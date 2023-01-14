@@ -17,7 +17,7 @@ export class TLRawReader {
       throw new TLError("No data remaining");
     }
     const buffer = this._buffer.slice(0, count);
-    this._buffer = this._buffer.slice(count);
+    this._buffer = this._buffer.subarray(count);
     return buffer;
   }
 
@@ -37,7 +37,8 @@ export class TLRawReader {
   }
 
   readDouble() {
-    return new DataView(this.read(8).buffer).getFloat64(0, true);
+    const buffer = this.read(8);
+    return new DataView(buffer.buffer, buffer.byteOffset, buffer.byteLength).getFloat64(0, true);
   }
 
   readInt128(signed = true) {

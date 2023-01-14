@@ -42,7 +42,7 @@ export class FileManager {
           try {
             const start = part * chunkSize;
             const end = start + chunkSize;
-            const bytes = contents.slice(start, end);
+            const bytes = contents.subarray(start, end);
             if (bytes.length == 0) {
               continue main;
             }

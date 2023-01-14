@@ -120,8 +120,8 @@ export class ClientPlain extends ClientAbstract {
 
     const newNonce_ = bufferFromBigInt(newNonce, 32, true, true);
     const serverNonce_ = bufferFromBigInt(serverNonce, 16, true, true);
-    const tmpAesKey = concat(await sha1(concat(newNonce_, serverNonce_)), (await sha1(concat(serverNonce_, newNonce_))).slice(0, 0 + 12));
-    const tmpAesIv = concat((await sha1(concat(serverNonce_, newNonce_))).slice(12, 12 + 8), await sha1(concat(newNonce_, newNonce_)), newNonce_.slice(0, 0 + 4));
+    const tmpAesKey = concat(await sha1(concat(newNonce_, serverNonce_)), (await sha1(concat(serverNonce_, newNonce_))).subarray(0, 0 + 12));
+    const tmpAesIv = concat((await sha1(concat(serverNonce_, newNonce_))).subarray(12, 12 + 8), await sha1(concat(newNonce_, newNonce_)), newNonce_.subarray(0, 0 + 4));
     const answerWithHash = ige256Decrypt(dhParams.encrypted_answer, tmpAesKey, tmpAesIv);
 
     const dhInnerData = new TLReader(answerWithHash.slice(20)).readObject();
@@ -152,8 +152,8 @@ export class ClientPlain extends ClientAbstract {
     assertInstanceOf(dhGenOk, types.Dh_gen_ok);
     d("got dh_gen_ok");
 
-    const serverNonceSlice = serverNonce_.slice(0, 8);
-    const salt = newNonce_.slice(0, 0 + 8).map((v, i) => v ^ serverNonceSlice[i]);
+    const serverNonceSlice = serverNonce_.subarray(0, 8);
+    const salt = newNonce_.subarray(0, 0 + 8).map((v, i) => v ^ serverNonceSlice[i]);
 
     const authKey_ = modExp(gA, b, dhPrime);
     const authKey = bufferFromBigInt(authKey_, 256, false, false);

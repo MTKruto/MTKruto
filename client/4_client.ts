@@ -837,6 +837,21 @@ export class Client<C extends Context = Context> extends ClientAbstract {
       throw new Error("apiHash not set");
     }
 
+    await this.#initConnection();
+
+    try {
+      await this.#updateManager.fetchState("authorize");
+      await this.#propagateAuthorizationState(true);
+      drop(this.#updateManager.recoverUpdateGap("authorize"));
+      d("already authorized");
+      return;
+    } catch (err) {
+      console.debug(err);
+      if (!(err instanceof AuthKeyUnregistered)) {
+        throw err;
+      }
+    }
+
     if (typeof params === "undefined") {
       const loginType = mustPromptOneOf("Do you want to login as bot [b] or user [u]?", ["b", "u"] as const);
       if (loginType == "b") {
@@ -847,20 +862,6 @@ export class Client<C extends Context = Context> extends ClientAbstract {
     }
 
     dAuth("authorizing with %s", typeof params === "string" ? "bot token" : params instanceof types.auth.ExportedAuthorization ? "exported authorization" : "AuthorizeUserParams");
-
-    await this.#initConnection();
-
-    try {
-      await this.#updateManager.fetchState("authorize");
-      await this.#propagateAuthorizationState(true);
-      drop(this.#updateManager.recoverUpdateGap("authorize"));
-      d("already authorized");
-      return;
-    } catch (err) {
-      if (!(err instanceof AuthKeyUnregistered)) {
-        throw err;
-      }
-    }
 
     if (typeof params === "string") {
       while (true) {
@@ -995,7 +996,6 @@ export class Client<C extends Context = Context> extends ClientAbstract {
    */
   async start(params?: string | types.auth.ExportedAuthorization | AuthorizeUserParams) {
     await this.connect();
-    await this.#initConnection();
     await this.authorize(params);
   }
 

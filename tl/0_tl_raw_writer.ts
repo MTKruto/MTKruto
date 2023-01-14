@@ -31,9 +31,9 @@ export class TLRawWriter {
   }
 
   writeDouble(double: number) {
-    const buf = new Uint8Array(8);
-    new DataView(buf.buffer).setFloat64(0, double, true);
-    this.write(buf);
+    const buffer = new Uint8Array(8);
+    new DataView(buffer.buffer, buffer.byteOffset, buffer.byteLength).setFloat64(0, double, true);
+    this.write(buffer);
     return this;
   }
 
