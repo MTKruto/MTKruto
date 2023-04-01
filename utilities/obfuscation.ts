@@ -51,10 +51,12 @@ export async function getObfuscationParameters(
   const decryptKey = initRev.slice(8, 8 + 32);
   const decryptIv = initRev.slice(40, 40 + 16);
 
-  await connection.write(concat(
+  const toWrite = concat(
     init.slice(0, 56),
     encryptedInit.slice(56, 56 + 8),
-  ));
+  );
+  console.log(toWrite.slice(40, 56));
+  await connection.write(toWrite);
 
   return {
     encryption: { key: encryptKey, iv: encryptIv },

@@ -68,6 +68,9 @@ export class Abridged extends Transport implements Transport {
       ? readBufferFromBigInt(buffer.length, 3)
       : new Uint8Array();
 
+    console.log({ unencr: concat(header, length, buffer) });
+    console.log({ encr: this.encrypt(concat(header, length, buffer)) });
+
     await this.connection.write(this.encrypt(concat(header, length, buffer)));
   }
 }

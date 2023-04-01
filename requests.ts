@@ -70,10 +70,7 @@ export async function reqPqMulti(transport: Transport) {
   const _count = dataView.getUint32(72, true);
   const publicKeyFingerprint = dataView.getBigUint64(76, true);
 
-  const pq = BigInt(
-    "0x" +
-      [...pq_].map((v) => v.toString(16).padStart(2, "0")).join(""),
-  );
+  const pq = bytesToInt(pq_);
 
   return { nonce, serverNonce, publicKeyFingerprint, pq, pqBytes: pq_ };
 }
@@ -162,12 +159,7 @@ export async function getDHParams(
     assertEquals(keyAesEncrypted.length, 256);
     /// End step 7
 
-    iKeyAesEncrypted = BigInt(
-      "0x" +
-        [...keyAesEncrypted].map((v) => v.toString(16).padStart(2, "0")).join(
-          "",
-        ),
-    );
+    iKeyAesEncrypted = bytesToInt(keyAesEncrypted);
   } while (iKeyAesEncrypted >= serverKey);
   /// The value of key_aes_encrypted is compared with the RSA-modulus of server_pubkey as a big-endian 2048-bit (256-byte) unsigned integer. If key_aes_encrypted turns out to be greater than or equal to the RSA modulus, the previous steps starting from the generation of new random temp_key are repeated.
   // if (iKeyAesEncrypted >= serverKey) {
