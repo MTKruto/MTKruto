@@ -1,6 +1,7 @@
 import { Connection } from "../connection/connection.ts";
 import { getObfuscationParameters } from "../obfuscated.ts";
-import { concat, readBufferFromBigInt } from "../utils.ts";
+import { concat } from "../utilities/buffer.ts";
+import { readBufferFromBigInt } from "../utilities/tl.ts";
 import { Transport } from "./transport.ts";
 
 export class Abridged extends Transport implements Transport {

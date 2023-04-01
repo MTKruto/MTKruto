@@ -1,18 +1,23 @@
-import { bytesToInt, readBytes } from "./buf.ts";
 import { Transport } from "./transport/transport.ts";
+import { getRandomBigInt, modExp } from "./utilities/bigint.ts";
+import { sha1, sha256 } from "./utilities/hash.ts";
 import {
-  BetterDataView,
-  concat,
-  getRandomBigInt,
+  bytesToInt,
+  bytesToString,
   packUnencryptedMessage,
-  sha1,
-} from "./utils.ts";
-import { assertEquals,randomBigIntBits,
+  readBufferFromBigInt,
+  readBytes,
+  toString,
+} from "./utilities/tl.ts";
+import { concat, xor } from "./utilities/buffer.ts";
+import { ExtendedDataView } from "./utilities/extended_data_view.ts";
+import {
+  assertEquals,
   factorize,
   igeDecrypt,
-  igeEncrypt, } from "./deps.ts";
-import { modExp, readBufferFromBigInt, sha256, xor } from "./utils.ts";
-import { bytesToString, toString } from "./buf.ts";
+  igeEncrypt,
+  randomBigIntBits,
+} from "./deps.ts";
 
 const req_pq_multi = 0xbe7e8ef1;
 const p_q_inner_data = 0x83c95aec;
@@ -51,7 +56,7 @@ export async function reqPqMulti(transport: Transport) {
   );
 
   const buffer = await transport.receive();
-  const dataView = new BetterDataView(buffer.buffer);
+  const dataView = new ExtendedDataView(buffer.buffer);
 
   const _authKeyId = dataView.getBigUint64(0, true);
   const _messageId = dataView.getBigUint64(8, true);
@@ -192,7 +197,7 @@ export async function getDHParams(
   ));
 
   const buffer = await transport.receive();
-  let dataView = new BetterDataView(buffer.buffer);
+  let dataView = new ExtendedDataView(buffer.buffer);
 
   const _authKeyId = dataView.getBigUint64(0, true);
   const _messageId = dataView.getBigUint64(8, true);
@@ -231,7 +236,7 @@ export async function getDHParams(
 
   const answer = igeDecrypt(encryptedAnswer, tmpAesKey, tmpAesIv).slice(20);
 
-  dataView = new BetterDataView(answer.buffer);
+  dataView = new ExtendedDataView(answer.buffer);
 
   const constructorId = dataView.getUint32(0, true);
   const __nonce = dataView.getBigUint128(4, true);
