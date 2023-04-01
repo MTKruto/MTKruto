@@ -1,5 +1,4 @@
 import { getDHParams, reqPqMulti } from "./requests.ts";
-// import { Intermediate } from "./transport/intermediate.ts";
 import { ConnectionWebSocket } from "./connection/connection_web_socket.ts";
 import {
   concat,
@@ -9,9 +8,7 @@ import {
   sha1,
   sha256,
 } from "./utils.ts";
-import { randomBigIntBits } from "https://deno.land/x/random_bigint@v1.5/src/randomBigInt.ts";
-import { igeEncrypt } from "https://deno.land/x/wasm_crypto@v0.2.2/mod.ts";
-import { assertEquals } from "https://deno.land/std@0.181.0/testing/asserts.ts";
+import { assertEquals, igeEncrypt, randomBigIntBits } from "./deps.ts";
 import { Abridged } from "./transport/abridged.ts";
 
 // const connection = new ConnectionTCP("127.0.0.1", 4430);

@@ -7,13 +7,10 @@ import {
   packUnencryptedMessage,
   sha1,
 } from "./utils.ts";
-import { assertEquals } from "https://deno.land/std@0.181.0/testing/asserts.ts";
-import { randomBigIntBits } from "https://deno.land/x/random_bigint@v1.5/mod.ts";
-import {
+import { assertEquals,randomBigIntBits,
   factorize,
   igeDecrypt,
-  igeEncrypt,
-} from "https://deno.land/x/wasm_crypto@v0.2.2/mod.ts";
+  igeEncrypt, } from "./deps.ts";
 import { modExp, readBufferFromBigInt, sha256, xor } from "./utils.ts";
 import { bytesToString, toString } from "./buf.ts";
 

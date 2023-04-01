@@ -2,7 +2,7 @@ import { Connection } from "../connection/connection.ts";
 import { getInit } from "../obfuscated.ts";
 import { readBufferFromBigInt } from "../utils.ts";
 import { Transport } from "./transport.ts";
-import { ctr256 } from "https://raw.githubusercontent.com/roj1512/wasm-crypto/main/mod.ts";
+import { ctr256 } from "../deps.ts";
 
 export class Abridged implements Transport {
   private initialized = false;

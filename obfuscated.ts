@@ -1,6 +1,6 @@
 import { Connection } from "./connection/connection.ts";
 import { concat, readBufferFromBigInt } from "./utils.ts";
-import { ctr256 } from "https://raw.githubusercontent.com/roj1512/wasm-crypto/main/mod.ts";
+import { ctr256 } from "./deps.ts";
 
 export async function getInit(protocol: number, connection: Connection) {
   const dc = 0xfcff;

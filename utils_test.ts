@@ -1,4 +1,4 @@
-import { assertEquals } from "https://deno.land/std@0.181.0/testing/asserts.ts";
+import { assertEquals } from "./deps.ts";
 import { BetterDataView } from "./utils.ts";
 
 Deno.test("BetterDataView", async (t) => {
