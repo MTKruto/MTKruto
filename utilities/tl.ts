@@ -85,7 +85,6 @@ export function toBigEndian(number: number | bigint, byteLength: number) {
   return new Uint8Array(buffer);
 }
 
-
 let lastMsgId = 0n;
 export function getMessageId() {
   const now = new Date().getTime() / 1000 + 0;
