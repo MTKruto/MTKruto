@@ -1,11 +1,19 @@
 import { Connection } from "../connection/connection.ts";
 import { Transport } from "./transport.ts";
-import { readBufferFromBigInt } from "../utils.ts";
+import { readBufferFromBigInt } from "../utilities/tl.ts";
 
-export class Intermediate implements Transport {
-  private initialized = false;
-
+export class Intermediate extends Transport implements Transport {
   constructor(private readonly connection: Connection) {
+    super();
+  }
+
+  async initialize() {
+    if (!this.initialized) {
+      await this.connection.write(new Uint8Array([0xee, 0xee, 0xee, 0xee]));
+      this.initialized = true;
+    } else {
+      throw new Error("Transport already initialized");
+    }
   }
 
   async receive() {
@@ -26,8 +34,7 @@ export class Intermediate implements Transport {
 
   async send(buffer: Uint8Array) {
     if (!this.initialized) {
-      await this.connection.write(new Uint8Array([0xee, 0xee, 0xee, 0xee]));
-      this.initialized = true;
+      throw new Error("Transport not initialized");
     }
 
     const length = readBufferFromBigInt(buffer.length, 4);

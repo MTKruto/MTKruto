@@ -2,6 +2,7 @@ import { MaybePromise } from "../types.ts";
 import { ctr256 } from "../deps.ts";
 
 export abstract class Transport {
+  protected initialized = false;
   protected obfuscationParameters: {
     encryption: { key: Uint8Array; iv: Uint8Array };
     decryption: { key: Uint8Array; iv: Uint8Array };
@@ -31,6 +32,7 @@ export abstract class Transport {
     }
   }
 
+  abstract initialize(): MaybePromise<void>;
   abstract receive(): MaybePromise<Uint8Array>;
-  abstract send(buffer: Uint8Array): Promise<void> | void;
+  abstract send(buffer: Uint8Array): MaybePromise<void>;
 }
