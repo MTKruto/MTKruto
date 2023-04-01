@@ -17,6 +17,29 @@ export class Abridged implements Transport {
   ) {
   }
 
+  async initialize() {
+    if (!this.initialized) {
+      if (this.obfuscated) {
+        const protocol = 0xefefefef;
+
+        const { encryptKey, encryptIv, decryptKey, decryptIv } = await getInit(
+          protocol,
+          this.connection,
+        );
+
+        this.encryptKey = encryptKey;
+        this.encryptIv = encryptIv;
+        this.decryptKey = decryptKey;
+        this.decryptIv = decryptIv;
+      } else {
+        await this.connection.write(new Uint8Array([0xef]));
+        this.initialized = true;
+      }
+    } else {
+      throw new Error("Transport already initialized");
+    }
+  }
+
   async receive() {
     let length: number;
 
@@ -54,22 +77,7 @@ export class Abridged implements Transport {
 
   async send(buffer: Uint8Array) {
     if (!this.initialized) {
-      if (this.obfuscated) {
-        const protocol = 0xefefefef;
-
-        const { encryptKey, encryptIv, decryptKey, decryptIv } = await getInit(
-          protocol,
-          this.connection,
-        );
-
-        this.encryptKey = encryptKey;
-        this.encryptIv = encryptIv;
-        this.decryptKey = decryptKey;
-        this.decryptIv = decryptIv;
-      } else {
-        await this.connection.write(new Uint8Array([0xef]));
-        this.initialized = true;
-      }
+      throw new Error("Transport not initialized");
     }
 
     const header = new Uint8Array([
