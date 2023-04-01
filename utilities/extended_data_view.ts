@@ -35,29 +35,4 @@ export class ExtendedDataView extends DataView {
       littleEndian,
     );
   }
-
-  getBigUint256(byteOffset: number, littleEndian?: boolean) {
-    const first = this.getBigUint128(byteOffset, littleEndian);
-    const second = this.getBigUint128(byteOffset + 16, littleEndian);
-
-    if (littleEndian) {
-      return (second >> 128n) + first;
-    } else {
-      return (first << 128n) + second;
-    }
-  }
-
-  setBigUint256(byteOffset: number, value: bigint, littleEndian?: boolean) {
-    const bottomMask = (1n << 128n) - 1n;
-    const topMask = ~bottomMask;
-    const second = value & bottomMask;
-    const first = (value & topMask) >> 128n;
-
-    this.setBigUint128(byteOffset, littleEndian ? second : first, littleEndian);
-    this.setBigUint128(
-      byteOffset + 16,
-      littleEndian ? first : second,
-      littleEndian,
-    );
-  }
 }
