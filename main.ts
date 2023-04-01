@@ -1,13 +1,10 @@
 import { getDHParams, reqPqMulti } from "./requests.ts";
 import { ConnectionWebSocket } from "./connection/connection_web_socket.ts";
-import {
-  concat,
-  getMessageId,
-  mod,
-  readBufferFromBigInt,
-  sha1,
-  sha256,
-} from "./utils.ts";
+// import { ConnectionTCP } from "./connection/connection_tcp.ts";
+import { getMessageId, readBufferFromBigInt } from "./utilities/tl.ts";
+import { sha1, sha256 } from "./utilities/hash.ts";
+import { mod } from "./utilities/bigint.ts";
+import { concat } from "./utilities/buffer.ts";
 import { assertEquals, igeEncrypt, randomBigIntBits } from "./deps.ts";
 import { Abridged } from "./transport/abridged.ts";
 
@@ -20,6 +17,8 @@ const connection = new ConnectionWebSocket("ws://127.0.0.1:8000/apiws");
 const transport = new Abridged(connection, true);
 
 await connection.open();
+
+await transport.initialize();
 
 const { pq, pqBytes, serverNonce, nonce, publicKeyFingerprint } =
   await reqPqMulti(transport);
