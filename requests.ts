@@ -195,8 +195,8 @@ export async function getDHParams(
   const _messageId = dataView.getBigUint64(8, true);
   const _messageLength = dataView.getUint32(16, true);
   const _constructorId = dataView.getUint32(20, true);
-  const nonce_ = dataView.getBigUint128(24, true);
-  const serverNonce_ = dataView.getBigUint128(40, true);
+  const _nonce_ = dataView.getBigUint128(24, true);
+  const _serverNonce_ = dataView.getBigUint128(40, true);
   const encryptedAnswer = readBytes(buffer.slice(56, 56 + 596));
 
   const tmpAesKey = concat(
@@ -230,13 +230,13 @@ export async function getDHParams(
 
   dataView = new ExtendedDataView(answer.buffer);
 
-  const constructorId = dataView.getUint32(0, true);
+  const _constructorId_ = dataView.getUint32(0, true);
   const __nonce = dataView.getBigUint128(4, true);
   const __serverNonce = dataView.getBigUint128(20, true);
   const g = dataView.getUint32(36, true);
   const dhPrime = readBytes(answer.slice(40, 40 + 260));
   const gA = readBytes(answer.slice(300, 300 + 260));
-  const serverTime = dataView.getUint32(560);
+  const _serverTime = dataView.getUint32(560);
 
   const b = getRandomBigInt(256);
 
