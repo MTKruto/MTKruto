@@ -7,4 +7,4 @@ export {
   factorize,
   igeDecrypt,
   igeEncrypt,
-} from "https://raw.githubusercontent.com/roj1512/wasm-crypto/main/mod.ts";
+} from "https://deno.land/x/wasm_crypto@v0.3.0/mod.ts";
