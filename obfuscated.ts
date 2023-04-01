@@ -2,7 +2,10 @@ import { Connection } from "./connection/connection.ts";
 import { concat, readBufferFromBigInt } from "./utils.ts";
 import { ctr256 } from "./deps.ts";
 
-export async function getInit(protocol: number, connection: Connection) {
+export async function getObfuscationParameters(
+  protocol: number,
+  connection: Connection,
+) {
   const dc = 0xfcff;
 
   let init: Uint8Array;
@@ -52,5 +55,8 @@ export async function getInit(protocol: number, connection: Connection) {
     encryptedInit.slice(56, 56 + 8),
   ));
 
-  return { encryptKey, encryptIv, decryptKey, decryptIv };
+  return {
+    encryption: { key: encryptKey, iv: encryptIv },
+    decryption: { key: decryptKey, iv: decryptIv },
+  };
 }
