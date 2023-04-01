@@ -1,5 +1,5 @@
 import { Connection } from "../connection/connection.ts";
-import { getObfuscationParameters } from "../obfuscated.ts";
+import { getObfuscationParameters } from "../utilities/obfuscation.ts";
 import { concat } from "../utilities/buffer.ts";
 import { readBufferFromBigInt } from "../utilities/tl.ts";
 import { Transport } from "./transport.ts";
