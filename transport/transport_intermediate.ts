@@ -1,6 +1,6 @@
 import { Connection } from "../connection/connection.ts";
 import { Transport } from "./transport.ts";
-import { readBufferFromBigInt } from "../utilities/4_tl.ts";
+import { bufferFromBigInt } from "../utilities/1_buffer.ts";
 import { concat } from "../utilities/1_buffer.ts";
 import { getObfuscationParameters } from "../utilities/5_obfuscation.ts";
 
@@ -49,7 +49,7 @@ export class TransportIntermediate extends Transport implements Transport {
       throw new Error("Transport not initialized");
     }
 
-    const length = readBufferFromBigInt(buffer.length, 4);
+    const length = bufferFromBigInt(buffer.length, 4);
 
     await this.connection.write(this.encrypt(concat(length, buffer)));
   }

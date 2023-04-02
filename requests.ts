@@ -1,14 +1,16 @@
 import { Transport } from "./transport/transport.ts";
-import { getRandomBigInt, modExp } from "./utilities/0_bigint.ts";
+import {
+  bigIntFromBuffer,
+  getRandomBigInt,
+  modExp,
+} from "./utilities/0_bigint.ts";
 import { sha1, sha256 } from "./utilities/3_hash.ts";
 import {
-  bytesToInt,
   deserializeString,
   packUnencryptedMessage,
-  readBufferFromBigInt,
   serializeString,
 } from "./utilities/4_tl.ts";
-import { concat, xor } from "./utilities/1_buffer.ts";
+import { bufferFromBigInt, concat, xor } from "./utilities/1_buffer.ts";
 import { ExtendedDataView } from "./utilities/2_extended_data_view.ts";
 import {
   assertEquals,
@@ -48,8 +50,8 @@ export async function reqPqMulti(transport: Transport) {
   await transport.send(
     packUnencryptedMessage(
       concat(
-        readBufferFromBigInt(req_pq_multi, 4),
-        readBufferFromBigInt(nonce, 16),
+        bufferFromBigInt(req_pq_multi, 4),
+        bufferFromBigInt(nonce, 16),
       ),
     ),
   );
@@ -69,7 +71,7 @@ export async function reqPqMulti(transport: Transport) {
   const _count = dataView.getUint32(72, true);
   const publicKeyFingerprint = dataView.getBigUint64(76, true);
 
-  const pq = bytesToInt(pq_);
+  const pq = bigIntFromBuffer(pq_);
 
   return { nonce, serverNonce, publicKeyFingerprint, pq, pqBytes: pq_ };
 }
@@ -91,13 +93,13 @@ export async function getDHParams(
   const newNonce = randomBigIntBits(32 * 8);
 
   let data = concat(
-    readBufferFromBigInt(p_q_inner_data, 4),
+    bufferFromBigInt(p_q_inner_data, 4),
     serializeString(pqBytes),
     serializeString(p.valueOf(), 4),
     serializeString(q.valueOf(), 4),
-    readBufferFromBigInt(nonce, 16),
-    readBufferFromBigInt(serverNonce, 16),
-    readBufferFromBigInt(newNonce, 32),
+    bufferFromBigInt(nonce, 16),
+    bufferFromBigInt(serverNonce, 16),
+    bufferFromBigInt(newNonce, 32),
   );
 
   /// Step 1
@@ -158,7 +160,7 @@ export async function getDHParams(
     assertEquals(keyAesEncrypted.length, 256);
     /// End step 7
 
-    iKeyAesEncrypted = bytesToInt(keyAesEncrypted);
+    iKeyAesEncrypted = bigIntFromBuffer(keyAesEncrypted);
   } while (iKeyAesEncrypted >= serverKey);
   /// The value of key_aes_encrypted is compared with the RSA-modulus of server_pubkey as a big-endian 2048-bit (256-byte) unsigned integer. If key_aes_encrypted turns out to be greater than or equal to the RSA modulus, the previous steps starting from the generation of new random temp_key are repeated.
   // if (iKeyAesEncrypted >= serverKey) {
@@ -170,19 +172,19 @@ export async function getDHParams(
   /// encrypted_data := RSA(key_aes_encrypted, server_pubkey); — 256-byte big-endian integer is elevated to the requisite power from the RSA public key modulo the RSA modulus, and the result is stored as a big-endian integer consisting of exactly 256 bytes (with leading zero bytes if required).
   const encrypedData = modExp(iKeyAesEncrypted, exponent, serverKey);
 
-  assertEquals(readBufferFromBigInt(encrypedData, 256, false).length, 256);
+  assertEquals(bufferFromBigInt(encrypedData, 256, false).length, 256);
   /// End step 8
 
-  const encryptedDataBuf = readBufferFromBigInt(encrypedData, 256, false);
+  const encryptedDataBuf = bufferFromBigInt(encrypedData, 256, false);
 
   await transport.send(packUnencryptedMessage(
     concat(
-      readBufferFromBigInt(req_DH_params, 4),
-      readBufferFromBigInt(nonce, 16),
-      readBufferFromBigInt(serverNonce, 16),
+      bufferFromBigInt(req_DH_params, 4),
+      bufferFromBigInt(nonce, 16),
+      bufferFromBigInt(serverNonce, 16),
       serializeString(p.valueOf(), 4),
       serializeString(q.valueOf(), 4),
-      readBufferFromBigInt(publicKeyFingerprint, 8),
+      bufferFromBigInt(publicKeyFingerprint, 8),
       serializeString(encryptedDataBuf),
     ),
   ));
@@ -201,28 +203,28 @@ export async function getDHParams(
   const tmpAesKey = concat(
     await sha1(
       concat(
-        readBufferFromBigInt(newNonce, 32),
-        readBufferFromBigInt(serverNonce, 16),
+        bufferFromBigInt(newNonce, 32),
+        bufferFromBigInt(serverNonce, 16),
       ),
     ),
     (await sha1(
       concat(
-        readBufferFromBigInt(serverNonce, 16),
-        readBufferFromBigInt(newNonce, 32),
+        bufferFromBigInt(serverNonce, 16),
+        bufferFromBigInt(newNonce, 32),
       ),
     )).slice(0, 12),
   );
 
   const tmpAesIv = concat(
     (await sha1(concat(
-      readBufferFromBigInt(serverNonce, 16),
-      readBufferFromBigInt(newNonce, 32),
+      bufferFromBigInt(serverNonce, 16),
+      bufferFromBigInt(newNonce, 32),
     ))).slice(12, 12 + 8),
     await sha1(concat(
-      readBufferFromBigInt(newNonce, 32),
-      readBufferFromBigInt(newNonce, 32),
+      bufferFromBigInt(newNonce, 32),
+      bufferFromBigInt(newNonce, 32),
     )),
-    readBufferFromBigInt(newNonce, 32).slice(0, 4),
+    bufferFromBigInt(newNonce, 32).slice(0, 4),
   );
 
   const answer = igeDecrypt(encryptedAnswer, tmpAesKey, tmpAesIv).slice(20);
@@ -239,14 +241,14 @@ export async function getDHParams(
 
   const b = getRandomBigInt(256);
 
-  const gB = modExp(BigInt(g), b, bytesToInt(dhPrime));
+  const gB = modExp(BigInt(g), b, bigIntFromBuffer(dhPrime));
 
   data = concat(
-    readBufferFromBigInt(client_DH_inner_data, 4),
-    readBufferFromBigInt(nonce, 16),
-    readBufferFromBigInt(serverNonce, 16),
-    readBufferFromBigInt(0, 8),
-    serializeString(readBufferFromBigInt(gB, 256, false)),
+    bufferFromBigInt(client_DH_inner_data, 4),
+    bufferFromBigInt(nonce, 16),
+    bufferFromBigInt(serverNonce, 16),
+    bufferFromBigInt(0, 8),
+    serializeString(bufferFromBigInt(gB, 256, false)),
   );
 
   let dataWithHash = concat(await sha1(data), data);
@@ -263,14 +265,14 @@ export async function getDHParams(
 
   await transport.send(packUnencryptedMessage(
     concat(
-      readBufferFromBigInt(set_client_DH_params, 4),
-      readBufferFromBigInt(nonce, 16),
-      readBufferFromBigInt(serverNonce, 16),
+      bufferFromBigInt(set_client_DH_params, 4),
+      bufferFromBigInt(nonce, 16),
+      bufferFromBigInt(serverNonce, 16),
       serializeString(encryptedData),
     ),
   ));
 
-  const authKey = modExp(bytesToInt(gA), b, bytesToInt(dhPrime));
+  const authKey = modExp(bigIntFromBuffer(gA), b, bigIntFromBuffer(dhPrime));
 
   return authKey;
 }

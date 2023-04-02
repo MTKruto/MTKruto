@@ -1,4 +1,4 @@
-import { concat } from "./1_buffer.ts";
+import { concat,bufferFromBigInt } from "./1_buffer.ts";
 import { ExtendedDataView } from "./2_extended_data_view.ts";
 
 export function deserializeString(buffer: Uint8Array) {
@@ -23,7 +23,7 @@ export function serializeString(
     if (!byteLength) {
       throw new Error("byteLength is unspecified");
     } else {
-      bytes = readBufferFromBigInt(bytes, byteLength, false);
+      bytes = bufferFromBigInt(bytes, byteLength, false);
     }
   }
 
@@ -61,13 +61,6 @@ export function serializeString(
   }
 }
 
-export function bytesToInt(bytes: Uint8Array) {
-  return BigInt(
-    "0x" +
-      [...bytes].map((v) => v.toString(16).padStart(2, "0")).join(""),
-  );
-}
-
 let lastMsgId = 0n;
 export function getMessageId() {
   const now = new Date().getTime() / 1000 + 0;
@@ -83,76 +76,10 @@ export function getMessageId() {
 }
 export function packUnencryptedMessage(data: Uint8Array) {
   const message = concat(
-    readBufferFromBigInt(0x00, 8),
-    readBufferFromBigInt(getMessageId(), 8),
-    readBufferFromBigInt(data.length, 4),
+    bufferFromBigInt(0x00, 8),
+    bufferFromBigInt(getMessageId(), 8),
+    bufferFromBigInt(data.length, 4),
     data,
   );
   return message;
-}
-
-const fromHexString = (hexString: string) =>
-  Uint8Array.from(
-    hexString.match(/.{1,2}/g)!.map((byte) => parseInt(byte, 16)),
-  );
-export function readBufferFromBigInt(
-  bigIntVar: bigint | number,
-  bytesNumber: number,
-  little = true,
-  signed = false,
-) {
-  bigIntVar = BigInt(
-    typeof bigIntVar === "number" ? Math.ceil(bigIntVar) : bigIntVar,
-  );
-  const bitLength = bigIntVar.toString(2).length;
-
-  const bytes = Math.ceil(bitLength / 8);
-
-  if (bytesNumber < bytes) {
-    throw new Error("OverflowError: int too big to convert");
-  }
-
-  if (!signed && bigIntVar < 0n) {
-    throw new Error("Cannot convert to unsigned");
-  }
-
-  let below = false;
-  if (bigIntVar < 0n) {
-    below = true;
-    bigIntVar = bigIntVar < 0 ? bigIntVar * -1n : bigIntVar;
-  }
-
-  const hex = bigIntVar.toString(16).padStart(bytesNumber * 2, "0");
-  let littleBuffer = fromHexString(hex);
-
-  if (little) {
-    littleBuffer = littleBuffer.reverse();
-  }
-
-  if (signed && below) {
-    if (little) {
-      let reminder = false;
-      if (littleBuffer[0] !== 0) {
-        littleBuffer[0] -= 1;
-      }
-      for (let i = 0; i < littleBuffer.length; i++) {
-        if (littleBuffer[i] === 0) {
-          reminder = true;
-          continue;
-        }
-        if (reminder) {
-          littleBuffer[i] -= 1;
-          reminder = false;
-        }
-        littleBuffer[i] = 255 - littleBuffer[i];
-      }
-    } else {
-      littleBuffer[littleBuffer.length - 1] = 256 -
-        littleBuffer[littleBuffer.length - 1];
-      for (let i = 0; i < littleBuffer.length - 1; i++) {
-        littleBuffer[i] = 255 - littleBuffer[i];
-      }
-    }
-  }
-  return littleBuffer;
 }

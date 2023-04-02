@@ -1,7 +1,7 @@
 import { Connection } from "../connection/connection.ts";
 import { getObfuscationParameters } from "../utilities/5_obfuscation.ts";
 import { concat } from "../utilities/1_buffer.ts";
-import { readBufferFromBigInt } from "../utilities/4_tl.ts";
+import { bufferFromBigInt } from "../utilities/1_buffer.ts";
 import { Transport } from "./transport.ts";
 
 export class TransportAbridged extends Transport implements Transport {
@@ -63,7 +63,7 @@ export class TransportAbridged extends Transport implements Transport {
       buffer.length >= 0x7F ? 0x7F : buffer.length,
     ]);
     const length = buffer.length >= 0x7F
-      ? readBufferFromBigInt(buffer.length, 3)
+      ? bufferFromBigInt(buffer.length, 3)
       : new Uint8Array();
 
     await this.connection.write(this.encrypt(concat(header, length, buffer)));

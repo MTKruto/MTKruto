@@ -1,10 +1,10 @@
 import { getDHParams, reqPqMulti } from "./requests.ts";
 // import { ConnectionWebSocket } from "./connection/connection_web_socket.ts";
 import { ConnectionTCP } from "./connection/connection_tcp.ts";
-import { getMessageId, readBufferFromBigInt } from "./utilities/4_tl.ts";
+import { getMessageId } from "./utilities/4_tl.ts";
 import { sha1, sha256 } from "./utilities/3_hash.ts";
 import { mod } from "./utilities/0_bigint.ts";
-import { concat } from "./utilities/1_buffer.ts";
+import { bufferFromBigInt, concat } from "./utilities/1_buffer.ts";
 import { assertEquals, igeEncrypt, randomBigIntBits } from "./deps.ts";
 import { TransportAbridged } from "./transport/transport_abridged.ts";
 
@@ -32,25 +32,25 @@ const authKey = await getDHParams(
   publicKeyFingerprint,
 );
 
-const authKeyBuffer = readBufferFromBigInt(authKey, 256, false);
+const authKeyBuffer = bufferFromBigInt(authKey, 256, false);
 
 const authKeyId = (await sha1(authKeyBuffer)).slice(-8);
 
 const ping = 0x7abe77ec;
 
-const pingId = readBufferFromBigInt(0, 8);
+const pingId = bufferFromBigInt(0, 8);
 
 const salt = randomBigIntBits(64);
 const sessionId = randomBigIntBits(64);
 const messageId = getMessageId();
-const seqNo = readBufferFromBigInt(1, 4);
-const messageData = concat(readBufferFromBigInt(ping, 4), pingId);
-const messageDataLength = readBufferFromBigInt(messageData.length, 4);
+const seqNo = bufferFromBigInt(1, 4);
+const messageData = concat(bufferFromBigInt(ping, 4), pingId);
+const messageDataLength = bufferFromBigInt(messageData.length, 4);
 
 let message = concat(
-  readBufferFromBigInt(salt, 8),
-  readBufferFromBigInt(sessionId, 8),
-  readBufferFromBigInt(messageId, 8),
+  bufferFromBigInt(salt, 8),
+  bufferFromBigInt(sessionId, 8),
+  bufferFromBigInt(messageId, 8),
   seqNo,
   messageDataLength,
   messageData,

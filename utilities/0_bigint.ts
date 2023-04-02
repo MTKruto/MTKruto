@@ -23,12 +23,15 @@ export function mod(n: number, m: number) {
   return ((n % m) + m) % m;
 }
 
-const getRandomByte = () => BigInt(Math.floor(Math.random() * 0xff));
+export function bigIntFromBuffer(bytes: Uint8Array) {
+  return BigInt(
+    "0x" +
+      [...bytes].map((v) => v.toString(16).padStart(2, "0")).join(""),
+  );
+}
+
 export function getRandomBigInt(byteLength: number) {
-  let int = getRandomByte();
-  for (let i = 0; i < byteLength; i++) {
-    int <<= 8n;
-    int |= getRandomByte();
-  }
-  return int;
+  const randomBytes = new Uint8Array(byteLength);
+  crypto.getRandomValues(randomBytes);
+  return bigIntFromBuffer(randomBytes);
 }

@@ -1,6 +1,5 @@
 import { Connection } from "../connection/connection.ts";
-import { concat } from "../utilities/1_buffer.ts";
-import { readBufferFromBigInt } from "./4_tl.ts";
+import { bufferFromBigInt, concat } from "../utilities/1_buffer.ts";
 import { ctr256 } from "../deps.ts";
 
 export async function getObfuscationParameters(
@@ -14,8 +13,8 @@ export async function getObfuscationParameters(
   while (true) {
     init = concat(
       crypto.getRandomValues(new Uint8Array(56)),
-      readBufferFromBigInt(protocol, 4, false),
-      readBufferFromBigInt(dc, 2, false),
+      bufferFromBigInt(protocol, 4, false),
+      bufferFromBigInt(dc, 2, false),
       crypto.getRandomValues(new Uint8Array(2)),
     );
 
