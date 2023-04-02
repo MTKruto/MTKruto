@@ -3,11 +3,11 @@ export class ExtendedDataView extends DataView {
     const bytes = new Uint8Array(this.buffer.slice(byteOffset, byteOffset + 3));
 
     if (littleEndian) {
-      return (bytes[3] << 16) | (bytes[2] << 8) | bytes[1];
+      return (bytes[2] << 16) | (bytes[1] << 8) | bytes[0];
     } else {
-      return bytes[1] |
-        (bytes[2] << 8) |
-        (bytes[3] << 16);
+      return bytes[2] |
+        (bytes[1] << 8) |
+        (bytes[0] << 16);
     }
   }
 
