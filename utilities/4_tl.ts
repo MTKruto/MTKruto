@@ -69,21 +69,6 @@ export function bytesToInt(bytes: Uint8Array) {
   );
 }
 
-export function toBigEndian(number: number | bigint, byteLength: number) {
-  const buffer = new ArrayBuffer(byteLength);
-  const dataView = new DataView(buffer);
-  if (typeof number === "number") {
-    if (byteLength > 3) {
-      dataView.setUint32(0, number, false);
-    } else {
-      dataView.setUint16(0, number, false);
-    }
-  } else {
-    dataView.setBigUint64(0, number, false);
-  }
-  return new Uint8Array(buffer);
-}
-
 let lastMsgId = 0n;
 export function getMessageId() {
   const now = new Date().getTime() / 1000 + 0;
