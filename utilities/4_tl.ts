@@ -1,9 +1,8 @@
 import { concat } from "./1_buffer.ts";
 import { ExtendedDataView } from "./2_extended_data_view.ts";
 
-export function readBytes(buffer: Uint8Array) {
+export function deserializeString(buffer: Uint8Array) {
   let L = buffer[0];
-
   if (L <= 253) {
     return buffer.slice(1, L + 1);
   }
@@ -11,26 +10,10 @@ export function readBytes(buffer: Uint8Array) {
   const dataView = new ExtendedDataView(buffer.buffer);
   L = dataView.getInt24(0);
 
-  console.log({ L });
-
   return buffer.slice(4).slice(0, L);
 }
 
-export function toString(bigint: bigint) {
-  const arr = new Array<number>();
-  const string = bigint.toString(16);
-  for (let i = 0; i < string.length; i += 2) {
-    let byte = parseInt(string.substring(i, i + 2), 16);
-    if (byte > 127) {
-      byte = -(~byte & 0xFF) - 1;
-    }
-    arr.push(byte);
-  }
-  const buffer = new Uint8Array([arr.length, ...arr]);
-  return concat(buffer, new Uint8Array(8 - buffer.length));
-}
-
-export function bytesToString(bytes: Uint8Array) {
+export function serializeString(bytes: Uint8Array) {
   let padding = 0;
 
   if (bytes.length <= 253) {
@@ -63,6 +46,20 @@ export function bytesToString(bytes: Uint8Array) {
       new Uint8Array(padding),
     );
   }
+}
+
+export function toString(bigint: bigint) {
+  const arr = new Array<number>();
+  const string = bigint.toString(16);
+  for (let i = 0; i < string.length; i += 2) {
+    let byte = parseInt(string.substring(i, i + 2), 16);
+    if (byte > 127) {
+      byte = -(~byte & 0xFF) - 1;
+    }
+    arr.push(byte);
+  }
+  const buffer = new Uint8Array([arr.length, ...arr]);
+  return concat(buffer, new Uint8Array(8 - buffer.length));
 }
 
 export function bytesToInt(bytes: Uint8Array) {

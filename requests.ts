@@ -3,10 +3,10 @@ import { getRandomBigInt, modExp } from "./utilities/0_bigint.ts";
 import { sha1, sha256 } from "./utilities/3_hash.ts";
 import {
   bytesToInt,
-  bytesToString,
+  deserializeString,
   packUnencryptedMessage,
   readBufferFromBigInt,
-  readBytes,
+  serializeString,
   toString,
 } from "./utilities/4_tl.ts";
 import { concat, xor } from "./utilities/1_buffer.ts";
@@ -65,7 +65,7 @@ export async function reqPqMulti(transport: Transport) {
   const nonce_ = dataView.getBigUint128(24, true);
   assertEquals(nonce, nonce_);
   const serverNonce = dataView.getBigUint128(40, true);
-  const pq_ = readBytes(buffer.slice(56, 56 + 12));
+  const pq_ = deserializeString(buffer.slice(56, 56 + 12));
   const _vectorConstructor = dataView.getUint32(68, true);
   const _count = dataView.getUint32(72, true);
   const publicKeyFingerprint = dataView.getBigUint64(76, true);
@@ -93,7 +93,7 @@ export async function getDHParams(
 
   let data = concat(
     readBufferFromBigInt(p_q_inner_data, 4),
-    bytesToString(pqBytes),
+    serializeString(pqBytes),
     toString(p.valueOf()),
     toString(q.valueOf()),
     readBufferFromBigInt(nonce, 16),
@@ -184,7 +184,7 @@ export async function getDHParams(
       toString(p.valueOf()),
       toString(q.valueOf()),
       readBufferFromBigInt(publicKeyFingerprint, 8),
-      bytesToString(encryptedDataBuf),
+      serializeString(encryptedDataBuf),
     ),
   ));
 
@@ -197,7 +197,7 @@ export async function getDHParams(
   const _constructorId = dataView.getUint32(20, true);
   const _nonce_ = dataView.getBigUint128(24, true);
   const _serverNonce_ = dataView.getBigUint128(40, true);
-  const encryptedAnswer = readBytes(buffer.slice(56, 56 + 596));
+  const encryptedAnswer = deserializeString(buffer.slice(56, 56 + 596));
 
   const tmpAesKey = concat(
     await sha1(
@@ -234,8 +234,8 @@ export async function getDHParams(
   const __nonce = dataView.getBigUint128(4, true);
   const __serverNonce = dataView.getBigUint128(20, true);
   const g = dataView.getUint32(36, true);
-  const dhPrime = readBytes(answer.slice(40, 40 + 260));
-  const gA = readBytes(answer.slice(300, 300 + 260));
+  const dhPrime = deserializeString(answer.slice(40, 40 + 260));
+  const gA = deserializeString(answer.slice(300, 300 + 260));
   const _serverTime = dataView.getUint32(560);
 
   const b = getRandomBigInt(256);
@@ -247,7 +247,7 @@ export async function getDHParams(
     readBufferFromBigInt(nonce, 16),
     readBufferFromBigInt(serverNonce, 16),
     readBufferFromBigInt(0, 8),
-    bytesToString(readBufferFromBigInt(gB, 256, false)),
+    serializeString(readBufferFromBigInt(gB, 256, false)),
   );
 
   let dataWithHash = concat(await sha1(data), data);
@@ -267,7 +267,7 @@ export async function getDHParams(
       readBufferFromBigInt(set_client_DH_params, 4),
       readBufferFromBigInt(nonce, 16),
       readBufferFromBigInt(serverNonce, 16),
-      bytesToString(encryptedData),
+      serializeString(encryptedData),
     ),
   ));
 
