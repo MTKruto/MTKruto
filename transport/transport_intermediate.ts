@@ -4,7 +4,7 @@ import { readBufferFromBigInt } from "../utilities/4_tl.ts";
 import { concat } from "../utilities/1_buffer.ts";
 import { getObfuscationParameters } from "../utilities/5_obfuscation.ts";
 
-export class Intermediate extends Transport implements Transport {
+export class TransportIntermediate extends Transport implements Transport {
   constructor(
     private readonly connection: Connection,
     private readonly obfuscated = false,

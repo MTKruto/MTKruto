@@ -4,7 +4,7 @@ import { concat } from "../utilities/1_buffer.ts";
 import { readBufferFromBigInt } from "../utilities/4_tl.ts";
 import { Transport } from "./transport.ts";
 
-export class Abridged extends Transport implements Transport {
+export class TransportAbridged extends Transport implements Transport {
   constructor(
     private readonly connection: Connection,
     private readonly obfuscated = false,

@@ -6,7 +6,7 @@ import { sha1, sha256 } from "./utilities/3_hash.ts";
 import { mod } from "./utilities/0_bigint.ts";
 import { concat } from "./utilities/1_buffer.ts";
 import { assertEquals, igeEncrypt, randomBigIntBits } from "./deps.ts";
-import { Abridged } from "./transport/abridged.ts";
+import { TransportAbridged } from "./transport/transport_abridged.ts";
 
 const connection = new ConnectionTCP("127.0.0.1", 4430);
 // const connection = new ConnectionWebSocket("ws://127.0.0.1:8000/apiws");
@@ -14,7 +14,7 @@ const connection = new ConnectionTCP("127.0.0.1", 4430);
 //   "wss://vesta.web.telegram.org:443/apiws",
 // );
 // const connection = new TCP("149.154.167.40", 80);
-const transport = new Abridged(connection, false);
+const transport = new TransportAbridged(connection, false);
 
 await connection.open();
 
