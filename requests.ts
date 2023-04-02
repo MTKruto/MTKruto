@@ -7,7 +7,6 @@ import {
   packUnencryptedMessage,
   readBufferFromBigInt,
   serializeString,
-  toString,
 } from "./utilities/4_tl.ts";
 import { concat, xor } from "./utilities/1_buffer.ts";
 import { ExtendedDataView } from "./utilities/2_extended_data_view.ts";
