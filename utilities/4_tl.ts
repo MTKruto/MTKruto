@@ -1,5 +1,5 @@
-import { concat } from "./buffer.ts";
-import { ExtendedDataView } from "./extended_data_view.ts";
+import { concat } from "./1_buffer.ts";
+import { ExtendedDataView } from "./2_extended_data_view.ts";
 
 export function readBytes(buffer: Uint8Array) {
   let L = buffer[0];
@@ -10,6 +10,8 @@ export function readBytes(buffer: Uint8Array) {
 
   const dataView = new ExtendedDataView(buffer.buffer);
   L = dataView.getInt24(0);
+
+  console.log({ L });
 
   return buffer.slice(4).slice(0, L);
 }
@@ -25,7 +27,7 @@ export function toString(bigint: bigint) {
     arr.push(byte);
   }
   const buffer = new Uint8Array([arr.length, ...arr]);
-  return new Uint8Array([...buffer, ...new Uint8Array(8 - buffer.length)]);
+  return concat(buffer, new Uint8Array(8 - buffer.length));
 }
 
 export function bytesToString(bytes: Uint8Array) {
@@ -99,12 +101,12 @@ export function getMessageId() {
   return newMsgId;
 }
 export function packUnencryptedMessage(data: Uint8Array) {
-  const message = new Uint8Array([
-    ...readBufferFromBigInt(0x00, 8),
-    ...readBufferFromBigInt(getMessageId(), 8),
-    ...readBufferFromBigInt(data.length, 4),
-    ...data,
-  ]);
+  const message = concat(
+    readBufferFromBigInt(0x00, 8),
+    readBufferFromBigInt(getMessageId(), 8),
+    readBufferFromBigInt(data.length, 4),
+    data,
+  );
   return message;
 }
 

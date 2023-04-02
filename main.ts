@@ -1,10 +1,10 @@
 import { getDHParams, reqPqMulti } from "./requests.ts";
 // import { ConnectionWebSocket } from "./connection/connection_web_socket.ts";
 import { ConnectionTCP } from "./connection/connection_tcp.ts";
-import { getMessageId, readBufferFromBigInt } from "./utilities/tl.ts";
-import { sha1, sha256 } from "./utilities/hash.ts";
-import { mod } from "./utilities/bigint.ts";
-import { concat } from "./utilities/buffer.ts";
+import { getMessageId, readBufferFromBigInt } from "./utilities/4_tl.ts";
+import { sha1, sha256 } from "./utilities/3_hash.ts";
+import { mod } from "./utilities/0_bigint.ts";
+import { concat } from "./utilities/1_buffer.ts";
 import { assertEquals, igeEncrypt, randomBigIntBits } from "./deps.ts";
 import { Abridged } from "./transport/abridged.ts";
 

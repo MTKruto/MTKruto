@@ -1,6 +1,6 @@
 import { Connection } from "../connection/connection.ts";
-import { concat } from "../utilities/buffer.ts";
-import { readBufferFromBigInt } from "../utilities/tl.ts";
+import { concat } from "../utilities/1_buffer.ts";
+import { readBufferFromBigInt } from "./4_tl.ts";
 import { ctr256 } from "../deps.ts";
 
 export async function getObfuscationParameters(

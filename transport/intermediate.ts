@@ -1,7 +1,7 @@
 import { Connection } from "../connection/connection.ts";
 import { Transport } from "./transport.ts";
-import { readBufferFromBigInt } from "../utilities/tl.ts";
-import { concat } from "../utilities/buffer.ts";
+import { readBufferFromBigInt } from "../utilities/4_tl.ts";
+import { concat } from "../utilities/1_buffer.ts";
 
 export class Intermediate extends Transport implements Transport {
   constructor(private readonly connection: Connection) {

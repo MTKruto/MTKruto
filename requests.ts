@@ -1,6 +1,6 @@
 import { Transport } from "./transport/transport.ts";
-import { getRandomBigInt, modExp } from "./utilities/bigint.ts";
-import { sha1, sha256 } from "./utilities/hash.ts";
+import { getRandomBigInt, modExp } from "./utilities/0_bigint.ts";
+import { sha1, sha256 } from "./utilities/3_hash.ts";
 import {
   bytesToInt,
   bytesToString,
@@ -8,9 +8,9 @@ import {
   readBufferFromBigInt,
   readBytes,
   toString,
-} from "./utilities/tl.ts";
-import { concat, xor } from "./utilities/buffer.ts";
-import { ExtendedDataView } from "./utilities/extended_data_view.ts";
+} from "./utilities/4_tl.ts";
+import { concat, xor } from "./utilities/1_buffer.ts";
+import { ExtendedDataView } from "./utilities/2_extended_data_view.ts";
 import {
   assertEquals,
   factorize,
