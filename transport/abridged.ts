@@ -1,12 +1,10 @@
 import { Connection } from "../connection/connection.ts";
-import { getObfuscationParameters } from "../utilities/obfuscation.ts";
-import { concat } from "../utilities/buffer.ts";
-import { readBufferFromBigInt } from "../utilities/tl.ts";
+import { getObfuscationParameters } from "../utilities/5_obfuscation.ts";
+import { concat } from "../utilities/1_buffer.ts";
+import { readBufferFromBigInt } from "../utilities/4_tl.ts";
 import { Transport } from "./transport.ts";
 
 export class Abridged extends Transport implements Transport {
-  private initialized = false;
-
   constructor(
     private readonly connection: Connection,
     private readonly obfuscated = false,
