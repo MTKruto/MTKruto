@@ -1,6 +1,6 @@
 import { getDHParams, reqPqMulti } from "./requests.ts";
-import { ConnectionWebSocket } from "./connection/connection_web_socket.ts";
-// import { ConnectionTCP } from "./connection/connection_tcp.ts";
+// import { ConnectionWebSocket } from "./connection/connection_web_socket.ts";
+import { ConnectionTCP } from "./connection/connection_tcp.ts";
 import { getMessageId, readBufferFromBigInt } from "./utilities/tl.ts";
 import { sha1, sha256 } from "./utilities/hash.ts";
 import { mod } from "./utilities/bigint.ts";
@@ -8,13 +8,13 @@ import { concat } from "./utilities/buffer.ts";
 import { assertEquals, igeEncrypt, randomBigIntBits } from "./deps.ts";
 import { Abridged } from "./transport/abridged.ts";
 
-// const connection = new ConnectionTCP("127.0.0.1", 4430);
-const connection = new ConnectionWebSocket("ws://127.0.0.1:8000/apiws");
+const connection = new ConnectionTCP("127.0.0.1", 4430);
+// const connection = new ConnectionWebSocket("ws://127.0.0.1:8000/apiws");
 // const connection = new ConnectionWebSocket(
 //   "wss://vesta.web.telegram.org:443/apiws",
 // );
 // const connection = new TCP("149.154.167.40", 80);
-const transport = new Abridged(connection, true);
+const transport = new Abridged(connection, false);
 
 await connection.open();
 

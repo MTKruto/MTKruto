@@ -48,10 +48,10 @@ export async function reqPqMulti(transport: Transport) {
 
   await transport.send(
     packUnencryptedMessage(
-      new Uint8Array([
-        ...readBufferFromBigInt(req_pq_multi, 4),
-        ...readBufferFromBigInt(nonce, 16),
-      ]),
+      concat(
+        readBufferFromBigInt(req_pq_multi, 4),
+        readBufferFromBigInt(nonce, 16),
+      ),
     ),
   );
 
@@ -106,7 +106,7 @@ export async function getDHParams(
   const randomPaddingBytes = new Uint8Array(192 - data.length);
   crypto.getRandomValues(randomPaddingBytes);
 
-  const dataWithPadding = new Uint8Array([...data, ...randomPaddingBytes]);
+  const dataWithPadding = concat(data, randomPaddingBytes);
   /// End step 1
 
   // Step 2
@@ -129,12 +129,12 @@ export async function getDHParams(
 
     /// Step 4
     /// data_with_hash := data_pad_reversed + SHA256(temp_key + data_with_padding); — after this assignment, data_with_hash is exactly 224 bytes long.
-    const dataWithHash = new Uint8Array([
-      ...dataPadReversed,
-      ...await sha256(
-        new Uint8Array([...tempKey, ...dataWithPadding]),
+    const dataWithHash = concat(
+      new Uint8Array(dataPadReversed),
+      await sha256(
+        concat(tempKey, dataWithPadding),
       ),
-    ]);
+    );
     assertEquals(dataWithHash.length, 224);
     /// End step 4
 
@@ -154,7 +154,7 @@ export async function getDHParams(
 
     /// Step 7
     /// key_aes_encrypted := temp_key_xor + aes_encrypted; — exactly 256 bytes (2048 bits) long
-    const keyAesEncrypted = new Uint8Array([...tempKeyXor, ...aesEncrypted]);
+    const keyAesEncrypted = concat(tempKeyXor, aesEncrypted);
 
     assertEquals(keyAesEncrypted.length, 256);
     /// End step 7

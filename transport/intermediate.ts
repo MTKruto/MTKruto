@@ -1,6 +1,7 @@
 import { Connection } from "../connection/connection.ts";
 import { Transport } from "./transport.ts";
 import { readBufferFromBigInt } from "../utilities/tl.ts";
+import { concat } from "../utilities/buffer.ts";
 
 export class Intermediate extends Transport implements Transport {
   constructor(private readonly connection: Connection) {
@@ -39,6 +40,6 @@ export class Intermediate extends Transport implements Transport {
 
     const length = readBufferFromBigInt(buffer.length, 4);
 
-    await this.connection.write(new Uint8Array([...length, ...buffer]));
+    await this.connection.write(concat(length, buffer));
   }
 }
