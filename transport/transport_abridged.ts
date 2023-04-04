@@ -39,19 +39,21 @@ export class TransportAbridged extends Transport implements Transport {
       if (buffer[0] < 0x7F) {
         length = buffer[0];
       } else {
-        const buffer = new Uint8Array(3);
+        let buffer = new Uint8Array(3);
         await this.connection.read(buffer);
-        const dataView = new DataView(this.decrypt(buffer).buffer);
+        buffer = this.decrypt(buffer);
+        const dataView = new DataView(buffer.buffer);
         length = dataView.getUint16(0, true);
       }
     }
 
     length *= 4;
 
-    const buffer = new Uint8Array(length);
+    let buffer = new Uint8Array(length);
     await this.connection.read(buffer);
+    buffer = this.decrypt(buffer);
 
-    return this.decrypt(buffer);
+    return buffer;
   }
 
   async send(buffer: Uint8Array) {

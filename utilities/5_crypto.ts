@@ -15,7 +15,7 @@ export class CTR {
     );
     this.iv = iv;
     this.state = state;
-    return encrypted;
+    return new Uint8Array(encrypted);
   }
 
   decrypt(data: Uint8Array) {
@@ -27,6 +27,6 @@ export class CTR {
     );
     this.iv = iv;
     this.state = state;
-    return decrypted;
+    return new Uint8Array(decrypted);
   }
 }
