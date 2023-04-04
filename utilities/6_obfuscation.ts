@@ -1,6 +1,6 @@
 import { Connection } from "../connection/connection.ts";
 import { bufferFromBigInt, concat } from "../utilities/1_buffer.ts";
-import { ctr256 } from "../deps.ts";
+import { CTR } from "./5_crypto.ts";
 
 export async function getObfuscationParameters(
   protocol: number,
@@ -39,24 +39,19 @@ export async function getObfuscationParameters(
 
   const encryptKey = init.slice(8, 8 + 32);
   const encryptIv = init.slice(40, 40 + 16);
+  const encryptionCTR = new CTR(encryptKey, encryptIv);
 
-  const encryptedInit = ctr256(
-    init,
-    encryptKey,
-    encryptIv,
-  );
+  const encryptedInit = encryptionCTR.encrypt(init);
 
   const initRev = new Uint8Array(init).reverse();
   const decryptKey = initRev.slice(8, 8 + 32);
   const decryptIv = initRev.slice(40, 40 + 16);
+  const decryptionCTR = new CTR(decryptKey, decryptIv);
 
   await connection.write(concat(
     init.slice(0, 56),
     encryptedInit.slice(56, 56 + 8),
   ));
 
-  return {
-    encryption: { key: encryptKey, iv: encryptIv },
-    decryption: { key: decryptKey, iv: decryptIv },
-  };
+  return { encryptionCTR, decryptionCTR };
 }

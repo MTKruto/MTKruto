@@ -1,20 +1,16 @@
 import { MaybePromise } from "../types.ts";
-import { ctr256 } from "../deps.ts";
+import { CTR } from "../utilities/5_crypto.ts";
 
 export abstract class Transport {
   protected initialized = false;
   protected obfuscationParameters: {
-    encryption: { key: Uint8Array; iv: Uint8Array };
-    decryption: { key: Uint8Array; iv: Uint8Array };
+    encryptionCTR: CTR;
+    decryptionCTR: CTR;
   } | null = null;
 
   protected encrypt(buffer: Uint8Array) {
     if (this.obfuscationParameters) {
-      return ctr256(
-        buffer,
-        this.obfuscationParameters.encryption.key,
-        this.obfuscationParameters.encryption.iv,
-      );
+      return this.obfuscationParameters.encryptionCTR.encrypt(buffer);
     } else {
       return buffer;
     }
@@ -22,11 +18,7 @@ export abstract class Transport {
 
   protected decrypt(buffer: Uint8Array) {
     if (this.obfuscationParameters) {
-      return ctr256(
-        buffer,
-        this.obfuscationParameters.decryption.key,
-        this.obfuscationParameters.decryption.iv,
-      );
+      return this.obfuscationParameters.decryptionCTR.decrypt(buffer);
     } else {
       return buffer;
     }

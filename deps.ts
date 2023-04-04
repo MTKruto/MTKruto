@@ -8,3 +8,8 @@ export {
   igeDecrypt,
   igeEncrypt,
 } from "https://deno.land/x/wasm_crypto@v0.3.0/mod.ts";
+
+export {
+  ctr256Decrypt,
+  ctr256Encrypt,
+} from "https://deno.land/x/tgcrypto@0.0.0/mod.ts";
