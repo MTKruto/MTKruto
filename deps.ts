@@ -3,7 +3,6 @@ export { assertEquals } from "https://deno.land/std@0.181.0/testing/asserts.ts";
 export { randomBigIntBits } from "https://deno.land/x/random_bigint@v1.5/src/randomBigInt.ts";
 
 export {
-  ctr256,
   factorize,
   igeDecrypt,
   igeEncrypt,
@@ -12,4 +11,5 @@ export {
 export {
   ctr256Decrypt,
   ctr256Encrypt,
-} from "https://deno.land/x/tgcrypto@0.0.0/mod.ts";
+  ige256Encrypt,
+} from "https://deno.land/x/tgcrypto@0.0.1/mod.ts";
