@@ -5,7 +5,7 @@ import { getMessageId } from "./utilities/4_tl.ts";
 import { sha1, sha256 } from "./utilities/3_hash.ts";
 import { mod } from "./utilities/0_bigint.ts";
 import { bufferFromBigInt, concat } from "./utilities/1_buffer.ts";
-import { assertEquals, igeEncrypt, randomBigIntBits } from "./deps.ts";
+import { assertEquals, ige256Encrypt, randomBigIntBits } from "./deps.ts";
 import { TransportAbridged } from "./transport/transport_abridged.ts";
 
 const connection = new ConnectionTCP("127.0.0.1", 4430);
@@ -14,7 +14,7 @@ const connection = new ConnectionTCP("127.0.0.1", 4430);
 //   "wss://vesta.web.telegram.org:443/apiws",
 // );
 // const connection = new TCP("149.154.167.40", 80);
-const transport = new TransportAbridged(connection, false);
+const transport = new TransportAbridged(connection, true);
 
 await connection.open();
 
@@ -85,7 +85,7 @@ const aesIv = concat(
   sha256B.slice(24, 24 + 8),
 );
 
-const encryptedMessage = igeEncrypt(message, aesKey, aesIv);
+const encryptedMessage = ige256Encrypt(message, aesKey, aesIv);
 
 // let x = 0 if outgoing else 8
 

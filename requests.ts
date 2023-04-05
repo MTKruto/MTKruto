@@ -15,8 +15,8 @@ import { ExtendedDataView } from "./utilities/2_extended_data_view.ts";
 import {
   assertEquals,
   factorize,
-  igeDecrypt,
-  igeEncrypt,
+  ige256Decrypt,
+  ige256Encrypt,
   randomBigIntBits,
 } from "./deps.ts";
 
@@ -141,7 +141,11 @@ export async function getDHParams(
 
     /// Step 5
     /// - aes_encrypted := AES256_IGE(data_with_hash, temp_key, 0); — AES256-IGE encryption with zero IV.
-    const aesEncrypted = igeEncrypt(dataWithHash, tempKey, new Uint8Array(32));
+    const aesEncrypted = ige256Encrypt(
+      dataWithHash,
+      tempKey,
+      new Uint8Array(32),
+    );
     /// End step 5
 
     /// Step 6
@@ -227,7 +231,7 @@ export async function getDHParams(
     bufferFromBigInt(newNonce, 32).slice(0, 4),
   );
 
-  const answer = igeDecrypt(encryptedAnswer, tmpAesKey, tmpAesIv).slice(20);
+  const answer = ige256Decrypt(encryptedAnswer, tmpAesKey, tmpAesIv).slice(20);
 
   dataView = new ExtendedDataView(answer.buffer);
 
@@ -261,7 +265,7 @@ export async function getDHParams(
   crypto.getRandomValues(randomBytes);
   dataWithHash = concat(dataWithHash, randomBytes);
 
-  const encryptedData = igeEncrypt(dataWithHash, tmpAesKey, tmpAesIv);
+  const encryptedData = ige256Encrypt(dataWithHash, tmpAesKey, tmpAesIv);
 
   await transport.send(packUnencryptedMessage(
     concat(
