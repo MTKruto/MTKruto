@@ -1,7 +1,9 @@
+import { Mutex } from "../utilities/7_mutex.ts";
 import { Connection } from "./connection.ts";
 
 export class ConnectionWebSocket implements Connection {
   private webSocket: WebSocket;
+  private rMutex = new Mutex();
   private buffer = new Array<number>();
   private nextResolve: [number, () => void] | null = null;
 
@@ -13,7 +15,7 @@ export class ConnectionWebSocket implements Connection {
           ...Array.from(new Uint8Array(await e.data.arrayBuffer())),
         );
         if (
-          this.nextResolve != null && this.nextResolve[0] >= this.buffer.length
+          this.nextResolve != null && this.buffer.length >= this.nextResolve[0]
         ) {
           this.nextResolve[1]();
           this.nextResolve = null;
@@ -41,8 +43,12 @@ export class ConnectionWebSocket implements Connection {
     if (this.webSocket.readyState != WebSocket.OPEN) {
       throw new Error("Connection not open");
     }
-    await new Promise<void>((r) => this.nextResolve = [p.length, r]);
+    const release = await this.rMutex.acquire();
+    if (this.buffer.length < p.length) {
+      await new Promise<void>((r) => this.nextResolve = [p.length, r]);
+    }
     p.set(this.buffer.splice(0, p.length));
+    release();
   }
 
   write(p: Uint8Array) {
