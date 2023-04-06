@@ -9,4 +9,4 @@ export {
   ctr256Encrypt,
   ige256Decrypt,
   ige256Encrypt,
-} from "https://deno.land/x/tgcrypto@0.0.2/mod.ts";
+} from "https://deno.land/x/tgcrypto@0.0.3/mod.ts";
