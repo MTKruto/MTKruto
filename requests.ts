@@ -1,17 +1,17 @@
 import { Transport } from "./transport/transport.ts";
 import {
+  deserializeString,
+  packUnencryptedMessage,
+  serializeString,
+} from "./utilities/1_tl.ts";
+import {
   bigIntFromBuffer,
   getRandomBigInt,
   modExp,
 } from "./utilities/0_bigint.ts";
-import { sha1, sha256 } from "./utilities/3_hash.ts";
-import {
-  deserializeString,
-  packUnencryptedMessage,
-  serializeString,
-} from "./utilities/4_tl.ts";
-import { bufferFromBigInt, concat, xor } from "./utilities/1_buffer.ts";
-import { ExtendedDataView } from "./utilities/2_extended_data_view.ts";
+import { sha1, sha256 } from "./utilities/0_hash.ts";
+import { bufferFromBigInt, concat, xor } from "./utilities/0_buffer.ts";
+import { ExtendedDataView } from "./utilities/0_extended_data_view.ts";
 import {
   assertEquals,
   factorize,
