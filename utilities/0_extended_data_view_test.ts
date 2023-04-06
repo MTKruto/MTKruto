@@ -1,5 +1,5 @@
 import { assertEquals } from "../deps.ts";
-import { ExtendedDataView } from "./2_extended_data_view.ts";
+import { ExtendedDataView } from "./0_extended_data_view.ts";
 
 Deno.test("ExtendedDataView", async (t) => {
   const dataView = new ExtendedDataView(

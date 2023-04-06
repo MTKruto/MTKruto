@@ -1,8 +1,8 @@
 import { Connection } from "../connection/connection.ts";
+import { getObfuscationParameters } from "../utilities/1_obfuscation.ts";
+import { bufferFromBigInt } from "../utilities/0_buffer.ts";
+import { concat } from "../utilities/0_buffer.ts";
 import { Transport } from "./transport.ts";
-import { bufferFromBigInt } from "../utilities/1_buffer.ts";
-import { concat } from "../utilities/1_buffer.ts";
-import { getObfuscationParameters } from "../utilities/6_obfuscation.ts";
 
 export class TransportIntermediate extends Transport implements Transport {
   constructor(
