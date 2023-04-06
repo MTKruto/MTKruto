@@ -34,7 +34,7 @@ Deno.test("ExtendedDataView", async (t) => {
     );
   });
 
-  await t.step("getInt23", () => {
+  await t.step("getInt24", () => {
     assertEquals(dataView.getInt24(1, false), 0xb64aeb);
     assertEquals(dataView.getInt24(1, true), 0xeb4ab6);
   });
