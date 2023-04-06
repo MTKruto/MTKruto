@@ -1,8 +1,11 @@
-import { Connection } from "./connection/connection.ts";
-import { concat, readBufferFromBigInt } from "./utils.ts";
-import { ctr256 } from "https://raw.githubusercontent.com/roj1512/wasm-crypto/main/mod.ts";
+import { Connection } from "../connection/connection.ts";
+import { bufferFromBigInt, concat } from "../utilities/1_buffer.ts";
+import { CTR } from "./5_crypto.ts";
 
-export async function getInit(protocol: number, connection: Connection) {
+export async function getObfuscationParameters(
+  protocol: number,
+  connection: Connection,
+) {
   const dc = 0xfcff;
 
   let init: Uint8Array;
@@ -10,8 +13,8 @@ export async function getInit(protocol: number, connection: Connection) {
   while (true) {
     init = concat(
       crypto.getRandomValues(new Uint8Array(56)),
-      readBufferFromBigInt(protocol, 4, false),
-      readBufferFromBigInt(dc, 2, false),
+      bufferFromBigInt(protocol, 4, false),
+      bufferFromBigInt(dc, 2, false),
       crypto.getRandomValues(new Uint8Array(2)),
     );
 
@@ -36,21 +39,19 @@ export async function getInit(protocol: number, connection: Connection) {
 
   const encryptKey = init.slice(8, 8 + 32);
   const encryptIv = init.slice(40, 40 + 16);
+  const encryptionCTR = new CTR(encryptKey, encryptIv);
 
-  const encryptedInit = ctr256(
-    init,
-    encryptKey,
-    encryptIv,
-  );
+  const encryptedInit = encryptionCTR.encrypt(init);
 
   const initRev = new Uint8Array(init).reverse();
   const decryptKey = initRev.slice(8, 8 + 32);
   const decryptIv = initRev.slice(40, 40 + 16);
+  const decryptionCTR = new CTR(decryptKey, decryptIv);
 
   await connection.write(concat(
     init.slice(0, 56),
     encryptedInit.slice(56, 56 + 8),
   ));
 
-  return { encryptKey, encryptIv, decryptKey, decryptIv };
+  return { encryptionCTR, decryptionCTR };
 }

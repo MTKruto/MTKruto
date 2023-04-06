@@ -37,10 +37,6 @@ export class ConnectionWebSocket implements Connection {
     }
   }
 
-  close() {
-    this.webSocket.close();
-  }
-
   async read(p: Uint8Array) {
     if (this.webSocket.readyState != WebSocket.OPEN) {
       throw new Error("Connection not open");
