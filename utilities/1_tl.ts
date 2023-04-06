@@ -1,5 +1,5 @@
-import { bufferFromBigInt, concat } from "./1_buffer.ts";
-import { ExtendedDataView } from "./2_extended_data_view.ts";
+import { bufferFromBigInt, concat } from "./0_buffer.ts";
+import { ExtendedDataView } from "./0_extended_data_view.ts";
 
 export function deserializeString(buffer: Uint8Array) {
   let L = buffer[0];

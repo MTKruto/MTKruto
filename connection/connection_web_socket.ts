@@ -1,4 +1,4 @@
-import { Mutex } from "../utilities/7_mutex.ts";
+import { Mutex } from "../utilities/0_mutex.ts";
 import { Connection } from "./connection.ts";
 
 export class ConnectionWebSocket implements Connection {
