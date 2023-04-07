@@ -1,9 +1,5 @@
 import { Transport } from "./transport/transport.ts";
-import {
-  deserializeString,
-  packUnencryptedMessage,
-  serializeString,
-} from "./utilities/1_tl.ts";
+import { packUnencryptedMessage } from "./utilities/1_tl.ts";
 import {
   bigIntFromBuffer,
   getRandomBigInt,
@@ -11,7 +7,6 @@ import {
 } from "./utilities/0_bigint.ts";
 import { sha1, sha256 } from "./utilities/0_hash.ts";
 import { bufferFromBigInt, concat, xor } from "./utilities/0_buffer.ts";
-import { ExtendedDataView } from "./utilities/0_extended_data_view.ts";
 import {
   assertEquals,
   factorize,
@@ -247,7 +242,7 @@ export async function getDHParams(
     bufferFromBigInt(newNonce, 32).slice(0, 4),
   );
 
-  const answer = ige256Decrypt(encryptedAnswer, tmpAesKey, tmpAesIv).slice(20);
+  const _answer = ige256Decrypt(encryptedAnswer, tmpAesKey, tmpAesIv).slice(20);
 
   reader = new TLReader(buffer);
 
