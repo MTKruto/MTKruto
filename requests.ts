@@ -49,14 +49,16 @@ const PUBLIC_KEYS = [
 export async function reqPqMulti(transport: Transport) {
   const nonce = randomBigIntBits(16 * 8);
 
-  await transport.send(
-    packUnencryptedMessage(
-      concat(
-        bufferFromBigInt(req_pq_multi, 4),
-        bufferFromBigInt(nonce, 16),
-      ),
-    ),
-  );
+  {
+    const writer = new TLWriter();
+
+    writer.writeInt(req_pq_multi);
+    writer.writeInt128(nonce);
+
+    await transport.send(
+      packUnencryptedMessage(writer.buffer),
+    );
+  }
 
   const buffer = await transport.receive();
   const dataView = new ExtendedDataView(buffer.buffer);
