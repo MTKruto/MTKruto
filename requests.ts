@@ -211,7 +211,6 @@ export async function getDHParams(
 
   const buffer = await transport.receive();
   let reader = new TLReader(buffer);
-  let dataView = new ExtendedDataView(buffer.buffer);
 
   const _authKeyId = reader.readInt64();
   const _messageId = reader.readInt64();
@@ -250,8 +249,7 @@ export async function getDHParams(
 
   const answer = ige256Decrypt(encryptedAnswer, tmpAesKey, tmpAesIv).slice(20);
 
-  dataView = new ExtendedDataView(answer.buffer);
-   reader = new TLReader(buffer)
+  reader = new TLReader(buffer);
 
   const _constructorId_ = reader.readInt();
   const __nonce = reader.readInt128();
@@ -265,13 +263,17 @@ export async function getDHParams(
 
   const gB = modExp(BigInt(g), b, bigIntFromBuffer(dhPrime));
 
-  data = concat(
-    bufferFromBigInt(client_DH_inner_data, 4),
-    bufferFromBigInt(nonce, 16),
-    bufferFromBigInt(serverNonce, 16),
-    bufferFromBigInt(0, 8),
-    serializeString(bufferFromBigInt(gB, 256, false)),
-  );
+  {
+    const writer = new TLWriter();
+
+    writer.writeInt(client_DH_inner_data);
+    writer.writeInt128(nonce);
+    writer.writeInt128(serverNonce);
+    writer.writeInt64(0n);
+    writer.writeBytes(bufferFromBigInt(gB, 256, false));
+
+    data = writer.buffer;
+  }
 
   let dataWithHash = concat(await sha1(data), data);
 
@@ -285,14 +287,18 @@ export async function getDHParams(
 
   const encryptedData = ige256Encrypt(dataWithHash, tmpAesKey, tmpAesIv);
 
-  await transport.send(packUnencryptedMessage(
-    concat(
-      bufferFromBigInt(set_client_DH_params, 4),
-      bufferFromBigInt(nonce, 16),
-      bufferFromBigInt(serverNonce, 16),
-      serializeString(encryptedData),
-    ),
-  ));
+  {
+    const writer = new TLWriter();
+
+    writer.writeInt(set_client_DH_params);
+    writer.writeInt128(nonce);
+    writer.writeInt128(serverNonce);
+    writer.writeBytes(encryptedData);
+
+    data = writer.buffer;
+  }
+
+  await transport.send(packUnencryptedMessage(data));
 
   const authKey = modExp(bigIntFromBuffer(gA), b, bigIntFromBuffer(dhPrime));
 

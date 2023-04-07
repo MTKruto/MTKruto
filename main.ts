@@ -1,7 +1,6 @@
 import { getDHParams, reqPqMulti } from "./requests.ts";
 import { ConnectionWebSocket } from "./connection/connection_web_socket.ts";
 import { ConnectionTCP } from "./connection/connection_tcp.ts";
-import { packEncryptedMessage } from "./utilities/1_tl.ts";
 import { TransportIntermediate } from "./transport/transport_intermediate.ts";
 import { Connection } from "./connection/connection.ts";
 import { TransportAbridged } from "./transport/transport_abridged.ts";

@@ -38,9 +38,9 @@ export class TLWriter {
     let L: Uint8Array;
     if (bytes.length > 253) {
       L = new Uint8Array(3);
-      L[0] = (bytes.length & 0xff0000) >>> 16;
+      L[2] = (bytes.length & 0xff0000) >>> 16;
       L[1] = (bytes.length & 0x00ff00) >>> 8;
-      L[2] = bytes.length & 0x0000ff;
+      L[0] = bytes.length & 0x0000ff;
       L = new Uint8Array([254, ...L]);
       padding = bytes.length % 4;
     } else {
