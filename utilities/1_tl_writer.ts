@@ -41,12 +41,16 @@ export class TLWriter {
       L[0] = (bytes.length & 0xff0000) >>> 16;
       L[1] = (bytes.length & 0x00ff00) >>> 8;
       L[2] = bytes.length & 0x0000ff;
+      L = new Uint8Array([254, ...L]);
       padding = bytes.length % 4;
     } else {
       L = new Uint8Array([bytes.length]);
       padding = (bytes.length + 1) % 4;
     }
-    this._buffer = concat(this._buffer, L, bytes, new Uint8Array(4 - padding));
+    if (padding > 0) {
+      padding = 4 - padding;
+    }
+    this._buffer = concat(this._buffer, L, bytes, new Uint8Array(padding));
   }
 
   writeString(string: string) {

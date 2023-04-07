@@ -191,28 +191,35 @@ export async function getDHParams(
 
   const encryptedDataBuf = bufferFromBigInt(encrypedData, 256, false);
 
+  {
+    const writer = new TLWriter();
+
+    writer.writeInt(req_DH_params);
+    writer.writeInt128(nonce);
+    writer.writeInt128(serverNonce);
+    writer.writeBytes(bufferFromBigInt(p.valueOf(), 4, false));
+    writer.writeBytes(bufferFromBigInt(q.valueOf(), 4, false));
+    writer.writeInt64(publicKeyFingerprint);
+    writer.writeBytes(encryptedDataBuf);
+
+    data = writer.buffer;
+  }
+
   await transport.send(packUnencryptedMessage(
-    concat(
-      bufferFromBigInt(req_DH_params, 4),
-      bufferFromBigInt(nonce, 16),
-      bufferFromBigInt(serverNonce, 16),
-      serializeString(p.valueOf(), 4),
-      serializeString(q.valueOf(), 4),
-      bufferFromBigInt(publicKeyFingerprint, 8),
-      serializeString(encryptedDataBuf),
-    ),
+    data,
   ));
 
   const buffer = await transport.receive();
+  let reader = new TLReader(buffer);
   let dataView = new ExtendedDataView(buffer.buffer);
 
-  const _authKeyId = dataView.getBigUint64(0, true);
-  const _messageId = dataView.getBigUint64(8, true);
-  const _messageLength = dataView.getUint32(16, true);
-  const _constructorId = dataView.getUint32(20, true);
-  const _nonce_ = dataView.getBigUint128(24, true);
-  const _serverNonce_ = dataView.getBigUint128(40, true);
-  const encryptedAnswer = deserializeString(buffer.slice(56, 56 + 596));
+  const _authKeyId = reader.readInt64();
+  const _messageId = reader.readInt64();
+  const _messageLength = reader.readInt();
+  const _constructorId = reader.readInt();
+  const _nonce_ = reader.readInt128();
+  const _serverNonce_ = reader.readInt128();
+  const encryptedAnswer = reader.readBytes();
 
   const tmpAesKey = concat(
     await sha1(
@@ -244,14 +251,15 @@ export async function getDHParams(
   const answer = ige256Decrypt(encryptedAnswer, tmpAesKey, tmpAesIv).slice(20);
 
   dataView = new ExtendedDataView(answer.buffer);
+   reader = new TLReader(buffer)
 
-  const _constructorId_ = dataView.getUint32(0, true);
-  const __nonce = dataView.getBigUint128(4, true);
-  const __serverNonce = dataView.getBigUint128(20, true);
-  const g = dataView.getUint32(36, true);
-  const dhPrime = deserializeString(answer.slice(40, 40 + 260));
-  const gA = deserializeString(answer.slice(300, 300 + 260));
-  const _serverTime = dataView.getUint32(560);
+  const _constructorId_ = reader.readInt();
+  const __nonce = reader.readInt128();
+  const __serverNonce = reader.readInt128();
+  const g = reader.readInt();
+  const dhPrime = reader.readBytes();
+  const gA = reader.readBytes();
+  const _serverTime = reader.readInt();
 
   const b = getRandomBigInt(256);
 

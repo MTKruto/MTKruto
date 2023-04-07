@@ -18,6 +18,11 @@ export class TLReader {
     return new ExtendedDataView(buffer.buffer).getUint32(0, true);
   }
 
+  readInt24() {
+    const buffer = this.read(24 / 8);
+    return new ExtendedDataView(buffer.buffer).getInt24(0, true);
+  }
+
   readInt64() {
     const buffer = this.read(64 / 8);
     return new ExtendedDataView(buffer.buffer).getBigUint64(0, true);
@@ -32,13 +37,16 @@ export class TLReader {
     let L = this.read(1)[0];
     let padding: number;
     if (L > 253) {
-      L = this.readInt();
+      L = this.readInt24();
       padding = L % 4;
     } else {
       padding = (L + 1) % 4;
     }
     const bytes = this.read(L);
-    this.read(4 - padding);
+    if (padding > 0) {
+      padding = 4 - padding;
+      this.read(padding);
+    }
     return bytes;
   }
 
