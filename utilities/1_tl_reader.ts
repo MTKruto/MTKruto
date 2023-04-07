@@ -1,4 +1,4 @@
-import { ExtendedDataView } from "./0_extended_data_view.ts";
+import { bigIntFromBuffer } from "./0_bigint.ts";
 
 export class TLReader {
   constructor(private buffer: Uint8Array) {
@@ -13,24 +13,24 @@ export class TLReader {
     return buffer;
   }
 
-  readInt24() {
+  readInt24(signed = true) {
     const buffer = this.read(24 / 8);
-    return new ExtendedDataView(buffer.buffer).getInt24(0, true);
+    return Number(bigIntFromBuffer(buffer, true, signed));
   }
 
-  readInt32() {
+  readInt32(signed = true) {
     const buffer = this.read(32 / 8);
-    return new ExtendedDataView(buffer.buffer).getInt32(0, true);
+    return Number(bigIntFromBuffer(buffer, true, signed));
   }
 
-  readInt64() {
+  readInt64(signed = true) {
     const buffer = this.read(64 / 8);
-    return new ExtendedDataView(buffer.buffer).getBigUint64(0, true);
+    return bigIntFromBuffer(buffer, true, signed);
   }
 
-  readInt128() {
+  readInt128(signed = true) {
     const buffer = this.read(128 / 8);
-    return new ExtendedDataView(buffer.buffer).getBigUint128(0, true);
+    return bigIntFromBuffer(buffer, true, signed);
   }
 
   readBytes() {

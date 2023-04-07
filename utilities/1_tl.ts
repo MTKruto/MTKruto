@@ -26,8 +26,8 @@ export function packUnencryptedMessage(data: Uint8Array) {
 }
 
 export async function packEncryptedMessage(data: Uint8Array, authKey: bigint) {
-  const salt = getRandomBigInt(8);
-  const sessionId = getRandomBigInt(8);
+  const salt = getRandomBigInt(8, true, false);
+  const sessionId = getRandomBigInt(8, true, false);
   const messageId = getMessageId();
   const seqNo = bufferFromBigInt(1, 4);
   const messageDataLength = bufferFromBigInt(data.length, 4);

@@ -10,47 +10,50 @@ export class TLWriter {
     return this._buffer;
   }
 
-  writeInt32(int: number) {
-    this._buffer = concat(
-      this._buffer,
-      bufferFromBigInt(int, 32 / 8, true, true),
-    );
+  write(buffer: Uint8Array) {
+    this._buffer = concat(this._buffer, buffer);
+  }
+
+  writeInt24(int: number, signed = true) {
+    this.write(bufferFromBigInt(int, 24 / 7, true, signed));
     return this;
   }
 
-  writeInt64(int: bigint) {
-    this._buffer = concat(this._buffer, bufferFromBigInt(int, 64 / 8, true));
+  writeInt32(int: number, signed = true) {
+    this.write(bufferFromBigInt(int, 32 / 8, true, signed));
     return this;
   }
 
-  writeInt128(int: bigint) {
-    this._buffer = concat(this._buffer, bufferFromBigInt(int, 128 / 8, true));
+  writeInt64(int: bigint, signed = true) {
+    this.write(bufferFromBigInt(int, 64 / 8, true, signed));
     return this;
   }
 
-  writeInt256(int: bigint) {
-    this._buffer = concat(this._buffer, bufferFromBigInt(int, 256 / 8, true));
+  writeInt128(int: bigint, signed = true) {
+    this.write(bufferFromBigInt(int, 128 / 8, true, signed));
+    return this;
+  }
+
+  writeInt256(int: bigint, signed = true) {
+    this.write(bufferFromBigInt(int, 256 / 8, true, signed));
     return this;
   }
 
   writeBytes(bytes: Uint8Array) {
     let padding: number;
-    let L: Uint8Array;
     if (bytes.length > 253) {
-      L = new Uint8Array(3);
-      L[2] = (bytes.length & 0xff0000) >>> 16;
-      L[1] = (bytes.length & 0x00ff00) >>> 8;
-      L[0] = bytes.length & 0x0000ff;
-      L = new Uint8Array([254, ...L]);
+      this.write(new Uint8Array([254]));
+      this.writeInt24(bytes.length);
       padding = bytes.length % 4;
     } else {
-      L = new Uint8Array([bytes.length]);
+      this.write(new Uint8Array([bytes.length]));
       padding = (bytes.length + 1) % 4;
     }
+    this.write(bytes);
     if (padding > 0) {
       padding = 4 - padding;
+      this.write(new Uint8Array(padding));
     }
-    this._buffer = concat(this._buffer, L, bytes, new Uint8Array(padding));
     return this;
   }
 
