@@ -84,7 +84,6 @@ export async function getDHParams(
   serverNonce: bigint,
   publicKeyFingerprint: bigint,
 ) {
-  console.log({ publicKeyFingerprint });
   const key = PUBLIC_KEYS.find((v) => v.f == publicKeyFingerprint);
   if (!key) {
     throw new Error("Key not found");

@@ -21,7 +21,6 @@ export class TransportAbridged extends Transport implements Transport {
         );
       } else {
         await this.connection.write(new Uint8Array([0xef]));
-        console.log('initialized')
       }
       this.initialized = true;
     } else {
@@ -30,17 +29,12 @@ export class TransportAbridged extends Transport implements Transport {
   }
 
   async receive() {
-    console.log('recv')
     let length: number;
 
     {
       let buffer = new Uint8Array(1);
-      console.log('reading')
       await this.connection.read(buffer);
-      console.log('read')
       buffer = this.decrypt(buffer);
-
-      console.log({buffer})
 
       if (buffer[0] < 0x7F) {
         length = buffer[0];
@@ -66,7 +60,6 @@ export class TransportAbridged extends Transport implements Transport {
     if (!this.initialized) {
       throw new Error("Transport not initialized");
     }
-    console.log("send", buffer.length)
 
     const header = new Uint8Array([
       buffer.length >= 0x7F ? 0x7F : buffer.length,
@@ -75,8 +68,6 @@ export class TransportAbridged extends Transport implements Transport {
       ? bufferFromBigInt(buffer.length, 3)
       : new Uint8Array();
 
-      console.log('sending')
     await this.connection.write(this.encrypt(concat(header, length, buffer)));
-    console.log('sent')
   }
 }

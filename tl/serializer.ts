@@ -1,5 +1,4 @@
 // deno-lint-ignore-file no-explicit-any
-import { bigIntFromBuffer } from "../utilities/0_bigint.ts";
 import { bufferFromBigInt, concat } from "../utilities/0_buffer.ts";
 import { serializeString } from "../utilities/1_tl.ts";
 import {
@@ -11,7 +10,6 @@ import {
 
 export function serialize(idS: string, params: Record<string, any>) {
   const id = CONSTRUCTOR_ID_MAP.get(idS) ?? METHOD_ID_MAP.get(idS);
-  console.log({ id });
   const obj = (CONSTRUCTOR_MAP.get(id) ?? METHOD_MAP.get(id)) as any;
   if (!obj) {
     throw new Error(`${idS} not found`);
@@ -53,4 +51,3 @@ export function serialize(idS: string, params: Record<string, any>) {
 
   return buffer;
 }
-
