@@ -47,7 +47,7 @@ export async function reqPqMulti(transport: Transport) {
   await transport.send(
     packUnencryptedMessage(
       new TLWriter()
-        .writeInt(req_pq_multi)
+        .writeInt32(req_pq_multi)
         .writeInt128(nonce)
         .buffer,
     ),
@@ -58,14 +58,14 @@ export async function reqPqMulti(transport: Transport) {
 
   const _authKeyId = reader.readInt64();
   const _messageId = reader.readInt64();
-  const _messageLength = reader.readInt();
-  const _constructorId = reader.readInt();
+  const _messageLength = reader.readInt32();
+  const _constructorId = reader.readInt32();
   const nonce_ = reader.readInt128();
   assertEquals(nonce, nonce_);
   const serverNonce = reader.readInt128();
   const pq_ = reader.readBytes();
-  const _vectorConstructor = reader.readInt();
-  const _count = reader.readInt();
+  const _vectorConstructor = reader.readInt32();
+  const _count = reader.readInt32();
   const publicKeyFingerprint = reader.readInt64();
 
   const pq = bigIntFromBuffer(pq_);
@@ -90,7 +90,7 @@ export async function getDHParams(
   const newNonce = randomBigIntBits(32 * 8);
 
   let data = new TLWriter()
-    .writeInt(p_q_inner_data)
+    .writeInt32(p_q_inner_data)
     .writeBytes(pqBytes)
     .writeBytes(bufferFromBigInt(p.valueOf(), 4, false))
     .writeBytes(bufferFromBigInt(q.valueOf(), 4, false))
@@ -180,7 +180,7 @@ export async function getDHParams(
 
   await transport.send(packUnencryptedMessage(
     new TLWriter()
-      .writeInt(req_DH_params)
+      .writeInt32(req_DH_params)
       .writeInt128(nonce)
       .writeInt128(serverNonce)
       .writeBytes(bufferFromBigInt(p.valueOf(), 4, false))
@@ -195,8 +195,8 @@ export async function getDHParams(
 
   const _authKeyId = reader.readInt64();
   const _messageId = reader.readInt64();
-  const _messageLength = reader.readInt();
-  const _constructorId = reader.readInt();
+  const _messageLength = reader.readInt32();
+  const _constructorId = reader.readInt32();
   const _nonce_ = reader.readInt128();
   const _serverNonce_ = reader.readInt128();
   const encryptedAnswer = reader.readBytes();
@@ -232,20 +232,20 @@ export async function getDHParams(
 
   reader = new TLReader(buffer);
 
-  const _constructorId_ = reader.readInt();
+  const _constructorId_ = reader.readInt32();
   const __nonce = reader.readInt128();
   const __serverNonce = reader.readInt128();
-  const g = reader.readInt();
+  const g = reader.readInt32();
   const dhPrime = reader.readBytes();
   const gA = reader.readBytes();
-  const _serverTime = reader.readInt();
+  const _serverTime = reader.readInt32();
 
   const b = getRandomBigInt(256);
 
   const gB = modExp(BigInt(g), b, bigIntFromBuffer(dhPrime));
 
   data = new TLWriter()
-    .writeInt(client_DH_inner_data)
+    .writeInt32(client_DH_inner_data)
     .writeInt128(nonce)
     .writeInt128(serverNonce)
     .writeInt64(0n)
@@ -266,7 +266,7 @@ export async function getDHParams(
 
   await transport.send(packUnencryptedMessage(
     new TLWriter()
-      .writeInt(set_client_DH_params)
+      .writeInt32(set_client_DH_params)
       .writeInt128(nonce)
       .writeInt128(serverNonce)
       .writeBytes(encryptedData)

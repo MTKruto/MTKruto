@@ -13,14 +13,14 @@ export class TLReader {
     return buffer;
   }
 
-  readInt() {
-    const buffer = this.read(32 / 8);
-    return new ExtendedDataView(buffer.buffer).getUint32(0, true);
-  }
-
   readInt24() {
     const buffer = this.read(24 / 8);
     return new ExtendedDataView(buffer.buffer).getInt24(0, true);
+  }
+
+  readInt32() {
+    const buffer = this.read(32 / 8);
+    return new ExtendedDataView(buffer.buffer).getInt32(0, true);
   }
 
   readInt64() {

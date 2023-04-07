@@ -10,16 +10,11 @@ export class TLWriter {
     return this._buffer;
   }
 
-  writeInt(int: number) {
+  writeInt32(int: number) {
     this._buffer = concat(
       this._buffer,
       bufferFromBigInt(int, 32 / 8, true, true),
     );
-    return this;
-  }
-
-  writeUint(uint: number) {
-    this._buffer = concat(this._buffer, bufferFromBigInt(uint, 32 / 8));
     return this;
   }
 
