@@ -81,17 +81,13 @@ export async function getDHParams(
   serverNonce: bigint,
   publicKeyFingerprint: bigint,
 ) {
-  console.log({ pq });
   const key = PUBLIC_KEYS.find((v) => v.f == publicKeyFingerprint);
   if (!key) {
     throw new Error("Key not found");
   }
   const { n: serverKey, e: exponent } = key;
   const [p, q] = factorize(pq);
-  console.log({ p, q });
   const newNonce = randomBigIntBits(32 * 8);
-
-  console.log(p.valueOf());
 
   let data = new TLWriter()
     .writeInt32(p_q_inner_data)
@@ -176,9 +172,6 @@ export async function getDHParams(
   /// Step 8
   /// encrypted_data := RSA(key_aes_encrypted, server_pubkey); — 256-byte big-endian integer is elevated to the requisite power from the RSA public key modulo the RSA modulus, and the result is stored as a big-endian integer consisting of exactly 256 bytes (with leading zero bytes if required).
   const encrypedData = modExp(iKeyAesEncrypted, exponent, serverKey);
-
-  console.log({encrypedData})
-  console.log(encrypedData.toString(16).length/2)
 
   const encryptedDataBuf = bufferFromBigInt(encrypedData, 256, false, true);
 
