@@ -42,7 +42,7 @@ await transport.initialize();
 const { pq, pqBytes, serverNonce, nonce, publicKeyFingerprint } =
   await reqPqMulti(transport);
 
-const authKey = await getDHParams(
+const _authKey = await getDHParams(
   transport,
   pq,
   pqBytes,
