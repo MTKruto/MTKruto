@@ -61,19 +61,19 @@ export async function reqPqMulti(transport: Transport) {
   }
 
   const buffer = await transport.receive();
-  const dataView = new ExtendedDataView(buffer.buffer);
+  const reader = new TLReader(buffer);
 
-  const _authKeyId = dataView.getBigUint64(0, true);
-  const _messageId = dataView.getBigUint64(8, true);
-  const _messageLength = dataView.getUint32(16, true);
-  const _constructorId = dataView.getUint32(20, true);
-  const nonce_ = dataView.getBigUint128(24, true);
+  const _authKeyId = reader.readInt64();
+  const _messageId = reader.readInt64();
+  const _messageLength = reader.readInt();
+  const _constructorId = reader.readInt();
+  const nonce_ = reader.readInt128();
   assertEquals(nonce, nonce_);
-  const serverNonce = dataView.getBigUint128(40, true);
-  const pq_ = deserializeString(buffer.slice(56, 56 + 12));
-  const _vectorConstructor = dataView.getUint32(68, true);
-  const _count = dataView.getUint32(72, true);
-  const publicKeyFingerprint = dataView.getBigUint64(76, true);
+  const serverNonce = reader.readInt128();
+  const pq_ = reader.readBytes();
+  const _vectorConstructor = reader.readInt();
+  const _count = reader.readInt();
+  const publicKeyFingerprint = reader.readInt64();
 
   const pq = bigIntFromBuffer(pq_);
 
