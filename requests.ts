@@ -96,15 +96,21 @@ export async function getDHParams(
   const [p, q] = factorize(pq);
   const newNonce = randomBigIntBits(32 * 8);
 
-  let data = concat(
-    bufferFromBigInt(p_q_inner_data, 4),
-    serializeString(pqBytes),
-    serializeString(p.valueOf(), 4),
-    serializeString(q.valueOf(), 4),
-    bufferFromBigInt(nonce, 16),
-    bufferFromBigInt(serverNonce, 16),
-    bufferFromBigInt(newNonce, 32),
-  );
+  let data: Uint8Array;
+
+  {
+    const writer = new TLWriter();
+
+    writer.writeInt(p_q_inner_data);
+    writer.writeBytes(pqBytes);
+    writer.writeBytes(bufferFromBigInt(p.valueOf(), 4, false));
+    writer.writeBytes(bufferFromBigInt(q.valueOf(), 4, false));
+    writer.writeInt128(nonce);
+    writer.writeInt128(serverNonce);
+    writer.writeInt256(newNonce);
+
+    data = writer.buffer;
+  }
 
   /// Step 1
   /// data_with_padding := data + random_padding_bytes; — where random_padding_bytes are chosen so that the resulting length of data_with_padding is precisely 192 bytes, and data is the TL-serialized data to be encrypted as before. One has to check that data is not longer than 144 bytes.
