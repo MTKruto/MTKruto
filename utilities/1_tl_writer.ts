@@ -15,22 +15,27 @@ export class TLWriter {
       this._buffer,
       bufferFromBigInt(int, 32 / 8, true, true),
     );
+    return this;
   }
 
   writeUint(uint: number) {
     this._buffer = concat(this._buffer, bufferFromBigInt(uint, 32 / 8));
+    return this;
   }
 
   writeInt64(int: bigint) {
     this._buffer = concat(this._buffer, bufferFromBigInt(int, 64 / 8, true));
+    return this;
   }
 
   writeInt128(int: bigint) {
     this._buffer = concat(this._buffer, bufferFromBigInt(int, 128 / 8, true));
+    return this;
   }
 
   writeInt256(int: bigint) {
     this._buffer = concat(this._buffer, bufferFromBigInt(int, 256 / 8, true));
+    return this;
   }
 
   writeBytes(bytes: Uint8Array) {
@@ -51,9 +56,11 @@ export class TLWriter {
       padding = 4 - padding;
     }
     this._buffer = concat(this._buffer, L, bytes, new Uint8Array(padding));
+    return this;
   }
 
   writeString(string: string) {
     this.writeBytes(new TextEncoder().encode(string));
+    return this;
   }
 }

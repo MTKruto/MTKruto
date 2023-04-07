@@ -44,16 +44,14 @@ const PUBLIC_KEYS = [
 export async function reqPqMulti(transport: Transport) {
   const nonce = randomBigIntBits(16 * 8);
 
-  {
-    const writer = new TLWriter();
-
-    writer.writeInt(req_pq_multi);
-    writer.writeInt128(nonce);
-
-    await transport.send(
-      packUnencryptedMessage(writer.buffer),
-    );
-  }
+  await transport.send(
+    packUnencryptedMessage(
+      new TLWriter()
+        .writeInt(req_pq_multi)
+        .writeInt128(nonce)
+        .buffer,
+    ),
+  );
 
   const buffer = await transport.receive();
   const reader = new TLReader(buffer);
@@ -91,21 +89,15 @@ export async function getDHParams(
   const [p, q] = factorize(pq);
   const newNonce = randomBigIntBits(32 * 8);
 
-  let data: Uint8Array;
-
-  {
-    const writer = new TLWriter();
-
-    writer.writeInt(p_q_inner_data);
-    writer.writeBytes(pqBytes);
-    writer.writeBytes(bufferFromBigInt(p.valueOf(), 4, false));
-    writer.writeBytes(bufferFromBigInt(q.valueOf(), 4, false));
-    writer.writeInt128(nonce);
-    writer.writeInt128(serverNonce);
-    writer.writeInt256(newNonce);
-
-    data = writer.buffer;
-  }
+  let data = new TLWriter()
+    .writeInt(p_q_inner_data)
+    .writeBytes(pqBytes)
+    .writeBytes(bufferFromBigInt(p.valueOf(), 4, false))
+    .writeBytes(bufferFromBigInt(q.valueOf(), 4, false))
+    .writeInt128(nonce)
+    .writeInt128(serverNonce)
+    .writeInt256(newNonce)
+    .buffer;
 
   /// Step 1
   /// data_with_padding := data + random_padding_bytes; — where random_padding_bytes are chosen so that the resulting length of data_with_padding is precisely 192 bytes, and data is the TL-serialized data to be encrypted as before. One has to check that data is not longer than 144 bytes.
@@ -186,22 +178,16 @@ export async function getDHParams(
 
   const encryptedDataBuf = bufferFromBigInt(encrypedData, 256, false);
 
-  {
-    const writer = new TLWriter();
-
-    writer.writeInt(req_DH_params);
-    writer.writeInt128(nonce);
-    writer.writeInt128(serverNonce);
-    writer.writeBytes(bufferFromBigInt(p.valueOf(), 4, false));
-    writer.writeBytes(bufferFromBigInt(q.valueOf(), 4, false));
-    writer.writeInt64(publicKeyFingerprint);
-    writer.writeBytes(encryptedDataBuf);
-
-    data = writer.buffer;
-  }
-
   await transport.send(packUnencryptedMessage(
-    data,
+    new TLWriter()
+      .writeInt(req_DH_params)
+      .writeInt128(nonce)
+      .writeInt128(serverNonce)
+      .writeBytes(bufferFromBigInt(p.valueOf(), 4, false))
+      .writeBytes(bufferFromBigInt(q.valueOf(), 4, false))
+      .writeInt64(publicKeyFingerprint)
+      .writeBytes(encryptedDataBuf)
+      .buffer,
   ));
 
   const buffer = await transport.receive();
@@ -258,17 +244,13 @@ export async function getDHParams(
 
   const gB = modExp(BigInt(g), b, bigIntFromBuffer(dhPrime));
 
-  {
-    const writer = new TLWriter();
-
-    writer.writeInt(client_DH_inner_data);
-    writer.writeInt128(nonce);
-    writer.writeInt128(serverNonce);
-    writer.writeInt64(0n);
-    writer.writeBytes(bufferFromBigInt(gB, 256, false));
-
-    data = writer.buffer;
-  }
+  data = new TLWriter()
+    .writeInt(client_DH_inner_data)
+    .writeInt128(nonce)
+    .writeInt128(serverNonce)
+    .writeInt64(0n)
+    .writeBytes(bufferFromBigInt(gB, 256, false))
+    .buffer;
 
   let dataWithHash = concat(await sha1(data), data);
 
@@ -282,18 +264,14 @@ export async function getDHParams(
 
   const encryptedData = ige256Encrypt(dataWithHash, tmpAesKey, tmpAesIv);
 
-  {
-    const writer = new TLWriter();
-
-    writer.writeInt(set_client_DH_params);
-    writer.writeInt128(nonce);
-    writer.writeInt128(serverNonce);
-    writer.writeBytes(encryptedData);
-
-    data = writer.buffer;
-  }
-
-  await transport.send(packUnencryptedMessage(data));
+  await transport.send(packUnencryptedMessage(
+    new TLWriter()
+      .writeInt(set_client_DH_params)
+      .writeInt128(nonce)
+      .writeInt128(serverNonce)
+      .writeBytes(encryptedData)
+      .buffer,
+  ));
 
   const authKey = modExp(bigIntFromBuffer(gA), b, bigIntFromBuffer(dhPrime));
 
