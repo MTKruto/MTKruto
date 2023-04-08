@@ -110,7 +110,7 @@ function getPropertiesDeclr(params: any[], prefix = false) {
 
     const isFlag = param.type.startsWith("flags");
     const name = toCamelCase(param.name);
-    const type = convertType(param.type, true, prefix);
+    const type = convertType(param.type, false, prefix);
     code += `${name}${isFlag ? "?:" : ":"} ${type}\n`;
   }
 
@@ -129,7 +129,7 @@ function getConstructor(params: any[], prefix = false) {
 
       const isFlag = param.type.startsWith("flags");
       const name = toCamelCase(param.name);
-      const type = convertType(param.type, true, prefix);
+      const type = convertType(param.type, false, prefix);
       code += `${name}${isFlag ? "?:" : ":"} ${type}, `;
     }
     code += "}";

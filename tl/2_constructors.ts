@@ -1264,7 +1264,7 @@ export abstract class TypeReadParticipantDate extends Constructor {
 export class ResPQ extends Constructor {
   nonce: bigint;
   serverNonce: bigint;
-  pq: string;
+  pq: string | Uint8Array;
   serverPublicKeyFingerprints: Array<bigint>;
 
   protected get [id]() {
@@ -1284,7 +1284,7 @@ export class ResPQ extends Constructor {
     params: {
       nonce: bigint;
       serverNonce: bigint;
-      pq: string;
+      pq: string | Uint8Array;
       serverPublicKeyFingerprints: Array<bigint>;
     },
   ) {
@@ -1297,9 +1297,9 @@ export class ResPQ extends Constructor {
 }
 
 export class PQInnerData extends Constructor {
-  pq: string;
-  p: string;
-  q: string;
+  pq: string | Uint8Array;
+  p: string | Uint8Array;
+  q: string | Uint8Array;
   nonce: bigint;
   serverNonce: bigint;
   newNonce: bigint;
@@ -1321,9 +1321,9 @@ export class PQInnerData extends Constructor {
 
   constructor(
     params: {
-      pq: string;
-      p: string;
-      q: string;
+      pq: string | Uint8Array;
+      p: string | Uint8Array;
+      q: string | Uint8Array;
       nonce: bigint;
       serverNonce: bigint;
       newNonce: bigint;
@@ -1340,9 +1340,9 @@ export class PQInnerData extends Constructor {
 }
 
 export class PQInnerDataDc extends TypePQInnerData {
-  pq: string;
-  p: string;
-  q: string;
+  pq: string | Uint8Array;
+  p: string | Uint8Array;
+  q: string | Uint8Array;
   nonce: bigint;
   serverNonce: bigint;
   newNonce: bigint;
@@ -1366,9 +1366,9 @@ export class PQInnerDataDc extends TypePQInnerData {
 
   constructor(
     params: {
-      pq: string;
-      p: string;
-      q: string;
+      pq: string | Uint8Array;
+      p: string | Uint8Array;
+      q: string | Uint8Array;
       nonce: bigint;
       serverNonce: bigint;
       newNonce: bigint;
@@ -1387,9 +1387,9 @@ export class PQInnerDataDc extends TypePQInnerData {
 }
 
 export class PQInnerDataTemp extends TypePQInnerData {
-  pq: string;
-  p: string;
-  q: string;
+  pq: string | Uint8Array;
+  p: string | Uint8Array;
+  q: string | Uint8Array;
   nonce: bigint;
   serverNonce: bigint;
   newNonce: bigint;
@@ -1413,9 +1413,9 @@ export class PQInnerDataTemp extends TypePQInnerData {
 
   constructor(
     params: {
-      pq: string;
-      p: string;
-      q: string;
+      pq: string | Uint8Array;
+      p: string | Uint8Array;
+      q: string | Uint8Array;
       nonce: bigint;
       serverNonce: bigint;
       newNonce: bigint;
@@ -1434,9 +1434,9 @@ export class PQInnerDataTemp extends TypePQInnerData {
 }
 
 export class PQInnerDataTempDc extends TypePQInnerData {
-  pq: string;
-  p: string;
-  q: string;
+  pq: string | Uint8Array;
+  p: string | Uint8Array;
+  q: string | Uint8Array;
   nonce: bigint;
   serverNonce: bigint;
   newNonce: bigint;
@@ -1462,9 +1462,9 @@ export class PQInnerDataTempDc extends TypePQInnerData {
 
   constructor(
     params: {
-      pq: string;
-      p: string;
-      q: string;
+      pq: string | Uint8Array;
+      p: string | Uint8Array;
+      q: string | Uint8Array;
       nonce: bigint;
       serverNonce: bigint;
       newNonce: bigint;
@@ -1553,7 +1553,7 @@ export class ServerDHParamsFail extends TypeServerDHParams {
 export class ServerDHParamsOk extends TypeServerDHParams {
   nonce: bigint;
   serverNonce: bigint;
-  encryptedAnswer: string;
+  encryptedAnswer: string | Uint8Array;
 
   protected get [id]() {
     return 0xd0e8075c;
@@ -1568,7 +1568,11 @@ export class ServerDHParamsOk extends TypeServerDHParams {
   }
 
   constructor(
-    params: { nonce: bigint; serverNonce: bigint; encryptedAnswer: string },
+    params: {
+      nonce: bigint;
+      serverNonce: bigint;
+      encryptedAnswer: string | Uint8Array;
+    },
   ) {
     super();
     this.nonce = params.nonce;
@@ -1581,8 +1585,8 @@ export class ServerDHInnerData extends Constructor {
   nonce: bigint;
   serverNonce: bigint;
   g: number;
-  dhPrime: string;
-  gA: string;
+  dhPrime: string | Uint8Array;
+  gA: string | Uint8Array;
   serverTime: number;
 
   protected get [id]() {
@@ -1605,8 +1609,8 @@ export class ServerDHInnerData extends Constructor {
       nonce: bigint;
       serverNonce: bigint;
       g: number;
-      dhPrime: string;
-      gA: string;
+      dhPrime: string | Uint8Array;
+      gA: string | Uint8Array;
       serverTime: number;
     },
   ) {
@@ -1624,7 +1628,7 @@ export class ClientDHInnerData extends Constructor {
   nonce: bigint;
   serverNonce: bigint;
   retryId: bigint;
-  gB: string;
+  gB: string | Uint8Array;
 
   protected get [id]() {
     return 0x6643b654;
@@ -1640,7 +1644,12 @@ export class ClientDHInnerData extends Constructor {
   }
 
   constructor(
-    params: { nonce: bigint; serverNonce: bigint; retryId: bigint; gB: string },
+    params: {
+      nonce: bigint;
+      serverNonce: bigint;
+      retryId: bigint;
+      gB: string | Uint8Array;
+    },
   ) {
     super();
     this.nonce = params.nonce;
@@ -1875,7 +1884,7 @@ export class MsgsStateReq extends TypeMsgsStateReq {
 
 export class MsgsStateInfo extends TypeMsgsStateInfo {
   reqMsgId: bigint;
-  info: string;
+  info: string | Uint8Array;
 
   protected get [id]() {
     return 0x04deb57d;
@@ -1888,7 +1897,7 @@ export class MsgsStateInfo extends TypeMsgsStateInfo {
     ];
   }
 
-  constructor(params: { reqMsgId: bigint; info: string }) {
+  constructor(params: { reqMsgId: bigint; info: string | Uint8Array }) {
     super();
     this.reqMsgId = params.reqMsgId;
     this.info = params.info;
@@ -1897,7 +1906,7 @@ export class MsgsStateInfo extends TypeMsgsStateInfo {
 
 export class MsgsAllInfo extends TypeMsgsAllInfo {
   msgIds: Array<bigint>;
-  info: string;
+  info: string | Uint8Array;
 
   protected get [id]() {
     return 0x8cc0d131;
@@ -1910,7 +1919,7 @@ export class MsgsAllInfo extends TypeMsgsAllInfo {
     ];
   }
 
-  constructor(params: { msgIds: Array<bigint>; info: string }) {
+  constructor(params: { msgIds: Array<bigint>; info: string | Uint8Array }) {
     super();
     this.msgIds = params.msgIds;
     this.info = params.info;
@@ -1998,7 +2007,7 @@ export class MsgResendReq extends TypeMsgResendReq {
 
 export class RpcError extends TypeRpcError {
   errorCode: number;
-  errorMessage: string;
+  errorMessage: string | Uint8Array;
 
   protected get [id]() {
     return 0x2144ca19;
@@ -2011,7 +2020,9 @@ export class RpcError extends TypeRpcError {
     ];
   }
 
-  constructor(params: { errorCode: number; errorMessage: string }) {
+  constructor(
+    params: { errorCode: number; errorMessage: string | Uint8Array },
+  ) {
     super();
     this.errorCode = params.errorCode;
     this.errorMessage = params.errorMessage;
@@ -2287,7 +2298,7 @@ export class IpPortSecret extends TypeIpPort {
 }
 
 export class AccessPointRule extends Constructor {
-  phonePrefixRules: string;
+  phonePrefixRules: string | Uint8Array;
   dcId: number;
   ips: Array<TypeIpPort>;
 
@@ -2304,7 +2315,11 @@ export class AccessPointRule extends Constructor {
   }
 
   constructor(
-    params: { phonePrefixRules: string; dcId: number; ips: Array<TypeIpPort> },
+    params: {
+      phonePrefixRules: string | Uint8Array;
+      dcId: number;
+      ips: Array<TypeIpPort>;
+    },
   ) {
     super();
     this.phonePrefixRules = params.phonePrefixRules;
@@ -2360,7 +2375,7 @@ export class True extends Constructor {
 
 export class Error extends Constructor {
   code: number;
-  text: string;
+  text: string | Uint8Array;
 
   protected get [id]() {
     return 0xc4b9f9bb;
@@ -2373,7 +2388,7 @@ export class Error extends Constructor {
     ];
   }
 
-  constructor(params: { code: number; text: string }) {
+  constructor(params: { code: number; text: string | Uint8Array }) {
     super();
     this.code = params.code;
     this.text = params.text;
@@ -2614,9 +2629,9 @@ export class InputUserFromMessage extends TypeInputUser {
 
 export class InputPhoneContact extends TypeInputContact {
   clientId: bigint;
-  phone: string;
-  firstName: string;
-  lastName: string;
+  phone: string | Uint8Array;
+  firstName: string | Uint8Array;
+  lastName: string | Uint8Array;
 
   protected get [id]() {
     return 0xf392b7f4;
@@ -2634,9 +2649,9 @@ export class InputPhoneContact extends TypeInputContact {
   constructor(
     params: {
       clientId: bigint;
-      phone: string;
-      firstName: string;
-      lastName: string;
+      phone: string | Uint8Array;
+      firstName: string | Uint8Array;
+      lastName: string | Uint8Array;
     },
   ) {
     super();
@@ -2650,8 +2665,8 @@ export class InputPhoneContact extends TypeInputContact {
 export class InputFile extends Constructor {
   id: bigint;
   parts: number;
-  name: string;
-  md5Checksum: string;
+  name: string | Uint8Array;
+  md5Checksum: string | Uint8Array;
 
   protected get [id]() {
     return 0xf52ff27f;
@@ -2667,7 +2682,12 @@ export class InputFile extends Constructor {
   }
 
   constructor(
-    params: { id: bigint; parts: number; name: string; md5Checksum: string },
+    params: {
+      id: bigint;
+      parts: number;
+      name: string | Uint8Array;
+      md5Checksum: string | Uint8Array;
+    },
   ) {
     super();
     this.id = params.id;
@@ -2680,7 +2700,7 @@ export class InputFile extends Constructor {
 export class InputFileBig extends TypeInputFile {
   id: bigint;
   parts: number;
-  name: string;
+  name: string | Uint8Array;
 
   protected get [id]() {
     return 0xfa4f0bb5;
@@ -2694,7 +2714,9 @@ export class InputFileBig extends TypeInputFile {
     ];
   }
 
-  constructor(params: { id: bigint; parts: number; name: string }) {
+  constructor(
+    params: { id: bigint; parts: number; name: string | Uint8Array },
+  ) {
     super();
     this.id = params.id;
     this.parts = params.parts;
@@ -2802,10 +2824,10 @@ export class InputMediaGeoPoint extends TypeInputMedia {
 }
 
 export class InputMediaContact extends TypeInputMedia {
-  phoneNumber: string;
-  firstName: string;
-  lastName: string;
-  vcard: string;
+  phoneNumber: string | Uint8Array;
+  firstName: string | Uint8Array;
+  lastName: string | Uint8Array;
+  vcard: string | Uint8Array;
 
   protected get [id]() {
     return 0xf8ab7dfb;
@@ -2822,10 +2844,10 @@ export class InputMediaContact extends TypeInputMedia {
 
   constructor(
     params: {
-      phoneNumber: string;
-      firstName: string;
-      lastName: string;
-      vcard: string;
+      phoneNumber: string | Uint8Array;
+      firstName: string | Uint8Array;
+      lastName: string | Uint8Array;
+      vcard: string | Uint8Array;
     },
   ) {
     super();
@@ -2842,7 +2864,7 @@ export class InputMediaUploadedDocument extends TypeInputMedia {
   spoiler?: true;
   file: TypeInputFile;
   thumb?: TypeInputFile;
-  mimeType: string;
+  mimeType: string | Uint8Array;
   attributes: Array<TypeDocumentAttribute>;
   stickers?: Array<TypeInputDocument>;
   ttlSeconds?: number;
@@ -2876,7 +2898,7 @@ export class InputMediaUploadedDocument extends TypeInputMedia {
       spoiler?: true;
       file: TypeInputFile;
       thumb?: TypeInputFile;
-      mimeType: string;
+      mimeType: string | Uint8Array;
       attributes: Array<TypeDocumentAttribute>;
       stickers?: Array<TypeInputDocument>;
       ttlSeconds?: number;
@@ -2899,7 +2921,7 @@ export class InputMediaDocument extends TypeInputMedia {
   spoiler?: true;
   id: TypeInputDocument;
   ttlSeconds?: number;
-  query?: string;
+  query?: string | Uint8Array;
 
   protected get [id]() {
     return 0x33473058;
@@ -2919,7 +2941,7 @@ export class InputMediaDocument extends TypeInputMedia {
       spoiler?: true;
       id: TypeInputDocument;
       ttlSeconds?: number;
-      query?: string;
+      query?: string | Uint8Array;
     },
   ) {
     super();
@@ -2932,11 +2954,11 @@ export class InputMediaDocument extends TypeInputMedia {
 
 export class InputMediaVenue extends TypeInputMedia {
   geoPoint: TypeInputGeoPoint;
-  title: string;
-  address: string;
-  provider: string;
-  venueId: string;
-  venueType: string;
+  title: string | Uint8Array;
+  address: string | Uint8Array;
+  provider: string | Uint8Array;
+  venueId: string | Uint8Array;
+  venueType: string | Uint8Array;
 
   protected get [id]() {
     return 0xc13d1c11;
@@ -2956,11 +2978,11 @@ export class InputMediaVenue extends TypeInputMedia {
   constructor(
     params: {
       geoPoint: TypeInputGeoPoint;
-      title: string;
-      address: string;
-      provider: string;
-      venueId: string;
-      venueType: string;
+      title: string | Uint8Array;
+      address: string | Uint8Array;
+      provider: string | Uint8Array;
+      venueId: string | Uint8Array;
+      venueType: string | Uint8Array;
     },
   ) {
     super();
@@ -2975,7 +2997,7 @@ export class InputMediaVenue extends TypeInputMedia {
 
 export class InputMediaPhotoExternal extends TypeInputMedia {
   spoiler?: true;
-  url: string;
+  url: string | Uint8Array;
   ttlSeconds?: number;
 
   protected get [id]() {
@@ -2990,7 +3012,9 @@ export class InputMediaPhotoExternal extends TypeInputMedia {
     ];
   }
 
-  constructor(params: { spoiler?: true; url: string; ttlSeconds?: number }) {
+  constructor(
+    params: { spoiler?: true; url: string | Uint8Array; ttlSeconds?: number },
+  ) {
     super();
     this.spoiler = params.spoiler;
     this.url = params.url;
@@ -3000,7 +3024,7 @@ export class InputMediaPhotoExternal extends TypeInputMedia {
 
 export class InputMediaDocumentExternal extends TypeInputMedia {
   spoiler?: true;
-  url: string;
+  url: string | Uint8Array;
   ttlSeconds?: number;
 
   protected get [id]() {
@@ -3015,7 +3039,9 @@ export class InputMediaDocumentExternal extends TypeInputMedia {
     ];
   }
 
-  constructor(params: { spoiler?: true; url: string; ttlSeconds?: number }) {
+  constructor(
+    params: { spoiler?: true; url: string | Uint8Array; ttlSeconds?: number },
+  ) {
     super();
     this.spoiler = params.spoiler;
     this.url = params.url;
@@ -3043,14 +3069,14 @@ export class InputMediaGame extends TypeInputMedia {
 }
 
 export class InputMediaInvoice extends TypeInputMedia {
-  title: string;
-  description: string;
+  title: string | Uint8Array;
+  description: string | Uint8Array;
   photo?: TypeInputWebDocument;
   invoice: TypeInvoice;
   payload: Uint8Array;
-  provider: string;
+  provider: string | Uint8Array;
   providerData: TypeDataJSON;
-  startParam?: string;
+  startParam?: string | Uint8Array;
   extendedMedia?: TypeInputMedia;
 
   protected get [id]() {
@@ -3073,14 +3099,14 @@ export class InputMediaInvoice extends TypeInputMedia {
 
   constructor(
     params: {
-      title: string;
-      description: string;
+      title: string | Uint8Array;
+      description: string | Uint8Array;
       photo?: TypeInputWebDocument;
       invoice: TypeInvoice;
       payload: Uint8Array;
-      provider: string;
+      provider: string | Uint8Array;
       providerData: TypeDataJSON;
-      startParam?: string;
+      startParam?: string | Uint8Array;
       extendedMedia?: TypeInputMedia;
     },
   ) {
@@ -3139,7 +3165,7 @@ export class InputMediaGeoLive extends TypeInputMedia {
 export class InputMediaPoll extends TypeInputMedia {
   poll: TypePoll;
   correctAnswers?: Array<Uint8Array>;
-  solution?: string;
+  solution?: string | Uint8Array;
   solutionEntities?: Array<TypeMessageEntity>;
 
   protected get [id]() {
@@ -3163,7 +3189,7 @@ export class InputMediaPoll extends TypeInputMedia {
     params: {
       poll: TypePoll;
       correctAnswers?: Array<Uint8Array>;
-      solution?: string;
+      solution?: string | Uint8Array;
       solutionEntities?: Array<TypeMessageEntity>;
     },
   ) {
@@ -3176,7 +3202,7 @@ export class InputMediaPoll extends TypeInputMedia {
 }
 
 export class InputMediaDice extends TypeInputMedia {
-  emoticon: string;
+  emoticon: string | Uint8Array;
 
   protected get [id]() {
     return 0xe66fbf7b;
@@ -3188,7 +3214,7 @@ export class InputMediaDice extends TypeInputMedia {
     ];
   }
 
-  constructor(params: { emoticon: string }) {
+  constructor(params: { emoticon: string | Uint8Array }) {
     super();
     this.emoticon = params.emoticon;
   }
@@ -3403,7 +3429,7 @@ export class InputDocumentFileLocation extends TypeInputFileLocation {
   id: bigint;
   accessHash: bigint;
   fileReference: Uint8Array;
-  thumbSize: string;
+  thumbSize: string | Uint8Array;
 
   protected get [id]() {
     return 0xbad07584;
@@ -3423,7 +3449,7 @@ export class InputDocumentFileLocation extends TypeInputFileLocation {
       id: bigint;
       accessHash: bigint;
       fileReference: Uint8Array;
-      thumbSize: string;
+      thumbSize: string | Uint8Array;
     },
   ) {
     super();
@@ -3474,7 +3500,7 @@ export class InputPhotoFileLocation extends TypeInputFileLocation {
   id: bigint;
   accessHash: bigint;
   fileReference: Uint8Array;
-  thumbSize: string;
+  thumbSize: string | Uint8Array;
 
   protected get [id]() {
     return 0x40181ffe;
@@ -3494,7 +3520,7 @@ export class InputPhotoFileLocation extends TypeInputFileLocation {
       id: bigint;
       accessHash: bigint;
       fileReference: Uint8Array;
-      thumbSize: string;
+      thumbSize: string | Uint8Array;
     },
   ) {
     super();
@@ -3873,16 +3899,16 @@ export class User extends Constructor {
   attachMenuEnabled?: true;
   id: bigint;
   accessHash?: bigint;
-  firstName?: string;
-  lastName?: string;
-  username?: string;
-  phone?: string;
+  firstName?: string | Uint8Array;
+  lastName?: string | Uint8Array;
+  username?: string | Uint8Array;
+  phone?: string | Uint8Array;
   photo?: TypeUserProfilePhoto;
   status?: TypeUserStatus;
   botInfoVersion?: number;
   restrictionReason?: Array<TypeRestrictionReason>;
-  botInlinePlaceholder?: string;
-  langCode?: string;
+  botInlinePlaceholder?: string | Uint8Array;
+  langCode?: string | Uint8Array;
   emojiStatus?: TypeEmojiStatus;
   usernames?: Array<TypeUsername>;
 
@@ -3953,16 +3979,16 @@ export class User extends Constructor {
       attachMenuEnabled?: true;
       id: bigint;
       accessHash?: bigint;
-      firstName?: string;
-      lastName?: string;
-      username?: string;
-      phone?: string;
+      firstName?: string | Uint8Array;
+      lastName?: string | Uint8Array;
+      username?: string | Uint8Array;
+      phone?: string | Uint8Array;
       photo?: TypeUserProfilePhoto;
       status?: TypeUserStatus;
       botInfoVersion?: number;
       restrictionReason?: Array<TypeRestrictionReason>;
-      botInlinePlaceholder?: string;
-      langCode?: string;
+      botInlinePlaceholder?: string | Uint8Array;
+      langCode?: string | Uint8Array;
       emojiStatus?: TypeEmojiStatus;
       usernames?: Array<TypeUsername>;
     },
@@ -4177,7 +4203,7 @@ export class Chat extends Constructor {
   callNotEmpty?: true;
   noforwards?: true;
   id: bigint;
-  title: string;
+  title: string | Uint8Array;
   photo: TypeChatPhoto;
   participantsCount: number;
   date: number;
@@ -4227,7 +4253,7 @@ export class Chat extends Constructor {
       callNotEmpty?: true;
       noforwards?: true;
       id: bigint;
-      title: string;
+      title: string | Uint8Array;
       photo: TypeChatPhoto;
       participantsCount: number;
       date: number;
@@ -4258,7 +4284,7 @@ export class Chat extends Constructor {
 
 export class ChatForbidden extends TypeChat {
   id: bigint;
-  title: string;
+  title: string | Uint8Array;
 
   protected get [id]() {
     return 0x6592a1a7;
@@ -4271,7 +4297,7 @@ export class ChatForbidden extends TypeChat {
     ];
   }
 
-  constructor(params: { id: bigint; title: string }) {
+  constructor(params: { id: bigint; title: string | Uint8Array }) {
     super();
     this.id = params.id;
     this.title = params.title;
@@ -4301,8 +4327,8 @@ export class Channel extends TypeChat {
   forum?: true;
   id: bigint;
   accessHash?: bigint;
-  title: string;
-  username?: string;
+  title: string | Uint8Array;
+  username?: string | Uint8Array;
   photo: TypeChatPhoto;
   date: number;
   restrictionReason?: Array<TypeRestrictionReason>;
@@ -4393,8 +4419,8 @@ export class Channel extends TypeChat {
       forum?: true;
       id: bigint;
       accessHash?: bigint;
-      title: string;
-      username?: string;
+      title: string | Uint8Array;
+      username?: string | Uint8Array;
       photo: TypeChatPhoto;
       date: number;
       restrictionReason?: Array<TypeRestrictionReason>;
@@ -4446,7 +4472,7 @@ export class ChannelForbidden extends TypeChat {
   megagroup?: true;
   id: bigint;
   accessHash: bigint;
-  title: string;
+  title: string | Uint8Array;
   untilDate?: number;
 
   protected get [id]() {
@@ -4470,7 +4496,7 @@ export class ChannelForbidden extends TypeChat {
       megagroup?: true;
       id: bigint;
       accessHash: bigint;
-      title: string;
+      title: string | Uint8Array;
       untilDate?: number;
     },
   ) {
@@ -4489,7 +4515,7 @@ export class ChatFull extends Constructor {
   hasScheduled?: true;
   translationsDisabled?: true;
   id: bigint;
-  about: string;
+  about: string | Uint8Array;
   participants: TypeChatParticipants;
   chatPhoto?: TypePhoto;
   notifySettings: TypePeerNotifySettings;
@@ -4500,7 +4526,7 @@ export class ChatFull extends Constructor {
   call?: TypeInputGroupCall;
   ttlPeriod?: number;
   groupcallDefaultJoinAs?: TypePeer;
-  themeEmoticon?: string;
+  themeEmoticon?: string | Uint8Array;
   requestsPending?: number;
   recentRequesters?: Array<bigint>;
   availableReactions?: TypeChatReactions;
@@ -4547,7 +4573,7 @@ export class ChatFull extends Constructor {
       hasScheduled?: true;
       translationsDisabled?: true;
       id: bigint;
-      about: string;
+      about: string | Uint8Array;
       participants: TypeChatParticipants;
       chatPhoto?: TypePhoto;
       notifySettings: TypePeerNotifySettings;
@@ -4558,7 +4584,7 @@ export class ChatFull extends Constructor {
       call?: TypeInputGroupCall;
       ttlPeriod?: number;
       groupcallDefaultJoinAs?: TypePeer;
-      themeEmoticon?: string;
+      themeEmoticon?: string | Uint8Array;
       requestsPending?: number;
       recentRequesters?: Array<bigint>;
       availableReactions?: TypeChatReactions;
@@ -4601,7 +4627,7 @@ export class ChannelFull extends TypeChatFull {
   participantsHidden?: true;
   translationsDisabled?: true;
   id: bigint;
-  about: string;
+  about: string | Uint8Array;
   participantsCount?: number;
   adminsCount?: number;
   kickedCount?: number;
@@ -4628,9 +4654,9 @@ export class ChannelFull extends TypeChatFull {
   pts: number;
   call?: TypeInputGroupCall;
   ttlPeriod?: number;
-  pendingSuggestions?: Array<string>;
+  pendingSuggestions?: Array<string | Uint8Array>;
   groupcallDefaultJoinAs?: TypePeer;
-  themeEmoticon?: string;
+  themeEmoticon?: string | Uint8Array;
   requestsPending?: number;
   recentRequesters?: Array<bigint>;
   defaultSendAs?: TypePeer;
@@ -4715,7 +4741,7 @@ export class ChannelFull extends TypeChatFull {
       participantsHidden?: true;
       translationsDisabled?: true;
       id: bigint;
-      about: string;
+      about: string | Uint8Array;
       participantsCount?: number;
       adminsCount?: number;
       kickedCount?: number;
@@ -4742,9 +4768,9 @@ export class ChannelFull extends TypeChatFull {
       pts: number;
       call?: TypeInputGroupCall;
       ttlPeriod?: number;
-      pendingSuggestions?: Array<string>;
+      pendingSuggestions?: Array<string | Uint8Array>;
       groupcallDefaultJoinAs?: TypePeer;
-      themeEmoticon?: string;
+      themeEmoticon?: string | Uint8Array;
       requestsPending?: number;
       recentRequesters?: Array<bigint>;
       defaultSendAs?: TypePeer;
@@ -5019,7 +5045,7 @@ export class Message extends Constructor {
   viaBotId?: bigint;
   replyTo?: TypeMessageReplyHeader;
   date: number;
-  message: string;
+  message: string | Uint8Array;
   media?: TypeMessageMedia;
   replyMarkup?: TypeReplyMarkup;
   entities?: Array<TypeMessageEntity>;
@@ -5027,7 +5053,7 @@ export class Message extends Constructor {
   forwards?: number;
   replies?: TypeMessageReplies;
   editDate?: number;
-  postAuthor?: string;
+  postAuthor?: string | Uint8Array;
   groupedId?: bigint;
   reactions?: TypeMessageReactions;
   restrictionReason?: Array<TypeRestrictionReason>;
@@ -5107,7 +5133,7 @@ export class Message extends Constructor {
       viaBotId?: bigint;
       replyTo?: TypeMessageReplyHeader;
       date: number;
-      message: string;
+      message: string | Uint8Array;
       media?: TypeMessageMedia;
       replyMarkup?: TypeReplyMarkup;
       entities?: Array<TypeMessageEntity>;
@@ -5115,7 +5141,7 @@ export class Message extends Constructor {
       forwards?: number;
       replies?: TypeMessageReplies;
       editDate?: number;
-      postAuthor?: string;
+      postAuthor?: string | Uint8Array;
       groupedId?: bigint;
       reactions?: TypeMessageReactions;
       restrictionReason?: Array<TypeRestrictionReason>;
@@ -5292,10 +5318,10 @@ export class MessageMediaGeo extends TypeMessageMedia {
 }
 
 export class MessageMediaContact extends TypeMessageMedia {
-  phoneNumber: string;
-  firstName: string;
-  lastName: string;
-  vcard: string;
+  phoneNumber: string | Uint8Array;
+  firstName: string | Uint8Array;
+  lastName: string | Uint8Array;
+  vcard: string | Uint8Array;
   userId: bigint;
 
   protected get [id]() {
@@ -5314,10 +5340,10 @@ export class MessageMediaContact extends TypeMessageMedia {
 
   constructor(
     params: {
-      phoneNumber: string;
-      firstName: string;
-      lastName: string;
-      vcard: string;
+      phoneNumber: string | Uint8Array;
+      firstName: string | Uint8Array;
+      lastName: string | Uint8Array;
+      vcard: string | Uint8Array;
       userId: bigint;
     },
   ) {
@@ -5400,11 +5426,11 @@ export class MessageMediaWebPage extends TypeMessageMedia {
 
 export class MessageMediaVenue extends TypeMessageMedia {
   geo: TypeGeoPoint;
-  title: string;
-  address: string;
-  provider: string;
-  venueId: string;
-  venueType: string;
+  title: string | Uint8Array;
+  address: string | Uint8Array;
+  provider: string | Uint8Array;
+  venueId: string | Uint8Array;
+  venueType: string | Uint8Array;
 
   protected get [id]() {
     return 0x2ec0533f;
@@ -5424,11 +5450,11 @@ export class MessageMediaVenue extends TypeMessageMedia {
   constructor(
     params: {
       geo: TypeGeoPoint;
-      title: string;
-      address: string;
-      provider: string;
-      venueId: string;
-      venueType: string;
+      title: string | Uint8Array;
+      address: string | Uint8Array;
+      provider: string | Uint8Array;
+      venueId: string | Uint8Array;
+      venueType: string | Uint8Array;
     },
   ) {
     super();
@@ -5463,13 +5489,13 @@ export class MessageMediaGame extends TypeMessageMedia {
 export class MessageMediaInvoice extends TypeMessageMedia {
   shippingAddressRequested?: true;
   test?: true;
-  title: string;
-  description: string;
+  title: string | Uint8Array;
+  description: string | Uint8Array;
   photo?: TypeWebDocument;
   receiptMsgId?: number;
-  currency: string;
+  currency: string | Uint8Array;
   totalAmount: bigint;
-  startParam: string;
+  startParam: string | Uint8Array;
   extendedMedia?: TypeMessageExtendedMedia;
 
   protected get [id]() {
@@ -5499,13 +5525,13 @@ export class MessageMediaInvoice extends TypeMessageMedia {
     params: {
       shippingAddressRequested?: true;
       test?: true;
-      title: string;
-      description: string;
+      title: string | Uint8Array;
+      description: string | Uint8Array;
       photo?: TypeWebDocument;
       receiptMsgId?: number;
-      currency: string;
+      currency: string | Uint8Array;
       totalAmount: bigint;
-      startParam: string;
+      startParam: string | Uint8Array;
       extendedMedia?: TypeMessageExtendedMedia;
     },
   ) {
@@ -5582,7 +5608,7 @@ export class MessageMediaPoll extends TypeMessageMedia {
 
 export class MessageMediaDice extends TypeMessageMedia {
   value: number;
-  emoticon: string;
+  emoticon: string | Uint8Array;
 
   protected get [id]() {
     return 0x3f7ee58b;
@@ -5595,7 +5621,7 @@ export class MessageMediaDice extends TypeMessageMedia {
     ];
   }
 
-  constructor(params: { value: number; emoticon: string }) {
+  constructor(params: { value: number; emoticon: string | Uint8Array }) {
     super();
     this.value = params.value;
     this.emoticon = params.emoticon;
@@ -5617,7 +5643,7 @@ export class MessageActionEmpty extends TypeMessageAction {
 }
 
 export class MessageActionChatCreate extends TypeMessageAction {
-  title: string;
+  title: string | Uint8Array;
   users: Array<bigint>;
 
   protected get [id]() {
@@ -5631,7 +5657,7 @@ export class MessageActionChatCreate extends TypeMessageAction {
     ];
   }
 
-  constructor(params: { title: string; users: Array<bigint> }) {
+  constructor(params: { title: string | Uint8Array; users: Array<bigint> }) {
     super();
     this.title = params.title;
     this.users = params.users;
@@ -5639,7 +5665,7 @@ export class MessageActionChatCreate extends TypeMessageAction {
 }
 
 export class MessageActionChatEditTitle extends TypeMessageAction {
-  title: string;
+  title: string | Uint8Array;
 
   protected get [id]() {
     return 0xb5a1ce5a;
@@ -5651,7 +5677,7 @@ export class MessageActionChatEditTitle extends TypeMessageAction {
     ];
   }
 
-  constructor(params: { title: string }) {
+  constructor(params: { title: string | Uint8Array }) {
     super();
     this.title = params.title;
   }
@@ -5748,7 +5774,7 @@ export class MessageActionChatJoinedByLink extends TypeMessageAction {
 }
 
 export class MessageActionChannelCreate extends TypeMessageAction {
-  title: string;
+  title: string | Uint8Array;
 
   protected get [id]() {
     return 0x95d2ac92;
@@ -5760,7 +5786,7 @@ export class MessageActionChannelCreate extends TypeMessageAction {
     ];
   }
 
-  constructor(params: { title: string }) {
+  constructor(params: { title: string | Uint8Array }) {
     super();
     this.title = params.title;
   }
@@ -5786,7 +5812,7 @@ export class MessageActionChatMigrateTo extends TypeMessageAction {
 }
 
 export class MessageActionChannelMigrateFrom extends TypeMessageAction {
-  title: string;
+  title: string | Uint8Array;
   chatId: bigint;
 
   protected get [id]() {
@@ -5800,7 +5826,7 @@ export class MessageActionChannelMigrateFrom extends TypeMessageAction {
     ];
   }
 
-  constructor(params: { title: string; chatId: bigint }) {
+  constructor(params: { title: string | Uint8Array; chatId: bigint }) {
     super();
     this.title = params.title;
     this.chatId = params.chatId;
@@ -5860,11 +5886,11 @@ export class MessageActionGameScore extends TypeMessageAction {
 export class MessageActionPaymentSentMe extends TypeMessageAction {
   recurringInit?: true;
   recurringUsed?: true;
-  currency: string;
+  currency: string | Uint8Array;
   totalAmount: bigint;
   payload: Uint8Array;
   info?: TypePaymentRequestedInfo;
-  shippingOptionId?: string;
+  shippingOptionId?: string | Uint8Array;
   charge: TypePaymentCharge;
 
   protected get [id]() {
@@ -5892,11 +5918,11 @@ export class MessageActionPaymentSentMe extends TypeMessageAction {
     params: {
       recurringInit?: true;
       recurringUsed?: true;
-      currency: string;
+      currency: string | Uint8Array;
       totalAmount: bigint;
       payload: Uint8Array;
       info?: TypePaymentRequestedInfo;
-      shippingOptionId?: string;
+      shippingOptionId?: string | Uint8Array;
       charge: TypePaymentCharge;
     },
   ) {
@@ -5915,9 +5941,9 @@ export class MessageActionPaymentSentMe extends TypeMessageAction {
 export class MessageActionPaymentSent extends TypeMessageAction {
   recurringInit?: true;
   recurringUsed?: true;
-  currency: string;
+  currency: string | Uint8Array;
   totalAmount: bigint;
-  invoiceSlug?: string;
+  invoiceSlug?: string | Uint8Array;
 
   protected get [id]() {
     return 0x96163f56;
@@ -5937,9 +5963,9 @@ export class MessageActionPaymentSent extends TypeMessageAction {
     params: {
       recurringInit?: true;
       recurringUsed?: true;
-      currency: string;
+      currency: string | Uint8Array;
       totalAmount: bigint;
-      invoiceSlug?: string;
+      invoiceSlug?: string | Uint8Array;
     },
   ) {
     super();
@@ -6005,7 +6031,7 @@ export class MessageActionScreenshotTaken extends TypeMessageAction {
 }
 
 export class MessageActionCustomAction extends TypeMessageAction {
-  message: string;
+  message: string | Uint8Array;
 
   protected get [id]() {
     return 0xfae69f56;
@@ -6017,7 +6043,7 @@ export class MessageActionCustomAction extends TypeMessageAction {
     ];
   }
 
-  constructor(params: { message: string }) {
+  constructor(params: { message: string | Uint8Array }) {
     super();
     this.message = params.message;
   }
@@ -6025,7 +6051,7 @@ export class MessageActionCustomAction extends TypeMessageAction {
 
 export class MessageActionBotAllowed extends TypeMessageAction {
   attachMenu?: true;
-  domain?: string;
+  domain?: string | Uint8Array;
   app?: TypeBotApp;
 
   protected get [id]() {
@@ -6041,7 +6067,11 @@ export class MessageActionBotAllowed extends TypeMessageAction {
   }
 
   constructor(
-    params: { attachMenu?: true; domain?: string; app?: TypeBotApp },
+    params: {
+      attachMenu?: true;
+      domain?: string | Uint8Array;
+      app?: TypeBotApp;
+    },
   ) {
     super();
     this.attachMenu = params.attachMenu;
@@ -6228,7 +6258,7 @@ export class MessageActionGroupCallScheduled extends TypeMessageAction {
 }
 
 export class MessageActionSetChatTheme extends TypeMessageAction {
-  emoticon: string;
+  emoticon: string | Uint8Array;
 
   protected get [id]() {
     return 0xaa786345;
@@ -6240,7 +6270,7 @@ export class MessageActionSetChatTheme extends TypeMessageAction {
     ];
   }
 
-  constructor(params: { emoticon: string }) {
+  constructor(params: { emoticon: string | Uint8Array }) {
     super();
     this.emoticon = params.emoticon;
   }
@@ -6261,8 +6291,8 @@ export class MessageActionChatJoinedByRequest extends TypeMessageAction {
 }
 
 export class MessageActionWebViewDataSentMe extends TypeMessageAction {
-  text: string;
-  data: string;
+  text: string | Uint8Array;
+  data: string | Uint8Array;
 
   protected get [id]() {
     return 0x47dd8079;
@@ -6275,7 +6305,9 @@ export class MessageActionWebViewDataSentMe extends TypeMessageAction {
     ];
   }
 
-  constructor(params: { text: string; data: string }) {
+  constructor(
+    params: { text: string | Uint8Array; data: string | Uint8Array },
+  ) {
     super();
     this.text = params.text;
     this.data = params.data;
@@ -6283,7 +6315,7 @@ export class MessageActionWebViewDataSentMe extends TypeMessageAction {
 }
 
 export class MessageActionWebViewDataSent extends TypeMessageAction {
-  text: string;
+  text: string | Uint8Array;
 
   protected get [id]() {
     return 0xb4c38cb5;
@@ -6295,14 +6327,14 @@ export class MessageActionWebViewDataSent extends TypeMessageAction {
     ];
   }
 
-  constructor(params: { text: string }) {
+  constructor(params: { text: string | Uint8Array }) {
     super();
     this.text = params.text;
   }
 }
 
 export class MessageActionGiftPremium extends TypeMessageAction {
-  currency: string;
+  currency: string | Uint8Array;
   amount: bigint;
   months: number;
 
@@ -6318,7 +6350,9 @@ export class MessageActionGiftPremium extends TypeMessageAction {
     ];
   }
 
-  constructor(params: { currency: string; amount: bigint; months: number }) {
+  constructor(
+    params: { currency: string | Uint8Array; amount: bigint; months: number },
+  ) {
     super();
     this.currency = params.currency;
     this.amount = params.amount;
@@ -6327,7 +6361,7 @@ export class MessageActionGiftPremium extends TypeMessageAction {
 }
 
 export class MessageActionTopicCreate extends TypeMessageAction {
-  title: string;
+  title: string | Uint8Array;
   iconColor: number;
   iconEmojiId?: bigint;
 
@@ -6344,7 +6378,11 @@ export class MessageActionTopicCreate extends TypeMessageAction {
   }
 
   constructor(
-    params: { title: string; iconColor: number; iconEmojiId?: bigint },
+    params: {
+      title: string | Uint8Array;
+      iconColor: number;
+      iconEmojiId?: bigint;
+    },
   ) {
     super();
     this.title = params.title;
@@ -6354,7 +6392,7 @@ export class MessageActionTopicCreate extends TypeMessageAction {
 }
 
 export class MessageActionTopicEdit extends TypeMessageAction {
-  title?: string;
+  title?: string | Uint8Array;
   iconEmojiId?: bigint;
   closed?: boolean;
   hidden?: boolean;
@@ -6374,7 +6412,7 @@ export class MessageActionTopicEdit extends TypeMessageAction {
 
   constructor(
     params: {
-      title?: string;
+      title?: string | Uint8Array;
       iconEmojiId?: bigint;
       closed?: boolean;
       hidden?: boolean;
@@ -6626,7 +6664,7 @@ export class Photo extends Constructor {
 }
 
 export class PhotoSizeEmpty extends TypePhotoSize {
-  type: string;
+  type: string | Uint8Array;
 
   protected get [id]() {
     return 0x0e17e23c;
@@ -6638,14 +6676,14 @@ export class PhotoSizeEmpty extends TypePhotoSize {
     ];
   }
 
-  constructor(params: { type: string }) {
+  constructor(params: { type: string | Uint8Array }) {
     super();
     this.type = params.type;
   }
 }
 
 export class PhotoSize extends Constructor {
-  type: string;
+  type: string | Uint8Array;
   w: number;
   h: number;
   size: number;
@@ -6663,7 +6701,9 @@ export class PhotoSize extends Constructor {
     ];
   }
 
-  constructor(params: { type: string; w: number; h: number; size: number }) {
+  constructor(
+    params: { type: string | Uint8Array; w: number; h: number; size: number },
+  ) {
     super();
     this.type = params.type;
     this.w = params.w;
@@ -6673,7 +6713,7 @@ export class PhotoSize extends Constructor {
 }
 
 export class PhotoCachedSize extends TypePhotoSize {
-  type: string;
+  type: string | Uint8Array;
   w: number;
   h: number;
   bytes: Uint8Array;
@@ -6692,7 +6732,12 @@ export class PhotoCachedSize extends TypePhotoSize {
   }
 
   constructor(
-    params: { type: string; w: number; h: number; bytes: Uint8Array },
+    params: {
+      type: string | Uint8Array;
+      w: number;
+      h: number;
+      bytes: Uint8Array;
+    },
   ) {
     super();
     this.type = params.type;
@@ -6703,7 +6748,7 @@ export class PhotoCachedSize extends TypePhotoSize {
 }
 
 export class PhotoStrippedSize extends TypePhotoSize {
-  type: string;
+  type: string | Uint8Array;
   bytes: Uint8Array;
 
   protected get [id]() {
@@ -6717,7 +6762,7 @@ export class PhotoStrippedSize extends TypePhotoSize {
     ];
   }
 
-  constructor(params: { type: string; bytes: Uint8Array }) {
+  constructor(params: { type: string | Uint8Array; bytes: Uint8Array }) {
     super();
     this.type = params.type;
     this.bytes = params.bytes;
@@ -6725,7 +6770,7 @@ export class PhotoStrippedSize extends TypePhotoSize {
 }
 
 export class PhotoSizeProgressive extends TypePhotoSize {
-  type: string;
+  type: string | Uint8Array;
   w: number;
   h: number;
   sizes: Array<number>;
@@ -6744,7 +6789,12 @@ export class PhotoSizeProgressive extends TypePhotoSize {
   }
 
   constructor(
-    params: { type: string; w: number; h: number; sizes: Array<number> },
+    params: {
+      type: string | Uint8Array;
+      w: number;
+      h: number;
+      sizes: Array<number>;
+    },
   ) {
     super();
     this.type = params.type;
@@ -6755,7 +6805,7 @@ export class PhotoSizeProgressive extends TypePhotoSize {
 }
 
 export class PhotoPathSize extends TypePhotoSize {
-  type: string;
+  type: string | Uint8Array;
   bytes: Uint8Array;
 
   protected get [id]() {
@@ -6769,7 +6819,7 @@ export class PhotoPathSize extends TypePhotoSize {
     ];
   }
 
-  constructor(params: { type: string; bytes: Uint8Array }) {
+  constructor(params: { type: string | Uint8Array; bytes: Uint8Array }) {
     super();
     this.type = params.type;
     this.bytes = params.bytes;
@@ -6827,7 +6877,7 @@ export class GeoPoint extends Constructor {
 
 export class AuthSentCode extends Constructor {
   type: TypeAuthSentCodeType;
-  phoneCodeHash: string;
+  phoneCodeHash: string | Uint8Array;
   nextType?: TypeAuthCodeType;
   timeout?: number;
 
@@ -6847,7 +6897,7 @@ export class AuthSentCode extends Constructor {
   constructor(
     params: {
       type: TypeAuthSentCodeType;
-      phoneCodeHash: string;
+      phoneCodeHash: string | Uint8Array;
       nextType?: TypeAuthCodeType;
       timeout?: number;
     },
@@ -7147,7 +7197,7 @@ export class PeerSettings extends Constructor {
   inviteMembers?: true;
   requestChatBroadcast?: true;
   geoDistance?: number;
-  requestChatTitle?: string;
+  requestChatTitle?: string | Uint8Array;
   requestChatDate?: number;
 
   protected get [id]() {
@@ -7183,7 +7233,7 @@ export class PeerSettings extends Constructor {
       inviteMembers?: true;
       requestChatBroadcast?: true;
       geoDistance?: number;
-      requestChatTitle?: string;
+      requestChatTitle?: string | Uint8Array;
       requestChatDate?: number;
     },
   ) {
@@ -7210,7 +7260,7 @@ export class WallPaper extends Constructor {
   pattern?: true;
   dark?: true;
   accessHash: bigint;
-  slug: string;
+  slug: string | Uint8Array;
   document: TypeDocument;
   settings?: TypeWallPaperSettings;
 
@@ -7244,7 +7294,7 @@ export class WallPaper extends Constructor {
       pattern?: true;
       dark?: true;
       accessHash: bigint;
-      slug: string;
+      slug: string | Uint8Array;
       document: TypeDocument;
       settings?: TypeWallPaperSettings;
     },
@@ -7451,7 +7501,7 @@ export class UserFull extends Constructor {
   voiceMessagesForbidden?: true;
   translationsDisabled?: true;
   id: bigint;
-  about?: string;
+  about?: string | Uint8Array;
   settings: TypePeerSettings;
   personalPhoto?: TypePhoto;
   profilePhoto?: TypePhoto;
@@ -7462,8 +7512,8 @@ export class UserFull extends Constructor {
   commonChatsCount: number;
   folderId?: number;
   ttlPeriod?: number;
-  themeEmoticon?: string;
-  privateForwardName?: string;
+  themeEmoticon?: string | Uint8Array;
+  privateForwardName?: string | Uint8Array;
   botGroupAdminRights?: TypeChatAdminRights;
   botBroadcastAdminRights?: TypeChatAdminRights;
   premiumGifts?: Array<TypePremiumGiftOption>;
@@ -7525,7 +7575,7 @@ export class UserFull extends Constructor {
       voiceMessagesForbidden?: true;
       translationsDisabled?: true;
       id: bigint;
-      about?: string;
+      about?: string | Uint8Array;
       settings: TypePeerSettings;
       personalPhoto?: TypePhoto;
       profilePhoto?: TypePhoto;
@@ -7536,8 +7586,8 @@ export class UserFull extends Constructor {
       commonChatsCount: number;
       folderId?: number;
       ttlPeriod?: number;
-      themeEmoticon?: string;
-      privateForwardName?: string;
+      themeEmoticon?: string | Uint8Array;
+      privateForwardName?: string | Uint8Array;
       botGroupAdminRights?: TypeChatAdminRights;
       botBroadcastAdminRights?: TypeChatAdminRights;
       premiumGifts?: Array<TypePremiumGiftOption>;
@@ -8531,8 +8581,8 @@ export class UpdateUserStatus extends TypeUpdate {
 
 export class UpdateUserName extends TypeUpdate {
   userId: bigint;
-  firstName: string;
-  lastName: string;
+  firstName: string | Uint8Array;
+  lastName: string | Uint8Array;
   usernames: Array<TypeUsername>;
 
   protected get [id]() {
@@ -8551,8 +8601,8 @@ export class UpdateUserName extends TypeUpdate {
   constructor(
     params: {
       userId: bigint;
-      firstName: string;
-      lastName: string;
+      firstName: string | Uint8Array;
+      lastName: string | Uint8Array;
       usernames: Array<TypeUsername>;
     },
   ) {
@@ -8762,8 +8812,8 @@ export class UpdateNotifySettings extends TypeUpdate {
 export class UpdateServiceNotification extends TypeUpdate {
   popup?: true;
   inboxDate?: number;
-  type: string;
-  message: string;
+  type: string | Uint8Array;
+  message: string | Uint8Array;
   media: TypeMessageMedia;
   entities: Array<TypeMessageEntity>;
 
@@ -8786,8 +8836,8 @@ export class UpdateServiceNotification extends TypeUpdate {
     params: {
       popup?: true;
       inboxDate?: number;
-      type: string;
-      message: string;
+      type: string | Uint8Array;
+      message: string | Uint8Array;
       media: TypeMessageMedia;
       entities: Array<TypeMessageEntity>;
     },
@@ -8826,7 +8876,7 @@ export class UpdatePrivacy extends TypeUpdate {
 
 export class UpdateUserPhone extends TypeUpdate {
   userId: bigint;
-  phone: string;
+  phone: string | Uint8Array;
 
   protected get [id]() {
     return 0x05492a13;
@@ -8839,7 +8889,7 @@ export class UpdateUserPhone extends TypeUpdate {
     ];
   }
 
-  constructor(params: { userId: bigint; phone: string }) {
+  constructor(params: { userId: bigint; phone: string | Uint8Array }) {
     super();
     this.userId = params.userId;
     this.phone = params.phone;
@@ -9254,10 +9304,10 @@ export class UpdateSavedGifs extends TypeUpdate {
 export class UpdateBotInlineQuery extends TypeUpdate {
   queryId: bigint;
   userId: bigint;
-  query: string;
+  query: string | Uint8Array;
   geo?: TypeGeoPoint;
   peerType?: TypeInlineQueryPeerType;
-  offset: string;
+  offset: string | Uint8Array;
 
   protected get [id]() {
     return 0x496f379c;
@@ -9282,10 +9332,10 @@ export class UpdateBotInlineQuery extends TypeUpdate {
     params: {
       queryId: bigint;
       userId: bigint;
-      query: string;
+      query: string | Uint8Array;
       geo?: TypeGeoPoint;
       peerType?: TypeInlineQueryPeerType;
-      offset: string;
+      offset: string | Uint8Array;
     },
   ) {
     super();
@@ -9300,9 +9350,9 @@ export class UpdateBotInlineQuery extends TypeUpdate {
 
 export class UpdateBotInlineSend extends TypeUpdate {
   userId: bigint;
-  query: string;
+  query: string | Uint8Array;
   geo?: TypeGeoPoint;
-  id: string;
+  id: string | Uint8Array;
   msgId?: TypeInputBotInlineMessageID;
 
   protected get [id]() {
@@ -9326,9 +9376,9 @@ export class UpdateBotInlineSend extends TypeUpdate {
   constructor(
     params: {
       userId: bigint;
-      query: string;
+      query: string | Uint8Array;
       geo?: TypeGeoPoint;
-      id: string;
+      id: string | Uint8Array;
       msgId?: TypeInputBotInlineMessageID;
     },
   ) {
@@ -9373,7 +9423,7 @@ export class UpdateBotCallbackQuery extends TypeUpdate {
   msgId: number;
   chatInstance: bigint;
   data?: Uint8Array;
-  gameShortName?: string;
+  gameShortName?: string | Uint8Array;
 
   protected get [id]() {
     return 0xb9cfc48d;
@@ -9399,7 +9449,7 @@ export class UpdateBotCallbackQuery extends TypeUpdate {
       msgId: number;
       chatInstance: bigint;
       data?: Uint8Array;
-      gameShortName?: string;
+      gameShortName?: string | Uint8Array;
     },
   ) {
     super();
@@ -9444,7 +9494,7 @@ export class UpdateInlineBotCallbackQuery extends TypeUpdate {
   msgId: TypeInputBotInlineMessageID;
   chatInstance: bigint;
   data?: Uint8Array;
-  gameShortName?: string;
+  gameShortName?: string | Uint8Array;
 
   protected get [id]() {
     return 0x691e9052;
@@ -9468,7 +9518,7 @@ export class UpdateInlineBotCallbackQuery extends TypeUpdate {
       msgId: TypeInputBotInlineMessageID;
       chatInstance: bigint;
       data?: Uint8Array;
-      gameShortName?: string;
+      gameShortName?: string | Uint8Array;
     },
   ) {
     super();
@@ -9756,8 +9806,8 @@ export class UpdateBotPrecheckoutQuery extends TypeUpdate {
   userId: bigint;
   payload: Uint8Array;
   info?: TypePaymentRequestedInfo;
-  shippingOptionId?: string;
-  currency: string;
+  shippingOptionId?: string | Uint8Array;
+  currency: string | Uint8Array;
   totalAmount: bigint;
 
   protected get [id]() {
@@ -9786,8 +9836,8 @@ export class UpdateBotPrecheckoutQuery extends TypeUpdate {
       userId: bigint;
       payload: Uint8Array;
       info?: TypePaymentRequestedInfo;
-      shippingOptionId?: string;
-      currency: string;
+      shippingOptionId?: string | Uint8Array;
+      currency: string | Uint8Array;
       totalAmount: bigint;
     },
   ) {
@@ -9822,7 +9872,7 @@ export class UpdatePhoneCall extends TypeUpdate {
 }
 
 export class UpdateLangPackTooLong extends TypeUpdate {
-  langCode: string;
+  langCode: string | Uint8Array;
 
   protected get [id]() {
     return 0x46560264;
@@ -9834,7 +9884,7 @@ export class UpdateLangPackTooLong extends TypeUpdate {
     ];
   }
 
-  constructor(params: { langCode: string }) {
+  constructor(params: { langCode: string | Uint8Array }) {
     super();
     this.langCode = params.langCode;
   }
@@ -10860,7 +10910,7 @@ export class UpdateBotChatInviteRequester extends TypeUpdate {
   peer: TypePeer;
   date: number;
   userId: bigint;
-  about: string;
+  about: string | Uint8Array;
   invite: TypeExportedChatInvite;
   qts: number;
 
@@ -10884,7 +10934,7 @@ export class UpdateBotChatInviteRequester extends TypeUpdate {
       peer: TypePeer;
       date: number;
       userId: bigint;
-      about: string;
+      about: string | Uint8Array;
       invite: TypeExportedChatInvite;
       qts: number;
     },
@@ -11008,7 +11058,7 @@ export class UpdateTranscribedAudio extends TypeUpdate {
   peer: TypePeer;
   msgId: number;
   transcriptionId: bigint;
-  text: string;
+  text: string | Uint8Array;
 
   protected get [id]() {
     return 0x0084cd5a;
@@ -11030,7 +11080,7 @@ export class UpdateTranscribedAudio extends TypeUpdate {
       peer: TypePeer;
       msgId: number;
       transcriptionId: bigint;
-      text: string;
+      text: string | Uint8Array;
     },
   ) {
     super();
@@ -11456,7 +11506,7 @@ export class UpdateShortMessage extends TypeUpdates {
   silent?: true;
   id: number;
   userId: bigint;
-  message: string;
+  message: string | Uint8Array;
   pts: number;
   ptsCount: number;
   date: number;
@@ -11506,7 +11556,7 @@ export class UpdateShortMessage extends TypeUpdates {
       silent?: true;
       id: number;
       userId: bigint;
-      message: string;
+      message: string | Uint8Array;
       pts: number;
       ptsCount: number;
       date: number;
@@ -11544,7 +11594,7 @@ export class UpdateShortChatMessage extends TypeUpdates {
   id: number;
   fromId: bigint;
   chatId: bigint;
-  message: string;
+  message: string | Uint8Array;
   pts: number;
   ptsCount: number;
   date: number;
@@ -11596,7 +11646,7 @@ export class UpdateShortChatMessage extends TypeUpdates {
       id: number;
       fromId: bigint;
       chatId: bigint;
-      message: string;
+      message: string | Uint8Array;
       pts: number;
       ptsCount: number;
       date: number;
@@ -11931,7 +11981,7 @@ export class DcOption extends Constructor {
   static?: true;
   thisPortOnly?: true;
   id: number;
-  ipAddress: string;
+  ipAddress: string | Uint8Array;
   port: number;
   secret?: Uint8Array;
 
@@ -11963,7 +12013,7 @@ export class DcOption extends Constructor {
       static?: true;
       thisPortOnly?: true;
       id: number;
-      ipAddress: string;
+      ipAddress: string | Uint8Array;
       port: number;
       secret?: Uint8Array;
     },
@@ -11993,7 +12043,7 @@ export class Config extends Constructor {
   testMode: boolean;
   thisDc: number;
   dcOptions: Array<TypeDcOption>;
-  dcTxtDomainName: string;
+  dcTxtDomainName: string | Uint8Array;
   chatSizeMax: number;
   megagroupSizeMax: number;
   forwardedCountMax: number;
@@ -12016,20 +12066,20 @@ export class Config extends Constructor {
   callRingTimeoutMs: number;
   callConnectTimeoutMs: number;
   callPacketTimeoutMs: number;
-  meUrlPrefix: string;
-  autoupdateUrlPrefix?: string;
-  gifSearchUsername?: string;
-  venueSearchUsername?: string;
-  imgSearchUsername?: string;
-  staticMapsProvider?: string;
+  meUrlPrefix: string | Uint8Array;
+  autoupdateUrlPrefix?: string | Uint8Array;
+  gifSearchUsername?: string | Uint8Array;
+  venueSearchUsername?: string | Uint8Array;
+  imgSearchUsername?: string | Uint8Array;
+  staticMapsProvider?: string | Uint8Array;
   captionLengthMax: number;
   messageLengthMax: number;
   webfileDcId: number;
-  suggestedLangCode?: string;
+  suggestedLangCode?: string | Uint8Array;
   langPackVersion?: number;
   baseLangPackVersion?: number;
   reactionsDefault?: TypeReaction;
-  autologinToken?: string;
+  autologinToken?: string | Uint8Array;
 
   protected get [id]() {
     return 0xcc1a241e;
@@ -12099,7 +12149,7 @@ export class Config extends Constructor {
       testMode: boolean;
       thisDc: number;
       dcOptions: Array<TypeDcOption>;
-      dcTxtDomainName: string;
+      dcTxtDomainName: string | Uint8Array;
       chatSizeMax: number;
       megagroupSizeMax: number;
       forwardedCountMax: number;
@@ -12122,20 +12172,20 @@ export class Config extends Constructor {
       callRingTimeoutMs: number;
       callConnectTimeoutMs: number;
       callPacketTimeoutMs: number;
-      meUrlPrefix: string;
-      autoupdateUrlPrefix?: string;
-      gifSearchUsername?: string;
-      venueSearchUsername?: string;
-      imgSearchUsername?: string;
-      staticMapsProvider?: string;
+      meUrlPrefix: string | Uint8Array;
+      autoupdateUrlPrefix?: string | Uint8Array;
+      gifSearchUsername?: string | Uint8Array;
+      venueSearchUsername?: string | Uint8Array;
+      imgSearchUsername?: string | Uint8Array;
+      staticMapsProvider?: string | Uint8Array;
       captionLengthMax: number;
       messageLengthMax: number;
       webfileDcId: number;
-      suggestedLangCode?: string;
+      suggestedLangCode?: string | Uint8Array;
       langPackVersion?: number;
       baseLangPackVersion?: number;
       reactionsDefault?: TypeReaction;
-      autologinToken?: string;
+      autologinToken?: string | Uint8Array;
     },
   ) {
     super();
@@ -12190,7 +12240,7 @@ export class Config extends Constructor {
 }
 
 export class NearestDc extends Constructor {
-  country: string;
+  country: string | Uint8Array;
   thisDc: number;
   nearestDc: number;
 
@@ -12206,7 +12256,9 @@ export class NearestDc extends Constructor {
     ];
   }
 
-  constructor(params: { country: string; thisDc: number; nearestDc: number }) {
+  constructor(
+    params: { country: string | Uint8Array; thisDc: number; nearestDc: number },
+  ) {
     super();
     this.country = params.country;
     this.thisDc = params.thisDc;
@@ -12217,11 +12269,11 @@ export class NearestDc extends Constructor {
 export class HelpAppUpdate extends Constructor {
   canNotSkip?: true;
   id: number;
-  version: string;
-  text: string;
+  version: string | Uint8Array;
+  text: string | Uint8Array;
   entities: Array<TypeMessageEntity>;
   document?: TypeDocument;
-  url?: string;
+  url?: string | Uint8Array;
   sticker?: TypeDocument;
 
   protected get [id]() {
@@ -12245,11 +12297,11 @@ export class HelpAppUpdate extends Constructor {
     params: {
       canNotSkip?: true;
       id: number;
-      version: string;
-      text: string;
+      version: string | Uint8Array;
+      text: string | Uint8Array;
       entities: Array<TypeMessageEntity>;
       document?: TypeDocument;
-      url?: string;
+      url?: string | Uint8Array;
       sticker?: TypeDocument;
     },
   ) {
@@ -12280,7 +12332,7 @@ export class HelpNoAppUpdate extends TypeHelpAppUpdate {
 }
 
 export class HelpInviteText extends Constructor {
-  message: string;
+  message: string | Uint8Array;
 
   protected get [id]() {
     return 0x18cb9f78;
@@ -12292,7 +12344,7 @@ export class HelpInviteText extends Constructor {
     ];
   }
 
-  constructor(params: { message: string }) {
+  constructor(params: { message: string | Uint8Array }) {
     super();
     this.message = params.message;
   }
@@ -12564,7 +12616,7 @@ export class InputEncryptedFileEmpty extends TypeInputEncryptedFile {
 export class InputEncryptedFileUploaded extends TypeInputEncryptedFile {
   id: bigint;
   parts: number;
-  md5Checksum: string;
+  md5Checksum: string | Uint8Array;
   keyFingerprint: number;
 
   protected get [id]() {
@@ -12584,7 +12636,7 @@ export class InputEncryptedFileUploaded extends TypeInputEncryptedFile {
     params: {
       id: bigint;
       parts: number;
-      md5Checksum: string;
+      md5Checksum: string | Uint8Array;
       keyFingerprint: number;
     },
   ) {
@@ -12873,7 +12925,7 @@ export class Document extends Constructor {
   accessHash: bigint;
   fileReference: Uint8Array;
   date: number;
-  mimeType: string;
+  mimeType: string | Uint8Array;
   size: bigint;
   thumbs?: Array<TypePhotoSize>;
   videoThumbs?: Array<TypeVideoSize>;
@@ -12905,7 +12957,7 @@ export class Document extends Constructor {
       accessHash: bigint;
       fileReference: Uint8Array;
       date: number;
-      mimeType: string;
+      mimeType: string | Uint8Array;
       size: bigint;
       thumbs?: Array<TypePhotoSize>;
       videoThumbs?: Array<TypeVideoSize>;
@@ -12928,7 +12980,7 @@ export class Document extends Constructor {
 }
 
 export class HelpSupport extends Constructor {
-  phoneNumber: string;
+  phoneNumber: string | Uint8Array;
   user: TypeUser;
 
   protected get [id]() {
@@ -12942,7 +12994,7 @@ export class HelpSupport extends Constructor {
     ];
   }
 
-  constructor(params: { phoneNumber: string; user: TypeUser }) {
+  constructor(params: { phoneNumber: string | Uint8Array; user: TypeUser }) {
     super();
     this.phoneNumber = params.phoneNumber;
     this.user = params.user;
@@ -13287,7 +13339,7 @@ export class SendMessageChooseStickerAction extends TypeSendMessageAction {
 }
 
 export class SendMessageEmojiInteraction extends TypeSendMessageAction {
-  emoticon: string;
+  emoticon: string | Uint8Array;
   msgId: number;
   interaction: TypeDataJSON;
 
@@ -13304,7 +13356,11 @@ export class SendMessageEmojiInteraction extends TypeSendMessageAction {
   }
 
   constructor(
-    params: { emoticon: string; msgId: number; interaction: TypeDataJSON },
+    params: {
+      emoticon: string | Uint8Array;
+      msgId: number;
+      interaction: TypeDataJSON;
+    },
   ) {
     super();
     this.emoticon = params.emoticon;
@@ -13314,7 +13370,7 @@ export class SendMessageEmojiInteraction extends TypeSendMessageAction {
 }
 
 export class SendMessageEmojiInteractionSeen extends TypeSendMessageAction {
-  emoticon: string;
+  emoticon: string | Uint8Array;
 
   protected get [id]() {
     return 0xb665902e;
@@ -13326,7 +13382,7 @@ export class SendMessageEmojiInteractionSeen extends TypeSendMessageAction {
     ];
   }
 
-  constructor(params: { emoticon: string }) {
+  constructor(params: { emoticon: string | Uint8Array }) {
     super();
     this.emoticon = params.emoticon;
   }
@@ -13973,7 +14029,7 @@ export class DocumentAttributeAnimated extends TypeDocumentAttribute {
 
 export class DocumentAttributeSticker extends TypeDocumentAttribute {
   mask?: true;
-  alt: string;
+  alt: string | Uint8Array;
   stickerset: TypeInputStickerSet;
   maskCoords?: TypeMaskCoords;
 
@@ -13993,7 +14049,7 @@ export class DocumentAttributeSticker extends TypeDocumentAttribute {
   constructor(
     params: {
       mask?: true;
-      alt: string;
+      alt: string | Uint8Array;
       stickerset: TypeInputStickerSet;
       maskCoords?: TypeMaskCoords;
     },
@@ -14048,8 +14104,8 @@ export class DocumentAttributeVideo extends TypeDocumentAttribute {
 export class DocumentAttributeAudio extends TypeDocumentAttribute {
   voice?: true;
   duration: number;
-  title?: string;
-  performer?: string;
+  title?: string | Uint8Array;
+  performer?: string | Uint8Array;
   waveform?: Uint8Array;
 
   protected get [id]() {
@@ -14070,8 +14126,8 @@ export class DocumentAttributeAudio extends TypeDocumentAttribute {
     params: {
       voice?: true;
       duration: number;
-      title?: string;
-      performer?: string;
+      title?: string | Uint8Array;
+      performer?: string | Uint8Array;
       waveform?: Uint8Array;
     },
   ) {
@@ -14085,7 +14141,7 @@ export class DocumentAttributeAudio extends TypeDocumentAttribute {
 }
 
 export class DocumentAttributeFilename extends TypeDocumentAttribute {
-  fileName: string;
+  fileName: string | Uint8Array;
 
   protected get [id]() {
     return 0x15590068;
@@ -14097,7 +14153,7 @@ export class DocumentAttributeFilename extends TypeDocumentAttribute {
     ];
   }
 
-  constructor(params: { fileName: string }) {
+  constructor(params: { fileName: string | Uint8Array }) {
     super();
     this.fileName = params.fileName;
   }
@@ -14120,7 +14176,7 @@ export class DocumentAttributeHasStickers extends TypeDocumentAttribute {
 export class DocumentAttributeCustomEmoji extends TypeDocumentAttribute {
   free?: true;
   textColor?: true;
-  alt: string;
+  alt: string | Uint8Array;
   stickerset: TypeInputStickerSet;
 
   protected get [id]() {
@@ -14140,7 +14196,7 @@ export class DocumentAttributeCustomEmoji extends TypeDocumentAttribute {
     params: {
       free?: true;
       textColor?: true;
-      alt: string;
+      alt: string | Uint8Array;
       stickerset: TypeInputStickerSet;
     },
   ) {
@@ -14189,7 +14245,7 @@ export class MessagesStickers extends Constructor {
 }
 
 export class StickerPack extends Constructor {
-  emoticon: string;
+  emoticon: string | Uint8Array;
   documents: Array<bigint>;
 
   protected get [id]() {
@@ -14203,7 +14259,9 @@ export class StickerPack extends Constructor {
     ];
   }
 
-  constructor(params: { emoticon: string; documents: Array<bigint> }) {
+  constructor(
+    params: { emoticon: string | Uint8Array; documents: Array<bigint> },
+  ) {
     super();
     this.emoticon = params.emoticon;
     this.documents = params.documents;
@@ -14311,20 +14369,20 @@ export class WebPagePending extends TypeWebPage {
 
 export class WebPage extends Constructor {
   id: bigint;
-  url: string;
-  displayUrl: string;
+  url: string | Uint8Array;
+  displayUrl: string | Uint8Array;
   hash: number;
-  type?: string;
-  siteName?: string;
-  title?: string;
-  description?: string;
+  type?: string | Uint8Array;
+  siteName?: string | Uint8Array;
+  title?: string | Uint8Array;
+  description?: string | Uint8Array;
   photo?: TypePhoto;
-  embedUrl?: string;
-  embedType?: string;
+  embedUrl?: string | Uint8Array;
+  embedType?: string | Uint8Array;
   embedWidth?: number;
   embedHeight?: number;
   duration?: number;
-  author?: string;
+  author?: string | Uint8Array;
   document?: TypeDocument;
   cachedPage?: TypePage;
   attributes?: Array<TypeWebPageAttribute>;
@@ -14363,20 +14421,20 @@ export class WebPage extends Constructor {
   constructor(
     params: {
       id: bigint;
-      url: string;
-      displayUrl: string;
+      url: string | Uint8Array;
+      displayUrl: string | Uint8Array;
       hash: number;
-      type?: string;
-      siteName?: string;
-      title?: string;
-      description?: string;
+      type?: string | Uint8Array;
+      siteName?: string | Uint8Array;
+      title?: string | Uint8Array;
+      description?: string | Uint8Array;
       photo?: TypePhoto;
-      embedUrl?: string;
-      embedType?: string;
+      embedUrl?: string | Uint8Array;
+      embedType?: string | Uint8Array;
       embedWidth?: number;
       embedHeight?: number;
       duration?: number;
-      author?: string;
+      author?: string | Uint8Array;
       document?: TypeDocument;
       cachedPage?: TypePage;
       attributes?: Array<TypeWebPageAttribute>;
@@ -14430,17 +14488,17 @@ export class Authorization extends Constructor {
   encryptedRequestsDisabled?: true;
   callRequestsDisabled?: true;
   hash: bigint;
-  deviceModel: string;
-  platform: string;
-  systemVersion: string;
+  deviceModel: string | Uint8Array;
+  platform: string | Uint8Array;
+  systemVersion: string | Uint8Array;
   apiId: number;
-  appName: string;
-  appVersion: string;
+  appName: string | Uint8Array;
+  appVersion: string | Uint8Array;
   dateCreated: number;
   dateActive: number;
-  ip: string;
-  country: string;
-  region: string;
+  ip: string | Uint8Array;
+  country: string | Uint8Array;
+  region: string | Uint8Array;
 
   protected get [id]() {
     return 0xad01d61d;
@@ -14476,17 +14534,17 @@ export class Authorization extends Constructor {
       encryptedRequestsDisabled?: true;
       callRequestsDisabled?: true;
       hash: bigint;
-      deviceModel: string;
-      platform: string;
-      systemVersion: string;
+      deviceModel: string | Uint8Array;
+      platform: string | Uint8Array;
+      systemVersion: string | Uint8Array;
       apiId: number;
-      appName: string;
-      appVersion: string;
+      appName: string | Uint8Array;
+      appVersion: string | Uint8Array;
       dateCreated: number;
       dateActive: number;
-      ip: string;
-      country: string;
-      region: string;
+      ip: string | Uint8Array;
+      country: string | Uint8Array;
+      region: string | Uint8Array;
     },
   ) {
     super();
@@ -14544,13 +14602,13 @@ export class AccountPassword extends Constructor {
   currentAlgo?: TypePasswordKdfAlgo;
   srpB?: Uint8Array;
   srpId?: bigint;
-  hint?: string;
-  emailUnconfirmedPattern?: string;
+  hint?: string | Uint8Array;
+  emailUnconfirmedPattern?: string | Uint8Array;
   newAlgo: TypePasswordKdfAlgo;
   newSecureAlgo: TypeSecurePasswordKdfAlgo;
   secureRandom: Uint8Array;
   pendingResetDate?: number;
-  loginEmailPattern?: string;
+  loginEmailPattern?: string | Uint8Array;
 
   protected get [id]() {
     return 0x957b50fb;
@@ -14586,13 +14644,13 @@ export class AccountPassword extends Constructor {
       currentAlgo?: TypePasswordKdfAlgo;
       srpB?: Uint8Array;
       srpId?: bigint;
-      hint?: string;
-      emailUnconfirmedPattern?: string;
+      hint?: string | Uint8Array;
+      emailUnconfirmedPattern?: string | Uint8Array;
       newAlgo: TypePasswordKdfAlgo;
       newSecureAlgo: TypeSecurePasswordKdfAlgo;
       secureRandom: Uint8Array;
       pendingResetDate?: number;
-      loginEmailPattern?: string;
+      loginEmailPattern?: string | Uint8Array;
     },
   ) {
     super();
@@ -14613,7 +14671,7 @@ export class AccountPassword extends Constructor {
 }
 
 export class AccountPasswordSettings extends Constructor {
-  email?: string;
+  email?: string | Uint8Array;
   secureSettings?: TypeSecureSecretSettings;
 
   protected get [id]() {
@@ -14632,7 +14690,10 @@ export class AccountPasswordSettings extends Constructor {
   }
 
   constructor(
-    params: { email?: string; secureSettings?: TypeSecureSecretSettings },
+    params: {
+      email?: string | Uint8Array;
+      secureSettings?: TypeSecureSecretSettings;
+    },
   ) {
     super();
     this.email = params.email;
@@ -14643,8 +14704,8 @@ export class AccountPasswordSettings extends Constructor {
 export class AccountPasswordInputSettings extends Constructor {
   newAlgo?: TypePasswordKdfAlgo;
   newPasswordHash?: Uint8Array;
-  hint?: string;
-  email?: string;
+  hint?: string | Uint8Array;
+  email?: string | Uint8Array;
   newSecureSettings?: TypeSecureSecretSettings;
 
   protected get [id]() {
@@ -14669,8 +14730,8 @@ export class AccountPasswordInputSettings extends Constructor {
     params: {
       newAlgo?: TypePasswordKdfAlgo;
       newPasswordHash?: Uint8Array;
-      hint?: string;
-      email?: string;
+      hint?: string | Uint8Array;
+      email?: string | Uint8Array;
       newSecureSettings?: TypeSecureSecretSettings;
     },
   ) {
@@ -14684,7 +14745,7 @@ export class AccountPasswordInputSettings extends Constructor {
 }
 
 export class AuthPasswordRecovery extends Constructor {
-  emailPattern: string;
+  emailPattern: string | Uint8Array;
 
   protected get [id]() {
     return 0x137948a5;
@@ -14696,7 +14757,7 @@ export class AuthPasswordRecovery extends Constructor {
     ];
   }
 
-  constructor(params: { emailPattern: string }) {
+  constructor(params: { emailPattern: string | Uint8Array }) {
     super();
     this.emailPattern = params.emailPattern;
   }
@@ -14725,7 +14786,7 @@ export class ChatInviteExported extends TypeExportedChatInvite {
   revoked?: true;
   permanent?: true;
   requestNeeded?: true;
-  link: string;
+  link: string | Uint8Array;
   adminId: bigint;
   date: number;
   startDate?: number;
@@ -14733,7 +14794,7 @@ export class ChatInviteExported extends TypeExportedChatInvite {
   usageLimit?: number;
   usage?: number;
   requested?: number;
-  title?: string;
+  title?: string | Uint8Array;
 
   protected get [id]() {
     return 0x0ab4a819;
@@ -14761,7 +14822,7 @@ export class ChatInviteExported extends TypeExportedChatInvite {
       revoked?: true;
       permanent?: true;
       requestNeeded?: true;
-      link: string;
+      link: string | Uint8Array;
       adminId: bigint;
       date: number;
       startDate?: number;
@@ -14769,7 +14830,7 @@ export class ChatInviteExported extends TypeExportedChatInvite {
       usageLimit?: number;
       usage?: number;
       requested?: number;
-      title?: string;
+      title?: string | Uint8Array;
     },
   ) {
     super();
@@ -14827,8 +14888,8 @@ export class ChatInvite extends Constructor {
   public?: true;
   megagroup?: true;
   requestNeeded?: true;
-  title: string;
-  about?: string;
+  title: string | Uint8Array;
+  about?: string | Uint8Array;
   photo: TypePhoto;
   participantsCount: number;
   participants?: Array<TypeUser>;
@@ -14859,8 +14920,8 @@ export class ChatInvite extends Constructor {
       public?: true;
       megagroup?: true;
       requestNeeded?: true;
-      title: string;
-      about?: string;
+      title: string | Uint8Array;
+      about?: string | Uint8Array;
       photo: TypePhoto;
       participantsCount: number;
       participants?: Array<TypeUser>;
@@ -14939,7 +15000,7 @@ export class InputStickerSetID extends TypeInputStickerSet {
 }
 
 export class InputStickerSetShortName extends TypeInputStickerSet {
-  shortName: string;
+  shortName: string | Uint8Array;
 
   protected get [id]() {
     return 0x861cc8a0;
@@ -14951,7 +15012,7 @@ export class InputStickerSetShortName extends TypeInputStickerSet {
     ];
   }
 
-  constructor(params: { shortName: string }) {
+  constructor(params: { shortName: string | Uint8Array }) {
     super();
     this.shortName = params.shortName;
   }
@@ -14972,7 +15033,7 @@ export class InputStickerSetAnimatedEmoji extends TypeInputStickerSet {
 }
 
 export class InputStickerSetDice extends TypeInputStickerSet {
-  emoticon: string;
+  emoticon: string | Uint8Array;
 
   protected get [id]() {
     return 0xe67f520e;
@@ -14984,7 +15045,7 @@ export class InputStickerSetDice extends TypeInputStickerSet {
     ];
   }
 
-  constructor(params: { emoticon: string }) {
+  constructor(params: { emoticon: string | Uint8Array }) {
     super();
     this.emoticon = params.emoticon;
   }
@@ -15071,8 +15132,8 @@ export class StickerSet extends Constructor {
   installedDate?: number;
   id: bigint;
   accessHash: bigint;
-  title: string;
-  shortName: string;
+  title: string | Uint8Array;
+  shortName: string | Uint8Array;
   thumbs?: Array<TypePhotoSize>;
   thumbDcId?: number;
   thumbVersion?: number;
@@ -15117,8 +15178,8 @@ export class StickerSet extends Constructor {
       installedDate?: number;
       id: bigint;
       accessHash: bigint;
-      title: string;
-      shortName: string;
+      title: string | Uint8Array;
+      shortName: string | Uint8Array;
       thumbs?: Array<TypePhotoSize>;
       thumbDcId?: number;
       thumbVersion?: number;
@@ -15198,8 +15259,8 @@ export class MessagesStickerSetNotModified extends TypeMessagesStickerSet {
 }
 
 export class BotCommand extends Constructor {
-  command: string;
-  description: string;
+  command: string | Uint8Array;
+  description: string | Uint8Array;
 
   protected get [id]() {
     return 0xc27ac8c7;
@@ -15212,7 +15273,9 @@ export class BotCommand extends Constructor {
     ];
   }
 
-  constructor(params: { command: string; description: string }) {
+  constructor(
+    params: { command: string | Uint8Array; description: string | Uint8Array },
+  ) {
     super();
     this.command = params.command;
     this.description = params.description;
@@ -15221,7 +15284,7 @@ export class BotCommand extends Constructor {
 
 export class BotInfo extends Constructor {
   userId?: bigint;
-  description?: string;
+  description?: string | Uint8Array;
   descriptionPhoto?: TypePhoto;
   descriptionDocument?: TypeDocument;
   commands?: Array<TypeBotCommand>;
@@ -15245,7 +15308,7 @@ export class BotInfo extends Constructor {
   constructor(
     params: {
       userId?: bigint;
-      description?: string;
+      description?: string | Uint8Array;
       descriptionPhoto?: TypePhoto;
       descriptionDocument?: TypeDocument;
       commands?: Array<TypeBotCommand>;
@@ -15263,7 +15326,7 @@ export class BotInfo extends Constructor {
 }
 
 export class KeyboardButton extends Constructor {
-  text: string;
+  text: string | Uint8Array;
 
   protected get [id]() {
     return 0xa2fa4880;
@@ -15275,15 +15338,15 @@ export class KeyboardButton extends Constructor {
     ];
   }
 
-  constructor(params: { text: string }) {
+  constructor(params: { text: string | Uint8Array }) {
     super();
     this.text = params.text;
   }
 }
 
 export class KeyboardButtonUrl extends TypeKeyboardButton {
-  text: string;
-  url: string;
+  text: string | Uint8Array;
+  url: string | Uint8Array;
 
   protected get [id]() {
     return 0x258aff05;
@@ -15296,7 +15359,7 @@ export class KeyboardButtonUrl extends TypeKeyboardButton {
     ];
   }
 
-  constructor(params: { text: string; url: string }) {
+  constructor(params: { text: string | Uint8Array; url: string | Uint8Array }) {
     super();
     this.text = params.text;
     this.url = params.url;
@@ -15305,7 +15368,7 @@ export class KeyboardButtonUrl extends TypeKeyboardButton {
 
 export class KeyboardButtonCallback extends TypeKeyboardButton {
   requiresPassword?: true;
-  text: string;
+  text: string | Uint8Array;
   data: Uint8Array;
 
   protected get [id]() {
@@ -15321,7 +15384,11 @@ export class KeyboardButtonCallback extends TypeKeyboardButton {
   }
 
   constructor(
-    params: { requiresPassword?: true; text: string; data: Uint8Array },
+    params: {
+      requiresPassword?: true;
+      text: string | Uint8Array;
+      data: Uint8Array;
+    },
   ) {
     super();
     this.requiresPassword = params.requiresPassword;
@@ -15331,7 +15398,7 @@ export class KeyboardButtonCallback extends TypeKeyboardButton {
 }
 
 export class KeyboardButtonRequestPhone extends TypeKeyboardButton {
-  text: string;
+  text: string | Uint8Array;
 
   protected get [id]() {
     return 0xb16a6c29;
@@ -15343,14 +15410,14 @@ export class KeyboardButtonRequestPhone extends TypeKeyboardButton {
     ];
   }
 
-  constructor(params: { text: string }) {
+  constructor(params: { text: string | Uint8Array }) {
     super();
     this.text = params.text;
   }
 }
 
 export class KeyboardButtonRequestGeoLocation extends TypeKeyboardButton {
-  text: string;
+  text: string | Uint8Array;
 
   protected get [id]() {
     return 0xfc796b3f;
@@ -15362,7 +15429,7 @@ export class KeyboardButtonRequestGeoLocation extends TypeKeyboardButton {
     ];
   }
 
-  constructor(params: { text: string }) {
+  constructor(params: { text: string | Uint8Array }) {
     super();
     this.text = params.text;
   }
@@ -15370,8 +15437,8 @@ export class KeyboardButtonRequestGeoLocation extends TypeKeyboardButton {
 
 export class KeyboardButtonSwitchInline extends TypeKeyboardButton {
   samePeer?: true;
-  text: string;
-  query: string;
+  text: string | Uint8Array;
+  query: string | Uint8Array;
 
   protected get [id]() {
     return 0x0568a748;
@@ -15385,7 +15452,13 @@ export class KeyboardButtonSwitchInline extends TypeKeyboardButton {
     ];
   }
 
-  constructor(params: { samePeer?: true; text: string; query: string }) {
+  constructor(
+    params: {
+      samePeer?: true;
+      text: string | Uint8Array;
+      query: string | Uint8Array;
+    },
+  ) {
     super();
     this.samePeer = params.samePeer;
     this.text = params.text;
@@ -15394,7 +15467,7 @@ export class KeyboardButtonSwitchInline extends TypeKeyboardButton {
 }
 
 export class KeyboardButtonGame extends TypeKeyboardButton {
-  text: string;
+  text: string | Uint8Array;
 
   protected get [id]() {
     return 0x50f41ccf;
@@ -15406,14 +15479,14 @@ export class KeyboardButtonGame extends TypeKeyboardButton {
     ];
   }
 
-  constructor(params: { text: string }) {
+  constructor(params: { text: string | Uint8Array }) {
     super();
     this.text = params.text;
   }
 }
 
 export class KeyboardButtonBuy extends TypeKeyboardButton {
-  text: string;
+  text: string | Uint8Array;
 
   protected get [id]() {
     return 0xafd93fbb;
@@ -15425,16 +15498,16 @@ export class KeyboardButtonBuy extends TypeKeyboardButton {
     ];
   }
 
-  constructor(params: { text: string }) {
+  constructor(params: { text: string | Uint8Array }) {
     super();
     this.text = params.text;
   }
 }
 
 export class KeyboardButtonUrlAuth extends TypeKeyboardButton {
-  text: string;
-  fwdText?: string;
-  url: string;
+  text: string | Uint8Array;
+  fwdText?: string | Uint8Array;
+  url: string | Uint8Array;
   buttonId: number;
 
   protected get [id]() {
@@ -15451,7 +15524,12 @@ export class KeyboardButtonUrlAuth extends TypeKeyboardButton {
   }
 
   constructor(
-    params: { text: string; fwdText?: string; url: string; buttonId: number },
+    params: {
+      text: string | Uint8Array;
+      fwdText?: string | Uint8Array;
+      url: string | Uint8Array;
+      buttonId: number;
+    },
   ) {
     super();
     this.text = params.text;
@@ -15463,9 +15541,9 @@ export class KeyboardButtonUrlAuth extends TypeKeyboardButton {
 
 export class InputKeyboardButtonUrlAuth extends TypeKeyboardButton {
   requestWriteAccess?: true;
-  text: string;
-  fwdText?: string;
-  url: string;
+  text: string | Uint8Array;
+  fwdText?: string | Uint8Array;
+  url: string | Uint8Array;
   bot: TypeInputUser;
 
   protected get [id]() {
@@ -15485,9 +15563,9 @@ export class InputKeyboardButtonUrlAuth extends TypeKeyboardButton {
   constructor(
     params: {
       requestWriteAccess?: true;
-      text: string;
-      fwdText?: string;
-      url: string;
+      text: string | Uint8Array;
+      fwdText?: string | Uint8Array;
+      url: string | Uint8Array;
       bot: TypeInputUser;
     },
   ) {
@@ -15502,7 +15580,7 @@ export class InputKeyboardButtonUrlAuth extends TypeKeyboardButton {
 
 export class KeyboardButtonRequestPoll extends TypeKeyboardButton {
   quiz?: boolean;
-  text: string;
+  text: string | Uint8Array;
 
   protected get [id]() {
     return 0xbbc7515d;
@@ -15515,7 +15593,7 @@ export class KeyboardButtonRequestPoll extends TypeKeyboardButton {
     ];
   }
 
-  constructor(params: { quiz?: boolean; text: string }) {
+  constructor(params: { quiz?: boolean; text: string | Uint8Array }) {
     super();
     this.quiz = params.quiz;
     this.text = params.text;
@@ -15523,7 +15601,7 @@ export class KeyboardButtonRequestPoll extends TypeKeyboardButton {
 }
 
 export class InputKeyboardButtonUserProfile extends TypeKeyboardButton {
-  text: string;
+  text: string | Uint8Array;
   userId: TypeInputUser;
 
   protected get [id]() {
@@ -15537,7 +15615,7 @@ export class InputKeyboardButtonUserProfile extends TypeKeyboardButton {
     ];
   }
 
-  constructor(params: { text: string; userId: TypeInputUser }) {
+  constructor(params: { text: string | Uint8Array; userId: TypeInputUser }) {
     super();
     this.text = params.text;
     this.userId = params.userId;
@@ -15545,7 +15623,7 @@ export class InputKeyboardButtonUserProfile extends TypeKeyboardButton {
 }
 
 export class KeyboardButtonUserProfile extends TypeKeyboardButton {
-  text: string;
+  text: string | Uint8Array;
   userId: bigint;
 
   protected get [id]() {
@@ -15559,7 +15637,7 @@ export class KeyboardButtonUserProfile extends TypeKeyboardButton {
     ];
   }
 
-  constructor(params: { text: string; userId: bigint }) {
+  constructor(params: { text: string | Uint8Array; userId: bigint }) {
     super();
     this.text = params.text;
     this.userId = params.userId;
@@ -15567,8 +15645,8 @@ export class KeyboardButtonUserProfile extends TypeKeyboardButton {
 }
 
 export class KeyboardButtonWebView extends TypeKeyboardButton {
-  text: string;
-  url: string;
+  text: string | Uint8Array;
+  url: string | Uint8Array;
 
   protected get [id]() {
     return 0x13767230;
@@ -15581,7 +15659,7 @@ export class KeyboardButtonWebView extends TypeKeyboardButton {
     ];
   }
 
-  constructor(params: { text: string; url: string }) {
+  constructor(params: { text: string | Uint8Array; url: string | Uint8Array }) {
     super();
     this.text = params.text;
     this.url = params.url;
@@ -15589,8 +15667,8 @@ export class KeyboardButtonWebView extends TypeKeyboardButton {
 }
 
 export class KeyboardButtonSimpleWebView extends TypeKeyboardButton {
-  text: string;
-  url: string;
+  text: string | Uint8Array;
+  url: string | Uint8Array;
 
   protected get [id]() {
     return 0xa0c0505c;
@@ -15603,7 +15681,7 @@ export class KeyboardButtonSimpleWebView extends TypeKeyboardButton {
     ];
   }
 
-  constructor(params: { text: string; url: string }) {
+  constructor(params: { text: string | Uint8Array; url: string | Uint8Array }) {
     super();
     this.text = params.text;
     this.url = params.url;
@@ -15611,7 +15689,7 @@ export class KeyboardButtonSimpleWebView extends TypeKeyboardButton {
 }
 
 export class KeyboardButtonRequestPeer extends TypeKeyboardButton {
-  text: string;
+  text: string | Uint8Array;
   buttonId: number;
   peerType: TypeRequestPeerType;
 
@@ -15628,7 +15706,11 @@ export class KeyboardButtonRequestPeer extends TypeKeyboardButton {
   }
 
   constructor(
-    params: { text: string; buttonId: number; peerType: TypeRequestPeerType },
+    params: {
+      text: string | Uint8Array;
+      buttonId: number;
+      peerType: TypeRequestPeerType;
+    },
   ) {
     super();
     this.text = params.text;
@@ -15678,7 +15760,7 @@ export class ReplyKeyboardHide extends TypeReplyMarkup {
 export class ReplyKeyboardForceReply extends TypeReplyMarkup {
   singleUse?: true;
   selective?: true;
-  placeholder?: string;
+  placeholder?: string | Uint8Array;
 
   protected get [id]() {
     return 0x86b40b08;
@@ -15693,7 +15775,11 @@ export class ReplyKeyboardForceReply extends TypeReplyMarkup {
   }
 
   constructor(
-    params: { singleUse?: true; selective?: true; placeholder?: string },
+    params: {
+      singleUse?: true;
+      selective?: true;
+      placeholder?: string | Uint8Array;
+    },
   ) {
     super();
     this.singleUse = params.singleUse;
@@ -15708,7 +15794,7 @@ export class ReplyKeyboardMarkup extends TypeReplyMarkup {
   selective?: true;
   persistent?: true;
   rows: Array<TypeKeyboardButtonRow>;
-  placeholder?: string;
+  placeholder?: string | Uint8Array;
 
   protected get [id]() {
     return 0x85dd99d1;
@@ -15732,7 +15818,7 @@ export class ReplyKeyboardMarkup extends TypeReplyMarkup {
       selective?: true;
       persistent?: true;
       rows: Array<TypeKeyboardButtonRow>;
-      placeholder?: string;
+      placeholder?: string | Uint8Array;
     },
   ) {
     super();
@@ -15965,7 +16051,7 @@ export class MessageEntityCode extends TypeMessageEntity {
 export class MessageEntityPre extends TypeMessageEntity {
   offset: number;
   length: number;
-  language: string;
+  language: string | Uint8Array;
 
   protected get [id]() {
     return 0x73924be0;
@@ -15979,7 +16065,9 @@ export class MessageEntityPre extends TypeMessageEntity {
     ];
   }
 
-  constructor(params: { offset: number; length: number; language: string }) {
+  constructor(
+    params: { offset: number; length: number; language: string | Uint8Array },
+  ) {
     super();
     this.offset = params.offset;
     this.length = params.length;
@@ -15990,7 +16078,7 @@ export class MessageEntityPre extends TypeMessageEntity {
 export class MessageEntityTextUrl extends TypeMessageEntity {
   offset: number;
   length: number;
-  url: string;
+  url: string | Uint8Array;
 
   protected get [id]() {
     return 0x76a6d327;
@@ -16004,7 +16092,9 @@ export class MessageEntityTextUrl extends TypeMessageEntity {
     ];
   }
 
-  constructor(params: { offset: number; length: number; url: string }) {
+  constructor(
+    params: { offset: number; length: number; url: string | Uint8Array },
+  ) {
     super();
     this.offset = params.offset;
     this.length = params.length;
@@ -16570,7 +16660,7 @@ export class ChannelParticipantSelf extends TypeChannelParticipant {
 export class ChannelParticipantCreator extends TypeChannelParticipant {
   userId: bigint;
   adminRights: TypeChatAdminRights;
-  rank?: string;
+  rank?: string | Uint8Array;
 
   protected get [id]() {
     return 0x2fe601d3;
@@ -16585,7 +16675,11 @@ export class ChannelParticipantCreator extends TypeChannelParticipant {
   }
 
   constructor(
-    params: { userId: bigint; adminRights: TypeChatAdminRights; rank?: string },
+    params: {
+      userId: bigint;
+      adminRights: TypeChatAdminRights;
+      rank?: string | Uint8Array;
+    },
   ) {
     super();
     this.userId = params.userId;
@@ -16602,7 +16696,7 @@ export class ChannelParticipantAdmin extends TypeChannelParticipant {
   promotedBy: bigint;
   date: number;
   adminRights: TypeChatAdminRights;
-  rank?: string;
+  rank?: string | Uint8Array;
 
   protected get [id]() {
     return 0x34c3bb53;
@@ -16630,7 +16724,7 @@ export class ChannelParticipantAdmin extends TypeChannelParticipant {
       promotedBy: bigint;
       date: number;
       adminRights: TypeChatAdminRights;
-      rank?: string;
+      rank?: string | Uint8Array;
     },
   ) {
     super();
@@ -16732,7 +16826,7 @@ export class ChannelParticipantsAdmins extends TypeChannelParticipantsFilter {
 }
 
 export class ChannelParticipantsKicked extends TypeChannelParticipantsFilter {
-  q: string;
+  q: string | Uint8Array;
 
   protected get [id]() {
     return 0xa3b54985;
@@ -16744,7 +16838,7 @@ export class ChannelParticipantsKicked extends TypeChannelParticipantsFilter {
     ];
   }
 
-  constructor(params: { q: string }) {
+  constructor(params: { q: string | Uint8Array }) {
     super();
     this.q = params.q;
   }
@@ -16765,7 +16859,7 @@ export class ChannelParticipantsBots extends TypeChannelParticipantsFilter {
 }
 
 export class ChannelParticipantsBanned extends TypeChannelParticipantsFilter {
-  q: string;
+  q: string | Uint8Array;
 
   protected get [id]() {
     return 0x1427a5e1;
@@ -16777,14 +16871,14 @@ export class ChannelParticipantsBanned extends TypeChannelParticipantsFilter {
     ];
   }
 
-  constructor(params: { q: string }) {
+  constructor(params: { q: string | Uint8Array }) {
     super();
     this.q = params.q;
   }
 }
 
 export class ChannelParticipantsSearch extends TypeChannelParticipantsFilter {
-  q: string;
+  q: string | Uint8Array;
 
   protected get [id]() {
     return 0x0656ac4b;
@@ -16796,14 +16890,14 @@ export class ChannelParticipantsSearch extends TypeChannelParticipantsFilter {
     ];
   }
 
-  constructor(params: { q: string }) {
+  constructor(params: { q: string | Uint8Array }) {
     super();
     this.q = params.q;
   }
 }
 
 export class ChannelParticipantsContacts extends TypeChannelParticipantsFilter {
-  q: string;
+  q: string | Uint8Array;
 
   protected get [id]() {
     return 0xbb6ae88d;
@@ -16815,14 +16909,14 @@ export class ChannelParticipantsContacts extends TypeChannelParticipantsFilter {
     ];
   }
 
-  constructor(params: { q: string }) {
+  constructor(params: { q: string | Uint8Array }) {
     super();
     this.q = params.q;
   }
 }
 
 export class ChannelParticipantsMentions extends TypeChannelParticipantsFilter {
-  q?: string;
+  q?: string | Uint8Array;
   topMsgId?: number;
 
   protected get [id]() {
@@ -16836,7 +16930,7 @@ export class ChannelParticipantsMentions extends TypeChannelParticipantsFilter {
     ];
   }
 
-  constructor(params: { q?: string; topMsgId?: number }) {
+  constructor(params: { q?: string | Uint8Array; topMsgId?: number }) {
     super();
     this.q = params.q;
     this.topMsgId = params.topMsgId;
@@ -16931,7 +17025,7 @@ export class ChannelsChannelParticipant extends Constructor {
 export class HelpTermsOfService extends Constructor {
   popup?: true;
   id: TypeDataJSON;
-  text: string;
+  text: string | Uint8Array;
   entities: Array<TypeMessageEntity>;
   minAgeConfirm?: number;
 
@@ -16953,7 +17047,7 @@ export class HelpTermsOfService extends Constructor {
     params: {
       popup?: true;
       id: TypeDataJSON;
-      text: string;
+      text: string | Uint8Array;
       entities: Array<TypeMessageEntity>;
       minAgeConfirm?: number;
     },
@@ -17004,7 +17098,7 @@ export class MessagesSavedGifs extends Constructor {
 }
 
 export class InputBotInlineMessageMediaAuto extends TypeInputBotInlineMessage {
-  message: string;
+  message: string | Uint8Array;
   entities?: Array<TypeMessageEntity>;
   replyMarkup?: TypeReplyMarkup;
 
@@ -17026,7 +17120,7 @@ export class InputBotInlineMessageMediaAuto extends TypeInputBotInlineMessage {
 
   constructor(
     params: {
-      message: string;
+      message: string | Uint8Array;
       entities?: Array<TypeMessageEntity>;
       replyMarkup?: TypeReplyMarkup;
     },
@@ -17040,7 +17134,7 @@ export class InputBotInlineMessageMediaAuto extends TypeInputBotInlineMessage {
 
 export class InputBotInlineMessageText extends TypeInputBotInlineMessage {
   noWebpage?: true;
-  message: string;
+  message: string | Uint8Array;
   entities?: Array<TypeMessageEntity>;
   replyMarkup?: TypeReplyMarkup;
 
@@ -17064,7 +17158,7 @@ export class InputBotInlineMessageText extends TypeInputBotInlineMessage {
   constructor(
     params: {
       noWebpage?: true;
-      message: string;
+      message: string | Uint8Array;
       entities?: Array<TypeMessageEntity>;
       replyMarkup?: TypeReplyMarkup;
     },
@@ -17118,11 +17212,11 @@ export class InputBotInlineMessageMediaGeo extends TypeInputBotInlineMessage {
 
 export class InputBotInlineMessageMediaVenue extends TypeInputBotInlineMessage {
   geoPoint: TypeInputGeoPoint;
-  title: string;
-  address: string;
-  provider: string;
-  venueId: string;
-  venueType: string;
+  title: string | Uint8Array;
+  address: string | Uint8Array;
+  provider: string | Uint8Array;
+  venueId: string | Uint8Array;
+  venueType: string | Uint8Array;
   replyMarkup?: TypeReplyMarkup;
 
   protected get [id]() {
@@ -17144,11 +17238,11 @@ export class InputBotInlineMessageMediaVenue extends TypeInputBotInlineMessage {
   constructor(
     params: {
       geoPoint: TypeInputGeoPoint;
-      title: string;
-      address: string;
-      provider: string;
-      venueId: string;
-      venueType: string;
+      title: string | Uint8Array;
+      address: string | Uint8Array;
+      provider: string | Uint8Array;
+      venueId: string | Uint8Array;
+      venueType: string | Uint8Array;
       replyMarkup?: TypeReplyMarkup;
     },
   ) {
@@ -17165,10 +17259,10 @@ export class InputBotInlineMessageMediaVenue extends TypeInputBotInlineMessage {
 
 export class InputBotInlineMessageMediaContact
   extends TypeInputBotInlineMessage {
-  phoneNumber: string;
-  firstName: string;
-  lastName: string;
-  vcard: string;
+  phoneNumber: string | Uint8Array;
+  firstName: string | Uint8Array;
+  lastName: string | Uint8Array;
+  vcard: string | Uint8Array;
   replyMarkup?: TypeReplyMarkup;
 
   protected get [id]() {
@@ -17187,10 +17281,10 @@ export class InputBotInlineMessageMediaContact
 
   constructor(
     params: {
-      phoneNumber: string;
-      firstName: string;
-      lastName: string;
-      vcard: string;
+      phoneNumber: string | Uint8Array;
+      firstName: string | Uint8Array;
+      lastName: string | Uint8Array;
+      vcard: string | Uint8Array;
       replyMarkup?: TypeReplyMarkup;
     },
   ) {
@@ -17224,12 +17318,12 @@ export class InputBotInlineMessageGame extends TypeInputBotInlineMessage {
 
 export class InputBotInlineMessageMediaInvoice
   extends TypeInputBotInlineMessage {
-  title: string;
-  description: string;
+  title: string | Uint8Array;
+  description: string | Uint8Array;
   photo?: TypeInputWebDocument;
   invoice: TypeInvoice;
   payload: Uint8Array;
-  provider: string;
+  provider: string | Uint8Array;
   providerData: TypeDataJSON;
   replyMarkup?: TypeReplyMarkup;
 
@@ -17252,12 +17346,12 @@ export class InputBotInlineMessageMediaInvoice
 
   constructor(
     params: {
-      title: string;
-      description: string;
+      title: string | Uint8Array;
+      description: string | Uint8Array;
       photo?: TypeInputWebDocument;
       invoice: TypeInvoice;
       payload: Uint8Array;
-      provider: string;
+      provider: string | Uint8Array;
       providerData: TypeDataJSON;
       replyMarkup?: TypeReplyMarkup;
     },
@@ -17275,11 +17369,11 @@ export class InputBotInlineMessageMediaInvoice
 }
 
 export class InputBotInlineResult extends Constructor {
-  id: string;
-  type: string;
-  title?: string;
-  description?: string;
-  url?: string;
+  id: string | Uint8Array;
+  type: string | Uint8Array;
+  title?: string | Uint8Array;
+  description?: string | Uint8Array;
+  url?: string | Uint8Array;
   thumb?: TypeInputWebDocument;
   content?: TypeInputWebDocument;
   sendMessage: TypeInputBotInlineMessage;
@@ -17303,11 +17397,11 @@ export class InputBotInlineResult extends Constructor {
 
   constructor(
     params: {
-      id: string;
-      type: string;
-      title?: string;
-      description?: string;
-      url?: string;
+      id: string | Uint8Array;
+      type: string | Uint8Array;
+      title?: string | Uint8Array;
+      description?: string | Uint8Array;
+      url?: string | Uint8Array;
       thumb?: TypeInputWebDocument;
       content?: TypeInputWebDocument;
       sendMessage: TypeInputBotInlineMessage;
@@ -17326,8 +17420,8 @@ export class InputBotInlineResult extends Constructor {
 }
 
 export class InputBotInlineResultPhoto extends TypeInputBotInlineResult {
-  id: string;
-  type: string;
+  id: string | Uint8Array;
+  type: string | Uint8Array;
   photo: TypeInputPhoto;
   sendMessage: TypeInputBotInlineMessage;
 
@@ -17346,8 +17440,8 @@ export class InputBotInlineResultPhoto extends TypeInputBotInlineResult {
 
   constructor(
     params: {
-      id: string;
-      type: string;
+      id: string | Uint8Array;
+      type: string | Uint8Array;
       photo: TypeInputPhoto;
       sendMessage: TypeInputBotInlineMessage;
     },
@@ -17361,10 +17455,10 @@ export class InputBotInlineResultPhoto extends TypeInputBotInlineResult {
 }
 
 export class InputBotInlineResultDocument extends TypeInputBotInlineResult {
-  id: string;
-  type: string;
-  title?: string;
-  description?: string;
+  id: string | Uint8Array;
+  type: string | Uint8Array;
+  title?: string | Uint8Array;
+  description?: string | Uint8Array;
   document: TypeInputDocument;
   sendMessage: TypeInputBotInlineMessage;
 
@@ -17385,10 +17479,10 @@ export class InputBotInlineResultDocument extends TypeInputBotInlineResult {
 
   constructor(
     params: {
-      id: string;
-      type: string;
-      title?: string;
-      description?: string;
+      id: string | Uint8Array;
+      type: string | Uint8Array;
+      title?: string | Uint8Array;
+      description?: string | Uint8Array;
       document: TypeInputDocument;
       sendMessage: TypeInputBotInlineMessage;
     },
@@ -17404,8 +17498,8 @@ export class InputBotInlineResultDocument extends TypeInputBotInlineResult {
 }
 
 export class InputBotInlineResultGame extends TypeInputBotInlineResult {
-  id: string;
-  shortName: string;
+  id: string | Uint8Array;
+  shortName: string | Uint8Array;
   sendMessage: TypeInputBotInlineMessage;
 
   protected get [id]() {
@@ -17422,8 +17516,8 @@ export class InputBotInlineResultGame extends TypeInputBotInlineResult {
 
   constructor(
     params: {
-      id: string;
-      shortName: string;
+      id: string | Uint8Array;
+      shortName: string | Uint8Array;
       sendMessage: TypeInputBotInlineMessage;
     },
   ) {
@@ -17435,7 +17529,7 @@ export class InputBotInlineResultGame extends TypeInputBotInlineResult {
 }
 
 export class BotInlineMessageMediaAuto extends TypeBotInlineMessage {
-  message: string;
+  message: string | Uint8Array;
   entities?: Array<TypeMessageEntity>;
   replyMarkup?: TypeReplyMarkup;
 
@@ -17457,7 +17551,7 @@ export class BotInlineMessageMediaAuto extends TypeBotInlineMessage {
 
   constructor(
     params: {
-      message: string;
+      message: string | Uint8Array;
       entities?: Array<TypeMessageEntity>;
       replyMarkup?: TypeReplyMarkup;
     },
@@ -17471,7 +17565,7 @@ export class BotInlineMessageMediaAuto extends TypeBotInlineMessage {
 
 export class BotInlineMessageText extends TypeBotInlineMessage {
   noWebpage?: true;
-  message: string;
+  message: string | Uint8Array;
   entities?: Array<TypeMessageEntity>;
   replyMarkup?: TypeReplyMarkup;
 
@@ -17495,7 +17589,7 @@ export class BotInlineMessageText extends TypeBotInlineMessage {
   constructor(
     params: {
       noWebpage?: true;
-      message: string;
+      message: string | Uint8Array;
       entities?: Array<TypeMessageEntity>;
       replyMarkup?: TypeReplyMarkup;
     },
@@ -17549,11 +17643,11 @@ export class BotInlineMessageMediaGeo extends TypeBotInlineMessage {
 
 export class BotInlineMessageMediaVenue extends TypeBotInlineMessage {
   geo: TypeGeoPoint;
-  title: string;
-  address: string;
-  provider: string;
-  venueId: string;
-  venueType: string;
+  title: string | Uint8Array;
+  address: string | Uint8Array;
+  provider: string | Uint8Array;
+  venueId: string | Uint8Array;
+  venueType: string | Uint8Array;
   replyMarkup?: TypeReplyMarkup;
 
   protected get [id]() {
@@ -17575,11 +17669,11 @@ export class BotInlineMessageMediaVenue extends TypeBotInlineMessage {
   constructor(
     params: {
       geo: TypeGeoPoint;
-      title: string;
-      address: string;
-      provider: string;
-      venueId: string;
-      venueType: string;
+      title: string | Uint8Array;
+      address: string | Uint8Array;
+      provider: string | Uint8Array;
+      venueId: string | Uint8Array;
+      venueType: string | Uint8Array;
       replyMarkup?: TypeReplyMarkup;
     },
   ) {
@@ -17595,10 +17689,10 @@ export class BotInlineMessageMediaVenue extends TypeBotInlineMessage {
 }
 
 export class BotInlineMessageMediaContact extends TypeBotInlineMessage {
-  phoneNumber: string;
-  firstName: string;
-  lastName: string;
-  vcard: string;
+  phoneNumber: string | Uint8Array;
+  firstName: string | Uint8Array;
+  lastName: string | Uint8Array;
+  vcard: string | Uint8Array;
   replyMarkup?: TypeReplyMarkup;
 
   protected get [id]() {
@@ -17617,10 +17711,10 @@ export class BotInlineMessageMediaContact extends TypeBotInlineMessage {
 
   constructor(
     params: {
-      phoneNumber: string;
-      firstName: string;
-      lastName: string;
-      vcard: string;
+      phoneNumber: string | Uint8Array;
+      firstName: string | Uint8Array;
+      lastName: string | Uint8Array;
+      vcard: string | Uint8Array;
       replyMarkup?: TypeReplyMarkup;
     },
   ) {
@@ -17636,10 +17730,10 @@ export class BotInlineMessageMediaContact extends TypeBotInlineMessage {
 export class BotInlineMessageMediaInvoice extends TypeBotInlineMessage {
   shippingAddressRequested?: true;
   test?: true;
-  title: string;
-  description: string;
+  title: string | Uint8Array;
+  description: string | Uint8Array;
   photo?: TypeWebDocument;
-  currency: string;
+  currency: string | Uint8Array;
   totalAmount: bigint;
   replyMarkup?: TypeReplyMarkup;
 
@@ -17664,10 +17758,10 @@ export class BotInlineMessageMediaInvoice extends TypeBotInlineMessage {
     params: {
       shippingAddressRequested?: true;
       test?: true;
-      title: string;
-      description: string;
+      title: string | Uint8Array;
+      description: string | Uint8Array;
       photo?: TypeWebDocument;
-      currency: string;
+      currency: string | Uint8Array;
       totalAmount: bigint;
       replyMarkup?: TypeReplyMarkup;
     },
@@ -17685,11 +17779,11 @@ export class BotInlineMessageMediaInvoice extends TypeBotInlineMessage {
 }
 
 export class BotInlineResult extends Constructor {
-  id: string;
-  type: string;
-  title?: string;
-  description?: string;
-  url?: string;
+  id: string | Uint8Array;
+  type: string | Uint8Array;
+  title?: string | Uint8Array;
+  description?: string | Uint8Array;
+  url?: string | Uint8Array;
   thumb?: TypeWebDocument;
   content?: TypeWebDocument;
   sendMessage: TypeBotInlineMessage;
@@ -17713,11 +17807,11 @@ export class BotInlineResult extends Constructor {
 
   constructor(
     params: {
-      id: string;
-      type: string;
-      title?: string;
-      description?: string;
-      url?: string;
+      id: string | Uint8Array;
+      type: string | Uint8Array;
+      title?: string | Uint8Array;
+      description?: string | Uint8Array;
+      url?: string | Uint8Array;
       thumb?: TypeWebDocument;
       content?: TypeWebDocument;
       sendMessage: TypeBotInlineMessage;
@@ -17736,12 +17830,12 @@ export class BotInlineResult extends Constructor {
 }
 
 export class BotInlineMediaResult extends TypeBotInlineResult {
-  id: string;
-  type: string;
+  id: string | Uint8Array;
+  type: string | Uint8Array;
   photo?: TypePhoto;
   document?: TypeDocument;
-  title?: string;
-  description?: string;
+  title?: string | Uint8Array;
+  description?: string | Uint8Array;
   sendMessage: TypeBotInlineMessage;
 
   protected get [id]() {
@@ -17762,12 +17856,12 @@ export class BotInlineMediaResult extends TypeBotInlineResult {
 
   constructor(
     params: {
-      id: string;
-      type: string;
+      id: string | Uint8Array;
+      type: string | Uint8Array;
       photo?: TypePhoto;
       document?: TypeDocument;
-      title?: string;
-      description?: string;
+      title?: string | Uint8Array;
+      description?: string | Uint8Array;
       sendMessage: TypeBotInlineMessage;
     },
   ) {
@@ -17785,7 +17879,7 @@ export class BotInlineMediaResult extends TypeBotInlineResult {
 export class MessagesBotResults extends Constructor {
   gallery?: true;
   queryId: bigint;
-  nextOffset?: string;
+  nextOffset?: string | Uint8Array;
   switchPm?: TypeInlineBotSwitchPM;
   switchWebview?: TypeInlineBotWebView;
   results: Array<TypeBotInlineResult>;
@@ -17821,7 +17915,7 @@ export class MessagesBotResults extends Constructor {
     params: {
       gallery?: true;
       queryId: bigint;
-      nextOffset?: string;
+      nextOffset?: string | Uint8Array;
       switchPm?: TypeInlineBotSwitchPM;
       switchWebview?: TypeInlineBotWebView;
       results: Array<TypeBotInlineResult>;
@@ -17842,8 +17936,8 @@ export class MessagesBotResults extends Constructor {
 }
 
 export class ExportedMessageLink extends Constructor {
-  link: string;
-  html: string;
+  link: string | Uint8Array;
+  html: string | Uint8Array;
 
   protected get [id]() {
     return 0x5dab1af4;
@@ -17856,7 +17950,9 @@ export class ExportedMessageLink extends Constructor {
     ];
   }
 
-  constructor(params: { link: string; html: string }) {
+  constructor(
+    params: { link: string | Uint8Array; html: string | Uint8Array },
+  ) {
     super();
     this.link = params.link;
     this.html = params.html;
@@ -17866,13 +17962,13 @@ export class ExportedMessageLink extends Constructor {
 export class MessageFwdHeader extends Constructor {
   imported?: true;
   fromId?: TypePeer;
-  fromName?: string;
+  fromName?: string | Uint8Array;
   date: number;
   channelPost?: number;
-  postAuthor?: string;
+  postAuthor?: string | Uint8Array;
   savedFromPeer?: TypePeer;
   savedFromMsgId?: number;
-  psaType?: string;
+  psaType?: string | Uint8Array;
 
   protected get [id]() {
     return 0x5f777dce;
@@ -17896,13 +17992,13 @@ export class MessageFwdHeader extends Constructor {
     params: {
       imported?: true;
       fromId?: TypePeer;
-      fromName?: string;
+      fromName?: string | Uint8Array;
       date: number;
       channelPost?: number;
-      postAuthor?: string;
+      postAuthor?: string | Uint8Array;
       savedFromPeer?: TypePeer;
       savedFromMsgId?: number;
-      psaType?: string;
+      psaType?: string | Uint8Array;
     },
   ) {
     super();
@@ -18046,7 +18142,7 @@ export class AuthSentCodeTypeCall extends TypeAuthSentCodeType {
 }
 
 export class AuthSentCodeTypeFlashCall extends TypeAuthSentCodeType {
-  pattern: string;
+  pattern: string | Uint8Array;
 
   protected get [id]() {
     return 0xab03c6d9;
@@ -18058,14 +18154,14 @@ export class AuthSentCodeTypeFlashCall extends TypeAuthSentCodeType {
     ];
   }
 
-  constructor(params: { pattern: string }) {
+  constructor(params: { pattern: string | Uint8Array }) {
     super();
     this.pattern = params.pattern;
   }
 }
 
 export class AuthSentCodeTypeMissedCall extends TypeAuthSentCodeType {
-  prefix: string;
+  prefix: string | Uint8Array;
   length: number;
 
   protected get [id]() {
@@ -18079,7 +18175,7 @@ export class AuthSentCodeTypeMissedCall extends TypeAuthSentCodeType {
     ];
   }
 
-  constructor(params: { prefix: string; length: number }) {
+  constructor(params: { prefix: string | Uint8Array; length: number }) {
     super();
     this.prefix = params.prefix;
     this.length = params.length;
@@ -18089,7 +18185,7 @@ export class AuthSentCodeTypeMissedCall extends TypeAuthSentCodeType {
 export class AuthSentCodeTypeEmailCode extends TypeAuthSentCodeType {
   appleSigninAllowed?: true;
   googleSigninAllowed?: true;
-  emailPattern: string;
+  emailPattern: string | Uint8Array;
   length: number;
   nextPhoneLoginDate?: number;
 
@@ -18111,7 +18207,7 @@ export class AuthSentCodeTypeEmailCode extends TypeAuthSentCodeType {
     params: {
       appleSigninAllowed?: true;
       googleSigninAllowed?: true;
-      emailPattern: string;
+      emailPattern: string | Uint8Array;
       length: number;
       nextPhoneLoginDate?: number;
     },
@@ -18150,7 +18246,7 @@ export class AuthSentCodeTypeSetUpEmailRequired extends TypeAuthSentCodeType {
 }
 
 export class AuthSentCodeTypeFragmentSms extends TypeAuthSentCodeType {
-  url: string;
+  url: string | Uint8Array;
   length: number;
 
   protected get [id]() {
@@ -18164,7 +18260,7 @@ export class AuthSentCodeTypeFragmentSms extends TypeAuthSentCodeType {
     ];
   }
 
-  constructor(params: { url: string; length: number }) {
+  constructor(params: { url: string | Uint8Array; length: number }) {
     super();
     this.url = params.url;
     this.length = params.length;
@@ -18173,7 +18269,7 @@ export class AuthSentCodeTypeFragmentSms extends TypeAuthSentCodeType {
 
 export class AuthSentCodeTypeFirebaseSms extends TypeAuthSentCodeType {
   nonce?: Uint8Array;
-  receipt?: string;
+  receipt?: string | Uint8Array;
   pushTimeout?: number;
   length: number;
 
@@ -18193,7 +18289,7 @@ export class AuthSentCodeTypeFirebaseSms extends TypeAuthSentCodeType {
   constructor(
     params: {
       nonce?: Uint8Array;
-      receipt?: string;
+      receipt?: string | Uint8Array;
       pushTimeout?: number;
       length: number;
     },
@@ -18210,8 +18306,8 @@ export class MessagesBotCallbackAnswer extends Constructor {
   alert?: true;
   hasUrl?: true;
   nativeUi?: true;
-  message?: string;
-  url?: string;
+  message?: string | Uint8Array;
+  url?: string | Uint8Array;
   cacheTime: number;
 
   protected get [id]() {
@@ -18234,8 +18330,8 @@ export class MessagesBotCallbackAnswer extends Constructor {
       alert?: true;
       hasUrl?: true;
       nativeUi?: true;
-      message?: string;
-      url?: string;
+      message?: string | Uint8Array;
+      url?: string | Uint8Array;
       cacheTime: number;
     },
   ) {
@@ -18324,8 +18420,8 @@ export class InputBotInlineMessageID64 extends TypeInputBotInlineMessageID {
 }
 
 export class InlineBotSwitchPM extends Constructor {
-  text: string;
-  startParam: string;
+  text: string | Uint8Array;
+  startParam: string | Uint8Array;
 
   protected get [id]() {
     return 0x3c20629f;
@@ -18338,7 +18434,9 @@ export class InlineBotSwitchPM extends Constructor {
     ];
   }
 
-  constructor(params: { text: string; startParam: string }) {
+  constructor(
+    params: { text: string | Uint8Array; startParam: string | Uint8Array },
+  ) {
     super();
     this.text = params.text;
     this.startParam = params.startParam;
@@ -18634,7 +18732,7 @@ export class DraftMessageEmpty extends TypeDraftMessage {
 export class DraftMessage extends Constructor {
   noWebpage?: true;
   replyToMsgId?: number;
-  message: string;
+  message: string | Uint8Array;
   entities?: Array<TypeMessageEntity>;
   date: number;
 
@@ -18660,7 +18758,7 @@ export class DraftMessage extends Constructor {
     params: {
       noWebpage?: true;
       replyToMsgId?: number;
-      message: string;
+      message: string | Uint8Array;
       entities?: Array<TypeMessageEntity>;
       date: number;
     },
@@ -19007,9 +19105,9 @@ export class InputStickeredMediaDocument extends TypeInputStickeredMedia {
 export class Game extends Constructor {
   id: bigint;
   accessHash: bigint;
-  shortName: string;
-  title: string;
-  description: string;
+  shortName: string | Uint8Array;
+  title: string | Uint8Array;
+  description: string | Uint8Array;
   photo: TypePhoto;
   document?: TypeDocument;
 
@@ -19033,9 +19131,9 @@ export class Game extends Constructor {
     params: {
       id: bigint;
       accessHash: bigint;
-      shortName: string;
-      title: string;
-      description: string;
+      shortName: string | Uint8Array;
+      title: string | Uint8Array;
+      description: string | Uint8Array;
       photo: TypePhoto;
       document?: TypeDocument;
     },
@@ -19075,7 +19173,7 @@ export class InputGameID extends TypeInputGame {
 
 export class InputGameShortName extends TypeInputGame {
   botId: TypeInputUser;
-  shortName: string;
+  shortName: string | Uint8Array;
 
   protected get [id]() {
     return 0xc331e80a;
@@ -19088,7 +19186,9 @@ export class InputGameShortName extends TypeInputGame {
     ];
   }
 
-  constructor(params: { botId: TypeInputUser; shortName: string }) {
+  constructor(
+    params: { botId: TypeInputUser; shortName: string | Uint8Array },
+  ) {
     super();
     this.botId = params.botId;
     this.shortName = params.shortName;
@@ -19159,7 +19259,7 @@ export class TextEmpty extends TypeRichText {
 }
 
 export class TextPlain extends TypeRichText {
-  text: string;
+  text: string | Uint8Array;
 
   protected get [id]() {
     return 0x744694e0;
@@ -19171,7 +19271,7 @@ export class TextPlain extends TypeRichText {
     ];
   }
 
-  constructor(params: { text: string }) {
+  constructor(params: { text: string | Uint8Array }) {
     super();
     this.text = params.text;
   }
@@ -19274,7 +19374,7 @@ export class TextFixed extends TypeRichText {
 
 export class TextUrl extends TypeRichText {
   text: TypeRichText;
-  url: string;
+  url: string | Uint8Array;
   webpageId: bigint;
 
   protected get [id]() {
@@ -19289,7 +19389,9 @@ export class TextUrl extends TypeRichText {
     ];
   }
 
-  constructor(params: { text: TypeRichText; url: string; webpageId: bigint }) {
+  constructor(
+    params: { text: TypeRichText; url: string | Uint8Array; webpageId: bigint },
+  ) {
     super();
     this.text = params.text;
     this.url = params.url;
@@ -19299,7 +19401,7 @@ export class TextUrl extends TypeRichText {
 
 export class TextEmail extends TypeRichText {
   text: TypeRichText;
-  email: string;
+  email: string | Uint8Array;
 
   protected get [id]() {
     return 0xde5a0dd6;
@@ -19312,7 +19414,7 @@ export class TextEmail extends TypeRichText {
     ];
   }
 
-  constructor(params: { text: TypeRichText; email: string }) {
+  constructor(params: { text: TypeRichText; email: string | Uint8Array }) {
     super();
     this.text = params.text;
     this.email = params.email;
@@ -19397,7 +19499,7 @@ export class TextMarked extends TypeRichText {
 
 export class TextPhone extends TypeRichText {
   text: TypeRichText;
-  phone: string;
+  phone: string | Uint8Array;
 
   protected get [id]() {
     return 0x1ccb966a;
@@ -19410,7 +19512,7 @@ export class TextPhone extends TypeRichText {
     ];
   }
 
-  constructor(params: { text: TypeRichText; phone: string }) {
+  constructor(params: { text: TypeRichText; phone: string | Uint8Array }) {
     super();
     this.text = params.text;
     this.phone = params.phone;
@@ -19444,7 +19546,7 @@ export class TextImage extends TypeRichText {
 
 export class TextAnchor extends TypeRichText {
   text: TypeRichText;
-  name: string;
+  name: string | Uint8Array;
 
   protected get [id]() {
     return 0x35553762;
@@ -19457,7 +19559,7 @@ export class TextAnchor extends TypeRichText {
     ];
   }
 
-  constructor(params: { text: TypeRichText; name: string }) {
+  constructor(params: { text: TypeRichText; name: string | Uint8Array }) {
     super();
     this.text = params.text;
     this.name = params.name;
@@ -19597,7 +19699,7 @@ export class PageBlockParagraph extends TypePageBlock {
 
 export class PageBlockPreformatted extends TypePageBlock {
   text: TypeRichText;
-  language: string;
+  language: string | Uint8Array;
 
   protected get [id]() {
     return 0xc070d93e;
@@ -19610,7 +19712,7 @@ export class PageBlockPreformatted extends TypePageBlock {
     ];
   }
 
-  constructor(params: { text: TypeRichText; language: string }) {
+  constructor(params: { text: TypeRichText; language: string | Uint8Array }) {
     super();
     this.text = params.text;
     this.language = params.language;
@@ -19651,7 +19753,7 @@ export class PageBlockDivider extends TypePageBlock {
 }
 
 export class PageBlockAnchor extends TypePageBlock {
-  name: string;
+  name: string | Uint8Array;
 
   protected get [id]() {
     return 0xce0d37b0;
@@ -19663,7 +19765,7 @@ export class PageBlockAnchor extends TypePageBlock {
     ];
   }
 
-  constructor(params: { name: string }) {
+  constructor(params: { name: string | Uint8Array }) {
     super();
     this.name = params.name;
   }
@@ -19735,7 +19837,7 @@ export class PageBlockPullquote extends TypePageBlock {
 export class PageBlockPhoto extends TypePageBlock {
   photoId: bigint;
   caption: TypePageCaption;
-  url?: string;
+  url?: string | Uint8Array;
   webpageId?: bigint;
 
   protected get [id]() {
@@ -19755,7 +19857,7 @@ export class PageBlockPhoto extends TypePageBlock {
     params: {
       photoId: bigint;
       caption: TypePageCaption;
-      url?: string;
+      url?: string | Uint8Array;
       webpageId?: bigint;
     },
   ) {
@@ -19824,8 +19926,8 @@ export class PageBlockCover extends TypePageBlock {
 export class PageBlockEmbed extends TypePageBlock {
   fullWidth?: true;
   allowScrolling?: true;
-  url?: string;
-  html?: string;
+  url?: string | Uint8Array;
+  html?: string | Uint8Array;
   posterPhotoId?: bigint;
   w?: number;
   h?: number;
@@ -19852,8 +19954,8 @@ export class PageBlockEmbed extends TypePageBlock {
     params: {
       fullWidth?: true;
       allowScrolling?: true;
-      url?: string;
-      html?: string;
+      url?: string | Uint8Array;
+      html?: string | Uint8Array;
       posterPhotoId?: bigint;
       w?: number;
       h?: number;
@@ -19873,10 +19975,10 @@ export class PageBlockEmbed extends TypePageBlock {
 }
 
 export class PageBlockEmbedPost extends TypePageBlock {
-  url: string;
+  url: string | Uint8Array;
   webpageId: bigint;
   authorPhotoId: bigint;
-  author: string;
+  author: string | Uint8Array;
   date: number;
   blocks: Array<TypePageBlock>;
   caption: TypePageCaption;
@@ -19899,10 +20001,10 @@ export class PageBlockEmbedPost extends TypePageBlock {
 
   constructor(
     params: {
-      url: string;
+      url: string | Uint8Array;
       webpageId: bigint;
       authorPhotoId: bigint;
-      author: string;
+      author: string | Uint8Array;
       date: number;
       blocks: Array<TypePageBlock>;
       caption: TypePageCaption;
@@ -20229,7 +20331,7 @@ export class PhoneCallDiscardReasonBusy extends TypePhoneCallDiscardReason {
 }
 
 export class DataJSON extends Constructor {
-  data: string;
+  data: string | Uint8Array;
 
   protected get [id]() {
     return 0x7d748d04;
@@ -20241,14 +20343,14 @@ export class DataJSON extends Constructor {
     ];
   }
 
-  constructor(params: { data: string }) {
+  constructor(params: { data: string | Uint8Array }) {
     super();
     this.data = params.data;
   }
 }
 
 export class LabeledPrice extends Constructor {
-  label: string;
+  label: string | Uint8Array;
   amount: bigint;
 
   protected get [id]() {
@@ -20262,7 +20364,7 @@ export class LabeledPrice extends Constructor {
     ];
   }
 
-  constructor(params: { label: string; amount: bigint }) {
+  constructor(params: { label: string | Uint8Array; amount: bigint }) {
     super();
     this.label = params.label;
     this.amount = params.amount;
@@ -20279,11 +20381,11 @@ export class Invoice extends Constructor {
   phoneToProvider?: true;
   emailToProvider?: true;
   recurring?: true;
-  currency: string;
+  currency: string | Uint8Array;
   prices: Array<TypeLabeledPrice>;
   maxTipAmount?: bigint;
   suggestedTipAmounts?: Array<bigint>;
-  recurringTermsUrl?: string;
+  recurringTermsUrl?: string | Uint8Array;
 
   protected get [id]() {
     return 0x3e85a91b;
@@ -20319,11 +20421,11 @@ export class Invoice extends Constructor {
       phoneToProvider?: true;
       emailToProvider?: true;
       recurring?: true;
-      currency: string;
+      currency: string | Uint8Array;
       prices: Array<TypeLabeledPrice>;
       maxTipAmount?: bigint;
       suggestedTipAmounts?: Array<bigint>;
-      recurringTermsUrl?: string;
+      recurringTermsUrl?: string | Uint8Array;
     },
   ) {
     super();
@@ -20345,8 +20447,8 @@ export class Invoice extends Constructor {
 }
 
 export class PaymentCharge extends Constructor {
-  id: string;
-  providerChargeId: string;
+  id: string | Uint8Array;
+  providerChargeId: string | Uint8Array;
 
   protected get [id]() {
     return 0xea02c27e;
@@ -20359,7 +20461,9 @@ export class PaymentCharge extends Constructor {
     ];
   }
 
-  constructor(params: { id: string; providerChargeId: string }) {
+  constructor(
+    params: { id: string | Uint8Array; providerChargeId: string | Uint8Array },
+  ) {
     super();
     this.id = params.id;
     this.providerChargeId = params.providerChargeId;
@@ -20367,12 +20471,12 @@ export class PaymentCharge extends Constructor {
 }
 
 export class PostAddress extends Constructor {
-  streetLine1: string;
-  streetLine2: string;
-  city: string;
-  state: string;
-  countryIso2: string;
-  postCode: string;
+  streetLine1: string | Uint8Array;
+  streetLine2: string | Uint8Array;
+  city: string | Uint8Array;
+  state: string | Uint8Array;
+  countryIso2: string | Uint8Array;
+  postCode: string | Uint8Array;
 
   protected get [id]() {
     return 0x1e8caaeb;
@@ -20391,12 +20495,12 @@ export class PostAddress extends Constructor {
 
   constructor(
     params: {
-      streetLine1: string;
-      streetLine2: string;
-      city: string;
-      state: string;
-      countryIso2: string;
-      postCode: string;
+      streetLine1: string | Uint8Array;
+      streetLine2: string | Uint8Array;
+      city: string | Uint8Array;
+      state: string | Uint8Array;
+      countryIso2: string | Uint8Array;
+      postCode: string | Uint8Array;
     },
   ) {
     super();
@@ -20410,9 +20514,9 @@ export class PostAddress extends Constructor {
 }
 
 export class PaymentRequestedInfo extends Constructor {
-  name?: string;
-  phone?: string;
-  email?: string;
+  name?: string | Uint8Array;
+  phone?: string | Uint8Array;
+  email?: string | Uint8Array;
   shippingAddress?: TypePostAddress;
 
   protected get [id]() {
@@ -20430,9 +20534,9 @@ export class PaymentRequestedInfo extends Constructor {
 
   constructor(
     params: {
-      name?: string;
-      phone?: string;
-      email?: string;
+      name?: string | Uint8Array;
+      phone?: string | Uint8Array;
+      email?: string | Uint8Array;
       shippingAddress?: TypePostAddress;
     },
   ) {
@@ -20445,8 +20549,8 @@ export class PaymentRequestedInfo extends Constructor {
 }
 
 export class PaymentSavedCredentialsCard extends TypePaymentSavedCredentials {
-  id: string;
-  title: string;
+  id: string | Uint8Array;
+  title: string | Uint8Array;
 
   protected get [id]() {
     return 0xcdc27a1f;
@@ -20459,7 +20563,7 @@ export class PaymentSavedCredentialsCard extends TypePaymentSavedCredentials {
     ];
   }
 
-  constructor(params: { id: string; title: string }) {
+  constructor(params: { id: string | Uint8Array; title: string | Uint8Array }) {
     super();
     this.id = params.id;
     this.title = params.title;
@@ -20467,10 +20571,10 @@ export class PaymentSavedCredentialsCard extends TypePaymentSavedCredentials {
 }
 
 export class WebDocument extends Constructor {
-  url: string;
+  url: string | Uint8Array;
   accessHash: bigint;
   size: number;
-  mimeType: string;
+  mimeType: string | Uint8Array;
   attributes: Array<TypeDocumentAttribute>;
 
   protected get [id]() {
@@ -20489,10 +20593,10 @@ export class WebDocument extends Constructor {
 
   constructor(
     params: {
-      url: string;
+      url: string | Uint8Array;
       accessHash: bigint;
       size: number;
-      mimeType: string;
+      mimeType: string | Uint8Array;
       attributes: Array<TypeDocumentAttribute>;
     },
   ) {
@@ -20506,9 +20610,9 @@ export class WebDocument extends Constructor {
 }
 
 export class WebDocumentNoProxy extends TypeWebDocument {
-  url: string;
+  url: string | Uint8Array;
   size: number;
-  mimeType: string;
+  mimeType: string | Uint8Array;
   attributes: Array<TypeDocumentAttribute>;
 
   protected get [id]() {
@@ -20526,9 +20630,9 @@ export class WebDocumentNoProxy extends TypeWebDocument {
 
   constructor(
     params: {
-      url: string;
+      url: string | Uint8Array;
       size: number;
-      mimeType: string;
+      mimeType: string | Uint8Array;
       attributes: Array<TypeDocumentAttribute>;
     },
   ) {
@@ -20541,9 +20645,9 @@ export class WebDocumentNoProxy extends TypeWebDocument {
 }
 
 export class InputWebDocument extends Constructor {
-  url: string;
+  url: string | Uint8Array;
   size: number;
-  mimeType: string;
+  mimeType: string | Uint8Array;
   attributes: Array<TypeDocumentAttribute>;
 
   protected get [id]() {
@@ -20561,9 +20665,9 @@ export class InputWebDocument extends Constructor {
 
   constructor(
     params: {
-      url: string;
+      url: string | Uint8Array;
       size: number;
-      mimeType: string;
+      mimeType: string | Uint8Array;
       attributes: Array<TypeDocumentAttribute>;
     },
   ) {
@@ -20576,7 +20680,7 @@ export class InputWebDocument extends Constructor {
 }
 
 export class InputWebFileLocation extends Constructor {
-  url: string;
+  url: string | Uint8Array;
   accessHash: bigint;
 
   protected get [id]() {
@@ -20590,7 +20694,7 @@ export class InputWebFileLocation extends Constructor {
     ];
   }
 
-  constructor(params: { url: string; accessHash: bigint }) {
+  constructor(params: { url: string | Uint8Array; accessHash: bigint }) {
     super();
     this.url = params.url;
     this.accessHash = params.accessHash;
@@ -20644,8 +20748,8 @@ export class InputWebFileAudioAlbumThumbLocation
   extends TypeInputWebFileLocation {
   small?: true;
   document?: TypeInputDocument;
-  title?: string;
-  performer?: string;
+  title?: string | Uint8Array;
+  performer?: string | Uint8Array;
 
   protected get [id]() {
     return 0xf46fe924;
@@ -20664,8 +20768,8 @@ export class InputWebFileAudioAlbumThumbLocation
     params: {
       small?: true;
       document?: TypeInputDocument;
-      title?: string;
-      performer?: string;
+      title?: string | Uint8Array;
+      performer?: string | Uint8Array;
     },
   ) {
     super();
@@ -20678,7 +20782,7 @@ export class InputWebFileAudioAlbumThumbLocation
 
 export class UploadWebFile extends Constructor {
   size: number;
-  mimeType: string;
+  mimeType: string | Uint8Array;
   fileType: TypeStorageFileType;
   mtime: number;
   bytes: Uint8Array;
@@ -20700,7 +20804,7 @@ export class UploadWebFile extends Constructor {
   constructor(
     params: {
       size: number;
-      mimeType: string;
+      mimeType: string | Uint8Array;
       fileType: TypeStorageFileType;
       mtime: number;
       bytes: Uint8Array;
@@ -20720,13 +20824,13 @@ export class PaymentsPaymentForm extends Constructor {
   passwordMissing?: true;
   formId: bigint;
   botId: bigint;
-  title: string;
-  description: string;
+  title: string | Uint8Array;
+  description: string | Uint8Array;
   photo?: TypeWebDocument;
   invoice: TypeInvoice;
   providerId: bigint;
-  url: string;
-  nativeProvider?: string;
+  url: string | Uint8Array;
+  nativeProvider?: string | Uint8Array;
   nativeParams?: TypeDataJSON;
   additionalMethods?: Array<TypePaymentFormMethod>;
   savedInfo?: TypePaymentRequestedInfo;
@@ -20776,13 +20880,13 @@ export class PaymentsPaymentForm extends Constructor {
       passwordMissing?: true;
       formId: bigint;
       botId: bigint;
-      title: string;
-      description: string;
+      title: string | Uint8Array;
+      description: string | Uint8Array;
       photo?: TypeWebDocument;
       invoice: TypeInvoice;
       providerId: bigint;
-      url: string;
-      nativeProvider?: string;
+      url: string | Uint8Array;
+      nativeProvider?: string | Uint8Array;
       nativeParams?: TypeDataJSON;
       additionalMethods?: Array<TypePaymentFormMethod>;
       savedInfo?: TypePaymentRequestedInfo;
@@ -20811,7 +20915,7 @@ export class PaymentsPaymentForm extends Constructor {
 }
 
 export class PaymentsValidatedRequestedInfo extends Constructor {
-  id?: string;
+  id?: string | Uint8Array;
   shippingOptions?: Array<TypeShippingOption>;
 
   protected get [id]() {
@@ -20830,7 +20934,10 @@ export class PaymentsValidatedRequestedInfo extends Constructor {
   }
 
   constructor(
-    params: { id?: string; shippingOptions?: Array<TypeShippingOption> },
+    params: {
+      id?: string | Uint8Array;
+      shippingOptions?: Array<TypeShippingOption>;
+    },
   ) {
     super();
     this.id = params.id;
@@ -20859,7 +20966,7 @@ export class PaymentsPaymentResult extends Constructor {
 
 export class PaymentsPaymentVerificationNeeded
   extends TypePaymentsPaymentResult {
-  url: string;
+  url: string | Uint8Array;
 
   protected get [id]() {
     return 0xd8411139;
@@ -20871,7 +20978,7 @@ export class PaymentsPaymentVerificationNeeded
     ];
   }
 
-  constructor(params: { url: string }) {
+  constructor(params: { url: string | Uint8Array }) {
     super();
     this.url = params.url;
   }
@@ -20881,16 +20988,16 @@ export class PaymentsPaymentReceipt extends Constructor {
   date: number;
   botId: bigint;
   providerId: bigint;
-  title: string;
-  description: string;
+  title: string | Uint8Array;
+  description: string | Uint8Array;
   photo?: TypeWebDocument;
   invoice: TypeInvoice;
   info?: TypePaymentRequestedInfo;
   shipping?: TypeShippingOption;
   tipAmount?: bigint;
-  currency: string;
+  currency: string | Uint8Array;
   totalAmount: bigint;
-  credentialsTitle: string;
+  credentialsTitle: string | Uint8Array;
   users: Array<TypeUser>;
 
   protected get [id]() {
@@ -20925,16 +21032,16 @@ export class PaymentsPaymentReceipt extends Constructor {
       date: number;
       botId: bigint;
       providerId: bigint;
-      title: string;
-      description: string;
+      title: string | Uint8Array;
+      description: string | Uint8Array;
       photo?: TypeWebDocument;
       invoice: TypeInvoice;
       info?: TypePaymentRequestedInfo;
       shipping?: TypeShippingOption;
       tipAmount?: bigint;
-      currency: string;
+      currency: string | Uint8Array;
       totalAmount: bigint;
-      credentialsTitle: string;
+      credentialsTitle: string | Uint8Array;
       users: Array<TypeUser>;
     },
   ) {
@@ -20988,7 +21095,7 @@ export class PaymentsSavedInfo extends Constructor {
 }
 
 export class InputPaymentCredentialsSaved extends TypeInputPaymentCredentials {
-  id: string;
+  id: string | Uint8Array;
   tmpPassword: Uint8Array;
 
   protected get [id]() {
@@ -21002,7 +21109,7 @@ export class InputPaymentCredentialsSaved extends TypeInputPaymentCredentials {
     ];
   }
 
-  constructor(params: { id: string; tmpPassword: Uint8Array }) {
+  constructor(params: { id: string | Uint8Array; tmpPassword: Uint8Array }) {
     super();
     this.id = params.id;
     this.tmpPassword = params.tmpPassword;
@@ -21094,8 +21201,8 @@ export class AccountTmpPassword extends Constructor {
 }
 
 export class ShippingOption extends Constructor {
-  id: string;
-  title: string;
+  id: string | Uint8Array;
+  title: string | Uint8Array;
   prices: Array<TypeLabeledPrice>;
 
   protected get [id]() {
@@ -21111,7 +21218,11 @@ export class ShippingOption extends Constructor {
   }
 
   constructor(
-    params: { id: string; title: string; prices: Array<TypeLabeledPrice> },
+    params: {
+      id: string | Uint8Array;
+      title: string | Uint8Array;
+      prices: Array<TypeLabeledPrice>;
+    },
   ) {
     super();
     this.id = params.id;
@@ -21122,9 +21233,9 @@ export class ShippingOption extends Constructor {
 
 export class InputStickerSetItem extends Constructor {
   document: TypeInputDocument;
-  emoji: string;
+  emoji: string | Uint8Array;
   maskCoords?: TypeMaskCoords;
-  keywords?: string;
+  keywords?: string | Uint8Array;
 
   protected get [id]() {
     return 0x32da9e9c;
@@ -21142,9 +21253,9 @@ export class InputStickerSetItem extends Constructor {
   constructor(
     params: {
       document: TypeInputDocument;
-      emoji: string;
+      emoji: string | Uint8Array;
       maskCoords?: TypeMaskCoords;
-      keywords?: string;
+      keywords?: string | Uint8Array;
     },
   ) {
     super();
@@ -21466,8 +21577,8 @@ export class PhoneCallDiscarded extends TypePhoneCall {
 export class PhoneConnection extends Constructor {
   tcp?: true;
   id: bigint;
-  ip: string;
-  ipv6: string;
+  ip: string | Uint8Array;
+  ipv6: string | Uint8Array;
   port: number;
   peerTag: Uint8Array;
 
@@ -21490,8 +21601,8 @@ export class PhoneConnection extends Constructor {
     params: {
       tcp?: true;
       id: bigint;
-      ip: string;
-      ipv6: string;
+      ip: string | Uint8Array;
+      ipv6: string | Uint8Array;
       port: number;
       peerTag: Uint8Array;
     },
@@ -21510,11 +21621,11 @@ export class PhoneConnectionWebrtc extends TypePhoneConnection {
   turn?: true;
   stun?: true;
   id: bigint;
-  ip: string;
-  ipv6: string;
+  ip: string | Uint8Array;
+  ipv6: string | Uint8Array;
   port: number;
-  username: string;
-  password: string;
+  username: string | Uint8Array;
+  password: string | Uint8Array;
 
   protected get [id]() {
     return 0x635fe375;
@@ -21538,11 +21649,11 @@ export class PhoneConnectionWebrtc extends TypePhoneConnection {
       turn?: true;
       stun?: true;
       id: bigint;
-      ip: string;
-      ipv6: string;
+      ip: string | Uint8Array;
+      ipv6: string | Uint8Array;
       port: number;
-      username: string;
-      password: string;
+      username: string | Uint8Array;
+      password: string | Uint8Array;
     },
   ) {
     super();
@@ -21562,7 +21673,7 @@ export class PhoneCallProtocol extends Constructor {
   udpReflector?: true;
   minLayer: number;
   maxLayer: number;
-  libraryVersions: Array<string>;
+  libraryVersions: Array<string | Uint8Array>;
 
   protected get [id]() {
     return 0xfc878fc8;
@@ -21584,7 +21695,7 @@ export class PhoneCallProtocol extends Constructor {
       udpReflector?: true;
       minLayer: number;
       maxLayer: number;
-      libraryVersions: Array<string>;
+      libraryVersions: Array<string | Uint8Array>;
     },
   ) {
     super();
@@ -21658,7 +21769,7 @@ export class UploadCdnFile extends Constructor {
 
 export class CdnPublicKey extends Constructor {
   dcId: number;
-  publicKey: string;
+  publicKey: string | Uint8Array;
 
   protected get [id]() {
     return 0xc982eaba;
@@ -21671,7 +21782,7 @@ export class CdnPublicKey extends Constructor {
     ];
   }
 
-  constructor(params: { dcId: number; publicKey: string }) {
+  constructor(params: { dcId: number; publicKey: string | Uint8Array }) {
     super();
     this.dcId = params.dcId;
     this.publicKey = params.publicKey;
@@ -21698,8 +21809,8 @@ export class CdnConfig extends Constructor {
 }
 
 export class LangPackString extends Constructor {
-  key: string;
-  value: string;
+  key: string | Uint8Array;
+  value: string | Uint8Array;
 
   protected get [id]() {
     return 0xcad181f6;
@@ -21712,7 +21823,9 @@ export class LangPackString extends Constructor {
     ];
   }
 
-  constructor(params: { key: string; value: string }) {
+  constructor(
+    params: { key: string | Uint8Array; value: string | Uint8Array },
+  ) {
     super();
     this.key = params.key;
     this.value = params.value;
@@ -21720,13 +21833,13 @@ export class LangPackString extends Constructor {
 }
 
 export class LangPackStringPluralized extends TypeLangPackString {
-  key: string;
-  zeroValue?: string;
-  oneValue?: string;
-  twoValue?: string;
-  fewValue?: string;
-  manyValue?: string;
-  otherValue: string;
+  key: string | Uint8Array;
+  zeroValue?: string | Uint8Array;
+  oneValue?: string | Uint8Array;
+  twoValue?: string | Uint8Array;
+  fewValue?: string | Uint8Array;
+  manyValue?: string | Uint8Array;
+  otherValue: string | Uint8Array;
 
   protected get [id]() {
     return 0x6c47ac9f;
@@ -21746,13 +21859,13 @@ export class LangPackStringPluralized extends TypeLangPackString {
 
   constructor(
     params: {
-      key: string;
-      zeroValue?: string;
-      oneValue?: string;
-      twoValue?: string;
-      fewValue?: string;
-      manyValue?: string;
-      otherValue: string;
+      key: string | Uint8Array;
+      zeroValue?: string | Uint8Array;
+      oneValue?: string | Uint8Array;
+      twoValue?: string | Uint8Array;
+      fewValue?: string | Uint8Array;
+      manyValue?: string | Uint8Array;
+      otherValue: string | Uint8Array;
     },
   ) {
     super();
@@ -21767,7 +21880,7 @@ export class LangPackStringPluralized extends TypeLangPackString {
 }
 
 export class LangPackStringDeleted extends TypeLangPackString {
-  key: string;
+  key: string | Uint8Array;
 
   protected get [id]() {
     return 0x2979eeb2;
@@ -21779,14 +21892,14 @@ export class LangPackStringDeleted extends TypeLangPackString {
     ];
   }
 
-  constructor(params: { key: string }) {
+  constructor(params: { key: string | Uint8Array }) {
     super();
     this.key = params.key;
   }
 }
 
 export class LangPackDifference extends Constructor {
-  langCode: string;
+  langCode: string | Uint8Array;
   fromVersion: number;
   version: number;
   strings: Array<TypeLangPackString>;
@@ -21806,7 +21919,7 @@ export class LangPackDifference extends Constructor {
 
   constructor(
     params: {
-      langCode: string;
+      langCode: string | Uint8Array;
       fromVersion: number;
       version: number;
       strings: Array<TypeLangPackString>;
@@ -21824,14 +21937,14 @@ export class LangPackLanguage extends Constructor {
   official?: true;
   rtl?: true;
   beta?: true;
-  name: string;
-  nativeName: string;
-  langCode: string;
-  baseLangCode?: string;
-  pluralCode: string;
+  name: string | Uint8Array;
+  nativeName: string | Uint8Array;
+  langCode: string | Uint8Array;
+  baseLangCode?: string | Uint8Array;
+  pluralCode: string | Uint8Array;
   stringsCount: number;
   translatedCount: number;
-  translationsUrl: string;
+  translationsUrl: string | Uint8Array;
 
   protected get [id]() {
     return 0xeeca5ce3;
@@ -21858,14 +21971,14 @@ export class LangPackLanguage extends Constructor {
       official?: true;
       rtl?: true;
       beta?: true;
-      name: string;
-      nativeName: string;
-      langCode: string;
-      baseLangCode?: string;
-      pluralCode: string;
+      name: string | Uint8Array;
+      nativeName: string | Uint8Array;
+      langCode: string | Uint8Array;
+      baseLangCode?: string | Uint8Array;
+      pluralCode: string | Uint8Array;
       stringsCount: number;
       translatedCount: number;
-      translationsUrl: string;
+      translationsUrl: string | Uint8Array;
     },
   ) {
     super();
@@ -21885,8 +21998,8 @@ export class LangPackLanguage extends Constructor {
 
 export class ChannelAdminLogEventActionChangeTitle
   extends TypeChannelAdminLogEventAction {
-  prevValue: string;
-  newValue: string;
+  prevValue: string | Uint8Array;
+  newValue: string | Uint8Array;
 
   protected get [id]() {
     return 0xe6dfb825;
@@ -21899,7 +22012,9 @@ export class ChannelAdminLogEventActionChangeTitle
     ];
   }
 
-  constructor(params: { prevValue: string; newValue: string }) {
+  constructor(
+    params: { prevValue: string | Uint8Array; newValue: string | Uint8Array },
+  ) {
     super();
     this.prevValue = params.prevValue;
     this.newValue = params.newValue;
@@ -21908,8 +22023,8 @@ export class ChannelAdminLogEventActionChangeTitle
 
 export class ChannelAdminLogEventActionChangeAbout
   extends TypeChannelAdminLogEventAction {
-  prevValue: string;
-  newValue: string;
+  prevValue: string | Uint8Array;
+  newValue: string | Uint8Array;
 
   protected get [id]() {
     return 0x55188a2e;
@@ -21922,7 +22037,9 @@ export class ChannelAdminLogEventActionChangeAbout
     ];
   }
 
-  constructor(params: { prevValue: string; newValue: string }) {
+  constructor(
+    params: { prevValue: string | Uint8Array; newValue: string | Uint8Array },
+  ) {
     super();
     this.prevValue = params.prevValue;
     this.newValue = params.newValue;
@@ -21931,8 +22048,8 @@ export class ChannelAdminLogEventActionChangeAbout
 
 export class ChannelAdminLogEventActionChangeUsername
   extends TypeChannelAdminLogEventAction {
-  prevValue: string;
-  newValue: string;
+  prevValue: string | Uint8Array;
+  newValue: string | Uint8Array;
 
   protected get [id]() {
     return 0x6a4afc38;
@@ -21945,7 +22062,9 @@ export class ChannelAdminLogEventActionChangeUsername
     ];
   }
 
-  constructor(params: { prevValue: string; newValue: string }) {
+  constructor(
+    params: { prevValue: string | Uint8Array; newValue: string | Uint8Array },
+  ) {
     super();
     this.prevValue = params.prevValue;
     this.newValue = params.newValue;
@@ -22672,8 +22791,8 @@ export class ChannelAdminLogEventActionChangeAvailableReactions
 
 export class ChannelAdminLogEventActionChangeUsernames
   extends TypeChannelAdminLogEventAction {
-  prevValue: Array<string>;
-  newValue: Array<string>;
+  prevValue: Array<string | Uint8Array>;
+  newValue: Array<string | Uint8Array>;
 
   protected get [id]() {
     return 0xf04fb3a9;
@@ -22686,7 +22805,12 @@ export class ChannelAdminLogEventActionChangeUsernames
     ];
   }
 
-  constructor(params: { prevValue: Array<string>; newValue: Array<string> }) {
+  constructor(
+    params: {
+      prevValue: Array<string | Uint8Array>;
+      newValue: Array<string | Uint8Array>;
+    },
+  ) {
     super();
     this.prevValue = params.prevValue;
     this.newValue = params.newValue;
@@ -23051,7 +23175,7 @@ export class MessagesFavedStickers extends Constructor {
 }
 
 export class RecentMeUrlUnknown extends TypeRecentMeUrl {
-  url: string;
+  url: string | Uint8Array;
 
   protected get [id]() {
     return 0x46e1d13d;
@@ -23063,14 +23187,14 @@ export class RecentMeUrlUnknown extends TypeRecentMeUrl {
     ];
   }
 
-  constructor(params: { url: string }) {
+  constructor(params: { url: string | Uint8Array }) {
     super();
     this.url = params.url;
   }
 }
 
 export class RecentMeUrlUser extends TypeRecentMeUrl {
-  url: string;
+  url: string | Uint8Array;
   userId: bigint;
 
   protected get [id]() {
@@ -23084,7 +23208,7 @@ export class RecentMeUrlUser extends TypeRecentMeUrl {
     ];
   }
 
-  constructor(params: { url: string; userId: bigint }) {
+  constructor(params: { url: string | Uint8Array; userId: bigint }) {
     super();
     this.url = params.url;
     this.userId = params.userId;
@@ -23092,7 +23216,7 @@ export class RecentMeUrlUser extends TypeRecentMeUrl {
 }
 
 export class RecentMeUrlChat extends TypeRecentMeUrl {
-  url: string;
+  url: string | Uint8Array;
   chatId: bigint;
 
   protected get [id]() {
@@ -23106,7 +23230,7 @@ export class RecentMeUrlChat extends TypeRecentMeUrl {
     ];
   }
 
-  constructor(params: { url: string; chatId: bigint }) {
+  constructor(params: { url: string | Uint8Array; chatId: bigint }) {
     super();
     this.url = params.url;
     this.chatId = params.chatId;
@@ -23114,7 +23238,7 @@ export class RecentMeUrlChat extends TypeRecentMeUrl {
 }
 
 export class RecentMeUrlChatInvite extends TypeRecentMeUrl {
-  url: string;
+  url: string | Uint8Array;
   chatInvite: TypeChatInvite;
 
   protected get [id]() {
@@ -23128,7 +23252,9 @@ export class RecentMeUrlChatInvite extends TypeRecentMeUrl {
     ];
   }
 
-  constructor(params: { url: string; chatInvite: TypeChatInvite }) {
+  constructor(
+    params: { url: string | Uint8Array; chatInvite: TypeChatInvite },
+  ) {
     super();
     this.url = params.url;
     this.chatInvite = params.chatInvite;
@@ -23136,7 +23262,7 @@ export class RecentMeUrlChatInvite extends TypeRecentMeUrl {
 }
 
 export class RecentMeUrlStickerSet extends TypeRecentMeUrl {
-  url: string;
+  url: string | Uint8Array;
   set: TypeStickerSetCovered;
 
   protected get [id]() {
@@ -23150,7 +23276,9 @@ export class RecentMeUrlStickerSet extends TypeRecentMeUrl {
     ];
   }
 
-  constructor(params: { url: string; set: TypeStickerSetCovered }) {
+  constructor(
+    params: { url: string | Uint8Array; set: TypeStickerSetCovered },
+  ) {
     super();
     this.url = params.url;
     this.set = params.set;
@@ -23191,7 +23319,7 @@ export class HelpRecentMeUrls extends Constructor {
 export class InputSingleMedia extends Constructor {
   media: TypeInputMedia;
   randomId: bigint;
-  message: string;
+  message: string | Uint8Array;
   entities?: Array<TypeMessageEntity>;
 
   protected get [id]() {
@@ -23215,7 +23343,7 @@ export class InputSingleMedia extends Constructor {
     params: {
       media: TypeInputMedia;
       randomId: bigint;
-      message: string;
+      message: string | Uint8Array;
       entities?: Array<TypeMessageEntity>;
     },
   ) {
@@ -23230,13 +23358,13 @@ export class InputSingleMedia extends Constructor {
 export class WebAuthorization extends Constructor {
   hash: bigint;
   botId: bigint;
-  domain: string;
-  browser: string;
-  platform: string;
+  domain: string | Uint8Array;
+  browser: string | Uint8Array;
+  platform: string | Uint8Array;
   dateCreated: number;
   dateActive: number;
-  ip: string;
-  region: string;
+  ip: string | Uint8Array;
+  region: string | Uint8Array;
 
   protected get [id]() {
     return 0xa6f8f452;
@@ -23260,13 +23388,13 @@ export class WebAuthorization extends Constructor {
     params: {
       hash: bigint;
       botId: bigint;
-      domain: string;
-      browser: string;
-      platform: string;
+      domain: string | Uint8Array;
+      browser: string | Uint8Array;
+      platform: string | Uint8Array;
       dateCreated: number;
       dateActive: number;
-      ip: string;
-      region: string;
+      ip: string | Uint8Array;
+      region: string | Uint8Array;
     },
   ) {
     super();
@@ -23522,7 +23650,7 @@ export class FileHash extends Constructor {
 }
 
 export class InputClientProxy extends Constructor {
-  address: string;
+  address: string | Uint8Array;
   port: number;
 
   protected get [id]() {
@@ -23536,7 +23664,7 @@ export class InputClientProxy extends Constructor {
     ];
   }
 
-  constructor(params: { address: string; port: number }) {
+  constructor(params: { address: string | Uint8Array; port: number }) {
     super();
     this.address = params.address;
     this.port = params.port;
@@ -23590,7 +23718,7 @@ export class HelpTermsOfServiceUpdate extends Constructor {
 export class InputSecureFileUploaded extends TypeInputSecureFile {
   id: bigint;
   parts: number;
-  md5Checksum: string;
+  md5Checksum: string | Uint8Array;
   fileHash: Uint8Array;
   secret: Uint8Array;
 
@@ -23612,7 +23740,7 @@ export class InputSecureFileUploaded extends TypeInputSecureFile {
     params: {
       id: bigint;
       parts: number;
-      md5Checksum: string;
+      md5Checksum: string | Uint8Array;
       fileHash: Uint8Array;
       secret: Uint8Array;
     },
@@ -23737,7 +23865,7 @@ export class SecureData extends Constructor {
 }
 
 export class SecurePlainPhone extends TypeSecurePlainData {
-  phone: string;
+  phone: string | Uint8Array;
 
   protected get [id]() {
     return 0x7d6099dd;
@@ -23749,14 +23877,14 @@ export class SecurePlainPhone extends TypeSecurePlainData {
     ];
   }
 
-  constructor(params: { phone: string }) {
+  constructor(params: { phone: string | Uint8Array }) {
     super();
     this.phone = params.phone;
   }
 }
 
 export class SecurePlainEmail extends TypeSecurePlainData {
-  email: string;
+  email: string | Uint8Array;
 
   protected get [id]() {
     return 0x21ec5a5f;
@@ -23768,7 +23896,7 @@ export class SecurePlainEmail extends TypeSecurePlainData {
     ];
   }
 
-  constructor(params: { email: string }) {
+  constructor(params: { email: string | Uint8Array }) {
     super();
     this.email = params.email;
   }
@@ -24103,8 +24231,8 @@ export class SecureValueHash extends Constructor {
 export class SecureValueErrorData extends TypeSecureValueError {
   type: TypeSecureValueType;
   dataHash: Uint8Array;
-  field: string;
-  text: string;
+  field: string | Uint8Array;
+  text: string | Uint8Array;
 
   protected get [id]() {
     return 0xe8a40bd9;
@@ -24123,8 +24251,8 @@ export class SecureValueErrorData extends TypeSecureValueError {
     params: {
       type: TypeSecureValueType;
       dataHash: Uint8Array;
-      field: string;
-      text: string;
+      field: string | Uint8Array;
+      text: string | Uint8Array;
     },
   ) {
     super();
@@ -24138,7 +24266,7 @@ export class SecureValueErrorData extends TypeSecureValueError {
 export class SecureValueErrorFrontSide extends TypeSecureValueError {
   type: TypeSecureValueType;
   fileHash: Uint8Array;
-  text: string;
+  text: string | Uint8Array;
 
   protected get [id]() {
     return 0x00be3dfa;
@@ -24153,7 +24281,11 @@ export class SecureValueErrorFrontSide extends TypeSecureValueError {
   }
 
   constructor(
-    params: { type: TypeSecureValueType; fileHash: Uint8Array; text: string },
+    params: {
+      type: TypeSecureValueType;
+      fileHash: Uint8Array;
+      text: string | Uint8Array;
+    },
   ) {
     super();
     this.type = params.type;
@@ -24165,7 +24297,7 @@ export class SecureValueErrorFrontSide extends TypeSecureValueError {
 export class SecureValueErrorReverseSide extends TypeSecureValueError {
   type: TypeSecureValueType;
   fileHash: Uint8Array;
-  text: string;
+  text: string | Uint8Array;
 
   protected get [id]() {
     return 0x868a2aa5;
@@ -24180,7 +24312,11 @@ export class SecureValueErrorReverseSide extends TypeSecureValueError {
   }
 
   constructor(
-    params: { type: TypeSecureValueType; fileHash: Uint8Array; text: string },
+    params: {
+      type: TypeSecureValueType;
+      fileHash: Uint8Array;
+      text: string | Uint8Array;
+    },
   ) {
     super();
     this.type = params.type;
@@ -24192,7 +24328,7 @@ export class SecureValueErrorReverseSide extends TypeSecureValueError {
 export class SecureValueErrorSelfie extends TypeSecureValueError {
   type: TypeSecureValueType;
   fileHash: Uint8Array;
-  text: string;
+  text: string | Uint8Array;
 
   protected get [id]() {
     return 0xe537ced6;
@@ -24207,7 +24343,11 @@ export class SecureValueErrorSelfie extends TypeSecureValueError {
   }
 
   constructor(
-    params: { type: TypeSecureValueType; fileHash: Uint8Array; text: string },
+    params: {
+      type: TypeSecureValueType;
+      fileHash: Uint8Array;
+      text: string | Uint8Array;
+    },
   ) {
     super();
     this.type = params.type;
@@ -24219,7 +24359,7 @@ export class SecureValueErrorSelfie extends TypeSecureValueError {
 export class SecureValueErrorFile extends TypeSecureValueError {
   type: TypeSecureValueType;
   fileHash: Uint8Array;
-  text: string;
+  text: string | Uint8Array;
 
   protected get [id]() {
     return 0x7a700873;
@@ -24234,7 +24374,11 @@ export class SecureValueErrorFile extends TypeSecureValueError {
   }
 
   constructor(
-    params: { type: TypeSecureValueType; fileHash: Uint8Array; text: string },
+    params: {
+      type: TypeSecureValueType;
+      fileHash: Uint8Array;
+      text: string | Uint8Array;
+    },
   ) {
     super();
     this.type = params.type;
@@ -24246,7 +24390,7 @@ export class SecureValueErrorFile extends TypeSecureValueError {
 export class SecureValueErrorFiles extends TypeSecureValueError {
   type: TypeSecureValueType;
   fileHash: Array<Uint8Array>;
-  text: string;
+  text: string | Uint8Array;
 
   protected get [id]() {
     return 0x666220e9;
@@ -24264,7 +24408,7 @@ export class SecureValueErrorFiles extends TypeSecureValueError {
     params: {
       type: TypeSecureValueType;
       fileHash: Array<Uint8Array>;
-      text: string;
+      text: string | Uint8Array;
     },
   ) {
     super();
@@ -24277,7 +24421,7 @@ export class SecureValueErrorFiles extends TypeSecureValueError {
 export class SecureValueError extends Constructor {
   type: TypeSecureValueType;
   hash: Uint8Array;
-  text: string;
+  text: string | Uint8Array;
 
   protected get [id]() {
     return 0x869d758f;
@@ -24292,7 +24436,11 @@ export class SecureValueError extends Constructor {
   }
 
   constructor(
-    params: { type: TypeSecureValueType; hash: Uint8Array; text: string },
+    params: {
+      type: TypeSecureValueType;
+      hash: Uint8Array;
+      text: string | Uint8Array;
+    },
   ) {
     super();
     this.type = params.type;
@@ -24304,7 +24452,7 @@ export class SecureValueError extends Constructor {
 export class SecureValueErrorTranslationFile extends TypeSecureValueError {
   type: TypeSecureValueType;
   fileHash: Uint8Array;
-  text: string;
+  text: string | Uint8Array;
 
   protected get [id]() {
     return 0xa1144770;
@@ -24319,7 +24467,11 @@ export class SecureValueErrorTranslationFile extends TypeSecureValueError {
   }
 
   constructor(
-    params: { type: TypeSecureValueType; fileHash: Uint8Array; text: string },
+    params: {
+      type: TypeSecureValueType;
+      fileHash: Uint8Array;
+      text: string | Uint8Array;
+    },
   ) {
     super();
     this.type = params.type;
@@ -24331,7 +24483,7 @@ export class SecureValueErrorTranslationFile extends TypeSecureValueError {
 export class SecureValueErrorTranslationFiles extends TypeSecureValueError {
   type: TypeSecureValueType;
   fileHash: Array<Uint8Array>;
-  text: string;
+  text: string | Uint8Array;
 
   protected get [id]() {
     return 0x34636dd8;
@@ -24349,7 +24501,7 @@ export class SecureValueErrorTranslationFiles extends TypeSecureValueError {
     params: {
       type: TypeSecureValueType;
       fileHash: Array<Uint8Array>;
-      text: string;
+      text: string | Uint8Array;
     },
   ) {
     super();
@@ -24391,7 +24543,7 @@ export class AccountAuthorizationForm extends Constructor {
   values: Array<TypeSecureValue>;
   errors: Array<TypeSecureValueError>;
   users: Array<TypeUser>;
-  privacyPolicyUrl?: string;
+  privacyPolicyUrl?: string | Uint8Array;
 
   protected get [id]() {
     return 0xad2e1cd8;
@@ -24417,7 +24569,7 @@ export class AccountAuthorizationForm extends Constructor {
       values: Array<TypeSecureValue>;
       errors: Array<TypeSecureValueError>;
       users: Array<TypeUser>;
-      privacyPolicyUrl?: string;
+      privacyPolicyUrl?: string | Uint8Array;
     },
   ) {
     super();
@@ -24430,7 +24582,7 @@ export class AccountAuthorizationForm extends Constructor {
 }
 
 export class AccountSentEmailCode extends Constructor {
-  emailPattern: string;
+  emailPattern: string | Uint8Array;
   length: number;
 
   protected get [id]() {
@@ -24444,7 +24596,7 @@ export class AccountSentEmailCode extends Constructor {
     ];
   }
 
-  constructor(params: { emailPattern: string; length: number }) {
+  constructor(params: { emailPattern: string | Uint8Array; length: number }) {
     super();
     this.emailPattern = params.emailPattern;
     this.length = params.length;
@@ -24467,7 +24619,7 @@ export class HelpDeepLinkInfoEmpty extends TypeHelpDeepLinkInfo {
 
 export class HelpDeepLinkInfo extends Constructor {
   updateApp?: true;
-  message: string;
+  message: string | Uint8Array;
   entities?: Array<TypeMessageEntity>;
 
   protected get [id]() {
@@ -24489,7 +24641,7 @@ export class HelpDeepLinkInfo extends Constructor {
   constructor(
     params: {
       updateApp?: true;
-      message: string;
+      message: string | Uint8Array;
       entities?: Array<TypeMessageEntity>;
     },
   ) {
@@ -24501,9 +24653,9 @@ export class HelpDeepLinkInfo extends Constructor {
 }
 
 export class SavedPhoneContact extends TypeSavedContact {
-  phone: string;
-  firstName: string;
-  lastName: string;
+  phone: string | Uint8Array;
+  firstName: string | Uint8Array;
+  lastName: string | Uint8Array;
   date: number;
 
   protected get [id]() {
@@ -24521,9 +24673,9 @@ export class SavedPhoneContact extends TypeSavedContact {
 
   constructor(
     params: {
-      phone: string;
-      firstName: string;
-      lastName: string;
+      phone: string | Uint8Array;
+      firstName: string | Uint8Array;
+      lastName: string | Uint8Array;
       date: number;
     },
   ) {
@@ -24814,7 +24966,7 @@ export class HelpPassportConfig extends Constructor {
 
 export class InputAppEvent extends Constructor {
   time: number;
-  type: string;
+  type: string | Uint8Array;
   peer: bigint;
   data: TypeJSONValue;
 
@@ -24832,7 +24984,12 @@ export class InputAppEvent extends Constructor {
   }
 
   constructor(
-    params: { time: number; type: string; peer: bigint; data: TypeJSONValue },
+    params: {
+      time: number;
+      type: string | Uint8Array;
+      peer: bigint;
+      data: TypeJSONValue;
+    },
   ) {
     super();
     this.time = params.time;
@@ -24843,7 +25000,7 @@ export class InputAppEvent extends Constructor {
 }
 
 export class JsonObjectValue extends Constructor {
-  key: string;
+  key: string | Uint8Array;
   value: TypeJSONValue;
 
   protected get [id]() {
@@ -24857,7 +25014,7 @@ export class JsonObjectValue extends Constructor {
     ];
   }
 
-  constructor(params: { key: string; value: TypeJSONValue }) {
+  constructor(params: { key: string | Uint8Array; value: TypeJSONValue }) {
     super();
     this.key = params.key;
     this.value = params.value;
@@ -24917,7 +25074,7 @@ export class JsonNumber extends TypeJSONValue {
 }
 
 export class JsonString extends TypeJSONValue {
-  value: string;
+  value: string | Uint8Array;
 
   protected get [id]() {
     return 0xb71e767a;
@@ -24929,7 +25086,7 @@ export class JsonString extends TypeJSONValue {
     ];
   }
 
-  constructor(params: { value: string }) {
+  constructor(params: { value: string | Uint8Array }) {
     super();
     this.value = params.value;
   }
@@ -25104,7 +25261,7 @@ export class PageListItemBlocks extends TypePageListItem {
 }
 
 export class PageListOrderedItemText extends TypePageListOrderedItem {
-  num: string;
+  num: string | Uint8Array;
   text: TypeRichText;
 
   protected get [id]() {
@@ -25118,7 +25275,7 @@ export class PageListOrderedItemText extends TypePageListOrderedItem {
     ];
   }
 
-  constructor(params: { num: string; text: TypeRichText }) {
+  constructor(params: { num: string | Uint8Array; text: TypeRichText }) {
     super();
     this.num = params.num;
     this.text = params.text;
@@ -25126,7 +25283,7 @@ export class PageListOrderedItemText extends TypePageListOrderedItem {
 }
 
 export class PageListOrderedItemBlocks extends TypePageListOrderedItem {
-  num: string;
+  num: string | Uint8Array;
   blocks: Array<TypePageBlock>;
 
   protected get [id]() {
@@ -25140,7 +25297,9 @@ export class PageListOrderedItemBlocks extends TypePageListOrderedItem {
     ];
   }
 
-  constructor(params: { num: string; blocks: Array<TypePageBlock> }) {
+  constructor(
+    params: { num: string | Uint8Array; blocks: Array<TypePageBlock> },
+  ) {
     super();
     this.num = params.num;
     this.blocks = params.blocks;
@@ -25148,12 +25307,12 @@ export class PageListOrderedItemBlocks extends TypePageListOrderedItem {
 }
 
 export class PageRelatedArticle extends Constructor {
-  url: string;
+  url: string | Uint8Array;
   webpageId: bigint;
-  title?: string;
-  description?: string;
+  title?: string | Uint8Array;
+  description?: string | Uint8Array;
   photoId?: bigint;
-  author?: string;
+  author?: string | Uint8Array;
   publishedDate?: number;
 
   protected get [id]() {
@@ -25174,12 +25333,12 @@ export class PageRelatedArticle extends Constructor {
 
   constructor(
     params: {
-      url: string;
+      url: string | Uint8Array;
       webpageId: bigint;
-      title?: string;
-      description?: string;
+      title?: string | Uint8Array;
+      description?: string | Uint8Array;
       photoId?: bigint;
-      author?: string;
+      author?: string | Uint8Array;
       publishedDate?: number;
     },
   ) {
@@ -25198,7 +25357,7 @@ export class Page extends Constructor {
   part?: true;
   rtl?: true;
   v2?: true;
-  url: string;
+  url: string | Uint8Array;
   blocks: Array<TypePageBlock>;
   photos: Array<TypePhoto>;
   documents: Array<TypeDocument>;
@@ -25226,7 +25385,7 @@ export class Page extends Constructor {
       part?: true;
       rtl?: true;
       v2?: true;
-      url: string;
+      url: string | Uint8Array;
       blocks: Array<TypePageBlock>;
       photos: Array<TypePhoto>;
       documents: Array<TypeDocument>;
@@ -25246,7 +25405,7 @@ export class Page extends Constructor {
 }
 
 export class HelpSupportName extends Constructor {
-  name: string;
+  name: string | Uint8Array;
 
   protected get [id]() {
     return 0x8c05f1c9;
@@ -25258,7 +25417,7 @@ export class HelpSupportName extends Constructor {
     ];
   }
 
-  constructor(params: { name: string }) {
+  constructor(params: { name: string | Uint8Array }) {
     super();
     this.name = params.name;
   }
@@ -25279,9 +25438,9 @@ export class HelpUserInfoEmpty extends TypeHelpUserInfo {
 }
 
 export class HelpUserInfo extends Constructor {
-  message: string;
+  message: string | Uint8Array;
   entities: Array<TypeMessageEntity>;
-  author: string;
+  author: string | Uint8Array;
   date: number;
 
   protected get [id]() {
@@ -25299,9 +25458,9 @@ export class HelpUserInfo extends Constructor {
 
   constructor(
     params: {
-      message: string;
+      message: string | Uint8Array;
       entities: Array<TypeMessageEntity>;
-      author: string;
+      author: string | Uint8Array;
       date: number;
     },
   ) {
@@ -25314,7 +25473,7 @@ export class HelpUserInfo extends Constructor {
 }
 
 export class PollAnswer extends Constructor {
-  text: string;
+  text: string | Uint8Array;
   option: Uint8Array;
 
   protected get [id]() {
@@ -25328,7 +25487,7 @@ export class PollAnswer extends Constructor {
     ];
   }
 
-  constructor(params: { text: string; option: Uint8Array }) {
+  constructor(params: { text: string | Uint8Array; option: Uint8Array }) {
     super();
     this.text = params.text;
     this.option = params.option;
@@ -25341,7 +25500,7 @@ export class Poll extends Constructor {
   publicVoters?: true;
   multipleChoice?: true;
   quiz?: true;
-  question: string;
+  question: string | Uint8Array;
   answers: Array<TypePollAnswer>;
   closePeriod?: number;
   closeDate?: number;
@@ -25371,7 +25530,7 @@ export class Poll extends Constructor {
       publicVoters?: true;
       multipleChoice?: true;
       quiz?: true;
-      question: string;
+      question: string | Uint8Array;
       answers: Array<TypePollAnswer>;
       closePeriod?: number;
       closeDate?: number;
@@ -25430,7 +25589,7 @@ export class PollResults extends Constructor {
   results?: Array<TypePollAnswerVoters>;
   totalVoters?: number;
   recentVoters?: Array<bigint>;
-  solution?: string;
+  solution?: string | Uint8Array;
   solutionEntities?: Array<TypeMessageEntity>;
 
   protected get [id]() {
@@ -25462,7 +25621,7 @@ export class PollResults extends Constructor {
       results?: Array<TypePollAnswerVoters>;
       totalVoters?: number;
       recentVoters?: Array<bigint>;
-      solution?: string;
+      solution?: string | Uint8Array;
       solutionEntities?: Array<TypeMessageEntity>;
     },
   ) {
@@ -25496,7 +25655,7 @@ export class ChatOnlines extends Constructor {
 }
 
 export class StatsURL extends Constructor {
-  url: string;
+  url: string | Uint8Array;
 
   protected get [id]() {
     return 0x47a971e0;
@@ -25508,7 +25667,7 @@ export class StatsURL extends Constructor {
     ];
   }
 
-  constructor(params: { url: string }) {
+  constructor(params: { url: string | Uint8Array }) {
     super();
     this.url = params.url;
   }
@@ -25707,7 +25866,7 @@ export class InputWallPaper extends Constructor {
 }
 
 export class InputWallPaperSlug extends TypeInputWallPaper {
-  slug: string;
+  slug: string | Uint8Array;
 
   protected get [id]() {
     return 0x72091c80;
@@ -25719,7 +25878,7 @@ export class InputWallPaperSlug extends TypeInputWallPaper {
     ];
   }
 
-  constructor(params: { slug: string }) {
+  constructor(params: { slug: string | Uint8Array }) {
     super();
     this.slug = params.slug;
   }
@@ -25787,7 +25946,7 @@ export class CodeSettings extends Constructor {
   allowMissedCall?: true;
   allowFirebase?: true;
   logoutTokens?: Array<Uint8Array>;
-  token?: string;
+  token?: string | Uint8Array;
   appSandbox?: boolean;
 
   protected get [id]() {
@@ -25815,7 +25974,7 @@ export class CodeSettings extends Constructor {
       allowMissedCall?: true;
       allowFirebase?: true;
       logoutTokens?: Array<Uint8Array>;
-      token?: string;
+      token?: string | Uint8Array;
       appSandbox?: boolean;
     },
   ) {
@@ -25965,8 +26124,8 @@ export class AccountAutoDownloadSettings extends Constructor {
 }
 
 export class EmojiKeyword extends Constructor {
-  keyword: string;
-  emoticons: Array<string>;
+  keyword: string | Uint8Array;
+  emoticons: Array<string | Uint8Array>;
 
   protected get [id]() {
     return 0xd5b3b9f9;
@@ -25979,7 +26138,12 @@ export class EmojiKeyword extends Constructor {
     ];
   }
 
-  constructor(params: { keyword: string; emoticons: Array<string> }) {
+  constructor(
+    params: {
+      keyword: string | Uint8Array;
+      emoticons: Array<string | Uint8Array>;
+    },
+  ) {
     super();
     this.keyword = params.keyword;
     this.emoticons = params.emoticons;
@@ -25987,8 +26151,8 @@ export class EmojiKeyword extends Constructor {
 }
 
 export class EmojiKeywordDeleted extends TypeEmojiKeyword {
-  keyword: string;
-  emoticons: Array<string>;
+  keyword: string | Uint8Array;
+  emoticons: Array<string | Uint8Array>;
 
   protected get [id]() {
     return 0x236df622;
@@ -26001,7 +26165,12 @@ export class EmojiKeywordDeleted extends TypeEmojiKeyword {
     ];
   }
 
-  constructor(params: { keyword: string; emoticons: Array<string> }) {
+  constructor(
+    params: {
+      keyword: string | Uint8Array;
+      emoticons: Array<string | Uint8Array>;
+    },
+  ) {
     super();
     this.keyword = params.keyword;
     this.emoticons = params.emoticons;
@@ -26009,7 +26178,7 @@ export class EmojiKeywordDeleted extends TypeEmojiKeyword {
 }
 
 export class EmojiKeywordsDifference extends Constructor {
-  langCode: string;
+  langCode: string | Uint8Array;
   fromVersion: number;
   version: number;
   keywords: Array<TypeEmojiKeyword>;
@@ -26029,7 +26198,7 @@ export class EmojiKeywordsDifference extends Constructor {
 
   constructor(
     params: {
-      langCode: string;
+      langCode: string | Uint8Array;
       fromVersion: number;
       version: number;
       keywords: Array<TypeEmojiKeyword>;
@@ -26044,7 +26213,7 @@ export class EmojiKeywordsDifference extends Constructor {
 }
 
 export class EmojiURL extends Constructor {
-  url: string;
+  url: string | Uint8Array;
 
   protected get [id]() {
     return 0xa575739d;
@@ -26056,14 +26225,14 @@ export class EmojiURL extends Constructor {
     ];
   }
 
-  constructor(params: { url: string }) {
+  constructor(params: { url: string | Uint8Array }) {
     super();
     this.url = params.url;
   }
 }
 
 export class EmojiLanguage extends Constructor {
-  langCode: string;
+  langCode: string | Uint8Array;
 
   protected get [id]() {
     return 0xb3fb5361;
@@ -26075,7 +26244,7 @@ export class EmojiLanguage extends Constructor {
     ];
   }
 
-  constructor(params: { langCode: string }) {
+  constructor(params: { langCode: string | Uint8Array }) {
     super();
     this.langCode = params.langCode;
   }
@@ -26086,7 +26255,7 @@ export class Folder extends Constructor {
   autofillPublicGroups?: true;
   autofillNewCorrespondents?: true;
   id: number;
-  title: string;
+  title: string | Uint8Array;
   photo?: TypeChatPhoto;
 
   protected get [id]() {
@@ -26110,7 +26279,7 @@ export class Folder extends Constructor {
       autofillPublicGroups?: true;
       autofillNewCorrespondents?: true;
       id: number;
-      title: string;
+      title: string | Uint8Array;
       photo?: TypeChatPhoto;
     },
   ) {
@@ -26198,7 +26367,7 @@ export class MessagesSearchCounter extends Constructor {
 export class UrlAuthResultRequest extends TypeUrlAuthResult {
   requestWriteAccess?: true;
   bot: TypeUser;
-  domain: string;
+  domain: string | Uint8Array;
 
   protected get [id]() {
     return 0x92d33a0e;
@@ -26213,7 +26382,11 @@ export class UrlAuthResultRequest extends TypeUrlAuthResult {
   }
 
   constructor(
-    params: { requestWriteAccess?: true; bot: TypeUser; domain: string },
+    params: {
+      requestWriteAccess?: true;
+      bot: TypeUser;
+      domain: string | Uint8Array;
+    },
   ) {
     super();
     this.requestWriteAccess = params.requestWriteAccess;
@@ -26223,7 +26396,7 @@ export class UrlAuthResultRequest extends TypeUrlAuthResult {
 }
 
 export class UrlAuthResultAccepted extends TypeUrlAuthResult {
-  url: string;
+  url: string | Uint8Array;
 
   protected get [id]() {
     return 0x8f8c0e4e;
@@ -26235,7 +26408,7 @@ export class UrlAuthResultAccepted extends TypeUrlAuthResult {
     ];
   }
 
-  constructor(params: { url: string }) {
+  constructor(params: { url: string | Uint8Array }) {
     super();
     this.url = params.url;
   }
@@ -26271,7 +26444,7 @@ export class ChannelLocationEmpty extends TypeChannelLocation {
 
 export class ChannelLocation extends Constructor {
   geoPoint: TypeGeoPoint;
-  address: string;
+  address: string | Uint8Array;
 
   protected get [id]() {
     return 0x209b82db;
@@ -26284,7 +26457,9 @@ export class ChannelLocation extends Constructor {
     ];
   }
 
-  constructor(params: { geoPoint: TypeGeoPoint; address: string }) {
+  constructor(
+    params: { geoPoint: TypeGeoPoint; address: string | Uint8Array },
+  ) {
     super();
     this.geoPoint = params.geoPoint;
     this.address = params.address;
@@ -26336,9 +26511,9 @@ export class PeerSelfLocated extends TypePeerLocated {
 }
 
 export class RestrictionReason extends Constructor {
-  platform: string;
-  reason: string;
-  text: string;
+  platform: string | Uint8Array;
+  reason: string | Uint8Array;
+  text: string | Uint8Array;
 
   protected get [id]() {
     return 0xd072acb4;
@@ -26352,7 +26527,13 @@ export class RestrictionReason extends Constructor {
     ];
   }
 
-  constructor(params: { platform: string; reason: string; text: string }) {
+  constructor(
+    params: {
+      platform: string | Uint8Array;
+      reason: string | Uint8Array;
+      text: string | Uint8Array;
+    },
+  ) {
     super();
     this.platform = params.platform;
     this.reason = params.reason;
@@ -26383,7 +26564,7 @@ export class InputTheme extends Constructor {
 }
 
 export class InputThemeSlug extends TypeInputTheme {
-  slug: string;
+  slug: string | Uint8Array;
 
   protected get [id]() {
     return 0xf5890df1;
@@ -26395,7 +26576,7 @@ export class InputThemeSlug extends TypeInputTheme {
     ];
   }
 
-  constructor(params: { slug: string }) {
+  constructor(params: { slug: string | Uint8Array }) {
     super();
     this.slug = params.slug;
   }
@@ -26407,11 +26588,11 @@ export class Theme extends Constructor {
   forChat?: true;
   id: bigint;
   accessHash: bigint;
-  slug: string;
-  title: string;
+  slug: string | Uint8Array;
+  title: string | Uint8Array;
   document?: TypeDocument;
   settings?: Array<TypeThemeSettings>;
-  emoticon?: string;
+  emoticon?: string | Uint8Array;
   installsCount?: number;
 
   protected get [id]() {
@@ -26445,11 +26626,11 @@ export class Theme extends Constructor {
       forChat?: true;
       id: bigint;
       accessHash: bigint;
-      slug: string;
-      title: string;
+      slug: string | Uint8Array;
+      title: string | Uint8Array;
       document?: TypeDocument;
       settings?: Array<TypeThemeSettings>;
-      emoticon?: string;
+      emoticon?: string | Uint8Array;
       installsCount?: number;
     },
   ) {
@@ -26886,7 +27067,7 @@ export class MessagesVotesList extends Constructor {
   count: number;
   votes: Array<TypeMessageUserVote>;
   users: Array<TypeUser>;
-  nextOffset?: string;
+  nextOffset?: string | Uint8Array;
 
   protected get [id]() {
     return 0x0823f649;
@@ -26906,7 +27087,7 @@ export class MessagesVotesList extends Constructor {
       count: number;
       votes: Array<TypeMessageUserVote>;
       users: Array<TypeUser>;
-      nextOffset?: string;
+      nextOffset?: string | Uint8Array;
     },
   ) {
     super();
@@ -26918,8 +27099,8 @@ export class MessagesVotesList extends Constructor {
 }
 
 export class BankCardOpenUrl extends Constructor {
-  url: string;
-  name: string;
+  url: string | Uint8Array;
+  name: string | Uint8Array;
 
   protected get [id]() {
     return 0xf568028a;
@@ -26932,7 +27113,7 @@ export class BankCardOpenUrl extends Constructor {
     ];
   }
 
-  constructor(params: { url: string; name: string }) {
+  constructor(params: { url: string | Uint8Array; name: string | Uint8Array }) {
     super();
     this.url = params.url;
     this.name = params.name;
@@ -26940,7 +27121,7 @@ export class BankCardOpenUrl extends Constructor {
 }
 
 export class PaymentsBankCardData extends Constructor {
-  title: string;
+  title: string | Uint8Array;
   openUrls: Array<TypeBankCardOpenUrl>;
 
   protected get [id]() {
@@ -26954,7 +27135,12 @@ export class PaymentsBankCardData extends Constructor {
     ];
   }
 
-  constructor(params: { title: string; openUrls: Array<TypeBankCardOpenUrl> }) {
+  constructor(
+    params: {
+      title: string | Uint8Array;
+      openUrls: Array<TypeBankCardOpenUrl>;
+    },
+  ) {
     super();
     this.title = params.title;
     this.openUrls = params.openUrls;
@@ -26971,8 +27157,8 @@ export class DialogFilter extends Constructor {
   excludeRead?: true;
   excludeArchived?: true;
   id: number;
-  title: string;
-  emoticon?: string;
+  title: string | Uint8Array;
+  emoticon?: string | Uint8Array;
   pinnedPeers: Array<TypeInputPeer>;
   includePeers: Array<TypeInputPeer>;
   excludePeers: Array<TypeInputPeer>;
@@ -27011,8 +27197,8 @@ export class DialogFilter extends Constructor {
       excludeRead?: true;
       excludeArchived?: true;
       id: number;
-      title: string;
-      emoticon?: string;
+      title: string | Uint8Array;
+      emoticon?: string | Uint8Array;
       pinnedPeers: Array<TypeInputPeer>;
       includePeers: Array<TypeInputPeer>;
       excludePeers: Array<TypeInputPeer>;
@@ -27052,7 +27238,7 @@ export class DialogFilterDefault extends TypeDialogFilter {
 
 export class DialogFilterSuggested extends Constructor {
   filter: TypeDialogFilter;
-  description: string;
+  description: string | Uint8Array;
 
   protected get [id]() {
     return 0x77744d4a;
@@ -27065,7 +27251,9 @@ export class DialogFilterSuggested extends Constructor {
     ];
   }
 
-  constructor(params: { filter: TypeDialogFilter; description: string }) {
+  constructor(
+    params: { filter: TypeDialogFilter; description: string | Uint8Array },
+  ) {
     super();
     this.filter = params.filter;
     this.description = params.description;
@@ -27139,7 +27327,7 @@ export class StatsPercentValue extends Constructor {
 }
 
 export class StatsGraphAsync extends TypeStatsGraph {
-  token: string;
+  token: string | Uint8Array;
 
   protected get [id]() {
     return 0x4a27eb2d;
@@ -27151,14 +27339,14 @@ export class StatsGraphAsync extends TypeStatsGraph {
     ];
   }
 
-  constructor(params: { token: string }) {
+  constructor(params: { token: string | Uint8Array }) {
     super();
     this.token = params.token;
   }
 }
 
 export class StatsGraphError extends TypeStatsGraph {
-  error: string;
+  error: string | Uint8Array;
 
   protected get [id]() {
     return 0xbedc9822;
@@ -27170,7 +27358,7 @@ export class StatsGraphError extends TypeStatsGraph {
     ];
   }
 
-  constructor(params: { error: string }) {
+  constructor(params: { error: string | Uint8Array }) {
     super();
     this.error = params.error;
   }
@@ -27178,7 +27366,7 @@ export class StatsGraphError extends TypeStatsGraph {
 
 export class StatsGraph extends Constructor {
   json: TypeDataJSON;
-  zoomToken?: string;
+  zoomToken?: string | Uint8Array;
 
   protected get [id]() {
     return 0x8ea464b6;
@@ -27191,7 +27379,7 @@ export class StatsGraph extends Constructor {
     ];
   }
 
-  constructor(params: { json: TypeDataJSON; zoomToken?: string }) {
+  constructor(params: { json: TypeDataJSON; zoomToken?: string | Uint8Array }) {
     super();
     this.json = params.json;
     this.zoomToken = params.zoomToken;
@@ -27331,8 +27519,8 @@ export class HelpPromoData extends Constructor {
   peer: TypePeer;
   chats: Array<TypeChat>;
   users: Array<TypeUser>;
-  psaType?: string;
-  psaMessage?: string;
+  psaType?: string | Uint8Array;
+  psaMessage?: string | Uint8Array;
 
   protected get [id]() {
     return 0x8c39793f;
@@ -27357,8 +27545,8 @@ export class HelpPromoData extends Constructor {
       peer: TypePeer;
       chats: Array<TypeChat>;
       users: Array<TypeUser>;
-      psaType?: string;
-      psaMessage?: string;
+      psaType?: string | Uint8Array;
+      psaMessage?: string | Uint8Array;
     },
   ) {
     super();
@@ -27373,7 +27561,7 @@ export class HelpPromoData extends Constructor {
 }
 
 export class VideoSize extends Constructor {
-  type: string;
+  type: string | Uint8Array;
   w: number;
   h: number;
   size: number;
@@ -27395,7 +27583,7 @@ export class VideoSize extends Constructor {
 
   constructor(
     params: {
-      type: string;
+      type: string | Uint8Array;
       w: number;
       h: number;
       size: number;
@@ -27661,9 +27849,9 @@ export class GlobalPrivacySettings extends Constructor {
 }
 
 export class HelpCountryCode extends Constructor {
-  countryCode: string;
-  prefixes?: Array<string>;
-  patterns?: Array<string>;
+  countryCode: string | Uint8Array;
+  prefixes?: Array<string | Uint8Array>;
+  patterns?: Array<string | Uint8Array>;
 
   protected get [id]() {
     return 0x4203c5ef;
@@ -27679,9 +27867,9 @@ export class HelpCountryCode extends Constructor {
 
   constructor(
     params: {
-      countryCode: string;
-      prefixes?: Array<string>;
-      patterns?: Array<string>;
+      countryCode: string | Uint8Array;
+      prefixes?: Array<string | Uint8Array>;
+      patterns?: Array<string | Uint8Array>;
     },
   ) {
     super();
@@ -27693,9 +27881,9 @@ export class HelpCountryCode extends Constructor {
 
 export class HelpCountry extends Constructor {
   hidden?: true;
-  iso2: string;
-  defaultName: string;
-  name?: string;
+  iso2: string | Uint8Array;
+  defaultName: string | Uint8Array;
+  name?: string | Uint8Array;
   countryCodes: Array<TypeHelpCountryCode>;
 
   protected get [id]() {
@@ -27715,9 +27903,9 @@ export class HelpCountry extends Constructor {
   constructor(
     params: {
       hidden?: true;
-      iso2: string;
-      defaultName: string;
-      name?: string;
+      iso2: string | Uint8Array;
+      defaultName: string | Uint8Array;
+      name?: string | Uint8Array;
       countryCodes: Array<TypeHelpCountryCode>;
     },
   ) {
@@ -28035,7 +28223,7 @@ export class GroupCall extends Constructor {
   id: bigint;
   accessHash: bigint;
   participantsCount: number;
-  title?: string;
+  title?: string | Uint8Array;
   streamDcId?: number;
   recordStartDate?: number;
   scheduleDate?: number;
@@ -28083,7 +28271,7 @@ export class GroupCall extends Constructor {
       id: bigint;
       accessHash: bigint;
       participantsCount: number;
-      title?: string;
+      title?: string | Uint8Array;
       streamDcId?: number;
       recordStartDate?: number;
       scheduleDate?: number;
@@ -28152,7 +28340,7 @@ export class GroupCallParticipant extends Constructor {
   activeDate?: number;
   source: number;
   volume?: number;
-  about?: string;
+  about?: string | Uint8Array;
   raiseHandRating?: bigint;
   video?: TypeGroupCallParticipantVideo;
   presentation?: TypeGroupCallParticipantVideo;
@@ -28210,7 +28398,7 @@ export class GroupCallParticipant extends Constructor {
       activeDate?: number;
       source: number;
       volume?: number;
-      about?: string;
+      about?: string | Uint8Array;
       raiseHandRating?: bigint;
       video?: TypeGroupCallParticipantVideo;
       presentation?: TypeGroupCallParticipantVideo;
@@ -28242,7 +28430,7 @@ export class GroupCallParticipant extends Constructor {
 export class PhoneGroupCall extends Constructor {
   call: TypeGroupCall;
   participants: Array<TypeGroupCallParticipant>;
-  participantsNextOffset: string;
+  participantsNextOffset: string | Uint8Array;
   chats: Array<TypeChat>;
   users: Array<TypeUser>;
 
@@ -28268,7 +28456,7 @@ export class PhoneGroupCall extends Constructor {
     params: {
       call: TypeGroupCall;
       participants: Array<TypeGroupCallParticipant>;
-      participantsNextOffset: string;
+      participantsNextOffset: string | Uint8Array;
       chats: Array<TypeChat>;
       users: Array<TypeUser>;
     },
@@ -28285,7 +28473,7 @@ export class PhoneGroupCall extends Constructor {
 export class PhoneGroupParticipants extends Constructor {
   count: number;
   participants: Array<TypeGroupCallParticipant>;
-  nextOffset: string;
+  nextOffset: string | Uint8Array;
   chats: Array<TypeChat>;
   users: Array<TypeUser>;
   version: number;
@@ -28313,7 +28501,7 @@ export class PhoneGroupParticipants extends Constructor {
     params: {
       count: number;
       participants: Array<TypeGroupCallParticipant>;
-      nextOffset: string;
+      nextOffset: string | Uint8Array;
       chats: Array<TypeChat>;
       users: Array<TypeUser>;
       version: number;
@@ -28421,7 +28609,7 @@ export class MessagesHistoryImport extends Constructor {
 export class MessagesHistoryImportParsed extends Constructor {
   pm?: true;
   group?: true;
-  title?: string;
+  title?: string | Uint8Array;
 
   protected get [id]() {
     return 0x5e0fb7b9;
@@ -28435,7 +28623,9 @@ export class MessagesHistoryImportParsed extends Constructor {
     ];
   }
 
-  constructor(params: { pm?: true; group?: true; title?: string }) {
+  constructor(
+    params: { pm?: true; group?: true; title?: string | Uint8Array },
+  ) {
     super();
     this.pm = params.pm;
     this.group = params.group;
@@ -28482,7 +28672,7 @@ export class ChatInviteImporter extends Constructor {
   requested?: true;
   userId: bigint;
   date: number;
-  about?: string;
+  about?: string | Uint8Array;
   approvedBy?: bigint;
 
   protected get [id]() {
@@ -28504,7 +28694,7 @@ export class ChatInviteImporter extends Constructor {
       requested?: true;
       userId: bigint;
       date: number;
-      about?: string;
+      about?: string | Uint8Array;
       approvedBy?: bigint;
     },
   ) {
@@ -28691,7 +28881,7 @@ export class MessagesChatAdminsWithInvites extends Constructor {
 }
 
 export class MessagesCheckedHistoryImportPeer extends Constructor {
-  confirmText: string;
+  confirmText: string | Uint8Array;
 
   protected get [id]() {
     return 0xa24de717;
@@ -28703,7 +28893,7 @@ export class MessagesCheckedHistoryImportPeer extends Constructor {
     ];
   }
 
-  constructor(params: { confirmText: string }) {
+  constructor(params: { confirmText: string | Uint8Array }) {
     super();
     this.confirmText = params.confirmText;
   }
@@ -28741,7 +28931,7 @@ export class PhoneJoinAsPeers extends Constructor {
 }
 
 export class PhoneExportedGroupCallInvite extends Constructor {
-  link: string;
+  link: string | Uint8Array;
 
   protected get [id]() {
     return 0x204bd158;
@@ -28753,14 +28943,14 @@ export class PhoneExportedGroupCallInvite extends Constructor {
     ];
   }
 
-  constructor(params: { link: string }) {
+  constructor(params: { link: string | Uint8Array }) {
     super();
     this.link = params.link;
   }
 }
 
 export class GroupCallParticipantVideoSourceGroup extends Constructor {
-  semantics: string;
+  semantics: string | Uint8Array;
   sources: Array<number>;
 
   protected get [id]() {
@@ -28774,7 +28964,9 @@ export class GroupCallParticipantVideoSourceGroup extends Constructor {
     ];
   }
 
-  constructor(params: { semantics: string; sources: Array<number> }) {
+  constructor(
+    params: { semantics: string | Uint8Array; sources: Array<number> },
+  ) {
     super();
     this.semantics = params.semantics;
     this.sources = params.sources;
@@ -28783,7 +28975,7 @@ export class GroupCallParticipantVideoSourceGroup extends Constructor {
 
 export class GroupCallParticipantVideo extends Constructor {
   paused?: true;
-  endpoint: string;
+  endpoint: string | Uint8Array;
   sourceGroups: Array<TypeGroupCallParticipantVideoSourceGroup>;
   audioSource?: number;
 
@@ -28807,7 +28999,7 @@ export class GroupCallParticipantVideo extends Constructor {
   constructor(
     params: {
       paused?: true;
-      endpoint: string;
+      endpoint: string | Uint8Array;
       sourceGroups: Array<TypeGroupCallParticipantVideoSourceGroup>;
       audioSource?: number;
     },
@@ -28821,7 +29013,7 @@ export class GroupCallParticipantVideo extends Constructor {
 }
 
 export class StickersSuggestedShortName extends Constructor {
-  shortName: string;
+  shortName: string | Uint8Array;
 
   protected get [id]() {
     return 0x85fea03f;
@@ -28833,7 +29025,7 @@ export class StickersSuggestedShortName extends Constructor {
     ];
   }
 
-  constructor(params: { shortName: string }) {
+  constructor(params: { shortName: string | Uint8Array }) {
     super();
     this.shortName = params.shortName;
   }
@@ -29015,13 +29207,13 @@ export class SponsoredMessage extends Constructor {
   randomId: Uint8Array;
   fromId?: TypePeer;
   chatInvite?: TypeChatInvite;
-  chatInviteHash?: string;
+  chatInviteHash?: string | Uint8Array;
   channelPost?: number;
-  startParam?: string;
-  message: string;
+  startParam?: string | Uint8Array;
+  message: string | Uint8Array;
   entities?: Array<TypeMessageEntity>;
-  sponsorInfo?: string;
-  additionalInfo?: string;
+  sponsorInfo?: string | Uint8Array;
+  additionalInfo?: string | Uint8Array;
 
   protected get [id]() {
     return 0xfc25b828;
@@ -29055,13 +29247,13 @@ export class SponsoredMessage extends Constructor {
       randomId: Uint8Array;
       fromId?: TypePeer;
       chatInvite?: TypeChatInvite;
-      chatInviteHash?: string;
+      chatInviteHash?: string | Uint8Array;
       channelPost?: number;
-      startParam?: string;
-      message: string;
+      startParam?: string | Uint8Array;
+      message: string | Uint8Array;
       entities?: Array<TypeMessageEntity>;
-      sponsorInfo?: string;
-      additionalInfo?: string;
+      sponsorInfo?: string | Uint8Array;
+      additionalInfo?: string | Uint8Array;
     },
   ) {
     super();
@@ -29455,7 +29647,7 @@ export class MessagesMessageReactionsList extends Constructor {
   reactions: Array<TypeMessagePeerReaction>;
   chats: Array<TypeChat>;
   users: Array<TypeUser>;
-  nextOffset?: string;
+  nextOffset?: string | Uint8Array;
 
   protected get [id]() {
     return 0x31bd492d;
@@ -29481,7 +29673,7 @@ export class MessagesMessageReactionsList extends Constructor {
       reactions: Array<TypeMessagePeerReaction>;
       chats: Array<TypeChat>;
       users: Array<TypeUser>;
-      nextOffset?: string;
+      nextOffset?: string | Uint8Array;
     },
   ) {
     super();
@@ -29496,8 +29688,8 @@ export class MessagesMessageReactionsList extends Constructor {
 export class AvailableReaction extends Constructor {
   inactive?: true;
   premium?: true;
-  reaction: string;
-  title: string;
+  reaction: string | Uint8Array;
+  title: string | Uint8Array;
   staticIcon: TypeDocument;
   appearAnimation: TypeDocument;
   selectAnimation: TypeDocument;
@@ -29530,8 +29722,8 @@ export class AvailableReaction extends Constructor {
     params: {
       inactive?: true;
       premium?: true;
-      reaction: string;
-      title: string;
+      reaction: string | Uint8Array;
+      title: string | Uint8Array;
       staticIcon: TypeDocument;
       appearAnimation: TypeDocument;
       selectAnimation: TypeDocument;
@@ -29685,8 +29877,8 @@ export class PhoneGroupCallStreamChannels extends Constructor {
 }
 
 export class PhoneGroupCallStreamRtmpUrl extends Constructor {
-  url: string;
-  key: string;
+  url: string | Uint8Array;
+  key: string | Uint8Array;
 
   protected get [id]() {
     return 0x2dbf3432;
@@ -29699,7 +29891,7 @@ export class PhoneGroupCallStreamRtmpUrl extends Constructor {
     ];
   }
 
-  constructor(params: { url: string; key: string }) {
+  constructor(params: { url: string | Uint8Array; key: string | Uint8Array }) {
     super();
     this.url = params.url;
     this.key = params.key;
@@ -29707,7 +29899,7 @@ export class PhoneGroupCallStreamRtmpUrl extends Constructor {
 }
 
 export class AttachMenuBotIconColor extends Constructor {
-  name: string;
+  name: string | Uint8Array;
   color: number;
 
   protected get [id]() {
@@ -29721,7 +29913,7 @@ export class AttachMenuBotIconColor extends Constructor {
     ];
   }
 
-  constructor(params: { name: string; color: number }) {
+  constructor(params: { name: string | Uint8Array; color: number }) {
     super();
     this.name = params.name;
     this.color = params.color;
@@ -29729,7 +29921,7 @@ export class AttachMenuBotIconColor extends Constructor {
 }
 
 export class AttachMenuBotIcon extends Constructor {
-  name: string;
+  name: string | Uint8Array;
   icon: TypeDocument;
   colors?: Array<TypeAttachMenuBotIconColor>;
 
@@ -29751,7 +29943,7 @@ export class AttachMenuBotIcon extends Constructor {
 
   constructor(
     params: {
-      name: string;
+      name: string | Uint8Array;
       icon: TypeDocument;
       colors?: Array<TypeAttachMenuBotIconColor>;
     },
@@ -29768,7 +29960,7 @@ export class AttachMenuBot extends Constructor {
   hasSettings?: true;
   requestWriteAccess?: true;
   botId: bigint;
-  shortName: string;
+  shortName: string | Uint8Array;
   peerTypes: Array<TypeAttachMenuPeerType>;
   icons: Array<TypeAttachMenuBotIcon>;
 
@@ -29794,7 +29986,7 @@ export class AttachMenuBot extends Constructor {
       hasSettings?: true;
       requestWriteAccess?: true;
       botId: bigint;
-      shortName: string;
+      shortName: string | Uint8Array;
       peerTypes: Array<TypeAttachMenuPeerType>;
       icons: Array<TypeAttachMenuBotIcon>;
     },
@@ -29879,7 +30071,7 @@ export class AttachMenuBotsBot extends Constructor {
 
 export class WebViewResultUrl extends TypeWebViewResult {
   queryId: bigint;
-  url: string;
+  url: string | Uint8Array;
 
   protected get [id]() {
     return 0x0c14557c;
@@ -29892,7 +30084,7 @@ export class WebViewResultUrl extends TypeWebViewResult {
     ];
   }
 
-  constructor(params: { queryId: bigint; url: string }) {
+  constructor(params: { queryId: bigint; url: string | Uint8Array }) {
     super();
     this.queryId = params.queryId;
     this.url = params.url;
@@ -29900,7 +30092,7 @@ export class WebViewResultUrl extends TypeWebViewResult {
 }
 
 export class SimpleWebViewResultUrl extends TypeSimpleWebViewResult {
-  url: string;
+  url: string | Uint8Array;
 
   protected get [id]() {
     return 0x882f76bb;
@@ -29912,7 +30104,7 @@ export class SimpleWebViewResultUrl extends TypeSimpleWebViewResult {
     ];
   }
 
-  constructor(params: { url: string }) {
+  constructor(params: { url: string | Uint8Array }) {
     super();
     this.url = params.url;
   }
@@ -29970,8 +30162,8 @@ export class BotMenuButtonCommands extends TypeBotMenuButton {
 }
 
 export class BotMenuButton extends Constructor {
-  text: string;
-  url: string;
+  text: string | Uint8Array;
+  url: string | Uint8Array;
 
   protected get [id]() {
     return 0xc7b57ce6;
@@ -29984,7 +30176,7 @@ export class BotMenuButton extends Constructor {
     ];
   }
 
-  constructor(params: { text: string; url: string }) {
+  constructor(params: { text: string | Uint8Array; url: string | Uint8Array }) {
     super();
     this.text = params.text;
     this.url = params.url;
@@ -30057,8 +30249,8 @@ export class NotificationSoundNone extends TypeNotificationSound {
 }
 
 export class NotificationSoundLocal extends TypeNotificationSound {
-  title: string;
-  data: string;
+  title: string | Uint8Array;
+  data: string | Uint8Array;
 
   protected get [id]() {
     return 0x830b9ae4;
@@ -30071,7 +30263,9 @@ export class NotificationSoundLocal extends TypeNotificationSound {
     ];
   }
 
-  constructor(params: { title: string; data: string }) {
+  constructor(
+    params: { title: string | Uint8Array; data: string | Uint8Array },
+  ) {
     super();
     this.title = params.title;
     this.data = params.data;
@@ -30223,7 +30417,7 @@ export class InputInvoiceMessage extends TypeInputInvoice {
 }
 
 export class InputInvoiceSlug extends TypeInputInvoice {
-  slug: string;
+  slug: string | Uint8Array;
 
   protected get [id]() {
     return 0xc326caef;
@@ -30235,14 +30429,14 @@ export class InputInvoiceSlug extends TypeInputInvoice {
     ];
   }
 
-  constructor(params: { slug: string }) {
+  constructor(params: { slug: string | Uint8Array }) {
     super();
     this.slug = params.slug;
   }
 }
 
 export class PaymentsExportedInvoice extends Constructor {
-  url: string;
+  url: string | Uint8Array;
 
   protected get [id]() {
     return 0xaed0cbd9;
@@ -30254,7 +30448,7 @@ export class PaymentsExportedInvoice extends Constructor {
     ];
   }
 
-  constructor(params: { url: string }) {
+  constructor(params: { url: string | Uint8Array }) {
     super();
     this.url = params.url;
   }
@@ -30263,7 +30457,7 @@ export class PaymentsExportedInvoice extends Constructor {
 export class MessagesTranscribedAudio extends Constructor {
   pending?: true;
   transcriptionId: bigint;
-  text: string;
+  text: string | Uint8Array;
 
   protected get [id]() {
     return 0x93752c52;
@@ -30278,7 +30472,11 @@ export class MessagesTranscribedAudio extends Constructor {
   }
 
   constructor(
-    params: { pending?: true; transcriptionId: bigint; text: string },
+    params: {
+      pending?: true;
+      transcriptionId: bigint;
+      text: string | Uint8Array;
+    },
   ) {
     super();
     this.pending = params.pending;
@@ -30288,9 +30486,9 @@ export class MessagesTranscribedAudio extends Constructor {
 }
 
 export class HelpPremiumPromo extends Constructor {
-  statusText: string;
+  statusText: string | Uint8Array;
   statusEntities: Array<TypeMessageEntity>;
-  videoSections: Array<string>;
+  videoSections: Array<string | Uint8Array>;
   videos: Array<TypeDocument>;
   periodOptions: Array<TypePremiumSubscriptionOption>;
   users: Array<TypeUser>;
@@ -30316,9 +30514,9 @@ export class HelpPremiumPromo extends Constructor {
 
   constructor(
     params: {
-      statusText: string;
+      statusText: string | Uint8Array;
       statusEntities: Array<TypeMessageEntity>;
-      videoSections: Array<string>;
+      videoSections: Array<string | Uint8Array>;
       videos: Array<TypeDocument>;
       periodOptions: Array<TypePremiumSubscriptionOption>;
       users: Array<TypeUser>;
@@ -30359,7 +30557,7 @@ export class InputStorePaymentPremiumSubscription
 
 export class InputStorePaymentGiftPremium extends TypeInputStorePaymentPurpose {
   userId: TypeInputUser;
-  currency: string;
+  currency: string | Uint8Array;
   amount: bigint;
 
   protected get [id]() {
@@ -30375,7 +30573,11 @@ export class InputStorePaymentGiftPremium extends TypeInputStorePaymentPurpose {
   }
 
   constructor(
-    params: { userId: TypeInputUser; currency: string; amount: bigint },
+    params: {
+      userId: TypeInputUser;
+      currency: string | Uint8Array;
+      amount: bigint;
+    },
   ) {
     super();
     this.userId = params.userId;
@@ -30386,10 +30588,10 @@ export class InputStorePaymentGiftPremium extends TypeInputStorePaymentPurpose {
 
 export class PremiumGiftOption extends Constructor {
   months: number;
-  currency: string;
+  currency: string | Uint8Array;
   amount: bigint;
-  botUrl: string;
-  storeProduct?: string;
+  botUrl: string | Uint8Array;
+  storeProduct?: string | Uint8Array;
 
   protected get [id]() {
     return 0x74c34319;
@@ -30408,10 +30610,10 @@ export class PremiumGiftOption extends Constructor {
   constructor(
     params: {
       months: number;
-      currency: string;
+      currency: string | Uint8Array;
       amount: bigint;
-      botUrl: string;
-      storeProduct?: string;
+      botUrl: string | Uint8Array;
+      storeProduct?: string | Uint8Array;
     },
   ) {
     super();
@@ -30424,8 +30626,8 @@ export class PremiumGiftOption extends Constructor {
 }
 
 export class PaymentFormMethod extends Constructor {
-  url: string;
-  title: string;
+  url: string | Uint8Array;
+  title: string | Uint8Array;
 
   protected get [id]() {
     return 0x88f8f21b;
@@ -30438,7 +30640,9 @@ export class PaymentFormMethod extends Constructor {
     ];
   }
 
-  constructor(params: { url: string; title: string }) {
+  constructor(
+    params: { url: string | Uint8Array; title: string | Uint8Array },
+  ) {
     super();
     this.url = params.url;
     this.title = params.title;
@@ -30551,7 +30755,7 @@ export class ReactionEmpty extends TypeReaction {
 }
 
 export class ReactionEmoji extends TypeReaction {
-  emoticon: string;
+  emoticon: string | Uint8Array;
 
   protected get [id]() {
     return 0x1b2286b8;
@@ -30563,7 +30767,7 @@ export class ReactionEmoji extends TypeReaction {
     ];
   }
 
-  constructor(params: { emoticon: string }) {
+  constructor(params: { emoticon: string | Uint8Array }) {
     super();
     this.emoticon = params.emoticon;
   }
@@ -30677,8 +30881,8 @@ export class MessagesReactions extends Constructor {
 }
 
 export class EmailVerifyPurposeLoginSetup extends TypeEmailVerifyPurpose {
-  phoneNumber: string;
-  phoneCodeHash: string;
+  phoneNumber: string | Uint8Array;
+  phoneCodeHash: string | Uint8Array;
 
   protected get [id]() {
     return 0x4345be73;
@@ -30691,7 +30895,12 @@ export class EmailVerifyPurposeLoginSetup extends TypeEmailVerifyPurpose {
     ];
   }
 
-  constructor(params: { phoneNumber: string; phoneCodeHash: string }) {
+  constructor(
+    params: {
+      phoneNumber: string | Uint8Array;
+      phoneCodeHash: string | Uint8Array;
+    },
+  ) {
     super();
     this.phoneNumber = params.phoneNumber;
     this.phoneCodeHash = params.phoneCodeHash;
@@ -30727,7 +30936,7 @@ export class EmailVerifyPurposePassport extends TypeEmailVerifyPurpose {
 }
 
 export class EmailVerificationCode extends TypeEmailVerification {
-  code: string;
+  code: string | Uint8Array;
 
   protected get [id]() {
     return 0x922e55a9;
@@ -30739,14 +30948,14 @@ export class EmailVerificationCode extends TypeEmailVerification {
     ];
   }
 
-  constructor(params: { code: string }) {
+  constructor(params: { code: string | Uint8Array }) {
     super();
     this.code = params.code;
   }
 }
 
 export class EmailVerificationGoogle extends TypeEmailVerification {
-  token: string;
+  token: string | Uint8Array;
 
   protected get [id]() {
     return 0xdb909ec2;
@@ -30758,14 +30967,14 @@ export class EmailVerificationGoogle extends TypeEmailVerification {
     ];
   }
 
-  constructor(params: { token: string }) {
+  constructor(params: { token: string | Uint8Array }) {
     super();
     this.token = params.token;
   }
 }
 
 export class EmailVerificationApple extends TypeEmailVerification {
-  token: string;
+  token: string | Uint8Array;
 
   protected get [id]() {
     return 0x96d074fd;
@@ -30777,14 +30986,14 @@ export class EmailVerificationApple extends TypeEmailVerification {
     ];
   }
 
-  constructor(params: { token: string }) {
+  constructor(params: { token: string | Uint8Array }) {
     super();
     this.token = params.token;
   }
 }
 
 export class AccountEmailVerified extends Constructor {
-  email: string;
+  email: string | Uint8Array;
 
   protected get [id]() {
     return 0x2b96cd1b;
@@ -30796,14 +31005,14 @@ export class AccountEmailVerified extends Constructor {
     ];
   }
 
-  constructor(params: { email: string }) {
+  constructor(params: { email: string | Uint8Array }) {
     super();
     this.email = params.email;
   }
 }
 
 export class AccountEmailVerifiedLogin extends TypeAccountEmailVerified {
-  email: string;
+  email: string | Uint8Array;
   sentCode: TypeAuthSentCode;
 
   protected get [id]() {
@@ -30817,7 +31026,9 @@ export class AccountEmailVerifiedLogin extends TypeAccountEmailVerified {
     ];
   }
 
-  constructor(params: { email: string; sentCode: TypeAuthSentCode }) {
+  constructor(
+    params: { email: string | Uint8Array; sentCode: TypeAuthSentCode },
+  ) {
     super();
     this.email = params.email;
     this.sentCode = params.sentCode;
@@ -30827,12 +31038,12 @@ export class AccountEmailVerifiedLogin extends TypeAccountEmailVerified {
 export class PremiumSubscriptionOption extends Constructor {
   current?: true;
   canPurchaseUpgrade?: true;
-  transaction?: string;
+  transaction?: string | Uint8Array;
   months: number;
-  currency: string;
+  currency: string | Uint8Array;
   amount: bigint;
-  botUrl: string;
-  storeProduct?: string;
+  botUrl: string | Uint8Array;
+  storeProduct?: string | Uint8Array;
 
   protected get [id]() {
     return 0x5f2d1df2;
@@ -30855,12 +31066,12 @@ export class PremiumSubscriptionOption extends Constructor {
     params: {
       current?: true;
       canPurchaseUpgrade?: true;
-      transaction?: string;
+      transaction?: string | Uint8Array;
       months: number;
-      currency: string;
+      currency: string | Uint8Array;
       amount: bigint;
-      botUrl: string;
-      storeProduct?: string;
+      botUrl: string | Uint8Array;
+      storeProduct?: string | Uint8Array;
     },
   ) {
     super();
@@ -30953,7 +31164,7 @@ export class MessageExtendedMedia extends Constructor {
 
 export class StickerKeyword extends Constructor {
   documentId: bigint;
-  keyword: Array<string>;
+  keyword: Array<string | Uint8Array>;
 
   protected get [id]() {
     return 0xfcfeb29c;
@@ -30966,7 +31177,9 @@ export class StickerKeyword extends Constructor {
     ];
   }
 
-  constructor(params: { documentId: bigint; keyword: Array<string> }) {
+  constructor(
+    params: { documentId: bigint; keyword: Array<string | Uint8Array> },
+  ) {
     super();
     this.documentId = params.documentId;
     this.keyword = params.keyword;
@@ -30976,7 +31189,7 @@ export class StickerKeyword extends Constructor {
 export class Username extends Constructor {
   editable?: true;
   active?: true;
-  username: string;
+  username: string | Uint8Array;
 
   protected get [id]() {
     return 0xb4073647;
@@ -30990,7 +31203,9 @@ export class Username extends Constructor {
     ];
   }
 
-  constructor(params: { editable?: true; active?: true; username: string }) {
+  constructor(
+    params: { editable?: true; active?: true; username: string | Uint8Array },
+  ) {
     super();
     this.editable = params.editable;
     this.active = params.active;
@@ -31025,7 +31240,7 @@ export class ForumTopic extends Constructor {
   hidden?: true;
   id: number;
   date: number;
-  title: string;
+  title: string | Uint8Array;
   iconColor: number;
   iconEmojiId?: bigint;
   topMessage: number;
@@ -31075,7 +31290,7 @@ export class ForumTopic extends Constructor {
       hidden?: true;
       id: number;
       date: number;
-      title: string;
+      title: string | Uint8Array;
       iconColor: number;
       iconEmojiId?: bigint;
       topMessage: number;
@@ -31179,7 +31394,7 @@ export class DefaultHistoryTTL extends Constructor {
 }
 
 export class ExportedContactToken extends Constructor {
-  url: string;
+  url: string | Uint8Array;
   expires: number;
 
   protected get [id]() {
@@ -31193,7 +31408,7 @@ export class ExportedContactToken extends Constructor {
     ];
   }
 
-  constructor(params: { url: string; expires: number }) {
+  constructor(params: { url: string | Uint8Array; expires: number }) {
     super();
     this.url = params.url;
     this.expires = params.expires;
@@ -31353,9 +31568,9 @@ export class EmojiList extends Constructor {
 }
 
 export class EmojiGroup extends Constructor {
-  title: string;
+  title: string | Uint8Array;
   iconEmojiId: bigint;
-  emoticons: Array<string>;
+  emoticons: Array<string | Uint8Array>;
 
   protected get [id]() {
     return 0x7a9abda9;
@@ -31370,7 +31585,11 @@ export class EmojiGroup extends Constructor {
   }
 
   constructor(
-    params: { title: string; iconEmojiId: bigint; emoticons: Array<string> },
+    params: {
+      title: string | Uint8Array;
+      iconEmojiId: bigint;
+      emoticons: Array<string | Uint8Array>;
+    },
   ) {
     super();
     this.title = params.title;
@@ -31416,7 +31635,7 @@ export class MessagesEmojiGroups extends Constructor {
 }
 
 export class TextWithEntities extends Constructor {
-  text: string;
+  text: string | Uint8Array;
   entities: Array<TypeMessageEntity>;
 
   protected get [id]() {
@@ -31430,7 +31649,9 @@ export class TextWithEntities extends Constructor {
     ];
   }
 
-  constructor(params: { text: string; entities: Array<TypeMessageEntity> }) {
+  constructor(
+    params: { text: string | Uint8Array; entities: Array<TypeMessageEntity> },
+  ) {
     super();
     this.text = params.text;
     this.entities = params.entities;
@@ -31606,7 +31827,7 @@ export class InputBotAppID extends TypeInputBotApp {
 
 export class InputBotAppShortName extends TypeInputBotApp {
   botId: TypeInputUser;
-  shortName: string;
+  shortName: string | Uint8Array;
 
   protected get [id]() {
     return 0x908c0407;
@@ -31619,7 +31840,9 @@ export class InputBotAppShortName extends TypeInputBotApp {
     ];
   }
 
-  constructor(params: { botId: TypeInputUser; shortName: string }) {
+  constructor(
+    params: { botId: TypeInputUser; shortName: string | Uint8Array },
+  ) {
     super();
     this.botId = params.botId;
     this.shortName = params.shortName;
@@ -31643,9 +31866,9 @@ export class BotAppNotModified extends TypeBotApp {
 export class BotApp extends Constructor {
   id: bigint;
   accessHash: bigint;
-  shortName: string;
-  title: string;
-  description: string;
+  shortName: string | Uint8Array;
+  title: string | Uint8Array;
+  description: string | Uint8Array;
   photo: TypePhoto;
   document?: TypeDocument;
   hash: bigint;
@@ -31671,9 +31894,9 @@ export class BotApp extends Constructor {
     params: {
       id: bigint;
       accessHash: bigint;
-      shortName: string;
-      title: string;
-      description: string;
+      shortName: string | Uint8Array;
+      title: string | Uint8Array;
+      description: string | Uint8Array;
       photo: TypePhoto;
       document?: TypeDocument;
       hash: bigint;
@@ -31719,7 +31942,7 @@ export class MessagesBotApp extends Constructor {
 }
 
 export class AppWebViewResultUrl extends TypeAppWebViewResult {
-  url: string;
+  url: string | Uint8Array;
 
   protected get [id]() {
     return 0x3c1b4f0d;
@@ -31731,15 +31954,15 @@ export class AppWebViewResultUrl extends TypeAppWebViewResult {
     ];
   }
 
-  constructor(params: { url: string }) {
+  constructor(params: { url: string | Uint8Array }) {
     super();
     this.url = params.url;
   }
 }
 
 export class InlineBotWebView extends Constructor {
-  text: string;
-  url: string;
+  text: string | Uint8Array;
+  url: string | Uint8Array;
 
   protected get [id]() {
     return 0xb57295d5;
@@ -31752,7 +31975,7 @@ export class InlineBotWebView extends Constructor {
     ];
   }
 
-  constructor(params: { text: string; url: string }) {
+  constructor(params: { text: string | Uint8Array; url: string | Uint8Array }) {
     super();
     this.text = params.text;
     this.url = params.url;
