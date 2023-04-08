@@ -32004,7 +32004,7 @@ export class ReadParticipantDate extends Constructor {
   }
 }
 
-export const map = new Map<number, typeof Constructor>(
+export const map = new Map<number, InstanceType<Constructor>>(
   [
     [0x05162463, ResPQ],
     [0x83c95aec, PQInnerData],

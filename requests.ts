@@ -14,8 +14,8 @@ import {
   ige256Encrypt,
   randomBigIntBits,
 } from "./deps.ts";
-import { TLReader } from "./tl/1_tl_reader.ts";
-import { ClientDHInnerData, PQInnerData } from "./tl/2_constructors.ts";
+import { TLRawReader } from "./tl/0_tl_raw_reader.ts";
+import { ClientDHInnerData, map, PQInnerData } from "./tl/2_constructors.ts";
 import {
   ReqDHParams,
   ReqPqMulti,
@@ -50,12 +50,14 @@ export async function reqPqMulti(transport: Transport) {
   );
 
   const buffer = await transport.receive();
-  const reader = new TLReader(buffer);
+  const reader = new TLRawReader(buffer);
 
   const _authKeyId = reader.readInt64();
   const _messageId = reader.readInt64();
   const _messageLength = reader.readInt32();
   const _constructorId = reader.readInt32();
+  const _constructor = map.get(_constructorId);
+
   const nonce_ = reader.readInt128();
   assertEquals(nonce, nonce_);
   const serverNonce = reader.readInt128();
@@ -185,7 +187,7 @@ export async function getDHParams(
   ));
 
   const buffer = await transport.receive();
-  let reader = new TLReader(buffer);
+  let reader = new TLRawReader(buffer);
 
   const _authKeyId = reader.readInt64();
   const _messageId = reader.readInt64();
@@ -224,7 +226,7 @@ export async function getDHParams(
 
   const _answer = ige256Decrypt(encryptedAnswer, tmpAesKey, tmpAesIv).slice(20);
 
-  reader = new TLReader(buffer);
+  reader = new TLRawReader(buffer);
 
   const _constructorId_ = reader.readInt32();
   const __nonce = reader.readInt128();

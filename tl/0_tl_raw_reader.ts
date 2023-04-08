@@ -1,6 +1,6 @@
 import { bigIntFromBuffer } from "../utilities/0_bigint.ts";
 
-export class TLReader {
+export class TLRawReader {
   constructor(private buffer: Uint8Array) {
   }
 

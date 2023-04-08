@@ -1,6 +1,6 @@
 import { bufferFromBigInt, concat } from "../utilities/0_buffer.ts";
 
-export class TLWriter {
+export class TLRawWriter {
   private _buffer = new Uint8Array();
 
   constructor() {

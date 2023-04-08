@@ -1,4 +1,4 @@
-import { TLWriter } from "./0_tl_writer.ts";
+import { TLRawWriter } from "./0_tl_raw_writer.ts";
 
 type MaybeArrayOf<T> = T | T[];
 type MaybeInArray<T> = T | [T];
@@ -27,14 +27,12 @@ export type Params = [
 
 export const id = Symbol("id");
 
-export const params = Symbol("params");
-
 export abstract class TLObject {
   protected abstract get [id](): number;
   protected abstract get [params](): Params;
 
   serialize() {
-    const writer = new TLWriter();
+    const writer = new TLRawWriter();
     writer.writeInt32(this[id]);
 
     for (const [value, type, note] of this[params]) {
