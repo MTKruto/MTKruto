@@ -1,10 +1,15 @@
 import { bufferFromBigInt } from "../utilities/0_buffer.ts";
 
+export function toCamelCase(string: string) {
+  string = string.replace(/\.(.)/g, (_: string, g: string) => g.toUpperCase());
+  string = string.replace(/_(.)/g, (_: string, g: string) => g.toUpperCase());
+  return string;
+}
+
 export function revampType(type: string) {
   type = type.split("?").slice(-1)[0];
   type = type[0].toUpperCase() + type.slice(1);
-  type = type.replace(/\.(.)/g, (_: string, g: string) => g.toUpperCase());
-  type = type.replace(/_(.)/g, (_: string, g: string) => g.toUpperCase());
+  type = toCamelCase(type);
   return type;
 }
 

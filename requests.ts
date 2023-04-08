@@ -93,8 +93,8 @@ export async function getDHParams(
     p: bufferFromBigInt(p.valueOf(), 4, false),
     q: bufferFromBigInt(q.valueOf(), 4, false),
     nonce,
-    server_nonce: serverNonce,
-    new_nonce: newNonce,
+    serverNonce,
+    newNonce,
   }).serialize();
 
   /// Step 1
@@ -244,9 +244,9 @@ export async function getDHParams(
 
   data = new ClientDHInnerData({
     nonce,
-    server_nonce: serverNonce,
-    retry_id: 0n,
-    g_b: bufferFromBigInt(gB, 256, false, true),
+    serverNonce,
+    retryId: 0n,
+    gB: bufferFromBigInt(gB, 256, false, true),
   }).serialize();
 
   let dataWithHash = concat(await sha1(data), data);

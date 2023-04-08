@@ -1,6 +1,6 @@
 // deno-lint-ignore-file no-explicit-any
 import { parse } from "https://deno.land/x/tl_json@1.1.0/mod.ts";
-import { revampId, revampType } from "./utilities.ts";
+import { revampId, revampType, toCamelCase } from "./utilities.ts";
 
 const apiContent = Deno.readTextFileSync("tl/api.tl");
 
@@ -73,7 +73,8 @@ function getParamsGetter(params: any[]) {
     } else if (!type.startsWith("Type") && type != "Uint8Array") {
       type = `"${type}"`;
     }
-    code += `[this.${param.name} ${
+    const name = toCamelCase(param.name);
+    code += `[this.${name} ${
       isFlag ? "?? null" : ""
     }, ${type}, "${param.type}"],\n`;
   }
@@ -88,9 +89,11 @@ function getPropertiesDeclr(params: any[]) {
     if (param.name.startsWith("flags")) {
       continue;
     }
+
     const isFlag = param.type.startsWith("flags");
+    const name = toCamelCase(param.name);
     const type = convertType(param.type);
-    code += `${param.name}${isFlag ? "?:" : ":"} ${type}\n`;
+    code += `${name}${isFlag ? "?:" : ":"} ${type}\n`;
   }
 
   return code.trim();
@@ -105,9 +108,11 @@ function getConstructor(params: any[]) {
       if (param.name.startsWith("flags")) {
         continue;
       }
+
       const isFlag = param.type.startsWith("flags");
+      const name = toCamelCase(param.name);
       const type = convertType(param.type);
-      code += `${param.name}${isFlag ? "?:" : ":"} ${type}, `;
+      code += `${name}${isFlag ? "?:" : ":"} ${type}, `;
     }
     code += "}";
   }
@@ -117,7 +122,8 @@ function getConstructor(params: any[]) {
     if (param.name.startsWith("flags")) {
       continue;
     }
-    code += `this.${param.name} = params.${param.name};\n`;
+    const name = toCamelCase(param.name);
+    code += `this.${name} = params.${name};\n`;
   }
   code += "}\n";
   return code;
