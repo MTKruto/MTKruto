@@ -1,15 +1,19 @@
 import { bigIntFromBuffer } from "../utilities/0_bigint.ts";
 
 export class TLRawReader {
-  constructor(private buffer: Uint8Array) {
+  constructor(protected _buffer: Uint8Array) {
+  }
+
+  get buffer() {
+    return this._buffer;
   }
 
   read(count: number) {
-    if (this.buffer.length < count) {
+    if (this._buffer.length < count) {
       throw new Error("No data remaining");
     }
-    const buffer = this.buffer.slice(0, count);
-    this.buffer = this.buffer.slice(count);
+    const buffer = this._buffer.slice(0, count);
+    this._buffer = this._buffer.slice(count);
     return buffer;
   }
 
