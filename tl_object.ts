@@ -88,8 +88,10 @@ export abstract class TLObject {
         case "string":
           if (typeof value === "string") {
             writer.writeString(value);
+          } else if (value instanceof Uint8Array) {
+            writer.writeBytes(value);
           } else {
-            throw new Error("Expected string");
+            throw new Error("Expected string or Uint8Array");
           }
           break;
         case "true":
@@ -99,8 +101,8 @@ export abstract class TLObject {
             throw new Error("Expected true");
           }
       }
-
-      return writer.buffer;
     }
+
+    return writer.buffer;
   }
 }

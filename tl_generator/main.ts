@@ -25,12 +25,12 @@ const typeMap: Record<string, string> = {
   "bool": "boolean",
   "double": "number",
   "true": "true",
-  "string": "string",
+  "string": "string | Uint8Array",
   "bytes": "Uint8Array",
   "int128": "bigint",
   "int256": "bigint",
 };
-function convertType(type: string) {
+function convertType(type: string, single = false) {
   if (type.startsWith("flags")) {
     type = type.split("?").slice(-1)[0];
   }
@@ -42,6 +42,9 @@ function convertType(type: string) {
   const mapping = typeMap[type.toLowerCase()];
   if (mapping != undefined) {
     type = mapping;
+    if (single) {
+      type = type.split(/\s/)[0];
+    }
   } else {
     type = `Type${revampType(type)}`;
   }
@@ -60,7 +63,7 @@ function getParamsGetter(params: any[]) {
       continue;
     }
     const isFlag = param.type.startsWith("flags");
-    let type = convertType(param.type);
+    let type = convertType(param.type, true);
     if (type.startsWith("Array")) {
       type = type.split("<")[1].split(">")[0];
       if (!type.startsWith("Type") && type != "Uint8Array") {
@@ -142,12 +145,12 @@ for (const constructor of constructors) {
     continue;
   }
 
-  const isAbstract =
-    constructor.predicate.toLowerCase() == constructor.type.toLowerCase();
+  // const isAbstract =
+  //   constructor.predicate.toLowerCase() == constructor.type.toLowerCase();
 
-  if (isAbstract) {
-    continue;
-  }
+  // if (isAbstract) {
+  //   continue;
+  // }
 
   let parent: string;
   if (constructor.predicate.toLowerCase() == constructor.type.toLowerCase()) {
