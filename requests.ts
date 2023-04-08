@@ -16,11 +16,10 @@ import {
 } from "./deps.ts";
 import { TLReader } from "./utilities/1_tl_reader.ts";
 import { TLWriter } from "./utilities/1_tl_writer.ts";
+import { ClientDHInnerData, PQInnerData } from "./generated.ts";
 
 const req_pq_multi = 0xbe7e8ef1;
-const p_q_inner_data = 0x83c95aec;
 const req_DH_params = 0xd712e4be;
-const client_DH_inner_data = 0x6643b654;
 const set_client_DH_params = 0xf5045f1f;
 
 const PUBLIC_KEYS = [
@@ -89,15 +88,14 @@ export async function getDHParams(
   const [p, q] = factorize(pq);
   const newNonce = randomBigIntBits(32 * 8);
 
-  let data = new TLWriter()
-    .writeInt32(p_q_inner_data)
-    .writeBytes(pqBytes)
-    .writeBytes(bufferFromBigInt(p.valueOf(), 4, false))
-    .writeBytes(bufferFromBigInt(q.valueOf(), 4, false))
-    .writeInt128(nonce)
-    .writeInt128(serverNonce)
-    .writeInt256(newNonce)
-    .buffer;
+  let data = new PQInnerData({
+    pq: pqBytes,
+    p: bufferFromBigInt(p.valueOf(), 4, false),
+    q: bufferFromBigInt(q.valueOf(), 4, false),
+    nonce,
+    server_nonce: serverNonce,
+    new_nonce: newNonce,
+  }).serialize();
 
   /// Step 1
   /// data_with_padding := data + random_padding_bytes; — where random_padding_bytes are chosen so that the resulting length of data_with_padding is precisely 192 bytes, and data is the TL-serialized data to be encrypted as before. One has to check that data is not longer than 144 bytes.
@@ -244,13 +242,12 @@ export async function getDHParams(
 
   const gB = modExp(BigInt(g), b, bigIntFromBuffer(dhPrime, false, true));
 
-  data = new TLWriter()
-    .writeInt32(client_DH_inner_data)
-    .writeInt128(nonce)
-    .writeInt128(serverNonce)
-    .writeInt64(0n)
-    .writeBytes(bufferFromBigInt(gB, 256, false, true))
-    .buffer;
+  data = new ClientDHInnerData({
+    nonce,
+    server_nonce: serverNonce,
+    retry_id: 0n,
+    g_b: bufferFromBigInt(gB, 256, false, true),
+  }).serialize();
 
   let dataWithHash = concat(await sha1(data), data);
 
