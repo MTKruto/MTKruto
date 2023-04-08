@@ -23,15 +23,36 @@ export function mod(n: number, m: number) {
   return ((n % m) + m) % m;
 }
 
-export function bigIntFromBuffer(bytes: Uint8Array) {
-  return BigInt(
+export function bigIntFromBuffer(
+  buffer: Uint8Array,
+  little = true,
+  signed = false,
+) {
+  let randomBuffer = buffer;
+  const bytesLength = randomBuffer.length;
+
+  if (little) {
+    randomBuffer = randomBuffer.reverse();
+  }
+
+  let bigIntVar = BigInt(
     "0x" +
-      [...bytes].map((v) => v.toString(16).padStart(2, "0")).join(""),
+      [...randomBuffer].map((v) => v.toString(16).padStart(2, "0")).join(""),
   );
+
+  if (signed && Math.floor(bigIntVar.toString(2).length / 8) >= bytesLength) {
+    bigIntVar = bigIntVar - (2n ** (BigInt(bytesLength * 8)));
+  }
+
+  return bigIntVar;
 }
 
-export function getRandomBigInt(byteLength: number) {
+export function getRandomBigInt(
+  byteLength: number,
+  little?: boolean,
+  signed?: boolean,
+) {
   const randomBytes = new Uint8Array(byteLength);
   crypto.getRandomValues(randomBytes);
-  return bigIntFromBuffer(randomBytes);
+  return bigIntFromBuffer(randomBytes, little, signed);
 }
