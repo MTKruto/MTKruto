@@ -14,10 +14,8 @@ import {
   ige256Encrypt,
   randomBigIntBits,
 } from "./deps.ts";
-import { TLRawReader } from "./tl/0_tl_raw_reader.ts";
 import {
   ClientDHInnerData,
-  map,
   PQInnerData,
   ServerDHParamsOk,
 } from "./tl/2_constructors.ts";
@@ -26,8 +24,8 @@ import {
   ReqPqMulti,
   SetClientDHParams,
 } from "./tl/3_functions.ts";
-import { deserialize, paramDesc } from "./tl/1_tl_object.ts";
 import { assertInstanceOf } from "https://deno.land/std@0.181.0/testing/asserts.ts";
+import { TLReader } from "./tl/3_tl_reader.ts";
 
 const PUBLIC_KEYS = [
   {
@@ -57,7 +55,7 @@ export async function reqPqMulti(transport: Transport) {
   );
 
   const buffer = await transport.receive();
-  const reader = new TLRawReader(buffer);
+  const reader = new TLReader(buffer);
 
   const _authKeyId = reader.readInt64();
   const _messageId = reader.readInt64();
@@ -193,25 +191,15 @@ export async function getDHParams(
   ));
 
   const buffer = await transport.receive();
-  let reader = new TLRawReader(buffer);
+  let reader = new TLReader(buffer);
 
   const _authKeyId = reader.readInt64();
   const _messageId = reader.readInt64();
   const _messageLength = reader.readInt32();
-  const _constructorId = reader.readInt32(false);
-  const constructor = map.get(_constructorId);
+  const object = reader.readObject();
 
-  if (!constructor) {
-    throw new Error("Unexpected constructor");
-  }
-  const response = deserialize(
-    reader.buffer,
-    constructor[paramDesc],
-    constructor,
-  );
-
-  assertInstanceOf(response, ServerDHParamsOk);
-  const { encryptedAnswer } = response;
+  assertInstanceOf(object, ServerDHParamsOk);
+  const { encryptedAnswer } = object;
 
   const tmpAesKey = concat(
     await sha1(
@@ -242,7 +230,7 @@ export async function getDHParams(
 
   const _answer = ige256Decrypt(encryptedAnswer, tmpAesKey, tmpAesIv).slice(20);
 
-  reader = new TLRawReader(buffer);
+  reader = new TLReader(buffer);
 
   const _constructorId_ = reader.readInt32();
   const __nonce = reader.readInt128();

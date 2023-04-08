@@ -137,11 +137,10 @@ export interface TLObjectConstructor<T = TLObject> {
 }
 
 export function deserialize<T extends TLObjectConstructor<InstanceType<T>>>(
-  buffer: Uint8Array,
+  reader: TLRawReader,
   paramDesc: ParamDesc,
   constructor: T,
 ): InstanceType<T> {
-  const reader = new TLRawReader(buffer);
   const params: Record<string, Param> = {};
   for (const [name, type, note] of paramDesc) {
     if (type instanceof Array) {
