@@ -22,6 +22,7 @@ export type Params = [
     | "boolean"
     | "true"
   >,
+  string,
 ][];
 
 export const id = Symbol("id");

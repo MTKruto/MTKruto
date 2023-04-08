@@ -1,10 +1,16 @@
 // deno-lint-ignore-file no-explicit-any
-import { parse } from "https://deno.land/x/tl_json@1.0.0/mod.ts";
+import { parse } from "https://deno.land/x/tl_json@1.1.0/mod.ts";
 import { revampId, revampType } from "./utilities.ts";
 
-const tlContent = Deno.readTextFileSync("tl/api.tl");
+const apiContent = Deno.readTextFileSync("tl/api.tl");
 
-const { constructors } = parse(tlContent);
+const mtProtoContent = Deno.readTextFileSync("tl/mtproto.tl");
+
+const { constructors: mtProtoConstructors } = parse(mtProtoContent);
+const { constructors: apiConstructors } = parse(apiContent);
+
+const constructors = mtProtoConstructors.concat(apiConstructors);
+
 let code = `import { id, params, TLObject, Params } from "./tl_object.ts";
 
 export abstract class Constructor extends TLObject {
@@ -21,6 +27,8 @@ const typeMap: Record<string, string> = {
   "true": "true",
   "string": "string",
   "bytes": "Uint8Array",
+  "int128": "bigint",
+  "int256": "bigint",
 };
 function convertType(type: string) {
   if (type.startsWith("flags")) {
@@ -62,7 +70,9 @@ function getParamsGetter(params: any[]) {
     } else if (!type.startsWith("Type") && type != "Uint8Array") {
       type = `"${type}"`;
     }
-    code += `[this.${param.name} ${isFlag ? "?? null" : ""}, ${type}],\n`;
+    code += `[this.${param.name} ${
+      isFlag ? "?? null" : ""
+    }, ${type}, "${param.type}"],\n`;
   }
   code += "]\n}\n";
   return code;
