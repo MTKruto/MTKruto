@@ -37,7 +37,7 @@ export abstract class TLObject {
     const writer = new TLWriter();
     writer.writeInt32(this[id]);
 
-    for (const [value, type] of this[params]) {
+    for (const [value, type, note] of this[params]) {
       if (type instanceof Array) {
         throw new Error("Unimplemented");
       }
@@ -56,7 +56,13 @@ export abstract class TLObject {
       switch (type) {
         case "bigint":
           if (typeof value === "bigint") {
-            writer.writeInt64(value);
+            if (note == "int128") {
+              writer.writeInt128(value);
+            } else if (note === "int256") {
+              writer.writeInt256(value);
+            } else {
+              writer.writeInt64(value);
+            }
           } else {
             throw new Error("Expected bigint");
           }
