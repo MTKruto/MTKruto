@@ -1,27 +1,4 @@
-// deno-lint-ignore-file no-explicit-any
-
-const id = Symbol("id");
-
-const params = Symbol("params");
-
-export abstract class TLObject {
-  protected abstract get [id](): number | symbol;
-  protected abstract get [params](): Params | symbol;
-}
-
-type MaybeInArray<T> = T | [T];
-
-type Params = [
-  | string
-  | number
-  | null
-  | bigint
-  | boolean
-  | Uint8Array
-  | Array<any>
-  | TLObject,
-  MaybeInArray<typeof TLObject | typeof Uint8Array | string>,
-][];
+import { id, Params, params, TLObject } from "./tl_object.ts";
 
 export abstract class Constructor extends TLObject {
 }
