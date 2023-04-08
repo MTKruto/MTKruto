@@ -178,7 +178,6 @@ export async function getDHParams(
   assertEquals(encryptedDataBuf.length, 256);
   /// End step 8
 
-
   await transport.send(packUnencryptedMessage(
     new TLWriter()
       .writeInt32(req_DH_params)
