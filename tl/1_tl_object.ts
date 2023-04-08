@@ -69,7 +69,7 @@ export abstract class TLObject {
         throw new Error("Unimplemented");
       }
 
-      if (type instanceof Uint8Array) {
+      if (type == Uint8Array) {
         if ((value instanceof Uint8Array)) {
           writer.writeBytes(value);
         } else {
@@ -133,6 +133,7 @@ export abstract class TLObject {
 
 export interface TLObjectConstructor<T = TLObject> {
   new (params: Record<string, Param>): T;
+  [paramDesc]: ParamDesc;
 }
 
 export function deserialize<T extends TLObjectConstructor<InstanceType<T>>>(
@@ -150,7 +151,7 @@ export function deserialize<T extends TLObjectConstructor<InstanceType<T>>>(
       throw new Error("Unimplemented");
     }
 
-    if (type instanceof Uint8Array) {
+    if (type == Uint8Array) {
       params[name] = reader.readBytes();
     }
 

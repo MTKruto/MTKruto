@@ -15,12 +15,19 @@ import {
   randomBigIntBits,
 } from "./deps.ts";
 import { TLRawReader } from "./tl/0_tl_raw_reader.ts";
-import { ClientDHInnerData, map, PQInnerData } from "./tl/2_constructors.ts";
+import {
+  ClientDHInnerData,
+  map,
+  PQInnerData,
+  ServerDHParamsOk,
+} from "./tl/2_constructors.ts";
 import {
   ReqDHParams,
   ReqPqMulti,
   SetClientDHParams,
 } from "./tl/3_functions.ts";
+import { deserialize, paramDesc } from "./tl/1_tl_object.ts";
+import { assertInstanceOf } from "https://deno.land/std@0.181.0/testing/asserts.ts";
 
 const PUBLIC_KEYS = [
   {
@@ -56,7 +63,6 @@ export async function reqPqMulti(transport: Transport) {
   const _messageId = reader.readInt64();
   const _messageLength = reader.readInt32();
   const _constructorId = reader.readInt32();
-  const _constructor = map.get(_constructorId);
 
   const nonce_ = reader.readInt128();
   assertEquals(nonce, nonce_);
@@ -192,10 +198,20 @@ export async function getDHParams(
   const _authKeyId = reader.readInt64();
   const _messageId = reader.readInt64();
   const _messageLength = reader.readInt32();
-  const _constructorId = reader.readInt32();
-  const _nonce_ = reader.readInt128();
-  const _serverNonce_ = reader.readInt128();
-  const encryptedAnswer = reader.readBytes();
+  const _constructorId = reader.readInt32(false);
+  const constructor = map.get(_constructorId);
+
+  if (!constructor) {
+    throw new Error("Unexpected constructor");
+  }
+  const response = deserialize(
+    reader.buffer,
+    constructor[paramDesc],
+    constructor,
+  );
+
+  assertInstanceOf(response, ServerDHParamsOk);
+  const { encryptedAnswer } = response;
 
   const tmpAesKey = concat(
     await sha1(
