@@ -47,7 +47,11 @@ export function bigIntFromBuffer(
   return bigIntVar;
 }
 
-export function getRandomBigInt(byteLength: number, little?: boolean, signed?: boolean) {
+export function getRandomBigInt(
+  byteLength: number,
+  little?: boolean,
+  signed?: boolean,
+) {
   const randomBytes = new Uint8Array(byteLength);
   crypto.getRandomValues(randomBytes);
   return bigIntFromBuffer(randomBytes, little, signed);
