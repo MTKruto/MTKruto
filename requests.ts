@@ -14,14 +14,13 @@ import {
   ige256Encrypt,
   randomBigIntBits,
 } from "./deps.ts";
-import { TLReader } from "./utilities/1_tl_reader.ts";
+import { TLReader } from "./tl/1_tl_reader.ts";
+import { ClientDHInnerData, PQInnerData } from "./tl/2_constructors.ts";
 import {
-  ClientDHInnerData,
-  PQInnerData,
   ReqDHParams,
   ReqPqMulti,
   SetClientDHParams,
-} from "./generated.ts";
+} from "./tl/3_functions.ts";
 
 const PUBLIC_KEYS = [
   {
