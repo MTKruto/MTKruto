@@ -1,19 +1,29 @@
 // deno-lint-ignore-file no-explicit-any
-import { parse } from "https://deno.land/x/tl_json@1.1.0/mod.ts";
+import { parse } from "https://deno.land/x/tl_json@1.1.2/mod.ts";
 import { revampId, revampType, toCamelCase } from "./utilities.ts";
 
 const apiContent = Deno.readTextFileSync("tl/api.tl");
 
 const mtProtoContent = Deno.readTextFileSync("tl/mtproto.tl");
 
-const { constructors: mtProtoConstructors } = parse(mtProtoContent);
-const { constructors: apiConstructors } = parse(apiContent);
+const { constructors: mtProtoConstructors, functions: mtProtoFunctions } =
+  parse(mtProtoContent);
+const { constructors: apiConstructors, functions: apiFunctions } = parse(
+  apiContent,
+);
 
 const constructors = mtProtoConstructors.concat(apiConstructors);
+const functions = mtProtoFunctions.concat(apiFunctions);
 
 let code = `import { id, params, TLObject, Params } from "./tl_object.ts";
 
+// Uknown type
+abstract class TypeX extends TLObject {}
+
 export abstract class Constructor extends TLObject {
+}
+
+export abstract class Function extends TLObject {
 }
 `;
 
@@ -35,7 +45,8 @@ function convertType(type: string, single = false) {
     type = type.split("?").slice(-1)[0];
   }
   let isVector = false;
-  if (type.startsWith("Vector")) {
+  // toLowerCase because it is sometimes `vector` in mtproto.tl
+  if (type.toLowerCase().startsWith("vector")) {
     isVector = true;
     type = type.split("<")[1].split(">")[0];
   }
@@ -46,6 +57,7 @@ function convertType(type: string, single = false) {
       type = type.split(/\s/)[0];
     }
   } else {
+    type = type.replaceAll("!", "");
     type = `Type${revampType(type)}`;
   }
   if (isVector) {
@@ -181,6 +193,25 @@ export class ${className} extends ${parent} {
   ${getConstructor(constructor.params)}
 }
 `;
+}
+
+for (const function_ of functions) {
+  const className = revampType(function_.func);
+  const id = revampId(function_.id);
+
+  code += `
+export class ${className} extends Function {
+  ${getPropertiesDeclr(function_.params)}
+    
+  protected get [id]() {
+    return ${id}
+  }
+
+  ${getParamsGetter(function_.params)}
+
+  ${getConstructor(function_.params)}
+}
+  `;
 }
 
 Deno.writeTextFileSync("generated.ts", code);
