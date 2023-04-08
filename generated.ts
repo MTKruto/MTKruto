@@ -9,6 +9,8 @@ export abstract class TLObject {
   protected abstract get [params](): Params | symbol;
 }
 
+type MaybeInArray<T> = T | [T];
+
 type Params = [
   | string
   | number
@@ -18,10 +20,13 @@ type Params = [
   | Uint8Array
   | Array<any>
   | TLObject,
-  string,
+  MaybeInArray<typeof TLObject | typeof Uint8Array | string>,
 ][];
 
 export abstract class Constructor extends TLObject {
+}
+
+export abstract class TypeTrue extends Constructor {
 }
 
 export abstract class TypeError extends Constructor {
@@ -1027,9 +1032,6 @@ export abstract class TypeAvailableReaction extends Constructor {
 export abstract class TypeMessagesAvailableReactions extends Constructor {
 }
 
-export abstract class TypeMessagesTranslatedText extends Constructor {
-}
-
 export abstract class TypeMessagePeerReaction extends Constructor {
 }
 
@@ -1132,6 +1134,75 @@ export abstract class TypePremiumSubscriptionOption extends Constructor {
 export abstract class TypeSendAsPeer extends Constructor {
 }
 
+export abstract class TypeMessageExtendedMedia extends Constructor {
+}
+
+export abstract class TypeStickerKeyword extends Constructor {
+}
+
+export abstract class TypeUsername extends Constructor {
+}
+
+export abstract class TypeForumTopic extends Constructor {
+}
+
+export abstract class TypeMessagesForumTopics extends Constructor {
+}
+
+export abstract class TypeDefaultHistoryTTL extends Constructor {
+}
+
+export abstract class TypeExportedContactToken extends Constructor {
+}
+
+export abstract class TypeRequestPeerType extends Constructor {
+}
+
+export abstract class TypeEmojiList extends Constructor {
+}
+
+export abstract class TypeEmojiGroup extends Constructor {
+}
+
+export abstract class TypeMessagesEmojiGroups extends Constructor {
+}
+
+export abstract class TypeTextWithEntities extends Constructor {
+}
+
+export abstract class TypeMessagesTranslatedText extends Constructor {
+}
+
+export abstract class TypeAutoSaveSettings extends Constructor {
+}
+
+export abstract class TypeAutoSaveException extends Constructor {
+}
+
+export abstract class TypeAccountAutoSaveSettings extends Constructor {
+}
+
+export abstract class TypeHelpAppConfig extends Constructor {
+}
+
+export abstract class TypeInputBotApp extends Constructor {
+}
+
+export abstract class TypeBotApp extends Constructor {
+}
+
+export abstract class TypeMessagesBotApp extends Constructor {
+}
+
+export abstract class TypeAppWebViewResult extends Constructor {
+}
+
+export abstract class TypeInlineBotWebView extends Constructor {
+}
+
+export abstract class TypeReadParticipantDate extends Constructor {
+}
+
 export class InputPeerEmpty extends TypeInputPeer {
   protected get [id]() {
     return 0x7f3b18ea;
@@ -1169,13 +1240,111 @@ export class InputPeerChat extends TypeInputPeer {
 
   protected get [params](): Params {
     return [
-      [this.chat_id, "long"],
+      [this.chat_id, "bigint"],
     ];
   }
 
   constructor(params: { chat_id: bigint }) {
     super();
     this.chat_id = params.chat_id;
+  }
+}
+
+export class InputPeerUser extends TypeInputPeer {
+  user_id: bigint;
+  access_hash: bigint;
+
+  protected get [id]() {
+    return 0xdde8a54c;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.user_id, "bigint"],
+      [this.access_hash, "bigint"],
+    ];
+  }
+
+  constructor(params: { user_id: bigint; access_hash: bigint }) {
+    super();
+    this.user_id = params.user_id;
+    this.access_hash = params.access_hash;
+  }
+}
+
+export class InputPeerChannel extends TypeInputPeer {
+  channel_id: bigint;
+  access_hash: bigint;
+
+  protected get [id]() {
+    return 0x27bcbbfc;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.channel_id, "bigint"],
+      [this.access_hash, "bigint"],
+    ];
+  }
+
+  constructor(params: { channel_id: bigint; access_hash: bigint }) {
+    super();
+    this.channel_id = params.channel_id;
+    this.access_hash = params.access_hash;
+  }
+}
+
+export class InputPeerUserFromMessage extends TypeInputPeer {
+  peer: TypeInputPeer;
+  msg_id: number;
+  user_id: bigint;
+
+  protected get [id]() {
+    return 0xa87b0a1c;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.peer, TypeInputPeer],
+      [this.msg_id, "number"],
+      [this.user_id, "bigint"],
+    ];
+  }
+
+  constructor(
+    params: { peer: TypeInputPeer; msg_id: number; user_id: bigint },
+  ) {
+    super();
+    this.peer = params.peer;
+    this.msg_id = params.msg_id;
+    this.user_id = params.user_id;
+  }
+}
+
+export class InputPeerChannelFromMessage extends TypeInputPeer {
+  peer: TypeInputPeer;
+  msg_id: number;
+  channel_id: bigint;
+
+  protected get [id]() {
+    return 0xbd2a0840;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.peer, TypeInputPeer],
+      [this.msg_id, "number"],
+      [this.channel_id, "bigint"],
+    ];
+  }
+
+  constructor(
+    params: { peer: TypeInputPeer; msg_id: number; channel_id: bigint },
+  ) {
+    super();
+    this.peer = params.peer;
+    this.msg_id = params.msg_id;
+    this.channel_id = params.channel_id;
   }
 }
 
@@ -1207,6 +1376,33 @@ export class InputUserSelf extends TypeInputUser {
   }
 }
 
+export class InputUserFromMessage extends TypeInputUser {
+  peer: TypeInputPeer;
+  msg_id: number;
+  user_id: bigint;
+
+  protected get [id]() {
+    return 0x1da448e2;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.peer, TypeInputPeer],
+      [this.msg_id, "number"],
+      [this.user_id, "bigint"],
+    ];
+  }
+
+  constructor(
+    params: { peer: TypeInputPeer; msg_id: number; user_id: bigint },
+  ) {
+    super();
+    this.peer = params.peer;
+    this.msg_id = params.msg_id;
+    this.user_id = params.user_id;
+  }
+}
+
 export class InputPhoneContact extends TypeInputContact {
   client_id: bigint;
   phone: string;
@@ -1219,7 +1415,7 @@ export class InputPhoneContact extends TypeInputContact {
 
   protected get [params](): Params {
     return [
-      [this.client_id, "long"],
+      [this.client_id, "bigint"],
       [this.phone, "string"],
       [this.first_name, "string"],
       [this.last_name, "string"],
@@ -1242,6 +1438,31 @@ export class InputPhoneContact extends TypeInputContact {
   }
 }
 
+export class InputFileBig extends TypeInputFile {
+  id: bigint;
+  parts: number;
+  name: string;
+
+  protected get [id]() {
+    return 0xfa4f0bb5;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.id, "bigint"],
+      [this.parts, "number"],
+      [this.name, "string"],
+    ];
+  }
+
+  constructor(params: { id: bigint; parts: number; name: string }) {
+    super();
+    this.id = params.id;
+    this.parts = params.parts;
+    this.name = params.name;
+  }
+}
+
 export class InputMediaEmpty extends TypeInputMedia {
   protected get [id]() {
     return 0x9664f57f;
@@ -1257,6 +1478,7 @@ export class InputMediaEmpty extends TypeInputMedia {
 }
 
 export class InputMediaUploadedPhoto extends TypeInputMedia {
+  spoiler?: true;
   file: TypeInputFile;
   stickers?: Array<TypeInputDocument>;
   ttl_seconds?: number;
@@ -1267,20 +1489,23 @@ export class InputMediaUploadedPhoto extends TypeInputMedia {
 
   protected get [params](): Params {
     return [
-      [this.file, "InputFile"],
-      [this.stickers ?? null, "flags.0?Vector<InputDocument>"],
-      [this.ttl_seconds ?? null, "flags.1?int"],
+      [this.spoiler ?? null, "true"],
+      [this.file, TypeInputFile],
+      [this.stickers ?? null, [TypeInputDocument]],
+      [this.ttl_seconds ?? null, "number"],
     ];
   }
 
   constructor(
     params: {
+      spoiler?: true;
       file: TypeInputFile;
       stickers?: Array<TypeInputDocument>;
       ttl_seconds?: number;
     },
   ) {
     super();
+    this.spoiler = params.spoiler;
     this.file = params.file;
     this.stickers = params.stickers;
     this.ttl_seconds = params.ttl_seconds;
@@ -1288,6 +1513,7 @@ export class InputMediaUploadedPhoto extends TypeInputMedia {
 }
 
 export class InputMediaPhoto extends TypeInputMedia {
+  spoiler?: true;
   id: TypeInputPhoto;
   ttl_seconds?: number;
 
@@ -1297,13 +1523,17 @@ export class InputMediaPhoto extends TypeInputMedia {
 
   protected get [params](): Params {
     return [
-      [this.id, "InputPhoto"],
-      [this.ttl_seconds ?? null, "flags.0?int"],
+      [this.spoiler ?? null, "true"],
+      [this.id, TypeInputPhoto],
+      [this.ttl_seconds ?? null, "number"],
     ];
   }
 
-  constructor(params: { id: TypeInputPhoto; ttl_seconds?: number }) {
+  constructor(
+    params: { spoiler?: true; id: TypeInputPhoto; ttl_seconds?: number },
+  ) {
     super();
+    this.spoiler = params.spoiler;
     this.id = params.id;
     this.ttl_seconds = params.ttl_seconds;
   }
@@ -1318,7 +1548,7 @@ export class InputMediaGeoPoint extends TypeInputMedia {
 
   protected get [params](): Params {
     return [
-      [this.geo_point, "InputGeoPoint"],
+      [this.geo_point, TypeInputGeoPoint],
     ];
   }
 
@@ -1363,6 +1593,356 @@ export class InputMediaContact extends TypeInputMedia {
   }
 }
 
+export class InputMediaUploadedDocument extends TypeInputMedia {
+  nosound_video?: true;
+  force_file?: true;
+  spoiler?: true;
+  file: TypeInputFile;
+  thumb?: TypeInputFile;
+  mime_type: string;
+  attributes: Array<TypeDocumentAttribute>;
+  stickers?: Array<TypeInputDocument>;
+  ttl_seconds?: number;
+
+  protected get [id]() {
+    return 0x5b38c6c1;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.nosound_video ?? null, "true"],
+      [this.force_file ?? null, "true"],
+      [this.spoiler ?? null, "true"],
+      [this.file, TypeInputFile],
+      [this.thumb ?? null, TypeInputFile],
+      [this.mime_type, "string"],
+      [this.attributes, [TypeDocumentAttribute]],
+      [this.stickers ?? null, [TypeInputDocument]],
+      [this.ttl_seconds ?? null, "number"],
+    ];
+  }
+
+  constructor(
+    params: {
+      nosound_video?: true;
+      force_file?: true;
+      spoiler?: true;
+      file: TypeInputFile;
+      thumb?: TypeInputFile;
+      mime_type: string;
+      attributes: Array<TypeDocumentAttribute>;
+      stickers?: Array<TypeInputDocument>;
+      ttl_seconds?: number;
+    },
+  ) {
+    super();
+    this.nosound_video = params.nosound_video;
+    this.force_file = params.force_file;
+    this.spoiler = params.spoiler;
+    this.file = params.file;
+    this.thumb = params.thumb;
+    this.mime_type = params.mime_type;
+    this.attributes = params.attributes;
+    this.stickers = params.stickers;
+    this.ttl_seconds = params.ttl_seconds;
+  }
+}
+
+export class InputMediaDocument extends TypeInputMedia {
+  spoiler?: true;
+  id: TypeInputDocument;
+  ttl_seconds?: number;
+  query?: string;
+
+  protected get [id]() {
+    return 0x33473058;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.spoiler ?? null, "true"],
+      [this.id, TypeInputDocument],
+      [this.ttl_seconds ?? null, "number"],
+      [this.query ?? null, "string"],
+    ];
+  }
+
+  constructor(
+    params: {
+      spoiler?: true;
+      id: TypeInputDocument;
+      ttl_seconds?: number;
+      query?: string;
+    },
+  ) {
+    super();
+    this.spoiler = params.spoiler;
+    this.id = params.id;
+    this.ttl_seconds = params.ttl_seconds;
+    this.query = params.query;
+  }
+}
+
+export class InputMediaVenue extends TypeInputMedia {
+  geo_point: TypeInputGeoPoint;
+  title: string;
+  address: string;
+  provider: string;
+  venue_id: string;
+  venue_type: string;
+
+  protected get [id]() {
+    return 0xc13d1c11;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.geo_point, TypeInputGeoPoint],
+      [this.title, "string"],
+      [this.address, "string"],
+      [this.provider, "string"],
+      [this.venue_id, "string"],
+      [this.venue_type, "string"],
+    ];
+  }
+
+  constructor(
+    params: {
+      geo_point: TypeInputGeoPoint;
+      title: string;
+      address: string;
+      provider: string;
+      venue_id: string;
+      venue_type: string;
+    },
+  ) {
+    super();
+    this.geo_point = params.geo_point;
+    this.title = params.title;
+    this.address = params.address;
+    this.provider = params.provider;
+    this.venue_id = params.venue_id;
+    this.venue_type = params.venue_type;
+  }
+}
+
+export class InputMediaPhotoExternal extends TypeInputMedia {
+  spoiler?: true;
+  url: string;
+  ttl_seconds?: number;
+
+  protected get [id]() {
+    return 0xe5bbfe1a;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.spoiler ?? null, "true"],
+      [this.url, "string"],
+      [this.ttl_seconds ?? null, "number"],
+    ];
+  }
+
+  constructor(params: { spoiler?: true; url: string; ttl_seconds?: number }) {
+    super();
+    this.spoiler = params.spoiler;
+    this.url = params.url;
+    this.ttl_seconds = params.ttl_seconds;
+  }
+}
+
+export class InputMediaDocumentExternal extends TypeInputMedia {
+  spoiler?: true;
+  url: string;
+  ttl_seconds?: number;
+
+  protected get [id]() {
+    return 0xfb52dc99;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.spoiler ?? null, "true"],
+      [this.url, "string"],
+      [this.ttl_seconds ?? null, "number"],
+    ];
+  }
+
+  constructor(params: { spoiler?: true; url: string; ttl_seconds?: number }) {
+    super();
+    this.spoiler = params.spoiler;
+    this.url = params.url;
+    this.ttl_seconds = params.ttl_seconds;
+  }
+}
+
+export class InputMediaGame extends TypeInputMedia {
+  id: TypeInputGame;
+
+  protected get [id]() {
+    return 0xd33f43f3;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.id, TypeInputGame],
+    ];
+  }
+
+  constructor(params: { id: TypeInputGame }) {
+    super();
+    this.id = params.id;
+  }
+}
+
+export class InputMediaInvoice extends TypeInputMedia {
+  title: string;
+  description: string;
+  photo?: TypeInputWebDocument;
+  invoice: TypeInvoice;
+  payload: Uint8Array;
+  provider: string;
+  provider_data: TypeDataJSON;
+  start_param?: string;
+  extended_media?: TypeInputMedia;
+
+  protected get [id]() {
+    return 0x8eb5a6d5;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.title, "string"],
+      [this.description, "string"],
+      [this.photo ?? null, TypeInputWebDocument],
+      [this.invoice, TypeInvoice],
+      [this.payload, Uint8Array],
+      [this.provider, "string"],
+      [this.provider_data, TypeDataJSON],
+      [this.start_param ?? null, "string"],
+      [this.extended_media ?? null, TypeInputMedia],
+    ];
+  }
+
+  constructor(
+    params: {
+      title: string;
+      description: string;
+      photo?: TypeInputWebDocument;
+      invoice: TypeInvoice;
+      payload: Uint8Array;
+      provider: string;
+      provider_data: TypeDataJSON;
+      start_param?: string;
+      extended_media?: TypeInputMedia;
+    },
+  ) {
+    super();
+    this.title = params.title;
+    this.description = params.description;
+    this.photo = params.photo;
+    this.invoice = params.invoice;
+    this.payload = params.payload;
+    this.provider = params.provider;
+    this.provider_data = params.provider_data;
+    this.start_param = params.start_param;
+    this.extended_media = params.extended_media;
+  }
+}
+
+export class InputMediaGeoLive extends TypeInputMedia {
+  stopped?: true;
+  geo_point: TypeInputGeoPoint;
+  heading?: number;
+  period?: number;
+  proximity_notification_radius?: number;
+
+  protected get [id]() {
+    return 0x971fa843;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.stopped ?? null, "true"],
+      [this.geo_point, TypeInputGeoPoint],
+      [this.heading ?? null, "number"],
+      [this.period ?? null, "number"],
+      [this.proximity_notification_radius ?? null, "number"],
+    ];
+  }
+
+  constructor(
+    params: {
+      stopped?: true;
+      geo_point: TypeInputGeoPoint;
+      heading?: number;
+      period?: number;
+      proximity_notification_radius?: number;
+    },
+  ) {
+    super();
+    this.stopped = params.stopped;
+    this.geo_point = params.geo_point;
+    this.heading = params.heading;
+    this.period = params.period;
+    this.proximity_notification_radius = params.proximity_notification_radius;
+  }
+}
+
+export class InputMediaPoll extends TypeInputMedia {
+  poll: TypePoll;
+  correct_answers?: Array<Uint8Array>;
+  solution?: string;
+  solution_entities?: Array<TypeMessageEntity>;
+
+  protected get [id]() {
+    return 0x0f94e5f1;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.poll, TypePoll],
+      [this.correct_answers ?? null, [Uint8Array]],
+      [this.solution ?? null, "string"],
+      [this.solution_entities ?? null, [TypeMessageEntity]],
+    ];
+  }
+
+  constructor(
+    params: {
+      poll: TypePoll;
+      correct_answers?: Array<Uint8Array>;
+      solution?: string;
+      solution_entities?: Array<TypeMessageEntity>;
+    },
+  ) {
+    super();
+    this.poll = params.poll;
+    this.correct_answers = params.correct_answers;
+    this.solution = params.solution;
+    this.solution_entities = params.solution_entities;
+  }
+}
+
+export class InputMediaDice extends TypeInputMedia {
+  emoticon: string;
+
+  protected get [id]() {
+    return 0xe66fbf7b;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.emoticon, "string"],
+    ];
+  }
+
+  constructor(params: { emoticon: string }) {
+    super();
+    this.emoticon = params.emoticon;
+  }
+}
+
 export class InputChatPhotoEmpty extends TypeInputChatPhoto {
   protected get [id]() {
     return 0x1ca48f57;
@@ -1381,16 +1961,18 @@ export class InputChatUploadedPhoto extends TypeInputChatPhoto {
   file?: TypeInputFile;
   video?: TypeInputFile;
   video_start_ts?: number;
+  video_emoji_markup?: TypeVideoSize;
 
   protected get [id]() {
-    return 0xc642724e;
+    return 0xbdcdaec0;
   }
 
   protected get [params](): Params {
     return [
-      [this.file ?? null, "flags.0?InputFile"],
-      [this.video ?? null, "flags.1?InputFile"],
-      [this.video_start_ts ?? null, "flags.2?double"],
+      [this.file ?? null, TypeInputFile],
+      [this.video ?? null, TypeInputFile],
+      [this.video_start_ts ?? null, "number"],
+      [this.video_emoji_markup ?? null, TypeVideoSize],
     ];
   }
 
@@ -1399,12 +1981,14 @@ export class InputChatUploadedPhoto extends TypeInputChatPhoto {
       file?: TypeInputFile;
       video?: TypeInputFile;
       video_start_ts?: number;
+      video_emoji_markup?: TypeVideoSize;
     },
   ) {
     super();
     this.file = params.file;
     this.video = params.video;
     this.video_start_ts = params.video_start_ts;
+    this.video_emoji_markup = params.video_emoji_markup;
   }
 }
 
@@ -1436,6 +2020,265 @@ export class InputPhotoEmpty extends TypeInputPhoto {
   }
 }
 
+export class InputEncryptedFileLocation extends TypeInputFileLocation {
+  id: bigint;
+  access_hash: bigint;
+
+  protected get [id]() {
+    return 0xf5235d55;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.id, "bigint"],
+      [this.access_hash, "bigint"],
+    ];
+  }
+
+  constructor(params: { id: bigint; access_hash: bigint }) {
+    super();
+    this.id = params.id;
+    this.access_hash = params.access_hash;
+  }
+}
+
+export class InputDocumentFileLocation extends TypeInputFileLocation {
+  id: bigint;
+  access_hash: bigint;
+  file_reference: Uint8Array;
+  thumb_size: string;
+
+  protected get [id]() {
+    return 0xbad07584;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.id, "bigint"],
+      [this.access_hash, "bigint"],
+      [this.file_reference, Uint8Array],
+      [this.thumb_size, "string"],
+    ];
+  }
+
+  constructor(
+    params: {
+      id: bigint;
+      access_hash: bigint;
+      file_reference: Uint8Array;
+      thumb_size: string;
+    },
+  ) {
+    super();
+    this.id = params.id;
+    this.access_hash = params.access_hash;
+    this.file_reference = params.file_reference;
+    this.thumb_size = params.thumb_size;
+  }
+}
+
+export class InputSecureFileLocation extends TypeInputFileLocation {
+  id: bigint;
+  access_hash: bigint;
+
+  protected get [id]() {
+    return 0xcbc7ee28;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.id, "bigint"],
+      [this.access_hash, "bigint"],
+    ];
+  }
+
+  constructor(params: { id: bigint; access_hash: bigint }) {
+    super();
+    this.id = params.id;
+    this.access_hash = params.access_hash;
+  }
+}
+
+export class InputTakeoutFileLocation extends TypeInputFileLocation {
+  protected get [id]() {
+    return 0x29be5899;
+  }
+
+  protected get [params](): Params {
+    return [];
+  }
+
+  constructor() {
+    super();
+  }
+}
+
+export class InputPhotoFileLocation extends TypeInputFileLocation {
+  id: bigint;
+  access_hash: bigint;
+  file_reference: Uint8Array;
+  thumb_size: string;
+
+  protected get [id]() {
+    return 0x40181ffe;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.id, "bigint"],
+      [this.access_hash, "bigint"],
+      [this.file_reference, Uint8Array],
+      [this.thumb_size, "string"],
+    ];
+  }
+
+  constructor(
+    params: {
+      id: bigint;
+      access_hash: bigint;
+      file_reference: Uint8Array;
+      thumb_size: string;
+    },
+  ) {
+    super();
+    this.id = params.id;
+    this.access_hash = params.access_hash;
+    this.file_reference = params.file_reference;
+    this.thumb_size = params.thumb_size;
+  }
+}
+
+export class InputPhotoLegacyFileLocation extends TypeInputFileLocation {
+  id: bigint;
+  access_hash: bigint;
+  file_reference: Uint8Array;
+  volume_id: bigint;
+  local_id: number;
+  secret: bigint;
+
+  protected get [id]() {
+    return 0xd83466f3;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.id, "bigint"],
+      [this.access_hash, "bigint"],
+      [this.file_reference, Uint8Array],
+      [this.volume_id, "bigint"],
+      [this.local_id, "number"],
+      [this.secret, "bigint"],
+    ];
+  }
+
+  constructor(
+    params: {
+      id: bigint;
+      access_hash: bigint;
+      file_reference: Uint8Array;
+      volume_id: bigint;
+      local_id: number;
+      secret: bigint;
+    },
+  ) {
+    super();
+    this.id = params.id;
+    this.access_hash = params.access_hash;
+    this.file_reference = params.file_reference;
+    this.volume_id = params.volume_id;
+    this.local_id = params.local_id;
+    this.secret = params.secret;
+  }
+}
+
+export class InputPeerPhotoFileLocation extends TypeInputFileLocation {
+  big?: true;
+  peer: TypeInputPeer;
+  photo_id: bigint;
+
+  protected get [id]() {
+    return 0x37257e99;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.big ?? null, "true"],
+      [this.peer, TypeInputPeer],
+      [this.photo_id, "bigint"],
+    ];
+  }
+
+  constructor(params: { big?: true; peer: TypeInputPeer; photo_id: bigint }) {
+    super();
+    this.big = params.big;
+    this.peer = params.peer;
+    this.photo_id = params.photo_id;
+  }
+}
+
+export class InputStickerSetThumb extends TypeInputFileLocation {
+  stickerset: TypeInputStickerSet;
+  thumb_version: number;
+
+  protected get [id]() {
+    return 0x9d84f3db;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.stickerset, TypeInputStickerSet],
+      [this.thumb_version, "number"],
+    ];
+  }
+
+  constructor(
+    params: { stickerset: TypeInputStickerSet; thumb_version: number },
+  ) {
+    super();
+    this.stickerset = params.stickerset;
+    this.thumb_version = params.thumb_version;
+  }
+}
+
+export class InputGroupCallStream extends TypeInputFileLocation {
+  call: TypeInputGroupCall;
+  time_ms: bigint;
+  scale: number;
+  video_channel?: number;
+  video_quality?: number;
+
+  protected get [id]() {
+    return 0x0598a92a;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.call, TypeInputGroupCall],
+      [this.time_ms, "bigint"],
+      [this.scale, "number"],
+      [this.video_channel ?? null, "number"],
+      [this.video_quality ?? null, "number"],
+    ];
+  }
+
+  constructor(
+    params: {
+      call: TypeInputGroupCall;
+      time_ms: bigint;
+      scale: number;
+      video_channel?: number;
+      video_quality?: number;
+    },
+  ) {
+    super();
+    this.call = params.call;
+    this.time_ms = params.time_ms;
+    this.scale = params.scale;
+    this.video_channel = params.video_channel;
+    this.video_quality = params.video_quality;
+  }
+}
+
 export class PeerUser extends TypePeer {
   user_id: bigint;
 
@@ -1445,7 +2288,7 @@ export class PeerUser extends TypePeer {
 
   protected get [params](): Params {
     return [
-      [this.user_id, "long"],
+      [this.user_id, "bigint"],
     ];
   }
 
@@ -1464,13 +2307,32 @@ export class PeerChat extends TypePeer {
 
   protected get [params](): Params {
     return [
-      [this.chat_id, "long"],
+      [this.chat_id, "bigint"],
     ];
   }
 
   constructor(params: { chat_id: bigint }) {
     super();
     this.chat_id = params.chat_id;
+  }
+}
+
+export class PeerChannel extends TypePeer {
+  channel_id: bigint;
+
+  protected get [id]() {
+    return 0xa2a5371e;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.channel_id, "bigint"],
+    ];
+  }
+
+  constructor(params: { channel_id: bigint }) {
+    super();
+    this.channel_id = params.channel_id;
   }
 }
 
@@ -1623,7 +2485,7 @@ export class UserEmpty extends TypeUser {
 
   protected get [params](): Params {
     return [
-      [this.id, "long"],
+      [this.id, "bigint"],
     ];
   }
 
@@ -1670,7 +2532,7 @@ export class UserStatusOnline extends TypeUserStatus {
 
   protected get [params](): Params {
     return [
-      [this.expires, "int"],
+      [this.expires, "number"],
     ];
   }
 
@@ -1689,13 +2551,55 @@ export class UserStatusOffline extends TypeUserStatus {
 
   protected get [params](): Params {
     return [
-      [this.was_online, "int"],
+      [this.was_online, "number"],
     ];
   }
 
   constructor(params: { was_online: number }) {
     super();
     this.was_online = params.was_online;
+  }
+}
+
+export class UserStatusRecently extends TypeUserStatus {
+  protected get [id]() {
+    return 0xe26f42f1;
+  }
+
+  protected get [params](): Params {
+    return [];
+  }
+
+  constructor() {
+    super();
+  }
+}
+
+export class UserStatusLastWeek extends TypeUserStatus {
+  protected get [id]() {
+    return 0x07bf09fc;
+  }
+
+  protected get [params](): Params {
+    return [];
+  }
+
+  constructor() {
+    super();
+  }
+}
+
+export class UserStatusLastMonth extends TypeUserStatus {
+  protected get [id]() {
+    return 0x77ebc742;
+  }
+
+  protected get [params](): Params {
+    return [];
+  }
+
+  constructor() {
+    super();
   }
 }
 
@@ -1708,7 +2612,7 @@ export class ChatEmpty extends TypeChat {
 
   protected get [params](): Params {
     return [
-      [this.id, "long"],
+      [this.id, "bigint"],
     ];
   }
 
@@ -1728,7 +2632,7 @@ export class ChatForbidden extends TypeChat {
 
   protected get [params](): Params {
     return [
-      [this.id, "long"],
+      [this.id, "bigint"],
       [this.title, "string"],
     ];
   }
@@ -1737,6 +2641,447 @@ export class ChatForbidden extends TypeChat {
     super();
     this.id = params.id;
     this.title = params.title;
+  }
+}
+
+export class Channel extends TypeChat {
+  creator?: true;
+  left?: true;
+  broadcast?: true;
+  verified?: true;
+  megagroup?: true;
+  restricted?: true;
+  signatures?: true;
+  min?: true;
+  scam?: true;
+  has_link?: true;
+  has_geo?: true;
+  slowmode_enabled?: true;
+  call_active?: true;
+  call_not_empty?: true;
+  fake?: true;
+  gigagroup?: true;
+  noforwards?: true;
+  join_to_send?: true;
+  join_request?: true;
+  forum?: true;
+  id: bigint;
+  access_hash?: bigint;
+  title: string;
+  username?: string;
+  photo: TypeChatPhoto;
+  date: number;
+  restriction_reason?: Array<TypeRestrictionReason>;
+  admin_rights?: TypeChatAdminRights;
+  banned_rights?: TypeChatBannedRights;
+  default_banned_rights?: TypeChatBannedRights;
+  participants_count?: number;
+  usernames?: Array<TypeUsername>;
+
+  protected get [id]() {
+    return 0x83259464;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.creator ?? null, "true"],
+      [this.left ?? null, "true"],
+      [this.broadcast ?? null, "true"],
+      [this.verified ?? null, "true"],
+      [this.megagroup ?? null, "true"],
+      [this.restricted ?? null, "true"],
+      [this.signatures ?? null, "true"],
+      [this.min ?? null, "true"],
+      [this.scam ?? null, "true"],
+      [this.has_link ?? null, "true"],
+      [this.has_geo ?? null, "true"],
+      [this.slowmode_enabled ?? null, "true"],
+      [this.call_active ?? null, "true"],
+      [this.call_not_empty ?? null, "true"],
+      [this.fake ?? null, "true"],
+      [this.gigagroup ?? null, "true"],
+      [this.noforwards ?? null, "true"],
+      [this.join_to_send ?? null, "true"],
+      [this.join_request ?? null, "true"],
+      [this.forum ?? null, "true"],
+      [this.id, "bigint"],
+      [this.access_hash ?? null, "bigint"],
+      [this.title, "string"],
+      [this.username ?? null, "string"],
+      [this.photo, TypeChatPhoto],
+      [this.date, "number"],
+      [this.restriction_reason ?? null, [TypeRestrictionReason]],
+      [this.admin_rights ?? null, TypeChatAdminRights],
+      [this.banned_rights ?? null, TypeChatBannedRights],
+      [this.default_banned_rights ?? null, TypeChatBannedRights],
+      [this.participants_count ?? null, "number"],
+      [this.usernames ?? null, [TypeUsername]],
+    ];
+  }
+
+  constructor(
+    params: {
+      creator?: true;
+      left?: true;
+      broadcast?: true;
+      verified?: true;
+      megagroup?: true;
+      restricted?: true;
+      signatures?: true;
+      min?: true;
+      scam?: true;
+      has_link?: true;
+      has_geo?: true;
+      slowmode_enabled?: true;
+      call_active?: true;
+      call_not_empty?: true;
+      fake?: true;
+      gigagroup?: true;
+      noforwards?: true;
+      join_to_send?: true;
+      join_request?: true;
+      forum?: true;
+      id: bigint;
+      access_hash?: bigint;
+      title: string;
+      username?: string;
+      photo: TypeChatPhoto;
+      date: number;
+      restriction_reason?: Array<TypeRestrictionReason>;
+      admin_rights?: TypeChatAdminRights;
+      banned_rights?: TypeChatBannedRights;
+      default_banned_rights?: TypeChatBannedRights;
+      participants_count?: number;
+      usernames?: Array<TypeUsername>;
+    },
+  ) {
+    super();
+    this.creator = params.creator;
+    this.left = params.left;
+    this.broadcast = params.broadcast;
+    this.verified = params.verified;
+    this.megagroup = params.megagroup;
+    this.restricted = params.restricted;
+    this.signatures = params.signatures;
+    this.min = params.min;
+    this.scam = params.scam;
+    this.has_link = params.has_link;
+    this.has_geo = params.has_geo;
+    this.slowmode_enabled = params.slowmode_enabled;
+    this.call_active = params.call_active;
+    this.call_not_empty = params.call_not_empty;
+    this.fake = params.fake;
+    this.gigagroup = params.gigagroup;
+    this.noforwards = params.noforwards;
+    this.join_to_send = params.join_to_send;
+    this.join_request = params.join_request;
+    this.forum = params.forum;
+    this.id = params.id;
+    this.access_hash = params.access_hash;
+    this.title = params.title;
+    this.username = params.username;
+    this.photo = params.photo;
+    this.date = params.date;
+    this.restriction_reason = params.restriction_reason;
+    this.admin_rights = params.admin_rights;
+    this.banned_rights = params.banned_rights;
+    this.default_banned_rights = params.default_banned_rights;
+    this.participants_count = params.participants_count;
+    this.usernames = params.usernames;
+  }
+}
+
+export class ChannelForbidden extends TypeChat {
+  broadcast?: true;
+  megagroup?: true;
+  id: bigint;
+  access_hash: bigint;
+  title: string;
+  until_date?: number;
+
+  protected get [id]() {
+    return 0x17d493d5;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.broadcast ?? null, "true"],
+      [this.megagroup ?? null, "true"],
+      [this.id, "bigint"],
+      [this.access_hash, "bigint"],
+      [this.title, "string"],
+      [this.until_date ?? null, "number"],
+    ];
+  }
+
+  constructor(
+    params: {
+      broadcast?: true;
+      megagroup?: true;
+      id: bigint;
+      access_hash: bigint;
+      title: string;
+      until_date?: number;
+    },
+  ) {
+    super();
+    this.broadcast = params.broadcast;
+    this.megagroup = params.megagroup;
+    this.id = params.id;
+    this.access_hash = params.access_hash;
+    this.title = params.title;
+    this.until_date = params.until_date;
+  }
+}
+
+export class ChannelFull extends TypeChatFull {
+  can_view_participants?: true;
+  can_set_username?: true;
+  can_set_stickers?: true;
+  hidden_prehistory?: true;
+  can_set_location?: true;
+  has_scheduled?: true;
+  can_view_stats?: true;
+  blocked?: true;
+  can_delete_channel?: true;
+  antispam?: true;
+  participants_hidden?: true;
+  translations_disabled?: true;
+  id: bigint;
+  about: string;
+  participants_count?: number;
+  admins_count?: number;
+  kicked_count?: number;
+  banned_count?: number;
+  online_count?: number;
+  read_inbox_max_id: number;
+  read_outbox_max_id: number;
+  unread_count: number;
+  chat_photo: TypePhoto;
+  notify_settings: TypePeerNotifySettings;
+  exported_invite?: TypeExportedChatInvite;
+  bot_info: Array<TypeBotInfo>;
+  migrated_from_chat_id?: bigint;
+  migrated_from_max_id?: number;
+  pinned_msg_id?: number;
+  stickerset?: TypeStickerSet;
+  available_min_id?: number;
+  folder_id?: number;
+  linked_chat_id?: bigint;
+  location?: TypeChannelLocation;
+  slowmode_seconds?: number;
+  slowmode_next_send_date?: number;
+  stats_dc?: number;
+  pts: number;
+  call?: TypeInputGroupCall;
+  ttl_period?: number;
+  pending_suggestions?: Array<string>;
+  groupcall_default_join_as?: TypePeer;
+  theme_emoticon?: string;
+  requests_pending?: number;
+  recent_requesters?: Array<bigint>;
+  default_send_as?: TypePeer;
+  available_reactions?: TypeChatReactions;
+
+  protected get [id]() {
+    return 0xf2355507;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.can_view_participants ?? null, "true"],
+      [this.can_set_username ?? null, "true"],
+      [this.can_set_stickers ?? null, "true"],
+      [this.hidden_prehistory ?? null, "true"],
+      [this.can_set_location ?? null, "true"],
+      [this.has_scheduled ?? null, "true"],
+      [this.can_view_stats ?? null, "true"],
+      [this.blocked ?? null, "true"],
+      [this.can_delete_channel ?? null, "true"],
+      [this.antispam ?? null, "true"],
+      [this.participants_hidden ?? null, "true"],
+      [this.translations_disabled ?? null, "true"],
+      [this.id, "bigint"],
+      [this.about, "string"],
+      [this.participants_count ?? null, "number"],
+      [this.admins_count ?? null, "number"],
+      [this.kicked_count ?? null, "number"],
+      [this.banned_count ?? null, "number"],
+      [this.online_count ?? null, "number"],
+      [this.read_inbox_max_id, "number"],
+      [this.read_outbox_max_id, "number"],
+      [this.unread_count, "number"],
+      [this.chat_photo, TypePhoto],
+      [this.notify_settings, TypePeerNotifySettings],
+      [this.exported_invite ?? null, TypeExportedChatInvite],
+      [this.bot_info, [TypeBotInfo]],
+      [this.migrated_from_chat_id ?? null, "bigint"],
+      [this.migrated_from_max_id ?? null, "number"],
+      [this.pinned_msg_id ?? null, "number"],
+      [this.stickerset ?? null, TypeStickerSet],
+      [this.available_min_id ?? null, "number"],
+      [this.folder_id ?? null, "number"],
+      [this.linked_chat_id ?? null, "bigint"],
+      [this.location ?? null, TypeChannelLocation],
+      [this.slowmode_seconds ?? null, "number"],
+      [this.slowmode_next_send_date ?? null, "number"],
+      [this.stats_dc ?? null, "number"],
+      [this.pts, "number"],
+      [this.call ?? null, TypeInputGroupCall],
+      [this.ttl_period ?? null, "number"],
+      [this.pending_suggestions ?? null, ["string"]],
+      [this.groupcall_default_join_as ?? null, TypePeer],
+      [this.theme_emoticon ?? null, "string"],
+      [this.requests_pending ?? null, "number"],
+      [this.recent_requesters ?? null, ["bigint"]],
+      [this.default_send_as ?? null, TypePeer],
+      [this.available_reactions ?? null, TypeChatReactions],
+    ];
+  }
+
+  constructor(
+    params: {
+      can_view_participants?: true;
+      can_set_username?: true;
+      can_set_stickers?: true;
+      hidden_prehistory?: true;
+      can_set_location?: true;
+      has_scheduled?: true;
+      can_view_stats?: true;
+      blocked?: true;
+      can_delete_channel?: true;
+      antispam?: true;
+      participants_hidden?: true;
+      translations_disabled?: true;
+      id: bigint;
+      about: string;
+      participants_count?: number;
+      admins_count?: number;
+      kicked_count?: number;
+      banned_count?: number;
+      online_count?: number;
+      read_inbox_max_id: number;
+      read_outbox_max_id: number;
+      unread_count: number;
+      chat_photo: TypePhoto;
+      notify_settings: TypePeerNotifySettings;
+      exported_invite?: TypeExportedChatInvite;
+      bot_info: Array<TypeBotInfo>;
+      migrated_from_chat_id?: bigint;
+      migrated_from_max_id?: number;
+      pinned_msg_id?: number;
+      stickerset?: TypeStickerSet;
+      available_min_id?: number;
+      folder_id?: number;
+      linked_chat_id?: bigint;
+      location?: TypeChannelLocation;
+      slowmode_seconds?: number;
+      slowmode_next_send_date?: number;
+      stats_dc?: number;
+      pts: number;
+      call?: TypeInputGroupCall;
+      ttl_period?: number;
+      pending_suggestions?: Array<string>;
+      groupcall_default_join_as?: TypePeer;
+      theme_emoticon?: string;
+      requests_pending?: number;
+      recent_requesters?: Array<bigint>;
+      default_send_as?: TypePeer;
+      available_reactions?: TypeChatReactions;
+    },
+  ) {
+    super();
+    this.can_view_participants = params.can_view_participants;
+    this.can_set_username = params.can_set_username;
+    this.can_set_stickers = params.can_set_stickers;
+    this.hidden_prehistory = params.hidden_prehistory;
+    this.can_set_location = params.can_set_location;
+    this.has_scheduled = params.has_scheduled;
+    this.can_view_stats = params.can_view_stats;
+    this.blocked = params.blocked;
+    this.can_delete_channel = params.can_delete_channel;
+    this.antispam = params.antispam;
+    this.participants_hidden = params.participants_hidden;
+    this.translations_disabled = params.translations_disabled;
+    this.id = params.id;
+    this.about = params.about;
+    this.participants_count = params.participants_count;
+    this.admins_count = params.admins_count;
+    this.kicked_count = params.kicked_count;
+    this.banned_count = params.banned_count;
+    this.online_count = params.online_count;
+    this.read_inbox_max_id = params.read_inbox_max_id;
+    this.read_outbox_max_id = params.read_outbox_max_id;
+    this.unread_count = params.unread_count;
+    this.chat_photo = params.chat_photo;
+    this.notify_settings = params.notify_settings;
+    this.exported_invite = params.exported_invite;
+    this.bot_info = params.bot_info;
+    this.migrated_from_chat_id = params.migrated_from_chat_id;
+    this.migrated_from_max_id = params.migrated_from_max_id;
+    this.pinned_msg_id = params.pinned_msg_id;
+    this.stickerset = params.stickerset;
+    this.available_min_id = params.available_min_id;
+    this.folder_id = params.folder_id;
+    this.linked_chat_id = params.linked_chat_id;
+    this.location = params.location;
+    this.slowmode_seconds = params.slowmode_seconds;
+    this.slowmode_next_send_date = params.slowmode_next_send_date;
+    this.stats_dc = params.stats_dc;
+    this.pts = params.pts;
+    this.call = params.call;
+    this.ttl_period = params.ttl_period;
+    this.pending_suggestions = params.pending_suggestions;
+    this.groupcall_default_join_as = params.groupcall_default_join_as;
+    this.theme_emoticon = params.theme_emoticon;
+    this.requests_pending = params.requests_pending;
+    this.recent_requesters = params.recent_requesters;
+    this.default_send_as = params.default_send_as;
+    this.available_reactions = params.available_reactions;
+  }
+}
+
+export class ChatParticipantCreator extends TypeChatParticipant {
+  user_id: bigint;
+
+  protected get [id]() {
+    return 0xe46bcee4;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.user_id, "bigint"],
+    ];
+  }
+
+  constructor(params: { user_id: bigint }) {
+    super();
+    this.user_id = params.user_id;
+  }
+}
+
+export class ChatParticipantAdmin extends TypeChatParticipant {
+  user_id: bigint;
+  inviter_id: bigint;
+  date: number;
+
+  protected get [id]() {
+    return 0xa0933f5b;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.user_id, "bigint"],
+      [this.inviter_id, "bigint"],
+      [this.date, "number"],
+    ];
+  }
+
+  constructor(params: { user_id: bigint; inviter_id: bigint; date: number }) {
+    super();
+    this.user_id = params.user_id;
+    this.inviter_id = params.inviter_id;
+    this.date = params.date;
   }
 }
 
@@ -1750,8 +3095,8 @@ export class ChatParticipantsForbidden extends TypeChatParticipants {
 
   protected get [params](): Params {
     return [
-      [this.chat_id, "long"],
-      [this.self_participant ?? null, "flags.0?ChatParticipant"],
+      [this.chat_id, "bigint"],
+      [this.self_participant ?? null, TypeChatParticipant],
     ];
   }
 
@@ -1788,8 +3133,8 @@ export class MessageEmpty extends TypeMessage {
 
   protected get [params](): Params {
     return [
-      [this.id, "int"],
-      [this.peer_id ?? null, "flags.0?Peer"],
+      [this.id, "number"],
+      [this.peer_id ?? null, TypePeer],
     ];
   }
 
@@ -1821,19 +3166,19 @@ export class MessageService extends TypeMessage {
 
   protected get [params](): Params {
     return [
-      [this.out ?? null, "flags.1?true"],
-      [this.mentioned ?? null, "flags.4?true"],
-      [this.media_unread ?? null, "flags.5?true"],
-      [this.silent ?? null, "flags.13?true"],
-      [this.post ?? null, "flags.14?true"],
-      [this.legacy ?? null, "flags.19?true"],
-      [this.id, "int"],
-      [this.from_id ?? null, "flags.8?Peer"],
-      [this.peer_id, "Peer"],
-      [this.reply_to ?? null, "flags.3?MessageReplyHeader"],
-      [this.date, "int"],
-      [this.action, "MessageAction"],
-      [this.ttl_period ?? null, "flags.25?int"],
+      [this.out ?? null, "true"],
+      [this.mentioned ?? null, "true"],
+      [this.media_unread ?? null, "true"],
+      [this.silent ?? null, "true"],
+      [this.post ?? null, "true"],
+      [this.legacy ?? null, "true"],
+      [this.id, "number"],
+      [this.from_id ?? null, TypePeer],
+      [this.peer_id, TypePeer],
+      [this.reply_to ?? null, TypeMessageReplyHeader],
+      [this.date, "number"],
+      [this.action, TypeMessageAction],
+      [this.ttl_period ?? null, "number"],
     ];
   }
 
@@ -1886,6 +3231,7 @@ export class MessageMediaEmpty extends TypeMessageMedia {
 }
 
 export class MessageMediaPhoto extends TypeMessageMedia {
+  spoiler?: true;
   photo?: TypePhoto;
   ttl_seconds?: number;
 
@@ -1895,13 +3241,17 @@ export class MessageMediaPhoto extends TypeMessageMedia {
 
   protected get [params](): Params {
     return [
-      [this.photo ?? null, "flags.0?Photo"],
-      [this.ttl_seconds ?? null, "flags.2?int"],
+      [this.spoiler ?? null, "true"],
+      [this.photo ?? null, TypePhoto],
+      [this.ttl_seconds ?? null, "number"],
     ];
   }
 
-  constructor(params: { photo?: TypePhoto; ttl_seconds?: number }) {
+  constructor(
+    params: { spoiler?: true; photo?: TypePhoto; ttl_seconds?: number },
+  ) {
     super();
+    this.spoiler = params.spoiler;
     this.photo = params.photo;
     this.ttl_seconds = params.ttl_seconds;
   }
@@ -1916,7 +3266,7 @@ export class MessageMediaGeo extends TypeMessageMedia {
 
   protected get [params](): Params {
     return [
-      [this.geo, "GeoPoint"],
+      [this.geo, TypeGeoPoint],
     ];
   }
 
@@ -1943,7 +3293,7 @@ export class MessageMediaContact extends TypeMessageMedia {
       [this.first_name, "string"],
       [this.last_name, "string"],
       [this.vcard, "string"],
-      [this.user_id, "long"],
+      [this.user_id, "bigint"],
     ];
   }
 
@@ -1979,6 +3329,260 @@ export class MessageMediaUnsupported extends TypeMessageMedia {
   }
 }
 
+export class MessageMediaDocument extends TypeMessageMedia {
+  nopremium?: true;
+  spoiler?: true;
+  document?: TypeDocument;
+  ttl_seconds?: number;
+
+  protected get [id]() {
+    return 0x9cb070d7;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.nopremium ?? null, "true"],
+      [this.spoiler ?? null, "true"],
+      [this.document ?? null, TypeDocument],
+      [this.ttl_seconds ?? null, "number"],
+    ];
+  }
+
+  constructor(
+    params: {
+      nopremium?: true;
+      spoiler?: true;
+      document?: TypeDocument;
+      ttl_seconds?: number;
+    },
+  ) {
+    super();
+    this.nopremium = params.nopremium;
+    this.spoiler = params.spoiler;
+    this.document = params.document;
+    this.ttl_seconds = params.ttl_seconds;
+  }
+}
+
+export class MessageMediaWebPage extends TypeMessageMedia {
+  webpage: TypeWebPage;
+
+  protected get [id]() {
+    return 0xa32dd600;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.webpage, TypeWebPage],
+    ];
+  }
+
+  constructor(params: { webpage: TypeWebPage }) {
+    super();
+    this.webpage = params.webpage;
+  }
+}
+
+export class MessageMediaVenue extends TypeMessageMedia {
+  geo: TypeGeoPoint;
+  title: string;
+  address: string;
+  provider: string;
+  venue_id: string;
+  venue_type: string;
+
+  protected get [id]() {
+    return 0x2ec0533f;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.geo, TypeGeoPoint],
+      [this.title, "string"],
+      [this.address, "string"],
+      [this.provider, "string"],
+      [this.venue_id, "string"],
+      [this.venue_type, "string"],
+    ];
+  }
+
+  constructor(
+    params: {
+      geo: TypeGeoPoint;
+      title: string;
+      address: string;
+      provider: string;
+      venue_id: string;
+      venue_type: string;
+    },
+  ) {
+    super();
+    this.geo = params.geo;
+    this.title = params.title;
+    this.address = params.address;
+    this.provider = params.provider;
+    this.venue_id = params.venue_id;
+    this.venue_type = params.venue_type;
+  }
+}
+
+export class MessageMediaGame extends TypeMessageMedia {
+  game: TypeGame;
+
+  protected get [id]() {
+    return 0xfdb19008;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.game, TypeGame],
+    ];
+  }
+
+  constructor(params: { game: TypeGame }) {
+    super();
+    this.game = params.game;
+  }
+}
+
+export class MessageMediaInvoice extends TypeMessageMedia {
+  shipping_address_requested?: true;
+  test?: true;
+  title: string;
+  description: string;
+  photo?: TypeWebDocument;
+  receipt_msg_id?: number;
+  currency: string;
+  total_amount: bigint;
+  start_param: string;
+  extended_media?: TypeMessageExtendedMedia;
+
+  protected get [id]() {
+    return 0xf6a548d3;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.shipping_address_requested ?? null, "true"],
+      [this.test ?? null, "true"],
+      [this.title, "string"],
+      [this.description, "string"],
+      [this.photo ?? null, TypeWebDocument],
+      [this.receipt_msg_id ?? null, "number"],
+      [this.currency, "string"],
+      [this.total_amount, "bigint"],
+      [this.start_param, "string"],
+      [this.extended_media ?? null, TypeMessageExtendedMedia],
+    ];
+  }
+
+  constructor(
+    params: {
+      shipping_address_requested?: true;
+      test?: true;
+      title: string;
+      description: string;
+      photo?: TypeWebDocument;
+      receipt_msg_id?: number;
+      currency: string;
+      total_amount: bigint;
+      start_param: string;
+      extended_media?: TypeMessageExtendedMedia;
+    },
+  ) {
+    super();
+    this.shipping_address_requested = params.shipping_address_requested;
+    this.test = params.test;
+    this.title = params.title;
+    this.description = params.description;
+    this.photo = params.photo;
+    this.receipt_msg_id = params.receipt_msg_id;
+    this.currency = params.currency;
+    this.total_amount = params.total_amount;
+    this.start_param = params.start_param;
+    this.extended_media = params.extended_media;
+  }
+}
+
+export class MessageMediaGeoLive extends TypeMessageMedia {
+  geo: TypeGeoPoint;
+  heading?: number;
+  period: number;
+  proximity_notification_radius?: number;
+
+  protected get [id]() {
+    return 0xb940c666;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.geo, TypeGeoPoint],
+      [this.heading ?? null, "number"],
+      [this.period, "number"],
+      [this.proximity_notification_radius ?? null, "number"],
+    ];
+  }
+
+  constructor(
+    params: {
+      geo: TypeGeoPoint;
+      heading?: number;
+      period: number;
+      proximity_notification_radius?: number;
+    },
+  ) {
+    super();
+    this.geo = params.geo;
+    this.heading = params.heading;
+    this.period = params.period;
+    this.proximity_notification_radius = params.proximity_notification_radius;
+  }
+}
+
+export class MessageMediaPoll extends TypeMessageMedia {
+  poll: TypePoll;
+  results: TypePollResults;
+
+  protected get [id]() {
+    return 0x4bd6e798;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.poll, TypePoll],
+      [this.results, TypePollResults],
+    ];
+  }
+
+  constructor(params: { poll: TypePoll; results: TypePollResults }) {
+    super();
+    this.poll = params.poll;
+    this.results = params.results;
+  }
+}
+
+export class MessageMediaDice extends TypeMessageMedia {
+  value: number;
+  emoticon: string;
+
+  protected get [id]() {
+    return 0x3f7ee58b;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.value, "number"],
+      [this.emoticon, "string"],
+    ];
+  }
+
+  constructor(params: { value: number; emoticon: string }) {
+    super();
+    this.value = params.value;
+    this.emoticon = params.emoticon;
+  }
+}
+
 export class MessageActionEmpty extends TypeMessageAction {
   protected get [id]() {
     return 0xb6aef7b0;
@@ -2004,7 +3608,7 @@ export class MessageActionChatCreate extends TypeMessageAction {
   protected get [params](): Params {
     return [
       [this.title, "string"],
-      [this.users, "Vector<long>"],
+      [this.users, ["bigint"]],
     ];
   }
 
@@ -2043,7 +3647,7 @@ export class MessageActionChatEditPhoto extends TypeMessageAction {
 
   protected get [params](): Params {
     return [
-      [this.photo, "Photo"],
+      [this.photo, TypePhoto],
     ];
   }
 
@@ -2076,7 +3680,7 @@ export class MessageActionChatAddUser extends TypeMessageAction {
 
   protected get [params](): Params {
     return [
-      [this.users, "Vector<long>"],
+      [this.users, ["bigint"]],
     ];
   }
 
@@ -2095,13 +3699,755 @@ export class MessageActionChatDeleteUser extends TypeMessageAction {
 
   protected get [params](): Params {
     return [
-      [this.user_id, "long"],
+      [this.user_id, "bigint"],
     ];
   }
 
   constructor(params: { user_id: bigint }) {
     super();
     this.user_id = params.user_id;
+  }
+}
+
+export class MessageActionChatJoinedByLink extends TypeMessageAction {
+  inviter_id: bigint;
+
+  protected get [id]() {
+    return 0x031224c3;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.inviter_id, "bigint"],
+    ];
+  }
+
+  constructor(params: { inviter_id: bigint }) {
+    super();
+    this.inviter_id = params.inviter_id;
+  }
+}
+
+export class MessageActionChannelCreate extends TypeMessageAction {
+  title: string;
+
+  protected get [id]() {
+    return 0x95d2ac92;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.title, "string"],
+    ];
+  }
+
+  constructor(params: { title: string }) {
+    super();
+    this.title = params.title;
+  }
+}
+
+export class MessageActionChatMigrateTo extends TypeMessageAction {
+  channel_id: bigint;
+
+  protected get [id]() {
+    return 0xe1037f92;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.channel_id, "bigint"],
+    ];
+  }
+
+  constructor(params: { channel_id: bigint }) {
+    super();
+    this.channel_id = params.channel_id;
+  }
+}
+
+export class MessageActionChannelMigrateFrom extends TypeMessageAction {
+  title: string;
+  chat_id: bigint;
+
+  protected get [id]() {
+    return 0xea3948e9;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.title, "string"],
+      [this.chat_id, "bigint"],
+    ];
+  }
+
+  constructor(params: { title: string; chat_id: bigint }) {
+    super();
+    this.title = params.title;
+    this.chat_id = params.chat_id;
+  }
+}
+
+export class MessageActionPinMessage extends TypeMessageAction {
+  protected get [id]() {
+    return 0x94bd38ed;
+  }
+
+  protected get [params](): Params {
+    return [];
+  }
+
+  constructor() {
+    super();
+  }
+}
+
+export class MessageActionHistoryClear extends TypeMessageAction {
+  protected get [id]() {
+    return 0x9fbab604;
+  }
+
+  protected get [params](): Params {
+    return [];
+  }
+
+  constructor() {
+    super();
+  }
+}
+
+export class MessageActionGameScore extends TypeMessageAction {
+  game_id: bigint;
+  score: number;
+
+  protected get [id]() {
+    return 0x92a72876;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.game_id, "bigint"],
+      [this.score, "number"],
+    ];
+  }
+
+  constructor(params: { game_id: bigint; score: number }) {
+    super();
+    this.game_id = params.game_id;
+    this.score = params.score;
+  }
+}
+
+export class MessageActionPaymentSentMe extends TypeMessageAction {
+  recurring_init?: true;
+  recurring_used?: true;
+  currency: string;
+  total_amount: bigint;
+  payload: Uint8Array;
+  info?: TypePaymentRequestedInfo;
+  shipping_option_id?: string;
+  charge: TypePaymentCharge;
+
+  protected get [id]() {
+    return 0x8f31b327;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.recurring_init ?? null, "true"],
+      [this.recurring_used ?? null, "true"],
+      [this.currency, "string"],
+      [this.total_amount, "bigint"],
+      [this.payload, Uint8Array],
+      [this.info ?? null, TypePaymentRequestedInfo],
+      [this.shipping_option_id ?? null, "string"],
+      [this.charge, TypePaymentCharge],
+    ];
+  }
+
+  constructor(
+    params: {
+      recurring_init?: true;
+      recurring_used?: true;
+      currency: string;
+      total_amount: bigint;
+      payload: Uint8Array;
+      info?: TypePaymentRequestedInfo;
+      shipping_option_id?: string;
+      charge: TypePaymentCharge;
+    },
+  ) {
+    super();
+    this.recurring_init = params.recurring_init;
+    this.recurring_used = params.recurring_used;
+    this.currency = params.currency;
+    this.total_amount = params.total_amount;
+    this.payload = params.payload;
+    this.info = params.info;
+    this.shipping_option_id = params.shipping_option_id;
+    this.charge = params.charge;
+  }
+}
+
+export class MessageActionPaymentSent extends TypeMessageAction {
+  recurring_init?: true;
+  recurring_used?: true;
+  currency: string;
+  total_amount: bigint;
+  invoice_slug?: string;
+
+  protected get [id]() {
+    return 0x96163f56;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.recurring_init ?? null, "true"],
+      [this.recurring_used ?? null, "true"],
+      [this.currency, "string"],
+      [this.total_amount, "bigint"],
+      [this.invoice_slug ?? null, "string"],
+    ];
+  }
+
+  constructor(
+    params: {
+      recurring_init?: true;
+      recurring_used?: true;
+      currency: string;
+      total_amount: bigint;
+      invoice_slug?: string;
+    },
+  ) {
+    super();
+    this.recurring_init = params.recurring_init;
+    this.recurring_used = params.recurring_used;
+    this.currency = params.currency;
+    this.total_amount = params.total_amount;
+    this.invoice_slug = params.invoice_slug;
+  }
+}
+
+export class MessageActionPhoneCall extends TypeMessageAction {
+  video?: true;
+  call_id: bigint;
+  reason?: TypePhoneCallDiscardReason;
+  duration?: number;
+
+  protected get [id]() {
+    return 0x80e11a7f;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.video ?? null, "true"],
+      [this.call_id, "bigint"],
+      [this.reason ?? null, TypePhoneCallDiscardReason],
+      [this.duration ?? null, "number"],
+    ];
+  }
+
+  constructor(
+    params: {
+      video?: true;
+      call_id: bigint;
+      reason?: TypePhoneCallDiscardReason;
+      duration?: number;
+    },
+  ) {
+    super();
+    this.video = params.video;
+    this.call_id = params.call_id;
+    this.reason = params.reason;
+    this.duration = params.duration;
+  }
+}
+
+export class MessageActionScreenshotTaken extends TypeMessageAction {
+  protected get [id]() {
+    return 0x4792929b;
+  }
+
+  protected get [params](): Params {
+    return [];
+  }
+
+  constructor() {
+    super();
+  }
+}
+
+export class MessageActionCustomAction extends TypeMessageAction {
+  message: string;
+
+  protected get [id]() {
+    return 0xfae69f56;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.message, "string"],
+    ];
+  }
+
+  constructor(params: { message: string }) {
+    super();
+    this.message = params.message;
+  }
+}
+
+export class MessageActionBotAllowed extends TypeMessageAction {
+  attach_menu?: true;
+  domain?: string;
+  app?: TypeBotApp;
+
+  protected get [id]() {
+    return 0xc516d679;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.attach_menu ?? null, "true"],
+      [this.domain ?? null, "string"],
+      [this.app ?? null, TypeBotApp],
+    ];
+  }
+
+  constructor(
+    params: { attach_menu?: true; domain?: string; app?: TypeBotApp },
+  ) {
+    super();
+    this.attach_menu = params.attach_menu;
+    this.domain = params.domain;
+    this.app = params.app;
+  }
+}
+
+export class MessageActionSecureValuesSentMe extends TypeMessageAction {
+  values: Array<TypeSecureValue>;
+  credentials: TypeSecureCredentialsEncrypted;
+
+  protected get [id]() {
+    return 0x1b287353;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.values, [TypeSecureValue]],
+      [this.credentials, TypeSecureCredentialsEncrypted],
+    ];
+  }
+
+  constructor(
+    params: {
+      values: Array<TypeSecureValue>;
+      credentials: TypeSecureCredentialsEncrypted;
+    },
+  ) {
+    super();
+    this.values = params.values;
+    this.credentials = params.credentials;
+  }
+}
+
+export class MessageActionSecureValuesSent extends TypeMessageAction {
+  types: Array<TypeSecureValueType>;
+
+  protected get [id]() {
+    return 0xd95c6154;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.types, [TypeSecureValueType]],
+    ];
+  }
+
+  constructor(params: { types: Array<TypeSecureValueType> }) {
+    super();
+    this.types = params.types;
+  }
+}
+
+export class MessageActionContactSignUp extends TypeMessageAction {
+  protected get [id]() {
+    return 0xf3f25f76;
+  }
+
+  protected get [params](): Params {
+    return [];
+  }
+
+  constructor() {
+    super();
+  }
+}
+
+export class MessageActionGeoProximityReached extends TypeMessageAction {
+  from_id: TypePeer;
+  to_id: TypePeer;
+  distance: number;
+
+  protected get [id]() {
+    return 0x98e0d697;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.from_id, TypePeer],
+      [this.to_id, TypePeer],
+      [this.distance, "number"],
+    ];
+  }
+
+  constructor(
+    params: { from_id: TypePeer; to_id: TypePeer; distance: number },
+  ) {
+    super();
+    this.from_id = params.from_id;
+    this.to_id = params.to_id;
+    this.distance = params.distance;
+  }
+}
+
+export class MessageActionGroupCall extends TypeMessageAction {
+  call: TypeInputGroupCall;
+  duration?: number;
+
+  protected get [id]() {
+    return 0x7a0d7f42;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.call, TypeInputGroupCall],
+      [this.duration ?? null, "number"],
+    ];
+  }
+
+  constructor(params: { call: TypeInputGroupCall; duration?: number }) {
+    super();
+    this.call = params.call;
+    this.duration = params.duration;
+  }
+}
+
+export class MessageActionInviteToGroupCall extends TypeMessageAction {
+  call: TypeInputGroupCall;
+  users: Array<bigint>;
+
+  protected get [id]() {
+    return 0x502f92f7;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.call, TypeInputGroupCall],
+      [this.users, ["bigint"]],
+    ];
+  }
+
+  constructor(params: { call: TypeInputGroupCall; users: Array<bigint> }) {
+    super();
+    this.call = params.call;
+    this.users = params.users;
+  }
+}
+
+export class MessageActionSetMessagesTTL extends TypeMessageAction {
+  period: number;
+  auto_setting_from?: bigint;
+
+  protected get [id]() {
+    return 0x3c134d7b;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.period, "number"],
+      [this.auto_setting_from ?? null, "bigint"],
+    ];
+  }
+
+  constructor(params: { period: number; auto_setting_from?: bigint }) {
+    super();
+    this.period = params.period;
+    this.auto_setting_from = params.auto_setting_from;
+  }
+}
+
+export class MessageActionGroupCallScheduled extends TypeMessageAction {
+  call: TypeInputGroupCall;
+  schedule_date: number;
+
+  protected get [id]() {
+    return 0xb3a07661;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.call, TypeInputGroupCall],
+      [this.schedule_date, "number"],
+    ];
+  }
+
+  constructor(params: { call: TypeInputGroupCall; schedule_date: number }) {
+    super();
+    this.call = params.call;
+    this.schedule_date = params.schedule_date;
+  }
+}
+
+export class MessageActionSetChatTheme extends TypeMessageAction {
+  emoticon: string;
+
+  protected get [id]() {
+    return 0xaa786345;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.emoticon, "string"],
+    ];
+  }
+
+  constructor(params: { emoticon: string }) {
+    super();
+    this.emoticon = params.emoticon;
+  }
+}
+
+export class MessageActionChatJoinedByRequest extends TypeMessageAction {
+  protected get [id]() {
+    return 0xebbca3cb;
+  }
+
+  protected get [params](): Params {
+    return [];
+  }
+
+  constructor() {
+    super();
+  }
+}
+
+export class MessageActionWebViewDataSentMe extends TypeMessageAction {
+  text: string;
+  data: string;
+
+  protected get [id]() {
+    return 0x47dd8079;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.text, "string"],
+      [this.data, "string"],
+    ];
+  }
+
+  constructor(params: { text: string; data: string }) {
+    super();
+    this.text = params.text;
+    this.data = params.data;
+  }
+}
+
+export class MessageActionWebViewDataSent extends TypeMessageAction {
+  text: string;
+
+  protected get [id]() {
+    return 0xb4c38cb5;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.text, "string"],
+    ];
+  }
+
+  constructor(params: { text: string }) {
+    super();
+    this.text = params.text;
+  }
+}
+
+export class MessageActionGiftPremium extends TypeMessageAction {
+  currency: string;
+  amount: bigint;
+  months: number;
+
+  protected get [id]() {
+    return 0xaba0f5c6;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.currency, "string"],
+      [this.amount, "bigint"],
+      [this.months, "number"],
+    ];
+  }
+
+  constructor(params: { currency: string; amount: bigint; months: number }) {
+    super();
+    this.currency = params.currency;
+    this.amount = params.amount;
+    this.months = params.months;
+  }
+}
+
+export class MessageActionTopicCreate extends TypeMessageAction {
+  title: string;
+  icon_color: number;
+  icon_emoji_id?: bigint;
+
+  protected get [id]() {
+    return 0x0d999256;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.title, "string"],
+      [this.icon_color, "number"],
+      [this.icon_emoji_id ?? null, "bigint"],
+    ];
+  }
+
+  constructor(
+    params: { title: string; icon_color: number; icon_emoji_id?: bigint },
+  ) {
+    super();
+    this.title = params.title;
+    this.icon_color = params.icon_color;
+    this.icon_emoji_id = params.icon_emoji_id;
+  }
+}
+
+export class MessageActionTopicEdit extends TypeMessageAction {
+  title?: string;
+  icon_emoji_id?: bigint;
+  closed?: boolean;
+  hidden?: boolean;
+
+  protected get [id]() {
+    return 0xc0944820;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.title ?? null, "string"],
+      [this.icon_emoji_id ?? null, "bigint"],
+      [this.closed ?? null, "boolean"],
+      [this.hidden ?? null, "boolean"],
+    ];
+  }
+
+  constructor(
+    params: {
+      title?: string;
+      icon_emoji_id?: bigint;
+      closed?: boolean;
+      hidden?: boolean;
+    },
+  ) {
+    super();
+    this.title = params.title;
+    this.icon_emoji_id = params.icon_emoji_id;
+    this.closed = params.closed;
+    this.hidden = params.hidden;
+  }
+}
+
+export class MessageActionSuggestProfilePhoto extends TypeMessageAction {
+  photo: TypePhoto;
+
+  protected get [id]() {
+    return 0x57de635e;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.photo, TypePhoto],
+    ];
+  }
+
+  constructor(params: { photo: TypePhoto }) {
+    super();
+    this.photo = params.photo;
+  }
+}
+
+export class MessageActionRequestedPeer extends TypeMessageAction {
+  button_id: number;
+  peer: TypePeer;
+
+  protected get [id]() {
+    return 0xfe77345d;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.button_id, "number"],
+      [this.peer, TypePeer],
+    ];
+  }
+
+  constructor(params: { button_id: number; peer: TypePeer }) {
+    super();
+    this.button_id = params.button_id;
+    this.peer = params.peer;
+  }
+}
+
+export class DialogFolder extends TypeDialog {
+  pinned?: true;
+  folder: TypeFolder;
+  peer: TypePeer;
+  top_message: number;
+  unread_muted_peers_count: number;
+  unread_unmuted_peers_count: number;
+  unread_muted_messages_count: number;
+  unread_unmuted_messages_count: number;
+
+  protected get [id]() {
+    return 0x71bd134c;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.pinned ?? null, "true"],
+      [this.folder, TypeFolder],
+      [this.peer, TypePeer],
+      [this.top_message, "number"],
+      [this.unread_muted_peers_count, "number"],
+      [this.unread_unmuted_peers_count, "number"],
+      [this.unread_muted_messages_count, "number"],
+      [this.unread_unmuted_messages_count, "number"],
+    ];
+  }
+
+  constructor(
+    params: {
+      pinned?: true;
+      folder: TypeFolder;
+      peer: TypePeer;
+      top_message: number;
+      unread_muted_peers_count: number;
+      unread_unmuted_peers_count: number;
+      unread_muted_messages_count: number;
+      unread_unmuted_messages_count: number;
+    },
+  ) {
+    super();
+    this.pinned = params.pinned;
+    this.folder = params.folder;
+    this.peer = params.peer;
+    this.top_message = params.top_message;
+    this.unread_muted_peers_count = params.unread_muted_peers_count;
+    this.unread_unmuted_peers_count = params.unread_unmuted_peers_count;
+    this.unread_muted_messages_count = params.unread_muted_messages_count;
+    this.unread_unmuted_messages_count = params.unread_unmuted_messages_count;
   }
 }
 
@@ -2114,7 +4460,7 @@ export class PhotoEmpty extends TypePhoto {
 
   protected get [params](): Params {
     return [
-      [this.id, "long"],
+      [this.id, "bigint"],
     ];
   }
 
@@ -2156,9 +4502,9 @@ export class PhotoCachedSize extends TypePhotoSize {
   protected get [params](): Params {
     return [
       [this.type, "string"],
-      [this.w, "int"],
-      [this.h, "int"],
-      [this.bytes, "bytes"],
+      [this.w, "number"],
+      [this.h, "number"],
+      [this.bytes, Uint8Array],
     ];
   }
 
@@ -2169,6 +4515,80 @@ export class PhotoCachedSize extends TypePhotoSize {
     this.type = params.type;
     this.w = params.w;
     this.h = params.h;
+    this.bytes = params.bytes;
+  }
+}
+
+export class PhotoStrippedSize extends TypePhotoSize {
+  type: string;
+  bytes: Uint8Array;
+
+  protected get [id]() {
+    return 0xe0b0bc2e;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.type, "string"],
+      [this.bytes, Uint8Array],
+    ];
+  }
+
+  constructor(params: { type: string; bytes: Uint8Array }) {
+    super();
+    this.type = params.type;
+    this.bytes = params.bytes;
+  }
+}
+
+export class PhotoSizeProgressive extends TypePhotoSize {
+  type: string;
+  w: number;
+  h: number;
+  sizes: Array<number>;
+
+  protected get [id]() {
+    return 0xfa3efb95;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.type, "string"],
+      [this.w, "number"],
+      [this.h, "number"],
+      [this.sizes, ["number"]],
+    ];
+  }
+
+  constructor(
+    params: { type: string; w: number; h: number; sizes: Array<number> },
+  ) {
+    super();
+    this.type = params.type;
+    this.w = params.w;
+    this.h = params.h;
+    this.sizes = params.sizes;
+  }
+}
+
+export class PhotoPathSize extends TypePhotoSize {
+  type: string;
+  bytes: Uint8Array;
+
+  protected get [id]() {
+    return 0xd8214d41;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.type, "string"],
+      [this.bytes, Uint8Array],
+    ];
+  }
+
+  constructor(params: { type: string; bytes: Uint8Array }) {
+    super();
+    this.type = params.type;
     this.bytes = params.bytes;
   }
 }
@@ -2184,6 +4604,44 @@ export class GeoPointEmpty extends TypeGeoPoint {
 
   constructor() {
     super();
+  }
+}
+
+export class AuthSentCodeSuccess extends TypeAuthSentCode {
+  authorization: TypeAuthAuthorization;
+
+  protected get [id]() {
+    return 0x2390fe44;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.authorization, TypeAuthAuthorization],
+    ];
+  }
+
+  constructor(params: { authorization: TypeAuthAuthorization }) {
+    super();
+    this.authorization = params.authorization;
+  }
+}
+
+export class AuthAuthorizationSignUpRequired extends TypeAuthAuthorization {
+  terms_of_service?: TypeHelpTermsOfService;
+
+  protected get [id]() {
+    return 0x44747e9a;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.terms_of_service ?? null, TypeHelpTermsOfService],
+    ];
+  }
+
+  constructor(params: { terms_of_service?: TypeHelpTermsOfService }) {
+    super();
+    this.terms_of_service = params.terms_of_service;
   }
 }
 
@@ -2212,6 +4670,77 @@ export class InputNotifyChats extends TypeInputNotifyPeer {
 
   constructor() {
     super();
+  }
+}
+
+export class InputNotifyBroadcasts extends TypeInputNotifyPeer {
+  protected get [id]() {
+    return 0xb1db7c7e;
+  }
+
+  protected get [params](): Params {
+    return [];
+  }
+
+  constructor() {
+    super();
+  }
+}
+
+export class InputNotifyForumTopic extends TypeInputNotifyPeer {
+  peer: TypeInputPeer;
+  top_msg_id: number;
+
+  protected get [id]() {
+    return 0x5c467992;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.peer, TypeInputPeer],
+      [this.top_msg_id, "number"],
+    ];
+  }
+
+  constructor(params: { peer: TypeInputPeer; top_msg_id: number }) {
+    super();
+    this.peer = params.peer;
+    this.top_msg_id = params.top_msg_id;
+  }
+}
+
+export class WallPaperNoFile extends TypeWallPaper {
+  id: bigint;
+  default?: true;
+  dark?: true;
+  settings?: TypeWallPaperSettings;
+
+  protected get [id]() {
+    return 0xe0804116;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.id, "bigint"],
+      [this.default ?? null, "true"],
+      [this.dark ?? null, "true"],
+      [this.settings ?? null, TypeWallPaperSettings],
+    ];
+  }
+
+  constructor(
+    params: {
+      id: bigint;
+      default?: true;
+      dark?: true;
+      settings?: TypeWallPaperSettings;
+    },
+  ) {
+    super();
+    this.id = params.id;
+    this.default = params.default;
+    this.dark = params.dark;
+    this.settings = params.settings;
   }
 }
 
@@ -2285,6 +4814,76 @@ export class InputReportReasonOther extends TypeReportReason {
   }
 }
 
+export class InputReportReasonCopyright extends TypeReportReason {
+  protected get [id]() {
+    return 0x9b89f93a;
+  }
+
+  protected get [params](): Params {
+    return [];
+  }
+
+  constructor() {
+    super();
+  }
+}
+
+export class InputReportReasonGeoIrrelevant extends TypeReportReason {
+  protected get [id]() {
+    return 0xdbd4feed;
+  }
+
+  protected get [params](): Params {
+    return [];
+  }
+
+  constructor() {
+    super();
+  }
+}
+
+export class InputReportReasonFake extends TypeReportReason {
+  protected get [id]() {
+    return 0xf5ddd6e7;
+  }
+
+  protected get [params](): Params {
+    return [];
+  }
+
+  constructor() {
+    super();
+  }
+}
+
+export class InputReportReasonIllegalDrugs extends TypeReportReason {
+  protected get [id]() {
+    return 0x0a8eb2be;
+  }
+
+  protected get [params](): Params {
+    return [];
+  }
+
+  constructor() {
+    super();
+  }
+}
+
+export class InputReportReasonPersonalDetails extends TypeReportReason {
+  protected get [id]() {
+    return 0x9ec7863d;
+  }
+
+  protected get [params](): Params {
+    return [];
+  }
+
+  constructor() {
+    super();
+  }
+}
+
 export class ContactsContactsNotModified extends TypeContactsContacts {
   protected get [id]() {
     return 0xb74ba9d2;
@@ -2311,10 +4910,10 @@ export class ContactsBlockedSlice extends TypeContactsBlocked {
 
   protected get [params](): Params {
     return [
-      [this.count, "int"],
-      [this.blocked, "Vector<PeerBlocked>"],
-      [this.chats, "Vector<Chat>"],
-      [this.users, "Vector<User>"],
+      [this.count, "number"],
+      [this.blocked, [TypePeerBlocked]],
+      [this.chats, [TypeChat]],
+      [this.users, [TypeUser]],
     ];
   }
 
@@ -2347,11 +4946,11 @@ export class MessagesDialogsSlice extends TypeMessagesDialogs {
 
   protected get [params](): Params {
     return [
-      [this.count, "int"],
-      [this.dialogs, "Vector<Dialog>"],
-      [this.messages, "Vector<Message>"],
-      [this.chats, "Vector<Chat>"],
-      [this.users, "Vector<User>"],
+      [this.count, "number"],
+      [this.dialogs, [TypeDialog]],
+      [this.messages, [TypeMessage]],
+      [this.chats, [TypeChat]],
+      [this.users, [TypeUser]],
     ];
   }
 
@@ -2373,6 +4972,25 @@ export class MessagesDialogsSlice extends TypeMessagesDialogs {
   }
 }
 
+export class MessagesDialogsNotModified extends TypeMessagesDialogs {
+  count: number;
+
+  protected get [id]() {
+    return 0xf0e3e596;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.count, "number"],
+    ];
+  }
+
+  constructor(params: { count: number }) {
+    super();
+    this.count = params.count;
+  }
+}
+
 export class MessagesMessagesSlice extends TypeMessagesMessages {
   inexact?: true;
   count: number;
@@ -2388,13 +5006,13 @@ export class MessagesMessagesSlice extends TypeMessagesMessages {
 
   protected get [params](): Params {
     return [
-      [this.inexact ?? null, "flags.1?true"],
-      [this.count, "int"],
-      [this.next_rate ?? null, "flags.0?int"],
-      [this.offset_id_offset ?? null, "flags.2?int"],
-      [this.messages, "Vector<Message>"],
-      [this.chats, "Vector<Chat>"],
-      [this.users, "Vector<User>"],
+      [this.inexact ?? null, "true"],
+      [this.count, "number"],
+      [this.next_rate ?? null, "number"],
+      [this.offset_id_offset ?? null, "number"],
+      [this.messages, [TypeMessage]],
+      [this.chats, [TypeChat]],
+      [this.users, [TypeUser]],
     ];
   }
 
@@ -2417,6 +5035,98 @@ export class MessagesMessagesSlice extends TypeMessagesMessages {
     this.messages = params.messages;
     this.chats = params.chats;
     this.users = params.users;
+  }
+}
+
+export class MessagesChannelMessages extends TypeMessagesMessages {
+  inexact?: true;
+  pts: number;
+  count: number;
+  offset_id_offset?: number;
+  messages: Array<TypeMessage>;
+  topics: Array<TypeForumTopic>;
+  chats: Array<TypeChat>;
+  users: Array<TypeUser>;
+
+  protected get [id]() {
+    return 0xc776ba4e;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.inexact ?? null, "true"],
+      [this.pts, "number"],
+      [this.count, "number"],
+      [this.offset_id_offset ?? null, "number"],
+      [this.messages, [TypeMessage]],
+      [this.topics, [TypeForumTopic]],
+      [this.chats, [TypeChat]],
+      [this.users, [TypeUser]],
+    ];
+  }
+
+  constructor(
+    params: {
+      inexact?: true;
+      pts: number;
+      count: number;
+      offset_id_offset?: number;
+      messages: Array<TypeMessage>;
+      topics: Array<TypeForumTopic>;
+      chats: Array<TypeChat>;
+      users: Array<TypeUser>;
+    },
+  ) {
+    super();
+    this.inexact = params.inexact;
+    this.pts = params.pts;
+    this.count = params.count;
+    this.offset_id_offset = params.offset_id_offset;
+    this.messages = params.messages;
+    this.topics = params.topics;
+    this.chats = params.chats;
+    this.users = params.users;
+  }
+}
+
+export class MessagesMessagesNotModified extends TypeMessagesMessages {
+  count: number;
+
+  protected get [id]() {
+    return 0x74535f21;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.count, "number"],
+    ];
+  }
+
+  constructor(params: { count: number }) {
+    super();
+    this.count = params.count;
+  }
+}
+
+export class MessagesChatsSlice extends TypeMessagesChats {
+  count: number;
+  chats: Array<TypeChat>;
+
+  protected get [id]() {
+    return 0x9cd81144;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.count, "number"],
+      [this.chats, [TypeChat]],
+    ];
+  }
+
+  constructor(params: { count: number; chats: Array<TypeChat> }) {
+    super();
+    this.count = params.count;
+    this.chats = params.chats;
   }
 }
 
@@ -2518,6 +5228,151 @@ export class InputMessagesFilterGif extends TypeMessagesFilter {
   }
 }
 
+export class InputMessagesFilterVoice extends TypeMessagesFilter {
+  protected get [id]() {
+    return 0x50f5c392;
+  }
+
+  protected get [params](): Params {
+    return [];
+  }
+
+  constructor() {
+    super();
+  }
+}
+
+export class InputMessagesFilterMusic extends TypeMessagesFilter {
+  protected get [id]() {
+    return 0x3751b49e;
+  }
+
+  protected get [params](): Params {
+    return [];
+  }
+
+  constructor() {
+    super();
+  }
+}
+
+export class InputMessagesFilterChatPhotos extends TypeMessagesFilter {
+  protected get [id]() {
+    return 0x3a20ecb8;
+  }
+
+  protected get [params](): Params {
+    return [];
+  }
+
+  constructor() {
+    super();
+  }
+}
+
+export class InputMessagesFilterPhoneCalls extends TypeMessagesFilter {
+  missed?: true;
+
+  protected get [id]() {
+    return 0x80c99768;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.missed ?? null, "true"],
+    ];
+  }
+
+  constructor(params: { missed?: true }) {
+    super();
+    this.missed = params.missed;
+  }
+}
+
+export class InputMessagesFilterRoundVoice extends TypeMessagesFilter {
+  protected get [id]() {
+    return 0x7a7c17a4;
+  }
+
+  protected get [params](): Params {
+    return [];
+  }
+
+  constructor() {
+    super();
+  }
+}
+
+export class InputMessagesFilterRoundVideo extends TypeMessagesFilter {
+  protected get [id]() {
+    return 0xb549da53;
+  }
+
+  protected get [params](): Params {
+    return [];
+  }
+
+  constructor() {
+    super();
+  }
+}
+
+export class InputMessagesFilterMyMentions extends TypeMessagesFilter {
+  protected get [id]() {
+    return 0xc1f8e69a;
+  }
+
+  protected get [params](): Params {
+    return [];
+  }
+
+  constructor() {
+    super();
+  }
+}
+
+export class InputMessagesFilterGeo extends TypeMessagesFilter {
+  protected get [id]() {
+    return 0xe7026d0d;
+  }
+
+  protected get [params](): Params {
+    return [];
+  }
+
+  constructor() {
+    super();
+  }
+}
+
+export class InputMessagesFilterContacts extends TypeMessagesFilter {
+  protected get [id]() {
+    return 0xe062db83;
+  }
+
+  protected get [params](): Params {
+    return [];
+  }
+
+  constructor() {
+    super();
+  }
+}
+
+export class InputMessagesFilterPinned extends TypeMessagesFilter {
+  protected get [id]() {
+    return 0x1bb00451;
+  }
+
+  protected get [params](): Params {
+    return [];
+  }
+
+  constructor() {
+    super();
+  }
+}
+
 export class UpdateNewMessage extends TypeUpdate {
   message: TypeMessage;
   pts: number;
@@ -2529,9 +5384,9 @@ export class UpdateNewMessage extends TypeUpdate {
 
   protected get [params](): Params {
     return [
-      [this.message, "Message"],
-      [this.pts, "int"],
-      [this.pts_count, "int"],
+      [this.message, TypeMessage],
+      [this.pts, "number"],
+      [this.pts_count, "number"],
     ];
   }
 
@@ -2555,8 +5410,8 @@ export class UpdateMessageID extends TypeUpdate {
 
   protected get [params](): Params {
     return [
-      [this.id, "int"],
-      [this.random_id, "long"],
+      [this.id, "number"],
+      [this.random_id, "bigint"],
     ];
   }
 
@@ -2578,9 +5433,9 @@ export class UpdateDeleteMessages extends TypeUpdate {
 
   protected get [params](): Params {
     return [
-      [this.messages, "Vector<int>"],
-      [this.pts, "int"],
-      [this.pts_count, "int"],
+      [this.messages, ["number"]],
+      [this.pts, "number"],
+      [this.pts_count, "number"],
     ];
   }
 
@@ -2604,8 +5459,8 @@ export class UpdateUserTyping extends TypeUpdate {
 
   protected get [params](): Params {
     return [
-      [this.user_id, "long"],
-      [this.action, "SendMessageAction"],
+      [this.user_id, "bigint"],
+      [this.action, TypeSendMessageAction],
     ];
   }
 
@@ -2627,9 +5482,9 @@ export class UpdateChatUserTyping extends TypeUpdate {
 
   protected get [params](): Params {
     return [
-      [this.chat_id, "long"],
-      [this.from_id, "Peer"],
-      [this.action, "SendMessageAction"],
+      [this.chat_id, "bigint"],
+      [this.from_id, TypePeer],
+      [this.action, TypeSendMessageAction],
     ];
   }
 
@@ -2656,7 +5511,7 @@ export class UpdateChatParticipants extends TypeUpdate {
 
   protected get [params](): Params {
     return [
-      [this.participants, "ChatParticipants"],
+      [this.participants, TypeChatParticipants],
     ];
   }
 
@@ -2676,8 +5531,8 @@ export class UpdateUserStatus extends TypeUpdate {
 
   protected get [params](): Params {
     return [
-      [this.user_id, "long"],
-      [this.status, "UserStatus"],
+      [this.user_id, "bigint"],
+      [this.status, TypeUserStatus],
     ];
   }
 
@@ -2692,18 +5547,18 @@ export class UpdateUserName extends TypeUpdate {
   user_id: bigint;
   first_name: string;
   last_name: string;
-  username: string;
+  usernames: Array<TypeUsername>;
 
   protected get [id]() {
-    return 0xc3f202e0;
+    return 0xa7848924;
   }
 
   protected get [params](): Params {
     return [
-      [this.user_id, "long"],
+      [this.user_id, "bigint"],
       [this.first_name, "string"],
       [this.last_name, "string"],
-      [this.username, "string"],
+      [this.usernames, [TypeUsername]],
     ];
   }
 
@@ -2712,49 +5567,2683 @@ export class UpdateUserName extends TypeUpdate {
       user_id: bigint;
       first_name: string;
       last_name: string;
-      username: string;
+      usernames: Array<TypeUsername>;
     },
   ) {
     super();
     this.user_id = params.user_id;
     this.first_name = params.first_name;
     this.last_name = params.last_name;
-    this.username = params.username;
+    this.usernames = params.usernames;
   }
 }
 
-export class UpdateUserPhoto extends TypeUpdate {
-  user_id: bigint;
-  date: number;
-  photo: TypeUserProfilePhoto;
-  previous: boolean;
+export class UpdateNewEncryptedMessage extends TypeUpdate {
+  message: TypeEncryptedMessage;
+  qts: number;
 
   protected get [id]() {
-    return 0xf227868c;
+    return 0x12bcbd9a;
   }
 
   protected get [params](): Params {
     return [
-      [this.user_id, "long"],
-      [this.date, "int"],
-      [this.photo, "UserProfilePhoto"],
-      [this.previous, "Bool"],
+      [this.message, TypeEncryptedMessage],
+      [this.qts, "number"],
+    ];
+  }
+
+  constructor(params: { message: TypeEncryptedMessage; qts: number }) {
+    super();
+    this.message = params.message;
+    this.qts = params.qts;
+  }
+}
+
+export class UpdateEncryptedChatTyping extends TypeUpdate {
+  chat_id: number;
+
+  protected get [id]() {
+    return 0x1710f156;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.chat_id, "number"],
+    ];
+  }
+
+  constructor(params: { chat_id: number }) {
+    super();
+    this.chat_id = params.chat_id;
+  }
+}
+
+export class UpdateEncryption extends TypeUpdate {
+  chat: TypeEncryptedChat;
+  date: number;
+
+  protected get [id]() {
+    return 0xb4a2e88d;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.chat, TypeEncryptedChat],
+      [this.date, "number"],
+    ];
+  }
+
+  constructor(params: { chat: TypeEncryptedChat; date: number }) {
+    super();
+    this.chat = params.chat;
+    this.date = params.date;
+  }
+}
+
+export class UpdateEncryptedMessagesRead extends TypeUpdate {
+  chat_id: number;
+  max_date: number;
+  date: number;
+
+  protected get [id]() {
+    return 0x38fe25b7;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.chat_id, "number"],
+      [this.max_date, "number"],
+      [this.date, "number"],
+    ];
+  }
+
+  constructor(params: { chat_id: number; max_date: number; date: number }) {
+    super();
+    this.chat_id = params.chat_id;
+    this.max_date = params.max_date;
+    this.date = params.date;
+  }
+}
+
+export class UpdateChatParticipantAdd extends TypeUpdate {
+  chat_id: bigint;
+  user_id: bigint;
+  inviter_id: bigint;
+  date: number;
+  version: number;
+
+  protected get [id]() {
+    return 0x3dda5451;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.chat_id, "bigint"],
+      [this.user_id, "bigint"],
+      [this.inviter_id, "bigint"],
+      [this.date, "number"],
+      [this.version, "number"],
+    ];
+  }
+
+  constructor(
+    params: {
+      chat_id: bigint;
+      user_id: bigint;
+      inviter_id: bigint;
+      date: number;
+      version: number;
+    },
+  ) {
+    super();
+    this.chat_id = params.chat_id;
+    this.user_id = params.user_id;
+    this.inviter_id = params.inviter_id;
+    this.date = params.date;
+    this.version = params.version;
+  }
+}
+
+export class UpdateChatParticipantDelete extends TypeUpdate {
+  chat_id: bigint;
+  user_id: bigint;
+  version: number;
+
+  protected get [id]() {
+    return 0xe32f3d77;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.chat_id, "bigint"],
+      [this.user_id, "bigint"],
+      [this.version, "number"],
+    ];
+  }
+
+  constructor(params: { chat_id: bigint; user_id: bigint; version: number }) {
+    super();
+    this.chat_id = params.chat_id;
+    this.user_id = params.user_id;
+    this.version = params.version;
+  }
+}
+
+export class UpdateDcOptions extends TypeUpdate {
+  dc_options: Array<TypeDcOption>;
+
+  protected get [id]() {
+    return 0x8e5e9873;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.dc_options, [TypeDcOption]],
+    ];
+  }
+
+  constructor(params: { dc_options: Array<TypeDcOption> }) {
+    super();
+    this.dc_options = params.dc_options;
+  }
+}
+
+export class UpdateNotifySettings extends TypeUpdate {
+  peer: TypeNotifyPeer;
+  notify_settings: TypePeerNotifySettings;
+
+  protected get [id]() {
+    return 0xbec268ef;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.peer, TypeNotifyPeer],
+      [this.notify_settings, TypePeerNotifySettings],
+    ];
+  }
+
+  constructor(
+    params: { peer: TypeNotifyPeer; notify_settings: TypePeerNotifySettings },
+  ) {
+    super();
+    this.peer = params.peer;
+    this.notify_settings = params.notify_settings;
+  }
+}
+
+export class UpdateServiceNotification extends TypeUpdate {
+  popup?: true;
+  inbox_date?: number;
+  type: string;
+  message: string;
+  media: TypeMessageMedia;
+  entities: Array<TypeMessageEntity>;
+
+  protected get [id]() {
+    return 0xebe46819;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.popup ?? null, "true"],
+      [this.inbox_date ?? null, "number"],
+      [this.type, "string"],
+      [this.message, "string"],
+      [this.media, TypeMessageMedia],
+      [this.entities, [TypeMessageEntity]],
+    ];
+  }
+
+  constructor(
+    params: {
+      popup?: true;
+      inbox_date?: number;
+      type: string;
+      message: string;
+      media: TypeMessageMedia;
+      entities: Array<TypeMessageEntity>;
+    },
+  ) {
+    super();
+    this.popup = params.popup;
+    this.inbox_date = params.inbox_date;
+    this.type = params.type;
+    this.message = params.message;
+    this.media = params.media;
+    this.entities = params.entities;
+  }
+}
+
+export class UpdatePrivacy extends TypeUpdate {
+  key: TypePrivacyKey;
+  rules: Array<TypePrivacyRule>;
+
+  protected get [id]() {
+    return 0xee3b272a;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.key, TypePrivacyKey],
+      [this.rules, [TypePrivacyRule]],
+    ];
+  }
+
+  constructor(params: { key: TypePrivacyKey; rules: Array<TypePrivacyRule> }) {
+    super();
+    this.key = params.key;
+    this.rules = params.rules;
+  }
+}
+
+export class UpdateUserPhone extends TypeUpdate {
+  user_id: bigint;
+  phone: string;
+
+  protected get [id]() {
+    return 0x05492a13;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.user_id, "bigint"],
+      [this.phone, "string"],
+    ];
+  }
+
+  constructor(params: { user_id: bigint; phone: string }) {
+    super();
+    this.user_id = params.user_id;
+    this.phone = params.phone;
+  }
+}
+
+export class UpdateReadHistoryInbox extends TypeUpdate {
+  folder_id?: number;
+  peer: TypePeer;
+  max_id: number;
+  still_unread_count: number;
+  pts: number;
+  pts_count: number;
+
+  protected get [id]() {
+    return 0x9c974fdf;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.folder_id ?? null, "number"],
+      [this.peer, TypePeer],
+      [this.max_id, "number"],
+      [this.still_unread_count, "number"],
+      [this.pts, "number"],
+      [this.pts_count, "number"],
+    ];
+  }
+
+  constructor(
+    params: {
+      folder_id?: number;
+      peer: TypePeer;
+      max_id: number;
+      still_unread_count: number;
+      pts: number;
+      pts_count: number;
+    },
+  ) {
+    super();
+    this.folder_id = params.folder_id;
+    this.peer = params.peer;
+    this.max_id = params.max_id;
+    this.still_unread_count = params.still_unread_count;
+    this.pts = params.pts;
+    this.pts_count = params.pts_count;
+  }
+}
+
+export class UpdateReadHistoryOutbox extends TypeUpdate {
+  peer: TypePeer;
+  max_id: number;
+  pts: number;
+  pts_count: number;
+
+  protected get [id]() {
+    return 0x2f2f21bf;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.peer, TypePeer],
+      [this.max_id, "number"],
+      [this.pts, "number"],
+      [this.pts_count, "number"],
+    ];
+  }
+
+  constructor(
+    params: { peer: TypePeer; max_id: number; pts: number; pts_count: number },
+  ) {
+    super();
+    this.peer = params.peer;
+    this.max_id = params.max_id;
+    this.pts = params.pts;
+    this.pts_count = params.pts_count;
+  }
+}
+
+export class UpdateWebPage extends TypeUpdate {
+  webpage: TypeWebPage;
+  pts: number;
+  pts_count: number;
+
+  protected get [id]() {
+    return 0x7f891213;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.webpage, TypeWebPage],
+      [this.pts, "number"],
+      [this.pts_count, "number"],
+    ];
+  }
+
+  constructor(
+    params: { webpage: TypeWebPage; pts: number; pts_count: number },
+  ) {
+    super();
+    this.webpage = params.webpage;
+    this.pts = params.pts;
+    this.pts_count = params.pts_count;
+  }
+}
+
+export class UpdateReadMessagesContents extends TypeUpdate {
+  messages: Array<number>;
+  pts: number;
+  pts_count: number;
+
+  protected get [id]() {
+    return 0x68c13933;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.messages, ["number"]],
+      [this.pts, "number"],
+      [this.pts_count, "number"],
+    ];
+  }
+
+  constructor(
+    params: { messages: Array<number>; pts: number; pts_count: number },
+  ) {
+    super();
+    this.messages = params.messages;
+    this.pts = params.pts;
+    this.pts_count = params.pts_count;
+  }
+}
+
+export class UpdateChannelTooLong extends TypeUpdate {
+  channel_id: bigint;
+  pts?: number;
+
+  protected get [id]() {
+    return 0x108d941f;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.channel_id, "bigint"],
+      [this.pts ?? null, "number"],
+    ];
+  }
+
+  constructor(params: { channel_id: bigint; pts?: number }) {
+    super();
+    this.channel_id = params.channel_id;
+    this.pts = params.pts;
+  }
+}
+
+export class UpdateChannel extends TypeUpdate {
+  channel_id: bigint;
+
+  protected get [id]() {
+    return 0x635b4c09;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.channel_id, "bigint"],
+    ];
+  }
+
+  constructor(params: { channel_id: bigint }) {
+    super();
+    this.channel_id = params.channel_id;
+  }
+}
+
+export class UpdateNewChannelMessage extends TypeUpdate {
+  message: TypeMessage;
+  pts: number;
+  pts_count: number;
+
+  protected get [id]() {
+    return 0x62ba04d9;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.message, TypeMessage],
+      [this.pts, "number"],
+      [this.pts_count, "number"],
+    ];
+  }
+
+  constructor(
+    params: { message: TypeMessage; pts: number; pts_count: number },
+  ) {
+    super();
+    this.message = params.message;
+    this.pts = params.pts;
+    this.pts_count = params.pts_count;
+  }
+}
+
+export class UpdateReadChannelInbox extends TypeUpdate {
+  folder_id?: number;
+  channel_id: bigint;
+  max_id: number;
+  still_unread_count: number;
+  pts: number;
+
+  protected get [id]() {
+    return 0x922e6e10;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.folder_id ?? null, "number"],
+      [this.channel_id, "bigint"],
+      [this.max_id, "number"],
+      [this.still_unread_count, "number"],
+      [this.pts, "number"],
+    ];
+  }
+
+  constructor(
+    params: {
+      folder_id?: number;
+      channel_id: bigint;
+      max_id: number;
+      still_unread_count: number;
+      pts: number;
+    },
+  ) {
+    super();
+    this.folder_id = params.folder_id;
+    this.channel_id = params.channel_id;
+    this.max_id = params.max_id;
+    this.still_unread_count = params.still_unread_count;
+    this.pts = params.pts;
+  }
+}
+
+export class UpdateDeleteChannelMessages extends TypeUpdate {
+  channel_id: bigint;
+  messages: Array<number>;
+  pts: number;
+  pts_count: number;
+
+  protected get [id]() {
+    return 0xc32d5b12;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.channel_id, "bigint"],
+      [this.messages, ["number"]],
+      [this.pts, "number"],
+      [this.pts_count, "number"],
+    ];
+  }
+
+  constructor(
+    params: {
+      channel_id: bigint;
+      messages: Array<number>;
+      pts: number;
+      pts_count: number;
+    },
+  ) {
+    super();
+    this.channel_id = params.channel_id;
+    this.messages = params.messages;
+    this.pts = params.pts;
+    this.pts_count = params.pts_count;
+  }
+}
+
+export class UpdateChannelMessageViews extends TypeUpdate {
+  channel_id: bigint;
+  id: number;
+  views: number;
+
+  protected get [id]() {
+    return 0xf226ac08;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.channel_id, "bigint"],
+      [this.id, "number"],
+      [this.views, "number"],
+    ];
+  }
+
+  constructor(params: { channel_id: bigint; id: number; views: number }) {
+    super();
+    this.channel_id = params.channel_id;
+    this.id = params.id;
+    this.views = params.views;
+  }
+}
+
+export class UpdateChatParticipantAdmin extends TypeUpdate {
+  chat_id: bigint;
+  user_id: bigint;
+  is_admin: boolean;
+  version: number;
+
+  protected get [id]() {
+    return 0xd7ca61a2;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.chat_id, "bigint"],
+      [this.user_id, "bigint"],
+      [this.is_admin, "boolean"],
+      [this.version, "number"],
+    ];
+  }
+
+  constructor(
+    params: {
+      chat_id: bigint;
+      user_id: bigint;
+      is_admin: boolean;
+      version: number;
+    },
+  ) {
+    super();
+    this.chat_id = params.chat_id;
+    this.user_id = params.user_id;
+    this.is_admin = params.is_admin;
+    this.version = params.version;
+  }
+}
+
+export class UpdateNewStickerSet extends TypeUpdate {
+  stickerset: TypeMessagesStickerSet;
+
+  protected get [id]() {
+    return 0x688a30aa;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.stickerset, TypeMessagesStickerSet],
+    ];
+  }
+
+  constructor(params: { stickerset: TypeMessagesStickerSet }) {
+    super();
+    this.stickerset = params.stickerset;
+  }
+}
+
+export class UpdateStickerSetsOrder extends TypeUpdate {
+  masks?: true;
+  emojis?: true;
+  order: Array<bigint>;
+
+  protected get [id]() {
+    return 0x0bb2d201;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.masks ?? null, "true"],
+      [this.emojis ?? null, "true"],
+      [this.order, ["bigint"]],
+    ];
+  }
+
+  constructor(params: { masks?: true; emojis?: true; order: Array<bigint> }) {
+    super();
+    this.masks = params.masks;
+    this.emojis = params.emojis;
+    this.order = params.order;
+  }
+}
+
+export class UpdateStickerSets extends TypeUpdate {
+  masks?: true;
+  emojis?: true;
+
+  protected get [id]() {
+    return 0x31c24808;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.masks ?? null, "true"],
+      [this.emojis ?? null, "true"],
+    ];
+  }
+
+  constructor(params: { masks?: true; emojis?: true }) {
+    super();
+    this.masks = params.masks;
+    this.emojis = params.emojis;
+  }
+}
+
+export class UpdateSavedGifs extends TypeUpdate {
+  protected get [id]() {
+    return 0x9375341e;
+  }
+
+  protected get [params](): Params {
+    return [];
+  }
+
+  constructor() {
+    super();
+  }
+}
+
+export class UpdateBotInlineQuery extends TypeUpdate {
+  query_id: bigint;
+  user_id: bigint;
+  query: string;
+  geo?: TypeGeoPoint;
+  peer_type?: TypeInlineQueryPeerType;
+  offset: string;
+
+  protected get [id]() {
+    return 0x496f379c;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.query_id, "bigint"],
+      [this.user_id, "bigint"],
+      [this.query, "string"],
+      [this.geo ?? null, TypeGeoPoint],
+      [this.peer_type ?? null, TypeInlineQueryPeerType],
+      [this.offset, "string"],
+    ];
+  }
+
+  constructor(
+    params: {
+      query_id: bigint;
+      user_id: bigint;
+      query: string;
+      geo?: TypeGeoPoint;
+      peer_type?: TypeInlineQueryPeerType;
+      offset: string;
+    },
+  ) {
+    super();
+    this.query_id = params.query_id;
+    this.user_id = params.user_id;
+    this.query = params.query;
+    this.geo = params.geo;
+    this.peer_type = params.peer_type;
+    this.offset = params.offset;
+  }
+}
+
+export class UpdateBotInlineSend extends TypeUpdate {
+  user_id: bigint;
+  query: string;
+  geo?: TypeGeoPoint;
+  id: string;
+  msg_id?: TypeInputBotInlineMessageID;
+
+  protected get [id]() {
+    return 0x12f12a07;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.user_id, "bigint"],
+      [this.query, "string"],
+      [this.geo ?? null, TypeGeoPoint],
+      [this.id, "string"],
+      [this.msg_id ?? null, TypeInputBotInlineMessageID],
     ];
   }
 
   constructor(
     params: {
       user_id: bigint;
-      date: number;
-      photo: TypeUserProfilePhoto;
-      previous: boolean;
+      query: string;
+      geo?: TypeGeoPoint;
+      id: string;
+      msg_id?: TypeInputBotInlineMessageID;
     },
   ) {
     super();
     this.user_id = params.user_id;
+    this.query = params.query;
+    this.geo = params.geo;
+    this.id = params.id;
+    this.msg_id = params.msg_id;
+  }
+}
+
+export class UpdateEditChannelMessage extends TypeUpdate {
+  message: TypeMessage;
+  pts: number;
+  pts_count: number;
+
+  protected get [id]() {
+    return 0x1b3f4df7;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.message, TypeMessage],
+      [this.pts, "number"],
+      [this.pts_count, "number"],
+    ];
+  }
+
+  constructor(
+    params: { message: TypeMessage; pts: number; pts_count: number },
+  ) {
+    super();
+    this.message = params.message;
+    this.pts = params.pts;
+    this.pts_count = params.pts_count;
+  }
+}
+
+export class UpdateBotCallbackQuery extends TypeUpdate {
+  query_id: bigint;
+  user_id: bigint;
+  peer: TypePeer;
+  msg_id: number;
+  chat_instance: bigint;
+  data?: Uint8Array;
+  game_short_name?: string;
+
+  protected get [id]() {
+    return 0xb9cfc48d;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.query_id, "bigint"],
+      [this.user_id, "bigint"],
+      [this.peer, TypePeer],
+      [this.msg_id, "number"],
+      [this.chat_instance, "bigint"],
+      [this.data ?? null, Uint8Array],
+      [this.game_short_name ?? null, "string"],
+    ];
+  }
+
+  constructor(
+    params: {
+      query_id: bigint;
+      user_id: bigint;
+      peer: TypePeer;
+      msg_id: number;
+      chat_instance: bigint;
+      data?: Uint8Array;
+      game_short_name?: string;
+    },
+  ) {
+    super();
+    this.query_id = params.query_id;
+    this.user_id = params.user_id;
+    this.peer = params.peer;
+    this.msg_id = params.msg_id;
+    this.chat_instance = params.chat_instance;
+    this.data = params.data;
+    this.game_short_name = params.game_short_name;
+  }
+}
+
+export class UpdateEditMessage extends TypeUpdate {
+  message: TypeMessage;
+  pts: number;
+  pts_count: number;
+
+  protected get [id]() {
+    return 0xe40370a3;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.message, TypeMessage],
+      [this.pts, "number"],
+      [this.pts_count, "number"],
+    ];
+  }
+
+  constructor(
+    params: { message: TypeMessage; pts: number; pts_count: number },
+  ) {
+    super();
+    this.message = params.message;
+    this.pts = params.pts;
+    this.pts_count = params.pts_count;
+  }
+}
+
+export class UpdateInlineBotCallbackQuery extends TypeUpdate {
+  query_id: bigint;
+  user_id: bigint;
+  msg_id: TypeInputBotInlineMessageID;
+  chat_instance: bigint;
+  data?: Uint8Array;
+  game_short_name?: string;
+
+  protected get [id]() {
+    return 0x691e9052;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.query_id, "bigint"],
+      [this.user_id, "bigint"],
+      [this.msg_id, TypeInputBotInlineMessageID],
+      [this.chat_instance, "bigint"],
+      [this.data ?? null, Uint8Array],
+      [this.game_short_name ?? null, "string"],
+    ];
+  }
+
+  constructor(
+    params: {
+      query_id: bigint;
+      user_id: bigint;
+      msg_id: TypeInputBotInlineMessageID;
+      chat_instance: bigint;
+      data?: Uint8Array;
+      game_short_name?: string;
+    },
+  ) {
+    super();
+    this.query_id = params.query_id;
+    this.user_id = params.user_id;
+    this.msg_id = params.msg_id;
+    this.chat_instance = params.chat_instance;
+    this.data = params.data;
+    this.game_short_name = params.game_short_name;
+  }
+}
+
+export class UpdateReadChannelOutbox extends TypeUpdate {
+  channel_id: bigint;
+  max_id: number;
+
+  protected get [id]() {
+    return 0xb75f99a9;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.channel_id, "bigint"],
+      [this.max_id, "number"],
+    ];
+  }
+
+  constructor(params: { channel_id: bigint; max_id: number }) {
+    super();
+    this.channel_id = params.channel_id;
+    this.max_id = params.max_id;
+  }
+}
+
+export class UpdateDraftMessage extends TypeUpdate {
+  peer: TypePeer;
+  top_msg_id?: number;
+  draft: TypeDraftMessage;
+
+  protected get [id]() {
+    return 0x1b49ec6d;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.peer, TypePeer],
+      [this.top_msg_id ?? null, "number"],
+      [this.draft, TypeDraftMessage],
+    ];
+  }
+
+  constructor(
+    params: { peer: TypePeer; top_msg_id?: number; draft: TypeDraftMessage },
+  ) {
+    super();
+    this.peer = params.peer;
+    this.top_msg_id = params.top_msg_id;
+    this.draft = params.draft;
+  }
+}
+
+export class UpdateReadFeaturedStickers extends TypeUpdate {
+  protected get [id]() {
+    return 0x571d2742;
+  }
+
+  protected get [params](): Params {
+    return [];
+  }
+
+  constructor() {
+    super();
+  }
+}
+
+export class UpdateRecentStickers extends TypeUpdate {
+  protected get [id]() {
+    return 0x9a422c20;
+  }
+
+  protected get [params](): Params {
+    return [];
+  }
+
+  constructor() {
+    super();
+  }
+}
+
+export class UpdateConfig extends TypeUpdate {
+  protected get [id]() {
+    return 0xa229dd06;
+  }
+
+  protected get [params](): Params {
+    return [];
+  }
+
+  constructor() {
+    super();
+  }
+}
+
+export class UpdatePtsChanged extends TypeUpdate {
+  protected get [id]() {
+    return 0x3354678f;
+  }
+
+  protected get [params](): Params {
+    return [];
+  }
+
+  constructor() {
+    super();
+  }
+}
+
+export class UpdateChannelWebPage extends TypeUpdate {
+  channel_id: bigint;
+  webpage: TypeWebPage;
+  pts: number;
+  pts_count: number;
+
+  protected get [id]() {
+    return 0x2f2ba99f;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.channel_id, "bigint"],
+      [this.webpage, TypeWebPage],
+      [this.pts, "number"],
+      [this.pts_count, "number"],
+    ];
+  }
+
+  constructor(
+    params: {
+      channel_id: bigint;
+      webpage: TypeWebPage;
+      pts: number;
+      pts_count: number;
+    },
+  ) {
+    super();
+    this.channel_id = params.channel_id;
+    this.webpage = params.webpage;
+    this.pts = params.pts;
+    this.pts_count = params.pts_count;
+  }
+}
+
+export class UpdateDialogPinned extends TypeUpdate {
+  pinned?: true;
+  folder_id?: number;
+  peer: TypeDialogPeer;
+
+  protected get [id]() {
+    return 0x6e6fe51c;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.pinned ?? null, "true"],
+      [this.folder_id ?? null, "number"],
+      [this.peer, TypeDialogPeer],
+    ];
+  }
+
+  constructor(
+    params: { pinned?: true; folder_id?: number; peer: TypeDialogPeer },
+  ) {
+    super();
+    this.pinned = params.pinned;
+    this.folder_id = params.folder_id;
+    this.peer = params.peer;
+  }
+}
+
+export class UpdatePinnedDialogs extends TypeUpdate {
+  folder_id?: number;
+  order?: Array<TypeDialogPeer>;
+
+  protected get [id]() {
+    return 0xfa0f3ca2;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.folder_id ?? null, "number"],
+      [this.order ?? null, [TypeDialogPeer]],
+    ];
+  }
+
+  constructor(params: { folder_id?: number; order?: Array<TypeDialogPeer> }) {
+    super();
+    this.folder_id = params.folder_id;
+    this.order = params.order;
+  }
+}
+
+export class UpdateBotWebhookJSON extends TypeUpdate {
+  data: TypeDataJSON;
+
+  protected get [id]() {
+    return 0x8317c0c3;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.data, TypeDataJSON],
+    ];
+  }
+
+  constructor(params: { data: TypeDataJSON }) {
+    super();
+    this.data = params.data;
+  }
+}
+
+export class UpdateBotWebhookJSONQuery extends TypeUpdate {
+  query_id: bigint;
+  data: TypeDataJSON;
+  timeout: number;
+
+  protected get [id]() {
+    return 0x9b9240a6;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.query_id, "bigint"],
+      [this.data, TypeDataJSON],
+      [this.timeout, "number"],
+    ];
+  }
+
+  constructor(
+    params: { query_id: bigint; data: TypeDataJSON; timeout: number },
+  ) {
+    super();
+    this.query_id = params.query_id;
+    this.data = params.data;
+    this.timeout = params.timeout;
+  }
+}
+
+export class UpdateBotShippingQuery extends TypeUpdate {
+  query_id: bigint;
+  user_id: bigint;
+  payload: Uint8Array;
+  shipping_address: TypePostAddress;
+
+  protected get [id]() {
+    return 0xb5aefd7d;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.query_id, "bigint"],
+      [this.user_id, "bigint"],
+      [this.payload, Uint8Array],
+      [this.shipping_address, TypePostAddress],
+    ];
+  }
+
+  constructor(
+    params: {
+      query_id: bigint;
+      user_id: bigint;
+      payload: Uint8Array;
+      shipping_address: TypePostAddress;
+    },
+  ) {
+    super();
+    this.query_id = params.query_id;
+    this.user_id = params.user_id;
+    this.payload = params.payload;
+    this.shipping_address = params.shipping_address;
+  }
+}
+
+export class UpdateBotPrecheckoutQuery extends TypeUpdate {
+  query_id: bigint;
+  user_id: bigint;
+  payload: Uint8Array;
+  info?: TypePaymentRequestedInfo;
+  shipping_option_id?: string;
+  currency: string;
+  total_amount: bigint;
+
+  protected get [id]() {
+    return 0x8caa9a96;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.query_id, "bigint"],
+      [this.user_id, "bigint"],
+      [this.payload, Uint8Array],
+      [this.info ?? null, TypePaymentRequestedInfo],
+      [this.shipping_option_id ?? null, "string"],
+      [this.currency, "string"],
+      [this.total_amount, "bigint"],
+    ];
+  }
+
+  constructor(
+    params: {
+      query_id: bigint;
+      user_id: bigint;
+      payload: Uint8Array;
+      info?: TypePaymentRequestedInfo;
+      shipping_option_id?: string;
+      currency: string;
+      total_amount: bigint;
+    },
+  ) {
+    super();
+    this.query_id = params.query_id;
+    this.user_id = params.user_id;
+    this.payload = params.payload;
+    this.info = params.info;
+    this.shipping_option_id = params.shipping_option_id;
+    this.currency = params.currency;
+    this.total_amount = params.total_amount;
+  }
+}
+
+export class UpdatePhoneCall extends TypeUpdate {
+  phone_call: TypePhoneCall;
+
+  protected get [id]() {
+    return 0xab0f6b1e;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.phone_call, TypePhoneCall],
+    ];
+  }
+
+  constructor(params: { phone_call: TypePhoneCall }) {
+    super();
+    this.phone_call = params.phone_call;
+  }
+}
+
+export class UpdateLangPackTooLong extends TypeUpdate {
+  lang_code: string;
+
+  protected get [id]() {
+    return 0x46560264;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.lang_code, "string"],
+    ];
+  }
+
+  constructor(params: { lang_code: string }) {
+    super();
+    this.lang_code = params.lang_code;
+  }
+}
+
+export class UpdateLangPack extends TypeUpdate {
+  difference: TypeLangPackDifference;
+
+  protected get [id]() {
+    return 0x56022f4d;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.difference, TypeLangPackDifference],
+    ];
+  }
+
+  constructor(params: { difference: TypeLangPackDifference }) {
+    super();
+    this.difference = params.difference;
+  }
+}
+
+export class UpdateFavedStickers extends TypeUpdate {
+  protected get [id]() {
+    return 0xe511996d;
+  }
+
+  protected get [params](): Params {
+    return [];
+  }
+
+  constructor() {
+    super();
+  }
+}
+
+export class UpdateChannelReadMessagesContents extends TypeUpdate {
+  channel_id: bigint;
+  top_msg_id?: number;
+  messages: Array<number>;
+
+  protected get [id]() {
+    return 0xea29055d;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.channel_id, "bigint"],
+      [this.top_msg_id ?? null, "number"],
+      [this.messages, ["number"]],
+    ];
+  }
+
+  constructor(
+    params: {
+      channel_id: bigint;
+      top_msg_id?: number;
+      messages: Array<number>;
+    },
+  ) {
+    super();
+    this.channel_id = params.channel_id;
+    this.top_msg_id = params.top_msg_id;
+    this.messages = params.messages;
+  }
+}
+
+export class UpdateContactsReset extends TypeUpdate {
+  protected get [id]() {
+    return 0x7084a7be;
+  }
+
+  protected get [params](): Params {
+    return [];
+  }
+
+  constructor() {
+    super();
+  }
+}
+
+export class UpdateChannelAvailableMessages extends TypeUpdate {
+  channel_id: bigint;
+  available_min_id: number;
+
+  protected get [id]() {
+    return 0xb23fc698;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.channel_id, "bigint"],
+      [this.available_min_id, "number"],
+    ];
+  }
+
+  constructor(params: { channel_id: bigint; available_min_id: number }) {
+    super();
+    this.channel_id = params.channel_id;
+    this.available_min_id = params.available_min_id;
+  }
+}
+
+export class UpdateDialogUnreadMark extends TypeUpdate {
+  unread?: true;
+  peer: TypeDialogPeer;
+
+  protected get [id]() {
+    return 0xe16459c3;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.unread ?? null, "true"],
+      [this.peer, TypeDialogPeer],
+    ];
+  }
+
+  constructor(params: { unread?: true; peer: TypeDialogPeer }) {
+    super();
+    this.unread = params.unread;
+    this.peer = params.peer;
+  }
+}
+
+export class UpdateMessagePoll extends TypeUpdate {
+  poll_id: bigint;
+  poll?: TypePoll;
+  results: TypePollResults;
+
+  protected get [id]() {
+    return 0xaca1657b;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.poll_id, "bigint"],
+      [this.poll ?? null, TypePoll],
+      [this.results, TypePollResults],
+    ];
+  }
+
+  constructor(
+    params: { poll_id: bigint; poll?: TypePoll; results: TypePollResults },
+  ) {
+    super();
+    this.poll_id = params.poll_id;
+    this.poll = params.poll;
+    this.results = params.results;
+  }
+}
+
+export class UpdateChatDefaultBannedRights extends TypeUpdate {
+  peer: TypePeer;
+  default_banned_rights: TypeChatBannedRights;
+  version: number;
+
+  protected get [id]() {
+    return 0x54c01850;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.peer, TypePeer],
+      [this.default_banned_rights, TypeChatBannedRights],
+      [this.version, "number"],
+    ];
+  }
+
+  constructor(
+    params: {
+      peer: TypePeer;
+      default_banned_rights: TypeChatBannedRights;
+      version: number;
+    },
+  ) {
+    super();
+    this.peer = params.peer;
+    this.default_banned_rights = params.default_banned_rights;
+    this.version = params.version;
+  }
+}
+
+export class UpdateFolderPeers extends TypeUpdate {
+  folder_peers: Array<TypeFolderPeer>;
+  pts: number;
+  pts_count: number;
+
+  protected get [id]() {
+    return 0x19360dc0;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.folder_peers, [TypeFolderPeer]],
+      [this.pts, "number"],
+      [this.pts_count, "number"],
+    ];
+  }
+
+  constructor(
+    params: {
+      folder_peers: Array<TypeFolderPeer>;
+      pts: number;
+      pts_count: number;
+    },
+  ) {
+    super();
+    this.folder_peers = params.folder_peers;
+    this.pts = params.pts;
+    this.pts_count = params.pts_count;
+  }
+}
+
+export class UpdatePeerSettings extends TypeUpdate {
+  peer: TypePeer;
+  settings: TypePeerSettings;
+
+  protected get [id]() {
+    return 0x6a7e7366;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.peer, TypePeer],
+      [this.settings, TypePeerSettings],
+    ];
+  }
+
+  constructor(params: { peer: TypePeer; settings: TypePeerSettings }) {
+    super();
+    this.peer = params.peer;
+    this.settings = params.settings;
+  }
+}
+
+export class UpdatePeerLocated extends TypeUpdate {
+  peers: Array<TypePeerLocated>;
+
+  protected get [id]() {
+    return 0xb4afcfb0;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.peers, [TypePeerLocated]],
+    ];
+  }
+
+  constructor(params: { peers: Array<TypePeerLocated> }) {
+    super();
+    this.peers = params.peers;
+  }
+}
+
+export class UpdateNewScheduledMessage extends TypeUpdate {
+  message: TypeMessage;
+
+  protected get [id]() {
+    return 0x39a51dfb;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.message, TypeMessage],
+    ];
+  }
+
+  constructor(params: { message: TypeMessage }) {
+    super();
+    this.message = params.message;
+  }
+}
+
+export class UpdateDeleteScheduledMessages extends TypeUpdate {
+  peer: TypePeer;
+  messages: Array<number>;
+
+  protected get [id]() {
+    return 0x90866cee;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.peer, TypePeer],
+      [this.messages, ["number"]],
+    ];
+  }
+
+  constructor(params: { peer: TypePeer; messages: Array<number> }) {
+    super();
+    this.peer = params.peer;
+    this.messages = params.messages;
+  }
+}
+
+export class UpdateTheme extends TypeUpdate {
+  theme: TypeTheme;
+
+  protected get [id]() {
+    return 0x8216fba3;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.theme, TypeTheme],
+    ];
+  }
+
+  constructor(params: { theme: TypeTheme }) {
+    super();
+    this.theme = params.theme;
+  }
+}
+
+export class UpdateGeoLiveViewed extends TypeUpdate {
+  peer: TypePeer;
+  msg_id: number;
+
+  protected get [id]() {
+    return 0x871fb939;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.peer, TypePeer],
+      [this.msg_id, "number"],
+    ];
+  }
+
+  constructor(params: { peer: TypePeer; msg_id: number }) {
+    super();
+    this.peer = params.peer;
+    this.msg_id = params.msg_id;
+  }
+}
+
+export class UpdateLoginToken extends TypeUpdate {
+  protected get [id]() {
+    return 0x564fe691;
+  }
+
+  protected get [params](): Params {
+    return [];
+  }
+
+  constructor() {
+    super();
+  }
+}
+
+export class UpdateMessagePollVote extends TypeUpdate {
+  poll_id: bigint;
+  user_id: bigint;
+  options: Array<Uint8Array>;
+  qts: number;
+
+  protected get [id]() {
+    return 0x106395c9;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.poll_id, "bigint"],
+      [this.user_id, "bigint"],
+      [this.options, [Uint8Array]],
+      [this.qts, "number"],
+    ];
+  }
+
+  constructor(
+    params: {
+      poll_id: bigint;
+      user_id: bigint;
+      options: Array<Uint8Array>;
+      qts: number;
+    },
+  ) {
+    super();
+    this.poll_id = params.poll_id;
+    this.user_id = params.user_id;
+    this.options = params.options;
+    this.qts = params.qts;
+  }
+}
+
+export class UpdateDialogFilter extends TypeUpdate {
+  id: number;
+  filter?: TypeDialogFilter;
+
+  protected get [id]() {
+    return 0x26ffde7d;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.id, "number"],
+      [this.filter ?? null, TypeDialogFilter],
+    ];
+  }
+
+  constructor(params: { id: number; filter?: TypeDialogFilter }) {
+    super();
+    this.id = params.id;
+    this.filter = params.filter;
+  }
+}
+
+export class UpdateDialogFilterOrder extends TypeUpdate {
+  order: Array<number>;
+
+  protected get [id]() {
+    return 0xa5d72105;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.order, ["number"]],
+    ];
+  }
+
+  constructor(params: { order: Array<number> }) {
+    super();
+    this.order = params.order;
+  }
+}
+
+export class UpdateDialogFilters extends TypeUpdate {
+  protected get [id]() {
+    return 0x3504914f;
+  }
+
+  protected get [params](): Params {
+    return [];
+  }
+
+  constructor() {
+    super();
+  }
+}
+
+export class UpdatePhoneCallSignalingData extends TypeUpdate {
+  phone_call_id: bigint;
+  data: Uint8Array;
+
+  protected get [id]() {
+    return 0x2661bf09;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.phone_call_id, "bigint"],
+      [this.data, Uint8Array],
+    ];
+  }
+
+  constructor(params: { phone_call_id: bigint; data: Uint8Array }) {
+    super();
+    this.phone_call_id = params.phone_call_id;
+    this.data = params.data;
+  }
+}
+
+export class UpdateChannelMessageForwards extends TypeUpdate {
+  channel_id: bigint;
+  id: number;
+  forwards: number;
+
+  protected get [id]() {
+    return 0xd29a27f4;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.channel_id, "bigint"],
+      [this.id, "number"],
+      [this.forwards, "number"],
+    ];
+  }
+
+  constructor(params: { channel_id: bigint; id: number; forwards: number }) {
+    super();
+    this.channel_id = params.channel_id;
+    this.id = params.id;
+    this.forwards = params.forwards;
+  }
+}
+
+export class UpdateReadChannelDiscussionInbox extends TypeUpdate {
+  channel_id: bigint;
+  top_msg_id: number;
+  read_max_id: number;
+  broadcast_id?: bigint;
+  broadcast_post?: number;
+
+  protected get [id]() {
+    return 0xd6b19546;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.channel_id, "bigint"],
+      [this.top_msg_id, "number"],
+      [this.read_max_id, "number"],
+      [this.broadcast_id ?? null, "bigint"],
+      [this.broadcast_post ?? null, "number"],
+    ];
+  }
+
+  constructor(
+    params: {
+      channel_id: bigint;
+      top_msg_id: number;
+      read_max_id: number;
+      broadcast_id?: bigint;
+      broadcast_post?: number;
+    },
+  ) {
+    super();
+    this.channel_id = params.channel_id;
+    this.top_msg_id = params.top_msg_id;
+    this.read_max_id = params.read_max_id;
+    this.broadcast_id = params.broadcast_id;
+    this.broadcast_post = params.broadcast_post;
+  }
+}
+
+export class UpdateReadChannelDiscussionOutbox extends TypeUpdate {
+  channel_id: bigint;
+  top_msg_id: number;
+  read_max_id: number;
+
+  protected get [id]() {
+    return 0x695c9e7c;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.channel_id, "bigint"],
+      [this.top_msg_id, "number"],
+      [this.read_max_id, "number"],
+    ];
+  }
+
+  constructor(
+    params: { channel_id: bigint; top_msg_id: number; read_max_id: number },
+  ) {
+    super();
+    this.channel_id = params.channel_id;
+    this.top_msg_id = params.top_msg_id;
+    this.read_max_id = params.read_max_id;
+  }
+}
+
+export class UpdatePeerBlocked extends TypeUpdate {
+  peer_id: TypePeer;
+  blocked: boolean;
+
+  protected get [id]() {
+    return 0x246a4b22;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.peer_id, TypePeer],
+      [this.blocked, "boolean"],
+    ];
+  }
+
+  constructor(params: { peer_id: TypePeer; blocked: boolean }) {
+    super();
+    this.peer_id = params.peer_id;
+    this.blocked = params.blocked;
+  }
+}
+
+export class UpdateChannelUserTyping extends TypeUpdate {
+  channel_id: bigint;
+  top_msg_id?: number;
+  from_id: TypePeer;
+  action: TypeSendMessageAction;
+
+  protected get [id]() {
+    return 0x8c88c923;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.channel_id, "bigint"],
+      [this.top_msg_id ?? null, "number"],
+      [this.from_id, TypePeer],
+      [this.action, TypeSendMessageAction],
+    ];
+  }
+
+  constructor(
+    params: {
+      channel_id: bigint;
+      top_msg_id?: number;
+      from_id: TypePeer;
+      action: TypeSendMessageAction;
+    },
+  ) {
+    super();
+    this.channel_id = params.channel_id;
+    this.top_msg_id = params.top_msg_id;
+    this.from_id = params.from_id;
+    this.action = params.action;
+  }
+}
+
+export class UpdatePinnedMessages extends TypeUpdate {
+  pinned?: true;
+  peer: TypePeer;
+  messages: Array<number>;
+  pts: number;
+  pts_count: number;
+
+  protected get [id]() {
+    return 0xed85eab5;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.pinned ?? null, "true"],
+      [this.peer, TypePeer],
+      [this.messages, ["number"]],
+      [this.pts, "number"],
+      [this.pts_count, "number"],
+    ];
+  }
+
+  constructor(
+    params: {
+      pinned?: true;
+      peer: TypePeer;
+      messages: Array<number>;
+      pts: number;
+      pts_count: number;
+    },
+  ) {
+    super();
+    this.pinned = params.pinned;
+    this.peer = params.peer;
+    this.messages = params.messages;
+    this.pts = params.pts;
+    this.pts_count = params.pts_count;
+  }
+}
+
+export class UpdatePinnedChannelMessages extends TypeUpdate {
+  pinned?: true;
+  channel_id: bigint;
+  messages: Array<number>;
+  pts: number;
+  pts_count: number;
+
+  protected get [id]() {
+    return 0x5bb98608;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.pinned ?? null, "true"],
+      [this.channel_id, "bigint"],
+      [this.messages, ["number"]],
+      [this.pts, "number"],
+      [this.pts_count, "number"],
+    ];
+  }
+
+  constructor(
+    params: {
+      pinned?: true;
+      channel_id: bigint;
+      messages: Array<number>;
+      pts: number;
+      pts_count: number;
+    },
+  ) {
+    super();
+    this.pinned = params.pinned;
+    this.channel_id = params.channel_id;
+    this.messages = params.messages;
+    this.pts = params.pts;
+    this.pts_count = params.pts_count;
+  }
+}
+
+export class UpdateChat extends TypeUpdate {
+  chat_id: bigint;
+
+  protected get [id]() {
+    return 0xf89a6a4e;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.chat_id, "bigint"],
+    ];
+  }
+
+  constructor(params: { chat_id: bigint }) {
+    super();
+    this.chat_id = params.chat_id;
+  }
+}
+
+export class UpdateGroupCallParticipants extends TypeUpdate {
+  call: TypeInputGroupCall;
+  participants: Array<TypeGroupCallParticipant>;
+  version: number;
+
+  protected get [id]() {
+    return 0xf2ebdb4e;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.call, TypeInputGroupCall],
+      [this.participants, [TypeGroupCallParticipant]],
+      [this.version, "number"],
+    ];
+  }
+
+  constructor(
+    params: {
+      call: TypeInputGroupCall;
+      participants: Array<TypeGroupCallParticipant>;
+      version: number;
+    },
+  ) {
+    super();
+    this.call = params.call;
+    this.participants = params.participants;
+    this.version = params.version;
+  }
+}
+
+export class UpdateGroupCall extends TypeUpdate {
+  chat_id: bigint;
+  call: TypeGroupCall;
+
+  protected get [id]() {
+    return 0x14b24500;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.chat_id, "bigint"],
+      [this.call, TypeGroupCall],
+    ];
+  }
+
+  constructor(params: { chat_id: bigint; call: TypeGroupCall }) {
+    super();
+    this.chat_id = params.chat_id;
+    this.call = params.call;
+  }
+}
+
+export class UpdatePeerHistoryTTL extends TypeUpdate {
+  peer: TypePeer;
+  ttl_period?: number;
+
+  protected get [id]() {
+    return 0xbb9bb9a5;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.peer, TypePeer],
+      [this.ttl_period ?? null, "number"],
+    ];
+  }
+
+  constructor(params: { peer: TypePeer; ttl_period?: number }) {
+    super();
+    this.peer = params.peer;
+    this.ttl_period = params.ttl_period;
+  }
+}
+
+export class UpdateChatParticipant extends TypeUpdate {
+  chat_id: bigint;
+  date: number;
+  actor_id: bigint;
+  user_id: bigint;
+  prev_participant?: TypeChatParticipant;
+  new_participant?: TypeChatParticipant;
+  invite?: TypeExportedChatInvite;
+  qts: number;
+
+  protected get [id]() {
+    return 0xd087663a;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.chat_id, "bigint"],
+      [this.date, "number"],
+      [this.actor_id, "bigint"],
+      [this.user_id, "bigint"],
+      [this.prev_participant ?? null, TypeChatParticipant],
+      [this.new_participant ?? null, TypeChatParticipant],
+      [this.invite ?? null, TypeExportedChatInvite],
+      [this.qts, "number"],
+    ];
+  }
+
+  constructor(
+    params: {
+      chat_id: bigint;
+      date: number;
+      actor_id: bigint;
+      user_id: bigint;
+      prev_participant?: TypeChatParticipant;
+      new_participant?: TypeChatParticipant;
+      invite?: TypeExportedChatInvite;
+      qts: number;
+    },
+  ) {
+    super();
+    this.chat_id = params.chat_id;
     this.date = params.date;
-    this.photo = params.photo;
-    this.previous = params.previous;
+    this.actor_id = params.actor_id;
+    this.user_id = params.user_id;
+    this.prev_participant = params.prev_participant;
+    this.new_participant = params.new_participant;
+    this.invite = params.invite;
+    this.qts = params.qts;
+  }
+}
+
+export class UpdateChannelParticipant extends TypeUpdate {
+  channel_id: bigint;
+  date: number;
+  actor_id: bigint;
+  user_id: bigint;
+  prev_participant?: TypeChannelParticipant;
+  new_participant?: TypeChannelParticipant;
+  invite?: TypeExportedChatInvite;
+  qts: number;
+
+  protected get [id]() {
+    return 0x985d3abb;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.channel_id, "bigint"],
+      [this.date, "number"],
+      [this.actor_id, "bigint"],
+      [this.user_id, "bigint"],
+      [this.prev_participant ?? null, TypeChannelParticipant],
+      [this.new_participant ?? null, TypeChannelParticipant],
+      [this.invite ?? null, TypeExportedChatInvite],
+      [this.qts, "number"],
+    ];
+  }
+
+  constructor(
+    params: {
+      channel_id: bigint;
+      date: number;
+      actor_id: bigint;
+      user_id: bigint;
+      prev_participant?: TypeChannelParticipant;
+      new_participant?: TypeChannelParticipant;
+      invite?: TypeExportedChatInvite;
+      qts: number;
+    },
+  ) {
+    super();
+    this.channel_id = params.channel_id;
+    this.date = params.date;
+    this.actor_id = params.actor_id;
+    this.user_id = params.user_id;
+    this.prev_participant = params.prev_participant;
+    this.new_participant = params.new_participant;
+    this.invite = params.invite;
+    this.qts = params.qts;
+  }
+}
+
+export class UpdateBotStopped extends TypeUpdate {
+  user_id: bigint;
+  date: number;
+  stopped: boolean;
+  qts: number;
+
+  protected get [id]() {
+    return 0xc4870a49;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.user_id, "bigint"],
+      [this.date, "number"],
+      [this.stopped, "boolean"],
+      [this.qts, "number"],
+    ];
+  }
+
+  constructor(
+    params: { user_id: bigint; date: number; stopped: boolean; qts: number },
+  ) {
+    super();
+    this.user_id = params.user_id;
+    this.date = params.date;
+    this.stopped = params.stopped;
+    this.qts = params.qts;
+  }
+}
+
+export class UpdateGroupCallConnection extends TypeUpdate {
+  presentation?: true;
+  params: TypeDataJSON;
+
+  protected get [id]() {
+    return 0x0b783982;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.presentation ?? null, "true"],
+      [this.params, TypeDataJSON],
+    ];
+  }
+
+  constructor(params: { presentation?: true; params: TypeDataJSON }) {
+    super();
+    this.presentation = params.presentation;
+    this.params = params.params;
+  }
+}
+
+export class UpdateBotCommands extends TypeUpdate {
+  peer: TypePeer;
+  bot_id: bigint;
+  commands: Array<TypeBotCommand>;
+
+  protected get [id]() {
+    return 0x4d712f2e;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.peer, TypePeer],
+      [this.bot_id, "bigint"],
+      [this.commands, [TypeBotCommand]],
+    ];
+  }
+
+  constructor(
+    params: { peer: TypePeer; bot_id: bigint; commands: Array<TypeBotCommand> },
+  ) {
+    super();
+    this.peer = params.peer;
+    this.bot_id = params.bot_id;
+    this.commands = params.commands;
+  }
+}
+
+export class UpdatePendingJoinRequests extends TypeUpdate {
+  peer: TypePeer;
+  requests_pending: number;
+  recent_requesters: Array<bigint>;
+
+  protected get [id]() {
+    return 0x7063c3db;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.peer, TypePeer],
+      [this.requests_pending, "number"],
+      [this.recent_requesters, ["bigint"]],
+    ];
+  }
+
+  constructor(
+    params: {
+      peer: TypePeer;
+      requests_pending: number;
+      recent_requesters: Array<bigint>;
+    },
+  ) {
+    super();
+    this.peer = params.peer;
+    this.requests_pending = params.requests_pending;
+    this.recent_requesters = params.recent_requesters;
+  }
+}
+
+export class UpdateBotChatInviteRequester extends TypeUpdate {
+  peer: TypePeer;
+  date: number;
+  user_id: bigint;
+  about: string;
+  invite: TypeExportedChatInvite;
+  qts: number;
+
+  protected get [id]() {
+    return 0x11dfa986;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.peer, TypePeer],
+      [this.date, "number"],
+      [this.user_id, "bigint"],
+      [this.about, "string"],
+      [this.invite, TypeExportedChatInvite],
+      [this.qts, "number"],
+    ];
+  }
+
+  constructor(
+    params: {
+      peer: TypePeer;
+      date: number;
+      user_id: bigint;
+      about: string;
+      invite: TypeExportedChatInvite;
+      qts: number;
+    },
+  ) {
+    super();
+    this.peer = params.peer;
+    this.date = params.date;
+    this.user_id = params.user_id;
+    this.about = params.about;
+    this.invite = params.invite;
+    this.qts = params.qts;
+  }
+}
+
+export class UpdateMessageReactions extends TypeUpdate {
+  peer: TypePeer;
+  msg_id: number;
+  top_msg_id?: number;
+  reactions: TypeMessageReactions;
+
+  protected get [id]() {
+    return 0x5e1b3cb8;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.peer, TypePeer],
+      [this.msg_id, "number"],
+      [this.top_msg_id ?? null, "number"],
+      [this.reactions, TypeMessageReactions],
+    ];
+  }
+
+  constructor(
+    params: {
+      peer: TypePeer;
+      msg_id: number;
+      top_msg_id?: number;
+      reactions: TypeMessageReactions;
+    },
+  ) {
+    super();
+    this.peer = params.peer;
+    this.msg_id = params.msg_id;
+    this.top_msg_id = params.top_msg_id;
+    this.reactions = params.reactions;
+  }
+}
+
+export class UpdateAttachMenuBots extends TypeUpdate {
+  protected get [id]() {
+    return 0x17b7a20b;
+  }
+
+  protected get [params](): Params {
+    return [];
+  }
+
+  constructor() {
+    super();
+  }
+}
+
+export class UpdateWebViewResultSent extends TypeUpdate {
+  query_id: bigint;
+
+  protected get [id]() {
+    return 0x1592b79d;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.query_id, "bigint"],
+    ];
+  }
+
+  constructor(params: { query_id: bigint }) {
+    super();
+    this.query_id = params.query_id;
+  }
+}
+
+export class UpdateBotMenuButton extends TypeUpdate {
+  bot_id: bigint;
+  button: TypeBotMenuButton;
+
+  protected get [id]() {
+    return 0x14b85813;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.bot_id, "bigint"],
+      [this.button, TypeBotMenuButton],
+    ];
+  }
+
+  constructor(params: { bot_id: bigint; button: TypeBotMenuButton }) {
+    super();
+    this.bot_id = params.bot_id;
+    this.button = params.button;
+  }
+}
+
+export class UpdateSavedRingtones extends TypeUpdate {
+  protected get [id]() {
+    return 0x74d8be99;
+  }
+
+  protected get [params](): Params {
+    return [];
+  }
+
+  constructor() {
+    super();
+  }
+}
+
+export class UpdateTranscribedAudio extends TypeUpdate {
+  pending?: true;
+  peer: TypePeer;
+  msg_id: number;
+  transcription_id: bigint;
+  text: string;
+
+  protected get [id]() {
+    return 0x0084cd5a;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.pending ?? null, "true"],
+      [this.peer, TypePeer],
+      [this.msg_id, "number"],
+      [this.transcription_id, "bigint"],
+      [this.text, "string"],
+    ];
+  }
+
+  constructor(
+    params: {
+      pending?: true;
+      peer: TypePeer;
+      msg_id: number;
+      transcription_id: bigint;
+      text: string;
+    },
+  ) {
+    super();
+    this.pending = params.pending;
+    this.peer = params.peer;
+    this.msg_id = params.msg_id;
+    this.transcription_id = params.transcription_id;
+    this.text = params.text;
+  }
+}
+
+export class UpdateReadFeaturedEmojiStickers extends TypeUpdate {
+  protected get [id]() {
+    return 0xfb4c496c;
+  }
+
+  protected get [params](): Params {
+    return [];
+  }
+
+  constructor() {
+    super();
+  }
+}
+
+export class UpdateUserEmojiStatus extends TypeUpdate {
+  user_id: bigint;
+  emoji_status: TypeEmojiStatus;
+
+  protected get [id]() {
+    return 0x28373599;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.user_id, "bigint"],
+      [this.emoji_status, TypeEmojiStatus],
+    ];
+  }
+
+  constructor(params: { user_id: bigint; emoji_status: TypeEmojiStatus }) {
+    super();
+    this.user_id = params.user_id;
+    this.emoji_status = params.emoji_status;
+  }
+}
+
+export class UpdateRecentEmojiStatuses extends TypeUpdate {
+  protected get [id]() {
+    return 0x30f443db;
+  }
+
+  protected get [params](): Params {
+    return [];
+  }
+
+  constructor() {
+    super();
+  }
+}
+
+export class UpdateRecentReactions extends TypeUpdate {
+  protected get [id]() {
+    return 0x6f7863f4;
+  }
+
+  protected get [params](): Params {
+    return [];
+  }
+
+  constructor() {
+    super();
+  }
+}
+
+export class UpdateMoveStickerSetToTop extends TypeUpdate {
+  masks?: true;
+  emojis?: true;
+  stickerset: bigint;
+
+  protected get [id]() {
+    return 0x86fccf85;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.masks ?? null, "true"],
+      [this.emojis ?? null, "true"],
+      [this.stickerset, "bigint"],
+    ];
+  }
+
+  constructor(params: { masks?: true; emojis?: true; stickerset: bigint }) {
+    super();
+    this.masks = params.masks;
+    this.emojis = params.emojis;
+    this.stickerset = params.stickerset;
+  }
+}
+
+export class UpdateMessageExtendedMedia extends TypeUpdate {
+  peer: TypePeer;
+  msg_id: number;
+  extended_media: TypeMessageExtendedMedia;
+
+  protected get [id]() {
+    return 0x5a73a98c;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.peer, TypePeer],
+      [this.msg_id, "number"],
+      [this.extended_media, TypeMessageExtendedMedia],
+    ];
+  }
+
+  constructor(
+    params: {
+      peer: TypePeer;
+      msg_id: number;
+      extended_media: TypeMessageExtendedMedia;
+    },
+  ) {
+    super();
+    this.peer = params.peer;
+    this.msg_id = params.msg_id;
+    this.extended_media = params.extended_media;
+  }
+}
+
+export class UpdateChannelPinnedTopic extends TypeUpdate {
+  pinned?: true;
+  channel_id: bigint;
+  topic_id: number;
+
+  protected get [id]() {
+    return 0x192efbe3;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.pinned ?? null, "true"],
+      [this.channel_id, "bigint"],
+      [this.topic_id, "number"],
+    ];
+  }
+
+  constructor(params: { pinned?: true; channel_id: bigint; topic_id: number }) {
+    super();
+    this.pinned = params.pinned;
+    this.channel_id = params.channel_id;
+    this.topic_id = params.topic_id;
+  }
+}
+
+export class UpdateChannelPinnedTopics extends TypeUpdate {
+  channel_id: bigint;
+  order?: Array<number>;
+
+  protected get [id]() {
+    return 0xfe198602;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.channel_id, "bigint"],
+      [this.order ?? null, ["number"]],
+    ];
+  }
+
+  constructor(params: { channel_id: bigint; order?: Array<number> }) {
+    super();
+    this.channel_id = params.channel_id;
+    this.order = params.order;
+  }
+}
+
+export class UpdateUser extends TypeUpdate {
+  user_id: bigint;
+
+  protected get [id]() {
+    return 0x20529438;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.user_id, "bigint"],
+    ];
+  }
+
+  constructor(params: { user_id: bigint }) {
+    super();
+    this.user_id = params.user_id;
+  }
+}
+
+export class UpdateAutoSaveSettings extends TypeUpdate {
+  protected get [id]() {
+    return 0xec05b097;
+  }
+
+  protected get [params](): Params {
+    return [];
+  }
+
+  constructor() {
+    super();
+  }
+}
+
+export class UpdateGroupInvitePrivacyForbidden extends TypeUpdate {
+  user_id: bigint;
+
+  protected get [id]() {
+    return 0xccf08ad6;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.user_id, "bigint"],
+    ];
+  }
+
+  constructor(params: { user_id: bigint }) {
+    super();
+    this.user_id = params.user_id;
   }
 }
 
@@ -2768,8 +8257,8 @@ export class UpdatesDifferenceEmpty extends TypeUpdatesDifference {
 
   protected get [params](): Params {
     return [
-      [this.date, "int"],
-      [this.seq, "int"],
+      [this.date, "number"],
+      [this.seq, "number"],
     ];
   }
 
@@ -2794,12 +8283,12 @@ export class UpdatesDifferenceSlice extends TypeUpdatesDifference {
 
   protected get [params](): Params {
     return [
-      [this.new_messages, "Vector<Message>"],
-      [this.new_encrypted_messages, "Vector<EncryptedMessage>"],
-      [this.other_updates, "Vector<Update>"],
-      [this.chats, "Vector<Chat>"],
-      [this.users, "Vector<User>"],
-      [this.intermediate_state, "updates.State"],
+      [this.new_messages, [TypeMessage]],
+      [this.new_encrypted_messages, [TypeEncryptedMessage]],
+      [this.other_updates, [TypeUpdate]],
+      [this.chats, [TypeChat]],
+      [this.users, [TypeUser]],
+      [this.intermediate_state, TypeUpdatesState],
     ];
   }
 
@@ -2820,6 +8309,25 @@ export class UpdatesDifferenceSlice extends TypeUpdatesDifference {
     this.chats = params.chats;
     this.users = params.users;
     this.intermediate_state = params.intermediate_state;
+  }
+}
+
+export class UpdatesDifferenceTooLong extends TypeUpdatesDifference {
+  pts: number;
+
+  protected get [id]() {
+    return 0x4afe8f6d;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.pts, "number"],
+    ];
+  }
+
+  constructor(params: { pts: number }) {
+    super();
+    this.pts = params.pts;
   }
 }
 
@@ -2860,21 +8368,21 @@ export class UpdateShortMessage extends TypeUpdates {
 
   protected get [params](): Params {
     return [
-      [this.out ?? null, "flags.1?true"],
-      [this.mentioned ?? null, "flags.4?true"],
-      [this.media_unread ?? null, "flags.5?true"],
-      [this.silent ?? null, "flags.13?true"],
-      [this.id, "int"],
-      [this.user_id, "long"],
+      [this.out ?? null, "true"],
+      [this.mentioned ?? null, "true"],
+      [this.media_unread ?? null, "true"],
+      [this.silent ?? null, "true"],
+      [this.id, "number"],
+      [this.user_id, "bigint"],
       [this.message, "string"],
-      [this.pts, "int"],
-      [this.pts_count, "int"],
-      [this.date, "int"],
-      [this.fwd_from ?? null, "flags.2?MessageFwdHeader"],
-      [this.via_bot_id ?? null, "flags.11?long"],
-      [this.reply_to ?? null, "flags.3?MessageReplyHeader"],
-      [this.entities ?? null, "flags.7?Vector<MessageEntity>"],
-      [this.ttl_period ?? null, "flags.25?int"],
+      [this.pts, "number"],
+      [this.pts_count, "number"],
+      [this.date, "number"],
+      [this.fwd_from ?? null, TypeMessageFwdHeader],
+      [this.via_bot_id ?? null, "bigint"],
+      [this.reply_to ?? null, TypeMessageReplyHeader],
+      [this.entities ?? null, [TypeMessageEntity]],
+      [this.ttl_period ?? null, "number"],
     ];
   }
 
@@ -2940,22 +8448,22 @@ export class UpdateShortChatMessage extends TypeUpdates {
 
   protected get [params](): Params {
     return [
-      [this.out ?? null, "flags.1?true"],
-      [this.mentioned ?? null, "flags.4?true"],
-      [this.media_unread ?? null, "flags.5?true"],
-      [this.silent ?? null, "flags.13?true"],
-      [this.id, "int"],
-      [this.from_id, "long"],
-      [this.chat_id, "long"],
+      [this.out ?? null, "true"],
+      [this.mentioned ?? null, "true"],
+      [this.media_unread ?? null, "true"],
+      [this.silent ?? null, "true"],
+      [this.id, "number"],
+      [this.from_id, "bigint"],
+      [this.chat_id, "bigint"],
       [this.message, "string"],
-      [this.pts, "int"],
-      [this.pts_count, "int"],
-      [this.date, "int"],
-      [this.fwd_from ?? null, "flags.2?MessageFwdHeader"],
-      [this.via_bot_id ?? null, "flags.11?long"],
-      [this.reply_to ?? null, "flags.3?MessageReplyHeader"],
-      [this.entities ?? null, "flags.7?Vector<MessageEntity>"],
-      [this.ttl_period ?? null, "flags.25?int"],
+      [this.pts, "number"],
+      [this.pts_count, "number"],
+      [this.date, "number"],
+      [this.fwd_from ?? null, TypeMessageFwdHeader],
+      [this.via_bot_id ?? null, "bigint"],
+      [this.reply_to ?? null, TypeMessageReplyHeader],
+      [this.entities ?? null, [TypeMessageEntity]],
+      [this.ttl_period ?? null, "number"],
     ];
   }
 
@@ -3009,8 +8517,8 @@ export class UpdateShort extends TypeUpdates {
 
   protected get [params](): Params {
     return [
-      [this.update, "Update"],
-      [this.date, "int"],
+      [this.update, TypeUpdate],
+      [this.date, "number"],
     ];
   }
 
@@ -3035,12 +8543,12 @@ export class UpdatesCombined extends TypeUpdates {
 
   protected get [params](): Params {
     return [
-      [this.updates, "Vector<Update>"],
-      [this.users, "Vector<User>"],
-      [this.chats, "Vector<Chat>"],
-      [this.date, "int"],
-      [this.seq_start, "int"],
-      [this.seq, "int"],
+      [this.updates, [TypeUpdate]],
+      [this.users, [TypeUser]],
+      [this.chats, [TypeChat]],
+      [this.date, "number"],
+      [this.seq_start, "number"],
+      [this.seq, "number"],
     ];
   }
 
@@ -3064,6 +8572,57 @@ export class UpdatesCombined extends TypeUpdates {
   }
 }
 
+export class UpdateShortSentMessage extends TypeUpdates {
+  out?: true;
+  id: number;
+  pts: number;
+  pts_count: number;
+  date: number;
+  media?: TypeMessageMedia;
+  entities?: Array<TypeMessageEntity>;
+  ttl_period?: number;
+
+  protected get [id]() {
+    return 0x9015e101;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.out ?? null, "true"],
+      [this.id, "number"],
+      [this.pts, "number"],
+      [this.pts_count, "number"],
+      [this.date, "number"],
+      [this.media ?? null, TypeMessageMedia],
+      [this.entities ?? null, [TypeMessageEntity]],
+      [this.ttl_period ?? null, "number"],
+    ];
+  }
+
+  constructor(
+    params: {
+      out?: true;
+      id: number;
+      pts: number;
+      pts_count: number;
+      date: number;
+      media?: TypeMessageMedia;
+      entities?: Array<TypeMessageEntity>;
+      ttl_period?: number;
+    },
+  ) {
+    super();
+    this.out = params.out;
+    this.id = params.id;
+    this.pts = params.pts;
+    this.pts_count = params.pts_count;
+    this.date = params.date;
+    this.media = params.media;
+    this.entities = params.entities;
+    this.ttl_period = params.ttl_period;
+  }
+}
+
 export class PhotosPhotosSlice extends TypePhotosPhotos {
   count: number;
   photos: Array<TypePhoto>;
@@ -3075,9 +8634,9 @@ export class PhotosPhotosSlice extends TypePhotosPhotos {
 
   protected get [params](): Params {
     return [
-      [this.count, "int"],
-      [this.photos, "Vector<Photo>"],
-      [this.users, "Vector<User>"],
+      [this.count, "number"],
+      [this.photos, [TypePhoto]],
+      [this.users, [TypeUser]],
     ];
   }
 
@@ -3088,6 +8647,45 @@ export class PhotosPhotosSlice extends TypePhotosPhotos {
     this.count = params.count;
     this.photos = params.photos;
     this.users = params.users;
+  }
+}
+
+export class UploadFileCdnRedirect extends TypeUploadFile {
+  dc_id: number;
+  file_token: Uint8Array;
+  encryption_key: Uint8Array;
+  encryption_iv: Uint8Array;
+  file_hashes: Array<TypeFileHash>;
+
+  protected get [id]() {
+    return 0xf18cda44;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.dc_id, "number"],
+      [this.file_token, Uint8Array],
+      [this.encryption_key, Uint8Array],
+      [this.encryption_iv, Uint8Array],
+      [this.file_hashes, [TypeFileHash]],
+    ];
+  }
+
+  constructor(
+    params: {
+      dc_id: number;
+      file_token: Uint8Array;
+      encryption_key: Uint8Array;
+      encryption_iv: Uint8Array;
+      file_hashes: Array<TypeFileHash>;
+    },
+  ) {
+    super();
+    this.dc_id = params.dc_id;
+    this.file_token = params.file_token;
+    this.encryption_key = params.encryption_key;
+    this.encryption_iv = params.encryption_iv;
+    this.file_hashes = params.file_hashes;
   }
 }
 
@@ -3105,94 +8703,6 @@ export class HelpNoAppUpdate extends TypeHelpAppUpdate {
   }
 }
 
-export class UpdateNewEncryptedMessage extends TypeUpdate {
-  message: TypeEncryptedMessage;
-  qts: number;
-
-  protected get [id]() {
-    return 0x12bcbd9a;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.message, "EncryptedMessage"],
-      [this.qts, "int"],
-    ];
-  }
-
-  constructor(params: { message: TypeEncryptedMessage; qts: number }) {
-    super();
-    this.message = params.message;
-    this.qts = params.qts;
-  }
-}
-
-export class UpdateEncryptedChatTyping extends TypeUpdate {
-  chat_id: number;
-
-  protected get [id]() {
-    return 0x1710f156;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.chat_id, "int"],
-    ];
-  }
-
-  constructor(params: { chat_id: number }) {
-    super();
-    this.chat_id = params.chat_id;
-  }
-}
-
-export class UpdateEncryption extends TypeUpdate {
-  chat: TypeEncryptedChat;
-  date: number;
-
-  protected get [id]() {
-    return 0xb4a2e88d;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.chat, "EncryptedChat"],
-      [this.date, "int"],
-    ];
-  }
-
-  constructor(params: { chat: TypeEncryptedChat; date: number }) {
-    super();
-    this.chat = params.chat;
-    this.date = params.date;
-  }
-}
-
-export class UpdateEncryptedMessagesRead extends TypeUpdate {
-  chat_id: number;
-  max_date: number;
-  date: number;
-
-  protected get [id]() {
-    return 0x38fe25b7;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.chat_id, "int"],
-      [this.max_date, "int"],
-      [this.date, "int"],
-    ];
-  }
-
-  constructor(params: { chat_id: number; max_date: number; date: number }) {
-    super();
-    this.chat_id = params.chat_id;
-    this.max_date = params.max_date;
-    this.date = params.date;
-  }
-}
-
 export class EncryptedChatEmpty extends TypeEncryptedChat {
   id: number;
 
@@ -3202,7 +8712,7 @@ export class EncryptedChatEmpty extends TypeEncryptedChat {
 
   protected get [params](): Params {
     return [
-      [this.id, "int"],
+      [this.id, "number"],
     ];
   }
 
@@ -3225,11 +8735,11 @@ export class EncryptedChatWaiting extends TypeEncryptedChat {
 
   protected get [params](): Params {
     return [
-      [this.id, "int"],
-      [this.access_hash, "long"],
-      [this.date, "int"],
-      [this.admin_id, "long"],
-      [this.participant_id, "long"],
+      [this.id, "number"],
+      [this.access_hash, "bigint"],
+      [this.date, "number"],
+      [this.admin_id, "bigint"],
+      [this.participant_id, "bigint"],
     ];
   }
 
@@ -3266,13 +8776,13 @@ export class EncryptedChatRequested extends TypeEncryptedChat {
 
   protected get [params](): Params {
     return [
-      [this.folder_id ?? null, "flags.0?int"],
-      [this.id, "int"],
-      [this.access_hash, "long"],
-      [this.date, "int"],
-      [this.admin_id, "long"],
-      [this.participant_id, "long"],
-      [this.g_a, "bytes"],
+      [this.folder_id ?? null, "number"],
+      [this.id, "number"],
+      [this.access_hash, "bigint"],
+      [this.date, "number"],
+      [this.admin_id, "bigint"],
+      [this.participant_id, "bigint"],
+      [this.g_a, Uint8Array],
     ];
   }
 
@@ -3308,8 +8818,8 @@ export class EncryptedChatDiscarded extends TypeEncryptedChat {
 
   protected get [params](): Params {
     return [
-      [this.history_deleted ?? null, "flags.0?true"],
-      [this.id, "int"],
+      [this.history_deleted ?? null, "true"],
+      [this.id, "number"],
     ];
   }
 
@@ -3360,10 +8870,10 @@ export class InputEncryptedFileUploaded extends TypeInputEncryptedFile {
 
   protected get [params](): Params {
     return [
-      [this.id, "long"],
-      [this.parts, "int"],
+      [this.id, "bigint"],
+      [this.parts, "number"],
       [this.md5_checksum, "string"],
-      [this.key_fingerprint, "int"],
+      [this.key_fingerprint, "number"],
     ];
   }
 
@@ -3383,25 +8893,28 @@ export class InputEncryptedFileUploaded extends TypeInputEncryptedFile {
   }
 }
 
-export class InputEncryptedFileLocation extends TypeInputFileLocation {
+export class InputEncryptedFileBigUploaded extends TypeInputEncryptedFile {
   id: bigint;
-  access_hash: bigint;
+  parts: number;
+  key_fingerprint: number;
 
   protected get [id]() {
-    return 0xf5235d55;
+    return 0x2dc173c8;
   }
 
   protected get [params](): Params {
     return [
-      [this.id, "long"],
-      [this.access_hash, "long"],
+      [this.id, "bigint"],
+      [this.parts, "number"],
+      [this.key_fingerprint, "number"],
     ];
   }
 
-  constructor(params: { id: bigint; access_hash: bigint }) {
+  constructor(params: { id: bigint; parts: number; key_fingerprint: number }) {
     super();
     this.id = params.id;
-    this.access_hash = params.access_hash;
+    this.parts = params.parts;
+    this.key_fingerprint = params.key_fingerprint;
   }
 }
 
@@ -3417,10 +8930,10 @@ export class EncryptedMessageService extends TypeEncryptedMessage {
 
   protected get [params](): Params {
     return [
-      [this.random_id, "long"],
-      [this.chat_id, "int"],
-      [this.date, "int"],
-      [this.bytes, "bytes"],
+      [this.random_id, "bigint"],
+      [this.chat_id, "number"],
+      [this.date, "number"],
+      [this.bytes, Uint8Array],
     ];
   }
 
@@ -3449,7 +8962,7 @@ export class MessagesDhConfigNotModified extends TypeMessagesDhConfig {
 
   protected get [params](): Params {
     return [
-      [this.random, "bytes"],
+      [this.random, Uint8Array],
     ];
   }
 
@@ -3470,8 +8983,8 @@ export class MessagesSentEncryptedFile
 
   protected get [params](): Params {
     return [
-      [this.date, "int"],
-      [this.file, "EncryptedFile"],
+      [this.date, "number"],
+      [this.file, TypeEncryptedFile],
     ];
   }
 
@@ -3479,244 +8992,6 @@ export class MessagesSentEncryptedFile
     super();
     this.date = params.date;
     this.file = params.file;
-  }
-}
-
-export class InputFileBig extends TypeInputFile {
-  id: bigint;
-  parts: number;
-  name: string;
-
-  protected get [id]() {
-    return 0xfa4f0bb5;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.id, "long"],
-      [this.parts, "int"],
-      [this.name, "string"],
-    ];
-  }
-
-  constructor(params: { id: bigint; parts: number; name: string }) {
-    super();
-    this.id = params.id;
-    this.parts = params.parts;
-    this.name = params.name;
-  }
-}
-
-export class InputEncryptedFileBigUploaded extends TypeInputEncryptedFile {
-  id: bigint;
-  parts: number;
-  key_fingerprint: number;
-
-  protected get [id]() {
-    return 0x2dc173c8;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.id, "long"],
-      [this.parts, "int"],
-      [this.key_fingerprint, "int"],
-    ];
-  }
-
-  constructor(params: { id: bigint; parts: number; key_fingerprint: number }) {
-    super();
-    this.id = params.id;
-    this.parts = params.parts;
-    this.key_fingerprint = params.key_fingerprint;
-  }
-}
-
-export class UpdateChatParticipantAdd extends TypeUpdate {
-  chat_id: bigint;
-  user_id: bigint;
-  inviter_id: bigint;
-  date: number;
-  version: number;
-
-  protected get [id]() {
-    return 0x3dda5451;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.chat_id, "long"],
-      [this.user_id, "long"],
-      [this.inviter_id, "long"],
-      [this.date, "int"],
-      [this.version, "int"],
-    ];
-  }
-
-  constructor(
-    params: {
-      chat_id: bigint;
-      user_id: bigint;
-      inviter_id: bigint;
-      date: number;
-      version: number;
-    },
-  ) {
-    super();
-    this.chat_id = params.chat_id;
-    this.user_id = params.user_id;
-    this.inviter_id = params.inviter_id;
-    this.date = params.date;
-    this.version = params.version;
-  }
-}
-
-export class UpdateChatParticipantDelete extends TypeUpdate {
-  chat_id: bigint;
-  user_id: bigint;
-  version: number;
-
-  protected get [id]() {
-    return 0xe32f3d77;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.chat_id, "long"],
-      [this.user_id, "long"],
-      [this.version, "int"],
-    ];
-  }
-
-  constructor(params: { chat_id: bigint; user_id: bigint; version: number }) {
-    super();
-    this.chat_id = params.chat_id;
-    this.user_id = params.user_id;
-    this.version = params.version;
-  }
-}
-
-export class UpdateDcOptions extends TypeUpdate {
-  dc_options: Array<TypeDcOption>;
-
-  protected get [id]() {
-    return 0x8e5e9873;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.dc_options, "Vector<DcOption>"],
-    ];
-  }
-
-  constructor(params: { dc_options: Array<TypeDcOption> }) {
-    super();
-    this.dc_options = params.dc_options;
-  }
-}
-
-export class InputMediaUploadedDocument extends TypeInputMedia {
-  nosound_video?: true;
-  force_file?: true;
-  file: TypeInputFile;
-  thumb?: TypeInputFile;
-  mime_type: string;
-  attributes: Array<TypeDocumentAttribute>;
-  stickers?: Array<TypeInputDocument>;
-  ttl_seconds?: number;
-
-  protected get [id]() {
-    return 0x5b38c6c1;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.nosound_video ?? null, "flags.3?true"],
-      [this.force_file ?? null, "flags.4?true"],
-      [this.file, "InputFile"],
-      [this.thumb ?? null, "flags.2?InputFile"],
-      [this.mime_type, "string"],
-      [this.attributes, "Vector<DocumentAttribute>"],
-      [this.stickers ?? null, "flags.0?Vector<InputDocument>"],
-      [this.ttl_seconds ?? null, "flags.1?int"],
-    ];
-  }
-
-  constructor(
-    params: {
-      nosound_video?: true;
-      force_file?: true;
-      file: TypeInputFile;
-      thumb?: TypeInputFile;
-      mime_type: string;
-      attributes: Array<TypeDocumentAttribute>;
-      stickers?: Array<TypeInputDocument>;
-      ttl_seconds?: number;
-    },
-  ) {
-    super();
-    this.nosound_video = params.nosound_video;
-    this.force_file = params.force_file;
-    this.file = params.file;
-    this.thumb = params.thumb;
-    this.mime_type = params.mime_type;
-    this.attributes = params.attributes;
-    this.stickers = params.stickers;
-    this.ttl_seconds = params.ttl_seconds;
-  }
-}
-
-export class InputMediaDocument extends TypeInputMedia {
-  id: TypeInputDocument;
-  ttl_seconds?: number;
-  query?: string;
-
-  protected get [id]() {
-    return 0x33473058;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.id, "InputDocument"],
-      [this.ttl_seconds ?? null, "flags.0?int"],
-      [this.query ?? null, "flags.1?string"],
-    ];
-  }
-
-  constructor(
-    params: { id: TypeInputDocument; ttl_seconds?: number; query?: string },
-  ) {
-    super();
-    this.id = params.id;
-    this.ttl_seconds = params.ttl_seconds;
-    this.query = params.query;
-  }
-}
-
-export class MessageMediaDocument extends TypeMessageMedia {
-  nopremium?: true;
-  document?: TypeDocument;
-  ttl_seconds?: number;
-
-  protected get [id]() {
-    return 0x9cb070d7;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.nopremium ?? null, "flags.3?true"],
-      [this.document ?? null, "flags.0?Document"],
-      [this.ttl_seconds ?? null, "flags.2?int"],
-    ];
-  }
-
-  constructor(
-    params: { nopremium?: true; document?: TypeDocument; ttl_seconds?: number },
-  ) {
-    super();
-    this.nopremium = params.nopremium;
-    this.document = params.document;
-    this.ttl_seconds = params.ttl_seconds;
   }
 }
 
@@ -3734,41 +9009,6 @@ export class InputDocumentEmpty extends TypeInputDocument {
   }
 }
 
-export class InputDocumentFileLocation extends TypeInputFileLocation {
-  id: bigint;
-  access_hash: bigint;
-  file_reference: Uint8Array;
-  thumb_size: string;
-
-  protected get [id]() {
-    return 0xbad07584;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.id, "long"],
-      [this.access_hash, "long"],
-      [this.file_reference, "bytes"],
-      [this.thumb_size, "string"],
-    ];
-  }
-
-  constructor(
-    params: {
-      id: bigint;
-      access_hash: bigint;
-      file_reference: Uint8Array;
-      thumb_size: string;
-    },
-  ) {
-    super();
-    this.id = params.id;
-    this.access_hash = params.access_hash;
-    this.file_reference = params.file_reference;
-    this.thumb_size = params.thumb_size;
-  }
-}
-
 export class DocumentEmpty extends TypeDocument {
   id: bigint;
 
@@ -3778,7 +9018,7 @@ export class DocumentEmpty extends TypeDocument {
 
   protected get [params](): Params {
     return [
-      [this.id, "long"],
+      [this.id, "bigint"],
     ];
   }
 
@@ -3816,27 +9056,39 @@ export class NotifyChats extends TypeNotifyPeer {
   }
 }
 
-export class UpdateNotifySettings extends TypeUpdate {
-  peer: TypeNotifyPeer;
-  notify_settings: TypePeerNotifySettings;
+export class NotifyBroadcasts extends TypeNotifyPeer {
+  protected get [id]() {
+    return 0xd612e8ef;
+  }
+
+  protected get [params](): Params {
+    return [];
+  }
+
+  constructor() {
+    super();
+  }
+}
+
+export class NotifyForumTopic extends TypeNotifyPeer {
+  peer: TypePeer;
+  top_msg_id: number;
 
   protected get [id]() {
-    return 0xbec268ef;
+    return 0x226e6308;
   }
 
   protected get [params](): Params {
     return [
-      [this.peer, "NotifyPeer"],
-      [this.notify_settings, "PeerNotifySettings"],
+      [this.peer, TypePeer],
+      [this.top_msg_id, "number"],
     ];
   }
 
-  constructor(
-    params: { peer: TypeNotifyPeer; notify_settings: TypePeerNotifySettings },
-  ) {
+  constructor(params: { peer: TypePeer; top_msg_id: number }) {
     super();
     this.peer = params.peer;
-    this.notify_settings = params.notify_settings;
+    this.top_msg_id = params.top_msg_id;
   }
 }
 
@@ -3891,7 +9143,7 @@ export class SendMessageUploadVideoAction extends TypeSendMessageAction {
 
   protected get [params](): Params {
     return [
-      [this.progress, "int"],
+      [this.progress, "number"],
     ];
   }
 
@@ -3924,7 +9176,7 @@ export class SendMessageUploadAudioAction extends TypeSendMessageAction {
 
   protected get [params](): Params {
     return [
-      [this.progress, "int"],
+      [this.progress, "number"],
     ];
   }
 
@@ -3943,7 +9195,7 @@ export class SendMessageUploadPhotoAction extends TypeSendMessageAction {
 
   protected get [params](): Params {
     return [
-      [this.progress, "int"],
+      [this.progress, "number"],
     ];
   }
 
@@ -3962,7 +9214,7 @@ export class SendMessageUploadDocumentAction extends TypeSendMessageAction {
 
   protected get [params](): Params {
     return [
-      [this.progress, "int"],
+      [this.progress, "number"],
     ];
   }
 
@@ -4000,110 +9252,143 @@ export class SendMessageChooseContactAction extends TypeSendMessageAction {
   }
 }
 
-export class UpdateServiceNotification extends TypeUpdate {
-  popup?: true;
-  inbox_date?: number;
-  type: string;
-  message: string;
-  media: TypeMessageMedia;
-  entities: Array<TypeMessageEntity>;
+export class SendMessageGamePlayAction extends TypeSendMessageAction {
+  protected get [id]() {
+    return 0xdd6a8f48;
+  }
+
+  protected get [params](): Params {
+    return [];
+  }
+
+  constructor() {
+    super();
+  }
+}
+
+export class SendMessageRecordRoundAction extends TypeSendMessageAction {
+  protected get [id]() {
+    return 0x88f27fbc;
+  }
+
+  protected get [params](): Params {
+    return [];
+  }
+
+  constructor() {
+    super();
+  }
+}
+
+export class SendMessageUploadRoundAction extends TypeSendMessageAction {
+  progress: number;
 
   protected get [id]() {
-    return 0xebe46819;
+    return 0x243e1c66;
   }
 
   protected get [params](): Params {
     return [
-      [this.popup ?? null, "flags.0?true"],
-      [this.inbox_date ?? null, "flags.1?int"],
-      [this.type, "string"],
-      [this.message, "string"],
-      [this.media, "MessageMedia"],
-      [this.entities, "Vector<MessageEntity>"],
+      [this.progress, "number"],
+    ];
+  }
+
+  constructor(params: { progress: number }) {
+    super();
+    this.progress = params.progress;
+  }
+}
+
+export class SpeakingInGroupCallAction extends TypeSendMessageAction {
+  protected get [id]() {
+    return 0xd92c2285;
+  }
+
+  protected get [params](): Params {
+    return [];
+  }
+
+  constructor() {
+    super();
+  }
+}
+
+export class SendMessageHistoryImportAction extends TypeSendMessageAction {
+  progress: number;
+
+  protected get [id]() {
+    return 0xdbda9246;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.progress, "number"],
+    ];
+  }
+
+  constructor(params: { progress: number }) {
+    super();
+    this.progress = params.progress;
+  }
+}
+
+export class SendMessageChooseStickerAction extends TypeSendMessageAction {
+  protected get [id]() {
+    return 0xb05ac6b1;
+  }
+
+  protected get [params](): Params {
+    return [];
+  }
+
+  constructor() {
+    super();
+  }
+}
+
+export class SendMessageEmojiInteraction extends TypeSendMessageAction {
+  emoticon: string;
+  msg_id: number;
+  interaction: TypeDataJSON;
+
+  protected get [id]() {
+    return 0x25972bcb;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.emoticon, "string"],
+      [this.msg_id, "number"],
+      [this.interaction, TypeDataJSON],
     ];
   }
 
   constructor(
-    params: {
-      popup?: true;
-      inbox_date?: number;
-      type: string;
-      message: string;
-      media: TypeMessageMedia;
-      entities: Array<TypeMessageEntity>;
-    },
+    params: { emoticon: string; msg_id: number; interaction: TypeDataJSON },
   ) {
     super();
-    this.popup = params.popup;
-    this.inbox_date = params.inbox_date;
-    this.type = params.type;
-    this.message = params.message;
-    this.media = params.media;
-    this.entities = params.entities;
+    this.emoticon = params.emoticon;
+    this.msg_id = params.msg_id;
+    this.interaction = params.interaction;
   }
 }
 
-export class UserStatusRecently extends TypeUserStatus {
-  protected get [id]() {
-    return 0xe26f42f1;
-  }
-
-  protected get [params](): Params {
-    return [];
-  }
-
-  constructor() {
-    super();
-  }
-}
-
-export class UserStatusLastWeek extends TypeUserStatus {
-  protected get [id]() {
-    return 0x07bf09fc;
-  }
-
-  protected get [params](): Params {
-    return [];
-  }
-
-  constructor() {
-    super();
-  }
-}
-
-export class UserStatusLastMonth extends TypeUserStatus {
-  protected get [id]() {
-    return 0x77ebc742;
-  }
-
-  protected get [params](): Params {
-    return [];
-  }
-
-  constructor() {
-    super();
-  }
-}
-
-export class UpdatePrivacy extends TypeUpdate {
-  key: TypePrivacyKey;
-  rules: Array<TypePrivacyRule>;
+export class SendMessageEmojiInteractionSeen extends TypeSendMessageAction {
+  emoticon: string;
 
   protected get [id]() {
-    return 0xee3b272a;
+    return 0xb665902e;
   }
 
   protected get [params](): Params {
     return [
-      [this.key, "PrivacyKey"],
-      [this.rules, "Vector<PrivacyRule>"],
+      [this.emoticon, "string"],
     ];
   }
 
-  constructor(params: { key: TypePrivacyKey; rules: Array<TypePrivacyRule> }) {
+  constructor(params: { emoticon: string }) {
     super();
-    this.key = params.key;
-    this.rules = params.rules;
+    this.emoticon = params.emoticon;
   }
 }
 
@@ -4121,9 +9406,233 @@ export class InputPrivacyKeyStatusTimestamp extends TypeInputPrivacyKey {
   }
 }
 
+export class InputPrivacyKeyChatInvite extends TypeInputPrivacyKey {
+  protected get [id]() {
+    return 0xbdfb0426;
+  }
+
+  protected get [params](): Params {
+    return [];
+  }
+
+  constructor() {
+    super();
+  }
+}
+
+export class InputPrivacyKeyPhoneCall extends TypeInputPrivacyKey {
+  protected get [id]() {
+    return 0xfabadc5f;
+  }
+
+  protected get [params](): Params {
+    return [];
+  }
+
+  constructor() {
+    super();
+  }
+}
+
+export class InputPrivacyKeyPhoneP2P extends TypeInputPrivacyKey {
+  protected get [id]() {
+    return 0xdb9e70d2;
+  }
+
+  protected get [params](): Params {
+    return [];
+  }
+
+  constructor() {
+    super();
+  }
+}
+
+export class InputPrivacyKeyForwards extends TypeInputPrivacyKey {
+  protected get [id]() {
+    return 0xa4dd4c08;
+  }
+
+  protected get [params](): Params {
+    return [];
+  }
+
+  constructor() {
+    super();
+  }
+}
+
+export class InputPrivacyKeyProfilePhoto extends TypeInputPrivacyKey {
+  protected get [id]() {
+    return 0x5719bacc;
+  }
+
+  protected get [params](): Params {
+    return [];
+  }
+
+  constructor() {
+    super();
+  }
+}
+
+export class InputPrivacyKeyPhoneNumber extends TypeInputPrivacyKey {
+  protected get [id]() {
+    return 0x0352dafa;
+  }
+
+  protected get [params](): Params {
+    return [];
+  }
+
+  constructor() {
+    super();
+  }
+}
+
+export class InputPrivacyKeyAddedByPhone extends TypeInputPrivacyKey {
+  protected get [id]() {
+    return 0xd1219bdd;
+  }
+
+  protected get [params](): Params {
+    return [];
+  }
+
+  constructor() {
+    super();
+  }
+}
+
+export class InputPrivacyKeyVoiceMessages extends TypeInputPrivacyKey {
+  protected get [id]() {
+    return 0xaee69d68;
+  }
+
+  protected get [params](): Params {
+    return [];
+  }
+
+  constructor() {
+    super();
+  }
+}
+
 export class PrivacyKeyStatusTimestamp extends TypePrivacyKey {
   protected get [id]() {
     return 0xbc2eab30;
+  }
+
+  protected get [params](): Params {
+    return [];
+  }
+
+  constructor() {
+    super();
+  }
+}
+
+export class PrivacyKeyChatInvite extends TypePrivacyKey {
+  protected get [id]() {
+    return 0x500e6dfa;
+  }
+
+  protected get [params](): Params {
+    return [];
+  }
+
+  constructor() {
+    super();
+  }
+}
+
+export class PrivacyKeyPhoneCall extends TypePrivacyKey {
+  protected get [id]() {
+    return 0x3d662b7b;
+  }
+
+  protected get [params](): Params {
+    return [];
+  }
+
+  constructor() {
+    super();
+  }
+}
+
+export class PrivacyKeyPhoneP2P extends TypePrivacyKey {
+  protected get [id]() {
+    return 0x39491cc8;
+  }
+
+  protected get [params](): Params {
+    return [];
+  }
+
+  constructor() {
+    super();
+  }
+}
+
+export class PrivacyKeyForwards extends TypePrivacyKey {
+  protected get [id]() {
+    return 0x69ec56a3;
+  }
+
+  protected get [params](): Params {
+    return [];
+  }
+
+  constructor() {
+    super();
+  }
+}
+
+export class PrivacyKeyProfilePhoto extends TypePrivacyKey {
+  protected get [id]() {
+    return 0x96151fed;
+  }
+
+  protected get [params](): Params {
+    return [];
+  }
+
+  constructor() {
+    super();
+  }
+}
+
+export class PrivacyKeyPhoneNumber extends TypePrivacyKey {
+  protected get [id]() {
+    return 0xd19ae46d;
+  }
+
+  protected get [params](): Params {
+    return [];
+  }
+
+  constructor() {
+    super();
+  }
+}
+
+export class PrivacyKeyAddedByPhone extends TypePrivacyKey {
+  protected get [id]() {
+    return 0x42ffd42b;
+  }
+
+  protected get [params](): Params {
+    return [];
+  }
+
+  constructor() {
+    super();
+  }
+}
+
+export class PrivacyKeyVoiceMessages extends TypePrivacyKey {
+  protected get [id]() {
+    return 0x0697f414;
   }
 
   protected get [params](): Params {
@@ -4172,7 +9681,7 @@ export class InputPrivacyValueAllowUsers extends TypeInputPrivacyRule {
 
   protected get [params](): Params {
     return [
-      [this.users, "Vector<InputUser>"],
+      [this.users, [TypeInputUser]],
     ];
   }
 
@@ -4219,13 +9728,53 @@ export class InputPrivacyValueDisallowUsers extends TypeInputPrivacyRule {
 
   protected get [params](): Params {
     return [
-      [this.users, "Vector<InputUser>"],
+      [this.users, [TypeInputUser]],
     ];
   }
 
   constructor(params: { users: Array<TypeInputUser> }) {
     super();
     this.users = params.users;
+  }
+}
+
+export class InputPrivacyValueAllowChatParticipants
+  extends TypeInputPrivacyRule {
+  chats: Array<bigint>;
+
+  protected get [id]() {
+    return 0x840649cf;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.chats, ["bigint"]],
+    ];
+  }
+
+  constructor(params: { chats: Array<bigint> }) {
+    super();
+    this.chats = params.chats;
+  }
+}
+
+export class InputPrivacyValueDisallowChatParticipants
+  extends TypeInputPrivacyRule {
+  chats: Array<bigint>;
+
+  protected get [id]() {
+    return 0xe94f0f86;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.chats, ["bigint"]],
+    ];
+  }
+
+  constructor(params: { chats: Array<bigint> }) {
+    super();
+    this.chats = params.chats;
   }
 }
 
@@ -4266,7 +9815,7 @@ export class PrivacyValueAllowUsers extends TypePrivacyRule {
 
   protected get [params](): Params {
     return [
-      [this.users, "Vector<long>"],
+      [this.users, ["bigint"]],
     ];
   }
 
@@ -4313,7 +9862,7 @@ export class PrivacyValueDisallowUsers extends TypePrivacyRule {
 
   protected get [params](): Params {
     return [
-      [this.users, "Vector<long>"],
+      [this.users, ["bigint"]],
     ];
   }
 
@@ -4323,25 +9872,41 @@ export class PrivacyValueDisallowUsers extends TypePrivacyRule {
   }
 }
 
-export class UpdateUserPhone extends TypeUpdate {
-  user_id: bigint;
-  phone: string;
+export class PrivacyValueAllowChatParticipants extends TypePrivacyRule {
+  chats: Array<bigint>;
 
   protected get [id]() {
-    return 0x05492a13;
+    return 0x6b134e8e;
   }
 
   protected get [params](): Params {
     return [
-      [this.user_id, "long"],
-      [this.phone, "string"],
+      [this.chats, ["bigint"]],
     ];
   }
 
-  constructor(params: { user_id: bigint; phone: string }) {
+  constructor(params: { chats: Array<bigint> }) {
     super();
-    this.user_id = params.user_id;
-    this.phone = params.phone;
+    this.chats = params.chats;
+  }
+}
+
+export class PrivacyValueDisallowChatParticipants extends TypePrivacyRule {
+  chats: Array<bigint>;
+
+  protected get [id]() {
+    return 0x41c87565;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.chats, ["bigint"]],
+    ];
+  }
+
+  constructor(params: { chats: Array<bigint> }) {
+    super();
+    this.chats = params.chats;
   }
 }
 
@@ -4355,8 +9920,8 @@ export class DocumentAttributeImageSize extends TypeDocumentAttribute {
 
   protected get [params](): Params {
     return [
-      [this.w, "int"],
-      [this.h, "int"],
+      [this.w, "number"],
+      [this.h, "number"],
     ];
   }
 
@@ -4393,10 +9958,10 @@ export class DocumentAttributeSticker extends TypeDocumentAttribute {
 
   protected get [params](): Params {
     return [
-      [this.mask ?? null, "flags.1?true"],
+      [this.mask ?? null, "true"],
       [this.alt, "string"],
-      [this.stickerset, "InputStickerSet"],
-      [this.mask_coords ?? null, "flags.0?MaskCoords"],
+      [this.stickerset, TypeInputStickerSet],
+      [this.mask_coords ?? null, TypeMaskCoords],
     ];
   }
 
@@ -4429,11 +9994,11 @@ export class DocumentAttributeVideo extends TypeDocumentAttribute {
 
   protected get [params](): Params {
     return [
-      [this.round_message ?? null, "flags.0?true"],
-      [this.supports_streaming ?? null, "flags.1?true"],
-      [this.duration, "int"],
-      [this.w, "int"],
-      [this.h, "int"],
+      [this.round_message ?? null, "true"],
+      [this.supports_streaming ?? null, "true"],
+      [this.duration, "number"],
+      [this.w, "number"],
+      [this.h, "number"],
     ];
   }
 
@@ -4468,11 +10033,11 @@ export class DocumentAttributeAudio extends TypeDocumentAttribute {
 
   protected get [params](): Params {
     return [
-      [this.voice ?? null, "flags.10?true"],
-      [this.duration, "int"],
-      [this.title ?? null, "flags.0?string"],
-      [this.performer ?? null, "flags.1?string"],
-      [this.waveform ?? null, "flags.2?bytes"],
+      [this.voice ?? null, "true"],
+      [this.duration, "number"],
+      [this.title ?? null, "string"],
+      [this.performer ?? null, "string"],
+      [this.waveform ?? null, Uint8Array],
     ];
   }
 
@@ -4513,6 +10078,55 @@ export class DocumentAttributeFilename extends TypeDocumentAttribute {
   }
 }
 
+export class DocumentAttributeHasStickers extends TypeDocumentAttribute {
+  protected get [id]() {
+    return 0x9801d2f7;
+  }
+
+  protected get [params](): Params {
+    return [];
+  }
+
+  constructor() {
+    super();
+  }
+}
+
+export class DocumentAttributeCustomEmoji extends TypeDocumentAttribute {
+  free?: true;
+  text_color?: true;
+  alt: string;
+  stickerset: TypeInputStickerSet;
+
+  protected get [id]() {
+    return 0xfd149899;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.free ?? null, "true"],
+      [this.text_color ?? null, "true"],
+      [this.alt, "string"],
+      [this.stickerset, TypeInputStickerSet],
+    ];
+  }
+
+  constructor(
+    params: {
+      free?: true;
+      text_color?: true;
+      alt: string;
+      stickerset: TypeInputStickerSet;
+    },
+  ) {
+    super();
+    this.free = params.free;
+    this.text_color = params.text_color;
+    this.alt = params.alt;
+    this.stickerset = params.stickerset;
+  }
+}
+
 export class MessagesStickersNotModified extends TypeMessagesStickers {
   protected get [id]() {
     return 0xf1749a22;
@@ -4541,106 +10155,6 @@ export class MessagesAllStickersNotModified extends TypeMessagesAllStickers {
   }
 }
 
-export class UpdateReadHistoryInbox extends TypeUpdate {
-  folder_id?: number;
-  peer: TypePeer;
-  max_id: number;
-  still_unread_count: number;
-  pts: number;
-  pts_count: number;
-
-  protected get [id]() {
-    return 0x9c974fdf;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.folder_id ?? null, "flags.0?int"],
-      [this.peer, "Peer"],
-      [this.max_id, "int"],
-      [this.still_unread_count, "int"],
-      [this.pts, "int"],
-      [this.pts_count, "int"],
-    ];
-  }
-
-  constructor(
-    params: {
-      folder_id?: number;
-      peer: TypePeer;
-      max_id: number;
-      still_unread_count: number;
-      pts: number;
-      pts_count: number;
-    },
-  ) {
-    super();
-    this.folder_id = params.folder_id;
-    this.peer = params.peer;
-    this.max_id = params.max_id;
-    this.still_unread_count = params.still_unread_count;
-    this.pts = params.pts;
-    this.pts_count = params.pts_count;
-  }
-}
-
-export class UpdateReadHistoryOutbox extends TypeUpdate {
-  peer: TypePeer;
-  max_id: number;
-  pts: number;
-  pts_count: number;
-
-  protected get [id]() {
-    return 0x2f2f21bf;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.peer, "Peer"],
-      [this.max_id, "int"],
-      [this.pts, "int"],
-      [this.pts_count, "int"],
-    ];
-  }
-
-  constructor(
-    params: { peer: TypePeer; max_id: number; pts: number; pts_count: number },
-  ) {
-    super();
-    this.peer = params.peer;
-    this.max_id = params.max_id;
-    this.pts = params.pts;
-    this.pts_count = params.pts_count;
-  }
-}
-
-export class UpdateWebPage extends TypeUpdate {
-  webpage: TypeWebPage;
-  pts: number;
-  pts_count: number;
-
-  protected get [id]() {
-    return 0x7f891213;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.webpage, "WebPage"],
-      [this.pts, "int"],
-      [this.pts_count, "int"],
-    ];
-  }
-
-  constructor(
-    params: { webpage: TypeWebPage; pts: number; pts_count: number },
-  ) {
-    super();
-    this.webpage = params.webpage;
-    this.pts = params.pts;
-    this.pts_count = params.pts_count;
-  }
-}
-
 export class WebPageEmpty extends TypeWebPage {
   id: bigint;
 
@@ -4650,7 +10164,7 @@ export class WebPageEmpty extends TypeWebPage {
 
   protected get [params](): Params {
     return [
-      [this.id, "long"],
+      [this.id, "bigint"],
     ];
   }
 
@@ -4670,8 +10184,8 @@ export class WebPagePending extends TypeWebPage {
 
   protected get [params](): Params {
     return [
-      [this.id, "long"],
-      [this.date, "int"],
+      [this.id, "bigint"],
+      [this.date, "number"],
     ];
   }
 
@@ -4682,108 +10196,22 @@ export class WebPagePending extends TypeWebPage {
   }
 }
 
-export class MessageMediaWebPage extends TypeMessageMedia {
-  webpage: TypeWebPage;
+export class WebPageNotModified extends TypeWebPage {
+  cached_page_views?: number;
 
   protected get [id]() {
-    return 0xa32dd500;
+    return 0x7311ca11;
   }
 
   protected get [params](): Params {
     return [
-      [this.webpage, "WebPage"],
+      [this.cached_page_views ?? null, "number"],
     ];
   }
 
-  constructor(params: { webpage: TypeWebPage }) {
+  constructor(params: { cached_page_views?: number }) {
     super();
-    this.webpage = params.webpage;
-  }
-}
-
-export class InputMediaVenue extends TypeInputMedia {
-  geo_point: TypeInputGeoPoint;
-  title: string;
-  address: string;
-  provider: string;
-  venue_id: string;
-  venue_type: string;
-
-  protected get [id]() {
-    return 0xc13d1c11;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.geo_point, "InputGeoPoint"],
-      [this.title, "string"],
-      [this.address, "string"],
-      [this.provider, "string"],
-      [this.venue_id, "string"],
-      [this.venue_type, "string"],
-    ];
-  }
-
-  constructor(
-    params: {
-      geo_point: TypeInputGeoPoint;
-      title: string;
-      address: string;
-      provider: string;
-      venue_id: string;
-      venue_type: string;
-    },
-  ) {
-    super();
-    this.geo_point = params.geo_point;
-    this.title = params.title;
-    this.address = params.address;
-    this.provider = params.provider;
-    this.venue_id = params.venue_id;
-    this.venue_type = params.venue_type;
-  }
-}
-
-export class MessageMediaVenue extends TypeMessageMedia {
-  geo: TypeGeoPoint;
-  title: string;
-  address: string;
-  provider: string;
-  venue_id: string;
-  venue_type: string;
-
-  protected get [id]() {
-    return 0x2ec0533f;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.geo, "GeoPoint"],
-      [this.title, "string"],
-      [this.address, "string"],
-      [this.provider, "string"],
-      [this.venue_id, "string"],
-      [this.venue_type, "string"],
-    ];
-  }
-
-  constructor(
-    params: {
-      geo: TypeGeoPoint;
-      title: string;
-      address: string;
-      provider: string;
-      venue_id: string;
-      venue_type: string;
-    },
-  ) {
-    super();
-    this.geo = params.geo;
-    this.title = params.title;
-    this.address = params.address;
-    this.provider = params.provider;
-    this.venue_id = params.venue_id;
-    this.venue_type = params.venue_type;
+    this.cached_page_views = params.cached_page_views;
   }
 }
 
@@ -4807,18 +10235,18 @@ export class ChatInviteExported extends TypeExportedChatInvite {
 
   protected get [params](): Params {
     return [
-      [this.revoked ?? null, "flags.0?true"],
-      [this.permanent ?? null, "flags.5?true"],
-      [this.request_needed ?? null, "flags.6?true"],
+      [this.revoked ?? null, "true"],
+      [this.permanent ?? null, "true"],
+      [this.request_needed ?? null, "true"],
       [this.link, "string"],
-      [this.admin_id, "long"],
-      [this.date, "int"],
-      [this.start_date ?? null, "flags.4?int"],
-      [this.expire_date ?? null, "flags.1?int"],
-      [this.usage_limit ?? null, "flags.2?int"],
-      [this.usage ?? null, "flags.3?int"],
-      [this.requested ?? null, "flags.7?int"],
-      [this.title ?? null, "flags.8?string"],
+      [this.admin_id, "bigint"],
+      [this.date, "number"],
+      [this.start_date ?? null, "number"],
+      [this.expire_date ?? null, "number"],
+      [this.usage_limit ?? null, "number"],
+      [this.usage ?? null, "number"],
+      [this.requested ?? null, "number"],
+      [this.title ?? null, "string"],
     ];
   }
 
@@ -4854,6 +10282,20 @@ export class ChatInviteExported extends TypeExportedChatInvite {
   }
 }
 
+export class ChatInvitePublicJoinRequests extends TypeExportedChatInvite {
+  protected get [id]() {
+    return 0xed107ab7;
+  }
+
+  protected get [params](): Params {
+    return [];
+  }
+
+  constructor() {
+    super();
+  }
+}
+
 export class ChatInviteAlready extends TypeChatInvite {
   chat: TypeChat;
 
@@ -4863,7 +10305,7 @@ export class ChatInviteAlready extends TypeChatInvite {
 
   protected get [params](): Params {
     return [
-      [this.chat, "Chat"],
+      [this.chat, TypeChat],
     ];
   }
 
@@ -4873,49 +10315,25 @@ export class ChatInviteAlready extends TypeChatInvite {
   }
 }
 
-export class MessageActionChatJoinedByLink extends TypeMessageAction {
-  inviter_id: bigint;
+export class ChatInvitePeek extends TypeChatInvite {
+  chat: TypeChat;
+  expires: number;
 
   protected get [id]() {
-    return 0x031224c3;
+    return 0x61695cb0;
   }
 
   protected get [params](): Params {
     return [
-      [this.inviter_id, "long"],
+      [this.chat, TypeChat],
+      [this.expires, "number"],
     ];
   }
 
-  constructor(params: { inviter_id: bigint }) {
+  constructor(params: { chat: TypeChat; expires: number }) {
     super();
-    this.inviter_id = params.inviter_id;
-  }
-}
-
-export class UpdateReadMessagesContents extends TypeUpdate {
-  messages: Array<number>;
-  pts: number;
-  pts_count: number;
-
-  protected get [id]() {
-    return 0x68c13933;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.messages, "Vector<int>"],
-      [this.pts, "int"],
-      [this.pts_count, "int"],
-    ];
-  }
-
-  constructor(
-    params: { messages: Array<number>; pts: number; pts_count: number },
-  ) {
-    super();
-    this.messages = params.messages;
-    this.pts = params.pts;
-    this.pts_count = params.pts_count;
+    this.chat = params.chat;
+    this.expires = params.expires;
   }
 }
 
@@ -4943,8 +10361,8 @@ export class InputStickerSetID extends TypeInputStickerSet {
 
   protected get [params](): Params {
     return [
-      [this.id, "long"],
-      [this.access_hash, "long"],
+      [this.id, "bigint"],
+      [this.access_hash, "bigint"],
     ];
   }
 
@@ -4974,415 +10392,9 @@ export class InputStickerSetShortName extends TypeInputStickerSet {
   }
 }
 
-export class ReplyKeyboardHide extends TypeReplyMarkup {
-  selective?: true;
-
+export class InputStickerSetAnimatedEmoji extends TypeInputStickerSet {
   protected get [id]() {
-    return 0xa03e5b85;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.selective ?? null, "flags.2?true"],
-    ];
-  }
-
-  constructor(params: { selective?: true }) {
-    super();
-    this.selective = params.selective;
-  }
-}
-
-export class ReplyKeyboardForceReply extends TypeReplyMarkup {
-  single_use?: true;
-  selective?: true;
-  placeholder?: string;
-
-  protected get [id]() {
-    return 0x86b40b08;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.single_use ?? null, "flags.1?true"],
-      [this.selective ?? null, "flags.2?true"],
-      [this.placeholder ?? null, "flags.3?string"],
-    ];
-  }
-
-  constructor(
-    params: { single_use?: true; selective?: true; placeholder?: string },
-  ) {
-    super();
-    this.single_use = params.single_use;
-    this.selective = params.selective;
-    this.placeholder = params.placeholder;
-  }
-}
-
-export class ReplyKeyboardMarkup extends TypeReplyMarkup {
-  resize?: true;
-  single_use?: true;
-  selective?: true;
-  rows: Array<TypeKeyboardButtonRow>;
-  placeholder?: string;
-
-  protected get [id]() {
-    return 0x85dd99d1;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.resize ?? null, "flags.0?true"],
-      [this.single_use ?? null, "flags.1?true"],
-      [this.selective ?? null, "flags.2?true"],
-      [this.rows, "Vector<KeyboardButtonRow>"],
-      [this.placeholder ?? null, "flags.3?string"],
-    ];
-  }
-
-  constructor(
-    params: {
-      resize?: true;
-      single_use?: true;
-      selective?: true;
-      rows: Array<TypeKeyboardButtonRow>;
-      placeholder?: string;
-    },
-  ) {
-    super();
-    this.resize = params.resize;
-    this.single_use = params.single_use;
-    this.selective = params.selective;
-    this.rows = params.rows;
-    this.placeholder = params.placeholder;
-  }
-}
-
-export class InputPeerUser extends TypeInputPeer {
-  user_id: bigint;
-  access_hash: bigint;
-
-  protected get [id]() {
-    return 0xdde8a54c;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.user_id, "long"],
-      [this.access_hash, "long"],
-    ];
-  }
-
-  constructor(params: { user_id: bigint; access_hash: bigint }) {
-    super();
-    this.user_id = params.user_id;
-    this.access_hash = params.access_hash;
-  }
-}
-
-export class MessageEntityUnknown extends TypeMessageEntity {
-  offset: number;
-  length: number;
-
-  protected get [id]() {
-    return 0xbb92ba95;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.offset, "int"],
-      [this.length, "int"],
-    ];
-  }
-
-  constructor(params: { offset: number; length: number }) {
-    super();
-    this.offset = params.offset;
-    this.length = params.length;
-  }
-}
-
-export class MessageEntityMention extends TypeMessageEntity {
-  offset: number;
-  length: number;
-
-  protected get [id]() {
-    return 0xfa04579d;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.offset, "int"],
-      [this.length, "int"],
-    ];
-  }
-
-  constructor(params: { offset: number; length: number }) {
-    super();
-    this.offset = params.offset;
-    this.length = params.length;
-  }
-}
-
-export class MessageEntityHashtag extends TypeMessageEntity {
-  offset: number;
-  length: number;
-
-  protected get [id]() {
-    return 0x6f635b0d;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.offset, "int"],
-      [this.length, "int"],
-    ];
-  }
-
-  constructor(params: { offset: number; length: number }) {
-    super();
-    this.offset = params.offset;
-    this.length = params.length;
-  }
-}
-
-export class MessageEntityBotCommand extends TypeMessageEntity {
-  offset: number;
-  length: number;
-
-  protected get [id]() {
-    return 0x6cef8ac7;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.offset, "int"],
-      [this.length, "int"],
-    ];
-  }
-
-  constructor(params: { offset: number; length: number }) {
-    super();
-    this.offset = params.offset;
-    this.length = params.length;
-  }
-}
-
-export class MessageEntityUrl extends TypeMessageEntity {
-  offset: number;
-  length: number;
-
-  protected get [id]() {
-    return 0x6ed02538;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.offset, "int"],
-      [this.length, "int"],
-    ];
-  }
-
-  constructor(params: { offset: number; length: number }) {
-    super();
-    this.offset = params.offset;
-    this.length = params.length;
-  }
-}
-
-export class MessageEntityEmail extends TypeMessageEntity {
-  offset: number;
-  length: number;
-
-  protected get [id]() {
-    return 0x64e475c2;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.offset, "int"],
-      [this.length, "int"],
-    ];
-  }
-
-  constructor(params: { offset: number; length: number }) {
-    super();
-    this.offset = params.offset;
-    this.length = params.length;
-  }
-}
-
-export class MessageEntityBold extends TypeMessageEntity {
-  offset: number;
-  length: number;
-
-  protected get [id]() {
-    return 0xbd610bc9;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.offset, "int"],
-      [this.length, "int"],
-    ];
-  }
-
-  constructor(params: { offset: number; length: number }) {
-    super();
-    this.offset = params.offset;
-    this.length = params.length;
-  }
-}
-
-export class MessageEntityItalic extends TypeMessageEntity {
-  offset: number;
-  length: number;
-
-  protected get [id]() {
-    return 0x826f8b60;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.offset, "int"],
-      [this.length, "int"],
-    ];
-  }
-
-  constructor(params: { offset: number; length: number }) {
-    super();
-    this.offset = params.offset;
-    this.length = params.length;
-  }
-}
-
-export class MessageEntityCode extends TypeMessageEntity {
-  offset: number;
-  length: number;
-
-  protected get [id]() {
-    return 0x28a20571;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.offset, "int"],
-      [this.length, "int"],
-    ];
-  }
-
-  constructor(params: { offset: number; length: number }) {
-    super();
-    this.offset = params.offset;
-    this.length = params.length;
-  }
-}
-
-export class MessageEntityPre extends TypeMessageEntity {
-  offset: number;
-  length: number;
-  language: string;
-
-  protected get [id]() {
-    return 0x73924be0;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.offset, "int"],
-      [this.length, "int"],
-      [this.language, "string"],
-    ];
-  }
-
-  constructor(params: { offset: number; length: number; language: string }) {
-    super();
-    this.offset = params.offset;
-    this.length = params.length;
-    this.language = params.language;
-  }
-}
-
-export class MessageEntityTextUrl extends TypeMessageEntity {
-  offset: number;
-  length: number;
-  url: string;
-
-  protected get [id]() {
-    return 0x76a6d327;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.offset, "int"],
-      [this.length, "int"],
-      [this.url, "string"],
-    ];
-  }
-
-  constructor(params: { offset: number; length: number; url: string }) {
-    super();
-    this.offset = params.offset;
-    this.length = params.length;
-    this.url = params.url;
-  }
-}
-
-export class UpdateShortSentMessage extends TypeUpdates {
-  out?: true;
-  id: number;
-  pts: number;
-  pts_count: number;
-  date: number;
-  media?: TypeMessageMedia;
-  entities?: Array<TypeMessageEntity>;
-  ttl_period?: number;
-
-  protected get [id]() {
-    return 0x9015e101;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.out ?? null, "flags.1?true"],
-      [this.id, "int"],
-      [this.pts, "int"],
-      [this.pts_count, "int"],
-      [this.date, "int"],
-      [this.media ?? null, "flags.9?MessageMedia"],
-      [this.entities ?? null, "flags.7?Vector<MessageEntity>"],
-      [this.ttl_period ?? null, "flags.25?int"],
-    ];
-  }
-
-  constructor(
-    params: {
-      out?: true;
-      id: number;
-      pts: number;
-      pts_count: number;
-      date: number;
-      media?: TypeMessageMedia;
-      entities?: Array<TypeMessageEntity>;
-      ttl_period?: number;
-    },
-  ) {
-    super();
-    this.out = params.out;
-    this.id = params.id;
-    this.pts = params.pts;
-    this.pts_count = params.pts_count;
-    this.date = params.date;
-    this.media = params.media;
-    this.entities = params.entities;
-    this.ttl_period = params.ttl_period;
-  }
-}
-
-export class InputChannelEmpty extends TypeInputChannel {
-  protected get [id]() {
-    return 0xee8c1e86;
+    return 0x028703c8;
   }
 
   protected get [params](): Params {
@@ -5394,730 +10406,29 @@ export class InputChannelEmpty extends TypeInputChannel {
   }
 }
 
-export class PeerChannel extends TypePeer {
-  channel_id: bigint;
+export class InputStickerSetDice extends TypeInputStickerSet {
+  emoticon: string;
 
   protected get [id]() {
-    return 0xa2a5371e;
+    return 0xe67f520e;
   }
 
   protected get [params](): Params {
     return [
-      [this.channel_id, "long"],
+      [this.emoticon, "string"],
     ];
   }
 
-  constructor(params: { channel_id: bigint }) {
+  constructor(params: { emoticon: string }) {
     super();
-    this.channel_id = params.channel_id;
+    this.emoticon = params.emoticon;
   }
 }
 
-export class InputPeerChannel extends TypeInputPeer {
-  channel_id: bigint;
-  access_hash: bigint;
-
+export class InputStickerSetAnimatedEmojiAnimations
+  extends TypeInputStickerSet {
   protected get [id]() {
-    return 0x27bcbbfc;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.channel_id, "long"],
-      [this.access_hash, "long"],
-    ];
-  }
-
-  constructor(params: { channel_id: bigint; access_hash: bigint }) {
-    super();
-    this.channel_id = params.channel_id;
-    this.access_hash = params.access_hash;
-  }
-}
-
-export class Channel extends TypeChat {
-  creator?: true;
-  left?: true;
-  broadcast?: true;
-  verified?: true;
-  megagroup?: true;
-  restricted?: true;
-  signatures?: true;
-  min?: true;
-  scam?: true;
-  has_link?: true;
-  has_geo?: true;
-  slowmode_enabled?: true;
-  call_active?: true;
-  call_not_empty?: true;
-  fake?: true;
-  gigagroup?: true;
-  noforwards?: true;
-  join_to_send?: true;
-  join_request?: true;
-  id: bigint;
-  access_hash?: bigint;
-  title: string;
-  username?: string;
-  photo: TypeChatPhoto;
-  date: number;
-  restriction_reason?: Array<TypeRestrictionReason>;
-  admin_rights?: TypeChatAdminRights;
-  banned_rights?: TypeChatBannedRights;
-  default_banned_rights?: TypeChatBannedRights;
-  participants_count?: number;
-
-  protected get [id]() {
-    return 0x8261ac61;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.creator ?? null, "flags.0?true"],
-      [this.left ?? null, "flags.2?true"],
-      [this.broadcast ?? null, "flags.5?true"],
-      [this.verified ?? null, "flags.7?true"],
-      [this.megagroup ?? null, "flags.8?true"],
-      [this.restricted ?? null, "flags.9?true"],
-      [this.signatures ?? null, "flags.11?true"],
-      [this.min ?? null, "flags.12?true"],
-      [this.scam ?? null, "flags.19?true"],
-      [this.has_link ?? null, "flags.20?true"],
-      [this.has_geo ?? null, "flags.21?true"],
-      [this.slowmode_enabled ?? null, "flags.22?true"],
-      [this.call_active ?? null, "flags.23?true"],
-      [this.call_not_empty ?? null, "flags.24?true"],
-      [this.fake ?? null, "flags.25?true"],
-      [this.gigagroup ?? null, "flags.26?true"],
-      [this.noforwards ?? null, "flags.27?true"],
-      [this.join_to_send ?? null, "flags.28?true"],
-      [this.join_request ?? null, "flags.29?true"],
-      [this.id, "long"],
-      [this.access_hash ?? null, "flags.13?long"],
-      [this.title, "string"],
-      [this.username ?? null, "flags.6?string"],
-      [this.photo, "ChatPhoto"],
-      [this.date, "int"],
-      [this.restriction_reason ?? null, "flags.9?Vector<RestrictionReason>"],
-      [this.admin_rights ?? null, "flags.14?ChatAdminRights"],
-      [this.banned_rights ?? null, "flags.15?ChatBannedRights"],
-      [this.default_banned_rights ?? null, "flags.18?ChatBannedRights"],
-      [this.participants_count ?? null, "flags.17?int"],
-    ];
-  }
-
-  constructor(
-    params: {
-      creator?: true;
-      left?: true;
-      broadcast?: true;
-      verified?: true;
-      megagroup?: true;
-      restricted?: true;
-      signatures?: true;
-      min?: true;
-      scam?: true;
-      has_link?: true;
-      has_geo?: true;
-      slowmode_enabled?: true;
-      call_active?: true;
-      call_not_empty?: true;
-      fake?: true;
-      gigagroup?: true;
-      noforwards?: true;
-      join_to_send?: true;
-      join_request?: true;
-      id: bigint;
-      access_hash?: bigint;
-      title: string;
-      username?: string;
-      photo: TypeChatPhoto;
-      date: number;
-      restriction_reason?: Array<TypeRestrictionReason>;
-      admin_rights?: TypeChatAdminRights;
-      banned_rights?: TypeChatBannedRights;
-      default_banned_rights?: TypeChatBannedRights;
-      participants_count?: number;
-    },
-  ) {
-    super();
-    this.creator = params.creator;
-    this.left = params.left;
-    this.broadcast = params.broadcast;
-    this.verified = params.verified;
-    this.megagroup = params.megagroup;
-    this.restricted = params.restricted;
-    this.signatures = params.signatures;
-    this.min = params.min;
-    this.scam = params.scam;
-    this.has_link = params.has_link;
-    this.has_geo = params.has_geo;
-    this.slowmode_enabled = params.slowmode_enabled;
-    this.call_active = params.call_active;
-    this.call_not_empty = params.call_not_empty;
-    this.fake = params.fake;
-    this.gigagroup = params.gigagroup;
-    this.noforwards = params.noforwards;
-    this.join_to_send = params.join_to_send;
-    this.join_request = params.join_request;
-    this.id = params.id;
-    this.access_hash = params.access_hash;
-    this.title = params.title;
-    this.username = params.username;
-    this.photo = params.photo;
-    this.date = params.date;
-    this.restriction_reason = params.restriction_reason;
-    this.admin_rights = params.admin_rights;
-    this.banned_rights = params.banned_rights;
-    this.default_banned_rights = params.default_banned_rights;
-    this.participants_count = params.participants_count;
-  }
-}
-
-export class ChannelForbidden extends TypeChat {
-  broadcast?: true;
-  megagroup?: true;
-  id: bigint;
-  access_hash: bigint;
-  title: string;
-  until_date?: number;
-
-  protected get [id]() {
-    return 0x17d493d5;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.broadcast ?? null, "flags.5?true"],
-      [this.megagroup ?? null, "flags.8?true"],
-      [this.id, "long"],
-      [this.access_hash, "long"],
-      [this.title, "string"],
-      [this.until_date ?? null, "flags.16?int"],
-    ];
-  }
-
-  constructor(
-    params: {
-      broadcast?: true;
-      megagroup?: true;
-      id: bigint;
-      access_hash: bigint;
-      title: string;
-      until_date?: number;
-    },
-  ) {
-    super();
-    this.broadcast = params.broadcast;
-    this.megagroup = params.megagroup;
-    this.id = params.id;
-    this.access_hash = params.access_hash;
-    this.title = params.title;
-    this.until_date = params.until_date;
-  }
-}
-
-export class ChannelFull extends TypeChatFull {
-  can_view_participants?: true;
-  can_set_username?: true;
-  can_set_stickers?: true;
-  hidden_prehistory?: true;
-  can_set_location?: true;
-  has_scheduled?: true;
-  can_view_stats?: true;
-  blocked?: true;
-  can_delete_channel?: true;
-  id: bigint;
-  about: string;
-  participants_count?: number;
-  admins_count?: number;
-  kicked_count?: number;
-  banned_count?: number;
-  online_count?: number;
-  read_inbox_max_id: number;
-  read_outbox_max_id: number;
-  unread_count: number;
-  chat_photo: TypePhoto;
-  notify_settings: TypePeerNotifySettings;
-  exported_invite?: TypeExportedChatInvite;
-  bot_info: Array<TypeBotInfo>;
-  migrated_from_chat_id?: bigint;
-  migrated_from_max_id?: number;
-  pinned_msg_id?: number;
-  stickerset?: TypeStickerSet;
-  available_min_id?: number;
-  folder_id?: number;
-  linked_chat_id?: bigint;
-  location?: TypeChannelLocation;
-  slowmode_seconds?: number;
-  slowmode_next_send_date?: number;
-  stats_dc?: number;
-  pts: number;
-  call?: TypeInputGroupCall;
-  ttl_period?: number;
-  pending_suggestions?: Array<string>;
-  groupcall_default_join_as?: TypePeer;
-  theme_emoticon?: string;
-  requests_pending?: number;
-  recent_requesters?: Array<bigint>;
-  default_send_as?: TypePeer;
-  available_reactions?: TypeChatReactions;
-
-  protected get [id]() {
-    return 0xf2355507;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.can_view_participants ?? null, "flags.3?true"],
-      [this.can_set_username ?? null, "flags.6?true"],
-      [this.can_set_stickers ?? null, "flags.7?true"],
-      [this.hidden_prehistory ?? null, "flags.10?true"],
-      [this.can_set_location ?? null, "flags.16?true"],
-      [this.has_scheduled ?? null, "flags.19?true"],
-      [this.can_view_stats ?? null, "flags.20?true"],
-      [this.blocked ?? null, "flags.22?true"],
-      [this.can_delete_channel ?? null, "flags2.0?true"],
-      [this.id, "long"],
-      [this.about, "string"],
-      [this.participants_count ?? null, "flags.0?int"],
-      [this.admins_count ?? null, "flags.1?int"],
-      [this.kicked_count ?? null, "flags.2?int"],
-      [this.banned_count ?? null, "flags.2?int"],
-      [this.online_count ?? null, "flags.13?int"],
-      [this.read_inbox_max_id, "int"],
-      [this.read_outbox_max_id, "int"],
-      [this.unread_count, "int"],
-      [this.chat_photo, "Photo"],
-      [this.notify_settings, "PeerNotifySettings"],
-      [this.exported_invite ?? null, "flags.23?ExportedChatInvite"],
-      [this.bot_info, "Vector<BotInfo>"],
-      [this.migrated_from_chat_id ?? null, "flags.4?long"],
-      [this.migrated_from_max_id ?? null, "flags.4?int"],
-      [this.pinned_msg_id ?? null, "flags.5?int"],
-      [this.stickerset ?? null, "flags.8?StickerSet"],
-      [this.available_min_id ?? null, "flags.9?int"],
-      [this.folder_id ?? null, "flags.11?int"],
-      [this.linked_chat_id ?? null, "flags.14?long"],
-      [this.location ?? null, "flags.15?ChannelLocation"],
-      [this.slowmode_seconds ?? null, "flags.17?int"],
-      [this.slowmode_next_send_date ?? null, "flags.18?int"],
-      [this.stats_dc ?? null, "flags.12?int"],
-      [this.pts, "int"],
-      [this.call ?? null, "flags.21?InputGroupCall"],
-      [this.ttl_period ?? null, "flags.24?int"],
-      [this.pending_suggestions ?? null, "flags.25?Vector<string>"],
-      [this.groupcall_default_join_as ?? null, "flags.26?Peer"],
-      [this.theme_emoticon ?? null, "flags.27?string"],
-      [this.requests_pending ?? null, "flags.28?int"],
-      [this.recent_requesters ?? null, "flags.28?Vector<long>"],
-      [this.default_send_as ?? null, "flags.29?Peer"],
-      [this.available_reactions ?? null, "flags.30?ChatReactions"],
-    ];
-  }
-
-  constructor(
-    params: {
-      can_view_participants?: true;
-      can_set_username?: true;
-      can_set_stickers?: true;
-      hidden_prehistory?: true;
-      can_set_location?: true;
-      has_scheduled?: true;
-      can_view_stats?: true;
-      blocked?: true;
-      can_delete_channel?: true;
-      id: bigint;
-      about: string;
-      participants_count?: number;
-      admins_count?: number;
-      kicked_count?: number;
-      banned_count?: number;
-      online_count?: number;
-      read_inbox_max_id: number;
-      read_outbox_max_id: number;
-      unread_count: number;
-      chat_photo: TypePhoto;
-      notify_settings: TypePeerNotifySettings;
-      exported_invite?: TypeExportedChatInvite;
-      bot_info: Array<TypeBotInfo>;
-      migrated_from_chat_id?: bigint;
-      migrated_from_max_id?: number;
-      pinned_msg_id?: number;
-      stickerset?: TypeStickerSet;
-      available_min_id?: number;
-      folder_id?: number;
-      linked_chat_id?: bigint;
-      location?: TypeChannelLocation;
-      slowmode_seconds?: number;
-      slowmode_next_send_date?: number;
-      stats_dc?: number;
-      pts: number;
-      call?: TypeInputGroupCall;
-      ttl_period?: number;
-      pending_suggestions?: Array<string>;
-      groupcall_default_join_as?: TypePeer;
-      theme_emoticon?: string;
-      requests_pending?: number;
-      recent_requesters?: Array<bigint>;
-      default_send_as?: TypePeer;
-      available_reactions?: TypeChatReactions;
-    },
-  ) {
-    super();
-    this.can_view_participants = params.can_view_participants;
-    this.can_set_username = params.can_set_username;
-    this.can_set_stickers = params.can_set_stickers;
-    this.hidden_prehistory = params.hidden_prehistory;
-    this.can_set_location = params.can_set_location;
-    this.has_scheduled = params.has_scheduled;
-    this.can_view_stats = params.can_view_stats;
-    this.blocked = params.blocked;
-    this.can_delete_channel = params.can_delete_channel;
-    this.id = params.id;
-    this.about = params.about;
-    this.participants_count = params.participants_count;
-    this.admins_count = params.admins_count;
-    this.kicked_count = params.kicked_count;
-    this.banned_count = params.banned_count;
-    this.online_count = params.online_count;
-    this.read_inbox_max_id = params.read_inbox_max_id;
-    this.read_outbox_max_id = params.read_outbox_max_id;
-    this.unread_count = params.unread_count;
-    this.chat_photo = params.chat_photo;
-    this.notify_settings = params.notify_settings;
-    this.exported_invite = params.exported_invite;
-    this.bot_info = params.bot_info;
-    this.migrated_from_chat_id = params.migrated_from_chat_id;
-    this.migrated_from_max_id = params.migrated_from_max_id;
-    this.pinned_msg_id = params.pinned_msg_id;
-    this.stickerset = params.stickerset;
-    this.available_min_id = params.available_min_id;
-    this.folder_id = params.folder_id;
-    this.linked_chat_id = params.linked_chat_id;
-    this.location = params.location;
-    this.slowmode_seconds = params.slowmode_seconds;
-    this.slowmode_next_send_date = params.slowmode_next_send_date;
-    this.stats_dc = params.stats_dc;
-    this.pts = params.pts;
-    this.call = params.call;
-    this.ttl_period = params.ttl_period;
-    this.pending_suggestions = params.pending_suggestions;
-    this.groupcall_default_join_as = params.groupcall_default_join_as;
-    this.theme_emoticon = params.theme_emoticon;
-    this.requests_pending = params.requests_pending;
-    this.recent_requesters = params.recent_requesters;
-    this.default_send_as = params.default_send_as;
-    this.available_reactions = params.available_reactions;
-  }
-}
-
-export class MessagesChannelMessages extends TypeMessagesMessages {
-  inexact?: true;
-  pts: number;
-  count: number;
-  offset_id_offset?: number;
-  messages: Array<TypeMessage>;
-  chats: Array<TypeChat>;
-  users: Array<TypeUser>;
-
-  protected get [id]() {
-    return 0x64479808;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.inexact ?? null, "flags.1?true"],
-      [this.pts, "int"],
-      [this.count, "int"],
-      [this.offset_id_offset ?? null, "flags.2?int"],
-      [this.messages, "Vector<Message>"],
-      [this.chats, "Vector<Chat>"],
-      [this.users, "Vector<User>"],
-    ];
-  }
-
-  constructor(
-    params: {
-      inexact?: true;
-      pts: number;
-      count: number;
-      offset_id_offset?: number;
-      messages: Array<TypeMessage>;
-      chats: Array<TypeChat>;
-      users: Array<TypeUser>;
-    },
-  ) {
-    super();
-    this.inexact = params.inexact;
-    this.pts = params.pts;
-    this.count = params.count;
-    this.offset_id_offset = params.offset_id_offset;
-    this.messages = params.messages;
-    this.chats = params.chats;
-    this.users = params.users;
-  }
-}
-
-export class MessageActionChannelCreate extends TypeMessageAction {
-  title: string;
-
-  protected get [id]() {
-    return 0x95d2ac92;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.title, "string"],
-    ];
-  }
-
-  constructor(params: { title: string }) {
-    super();
-    this.title = params.title;
-  }
-}
-
-export class UpdateChannelTooLong extends TypeUpdate {
-  channel_id: bigint;
-  pts?: number;
-
-  protected get [id]() {
-    return 0x108d941f;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.channel_id, "long"],
-      [this.pts ?? null, "flags.0?int"],
-    ];
-  }
-
-  constructor(params: { channel_id: bigint; pts?: number }) {
-    super();
-    this.channel_id = params.channel_id;
-    this.pts = params.pts;
-  }
-}
-
-export class UpdateChannel extends TypeUpdate {
-  channel_id: bigint;
-
-  protected get [id]() {
-    return 0x635b4c09;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.channel_id, "long"],
-    ];
-  }
-
-  constructor(params: { channel_id: bigint }) {
-    super();
-    this.channel_id = params.channel_id;
-  }
-}
-
-export class UpdateNewChannelMessage extends TypeUpdate {
-  message: TypeMessage;
-  pts: number;
-  pts_count: number;
-
-  protected get [id]() {
-    return 0x62ba04d9;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.message, "Message"],
-      [this.pts, "int"],
-      [this.pts_count, "int"],
-    ];
-  }
-
-  constructor(
-    params: { message: TypeMessage; pts: number; pts_count: number },
-  ) {
-    super();
-    this.message = params.message;
-    this.pts = params.pts;
-    this.pts_count = params.pts_count;
-  }
-}
-
-export class UpdateReadChannelInbox extends TypeUpdate {
-  folder_id?: number;
-  channel_id: bigint;
-  max_id: number;
-  still_unread_count: number;
-  pts: number;
-
-  protected get [id]() {
-    return 0x922e6e10;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.folder_id ?? null, "flags.0?int"],
-      [this.channel_id, "long"],
-      [this.max_id, "int"],
-      [this.still_unread_count, "int"],
-      [this.pts, "int"],
-    ];
-  }
-
-  constructor(
-    params: {
-      folder_id?: number;
-      channel_id: bigint;
-      max_id: number;
-      still_unread_count: number;
-      pts: number;
-    },
-  ) {
-    super();
-    this.folder_id = params.folder_id;
-    this.channel_id = params.channel_id;
-    this.max_id = params.max_id;
-    this.still_unread_count = params.still_unread_count;
-    this.pts = params.pts;
-  }
-}
-
-export class UpdateDeleteChannelMessages extends TypeUpdate {
-  channel_id: bigint;
-  messages: Array<number>;
-  pts: number;
-  pts_count: number;
-
-  protected get [id]() {
-    return 0xc32d5b12;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.channel_id, "long"],
-      [this.messages, "Vector<int>"],
-      [this.pts, "int"],
-      [this.pts_count, "int"],
-    ];
-  }
-
-  constructor(
-    params: {
-      channel_id: bigint;
-      messages: Array<number>;
-      pts: number;
-      pts_count: number;
-    },
-  ) {
-    super();
-    this.channel_id = params.channel_id;
-    this.messages = params.messages;
-    this.pts = params.pts;
-    this.pts_count = params.pts_count;
-  }
-}
-
-export class UpdateChannelMessageViews extends TypeUpdate {
-  channel_id: bigint;
-  id: number;
-  views: number;
-
-  protected get [id]() {
-    return 0xf226ac08;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.channel_id, "long"],
-      [this.id, "int"],
-      [this.views, "int"],
-    ];
-  }
-
-  constructor(params: { channel_id: bigint; id: number; views: number }) {
-    super();
-    this.channel_id = params.channel_id;
-    this.id = params.id;
-    this.views = params.views;
-  }
-}
-
-export class UpdatesChannelDifferenceEmpty
-  extends TypeUpdatesChannelDifference {
-  final?: true;
-  pts: number;
-  timeout?: number;
-
-  protected get [id]() {
-    return 0x3e11affb;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.final ?? null, "flags.0?true"],
-      [this.pts, "int"],
-      [this.timeout ?? null, "flags.1?int"],
-    ];
-  }
-
-  constructor(params: { final?: true; pts: number; timeout?: number }) {
-    super();
-    this.final = params.final;
-    this.pts = params.pts;
-    this.timeout = params.timeout;
-  }
-}
-
-export class UpdatesChannelDifferenceTooLong
-  extends TypeUpdatesChannelDifference {
-  final?: true;
-  timeout?: number;
-  dialog: TypeDialog;
-  messages: Array<TypeMessage>;
-  chats: Array<TypeChat>;
-  users: Array<TypeUser>;
-
-  protected get [id]() {
-    return 0xa4bcc6fe;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.final ?? null, "flags.0?true"],
-      [this.timeout ?? null, "flags.1?int"],
-      [this.dialog, "Dialog"],
-      [this.messages, "Vector<Message>"],
-      [this.chats, "Vector<Chat>"],
-      [this.users, "Vector<User>"],
-    ];
-  }
-
-  constructor(
-    params: {
-      final?: true;
-      timeout?: number;
-      dialog: TypeDialog;
-      messages: Array<TypeMessage>;
-      chats: Array<TypeChat>;
-      users: Array<TypeUser>;
-    },
-  ) {
-    super();
-    this.final = params.final;
-    this.timeout = params.timeout;
-    this.dialog = params.dialog;
-    this.messages = params.messages;
-    this.chats = params.chats;
-    this.users = params.users;
-  }
-}
-
-export class ChannelMessagesFilterEmpty extends TypeChannelMessagesFilter {
-  protected get [id]() {
-    return 0x94d42ee7;
+    return 0x0cde3739;
   }
 
   protected get [params](): Params {
@@ -6129,75 +10440,9 @@ export class ChannelMessagesFilterEmpty extends TypeChannelMessagesFilter {
   }
 }
 
-export class ChannelParticipantSelf extends TypeChannelParticipant {
-  via_request?: true;
-  user_id: bigint;
-  inviter_id: bigint;
-  date: number;
-
+export class InputStickerSetPremiumGifts extends TypeInputStickerSet {
   protected get [id]() {
-    return 0x35a8bfa7;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.via_request ?? null, "flags.0?true"],
-      [this.user_id, "long"],
-      [this.inviter_id, "long"],
-      [this.date, "int"],
-    ];
-  }
-
-  constructor(
-    params: {
-      via_request?: true;
-      user_id: bigint;
-      inviter_id: bigint;
-      date: number;
-    },
-  ) {
-    super();
-    this.via_request = params.via_request;
-    this.user_id = params.user_id;
-    this.inviter_id = params.inviter_id;
-    this.date = params.date;
-  }
-}
-
-export class ChannelParticipantCreator extends TypeChannelParticipant {
-  user_id: bigint;
-  admin_rights: TypeChatAdminRights;
-  rank?: string;
-
-  protected get [id]() {
-    return 0x2fe601d3;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.user_id, "long"],
-      [this.admin_rights, "ChatAdminRights"],
-      [this.rank ?? null, "flags.0?string"],
-    ];
-  }
-
-  constructor(
-    params: {
-      user_id: bigint;
-      admin_rights: TypeChatAdminRights;
-      rank?: string;
-    },
-  ) {
-    super();
-    this.user_id = params.user_id;
-    this.admin_rights = params.admin_rights;
-    this.rank = params.rank;
-  }
-}
-
-export class ChannelParticipantsRecent extends TypeChannelParticipantsFilter {
-  protected get [id]() {
-    return 0xde3f3c79;
+    return 0xc88b3b02;
   }
 
   protected get [params](): Params {
@@ -6209,9 +10454,9 @@ export class ChannelParticipantsRecent extends TypeChannelParticipantsFilter {
   }
 }
 
-export class ChannelParticipantsAdmins extends TypeChannelParticipantsFilter {
+export class InputStickerSetEmojiGenericAnimations extends TypeInputStickerSet {
   protected get [id]() {
-    return 0xb4608969;
+    return 0x04c4d4ce;
   }
 
   protected get [params](): Params {
@@ -6223,148 +10468,9 @@ export class ChannelParticipantsAdmins extends TypeChannelParticipantsFilter {
   }
 }
 
-export class ChannelParticipantsKicked extends TypeChannelParticipantsFilter {
-  q: string;
-
+export class InputStickerSetEmojiDefaultStatuses extends TypeInputStickerSet {
   protected get [id]() {
-    return 0xa3b54985;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.q, "string"],
-    ];
-  }
-
-  constructor(params: { q: string }) {
-    super();
-    this.q = params.q;
-  }
-}
-
-export class ChatParticipantCreator extends TypeChatParticipant {
-  user_id: bigint;
-
-  protected get [id]() {
-    return 0xe46bcee4;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.user_id, "long"],
-    ];
-  }
-
-  constructor(params: { user_id: bigint }) {
-    super();
-    this.user_id = params.user_id;
-  }
-}
-
-export class ChatParticipantAdmin extends TypeChatParticipant {
-  user_id: bigint;
-  inviter_id: bigint;
-  date: number;
-
-  protected get [id]() {
-    return 0xa0933f5b;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.user_id, "long"],
-      [this.inviter_id, "long"],
-      [this.date, "int"],
-    ];
-  }
-
-  constructor(params: { user_id: bigint; inviter_id: bigint; date: number }) {
-    super();
-    this.user_id = params.user_id;
-    this.inviter_id = params.inviter_id;
-    this.date = params.date;
-  }
-}
-
-export class UpdateChatParticipantAdmin extends TypeUpdate {
-  chat_id: bigint;
-  user_id: bigint;
-  is_admin: boolean;
-  version: number;
-
-  protected get [id]() {
-    return 0xd7ca61a2;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.chat_id, "long"],
-      [this.user_id, "long"],
-      [this.is_admin, "Bool"],
-      [this.version, "int"],
-    ];
-  }
-
-  constructor(
-    params: {
-      chat_id: bigint;
-      user_id: bigint;
-      is_admin: boolean;
-      version: number;
-    },
-  ) {
-    super();
-    this.chat_id = params.chat_id;
-    this.user_id = params.user_id;
-    this.is_admin = params.is_admin;
-    this.version = params.version;
-  }
-}
-
-export class MessageActionChatMigrateTo extends TypeMessageAction {
-  channel_id: bigint;
-
-  protected get [id]() {
-    return 0xe1037f92;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.channel_id, "long"],
-    ];
-  }
-
-  constructor(params: { channel_id: bigint }) {
-    super();
-    this.channel_id = params.channel_id;
-  }
-}
-
-export class MessageActionChannelMigrateFrom extends TypeMessageAction {
-  title: string;
-  chat_id: bigint;
-
-  protected get [id]() {
-    return 0xea3948e9;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.title, "string"],
-      [this.chat_id, "long"],
-    ];
-  }
-
-  constructor(params: { title: string; chat_id: bigint }) {
-    super();
-    this.title = params.title;
-    this.chat_id = params.chat_id;
-  }
-}
-
-export class ChannelParticipantsBots extends TypeChannelParticipantsFilter {
-  protected get [id]() {
-    return 0xb0d1865b;
+    return 0x29d0f5ee;
   }
 
   protected get [params](): Params {
@@ -6376,75 +10482,9 @@ export class ChannelParticipantsBots extends TypeChannelParticipantsFilter {
   }
 }
 
-export class UpdateNewStickerSet extends TypeUpdate {
-  stickerset: TypeMessagesStickerSet;
-
+export class InputStickerSetEmojiDefaultTopicIcons extends TypeInputStickerSet {
   protected get [id]() {
-    return 0x688a30aa;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.stickerset, "messages.StickerSet"],
-    ];
-  }
-
-  constructor(params: { stickerset: TypeMessagesStickerSet }) {
-    super();
-    this.stickerset = params.stickerset;
-  }
-}
-
-export class UpdateStickerSetsOrder extends TypeUpdate {
-  masks?: true;
-  emojis?: true;
-  order: Array<bigint>;
-
-  protected get [id]() {
-    return 0x0bb2d201;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.masks ?? null, "flags.0?true"],
-      [this.emojis ?? null, "flags.1?true"],
-      [this.order, "Vector<long>"],
-    ];
-  }
-
-  constructor(params: { masks?: true; emojis?: true; order: Array<bigint> }) {
-    super();
-    this.masks = params.masks;
-    this.emojis = params.emojis;
-    this.order = params.order;
-  }
-}
-
-export class UpdateStickerSets extends TypeUpdate {
-  masks?: true;
-  emojis?: true;
-
-  protected get [id]() {
-    return 0x31c24808;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.masks ?? null, "flags.0?true"],
-      [this.emojis ?? null, "flags.1?true"],
-    ];
-  }
-
-  constructor(params: { masks?: true; emojis?: true }) {
-    super();
-    this.masks = params.masks;
-    this.emojis = params.emojis;
-  }
-}
-
-export class MessagesSavedGifsNotModified extends TypeMessagesSavedGifs {
-  protected get [id]() {
-    return 0xe8025ca2;
+    return 0x44c1f8e9;
   }
 
   protected get [params](): Params {
@@ -6456,9 +10496,9 @@ export class MessagesSavedGifsNotModified extends TypeMessagesSavedGifs {
   }
 }
 
-export class UpdateSavedGifs extends TypeUpdate {
+export class MessagesStickerSetNotModified extends TypeMessagesStickerSet {
   protected get [id]() {
-    return 0x9375341e;
+    return 0xd3f924eb;
   }
 
   protected get [params](): Params {
@@ -6467,435 +10507,6 @@ export class UpdateSavedGifs extends TypeUpdate {
 
   constructor() {
     super();
-  }
-}
-
-export class InputBotInlineMessageMediaAuto extends TypeInputBotInlineMessage {
-  message: string;
-  entities?: Array<TypeMessageEntity>;
-  reply_markup?: TypeReplyMarkup;
-
-  protected get [id]() {
-    return 0x3380c786;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.message, "string"],
-      [this.entities ?? null, "flags.1?Vector<MessageEntity>"],
-      [this.reply_markup ?? null, "flags.2?ReplyMarkup"],
-    ];
-  }
-
-  constructor(
-    params: {
-      message: string;
-      entities?: Array<TypeMessageEntity>;
-      reply_markup?: TypeReplyMarkup;
-    },
-  ) {
-    super();
-    this.message = params.message;
-    this.entities = params.entities;
-    this.reply_markup = params.reply_markup;
-  }
-}
-
-export class InputBotInlineMessageText extends TypeInputBotInlineMessage {
-  no_webpage?: true;
-  message: string;
-  entities?: Array<TypeMessageEntity>;
-  reply_markup?: TypeReplyMarkup;
-
-  protected get [id]() {
-    return 0x3dcd7a87;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.no_webpage ?? null, "flags.0?true"],
-      [this.message, "string"],
-      [this.entities ?? null, "flags.1?Vector<MessageEntity>"],
-      [this.reply_markup ?? null, "flags.2?ReplyMarkup"],
-    ];
-  }
-
-  constructor(
-    params: {
-      no_webpage?: true;
-      message: string;
-      entities?: Array<TypeMessageEntity>;
-      reply_markup?: TypeReplyMarkup;
-    },
-  ) {
-    super();
-    this.no_webpage = params.no_webpage;
-    this.message = params.message;
-    this.entities = params.entities;
-    this.reply_markup = params.reply_markup;
-  }
-}
-
-export class BotInlineMessageMediaAuto extends TypeBotInlineMessage {
-  message: string;
-  entities?: Array<TypeMessageEntity>;
-  reply_markup?: TypeReplyMarkup;
-
-  protected get [id]() {
-    return 0x764cf810;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.message, "string"],
-      [this.entities ?? null, "flags.1?Vector<MessageEntity>"],
-      [this.reply_markup ?? null, "flags.2?ReplyMarkup"],
-    ];
-  }
-
-  constructor(
-    params: {
-      message: string;
-      entities?: Array<TypeMessageEntity>;
-      reply_markup?: TypeReplyMarkup;
-    },
-  ) {
-    super();
-    this.message = params.message;
-    this.entities = params.entities;
-    this.reply_markup = params.reply_markup;
-  }
-}
-
-export class BotInlineMessageText extends TypeBotInlineMessage {
-  no_webpage?: true;
-  message: string;
-  entities?: Array<TypeMessageEntity>;
-  reply_markup?: TypeReplyMarkup;
-
-  protected get [id]() {
-    return 0x8c7f65e2;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.no_webpage ?? null, "flags.0?true"],
-      [this.message, "string"],
-      [this.entities ?? null, "flags.1?Vector<MessageEntity>"],
-      [this.reply_markup ?? null, "flags.2?ReplyMarkup"],
-    ];
-  }
-
-  constructor(
-    params: {
-      no_webpage?: true;
-      message: string;
-      entities?: Array<TypeMessageEntity>;
-      reply_markup?: TypeReplyMarkup;
-    },
-  ) {
-    super();
-    this.no_webpage = params.no_webpage;
-    this.message = params.message;
-    this.entities = params.entities;
-    this.reply_markup = params.reply_markup;
-  }
-}
-
-export class UpdateBotInlineQuery extends TypeUpdate {
-  query_id: bigint;
-  user_id: bigint;
-  query: string;
-  geo?: TypeGeoPoint;
-  peer_type?: TypeInlineQueryPeerType;
-  offset: string;
-
-  protected get [id]() {
-    return 0x496f379c;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.query_id, "long"],
-      [this.user_id, "long"],
-      [this.query, "string"],
-      [this.geo ?? null, "flags.0?GeoPoint"],
-      [this.peer_type ?? null, "flags.1?InlineQueryPeerType"],
-      [this.offset, "string"],
-    ];
-  }
-
-  constructor(
-    params: {
-      query_id: bigint;
-      user_id: bigint;
-      query: string;
-      geo?: TypeGeoPoint;
-      peer_type?: TypeInlineQueryPeerType;
-      offset: string;
-    },
-  ) {
-    super();
-    this.query_id = params.query_id;
-    this.user_id = params.user_id;
-    this.query = params.query;
-    this.geo = params.geo;
-    this.peer_type = params.peer_type;
-    this.offset = params.offset;
-  }
-}
-
-export class UpdateBotInlineSend extends TypeUpdate {
-  user_id: bigint;
-  query: string;
-  geo?: TypeGeoPoint;
-  id: string;
-  msg_id?: TypeInputBotInlineMessageID;
-
-  protected get [id]() {
-    return 0x12f12a07;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.user_id, "long"],
-      [this.query, "string"],
-      [this.geo ?? null, "flags.0?GeoPoint"],
-      [this.id, "string"],
-      [this.msg_id ?? null, "flags.1?InputBotInlineMessageID"],
-    ];
-  }
-
-  constructor(
-    params: {
-      user_id: bigint;
-      query: string;
-      geo?: TypeGeoPoint;
-      id: string;
-      msg_id?: TypeInputBotInlineMessageID;
-    },
-  ) {
-    super();
-    this.user_id = params.user_id;
-    this.query = params.query;
-    this.geo = params.geo;
-    this.id = params.id;
-    this.msg_id = params.msg_id;
-  }
-}
-
-export class InputMessagesFilterVoice extends TypeMessagesFilter {
-  protected get [id]() {
-    return 0x50f5c392;
-  }
-
-  protected get [params](): Params {
-    return [];
-  }
-
-  constructor() {
-    super();
-  }
-}
-
-export class InputMessagesFilterMusic extends TypeMessagesFilter {
-  protected get [id]() {
-    return 0x3751b49e;
-  }
-
-  protected get [params](): Params {
-    return [];
-  }
-
-  constructor() {
-    super();
-  }
-}
-
-export class InputPrivacyKeyChatInvite extends TypeInputPrivacyKey {
-  protected get [id]() {
-    return 0xbdfb0426;
-  }
-
-  protected get [params](): Params {
-    return [];
-  }
-
-  constructor() {
-    super();
-  }
-}
-
-export class PrivacyKeyChatInvite extends TypePrivacyKey {
-  protected get [id]() {
-    return 0x500e6dfa;
-  }
-
-  protected get [params](): Params {
-    return [];
-  }
-
-  constructor() {
-    super();
-  }
-}
-
-export class UpdateEditChannelMessage extends TypeUpdate {
-  message: TypeMessage;
-  pts: number;
-  pts_count: number;
-
-  protected get [id]() {
-    return 0x1b3f4df7;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.message, "Message"],
-      [this.pts, "int"],
-      [this.pts_count, "int"],
-    ];
-  }
-
-  constructor(
-    params: { message: TypeMessage; pts: number; pts_count: number },
-  ) {
-    super();
-    this.message = params.message;
-    this.pts = params.pts;
-    this.pts_count = params.pts_count;
-  }
-}
-
-export class MessageActionPinMessage extends TypeMessageAction {
-  protected get [id]() {
-    return 0x94bd38ed;
-  }
-
-  protected get [params](): Params {
-    return [];
-  }
-
-  constructor() {
-    super();
-  }
-}
-
-export class AuthCodeTypeSms extends TypeAuthCodeType {
-  protected get [id]() {
-    return 0x72a3158c;
-  }
-
-  protected get [params](): Params {
-    return [];
-  }
-
-  constructor() {
-    super();
-  }
-}
-
-export class AuthCodeTypeCall extends TypeAuthCodeType {
-  protected get [id]() {
-    return 0x741cd3e3;
-  }
-
-  protected get [params](): Params {
-    return [];
-  }
-
-  constructor() {
-    super();
-  }
-}
-
-export class AuthCodeTypeFlashCall extends TypeAuthCodeType {
-  protected get [id]() {
-    return 0x226ccefb;
-  }
-
-  protected get [params](): Params {
-    return [];
-  }
-
-  constructor() {
-    super();
-  }
-}
-
-export class AuthSentCodeTypeApp extends TypeAuthSentCodeType {
-  length: number;
-
-  protected get [id]() {
-    return 0x3dbb5986;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.length, "int"],
-    ];
-  }
-
-  constructor(params: { length: number }) {
-    super();
-    this.length = params.length;
-  }
-}
-
-export class AuthSentCodeTypeSms extends TypeAuthSentCodeType {
-  length: number;
-
-  protected get [id]() {
-    return 0xc000bba2;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.length, "int"],
-    ];
-  }
-
-  constructor(params: { length: number }) {
-    super();
-    this.length = params.length;
-  }
-}
-
-export class AuthSentCodeTypeCall extends TypeAuthSentCodeType {
-  length: number;
-
-  protected get [id]() {
-    return 0x5353e5a7;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.length, "int"],
-    ];
-  }
-
-  constructor(params: { length: number }) {
-    super();
-    this.length = params.length;
-  }
-}
-
-export class AuthSentCodeTypeFlashCall extends TypeAuthSentCodeType {
-  pattern: string;
-
-  protected get [id]() {
-    return 0xab03c6d9;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.pattern, "string"],
-    ];
-  }
-
-  constructor(params: { pattern: string }) {
-    super();
-    this.pattern = params.pattern;
   }
 }
 
@@ -6932,9 +10543,9 @@ export class KeyboardButtonCallback extends TypeKeyboardButton {
 
   protected get [params](): Params {
     return [
-      [this.requires_password ?? null, "flags.0?true"],
+      [this.requires_password ?? null, "true"],
       [this.text, "string"],
-      [this.data, "bytes"],
+      [this.data, Uint8Array],
     ];
   }
 
@@ -6997,7 +10608,7 @@ export class KeyboardButtonSwitchInline extends TypeKeyboardButton {
 
   protected get [params](): Params {
     return [
-      [this.same_peer ?? null, "flags.0?true"],
+      [this.same_peer ?? null, "true"],
       [this.text, "string"],
       [this.query, "string"],
     ];
@@ -7011,6 +10622,339 @@ export class KeyboardButtonSwitchInline extends TypeKeyboardButton {
   }
 }
 
+export class KeyboardButtonGame extends TypeKeyboardButton {
+  text: string;
+
+  protected get [id]() {
+    return 0x50f41ccf;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.text, "string"],
+    ];
+  }
+
+  constructor(params: { text: string }) {
+    super();
+    this.text = params.text;
+  }
+}
+
+export class KeyboardButtonBuy extends TypeKeyboardButton {
+  text: string;
+
+  protected get [id]() {
+    return 0xafd93fbb;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.text, "string"],
+    ];
+  }
+
+  constructor(params: { text: string }) {
+    super();
+    this.text = params.text;
+  }
+}
+
+export class KeyboardButtonUrlAuth extends TypeKeyboardButton {
+  text: string;
+  fwd_text?: string;
+  url: string;
+  button_id: number;
+
+  protected get [id]() {
+    return 0x10b78d29;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.text, "string"],
+      [this.fwd_text ?? null, "string"],
+      [this.url, "string"],
+      [this.button_id, "number"],
+    ];
+  }
+
+  constructor(
+    params: { text: string; fwd_text?: string; url: string; button_id: number },
+  ) {
+    super();
+    this.text = params.text;
+    this.fwd_text = params.fwd_text;
+    this.url = params.url;
+    this.button_id = params.button_id;
+  }
+}
+
+export class InputKeyboardButtonUrlAuth extends TypeKeyboardButton {
+  request_write_access?: true;
+  text: string;
+  fwd_text?: string;
+  url: string;
+  bot: TypeInputUser;
+
+  protected get [id]() {
+    return 0xd02e7fd4;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.request_write_access ?? null, "true"],
+      [this.text, "string"],
+      [this.fwd_text ?? null, "string"],
+      [this.url, "string"],
+      [this.bot, TypeInputUser],
+    ];
+  }
+
+  constructor(
+    params: {
+      request_write_access?: true;
+      text: string;
+      fwd_text?: string;
+      url: string;
+      bot: TypeInputUser;
+    },
+  ) {
+    super();
+    this.request_write_access = params.request_write_access;
+    this.text = params.text;
+    this.fwd_text = params.fwd_text;
+    this.url = params.url;
+    this.bot = params.bot;
+  }
+}
+
+export class KeyboardButtonRequestPoll extends TypeKeyboardButton {
+  quiz?: boolean;
+  text: string;
+
+  protected get [id]() {
+    return 0xbbc7515d;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.quiz ?? null, "boolean"],
+      [this.text, "string"],
+    ];
+  }
+
+  constructor(params: { quiz?: boolean; text: string }) {
+    super();
+    this.quiz = params.quiz;
+    this.text = params.text;
+  }
+}
+
+export class InputKeyboardButtonUserProfile extends TypeKeyboardButton {
+  text: string;
+  user_id: TypeInputUser;
+
+  protected get [id]() {
+    return 0xe988037b;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.text, "string"],
+      [this.user_id, TypeInputUser],
+    ];
+  }
+
+  constructor(params: { text: string; user_id: TypeInputUser }) {
+    super();
+    this.text = params.text;
+    this.user_id = params.user_id;
+  }
+}
+
+export class KeyboardButtonUserProfile extends TypeKeyboardButton {
+  text: string;
+  user_id: bigint;
+
+  protected get [id]() {
+    return 0x308660c1;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.text, "string"],
+      [this.user_id, "bigint"],
+    ];
+  }
+
+  constructor(params: { text: string; user_id: bigint }) {
+    super();
+    this.text = params.text;
+    this.user_id = params.user_id;
+  }
+}
+
+export class KeyboardButtonWebView extends TypeKeyboardButton {
+  text: string;
+  url: string;
+
+  protected get [id]() {
+    return 0x13767230;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.text, "string"],
+      [this.url, "string"],
+    ];
+  }
+
+  constructor(params: { text: string; url: string }) {
+    super();
+    this.text = params.text;
+    this.url = params.url;
+  }
+}
+
+export class KeyboardButtonSimpleWebView extends TypeKeyboardButton {
+  text: string;
+  url: string;
+
+  protected get [id]() {
+    return 0xa0c0505c;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.text, "string"],
+      [this.url, "string"],
+    ];
+  }
+
+  constructor(params: { text: string; url: string }) {
+    super();
+    this.text = params.text;
+    this.url = params.url;
+  }
+}
+
+export class KeyboardButtonRequestPeer extends TypeKeyboardButton {
+  text: string;
+  button_id: number;
+  peer_type: TypeRequestPeerType;
+
+  protected get [id]() {
+    return 0x0d0b468c;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.text, "string"],
+      [this.button_id, "number"],
+      [this.peer_type, TypeRequestPeerType],
+    ];
+  }
+
+  constructor(
+    params: { text: string; button_id: number; peer_type: TypeRequestPeerType },
+  ) {
+    super();
+    this.text = params.text;
+    this.button_id = params.button_id;
+    this.peer_type = params.peer_type;
+  }
+}
+
+export class ReplyKeyboardHide extends TypeReplyMarkup {
+  selective?: true;
+
+  protected get [id]() {
+    return 0xa03e5b85;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.selective ?? null, "true"],
+    ];
+  }
+
+  constructor(params: { selective?: true }) {
+    super();
+    this.selective = params.selective;
+  }
+}
+
+export class ReplyKeyboardForceReply extends TypeReplyMarkup {
+  single_use?: true;
+  selective?: true;
+  placeholder?: string;
+
+  protected get [id]() {
+    return 0x86b40b08;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.single_use ?? null, "true"],
+      [this.selective ?? null, "true"],
+      [this.placeholder ?? null, "string"],
+    ];
+  }
+
+  constructor(
+    params: { single_use?: true; selective?: true; placeholder?: string },
+  ) {
+    super();
+    this.single_use = params.single_use;
+    this.selective = params.selective;
+    this.placeholder = params.placeholder;
+  }
+}
+
+export class ReplyKeyboardMarkup extends TypeReplyMarkup {
+  resize?: true;
+  single_use?: true;
+  selective?: true;
+  persistent?: true;
+  rows: Array<TypeKeyboardButtonRow>;
+  placeholder?: string;
+
+  protected get [id]() {
+    return 0x85dd99d1;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.resize ?? null, "true"],
+      [this.single_use ?? null, "true"],
+      [this.selective ?? null, "true"],
+      [this.persistent ?? null, "true"],
+      [this.rows, [TypeKeyboardButtonRow]],
+      [this.placeholder ?? null, "string"],
+    ];
+  }
+
+  constructor(
+    params: {
+      resize?: true;
+      single_use?: true;
+      selective?: true;
+      persistent?: true;
+      rows: Array<TypeKeyboardButtonRow>;
+      placeholder?: string;
+    },
+  ) {
+    super();
+    this.resize = params.resize;
+    this.single_use = params.single_use;
+    this.selective = params.selective;
+    this.persistent = params.persistent;
+    this.rows = params.rows;
+    this.placeholder = params.placeholder;
+  }
+}
+
 export class ReplyInlineMarkup extends TypeReplyMarkup {
   rows: Array<TypeKeyboardButtonRow>;
 
@@ -7020,7 +10964,7 @@ export class ReplyInlineMarkup extends TypeReplyMarkup {
 
   protected get [params](): Params {
     return [
-      [this.rows, "Vector<KeyboardButtonRow>"],
+      [this.rows, [TypeKeyboardButtonRow]],
     ];
   }
 
@@ -7030,77 +10974,1017 @@ export class ReplyInlineMarkup extends TypeReplyMarkup {
   }
 }
 
-export class UpdateBotCallbackQuery extends TypeUpdate {
-  query_id: bigint;
-  user_id: bigint;
-  peer: TypePeer;
-  msg_id: number;
-  chat_instance: bigint;
-  data?: Uint8Array;
-  game_short_name?: string;
+export class MessageEntityUnknown extends TypeMessageEntity {
+  offset: number;
+  length: number;
 
   protected get [id]() {
-    return 0xb9cfc48d;
+    return 0xbb92ba95;
   }
 
   protected get [params](): Params {
     return [
-      [this.query_id, "long"],
-      [this.user_id, "long"],
-      [this.peer, "Peer"],
-      [this.msg_id, "int"],
-      [this.chat_instance, "long"],
-      [this.data ?? null, "flags.0?bytes"],
-      [this.game_short_name ?? null, "flags.1?string"],
+      [this.offset, "number"],
+      [this.length, "number"],
+    ];
+  }
+
+  constructor(params: { offset: number; length: number }) {
+    super();
+    this.offset = params.offset;
+    this.length = params.length;
+  }
+}
+
+export class MessageEntityMention extends TypeMessageEntity {
+  offset: number;
+  length: number;
+
+  protected get [id]() {
+    return 0xfa04579d;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.offset, "number"],
+      [this.length, "number"],
+    ];
+  }
+
+  constructor(params: { offset: number; length: number }) {
+    super();
+    this.offset = params.offset;
+    this.length = params.length;
+  }
+}
+
+export class MessageEntityHashtag extends TypeMessageEntity {
+  offset: number;
+  length: number;
+
+  protected get [id]() {
+    return 0x6f635b0d;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.offset, "number"],
+      [this.length, "number"],
+    ];
+  }
+
+  constructor(params: { offset: number; length: number }) {
+    super();
+    this.offset = params.offset;
+    this.length = params.length;
+  }
+}
+
+export class MessageEntityBotCommand extends TypeMessageEntity {
+  offset: number;
+  length: number;
+
+  protected get [id]() {
+    return 0x6cef8ac7;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.offset, "number"],
+      [this.length, "number"],
+    ];
+  }
+
+  constructor(params: { offset: number; length: number }) {
+    super();
+    this.offset = params.offset;
+    this.length = params.length;
+  }
+}
+
+export class MessageEntityUrl extends TypeMessageEntity {
+  offset: number;
+  length: number;
+
+  protected get [id]() {
+    return 0x6ed02538;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.offset, "number"],
+      [this.length, "number"],
+    ];
+  }
+
+  constructor(params: { offset: number; length: number }) {
+    super();
+    this.offset = params.offset;
+    this.length = params.length;
+  }
+}
+
+export class MessageEntityEmail extends TypeMessageEntity {
+  offset: number;
+  length: number;
+
+  protected get [id]() {
+    return 0x64e475c2;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.offset, "number"],
+      [this.length, "number"],
+    ];
+  }
+
+  constructor(params: { offset: number; length: number }) {
+    super();
+    this.offset = params.offset;
+    this.length = params.length;
+  }
+}
+
+export class MessageEntityBold extends TypeMessageEntity {
+  offset: number;
+  length: number;
+
+  protected get [id]() {
+    return 0xbd610bc9;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.offset, "number"],
+      [this.length, "number"],
+    ];
+  }
+
+  constructor(params: { offset: number; length: number }) {
+    super();
+    this.offset = params.offset;
+    this.length = params.length;
+  }
+}
+
+export class MessageEntityItalic extends TypeMessageEntity {
+  offset: number;
+  length: number;
+
+  protected get [id]() {
+    return 0x826f8b60;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.offset, "number"],
+      [this.length, "number"],
+    ];
+  }
+
+  constructor(params: { offset: number; length: number }) {
+    super();
+    this.offset = params.offset;
+    this.length = params.length;
+  }
+}
+
+export class MessageEntityCode extends TypeMessageEntity {
+  offset: number;
+  length: number;
+
+  protected get [id]() {
+    return 0x28a20571;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.offset, "number"],
+      [this.length, "number"],
+    ];
+  }
+
+  constructor(params: { offset: number; length: number }) {
+    super();
+    this.offset = params.offset;
+    this.length = params.length;
+  }
+}
+
+export class MessageEntityPre extends TypeMessageEntity {
+  offset: number;
+  length: number;
+  language: string;
+
+  protected get [id]() {
+    return 0x73924be0;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.offset, "number"],
+      [this.length, "number"],
+      [this.language, "string"],
+    ];
+  }
+
+  constructor(params: { offset: number; length: number; language: string }) {
+    super();
+    this.offset = params.offset;
+    this.length = params.length;
+    this.language = params.language;
+  }
+}
+
+export class MessageEntityTextUrl extends TypeMessageEntity {
+  offset: number;
+  length: number;
+  url: string;
+
+  protected get [id]() {
+    return 0x76a6d327;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.offset, "number"],
+      [this.length, "number"],
+      [this.url, "string"],
+    ];
+  }
+
+  constructor(params: { offset: number; length: number; url: string }) {
+    super();
+    this.offset = params.offset;
+    this.length = params.length;
+    this.url = params.url;
+  }
+}
+
+export class MessageEntityMentionName extends TypeMessageEntity {
+  offset: number;
+  length: number;
+  user_id: bigint;
+
+  protected get [id]() {
+    return 0xdc7b1140;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.offset, "number"],
+      [this.length, "number"],
+      [this.user_id, "bigint"],
+    ];
+  }
+
+  constructor(params: { offset: number; length: number; user_id: bigint }) {
+    super();
+    this.offset = params.offset;
+    this.length = params.length;
+    this.user_id = params.user_id;
+  }
+}
+
+export class InputMessageEntityMentionName extends TypeMessageEntity {
+  offset: number;
+  length: number;
+  user_id: TypeInputUser;
+
+  protected get [id]() {
+    return 0x208e68c9;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.offset, "number"],
+      [this.length, "number"],
+      [this.user_id, TypeInputUser],
+    ];
+  }
+
+  constructor(
+    params: { offset: number; length: number; user_id: TypeInputUser },
+  ) {
+    super();
+    this.offset = params.offset;
+    this.length = params.length;
+    this.user_id = params.user_id;
+  }
+}
+
+export class MessageEntityPhone extends TypeMessageEntity {
+  offset: number;
+  length: number;
+
+  protected get [id]() {
+    return 0x9b69e34b;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.offset, "number"],
+      [this.length, "number"],
+    ];
+  }
+
+  constructor(params: { offset: number; length: number }) {
+    super();
+    this.offset = params.offset;
+    this.length = params.length;
+  }
+}
+
+export class MessageEntityCashtag extends TypeMessageEntity {
+  offset: number;
+  length: number;
+
+  protected get [id]() {
+    return 0x4c4e743f;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.offset, "number"],
+      [this.length, "number"],
+    ];
+  }
+
+  constructor(params: { offset: number; length: number }) {
+    super();
+    this.offset = params.offset;
+    this.length = params.length;
+  }
+}
+
+export class MessageEntityUnderline extends TypeMessageEntity {
+  offset: number;
+  length: number;
+
+  protected get [id]() {
+    return 0x9c4e7e8b;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.offset, "number"],
+      [this.length, "number"],
+    ];
+  }
+
+  constructor(params: { offset: number; length: number }) {
+    super();
+    this.offset = params.offset;
+    this.length = params.length;
+  }
+}
+
+export class MessageEntityStrike extends TypeMessageEntity {
+  offset: number;
+  length: number;
+
+  protected get [id]() {
+    return 0xbf0693d4;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.offset, "number"],
+      [this.length, "number"],
+    ];
+  }
+
+  constructor(params: { offset: number; length: number }) {
+    super();
+    this.offset = params.offset;
+    this.length = params.length;
+  }
+}
+
+export class MessageEntityBlockquote extends TypeMessageEntity {
+  offset: number;
+  length: number;
+
+  protected get [id]() {
+    return 0x020df5d0;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.offset, "number"],
+      [this.length, "number"],
+    ];
+  }
+
+  constructor(params: { offset: number; length: number }) {
+    super();
+    this.offset = params.offset;
+    this.length = params.length;
+  }
+}
+
+export class MessageEntityBankCard extends TypeMessageEntity {
+  offset: number;
+  length: number;
+
+  protected get [id]() {
+    return 0x761e6af4;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.offset, "number"],
+      [this.length, "number"],
+    ];
+  }
+
+  constructor(params: { offset: number; length: number }) {
+    super();
+    this.offset = params.offset;
+    this.length = params.length;
+  }
+}
+
+export class MessageEntitySpoiler extends TypeMessageEntity {
+  offset: number;
+  length: number;
+
+  protected get [id]() {
+    return 0x32ca960f;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.offset, "number"],
+      [this.length, "number"],
+    ];
+  }
+
+  constructor(params: { offset: number; length: number }) {
+    super();
+    this.offset = params.offset;
+    this.length = params.length;
+  }
+}
+
+export class MessageEntityCustomEmoji extends TypeMessageEntity {
+  offset: number;
+  length: number;
+  document_id: bigint;
+
+  protected get [id]() {
+    return 0xc8cf05f8;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.offset, "number"],
+      [this.length, "number"],
+      [this.document_id, "bigint"],
+    ];
+  }
+
+  constructor(params: { offset: number; length: number; document_id: bigint }) {
+    super();
+    this.offset = params.offset;
+    this.length = params.length;
+    this.document_id = params.document_id;
+  }
+}
+
+export class InputChannelEmpty extends TypeInputChannel {
+  protected get [id]() {
+    return 0xee8c1e86;
+  }
+
+  protected get [params](): Params {
+    return [];
+  }
+
+  constructor() {
+    super();
+  }
+}
+
+export class InputChannelFromMessage extends TypeInputChannel {
+  peer: TypeInputPeer;
+  msg_id: number;
+  channel_id: bigint;
+
+  protected get [id]() {
+    return 0x5b934f9d;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.peer, TypeInputPeer],
+      [this.msg_id, "number"],
+      [this.channel_id, "bigint"],
+    ];
+  }
+
+  constructor(
+    params: { peer: TypeInputPeer; msg_id: number; channel_id: bigint },
+  ) {
+    super();
+    this.peer = params.peer;
+    this.msg_id = params.msg_id;
+    this.channel_id = params.channel_id;
+  }
+}
+
+export class UpdatesChannelDifferenceEmpty
+  extends TypeUpdatesChannelDifference {
+  final?: true;
+  pts: number;
+  timeout?: number;
+
+  protected get [id]() {
+    return 0x3e11affb;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.final ?? null, "true"],
+      [this.pts, "number"],
+      [this.timeout ?? null, "number"],
+    ];
+  }
+
+  constructor(params: { final?: true; pts: number; timeout?: number }) {
+    super();
+    this.final = params.final;
+    this.pts = params.pts;
+    this.timeout = params.timeout;
+  }
+}
+
+export class UpdatesChannelDifferenceTooLong
+  extends TypeUpdatesChannelDifference {
+  final?: true;
+  timeout?: number;
+  dialog: TypeDialog;
+  messages: Array<TypeMessage>;
+  chats: Array<TypeChat>;
+  users: Array<TypeUser>;
+
+  protected get [id]() {
+    return 0xa4bcc6fe;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.final ?? null, "true"],
+      [this.timeout ?? null, "number"],
+      [this.dialog, TypeDialog],
+      [this.messages, [TypeMessage]],
+      [this.chats, [TypeChat]],
+      [this.users, [TypeUser]],
     ];
   }
 
   constructor(
     params: {
-      query_id: bigint;
-      user_id: bigint;
-      peer: TypePeer;
-      msg_id: number;
-      chat_instance: bigint;
-      data?: Uint8Array;
-      game_short_name?: string;
+      final?: true;
+      timeout?: number;
+      dialog: TypeDialog;
+      messages: Array<TypeMessage>;
+      chats: Array<TypeChat>;
+      users: Array<TypeUser>;
     },
   ) {
     super();
-    this.query_id = params.query_id;
-    this.user_id = params.user_id;
-    this.peer = params.peer;
-    this.msg_id = params.msg_id;
-    this.chat_instance = params.chat_instance;
-    this.data = params.data;
-    this.game_short_name = params.game_short_name;
+    this.final = params.final;
+    this.timeout = params.timeout;
+    this.dialog = params.dialog;
+    this.messages = params.messages;
+    this.chats = params.chats;
+    this.users = params.users;
   }
 }
 
-export class UpdateEditMessage extends TypeUpdate {
-  message: TypeMessage;
-  pts: number;
-  pts_count: number;
+export class ChannelMessagesFilterEmpty extends TypeChannelMessagesFilter {
+  protected get [id]() {
+    return 0x94d42ee7;
+  }
+
+  protected get [params](): Params {
+    return [];
+  }
+
+  constructor() {
+    super();
+  }
+}
+
+export class ChannelParticipantSelf extends TypeChannelParticipant {
+  via_request?: true;
+  user_id: bigint;
+  inviter_id: bigint;
+  date: number;
 
   protected get [id]() {
-    return 0xe40370a3;
+    return 0x35a8bfa7;
   }
 
   protected get [params](): Params {
     return [
-      [this.message, "Message"],
-      [this.pts, "int"],
-      [this.pts_count, "int"],
+      [this.via_request ?? null, "true"],
+      [this.user_id, "bigint"],
+      [this.inviter_id, "bigint"],
+      [this.date, "number"],
     ];
   }
 
   constructor(
-    params: { message: TypeMessage; pts: number; pts_count: number },
+    params: {
+      via_request?: true;
+      user_id: bigint;
+      inviter_id: bigint;
+      date: number;
+    },
+  ) {
+    super();
+    this.via_request = params.via_request;
+    this.user_id = params.user_id;
+    this.inviter_id = params.inviter_id;
+    this.date = params.date;
+  }
+}
+
+export class ChannelParticipantCreator extends TypeChannelParticipant {
+  user_id: bigint;
+  admin_rights: TypeChatAdminRights;
+  rank?: string;
+
+  protected get [id]() {
+    return 0x2fe601d3;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.user_id, "bigint"],
+      [this.admin_rights, TypeChatAdminRights],
+      [this.rank ?? null, "string"],
+    ];
+  }
+
+  constructor(
+    params: {
+      user_id: bigint;
+      admin_rights: TypeChatAdminRights;
+      rank?: string;
+    },
+  ) {
+    super();
+    this.user_id = params.user_id;
+    this.admin_rights = params.admin_rights;
+    this.rank = params.rank;
+  }
+}
+
+export class ChannelParticipantAdmin extends TypeChannelParticipant {
+  can_edit?: true;
+  self?: true;
+  user_id: bigint;
+  inviter_id?: bigint;
+  promoted_by: bigint;
+  date: number;
+  admin_rights: TypeChatAdminRights;
+  rank?: string;
+
+  protected get [id]() {
+    return 0x34c3bb53;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.can_edit ?? null, "true"],
+      [this.self ?? null, "true"],
+      [this.user_id, "bigint"],
+      [this.inviter_id ?? null, "bigint"],
+      [this.promoted_by, "bigint"],
+      [this.date, "number"],
+      [this.admin_rights, TypeChatAdminRights],
+      [this.rank ?? null, "string"],
+    ];
+  }
+
+  constructor(
+    params: {
+      can_edit?: true;
+      self?: true;
+      user_id: bigint;
+      inviter_id?: bigint;
+      promoted_by: bigint;
+      date: number;
+      admin_rights: TypeChatAdminRights;
+      rank?: string;
+    },
+  ) {
+    super();
+    this.can_edit = params.can_edit;
+    this.self = params.self;
+    this.user_id = params.user_id;
+    this.inviter_id = params.inviter_id;
+    this.promoted_by = params.promoted_by;
+    this.date = params.date;
+    this.admin_rights = params.admin_rights;
+    this.rank = params.rank;
+  }
+}
+
+export class ChannelParticipantBanned extends TypeChannelParticipant {
+  left?: true;
+  peer: TypePeer;
+  kicked_by: bigint;
+  date: number;
+  banned_rights: TypeChatBannedRights;
+
+  protected get [id]() {
+    return 0x6df8014e;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.left ?? null, "true"],
+      [this.peer, TypePeer],
+      [this.kicked_by, "bigint"],
+      [this.date, "number"],
+      [this.banned_rights, TypeChatBannedRights],
+    ];
+  }
+
+  constructor(
+    params: {
+      left?: true;
+      peer: TypePeer;
+      kicked_by: bigint;
+      date: number;
+      banned_rights: TypeChatBannedRights;
+    },
+  ) {
+    super();
+    this.left = params.left;
+    this.peer = params.peer;
+    this.kicked_by = params.kicked_by;
+    this.date = params.date;
+    this.banned_rights = params.banned_rights;
+  }
+}
+
+export class ChannelParticipantLeft extends TypeChannelParticipant {
+  peer: TypePeer;
+
+  protected get [id]() {
+    return 0x1b03f006;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.peer, TypePeer],
+    ];
+  }
+
+  constructor(params: { peer: TypePeer }) {
+    super();
+    this.peer = params.peer;
+  }
+}
+
+export class ChannelParticipantsRecent extends TypeChannelParticipantsFilter {
+  protected get [id]() {
+    return 0xde3f3c79;
+  }
+
+  protected get [params](): Params {
+    return [];
+  }
+
+  constructor() {
+    super();
+  }
+}
+
+export class ChannelParticipantsAdmins extends TypeChannelParticipantsFilter {
+  protected get [id]() {
+    return 0xb4608969;
+  }
+
+  protected get [params](): Params {
+    return [];
+  }
+
+  constructor() {
+    super();
+  }
+}
+
+export class ChannelParticipantsKicked extends TypeChannelParticipantsFilter {
+  q: string;
+
+  protected get [id]() {
+    return 0xa3b54985;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.q, "string"],
+    ];
+  }
+
+  constructor(params: { q: string }) {
+    super();
+    this.q = params.q;
+  }
+}
+
+export class ChannelParticipantsBots extends TypeChannelParticipantsFilter {
+  protected get [id]() {
+    return 0xb0d1865b;
+  }
+
+  protected get [params](): Params {
+    return [];
+  }
+
+  constructor() {
+    super();
+  }
+}
+
+export class ChannelParticipantsBanned extends TypeChannelParticipantsFilter {
+  q: string;
+
+  protected get [id]() {
+    return 0x1427a5e1;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.q, "string"],
+    ];
+  }
+
+  constructor(params: { q: string }) {
+    super();
+    this.q = params.q;
+  }
+}
+
+export class ChannelParticipantsSearch extends TypeChannelParticipantsFilter {
+  q: string;
+
+  protected get [id]() {
+    return 0x0656ac4b;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.q, "string"],
+    ];
+  }
+
+  constructor(params: { q: string }) {
+    super();
+    this.q = params.q;
+  }
+}
+
+export class ChannelParticipantsContacts extends TypeChannelParticipantsFilter {
+  q: string;
+
+  protected get [id]() {
+    return 0xbb6ae88d;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.q, "string"],
+    ];
+  }
+
+  constructor(params: { q: string }) {
+    super();
+    this.q = params.q;
+  }
+}
+
+export class ChannelParticipantsMentions extends TypeChannelParticipantsFilter {
+  q?: string;
+  top_msg_id?: number;
+
+  protected get [id]() {
+    return 0xe04b5ceb;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.q ?? null, "string"],
+      [this.top_msg_id ?? null, "number"],
+    ];
+  }
+
+  constructor(params: { q?: string; top_msg_id?: number }) {
+    super();
+    this.q = params.q;
+    this.top_msg_id = params.top_msg_id;
+  }
+}
+
+export class ChannelsChannelParticipantsNotModified
+  extends TypeChannelsChannelParticipants {
+  protected get [id]() {
+    return 0xf0173fe9;
+  }
+
+  protected get [params](): Params {
+    return [];
+  }
+
+  constructor() {
+    super();
+  }
+}
+
+export class MessagesSavedGifsNotModified extends TypeMessagesSavedGifs {
+  protected get [id]() {
+    return 0xe8025ca2;
+  }
+
+  protected get [params](): Params {
+    return [];
+  }
+
+  constructor() {
+    super();
+  }
+}
+
+export class InputBotInlineMessageMediaAuto extends TypeInputBotInlineMessage {
+  message: string;
+  entities?: Array<TypeMessageEntity>;
+  reply_markup?: TypeReplyMarkup;
+
+  protected get [id]() {
+    return 0x3380c786;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.message, "string"],
+      [this.entities ?? null, [TypeMessageEntity]],
+      [this.reply_markup ?? null, TypeReplyMarkup],
+    ];
+  }
+
+  constructor(
+    params: {
+      message: string;
+      entities?: Array<TypeMessageEntity>;
+      reply_markup?: TypeReplyMarkup;
+    },
   ) {
     super();
     this.message = params.message;
-    this.pts = params.pts;
-    this.pts_count = params.pts_count;
+    this.entities = params.entities;
+    this.reply_markup = params.reply_markup;
+  }
+}
+
+export class InputBotInlineMessageText extends TypeInputBotInlineMessage {
+  no_webpage?: true;
+  message: string;
+  entities?: Array<TypeMessageEntity>;
+  reply_markup?: TypeReplyMarkup;
+
+  protected get [id]() {
+    return 0x3dcd7a87;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.no_webpage ?? null, "true"],
+      [this.message, "string"],
+      [this.entities ?? null, [TypeMessageEntity]],
+      [this.reply_markup ?? null, TypeReplyMarkup],
+    ];
+  }
+
+  constructor(
+    params: {
+      no_webpage?: true;
+      message: string;
+      entities?: Array<TypeMessageEntity>;
+      reply_markup?: TypeReplyMarkup;
+    },
+  ) {
+    super();
+    this.no_webpage = params.no_webpage;
+    this.message = params.message;
+    this.entities = params.entities;
+    this.reply_markup = params.reply_markup;
   }
 }
 
@@ -7117,11 +12001,11 @@ export class InputBotInlineMessageMediaGeo extends TypeInputBotInlineMessage {
 
   protected get [params](): Params {
     return [
-      [this.geo_point, "InputGeoPoint"],
-      [this.heading ?? null, "flags.0?int"],
-      [this.period ?? null, "flags.1?int"],
-      [this.proximity_notification_radius ?? null, "flags.3?int"],
-      [this.reply_markup ?? null, "flags.2?ReplyMarkup"],
+      [this.geo_point, TypeInputGeoPoint],
+      [this.heading ?? null, "number"],
+      [this.period ?? null, "number"],
+      [this.proximity_notification_radius ?? null, "number"],
+      [this.reply_markup ?? null, TypeReplyMarkup],
     ];
   }
 
@@ -7158,13 +12042,13 @@ export class InputBotInlineMessageMediaVenue extends TypeInputBotInlineMessage {
 
   protected get [params](): Params {
     return [
-      [this.geo_point, "InputGeoPoint"],
+      [this.geo_point, TypeInputGeoPoint],
       [this.title, "string"],
       [this.address, "string"],
       [this.provider, "string"],
       [this.venue_id, "string"],
       [this.venue_type, "string"],
-      [this.reply_markup ?? null, "flags.2?ReplyMarkup"],
+      [this.reply_markup ?? null, TypeReplyMarkup],
     ];
   }
 
@@ -7208,7 +12092,7 @@ export class InputBotInlineMessageMediaContact
       [this.first_name, "string"],
       [this.last_name, "string"],
       [this.vcard, "string"],
-      [this.reply_markup ?? null, "flags.2?ReplyMarkup"],
+      [this.reply_markup ?? null, TypeReplyMarkup],
     ];
   }
 
@@ -7230,6 +12114,252 @@ export class InputBotInlineMessageMediaContact
   }
 }
 
+export class InputBotInlineMessageGame extends TypeInputBotInlineMessage {
+  reply_markup?: TypeReplyMarkup;
+
+  protected get [id]() {
+    return 0x4b425864;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.reply_markup ?? null, TypeReplyMarkup],
+    ];
+  }
+
+  constructor(params: { reply_markup?: TypeReplyMarkup }) {
+    super();
+    this.reply_markup = params.reply_markup;
+  }
+}
+
+export class InputBotInlineMessageMediaInvoice
+  extends TypeInputBotInlineMessage {
+  title: string;
+  description: string;
+  photo?: TypeInputWebDocument;
+  invoice: TypeInvoice;
+  payload: Uint8Array;
+  provider: string;
+  provider_data: TypeDataJSON;
+  reply_markup?: TypeReplyMarkup;
+
+  protected get [id]() {
+    return 0xd7e78225;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.title, "string"],
+      [this.description, "string"],
+      [this.photo ?? null, TypeInputWebDocument],
+      [this.invoice, TypeInvoice],
+      [this.payload, Uint8Array],
+      [this.provider, "string"],
+      [this.provider_data, TypeDataJSON],
+      [this.reply_markup ?? null, TypeReplyMarkup],
+    ];
+  }
+
+  constructor(
+    params: {
+      title: string;
+      description: string;
+      photo?: TypeInputWebDocument;
+      invoice: TypeInvoice;
+      payload: Uint8Array;
+      provider: string;
+      provider_data: TypeDataJSON;
+      reply_markup?: TypeReplyMarkup;
+    },
+  ) {
+    super();
+    this.title = params.title;
+    this.description = params.description;
+    this.photo = params.photo;
+    this.invoice = params.invoice;
+    this.payload = params.payload;
+    this.provider = params.provider;
+    this.provider_data = params.provider_data;
+    this.reply_markup = params.reply_markup;
+  }
+}
+
+export class InputBotInlineResultPhoto extends TypeInputBotInlineResult {
+  id: string;
+  type: string;
+  photo: TypeInputPhoto;
+  send_message: TypeInputBotInlineMessage;
+
+  protected get [id]() {
+    return 0xa8d864a7;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.id, "string"],
+      [this.type, "string"],
+      [this.photo, TypeInputPhoto],
+      [this.send_message, TypeInputBotInlineMessage],
+    ];
+  }
+
+  constructor(
+    params: {
+      id: string;
+      type: string;
+      photo: TypeInputPhoto;
+      send_message: TypeInputBotInlineMessage;
+    },
+  ) {
+    super();
+    this.id = params.id;
+    this.type = params.type;
+    this.photo = params.photo;
+    this.send_message = params.send_message;
+  }
+}
+
+export class InputBotInlineResultDocument extends TypeInputBotInlineResult {
+  id: string;
+  type: string;
+  title?: string;
+  description?: string;
+  document: TypeInputDocument;
+  send_message: TypeInputBotInlineMessage;
+
+  protected get [id]() {
+    return 0xfff8fdc4;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.id, "string"],
+      [this.type, "string"],
+      [this.title ?? null, "string"],
+      [this.description ?? null, "string"],
+      [this.document, TypeInputDocument],
+      [this.send_message, TypeInputBotInlineMessage],
+    ];
+  }
+
+  constructor(
+    params: {
+      id: string;
+      type: string;
+      title?: string;
+      description?: string;
+      document: TypeInputDocument;
+      send_message: TypeInputBotInlineMessage;
+    },
+  ) {
+    super();
+    this.id = params.id;
+    this.type = params.type;
+    this.title = params.title;
+    this.description = params.description;
+    this.document = params.document;
+    this.send_message = params.send_message;
+  }
+}
+
+export class InputBotInlineResultGame extends TypeInputBotInlineResult {
+  id: string;
+  short_name: string;
+  send_message: TypeInputBotInlineMessage;
+
+  protected get [id]() {
+    return 0x4fa417f2;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.id, "string"],
+      [this.short_name, "string"],
+      [this.send_message, TypeInputBotInlineMessage],
+    ];
+  }
+
+  constructor(
+    params: {
+      id: string;
+      short_name: string;
+      send_message: TypeInputBotInlineMessage;
+    },
+  ) {
+    super();
+    this.id = params.id;
+    this.short_name = params.short_name;
+    this.send_message = params.send_message;
+  }
+}
+
+export class BotInlineMessageMediaAuto extends TypeBotInlineMessage {
+  message: string;
+  entities?: Array<TypeMessageEntity>;
+  reply_markup?: TypeReplyMarkup;
+
+  protected get [id]() {
+    return 0x764cf810;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.message, "string"],
+      [this.entities ?? null, [TypeMessageEntity]],
+      [this.reply_markup ?? null, TypeReplyMarkup],
+    ];
+  }
+
+  constructor(
+    params: {
+      message: string;
+      entities?: Array<TypeMessageEntity>;
+      reply_markup?: TypeReplyMarkup;
+    },
+  ) {
+    super();
+    this.message = params.message;
+    this.entities = params.entities;
+    this.reply_markup = params.reply_markup;
+  }
+}
+
+export class BotInlineMessageText extends TypeBotInlineMessage {
+  no_webpage?: true;
+  message: string;
+  entities?: Array<TypeMessageEntity>;
+  reply_markup?: TypeReplyMarkup;
+
+  protected get [id]() {
+    return 0x8c7f65e2;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.no_webpage ?? null, "true"],
+      [this.message, "string"],
+      [this.entities ?? null, [TypeMessageEntity]],
+      [this.reply_markup ?? null, TypeReplyMarkup],
+    ];
+  }
+
+  constructor(
+    params: {
+      no_webpage?: true;
+      message: string;
+      entities?: Array<TypeMessageEntity>;
+      reply_markup?: TypeReplyMarkup;
+    },
+  ) {
+    super();
+    this.no_webpage = params.no_webpage;
+    this.message = params.message;
+    this.entities = params.entities;
+    this.reply_markup = params.reply_markup;
+  }
+}
+
 export class BotInlineMessageMediaGeo extends TypeBotInlineMessage {
   geo: TypeGeoPoint;
   heading?: number;
@@ -7243,11 +12373,11 @@ export class BotInlineMessageMediaGeo extends TypeBotInlineMessage {
 
   protected get [params](): Params {
     return [
-      [this.geo, "GeoPoint"],
-      [this.heading ?? null, "flags.0?int"],
-      [this.period ?? null, "flags.1?int"],
-      [this.proximity_notification_radius ?? null, "flags.3?int"],
-      [this.reply_markup ?? null, "flags.2?ReplyMarkup"],
+      [this.geo, TypeGeoPoint],
+      [this.heading ?? null, "number"],
+      [this.period ?? null, "number"],
+      [this.proximity_notification_radius ?? null, "number"],
+      [this.reply_markup ?? null, TypeReplyMarkup],
     ];
   }
 
@@ -7284,13 +12414,13 @@ export class BotInlineMessageMediaVenue extends TypeBotInlineMessage {
 
   protected get [params](): Params {
     return [
-      [this.geo, "GeoPoint"],
+      [this.geo, TypeGeoPoint],
       [this.title, "string"],
       [this.address, "string"],
       [this.provider, "string"],
       [this.venue_id, "string"],
       [this.venue_type, "string"],
-      [this.reply_markup ?? null, "flags.2?ReplyMarkup"],
+      [this.reply_markup ?? null, TypeReplyMarkup],
     ];
   }
 
@@ -7333,7 +12463,7 @@ export class BotInlineMessageMediaContact extends TypeBotInlineMessage {
       [this.first_name, "string"],
       [this.last_name, "string"],
       [this.vcard, "string"],
-      [this.reply_markup ?? null, "flags.2?ReplyMarkup"],
+      [this.reply_markup ?? null, TypeReplyMarkup],
     ];
   }
 
@@ -7355,81 +12485,54 @@ export class BotInlineMessageMediaContact extends TypeBotInlineMessage {
   }
 }
 
-export class InputBotInlineResultPhoto extends TypeInputBotInlineResult {
-  id: string;
-  type: string;
-  photo: TypeInputPhoto;
-  send_message: TypeInputBotInlineMessage;
+export class BotInlineMessageMediaInvoice extends TypeBotInlineMessage {
+  shipping_address_requested?: true;
+  test?: true;
+  title: string;
+  description: string;
+  photo?: TypeWebDocument;
+  currency: string;
+  total_amount: bigint;
+  reply_markup?: TypeReplyMarkup;
 
   protected get [id]() {
-    return 0xa8d864a7;
+    return 0x354a9b09;
   }
 
   protected get [params](): Params {
     return [
-      [this.id, "string"],
-      [this.type, "string"],
-      [this.photo, "InputPhoto"],
-      [this.send_message, "InputBotInlineMessage"],
+      [this.shipping_address_requested ?? null, "true"],
+      [this.test ?? null, "true"],
+      [this.title, "string"],
+      [this.description, "string"],
+      [this.photo ?? null, TypeWebDocument],
+      [this.currency, "string"],
+      [this.total_amount, "bigint"],
+      [this.reply_markup ?? null, TypeReplyMarkup],
     ];
   }
 
   constructor(
     params: {
-      id: string;
-      type: string;
-      photo: TypeInputPhoto;
-      send_message: TypeInputBotInlineMessage;
+      shipping_address_requested?: true;
+      test?: true;
+      title: string;
+      description: string;
+      photo?: TypeWebDocument;
+      currency: string;
+      total_amount: bigint;
+      reply_markup?: TypeReplyMarkup;
     },
   ) {
     super();
-    this.id = params.id;
-    this.type = params.type;
-    this.photo = params.photo;
-    this.send_message = params.send_message;
-  }
-}
-
-export class InputBotInlineResultDocument extends TypeInputBotInlineResult {
-  id: string;
-  type: string;
-  title?: string;
-  description?: string;
-  document: TypeInputDocument;
-  send_message: TypeInputBotInlineMessage;
-
-  protected get [id]() {
-    return 0xfff8fdc4;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.id, "string"],
-      [this.type, "string"],
-      [this.title ?? null, "flags.1?string"],
-      [this.description ?? null, "flags.2?string"],
-      [this.document, "InputDocument"],
-      [this.send_message, "InputBotInlineMessage"],
-    ];
-  }
-
-  constructor(
-    params: {
-      id: string;
-      type: string;
-      title?: string;
-      description?: string;
-      document: TypeInputDocument;
-      send_message: TypeInputBotInlineMessage;
-    },
-  ) {
-    super();
-    this.id = params.id;
-    this.type = params.type;
+    this.shipping_address_requested = params.shipping_address_requested;
+    this.test = params.test;
     this.title = params.title;
     this.description = params.description;
-    this.document = params.document;
-    this.send_message = params.send_message;
+    this.photo = params.photo;
+    this.currency = params.currency;
+    this.total_amount = params.total_amount;
+    this.reply_markup = params.reply_markup;
   }
 }
 
@@ -7450,11 +12553,11 @@ export class BotInlineMediaResult extends TypeBotInlineResult {
     return [
       [this.id, "string"],
       [this.type, "string"],
-      [this.photo ?? null, "flags.0?Photo"],
-      [this.document ?? null, "flags.1?Document"],
-      [this.title ?? null, "flags.2?string"],
-      [this.description ?? null, "flags.3?string"],
-      [this.send_message, "BotInlineMessage"],
+      [this.photo ?? null, TypePhoto],
+      [this.document ?? null, TypeDocument],
+      [this.title ?? null, "string"],
+      [this.description ?? null, "string"],
+      [this.send_message, TypeBotInlineMessage],
     ];
   }
 
@@ -7480,46 +12583,326 @@ export class BotInlineMediaResult extends TypeBotInlineResult {
   }
 }
 
-export class UpdateInlineBotCallbackQuery extends TypeUpdate {
-  query_id: bigint;
-  user_id: bigint;
-  msg_id: TypeInputBotInlineMessageID;
-  chat_instance: bigint;
-  data?: Uint8Array;
-  game_short_name?: string;
+export class AuthCodeTypeSms extends TypeAuthCodeType {
+  protected get [id]() {
+    return 0x72a3158c;
+  }
+
+  protected get [params](): Params {
+    return [];
+  }
+
+  constructor() {
+    super();
+  }
+}
+
+export class AuthCodeTypeCall extends TypeAuthCodeType {
+  protected get [id]() {
+    return 0x741cd3e3;
+  }
+
+  protected get [params](): Params {
+    return [];
+  }
+
+  constructor() {
+    super();
+  }
+}
+
+export class AuthCodeTypeFlashCall extends TypeAuthCodeType {
+  protected get [id]() {
+    return 0x226ccefb;
+  }
+
+  protected get [params](): Params {
+    return [];
+  }
+
+  constructor() {
+    super();
+  }
+}
+
+export class AuthCodeTypeMissedCall extends TypeAuthCodeType {
+  protected get [id]() {
+    return 0xd61ad6ee;
+  }
+
+  protected get [params](): Params {
+    return [];
+  }
+
+  constructor() {
+    super();
+  }
+}
+
+export class AuthCodeTypeFragmentSms extends TypeAuthCodeType {
+  protected get [id]() {
+    return 0x06ed998c;
+  }
+
+  protected get [params](): Params {
+    return [];
+  }
+
+  constructor() {
+    super();
+  }
+}
+
+export class AuthSentCodeTypeApp extends TypeAuthSentCodeType {
+  length: number;
 
   protected get [id]() {
-    return 0x691e9052;
+    return 0x3dbb5986;
   }
 
   protected get [params](): Params {
     return [
-      [this.query_id, "long"],
-      [this.user_id, "long"],
-      [this.msg_id, "InputBotInlineMessageID"],
-      [this.chat_instance, "long"],
-      [this.data ?? null, "flags.0?bytes"],
-      [this.game_short_name ?? null, "flags.1?string"],
+      [this.length, "number"],
+    ];
+  }
+
+  constructor(params: { length: number }) {
+    super();
+    this.length = params.length;
+  }
+}
+
+export class AuthSentCodeTypeSms extends TypeAuthSentCodeType {
+  length: number;
+
+  protected get [id]() {
+    return 0xc000bba2;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.length, "number"],
+    ];
+  }
+
+  constructor(params: { length: number }) {
+    super();
+    this.length = params.length;
+  }
+}
+
+export class AuthSentCodeTypeCall extends TypeAuthSentCodeType {
+  length: number;
+
+  protected get [id]() {
+    return 0x5353e5a7;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.length, "number"],
+    ];
+  }
+
+  constructor(params: { length: number }) {
+    super();
+    this.length = params.length;
+  }
+}
+
+export class AuthSentCodeTypeFlashCall extends TypeAuthSentCodeType {
+  pattern: string;
+
+  protected get [id]() {
+    return 0xab03c6d9;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.pattern, "string"],
+    ];
+  }
+
+  constructor(params: { pattern: string }) {
+    super();
+    this.pattern = params.pattern;
+  }
+}
+
+export class AuthSentCodeTypeMissedCall extends TypeAuthSentCodeType {
+  prefix: string;
+  length: number;
+
+  protected get [id]() {
+    return 0x82006484;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.prefix, "string"],
+      [this.length, "number"],
+    ];
+  }
+
+  constructor(params: { prefix: string; length: number }) {
+    super();
+    this.prefix = params.prefix;
+    this.length = params.length;
+  }
+}
+
+export class AuthSentCodeTypeEmailCode extends TypeAuthSentCodeType {
+  apple_signin_allowed?: true;
+  google_signin_allowed?: true;
+  email_pattern: string;
+  length: number;
+  next_phone_login_date?: number;
+
+  protected get [id]() {
+    return 0x5a159841;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.apple_signin_allowed ?? null, "true"],
+      [this.google_signin_allowed ?? null, "true"],
+      [this.email_pattern, "string"],
+      [this.length, "number"],
+      [this.next_phone_login_date ?? null, "number"],
     ];
   }
 
   constructor(
     params: {
-      query_id: bigint;
-      user_id: bigint;
-      msg_id: TypeInputBotInlineMessageID;
-      chat_instance: bigint;
-      data?: Uint8Array;
-      game_short_name?: string;
+      apple_signin_allowed?: true;
+      google_signin_allowed?: true;
+      email_pattern: string;
+      length: number;
+      next_phone_login_date?: number;
     },
   ) {
     super();
-    this.query_id = params.query_id;
-    this.user_id = params.user_id;
-    this.msg_id = params.msg_id;
-    this.chat_instance = params.chat_instance;
-    this.data = params.data;
-    this.game_short_name = params.game_short_name;
+    this.apple_signin_allowed = params.apple_signin_allowed;
+    this.google_signin_allowed = params.google_signin_allowed;
+    this.email_pattern = params.email_pattern;
+    this.length = params.length;
+    this.next_phone_login_date = params.next_phone_login_date;
+  }
+}
+
+export class AuthSentCodeTypeSetUpEmailRequired extends TypeAuthSentCodeType {
+  apple_signin_allowed?: true;
+  google_signin_allowed?: true;
+
+  protected get [id]() {
+    return 0xa5491dea;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.apple_signin_allowed ?? null, "true"],
+      [this.google_signin_allowed ?? null, "true"],
+    ];
+  }
+
+  constructor(
+    params: { apple_signin_allowed?: true; google_signin_allowed?: true },
+  ) {
+    super();
+    this.apple_signin_allowed = params.apple_signin_allowed;
+    this.google_signin_allowed = params.google_signin_allowed;
+  }
+}
+
+export class AuthSentCodeTypeFragmentSms extends TypeAuthSentCodeType {
+  url: string;
+  length: number;
+
+  protected get [id]() {
+    return 0xd9565c39;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.url, "string"],
+      [this.length, "number"],
+    ];
+  }
+
+  constructor(params: { url: string; length: number }) {
+    super();
+    this.url = params.url;
+    this.length = params.length;
+  }
+}
+
+export class AuthSentCodeTypeFirebaseSms extends TypeAuthSentCodeType {
+  nonce?: Uint8Array;
+  receipt?: string;
+  push_timeout?: number;
+  length: number;
+
+  protected get [id]() {
+    return 0xe57b1432;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.nonce ?? null, Uint8Array],
+      [this.receipt ?? null, "string"],
+      [this.push_timeout ?? null, "number"],
+      [this.length, "number"],
+    ];
+  }
+
+  constructor(
+    params: {
+      nonce?: Uint8Array;
+      receipt?: string;
+      push_timeout?: number;
+      length: number;
+    },
+  ) {
+    super();
+    this.nonce = params.nonce;
+    this.receipt = params.receipt;
+    this.push_timeout = params.push_timeout;
+    this.length = params.length;
+  }
+}
+
+export class InputBotInlineMessageID64 extends TypeInputBotInlineMessageID {
+  dc_id: number;
+  owner_id: bigint;
+  id: number;
+  access_hash: bigint;
+
+  protected get [id]() {
+    return 0xb6d915d7;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.dc_id, "number"],
+      [this.owner_id, "bigint"],
+      [this.id, "number"],
+      [this.access_hash, "bigint"],
+    ];
+  }
+
+  constructor(
+    params: {
+      dc_id: number;
+      owner_id: bigint;
+      id: number;
+      access_hash: bigint;
+    },
+  ) {
+    super();
+    this.dc_id = params.dc_id;
+    this.owner_id = params.owner_id;
+    this.id = params.id;
+    this.access_hash = params.access_hash;
   }
 }
 
@@ -7593,6 +12976,48 @@ export class TopPeerCategoryChannels extends TypeTopPeerCategory {
   }
 }
 
+export class TopPeerCategoryPhoneCalls extends TypeTopPeerCategory {
+  protected get [id]() {
+    return 0x1e76a78c;
+  }
+
+  protected get [params](): Params {
+    return [];
+  }
+
+  constructor() {
+    super();
+  }
+}
+
+export class TopPeerCategoryForwardUsers extends TypeTopPeerCategory {
+  protected get [id]() {
+    return 0xa8406ca9;
+  }
+
+  protected get [params](): Params {
+    return [];
+  }
+
+  constructor() {
+    super();
+  }
+}
+
+export class TopPeerCategoryForwardChats extends TypeTopPeerCategory {
+  protected get [id]() {
+    return 0xfbeec0f0;
+  }
+
+  protected get [params](): Params {
+    return [];
+  }
+
+  constructor() {
+    super();
+  }
+}
+
 export class ContactsTopPeersNotModified extends TypeContactsTopPeers {
   protected get [id]() {
     return 0xde266ef5;
@@ -7607,61 +13032,9 @@ export class ContactsTopPeersNotModified extends TypeContactsTopPeers {
   }
 }
 
-export class MessageEntityMentionName extends TypeMessageEntity {
-  offset: number;
-  length: number;
-  user_id: bigint;
-
+export class ContactsTopPeersDisabled extends TypeContactsTopPeers {
   protected get [id]() {
-    return 0xdc7b1140;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.offset, "int"],
-      [this.length, "int"],
-      [this.user_id, "long"],
-    ];
-  }
-
-  constructor(params: { offset: number; length: number; user_id: bigint }) {
-    super();
-    this.offset = params.offset;
-    this.length = params.length;
-    this.user_id = params.user_id;
-  }
-}
-
-export class InputMessageEntityMentionName extends TypeMessageEntity {
-  offset: number;
-  length: number;
-  user_id: TypeInputUser;
-
-  protected get [id]() {
-    return 0x208e68c9;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.offset, "int"],
-      [this.length, "int"],
-      [this.user_id, "InputUser"],
-    ];
-  }
-
-  constructor(
-    params: { offset: number; length: number; user_id: TypeInputUser },
-  ) {
-    super();
-    this.offset = params.offset;
-    this.length = params.length;
-    this.user_id = params.user_id;
-  }
-}
-
-export class InputMessagesFilterChatPhotos extends TypeMessagesFilter {
-  protected get [id]() {
-    return 0x3a20ecb8;
+    return 0xb52c939d;
   }
 
   protected get [params](): Params {
@@ -7670,50 +13043,6 @@ export class InputMessagesFilterChatPhotos extends TypeMessagesFilter {
 
   constructor() {
     super();
-  }
-}
-
-export class UpdateReadChannelOutbox extends TypeUpdate {
-  channel_id: bigint;
-  max_id: number;
-
-  protected get [id]() {
-    return 0xb75f99a9;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.channel_id, "long"],
-      [this.max_id, "int"],
-    ];
-  }
-
-  constructor(params: { channel_id: bigint; max_id: number }) {
-    super();
-    this.channel_id = params.channel_id;
-    this.max_id = params.max_id;
-  }
-}
-
-export class UpdateDraftMessage extends TypeUpdate {
-  peer: TypePeer;
-  draft: TypeDraftMessage;
-
-  protected get [id]() {
-    return 0xee2bb969;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.peer, "Peer"],
-      [this.draft, "DraftMessage"],
-    ];
-  }
-
-  constructor(params: { peer: TypePeer; draft: TypeDraftMessage }) {
-    super();
-    this.peer = params.peer;
-    this.draft = params.draft;
   }
 }
 
@@ -7726,27 +13055,13 @@ export class DraftMessageEmpty extends TypeDraftMessage {
 
   protected get [params](): Params {
     return [
-      [this.date ?? null, "flags.0?int"],
+      [this.date ?? null, "number"],
     ];
   }
 
   constructor(params: { date?: number }) {
     super();
     this.date = params.date;
-  }
-}
-
-export class MessageActionHistoryClear extends TypeMessageAction {
-  protected get [id]() {
-    return 0x9fbab604;
-  }
-
-  protected get [params](): Params {
-    return [];
-  }
-
-  constructor() {
-    super();
   }
 }
 
@@ -7760,7 +13075,7 @@ export class MessagesFeaturedStickersNotModified
 
   protected get [params](): Params {
     return [
-      [this.count, "int"],
+      [this.count, "number"],
     ];
   }
 
@@ -7770,38 +13085,10 @@ export class MessagesFeaturedStickersNotModified
   }
 }
 
-export class UpdateReadFeaturedStickers extends TypeUpdate {
-  protected get [id]() {
-    return 0x571d2742;
-  }
-
-  protected get [params](): Params {
-    return [];
-  }
-
-  constructor() {
-    super();
-  }
-}
-
 export class MessagesRecentStickersNotModified
   extends TypeMessagesRecentStickers {
   protected get [id]() {
     return 0x0b17f890;
-  }
-
-  protected get [params](): Params {
-    return [];
-  }
-
-  constructor() {
-    super();
-  }
-}
-
-export class UpdateRecentStickers extends TypeUpdate {
-  protected get [id]() {
-    return 0x9a422c20;
   }
 
   protected get [params](): Params {
@@ -7838,85 +13125,13 @@ export class MessagesStickerSetInstallResultArchive
 
   protected get [params](): Params {
     return [
-      [this.sets, "Vector<StickerSetCovered>"],
+      [this.sets, [TypeStickerSetCovered]],
     ];
   }
 
   constructor(params: { sets: Array<TypeStickerSetCovered> }) {
     super();
     this.sets = params.sets;
-  }
-}
-
-export class UpdateConfig extends TypeUpdate {
-  protected get [id]() {
-    return 0xa229dd06;
-  }
-
-  protected get [params](): Params {
-    return [];
-  }
-
-  constructor() {
-    super();
-  }
-}
-
-export class UpdatePtsChanged extends TypeUpdate {
-  protected get [id]() {
-    return 0x3354678f;
-  }
-
-  protected get [params](): Params {
-    return [];
-  }
-
-  constructor() {
-    super();
-  }
-}
-
-export class InputMediaPhotoExternal extends TypeInputMedia {
-  url: string;
-  ttl_seconds?: number;
-
-  protected get [id]() {
-    return 0xe5bbfe1a;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.url, "string"],
-      [this.ttl_seconds ?? null, "flags.0?int"],
-    ];
-  }
-
-  constructor(params: { url: string; ttl_seconds?: number }) {
-    super();
-    this.url = params.url;
-    this.ttl_seconds = params.ttl_seconds;
-  }
-}
-
-export class InputMediaDocumentExternal extends TypeInputMedia {
-  url: string;
-  ttl_seconds?: number;
-
-  protected get [id]() {
-    return 0xfb52dc99;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.url, "string"],
-      [this.ttl_seconds ?? null, "flags.0?int"],
-    ];
-  }
-
-  constructor(params: { url: string; ttl_seconds?: number }) {
-    super();
-    this.url = params.url;
-    this.ttl_seconds = params.ttl_seconds;
   }
 }
 
@@ -7930,8 +13145,8 @@ export class StickerSetMultiCovered extends TypeStickerSetCovered {
 
   protected get [params](): Params {
     return [
-      [this.set, "StickerSet"],
-      [this.covers, "Vector<Document>"],
+      [this.set, TypeStickerSet],
+      [this.covers, [TypeDocument]],
     ];
   }
 
@@ -7942,17 +13157,57 @@ export class StickerSetMultiCovered extends TypeStickerSetCovered {
   }
 }
 
-export class DocumentAttributeHasStickers extends TypeDocumentAttribute {
+export class StickerSetFullCovered extends TypeStickerSetCovered {
+  set: TypeStickerSet;
+  packs: Array<TypeStickerPack>;
+  keywords: Array<TypeStickerKeyword>;
+  documents: Array<TypeDocument>;
+
   protected get [id]() {
-    return 0x9801d2f7;
+    return 0x40d13c0e;
   }
 
   protected get [params](): Params {
-    return [];
+    return [
+      [this.set, TypeStickerSet],
+      [this.packs, [TypeStickerPack]],
+      [this.keywords, [TypeStickerKeyword]],
+      [this.documents, [TypeDocument]],
+    ];
   }
 
-  constructor() {
+  constructor(
+    params: {
+      set: TypeStickerSet;
+      packs: Array<TypeStickerPack>;
+      keywords: Array<TypeStickerKeyword>;
+      documents: Array<TypeDocument>;
+    },
+  ) {
     super();
+    this.set = params.set;
+    this.packs = params.packs;
+    this.keywords = params.keywords;
+    this.documents = params.documents;
+  }
+}
+
+export class StickerSetNoCovered extends TypeStickerSetCovered {
+  set: TypeStickerSet;
+
+  protected get [id]() {
+    return 0x77b15d1c;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.set, TypeStickerSet],
+    ];
+  }
+
+  constructor(params: { set: TypeStickerSet }) {
+    super();
+    this.set = params.set;
   }
 }
 
@@ -7965,7 +13220,7 @@ export class InputStickeredMediaPhoto extends TypeInputStickeredMedia {
 
   protected get [params](): Params {
     return [
-      [this.id, "InputPhoto"],
+      [this.id, TypeInputPhoto],
     ];
   }
 
@@ -7984,99 +13239,11 @@ export class InputStickeredMediaDocument extends TypeInputStickeredMedia {
 
   protected get [params](): Params {
     return [
-      [this.id, "InputDocument"],
+      [this.id, TypeInputDocument],
     ];
   }
 
   constructor(params: { id: TypeInputDocument }) {
-    super();
-    this.id = params.id;
-  }
-}
-
-export class InputBotInlineResultGame extends TypeInputBotInlineResult {
-  id: string;
-  short_name: string;
-  send_message: TypeInputBotInlineMessage;
-
-  protected get [id]() {
-    return 0x4fa417f2;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.id, "string"],
-      [this.short_name, "string"],
-      [this.send_message, "InputBotInlineMessage"],
-    ];
-  }
-
-  constructor(
-    params: {
-      id: string;
-      short_name: string;
-      send_message: TypeInputBotInlineMessage;
-    },
-  ) {
-    super();
-    this.id = params.id;
-    this.short_name = params.short_name;
-    this.send_message = params.send_message;
-  }
-}
-
-export class InputBotInlineMessageGame extends TypeInputBotInlineMessage {
-  reply_markup?: TypeReplyMarkup;
-
-  protected get [id]() {
-    return 0x4b425864;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.reply_markup ?? null, "flags.2?ReplyMarkup"],
-    ];
-  }
-
-  constructor(params: { reply_markup?: TypeReplyMarkup }) {
-    super();
-    this.reply_markup = params.reply_markup;
-  }
-}
-
-export class MessageMediaGame extends TypeMessageMedia {
-  game: TypeGame;
-
-  protected get [id]() {
-    return 0xfdb19008;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.game, "Game"],
-    ];
-  }
-
-  constructor(params: { game: TypeGame }) {
-    super();
-    this.game = params.game;
-  }
-}
-
-export class InputMediaGame extends TypeInputMedia {
-  id: TypeInputGame;
-
-  protected get [id]() {
-    return 0xd33f43f3;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.id, "InputGame"],
-    ];
-  }
-
-  constructor(params: { id: TypeInputGame }) {
     super();
     this.id = params.id;
   }
@@ -8092,8 +13259,8 @@ export class InputGameID extends TypeInputGame {
 
   protected get [params](): Params {
     return [
-      [this.id, "long"],
-      [this.access_hash, "long"],
+      [this.id, "bigint"],
+      [this.access_hash, "bigint"],
     ];
   }
 
@@ -8114,7 +13281,7 @@ export class InputGameShortName extends TypeInputGame {
 
   protected get [params](): Params {
     return [
-      [this.bot_id, "InputUser"],
+      [this.bot_id, TypeInputUser],
       [this.short_name, "string"],
     ];
   }
@@ -8123,123 +13290,6 @@ export class InputGameShortName extends TypeInputGame {
     super();
     this.bot_id = params.bot_id;
     this.short_name = params.short_name;
-  }
-}
-
-export class KeyboardButtonGame extends TypeKeyboardButton {
-  text: string;
-
-  protected get [id]() {
-    return 0x50f41ccf;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.text, "string"],
-    ];
-  }
-
-  constructor(params: { text: string }) {
-    super();
-    this.text = params.text;
-  }
-}
-
-export class MessageActionGameScore extends TypeMessageAction {
-  game_id: bigint;
-  score: number;
-
-  protected get [id]() {
-    return 0x92a72876;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.game_id, "long"],
-      [this.score, "int"],
-    ];
-  }
-
-  constructor(params: { game_id: bigint; score: number }) {
-    super();
-    this.game_id = params.game_id;
-    this.score = params.score;
-  }
-}
-
-export class UpdatesDifferenceTooLong extends TypeUpdatesDifference {
-  pts: number;
-
-  protected get [id]() {
-    return 0x4afe8f6d;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.pts, "int"],
-    ];
-  }
-
-  constructor(params: { pts: number }) {
-    super();
-    this.pts = params.pts;
-  }
-}
-
-export class UpdateChannelWebPage extends TypeUpdate {
-  channel_id: bigint;
-  webpage: TypeWebPage;
-  pts: number;
-  pts_count: number;
-
-  protected get [id]() {
-    return 0x2f2ba99f;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.channel_id, "long"],
-      [this.webpage, "WebPage"],
-      [this.pts, "int"],
-      [this.pts_count, "int"],
-    ];
-  }
-
-  constructor(
-    params: {
-      channel_id: bigint;
-      webpage: TypeWebPage;
-      pts: number;
-      pts_count: number;
-    },
-  ) {
-    super();
-    this.channel_id = params.channel_id;
-    this.webpage = params.webpage;
-    this.pts = params.pts;
-    this.pts_count = params.pts_count;
-  }
-}
-
-export class MessagesChatsSlice extends TypeMessagesChats {
-  count: number;
-  chats: Array<TypeChat>;
-
-  protected get [id]() {
-    return 0x9cd81144;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.count, "int"],
-      [this.chats, "Vector<Chat>"],
-    ];
-  }
-
-  constructor(params: { count: number; chats: Array<TypeChat> }) {
-    super();
-    this.count = params.count;
-    this.chats = params.chats;
   }
 }
 
@@ -8285,7 +13335,7 @@ export class TextBold extends TypeRichText {
 
   protected get [params](): Params {
     return [
-      [this.text, "RichText"],
+      [this.text, TypeRichText],
     ];
   }
 
@@ -8304,7 +13354,7 @@ export class TextItalic extends TypeRichText {
 
   protected get [params](): Params {
     return [
-      [this.text, "RichText"],
+      [this.text, TypeRichText],
     ];
   }
 
@@ -8323,7 +13373,7 @@ export class TextUnderline extends TypeRichText {
 
   protected get [params](): Params {
     return [
-      [this.text, "RichText"],
+      [this.text, TypeRichText],
     ];
   }
 
@@ -8342,7 +13392,7 @@ export class TextStrike extends TypeRichText {
 
   protected get [params](): Params {
     return [
-      [this.text, "RichText"],
+      [this.text, TypeRichText],
     ];
   }
 
@@ -8361,7 +13411,7 @@ export class TextFixed extends TypeRichText {
 
   protected get [params](): Params {
     return [
-      [this.text, "RichText"],
+      [this.text, TypeRichText],
     ];
   }
 
@@ -8382,9 +13432,9 @@ export class TextUrl extends TypeRichText {
 
   protected get [params](): Params {
     return [
-      [this.text, "RichText"],
+      [this.text, TypeRichText],
       [this.url, "string"],
-      [this.webpage_id, "long"],
+      [this.webpage_id, "bigint"],
     ];
   }
 
@@ -8406,7 +13456,7 @@ export class TextEmail extends TypeRichText {
 
   protected get [params](): Params {
     return [
-      [this.text, "RichText"],
+      [this.text, TypeRichText],
       [this.email, "string"],
     ];
   }
@@ -8427,13 +13477,139 @@ export class TextConcat extends TypeRichText {
 
   protected get [params](): Params {
     return [
-      [this.texts, "Vector<RichText>"],
+      [this.texts, [TypeRichText]],
     ];
   }
 
   constructor(params: { texts: Array<TypeRichText> }) {
     super();
     this.texts = params.texts;
+  }
+}
+
+export class TextSubscript extends TypeRichText {
+  text: TypeRichText;
+
+  protected get [id]() {
+    return 0xed6a8504;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.text, TypeRichText],
+    ];
+  }
+
+  constructor(params: { text: TypeRichText }) {
+    super();
+    this.text = params.text;
+  }
+}
+
+export class TextSuperscript extends TypeRichText {
+  text: TypeRichText;
+
+  protected get [id]() {
+    return 0xc7fb5e01;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.text, TypeRichText],
+    ];
+  }
+
+  constructor(params: { text: TypeRichText }) {
+    super();
+    this.text = params.text;
+  }
+}
+
+export class TextMarked extends TypeRichText {
+  text: TypeRichText;
+
+  protected get [id]() {
+    return 0x034b8621;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.text, TypeRichText],
+    ];
+  }
+
+  constructor(params: { text: TypeRichText }) {
+    super();
+    this.text = params.text;
+  }
+}
+
+export class TextPhone extends TypeRichText {
+  text: TypeRichText;
+  phone: string;
+
+  protected get [id]() {
+    return 0x1ccb966a;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.text, TypeRichText],
+      [this.phone, "string"],
+    ];
+  }
+
+  constructor(params: { text: TypeRichText; phone: string }) {
+    super();
+    this.text = params.text;
+    this.phone = params.phone;
+  }
+}
+
+export class TextImage extends TypeRichText {
+  document_id: bigint;
+  w: number;
+  h: number;
+
+  protected get [id]() {
+    return 0x081ccf4f;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.document_id, "bigint"],
+      [this.w, "number"],
+      [this.h, "number"],
+    ];
+  }
+
+  constructor(params: { document_id: bigint; w: number; h: number }) {
+    super();
+    this.document_id = params.document_id;
+    this.w = params.w;
+    this.h = params.h;
+  }
+}
+
+export class TextAnchor extends TypeRichText {
+  text: TypeRichText;
+  name: string;
+
+  protected get [id]() {
+    return 0x35553762;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.text, TypeRichText],
+      [this.name, "string"],
+    ];
+  }
+
+  constructor(params: { text: TypeRichText; name: string }) {
+    super();
+    this.text = params.text;
+    this.name = params.name;
   }
 }
 
@@ -8460,7 +13636,7 @@ export class PageBlockTitle extends TypePageBlock {
 
   protected get [params](): Params {
     return [
-      [this.text, "RichText"],
+      [this.text, TypeRichText],
     ];
   }
 
@@ -8479,7 +13655,7 @@ export class PageBlockSubtitle extends TypePageBlock {
 
   protected get [params](): Params {
     return [
-      [this.text, "RichText"],
+      [this.text, TypeRichText],
     ];
   }
 
@@ -8499,8 +13675,8 @@ export class PageBlockAuthorDate extends TypePageBlock {
 
   protected get [params](): Params {
     return [
-      [this.author, "RichText"],
-      [this.published_date, "int"],
+      [this.author, TypeRichText],
+      [this.published_date, "number"],
     ];
   }
 
@@ -8520,7 +13696,7 @@ export class PageBlockHeader extends TypePageBlock {
 
   protected get [params](): Params {
     return [
-      [this.text, "RichText"],
+      [this.text, TypeRichText],
     ];
   }
 
@@ -8539,7 +13715,7 @@ export class PageBlockSubheader extends TypePageBlock {
 
   protected get [params](): Params {
     return [
-      [this.text, "RichText"],
+      [this.text, TypeRichText],
     ];
   }
 
@@ -8558,7 +13734,7 @@ export class PageBlockParagraph extends TypePageBlock {
 
   protected get [params](): Params {
     return [
-      [this.text, "RichText"],
+      [this.text, TypeRichText],
     ];
   }
 
@@ -8578,7 +13754,7 @@ export class PageBlockPreformatted extends TypePageBlock {
 
   protected get [params](): Params {
     return [
-      [this.text, "RichText"],
+      [this.text, TypeRichText],
       [this.language, "string"],
     ];
   }
@@ -8599,7 +13775,7 @@ export class PageBlockFooter extends TypePageBlock {
 
   protected get [params](): Params {
     return [
-      [this.text, "RichText"],
+      [this.text, TypeRichText],
     ];
   }
 
@@ -8651,7 +13827,7 @@ export class PageBlockList extends TypePageBlock {
 
   protected get [params](): Params {
     return [
-      [this.items, "Vector<PageListItem>"],
+      [this.items, [TypePageListItem]],
     ];
   }
 
@@ -8671,8 +13847,8 @@ export class PageBlockBlockquote extends TypePageBlock {
 
   protected get [params](): Params {
     return [
-      [this.text, "RichText"],
-      [this.caption, "RichText"],
+      [this.text, TypeRichText],
+      [this.caption, TypeRichText],
     ];
   }
 
@@ -8693,8 +13869,8 @@ export class PageBlockPullquote extends TypePageBlock {
 
   protected get [params](): Params {
     return [
-      [this.text, "RichText"],
-      [this.caption, "RichText"],
+      [this.text, TypeRichText],
+      [this.caption, TypeRichText],
     ];
   }
 
@@ -8717,10 +13893,10 @@ export class PageBlockPhoto extends TypePageBlock {
 
   protected get [params](): Params {
     return [
-      [this.photo_id, "long"],
-      [this.caption, "PageCaption"],
-      [this.url ?? null, "flags.0?string"],
-      [this.webpage_id ?? null, "flags.0?long"],
+      [this.photo_id, "bigint"],
+      [this.caption, TypePageCaption],
+      [this.url ?? null, "string"],
+      [this.webpage_id ?? null, "bigint"],
     ];
   }
 
@@ -8752,10 +13928,10 @@ export class PageBlockVideo extends TypePageBlock {
 
   protected get [params](): Params {
     return [
-      [this.autoplay ?? null, "flags.0?true"],
-      [this.loop ?? null, "flags.1?true"],
-      [this.video_id, "long"],
-      [this.caption, "PageCaption"],
+      [this.autoplay ?? null, "true"],
+      [this.loop ?? null, "true"],
+      [this.video_id, "bigint"],
+      [this.caption, TypePageCaption],
     ];
   }
 
@@ -8784,7 +13960,7 @@ export class PageBlockCover extends TypePageBlock {
 
   protected get [params](): Params {
     return [
-      [this.cover, "PageBlock"],
+      [this.cover, TypePageBlock],
     ];
   }
 
@@ -8810,14 +13986,14 @@ export class PageBlockEmbed extends TypePageBlock {
 
   protected get [params](): Params {
     return [
-      [this.full_width ?? null, "flags.0?true"],
-      [this.allow_scrolling ?? null, "flags.3?true"],
-      [this.url ?? null, "flags.1?string"],
-      [this.html ?? null, "flags.2?string"],
-      [this.poster_photo_id ?? null, "flags.4?long"],
-      [this.w ?? null, "flags.5?int"],
-      [this.h ?? null, "flags.5?int"],
-      [this.caption, "PageCaption"],
+      [this.full_width ?? null, "true"],
+      [this.allow_scrolling ?? null, "true"],
+      [this.url ?? null, "string"],
+      [this.html ?? null, "string"],
+      [this.poster_photo_id ?? null, "bigint"],
+      [this.w ?? null, "number"],
+      [this.h ?? null, "number"],
+      [this.caption, TypePageCaption],
     ];
   }
 
@@ -8861,12 +14037,12 @@ export class PageBlockEmbedPost extends TypePageBlock {
   protected get [params](): Params {
     return [
       [this.url, "string"],
-      [this.webpage_id, "long"],
-      [this.author_photo_id, "long"],
+      [this.webpage_id, "bigint"],
+      [this.author_photo_id, "bigint"],
       [this.author, "string"],
-      [this.date, "int"],
-      [this.blocks, "Vector<PageBlock>"],
-      [this.caption, "PageCaption"],
+      [this.date, "number"],
+      [this.blocks, [TypePageBlock]],
+      [this.caption, TypePageCaption],
     ];
   }
 
@@ -8902,8 +14078,8 @@ export class PageBlockCollage extends TypePageBlock {
 
   protected get [params](): Params {
     return [
-      [this.items, "Vector<PageBlock>"],
-      [this.caption, "PageCaption"],
+      [this.items, [TypePageBlock]],
+      [this.caption, TypePageCaption],
     ];
   }
 
@@ -8926,8 +14102,8 @@ export class PageBlockSlideshow extends TypePageBlock {
 
   protected get [params](): Params {
     return [
-      [this.items, "Vector<PageBlock>"],
-      [this.caption, "PageCaption"],
+      [this.items, [TypePageBlock]],
+      [this.caption, TypePageCaption],
     ];
   }
 
@@ -8940,64 +14116,207 @@ export class PageBlockSlideshow extends TypePageBlock {
   }
 }
 
-export class WebPageNotModified extends TypeWebPage {
-  cached_page_views?: number;
+export class PageBlockChannel extends TypePageBlock {
+  channel: TypeChat;
 
   protected get [id]() {
-    return 0x7311ca11;
+    return 0xef1751b5;
   }
 
   protected get [params](): Params {
     return [
-      [this.cached_page_views ?? null, "flags.0?int"],
+      [this.channel, TypeChat],
     ];
   }
 
-  constructor(params: { cached_page_views?: number }) {
+  constructor(params: { channel: TypeChat }) {
     super();
-    this.cached_page_views = params.cached_page_views;
+    this.channel = params.channel;
   }
 }
 
-export class InputPrivacyKeyPhoneCall extends TypeInputPrivacyKey {
+export class PageBlockAudio extends TypePageBlock {
+  audio_id: bigint;
+  caption: TypePageCaption;
+
   protected get [id]() {
-    return 0xfabadc5f;
+    return 0x804361ea;
   }
 
   protected get [params](): Params {
-    return [];
+    return [
+      [this.audio_id, "bigint"],
+      [this.caption, TypePageCaption],
+    ];
   }
 
-  constructor() {
+  constructor(params: { audio_id: bigint; caption: TypePageCaption }) {
     super();
+    this.audio_id = params.audio_id;
+    this.caption = params.caption;
   }
 }
 
-export class PrivacyKeyPhoneCall extends TypePrivacyKey {
+export class PageBlockKicker extends TypePageBlock {
+  text: TypeRichText;
+
   protected get [id]() {
-    return 0x3d662b7b;
+    return 0x1e148390;
   }
 
   protected get [params](): Params {
-    return [];
+    return [
+      [this.text, TypeRichText],
+    ];
   }
 
-  constructor() {
+  constructor(params: { text: TypeRichText }) {
     super();
+    this.text = params.text;
   }
 }
 
-export class SendMessageGamePlayAction extends TypeSendMessageAction {
+export class PageBlockTable extends TypePageBlock {
+  bordered?: true;
+  striped?: true;
+  title: TypeRichText;
+  rows: Array<TypePageTableRow>;
+
   protected get [id]() {
-    return 0xdd6a8f48;
+    return 0xbf4dea82;
   }
 
   protected get [params](): Params {
-    return [];
+    return [
+      [this.bordered ?? null, "true"],
+      [this.striped ?? null, "true"],
+      [this.title, TypeRichText],
+      [this.rows, [TypePageTableRow]],
+    ];
   }
 
-  constructor() {
+  constructor(
+    params: {
+      bordered?: true;
+      striped?: true;
+      title: TypeRichText;
+      rows: Array<TypePageTableRow>;
+    },
+  ) {
     super();
+    this.bordered = params.bordered;
+    this.striped = params.striped;
+    this.title = params.title;
+    this.rows = params.rows;
+  }
+}
+
+export class PageBlockOrderedList extends TypePageBlock {
+  items: Array<TypePageListOrderedItem>;
+
+  protected get [id]() {
+    return 0x9a8ae1e1;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.items, [TypePageListOrderedItem]],
+    ];
+  }
+
+  constructor(params: { items: Array<TypePageListOrderedItem> }) {
+    super();
+    this.items = params.items;
+  }
+}
+
+export class PageBlockDetails extends TypePageBlock {
+  open?: true;
+  blocks: Array<TypePageBlock>;
+  title: TypeRichText;
+
+  protected get [id]() {
+    return 0x76768bed;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.open ?? null, "true"],
+      [this.blocks, [TypePageBlock]],
+      [this.title, TypeRichText],
+    ];
+  }
+
+  constructor(
+    params: { open?: true; blocks: Array<TypePageBlock>; title: TypeRichText },
+  ) {
+    super();
+    this.open = params.open;
+    this.blocks = params.blocks;
+    this.title = params.title;
+  }
+}
+
+export class PageBlockRelatedArticles extends TypePageBlock {
+  title: TypeRichText;
+  articles: Array<TypePageRelatedArticle>;
+
+  protected get [id]() {
+    return 0x16115a96;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.title, TypeRichText],
+      [this.articles, [TypePageRelatedArticle]],
+    ];
+  }
+
+  constructor(
+    params: { title: TypeRichText; articles: Array<TypePageRelatedArticle> },
+  ) {
+    super();
+    this.title = params.title;
+    this.articles = params.articles;
+  }
+}
+
+export class PageBlockMap extends TypePageBlock {
+  geo: TypeGeoPoint;
+  zoom: number;
+  w: number;
+  h: number;
+  caption: TypePageCaption;
+
+  protected get [id]() {
+    return 0xa44f3ef6;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.geo, TypeGeoPoint],
+      [this.zoom, "number"],
+      [this.w, "number"],
+      [this.h, "number"],
+      [this.caption, TypePageCaption],
+    ];
+  }
+
+  constructor(
+    params: {
+      geo: TypeGeoPoint;
+      zoom: number;
+      w: number;
+      h: number;
+      caption: TypePageCaption;
+    },
+  ) {
+    super();
+    this.geo = params.geo;
+    this.zoom = params.zoom;
+    this.w = params.w;
+    this.h = params.h;
+    this.caption = params.caption;
   }
 }
 
@@ -9058,316 +14377,6 @@ export class PhoneCallDiscardReasonBusy extends TypePhoneCallDiscardReason {
   }
 }
 
-export class UpdateDialogPinned extends TypeUpdate {
-  pinned?: true;
-  folder_id?: number;
-  peer: TypeDialogPeer;
-
-  protected get [id]() {
-    return 0x6e6fe51c;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.pinned ?? null, "flags.0?true"],
-      [this.folder_id ?? null, "flags.1?int"],
-      [this.peer, "DialogPeer"],
-    ];
-  }
-
-  constructor(
-    params: { pinned?: true; folder_id?: number; peer: TypeDialogPeer },
-  ) {
-    super();
-    this.pinned = params.pinned;
-    this.folder_id = params.folder_id;
-    this.peer = params.peer;
-  }
-}
-
-export class UpdatePinnedDialogs extends TypeUpdate {
-  folder_id?: number;
-  order?: Array<TypeDialogPeer>;
-
-  protected get [id]() {
-    return 0xfa0f3ca2;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.folder_id ?? null, "flags.1?int"],
-      [this.order ?? null, "flags.0?Vector<DialogPeer>"],
-    ];
-  }
-
-  constructor(params: { folder_id?: number; order?: Array<TypeDialogPeer> }) {
-    super();
-    this.folder_id = params.folder_id;
-    this.order = params.order;
-  }
-}
-
-export class UpdateBotWebhookJSON extends TypeUpdate {
-  data: TypeDataJSON;
-
-  protected get [id]() {
-    return 0x8317c0c3;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.data, "DataJSON"],
-    ];
-  }
-
-  constructor(params: { data: TypeDataJSON }) {
-    super();
-    this.data = params.data;
-  }
-}
-
-export class UpdateBotWebhookJSONQuery extends TypeUpdate {
-  query_id: bigint;
-  data: TypeDataJSON;
-  timeout: number;
-
-  protected get [id]() {
-    return 0x9b9240a6;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.query_id, "long"],
-      [this.data, "DataJSON"],
-      [this.timeout, "int"],
-    ];
-  }
-
-  constructor(
-    params: { query_id: bigint; data: TypeDataJSON; timeout: number },
-  ) {
-    super();
-    this.query_id = params.query_id;
-    this.data = params.data;
-    this.timeout = params.timeout;
-  }
-}
-
-export class InputMediaInvoice extends TypeInputMedia {
-  title: string;
-  description: string;
-  photo?: TypeInputWebDocument;
-  invoice: TypeInvoice;
-  payload: Uint8Array;
-  provider: string;
-  provider_data: TypeDataJSON;
-  start_param?: string;
-
-  protected get [id]() {
-    return 0xd9799874;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.title, "string"],
-      [this.description, "string"],
-      [this.photo ?? null, "flags.0?InputWebDocument"],
-      [this.invoice, "Invoice"],
-      [this.payload, "bytes"],
-      [this.provider, "string"],
-      [this.provider_data, "DataJSON"],
-      [this.start_param ?? null, "flags.1?string"],
-    ];
-  }
-
-  constructor(
-    params: {
-      title: string;
-      description: string;
-      photo?: TypeInputWebDocument;
-      invoice: TypeInvoice;
-      payload: Uint8Array;
-      provider: string;
-      provider_data: TypeDataJSON;
-      start_param?: string;
-    },
-  ) {
-    super();
-    this.title = params.title;
-    this.description = params.description;
-    this.photo = params.photo;
-    this.invoice = params.invoice;
-    this.payload = params.payload;
-    this.provider = params.provider;
-    this.provider_data = params.provider_data;
-    this.start_param = params.start_param;
-  }
-}
-
-export class MessageActionPaymentSentMe extends TypeMessageAction {
-  recurring_init?: true;
-  recurring_used?: true;
-  currency: string;
-  total_amount: bigint;
-  payload: Uint8Array;
-  info?: TypePaymentRequestedInfo;
-  shipping_option_id?: string;
-  charge: TypePaymentCharge;
-
-  protected get [id]() {
-    return 0x8f31b327;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.recurring_init ?? null, "flags.2?true"],
-      [this.recurring_used ?? null, "flags.3?true"],
-      [this.currency, "string"],
-      [this.total_amount, "long"],
-      [this.payload, "bytes"],
-      [this.info ?? null, "flags.0?PaymentRequestedInfo"],
-      [this.shipping_option_id ?? null, "flags.1?string"],
-      [this.charge, "PaymentCharge"],
-    ];
-  }
-
-  constructor(
-    params: {
-      recurring_init?: true;
-      recurring_used?: true;
-      currency: string;
-      total_amount: bigint;
-      payload: Uint8Array;
-      info?: TypePaymentRequestedInfo;
-      shipping_option_id?: string;
-      charge: TypePaymentCharge;
-    },
-  ) {
-    super();
-    this.recurring_init = params.recurring_init;
-    this.recurring_used = params.recurring_used;
-    this.currency = params.currency;
-    this.total_amount = params.total_amount;
-    this.payload = params.payload;
-    this.info = params.info;
-    this.shipping_option_id = params.shipping_option_id;
-    this.charge = params.charge;
-  }
-}
-
-export class MessageMediaInvoice extends TypeMessageMedia {
-  shipping_address_requested?: true;
-  test?: true;
-  title: string;
-  description: string;
-  photo?: TypeWebDocument;
-  receipt_msg_id?: number;
-  currency: string;
-  total_amount: bigint;
-  start_param: string;
-
-  protected get [id]() {
-    return 0x84551347;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.shipping_address_requested ?? null, "flags.1?true"],
-      [this.test ?? null, "flags.3?true"],
-      [this.title, "string"],
-      [this.description, "string"],
-      [this.photo ?? null, "flags.0?WebDocument"],
-      [this.receipt_msg_id ?? null, "flags.2?int"],
-      [this.currency, "string"],
-      [this.total_amount, "long"],
-      [this.start_param, "string"],
-    ];
-  }
-
-  constructor(
-    params: {
-      shipping_address_requested?: true;
-      test?: true;
-      title: string;
-      description: string;
-      photo?: TypeWebDocument;
-      receipt_msg_id?: number;
-      currency: string;
-      total_amount: bigint;
-      start_param: string;
-    },
-  ) {
-    super();
-    this.shipping_address_requested = params.shipping_address_requested;
-    this.test = params.test;
-    this.title = params.title;
-    this.description = params.description;
-    this.photo = params.photo;
-    this.receipt_msg_id = params.receipt_msg_id;
-    this.currency = params.currency;
-    this.total_amount = params.total_amount;
-    this.start_param = params.start_param;
-  }
-}
-
-export class KeyboardButtonBuy extends TypeKeyboardButton {
-  text: string;
-
-  protected get [id]() {
-    return 0xafd93fbb;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.text, "string"],
-    ];
-  }
-
-  constructor(params: { text: string }) {
-    super();
-    this.text = params.text;
-  }
-}
-
-export class MessageActionPaymentSent extends TypeMessageAction {
-  recurring_init?: true;
-  recurring_used?: true;
-  currency: string;
-  total_amount: bigint;
-  invoice_slug?: string;
-
-  protected get [id]() {
-    return 0x96163f56;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.recurring_init ?? null, "flags.2?true"],
-      [this.recurring_used ?? null, "flags.3?true"],
-      [this.currency, "string"],
-      [this.total_amount, "long"],
-      [this.invoice_slug ?? null, "flags.0?string"],
-    ];
-  }
-
-  constructor(
-    params: {
-      recurring_init?: true;
-      recurring_used?: true;
-      currency: string;
-      total_amount: bigint;
-      invoice_slug?: string;
-    },
-  ) {
-    super();
-    this.recurring_init = params.recurring_init;
-    this.recurring_used = params.recurring_used;
-    this.currency = params.currency;
-    this.total_amount = params.total_amount;
-    this.invoice_slug = params.invoice_slug;
-  }
-}
-
 export class PaymentSavedCredentialsCard extends TypePaymentSavedCredentials {
   id: string;
   title: string;
@@ -9390,6 +14399,140 @@ export class PaymentSavedCredentialsCard extends TypePaymentSavedCredentials {
   }
 }
 
+export class WebDocumentNoProxy extends TypeWebDocument {
+  url: string;
+  size: number;
+  mime_type: string;
+  attributes: Array<TypeDocumentAttribute>;
+
+  protected get [id]() {
+    return 0xf9c8bcc6;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.url, "string"],
+      [this.size, "number"],
+      [this.mime_type, "string"],
+      [this.attributes, [TypeDocumentAttribute]],
+    ];
+  }
+
+  constructor(
+    params: {
+      url: string;
+      size: number;
+      mime_type: string;
+      attributes: Array<TypeDocumentAttribute>;
+    },
+  ) {
+    super();
+    this.url = params.url;
+    this.size = params.size;
+    this.mime_type = params.mime_type;
+    this.attributes = params.attributes;
+  }
+}
+
+export class InputWebFileGeoPointLocation extends TypeInputWebFileLocation {
+  geo_point: TypeInputGeoPoint;
+  access_hash: bigint;
+  w: number;
+  h: number;
+  zoom: number;
+  scale: number;
+
+  protected get [id]() {
+    return 0x9f2221c9;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.geo_point, TypeInputGeoPoint],
+      [this.access_hash, "bigint"],
+      [this.w, "number"],
+      [this.h, "number"],
+      [this.zoom, "number"],
+      [this.scale, "number"],
+    ];
+  }
+
+  constructor(
+    params: {
+      geo_point: TypeInputGeoPoint;
+      access_hash: bigint;
+      w: number;
+      h: number;
+      zoom: number;
+      scale: number;
+    },
+  ) {
+    super();
+    this.geo_point = params.geo_point;
+    this.access_hash = params.access_hash;
+    this.w = params.w;
+    this.h = params.h;
+    this.zoom = params.zoom;
+    this.scale = params.scale;
+  }
+}
+
+export class InputWebFileAudioAlbumThumbLocation
+  extends TypeInputWebFileLocation {
+  small?: true;
+  document?: TypeInputDocument;
+  title?: string;
+  performer?: string;
+
+  protected get [id]() {
+    return 0xf46fe924;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.small ?? null, "true"],
+      [this.document ?? null, TypeInputDocument],
+      [this.title ?? null, "string"],
+      [this.performer ?? null, "string"],
+    ];
+  }
+
+  constructor(
+    params: {
+      small?: true;
+      document?: TypeInputDocument;
+      title?: string;
+      performer?: string;
+    },
+  ) {
+    super();
+    this.small = params.small;
+    this.document = params.document;
+    this.title = params.title;
+    this.performer = params.performer;
+  }
+}
+
+export class PaymentsPaymentVerificationNeeded
+  extends TypePaymentsPaymentResult {
+  url: string;
+
+  protected get [id]() {
+    return 0xd8411139;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.url, "string"],
+    ];
+  }
+
+  constructor(params: { url: string }) {
+    super();
+    this.url = params.url;
+  }
+}
+
 export class InputPaymentCredentialsSaved extends TypeInputPaymentCredentials {
   id: string;
   tmp_password: Uint8Array;
@@ -9401,7 +14544,7 @@ export class InputPaymentCredentialsSaved extends TypeInputPaymentCredentials {
   protected get [params](): Params {
     return [
       [this.id, "string"],
-      [this.tmp_password, "bytes"],
+      [this.tmp_password, Uint8Array],
     ];
   }
 
@@ -9412,104 +14555,43 @@ export class InputPaymentCredentialsSaved extends TypeInputPaymentCredentials {
   }
 }
 
-export class UpdateBotShippingQuery extends TypeUpdate {
-  query_id: bigint;
-  user_id: bigint;
-  payload: Uint8Array;
-  shipping_address: TypePostAddress;
+export class InputPaymentCredentialsApplePay
+  extends TypeInputPaymentCredentials {
+  payment_data: TypeDataJSON;
 
   protected get [id]() {
-    return 0xb5aefd7d;
+    return 0x0aa1c39f;
   }
 
   protected get [params](): Params {
     return [
-      [this.query_id, "long"],
-      [this.user_id, "long"],
-      [this.payload, "bytes"],
-      [this.shipping_address, "PostAddress"],
+      [this.payment_data, TypeDataJSON],
     ];
   }
 
-  constructor(
-    params: {
-      query_id: bigint;
-      user_id: bigint;
-      payload: Uint8Array;
-      shipping_address: TypePostAddress;
-    },
-  ) {
+  constructor(params: { payment_data: TypeDataJSON }) {
     super();
-    this.query_id = params.query_id;
-    this.user_id = params.user_id;
-    this.payload = params.payload;
-    this.shipping_address = params.shipping_address;
+    this.payment_data = params.payment_data;
   }
 }
 
-export class UpdateBotPrecheckoutQuery extends TypeUpdate {
-  query_id: bigint;
-  user_id: bigint;
-  payload: Uint8Array;
-  info?: TypePaymentRequestedInfo;
-  shipping_option_id?: string;
-  currency: string;
-  total_amount: bigint;
+export class InputPaymentCredentialsGooglePay
+  extends TypeInputPaymentCredentials {
+  payment_token: TypeDataJSON;
 
   protected get [id]() {
-    return 0x8caa9a96;
+    return 0x8ac32801;
   }
 
   protected get [params](): Params {
     return [
-      [this.query_id, "long"],
-      [this.user_id, "long"],
-      [this.payload, "bytes"],
-      [this.info ?? null, "flags.0?PaymentRequestedInfo"],
-      [this.shipping_option_id ?? null, "flags.1?string"],
-      [this.currency, "string"],
-      [this.total_amount, "long"],
+      [this.payment_token, TypeDataJSON],
     ];
   }
 
-  constructor(
-    params: {
-      query_id: bigint;
-      user_id: bigint;
-      payload: Uint8Array;
-      info?: TypePaymentRequestedInfo;
-      shipping_option_id?: string;
-      currency: string;
-      total_amount: bigint;
-    },
-  ) {
+  constructor(params: { payment_token: TypeDataJSON }) {
     super();
-    this.query_id = params.query_id;
-    this.user_id = params.user_id;
-    this.payload = params.payload;
-    this.info = params.info;
-    this.shipping_option_id = params.shipping_option_id;
-    this.currency = params.currency;
-    this.total_amount = params.total_amount;
-  }
-}
-
-export class UpdatePhoneCall extends TypeUpdate {
-  phone_call: TypePhoneCall;
-
-  protected get [id]() {
-    return 0xab0f6b1e;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.phone_call, "PhoneCall"],
-    ];
-  }
-
-  constructor(params: { phone_call: TypePhoneCall }) {
-    super();
-    this.phone_call = params.phone_call;
+    this.payment_token = params.payment_token;
   }
 }
 
@@ -9522,7 +14604,7 @@ export class PhoneCallEmpty extends TypePhoneCall {
 
   protected get [params](): Params {
     return [
-      [this.id, "long"],
+      [this.id, "bigint"],
     ];
   }
 
@@ -9548,14 +14630,14 @@ export class PhoneCallWaiting extends TypePhoneCall {
 
   protected get [params](): Params {
     return [
-      [this.video ?? null, "flags.6?true"],
-      [this.id, "long"],
-      [this.access_hash, "long"],
-      [this.date, "int"],
-      [this.admin_id, "long"],
-      [this.participant_id, "long"],
-      [this.protocol, "PhoneCallProtocol"],
-      [this.receive_date ?? null, "flags.0?int"],
+      [this.video ?? null, "true"],
+      [this.id, "bigint"],
+      [this.access_hash, "bigint"],
+      [this.date, "number"],
+      [this.admin_id, "bigint"],
+      [this.participant_id, "bigint"],
+      [this.protocol, TypePhoneCallProtocol],
+      [this.receive_date ?? null, "number"],
     ];
   }
 
@@ -9599,14 +14681,14 @@ export class PhoneCallRequested extends TypePhoneCall {
 
   protected get [params](): Params {
     return [
-      [this.video ?? null, "flags.6?true"],
-      [this.id, "long"],
-      [this.access_hash, "long"],
-      [this.date, "int"],
-      [this.admin_id, "long"],
-      [this.participant_id, "long"],
-      [this.g_a_hash, "bytes"],
-      [this.protocol, "PhoneCallProtocol"],
+      [this.video ?? null, "true"],
+      [this.id, "bigint"],
+      [this.access_hash, "bigint"],
+      [this.date, "number"],
+      [this.admin_id, "bigint"],
+      [this.participant_id, "bigint"],
+      [this.g_a_hash, Uint8Array],
+      [this.protocol, TypePhoneCallProtocol],
     ];
   }
 
@@ -9650,14 +14732,14 @@ export class PhoneCallAccepted extends TypePhoneCall {
 
   protected get [params](): Params {
     return [
-      [this.video ?? null, "flags.6?true"],
-      [this.id, "long"],
-      [this.access_hash, "long"],
-      [this.date, "int"],
-      [this.admin_id, "long"],
-      [this.participant_id, "long"],
-      [this.g_b, "bytes"],
-      [this.protocol, "PhoneCallProtocol"],
+      [this.video ?? null, "true"],
+      [this.id, "bigint"],
+      [this.access_hash, "bigint"],
+      [this.date, "number"],
+      [this.admin_id, "bigint"],
+      [this.participant_id, "bigint"],
+      [this.g_b, Uint8Array],
+      [this.protocol, TypePhoneCallProtocol],
     ];
   }
 
@@ -9699,12 +14781,12 @@ export class PhoneCallDiscarded extends TypePhoneCall {
 
   protected get [params](): Params {
     return [
-      [this.need_rating ?? null, "flags.2?true"],
-      [this.need_debug ?? null, "flags.3?true"],
-      [this.video ?? null, "flags.6?true"],
-      [this.id, "long"],
-      [this.reason ?? null, "flags.0?PhoneCallDiscardReason"],
-      [this.duration ?? null, "flags.1?int"],
+      [this.need_rating ?? null, "true"],
+      [this.need_debug ?? null, "true"],
+      [this.video ?? null, "true"],
+      [this.id, "bigint"],
+      [this.reason ?? null, TypePhoneCallDiscardReason],
+      [this.duration ?? null, "number"],
     ];
   }
 
@@ -9728,157 +14810,54 @@ export class PhoneCallDiscarded extends TypePhoneCall {
   }
 }
 
-export class InputMessagesFilterPhoneCalls extends TypeMessagesFilter {
-  missed?: true;
+export class PhoneConnectionWebrtc extends TypePhoneConnection {
+  turn?: true;
+  stun?: true;
+  id: bigint;
+  ip: string;
+  ipv6: string;
+  port: number;
+  username: string;
+  password: string;
 
   protected get [id]() {
-    return 0x80c99768;
+    return 0x635fe375;
   }
 
   protected get [params](): Params {
     return [
-      [this.missed ?? null, "flags.0?true"],
-    ];
-  }
-
-  constructor(params: { missed?: true }) {
-    super();
-    this.missed = params.missed;
-  }
-}
-
-export class MessageActionPhoneCall extends TypeMessageAction {
-  video?: true;
-  call_id: bigint;
-  reason?: TypePhoneCallDiscardReason;
-  duration?: number;
-
-  protected get [id]() {
-    return 0x80e11a7f;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.video ?? null, "flags.2?true"],
-      [this.call_id, "long"],
-      [this.reason ?? null, "flags.0?PhoneCallDiscardReason"],
-      [this.duration ?? null, "flags.1?int"],
+      [this.turn ?? null, "true"],
+      [this.stun ?? null, "true"],
+      [this.id, "bigint"],
+      [this.ip, "string"],
+      [this.ipv6, "string"],
+      [this.port, "number"],
+      [this.username, "string"],
+      [this.password, "string"],
     ];
   }
 
   constructor(
     params: {
-      video?: true;
-      call_id: bigint;
-      reason?: TypePhoneCallDiscardReason;
-      duration?: number;
+      turn?: true;
+      stun?: true;
+      id: bigint;
+      ip: string;
+      ipv6: string;
+      port: number;
+      username: string;
+      password: string;
     },
   ) {
     super();
-    this.video = params.video;
-    this.call_id = params.call_id;
-    this.reason = params.reason;
-    this.duration = params.duration;
-  }
-}
-
-export class InputMessagesFilterRoundVoice extends TypeMessagesFilter {
-  protected get [id]() {
-    return 0x7a7c17a4;
-  }
-
-  protected get [params](): Params {
-    return [];
-  }
-
-  constructor() {
-    super();
-  }
-}
-
-export class InputMessagesFilterRoundVideo extends TypeMessagesFilter {
-  protected get [id]() {
-    return 0xb549da53;
-  }
-
-  protected get [params](): Params {
-    return [];
-  }
-
-  constructor() {
-    super();
-  }
-}
-
-export class SendMessageRecordRoundAction extends TypeSendMessageAction {
-  protected get [id]() {
-    return 0x88f27fbc;
-  }
-
-  protected get [params](): Params {
-    return [];
-  }
-
-  constructor() {
-    super();
-  }
-}
-
-export class SendMessageUploadRoundAction extends TypeSendMessageAction {
-  progress: number;
-
-  protected get [id]() {
-    return 0x243e1c66;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.progress, "int"],
-    ];
-  }
-
-  constructor(params: { progress: number }) {
-    super();
-    this.progress = params.progress;
-  }
-}
-
-export class UploadFileCdnRedirect extends TypeUploadFile {
-  dc_id: number;
-  file_token: Uint8Array;
-  encryption_key: Uint8Array;
-  encryption_iv: Uint8Array;
-  file_hashes: Array<TypeFileHash>;
-
-  protected get [id]() {
-    return 0xf18cda44;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.dc_id, "int"],
-      [this.file_token, "bytes"],
-      [this.encryption_key, "bytes"],
-      [this.encryption_iv, "bytes"],
-      [this.file_hashes, "Vector<FileHash>"],
-    ];
-  }
-
-  constructor(
-    params: {
-      dc_id: number;
-      file_token: Uint8Array;
-      encryption_key: Uint8Array;
-      encryption_iv: Uint8Array;
-      file_hashes: Array<TypeFileHash>;
-    },
-  ) {
-    super();
-    this.dc_id = params.dc_id;
-    this.file_token = params.file_token;
-    this.encryption_key = params.encryption_key;
-    this.encryption_iv = params.encryption_iv;
-    this.file_hashes = params.file_hashes;
+    this.turn = params.turn;
+    this.stun = params.stun;
+    this.id = params.id;
+    this.ip = params.ip;
+    this.ipv6 = params.ipv6;
+    this.port = params.port;
+    this.username = params.username;
+    this.password = params.password;
   }
 }
 
@@ -9891,32 +14870,13 @@ export class UploadCdnFileReuploadNeeded extends TypeUploadCdnFile {
 
   protected get [params](): Params {
     return [
-      [this.request_token, "bytes"],
+      [this.request_token, Uint8Array],
     ];
   }
 
   constructor(params: { request_token: Uint8Array }) {
     super();
     this.request_token = params.request_token;
-  }
-}
-
-export class PageBlockChannel extends TypePageBlock {
-  channel: TypeChat;
-
-  protected get [id]() {
-    return 0xef1751b5;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.channel, "Chat"],
-    ];
-  }
-
-  constructor(params: { channel: TypeChat }) {
-    super();
-    this.channel = params.channel;
   }
 }
 
@@ -9936,11 +14896,11 @@ export class LangPackStringPluralized extends TypeLangPackString {
   protected get [params](): Params {
     return [
       [this.key, "string"],
-      [this.zero_value ?? null, "flags.0?string"],
-      [this.one_value ?? null, "flags.1?string"],
-      [this.two_value ?? null, "flags.2?string"],
-      [this.few_value ?? null, "flags.3?string"],
-      [this.many_value ?? null, "flags.4?string"],
+      [this.zero_value ?? null, "string"],
+      [this.one_value ?? null, "string"],
+      [this.two_value ?? null, "string"],
+      [this.few_value ?? null, "string"],
+      [this.many_value ?? null, "string"],
       [this.other_value, "string"],
     ];
   }
@@ -9983,172 +14943,6 @@ export class LangPackStringDeleted extends TypeLangPackString {
   constructor(params: { key: string }) {
     super();
     this.key = params.key;
-  }
-}
-
-export class UpdateLangPackTooLong extends TypeUpdate {
-  lang_code: string;
-
-  protected get [id]() {
-    return 0x46560264;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.lang_code, "string"],
-    ];
-  }
-
-  constructor(params: { lang_code: string }) {
-    super();
-    this.lang_code = params.lang_code;
-  }
-}
-
-export class UpdateLangPack extends TypeUpdate {
-  difference: TypeLangPackDifference;
-
-  protected get [id]() {
-    return 0x56022f4d;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.difference, "LangPackDifference"],
-    ];
-  }
-
-  constructor(params: { difference: TypeLangPackDifference }) {
-    super();
-    this.difference = params.difference;
-  }
-}
-
-export class ChannelParticipantAdmin extends TypeChannelParticipant {
-  can_edit?: true;
-  self?: true;
-  user_id: bigint;
-  inviter_id?: bigint;
-  promoted_by: bigint;
-  date: number;
-  admin_rights: TypeChatAdminRights;
-  rank?: string;
-
-  protected get [id]() {
-    return 0x34c3bb53;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.can_edit ?? null, "flags.0?true"],
-      [this.self ?? null, "flags.1?true"],
-      [this.user_id, "long"],
-      [this.inviter_id ?? null, "flags.1?long"],
-      [this.promoted_by, "long"],
-      [this.date, "int"],
-      [this.admin_rights, "ChatAdminRights"],
-      [this.rank ?? null, "flags.2?string"],
-    ];
-  }
-
-  constructor(
-    params: {
-      can_edit?: true;
-      self?: true;
-      user_id: bigint;
-      inviter_id?: bigint;
-      promoted_by: bigint;
-      date: number;
-      admin_rights: TypeChatAdminRights;
-      rank?: string;
-    },
-  ) {
-    super();
-    this.can_edit = params.can_edit;
-    this.self = params.self;
-    this.user_id = params.user_id;
-    this.inviter_id = params.inviter_id;
-    this.promoted_by = params.promoted_by;
-    this.date = params.date;
-    this.admin_rights = params.admin_rights;
-    this.rank = params.rank;
-  }
-}
-
-export class ChannelParticipantBanned extends TypeChannelParticipant {
-  left?: true;
-  peer: TypePeer;
-  kicked_by: bigint;
-  date: number;
-  banned_rights: TypeChatBannedRights;
-
-  protected get [id]() {
-    return 0x6df8014e;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.left ?? null, "flags.0?true"],
-      [this.peer, "Peer"],
-      [this.kicked_by, "long"],
-      [this.date, "int"],
-      [this.banned_rights, "ChatBannedRights"],
-    ];
-  }
-
-  constructor(
-    params: {
-      left?: true;
-      peer: TypePeer;
-      kicked_by: bigint;
-      date: number;
-      banned_rights: TypeChatBannedRights;
-    },
-  ) {
-    super();
-    this.left = params.left;
-    this.peer = params.peer;
-    this.kicked_by = params.kicked_by;
-    this.date = params.date;
-    this.banned_rights = params.banned_rights;
-  }
-}
-
-export class ChannelParticipantsBanned extends TypeChannelParticipantsFilter {
-  q: string;
-
-  protected get [id]() {
-    return 0x1427a5e1;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.q, "string"],
-    ];
-  }
-
-  constructor(params: { q: string }) {
-    super();
-    this.q = params.q;
-  }
-}
-
-export class ChannelParticipantsSearch extends TypeChannelParticipantsFilter {
-  q: string;
-
-  protected get [id]() {
-    return 0x0656ac4b;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.q, "string"],
-    ];
-  }
-
-  constructor(params: { q: string }) {
-    super();
-    this.q = params.q;
   }
 }
 
@@ -10232,8 +15026,8 @@ export class ChannelAdminLogEventActionChangePhoto
 
   protected get [params](): Params {
     return [
-      [this.prev_photo, "Photo"],
-      [this.new_photo, "Photo"],
+      [this.prev_photo, TypePhoto],
+      [this.new_photo, TypePhoto],
     ];
   }
 
@@ -10254,7 +15048,7 @@ export class ChannelAdminLogEventActionToggleInvites
 
   protected get [params](): Params {
     return [
-      [this.new_value, "Bool"],
+      [this.new_value, "boolean"],
     ];
   }
 
@@ -10274,7 +15068,7 @@ export class ChannelAdminLogEventActionToggleSignatures
 
   protected get [params](): Params {
     return [
-      [this.new_value, "Bool"],
+      [this.new_value, "boolean"],
     ];
   }
 
@@ -10294,7 +15088,7 @@ export class ChannelAdminLogEventActionUpdatePinned
 
   protected get [params](): Params {
     return [
-      [this.message, "Message"],
+      [this.message, TypeMessage],
     ];
   }
 
@@ -10315,8 +15109,8 @@ export class ChannelAdminLogEventActionEditMessage
 
   protected get [params](): Params {
     return [
-      [this.prev_message, "Message"],
-      [this.new_message, "Message"],
+      [this.prev_message, TypeMessage],
+      [this.new_message, TypeMessage],
     ];
   }
 
@@ -10337,7 +15131,7 @@ export class ChannelAdminLogEventActionDeleteMessage
 
   protected get [params](): Params {
     return [
-      [this.message, "Message"],
+      [this.message, TypeMessage],
     ];
   }
 
@@ -10387,7 +15181,7 @@ export class ChannelAdminLogEventActionParticipantInvite
 
   protected get [params](): Params {
     return [
-      [this.participant, "ChannelParticipant"],
+      [this.participant, TypeChannelParticipant],
     ];
   }
 
@@ -10408,8 +15202,8 @@ export class ChannelAdminLogEventActionParticipantToggleBan
 
   protected get [params](): Params {
     return [
-      [this.prev_participant, "ChannelParticipant"],
-      [this.new_participant, "ChannelParticipant"],
+      [this.prev_participant, TypeChannelParticipant],
+      [this.new_participant, TypeChannelParticipant],
     ];
   }
 
@@ -10436,8 +15230,8 @@ export class ChannelAdminLogEventActionParticipantToggleAdmin
 
   protected get [params](): Params {
     return [
-      [this.prev_participant, "ChannelParticipant"],
-      [this.new_participant, "ChannelParticipant"],
+      [this.prev_participant, TypeChannelParticipant],
+      [this.new_participant, TypeChannelParticipant],
     ];
   }
 
@@ -10453,135 +15247,6 @@ export class ChannelAdminLogEventActionParticipantToggleAdmin
   }
 }
 
-export class TopPeerCategoryPhoneCalls extends TypeTopPeerCategory {
-  protected get [id]() {
-    return 0x1e76a78c;
-  }
-
-  protected get [params](): Params {
-    return [];
-  }
-
-  constructor() {
-    super();
-  }
-}
-
-export class PageBlockAudio extends TypePageBlock {
-  audio_id: bigint;
-  caption: TypePageCaption;
-
-  protected get [id]() {
-    return 0x804361ea;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.audio_id, "long"],
-      [this.caption, "PageCaption"],
-    ];
-  }
-
-  constructor(params: { audio_id: bigint; caption: TypePageCaption }) {
-    super();
-    this.audio_id = params.audio_id;
-    this.caption = params.caption;
-  }
-}
-
-export class MessageActionScreenshotTaken extends TypeMessageAction {
-  protected get [id]() {
-    return 0x4792929b;
-  }
-
-  protected get [params](): Params {
-    return [];
-  }
-
-  constructor() {
-    super();
-  }
-}
-
-export class MessagesFavedStickersNotModified
-  extends TypeMessagesFavedStickers {
-  protected get [id]() {
-    return 0x9e8fa6d3;
-  }
-
-  protected get [params](): Params {
-    return [];
-  }
-
-  constructor() {
-    super();
-  }
-}
-
-export class UpdateFavedStickers extends TypeUpdate {
-  protected get [id]() {
-    return 0xe511996d;
-  }
-
-  protected get [params](): Params {
-    return [];
-  }
-
-  constructor() {
-    super();
-  }
-}
-
-export class UpdateChannelReadMessagesContents extends TypeUpdate {
-  channel_id: bigint;
-  messages: Array<number>;
-
-  protected get [id]() {
-    return 0x44bdd535;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.channel_id, "long"],
-      [this.messages, "Vector<int>"],
-    ];
-  }
-
-  constructor(params: { channel_id: bigint; messages: Array<number> }) {
-    super();
-    this.channel_id = params.channel_id;
-    this.messages = params.messages;
-  }
-}
-
-export class InputMessagesFilterMyMentions extends TypeMessagesFilter {
-  protected get [id]() {
-    return 0xc1f8e69a;
-  }
-
-  protected get [params](): Params {
-    return [];
-  }
-
-  constructor() {
-    super();
-  }
-}
-
-export class UpdateContactsReset extends TypeUpdate {
-  protected get [id]() {
-    return 0x7084a7be;
-  }
-
-  protected get [params](): Params {
-    return [];
-  }
-
-  constructor() {
-    super();
-  }
-}
-
 export class ChannelAdminLogEventActionChangeStickerSet
   extends TypeChannelAdminLogEventAction {
   prev_stickerset: TypeInputStickerSet;
@@ -10593,8 +15258,8 @@ export class ChannelAdminLogEventActionChangeStickerSet
 
   protected get [params](): Params {
     return [
-      [this.prev_stickerset, "InputStickerSet"],
-      [this.new_stickerset, "InputStickerSet"],
+      [this.prev_stickerset, TypeInputStickerSet],
+      [this.new_stickerset, TypeInputStickerSet],
     ];
   }
 
@@ -10610,95 +15275,6 @@ export class ChannelAdminLogEventActionChangeStickerSet
   }
 }
 
-export class MessageActionCustomAction extends TypeMessageAction {
-  message: string;
-
-  protected get [id]() {
-    return 0xfae69f56;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.message, "string"],
-    ];
-  }
-
-  constructor(params: { message: string }) {
-    super();
-    this.message = params.message;
-  }
-}
-
-export class InputPaymentCredentialsApplePay
-  extends TypeInputPaymentCredentials {
-  payment_data: TypeDataJSON;
-
-  protected get [id]() {
-    return 0x0aa1c39f;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.payment_data, "DataJSON"],
-    ];
-  }
-
-  constructor(params: { payment_data: TypeDataJSON }) {
-    super();
-    this.payment_data = params.payment_data;
-  }
-}
-
-export class InputMessagesFilterGeo extends TypeMessagesFilter {
-  protected get [id]() {
-    return 0xe7026d0d;
-  }
-
-  protected get [params](): Params {
-    return [];
-  }
-
-  constructor() {
-    super();
-  }
-}
-
-export class InputMessagesFilterContacts extends TypeMessagesFilter {
-  protected get [id]() {
-    return 0xe062db83;
-  }
-
-  protected get [params](): Params {
-    return [];
-  }
-
-  constructor() {
-    super();
-  }
-}
-
-export class UpdateChannelAvailableMessages extends TypeUpdate {
-  channel_id: bigint;
-  available_min_id: number;
-
-  protected get [id]() {
-    return 0xb23fc698;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.channel_id, "long"],
-      [this.available_min_id, "int"],
-    ];
-  }
-
-  constructor(params: { channel_id: bigint; available_min_id: number }) {
-    super();
-    this.channel_id = params.channel_id;
-    this.available_min_id = params.available_min_id;
-  }
-}
-
 export class ChannelAdminLogEventActionTogglePreHistoryHidden
   extends TypeChannelAdminLogEventAction {
   new_value: boolean;
@@ -10709,7 +15285,7 @@ export class ChannelAdminLogEventActionTogglePreHistoryHidden
 
   protected get [params](): Params {
     return [
-      [this.new_value, "Bool"],
+      [this.new_value, "boolean"],
     ];
   }
 
@@ -10719,77 +15295,609 @@ export class ChannelAdminLogEventActionTogglePreHistoryHidden
   }
 }
 
-export class InputMediaGeoLive extends TypeInputMedia {
-  stopped?: true;
-  geo_point: TypeInputGeoPoint;
-  heading?: number;
-  period?: number;
-  proximity_notification_radius?: number;
+export class ChannelAdminLogEventActionDefaultBannedRights
+  extends TypeChannelAdminLogEventAction {
+  prev_banned_rights: TypeChatBannedRights;
+  new_banned_rights: TypeChatBannedRights;
 
   protected get [id]() {
-    return 0x971fa843;
+    return 0x2df5fc0a;
   }
 
   protected get [params](): Params {
     return [
-      [this.stopped ?? null, "flags.0?true"],
-      [this.geo_point, "InputGeoPoint"],
-      [this.heading ?? null, "flags.2?int"],
-      [this.period ?? null, "flags.1?int"],
-      [this.proximity_notification_radius ?? null, "flags.3?int"],
+      [this.prev_banned_rights, TypeChatBannedRights],
+      [this.new_banned_rights, TypeChatBannedRights],
     ];
   }
 
   constructor(
     params: {
-      stopped?: true;
-      geo_point: TypeInputGeoPoint;
-      heading?: number;
-      period?: number;
-      proximity_notification_radius?: number;
+      prev_banned_rights: TypeChatBannedRights;
+      new_banned_rights: TypeChatBannedRights;
     },
   ) {
     super();
-    this.stopped = params.stopped;
-    this.geo_point = params.geo_point;
-    this.heading = params.heading;
-    this.period = params.period;
-    this.proximity_notification_radius = params.proximity_notification_radius;
+    this.prev_banned_rights = params.prev_banned_rights;
+    this.new_banned_rights = params.new_banned_rights;
   }
 }
 
-export class MessageMediaGeoLive extends TypeMessageMedia {
-  geo: TypeGeoPoint;
-  heading?: number;
-  period: number;
-  proximity_notification_radius?: number;
+export class ChannelAdminLogEventActionStopPoll
+  extends TypeChannelAdminLogEventAction {
+  message: TypeMessage;
 
   protected get [id]() {
-    return 0xb940c666;
+    return 0x8f079643;
   }
 
   protected get [params](): Params {
     return [
-      [this.geo, "GeoPoint"],
-      [this.heading ?? null, "flags.0?int"],
-      [this.period, "int"],
-      [this.proximity_notification_radius ?? null, "flags.1?int"],
+      [this.message, TypeMessage],
+    ];
+  }
+
+  constructor(params: { message: TypeMessage }) {
+    super();
+    this.message = params.message;
+  }
+}
+
+export class ChannelAdminLogEventActionChangeLinkedChat
+  extends TypeChannelAdminLogEventAction {
+  prev_value: bigint;
+  new_value: bigint;
+
+  protected get [id]() {
+    return 0x050c7ac8;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.prev_value, "bigint"],
+      [this.new_value, "bigint"],
+    ];
+  }
+
+  constructor(params: { prev_value: bigint; new_value: bigint }) {
+    super();
+    this.prev_value = params.prev_value;
+    this.new_value = params.new_value;
+  }
+}
+
+export class ChannelAdminLogEventActionChangeLocation
+  extends TypeChannelAdminLogEventAction {
+  prev_value: TypeChannelLocation;
+  new_value: TypeChannelLocation;
+
+  protected get [id]() {
+    return 0x0e6b76ae;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.prev_value, TypeChannelLocation],
+      [this.new_value, TypeChannelLocation],
+    ];
+  }
+
+  constructor(
+    params: { prev_value: TypeChannelLocation; new_value: TypeChannelLocation },
+  ) {
+    super();
+    this.prev_value = params.prev_value;
+    this.new_value = params.new_value;
+  }
+}
+
+export class ChannelAdminLogEventActionToggleSlowMode
+  extends TypeChannelAdminLogEventAction {
+  prev_value: number;
+  new_value: number;
+
+  protected get [id]() {
+    return 0x53909779;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.prev_value, "number"],
+      [this.new_value, "number"],
+    ];
+  }
+
+  constructor(params: { prev_value: number; new_value: number }) {
+    super();
+    this.prev_value = params.prev_value;
+    this.new_value = params.new_value;
+  }
+}
+
+export class ChannelAdminLogEventActionStartGroupCall
+  extends TypeChannelAdminLogEventAction {
+  call: TypeInputGroupCall;
+
+  protected get [id]() {
+    return 0x23209745;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.call, TypeInputGroupCall],
+    ];
+  }
+
+  constructor(params: { call: TypeInputGroupCall }) {
+    super();
+    this.call = params.call;
+  }
+}
+
+export class ChannelAdminLogEventActionDiscardGroupCall
+  extends TypeChannelAdminLogEventAction {
+  call: TypeInputGroupCall;
+
+  protected get [id]() {
+    return 0xdb9f9140;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.call, TypeInputGroupCall],
+    ];
+  }
+
+  constructor(params: { call: TypeInputGroupCall }) {
+    super();
+    this.call = params.call;
+  }
+}
+
+export class ChannelAdminLogEventActionParticipantMute
+  extends TypeChannelAdminLogEventAction {
+  participant: TypeGroupCallParticipant;
+
+  protected get [id]() {
+    return 0xf92424d2;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.participant, TypeGroupCallParticipant],
+    ];
+  }
+
+  constructor(params: { participant: TypeGroupCallParticipant }) {
+    super();
+    this.participant = params.participant;
+  }
+}
+
+export class ChannelAdminLogEventActionParticipantUnmute
+  extends TypeChannelAdminLogEventAction {
+  participant: TypeGroupCallParticipant;
+
+  protected get [id]() {
+    return 0xe64429c0;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.participant, TypeGroupCallParticipant],
+    ];
+  }
+
+  constructor(params: { participant: TypeGroupCallParticipant }) {
+    super();
+    this.participant = params.participant;
+  }
+}
+
+export class ChannelAdminLogEventActionToggleGroupCallSetting
+  extends TypeChannelAdminLogEventAction {
+  join_muted: boolean;
+
+  protected get [id]() {
+    return 0x56d6a247;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.join_muted, "boolean"],
+    ];
+  }
+
+  constructor(params: { join_muted: boolean }) {
+    super();
+    this.join_muted = params.join_muted;
+  }
+}
+
+export class ChannelAdminLogEventActionParticipantJoinByInvite
+  extends TypeChannelAdminLogEventAction {
+  invite: TypeExportedChatInvite;
+
+  protected get [id]() {
+    return 0x5cdada77;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.invite, TypeExportedChatInvite],
+    ];
+  }
+
+  constructor(params: { invite: TypeExportedChatInvite }) {
+    super();
+    this.invite = params.invite;
+  }
+}
+
+export class ChannelAdminLogEventActionExportedInviteDelete
+  extends TypeChannelAdminLogEventAction {
+  invite: TypeExportedChatInvite;
+
+  protected get [id]() {
+    return 0x5a50fca4;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.invite, TypeExportedChatInvite],
+    ];
+  }
+
+  constructor(params: { invite: TypeExportedChatInvite }) {
+    super();
+    this.invite = params.invite;
+  }
+}
+
+export class ChannelAdminLogEventActionExportedInviteRevoke
+  extends TypeChannelAdminLogEventAction {
+  invite: TypeExportedChatInvite;
+
+  protected get [id]() {
+    return 0x410a134e;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.invite, TypeExportedChatInvite],
+    ];
+  }
+
+  constructor(params: { invite: TypeExportedChatInvite }) {
+    super();
+    this.invite = params.invite;
+  }
+}
+
+export class ChannelAdminLogEventActionExportedInviteEdit
+  extends TypeChannelAdminLogEventAction {
+  prev_invite: TypeExportedChatInvite;
+  new_invite: TypeExportedChatInvite;
+
+  protected get [id]() {
+    return 0xe90ebb59;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.prev_invite, TypeExportedChatInvite],
+      [this.new_invite, TypeExportedChatInvite],
     ];
   }
 
   constructor(
     params: {
-      geo: TypeGeoPoint;
-      heading?: number;
-      period: number;
-      proximity_notification_radius?: number;
+      prev_invite: TypeExportedChatInvite;
+      new_invite: TypeExportedChatInvite;
     },
   ) {
     super();
-    this.geo = params.geo;
-    this.heading = params.heading;
-    this.period = params.period;
-    this.proximity_notification_radius = params.proximity_notification_radius;
+    this.prev_invite = params.prev_invite;
+    this.new_invite = params.new_invite;
+  }
+}
+
+export class ChannelAdminLogEventActionParticipantVolume
+  extends TypeChannelAdminLogEventAction {
+  participant: TypeGroupCallParticipant;
+
+  protected get [id]() {
+    return 0x3e7f6847;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.participant, TypeGroupCallParticipant],
+    ];
+  }
+
+  constructor(params: { participant: TypeGroupCallParticipant }) {
+    super();
+    this.participant = params.participant;
+  }
+}
+
+export class ChannelAdminLogEventActionChangeHistoryTTL
+  extends TypeChannelAdminLogEventAction {
+  prev_value: number;
+  new_value: number;
+
+  protected get [id]() {
+    return 0x6e941a38;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.prev_value, "number"],
+      [this.new_value, "number"],
+    ];
+  }
+
+  constructor(params: { prev_value: number; new_value: number }) {
+    super();
+    this.prev_value = params.prev_value;
+    this.new_value = params.new_value;
+  }
+}
+
+export class ChannelAdminLogEventActionParticipantJoinByRequest
+  extends TypeChannelAdminLogEventAction {
+  invite: TypeExportedChatInvite;
+  approved_by: bigint;
+
+  protected get [id]() {
+    return 0xafb6144a;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.invite, TypeExportedChatInvite],
+      [this.approved_by, "bigint"],
+    ];
+  }
+
+  constructor(params: { invite: TypeExportedChatInvite; approved_by: bigint }) {
+    super();
+    this.invite = params.invite;
+    this.approved_by = params.approved_by;
+  }
+}
+
+export class ChannelAdminLogEventActionToggleNoForwards
+  extends TypeChannelAdminLogEventAction {
+  new_value: boolean;
+
+  protected get [id]() {
+    return 0xcb2ac766;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.new_value, "boolean"],
+    ];
+  }
+
+  constructor(params: { new_value: boolean }) {
+    super();
+    this.new_value = params.new_value;
+  }
+}
+
+export class ChannelAdminLogEventActionSendMessage
+  extends TypeChannelAdminLogEventAction {
+  message: TypeMessage;
+
+  protected get [id]() {
+    return 0x278f2868;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.message, TypeMessage],
+    ];
+  }
+
+  constructor(params: { message: TypeMessage }) {
+    super();
+    this.message = params.message;
+  }
+}
+
+export class ChannelAdminLogEventActionChangeAvailableReactions
+  extends TypeChannelAdminLogEventAction {
+  prev_value: TypeChatReactions;
+  new_value: TypeChatReactions;
+
+  protected get [id]() {
+    return 0xbe4e0ef8;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.prev_value, TypeChatReactions],
+      [this.new_value, TypeChatReactions],
+    ];
+  }
+
+  constructor(
+    params: { prev_value: TypeChatReactions; new_value: TypeChatReactions },
+  ) {
+    super();
+    this.prev_value = params.prev_value;
+    this.new_value = params.new_value;
+  }
+}
+
+export class ChannelAdminLogEventActionChangeUsernames
+  extends TypeChannelAdminLogEventAction {
+  prev_value: Array<string>;
+  new_value: Array<string>;
+
+  protected get [id]() {
+    return 0xf04fb3a9;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.prev_value, ["string"]],
+      [this.new_value, ["string"]],
+    ];
+  }
+
+  constructor(params: { prev_value: Array<string>; new_value: Array<string> }) {
+    super();
+    this.prev_value = params.prev_value;
+    this.new_value = params.new_value;
+  }
+}
+
+export class ChannelAdminLogEventActionToggleForum
+  extends TypeChannelAdminLogEventAction {
+  new_value: boolean;
+
+  protected get [id]() {
+    return 0x02cc6383;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.new_value, "boolean"],
+    ];
+  }
+
+  constructor(params: { new_value: boolean }) {
+    super();
+    this.new_value = params.new_value;
+  }
+}
+
+export class ChannelAdminLogEventActionCreateTopic
+  extends TypeChannelAdminLogEventAction {
+  topic: TypeForumTopic;
+
+  protected get [id]() {
+    return 0x58707d28;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.topic, TypeForumTopic],
+    ];
+  }
+
+  constructor(params: { topic: TypeForumTopic }) {
+    super();
+    this.topic = params.topic;
+  }
+}
+
+export class ChannelAdminLogEventActionEditTopic
+  extends TypeChannelAdminLogEventAction {
+  prev_topic: TypeForumTopic;
+  new_topic: TypeForumTopic;
+
+  protected get [id]() {
+    return 0xf06fe208;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.prev_topic, TypeForumTopic],
+      [this.new_topic, TypeForumTopic],
+    ];
+  }
+
+  constructor(
+    params: { prev_topic: TypeForumTopic; new_topic: TypeForumTopic },
+  ) {
+    super();
+    this.prev_topic = params.prev_topic;
+    this.new_topic = params.new_topic;
+  }
+}
+
+export class ChannelAdminLogEventActionDeleteTopic
+  extends TypeChannelAdminLogEventAction {
+  topic: TypeForumTopic;
+
+  protected get [id]() {
+    return 0xae168909;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.topic, TypeForumTopic],
+    ];
+  }
+
+  constructor(params: { topic: TypeForumTopic }) {
+    super();
+    this.topic = params.topic;
+  }
+}
+
+export class ChannelAdminLogEventActionPinTopic
+  extends TypeChannelAdminLogEventAction {
+  prev_topic?: TypeForumTopic;
+  new_topic?: TypeForumTopic;
+
+  protected get [id]() {
+    return 0x5d8d353b;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.prev_topic ?? null, TypeForumTopic],
+      [this.new_topic ?? null, TypeForumTopic],
+    ];
+  }
+
+  constructor(
+    params: { prev_topic?: TypeForumTopic; new_topic?: TypeForumTopic },
+  ) {
+    super();
+    this.prev_topic = params.prev_topic;
+    this.new_topic = params.new_topic;
+  }
+}
+
+export class ChannelAdminLogEventActionToggleAntiSpam
+  extends TypeChannelAdminLogEventAction {
+  new_value: boolean;
+
+  protected get [id]() {
+    return 0x64f36dfc;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.new_value, "boolean"],
+    ];
+  }
+
+  constructor(params: { new_value: boolean }) {
+    super();
+    this.new_value = params.new_value;
+  }
+}
+
+export class MessagesFavedStickersNotModified
+  extends TypeMessagesFavedStickers {
+  protected get [id]() {
+    return 0x9e8fa6d3;
+  }
+
+  protected get [params](): Params {
+    return [];
+  }
+
+  constructor() {
+    super();
   }
 }
 
@@ -10823,7 +15931,7 @@ export class RecentMeUrlUser extends TypeRecentMeUrl {
   protected get [params](): Params {
     return [
       [this.url, "string"],
-      [this.user_id, "long"],
+      [this.user_id, "bigint"],
     ];
   }
 
@@ -10845,7 +15953,7 @@ export class RecentMeUrlChat extends TypeRecentMeUrl {
   protected get [params](): Params {
     return [
       [this.url, "string"],
-      [this.chat_id, "long"],
+      [this.chat_id, "bigint"],
     ];
   }
 
@@ -10867,7 +15975,7 @@ export class RecentMeUrlChatInvite extends TypeRecentMeUrl {
   protected get [params](): Params {
     return [
       [this.url, "string"],
-      [this.chat_invite, "ChatInvite"],
+      [this.chat_invite, TypeChatInvite],
     ];
   }
 
@@ -10889,7 +15997,7 @@ export class RecentMeUrlStickerSet extends TypeRecentMeUrl {
   protected get [params](): Params {
     return [
       [this.url, "string"],
-      [this.set, "StickerSetCovered"],
+      [this.set, TypeStickerSetCovered],
     ];
   }
 
@@ -10897,40 +16005,6 @@ export class RecentMeUrlStickerSet extends TypeRecentMeUrl {
     super();
     this.url = params.url;
     this.set = params.set;
-  }
-}
-
-export class ChannelsChannelParticipantsNotModified
-  extends TypeChannelsChannelParticipants {
-  protected get [id]() {
-    return 0xf0173fe9;
-  }
-
-  protected get [params](): Params {
-    return [];
-  }
-
-  constructor() {
-    super();
-  }
-}
-
-export class MessagesMessagesNotModified extends TypeMessagesMessages {
-  count: number;
-
-  protected get [id]() {
-    return 0x74535f21;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.count, "int"],
-    ];
-  }
-
-  constructor(params: { count: number }) {
-    super();
-    this.count = params.count;
   }
 }
 
@@ -10943,7 +16017,7 @@ export class InputMessageID extends TypeInputMessage {
 
   protected get [params](): Params {
     return [
-      [this.id, "int"],
+      [this.id, "number"],
     ];
   }
 
@@ -10962,7 +16036,7 @@ export class InputMessageReplyTo extends TypeInputMessage {
 
   protected get [params](): Params {
     return [
-      [this.id, "int"],
+      [this.id, "number"],
     ];
   }
 
@@ -10986,66 +16060,63 @@ export class InputMessagePinned extends TypeInputMessage {
   }
 }
 
-export class MessageEntityPhone extends TypeMessageEntity {
-  offset: number;
-  length: number;
+export class InputMessageCallbackQuery extends TypeInputMessage {
+  id: number;
+  query_id: bigint;
 
   protected get [id]() {
-    return 0x9b69e34b;
+    return 0xacfa1a7e;
   }
 
   protected get [params](): Params {
     return [
-      [this.offset, "int"],
-      [this.length, "int"],
+      [this.id, "number"],
+      [this.query_id, "bigint"],
     ];
   }
 
-  constructor(params: { offset: number; length: number }) {
+  constructor(params: { id: number; query_id: bigint }) {
     super();
-    this.offset = params.offset;
-    this.length = params.length;
+    this.id = params.id;
+    this.query_id = params.query_id;
   }
 }
 
-export class MessageEntityCashtag extends TypeMessageEntity {
-  offset: number;
-  length: number;
+export class InputDialogPeerFolder extends TypeInputDialogPeer {
+  folder_id: number;
 
   protected get [id]() {
-    return 0x4c4e743f;
+    return 0x64600527;
   }
 
   protected get [params](): Params {
     return [
-      [this.offset, "int"],
-      [this.length, "int"],
+      [this.folder_id, "number"],
     ];
   }
 
-  constructor(params: { offset: number; length: number }) {
+  constructor(params: { folder_id: number }) {
     super();
-    this.offset = params.offset;
-    this.length = params.length;
+    this.folder_id = params.folder_id;
   }
 }
 
-export class MessageActionBotAllowed extends TypeMessageAction {
-  domain: string;
+export class DialogPeerFolder extends TypeDialogPeer {
+  folder_id: number;
 
   protected get [id]() {
-    return 0xabe9affe;
+    return 0x514519e2;
   }
 
   protected get [params](): Params {
     return [
-      [this.domain, "string"],
+      [this.folder_id, "number"],
     ];
   }
 
-  constructor(params: { domain: string }) {
+  constructor(params: { folder_id: number }) {
     super();
-    this.domain = params.domain;
+    this.folder_id = params.folder_id;
   }
 }
 
@@ -11064,41 +16135,6 @@ export class MessagesFoundStickerSetsNotModified
   }
 }
 
-export class WebDocumentNoProxy extends TypeWebDocument {
-  url: string;
-  size: number;
-  mime_type: string;
-  attributes: Array<TypeDocumentAttribute>;
-
-  protected get [id]() {
-    return 0xf9c8bcc6;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.url, "string"],
-      [this.size, "int"],
-      [this.mime_type, "string"],
-      [this.attributes, "Vector<DocumentAttribute>"],
-    ];
-  }
-
-  constructor(
-    params: {
-      url: string;
-      size: number;
-      mime_type: string;
-      attributes: Array<TypeDocumentAttribute>;
-    },
-  ) {
-    super();
-    this.url = params.url;
-    this.size = params.size;
-    this.mime_type = params.mime_type;
-    this.attributes = params.attributes;
-  }
-}
-
 export class HelpTermsOfServiceUpdateEmpty
   extends TypeHelpTermsOfServiceUpdate {
   expires: number;
@@ -11109,7 +16145,7 @@ export class HelpTermsOfServiceUpdateEmpty
 
   protected get [params](): Params {
     return [
-      [this.expires, "int"],
+      [this.expires, "number"],
     ];
   }
 
@@ -11132,11 +16168,11 @@ export class InputSecureFileUploaded extends TypeInputSecureFile {
 
   protected get [params](): Params {
     return [
-      [this.id, "long"],
-      [this.parts, "int"],
+      [this.id, "bigint"],
+      [this.parts, "number"],
       [this.md5_checksum, "string"],
-      [this.file_hash, "bytes"],
-      [this.secret, "bytes"],
+      [this.file_hash, Uint8Array],
+      [this.secret, Uint8Array],
     ];
   }
 
@@ -11155,28 +16191,6 @@ export class InputSecureFileUploaded extends TypeInputSecureFile {
     this.md5_checksum = params.md5_checksum;
     this.file_hash = params.file_hash;
     this.secret = params.secret;
-  }
-}
-
-export class InputSecureFileLocation extends TypeInputFileLocation {
-  id: bigint;
-  access_hash: bigint;
-
-  protected get [id]() {
-    return 0xcbc7ee28;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.id, "long"],
-      [this.access_hash, "long"],
-    ];
-  }
-
-  constructor(params: { id: bigint; access_hash: bigint }) {
-    super();
-    this.id = params.id;
-    this.access_hash = params.access_hash;
   }
 }
 
@@ -11426,8 +16440,8 @@ export class SecureValueErrorData extends TypeSecureValueError {
 
   protected get [params](): Params {
     return [
-      [this.type, "SecureValueType"],
-      [this.data_hash, "bytes"],
+      [this.type, TypeSecureValueType],
+      [this.data_hash, Uint8Array],
       [this.field, "string"],
       [this.text, "string"],
     ];
@@ -11460,8 +16474,8 @@ export class SecureValueErrorFrontSide extends TypeSecureValueError {
 
   protected get [params](): Params {
     return [
-      [this.type, "SecureValueType"],
-      [this.file_hash, "bytes"],
+      [this.type, TypeSecureValueType],
+      [this.file_hash, Uint8Array],
       [this.text, "string"],
     ];
   }
@@ -11487,8 +16501,8 @@ export class SecureValueErrorReverseSide extends TypeSecureValueError {
 
   protected get [params](): Params {
     return [
-      [this.type, "SecureValueType"],
-      [this.file_hash, "bytes"],
+      [this.type, TypeSecureValueType],
+      [this.file_hash, Uint8Array],
       [this.text, "string"],
     ];
   }
@@ -11514,8 +16528,8 @@ export class SecureValueErrorSelfie extends TypeSecureValueError {
 
   protected get [params](): Params {
     return [
-      [this.type, "SecureValueType"],
-      [this.file_hash, "bytes"],
+      [this.type, TypeSecureValueType],
+      [this.file_hash, Uint8Array],
       [this.text, "string"],
     ];
   }
@@ -11541,8 +16555,8 @@ export class SecureValueErrorFile extends TypeSecureValueError {
 
   protected get [params](): Params {
     return [
-      [this.type, "SecureValueType"],
-      [this.file_hash, "bytes"],
+      [this.type, TypeSecureValueType],
+      [this.file_hash, Uint8Array],
       [this.text, "string"],
     ];
   }
@@ -11568,8 +16582,8 @@ export class SecureValueErrorFiles extends TypeSecureValueError {
 
   protected get [params](): Params {
     return [
-      [this.type, "SecureValueType"],
-      [this.file_hash, "Vector<bytes>"],
+      [this.type, TypeSecureValueType],
+      [this.file_hash, [Uint8Array]],
       [this.text, "string"],
     ];
   }
@@ -11588,49 +16602,61 @@ export class SecureValueErrorFiles extends TypeSecureValueError {
   }
 }
 
-export class MessageActionSecureValuesSentMe extends TypeMessageAction {
-  values: Array<TypeSecureValue>;
-  credentials: TypeSecureCredentialsEncrypted;
+export class SecureValueErrorTranslationFile extends TypeSecureValueError {
+  type: TypeSecureValueType;
+  file_hash: Uint8Array;
+  text: string;
 
   protected get [id]() {
-    return 0x1b287353;
+    return 0xa1144770;
   }
 
   protected get [params](): Params {
     return [
-      [this.values, "Vector<SecureValue>"],
-      [this.credentials, "SecureCredentialsEncrypted"],
+      [this.type, TypeSecureValueType],
+      [this.file_hash, Uint8Array],
+      [this.text, "string"],
+    ];
+  }
+
+  constructor(
+    params: { type: TypeSecureValueType; file_hash: Uint8Array; text: string },
+  ) {
+    super();
+    this.type = params.type;
+    this.file_hash = params.file_hash;
+    this.text = params.text;
+  }
+}
+
+export class SecureValueErrorTranslationFiles extends TypeSecureValueError {
+  type: TypeSecureValueType;
+  file_hash: Array<Uint8Array>;
+  text: string;
+
+  protected get [id]() {
+    return 0x34636dd8;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.type, TypeSecureValueType],
+      [this.file_hash, [Uint8Array]],
+      [this.text, "string"],
     ];
   }
 
   constructor(
     params: {
-      values: Array<TypeSecureValue>;
-      credentials: TypeSecureCredentialsEncrypted;
+      type: TypeSecureValueType;
+      file_hash: Array<Uint8Array>;
+      text: string;
     },
   ) {
     super();
-    this.values = params.values;
-    this.credentials = params.credentials;
-  }
-}
-
-export class MessageActionSecureValuesSent extends TypeMessageAction {
-  types: Array<TypeSecureValueType>;
-
-  protected get [id]() {
-    return 0xd95c6154;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.types, "Vector<SecureValueType>"],
-    ];
-  }
-
-  constructor(params: { types: Array<TypeSecureValueType> }) {
-    super();
-    this.types = params.types;
+    this.type = params.type;
+    this.file_hash = params.file_hash;
+    this.text = params.text;
   }
 }
 
@@ -11663,7 +16689,7 @@ export class SavedPhoneContact extends TypeSavedContact {
       [this.phone, "string"],
       [this.first_name, "string"],
       [this.last_name, "string"],
-      [this.date, "int"],
+      [this.date, "number"],
     ];
   }
 
@@ -11683,132 +16709,6 @@ export class SavedPhoneContact extends TypeSavedContact {
   }
 }
 
-export class InputTakeoutFileLocation extends TypeInputFileLocation {
-  protected get [id]() {
-    return 0x29be5899;
-  }
-
-  protected get [params](): Params {
-    return [];
-  }
-
-  constructor() {
-    super();
-  }
-}
-
-export class UpdateDialogUnreadMark extends TypeUpdate {
-  unread?: true;
-  peer: TypeDialogPeer;
-
-  protected get [id]() {
-    return 0xe16459c3;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.unread ?? null, "flags.0?true"],
-      [this.peer, "DialogPeer"],
-    ];
-  }
-
-  constructor(params: { unread?: true; peer: TypeDialogPeer }) {
-    super();
-    this.unread = params.unread;
-    this.peer = params.peer;
-  }
-}
-
-export class MessagesDialogsNotModified extends TypeMessagesDialogs {
-  count: number;
-
-  protected get [id]() {
-    return 0xf0e3e596;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.count, "int"],
-    ];
-  }
-
-  constructor(params: { count: number }) {
-    super();
-    this.count = params.count;
-  }
-}
-
-export class InputWebFileGeoPointLocation extends TypeInputWebFileLocation {
-  geo_point: TypeInputGeoPoint;
-  access_hash: bigint;
-  w: number;
-  h: number;
-  zoom: number;
-  scale: number;
-
-  protected get [id]() {
-    return 0x9f2221c9;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.geo_point, "InputGeoPoint"],
-      [this.access_hash, "long"],
-      [this.w, "int"],
-      [this.h, "int"],
-      [this.zoom, "int"],
-      [this.scale, "int"],
-    ];
-  }
-
-  constructor(
-    params: {
-      geo_point: TypeInputGeoPoint;
-      access_hash: bigint;
-      w: number;
-      h: number;
-      zoom: number;
-      scale: number;
-    },
-  ) {
-    super();
-    this.geo_point = params.geo_point;
-    this.access_hash = params.access_hash;
-    this.w = params.w;
-    this.h = params.h;
-    this.zoom = params.zoom;
-    this.scale = params.scale;
-  }
-}
-
-export class ContactsTopPeersDisabled extends TypeContactsTopPeers {
-  protected get [id]() {
-    return 0xb52c939d;
-  }
-
-  protected get [params](): Params {
-    return [];
-  }
-
-  constructor() {
-    super();
-  }
-}
-
-export class InputReportReasonCopyright extends TypeReportReason {
-  protected get [id]() {
-    return 0x9b89f93a;
-  }
-
-  protected get [params](): Params {
-    return [];
-  }
-
-  constructor() {
-    super();
-  }
-}
-
 export class PasswordKdfAlgoUnknown extends TypePasswordKdfAlgo {
   protected get [id]() {
     return 0xd45ab096;
@@ -11820,6 +16720,37 @@ export class PasswordKdfAlgoUnknown extends TypePasswordKdfAlgo {
 
   constructor() {
     super();
+  }
+}
+
+export class PasswordKdfAlgoSHA256SHA256PBKDF2HMACSHA512iter100000SHA256ModPow
+  extends TypePasswordKdfAlgo {
+  salt1: Uint8Array;
+  salt2: Uint8Array;
+  g: number;
+  p: Uint8Array;
+
+  protected get [id]() {
+    return 0x3a912d4a;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.salt1, Uint8Array],
+      [this.salt2, Uint8Array],
+      [this.g, "number"],
+      [this.p, Uint8Array],
+    ];
+  }
+
+  constructor(
+    params: { salt1: Uint8Array; salt2: Uint8Array; g: number; p: Uint8Array },
+  ) {
+    super();
+    this.salt1 = params.salt1;
+    this.salt2 = params.salt2;
+    this.g = params.g;
+    this.p = params.p;
   }
 }
 
@@ -11847,7 +16778,7 @@ export class SecurePasswordKdfAlgoPBKDF2HMACSHA512iter100000
 
   protected get [params](): Params {
     return [
-      [this.salt, "bytes"],
+      [this.salt, Uint8Array],
     ];
   }
 
@@ -11866,44 +16797,13 @@ export class SecurePasswordKdfAlgoSHA512 extends TypeSecurePasswordKdfAlgo {
 
   protected get [params](): Params {
     return [
-      [this.salt, "bytes"],
+      [this.salt, Uint8Array],
     ];
   }
 
   constructor(params: { salt: Uint8Array }) {
     super();
     this.salt = params.salt;
-  }
-}
-
-export class PasswordKdfAlgoSHA256SHA256PBKDF2HMACSHA512iter100000SHA256ModPow
-  extends TypePasswordKdfAlgo {
-  salt1: Uint8Array;
-  salt2: Uint8Array;
-  g: number;
-  p: Uint8Array;
-
-  protected get [id]() {
-    return 0x3a912d4a;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.salt1, "bytes"],
-      [this.salt2, "bytes"],
-      [this.g, "int"],
-      [this.p, "bytes"],
-    ];
-  }
-
-  constructor(
-    params: { salt1: Uint8Array; salt2: Uint8Array; g: number; p: Uint8Array },
-  ) {
-    super();
-    this.salt1 = params.salt1;
-    this.salt2 = params.salt2;
-    this.g = params.g;
-    this.p = params.p;
   }
 }
 
@@ -11921,64 +16821,6 @@ export class InputCheckPasswordEmpty extends TypeInputCheckPasswordSRP {
   }
 }
 
-export class SecureValueErrorTranslationFile extends TypeSecureValueError {
-  type: TypeSecureValueType;
-  file_hash: Uint8Array;
-  text: string;
-
-  protected get [id]() {
-    return 0xa1144770;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.type, "SecureValueType"],
-      [this.file_hash, "bytes"],
-      [this.text, "string"],
-    ];
-  }
-
-  constructor(
-    params: { type: TypeSecureValueType; file_hash: Uint8Array; text: string },
-  ) {
-    super();
-    this.type = params.type;
-    this.file_hash = params.file_hash;
-    this.text = params.text;
-  }
-}
-
-export class SecureValueErrorTranslationFiles extends TypeSecureValueError {
-  type: TypeSecureValueType;
-  file_hash: Array<Uint8Array>;
-  text: string;
-
-  protected get [id]() {
-    return 0x34636dd8;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.type, "SecureValueType"],
-      [this.file_hash, "Vector<bytes>"],
-      [this.text, "string"],
-    ];
-  }
-
-  constructor(
-    params: {
-      type: TypeSecureValueType;
-      file_hash: Array<Uint8Array>;
-      text: string;
-    },
-  ) {
-    super();
-    this.type = params.type;
-    this.file_hash = params.file_hash;
-    this.text = params.text;
-  }
-}
-
 export class SecureRequiredTypeOneOf extends TypeSecureRequiredType {
   types: Array<TypeSecureRequiredType>;
 
@@ -11988,7 +16830,7 @@ export class SecureRequiredTypeOneOf extends TypeSecureRequiredType {
 
   protected get [params](): Params {
     return [
-      [this.types, "Vector<SecureRequiredType>"],
+      [this.types, [TypeSecureRequiredType]],
     ];
   }
 
@@ -12035,7 +16877,7 @@ export class JsonBool extends TypeJSONValue {
 
   protected get [params](): Params {
     return [
-      [this.value, "Bool"],
+      [this.value, "boolean"],
     ];
   }
 
@@ -12054,7 +16896,7 @@ export class JsonNumber extends TypeJSONValue {
 
   protected get [params](): Params {
     return [
-      [this.value, "double"],
+      [this.value, "number"],
     ];
   }
 
@@ -12092,7 +16934,7 @@ export class JsonArray extends TypeJSONValue {
 
   protected get [params](): Params {
     return [
-      [this.value, "Vector<JSONValue>"],
+      [this.value, [TypeJSONValue]],
     ];
   }
 
@@ -12111,199 +16953,13 @@ export class JsonObject extends TypeJSONValue {
 
   protected get [params](): Params {
     return [
-      [this.value, "Vector<JSONObjectValue>"],
+      [this.value, [TypeJSONObjectValue]],
     ];
   }
 
   constructor(params: { value: Array<TypeJSONObjectValue> }) {
     super();
     this.value = params.value;
-  }
-}
-
-export class InputNotifyBroadcasts extends TypeInputNotifyPeer {
-  protected get [id]() {
-    return 0xb1db7c7e;
-  }
-
-  protected get [params](): Params {
-    return [];
-  }
-
-  constructor() {
-    super();
-  }
-}
-
-export class NotifyBroadcasts extends TypeNotifyPeer {
-  protected get [id]() {
-    return 0xd612e8ef;
-  }
-
-  protected get [params](): Params {
-    return [];
-  }
-
-  constructor() {
-    super();
-  }
-}
-
-export class TextSubscript extends TypeRichText {
-  text: TypeRichText;
-
-  protected get [id]() {
-    return 0xed6a8504;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.text, "RichText"],
-    ];
-  }
-
-  constructor(params: { text: TypeRichText }) {
-    super();
-    this.text = params.text;
-  }
-}
-
-export class TextSuperscript extends TypeRichText {
-  text: TypeRichText;
-
-  protected get [id]() {
-    return 0xc7fb5e01;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.text, "RichText"],
-    ];
-  }
-
-  constructor(params: { text: TypeRichText }) {
-    super();
-    this.text = params.text;
-  }
-}
-
-export class TextMarked extends TypeRichText {
-  text: TypeRichText;
-
-  protected get [id]() {
-    return 0x034b8621;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.text, "RichText"],
-    ];
-  }
-
-  constructor(params: { text: TypeRichText }) {
-    super();
-    this.text = params.text;
-  }
-}
-
-export class TextPhone extends TypeRichText {
-  text: TypeRichText;
-  phone: string;
-
-  protected get [id]() {
-    return 0x1ccb966a;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.text, "RichText"],
-      [this.phone, "string"],
-    ];
-  }
-
-  constructor(params: { text: TypeRichText; phone: string }) {
-    super();
-    this.text = params.text;
-    this.phone = params.phone;
-  }
-}
-
-export class TextImage extends TypeRichText {
-  document_id: bigint;
-  w: number;
-  h: number;
-
-  protected get [id]() {
-    return 0x081ccf4f;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.document_id, "long"],
-      [this.w, "int"],
-      [this.h, "int"],
-    ];
-  }
-
-  constructor(params: { document_id: bigint; w: number; h: number }) {
-    super();
-    this.document_id = params.document_id;
-    this.w = params.w;
-    this.h = params.h;
-  }
-}
-
-export class PageBlockKicker extends TypePageBlock {
-  text: TypeRichText;
-
-  protected get [id]() {
-    return 0x1e148390;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.text, "RichText"],
-    ];
-  }
-
-  constructor(params: { text: TypeRichText }) {
-    super();
-    this.text = params.text;
-  }
-}
-
-export class PageBlockTable extends TypePageBlock {
-  bordered?: true;
-  striped?: true;
-  title: TypeRichText;
-  rows: Array<TypePageTableRow>;
-
-  protected get [id]() {
-    return 0xbf4dea82;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.bordered ?? null, "flags.0?true"],
-      [this.striped ?? null, "flags.1?true"],
-      [this.title, "RichText"],
-      [this.rows, "Vector<PageTableRow>"],
-    ];
-  }
-
-  constructor(
-    params: {
-      bordered?: true;
-      striped?: true;
-      title: TypeRichText;
-      rows: Array<TypePageTableRow>;
-    },
-  ) {
-    super();
-    this.bordered = params.bordered;
-    this.striped = params.striped;
-    this.title = params.title;
-    this.rows = params.rows;
   }
 }
 
@@ -12316,7 +16972,7 @@ export class PageListItemText extends TypePageListItem {
 
   protected get [params](): Params {
     return [
-      [this.text, "RichText"],
+      [this.text, TypeRichText],
     ];
   }
 
@@ -12335,7 +16991,7 @@ export class PageListItemBlocks extends TypePageListItem {
 
   protected get [params](): Params {
     return [
-      [this.blocks, "Vector<PageBlock>"],
+      [this.blocks, [TypePageBlock]],
     ];
   }
 
@@ -12356,7 +17012,7 @@ export class PageListOrderedItemText extends TypePageListOrderedItem {
   protected get [params](): Params {
     return [
       [this.num, "string"],
-      [this.text, "RichText"],
+      [this.text, TypeRichText],
     ];
   }
 
@@ -12378,7 +17034,7 @@ export class PageListOrderedItemBlocks extends TypePageListOrderedItem {
   protected get [params](): Params {
     return [
       [this.num, "string"],
-      [this.blocks, "Vector<PageBlock>"],
+      [this.blocks, [TypePageBlock]],
     ];
   }
 
@@ -12386,165 +17042,6 @@ export class PageListOrderedItemBlocks extends TypePageListOrderedItem {
     super();
     this.num = params.num;
     this.blocks = params.blocks;
-  }
-}
-
-export class PageBlockOrderedList extends TypePageBlock {
-  items: Array<TypePageListOrderedItem>;
-
-  protected get [id]() {
-    return 0x9a8ae1e1;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.items, "Vector<PageListOrderedItem>"],
-    ];
-  }
-
-  constructor(params: { items: Array<TypePageListOrderedItem> }) {
-    super();
-    this.items = params.items;
-  }
-}
-
-export class PageBlockDetails extends TypePageBlock {
-  open?: true;
-  blocks: Array<TypePageBlock>;
-  title: TypeRichText;
-
-  protected get [id]() {
-    return 0x76768bed;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.open ?? null, "flags.0?true"],
-      [this.blocks, "Vector<PageBlock>"],
-      [this.title, "RichText"],
-    ];
-  }
-
-  constructor(
-    params: { open?: true; blocks: Array<TypePageBlock>; title: TypeRichText },
-  ) {
-    super();
-    this.open = params.open;
-    this.blocks = params.blocks;
-    this.title = params.title;
-  }
-}
-
-export class PageBlockRelatedArticles extends TypePageBlock {
-  title: TypeRichText;
-  articles: Array<TypePageRelatedArticle>;
-
-  protected get [id]() {
-    return 0x16115a96;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.title, "RichText"],
-      [this.articles, "Vector<PageRelatedArticle>"],
-    ];
-  }
-
-  constructor(
-    params: { title: TypeRichText; articles: Array<TypePageRelatedArticle> },
-  ) {
-    super();
-    this.title = params.title;
-    this.articles = params.articles;
-  }
-}
-
-export class PageBlockMap extends TypePageBlock {
-  geo: TypeGeoPoint;
-  zoom: number;
-  w: number;
-  h: number;
-  caption: TypePageCaption;
-
-  protected get [id]() {
-    return 0xa44f3ef6;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.geo, "GeoPoint"],
-      [this.zoom, "int"],
-      [this.w, "int"],
-      [this.h, "int"],
-      [this.caption, "PageCaption"],
-    ];
-  }
-
-  constructor(
-    params: {
-      geo: TypeGeoPoint;
-      zoom: number;
-      w: number;
-      h: number;
-      caption: TypePageCaption;
-    },
-  ) {
-    super();
-    this.geo = params.geo;
-    this.zoom = params.zoom;
-    this.w = params.w;
-    this.h = params.h;
-    this.caption = params.caption;
-  }
-}
-
-export class InputPrivacyKeyPhoneP2P extends TypeInputPrivacyKey {
-  protected get [id]() {
-    return 0xdb9e70d2;
-  }
-
-  protected get [params](): Params {
-    return [];
-  }
-
-  constructor() {
-    super();
-  }
-}
-
-export class PrivacyKeyPhoneP2P extends TypePrivacyKey {
-  protected get [id]() {
-    return 0x39491cc8;
-  }
-
-  protected get [params](): Params {
-    return [];
-  }
-
-  constructor() {
-    super();
-  }
-}
-
-export class TextAnchor extends TypeRichText {
-  text: TypeRichText;
-  name: string;
-
-  protected get [id]() {
-    return 0x35553762;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.text, "RichText"],
-      [this.name, "string"],
-    ];
-  }
-
-  constructor(params: { text: TypeRichText; name: string }) {
-    super();
-    this.text = params.text;
-    this.name = params.name;
   }
 }
 
@@ -12559,157 +17056,6 @@ export class HelpUserInfoEmpty extends TypeHelpUserInfo {
 
   constructor() {
     super();
-  }
-}
-
-export class MessageActionContactSignUp extends TypeMessageAction {
-  protected get [id]() {
-    return 0xf3f25f76;
-  }
-
-  protected get [params](): Params {
-    return [];
-  }
-
-  constructor() {
-    super();
-  }
-}
-
-export class UpdateMessagePoll extends TypeUpdate {
-  poll_id: bigint;
-  poll?: TypePoll;
-  results: TypePollResults;
-
-  protected get [id]() {
-    return 0xaca1657b;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.poll_id, "long"],
-      [this.poll ?? null, "flags.0?Poll"],
-      [this.results, "PollResults"],
-    ];
-  }
-
-  constructor(
-    params: { poll_id: bigint; poll?: TypePoll; results: TypePollResults },
-  ) {
-    super();
-    this.poll_id = params.poll_id;
-    this.poll = params.poll;
-    this.results = params.results;
-  }
-}
-
-export class InputMediaPoll extends TypeInputMedia {
-  poll: TypePoll;
-  correct_answers?: Array<Uint8Array>;
-  solution?: string;
-  solution_entities?: Array<TypeMessageEntity>;
-
-  protected get [id]() {
-    return 0x0f94e5f1;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.poll, "Poll"],
-      [this.correct_answers ?? null, "flags.0?Vector<bytes>"],
-      [this.solution ?? null, "flags.1?string"],
-      [this.solution_entities ?? null, "flags.1?Vector<MessageEntity>"],
-    ];
-  }
-
-  constructor(
-    params: {
-      poll: TypePoll;
-      correct_answers?: Array<Uint8Array>;
-      solution?: string;
-      solution_entities?: Array<TypeMessageEntity>;
-    },
-  ) {
-    super();
-    this.poll = params.poll;
-    this.correct_answers = params.correct_answers;
-    this.solution = params.solution;
-    this.solution_entities = params.solution_entities;
-  }
-}
-
-export class MessageMediaPoll extends TypeMessageMedia {
-  poll: TypePoll;
-  results: TypePollResults;
-
-  protected get [id]() {
-    return 0x4bd6e798;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.poll, "Poll"],
-      [this.results, "PollResults"],
-    ];
-  }
-
-  constructor(params: { poll: TypePoll; results: TypePollResults }) {
-    super();
-    this.poll = params.poll;
-    this.results = params.results;
-  }
-}
-
-export class PhotoStrippedSize extends TypePhotoSize {
-  type: string;
-  bytes: Uint8Array;
-
-  protected get [id]() {
-    return 0xe0b0bc2e;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.type, "string"],
-      [this.bytes, "bytes"],
-    ];
-  }
-
-  constructor(params: { type: string; bytes: Uint8Array }) {
-    super();
-    this.type = params.type;
-    this.bytes = params.bytes;
-  }
-}
-
-export class UpdateChatDefaultBannedRights extends TypeUpdate {
-  peer: TypePeer;
-  default_banned_rights: TypeChatBannedRights;
-  version: number;
-
-  protected get [id]() {
-    return 0x54c01850;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.peer, "Peer"],
-      [this.default_banned_rights, "ChatBannedRights"],
-      [this.version, "int"],
-    ];
-  }
-
-  constructor(
-    params: {
-      peer: TypePeer;
-      default_banned_rights: TypeChatBannedRights;
-      version: number;
-    },
-  ) {
-    super();
-    this.peer = params.peer;
-    this.default_banned_rights = params.default_banned_rights;
-    this.version = params.version;
   }
 }
 
@@ -12732,70 +17078,22 @@ export class InputWallPaperSlug extends TypeInputWallPaper {
   }
 }
 
-export class ChannelParticipantsContacts extends TypeChannelParticipantsFilter {
-  q: string;
+export class InputWallPaperNoFile extends TypeInputWallPaper {
+  id: bigint;
 
   protected get [id]() {
-    return 0xbb6ae88d;
+    return 0x967a462e;
   }
 
   protected get [params](): Params {
     return [
-      [this.q, "string"],
+      [this.id, "bigint"],
     ];
   }
 
-  constructor(params: { q: string }) {
+  constructor(params: { id: bigint }) {
     super();
-    this.q = params.q;
-  }
-}
-
-export class ChannelAdminLogEventActionDefaultBannedRights
-  extends TypeChannelAdminLogEventAction {
-  prev_banned_rights: TypeChatBannedRights;
-  new_banned_rights: TypeChatBannedRights;
-
-  protected get [id]() {
-    return 0x2df5fc0a;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.prev_banned_rights, "ChatBannedRights"],
-      [this.new_banned_rights, "ChatBannedRights"],
-    ];
-  }
-
-  constructor(
-    params: {
-      prev_banned_rights: TypeChatBannedRights;
-      new_banned_rights: TypeChatBannedRights;
-    },
-  ) {
-    super();
-    this.prev_banned_rights = params.prev_banned_rights;
-    this.new_banned_rights = params.new_banned_rights;
-  }
-}
-
-export class ChannelAdminLogEventActionStopPoll
-  extends TypeChannelAdminLogEventAction {
-  message: TypeMessage;
-
-  protected get [id]() {
-    return 0x8f079643;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.message, "Message"],
-    ];
-  }
-
-  constructor(params: { message: TypeMessage }) {
-    super();
-    this.message = params.message;
+    this.id = params.id;
   }
 }
 
@@ -12824,7 +17122,7 @@ export class EmojiKeywordDeleted extends TypeEmojiKeyword {
   protected get [params](): Params {
     return [
       [this.keyword, "string"],
-      [this.emoticons, "Vector<string>"],
+      [this.emoticons, ["string"]],
     ];
   }
 
@@ -12832,565 +17130,6 @@ export class EmojiKeywordDeleted extends TypeEmojiKeyword {
     super();
     this.keyword = params.keyword;
     this.emoticons = params.emoticons;
-  }
-}
-
-export class InputPrivacyKeyForwards extends TypeInputPrivacyKey {
-  protected get [id]() {
-    return 0xa4dd4c08;
-  }
-
-  protected get [params](): Params {
-    return [];
-  }
-
-  constructor() {
-    super();
-  }
-}
-
-export class PrivacyKeyForwards extends TypePrivacyKey {
-  protected get [id]() {
-    return 0x69ec56a3;
-  }
-
-  protected get [params](): Params {
-    return [];
-  }
-
-  constructor() {
-    super();
-  }
-}
-
-export class InputPrivacyKeyProfilePhoto extends TypeInputPrivacyKey {
-  protected get [id]() {
-    return 0x5719bacc;
-  }
-
-  protected get [params](): Params {
-    return [];
-  }
-
-  constructor() {
-    super();
-  }
-}
-
-export class PrivacyKeyProfilePhoto extends TypePrivacyKey {
-  protected get [id]() {
-    return 0x96151fed;
-  }
-
-  protected get [params](): Params {
-    return [];
-  }
-
-  constructor() {
-    super();
-  }
-}
-
-export class InputPhotoFileLocation extends TypeInputFileLocation {
-  id: bigint;
-  access_hash: bigint;
-  file_reference: Uint8Array;
-  thumb_size: string;
-
-  protected get [id]() {
-    return 0x40181ffe;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.id, "long"],
-      [this.access_hash, "long"],
-      [this.file_reference, "bytes"],
-      [this.thumb_size, "string"],
-    ];
-  }
-
-  constructor(
-    params: {
-      id: bigint;
-      access_hash: bigint;
-      file_reference: Uint8Array;
-      thumb_size: string;
-    },
-  ) {
-    super();
-    this.id = params.id;
-    this.access_hash = params.access_hash;
-    this.file_reference = params.file_reference;
-    this.thumb_size = params.thumb_size;
-  }
-}
-
-export class InputPhotoLegacyFileLocation extends TypeInputFileLocation {
-  id: bigint;
-  access_hash: bigint;
-  file_reference: Uint8Array;
-  volume_id: bigint;
-  local_id: number;
-  secret: bigint;
-
-  protected get [id]() {
-    return 0xd83466f3;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.id, "long"],
-      [this.access_hash, "long"],
-      [this.file_reference, "bytes"],
-      [this.volume_id, "long"],
-      [this.local_id, "int"],
-      [this.secret, "long"],
-    ];
-  }
-
-  constructor(
-    params: {
-      id: bigint;
-      access_hash: bigint;
-      file_reference: Uint8Array;
-      volume_id: bigint;
-      local_id: number;
-      secret: bigint;
-    },
-  ) {
-    super();
-    this.id = params.id;
-    this.access_hash = params.access_hash;
-    this.file_reference = params.file_reference;
-    this.volume_id = params.volume_id;
-    this.local_id = params.local_id;
-    this.secret = params.secret;
-  }
-}
-
-export class InputPeerPhotoFileLocation extends TypeInputFileLocation {
-  big?: true;
-  peer: TypeInputPeer;
-  photo_id: bigint;
-
-  protected get [id]() {
-    return 0x37257e99;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.big ?? null, "flags.0?true"],
-      [this.peer, "InputPeer"],
-      [this.photo_id, "long"],
-    ];
-  }
-
-  constructor(params: { big?: true; peer: TypeInputPeer; photo_id: bigint }) {
-    super();
-    this.big = params.big;
-    this.peer = params.peer;
-    this.photo_id = params.photo_id;
-  }
-}
-
-export class InputStickerSetThumb extends TypeInputFileLocation {
-  stickerset: TypeInputStickerSet;
-  thumb_version: number;
-
-  protected get [id]() {
-    return 0x9d84f3db;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.stickerset, "InputStickerSet"],
-      [this.thumb_version, "int"],
-    ];
-  }
-
-  constructor(
-    params: { stickerset: TypeInputStickerSet; thumb_version: number },
-  ) {
-    super();
-    this.stickerset = params.stickerset;
-    this.thumb_version = params.thumb_version;
-  }
-}
-
-export class DialogFolder extends TypeDialog {
-  pinned?: true;
-  folder: TypeFolder;
-  peer: TypePeer;
-  top_message: number;
-  unread_muted_peers_count: number;
-  unread_unmuted_peers_count: number;
-  unread_muted_messages_count: number;
-  unread_unmuted_messages_count: number;
-
-  protected get [id]() {
-    return 0x71bd134c;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.pinned ?? null, "flags.2?true"],
-      [this.folder, "Folder"],
-      [this.peer, "Peer"],
-      [this.top_message, "int"],
-      [this.unread_muted_peers_count, "int"],
-      [this.unread_unmuted_peers_count, "int"],
-      [this.unread_muted_messages_count, "int"],
-      [this.unread_unmuted_messages_count, "int"],
-    ];
-  }
-
-  constructor(
-    params: {
-      pinned?: true;
-      folder: TypeFolder;
-      peer: TypePeer;
-      top_message: number;
-      unread_muted_peers_count: number;
-      unread_unmuted_peers_count: number;
-      unread_muted_messages_count: number;
-      unread_unmuted_messages_count: number;
-    },
-  ) {
-    super();
-    this.pinned = params.pinned;
-    this.folder = params.folder;
-    this.peer = params.peer;
-    this.top_message = params.top_message;
-    this.unread_muted_peers_count = params.unread_muted_peers_count;
-    this.unread_unmuted_peers_count = params.unread_unmuted_peers_count;
-    this.unread_muted_messages_count = params.unread_muted_messages_count;
-    this.unread_unmuted_messages_count = params.unread_unmuted_messages_count;
-  }
-}
-
-export class InputDialogPeerFolder extends TypeInputDialogPeer {
-  folder_id: number;
-
-  protected get [id]() {
-    return 0x64600527;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.folder_id, "int"],
-    ];
-  }
-
-  constructor(params: { folder_id: number }) {
-    super();
-    this.folder_id = params.folder_id;
-  }
-}
-
-export class DialogPeerFolder extends TypeDialogPeer {
-  folder_id: number;
-
-  protected get [id]() {
-    return 0x514519e2;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.folder_id, "int"],
-    ];
-  }
-
-  constructor(params: { folder_id: number }) {
-    super();
-    this.folder_id = params.folder_id;
-  }
-}
-
-export class UpdateFolderPeers extends TypeUpdate {
-  folder_peers: Array<TypeFolderPeer>;
-  pts: number;
-  pts_count: number;
-
-  protected get [id]() {
-    return 0x19360dc0;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.folder_peers, "Vector<FolderPeer>"],
-      [this.pts, "int"],
-      [this.pts_count, "int"],
-    ];
-  }
-
-  constructor(
-    params: {
-      folder_peers: Array<TypeFolderPeer>;
-      pts: number;
-      pts_count: number;
-    },
-  ) {
-    super();
-    this.folder_peers = params.folder_peers;
-    this.pts = params.pts;
-    this.pts_count = params.pts_count;
-  }
-}
-
-export class InputUserFromMessage extends TypeInputUser {
-  peer: TypeInputPeer;
-  msg_id: number;
-  user_id: bigint;
-
-  protected get [id]() {
-    return 0x1da448e2;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.peer, "InputPeer"],
-      [this.msg_id, "int"],
-      [this.user_id, "long"],
-    ];
-  }
-
-  constructor(
-    params: { peer: TypeInputPeer; msg_id: number; user_id: bigint },
-  ) {
-    super();
-    this.peer = params.peer;
-    this.msg_id = params.msg_id;
-    this.user_id = params.user_id;
-  }
-}
-
-export class InputChannelFromMessage extends TypeInputChannel {
-  peer: TypeInputPeer;
-  msg_id: number;
-  channel_id: bigint;
-
-  protected get [id]() {
-    return 0x5b934f9d;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.peer, "InputPeer"],
-      [this.msg_id, "int"],
-      [this.channel_id, "long"],
-    ];
-  }
-
-  constructor(
-    params: { peer: TypeInputPeer; msg_id: number; channel_id: bigint },
-  ) {
-    super();
-    this.peer = params.peer;
-    this.msg_id = params.msg_id;
-    this.channel_id = params.channel_id;
-  }
-}
-
-export class InputPeerUserFromMessage extends TypeInputPeer {
-  peer: TypeInputPeer;
-  msg_id: number;
-  user_id: bigint;
-
-  protected get [id]() {
-    return 0xa87b0a1c;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.peer, "InputPeer"],
-      [this.msg_id, "int"],
-      [this.user_id, "long"],
-    ];
-  }
-
-  constructor(
-    params: { peer: TypeInputPeer; msg_id: number; user_id: bigint },
-  ) {
-    super();
-    this.peer = params.peer;
-    this.msg_id = params.msg_id;
-    this.user_id = params.user_id;
-  }
-}
-
-export class InputPeerChannelFromMessage extends TypeInputPeer {
-  peer: TypeInputPeer;
-  msg_id: number;
-  channel_id: bigint;
-
-  protected get [id]() {
-    return 0xbd2a0840;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.peer, "InputPeer"],
-      [this.msg_id, "int"],
-      [this.channel_id, "long"],
-    ];
-  }
-
-  constructor(
-    params: { peer: TypeInputPeer; msg_id: number; channel_id: bigint },
-  ) {
-    super();
-    this.peer = params.peer;
-    this.msg_id = params.msg_id;
-    this.channel_id = params.channel_id;
-  }
-}
-
-export class InputPrivacyKeyPhoneNumber extends TypeInputPrivacyKey {
-  protected get [id]() {
-    return 0x0352dafa;
-  }
-
-  protected get [params](): Params {
-    return [];
-  }
-
-  constructor() {
-    super();
-  }
-}
-
-export class PrivacyKeyPhoneNumber extends TypePrivacyKey {
-  protected get [id]() {
-    return 0xd19ae46d;
-  }
-
-  protected get [params](): Params {
-    return [];
-  }
-
-  constructor() {
-    super();
-  }
-}
-
-export class TopPeerCategoryForwardUsers extends TypeTopPeerCategory {
-  protected get [id]() {
-    return 0xa8406ca9;
-  }
-
-  protected get [params](): Params {
-    return [];
-  }
-
-  constructor() {
-    super();
-  }
-}
-
-export class TopPeerCategoryForwardChats extends TypeTopPeerCategory {
-  protected get [id]() {
-    return 0xfbeec0f0;
-  }
-
-  protected get [params](): Params {
-    return [];
-  }
-
-  constructor() {
-    super();
-  }
-}
-
-export class ChannelAdminLogEventActionChangeLinkedChat
-  extends TypeChannelAdminLogEventAction {
-  prev_value: bigint;
-  new_value: bigint;
-
-  protected get [id]() {
-    return 0x050c7ac8;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.prev_value, "long"],
-      [this.new_value, "long"],
-    ];
-  }
-
-  constructor(params: { prev_value: bigint; new_value: bigint }) {
-    super();
-    this.prev_value = params.prev_value;
-    this.new_value = params.new_value;
-  }
-}
-
-export class KeyboardButtonUrlAuth extends TypeKeyboardButton {
-  text: string;
-  fwd_text?: string;
-  url: string;
-  button_id: number;
-
-  protected get [id]() {
-    return 0x10b78d29;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.text, "string"],
-      [this.fwd_text ?? null, "flags.0?string"],
-      [this.url, "string"],
-      [this.button_id, "int"],
-    ];
-  }
-
-  constructor(
-    params: { text: string; fwd_text?: string; url: string; button_id: number },
-  ) {
-    super();
-    this.text = params.text;
-    this.fwd_text = params.fwd_text;
-    this.url = params.url;
-    this.button_id = params.button_id;
-  }
-}
-
-export class InputKeyboardButtonUrlAuth extends TypeKeyboardButton {
-  request_write_access?: true;
-  text: string;
-  fwd_text?: string;
-  url: string;
-  bot: TypeInputUser;
-
-  protected get [id]() {
-    return 0xd02e7fd4;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.request_write_access ?? null, "flags.0?true"],
-      [this.text, "string"],
-      [this.fwd_text ?? null, "flags.1?string"],
-      [this.url, "string"],
-      [this.bot, "InputUser"],
-    ];
-  }
-
-  constructor(
-    params: {
-      request_write_access?: true;
-      text: string;
-      fwd_text?: string;
-      url: string;
-      bot: TypeInputUser;
-    },
-  ) {
-    super();
-    this.request_write_access = params.request_write_access;
-    this.text = params.text;
-    this.fwd_text = params.fwd_text;
-    this.url = params.url;
-    this.bot = params.bot;
   }
 }
 
@@ -13405,8 +17144,8 @@ export class UrlAuthResultRequest extends TypeUrlAuthResult {
 
   protected get [params](): Params {
     return [
-      [this.request_write_access ?? null, "flags.0?true"],
-      [this.bot, "User"],
+      [this.request_write_access ?? null, "true"],
+      [this.bot, TypeUser],
       [this.domain, "string"],
     ];
   }
@@ -13454,172 +17193,6 @@ export class UrlAuthResultDefault extends TypeUrlAuthResult {
   }
 }
 
-export class InputPrivacyValueAllowChatParticipants
-  extends TypeInputPrivacyRule {
-  chats: Array<bigint>;
-
-  protected get [id]() {
-    return 0x840649cf;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.chats, "Vector<long>"],
-    ];
-  }
-
-  constructor(params: { chats: Array<bigint> }) {
-    super();
-    this.chats = params.chats;
-  }
-}
-
-export class InputPrivacyValueDisallowChatParticipants
-  extends TypeInputPrivacyRule {
-  chats: Array<bigint>;
-
-  protected get [id]() {
-    return 0xe94f0f86;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.chats, "Vector<long>"],
-    ];
-  }
-
-  constructor(params: { chats: Array<bigint> }) {
-    super();
-    this.chats = params.chats;
-  }
-}
-
-export class PrivacyValueAllowChatParticipants extends TypePrivacyRule {
-  chats: Array<bigint>;
-
-  protected get [id]() {
-    return 0x6b134e8e;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.chats, "Vector<long>"],
-    ];
-  }
-
-  constructor(params: { chats: Array<bigint> }) {
-    super();
-    this.chats = params.chats;
-  }
-}
-
-export class PrivacyValueDisallowChatParticipants extends TypePrivacyRule {
-  chats: Array<bigint>;
-
-  protected get [id]() {
-    return 0x41c87565;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.chats, "Vector<long>"],
-    ];
-  }
-
-  constructor(params: { chats: Array<bigint> }) {
-    super();
-    this.chats = params.chats;
-  }
-}
-
-export class MessageEntityUnderline extends TypeMessageEntity {
-  offset: number;
-  length: number;
-
-  protected get [id]() {
-    return 0x9c4e7e8b;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.offset, "int"],
-      [this.length, "int"],
-    ];
-  }
-
-  constructor(params: { offset: number; length: number }) {
-    super();
-    this.offset = params.offset;
-    this.length = params.length;
-  }
-}
-
-export class MessageEntityStrike extends TypeMessageEntity {
-  offset: number;
-  length: number;
-
-  protected get [id]() {
-    return 0xbf0693d4;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.offset, "int"],
-      [this.length, "int"],
-    ];
-  }
-
-  constructor(params: { offset: number; length: number }) {
-    super();
-    this.offset = params.offset;
-    this.length = params.length;
-  }
-}
-
-export class MessageEntityBlockquote extends TypeMessageEntity {
-  offset: number;
-  length: number;
-
-  protected get [id]() {
-    return 0x020df5d0;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.offset, "int"],
-      [this.length, "int"],
-    ];
-  }
-
-  constructor(params: { offset: number; length: number }) {
-    super();
-    this.offset = params.offset;
-    this.length = params.length;
-  }
-}
-
-export class UpdatePeerSettings extends TypeUpdate {
-  peer: TypePeer;
-  settings: TypePeerSettings;
-
-  protected get [id]() {
-    return 0x6a7e7366;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.peer, "Peer"],
-      [this.settings, "PeerSettings"],
-    ];
-  }
-
-  constructor(params: { peer: TypePeer; settings: TypePeerSettings }) {
-    super();
-    this.peer = params.peer;
-    this.settings = params.settings;
-  }
-}
-
 export class ChannelLocationEmpty extends TypeChannelLocation {
   protected get [id]() {
     return 0xbfb5ad8b;
@@ -13634,178 +17207,22 @@ export class ChannelLocationEmpty extends TypeChannelLocation {
   }
 }
 
-export class UpdatePeerLocated extends TypeUpdate {
-  peers: Array<TypePeerLocated>;
+export class PeerSelfLocated extends TypePeerLocated {
+  expires: number;
 
   protected get [id]() {
-    return 0xb4afcfb0;
+    return 0xf8ec284b;
   }
 
   protected get [params](): Params {
     return [
-      [this.peers, "Vector<PeerLocated>"],
+      [this.expires, "number"],
     ];
   }
 
-  constructor(params: { peers: Array<TypePeerLocated> }) {
+  constructor(params: { expires: number }) {
     super();
-    this.peers = params.peers;
-  }
-}
-
-export class ChannelAdminLogEventActionChangeLocation
-  extends TypeChannelAdminLogEventAction {
-  prev_value: TypeChannelLocation;
-  new_value: TypeChannelLocation;
-
-  protected get [id]() {
-    return 0x0e6b76ae;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.prev_value, "ChannelLocation"],
-      [this.new_value, "ChannelLocation"],
-    ];
-  }
-
-  constructor(
-    params: { prev_value: TypeChannelLocation; new_value: TypeChannelLocation },
-  ) {
-    super();
-    this.prev_value = params.prev_value;
-    this.new_value = params.new_value;
-  }
-}
-
-export class InputReportReasonGeoIrrelevant extends TypeReportReason {
-  protected get [id]() {
-    return 0xdbd4feed;
-  }
-
-  protected get [params](): Params {
-    return [];
-  }
-
-  constructor() {
-    super();
-  }
-}
-
-export class ChannelAdminLogEventActionToggleSlowMode
-  extends TypeChannelAdminLogEventAction {
-  prev_value: number;
-  new_value: number;
-
-  protected get [id]() {
-    return 0x53909779;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.prev_value, "int"],
-      [this.new_value, "int"],
-    ];
-  }
-
-  constructor(params: { prev_value: number; new_value: number }) {
-    super();
-    this.prev_value = params.prev_value;
-    this.new_value = params.new_value;
-  }
-}
-
-export class AuthAuthorizationSignUpRequired extends TypeAuthAuthorization {
-  terms_of_service?: TypeHelpTermsOfService;
-
-  protected get [id]() {
-    return 0x44747e9a;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.terms_of_service ?? null, "flags.0?help.TermsOfService"],
-    ];
-  }
-
-  constructor(params: { terms_of_service?: TypeHelpTermsOfService }) {
-    super();
-    this.terms_of_service = params.terms_of_service;
-  }
-}
-
-export class PaymentsPaymentVerificationNeeded
-  extends TypePaymentsPaymentResult {
-  url: string;
-
-  protected get [id]() {
-    return 0xd8411139;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.url, "string"],
-    ];
-  }
-
-  constructor(params: { url: string }) {
-    super();
-    this.url = params.url;
-  }
-}
-
-export class InputStickerSetAnimatedEmoji extends TypeInputStickerSet {
-  protected get [id]() {
-    return 0x028703c8;
-  }
-
-  protected get [params](): Params {
-    return [];
-  }
-
-  constructor() {
-    super();
-  }
-}
-
-export class UpdateNewScheduledMessage extends TypeUpdate {
-  message: TypeMessage;
-
-  protected get [id]() {
-    return 0x39a51dfb;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.message, "Message"],
-    ];
-  }
-
-  constructor(params: { message: TypeMessage }) {
-    super();
-    this.message = params.message;
-  }
-}
-
-export class UpdateDeleteScheduledMessages extends TypeUpdate {
-  peer: TypePeer;
-  messages: Array<number>;
-
-  protected get [id]() {
-    return 0x90866cee;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.peer, "Peer"],
-      [this.messages, "Vector<int>"],
-    ];
-  }
-
-  constructor(params: { peer: TypePeer; messages: Array<number> }) {
-    super();
-    this.peer = params.peer;
-    this.messages = params.messages;
+    this.expires = params.expires;
   }
 }
 
@@ -13842,89 +17259,6 @@ export class AccountThemesNotModified extends TypeAccountThemes {
   }
 }
 
-export class UpdateTheme extends TypeUpdate {
-  theme: TypeTheme;
-
-  protected get [id]() {
-    return 0x8216fba3;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.theme, "Theme"],
-    ];
-  }
-
-  constructor(params: { theme: TypeTheme }) {
-    super();
-    this.theme = params.theme;
-  }
-}
-
-export class InputPrivacyKeyAddedByPhone extends TypeInputPrivacyKey {
-  protected get [id]() {
-    return 0xd1219bdd;
-  }
-
-  protected get [params](): Params {
-    return [];
-  }
-
-  constructor() {
-    super();
-  }
-}
-
-export class PrivacyKeyAddedByPhone extends TypePrivacyKey {
-  protected get [id]() {
-    return 0x42ffd42b;
-  }
-
-  protected get [params](): Params {
-    return [];
-  }
-
-  constructor() {
-    super();
-  }
-}
-
-export class UpdateGeoLiveViewed extends TypeUpdate {
-  peer: TypePeer;
-  msg_id: number;
-
-  protected get [id]() {
-    return 0x871fb939;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.peer, "Peer"],
-      [this.msg_id, "int"],
-    ];
-  }
-
-  constructor(params: { peer: TypePeer; msg_id: number }) {
-    super();
-    this.peer = params.peer;
-    this.msg_id = params.msg_id;
-  }
-}
-
-export class UpdateLoginToken extends TypeUpdate {
-  protected get [id]() {
-    return 0x564fe691;
-  }
-
-  protected get [params](): Params {
-    return [];
-  }
-
-  constructor() {
-    super();
-  }
-}
-
 export class AuthLoginTokenMigrateTo extends TypeAuthLoginToken {
   dc_id: number;
   token: Uint8Array;
@@ -13935,8 +17269,8 @@ export class AuthLoginTokenMigrateTo extends TypeAuthLoginToken {
 
   protected get [params](): Params {
     return [
-      [this.dc_id, "int"],
-      [this.token, "bytes"],
+      [this.dc_id, "number"],
+      [this.token, Uint8Array],
     ];
   }
 
@@ -13956,7 +17290,7 @@ export class AuthLoginTokenSuccess extends TypeAuthLoginToken {
 
   protected get [params](): Params {
     return [
-      [this.authorization, "auth.Authorization"],
+      [this.authorization, TypeAuthAuthorization],
     ];
   }
 
@@ -14036,60 +17370,6 @@ export class BaseThemeArctic extends TypeBaseTheme {
   }
 }
 
-export class InputWallPaperNoFile extends TypeInputWallPaper {
-  id: bigint;
-
-  protected get [id]() {
-    return 0x967a462e;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.id, "long"],
-    ];
-  }
-
-  constructor(params: { id: bigint }) {
-    super();
-    this.id = params.id;
-  }
-}
-
-export class WallPaperNoFile extends TypeWallPaper {
-  id: bigint;
-  default?: true;
-  dark?: true;
-  settings?: TypeWallPaperSettings;
-
-  protected get [id]() {
-    return 0xe0804116;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.id, "long"],
-      [this.default ?? null, "flags.1?true"],
-      [this.dark ?? null, "flags.4?true"],
-      [this.settings ?? null, "flags.2?WallPaperSettings"],
-    ];
-  }
-
-  constructor(
-    params: {
-      id: bigint;
-      default?: true;
-      dark?: true;
-      settings?: TypeWallPaperSettings;
-    },
-  ) {
-    super();
-    this.id = params.id;
-    this.default = params.default;
-    this.dark = params.dark;
-    this.settings = params.settings;
-  }
-}
-
 export class WebPageAttributeTheme extends TypeWebPageAttribute {
   documents?: Array<TypeDocument>;
   settings?: TypeThemeSettings;
@@ -14100,8 +17380,8 @@ export class WebPageAttributeTheme extends TypeWebPageAttribute {
 
   protected get [params](): Params {
     return [
-      [this.documents ?? null, "flags.0?Vector<Document>"],
-      [this.settings ?? null, "flags.1?ThemeSettings"],
+      [this.documents ?? null, [TypeDocument]],
+      [this.settings ?? null, TypeThemeSettings],
     ];
   }
 
@@ -14111,41 +17391,6 @@ export class WebPageAttributeTheme extends TypeWebPageAttribute {
     super();
     this.documents = params.documents;
     this.settings = params.settings;
-  }
-}
-
-export class UpdateMessagePollVote extends TypeUpdate {
-  poll_id: bigint;
-  user_id: bigint;
-  options: Array<Uint8Array>;
-  qts: number;
-
-  protected get [id]() {
-    return 0x106395c9;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.poll_id, "long"],
-      [this.user_id, "long"],
-      [this.options, "Vector<bytes>"],
-      [this.qts, "int"],
-    ];
-  }
-
-  constructor(
-    params: {
-      poll_id: bigint;
-      user_id: bigint;
-      options: Array<Uint8Array>;
-      qts: number;
-    },
-  ) {
-    super();
-    this.poll_id = params.poll_id;
-    this.user_id = params.user_id;
-    this.options = params.options;
-    this.qts = params.qts;
   }
 }
 
@@ -14159,8 +17404,8 @@ export class MessageUserVoteInputOption extends TypeMessageUserVote {
 
   protected get [params](): Params {
     return [
-      [this.user_id, "long"],
-      [this.date, "int"],
+      [this.user_id, "bigint"],
+      [this.date, "number"],
     ];
   }
 
@@ -14182,9 +17427,9 @@ export class MessageUserVoteMultiple extends TypeMessageUserVote {
 
   protected get [params](): Params {
     return [
-      [this.user_id, "long"],
-      [this.options, "Vector<bytes>"],
-      [this.date, "int"],
+      [this.user_id, "bigint"],
+      [this.options, [Uint8Array]],
+      [this.date, "number"],
     ];
   }
 
@@ -14198,113 +17443,9 @@ export class MessageUserVoteMultiple extends TypeMessageUserVote {
   }
 }
 
-export class KeyboardButtonRequestPoll extends TypeKeyboardButton {
-  quiz?: boolean;
-  text: string;
-
+export class DialogFilterDefault extends TypeDialogFilter {
   protected get [id]() {
-    return 0xbbc7515d;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.quiz ?? null, "flags.0?Bool"],
-      [this.text, "string"],
-    ];
-  }
-
-  constructor(params: { quiz?: boolean; text: string }) {
-    super();
-    this.quiz = params.quiz;
-    this.text = params.text;
-  }
-}
-
-export class MessageEntityBankCard extends TypeMessageEntity {
-  offset: number;
-  length: number;
-
-  protected get [id]() {
-    return 0x761e6af4;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.offset, "int"],
-      [this.length, "int"],
-    ];
-  }
-
-  constructor(params: { offset: number; length: number }) {
-    super();
-    this.offset = params.offset;
-    this.length = params.length;
-  }
-}
-
-export class PeerSelfLocated extends TypePeerLocated {
-  expires: number;
-
-  protected get [id]() {
-    return 0xf8ec284b;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.expires, "int"],
-    ];
-  }
-
-  constructor(params: { expires: number }) {
-    super();
-    this.expires = params.expires;
-  }
-}
-
-export class UpdateDialogFilter extends TypeUpdate {
-  id: number;
-  filter?: TypeDialogFilter;
-
-  protected get [id]() {
-    return 0x26ffde7d;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.id, "int"],
-      [this.filter ?? null, "flags.0?DialogFilter"],
-    ];
-  }
-
-  constructor(params: { id: number; filter?: TypeDialogFilter }) {
-    super();
-    this.id = params.id;
-    this.filter = params.filter;
-  }
-}
-
-export class UpdateDialogFilterOrder extends TypeUpdate {
-  order: Array<number>;
-
-  protected get [id]() {
-    return 0xa5d72105;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.order, "Vector<int>"],
-    ];
-  }
-
-  constructor(params: { order: Array<number> }) {
-    super();
-    this.order = params.order;
-  }
-}
-
-export class UpdateDialogFilters extends TypeUpdate {
-  protected get [id]() {
-    return 0x3504914f;
+    return 0x363293ae;
   }
 
   protected get [params](): Params {
@@ -14354,66 +17495,6 @@ export class StatsGraphError extends TypeStatsGraph {
   }
 }
 
-export class InputMediaDice extends TypeInputMedia {
-  emoticon: string;
-
-  protected get [id]() {
-    return 0xe66fbf7b;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.emoticon, "string"],
-    ];
-  }
-
-  constructor(params: { emoticon: string }) {
-    super();
-    this.emoticon = params.emoticon;
-  }
-}
-
-export class MessageMediaDice extends TypeMessageMedia {
-  value: number;
-  emoticon: string;
-
-  protected get [id]() {
-    return 0x3f7ee58b;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.value, "int"],
-      [this.emoticon, "string"],
-    ];
-  }
-
-  constructor(params: { value: number; emoticon: string }) {
-    super();
-    this.value = params.value;
-    this.emoticon = params.emoticon;
-  }
-}
-
-export class InputStickerSetDice extends TypeInputStickerSet {
-  emoticon: string;
-
-  protected get [id]() {
-    return 0xe67f520e;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.emoticon, "string"],
-    ];
-  }
-
-  constructor(params: { emoticon: string }) {
-    super();
-    this.emoticon = params.emoticon;
-  }
-}
-
 export class HelpPromoDataEmpty extends TypeHelpPromoData {
   expires: number;
 
@@ -14423,7 +17504,7 @@ export class HelpPromoDataEmpty extends TypeHelpPromoData {
 
   protected get [params](): Params {
     return [
-      [this.expires, "int"],
+      [this.expires, "number"],
     ];
   }
 
@@ -14433,500 +17514,62 @@ export class HelpPromoDataEmpty extends TypeHelpPromoData {
   }
 }
 
-export class UpdatePhoneCallSignalingData extends TypeUpdate {
-  phone_call_id: bigint;
-  data: Uint8Array;
+export class VideoSizeEmojiMarkup extends TypeVideoSize {
+  emoji_id: bigint;
+  background_colors: Array<number>;
 
   protected get [id]() {
-    return 0x2661bf09;
+    return 0xf85c413c;
   }
 
   protected get [params](): Params {
     return [
-      [this.phone_call_id, "long"],
-      [this.data, "bytes"],
+      [this.emoji_id, "bigint"],
+      [this.background_colors, ["number"]],
     ];
   }
 
-  constructor(params: { phone_call_id: bigint; data: Uint8Array }) {
+  constructor(params: { emoji_id: bigint; background_colors: Array<number> }) {
     super();
-    this.phone_call_id = params.phone_call_id;
-    this.data = params.data;
+    this.emoji_id = params.emoji_id;
+    this.background_colors = params.background_colors;
   }
 }
 
-export class ChatInvitePeek extends TypeChatInvite {
-  chat: TypeChat;
-  expires: number;
+export class VideoSizeStickerMarkup extends TypeVideoSize {
+  stickerset: TypeInputStickerSet;
+  sticker_id: bigint;
+  background_colors: Array<number>;
 
   protected get [id]() {
-    return 0x61695cb0;
+    return 0x0da082fe;
   }
 
   protected get [params](): Params {
     return [
-      [this.chat, "Chat"],
-      [this.expires, "int"],
-    ];
-  }
-
-  constructor(params: { chat: TypeChat; expires: number }) {
-    super();
-    this.chat = params.chat;
-    this.expires = params.expires;
-  }
-}
-
-export class PhoneConnectionWebrtc extends TypePhoneConnection {
-  turn?: true;
-  stun?: true;
-  id: bigint;
-  ip: string;
-  ipv6: string;
-  port: number;
-  username: string;
-  password: string;
-
-  protected get [id]() {
-    return 0x635fe375;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.turn ?? null, "flags.0?true"],
-      [this.stun ?? null, "flags.1?true"],
-      [this.id, "long"],
-      [this.ip, "string"],
-      [this.ipv6, "string"],
-      [this.port, "int"],
-      [this.username, "string"],
-      [this.password, "string"],
+      [this.stickerset, TypeInputStickerSet],
+      [this.sticker_id, "bigint"],
+      [this.background_colors, ["number"]],
     ];
   }
 
   constructor(
     params: {
-      turn?: true;
-      stun?: true;
-      id: bigint;
-      ip: string;
-      ipv6: string;
-      port: number;
-      username: string;
-      password: string;
+      stickerset: TypeInputStickerSet;
+      sticker_id: bigint;
+      background_colors: Array<number>;
     },
   ) {
     super();
-    this.turn = params.turn;
-    this.stun = params.stun;
-    this.id = params.id;
-    this.ip = params.ip;
-    this.ipv6 = params.ipv6;
-    this.port = params.port;
-    this.username = params.username;
-    this.password = params.password;
+    this.stickerset = params.stickerset;
+    this.sticker_id = params.sticker_id;
+    this.background_colors = params.background_colors;
   }
 }
 
 export class HelpCountriesListNotModified extends TypeHelpCountriesList {
   protected get [id]() {
     return 0x93cc1f32;
-  }
-
-  protected get [params](): Params {
-    return [];
-  }
-
-  constructor() {
-    super();
-  }
-}
-
-export class UpdateChannelMessageForwards extends TypeUpdate {
-  channel_id: bigint;
-  id: number;
-  forwards: number;
-
-  protected get [id]() {
-    return 0xd29a27f4;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.channel_id, "long"],
-      [this.id, "int"],
-      [this.forwards, "int"],
-    ];
-  }
-
-  constructor(params: { channel_id: bigint; id: number; forwards: number }) {
-    super();
-    this.channel_id = params.channel_id;
-    this.id = params.id;
-    this.forwards = params.forwards;
-  }
-}
-
-export class PhotoSizeProgressive extends TypePhotoSize {
-  type: string;
-  w: number;
-  h: number;
-  sizes: Array<number>;
-
-  protected get [id]() {
-    return 0xfa3efb95;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.type, "string"],
-      [this.w, "int"],
-      [this.h, "int"],
-      [this.sizes, "Vector<int>"],
-    ];
-  }
-
-  constructor(
-    params: { type: string; w: number; h: number; sizes: Array<number> },
-  ) {
-    super();
-    this.type = params.type;
-    this.w = params.w;
-    this.h = params.h;
-    this.sizes = params.sizes;
-  }
-}
-
-export class UpdateReadChannelDiscussionInbox extends TypeUpdate {
-  channel_id: bigint;
-  top_msg_id: number;
-  read_max_id: number;
-  broadcast_id?: bigint;
-  broadcast_post?: number;
-
-  protected get [id]() {
-    return 0xd6b19546;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.channel_id, "long"],
-      [this.top_msg_id, "int"],
-      [this.read_max_id, "int"],
-      [this.broadcast_id ?? null, "flags.0?long"],
-      [this.broadcast_post ?? null, "flags.0?int"],
-    ];
-  }
-
-  constructor(
-    params: {
-      channel_id: bigint;
-      top_msg_id: number;
-      read_max_id: number;
-      broadcast_id?: bigint;
-      broadcast_post?: number;
-    },
-  ) {
-    super();
-    this.channel_id = params.channel_id;
-    this.top_msg_id = params.top_msg_id;
-    this.read_max_id = params.read_max_id;
-    this.broadcast_id = params.broadcast_id;
-    this.broadcast_post = params.broadcast_post;
-  }
-}
-
-export class UpdateReadChannelDiscussionOutbox extends TypeUpdate {
-  channel_id: bigint;
-  top_msg_id: number;
-  read_max_id: number;
-
-  protected get [id]() {
-    return 0x695c9e7c;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.channel_id, "long"],
-      [this.top_msg_id, "int"],
-      [this.read_max_id, "int"],
-    ];
-  }
-
-  constructor(
-    params: { channel_id: bigint; top_msg_id: number; read_max_id: number },
-  ) {
-    super();
-    this.channel_id = params.channel_id;
-    this.top_msg_id = params.top_msg_id;
-    this.read_max_id = params.read_max_id;
-  }
-}
-
-export class UpdatePeerBlocked extends TypeUpdate {
-  peer_id: TypePeer;
-  blocked: boolean;
-
-  protected get [id]() {
-    return 0x246a4b22;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.peer_id, "Peer"],
-      [this.blocked, "Bool"],
-    ];
-  }
-
-  constructor(params: { peer_id: TypePeer; blocked: boolean }) {
-    super();
-    this.peer_id = params.peer_id;
-    this.blocked = params.blocked;
-  }
-}
-
-export class UpdateChannelUserTyping extends TypeUpdate {
-  channel_id: bigint;
-  top_msg_id?: number;
-  from_id: TypePeer;
-  action: TypeSendMessageAction;
-
-  protected get [id]() {
-    return 0x8c88c923;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.channel_id, "long"],
-      [this.top_msg_id ?? null, "flags.0?int"],
-      [this.from_id, "Peer"],
-      [this.action, "SendMessageAction"],
-    ];
-  }
-
-  constructor(
-    params: {
-      channel_id: bigint;
-      top_msg_id?: number;
-      from_id: TypePeer;
-      action: TypeSendMessageAction;
-    },
-  ) {
-    super();
-    this.channel_id = params.channel_id;
-    this.top_msg_id = params.top_msg_id;
-    this.from_id = params.from_id;
-    this.action = params.action;
-  }
-}
-
-export class InputMessageCallbackQuery extends TypeInputMessage {
-  id: number;
-  query_id: bigint;
-
-  protected get [id]() {
-    return 0xacfa1a7e;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.id, "int"],
-      [this.query_id, "long"],
-    ];
-  }
-
-  constructor(params: { id: number; query_id: bigint }) {
-    super();
-    this.id = params.id;
-    this.query_id = params.query_id;
-  }
-}
-
-export class ChannelParticipantLeft extends TypeChannelParticipant {
-  peer: TypePeer;
-
-  protected get [id]() {
-    return 0x1b03f006;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.peer, "Peer"],
-    ];
-  }
-
-  constructor(params: { peer: TypePeer }) {
-    super();
-    this.peer = params.peer;
-  }
-}
-
-export class ChannelParticipantsMentions extends TypeChannelParticipantsFilter {
-  q?: string;
-  top_msg_id?: number;
-
-  protected get [id]() {
-    return 0xe04b5ceb;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.q ?? null, "flags.0?string"],
-      [this.top_msg_id ?? null, "flags.1?int"],
-    ];
-  }
-
-  constructor(params: { q?: string; top_msg_id?: number }) {
-    super();
-    this.q = params.q;
-    this.top_msg_id = params.top_msg_id;
-  }
-}
-
-export class UpdatePinnedMessages extends TypeUpdate {
-  pinned?: true;
-  peer: TypePeer;
-  messages: Array<number>;
-  pts: number;
-  pts_count: number;
-
-  protected get [id]() {
-    return 0xed85eab5;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.pinned ?? null, "flags.0?true"],
-      [this.peer, "Peer"],
-      [this.messages, "Vector<int>"],
-      [this.pts, "int"],
-      [this.pts_count, "int"],
-    ];
-  }
-
-  constructor(
-    params: {
-      pinned?: true;
-      peer: TypePeer;
-      messages: Array<number>;
-      pts: number;
-      pts_count: number;
-    },
-  ) {
-    super();
-    this.pinned = params.pinned;
-    this.peer = params.peer;
-    this.messages = params.messages;
-    this.pts = params.pts;
-    this.pts_count = params.pts_count;
-  }
-}
-
-export class UpdatePinnedChannelMessages extends TypeUpdate {
-  pinned?: true;
-  channel_id: bigint;
-  messages: Array<number>;
-  pts: number;
-  pts_count: number;
-
-  protected get [id]() {
-    return 0x5bb98608;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.pinned ?? null, "flags.0?true"],
-      [this.channel_id, "long"],
-      [this.messages, "Vector<int>"],
-      [this.pts, "int"],
-      [this.pts_count, "int"],
-    ];
-  }
-
-  constructor(
-    params: {
-      pinned?: true;
-      channel_id: bigint;
-      messages: Array<number>;
-      pts: number;
-      pts_count: number;
-    },
-  ) {
-    super();
-    this.pinned = params.pinned;
-    this.channel_id = params.channel_id;
-    this.messages = params.messages;
-    this.pts = params.pts;
-    this.pts_count = params.pts_count;
-  }
-}
-
-export class InputMessagesFilterPinned extends TypeMessagesFilter {
-  protected get [id]() {
-    return 0x1bb00451;
-  }
-
-  protected get [params](): Params {
-    return [];
-  }
-
-  constructor() {
-    super();
-  }
-}
-
-export class MessageActionGeoProximityReached extends TypeMessageAction {
-  from_id: TypePeer;
-  to_id: TypePeer;
-  distance: number;
-
-  protected get [id]() {
-    return 0x98e0d697;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.from_id, "Peer"],
-      [this.to_id, "Peer"],
-      [this.distance, "int"],
-    ];
-  }
-
-  constructor(
-    params: { from_id: TypePeer; to_id: TypePeer; distance: number },
-  ) {
-    super();
-    this.from_id = params.from_id;
-    this.to_id = params.to_id;
-    this.distance = params.distance;
-  }
-}
-
-export class PhotoPathSize extends TypePhotoSize {
-  type: string;
-  bytes: Uint8Array;
-
-  protected get [id]() {
-    return 0xd8214d41;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.type, "string"],
-      [this.bytes, "bytes"],
-    ];
-  }
-
-  constructor(params: { type: string; bytes: Uint8Array }) {
-    super();
-    this.type = params.type;
-    this.bytes = params.bytes;
-  }
-}
-
-export class SpeakingInGroupCallAction extends TypeSendMessageAction {
-  protected get [id]() {
-    return 0xd92c2285;
   }
 
   protected get [params](): Params {
@@ -14949,9 +17592,9 @@ export class GroupCallDiscarded extends TypeGroupCall {
 
   protected get [params](): Params {
     return [
-      [this.id, "long"],
-      [this.access_hash, "long"],
-      [this.duration, "int"],
+      [this.id, "bigint"],
+      [this.access_hash, "bigint"],
+      [this.duration, "number"],
     ];
   }
 
@@ -14960,122 +17603,6 @@ export class GroupCallDiscarded extends TypeGroupCall {
     this.id = params.id;
     this.access_hash = params.access_hash;
     this.duration = params.duration;
-  }
-}
-
-export class MessageActionGroupCall extends TypeMessageAction {
-  call: TypeInputGroupCall;
-  duration?: number;
-
-  protected get [id]() {
-    return 0x7a0d7f42;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.call, "InputGroupCall"],
-      [this.duration ?? null, "flags.0?int"],
-    ];
-  }
-
-  constructor(params: { call: TypeInputGroupCall; duration?: number }) {
-    super();
-    this.call = params.call;
-    this.duration = params.duration;
-  }
-}
-
-export class MessageActionInviteToGroupCall extends TypeMessageAction {
-  call: TypeInputGroupCall;
-  users: Array<bigint>;
-
-  protected get [id]() {
-    return 0x502f92f7;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.call, "InputGroupCall"],
-      [this.users, "Vector<long>"],
-    ];
-  }
-
-  constructor(params: { call: TypeInputGroupCall; users: Array<bigint> }) {
-    super();
-    this.call = params.call;
-    this.users = params.users;
-  }
-}
-
-export class UpdateChat extends TypeUpdate {
-  chat_id: bigint;
-
-  protected get [id]() {
-    return 0xf89a6a4e;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.chat_id, "long"],
-    ];
-  }
-
-  constructor(params: { chat_id: bigint }) {
-    super();
-    this.chat_id = params.chat_id;
-  }
-}
-
-export class UpdateGroupCallParticipants extends TypeUpdate {
-  call: TypeInputGroupCall;
-  participants: Array<TypeGroupCallParticipant>;
-  version: number;
-
-  protected get [id]() {
-    return 0xf2ebdb4e;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.call, "InputGroupCall"],
-      [this.participants, "Vector<GroupCallParticipant>"],
-      [this.version, "int"],
-    ];
-  }
-
-  constructor(
-    params: {
-      call: TypeInputGroupCall;
-      participants: Array<TypeGroupCallParticipant>;
-      version: number;
-    },
-  ) {
-    super();
-    this.call = params.call;
-    this.participants = params.participants;
-    this.version = params.version;
-  }
-}
-
-export class UpdateGroupCall extends TypeUpdate {
-  chat_id: bigint;
-  call: TypeGroupCall;
-
-  protected get [id]() {
-    return 0x14b24500;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.chat_id, "long"],
-      [this.call, "GroupCall"],
-    ];
-  }
-
-  constructor(params: { chat_id: bigint; call: TypeGroupCall }) {
-    super();
-    this.chat_id = params.chat_id;
-    this.call = params.call;
   }
 }
 
@@ -15149,336 +17676,6 @@ export class InlineQueryPeerTypeBroadcast extends TypeInlineQueryPeerType {
   }
 }
 
-export class ChannelAdminLogEventActionStartGroupCall
-  extends TypeChannelAdminLogEventAction {
-  call: TypeInputGroupCall;
-
-  protected get [id]() {
-    return 0x23209745;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.call, "InputGroupCall"],
-    ];
-  }
-
-  constructor(params: { call: TypeInputGroupCall }) {
-    super();
-    this.call = params.call;
-  }
-}
-
-export class ChannelAdminLogEventActionDiscardGroupCall
-  extends TypeChannelAdminLogEventAction {
-  call: TypeInputGroupCall;
-
-  protected get [id]() {
-    return 0xdb9f9140;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.call, "InputGroupCall"],
-    ];
-  }
-
-  constructor(params: { call: TypeInputGroupCall }) {
-    super();
-    this.call = params.call;
-  }
-}
-
-export class ChannelAdminLogEventActionParticipantMute
-  extends TypeChannelAdminLogEventAction {
-  participant: TypeGroupCallParticipant;
-
-  protected get [id]() {
-    return 0xf92424d2;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.participant, "GroupCallParticipant"],
-    ];
-  }
-
-  constructor(params: { participant: TypeGroupCallParticipant }) {
-    super();
-    this.participant = params.participant;
-  }
-}
-
-export class ChannelAdminLogEventActionParticipantUnmute
-  extends TypeChannelAdminLogEventAction {
-  participant: TypeGroupCallParticipant;
-
-  protected get [id]() {
-    return 0xe64429c0;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.participant, "GroupCallParticipant"],
-    ];
-  }
-
-  constructor(params: { participant: TypeGroupCallParticipant }) {
-    super();
-    this.participant = params.participant;
-  }
-}
-
-export class ChannelAdminLogEventActionToggleGroupCallSetting
-  extends TypeChannelAdminLogEventAction {
-  join_muted: boolean;
-
-  protected get [id]() {
-    return 0x56d6a247;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.join_muted, "Bool"],
-    ];
-  }
-
-  constructor(params: { join_muted: boolean }) {
-    super();
-    this.join_muted = params.join_muted;
-  }
-}
-
-export class InputPaymentCredentialsGooglePay
-  extends TypeInputPaymentCredentials {
-  payment_token: TypeDataJSON;
-
-  protected get [id]() {
-    return 0x8ac32801;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.payment_token, "DataJSON"],
-    ];
-  }
-
-  constructor(params: { payment_token: TypeDataJSON }) {
-    super();
-    this.payment_token = params.payment_token;
-  }
-}
-
-export class SendMessageHistoryImportAction extends TypeSendMessageAction {
-  progress: number;
-
-  protected get [id]() {
-    return 0xdbda9246;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.progress, "int"],
-    ];
-  }
-
-  constructor(params: { progress: number }) {
-    super();
-    this.progress = params.progress;
-  }
-}
-
-export class InputReportReasonFake extends TypeReportReason {
-  protected get [id]() {
-    return 0xf5ddd6e7;
-  }
-
-  protected get [params](): Params {
-    return [];
-  }
-
-  constructor() {
-    super();
-  }
-}
-
-export class MessageActionSetMessagesTTL extends TypeMessageAction {
-  period: number;
-
-  protected get [id]() {
-    return 0xaa1afbfd;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.period, "int"],
-    ];
-  }
-
-  constructor(params: { period: number }) {
-    super();
-    this.period = params.period;
-  }
-}
-
-export class UpdatePeerHistoryTTL extends TypeUpdate {
-  peer: TypePeer;
-  ttl_period?: number;
-
-  protected get [id]() {
-    return 0xbb9bb9a5;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.peer, "Peer"],
-      [this.ttl_period ?? null, "flags.0?int"],
-    ];
-  }
-
-  constructor(params: { peer: TypePeer; ttl_period?: number }) {
-    super();
-    this.peer = params.peer;
-    this.ttl_period = params.ttl_period;
-  }
-}
-
-export class UpdateChatParticipant extends TypeUpdate {
-  chat_id: bigint;
-  date: number;
-  actor_id: bigint;
-  user_id: bigint;
-  prev_participant?: TypeChatParticipant;
-  new_participant?: TypeChatParticipant;
-  invite?: TypeExportedChatInvite;
-  qts: number;
-
-  protected get [id]() {
-    return 0xd087663a;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.chat_id, "long"],
-      [this.date, "int"],
-      [this.actor_id, "long"],
-      [this.user_id, "long"],
-      [this.prev_participant ?? null, "flags.0?ChatParticipant"],
-      [this.new_participant ?? null, "flags.1?ChatParticipant"],
-      [this.invite ?? null, "flags.2?ExportedChatInvite"],
-      [this.qts, "int"],
-    ];
-  }
-
-  constructor(
-    params: {
-      chat_id: bigint;
-      date: number;
-      actor_id: bigint;
-      user_id: bigint;
-      prev_participant?: TypeChatParticipant;
-      new_participant?: TypeChatParticipant;
-      invite?: TypeExportedChatInvite;
-      qts: number;
-    },
-  ) {
-    super();
-    this.chat_id = params.chat_id;
-    this.date = params.date;
-    this.actor_id = params.actor_id;
-    this.user_id = params.user_id;
-    this.prev_participant = params.prev_participant;
-    this.new_participant = params.new_participant;
-    this.invite = params.invite;
-    this.qts = params.qts;
-  }
-}
-
-export class UpdateChannelParticipant extends TypeUpdate {
-  via_chatlist?: true;
-  channel_id: bigint;
-  date: number;
-  actor_id: bigint;
-  user_id: bigint;
-  prev_participant?: TypeChannelParticipant;
-  new_participant?: TypeChannelParticipant;
-  invite?: TypeExportedChatInvite;
-  qts: number;
-
-  protected get [id]() {
-    return 0x985d3abb;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.via_chatlist ?? null, "flags.3?true"],
-      [this.channel_id, "long"],
-      [this.date, "int"],
-      [this.actor_id, "long"],
-      [this.user_id, "long"],
-      [this.prev_participant ?? null, "flags.0?ChannelParticipant"],
-      [this.new_participant ?? null, "flags.1?ChannelParticipant"],
-      [this.invite ?? null, "flags.2?ExportedChatInvite"],
-      [this.qts, "int"],
-    ];
-  }
-
-  constructor(
-    params: {
-      via_chatlist?: true;
-      channel_id: bigint;
-      date: number;
-      actor_id: bigint;
-      user_id: bigint;
-      prev_participant?: TypeChannelParticipant;
-      new_participant?: TypeChannelParticipant;
-      invite?: TypeExportedChatInvite;
-      qts: number;
-    },
-  ) {
-    super();
-    this.via_chatlist = params.via_chatlist;
-    this.channel_id = params.channel_id;
-    this.date = params.date;
-    this.actor_id = params.actor_id;
-    this.user_id = params.user_id;
-    this.prev_participant = params.prev_participant;
-    this.new_participant = params.new_participant;
-    this.invite = params.invite;
-    this.qts = params.qts;
-  }
-}
-
-export class UpdateBotStopped extends TypeUpdate {
-  user_id: bigint;
-  date: number;
-  stopped: boolean;
-  qts: number;
-
-  protected get [id]() {
-    return 0xc4870a49;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.user_id, "long"],
-      [this.date, "int"],
-      [this.stopped, "Bool"],
-      [this.qts, "int"],
-    ];
-  }
-
-  constructor(
-    params: { user_id: bigint; date: number; stopped: boolean; qts: number },
-  ) {
-    super();
-    this.user_id = params.user_id;
-    this.date = params.date;
-    this.stopped = params.stopped;
-    this.qts = params.qts;
-  }
-}
-
 export class MessagesExportedChatInviteReplaced
   extends TypeMessagesExportedChatInvite {
   invite: TypeExportedChatInvite;
@@ -15491,9 +17688,9 @@ export class MessagesExportedChatInviteReplaced
 
   protected get [params](): Params {
     return [
-      [this.invite, "ExportedChatInvite"],
-      [this.new_invite, "ExportedChatInvite"],
-      [this.users, "Vector<User>"],
+      [this.invite, TypeExportedChatInvite],
+      [this.new_invite, TypeExportedChatInvite],
+      [this.users, [TypeUser]],
     ];
   }
 
@@ -15508,323 +17705,6 @@ export class MessagesExportedChatInviteReplaced
     this.invite = params.invite;
     this.new_invite = params.new_invite;
     this.users = params.users;
-  }
-}
-
-export class ChannelAdminLogEventActionParticipantJoinByInvite
-  extends TypeChannelAdminLogEventAction {
-  invite: TypeExportedChatInvite;
-
-  protected get [id]() {
-    return 0x5cdada77;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.invite, "ExportedChatInvite"],
-    ];
-  }
-
-  constructor(params: { invite: TypeExportedChatInvite }) {
-    super();
-    this.invite = params.invite;
-  }
-}
-
-export class ChannelAdminLogEventActionExportedInviteDelete
-  extends TypeChannelAdminLogEventAction {
-  invite: TypeExportedChatInvite;
-
-  protected get [id]() {
-    return 0x5a50fca4;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.invite, "ExportedChatInvite"],
-    ];
-  }
-
-  constructor(params: { invite: TypeExportedChatInvite }) {
-    super();
-    this.invite = params.invite;
-  }
-}
-
-export class ChannelAdminLogEventActionExportedInviteRevoke
-  extends TypeChannelAdminLogEventAction {
-  invite: TypeExportedChatInvite;
-
-  protected get [id]() {
-    return 0x410a134e;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.invite, "ExportedChatInvite"],
-    ];
-  }
-
-  constructor(params: { invite: TypeExportedChatInvite }) {
-    super();
-    this.invite = params.invite;
-  }
-}
-
-export class ChannelAdminLogEventActionExportedInviteEdit
-  extends TypeChannelAdminLogEventAction {
-  prev_invite: TypeExportedChatInvite;
-  new_invite: TypeExportedChatInvite;
-
-  protected get [id]() {
-    return 0xe90ebb59;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.prev_invite, "ExportedChatInvite"],
-      [this.new_invite, "ExportedChatInvite"],
-    ];
-  }
-
-  constructor(
-    params: {
-      prev_invite: TypeExportedChatInvite;
-      new_invite: TypeExportedChatInvite;
-    },
-  ) {
-    super();
-    this.prev_invite = params.prev_invite;
-    this.new_invite = params.new_invite;
-  }
-}
-
-export class ChannelAdminLogEventActionParticipantVolume
-  extends TypeChannelAdminLogEventAction {
-  participant: TypeGroupCallParticipant;
-
-  protected get [id]() {
-    return 0x3e7f6847;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.participant, "GroupCallParticipant"],
-    ];
-  }
-
-  constructor(params: { participant: TypeGroupCallParticipant }) {
-    super();
-    this.participant = params.participant;
-  }
-}
-
-export class ChannelAdminLogEventActionChangeHistoryTTL
-  extends TypeChannelAdminLogEventAction {
-  prev_value: number;
-  new_value: number;
-
-  protected get [id]() {
-    return 0x6e941a38;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.prev_value, "int"],
-      [this.new_value, "int"],
-    ];
-  }
-
-  constructor(params: { prev_value: number; new_value: number }) {
-    super();
-    this.prev_value = params.prev_value;
-    this.new_value = params.new_value;
-  }
-}
-
-export class InputGroupCallStream extends TypeInputFileLocation {
-  call: TypeInputGroupCall;
-  time_ms: bigint;
-  scale: number;
-  video_channel?: number;
-  video_quality?: number;
-
-  protected get [id]() {
-    return 0x0598a92a;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.call, "InputGroupCall"],
-      [this.time_ms, "long"],
-      [this.scale, "int"],
-      [this.video_channel ?? null, "flags.0?int"],
-      [this.video_quality ?? null, "flags.0?int"],
-    ];
-  }
-
-  constructor(
-    params: {
-      call: TypeInputGroupCall;
-      time_ms: bigint;
-      scale: number;
-      video_channel?: number;
-      video_quality?: number;
-    },
-  ) {
-    super();
-    this.call = params.call;
-    this.time_ms = params.time_ms;
-    this.scale = params.scale;
-    this.video_channel = params.video_channel;
-    this.video_quality = params.video_quality;
-  }
-}
-
-export class InputBotInlineMessageMediaInvoice
-  extends TypeInputBotInlineMessage {
-  title: string;
-  description: string;
-  photo?: TypeInputWebDocument;
-  invoice: TypeInvoice;
-  payload: Uint8Array;
-  provider: string;
-  provider_data: TypeDataJSON;
-  reply_markup?: TypeReplyMarkup;
-
-  protected get [id]() {
-    return 0xd7e78225;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.title, "string"],
-      [this.description, "string"],
-      [this.photo ?? null, "flags.0?InputWebDocument"],
-      [this.invoice, "Invoice"],
-      [this.payload, "bytes"],
-      [this.provider, "string"],
-      [this.provider_data, "DataJSON"],
-      [this.reply_markup ?? null, "flags.2?ReplyMarkup"],
-    ];
-  }
-
-  constructor(
-    params: {
-      title: string;
-      description: string;
-      photo?: TypeInputWebDocument;
-      invoice: TypeInvoice;
-      payload: Uint8Array;
-      provider: string;
-      provider_data: TypeDataJSON;
-      reply_markup?: TypeReplyMarkup;
-    },
-  ) {
-    super();
-    this.title = params.title;
-    this.description = params.description;
-    this.photo = params.photo;
-    this.invoice = params.invoice;
-    this.payload = params.payload;
-    this.provider = params.provider;
-    this.provider_data = params.provider_data;
-    this.reply_markup = params.reply_markup;
-  }
-}
-
-export class BotInlineMessageMediaInvoice extends TypeBotInlineMessage {
-  shipping_address_requested?: true;
-  test?: true;
-  title: string;
-  description: string;
-  photo?: TypeWebDocument;
-  currency: string;
-  total_amount: bigint;
-  reply_markup?: TypeReplyMarkup;
-
-  protected get [id]() {
-    return 0x354a9b09;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.shipping_address_requested ?? null, "flags.1?true"],
-      [this.test ?? null, "flags.3?true"],
-      [this.title, "string"],
-      [this.description, "string"],
-      [this.photo ?? null, "flags.0?WebDocument"],
-      [this.currency, "string"],
-      [this.total_amount, "long"],
-      [this.reply_markup ?? null, "flags.2?ReplyMarkup"],
-    ];
-  }
-
-  constructor(
-    params: {
-      shipping_address_requested?: true;
-      test?: true;
-      title: string;
-      description: string;
-      photo?: TypeWebDocument;
-      currency: string;
-      total_amount: bigint;
-      reply_markup?: TypeReplyMarkup;
-    },
-  ) {
-    super();
-    this.shipping_address_requested = params.shipping_address_requested;
-    this.test = params.test;
-    this.title = params.title;
-    this.description = params.description;
-    this.photo = params.photo;
-    this.currency = params.currency;
-    this.total_amount = params.total_amount;
-    this.reply_markup = params.reply_markup;
-  }
-}
-
-export class MessageActionGroupCallScheduled extends TypeMessageAction {
-  call: TypeInputGroupCall;
-  schedule_date: number;
-
-  protected get [id]() {
-    return 0xb3a07661;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.call, "InputGroupCall"],
-      [this.schedule_date, "int"],
-    ];
-  }
-
-  constructor(params: { call: TypeInputGroupCall; schedule_date: number }) {
-    super();
-    this.call = params.call;
-    this.schedule_date = params.schedule_date;
-  }
-}
-
-export class UpdateGroupCallConnection extends TypeUpdate {
-  presentation?: true;
-  params: TypeDataJSON;
-
-  protected get [id]() {
-    return 0x0b783982;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.presentation ?? null, "flags.0?true"],
-      [this.params, "DataJSON"],
-    ];
-  }
-
-  constructor(params: { presentation?: true; params: TypeDataJSON }) {
-    super();
-    this.presentation = params.presentation;
-    this.params = params.params;
   }
 }
 
@@ -15893,7 +17773,7 @@ export class BotCommandScopePeer extends TypeBotCommandScope {
 
   protected get [params](): Params {
     return [
-      [this.peer, "InputPeer"],
+      [this.peer, TypeInputPeer],
     ];
   }
 
@@ -15912,7 +17792,7 @@ export class BotCommandScopePeerAdmins extends TypeBotCommandScope {
 
   protected get [params](): Params {
     return [
-      [this.peer, "InputPeer"],
+      [this.peer, TypeInputPeer],
     ];
   }
 
@@ -15932,8 +17812,8 @@ export class BotCommandScopePeerUser extends TypeBotCommandScope {
 
   protected get [params](): Params {
     return [
-      [this.peer, "InputPeer"],
-      [this.user_id, "InputUser"],
+      [this.peer, TypeInputPeer],
+      [this.user_id, TypeInputUser],
     ];
   }
 
@@ -15954,7 +17834,7 @@ export class AccountResetPasswordFailedWait
 
   protected get [params](): Params {
     return [
-      [this.retry_date, "int"],
+      [this.retry_date, "number"],
     ];
   }
 
@@ -15974,7 +17854,7 @@ export class AccountResetPasswordRequestedWait
 
   protected get [params](): Params {
     return [
-      [this.until_date, "int"],
+      [this.until_date, "number"],
     ];
   }
 
@@ -15998,55 +17878,10 @@ export class AccountResetPasswordOk extends TypeAccountResetPasswordResult {
   }
 }
 
-export class UpdateBotCommands extends TypeUpdate {
-  peer: TypePeer;
-  bot_id: bigint;
-  commands: Array<TypeBotCommand>;
-
+export class MessagesSponsoredMessagesEmpty
+  extends TypeMessagesSponsoredMessages {
   protected get [id]() {
-    return 0x4d712f2e;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.peer, "Peer"],
-      [this.bot_id, "long"],
-      [this.commands, "Vector<BotCommand>"],
-    ];
-  }
-
-  constructor(
-    params: { peer: TypePeer; bot_id: bigint; commands: Array<TypeBotCommand> },
-  ) {
-    super();
-    this.peer = params.peer;
-    this.bot_id = params.bot_id;
-    this.commands = params.commands;
-  }
-}
-
-export class MessageActionSetChatTheme extends TypeMessageAction {
-  emoticon: string;
-
-  protected get [id]() {
-    return 0xaa786345;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.emoticon, "string"],
-    ];
-  }
-
-  constructor(params: { emoticon: string }) {
-    super();
-    this.emoticon = params.emoticon;
-  }
-}
-
-export class SendMessageChooseStickerAction extends TypeSendMessageAction {
-  protected get [id]() {
-    return 0xb05ac6b1;
+    return 0x1839490f;
   }
 
   protected get [params](): Params {
@@ -16055,102 +17890,6 @@ export class SendMessageChooseStickerAction extends TypeSendMessageAction {
 
   constructor() {
     super();
-  }
-}
-
-export class InputStickerSetAnimatedEmojiAnimations
-  extends TypeInputStickerSet {
-  protected get [id]() {
-    return 0x0cde3739;
-  }
-
-  protected get [params](): Params {
-    return [];
-  }
-
-  constructor() {
-    super();
-  }
-}
-
-export class SendMessageEmojiInteraction extends TypeSendMessageAction {
-  emoticon: string;
-  msg_id: number;
-  interaction: TypeDataJSON;
-
-  protected get [id]() {
-    return 0x25972bcb;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.emoticon, "string"],
-      [this.msg_id, "int"],
-      [this.interaction, "DataJSON"],
-    ];
-  }
-
-  constructor(
-    params: { emoticon: string; msg_id: number; interaction: TypeDataJSON },
-  ) {
-    super();
-    this.emoticon = params.emoticon;
-    this.msg_id = params.msg_id;
-    this.interaction = params.interaction;
-  }
-}
-
-export class SendMessageEmojiInteractionSeen extends TypeSendMessageAction {
-  emoticon: string;
-
-  protected get [id]() {
-    return 0xb665902e;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.emoticon, "string"],
-    ];
-  }
-
-  constructor(params: { emoticon: string }) {
-    super();
-    this.emoticon = params.emoticon;
-  }
-}
-
-export class InputBotInlineMessageID64 extends TypeInputBotInlineMessageID {
-  dc_id: number;
-  owner_id: bigint;
-  id: number;
-  access_hash: bigint;
-
-  protected get [id]() {
-    return 0xb6d915d7;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.dc_id, "int"],
-      [this.owner_id, "long"],
-      [this.id, "int"],
-      [this.access_hash, "long"],
-    ];
-  }
-
-  constructor(
-    params: {
-      dc_id: number;
-      owner_id: bigint;
-      id: number;
-      access_hash: bigint;
-    },
-  ) {
-    super();
-    this.dc_id = params.dc_id;
-    this.owner_id = params.owner_id;
-    this.id = params.id;
-    this.access_hash = params.access_hash;
   }
 }
 
@@ -16165,9 +17904,9 @@ export class SearchResultPosition extends TypeSearchResultsPosition {
 
   protected get [params](): Params {
     return [
-      [this.msg_id, "int"],
-      [this.date, "int"],
-      [this.offset, "int"],
+      [this.msg_id, "number"],
+      [this.date, "number"],
+      [this.offset, "number"],
     ];
   }
 
@@ -16179,390 +17918,10 @@ export class SearchResultPosition extends TypeSearchResultsPosition {
   }
 }
 
-export class MessageActionChatJoinedByRequest extends TypeMessageAction {
-  protected get [id]() {
-    return 0xebbca3cb;
-  }
-
-  protected get [params](): Params {
-    return [];
-  }
-
-  constructor() {
-    super();
-  }
-}
-
-export class UpdatePendingJoinRequests extends TypeUpdate {
-  peer: TypePeer;
-  requests_pending: number;
-  recent_requesters: Array<bigint>;
-
-  protected get [id]() {
-    return 0x7063c3db;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.peer, "Peer"],
-      [this.requests_pending, "int"],
-      [this.recent_requesters, "Vector<long>"],
-    ];
-  }
-
-  constructor(
-    params: {
-      peer: TypePeer;
-      requests_pending: number;
-      recent_requesters: Array<bigint>;
-    },
-  ) {
-    super();
-    this.peer = params.peer;
-    this.requests_pending = params.requests_pending;
-    this.recent_requesters = params.recent_requesters;
-  }
-}
-
-export class UpdateBotChatInviteRequester extends TypeUpdate {
-  peer: TypePeer;
-  date: number;
-  user_id: bigint;
-  about: string;
-  invite: TypeExportedChatInvite;
-  qts: number;
-
-  protected get [id]() {
-    return 0x11dfa986;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.peer, "Peer"],
-      [this.date, "int"],
-      [this.user_id, "long"],
-      [this.about, "string"],
-      [this.invite, "ExportedChatInvite"],
-      [this.qts, "int"],
-    ];
-  }
-
-  constructor(
-    params: {
-      peer: TypePeer;
-      date: number;
-      user_id: bigint;
-      about: string;
-      invite: TypeExportedChatInvite;
-      qts: number;
-    },
-  ) {
-    super();
-    this.peer = params.peer;
-    this.date = params.date;
-    this.user_id = params.user_id;
-    this.about = params.about;
-    this.invite = params.invite;
-    this.qts = params.qts;
-  }
-}
-
-export class ChannelAdminLogEventActionParticipantJoinByRequest
-  extends TypeChannelAdminLogEventAction {
-  invite: TypeExportedChatInvite;
-  approved_by: bigint;
-
-  protected get [id]() {
-    return 0xafb6144a;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.invite, "ExportedChatInvite"],
-      [this.approved_by, "long"],
-    ];
-  }
-
-  constructor(params: { invite: TypeExportedChatInvite; approved_by: bigint }) {
-    super();
-    this.invite = params.invite;
-    this.approved_by = params.approved_by;
-  }
-}
-
-export class InputKeyboardButtonUserProfile extends TypeKeyboardButton {
-  text: string;
-  user_id: TypeInputUser;
-
-  protected get [id]() {
-    return 0xe988037b;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.text, "string"],
-      [this.user_id, "InputUser"],
-    ];
-  }
-
-  constructor(params: { text: string; user_id: TypeInputUser }) {
-    super();
-    this.text = params.text;
-    this.user_id = params.user_id;
-  }
-}
-
-export class KeyboardButtonUserProfile extends TypeKeyboardButton {
-  text: string;
-  user_id: bigint;
-
-  protected get [id]() {
-    return 0x308660c1;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.text, "string"],
-      [this.user_id, "long"],
-    ];
-  }
-
-  constructor(params: { text: string; user_id: bigint }) {
-    super();
-    this.text = params.text;
-    this.user_id = params.user_id;
-  }
-}
-
-export class ChannelAdminLogEventActionToggleNoForwards
-  extends TypeChannelAdminLogEventAction {
-  new_value: boolean;
-
-  protected get [id]() {
-    return 0xcb2ac766;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.new_value, "Bool"],
-    ];
-  }
-
-  constructor(params: { new_value: boolean }) {
-    super();
-    this.new_value = params.new_value;
-  }
-}
-
-export class MessagesStickerSetNotModified extends TypeMessagesStickerSet {
-  protected get [id]() {
-    return 0xd3f924eb;
-  }
-
-  protected get [params](): Params {
-    return [];
-  }
-
-  constructor() {
-    super();
-  }
-}
-
-export class ChannelAdminLogEventActionSendMessage
-  extends TypeChannelAdminLogEventAction {
-  message: TypeMessage;
-
-  protected get [id]() {
-    return 0x278f2868;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.message, "Message"],
-    ];
-  }
-
-  constructor(params: { message: TypeMessage }) {
-    super();
-    this.message = params.message;
-  }
-}
-
-export class AuthCodeTypeMissedCall extends TypeAuthCodeType {
-  protected get [id]() {
-    return 0xd61ad6ee;
-  }
-
-  protected get [params](): Params {
-    return [];
-  }
-
-  constructor() {
-    super();
-  }
-}
-
-export class AuthSentCodeTypeMissedCall extends TypeAuthSentCodeType {
-  prefix: string;
-  length: number;
-
-  protected get [id]() {
-    return 0x82006484;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.prefix, "string"],
-      [this.length, "int"],
-    ];
-  }
-
-  constructor(params: { prefix: string; length: number }) {
-    super();
-    this.prefix = params.prefix;
-    this.length = params.length;
-  }
-}
-
-export class UpdateMessageReactions extends TypeUpdate {
-  peer: TypePeer;
-  msg_id: number;
-  reactions: TypeMessageReactions;
-
-  protected get [id]() {
-    return 0x154798c3;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.peer, "Peer"],
-      [this.msg_id, "int"],
-      [this.reactions, "MessageReactions"],
-    ];
-  }
-
-  constructor(
-    params: { peer: TypePeer; msg_id: number; reactions: TypeMessageReactions },
-  ) {
-    super();
-    this.peer = params.peer;
-    this.msg_id = params.msg_id;
-    this.reactions = params.reactions;
-  }
-}
-
 export class MessagesAvailableReactionsNotModified
   extends TypeMessagesAvailableReactions {
   protected get [id]() {
     return 0x9f071957;
-  }
-
-  protected get [params](): Params {
-    return [];
-  }
-
-  constructor() {
-    super();
-  }
-}
-
-export class MessageEntitySpoiler extends TypeMessageEntity {
-  offset: number;
-  length: number;
-
-  protected get [id]() {
-    return 0x32ca960f;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.offset, "int"],
-      [this.length, "int"],
-    ];
-  }
-
-  constructor(params: { offset: number; length: number }) {
-    super();
-    this.offset = params.offset;
-    this.length = params.length;
-  }
-}
-
-export class ChannelAdminLogEventActionChangeAvailableReactions
-  extends TypeChannelAdminLogEventAction {
-  prev_value: TypeChatReactions;
-  new_value: TypeChatReactions;
-
-  protected get [id]() {
-    return 0xbe4e0ef8;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.prev_value, "ChatReactions"],
-      [this.new_value, "ChatReactions"],
-    ];
-  }
-
-  constructor(
-    params: { prev_value: TypeChatReactions; new_value: TypeChatReactions },
-  ) {
-    super();
-    this.prev_value = params.prev_value;
-    this.new_value = params.new_value;
-  }
-}
-
-export class MessagesTranslateNoResult extends TypeMessagesTranslatedText {
-  protected get [id]() {
-    return 0x67ca4737;
-  }
-
-  protected get [params](): Params {
-    return [];
-  }
-
-  constructor() {
-    super();
-  }
-}
-
-export class MessagesTranslateResultText extends TypeMessagesTranslatedText {
-  text: string;
-
-  protected get [id]() {
-    return 0xa214f7d0;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.text, "string"],
-    ];
-  }
-
-  constructor(params: { text: string }) {
-    super();
-    this.text = params.text;
-  }
-}
-
-export class InputReportReasonIllegalDrugs extends TypeReportReason {
-  protected get [id]() {
-    return 0x0a8eb2be;
-  }
-
-  protected get [params](): Params {
-    return [];
-  }
-
-  constructor() {
-    super();
-  }
-}
-
-export class InputReportReasonPersonalDetails extends TypeReportReason {
-  protected get [id]() {
-    return 0x9ec7863d;
   }
 
   protected get [params](): Params {
@@ -16588,20 +17947,6 @@ export class AttachMenuBotsNotModified extends TypeAttachMenuBots {
   }
 }
 
-export class UpdateAttachMenuBots extends TypeUpdate {
-  protected get [id]() {
-    return 0x17b7a20b;
-  }
-
-  protected get [params](): Params {
-    return [];
-  }
-
-  constructor() {
-    super();
-  }
-}
-
 export class WebViewResultUrl extends TypeWebViewResult {
   query_id: bigint;
   url: string;
@@ -16612,7 +17957,7 @@ export class WebViewResultUrl extends TypeWebViewResult {
 
   protected get [params](): Params {
     return [
-      [this.query_id, "long"],
+      [this.query_id, "bigint"],
       [this.url, "string"],
     ];
   }
@@ -16640,132 +17985,6 @@ export class SimpleWebViewResultUrl extends TypeSimpleWebViewResult {
   constructor(params: { url: string }) {
     super();
     this.url = params.url;
-  }
-}
-
-export class UpdateWebViewResultSent extends TypeUpdate {
-  query_id: bigint;
-
-  protected get [id]() {
-    return 0x1592b79d;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.query_id, "long"],
-    ];
-  }
-
-  constructor(params: { query_id: bigint }) {
-    super();
-    this.query_id = params.query_id;
-  }
-}
-
-export class KeyboardButtonWebView extends TypeKeyboardButton {
-  text: string;
-  url: string;
-
-  protected get [id]() {
-    return 0x13767230;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.text, "string"],
-      [this.url, "string"],
-    ];
-  }
-
-  constructor(params: { text: string; url: string }) {
-    super();
-    this.text = params.text;
-    this.url = params.url;
-  }
-}
-
-export class KeyboardButtonSimpleWebView extends TypeKeyboardButton {
-  text: string;
-  url: string;
-
-  protected get [id]() {
-    return 0xa0c0505c;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.text, "string"],
-      [this.url, "string"],
-    ];
-  }
-
-  constructor(params: { text: string; url: string }) {
-    super();
-    this.text = params.text;
-    this.url = params.url;
-  }
-}
-
-export class MessageActionWebViewDataSentMe extends TypeMessageAction {
-  text: string;
-  data: string;
-
-  protected get [id]() {
-    return 0x47dd8079;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.text, "string"],
-      [this.data, "string"],
-    ];
-  }
-
-  constructor(params: { text: string; data: string }) {
-    super();
-    this.text = params.text;
-    this.data = params.data;
-  }
-}
-
-export class MessageActionWebViewDataSent extends TypeMessageAction {
-  text: string;
-
-  protected get [id]() {
-    return 0xb4c38cb5;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.text, "string"],
-    ];
-  }
-
-  constructor(params: { text: string }) {
-    super();
-    this.text = params.text;
-  }
-}
-
-export class UpdateBotMenuButton extends TypeUpdate {
-  bot_id: bigint;
-  button: TypeBotMenuButton;
-
-  protected get [id]() {
-    return 0x14b85813;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.bot_id, "long"],
-      [this.button, "BotMenuButton"],
-    ];
-  }
-
-  constructor(params: { bot_id: bigint; button: TypeBotMenuButton }) {
-    super();
-    this.bot_id = params.bot_id;
-    this.button = params.button;
   }
 }
 
@@ -16801,20 +18020,6 @@ export class AccountSavedRingtonesNotModified
   extends TypeAccountSavedRingtones {
   protected get [id]() {
     return 0xfbf6e8b1;
-  }
-
-  protected get [params](): Params {
-    return [];
-  }
-
-  constructor() {
-    super();
-  }
-}
-
-export class UpdateSavedRingtones extends TypeUpdate {
-  protected get [id]() {
-    return 0x74d8be99;
   }
 
   protected get [params](): Params {
@@ -16885,7 +18090,7 @@ export class NotificationSoundRingtone extends TypeNotificationSound {
 
   protected get [params](): Params {
     return [
-      [this.id, "long"],
+      [this.id, "bigint"],
     ];
   }
 
@@ -16904,7 +18109,7 @@ export class AccountSavedRingtoneConverted extends TypeAccountSavedRingtone {
 
   protected get [params](): Params {
     return [
-      [this.document, "Document"],
+      [this.document, TypeDocument],
     ];
   }
 
@@ -16984,20 +18189,6 @@ export class AttachMenuPeerTypeBroadcast extends TypeAttachMenuPeerType {
   }
 }
 
-export class ChatInvitePublicJoinRequests extends TypeExportedChatInvite {
-  protected get [id]() {
-    return 0xed107ab7;
-  }
-
-  protected get [params](): Params {
-    return [];
-  }
-
-  constructor() {
-    super();
-  }
-}
-
 export class InputInvoiceMessage extends TypeInputInvoice {
   peer: TypeInputPeer;
   msg_id: number;
@@ -17008,8 +18199,8 @@ export class InputInvoiceMessage extends TypeInputInvoice {
 
   protected get [params](): Params {
     return [
-      [this.peer, "InputPeer"],
-      [this.msg_id, "int"],
+      [this.peer, TypeInputPeer],
+      [this.msg_id, "number"],
     ];
   }
 
@@ -17039,150 +18230,6 @@ export class InputInvoiceSlug extends TypeInputInvoice {
   }
 }
 
-export class UpdateTranscribedAudio extends TypeUpdate {
-  pending?: true;
-  peer: TypePeer;
-  msg_id: number;
-  transcription_id: bigint;
-  text: string;
-
-  protected get [id]() {
-    return 0x0084cd5a;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.pending ?? null, "flags.0?true"],
-      [this.peer, "Peer"],
-      [this.msg_id, "int"],
-      [this.transcription_id, "long"],
-      [this.text, "string"],
-    ];
-  }
-
-  constructor(
-    params: {
-      pending?: true;
-      peer: TypePeer;
-      msg_id: number;
-      transcription_id: bigint;
-      text: string;
-    },
-  ) {
-    super();
-    this.pending = params.pending;
-    this.peer = params.peer;
-    this.msg_id = params.msg_id;
-    this.transcription_id = params.transcription_id;
-    this.text = params.text;
-  }
-}
-
-export class DialogFilterDefault extends TypeDialogFilter {
-  protected get [id]() {
-    return 0x363293ae;
-  }
-
-  protected get [params](): Params {
-    return [];
-  }
-
-  constructor() {
-    super();
-  }
-}
-
-export class MessageEntityCustomEmoji extends TypeMessageEntity {
-  offset: number;
-  length: number;
-  document_id: bigint;
-
-  protected get [id]() {
-    return 0xc8cf05f8;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.offset, "int"],
-      [this.length, "int"],
-      [this.document_id, "long"],
-    ];
-  }
-
-  constructor(params: { offset: number; length: number; document_id: bigint }) {
-    super();
-    this.offset = params.offset;
-    this.length = params.length;
-    this.document_id = params.document_id;
-  }
-}
-
-export class DocumentAttributeCustomEmoji extends TypeDocumentAttribute {
-  free?: true;
-  text_color?: true;
-  alt: string;
-  stickerset: TypeInputStickerSet;
-
-  protected get [id]() {
-    return 0xfd149899;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.free ?? null, "flags.0?true"],
-      [this.text_color ?? null, "flags.1?true"],
-      [this.alt, "string"],
-      [this.stickerset, "InputStickerSet"],
-    ];
-  }
-
-  constructor(
-    params: {
-      free?: true;
-      text_color?: true;
-      alt: string;
-      stickerset: TypeInputStickerSet;
-    },
-  ) {
-    super();
-    this.free = params.free;
-    this.text_color = params.text_color;
-    this.alt = params.alt;
-    this.stickerset = params.stickerset;
-  }
-}
-
-export class StickerSetFullCovered extends TypeStickerSetCovered {
-  set: TypeStickerSet;
-  packs: Array<TypeStickerPack>;
-  documents: Array<TypeDocument>;
-
-  protected get [id]() {
-    return 0x1aed5ee5;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.set, "StickerSet"],
-      [this.packs, "Vector<StickerPack>"],
-      [this.documents, "Vector<Document>"],
-    ];
-  }
-
-  constructor(
-    params: {
-      set: TypeStickerSet;
-      packs: Array<TypeStickerPack>;
-      documents: Array<TypeDocument>;
-    },
-  ) {
-    super();
-    this.set = params.set;
-    this.packs = params.packs;
-    this.documents = params.documents;
-  }
-}
-
 export class InputStorePaymentPremiumSubscription
   extends TypeInputStorePaymentPurpose {
   restore?: true;
@@ -17194,8 +18241,8 @@ export class InputStorePaymentPremiumSubscription
 
   protected get [params](): Params {
     return [
-      [this.restore ?? null, "flags.0?true"],
-      [this.upgrade ?? null, "flags.1?true"],
+      [this.restore ?? null, "true"],
+      [this.upgrade ?? null, "true"],
     ];
   }
 
@@ -17217,9 +18264,9 @@ export class InputStorePaymentGiftPremium extends TypeInputStorePaymentPurpose {
 
   protected get [params](): Params {
     return [
-      [this.user_id, "InputUser"],
+      [this.user_id, TypeInputUser],
       [this.currency, "string"],
-      [this.amount, "long"],
+      [this.amount, "bigint"],
     ];
   }
 
@@ -17230,123 +18277,6 @@ export class InputStorePaymentGiftPremium extends TypeInputStorePaymentPurpose {
     this.user_id = params.user_id;
     this.currency = params.currency;
     this.amount = params.amount;
-  }
-}
-
-export class MessageActionGiftPremium extends TypeMessageAction {
-  currency: string;
-  amount: bigint;
-  months: number;
-
-  protected get [id]() {
-    return 0xaba0f5c6;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.currency, "string"],
-      [this.amount, "long"],
-      [this.months, "int"],
-    ];
-  }
-
-  constructor(params: { currency: string; amount: bigint; months: number }) {
-    super();
-    this.currency = params.currency;
-    this.amount = params.amount;
-    this.months = params.months;
-  }
-}
-
-export class InputStickerSetPremiumGifts extends TypeInputStickerSet {
-  protected get [id]() {
-    return 0xc88b3b02;
-  }
-
-  protected get [params](): Params {
-    return [];
-  }
-
-  constructor() {
-    super();
-  }
-}
-
-export class UpdateReadFeaturedEmojiStickers extends TypeUpdate {
-  protected get [id]() {
-    return 0xfb4c496c;
-  }
-
-  protected get [params](): Params {
-    return [];
-  }
-
-  constructor() {
-    super();
-  }
-}
-
-export class InputPrivacyKeyVoiceMessages extends TypeInputPrivacyKey {
-  protected get [id]() {
-    return 0xaee69d68;
-  }
-
-  protected get [params](): Params {
-    return [];
-  }
-
-  constructor() {
-    super();
-  }
-}
-
-export class PrivacyKeyVoiceMessages extends TypePrivacyKey {
-  protected get [id]() {
-    return 0x0697f414;
-  }
-
-  protected get [params](): Params {
-    return [];
-  }
-
-  constructor() {
-    super();
-  }
-}
-
-export class InputWebFileAudioAlbumThumbLocation
-  extends TypeInputWebFileLocation {
-  small?: true;
-  document?: TypeInputDocument;
-  title?: string;
-  performer?: string;
-
-  protected get [id]() {
-    return 0xf46fe924;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.small ?? null, "flags.2?true"],
-      [this.document ?? null, "flags.0?InputDocument"],
-      [this.title ?? null, "flags.1?string"],
-      [this.performer ?? null, "flags.1?string"],
-    ];
-  }
-
-  constructor(
-    params: {
-      small?: true;
-      document?: TypeInputDocument;
-      title?: string;
-      performer?: string;
-    },
-  ) {
-    super();
-    this.small = params.small;
-    this.document = params.document;
-    this.title = params.title;
-    this.performer = params.performer;
   }
 }
 
@@ -17374,8 +18304,8 @@ export class EmojiStatusUntil extends TypeEmojiStatus {
 
   protected get [params](): Params {
     return [
-      [this.document_id, "long"],
-      [this.until, "int"],
+      [this.document_id, "bigint"],
+      [this.until, "number"],
     ];
   }
 
@@ -17383,42 +18313,6 @@ export class EmojiStatusUntil extends TypeEmojiStatus {
     super();
     this.document_id = params.document_id;
     this.until = params.until;
-  }
-}
-
-export class UpdateUserEmojiStatus extends TypeUpdate {
-  user_id: bigint;
-  emoji_status: TypeEmojiStatus;
-
-  protected get [id]() {
-    return 0x28373599;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.user_id, "long"],
-      [this.emoji_status, "EmojiStatus"],
-    ];
-  }
-
-  constructor(params: { user_id: bigint; emoji_status: TypeEmojiStatus }) {
-    super();
-    this.user_id = params.user_id;
-    this.emoji_status = params.emoji_status;
-  }
-}
-
-export class UpdateRecentEmojiStatuses extends TypeUpdate {
-  protected get [id]() {
-    return 0x30f443db;
-  }
-
-  protected get [params](): Params {
-    return [];
-  }
-
-  constructor() {
-    super();
   }
 }
 
@@ -17478,7 +18372,7 @@ export class ReactionCustomEmoji extends TypeReaction {
 
   protected get [params](): Params {
     return [
-      [this.document_id, "long"],
+      [this.document_id, "bigint"],
     ];
   }
 
@@ -17511,7 +18405,7 @@ export class ChatReactionsAll extends TypeChatReactions {
 
   protected get [params](): Params {
     return [
-      [this.allow_custom ?? null, "flags.0?true"],
+      [this.allow_custom ?? null, "true"],
     ];
   }
 
@@ -17530,7 +18424,7 @@ export class ChatReactionsSome extends TypeChatReactions {
 
   protected get [params](): Params {
     return [
-      [this.reactions, "Vector<Reaction>"],
+      [this.reactions, [TypeReaction]],
     ];
   }
 
@@ -17551,108 +18445,6 @@ export class MessagesReactionsNotModified extends TypeMessagesReactions {
 
   constructor() {
     super();
-  }
-}
-
-export class UpdateRecentReactions extends TypeUpdate {
-  protected get [id]() {
-    return 0x6f7863f4;
-  }
-
-  protected get [params](): Params {
-    return [];
-  }
-
-  constructor() {
-    super();
-  }
-}
-
-export class UpdateMoveStickerSetToTop extends TypeUpdate {
-  masks?: true;
-  emojis?: true;
-  stickerset: bigint;
-
-  protected get [id]() {
-    return 0x86fccf85;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.masks ?? null, "flags.0?true"],
-      [this.emojis ?? null, "flags.1?true"],
-      [this.stickerset, "long"],
-    ];
-  }
-
-  constructor(params: { masks?: true; emojis?: true; stickerset: bigint }) {
-    super();
-    this.masks = params.masks;
-    this.emojis = params.emojis;
-    this.stickerset = params.stickerset;
-  }
-}
-
-export class AuthSentCodeTypeEmailCode extends TypeAuthSentCodeType {
-  apple_signin_allowed?: true;
-  google_signin_allowed?: true;
-  email_pattern: string;
-  length: number;
-  next_phone_login_date?: number;
-
-  protected get [id]() {
-    return 0x5a159841;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.apple_signin_allowed ?? null, "flags.0?true"],
-      [this.google_signin_allowed ?? null, "flags.1?true"],
-      [this.email_pattern, "string"],
-      [this.length, "int"],
-      [this.next_phone_login_date ?? null, "flags.2?int"],
-    ];
-  }
-
-  constructor(
-    params: {
-      apple_signin_allowed?: true;
-      google_signin_allowed?: true;
-      email_pattern: string;
-      length: number;
-      next_phone_login_date?: number;
-    },
-  ) {
-    super();
-    this.apple_signin_allowed = params.apple_signin_allowed;
-    this.google_signin_allowed = params.google_signin_allowed;
-    this.email_pattern = params.email_pattern;
-    this.length = params.length;
-    this.next_phone_login_date = params.next_phone_login_date;
-  }
-}
-
-export class AuthSentCodeTypeSetUpEmailRequired extends TypeAuthSentCodeType {
-  apple_signin_allowed?: true;
-  google_signin_allowed?: true;
-
-  protected get [id]() {
-    return 0xa5491dea;
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.apple_signin_allowed ?? null, "flags.0?true"],
-      [this.google_signin_allowed ?? null, "flags.1?true"],
-    ];
-  }
-
-  constructor(
-    params: { apple_signin_allowed?: true; google_signin_allowed?: true },
-  ) {
-    super();
-    this.apple_signin_allowed = params.apple_signin_allowed;
-    this.google_signin_allowed = params.google_signin_allowed;
   }
 }
 
@@ -17774,7 +18566,7 @@ export class AccountEmailVerifiedLogin extends TypeAccountEmailVerified {
   protected get [params](): Params {
     return [
       [this.email, "string"],
-      [this.sent_code, "auth.SentCode"],
+      [this.sent_code, TypeAuthSentCode],
     ];
   }
 
@@ -17785,9 +18577,163 @@ export class AccountEmailVerifiedLogin extends TypeAccountEmailVerified {
   }
 }
 
-export class InputStickerSetEmojiGenericAnimations extends TypeInputStickerSet {
+export class MessageExtendedMediaPreview extends TypeMessageExtendedMedia {
+  w?: number;
+  h?: number;
+  thumb?: TypePhotoSize;
+  video_duration?: number;
+
   protected get [id]() {
-    return 0x04c4d4ce;
+    return 0xad628cc8;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.w ?? null, "number"],
+      [this.h ?? null, "number"],
+      [this.thumb ?? null, TypePhotoSize],
+      [this.video_duration ?? null, "number"],
+    ];
+  }
+
+  constructor(
+    params: {
+      w?: number;
+      h?: number;
+      thumb?: TypePhotoSize;
+      video_duration?: number;
+    },
+  ) {
+    super();
+    this.w = params.w;
+    this.h = params.h;
+    this.thumb = params.thumb;
+    this.video_duration = params.video_duration;
+  }
+}
+
+export class ForumTopicDeleted extends TypeForumTopic {
+  id: number;
+
+  protected get [id]() {
+    return 0x023f109b;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.id, "number"],
+    ];
+  }
+
+  constructor(params: { id: number }) {
+    super();
+    this.id = params.id;
+  }
+}
+
+export class RequestPeerTypeUser extends TypeRequestPeerType {
+  bot?: boolean;
+  premium?: boolean;
+
+  protected get [id]() {
+    return 0x5f3b8a00;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.bot ?? null, "boolean"],
+      [this.premium ?? null, "boolean"],
+    ];
+  }
+
+  constructor(params: { bot?: boolean; premium?: boolean }) {
+    super();
+    this.bot = params.bot;
+    this.premium = params.premium;
+  }
+}
+
+export class RequestPeerTypeChat extends TypeRequestPeerType {
+  creator?: true;
+  bot_participant?: true;
+  has_username?: boolean;
+  forum?: boolean;
+  user_admin_rights?: TypeChatAdminRights;
+  bot_admin_rights?: TypeChatAdminRights;
+
+  protected get [id]() {
+    return 0xc9f06e1b;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.creator ?? null, "true"],
+      [this.bot_participant ?? null, "true"],
+      [this.has_username ?? null, "boolean"],
+      [this.forum ?? null, "boolean"],
+      [this.user_admin_rights ?? null, TypeChatAdminRights],
+      [this.bot_admin_rights ?? null, TypeChatAdminRights],
+    ];
+  }
+
+  constructor(
+    params: {
+      creator?: true;
+      bot_participant?: true;
+      has_username?: boolean;
+      forum?: boolean;
+      user_admin_rights?: TypeChatAdminRights;
+      bot_admin_rights?: TypeChatAdminRights;
+    },
+  ) {
+    super();
+    this.creator = params.creator;
+    this.bot_participant = params.bot_participant;
+    this.has_username = params.has_username;
+    this.forum = params.forum;
+    this.user_admin_rights = params.user_admin_rights;
+    this.bot_admin_rights = params.bot_admin_rights;
+  }
+}
+
+export class RequestPeerTypeBroadcast extends TypeRequestPeerType {
+  creator?: true;
+  has_username?: boolean;
+  user_admin_rights?: TypeChatAdminRights;
+  bot_admin_rights?: TypeChatAdminRights;
+
+  protected get [id]() {
+    return 0x339bef6c;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.creator ?? null, "true"],
+      [this.has_username ?? null, "boolean"],
+      [this.user_admin_rights ?? null, TypeChatAdminRights],
+      [this.bot_admin_rights ?? null, TypeChatAdminRights],
+    ];
+  }
+
+  constructor(
+    params: {
+      creator?: true;
+      has_username?: boolean;
+      user_admin_rights?: TypeChatAdminRights;
+      bot_admin_rights?: TypeChatAdminRights;
+    },
+  ) {
+    super();
+    this.creator = params.creator;
+    this.has_username = params.has_username;
+    this.user_admin_rights = params.user_admin_rights;
+    this.bot_admin_rights = params.bot_admin_rights;
+  }
+}
+
+export class EmojiListNotModified extends TypeEmojiList {
+  protected get [id]() {
+    return 0x481eadfa;
   }
 
   protected get [params](): Params {
@@ -17799,9 +18745,9 @@ export class InputStickerSetEmojiGenericAnimations extends TypeInputStickerSet {
   }
 }
 
-export class InputStickerSetEmojiDefaultStatuses extends TypeInputStickerSet {
+export class MessagesEmojiGroupsNotModified extends TypeMessagesEmojiGroups {
   protected get [id]() {
-    return 0x29d0f5ee;
+    return 0x6fb4ad87;
   }
 
   protected get [params](): Params {
@@ -17810,5 +18756,115 @@ export class InputStickerSetEmojiDefaultStatuses extends TypeInputStickerSet {
 
   constructor() {
     super();
+  }
+}
+
+export class MessagesTranslateResult extends TypeMessagesTranslatedText {
+  result: Array<TypeTextWithEntities>;
+
+  protected get [id]() {
+    return 0x33db32f8;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.result, [TypeTextWithEntities]],
+    ];
+  }
+
+  constructor(params: { result: Array<TypeTextWithEntities> }) {
+    super();
+    this.result = params.result;
+  }
+}
+
+export class HelpAppConfigNotModified extends TypeHelpAppConfig {
+  protected get [id]() {
+    return 0x7cde641d;
+  }
+
+  protected get [params](): Params {
+    return [];
+  }
+
+  constructor() {
+    super();
+  }
+}
+
+export class InputBotAppID extends TypeInputBotApp {
+  id: bigint;
+  access_hash: bigint;
+
+  protected get [id]() {
+    return 0xa920bd7a;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.id, "bigint"],
+      [this.access_hash, "bigint"],
+    ];
+  }
+
+  constructor(params: { id: bigint; access_hash: bigint }) {
+    super();
+    this.id = params.id;
+    this.access_hash = params.access_hash;
+  }
+}
+
+export class InputBotAppShortName extends TypeInputBotApp {
+  bot_id: TypeInputUser;
+  short_name: string;
+
+  protected get [id]() {
+    return 0x908c0407;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.bot_id, TypeInputUser],
+      [this.short_name, "string"],
+    ];
+  }
+
+  constructor(params: { bot_id: TypeInputUser; short_name: string }) {
+    super();
+    this.bot_id = params.bot_id;
+    this.short_name = params.short_name;
+  }
+}
+
+export class BotAppNotModified extends TypeBotApp {
+  protected get [id]() {
+    return 0x5da674b7;
+  }
+
+  protected get [params](): Params {
+    return [];
+  }
+
+  constructor() {
+    super();
+  }
+}
+
+export class AppWebViewResultUrl extends TypeAppWebViewResult {
+  url: string;
+
+  protected get [id]() {
+    return 0x3c1b4f0d;
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.url, "string"],
+    ];
+  }
+
+  constructor(params: { url: string }) {
+    super();
+    this.url = params.url;
   }
 }

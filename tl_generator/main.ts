@@ -1,9 +1,10 @@
 // deno-lint-ignore-file no-explicit-any
+import { parse } from "https://deno.land/x/tl_json@1.0.0/mod.ts";
 import { revampId, revampType } from "./utilities.ts";
 
-const schema = Deno.readTextFileSync("tl/schema.json");
+const tlContent = Deno.readTextFileSync("tl/api.tl");
 
-const { constructors } = JSON.parse(schema);
+const { constructors } = parse(tlContent);
 let code = `// deno-lint-ignore-file no-explicit-any
 
 const id = Symbol("id");
@@ -15,13 +16,15 @@ export abstract class TLObject {
   protected abstract get [params](): Params | symbol;
 }
 
-type Params = [string | number | null | bigint | boolean | Uint8Array | Array<any> | TLObject, string][];
+type MaybeInArray<T> = T | [T];
+
+type Params = [string | number | null | bigint | boolean | Uint8Array | Array<any> | TLObject, MaybeInArray<typeof TLObject | typeof Uint8Array | string>][];
 
 export abstract class Constructor extends TLObject {
 }
 `;
 
-const skipIds = ["-1132882121", "-1720552011", "1072550713", "481674261"];
+const skipIds = [0x1cb5c415, 0xbc799737, 0x997275b5];
 
 const typeMap: Record<string, string> = {
   "int": "number",
@@ -62,9 +65,17 @@ function getParamsGetter(params: any[]) {
       continue;
     }
     const isFlag = param.type.startsWith("flags");
-    code += `[this.${param.name} ${
-      isFlag ? "?? null" : ""
-    }, "${param.type}"],\n`;
+    let type = convertType(param.type);
+    if (type.startsWith("Array")) {
+      type = type.split("<")[1].split(">")[0];
+      if (!type.startsWith("Type") && type != "Uint8Array") {
+        type = `"${type}"`;
+      }
+      type = `[${type}]`;
+    } else if (!type.startsWith("Type") && type != "Uint8Array") {
+      type = `"${type}"`;
+    }
+    code += `[this.${param.name} ${isFlag ? "?? null" : ""}, ${type}],\n`;
   }
   code += "]\n}\n";
   return code;
