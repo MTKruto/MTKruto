@@ -164,17 +164,11 @@ export abstract class ${className} extends Constructor {
   }
 }
 
+const entries = new Array<[string, string]>();
 for (const constructor of constructors) {
   if (skipIds.includes(constructor.id)) {
     continue;
   }
-
-  // const isAbstract =
-  //   constructor.predicate.toLowerCase() == constructor.type.toLowerCase();
-
-  // if (isAbstract) {
-  //   continue;
-  // }
 
   let parent: string;
   if (constructor.predicate.toLowerCase() == constructor.type.toLowerCase()) {
@@ -185,6 +179,7 @@ for (const constructor of constructors) {
 
   const id = revampId(constructor.id);
   const className = revampType(constructor.predicate);
+  entries.push([id, className]);
 
   code += `
 export class ${className} extends ${parent} {
@@ -200,6 +195,18 @@ export class ${className} extends ${parent} {
 }
 `;
 }
+
+code += `
+export const map = new Map<number, typeof Constructor>([
+`;
+
+for (const [id, className] of entries) {
+  code += `[${id}, ${className}],\n`;
+}
+
+code += `// deno-lint-ignore no-explicit-any
+] as const as any);
+`;
 
 Deno.writeTextFileSync("tl/2_constructors.ts", code);
 
