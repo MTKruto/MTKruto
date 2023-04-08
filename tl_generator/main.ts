@@ -49,12 +49,12 @@ const typeMap: Record<string, string> = {
   "bool": "boolean",
   "double": "number",
   "true": "true",
-  "string": "string | Uint8Array",
+  "string": "string",
   "bytes": "Uint8Array",
   "int128": "bigint",
   "int256": "bigint",
 };
-function convertType(type: string, single = false, prefix = false) {
+function convertType(type: string, prefix = false) {
   if (type.startsWith("flags")) {
     type = type.split("?").slice(-1)[0];
   }
@@ -67,9 +67,6 @@ function convertType(type: string, single = false, prefix = false) {
   const mapping = typeMap[type.toLowerCase()];
   if (mapping != undefined) {
     type = mapping;
-    if (single) {
-      type = type.split(/\s/)[0];
-    }
   } else {
     type = type.replaceAll("!", "");
     type = `Type${revampType(type)}`;
@@ -93,7 +90,7 @@ function getParamDescGetter(params: any[], prefix = false) {
     }
     const name = toCamelCase(param.name);
     code += `["${name}", `;
-    let type = convertType(param.type, true, prefix);
+    let type = convertType(param.type, prefix);
     if (type.startsWith("Array")) {
       type = type.split("<")[1].split(">")[0];
       if (
@@ -126,7 +123,7 @@ function getParamsGetter(params: any[], prefix = false) {
       continue;
     }
     const isFlag = param.type.startsWith("flags");
-    let type = convertType(param.type, true, prefix);
+    let type = convertType(param.type, prefix);
     if (type.startsWith("Array")) {
       type = type.split("<")[1].split(">")[0];
       if (
@@ -161,7 +158,7 @@ function getPropertiesDeclr(params: any[], prefix = false) {
 
     const isFlag = param.type.startsWith("flags");
     const name = toCamelCase(param.name);
-    const type = convertType(param.type, false, prefix);
+    const type = convertType(param.type, prefix);
     code += `${name}${isFlag ? "?:" : ":"} ${type}\n`;
   }
 
@@ -180,7 +177,7 @@ function getConstructor(params: any[], prefix = false) {
 
       const isFlag = param.type.startsWith("flags");
       const name = toCamelCase(param.name);
-      const type = convertType(param.type, false, prefix);
+      const type = convertType(param.type, prefix);
       code += `${name}${isFlag ? "?:" : ":"} ${type}, `;
     }
     code += "}";
