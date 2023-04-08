@@ -64,10 +64,10 @@ export class ReqPqMulti extends Function {
 export class ReqDHParams extends Function {
   nonce: bigint;
   serverNonce: bigint;
-  p: string | Uint8Array;
-  q: string | Uint8Array;
+  p: Uint8Array;
+  q: Uint8Array;
   publicKeyFingerprint: bigint;
-  encryptedData: string | Uint8Array;
+  encryptedData: Uint8Array;
 
   protected get [id]() {
     return 0xd712e4be;
@@ -77,10 +77,10 @@ export class ReqDHParams extends Function {
     return [
       ["nonce", "bigint", "int128"],
       ["serverNonce", "bigint", "int128"],
-      ["p", "string", "string"],
-      ["q", "string", "string"],
+      ["p", Uint8Array, "bytes"],
+      ["q", Uint8Array, "bytes"],
       ["publicKeyFingerprint", "bigint", "long"],
-      ["encryptedData", "string", "string"],
+      ["encryptedData", Uint8Array, "bytes"],
     ];
   }
 
@@ -88,10 +88,10 @@ export class ReqDHParams extends Function {
     return [
       [this.nonce, "bigint", "int128"],
       [this.serverNonce, "bigint", "int128"],
-      [this.p, "string", "string"],
-      [this.q, "string", "string"],
+      [this.p, Uint8Array, "bytes"],
+      [this.q, Uint8Array, "bytes"],
       [this.publicKeyFingerprint, "bigint", "long"],
-      [this.encryptedData, "string", "string"],
+      [this.encryptedData, Uint8Array, "bytes"],
     ];
   }
 
@@ -99,10 +99,10 @@ export class ReqDHParams extends Function {
     params: {
       nonce: bigint;
       serverNonce: bigint;
-      p: string | Uint8Array;
-      q: string | Uint8Array;
+      p: Uint8Array;
+      q: Uint8Array;
       publicKeyFingerprint: bigint;
-      encryptedData: string | Uint8Array;
+      encryptedData: Uint8Array;
     },
   ) {
     super();
@@ -118,7 +118,7 @@ export class ReqDHParams extends Function {
 export class SetClientDHParams extends Function {
   nonce: bigint;
   serverNonce: bigint;
-  encryptedData: string | Uint8Array;
+  encryptedData: Uint8Array;
 
   protected get [id]() {
     return 0xf5045f1f;
@@ -128,7 +128,7 @@ export class SetClientDHParams extends Function {
     return [
       ["nonce", "bigint", "int128"],
       ["serverNonce", "bigint", "int128"],
-      ["encryptedData", "string", "string"],
+      ["encryptedData", Uint8Array, "bytes"],
     ];
   }
 
@@ -136,16 +136,12 @@ export class SetClientDHParams extends Function {
     return [
       [this.nonce, "bigint", "int128"],
       [this.serverNonce, "bigint", "int128"],
-      [this.encryptedData, "string", "string"],
+      [this.encryptedData, Uint8Array, "bytes"],
     ];
   }
 
   constructor(
-    params: {
-      nonce: bigint;
-      serverNonce: bigint;
-      encryptedData: string | Uint8Array;
-    },
+    params: { nonce: bigint; serverNonce: bigint; encryptedData: Uint8Array },
   ) {
     super();
     this.nonce = params.nonce;

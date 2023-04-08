@@ -1272,7 +1272,7 @@ export abstract class TypeReadParticipantDate extends Constructor {
 export class ResPQ extends Constructor {
   nonce: bigint;
   serverNonce: bigint;
-  pq: string | Uint8Array;
+  pq: Uint8Array;
   serverPublicKeyFingerprints: Array<bigint>;
 
   protected get [id]() {
@@ -1283,7 +1283,7 @@ export class ResPQ extends Constructor {
     return [
       ["nonce", "bigint", "int128"],
       ["serverNonce", "bigint", "int128"],
-      ["pq", "string", "string"],
+      ["pq", Uint8Array, "bytes"],
       ["serverPublicKeyFingerprints", ["bigint"], "Vector<long>"],
     ];
   }
@@ -1292,7 +1292,7 @@ export class ResPQ extends Constructor {
     return [
       [this.nonce, "bigint", "int128"],
       [this.serverNonce, "bigint", "int128"],
-      [this.pq, "string", "string"],
+      [this.pq, Uint8Array, "bytes"],
       [this.serverPublicKeyFingerprints, ["bigint"], "Vector<long>"],
     ];
   }
@@ -1301,7 +1301,7 @@ export class ResPQ extends Constructor {
     params: {
       nonce: bigint;
       serverNonce: bigint;
-      pq: string | Uint8Array;
+      pq: Uint8Array;
       serverPublicKeyFingerprints: Array<bigint>;
     },
   ) {
@@ -1314,9 +1314,9 @@ export class ResPQ extends Constructor {
 }
 
 export class PQInnerData extends Constructor {
-  pq: string | Uint8Array;
-  p: string | Uint8Array;
-  q: string | Uint8Array;
+  pq: Uint8Array;
+  p: Uint8Array;
+  q: Uint8Array;
   nonce: bigint;
   serverNonce: bigint;
   newNonce: bigint;
@@ -1327,9 +1327,9 @@ export class PQInnerData extends Constructor {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["pq", "string", "string"],
-      ["p", "string", "string"],
-      ["q", "string", "string"],
+      ["pq", Uint8Array, "bytes"],
+      ["p", Uint8Array, "bytes"],
+      ["q", Uint8Array, "bytes"],
       ["nonce", "bigint", "int128"],
       ["serverNonce", "bigint", "int128"],
       ["newNonce", "bigint", "int256"],
@@ -1338,9 +1338,9 @@ export class PQInnerData extends Constructor {
 
   protected get [params](): Params {
     return [
-      [this.pq, "string", "string"],
-      [this.p, "string", "string"],
-      [this.q, "string", "string"],
+      [this.pq, Uint8Array, "bytes"],
+      [this.p, Uint8Array, "bytes"],
+      [this.q, Uint8Array, "bytes"],
       [this.nonce, "bigint", "int128"],
       [this.serverNonce, "bigint", "int128"],
       [this.newNonce, "bigint", "int256"],
@@ -1349,9 +1349,9 @@ export class PQInnerData extends Constructor {
 
   constructor(
     params: {
-      pq: string | Uint8Array;
-      p: string | Uint8Array;
-      q: string | Uint8Array;
+      pq: Uint8Array;
+      p: Uint8Array;
+      q: Uint8Array;
       nonce: bigint;
       serverNonce: bigint;
       newNonce: bigint;
@@ -1368,9 +1368,9 @@ export class PQInnerData extends Constructor {
 }
 
 export class PQInnerDataDc extends TypePQInnerData {
-  pq: string | Uint8Array;
-  p: string | Uint8Array;
-  q: string | Uint8Array;
+  pq: Uint8Array;
+  p: Uint8Array;
+  q: Uint8Array;
   nonce: bigint;
   serverNonce: bigint;
   newNonce: bigint;
@@ -1382,9 +1382,9 @@ export class PQInnerDataDc extends TypePQInnerData {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["pq", "string", "string"],
-      ["p", "string", "string"],
-      ["q", "string", "string"],
+      ["pq", Uint8Array, "bytes"],
+      ["p", Uint8Array, "bytes"],
+      ["q", Uint8Array, "bytes"],
       ["nonce", "bigint", "int128"],
       ["serverNonce", "bigint", "int128"],
       ["newNonce", "bigint", "int256"],
@@ -1394,9 +1394,9 @@ export class PQInnerDataDc extends TypePQInnerData {
 
   protected get [params](): Params {
     return [
-      [this.pq, "string", "string"],
-      [this.p, "string", "string"],
-      [this.q, "string", "string"],
+      [this.pq, Uint8Array, "bytes"],
+      [this.p, Uint8Array, "bytes"],
+      [this.q, Uint8Array, "bytes"],
       [this.nonce, "bigint", "int128"],
       [this.serverNonce, "bigint", "int128"],
       [this.newNonce, "bigint", "int256"],
@@ -1406,9 +1406,9 @@ export class PQInnerDataDc extends TypePQInnerData {
 
   constructor(
     params: {
-      pq: string | Uint8Array;
-      p: string | Uint8Array;
-      q: string | Uint8Array;
+      pq: Uint8Array;
+      p: Uint8Array;
+      q: Uint8Array;
       nonce: bigint;
       serverNonce: bigint;
       newNonce: bigint;
@@ -1427,9 +1427,9 @@ export class PQInnerDataDc extends TypePQInnerData {
 }
 
 export class PQInnerDataTemp extends TypePQInnerData {
-  pq: string | Uint8Array;
-  p: string | Uint8Array;
-  q: string | Uint8Array;
+  pq: Uint8Array;
+  p: Uint8Array;
+  q: Uint8Array;
   nonce: bigint;
   serverNonce: bigint;
   newNonce: bigint;
@@ -1441,9 +1441,9 @@ export class PQInnerDataTemp extends TypePQInnerData {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["pq", "string", "string"],
-      ["p", "string", "string"],
-      ["q", "string", "string"],
+      ["pq", Uint8Array, "bytes"],
+      ["p", Uint8Array, "bytes"],
+      ["q", Uint8Array, "bytes"],
       ["nonce", "bigint", "int128"],
       ["serverNonce", "bigint", "int128"],
       ["newNonce", "bigint", "int256"],
@@ -1453,9 +1453,9 @@ export class PQInnerDataTemp extends TypePQInnerData {
 
   protected get [params](): Params {
     return [
-      [this.pq, "string", "string"],
-      [this.p, "string", "string"],
-      [this.q, "string", "string"],
+      [this.pq, Uint8Array, "bytes"],
+      [this.p, Uint8Array, "bytes"],
+      [this.q, Uint8Array, "bytes"],
       [this.nonce, "bigint", "int128"],
       [this.serverNonce, "bigint", "int128"],
       [this.newNonce, "bigint", "int256"],
@@ -1465,9 +1465,9 @@ export class PQInnerDataTemp extends TypePQInnerData {
 
   constructor(
     params: {
-      pq: string | Uint8Array;
-      p: string | Uint8Array;
-      q: string | Uint8Array;
+      pq: Uint8Array;
+      p: Uint8Array;
+      q: Uint8Array;
       nonce: bigint;
       serverNonce: bigint;
       newNonce: bigint;
@@ -1486,9 +1486,9 @@ export class PQInnerDataTemp extends TypePQInnerData {
 }
 
 export class PQInnerDataTempDc extends TypePQInnerData {
-  pq: string | Uint8Array;
-  p: string | Uint8Array;
-  q: string | Uint8Array;
+  pq: Uint8Array;
+  p: Uint8Array;
+  q: Uint8Array;
   nonce: bigint;
   serverNonce: bigint;
   newNonce: bigint;
@@ -1501,9 +1501,9 @@ export class PQInnerDataTempDc extends TypePQInnerData {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["pq", "string", "string"],
-      ["p", "string", "string"],
-      ["q", "string", "string"],
+      ["pq", Uint8Array, "bytes"],
+      ["p", Uint8Array, "bytes"],
+      ["q", Uint8Array, "bytes"],
       ["nonce", "bigint", "int128"],
       ["serverNonce", "bigint", "int128"],
       ["newNonce", "bigint", "int256"],
@@ -1514,9 +1514,9 @@ export class PQInnerDataTempDc extends TypePQInnerData {
 
   protected get [params](): Params {
     return [
-      [this.pq, "string", "string"],
-      [this.p, "string", "string"],
-      [this.q, "string", "string"],
+      [this.pq, Uint8Array, "bytes"],
+      [this.p, Uint8Array, "bytes"],
+      [this.q, Uint8Array, "bytes"],
       [this.nonce, "bigint", "int128"],
       [this.serverNonce, "bigint", "int128"],
       [this.newNonce, "bigint", "int256"],
@@ -1527,9 +1527,9 @@ export class PQInnerDataTempDc extends TypePQInnerData {
 
   constructor(
     params: {
-      pq: string | Uint8Array;
-      p: string | Uint8Array;
-      q: string | Uint8Array;
+      pq: Uint8Array;
+      p: Uint8Array;
+      q: Uint8Array;
       nonce: bigint;
       serverNonce: bigint;
       newNonce: bigint;
@@ -1636,7 +1636,7 @@ export class ServerDHParamsFail extends TypeServerDHParams {
 export class ServerDHParamsOk extends TypeServerDHParams {
   nonce: bigint;
   serverNonce: bigint;
-  encryptedAnswer: string | Uint8Array;
+  encryptedAnswer: Uint8Array;
 
   protected get [id]() {
     return 0xd0e8075c;
@@ -1646,7 +1646,7 @@ export class ServerDHParamsOk extends TypeServerDHParams {
     return [
       ["nonce", "bigint", "int128"],
       ["serverNonce", "bigint", "int128"],
-      ["encryptedAnswer", "string", "string"],
+      ["encryptedAnswer", Uint8Array, "bytes"],
     ];
   }
 
@@ -1654,16 +1654,12 @@ export class ServerDHParamsOk extends TypeServerDHParams {
     return [
       [this.nonce, "bigint", "int128"],
       [this.serverNonce, "bigint", "int128"],
-      [this.encryptedAnswer, "string", "string"],
+      [this.encryptedAnswer, Uint8Array, "bytes"],
     ];
   }
 
   constructor(
-    params: {
-      nonce: bigint;
-      serverNonce: bigint;
-      encryptedAnswer: string | Uint8Array;
-    },
+    params: { nonce: bigint; serverNonce: bigint; encryptedAnswer: Uint8Array },
   ) {
     super();
     this.nonce = params.nonce;
@@ -1676,8 +1672,8 @@ export class ServerDHInnerData extends Constructor {
   nonce: bigint;
   serverNonce: bigint;
   g: number;
-  dhPrime: string | Uint8Array;
-  gA: string | Uint8Array;
+  dhPrime: Uint8Array;
+  gA: Uint8Array;
   serverTime: number;
 
   protected get [id]() {
@@ -1689,8 +1685,8 @@ export class ServerDHInnerData extends Constructor {
       ["nonce", "bigint", "int128"],
       ["serverNonce", "bigint", "int128"],
       ["g", "number", "int"],
-      ["dhPrime", "string", "string"],
-      ["gA", "string", "string"],
+      ["dhPrime", Uint8Array, "bytes"],
+      ["gA", Uint8Array, "bytes"],
       ["serverTime", "number", "int"],
     ];
   }
@@ -1700,8 +1696,8 @@ export class ServerDHInnerData extends Constructor {
       [this.nonce, "bigint", "int128"],
       [this.serverNonce, "bigint", "int128"],
       [this.g, "number", "int"],
-      [this.dhPrime, "string", "string"],
-      [this.gA, "string", "string"],
+      [this.dhPrime, Uint8Array, "bytes"],
+      [this.gA, Uint8Array, "bytes"],
       [this.serverTime, "number", "int"],
     ];
   }
@@ -1711,8 +1707,8 @@ export class ServerDHInnerData extends Constructor {
       nonce: bigint;
       serverNonce: bigint;
       g: number;
-      dhPrime: string | Uint8Array;
-      gA: string | Uint8Array;
+      dhPrime: Uint8Array;
+      gA: Uint8Array;
       serverTime: number;
     },
   ) {
@@ -1730,7 +1726,7 @@ export class ClientDHInnerData extends Constructor {
   nonce: bigint;
   serverNonce: bigint;
   retryId: bigint;
-  gB: string | Uint8Array;
+  gB: Uint8Array;
 
   protected get [id]() {
     return 0x6643b654;
@@ -1741,7 +1737,7 @@ export class ClientDHInnerData extends Constructor {
       ["nonce", "bigint", "int128"],
       ["serverNonce", "bigint", "int128"],
       ["retryId", "bigint", "long"],
-      ["gB", "string", "string"],
+      ["gB", Uint8Array, "bytes"],
     ];
   }
 
@@ -1750,7 +1746,7 @@ export class ClientDHInnerData extends Constructor {
       [this.nonce, "bigint", "int128"],
       [this.serverNonce, "bigint", "int128"],
       [this.retryId, "bigint", "long"],
-      [this.gB, "string", "string"],
+      [this.gB, Uint8Array, "bytes"],
     ];
   }
 
@@ -1759,7 +1755,7 @@ export class ClientDHInnerData extends Constructor {
       nonce: bigint;
       serverNonce: bigint;
       retryId: bigint;
-      gB: string | Uint8Array;
+      gB: Uint8Array;
     },
   ) {
     super();
@@ -2060,7 +2056,7 @@ export class MsgsStateReq extends TypeMsgsStateReq {
 
 export class MsgsStateInfo extends TypeMsgsStateInfo {
   reqMsgId: bigint;
-  info: string | Uint8Array;
+  info: Uint8Array;
 
   protected get [id]() {
     return 0x04deb57d;
@@ -2069,18 +2065,18 @@ export class MsgsStateInfo extends TypeMsgsStateInfo {
   static get [paramDesc](): ParamDesc {
     return [
       ["reqMsgId", "bigint", "long"],
-      ["info", "string", "string"],
+      ["info", Uint8Array, "bytes"],
     ];
   }
 
   protected get [params](): Params {
     return [
       [this.reqMsgId, "bigint", "long"],
-      [this.info, "string", "string"],
+      [this.info, Uint8Array, "bytes"],
     ];
   }
 
-  constructor(params: { reqMsgId: bigint; info: string | Uint8Array }) {
+  constructor(params: { reqMsgId: bigint; info: Uint8Array }) {
     super();
     this.reqMsgId = params.reqMsgId;
     this.info = params.info;
@@ -2089,7 +2085,7 @@ export class MsgsStateInfo extends TypeMsgsStateInfo {
 
 export class MsgsAllInfo extends TypeMsgsAllInfo {
   msgIds: Array<bigint>;
-  info: string | Uint8Array;
+  info: Uint8Array;
 
   protected get [id]() {
     return 0x8cc0d131;
@@ -2098,18 +2094,18 @@ export class MsgsAllInfo extends TypeMsgsAllInfo {
   static get [paramDesc](): ParamDesc {
     return [
       ["msgIds", ["bigint"], "Vector<long>"],
-      ["info", "string", "string"],
+      ["info", Uint8Array, "bytes"],
     ];
   }
 
   protected get [params](): Params {
     return [
       [this.msgIds, ["bigint"], "Vector<long>"],
-      [this.info, "string", "string"],
+      [this.info, Uint8Array, "bytes"],
     ];
   }
 
-  constructor(params: { msgIds: Array<bigint>; info: string | Uint8Array }) {
+  constructor(params: { msgIds: Array<bigint>; info: Uint8Array }) {
     super();
     this.msgIds = params.msgIds;
     this.info = params.info;
@@ -2220,7 +2216,7 @@ export class MsgResendReq extends TypeMsgResendReq {
 
 export class RpcError extends TypeRpcError {
   errorCode: number;
-  errorMessage: string | Uint8Array;
+  errorMessage: Uint8Array;
 
   protected get [id]() {
     return 0x2144ca19;
@@ -2229,20 +2225,18 @@ export class RpcError extends TypeRpcError {
   static get [paramDesc](): ParamDesc {
     return [
       ["errorCode", "number", "int"],
-      ["errorMessage", "string", "string"],
+      ["errorMessage", Uint8Array, "bytes"],
     ];
   }
 
   protected get [params](): Params {
     return [
       [this.errorCode, "number", "int"],
-      [this.errorMessage, "string", "string"],
+      [this.errorMessage, Uint8Array, "bytes"],
     ];
   }
 
-  constructor(
-    params: { errorCode: number; errorMessage: string | Uint8Array },
-  ) {
+  constructor(params: { errorCode: number; errorMessage: Uint8Array }) {
     super();
     this.errorCode = params.errorCode;
     this.errorMessage = params.errorMessage;
@@ -2600,7 +2594,7 @@ export class IpPortSecret extends TypeIpPort {
 }
 
 export class AccessPointRule extends Constructor {
-  phonePrefixRules: string | Uint8Array;
+  phonePrefixRules: Uint8Array;
   dcId: number;
   ips: Array<TypeIpPort>;
 
@@ -2610,7 +2604,7 @@ export class AccessPointRule extends Constructor {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["phonePrefixRules", "string", "string"],
+      ["phonePrefixRules", Uint8Array, "bytes"],
       ["dcId", "number", "int"],
       ["ips", [TypeIpPort], "vector<IpPort>"],
     ];
@@ -2618,7 +2612,7 @@ export class AccessPointRule extends Constructor {
 
   protected get [params](): Params {
     return [
-      [this.phonePrefixRules, "string", "string"],
+      [this.phonePrefixRules, Uint8Array, "bytes"],
       [this.dcId, "number", "int"],
       [this.ips, [TypeIpPort], "vector<IpPort>"],
     ];
@@ -2626,7 +2620,7 @@ export class AccessPointRule extends Constructor {
 
   constructor(
     params: {
-      phonePrefixRules: string | Uint8Array;
+      phonePrefixRules: Uint8Array;
       dcId: number;
       ips: Array<TypeIpPort>;
     },
