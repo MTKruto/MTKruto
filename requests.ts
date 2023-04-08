@@ -15,12 +15,13 @@ import {
   randomBigIntBits,
 } from "./deps.ts";
 import { TLReader } from "./utilities/1_tl_reader.ts";
-import { TLWriter } from "./utilities/1_tl_writer.ts";
-import { ClientDHInnerData, PQInnerData } from "./generated.ts";
-
-const req_pq_multi = 0xbe7e8ef1;
-const req_DH_params = 0xd712e4be;
-const set_client_DH_params = 0xf5045f1f;
+import {
+  ClientDHInnerData,
+  PQInnerData,
+  ReqDHParams,
+  ReqPqMulti,
+  SetClientDHParams,
+} from "./generated.ts";
 
 const PUBLIC_KEYS = [
   {
@@ -45,10 +46,7 @@ export async function reqPqMulti(transport: Transport) {
 
   await transport.send(
     packUnencryptedMessage(
-      new TLWriter()
-        .writeInt32(req_pq_multi)
-        .writeInt128(nonce)
-        .buffer,
+      new ReqPqMulti({ nonce }).serialize(),
     ),
   );
 
@@ -177,15 +175,14 @@ export async function getDHParams(
   /// End step 8
 
   await transport.send(packUnencryptedMessage(
-    new TLWriter()
-      .writeInt32(req_DH_params)
-      .writeInt128(nonce)
-      .writeInt128(serverNonce)
-      .writeBytes(bufferFromBigInt(p.valueOf(), 4, false))
-      .writeBytes(bufferFromBigInt(q.valueOf(), 4, false))
-      .writeInt64(publicKeyFingerprint)
-      .writeBytes(encryptedDataBuf)
-      .buffer,
+    new ReqDHParams({
+      nonce,
+      serverNonce,
+      p: bufferFromBigInt(p.valueOf(), 4, false),
+      q: bufferFromBigInt(q.valueOf(), 4, false),
+      publicKeyFingerprint,
+      encryptedData: encryptedDataBuf,
+    }).serialize(),
   ));
 
   const buffer = await transport.receive();
@@ -262,12 +259,8 @@ export async function getDHParams(
   const encryptedData = ige256Encrypt(dataWithHash, tmpAesKey, tmpAesIv);
 
   await transport.send(packUnencryptedMessage(
-    new TLWriter()
-      .writeInt32(set_client_DH_params)
-      .writeInt128(nonce)
-      .writeInt128(serverNonce)
-      .writeBytes(encryptedData)
-      .buffer,
+    new SetClientDHParams({ nonce, serverNonce, encryptedData })
+      .serialize(),
   ));
 
   const authKey = modExp(
