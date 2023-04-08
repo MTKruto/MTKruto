@@ -15,7 +15,8 @@ const { constructors: apiConstructors, functions: apiFunctions } = parse(
 const constructors = mtProtoConstructors.concat(apiConstructors);
 const functions = mtProtoFunctions.concat(apiFunctions);
 
-let code = `import { id, params, TLObject, Params } from "./1_tl_object.ts";
+let code =
+  `import { id, params, TLObject, Params, TLObjectConstructor, ParamDesc, paramDesc } from "./1_tl_object.ts";
 
 export abstract class Constructor extends TLObject {
 }
@@ -65,6 +66,40 @@ function convertType(type: string, single = false, prefix = false) {
   } else {
     return type;
   }
+}
+
+function getParamDescGetter(params: any[], prefix = false) {
+  let code = `static get [paramDesc](): ParamDesc {
+    return [\n`;
+  for (const param of params) {
+    if (param.name.startsWith("flags")) {
+      continue;
+    }
+    const name = toCamelCase(param.name);
+    code += `["${name}", `;
+    let type = convertType(param.type, true, prefix);
+    if (type.startsWith("Array")) {
+      type = type.split("<")[1].split(">")[0];
+      if (
+        !type.replace("constructors.", "").startsWith("Type") &&
+        type != "Uint8Array"
+      ) {
+        type = `"${type}"`;
+      }
+      type = `[${type}]`;
+    } else if (
+      !type.replace("constructors.", "").startsWith("Type") &&
+      type != "Uint8Array"
+    ) {
+      type = `"${type}"`;
+    }
+    code += `${type}, `;
+    code += `"${param.type}"`;
+    code += "],";
+  }
+  code += "]\n";
+  code += "}\n";
+  return code;
 }
 
 function getParamsGetter(params: any[], prefix = false) {
@@ -189,6 +224,8 @@ export class ${className} extends ${parent} {
     return ${id}
   }
 
+  ${getParamDescGetter(constructor.params)}
+
   ${getParamsGetter(constructor.params)}
 
   ${getConstructor(constructor.params)}
@@ -197,7 +234,7 @@ export class ${className} extends ${parent} {
 }
 
 code += `
-export const map = new Map<number, typeof Constructor>([
+export const map = new Map<number, TLObjectConstructor>([
 `;
 
 for (const [id, className] of entries) {
@@ -210,7 +247,8 @@ code += `// deno-lint-ignore no-explicit-any
 
 Deno.writeTextFileSync("tl/2_constructors.ts", code);
 
-code = `import { id, params, TLObject, Params } from "./1_tl_object.ts";
+code =
+  `import { id, params, TLObject, Params, paramDesc, ParamDesc } from "./1_tl_object.ts";
 import * as constructors from "./2_constructors.ts";
 
 export abstract class Function extends TLObject {
@@ -228,6 +266,8 @@ export class ${className} extends Function {
   protected get [id]() {
     return ${id}
   }
+
+  ${getParamDescGetter(function_.params, true)}
 
   ${getParamsGetter(function_.params, true)}
 

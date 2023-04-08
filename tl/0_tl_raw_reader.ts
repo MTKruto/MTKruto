@@ -33,6 +33,11 @@ export class TLRawReader {
     return bigIntFromBuffer(buffer, true, signed);
   }
 
+  readInt256(signed = true) {
+    const buffer = this.read(256 / 8);
+    return bigIntFromBuffer(buffer, true, signed);
+  }
+
   readBytes() {
     let L = this.read(1)[0];
     let padding: number;

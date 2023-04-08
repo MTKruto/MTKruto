@@ -1,9 +1,24 @@
+import { TLRawReader } from "./0_tl_raw_reader.ts";
 import { TLRawWriter } from "./0_tl_raw_writer.ts";
 
 type MaybeArrayOf<T> = T | T[];
 type MaybeInArray<T> = T | [T];
 
-export type Params = [
+export type ParamDesc = [
+  string,
+  MaybeInArray<
+    | typeof TLObject
+    | typeof Uint8Array
+    | "string"
+    | "number"
+    | "bigint"
+    | "boolean"
+    | "true"
+  >,
+  string,
+][];
+
+type Param =
   | null
   | MaybeArrayOf<
     | string
@@ -12,7 +27,10 @@ export type Params = [
     | boolean
     | Uint8Array
     | TLObject
-  >,
+  >;
+
+export type Params = [
+  Param,
   MaybeInArray<
     | typeof TLObject
     | typeof Uint8Array
@@ -27,9 +45,17 @@ export type Params = [
 
 export const id = Symbol("id");
 
+export const params = Symbol("params");
+
+export const paramDesc = Symbol("paramDesc");
+
 export abstract class TLObject {
   protected abstract get [id](): number;
   protected abstract get [params](): Params;
+
+  protected static get [paramDesc](): ParamDesc {
+    throw new Error("Unimplemented");
+  }
 
   serialize() {
     const writer = new TLRawWriter();
@@ -103,4 +129,56 @@ export abstract class TLObject {
 
     return writer.buffer;
   }
+}
+
+export interface TLObjectConstructor<T = TLObject> {
+  new (params: Record<string, Param>): T;
+}
+
+export function deserialize<T extends TLObjectConstructor<InstanceType<T>>>(
+  buffer: Uint8Array,
+  paramDesc: ParamDesc,
+  constructor: T,
+): InstanceType<T> {
+  const reader = new TLRawReader(buffer);
+  const params: Record<string, Param> = {};
+  for (const [name, type, note] of paramDesc) {
+    if (type instanceof Array) {
+      throw new Error("Unimplemented");
+    }
+    if (type instanceof TLObject) {
+      throw new Error("Unimplemented");
+    }
+
+    if (type instanceof Uint8Array) {
+      params[name] = reader.readBytes();
+    }
+
+    switch (type) {
+      case "bigint":
+        if (note == "int128") {
+          params[name] = reader.readInt128();
+        } else if (note === "int256") {
+          params[name] = reader.readInt256();
+        } else {
+          params[name] = reader.readInt64();
+        }
+        break;
+      case "boolean":
+        params[name] = reader.readInt32() == 0x997275b5;
+        break;
+      case "number":
+        params[name] = reader.readInt32();
+        break;
+      case "string":
+        params[name] = reader.readString();
+        break;
+      case "true":
+        if (reader.readInt32() == 0x997275b5) {
+          params[name] = true;
+        }
+    }
+  }
+
+  return new constructor(params);
 }
