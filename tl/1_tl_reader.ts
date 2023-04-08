@@ -1,4 +1,4 @@
-import { bigIntFromBuffer } from "./0_bigint.ts";
+import { bigIntFromBuffer } from "../utilities/0_bigint.ts";
 
 export class TLReader {
   constructor(private buffer: Uint8Array) {

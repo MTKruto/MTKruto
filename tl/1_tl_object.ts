@@ -1,4 +1,4 @@
-import { TLWriter } from "./utilities/1_tl_writer.ts";
+import { TLWriter } from "./0_tl_writer.ts";
 
 type MaybeArrayOf<T> = T | T[];
 type MaybeInArray<T> = T | [T];
