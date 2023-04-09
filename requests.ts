@@ -1,5 +1,8 @@
 import { Transport } from "./transport/transport.ts";
-import { packUnencryptedMessage } from "./utilities/1_tl.ts";
+import {
+  packUnencryptedMessage,
+  unpackUnencryptedMessage,
+} from "./utilities/1_tl.ts";
 import {
   bigIntFromBuffer,
   getRandomBigInt,
@@ -58,11 +61,9 @@ export async function reqPqMulti(transport: Transport) {
   );
 
   const buffer = await transport.receive();
-  const reader = new TLReader(buffer);
+  const { message } = unpackUnencryptedMessage(buffer);
+  const reader = new TLReader(message);
 
-  const _authKeyId = reader.readInt64();
-  const _messageId = reader.readInt64();
-  const _messageLength = reader.readInt32();
   const obj = reader.readObject();
 
   assertInstanceOf(obj, ResPQ);
@@ -194,11 +195,8 @@ export async function getDHParams(
   ));
 
   const buffer = await transport.receive();
-  let reader = new TLReader(buffer);
-
-  const _authKeyId = reader.readInt64();
-  const _messageId = reader.readInt64();
-  const _messageLength = reader.readInt32();
+  const { message } = unpackUnencryptedMessage(buffer);
+  let reader = new TLReader(message);
   let object = reader.readObject();
 
   assertInstanceOf(object, ServerDHParamsOk);
@@ -269,11 +267,8 @@ export async function getDHParams(
 
   {
     const buffer = await transport.receive();
-    const reader = new TLReader(buffer);
-
-    const _authKeyId = reader.readInt64();
-    const _messageId = reader.readInt64();
-    const _messageLength = reader.readInt32();
+    const { message } = unpackUnencryptedMessage(buffer);
+    const reader = new TLReader(message);
     const object = reader.readObject();
 
     assertInstanceOf(object, DhGenOk);
