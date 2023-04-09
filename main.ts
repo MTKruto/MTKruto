@@ -4,6 +4,8 @@ import { ConnectionTCP } from "./connection/connection_tcp.ts";
 import { TransportIntermediate } from "./transport/transport_intermediate.ts";
 import { Connection } from "./connection/connection.ts";
 import { TransportAbridged } from "./transport/transport_abridged.ts";
+import { packEncryptedMessage } from "./utilities/1_tl.ts";
+import { Ping } from "./tl/3_functions.ts";
 
 function getConnection(server: "piltover" | "piltover-ws" | "tg" | "tg-ws") {
   switch (server) {
@@ -42,11 +44,15 @@ await transport.initialize();
 const { pq, pqBytes, serverNonce, nonce, publicKeyFingerprint } =
   await reqPqMulti(transport);
 
-const _authKey = await getDHParams(
+const authKey = await getDHParams(
   transport,
   pq,
   pqBytes,
   nonce,
   serverNonce,
   publicKeyFingerprint,
+);
+
+await transport.send(
+  await packEncryptedMessage(new Ping({ pingId: 2006n }).serialize(), authKey),
 );
