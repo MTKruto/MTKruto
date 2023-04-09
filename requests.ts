@@ -249,7 +249,7 @@ export async function getDHParams(
     .writeInt128(nonce)
     .writeInt128(serverNonce)
     .writeInt64(0n)
-    .writeBytes(bufferFromBigInt(gB, 256, false, true))
+    .writeBytes(bufferFromBigInt(gB, 256, false, false))
     .buffer;
 
   let dataWithHash = concat(await sha1(data), data);
