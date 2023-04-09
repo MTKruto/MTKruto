@@ -43,7 +43,7 @@ const {
   pqBytes,
   serverNonce,
   nonce,
-  publicKeyFingerprint
+  publicKeyFingerprint,
 } = await reqPqMulti(transport);
 
 const { authKey } = await getDHParams(
