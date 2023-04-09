@@ -68,7 +68,7 @@ export async function reqPqMulti(transport: Transport) {
   const _count = reader.readInt32();
   const publicKeyFingerprint = reader.readInt64();
 
-  const pq = bigIntFromBuffer(pq_, false, true);
+  const pq = bigIntFromBuffer(pq_, false, false);
 
   return { nonce, serverNonce, publicKeyFingerprint, pq, pqBytes: pq_ };
 }
@@ -173,11 +173,10 @@ export async function getDHParams(
   /// encrypted_data := RSA(key_aes_encrypted, server_pubkey); — 256-byte big-endian integer is elevated to the requisite power from the RSA public key modulo the RSA modulus, and the result is stored as a big-endian integer consisting of exactly 256 bytes (with leading zero bytes if required).
   const encrypedData = modExp(iKeyAesEncrypted, exponent, serverKey);
 
-  const encryptedDataBuf = bufferFromBigInt(encrypedData, 256, false, true);
+  const encryptedDataBuf = bufferFromBigInt(encrypedData, 256, false);
 
-  assertEquals(encryptedDataBuf.length, 256);
+  assertEquals(bufferFromBigInt(encrypedData, 256, false).length, 256);
   /// End step 8
-
 
   await transport.send(packUnencryptedMessage(
     new TLWriter()
@@ -229,9 +228,9 @@ export async function getDHParams(
     bufferFromBigInt(newNonce, 32, true, true).slice(0, 4),
   );
 
-  const _answer = ige256Decrypt(encryptedAnswer, tmpAesKey, tmpAesIv).slice(20);
+  const answer = ige256Decrypt(encryptedAnswer, tmpAesKey, tmpAesIv).slice(20);
 
-  reader = new TLReader(buffer);
+  reader = new TLReader(answer);
 
   const _constructorId_ = reader.readInt32();
   const __nonce = reader.readInt128();
@@ -241,9 +240,9 @@ export async function getDHParams(
   const gA = reader.readBytes();
   const _serverTime = reader.readInt32();
 
-  const b = getRandomBigInt(256, false, false);
+  const b = getRandomBigInt(256);
 
-  const gB = modExp(BigInt(g), b, bigIntFromBuffer(dhPrime, false, true));
+  const gB = modExp(BigInt(g), b, bigIntFromBuffer(dhPrime, false, false));
 
   data = new TLWriter()
     .writeInt32(client_DH_inner_data)
@@ -275,9 +274,9 @@ export async function getDHParams(
   ));
 
   const authKey = modExp(
-    bigIntFromBuffer(gA, false, true),
+    bigIntFromBuffer(gA, false, false),
     b,
-    bigIntFromBuffer(dhPrime, false, true),
+    bigIntFromBuffer(dhPrime, false, false),
   );
 
   return authKey;
