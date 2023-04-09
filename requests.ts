@@ -1,5 +1,8 @@
 import { Transport } from "./transport/transport.ts";
-import { packUnencryptedMessage } from "./utilities/1_tl.ts";
+import {
+  packUnencryptedMessage,
+  unpackUnencryptedMessage,
+} from "./utilities/1_tl.ts";
 import {
   bigIntFromBuffer,
   getRandomBigInt,
@@ -14,14 +17,21 @@ import {
   ige256Encrypt,
   randomBigIntBits,
 } from "./deps.ts";
-import { TLReader } from "./utilities/1_tl_reader.ts";
-import { TLWriter } from "./utilities/1_tl_writer.ts";
-
-const req_pq_multi = 0xbe7e8ef1;
-const p_q_inner_data = 0x83c95aec;
-const req_DH_params = 0xd712e4be;
-const client_DH_inner_data = 0x6643b654;
-const set_client_DH_params = 0xf5045f1f;
+import {
+  ClientDHInnerData,
+  DhGenOk,
+  PQInnerData,
+  ResPQ,
+  ServerDHInnerData,
+  ServerDHParamsOk,
+} from "./tl/2_constructors.ts";
+import {
+  ReqDHParams,
+  ReqPqMulti,
+  SetClientDHParams,
+} from "./tl/3_functions.ts";
+import { assertInstanceOf } from "https://deno.land/std@0.181.0/testing/asserts.ts";
+import { TLReader } from "./tl/3_tl_reader.ts";
 
 const PUBLIC_KEYS = [
   {
@@ -39,38 +49,47 @@ const PUBLIC_KEYS = [
     n: 0xCE04512E9D3DBB6EA8DFEE9B560C3C48E406E7852DD9640A019FCDA0FB65F69A4264B60CCAC82162A954A27A1CE764CD81389DD07D314A2E7B078F403E6D9DE57346772F603D9383A0835674070E35CD7FB965747F8B27EE69F4B191CA003B40D9D22AC574A35A2C23E5A79B185069106752979720B1DC6E8C8E5F3FE667CA45B5CB7033612AA08F92A67BA04345DDC8F5603688A9559F1BDA2F053BD2C498510DE0AB528FED53BCAE548F40D36EACC292D1D3AEE5AA06C87185397BC73CAF642F731B9C9323F8D658B9C0484F42EF77438113265CC6AE883063A8B7FC89B183B48192C6A423E96AAA80169965B79B0C497623577CD5086B386D4CA5C44B3DFDn,
     e: 0x10001n,
   },
+  {
+    f: 847625836280919973n,
+    n: 0xaeec36c8ffc109cb099624685b97815415657bd76d8c9c3e398103d7ad16c9bba6f525ed0412d7ae2c2de2b44e77d72cbf4b7438709a4e646a05c43427c7f184debf72947519680e651500890c6832796dd11f772c25ff8f576755afe055b0a3752c696eb7d8da0d8be1faf38c9bdd97ce0a77d3916230c4032167100edd0f9e7a3a9b602d04367b689536af0d64b613ccba7962939d3b57682beb6dae5b608130b2e52aca78ba023cf6ce806b1dc49c72cf928a7199d22e3d7ac84e47bc9427d0236945d10dbd15177bab413fbf0edfda09f014c7a7da088dde9759702ca760af2b8e4e97cc055c617bd74c3d97008635b98dc4d621b4891da9fb0473047927n,
+    e: 0x010001n,
+  },
 ];
 
 export async function reqPqMulti(transport: Transport) {
+  const messageIds = new Array<bigint>();
   const nonce = getRandomBigInt(16, false, true);
 
   await transport.send(
     packUnencryptedMessage(
-      new TLWriter()
-        .writeInt32(req_pq_multi)
-        .writeInt128(nonce)
-        .buffer,
+      new ReqPqMulti({ nonce }).serialize(),
     ),
   );
 
   const buffer = await transport.receive();
-  const reader = new TLReader(buffer);
+  const { message, messageId } = unpackUnencryptedMessage(buffer);
+  messageIds.push(messageId);
+  const reader = new TLReader(message);
 
-  const _authKeyId = reader.readInt64();
-  const _messageId = reader.readInt64();
-  const _messageLength = reader.readInt32();
-  const _constructorId = reader.readInt32();
-  const nonce_ = reader.readInt128();
+  const obj = reader.readObject();
+
+  assertInstanceOf(obj, ResPQ);
+
+  const { nonce: nonce_, serverPublicKeyFingerprints, serverNonce, pq: pq_ } =
+    obj;
   assertEquals(nonce, nonce_);
-  const serverNonce = reader.readInt128();
-  const pq_ = reader.readBytes();
-  const _vectorConstructor = reader.readInt32();
-  const _count = reader.readInt32();
-  const publicKeyFingerprint = reader.readInt64();
+  const publicKeyFingerprint = serverPublicKeyFingerprints[0];
 
   const pq = bigIntFromBuffer(pq_, false, false);
 
-  return { nonce, serverNonce, publicKeyFingerprint, pq, pqBytes: pq_ };
+  return {
+    nonce,
+    serverNonce,
+    publicKeyFingerprint,
+    pq,
+    pqBytes: pq_,
+    messageIds,
+  };
 }
 
 export async function getDHParams(
@@ -81,6 +100,8 @@ export async function getDHParams(
   serverNonce: bigint,
   publicKeyFingerprint: bigint,
 ) {
+  const messageIds = new Array<bigint>();
+
   const key = PUBLIC_KEYS.find((v) => v.f == publicKeyFingerprint);
   if (!key) {
     throw new Error("Key not found");
@@ -89,15 +110,14 @@ export async function getDHParams(
   const [p, q] = factorize(pq);
   const newNonce = randomBigIntBits(32 * 8);
 
-  let data = new TLWriter()
-    .writeInt32(p_q_inner_data)
-    .writeBytes(pqBytes)
-    .writeBytes(bufferFromBigInt(p.valueOf(), 4, false))
-    .writeBytes(bufferFromBigInt(q.valueOf(), 4, false))
-    .writeInt128(nonce)
-    .writeInt128(serverNonce)
-    .writeInt256(newNonce)
-    .buffer;
+  let data = new PQInnerData({
+    pq: pqBytes,
+    p: bufferFromBigInt(p.valueOf(), 4, false),
+    q: bufferFromBigInt(q.valueOf(), 4, false),
+    nonce,
+    serverNonce,
+    newNonce,
+  }).serialize();
 
   /// Step 1
   /// data_with_padding := data + random_padding_bytes; — where random_padding_bytes are chosen so that the resulting length of data_with_padding is precisely 192 bytes, and data is the TL-serialized data to be encrypted as before. One has to check that data is not longer than 144 bytes.
@@ -179,27 +199,24 @@ export async function getDHParams(
   /// End step 8
 
   await transport.send(packUnencryptedMessage(
-    new TLWriter()
-      .writeInt32(req_DH_params)
-      .writeInt128(nonce)
-      .writeInt128(serverNonce)
-      .writeBytes(bufferFromBigInt(p.valueOf(), 4, false))
-      .writeBytes(bufferFromBigInt(q.valueOf(), 4, false))
-      .writeInt64(publicKeyFingerprint)
-      .writeBytes(encryptedDataBuf)
-      .buffer,
+    new ReqDHParams({
+      nonce,
+      serverNonce,
+      p: bufferFromBigInt(p.valueOf(), 4, false),
+      q: bufferFromBigInt(q.valueOf(), 4, false),
+      publicKeyFingerprint,
+      encryptedData: encryptedDataBuf,
+    }).serialize(),
   ));
 
   const buffer = await transport.receive();
-  let reader = new TLReader(buffer);
+  const { message, messageId } = unpackUnencryptedMessage(buffer);
+  messageIds.push(messageId);
+  let reader = new TLReader(message);
+  let object = reader.readObject();
 
-  const _authKeyId = reader.readInt64();
-  const _messageId = reader.readInt64();
-  const _messageLength = reader.readInt32();
-  const _constructorId = reader.readInt32();
-  const _nonce_ = reader.readInt128();
-  const _serverNonce_ = reader.readInt128();
-  const encryptedAnswer = reader.readBytes();
+  assertInstanceOf(object, ServerDHParamsOk);
+  const { encryptedAnswer } = object;
 
   const tmpAesKey = concat(
     await sha1(
@@ -232,25 +249,20 @@ export async function getDHParams(
 
   reader = new TLReader(answer);
 
-  const _constructorId_ = reader.readInt32();
-  const __nonce = reader.readInt128();
-  const __serverNonce = reader.readInt128();
-  const g = reader.readInt32();
-  const dhPrime = reader.readBytes();
-  const gA = reader.readBytes();
-  const _serverTime = reader.readInt32();
+  object = reader.readObject();
+  assertInstanceOf(object, ServerDHInnerData);
+
+  const { g, dhPrime, gA, serverTime } = object;
 
   const b = getRandomBigInt(256);
 
   const gB = modExp(BigInt(g), b, bigIntFromBuffer(dhPrime, false, false));
-
-  data = new TLWriter()
-    .writeInt32(client_DH_inner_data)
-    .writeInt128(nonce)
-    .writeInt128(serverNonce)
-    .writeInt64(0n)
-    .writeBytes(bufferFromBigInt(gB, 256, false, false))
-    .buffer;
+  data = new ClientDHInnerData({
+    nonce,
+    serverNonce,
+    retryId: 0n,
+    gB: bufferFromBigInt(gB, 256, false, false),
+  }).serialize();
 
   let dataWithHash = concat(await sha1(data), data);
 
@@ -265,13 +277,19 @@ export async function getDHParams(
   const encryptedData = ige256Encrypt(dataWithHash, tmpAesKey, tmpAesIv);
 
   await transport.send(packUnencryptedMessage(
-    new TLWriter()
-      .writeInt32(set_client_DH_params)
-      .writeInt128(nonce)
-      .writeInt128(serverNonce)
-      .writeBytes(encryptedData)
-      .buffer,
+    new SetClientDHParams({ nonce, serverNonce, encryptedData })
+      .serialize(),
   ));
+
+  {
+    const buffer = await transport.receive();
+    const { message, messageId } = unpackUnencryptedMessage(buffer);
+    messageIds.push(messageId);
+    const reader = new TLReader(message);
+    const object = reader.readObject();
+
+    assertInstanceOf(object, DhGenOk);
+  }
 
   const authKey = modExp(
     bigIntFromBuffer(gA, false, false),
@@ -279,5 +297,5 @@ export async function getDHParams(
     bigIntFromBuffer(dhPrime, false, false),
   );
 
-  return authKey;
+  return { authKey, messageIds, serverTime };
 }

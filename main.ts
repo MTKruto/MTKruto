@@ -38,11 +38,15 @@ await connection.open();
 
 await transport.initialize();
 
-//#region genauthkey
-const { pq, pqBytes, serverNonce, nonce, publicKeyFingerprint } =
-  await reqPqMulti(transport);
+const {
+  pq,
+  pqBytes,
+  serverNonce,
+  nonce,
+  publicKeyFingerprint,
+} = await reqPqMulti(transport);
 
-const _authKey = await getDHParams(
+const { authKey } = await getDHParams(
   transport,
   pq,
   pqBytes,
@@ -50,5 +54,3 @@ const _authKey = await getDHParams(
   serverNonce,
   publicKeyFingerprint,
 );
-
-await transport.receive();

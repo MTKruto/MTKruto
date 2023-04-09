@@ -57,4 +57,11 @@ export class ConnectionWebSocket implements Connection {
     }
     this.webSocket.send(p);
   }
+
+  close() {
+    if (this.webSocket.readyState == WebSocket.CLOSED) {
+      throw new Error("Connection not open");
+    }
+    this.webSocket.close();
+  }
 }
