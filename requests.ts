@@ -284,6 +284,5 @@ export async function getDHParams(
     bigIntFromBuffer(dhPrime, false, true),
   );
 
-  console.log({ authKey });
   return authKey;
 }
