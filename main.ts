@@ -50,5 +50,3 @@ const _authKey = await getDHParams(
   serverNonce,
   publicKeyFingerprint,
 );
-
-await transport.receive();

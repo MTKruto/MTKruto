@@ -16,7 +16,9 @@ import {
 } from "./deps.ts";
 import {
   ClientDHInnerData,
+  DhGenOk,
   PQInnerData,
+  ServerDHInnerData,
   ServerDHParamsOk,
 } from "./tl/2_constructors.ts";
 import {
@@ -196,7 +198,7 @@ export async function getDHParams(
   const _authKeyId = reader.readInt64();
   const _messageId = reader.readInt64();
   const _messageLength = reader.readInt32();
-  const object = reader.readObject();
+  let object = reader.readObject();
 
   assertInstanceOf(object, ServerDHParamsOk);
   const { encryptedAnswer } = object;
@@ -228,22 +230,18 @@ export async function getDHParams(
     bufferFromBigInt(newNonce, 32, true, true).slice(0, 4),
   );
 
-  const _answer = ige256Decrypt(encryptedAnswer, tmpAesKey, tmpAesIv).slice(20);
+  const answer = ige256Decrypt(encryptedAnswer, tmpAesKey, tmpAesIv).slice(20);
 
-  reader = new TLReader(buffer);
+  reader = new TLReader(answer);
 
-  const _constructorId_ = reader.readInt32();
-  const __nonce = reader.readInt128();
-  const __serverNonce = reader.readInt128();
-  const g = reader.readInt32();
-  const dhPrime = reader.readBytes();
-  const gA = reader.readBytes();
-  const _serverTime = reader.readInt32();
+  object = reader.readObject();
+  assertInstanceOf(object, ServerDHInnerData);
+
+  const { g, dhPrime, gA } = object;
 
   const b = getRandomBigInt(256, false, false);
 
   const gB = modExp(BigInt(g), b, bigIntFromBuffer(dhPrime, false, true));
-
   data = new ClientDHInnerData({
     nonce,
     serverNonce,
@@ -268,11 +266,24 @@ export async function getDHParams(
       .serialize(),
   ));
 
+  {
+    const buffer = await transport.receive();
+    const reader = new TLReader(buffer);
+
+    const _authKeyId = reader.readInt64();
+    const _messageId = reader.readInt64();
+    const _messageLength = reader.readInt32();
+    const object = reader.readObject();
+
+    assertInstanceOf(object, DhGenOk);
+  }
+
   const authKey = modExp(
     bigIntFromBuffer(gA, false, true),
     b,
     bigIntFromBuffer(dhPrime, false, true),
   );
 
+  console.log({ authKey });
   return authKey;
 }
