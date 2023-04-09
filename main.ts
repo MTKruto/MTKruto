@@ -4,12 +4,6 @@ import { ConnectionTCP } from "./connection/connection_tcp.ts";
 import { TransportIntermediate } from "./transport/transport_intermediate.ts";
 import { Connection } from "./connection/connection.ts";
 import { TransportAbridged } from "./transport/transport_abridged.ts";
-import {
-  packEncryptedMessage,
-  unpackEncryptedMessage,
-} from "./utilities/1_tl.ts";
-import { Ping } from "./tl/3_functions.ts";
-import { TLReader } from "./tl/3_tl_reader.ts";
 
 function getConnection(server: "piltover" | "piltover-ws" | "tg" | "tg-ws") {
   switch (server) {
@@ -44,11 +38,15 @@ await connection.open();
 
 await transport.initialize();
 
-//#region genauthkey
-const { pq, pqBytes, serverNonce, nonce, publicKeyFingerprint } =
-  await reqPqMulti(transport);
+const {
+  pq,
+  pqBytes,
+  serverNonce,
+  nonce,
+  publicKeyFingerprint
+} = await reqPqMulti(transport);
 
-const authKey = await getDHParams(
+const { authKey } = await getDHParams(
   transport,
   pq,
   pqBytes,
@@ -56,18 +54,3 @@ const authKey = await getDHParams(
   serverNonce,
   publicKeyFingerprint,
 );
-
-await transport.send(
-  await packEncryptedMessage(
-    new Ping({ pingId: 4472942n }).serialize(),
-    authKey,
-  ),
-);
-
-const buffer = await transport.receive();
-
-const { message } = await unpackEncryptedMessage(buffer, authKey);
-
-const reader = new TLReader(message);
-const obj = reader.readObject();
-console.log(obj);

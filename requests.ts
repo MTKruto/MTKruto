@@ -52,6 +52,7 @@ const PUBLIC_KEYS = [
 ];
 
 export async function reqPqMulti(transport: Transport) {
+  const messageIds = new Array<bigint>();
   const nonce = getRandomBigInt(16, false, true);
 
   await transport.send(
@@ -61,7 +62,8 @@ export async function reqPqMulti(transport: Transport) {
   );
 
   const buffer = await transport.receive();
-  const { message } = unpackUnencryptedMessage(buffer);
+  const { message, messageId } = unpackUnencryptedMessage(buffer);
+  messageIds.push(messageId);
   const reader = new TLReader(message);
 
   const obj = reader.readObject();
@@ -70,13 +72,19 @@ export async function reqPqMulti(transport: Transport) {
 
   const { nonce: nonce_, serverPublicKeyFingerprints, serverNonce, pq: pq_ } =
     obj;
-
   assertEquals(nonce, nonce_);
   const publicKeyFingerprint = serverPublicKeyFingerprints[0];
 
   const pq = bigIntFromBuffer(pq_, false, false);
 
-  return { nonce, serverNonce, publicKeyFingerprint, pq, pqBytes: pq_ };
+  return {
+    nonce,
+    serverNonce,
+    publicKeyFingerprint,
+    pq,
+    pqBytes: pq_,
+    messageIds,
+  };
 }
 
 export async function getDHParams(
@@ -87,6 +95,8 @@ export async function getDHParams(
   serverNonce: bigint,
   publicKeyFingerprint: bigint,
 ) {
+  const messageIds = new Array<bigint>();
+
   const key = PUBLIC_KEYS.find((v) => v.f == publicKeyFingerprint);
   if (!key) {
     throw new Error("Key not found");
@@ -195,7 +205,8 @@ export async function getDHParams(
   ));
 
   const buffer = await transport.receive();
-  const { message } = unpackUnencryptedMessage(buffer);
+  const { message, messageId } = unpackUnencryptedMessage(buffer);
+  messageIds.push(messageId);
   let reader = new TLReader(message);
   let object = reader.readObject();
 
@@ -236,7 +247,7 @@ export async function getDHParams(
   object = reader.readObject();
   assertInstanceOf(object, ServerDHInnerData);
 
-  const { g, dhPrime, gA } = object;
+  const { g, dhPrime, gA, serverTime } = object;
 
   const b = getRandomBigInt(256);
 
@@ -267,7 +278,8 @@ export async function getDHParams(
 
   {
     const buffer = await transport.receive();
-    const { message } = unpackUnencryptedMessage(buffer);
+    const { message, messageId } = unpackUnencryptedMessage(buffer);
+    messageIds.push(messageId);
     const reader = new TLReader(message);
     const object = reader.readObject();
 
@@ -280,5 +292,5 @@ export async function getDHParams(
     bigIntFromBuffer(dhPrime, false, false),
   );
 
-  return authKey;
+  return { authKey, messageIds, serverTime };
 }

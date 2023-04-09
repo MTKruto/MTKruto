@@ -1,5 +1,7 @@
+import { assertEquals } from "https://deno.land/std@0.181.0/testing/asserts.ts";
 import { ige256Decrypt, ige256Encrypt } from "../../tgcrypto_wasm/dist/mod.ts";
 import { TLRawReader } from "../tl/0_tl_raw_reader.ts";
+import { TLRawWriter } from "../tl/0_tl_raw_writer.ts";
 import { getRandomBigInt, mod } from "./0_bigint.ts";
 import { bufferFromBigInt, concat, sha1, sha256 } from "./0_buffer.ts";
 
@@ -37,20 +39,23 @@ export function unpackUnencryptedMessage(buffer: Uint8Array) {
 }
 
 export async function packEncryptedMessage(data: Uint8Array, authKey: bigint) {
-  const salt = getRandomBigInt(8, true, false);
   const sessionId = getRandomBigInt(8, true, false);
   const messageId = getMessageId();
-  const seqNo = bufferFromBigInt(1, 4);
-  const messageDataLength = bufferFromBigInt(data.length, 4);
+  const seqNo = 1;
+  const messageDataLength = data.length;
 
-  let message = concat(
-    bufferFromBigInt(salt, 8),
-    bufferFromBigInt(sessionId, 8),
-    bufferFromBigInt(messageId, 8),
-    seqNo,
-    messageDataLength,
-    data,
-  );
+  const writer = new TLRawWriter();
+
+  writer.writeInt64(0n);
+  writer.writeInt64(sessionId);
+  writer.writeInt64(messageId);
+  writer.writeInt32(seqNo);
+  writer.writeInt32(messageDataLength);
+  writer.write(data);
+
+  let message = writer.buffer;
+
+  assertEquals(writer.buffer, message);
 
   const padding = new Uint8Array(mod(-(message.length + 12), 16) + 12);
 

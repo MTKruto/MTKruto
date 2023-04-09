@@ -129,7 +129,7 @@ export abstract class TLObject {
 
   serialize() {
     const writer = new TLRawWriter();
-    writer.writeInt32(this[id]);
+    writer.writeInt32(this[id], false);
 
     for (const [value, type, note] of this[params]) {
       if (type instanceof Array) {
@@ -193,7 +193,7 @@ function deserializeSingleParam(
           return reader.readInt64();
         }
       case "boolean":
-        return reader.readInt32() == 0x997275b5;
+        return reader.readInt32(false) == 0x997275b5;
       case "number":
         return reader.readInt32();
       case "string":
@@ -220,7 +220,7 @@ export function deserialize<T extends TLObjectConstructor<InstanceType<T>>>(
       throw new Error("Unimplemented");
     }
     if (type instanceof Array) {
-      assertEquals(reader.readInt32(), 0x1cb5c415);
+      assertEquals(reader.readInt32(false), 0x1cb5c415);
       const count = reader.readInt32();
       const items = new Array<
         NonNullable<ReturnType<typeof deserializeSingleParam>>
