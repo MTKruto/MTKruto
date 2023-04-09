@@ -29,4 +29,12 @@ export class ConnectionTCP implements Connection {
     }
     await this.connection.write(p);
   }
+
+  close() {
+    if (!this.connection) {
+      throw new Error("Connection not open");
+    }
+    this.connection.close();
+    delete this.connection;
+  }
 }

@@ -1,4 +1,7 @@
-import { ige256Encrypt } from "../../tgcrypto_wasm/dist/mod.ts";
+import { assertEquals } from "https://deno.land/std@0.181.0/testing/asserts.ts";
+import { ige256Decrypt, ige256Encrypt } from "../../tgcrypto_wasm/dist/mod.ts";
+import { TLRawReader } from "../tl/0_tl_raw_reader.ts";
+import { TLRawWriter } from "../tl/0_tl_raw_writer.ts";
 import { getRandomBigInt, mod } from "./0_bigint.ts";
 import { bufferFromBigInt, concat, sha1, sha256 } from "./0_buffer.ts";
 
@@ -15,6 +18,7 @@ export function getMessageId() {
   lastMsgId = newMsgId;
   return newMsgId;
 }
+
 export function packUnencryptedMessage(data: Uint8Array) {
   const message = concat(
     bufferFromBigInt(0x00, 8),
@@ -24,22 +28,34 @@ export function packUnencryptedMessage(data: Uint8Array) {
   );
   return message;
 }
+export function unpackUnencryptedMessage(buffer: Uint8Array) {
+  const reader = new TLRawReader(buffer);
+  const _authKeyId = reader.readInt64();
+  const messageId = reader.readInt64();
+  const messageLength = reader.readInt32();
+  const message = reader.read(messageLength);
+
+  return { messageId, message };
+}
 
 export async function packEncryptedMessage(data: Uint8Array, authKey: bigint) {
-  const salt = getRandomBigInt(8, true, false);
   const sessionId = getRandomBigInt(8, true, false);
   const messageId = getMessageId();
-  const seqNo = bufferFromBigInt(1, 4);
-  const messageDataLength = bufferFromBigInt(data.length, 4);
+  const seqNo = 1;
+  const messageDataLength = data.length;
 
-  let message = concat(
-    bufferFromBigInt(salt, 8),
-    bufferFromBigInt(sessionId, 8),
-    bufferFromBigInt(messageId, 8),
-    seqNo,
-    messageDataLength,
-    data,
-  );
+  const writer = new TLRawWriter();
+
+  writer.writeInt64(0n);
+  writer.writeInt64(sessionId);
+  writer.writeInt64(messageId);
+  writer.writeInt32(seqNo);
+  writer.writeInt32(messageDataLength);
+  writer.write(data);
+
+  let message = writer.buffer;
+
+  assertEquals(writer.buffer, message);
 
   const padding = new Uint8Array(mod(-(message.length + 12), 16) + 12);
 
@@ -75,4 +91,45 @@ export async function packEncryptedMessage(data: Uint8Array, authKey: bigint) {
 
   const encryptedMessage = ige256Encrypt(message, aesKey, aesIv);
   return concat(authKeyId, msgKey, encryptedMessage);
+}
+export async function unpackEncryptedMessage(
+  buffer: Uint8Array,
+  authKey_: bigint,
+) {
+  const authKey = bufferFromBigInt(authKey_, 256, false, false);
+
+  let reader = new TLRawReader(buffer);
+  const _authKeyId = reader.readInt64();
+  const msgKey_ = reader.readInt128();
+  const msgKey = bufferFromBigInt(msgKey_, 16, true, true);
+
+  const x = 8;
+
+  const sha256A = await sha256(concat(msgKey, authKey.slice(x, x + 36)));
+  const sha256B = await sha256(
+    concat(authKey.slice(40 + x, 40 + x + 36), msgKey),
+  );
+
+  const aesKey = concat(
+    sha256A.slice(0, 8),
+    sha256B.slice(8, 8 + 16),
+    sha256A.slice(24, 24 + 8),
+  );
+  const aesIv = concat(
+    sha256B.slice(0, 8),
+    sha256A.slice(8, 8 + 16),
+    sha256B.slice(24, 24 + 8),
+  );
+
+  const decrypted = ige256Decrypt(reader.buffer, aesKey, aesIv);
+  reader = new TLRawReader(decrypted);
+
+  const _salt = reader.readInt64();
+  const _sessionId = reader.readInt64();
+  const messageId = reader.readInt64();
+  const _seqNo = reader.readInt32();
+  const messageLength = reader.readInt32(false);
+  const message = reader.read(messageLength);
+
+  return { messageId, message };
 }
