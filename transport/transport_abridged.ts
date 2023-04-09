@@ -61,11 +61,13 @@ export class TransportAbridged extends Transport implements Transport {
       throw new Error("Transport not initialized");
     }
 
+    const bufferLength = buffer.length / 4;
+
     const header = new Uint8Array([
-      buffer.length >= 0x7F ? 0x7F : buffer.length,
+      bufferLength >= 0x7F ? 0x7F : bufferLength,
     ]);
-    const length = buffer.length >= 0x7F
-      ? bufferFromBigInt(buffer.length, 3)
+    const length = bufferLength >= 0x7F
+      ? bufferFromBigInt(bufferLength, 3)
       : new Uint8Array();
 
     await this.connection.write(this.encrypt(concat(header, length, buffer)));
