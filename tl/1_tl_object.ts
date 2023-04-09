@@ -1,3 +1,4 @@
+import { assertEquals } from "https://deno.land/std@0.181.0/testing/asserts.ts";
 import { TLRawReader } from "./0_tl_raw_reader.ts";
 import { TLRawWriter } from "./0_tl_raw_writer.ts";
 
@@ -135,7 +136,51 @@ export interface TLObjectConstructor<T = TLObject> {
   new (params: Record<string, Param>): T;
   [paramDesc]: ParamDesc;
 }
+function isTLObjectConstructor(t: unknown): t is typeof TLObject {
+  // deno-lint-ignore no-explicit-any
+  return (t as any)[paramDesc] instanceof Array;
+}
 
+function deserializeSingleParam(
+  reader: TLRawReader,
+  type:
+    | typeof Uint8Array
+    | "string"
+    | "number"
+    | "bigint"
+    | "boolean"
+    | "true",
+  note: string,
+) {
+  if (type == Uint8Array) {
+    return reader.readBytes();
+  } else {
+    switch (type) {
+      case "bigint":
+        if (note == "int128") {
+          return reader.readInt128();
+        } else if (note === "int256") {
+          return reader.readInt256();
+        } else {
+          return reader.readInt64();
+        }
+      case "boolean":
+        return reader.readInt32() == 0x997275b5;
+      case "number":
+        return reader.readInt32();
+      case "string":
+        return reader.readString();
+      case "true":
+        if (reader.readInt32() == 0x997275b5) {
+          return true;
+        } else {
+          return undefined;
+        }
+      default:
+        throw new Error(`Unexpected type ${type}`);
+    }
+  }
+}
 export function deserialize<T extends TLObjectConstructor<InstanceType<T>>>(
   reader: TLRawReader,
   paramDesc: ParamDesc,
@@ -143,40 +188,29 @@ export function deserialize<T extends TLObjectConstructor<InstanceType<T>>>(
 ): InstanceType<T> {
   const params: Record<string, Param> = {};
   for (const [name, type, note] of paramDesc) {
+    if (isTLObjectConstructor(type)) {
+      throw new Error("Unimplemented");
+    }
     if (type instanceof Array) {
-      throw new Error("Unimplemented");
-    }
-    if (type instanceof TLObject) {
-      throw new Error("Unimplemented");
-    }
-
-    if (type == Uint8Array) {
-      params[name] = reader.readBytes();
-    }
-
-    switch (type) {
-      case "bigint":
-        if (note == "int128") {
-          params[name] = reader.readInt128();
-        } else if (note === "int256") {
-          params[name] = reader.readInt256();
+      assertEquals(reader.readInt32(), 0x1cb5c415);
+      const count = reader.readInt32();
+      const items = new Array<
+        NonNullable<ReturnType<typeof deserializeSingleParam>>
+      >();
+      for (let i = 0; i < count; i++) {
+        if (isTLObjectConstructor(type[0])) {
+          throw new Error("Unimplemented");
         } else {
-          params[name] = reader.readInt64();
+          items.push(deserializeSingleParam(reader, type[0], note)!);
         }
-        break;
-      case "boolean":
-        params[name] = reader.readInt32() == 0x997275b5;
-        break;
-      case "number":
-        params[name] = reader.readInt32();
-        break;
-      case "string":
-        params[name] = reader.readString();
-        break;
-      case "true":
-        if (reader.readInt32() == 0x997275b5) {
-          params[name] = true;
-        }
+      }
+      params[name] = items;
+      continue;
+    }
+
+    const value = deserializeSingleParam(reader, type, note);
+    if (value) {
+      params[name] = value;
     }
   }
 

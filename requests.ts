@@ -18,6 +18,7 @@ import {
   ClientDHInnerData,
   DhGenOk,
   PQInnerData,
+  ResPQ,
   ServerDHInnerData,
   ServerDHParamsOk,
 } from "./tl/2_constructors.ts";
@@ -62,15 +63,15 @@ export async function reqPqMulti(transport: Transport) {
   const _authKeyId = reader.readInt64();
   const _messageId = reader.readInt64();
   const _messageLength = reader.readInt32();
-  const _constructorId = reader.readInt32();
+  const obj = reader.readObject();
 
-  const nonce_ = reader.readInt128();
+  assertInstanceOf(obj, ResPQ);
+
+  const { nonce: nonce_, serverPublicKeyFingerprints, serverNonce, pq: pq_ } =
+    obj;
+
   assertEquals(nonce, nonce_);
-  const serverNonce = reader.readInt128();
-  const pq_ = reader.readBytes();
-  const _vectorConstructor = reader.readInt32();
-  const _count = reader.readInt32();
-  const publicKeyFingerprint = reader.readInt64();
+  const publicKeyFingerprint = serverPublicKeyFingerprints[0];
 
   const pq = bigIntFromBuffer(pq_, false, false);
 
