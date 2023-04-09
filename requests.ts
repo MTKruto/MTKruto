@@ -72,7 +72,7 @@ export async function reqPqMulti(transport: Transport) {
   const _count = reader.readInt32();
   const publicKeyFingerprint = reader.readInt64();
 
-  const pq = bigIntFromBuffer(pq_, false, true);
+  const pq = bigIntFromBuffer(pq_, false, false);
 
   return { nonce, serverNonce, publicKeyFingerprint, pq, pqBytes: pq_ };
 }
@@ -176,9 +176,9 @@ export async function getDHParams(
   /// encrypted_data := RSA(key_aes_encrypted, server_pubkey); — 256-byte big-endian integer is elevated to the requisite power from the RSA public key modulo the RSA modulus, and the result is stored as a big-endian integer consisting of exactly 256 bytes (with leading zero bytes if required).
   const encrypedData = modExp(iKeyAesEncrypted, exponent, serverKey);
 
-  const encryptedDataBuf = bufferFromBigInt(encrypedData, 256, false, true);
+  const encryptedDataBuf = bufferFromBigInt(encrypedData, 256, false);
 
-  assertEquals(encryptedDataBuf.length, 256);
+  assertEquals(bufferFromBigInt(encrypedData, 256, false).length, 256);
   /// End step 8
 
   await transport.send(packUnencryptedMessage(
@@ -239,14 +239,14 @@ export async function getDHParams(
 
   const { g, dhPrime, gA } = object;
 
-  const b = getRandomBigInt(256, false, false);
+  const b = getRandomBigInt(256);
 
-  const gB = modExp(BigInt(g), b, bigIntFromBuffer(dhPrime, false, true));
+  const gB = modExp(BigInt(g), b, bigIntFromBuffer(dhPrime, false, false));
   data = new ClientDHInnerData({
     nonce,
     serverNonce,
     retryId: 0n,
-    gB: bufferFromBigInt(gB, 256, false, true),
+    gB: bufferFromBigInt(gB, 256, false, false),
   }).serialize();
 
   let dataWithHash = concat(await sha1(data), data);
@@ -279,9 +279,9 @@ export async function getDHParams(
   }
 
   const authKey = modExp(
-    bigIntFromBuffer(gA, false, true),
+    bigIntFromBuffer(gA, false, false),
     b,
-    bigIntFromBuffer(dhPrime, false, true),
+    bigIntFromBuffer(dhPrime, false, false),
   );
 
   return authKey;
