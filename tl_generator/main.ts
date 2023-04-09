@@ -2,9 +2,9 @@
 import { parse } from "https://deno.land/x/tl_json@1.1.2/mod.ts";
 import { revampId, revampType, toCamelCase } from "./utilities.ts";
 
-const apiContent = Deno.readTextFileSync("tl/api.tl");
+const apiContent = Deno.readTextFileSync("api.tl");
 
-const mtProtoContent = Deno.readTextFileSync("tl/mtproto.tl");
+const mtProtoContent = Deno.readTextFileSync("mtproto.tl");
 
 const { constructors: mtProtoConstructors, functions: mtProtoFunctions } =
   parse(mtProtoContent);
