@@ -14,7 +14,9 @@ function getConnection(server: "piltover" | "piltover-ws" | "tg" | "tg-ws") {
     case "tg":
       return new ConnectionTCP("149.154.167.40", 80);
     case "tg-ws":
-      return new ConnectionWebSocket("wss://vesta.web.telegram.org:443/apiws");
+      return new ConnectionWebSocket(
+        "wss://vesta.web.telegram.org:443/apiws_test",
+      );
   }
 }
 
