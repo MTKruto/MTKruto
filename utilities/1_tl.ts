@@ -38,18 +38,17 @@ export function unpackUnencryptedMessage(buffer: Uint8Array) {
   return { messageId, message };
 }
 
-export async function packEncryptedMessage(data: Uint8Array, authKey: bigint) {
-  const sessionId = getRandomBigInt(8, true, false);
+const sessionId = getRandomBigInt(8, true, false);
+export async function packEncryptedMessage(data: Uint8Array, authKey: bigint, salt:bigint) {
   const messageId = getMessageId();
-  const seqNo = 1;
   const messageDataLength = data.length;
 
   const writer = new TLRawWriter();
 
-  writer.writeInt64(0n);
+  writer.writeInt64(salt);
   writer.writeInt64(sessionId);
   writer.writeInt64(messageId);
-  writer.writeInt32(seqNo);
+  writer.writeInt32(7);
   writer.writeInt32(messageDataLength);
   writer.write(data);
 
