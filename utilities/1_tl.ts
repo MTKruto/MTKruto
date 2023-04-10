@@ -1,5 +1,5 @@
 import { assertEquals } from "https://deno.land/std@0.181.0/testing/asserts.ts";
-import { ige256Decrypt, ige256Encrypt } from "../../tgcrypto_wasm/dist/mod.ts";
+import { ige256Decrypt, ige256Encrypt } from "../deps.ts";
 import { TLRawReader } from "../tl/0_tl_raw_reader.ts";
 import { TLRawWriter } from "../tl/0_tl_raw_writer.ts";
 import { getRandomBigInt, mod } from "./0_bigint.ts";
@@ -39,7 +39,11 @@ export function unpackUnencryptedMessage(buffer: Uint8Array) {
 }
 
 const sessionId = getRandomBigInt(8, true, false);
-export async function packEncryptedMessage(data: Uint8Array, authKey: bigint, salt:bigint) {
+export async function packEncryptedMessage(
+  data: Uint8Array,
+  authKey: bigint,
+  salt: bigint,
+) {
   const messageId = getMessageId();
   const messageDataLength = data.length;
 
