@@ -5,7 +5,7 @@ import { TLRawWriter } from "./0_tl_raw_writer.ts";
 type MaybeArrayOf<T> = T | T[];
 type MaybeInArray<T> = T | [T];
 
-export type ParamDesc = [
+export type ParamDesc = ([
   string,
   MaybeInArray<
     | typeof TLObject
@@ -17,7 +17,7 @@ export type ParamDesc = [
     | "true"
   >,
   string,
-][];
+] | [null, string, "#"])[];
 
 type Param =
   | null
@@ -30,7 +30,7 @@ type Param =
     | TLObject
   >;
 
-export type Params = [
+export type Params = ([
   Param,
   MaybeInArray<
     | typeof TLObject
@@ -42,7 +42,7 @@ export type Params = [
     | "true"
   >,
   string,
-][];
+] | [null, string, "#"])[];
 
 export const id = Symbol("id");
 
@@ -132,6 +132,11 @@ export abstract class TLObject {
     writer.writeInt32(this[id], false);
 
     for (const [value, type, note] of this[params]) {
+      if (note.includes("?")) {
+        if (value == null) {
+          continue;
+        }
+      }
       if (type instanceof Array) {
         const itemsType = type[0];
         if (isTLObjectConstructor(itemsType)) {
@@ -151,6 +156,22 @@ export abstract class TLObject {
       }
       if (isTLObjectConstructor(type)) {
         throw new Error("Unimplemented");
+      }
+
+      if (typeof type === "string" && note == "#") {
+        console.log("writing flags")
+        let flags = 0;
+        for (const [value, _, note] of this[params]) {
+          if (note.startsWith(type)) {
+            if (value != null) {
+              const bitIndex = Number(note.split("?")[0].split(".")[1]);
+              flags |= 1 << bitIndex;
+            }
+          }
+        }
+        console.log({flags})
+        writer.writeInt32(flags);
+        continue;
       }
 
       serializeSingleParam(writer, value, type, note);
