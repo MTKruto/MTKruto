@@ -135,24 +135,6 @@ export const publicKeys = new Map<bigint, [bigint, bigint]>([
       0x10001n,
     ],
   ],
-
-  [
-    -5746138571559360724n,
-    [
-      BigInt(
-        "0x" +
-          "ce04512e9d3dbb6ea8dfee9b560c3c48e406e7852dd9640a019fcda0fb65f69a" +
-          "4264b60ccac82162a954a27a1ce764cd81389dd07d314a2e7b078f403e6d9de5" +
-          "7346772f603d9383a0835674070e35cd7fb965747f8b27ee69f4b191ca003b40" +
-          "d9d22ac574a35a2c23e5a79b185069106752979720b1dc6e8c8e5f3fe667ca45" +
-          "b5cb7033612aa08f92a67ba04345ddc8f5603688a9559f1bda2f053bd2c49851" +
-          "0de0ab528fed53bcae548f40d36eacc292d1d3aee5aa06c87185397bc73caf64" +
-          "2f731b9c9323f8d658b9c0484f42ef77438113265cc6ae883063a8b7fc89b183" +
-          "b48192c6a423e96aaa80169965b79b0c497623577cd5086b386d4ca5c44b3dfd",
-      ),
-      0x10001n,
-    ],
-  ],
   [
     -5595554452916591101n,
     [
@@ -184,6 +166,24 @@ export const publicKeys = new Map<bigint, [bigint, bigint]>([
           "961cdfdeda629e37f1fb09a0722027696032fe61ed663db7a37f6f263d370f69" +
           "db53a0dc0a1748bdaaff6209d5645485e6e001d1953255757e4b8e42813347b1" +
           "1da6ab500fd0ace7e6dfa3736199ccaf9397ed0745a427dcfa6cd67bcb1acff3",
+      ),
+      0x10001n,
+    ],
+  ],
+  // Piltover
+  [
+    -5746138571559360724n,
+    [
+      BigInt(
+        "0x" +
+          "ce04512e9d3dbb6ea8dfee9b560c3c48e406e7852dd9640a019fcda0fb65f69a" +
+          "4264b60ccac82162a954a27a1ce764cd81389dd07d314a2e7b078f403e6d9de5" +
+          "7346772f603d9383a0835674070e35cd7fb965747f8b27ee69f4b191ca003b40" +
+          "d9d22ac574a35a2c23e5a79b185069106752979720b1dc6e8c8e5f3fe667ca45" +
+          "b5cb7033612aa08f92a67ba04345ddc8f5603688a9559f1bda2f053bd2c49851" +
+          "0de0ab528fed53bcae548f40d36eacc292d1d3aee5aa06c87185397bc73caf64" +
+          "2f731b9c9323f8d658b9c0484f42ef77438113265cc6ae883063a8b7fc89b183" +
+          "b48192c6a423e96aaa80169965b79b0c497623577cd5086b386d4ca5c44b3dfd",
       ),
       0x10001n,
     ],
