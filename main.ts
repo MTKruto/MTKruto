@@ -33,7 +33,7 @@ function getTransport(
   }
 }
 
-const connection = getConnection("piltover");
+const connection = getConnection("tg");
 const transport = getTransport(connection, "intermediate", false);
 
 await connection.open();

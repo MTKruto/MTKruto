@@ -32,7 +32,7 @@ const constructors = mtProtoConstructors.concat(apiConstructors);
 const functions = mtProtoFunctions.concat(apiFunctions);
 
 let code =
-  `import { id, params, TLObject, Params, TLObjectConstructor, ParamDesc, paramDesc } from "./1_tl_object.ts";
+  `import { id, params, TLObject, Params, TLObjectConstructor, ParamDesc, paramDesc, flags } from "./1_tl_object.ts";
 
 export abstract class Constructor extends TLObject {
 }
@@ -85,7 +85,10 @@ function getParamDescGetter(params: any[], prefix = false) {
   let code = `static get [paramDesc](): ParamDesc {
     return [\n`;
   for (const param of params) {
-    if (param.name.startsWith("flags")) {
+    if (param.name.startsWith("flags") && param.type == "#") {
+      code += `["${param.name}",`;
+      code += "flags,";
+      code += `"${param.type}"],`;
       continue;
     }
     const name = toCamelCase(param.name);
@@ -119,7 +122,10 @@ function getParamsGetter(params: any[], prefix = false) {
   let code = `protected get [params](): Params {
     return [\n`;
   for (const param of params) {
-    if (param.name.startsWith("flags")) {
+    if (param.name.startsWith("flags") && param.type == "#") {
+      code += `["${param.name}",`;
+      code += "flags,";
+      code += `"${param.type}"],`;
       continue;
     }
     const isFlag = param.type.startsWith("flags");
@@ -152,7 +158,7 @@ function getPropertiesDeclr(params: any[], prefix = false) {
   let code = ``;
 
   for (const param of params) {
-    if (param.name.startsWith("flags")) {
+    if (param.name.startsWith("flags") && param.type == "#") {
       continue;
     }
 
@@ -171,7 +177,7 @@ function getConstructor(params: any[], prefix = false) {
   if (params.length > 0) {
     code += `params: {`;
     for (const param of params) {
-      if (param.name.startsWith("flags")) {
+      if (param.name.startsWith("flags") && param.type == "#") {
         continue;
       }
 
@@ -185,7 +191,7 @@ function getConstructor(params: any[], prefix = false) {
   code += ") {\n";
   code += "super()\n";
   for (const param of params) {
-    if (param.name.startsWith("flags")) {
+    if (param.name.startsWith("flags") && param.type == "#") {
       continue;
     }
     const name = toCamelCase(param.name);
@@ -261,7 +267,7 @@ code += `// deno-lint-ignore no-explicit-any
 Deno.writeTextFileSync("tl/2_constructors.ts", code);
 
 code =
-  `import { id, params, TLObject, Params, paramDesc, ParamDesc } from "./1_tl_object.ts";
+  `import { id, params, TLObject, Params, paramDesc, ParamDesc, flags } from "./1_tl_object.ts";
 import * as constructors from "./2_constructors.ts";
 
 export abstract class Function extends TLObject {
