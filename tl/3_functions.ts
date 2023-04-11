@@ -374,7 +374,7 @@ export class InitConnection extends Function {
 
   static get [paramDesc](): ParamDesc {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       ["apiId", "number", "int"],
       ["deviceModel", "string", "string"],
       ["systemVersion", "string", "string"],
@@ -650,7 +650,7 @@ export class AuthSignIn extends Function {
 
   static get [paramDesc](): ParamDesc {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       ["phoneNumber", "string", "string"],
       ["phoneCodeHash", "string", "string"],
       ["phoneCode", "string", "flags.0?string"],
@@ -931,7 +931,7 @@ export class AuthRecoverPassword extends Function {
 
   static get [paramDesc](): ParamDesc {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       ["code", "string", "string"],
       [
         "newSettings",
@@ -1205,7 +1205,7 @@ export class AuthRequestFirebaseSms extends Function {
 
   static get [paramDesc](): ParamDesc {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       ["phoneNumber", "string", "string"],
       ["phoneCodeHash", "string", "string"],
       ["safetyNetToken", "string", "flags.0?string"],
@@ -1253,7 +1253,7 @@ export class AccountRegisterDevice extends Function {
 
   static get [paramDesc](): ParamDesc {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       ["noMuted", "true", "flags.0?true"],
       ["tokenType", "number", "int"],
       ["token", "string", "string"],
@@ -1426,7 +1426,7 @@ export class AccountUpdateProfile extends Function {
 
   static get [paramDesc](): ParamDesc {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       ["firstName", "string", "flags.0?string"],
       ["lastName", "string", "flags.1?string"],
       ["about", "string", "flags.2?string"],
@@ -1668,7 +1668,7 @@ export class AccountDeleteAccount extends Function {
 
   static get [paramDesc](): ParamDesc {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       ["reason", "string", "string"],
       [
         "password",
@@ -2501,7 +2501,7 @@ export class AccountInitTakeoutSession extends Function {
 
   static get [paramDesc](): ParamDesc {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       ["contacts", "true", "flags.0?true"],
       ["messageUsers", "true", "flags.1?true"],
       ["messageChats", "true", "flags.2?true"],
@@ -2556,7 +2556,7 @@ export class AccountFinishTakeoutSession extends Function {
 
   static get [paramDesc](): ParamDesc {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       ["success", "true", "flags.0?true"],
     ];
   }
@@ -2688,7 +2688,7 @@ export class AccountGetNotifyExceptions extends Function {
 
   static get [paramDesc](): ParamDesc {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       ["compareSound", "true", "flags.1?true"],
       ["peer", constructors.TypeInputNotifyPeer, "flags.0?InputNotifyPeer"],
     ];
@@ -2899,7 +2899,7 @@ export class AccountSaveAutoDownloadSettings extends Function {
 
   static get [paramDesc](): ParamDesc {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       ["low", "true", "flags.0?true"],
       ["high", "true", "flags.1?true"],
       [
@@ -2949,7 +2949,7 @@ export class AccountUploadTheme extends Function {
 
   static get [paramDesc](): ParamDesc {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       ["file", constructors.TypeInputFile, "InputFile"],
       ["thumb", constructors.TypeInputFile, "flags.0?InputFile"],
       ["fileName", "string", "string"],
@@ -2995,7 +2995,7 @@ export class AccountCreateTheme extends Function {
 
   static get [paramDesc](): ParamDesc {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       ["slug", "string", "string"],
       ["title", "string", "string"],
       ["document", constructors.TypeInputDocument, "flags.2?InputDocument"],
@@ -3055,7 +3055,7 @@ export class AccountUpdateTheme extends Function {
 
   static get [paramDesc](): ParamDesc {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       ["format", "string", "string"],
       ["theme", constructors.TypeInputTheme, "InputTheme"],
       ["slug", "string", "flags.0?string"],
@@ -3150,7 +3150,7 @@ export class AccountInstallTheme extends Function {
 
   static get [paramDesc](): ParamDesc {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       ["dark", "true", "flags.0?true"],
       ["theme", constructors.TypeInputTheme, "flags.1?InputTheme"],
       ["format", "string", "flags.2?string"],
@@ -3251,7 +3251,7 @@ export class AccountSetContentSettings extends Function {
 
   static get [paramDesc](): ParamDesc {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       ["sensitiveEnabled", "true", "flags.0?true"],
     ];
   }
@@ -3512,7 +3512,7 @@ export class AccountChangeAuthorizationSettings extends Function {
 
   static get [paramDesc](): ParamDesc {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       ["hash", "bigint", "long"],
       ["encryptedRequestsDisabled", "boolean", "flags.0?Bool"],
       ["callRequestsDisabled", "boolean", "flags.1?Bool"],
@@ -3863,7 +3863,7 @@ export class AccountSaveAutoSaveSettings extends Function {
 
   static get [paramDesc](): ParamDesc {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       ["users", "true", "flags.0?true"],
       ["chats", "true", "flags.1?true"],
       ["broadcasts", "true", "flags.2?true"],
@@ -4306,7 +4306,7 @@ export class ContactsGetTopPeers extends Function {
 
   static get [paramDesc](): ParamDesc {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       ["correspondents", "true", "flags.0?true"],
       ["botsPm", "true", "flags.1?true"],
       ["botsInline", "true", "flags.2?true"],
@@ -4476,7 +4476,7 @@ export class ContactsAddContact extends Function {
 
   static get [paramDesc](): ParamDesc {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       ["addPhonePrivacyException", "true", "flags.0?true"],
       ["id", constructors.TypeInputUser, "InputUser"],
       ["firstName", "string", "string"],
@@ -4550,7 +4550,7 @@ export class ContactsGetLocated extends Function {
 
   static get [paramDesc](): ParamDesc {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       ["background", "true", "flags.1?true"],
       ["geoPoint", constructors.TypeInputGeoPoint, "InputGeoPoint"],
       ["selfExpires", "number", "flags.0?int"],
@@ -4592,7 +4592,7 @@ export class ContactsBlockFromReplies extends Function {
 
   static get [paramDesc](): ParamDesc {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       ["deleteMessage", "true", "flags.0?true"],
       ["deleteHistory", "true", "flags.1?true"],
       ["reportSpam", "true", "flags.2?true"],
@@ -4734,7 +4734,7 @@ export class MessagesGetDialogs extends Function {
 
   static get [paramDesc](): ParamDesc {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       ["excludePinned", "true", "flags.0?true"],
       ["folderId", "number", "flags.1?int"],
       ["offsetDate", "number", "int"],
@@ -4865,7 +4865,7 @@ export class MessagesSearch extends Function {
 
   static get [paramDesc](): ParamDesc {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       ["peer", constructors.TypeInputPeer, "InputPeer"],
       ["q", "string", "string"],
       ["fromId", constructors.TypeInputPeer, "flags.0?InputPeer"],
@@ -4978,7 +4978,7 @@ export class MessagesDeleteHistory extends Function {
 
   static get [paramDesc](): ParamDesc {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       ["justClear", "true", "flags.0?true"],
       ["revoke", "true", "flags.1?true"],
       ["peer", constructors.TypeInputPeer, "InputPeer"],
@@ -5030,7 +5030,7 @@ export class MessagesDeleteMessages extends Function {
 
   static get [paramDesc](): ParamDesc {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       ["revoke", "true", "flags.0?true"],
       ["id", ["number"], "Vector<int>"],
     ];
@@ -5087,7 +5087,7 @@ export class MessagesSetTyping extends Function {
 
   static get [paramDesc](): ParamDesc {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       ["peer", constructors.TypeInputPeer, "InputPeer"],
       ["topMsgId", "number", "flags.0?int"],
       ["action", constructors.TypeSendMessageAction, "SendMessageAction"],
@@ -5140,7 +5140,7 @@ export class MessagesSendMessage extends Function {
 
   static get [paramDesc](): ParamDesc {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       ["noWebpage", "true", "flags.1?true"],
       ["silent", "true", "flags.5?true"],
       ["background", "true", "flags.6?true"],
@@ -5253,7 +5253,7 @@ export class MessagesSendMedia extends Function {
 
   static get [paramDesc](): ParamDesc {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       ["silent", "true", "flags.5?true"],
       ["background", "true", "flags.6?true"],
       ["clearDraft", "true", "flags.7?true"],
@@ -5364,7 +5364,7 @@ export class MessagesForwardMessages extends Function {
 
   static get [paramDesc](): ParamDesc {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       ["silent", "true", "flags.5?true"],
       ["background", "true", "flags.6?true"],
       ["withMyScore", "true", "flags.8?true"],
@@ -5688,7 +5688,7 @@ export class MessagesDeleteChatUser extends Function {
 
   static get [paramDesc](): ParamDesc {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       ["revokeHistory", "true", "flags.0?true"],
       ["chatId", "bigint", "long"],
       ["userId", constructors.TypeInputUser, "InputUser"],
@@ -5729,7 +5729,7 @@ export class MessagesCreateChat extends Function {
 
   static get [paramDesc](): ParamDesc {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       ["users", [constructors.TypeInputUser], "Vector<InputUser>"],
       ["title", "string", "string"],
       ["ttlPeriod", "number", "flags.0?int"],
@@ -5876,7 +5876,7 @@ export class MessagesDiscardEncryption extends Function {
 
   static get [paramDesc](): ParamDesc {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       ["deleteHistory", "true", "flags.0?true"],
       ["chatId", "number", "int"],
     ];
@@ -5971,7 +5971,7 @@ export class MessagesSendEncrypted extends Function {
 
   static get [paramDesc](): ParamDesc {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       ["silent", "true", "flags.0?true"],
       ["peer", constructors.TypeInputEncryptedChat, "InputEncryptedChat"],
       ["randomId", "bigint", "long"],
@@ -6018,7 +6018,7 @@ export class MessagesSendEncryptedFile extends Function {
 
   static get [paramDesc](): ParamDesc {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       ["silent", "true", "flags.0?true"],
       ["peer", constructors.TypeInputEncryptedChat, "InputEncryptedChat"],
       ["randomId", "bigint", "long"],
@@ -6234,7 +6234,7 @@ export class MessagesGetWebPagePreview extends Function {
 
   static get [paramDesc](): ParamDesc {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       ["message", "string", "string"],
       [
         "entities",
@@ -6282,7 +6282,7 @@ export class MessagesExportChatInvite extends Function {
 
   static get [paramDesc](): ParamDesc {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       ["legacyRevokePermanent", "true", "flags.2?true"],
       ["requestNeeded", "true", "flags.3?true"],
       ["peer", constructors.TypeInputPeer, "InputPeer"],
@@ -6625,7 +6625,7 @@ export class MessagesSearchGlobal extends Function {
 
   static get [paramDesc](): ParamDesc {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       ["folderId", "number", "flags.0?int"],
       ["q", "string", "string"],
       ["filter", constructors.TypeMessagesFilter, "MessagesFilter"],
@@ -6690,7 +6690,7 @@ export class MessagesReorderStickerSets extends Function {
 
   static get [paramDesc](): ParamDesc {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       ["masks", "true", "flags.0?true"],
       ["emojis", "true", "flags.1?true"],
       ["order", ["bigint"], "Vector<long>"],
@@ -6814,7 +6814,7 @@ export class MessagesGetInlineBotResults extends Function {
 
   static get [paramDesc](): ParamDesc {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       ["bot", constructors.TypeInputUser, "InputUser"],
       ["peer", constructors.TypeInputPeer, "InputPeer"],
       ["geoPoint", constructors.TypeInputGeoPoint, "flags.0?InputGeoPoint"],
@@ -6872,7 +6872,7 @@ export class MessagesSetInlineBotResults extends Function {
 
   static get [paramDesc](): ParamDesc {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       ["gallery", "true", "flags.0?true"],
       ["private", "true", "flags.1?true"],
       ["queryId", "bigint", "long"],
@@ -6966,7 +6966,7 @@ export class MessagesSendInlineBotResult extends Function {
 
   static get [paramDesc](): ParamDesc {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       ["silent", "true", "flags.5?true"],
       ["background", "true", "flags.6?true"],
       ["clearDraft", "true", "flags.7?true"],
@@ -7077,7 +7077,7 @@ export class MessagesEditMessage extends Function {
 
   static get [paramDesc](): ParamDesc {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       ["noWebpage", "true", "flags.1?true"],
       ["peer", constructors.TypeInputPeer, "InputPeer"],
       ["id", "number", "int"],
@@ -7153,7 +7153,7 @@ export class MessagesEditInlineBotMessage extends Function {
 
   static get [paramDesc](): ParamDesc {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       ["noWebpage", "true", "flags.1?true"],
       [
         "id",
@@ -7228,7 +7228,7 @@ export class MessagesGetBotCallbackAnswer extends Function {
 
   static get [paramDesc](): ParamDesc {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       ["game", "true", "flags.1?true"],
       ["peer", constructors.TypeInputPeer, "InputPeer"],
       ["msgId", "number", "int"],
@@ -7287,7 +7287,7 @@ export class MessagesSetBotCallbackAnswer extends Function {
 
   static get [paramDesc](): ParamDesc {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       ["alert", "true", "flags.1?true"],
       ["queryId", "bigint", "long"],
       ["message", "string", "flags.0?string"],
@@ -7368,7 +7368,7 @@ export class MessagesSaveDraft extends Function {
 
   static get [paramDesc](): ParamDesc {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       ["noWebpage", "true", "flags.1?true"],
       ["replyToMsgId", "number", "flags.0?int"],
       ["topMsgId", "number", "flags.2?int"],
@@ -7496,7 +7496,7 @@ export class MessagesGetRecentStickers extends Function {
 
   static get [paramDesc](): ParamDesc {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       ["attached", "true", "flags.0?true"],
       ["hash", "bigint", "long"],
     ];
@@ -7528,7 +7528,7 @@ export class MessagesSaveRecentSticker extends Function {
 
   static get [paramDesc](): ParamDesc {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       ["attached", "true", "flags.0?true"],
       ["id", constructors.TypeInputDocument, "InputDocument"],
       ["unsave", "boolean", "Bool"],
@@ -7567,7 +7567,7 @@ export class MessagesClearRecentStickers extends Function {
 
   static get [paramDesc](): ParamDesc {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       ["attached", "true", "flags.0?true"],
     ];
   }
@@ -7597,7 +7597,7 @@ export class MessagesGetArchivedStickers extends Function {
 
   static get [paramDesc](): ParamDesc {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       ["masks", "true", "flags.0?true"],
       ["emojis", "true", "flags.1?true"],
       ["offsetId", "bigint", "long"],
@@ -7690,7 +7690,7 @@ export class MessagesSetGameScore extends Function {
 
   static get [paramDesc](): ParamDesc {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       ["editMessage", "true", "flags.0?true"],
       ["force", "true", "flags.1?true"],
       ["peer", constructors.TypeInputPeer, "InputPeer"],
@@ -7745,7 +7745,7 @@ export class MessagesSetInlineGameScore extends Function {
 
   static get [paramDesc](): ParamDesc {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       ["editMessage", "true", "flags.0?true"],
       ["force", "true", "flags.1?true"],
       [
@@ -7975,7 +7975,7 @@ export class MessagesToggleDialogPin extends Function {
 
   static get [paramDesc](): ParamDesc {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       ["pinned", "true", "flags.0?true"],
       ["peer", constructors.TypeInputDialogPeer, "InputDialogPeer"],
     ];
@@ -8009,7 +8009,7 @@ export class MessagesReorderPinnedDialogs extends Function {
 
   static get [paramDesc](): ParamDesc {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       ["force", "true", "flags.0?true"],
       ["folderId", "number", "int"],
       ["order", [constructors.TypeInputDialogPeer], "Vector<InputDialogPeer>"],
@@ -8079,7 +8079,7 @@ export class MessagesSetBotShippingResults extends Function {
 
   static get [paramDesc](): ParamDesc {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       ["queryId", "bigint", "long"],
       ["error", "string", "flags.0?string"],
       [
@@ -8128,7 +8128,7 @@ export class MessagesSetBotPrecheckoutResults extends Function {
 
   static get [paramDesc](): ParamDesc {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       ["success", "true", "flags.1?true"],
       ["queryId", "bigint", "long"],
       ["error", "string", "flags.0?string"],
@@ -8294,7 +8294,7 @@ export class MessagesGetUnreadMentions extends Function {
 
   static get [paramDesc](): ParamDesc {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       ["peer", constructors.TypeInputPeer, "InputPeer"],
       ["topMsgId", "number", "flags.0?int"],
       ["offsetId", "number", "int"],
@@ -8350,7 +8350,7 @@ export class MessagesReadMentions extends Function {
 
   static get [paramDesc](): ParamDesc {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       ["peer", constructors.TypeInputPeer, "InputPeer"],
       ["topMsgId", "number", "flags.0?int"],
     ];
@@ -8425,7 +8425,7 @@ export class MessagesSendMultiMedia extends Function {
 
   static get [paramDesc](): ParamDesc {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       ["silent", "true", "flags.5?true"],
       ["background", "true", "flags.6?true"],
       ["clearDraft", "true", "flags.7?true"],
@@ -8540,7 +8540,7 @@ export class MessagesSearchStickerSets extends Function {
 
   static get [paramDesc](): ParamDesc {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       ["excludeFeatured", "true", "flags.0?true"],
       ["q", "string", "string"],
       ["hash", "bigint", "long"],
@@ -8592,7 +8592,7 @@ export class MessagesMarkDialogUnread extends Function {
 
   static get [paramDesc](): ParamDesc {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       ["unread", "true", "flags.0?true"],
       ["peer", constructors.TypeInputDialogPeer, "InputDialogPeer"],
     ];
@@ -8664,7 +8664,7 @@ export class MessagesUpdatePinnedMessage extends Function {
 
   static get [paramDesc](): ParamDesc {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       ["silent", "true", "flags.0?true"],
       ["unpin", "true", "flags.1?true"],
       ["pmOneside", "true", "flags.2?true"],
@@ -8977,7 +8977,7 @@ export class MessagesGetSearchCounters extends Function {
 
   static get [paramDesc](): ParamDesc {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       ["peer", constructors.TypeInputPeer, "InputPeer"],
       ["topMsgId", "number", "flags.0?int"],
       ["filters", [constructors.TypeMessagesFilter], "Vector<MessagesFilter>"],
@@ -9023,7 +9023,7 @@ export class MessagesRequestUrlAuth extends Function {
 
   static get [paramDesc](): ParamDesc {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       ["peer", constructors.TypeInputPeer, "flags.1?InputPeer"],
       ["msgId", "number", "flags.1?int"],
       ["buttonId", "number", "flags.1?int"],
@@ -9070,7 +9070,7 @@ export class MessagesAcceptUrlAuth extends Function {
 
   static get [paramDesc](): ParamDesc {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       ["writeAllowed", "true", "flags.0?true"],
       ["peer", constructors.TypeInputPeer, "flags.1?InputPeer"],
       ["msgId", "number", "flags.1?int"],
@@ -9262,7 +9262,7 @@ export class MessagesGetPollVotes extends Function {
 
   static get [paramDesc](): ParamDesc {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       ["peer", constructors.TypeInputPeer, "InputPeer"],
       ["id", "number", "int"],
       ["option", Uint8Array, "flags.0?bytes"],
@@ -9312,7 +9312,7 @@ export class MessagesToggleStickerSets extends Function {
 
   static get [paramDesc](): ParamDesc {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       ["uninstall", "true", "flags.0?true"],
       ["archive", "true", "flags.1?true"],
       ["unarchive", "true", "flags.2?true"],
@@ -9400,7 +9400,7 @@ export class MessagesUpdateDialogFilter extends Function {
 
   static get [paramDesc](): ParamDesc {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       ["id", "number", "int"],
       ["filter", constructors.TypeDialogFilter, "flags.0?DialogFilter"],
     ];
@@ -9630,7 +9630,7 @@ export class MessagesUnpinAllMessages extends Function {
 
   static get [paramDesc](): ParamDesc {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       ["peer", constructors.TypeInputPeer, "InputPeer"],
       ["topMsgId", "number", "flags.0?int"],
     ];
@@ -9685,7 +9685,7 @@ export class MessagesDeletePhoneCallHistory extends Function {
 
   static get [paramDesc](): ParamDesc {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       ["revoke", "true", "flags.0?true"],
     ];
   }
@@ -9854,7 +9854,7 @@ export class MessagesGetExportedChatInvites extends Function {
 
   static get [paramDesc](): ParamDesc {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       ["revoked", "true", "flags.3?true"],
       ["peer", constructors.TypeInputPeer, "InputPeer"],
       ["adminId", constructors.TypeInputUser, "InputUser"],
@@ -9940,7 +9940,7 @@ export class MessagesEditExportedChatInvite extends Function {
 
   static get [paramDesc](): ParamDesc {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       ["revoked", "true", "flags.2?true"],
       ["peer", constructors.TypeInputPeer, "InputPeer"],
       ["link", "string", "string"],
@@ -10089,7 +10089,7 @@ export class MessagesGetChatInviteImporters extends Function {
 
   static get [paramDesc](): ParamDesc {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       ["requested", "true", "flags.0?true"],
       ["peer", constructors.TypeInputPeer, "InputPeer"],
       ["link", "string", "flags.1?string"],
@@ -10346,7 +10346,7 @@ export class MessagesHideChatJoinRequest extends Function {
 
   static get [paramDesc](): ParamDesc {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       ["approved", "true", "flags.0?true"],
       ["peer", constructors.TypeInputPeer, "InputPeer"],
       ["userId", constructors.TypeInputUser, "InputUser"],
@@ -10387,7 +10387,7 @@ export class MessagesHideAllChatJoinRequests extends Function {
 
   static get [paramDesc](): ParamDesc {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       ["approved", "true", "flags.0?true"],
       ["peer", constructors.TypeInputPeer, "InputPeer"],
       ["link", "string", "flags.1?string"],
@@ -10493,7 +10493,7 @@ export class MessagesSendReaction extends Function {
 
   static get [paramDesc](): ParamDesc {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       ["big", "true", "flags.1?true"],
       ["addToRecent", "true", "flags.2?true"],
       ["peer", constructors.TypeInputPeer, "InputPeer"],
@@ -10577,7 +10577,7 @@ export class MessagesGetMessageReactionsList extends Function {
 
   static get [paramDesc](): ParamDesc {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       ["peer", constructors.TypeInputPeer, "InputPeer"],
       ["id", "number", "int"],
       ["reaction", constructors.TypeReaction, "flags.0?Reaction"],
@@ -10715,7 +10715,7 @@ export class MessagesTranslateText extends Function {
 
   static get [paramDesc](): ParamDesc {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       ["peer", constructors.TypeInputPeer, "flags.0?InputPeer"],
       ["id", ["number"], "flags.0?Vector<int>"],
       [
@@ -10772,7 +10772,7 @@ export class MessagesGetUnreadReactions extends Function {
 
   static get [paramDesc](): ParamDesc {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       ["peer", constructors.TypeInputPeer, "InputPeer"],
       ["topMsgId", "number", "flags.0?int"],
       ["offsetId", "number", "int"],
@@ -10828,7 +10828,7 @@ export class MessagesReadReactions extends Function {
 
   static get [paramDesc](): ParamDesc {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       ["peer", constructors.TypeInputPeer, "InputPeer"],
       ["topMsgId", "number", "flags.0?int"],
     ];
@@ -10949,7 +10949,7 @@ export class MessagesToggleBotInAttachMenu extends Function {
 
   static get [paramDesc](): ParamDesc {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       ["writeAllowed", "true", "flags.0?true"],
       ["bot", constructors.TypeInputUser, "InputUser"],
       ["enabled", "boolean", "Bool"],
@@ -10998,7 +10998,7 @@ export class MessagesRequestWebView extends Function {
 
   static get [paramDesc](): ParamDesc {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       ["fromBotMenu", "true", "flags.4?true"],
       ["silent", "true", "flags.5?true"],
       ["peer", constructors.TypeInputPeer, "InputPeer"],
@@ -11075,7 +11075,7 @@ export class MessagesProlongWebView extends Function {
 
   static get [paramDesc](): ParamDesc {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       ["silent", "true", "flags.5?true"],
       ["peer", constructors.TypeInputPeer, "InputPeer"],
       ["bot", constructors.TypeInputUser, "InputUser"],
@@ -11134,7 +11134,7 @@ export class MessagesRequestSimpleWebView extends Function {
 
   static get [paramDesc](): ParamDesc {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       ["fromSwitchWebview", "true", "flags.1?true"],
       ["bot", constructors.TypeInputUser, "InputUser"],
       ["url", "string", "string"],
@@ -11747,7 +11747,7 @@ export class MessagesTogglePeerTranslations extends Function {
 
   static get [paramDesc](): ParamDesc {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       ["disabled", "true", "flags.0?true"],
       ["peer", constructors.TypeInputPeer, "InputPeer"],
     ];
@@ -11811,7 +11811,7 @@ export class MessagesRequestAppWebView extends Function {
 
   static get [paramDesc](): ParamDesc {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       ["writeAllowed", "true", "flags.0?true"],
       ["peer", constructors.TypeInputPeer, "InputPeer"],
       ["app", constructors.TypeInputBotApp, "InputBotApp"],
@@ -11883,7 +11883,7 @@ export class UpdatesGetDifference extends Function {
 
   static get [paramDesc](): ParamDesc {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       ["pts", "number", "int"],
       ["ptsTotalLimit", "number", "flags.0?int"],
       ["date", "number", "int"],
@@ -11925,7 +11925,7 @@ export class UpdatesGetChannelDifference extends Function {
 
   static get [paramDesc](): ParamDesc {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       ["force", "true", "flags.0?true"],
       ["channel", constructors.TypeInputChannel, "InputChannel"],
       [
@@ -11981,7 +11981,7 @@ export class PhotosUpdateProfilePhoto extends Function {
 
   static get [paramDesc](): ParamDesc {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       ["fallback", "true", "flags.0?true"],
       ["id", constructors.TypeInputPhoto, "InputPhoto"],
     ];
@@ -12015,7 +12015,7 @@ export class PhotosUploadProfilePhoto extends Function {
 
   static get [paramDesc](): ParamDesc {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       ["fallback", "true", "flags.3?true"],
       ["file", constructors.TypeInputFile, "flags.0?InputFile"],
       ["video", constructors.TypeInputFile, "flags.1?InputFile"],
@@ -12141,7 +12141,7 @@ export class PhotosUploadContactProfilePhoto extends Function {
 
   static get [paramDesc](): ParamDesc {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       ["suggest", "true", "flags.3?true"],
       ["save", "true", "flags.4?true"],
       ["userId", constructors.TypeInputUser, "InputUser"],
@@ -12237,7 +12237,7 @@ export class UploadGetFile extends Function {
 
   static get [paramDesc](): ParamDesc {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       ["precise", "true", "flags.0?true"],
       ["cdnSupported", "true", "flags.1?true"],
       ["location", constructors.TypeInputFileLocation, "InputFileLocation"],
@@ -13327,7 +13327,7 @@ export class ChannelsCreateChannel extends Function {
 
   static get [paramDesc](): ParamDesc {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       ["broadcast", "true", "flags.0?true"],
       ["megagroup", "true", "flags.1?true"],
       ["forImport", "true", "flags.3?true"],
@@ -13677,7 +13677,7 @@ export class ChannelsExportMessageLink extends Function {
 
   static get [paramDesc](): ParamDesc {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       ["grouped", "true", "flags.0?true"],
       ["thread", "true", "flags.1?true"],
       ["channel", constructors.TypeInputChannel, "InputChannel"],
@@ -13752,7 +13752,7 @@ export class ChannelsGetAdminedPublicChannels extends Function {
 
   static get [paramDesc](): ParamDesc {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       ["byLocation", "true", "flags.0?true"],
       ["checkLimit", "true", "flags.1?true"],
     ];
@@ -13831,7 +13831,7 @@ export class ChannelsGetAdminLog extends Function {
 
   static get [paramDesc](): ParamDesc {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       ["channel", constructors.TypeInputChannel, "InputChannel"],
       ["q", "string", "string"],
       [
@@ -13965,7 +13965,7 @@ export class ChannelsDeleteHistory extends Function {
 
   static get [paramDesc](): ParamDesc {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       ["forEveryone", "true", "flags.0?true"],
       ["channel", constructors.TypeInputChannel, "InputChannel"],
       ["maxId", "number", "int"],
@@ -14580,7 +14580,7 @@ export class ChannelsCreateForumTopic extends Function {
 
   static get [paramDesc](): ParamDesc {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       ["channel", constructors.TypeInputChannel, "InputChannel"],
       ["title", "string", "string"],
       ["iconColor", "number", "flags.0?int"],
@@ -14636,7 +14636,7 @@ export class ChannelsGetForumTopics extends Function {
 
   static get [paramDesc](): ParamDesc {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       ["channel", constructors.TypeInputChannel, "InputChannel"],
       ["q", "string", "flags.0?string"],
       ["offsetDate", "number", "int"],
@@ -14723,7 +14723,7 @@ export class ChannelsEditForumTopic extends Function {
 
   static get [paramDesc](): ParamDesc {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       ["channel", constructors.TypeInputChannel, "InputChannel"],
       ["topicId", "number", "int"],
       ["title", "string", "flags.0?string"],
@@ -14846,7 +14846,7 @@ export class ChannelsReorderPinnedForumTopics extends Function {
 
   static get [paramDesc](): ParamDesc {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       ["force", "true", "flags.0?true"],
       ["channel", constructors.TypeInputChannel, "InputChannel"],
       ["order", ["number"], "Vector<int>"],
@@ -15250,7 +15250,7 @@ export class BotsSetBotInfo extends Function {
 
   static get [paramDesc](): ParamDesc {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       ["langCode", "string", "string"],
       ["about", "string", "flags.0?string"],
       ["description", "string", "flags.1?string"],
@@ -15311,7 +15311,7 @@ export class PaymentsGetPaymentForm extends Function {
 
   static get [paramDesc](): ParamDesc {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       ["invoice", constructors.TypeInputInvoice, "InputInvoice"],
       ["themeParams", constructors.TypeDataJSON, "flags.0?DataJSON"],
     ];
@@ -15377,7 +15377,7 @@ export class PaymentsValidateRequestedInfo extends Function {
 
   static get [paramDesc](): ParamDesc {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       ["save", "true", "flags.0?true"],
       ["invoice", constructors.TypeInputInvoice, "InputInvoice"],
       ["info", constructors.TypePaymentRequestedInfo, "PaymentRequestedInfo"],
@@ -15425,7 +15425,7 @@ export class PaymentsSendPaymentForm extends Function {
 
   static get [paramDesc](): ParamDesc {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       ["formId", "bigint", "long"],
       ["invoice", constructors.TypeInputInvoice, "InputInvoice"],
       ["requestedInfoId", "string", "flags.0?string"],
@@ -15503,7 +15503,7 @@ export class PaymentsClearSavedInfo extends Function {
 
   static get [paramDesc](): ParamDesc {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       ["credentials", "true", "flags.0?true"],
       ["info", "true", "flags.1?true"],
     ];
@@ -15710,7 +15710,7 @@ export class StickersCreateStickerSet extends Function {
 
   static get [paramDesc](): ParamDesc {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       ["masks", "true", "flags.0?true"],
       ["animated", "true", "flags.1?true"],
       ["videos", "true", "flags.4?true"],
@@ -15889,7 +15889,7 @@ export class StickersSetStickerSetThumb extends Function {
 
   static get [paramDesc](): ParamDesc {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       ["stickerset", constructors.TypeInputStickerSet, "InputStickerSet"],
       ["thumb", constructors.TypeInputDocument, "flags.0?InputDocument"],
       ["thumbDocumentId", "bigint", "flags.1?long"],
@@ -15985,7 +15985,7 @@ export class StickersChangeSticker extends Function {
 
   static get [paramDesc](): ParamDesc {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       ["sticker", constructors.TypeInputDocument, "InputDocument"],
       ["emoji", "string", "flags.0?string"],
       ["maskCoords", constructors.TypeMaskCoords, "flags.1?MaskCoords"],
@@ -16110,7 +16110,7 @@ export class PhoneRequestCall extends Function {
 
   static get [paramDesc](): ParamDesc {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       ["video", "true", "flags.0?true"],
       ["userId", constructors.TypeInputUser, "InputUser"],
       ["randomId", "number", "int"],
@@ -16269,7 +16269,7 @@ export class PhoneDiscardCall extends Function {
 
   static get [paramDesc](): ParamDesc {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       ["video", "true", "flags.0?true"],
       ["peer", constructors.TypeInputPhoneCall, "InputPhoneCall"],
       ["duration", "number", "int"],
@@ -16327,7 +16327,7 @@ export class PhoneSetCallRating extends Function {
 
   static get [paramDesc](): ParamDesc {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       ["userInitiative", "true", "flags.0?true"],
       ["peer", constructors.TypeInputPhoneCall, "InputPhoneCall"],
       ["rating", "number", "int"],
@@ -16439,7 +16439,7 @@ export class PhoneCreateGroupCall extends Function {
 
   static get [paramDesc](): ParamDesc {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       ["rtmpStream", "true", "flags.2?true"],
       ["peer", constructors.TypeInputPeer, "InputPeer"],
       ["randomId", "number", "int"],
@@ -16491,7 +16491,7 @@ export class PhoneJoinGroupCall extends Function {
 
   static get [paramDesc](): ParamDesc {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       ["muted", "true", "flags.0?true"],
       ["videoStopped", "true", "flags.2?true"],
       ["call", constructors.TypeInputGroupCall, "InputGroupCall"],
@@ -16634,7 +16634,7 @@ export class PhoneToggleGroupCallSettings extends Function {
 
   static get [paramDesc](): ParamDesc {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       ["resetInviteHash", "true", "flags.1?true"],
       ["call", constructors.TypeInputGroupCall, "InputGroupCall"],
       ["joinMuted", "boolean", "flags.0?Bool"],
@@ -16788,7 +16788,7 @@ export class PhoneToggleGroupCallRecord extends Function {
 
   static get [paramDesc](): ParamDesc {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       ["start", "true", "flags.0?true"],
       ["video", "true", "flags.2?true"],
       ["call", constructors.TypeInputGroupCall, "InputGroupCall"],
@@ -16842,7 +16842,7 @@ export class PhoneEditGroupCallParticipant extends Function {
 
   static get [paramDesc](): ParamDesc {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       ["call", constructors.TypeInputGroupCall, "InputGroupCall"],
       ["participant", constructors.TypeInputPeer, "InputPeer"],
       ["muted", "boolean", "flags.0?Bool"],
@@ -16958,7 +16958,7 @@ export class PhoneExportGroupCallInvite extends Function {
 
   static get [paramDesc](): ParamDesc {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       ["canSelfUnmute", "true", "flags.0?true"],
       ["call", constructors.TypeInputGroupCall, "InputGroupCall"],
     ];
@@ -17441,7 +17441,7 @@ export class StatsGetBroadcastStats extends Function {
 
   static get [paramDesc](): ParamDesc {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       ["dark", "true", "flags.0?true"],
       ["channel", constructors.TypeInputChannel, "InputChannel"],
     ];
@@ -17472,7 +17472,7 @@ export class StatsLoadAsyncGraph extends Function {
 
   static get [paramDesc](): ParamDesc {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       ["token", "string", "string"],
       ["x", "bigint", "flags.0?long"],
     ];
@@ -17503,7 +17503,7 @@ export class StatsGetMegagroupStats extends Function {
 
   static get [paramDesc](): ParamDesc {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       ["dark", "true", "flags.0?true"],
       ["channel", constructors.TypeInputChannel, "InputChannel"],
     ];
@@ -17589,7 +17589,7 @@ export class StatsGetMessageStats extends Function {
 
   static get [paramDesc](): ParamDesc {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       ["dark", "true", "flags.0?true"],
       ["channel", constructors.TypeInputChannel, "InputChannel"],
       ["msgId", "number", "int"],

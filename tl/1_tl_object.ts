@@ -1,3 +1,7 @@
+import {
+  assertFalse,
+  assertNotEquals,
+} from "https://deno.land/std@0.181.0/testing/asserts.ts";
 import { assertEquals } from "../deps.ts";
 import { TLRawReader } from "./0_tl_raw_reader.ts";
 import { TLRawWriter } from "./0_tl_raw_writer.ts";
@@ -17,7 +21,7 @@ export type ParamDesc = ([
     | "true"
   >,
   string,
-] | [typeof flags, string, "#"])[];
+] | [string, typeof flags, "#"])[];
 
 type Param =
   | null
@@ -161,7 +165,6 @@ export abstract class TLObject {
       }
 
       if (value == flags && note == "#") {
-        console.log("writing flags");
         let flags = 0;
         for (const [value, _, note] of this[params]) {
           if (note.startsWith(type)) {
@@ -221,7 +224,7 @@ function deserializeSingleParam(
       case "string":
         return reader.readString();
       case "true":
-        if (reader.readInt32() == 0x997275b5) {
+        if (reader.readInt32(false) == 0x997275b5) {
           return true;
         } else {
           return undefined;
@@ -237,10 +240,33 @@ export function deserialize<T extends TLObjectConstructor<InstanceType<T>>>(
   constructor: T,
 ): InstanceType<T> {
   const params: Record<string, Param> = {};
+  const flagMap = new Map<string, number>();
   for (const [name, type, note] of paramDesc) {
+    if (note.includes("?")) {
+      const groupName = note.split(".")[0];
+      assertEquals(typeof groupName, "string");
+
+      const bitIndex = Number(note.split("?")[0].split(".")[1]);
+      assertFalse(isNaN(bitIndex));
+
+      const bits = flagMap.get(groupName);
+      assertNotEquals(bits, undefined);
+
+      if ((bits! & (1 << bitIndex)) == 0) {
+        continue;
+      }
+    }
+
+    if (type == flags && note == "#") {
+      flagMap.set(name, reader.readInt32());
+      console.log(flagMap);
+      continue;
+    }
+
     if (isTLObjectConstructor(type)) {
       throw new Error("Unimplemented");
     }
+
     if (type instanceof Array) {
       assertEquals(reader.readInt32(false), 0x1cb5c415);
       const count = reader.readInt32();

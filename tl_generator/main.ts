@@ -86,9 +86,9 @@ function getParamDescGetter(params: any[], prefix = false) {
     return [\n`;
   for (const param of params) {
     if (param.name.startsWith("flags") && param.type == "#") {
-      code += "[flags,";
-      code += `"${param.name}"`;
-      code += `, "${param.type}"],`;
+      code += `["${param.name}",`;
+      code += "flags,";
+      code += `"${param.type}"],`;
       continue;
     }
     const name = toCamelCase(param.name);
