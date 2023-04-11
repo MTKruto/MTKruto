@@ -57,6 +57,7 @@ function serializeSingleParam(
   writer: TLRawWriter,
   value: Param,
   type:
+    | typeof TLObject
     | typeof Uint8Array
     | "string"
     | "number"
@@ -65,6 +66,15 @@ function serializeSingleParam(
     | "true",
   ntype: string,
 ) {
+  if (isTLObjectConstructor(type)) {
+    if (value instanceof type) {
+      writer.write(value.serialize());
+      return;
+    } else {
+      throw new Error("a");
+    }
+  }
+
   if (type == Uint8Array) {
     if ((value instanceof Uint8Array)) {
       writer.writeBytes(value);
@@ -127,7 +137,8 @@ export abstract class TLObject {
   protected abstract get [params](): Params;
 
   protected static get [paramDesc](): ParamDesc {
-    throw new Error("Unimplemented");
+    // unimpl
+    return []
   }
 
   serialize() {
@@ -160,10 +171,6 @@ export abstract class TLObject {
 
       if (type instanceof Array) {
         const itemsType = type[0];
-        if (isTLObjectConstructor(itemsType)) {
-          throw new Error("Unimplemented");
-        }
-
         if (!Array.isArray(value)) {
           throw new Error("Expected array");
         }
@@ -172,12 +179,7 @@ export abstract class TLObject {
         for (const item of value) {
           serializeSingleParam(writer, item, itemsType, ntype);
         }
-
         continue;
-      }
-      if (isTLObjectConstructor(type)) {
-        value;
-        throw new Error("Unimplemented");
       }
 
       serializeSingleParam(writer, value, type, ntype);
@@ -199,6 +201,7 @@ function isTLObjectConstructor(t: unknown): t is typeof TLObject {
 function deserializeSingleParam(
   reader: TLRawReader,
   type:
+    | typeof TLObject
     | typeof Uint8Array
     | "string"
     | "number"
@@ -207,6 +210,14 @@ function deserializeSingleParam(
     | "true",
   ntype: string,
 ) {
+  if (isTLObjectConstructor(type)) {
+    return deserialize(
+      reader,
+      type[paramDesc],
+      type as unknown as TLObjectConstructor,
+    );
+  }
+
   if (type == Uint8Array) {
     return reader.readBytes();
   } else {
@@ -268,11 +279,7 @@ export function deserialize<T extends TLObjectConstructor<InstanceType<T>>>(
         NonNullable<ReturnType<typeof deserializeSingleParam>>
       >();
       for (let i = 0; i < count; i++) {
-        if (isTLObjectConstructor(type[0])) {
-          throw new Error("Unimplemented");
-        } else {
-          items.push(deserializeSingleParam(reader, type[0], ntype)!);
-        }
+        items.push(deserializeSingleParam(reader, type[0], ntype)!);
       }
       params[name] = items;
       continue;
