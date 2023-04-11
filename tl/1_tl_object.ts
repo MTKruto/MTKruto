@@ -1,4 +1,4 @@
-import { assertEquals } from "https://deno.land/std@0.181.0/testing/asserts.ts";
+import { assertEquals } from "../deps.ts";
 import { TLRawReader } from "./0_tl_raw_reader.ts";
 import { TLRawWriter } from "./0_tl_raw_writer.ts";
 
@@ -17,7 +17,7 @@ export type ParamDesc = ([
     | "true"
   >,
   string,
-] | [null, string, "#"])[];
+] | [typeof flags, string, "#"])[];
 
 type Param =
   | null
@@ -29,6 +29,8 @@ type Param =
     | Uint8Array
     | TLObject
   >;
+
+export const flags = Symbol("flags");
 
 export type Params = ([
   Param,
@@ -42,7 +44,7 @@ export type Params = ([
     | "true"
   >,
   string,
-] | [null, string, "#"])[];
+] | [typeof flags, string, "#"])[];
 
 export const id = Symbol("id");
 
@@ -158,8 +160,8 @@ export abstract class TLObject {
         throw new Error("Unimplemented");
       }
 
-      if (typeof type === "string" && note == "#") {
-        console.log("writing flags")
+      if (value == flags && note == "#") {
+        console.log("writing flags");
         let flags = 0;
         for (const [value, _, note] of this[params]) {
           if (note.startsWith(type)) {
@@ -169,7 +171,6 @@ export abstract class TLObject {
             }
           }
         }
-        console.log({flags})
         writer.writeInt32(flags);
         continue;
       }

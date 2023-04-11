@@ -32,7 +32,7 @@ const constructors = mtProtoConstructors.concat(apiConstructors);
 const functions = mtProtoFunctions.concat(apiFunctions);
 
 let code =
-  `import { id, params, TLObject, Params, TLObjectConstructor, ParamDesc, paramDesc } from "./1_tl_object.ts";
+  `import { id, params, TLObject, Params, TLObjectConstructor, ParamDesc, paramDesc, flags } from "./1_tl_object.ts";
 
 export abstract class Constructor extends TLObject {
 }
@@ -86,7 +86,7 @@ function getParamDescGetter(params: any[], prefix = false) {
     return [\n`;
   for (const param of params) {
     if (param.name.startsWith("flags") && param.type == "#") {
-      code += "[null,";
+      code += "[flags,";
       code += `"${param.name}"`;
       code += `, "${param.type}"],`;
       continue;
@@ -123,7 +123,7 @@ function getParamsGetter(params: any[], prefix = false) {
     return [\n`;
   for (const param of params) {
     if (param.name.startsWith("flags") && param.type == "#") {
-      code += "[null,";
+      code += "[flags,";
       code += `"${param.name}"`;
       code += `, "${param.type}"],`;
       continue;
@@ -267,7 +267,7 @@ code += `// deno-lint-ignore no-explicit-any
 Deno.writeTextFileSync("tl/2_constructors.ts", code);
 
 code =
-  `import { id, params, TLObject, Params, paramDesc, ParamDesc } from "./1_tl_object.ts";
+  `import { id, params, TLObject, Params, paramDesc, ParamDesc, flags } from "./1_tl_object.ts";
 import * as constructors from "./2_constructors.ts";
 
 export abstract class Function extends TLObject {
