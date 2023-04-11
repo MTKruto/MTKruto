@@ -3178,7 +3178,7 @@ export class InputMediaUploadedPhoto extends TypeInputMedia {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.spoiler ?? null, "true", "flags.2?true"],
       [this.file, TypeInputFile, "InputFile"],
       [
@@ -3226,7 +3226,7 @@ export class InputMediaPhoto extends TypeInputMedia {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.spoiler ?? null, "true", "flags.1?true"],
       [this.id, TypeInputPhoto, "InputPhoto"],
       [this.ttlSeconds ?? null, "number", "flags.0?int"],
@@ -3344,7 +3344,7 @@ export class InputMediaUploadedDocument extends TypeInputMedia {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.nosoundVideo ?? null, "true", "flags.3?true"],
       [this.forceFile ?? null, "true", "flags.4?true"],
       [this.spoiler ?? null, "true", "flags.5?true"],
@@ -3409,7 +3409,7 @@ export class InputMediaDocument extends TypeInputMedia {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.spoiler ?? null, "true", "flags.2?true"],
       [this.id, TypeInputDocument, "InputDocument"],
       [this.ttlSeconds ?? null, "number", "flags.0?int"],
@@ -3507,7 +3507,7 @@ export class InputMediaPhotoExternal extends TypeInputMedia {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.spoiler ?? null, "true", "flags.1?true"],
       [this.url, "string", "string"],
       [this.ttlSeconds ?? null, "number", "flags.0?int"],
@@ -3542,7 +3542,7 @@ export class InputMediaDocumentExternal extends TypeInputMedia {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.spoiler ?? null, "true", "flags.1?true"],
       [this.url, "string", "string"],
       [this.ttlSeconds ?? null, "number", "flags.0?int"],
@@ -3614,7 +3614,7 @@ export class InputMediaInvoice extends TypeInputMedia {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.title, "string", "string"],
       [this.description, "string", "string"],
       [this.photo ?? null, TypeInputWebDocument, "flags.0?InputWebDocument"],
@@ -3677,7 +3677,7 @@ export class InputMediaGeoLive extends TypeInputMedia {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.stopped ?? null, "true", "flags.0?true"],
       [this.geoPoint, TypeInputGeoPoint, "InputGeoPoint"],
       [this.heading ?? null, "number", "flags.2?int"],
@@ -3730,7 +3730,7 @@ export class InputMediaPoll extends TypeInputMedia {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.poll, TypePoll, "Poll"],
       [this.correctAnswers ?? null, [Uint8Array], "flags.0?Vector<bytes>"],
       [this.solution ?? null, "string", "flags.1?string"],
@@ -3823,7 +3823,7 @@ export class InputChatUploadedPhoto extends TypeInputChatPhoto {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.file ?? null, TypeInputFile, "flags.0?InputFile"],
       [this.video ?? null, TypeInputFile, "flags.1?InputFile"],
       [this.videoStartTs ?? null, "number", "flags.2?double"],
@@ -3910,7 +3910,7 @@ export class InputGeoPoint extends Constructor {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.lat, "number", "double"],
       [this.long, "number", "double"],
       [this.accuracyRadius ?? null, "number", "flags.0?int"],
@@ -4260,7 +4260,7 @@ export class InputPeerPhotoFileLocation extends TypeInputFileLocation {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.big ?? null, "true", "flags.0?true"],
       [this.peer, TypeInputPeer, "InputPeer"],
       [this.photoId, "bigint", "long"],
@@ -4330,7 +4330,7 @@ export class InputGroupCallStream extends TypeInputFileLocation {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.call, TypeInputGroupCall, "InputGroupCall"],
       [this.timeMs, "bigint", "long"],
       [this.scale, "number", "int"],
@@ -4720,7 +4720,7 @@ export class User extends Constructor {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.self ?? null, "true", "flags.10?true"],
       [this.contact ?? null, "true", "flags.11?true"],
       [this.mutualContact ?? null, "true", "flags.12?true"],
@@ -4739,7 +4739,7 @@ export class User extends Constructor {
       [this.botAttachMenu ?? null, "true", "flags.27?true"],
       [this.premium ?? null, "true", "flags.28?true"],
       [this.attachMenuEnabled ?? null, "true", "flags.29?true"],
-      [flags, "flags2", "#"],
+      ["flags2", flags, "#"],
       [this.id, "bigint", "long"],
       [this.accessHash ?? null, "bigint", "flags.0?long"],
       [this.firstName ?? null, "string", "flags.1?string"],
@@ -4875,7 +4875,7 @@ export class UserProfilePhoto extends Constructor {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.hasVideo ?? null, "true", "flags.0?true"],
       [this.personal ?? null, "true", "flags.2?true"],
       [this.photoId, "bigint", "long"],
@@ -5097,7 +5097,7 @@ export class Chat extends Constructor {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.creator ?? null, "true", "flags.0?true"],
       [this.left ?? null, "true", "flags.2?true"],
       [this.deactivated ?? null, "true", "flags.5?true"],
@@ -5278,7 +5278,7 @@ export class Channel extends TypeChat {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.creator ?? null, "true", "flags.0?true"],
       [this.left ?? null, "true", "flags.2?true"],
       [this.broadcast ?? null, "true", "flags.5?true"],
@@ -5299,7 +5299,7 @@ export class Channel extends TypeChat {
       [this.joinToSend ?? null, "true", "flags.28?true"],
       [this.joinRequest ?? null, "true", "flags.29?true"],
       [this.forum ?? null, "true", "flags.30?true"],
-      [flags, "flags2", "#"],
+      ["flags2", flags, "#"],
       [this.id, "bigint", "long"],
       [this.accessHash ?? null, "bigint", "flags.13?long"],
       [this.title, "string", "string"],
@@ -5429,7 +5429,7 @@ export class ChannelForbidden extends TypeChat {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.broadcast ?? null, "true", "flags.5?true"],
       [this.megagroup ?? null, "true", "flags.8?true"],
       [this.id, "bigint", "long"],
@@ -5511,7 +5511,7 @@ export class ChatFull extends Constructor {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.canSetUsername ?? null, "true", "flags.7?true"],
       [this.hasScheduled ?? null, "true", "flags.8?true"],
       [this.translationsDisabled ?? null, "true", "flags.19?true"],
@@ -5697,7 +5697,7 @@ export class ChannelFull extends TypeChatFull {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.canViewParticipants ?? null, "true", "flags.3?true"],
       [this.canSetUsername ?? null, "true", "flags.6?true"],
       [this.canSetStickers ?? null, "true", "flags.7?true"],
@@ -5706,7 +5706,7 @@ export class ChannelFull extends TypeChatFull {
       [this.hasScheduled ?? null, "true", "flags.19?true"],
       [this.canViewStats ?? null, "true", "flags.20?true"],
       [this.blocked ?? null, "true", "flags.22?true"],
-      [flags, "flags2", "#"],
+      ["flags2", flags, "#"],
       [this.canDeleteChannel ?? null, "true", "flags2.0?true"],
       [this.antispam ?? null, "true", "flags2.1?true"],
       [this.participantsHidden ?? null, "true", "flags2.2?true"],
@@ -5968,7 +5968,7 @@ export class ChatParticipantsForbidden extends TypeChatParticipants {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.chatId, "bigint", "long"],
       [
         this.selfParticipant ?? null,
@@ -6066,7 +6066,7 @@ export class ChatPhoto extends Constructor {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.hasVideo ?? null, "true", "flags.0?true"],
       [this.photoId, "bigint", "long"],
       [this.strippedThumb ?? null, Uint8Array, "flags.1?bytes"],
@@ -6108,7 +6108,7 @@ export class MessageEmpty extends TypeMessage {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.id, "number", "int"],
       [this.peerId ?? null, TypePeer, "flags.0?Peer"],
     ];
@@ -6199,7 +6199,7 @@ export class Message extends Constructor {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.out ?? null, "true", "flags.1?true"],
       [this.mentioned ?? null, "true", "flags.4?true"],
       [this.mediaUnread ?? null, "true", "flags.5?true"],
@@ -6357,7 +6357,7 @@ export class MessageService extends TypeMessage {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.out ?? null, "true", "flags.1?true"],
       [this.mentioned ?? null, "true", "flags.4?true"],
       [this.mediaUnread ?? null, "true", "flags.5?true"],
@@ -6450,7 +6450,7 @@ export class MessageMediaPhoto extends TypeMessageMedia {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.spoiler ?? null, "true", "flags.3?true"],
       [this.photo ?? null, TypePhoto, "flags.0?Photo"],
       [this.ttlSeconds ?? null, "number", "flags.2?int"],
@@ -6581,7 +6581,7 @@ export class MessageMediaDocument extends TypeMessageMedia {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.nopremium ?? null, "true", "flags.3?true"],
       [this.spoiler ?? null, "true", "flags.4?true"],
       [this.document ?? null, TypeDocument, "flags.0?Document"],
@@ -6747,7 +6747,7 @@ export class MessageMediaInvoice extends TypeMessageMedia {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.shippingAddressRequested ?? null, "true", "flags.1?true"],
       [this.test ?? null, "true", "flags.3?true"],
       [this.title, "string", "string"],
@@ -6815,7 +6815,7 @@ export class MessageMediaGeoLive extends TypeMessageMedia {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.geo, TypeGeoPoint, "GeoPoint"],
       [this.heading ?? null, "number", "flags.0?int"],
       [this.period, "number", "int"],
@@ -7261,7 +7261,7 @@ export class MessageActionPaymentSentMe extends TypeMessageAction {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.recurringInit ?? null, "true", "flags.2?true"],
       [this.recurringUsed ?? null, "true", "flags.3?true"],
       [this.currency, "string", "string"],
@@ -7325,7 +7325,7 @@ export class MessageActionPaymentSent extends TypeMessageAction {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.recurringInit ?? null, "true", "flags.2?true"],
       [this.recurringUsed ?? null, "true", "flags.3?true"],
       [this.currency, "string", "string"],
@@ -7374,7 +7374,7 @@ export class MessageActionPhoneCall extends TypeMessageAction {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.video ?? null, "true", "flags.2?true"],
       [this.callId, "bigint", "long"],
       [
@@ -7465,7 +7465,7 @@ export class MessageActionBotAllowed extends TypeMessageAction {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.attachMenu ?? null, "true", "flags.1?true"],
       [this.domain ?? null, "string", "flags.0?string"],
       [this.app ?? null, TypeBotApp, "flags.2?BotApp"],
@@ -7618,7 +7618,7 @@ export class MessageActionGroupCall extends TypeMessageAction {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.call, TypeInputGroupCall, "InputGroupCall"],
       [this.duration ?? null, "number", "flags.0?int"],
     ];
@@ -7678,7 +7678,7 @@ export class MessageActionSetMessagesTTL extends TypeMessageAction {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.period, "number", "int"],
       [this.autoSettingFrom ?? null, "bigint", "flags.0?long"],
     ];
@@ -7870,7 +7870,7 @@ export class MessageActionTopicCreate extends TypeMessageAction {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.title, "string", "string"],
       [this.iconColor, "number", "int"],
       [this.iconEmojiId ?? null, "bigint", "flags.0?long"],
@@ -7909,7 +7909,7 @@ export class MessageActionTopicEdit extends TypeMessageAction {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.title ?? null, "string", "flags.0?string"],
       [this.iconEmojiId ?? null, "bigint", "flags.1?long"],
       [this.closed ?? null, "boolean", "flags.2?Bool"],
@@ -8029,7 +8029,7 @@ export class Dialog extends Constructor {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.pinned ?? null, "true", "flags.2?true"],
       [this.unreadMark ?? null, "true", "flags.3?true"],
       [this.peer, TypePeer, "Peer"],
@@ -8113,7 +8113,7 @@ export class DialogFolder extends TypeDialog {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.pinned ?? null, "true", "flags.2?true"],
       [this.folder, TypeFolder, "Folder"],
       [this.peer, TypePeer, "Peer"],
@@ -8204,7 +8204,7 @@ export class Photo extends Constructor {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.hasStickers ?? null, "true", "flags.0?true"],
       [this.id, "bigint", "long"],
       [this.accessHash, "bigint", "long"],
@@ -8478,7 +8478,7 @@ export class GeoPoint extends Constructor {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.long, "number", "double"],
       [this.lat, "number", "double"],
       [this.accessHash, "bigint", "long"],
@@ -8524,7 +8524,7 @@ export class AuthSentCode extends Constructor {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.type, TypeAuthSentCodeType, "auth.SentCodeType"],
       [this.phoneCodeHash, "string", "string"],
       [this.nextType ?? null, TypeAuthCodeType, "flags.1?auth.CodeType"],
@@ -8597,7 +8597,7 @@ export class AuthAuthorization extends Constructor {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.setupPasswordRequired ?? null, "true", "flags.1?true"],
       [this.otherwiseReloginDays ?? null, "number", "flags.1?int"],
       [this.tmpSessions ?? null, "number", "flags.0?int"],
@@ -8640,7 +8640,7 @@ export class AuthAuthorizationSignUpRequired extends TypeAuthAuthorization {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [
         this.termsOfService ?? null,
         TypeHelpTermsOfService,
@@ -8814,7 +8814,7 @@ export class InputPeerNotifySettings extends Constructor {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.showPreviews ?? null, "boolean", "flags.0?Bool"],
       [this.silent ?? null, "boolean", "flags.1?Bool"],
       [this.muteUntil ?? null, "number", "flags.2?int"],
@@ -8864,7 +8864,7 @@ export class PeerNotifySettings extends Constructor {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.showPreviews ?? null, "boolean", "flags.0?Bool"],
       [this.silent ?? null, "boolean", "flags.1?Bool"],
       [this.muteUntil ?? null, "number", "flags.2?int"],
@@ -8944,7 +8944,7 @@ export class PeerSettings extends Constructor {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.reportSpam ?? null, "true", "flags.0?true"],
       [this.addContact ?? null, "true", "flags.1?true"],
       [this.blockContact ?? null, "true", "flags.2?true"],
@@ -9025,7 +9025,7 @@ export class WallPaper extends Constructor {
   protected get [params](): Params {
     return [
       [this.id, "bigint", "long"],
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.creator ?? null, "true", "flags.0?true"],
       [this.default ?? null, "true", "flags.1?true"],
       [this.pattern ?? null, "true", "flags.3?true"],
@@ -9090,7 +9090,7 @@ export class WallPaperNoFile extends TypeWallPaper {
   protected get [params](): Params {
     return [
       [this.id, "bigint", "long"],
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.default ?? null, "true", "flags.1?true"],
       [this.dark ?? null, "true", "flags.4?true"],
       [
@@ -9369,7 +9369,7 @@ export class UserFull extends Constructor {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.blocked ?? null, "true", "flags.0?true"],
       [this.phoneCallsAvailable ?? null, "true", "flags.4?true"],
       [this.phoneCallsPrivate ?? null, "true", "flags.5?true"],
@@ -9924,7 +9924,7 @@ export class MessagesMessagesSlice extends TypeMessagesMessages {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.inexact ?? null, "true", "flags.1?true"],
       [this.count, "number", "int"],
       [this.nextRate ?? null, "number", "flags.0?int"],
@@ -9987,7 +9987,7 @@ export class MessagesChannelMessages extends TypeMessagesMessages {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.inexact ?? null, "true", "flags.1?true"],
       [this.pts, "number", "int"],
       [this.count, "number", "int"],
@@ -10370,7 +10370,7 @@ export class InputMessagesFilterPhoneCalls extends TypeMessagesFilter {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.missed ?? null, "true", "flags.0?true"],
     ];
   }
@@ -11028,7 +11028,7 @@ export class UpdateServiceNotification extends TypeUpdate {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.popup ?? null, "true", "flags.0?true"],
       [this.inboxDate ?? null, "number", "flags.1?int"],
       [this.type, "string", "string"],
@@ -11142,7 +11142,7 @@ export class UpdateReadHistoryInbox extends TypeUpdate {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.folderId ?? null, "number", "flags.0?int"],
       [this.peer, TypePeer, "Peer"],
       [this.maxId, "number", "int"],
@@ -11297,7 +11297,7 @@ export class UpdateChannelTooLong extends TypeUpdate {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.channelId, "bigint", "long"],
       [this.pts ?? null, "number", "flags.0?int"],
     ];
@@ -11392,7 +11392,7 @@ export class UpdateReadChannelInbox extends TypeUpdate {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.folderId ?? null, "number", "flags.0?int"],
       [this.channelId, "bigint", "long"],
       [this.maxId, "number", "int"],
@@ -11585,7 +11585,7 @@ export class UpdateStickerSetsOrder extends TypeUpdate {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.masks ?? null, "true", "flags.0?true"],
       [this.emojis ?? null, "true", "flags.1?true"],
       [this.order, ["bigint"], "Vector<long>"],
@@ -11618,7 +11618,7 @@ export class UpdateStickerSets extends TypeUpdate {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.masks ?? null, "true", "flags.0?true"],
       [this.emojis ?? null, "true", "flags.1?true"],
     ];
@@ -11675,7 +11675,7 @@ export class UpdateBotInlineQuery extends TypeUpdate {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.queryId, "bigint", "long"],
       [this.userId, "bigint", "long"],
       [this.query, "string", "string"],
@@ -11733,7 +11733,7 @@ export class UpdateBotInlineSend extends TypeUpdate {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.userId, "bigint", "long"],
       [this.query, "string", "string"],
       [this.geo ?? null, TypeGeoPoint, "flags.0?GeoPoint"],
@@ -11825,7 +11825,7 @@ export class UpdateBotCallbackQuery extends TypeUpdate {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.queryId, "bigint", "long"],
       [this.userId, "bigint", "long"],
       [this.peer, TypePeer, "Peer"],
@@ -11917,7 +11917,7 @@ export class UpdateInlineBotCallbackQuery extends TypeUpdate {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.queryId, "bigint", "long"],
       [this.userId, "bigint", "long"],
       [this.msgId, TypeInputBotInlineMessageID, "InputBotInlineMessageID"],
@@ -11996,7 +11996,7 @@ export class UpdateDraftMessage extends TypeUpdate {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.peer, TypePeer, "Peer"],
       [this.topMsgId ?? null, "number", "flags.0?int"],
       [this.draft, TypeDraftMessage, "DraftMessage"],
@@ -12149,7 +12149,7 @@ export class UpdateDialogPinned extends TypeUpdate {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.pinned ?? null, "true", "flags.0?true"],
       [this.folderId ?? null, "number", "flags.1?int"],
       [this.peer, TypeDialogPeer, "DialogPeer"],
@@ -12184,7 +12184,7 @@ export class UpdatePinnedDialogs extends TypeUpdate {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.folderId ?? null, "number", "flags.1?int"],
       [this.order ?? null, [TypeDialogPeer], "flags.0?Vector<DialogPeer>"],
     ];
@@ -12329,7 +12329,7 @@ export class UpdateBotPrecheckoutQuery extends TypeUpdate {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.queryId, "bigint", "long"],
       [this.userId, "bigint", "long"],
       [this.payload, Uint8Array, "bytes"],
@@ -12479,7 +12479,7 @@ export class UpdateChannelReadMessagesContents extends TypeUpdate {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.channelId, "bigint", "long"],
       [this.topMsgId ?? null, "number", "flags.0?int"],
       [this.messages, ["number"], "Vector<int>"],
@@ -12561,7 +12561,7 @@ export class UpdateDialogUnreadMark extends TypeUpdate {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.unread ?? null, "true", "flags.0?true"],
       [this.peer, TypeDialogPeer, "DialogPeer"],
     ];
@@ -12594,7 +12594,7 @@ export class UpdateMessagePoll extends TypeUpdate {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.pollId, "bigint", "long"],
       [this.poll ?? null, TypePoll, "flags.0?Poll"],
       [this.results, TypePollResults, "PollResults"],
@@ -12931,7 +12931,7 @@ export class UpdateDialogFilter extends TypeUpdate {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.id, "number", "int"],
       [this.filter ?? null, TypeDialogFilter, "flags.0?DialogFilter"],
     ];
@@ -13073,7 +13073,7 @@ export class UpdateReadChannelDiscussionInbox extends TypeUpdate {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.channelId, "bigint", "long"],
       [this.topMsgId, "number", "int"],
       [this.readMaxId, "number", "int"],
@@ -13186,7 +13186,7 @@ export class UpdateChannelUserTyping extends TypeUpdate {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.channelId, "bigint", "long"],
       [this.topMsgId ?? null, "number", "flags.0?int"],
       [this.fromId, TypePeer, "Peer"],
@@ -13234,7 +13234,7 @@ export class UpdatePinnedMessages extends TypeUpdate {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.pinned ?? null, "true", "flags.0?true"],
       [this.peer, TypePeer, "Peer"],
       [this.messages, ["number"], "Vector<int>"],
@@ -13285,7 +13285,7 @@ export class UpdatePinnedChannelMessages extends TypeUpdate {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.pinned ?? null, "true", "flags.0?true"],
       [this.channelId, "bigint", "long"],
       [this.messages, ["number"], "Vector<int>"],
@@ -13431,7 +13431,7 @@ export class UpdatePeerHistoryTTL extends TypeUpdate {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.peer, TypePeer, "Peer"],
       [this.ttlPeriod ?? null, "number", "flags.0?int"],
     ];
@@ -13474,7 +13474,7 @@ export class UpdateChatParticipant extends TypeUpdate {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.chatId, "bigint", "long"],
       [this.date, "number", "int"],
       [this.actorId, "bigint", "long"],
@@ -13552,7 +13552,7 @@ export class UpdateChannelParticipant extends TypeUpdate {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.channelId, "bigint", "long"],
       [this.date, "number", "int"],
       [this.actorId, "bigint", "long"],
@@ -13657,7 +13657,7 @@ export class UpdateGroupCallConnection extends TypeUpdate {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.presentation ?? null, "true", "flags.0?true"],
       [this.params, TypeDataJSON, "DataJSON"],
     ];
@@ -13820,7 +13820,7 @@ export class UpdateMessageReactions extends TypeUpdate {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.peer, TypePeer, "Peer"],
       [this.msgId, "number", "int"],
       [this.topMsgId ?? null, "number", "flags.0?int"],
@@ -13958,7 +13958,7 @@ export class UpdateTranscribedAudio extends TypeUpdate {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.pending ?? null, "true", "flags.0?true"],
       [this.peer, TypePeer, "Peer"],
       [this.msgId, "number", "int"],
@@ -14088,7 +14088,7 @@ export class UpdateMoveStickerSetToTop extends TypeUpdate {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.masks ?? null, "true", "flags.0?true"],
       [this.emojis ?? null, "true", "flags.1?true"],
       [this.stickerset, "bigint", "long"],
@@ -14162,7 +14162,7 @@ export class UpdateChannelPinnedTopic extends TypeUpdate {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.pinned ?? null, "true", "flags.0?true"],
       [this.channelId, "bigint", "long"],
       [this.topicId, "number", "int"],
@@ -14195,7 +14195,7 @@ export class UpdateChannelPinnedTopics extends TypeUpdate {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.channelId, "bigint", "long"],
       [this.order ?? null, ["number"], "flags.0?Vector<int>"],
     ];
@@ -14565,7 +14565,7 @@ export class UpdateShortMessage extends TypeUpdates {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.out ?? null, "true", "flags.1?true"],
       [this.mentioned ?? null, "true", "flags.4?true"],
       [this.mediaUnread ?? null, "true", "flags.5?true"],
@@ -14676,7 +14676,7 @@ export class UpdateShortChatMessage extends TypeUpdates {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.out ?? null, "true", "flags.1?true"],
       [this.mentioned ?? null, "true", "flags.4?true"],
       [this.mediaUnread ?? null, "true", "flags.5?true"],
@@ -14906,7 +14906,7 @@ export class UpdateShortSentMessage extends TypeUpdates {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.out ?? null, "true", "flags.1?true"],
       [this.id, "number", "int"],
       [this.pts, "number", "int"],
@@ -15157,7 +15157,7 @@ export class DcOption extends Constructor {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.ipv6 ?? null, "true", "flags.0?true"],
       [this.mediaOnly ?? null, "true", "flags.1?true"],
       [this.tcpoOnly ?? null, "true", "flags.2?true"],
@@ -15307,7 +15307,7 @@ export class Config extends Constructor {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.defaultP2pContacts ?? null, "true", "flags.3?true"],
       [this.preloadFeaturedStickers ?? null, "true", "flags.4?true"],
       [this.revokePmInbox ?? null, "true", "flags.6?true"],
@@ -15523,7 +15523,7 @@ export class HelpAppUpdate extends Constructor {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.canNotSkip ?? null, "true", "flags.0?true"],
       [this.id, "number", "int"],
       [this.version, "string", "string"],
@@ -15704,7 +15704,7 @@ export class EncryptedChatRequested extends TypeEncryptedChat {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.folderId ?? null, "number", "flags.0?int"],
       [this.id, "number", "int"],
       [this.accessHash, "bigint", "long"],
@@ -15814,7 +15814,7 @@ export class EncryptedChatDiscarded extends TypeEncryptedChat {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.historyDeleted ?? null, "true", "flags.0?true"],
       [this.id, "number", "int"],
     ];
@@ -16371,7 +16371,7 @@ export class Document extends Constructor {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.id, "bigint", "long"],
       [this.accessHash, "bigint", "long"],
       [this.fileReference, Uint8Array, "bytes"],
@@ -17787,7 +17787,7 @@ export class DocumentAttributeSticker extends TypeDocumentAttribute {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.mask ?? null, "true", "flags.1?true"],
       [this.alt, "string", "string"],
       [this.stickerset, TypeInputStickerSet, "InputStickerSet"],
@@ -17835,7 +17835,7 @@ export class DocumentAttributeVideo extends TypeDocumentAttribute {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.roundMessage ?? null, "true", "flags.0?true"],
       [this.supportsStreaming ?? null, "true", "flags.1?true"],
       [this.duration, "number", "int"],
@@ -17886,7 +17886,7 @@ export class DocumentAttributeAudio extends TypeDocumentAttribute {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.voice ?? null, "true", "flags.10?true"],
       [this.duration, "number", "int"],
       [this.title ?? null, "string", "flags.0?string"],
@@ -17978,7 +17978,7 @@ export class DocumentAttributeCustomEmoji extends TypeDocumentAttribute {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.free ?? null, "true", "flags.0?true"],
       [this.textColor ?? null, "true", "flags.1?true"],
       [this.alt, "string", "string"],
@@ -18262,7 +18262,7 @@ export class WebPage extends Constructor {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.id, "bigint", "long"],
       [this.url, "string", "string"],
       [this.displayUrl, "string", "string"],
@@ -18348,7 +18348,7 @@ export class WebPageNotModified extends TypeWebPage {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.cachedPageViews ?? null, "number", "flags.0?int"],
     ];
   }
@@ -18407,7 +18407,7 @@ export class Authorization extends Constructor {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.current ?? null, "true", "flags.0?true"],
       [this.officialApp ?? null, "true", "flags.1?true"],
       [this.passwordPending ?? null, "true", "flags.2?true"],
@@ -18544,7 +18544,7 @@ export class AccountPassword extends Constructor {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.hasRecovery ?? null, "true", "flags.0?true"],
       [this.hasSecureValues ?? null, "true", "flags.1?true"],
       [this.hasPassword ?? null, "true", "flags.2?true"],
@@ -18621,7 +18621,7 @@ export class AccountPasswordSettings extends Constructor {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.email ?? null, "string", "flags.0?string"],
       [
         this.secureSettings ?? null,
@@ -18668,7 +18668,7 @@ export class AccountPasswordInputSettings extends Constructor {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.newAlgo ?? null, TypePasswordKdfAlgo, "flags.0?PasswordKdfAlgo"],
       [this.newPasswordHash ?? null, Uint8Array, "flags.0?bytes"],
       [this.hint ?? null, "string", "flags.0?string"],
@@ -18791,7 +18791,7 @@ export class ChatInviteExported extends TypeExportedChatInvite {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.revoked ?? null, "true", "flags.0?true"],
       [this.permanent ?? null, "true", "flags.5?true"],
       [this.requestNeeded ?? null, "true", "flags.6?true"],
@@ -18916,7 +18916,7 @@ export class ChatInvite extends Constructor {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.channel ?? null, "true", "flags.0?true"],
       [this.broadcast ?? null, "true", "flags.1?true"],
       [this.public ?? null, "true", "flags.2?true"],
@@ -19241,7 +19241,7 @@ export class StickerSet extends Constructor {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.archived ?? null, "true", "flags.1?true"],
       [this.official ?? null, "true", "flags.2?true"],
       [this.masks ?? null, "true", "flags.3?true"],
@@ -19421,7 +19421,7 @@ export class BotInfo extends Constructor {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.userId ?? null, "bigint", "flags.0?long"],
       [this.description ?? null, "string", "flags.1?string"],
       [this.descriptionPhoto ?? null, TypePhoto, "flags.4?Photo"],
@@ -19525,7 +19525,7 @@ export class KeyboardButtonCallback extends TypeKeyboardButton {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.requiresPassword ?? null, "true", "flags.0?true"],
       [this.text, "string", "string"],
       [this.data, Uint8Array, "bytes"],
@@ -19612,7 +19612,7 @@ export class KeyboardButtonSwitchInline extends TypeKeyboardButton {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.samePeer ?? null, "true", "flags.0?true"],
       [this.text, "string", "string"],
       [this.query, "string", "string"],
@@ -19699,7 +19699,7 @@ export class KeyboardButtonUrlAuth extends TypeKeyboardButton {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.text, "string", "string"],
       [this.fwdText ?? null, "string", "flags.0?string"],
       [this.url, "string", "string"],
@@ -19742,7 +19742,7 @@ export class InputKeyboardButtonUrlAuth extends TypeKeyboardButton {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.requestWriteAccess ?? null, "true", "flags.0?true"],
       [this.text, "string", "string"],
       [this.fwdText ?? null, "string", "flags.1?string"],
@@ -19787,7 +19787,7 @@ export class KeyboardButtonRequestPoll extends TypeKeyboardButton {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.quiz ?? null, "boolean", "flags.0?Bool"],
       [this.text, "string", "string"],
     ];
@@ -19992,7 +19992,7 @@ export class ReplyKeyboardHide extends TypeReplyMarkup {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.selective ?? null, "true", "flags.2?true"],
     ];
   }
@@ -20023,7 +20023,7 @@ export class ReplyKeyboardForceReply extends TypeReplyMarkup {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.singleUse ?? null, "true", "flags.1?true"],
       [this.selective ?? null, "true", "flags.2?true"],
       [this.placeholder ?? null, "string", "flags.3?string"],
@@ -20066,7 +20066,7 @@ export class ReplyKeyboardMarkup extends TypeReplyMarkup {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.resize ?? null, "true", "flags.0?true"],
       [this.singleUse ?? null, "true", "flags.1?true"],
       [this.selective ?? null, "true", "flags.2?true"],
@@ -20919,7 +20919,7 @@ export class UpdatesChannelDifferenceEmpty
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.final ?? null, "true", "flags.0?true"],
       [this.pts, "number", "int"],
       [this.timeout ?? null, "number", "flags.1?int"],
@@ -20961,7 +20961,7 @@ export class UpdatesChannelDifferenceTooLong
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.final ?? null, "true", "flags.0?true"],
       [this.timeout ?? null, "number", "flags.1?int"],
       [this.dialog, TypeDialog, "Dialog"],
@@ -21019,7 +21019,7 @@ export class UpdatesChannelDifference extends Constructor {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.final ?? null, "true", "flags.0?true"],
       [this.pts, "number", "int"],
       [this.timeout ?? null, "number", "flags.1?int"],
@@ -21088,7 +21088,7 @@ export class ChannelMessagesFilter extends Constructor {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.excludeNewMessages ?? null, "true", "flags.1?true"],
       [this.ranges, [TypeMessageRange], "Vector<MessageRange>"],
     ];
@@ -21154,7 +21154,7 @@ export class ChannelParticipantSelf extends TypeChannelParticipant {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.viaRequest ?? null, "true", "flags.0?true"],
       [this.userId, "bigint", "long"],
       [this.inviterId, "bigint", "long"],
@@ -21198,7 +21198,7 @@ export class ChannelParticipantCreator extends TypeChannelParticipant {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.userId, "bigint", "long"],
       [this.adminRights, TypeChatAdminRights, "ChatAdminRights"],
       [this.rank ?? null, "string", "flags.0?string"],
@@ -21245,7 +21245,7 @@ export class ChannelParticipantAdmin extends TypeChannelParticipant {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.canEdit ?? null, "true", "flags.0?true"],
       [this.self ?? null, "true", "flags.1?true"],
       [this.userId, "bigint", "long"],
@@ -21305,7 +21305,7 @@ export class ChannelParticipantBanned extends TypeChannelParticipant {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.left ?? null, "true", "flags.0?true"],
       [this.peer, TypePeer, "Peer"],
       [this.kickedBy, "bigint", "long"],
@@ -21529,7 +21529,7 @@ export class ChannelParticipantsMentions extends TypeChannelParticipantsFilter {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.q ?? null, "string", "flags.0?string"],
       [this.topMsgId ?? null, "number", "flags.1?int"],
     ];
@@ -21672,7 +21672,7 @@ export class HelpTermsOfService extends Constructor {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.popup ?? null, "true", "flags.0?true"],
       [this.id, TypeDataJSON, "DataJSON"],
       [this.text, "string", "string"],
@@ -21766,7 +21766,7 @@ export class InputBotInlineMessageMediaAuto extends TypeInputBotInlineMessage {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.message, "string", "string"],
       [
         this.entities ?? null,
@@ -21813,7 +21813,7 @@ export class InputBotInlineMessageText extends TypeInputBotInlineMessage {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.noWebpage ?? null, "true", "flags.0?true"],
       [this.message, "string", "string"],
       [
@@ -21865,7 +21865,7 @@ export class InputBotInlineMessageMediaGeo extends TypeInputBotInlineMessage {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.geoPoint, TypeInputGeoPoint, "InputGeoPoint"],
       [this.heading ?? null, "number", "flags.0?int"],
       [this.period ?? null, "number", "flags.1?int"],
@@ -21920,7 +21920,7 @@ export class InputBotInlineMessageMediaVenue extends TypeInputBotInlineMessage {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.geoPoint, TypeInputGeoPoint, "InputGeoPoint"],
       [this.title, "string", "string"],
       [this.address, "string", "string"],
@@ -21978,7 +21978,7 @@ export class InputBotInlineMessageMediaContact
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.phoneNumber, "string", "string"],
       [this.firstName, "string", "string"],
       [this.lastName, "string", "string"],
@@ -22021,7 +22021,7 @@ export class InputBotInlineMessageGame extends TypeInputBotInlineMessage {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.replyMarkup ?? null, TypeReplyMarkup, "flags.2?ReplyMarkup"],
     ];
   }
@@ -22063,7 +22063,7 @@ export class InputBotInlineMessageMediaInvoice
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.title, "string", "string"],
       [this.description, "string", "string"],
       [this.photo ?? null, TypeInputWebDocument, "flags.0?InputWebDocument"],
@@ -22129,7 +22129,7 @@ export class InputBotInlineResult extends Constructor {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.id, "string", "string"],
       [this.type, "string", "string"],
       [this.title ?? null, "string", "flags.1?string"],
@@ -22235,7 +22235,7 @@ export class InputBotInlineResultDocument extends TypeInputBotInlineResult {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.id, "string", "string"],
       [this.type, "string", "string"],
       [this.title ?? null, "string", "flags.1?string"],
@@ -22324,7 +22324,7 @@ export class BotInlineMessageMediaAuto extends TypeBotInlineMessage {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.message, "string", "string"],
       [
         this.entities ?? null,
@@ -22371,7 +22371,7 @@ export class BotInlineMessageText extends TypeBotInlineMessage {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.noWebpage ?? null, "true", "flags.0?true"],
       [this.message, "string", "string"],
       [
@@ -22423,7 +22423,7 @@ export class BotInlineMessageMediaGeo extends TypeBotInlineMessage {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.geo, TypeGeoPoint, "GeoPoint"],
       [this.heading ?? null, "number", "flags.0?int"],
       [this.period ?? null, "number", "flags.1?int"],
@@ -22478,7 +22478,7 @@ export class BotInlineMessageMediaVenue extends TypeBotInlineMessage {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.geo, TypeGeoPoint, "GeoPoint"],
       [this.title, "string", "string"],
       [this.address, "string", "string"],
@@ -22535,7 +22535,7 @@ export class BotInlineMessageMediaContact extends TypeBotInlineMessage {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.phoneNumber, "string", "string"],
       [this.firstName, "string", "string"],
       [this.lastName, "string", "string"],
@@ -22592,7 +22592,7 @@ export class BotInlineMessageMediaInvoice extends TypeBotInlineMessage {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.shippingAddressRequested ?? null, "true", "flags.1?true"],
       [this.test ?? null, "true", "flags.3?true"],
       [this.title, "string", "string"],
@@ -22658,7 +22658,7 @@ export class BotInlineResult extends Constructor {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.id, "string", "string"],
       [this.type, "string", "string"],
       [this.title ?? null, "string", "flags.1?string"],
@@ -22722,7 +22722,7 @@ export class BotInlineMediaResult extends TypeBotInlineResult {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.id, "string", "string"],
       [this.type, "string", "string"],
       [this.photo ?? null, TypePhoto, "flags.0?Photo"],
@@ -22785,7 +22785,7 @@ export class MessagesBotResults extends Constructor {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.gallery ?? null, "true", "flags.0?true"],
       [this.queryId, "bigint", "long"],
       [this.nextOffset ?? null, "string", "flags.1?string"],
@@ -22890,7 +22890,7 @@ export class MessageFwdHeader extends Constructor {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.imported ?? null, "true", "flags.7?true"],
       [this.fromId ?? null, TypePeer, "flags.0?Peer"],
       [this.fromName ?? null, "string", "flags.5?string"],
@@ -23172,7 +23172,7 @@ export class AuthSentCodeTypeEmailCode extends TypeAuthSentCodeType {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.appleSigninAllowed ?? null, "true", "flags.0?true"],
       [this.googleSigninAllowed ?? null, "true", "flags.1?true"],
       [this.emailPattern, "string", "string"],
@@ -23217,7 +23217,7 @@ export class AuthSentCodeTypeSetUpEmailRequired extends TypeAuthSentCodeType {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.appleSigninAllowed ?? null, "true", "flags.0?true"],
       [this.googleSigninAllowed ?? null, "true", "flags.1?true"],
     ];
@@ -23283,7 +23283,7 @@ export class AuthSentCodeTypeFirebaseSms extends TypeAuthSentCodeType {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.nonce ?? null, Uint8Array, "flags.0?bytes"],
       [this.receipt ?? null, "string", "flags.1?string"],
       [this.pushTimeout ?? null, "number", "flags.1?int"],
@@ -23333,7 +23333,7 @@ export class MessagesBotCallbackAnswer extends Constructor {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.alert ?? null, "true", "flags.1?true"],
       [this.hasUrl ?? null, "true", "flags.3?true"],
       [this.nativeUi ?? null, "true", "flags.4?true"],
@@ -23379,7 +23379,7 @@ export class MessagesMessageEditData extends Constructor {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.caption ?? null, "true", "flags.0?true"],
     ];
   }
@@ -23851,7 +23851,7 @@ export class DraftMessageEmpty extends TypeDraftMessage {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.date ?? null, "number", "flags.0?int"],
     ];
   }
@@ -23886,7 +23886,7 @@ export class DraftMessage extends Constructor {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.noWebpage ?? null, "true", "flags.1?true"],
       [this.replyToMsgId ?? null, "number", "flags.0?int"],
       [this.message, "string", "string"],
@@ -23967,7 +23967,7 @@ export class MessagesFeaturedStickers extends Constructor {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.premium ?? null, "true", "flags.0?true"],
       [this.hash, "bigint", "long"],
       [this.count, "number", "int"],
@@ -24373,7 +24373,7 @@ export class Game extends Constructor {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.id, "bigint", "long"],
       [this.accessHash, "bigint", "long"],
       [this.shortName, "string", "string"],
@@ -25323,7 +25323,7 @@ export class PageBlockPhoto extends TypePageBlock {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.photoId, "bigint", "long"],
       [this.caption, TypePageCaption, "PageCaption"],
       [this.url ?? null, "string", "flags.0?string"],
@@ -25369,7 +25369,7 @@ export class PageBlockVideo extends TypePageBlock {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.autoplay ?? null, "true", "flags.0?true"],
       [this.loop ?? null, "true", "flags.1?true"],
       [this.videoId, "bigint", "long"],
@@ -25448,7 +25448,7 @@ export class PageBlockEmbed extends TypePageBlock {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.fullWidth ?? null, "true", "flags.0?true"],
       [this.allowScrolling ?? null, "true", "flags.3?true"],
       [this.url ?? null, "string", "flags.1?string"],
@@ -25706,7 +25706,7 @@ export class PageBlockTable extends TypePageBlock {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.bordered ?? null, "true", "flags.0?true"],
       [this.striped ?? null, "true", "flags.1?true"],
       [this.title, TypeRichText, "RichText"],
@@ -25775,7 +25775,7 @@ export class PageBlockDetails extends TypePageBlock {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.open ?? null, "true", "flags.0?true"],
       [this.blocks, [TypePageBlock], "Vector<PageBlock>"],
       [this.title, TypeRichText, "RichText"],
@@ -26041,7 +26041,7 @@ export class Invoice extends Constructor {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.test ?? null, "true", "flags.0?true"],
       [this.nameRequested ?? null, "true", "flags.1?true"],
       [this.phoneRequested ?? null, "true", "flags.2?true"],
@@ -26200,7 +26200,7 @@ export class PaymentRequestedInfo extends Constructor {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.name ?? null, "string", "flags.0?string"],
       [this.phone ?? null, "string", "flags.1?string"],
       [this.email ?? null, "string", "flags.2?string"],
@@ -26496,7 +26496,7 @@ export class InputWebFileAudioAlbumThumbLocation
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.small ?? null, "true", "flags.2?true"],
       [this.document ?? null, TypeInputDocument, "flags.0?InputDocument"],
       [this.title ?? null, "string", "flags.1?string"],
@@ -26623,7 +26623,7 @@ export class PaymentsPaymentForm extends Constructor {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.canSaveCredentials ?? null, "true", "flags.2?true"],
       [this.passwordMissing ?? null, "true", "flags.3?true"],
       [this.formId, "bigint", "long"],
@@ -26717,7 +26717,7 @@ export class PaymentsValidatedRequestedInfo extends Constructor {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.id ?? null, "string", "flags.0?string"],
       [
         this.shippingOptions ?? null,
@@ -26829,7 +26829,7 @@ export class PaymentsPaymentReceipt extends Constructor {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.date, "number", "int"],
       [this.botId, "bigint", "long"],
       [this.providerId, "bigint", "long"],
@@ -26905,7 +26905,7 @@ export class PaymentsSavedInfo extends Constructor {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.hasSavedCredentials ?? null, "true", "flags.1?true"],
       [
         this.savedInfo ?? null,
@@ -26974,7 +26974,7 @@ export class InputPaymentCredentials extends Constructor {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.save ?? null, "true", "flags.0?true"],
       [this.data, TypeDataJSON, "DataJSON"],
     ];
@@ -27125,7 +27125,7 @@ export class InputStickerSetItem extends Constructor {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.document, TypeInputDocument, "InputDocument"],
       [this.emoji, "string", "string"],
       [this.maskCoords ?? null, TypeMaskCoords, "flags.0?MaskCoords"],
@@ -27233,7 +27233,7 @@ export class PhoneCallWaiting extends TypePhoneCall {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.video ?? null, "true", "flags.6?true"],
       [this.id, "bigint", "long"],
       [this.accessHash, "bigint", "long"],
@@ -27299,7 +27299,7 @@ export class PhoneCallRequested extends TypePhoneCall {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.video ?? null, "true", "flags.6?true"],
       [this.id, "bigint", "long"],
       [this.accessHash, "bigint", "long"],
@@ -27365,7 +27365,7 @@ export class PhoneCallAccepted extends TypePhoneCall {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.video ?? null, "true", "flags.6?true"],
       [this.id, "bigint", "long"],
       [this.accessHash, "bigint", "long"],
@@ -27439,7 +27439,7 @@ export class PhoneCall extends Constructor {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.p2pAllowed ?? null, "true", "flags.5?true"],
       [this.video ?? null, "true", "flags.6?true"],
       [this.id, "bigint", "long"],
@@ -27513,7 +27513,7 @@ export class PhoneCallDiscarded extends TypePhoneCall {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.needRating ?? null, "true", "flags.2?true"],
       [this.needDebug ?? null, "true", "flags.3?true"],
       [this.video ?? null, "true", "flags.6?true"],
@@ -27573,7 +27573,7 @@ export class PhoneConnection extends Constructor {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.tcp ?? null, "true", "flags.0?true"],
       [this.id, "bigint", "long"],
       [this.ip, "string", "string"],
@@ -27633,7 +27633,7 @@ export class PhoneConnectionWebrtc extends TypePhoneConnection {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.turn ?? null, "true", "flags.0?true"],
       [this.stun ?? null, "true", "flags.1?true"],
       [this.id, "bigint", "long"],
@@ -27693,7 +27693,7 @@ export class PhoneCallProtocol extends Constructor {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.udpP2p ?? null, "true", "flags.0?true"],
       [this.udpReflector ?? null, "true", "flags.1?true"],
       [this.minLayer, "number", "int"],
@@ -27910,7 +27910,7 @@ export class LangPackStringPluralized extends TypeLangPackString {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.key, "string", "string"],
       [this.zeroValue ?? null, "string", "flags.0?string"],
       [this.oneValue ?? null, "string", "flags.1?string"],
@@ -28048,7 +28048,7 @@ export class LangPackLanguage extends Constructor {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.official ?? null, "true", "flags.0?true"],
       [this.rtl ?? null, "true", "flags.2?true"],
       [this.beta ?? null, "true", "flags.3?true"],
@@ -29265,7 +29265,7 @@ export class ChannelAdminLogEventActionPinTopic
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.prevTopic ?? null, TypeForumTopic, "flags.0?ForumTopic"],
       [this.newTopic ?? null, TypeForumTopic, "flags.1?ForumTopic"],
     ];
@@ -29443,7 +29443,7 @@ export class ChannelAdminLogEventsFilter extends Constructor {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.join ?? null, "true", "flags.0?true"],
       [this.leave ?? null, "true", "flags.1?true"],
       [this.invite ?? null, "true", "flags.2?true"],
@@ -29798,7 +29798,7 @@ export class InputSingleMedia extends Constructor {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.media, TypeInputMedia, "InputMedia"],
       [this.randomId, "bigint", "long"],
       [this.message, "string", "string"],
@@ -30799,7 +30799,7 @@ export class SecureValue extends Constructor {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.type, TypeSecureValueType, "SecureValueType"],
       [this.data ?? null, TypeSecureData, "flags.0?SecureData"],
       [this.frontSide ?? null, TypeSecureFile, "flags.1?SecureFile"],
@@ -30872,7 +30872,7 @@ export class InputSecureValue extends Constructor {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.type, TypeSecureValueType, "SecureValueType"],
       [this.data ?? null, TypeSecureData, "flags.0?SecureData"],
       [this.frontSide ?? null, TypeInputSecureFile, "flags.1?InputSecureFile"],
@@ -31340,7 +31340,7 @@ export class AccountAuthorizationForm extends Constructor {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [
         this.requiredTypes,
         [TypeSecureRequiredType],
@@ -31438,7 +31438,7 @@ export class HelpDeepLinkInfo extends Constructor {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.updateApp ?? null, "true", "flags.0?true"],
       [this.message, "string", "string"],
       [
@@ -31771,7 +31771,7 @@ export class SecureRequiredType extends Constructor {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.nativeNames ?? null, "true", "flags.0?true"],
       [this.selfieRequired ?? null, "true", "flags.1?true"],
       [this.translationRequired ?? null, "true", "flags.2?true"],
@@ -32108,7 +32108,7 @@ export class PageTableCell extends Constructor {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.header ?? null, "true", "flags.0?true"],
       [this.alignCenter ?? null, "true", "flags.3?true"],
       [this.alignRight ?? null, "true", "flags.4?true"],
@@ -32334,7 +32334,7 @@ export class PageRelatedArticle extends Constructor {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.url, "string", "string"],
       [this.webpageId, "bigint", "long"],
       [this.title ?? null, "string", "flags.0?string"],
@@ -32397,7 +32397,7 @@ export class Page extends Constructor {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.part ?? null, "true", "flags.0?true"],
       [this.rtl ?? null, "true", "flags.1?true"],
       [this.v2 ?? null, "true", "flags.2?true"],
@@ -32582,7 +32582,7 @@ export class Poll extends Constructor {
   protected get [params](): Params {
     return [
       [this.id, "bigint", "long"],
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.closed ?? null, "true", "flags.0?true"],
       [this.publicVoters ?? null, "true", "flags.1?true"],
       [this.multipleChoice ?? null, "true", "flags.2?true"],
@@ -32642,7 +32642,7 @@ export class PollAnswerVoters extends Constructor {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.chosen ?? null, "true", "flags.0?true"],
       [this.correct ?? null, "true", "flags.1?true"],
       [this.option, Uint8Array, "bytes"],
@@ -32696,7 +32696,7 @@ export class PollResults extends Constructor {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.min ?? null, "true", "flags.0?true"],
       [
         this.results ?? null,
@@ -32822,7 +32822,7 @@ export class ChatAdminRights extends Constructor {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.changeInfo ?? null, "true", "flags.0?true"],
       [this.postMessages ?? null, "true", "flags.1?true"],
       [this.editMessages ?? null, "true", "flags.2?true"],
@@ -32926,7 +32926,7 @@ export class ChatBannedRights extends Constructor {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.viewMessages ?? null, "true", "flags.0?true"],
       [this.sendMessages ?? null, "true", "flags.1?true"],
       [this.sendMedia ?? null, "true", "flags.2?true"],
@@ -33157,7 +33157,7 @@ export class CodeSettings extends Constructor {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.allowFlashcall ?? null, "true", "flags.0?true"],
       [this.currentNumber ?? null, "true", "flags.1?true"],
       [this.allowAppHash ?? null, "true", "flags.4?true"],
@@ -33223,7 +33223,7 @@ export class WallPaperSettings extends Constructor {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.blur ?? null, "true", "flags.1?true"],
       [this.motion ?? null, "true", "flags.2?true"],
       [this.backgroundColor ?? null, "number", "flags.0?int"],
@@ -33289,7 +33289,7 @@ export class AutoDownloadSettings extends Constructor {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.disabled ?? null, "true", "flags.0?true"],
       [this.videoPreloadLarge ?? null, "true", "flags.1?true"],
       [this.audioPreloadNext ?? null, "true", "flags.2?true"],
@@ -33542,7 +33542,7 @@ export class Folder extends Constructor {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.autofillNewBroadcasts ?? null, "true", "flags.0?true"],
       [this.autofillPublicGroups ?? null, "true", "flags.1?true"],
       [this.autofillNewCorrespondents ?? null, "true", "flags.2?true"],
@@ -33650,7 +33650,7 @@ export class MessagesSearchCounter extends Constructor {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.inexact ?? null, "true", "flags.1?true"],
       [this.filter, TypeMessagesFilter, "MessagesFilter"],
       [this.count, "number", "int"],
@@ -33687,7 +33687,7 @@ export class UrlAuthResultRequest extends TypeUrlAuthResult {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.requestWriteAccess ?? null, "true", "flags.0?true"],
       [this.bot, TypeUser, "User"],
       [this.domain, "string", "string"],
@@ -33975,7 +33975,7 @@ export class Theme extends Constructor {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.creator ?? null, "true", "flags.0?true"],
       [this.default ?? null, "true", "flags.1?true"],
       [this.forChat ?? null, "true", "flags.5?true"],
@@ -34172,7 +34172,7 @@ export class AccountContentSettings extends Constructor {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.sensitiveEnabled ?? null, "true", "flags.0?true"],
       [this.sensitiveCanChange ?? null, "true", "flags.1?true"],
     ];
@@ -34342,7 +34342,7 @@ export class InputThemeSettings extends Constructor {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.messageColorsAnimated ?? null, "true", "flags.2?true"],
       [this.baseTheme, TypeBaseTheme, "BaseTheme"],
       [this.accentColor, "number", "int"],
@@ -34405,7 +34405,7 @@ export class ThemeSettings extends Constructor {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.messageColorsAnimated ?? null, "true", "flags.2?true"],
       [this.baseTheme, TypeBaseTheme, "BaseTheme"],
       [this.accentColor, "number", "int"],
@@ -34453,7 +34453,7 @@ export class WebPageAttributeTheme extends TypeWebPageAttribute {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.documents ?? null, [TypeDocument], "flags.0?Vector<Document>"],
       [this.settings ?? null, TypeThemeSettings, "flags.1?ThemeSettings"],
     ];
@@ -34587,7 +34587,7 @@ export class MessagesVotesList extends Constructor {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.count, "number", "int"],
       [this.votes, [TypeMessageUserVote], "Vector<MessageUserVote>"],
       [this.users, [TypeUser], "Vector<User>"],
@@ -34711,7 +34711,7 @@ export class DialogFilter extends Constructor {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.contacts ?? null, "true", "flags.0?true"],
       [this.nonContacts ?? null, "true", "flags.1?true"],
       [this.groups ?? null, "true", "flags.2?true"],
@@ -34967,7 +34967,7 @@ export class StatsGraph extends Constructor {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.json, TypeDataJSON, "DataJSON"],
       [this.zoomToken ?? null, "string", "flags.0?string"],
     ];
@@ -35173,7 +35173,7 @@ export class HelpPromoData extends Constructor {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.proxy ?? null, "true", "flags.0?true"],
       [this.expires, "number", "int"],
       [this.peer, TypePeer, "Peer"],
@@ -35230,7 +35230,7 @@ export class VideoSize extends Constructor {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.type, "string", "string"],
       [this.w, "number", "int"],
       [this.h, "number", "int"],
@@ -35563,7 +35563,7 @@ export class GlobalPrivacySettings extends Constructor {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [
         this.archiveAndMuteNewNoncontactPeers ?? null,
         "boolean",
@@ -35599,7 +35599,7 @@ export class HelpCountryCode extends Constructor {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.countryCode, "string", "string"],
       [this.prefixes ?? null, ["string"], "flags.0?Vector<string>"],
       [this.patterns ?? null, ["string"], "flags.1?Vector<string>"],
@@ -35644,7 +35644,7 @@ export class HelpCountry extends Constructor {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.hidden ?? null, "true", "flags.0?true"],
       [this.iso2, "string", "string"],
       [this.defaultName, "string", "string"],
@@ -35738,7 +35738,7 @@ export class MessageViews extends Constructor {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.views ?? null, "number", "flags.0?int"],
       [this.forwards ?? null, "number", "flags.1?int"],
       [this.replies ?? null, TypeMessageReplies, "flags.2?MessageReplies"],
@@ -35822,7 +35822,7 @@ export class MessagesDiscussionMessage extends Constructor {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.messages, [TypeMessage], "Vector<Message>"],
       [this.maxId ?? null, "number", "flags.0?int"],
       [this.readInboxMaxId ?? null, "number", "flags.1?int"],
@@ -35879,7 +35879,7 @@ export class MessageReplyHeader extends Constructor {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.replyToScheduled ?? null, "true", "flags.2?true"],
       [this.forumTopic ?? null, "true", "flags.3?true"],
       [this.replyToMsgId, "number", "int"],
@@ -35934,7 +35934,7 @@ export class MessageReplies extends Constructor {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.comments ?? null, "true", "flags.0?true"],
       [this.replies, "number", "int"],
       [this.repliesPts, "number", "int"],
@@ -36104,7 +36104,7 @@ export class GroupCall extends Constructor {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.joinMuted ?? null, "true", "flags.1?true"],
       [this.canChangeJoinMuted ?? null, "true", "flags.2?true"],
       [this.joinDateAsc ?? null, "true", "flags.6?true"],
@@ -36259,7 +36259,7 @@ export class GroupCallParticipant extends Constructor {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.muted ?? null, "true", "flags.0?true"],
       [this.left ?? null, "true", "flags.1?true"],
       [this.canSelfUnmute ?? null, "true", "flags.2?true"],
@@ -36590,7 +36590,7 @@ export class MessagesHistoryImportParsed extends Constructor {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.pm ?? null, "true", "flags.0?true"],
       [this.group ?? null, "true", "flags.1?true"],
       [this.title ?? null, "string", "flags.2?string"],
@@ -36673,7 +36673,7 @@ export class ChatInviteImporter extends Constructor {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.requested ?? null, "true", "flags.0?true"],
       [this.userId, "bigint", "long"],
       [this.date, "number", "int"],
@@ -37063,7 +37063,7 @@ export class GroupCallParticipantVideo extends Constructor {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.paused ?? null, "true", "flags.0?true"],
       [this.endpoint, "string", "string"],
       [
@@ -37375,7 +37375,7 @@ export class SponsoredMessage extends Constructor {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.recommended ?? null, "true", "flags.5?true"],
       [this.showPeerPhoto ?? null, "true", "flags.6?true"],
       [this.randomId, Uint8Array, "bytes"],
@@ -37449,7 +37449,7 @@ export class MessagesSponsoredMessages extends Constructor {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.postsBetween ?? null, "number", "flags.0?int"],
       [this.messages, [TypeSponsoredMessage], "Vector<SponsoredMessage>"],
       [this.chats, [TypeChat], "Vector<Chat>"],
@@ -37567,7 +37567,7 @@ export class MessagesSearchResultsCalendar extends Constructor {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.inexact ?? null, "true", "flags.0?true"],
       [this.count, "number", "int"],
       [this.minDate, "number", "int"],
@@ -37815,7 +37815,7 @@ export class AuthLoggedOut extends Constructor {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.futureAuthToken ?? null, Uint8Array, "flags.0?bytes"],
     ];
   }
@@ -37846,7 +37846,7 @@ export class ReactionCount extends Constructor {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.chosenOrder ?? null, "number", "flags.0?int"],
       [this.reaction, TypeReaction, "Reaction"],
       [this.count, "number", "int"],
@@ -37889,7 +37889,7 @@ export class MessageReactions extends Constructor {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.min ?? null, "true", "flags.0?true"],
       [this.canSeeList ?? null, "true", "flags.2?true"],
       [this.results, [TypeReactionCount], "Vector<ReactionCount>"],
@@ -37941,7 +37941,7 @@ export class MessagesMessageReactionsList extends Constructor {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.count, "number", "int"],
       [
         this.reactions,
@@ -38008,7 +38008,7 @@ export class AvailableReaction extends Constructor {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.inactive ?? null, "true", "flags.0?true"],
       [this.premium ?? null, "true", "flags.2?true"],
       [this.reaction, "string", "string"],
@@ -38127,7 +38127,7 @@ export class MessagePeerReaction extends Constructor {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.big ?? null, "true", "flags.0?true"],
       [this.unread ?? null, "true", "flags.1?true"],
       [this.peerId, TypePeer, "Peer"],
@@ -38304,7 +38304,7 @@ export class AttachMenuBotIcon extends Constructor {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.name, "string", "string"],
       [this.icon, TypeDocument, "Document"],
       [
@@ -38357,7 +38357,7 @@ export class AttachMenuBot extends Constructor {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.inactive ?? null, "true", "flags.0?true"],
       [this.hasSettings ?? null, "true", "flags.1?true"],
       [this.requestWriteAccess ?? null, "true", "flags.2?true"],
@@ -38546,7 +38546,7 @@ export class WebViewMessageSent extends Constructor {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [
         this.msgId ?? null,
         TypeInputBotInlineMessageID,
@@ -38996,7 +38996,7 @@ export class MessagesTranscribedAudio extends Constructor {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.pending ?? null, "true", "flags.0?true"],
       [this.transcriptionId, "bigint", "long"],
       [this.text, "string", "string"],
@@ -39094,7 +39094,7 @@ export class InputStorePaymentPremiumSubscription
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.restore ?? null, "true", "flags.0?true"],
       [this.upgrade ?? null, "true", "flags.1?true"],
     ];
@@ -39166,7 +39166,7 @@ export class PremiumGiftOption extends Constructor {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.months, "number", "int"],
       [this.currency, "string", "string"],
       [this.amount, "bigint", "long"],
@@ -39443,7 +39443,7 @@ export class ChatReactionsAll extends TypeChatReactions {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.allowCustom ?? null, "true", "flags.0?true"],
     ];
   }
@@ -39750,7 +39750,7 @@ export class PremiumSubscriptionOption extends Constructor {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.current ?? null, "true", "flags.1?true"],
       [this.canPurchaseUpgrade ?? null, "true", "flags.2?true"],
       [this.transaction ?? null, "string", "flags.3?string"],
@@ -39804,7 +39804,7 @@ export class SendAsPeer extends Constructor {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.premiumRequired ?? null, "true", "flags.0?true"],
       [this.peer, TypePeer, "Peer"],
     ];
@@ -39839,7 +39839,7 @@ export class MessageExtendedMediaPreview extends TypeMessageExtendedMedia {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.w ?? null, "number", "flags.0?int"],
       [this.h ?? null, "number", "flags.0?int"],
       [this.thumb ?? null, TypePhotoSize, "flags.1?PhotoSize"],
@@ -39937,7 +39937,7 @@ export class Username extends Constructor {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.editable ?? null, "true", "flags.0?true"],
       [this.active ?? null, "true", "flags.1?true"],
       [this.username, "string", "string"],
@@ -40029,7 +40029,7 @@ export class ForumTopic extends Constructor {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.my ?? null, "true", "flags.1?true"],
       [this.closed ?? null, "true", "flags.2?true"],
       [this.pinned ?? null, "true", "flags.3?true"],
@@ -40126,7 +40126,7 @@ export class MessagesForumTopics extends Constructor {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.orderByCreateDate ?? null, "true", "flags.0?true"],
       [this.count, "number", "int"],
       [this.topics, [TypeForumTopic], "Vector<ForumTopic>"],
@@ -40231,7 +40231,7 @@ export class RequestPeerTypeUser extends TypeRequestPeerType {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.bot ?? null, "boolean", "flags.0?Bool"],
       [this.premium ?? null, "boolean", "flags.1?Bool"],
     ];
@@ -40270,7 +40270,7 @@ export class RequestPeerTypeChat extends TypeRequestPeerType {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.creator ?? null, "true", "flags.0?true"],
       [this.botParticipant ?? null, "true", "flags.5?true"],
       [this.hasUsername ?? null, "boolean", "flags.3?Bool"],
@@ -40330,7 +40330,7 @@ export class RequestPeerTypeBroadcast extends TypeRequestPeerType {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.creator ?? null, "true", "flags.0?true"],
       [this.hasUsername ?? null, "boolean", "flags.3?Bool"],
       [
@@ -40565,7 +40565,7 @@ export class AutoSaveSettings extends Constructor {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.photos ?? null, "true", "flags.0?true"],
       [this.videos ?? null, "true", "flags.1?true"],
       [this.videoMaxSize ?? null, "bigint", "flags.2?long"],
@@ -40816,7 +40816,7 @@ export class BotApp extends Constructor {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.id, "bigint", "long"],
       [this.accessHash, "bigint", "long"],
       [this.shortName, "string", "string"],
@@ -40872,7 +40872,7 @@ export class MessagesBotApp extends Constructor {
 
   protected get [params](): Params {
     return [
-      [flags, "flags", "#"],
+      ["flags", flags, "#"],
       [this.inactive ?? null, "true", "flags.0?true"],
       [this.requestWriteAccess ?? null, "true", "flags.1?true"],
       [this.app, TypeBotApp, "BotApp"],

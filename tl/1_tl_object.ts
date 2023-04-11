@@ -1,8 +1,5 @@
-import {
-  assertFalse,
-  assertNotEquals,
-} from "https://deno.land/std@0.181.0/testing/asserts.ts";
 import { assertEquals } from "../deps.ts";
+import { analyzeOptionalParam, isOptionalParam } from "../utilities/1_tl.ts";
 import { TLRawReader } from "./0_tl_raw_reader.ts";
 import { TLRawWriter } from "./0_tl_raw_writer.ts";
 
@@ -48,7 +45,7 @@ export type Params = ([
     | "true"
   >,
   string,
-] | [typeof flags, string, "#"])[];
+] | [string, typeof flags, "#"])[];
 
 export const id = Symbol("id");
 
@@ -66,7 +63,7 @@ function serializeSingleParam(
     | "bigint"
     | "boolean"
     | "true",
-  note: string,
+  ntype: string,
 ) {
   if (type == Uint8Array) {
     if ((value instanceof Uint8Array)) {
@@ -79,9 +76,9 @@ function serializeSingleParam(
   switch (type) {
     case "bigint":
       if (typeof value === "bigint") {
-        if (note == "int128") {
+        if (ntype == "int128") {
           writer.writeInt128(value);
-        } else if (note === "int256") {
+        } else if (ntype === "int256") {
           writer.writeInt256(value);
         } else {
           writer.writeInt64(value);
@@ -137,12 +134,30 @@ export abstract class TLObject {
     const writer = new TLRawWriter();
     writer.writeInt32(this[id], false);
 
-    for (const [value, type, note] of this[params]) {
-      if (note.includes("?")) {
-        if (value == null) {
-          continue;
-        }
+    for (const [value, type, ntype] of this[params]) {
+      if (isOptionalParam(ntype) && value == null) {
+        continue;
       }
+
+      if (type == flags) {
+        let flags = 0;
+        const flagField_ = value;
+
+        for (const [value, _, ntype] of this[params]) {
+          if (isOptionalParam(ntype)) {
+            const { flagField, bitIndex } = analyzeOptionalParam(ntype);
+
+            if (flagField == flagField_) {
+              if (value != null) {
+                flags |= 1 << bitIndex;
+              }
+            }
+          }
+        }
+        writer.writeInt32(flags);
+        continue;
+      }
+
       if (type instanceof Array) {
         const itemsType = type[0];
         if (isTLObjectConstructor(itemsType)) {
@@ -155,30 +170,17 @@ export abstract class TLObject {
         writer.writeInt32(0x1cb5c415); // vector constructor
         writer.writeInt32(value.length);
         for (const item of value) {
-          serializeSingleParam(writer, item, itemsType, note);
+          serializeSingleParam(writer, item, itemsType, ntype);
         }
 
         continue;
       }
       if (isTLObjectConstructor(type)) {
+        value;
         throw new Error("Unimplemented");
       }
 
-      if (value == flags && note == "#") {
-        let flags = 0;
-        for (const [value, _, note] of this[params]) {
-          if (note.startsWith(type)) {
-            if (value != null) {
-              const bitIndex = Number(note.split("?")[0].split(".")[1]);
-              flags |= 1 << bitIndex;
-            }
-          }
-        }
-        writer.writeInt32(flags);
-        continue;
-      }
-
-      serializeSingleParam(writer, value, type, note);
+      serializeSingleParam(writer, value, type, ntype);
     }
 
     return writer.buffer;
@@ -203,16 +205,16 @@ function deserializeSingleParam(
     | "bigint"
     | "boolean"
     | "true",
-  note: string,
+  ntype: string,
 ) {
   if (type == Uint8Array) {
     return reader.readBytes();
   } else {
     switch (type) {
       case "bigint":
-        if (note == "int128") {
+        if (ntype == "int128") {
           return reader.readInt128();
-        } else if (note === "int256") {
+        } else if (ntype === "int256") {
           return reader.readInt256();
         } else {
           return reader.readInt64();
@@ -240,26 +242,18 @@ export function deserialize<T extends TLObjectConstructor<InstanceType<T>>>(
   constructor: T,
 ): InstanceType<T> {
   const params: Record<string, Param> = {};
-  const flagMap = new Map<string, number>();
-  for (const [name, type, note] of paramDesc) {
-    if (note.includes("?")) {
-      const groupName = note.split(".")[0];
-      assertEquals(typeof groupName, "string");
-
-      const bitIndex = Number(note.split("?")[0].split(".")[1]);
-      assertFalse(isNaN(bitIndex));
-
-      const bits = flagMap.get(groupName);
-      assertNotEquals(bits, undefined);
-
-      if ((bits! & (1 << bitIndex)) == 0) {
+  const flagFields: Record<string, number> = {};
+  for (const [name, type, ntype] of paramDesc) {
+    if (isOptionalParam(ntype)) {
+      const { flagField, bitIndex } = analyzeOptionalParam(ntype);
+      const bits = flagFields[flagField];
+      if ((bits & (1 << bitIndex)) == 0) {
         continue;
       }
     }
 
-    if (type == flags && note == "#") {
-      flagMap.set(name, reader.readInt32());
-      console.log(flagMap);
+    if (type == flags && ntype == "#") {
+      flagFields[name] = reader.readInt32();
       continue;
     }
 
@@ -277,14 +271,14 @@ export function deserialize<T extends TLObjectConstructor<InstanceType<T>>>(
         if (isTLObjectConstructor(type[0])) {
           throw new Error("Unimplemented");
         } else {
-          items.push(deserializeSingleParam(reader, type[0], note)!);
+          items.push(deserializeSingleParam(reader, type[0], ntype)!);
         }
       }
       params[name] = items;
       continue;
     }
 
-    const value = deserializeSingleParam(reader, type, note);
+    const value = deserializeSingleParam(reader, type, ntype);
     if (value) {
       params[name] = value;
     }

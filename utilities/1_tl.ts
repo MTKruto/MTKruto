@@ -1,5 +1,9 @@
-import { assertEquals } from "https://deno.land/std@0.181.0/testing/asserts.ts";
-import { ige256Decrypt, ige256Encrypt } from "../deps.ts";
+import {
+  assertEquals,
+  assertFalse,
+  ige256Decrypt,
+  ige256Encrypt,
+} from "../deps.ts";
 import { TLRawReader } from "../tl/0_tl_raw_reader.ts";
 import { TLRawWriter } from "../tl/0_tl_raw_writer.ts";
 import { getRandomBigInt, mod } from "./0_bigint.ts";
@@ -135,4 +139,17 @@ export async function unpackEncryptedMessage(
   const message = reader.read(messageLength);
 
   return { messageId, message };
+}
+
+export function isOptionalParam(ntype: string) {
+  return ntype.includes("?");
+}
+export function analyzeOptionalParam(ntype: string) {
+  const flagField = ntype.split(".")[0];
+  assertEquals(typeof flagField, "string");
+
+  const bitIndex = Number(ntype.split("?")[0].split(".")[1]);
+  assertFalse(isNaN(bitIndex));
+
+  return { flagField, bitIndex };
 }
