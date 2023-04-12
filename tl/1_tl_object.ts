@@ -67,7 +67,10 @@ function serializeSingleParam(
   ntype: string,
 ) {
   if (isTLObjectConstructor(type)) {
-    if (value instanceof type) {
+    if (
+      (type.name == "TypeX" && value instanceof TLObject) ||
+      value instanceof type
+    ) {
       writer.write(value.serialize());
       return;
     } else {
@@ -138,7 +141,7 @@ export abstract class TLObject {
 
   protected static get [paramDesc](): ParamDesc {
     // unimpl
-    return []
+    return [];
   }
 
   serialize() {
