@@ -28,13 +28,23 @@ export class Client {
   }
 
   async connect() {
+    this.transport = new TransportAbridged(this.connection);
     await this.connection.open();
     await this.transport.initialize();
   }
 
+  async disconnect() {
+    await this.connection.close();
+  }
+
+  async invokeRaw(buffer: Uint8Array) {
+    await this.transport.send(buffer);
+    return await this.transport.receive();
+  }
+
   async invoke(function_: Function) {
-    await this.transport.send(packUnencryptedMessage(function_.serialize()));
-    const buffer = await this.transport.receive();
+    // deno-fmt-ignore
+    const buffer = await this.invokeRaw(packUnencryptedMessage(function_.serialize()));
     if (buffer.length == 4) {
       const int = bigIntFromBuffer(buffer, true, true);
       if (int == -404n) {

@@ -9,6 +9,9 @@ import {
 } from "./deps.ts";
 import { Client } from "./client.ts";
 import {
+  HelpGetConfig,
+  InitConnection,
+  InvokeWithLayer,
   ReqDHParams,
   ReqPqMulti,
   SetClientDHParams,
@@ -34,6 +37,9 @@ import {
 } from "./utilities/0_buffer.ts";
 import { publicKeys } from "./constants.ts";
 import { TLReader } from "./tl/3_tl_reader.ts";
+import { TLWriter } from "./tl/3_tl_writer.ts";
+import { getMessageId } from "./utilities/1_tl.ts";
+import { TLObject } from "./tl/1_tl_object.ts";
 
 async function rsaPad(data: Uint8Array, fingerprint: bigint) {
   assert(data.length <= 144);
@@ -137,7 +143,7 @@ async function createAuthKey(client: Client) {
   const dhPrime = bigIntFromBuffer(dhPrime_, false, false);
 
   const b = getRandomBigInt(256, false, false);
-  const gB = modExp(BigInt(g), dhPrime, b);
+  const gB = modExp(BigInt(g), b, dhPrime);
 
   const data = new ClientDHInnerData({
     nonce,
@@ -161,7 +167,7 @@ async function createAuthKey(client: Client) {
   const serverNonceSlice = serverNonce_.slice(0, 8);
   const salt = newNonce_.slice(0, 0 + 8).map((v, i) => v ^ serverNonceSlice[i]);
 
-  const authKey_ = modExp(gA, dhPrime, b);
+  const authKey_ = modExp(gA, b, dhPrime);
   const authKey = bufferFromBigInt(authKey_, 256, false, false);
   const authKeyId = (await sha1(authKey)).slice(-8);
 
@@ -172,7 +178,86 @@ async function createAuthKey(client: Client) {
   };
 }
 
-const client = new Client(true);
+async function encryptMessage(
+  body: TLObject,
+  authKey: Uint8Array,
+  authKeyId: bigint,
+  seqNo: number,
+  salt: bigint,
+  sessionId: bigint,
+  messageId: bigint,
+) {
+  const encoded = body.serialize();
+
+  const payloadWriter = new TLWriter();
+
+  payloadWriter.writeInt64(salt);
+  payloadWriter.writeInt64(sessionId);
+  payloadWriter.writeInt64(messageId);
+  payloadWriter.writeInt32(seqNo);
+  payloadWriter.writeInt32(encoded.length);
+  payloadWriter.write(encoded);
+  // deno-fmt-ignore
+  payloadWriter.write(new Uint8Array(payloadWriter.buffer.length + 12 % 16 + 12));
+
+  let payload = payloadWriter.buffer;
+  while (true) {
+    if (payload.length % 16 == 0 && (payload.length) % 4 == 0) {
+      break;
+    }
+    payload = concat(payload, new Uint8Array(1));
+  }
+
+  // deno-fmt-ignore
+  const messageKey = (await sha256(concat(authKey.slice(88, 120), payload))).slice(8, 24);
+
+  const a = await sha256(concat(messageKey, authKey.slice(0, 36)));
+  const b = await sha256(concat(authKey.slice(40, 76), messageKey));
+
+  const aesKey = concat(a.slice(0, 8), b.slice(8, 24), a.slice(24, 32));
+  const aesIV = concat(b.slice(0, 8), a.slice(8, 24), b.slice(24, 32));
+
+  const messageWriter = new TLWriter();
+
+  messageWriter.writeInt64(authKeyId);
+  messageWriter.write(messageKey);
+  messageWriter.write(ige256Encrypt(payloadWriter.buffer, aesKey, aesIV));
+
+  return messageWriter.buffer;
+}
+
+const client = new Client();
 await client.connect();
 
-console.log(await createAuthKey(client));
+const { authKey, salt, authKeyId } = await createAuthKey(client);
+// console.log(bigIntFromBuffer(authKeyId, true, false));
+// console.log({ authKey });
+// await client.disconnect();
+// await client.connect();
+
+const encrmsg = await encryptMessage(
+  new InvokeWithLayer({
+    layer: 155,
+    query: new InitConnection({
+      apiId: 0,
+      deviceModel: "Unknown",
+      systemVersion: "1.0",
+      appVersion: "1.0",
+      langCode: "en",
+      langPack: "",
+      systemLangCode: "en",
+      query: new HelpGetConfig(),
+    }),
+  }),
+  // new Ping({ pingId: 0n }),
+  authKey,
+  authKeyId,
+  1,
+  salt,
+  getRandomBigInt(8),
+  getMessageId(),
+);
+
+const buffer = await client.invokeRaw(encrmsg);
+
+console.log({ buffer });
