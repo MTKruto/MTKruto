@@ -157,7 +157,6 @@ export const publicKeys = new Map<bigint, [bigint, bigint]>([
     [
       BigInt(
         "0x" +
-          "9dc063b8a5c08e8f859c0ee5dcd824c7807f20153361a7f63cfd2a433a1be7f5" +
           "e8bb3305c0b52c6cf2afdf7637313489e63e05268e5badb601af417786472e5f" +
           "93b85438968e20e6729a301c0afc121bf7151f834436f7fda680847a66bf64ac" +
           "cec78ee21c0b316f0edafe2f41908da7bd1f4a5107638eeb67040ace472a14f9" +
