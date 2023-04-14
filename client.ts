@@ -13,10 +13,17 @@ import { TLReader } from "./tl/3_tl_reader.ts";
 export class Client {
   protected connection: Connection;
   protected transport: Transport;
-  dcId = (2 + 10000) * +1;
+  dcId: number;
 
-  constructor() {
-    this.connection = new ConnectionTCP("149.154.167.40", 80);
+  constructor(test = false) {
+    this.dcId = 1;
+    if (test) {
+      this.connection = new ConnectionTCP("149.154.175.10", 80);
+      this.dcId += 10000;
+    } else {
+      this.connection = new ConnectionTCP("149.154.175.53", 80);
+    }
+    // this.connection = new ConnectionTCP("127.0.0.1", 4430);
     this.transport = new TransportAbridged(this.connection);
   }
 

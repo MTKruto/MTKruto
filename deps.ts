@@ -1,6 +1,9 @@
 export {
+  assert,
   assertEquals,
+  assertExists,
   assertFalse,
+  assertInstanceOf,
   assertNotEquals,
 } from "https://deno.land/std@0.181.0/testing/asserts.ts";
 
