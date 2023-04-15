@@ -1,6 +1,6 @@
 import { bufferFromBigInt } from "../utilities/0_buffer.ts";
 
-const abbrs = ["RPC", "HTTP", "DC", "CDN", "ABS", "GZIP"];
+const abbrs = ["RPC", "HTTP", "DC", "CDN", "ABS", "GZIP", "OK", "DH"];
 const abbrReplacements = [["Url", "URL"], ["Pq", "PQ"]];
 
 export function toCamelCase(string: string, replaceAbbrs = false) {

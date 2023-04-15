@@ -1393,7 +1393,7 @@ export class PQInnerDataTempDC extends TypePQInnerData {
   }
 }
 
-export class ServerDHParamsOk extends TypeServerDHParams {
+export class ServerDHParamsOK extends TypeServerDHParams {
   nonce: bigint;
   serverNonce: bigint;
   encryptedAnswer: Uint8Array;
@@ -1508,7 +1508,7 @@ export class ClientDHInnerData extends Constructor {
   }
 }
 
-export class DhGenOk extends TypeSetClientDHParamsAnswer {
+export class DHGenOK extends TypeSetClientDHParamsAnswer {
   nonce: bigint;
   serverNonce: bigint;
   newNonceHash1: bigint;
@@ -1541,7 +1541,7 @@ export class DhGenOk extends TypeSetClientDHParamsAnswer {
   }
 }
 
-export class DhGenRetry extends TypeSetClientDHParamsAnswer {
+export class DHGenRetry extends TypeSetClientDHParamsAnswer {
   nonce: bigint;
   serverNonce: bigint;
   newNonceHash2: bigint;
@@ -1574,7 +1574,7 @@ export class DhGenRetry extends TypeSetClientDHParamsAnswer {
   }
 }
 
-export class DhGenFail extends TypeSetClientDHParamsAnswer {
+export class DHGenFail extends TypeSetClientDHParamsAnswer {
   nonce: bigint;
   serverNonce: bigint;
   newNonceHash3: bigint;
@@ -1841,7 +1841,7 @@ export class Pong extends Constructor {
   }
 }
 
-export class DestroySessionOk extends TypeDestroySessionRes {
+export class DestroySessionOK extends TypeDestroySessionRes {
   sessionId: bigint;
 
   protected get [id]() {
@@ -2222,7 +2222,7 @@ export class MsgNewDetailedInfo extends TypeMsgDetailedInfo {
   }
 }
 
-export class DestroyAuthKeyOk extends TypeDestroyAuthKeyRes {
+export class DestroyAuthKeyOK extends TypeDestroyAuthKeyRes {
   protected get [id]() {
     return 0xf660e1d4;
   }
@@ -37343,12 +37343,12 @@ export const map = new Map<number, TLObjectConstructor>(
     [0x05162463, ResPQ],
     [0xa9f55f95, PQInnerDataDC],
     [0x56fddf88, PQInnerDataTempDC],
-    [0xd0e8075c, ServerDHParamsOk],
+    [0xd0e8075c, ServerDHParamsOK],
     [0xb5890dba, ServerDHInnerData],
     [0x6643b654, ClientDHInnerData],
-    [0x3bcbf734, DhGenOk],
-    [0x46dc1fb9, DhGenRetry],
-    [0xa69dae02, DhGenFail],
+    [0x3bcbf734, DHGenOK],
+    [0x46dc1fb9, DHGenRetry],
+    [0xa69dae02, DHGenFail],
     [0x75a3f765, BindAuthKeyInner],
     [0x2144ca19, RPCError],
     [0x5e2ad36e, RPCAnswerUnknown],
@@ -37357,7 +37357,7 @@ export const map = new Map<number, TLObjectConstructor>(
     [0x0949d9dc, FutureSalt],
     [0xae500895, FutureSalts],
     [0x347773c5, Pong],
-    [0xe22045fc, DestroySessionOk],
+    [0xe22045fc, DestroySessionOK],
     [0x62d350c9, DestroySessionNone],
     [0x9ec20908, NewSessionCreated],
     [0x3072cfa1, GZIPPacked],
@@ -37370,7 +37370,7 @@ export const map = new Map<number, TLObjectConstructor>(
     [0x8cc0d131, MsgsAllInfo],
     [0x276d3ec6, MsgDetailedInfo],
     [0x809db6df, MsgNewDetailedInfo],
-    [0xf660e1d4, DestroyAuthKeyOk],
+    [0xf660e1d4, DestroyAuthKeyOK],
     [0x0a9f2259, DestroyAuthKeyNone],
     [0xea109b13, DestroyAuthKeyFail],
     [0x9299359f, HTTPWait],

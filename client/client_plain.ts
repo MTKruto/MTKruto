@@ -4,7 +4,7 @@ import { bigIntFromBuffer, getRandomBigInt, modExp } from "../utilities/0_bigint
 import { bufferFromBigInt, concat, sha1 } from "../utilities/0_buffer.ts";
 import { rsaPad } from "../utilities/1_auth.ts";
 import { packUnencryptedMessage, unpackUnencryptedMessage } from "../utilities/1_message.ts";
-import { ClientDHInnerData, DhGenOk, PQInnerDataDC, ResPQ, ServerDHInnerData, ServerDHParamsOk } from "../tl/2_constructors.ts";
+import { ClientDHInnerData, DHGenOK, PQInnerDataDC, ResPQ, ServerDHInnerData, ServerDHParamsOK } from "../tl/2_constructors.ts";
 import { Function, ReqDHParams, ReqPQMulti, SetClientDHParams } from "../tl/3_functions.ts";
 import { TLReader } from "../tl/3_tl_reader.ts";
 import { ClientAbstract } from "./client_abstract.ts";
@@ -86,7 +86,7 @@ export class ClientPlain extends ClientAbstract {
       }),
     );
 
-    assertInstanceOf(dhParams, ServerDHParamsOk);
+    assertInstanceOf(dhParams, ServerDHParamsOK);
     logger().debug("Got server_DH_params_ok");
 
     const newNonce_ = bufferFromBigInt(newNonce, 32, true, true);
@@ -120,7 +120,7 @@ export class ClientPlain extends ClientAbstract {
     encryptedData = ige256Encrypt(dataWithHash, tmpAesKey, tmpAesIv);
 
     const dhGenOk = await this.invoke(new SetClientDHParams({ nonce, serverNonce, encryptedData }));
-    assertInstanceOf(dhGenOk, DhGenOk);
+    assertInstanceOf(dhGenOk, DHGenOK);
     logger().debug("Got dh_gen_ok");
 
     const serverNonceSlice = serverNonce_.slice(0, 8);
