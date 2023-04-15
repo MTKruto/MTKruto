@@ -1,14 +1,12 @@
-import { assert, assertEquals, assertExists, ige256Encrypt } from "../deps.ts";
-import { publicKeys } from "../constants.ts";
+import { assert, assertEquals, ige256Encrypt } from "../deps.ts";
 import { bigIntFromBuffer, modExp } from "./0_bigint.ts";
 import { bufferFromBigInt, concat, sha256 } from "./0_buffer.ts";
 
-export async function rsaPad(data: Uint8Array, fingerprint: bigint) {
+export async function rsaPad(
+  data: Uint8Array,
+  [serverKey, exponent]: [bigint, bigint],
+) {
   assert(data.length <= 144);
-
-  const publicKey = publicKeys.get(fingerprint);
-  assertExists(publicKey);
-  const [serverKey, exponent] = publicKey;
 
   let keyAesEncryptedInt: bigint;
   let tries = 0;

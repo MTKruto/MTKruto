@@ -5,6 +5,7 @@ import {
   ige256Decrypt,
   ige256Encrypt,
 } from "../deps.ts";
+import { publicKeys } from "../constants.ts";
 import {
   bigIntFromBuffer,
   getRandomBigInt,
@@ -62,7 +63,21 @@ export class ClientPlain extends ClientAbstract {
     const p = bufferFromBigInt(p_.valueOf(), 4, false, false);
     const q = bufferFromBigInt(q_.valueOf(), 4, false, false);
 
-    const publicKeyFingerprint = resPq.serverPublicKeyFingerprints[2];
+    let publicKeyFingerprint: bigint | undefined;
+    let publicKey: [bigint, bigint] | undefined;
+
+    for (const fingerprint of resPq.serverPublicKeyFingerprints) {
+      const maybePublicKey = publicKeys.get(fingerprint);
+      if (maybePublicKey) {
+        publicKeyFingerprint = fingerprint;
+        publicKey = maybePublicKey;
+        break;
+      }
+    }
+
+    if (!publicKeyFingerprint || !publicKey) {
+      throw new Error("No corresponding public key found");
+    }
 
     const dc = this.dcId;
     const pq = resPq.pq;
@@ -78,7 +93,7 @@ export class ClientPlain extends ClientAbstract {
         nonce,
         serverNonce,
       }).serialize(),
-      publicKeyFingerprint,
+      publicKey,
     );
 
     const dhParams = await this.invoke(
