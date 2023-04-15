@@ -111,7 +111,7 @@ export async function decryptMessage(
 
   const _salt = plainReader.readInt64();
   const sid = plainReader.readInt64();
-  // assertEquals(sid, sessionId);
+  assertEquals(sid, sessionId);
 
   const mid = plainReader.readInt64();
   const seqno = plainReader.readInt32();

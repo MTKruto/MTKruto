@@ -1,3 +1,4 @@
+import { gunzip } from "../deps.ts";
 import { getRandomBigInt } from "../utilities/0_bigint.ts";
 import {
   decryptMessage,
@@ -5,13 +6,14 @@ import {
   getMessageId,
 } from "../utilities/1_message.ts";
 import { TLObject } from "../tl/1_tl_object.ts";
-import { Pong, RpcError } from "../tl/2_constructors.ts";
+import { GzipPacked, Pong, RpcError } from "../tl/2_constructors.ts";
 import { Function, Ping } from "../tl/3_functions.ts";
-import { RPCResult } from "../tl/5_rpc_result.ts";
-import { Message } from "../tl/6_message.ts";
-import { MessageContainer } from "../tl/7_message_container.ts";
+import { RpcResult } from "../tl/4_rpc_result.ts";
+import { Message } from "../tl/5_message.ts";
+import { MessageContainer } from "../tl/6_message_container.ts";
 import { ClientAbstract } from "./client_abstract.ts";
 import { ClientPlain } from "./client_plain.ts";
+import { TLReader } from "../tl/3_tl_reader.ts";
 
 export class Client extends ClientAbstract {
   private sessionId = getRandomBigInt(8, true, true);
@@ -55,8 +57,11 @@ export class Client extends ClientAbstract {
         : [decrypted];
 
       for (const message of messages) {
-        if (message.body instanceof RPCResult) {
-          const result = message.body.result;
+        if (message.body instanceof RpcResult) {
+          let result = message.body.result;
+          if (result instanceof GzipPacked) {
+            result = new TLReader(gunzip(result.packedData)).readObject();
+          }
           const promise = this.promises.get(message.body.messageId);
           if (promise) {
             if (result instanceof RpcError) {
