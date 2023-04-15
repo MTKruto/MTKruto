@@ -1,6 +1,6 @@
 import { Connection } from "../connection/connection.ts";
-import { Transport } from "../transport/transport.ts";
 import { ConnectionTCP } from "../connection/connection_tcp.ts";
+import { Transport } from "../transport/transport.ts";
 import { TransportAbridged } from "../transport/transport_abridged.ts";
 
 export abstract class ClientAbstract {

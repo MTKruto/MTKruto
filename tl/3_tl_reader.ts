@@ -1,8 +1,8 @@
+import { gunzip } from "../deps.ts";
 import { TLRawReader } from "./0_tl_raw_reader.ts";
 import { paramDesc } from "./1_tl_object.ts";
-import { deserialize } from "./3_tl_object_deserializer.ts";
 import { map } from "./2_constructors.ts";
-import { gunzip } from "https://deno.land/x/compress@v0.4.5/zlib/mod.ts";
+import { deserialize } from "./3_tl_object_deserializer.ts";
 
 export class TLReader extends TLRawReader {
   readObject(id?: number) {

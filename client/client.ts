@@ -1,31 +1,29 @@
-import { TLObject } from "../tl/1_tl_object.ts";
-import { RpcError } from "../tl/2_constructors.ts";
-import { Function, Ping } from "../tl/3_functions.ts";
-import { RPCResult } from "../tl/5_rpc_result.ts";
-import { Message } from "../tl/6_message.ts";
-import { MessageContainer } from "../tl/7_message_container.ts";
 import { getRandomBigInt } from "../utilities/0_bigint.ts";
 import {
   decryptMessage,
   encryptMessage,
   getMessageId,
 } from "../utilities/1_message.ts";
+import { TLObject } from "../tl/1_tl_object.ts";
+import { RpcError } from "../tl/2_constructors.ts";
+import { Function, Ping } from "../tl/3_functions.ts";
+import { RPCResult } from "../tl/5_rpc_result.ts";
+import { Message } from "../tl/6_message.ts";
+import { MessageContainer } from "../tl/7_message_container.ts";
 import { ClientAbstract } from "./client_abstract.ts";
 import { ClientPlain } from "./client_plain.ts";
 
 export class Client extends ClientAbstract {
-  auth?: { key: Uint8Array; id: bigint };
-  salt = 0n;
-  seqNo = 0;
-  sessionId: bigint;
-  promises = new Map<
+  private sessionId = getRandomBigInt(8);
+  private auth?: { key: Uint8Array; id: bigint };
+  private state = { salt: 0n, seqNo: 0 };
+  private promises = new Map<
     bigint,
     { resolve: (obj: TLObject) => void; reject: (err: TLObject) => void }
   >();
 
   constructor(test?: boolean) {
     super(test);
-    this.sessionId = getRandomBigInt(8);
   }
 
   async connect() {
@@ -34,7 +32,7 @@ export class Client extends ClientAbstract {
     const { authKey: key, authKeyId: id, salt } = await plain.createAuthKey();
     await plain.disconnect();
     this.auth = { key, id };
-    this.salt = salt;
+    this.state.salt = salt;
     await super.connect();
     this.loop();
   }
@@ -76,10 +74,10 @@ export class Client extends ClientAbstract {
     if (!this.auth) {
       throw new Error("Not connected");
     }
-    let seqNo = this.seqNo * 2;
+    let seqNo = this.state.seqNo * 2;
     if (!(function_ instanceof Ping)) {
       seqNo++;
-      this.seqNo++;
+      this.state.seqNo++;
     }
     const message = new Message(getMessageId(), seqNo, function_);
     await this.transport.send(
@@ -87,7 +85,7 @@ export class Client extends ClientAbstract {
         message,
         this.auth.key,
         this.auth.id,
-        this.salt,
+        this.state.salt,
         this.sessionId,
       ),
     );
