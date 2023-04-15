@@ -12,31 +12,6 @@ import * as constructors from "./2_constructors.ts";
 export abstract class Function extends TLObject {
 }
 
-export class ReqPq extends Function {
-  nonce: bigint;
-
-  protected get [id]() {
-    return 0x60469778;
-  }
-
-  static get [paramDesc](): ParamDesc {
-    return [
-      ["nonce", "bigint", "int128"],
-    ];
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.nonce, "bigint", "int128"],
-    ];
-  }
-
-  constructor(params: { nonce: bigint }) {
-    super();
-    this.nonce = params.nonce;
-  }
-}
-
 export class ReqPqMulti extends Function {
   nonce: bigint;
 
@@ -148,24 +123,6 @@ export class SetClientDHParams extends Function {
     this.nonce = params.nonce;
     this.serverNonce = params.serverNonce;
     this.encryptedData = params.encryptedData;
-  }
-}
-
-export class DestroyAuthKey extends Function {
-  protected get [id]() {
-    return 0xd1435160;
-  }
-
-  static get [paramDesc](): ParamDesc {
-    return [];
-  }
-
-  protected get [params](): Params {
-    return [];
-  }
-
-  constructor() {
-    super();
   }
 }
 
@@ -295,6 +252,24 @@ export class DestroySession extends Function {
   constructor(params: { sessionId: bigint }) {
     super();
     this.sessionId = params.sessionId;
+  }
+}
+
+export class DestroyAuthKey extends Function {
+  protected get [id]() {
+    return 0xd1435160;
+  }
+
+  static get [paramDesc](): ParamDesc {
+    return [];
+  }
+
+  protected get [params](): Params {
+    return [];
+  }
+
+  constructor() {
+    super();
   }
 }
 
@@ -17403,31 +17378,6 @@ export class FoldersEditPeerFolders extends Function {
   ) {
     super();
     this.folderPeers = params.folderPeers;
-  }
-}
-
-export class FoldersDeleteFolder extends Function {
-  folderId: number;
-
-  protected get [id]() {
-    return 0x1c295881;
-  }
-
-  static get [paramDesc](): ParamDesc {
-    return [
-      ["folderId", "number", "int"],
-    ];
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.folderId, "number", "int"],
-    ];
-  }
-
-  constructor(params: { folderId: number }) {
-    super();
-    this.folderId = params.folderId;
   }
 }
 

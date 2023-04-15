@@ -21,9 +21,6 @@ export abstract class TypeResPQ extends Constructor {
 export abstract class TypePQInnerData extends Constructor {
 }
 
-export abstract class TypeBindAuthKeyInner extends Constructor {
-}
-
 export abstract class TypeServerDHParams extends Constructor {
 }
 
@@ -36,28 +33,7 @@ export abstract class TypeClientDHInnerData extends Constructor {
 export abstract class TypeSetClientDHParamsAnswer extends Constructor {
 }
 
-export abstract class TypeDestroyAuthKeyRes extends Constructor {
-}
-
-export abstract class TypeMsgsAck extends Constructor {
-}
-
-export abstract class TypeBadMsgNotification extends Constructor {
-}
-
-export abstract class TypeMsgsStateReq extends Constructor {
-}
-
-export abstract class TypeMsgsStateInfo extends Constructor {
-}
-
-export abstract class TypeMsgsAllInfo extends Constructor {
-}
-
-export abstract class TypeMsgDetailedInfo extends Constructor {
-}
-
-export abstract class TypeMsgResendReq extends Constructor {
+export abstract class TypeBindAuthKeyInner extends Constructor {
 }
 
 export abstract class TypeRpcError extends Constructor {
@@ -81,16 +57,31 @@ export abstract class TypeDestroySessionRes extends Constructor {
 export abstract class TypeNewSession extends Constructor {
 }
 
+export abstract class TypeMsgsAck extends Constructor {
+}
+
+export abstract class TypeBadMsgNotification extends Constructor {
+}
+
+export abstract class TypeMsgResendReq extends Constructor {
+}
+
+export abstract class TypeMsgsStateReq extends Constructor {
+}
+
+export abstract class TypeMsgsStateInfo extends Constructor {
+}
+
+export abstract class TypeMsgsAllInfo extends Constructor {
+}
+
+export abstract class TypeMsgDetailedInfo extends Constructor {
+}
+
+export abstract class TypeDestroyAuthKeyRes extends Constructor {
+}
+
 export abstract class TypeHttpWait extends Constructor {
-}
-
-export abstract class TypeIpPort extends Constructor {
-}
-
-export abstract class TypeAccessPointRule extends Constructor {
-}
-
-export abstract class TypeHelpConfigSimple extends Constructor {
 }
 
 export abstract class TypeTrue extends Constructor {
@@ -1314,60 +1305,6 @@ export class ResPQ extends Constructor {
   }
 }
 
-export class PQInnerData extends Constructor {
-  pq: Uint8Array;
-  p: Uint8Array;
-  q: Uint8Array;
-  nonce: bigint;
-  serverNonce: bigint;
-  newNonce: bigint;
-
-  protected get [id]() {
-    return 0x83c95aec;
-  }
-
-  static get [paramDesc](): ParamDesc {
-    return [
-      ["pq", Uint8Array, "bytes"],
-      ["p", Uint8Array, "bytes"],
-      ["q", Uint8Array, "bytes"],
-      ["nonce", "bigint", "int128"],
-      ["serverNonce", "bigint", "int128"],
-      ["newNonce", "bigint", "int256"],
-    ];
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.pq, Uint8Array, "bytes"],
-      [this.p, Uint8Array, "bytes"],
-      [this.q, Uint8Array, "bytes"],
-      [this.nonce, "bigint", "int128"],
-      [this.serverNonce, "bigint", "int128"],
-      [this.newNonce, "bigint", "int256"],
-    ];
-  }
-
-  constructor(
-    params: {
-      pq: Uint8Array;
-      p: Uint8Array;
-      q: Uint8Array;
-      nonce: bigint;
-      serverNonce: bigint;
-      newNonce: bigint;
-    },
-  ) {
-    super();
-    this.pq = params.pq;
-    this.p = params.p;
-    this.q = params.q;
-    this.nonce = params.nonce;
-    this.serverNonce = params.serverNonce;
-    this.newNonce = params.newNonce;
-  }
-}
-
 export class PQInnerDataDc extends TypePQInnerData {
   pq: Uint8Array;
   p: Uint8Array;
@@ -1424,65 +1361,6 @@ export class PQInnerDataDc extends TypePQInnerData {
     this.serverNonce = params.serverNonce;
     this.newNonce = params.newNonce;
     this.dc = params.dc;
-  }
-}
-
-export class PQInnerDataTemp extends TypePQInnerData {
-  pq: Uint8Array;
-  p: Uint8Array;
-  q: Uint8Array;
-  nonce: bigint;
-  serverNonce: bigint;
-  newNonce: bigint;
-  expiresIn: number;
-
-  protected get [id]() {
-    return 0x3c6a84d4;
-  }
-
-  static get [paramDesc](): ParamDesc {
-    return [
-      ["pq", Uint8Array, "bytes"],
-      ["p", Uint8Array, "bytes"],
-      ["q", Uint8Array, "bytes"],
-      ["nonce", "bigint", "int128"],
-      ["serverNonce", "bigint", "int128"],
-      ["newNonce", "bigint", "int256"],
-      ["expiresIn", "number", "int"],
-    ];
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.pq, Uint8Array, "bytes"],
-      [this.p, Uint8Array, "bytes"],
-      [this.q, Uint8Array, "bytes"],
-      [this.nonce, "bigint", "int128"],
-      [this.serverNonce, "bigint", "int128"],
-      [this.newNonce, "bigint", "int256"],
-      [this.expiresIn, "number", "int"],
-    ];
-  }
-
-  constructor(
-    params: {
-      pq: Uint8Array;
-      p: Uint8Array;
-      q: Uint8Array;
-      nonce: bigint;
-      serverNonce: bigint;
-      newNonce: bigint;
-      expiresIn: number;
-    },
-  ) {
-    super();
-    this.pq = params.pq;
-    this.p = params.p;
-    this.q = params.q;
-    this.nonce = params.nonce;
-    this.serverNonce = params.serverNonce;
-    this.newNonce = params.newNonce;
-    this.expiresIn = params.expiresIn;
   }
 }
 
@@ -1547,90 +1425,6 @@ export class PQInnerDataTempDc extends TypePQInnerData {
     this.newNonce = params.newNonce;
     this.dc = params.dc;
     this.expiresIn = params.expiresIn;
-  }
-}
-
-export class BindAuthKeyInner extends TypeBindAuthKeyInner {
-  nonce: bigint;
-  tempAuthKeyId: bigint;
-  permAuthKeyId: bigint;
-  tempSessionId: bigint;
-  expiresAt: number;
-
-  protected get [id]() {
-    return 0x75a3f765;
-  }
-
-  static get [paramDesc](): ParamDesc {
-    return [
-      ["nonce", "bigint", "long"],
-      ["tempAuthKeyId", "bigint", "long"],
-      ["permAuthKeyId", "bigint", "long"],
-      ["tempSessionId", "bigint", "long"],
-      ["expiresAt", "number", "int"],
-    ];
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.nonce, "bigint", "long"],
-      [this.tempAuthKeyId, "bigint", "long"],
-      [this.permAuthKeyId, "bigint", "long"],
-      [this.tempSessionId, "bigint", "long"],
-      [this.expiresAt, "number", "int"],
-    ];
-  }
-
-  constructor(
-    params: {
-      nonce: bigint;
-      tempAuthKeyId: bigint;
-      permAuthKeyId: bigint;
-      tempSessionId: bigint;
-      expiresAt: number;
-    },
-  ) {
-    super();
-    this.nonce = params.nonce;
-    this.tempAuthKeyId = params.tempAuthKeyId;
-    this.permAuthKeyId = params.permAuthKeyId;
-    this.tempSessionId = params.tempSessionId;
-    this.expiresAt = params.expiresAt;
-  }
-}
-
-export class ServerDHParamsFail extends TypeServerDHParams {
-  nonce: bigint;
-  serverNonce: bigint;
-  newNonceHash: bigint;
-
-  protected get [id]() {
-    return 0x79cb045d;
-  }
-
-  static get [paramDesc](): ParamDesc {
-    return [
-      ["nonce", "bigint", "int128"],
-      ["serverNonce", "bigint", "int128"],
-      ["newNonceHash", "bigint", "int128"],
-    ];
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.nonce, "bigint", "int128"],
-      [this.serverNonce, "bigint", "int128"],
-      [this.newNonceHash, "bigint", "int128"],
-    ];
-  }
-
-  constructor(
-    params: { nonce: bigint; serverNonce: bigint; newNonceHash: bigint },
-  ) {
-    super();
-    this.nonce = params.nonce;
-    this.serverNonce = params.serverNonce;
-    this.newNonceHash = params.newNonceHash;
   }
 }
 
@@ -1872,352 +1666,58 @@ export class DhGenFail extends TypeSetClientDHParamsAnswer {
   }
 }
 
-export class DestroyAuthKeyOk extends TypeDestroyAuthKeyRes {
-  protected get [id]() {
-    return 0xf660e1d4;
-  }
-
-  static get [paramDesc](): ParamDesc {
-    return [];
-  }
-
-  protected get [params](): Params {
-    return [];
-  }
-
-  constructor() {
-    super();
-  }
-}
-
-export class DestroyAuthKeyNone extends TypeDestroyAuthKeyRes {
-  protected get [id]() {
-    return 0x0a9f2259;
-  }
-
-  static get [paramDesc](): ParamDesc {
-    return [];
-  }
-
-  protected get [params](): Params {
-    return [];
-  }
-
-  constructor() {
-    super();
-  }
-}
-
-export class DestroyAuthKeyFail extends TypeDestroyAuthKeyRes {
-  protected get [id]() {
-    return 0xea109b13;
-  }
-
-  static get [paramDesc](): ParamDesc {
-    return [];
-  }
-
-  protected get [params](): Params {
-    return [];
-  }
-
-  constructor() {
-    super();
-  }
-}
-
-export class MsgsAck extends TypeMsgsAck {
-  msgIds: Array<bigint>;
+export class BindAuthKeyInner extends TypeBindAuthKeyInner {
+  nonce: bigint;
+  tempAuthKeyId: bigint;
+  permAuthKeyId: bigint;
+  tempSessionId: bigint;
+  expiresAt: number;
 
   protected get [id]() {
-    return 0x62d6b459;
+    return 0x75a3f765;
   }
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["msgIds", ["bigint"], "Vector<long>"],
+      ["nonce", "bigint", "long"],
+      ["tempAuthKeyId", "bigint", "long"],
+      ["permAuthKeyId", "bigint", "long"],
+      ["tempSessionId", "bigint", "long"],
+      ["expiresAt", "number", "int"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.msgIds, ["bigint"], "Vector<long>"],
-    ];
-  }
-
-  constructor(params: { msgIds: Array<bigint> }) {
-    super();
-    this.msgIds = params.msgIds;
-  }
-}
-
-export class BadMsgNotification extends TypeBadMsgNotification {
-  badMsgId: bigint;
-  badMsgSeqno: number;
-  errorCode: number;
-
-  protected get [id]() {
-    return 0xa7eff811;
-  }
-
-  static get [paramDesc](): ParamDesc {
-    return [
-      ["badMsgId", "bigint", "long"],
-      ["badMsgSeqno", "number", "int"],
-      ["errorCode", "number", "int"],
-    ];
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.badMsgId, "bigint", "long"],
-      [this.badMsgSeqno, "number", "int"],
-      [this.errorCode, "number", "int"],
-    ];
-  }
-
-  constructor(
-    params: { badMsgId: bigint; badMsgSeqno: number; errorCode: number },
-  ) {
-    super();
-    this.badMsgId = params.badMsgId;
-    this.badMsgSeqno = params.badMsgSeqno;
-    this.errorCode = params.errorCode;
-  }
-}
-
-export class BadServerSalt extends TypeBadMsgNotification {
-  badMsgId: bigint;
-  badMsgSeqno: number;
-  errorCode: number;
-  newServerSalt: bigint;
-
-  protected get [id]() {
-    return 0xedab447b;
-  }
-
-  static get [paramDesc](): ParamDesc {
-    return [
-      ["badMsgId", "bigint", "long"],
-      ["badMsgSeqno", "number", "int"],
-      ["errorCode", "number", "int"],
-      ["newServerSalt", "bigint", "long"],
-    ];
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.badMsgId, "bigint", "long"],
-      [this.badMsgSeqno, "number", "int"],
-      [this.errorCode, "number", "int"],
-      [this.newServerSalt, "bigint", "long"],
+      [this.nonce, "bigint", "long"],
+      [this.tempAuthKeyId, "bigint", "long"],
+      [this.permAuthKeyId, "bigint", "long"],
+      [this.tempSessionId, "bigint", "long"],
+      [this.expiresAt, "number", "int"],
     ];
   }
 
   constructor(
     params: {
-      badMsgId: bigint;
-      badMsgSeqno: number;
-      errorCode: number;
-      newServerSalt: bigint;
+      nonce: bigint;
+      tempAuthKeyId: bigint;
+      permAuthKeyId: bigint;
+      tempSessionId: bigint;
+      expiresAt: number;
     },
   ) {
     super();
-    this.badMsgId = params.badMsgId;
-    this.badMsgSeqno = params.badMsgSeqno;
-    this.errorCode = params.errorCode;
-    this.newServerSalt = params.newServerSalt;
-  }
-}
-
-export class MsgsStateReq extends TypeMsgsStateReq {
-  msgIds: Array<bigint>;
-
-  protected get [id]() {
-    return 0xda69fb52;
-  }
-
-  static get [paramDesc](): ParamDesc {
-    return [
-      ["msgIds", ["bigint"], "Vector<long>"],
-    ];
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.msgIds, ["bigint"], "Vector<long>"],
-    ];
-  }
-
-  constructor(params: { msgIds: Array<bigint> }) {
-    super();
-    this.msgIds = params.msgIds;
-  }
-}
-
-export class MsgsStateInfo extends TypeMsgsStateInfo {
-  reqMsgId: bigint;
-  info: Uint8Array;
-
-  protected get [id]() {
-    return 0x04deb57d;
-  }
-
-  static get [paramDesc](): ParamDesc {
-    return [
-      ["reqMsgId", "bigint", "long"],
-      ["info", Uint8Array, "bytes"],
-    ];
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.reqMsgId, "bigint", "long"],
-      [this.info, Uint8Array, "bytes"],
-    ];
-  }
-
-  constructor(params: { reqMsgId: bigint; info: Uint8Array }) {
-    super();
-    this.reqMsgId = params.reqMsgId;
-    this.info = params.info;
-  }
-}
-
-export class MsgsAllInfo extends TypeMsgsAllInfo {
-  msgIds: Array<bigint>;
-  info: Uint8Array;
-
-  protected get [id]() {
-    return 0x8cc0d131;
-  }
-
-  static get [paramDesc](): ParamDesc {
-    return [
-      ["msgIds", ["bigint"], "Vector<long>"],
-      ["info", Uint8Array, "bytes"],
-    ];
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.msgIds, ["bigint"], "Vector<long>"],
-      [this.info, Uint8Array, "bytes"],
-    ];
-  }
-
-  constructor(params: { msgIds: Array<bigint>; info: Uint8Array }) {
-    super();
-    this.msgIds = params.msgIds;
-    this.info = params.info;
-  }
-}
-
-export class MsgDetailedInfo extends TypeMsgDetailedInfo {
-  msgId: bigint;
-  answerMsgId: bigint;
-  bytes: number;
-  status: number;
-
-  protected get [id]() {
-    return 0x276d3ec6;
-  }
-
-  static get [paramDesc](): ParamDesc {
-    return [
-      ["msgId", "bigint", "long"],
-      ["answerMsgId", "bigint", "long"],
-      ["bytes", "number", "int"],
-      ["status", "number", "int"],
-    ];
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.msgId, "bigint", "long"],
-      [this.answerMsgId, "bigint", "long"],
-      [this.bytes, "number", "int"],
-      [this.status, "number", "int"],
-    ];
-  }
-
-  constructor(
-    params: {
-      msgId: bigint;
-      answerMsgId: bigint;
-      bytes: number;
-      status: number;
-    },
-  ) {
-    super();
-    this.msgId = params.msgId;
-    this.answerMsgId = params.answerMsgId;
-    this.bytes = params.bytes;
-    this.status = params.status;
-  }
-}
-
-export class MsgNewDetailedInfo extends TypeMsgDetailedInfo {
-  answerMsgId: bigint;
-  bytes: number;
-  status: number;
-
-  protected get [id]() {
-    return 0x809db6df;
-  }
-
-  static get [paramDesc](): ParamDesc {
-    return [
-      ["answerMsgId", "bigint", "long"],
-      ["bytes", "number", "int"],
-      ["status", "number", "int"],
-    ];
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.answerMsgId, "bigint", "long"],
-      [this.bytes, "number", "int"],
-      [this.status, "number", "int"],
-    ];
-  }
-
-  constructor(params: { answerMsgId: bigint; bytes: number; status: number }) {
-    super();
-    this.answerMsgId = params.answerMsgId;
-    this.bytes = params.bytes;
-    this.status = params.status;
-  }
-}
-
-export class MsgResendReq extends TypeMsgResendReq {
-  msgIds: Array<bigint>;
-
-  protected get [id]() {
-    return 0x7d861a08;
-  }
-
-  static get [paramDesc](): ParamDesc {
-    return [
-      ["msgIds", ["bigint"], "Vector<long>"],
-    ];
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.msgIds, ["bigint"], "Vector<long>"],
-    ];
-  }
-
-  constructor(params: { msgIds: Array<bigint> }) {
-    super();
-    this.msgIds = params.msgIds;
+    this.nonce = params.nonce;
+    this.tempAuthKeyId = params.tempAuthKeyId;
+    this.permAuthKeyId = params.permAuthKeyId;
+    this.tempSessionId = params.tempSessionId;
+    this.expiresAt = params.expiresAt;
   }
 }
 
 export class RpcError extends TypeRpcError {
   errorCode: number;
-  errorMessage: Uint8Array;
+  errorMessage: string;
 
   protected get [id]() {
     return 0x2144ca19;
@@ -2226,18 +1726,18 @@ export class RpcError extends TypeRpcError {
   static get [paramDesc](): ParamDesc {
     return [
       ["errorCode", "number", "int"],
-      ["errorMessage", Uint8Array, "bytes"],
+      ["errorMessage", "string", "string"],
     ];
   }
 
   protected get [params](): Params {
     return [
       [this.errorCode, "number", "int"],
-      [this.errorMessage, Uint8Array, "bytes"],
+      [this.errorMessage, "string", "string"],
     ];
   }
 
-  constructor(params: { errorCode: number; errorMessage: Uint8Array }) {
+  constructor(params: { errorCode: number; errorMessage: string }) {
     super();
     this.errorCode = params.errorCode;
     this.errorMessage = params.errorMessage;
@@ -2497,6 +1997,349 @@ export class NewSessionCreated extends TypeNewSession {
   }
 }
 
+export class MsgsAck extends TypeMsgsAck {
+  msgIds: Array<bigint>;
+
+  protected get [id]() {
+    return 0x62d6b459;
+  }
+
+  static get [paramDesc](): ParamDesc {
+    return [
+      ["msgIds", ["bigint"], "Vector<long>"],
+    ];
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.msgIds, ["bigint"], "Vector<long>"],
+    ];
+  }
+
+  constructor(params: { msgIds: Array<bigint> }) {
+    super();
+    this.msgIds = params.msgIds;
+  }
+}
+
+export class BadMsgNotification extends TypeBadMsgNotification {
+  badMsgId: bigint;
+  badMsgSeqno: number;
+  errorCode: number;
+
+  protected get [id]() {
+    return 0xa7eff811;
+  }
+
+  static get [paramDesc](): ParamDesc {
+    return [
+      ["badMsgId", "bigint", "long"],
+      ["badMsgSeqno", "number", "int"],
+      ["errorCode", "number", "int"],
+    ];
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.badMsgId, "bigint", "long"],
+      [this.badMsgSeqno, "number", "int"],
+      [this.errorCode, "number", "int"],
+    ];
+  }
+
+  constructor(
+    params: { badMsgId: bigint; badMsgSeqno: number; errorCode: number },
+  ) {
+    super();
+    this.badMsgId = params.badMsgId;
+    this.badMsgSeqno = params.badMsgSeqno;
+    this.errorCode = params.errorCode;
+  }
+}
+
+export class BadServerSalt extends TypeBadMsgNotification {
+  badMsgId: bigint;
+  badMsgSeqno: number;
+  errorCode: number;
+  newServerSalt: bigint;
+
+  protected get [id]() {
+    return 0xedab447b;
+  }
+
+  static get [paramDesc](): ParamDesc {
+    return [
+      ["badMsgId", "bigint", "long"],
+      ["badMsgSeqno", "number", "int"],
+      ["errorCode", "number", "int"],
+      ["newServerSalt", "bigint", "long"],
+    ];
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.badMsgId, "bigint", "long"],
+      [this.badMsgSeqno, "number", "int"],
+      [this.errorCode, "number", "int"],
+      [this.newServerSalt, "bigint", "long"],
+    ];
+  }
+
+  constructor(
+    params: {
+      badMsgId: bigint;
+      badMsgSeqno: number;
+      errorCode: number;
+      newServerSalt: bigint;
+    },
+  ) {
+    super();
+    this.badMsgId = params.badMsgId;
+    this.badMsgSeqno = params.badMsgSeqno;
+    this.errorCode = params.errorCode;
+    this.newServerSalt = params.newServerSalt;
+  }
+}
+
+export class MsgResendReq extends TypeMsgResendReq {
+  msgIds: Array<bigint>;
+
+  protected get [id]() {
+    return 0x7d861a08;
+  }
+
+  static get [paramDesc](): ParamDesc {
+    return [
+      ["msgIds", ["bigint"], "Vector<long>"],
+    ];
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.msgIds, ["bigint"], "Vector<long>"],
+    ];
+  }
+
+  constructor(params: { msgIds: Array<bigint> }) {
+    super();
+    this.msgIds = params.msgIds;
+  }
+}
+
+export class MsgsStateReq extends TypeMsgsStateReq {
+  msgIds: Array<bigint>;
+
+  protected get [id]() {
+    return 0xda69fb52;
+  }
+
+  static get [paramDesc](): ParamDesc {
+    return [
+      ["msgIds", ["bigint"], "Vector<long>"],
+    ];
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.msgIds, ["bigint"], "Vector<long>"],
+    ];
+  }
+
+  constructor(params: { msgIds: Array<bigint> }) {
+    super();
+    this.msgIds = params.msgIds;
+  }
+}
+
+export class MsgsStateInfo extends TypeMsgsStateInfo {
+  reqMsgId: bigint;
+  info: Uint8Array;
+
+  protected get [id]() {
+    return 0x04deb57d;
+  }
+
+  static get [paramDesc](): ParamDesc {
+    return [
+      ["reqMsgId", "bigint", "long"],
+      ["info", Uint8Array, "bytes"],
+    ];
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.reqMsgId, "bigint", "long"],
+      [this.info, Uint8Array, "bytes"],
+    ];
+  }
+
+  constructor(params: { reqMsgId: bigint; info: Uint8Array }) {
+    super();
+    this.reqMsgId = params.reqMsgId;
+    this.info = params.info;
+  }
+}
+
+export class MsgsAllInfo extends TypeMsgsAllInfo {
+  msgIds: Array<bigint>;
+  info: Uint8Array;
+
+  protected get [id]() {
+    return 0x8cc0d131;
+  }
+
+  static get [paramDesc](): ParamDesc {
+    return [
+      ["msgIds", ["bigint"], "Vector<long>"],
+      ["info", Uint8Array, "bytes"],
+    ];
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.msgIds, ["bigint"], "Vector<long>"],
+      [this.info, Uint8Array, "bytes"],
+    ];
+  }
+
+  constructor(params: { msgIds: Array<bigint>; info: Uint8Array }) {
+    super();
+    this.msgIds = params.msgIds;
+    this.info = params.info;
+  }
+}
+
+export class MsgDetailedInfo extends TypeMsgDetailedInfo {
+  msgId: bigint;
+  answerMsgId: bigint;
+  bytes: number;
+  status: number;
+
+  protected get [id]() {
+    return 0x276d3ec6;
+  }
+
+  static get [paramDesc](): ParamDesc {
+    return [
+      ["msgId", "bigint", "long"],
+      ["answerMsgId", "bigint", "long"],
+      ["bytes", "number", "int"],
+      ["status", "number", "int"],
+    ];
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.msgId, "bigint", "long"],
+      [this.answerMsgId, "bigint", "long"],
+      [this.bytes, "number", "int"],
+      [this.status, "number", "int"],
+    ];
+  }
+
+  constructor(
+    params: {
+      msgId: bigint;
+      answerMsgId: bigint;
+      bytes: number;
+      status: number;
+    },
+  ) {
+    super();
+    this.msgId = params.msgId;
+    this.answerMsgId = params.answerMsgId;
+    this.bytes = params.bytes;
+    this.status = params.status;
+  }
+}
+
+export class MsgNewDetailedInfo extends TypeMsgDetailedInfo {
+  answerMsgId: bigint;
+  bytes: number;
+  status: number;
+
+  protected get [id]() {
+    return 0x809db6df;
+  }
+
+  static get [paramDesc](): ParamDesc {
+    return [
+      ["answerMsgId", "bigint", "long"],
+      ["bytes", "number", "int"],
+      ["status", "number", "int"],
+    ];
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.answerMsgId, "bigint", "long"],
+      [this.bytes, "number", "int"],
+      [this.status, "number", "int"],
+    ];
+  }
+
+  constructor(params: { answerMsgId: bigint; bytes: number; status: number }) {
+    super();
+    this.answerMsgId = params.answerMsgId;
+    this.bytes = params.bytes;
+    this.status = params.status;
+  }
+}
+
+export class DestroyAuthKeyOk extends TypeDestroyAuthKeyRes {
+  protected get [id]() {
+    return 0xf660e1d4;
+  }
+
+  static get [paramDesc](): ParamDesc {
+    return [];
+  }
+
+  protected get [params](): Params {
+    return [];
+  }
+
+  constructor() {
+    super();
+  }
+}
+
+export class DestroyAuthKeyNone extends TypeDestroyAuthKeyRes {
+  protected get [id]() {
+    return 0x0a9f2259;
+  }
+
+  static get [paramDesc](): ParamDesc {
+    return [];
+  }
+
+  protected get [params](): Params {
+    return [];
+  }
+
+  constructor() {
+    super();
+  }
+}
+
+export class DestroyAuthKeyFail extends TypeDestroyAuthKeyRes {
+  protected get [id]() {
+    return 0xea109b13;
+  }
+
+  static get [paramDesc](): ParamDesc {
+    return [];
+  }
+
+  protected get [params](): Params {
+    return [];
+  }
+
+  constructor() {
+    super();
+  }
+}
+
 export class HttpWait extends TypeHttpWait {
   maxDelay: number;
   waitAfter: number;
@@ -2529,146 +2372,6 @@ export class HttpWait extends TypeHttpWait {
     this.maxDelay = params.maxDelay;
     this.waitAfter = params.waitAfter;
     this.maxWait = params.maxWait;
-  }
-}
-
-export class IpPort extends Constructor {
-  ipv4: number;
-  port: number;
-
-  protected get [id]() {
-    return 0xd433ad73;
-  }
-
-  static get [paramDesc](): ParamDesc {
-    return [
-      ["ipv4", "number", "int"],
-      ["port", "number", "int"],
-    ];
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.ipv4, "number", "int"],
-      [this.port, "number", "int"],
-    ];
-  }
-
-  constructor(params: { ipv4: number; port: number }) {
-    super();
-    this.ipv4 = params.ipv4;
-    this.port = params.port;
-  }
-}
-
-export class IpPortSecret extends TypeIpPort {
-  ipv4: number;
-  port: number;
-  secret: Uint8Array;
-
-  protected get [id]() {
-    return 0x37982646;
-  }
-
-  static get [paramDesc](): ParamDesc {
-    return [
-      ["ipv4", "number", "int"],
-      ["port", "number", "int"],
-      ["secret", Uint8Array, "bytes"],
-    ];
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.ipv4, "number", "int"],
-      [this.port, "number", "int"],
-      [this.secret, Uint8Array, "bytes"],
-    ];
-  }
-
-  constructor(params: { ipv4: number; port: number; secret: Uint8Array }) {
-    super();
-    this.ipv4 = params.ipv4;
-    this.port = params.port;
-    this.secret = params.secret;
-  }
-}
-
-export class AccessPointRule extends Constructor {
-  phonePrefixRules: Uint8Array;
-  dcId: number;
-  ips: Array<TypeIpPort>;
-
-  protected get [id]() {
-    return 0x4679b65f;
-  }
-
-  static get [paramDesc](): ParamDesc {
-    return [
-      ["phonePrefixRules", Uint8Array, "bytes"],
-      ["dcId", "number", "int"],
-      ["ips", [TypeIpPort], "vector<IpPort>"],
-    ];
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.phonePrefixRules, Uint8Array, "bytes"],
-      [this.dcId, "number", "int"],
-      [this.ips, [TypeIpPort], "vector<IpPort>"],
-    ];
-  }
-
-  constructor(
-    params: {
-      phonePrefixRules: Uint8Array;
-      dcId: number;
-      ips: Array<TypeIpPort>;
-    },
-  ) {
-    super();
-    this.phonePrefixRules = params.phonePrefixRules;
-    this.dcId = params.dcId;
-    this.ips = params.ips;
-  }
-}
-
-export class HelpConfigSimple extends Constructor {
-  date: number;
-  expires: number;
-  rules: Array<TypeAccessPointRule>;
-
-  protected get [id]() {
-    return 0x5a592a6c;
-  }
-
-  static get [paramDesc](): ParamDesc {
-    return [
-      ["date", "number", "int"],
-      ["expires", "number", "int"],
-      ["rules", [TypeAccessPointRule], "vector<AccessPointRule>"],
-    ];
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.date, "number", "int"],
-      [this.expires, "number", "int"],
-      [this.rules, [TypeAccessPointRule], "vector<AccessPointRule>"],
-    ];
-  }
-
-  constructor(
-    params: {
-      date: number;
-      expires: number;
-      rules: Array<TypeAccessPointRule>;
-    },
-  ) {
-    super();
-    this.date = params.date;
-    this.expires = params.expires;
-    this.rules = params.rules;
   }
 }
 
@@ -4656,6 +4359,7 @@ export class User extends Constructor {
   botAttachMenu?: true;
   premium?: true;
   attachMenuEnabled?: true;
+  botCanEdit?: true;
   id: bigint;
   accessHash?: bigint;
   firstName?: string;
@@ -4697,6 +4401,7 @@ export class User extends Constructor {
       ["premium", "true", "flags.28?true"],
       ["attachMenuEnabled", "true", "flags.29?true"],
       ["flags2", flags, "#"],
+      ["botCanEdit", "true", "flags2.1?true"],
       ["id", "bigint", "long"],
       ["accessHash", "bigint", "flags.0?long"],
       ["firstName", "string", "flags.1?string"],
@@ -4740,6 +4445,7 @@ export class User extends Constructor {
       [this.premium ?? null, "true", "flags.28?true"],
       [this.attachMenuEnabled ?? null, "true", "flags.29?true"],
       ["flags2", flags, "#"],
+      [this.botCanEdit ?? null, "true", "flags2.1?true"],
       [this.id, "bigint", "long"],
       [this.accessHash ?? null, "bigint", "flags.0?long"],
       [this.firstName ?? null, "string", "flags.1?string"],
@@ -4781,6 +4487,7 @@ export class User extends Constructor {
       botAttachMenu?: true;
       premium?: true;
       attachMenuEnabled?: true;
+      botCanEdit?: true;
       id: bigint;
       accessHash?: bigint;
       firstName?: string;
@@ -4816,6 +4523,7 @@ export class User extends Constructor {
     this.botAttachMenu = params.botAttachMenu;
     this.premium = params.premium;
     this.attachMenuEnabled = params.attachMenuEnabled;
+    this.botCanEdit = params.botCanEdit;
     this.id = params.id;
     this.accessHash = params.accessHash;
     this.firstName = params.firstName;
@@ -13523,6 +13231,7 @@ export class UpdateChatParticipant extends TypeUpdate {
 }
 
 export class UpdateChannelParticipant extends TypeUpdate {
+  viaChatlist?: true;
   channelId: bigint;
   date: number;
   actorId: bigint;
@@ -13539,6 +13248,7 @@ export class UpdateChannelParticipant extends TypeUpdate {
   static get [paramDesc](): ParamDesc {
     return [
       ["flags", flags, "#"],
+      ["viaChatlist", "true", "flags.3?true"],
       ["channelId", "bigint", "long"],
       ["date", "number", "int"],
       ["actorId", "bigint", "long"],
@@ -13553,6 +13263,7 @@ export class UpdateChannelParticipant extends TypeUpdate {
   protected get [params](): Params {
     return [
       ["flags", flags, "#"],
+      [this.viaChatlist ?? null, "true", "flags.3?true"],
       [this.channelId, "bigint", "long"],
       [this.date, "number", "int"],
       [this.actorId, "bigint", "long"],
@@ -13578,6 +13289,7 @@ export class UpdateChannelParticipant extends TypeUpdate {
 
   constructor(
     params: {
+      viaChatlist?: true;
       channelId: bigint;
       date: number;
       actorId: bigint;
@@ -13589,6 +13301,7 @@ export class UpdateChannelParticipant extends TypeUpdate {
     },
   ) {
     super();
+    this.viaChatlist = params.viaChatlist;
     this.channelId = params.channelId;
     this.date = params.date;
     this.actorId = params.actorId;
@@ -36651,6 +36364,7 @@ export class MessagesAffectedFoundMessages extends Constructor {
 
 export class ChatInviteImporter extends Constructor {
   requested?: true;
+  viaChatlist?: true;
   userId: bigint;
   date: number;
   about?: string;
@@ -36664,6 +36378,7 @@ export class ChatInviteImporter extends Constructor {
     return [
       ["flags", flags, "#"],
       ["requested", "true", "flags.0?true"],
+      ["viaChatlist", "true", "flags.3?true"],
       ["userId", "bigint", "long"],
       ["date", "number", "int"],
       ["about", "string", "flags.2?string"],
@@ -36675,6 +36390,7 @@ export class ChatInviteImporter extends Constructor {
     return [
       ["flags", flags, "#"],
       [this.requested ?? null, "true", "flags.0?true"],
+      [this.viaChatlist ?? null, "true", "flags.3?true"],
       [this.userId, "bigint", "long"],
       [this.date, "number", "int"],
       [this.about ?? null, "string", "flags.2?string"],
@@ -36685,6 +36401,7 @@ export class ChatInviteImporter extends Constructor {
   constructor(
     params: {
       requested?: true;
+      viaChatlist?: true;
       userId: bigint;
       date: number;
       about?: string;
@@ -36693,6 +36410,7 @@ export class ChatInviteImporter extends Constructor {
   ) {
     super();
     this.requested = params.requested;
+    this.viaChatlist = params.viaChatlist;
     this.userId = params.userId;
     this.date = params.date;
     this.about = params.about;
@@ -40975,30 +40693,15 @@ export class ReadParticipantDate extends Constructor {
 export const map = new Map<number, TLObjectConstructor>(
   [
     [0x05162463, ResPQ],
-    [0x83c95aec, PQInnerData],
     [0xa9f55f95, PQInnerDataDc],
-    [0x3c6a84d4, PQInnerDataTemp],
     [0x56fddf88, PQInnerDataTempDc],
-    [0x75a3f765, BindAuthKeyInner],
-    [0x79cb045d, ServerDHParamsFail],
     [0xd0e8075c, ServerDHParamsOk],
     [0xb5890dba, ServerDHInnerData],
     [0x6643b654, ClientDHInnerData],
     [0x3bcbf734, DhGenOk],
     [0x46dc1fb9, DhGenRetry],
     [0xa69dae02, DhGenFail],
-    [0xf660e1d4, DestroyAuthKeyOk],
-    [0x0a9f2259, DestroyAuthKeyNone],
-    [0xea109b13, DestroyAuthKeyFail],
-    [0x62d6b459, MsgsAck],
-    [0xa7eff811, BadMsgNotification],
-    [0xedab447b, BadServerSalt],
-    [0xda69fb52, MsgsStateReq],
-    [0x04deb57d, MsgsStateInfo],
-    [0x8cc0d131, MsgsAllInfo],
-    [0x276d3ec6, MsgDetailedInfo],
-    [0x809db6df, MsgNewDetailedInfo],
-    [0x7d861a08, MsgResendReq],
+    [0x75a3f765, BindAuthKeyInner],
     [0x2144ca19, RpcError],
     [0x5e2ad36e, RpcAnswerUnknown],
     [0xcd78e586, RpcAnswerDroppedRunning],
@@ -41009,11 +40712,19 @@ export const map = new Map<number, TLObjectConstructor>(
     [0xe22045fc, DestroySessionOk],
     [0x62d350c9, DestroySessionNone],
     [0x9ec20908, NewSessionCreated],
+    [0x62d6b459, MsgsAck],
+    [0xa7eff811, BadMsgNotification],
+    [0xedab447b, BadServerSalt],
+    [0x7d861a08, MsgResendReq],
+    [0xda69fb52, MsgsStateReq],
+    [0x04deb57d, MsgsStateInfo],
+    [0x8cc0d131, MsgsAllInfo],
+    [0x276d3ec6, MsgDetailedInfo],
+    [0x809db6df, MsgNewDetailedInfo],
+    [0xf660e1d4, DestroyAuthKeyOk],
+    [0x0a9f2259, DestroyAuthKeyNone],
+    [0xea109b13, DestroyAuthKeyFail],
     [0x9299359f, HttpWait],
-    [0xd433ad73, IpPort],
-    [0x37982646, IpPortSecret],
-    [0x4679b65f, AccessPointRule],
-    [0x5a592a6c, HelpConfigSimple],
     [0x3fedd339, True],
     [0xc4b9f9bb, Error],
     [0x56730bcc, Null],
