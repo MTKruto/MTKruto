@@ -83,7 +83,7 @@ export async function encryptMessage(
 
   messageWriter.writeInt64(authKeyId);
   messageWriter.write(messageKey);
-  messageWriter.write(ige256Encrypt(payloadWriter.buffer, aesKey, aesIV));
+  messageWriter.write(ige256Encrypt(payload, aesKey, aesIV));
 
   return messageWriter.buffer;
 }
