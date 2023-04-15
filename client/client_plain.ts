@@ -4,8 +4,8 @@ import { bigIntFromBuffer, getRandomBigInt, modExp } from "../utilities/0_bigint
 import { bufferFromBigInt, concat, sha1 } from "../utilities/0_buffer.ts";
 import { rsaPad } from "../utilities/1_auth.ts";
 import { packUnencryptedMessage, unpackUnencryptedMessage } from "../utilities/1_message.ts";
-import { ClientDHInnerData, DhGenOk, PQInnerDataDc, ResPQ, ServerDHInnerData, ServerDHParamsOk } from "../tl/2_constructors.ts";
-import { Function, ReqDHParams, ReqPqMulti, SetClientDHParams } from "../tl/3_functions.ts";
+import { ClientDHInnerData, DhGenOk, PQInnerDataDC, ResPQ, ServerDHInnerData, ServerDHParamsOk } from "../tl/2_constructors.ts";
+import { Function, ReqDHParams, ReqPQMulti, SetClientDHParams } from "../tl/3_functions.ts";
 import { TLReader } from "../tl/3_tl_reader.ts";
 import { ClientAbstract } from "./client_abstract.ts";
 import { logger } from "../utilities/0_logger.ts";
@@ -29,7 +29,7 @@ export class ClientPlain extends ClientAbstract {
     let nonce = getRandomBigInt(16, true, true);
     logger().debug("Auth key creation started");
 
-    const resPq = await this.invoke(new ReqPqMulti({ nonce }));
+    const resPq = await this.invoke(new ReqPQMulti({ nonce }));
 
     assertInstanceOf(resPq, ResPQ);
     assertEquals(resPq.nonce, nonce);
@@ -63,7 +63,7 @@ export class ClientPlain extends ClientAbstract {
     const serverNonce = resPq.serverNonce;
     const newNonce = getRandomBigInt(32, true, true);
     let encryptedData = await rsaPad(
-      new PQInnerDataDc({
+      new PQInnerDataDC({
         pq,
         p,
         q,
