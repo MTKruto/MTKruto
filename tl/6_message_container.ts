@@ -1,6 +1,6 @@
 import { TLReader } from "./3_tl_reader.ts";
 import { TLWriter } from "./3_tl_writer.ts";
-import { Message } from "./6_message.ts";
+import { Message } from "./5_message.ts";
 
 export class MessageContainer {
   static get cid() {

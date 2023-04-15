@@ -57,6 +57,9 @@ export abstract class TypeDestroySessionRes extends Constructor {
 export abstract class TypeNewSession extends Constructor {
 }
 
+export abstract class TypeObject extends Constructor {
+}
+
 export abstract class TypeMsgsAck extends Constructor {
 }
 
@@ -1994,6 +1997,31 @@ export class NewSessionCreated extends TypeNewSession {
     this.firstMsgId = params.firstMsgId;
     this.uniqueId = params.uniqueId;
     this.serverSalt = params.serverSalt;
+  }
+}
+
+export class GzipPacked extends TypeObject {
+  packedData: Uint8Array;
+
+  protected get [id]() {
+    return 0x3072cfa1;
+  }
+
+  static get [paramDesc](): ParamDesc {
+    return [
+      ["packedData", Uint8Array, "bytes"],
+    ];
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.packedData, Uint8Array, "bytes"],
+    ];
+  }
+
+  constructor(params: { packedData: Uint8Array }) {
+    super();
+    this.packedData = params.packedData;
   }
 }
 
@@ -40712,6 +40740,7 @@ export const map = new Map<number, TLObjectConstructor>(
     [0xe22045fc, DestroySessionOk],
     [0x62d350c9, DestroySessionNone],
     [0x9ec20908, NewSessionCreated],
+    [0x3072cfa1, GzipPacked],
     [0x62d6b459, MsgsAck],
     [0xa7eff811, BadMsgNotification],
     [0xedab447b, BadServerSalt],

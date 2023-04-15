@@ -1,8 +1,7 @@
 import { TLObject } from "./1_tl_object.ts";
 import { TLReader } from "./3_tl_reader.ts";
-import { GZIPPacked } from "./4_gzip_packed.ts";
 
-export class RPCResult {
+export class RpcResult {
   static get cid() {
     return 0xf35c6d01;
   }
@@ -16,7 +15,7 @@ export class RPCResult {
   static deserialize(buffer: Uint8Array) {
     const reader = new TLReader(buffer);
     const messageId = reader.readInt64();
-    const result = GZIPPacked.readPossiblyCompressedObject(reader);
-    return new RPCResult(messageId, result);
+    const result = reader.readObject();
+    return new RpcResult(messageId, result);
   }
 }

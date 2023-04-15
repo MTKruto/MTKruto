@@ -3,10 +3,9 @@ import { TLRawReader } from "../tl/0_tl_raw_reader.ts";
 import { TLRawWriter } from "../tl/0_tl_raw_writer.ts";
 import { TLObject } from "../tl/1_tl_object.ts";
 import { TLReader } from "../tl/3_tl_reader.ts";
-import { GZIPPacked } from "../tl/4_gzip_packed.ts";
-import { RPCResult } from "../tl/5_rpc_result.ts";
-import { Message } from "../tl/6_message.ts";
-import { MessageContainer } from "../tl/7_message_container.ts";
+import { RpcResult } from "../tl/4_rpc_result.ts";
+import { Message } from "../tl/5_message.ts";
+import { MessageContainer } from "../tl/6_message_container.ts";
 import { bufferFromBigInt, concat, sha256 } from "./0_buffer.ts";
 
 let lastMsgId = 0n;
@@ -112,7 +111,7 @@ export async function decryptMessage(
 
   const _salt = plainReader.readInt64();
   const sid = plainReader.readInt64();
-  assertEquals(sid, sessionId);
+  // assertEquals(sid, sessionId);
 
   const mid = plainReader.readInt64();
   const seqno = plainReader.readInt32();
@@ -123,11 +122,8 @@ export async function decryptMessage(
 
   if (cid == MessageContainer.cid) {
     return MessageContainer.deserialize(plainReader.buffer);
-  } else if (cid == RPCResult.cid) {
-    const body = RPCResult.deserialize(plainReader.buffer);
-    return new Message(mid, seqno, body);
-  } else if (cid == GZIPPacked.cid) {
-    const body = GZIPPacked.deserialize(plainReader).packedData;
+  } else if (cid == RpcResult.cid) {
+    const body = RpcResult.deserialize(plainReader.buffer);
     return new Message(mid, seqno, body);
   } else {
     const body = plainReader.readObject(cid);
