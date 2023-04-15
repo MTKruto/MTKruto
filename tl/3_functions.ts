@@ -63,16 +63,7 @@ export class ReqDHParams extends Function {
     ];
   }
 
-  constructor(
-    params: {
-      nonce: bigint;
-      serverNonce: bigint;
-      p: Uint8Array;
-      q: Uint8Array;
-      publicKeyFingerprint: bigint;
-      encryptedData: Uint8Array;
-    },
-  ) {
+  constructor(params: { nonce: bigint; serverNonce: bigint; p: Uint8Array; q: Uint8Array; publicKeyFingerprint: bigint; encryptedData: Uint8Array }) {
     super();
     this.nonce = params.nonce;
     this.serverNonce = params.serverNonce;
@@ -108,9 +99,7 @@ export class SetClientDHParams extends Function {
     ];
   }
 
-  constructor(
-    params: { nonce: bigint; serverNonce: bigint; encryptedData: Uint8Array },
-  ) {
+  constructor(params: { nonce: bigint; serverNonce: bigint; encryptedData: Uint8Array }) {
     super();
     this.nonce = params.nonce;
     this.serverNonce = params.serverNonce;
@@ -365,30 +354,13 @@ export class InitConnection extends Function {
       [this.systemLangCode, "string", "string"],
       [this.langPack, "string", "string"],
       [this.langCode, "string", "string"],
-      [
-        this.proxy ?? null,
-        constructors.TypeInputClientProxy,
-        "flags.0?InputClientProxy",
-      ],
+      [this.proxy ?? null, constructors.TypeInputClientProxy, "flags.0?InputClientProxy"],
       [this.params ?? null, constructors.TypeJSONValue, "flags.1?JSONValue"],
       [this.query, constructors.TypeX, "!X"],
     ];
   }
 
-  constructor(
-    params: {
-      apiId: number;
-      deviceModel: string;
-      systemVersion: string;
-      appVersion: string;
-      systemLangCode: string;
-      langPack: string;
-      langCode: string;
-      proxy?: constructors.TypeInputClientProxy;
-      params?: constructors.TypeJSONValue;
-      query: constructors.TypeX;
-    },
-  ) {
+  constructor(params: { apiId: number; deviceModel: string; systemVersion: string; appVersion: string; systemLangCode: string; langPack: string; langCode: string; proxy?: constructors.TypeInputClientProxy; params?: constructors.TypeJSONValue; query: constructors.TypeX }) {
     super();
     this.apiId = params.apiId;
     this.deviceModel = params.deviceModel;
@@ -479,9 +451,7 @@ export class InvokeWithMessagesRange extends Function {
     ];
   }
 
-  constructor(
-    params: { range: constructors.TypeMessageRange; query: constructors.TypeX },
-  ) {
+  constructor(params: { range: constructors.TypeMessageRange; query: constructors.TypeX }) {
     super();
     this.range = params.range;
     this.query = params.query;
@@ -545,14 +515,7 @@ export class AuthSendCode extends Function {
     ];
   }
 
-  constructor(
-    params: {
-      phoneNumber: string;
-      apiId: number;
-      apiHash: string;
-      settings: constructors.TypeCodeSettings;
-    },
-  ) {
+  constructor(params: { phoneNumber: string; apiId: number; apiHash: string; settings: constructors.TypeCodeSettings }) {
     super();
     this.phoneNumber = params.phoneNumber;
     this.apiId = params.apiId;
@@ -589,14 +552,7 @@ export class AuthSignUp extends Function {
     ];
   }
 
-  constructor(
-    params: {
-      phoneNumber: string;
-      phoneCodeHash: string;
-      firstName: string;
-      lastName: string;
-    },
-  ) {
+  constructor(params: { phoneNumber: string; phoneCodeHash: string; firstName: string; lastName: string }) {
     super();
     this.phoneNumber = params.phoneNumber;
     this.phoneCodeHash = params.phoneCodeHash;
@@ -621,11 +577,7 @@ export class AuthSignIn extends Function {
       ["phoneNumber", "string", "string"],
       ["phoneCodeHash", "string", "string"],
       ["phoneCode", "string", "flags.0?string"],
-      [
-        "emailVerification",
-        constructors.TypeEmailVerification,
-        "flags.1?EmailVerification",
-      ],
+      ["emailVerification", constructors.TypeEmailVerification, "flags.1?EmailVerification"],
     ];
   }
 
@@ -635,22 +587,11 @@ export class AuthSignIn extends Function {
       [this.phoneNumber, "string", "string"],
       [this.phoneCodeHash, "string", "string"],
       [this.phoneCode ?? null, "string", "flags.0?string"],
-      [
-        this.emailVerification ?? null,
-        constructors.TypeEmailVerification,
-        "flags.1?EmailVerification",
-      ],
+      [this.emailVerification ?? null, constructors.TypeEmailVerification, "flags.1?EmailVerification"],
     ];
   }
 
-  constructor(
-    params: {
-      phoneNumber: string;
-      phoneCodeHash: string;
-      phoneCode?: string;
-      emailVerification?: constructors.TypeEmailVerification;
-    },
-  ) {
+  constructor(params: { phoneNumber: string; phoneCodeHash: string; phoneCode?: string; emailVerification?: constructors.TypeEmailVerification }) {
     super();
     this.phoneNumber = params.phoneNumber;
     this.phoneCodeHash = params.phoneCodeHash;
@@ -777,14 +718,7 @@ export class AuthBindTempAuthKey extends Function {
     ];
   }
 
-  constructor(
-    params: {
-      permAuthKeyId: bigint;
-      nonce: bigint;
-      expiresAt: number;
-      encryptedMessage: Uint8Array;
-    },
-  ) {
+  constructor(params: { permAuthKeyId: bigint; nonce: bigint; expiresAt: number; encryptedMessage: Uint8Array }) {
     super();
     this.permAuthKeyId = params.permAuthKeyId;
     this.nonce = params.nonce;
@@ -821,14 +755,7 @@ export class AuthImportBotAuthorization extends Function {
     ];
   }
 
-  constructor(
-    params: {
-      flags: number;
-      apiId: number;
-      apiHash: string;
-      botAuthToken: string;
-    },
-  ) {
+  constructor(params: { flags: number; apiId: number; apiHash: string; botAuthToken: string }) {
     super();
     this.flags = params.flags;
     this.apiId = params.apiId;
@@ -846,21 +773,13 @@ export class AuthCheckPassword extends Function {
 
   static get [paramDesc](): ParamDesc {
     return [
-      [
-        "password",
-        constructors.TypeInputCheckPasswordSRP,
-        "InputCheckPasswordSRP",
-      ],
+      ["password", constructors.TypeInputCheckPasswordSRP, "InputCheckPasswordSRP"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [
-        this.password,
-        constructors.TypeInputCheckPasswordSRP,
-        "InputCheckPasswordSRP",
-      ],
+      [this.password, constructors.TypeInputCheckPasswordSRP, "InputCheckPasswordSRP"],
     ];
   }
 
@@ -900,11 +819,7 @@ export class AuthRecoverPassword extends Function {
     return [
       ["flags", flags, "#"],
       ["code", "string", "string"],
-      [
-        "newSettings",
-        constructors.TypeAccountPasswordInputSettings,
-        "flags.0?account.PasswordInputSettings",
-      ],
+      ["newSettings", constructors.TypeAccountPasswordInputSettings, "flags.0?account.PasswordInputSettings"],
     ];
   }
 
@@ -912,20 +827,11 @@ export class AuthRecoverPassword extends Function {
     return [
       ["flags", flags, "#"],
       [this.code, "string", "string"],
-      [
-        this.newSettings ?? null,
-        constructors.TypeAccountPasswordInputSettings,
-        "flags.0?account.PasswordInputSettings",
-      ],
+      [this.newSettings ?? null, constructors.TypeAccountPasswordInputSettings, "flags.0?account.PasswordInputSettings"],
     ];
   }
 
-  constructor(
-    params: {
-      code: string;
-      newSettings?: constructors.TypeAccountPasswordInputSettings;
-    },
-  ) {
+  constructor(params: { code: string; newSettings?: constructors.TypeAccountPasswordInputSettings }) {
     super();
     this.code = params.code;
     this.newSettings = params.newSettings;
@@ -1040,9 +946,7 @@ export class AuthExportLoginToken extends Function {
     ];
   }
 
-  constructor(
-    params: { apiId: number; apiHash: string; exceptIds: Array<bigint> },
-  ) {
+  constructor(params: { apiId: number; apiHash: string; exceptIds: Array<bigint> }) {
     super();
     this.apiId = params.apiId;
     this.apiHash = params.apiHash;
@@ -1150,9 +1054,7 @@ export class AuthImportWebTokenAuthorization extends Function {
     ];
   }
 
-  constructor(
-    params: { apiId: number; apiHash: string; webAuthToken: string },
-  ) {
+  constructor(params: { apiId: number; apiHash: string; webAuthToken: string }) {
     super();
     this.apiId = params.apiId;
     this.apiHash = params.apiHash;
@@ -1190,14 +1092,7 @@ export class AuthRequestFirebaseSms extends Function {
     ];
   }
 
-  constructor(
-    params: {
-      phoneNumber: string;
-      phoneCodeHash: string;
-      safetyNetToken?: string;
-      iosPushSecret?: string;
-    },
-  ) {
+  constructor(params: { phoneNumber: string; phoneCodeHash: string; safetyNetToken?: string; iosPushSecret?: string }) {
     super();
     this.phoneNumber = params.phoneNumber;
     this.phoneCodeHash = params.phoneCodeHash;
@@ -1242,16 +1137,7 @@ export class AccountRegisterDevice extends Function {
     ];
   }
 
-  constructor(
-    params: {
-      noMuted?: true;
-      tokenType: number;
-      token: string;
-      appSandbox: boolean;
-      secret: Uint8Array;
-      otherUids: Array<bigint>;
-    },
-  ) {
+  constructor(params: { noMuted?: true; tokenType: number; token: string; appSandbox: boolean; secret: Uint8Array; otherUids: Array<bigint> }) {
     super();
     this.noMuted = params.noMuted;
     this.tokenType = params.tokenType;
@@ -1287,9 +1173,7 @@ export class AccountUnregisterDevice extends Function {
     ];
   }
 
-  constructor(
-    params: { tokenType: number; token: string; otherUids: Array<bigint> },
-  ) {
+  constructor(params: { tokenType: number; token: string; otherUids: Array<bigint> }) {
     super();
     this.tokenType = params.tokenType;
     this.token = params.token;
@@ -1308,31 +1192,18 @@ export class AccountUpdateNotifySettings extends Function {
   static get [paramDesc](): ParamDesc {
     return [
       ["peer", constructors.TypeInputNotifyPeer, "InputNotifyPeer"],
-      [
-        "settings",
-        constructors.TypeInputPeerNotifySettings,
-        "InputPeerNotifySettings",
-      ],
+      ["settings", constructors.TypeInputPeerNotifySettings, "InputPeerNotifySettings"],
     ];
   }
 
   protected get [params](): Params {
     return [
       [this.peer, constructors.TypeInputNotifyPeer, "InputNotifyPeer"],
-      [
-        this.settings,
-        constructors.TypeInputPeerNotifySettings,
-        "InputPeerNotifySettings",
-      ],
+      [this.settings, constructors.TypeInputPeerNotifySettings, "InputPeerNotifySettings"],
     ];
   }
 
-  constructor(
-    params: {
-      peer: constructors.TypeInputNotifyPeer;
-      settings: constructors.TypeInputPeerNotifySettings;
-    },
-  ) {
+  constructor(params: { peer: constructors.TypeInputNotifyPeer; settings: constructors.TypeInputPeerNotifySettings }) {
     super();
     this.peer = params.peer;
     this.settings = params.settings;
@@ -1409,9 +1280,7 @@ export class AccountUpdateProfile extends Function {
     ];
   }
 
-  constructor(
-    params: { firstName?: string; lastName?: string; about?: string },
-  ) {
+  constructor(params: { firstName?: string; lastName?: string; about?: string }) {
     super();
     this.firstName = params.firstName;
     this.lastName = params.lastName;
@@ -1494,13 +1363,7 @@ export class AccountReportPeer extends Function {
     ];
   }
 
-  constructor(
-    params: {
-      peer: constructors.TypeInputPeer;
-      reason: constructors.TypeReportReason;
-      message: string;
-    },
-  ) {
+  constructor(params: { peer: constructors.TypeInputPeer; reason: constructors.TypeReportReason; message: string }) {
     super();
     this.peer = params.peer;
     this.reason = params.reason;
@@ -1594,31 +1457,18 @@ export class AccountSetPrivacy extends Function {
   static get [paramDesc](): ParamDesc {
     return [
       ["key", constructors.TypeInputPrivacyKey, "InputPrivacyKey"],
-      [
-        "rules",
-        [constructors.TypeInputPrivacyRule],
-        "Vector<InputPrivacyRule>",
-      ],
+      ["rules", [constructors.TypeInputPrivacyRule], "Vector<InputPrivacyRule>"],
     ];
   }
 
   protected get [params](): Params {
     return [
       [this.key, constructors.TypeInputPrivacyKey, "InputPrivacyKey"],
-      [
-        this.rules,
-        [constructors.TypeInputPrivacyRule],
-        "Vector<InputPrivacyRule>",
-      ],
+      [this.rules, [constructors.TypeInputPrivacyRule], "Vector<InputPrivacyRule>"],
     ];
   }
 
-  constructor(
-    params: {
-      key: constructors.TypeInputPrivacyKey;
-      rules: Array<constructors.TypeInputPrivacyRule>;
-    },
-  ) {
+  constructor(params: { key: constructors.TypeInputPrivacyKey; rules: Array<constructors.TypeInputPrivacyRule> }) {
     super();
     this.key = params.key;
     this.rules = params.rules;
@@ -1637,11 +1487,7 @@ export class AccountDeleteAccount extends Function {
     return [
       ["flags", flags, "#"],
       ["reason", "string", "string"],
-      [
-        "password",
-        constructors.TypeInputCheckPasswordSRP,
-        "flags.0?InputCheckPasswordSRP",
-      ],
+      ["password", constructors.TypeInputCheckPasswordSRP, "flags.0?InputCheckPasswordSRP"],
     ];
   }
 
@@ -1649,20 +1495,11 @@ export class AccountDeleteAccount extends Function {
     return [
       ["flags", flags, "#"],
       [this.reason, "string", "string"],
-      [
-        this.password ?? null,
-        constructors.TypeInputCheckPasswordSRP,
-        "flags.0?InputCheckPasswordSRP",
-      ],
+      [this.password ?? null, constructors.TypeInputCheckPasswordSRP, "flags.0?InputCheckPasswordSRP"],
     ];
   }
 
-  constructor(
-    params: {
-      reason: string;
-      password?: constructors.TypeInputCheckPasswordSRP;
-    },
-  ) {
+  constructor(params: { reason: string; password?: constructors.TypeInputCheckPasswordSRP }) {
     super();
     this.reason = params.reason;
     this.password = params.password;
@@ -1734,9 +1571,7 @@ export class AccountSendChangePhoneCode extends Function {
     ];
   }
 
-  constructor(
-    params: { phoneNumber: string; settings: constructors.TypeCodeSettings },
-  ) {
+  constructor(params: { phoneNumber: string; settings: constructors.TypeCodeSettings }) {
     super();
     this.phoneNumber = params.phoneNumber;
     this.settings = params.settings;
@@ -1768,9 +1603,7 @@ export class AccountChangePhone extends Function {
     ];
   }
 
-  constructor(
-    params: { phoneNumber: string; phoneCodeHash: string; phoneCode: string },
-  ) {
+  constructor(params: { phoneNumber: string; phoneCodeHash: string; phoneCode: string }) {
     super();
     this.phoneNumber = params.phoneNumber;
     this.phoneCodeHash = params.phoneCodeHash;
@@ -1873,21 +1706,13 @@ export class AccountGetPasswordSettings extends Function {
 
   static get [paramDesc](): ParamDesc {
     return [
-      [
-        "password",
-        constructors.TypeInputCheckPasswordSRP,
-        "InputCheckPasswordSRP",
-      ],
+      ["password", constructors.TypeInputCheckPasswordSRP, "InputCheckPasswordSRP"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [
-        this.password,
-        constructors.TypeInputCheckPasswordSRP,
-        "InputCheckPasswordSRP",
-      ],
+      [this.password, constructors.TypeInputCheckPasswordSRP, "InputCheckPasswordSRP"],
     ];
   }
 
@@ -1907,40 +1732,19 @@ export class AccountUpdatePasswordSettings extends Function {
 
   static get [paramDesc](): ParamDesc {
     return [
-      [
-        "password",
-        constructors.TypeInputCheckPasswordSRP,
-        "InputCheckPasswordSRP",
-      ],
-      [
-        "newSettings",
-        constructors.TypeAccountPasswordInputSettings,
-        "account.PasswordInputSettings",
-      ],
+      ["password", constructors.TypeInputCheckPasswordSRP, "InputCheckPasswordSRP"],
+      ["newSettings", constructors.TypeAccountPasswordInputSettings, "account.PasswordInputSettings"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [
-        this.password,
-        constructors.TypeInputCheckPasswordSRP,
-        "InputCheckPasswordSRP",
-      ],
-      [
-        this.newSettings,
-        constructors.TypeAccountPasswordInputSettings,
-        "account.PasswordInputSettings",
-      ],
+      [this.password, constructors.TypeInputCheckPasswordSRP, "InputCheckPasswordSRP"],
+      [this.newSettings, constructors.TypeAccountPasswordInputSettings, "account.PasswordInputSettings"],
     ];
   }
 
-  constructor(
-    params: {
-      password: constructors.TypeInputCheckPasswordSRP;
-      newSettings: constructors.TypeAccountPasswordInputSettings;
-    },
-  ) {
+  constructor(params: { password: constructors.TypeInputCheckPasswordSRP; newSettings: constructors.TypeAccountPasswordInputSettings }) {
     super();
     this.password = params.password;
     this.newSettings = params.newSettings;
@@ -1969,9 +1773,7 @@ export class AccountSendConfirmPhoneCode extends Function {
     ];
   }
 
-  constructor(
-    params: { hash: string; settings: constructors.TypeCodeSettings },
-  ) {
+  constructor(params: { hash: string; settings: constructors.TypeCodeSettings }) {
     super();
     this.hash = params.hash;
     this.settings = params.settings;
@@ -2017,32 +1819,19 @@ export class AccountGetTmpPassword extends Function {
 
   static get [paramDesc](): ParamDesc {
     return [
-      [
-        "password",
-        constructors.TypeInputCheckPasswordSRP,
-        "InputCheckPasswordSRP",
-      ],
+      ["password", constructors.TypeInputCheckPasswordSRP, "InputCheckPasswordSRP"],
       ["period", "number", "int"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [
-        this.password,
-        constructors.TypeInputCheckPasswordSRP,
-        "InputCheckPasswordSRP",
-      ],
+      [this.password, constructors.TypeInputCheckPasswordSRP, "InputCheckPasswordSRP"],
       [this.period, "number", "int"],
     ];
   }
 
-  constructor(
-    params: {
-      password: constructors.TypeInputCheckPasswordSRP;
-      period: number;
-    },
-  ) {
+  constructor(params: { password: constructors.TypeInputCheckPasswordSRP; period: number }) {
     super();
     this.password = params.password;
     this.period = params.period;
@@ -2143,11 +1932,7 @@ export class AccountGetSecureValue extends Function {
 
   protected get [params](): Params {
     return [
-      [
-        this.types,
-        [constructors.TypeSecureValueType],
-        "Vector<SecureValueType>",
-      ],
+      [this.types, [constructors.TypeSecureValueType], "Vector<SecureValueType>"],
     ];
   }
 
@@ -2179,12 +1964,7 @@ export class AccountSaveSecureValue extends Function {
     ];
   }
 
-  constructor(
-    params: {
-      value: constructors.TypeInputSecureValue;
-      secureSecretId: bigint;
-    },
-  ) {
+  constructor(params: { value: constructors.TypeInputSecureValue; secureSecretId: bigint }) {
     super();
     this.value = params.value;
     this.secureSecretId = params.secureSecretId;
@@ -2206,11 +1986,7 @@ export class AccountDeleteSecureValue extends Function {
 
   protected get [params](): Params {
     return [
-      [
-        this.types,
-        [constructors.TypeSecureValueType],
-        "Vector<SecureValueType>",
-      ],
+      [this.types, [constructors.TypeSecureValueType], "Vector<SecureValueType>"],
     ];
   }
 
@@ -2269,16 +2045,8 @@ export class AccountAcceptAuthorization extends Function {
       ["botId", "bigint", "long"],
       ["scope", "string", "string"],
       ["publicKey", "string", "string"],
-      [
-        "valueHashes",
-        [constructors.TypeSecureValueHash],
-        "Vector<SecureValueHash>",
-      ],
-      [
-        "credentials",
-        constructors.TypeSecureCredentialsEncrypted,
-        "SecureCredentialsEncrypted",
-      ],
+      ["valueHashes", [constructors.TypeSecureValueHash], "Vector<SecureValueHash>"],
+      ["credentials", constructors.TypeSecureCredentialsEncrypted, "SecureCredentialsEncrypted"],
     ];
   }
 
@@ -2287,28 +2055,12 @@ export class AccountAcceptAuthorization extends Function {
       [this.botId, "bigint", "long"],
       [this.scope, "string", "string"],
       [this.publicKey, "string", "string"],
-      [
-        this.valueHashes,
-        [constructors.TypeSecureValueHash],
-        "Vector<SecureValueHash>",
-      ],
-      [
-        this.credentials,
-        constructors.TypeSecureCredentialsEncrypted,
-        "SecureCredentialsEncrypted",
-      ],
+      [this.valueHashes, [constructors.TypeSecureValueHash], "Vector<SecureValueHash>"],
+      [this.credentials, constructors.TypeSecureCredentialsEncrypted, "SecureCredentialsEncrypted"],
     ];
   }
 
-  constructor(
-    params: {
-      botId: bigint;
-      scope: string;
-      publicKey: string;
-      valueHashes: Array<constructors.TypeSecureValueHash>;
-      credentials: constructors.TypeSecureCredentialsEncrypted;
-    },
-  ) {
+  constructor(params: { botId: bigint; scope: string; publicKey: string; valueHashes: Array<constructors.TypeSecureValueHash>; credentials: constructors.TypeSecureCredentialsEncrypted }) {
     super();
     this.botId = params.botId;
     this.scope = params.scope;
@@ -2340,9 +2092,7 @@ export class AccountSendVerifyPhoneCode extends Function {
     ];
   }
 
-  constructor(
-    params: { phoneNumber: string; settings: constructors.TypeCodeSettings },
-  ) {
+  constructor(params: { phoneNumber: string; settings: constructors.TypeCodeSettings }) {
     super();
     this.phoneNumber = params.phoneNumber;
     this.settings = params.settings;
@@ -2374,9 +2124,7 @@ export class AccountVerifyPhone extends Function {
     ];
   }
 
-  constructor(
-    params: { phoneNumber: string; phoneCodeHash: string; phoneCode: string },
-  ) {
+  constructor(params: { phoneNumber: string; phoneCodeHash: string; phoneCode: string }) {
     super();
     this.phoneNumber = params.phoneNumber;
     this.phoneCodeHash = params.phoneCodeHash;
@@ -2406,9 +2154,7 @@ export class AccountSendVerifyEmailCode extends Function {
     ];
   }
 
-  constructor(
-    params: { purpose: constructors.TypeEmailVerifyPurpose; email: string },
-  ) {
+  constructor(params: { purpose: constructors.TypeEmailVerifyPurpose; email: string }) {
     super();
     this.purpose = params.purpose;
     this.email = params.email;
@@ -2433,20 +2179,11 @@ export class AccountVerifyEmail extends Function {
   protected get [params](): Params {
     return [
       [this.purpose, constructors.TypeEmailVerifyPurpose, "EmailVerifyPurpose"],
-      [
-        this.verification,
-        constructors.TypeEmailVerification,
-        "EmailVerification",
-      ],
+      [this.verification, constructors.TypeEmailVerification, "EmailVerification"],
     ];
   }
 
-  constructor(
-    params: {
-      purpose: constructors.TypeEmailVerifyPurpose;
-      verification: constructors.TypeEmailVerification;
-    },
-  ) {
+  constructor(params: { purpose: constructors.TypeEmailVerifyPurpose; verification: constructors.TypeEmailVerification }) {
     super();
     this.purpose = params.purpose;
     this.verification = params.verification;
@@ -2492,17 +2229,7 @@ export class AccountInitTakeoutSession extends Function {
     ];
   }
 
-  constructor(
-    params: {
-      contacts?: true;
-      messageUsers?: true;
-      messageChats?: true;
-      messageMegagroups?: true;
-      messageChannels?: true;
-      files?: true;
-      fileMaxSize?: bigint;
-    },
-  ) {
+  constructor(params: { contacts?: true; messageUsers?: true; messageChats?: true; messageMegagroups?: true; messageChannels?: true; files?: true; fileMaxSize?: bigint }) {
     super();
     this.contacts = params.contacts;
     this.messageUsers = params.messageUsers;
@@ -2665,17 +2392,11 @@ export class AccountGetNotifyExceptions extends Function {
     return [
       ["flags", flags, "#"],
       [this.compareSound ?? null, "true", "flags.1?true"],
-      [
-        this.peer ?? null,
-        constructors.TypeInputNotifyPeer,
-        "flags.0?InputNotifyPeer",
-      ],
+      [this.peer ?? null, constructors.TypeInputNotifyPeer, "flags.0?InputNotifyPeer"],
     ];
   }
 
-  constructor(
-    params: { compareSound?: true; peer?: constructors.TypeInputNotifyPeer },
-  ) {
+  constructor(params: { compareSound?: true; peer?: constructors.TypeInputNotifyPeer }) {
     super();
     this.compareSound = params.compareSound;
     this.peer = params.peer;
@@ -2732,13 +2453,7 @@ export class AccountUploadWallPaper extends Function {
     ];
   }
 
-  constructor(
-    params: {
-      file: constructors.TypeInputFile;
-      mimeType: string;
-      settings: constructors.TypeWallPaperSettings;
-    },
-  ) {
+  constructor(params: { file: constructors.TypeInputFile; mimeType: string; settings: constructors.TypeWallPaperSettings }) {
     super();
     this.file = params.file;
     this.mimeType = params.mimeType;
@@ -2771,13 +2486,7 @@ export class AccountSaveWallPaper extends Function {
     ];
   }
 
-  constructor(
-    params: {
-      wallpaper: constructors.TypeInputWallPaper;
-      unsave: boolean;
-      settings: constructors.TypeWallPaperSettings;
-    },
-  ) {
+  constructor(params: { wallpaper: constructors.TypeInputWallPaper; unsave: boolean; settings: constructors.TypeWallPaperSettings }) {
     super();
     this.wallpaper = params.wallpaper;
     this.unsave = params.unsave;
@@ -2807,12 +2516,7 @@ export class AccountInstallWallPaper extends Function {
     ];
   }
 
-  constructor(
-    params: {
-      wallpaper: constructors.TypeInputWallPaper;
-      settings: constructors.TypeWallPaperSettings;
-    },
-  ) {
+  constructor(params: { wallpaper: constructors.TypeInputWallPaper; settings: constructors.TypeWallPaperSettings }) {
     super();
     this.wallpaper = params.wallpaper;
     this.settings = params.settings;
@@ -2869,11 +2573,7 @@ export class AccountSaveAutoDownloadSettings extends Function {
       ["flags", flags, "#"],
       ["low", "true", "flags.0?true"],
       ["high", "true", "flags.1?true"],
-      [
-        "settings",
-        constructors.TypeAutoDownloadSettings,
-        "AutoDownloadSettings",
-      ],
+      ["settings", constructors.TypeAutoDownloadSettings, "AutoDownloadSettings"],
     ];
   }
 
@@ -2882,21 +2582,11 @@ export class AccountSaveAutoDownloadSettings extends Function {
       ["flags", flags, "#"],
       [this.low ?? null, "true", "flags.0?true"],
       [this.high ?? null, "true", "flags.1?true"],
-      [
-        this.settings,
-        constructors.TypeAutoDownloadSettings,
-        "AutoDownloadSettings",
-      ],
+      [this.settings, constructors.TypeAutoDownloadSettings, "AutoDownloadSettings"],
     ];
   }
 
-  constructor(
-    params: {
-      low?: true;
-      high?: true;
-      settings: constructors.TypeAutoDownloadSettings;
-    },
-  ) {
+  constructor(params: { low?: true; high?: true; settings: constructors.TypeAutoDownloadSettings }) {
     super();
     this.low = params.low;
     this.high = params.high;
@@ -2934,14 +2624,7 @@ export class AccountUploadTheme extends Function {
     ];
   }
 
-  constructor(
-    params: {
-      file: constructors.TypeInputFile;
-      thumb?: constructors.TypeInputFile;
-      fileName: string;
-      mimeType: string;
-    },
-  ) {
+  constructor(params: { file: constructors.TypeInputFile; thumb?: constructors.TypeInputFile; fileName: string; mimeType: string }) {
     super();
     this.file = params.file;
     this.thumb = params.thumb;
@@ -2966,11 +2649,7 @@ export class AccountCreateTheme extends Function {
       ["slug", "string", "string"],
       ["title", "string", "string"],
       ["document", constructors.TypeInputDocument, "flags.2?InputDocument"],
-      [
-        "settings",
-        [constructors.TypeInputThemeSettings],
-        "flags.3?Vector<InputThemeSettings>",
-      ],
+      ["settings", [constructors.TypeInputThemeSettings], "flags.3?Vector<InputThemeSettings>"],
     ];
   }
 
@@ -2979,27 +2658,12 @@ export class AccountCreateTheme extends Function {
       ["flags", flags, "#"],
       [this.slug, "string", "string"],
       [this.title, "string", "string"],
-      [
-        this.document ?? null,
-        constructors.TypeInputDocument,
-        "flags.2?InputDocument",
-      ],
-      [
-        this.settings ?? null,
-        [constructors.TypeInputThemeSettings],
-        "flags.3?Vector<InputThemeSettings>",
-      ],
+      [this.document ?? null, constructors.TypeInputDocument, "flags.2?InputDocument"],
+      [this.settings ?? null, [constructors.TypeInputThemeSettings], "flags.3?Vector<InputThemeSettings>"],
     ];
   }
 
-  constructor(
-    params: {
-      slug: string;
-      title: string;
-      document?: constructors.TypeInputDocument;
-      settings?: Array<constructors.TypeInputThemeSettings>;
-    },
-  ) {
+  constructor(params: { slug: string; title: string; document?: constructors.TypeInputDocument; settings?: Array<constructors.TypeInputThemeSettings> }) {
     super();
     this.slug = params.slug;
     this.title = params.title;
@@ -3028,11 +2692,7 @@ export class AccountUpdateTheme extends Function {
       ["slug", "string", "flags.0?string"],
       ["title", "string", "flags.1?string"],
       ["document", constructors.TypeInputDocument, "flags.2?InputDocument"],
-      [
-        "settings",
-        [constructors.TypeInputThemeSettings],
-        "flags.3?Vector<InputThemeSettings>",
-      ],
+      ["settings", [constructors.TypeInputThemeSettings], "flags.3?Vector<InputThemeSettings>"],
     ];
   }
 
@@ -3043,29 +2703,12 @@ export class AccountUpdateTheme extends Function {
       [this.theme, constructors.TypeInputTheme, "InputTheme"],
       [this.slug ?? null, "string", "flags.0?string"],
       [this.title ?? null, "string", "flags.1?string"],
-      [
-        this.document ?? null,
-        constructors.TypeInputDocument,
-        "flags.2?InputDocument",
-      ],
-      [
-        this.settings ?? null,
-        [constructors.TypeInputThemeSettings],
-        "flags.3?Vector<InputThemeSettings>",
-      ],
+      [this.document ?? null, constructors.TypeInputDocument, "flags.2?InputDocument"],
+      [this.settings ?? null, [constructors.TypeInputThemeSettings], "flags.3?Vector<InputThemeSettings>"],
     ];
   }
 
-  constructor(
-    params: {
-      format: string;
-      theme: constructors.TypeInputTheme;
-      slug?: string;
-      title?: string;
-      document?: constructors.TypeInputDocument;
-      settings?: Array<constructors.TypeInputThemeSettings>;
-    },
-  ) {
+  constructor(params: { format: string; theme: constructors.TypeInputTheme; slug?: string; title?: string; document?: constructors.TypeInputDocument; settings?: Array<constructors.TypeInputThemeSettings> }) {
     super();
     this.format = params.format;
     this.theme = params.theme;
@@ -3135,14 +2778,7 @@ export class AccountInstallTheme extends Function {
     ];
   }
 
-  constructor(
-    params: {
-      dark?: true;
-      theme?: constructors.TypeInputTheme;
-      format?: string;
-      baseTheme?: constructors.TypeBaseTheme;
-    },
-  ) {
+  constructor(params: { dark?: true; theme?: constructors.TypeInputTheme; format?: string; baseTheme?: constructors.TypeBaseTheme }) {
     super();
     this.dark = params.dark;
     this.theme = params.theme;
@@ -3263,21 +2899,13 @@ export class AccountGetMultiWallPapers extends Function {
 
   static get [paramDesc](): ParamDesc {
     return [
-      [
-        "wallpapers",
-        [constructors.TypeInputWallPaper],
-        "Vector<InputWallPaper>",
-      ],
+      ["wallpapers", [constructors.TypeInputWallPaper], "Vector<InputWallPaper>"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [
-        this.wallpapers,
-        [constructors.TypeInputWallPaper],
-        "Vector<InputWallPaper>",
-      ],
+      [this.wallpapers, [constructors.TypeInputWallPaper], "Vector<InputWallPaper>"],
     ];
   }
 
@@ -3314,21 +2942,13 @@ export class AccountSetGlobalPrivacySettings extends Function {
 
   static get [paramDesc](): ParamDesc {
     return [
-      [
-        "settings",
-        constructors.TypeGlobalPrivacySettings,
-        "GlobalPrivacySettings",
-      ],
+      ["settings", constructors.TypeGlobalPrivacySettings, "GlobalPrivacySettings"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [
-        this.settings,
-        constructors.TypeGlobalPrivacySettings,
-        "GlobalPrivacySettings",
-      ],
+      [this.settings, constructors.TypeGlobalPrivacySettings, "GlobalPrivacySettings"],
     ];
   }
 
@@ -3366,14 +2986,7 @@ export class AccountReportProfilePhoto extends Function {
     ];
   }
 
-  constructor(
-    params: {
-      peer: constructors.TypeInputPeer;
-      photoId: constructors.TypeInputPhoto;
-      reason: constructors.TypeReportReason;
-      message: string;
-    },
-  ) {
+  constructor(params: { peer: constructors.TypeInputPeer; photoId: constructors.TypeInputPhoto; reason: constructors.TypeReportReason; message: string }) {
     super();
     this.peer = params.peer;
     this.photoId = params.photoId;
@@ -3495,13 +3108,7 @@ export class AccountChangeAuthorizationSettings extends Function {
     ];
   }
 
-  constructor(
-    params: {
-      hash: bigint;
-      encryptedRequestsDisabled?: boolean;
-      callRequestsDisabled?: boolean;
-    },
-  ) {
+  constructor(params: { hash: bigint; encryptedRequestsDisabled?: boolean; callRequestsDisabled?: boolean }) {
     super();
     this.hash = params.hash;
     this.encryptedRequestsDisabled = params.encryptedRequestsDisabled;
@@ -3588,13 +3195,7 @@ export class AccountUploadRingtone extends Function {
     ];
   }
 
-  constructor(
-    params: {
-      file: constructors.TypeInputFile;
-      fileName: string;
-      mimeType: string;
-    },
-  ) {
+  constructor(params: { file: constructors.TypeInputFile; fileName: string; mimeType: string }) {
     super();
     this.file = params.file;
     this.fileName = params.fileName;
@@ -3850,15 +3451,7 @@ export class AccountSaveAutoSaveSettings extends Function {
     ];
   }
 
-  constructor(
-    params: {
-      users?: true;
-      chats?: true;
-      broadcasts?: true;
-      peer?: constructors.TypeInputPeer;
-      settings: constructors.TypeAutoSaveSettings;
-    },
-  ) {
+  constructor(params: { users?: true; chats?: true; broadcasts?: true; peer?: constructors.TypeInputPeer; settings: constructors.TypeAutoSaveSettings }) {
     super();
     this.users = params.users;
     this.chats = params.chats;
@@ -3947,31 +3540,18 @@ export class UsersSetSecureValueErrors extends Function {
   static get [paramDesc](): ParamDesc {
     return [
       ["id", constructors.TypeInputUser, "InputUser"],
-      [
-        "errors",
-        [constructors.TypeSecureValueError],
-        "Vector<SecureValueError>",
-      ],
+      ["errors", [constructors.TypeSecureValueError], "Vector<SecureValueError>"],
     ];
   }
 
   protected get [params](): Params {
     return [
       [this.id, constructors.TypeInputUser, "InputUser"],
-      [
-        this.errors,
-        [constructors.TypeSecureValueError],
-        "Vector<SecureValueError>",
-      ],
+      [this.errors, [constructors.TypeSecureValueError], "Vector<SecureValueError>"],
     ];
   }
 
-  constructor(
-    params: {
-      id: constructors.TypeInputUser;
-      errors: Array<constructors.TypeSecureValueError>;
-    },
-  ) {
+  constructor(params: { id: constructors.TypeInputUser; errors: Array<constructors.TypeSecureValueError> }) {
     super();
     this.id = params.id;
     this.errors = params.errors;
@@ -4305,21 +3885,7 @@ export class ContactsGetTopPeers extends Function {
     ];
   }
 
-  constructor(
-    params: {
-      correspondents?: true;
-      botsPm?: true;
-      botsInline?: true;
-      phoneCalls?: true;
-      forwardUsers?: true;
-      forwardChats?: true;
-      groups?: true;
-      channels?: true;
-      offset: number;
-      limit: number;
-      hash: bigint;
-    },
-  ) {
+  constructor(params: { correspondents?: true; botsPm?: true; botsInline?: true; phoneCalls?: true; forwardUsers?: true; forwardChats?: true; groups?: true; channels?: true; offset: number; limit: number; hash: bigint }) {
     super();
     this.correspondents = params.correspondents;
     this.botsPm = params.botsPm;
@@ -4357,12 +3923,7 @@ export class ContactsResetTopPeerRating extends Function {
     ];
   }
 
-  constructor(
-    params: {
-      category: constructors.TypeTopPeerCategory;
-      peer: constructors.TypeInputPeer;
-    },
-  ) {
+  constructor(params: { category: constructors.TypeTopPeerCategory; peer: constructors.TypeInputPeer }) {
     super();
     this.category = params.category;
     this.peer = params.peer;
@@ -4463,15 +4024,7 @@ export class ContactsAddContact extends Function {
     ];
   }
 
-  constructor(
-    params: {
-      addPhonePrivacyException?: true;
-      id: constructors.TypeInputUser;
-      firstName: string;
-      lastName: string;
-      phone: string;
-    },
-  ) {
+  constructor(params: { addPhonePrivacyException?: true; id: constructors.TypeInputUser; firstName: string; lastName: string; phone: string }) {
     super();
     this.addPhonePrivacyException = params.addPhonePrivacyException;
     this.id = params.id;
@@ -4533,13 +4086,7 @@ export class ContactsGetLocated extends Function {
     ];
   }
 
-  constructor(
-    params: {
-      background?: true;
-      geoPoint: constructors.TypeInputGeoPoint;
-      selfExpires?: number;
-    },
-  ) {
+  constructor(params: { background?: true; geoPoint: constructors.TypeInputGeoPoint; selfExpires?: number }) {
     super();
     this.background = params.background;
     this.geoPoint = params.geoPoint;
@@ -4577,14 +4124,7 @@ export class ContactsBlockFromReplies extends Function {
     ];
   }
 
-  constructor(
-    params: {
-      deleteMessage?: true;
-      deleteHistory?: true;
-      reportSpam?: true;
-      msgId: number;
-    },
-  ) {
+  constructor(params: { deleteMessage?: true; deleteHistory?: true; reportSpam?: true; msgId: number }) {
     super();
     this.deleteMessage = params.deleteMessage;
     this.deleteHistory = params.deleteHistory;
@@ -4725,17 +4265,7 @@ export class MessagesGetDialogs extends Function {
     ];
   }
 
-  constructor(
-    params: {
-      excludePinned?: true;
-      folderId?: number;
-      offsetDate: number;
-      offsetId: number;
-      offsetPeer: constructors.TypeInputPeer;
-      limit: number;
-      hash: bigint;
-    },
-  ) {
+  constructor(params: { excludePinned?: true; folderId?: number; offsetDate: number; offsetId: number; offsetPeer: constructors.TypeInputPeer; limit: number; hash: bigint }) {
     super();
     this.excludePinned = params.excludePinned;
     this.folderId = params.folderId;
@@ -4787,18 +4317,7 @@ export class MessagesGetHistory extends Function {
     ];
   }
 
-  constructor(
-    params: {
-      peer: constructors.TypeInputPeer;
-      offsetId: number;
-      offsetDate: number;
-      addOffset: number;
-      limit: number;
-      maxId: number;
-      minId: number;
-      hash: bigint;
-    },
-  ) {
+  constructor(params: { peer: constructors.TypeInputPeer; offsetId: number; offsetDate: number; addOffset: number; limit: number; maxId: number; minId: number; hash: bigint }) {
     super();
     this.peer = params.peer;
     this.offsetId = params.offsetId;
@@ -4868,23 +4387,7 @@ export class MessagesSearch extends Function {
     ];
   }
 
-  constructor(
-    params: {
-      peer: constructors.TypeInputPeer;
-      q: string;
-      fromId?: constructors.TypeInputPeer;
-      topMsgId?: number;
-      filter: constructors.TypeMessagesFilter;
-      minDate: number;
-      maxDate: number;
-      offsetId: number;
-      addOffset: number;
-      limit: number;
-      maxId: number;
-      minId: number;
-      hash: bigint;
-    },
-  ) {
+  constructor(params: { peer: constructors.TypeInputPeer; q: string; fromId?: constructors.TypeInputPeer; topMsgId?: number; filter: constructors.TypeMessagesFilter; minDate: number; maxDate: number; offsetId: number; addOffset: number; limit: number; maxId: number; minId: number; hash: bigint }) {
     super();
     this.peer = params.peer;
     this.q = params.q;
@@ -4967,16 +4470,7 @@ export class MessagesDeleteHistory extends Function {
     ];
   }
 
-  constructor(
-    params: {
-      justClear?: true;
-      revoke?: true;
-      peer: constructors.TypeInputPeer;
-      maxId: number;
-      minDate?: number;
-      maxDate?: number;
-    },
-  ) {
+  constructor(params: { justClear?: true; revoke?: true; peer: constructors.TypeInputPeer; maxId: number; minDate?: number; maxDate?: number }) {
     super();
     this.justClear = params.justClear;
     this.revoke = params.revoke;
@@ -5070,13 +4564,7 @@ export class MessagesSetTyping extends Function {
     ];
   }
 
-  constructor(
-    params: {
-      peer: constructors.TypeInputPeer;
-      topMsgId?: number;
-      action: constructors.TypeSendMessageAction;
-    },
-  ) {
+  constructor(params: { peer: constructors.TypeInputPeer; topMsgId?: number; action: constructors.TypeSendMessageAction }) {
     super();
     this.peer = params.peer;
     this.topMsgId = params.topMsgId;
@@ -5120,11 +4608,7 @@ export class MessagesSendMessage extends Function {
       ["message", "string", "string"],
       ["randomId", "bigint", "long"],
       ["replyMarkup", constructors.TypeReplyMarkup, "flags.2?ReplyMarkup"],
-      [
-        "entities",
-        [constructors.TypeMessageEntity],
-        "flags.3?Vector<MessageEntity>",
-      ],
+      ["entities", [constructors.TypeMessageEntity], "flags.3?Vector<MessageEntity>"],
       ["scheduleDate", "number", "flags.10?int"],
       ["sendAs", constructors.TypeInputPeer, "flags.13?InputPeer"],
     ];
@@ -5144,40 +4628,14 @@ export class MessagesSendMessage extends Function {
       [this.topMsgId ?? null, "number", "flags.9?int"],
       [this.message, "string", "string"],
       [this.randomId, "bigint", "long"],
-      [
-        this.replyMarkup ?? null,
-        constructors.TypeReplyMarkup,
-        "flags.2?ReplyMarkup",
-      ],
-      [
-        this.entities ?? null,
-        [constructors.TypeMessageEntity],
-        "flags.3?Vector<MessageEntity>",
-      ],
+      [this.replyMarkup ?? null, constructors.TypeReplyMarkup, "flags.2?ReplyMarkup"],
+      [this.entities ?? null, [constructors.TypeMessageEntity], "flags.3?Vector<MessageEntity>"],
       [this.scheduleDate ?? null, "number", "flags.10?int"],
       [this.sendAs ?? null, constructors.TypeInputPeer, "flags.13?InputPeer"],
     ];
   }
 
-  constructor(
-    params: {
-      noWebpage?: true;
-      silent?: true;
-      background?: true;
-      clearDraft?: true;
-      noforwards?: true;
-      updateStickersetsOrder?: true;
-      peer: constructors.TypeInputPeer;
-      replyToMsgId?: number;
-      topMsgId?: number;
-      message: string;
-      randomId: bigint;
-      replyMarkup?: constructors.TypeReplyMarkup;
-      entities?: Array<constructors.TypeMessageEntity>;
-      scheduleDate?: number;
-      sendAs?: constructors.TypeInputPeer;
-    },
-  ) {
+  constructor(params: { noWebpage?: true; silent?: true; background?: true; clearDraft?: true; noforwards?: true; updateStickersetsOrder?: true; peer: constructors.TypeInputPeer; replyToMsgId?: number; topMsgId?: number; message: string; randomId: bigint; replyMarkup?: constructors.TypeReplyMarkup; entities?: Array<constructors.TypeMessageEntity>; scheduleDate?: number; sendAs?: constructors.TypeInputPeer }) {
     super();
     this.noWebpage = params.noWebpage;
     this.silent = params.silent;
@@ -5233,11 +4691,7 @@ export class MessagesSendMedia extends Function {
       ["message", "string", "string"],
       ["randomId", "bigint", "long"],
       ["replyMarkup", constructors.TypeReplyMarkup, "flags.2?ReplyMarkup"],
-      [
-        "entities",
-        [constructors.TypeMessageEntity],
-        "flags.3?Vector<MessageEntity>",
-      ],
+      ["entities", [constructors.TypeMessageEntity], "flags.3?Vector<MessageEntity>"],
       ["scheduleDate", "number", "flags.10?int"],
       ["sendAs", constructors.TypeInputPeer, "flags.13?InputPeer"],
     ];
@@ -5257,40 +4711,14 @@ export class MessagesSendMedia extends Function {
       [this.media, constructors.TypeInputMedia, "InputMedia"],
       [this.message, "string", "string"],
       [this.randomId, "bigint", "long"],
-      [
-        this.replyMarkup ?? null,
-        constructors.TypeReplyMarkup,
-        "flags.2?ReplyMarkup",
-      ],
-      [
-        this.entities ?? null,
-        [constructors.TypeMessageEntity],
-        "flags.3?Vector<MessageEntity>",
-      ],
+      [this.replyMarkup ?? null, constructors.TypeReplyMarkup, "flags.2?ReplyMarkup"],
+      [this.entities ?? null, [constructors.TypeMessageEntity], "flags.3?Vector<MessageEntity>"],
       [this.scheduleDate ?? null, "number", "flags.10?int"],
       [this.sendAs ?? null, constructors.TypeInputPeer, "flags.13?InputPeer"],
     ];
   }
 
-  constructor(
-    params: {
-      silent?: true;
-      background?: true;
-      clearDraft?: true;
-      noforwards?: true;
-      updateStickersetsOrder?: true;
-      peer: constructors.TypeInputPeer;
-      replyToMsgId?: number;
-      topMsgId?: number;
-      media: constructors.TypeInputMedia;
-      message: string;
-      randomId: bigint;
-      replyMarkup?: constructors.TypeReplyMarkup;
-      entities?: Array<constructors.TypeMessageEntity>;
-      scheduleDate?: number;
-      sendAs?: constructors.TypeInputPeer;
-    },
-  ) {
+  constructor(params: { silent?: true; background?: true; clearDraft?: true; noforwards?: true; updateStickersetsOrder?: true; peer: constructors.TypeInputPeer; replyToMsgId?: number; topMsgId?: number; media: constructors.TypeInputMedia; message: string; randomId: bigint; replyMarkup?: constructors.TypeReplyMarkup; entities?: Array<constructors.TypeMessageEntity>; scheduleDate?: number; sendAs?: constructors.TypeInputPeer }) {
     super();
     this.silent = params.silent;
     this.background = params.background;
@@ -5367,23 +4795,7 @@ export class MessagesForwardMessages extends Function {
     ];
   }
 
-  constructor(
-    params: {
-      silent?: true;
-      background?: true;
-      withMyScore?: true;
-      dropAuthor?: true;
-      dropMediaCaptions?: true;
-      noforwards?: true;
-      fromPeer: constructors.TypeInputPeer;
-      id: Array<number>;
-      randomId: Array<bigint>;
-      toPeer: constructors.TypeInputPeer;
-      topMsgId?: number;
-      scheduleDate?: number;
-      sendAs?: constructors.TypeInputPeer;
-    },
-  ) {
+  constructor(params: { silent?: true; background?: true; withMyScore?: true; dropAuthor?: true; dropMediaCaptions?: true; noforwards?: true; fromPeer: constructors.TypeInputPeer; id: Array<number>; randomId: Array<bigint>; toPeer: constructors.TypeInputPeer; topMsgId?: number; scheduleDate?: number; sendAs?: constructors.TypeInputPeer }) {
     super();
     this.silent = params.silent;
     this.background = params.background;
@@ -5479,14 +4891,7 @@ export class MessagesReport extends Function {
     ];
   }
 
-  constructor(
-    params: {
-      peer: constructors.TypeInputPeer;
-      id: Array<number>;
-      reason: constructors.TypeReportReason;
-      message: string;
-    },
-  ) {
+  constructor(params: { peer: constructors.TypeInputPeer; id: Array<number>; reason: constructors.TypeReportReason; message: string }) {
     super();
     this.peer = params.peer;
     this.id = params.id;
@@ -5596,9 +5001,7 @@ export class MessagesEditChatPhoto extends Function {
     ];
   }
 
-  constructor(
-    params: { chatId: bigint; photo: constructors.TypeInputChatPhoto },
-  ) {
+  constructor(params: { chatId: bigint; photo: constructors.TypeInputChatPhoto }) {
     super();
     this.chatId = params.chatId;
     this.photo = params.photo;
@@ -5630,13 +5033,7 @@ export class MessagesAddChatUser extends Function {
     ];
   }
 
-  constructor(
-    params: {
-      chatId: bigint;
-      userId: constructors.TypeInputUser;
-      fwdLimit: number;
-    },
-  ) {
+  constructor(params: { chatId: bigint; userId: constructors.TypeInputUser; fwdLimit: number }) {
     super();
     this.chatId = params.chatId;
     this.userId = params.userId;
@@ -5671,13 +5068,7 @@ export class MessagesDeleteChatUser extends Function {
     ];
   }
 
-  constructor(
-    params: {
-      revokeHistory?: true;
-      chatId: bigint;
-      userId: constructors.TypeInputUser;
-    },
-  ) {
+  constructor(params: { revokeHistory?: true; chatId: bigint; userId: constructors.TypeInputUser }) {
     super();
     this.revokeHistory = params.revokeHistory;
     this.chatId = params.chatId;
@@ -5712,13 +5103,7 @@ export class MessagesCreateChat extends Function {
     ];
   }
 
-  constructor(
-    params: {
-      users: Array<constructors.TypeInputUser>;
-      title: string;
-      ttlPeriod?: number;
-    },
-  ) {
+  constructor(params: { users: Array<constructors.TypeInputUser>; title: string; ttlPeriod?: number }) {
     super();
     this.users = params.users;
     this.title = params.title;
@@ -5780,13 +5165,7 @@ export class MessagesRequestEncryption extends Function {
     ];
   }
 
-  constructor(
-    params: {
-      userId: constructors.TypeInputUser;
-      randomId: number;
-      gA: Uint8Array;
-    },
-  ) {
+  constructor(params: { userId: constructors.TypeInputUser; randomId: number; gA: Uint8Array }) {
     super();
     this.userId = params.userId;
     this.randomId = params.randomId;
@@ -5819,13 +5198,7 @@ export class MessagesAcceptEncryption extends Function {
     ];
   }
 
-  constructor(
-    params: {
-      peer: constructors.TypeInputEncryptedChat;
-      gB: Uint8Array;
-      keyFingerprint: bigint;
-    },
-  ) {
+  constructor(params: { peer: constructors.TypeInputEncryptedChat; gB: Uint8Array; keyFingerprint: bigint }) {
     super();
     this.peer = params.peer;
     this.gB = params.gB;
@@ -5886,9 +5259,7 @@ export class MessagesSetEncryptedTyping extends Function {
     ];
   }
 
-  constructor(
-    params: { peer: constructors.TypeInputEncryptedChat; typing: boolean },
-  ) {
+  constructor(params: { peer: constructors.TypeInputEncryptedChat; typing: boolean }) {
     super();
     this.peer = params.peer;
     this.typing = params.typing;
@@ -5917,9 +5288,7 @@ export class MessagesReadEncryptedHistory extends Function {
     ];
   }
 
-  constructor(
-    params: { peer: constructors.TypeInputEncryptedChat; maxDate: number },
-  ) {
+  constructor(params: { peer: constructors.TypeInputEncryptedChat; maxDate: number }) {
     super();
     this.peer = params.peer;
     this.maxDate = params.maxDate;
@@ -5956,14 +5325,7 @@ export class MessagesSendEncrypted extends Function {
     ];
   }
 
-  constructor(
-    params: {
-      silent?: true;
-      peer: constructors.TypeInputEncryptedChat;
-      randomId: bigint;
-      data: Uint8Array;
-    },
-  ) {
+  constructor(params: { silent?: true; peer: constructors.TypeInputEncryptedChat; randomId: bigint; data: Uint8Array }) {
     super();
     this.silent = params.silent;
     this.peer = params.peer;
@@ -6005,15 +5367,7 @@ export class MessagesSendEncryptedFile extends Function {
     ];
   }
 
-  constructor(
-    params: {
-      silent?: true;
-      peer: constructors.TypeInputEncryptedChat;
-      randomId: bigint;
-      data: Uint8Array;
-      file: constructors.TypeInputEncryptedFile;
-    },
-  ) {
+  constructor(params: { silent?: true; peer: constructors.TypeInputEncryptedChat; randomId: bigint; data: Uint8Array; file: constructors.TypeInputEncryptedFile }) {
     super();
     this.silent = params.silent;
     this.peer = params.peer;
@@ -6048,13 +5402,7 @@ export class MessagesSendEncryptedService extends Function {
     ];
   }
 
-  constructor(
-    params: {
-      peer: constructors.TypeInputEncryptedChat;
-      randomId: bigint;
-      data: Uint8Array;
-    },
-  ) {
+  constructor(params: { peer: constructors.TypeInputEncryptedChat; randomId: bigint; data: Uint8Array }) {
     super();
     this.peer = params.peer;
     this.randomId = params.randomId;
@@ -6203,11 +5551,7 @@ export class MessagesGetWebPagePreview extends Function {
     return [
       ["flags", flags, "#"],
       ["message", "string", "string"],
-      [
-        "entities",
-        [constructors.TypeMessageEntity],
-        "flags.3?Vector<MessageEntity>",
-      ],
+      ["entities", [constructors.TypeMessageEntity], "flags.3?Vector<MessageEntity>"],
     ];
   }
 
@@ -6215,20 +5559,11 @@ export class MessagesGetWebPagePreview extends Function {
     return [
       ["flags", flags, "#"],
       [this.message, "string", "string"],
-      [
-        this.entities ?? null,
-        [constructors.TypeMessageEntity],
-        "flags.3?Vector<MessageEntity>",
-      ],
+      [this.entities ?? null, [constructors.TypeMessageEntity], "flags.3?Vector<MessageEntity>"],
     ];
   }
 
-  constructor(
-    params: {
-      message: string;
-      entities?: Array<constructors.TypeMessageEntity>;
-    },
-  ) {
+  constructor(params: { message: string; entities?: Array<constructors.TypeMessageEntity> }) {
     super();
     this.message = params.message;
     this.entities = params.entities;
@@ -6271,16 +5606,7 @@ export class MessagesExportChatInvite extends Function {
     ];
   }
 
-  constructor(
-    params: {
-      legacyRevokePermanent?: true;
-      requestNeeded?: true;
-      peer: constructors.TypeInputPeer;
-      expireDate?: number;
-      usageLimit?: number;
-      title?: string;
-    },
-  ) {
+  constructor(params: { legacyRevokePermanent?: true; requestNeeded?: true; peer: constructors.TypeInputPeer; expireDate?: number; usageLimit?: number; title?: string }) {
     super();
     this.legacyRevokePermanent = params.legacyRevokePermanent;
     this.requestNeeded = params.requestNeeded;
@@ -6363,9 +5689,7 @@ export class MessagesGetStickerSet extends Function {
     ];
   }
 
-  constructor(
-    params: { stickerset: constructors.TypeInputStickerSet; hash: number },
-  ) {
+  constructor(params: { stickerset: constructors.TypeInputStickerSet; hash: number }) {
     super();
     this.stickerset = params.stickerset;
     this.hash = params.hash;
@@ -6394,9 +5718,7 @@ export class MessagesInstallStickerSet extends Function {
     ];
   }
 
-  constructor(
-    params: { stickerset: constructors.TypeInputStickerSet; archived: boolean },
-  ) {
+  constructor(params: { stickerset: constructors.TypeInputStickerSet; archived: boolean }) {
     super();
     this.stickerset = params.stickerset;
     this.archived = params.archived;
@@ -6456,14 +5778,7 @@ export class MessagesStartBot extends Function {
     ];
   }
 
-  constructor(
-    params: {
-      bot: constructors.TypeInputUser;
-      peer: constructors.TypeInputPeer;
-      randomId: bigint;
-      startParam: string;
-    },
-  ) {
+  constructor(params: { bot: constructors.TypeInputUser; peer: constructors.TypeInputPeer; randomId: bigint; startParam: string }) {
     super();
     this.bot = params.bot;
     this.peer = params.peer;
@@ -6497,13 +5812,7 @@ export class MessagesGetMessagesViews extends Function {
     ];
   }
 
-  constructor(
-    params: {
-      peer: constructors.TypeInputPeer;
-      id: Array<number>;
-      increment: boolean;
-    },
-  ) {
+  constructor(params: { peer: constructors.TypeInputPeer; id: Array<number>; increment: boolean }) {
     super();
     this.peer = params.peer;
     this.id = params.id;
@@ -6536,13 +5845,7 @@ export class MessagesEditChatAdmin extends Function {
     ];
   }
 
-  constructor(
-    params: {
-      chatId: bigint;
-      userId: constructors.TypeInputUser;
-      isAdmin: boolean;
-    },
-  ) {
+  constructor(params: { chatId: bigint; userId: constructors.TypeInputUser; isAdmin: boolean }) {
     super();
     this.chatId = params.chatId;
     this.userId = params.userId;
@@ -6620,19 +5923,7 @@ export class MessagesSearchGlobal extends Function {
     ];
   }
 
-  constructor(
-    params: {
-      folderId?: number;
-      q: string;
-      filter: constructors.TypeMessagesFilter;
-      minDate: number;
-      maxDate: number;
-      offsetRate: number;
-      offsetPeer: constructors.TypeInputPeer;
-      offsetId: number;
-      limit: number;
-    },
-  ) {
+  constructor(params: { folderId?: number; q: string; filter: constructors.TypeMessagesFilter; minDate: number; maxDate: number; offsetRate: number; offsetPeer: constructors.TypeInputPeer; offsetId: number; limit: number }) {
     super();
     this.folderId = params.folderId;
     this.q = params.q;
@@ -6795,25 +6086,13 @@ export class MessagesGetInlineBotResults extends Function {
       ["flags", flags, "#"],
       [this.bot, constructors.TypeInputUser, "InputUser"],
       [this.peer, constructors.TypeInputPeer, "InputPeer"],
-      [
-        this.geoPoint ?? null,
-        constructors.TypeInputGeoPoint,
-        "flags.0?InputGeoPoint",
-      ],
+      [this.geoPoint ?? null, constructors.TypeInputGeoPoint, "flags.0?InputGeoPoint"],
       [this.query, "string", "string"],
       [this.offset, "string", "string"],
     ];
   }
 
-  constructor(
-    params: {
-      bot: constructors.TypeInputUser;
-      peer: constructors.TypeInputPeer;
-      geoPoint?: constructors.TypeInputGeoPoint;
-      query: string;
-      offset: string;
-    },
-  ) {
+  constructor(params: { bot: constructors.TypeInputUser; peer: constructors.TypeInputPeer; geoPoint?: constructors.TypeInputGeoPoint; query: string; offset: string }) {
     super();
     this.bot = params.bot;
     this.peer = params.peer;
@@ -6843,23 +6122,11 @@ export class MessagesSetInlineBotResults extends Function {
       ["gallery", "true", "flags.0?true"],
       ["private", "true", "flags.1?true"],
       ["queryId", "bigint", "long"],
-      [
-        "results",
-        [constructors.TypeInputBotInlineResult],
-        "Vector<InputBotInlineResult>",
-      ],
+      ["results", [constructors.TypeInputBotInlineResult], "Vector<InputBotInlineResult>"],
       ["cacheTime", "number", "int"],
       ["nextOffset", "string", "flags.2?string"],
-      [
-        "switchPm",
-        constructors.TypeInlineBotSwitchPM,
-        "flags.3?InlineBotSwitchPM",
-      ],
-      [
-        "switchWebview",
-        constructors.TypeInlineBotWebView,
-        "flags.4?InlineBotWebView",
-      ],
+      ["switchPm", constructors.TypeInlineBotSwitchPM, "flags.3?InlineBotSwitchPM"],
+      ["switchWebview", constructors.TypeInlineBotWebView, "flags.4?InlineBotWebView"],
     ];
   }
 
@@ -6869,38 +6136,15 @@ export class MessagesSetInlineBotResults extends Function {
       [this.gallery ?? null, "true", "flags.0?true"],
       [this.private ?? null, "true", "flags.1?true"],
       [this.queryId, "bigint", "long"],
-      [
-        this.results,
-        [constructors.TypeInputBotInlineResult],
-        "Vector<InputBotInlineResult>",
-      ],
+      [this.results, [constructors.TypeInputBotInlineResult], "Vector<InputBotInlineResult>"],
       [this.cacheTime, "number", "int"],
       [this.nextOffset ?? null, "string", "flags.2?string"],
-      [
-        this.switchPm ?? null,
-        constructors.TypeInlineBotSwitchPM,
-        "flags.3?InlineBotSwitchPM",
-      ],
-      [
-        this.switchWebview ?? null,
-        constructors.TypeInlineBotWebView,
-        "flags.4?InlineBotWebView",
-      ],
+      [this.switchPm ?? null, constructors.TypeInlineBotSwitchPM, "flags.3?InlineBotSwitchPM"],
+      [this.switchWebview ?? null, constructors.TypeInlineBotWebView, "flags.4?InlineBotWebView"],
     ];
   }
 
-  constructor(
-    params: {
-      gallery?: true;
-      private?: true;
-      queryId: bigint;
-      results: Array<constructors.TypeInputBotInlineResult>;
-      cacheTime: number;
-      nextOffset?: string;
-      switchPm?: constructors.TypeInlineBotSwitchPM;
-      switchWebview?: constructors.TypeInlineBotWebView;
-    },
-  ) {
+  constructor(params: { gallery?: true; private?: true; queryId: bigint; results: Array<constructors.TypeInputBotInlineResult>; cacheTime: number; nextOffset?: string; switchPm?: constructors.TypeInlineBotSwitchPM; switchWebview?: constructors.TypeInlineBotWebView }) {
     super();
     this.gallery = params.gallery;
     this.private = params.private;
@@ -6967,22 +6211,7 @@ export class MessagesSendInlineBotResult extends Function {
     ];
   }
 
-  constructor(
-    params: {
-      silent?: true;
-      background?: true;
-      clearDraft?: true;
-      hideVia?: true;
-      peer: constructors.TypeInputPeer;
-      replyToMsgId?: number;
-      topMsgId?: number;
-      randomId: bigint;
-      queryId: bigint;
-      id: string;
-      scheduleDate?: number;
-      sendAs?: constructors.TypeInputPeer;
-    },
-  ) {
+  constructor(params: { silent?: true; background?: true; clearDraft?: true; hideVia?: true; peer: constructors.TypeInputPeer; replyToMsgId?: number; topMsgId?: number; randomId: bigint; queryId: bigint; id: string; scheduleDate?: number; sendAs?: constructors.TypeInputPeer }) {
     super();
     this.silent = params.silent;
     this.background = params.background;
@@ -7051,11 +6280,7 @@ export class MessagesEditMessage extends Function {
       ["message", "string", "flags.11?string"],
       ["media", constructors.TypeInputMedia, "flags.14?InputMedia"],
       ["replyMarkup", constructors.TypeReplyMarkup, "flags.2?ReplyMarkup"],
-      [
-        "entities",
-        [constructors.TypeMessageEntity],
-        "flags.3?Vector<MessageEntity>",
-      ],
+      ["entities", [constructors.TypeMessageEntity], "flags.3?Vector<MessageEntity>"],
       ["scheduleDate", "number", "flags.15?int"],
     ];
   }
@@ -7068,32 +6293,13 @@ export class MessagesEditMessage extends Function {
       [this.id, "number", "int"],
       [this.message ?? null, "string", "flags.11?string"],
       [this.media ?? null, constructors.TypeInputMedia, "flags.14?InputMedia"],
-      [
-        this.replyMarkup ?? null,
-        constructors.TypeReplyMarkup,
-        "flags.2?ReplyMarkup",
-      ],
-      [
-        this.entities ?? null,
-        [constructors.TypeMessageEntity],
-        "flags.3?Vector<MessageEntity>",
-      ],
+      [this.replyMarkup ?? null, constructors.TypeReplyMarkup, "flags.2?ReplyMarkup"],
+      [this.entities ?? null, [constructors.TypeMessageEntity], "flags.3?Vector<MessageEntity>"],
       [this.scheduleDate ?? null, "number", "flags.15?int"],
     ];
   }
 
-  constructor(
-    params: {
-      noWebpage?: true;
-      peer: constructors.TypeInputPeer;
-      id: number;
-      message?: string;
-      media?: constructors.TypeInputMedia;
-      replyMarkup?: constructors.TypeReplyMarkup;
-      entities?: Array<constructors.TypeMessageEntity>;
-      scheduleDate?: number;
-    },
-  ) {
+  constructor(params: { noWebpage?: true; peer: constructors.TypeInputPeer; id: number; message?: string; media?: constructors.TypeInputMedia; replyMarkup?: constructors.TypeReplyMarkup; entities?: Array<constructors.TypeMessageEntity>; scheduleDate?: number }) {
     super();
     this.noWebpage = params.noWebpage;
     this.peer = params.peer;
@@ -7122,19 +6328,11 @@ export class MessagesEditInlineBotMessage extends Function {
     return [
       ["flags", flags, "#"],
       ["noWebpage", "true", "flags.1?true"],
-      [
-        "id",
-        constructors.TypeInputBotInlineMessageID,
-        "InputBotInlineMessageID",
-      ],
+      ["id", constructors.TypeInputBotInlineMessageID, "InputBotInlineMessageID"],
       ["message", "string", "flags.11?string"],
       ["media", constructors.TypeInputMedia, "flags.14?InputMedia"],
       ["replyMarkup", constructors.TypeReplyMarkup, "flags.2?ReplyMarkup"],
-      [
-        "entities",
-        [constructors.TypeMessageEntity],
-        "flags.3?Vector<MessageEntity>",
-      ],
+      ["entities", [constructors.TypeMessageEntity], "flags.3?Vector<MessageEntity>"],
     ];
   }
 
@@ -7142,36 +6340,15 @@ export class MessagesEditInlineBotMessage extends Function {
     return [
       ["flags", flags, "#"],
       [this.noWebpage ?? null, "true", "flags.1?true"],
-      [
-        this.id,
-        constructors.TypeInputBotInlineMessageID,
-        "InputBotInlineMessageID",
-      ],
+      [this.id, constructors.TypeInputBotInlineMessageID, "InputBotInlineMessageID"],
       [this.message ?? null, "string", "flags.11?string"],
       [this.media ?? null, constructors.TypeInputMedia, "flags.14?InputMedia"],
-      [
-        this.replyMarkup ?? null,
-        constructors.TypeReplyMarkup,
-        "flags.2?ReplyMarkup",
-      ],
-      [
-        this.entities ?? null,
-        [constructors.TypeMessageEntity],
-        "flags.3?Vector<MessageEntity>",
-      ],
+      [this.replyMarkup ?? null, constructors.TypeReplyMarkup, "flags.2?ReplyMarkup"],
+      [this.entities ?? null, [constructors.TypeMessageEntity], "flags.3?Vector<MessageEntity>"],
     ];
   }
 
-  constructor(
-    params: {
-      noWebpage?: true;
-      id: constructors.TypeInputBotInlineMessageID;
-      message?: string;
-      media?: constructors.TypeInputMedia;
-      replyMarkup?: constructors.TypeReplyMarkup;
-      entities?: Array<constructors.TypeMessageEntity>;
-    },
-  ) {
+  constructor(params: { noWebpage?: true; id: constructors.TypeInputBotInlineMessageID; message?: string; media?: constructors.TypeInputMedia; replyMarkup?: constructors.TypeReplyMarkup; entities?: Array<constructors.TypeMessageEntity> }) {
     super();
     this.noWebpage = params.noWebpage;
     this.id = params.id;
@@ -7200,11 +6377,7 @@ export class MessagesGetBotCallbackAnswer extends Function {
       ["peer", constructors.TypeInputPeer, "InputPeer"],
       ["msgId", "number", "int"],
       ["data", Uint8Array, "flags.0?bytes"],
-      [
-        "password",
-        constructors.TypeInputCheckPasswordSRP,
-        "flags.2?InputCheckPasswordSRP",
-      ],
+      ["password", constructors.TypeInputCheckPasswordSRP, "flags.2?InputCheckPasswordSRP"],
     ];
   }
 
@@ -7215,23 +6388,11 @@ export class MessagesGetBotCallbackAnswer extends Function {
       [this.peer, constructors.TypeInputPeer, "InputPeer"],
       [this.msgId, "number", "int"],
       [this.data ?? null, Uint8Array, "flags.0?bytes"],
-      [
-        this.password ?? null,
-        constructors.TypeInputCheckPasswordSRP,
-        "flags.2?InputCheckPasswordSRP",
-      ],
+      [this.password ?? null, constructors.TypeInputCheckPasswordSRP, "flags.2?InputCheckPasswordSRP"],
     ];
   }
 
-  constructor(
-    params: {
-      game?: true;
-      peer: constructors.TypeInputPeer;
-      msgId: number;
-      data?: Uint8Array;
-      password?: constructors.TypeInputCheckPasswordSRP;
-    },
-  ) {
+  constructor(params: { game?: true; peer: constructors.TypeInputPeer; msgId: number; data?: Uint8Array; password?: constructors.TypeInputCheckPasswordSRP }) {
     super();
     this.game = params.game;
     this.peer = params.peer;
@@ -7274,15 +6435,7 @@ export class MessagesSetBotCallbackAnswer extends Function {
     ];
   }
 
-  constructor(
-    params: {
-      alert?: true;
-      queryId: bigint;
-      message?: string;
-      url?: string;
-      cacheTime: number;
-    },
-  ) {
+  constructor(params: { alert?: true; queryId: bigint; message?: string; url?: string; cacheTime: number }) {
     super();
     this.alert = params.alert;
     this.queryId = params.queryId;
@@ -7307,11 +6460,7 @@ export class MessagesGetPeerDialogs extends Function {
 
   protected get [params](): Params {
     return [
-      [
-        this.peers,
-        [constructors.TypeInputDialogPeer],
-        "Vector<InputDialogPeer>",
-      ],
+      [this.peers, [constructors.TypeInputDialogPeer], "Vector<InputDialogPeer>"],
     ];
   }
 
@@ -7341,11 +6490,7 @@ export class MessagesSaveDraft extends Function {
       ["topMsgId", "number", "flags.2?int"],
       ["peer", constructors.TypeInputPeer, "InputPeer"],
       ["message", "string", "string"],
-      [
-        "entities",
-        [constructors.TypeMessageEntity],
-        "flags.3?Vector<MessageEntity>",
-      ],
+      ["entities", [constructors.TypeMessageEntity], "flags.3?Vector<MessageEntity>"],
     ];
   }
 
@@ -7357,24 +6502,11 @@ export class MessagesSaveDraft extends Function {
       [this.topMsgId ?? null, "number", "flags.2?int"],
       [this.peer, constructors.TypeInputPeer, "InputPeer"],
       [this.message, "string", "string"],
-      [
-        this.entities ?? null,
-        [constructors.TypeMessageEntity],
-        "flags.3?Vector<MessageEntity>",
-      ],
+      [this.entities ?? null, [constructors.TypeMessageEntity], "flags.3?Vector<MessageEntity>"],
     ];
   }
 
-  constructor(
-    params: {
-      noWebpage?: true;
-      replyToMsgId?: number;
-      topMsgId?: number;
-      peer: constructors.TypeInputPeer;
-      message: string;
-      entities?: Array<constructors.TypeMessageEntity>;
-    },
-  ) {
+  constructor(params: { noWebpage?: true; replyToMsgId?: number; topMsgId?: number; peer: constructors.TypeInputPeer; message: string; entities?: Array<constructors.TypeMessageEntity> }) {
     super();
     this.noWebpage = params.noWebpage;
     this.replyToMsgId = params.replyToMsgId;
@@ -7511,13 +6643,7 @@ export class MessagesSaveRecentSticker extends Function {
     ];
   }
 
-  constructor(
-    params: {
-      attached?: true;
-      id: constructors.TypeInputDocument;
-      unsave: boolean;
-    },
-  ) {
+  constructor(params: { attached?: true; id: constructors.TypeInputDocument; unsave: boolean }) {
     super();
     this.attached = params.attached;
     this.id = params.id;
@@ -7582,9 +6708,7 @@ export class MessagesGetArchivedStickers extends Function {
     ];
   }
 
-  constructor(
-    params: { masks?: true; emojis?: true; offsetId: bigint; limit: number },
-  ) {
+  constructor(params: { masks?: true; emojis?: true; offsetId: bigint; limit: number }) {
     super();
     this.masks = params.masks;
     this.emojis = params.emojis;
@@ -7679,16 +6803,7 @@ export class MessagesSetGameScore extends Function {
     ];
   }
 
-  constructor(
-    params: {
-      editMessage?: true;
-      force?: true;
-      peer: constructors.TypeInputPeer;
-      id: number;
-      userId: constructors.TypeInputUser;
-      score: number;
-    },
-  ) {
+  constructor(params: { editMessage?: true; force?: true; peer: constructors.TypeInputPeer; id: number; userId: constructors.TypeInputUser; score: number }) {
     super();
     this.editMessage = params.editMessage;
     this.force = params.force;
@@ -7715,11 +6830,7 @@ export class MessagesSetInlineGameScore extends Function {
       ["flags", flags, "#"],
       ["editMessage", "true", "flags.0?true"],
       ["force", "true", "flags.1?true"],
-      [
-        "id",
-        constructors.TypeInputBotInlineMessageID,
-        "InputBotInlineMessageID",
-      ],
+      ["id", constructors.TypeInputBotInlineMessageID, "InputBotInlineMessageID"],
       ["userId", constructors.TypeInputUser, "InputUser"],
       ["score", "number", "int"],
     ];
@@ -7730,25 +6841,13 @@ export class MessagesSetInlineGameScore extends Function {
       ["flags", flags, "#"],
       [this.editMessage ?? null, "true", "flags.0?true"],
       [this.force ?? null, "true", "flags.1?true"],
-      [
-        this.id,
-        constructors.TypeInputBotInlineMessageID,
-        "InputBotInlineMessageID",
-      ],
+      [this.id, constructors.TypeInputBotInlineMessageID, "InputBotInlineMessageID"],
       [this.userId, constructors.TypeInputUser, "InputUser"],
       [this.score, "number", "int"],
     ];
   }
 
-  constructor(
-    params: {
-      editMessage?: true;
-      force?: true;
-      id: constructors.TypeInputBotInlineMessageID;
-      userId: constructors.TypeInputUser;
-      score: number;
-    },
-  ) {
+  constructor(params: { editMessage?: true; force?: true; id: constructors.TypeInputBotInlineMessageID; userId: constructors.TypeInputUser; score: number }) {
     super();
     this.editMessage = params.editMessage;
     this.force = params.force;
@@ -7783,13 +6882,7 @@ export class MessagesGetGameHighScores extends Function {
     ];
   }
 
-  constructor(
-    params: {
-      peer: constructors.TypeInputPeer;
-      id: number;
-      userId: constructors.TypeInputUser;
-    },
-  ) {
+  constructor(params: { peer: constructors.TypeInputPeer; id: number; userId: constructors.TypeInputUser }) {
     super();
     this.peer = params.peer;
     this.id = params.id;
@@ -7807,32 +6900,19 @@ export class MessagesGetInlineGameHighScores extends Function {
 
   static get [paramDesc](): ParamDesc {
     return [
-      [
-        "id",
-        constructors.TypeInputBotInlineMessageID,
-        "InputBotInlineMessageID",
-      ],
+      ["id", constructors.TypeInputBotInlineMessageID, "InputBotInlineMessageID"],
       ["userId", constructors.TypeInputUser, "InputUser"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [
-        this.id,
-        constructors.TypeInputBotInlineMessageID,
-        "InputBotInlineMessageID",
-      ],
+      [this.id, constructors.TypeInputBotInlineMessageID, "InputBotInlineMessageID"],
       [this.userId, constructors.TypeInputUser, "InputUser"],
     ];
   }
 
-  constructor(
-    params: {
-      id: constructors.TypeInputBotInlineMessageID;
-      userId: constructors.TypeInputUser;
-    },
-  ) {
+  constructor(params: { id: constructors.TypeInputBotInlineMessageID; userId: constructors.TypeInputUser }) {
     super();
     this.id = params.id;
     this.userId = params.userId;
@@ -7864,13 +6944,7 @@ export class MessagesGetCommonChats extends Function {
     ];
   }
 
-  constructor(
-    params: {
-      userId: constructors.TypeInputUser;
-      maxId: bigint;
-      limit: number;
-    },
-  ) {
+  constructor(params: { userId: constructors.TypeInputUser; maxId: bigint; limit: number }) {
     super();
     this.userId = params.userId;
     this.maxId = params.maxId;
@@ -7956,9 +7030,7 @@ export class MessagesToggleDialogPin extends Function {
     ];
   }
 
-  constructor(
-    params: { pinned?: true; peer: constructors.TypeInputDialogPeer },
-  ) {
+  constructor(params: { pinned?: true; peer: constructors.TypeInputDialogPeer }) {
     super();
     this.pinned = params.pinned;
     this.peer = params.peer;
@@ -7988,21 +7060,11 @@ export class MessagesReorderPinnedDialogs extends Function {
       ["flags", flags, "#"],
       [this.force ?? null, "true", "flags.0?true"],
       [this.folderId, "number", "int"],
-      [
-        this.order,
-        [constructors.TypeInputDialogPeer],
-        "Vector<InputDialogPeer>",
-      ],
+      [this.order, [constructors.TypeInputDialogPeer], "Vector<InputDialogPeer>"],
     ];
   }
 
-  constructor(
-    params: {
-      force?: true;
-      folderId: number;
-      order: Array<constructors.TypeInputDialogPeer>;
-    },
-  ) {
+  constructor(params: { force?: true; folderId: number; order: Array<constructors.TypeInputDialogPeer> }) {
     super();
     this.force = params.force;
     this.folderId = params.folderId;
@@ -8049,11 +7111,7 @@ export class MessagesSetBotShippingResults extends Function {
       ["flags", flags, "#"],
       ["queryId", "bigint", "long"],
       ["error", "string", "flags.0?string"],
-      [
-        "shippingOptions",
-        [constructors.TypeShippingOption],
-        "flags.1?Vector<ShippingOption>",
-      ],
+      ["shippingOptions", [constructors.TypeShippingOption], "flags.1?Vector<ShippingOption>"],
     ];
   }
 
@@ -8062,21 +7120,11 @@ export class MessagesSetBotShippingResults extends Function {
       ["flags", flags, "#"],
       [this.queryId, "bigint", "long"],
       [this.error ?? null, "string", "flags.0?string"],
-      [
-        this.shippingOptions ?? null,
-        [constructors.TypeShippingOption],
-        "flags.1?Vector<ShippingOption>",
-      ],
+      [this.shippingOptions ?? null, [constructors.TypeShippingOption], "flags.1?Vector<ShippingOption>"],
     ];
   }
 
-  constructor(
-    params: {
-      queryId: bigint;
-      error?: string;
-      shippingOptions?: Array<constructors.TypeShippingOption>;
-    },
-  ) {
+  constructor(params: { queryId: bigint; error?: string; shippingOptions?: Array<constructors.TypeShippingOption> }) {
     super();
     this.queryId = params.queryId;
     this.error = params.error;
@@ -8141,12 +7189,7 @@ export class MessagesUploadMedia extends Function {
     ];
   }
 
-  constructor(
-    params: {
-      peer: constructors.TypeInputPeer;
-      media: constructors.TypeInputMedia;
-    },
-  ) {
+  constructor(params: { peer: constructors.TypeInputPeer; media: constructors.TypeInputMedia }) {
     super();
     this.peer = params.peer;
     this.media = params.media;
@@ -8178,13 +7221,7 @@ export class MessagesSendScreenshotNotification extends Function {
     ];
   }
 
-  constructor(
-    params: {
-      peer: constructors.TypeInputPeer;
-      replyToMsgId: number;
-      randomId: bigint;
-    },
-  ) {
+  constructor(params: { peer: constructors.TypeInputPeer; replyToMsgId: number; randomId: bigint }) {
     super();
     this.peer = params.peer;
     this.replyToMsgId = params.replyToMsgId;
@@ -8285,17 +7322,7 @@ export class MessagesGetUnreadMentions extends Function {
     ];
   }
 
-  constructor(
-    params: {
-      peer: constructors.TypeInputPeer;
-      topMsgId?: number;
-      offsetId: number;
-      addOffset: number;
-      limit: number;
-      maxId: number;
-      minId: number;
-    },
-  ) {
+  constructor(params: { peer: constructors.TypeInputPeer; topMsgId?: number; offsetId: number; addOffset: number; limit: number; maxId: number; minId: number }) {
     super();
     this.peer = params.peer;
     this.topMsgId = params.topMsgId;
@@ -8363,9 +7390,7 @@ export class MessagesGetRecentLocations extends Function {
     ];
   }
 
-  constructor(
-    params: { peer: constructors.TypeInputPeer; limit: number; hash: bigint },
-  ) {
+  constructor(params: { peer: constructors.TypeInputPeer; limit: number; hash: bigint }) {
     super();
     this.peer = params.peer;
     this.limit = params.limit;
@@ -8401,11 +7426,7 @@ export class MessagesSendMultiMedia extends Function {
       ["peer", constructors.TypeInputPeer, "InputPeer"],
       ["replyToMsgId", "number", "flags.0?int"],
       ["topMsgId", "number", "flags.9?int"],
-      [
-        "multiMedia",
-        [constructors.TypeInputSingleMedia],
-        "Vector<InputSingleMedia>",
-      ],
+      ["multiMedia", [constructors.TypeInputSingleMedia], "Vector<InputSingleMedia>"],
       ["scheduleDate", "number", "flags.10?int"],
       ["sendAs", constructors.TypeInputPeer, "flags.13?InputPeer"],
     ];
@@ -8422,31 +7443,13 @@ export class MessagesSendMultiMedia extends Function {
       [this.peer, constructors.TypeInputPeer, "InputPeer"],
       [this.replyToMsgId ?? null, "number", "flags.0?int"],
       [this.topMsgId ?? null, "number", "flags.9?int"],
-      [
-        this.multiMedia,
-        [constructors.TypeInputSingleMedia],
-        "Vector<InputSingleMedia>",
-      ],
+      [this.multiMedia, [constructors.TypeInputSingleMedia], "Vector<InputSingleMedia>"],
       [this.scheduleDate ?? null, "number", "flags.10?int"],
       [this.sendAs ?? null, constructors.TypeInputPeer, "flags.13?InputPeer"],
     ];
   }
 
-  constructor(
-    params: {
-      silent?: true;
-      background?: true;
-      clearDraft?: true;
-      noforwards?: true;
-      updateStickersetsOrder?: true;
-      peer: constructors.TypeInputPeer;
-      replyToMsgId?: number;
-      topMsgId?: number;
-      multiMedia: Array<constructors.TypeInputSingleMedia>;
-      scheduleDate?: number;
-      sendAs?: constructors.TypeInputPeer;
-    },
-  ) {
+  constructor(params: { silent?: true; background?: true; clearDraft?: true; noforwards?: true; updateStickersetsOrder?: true; peer: constructors.TypeInputPeer; replyToMsgId?: number; topMsgId?: number; multiMedia: Array<constructors.TypeInputSingleMedia>; scheduleDate?: number; sendAs?: constructors.TypeInputPeer }) {
     super();
     this.silent = params.silent;
     this.background = params.background;
@@ -8484,12 +7487,7 @@ export class MessagesUploadEncryptedFile extends Function {
     ];
   }
 
-  constructor(
-    params: {
-      peer: constructors.TypeInputEncryptedChat;
-      file: constructors.TypeInputEncryptedFile;
-    },
-  ) {
+  constructor(params: { peer: constructors.TypeInputEncryptedChat; file: constructors.TypeInputEncryptedFile }) {
     super();
     this.peer = params.peer;
     this.file = params.file;
@@ -8573,9 +7571,7 @@ export class MessagesMarkDialogUnread extends Function {
     ];
   }
 
-  constructor(
-    params: { unread?: true; peer: constructors.TypeInputDialogPeer },
-  ) {
+  constructor(params: { unread?: true; peer: constructors.TypeInputDialogPeer }) {
     super();
     this.unread = params.unread;
     this.peer = params.peer;
@@ -8651,15 +7647,7 @@ export class MessagesUpdatePinnedMessage extends Function {
     ];
   }
 
-  constructor(
-    params: {
-      silent?: true;
-      unpin?: true;
-      pmOneside?: true;
-      peer: constructors.TypeInputPeer;
-      id: number;
-    },
-  ) {
+  constructor(params: { silent?: true; unpin?: true; pmOneside?: true; peer: constructors.TypeInputPeer; id: number }) {
     super();
     this.silent = params.silent;
     this.unpin = params.unpin;
@@ -8694,13 +7682,7 @@ export class MessagesSendVote extends Function {
     ];
   }
 
-  constructor(
-    params: {
-      peer: constructors.TypeInputPeer;
-      msgId: number;
-      options: Array<Uint8Array>;
-    },
-  ) {
+  constructor(params: { peer: constructors.TypeInputPeer; msgId: number; options: Array<Uint8Array> }) {
     super();
     this.peer = params.peer;
     this.msgId = params.msgId;
@@ -8809,20 +7791,11 @@ export class MessagesEditChatDefaultBannedRights extends Function {
   protected get [params](): Params {
     return [
       [this.peer, constructors.TypeInputPeer, "InputPeer"],
-      [
-        this.bannedRights,
-        constructors.TypeChatBannedRights,
-        "ChatBannedRights",
-      ],
+      [this.bannedRights, constructors.TypeChatBannedRights, "ChatBannedRights"],
     ];
   }
 
-  constructor(
-    params: {
-      peer: constructors.TypeInputPeer;
-      bannedRights: constructors.TypeChatBannedRights;
-    },
-  ) {
+  constructor(params: { peer: constructors.TypeInputPeer; bannedRights: constructors.TypeChatBannedRights }) {
     super();
     this.peer = params.peer;
     this.bannedRights = params.bannedRights;
@@ -8956,21 +7929,11 @@ export class MessagesGetSearchCounters extends Function {
       ["flags", flags, "#"],
       [this.peer, constructors.TypeInputPeer, "InputPeer"],
       [this.topMsgId ?? null, "number", "flags.0?int"],
-      [
-        this.filters,
-        [constructors.TypeMessagesFilter],
-        "Vector<MessagesFilter>",
-      ],
+      [this.filters, [constructors.TypeMessagesFilter], "Vector<MessagesFilter>"],
     ];
   }
 
-  constructor(
-    params: {
-      peer: constructors.TypeInputPeer;
-      topMsgId?: number;
-      filters: Array<constructors.TypeMessagesFilter>;
-    },
-  ) {
+  constructor(params: { peer: constructors.TypeInputPeer; topMsgId?: number; filters: Array<constructors.TypeMessagesFilter> }) {
     super();
     this.peer = params.peer;
     this.topMsgId = params.topMsgId;
@@ -9008,14 +7971,7 @@ export class MessagesRequestUrlAuth extends Function {
     ];
   }
 
-  constructor(
-    params: {
-      peer?: constructors.TypeInputPeer;
-      msgId?: number;
-      buttonId?: number;
-      url?: string;
-    },
-  ) {
+  constructor(params: { peer?: constructors.TypeInputPeer; msgId?: number; buttonId?: number; url?: string }) {
     super();
     this.peer = params.peer;
     this.msgId = params.msgId;
@@ -9057,15 +8013,7 @@ export class MessagesAcceptUrlAuth extends Function {
     ];
   }
 
-  constructor(
-    params: {
-      writeAllowed?: true;
-      peer?: constructors.TypeInputPeer;
-      msgId?: number;
-      buttonId?: number;
-      url?: string;
-    },
-  ) {
+  constructor(params: { writeAllowed?: true; peer?: constructors.TypeInputPeer; msgId?: number; buttonId?: number; url?: string }) {
     super();
     this.writeAllowed = params.writeAllowed;
     this.peer = params.peer;
@@ -9249,15 +8197,7 @@ export class MessagesGetPollVotes extends Function {
     ];
   }
 
-  constructor(
-    params: {
-      peer: constructors.TypeInputPeer;
-      id: number;
-      option?: Uint8Array;
-      offset?: string;
-      limit: number;
-    },
-  ) {
+  constructor(params: { peer: constructors.TypeInputPeer; id: number; option?: Uint8Array; offset?: string; limit: number }) {
     super();
     this.peer = params.peer;
     this.id = params.id;
@@ -9283,11 +8223,7 @@ export class MessagesToggleStickerSets extends Function {
       ["uninstall", "true", "flags.0?true"],
       ["archive", "true", "flags.1?true"],
       ["unarchive", "true", "flags.2?true"],
-      [
-        "stickersets",
-        [constructors.TypeInputStickerSet],
-        "Vector<InputStickerSet>",
-      ],
+      ["stickersets", [constructors.TypeInputStickerSet], "Vector<InputStickerSet>"],
     ];
   }
 
@@ -9297,22 +8233,11 @@ export class MessagesToggleStickerSets extends Function {
       [this.uninstall ?? null, "true", "flags.0?true"],
       [this.archive ?? null, "true", "flags.1?true"],
       [this.unarchive ?? null, "true", "flags.2?true"],
-      [
-        this.stickersets,
-        [constructors.TypeInputStickerSet],
-        "Vector<InputStickerSet>",
-      ],
+      [this.stickersets, [constructors.TypeInputStickerSet], "Vector<InputStickerSet>"],
     ];
   }
 
-  constructor(
-    params: {
-      uninstall?: true;
-      archive?: true;
-      unarchive?: true;
-      stickersets: Array<constructors.TypeInputStickerSet>;
-    },
-  ) {
+  constructor(params: { uninstall?: true; archive?: true; unarchive?: true; stickersets: Array<constructors.TypeInputStickerSet> }) {
     super();
     this.uninstall = params.uninstall;
     this.archive = params.archive;
@@ -9377,11 +8302,7 @@ export class MessagesUpdateDialogFilter extends Function {
     return [
       ["flags", flags, "#"],
       [this.id, "number", "int"],
-      [
-        this.filter ?? null,
-        constructors.TypeDialogFilter,
-        "flags.0?DialogFilter",
-      ],
+      [this.filter ?? null, constructors.TypeDialogFilter, "flags.0?DialogFilter"],
     ];
   }
 
@@ -9493,19 +8414,7 @@ export class MessagesGetReplies extends Function {
     ];
   }
 
-  constructor(
-    params: {
-      peer: constructors.TypeInputPeer;
-      msgId: number;
-      offsetId: number;
-      offsetDate: number;
-      addOffset: number;
-      limit: number;
-      maxId: number;
-      minId: number;
-      hash: bigint;
-    },
-  ) {
+  constructor(params: { peer: constructors.TypeInputPeer; msgId: number; offsetId: number; offsetDate: number; addOffset: number; limit: number; maxId: number; minId: number; hash: bigint }) {
     super();
     this.peer = params.peer;
     this.msgId = params.msgId;
@@ -9573,13 +8482,7 @@ export class MessagesReadDiscussion extends Function {
     ];
   }
 
-  constructor(
-    params: {
-      peer: constructors.TypeInputPeer;
-      msgId: number;
-      readMaxId: number;
-    },
-  ) {
+  constructor(params: { peer: constructors.TypeInputPeer; msgId: number; readMaxId: number }) {
     super();
     this.peer = params.peer;
     this.msgId = params.msgId;
@@ -9720,13 +8623,7 @@ export class MessagesInitHistoryImport extends Function {
     ];
   }
 
-  constructor(
-    params: {
-      peer: constructors.TypeInputPeer;
-      file: constructors.TypeInputFile;
-      mediaCount: number;
-    },
-  ) {
+  constructor(params: { peer: constructors.TypeInputPeer; file: constructors.TypeInputFile; mediaCount: number }) {
     super();
     this.peer = params.peer;
     this.file = params.file;
@@ -9762,14 +8659,7 @@ export class MessagesUploadImportedMedia extends Function {
     ];
   }
 
-  constructor(
-    params: {
-      peer: constructors.TypeInputPeer;
-      importId: bigint;
-      fileName: string;
-      media: constructors.TypeInputMedia;
-    },
-  ) {
+  constructor(params: { peer: constructors.TypeInputPeer; importId: bigint; fileName: string; media: constructors.TypeInputMedia }) {
     super();
     this.peer = params.peer;
     this.importId = params.importId;
@@ -9843,16 +8733,7 @@ export class MessagesGetExportedChatInvites extends Function {
     ];
   }
 
-  constructor(
-    params: {
-      revoked?: true;
-      peer: constructors.TypeInputPeer;
-      adminId: constructors.TypeInputUser;
-      offsetDate?: number;
-      offsetLink?: string;
-      limit: number;
-    },
-  ) {
+  constructor(params: { revoked?: true; peer: constructors.TypeInputPeer; adminId: constructors.TypeInputUser; offsetDate?: number; offsetLink?: string; limit: number }) {
     super();
     this.revoked = params.revoked;
     this.peer = params.peer;
@@ -9931,17 +8812,7 @@ export class MessagesEditExportedChatInvite extends Function {
     ];
   }
 
-  constructor(
-    params: {
-      revoked?: true;
-      peer: constructors.TypeInputPeer;
-      link: string;
-      expireDate?: number;
-      usageLimit?: number;
-      requestNeeded?: boolean;
-      title?: string;
-    },
-  ) {
+  constructor(params: { revoked?: true; peer: constructors.TypeInputPeer; link: string; expireDate?: number; usageLimit?: number; requestNeeded?: boolean; title?: string }) {
     super();
     this.revoked = params.revoked;
     this.peer = params.peer;
@@ -9975,12 +8846,7 @@ export class MessagesDeleteRevokedExportedChatInvites extends Function {
     ];
   }
 
-  constructor(
-    params: {
-      peer: constructors.TypeInputPeer;
-      adminId: constructors.TypeInputUser;
-    },
-  ) {
+  constructor(params: { peer: constructors.TypeInputPeer; adminId: constructors.TypeInputUser }) {
     super();
     this.peer = params.peer;
     this.adminId = params.adminId;
@@ -10080,17 +8946,7 @@ export class MessagesGetChatInviteImporters extends Function {
     ];
   }
 
-  constructor(
-    params: {
-      requested?: true;
-      peer: constructors.TypeInputPeer;
-      link?: string;
-      q?: string;
-      offsetDate: number;
-      offsetUser: constructors.TypeInputUser;
-      limit: number;
-    },
-  ) {
+  constructor(params: { requested?: true; peer: constructors.TypeInputPeer; link?: string; q?: string; offsetDate: number; offsetUser: constructors.TypeInputUser; limit: number }) {
     super();
     this.requested = params.requested;
     this.peer = params.peer;
@@ -10242,14 +9098,7 @@ export class MessagesGetSearchResultsCalendar extends Function {
     ];
   }
 
-  constructor(
-    params: {
-      peer: constructors.TypeInputPeer;
-      filter: constructors.TypeMessagesFilter;
-      offsetId: number;
-      offsetDate: number;
-    },
-  ) {
+  constructor(params: { peer: constructors.TypeInputPeer; filter: constructors.TypeMessagesFilter; offsetId: number; offsetDate: number }) {
     super();
     this.peer = params.peer;
     this.filter = params.filter;
@@ -10286,14 +9135,7 @@ export class MessagesGetSearchResultsPositions extends Function {
     ];
   }
 
-  constructor(
-    params: {
-      peer: constructors.TypeInputPeer;
-      filter: constructors.TypeMessagesFilter;
-      offsetId: number;
-      limit: number;
-    },
-  ) {
+  constructor(params: { peer: constructors.TypeInputPeer; filter: constructors.TypeMessagesFilter; offsetId: number; limit: number }) {
     super();
     this.peer = params.peer;
     this.filter = params.filter;
@@ -10329,13 +9171,7 @@ export class MessagesHideChatJoinRequest extends Function {
     ];
   }
 
-  constructor(
-    params: {
-      approved?: true;
-      peer: constructors.TypeInputPeer;
-      userId: constructors.TypeInputUser;
-    },
-  ) {
+  constructor(params: { approved?: true; peer: constructors.TypeInputPeer; userId: constructors.TypeInputUser }) {
     super();
     this.approved = params.approved;
     this.peer = params.peer;
@@ -10370,13 +9206,7 @@ export class MessagesHideAllChatJoinRequests extends Function {
     ];
   }
 
-  constructor(
-    params: {
-      approved?: true;
-      peer: constructors.TypeInputPeer;
-      link?: string;
-    },
-  ) {
+  constructor(params: { approved?: true; peer: constructors.TypeInputPeer; link?: string }) {
     super();
     this.approved = params.approved;
     this.peer = params.peer;
@@ -10435,12 +9265,7 @@ export class MessagesSaveDefaultSendAs extends Function {
     ];
   }
 
-  constructor(
-    params: {
-      peer: constructors.TypeInputPeer;
-      sendAs: constructors.TypeInputPeer;
-    },
-  ) {
+  constructor(params: { peer: constructors.TypeInputPeer; sendAs: constructors.TypeInputPeer }) {
     super();
     this.peer = params.peer;
     this.sendAs = params.sendAs;
@@ -10476,23 +9301,11 @@ export class MessagesSendReaction extends Function {
       [this.addToRecent ?? null, "true", "flags.2?true"],
       [this.peer, constructors.TypeInputPeer, "InputPeer"],
       [this.msgId, "number", "int"],
-      [
-        this.reaction ?? null,
-        [constructors.TypeReaction],
-        "flags.0?Vector<Reaction>",
-      ],
+      [this.reaction ?? null, [constructors.TypeReaction], "flags.0?Vector<Reaction>"],
     ];
   }
 
-  constructor(
-    params: {
-      big?: true;
-      addToRecent?: true;
-      peer: constructors.TypeInputPeer;
-      msgId: number;
-      reaction?: Array<constructors.TypeReaction>;
-    },
-  ) {
+  constructor(params: { big?: true; addToRecent?: true; peer: constructors.TypeInputPeer; msgId: number; reaction?: Array<constructors.TypeReaction> }) {
     super();
     this.big = params.big;
     this.addToRecent = params.addToRecent;
@@ -10564,15 +9377,7 @@ export class MessagesGetMessageReactionsList extends Function {
     ];
   }
 
-  constructor(
-    params: {
-      peer: constructors.TypeInputPeer;
-      id: number;
-      reaction?: constructors.TypeReaction;
-      offset?: string;
-      limit: number;
-    },
-  ) {
+  constructor(params: { peer: constructors.TypeInputPeer; id: number; reaction?: constructors.TypeReaction; offset?: string; limit: number }) {
     super();
     this.peer = params.peer;
     this.id = params.id;
@@ -10600,20 +9405,11 @@ export class MessagesSetChatAvailableReactions extends Function {
   protected get [params](): Params {
     return [
       [this.peer, constructors.TypeInputPeer, "InputPeer"],
-      [
-        this.availableReactions,
-        constructors.TypeChatReactions,
-        "ChatReactions",
-      ],
+      [this.availableReactions, constructors.TypeChatReactions, "ChatReactions"],
     ];
   }
 
-  constructor(
-    params: {
-      peer: constructors.TypeInputPeer;
-      availableReactions: constructors.TypeChatReactions;
-    },
-  ) {
+  constructor(params: { peer: constructors.TypeInputPeer; availableReactions: constructors.TypeChatReactions }) {
     super();
     this.peer = params.peer;
     this.availableReactions = params.availableReactions;
@@ -10685,11 +9481,7 @@ export class MessagesTranslateText extends Function {
       ["flags", flags, "#"],
       ["peer", constructors.TypeInputPeer, "flags.0?InputPeer"],
       ["id", ["number"], "flags.0?Vector<int>"],
-      [
-        "text",
-        [constructors.TypeTextWithEntities],
-        "flags.1?Vector<TextWithEntities>",
-      ],
+      ["text", [constructors.TypeTextWithEntities], "flags.1?Vector<TextWithEntities>"],
       ["toLang", "string", "string"],
     ];
   }
@@ -10699,23 +9491,12 @@ export class MessagesTranslateText extends Function {
       ["flags", flags, "#"],
       [this.peer ?? null, constructors.TypeInputPeer, "flags.0?InputPeer"],
       [this.id ?? null, ["number"], "flags.0?Vector<int>"],
-      [
-        this.text ?? null,
-        [constructors.TypeTextWithEntities],
-        "flags.1?Vector<TextWithEntities>",
-      ],
+      [this.text ?? null, [constructors.TypeTextWithEntities], "flags.1?Vector<TextWithEntities>"],
       [this.toLang, "string", "string"],
     ];
   }
 
-  constructor(
-    params: {
-      peer?: constructors.TypeInputPeer;
-      id?: Array<number>;
-      text?: Array<constructors.TypeTextWithEntities>;
-      toLang: string;
-    },
-  ) {
+  constructor(params: { peer?: constructors.TypeInputPeer; id?: Array<number>; text?: Array<constructors.TypeTextWithEntities>; toLang: string }) {
     super();
     this.peer = params.peer;
     this.id = params.id;
@@ -10763,17 +9544,7 @@ export class MessagesGetUnreadReactions extends Function {
     ];
   }
 
-  constructor(
-    params: {
-      peer: constructors.TypeInputPeer;
-      topMsgId?: number;
-      offsetId: number;
-      addOffset: number;
-      limit: number;
-      maxId: number;
-      minId: number;
-    },
-  ) {
+  constructor(params: { peer: constructors.TypeInputPeer; topMsgId?: number; offsetId: number; addOffset: number; limit: number; maxId: number; minId: number }) {
     super();
     this.peer = params.peer;
     this.topMsgId = params.topMsgId;
@@ -10841,13 +9612,7 @@ export class MessagesSearchSentMedia extends Function {
     ];
   }
 
-  constructor(
-    params: {
-      q: string;
-      filter: constructors.TypeMessagesFilter;
-      limit: number;
-    },
-  ) {
+  constructor(params: { q: string; filter: constructors.TypeMessagesFilter; limit: number }) {
     super();
     this.q = params.q;
     this.filter = params.filter;
@@ -10932,13 +9697,7 @@ export class MessagesToggleBotInAttachMenu extends Function {
     ];
   }
 
-  constructor(
-    params: {
-      writeAllowed?: true;
-      bot: constructors.TypeInputUser;
-      enabled: boolean;
-    },
-  ) {
+  constructor(params: { writeAllowed?: true; bot: constructors.TypeInputUser; enabled: boolean }) {
     super();
     this.writeAllowed = params.writeAllowed;
     this.bot = params.bot;
@@ -10997,21 +9756,7 @@ export class MessagesRequestWebView extends Function {
     ];
   }
 
-  constructor(
-    params: {
-      fromBotMenu?: true;
-      silent?: true;
-      peer: constructors.TypeInputPeer;
-      bot: constructors.TypeInputUser;
-      url?: string;
-      startParam?: string;
-      themeParams?: constructors.TypeDataJSON;
-      platform: string;
-      replyToMsgId?: number;
-      topMsgId?: number;
-      sendAs?: constructors.TypeInputPeer;
-    },
-  ) {
+  constructor(params: { fromBotMenu?: true; silent?: true; peer: constructors.TypeInputPeer; bot: constructors.TypeInputUser; url?: string; startParam?: string; themeParams?: constructors.TypeDataJSON; platform: string; replyToMsgId?: number; topMsgId?: number; sendAs?: constructors.TypeInputPeer }) {
     super();
     this.fromBotMenu = params.fromBotMenu;
     this.silent = params.silent;
@@ -11066,17 +9811,7 @@ export class MessagesProlongWebView extends Function {
     ];
   }
 
-  constructor(
-    params: {
-      silent?: true;
-      peer: constructors.TypeInputPeer;
-      bot: constructors.TypeInputUser;
-      queryId: bigint;
-      replyToMsgId?: number;
-      topMsgId?: number;
-      sendAs?: constructors.TypeInputPeer;
-    },
-  ) {
+  constructor(params: { silent?: true; peer: constructors.TypeInputPeer; bot: constructors.TypeInputUser; queryId: bigint; replyToMsgId?: number; topMsgId?: number; sendAs?: constructors.TypeInputPeer }) {
     super();
     this.silent = params.silent;
     this.peer = params.peer;
@@ -11121,15 +9856,7 @@ export class MessagesRequestSimpleWebView extends Function {
     ];
   }
 
-  constructor(
-    params: {
-      fromSwitchWebview?: true;
-      bot: constructors.TypeInputUser;
-      url: string;
-      themeParams?: constructors.TypeDataJSON;
-      platform: string;
-    },
-  ) {
+  constructor(params: { fromSwitchWebview?: true; bot: constructors.TypeInputUser; url: string; themeParams?: constructors.TypeDataJSON; platform: string }) {
     super();
     this.fromSwitchWebview = params.fromSwitchWebview;
     this.bot = params.bot;
@@ -11157,20 +9884,11 @@ export class MessagesSendWebViewResultMessage extends Function {
   protected get [params](): Params {
     return [
       [this.botQueryId, "string", "string"],
-      [
-        this.result,
-        constructors.TypeInputBotInlineResult,
-        "InputBotInlineResult",
-      ],
+      [this.result, constructors.TypeInputBotInlineResult, "InputBotInlineResult"],
     ];
   }
 
-  constructor(
-    params: {
-      botQueryId: string;
-      result: constructors.TypeInputBotInlineResult;
-    },
-  ) {
+  constructor(params: { botQueryId: string; result: constructors.TypeInputBotInlineResult }) {
     super();
     this.botQueryId = params.botQueryId;
     this.result = params.result;
@@ -11205,14 +9923,7 @@ export class MessagesSendWebViewData extends Function {
     ];
   }
 
-  constructor(
-    params: {
-      bot: constructors.TypeInputUser;
-      randomId: bigint;
-      buttonText: string;
-      data: string;
-    },
-  ) {
+  constructor(params: { bot: constructors.TypeInputUser; randomId: bigint; buttonText: string; data: string }) {
     super();
     this.bot = params.bot;
     this.randomId = params.randomId;
@@ -11278,14 +9989,7 @@ export class MessagesRateTranscribedAudio extends Function {
     ];
   }
 
-  constructor(
-    params: {
-      peer: constructors.TypeInputPeer;
-      msgId: number;
-      transcriptionId: bigint;
-      good: boolean;
-    },
-  ) {
+  constructor(params: { peer: constructors.TypeInputPeer; msgId: number; transcriptionId: bigint; good: boolean }) {
     super();
     this.peer = params.peer;
     this.msgId = params.msgId;
@@ -11394,13 +10098,7 @@ export class MessagesReportReaction extends Function {
     ];
   }
 
-  constructor(
-    params: {
-      peer: constructors.TypeInputPeer;
-      id: number;
-      reactionPeer: constructors.TypeInputPeer;
-    },
-  ) {
+  constructor(params: { peer: constructors.TypeInputPeer; id: number; reactionPeer: constructors.TypeInputPeer }) {
     super();
     this.peer = params.peer;
     this.id = params.id;
@@ -11584,14 +10282,7 @@ export class MessagesSendBotRequestedPeer extends Function {
     ];
   }
 
-  constructor(
-    params: {
-      peer: constructors.TypeInputPeer;
-      msgId: number;
-      buttonId: number;
-      requestedPeer: constructors.TypeInputPeer;
-    },
-  ) {
+  constructor(params: { peer: constructors.TypeInputPeer; msgId: number; buttonId: number; requestedPeer: constructors.TypeInputPeer }) {
     super();
     this.peer = params.peer;
     this.msgId = params.msgId;
@@ -11800,16 +10491,7 @@ export class MessagesRequestAppWebView extends Function {
     ];
   }
 
-  constructor(
-    params: {
-      writeAllowed?: true;
-      peer: constructors.TypeInputPeer;
-      app: constructors.TypeInputBotApp;
-      startParam?: string;
-      themeParams?: constructors.TypeDataJSON;
-      platform: string;
-    },
-  ) {
+  constructor(params: { writeAllowed?: true; peer: constructors.TypeInputPeer; app: constructors.TypeInputBotApp; startParam?: string; themeParams?: constructors.TypeDataJSON; platform: string }) {
     super();
     this.writeAllowed = params.writeAllowed;
     this.peer = params.peer;
@@ -11868,9 +10550,7 @@ export class UpdatesGetDifference extends Function {
     ];
   }
 
-  constructor(
-    params: { pts: number; ptsTotalLimit?: number; date: number; qts: number },
-  ) {
+  constructor(params: { pts: number; ptsTotalLimit?: number; date: number; qts: number }) {
     super();
     this.pts = params.pts;
     this.ptsTotalLimit = params.ptsTotalLimit;
@@ -11895,11 +10575,7 @@ export class UpdatesGetChannelDifference extends Function {
       ["flags", flags, "#"],
       ["force", "true", "flags.0?true"],
       ["channel", constructors.TypeInputChannel, "InputChannel"],
-      [
-        "filter",
-        constructors.TypeChannelMessagesFilter,
-        "ChannelMessagesFilter",
-      ],
+      ["filter", constructors.TypeChannelMessagesFilter, "ChannelMessagesFilter"],
       ["pts", "number", "int"],
       ["limit", "number", "int"],
     ];
@@ -11910,25 +10586,13 @@ export class UpdatesGetChannelDifference extends Function {
       ["flags", flags, "#"],
       [this.force ?? null, "true", "flags.0?true"],
       [this.channel, constructors.TypeInputChannel, "InputChannel"],
-      [
-        this.filter,
-        constructors.TypeChannelMessagesFilter,
-        "ChannelMessagesFilter",
-      ],
+      [this.filter, constructors.TypeChannelMessagesFilter, "ChannelMessagesFilter"],
       [this.pts, "number", "int"],
       [this.limit, "number", "int"],
     ];
   }
 
-  constructor(
-    params: {
-      force?: true;
-      channel: constructors.TypeInputChannel;
-      filter: constructors.TypeChannelMessagesFilter;
-      pts: number;
-      limit: number;
-    },
-  ) {
+  constructor(params: { force?: true; channel: constructors.TypeInputChannel; filter: constructors.TypeChannelMessagesFilter; pts: number; limit: number }) {
     super();
     this.force = params.force;
     this.channel = params.channel;
@@ -11998,23 +10662,11 @@ export class PhotosUploadProfilePhoto extends Function {
       [this.file ?? null, constructors.TypeInputFile, "flags.0?InputFile"],
       [this.video ?? null, constructors.TypeInputFile, "flags.1?InputFile"],
       [this.videoStartTs ?? null, "number", "flags.2?double"],
-      [
-        this.videoEmojiMarkup ?? null,
-        constructors.TypeVideoSize,
-        "flags.4?VideoSize",
-      ],
+      [this.videoEmojiMarkup ?? null, constructors.TypeVideoSize, "flags.4?VideoSize"],
     ];
   }
 
-  constructor(
-    params: {
-      fallback?: true;
-      file?: constructors.TypeInputFile;
-      video?: constructors.TypeInputFile;
-      videoStartTs?: number;
-      videoEmojiMarkup?: constructors.TypeVideoSize;
-    },
-  ) {
+  constructor(params: { fallback?: true; file?: constructors.TypeInputFile; video?: constructors.TypeInputFile; videoStartTs?: number; videoEmojiMarkup?: constructors.TypeVideoSize }) {
     super();
     this.fallback = params.fallback;
     this.file = params.file;
@@ -12077,14 +10729,7 @@ export class PhotosGetUserPhotos extends Function {
     ];
   }
 
-  constructor(
-    params: {
-      userId: constructors.TypeInputUser;
-      offset: number;
-      maxId: bigint;
-      limit: number;
-    },
-  ) {
+  constructor(params: { userId: constructors.TypeInputUser; offset: number; maxId: bigint; limit: number }) {
     super();
     this.userId = params.userId;
     this.offset = params.offset;
@@ -12128,25 +10773,11 @@ export class PhotosUploadContactProfilePhoto extends Function {
       [this.file ?? null, constructors.TypeInputFile, "flags.0?InputFile"],
       [this.video ?? null, constructors.TypeInputFile, "flags.1?InputFile"],
       [this.videoStartTs ?? null, "number", "flags.2?double"],
-      [
-        this.videoEmojiMarkup ?? null,
-        constructors.TypeVideoSize,
-        "flags.5?VideoSize",
-      ],
+      [this.videoEmojiMarkup ?? null, constructors.TypeVideoSize, "flags.5?VideoSize"],
     ];
   }
 
-  constructor(
-    params: {
-      suggest?: true;
-      save?: true;
-      userId: constructors.TypeInputUser;
-      file?: constructors.TypeInputFile;
-      video?: constructors.TypeInputFile;
-      videoStartTs?: number;
-      videoEmojiMarkup?: constructors.TypeVideoSize;
-    },
-  ) {
+  constructor(params: { suggest?: true; save?: true; userId: constructors.TypeInputUser; file?: constructors.TypeInputFile; video?: constructors.TypeInputFile; videoStartTs?: number; videoEmojiMarkup?: constructors.TypeVideoSize }) {
     super();
     this.suggest = params.suggest;
     this.save = params.save;
@@ -12224,15 +10855,7 @@ export class UploadGetFile extends Function {
     ];
   }
 
-  constructor(
-    params: {
-      precise?: true;
-      cdnSupported?: true;
-      location: constructors.TypeInputFileLocation;
-      offset: bigint;
-      limit: number;
-    },
-  ) {
+  constructor(params: { precise?: true; cdnSupported?: true; location: constructors.TypeInputFileLocation; offset: bigint; limit: number }) {
     super();
     this.precise = params.precise;
     this.cdnSupported = params.cdnSupported;
@@ -12270,14 +10893,7 @@ export class UploadSaveBigFilePart extends Function {
     ];
   }
 
-  constructor(
-    params: {
-      fileId: bigint;
-      filePart: number;
-      fileTotalParts: number;
-      bytes: Uint8Array;
-    },
-  ) {
+  constructor(params: { fileId: bigint; filePart: number; fileTotalParts: number; bytes: Uint8Array }) {
     super();
     this.fileId = params.fileId;
     this.filePart = params.filePart;
@@ -12297,11 +10913,7 @@ export class UploadGetWebFile extends Function {
 
   static get [paramDesc](): ParamDesc {
     return [
-      [
-        "location",
-        constructors.TypeInputWebFileLocation,
-        "InputWebFileLocation",
-      ],
+      ["location", constructors.TypeInputWebFileLocation, "InputWebFileLocation"],
       ["offset", "number", "int"],
       ["limit", "number", "int"],
     ];
@@ -12309,23 +10921,13 @@ export class UploadGetWebFile extends Function {
 
   protected get [params](): Params {
     return [
-      [
-        this.location,
-        constructors.TypeInputWebFileLocation,
-        "InputWebFileLocation",
-      ],
+      [this.location, constructors.TypeInputWebFileLocation, "InputWebFileLocation"],
       [this.offset, "number", "int"],
       [this.limit, "number", "int"],
     ];
   }
 
-  constructor(
-    params: {
-      location: constructors.TypeInputWebFileLocation;
-      offset: number;
-      limit: number;
-    },
-  ) {
+  constructor(params: { location: constructors.TypeInputWebFileLocation; offset: number; limit: number }) {
     super();
     this.location = params.location;
     this.offset = params.offset;
@@ -12358,9 +10960,7 @@ export class UploadGetCdnFile extends Function {
     ];
   }
 
-  constructor(
-    params: { fileToken: Uint8Array; offset: bigint; limit: number },
-  ) {
+  constructor(params: { fileToken: Uint8Array; offset: bigint; limit: number }) {
     super();
     this.fileToken = params.fileToken;
     this.offset = params.offset;
@@ -12448,9 +11048,7 @@ export class UploadGetFileHashes extends Function {
     ];
   }
 
-  constructor(
-    params: { location: constructors.TypeInputFileLocation; offset: bigint },
-  ) {
+  constructor(params: { location: constructors.TypeInputFileLocation; offset: bigint }) {
     super();
     this.location = params.location;
     this.offset = params.offset;
@@ -12858,21 +11456,11 @@ export class HelpEditUserInfo extends Function {
     return [
       [this.userId, constructors.TypeInputUser, "InputUser"],
       [this.message, "string", "string"],
-      [
-        this.entities,
-        [constructors.TypeMessageEntity],
-        "Vector<MessageEntity>",
-      ],
+      [this.entities, [constructors.TypeMessageEntity], "Vector<MessageEntity>"],
     ];
   }
 
-  constructor(
-    params: {
-      userId: constructors.TypeInputUser;
-      message: string;
-      entities: Array<constructors.TypeMessageEntity>;
-    },
-  ) {
+  constructor(params: { userId: constructors.TypeInputUser; message: string; entities: Array<constructors.TypeMessageEntity> }) {
     super();
     this.userId = params.userId;
     this.message = params.message;
@@ -12945,9 +11533,7 @@ export class HelpDismissSuggestion extends Function {
     ];
   }
 
-  constructor(
-    params: { peer: constructors.TypeInputPeer; suggestion: string },
-  ) {
+  constructor(params: { peer: constructors.TypeInputPeer; suggestion: string }) {
     super();
     this.peer = params.peer;
     this.suggestion = params.suggestion;
@@ -13023,9 +11609,7 @@ export class ChannelsReadHistory extends Function {
     ];
   }
 
-  constructor(
-    params: { channel: constructors.TypeInputChannel; maxId: number },
-  ) {
+  constructor(params: { channel: constructors.TypeInputChannel; maxId: number }) {
     super();
     this.channel = params.channel;
     this.maxId = params.maxId;
@@ -13054,9 +11638,7 @@ export class ChannelsDeleteMessages extends Function {
     ];
   }
 
-  constructor(
-    params: { channel: constructors.TypeInputChannel; id: Array<number> },
-  ) {
+  constructor(params: { channel: constructors.TypeInputChannel; id: Array<number> }) {
     super();
     this.channel = params.channel;
     this.id = params.id;
@@ -13088,13 +11670,7 @@ export class ChannelsReportSpam extends Function {
     ];
   }
 
-  constructor(
-    params: {
-      channel: constructors.TypeInputChannel;
-      participant: constructors.TypeInputPeer;
-      id: Array<number>;
-    },
-  ) {
+  constructor(params: { channel: constructors.TypeInputChannel; participant: constructors.TypeInputPeer; id: Array<number> }) {
     super();
     this.channel = params.channel;
     this.participant = params.participant;
@@ -13124,12 +11700,7 @@ export class ChannelsGetMessages extends Function {
     ];
   }
 
-  constructor(
-    params: {
-      channel: constructors.TypeInputChannel;
-      id: Array<constructors.TypeInputMessage>;
-    },
-  ) {
+  constructor(params: { channel: constructors.TypeInputChannel; id: Array<constructors.TypeInputMessage> }) {
     super();
     this.channel = params.channel;
     this.id = params.id;
@@ -13150,11 +11721,7 @@ export class ChannelsGetParticipants extends Function {
   static get [paramDesc](): ParamDesc {
     return [
       ["channel", constructors.TypeInputChannel, "InputChannel"],
-      [
-        "filter",
-        constructors.TypeChannelParticipantsFilter,
-        "ChannelParticipantsFilter",
-      ],
+      ["filter", constructors.TypeChannelParticipantsFilter, "ChannelParticipantsFilter"],
       ["offset", "number", "int"],
       ["limit", "number", "int"],
       ["hash", "bigint", "long"],
@@ -13164,26 +11731,14 @@ export class ChannelsGetParticipants extends Function {
   protected get [params](): Params {
     return [
       [this.channel, constructors.TypeInputChannel, "InputChannel"],
-      [
-        this.filter,
-        constructors.TypeChannelParticipantsFilter,
-        "ChannelParticipantsFilter",
-      ],
+      [this.filter, constructors.TypeChannelParticipantsFilter, "ChannelParticipantsFilter"],
       [this.offset, "number", "int"],
       [this.limit, "number", "int"],
       [this.hash, "bigint", "long"],
     ];
   }
 
-  constructor(
-    params: {
-      channel: constructors.TypeInputChannel;
-      filter: constructors.TypeChannelParticipantsFilter;
-      offset: number;
-      limit: number;
-      hash: bigint;
-    },
-  ) {
+  constructor(params: { channel: constructors.TypeInputChannel; filter: constructors.TypeChannelParticipantsFilter; offset: number; limit: number; hash: bigint }) {
     super();
     this.channel = params.channel;
     this.filter = params.filter;
@@ -13215,12 +11770,7 @@ export class ChannelsGetParticipant extends Function {
     ];
   }
 
-  constructor(
-    params: {
-      channel: constructors.TypeInputChannel;
-      participant: constructors.TypeInputPeer;
-    },
-  ) {
+  constructor(params: { channel: constructors.TypeInputChannel; participant: constructors.TypeInputPeer }) {
     super();
     this.channel = params.channel;
     this.participant = params.participant;
@@ -13316,29 +11866,13 @@ export class ChannelsCreateChannel extends Function {
       [this.forum ?? null, "true", "flags.5?true"],
       [this.title, "string", "string"],
       [this.about, "string", "string"],
-      [
-        this.geoPoint ?? null,
-        constructors.TypeInputGeoPoint,
-        "flags.2?InputGeoPoint",
-      ],
+      [this.geoPoint ?? null, constructors.TypeInputGeoPoint, "flags.2?InputGeoPoint"],
       [this.address ?? null, "string", "flags.2?string"],
       [this.ttlPeriod ?? null, "number", "flags.4?int"],
     ];
   }
 
-  constructor(
-    params: {
-      broadcast?: true;
-      megagroup?: true;
-      forImport?: true;
-      forum?: true;
-      title: string;
-      about: string;
-      geoPoint?: constructors.TypeInputGeoPoint;
-      address?: string;
-      ttlPeriod?: number;
-    },
-  ) {
+  constructor(params: { broadcast?: true; megagroup?: true; forImport?: true; forum?: true; title: string; about: string; geoPoint?: constructors.TypeInputGeoPoint; address?: string; ttlPeriod?: number }) {
     super();
     this.broadcast = params.broadcast;
     this.megagroup = params.megagroup;
@@ -13380,14 +11914,7 @@ export class ChannelsEditAdmin extends Function {
     ];
   }
 
-  constructor(
-    params: {
-      channel: constructors.TypeInputChannel;
-      userId: constructors.TypeInputUser;
-      adminRights: constructors.TypeChatAdminRights;
-      rank: string;
-    },
-  ) {
+  constructor(params: { channel: constructors.TypeInputChannel; userId: constructors.TypeInputUser; adminRights: constructors.TypeChatAdminRights; rank: string }) {
     super();
     this.channel = params.channel;
     this.userId = params.userId;
@@ -13418,9 +11945,7 @@ export class ChannelsEditTitle extends Function {
     ];
   }
 
-  constructor(
-    params: { channel: constructors.TypeInputChannel; title: string },
-  ) {
+  constructor(params: { channel: constructors.TypeInputChannel; title: string }) {
     super();
     this.channel = params.channel;
     this.title = params.title;
@@ -13449,12 +11974,7 @@ export class ChannelsEditPhoto extends Function {
     ];
   }
 
-  constructor(
-    params: {
-      channel: constructors.TypeInputChannel;
-      photo: constructors.TypeInputChatPhoto;
-    },
-  ) {
+  constructor(params: { channel: constructors.TypeInputChannel; photo: constructors.TypeInputChatPhoto }) {
     super();
     this.channel = params.channel;
     this.photo = params.photo;
@@ -13483,9 +12003,7 @@ export class ChannelsCheckUsername extends Function {
     ];
   }
 
-  constructor(
-    params: { channel: constructors.TypeInputChannel; username: string },
-  ) {
+  constructor(params: { channel: constructors.TypeInputChannel; username: string }) {
     super();
     this.channel = params.channel;
     this.username = params.username;
@@ -13514,9 +12032,7 @@ export class ChannelsUpdateUsername extends Function {
     ];
   }
 
-  constructor(
-    params: { channel: constructors.TypeInputChannel; username: string },
-  ) {
+  constructor(params: { channel: constructors.TypeInputChannel; username: string }) {
     super();
     this.channel = params.channel;
     this.username = params.username;
@@ -13595,12 +12111,7 @@ export class ChannelsInviteToChannel extends Function {
     ];
   }
 
-  constructor(
-    params: {
-      channel: constructors.TypeInputChannel;
-      users: Array<constructors.TypeInputUser>;
-    },
-  ) {
+  constructor(params: { channel: constructors.TypeInputChannel; users: Array<constructors.TypeInputUser> }) {
     super();
     this.channel = params.channel;
     this.users = params.users;
@@ -13662,14 +12173,7 @@ export class ChannelsExportMessageLink extends Function {
     ];
   }
 
-  constructor(
-    params: {
-      grouped?: true;
-      thread?: true;
-      channel: constructors.TypeInputChannel;
-      id: number;
-    },
-  ) {
+  constructor(params: { grouped?: true; thread?: true; channel: constructors.TypeInputChannel; id: number }) {
     super();
     this.grouped = params.grouped;
     this.thread = params.thread;
@@ -13700,9 +12204,7 @@ export class ChannelsToggleSignatures extends Function {
     ];
   }
 
-  constructor(
-    params: { channel: constructors.TypeInputChannel; enabled: boolean },
-  ) {
+  constructor(params: { channel: constructors.TypeInputChannel; enabled: boolean }) {
     super();
     this.channel = params.channel;
     this.enabled = params.enabled;
@@ -13761,21 +12263,11 @@ export class ChannelsEditBanned extends Function {
     return [
       [this.channel, constructors.TypeInputChannel, "InputChannel"],
       [this.participant, constructors.TypeInputPeer, "InputPeer"],
-      [
-        this.bannedRights,
-        constructors.TypeChatBannedRights,
-        "ChatBannedRights",
-      ],
+      [this.bannedRights, constructors.TypeChatBannedRights, "ChatBannedRights"],
     ];
   }
 
-  constructor(
-    params: {
-      channel: constructors.TypeInputChannel;
-      participant: constructors.TypeInputPeer;
-      bannedRights: constructors.TypeChatBannedRights;
-    },
-  ) {
+  constructor(params: { channel: constructors.TypeInputChannel; participant: constructors.TypeInputPeer; bannedRights: constructors.TypeChatBannedRights }) {
     super();
     this.channel = params.channel;
     this.participant = params.participant;
@@ -13801,11 +12293,7 @@ export class ChannelsGetAdminLog extends Function {
       ["flags", flags, "#"],
       ["channel", constructors.TypeInputChannel, "InputChannel"],
       ["q", "string", "string"],
-      [
-        "eventsFilter",
-        constructors.TypeChannelAdminLogEventsFilter,
-        "flags.0?ChannelAdminLogEventsFilter",
-      ],
+      ["eventsFilter", constructors.TypeChannelAdminLogEventsFilter, "flags.0?ChannelAdminLogEventsFilter"],
       ["admins", [constructors.TypeInputUser], "flags.1?Vector<InputUser>"],
       ["maxId", "bigint", "long"],
       ["minId", "bigint", "long"],
@@ -13818,33 +12306,15 @@ export class ChannelsGetAdminLog extends Function {
       ["flags", flags, "#"],
       [this.channel, constructors.TypeInputChannel, "InputChannel"],
       [this.q, "string", "string"],
-      [
-        this.eventsFilter ?? null,
-        constructors.TypeChannelAdminLogEventsFilter,
-        "flags.0?ChannelAdminLogEventsFilter",
-      ],
-      [
-        this.admins ?? null,
-        [constructors.TypeInputUser],
-        "flags.1?Vector<InputUser>",
-      ],
+      [this.eventsFilter ?? null, constructors.TypeChannelAdminLogEventsFilter, "flags.0?ChannelAdminLogEventsFilter"],
+      [this.admins ?? null, [constructors.TypeInputUser], "flags.1?Vector<InputUser>"],
       [this.maxId, "bigint", "long"],
       [this.minId, "bigint", "long"],
       [this.limit, "number", "int"],
     ];
   }
 
-  constructor(
-    params: {
-      channel: constructors.TypeInputChannel;
-      q: string;
-      eventsFilter?: constructors.TypeChannelAdminLogEventsFilter;
-      admins?: Array<constructors.TypeInputUser>;
-      maxId: bigint;
-      minId: bigint;
-      limit: number;
-    },
-  ) {
+  constructor(params: { channel: constructors.TypeInputChannel; q: string; eventsFilter?: constructors.TypeChannelAdminLogEventsFilter; admins?: Array<constructors.TypeInputUser>; maxId: bigint; minId: bigint; limit: number }) {
     super();
     this.channel = params.channel;
     this.q = params.q;
@@ -13878,12 +12348,7 @@ export class ChannelsSetStickers extends Function {
     ];
   }
 
-  constructor(
-    params: {
-      channel: constructors.TypeInputChannel;
-      stickerset: constructors.TypeInputStickerSet;
-    },
-  ) {
+  constructor(params: { channel: constructors.TypeInputChannel; stickerset: constructors.TypeInputStickerSet }) {
     super();
     this.channel = params.channel;
     this.stickerset = params.stickerset;
@@ -13912,9 +12377,7 @@ export class ChannelsReadMessageContents extends Function {
     ];
   }
 
-  constructor(
-    params: { channel: constructors.TypeInputChannel; id: Array<number> },
-  ) {
+  constructor(params: { channel: constructors.TypeInputChannel; id: Array<number> }) {
     super();
     this.channel = params.channel;
     this.id = params.id;
@@ -13948,13 +12411,7 @@ export class ChannelsDeleteHistory extends Function {
     ];
   }
 
-  constructor(
-    params: {
-      forEveryone?: true;
-      channel: constructors.TypeInputChannel;
-      maxId: number;
-    },
-  ) {
+  constructor(params: { forEveryone?: true; channel: constructors.TypeInputChannel; maxId: number }) {
     super();
     this.forEveryone = params.forEveryone;
     this.channel = params.channel;
@@ -13984,9 +12441,7 @@ export class ChannelsTogglePreHistoryHidden extends Function {
     ];
   }
 
-  constructor(
-    params: { channel: constructors.TypeInputChannel; enabled: boolean },
-  ) {
+  constructor(params: { channel: constructors.TypeInputChannel; enabled: boolean }) {
     super();
     this.channel = params.channel;
     this.enabled = params.enabled;
@@ -14058,12 +12513,7 @@ export class ChannelsSetDiscussionGroup extends Function {
     ];
   }
 
-  constructor(
-    params: {
-      broadcast: constructors.TypeInputChannel;
-      group: constructors.TypeInputChannel;
-    },
-  ) {
+  constructor(params: { broadcast: constructors.TypeInputChannel; group: constructors.TypeInputChannel }) {
     super();
     this.broadcast = params.broadcast;
     this.group = params.group;
@@ -14083,11 +12533,7 @@ export class ChannelsEditCreator extends Function {
     return [
       ["channel", constructors.TypeInputChannel, "InputChannel"],
       ["userId", constructors.TypeInputUser, "InputUser"],
-      [
-        "password",
-        constructors.TypeInputCheckPasswordSRP,
-        "InputCheckPasswordSRP",
-      ],
+      ["password", constructors.TypeInputCheckPasswordSRP, "InputCheckPasswordSRP"],
     ];
   }
 
@@ -14095,21 +12541,11 @@ export class ChannelsEditCreator extends Function {
     return [
       [this.channel, constructors.TypeInputChannel, "InputChannel"],
       [this.userId, constructors.TypeInputUser, "InputUser"],
-      [
-        this.password,
-        constructors.TypeInputCheckPasswordSRP,
-        "InputCheckPasswordSRP",
-      ],
+      [this.password, constructors.TypeInputCheckPasswordSRP, "InputCheckPasswordSRP"],
     ];
   }
 
-  constructor(
-    params: {
-      channel: constructors.TypeInputChannel;
-      userId: constructors.TypeInputUser;
-      password: constructors.TypeInputCheckPasswordSRP;
-    },
-  ) {
+  constructor(params: { channel: constructors.TypeInputChannel; userId: constructors.TypeInputUser; password: constructors.TypeInputCheckPasswordSRP }) {
     super();
     this.channel = params.channel;
     this.userId = params.userId;
@@ -14142,13 +12578,7 @@ export class ChannelsEditLocation extends Function {
     ];
   }
 
-  constructor(
-    params: {
-      channel: constructors.TypeInputChannel;
-      geoPoint: constructors.TypeInputGeoPoint;
-      address: string;
-    },
-  ) {
+  constructor(params: { channel: constructors.TypeInputChannel; geoPoint: constructors.TypeInputGeoPoint; address: string }) {
     super();
     this.channel = params.channel;
     this.geoPoint = params.geoPoint;
@@ -14178,9 +12608,7 @@ export class ChannelsToggleSlowMode extends Function {
     ];
   }
 
-  constructor(
-    params: { channel: constructors.TypeInputChannel; seconds: number },
-  ) {
+  constructor(params: { channel: constructors.TypeInputChannel; seconds: number }) {
     super();
     this.channel = params.channel;
     this.seconds = params.seconds;
@@ -14252,9 +12680,7 @@ export class ChannelsViewSponsoredMessage extends Function {
     ];
   }
 
-  constructor(
-    params: { channel: constructors.TypeInputChannel; randomId: Uint8Array },
-  ) {
+  constructor(params: { channel: constructors.TypeInputChannel; randomId: Uint8Array }) {
     super();
     this.channel = params.channel;
     this.randomId = params.randomId;
@@ -14333,12 +12759,7 @@ export class ChannelsDeleteParticipantHistory extends Function {
     ];
   }
 
-  constructor(
-    params: {
-      channel: constructors.TypeInputChannel;
-      participant: constructors.TypeInputPeer;
-    },
-  ) {
+  constructor(params: { channel: constructors.TypeInputChannel; participant: constructors.TypeInputPeer }) {
     super();
     this.channel = params.channel;
     this.participant = params.participant;
@@ -14367,9 +12788,7 @@ export class ChannelsToggleJoinToSend extends Function {
     ];
   }
 
-  constructor(
-    params: { channel: constructors.TypeInputChannel; enabled: boolean },
-  ) {
+  constructor(params: { channel: constructors.TypeInputChannel; enabled: boolean }) {
     super();
     this.channel = params.channel;
     this.enabled = params.enabled;
@@ -14398,9 +12817,7 @@ export class ChannelsToggleJoinRequest extends Function {
     ];
   }
 
-  constructor(
-    params: { channel: constructors.TypeInputChannel; enabled: boolean },
-  ) {
+  constructor(params: { channel: constructors.TypeInputChannel; enabled: boolean }) {
     super();
     this.channel = params.channel;
     this.enabled = params.enabled;
@@ -14429,9 +12846,7 @@ export class ChannelsReorderUsernames extends Function {
     ];
   }
 
-  constructor(
-    params: { channel: constructors.TypeInputChannel; order: Array<string> },
-  ) {
+  constructor(params: { channel: constructors.TypeInputChannel; order: Array<string> }) {
     super();
     this.channel = params.channel;
     this.order = params.order;
@@ -14463,13 +12878,7 @@ export class ChannelsToggleUsername extends Function {
     ];
   }
 
-  constructor(
-    params: {
-      channel: constructors.TypeInputChannel;
-      username: string;
-      active: boolean;
-    },
-  ) {
+  constructor(params: { channel: constructors.TypeInputChannel; username: string; active: boolean }) {
     super();
     this.channel = params.channel;
     this.username = params.username;
@@ -14524,9 +12933,7 @@ export class ChannelsToggleForum extends Function {
     ];
   }
 
-  constructor(
-    params: { channel: constructors.TypeInputChannel; enabled: boolean },
-  ) {
+  constructor(params: { channel: constructors.TypeInputChannel; enabled: boolean }) {
     super();
     this.channel = params.channel;
     this.enabled = params.enabled;
@@ -14569,16 +12976,7 @@ export class ChannelsCreateForumTopic extends Function {
     ];
   }
 
-  constructor(
-    params: {
-      channel: constructors.TypeInputChannel;
-      title: string;
-      iconColor?: number;
-      iconEmojiId?: bigint;
-      randomId: bigint;
-      sendAs?: constructors.TypeInputPeer;
-    },
-  ) {
+  constructor(params: { channel: constructors.TypeInputChannel; title: string; iconColor?: number; iconEmojiId?: bigint; randomId: bigint; sendAs?: constructors.TypeInputPeer }) {
     super();
     this.channel = params.channel;
     this.title = params.title;
@@ -14625,16 +13023,7 @@ export class ChannelsGetForumTopics extends Function {
     ];
   }
 
-  constructor(
-    params: {
-      channel: constructors.TypeInputChannel;
-      q?: string;
-      offsetDate: number;
-      offsetId: number;
-      offsetTopic: number;
-      limit: number;
-    },
-  ) {
+  constructor(params: { channel: constructors.TypeInputChannel; q?: string; offsetDate: number; offsetId: number; offsetTopic: number; limit: number }) {
     super();
     this.channel = params.channel;
     this.q = params.q;
@@ -14667,9 +13056,7 @@ export class ChannelsGetForumTopicsByID extends Function {
     ];
   }
 
-  constructor(
-    params: { channel: constructors.TypeInputChannel; topics: Array<number> },
-  ) {
+  constructor(params: { channel: constructors.TypeInputChannel; topics: Array<number> }) {
     super();
     this.channel = params.channel;
     this.topics = params.topics;
@@ -14712,16 +13099,7 @@ export class ChannelsEditForumTopic extends Function {
     ];
   }
 
-  constructor(
-    params: {
-      channel: constructors.TypeInputChannel;
-      topicId: number;
-      title?: string;
-      iconEmojiId?: bigint;
-      closed?: boolean;
-      hidden?: boolean;
-    },
-  ) {
+  constructor(params: { channel: constructors.TypeInputChannel; topicId: number; title?: string; iconEmojiId?: bigint; closed?: boolean; hidden?: boolean }) {
     super();
     this.channel = params.channel;
     this.topicId = params.topicId;
@@ -14757,13 +13135,7 @@ export class ChannelsUpdatePinnedForumTopic extends Function {
     ];
   }
 
-  constructor(
-    params: {
-      channel: constructors.TypeInputChannel;
-      topicId: number;
-      pinned: boolean;
-    },
-  ) {
+  constructor(params: { channel: constructors.TypeInputChannel; topicId: number; pinned: boolean }) {
     super();
     this.channel = params.channel;
     this.topicId = params.topicId;
@@ -14793,9 +13165,7 @@ export class ChannelsDeleteTopicHistory extends Function {
     ];
   }
 
-  constructor(
-    params: { channel: constructors.TypeInputChannel; topMsgId: number },
-  ) {
+  constructor(params: { channel: constructors.TypeInputChannel; topMsgId: number }) {
     super();
     this.channel = params.channel;
     this.topMsgId = params.topMsgId;
@@ -14829,13 +13199,7 @@ export class ChannelsReorderPinnedForumTopics extends Function {
     ];
   }
 
-  constructor(
-    params: {
-      force?: true;
-      channel: constructors.TypeInputChannel;
-      order: Array<number>;
-    },
-  ) {
+  constructor(params: { force?: true; channel: constructors.TypeInputChannel; order: Array<number> }) {
     super();
     this.force = params.force;
     this.channel = params.channel;
@@ -14865,9 +13229,7 @@ export class ChannelsToggleAntiSpam extends Function {
     ];
   }
 
-  constructor(
-    params: { channel: constructors.TypeInputChannel; enabled: boolean },
-  ) {
+  constructor(params: { channel: constructors.TypeInputChannel; enabled: boolean }) {
     super();
     this.channel = params.channel;
     this.enabled = params.enabled;
@@ -14896,9 +13258,7 @@ export class ChannelsReportAntiSpamFalsePositive extends Function {
     ];
   }
 
-  constructor(
-    params: { channel: constructors.TypeInputChannel; msgId: number },
-  ) {
+  constructor(params: { channel: constructors.TypeInputChannel; msgId: number }) {
     super();
     this.channel = params.channel;
     this.msgId = params.msgId;
@@ -14927,9 +13287,7 @@ export class ChannelsToggleParticipantsHidden extends Function {
     ];
   }
 
-  constructor(
-    params: { channel: constructors.TypeInputChannel; enabled: boolean },
-  ) {
+  constructor(params: { channel: constructors.TypeInputChannel; enabled: boolean }) {
     super();
     this.channel = params.channel;
     this.enabled = params.enabled;
@@ -14958,9 +13316,7 @@ export class BotsSendCustomRequest extends Function {
     ];
   }
 
-  constructor(
-    params: { customMethod: string; params: constructors.TypeDataJSON },
-  ) {
+  constructor(params: { customMethod: string; params: constructors.TypeDataJSON }) {
     super();
     this.customMethod = params.customMethod;
     this.params = params.params;
@@ -15021,13 +13377,7 @@ export class BotsSetBotCommands extends Function {
     ];
   }
 
-  constructor(
-    params: {
-      scope: constructors.TypeBotCommandScope;
-      langCode: string;
-      commands: Array<constructors.TypeBotCommand>;
-    },
-  ) {
+  constructor(params: { scope: constructors.TypeBotCommandScope; langCode: string; commands: Array<constructors.TypeBotCommand> }) {
     super();
     this.scope = params.scope;
     this.langCode = params.langCode;
@@ -15057,9 +13407,7 @@ export class BotsResetBotCommands extends Function {
     ];
   }
 
-  constructor(
-    params: { scope: constructors.TypeBotCommandScope; langCode: string },
-  ) {
+  constructor(params: { scope: constructors.TypeBotCommandScope; langCode: string }) {
     super();
     this.scope = params.scope;
     this.langCode = params.langCode;
@@ -15088,9 +13436,7 @@ export class BotsGetBotCommands extends Function {
     ];
   }
 
-  constructor(
-    params: { scope: constructors.TypeBotCommandScope; langCode: string },
-  ) {
+  constructor(params: { scope: constructors.TypeBotCommandScope; langCode: string }) {
     super();
     this.scope = params.scope;
     this.langCode = params.langCode;
@@ -15119,12 +13465,7 @@ export class BotsSetBotMenuButton extends Function {
     ];
   }
 
-  constructor(
-    params: {
-      userId: constructors.TypeInputUser;
-      button: constructors.TypeBotMenuButton;
-    },
-  ) {
+  constructor(params: { userId: constructors.TypeInputUser; button: constructors.TypeBotMenuButton }) {
     super();
     this.userId = params.userId;
     this.button = params.button;
@@ -15233,9 +13574,7 @@ export class BotsSetBotInfo extends Function {
     ];
   }
 
-  constructor(
-    params: { langCode: string; about?: string; description?: string },
-  ) {
+  constructor(params: { langCode: string; about?: string; description?: string }) {
     super();
     this.langCode = params.langCode;
     this.about = params.about;
@@ -15292,12 +13631,7 @@ export class PaymentsGetPaymentForm extends Function {
     ];
   }
 
-  constructor(
-    params: {
-      invoice: constructors.TypeInputInvoice;
-      themeParams?: constructors.TypeDataJSON;
-    },
-  ) {
+  constructor(params: { invoice: constructors.TypeInputInvoice; themeParams?: constructors.TypeDataJSON }) {
     super();
     this.invoice = params.invoice;
     this.themeParams = params.themeParams;
@@ -15356,21 +13690,11 @@ export class PaymentsValidateRequestedInfo extends Function {
       ["flags", flags, "#"],
       [this.save ?? null, "true", "flags.0?true"],
       [this.invoice, constructors.TypeInputInvoice, "InputInvoice"],
-      [
-        this.info,
-        constructors.TypePaymentRequestedInfo,
-        "PaymentRequestedInfo",
-      ],
+      [this.info, constructors.TypePaymentRequestedInfo, "PaymentRequestedInfo"],
     ];
   }
 
-  constructor(
-    params: {
-      save?: true;
-      invoice: constructors.TypeInputInvoice;
-      info: constructors.TypePaymentRequestedInfo;
-    },
-  ) {
+  constructor(params: { save?: true; invoice: constructors.TypeInputInvoice; info: constructors.TypePaymentRequestedInfo }) {
     super();
     this.save = params.save;
     this.invoice = params.invoice;
@@ -15397,11 +13721,7 @@ export class PaymentsSendPaymentForm extends Function {
       ["invoice", constructors.TypeInputInvoice, "InputInvoice"],
       ["requestedInfoId", "string", "flags.0?string"],
       ["shippingOptionId", "string", "flags.1?string"],
-      [
-        "credentials",
-        constructors.TypeInputPaymentCredentials,
-        "InputPaymentCredentials",
-      ],
+      ["credentials", constructors.TypeInputPaymentCredentials, "InputPaymentCredentials"],
       ["tipAmount", "bigint", "flags.2?long"],
     ];
   }
@@ -15413,25 +13733,12 @@ export class PaymentsSendPaymentForm extends Function {
       [this.invoice, constructors.TypeInputInvoice, "InputInvoice"],
       [this.requestedInfoId ?? null, "string", "flags.0?string"],
       [this.shippingOptionId ?? null, "string", "flags.1?string"],
-      [
-        this.credentials,
-        constructors.TypeInputPaymentCredentials,
-        "InputPaymentCredentials",
-      ],
+      [this.credentials, constructors.TypeInputPaymentCredentials, "InputPaymentCredentials"],
       [this.tipAmount ?? null, "bigint", "flags.2?long"],
     ];
   }
 
-  constructor(
-    params: {
-      formId: bigint;
-      invoice: constructors.TypeInputInvoice;
-      requestedInfoId?: string;
-      shippingOptionId?: string;
-      credentials: constructors.TypeInputPaymentCredentials;
-      tipAmount?: bigint;
-    },
-  ) {
+  constructor(params: { formId: bigint; invoice: constructors.TypeInputInvoice; requestedInfoId?: string; shippingOptionId?: string; credentials: constructors.TypeInputPaymentCredentials; tipAmount?: bigint }) {
     super();
     this.formId = params.formId;
     this.invoice = params.invoice;
@@ -15552,31 +13859,18 @@ export class PaymentsAssignAppStoreTransaction extends Function {
   static get [paramDesc](): ParamDesc {
     return [
       ["receipt", Uint8Array, "bytes"],
-      [
-        "purpose",
-        constructors.TypeInputStorePaymentPurpose,
-        "InputStorePaymentPurpose",
-      ],
+      ["purpose", constructors.TypeInputStorePaymentPurpose, "InputStorePaymentPurpose"],
     ];
   }
 
   protected get [params](): Params {
     return [
       [this.receipt, Uint8Array, "bytes"],
-      [
-        this.purpose,
-        constructors.TypeInputStorePaymentPurpose,
-        "InputStorePaymentPurpose",
-      ],
+      [this.purpose, constructors.TypeInputStorePaymentPurpose, "InputStorePaymentPurpose"],
     ];
   }
 
-  constructor(
-    params: {
-      receipt: Uint8Array;
-      purpose: constructors.TypeInputStorePaymentPurpose;
-    },
-  ) {
+  constructor(params: { receipt: Uint8Array; purpose: constructors.TypeInputStorePaymentPurpose }) {
     super();
     this.receipt = params.receipt;
     this.purpose = params.purpose;
@@ -15594,31 +13888,18 @@ export class PaymentsAssignPlayMarketTransaction extends Function {
   static get [paramDesc](): ParamDesc {
     return [
       ["receipt", constructors.TypeDataJSON, "DataJSON"],
-      [
-        "purpose",
-        constructors.TypeInputStorePaymentPurpose,
-        "InputStorePaymentPurpose",
-      ],
+      ["purpose", constructors.TypeInputStorePaymentPurpose, "InputStorePaymentPurpose"],
     ];
   }
 
   protected get [params](): Params {
     return [
       [this.receipt, constructors.TypeDataJSON, "DataJSON"],
-      [
-        this.purpose,
-        constructors.TypeInputStorePaymentPurpose,
-        "InputStorePaymentPurpose",
-      ],
+      [this.purpose, constructors.TypeInputStorePaymentPurpose, "InputStorePaymentPurpose"],
     ];
   }
 
-  constructor(
-    params: {
-      receipt: constructors.TypeDataJSON;
-      purpose: constructors.TypeInputStorePaymentPurpose;
-    },
-  ) {
+  constructor(params: { receipt: constructors.TypeDataJSON; purpose: constructors.TypeInputStorePaymentPurpose }) {
     super();
     this.receipt = params.receipt;
     this.purpose = params.purpose;
@@ -15634,21 +13915,13 @@ export class PaymentsCanPurchasePremium extends Function {
 
   static get [paramDesc](): ParamDesc {
     return [
-      [
-        "purpose",
-        constructors.TypeInputStorePaymentPurpose,
-        "InputStorePaymentPurpose",
-      ],
+      ["purpose", constructors.TypeInputStorePaymentPurpose, "InputStorePaymentPurpose"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [
-        this.purpose,
-        constructors.TypeInputStorePaymentPurpose,
-        "InputStorePaymentPurpose",
-      ],
+      [this.purpose, constructors.TypeInputStorePaymentPurpose, "InputStorePaymentPurpose"],
     ];
   }
 
@@ -15687,11 +13960,7 @@ export class StickersCreateStickerSet extends Function {
       ["title", "string", "string"],
       ["shortName", "string", "string"],
       ["thumb", constructors.TypeInputDocument, "flags.2?InputDocument"],
-      [
-        "stickers",
-        [constructors.TypeInputStickerSetItem],
-        "Vector<InputStickerSetItem>",
-      ],
+      ["stickers", [constructors.TypeInputStickerSetItem], "Vector<InputStickerSetItem>"],
       ["software", "string", "flags.3?string"],
     ];
   }
@@ -15707,35 +13976,13 @@ export class StickersCreateStickerSet extends Function {
       [this.userId, constructors.TypeInputUser, "InputUser"],
       [this.title, "string", "string"],
       [this.shortName, "string", "string"],
-      [
-        this.thumb ?? null,
-        constructors.TypeInputDocument,
-        "flags.2?InputDocument",
-      ],
-      [
-        this.stickers,
-        [constructors.TypeInputStickerSetItem],
-        "Vector<InputStickerSetItem>",
-      ],
+      [this.thumb ?? null, constructors.TypeInputDocument, "flags.2?InputDocument"],
+      [this.stickers, [constructors.TypeInputStickerSetItem], "Vector<InputStickerSetItem>"],
       [this.software ?? null, "string", "flags.3?string"],
     ];
   }
 
-  constructor(
-    params: {
-      masks?: true;
-      animated?: true;
-      videos?: true;
-      emojis?: true;
-      textColor?: true;
-      userId: constructors.TypeInputUser;
-      title: string;
-      shortName: string;
-      thumb?: constructors.TypeInputDocument;
-      stickers: Array<constructors.TypeInputStickerSetItem>;
-      software?: string;
-    },
-  ) {
+  constructor(params: { masks?: true; animated?: true; videos?: true; emojis?: true; textColor?: true; userId: constructors.TypeInputUser; title: string; shortName: string; thumb?: constructors.TypeInputDocument; stickers: Array<constructors.TypeInputStickerSetItem>; software?: string }) {
     super();
     this.masks = params.masks;
     this.animated = params.animated;
@@ -15798,9 +14045,7 @@ export class StickersChangeStickerPosition extends Function {
     ];
   }
 
-  constructor(
-    params: { sticker: constructors.TypeInputDocument; position: number },
-  ) {
+  constructor(params: { sticker: constructors.TypeInputDocument; position: number }) {
     super();
     this.sticker = params.sticker;
     this.position = params.position;
@@ -15825,20 +14070,11 @@ export class StickersAddStickerToSet extends Function {
   protected get [params](): Params {
     return [
       [this.stickerset, constructors.TypeInputStickerSet, "InputStickerSet"],
-      [
-        this.sticker,
-        constructors.TypeInputStickerSetItem,
-        "InputStickerSetItem",
-      ],
+      [this.sticker, constructors.TypeInputStickerSetItem, "InputStickerSetItem"],
     ];
   }
 
-  constructor(
-    params: {
-      stickerset: constructors.TypeInputStickerSet;
-      sticker: constructors.TypeInputStickerSetItem;
-    },
-  ) {
+  constructor(params: { stickerset: constructors.TypeInputStickerSet; sticker: constructors.TypeInputStickerSetItem }) {
     super();
     this.stickerset = params.stickerset;
     this.sticker = params.sticker;
@@ -15867,22 +14103,12 @@ export class StickersSetStickerSetThumb extends Function {
     return [
       ["flags", flags, "#"],
       [this.stickerset, constructors.TypeInputStickerSet, "InputStickerSet"],
-      [
-        this.thumb ?? null,
-        constructors.TypeInputDocument,
-        "flags.0?InputDocument",
-      ],
+      [this.thumb ?? null, constructors.TypeInputDocument, "flags.0?InputDocument"],
       [this.thumbDocumentId ?? null, "bigint", "flags.1?long"],
     ];
   }
 
-  constructor(
-    params: {
-      stickerset: constructors.TypeInputStickerSet;
-      thumb?: constructors.TypeInputDocument;
-      thumbDocumentId?: bigint;
-    },
-  ) {
+  constructor(params: { stickerset: constructors.TypeInputStickerSet; thumb?: constructors.TypeInputDocument; thumbDocumentId?: bigint }) {
     super();
     this.stickerset = params.stickerset;
     this.thumb = params.thumb;
@@ -15965,23 +14191,12 @@ export class StickersChangeSticker extends Function {
       ["flags", flags, "#"],
       [this.sticker, constructors.TypeInputDocument, "InputDocument"],
       [this.emoji ?? null, "string", "flags.0?string"],
-      [
-        this.maskCoords ?? null,
-        constructors.TypeMaskCoords,
-        "flags.1?MaskCoords",
-      ],
+      [this.maskCoords ?? null, constructors.TypeMaskCoords, "flags.1?MaskCoords"],
       [this.keywords ?? null, "string", "flags.2?string"],
     ];
   }
 
-  constructor(
-    params: {
-      sticker: constructors.TypeInputDocument;
-      emoji?: string;
-      maskCoords?: constructors.TypeMaskCoords;
-      keywords?: string;
-    },
-  ) {
+  constructor(params: { sticker: constructors.TypeInputDocument; emoji?: string; maskCoords?: constructors.TypeMaskCoords; keywords?: string }) {
     super();
     this.sticker = params.sticker;
     this.emoji = params.emoji;
@@ -16012,9 +14227,7 @@ export class StickersRenameStickerSet extends Function {
     ];
   }
 
-  constructor(
-    params: { stickerset: constructors.TypeInputStickerSet; title: string },
-  ) {
+  constructor(params: { stickerset: constructors.TypeInputStickerSet; title: string }) {
     super();
     this.stickerset = params.stickerset;
     this.title = params.title;
@@ -16097,15 +14310,7 @@ export class PhoneRequestCall extends Function {
     ];
   }
 
-  constructor(
-    params: {
-      video?: true;
-      userId: constructors.TypeInputUser;
-      randomId: number;
-      gAHash: Uint8Array;
-      protocol: constructors.TypePhoneCallProtocol;
-    },
-  ) {
+  constructor(params: { video?: true; userId: constructors.TypeInputUser; randomId: number; gAHash: Uint8Array; protocol: constructors.TypePhoneCallProtocol }) {
     super();
     this.video = params.video;
     this.userId = params.userId;
@@ -16140,13 +14345,7 @@ export class PhoneAcceptCall extends Function {
     ];
   }
 
-  constructor(
-    params: {
-      peer: constructors.TypeInputPhoneCall;
-      gB: Uint8Array;
-      protocol: constructors.TypePhoneCallProtocol;
-    },
-  ) {
+  constructor(params: { peer: constructors.TypeInputPhoneCall; gB: Uint8Array; protocol: constructors.TypePhoneCallProtocol }) {
     super();
     this.peer = params.peer;
     this.gB = params.gB;
@@ -16182,14 +14381,7 @@ export class PhoneConfirmCall extends Function {
     ];
   }
 
-  constructor(
-    params: {
-      peer: constructors.TypeInputPhoneCall;
-      gA: Uint8Array;
-      keyFingerprint: bigint;
-      protocol: constructors.TypePhoneCallProtocol;
-    },
-  ) {
+  constructor(params: { peer: constructors.TypeInputPhoneCall; gA: Uint8Array; keyFingerprint: bigint; protocol: constructors.TypePhoneCallProtocol }) {
     super();
     this.peer = params.peer;
     this.gA = params.gA;
@@ -16240,11 +14432,7 @@ export class PhoneDiscardCall extends Function {
       ["video", "true", "flags.0?true"],
       ["peer", constructors.TypeInputPhoneCall, "InputPhoneCall"],
       ["duration", "number", "int"],
-      [
-        "reason",
-        constructors.TypePhoneCallDiscardReason,
-        "PhoneCallDiscardReason",
-      ],
+      ["reason", constructors.TypePhoneCallDiscardReason, "PhoneCallDiscardReason"],
       ["connectionId", "bigint", "long"],
     ];
   }
@@ -16255,24 +14443,12 @@ export class PhoneDiscardCall extends Function {
       [this.video ?? null, "true", "flags.0?true"],
       [this.peer, constructors.TypeInputPhoneCall, "InputPhoneCall"],
       [this.duration, "number", "int"],
-      [
-        this.reason,
-        constructors.TypePhoneCallDiscardReason,
-        "PhoneCallDiscardReason",
-      ],
+      [this.reason, constructors.TypePhoneCallDiscardReason, "PhoneCallDiscardReason"],
       [this.connectionId, "bigint", "long"],
     ];
   }
 
-  constructor(
-    params: {
-      video?: true;
-      peer: constructors.TypeInputPhoneCall;
-      duration: number;
-      reason: constructors.TypePhoneCallDiscardReason;
-      connectionId: bigint;
-    },
-  ) {
+  constructor(params: { video?: true; peer: constructors.TypeInputPhoneCall; duration: number; reason: constructors.TypePhoneCallDiscardReason; connectionId: bigint }) {
     super();
     this.video = params.video;
     this.peer = params.peer;
@@ -16312,14 +14488,7 @@ export class PhoneSetCallRating extends Function {
     ];
   }
 
-  constructor(
-    params: {
-      userInitiative?: true;
-      peer: constructors.TypeInputPhoneCall;
-      rating: number;
-      comment: string;
-    },
-  ) {
+  constructor(params: { userInitiative?: true; peer: constructors.TypeInputPhoneCall; rating: number; comment: string }) {
     super();
     this.userInitiative = params.userInitiative;
     this.peer = params.peer;
@@ -16350,12 +14519,7 @@ export class PhoneSaveCallDebug extends Function {
     ];
   }
 
-  constructor(
-    params: {
-      peer: constructors.TypeInputPhoneCall;
-      debug: constructors.TypeDataJSON;
-    },
-  ) {
+  constructor(params: { peer: constructors.TypeInputPhoneCall; debug: constructors.TypeDataJSON }) {
     super();
     this.peer = params.peer;
     this.debug = params.debug;
@@ -16384,9 +14548,7 @@ export class PhoneSendSignalingData extends Function {
     ];
   }
 
-  constructor(
-    params: { peer: constructors.TypeInputPhoneCall; data: Uint8Array },
-  ) {
+  constructor(params: { peer: constructors.TypeInputPhoneCall; data: Uint8Array }) {
     super();
     this.peer = params.peer;
     this.data = params.data;
@@ -16426,15 +14588,7 @@ export class PhoneCreateGroupCall extends Function {
     ];
   }
 
-  constructor(
-    params: {
-      rtmpStream?: true;
-      peer: constructors.TypeInputPeer;
-      randomId: number;
-      title?: string;
-      scheduleDate?: number;
-    },
-  ) {
+  constructor(params: { rtmpStream?: true; peer: constructors.TypeInputPeer; randomId: number; title?: string; scheduleDate?: number }) {
     super();
     this.rtmpStream = params.rtmpStream;
     this.peer = params.peer;
@@ -16480,16 +14634,7 @@ export class PhoneJoinGroupCall extends Function {
     ];
   }
 
-  constructor(
-    params: {
-      muted?: true;
-      videoStopped?: true;
-      call: constructors.TypeInputGroupCall;
-      joinAs: constructors.TypeInputPeer;
-      inviteHash?: string;
-      params: constructors.TypeDataJSON;
-    },
-  ) {
+  constructor(params: { muted?: true; videoStopped?: true; call: constructors.TypeInputGroupCall; joinAs: constructors.TypeInputPeer; inviteHash?: string; params: constructors.TypeDataJSON }) {
     super();
     this.muted = params.muted;
     this.videoStopped = params.videoStopped;
@@ -16522,9 +14667,7 @@ export class PhoneLeaveGroupCall extends Function {
     ];
   }
 
-  constructor(
-    params: { call: constructors.TypeInputGroupCall; source: number },
-  ) {
+  constructor(params: { call: constructors.TypeInputGroupCall; source: number }) {
     super();
     this.call = params.call;
     this.source = params.source;
@@ -16553,12 +14696,7 @@ export class PhoneInviteToGroupCall extends Function {
     ];
   }
 
-  constructor(
-    params: {
-      call: constructors.TypeInputGroupCall;
-      users: Array<constructors.TypeInputUser>;
-    },
-  ) {
+  constructor(params: { call: constructors.TypeInputGroupCall; users: Array<constructors.TypeInputUser> }) {
     super();
     this.call = params.call;
     this.users = params.users;
@@ -16617,13 +14755,7 @@ export class PhoneToggleGroupCallSettings extends Function {
     ];
   }
 
-  constructor(
-    params: {
-      resetInviteHash?: true;
-      call: constructors.TypeInputGroupCall;
-      joinMuted?: boolean;
-    },
-  ) {
+  constructor(params: { resetInviteHash?: true; call: constructors.TypeInputGroupCall; joinMuted?: boolean }) {
     super();
     this.resetInviteHash = params.resetInviteHash;
     this.call = params.call;
@@ -16653,9 +14785,7 @@ export class PhoneGetGroupCall extends Function {
     ];
   }
 
-  constructor(
-    params: { call: constructors.TypeInputGroupCall; limit: number },
-  ) {
+  constructor(params: { call: constructors.TypeInputGroupCall; limit: number }) {
     super();
     this.call = params.call;
     this.limit = params.limit;
@@ -16693,15 +14823,7 @@ export class PhoneGetGroupParticipants extends Function {
     ];
   }
 
-  constructor(
-    params: {
-      call: constructors.TypeInputGroupCall;
-      ids: Array<constructors.TypeInputPeer>;
-      sources: Array<number>;
-      offset: string;
-      limit: number;
-    },
-  ) {
+  constructor(params: { call: constructors.TypeInputGroupCall; ids: Array<constructors.TypeInputPeer>; sources: Array<number>; offset: string; limit: number }) {
     super();
     this.call = params.call;
     this.ids = params.ids;
@@ -16733,9 +14855,7 @@ export class PhoneCheckGroupCall extends Function {
     ];
   }
 
-  constructor(
-    params: { call: constructors.TypeInputGroupCall; sources: Array<number> },
-  ) {
+  constructor(params: { call: constructors.TypeInputGroupCall; sources: Array<number> }) {
     super();
     this.call = params.call;
     this.sources = params.sources;
@@ -16775,15 +14895,7 @@ export class PhoneToggleGroupCallRecord extends Function {
     ];
   }
 
-  constructor(
-    params: {
-      start?: true;
-      video?: true;
-      call: constructors.TypeInputGroupCall;
-      title?: string;
-      videoPortrait?: boolean;
-    },
-  ) {
+  constructor(params: { start?: true; video?: true; call: constructors.TypeInputGroupCall; title?: string; videoPortrait?: boolean }) {
     super();
     this.start = params.start;
     this.video = params.video;
@@ -16835,18 +14947,7 @@ export class PhoneEditGroupCallParticipant extends Function {
     ];
   }
 
-  constructor(
-    params: {
-      call: constructors.TypeInputGroupCall;
-      participant: constructors.TypeInputPeer;
-      muted?: boolean;
-      volume?: number;
-      raiseHand?: boolean;
-      videoStopped?: boolean;
-      videoPaused?: boolean;
-      presentationPaused?: boolean;
-    },
-  ) {
+  constructor(params: { call: constructors.TypeInputGroupCall; participant: constructors.TypeInputPeer; muted?: boolean; volume?: number; raiseHand?: boolean; videoStopped?: boolean; videoPaused?: boolean; presentationPaused?: boolean }) {
     super();
     this.call = params.call;
     this.participant = params.participant;
@@ -16881,9 +14982,7 @@ export class PhoneEditGroupCallTitle extends Function {
     ];
   }
 
-  constructor(
-    params: { call: constructors.TypeInputGroupCall; title: string },
-  ) {
+  constructor(params: { call: constructors.TypeInputGroupCall; title: string }) {
     super();
     this.call = params.call;
     this.title = params.title;
@@ -16939,9 +15038,7 @@ export class PhoneExportGroupCallInvite extends Function {
     ];
   }
 
-  constructor(
-    params: { canSelfUnmute?: true; call: constructors.TypeInputGroupCall },
-  ) {
+  constructor(params: { canSelfUnmute?: true; call: constructors.TypeInputGroupCall }) {
     super();
     this.canSelfUnmute = params.canSelfUnmute;
     this.call = params.call;
@@ -16970,9 +15067,7 @@ export class PhoneToggleGroupCallStartSubscription extends Function {
     ];
   }
 
-  constructor(
-    params: { call: constructors.TypeInputGroupCall; subscribed: boolean },
-  ) {
+  constructor(params: { call: constructors.TypeInputGroupCall; subscribed: boolean }) {
     super();
     this.call = params.call;
     this.subscribed = params.subscribed;
@@ -17026,12 +15121,7 @@ export class PhoneSaveDefaultGroupCallJoinAs extends Function {
     ];
   }
 
-  constructor(
-    params: {
-      peer: constructors.TypeInputPeer;
-      joinAs: constructors.TypeInputPeer;
-    },
-  ) {
+  constructor(params: { peer: constructors.TypeInputPeer; joinAs: constructors.TypeInputPeer }) {
     super();
     this.peer = params.peer;
     this.joinAs = params.joinAs;
@@ -17060,12 +15150,7 @@ export class PhoneJoinGroupCallPresentation extends Function {
     ];
   }
 
-  constructor(
-    params: {
-      call: constructors.TypeInputGroupCall;
-      params: constructors.TypeDataJSON;
-    },
-  ) {
+  constructor(params: { call: constructors.TypeInputGroupCall; params: constructors.TypeDataJSON }) {
     super();
     this.call = params.call;
     this.params = params.params;
@@ -17173,12 +15258,7 @@ export class PhoneSaveCallLog extends Function {
     ];
   }
 
-  constructor(
-    params: {
-      peer: constructors.TypeInputPhoneCall;
-      file: constructors.TypeInputFile;
-    },
-  ) {
+  constructor(params: { peer: constructors.TypeInputPhoneCall; file: constructors.TypeInputFile }) {
     super();
     this.peer = params.peer;
     this.file = params.file;
@@ -17239,9 +15319,7 @@ export class LangpackGetStrings extends Function {
     ];
   }
 
-  constructor(
-    params: { langPack: string; langCode: string; keys: Array<string> },
-  ) {
+  constructor(params: { langPack: string; langCode: string; keys: Array<string> }) {
     super();
     this.langPack = params.langPack;
     this.langCode = params.langCode;
@@ -17274,9 +15352,7 @@ export class LangpackGetDifference extends Function {
     ];
   }
 
-  constructor(
-    params: { langPack: string; langCode: string; fromVersion: number },
-  ) {
+  constructor(params: { langPack: string; langCode: string; fromVersion: number }) {
     super();
     this.langPack = params.langPack;
     this.langCode = params.langCode;
@@ -17347,27 +15423,17 @@ export class FoldersEditPeerFolders extends Function {
 
   static get [paramDesc](): ParamDesc {
     return [
-      [
-        "folderPeers",
-        [constructors.TypeInputFolderPeer],
-        "Vector<InputFolderPeer>",
-      ],
+      ["folderPeers", [constructors.TypeInputFolderPeer], "Vector<InputFolderPeer>"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [
-        this.folderPeers,
-        [constructors.TypeInputFolderPeer],
-        "Vector<InputFolderPeer>",
-      ],
+      [this.folderPeers, [constructors.TypeInputFolderPeer], "Vector<InputFolderPeer>"],
     ];
   }
 
-  constructor(
-    params: { folderPeers: Array<constructors.TypeInputFolderPeer> },
-  ) {
+  constructor(params: { folderPeers: Array<constructors.TypeInputFolderPeer> }) {
     super();
     this.folderPeers = params.folderPeers;
   }
@@ -17500,16 +15566,7 @@ export class StatsGetMessagePublicForwards extends Function {
     ];
   }
 
-  constructor(
-    params: {
-      channel: constructors.TypeInputChannel;
-      msgId: number;
-      offsetRate: number;
-      offsetPeer: constructors.TypeInputPeer;
-      offsetId: number;
-      limit: number;
-    },
-  ) {
+  constructor(params: { channel: constructors.TypeInputChannel; msgId: number; offsetRate: number; offsetPeer: constructors.TypeInputPeer; offsetId: number; limit: number }) {
     super();
     this.channel = params.channel;
     this.msgId = params.msgId;
@@ -17547,13 +15604,7 @@ export class StatsGetMessageStats extends Function {
     ];
   }
 
-  constructor(
-    params: {
-      dark?: true;
-      channel: constructors.TypeInputChannel;
-      msgId: number;
-    },
-  ) {
+  constructor(params: { dark?: true; channel: constructors.TypeInputChannel; msgId: number }) {
     super();
     this.dark = params.dark;
     this.channel = params.channel;
