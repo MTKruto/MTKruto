@@ -4,9 +4,6 @@ const abbrs = ["RPC", "HTTP", "DC", "CDN", "ABS", "GZIP"];
 const abbrReplacements = [["Url", "URL"], ["Pq", "PQ"]];
 
 export function toCamelCase(string: string, replaceAbbrs = false) {
-  if (string == "RecentMeUrl") {
-    console.log(string);
-  }
   string = string.replace(/\.(.)/g, "_$1");
   if (replaceAbbrs) {
     for (const abbr of abbrs) {
