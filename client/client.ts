@@ -13,7 +13,7 @@ import { TLReader } from "../tl/3_tl_reader.ts";
 import { logger } from "../utilities/0_logger.ts";
 
 export class Client extends ClientAbstract {
-  private sessionId = getRandomBigInt(8, true, true);
+  private sessionId = getRandomBigInt(8, false, true);
   private auth?: { key: Uint8Array; id: bigint };
   private state = { salt: 0n, seqNo: 0 };
   private promises = new Map<bigint, { resolve: (obj: TLObject) => void; reject: (err: TLObject) => void }>();

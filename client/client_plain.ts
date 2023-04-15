@@ -26,14 +26,13 @@ export class ClientPlain extends ClientAbstract {
   }
 
   async createAuthKey() {
-    let nonce = getRandomBigInt(16, true, true);
+    const nonce = getRandomBigInt(16, false, true);
     logger().debug("Auth key creation started");
 
     const resPq = await this.invoke(new ReqPQMulti({ nonce }));
 
     assertInstanceOf(resPq, ResPQ);
     assertEquals(resPq.nonce, nonce);
-    nonce = resPq.nonce;
     logger().debug("Got res_pq");
 
     const pq_ = bigIntFromBuffer(resPq.pq, false, false);
@@ -61,7 +60,7 @@ export class ClientPlain extends ClientAbstract {
     const dc = this.dcId;
     const pq = resPq.pq;
     const serverNonce = resPq.serverNonce;
-    const newNonce = getRandomBigInt(32, true, true);
+    const newNonce = getRandomBigInt(32, false, true);
     let encryptedData = await rsaPad(
       new PQInnerDataDC({
         pq,
