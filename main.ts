@@ -5,6 +5,19 @@ import {
   InvokeWithLayer,
   Ping,
 } from "./tl/3_functions.ts";
+import { log } from "./deps.ts";
+
+log.setup({
+  handlers: {
+    console: new log.handlers.ConsoleHandler("DEBUG"),
+  },
+  loggers: {
+    "MTKruto": {
+      level: "DEBUG",
+      handlers: ["console"],
+    },
+  },
+});
 
 const client = new Client(true);
 

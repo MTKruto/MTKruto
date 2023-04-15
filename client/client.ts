@@ -14,6 +14,7 @@ import { MessageContainer } from "../tl/6_message_container.ts";
 import { ClientAbstract } from "./client_abstract.ts";
 import { ClientPlain } from "./client_plain.ts";
 import { TLReader } from "../tl/3_tl_reader.ts";
+import { logger } from "../utilities/0_logger.ts";
 
 export class Client extends ClientAbstract {
   private sessionId = getRandomBigInt(8, true, true);
@@ -35,6 +36,7 @@ export class Client extends ClientAbstract {
     this.auth = { key, id };
     this.state.salt = salt;
     await super.connect();
+    logger().debug("Client connected");
     this.loop();
   }
 
@@ -111,6 +113,7 @@ export class Client extends ClientAbstract {
         this.sessionId,
       ),
     );
+    logger().debug(`Invoked ${function_.constructor.name}`)
 
     if (noWait) {
       return

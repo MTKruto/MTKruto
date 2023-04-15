@@ -33,6 +33,7 @@ import {
 } from "../tl/3_functions.ts";
 import { TLReader } from "../tl/3_tl_reader.ts";
 import { ClientAbstract } from "./client_abstract.ts";
+import { logger } from "../utilities/0_logger.ts";
 
 export class ClientPlain extends ClientAbstract {
   async invoke(function_: Function) {
@@ -51,15 +52,18 @@ export class ClientPlain extends ClientAbstract {
 
   async createAuthKey() {
     let nonce = getRandomBigInt(16, true, true);
+    logger().debug("Auth key creation started");
 
     const resPq = await this.invoke(new ReqPqMulti({ nonce }));
 
     assertInstanceOf(resPq, ResPQ);
     assertEquals(resPq.nonce, nonce);
     nonce = resPq.nonce;
+    logger().debug("Got res_pq");
 
     const pq_ = bigIntFromBuffer(resPq.pq, false, false);
     const [p_, q_] = factorize(pq_);
+    logger().debug("Factorized pq");
     const p = bufferFromBigInt(p_.valueOf(), 4, false, false);
     const q = bufferFromBigInt(q_.valueOf(), 4, false, false);
 
@@ -108,6 +112,7 @@ export class ClientPlain extends ClientAbstract {
     );
 
     assertInstanceOf(dhParams, ServerDHParamsOk);
+    logger().debug("Got server_DH_params_ok");
 
     const newNonce_ = bufferFromBigInt(newNonce, 32, true, true);
     const serverNonce_ = bufferFromBigInt(serverNonce, 16, true, true);
@@ -145,6 +150,7 @@ export class ClientPlain extends ClientAbstract {
     // deno-fmt-ignore
     const dhGenOk = await this.invoke(new SetClientDHParams({ nonce, serverNonce, encryptedData }));
     assertInstanceOf(dhGenOk, DhGenOk);
+    logger().debug("Got dh_gen_ok");
 
     const serverNonceSlice = serverNonce_.slice(0, 8);
     const salt = newNonce_.slice(0, 0 + 8).map((v, i) =>
@@ -154,6 +160,8 @@ export class ClientPlain extends ClientAbstract {
     const authKey_ = modExp(gA, b, dhPrime);
     const authKey = bufferFromBigInt(authKey_, 256, false, false);
     const authKeyId = (await sha1(authKey)).slice(-8);
+
+    logger().debug("Auth key created");
 
     return {
       authKey,
