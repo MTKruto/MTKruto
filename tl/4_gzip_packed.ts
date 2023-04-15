@@ -2,7 +2,6 @@ import { gunzip, gzip } from "../deps.ts";
 import { TLObject } from "./1_tl_object.ts";
 import { TLReader } from "./3_tl_reader.ts";
 import { TLWriter } from "./3_tl_writer.ts";
-import { RPCResult } from "./5_rpc_result.ts";
 
 export class GZIPPacked {
   static get cid() {
