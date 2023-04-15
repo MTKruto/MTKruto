@@ -49,7 +49,7 @@ export class ClientPlain extends ClientAbstract {
   }
 
   async createAuthKey() {
-    let nonce = getRandomBigInt(16, false, true);
+    let nonce = getRandomBigInt(16, true, true);
 
     const resPq = await this.invoke(new ReqPqMulti({ nonce }));
 
@@ -62,7 +62,7 @@ export class ClientPlain extends ClientAbstract {
     const p = bufferFromBigInt(p_.valueOf(), 4, false, false);
     const q = bufferFromBigInt(q_.valueOf(), 4, false, false);
 
-    const publicKeyFingerprint = resPq.serverPublicKeyFingerprints[0];
+    const publicKeyFingerprint = resPq.serverPublicKeyFingerprints[2];
 
     const dc = this.dcId;
     const pq = resPq.pq;

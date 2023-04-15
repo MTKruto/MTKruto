@@ -31,9 +31,9 @@ export class Client extends ClientAbstract {
   async connect() {
     const plain = new ClientPlain(this.test);
     await plain.connect();
-    const { authKey, authKeyId, salt } = await plain.createAuthKey();
+    const { authKey: key, authKeyId: id, salt } = await plain.createAuthKey();
     await plain.disconnect();
-    this.auth = { key: authKey, id: authKeyId };
+    this.auth = { key, id };
     this.salt = salt;
     await super.connect();
     this.loop();

@@ -84,10 +84,6 @@ export function deserialize<T extends TLObjectConstructor<InstanceType<T>>>(
       continue;
     }
 
-    if (isTLObjectConstructor(type)) {
-      throw new Error("Unimplemented");
-    }
-
     if (type instanceof Array) {
       assertEquals(reader.readInt32(false), 0x1cb5c415);
       const count = reader.readInt32();

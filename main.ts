@@ -8,8 +8,7 @@ import {
 const client = new Client(true);
 
 await client.connect();
-
-const res = await client.invoke(
+await client.invoke(
   new InvokeWithLayer({
     layer: 155,
     query: new InitConnection({
@@ -24,9 +23,3 @@ const res = await client.invoke(
     }),
   }),
 );
-
-console.log(res);
-
-// while (true) {
-//   await new Promise((r) => setTimeout(r, 10000));
-// }
