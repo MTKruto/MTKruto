@@ -639,10 +639,10 @@ export abstract class TypePopularContact extends Constructor {
 export abstract class TypeMessagesFavedStickers extends Constructor {
 }
 
-export abstract class TypeRecentMeUrl extends Constructor {
+export abstract class TypeRecentMeURL extends Constructor {
 }
 
-export abstract class TypeHelpRecentMeUrls extends Constructor {
+export abstract class TypeHelpRecentMeURLs extends Constructor {
 }
 
 export abstract class TypeInputSingleMedia extends Constructor {
@@ -840,7 +840,7 @@ export abstract class TypeFolderPeer extends Constructor {
 export abstract class TypeMessagesSearchCounter extends Constructor {
 }
 
-export abstract class TypeUrlAuthResult extends Constructor {
+export abstract class TypeURLAuthResult extends Constructor {
 }
 
 export abstract class TypeChannelLocation extends Constructor {
@@ -888,7 +888,7 @@ export abstract class TypeMessageUserVote extends Constructor {
 export abstract class TypeMessagesVotesList extends Constructor {
 }
 
-export abstract class TypeBankCardOpenUrl extends Constructor {
+export abstract class TypeBankCardOpenURL extends Constructor {
 }
 
 export abstract class TypePaymentsBankCardData extends Constructor {
@@ -1092,7 +1092,7 @@ export abstract class TypeGroupCallStreamChannel extends Constructor {
 export abstract class TypePhoneGroupCallStreamChannels extends Constructor {
 }
 
-export abstract class TypePhoneGroupCallStreamRtmpUrl extends Constructor {
+export abstract class TypePhoneGroupCallStreamRtmpURL extends Constructor {
 }
 
 export abstract class TypeAttachMenuBotIconColor extends Constructor {
@@ -1291,7 +1291,7 @@ export class ResPQ extends Constructor {
   }
 }
 
-export class PQInnerDataDc extends TypePQInnerData {
+export class PQInnerDataDC extends TypePQInnerData {
   pq: Uint8Array;
   p: Uint8Array;
   q: Uint8Array;
@@ -1340,7 +1340,7 @@ export class PQInnerDataDc extends TypePQInnerData {
   }
 }
 
-export class PQInnerDataTempDc extends TypePQInnerData {
+export class PQInnerDataTempDC extends TypePQInnerData {
   pq: Uint8Array;
   p: Uint8Array;
   q: Uint8Array;
@@ -1648,7 +1648,7 @@ export class BindAuthKeyInner extends TypeBindAuthKeyInner {
   }
 }
 
-export class RpcError extends TypeRpcError {
+export class RPCError extends TypeRpcError {
   errorCode: number;
   errorMessage: string;
 
@@ -1677,7 +1677,7 @@ export class RpcError extends TypeRpcError {
   }
 }
 
-export class RpcAnswerUnknown extends TypeRpcDropAnswer {
+export class RPCAnswerUnknown extends TypeRpcDropAnswer {
   protected get [id]() {
     return 0x5e2ad36e;
   }
@@ -1695,7 +1695,7 @@ export class RpcAnswerUnknown extends TypeRpcDropAnswer {
   }
 }
 
-export class RpcAnswerDroppedRunning extends TypeRpcDropAnswer {
+export class RPCAnswerDroppedRunning extends TypeRpcDropAnswer {
   protected get [id]() {
     return 0xcd78e586;
   }
@@ -1713,7 +1713,7 @@ export class RpcAnswerDroppedRunning extends TypeRpcDropAnswer {
   }
 }
 
-export class RpcAnswerDropped extends TypeRpcDropAnswer {
+export class RPCAnswerDropped extends TypeRpcDropAnswer {
   msgId: bigint;
   seqNo: number;
   bytes: number;
@@ -1924,7 +1924,7 @@ export class NewSessionCreated extends TypeNewSession {
   }
 }
 
-export class GzipPacked extends TypeObject {
+export class GZIPPacked extends TypeObject {
   packedData: Uint8Array;
 
   protected get [id]() {
@@ -2276,7 +2276,7 @@ export class DestroyAuthKeyFail extends TypeDestroyAuthKeyRes {
   }
 }
 
-export class HttpWait extends TypeHttpWait {
+export class HTTPWait extends TypeHttpWait {
   maxDelay: number;
   waitAfter: number;
   maxWait: number;
@@ -9260,7 +9260,7 @@ export class InputMessagesFilterDocument extends TypeMessagesFilter {
   }
 }
 
-export class InputMessagesFilterUrl extends TypeMessagesFilter {
+export class InputMessagesFilterURL extends TypeMessagesFilter {
   protected get [id]() {
     return 0x7ef0dd87;
   }
@@ -17726,7 +17726,7 @@ export class KeyboardButton extends Constructor {
   }
 }
 
-export class KeyboardButtonUrl extends TypeKeyboardButton {
+export class KeyboardButtonURL extends TypeKeyboardButton {
   text: string;
   url: string;
 
@@ -17925,7 +17925,7 @@ export class KeyboardButtonBuy extends TypeKeyboardButton {
   }
 }
 
-export class KeyboardButtonUrlAuth extends TypeKeyboardButton {
+export class KeyboardButtonURLAuth extends TypeKeyboardButton {
   text: string;
   fwdText?: string;
   url: string;
@@ -17964,7 +17964,7 @@ export class KeyboardButtonUrlAuth extends TypeKeyboardButton {
   }
 }
 
-export class InputKeyboardButtonUrlAuth extends TypeKeyboardButton {
+export class InputKeyboardButtonURLAuth extends TypeKeyboardButton {
   requestWriteAccess?: true;
   text: string;
   fwdText?: string;
@@ -18462,7 +18462,7 @@ export class MessageEntityBotCommand extends TypeMessageEntity {
   }
 }
 
-export class MessageEntityUrl extends TypeMessageEntity {
+export class MessageEntityURL extends TypeMessageEntity {
   offset: number;
   length: number;
 
@@ -18640,7 +18640,7 @@ export class MessageEntityPre extends TypeMessageEntity {
   }
 }
 
-export class MessageEntityTextUrl extends TypeMessageEntity {
+export class MessageEntityTextURL extends TypeMessageEntity {
   offset: number;
   length: number;
   url: string;
@@ -22529,7 +22529,7 @@ export class TextFixed extends TypeRichText {
   }
 }
 
-export class TextUrl extends TypeRichText {
+export class TextURL extends TypeRichText {
   text: TypeRichText;
   url: string;
   webpageId: bigint;
@@ -26960,7 +26960,7 @@ export class MessagesFavedStickers extends Constructor {
   }
 }
 
-export class RecentMeUrlUnknown extends TypeRecentMeUrl {
+export class RecentMeURLUnknown extends TypeRecentMeURL {
   url: string;
 
   protected get [id]() {
@@ -26985,7 +26985,7 @@ export class RecentMeUrlUnknown extends TypeRecentMeUrl {
   }
 }
 
-export class RecentMeUrlUser extends TypeRecentMeUrl {
+export class RecentMeURLUser extends TypeRecentMeURL {
   url: string;
   userId: bigint;
 
@@ -27014,7 +27014,7 @@ export class RecentMeUrlUser extends TypeRecentMeUrl {
   }
 }
 
-export class RecentMeUrlChat extends TypeRecentMeUrl {
+export class RecentMeURLChat extends TypeRecentMeURL {
   url: string;
   chatId: bigint;
 
@@ -27043,7 +27043,7 @@ export class RecentMeUrlChat extends TypeRecentMeUrl {
   }
 }
 
-export class RecentMeUrlChatInvite extends TypeRecentMeUrl {
+export class RecentMeURLChatInvite extends TypeRecentMeURL {
   url: string;
   chatInvite: TypeChatInvite;
 
@@ -27072,7 +27072,7 @@ export class RecentMeUrlChatInvite extends TypeRecentMeUrl {
   }
 }
 
-export class RecentMeUrlStickerSet extends TypeRecentMeUrl {
+export class RecentMeURLStickerSet extends TypeRecentMeURL {
   url: string;
   set: TypeStickerSetCovered;
 
@@ -27101,8 +27101,8 @@ export class RecentMeUrlStickerSet extends TypeRecentMeUrl {
   }
 }
 
-export class HelpRecentMeUrls extends Constructor {
-  urls: Array<TypeRecentMeUrl>;
+export class HelpRecentMeURLs extends Constructor {
+  urls: Array<TypeRecentMeURL>;
   chats: Array<TypeChat>;
   users: Array<TypeUser>;
 
@@ -27112,7 +27112,7 @@ export class HelpRecentMeUrls extends Constructor {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["urls", [TypeRecentMeUrl], "Vector<RecentMeUrl>"],
+      ["urls", [TypeRecentMeURL], "Vector<RecentMeUrl>"],
       ["chats", [TypeChat], "Vector<Chat>"],
       ["users", [TypeUser], "Vector<User>"],
     ];
@@ -27120,13 +27120,13 @@ export class HelpRecentMeUrls extends Constructor {
 
   protected get [params](): Params {
     return [
-      [this.urls, [TypeRecentMeUrl], "Vector<RecentMeUrl>"],
+      [this.urls, [TypeRecentMeURL], "Vector<RecentMeUrl>"],
       [this.chats, [TypeChat], "Vector<Chat>"],
       [this.users, [TypeUser], "Vector<User>"],
     ];
   }
 
-  constructor(params: { urls: Array<TypeRecentMeUrl>; chats: Array<TypeChat>; users: Array<TypeUser> }) {
+  constructor(params: { urls: Array<TypeRecentMeURL>; chats: Array<TypeChat>; users: Array<TypeUser> }) {
     super();
     this.urls = params.urls;
     this.chats = params.chats;
@@ -30678,7 +30678,7 @@ export class MessagesSearchCounter extends Constructor {
   }
 }
 
-export class UrlAuthResultRequest extends TypeUrlAuthResult {
+export class URLAuthResultRequest extends TypeURLAuthResult {
   requestWriteAccess?: true;
   bot: TypeUser;
   domain: string;
@@ -30713,7 +30713,7 @@ export class UrlAuthResultRequest extends TypeUrlAuthResult {
   }
 }
 
-export class UrlAuthResultAccepted extends TypeUrlAuthResult {
+export class URLAuthResultAccepted extends TypeURLAuthResult {
   url: string;
 
   protected get [id]() {
@@ -30738,7 +30738,7 @@ export class UrlAuthResultAccepted extends TypeUrlAuthResult {
   }
 }
 
-export class UrlAuthResultDefault extends TypeUrlAuthResult {
+export class URLAuthResultDefault extends TypeURLAuthResult {
   protected get [id]() {
     return 0xa9d6db1f;
   }
@@ -31562,7 +31562,7 @@ export class MessagesVotesList extends Constructor {
   }
 }
 
-export class BankCardOpenUrl extends Constructor {
+export class BankCardOpenURL extends Constructor {
   url: string;
   name: string;
 
@@ -31593,7 +31593,7 @@ export class BankCardOpenUrl extends Constructor {
 
 export class PaymentsBankCardData extends Constructor {
   title: string;
-  openUrls: Array<TypeBankCardOpenUrl>;
+  openUrls: Array<TypeBankCardOpenURL>;
 
   protected get [id]() {
     return 0x3e24e573;
@@ -31602,18 +31602,18 @@ export class PaymentsBankCardData extends Constructor {
   static get [paramDesc](): ParamDesc {
     return [
       ["title", "string", "string"],
-      ["openUrls", [TypeBankCardOpenUrl], "Vector<BankCardOpenUrl>"],
+      ["openUrls", [TypeBankCardOpenURL], "Vector<BankCardOpenUrl>"],
     ];
   }
 
   protected get [params](): Params {
     return [
       [this.title, "string", "string"],
-      [this.openUrls, [TypeBankCardOpenUrl], "Vector<BankCardOpenUrl>"],
+      [this.openUrls, [TypeBankCardOpenURL], "Vector<BankCardOpenUrl>"],
     ];
   }
 
-  constructor(params: { title: string; openUrls: Array<TypeBankCardOpenUrl> }) {
+  constructor(params: { title: string; openUrls: Array<TypeBankCardOpenURL> }) {
     super();
     this.title = params.title;
     this.openUrls = params.openUrls;
@@ -34759,7 +34759,7 @@ export class PhoneGroupCallStreamChannels extends Constructor {
   }
 }
 
-export class PhoneGroupCallStreamRtmpUrl extends Constructor {
+export class PhoneGroupCallStreamRtmpURL extends Constructor {
   url: string;
   key: string;
 
@@ -34983,7 +34983,7 @@ export class AttachMenuBotsBot extends Constructor {
   }
 }
 
-export class WebViewResultUrl extends TypeWebViewResult {
+export class WebViewResultURL extends TypeWebViewResult {
   queryId: bigint;
   url: string;
 
@@ -35012,7 +35012,7 @@ export class WebViewResultUrl extends TypeWebViewResult {
   }
 }
 
-export class SimpleWebViewResultUrl extends TypeSimpleWebViewResult {
+export class SimpleWebViewResultURL extends TypeSimpleWebViewResult {
   url: string;
 
   protected get [id]() {
@@ -37255,7 +37255,7 @@ export class MessagesBotApp extends Constructor {
   }
 }
 
-export class AppWebViewResultUrl extends TypeAppWebViewResult {
+export class AppWebViewResultURL extends TypeAppWebViewResult {
   url: string;
 
   protected get [id]() {
@@ -37341,8 +37341,8 @@ export class ReadParticipantDate extends Constructor {
 export const map = new Map<number, TLObjectConstructor>(
   [
     [0x05162463, ResPQ],
-    [0xa9f55f95, PQInnerDataDc],
-    [0x56fddf88, PQInnerDataTempDc],
+    [0xa9f55f95, PQInnerDataDC],
+    [0x56fddf88, PQInnerDataTempDC],
     [0xd0e8075c, ServerDHParamsOk],
     [0xb5890dba, ServerDHInnerData],
     [0x6643b654, ClientDHInnerData],
@@ -37350,17 +37350,17 @@ export const map = new Map<number, TLObjectConstructor>(
     [0x46dc1fb9, DhGenRetry],
     [0xa69dae02, DhGenFail],
     [0x75a3f765, BindAuthKeyInner],
-    [0x2144ca19, RpcError],
-    [0x5e2ad36e, RpcAnswerUnknown],
-    [0xcd78e586, RpcAnswerDroppedRunning],
-    [0xa43ad8b7, RpcAnswerDropped],
+    [0x2144ca19, RPCError],
+    [0x5e2ad36e, RPCAnswerUnknown],
+    [0xcd78e586, RPCAnswerDroppedRunning],
+    [0xa43ad8b7, RPCAnswerDropped],
     [0x0949d9dc, FutureSalt],
     [0xae500895, FutureSalts],
     [0x347773c5, Pong],
     [0xe22045fc, DestroySessionOk],
     [0x62d350c9, DestroySessionNone],
     [0x9ec20908, NewSessionCreated],
-    [0x3072cfa1, GzipPacked],
+    [0x3072cfa1, GZIPPacked],
     [0x62d6b459, MsgsAck],
     [0xa7eff811, BadMsgNotification],
     [0xedab447b, BadServerSalt],
@@ -37373,7 +37373,7 @@ export const map = new Map<number, TLObjectConstructor>(
     [0xf660e1d4, DestroyAuthKeyOk],
     [0x0a9f2259, DestroyAuthKeyNone],
     [0xea109b13, DestroyAuthKeyFail],
-    [0x9299359f, HttpWait],
+    [0x9299359f, HTTPWait],
     [0x3fedd339, True],
     [0xc4b9f9bb, Error],
     [0x56730bcc, Null],
@@ -37575,7 +37575,7 @@ export const map = new Map<number, TLObjectConstructor>(
     [0x9fc00e65, InputMessagesFilterVideo],
     [0x56e9f0e4, InputMessagesFilterPhotoVideo],
     [0x9eddf188, InputMessagesFilterDocument],
-    [0x7ef0dd87, InputMessagesFilterUrl],
+    [0x7ef0dd87, InputMessagesFilterURL],
     [0xffc86587, InputMessagesFilterGif],
     [0x50f5c392, InputMessagesFilterVoice],
     [0x3751b49e, InputMessagesFilterMusic],
@@ -37850,15 +37850,15 @@ export const map = new Map<number, TLObjectConstructor>(
     [0xc27ac8c7, BotCommand],
     [0x8f300b57, BotInfo],
     [0xa2fa4880, KeyboardButton],
-    [0x258aff05, KeyboardButtonUrl],
+    [0x258aff05, KeyboardButtonURL],
     [0x35bbdb6b, KeyboardButtonCallback],
     [0xb16a6c29, KeyboardButtonRequestPhone],
     [0xfc796b3f, KeyboardButtonRequestGeoLocation],
     [0x0568a748, KeyboardButtonSwitchInline],
     [0x50f41ccf, KeyboardButtonGame],
     [0xafd93fbb, KeyboardButtonBuy],
-    [0x10b78d29, KeyboardButtonUrlAuth],
-    [0xd02e7fd4, InputKeyboardButtonUrlAuth],
+    [0x10b78d29, KeyboardButtonURLAuth],
+    [0xd02e7fd4, InputKeyboardButtonURLAuth],
     [0xbbc7515d, KeyboardButtonRequestPoll],
     [0xe988037b, InputKeyboardButtonUserProfile],
     [0x308660c1, KeyboardButtonUserProfile],
@@ -37874,13 +37874,13 @@ export const map = new Map<number, TLObjectConstructor>(
     [0xfa04579d, MessageEntityMention],
     [0x6f635b0d, MessageEntityHashtag],
     [0x6cef8ac7, MessageEntityBotCommand],
-    [0x6ed02538, MessageEntityUrl],
+    [0x6ed02538, MessageEntityURL],
     [0x64e475c2, MessageEntityEmail],
     [0xbd610bc9, MessageEntityBold],
     [0x826f8b60, MessageEntityItalic],
     [0x28a20571, MessageEntityCode],
     [0x73924be0, MessageEntityPre],
-    [0x76a6d327, MessageEntityTextUrl],
+    [0x76a6d327, MessageEntityTextURL],
     [0xdc7b1140, MessageEntityMentionName],
     [0x208e68c9, InputMessageEntityMentionName],
     [0x9b69e34b, MessageEntityPhone],
@@ -38004,7 +38004,7 @@ export const map = new Map<number, TLObjectConstructor>(
     [0xc12622c4, TextUnderline],
     [0x9bf8bb95, TextStrike],
     [0x6c3f19b9, TextFixed],
-    [0x3c2884c1, TextUrl],
+    [0x3c2884c1, TextURL],
     [0xde5a0dd6, TextEmail],
     [0x7e6260d7, TextConcat],
     [0xed6a8504, TextSubscript],
@@ -38142,12 +38142,12 @@ export const map = new Map<number, TLObjectConstructor>(
     [0x5ce14175, PopularContact],
     [0x9e8fa6d3, MessagesFavedStickersNotModified],
     [0x2cb51097, MessagesFavedStickers],
-    [0x46e1d13d, RecentMeUrlUnknown],
-    [0xb92c09e2, RecentMeUrlUser],
-    [0xb2da71d2, RecentMeUrlChat],
-    [0xeb49081d, RecentMeUrlChatInvite],
-    [0xbc0a57dc, RecentMeUrlStickerSet],
-    [0x0e0310d7, HelpRecentMeUrls],
+    [0x46e1d13d, RecentMeURLUnknown],
+    [0xb92c09e2, RecentMeURLUser],
+    [0xb2da71d2, RecentMeURLChat],
+    [0xeb49081d, RecentMeURLChatInvite],
+    [0xbc0a57dc, RecentMeURLStickerSet],
+    [0x0e0310d7, HelpRecentMeURLs],
     [0x1cc6e91f, InputSingleMedia],
     [0xa6f8f452, WebAuthorization],
     [0xed56c9fc, AccountWebAuthorizations],
@@ -38262,9 +38262,9 @@ export const map = new Map<number, TLObjectConstructor>(
     [0xfbd2c296, InputFolderPeer],
     [0xe9baa668, FolderPeer],
     [0xe844ebff, MessagesSearchCounter],
-    [0x92d33a0e, UrlAuthResultRequest],
-    [0x8f8c0e4e, UrlAuthResultAccepted],
-    [0xa9d6db1f, UrlAuthResultDefault],
+    [0x92d33a0e, URLAuthResultRequest],
+    [0x8f8c0e4e, URLAuthResultAccepted],
+    [0xa9d6db1f, URLAuthResultDefault],
     [0xbfb5ad8b, ChannelLocationEmpty],
     [0x209b82db, ChannelLocation],
     [0xca461b5d, PeerLocated],
@@ -38292,7 +38292,7 @@ export const map = new Map<number, TLObjectConstructor>(
     [0x3ca5b0ec, MessageUserVoteInputOption],
     [0x8a65e557, MessageUserVoteMultiple],
     [0x0823f649, MessagesVotesList],
-    [0xf568028a, BankCardOpenUrl],
+    [0xf568028a, BankCardOpenURL],
     [0x3e24e573, PaymentsBankCardData],
     [0x7438f7e8, DialogFilter],
     [0x363293ae, DialogFilterDefault],
@@ -38383,15 +38383,15 @@ export const map = new Map<number, TLObjectConstructor>(
     [0x8c79b63c, MessagePeerReaction],
     [0x80eb48af, GroupCallStreamChannel],
     [0xd0e482b2, PhoneGroupCallStreamChannels],
-    [0x2dbf3432, PhoneGroupCallStreamRtmpUrl],
+    [0x2dbf3432, PhoneGroupCallStreamRtmpURL],
     [0x4576f3f0, AttachMenuBotIconColor],
     [0xb2a7386b, AttachMenuBotIcon],
     [0xc8aa2cd2, AttachMenuBot],
     [0xf1d88a5c, AttachMenuBotsNotModified],
     [0x3c4301c0, AttachMenuBots],
     [0x93bf667f, AttachMenuBotsBot],
-    [0x0c14557c, WebViewResultUrl],
-    [0x882f76bb, SimpleWebViewResultUrl],
+    [0x0c14557c, WebViewResultURL],
+    [0x882f76bb, SimpleWebViewResultURL],
     [0x0c94511c, WebViewMessageSent],
     [0x7533a588, BotMenuButtonDefault],
     [0x4258c205, BotMenuButtonCommands],
@@ -38470,7 +38470,7 @@ export const map = new Map<number, TLObjectConstructor>(
     [0x5da674b7, BotAppNotModified],
     [0x95fcd1d6, BotApp],
     [0xeb50adf5, MessagesBotApp],
-    [0x3c1b4f0d, AppWebViewResultUrl],
+    [0x3c1b4f0d, AppWebViewResultURL],
     [0xb57295d5, InlineBotWebView],
     [0x4a4ff172, ReadParticipantDate],
     // deno-lint-ignore no-explicit-any

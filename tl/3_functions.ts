@@ -4,7 +4,7 @@ import * as constructors from "./2_constructors.ts";
 export abstract class Function extends TLObject {
 }
 
-export class ReqPqMulti extends Function {
+export class ReqPQMulti extends Function {
   nonce: bigint;
 
   protected get [id]() {
@@ -107,7 +107,7 @@ export class SetClientDHParams extends Function {
   }
 }
 
-export class RpcDropAnswer extends Function {
+export class RPCDropAnswer extends Function {
   reqMsgId: bigint;
 
   protected get [id]() {
@@ -7941,7 +7941,7 @@ export class MessagesGetSearchCounters extends Function {
   }
 }
 
-export class MessagesRequestUrlAuth extends Function {
+export class MessagesRequestURLAuth extends Function {
   peer?: constructors.TypeInputPeer;
   msgId?: number;
   buttonId?: number;
@@ -7980,7 +7980,7 @@ export class MessagesRequestUrlAuth extends Function {
   }
 }
 
-export class MessagesAcceptUrlAuth extends Function {
+export class MessagesAcceptURLAuth extends Function {
   writeAllowed?: true;
   peer?: constructors.TypeInputPeer;
   msgId?: number;
@@ -11224,7 +11224,7 @@ export class HelpGetCdnConfig extends Function {
   }
 }
 
-export class HelpGetRecentMeUrls extends Function {
+export class HelpGetRecentMeURLs extends Function {
   referer: string;
 
   protected get [id]() {
@@ -15207,7 +15207,7 @@ export class PhoneGetGroupCallStreamChannels extends Function {
   }
 }
 
-export class PhoneGetGroupCallStreamRtmpUrl extends Function {
+export class PhoneGetGroupCallStreamRtmpURL extends Function {
   peer: constructors.TypeInputPeer;
   revoke: boolean;
 

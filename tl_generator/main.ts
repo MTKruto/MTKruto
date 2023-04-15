@@ -67,7 +67,7 @@ function convertType(type: string, prefix = false) {
     type = mapping;
   } else {
     type = type.replaceAll("!", "");
-    type = `Type${revampType(type)}`;
+    type = `Type${revampType(type, true)}`;
     if (prefix) {
       type = `constructors.${type}`;
     }
@@ -203,7 +203,7 @@ for (const constructor of constructors) {
     continue;
   }
 
-  const className = `Type${revampType(constructor.type)}`;
+  const className = `Type${revampType(constructor.type, true)}`;
 
   if (!types.has(className)) {
     code += `
@@ -224,11 +224,11 @@ for (const constructor of constructors) {
   if (constructor.predicate.toLowerCase() == constructor.type.toLowerCase()) {
     parent = "Constructor";
   } else {
-    parent = `Type${revampType(constructor.type)}`;
+    parent = `Type${revampType(constructor.type, true)}`;
   }
 
   const id = revampId(constructor.id);
-  const className = revampType(constructor.predicate);
+  const className = revampType(constructor.predicate, true);
   entries.push([id, className]);
 
   code += `
@@ -270,7 +270,7 @@ export abstract class Function extends TLObject {
 `;
 
 for (const function_ of functions) {
-  const className = revampType(function_.func);
+  const className = revampType(function_.func, true);
   const id = revampId(function_.id);
 
   code += `
@@ -292,4 +292,4 @@ export class ${className} extends Function {
 
 Deno.writeTextFileSync("tl/3_functions.ts", code);
 
-await new Deno.Command("deno", { args: ["fmt"] }).output();
+new Deno.Command("deno", { args: ["fmt"] }).outputSync();

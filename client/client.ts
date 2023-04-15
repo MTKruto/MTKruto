@@ -2,7 +2,7 @@ import { gunzip } from "../deps.ts";
 import { getRandomBigInt } from "../utilities/0_bigint.ts";
 import { decryptMessage, encryptMessage, getMessageId } from "../utilities/1_message.ts";
 import { TLObject } from "../tl/1_tl_object.ts";
-import { GzipPacked, MsgsAck, Pong, RpcError } from "../tl/2_constructors.ts";
+import { GZIPPacked, MsgsAck, Pong, RPCError } from "../tl/2_constructors.ts";
 import { Function, Ping } from "../tl/3_functions.ts";
 import { RpcResult } from "../tl/4_rpc_result.ts";
 import { Message } from "../tl/5_message.ts";
@@ -58,12 +58,12 @@ export class Client extends ClientAbstract {
       for (const message of messages) {
         if (message.body instanceof RpcResult) {
           let result = message.body.result;
-          if (result instanceof GzipPacked) {
+          if (result instanceof GZIPPacked) {
             result = new TLReader(gunzip(result.packedData)).readObject();
           }
           const promise = this.promises.get(message.body.messageId);
           if (promise) {
-            if (result instanceof RpcError) {
+            if (result instanceof RPCError) {
               promise.reject(result);
             } else {
               promise.resolve(result);
