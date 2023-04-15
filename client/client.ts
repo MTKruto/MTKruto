@@ -6,7 +6,7 @@ import {
   getMessageId,
 } from "../utilities/1_message.ts";
 import { TLObject } from "../tl/1_tl_object.ts";
-import { GzipPacked, Pong, RpcError } from "../tl/2_constructors.ts";
+import { GzipPacked, MsgsAck, Pong, RpcError } from "../tl/2_constructors.ts";
 import { Function, Ping } from "../tl/3_functions.ts";
 import { RpcResult } from "../tl/4_rpc_result.ts";
 import { Message } from "../tl/5_message.ts";
@@ -19,10 +19,8 @@ export class Client extends ClientAbstract {
   private sessionId = getRandomBigInt(8, true, true);
   private auth?: { key: Uint8Array; id: bigint };
   private state = { salt: 0n, seqNo: 0 };
-  private promises = new Map<
-    bigint,
-    { resolve: (obj: TLObject) => void; reject: (err: TLObject) => void }
-  >();
+  // deno-fmt-ignore
+  private promises = new Map<bigint, { resolve: (obj: TLObject) => void; reject: (err: TLObject) => void }>();
 
   constructor(test?: boolean) {
     super(test);
@@ -69,11 +67,13 @@ export class Client extends ClientAbstract {
             } else {
               promise.resolve(result);
             }
+            this.promises.delete(message.body.messageId);
           }
         } else if (message.body instanceof Pong) {
           const promise = this.promises.get(message.body.msgId);
           if (promise) {
             promise.resolve(message.body);
+            this.promises.delete(message.body.msgId);
           }
         }
       }
@@ -85,7 +85,7 @@ export class Client extends ClientAbstract {
       throw new Error("Not connected");
     }
     let seqNo = this.state.seqNo * 2;
-    if (!(function_ instanceof Ping)) {
+    if (!(function_ instanceof Ping) && !(function_ instanceof MsgsAck)) {
       seqNo++;
       this.state.seqNo++;
     }
