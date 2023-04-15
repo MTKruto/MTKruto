@@ -5,7 +5,7 @@ import {
   getMessageId,
 } from "../utilities/1_message.ts";
 import { TLObject } from "../tl/1_tl_object.ts";
-import { RpcError } from "../tl/2_constructors.ts";
+import { Pong, RpcError } from "../tl/2_constructors.ts";
 import { Function, Ping } from "../tl/3_functions.ts";
 import { RPCResult } from "../tl/5_rpc_result.ts";
 import { Message } from "../tl/6_message.ts";
@@ -14,7 +14,7 @@ import { ClientAbstract } from "./client_abstract.ts";
 import { ClientPlain } from "./client_plain.ts";
 
 export class Client extends ClientAbstract {
-  private sessionId = getRandomBigInt(8);
+  private sessionId = getRandomBigInt(8, true, true);
   private auth?: { key: Uint8Array; id: bigint };
   private state = { salt: 0n, seqNo: 0 };
   private promises = new Map<
@@ -64,6 +64,11 @@ export class Client extends ClientAbstract {
             } else {
               promise.resolve(result);
             }
+          }
+        } else if (message.body instanceof Pong) {
+          const promise = this.promises.get(message.body.msgId);
+          if (promise) {
+            promise.resolve(message.body);
           }
         }
       }
