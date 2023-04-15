@@ -14,7 +14,7 @@ export class Message {
 
   serialize() {
     if (this.body instanceof RPCResult) {
-      throw new Error('Not implemented')
+      throw new Error("Not implemented");
     }
     return new TLWriter()
       .writeInt64(this.id)

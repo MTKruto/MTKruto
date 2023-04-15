@@ -3,7 +3,7 @@ import { TLReader } from "./3_tl_reader.ts";
 import { GZIPPacked } from "./4_gzip_packed.ts";
 
 export class RPCResult {
- static get cid() {
+  static get cid() {
     return 0xf35c6d01;
   }
 
