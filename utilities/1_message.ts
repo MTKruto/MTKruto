@@ -1,7 +1,6 @@
 import { assertEquals, ige256Decrypt, ige256Encrypt } from "../deps.ts";
 import { TLRawReader } from "../tl/0_tl_raw_reader.ts";
 import { TLRawWriter } from "../tl/0_tl_raw_writer.ts";
-import { getRandomBigInt } from "./0_bigint.ts";
 import { bufferFromBigInt, concat, sha256 } from "./0_buffer.ts";
 import { TLReader } from "../tl/3_tl_reader.ts";
 import { MessageContainer } from "../tl/7_message_container.ts";
@@ -106,19 +105,19 @@ export async function decryptMessage(
   const aesKey = concat(a.slice(0, 8), b.slice(8, 24), a.slice(24, 32));
   const aesIv = concat(b.slice(0, 8), a.slice(8, 24), b.slice(24, 32));
 
-  console.log(reader.buffer.length);
-
   const plaintext = ige256Decrypt(reader.buffer, aesKey, aesIv);
   assertEquals(plaintext.buffer.byteLength % 4, 0);
 
-  const plainReader = new TLReader(plaintext);
+  let plainReader = new TLReader(plaintext);
 
-  const salt = plainReader.readInt64();
+  const _salt = plainReader.readInt64();
   const sid = plainReader.readInt64(false);
+  assertEquals(sid, sessionId);
+
   const mid = plainReader.readInt64();
-  // assertEquals(plainReader.readInt64(false), sessionId);
   const seqno = plainReader.readInt32();
   const length = plainReader.readInt32();
+  plainReader = new TLReader(plainReader.read(length));
 
   const cid = plainReader.readInt32(false);
 
