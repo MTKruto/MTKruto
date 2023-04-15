@@ -11,8 +11,8 @@ import { bigIntFromBuffer } from "./utilities/0_bigint.ts";
 import { TLReader } from "./tl/3_tl_reader.ts";
 
 export class Client {
-  protected connection: Connection;
-  protected transport: Transport;
+  connection: Connection;
+  transport: Transport;
   dcId: number;
 
   constructor(test = false) {

@@ -12,13 +12,13 @@ const { constructors: apiConstructors, functions: apiFunctions } = parse(
   apiContent,
 );
 
-for (const constructor of mtProtoConstructors) {
-  for (const param of constructor.params) {
-    if (param.type == "string") {
-      param.type = "bytes";
-    }
-  }
-}
+// for (const constructor of mtProtoConstructors) {
+//   for (const param of constructor.params) {
+//     if (param.type == "string") {
+//       param.type = "bytes";
+//     }
+//   }
+// }
 
 for (const constructor of mtProtoFunctions) {
   for (const param of constructor.params) {
