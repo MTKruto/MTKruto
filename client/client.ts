@@ -21,6 +21,7 @@ export class Client extends ClientAbstract {
   private state = { salt: 0n, seqNo: 0 };
   // deno-fmt-ignore
   private promises = new Map<bigint, { resolve: (obj: TLObject) => void; reject: (err: TLObject) => void }>();
+  private toAcknowledge = new Set<bigint>();
 
   constructor(test?: boolean) {
     super(test);
@@ -43,6 +44,12 @@ export class Client extends ClientAbstract {
     }
 
     while (true) {
+      if (this.toAcknowledge.size != 0) {
+        // deno-fmt-ignore
+        await this.invoke(new MsgsAck({ msgIds: [...this.toAcknowledge] }), true);
+        this.toAcknowledge.clear();
+      }
+
       const buffer = await this.transport.receive();
       const decrypted = await decryptMessage(
         buffer,
@@ -76,11 +83,16 @@ export class Client extends ClientAbstract {
             this.promises.delete(message.body.msgId);
           }
         }
+
+        this.toAcknowledge.add(message.id);
       }
     }
   }
 
-  async invoke(function_: Function) {
+  async invoke(function_: Function): Promise<TLObject>;
+  async invoke(function_: Function, noWait: true): Promise<void>;
+  // deno-fmt-ignore
+  async invoke(function_: Function, noWait?: boolean): Promise<TLObject | void> {
     if (!this.auth) {
       throw new Error("Not connected");
     }
@@ -99,6 +111,11 @@ export class Client extends ClientAbstract {
         this.sessionId,
       ),
     );
+
+    if (noWait) {
+      return
+    }
+    
     return await new Promise<TLObject>((resolve, reject) => {
       this.promises.set(message.id, { resolve, reject });
     });
