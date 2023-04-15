@@ -24,10 +24,9 @@ export async function getObfuscationParameters(
 
     const dataView = new DataView(init.buffer);
     const firstInt = dataView.getInt32(0);
-    // deno-fmt-ignore
     if ([0x44414548, 0x54534f50, 0x20544547, 0x4954504f, 0x02010316, 0xdddddddd, 0xeeeeeeee].includes(firstInt)) {
-            continue;
-          }
+      continue;
+    }
 
     const secondInt = dataView.getInt32(4);
     if (secondInt == 0x00000000) {

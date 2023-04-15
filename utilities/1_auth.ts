@@ -21,9 +21,7 @@ export async function rsaPad(
 
     const tempKey = crypto.getRandomValues(new Uint8Array(32));
 
-    // deno-fmt-ignore
     const dataWithHash = concat(dataPadReversed, await sha256(concat(tempKey, dataWithPadding)));
-    // deno-fmt-ignore
     const aesEncrypted = ige256Encrypt(dataWithHash, tempKey, new Uint8Array(32));
 
     const aesEncryptedSha256 = await sha256(aesEncrypted);

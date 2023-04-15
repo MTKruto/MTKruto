@@ -1,10 +1,6 @@
 import { gunzip } from "../deps.ts";
 import { getRandomBigInt } from "../utilities/0_bigint.ts";
-import {
-  decryptMessage,
-  encryptMessage,
-  getMessageId,
-} from "../utilities/1_message.ts";
+import { decryptMessage, encryptMessage, getMessageId } from "../utilities/1_message.ts";
 import { TLObject } from "../tl/1_tl_object.ts";
 import { GzipPacked, MsgsAck, Pong, RpcError } from "../tl/2_constructors.ts";
 import { Function, Ping } from "../tl/3_functions.ts";
@@ -20,7 +16,6 @@ export class Client extends ClientAbstract {
   private sessionId = getRandomBigInt(8, true, true);
   private auth?: { key: Uint8Array; id: bigint };
   private state = { salt: 0n, seqNo: 0 };
-  // deno-fmt-ignore
   private promises = new Map<bigint, { resolve: (obj: TLObject) => void; reject: (err: TLObject) => void }>();
   private toAcknowledge = new Set<bigint>();
 
@@ -47,7 +42,6 @@ export class Client extends ClientAbstract {
 
     while (true) {
       if (this.toAcknowledge.size != 0) {
-        // deno-fmt-ignore
         await this.invoke(new MsgsAck({ msgIds: [...this.toAcknowledge] }), true);
         this.toAcknowledge.clear();
       }
@@ -59,9 +53,7 @@ export class Client extends ClientAbstract {
         this.auth.id,
         this.sessionId,
       );
-      const messages = decrypted instanceof MessageContainer
-        ? decrypted.messages
-        : [decrypted];
+      const messages = decrypted instanceof MessageContainer ? decrypted.messages : [decrypted];
 
       for (const message of messages) {
         if (message.body instanceof RpcResult) {
@@ -93,7 +85,6 @@ export class Client extends ClientAbstract {
 
   async invoke(function_: Function): Promise<TLObject>;
   async invoke(function_: Function, noWait: true): Promise<void>;
-  // deno-fmt-ignore
   async invoke(function_: Function, noWait?: boolean): Promise<TLObject | void> {
     if (!this.auth) {
       throw new Error("Not connected");
@@ -113,12 +104,12 @@ export class Client extends ClientAbstract {
         this.sessionId,
       ),
     );
-    logger().debug(`Invoked ${function_.constructor.name}`)
+    logger().debug(`Invoked ${function_.constructor.name}`);
 
     if (noWait) {
-      return
+      return;
     }
-    
+
     return await new Promise<TLObject>((resolve, reject) => {
       this.promises.set(message.id, { resolve, reject });
     });

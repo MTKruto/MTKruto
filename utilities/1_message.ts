@@ -58,7 +58,6 @@ export async function encryptMessage(
   payloadWriter.writeInt32(message.seqNo);
   payloadWriter.writeInt32(encoded.length);
   payloadWriter.write(encoded);
-  // deno-fmt-ignore
   payloadWriter.write(new Uint8Array(payloadWriter.buffer.length + 12 % 16 + 12));
 
   let payload = payloadWriter.buffer;
@@ -69,7 +68,6 @@ export async function encryptMessage(
     payload = concat(payload, new Uint8Array(1));
   }
 
-  // deno-fmt-ignore
   const messageKey = (await sha256(concat(authKey.slice(88, 120), payload))).slice(8, 24);
 
   const a = await sha256(concat(messageKey, authKey.slice(0, 36)));

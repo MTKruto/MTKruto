@@ -1,13 +1,4 @@
-import {
-  flags,
-  id,
-  ParamDesc,
-  paramDesc,
-  Params,
-  params,
-  TLObject,
-  TLObjectConstructor,
-} from "./1_tl_object.ts";
+import { flags, id, ParamDesc, paramDesc, Params, params, TLObject, TLObjectConstructor } from "./1_tl_object.ts";
 
 export abstract class Constructor extends TLObject {
 }
@@ -1032,8 +1023,7 @@ export abstract class TypePhoneJoinAsPeers extends Constructor {
 export abstract class TypePhoneExportedGroupCallInvite extends Constructor {
 }
 
-export abstract class TypeGroupCallParticipantVideoSourceGroup
-  extends Constructor {
+export abstract class TypeGroupCallParticipantVideoSourceGroup extends Constructor {
 }
 
 export abstract class TypeGroupCallParticipantVideo extends Constructor {
@@ -15970,8 +15960,7 @@ export class MessagesSentEncryptedMessage extends Constructor {
   }
 }
 
-export class MessagesSentEncryptedFile
-  extends TypeMessagesSentEncryptedMessage {
+export class MessagesSentEncryptedFile extends TypeMessagesSentEncryptedMessage {
   date: number;
   file: TypeEncryptedFile;
 
@@ -17171,8 +17160,7 @@ export class InputPrivacyValueDisallowUsers extends TypeInputPrivacyRule {
   }
 }
 
-export class InputPrivacyValueAllowChatParticipants
-  extends TypeInputPrivacyRule {
+export class InputPrivacyValueAllowChatParticipants extends TypeInputPrivacyRule {
   chats: Array<bigint>;
 
   protected get [id]() {
@@ -17197,8 +17185,7 @@ export class InputPrivacyValueAllowChatParticipants
   }
 }
 
-export class InputPrivacyValueDisallowChatParticipants
-  extends TypeInputPrivacyRule {
+export class InputPrivacyValueDisallowChatParticipants extends TypeInputPrivacyRule {
   chats: Array<bigint>;
 
   protected get [id]() {
@@ -18843,8 +18830,7 @@ export class InputStickerSetDice extends TypeInputStickerSet {
   }
 }
 
-export class InputStickerSetAnimatedEmojiAnimations
-  extends TypeInputStickerSet {
+export class InputStickerSetAnimatedEmojiAnimations extends TypeInputStickerSet {
   protected get [id]() {
     return 0x0cde3739;
   }
@@ -20639,8 +20625,7 @@ export class MessageRange extends Constructor {
   }
 }
 
-export class UpdatesChannelDifferenceEmpty
-  extends TypeUpdatesChannelDifference {
+export class UpdatesChannelDifferenceEmpty extends TypeUpdatesChannelDifference {
   final?: true;
   pts: number;
   timeout?: number;
@@ -20675,8 +20660,7 @@ export class UpdatesChannelDifferenceEmpty
   }
 }
 
-export class UpdatesChannelDifferenceTooLong
-  extends TypeUpdatesChannelDifference {
+export class UpdatesChannelDifferenceTooLong extends TypeUpdatesChannelDifference {
   final?: true;
   timeout?: number;
   dialog: TypeDialog;
@@ -21331,8 +21315,7 @@ export class ChannelsChannelParticipants extends Constructor {
   }
 }
 
-export class ChannelsChannelParticipantsNotModified
-  extends TypeChannelsChannelParticipants {
+export class ChannelsChannelParticipantsNotModified extends TypeChannelsChannelParticipants {
   protected get [id]() {
     return 0xf0173fe9;
   }
@@ -21694,8 +21677,7 @@ export class InputBotInlineMessageMediaVenue extends TypeInputBotInlineMessage {
   }
 }
 
-export class InputBotInlineMessageMediaContact
-  extends TypeInputBotInlineMessage {
+export class InputBotInlineMessageMediaContact extends TypeInputBotInlineMessage {
   phoneNumber: string;
   firstName: string;
   lastName: string;
@@ -21773,8 +21755,7 @@ export class InputBotInlineMessageGame extends TypeInputBotInlineMessage {
   }
 }
 
-export class InputBotInlineMessageMediaInvoice
-  extends TypeInputBotInlineMessage {
+export class InputBotInlineMessageMediaInvoice extends TypeInputBotInlineMessage {
   title: string;
   description: string;
   photo?: TypeInputWebDocument;
@@ -23658,8 +23639,7 @@ export class DraftMessage extends Constructor {
   }
 }
 
-export class MessagesFeaturedStickersNotModified
-  extends TypeMessagesFeaturedStickers {
+export class MessagesFeaturedStickersNotModified extends TypeMessagesFeaturedStickers {
   count: number;
 
   protected get [id]() {
@@ -23735,8 +23715,7 @@ export class MessagesFeaturedStickers extends Constructor {
   }
 }
 
-export class MessagesRecentStickersNotModified
-  extends TypeMessagesRecentStickers {
+export class MessagesRecentStickersNotModified extends TypeMessagesRecentStickers {
   protected get [id]() {
     return 0x0b17f890;
   }
@@ -23827,8 +23806,7 @@ export class MessagesArchivedStickers extends Constructor {
   }
 }
 
-export class MessagesStickerSetInstallResultSuccess
-  extends TypeMessagesStickerSetInstallResult {
+export class MessagesStickerSetInstallResultSuccess extends TypeMessagesStickerSetInstallResult {
   protected get [id]() {
     return 0x38641628;
   }
@@ -23846,8 +23824,7 @@ export class MessagesStickerSetInstallResultSuccess
   }
 }
 
-export class MessagesStickerSetInstallResultArchive
-  extends TypeMessagesStickerSetInstallResult {
+export class MessagesStickerSetInstallResultArchive extends TypeMessagesStickerSetInstallResult {
   sets: Array<TypeStickerSetCovered>;
 
   protected get [id]() {
@@ -25631,8 +25608,7 @@ export class PhoneCallDiscardReasonMissed extends TypePhoneCallDiscardReason {
   }
 }
 
-export class PhoneCallDiscardReasonDisconnect
-  extends TypePhoneCallDiscardReason {
+export class PhoneCallDiscardReasonDisconnect extends TypePhoneCallDiscardReason {
   protected get [id]() {
     return 0xe095c1a0;
   }
@@ -26214,8 +26190,7 @@ export class InputWebFileGeoPointLocation extends TypeInputWebFileLocation {
   }
 }
 
-export class InputWebFileAudioAlbumThumbLocation
-  extends TypeInputWebFileLocation {
+export class InputWebFileAudioAlbumThumbLocation extends TypeInputWebFileLocation {
   small?: true;
   document?: TypeInputDocument;
   title?: string;
@@ -26502,8 +26477,7 @@ export class PaymentsPaymentResult extends Constructor {
   }
 }
 
-export class PaymentsPaymentVerificationNeeded
-  extends TypePaymentsPaymentResult {
+export class PaymentsPaymentVerificationNeeded extends TypePaymentsPaymentResult {
   url: string;
 
   protected get [id]() {
@@ -26728,8 +26702,7 @@ export class InputPaymentCredentials extends Constructor {
   }
 }
 
-export class InputPaymentCredentialsApplePay
-  extends TypeInputPaymentCredentials {
+export class InputPaymentCredentialsApplePay extends TypeInputPaymentCredentials {
   paymentData: TypeDataJSON;
 
   protected get [id]() {
@@ -26754,8 +26727,7 @@ export class InputPaymentCredentialsApplePay
   }
 }
 
-export class InputPaymentCredentialsGooglePay
-  extends TypeInputPaymentCredentials {
+export class InputPaymentCredentialsGooglePay extends TypeInputPaymentCredentials {
   paymentToken: TypeDataJSON;
 
   protected get [id]() {
@@ -27834,8 +27806,7 @@ export class LangPackLanguage extends Constructor {
   }
 }
 
-export class ChannelAdminLogEventActionChangeTitle
-  extends TypeChannelAdminLogEventAction {
+export class ChannelAdminLogEventActionChangeTitle extends TypeChannelAdminLogEventAction {
   prevValue: string;
   newValue: string;
 
@@ -27864,8 +27835,7 @@ export class ChannelAdminLogEventActionChangeTitle
   }
 }
 
-export class ChannelAdminLogEventActionChangeAbout
-  extends TypeChannelAdminLogEventAction {
+export class ChannelAdminLogEventActionChangeAbout extends TypeChannelAdminLogEventAction {
   prevValue: string;
   newValue: string;
 
@@ -27894,8 +27864,7 @@ export class ChannelAdminLogEventActionChangeAbout
   }
 }
 
-export class ChannelAdminLogEventActionChangeUsername
-  extends TypeChannelAdminLogEventAction {
+export class ChannelAdminLogEventActionChangeUsername extends TypeChannelAdminLogEventAction {
   prevValue: string;
   newValue: string;
 
@@ -27924,8 +27893,7 @@ export class ChannelAdminLogEventActionChangeUsername
   }
 }
 
-export class ChannelAdminLogEventActionChangePhoto
-  extends TypeChannelAdminLogEventAction {
+export class ChannelAdminLogEventActionChangePhoto extends TypeChannelAdminLogEventAction {
   prevPhoto: TypePhoto;
   newPhoto: TypePhoto;
 
@@ -27954,8 +27922,7 @@ export class ChannelAdminLogEventActionChangePhoto
   }
 }
 
-export class ChannelAdminLogEventActionToggleInvites
-  extends TypeChannelAdminLogEventAction {
+export class ChannelAdminLogEventActionToggleInvites extends TypeChannelAdminLogEventAction {
   newValue: boolean;
 
   protected get [id]() {
@@ -27980,8 +27947,7 @@ export class ChannelAdminLogEventActionToggleInvites
   }
 }
 
-export class ChannelAdminLogEventActionToggleSignatures
-  extends TypeChannelAdminLogEventAction {
+export class ChannelAdminLogEventActionToggleSignatures extends TypeChannelAdminLogEventAction {
   newValue: boolean;
 
   protected get [id]() {
@@ -28006,8 +27972,7 @@ export class ChannelAdminLogEventActionToggleSignatures
   }
 }
 
-export class ChannelAdminLogEventActionUpdatePinned
-  extends TypeChannelAdminLogEventAction {
+export class ChannelAdminLogEventActionUpdatePinned extends TypeChannelAdminLogEventAction {
   message: TypeMessage;
 
   protected get [id]() {
@@ -28032,8 +27997,7 @@ export class ChannelAdminLogEventActionUpdatePinned
   }
 }
 
-export class ChannelAdminLogEventActionEditMessage
-  extends TypeChannelAdminLogEventAction {
+export class ChannelAdminLogEventActionEditMessage extends TypeChannelAdminLogEventAction {
   prevMessage: TypeMessage;
   newMessage: TypeMessage;
 
@@ -28062,8 +28026,7 @@ export class ChannelAdminLogEventActionEditMessage
   }
 }
 
-export class ChannelAdminLogEventActionDeleteMessage
-  extends TypeChannelAdminLogEventAction {
+export class ChannelAdminLogEventActionDeleteMessage extends TypeChannelAdminLogEventAction {
   message: TypeMessage;
 
   protected get [id]() {
@@ -28088,8 +28051,7 @@ export class ChannelAdminLogEventActionDeleteMessage
   }
 }
 
-export class ChannelAdminLogEventActionParticipantJoin
-  extends TypeChannelAdminLogEventAction {
+export class ChannelAdminLogEventActionParticipantJoin extends TypeChannelAdminLogEventAction {
   protected get [id]() {
     return 0x183040d3;
   }
@@ -28107,8 +28069,7 @@ export class ChannelAdminLogEventActionParticipantJoin
   }
 }
 
-export class ChannelAdminLogEventActionParticipantLeave
-  extends TypeChannelAdminLogEventAction {
+export class ChannelAdminLogEventActionParticipantLeave extends TypeChannelAdminLogEventAction {
   protected get [id]() {
     return 0xf89777f2;
   }
@@ -28126,8 +28087,7 @@ export class ChannelAdminLogEventActionParticipantLeave
   }
 }
 
-export class ChannelAdminLogEventActionParticipantInvite
-  extends TypeChannelAdminLogEventAction {
+export class ChannelAdminLogEventActionParticipantInvite extends TypeChannelAdminLogEventAction {
   participant: TypeChannelParticipant;
 
   protected get [id]() {
@@ -28152,8 +28112,7 @@ export class ChannelAdminLogEventActionParticipantInvite
   }
 }
 
-export class ChannelAdminLogEventActionParticipantToggleBan
-  extends TypeChannelAdminLogEventAction {
+export class ChannelAdminLogEventActionParticipantToggleBan extends TypeChannelAdminLogEventAction {
   prevParticipant: TypeChannelParticipant;
   newParticipant: TypeChannelParticipant;
 
@@ -28187,8 +28146,7 @@ export class ChannelAdminLogEventActionParticipantToggleBan
   }
 }
 
-export class ChannelAdminLogEventActionParticipantToggleAdmin
-  extends TypeChannelAdminLogEventAction {
+export class ChannelAdminLogEventActionParticipantToggleAdmin extends TypeChannelAdminLogEventAction {
   prevParticipant: TypeChannelParticipant;
   newParticipant: TypeChannelParticipant;
 
@@ -28222,8 +28180,7 @@ export class ChannelAdminLogEventActionParticipantToggleAdmin
   }
 }
 
-export class ChannelAdminLogEventActionChangeStickerSet
-  extends TypeChannelAdminLogEventAction {
+export class ChannelAdminLogEventActionChangeStickerSet extends TypeChannelAdminLogEventAction {
   prevStickerset: TypeInputStickerSet;
   newStickerset: TypeInputStickerSet;
 
@@ -28257,8 +28214,7 @@ export class ChannelAdminLogEventActionChangeStickerSet
   }
 }
 
-export class ChannelAdminLogEventActionTogglePreHistoryHidden
-  extends TypeChannelAdminLogEventAction {
+export class ChannelAdminLogEventActionTogglePreHistoryHidden extends TypeChannelAdminLogEventAction {
   newValue: boolean;
 
   protected get [id]() {
@@ -28283,8 +28239,7 @@ export class ChannelAdminLogEventActionTogglePreHistoryHidden
   }
 }
 
-export class ChannelAdminLogEventActionDefaultBannedRights
-  extends TypeChannelAdminLogEventAction {
+export class ChannelAdminLogEventActionDefaultBannedRights extends TypeChannelAdminLogEventAction {
   prevBannedRights: TypeChatBannedRights;
   newBannedRights: TypeChatBannedRights;
 
@@ -28318,8 +28273,7 @@ export class ChannelAdminLogEventActionDefaultBannedRights
   }
 }
 
-export class ChannelAdminLogEventActionStopPoll
-  extends TypeChannelAdminLogEventAction {
+export class ChannelAdminLogEventActionStopPoll extends TypeChannelAdminLogEventAction {
   message: TypeMessage;
 
   protected get [id]() {
@@ -28344,8 +28298,7 @@ export class ChannelAdminLogEventActionStopPoll
   }
 }
 
-export class ChannelAdminLogEventActionChangeLinkedChat
-  extends TypeChannelAdminLogEventAction {
+export class ChannelAdminLogEventActionChangeLinkedChat extends TypeChannelAdminLogEventAction {
   prevValue: bigint;
   newValue: bigint;
 
@@ -28374,8 +28327,7 @@ export class ChannelAdminLogEventActionChangeLinkedChat
   }
 }
 
-export class ChannelAdminLogEventActionChangeLocation
-  extends TypeChannelAdminLogEventAction {
+export class ChannelAdminLogEventActionChangeLocation extends TypeChannelAdminLogEventAction {
   prevValue: TypeChannelLocation;
   newValue: TypeChannelLocation;
 
@@ -28406,8 +28358,7 @@ export class ChannelAdminLogEventActionChangeLocation
   }
 }
 
-export class ChannelAdminLogEventActionToggleSlowMode
-  extends TypeChannelAdminLogEventAction {
+export class ChannelAdminLogEventActionToggleSlowMode extends TypeChannelAdminLogEventAction {
   prevValue: number;
   newValue: number;
 
@@ -28436,8 +28387,7 @@ export class ChannelAdminLogEventActionToggleSlowMode
   }
 }
 
-export class ChannelAdminLogEventActionStartGroupCall
-  extends TypeChannelAdminLogEventAction {
+export class ChannelAdminLogEventActionStartGroupCall extends TypeChannelAdminLogEventAction {
   call: TypeInputGroupCall;
 
   protected get [id]() {
@@ -28462,8 +28412,7 @@ export class ChannelAdminLogEventActionStartGroupCall
   }
 }
 
-export class ChannelAdminLogEventActionDiscardGroupCall
-  extends TypeChannelAdminLogEventAction {
+export class ChannelAdminLogEventActionDiscardGroupCall extends TypeChannelAdminLogEventAction {
   call: TypeInputGroupCall;
 
   protected get [id]() {
@@ -28488,8 +28437,7 @@ export class ChannelAdminLogEventActionDiscardGroupCall
   }
 }
 
-export class ChannelAdminLogEventActionParticipantMute
-  extends TypeChannelAdminLogEventAction {
+export class ChannelAdminLogEventActionParticipantMute extends TypeChannelAdminLogEventAction {
   participant: TypeGroupCallParticipant;
 
   protected get [id]() {
@@ -28514,8 +28462,7 @@ export class ChannelAdminLogEventActionParticipantMute
   }
 }
 
-export class ChannelAdminLogEventActionParticipantUnmute
-  extends TypeChannelAdminLogEventAction {
+export class ChannelAdminLogEventActionParticipantUnmute extends TypeChannelAdminLogEventAction {
   participant: TypeGroupCallParticipant;
 
   protected get [id]() {
@@ -28540,8 +28487,7 @@ export class ChannelAdminLogEventActionParticipantUnmute
   }
 }
 
-export class ChannelAdminLogEventActionToggleGroupCallSetting
-  extends TypeChannelAdminLogEventAction {
+export class ChannelAdminLogEventActionToggleGroupCallSetting extends TypeChannelAdminLogEventAction {
   joinMuted: boolean;
 
   protected get [id]() {
@@ -28566,8 +28512,7 @@ export class ChannelAdminLogEventActionToggleGroupCallSetting
   }
 }
 
-export class ChannelAdminLogEventActionParticipantJoinByInvite
-  extends TypeChannelAdminLogEventAction {
+export class ChannelAdminLogEventActionParticipantJoinByInvite extends TypeChannelAdminLogEventAction {
   invite: TypeExportedChatInvite;
 
   protected get [id]() {
@@ -28592,8 +28537,7 @@ export class ChannelAdminLogEventActionParticipantJoinByInvite
   }
 }
 
-export class ChannelAdminLogEventActionExportedInviteDelete
-  extends TypeChannelAdminLogEventAction {
+export class ChannelAdminLogEventActionExportedInviteDelete extends TypeChannelAdminLogEventAction {
   invite: TypeExportedChatInvite;
 
   protected get [id]() {
@@ -28618,8 +28562,7 @@ export class ChannelAdminLogEventActionExportedInviteDelete
   }
 }
 
-export class ChannelAdminLogEventActionExportedInviteRevoke
-  extends TypeChannelAdminLogEventAction {
+export class ChannelAdminLogEventActionExportedInviteRevoke extends TypeChannelAdminLogEventAction {
   invite: TypeExportedChatInvite;
 
   protected get [id]() {
@@ -28644,8 +28587,7 @@ export class ChannelAdminLogEventActionExportedInviteRevoke
   }
 }
 
-export class ChannelAdminLogEventActionExportedInviteEdit
-  extends TypeChannelAdminLogEventAction {
+export class ChannelAdminLogEventActionExportedInviteEdit extends TypeChannelAdminLogEventAction {
   prevInvite: TypeExportedChatInvite;
   newInvite: TypeExportedChatInvite;
 
@@ -28679,8 +28621,7 @@ export class ChannelAdminLogEventActionExportedInviteEdit
   }
 }
 
-export class ChannelAdminLogEventActionParticipantVolume
-  extends TypeChannelAdminLogEventAction {
+export class ChannelAdminLogEventActionParticipantVolume extends TypeChannelAdminLogEventAction {
   participant: TypeGroupCallParticipant;
 
   protected get [id]() {
@@ -28705,8 +28646,7 @@ export class ChannelAdminLogEventActionParticipantVolume
   }
 }
 
-export class ChannelAdminLogEventActionChangeHistoryTTL
-  extends TypeChannelAdminLogEventAction {
+export class ChannelAdminLogEventActionChangeHistoryTTL extends TypeChannelAdminLogEventAction {
   prevValue: number;
   newValue: number;
 
@@ -28735,8 +28675,7 @@ export class ChannelAdminLogEventActionChangeHistoryTTL
   }
 }
 
-export class ChannelAdminLogEventActionParticipantJoinByRequest
-  extends TypeChannelAdminLogEventAction {
+export class ChannelAdminLogEventActionParticipantJoinByRequest extends TypeChannelAdminLogEventAction {
   invite: TypeExportedChatInvite;
   approvedBy: bigint;
 
@@ -28765,8 +28704,7 @@ export class ChannelAdminLogEventActionParticipantJoinByRequest
   }
 }
 
-export class ChannelAdminLogEventActionToggleNoForwards
-  extends TypeChannelAdminLogEventAction {
+export class ChannelAdminLogEventActionToggleNoForwards extends TypeChannelAdminLogEventAction {
   newValue: boolean;
 
   protected get [id]() {
@@ -28791,8 +28729,7 @@ export class ChannelAdminLogEventActionToggleNoForwards
   }
 }
 
-export class ChannelAdminLogEventActionSendMessage
-  extends TypeChannelAdminLogEventAction {
+export class ChannelAdminLogEventActionSendMessage extends TypeChannelAdminLogEventAction {
   message: TypeMessage;
 
   protected get [id]() {
@@ -28817,8 +28754,7 @@ export class ChannelAdminLogEventActionSendMessage
   }
 }
 
-export class ChannelAdminLogEventActionChangeAvailableReactions
-  extends TypeChannelAdminLogEventAction {
+export class ChannelAdminLogEventActionChangeAvailableReactions extends TypeChannelAdminLogEventAction {
   prevValue: TypeChatReactions;
   newValue: TypeChatReactions;
 
@@ -28849,8 +28785,7 @@ export class ChannelAdminLogEventActionChangeAvailableReactions
   }
 }
 
-export class ChannelAdminLogEventActionChangeUsernames
-  extends TypeChannelAdminLogEventAction {
+export class ChannelAdminLogEventActionChangeUsernames extends TypeChannelAdminLogEventAction {
   prevValue: Array<string>;
   newValue: Array<string>;
 
@@ -28879,8 +28814,7 @@ export class ChannelAdminLogEventActionChangeUsernames
   }
 }
 
-export class ChannelAdminLogEventActionToggleForum
-  extends TypeChannelAdminLogEventAction {
+export class ChannelAdminLogEventActionToggleForum extends TypeChannelAdminLogEventAction {
   newValue: boolean;
 
   protected get [id]() {
@@ -28905,8 +28839,7 @@ export class ChannelAdminLogEventActionToggleForum
   }
 }
 
-export class ChannelAdminLogEventActionCreateTopic
-  extends TypeChannelAdminLogEventAction {
+export class ChannelAdminLogEventActionCreateTopic extends TypeChannelAdminLogEventAction {
   topic: TypeForumTopic;
 
   protected get [id]() {
@@ -28931,8 +28864,7 @@ export class ChannelAdminLogEventActionCreateTopic
   }
 }
 
-export class ChannelAdminLogEventActionEditTopic
-  extends TypeChannelAdminLogEventAction {
+export class ChannelAdminLogEventActionEditTopic extends TypeChannelAdminLogEventAction {
   prevTopic: TypeForumTopic;
   newTopic: TypeForumTopic;
 
@@ -28961,8 +28893,7 @@ export class ChannelAdminLogEventActionEditTopic
   }
 }
 
-export class ChannelAdminLogEventActionDeleteTopic
-  extends TypeChannelAdminLogEventAction {
+export class ChannelAdminLogEventActionDeleteTopic extends TypeChannelAdminLogEventAction {
   topic: TypeForumTopic;
 
   protected get [id]() {
@@ -28987,8 +28918,7 @@ export class ChannelAdminLogEventActionDeleteTopic
   }
 }
 
-export class ChannelAdminLogEventActionPinTopic
-  extends TypeChannelAdminLogEventAction {
+export class ChannelAdminLogEventActionPinTopic extends TypeChannelAdminLogEventAction {
   prevTopic?: TypeForumTopic;
   newTopic?: TypeForumTopic;
 
@@ -29021,8 +28951,7 @@ export class ChannelAdminLogEventActionPinTopic
   }
 }
 
-export class ChannelAdminLogEventActionToggleAntiSpam
-  extends TypeChannelAdminLogEventAction {
+export class ChannelAdminLogEventActionToggleAntiSpam extends TypeChannelAdminLogEventAction {
   newValue: boolean;
 
   protected get [id]() {
@@ -29279,8 +29208,7 @@ export class PopularContact extends Constructor {
   }
 }
 
-export class MessagesFavedStickersNotModified
-  extends TypeMessagesFavedStickers {
+export class MessagesFavedStickersNotModified extends TypeMessagesFavedStickers {
   protected get [id]() {
     return 0x9e8fa6d3;
   }
@@ -29867,8 +29795,7 @@ export class DialogPeerFolder extends TypeDialogPeer {
   }
 }
 
-export class MessagesFoundStickerSetsNotModified
-  extends TypeMessagesFoundStickerSets {
+export class MessagesFoundStickerSetsNotModified extends TypeMessagesFoundStickerSets {
   protected get [id]() {
     return 0x0d54b65d;
   }
@@ -29977,8 +29904,7 @@ export class InputClientProxy extends Constructor {
   }
 }
 
-export class HelpTermsOfServiceUpdateEmpty
-  extends TypeHelpTermsOfServiceUpdate {
+export class HelpTermsOfServiceUpdateEmpty extends TypeHelpTermsOfServiceUpdate {
   expires: number;
 
   protected get [id]() {
@@ -31291,8 +31217,7 @@ export class PasswordKdfAlgoUnknown extends TypePasswordKdfAlgo {
   }
 }
 
-export class PasswordKdfAlgoSHA256SHA256PBKDF2HMACSHA512iter100000SHA256ModPow
-  extends TypePasswordKdfAlgo {
+export class PasswordKdfAlgoSHA256SHA256PBKDF2HMACSHA512iter100000SHA256ModPow extends TypePasswordKdfAlgo {
   salt1: Uint8Array;
   salt2: Uint8Array;
   g: number;
@@ -31349,8 +31274,7 @@ export class SecurePasswordKdfAlgoUnknown extends TypeSecurePasswordKdfAlgo {
   }
 }
 
-export class SecurePasswordKdfAlgoPBKDF2HMACSHA512iter100000
-  extends TypeSecurePasswordKdfAlgo {
+export class SecurePasswordKdfAlgoPBKDF2HMACSHA512iter100000 extends TypeSecurePasswordKdfAlgo {
   salt: Uint8Array;
 
   protected get [id]() {
@@ -35315,8 +35239,7 @@ export class GlobalPrivacySettings extends Constructor {
 
   constructor(params: { archiveAndMuteNewNoncontactPeers?: boolean }) {
     super();
-    this.archiveAndMuteNewNoncontactPeers =
-      params.archiveAndMuteNewNoncontactPeers;
+    this.archiveAndMuteNewNoncontactPeers = params.archiveAndMuteNewNoncontactPeers;
   }
 }
 
@@ -36516,8 +36439,7 @@ export class MessagesExportedChatInvite extends Constructor {
   }
 }
 
-export class MessagesExportedChatInviteReplaced
-  extends TypeMessagesExportedChatInvite {
+export class MessagesExportedChatInviteReplaced extends TypeMessagesExportedChatInvite {
   invite: TypeExportedChatInvite;
   newInvite: TypeExportedChatInvite;
   users: Array<TypeUser>;
@@ -37013,8 +36935,7 @@ export class BotCommandScopePeerUser extends TypeBotCommandScope {
   }
 }
 
-export class AccountResetPasswordFailedWait
-  extends TypeAccountResetPasswordResult {
+export class AccountResetPasswordFailedWait extends TypeAccountResetPasswordResult {
   retryDate: number;
 
   protected get [id]() {
@@ -37039,8 +36960,7 @@ export class AccountResetPasswordFailedWait
   }
 }
 
-export class AccountResetPasswordRequestedWait
-  extends TypeAccountResetPasswordResult {
+export class AccountResetPasswordRequestedWait extends TypeAccountResetPasswordResult {
   untilDate: number;
 
   protected get [id]() {
@@ -37219,8 +37139,7 @@ export class MessagesSponsoredMessages extends Constructor {
   }
 }
 
-export class MessagesSponsoredMessagesEmpty
-  extends TypeMessagesSponsoredMessages {
+export class MessagesSponsoredMessagesEmpty extends TypeMessagesSponsoredMessages {
   protected get [id]() {
     return 0x1839490f;
   }
@@ -37799,8 +37718,7 @@ export class AvailableReaction extends Constructor {
   }
 }
 
-export class MessagesAvailableReactionsNotModified
-  extends TypeMessagesAvailableReactions {
+export class MessagesAvailableReactionsNotModified extends TypeMessagesAvailableReactions {
   protected get [id]() {
     return 0x9f071957;
   }
@@ -38372,8 +38290,7 @@ export class BotMenuButton extends Constructor {
   }
 }
 
-export class AccountSavedRingtonesNotModified
-  extends TypeAccountSavedRingtones {
+export class AccountSavedRingtonesNotModified extends TypeAccountSavedRingtones {
   protected get [id]() {
     return 0xfbf6e8b1;
   }
@@ -38821,8 +38738,7 @@ export class HelpPremiumPromo extends Constructor {
   }
 }
 
-export class InputStorePaymentPremiumSubscription
-  extends TypeInputStorePaymentPurpose {
+export class InputStorePaymentPremiumSubscription extends TypeInputStorePaymentPurpose {
   restore?: true;
   upgrade?: true;
 

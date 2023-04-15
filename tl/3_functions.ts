@@ -1,12 +1,4 @@
-import {
-  flags,
-  id,
-  ParamDesc,
-  paramDesc,
-  Params,
-  params,
-  TLObject,
-} from "./1_tl_object.ts";
+import { flags, id, ParamDesc, paramDesc, Params, params, TLObject } from "./1_tl_object.ts";
 import * as constructors from "./2_constructors.ts";
 
 export abstract class Function extends TLObject {

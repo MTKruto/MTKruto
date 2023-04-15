@@ -6,8 +6,7 @@ const apiContent = Deno.readTextFileSync("api.tl");
 
 const mtProtoContent = Deno.readTextFileSync("mtproto.tl");
 
-const { constructors: mtProtoConstructors, functions: mtProtoFunctions } =
-  parse(mtProtoContent);
+const { constructors: mtProtoConstructors, functions: mtProtoFunctions } = parse(mtProtoContent);
 const { constructors: apiConstructors, functions: apiFunctions } = parse(
   apiContent,
 );
@@ -31,8 +30,7 @@ for (const constructor of mtProtoFunctions) {
 const constructors = mtProtoConstructors.concat(apiConstructors);
 const functions = mtProtoFunctions.concat(apiFunctions);
 
-let code =
-  `import { id, params, TLObject, Params, TLObjectConstructor, ParamDesc, paramDesc, flags } from "./1_tl_object.ts";
+let code = `import { id, params, TLObject, Params, TLObjectConstructor, ParamDesc, paramDesc, flags } from "./1_tl_object.ts";
 
 export abstract class Constructor extends TLObject {
 }
@@ -146,9 +144,7 @@ function getParamsGetter(params: any[], prefix = false) {
       type = `"${type}"`;
     }
     const name = toCamelCase(param.name);
-    code += `[this.${name} ${
-      isFlag ? "?? null" : ""
-    }, ${type}, "${param.type}"],\n`;
+    code += `[this.${name} ${isFlag ? "?? null" : ""}, ${type}, "${param.type}"],\n`;
   }
   code += "]\n}\n";
   return code;
@@ -266,8 +262,7 @@ code += `// deno-lint-ignore no-explicit-any
 
 Deno.writeTextFileSync("tl/2_constructors.ts", code);
 
-code =
-  `import { id, params, TLObject, Params, paramDesc, ParamDesc, flags } from "./1_tl_object.ts";
+code = `import { id, params, TLObject, Params, paramDesc, ParamDesc, flags } from "./1_tl_object.ts";
 import * as constructors from "./2_constructors.ts";
 
 export abstract class Function extends TLObject {

@@ -1,10 +1,5 @@
 import { Client } from "./client/client.ts";
-import {
-  HelpGetConfig,
-  InitConnection,
-  InvokeWithLayer,
-  Ping,
-} from "./tl/3_functions.ts";
+import { HelpGetConfig, InitConnection, InvokeWithLayer, Ping } from "./tl/3_functions.ts";
 import { log } from "./deps.ts";
 
 log.setup({
