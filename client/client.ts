@@ -2,7 +2,7 @@ import { gunzip } from "../deps.ts";
 import { getRandomBigInt } from "../utilities/0_bigint.ts";
 import { decryptMessage, encryptMessage, getMessageId } from "../utilities/1_message.ts";
 import { TLObject } from "../tl/1_tl_object.ts";
-import { GZIPPacked, MsgsAck, Pong, RPCError } from "../tl/2_constructors.ts";
+import { GZIPPacked, MsgsAck, Pong, RPCError, Updates } from "../tl/2_constructors.ts";
 import { Function, Ping } from "../tl/3_functions.ts";
 import { RpcResult } from "../tl/4_rpc_result.ts";
 import { Message } from "../tl/5_message.ts";
@@ -13,7 +13,7 @@ import { TLReader } from "../tl/3_tl_reader.ts";
 import { logger } from "../utilities/0_logger.ts";
 
 export class Client extends ClientAbstract {
-  private sessionId = getRandomBigInt(8, false, true);
+  private sessionId = getRandomBigInt(8, false, false);
   private auth?: { key: Uint8Array; id: bigint };
   private state = { salt: 0n, seqNo: 0 };
   private promises = new Map<bigint, { resolve: (obj: TLObject) => void; reject: (err: TLObject) => void }>();
@@ -40,7 +40,7 @@ export class Client extends ClientAbstract {
       throw new Error("Not connected");
     }
 
-    while (true) {
+    while (this.connected) {
       if (this.toAcknowledge.size != 0) {
         await this.invoke(new MsgsAck({ msgIds: [...this.toAcknowledge] }), true);
         this.toAcknowledge.clear();
@@ -56,6 +56,7 @@ export class Client extends ClientAbstract {
       const messages = decrypted instanceof MessageContainer ? decrypted.messages : [decrypted];
 
       for (const message of messages) {
+        logger().debug(`Received ${message.body.constructor.name}`);
         if (message.body instanceof RpcResult) {
           let result = message.body.result;
           if (result instanceof GZIPPacked) {
