@@ -1,3 +1,5 @@
+export const ackThreshold = 10;
+
 export const publicKeys = new Map<bigint, [bigint, bigint]>([
   [
     1562291298945373506n,

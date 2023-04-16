@@ -1,17 +1,18 @@
 import { gunzip } from "../deps.ts";
+import { MaybePromise } from "../types.ts";
+import { ackThreshold } from "../constants.ts";
 import { getRandomBigInt } from "../utilities/0_bigint.ts";
+import { logger } from "../utilities/0_logger.ts";
 import { decryptMessage, encryptMessage, getMessageId } from "../utilities/1_message.ts";
 import { TLObject } from "../tl/1_tl_object.ts";
-import { GZIPPacked, MsgsAck, Pong, RPCError, Updates } from "../tl/2_constructors.ts";
+import { BadMsgNotification, BadServerSalt, GZIPPacked, MsgsAck, Pong, RPCError, Updates } from "../tl/2_constructors.ts";
 import { Function, Ping } from "../tl/3_functions.ts";
+import { TLReader } from "../tl/3_tl_reader.ts";
 import { RpcResult } from "../tl/4_rpc_result.ts";
 import { Message } from "../tl/5_message.ts";
 import { MessageContainer } from "../tl/6_message_container.ts";
 import { ClientAbstract } from "./client_abstract.ts";
 import { ClientPlain } from "./client_plain.ts";
-import { TLReader } from "../tl/3_tl_reader.ts";
-import { logger } from "../utilities/0_logger.ts";
-import { MaybePromise } from "../types.ts";
 
 export type UpdatesHandler = null | ((client: Client, update: Updates) => MaybePromise<void>);
 
@@ -45,8 +46,8 @@ export class Client extends ClientAbstract {
     }
 
     while (this.connected) {
-      if (this.toAcknowledge.size != 0) {
-        await this.invoke(new MsgsAck({ msgIds: [...this.toAcknowledge] }), true);
+      if (this.toAcknowledge.size >= ackThreshold) {
+        await this.send(new MsgsAck({ msgIds: [...this.toAcknowledge] }));
         this.toAcknowledge.clear();
       }
 
@@ -83,6 +84,15 @@ export class Client extends ClientAbstract {
             promise.resolve(message.body);
             this.promises.delete(message.body.msgId);
           }
+        } else if (message.body instanceof BadMsgNotification || message.body instanceof BadServerSalt) {
+          if (message.body instanceof BadServerSalt) {
+            this.state.salt = message.body.newServerSalt;
+          }
+          const promise = this.promises.get(message.body.badMsgId);
+          if (promise) {
+            promise.resolve(message.body);
+            this.promises.delete(message.body.badMsgId);
+          }
         }
 
         this.toAcknowledge.add(message.id);
@@ -117,8 +127,18 @@ export class Client extends ClientAbstract {
       return;
     }
 
-    return await new Promise<TLObject>((resolve, reject) => {
+    const result = await new Promise<TLObject>((resolve, reject) => {
       this.promises.set(message.id, { resolve, reject });
     });
+
+    if (result instanceof BadServerSalt) {
+      return await this.invoke(function_);
+    } else {
+      return result;
+    }
+  }
+
+  send(function_: Function) {
+    return this.invoke(function_, true);
   }
 }
