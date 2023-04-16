@@ -41,13 +41,7 @@ export function unpackUnencryptedMessage(buffer: Uint8Array) {
   return { messageId, message };
 }
 
-export async function encryptMessage(
-  message: Message,
-  authKey: Uint8Array,
-  authKeyId: bigint,
-  salt: bigint,
-  sessionId: bigint,
-) {
+export async function encryptMessage(message: Message, authKey: Uint8Array, authKeyId: bigint, salt: bigint, sessionId: bigint) {
   const encoded = (message.body as TLObject).serialize();
 
   const payloadWriter = new TLRawWriter();
@@ -84,12 +78,7 @@ export async function encryptMessage(
 
   return messageWriter.buffer;
 }
-export async function decryptMessage(
-  buffer: Uint8Array,
-  authKey: Uint8Array,
-  authKeyId: bigint,
-  sessionId: bigint,
-) {
+export async function decryptMessage(buffer: Uint8Array, authKey: Uint8Array, authKeyId: bigint, _sessionId: bigint) {
   const reader = new TLReader(buffer);
   assertEquals(reader.readInt64(false), authKeyId);
 
@@ -108,7 +97,7 @@ export async function decryptMessage(
   let plainReader = new TLReader(plaintext);
 
   const _salt = plainReader.readInt64();
-  const _sessionId = plainReader.readInt64(false);
+  const _sessionId_ = plainReader.readInt64(false);
 
   const mid = plainReader.readInt64();
   const seqno = plainReader.readInt32();

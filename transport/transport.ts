@@ -3,10 +3,7 @@ import { CTR } from "../utilities/0_crypto.ts";
 
 export abstract class Transport {
   protected initialized = false;
-  protected obfuscationParameters: {
-    encryptionCTR: CTR;
-    decryptionCTR: CTR;
-  } | null = null;
+  protected obfuscationParameters: { encryptionCTR: CTR; decryptionCTR: CTR } | null = null;
 
   protected encrypt(buffer: Uint8Array) {
     if (this.obfuscationParameters) {
