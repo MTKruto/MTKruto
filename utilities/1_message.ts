@@ -1,7 +1,7 @@
 import { assertEquals, ige256Decrypt, ige256Encrypt } from "../deps.ts";
 import { TLRawReader } from "../tl/0_tl_raw_reader.ts";
 import { TLRawWriter } from "../tl/0_tl_raw_writer.ts";
-import { TLObject } from "../tl/1_tl_object.ts";
+import { id, TLObject } from "../tl/1_tl_object.ts";
 import { TLReader } from "../tl/3_tl_reader.ts";
 import { RPCResult } from "../tl/4_rpc_result.ts";
 import { Message } from "../tl/5_message.ts";
@@ -118,9 +118,9 @@ export async function decryptMessage(
 
   const cid = plainReader.readInt32(false);
 
-  if (cid == MessageContainer.cid) {
+  if (cid == MessageContainer[id]) {
     return MessageContainer.deserialize(plainReader.buffer);
-  } else if (cid == RPCResult.cid) {
+  } else if (cid == RPCResult[id]) {
     const body = RPCResult.deserialize(plainReader.buffer);
     return new Message(mid, seqno, body);
   } else {

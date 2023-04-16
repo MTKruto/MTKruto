@@ -1,8 +1,8 @@
-import { TLObject } from "./1_tl_object.ts";
+import { TLObject, id } from "./1_tl_object.ts";
 import { TLReader } from "./3_tl_reader.ts";
 
 export class RPCResult {
-  static get cid() {
+  static get [id]() {
     return 0xf35c6d01;
   }
 
