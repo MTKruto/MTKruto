@@ -1,18 +1,18 @@
 import { length, TLObject } from "./1_tl_object.ts";
 import { TLReader } from "./3_tl_reader.ts";
 import { TLWriter } from "./3_tl_writer.ts";
-import { RpcResult } from "./4_rpc_result.ts";
+import { RPCResult } from "./4_rpc_result.ts";
 
 export class Message {
   constructor(
     public readonly id: bigint,
     public readonly seqNo: number,
-    public readonly body: TLObject | RpcResult,
+    public readonly body: TLObject | RPCResult,
   ) {
   }
 
   serialize() {
-    if (this.body instanceof RpcResult) {
+    if (this.body instanceof RPCResult) {
       throw new Error("Not applicable");
     }
     return new TLWriter()

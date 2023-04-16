@@ -8,7 +8,7 @@ import { TLObject } from "../tl/1_tl_object.ts";
 import { BadMsgNotification, BadServerSalt, GZIPPacked, MsgsAck, Pong, RPCError, Updates } from "../tl/2_constructors.ts";
 import { Function, Ping } from "../tl/3_functions.ts";
 import { TLReader } from "../tl/3_tl_reader.ts";
-import { RpcResult } from "../tl/4_rpc_result.ts";
+import { RPCResult } from "../tl/4_rpc_result.ts";
 import { Message } from "../tl/5_message.ts";
 import { MessageContainer } from "../tl/6_message_container.ts";
 import { ClientAbstract } from "./client_abstract.ts";
@@ -64,7 +64,7 @@ export class Client extends ClientAbstract {
         logger().debug(`Received ${message.body.constructor.name}`);
         if (message.body instanceof Updates) {
           this.updatesHandler?.(this, message.body);
-        } else if (message.body instanceof RpcResult) {
+        } else if (message.body instanceof RPCResult) {
           let result = message.body.result;
           if (result instanceof GZIPPacked) {
             result = new TLReader(gunzip(result.packedData)).readObject();
