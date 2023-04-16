@@ -6,19 +6,18 @@ const apiContent = Deno.readTextFileSync("api.tl");
 
 const mtProtoContent = Deno.readTextFileSync("mtproto.tl");
 
-const { constructors: mtProtoConstructors, functions: mtProtoFunctions } =
-  parse(mtProtoContent);
+const { constructors: mtProtoConstructors, functions: mtProtoFunctions } = parse(mtProtoContent);
 const { constructors: apiConstructors, functions: apiFunctions } = parse(
   apiContent,
 );
 
-for (const constructor of mtProtoConstructors) {
-  for (const param of constructor.params) {
-    if (param.type == "string") {
-      param.type = "bytes";
-    }
-  }
-}
+// for (const constructor of mtProtoConstructors) {
+//   for (const param of constructor.params) {
+//     if (param.type == "string") {
+//       param.type = "bytes";
+//     }
+//   }
+// }
 
 for (const constructor of mtProtoFunctions) {
   for (const param of constructor.params) {
@@ -31,8 +30,7 @@ for (const constructor of mtProtoFunctions) {
 const constructors = mtProtoConstructors.concat(apiConstructors);
 const functions = mtProtoFunctions.concat(apiFunctions);
 
-let code =
-  `import { id, params, TLObject, Params, TLObjectConstructor, ParamDesc, paramDesc, flags } from "./1_tl_object.ts";
+let code = `import { id, params, TLObject, Params, TLObjectConstructor, ParamDesc, paramDesc, flags } from "./1_tl_object.ts";
 
 export abstract class Constructor extends TLObject {
 }
@@ -69,7 +67,7 @@ function convertType(type: string, prefix = false) {
     type = mapping;
   } else {
     type = type.replaceAll("!", "");
-    type = `Type${revampType(type)}`;
+    type = `Type${revampType(type, true)}`;
     if (prefix) {
       type = `constructors.${type}`;
     }
@@ -146,9 +144,7 @@ function getParamsGetter(params: any[], prefix = false) {
       type = `"${type}"`;
     }
     const name = toCamelCase(param.name);
-    code += `[this.${name} ${
-      isFlag ? "?? null" : ""
-    }, ${type}, "${param.type}"],\n`;
+    code += `[this.${name} ${isFlag ? "?? null" : ""}, ${type}, "${param.type}"],\n`;
   }
   code += "]\n}\n";
   return code;
@@ -207,7 +203,7 @@ for (const constructor of constructors) {
     continue;
   }
 
-  const className = `Type${revampType(constructor.type)}`;
+  const className = `Type${revampType(constructor.type, true)}`;
 
   if (!types.has(className)) {
     code += `
@@ -228,11 +224,11 @@ for (const constructor of constructors) {
   if (constructor.predicate.toLowerCase() == constructor.type.toLowerCase()) {
     parent = "Constructor";
   } else {
-    parent = `Type${revampType(constructor.type)}`;
+    parent = `Type${revampType(constructor.type, true)}`;
   }
 
   const id = revampId(constructor.id);
-  const className = revampType(constructor.predicate);
+  const className = revampType(constructor.predicate, true);
   entries.push([id, className]);
 
   code += `
@@ -266,8 +262,7 @@ code += `// deno-lint-ignore no-explicit-any
 
 Deno.writeTextFileSync("tl/2_constructors.ts", code);
 
-code =
-  `import { id, params, TLObject, Params, paramDesc, ParamDesc, flags } from "./1_tl_object.ts";
+code = `import { id, params, TLObject, Params, paramDesc, ParamDesc, flags } from "./1_tl_object.ts";
 import * as constructors from "./2_constructors.ts";
 
 export abstract class Function extends TLObject {
@@ -275,7 +270,7 @@ export abstract class Function extends TLObject {
 `;
 
 for (const function_ of functions) {
-  const className = revampType(function_.func);
+  const className = revampType(function_.func, true);
   const id = revampId(function_.id);
 
   code += `
@@ -297,4 +292,4 @@ export class ${className} extends Function {
 
 Deno.writeTextFileSync("tl/3_functions.ts", code);
 
-await new Deno.Command("deno", { args: ["fmt"] }).output();
+new Deno.Command("deno", { args: ["fmt"] }).outputSync();

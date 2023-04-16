@@ -1,4 +1,4 @@
-import { analyzeOptionalParam, isOptionalParam } from "../utilities/1_tl.ts";
+import { assertEquals, assertFalse } from "../deps.ts";
 import { TLRawWriter } from "./0_tl_raw_writer.ts";
 
 type MaybeArrayOf<T> = T | T[];
@@ -52,6 +52,19 @@ export const params = Symbol("params");
 export const paramDesc = Symbol("paramDesc");
 
 export const length = Symbol("length");
+
+export function isOptionalParam(ntype: string) {
+  return ntype.includes("?");
+}
+export function analyzeOptionalParam(ntype: string) {
+  const flagField = ntype.split(".")[0];
+  assertEquals(typeof flagField, "string");
+
+  const bitIndex = Number(ntype.split("?")[0].split(".")[1]);
+  assertFalse(isNaN(bitIndex));
+
+  return { flagField, bitIndex };
+}
 
 function serializeSingleParam(
   writer: TLRawWriter,

@@ -1,15 +1,6 @@
 import { assertEquals } from "../deps.ts";
-import { analyzeOptionalParam, isOptionalParam } from "../utilities/1_tl.ts";
 import { TLRawReader } from "./0_tl_raw_reader.ts";
-import {
-  flags,
-  isTLObjectConstructor,
-  Param,
-  ParamDesc,
-  paramDesc,
-  TLObject,
-  TLObjectConstructor,
-} from "./1_tl_object.ts";
+import { analyzeOptionalParam, flags, isOptionalParam, isTLObjectConstructor, Param, ParamDesc, paramDesc, TLObject, TLObjectConstructor } from "./1_tl_object.ts";
 import { map } from "./2_constructors.ts";
 
 function deserializeSingleParam(
@@ -81,10 +72,6 @@ export function deserialize<T extends TLObjectConstructor<InstanceType<T>>>(
     if (type == flags && ntype == "#") {
       flagFields[name] = reader.readInt32();
       continue;
-    }
-
-    if (isTLObjectConstructor(type)) {
-      throw new Error("Unimplemented");
     }
 
     if (type instanceof Array) {
