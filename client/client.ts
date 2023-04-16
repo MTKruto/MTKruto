@@ -11,6 +11,9 @@ import { ClientAbstract } from "./client_abstract.ts";
 import { ClientPlain } from "./client_plain.ts";
 import { TLReader } from "../tl/3_tl_reader.ts";
 import { logger } from "../utilities/0_logger.ts";
+import { MaybePromise } from "../types.ts";
+
+export type UpdatesHandler = null | ((client: Client, update: Updates) => MaybePromise<void>);
 
 export class Client extends ClientAbstract {
   private sessionId = getRandomBigInt(8, false, false);
@@ -18,6 +21,7 @@ export class Client extends ClientAbstract {
   private state = { salt: 0n, seqNo: 0 };
   private promises = new Map<bigint, { resolve: (obj: TLObject) => void; reject: (err: TLObject) => void }>();
   private toAcknowledge = new Set<bigint>();
+  public updatesHandler: UpdatesHandler = null;
 
   constructor(test?: boolean) {
     super(test);
@@ -57,7 +61,9 @@ export class Client extends ClientAbstract {
 
       for (const message of messages) {
         logger().debug(`Received ${message.body.constructor.name}`);
-        if (message.body instanceof RpcResult) {
+        if (message.body instanceof Updates) {
+          this.updatesHandler?.(this, message.body);
+        } else if (message.body instanceof RpcResult) {
           let result = message.body.result;
           if (result instanceof GZIPPacked) {
             result = new TLReader(gunzip(result.packedData)).readObject();
