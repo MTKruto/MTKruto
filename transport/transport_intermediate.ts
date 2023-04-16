@@ -4,20 +4,14 @@ import { getObfuscationParameters } from "../utilities/1_obfuscation.ts";
 import { Transport } from "./transport.ts";
 
 export class TransportIntermediate extends Transport implements Transport {
-  constructor(
-    private readonly connection: Connection,
-    private readonly obfuscated = false,
-  ) {
+  constructor(private readonly connection: Connection, private readonly obfuscated = false) {
     super();
   }
 
   async initialize() {
     if (!this.initialized) {
       if (this.obfuscated) {
-        this.obfuscationParameters = await getObfuscationParameters(
-          0xeeeeeeee,
-          this.connection,
-        );
+        this.obfuscationParameters = await getObfuscationParameters(0xeeeeeeee, this.connection);
       } else {
         await this.connection.write(new Uint8Array([0xee, 0xee, 0xee, 0xee]));
       }

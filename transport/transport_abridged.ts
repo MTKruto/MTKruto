@@ -4,20 +4,14 @@ import { getObfuscationParameters } from "../utilities/1_obfuscation.ts";
 import { Transport } from "./transport.ts";
 
 export class TransportAbridged extends Transport implements Transport {
-  constructor(
-    private readonly connection: Connection,
-    private readonly obfuscated = false,
-  ) {
+  constructor(private readonly connection: Connection, private readonly obfuscated = false) {
     super();
   }
 
   async initialize() {
     if (!this.initialized) {
       if (this.obfuscated) {
-        this.obfuscationParameters = await getObfuscationParameters(
-          0xefefefef,
-          this.connection,
-        );
+        this.obfuscationParameters = await getObfuscationParameters(0xefefefef, this.connection);
       } else {
         await this.connection.write(new Uint8Array([0xef]));
       }
@@ -62,9 +56,7 @@ export class TransportAbridged extends Transport implements Transport {
 
     const bufferLength = buffer.length / 4;
 
-    const header = new Uint8Array([
-      bufferLength >= 0x7F ? 0x7F : bufferLength,
-    ]);
+    const header = new Uint8Array([bufferLength >= 0x7F ? 0x7F : bufferLength]);
     const length = bufferLength >= 0x7F ? bufferFromBigInt(bufferLength, 3) : new Uint8Array();
 
     await this.connection.write(this.encrypt(concat(header, length, buffer)));

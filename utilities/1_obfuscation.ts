@@ -2,21 +2,13 @@ import { Connection } from "../connection/connection.ts";
 import { bufferFromBigInt, concat } from "./0_buffer.ts";
 import { CTR } from "./0_crypto.ts";
 
-export async function getObfuscationParameters(
-  protocol: number,
-  connection: Connection,
-) {
+export async function getObfuscationParameters(protocol: number, connection: Connection) {
   const dc = 0xfcff;
 
   let init: Uint8Array;
 
   while (true) {
-    init = concat(
-      crypto.getRandomValues(new Uint8Array(56)),
-      bufferFromBigInt(protocol, 4, false),
-      bufferFromBigInt(dc, 2, false),
-      crypto.getRandomValues(new Uint8Array(2)),
-    );
+    init = concat(crypto.getRandomValues(new Uint8Array(56)), bufferFromBigInt(protocol, 4, false), bufferFromBigInt(dc, 2, false), crypto.getRandomValues(new Uint8Array(2)));
 
     if (init[0] == 0xef) {
       continue;
@@ -47,10 +39,7 @@ export async function getObfuscationParameters(
   const decryptIv = initRev.slice(40, 40 + 16);
   const decryptionCTR = new CTR(decryptKey, decryptIv);
 
-  await connection.write(concat(
-    init.slice(0, 56),
-    encryptedInit.slice(56, 56 + 8),
-  ));
+  await connection.write(concat(init.slice(0, 56), encryptedInit.slice(56, 56 + 8)));
 
   return { encryptionCTR, decryptionCTR };
 }

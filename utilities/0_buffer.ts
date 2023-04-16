@@ -6,31 +6,13 @@ export async function sha1(payload: Uint8Array) {
   return new Uint8Array(await crypto.subtle.digest("SHA-1", payload));
 }
 
-export function xor(a: Uint8Array, b: Uint8Array) {
-  const bytes = new Array<number>();
-  for (const i in a) {
-    bytes.push(a[i] ^ b[i]);
-  }
-  return Uint8Array.from(bytes);
-}
-
 export function concat(...buffers: [Uint8Array, Uint8Array, ...Uint8Array[]]) {
   return new Uint8Array(buffers.map((v) => Array.from(v)).flat());
 }
 
-const bufferFromHexString = (hexString: string) =>
-  Uint8Array.from(
-    hexString.match(/.{1,2}/g)!.map((byte) => parseInt(byte, 16)),
-  );
-export function bufferFromBigInt(
-  bigIntVar: bigint | number,
-  bytesNumber: number,
-  little = true,
-  signed = false,
-) {
-  bigIntVar = BigInt(
-    typeof bigIntVar === "number" ? Math.ceil(bigIntVar) : bigIntVar,
-  );
+const bufferFromHexString = (hexString: string) => Uint8Array.from(hexString.match(/.{1,2}/g)!.map((byte) => parseInt(byte, 16)));
+export function bufferFromBigInt(bigIntVar: bigint | number, bytesNumber: number, little = true, signed = false) {
+  bigIntVar = BigInt(typeof bigIntVar === "number" ? Math.ceil(bigIntVar) : bigIntVar);
   const bitLength = bigIntVar.toString(2).length;
 
   const bytes = Math.ceil(bitLength / 8);
