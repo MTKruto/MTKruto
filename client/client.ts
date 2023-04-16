@@ -17,7 +17,7 @@ import { ClientPlain } from "./client_plain.ts";
 export type UpdatesHandler = null | ((client: Client, update: Updates) => MaybePromise<void>);
 
 export class Client extends ClientAbstract {
-  private sessionId = getRandomBigInt(8, false, false);
+  private sessionId = getRandomBigInt(8, true, true);
   private auth?: { key: Uint8Array; id: bigint };
   private state = { salt: 0n, seqNo: 0 };
   private promises = new Map<bigint, { resolve: (obj: TLObject) => void; reject: (err: TLObject) => void }>();

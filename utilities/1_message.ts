@@ -108,7 +108,7 @@ export async function decryptMessage(
   let plainReader = new TLReader(plaintext);
 
   const _salt = plainReader.readInt64();
-  const sid = plainReader.readInt64(false);
+  const sid = plainReader.readInt64();
   assertEquals(sid, sessionId);
 
   const mid = plainReader.readInt64();
