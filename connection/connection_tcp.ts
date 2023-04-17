@@ -22,9 +22,7 @@ export class ConnectionTCP implements Connection {
     if (!this.connection) {
       throw new Error("Connection not open");
     }
-    const release = await this.mutex.acquire();
     await this.connection.read(p);
-    release();
   }
 
   async write(p: Uint8Array) {
