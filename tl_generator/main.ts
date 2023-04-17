@@ -51,6 +51,7 @@ const typeMap: Record<string, string> = {
   "bytes": "Uint8Array",
   "int128": "bigint",
   "int256": "bigint",
+  "!x": "T",
 };
 function convertType(type: string, prefix = false) {
   if (type.startsWith("flags")) {
@@ -66,7 +67,6 @@ function convertType(type: string, prefix = false) {
   if (mapping != undefined) {
     type = mapping;
   } else {
-    type = type.replaceAll("!", "");
     type = `Type${revampType(type, true)}`;
     if (prefix) {
       type = `constructors.${type}`;
@@ -92,7 +92,9 @@ function getParamDescGetter(params: any[], prefix = false) {
     const name = toCamelCase(param.name);
     code += `["${name}", `;
     let type = convertType(param.type, prefix);
-    if (type.startsWith("Array")) {
+    if (param.type.toLowerCase() == "!x") {
+      type = "constructors.TypeX";
+    } else if (type.startsWith("Array")) {
       type = type.split("<")[1].split(">")[0];
       if (
         !type.replace("constructors.", "").startsWith("Type") &&
@@ -128,7 +130,9 @@ function getParamsGetter(params: any[], prefix = false) {
     }
     const isFlag = param.type.startsWith("flags");
     let type = convertType(param.type, prefix);
-    if (type.startsWith("Array")) {
+    if (param.type.toLowerCase() == "!x") {
+      type = "constructors.TypeX";
+    } else if (type.startsWith("Array")) {
       type = type.split("<")[1].split(">")[0];
       if (
         !type.replace("constructors.", "").startsWith("Type") &&
@@ -273,7 +277,11 @@ export abstract class Function<T> extends TLObject {
 `;
 
 for (const function_ of functions) {
-  const className = revampType(function_.func, true);
+  const isGeneric = function_.params.some((v: any) => v.type == "!X");
+  let className = revampType(function_.func, true);
+  if (isGeneric) {
+    className += "<T extends Function<unknown>>";
+  }
   const id = revampId(function_.id);
   let type = function_.type;
   const isVector = type.toLowerCase().startsWith("vector<");
@@ -299,6 +307,9 @@ for (const function_ of functions) {
   }
   if (isVector) {
     type += "[]";
+  }
+  if (isGeneric) {
+    type = 'T["__R"]';
   }
 
   code += `
