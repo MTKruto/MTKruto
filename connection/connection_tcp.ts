@@ -1,7 +1,9 @@
+import { Mutex } from "../deps.ts";
 import { Connection } from "./connection.ts";
 
 export class ConnectionTCP implements Connection {
   private connection?: Deno.Conn;
+  mutex = new Mutex();
 
   constructor(
     private readonly hostname: string,
@@ -20,14 +22,18 @@ export class ConnectionTCP implements Connection {
     if (!this.connection) {
       throw new Error("Connection not open");
     }
+   const release  =await this.mutex.acquire()
     await this.connection.read(p);
+    release()
   }
 
   async write(p: Uint8Array) {
     if (!this.connection) {
       throw new Error("Connection not open");
     }
+    const release = await this.mutex.acquire();
     await this.connection.write(p);
+    release()
   }
 
   close() {
