@@ -11,7 +11,7 @@ import { ClientAbstract } from "./client_abstract.ts";
 import { logger } from "../utilities/0_logger.ts";
 
 export class ClientPlain extends ClientAbstract {
-  async invoke(function_: Function) {
+  async invoke<T extends Function<unknown>>(function_: T): Promise<T["__R"]> {
     await this.transport.send(packUnencryptedMessage(function_.serialize()));
     const buffer = await this.transport.receive();
     if (buffer.length == 4) {
