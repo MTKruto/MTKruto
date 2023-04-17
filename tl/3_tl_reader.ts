@@ -12,6 +12,6 @@ export class TLReader extends TLRawReader {
     if (constructor) {
       return deserialize(this, constructor[paramDesc], constructor);
     }
-    throw new Error(`Uknown constructor ${id.toString(16)}`);
+    throw new Error(`Unknown constructor ${id.toString(16)}`);
   }
 }
