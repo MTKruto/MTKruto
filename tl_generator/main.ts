@@ -215,6 +215,7 @@ export abstract class ${className} extends Constructor {
 }
 
 const entries = new Array<[string, string]>();
+const constructorClassNames = new Set<string>();
 for (const constructor of constructors) {
   if (skipIds.includes(constructor.id)) {
     continue;
@@ -230,6 +231,7 @@ for (const constructor of constructors) {
   const id = revampId(constructor.id);
   const className = revampType(constructor.predicate, true);
   entries.push([id, className]);
+  constructorClassNames.add(className);
 
   code += `
 export class ${className} extends ${parent} {
@@ -265,16 +267,42 @@ Deno.writeTextFileSync("tl/2_constructors.ts", code);
 code = `import { id, params, TLObject, Params, paramDesc, ParamDesc, flags } from "./1_tl_object.ts";
 import * as constructors from "./2_constructors.ts";
 
-export abstract class Function extends TLObject {
+export abstract class Function<T> extends TLObject {
+  __R: T = Symbol() as unknown as T // virtual member
 }
 `;
 
 for (const function_ of functions) {
   const className = revampType(function_.func, true);
   const id = revampId(function_.id);
+  let type = function_.type;
+  const isVector = type.toLowerCase().startsWith("vector<");
+  if (isVector) {
+    type = type.split("<")[1].slice(0, -1);
+  }
+  {
+    if (type.toLowerCase() == "bool") {
+      type = "boolean";
+    } else if (type.toLowerCase() == "int") {
+      type = "number";
+    } else if (type.toLowerCase() == "long") {
+      type = "bigint";
+    } else if (type.toLowerCase() == "string") {
+      type = "string";
+    } else {
+      type = revampType(type, true);
+      if (!constructorClassNames.has(type)) {
+        type = `Type${type}`;
+      }
+      type = `constructors.${type}`;
+    }
+  }
+  if (isVector) {
+    type += "[]";
+  }
 
   code += `
-export class ${className} extends Function {
+export class ${className} extends Function<${type}> {
   ${getPropertiesDeclr(function_.params, true)}
 
   protected get [id]() {
