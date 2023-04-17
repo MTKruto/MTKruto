@@ -34,7 +34,7 @@ export class Message {
       if (cid == RPCResult[id]) {
         body = RPCResult.deserialize(reader.buffer);
       } else {
-        body = reader.readObject();
+        body = reader.readObject(cid);
       }
     }
     return new Message(id_, seqNo, body);
