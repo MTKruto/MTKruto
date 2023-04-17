@@ -26,15 +26,11 @@ export class ConnectionWebSocket implements Connection {
   }
 
   async open() {
-    if (this.webSocket.readyState == WebSocket.OPEN) {
-      throw new Error("Connection already open");
-    } else {
-      while (this.webSocket.readyState != WebSocket.OPEN) {
-        if (this.webSocket.readyState == WebSocket.CLOSED) {
-          throw new Error("Connection was closed");
-        } else {
-          await new Promise((r) => setTimeout(r, 5));
-        }
+    while (this.webSocket.readyState != WebSocket.OPEN) {
+      if (this.webSocket.readyState == WebSocket.CLOSED) {
+        throw new Error("Connection was closed");
+      } else {
+        await new Promise((r) => setTimeout(r, 5));
       }
     }
   }
