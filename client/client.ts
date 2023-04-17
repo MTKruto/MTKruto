@@ -37,10 +37,11 @@ export class Client extends ClientAbstract {
     this.state.salt = salt;
     await super.connect();
     logger().debug("Client connected");
-    this.loop();
+    this.receiveLoop();
+    this.pingLoop();
   }
 
-  private async loop() {
+  private async receiveLoop() {
     if (!this.auth) {
       throw new Error("Not connected");
     }
@@ -103,6 +104,13 @@ export class Client extends ClientAbstract {
 
         this.toAcknowledge.add(message.id);
       }
+    }
+  }
+
+  private async pingLoop() {
+    while (this.connected) {
+      await this.invoke(new Ping({ pingId: getRandomBigInt(8, true, false) }));
+      await new Promise((r) => setTimeout(r, 60 * 1_000));
     }
   }
 
