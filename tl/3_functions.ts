@@ -255,9 +255,9 @@ export class DestroyAuthKey extends Function<constructors.TypeDestroyAuthKeyRes>
   }
 }
 
-export class InvokeAfterMsg extends Function<constructors.TypeX> {
+export class InvokeAfterMsg<T extends Function<unknown>> extends Function<T["__R"]> {
   msgId: bigint;
-  query: constructors.TypeX;
+  query: T;
 
   protected get [id]() {
     return 0xcb9f372d;
@@ -277,16 +277,16 @@ export class InvokeAfterMsg extends Function<constructors.TypeX> {
     ];
   }
 
-  constructor(params: { msgId: bigint; query: constructors.TypeX }) {
+  constructor(params: { msgId: bigint; query: T }) {
     super();
     this.msgId = params.msgId;
     this.query = params.query;
   }
 }
 
-export class InvokeAfterMsgs extends Function<constructors.TypeX> {
+export class InvokeAfterMsgs<T extends Function<unknown>> extends Function<T["__R"]> {
   msgIds: Array<bigint>;
-  query: constructors.TypeX;
+  query: T;
 
   protected get [id]() {
     return 0x3dc4b4f0;
@@ -306,14 +306,14 @@ export class InvokeAfterMsgs extends Function<constructors.TypeX> {
     ];
   }
 
-  constructor(params: { msgIds: Array<bigint>; query: constructors.TypeX }) {
+  constructor(params: { msgIds: Array<bigint>; query: T }) {
     super();
     this.msgIds = params.msgIds;
     this.query = params.query;
   }
 }
 
-export class InitConnection extends Function<constructors.TypeX> {
+export class InitConnection<T extends Function<unknown>> extends Function<T["__R"]> {
   apiId: number;
   deviceModel: string;
   systemVersion: string;
@@ -323,7 +323,7 @@ export class InitConnection extends Function<constructors.TypeX> {
   langCode: string;
   proxy?: constructors.TypeInputClientProxy;
   params?: constructors.TypeJSONValue;
-  query: constructors.TypeX;
+  query: T;
 
   protected get [id]() {
     return 0xc1cd5ea9;
@@ -361,7 +361,7 @@ export class InitConnection extends Function<constructors.TypeX> {
     ];
   }
 
-  constructor(params: { apiId: number; deviceModel: string; systemVersion: string; appVersion: string; systemLangCode: string; langPack: string; langCode: string; proxy?: constructors.TypeInputClientProxy; params?: constructors.TypeJSONValue; query: constructors.TypeX }) {
+  constructor(params: { apiId: number; deviceModel: string; systemVersion: string; appVersion: string; systemLangCode: string; langPack: string; langCode: string; proxy?: constructors.TypeInputClientProxy; params?: constructors.TypeJSONValue; query: T }) {
     super();
     this.apiId = params.apiId;
     this.deviceModel = params.deviceModel;
@@ -376,9 +376,9 @@ export class InitConnection extends Function<constructors.TypeX> {
   }
 }
 
-export class InvokeWithLayer extends Function<constructors.TypeX> {
+export class InvokeWithLayer<T extends Function<unknown>> extends Function<T["__R"]> {
   layer: number;
-  query: constructors.TypeX;
+  query: T;
 
   protected get [id]() {
     return 0xda9b0d0d;
@@ -398,15 +398,15 @@ export class InvokeWithLayer extends Function<constructors.TypeX> {
     ];
   }
 
-  constructor(params: { layer: number; query: constructors.TypeX }) {
+  constructor(params: { layer: number; query: T }) {
     super();
     this.layer = params.layer;
     this.query = params.query;
   }
 }
 
-export class InvokeWithoutUpdates extends Function<constructors.TypeX> {
-  query: constructors.TypeX;
+export class InvokeWithoutUpdates<T extends Function<unknown>> extends Function<T["__R"]> {
+  query: T;
 
   protected get [id]() {
     return 0xbf9459b7;
@@ -424,15 +424,15 @@ export class InvokeWithoutUpdates extends Function<constructors.TypeX> {
     ];
   }
 
-  constructor(params: { query: constructors.TypeX }) {
+  constructor(params: { query: T }) {
     super();
     this.query = params.query;
   }
 }
 
-export class InvokeWithMessagesRange extends Function<constructors.TypeX> {
+export class InvokeWithMessagesRange<T extends Function<unknown>> extends Function<T["__R"]> {
   range: constructors.TypeMessageRange;
-  query: constructors.TypeX;
+  query: T;
 
   protected get [id]() {
     return 0x365275f2;
@@ -452,16 +452,16 @@ export class InvokeWithMessagesRange extends Function<constructors.TypeX> {
     ];
   }
 
-  constructor(params: { range: constructors.TypeMessageRange; query: constructors.TypeX }) {
+  constructor(params: { range: constructors.TypeMessageRange; query: T }) {
     super();
     this.range = params.range;
     this.query = params.query;
   }
 }
 
-export class InvokeWithTakeout extends Function<constructors.TypeX> {
+export class InvokeWithTakeout<T extends Function<unknown>> extends Function<T["__R"]> {
   takeoutId: bigint;
-  query: constructors.TypeX;
+  query: T;
 
   protected get [id]() {
     return 0xaca9fd2e;
@@ -481,7 +481,7 @@ export class InvokeWithTakeout extends Function<constructors.TypeX> {
     ];
   }
 
-  constructor(params: { takeoutId: bigint; query: constructors.TypeX }) {
+  constructor(params: { takeoutId: bigint; query: T }) {
     super();
     this.takeoutId = params.takeoutId;
     this.query = params.query;
