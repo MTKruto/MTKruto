@@ -1,10 +1,11 @@
 import { flags, id, ParamDesc, paramDesc, Params, params, TLObject } from "./1_tl_object.ts";
 import * as constructors from "./2_constructors.ts";
 
-export abstract class Function extends TLObject {
+export abstract class Function<T> extends TLObject {
+  __R: T = Symbol() as unknown as T; // virtual member
 }
 
-export class ReqPQMulti extends Function {
+export class ReqPQMulti extends Function<constructors.ResPQ> {
   nonce: bigint;
 
   protected get [id]() {
@@ -29,7 +30,7 @@ export class ReqPQMulti extends Function {
   }
 }
 
-export class ReqDHParams extends Function {
+export class ReqDHParams extends Function<constructors.TypeServerDHParams> {
   nonce: bigint;
   serverNonce: bigint;
   p: Uint8Array;
@@ -74,7 +75,7 @@ export class ReqDHParams extends Function {
   }
 }
 
-export class SetClientDHParams extends Function {
+export class SetClientDHParams extends Function<constructors.TypeSetClientDHParamsAnswer> {
   nonce: bigint;
   serverNonce: bigint;
   encryptedData: Uint8Array;
@@ -107,7 +108,7 @@ export class SetClientDHParams extends Function {
   }
 }
 
-export class RPCDropAnswer extends Function {
+export class RPCDropAnswer extends Function<constructors.TypeRpcDropAnswer> {
   reqMsgId: bigint;
 
   protected get [id]() {
@@ -132,7 +133,7 @@ export class RPCDropAnswer extends Function {
   }
 }
 
-export class GetFutureSalts extends Function {
+export class GetFutureSalts extends Function<constructors.FutureSalts> {
   num: number;
 
   protected get [id]() {
@@ -157,7 +158,7 @@ export class GetFutureSalts extends Function {
   }
 }
 
-export class Ping extends Function {
+export class Ping extends Function<constructors.Pong> {
   pingId: bigint;
 
   protected get [id]() {
@@ -182,7 +183,7 @@ export class Ping extends Function {
   }
 }
 
-export class PingDelayDisconnect extends Function {
+export class PingDelayDisconnect extends Function<constructors.Pong> {
   pingId: bigint;
   disconnectDelay: number;
 
@@ -211,7 +212,7 @@ export class PingDelayDisconnect extends Function {
   }
 }
 
-export class DestroySession extends Function {
+export class DestroySession extends Function<constructors.TypeDestroySessionRes> {
   sessionId: bigint;
 
   protected get [id]() {
@@ -236,7 +237,7 @@ export class DestroySession extends Function {
   }
 }
 
-export class DestroyAuthKey extends Function {
+export class DestroyAuthKey extends Function<constructors.TypeDestroyAuthKeyRes> {
   protected get [id]() {
     return 0xd1435160;
   }
@@ -254,7 +255,7 @@ export class DestroyAuthKey extends Function {
   }
 }
 
-export class InvokeAfterMsg extends Function {
+export class InvokeAfterMsg extends Function<constructors.TypeX> {
   msgId: bigint;
   query: constructors.TypeX;
 
@@ -283,7 +284,7 @@ export class InvokeAfterMsg extends Function {
   }
 }
 
-export class InvokeAfterMsgs extends Function {
+export class InvokeAfterMsgs extends Function<constructors.TypeX> {
   msgIds: Array<bigint>;
   query: constructors.TypeX;
 
@@ -312,7 +313,7 @@ export class InvokeAfterMsgs extends Function {
   }
 }
 
-export class InitConnection extends Function {
+export class InitConnection extends Function<constructors.TypeX> {
   apiId: number;
   deviceModel: string;
   systemVersion: string;
@@ -375,7 +376,7 @@ export class InitConnection extends Function {
   }
 }
 
-export class InvokeWithLayer extends Function {
+export class InvokeWithLayer extends Function<constructors.TypeX> {
   layer: number;
   query: constructors.TypeX;
 
@@ -404,7 +405,7 @@ export class InvokeWithLayer extends Function {
   }
 }
 
-export class InvokeWithoutUpdates extends Function {
+export class InvokeWithoutUpdates extends Function<constructors.TypeX> {
   query: constructors.TypeX;
 
   protected get [id]() {
@@ -429,7 +430,7 @@ export class InvokeWithoutUpdates extends Function {
   }
 }
 
-export class InvokeWithMessagesRange extends Function {
+export class InvokeWithMessagesRange extends Function<constructors.TypeX> {
   range: constructors.TypeMessageRange;
   query: constructors.TypeX;
 
@@ -458,7 +459,7 @@ export class InvokeWithMessagesRange extends Function {
   }
 }
 
-export class InvokeWithTakeout extends Function {
+export class InvokeWithTakeout extends Function<constructors.TypeX> {
   takeoutId: bigint;
   query: constructors.TypeX;
 
@@ -487,7 +488,7 @@ export class InvokeWithTakeout extends Function {
   }
 }
 
-export class AuthSendCode extends Function {
+export class AuthSendCode extends Function<constructors.AuthSentCode> {
   phoneNumber: string;
   apiId: number;
   apiHash: string;
@@ -524,7 +525,7 @@ export class AuthSendCode extends Function {
   }
 }
 
-export class AuthSignUp extends Function {
+export class AuthSignUp extends Function<constructors.AuthAuthorization> {
   phoneNumber: string;
   phoneCodeHash: string;
   firstName: string;
@@ -561,7 +562,7 @@ export class AuthSignUp extends Function {
   }
 }
 
-export class AuthSignIn extends Function {
+export class AuthSignIn extends Function<constructors.AuthAuthorization> {
   phoneNumber: string;
   phoneCodeHash: string;
   phoneCode?: string;
@@ -600,7 +601,7 @@ export class AuthSignIn extends Function {
   }
 }
 
-export class AuthLogOut extends Function {
+export class AuthLogOut extends Function<constructors.AuthLoggedOut> {
   protected get [id]() {
     return 0x3e72ba19;
   }
@@ -618,7 +619,7 @@ export class AuthLogOut extends Function {
   }
 }
 
-export class AuthResetAuthorizations extends Function {
+export class AuthResetAuthorizations extends Function<boolean> {
   protected get [id]() {
     return 0x9fab0d1a;
   }
@@ -636,7 +637,7 @@ export class AuthResetAuthorizations extends Function {
   }
 }
 
-export class AuthExportAuthorization extends Function {
+export class AuthExportAuthorization extends Function<constructors.AuthExportedAuthorization> {
   dcId: number;
 
   protected get [id]() {
@@ -661,7 +662,7 @@ export class AuthExportAuthorization extends Function {
   }
 }
 
-export class AuthImportAuthorization extends Function {
+export class AuthImportAuthorization extends Function<constructors.AuthAuthorization> {
   id: bigint;
   bytes: Uint8Array;
 
@@ -690,7 +691,7 @@ export class AuthImportAuthorization extends Function {
   }
 }
 
-export class AuthBindTempAuthKey extends Function {
+export class AuthBindTempAuthKey extends Function<boolean> {
   permAuthKeyId: bigint;
   nonce: bigint;
   expiresAt: number;
@@ -727,7 +728,7 @@ export class AuthBindTempAuthKey extends Function {
   }
 }
 
-export class AuthImportBotAuthorization extends Function {
+export class AuthImportBotAuthorization extends Function<constructors.AuthAuthorization> {
   flags: number;
   apiId: number;
   apiHash: string;
@@ -764,7 +765,7 @@ export class AuthImportBotAuthorization extends Function {
   }
 }
 
-export class AuthCheckPassword extends Function {
+export class AuthCheckPassword extends Function<constructors.AuthAuthorization> {
   password: constructors.TypeInputCheckPasswordSRP;
 
   protected get [id]() {
@@ -789,7 +790,7 @@ export class AuthCheckPassword extends Function {
   }
 }
 
-export class AuthRequestPasswordRecovery extends Function {
+export class AuthRequestPasswordRecovery extends Function<constructors.AuthPasswordRecovery> {
   protected get [id]() {
     return 0xd897bc66;
   }
@@ -807,7 +808,7 @@ export class AuthRequestPasswordRecovery extends Function {
   }
 }
 
-export class AuthRecoverPassword extends Function {
+export class AuthRecoverPassword extends Function<constructors.AuthAuthorization> {
   code: string;
   newSettings?: constructors.TypeAccountPasswordInputSettings;
 
@@ -838,7 +839,7 @@ export class AuthRecoverPassword extends Function {
   }
 }
 
-export class AuthResendCode extends Function {
+export class AuthResendCode extends Function<constructors.AuthSentCode> {
   phoneNumber: string;
   phoneCodeHash: string;
 
@@ -867,7 +868,7 @@ export class AuthResendCode extends Function {
   }
 }
 
-export class AuthCancelCode extends Function {
+export class AuthCancelCode extends Function<boolean> {
   phoneNumber: string;
   phoneCodeHash: string;
 
@@ -896,7 +897,7 @@ export class AuthCancelCode extends Function {
   }
 }
 
-export class AuthDropTempAuthKeys extends Function {
+export class AuthDropTempAuthKeys extends Function<boolean> {
   exceptAuthKeys: Array<bigint>;
 
   protected get [id]() {
@@ -921,7 +922,7 @@ export class AuthDropTempAuthKeys extends Function {
   }
 }
 
-export class AuthExportLoginToken extends Function {
+export class AuthExportLoginToken extends Function<constructors.AuthLoginToken> {
   apiId: number;
   apiHash: string;
   exceptIds: Array<bigint>;
@@ -954,7 +955,7 @@ export class AuthExportLoginToken extends Function {
   }
 }
 
-export class AuthImportLoginToken extends Function {
+export class AuthImportLoginToken extends Function<constructors.AuthLoginToken> {
   token: Uint8Array;
 
   protected get [id]() {
@@ -979,7 +980,7 @@ export class AuthImportLoginToken extends Function {
   }
 }
 
-export class AuthAcceptLoginToken extends Function {
+export class AuthAcceptLoginToken extends Function<constructors.Authorization> {
   token: Uint8Array;
 
   protected get [id]() {
@@ -1004,7 +1005,7 @@ export class AuthAcceptLoginToken extends Function {
   }
 }
 
-export class AuthCheckRecoveryPassword extends Function {
+export class AuthCheckRecoveryPassword extends Function<boolean> {
   code: string;
 
   protected get [id]() {
@@ -1029,7 +1030,7 @@ export class AuthCheckRecoveryPassword extends Function {
   }
 }
 
-export class AuthImportWebTokenAuthorization extends Function {
+export class AuthImportWebTokenAuthorization extends Function<constructors.AuthAuthorization> {
   apiId: number;
   apiHash: string;
   webAuthToken: string;
@@ -1062,7 +1063,7 @@ export class AuthImportWebTokenAuthorization extends Function {
   }
 }
 
-export class AuthRequestFirebaseSms extends Function {
+export class AuthRequestFirebaseSms extends Function<boolean> {
   phoneNumber: string;
   phoneCodeHash: string;
   safetyNetToken?: string;
@@ -1101,7 +1102,7 @@ export class AuthRequestFirebaseSms extends Function {
   }
 }
 
-export class AccountRegisterDevice extends Function {
+export class AccountRegisterDevice extends Function<boolean> {
   noMuted?: true;
   tokenType: number;
   token: string;
@@ -1148,7 +1149,7 @@ export class AccountRegisterDevice extends Function {
   }
 }
 
-export class AccountUnregisterDevice extends Function {
+export class AccountUnregisterDevice extends Function<boolean> {
   tokenType: number;
   token: string;
   otherUids: Array<bigint>;
@@ -1181,7 +1182,7 @@ export class AccountUnregisterDevice extends Function {
   }
 }
 
-export class AccountUpdateNotifySettings extends Function {
+export class AccountUpdateNotifySettings extends Function<boolean> {
   peer: constructors.TypeInputNotifyPeer;
   settings: constructors.TypeInputPeerNotifySettings;
 
@@ -1210,7 +1211,7 @@ export class AccountUpdateNotifySettings extends Function {
   }
 }
 
-export class AccountGetNotifySettings extends Function {
+export class AccountGetNotifySettings extends Function<constructors.PeerNotifySettings> {
   peer: constructors.TypeInputNotifyPeer;
 
   protected get [id]() {
@@ -1235,7 +1236,7 @@ export class AccountGetNotifySettings extends Function {
   }
 }
 
-export class AccountResetNotifySettings extends Function {
+export class AccountResetNotifySettings extends Function<boolean> {
   protected get [id]() {
     return 0xdb7e1747;
   }
@@ -1253,7 +1254,7 @@ export class AccountResetNotifySettings extends Function {
   }
 }
 
-export class AccountUpdateProfile extends Function {
+export class AccountUpdateProfile extends Function<constructors.User> {
   firstName?: string;
   lastName?: string;
   about?: string;
@@ -1288,7 +1289,7 @@ export class AccountUpdateProfile extends Function {
   }
 }
 
-export class AccountUpdateStatus extends Function {
+export class AccountUpdateStatus extends Function<boolean> {
   offline: boolean;
 
   protected get [id]() {
@@ -1313,7 +1314,7 @@ export class AccountUpdateStatus extends Function {
   }
 }
 
-export class AccountGetWallPapers extends Function {
+export class AccountGetWallPapers extends Function<constructors.AccountWallPapers> {
   hash: bigint;
 
   protected get [id]() {
@@ -1338,7 +1339,7 @@ export class AccountGetWallPapers extends Function {
   }
 }
 
-export class AccountReportPeer extends Function {
+export class AccountReportPeer extends Function<boolean> {
   peer: constructors.TypeInputPeer;
   reason: constructors.TypeReportReason;
   message: string;
@@ -1371,7 +1372,7 @@ export class AccountReportPeer extends Function {
   }
 }
 
-export class AccountCheckUsername extends Function {
+export class AccountCheckUsername extends Function<boolean> {
   username: string;
 
   protected get [id]() {
@@ -1396,7 +1397,7 @@ export class AccountCheckUsername extends Function {
   }
 }
 
-export class AccountUpdateUsername extends Function {
+export class AccountUpdateUsername extends Function<constructors.User> {
   username: string;
 
   protected get [id]() {
@@ -1421,7 +1422,7 @@ export class AccountUpdateUsername extends Function {
   }
 }
 
-export class AccountGetPrivacy extends Function {
+export class AccountGetPrivacy extends Function<constructors.AccountPrivacyRules> {
   key: constructors.TypeInputPrivacyKey;
 
   protected get [id]() {
@@ -1446,7 +1447,7 @@ export class AccountGetPrivacy extends Function {
   }
 }
 
-export class AccountSetPrivacy extends Function {
+export class AccountSetPrivacy extends Function<constructors.AccountPrivacyRules> {
   key: constructors.TypeInputPrivacyKey;
   rules: Array<constructors.TypeInputPrivacyRule>;
 
@@ -1475,7 +1476,7 @@ export class AccountSetPrivacy extends Function {
   }
 }
 
-export class AccountDeleteAccount extends Function {
+export class AccountDeleteAccount extends Function<boolean> {
   reason: string;
   password?: constructors.TypeInputCheckPasswordSRP;
 
@@ -1506,7 +1507,7 @@ export class AccountDeleteAccount extends Function {
   }
 }
 
-export class AccountGetAccountTTL extends Function {
+export class AccountGetAccountTTL extends Function<constructors.AccountDaysTTL> {
   protected get [id]() {
     return 0x08fc711d;
   }
@@ -1524,7 +1525,7 @@ export class AccountGetAccountTTL extends Function {
   }
 }
 
-export class AccountSetAccountTTL extends Function {
+export class AccountSetAccountTTL extends Function<boolean> {
   ttl: constructors.TypeAccountDaysTTL;
 
   protected get [id]() {
@@ -1549,7 +1550,7 @@ export class AccountSetAccountTTL extends Function {
   }
 }
 
-export class AccountSendChangePhoneCode extends Function {
+export class AccountSendChangePhoneCode extends Function<constructors.AuthSentCode> {
   phoneNumber: string;
   settings: constructors.TypeCodeSettings;
 
@@ -1578,7 +1579,7 @@ export class AccountSendChangePhoneCode extends Function {
   }
 }
 
-export class AccountChangePhone extends Function {
+export class AccountChangePhone extends Function<constructors.User> {
   phoneNumber: string;
   phoneCodeHash: string;
   phoneCode: string;
@@ -1611,7 +1612,7 @@ export class AccountChangePhone extends Function {
   }
 }
 
-export class AccountUpdateDeviceLocked extends Function {
+export class AccountUpdateDeviceLocked extends Function<boolean> {
   period: number;
 
   protected get [id]() {
@@ -1636,7 +1637,7 @@ export class AccountUpdateDeviceLocked extends Function {
   }
 }
 
-export class AccountGetAuthorizations extends Function {
+export class AccountGetAuthorizations extends Function<constructors.AccountAuthorizations> {
   protected get [id]() {
     return 0xe320c158;
   }
@@ -1654,7 +1655,7 @@ export class AccountGetAuthorizations extends Function {
   }
 }
 
-export class AccountResetAuthorization extends Function {
+export class AccountResetAuthorization extends Function<boolean> {
   hash: bigint;
 
   protected get [id]() {
@@ -1679,7 +1680,7 @@ export class AccountResetAuthorization extends Function {
   }
 }
 
-export class AccountGetPassword extends Function {
+export class AccountGetPassword extends Function<constructors.AccountPassword> {
   protected get [id]() {
     return 0x548a30f5;
   }
@@ -1697,7 +1698,7 @@ export class AccountGetPassword extends Function {
   }
 }
 
-export class AccountGetPasswordSettings extends Function {
+export class AccountGetPasswordSettings extends Function<constructors.AccountPasswordSettings> {
   password: constructors.TypeInputCheckPasswordSRP;
 
   protected get [id]() {
@@ -1722,7 +1723,7 @@ export class AccountGetPasswordSettings extends Function {
   }
 }
 
-export class AccountUpdatePasswordSettings extends Function {
+export class AccountUpdatePasswordSettings extends Function<boolean> {
   password: constructors.TypeInputCheckPasswordSRP;
   newSettings: constructors.TypeAccountPasswordInputSettings;
 
@@ -1751,7 +1752,7 @@ export class AccountUpdatePasswordSettings extends Function {
   }
 }
 
-export class AccountSendConfirmPhoneCode extends Function {
+export class AccountSendConfirmPhoneCode extends Function<constructors.AuthSentCode> {
   hash: string;
   settings: constructors.TypeCodeSettings;
 
@@ -1780,7 +1781,7 @@ export class AccountSendConfirmPhoneCode extends Function {
   }
 }
 
-export class AccountConfirmPhone extends Function {
+export class AccountConfirmPhone extends Function<boolean> {
   phoneCodeHash: string;
   phoneCode: string;
 
@@ -1809,7 +1810,7 @@ export class AccountConfirmPhone extends Function {
   }
 }
 
-export class AccountGetTmpPassword extends Function {
+export class AccountGetTmpPassword extends Function<constructors.AccountTmpPassword> {
   password: constructors.TypeInputCheckPasswordSRP;
   period: number;
 
@@ -1838,7 +1839,7 @@ export class AccountGetTmpPassword extends Function {
   }
 }
 
-export class AccountGetWebAuthorizations extends Function {
+export class AccountGetWebAuthorizations extends Function<constructors.AccountWebAuthorizations> {
   protected get [id]() {
     return 0x182e6d6f;
   }
@@ -1856,7 +1857,7 @@ export class AccountGetWebAuthorizations extends Function {
   }
 }
 
-export class AccountResetWebAuthorization extends Function {
+export class AccountResetWebAuthorization extends Function<boolean> {
   hash: bigint;
 
   protected get [id]() {
@@ -1881,7 +1882,7 @@ export class AccountResetWebAuthorization extends Function {
   }
 }
 
-export class AccountResetWebAuthorizations extends Function {
+export class AccountResetWebAuthorizations extends Function<boolean> {
   protected get [id]() {
     return 0x682d2594;
   }
@@ -1899,7 +1900,7 @@ export class AccountResetWebAuthorizations extends Function {
   }
 }
 
-export class AccountGetAllSecureValues extends Function {
+export class AccountGetAllSecureValues extends Function<constructors.SecureValue[]> {
   protected get [id]() {
     return 0xb288bc7d;
   }
@@ -1917,7 +1918,7 @@ export class AccountGetAllSecureValues extends Function {
   }
 }
 
-export class AccountGetSecureValue extends Function {
+export class AccountGetSecureValue extends Function<constructors.SecureValue[]> {
   types: Array<constructors.TypeSecureValueType>;
 
   protected get [id]() {
@@ -1942,7 +1943,7 @@ export class AccountGetSecureValue extends Function {
   }
 }
 
-export class AccountSaveSecureValue extends Function {
+export class AccountSaveSecureValue extends Function<constructors.SecureValue> {
   value: constructors.TypeInputSecureValue;
   secureSecretId: bigint;
 
@@ -1971,7 +1972,7 @@ export class AccountSaveSecureValue extends Function {
   }
 }
 
-export class AccountDeleteSecureValue extends Function {
+export class AccountDeleteSecureValue extends Function<boolean> {
   types: Array<constructors.TypeSecureValueType>;
 
   protected get [id]() {
@@ -1996,7 +1997,7 @@ export class AccountDeleteSecureValue extends Function {
   }
 }
 
-export class AccountGetAuthorizationForm extends Function {
+export class AccountGetAuthorizationForm extends Function<constructors.AccountAuthorizationForm> {
   botId: bigint;
   scope: string;
   publicKey: string;
@@ -2029,7 +2030,7 @@ export class AccountGetAuthorizationForm extends Function {
   }
 }
 
-export class AccountAcceptAuthorization extends Function {
+export class AccountAcceptAuthorization extends Function<boolean> {
   botId: bigint;
   scope: string;
   publicKey: string;
@@ -2070,7 +2071,7 @@ export class AccountAcceptAuthorization extends Function {
   }
 }
 
-export class AccountSendVerifyPhoneCode extends Function {
+export class AccountSendVerifyPhoneCode extends Function<constructors.AuthSentCode> {
   phoneNumber: string;
   settings: constructors.TypeCodeSettings;
 
@@ -2099,7 +2100,7 @@ export class AccountSendVerifyPhoneCode extends Function {
   }
 }
 
-export class AccountVerifyPhone extends Function {
+export class AccountVerifyPhone extends Function<boolean> {
   phoneNumber: string;
   phoneCodeHash: string;
   phoneCode: string;
@@ -2132,7 +2133,7 @@ export class AccountVerifyPhone extends Function {
   }
 }
 
-export class AccountSendVerifyEmailCode extends Function {
+export class AccountSendVerifyEmailCode extends Function<constructors.AccountSentEmailCode> {
   purpose: constructors.TypeEmailVerifyPurpose;
   email: string;
 
@@ -2161,7 +2162,7 @@ export class AccountSendVerifyEmailCode extends Function {
   }
 }
 
-export class AccountVerifyEmail extends Function {
+export class AccountVerifyEmail extends Function<constructors.AccountEmailVerified> {
   purpose: constructors.TypeEmailVerifyPurpose;
   verification: constructors.TypeEmailVerification;
 
@@ -2190,7 +2191,7 @@ export class AccountVerifyEmail extends Function {
   }
 }
 
-export class AccountInitTakeoutSession extends Function {
+export class AccountInitTakeoutSession extends Function<constructors.AccountTakeout> {
   contacts?: true;
   messageUsers?: true;
   messageChats?: true;
@@ -2241,7 +2242,7 @@ export class AccountInitTakeoutSession extends Function {
   }
 }
 
-export class AccountFinishTakeoutSession extends Function {
+export class AccountFinishTakeoutSession extends Function<boolean> {
   success?: true;
 
   protected get [id]() {
@@ -2268,7 +2269,7 @@ export class AccountFinishTakeoutSession extends Function {
   }
 }
 
-export class AccountConfirmPasswordEmail extends Function {
+export class AccountConfirmPasswordEmail extends Function<boolean> {
   code: string;
 
   protected get [id]() {
@@ -2293,7 +2294,7 @@ export class AccountConfirmPasswordEmail extends Function {
   }
 }
 
-export class AccountResendPasswordEmail extends Function {
+export class AccountResendPasswordEmail extends Function<boolean> {
   protected get [id]() {
     return 0x7a7f2a15;
   }
@@ -2311,7 +2312,7 @@ export class AccountResendPasswordEmail extends Function {
   }
 }
 
-export class AccountCancelPasswordEmail extends Function {
+export class AccountCancelPasswordEmail extends Function<boolean> {
   protected get [id]() {
     return 0xc1cbd5b6;
   }
@@ -2329,7 +2330,7 @@ export class AccountCancelPasswordEmail extends Function {
   }
 }
 
-export class AccountGetContactSignUpNotification extends Function {
+export class AccountGetContactSignUpNotification extends Function<boolean> {
   protected get [id]() {
     return 0x9f07c728;
   }
@@ -2347,7 +2348,7 @@ export class AccountGetContactSignUpNotification extends Function {
   }
 }
 
-export class AccountSetContactSignUpNotification extends Function {
+export class AccountSetContactSignUpNotification extends Function<boolean> {
   silent: boolean;
 
   protected get [id]() {
@@ -2372,7 +2373,7 @@ export class AccountSetContactSignUpNotification extends Function {
   }
 }
 
-export class AccountGetNotifyExceptions extends Function {
+export class AccountGetNotifyExceptions extends Function<constructors.Updates> {
   compareSound?: true;
   peer?: constructors.TypeInputNotifyPeer;
 
@@ -2403,7 +2404,7 @@ export class AccountGetNotifyExceptions extends Function {
   }
 }
 
-export class AccountGetWallPaper extends Function {
+export class AccountGetWallPaper extends Function<constructors.WallPaper> {
   wallpaper: constructors.TypeInputWallPaper;
 
   protected get [id]() {
@@ -2428,7 +2429,7 @@ export class AccountGetWallPaper extends Function {
   }
 }
 
-export class AccountUploadWallPaper extends Function {
+export class AccountUploadWallPaper extends Function<constructors.WallPaper> {
   file: constructors.TypeInputFile;
   mimeType: string;
   settings: constructors.TypeWallPaperSettings;
@@ -2461,7 +2462,7 @@ export class AccountUploadWallPaper extends Function {
   }
 }
 
-export class AccountSaveWallPaper extends Function {
+export class AccountSaveWallPaper extends Function<boolean> {
   wallpaper: constructors.TypeInputWallPaper;
   unsave: boolean;
   settings: constructors.TypeWallPaperSettings;
@@ -2494,7 +2495,7 @@ export class AccountSaveWallPaper extends Function {
   }
 }
 
-export class AccountInstallWallPaper extends Function {
+export class AccountInstallWallPaper extends Function<boolean> {
   wallpaper: constructors.TypeInputWallPaper;
   settings: constructors.TypeWallPaperSettings;
 
@@ -2523,7 +2524,7 @@ export class AccountInstallWallPaper extends Function {
   }
 }
 
-export class AccountResetWallPapers extends Function {
+export class AccountResetWallPapers extends Function<boolean> {
   protected get [id]() {
     return 0xbb3b9804;
   }
@@ -2541,7 +2542,7 @@ export class AccountResetWallPapers extends Function {
   }
 }
 
-export class AccountGetAutoDownloadSettings extends Function {
+export class AccountGetAutoDownloadSettings extends Function<constructors.AccountAutoDownloadSettings> {
   protected get [id]() {
     return 0x56da0b3f;
   }
@@ -2559,7 +2560,7 @@ export class AccountGetAutoDownloadSettings extends Function {
   }
 }
 
-export class AccountSaveAutoDownloadSettings extends Function {
+export class AccountSaveAutoDownloadSettings extends Function<boolean> {
   low?: true;
   high?: true;
   settings: constructors.TypeAutoDownloadSettings;
@@ -2594,7 +2595,7 @@ export class AccountSaveAutoDownloadSettings extends Function {
   }
 }
 
-export class AccountUploadTheme extends Function {
+export class AccountUploadTheme extends Function<constructors.Document> {
   file: constructors.TypeInputFile;
   thumb?: constructors.TypeInputFile;
   fileName: string;
@@ -2633,7 +2634,7 @@ export class AccountUploadTheme extends Function {
   }
 }
 
-export class AccountCreateTheme extends Function {
+export class AccountCreateTheme extends Function<constructors.Theme> {
   slug: string;
   title: string;
   document?: constructors.TypeInputDocument;
@@ -2672,7 +2673,7 @@ export class AccountCreateTheme extends Function {
   }
 }
 
-export class AccountUpdateTheme extends Function {
+export class AccountUpdateTheme extends Function<constructors.Theme> {
   format: string;
   theme: constructors.TypeInputTheme;
   slug?: string;
@@ -2719,7 +2720,7 @@ export class AccountUpdateTheme extends Function {
   }
 }
 
-export class AccountSaveTheme extends Function {
+export class AccountSaveTheme extends Function<boolean> {
   theme: constructors.TypeInputTheme;
   unsave: boolean;
 
@@ -2748,7 +2749,7 @@ export class AccountSaveTheme extends Function {
   }
 }
 
-export class AccountInstallTheme extends Function {
+export class AccountInstallTheme extends Function<boolean> {
   dark?: true;
   theme?: constructors.TypeInputTheme;
   format?: string;
@@ -2787,7 +2788,7 @@ export class AccountInstallTheme extends Function {
   }
 }
 
-export class AccountGetTheme extends Function {
+export class AccountGetTheme extends Function<constructors.Theme> {
   format: string;
   theme: constructors.TypeInputTheme;
 
@@ -2816,7 +2817,7 @@ export class AccountGetTheme extends Function {
   }
 }
 
-export class AccountGetThemes extends Function {
+export class AccountGetThemes extends Function<constructors.AccountThemes> {
   format: string;
   hash: bigint;
 
@@ -2845,7 +2846,7 @@ export class AccountGetThemes extends Function {
   }
 }
 
-export class AccountSetContentSettings extends Function {
+export class AccountSetContentSettings extends Function<boolean> {
   sensitiveEnabled?: true;
 
   protected get [id]() {
@@ -2872,7 +2873,7 @@ export class AccountSetContentSettings extends Function {
   }
 }
 
-export class AccountGetContentSettings extends Function {
+export class AccountGetContentSettings extends Function<constructors.AccountContentSettings> {
   protected get [id]() {
     return 0x8b9b4dae;
   }
@@ -2890,7 +2891,7 @@ export class AccountGetContentSettings extends Function {
   }
 }
 
-export class AccountGetMultiWallPapers extends Function {
+export class AccountGetMultiWallPapers extends Function<constructors.WallPaper[]> {
   wallpapers: Array<constructors.TypeInputWallPaper>;
 
   protected get [id]() {
@@ -2915,7 +2916,7 @@ export class AccountGetMultiWallPapers extends Function {
   }
 }
 
-export class AccountGetGlobalPrivacySettings extends Function {
+export class AccountGetGlobalPrivacySettings extends Function<constructors.GlobalPrivacySettings> {
   protected get [id]() {
     return 0xeb2b4cf6;
   }
@@ -2933,7 +2934,7 @@ export class AccountGetGlobalPrivacySettings extends Function {
   }
 }
 
-export class AccountSetGlobalPrivacySettings extends Function {
+export class AccountSetGlobalPrivacySettings extends Function<constructors.GlobalPrivacySettings> {
   settings: constructors.TypeGlobalPrivacySettings;
 
   protected get [id]() {
@@ -2958,7 +2959,7 @@ export class AccountSetGlobalPrivacySettings extends Function {
   }
 }
 
-export class AccountReportProfilePhoto extends Function {
+export class AccountReportProfilePhoto extends Function<boolean> {
   peer: constructors.TypeInputPeer;
   photoId: constructors.TypeInputPhoto;
   reason: constructors.TypeReportReason;
@@ -2995,7 +2996,7 @@ export class AccountReportProfilePhoto extends Function {
   }
 }
 
-export class AccountResetPassword extends Function {
+export class AccountResetPassword extends Function<constructors.TypeAccountResetPasswordResult> {
   protected get [id]() {
     return 0x9308ce1b;
   }
@@ -3013,7 +3014,7 @@ export class AccountResetPassword extends Function {
   }
 }
 
-export class AccountDeclinePasswordReset extends Function {
+export class AccountDeclinePasswordReset extends Function<boolean> {
   protected get [id]() {
     return 0x4c9409f6;
   }
@@ -3031,7 +3032,7 @@ export class AccountDeclinePasswordReset extends Function {
   }
 }
 
-export class AccountGetChatThemes extends Function {
+export class AccountGetChatThemes extends Function<constructors.AccountThemes> {
   hash: bigint;
 
   protected get [id]() {
@@ -3056,7 +3057,7 @@ export class AccountGetChatThemes extends Function {
   }
 }
 
-export class AccountSetAuthorizationTTL extends Function {
+export class AccountSetAuthorizationTTL extends Function<boolean> {
   authorizationTtlDays: number;
 
   protected get [id]() {
@@ -3081,7 +3082,7 @@ export class AccountSetAuthorizationTTL extends Function {
   }
 }
 
-export class AccountChangeAuthorizationSettings extends Function {
+export class AccountChangeAuthorizationSettings extends Function<boolean> {
   hash: bigint;
   encryptedRequestsDisabled?: boolean;
   callRequestsDisabled?: boolean;
@@ -3116,7 +3117,7 @@ export class AccountChangeAuthorizationSettings extends Function {
   }
 }
 
-export class AccountGetSavedRingtones extends Function {
+export class AccountGetSavedRingtones extends Function<constructors.AccountSavedRingtones> {
   hash: bigint;
 
   protected get [id]() {
@@ -3141,7 +3142,7 @@ export class AccountGetSavedRingtones extends Function {
   }
 }
 
-export class AccountSaveRingtone extends Function {
+export class AccountSaveRingtone extends Function<constructors.AccountSavedRingtone> {
   id: constructors.TypeInputDocument;
   unsave: boolean;
 
@@ -3170,7 +3171,7 @@ export class AccountSaveRingtone extends Function {
   }
 }
 
-export class AccountUploadRingtone extends Function {
+export class AccountUploadRingtone extends Function<constructors.Document> {
   file: constructors.TypeInputFile;
   fileName: string;
   mimeType: string;
@@ -3203,7 +3204,7 @@ export class AccountUploadRingtone extends Function {
   }
 }
 
-export class AccountUpdateEmojiStatus extends Function {
+export class AccountUpdateEmojiStatus extends Function<boolean> {
   emojiStatus: constructors.TypeEmojiStatus;
 
   protected get [id]() {
@@ -3228,7 +3229,7 @@ export class AccountUpdateEmojiStatus extends Function {
   }
 }
 
-export class AccountGetDefaultEmojiStatuses extends Function {
+export class AccountGetDefaultEmojiStatuses extends Function<constructors.AccountEmojiStatuses> {
   hash: bigint;
 
   protected get [id]() {
@@ -3253,7 +3254,7 @@ export class AccountGetDefaultEmojiStatuses extends Function {
   }
 }
 
-export class AccountGetRecentEmojiStatuses extends Function {
+export class AccountGetRecentEmojiStatuses extends Function<constructors.AccountEmojiStatuses> {
   hash: bigint;
 
   protected get [id]() {
@@ -3278,7 +3279,7 @@ export class AccountGetRecentEmojiStatuses extends Function {
   }
 }
 
-export class AccountClearRecentEmojiStatuses extends Function {
+export class AccountClearRecentEmojiStatuses extends Function<boolean> {
   protected get [id]() {
     return 0x18201aae;
   }
@@ -3296,7 +3297,7 @@ export class AccountClearRecentEmojiStatuses extends Function {
   }
 }
 
-export class AccountReorderUsernames extends Function {
+export class AccountReorderUsernames extends Function<boolean> {
   order: Array<string>;
 
   protected get [id]() {
@@ -3321,7 +3322,7 @@ export class AccountReorderUsernames extends Function {
   }
 }
 
-export class AccountToggleUsername extends Function {
+export class AccountToggleUsername extends Function<boolean> {
   username: string;
   active: boolean;
 
@@ -3350,7 +3351,7 @@ export class AccountToggleUsername extends Function {
   }
 }
 
-export class AccountGetDefaultProfilePhotoEmojis extends Function {
+export class AccountGetDefaultProfilePhotoEmojis extends Function<constructors.EmojiList> {
   hash: bigint;
 
   protected get [id]() {
@@ -3375,7 +3376,7 @@ export class AccountGetDefaultProfilePhotoEmojis extends Function {
   }
 }
 
-export class AccountGetDefaultGroupPhotoEmojis extends Function {
+export class AccountGetDefaultGroupPhotoEmojis extends Function<constructors.EmojiList> {
   hash: bigint;
 
   protected get [id]() {
@@ -3400,7 +3401,7 @@ export class AccountGetDefaultGroupPhotoEmojis extends Function {
   }
 }
 
-export class AccountGetAutoSaveSettings extends Function {
+export class AccountGetAutoSaveSettings extends Function<constructors.AccountAutoSaveSettings> {
   protected get [id]() {
     return 0xadcbbcda;
   }
@@ -3418,7 +3419,7 @@ export class AccountGetAutoSaveSettings extends Function {
   }
 }
 
-export class AccountSaveAutoSaveSettings extends Function {
+export class AccountSaveAutoSaveSettings extends Function<boolean> {
   users?: true;
   chats?: true;
   broadcasts?: true;
@@ -3461,7 +3462,7 @@ export class AccountSaveAutoSaveSettings extends Function {
   }
 }
 
-export class AccountDeleteAutoSaveExceptions extends Function {
+export class AccountDeleteAutoSaveExceptions extends Function<boolean> {
   protected get [id]() {
     return 0x53bc0020;
   }
@@ -3479,7 +3480,7 @@ export class AccountDeleteAutoSaveExceptions extends Function {
   }
 }
 
-export class UsersGetUsers extends Function {
+export class UsersGetUsers extends Function<constructors.User[]> {
   id: Array<constructors.TypeInputUser>;
 
   protected get [id]() {
@@ -3504,7 +3505,7 @@ export class UsersGetUsers extends Function {
   }
 }
 
-export class UsersGetFullUser extends Function {
+export class UsersGetFullUser extends Function<constructors.UsersUserFull> {
   id: constructors.TypeInputUser;
 
   protected get [id]() {
@@ -3529,7 +3530,7 @@ export class UsersGetFullUser extends Function {
   }
 }
 
-export class UsersSetSecureValueErrors extends Function {
+export class UsersSetSecureValueErrors extends Function<boolean> {
   id: constructors.TypeInputUser;
   errors: Array<constructors.TypeSecureValueError>;
 
@@ -3558,7 +3559,7 @@ export class UsersSetSecureValueErrors extends Function {
   }
 }
 
-export class ContactsGetContactIDs extends Function {
+export class ContactsGetContactIDs extends Function<number[]> {
   hash: bigint;
 
   protected get [id]() {
@@ -3583,7 +3584,7 @@ export class ContactsGetContactIDs extends Function {
   }
 }
 
-export class ContactsGetStatuses extends Function {
+export class ContactsGetStatuses extends Function<constructors.ContactStatus[]> {
   protected get [id]() {
     return 0xc4a353ee;
   }
@@ -3601,7 +3602,7 @@ export class ContactsGetStatuses extends Function {
   }
 }
 
-export class ContactsGetContacts extends Function {
+export class ContactsGetContacts extends Function<constructors.ContactsContacts> {
   hash: bigint;
 
   protected get [id]() {
@@ -3626,7 +3627,7 @@ export class ContactsGetContacts extends Function {
   }
 }
 
-export class ContactsImportContacts extends Function {
+export class ContactsImportContacts extends Function<constructors.ContactsImportedContacts> {
   contacts: Array<constructors.TypeInputContact>;
 
   protected get [id]() {
@@ -3651,7 +3652,7 @@ export class ContactsImportContacts extends Function {
   }
 }
 
-export class ContactsDeleteContacts extends Function {
+export class ContactsDeleteContacts extends Function<constructors.Updates> {
   id: Array<constructors.TypeInputUser>;
 
   protected get [id]() {
@@ -3676,7 +3677,7 @@ export class ContactsDeleteContacts extends Function {
   }
 }
 
-export class ContactsDeleteByPhones extends Function {
+export class ContactsDeleteByPhones extends Function<boolean> {
   phones: Array<string>;
 
   protected get [id]() {
@@ -3701,7 +3702,7 @@ export class ContactsDeleteByPhones extends Function {
   }
 }
 
-export class ContactsBlock extends Function {
+export class ContactsBlock extends Function<boolean> {
   id: constructors.TypeInputPeer;
 
   protected get [id]() {
@@ -3726,7 +3727,7 @@ export class ContactsBlock extends Function {
   }
 }
 
-export class ContactsUnblock extends Function {
+export class ContactsUnblock extends Function<boolean> {
   id: constructors.TypeInputPeer;
 
   protected get [id]() {
@@ -3751,7 +3752,7 @@ export class ContactsUnblock extends Function {
   }
 }
 
-export class ContactsGetBlocked extends Function {
+export class ContactsGetBlocked extends Function<constructors.ContactsBlocked> {
   offset: number;
   limit: number;
 
@@ -3780,7 +3781,7 @@ export class ContactsGetBlocked extends Function {
   }
 }
 
-export class ContactsSearch extends Function {
+export class ContactsSearch extends Function<constructors.ContactsFound> {
   q: string;
   limit: number;
 
@@ -3809,7 +3810,7 @@ export class ContactsSearch extends Function {
   }
 }
 
-export class ContactsResolveUsername extends Function {
+export class ContactsResolveUsername extends Function<constructors.ContactsResolvedPeer> {
   username: string;
 
   protected get [id]() {
@@ -3834,7 +3835,7 @@ export class ContactsResolveUsername extends Function {
   }
 }
 
-export class ContactsGetTopPeers extends Function {
+export class ContactsGetTopPeers extends Function<constructors.ContactsTopPeers> {
   correspondents?: true;
   botsPm?: true;
   botsInline?: true;
@@ -3901,7 +3902,7 @@ export class ContactsGetTopPeers extends Function {
   }
 }
 
-export class ContactsResetTopPeerRating extends Function {
+export class ContactsResetTopPeerRating extends Function<boolean> {
   category: constructors.TypeTopPeerCategory;
   peer: constructors.TypeInputPeer;
 
@@ -3930,7 +3931,7 @@ export class ContactsResetTopPeerRating extends Function {
   }
 }
 
-export class ContactsResetSaved extends Function {
+export class ContactsResetSaved extends Function<boolean> {
   protected get [id]() {
     return 0x879537f1;
   }
@@ -3948,7 +3949,7 @@ export class ContactsResetSaved extends Function {
   }
 }
 
-export class ContactsGetSaved extends Function {
+export class ContactsGetSaved extends Function<constructors.TypeSavedContact[]> {
   protected get [id]() {
     return 0x82f1e39f;
   }
@@ -3966,7 +3967,7 @@ export class ContactsGetSaved extends Function {
   }
 }
 
-export class ContactsToggleTopPeers extends Function {
+export class ContactsToggleTopPeers extends Function<boolean> {
   enabled: boolean;
 
   protected get [id]() {
@@ -3991,7 +3992,7 @@ export class ContactsToggleTopPeers extends Function {
   }
 }
 
-export class ContactsAddContact extends Function {
+export class ContactsAddContact extends Function<constructors.Updates> {
   addPhonePrivacyException?: true;
   id: constructors.TypeInputUser;
   firstName: string;
@@ -4034,7 +4035,7 @@ export class ContactsAddContact extends Function {
   }
 }
 
-export class ContactsAcceptContact extends Function {
+export class ContactsAcceptContact extends Function<constructors.Updates> {
   id: constructors.TypeInputUser;
 
   protected get [id]() {
@@ -4059,7 +4060,7 @@ export class ContactsAcceptContact extends Function {
   }
 }
 
-export class ContactsGetLocated extends Function {
+export class ContactsGetLocated extends Function<constructors.Updates> {
   background?: true;
   geoPoint: constructors.TypeInputGeoPoint;
   selfExpires?: number;
@@ -4094,7 +4095,7 @@ export class ContactsGetLocated extends Function {
   }
 }
 
-export class ContactsBlockFromReplies extends Function {
+export class ContactsBlockFromReplies extends Function<constructors.Updates> {
   deleteMessage?: true;
   deleteHistory?: true;
   reportSpam?: true;
@@ -4133,7 +4134,7 @@ export class ContactsBlockFromReplies extends Function {
   }
 }
 
-export class ContactsResolvePhone extends Function {
+export class ContactsResolvePhone extends Function<constructors.ContactsResolvedPeer> {
   phone: string;
 
   protected get [id]() {
@@ -4158,7 +4159,7 @@ export class ContactsResolvePhone extends Function {
   }
 }
 
-export class ContactsExportContactToken extends Function {
+export class ContactsExportContactToken extends Function<constructors.ExportedContactToken> {
   protected get [id]() {
     return 0xf8654027;
   }
@@ -4176,7 +4177,7 @@ export class ContactsExportContactToken extends Function {
   }
 }
 
-export class ContactsImportContactToken extends Function {
+export class ContactsImportContactToken extends Function<constructors.User> {
   token: string;
 
   protected get [id]() {
@@ -4201,7 +4202,7 @@ export class ContactsImportContactToken extends Function {
   }
 }
 
-export class MessagesGetMessages extends Function {
+export class MessagesGetMessages extends Function<constructors.MessagesMessages> {
   id: Array<constructors.TypeInputMessage>;
 
   protected get [id]() {
@@ -4226,7 +4227,7 @@ export class MessagesGetMessages extends Function {
   }
 }
 
-export class MessagesGetDialogs extends Function {
+export class MessagesGetDialogs extends Function<constructors.MessagesDialogs> {
   excludePinned?: true;
   folderId?: number;
   offsetDate: number;
@@ -4277,7 +4278,7 @@ export class MessagesGetDialogs extends Function {
   }
 }
 
-export class MessagesGetHistory extends Function {
+export class MessagesGetHistory extends Function<constructors.MessagesMessages> {
   peer: constructors.TypeInputPeer;
   offsetId: number;
   offsetDate: number;
@@ -4330,7 +4331,7 @@ export class MessagesGetHistory extends Function {
   }
 }
 
-export class MessagesSearch extends Function {
+export class MessagesSearch extends Function<constructors.MessagesMessages> {
   peer: constructors.TypeInputPeer;
   q: string;
   fromId?: constructors.TypeInputPeer;
@@ -4405,7 +4406,7 @@ export class MessagesSearch extends Function {
   }
 }
 
-export class MessagesReadHistory extends Function {
+export class MessagesReadHistory extends Function<constructors.MessagesAffectedMessages> {
   peer: constructors.TypeInputPeer;
   maxId: number;
 
@@ -4434,7 +4435,7 @@ export class MessagesReadHistory extends Function {
   }
 }
 
-export class MessagesDeleteHistory extends Function {
+export class MessagesDeleteHistory extends Function<constructors.MessagesAffectedHistory> {
   justClear?: true;
   revoke?: true;
   peer: constructors.TypeInputPeer;
@@ -4481,7 +4482,7 @@ export class MessagesDeleteHistory extends Function {
   }
 }
 
-export class MessagesDeleteMessages extends Function {
+export class MessagesDeleteMessages extends Function<constructors.MessagesAffectedMessages> {
   revoke?: true;
   id: Array<number>;
 
@@ -4512,7 +4513,7 @@ export class MessagesDeleteMessages extends Function {
   }
 }
 
-export class MessagesReceivedMessages extends Function {
+export class MessagesReceivedMessages extends Function<constructors.ReceivedNotifyMessage[]> {
   maxId: number;
 
   protected get [id]() {
@@ -4537,7 +4538,7 @@ export class MessagesReceivedMessages extends Function {
   }
 }
 
-export class MessagesSetTyping extends Function {
+export class MessagesSetTyping extends Function<boolean> {
   peer: constructors.TypeInputPeer;
   topMsgId?: number;
   action: constructors.TypeSendMessageAction;
@@ -4572,7 +4573,7 @@ export class MessagesSetTyping extends Function {
   }
 }
 
-export class MessagesSendMessage extends Function {
+export class MessagesSendMessage extends Function<constructors.Updates> {
   noWebpage?: true;
   silent?: true;
   background?: true;
@@ -4655,7 +4656,7 @@ export class MessagesSendMessage extends Function {
   }
 }
 
-export class MessagesSendMedia extends Function {
+export class MessagesSendMedia extends Function<constructors.Updates> {
   silent?: true;
   background?: true;
   clearDraft?: true;
@@ -4738,7 +4739,7 @@ export class MessagesSendMedia extends Function {
   }
 }
 
-export class MessagesForwardMessages extends Function {
+export class MessagesForwardMessages extends Function<constructors.Updates> {
   silent?: true;
   background?: true;
   withMyScore?: true;
@@ -4813,7 +4814,7 @@ export class MessagesForwardMessages extends Function {
   }
 }
 
-export class MessagesReportSpam extends Function {
+export class MessagesReportSpam extends Function<boolean> {
   peer: constructors.TypeInputPeer;
 
   protected get [id]() {
@@ -4838,7 +4839,7 @@ export class MessagesReportSpam extends Function {
   }
 }
 
-export class MessagesGetPeerSettings extends Function {
+export class MessagesGetPeerSettings extends Function<constructors.MessagesPeerSettings> {
   peer: constructors.TypeInputPeer;
 
   protected get [id]() {
@@ -4863,7 +4864,7 @@ export class MessagesGetPeerSettings extends Function {
   }
 }
 
-export class MessagesReport extends Function {
+export class MessagesReport extends Function<boolean> {
   peer: constructors.TypeInputPeer;
   id: Array<number>;
   reason: constructors.TypeReportReason;
@@ -4900,7 +4901,7 @@ export class MessagesReport extends Function {
   }
 }
 
-export class MessagesGetChats extends Function {
+export class MessagesGetChats extends Function<constructors.MessagesChats> {
   id: Array<bigint>;
 
   protected get [id]() {
@@ -4925,7 +4926,7 @@ export class MessagesGetChats extends Function {
   }
 }
 
-export class MessagesGetFullChat extends Function {
+export class MessagesGetFullChat extends Function<constructors.MessagesChatFull> {
   chatId: bigint;
 
   protected get [id]() {
@@ -4950,7 +4951,7 @@ export class MessagesGetFullChat extends Function {
   }
 }
 
-export class MessagesEditChatTitle extends Function {
+export class MessagesEditChatTitle extends Function<constructors.Updates> {
   chatId: bigint;
   title: string;
 
@@ -4979,7 +4980,7 @@ export class MessagesEditChatTitle extends Function {
   }
 }
 
-export class MessagesEditChatPhoto extends Function {
+export class MessagesEditChatPhoto extends Function<constructors.Updates> {
   chatId: bigint;
   photo: constructors.TypeInputChatPhoto;
 
@@ -5008,7 +5009,7 @@ export class MessagesEditChatPhoto extends Function {
   }
 }
 
-export class MessagesAddChatUser extends Function {
+export class MessagesAddChatUser extends Function<constructors.Updates> {
   chatId: bigint;
   userId: constructors.TypeInputUser;
   fwdLimit: number;
@@ -5041,7 +5042,7 @@ export class MessagesAddChatUser extends Function {
   }
 }
 
-export class MessagesDeleteChatUser extends Function {
+export class MessagesDeleteChatUser extends Function<constructors.Updates> {
   revokeHistory?: true;
   chatId: bigint;
   userId: constructors.TypeInputUser;
@@ -5076,7 +5077,7 @@ export class MessagesDeleteChatUser extends Function {
   }
 }
 
-export class MessagesCreateChat extends Function {
+export class MessagesCreateChat extends Function<constructors.Updates> {
   users: Array<constructors.TypeInputUser>;
   title: string;
   ttlPeriod?: number;
@@ -5111,7 +5112,7 @@ export class MessagesCreateChat extends Function {
   }
 }
 
-export class MessagesGetDhConfig extends Function {
+export class MessagesGetDhConfig extends Function<constructors.MessagesDhConfig> {
   version: number;
   randomLength: number;
 
@@ -5140,7 +5141,7 @@ export class MessagesGetDhConfig extends Function {
   }
 }
 
-export class MessagesRequestEncryption extends Function {
+export class MessagesRequestEncryption extends Function<constructors.EncryptedChat> {
   userId: constructors.TypeInputUser;
   randomId: number;
   gA: Uint8Array;
@@ -5173,7 +5174,7 @@ export class MessagesRequestEncryption extends Function {
   }
 }
 
-export class MessagesAcceptEncryption extends Function {
+export class MessagesAcceptEncryption extends Function<constructors.EncryptedChat> {
   peer: constructors.TypeInputEncryptedChat;
   gB: Uint8Array;
   keyFingerprint: bigint;
@@ -5206,7 +5207,7 @@ export class MessagesAcceptEncryption extends Function {
   }
 }
 
-export class MessagesDiscardEncryption extends Function {
+export class MessagesDiscardEncryption extends Function<boolean> {
   deleteHistory?: true;
   chatId: number;
 
@@ -5237,7 +5238,7 @@ export class MessagesDiscardEncryption extends Function {
   }
 }
 
-export class MessagesSetEncryptedTyping extends Function {
+export class MessagesSetEncryptedTyping extends Function<boolean> {
   peer: constructors.TypeInputEncryptedChat;
   typing: boolean;
 
@@ -5266,7 +5267,7 @@ export class MessagesSetEncryptedTyping extends Function {
   }
 }
 
-export class MessagesReadEncryptedHistory extends Function {
+export class MessagesReadEncryptedHistory extends Function<boolean> {
   peer: constructors.TypeInputEncryptedChat;
   maxDate: number;
 
@@ -5295,7 +5296,7 @@ export class MessagesReadEncryptedHistory extends Function {
   }
 }
 
-export class MessagesSendEncrypted extends Function {
+export class MessagesSendEncrypted extends Function<constructors.MessagesSentEncryptedMessage> {
   silent?: true;
   peer: constructors.TypeInputEncryptedChat;
   randomId: bigint;
@@ -5334,7 +5335,7 @@ export class MessagesSendEncrypted extends Function {
   }
 }
 
-export class MessagesSendEncryptedFile extends Function {
+export class MessagesSendEncryptedFile extends Function<constructors.MessagesSentEncryptedMessage> {
   silent?: true;
   peer: constructors.TypeInputEncryptedChat;
   randomId: bigint;
@@ -5377,7 +5378,7 @@ export class MessagesSendEncryptedFile extends Function {
   }
 }
 
-export class MessagesSendEncryptedService extends Function {
+export class MessagesSendEncryptedService extends Function<constructors.MessagesSentEncryptedMessage> {
   peer: constructors.TypeInputEncryptedChat;
   randomId: bigint;
   data: Uint8Array;
@@ -5410,7 +5411,7 @@ export class MessagesSendEncryptedService extends Function {
   }
 }
 
-export class MessagesReceivedQueue extends Function {
+export class MessagesReceivedQueue extends Function<bigint[]> {
   maxQts: number;
 
   protected get [id]() {
@@ -5435,7 +5436,7 @@ export class MessagesReceivedQueue extends Function {
   }
 }
 
-export class MessagesReportEncryptedSpam extends Function {
+export class MessagesReportEncryptedSpam extends Function<boolean> {
   peer: constructors.TypeInputEncryptedChat;
 
   protected get [id]() {
@@ -5460,7 +5461,7 @@ export class MessagesReportEncryptedSpam extends Function {
   }
 }
 
-export class MessagesReadMessageContents extends Function {
+export class MessagesReadMessageContents extends Function<constructors.MessagesAffectedMessages> {
   id: Array<number>;
 
   protected get [id]() {
@@ -5485,7 +5486,7 @@ export class MessagesReadMessageContents extends Function {
   }
 }
 
-export class MessagesGetStickers extends Function {
+export class MessagesGetStickers extends Function<constructors.MessagesStickers> {
   emoticon: string;
   hash: bigint;
 
@@ -5514,7 +5515,7 @@ export class MessagesGetStickers extends Function {
   }
 }
 
-export class MessagesGetAllStickers extends Function {
+export class MessagesGetAllStickers extends Function<constructors.MessagesAllStickers> {
   hash: bigint;
 
   protected get [id]() {
@@ -5539,7 +5540,7 @@ export class MessagesGetAllStickers extends Function {
   }
 }
 
-export class MessagesGetWebPagePreview extends Function {
+export class MessagesGetWebPagePreview extends Function<constructors.TypeMessageMedia> {
   message: string;
   entities?: Array<constructors.TypeMessageEntity>;
 
@@ -5570,7 +5571,7 @@ export class MessagesGetWebPagePreview extends Function {
   }
 }
 
-export class MessagesExportChatInvite extends Function {
+export class MessagesExportChatInvite extends Function<constructors.TypeExportedChatInvite> {
   legacyRevokePermanent?: true;
   requestNeeded?: true;
   peer: constructors.TypeInputPeer;
@@ -5617,7 +5618,7 @@ export class MessagesExportChatInvite extends Function {
   }
 }
 
-export class MessagesCheckChatInvite extends Function {
+export class MessagesCheckChatInvite extends Function<constructors.ChatInvite> {
   hash: string;
 
   protected get [id]() {
@@ -5642,7 +5643,7 @@ export class MessagesCheckChatInvite extends Function {
   }
 }
 
-export class MessagesImportChatInvite extends Function {
+export class MessagesImportChatInvite extends Function<constructors.Updates> {
   hash: string;
 
   protected get [id]() {
@@ -5667,7 +5668,7 @@ export class MessagesImportChatInvite extends Function {
   }
 }
 
-export class MessagesGetStickerSet extends Function {
+export class MessagesGetStickerSet extends Function<constructors.MessagesStickerSet> {
   stickerset: constructors.TypeInputStickerSet;
   hash: number;
 
@@ -5696,7 +5697,7 @@ export class MessagesGetStickerSet extends Function {
   }
 }
 
-export class MessagesInstallStickerSet extends Function {
+export class MessagesInstallStickerSet extends Function<constructors.TypeMessagesStickerSetInstallResult> {
   stickerset: constructors.TypeInputStickerSet;
   archived: boolean;
 
@@ -5725,7 +5726,7 @@ export class MessagesInstallStickerSet extends Function {
   }
 }
 
-export class MessagesUninstallStickerSet extends Function {
+export class MessagesUninstallStickerSet extends Function<boolean> {
   stickerset: constructors.TypeInputStickerSet;
 
   protected get [id]() {
@@ -5750,7 +5751,7 @@ export class MessagesUninstallStickerSet extends Function {
   }
 }
 
-export class MessagesStartBot extends Function {
+export class MessagesStartBot extends Function<constructors.Updates> {
   bot: constructors.TypeInputUser;
   peer: constructors.TypeInputPeer;
   randomId: bigint;
@@ -5787,7 +5788,7 @@ export class MessagesStartBot extends Function {
   }
 }
 
-export class MessagesGetMessagesViews extends Function {
+export class MessagesGetMessagesViews extends Function<constructors.MessagesMessageViews> {
   peer: constructors.TypeInputPeer;
   id: Array<number>;
   increment: boolean;
@@ -5820,7 +5821,7 @@ export class MessagesGetMessagesViews extends Function {
   }
 }
 
-export class MessagesEditChatAdmin extends Function {
+export class MessagesEditChatAdmin extends Function<boolean> {
   chatId: bigint;
   userId: constructors.TypeInputUser;
   isAdmin: boolean;
@@ -5853,7 +5854,7 @@ export class MessagesEditChatAdmin extends Function {
   }
 }
 
-export class MessagesMigrateChat extends Function {
+export class MessagesMigrateChat extends Function<constructors.Updates> {
   chatId: bigint;
 
   protected get [id]() {
@@ -5878,7 +5879,7 @@ export class MessagesMigrateChat extends Function {
   }
 }
 
-export class MessagesSearchGlobal extends Function {
+export class MessagesSearchGlobal extends Function<constructors.MessagesMessages> {
   folderId?: number;
   q: string;
   filter: constructors.TypeMessagesFilter;
@@ -5937,7 +5938,7 @@ export class MessagesSearchGlobal extends Function {
   }
 }
 
-export class MessagesReorderStickerSets extends Function {
+export class MessagesReorderStickerSets extends Function<boolean> {
   masks?: true;
   emojis?: true;
   order: Array<bigint>;
@@ -5972,7 +5973,7 @@ export class MessagesReorderStickerSets extends Function {
   }
 }
 
-export class MessagesGetDocumentByHash extends Function {
+export class MessagesGetDocumentByHash extends Function<constructors.Document> {
   sha256: Uint8Array;
   size: bigint;
   mimeType: string;
@@ -6005,7 +6006,7 @@ export class MessagesGetDocumentByHash extends Function {
   }
 }
 
-export class MessagesGetSavedGifs extends Function {
+export class MessagesGetSavedGifs extends Function<constructors.MessagesSavedGifs> {
   hash: bigint;
 
   protected get [id]() {
@@ -6030,7 +6031,7 @@ export class MessagesGetSavedGifs extends Function {
   }
 }
 
-export class MessagesSaveGif extends Function {
+export class MessagesSaveGif extends Function<boolean> {
   id: constructors.TypeInputDocument;
   unsave: boolean;
 
@@ -6059,7 +6060,7 @@ export class MessagesSaveGif extends Function {
   }
 }
 
-export class MessagesGetInlineBotResults extends Function {
+export class MessagesGetInlineBotResults extends Function<constructors.MessagesBotResults> {
   bot: constructors.TypeInputUser;
   peer: constructors.TypeInputPeer;
   geoPoint?: constructors.TypeInputGeoPoint;
@@ -6102,7 +6103,7 @@ export class MessagesGetInlineBotResults extends Function {
   }
 }
 
-export class MessagesSetInlineBotResults extends Function {
+export class MessagesSetInlineBotResults extends Function<boolean> {
   gallery?: true;
   private?: true;
   queryId: bigint;
@@ -6157,7 +6158,7 @@ export class MessagesSetInlineBotResults extends Function {
   }
 }
 
-export class MessagesSendInlineBotResult extends Function {
+export class MessagesSendInlineBotResult extends Function<constructors.Updates> {
   silent?: true;
   background?: true;
   clearDraft?: true;
@@ -6228,7 +6229,7 @@ export class MessagesSendInlineBotResult extends Function {
   }
 }
 
-export class MessagesGetMessageEditData extends Function {
+export class MessagesGetMessageEditData extends Function<constructors.MessagesMessageEditData> {
   peer: constructors.TypeInputPeer;
   id: number;
 
@@ -6257,7 +6258,7 @@ export class MessagesGetMessageEditData extends Function {
   }
 }
 
-export class MessagesEditMessage extends Function {
+export class MessagesEditMessage extends Function<constructors.Updates> {
   noWebpage?: true;
   peer: constructors.TypeInputPeer;
   id: number;
@@ -6312,7 +6313,7 @@ export class MessagesEditMessage extends Function {
   }
 }
 
-export class MessagesEditInlineBotMessage extends Function {
+export class MessagesEditInlineBotMessage extends Function<boolean> {
   noWebpage?: true;
   id: constructors.TypeInputBotInlineMessageID;
   message?: string;
@@ -6359,7 +6360,7 @@ export class MessagesEditInlineBotMessage extends Function {
   }
 }
 
-export class MessagesGetBotCallbackAnswer extends Function {
+export class MessagesGetBotCallbackAnswer extends Function<constructors.MessagesBotCallbackAnswer> {
   game?: true;
   peer: constructors.TypeInputPeer;
   msgId: number;
@@ -6402,7 +6403,7 @@ export class MessagesGetBotCallbackAnswer extends Function {
   }
 }
 
-export class MessagesSetBotCallbackAnswer extends Function {
+export class MessagesSetBotCallbackAnswer extends Function<boolean> {
   alert?: true;
   queryId: bigint;
   message?: string;
@@ -6445,7 +6446,7 @@ export class MessagesSetBotCallbackAnswer extends Function {
   }
 }
 
-export class MessagesGetPeerDialogs extends Function {
+export class MessagesGetPeerDialogs extends Function<constructors.MessagesPeerDialogs> {
   peers: Array<constructors.TypeInputDialogPeer>;
 
   protected get [id]() {
@@ -6470,7 +6471,7 @@ export class MessagesGetPeerDialogs extends Function {
   }
 }
 
-export class MessagesSaveDraft extends Function {
+export class MessagesSaveDraft extends Function<boolean> {
   noWebpage?: true;
   replyToMsgId?: number;
   topMsgId?: number;
@@ -6517,7 +6518,7 @@ export class MessagesSaveDraft extends Function {
   }
 }
 
-export class MessagesGetAllDrafts extends Function {
+export class MessagesGetAllDrafts extends Function<constructors.Updates> {
   protected get [id]() {
     return 0x6a3f8d65;
   }
@@ -6535,7 +6536,7 @@ export class MessagesGetAllDrafts extends Function {
   }
 }
 
-export class MessagesGetFeaturedStickers extends Function {
+export class MessagesGetFeaturedStickers extends Function<constructors.MessagesFeaturedStickers> {
   hash: bigint;
 
   protected get [id]() {
@@ -6560,7 +6561,7 @@ export class MessagesGetFeaturedStickers extends Function {
   }
 }
 
-export class MessagesReadFeaturedStickers extends Function {
+export class MessagesReadFeaturedStickers extends Function<boolean> {
   id: Array<bigint>;
 
   protected get [id]() {
@@ -6585,7 +6586,7 @@ export class MessagesReadFeaturedStickers extends Function {
   }
 }
 
-export class MessagesGetRecentStickers extends Function {
+export class MessagesGetRecentStickers extends Function<constructors.MessagesRecentStickers> {
   attached?: true;
   hash: bigint;
 
@@ -6616,7 +6617,7 @@ export class MessagesGetRecentStickers extends Function {
   }
 }
 
-export class MessagesSaveRecentSticker extends Function {
+export class MessagesSaveRecentSticker extends Function<boolean> {
   attached?: true;
   id: constructors.TypeInputDocument;
   unsave: boolean;
@@ -6651,7 +6652,7 @@ export class MessagesSaveRecentSticker extends Function {
   }
 }
 
-export class MessagesClearRecentStickers extends Function {
+export class MessagesClearRecentStickers extends Function<boolean> {
   attached?: true;
 
   protected get [id]() {
@@ -6678,7 +6679,7 @@ export class MessagesClearRecentStickers extends Function {
   }
 }
 
-export class MessagesGetArchivedStickers extends Function {
+export class MessagesGetArchivedStickers extends Function<constructors.MessagesArchivedStickers> {
   masks?: true;
   emojis?: true;
   offsetId: bigint;
@@ -6717,7 +6718,7 @@ export class MessagesGetArchivedStickers extends Function {
   }
 }
 
-export class MessagesGetMaskStickers extends Function {
+export class MessagesGetMaskStickers extends Function<constructors.MessagesAllStickers> {
   hash: bigint;
 
   protected get [id]() {
@@ -6742,7 +6743,7 @@ export class MessagesGetMaskStickers extends Function {
   }
 }
 
-export class MessagesGetAttachedStickers extends Function {
+export class MessagesGetAttachedStickers extends Function<constructors.StickerSetCovered[]> {
   media: constructors.TypeInputStickeredMedia;
 
   protected get [id]() {
@@ -6767,7 +6768,7 @@ export class MessagesGetAttachedStickers extends Function {
   }
 }
 
-export class MessagesSetGameScore extends Function {
+export class MessagesSetGameScore extends Function<constructors.Updates> {
   editMessage?: true;
   force?: true;
   peer: constructors.TypeInputPeer;
@@ -6814,7 +6815,7 @@ export class MessagesSetGameScore extends Function {
   }
 }
 
-export class MessagesSetInlineGameScore extends Function {
+export class MessagesSetInlineGameScore extends Function<boolean> {
   editMessage?: true;
   force?: true;
   id: constructors.TypeInputBotInlineMessageID;
@@ -6857,7 +6858,7 @@ export class MessagesSetInlineGameScore extends Function {
   }
 }
 
-export class MessagesGetGameHighScores extends Function {
+export class MessagesGetGameHighScores extends Function<constructors.MessagesHighScores> {
   peer: constructors.TypeInputPeer;
   id: number;
   userId: constructors.TypeInputUser;
@@ -6890,7 +6891,7 @@ export class MessagesGetGameHighScores extends Function {
   }
 }
 
-export class MessagesGetInlineGameHighScores extends Function {
+export class MessagesGetInlineGameHighScores extends Function<constructors.MessagesHighScores> {
   id: constructors.TypeInputBotInlineMessageID;
   userId: constructors.TypeInputUser;
 
@@ -6919,7 +6920,7 @@ export class MessagesGetInlineGameHighScores extends Function {
   }
 }
 
-export class MessagesGetCommonChats extends Function {
+export class MessagesGetCommonChats extends Function<constructors.MessagesChats> {
   userId: constructors.TypeInputUser;
   maxId: bigint;
   limit: number;
@@ -6952,7 +6953,7 @@ export class MessagesGetCommonChats extends Function {
   }
 }
 
-export class MessagesGetAllChats extends Function {
+export class MessagesGetAllChats extends Function<constructors.MessagesChats> {
   exceptIds: Array<bigint>;
 
   protected get [id]() {
@@ -6977,7 +6978,7 @@ export class MessagesGetAllChats extends Function {
   }
 }
 
-export class MessagesGetWebPage extends Function {
+export class MessagesGetWebPage extends Function<constructors.WebPage> {
   url: string;
   hash: number;
 
@@ -7006,7 +7007,7 @@ export class MessagesGetWebPage extends Function {
   }
 }
 
-export class MessagesToggleDialogPin extends Function {
+export class MessagesToggleDialogPin extends Function<boolean> {
   pinned?: true;
   peer: constructors.TypeInputDialogPeer;
 
@@ -7037,7 +7038,7 @@ export class MessagesToggleDialogPin extends Function {
   }
 }
 
-export class MessagesReorderPinnedDialogs extends Function {
+export class MessagesReorderPinnedDialogs extends Function<boolean> {
   force?: true;
   folderId: number;
   order: Array<constructors.TypeInputDialogPeer>;
@@ -7072,7 +7073,7 @@ export class MessagesReorderPinnedDialogs extends Function {
   }
 }
 
-export class MessagesGetPinnedDialogs extends Function {
+export class MessagesGetPinnedDialogs extends Function<constructors.MessagesPeerDialogs> {
   folderId: number;
 
   protected get [id]() {
@@ -7097,7 +7098,7 @@ export class MessagesGetPinnedDialogs extends Function {
   }
 }
 
-export class MessagesSetBotShippingResults extends Function {
+export class MessagesSetBotShippingResults extends Function<boolean> {
   queryId: bigint;
   error?: string;
   shippingOptions?: Array<constructors.TypeShippingOption>;
@@ -7132,7 +7133,7 @@ export class MessagesSetBotShippingResults extends Function {
   }
 }
 
-export class MessagesSetBotPrecheckoutResults extends Function {
+export class MessagesSetBotPrecheckoutResults extends Function<boolean> {
   success?: true;
   queryId: bigint;
   error?: string;
@@ -7167,7 +7168,7 @@ export class MessagesSetBotPrecheckoutResults extends Function {
   }
 }
 
-export class MessagesUploadMedia extends Function {
+export class MessagesUploadMedia extends Function<constructors.TypeMessageMedia> {
   peer: constructors.TypeInputPeer;
   media: constructors.TypeInputMedia;
 
@@ -7196,7 +7197,7 @@ export class MessagesUploadMedia extends Function {
   }
 }
 
-export class MessagesSendScreenshotNotification extends Function {
+export class MessagesSendScreenshotNotification extends Function<constructors.Updates> {
   peer: constructors.TypeInputPeer;
   replyToMsgId: number;
   randomId: bigint;
@@ -7229,7 +7230,7 @@ export class MessagesSendScreenshotNotification extends Function {
   }
 }
 
-export class MessagesGetFavedStickers extends Function {
+export class MessagesGetFavedStickers extends Function<constructors.MessagesFavedStickers> {
   hash: bigint;
 
   protected get [id]() {
@@ -7254,7 +7255,7 @@ export class MessagesGetFavedStickers extends Function {
   }
 }
 
-export class MessagesFaveSticker extends Function {
+export class MessagesFaveSticker extends Function<boolean> {
   id: constructors.TypeInputDocument;
   unfave: boolean;
 
@@ -7283,7 +7284,7 @@ export class MessagesFaveSticker extends Function {
   }
 }
 
-export class MessagesGetUnreadMentions extends Function {
+export class MessagesGetUnreadMentions extends Function<constructors.MessagesMessages> {
   peer: constructors.TypeInputPeer;
   topMsgId?: number;
   offsetId: number;
@@ -7334,7 +7335,7 @@ export class MessagesGetUnreadMentions extends Function {
   }
 }
 
-export class MessagesReadMentions extends Function {
+export class MessagesReadMentions extends Function<constructors.MessagesAffectedHistory> {
   peer: constructors.TypeInputPeer;
   topMsgId?: number;
 
@@ -7365,7 +7366,7 @@ export class MessagesReadMentions extends Function {
   }
 }
 
-export class MessagesGetRecentLocations extends Function {
+export class MessagesGetRecentLocations extends Function<constructors.MessagesMessages> {
   peer: constructors.TypeInputPeer;
   limit: number;
   hash: bigint;
@@ -7398,7 +7399,7 @@ export class MessagesGetRecentLocations extends Function {
   }
 }
 
-export class MessagesSendMultiMedia extends Function {
+export class MessagesSendMultiMedia extends Function<constructors.Updates> {
   silent?: true;
   background?: true;
   clearDraft?: true;
@@ -7465,7 +7466,7 @@ export class MessagesSendMultiMedia extends Function {
   }
 }
 
-export class MessagesUploadEncryptedFile extends Function {
+export class MessagesUploadEncryptedFile extends Function<constructors.EncryptedFile> {
   peer: constructors.TypeInputEncryptedChat;
   file: constructors.TypeInputEncryptedFile;
 
@@ -7494,7 +7495,7 @@ export class MessagesUploadEncryptedFile extends Function {
   }
 }
 
-export class MessagesSearchStickerSets extends Function {
+export class MessagesSearchStickerSets extends Function<constructors.MessagesFoundStickerSets> {
   excludeFeatured?: true;
   q: string;
   hash: bigint;
@@ -7529,7 +7530,7 @@ export class MessagesSearchStickerSets extends Function {
   }
 }
 
-export class MessagesGetSplitRanges extends Function {
+export class MessagesGetSplitRanges extends Function<constructors.MessageRange[]> {
   protected get [id]() {
     return 0x1cff7e08;
   }
@@ -7547,7 +7548,7 @@ export class MessagesGetSplitRanges extends Function {
   }
 }
 
-export class MessagesMarkDialogUnread extends Function {
+export class MessagesMarkDialogUnread extends Function<boolean> {
   unread?: true;
   peer: constructors.TypeInputDialogPeer;
 
@@ -7578,7 +7579,7 @@ export class MessagesMarkDialogUnread extends Function {
   }
 }
 
-export class MessagesGetDialogUnreadMarks extends Function {
+export class MessagesGetDialogUnreadMarks extends Function<constructors.DialogPeer[]> {
   protected get [id]() {
     return 0x22e24e22;
   }
@@ -7596,7 +7597,7 @@ export class MessagesGetDialogUnreadMarks extends Function {
   }
 }
 
-export class MessagesClearAllDrafts extends Function {
+export class MessagesClearAllDrafts extends Function<boolean> {
   protected get [id]() {
     return 0x7e58ee9c;
   }
@@ -7614,7 +7615,7 @@ export class MessagesClearAllDrafts extends Function {
   }
 }
 
-export class MessagesUpdatePinnedMessage extends Function {
+export class MessagesUpdatePinnedMessage extends Function<constructors.Updates> {
   silent?: true;
   unpin?: true;
   pmOneside?: true;
@@ -7657,7 +7658,7 @@ export class MessagesUpdatePinnedMessage extends Function {
   }
 }
 
-export class MessagesSendVote extends Function {
+export class MessagesSendVote extends Function<constructors.Updates> {
   peer: constructors.TypeInputPeer;
   msgId: number;
   options: Array<Uint8Array>;
@@ -7690,7 +7691,7 @@ export class MessagesSendVote extends Function {
   }
 }
 
-export class MessagesGetPollResults extends Function {
+export class MessagesGetPollResults extends Function<constructors.Updates> {
   peer: constructors.TypeInputPeer;
   msgId: number;
 
@@ -7719,7 +7720,7 @@ export class MessagesGetPollResults extends Function {
   }
 }
 
-export class MessagesGetOnlines extends Function {
+export class MessagesGetOnlines extends Function<constructors.ChatOnlines> {
   peer: constructors.TypeInputPeer;
 
   protected get [id]() {
@@ -7744,7 +7745,7 @@ export class MessagesGetOnlines extends Function {
   }
 }
 
-export class MessagesEditChatAbout extends Function {
+export class MessagesEditChatAbout extends Function<boolean> {
   peer: constructors.TypeInputPeer;
   about: string;
 
@@ -7773,7 +7774,7 @@ export class MessagesEditChatAbout extends Function {
   }
 }
 
-export class MessagesEditChatDefaultBannedRights extends Function {
+export class MessagesEditChatDefaultBannedRights extends Function<constructors.Updates> {
   peer: constructors.TypeInputPeer;
   bannedRights: constructors.TypeChatBannedRights;
 
@@ -7802,7 +7803,7 @@ export class MessagesEditChatDefaultBannedRights extends Function {
   }
 }
 
-export class MessagesGetEmojiKeywords extends Function {
+export class MessagesGetEmojiKeywords extends Function<constructors.EmojiKeywordsDifference> {
   langCode: string;
 
   protected get [id]() {
@@ -7827,7 +7828,7 @@ export class MessagesGetEmojiKeywords extends Function {
   }
 }
 
-export class MessagesGetEmojiKeywordsDifference extends Function {
+export class MessagesGetEmojiKeywordsDifference extends Function<constructors.EmojiKeywordsDifference> {
   langCode: string;
   fromVersion: number;
 
@@ -7856,7 +7857,7 @@ export class MessagesGetEmojiKeywordsDifference extends Function {
   }
 }
 
-export class MessagesGetEmojiKeywordsLanguages extends Function {
+export class MessagesGetEmojiKeywordsLanguages extends Function<constructors.EmojiLanguage[]> {
   langCodes: Array<string>;
 
   protected get [id]() {
@@ -7881,7 +7882,7 @@ export class MessagesGetEmojiKeywordsLanguages extends Function {
   }
 }
 
-export class MessagesGetEmojiURL extends Function {
+export class MessagesGetEmojiURL extends Function<constructors.EmojiURL> {
   langCode: string;
 
   protected get [id]() {
@@ -7906,7 +7907,7 @@ export class MessagesGetEmojiURL extends Function {
   }
 }
 
-export class MessagesGetSearchCounters extends Function {
+export class MessagesGetSearchCounters extends Function<constructors.MessagesSearchCounter[]> {
   peer: constructors.TypeInputPeer;
   topMsgId?: number;
   filters: Array<constructors.TypeMessagesFilter>;
@@ -7941,7 +7942,7 @@ export class MessagesGetSearchCounters extends Function {
   }
 }
 
-export class MessagesRequestURLAuth extends Function {
+export class MessagesRequestURLAuth extends Function<constructors.TypeURLAuthResult> {
   peer?: constructors.TypeInputPeer;
   msgId?: number;
   buttonId?: number;
@@ -7980,7 +7981,7 @@ export class MessagesRequestURLAuth extends Function {
   }
 }
 
-export class MessagesAcceptURLAuth extends Function {
+export class MessagesAcceptURLAuth extends Function<constructors.TypeURLAuthResult> {
   writeAllowed?: true;
   peer?: constructors.TypeInputPeer;
   msgId?: number;
@@ -8023,7 +8024,7 @@ export class MessagesAcceptURLAuth extends Function {
   }
 }
 
-export class MessagesHidePeerSettingsBar extends Function {
+export class MessagesHidePeerSettingsBar extends Function<boolean> {
   peer: constructors.TypeInputPeer;
 
   protected get [id]() {
@@ -8048,7 +8049,7 @@ export class MessagesHidePeerSettingsBar extends Function {
   }
 }
 
-export class MessagesGetScheduledHistory extends Function {
+export class MessagesGetScheduledHistory extends Function<constructors.MessagesMessages> {
   peer: constructors.TypeInputPeer;
   hash: bigint;
 
@@ -8077,7 +8078,7 @@ export class MessagesGetScheduledHistory extends Function {
   }
 }
 
-export class MessagesGetScheduledMessages extends Function {
+export class MessagesGetScheduledMessages extends Function<constructors.MessagesMessages> {
   peer: constructors.TypeInputPeer;
   id: Array<number>;
 
@@ -8106,7 +8107,7 @@ export class MessagesGetScheduledMessages extends Function {
   }
 }
 
-export class MessagesSendScheduledMessages extends Function {
+export class MessagesSendScheduledMessages extends Function<constructors.Updates> {
   peer: constructors.TypeInputPeer;
   id: Array<number>;
 
@@ -8135,7 +8136,7 @@ export class MessagesSendScheduledMessages extends Function {
   }
 }
 
-export class MessagesDeleteScheduledMessages extends Function {
+export class MessagesDeleteScheduledMessages extends Function<constructors.Updates> {
   peer: constructors.TypeInputPeer;
   id: Array<number>;
 
@@ -8164,7 +8165,7 @@ export class MessagesDeleteScheduledMessages extends Function {
   }
 }
 
-export class MessagesGetPollVotes extends Function {
+export class MessagesGetPollVotes extends Function<constructors.MessagesVotesList> {
   peer: constructors.TypeInputPeer;
   id: number;
   option?: Uint8Array;
@@ -8207,7 +8208,7 @@ export class MessagesGetPollVotes extends Function {
   }
 }
 
-export class MessagesToggleStickerSets extends Function {
+export class MessagesToggleStickerSets extends Function<boolean> {
   uninstall?: true;
   archive?: true;
   unarchive?: true;
@@ -8246,7 +8247,7 @@ export class MessagesToggleStickerSets extends Function {
   }
 }
 
-export class MessagesGetDialogFilters extends Function {
+export class MessagesGetDialogFilters extends Function<constructors.DialogFilter[]> {
   protected get [id]() {
     return 0xf19ed96d;
   }
@@ -8264,7 +8265,7 @@ export class MessagesGetDialogFilters extends Function {
   }
 }
 
-export class MessagesGetSuggestedDialogFilters extends Function {
+export class MessagesGetSuggestedDialogFilters extends Function<constructors.DialogFilterSuggested[]> {
   protected get [id]() {
     return 0xa29cd42c;
   }
@@ -8282,7 +8283,7 @@ export class MessagesGetSuggestedDialogFilters extends Function {
   }
 }
 
-export class MessagesUpdateDialogFilter extends Function {
+export class MessagesUpdateDialogFilter extends Function<boolean> {
   id: number;
   filter?: constructors.TypeDialogFilter;
 
@@ -8313,7 +8314,7 @@ export class MessagesUpdateDialogFilter extends Function {
   }
 }
 
-export class MessagesUpdateDialogFiltersOrder extends Function {
+export class MessagesUpdateDialogFiltersOrder extends Function<boolean> {
   order: Array<number>;
 
   protected get [id]() {
@@ -8338,7 +8339,7 @@ export class MessagesUpdateDialogFiltersOrder extends Function {
   }
 }
 
-export class MessagesGetOldFeaturedStickers extends Function {
+export class MessagesGetOldFeaturedStickers extends Function<constructors.MessagesFeaturedStickers> {
   offset: number;
   limit: number;
   hash: bigint;
@@ -8371,7 +8372,7 @@ export class MessagesGetOldFeaturedStickers extends Function {
   }
 }
 
-export class MessagesGetReplies extends Function {
+export class MessagesGetReplies extends Function<constructors.MessagesMessages> {
   peer: constructors.TypeInputPeer;
   msgId: number;
   offsetId: number;
@@ -8428,7 +8429,7 @@ export class MessagesGetReplies extends Function {
   }
 }
 
-export class MessagesGetDiscussionMessage extends Function {
+export class MessagesGetDiscussionMessage extends Function<constructors.MessagesDiscussionMessage> {
   peer: constructors.TypeInputPeer;
   msgId: number;
 
@@ -8457,7 +8458,7 @@ export class MessagesGetDiscussionMessage extends Function {
   }
 }
 
-export class MessagesReadDiscussion extends Function {
+export class MessagesReadDiscussion extends Function<boolean> {
   peer: constructors.TypeInputPeer;
   msgId: number;
   readMaxId: number;
@@ -8490,7 +8491,7 @@ export class MessagesReadDiscussion extends Function {
   }
 }
 
-export class MessagesUnpinAllMessages extends Function {
+export class MessagesUnpinAllMessages extends Function<constructors.MessagesAffectedHistory> {
   peer: constructors.TypeInputPeer;
   topMsgId?: number;
 
@@ -8521,7 +8522,7 @@ export class MessagesUnpinAllMessages extends Function {
   }
 }
 
-export class MessagesDeleteChat extends Function {
+export class MessagesDeleteChat extends Function<boolean> {
   chatId: bigint;
 
   protected get [id]() {
@@ -8546,7 +8547,7 @@ export class MessagesDeleteChat extends Function {
   }
 }
 
-export class MessagesDeletePhoneCallHistory extends Function {
+export class MessagesDeletePhoneCallHistory extends Function<constructors.MessagesAffectedFoundMessages> {
   revoke?: true;
 
   protected get [id]() {
@@ -8573,7 +8574,7 @@ export class MessagesDeletePhoneCallHistory extends Function {
   }
 }
 
-export class MessagesCheckHistoryImport extends Function {
+export class MessagesCheckHistoryImport extends Function<constructors.MessagesHistoryImportParsed> {
   importHead: string;
 
   protected get [id]() {
@@ -8598,7 +8599,7 @@ export class MessagesCheckHistoryImport extends Function {
   }
 }
 
-export class MessagesInitHistoryImport extends Function {
+export class MessagesInitHistoryImport extends Function<constructors.MessagesHistoryImport> {
   peer: constructors.TypeInputPeer;
   file: constructors.TypeInputFile;
   mediaCount: number;
@@ -8631,7 +8632,7 @@ export class MessagesInitHistoryImport extends Function {
   }
 }
 
-export class MessagesUploadImportedMedia extends Function {
+export class MessagesUploadImportedMedia extends Function<constructors.TypeMessageMedia> {
   peer: constructors.TypeInputPeer;
   importId: bigint;
   fileName: string;
@@ -8668,7 +8669,7 @@ export class MessagesUploadImportedMedia extends Function {
   }
 }
 
-export class MessagesStartHistoryImport extends Function {
+export class MessagesStartHistoryImport extends Function<boolean> {
   peer: constructors.TypeInputPeer;
   importId: bigint;
 
@@ -8697,7 +8698,7 @@ export class MessagesStartHistoryImport extends Function {
   }
 }
 
-export class MessagesGetExportedChatInvites extends Function {
+export class MessagesGetExportedChatInvites extends Function<constructors.MessagesExportedChatInvites> {
   revoked?: true;
   peer: constructors.TypeInputPeer;
   adminId: constructors.TypeInputUser;
@@ -8744,7 +8745,7 @@ export class MessagesGetExportedChatInvites extends Function {
   }
 }
 
-export class MessagesGetExportedChatInvite extends Function {
+export class MessagesGetExportedChatInvite extends Function<constructors.MessagesExportedChatInvite> {
   peer: constructors.TypeInputPeer;
   link: string;
 
@@ -8773,7 +8774,7 @@ export class MessagesGetExportedChatInvite extends Function {
   }
 }
 
-export class MessagesEditExportedChatInvite extends Function {
+export class MessagesEditExportedChatInvite extends Function<constructors.MessagesExportedChatInvite> {
   revoked?: true;
   peer: constructors.TypeInputPeer;
   link: string;
@@ -8824,7 +8825,7 @@ export class MessagesEditExportedChatInvite extends Function {
   }
 }
 
-export class MessagesDeleteRevokedExportedChatInvites extends Function {
+export class MessagesDeleteRevokedExportedChatInvites extends Function<boolean> {
   peer: constructors.TypeInputPeer;
   adminId: constructors.TypeInputUser;
 
@@ -8853,7 +8854,7 @@ export class MessagesDeleteRevokedExportedChatInvites extends Function {
   }
 }
 
-export class MessagesDeleteExportedChatInvite extends Function {
+export class MessagesDeleteExportedChatInvite extends Function<boolean> {
   peer: constructors.TypeInputPeer;
   link: string;
 
@@ -8882,7 +8883,7 @@ export class MessagesDeleteExportedChatInvite extends Function {
   }
 }
 
-export class MessagesGetAdminsWithInvites extends Function {
+export class MessagesGetAdminsWithInvites extends Function<constructors.MessagesChatAdminsWithInvites> {
   peer: constructors.TypeInputPeer;
 
   protected get [id]() {
@@ -8907,7 +8908,7 @@ export class MessagesGetAdminsWithInvites extends Function {
   }
 }
 
-export class MessagesGetChatInviteImporters extends Function {
+export class MessagesGetChatInviteImporters extends Function<constructors.MessagesChatInviteImporters> {
   requested?: true;
   peer: constructors.TypeInputPeer;
   link?: string;
@@ -8958,7 +8959,7 @@ export class MessagesGetChatInviteImporters extends Function {
   }
 }
 
-export class MessagesSetHistoryTTL extends Function {
+export class MessagesSetHistoryTTL extends Function<constructors.Updates> {
   peer: constructors.TypeInputPeer;
   period: number;
 
@@ -8987,7 +8988,7 @@ export class MessagesSetHistoryTTL extends Function {
   }
 }
 
-export class MessagesCheckHistoryImportPeer extends Function {
+export class MessagesCheckHistoryImportPeer extends Function<constructors.MessagesCheckedHistoryImportPeer> {
   peer: constructors.TypeInputPeer;
 
   protected get [id]() {
@@ -9012,7 +9013,7 @@ export class MessagesCheckHistoryImportPeer extends Function {
   }
 }
 
-export class MessagesSetChatTheme extends Function {
+export class MessagesSetChatTheme extends Function<constructors.Updates> {
   peer: constructors.TypeInputPeer;
   emoticon: string;
 
@@ -9041,7 +9042,7 @@ export class MessagesSetChatTheme extends Function {
   }
 }
 
-export class MessagesGetMessageReadParticipants extends Function {
+export class MessagesGetMessageReadParticipants extends Function<constructors.ReadParticipantDate[]> {
   peer: constructors.TypeInputPeer;
   msgId: number;
 
@@ -9070,7 +9071,7 @@ export class MessagesGetMessageReadParticipants extends Function {
   }
 }
 
-export class MessagesGetSearchResultsCalendar extends Function {
+export class MessagesGetSearchResultsCalendar extends Function<constructors.MessagesSearchResultsCalendar> {
   peer: constructors.TypeInputPeer;
   filter: constructors.TypeMessagesFilter;
   offsetId: number;
@@ -9107,7 +9108,7 @@ export class MessagesGetSearchResultsCalendar extends Function {
   }
 }
 
-export class MessagesGetSearchResultsPositions extends Function {
+export class MessagesGetSearchResultsPositions extends Function<constructors.MessagesSearchResultsPositions> {
   peer: constructors.TypeInputPeer;
   filter: constructors.TypeMessagesFilter;
   offsetId: number;
@@ -9144,7 +9145,7 @@ export class MessagesGetSearchResultsPositions extends Function {
   }
 }
 
-export class MessagesHideChatJoinRequest extends Function {
+export class MessagesHideChatJoinRequest extends Function<constructors.Updates> {
   approved?: true;
   peer: constructors.TypeInputPeer;
   userId: constructors.TypeInputUser;
@@ -9179,7 +9180,7 @@ export class MessagesHideChatJoinRequest extends Function {
   }
 }
 
-export class MessagesHideAllChatJoinRequests extends Function {
+export class MessagesHideAllChatJoinRequests extends Function<constructors.Updates> {
   approved?: true;
   peer: constructors.TypeInputPeer;
   link?: string;
@@ -9214,7 +9215,7 @@ export class MessagesHideAllChatJoinRequests extends Function {
   }
 }
 
-export class MessagesToggleNoForwards extends Function {
+export class MessagesToggleNoForwards extends Function<constructors.Updates> {
   peer: constructors.TypeInputPeer;
   enabled: boolean;
 
@@ -9243,7 +9244,7 @@ export class MessagesToggleNoForwards extends Function {
   }
 }
 
-export class MessagesSaveDefaultSendAs extends Function {
+export class MessagesSaveDefaultSendAs extends Function<boolean> {
   peer: constructors.TypeInputPeer;
   sendAs: constructors.TypeInputPeer;
 
@@ -9272,7 +9273,7 @@ export class MessagesSaveDefaultSendAs extends Function {
   }
 }
 
-export class MessagesSendReaction extends Function {
+export class MessagesSendReaction extends Function<constructors.Updates> {
   big?: true;
   addToRecent?: true;
   peer: constructors.TypeInputPeer;
@@ -9315,7 +9316,7 @@ export class MessagesSendReaction extends Function {
   }
 }
 
-export class MessagesGetMessagesReactions extends Function {
+export class MessagesGetMessagesReactions extends Function<constructors.Updates> {
   peer: constructors.TypeInputPeer;
   id: Array<number>;
 
@@ -9344,7 +9345,7 @@ export class MessagesGetMessagesReactions extends Function {
   }
 }
 
-export class MessagesGetMessageReactionsList extends Function {
+export class MessagesGetMessageReactionsList extends Function<constructors.MessagesMessageReactionsList> {
   peer: constructors.TypeInputPeer;
   id: number;
   reaction?: constructors.TypeReaction;
@@ -9387,7 +9388,7 @@ export class MessagesGetMessageReactionsList extends Function {
   }
 }
 
-export class MessagesSetChatAvailableReactions extends Function {
+export class MessagesSetChatAvailableReactions extends Function<constructors.Updates> {
   peer: constructors.TypeInputPeer;
   availableReactions: constructors.TypeChatReactions;
 
@@ -9416,7 +9417,7 @@ export class MessagesSetChatAvailableReactions extends Function {
   }
 }
 
-export class MessagesGetAvailableReactions extends Function {
+export class MessagesGetAvailableReactions extends Function<constructors.MessagesAvailableReactions> {
   hash: number;
 
   protected get [id]() {
@@ -9441,7 +9442,7 @@ export class MessagesGetAvailableReactions extends Function {
   }
 }
 
-export class MessagesSetDefaultReaction extends Function {
+export class MessagesSetDefaultReaction extends Function<boolean> {
   reaction: constructors.TypeReaction;
 
   protected get [id]() {
@@ -9466,7 +9467,7 @@ export class MessagesSetDefaultReaction extends Function {
   }
 }
 
-export class MessagesTranslateText extends Function {
+export class MessagesTranslateText extends Function<constructors.TypeMessagesTranslatedText> {
   peer?: constructors.TypeInputPeer;
   id?: Array<number>;
   text?: Array<constructors.TypeTextWithEntities>;
@@ -9505,7 +9506,7 @@ export class MessagesTranslateText extends Function {
   }
 }
 
-export class MessagesGetUnreadReactions extends Function {
+export class MessagesGetUnreadReactions extends Function<constructors.MessagesMessages> {
   peer: constructors.TypeInputPeer;
   topMsgId?: number;
   offsetId: number;
@@ -9556,7 +9557,7 @@ export class MessagesGetUnreadReactions extends Function {
   }
 }
 
-export class MessagesReadReactions extends Function {
+export class MessagesReadReactions extends Function<constructors.MessagesAffectedHistory> {
   peer: constructors.TypeInputPeer;
   topMsgId?: number;
 
@@ -9587,7 +9588,7 @@ export class MessagesReadReactions extends Function {
   }
 }
 
-export class MessagesSearchSentMedia extends Function {
+export class MessagesSearchSentMedia extends Function<constructors.MessagesMessages> {
   q: string;
   filter: constructors.TypeMessagesFilter;
   limit: number;
@@ -9620,7 +9621,7 @@ export class MessagesSearchSentMedia extends Function {
   }
 }
 
-export class MessagesGetAttachMenuBots extends Function {
+export class MessagesGetAttachMenuBots extends Function<constructors.AttachMenuBots> {
   hash: bigint;
 
   protected get [id]() {
@@ -9645,7 +9646,7 @@ export class MessagesGetAttachMenuBots extends Function {
   }
 }
 
-export class MessagesGetAttachMenuBot extends Function {
+export class MessagesGetAttachMenuBot extends Function<constructors.AttachMenuBotsBot> {
   bot: constructors.TypeInputUser;
 
   protected get [id]() {
@@ -9670,7 +9671,7 @@ export class MessagesGetAttachMenuBot extends Function {
   }
 }
 
-export class MessagesToggleBotInAttachMenu extends Function {
+export class MessagesToggleBotInAttachMenu extends Function<boolean> {
   writeAllowed?: true;
   bot: constructors.TypeInputUser;
   enabled: boolean;
@@ -9705,7 +9706,7 @@ export class MessagesToggleBotInAttachMenu extends Function {
   }
 }
 
-export class MessagesRequestWebView extends Function {
+export class MessagesRequestWebView extends Function<constructors.TypeWebViewResult> {
   fromBotMenu?: true;
   silent?: true;
   peer: constructors.TypeInputPeer;
@@ -9772,7 +9773,7 @@ export class MessagesRequestWebView extends Function {
   }
 }
 
-export class MessagesProlongWebView extends Function {
+export class MessagesProlongWebView extends Function<boolean> {
   silent?: true;
   peer: constructors.TypeInputPeer;
   bot: constructors.TypeInputUser;
@@ -9823,7 +9824,7 @@ export class MessagesProlongWebView extends Function {
   }
 }
 
-export class MessagesRequestSimpleWebView extends Function {
+export class MessagesRequestSimpleWebView extends Function<constructors.TypeSimpleWebViewResult> {
   fromSwitchWebview?: true;
   bot: constructors.TypeInputUser;
   url: string;
@@ -9866,7 +9867,7 @@ export class MessagesRequestSimpleWebView extends Function {
   }
 }
 
-export class MessagesSendWebViewResultMessage extends Function {
+export class MessagesSendWebViewResultMessage extends Function<constructors.WebViewMessageSent> {
   botQueryId: string;
   result: constructors.TypeInputBotInlineResult;
 
@@ -9895,7 +9896,7 @@ export class MessagesSendWebViewResultMessage extends Function {
   }
 }
 
-export class MessagesSendWebViewData extends Function {
+export class MessagesSendWebViewData extends Function<constructors.Updates> {
   bot: constructors.TypeInputUser;
   randomId: bigint;
   buttonText: string;
@@ -9932,7 +9933,7 @@ export class MessagesSendWebViewData extends Function {
   }
 }
 
-export class MessagesTranscribeAudio extends Function {
+export class MessagesTranscribeAudio extends Function<constructors.MessagesTranscribedAudio> {
   peer: constructors.TypeInputPeer;
   msgId: number;
 
@@ -9961,7 +9962,7 @@ export class MessagesTranscribeAudio extends Function {
   }
 }
 
-export class MessagesRateTranscribedAudio extends Function {
+export class MessagesRateTranscribedAudio extends Function<boolean> {
   peer: constructors.TypeInputPeer;
   msgId: number;
   transcriptionId: bigint;
@@ -9998,7 +9999,7 @@ export class MessagesRateTranscribedAudio extends Function {
   }
 }
 
-export class MessagesGetCustomEmojiDocuments extends Function {
+export class MessagesGetCustomEmojiDocuments extends Function<constructors.Document[]> {
   documentId: Array<bigint>;
 
   protected get [id]() {
@@ -10023,7 +10024,7 @@ export class MessagesGetCustomEmojiDocuments extends Function {
   }
 }
 
-export class MessagesGetEmojiStickers extends Function {
+export class MessagesGetEmojiStickers extends Function<constructors.MessagesAllStickers> {
   hash: bigint;
 
   protected get [id]() {
@@ -10048,7 +10049,7 @@ export class MessagesGetEmojiStickers extends Function {
   }
 }
 
-export class MessagesGetFeaturedEmojiStickers extends Function {
+export class MessagesGetFeaturedEmojiStickers extends Function<constructors.MessagesFeaturedStickers> {
   hash: bigint;
 
   protected get [id]() {
@@ -10073,7 +10074,7 @@ export class MessagesGetFeaturedEmojiStickers extends Function {
   }
 }
 
-export class MessagesReportReaction extends Function {
+export class MessagesReportReaction extends Function<boolean> {
   peer: constructors.TypeInputPeer;
   id: number;
   reactionPeer: constructors.TypeInputPeer;
@@ -10106,7 +10107,7 @@ export class MessagesReportReaction extends Function {
   }
 }
 
-export class MessagesGetTopReactions extends Function {
+export class MessagesGetTopReactions extends Function<constructors.MessagesReactions> {
   limit: number;
   hash: bigint;
 
@@ -10135,7 +10136,7 @@ export class MessagesGetTopReactions extends Function {
   }
 }
 
-export class MessagesGetRecentReactions extends Function {
+export class MessagesGetRecentReactions extends Function<constructors.MessagesReactions> {
   limit: number;
   hash: bigint;
 
@@ -10164,7 +10165,7 @@ export class MessagesGetRecentReactions extends Function {
   }
 }
 
-export class MessagesClearRecentReactions extends Function {
+export class MessagesClearRecentReactions extends Function<boolean> {
   protected get [id]() {
     return 0x9dfeefb4;
   }
@@ -10182,7 +10183,7 @@ export class MessagesClearRecentReactions extends Function {
   }
 }
 
-export class MessagesGetExtendedMedia extends Function {
+export class MessagesGetExtendedMedia extends Function<constructors.Updates> {
   peer: constructors.TypeInputPeer;
   id: Array<number>;
 
@@ -10211,7 +10212,7 @@ export class MessagesGetExtendedMedia extends Function {
   }
 }
 
-export class MessagesSetDefaultHistoryTTL extends Function {
+export class MessagesSetDefaultHistoryTTL extends Function<boolean> {
   period: number;
 
   protected get [id]() {
@@ -10236,7 +10237,7 @@ export class MessagesSetDefaultHistoryTTL extends Function {
   }
 }
 
-export class MessagesGetDefaultHistoryTTL extends Function {
+export class MessagesGetDefaultHistoryTTL extends Function<constructors.DefaultHistoryTTL> {
   protected get [id]() {
     return 0x658b7188;
   }
@@ -10254,7 +10255,7 @@ export class MessagesGetDefaultHistoryTTL extends Function {
   }
 }
 
-export class MessagesSendBotRequestedPeer extends Function {
+export class MessagesSendBotRequestedPeer extends Function<constructors.Updates> {
   peer: constructors.TypeInputPeer;
   msgId: number;
   buttonId: number;
@@ -10291,7 +10292,7 @@ export class MessagesSendBotRequestedPeer extends Function {
   }
 }
 
-export class MessagesGetEmojiGroups extends Function {
+export class MessagesGetEmojiGroups extends Function<constructors.MessagesEmojiGroups> {
   hash: number;
 
   protected get [id]() {
@@ -10316,7 +10317,7 @@ export class MessagesGetEmojiGroups extends Function {
   }
 }
 
-export class MessagesGetEmojiStatusGroups extends Function {
+export class MessagesGetEmojiStatusGroups extends Function<constructors.MessagesEmojiGroups> {
   hash: number;
 
   protected get [id]() {
@@ -10341,7 +10342,7 @@ export class MessagesGetEmojiStatusGroups extends Function {
   }
 }
 
-export class MessagesGetEmojiProfilePhotoGroups extends Function {
+export class MessagesGetEmojiProfilePhotoGroups extends Function<constructors.MessagesEmojiGroups> {
   hash: number;
 
   protected get [id]() {
@@ -10366,7 +10367,7 @@ export class MessagesGetEmojiProfilePhotoGroups extends Function {
   }
 }
 
-export class MessagesSearchCustomEmoji extends Function {
+export class MessagesSearchCustomEmoji extends Function<constructors.EmojiList> {
   emoticon: string;
   hash: bigint;
 
@@ -10395,7 +10396,7 @@ export class MessagesSearchCustomEmoji extends Function {
   }
 }
 
-export class MessagesTogglePeerTranslations extends Function {
+export class MessagesTogglePeerTranslations extends Function<boolean> {
   disabled?: true;
   peer: constructors.TypeInputPeer;
 
@@ -10426,7 +10427,7 @@ export class MessagesTogglePeerTranslations extends Function {
   }
 }
 
-export class MessagesGetBotApp extends Function {
+export class MessagesGetBotApp extends Function<constructors.MessagesBotApp> {
   app: constructors.TypeInputBotApp;
   hash: bigint;
 
@@ -10455,7 +10456,7 @@ export class MessagesGetBotApp extends Function {
   }
 }
 
-export class MessagesRequestAppWebView extends Function {
+export class MessagesRequestAppWebView extends Function<constructors.TypeAppWebViewResult> {
   writeAllowed?: true;
   peer: constructors.TypeInputPeer;
   app: constructors.TypeInputBotApp;
@@ -10502,7 +10503,7 @@ export class MessagesRequestAppWebView extends Function {
   }
 }
 
-export class UpdatesGetState extends Function {
+export class UpdatesGetState extends Function<constructors.UpdatesState> {
   protected get [id]() {
     return 0xedd4882a;
   }
@@ -10520,7 +10521,7 @@ export class UpdatesGetState extends Function {
   }
 }
 
-export class UpdatesGetDifference extends Function {
+export class UpdatesGetDifference extends Function<constructors.UpdatesDifference> {
   pts: number;
   ptsTotalLimit?: number;
   date: number;
@@ -10559,7 +10560,7 @@ export class UpdatesGetDifference extends Function {
   }
 }
 
-export class UpdatesGetChannelDifference extends Function {
+export class UpdatesGetChannelDifference extends Function<constructors.UpdatesChannelDifference> {
   force?: true;
   channel: constructors.TypeInputChannel;
   filter: constructors.TypeChannelMessagesFilter;
@@ -10602,7 +10603,7 @@ export class UpdatesGetChannelDifference extends Function {
   }
 }
 
-export class PhotosUpdateProfilePhoto extends Function {
+export class PhotosUpdateProfilePhoto extends Function<constructors.PhotosPhoto> {
   fallback?: true;
   id: constructors.TypeInputPhoto;
 
@@ -10633,7 +10634,7 @@ export class PhotosUpdateProfilePhoto extends Function {
   }
 }
 
-export class PhotosUploadProfilePhoto extends Function {
+export class PhotosUploadProfilePhoto extends Function<constructors.PhotosPhoto> {
   fallback?: true;
   file?: constructors.TypeInputFile;
   video?: constructors.TypeInputFile;
@@ -10676,7 +10677,7 @@ export class PhotosUploadProfilePhoto extends Function {
   }
 }
 
-export class PhotosDeletePhotos extends Function {
+export class PhotosDeletePhotos extends Function<bigint[]> {
   id: Array<constructors.TypeInputPhoto>;
 
   protected get [id]() {
@@ -10701,7 +10702,7 @@ export class PhotosDeletePhotos extends Function {
   }
 }
 
-export class PhotosGetUserPhotos extends Function {
+export class PhotosGetUserPhotos extends Function<constructors.PhotosPhotos> {
   userId: constructors.TypeInputUser;
   offset: number;
   maxId: bigint;
@@ -10738,7 +10739,7 @@ export class PhotosGetUserPhotos extends Function {
   }
 }
 
-export class PhotosUploadContactProfilePhoto extends Function {
+export class PhotosUploadContactProfilePhoto extends Function<constructors.PhotosPhoto> {
   suggest?: true;
   save?: true;
   userId: constructors.TypeInputUser;
@@ -10789,7 +10790,7 @@ export class PhotosUploadContactProfilePhoto extends Function {
   }
 }
 
-export class UploadSaveFilePart extends Function {
+export class UploadSaveFilePart extends Function<boolean> {
   fileId: bigint;
   filePart: number;
   bytes: Uint8Array;
@@ -10822,7 +10823,7 @@ export class UploadSaveFilePart extends Function {
   }
 }
 
-export class UploadGetFile extends Function {
+export class UploadGetFile extends Function<constructors.UploadFile> {
   precise?: true;
   cdnSupported?: true;
   location: constructors.TypeInputFileLocation;
@@ -10865,7 +10866,7 @@ export class UploadGetFile extends Function {
   }
 }
 
-export class UploadSaveBigFilePart extends Function {
+export class UploadSaveBigFilePart extends Function<boolean> {
   fileId: bigint;
   filePart: number;
   fileTotalParts: number;
@@ -10902,7 +10903,7 @@ export class UploadSaveBigFilePart extends Function {
   }
 }
 
-export class UploadGetWebFile extends Function {
+export class UploadGetWebFile extends Function<constructors.UploadWebFile> {
   location: constructors.TypeInputWebFileLocation;
   offset: number;
   limit: number;
@@ -10935,7 +10936,7 @@ export class UploadGetWebFile extends Function {
   }
 }
 
-export class UploadGetCdnFile extends Function {
+export class UploadGetCdnFile extends Function<constructors.UploadCdnFile> {
   fileToken: Uint8Array;
   offset: bigint;
   limit: number;
@@ -10968,7 +10969,7 @@ export class UploadGetCdnFile extends Function {
   }
 }
 
-export class UploadReuploadCdnFile extends Function {
+export class UploadReuploadCdnFile extends Function<constructors.FileHash[]> {
   fileToken: Uint8Array;
   requestToken: Uint8Array;
 
@@ -10997,7 +10998,7 @@ export class UploadReuploadCdnFile extends Function {
   }
 }
 
-export class UploadGetCdnFileHashes extends Function {
+export class UploadGetCdnFileHashes extends Function<constructors.FileHash[]> {
   fileToken: Uint8Array;
   offset: bigint;
 
@@ -11026,7 +11027,7 @@ export class UploadGetCdnFileHashes extends Function {
   }
 }
 
-export class UploadGetFileHashes extends Function {
+export class UploadGetFileHashes extends Function<constructors.FileHash[]> {
   location: constructors.TypeInputFileLocation;
   offset: bigint;
 
@@ -11055,7 +11056,7 @@ export class UploadGetFileHashes extends Function {
   }
 }
 
-export class HelpGetConfig extends Function {
+export class HelpGetConfig extends Function<constructors.Config> {
   protected get [id]() {
     return 0xc4f9186b;
   }
@@ -11073,7 +11074,7 @@ export class HelpGetConfig extends Function {
   }
 }
 
-export class HelpGetNearestDc extends Function {
+export class HelpGetNearestDc extends Function<constructors.NearestDc> {
   protected get [id]() {
     return 0x1fb33026;
   }
@@ -11091,7 +11092,7 @@ export class HelpGetNearestDc extends Function {
   }
 }
 
-export class HelpGetAppUpdate extends Function {
+export class HelpGetAppUpdate extends Function<constructors.HelpAppUpdate> {
   source: string;
 
   protected get [id]() {
@@ -11116,7 +11117,7 @@ export class HelpGetAppUpdate extends Function {
   }
 }
 
-export class HelpGetInviteText extends Function {
+export class HelpGetInviteText extends Function<constructors.HelpInviteText> {
   protected get [id]() {
     return 0x4d392343;
   }
@@ -11134,7 +11135,7 @@ export class HelpGetInviteText extends Function {
   }
 }
 
-export class HelpGetSupport extends Function {
+export class HelpGetSupport extends Function<constructors.HelpSupport> {
   protected get [id]() {
     return 0x9cdf08cd;
   }
@@ -11152,7 +11153,7 @@ export class HelpGetSupport extends Function {
   }
 }
 
-export class HelpGetAppChangelog extends Function {
+export class HelpGetAppChangelog extends Function<constructors.Updates> {
   prevAppVersion: string;
 
   protected get [id]() {
@@ -11177,7 +11178,7 @@ export class HelpGetAppChangelog extends Function {
   }
 }
 
-export class HelpSetBotUpdatesStatus extends Function {
+export class HelpSetBotUpdatesStatus extends Function<boolean> {
   pendingUpdatesCount: number;
   message: string;
 
@@ -11206,7 +11207,7 @@ export class HelpSetBotUpdatesStatus extends Function {
   }
 }
 
-export class HelpGetCdnConfig extends Function {
+export class HelpGetCdnConfig extends Function<constructors.CdnConfig> {
   protected get [id]() {
     return 0x52029342;
   }
@@ -11224,7 +11225,7 @@ export class HelpGetCdnConfig extends Function {
   }
 }
 
-export class HelpGetRecentMeURLs extends Function {
+export class HelpGetRecentMeURLs extends Function<constructors.HelpRecentMeURLs> {
   referer: string;
 
   protected get [id]() {
@@ -11249,7 +11250,7 @@ export class HelpGetRecentMeURLs extends Function {
   }
 }
 
-export class HelpGetTermsOfServiceUpdate extends Function {
+export class HelpGetTermsOfServiceUpdate extends Function<constructors.HelpTermsOfServiceUpdate> {
   protected get [id]() {
     return 0x2ca51fd1;
   }
@@ -11267,7 +11268,7 @@ export class HelpGetTermsOfServiceUpdate extends Function {
   }
 }
 
-export class HelpAcceptTermsOfService extends Function {
+export class HelpAcceptTermsOfService extends Function<boolean> {
   id: constructors.TypeDataJSON;
 
   protected get [id]() {
@@ -11292,7 +11293,7 @@ export class HelpAcceptTermsOfService extends Function {
   }
 }
 
-export class HelpGetDeepLinkInfo extends Function {
+export class HelpGetDeepLinkInfo extends Function<constructors.HelpDeepLinkInfo> {
   path: string;
 
   protected get [id]() {
@@ -11317,7 +11318,7 @@ export class HelpGetDeepLinkInfo extends Function {
   }
 }
 
-export class HelpGetAppConfig extends Function {
+export class HelpGetAppConfig extends Function<constructors.HelpAppConfig> {
   hash: number;
 
   protected get [id]() {
@@ -11342,7 +11343,7 @@ export class HelpGetAppConfig extends Function {
   }
 }
 
-export class HelpSaveAppLog extends Function {
+export class HelpSaveAppLog extends Function<boolean> {
   events: Array<constructors.TypeInputAppEvent>;
 
   protected get [id]() {
@@ -11367,7 +11368,7 @@ export class HelpSaveAppLog extends Function {
   }
 }
 
-export class HelpGetPassportConfig extends Function {
+export class HelpGetPassportConfig extends Function<constructors.HelpPassportConfig> {
   hash: number;
 
   protected get [id]() {
@@ -11392,7 +11393,7 @@ export class HelpGetPassportConfig extends Function {
   }
 }
 
-export class HelpGetSupportName extends Function {
+export class HelpGetSupportName extends Function<constructors.HelpSupportName> {
   protected get [id]() {
     return 0xd360e72c;
   }
@@ -11410,7 +11411,7 @@ export class HelpGetSupportName extends Function {
   }
 }
 
-export class HelpGetUserInfo extends Function {
+export class HelpGetUserInfo extends Function<constructors.HelpUserInfo> {
   userId: constructors.TypeInputUser;
 
   protected get [id]() {
@@ -11435,7 +11436,7 @@ export class HelpGetUserInfo extends Function {
   }
 }
 
-export class HelpEditUserInfo extends Function {
+export class HelpEditUserInfo extends Function<constructors.HelpUserInfo> {
   userId: constructors.TypeInputUser;
   message: string;
   entities: Array<constructors.TypeMessageEntity>;
@@ -11468,7 +11469,7 @@ export class HelpEditUserInfo extends Function {
   }
 }
 
-export class HelpGetPromoData extends Function {
+export class HelpGetPromoData extends Function<constructors.HelpPromoData> {
   protected get [id]() {
     return 0xc0977421;
   }
@@ -11486,7 +11487,7 @@ export class HelpGetPromoData extends Function {
   }
 }
 
-export class HelpHidePromoData extends Function {
+export class HelpHidePromoData extends Function<boolean> {
   peer: constructors.TypeInputPeer;
 
   protected get [id]() {
@@ -11511,7 +11512,7 @@ export class HelpHidePromoData extends Function {
   }
 }
 
-export class HelpDismissSuggestion extends Function {
+export class HelpDismissSuggestion extends Function<boolean> {
   peer: constructors.TypeInputPeer;
   suggestion: string;
 
@@ -11540,7 +11541,7 @@ export class HelpDismissSuggestion extends Function {
   }
 }
 
-export class HelpGetCountriesList extends Function {
+export class HelpGetCountriesList extends Function<constructors.HelpCountriesList> {
   langCode: string;
   hash: number;
 
@@ -11569,7 +11570,7 @@ export class HelpGetCountriesList extends Function {
   }
 }
 
-export class HelpGetPremiumPromo extends Function {
+export class HelpGetPremiumPromo extends Function<constructors.HelpPremiumPromo> {
   protected get [id]() {
     return 0xb81b93d4;
   }
@@ -11587,7 +11588,7 @@ export class HelpGetPremiumPromo extends Function {
   }
 }
 
-export class ChannelsReadHistory extends Function {
+export class ChannelsReadHistory extends Function<boolean> {
   channel: constructors.TypeInputChannel;
   maxId: number;
 
@@ -11616,7 +11617,7 @@ export class ChannelsReadHistory extends Function {
   }
 }
 
-export class ChannelsDeleteMessages extends Function {
+export class ChannelsDeleteMessages extends Function<constructors.MessagesAffectedMessages> {
   channel: constructors.TypeInputChannel;
   id: Array<number>;
 
@@ -11645,7 +11646,7 @@ export class ChannelsDeleteMessages extends Function {
   }
 }
 
-export class ChannelsReportSpam extends Function {
+export class ChannelsReportSpam extends Function<boolean> {
   channel: constructors.TypeInputChannel;
   participant: constructors.TypeInputPeer;
   id: Array<number>;
@@ -11678,7 +11679,7 @@ export class ChannelsReportSpam extends Function {
   }
 }
 
-export class ChannelsGetMessages extends Function {
+export class ChannelsGetMessages extends Function<constructors.MessagesMessages> {
   channel: constructors.TypeInputChannel;
   id: Array<constructors.TypeInputMessage>;
 
@@ -11707,7 +11708,7 @@ export class ChannelsGetMessages extends Function {
   }
 }
 
-export class ChannelsGetParticipants extends Function {
+export class ChannelsGetParticipants extends Function<constructors.ChannelsChannelParticipants> {
   channel: constructors.TypeInputChannel;
   filter: constructors.TypeChannelParticipantsFilter;
   offset: number;
@@ -11748,7 +11749,7 @@ export class ChannelsGetParticipants extends Function {
   }
 }
 
-export class ChannelsGetParticipant extends Function {
+export class ChannelsGetParticipant extends Function<constructors.ChannelsChannelParticipant> {
   channel: constructors.TypeInputChannel;
   participant: constructors.TypeInputPeer;
 
@@ -11777,7 +11778,7 @@ export class ChannelsGetParticipant extends Function {
   }
 }
 
-export class ChannelsGetChannels extends Function {
+export class ChannelsGetChannels extends Function<constructors.MessagesChats> {
   id: Array<constructors.TypeInputChannel>;
 
   protected get [id]() {
@@ -11802,7 +11803,7 @@ export class ChannelsGetChannels extends Function {
   }
 }
 
-export class ChannelsGetFullChannel extends Function {
+export class ChannelsGetFullChannel extends Function<constructors.MessagesChatFull> {
   channel: constructors.TypeInputChannel;
 
   protected get [id]() {
@@ -11827,7 +11828,7 @@ export class ChannelsGetFullChannel extends Function {
   }
 }
 
-export class ChannelsCreateChannel extends Function {
+export class ChannelsCreateChannel extends Function<constructors.Updates> {
   broadcast?: true;
   megagroup?: true;
   forImport?: true;
@@ -11886,7 +11887,7 @@ export class ChannelsCreateChannel extends Function {
   }
 }
 
-export class ChannelsEditAdmin extends Function {
+export class ChannelsEditAdmin extends Function<constructors.Updates> {
   channel: constructors.TypeInputChannel;
   userId: constructors.TypeInputUser;
   adminRights: constructors.TypeChatAdminRights;
@@ -11923,7 +11924,7 @@ export class ChannelsEditAdmin extends Function {
   }
 }
 
-export class ChannelsEditTitle extends Function {
+export class ChannelsEditTitle extends Function<constructors.Updates> {
   channel: constructors.TypeInputChannel;
   title: string;
 
@@ -11952,7 +11953,7 @@ export class ChannelsEditTitle extends Function {
   }
 }
 
-export class ChannelsEditPhoto extends Function {
+export class ChannelsEditPhoto extends Function<constructors.Updates> {
   channel: constructors.TypeInputChannel;
   photo: constructors.TypeInputChatPhoto;
 
@@ -11981,7 +11982,7 @@ export class ChannelsEditPhoto extends Function {
   }
 }
 
-export class ChannelsCheckUsername extends Function {
+export class ChannelsCheckUsername extends Function<boolean> {
   channel: constructors.TypeInputChannel;
   username: string;
 
@@ -12010,7 +12011,7 @@ export class ChannelsCheckUsername extends Function {
   }
 }
 
-export class ChannelsUpdateUsername extends Function {
+export class ChannelsUpdateUsername extends Function<boolean> {
   channel: constructors.TypeInputChannel;
   username: string;
 
@@ -12039,7 +12040,7 @@ export class ChannelsUpdateUsername extends Function {
   }
 }
 
-export class ChannelsJoinChannel extends Function {
+export class ChannelsJoinChannel extends Function<constructors.Updates> {
   channel: constructors.TypeInputChannel;
 
   protected get [id]() {
@@ -12064,7 +12065,7 @@ export class ChannelsJoinChannel extends Function {
   }
 }
 
-export class ChannelsLeaveChannel extends Function {
+export class ChannelsLeaveChannel extends Function<constructors.Updates> {
   channel: constructors.TypeInputChannel;
 
   protected get [id]() {
@@ -12089,7 +12090,7 @@ export class ChannelsLeaveChannel extends Function {
   }
 }
 
-export class ChannelsInviteToChannel extends Function {
+export class ChannelsInviteToChannel extends Function<constructors.Updates> {
   channel: constructors.TypeInputChannel;
   users: Array<constructors.TypeInputUser>;
 
@@ -12118,7 +12119,7 @@ export class ChannelsInviteToChannel extends Function {
   }
 }
 
-export class ChannelsDeleteChannel extends Function {
+export class ChannelsDeleteChannel extends Function<constructors.Updates> {
   channel: constructors.TypeInputChannel;
 
   protected get [id]() {
@@ -12143,7 +12144,7 @@ export class ChannelsDeleteChannel extends Function {
   }
 }
 
-export class ChannelsExportMessageLink extends Function {
+export class ChannelsExportMessageLink extends Function<constructors.ExportedMessageLink> {
   grouped?: true;
   thread?: true;
   channel: constructors.TypeInputChannel;
@@ -12182,7 +12183,7 @@ export class ChannelsExportMessageLink extends Function {
   }
 }
 
-export class ChannelsToggleSignatures extends Function {
+export class ChannelsToggleSignatures extends Function<constructors.Updates> {
   channel: constructors.TypeInputChannel;
   enabled: boolean;
 
@@ -12211,7 +12212,7 @@ export class ChannelsToggleSignatures extends Function {
   }
 }
 
-export class ChannelsGetAdminedPublicChannels extends Function {
+export class ChannelsGetAdminedPublicChannels extends Function<constructors.MessagesChats> {
   byLocation?: true;
   checkLimit?: true;
 
@@ -12242,7 +12243,7 @@ export class ChannelsGetAdminedPublicChannels extends Function {
   }
 }
 
-export class ChannelsEditBanned extends Function {
+export class ChannelsEditBanned extends Function<constructors.Updates> {
   channel: constructors.TypeInputChannel;
   participant: constructors.TypeInputPeer;
   bannedRights: constructors.TypeChatBannedRights;
@@ -12275,7 +12276,7 @@ export class ChannelsEditBanned extends Function {
   }
 }
 
-export class ChannelsGetAdminLog extends Function {
+export class ChannelsGetAdminLog extends Function<constructors.ChannelsAdminLogResults> {
   channel: constructors.TypeInputChannel;
   q: string;
   eventsFilter?: constructors.TypeChannelAdminLogEventsFilter;
@@ -12326,7 +12327,7 @@ export class ChannelsGetAdminLog extends Function {
   }
 }
 
-export class ChannelsSetStickers extends Function {
+export class ChannelsSetStickers extends Function<boolean> {
   channel: constructors.TypeInputChannel;
   stickerset: constructors.TypeInputStickerSet;
 
@@ -12355,7 +12356,7 @@ export class ChannelsSetStickers extends Function {
   }
 }
 
-export class ChannelsReadMessageContents extends Function {
+export class ChannelsReadMessageContents extends Function<boolean> {
   channel: constructors.TypeInputChannel;
   id: Array<number>;
 
@@ -12384,7 +12385,7 @@ export class ChannelsReadMessageContents extends Function {
   }
 }
 
-export class ChannelsDeleteHistory extends Function {
+export class ChannelsDeleteHistory extends Function<constructors.Updates> {
   forEveryone?: true;
   channel: constructors.TypeInputChannel;
   maxId: number;
@@ -12419,7 +12420,7 @@ export class ChannelsDeleteHistory extends Function {
   }
 }
 
-export class ChannelsTogglePreHistoryHidden extends Function {
+export class ChannelsTogglePreHistoryHidden extends Function<constructors.Updates> {
   channel: constructors.TypeInputChannel;
   enabled: boolean;
 
@@ -12448,7 +12449,7 @@ export class ChannelsTogglePreHistoryHidden extends Function {
   }
 }
 
-export class ChannelsGetLeftChannels extends Function {
+export class ChannelsGetLeftChannels extends Function<constructors.MessagesChats> {
   offset: number;
 
   protected get [id]() {
@@ -12473,7 +12474,7 @@ export class ChannelsGetLeftChannels extends Function {
   }
 }
 
-export class ChannelsGetGroupsForDiscussion extends Function {
+export class ChannelsGetGroupsForDiscussion extends Function<constructors.MessagesChats> {
   protected get [id]() {
     return 0xf5dad378;
   }
@@ -12491,7 +12492,7 @@ export class ChannelsGetGroupsForDiscussion extends Function {
   }
 }
 
-export class ChannelsSetDiscussionGroup extends Function {
+export class ChannelsSetDiscussionGroup extends Function<boolean> {
   broadcast: constructors.TypeInputChannel;
   group: constructors.TypeInputChannel;
 
@@ -12520,7 +12521,7 @@ export class ChannelsSetDiscussionGroup extends Function {
   }
 }
 
-export class ChannelsEditCreator extends Function {
+export class ChannelsEditCreator extends Function<constructors.Updates> {
   channel: constructors.TypeInputChannel;
   userId: constructors.TypeInputUser;
   password: constructors.TypeInputCheckPasswordSRP;
@@ -12553,7 +12554,7 @@ export class ChannelsEditCreator extends Function {
   }
 }
 
-export class ChannelsEditLocation extends Function {
+export class ChannelsEditLocation extends Function<boolean> {
   channel: constructors.TypeInputChannel;
   geoPoint: constructors.TypeInputGeoPoint;
   address: string;
@@ -12586,7 +12587,7 @@ export class ChannelsEditLocation extends Function {
   }
 }
 
-export class ChannelsToggleSlowMode extends Function {
+export class ChannelsToggleSlowMode extends Function<constructors.Updates> {
   channel: constructors.TypeInputChannel;
   seconds: number;
 
@@ -12615,7 +12616,7 @@ export class ChannelsToggleSlowMode extends Function {
   }
 }
 
-export class ChannelsGetInactiveChannels extends Function {
+export class ChannelsGetInactiveChannels extends Function<constructors.MessagesInactiveChats> {
   protected get [id]() {
     return 0x11e831ee;
   }
@@ -12633,7 +12634,7 @@ export class ChannelsGetInactiveChannels extends Function {
   }
 }
 
-export class ChannelsConvertToGigagroup extends Function {
+export class ChannelsConvertToGigagroup extends Function<constructors.Updates> {
   channel: constructors.TypeInputChannel;
 
   protected get [id]() {
@@ -12658,7 +12659,7 @@ export class ChannelsConvertToGigagroup extends Function {
   }
 }
 
-export class ChannelsViewSponsoredMessage extends Function {
+export class ChannelsViewSponsoredMessage extends Function<boolean> {
   channel: constructors.TypeInputChannel;
   randomId: Uint8Array;
 
@@ -12687,7 +12688,7 @@ export class ChannelsViewSponsoredMessage extends Function {
   }
 }
 
-export class ChannelsGetSponsoredMessages extends Function {
+export class ChannelsGetSponsoredMessages extends Function<constructors.MessagesSponsoredMessages> {
   channel: constructors.TypeInputChannel;
 
   protected get [id]() {
@@ -12712,7 +12713,7 @@ export class ChannelsGetSponsoredMessages extends Function {
   }
 }
 
-export class ChannelsGetSendAs extends Function {
+export class ChannelsGetSendAs extends Function<constructors.ChannelsSendAsPeers> {
   peer: constructors.TypeInputPeer;
 
   protected get [id]() {
@@ -12737,7 +12738,7 @@ export class ChannelsGetSendAs extends Function {
   }
 }
 
-export class ChannelsDeleteParticipantHistory extends Function {
+export class ChannelsDeleteParticipantHistory extends Function<constructors.MessagesAffectedHistory> {
   channel: constructors.TypeInputChannel;
   participant: constructors.TypeInputPeer;
 
@@ -12766,7 +12767,7 @@ export class ChannelsDeleteParticipantHistory extends Function {
   }
 }
 
-export class ChannelsToggleJoinToSend extends Function {
+export class ChannelsToggleJoinToSend extends Function<constructors.Updates> {
   channel: constructors.TypeInputChannel;
   enabled: boolean;
 
@@ -12795,7 +12796,7 @@ export class ChannelsToggleJoinToSend extends Function {
   }
 }
 
-export class ChannelsToggleJoinRequest extends Function {
+export class ChannelsToggleJoinRequest extends Function<constructors.Updates> {
   channel: constructors.TypeInputChannel;
   enabled: boolean;
 
@@ -12824,7 +12825,7 @@ export class ChannelsToggleJoinRequest extends Function {
   }
 }
 
-export class ChannelsReorderUsernames extends Function {
+export class ChannelsReorderUsernames extends Function<boolean> {
   channel: constructors.TypeInputChannel;
   order: Array<string>;
 
@@ -12853,7 +12854,7 @@ export class ChannelsReorderUsernames extends Function {
   }
 }
 
-export class ChannelsToggleUsername extends Function {
+export class ChannelsToggleUsername extends Function<boolean> {
   channel: constructors.TypeInputChannel;
   username: string;
   active: boolean;
@@ -12886,7 +12887,7 @@ export class ChannelsToggleUsername extends Function {
   }
 }
 
-export class ChannelsDeactivateAllUsernames extends Function {
+export class ChannelsDeactivateAllUsernames extends Function<boolean> {
   channel: constructors.TypeInputChannel;
 
   protected get [id]() {
@@ -12911,7 +12912,7 @@ export class ChannelsDeactivateAllUsernames extends Function {
   }
 }
 
-export class ChannelsToggleForum extends Function {
+export class ChannelsToggleForum extends Function<constructors.Updates> {
   channel: constructors.TypeInputChannel;
   enabled: boolean;
 
@@ -12940,7 +12941,7 @@ export class ChannelsToggleForum extends Function {
   }
 }
 
-export class ChannelsCreateForumTopic extends Function {
+export class ChannelsCreateForumTopic extends Function<constructors.Updates> {
   channel: constructors.TypeInputChannel;
   title: string;
   iconColor?: number;
@@ -12987,7 +12988,7 @@ export class ChannelsCreateForumTopic extends Function {
   }
 }
 
-export class ChannelsGetForumTopics extends Function {
+export class ChannelsGetForumTopics extends Function<constructors.MessagesForumTopics> {
   channel: constructors.TypeInputChannel;
   q?: string;
   offsetDate: number;
@@ -13034,7 +13035,7 @@ export class ChannelsGetForumTopics extends Function {
   }
 }
 
-export class ChannelsGetForumTopicsByID extends Function {
+export class ChannelsGetForumTopicsByID extends Function<constructors.MessagesForumTopics> {
   channel: constructors.TypeInputChannel;
   topics: Array<number>;
 
@@ -13063,7 +13064,7 @@ export class ChannelsGetForumTopicsByID extends Function {
   }
 }
 
-export class ChannelsEditForumTopic extends Function {
+export class ChannelsEditForumTopic extends Function<constructors.Updates> {
   channel: constructors.TypeInputChannel;
   topicId: number;
   title?: string;
@@ -13110,7 +13111,7 @@ export class ChannelsEditForumTopic extends Function {
   }
 }
 
-export class ChannelsUpdatePinnedForumTopic extends Function {
+export class ChannelsUpdatePinnedForumTopic extends Function<constructors.Updates> {
   channel: constructors.TypeInputChannel;
   topicId: number;
   pinned: boolean;
@@ -13143,7 +13144,7 @@ export class ChannelsUpdatePinnedForumTopic extends Function {
   }
 }
 
-export class ChannelsDeleteTopicHistory extends Function {
+export class ChannelsDeleteTopicHistory extends Function<constructors.MessagesAffectedHistory> {
   channel: constructors.TypeInputChannel;
   topMsgId: number;
 
@@ -13172,7 +13173,7 @@ export class ChannelsDeleteTopicHistory extends Function {
   }
 }
 
-export class ChannelsReorderPinnedForumTopics extends Function {
+export class ChannelsReorderPinnedForumTopics extends Function<constructors.Updates> {
   force?: true;
   channel: constructors.TypeInputChannel;
   order: Array<number>;
@@ -13207,7 +13208,7 @@ export class ChannelsReorderPinnedForumTopics extends Function {
   }
 }
 
-export class ChannelsToggleAntiSpam extends Function {
+export class ChannelsToggleAntiSpam extends Function<constructors.Updates> {
   channel: constructors.TypeInputChannel;
   enabled: boolean;
 
@@ -13236,7 +13237,7 @@ export class ChannelsToggleAntiSpam extends Function {
   }
 }
 
-export class ChannelsReportAntiSpamFalsePositive extends Function {
+export class ChannelsReportAntiSpamFalsePositive extends Function<boolean> {
   channel: constructors.TypeInputChannel;
   msgId: number;
 
@@ -13265,7 +13266,7 @@ export class ChannelsReportAntiSpamFalsePositive extends Function {
   }
 }
 
-export class ChannelsToggleParticipantsHidden extends Function {
+export class ChannelsToggleParticipantsHidden extends Function<constructors.Updates> {
   channel: constructors.TypeInputChannel;
   enabled: boolean;
 
@@ -13294,7 +13295,7 @@ export class ChannelsToggleParticipantsHidden extends Function {
   }
 }
 
-export class BotsSendCustomRequest extends Function {
+export class BotsSendCustomRequest extends Function<constructors.DataJSON> {
   customMethod: string;
   params: constructors.TypeDataJSON;
 
@@ -13323,7 +13324,7 @@ export class BotsSendCustomRequest extends Function {
   }
 }
 
-export class BotsAnswerWebhookJSONQuery extends Function {
+export class BotsAnswerWebhookJSONQuery extends Function<boolean> {
   queryId: bigint;
   data: constructors.TypeDataJSON;
 
@@ -13352,7 +13353,7 @@ export class BotsAnswerWebhookJSONQuery extends Function {
   }
 }
 
-export class BotsSetBotCommands extends Function {
+export class BotsSetBotCommands extends Function<boolean> {
   scope: constructors.TypeBotCommandScope;
   langCode: string;
   commands: Array<constructors.TypeBotCommand>;
@@ -13385,7 +13386,7 @@ export class BotsSetBotCommands extends Function {
   }
 }
 
-export class BotsResetBotCommands extends Function {
+export class BotsResetBotCommands extends Function<boolean> {
   scope: constructors.TypeBotCommandScope;
   langCode: string;
 
@@ -13414,7 +13415,7 @@ export class BotsResetBotCommands extends Function {
   }
 }
 
-export class BotsGetBotCommands extends Function {
+export class BotsGetBotCommands extends Function<constructors.BotCommand[]> {
   scope: constructors.TypeBotCommandScope;
   langCode: string;
 
@@ -13443,7 +13444,7 @@ export class BotsGetBotCommands extends Function {
   }
 }
 
-export class BotsSetBotMenuButton extends Function {
+export class BotsSetBotMenuButton extends Function<boolean> {
   userId: constructors.TypeInputUser;
   button: constructors.TypeBotMenuButton;
 
@@ -13472,7 +13473,7 @@ export class BotsSetBotMenuButton extends Function {
   }
 }
 
-export class BotsGetBotMenuButton extends Function {
+export class BotsGetBotMenuButton extends Function<constructors.BotMenuButton> {
   userId: constructors.TypeInputUser;
 
   protected get [id]() {
@@ -13497,7 +13498,7 @@ export class BotsGetBotMenuButton extends Function {
   }
 }
 
-export class BotsSetBotBroadcastDefaultAdminRights extends Function {
+export class BotsSetBotBroadcastDefaultAdminRights extends Function<boolean> {
   adminRights: constructors.TypeChatAdminRights;
 
   protected get [id]() {
@@ -13522,7 +13523,7 @@ export class BotsSetBotBroadcastDefaultAdminRights extends Function {
   }
 }
 
-export class BotsSetBotGroupDefaultAdminRights extends Function {
+export class BotsSetBotGroupDefaultAdminRights extends Function<boolean> {
   adminRights: constructors.TypeChatAdminRights;
 
   protected get [id]() {
@@ -13547,7 +13548,7 @@ export class BotsSetBotGroupDefaultAdminRights extends Function {
   }
 }
 
-export class BotsSetBotInfo extends Function {
+export class BotsSetBotInfo extends Function<boolean> {
   langCode: string;
   about?: string;
   description?: string;
@@ -13582,7 +13583,7 @@ export class BotsSetBotInfo extends Function {
   }
 }
 
-export class BotsGetBotInfo extends Function {
+export class BotsGetBotInfo extends Function<string[]> {
   langCode: string;
 
   protected get [id]() {
@@ -13607,7 +13608,7 @@ export class BotsGetBotInfo extends Function {
   }
 }
 
-export class PaymentsGetPaymentForm extends Function {
+export class PaymentsGetPaymentForm extends Function<constructors.PaymentsPaymentForm> {
   invoice: constructors.TypeInputInvoice;
   themeParams?: constructors.TypeDataJSON;
 
@@ -13638,7 +13639,7 @@ export class PaymentsGetPaymentForm extends Function {
   }
 }
 
-export class PaymentsGetPaymentReceipt extends Function {
+export class PaymentsGetPaymentReceipt extends Function<constructors.PaymentsPaymentReceipt> {
   peer: constructors.TypeInputPeer;
   msgId: number;
 
@@ -13667,7 +13668,7 @@ export class PaymentsGetPaymentReceipt extends Function {
   }
 }
 
-export class PaymentsValidateRequestedInfo extends Function {
+export class PaymentsValidateRequestedInfo extends Function<constructors.PaymentsValidatedRequestedInfo> {
   save?: true;
   invoice: constructors.TypeInputInvoice;
   info: constructors.TypePaymentRequestedInfo;
@@ -13702,7 +13703,7 @@ export class PaymentsValidateRequestedInfo extends Function {
   }
 }
 
-export class PaymentsSendPaymentForm extends Function {
+export class PaymentsSendPaymentForm extends Function<constructors.PaymentsPaymentResult> {
   formId: bigint;
   invoice: constructors.TypeInputInvoice;
   requestedInfoId?: string;
@@ -13749,7 +13750,7 @@ export class PaymentsSendPaymentForm extends Function {
   }
 }
 
-export class PaymentsGetSavedInfo extends Function {
+export class PaymentsGetSavedInfo extends Function<constructors.PaymentsSavedInfo> {
   protected get [id]() {
     return 0x227d824b;
   }
@@ -13767,7 +13768,7 @@ export class PaymentsGetSavedInfo extends Function {
   }
 }
 
-export class PaymentsClearSavedInfo extends Function {
+export class PaymentsClearSavedInfo extends Function<boolean> {
   credentials?: true;
   info?: true;
 
@@ -13798,7 +13799,7 @@ export class PaymentsClearSavedInfo extends Function {
   }
 }
 
-export class PaymentsGetBankCardData extends Function {
+export class PaymentsGetBankCardData extends Function<constructors.PaymentsBankCardData> {
   number: string;
 
   protected get [id]() {
@@ -13823,7 +13824,7 @@ export class PaymentsGetBankCardData extends Function {
   }
 }
 
-export class PaymentsExportInvoice extends Function {
+export class PaymentsExportInvoice extends Function<constructors.PaymentsExportedInvoice> {
   invoiceMedia: constructors.TypeInputMedia;
 
   protected get [id]() {
@@ -13848,7 +13849,7 @@ export class PaymentsExportInvoice extends Function {
   }
 }
 
-export class PaymentsAssignAppStoreTransaction extends Function {
+export class PaymentsAssignAppStoreTransaction extends Function<constructors.Updates> {
   receipt: Uint8Array;
   purpose: constructors.TypeInputStorePaymentPurpose;
 
@@ -13877,7 +13878,7 @@ export class PaymentsAssignAppStoreTransaction extends Function {
   }
 }
 
-export class PaymentsAssignPlayMarketTransaction extends Function {
+export class PaymentsAssignPlayMarketTransaction extends Function<constructors.Updates> {
   receipt: constructors.TypeDataJSON;
   purpose: constructors.TypeInputStorePaymentPurpose;
 
@@ -13906,7 +13907,7 @@ export class PaymentsAssignPlayMarketTransaction extends Function {
   }
 }
 
-export class PaymentsCanPurchasePremium extends Function {
+export class PaymentsCanPurchasePremium extends Function<boolean> {
   purpose: constructors.TypeInputStorePaymentPurpose;
 
   protected get [id]() {
@@ -13931,7 +13932,7 @@ export class PaymentsCanPurchasePremium extends Function {
   }
 }
 
-export class StickersCreateStickerSet extends Function {
+export class StickersCreateStickerSet extends Function<constructors.MessagesStickerSet> {
   masks?: true;
   animated?: true;
   videos?: true;
@@ -13998,7 +13999,7 @@ export class StickersCreateStickerSet extends Function {
   }
 }
 
-export class StickersRemoveStickerFromSet extends Function {
+export class StickersRemoveStickerFromSet extends Function<constructors.MessagesStickerSet> {
   sticker: constructors.TypeInputDocument;
 
   protected get [id]() {
@@ -14023,7 +14024,7 @@ export class StickersRemoveStickerFromSet extends Function {
   }
 }
 
-export class StickersChangeStickerPosition extends Function {
+export class StickersChangeStickerPosition extends Function<constructors.MessagesStickerSet> {
   sticker: constructors.TypeInputDocument;
   position: number;
 
@@ -14052,7 +14053,7 @@ export class StickersChangeStickerPosition extends Function {
   }
 }
 
-export class StickersAddStickerToSet extends Function {
+export class StickersAddStickerToSet extends Function<constructors.MessagesStickerSet> {
   stickerset: constructors.TypeInputStickerSet;
   sticker: constructors.TypeInputStickerSetItem;
 
@@ -14081,7 +14082,7 @@ export class StickersAddStickerToSet extends Function {
   }
 }
 
-export class StickersSetStickerSetThumb extends Function {
+export class StickersSetStickerSetThumb extends Function<constructors.MessagesStickerSet> {
   stickerset: constructors.TypeInputStickerSet;
   thumb?: constructors.TypeInputDocument;
   thumbDocumentId?: bigint;
@@ -14116,7 +14117,7 @@ export class StickersSetStickerSetThumb extends Function {
   }
 }
 
-export class StickersCheckShortName extends Function {
+export class StickersCheckShortName extends Function<boolean> {
   shortName: string;
 
   protected get [id]() {
@@ -14141,7 +14142,7 @@ export class StickersCheckShortName extends Function {
   }
 }
 
-export class StickersSuggestShortName extends Function {
+export class StickersSuggestShortName extends Function<constructors.StickersSuggestedShortName> {
   title: string;
 
   protected get [id]() {
@@ -14166,7 +14167,7 @@ export class StickersSuggestShortName extends Function {
   }
 }
 
-export class StickersChangeSticker extends Function {
+export class StickersChangeSticker extends Function<constructors.MessagesStickerSet> {
   sticker: constructors.TypeInputDocument;
   emoji?: string;
   maskCoords?: constructors.TypeMaskCoords;
@@ -14205,7 +14206,7 @@ export class StickersChangeSticker extends Function {
   }
 }
 
-export class StickersRenameStickerSet extends Function {
+export class StickersRenameStickerSet extends Function<constructors.MessagesStickerSet> {
   stickerset: constructors.TypeInputStickerSet;
   title: string;
 
@@ -14234,7 +14235,7 @@ export class StickersRenameStickerSet extends Function {
   }
 }
 
-export class StickersDeleteStickerSet extends Function {
+export class StickersDeleteStickerSet extends Function<boolean> {
   stickerset: constructors.TypeInputStickerSet;
 
   protected get [id]() {
@@ -14259,7 +14260,7 @@ export class StickersDeleteStickerSet extends Function {
   }
 }
 
-export class PhoneGetCallConfig extends Function {
+export class PhoneGetCallConfig extends Function<constructors.DataJSON> {
   protected get [id]() {
     return 0x55451fa9;
   }
@@ -14277,7 +14278,7 @@ export class PhoneGetCallConfig extends Function {
   }
 }
 
-export class PhoneRequestCall extends Function {
+export class PhoneRequestCall extends Function<constructors.PhonePhoneCall> {
   video?: true;
   userId: constructors.TypeInputUser;
   randomId: number;
@@ -14320,7 +14321,7 @@ export class PhoneRequestCall extends Function {
   }
 }
 
-export class PhoneAcceptCall extends Function {
+export class PhoneAcceptCall extends Function<constructors.PhonePhoneCall> {
   peer: constructors.TypeInputPhoneCall;
   gB: Uint8Array;
   protocol: constructors.TypePhoneCallProtocol;
@@ -14353,7 +14354,7 @@ export class PhoneAcceptCall extends Function {
   }
 }
 
-export class PhoneConfirmCall extends Function {
+export class PhoneConfirmCall extends Function<constructors.PhonePhoneCall> {
   peer: constructors.TypeInputPhoneCall;
   gA: Uint8Array;
   keyFingerprint: bigint;
@@ -14390,7 +14391,7 @@ export class PhoneConfirmCall extends Function {
   }
 }
 
-export class PhoneReceivedCall extends Function {
+export class PhoneReceivedCall extends Function<boolean> {
   peer: constructors.TypeInputPhoneCall;
 
   protected get [id]() {
@@ -14415,7 +14416,7 @@ export class PhoneReceivedCall extends Function {
   }
 }
 
-export class PhoneDiscardCall extends Function {
+export class PhoneDiscardCall extends Function<constructors.Updates> {
   video?: true;
   peer: constructors.TypeInputPhoneCall;
   duration: number;
@@ -14458,7 +14459,7 @@ export class PhoneDiscardCall extends Function {
   }
 }
 
-export class PhoneSetCallRating extends Function {
+export class PhoneSetCallRating extends Function<constructors.Updates> {
   userInitiative?: true;
   peer: constructors.TypeInputPhoneCall;
   rating: number;
@@ -14497,7 +14498,7 @@ export class PhoneSetCallRating extends Function {
   }
 }
 
-export class PhoneSaveCallDebug extends Function {
+export class PhoneSaveCallDebug extends Function<boolean> {
   peer: constructors.TypeInputPhoneCall;
   debug: constructors.TypeDataJSON;
 
@@ -14526,7 +14527,7 @@ export class PhoneSaveCallDebug extends Function {
   }
 }
 
-export class PhoneSendSignalingData extends Function {
+export class PhoneSendSignalingData extends Function<boolean> {
   peer: constructors.TypeInputPhoneCall;
   data: Uint8Array;
 
@@ -14555,7 +14556,7 @@ export class PhoneSendSignalingData extends Function {
   }
 }
 
-export class PhoneCreateGroupCall extends Function {
+export class PhoneCreateGroupCall extends Function<constructors.Updates> {
   rtmpStream?: true;
   peer: constructors.TypeInputPeer;
   randomId: number;
@@ -14598,7 +14599,7 @@ export class PhoneCreateGroupCall extends Function {
   }
 }
 
-export class PhoneJoinGroupCall extends Function {
+export class PhoneJoinGroupCall extends Function<constructors.Updates> {
   muted?: true;
   videoStopped?: true;
   call: constructors.TypeInputGroupCall;
@@ -14645,7 +14646,7 @@ export class PhoneJoinGroupCall extends Function {
   }
 }
 
-export class PhoneLeaveGroupCall extends Function {
+export class PhoneLeaveGroupCall extends Function<constructors.Updates> {
   call: constructors.TypeInputGroupCall;
   source: number;
 
@@ -14674,7 +14675,7 @@ export class PhoneLeaveGroupCall extends Function {
   }
 }
 
-export class PhoneInviteToGroupCall extends Function {
+export class PhoneInviteToGroupCall extends Function<constructors.Updates> {
   call: constructors.TypeInputGroupCall;
   users: Array<constructors.TypeInputUser>;
 
@@ -14703,7 +14704,7 @@ export class PhoneInviteToGroupCall extends Function {
   }
 }
 
-export class PhoneDiscardGroupCall extends Function {
+export class PhoneDiscardGroupCall extends Function<constructors.Updates> {
   call: constructors.TypeInputGroupCall;
 
   protected get [id]() {
@@ -14728,7 +14729,7 @@ export class PhoneDiscardGroupCall extends Function {
   }
 }
 
-export class PhoneToggleGroupCallSettings extends Function {
+export class PhoneToggleGroupCallSettings extends Function<constructors.Updates> {
   resetInviteHash?: true;
   call: constructors.TypeInputGroupCall;
   joinMuted?: boolean;
@@ -14763,7 +14764,7 @@ export class PhoneToggleGroupCallSettings extends Function {
   }
 }
 
-export class PhoneGetGroupCall extends Function {
+export class PhoneGetGroupCall extends Function<constructors.PhoneGroupCall> {
   call: constructors.TypeInputGroupCall;
   limit: number;
 
@@ -14792,7 +14793,7 @@ export class PhoneGetGroupCall extends Function {
   }
 }
 
-export class PhoneGetGroupParticipants extends Function {
+export class PhoneGetGroupParticipants extends Function<constructors.PhoneGroupParticipants> {
   call: constructors.TypeInputGroupCall;
   ids: Array<constructors.TypeInputPeer>;
   sources: Array<number>;
@@ -14833,7 +14834,7 @@ export class PhoneGetGroupParticipants extends Function {
   }
 }
 
-export class PhoneCheckGroupCall extends Function {
+export class PhoneCheckGroupCall extends Function<number[]> {
   call: constructors.TypeInputGroupCall;
   sources: Array<number>;
 
@@ -14862,7 +14863,7 @@ export class PhoneCheckGroupCall extends Function {
   }
 }
 
-export class PhoneToggleGroupCallRecord extends Function {
+export class PhoneToggleGroupCallRecord extends Function<constructors.Updates> {
   start?: true;
   video?: true;
   call: constructors.TypeInputGroupCall;
@@ -14905,7 +14906,7 @@ export class PhoneToggleGroupCallRecord extends Function {
   }
 }
 
-export class PhoneEditGroupCallParticipant extends Function {
+export class PhoneEditGroupCallParticipant extends Function<constructors.Updates> {
   call: constructors.TypeInputGroupCall;
   participant: constructors.TypeInputPeer;
   muted?: boolean;
@@ -14960,7 +14961,7 @@ export class PhoneEditGroupCallParticipant extends Function {
   }
 }
 
-export class PhoneEditGroupCallTitle extends Function {
+export class PhoneEditGroupCallTitle extends Function<constructors.Updates> {
   call: constructors.TypeInputGroupCall;
   title: string;
 
@@ -14989,7 +14990,7 @@ export class PhoneEditGroupCallTitle extends Function {
   }
 }
 
-export class PhoneGetGroupCallJoinAs extends Function {
+export class PhoneGetGroupCallJoinAs extends Function<constructors.PhoneJoinAsPeers> {
   peer: constructors.TypeInputPeer;
 
   protected get [id]() {
@@ -15014,7 +15015,7 @@ export class PhoneGetGroupCallJoinAs extends Function {
   }
 }
 
-export class PhoneExportGroupCallInvite extends Function {
+export class PhoneExportGroupCallInvite extends Function<constructors.PhoneExportedGroupCallInvite> {
   canSelfUnmute?: true;
   call: constructors.TypeInputGroupCall;
 
@@ -15045,7 +15046,7 @@ export class PhoneExportGroupCallInvite extends Function {
   }
 }
 
-export class PhoneToggleGroupCallStartSubscription extends Function {
+export class PhoneToggleGroupCallStartSubscription extends Function<constructors.Updates> {
   call: constructors.TypeInputGroupCall;
   subscribed: boolean;
 
@@ -15074,7 +15075,7 @@ export class PhoneToggleGroupCallStartSubscription extends Function {
   }
 }
 
-export class PhoneStartScheduledGroupCall extends Function {
+export class PhoneStartScheduledGroupCall extends Function<constructors.Updates> {
   call: constructors.TypeInputGroupCall;
 
   protected get [id]() {
@@ -15099,7 +15100,7 @@ export class PhoneStartScheduledGroupCall extends Function {
   }
 }
 
-export class PhoneSaveDefaultGroupCallJoinAs extends Function {
+export class PhoneSaveDefaultGroupCallJoinAs extends Function<boolean> {
   peer: constructors.TypeInputPeer;
   joinAs: constructors.TypeInputPeer;
 
@@ -15128,7 +15129,7 @@ export class PhoneSaveDefaultGroupCallJoinAs extends Function {
   }
 }
 
-export class PhoneJoinGroupCallPresentation extends Function {
+export class PhoneJoinGroupCallPresentation extends Function<constructors.Updates> {
   call: constructors.TypeInputGroupCall;
   params: constructors.TypeDataJSON;
 
@@ -15157,7 +15158,7 @@ export class PhoneJoinGroupCallPresentation extends Function {
   }
 }
 
-export class PhoneLeaveGroupCallPresentation extends Function {
+export class PhoneLeaveGroupCallPresentation extends Function<constructors.Updates> {
   call: constructors.TypeInputGroupCall;
 
   protected get [id]() {
@@ -15182,7 +15183,7 @@ export class PhoneLeaveGroupCallPresentation extends Function {
   }
 }
 
-export class PhoneGetGroupCallStreamChannels extends Function {
+export class PhoneGetGroupCallStreamChannels extends Function<constructors.PhoneGroupCallStreamChannels> {
   call: constructors.TypeInputGroupCall;
 
   protected get [id]() {
@@ -15207,7 +15208,7 @@ export class PhoneGetGroupCallStreamChannels extends Function {
   }
 }
 
-export class PhoneGetGroupCallStreamRtmpURL extends Function {
+export class PhoneGetGroupCallStreamRtmpURL extends Function<constructors.PhoneGroupCallStreamRtmpURL> {
   peer: constructors.TypeInputPeer;
   revoke: boolean;
 
@@ -15236,7 +15237,7 @@ export class PhoneGetGroupCallStreamRtmpURL extends Function {
   }
 }
 
-export class PhoneSaveCallLog extends Function {
+export class PhoneSaveCallLog extends Function<boolean> {
   peer: constructors.TypeInputPhoneCall;
   file: constructors.TypeInputFile;
 
@@ -15265,7 +15266,7 @@ export class PhoneSaveCallLog extends Function {
   }
 }
 
-export class LangpackGetLangPack extends Function {
+export class LangpackGetLangPack extends Function<constructors.LangPackDifference> {
   langPack: string;
   langCode: string;
 
@@ -15294,7 +15295,7 @@ export class LangpackGetLangPack extends Function {
   }
 }
 
-export class LangpackGetStrings extends Function {
+export class LangpackGetStrings extends Function<constructors.LangPackString[]> {
   langPack: string;
   langCode: string;
   keys: Array<string>;
@@ -15327,7 +15328,7 @@ export class LangpackGetStrings extends Function {
   }
 }
 
-export class LangpackGetDifference extends Function {
+export class LangpackGetDifference extends Function<constructors.LangPackDifference> {
   langPack: string;
   langCode: string;
   fromVersion: number;
@@ -15360,7 +15361,7 @@ export class LangpackGetDifference extends Function {
   }
 }
 
-export class LangpackGetLanguages extends Function {
+export class LangpackGetLanguages extends Function<constructors.LangPackLanguage[]> {
   langPack: string;
 
   protected get [id]() {
@@ -15385,7 +15386,7 @@ export class LangpackGetLanguages extends Function {
   }
 }
 
-export class LangpackGetLanguage extends Function {
+export class LangpackGetLanguage extends Function<constructors.LangPackLanguage> {
   langPack: string;
   langCode: string;
 
@@ -15414,7 +15415,7 @@ export class LangpackGetLanguage extends Function {
   }
 }
 
-export class FoldersEditPeerFolders extends Function {
+export class FoldersEditPeerFolders extends Function<constructors.Updates> {
   folderPeers: Array<constructors.TypeInputFolderPeer>;
 
   protected get [id]() {
@@ -15439,7 +15440,7 @@ export class FoldersEditPeerFolders extends Function {
   }
 }
 
-export class StatsGetBroadcastStats extends Function {
+export class StatsGetBroadcastStats extends Function<constructors.StatsBroadcastStats> {
   dark?: true;
   channel: constructors.TypeInputChannel;
 
@@ -15470,7 +15471,7 @@ export class StatsGetBroadcastStats extends Function {
   }
 }
 
-export class StatsLoadAsyncGraph extends Function {
+export class StatsLoadAsyncGraph extends Function<constructors.StatsGraph> {
   token: string;
   x?: bigint;
 
@@ -15501,7 +15502,7 @@ export class StatsLoadAsyncGraph extends Function {
   }
 }
 
-export class StatsGetMegagroupStats extends Function {
+export class StatsGetMegagroupStats extends Function<constructors.StatsMegagroupStats> {
   dark?: true;
   channel: constructors.TypeInputChannel;
 
@@ -15532,7 +15533,7 @@ export class StatsGetMegagroupStats extends Function {
   }
 }
 
-export class StatsGetMessagePublicForwards extends Function {
+export class StatsGetMessagePublicForwards extends Function<constructors.MessagesMessages> {
   channel: constructors.TypeInputChannel;
   msgId: number;
   offsetRate: number;
@@ -15577,7 +15578,7 @@ export class StatsGetMessagePublicForwards extends Function {
   }
 }
 
-export class StatsGetMessageStats extends Function {
+export class StatsGetMessageStats extends Function<constructors.StatsMessageStats> {
   dark?: true;
   channel: constructors.TypeInputChannel;
   msgId: number;

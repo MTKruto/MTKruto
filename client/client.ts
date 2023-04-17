@@ -5,7 +5,7 @@ import { getRandomBigInt } from "../utilities/0_bigint.ts";
 import { logger } from "../utilities/0_logger.ts";
 import { decryptMessage, encryptMessage, getMessageId } from "../utilities/1_message.ts";
 import { TLObject } from "../tl/1_tl_object.ts";
-import { BadMsgNotification, BadServerSalt, GZIPPacked, MsgsAck, Pong, RPCError, Updates } from "../tl/2_constructors.ts";
+import { BadMsgNotification, BadServerSalt, Constructor, GZIPPacked, MsgsAck, Pong, RPCError, Updates } from "../tl/2_constructors.ts";
 import { Function, Ping } from "../tl/3_functions.ts";
 import { TLReader } from "../tl/3_tl_reader.ts";
 import { RPCResult } from "../tl/4_rpc_result.ts";
@@ -100,9 +100,9 @@ export class Client extends ClientAbstract {
     }
   }
 
-  async invoke(function_: Function): Promise<TLObject>;
-  async invoke(function_: Function, noWait: true): Promise<void>;
-  async invoke(function_: Function, noWait?: boolean): Promise<TLObject | void> {
+  async invoke<T extends (Function<unknown> | Constructor) = Function<unknown>>(function_: T): Promise<T extends Function<unknown> ? T["__R"] : void>;
+  async invoke<T extends (Function<unknown> | Constructor) = Function<unknown>>(function_: T, noWait: true): Promise<void>;
+  async invoke<T extends (Function<unknown> | Constructor) = Function<unknown>>(function_: T, noWait?: boolean): Promise<T | void> {
     if (!this.auth) {
       throw new Error("Not connected");
     }
@@ -132,13 +132,13 @@ export class Client extends ClientAbstract {
     });
 
     if (result instanceof BadServerSalt) {
-      return await this.invoke(function_);
+      return await this.invoke(function_) as T;
     } else {
-      return result;
+      return result as T;
     }
   }
 
-  send(function_: Function) {
+  send<T extends (Function<unknown> | Constructor) = Function<unknown>>(function_: T) {
     return this.invoke(function_, true);
   }
 }
