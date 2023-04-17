@@ -52,12 +52,18 @@ export class Client extends ClientAbstract {
       }
 
       const buffer = await this.transport.receive();
-      const decrypted = await decryptMessage(
-        buffer,
-        this.auth.key,
-        this.auth.id,
-        this.sessionId,
-      );
+      let decrypted: Message | MessageContainer;
+      try {
+        decrypted = await decryptMessage(
+          buffer,
+          this.auth.key,
+          this.auth.id,
+          this.sessionId,
+        );
+      } catch (err) {
+        logger().error(`Failed to decrypt message: ${err}`);
+        continue;
+      }
       const messages = decrypted instanceof MessageContainer ? decrypted.messages : [decrypted];
 
       for (const message of messages) {
