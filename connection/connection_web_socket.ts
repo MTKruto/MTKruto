@@ -1,9 +1,10 @@
-import { Mutex } from "../utilities/0_mutex.ts";
+import { Mutex } from "../deps.ts";
 import { Connection } from "./connection.ts";
 
 export class ConnectionWebSocket implements Connection {
   private webSocket: WebSocket;
   private rMutex = new Mutex();
+  private wMutex = new Mutex();
   private buffer = new Array<number>();
   private nextResolve: [number, () => void] | null = null;
 
@@ -47,11 +48,13 @@ export class ConnectionWebSocket implements Connection {
     release();
   }
 
-  write(p: Uint8Array) {
+  async write(p: Uint8Array) {
     if (this.webSocket.readyState == WebSocket.CLOSED) {
       throw new Error("Connection not open");
     }
+    const release = await this.wMutex.acquire();
     this.webSocket.send(p);
+    release();
   }
 
   close() {

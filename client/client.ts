@@ -109,7 +109,11 @@ export class Client extends ClientAbstract {
 
   private async pingLoop() {
     while (this.connected) {
-      await this.invoke(new Ping({ pingId: getRandomBigInt(8, true, false) }));
+      try {
+        await this.invoke(new Ping({ pingId: getRandomBigInt(8, true, false) }));
+      } catch (err) {
+        logger().error(`Failed to invoke ping: ${err}`);
+      }
       await new Promise((r) => setTimeout(r, 60 * 1_000));
     }
   }
