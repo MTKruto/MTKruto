@@ -61,4 +61,8 @@ export class TransportAbridged extends Transport implements Transport {
 
     await this.connection.write(this.encrypt(concat(header, length, buffer)));
   }
+
+  deinitialize() {
+    this.initialized = false;
+  }
 }

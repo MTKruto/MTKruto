@@ -46,4 +46,8 @@ export class TransportIntermediate extends Transport implements Transport {
 
     await this.connection.write(this.encrypt(concat(length, buffer)));
   }
+
+  deinitialize() {
+    this.initialized = false;
+  }
 }
