@@ -1,7 +1,7 @@
 import { Connection } from "../connection/connection.ts";
 import { ConnectionWebSocket } from "../connection/connection_web_socket.ts";
 import { Transport } from "../transport/transport.ts";
-import { TransportAbridged } from "../transport/transport_abridged.ts";
+import { TransportIntermediate } from "../transport/transport_intermediate.ts";
 
 export abstract class ClientAbstract {
   connection: Connection;
@@ -19,7 +19,7 @@ export abstract class ClientAbstract {
       this.connection = new ConnectionWebSocket(`${protocol}://venus.web.telegram.org/apiws`);
     }
     // this.connection = new ConnectionTCP("127.0.0.1", 4430);
-    this.transport = new TransportAbridged(this.connection, true);
+    this.transport = new TransportIntermediate(this.connection, true);
   }
 
   async connect() {
