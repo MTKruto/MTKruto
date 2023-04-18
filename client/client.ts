@@ -68,13 +68,17 @@ export class Client extends ClientAbstract {
       const messages = decrypted instanceof MessageContainer ? decrypted.messages : [decrypted];
 
       for (const message of messages) {
-        logger().debug(`Received ${message.body.constructor.name}`);
-        if (message.body instanceof Updates) {
-          this.updatesHandler?.(this, message.body);
+        let body = message.body
+        if (body instanceof GZIPPacked) {
+          body = new TLReader(gunzip(body.packedData)).readObject();
+        }
+        logger().debug(`Received ${body.constructor.name}`);
+        if (body instanceof Updates) {
+          this.updatesHandler?.(this, body);
         } else if (message.body instanceof RPCResult) {
           let result = message.body.result;
           if (result instanceof GZIPPacked) {
-            result = new TLReader(gunzip(result.packedData)).readObject();
+            result = new TLReader(gunzip(result.packedData)).readObject()
           }
           const promise = this.promises.get(message.body.messageId);
           if (promise) {
