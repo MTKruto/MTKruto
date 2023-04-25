@@ -1,6 +1,6 @@
-export { assert, assertEquals, assertExists, assertFalse, assertInstanceOf, assertNotEquals } from "https://deno.land/std@0.183.0/testing/asserts.ts";
+export { assert, assertEquals, assertExists, assertFalse, assertInstanceOf, assertNotEquals } from "https://deno.land/std@0.184.0/testing/asserts.ts";
 
-export * as log from "https://deno.land/std@0.183.0/log/mod.ts";
+export * as log from "https://deno.land/std@0.184.0/log/mod.ts";
 
 export { factorize } from "https://deno.land/x/wasm_crypto@v0.3.0/mod.ts";
 
