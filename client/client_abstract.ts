@@ -1,5 +1,6 @@
 import { Connection } from "../connection/connection.ts";
 import { ConnectionWebSocket } from "../connection/connection_web_socket.ts";
+import { initTgCrypto } from "../deps.ts";
 import { Transport } from "../transport/transport.ts";
 import { TransportIntermediate } from "../transport/transport_intermediate.ts";
 
@@ -23,6 +24,7 @@ export abstract class ClientAbstract {
   }
 
   async connect() {
+    await initTgCrypto();
     await this.connection.open();
     await this.transport.initialize();
     this.connected = true;
