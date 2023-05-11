@@ -5,7 +5,7 @@ import { getRandomBigInt } from "../utilities/0_bigint.ts";
 import { logger } from "../utilities/0_logger.ts";
 import { decryptMessage, encryptMessage, getMessageId } from "../utilities/1_message.ts";
 import { TLObject } from "../tl/1_tl_object.ts";
-import { BadMsgNotification, BadServerSalt, Constructor, GZIPPacked, MsgsAck, Pong, RPCError, Updates } from "../tl/2_constructors.ts";
+import { BadMsgNotification, BadServerSalt, GZIPPacked, MsgsAck, Pong, RPCError, Type, Updates } from "../tl/2_types.ts";
 import { Function, Ping } from "../tl/3_functions.ts";
 import { TLReader } from "../tl/3_tl_reader.ts";
 import { RPCResult } from "../tl/4_rpc_result.ts";
@@ -68,7 +68,7 @@ export class Client extends ClientAbstract {
       const messages = decrypted instanceof MessageContainer ? decrypted.messages : [decrypted];
 
       for (const message of messages) {
-        let body = message.body
+        let body = message.body;
         if (body instanceof GZIPPacked) {
           body = new TLReader(gunzip(body.packedData)).readObject();
         }
@@ -78,7 +78,7 @@ export class Client extends ClientAbstract {
         } else if (message.body instanceof RPCResult) {
           let result = message.body.result;
           if (result instanceof GZIPPacked) {
-            result = new TLReader(gunzip(result.packedData)).readObject()
+            result = new TLReader(gunzip(result.packedData)).readObject();
           }
           const promise = this.promises.get(message.body.messageId);
           if (promise) {
@@ -122,9 +122,9 @@ export class Client extends ClientAbstract {
     }
   }
 
-  async invoke<T extends (Function<unknown> | Constructor) = Function<unknown>>(function_: T): Promise<T extends Function<unknown> ? T["__R"] : void>;
-  async invoke<T extends (Function<unknown> | Constructor) = Function<unknown>>(function_: T, noWait: true): Promise<void>;
-  async invoke<T extends (Function<unknown> | Constructor) = Function<unknown>>(function_: T, noWait?: boolean): Promise<T | void> {
+  async invoke<T extends (Function<unknown> | Type) = Function<unknown>>(function_: T): Promise<T extends Function<unknown> ? T["__R"] : void>;
+  async invoke<T extends (Function<unknown> | Type) = Function<unknown>>(function_: T, noWait: true): Promise<void>;
+  async invoke<T extends (Function<unknown> | Type) = Function<unknown>>(function_: T, noWait?: boolean): Promise<T | void> {
     if (!this.auth) {
       throw new Error("Not connected");
     }
@@ -160,7 +160,7 @@ export class Client extends ClientAbstract {
     }
   }
 
-  send<T extends (Function<unknown> | Constructor) = Function<unknown>>(function_: T) {
+  send<T extends (Function<unknown> | Type) = Function<unknown>>(function_: T) {
     return this.invoke(function_, true);
   }
 }
