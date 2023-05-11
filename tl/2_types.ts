@@ -1,1260 +1,1260 @@
 import { flags, id, ParamDesc, paramDesc, Params, params, TLObject, TLObjectConstructor } from "./1_tl_object.ts";
 
-export abstract class Constructor extends TLObject {
+export abstract class Type extends TLObject {
 }
 
 // Uknown type
-export abstract class TypeX extends Constructor {}
+export abstract class TypeX extends Type {}
 
-export abstract class TypeResPQ extends Constructor {
+export abstract class TypeResPQ extends Type {
 }
 
-export abstract class TypePQInnerData extends Constructor {
+export abstract class TypePQInnerData extends Type {
 }
 
-export abstract class TypeServerDHParams extends Constructor {
+export abstract class TypeServerDHParams extends Type {
 }
 
-export abstract class TypeServerDHInnerData extends Constructor {
+export abstract class TypeServerDHInnerData extends Type {
 }
 
-export abstract class TypeClientDHInnerData extends Constructor {
+export abstract class TypeClientDHInnerData extends Type {
 }
 
-export abstract class TypeSetClientDHParamsAnswer extends Constructor {
+export abstract class TypeSetClientDHParamsAnswer extends Type {
 }
 
-export abstract class TypeBindAuthKeyInner extends Constructor {
+export abstract class TypeBindAuthKeyInner extends Type {
 }
 
-export abstract class TypeRpcError extends Constructor {
+export abstract class TypeRpcError extends Type {
 }
 
-export abstract class TypeRpcDropAnswer extends Constructor {
+export abstract class TypeRpcDropAnswer extends Type {
 }
 
-export abstract class TypeFutureSalt extends Constructor {
+export abstract class TypeFutureSalt extends Type {
 }
 
-export abstract class TypeFutureSalts extends Constructor {
+export abstract class TypeFutureSalts extends Type {
 }
 
-export abstract class TypePong extends Constructor {
+export abstract class TypePong extends Type {
 }
 
-export abstract class TypeDestroySessionRes extends Constructor {
+export abstract class TypeDestroySessionRes extends Type {
 }
 
-export abstract class TypeNewSession extends Constructor {
+export abstract class TypeNewSession extends Type {
 }
 
-export abstract class TypeObject extends Constructor {
+export abstract class TypeObject extends Type {
 }
 
-export abstract class TypeMsgsAck extends Constructor {
+export abstract class TypeMsgsAck extends Type {
 }
 
-export abstract class TypeBadMsgNotification extends Constructor {
+export abstract class TypeBadMsgNotification extends Type {
 }
 
-export abstract class TypeMsgResendReq extends Constructor {
+export abstract class TypeMsgResendReq extends Type {
 }
 
-export abstract class TypeMsgsStateReq extends Constructor {
+export abstract class TypeMsgsStateReq extends Type {
 }
 
-export abstract class TypeMsgsStateInfo extends Constructor {
+export abstract class TypeMsgsStateInfo extends Type {
 }
 
-export abstract class TypeMsgsAllInfo extends Constructor {
+export abstract class TypeMsgsAllInfo extends Type {
 }
 
-export abstract class TypeMsgDetailedInfo extends Constructor {
+export abstract class TypeMsgDetailedInfo extends Type {
 }
 
-export abstract class TypeDestroyAuthKeyRes extends Constructor {
+export abstract class TypeDestroyAuthKeyRes extends Type {
 }
 
-export abstract class TypeHttpWait extends Constructor {
+export abstract class TypeHttpWait extends Type {
 }
 
-export abstract class TypeTrue extends Constructor {
+export abstract class TypeTrue extends Type {
 }
 
-export abstract class TypeError extends Constructor {
+export abstract class TypeError extends Type {
 }
 
-export abstract class TypeNull extends Constructor {
+export abstract class TypeNull extends Type {
 }
 
-export abstract class TypeInputPeer extends Constructor {
+export abstract class TypeInputPeer extends Type {
 }
 
-export abstract class TypeInputUser extends Constructor {
+export abstract class TypeInputUser extends Type {
 }
 
-export abstract class TypeInputContact extends Constructor {
+export abstract class TypeInputContact extends Type {
 }
 
-export abstract class TypeInputFile extends Constructor {
+export abstract class TypeInputFile extends Type {
 }
 
-export abstract class TypeInputMedia extends Constructor {
+export abstract class TypeInputMedia extends Type {
 }
 
-export abstract class TypeInputChatPhoto extends Constructor {
+export abstract class TypeInputChatPhoto extends Type {
 }
 
-export abstract class TypeInputGeoPoint extends Constructor {
+export abstract class TypeInputGeoPoint extends Type {
 }
 
-export abstract class TypeInputPhoto extends Constructor {
+export abstract class TypeInputPhoto extends Type {
 }
 
-export abstract class TypeInputFileLocation extends Constructor {
+export abstract class TypeInputFileLocation extends Type {
 }
 
-export abstract class TypePeer extends Constructor {
+export abstract class TypePeer extends Type {
 }
 
-export abstract class TypeStorageFileType extends Constructor {
+export abstract class TypeStorageFileType extends Type {
 }
 
-export abstract class TypeUser extends Constructor {
+export abstract class TypeUser extends Type {
 }
 
-export abstract class TypeUserProfilePhoto extends Constructor {
+export abstract class TypeUserProfilePhoto extends Type {
 }
 
-export abstract class TypeUserStatus extends Constructor {
+export abstract class TypeUserStatus extends Type {
 }
 
-export abstract class TypeChat extends Constructor {
+export abstract class TypeChat extends Type {
 }
 
-export abstract class TypeChatFull extends Constructor {
+export abstract class TypeChatFull extends Type {
 }
 
-export abstract class TypeChatParticipant extends Constructor {
+export abstract class TypeChatParticipant extends Type {
 }
 
-export abstract class TypeChatParticipants extends Constructor {
+export abstract class TypeChatParticipants extends Type {
 }
 
-export abstract class TypeChatPhoto extends Constructor {
+export abstract class TypeChatPhoto extends Type {
 }
 
-export abstract class TypeMessage extends Constructor {
+export abstract class TypeMessage extends Type {
 }
 
-export abstract class TypeMessageMedia extends Constructor {
+export abstract class TypeMessageMedia extends Type {
 }
 
-export abstract class TypeMessageAction extends Constructor {
+export abstract class TypeMessageAction extends Type {
 }
 
-export abstract class TypeDialog extends Constructor {
+export abstract class TypeDialog extends Type {
 }
 
-export abstract class TypePhoto extends Constructor {
+export abstract class TypePhoto extends Type {
 }
 
-export abstract class TypePhotoSize extends Constructor {
+export abstract class TypePhotoSize extends Type {
 }
 
-export abstract class TypeGeoPoint extends Constructor {
+export abstract class TypeGeoPoint extends Type {
 }
 
-export abstract class TypeAuthSentCode extends Constructor {
+export abstract class TypeAuthSentCode extends Type {
 }
 
-export abstract class TypeAuthAuthorization extends Constructor {
+export abstract class TypeAuthAuthorization extends Type {
 }
 
-export abstract class TypeAuthExportedAuthorization extends Constructor {
+export abstract class TypeAuthExportedAuthorization extends Type {
 }
 
-export abstract class TypeInputNotifyPeer extends Constructor {
+export abstract class TypeInputNotifyPeer extends Type {
 }
 
-export abstract class TypeInputPeerNotifySettings extends Constructor {
+export abstract class TypeInputPeerNotifySettings extends Type {
 }
 
-export abstract class TypePeerNotifySettings extends Constructor {
+export abstract class TypePeerNotifySettings extends Type {
 }
 
-export abstract class TypePeerSettings extends Constructor {
+export abstract class TypePeerSettings extends Type {
 }
 
-export abstract class TypeWallPaper extends Constructor {
+export abstract class TypeWallPaper extends Type {
 }
 
-export abstract class TypeReportReason extends Constructor {
+export abstract class TypeReportReason extends Type {
 }
 
-export abstract class TypeUserFull extends Constructor {
+export abstract class TypeUserFull extends Type {
 }
 
-export abstract class TypeContact extends Constructor {
+export abstract class TypeContact extends Type {
 }
 
-export abstract class TypeImportedContact extends Constructor {
+export abstract class TypeImportedContact extends Type {
 }
 
-export abstract class TypeContactStatus extends Constructor {
+export abstract class TypeContactStatus extends Type {
 }
 
-export abstract class TypeContactsContacts extends Constructor {
+export abstract class TypeContactsContacts extends Type {
 }
 
-export abstract class TypeContactsImportedContacts extends Constructor {
+export abstract class TypeContactsImportedContacts extends Type {
 }
 
-export abstract class TypeContactsBlocked extends Constructor {
+export abstract class TypeContactsBlocked extends Type {
 }
 
-export abstract class TypeMessagesDialogs extends Constructor {
+export abstract class TypeMessagesDialogs extends Type {
 }
 
-export abstract class TypeMessagesMessages extends Constructor {
+export abstract class TypeMessagesMessages extends Type {
 }
 
-export abstract class TypeMessagesChats extends Constructor {
+export abstract class TypeMessagesChats extends Type {
 }
 
-export abstract class TypeMessagesChatFull extends Constructor {
+export abstract class TypeMessagesChatFull extends Type {
 }
 
-export abstract class TypeMessagesAffectedHistory extends Constructor {
+export abstract class TypeMessagesAffectedHistory extends Type {
 }
 
-export abstract class TypeMessagesFilter extends Constructor {
+export abstract class TypeMessagesFilter extends Type {
 }
 
-export abstract class TypeUpdate extends Constructor {
+export abstract class TypeUpdate extends Type {
 }
 
-export abstract class TypeUpdatesState extends Constructor {
+export abstract class TypeUpdatesState extends Type {
 }
 
-export abstract class TypeUpdatesDifference extends Constructor {
+export abstract class TypeUpdatesDifference extends Type {
 }
 
-export abstract class TypeUpdates extends Constructor {
+export abstract class TypeUpdates extends Type {
 }
 
-export abstract class TypePhotosPhotos extends Constructor {
+export abstract class TypePhotosPhotos extends Type {
 }
 
-export abstract class TypePhotosPhoto extends Constructor {
+export abstract class TypePhotosPhoto extends Type {
 }
 
-export abstract class TypeUploadFile extends Constructor {
+export abstract class TypeUploadFile extends Type {
 }
 
-export abstract class TypeDcOption extends Constructor {
+export abstract class TypeDcOption extends Type {
 }
 
-export abstract class TypeConfig extends Constructor {
+export abstract class TypeConfig extends Type {
 }
 
-export abstract class TypeNearestDc extends Constructor {
+export abstract class TypeNearestDc extends Type {
 }
 
-export abstract class TypeHelpAppUpdate extends Constructor {
+export abstract class TypeHelpAppUpdate extends Type {
 }
 
-export abstract class TypeHelpInviteText extends Constructor {
+export abstract class TypeHelpInviteText extends Type {
 }
 
-export abstract class TypeEncryptedChat extends Constructor {
+export abstract class TypeEncryptedChat extends Type {
 }
 
-export abstract class TypeInputEncryptedChat extends Constructor {
+export abstract class TypeInputEncryptedChat extends Type {
 }
 
-export abstract class TypeEncryptedFile extends Constructor {
+export abstract class TypeEncryptedFile extends Type {
 }
 
-export abstract class TypeInputEncryptedFile extends Constructor {
+export abstract class TypeInputEncryptedFile extends Type {
 }
 
-export abstract class TypeEncryptedMessage extends Constructor {
+export abstract class TypeEncryptedMessage extends Type {
 }
 
-export abstract class TypeMessagesDhConfig extends Constructor {
+export abstract class TypeMessagesDhConfig extends Type {
 }
 
-export abstract class TypeMessagesSentEncryptedMessage extends Constructor {
+export abstract class TypeMessagesSentEncryptedMessage extends Type {
 }
 
-export abstract class TypeInputDocument extends Constructor {
+export abstract class TypeInputDocument extends Type {
 }
 
-export abstract class TypeDocument extends Constructor {
+export abstract class TypeDocument extends Type {
 }
 
-export abstract class TypeHelpSupport extends Constructor {
+export abstract class TypeHelpSupport extends Type {
 }
 
-export abstract class TypeNotifyPeer extends Constructor {
+export abstract class TypeNotifyPeer extends Type {
 }
 
-export abstract class TypeSendMessageAction extends Constructor {
+export abstract class TypeSendMessageAction extends Type {
 }
 
-export abstract class TypeContactsFound extends Constructor {
+export abstract class TypeContactsFound extends Type {
 }
 
-export abstract class TypeInputPrivacyKey extends Constructor {
+export abstract class TypeInputPrivacyKey extends Type {
 }
 
-export abstract class TypePrivacyKey extends Constructor {
+export abstract class TypePrivacyKey extends Type {
 }
 
-export abstract class TypeInputPrivacyRule extends Constructor {
+export abstract class TypeInputPrivacyRule extends Type {
 }
 
-export abstract class TypePrivacyRule extends Constructor {
+export abstract class TypePrivacyRule extends Type {
 }
 
-export abstract class TypeAccountPrivacyRules extends Constructor {
+export abstract class TypeAccountPrivacyRules extends Type {
 }
 
-export abstract class TypeAccountDaysTTL extends Constructor {
+export abstract class TypeAccountDaysTTL extends Type {
 }
 
-export abstract class TypeDocumentAttribute extends Constructor {
+export abstract class TypeDocumentAttribute extends Type {
 }
 
-export abstract class TypeMessagesStickers extends Constructor {
+export abstract class TypeMessagesStickers extends Type {
 }
 
-export abstract class TypeStickerPack extends Constructor {
+export abstract class TypeStickerPack extends Type {
 }
 
-export abstract class TypeMessagesAllStickers extends Constructor {
+export abstract class TypeMessagesAllStickers extends Type {
 }
 
-export abstract class TypeMessagesAffectedMessages extends Constructor {
+export abstract class TypeMessagesAffectedMessages extends Type {
 }
 
-export abstract class TypeWebPage extends Constructor {
+export abstract class TypeWebPage extends Type {
 }
 
-export abstract class TypeAuthorization extends Constructor {
+export abstract class TypeAuthorization extends Type {
 }
 
-export abstract class TypeAccountAuthorizations extends Constructor {
+export abstract class TypeAccountAuthorizations extends Type {
 }
 
-export abstract class TypeAccountPassword extends Constructor {
+export abstract class TypeAccountPassword extends Type {
 }
 
-export abstract class TypeAccountPasswordSettings extends Constructor {
+export abstract class TypeAccountPasswordSettings extends Type {
 }
 
-export abstract class TypeAccountPasswordInputSettings extends Constructor {
+export abstract class TypeAccountPasswordInputSettings extends Type {
 }
 
-export abstract class TypeAuthPasswordRecovery extends Constructor {
+export abstract class TypeAuthPasswordRecovery extends Type {
 }
 
-export abstract class TypeReceivedNotifyMessage extends Constructor {
+export abstract class TypeReceivedNotifyMessage extends Type {
 }
 
-export abstract class TypeExportedChatInvite extends Constructor {
+export abstract class TypeExportedChatInvite extends Type {
 }
 
-export abstract class TypeChatInvite extends Constructor {
+export abstract class TypeChatInvite extends Type {
 }
 
-export abstract class TypeInputStickerSet extends Constructor {
+export abstract class TypeInputStickerSet extends Type {
 }
 
-export abstract class TypeStickerSet extends Constructor {
+export abstract class TypeStickerSet extends Type {
 }
 
-export abstract class TypeMessagesStickerSet extends Constructor {
+export abstract class TypeMessagesStickerSet extends Type {
 }
 
-export abstract class TypeBotCommand extends Constructor {
+export abstract class TypeBotCommand extends Type {
 }
 
-export abstract class TypeBotInfo extends Constructor {
+export abstract class TypeBotInfo extends Type {
 }
 
-export abstract class TypeKeyboardButton extends Constructor {
+export abstract class TypeKeyboardButton extends Type {
 }
 
-export abstract class TypeKeyboardButtonRow extends Constructor {
+export abstract class TypeKeyboardButtonRow extends Type {
 }
 
-export abstract class TypeReplyMarkup extends Constructor {
+export abstract class TypeReplyMarkup extends Type {
 }
 
-export abstract class TypeMessageEntity extends Constructor {
+export abstract class TypeMessageEntity extends Type {
 }
 
-export abstract class TypeInputChannel extends Constructor {
+export abstract class TypeInputChannel extends Type {
 }
 
-export abstract class TypeContactsResolvedPeer extends Constructor {
+export abstract class TypeContactsResolvedPeer extends Type {
 }
 
-export abstract class TypeMessageRange extends Constructor {
+export abstract class TypeMessageRange extends Type {
 }
 
-export abstract class TypeUpdatesChannelDifference extends Constructor {
+export abstract class TypeUpdatesChannelDifference extends Type {
 }
 
-export abstract class TypeChannelMessagesFilter extends Constructor {
+export abstract class TypeChannelMessagesFilter extends Type {
 }
 
-export abstract class TypeChannelParticipant extends Constructor {
+export abstract class TypeChannelParticipant extends Type {
 }
 
-export abstract class TypeChannelParticipantsFilter extends Constructor {
+export abstract class TypeChannelParticipantsFilter extends Type {
 }
 
-export abstract class TypeChannelsChannelParticipants extends Constructor {
+export abstract class TypeChannelsChannelParticipants extends Type {
 }
 
-export abstract class TypeChannelsChannelParticipant extends Constructor {
+export abstract class TypeChannelsChannelParticipant extends Type {
 }
 
-export abstract class TypeHelpTermsOfService extends Constructor {
+export abstract class TypeHelpTermsOfService extends Type {
 }
 
-export abstract class TypeMessagesSavedGifs extends Constructor {
+export abstract class TypeMessagesSavedGifs extends Type {
 }
 
-export abstract class TypeInputBotInlineMessage extends Constructor {
+export abstract class TypeInputBotInlineMessage extends Type {
 }
 
-export abstract class TypeInputBotInlineResult extends Constructor {
+export abstract class TypeInputBotInlineResult extends Type {
 }
 
-export abstract class TypeBotInlineMessage extends Constructor {
+export abstract class TypeBotInlineMessage extends Type {
 }
 
-export abstract class TypeBotInlineResult extends Constructor {
+export abstract class TypeBotInlineResult extends Type {
 }
 
-export abstract class TypeMessagesBotResults extends Constructor {
+export abstract class TypeMessagesBotResults extends Type {
 }
 
-export abstract class TypeExportedMessageLink extends Constructor {
+export abstract class TypeExportedMessageLink extends Type {
 }
 
-export abstract class TypeMessageFwdHeader extends Constructor {
+export abstract class TypeMessageFwdHeader extends Type {
 }
 
-export abstract class TypeAuthCodeType extends Constructor {
+export abstract class TypeAuthCodeType extends Type {
 }
 
-export abstract class TypeAuthSentCodeType extends Constructor {
+export abstract class TypeAuthSentCodeType extends Type {
 }
 
-export abstract class TypeMessagesBotCallbackAnswer extends Constructor {
+export abstract class TypeMessagesBotCallbackAnswer extends Type {
 }
 
-export abstract class TypeMessagesMessageEditData extends Constructor {
+export abstract class TypeMessagesMessageEditData extends Type {
 }
 
-export abstract class TypeInputBotInlineMessageID extends Constructor {
+export abstract class TypeInputBotInlineMessageID extends Type {
 }
 
-export abstract class TypeInlineBotSwitchPM extends Constructor {
+export abstract class TypeInlineBotSwitchPM extends Type {
 }
 
-export abstract class TypeMessagesPeerDialogs extends Constructor {
+export abstract class TypeMessagesPeerDialogs extends Type {
 }
 
-export abstract class TypeTopPeer extends Constructor {
+export abstract class TypeTopPeer extends Type {
 }
 
-export abstract class TypeTopPeerCategory extends Constructor {
+export abstract class TypeTopPeerCategory extends Type {
 }
 
-export abstract class TypeTopPeerCategoryPeers extends Constructor {
+export abstract class TypeTopPeerCategoryPeers extends Type {
 }
 
-export abstract class TypeContactsTopPeers extends Constructor {
+export abstract class TypeContactsTopPeers extends Type {
 }
 
-export abstract class TypeDraftMessage extends Constructor {
+export abstract class TypeDraftMessage extends Type {
 }
 
-export abstract class TypeMessagesFeaturedStickers extends Constructor {
+export abstract class TypeMessagesFeaturedStickers extends Type {
 }
 
-export abstract class TypeMessagesRecentStickers extends Constructor {
+export abstract class TypeMessagesRecentStickers extends Type {
 }
 
-export abstract class TypeMessagesArchivedStickers extends Constructor {
+export abstract class TypeMessagesArchivedStickers extends Type {
 }
 
-export abstract class TypeMessagesStickerSetInstallResult extends Constructor {
+export abstract class TypeMessagesStickerSetInstallResult extends Type {
 }
 
-export abstract class TypeStickerSetCovered extends Constructor {
+export abstract class TypeStickerSetCovered extends Type {
 }
 
-export abstract class TypeMaskCoords extends Constructor {
+export abstract class TypeMaskCoords extends Type {
 }
 
-export abstract class TypeInputStickeredMedia extends Constructor {
+export abstract class TypeInputStickeredMedia extends Type {
 }
 
-export abstract class TypeGame extends Constructor {
+export abstract class TypeGame extends Type {
 }
 
-export abstract class TypeInputGame extends Constructor {
+export abstract class TypeInputGame extends Type {
 }
 
-export abstract class TypeHighScore extends Constructor {
+export abstract class TypeHighScore extends Type {
 }
 
-export abstract class TypeMessagesHighScores extends Constructor {
+export abstract class TypeMessagesHighScores extends Type {
 }
 
-export abstract class TypeRichText extends Constructor {
+export abstract class TypeRichText extends Type {
 }
 
-export abstract class TypePageBlock extends Constructor {
+export abstract class TypePageBlock extends Type {
 }
 
-export abstract class TypePhoneCallDiscardReason extends Constructor {
+export abstract class TypePhoneCallDiscardReason extends Type {
 }
 
-export abstract class TypeDataJSON extends Constructor {
+export abstract class TypeDataJSON extends Type {
 }
 
-export abstract class TypeLabeledPrice extends Constructor {
+export abstract class TypeLabeledPrice extends Type {
 }
 
-export abstract class TypeInvoice extends Constructor {
+export abstract class TypeInvoice extends Type {
 }
 
-export abstract class TypePaymentCharge extends Constructor {
+export abstract class TypePaymentCharge extends Type {
 }
 
-export abstract class TypePostAddress extends Constructor {
+export abstract class TypePostAddress extends Type {
 }
 
-export abstract class TypePaymentRequestedInfo extends Constructor {
+export abstract class TypePaymentRequestedInfo extends Type {
 }
 
-export abstract class TypePaymentSavedCredentials extends Constructor {
+export abstract class TypePaymentSavedCredentials extends Type {
 }
 
-export abstract class TypeWebDocument extends Constructor {
+export abstract class TypeWebDocument extends Type {
 }
 
-export abstract class TypeInputWebDocument extends Constructor {
+export abstract class TypeInputWebDocument extends Type {
 }
 
-export abstract class TypeInputWebFileLocation extends Constructor {
+export abstract class TypeInputWebFileLocation extends Type {
 }
 
-export abstract class TypeUploadWebFile extends Constructor {
+export abstract class TypeUploadWebFile extends Type {
 }
 
-export abstract class TypePaymentsPaymentForm extends Constructor {
+export abstract class TypePaymentsPaymentForm extends Type {
 }
 
-export abstract class TypePaymentsValidatedRequestedInfo extends Constructor {
+export abstract class TypePaymentsValidatedRequestedInfo extends Type {
 }
 
-export abstract class TypePaymentsPaymentResult extends Constructor {
+export abstract class TypePaymentsPaymentResult extends Type {
 }
 
-export abstract class TypePaymentsPaymentReceipt extends Constructor {
+export abstract class TypePaymentsPaymentReceipt extends Type {
 }
 
-export abstract class TypePaymentsSavedInfo extends Constructor {
+export abstract class TypePaymentsSavedInfo extends Type {
 }
 
-export abstract class TypeInputPaymentCredentials extends Constructor {
+export abstract class TypeInputPaymentCredentials extends Type {
 }
 
-export abstract class TypeAccountTmpPassword extends Constructor {
+export abstract class TypeAccountTmpPassword extends Type {
 }
 
-export abstract class TypeShippingOption extends Constructor {
+export abstract class TypeShippingOption extends Type {
 }
 
-export abstract class TypeInputStickerSetItem extends Constructor {
+export abstract class TypeInputStickerSetItem extends Type {
 }
 
-export abstract class TypeInputPhoneCall extends Constructor {
+export abstract class TypeInputPhoneCall extends Type {
 }
 
-export abstract class TypePhoneCall extends Constructor {
+export abstract class TypePhoneCall extends Type {
 }
 
-export abstract class TypePhoneConnection extends Constructor {
+export abstract class TypePhoneConnection extends Type {
 }
 
-export abstract class TypePhoneCallProtocol extends Constructor {
+export abstract class TypePhoneCallProtocol extends Type {
 }
 
-export abstract class TypePhonePhoneCall extends Constructor {
+export abstract class TypePhonePhoneCall extends Type {
 }
 
-export abstract class TypeUploadCdnFile extends Constructor {
+export abstract class TypeUploadCdnFile extends Type {
 }
 
-export abstract class TypeCdnPublicKey extends Constructor {
+export abstract class TypeCdnPublicKey extends Type {
 }
 
-export abstract class TypeCdnConfig extends Constructor {
+export abstract class TypeCdnConfig extends Type {
 }
 
-export abstract class TypeLangPackString extends Constructor {
+export abstract class TypeLangPackString extends Type {
 }
 
-export abstract class TypeLangPackDifference extends Constructor {
+export abstract class TypeLangPackDifference extends Type {
 }
 
-export abstract class TypeLangPackLanguage extends Constructor {
+export abstract class TypeLangPackLanguage extends Type {
 }
 
-export abstract class TypeChannelAdminLogEventAction extends Constructor {
+export abstract class TypeChannelAdminLogEventAction extends Type {
 }
 
-export abstract class TypeChannelAdminLogEvent extends Constructor {
+export abstract class TypeChannelAdminLogEvent extends Type {
 }
 
-export abstract class TypeChannelsAdminLogResults extends Constructor {
+export abstract class TypeChannelsAdminLogResults extends Type {
 }
 
-export abstract class TypeChannelAdminLogEventsFilter extends Constructor {
+export abstract class TypeChannelAdminLogEventsFilter extends Type {
 }
 
-export abstract class TypePopularContact extends Constructor {
+export abstract class TypePopularContact extends Type {
 }
 
-export abstract class TypeMessagesFavedStickers extends Constructor {
+export abstract class TypeMessagesFavedStickers extends Type {
 }
 
-export abstract class TypeRecentMeURL extends Constructor {
+export abstract class TypeRecentMeURL extends Type {
 }
 
-export abstract class TypeHelpRecentMeURLs extends Constructor {
+export abstract class TypeHelpRecentMeURLs extends Type {
 }
 
-export abstract class TypeInputSingleMedia extends Constructor {
+export abstract class TypeInputSingleMedia extends Type {
 }
 
-export abstract class TypeWebAuthorization extends Constructor {
+export abstract class TypeWebAuthorization extends Type {
 }
 
-export abstract class TypeAccountWebAuthorizations extends Constructor {
+export abstract class TypeAccountWebAuthorizations extends Type {
 }
 
-export abstract class TypeInputMessage extends Constructor {
+export abstract class TypeInputMessage extends Type {
 }
 
-export abstract class TypeInputDialogPeer extends Constructor {
+export abstract class TypeInputDialogPeer extends Type {
 }
 
-export abstract class TypeDialogPeer extends Constructor {
+export abstract class TypeDialogPeer extends Type {
 }
 
-export abstract class TypeMessagesFoundStickerSets extends Constructor {
+export abstract class TypeMessagesFoundStickerSets extends Type {
 }
 
-export abstract class TypeFileHash extends Constructor {
+export abstract class TypeFileHash extends Type {
 }
 
-export abstract class TypeInputClientProxy extends Constructor {
+export abstract class TypeInputClientProxy extends Type {
 }
 
-export abstract class TypeHelpTermsOfServiceUpdate extends Constructor {
+export abstract class TypeHelpTermsOfServiceUpdate extends Type {
 }
 
-export abstract class TypeInputSecureFile extends Constructor {
+export abstract class TypeInputSecureFile extends Type {
 }
 
-export abstract class TypeSecureFile extends Constructor {
+export abstract class TypeSecureFile extends Type {
 }
 
-export abstract class TypeSecureData extends Constructor {
+export abstract class TypeSecureData extends Type {
 }
 
-export abstract class TypeSecurePlainData extends Constructor {
+export abstract class TypeSecurePlainData extends Type {
 }
 
-export abstract class TypeSecureValueType extends Constructor {
+export abstract class TypeSecureValueType extends Type {
 }
 
-export abstract class TypeSecureValue extends Constructor {
+export abstract class TypeSecureValue extends Type {
 }
 
-export abstract class TypeInputSecureValue extends Constructor {
+export abstract class TypeInputSecureValue extends Type {
 }
 
-export abstract class TypeSecureValueHash extends Constructor {
+export abstract class TypeSecureValueHash extends Type {
 }
 
-export abstract class TypeSecureValueError extends Constructor {
+export abstract class TypeSecureValueError extends Type {
 }
 
-export abstract class TypeSecureCredentialsEncrypted extends Constructor {
+export abstract class TypeSecureCredentialsEncrypted extends Type {
 }
 
-export abstract class TypeAccountAuthorizationForm extends Constructor {
+export abstract class TypeAccountAuthorizationForm extends Type {
 }
 
-export abstract class TypeAccountSentEmailCode extends Constructor {
+export abstract class TypeAccountSentEmailCode extends Type {
 }
 
-export abstract class TypeHelpDeepLinkInfo extends Constructor {
+export abstract class TypeHelpDeepLinkInfo extends Type {
 }
 
-export abstract class TypeSavedContact extends Constructor {
+export abstract class TypeSavedContact extends Type {
 }
 
-export abstract class TypeAccountTakeout extends Constructor {
+export abstract class TypeAccountTakeout extends Type {
 }
 
-export abstract class TypePasswordKdfAlgo extends Constructor {
+export abstract class TypePasswordKdfAlgo extends Type {
 }
 
-export abstract class TypeSecurePasswordKdfAlgo extends Constructor {
+export abstract class TypeSecurePasswordKdfAlgo extends Type {
 }
 
-export abstract class TypeSecureSecretSettings extends Constructor {
+export abstract class TypeSecureSecretSettings extends Type {
 }
 
-export abstract class TypeInputCheckPasswordSRP extends Constructor {
+export abstract class TypeInputCheckPasswordSRP extends Type {
 }
 
-export abstract class TypeSecureRequiredType extends Constructor {
+export abstract class TypeSecureRequiredType extends Type {
 }
 
-export abstract class TypeHelpPassportConfig extends Constructor {
+export abstract class TypeHelpPassportConfig extends Type {
 }
 
-export abstract class TypeInputAppEvent extends Constructor {
+export abstract class TypeInputAppEvent extends Type {
 }
 
-export abstract class TypeJSONObjectValue extends Constructor {
+export abstract class TypeJSONObjectValue extends Type {
 }
 
-export abstract class TypeJSONValue extends Constructor {
+export abstract class TypeJSONValue extends Type {
 }
 
-export abstract class TypePageTableCell extends Constructor {
+export abstract class TypePageTableCell extends Type {
 }
 
-export abstract class TypePageTableRow extends Constructor {
+export abstract class TypePageTableRow extends Type {
 }
 
-export abstract class TypePageCaption extends Constructor {
+export abstract class TypePageCaption extends Type {
 }
 
-export abstract class TypePageListItem extends Constructor {
+export abstract class TypePageListItem extends Type {
 }
 
-export abstract class TypePageListOrderedItem extends Constructor {
+export abstract class TypePageListOrderedItem extends Type {
 }
 
-export abstract class TypePageRelatedArticle extends Constructor {
+export abstract class TypePageRelatedArticle extends Type {
 }
 
-export abstract class TypePage extends Constructor {
+export abstract class TypePage extends Type {
 }
 
-export abstract class TypeHelpSupportName extends Constructor {
+export abstract class TypeHelpSupportName extends Type {
 }
 
-export abstract class TypeHelpUserInfo extends Constructor {
+export abstract class TypeHelpUserInfo extends Type {
 }
 
-export abstract class TypePollAnswer extends Constructor {
+export abstract class TypePollAnswer extends Type {
 }
 
-export abstract class TypePoll extends Constructor {
+export abstract class TypePoll extends Type {
 }
 
-export abstract class TypePollAnswerVoters extends Constructor {
+export abstract class TypePollAnswerVoters extends Type {
 }
 
-export abstract class TypePollResults extends Constructor {
+export abstract class TypePollResults extends Type {
 }
 
-export abstract class TypeChatOnlines extends Constructor {
+export abstract class TypeChatOnlines extends Type {
 }
 
-export abstract class TypeStatsURL extends Constructor {
+export abstract class TypeStatsURL extends Type {
 }
 
-export abstract class TypeChatAdminRights extends Constructor {
+export abstract class TypeChatAdminRights extends Type {
 }
 
-export abstract class TypeChatBannedRights extends Constructor {
+export abstract class TypeChatBannedRights extends Type {
 }
 
-export abstract class TypeInputWallPaper extends Constructor {
+export abstract class TypeInputWallPaper extends Type {
 }
 
-export abstract class TypeAccountWallPapers extends Constructor {
+export abstract class TypeAccountWallPapers extends Type {
 }
 
-export abstract class TypeCodeSettings extends Constructor {
+export abstract class TypeCodeSettings extends Type {
 }
 
-export abstract class TypeWallPaperSettings extends Constructor {
+export abstract class TypeWallPaperSettings extends Type {
 }
 
-export abstract class TypeAutoDownloadSettings extends Constructor {
+export abstract class TypeAutoDownloadSettings extends Type {
 }
 
-export abstract class TypeAccountAutoDownloadSettings extends Constructor {
+export abstract class TypeAccountAutoDownloadSettings extends Type {
 }
 
-export abstract class TypeEmojiKeyword extends Constructor {
+export abstract class TypeEmojiKeyword extends Type {
 }
 
-export abstract class TypeEmojiKeywordsDifference extends Constructor {
+export abstract class TypeEmojiKeywordsDifference extends Type {
 }
 
-export abstract class TypeEmojiURL extends Constructor {
+export abstract class TypeEmojiURL extends Type {
 }
 
-export abstract class TypeEmojiLanguage extends Constructor {
+export abstract class TypeEmojiLanguage extends Type {
 }
 
-export abstract class TypeFolder extends Constructor {
+export abstract class TypeFolder extends Type {
 }
 
-export abstract class TypeInputFolderPeer extends Constructor {
+export abstract class TypeInputFolderPeer extends Type {
 }
 
-export abstract class TypeFolderPeer extends Constructor {
+export abstract class TypeFolderPeer extends Type {
 }
 
-export abstract class TypeMessagesSearchCounter extends Constructor {
+export abstract class TypeMessagesSearchCounter extends Type {
 }
 
-export abstract class TypeURLAuthResult extends Constructor {
+export abstract class TypeURLAuthResult extends Type {
 }
 
-export abstract class TypeChannelLocation extends Constructor {
+export abstract class TypeChannelLocation extends Type {
 }
 
-export abstract class TypePeerLocated extends Constructor {
+export abstract class TypePeerLocated extends Type {
 }
 
-export abstract class TypeRestrictionReason extends Constructor {
+export abstract class TypeRestrictionReason extends Type {
 }
 
-export abstract class TypeInputTheme extends Constructor {
+export abstract class TypeInputTheme extends Type {
 }
 
-export abstract class TypeTheme extends Constructor {
+export abstract class TypeTheme extends Type {
 }
 
-export abstract class TypeAccountThemes extends Constructor {
+export abstract class TypeAccountThemes extends Type {
 }
 
-export abstract class TypeAuthLoginToken extends Constructor {
+export abstract class TypeAuthLoginToken extends Type {
 }
 
-export abstract class TypeAccountContentSettings extends Constructor {
+export abstract class TypeAccountContentSettings extends Type {
 }
 
-export abstract class TypeMessagesInactiveChats extends Constructor {
+export abstract class TypeMessagesInactiveChats extends Type {
 }
 
-export abstract class TypeBaseTheme extends Constructor {
+export abstract class TypeBaseTheme extends Type {
 }
 
-export abstract class TypeInputThemeSettings extends Constructor {
+export abstract class TypeInputThemeSettings extends Type {
 }
 
-export abstract class TypeThemeSettings extends Constructor {
+export abstract class TypeThemeSettings extends Type {
 }
 
-export abstract class TypeWebPageAttribute extends Constructor {
+export abstract class TypeWebPageAttribute extends Type {
 }
 
-export abstract class TypeMessageUserVote extends Constructor {
+export abstract class TypeMessageUserVote extends Type {
 }
 
-export abstract class TypeMessagesVotesList extends Constructor {
+export abstract class TypeMessagesVotesList extends Type {
 }
 
-export abstract class TypeBankCardOpenURL extends Constructor {
+export abstract class TypeBankCardOpenURL extends Type {
 }
 
-export abstract class TypePaymentsBankCardData extends Constructor {
+export abstract class TypePaymentsBankCardData extends Type {
 }
 
-export abstract class TypeDialogFilter extends Constructor {
+export abstract class TypeDialogFilter extends Type {
 }
 
-export abstract class TypeDialogFilterSuggested extends Constructor {
+export abstract class TypeDialogFilterSuggested extends Type {
 }
 
-export abstract class TypeStatsDateRangeDays extends Constructor {
+export abstract class TypeStatsDateRangeDays extends Type {
 }
 
-export abstract class TypeStatsAbsValueAndPrev extends Constructor {
+export abstract class TypeStatsAbsValueAndPrev extends Type {
 }
 
-export abstract class TypeStatsPercentValue extends Constructor {
+export abstract class TypeStatsPercentValue extends Type {
 }
 
-export abstract class TypeStatsGraph extends Constructor {
+export abstract class TypeStatsGraph extends Type {
 }
 
-export abstract class TypeMessageInteractionCounters extends Constructor {
+export abstract class TypeMessageInteractionCounters extends Type {
 }
 
-export abstract class TypeStatsBroadcastStats extends Constructor {
+export abstract class TypeStatsBroadcastStats extends Type {
 }
 
-export abstract class TypeHelpPromoData extends Constructor {
+export abstract class TypeHelpPromoData extends Type {
 }
 
-export abstract class TypeVideoSize extends Constructor {
+export abstract class TypeVideoSize extends Type {
 }
 
-export abstract class TypeStatsGroupTopPoster extends Constructor {
+export abstract class TypeStatsGroupTopPoster extends Type {
 }
 
-export abstract class TypeStatsGroupTopAdmin extends Constructor {
+export abstract class TypeStatsGroupTopAdmin extends Type {
 }
 
-export abstract class TypeStatsGroupTopInviter extends Constructor {
+export abstract class TypeStatsGroupTopInviter extends Type {
 }
 
-export abstract class TypeStatsMegagroupStats extends Constructor {
+export abstract class TypeStatsMegagroupStats extends Type {
 }
 
-export abstract class TypeGlobalPrivacySettings extends Constructor {
+export abstract class TypeGlobalPrivacySettings extends Type {
 }
 
-export abstract class TypeHelpCountryCode extends Constructor {
+export abstract class TypeHelpCountryCode extends Type {
 }
 
-export abstract class TypeHelpCountry extends Constructor {
+export abstract class TypeHelpCountry extends Type {
 }
 
-export abstract class TypeHelpCountriesList extends Constructor {
+export abstract class TypeHelpCountriesList extends Type {
 }
 
-export abstract class TypeMessageViews extends Constructor {
+export abstract class TypeMessageViews extends Type {
 }
 
-export abstract class TypeMessagesMessageViews extends Constructor {
+export abstract class TypeMessagesMessageViews extends Type {
 }
 
-export abstract class TypeMessagesDiscussionMessage extends Constructor {
+export abstract class TypeMessagesDiscussionMessage extends Type {
 }
 
-export abstract class TypeMessageReplyHeader extends Constructor {
+export abstract class TypeMessageReplyHeader extends Type {
 }
 
-export abstract class TypeMessageReplies extends Constructor {
+export abstract class TypeMessageReplies extends Type {
 }
 
-export abstract class TypePeerBlocked extends Constructor {
+export abstract class TypePeerBlocked extends Type {
 }
 
-export abstract class TypeStatsMessageStats extends Constructor {
+export abstract class TypeStatsMessageStats extends Type {
 }
 
-export abstract class TypeGroupCall extends Constructor {
+export abstract class TypeGroupCall extends Type {
 }
 
-export abstract class TypeInputGroupCall extends Constructor {
+export abstract class TypeInputGroupCall extends Type {
 }
 
-export abstract class TypeGroupCallParticipant extends Constructor {
+export abstract class TypeGroupCallParticipant extends Type {
 }
 
-export abstract class TypePhoneGroupCall extends Constructor {
+export abstract class TypePhoneGroupCall extends Type {
 }
 
-export abstract class TypePhoneGroupParticipants extends Constructor {
+export abstract class TypePhoneGroupParticipants extends Type {
 }
 
-export abstract class TypeInlineQueryPeerType extends Constructor {
+export abstract class TypeInlineQueryPeerType extends Type {
 }
 
-export abstract class TypeMessagesHistoryImport extends Constructor {
+export abstract class TypeMessagesHistoryImport extends Type {
 }
 
-export abstract class TypeMessagesHistoryImportParsed extends Constructor {
+export abstract class TypeMessagesHistoryImportParsed extends Type {
 }
 
-export abstract class TypeMessagesAffectedFoundMessages extends Constructor {
+export abstract class TypeMessagesAffectedFoundMessages extends Type {
 }
 
-export abstract class TypeChatInviteImporter extends Constructor {
+export abstract class TypeChatInviteImporter extends Type {
 }
 
-export abstract class TypeMessagesExportedChatInvites extends Constructor {
+export abstract class TypeMessagesExportedChatInvites extends Type {
 }
 
-export abstract class TypeMessagesExportedChatInvite extends Constructor {
+export abstract class TypeMessagesExportedChatInvite extends Type {
 }
 
-export abstract class TypeMessagesChatInviteImporters extends Constructor {
+export abstract class TypeMessagesChatInviteImporters extends Type {
 }
 
-export abstract class TypeChatAdminWithInvites extends Constructor {
+export abstract class TypeChatAdminWithInvites extends Type {
 }
 
-export abstract class TypeMessagesChatAdminsWithInvites extends Constructor {
+export abstract class TypeMessagesChatAdminsWithInvites extends Type {
 }
 
-export abstract class TypeMessagesCheckedHistoryImportPeer extends Constructor {
+export abstract class TypeMessagesCheckedHistoryImportPeer extends Type {
 }
 
-export abstract class TypePhoneJoinAsPeers extends Constructor {
+export abstract class TypePhoneJoinAsPeers extends Type {
 }
 
-export abstract class TypePhoneExportedGroupCallInvite extends Constructor {
+export abstract class TypePhoneExportedGroupCallInvite extends Type {
 }
 
-export abstract class TypeGroupCallParticipantVideoSourceGroup extends Constructor {
+export abstract class TypeGroupCallParticipantVideoSourceGroup extends Type {
 }
 
-export abstract class TypeGroupCallParticipantVideo extends Constructor {
+export abstract class TypeGroupCallParticipantVideo extends Type {
 }
 
-export abstract class TypeStickersSuggestedShortName extends Constructor {
+export abstract class TypeStickersSuggestedShortName extends Type {
 }
 
-export abstract class TypeBotCommandScope extends Constructor {
+export abstract class TypeBotCommandScope extends Type {
 }
 
-export abstract class TypeAccountResetPasswordResult extends Constructor {
+export abstract class TypeAccountResetPasswordResult extends Type {
 }
 
-export abstract class TypeSponsoredMessage extends Constructor {
+export abstract class TypeSponsoredMessage extends Type {
 }
 
-export abstract class TypeMessagesSponsoredMessages extends Constructor {
+export abstract class TypeMessagesSponsoredMessages extends Type {
 }
 
-export abstract class TypeSearchResultsCalendarPeriod extends Constructor {
+export abstract class TypeSearchResultsCalendarPeriod extends Type {
 }
 
-export abstract class TypeMessagesSearchResultsCalendar extends Constructor {
+export abstract class TypeMessagesSearchResultsCalendar extends Type {
 }
 
-export abstract class TypeSearchResultsPosition extends Constructor {
+export abstract class TypeSearchResultsPosition extends Type {
 }
 
-export abstract class TypeMessagesSearchResultsPositions extends Constructor {
+export abstract class TypeMessagesSearchResultsPositions extends Type {
 }
 
-export abstract class TypeChannelsSendAsPeers extends Constructor {
+export abstract class TypeChannelsSendAsPeers extends Type {
 }
 
-export abstract class TypeUsersUserFull extends Constructor {
+export abstract class TypeUsersUserFull extends Type {
 }
 
-export abstract class TypeMessagesPeerSettings extends Constructor {
+export abstract class TypeMessagesPeerSettings extends Type {
 }
 
-export abstract class TypeAuthLoggedOut extends Constructor {
+export abstract class TypeAuthLoggedOut extends Type {
 }
 
-export abstract class TypeReactionCount extends Constructor {
+export abstract class TypeReactionCount extends Type {
 }
 
-export abstract class TypeMessageReactions extends Constructor {
+export abstract class TypeMessageReactions extends Type {
 }
 
-export abstract class TypeMessagesMessageReactionsList extends Constructor {
+export abstract class TypeMessagesMessageReactionsList extends Type {
 }
 
-export abstract class TypeAvailableReaction extends Constructor {
+export abstract class TypeAvailableReaction extends Type {
 }
 
-export abstract class TypeMessagesAvailableReactions extends Constructor {
+export abstract class TypeMessagesAvailableReactions extends Type {
 }
 
-export abstract class TypeMessagePeerReaction extends Constructor {
+export abstract class TypeMessagePeerReaction extends Type {
 }
 
-export abstract class TypeGroupCallStreamChannel extends Constructor {
+export abstract class TypeGroupCallStreamChannel extends Type {
 }
 
-export abstract class TypePhoneGroupCallStreamChannels extends Constructor {
+export abstract class TypePhoneGroupCallStreamChannels extends Type {
 }
 
-export abstract class TypePhoneGroupCallStreamRtmpURL extends Constructor {
+export abstract class TypePhoneGroupCallStreamRtmpURL extends Type {
 }
 
-export abstract class TypeAttachMenuBotIconColor extends Constructor {
+export abstract class TypeAttachMenuBotIconColor extends Type {
 }
 
-export abstract class TypeAttachMenuBotIcon extends Constructor {
+export abstract class TypeAttachMenuBotIcon extends Type {
 }
 
-export abstract class TypeAttachMenuBot extends Constructor {
+export abstract class TypeAttachMenuBot extends Type {
 }
 
-export abstract class TypeAttachMenuBots extends Constructor {
+export abstract class TypeAttachMenuBots extends Type {
 }
 
-export abstract class TypeAttachMenuBotsBot extends Constructor {
+export abstract class TypeAttachMenuBotsBot extends Type {
 }
 
-export abstract class TypeWebViewResult extends Constructor {
+export abstract class TypeWebViewResult extends Type {
 }
 
-export abstract class TypeSimpleWebViewResult extends Constructor {
+export abstract class TypeSimpleWebViewResult extends Type {
 }
 
-export abstract class TypeWebViewMessageSent extends Constructor {
+export abstract class TypeWebViewMessageSent extends Type {
 }
 
-export abstract class TypeBotMenuButton extends Constructor {
+export abstract class TypeBotMenuButton extends Type {
 }
 
-export abstract class TypeAccountSavedRingtones extends Constructor {
+export abstract class TypeAccountSavedRingtones extends Type {
 }
 
-export abstract class TypeNotificationSound extends Constructor {
+export abstract class TypeNotificationSound extends Type {
 }
 
-export abstract class TypeAccountSavedRingtone extends Constructor {
+export abstract class TypeAccountSavedRingtone extends Type {
 }
 
-export abstract class TypeAttachMenuPeerType extends Constructor {
+export abstract class TypeAttachMenuPeerType extends Type {
 }
 
-export abstract class TypeInputInvoice extends Constructor {
+export abstract class TypeInputInvoice extends Type {
 }
 
-export abstract class TypePaymentsExportedInvoice extends Constructor {
+export abstract class TypePaymentsExportedInvoice extends Type {
 }
 
-export abstract class TypeMessagesTranscribedAudio extends Constructor {
+export abstract class TypeMessagesTranscribedAudio extends Type {
 }
 
-export abstract class TypeHelpPremiumPromo extends Constructor {
+export abstract class TypeHelpPremiumPromo extends Type {
 }
 
-export abstract class TypeInputStorePaymentPurpose extends Constructor {
+export abstract class TypeInputStorePaymentPurpose extends Type {
 }
 
-export abstract class TypePremiumGiftOption extends Constructor {
+export abstract class TypePremiumGiftOption extends Type {
 }
 
-export abstract class TypePaymentFormMethod extends Constructor {
+export abstract class TypePaymentFormMethod extends Type {
 }
 
-export abstract class TypeEmojiStatus extends Constructor {
+export abstract class TypeEmojiStatus extends Type {
 }
 
-export abstract class TypeAccountEmojiStatuses extends Constructor {
+export abstract class TypeAccountEmojiStatuses extends Type {
 }
 
-export abstract class TypeReaction extends Constructor {
+export abstract class TypeReaction extends Type {
 }
 
-export abstract class TypeChatReactions extends Constructor {
+export abstract class TypeChatReactions extends Type {
 }
 
-export abstract class TypeMessagesReactions extends Constructor {
+export abstract class TypeMessagesReactions extends Type {
 }
 
-export abstract class TypeEmailVerifyPurpose extends Constructor {
+export abstract class TypeEmailVerifyPurpose extends Type {
 }
 
-export abstract class TypeEmailVerification extends Constructor {
+export abstract class TypeEmailVerification extends Type {
 }
 
-export abstract class TypeAccountEmailVerified extends Constructor {
+export abstract class TypeAccountEmailVerified extends Type {
 }
 
-export abstract class TypePremiumSubscriptionOption extends Constructor {
+export abstract class TypePremiumSubscriptionOption extends Type {
 }
 
-export abstract class TypeSendAsPeer extends Constructor {
+export abstract class TypeSendAsPeer extends Type {
 }
 
-export abstract class TypeMessageExtendedMedia extends Constructor {
+export abstract class TypeMessageExtendedMedia extends Type {
 }
 
-export abstract class TypeStickerKeyword extends Constructor {
+export abstract class TypeStickerKeyword extends Type {
 }
 
-export abstract class TypeUsername extends Constructor {
+export abstract class TypeUsername extends Type {
 }
 
-export abstract class TypeForumTopic extends Constructor {
+export abstract class TypeForumTopic extends Type {
 }
 
-export abstract class TypeMessagesForumTopics extends Constructor {
+export abstract class TypeMessagesForumTopics extends Type {
 }
 
-export abstract class TypeDefaultHistoryTTL extends Constructor {
+export abstract class TypeDefaultHistoryTTL extends Type {
 }
 
-export abstract class TypeExportedContactToken extends Constructor {
+export abstract class TypeExportedContactToken extends Type {
 }
 
-export abstract class TypeRequestPeerType extends Constructor {
+export abstract class TypeRequestPeerType extends Type {
 }
 
-export abstract class TypeEmojiList extends Constructor {
+export abstract class TypeEmojiList extends Type {
 }
 
-export abstract class TypeEmojiGroup extends Constructor {
+export abstract class TypeEmojiGroup extends Type {
 }
 
-export abstract class TypeMessagesEmojiGroups extends Constructor {
+export abstract class TypeMessagesEmojiGroups extends Type {
 }
 
-export abstract class TypeTextWithEntities extends Constructor {
+export abstract class TypeTextWithEntities extends Type {
 }
 
-export abstract class TypeMessagesTranslatedText extends Constructor {
+export abstract class TypeMessagesTranslatedText extends Type {
 }
 
-export abstract class TypeAutoSaveSettings extends Constructor {
+export abstract class TypeAutoSaveSettings extends Type {
 }
 
-export abstract class TypeAutoSaveException extends Constructor {
+export abstract class TypeAutoSaveException extends Type {
 }
 
-export abstract class TypeAccountAutoSaveSettings extends Constructor {
+export abstract class TypeAccountAutoSaveSettings extends Type {
 }
 
-export abstract class TypeHelpAppConfig extends Constructor {
+export abstract class TypeHelpAppConfig extends Type {
 }
 
-export abstract class TypeInputBotApp extends Constructor {
+export abstract class TypeInputBotApp extends Type {
 }
 
-export abstract class TypeBotApp extends Constructor {
+export abstract class TypeBotApp extends Type {
 }
 
-export abstract class TypeMessagesBotApp extends Constructor {
+export abstract class TypeMessagesBotApp extends Type {
 }
 
-export abstract class TypeAppWebViewResult extends Constructor {
+export abstract class TypeAppWebViewResult extends Type {
 }
 
-export abstract class TypeInlineBotWebView extends Constructor {
+export abstract class TypeInlineBotWebView extends Type {
 }
 
-export abstract class TypeReadParticipantDate extends Constructor {
+export abstract class TypeReadParticipantDate extends Type {
 }
 
-export class ResPQ extends Constructor {
+export class ResPQ extends Type {
   nonce: bigint;
   serverNonce: bigint;
   pq: Uint8Array;
@@ -1426,7 +1426,7 @@ export class ServerDHParamsOK extends TypeServerDHParams {
   }
 }
 
-export class ServerDHInnerData extends Constructor {
+export class ServerDHInnerData extends Type {
   nonce: bigint;
   serverNonce: bigint;
   g: number;
@@ -1471,7 +1471,7 @@ export class ServerDHInnerData extends Constructor {
   }
 }
 
-export class ClientDHInnerData extends Constructor {
+export class ClientDHInnerData extends Type {
   nonce: bigint;
   serverNonce: bigint;
   retryId: bigint;
@@ -1812,7 +1812,7 @@ export class FutureSalts extends TypeFutureSalts {
   }
 }
 
-export class Pong extends Constructor {
+export class Pong extends Type {
   msgId: bigint;
   pingId: bigint;
 
@@ -2309,7 +2309,7 @@ export class HTTPWait extends TypeHttpWait {
   }
 }
 
-export class True extends Constructor {
+export class True extends Type {
   protected get [id]() {
     return 0x3fedd339;
   }
@@ -2327,7 +2327,7 @@ export class True extends Constructor {
   }
 }
 
-export class Error extends Constructor {
+export class Error extends Type {
   code: number;
   text: string;
 
@@ -2356,7 +2356,7 @@ export class Error extends Constructor {
   }
 }
 
-export class Null extends Constructor {
+export class Null extends Type {
   protected get [id]() {
     return 0x56730bcc;
   }
@@ -2595,7 +2595,7 @@ export class InputUserSelf extends TypeInputUser {
   }
 }
 
-export class InputUser extends Constructor {
+export class InputUser extends Type {
   userId: bigint;
   accessHash: bigint;
 
@@ -2694,7 +2694,7 @@ export class InputPhoneContact extends TypeInputContact {
   }
 }
 
-export class InputFile extends Constructor {
+export class InputFile extends Type {
   id: bigint;
   parts: number;
   name: string;
@@ -3379,7 +3379,7 @@ export class InputChatUploadedPhoto extends TypeInputChatPhoto {
   }
 }
 
-export class InputChatPhoto extends Constructor {
+export class InputChatPhoto extends Type {
   id: TypeInputPhoto;
 
   protected get [id]() {
@@ -3422,7 +3422,7 @@ export class InputGeoPointEmpty extends TypeInputGeoPoint {
   }
 }
 
-export class InputGeoPoint extends Constructor {
+export class InputGeoPoint extends Type {
   lat: number;
   long: number;
   accuracyRadius?: number;
@@ -3475,7 +3475,7 @@ export class InputPhotoEmpty extends TypeInputPhoto {
   }
 }
 
-export class InputPhoto extends Constructor {
+export class InputPhoto extends Type {
   id: bigint;
   accessHash: bigint;
   fileReference: Uint8Array;
@@ -3508,7 +3508,7 @@ export class InputPhoto extends Constructor {
   }
 }
 
-export class InputFileLocation extends Constructor {
+export class InputFileLocation extends Type {
   volumeId: bigint;
   localId: number;
   secret: bigint;
@@ -4127,7 +4127,7 @@ export class UserEmpty extends TypeUser {
   }
 }
 
-export class User extends Constructor {
+export class User extends Type {
   self?: true;
   contact?: true;
   mutualContact?: true;
@@ -4338,7 +4338,7 @@ export class UserProfilePhotoEmpty extends TypeUserProfilePhoto {
   }
 }
 
-export class UserProfilePhoto extends Constructor {
+export class UserProfilePhoto extends Type {
   hasVideo?: true;
   personal?: true;
   photoId: bigint;
@@ -4528,7 +4528,7 @@ export class ChatEmpty extends TypeChat {
   }
 }
 
-export class Chat extends Constructor {
+export class Chat extends Type {
   creator?: true;
   left?: true;
   deactivated?: true;
@@ -4875,7 +4875,7 @@ export class ChannelForbidden extends TypeChat {
   }
 }
 
-export class ChatFull extends Constructor {
+export class ChatFull extends Type {
   canSetUsername?: true;
   hasScheduled?: true;
   translationsDisabled?: true;
@@ -5259,7 +5259,7 @@ export class ChannelFull extends TypeChatFull {
   }
 }
 
-export class ChatParticipant extends Constructor {
+export class ChatParticipant extends Type {
   userId: bigint;
   inviterId: bigint;
   date: number;
@@ -5381,7 +5381,7 @@ export class ChatParticipantsForbidden extends TypeChatParticipants {
   }
 }
 
-export class ChatParticipants extends Constructor {
+export class ChatParticipants extends Type {
   chatId: bigint;
   participants: Array<TypeChatParticipant>;
   version: number;
@@ -5432,7 +5432,7 @@ export class ChatPhotoEmpty extends TypeChatPhoto {
   }
 }
 
-export class ChatPhoto extends Constructor {
+export class ChatPhoto extends Type {
   hasVideo?: true;
   photoId: bigint;
   strippedThumb?: Uint8Array;
@@ -5502,7 +5502,7 @@ export class MessageEmpty extends TypeMessage {
   }
 }
 
-export class Message extends Constructor {
+export class Message extends Type {
   out?: true;
   mentioned?: true;
   mediaUnread?: true;
@@ -7216,7 +7216,7 @@ export class MessageActionRequestedPeer extends TypeMessageAction {
   }
 }
 
-export class Dialog extends Constructor {
+export class Dialog extends Type {
   pinned?: true;
   unreadMark?: true;
   peer: TypePeer;
@@ -7375,7 +7375,7 @@ export class PhotoEmpty extends TypePhoto {
   }
 }
 
-export class Photo extends Constructor {
+export class Photo extends Type {
   hasStickers?: true;
   id: bigint;
   accessHash: bigint;
@@ -7455,7 +7455,7 @@ export class PhotoSizeEmpty extends TypePhotoSize {
   }
 }
 
-export class PhotoSize extends Constructor {
+export class PhotoSize extends Type {
   type: string;
   w: number;
   h: number;
@@ -7642,7 +7642,7 @@ export class GeoPointEmpty extends TypeGeoPoint {
   }
 }
 
-export class GeoPoint extends Constructor {
+export class GeoPoint extends Type {
   long: number;
   lat: number;
   accessHash: bigint;
@@ -7681,7 +7681,7 @@ export class GeoPoint extends Constructor {
   }
 }
 
-export class AuthSentCode extends Constructor {
+export class AuthSentCode extends Type {
   type: TypeAuthSentCodeType;
   phoneCodeHash: string;
   nextType?: TypeAuthCodeType;
@@ -7745,7 +7745,7 @@ export class AuthSentCodeSuccess extends TypeAuthSentCode {
   }
 }
 
-export class AuthAuthorization extends Constructor {
+export class AuthAuthorization extends Type {
   setupPasswordRequired?: true;
   otherwiseReloginDays?: number;
   tmpSessions?: number;
@@ -7815,7 +7815,7 @@ export class AuthAuthorizationSignUpRequired extends TypeAuthAuthorization {
   }
 }
 
-export class AuthExportedAuthorization extends Constructor {
+export class AuthExportedAuthorization extends Type {
   id: bigint;
   bytes: Uint8Array;
 
@@ -7844,7 +7844,7 @@ export class AuthExportedAuthorization extends Constructor {
   }
 }
 
-export class InputNotifyPeer extends Constructor {
+export class InputNotifyPeer extends Type {
   peer: TypeInputPeer;
 
   protected get [id]() {
@@ -7952,7 +7952,7 @@ export class InputNotifyForumTopic extends TypeInputNotifyPeer {
   }
 }
 
-export class InputPeerNotifySettings extends Constructor {
+export class InputPeerNotifySettings extends Type {
   showPreviews?: boolean;
   silent?: boolean;
   muteUntil?: number;
@@ -7991,7 +7991,7 @@ export class InputPeerNotifySettings extends Constructor {
   }
 }
 
-export class PeerNotifySettings extends Constructor {
+export class PeerNotifySettings extends Type {
   showPreviews?: boolean;
   silent?: boolean;
   muteUntil?: number;
@@ -8038,7 +8038,7 @@ export class PeerNotifySettings extends Constructor {
   }
 }
 
-export class PeerSettings extends Constructor {
+export class PeerSettings extends Type {
   reportSpam?: true;
   addContact?: true;
   blockContact?: true;
@@ -8109,7 +8109,7 @@ export class PeerSettings extends Constructor {
   }
 }
 
-export class WallPaper extends Constructor {
+export class WallPaper extends Type {
   id: bigint;
   creator?: true;
   default?: true;
@@ -8387,7 +8387,7 @@ export class InputReportReasonPersonalDetails extends TypeReportReason {
   }
 }
 
-export class UserFull extends Constructor {
+export class UserFull extends Type {
   blocked?: true;
   phoneCallsAvailable?: true;
   phoneCallsPrivate?: true;
@@ -8538,7 +8538,7 @@ export class UserFull extends Constructor {
   }
 }
 
-export class Contact extends Constructor {
+export class Contact extends Type {
   userId: bigint;
   mutual: boolean;
 
@@ -8567,7 +8567,7 @@ export class Contact extends Constructor {
   }
 }
 
-export class ImportedContact extends Constructor {
+export class ImportedContact extends Type {
   userId: bigint;
   clientId: bigint;
 
@@ -8596,7 +8596,7 @@ export class ImportedContact extends Constructor {
   }
 }
 
-export class ContactStatus extends Constructor {
+export class ContactStatus extends Type {
   userId: bigint;
   status: TypeUserStatus;
 
@@ -8643,7 +8643,7 @@ export class ContactsContactsNotModified extends TypeContactsContacts {
   }
 }
 
-export class ContactsContacts extends Constructor {
+export class ContactsContacts extends Type {
   contacts: Array<TypeContact>;
   savedCount: number;
   users: Array<TypeUser>;
@@ -8676,7 +8676,7 @@ export class ContactsContacts extends Constructor {
   }
 }
 
-export class ContactsImportedContacts extends Constructor {
+export class ContactsImportedContacts extends Type {
   imported: Array<TypeImportedContact>;
   popularInvites: Array<TypePopularContact>;
   retryContacts: Array<bigint>;
@@ -8713,7 +8713,7 @@ export class ContactsImportedContacts extends Constructor {
   }
 }
 
-export class ContactsBlocked extends Constructor {
+export class ContactsBlocked extends Type {
   blocked: Array<TypePeerBlocked>;
   chats: Array<TypeChat>;
   users: Array<TypeUser>;
@@ -8783,7 +8783,7 @@ export class ContactsBlockedSlice extends TypeContactsBlocked {
   }
 }
 
-export class MessagesDialogs extends Constructor {
+export class MessagesDialogs extends Type {
   dialogs: Array<TypeDialog>;
   messages: Array<TypeMessage>;
   chats: Array<TypeChat>;
@@ -8886,7 +8886,7 @@ export class MessagesDialogsNotModified extends TypeMessagesDialogs {
   }
 }
 
-export class MessagesMessages extends Constructor {
+export class MessagesMessages extends Type {
   messages: Array<TypeMessage>;
   chats: Array<TypeChat>;
   users: Array<TypeUser>;
@@ -9050,7 +9050,7 @@ export class MessagesMessagesNotModified extends TypeMessagesMessages {
   }
 }
 
-export class MessagesChats extends Constructor {
+export class MessagesChats extends Type {
   chats: Array<TypeChat>;
 
   protected get [id]() {
@@ -9104,7 +9104,7 @@ export class MessagesChatsSlice extends TypeMessagesChats {
   }
 }
 
-export class MessagesChatFull extends Constructor {
+export class MessagesChatFull extends Type {
   fullChat: TypeChatFull;
   chats: Array<TypeChat>;
   users: Array<TypeUser>;
@@ -9137,7 +9137,7 @@ export class MessagesChatFull extends Constructor {
   }
 }
 
-export class MessagesAffectedHistory extends Constructor {
+export class MessagesAffectedHistory extends Type {
   pts: number;
   ptsCount: number;
   offset: number;
@@ -12977,7 +12977,7 @@ export class UpdateGroupInvitePrivacyForbidden extends TypeUpdate {
   }
 }
 
-export class UpdatesState extends Constructor {
+export class UpdatesState extends Type {
   pts: number;
   qts: number;
   date: number;
@@ -13047,7 +13047,7 @@ export class UpdatesDifferenceEmpty extends TypeUpdatesDifference {
   }
 }
 
-export class UpdatesDifference extends Constructor {
+export class UpdatesDifference extends Type {
   newMessages: Array<TypeMessage>;
   newEncryptedMessages: Array<TypeEncryptedMessage>;
   otherUpdates: Array<TypeUpdate>;
@@ -13424,7 +13424,7 @@ export class UpdatesCombined extends TypeUpdates {
   }
 }
 
-export class Updates extends Constructor {
+export class Updates extends Type {
   updates: Array<TypeUpdate>;
   users: Array<TypeUser>;
   chats: Array<TypeChat>;
@@ -13520,7 +13520,7 @@ export class UpdateShortSentMessage extends TypeUpdates {
   }
 }
 
-export class PhotosPhotos extends Constructor {
+export class PhotosPhotos extends Type {
   photos: Array<TypePhoto>;
   users: Array<TypeUser>;
 
@@ -13582,7 +13582,7 @@ export class PhotosPhotosSlice extends TypePhotosPhotos {
   }
 }
 
-export class PhotosPhoto extends Constructor {
+export class PhotosPhoto extends Type {
   photo: TypePhoto;
   users: Array<TypeUser>;
 
@@ -13611,7 +13611,7 @@ export class PhotosPhoto extends Constructor {
   }
 }
 
-export class UploadFile extends Constructor {
+export class UploadFile extends Type {
   type: TypeStorageFileType;
   mtime: number;
   bytes: Uint8Array;
@@ -13685,7 +13685,7 @@ export class UploadFileCdnRedirect extends TypeUploadFile {
   }
 }
 
-export class DcOption extends Constructor {
+export class DcOption extends Type {
   ipv6?: true;
   mediaOnly?: true;
   tcpoOnly?: true;
@@ -13748,7 +13748,7 @@ export class DcOption extends Constructor {
   }
 }
 
-export class Config extends Constructor {
+export class Config extends Type {
   defaultP2pContacts?: true;
   preloadFeaturedStickers?: true;
   revokePmInbox?: true;
@@ -14009,7 +14009,7 @@ export class Config extends Constructor {
   }
 }
 
-export class NearestDc extends Constructor {
+export class NearestDc extends Type {
   country: string;
   thisDc: number;
   nearestDc: number;
@@ -14042,7 +14042,7 @@ export class NearestDc extends Constructor {
   }
 }
 
-export class HelpAppUpdate extends Constructor {
+export class HelpAppUpdate extends Type {
   canNotSkip?: true;
   id: number;
   version: string;
@@ -14115,7 +14115,7 @@ export class HelpNoAppUpdate extends TypeHelpAppUpdate {
   }
 }
 
-export class HelpInviteText extends Constructor {
+export class HelpInviteText extends Type {
   message: string;
 
   protected get [id]() {
@@ -14257,7 +14257,7 @@ export class EncryptedChatRequested extends TypeEncryptedChat {
   }
 }
 
-export class EncryptedChat extends Constructor {
+export class EncryptedChat extends Type {
   id: number;
   accessHash: bigint;
   date: number;
@@ -14337,7 +14337,7 @@ export class EncryptedChatDiscarded extends TypeEncryptedChat {
   }
 }
 
-export class InputEncryptedChat extends Constructor {
+export class InputEncryptedChat extends Type {
   chatId: number;
   accessHash: bigint;
 
@@ -14384,7 +14384,7 @@ export class EncryptedFileEmpty extends TypeEncryptedFile {
   }
 }
 
-export class EncryptedFile extends Constructor {
+export class EncryptedFile extends Type {
   id: bigint;
   accessHash: bigint;
   size: bigint;
@@ -14480,7 +14480,7 @@ export class InputEncryptedFileUploaded extends TypeInputEncryptedFile {
   }
 }
 
-export class InputEncryptedFile extends Constructor {
+export class InputEncryptedFile extends Type {
   id: bigint;
   accessHash: bigint;
 
@@ -14542,7 +14542,7 @@ export class InputEncryptedFileBigUploaded extends TypeInputEncryptedFile {
   }
 }
 
-export class EncryptedMessage extends Constructor {
+export class EncryptedMessage extends Type {
   randomId: bigint;
   chatId: number;
   date: number;
@@ -14645,7 +14645,7 @@ export class MessagesDhConfigNotModified extends TypeMessagesDhConfig {
   }
 }
 
-export class MessagesDhConfig extends Constructor {
+export class MessagesDhConfig extends Type {
   g: number;
   p: Uint8Array;
   version: number;
@@ -14682,7 +14682,7 @@ export class MessagesDhConfig extends Constructor {
   }
 }
 
-export class MessagesSentEncryptedMessage extends Constructor {
+export class MessagesSentEncryptedMessage extends Type {
   date: number;
 
   protected get [id]() {
@@ -14754,7 +14754,7 @@ export class InputDocumentEmpty extends TypeInputDocument {
   }
 }
 
-export class InputDocument extends Constructor {
+export class InputDocument extends Type {
   id: bigint;
   accessHash: bigint;
   fileReference: Uint8Array;
@@ -14812,7 +14812,7 @@ export class DocumentEmpty extends TypeDocument {
   }
 }
 
-export class Document extends Constructor {
+export class Document extends Type {
   id: bigint;
   accessHash: bigint;
   fileReference: Uint8Array;
@@ -14875,7 +14875,7 @@ export class Document extends Constructor {
   }
 }
 
-export class HelpSupport extends Constructor {
+export class HelpSupport extends Type {
   phoneNumber: string;
   user: TypeUser;
 
@@ -14904,7 +14904,7 @@ export class HelpSupport extends Constructor {
   }
 }
 
-export class NotifyPeer extends Constructor {
+export class NotifyPeer extends Type {
   peer: TypePeer;
 
   protected get [id]() {
@@ -15400,7 +15400,7 @@ export class SendMessageEmojiInteractionSeen extends TypeSendMessageAction {
   }
 }
 
-export class ContactsFound extends Constructor {
+export class ContactsFound extends Type {
   myResults: Array<TypePeer>;
   results: Array<TypePeer>;
   chats: Array<TypeChat>;
@@ -16105,7 +16105,7 @@ export class PrivacyValueDisallowChatParticipants extends TypePrivacyRule {
   }
 }
 
-export class AccountPrivacyRules extends Constructor {
+export class AccountPrivacyRules extends Type {
   rules: Array<TypePrivacyRule>;
   chats: Array<TypeChat>;
   users: Array<TypeUser>;
@@ -16138,7 +16138,7 @@ export class AccountPrivacyRules extends Constructor {
   }
 }
 
-export class AccountDaysTTL extends Constructor {
+export class AccountDaysTTL extends Type {
   days: number;
 
   protected get [id]() {
@@ -16435,7 +16435,7 @@ export class MessagesStickersNotModified extends TypeMessagesStickers {
   }
 }
 
-export class MessagesStickers extends Constructor {
+export class MessagesStickers extends Type {
   hash: bigint;
   stickers: Array<TypeDocument>;
 
@@ -16464,7 +16464,7 @@ export class MessagesStickers extends Constructor {
   }
 }
 
-export class StickerPack extends Constructor {
+export class StickerPack extends Type {
   emoticon: string;
   documents: Array<bigint>;
 
@@ -16511,7 +16511,7 @@ export class MessagesAllStickersNotModified extends TypeMessagesAllStickers {
   }
 }
 
-export class MessagesAllStickers extends Constructor {
+export class MessagesAllStickers extends Type {
   hash: bigint;
   sets: Array<TypeStickerSet>;
 
@@ -16540,7 +16540,7 @@ export class MessagesAllStickers extends Constructor {
   }
 }
 
-export class MessagesAffectedMessages extends Constructor {
+export class MessagesAffectedMessages extends Type {
   pts: number;
   ptsCount: number;
 
@@ -16623,7 +16623,7 @@ export class WebPagePending extends TypeWebPage {
   }
 }
 
-export class WebPage extends Constructor {
+export class WebPage extends Type {
   id: bigint;
   url: string;
   displayUrl: string;
@@ -16745,7 +16745,7 @@ export class WebPageNotModified extends TypeWebPage {
   }
 }
 
-export class Authorization extends Constructor {
+export class Authorization extends Type {
   current?: true;
   officialApp?: true;
   passwordPending?: true;
@@ -16836,7 +16836,7 @@ export class Authorization extends Constructor {
   }
 }
 
-export class AccountAuthorizations extends Constructor {
+export class AccountAuthorizations extends Type {
   authorizationTtlDays: number;
   authorizations: Array<TypeAuthorization>;
 
@@ -16865,7 +16865,7 @@ export class AccountAuthorizations extends Constructor {
   }
 }
 
-export class AccountPassword extends Constructor {
+export class AccountPassword extends Type {
   hasRecovery?: true;
   hasSecureValues?: true;
   hasPassword?: true;
@@ -16940,7 +16940,7 @@ export class AccountPassword extends Constructor {
   }
 }
 
-export class AccountPasswordSettings extends Constructor {
+export class AccountPasswordSettings extends Type {
   email?: string;
   secureSettings?: TypeSecureSecretSettings;
 
@@ -16971,7 +16971,7 @@ export class AccountPasswordSettings extends Constructor {
   }
 }
 
-export class AccountPasswordInputSettings extends Constructor {
+export class AccountPasswordInputSettings extends Type {
   newAlgo?: TypePasswordKdfAlgo;
   newPasswordHash?: Uint8Array;
   hint?: string;
@@ -17014,7 +17014,7 @@ export class AccountPasswordInputSettings extends Constructor {
   }
 }
 
-export class AuthPasswordRecovery extends Constructor {
+export class AuthPasswordRecovery extends Type {
   emailPattern: string;
 
   protected get [id]() {
@@ -17039,7 +17039,7 @@ export class AuthPasswordRecovery extends Constructor {
   }
 }
 
-export class ReceivedNotifyMessage extends Constructor {
+export class ReceivedNotifyMessage extends Type {
   id: number;
   flags: number;
 
@@ -17182,7 +17182,7 @@ export class ChatInviteAlready extends TypeChatInvite {
   }
 }
 
-export class ChatInvite extends Constructor {
+export class ChatInvite extends Type {
   channel?: true;
   broadcast?: true;
   public?: true;
@@ -17479,7 +17479,7 @@ export class InputStickerSetEmojiDefaultTopicIcons extends TypeInputStickerSet {
   }
 }
 
-export class StickerSet extends Constructor {
+export class StickerSet extends Type {
   archived?: true;
   official?: true;
   masks?: true;
@@ -17570,7 +17570,7 @@ export class StickerSet extends Constructor {
   }
 }
 
-export class MessagesStickerSet extends Constructor {
+export class MessagesStickerSet extends Type {
   set: TypeStickerSet;
   packs: Array<TypeStickerPack>;
   keywords: Array<TypeStickerKeyword>;
@@ -17625,7 +17625,7 @@ export class MessagesStickerSetNotModified extends TypeMessagesStickerSet {
   }
 }
 
-export class BotCommand extends Constructor {
+export class BotCommand extends Type {
   command: string;
   description: string;
 
@@ -17654,7 +17654,7 @@ export class BotCommand extends Constructor {
   }
 }
 
-export class BotInfo extends Constructor {
+export class BotInfo extends Type {
   userId?: bigint;
   description?: string;
   descriptionPhoto?: TypePhoto;
@@ -17701,7 +17701,7 @@ export class BotInfo extends Constructor {
   }
 }
 
-export class KeyboardButton extends Constructor {
+export class KeyboardButton extends Type {
   text: string;
 
   protected get [id]() {
@@ -18187,7 +18187,7 @@ export class KeyboardButtonRequestPeer extends TypeKeyboardButton {
   }
 }
 
-export class KeyboardButtonRow extends Constructor {
+export class KeyboardButtonRow extends Type {
   buttons: Array<TypeKeyboardButton>;
 
   protected get [id]() {
@@ -18993,7 +18993,7 @@ export class InputChannelEmpty extends TypeInputChannel {
   }
 }
 
-export class InputChannel extends Constructor {
+export class InputChannel extends Type {
   channelId: bigint;
   accessHash: bigint;
 
@@ -19055,7 +19055,7 @@ export class InputChannelFromMessage extends TypeInputChannel {
   }
 }
 
-export class ContactsResolvedPeer extends Constructor {
+export class ContactsResolvedPeer extends Type {
   peer: TypePeer;
   chats: Array<TypeChat>;
   users: Array<TypeUser>;
@@ -19088,7 +19088,7 @@ export class ContactsResolvedPeer extends Constructor {
   }
 }
 
-export class MessageRange extends Constructor {
+export class MessageRange extends Type {
   minId: number;
   maxId: number;
 
@@ -19199,7 +19199,7 @@ export class UpdatesChannelDifferenceTooLong extends TypeUpdatesChannelDifferenc
   }
 }
 
-export class UpdatesChannelDifference extends Constructor {
+export class UpdatesChannelDifference extends Type {
   final?: true;
   pts: number;
   timeout?: number;
@@ -19268,7 +19268,7 @@ export class ChannelMessagesFilterEmpty extends TypeChannelMessagesFilter {
   }
 }
 
-export class ChannelMessagesFilter extends Constructor {
+export class ChannelMessagesFilter extends Type {
   excludeNewMessages?: true;
   ranges: Array<TypeMessageRange>;
 
@@ -19299,7 +19299,7 @@ export class ChannelMessagesFilter extends Constructor {
   }
 }
 
-export class ChannelParticipant extends Constructor {
+export class ChannelParticipant extends Type {
   userId: bigint;
   date: number;
 
@@ -19710,7 +19710,7 @@ export class ChannelParticipantsMentions extends TypeChannelParticipantsFilter {
   }
 }
 
-export class ChannelsChannelParticipants extends Constructor {
+export class ChannelsChannelParticipants extends Type {
   count: number;
   participants: Array<TypeChannelParticipant>;
   chats: Array<TypeChat>;
@@ -19765,7 +19765,7 @@ export class ChannelsChannelParticipantsNotModified extends TypeChannelsChannelP
   }
 }
 
-export class ChannelsChannelParticipant extends Constructor {
+export class ChannelsChannelParticipant extends Type {
   participant: TypeChannelParticipant;
   chats: Array<TypeChat>;
   users: Array<TypeUser>;
@@ -19798,7 +19798,7 @@ export class ChannelsChannelParticipant extends Constructor {
   }
 }
 
-export class HelpTermsOfService extends Constructor {
+export class HelpTermsOfService extends Type {
   popup?: true;
   id: TypeDataJSON;
   text: string;
@@ -19859,7 +19859,7 @@ export class MessagesSavedGifsNotModified extends TypeMessagesSavedGifs {
   }
 }
 
-export class MessagesSavedGifs extends Constructor {
+export class MessagesSavedGifs extends Type {
   hash: bigint;
   gifs: Array<TypeDocument>;
 
@@ -20181,7 +20181,7 @@ export class InputBotInlineMessageMediaInvoice extends TypeInputBotInlineMessage
   }
 }
 
-export class InputBotInlineResult extends Constructor {
+export class InputBotInlineResult extends Type {
   id: string;
   type: string;
   title?: string;
@@ -20619,7 +20619,7 @@ export class BotInlineMessageMediaInvoice extends TypeBotInlineMessage {
   }
 }
 
-export class BotInlineResult extends Constructor {
+export class BotInlineResult extends Type {
   id: string;
   type: string;
   title?: string;
@@ -20725,7 +20725,7 @@ export class BotInlineMediaResult extends TypeBotInlineResult {
   }
 }
 
-export class MessagesBotResults extends Constructor {
+export class MessagesBotResults extends Type {
   gallery?: true;
   queryId: bigint;
   nextOffset?: string;
@@ -20780,7 +20780,7 @@ export class MessagesBotResults extends Constructor {
   }
 }
 
-export class ExportedMessageLink extends Constructor {
+export class ExportedMessageLink extends Type {
   link: string;
   html: string;
 
@@ -20809,7 +20809,7 @@ export class ExportedMessageLink extends Constructor {
   }
 }
 
-export class MessageFwdHeader extends Constructor {
+export class MessageFwdHeader extends Type {
   imported?: true;
   fromId?: TypePeer;
   fromName?: string;
@@ -21229,7 +21229,7 @@ export class AuthSentCodeTypeFirebaseSms extends TypeAuthSentCodeType {
   }
 }
 
-export class MessagesBotCallbackAnswer extends Constructor {
+export class MessagesBotCallbackAnswer extends Type {
   alert?: true;
   hasUrl?: true;
   nativeUi?: true;
@@ -21276,7 +21276,7 @@ export class MessagesBotCallbackAnswer extends Constructor {
   }
 }
 
-export class MessagesMessageEditData extends Constructor {
+export class MessagesMessageEditData extends Type {
   caption?: true;
 
   protected get [id]() {
@@ -21303,7 +21303,7 @@ export class MessagesMessageEditData extends Constructor {
   }
 }
 
-export class InputBotInlineMessageID extends Constructor {
+export class InputBotInlineMessageID extends Type {
   dcId: number;
   id: bigint;
   accessHash: bigint;
@@ -21373,7 +21373,7 @@ export class InputBotInlineMessageID64 extends TypeInputBotInlineMessageID {
   }
 }
 
-export class InlineBotSwitchPM extends Constructor {
+export class InlineBotSwitchPM extends Type {
   text: string;
   startParam: string;
 
@@ -21402,7 +21402,7 @@ export class InlineBotSwitchPM extends Constructor {
   }
 }
 
-export class MessagesPeerDialogs extends Constructor {
+export class MessagesPeerDialogs extends Type {
   dialogs: Array<TypeDialog>;
   messages: Array<TypeMessage>;
   chats: Array<TypeChat>;
@@ -21443,7 +21443,7 @@ export class MessagesPeerDialogs extends Constructor {
   }
 }
 
-export class TopPeer extends Constructor {
+export class TopPeer extends Type {
   peer: TypePeer;
   rating: number;
 
@@ -21616,7 +21616,7 @@ export class TopPeerCategoryForwardChats extends TypeTopPeerCategory {
   }
 }
 
-export class TopPeerCategoryPeers extends Constructor {
+export class TopPeerCategoryPeers extends Type {
   category: TypeTopPeerCategory;
   count: number;
   peers: Array<TypeTopPeer>;
@@ -21667,7 +21667,7 @@ export class ContactsTopPeersNotModified extends TypeContactsTopPeers {
   }
 }
 
-export class ContactsTopPeers extends Constructor {
+export class ContactsTopPeers extends Type {
   categories: Array<TypeTopPeerCategoryPeers>;
   chats: Array<TypeChat>;
   users: Array<TypeUser>;
@@ -21745,7 +21745,7 @@ export class DraftMessageEmpty extends TypeDraftMessage {
   }
 }
 
-export class DraftMessage extends Constructor {
+export class DraftMessage extends Type {
   noWebpage?: true;
   replyToMsgId?: number;
   message: string;
@@ -21813,7 +21813,7 @@ export class MessagesFeaturedStickersNotModified extends TypeMessagesFeaturedSti
   }
 }
 
-export class MessagesFeaturedStickers extends Constructor {
+export class MessagesFeaturedStickers extends Type {
   premium?: true;
   hash: bigint;
   count: number;
@@ -21874,7 +21874,7 @@ export class MessagesRecentStickersNotModified extends TypeMessagesRecentSticker
   }
 }
 
-export class MessagesRecentStickers extends Constructor {
+export class MessagesRecentStickers extends Type {
   hash: bigint;
   packs: Array<TypeStickerPack>;
   stickers: Array<TypeDocument>;
@@ -21911,7 +21911,7 @@ export class MessagesRecentStickers extends Constructor {
   }
 }
 
-export class MessagesArchivedStickers extends Constructor {
+export class MessagesArchivedStickers extends Type {
   count: number;
   sets: Array<TypeStickerSetCovered>;
 
@@ -21983,7 +21983,7 @@ export class MessagesStickerSetInstallResultArchive extends TypeMessagesStickerS
   }
 }
 
-export class StickerSetCovered extends Constructor {
+export class StickerSetCovered extends Type {
   set: TypeStickerSet;
   cover: TypeDocument;
 
@@ -22103,7 +22103,7 @@ export class StickerSetNoCovered extends TypeStickerSetCovered {
   }
 }
 
-export class MaskCoords extends Constructor {
+export class MaskCoords extends Type {
   n: number;
   x: number;
   y: number;
@@ -22190,7 +22190,7 @@ export class InputStickeredMediaDocument extends TypeInputStickeredMedia {
   }
 }
 
-export class Game extends Constructor {
+export class Game extends Type {
   id: bigint;
   accessHash: bigint;
   shortName: string;
@@ -22299,7 +22299,7 @@ export class InputGameShortName extends TypeInputGame {
   }
 }
 
-export class HighScore extends Constructor {
+export class HighScore extends Type {
   pos: number;
   userId: bigint;
   score: number;
@@ -22332,7 +22332,7 @@ export class HighScore extends Constructor {
   }
 }
 
-export class MessagesHighScores extends Constructor {
+export class MessagesHighScores extends Type {
   scores: Array<TypeHighScore>;
   users: Array<TypeUser>;
 
@@ -23719,7 +23719,7 @@ export class PhoneCallDiscardReasonBusy extends TypePhoneCallDiscardReason {
   }
 }
 
-export class DataJSON extends Constructor {
+export class DataJSON extends Type {
   data: string;
 
   protected get [id]() {
@@ -23744,7 +23744,7 @@ export class DataJSON extends Constructor {
   }
 }
 
-export class LabeledPrice extends Constructor {
+export class LabeledPrice extends Type {
   label: string;
   amount: bigint;
 
@@ -23773,7 +23773,7 @@ export class LabeledPrice extends Constructor {
   }
 }
 
-export class Invoice extends Constructor {
+export class Invoice extends Type {
   test?: true;
   nameRequested?: true;
   phoneRequested?: true;
@@ -23852,7 +23852,7 @@ export class Invoice extends Constructor {
   }
 }
 
-export class PaymentCharge extends Constructor {
+export class PaymentCharge extends Type {
   id: string;
   providerChargeId: string;
 
@@ -23881,7 +23881,7 @@ export class PaymentCharge extends Constructor {
   }
 }
 
-export class PostAddress extends Constructor {
+export class PostAddress extends Type {
   streetLine1: string;
   streetLine2: string;
   city: string;
@@ -23926,7 +23926,7 @@ export class PostAddress extends Constructor {
   }
 }
 
-export class PaymentRequestedInfo extends Constructor {
+export class PaymentRequestedInfo extends Type {
   name?: string;
   phone?: string;
   email?: string;
@@ -23994,7 +23994,7 @@ export class PaymentSavedCredentialsCard extends TypePaymentSavedCredentials {
   }
 }
 
-export class WebDocument extends Constructor {
+export class WebDocument extends Type {
   url: string;
   accessHash: bigint;
   size: number;
@@ -24072,7 +24072,7 @@ export class WebDocumentNoProxy extends TypeWebDocument {
   }
 }
 
-export class InputWebDocument extends Constructor {
+export class InputWebDocument extends Type {
   url: string;
   size: number;
   mimeType: string;
@@ -24109,7 +24109,7 @@ export class InputWebDocument extends Constructor {
   }
 }
 
-export class InputWebFileLocation extends Constructor {
+export class InputWebFileLocation extends Type {
   url: string;
   accessHash: bigint;
 
@@ -24222,7 +24222,7 @@ export class InputWebFileAudioAlbumThumbLocation extends TypeInputWebFileLocatio
   }
 }
 
-export class UploadWebFile extends Constructor {
+export class UploadWebFile extends Type {
   size: number;
   mimeType: string;
   fileType: TypeStorageFileType;
@@ -24263,7 +24263,7 @@ export class UploadWebFile extends Constructor {
   }
 }
 
-export class PaymentsPaymentForm extends Constructor {
+export class PaymentsPaymentForm extends Type {
   canSaveCredentials?: true;
   passwordMissing?: true;
   formId: bigint;
@@ -24350,7 +24350,7 @@ export class PaymentsPaymentForm extends Constructor {
   }
 }
 
-export class PaymentsValidatedRequestedInfo extends Constructor {
+export class PaymentsValidatedRequestedInfo extends Type {
   id?: string;
   shippingOptions?: Array<TypeShippingOption>;
 
@@ -24381,7 +24381,7 @@ export class PaymentsValidatedRequestedInfo extends Constructor {
   }
 }
 
-export class PaymentsPaymentResult extends Constructor {
+export class PaymentsPaymentResult extends Type {
   updates: TypeUpdates;
 
   protected get [id]() {
@@ -24431,7 +24431,7 @@ export class PaymentsPaymentVerificationNeeded extends TypePaymentsPaymentResult
   }
 }
 
-export class PaymentsPaymentReceipt extends Constructor {
+export class PaymentsPaymentReceipt extends Type {
   date: number;
   botId: bigint;
   providerId: bigint;
@@ -24510,7 +24510,7 @@ export class PaymentsPaymentReceipt extends Constructor {
   }
 }
 
-export class PaymentsSavedInfo extends Constructor {
+export class PaymentsSavedInfo extends Type {
   hasSavedCredentials?: true;
   savedInfo?: TypePaymentRequestedInfo;
 
@@ -24570,7 +24570,7 @@ export class InputPaymentCredentialsSaved extends TypeInputPaymentCredentials {
   }
 }
 
-export class InputPaymentCredentials extends Constructor {
+export class InputPaymentCredentials extends Type {
   save?: true;
   data: TypeDataJSON;
 
@@ -24651,7 +24651,7 @@ export class InputPaymentCredentialsGooglePay extends TypeInputPaymentCredential
   }
 }
 
-export class AccountTmpPassword extends Constructor {
+export class AccountTmpPassword extends Type {
   tmpPassword: Uint8Array;
   validUntil: number;
 
@@ -24680,7 +24680,7 @@ export class AccountTmpPassword extends Constructor {
   }
 }
 
-export class ShippingOption extends Constructor {
+export class ShippingOption extends Type {
   id: string;
   title: string;
   prices: Array<TypeLabeledPrice>;
@@ -24713,7 +24713,7 @@ export class ShippingOption extends Constructor {
   }
 }
 
-export class InputStickerSetItem extends Constructor {
+export class InputStickerSetItem extends Type {
   document: TypeInputDocument;
   emoji: string;
   maskCoords?: TypeMaskCoords;
@@ -24752,7 +24752,7 @@ export class InputStickerSetItem extends Constructor {
   }
 }
 
-export class InputPhoneCall extends Constructor {
+export class InputPhoneCall extends Type {
   id: bigint;
   accessHash: bigint;
 
@@ -24971,7 +24971,7 @@ export class PhoneCallAccepted extends TypePhoneCall {
   }
 }
 
-export class PhoneCall extends Constructor {
+export class PhoneCall extends Type {
   p2pAllowed?: true;
   video?: true;
   id: bigint;
@@ -25089,7 +25089,7 @@ export class PhoneCallDiscarded extends TypePhoneCall {
   }
 }
 
-export class PhoneConnection extends Constructor {
+export class PhoneConnection extends Type {
   tcp?: true;
   id: bigint;
   ip: string;
@@ -25191,7 +25191,7 @@ export class PhoneConnectionWebrtc extends TypePhoneConnection {
   }
 }
 
-export class PhoneCallProtocol extends Constructor {
+export class PhoneCallProtocol extends Type {
   udpP2p?: true;
   udpReflector?: true;
   minLayer: number;
@@ -25234,7 +25234,7 @@ export class PhoneCallProtocol extends Constructor {
   }
 }
 
-export class PhonePhoneCall extends Constructor {
+export class PhonePhoneCall extends Type {
   phoneCall: TypePhoneCall;
   users: Array<TypeUser>;
 
@@ -25288,7 +25288,7 @@ export class UploadCdnFileReuploadNeeded extends TypeUploadCdnFile {
   }
 }
 
-export class UploadCdnFile extends Constructor {
+export class UploadCdnFile extends Type {
   bytes: Uint8Array;
 
   protected get [id]() {
@@ -25313,7 +25313,7 @@ export class UploadCdnFile extends Constructor {
   }
 }
 
-export class CdnPublicKey extends Constructor {
+export class CdnPublicKey extends Type {
   dcId: number;
   publicKey: string;
 
@@ -25342,7 +25342,7 @@ export class CdnPublicKey extends Constructor {
   }
 }
 
-export class CdnConfig extends Constructor {
+export class CdnConfig extends Type {
   publicKeys: Array<TypeCdnPublicKey>;
 
   protected get [id]() {
@@ -25367,7 +25367,7 @@ export class CdnConfig extends Constructor {
   }
 }
 
-export class LangPackString extends Constructor {
+export class LangPackString extends Type {
   key: string;
   value: string;
 
@@ -25472,7 +25472,7 @@ export class LangPackStringDeleted extends TypeLangPackString {
   }
 }
 
-export class LangPackDifference extends Constructor {
+export class LangPackDifference extends Type {
   langCode: string;
   fromVersion: number;
   version: number;
@@ -25509,7 +25509,7 @@ export class LangPackDifference extends Constructor {
   }
 }
 
-export class LangPackLanguage extends Constructor {
+export class LangPackLanguage extends Type {
   official?: true;
   rtl?: true;
   beta?: true;
@@ -26715,7 +26715,7 @@ export class ChannelAdminLogEventActionToggleAntiSpam extends TypeChannelAdminLo
   }
 }
 
-export class ChannelAdminLogEvent extends Constructor {
+export class ChannelAdminLogEvent extends Type {
   id: bigint;
   date: number;
   userId: bigint;
@@ -26752,7 +26752,7 @@ export class ChannelAdminLogEvent extends Constructor {
   }
 }
 
-export class ChannelsAdminLogResults extends Constructor {
+export class ChannelsAdminLogResults extends Type {
   events: Array<TypeChannelAdminLogEvent>;
   chats: Array<TypeChat>;
   users: Array<TypeUser>;
@@ -26785,7 +26785,7 @@ export class ChannelsAdminLogResults extends Constructor {
   }
 }
 
-export class ChannelAdminLogEventsFilter extends Constructor {
+export class ChannelAdminLogEventsFilter extends Type {
   join?: true;
   leave?: true;
   invite?: true;
@@ -26880,7 +26880,7 @@ export class ChannelAdminLogEventsFilter extends Constructor {
   }
 }
 
-export class PopularContact extends Constructor {
+export class PopularContact extends Type {
   clientId: bigint;
   importers: number;
 
@@ -26927,7 +26927,7 @@ export class MessagesFavedStickersNotModified extends TypeMessagesFavedStickers 
   }
 }
 
-export class MessagesFavedStickers extends Constructor {
+export class MessagesFavedStickers extends Type {
   hash: bigint;
   packs: Array<TypeStickerPack>;
   stickers: Array<TypeDocument>;
@@ -27101,7 +27101,7 @@ export class RecentMeURLStickerSet extends TypeRecentMeURL {
   }
 }
 
-export class HelpRecentMeURLs extends Constructor {
+export class HelpRecentMeURLs extends Type {
   urls: Array<TypeRecentMeURL>;
   chats: Array<TypeChat>;
   users: Array<TypeUser>;
@@ -27134,7 +27134,7 @@ export class HelpRecentMeURLs extends Constructor {
   }
 }
 
-export class InputSingleMedia extends Constructor {
+export class InputSingleMedia extends Type {
   media: TypeInputMedia;
   randomId: bigint;
   message: string;
@@ -27173,7 +27173,7 @@ export class InputSingleMedia extends Constructor {
   }
 }
 
-export class WebAuthorization extends Constructor {
+export class WebAuthorization extends Type {
   hash: bigint;
   botId: bigint;
   domain: string;
@@ -27230,7 +27230,7 @@ export class WebAuthorization extends Constructor {
   }
 }
 
-export class AccountWebAuthorizations extends Constructor {
+export class AccountWebAuthorizations extends Type {
   authorizations: Array<TypeWebAuthorization>;
   users: Array<TypeUser>;
 
@@ -27356,7 +27356,7 @@ export class InputMessageCallbackQuery extends TypeInputMessage {
   }
 }
 
-export class InputDialogPeer extends Constructor {
+export class InputDialogPeer extends Type {
   peer: TypeInputPeer;
 
   protected get [id]() {
@@ -27406,7 +27406,7 @@ export class InputDialogPeerFolder extends TypeInputDialogPeer {
   }
 }
 
-export class DialogPeer extends Constructor {
+export class DialogPeer extends Type {
   peer: TypePeer;
 
   protected get [id]() {
@@ -27474,7 +27474,7 @@ export class MessagesFoundStickerSetsNotModified extends TypeMessagesFoundSticke
   }
 }
 
-export class MessagesFoundStickerSets extends Constructor {
+export class MessagesFoundStickerSets extends Type {
   hash: bigint;
   sets: Array<TypeStickerSetCovered>;
 
@@ -27503,7 +27503,7 @@ export class MessagesFoundStickerSets extends Constructor {
   }
 }
 
-export class FileHash extends Constructor {
+export class FileHash extends Type {
   offset: bigint;
   limit: number;
   hash: Uint8Array;
@@ -27536,7 +27536,7 @@ export class FileHash extends Constructor {
   }
 }
 
-export class InputClientProxy extends Constructor {
+export class InputClientProxy extends Type {
   address: string;
   port: number;
 
@@ -27590,7 +27590,7 @@ export class HelpTermsOfServiceUpdateEmpty extends TypeHelpTermsOfServiceUpdate 
   }
 }
 
-export class HelpTermsOfServiceUpdate extends Constructor {
+export class HelpTermsOfServiceUpdate extends Type {
   expires: number;
   termsOfService: TypeHelpTermsOfService;
 
@@ -27660,7 +27660,7 @@ export class InputSecureFileUploaded extends TypeInputSecureFile {
   }
 }
 
-export class InputSecureFile extends Constructor {
+export class InputSecureFile extends Type {
   id: bigint;
   accessHash: bigint;
 
@@ -27707,7 +27707,7 @@ export class SecureFileEmpty extends TypeSecureFile {
   }
 }
 
-export class SecureFile extends Constructor {
+export class SecureFile extends Type {
   id: bigint;
   accessHash: bigint;
   size: bigint;
@@ -27756,7 +27756,7 @@ export class SecureFile extends Constructor {
   }
 }
 
-export class SecureData extends Constructor {
+export class SecureData extends Type {
   data: Uint8Array;
   dataHash: Uint8Array;
   secret: Uint8Array;
@@ -28073,7 +28073,7 @@ export class SecureValueTypeEmail extends TypeSecureValueType {
   }
 }
 
-export class SecureValue extends Constructor {
+export class SecureValue extends Type {
   type: TypeSecureValueType;
   data?: TypeSecureData;
   frontSide?: TypeSecureFile;
@@ -28132,7 +28132,7 @@ export class SecureValue extends Constructor {
   }
 }
 
-export class InputSecureValue extends Constructor {
+export class InputSecureValue extends Type {
   type: TypeSecureValueType;
   data?: TypeSecureData;
   frontSide?: TypeInputSecureFile;
@@ -28187,7 +28187,7 @@ export class InputSecureValue extends Constructor {
   }
 }
 
-export class SecureValueHash extends Constructor {
+export class SecureValueHash extends Type {
   type: TypeSecureValueType;
   hash: Uint8Array;
 
@@ -28418,7 +28418,7 @@ export class SecureValueErrorFiles extends TypeSecureValueError {
   }
 }
 
-export class SecureValueError extends Constructor {
+export class SecureValueError extends Type {
   type: TypeSecureValueType;
   hash: Uint8Array;
   text: string;
@@ -28517,7 +28517,7 @@ export class SecureValueErrorTranslationFiles extends TypeSecureValueError {
   }
 }
 
-export class SecureCredentialsEncrypted extends Constructor {
+export class SecureCredentialsEncrypted extends Type {
   data: Uint8Array;
   hash: Uint8Array;
   secret: Uint8Array;
@@ -28550,7 +28550,7 @@ export class SecureCredentialsEncrypted extends Constructor {
   }
 }
 
-export class AccountAuthorizationForm extends Constructor {
+export class AccountAuthorizationForm extends Type {
   requiredTypes: Array<TypeSecureRequiredType>;
   values: Array<TypeSecureValue>;
   errors: Array<TypeSecureValueError>;
@@ -28593,7 +28593,7 @@ export class AccountAuthorizationForm extends Constructor {
   }
 }
 
-export class AccountSentEmailCode extends Constructor {
+export class AccountSentEmailCode extends Type {
   emailPattern: string;
   length: number;
 
@@ -28640,7 +28640,7 @@ export class HelpDeepLinkInfoEmpty extends TypeHelpDeepLinkInfo {
   }
 }
 
-export class HelpDeepLinkInfo extends Constructor {
+export class HelpDeepLinkInfo extends Type {
   updateApp?: true;
   message: string;
   entities?: Array<TypeMessageEntity>;
@@ -28712,7 +28712,7 @@ export class SavedPhoneContact extends TypeSavedContact {
   }
 }
 
-export class AccountTakeout extends Constructor {
+export class AccountTakeout extends Type {
   id: bigint;
 
   protected get [id]() {
@@ -28860,7 +28860,7 @@ export class SecurePasswordKdfAlgoSHA512 extends TypeSecurePasswordKdfAlgo {
   }
 }
 
-export class SecureSecretSettings extends Constructor {
+export class SecureSecretSettings extends Type {
   secureAlgo: TypeSecurePasswordKdfAlgo;
   secureSecret: Uint8Array;
   secureSecretId: bigint;
@@ -28911,7 +28911,7 @@ export class InputCheckPasswordEmpty extends TypeInputCheckPasswordSRP {
   }
 }
 
-export class InputCheckPasswordSRP extends Constructor {
+export class InputCheckPasswordSRP extends Type {
   srpId: bigint;
   A: Uint8Array;
   M1: Uint8Array;
@@ -28944,7 +28944,7 @@ export class InputCheckPasswordSRP extends Constructor {
   }
 }
 
-export class SecureRequiredType extends Constructor {
+export class SecureRequiredType extends Type {
   nativeNames?: true;
   selfieRequired?: true;
   translationRequired?: true;
@@ -29026,7 +29026,7 @@ export class HelpPassportConfigNotModified extends TypeHelpPassportConfig {
   }
 }
 
-export class HelpPassportConfig extends Constructor {
+export class HelpPassportConfig extends Type {
   hash: number;
   countriesLangs: TypeDataJSON;
 
@@ -29055,7 +29055,7 @@ export class HelpPassportConfig extends Constructor {
   }
 }
 
-export class InputAppEvent extends Constructor {
+export class InputAppEvent extends Type {
   time: number;
   type: string;
   peer: bigint;
@@ -29092,7 +29092,7 @@ export class InputAppEvent extends Constructor {
   }
 }
 
-export class JsonObjectValue extends Constructor {
+export class JsonObjectValue extends Type {
   key: string;
   value: TypeJSONValue;
 
@@ -29264,7 +29264,7 @@ export class JsonObject extends TypeJSONValue {
   }
 }
 
-export class PageTableCell extends Constructor {
+export class PageTableCell extends Type {
   header?: true;
   alignCenter?: true;
   alignRight?: true;
@@ -29319,7 +29319,7 @@ export class PageTableCell extends Constructor {
   }
 }
 
-export class PageTableRow extends Constructor {
+export class PageTableRow extends Type {
   cells: Array<TypePageTableCell>;
 
   protected get [id]() {
@@ -29344,7 +29344,7 @@ export class PageTableRow extends Constructor {
   }
 }
 
-export class PageCaption extends Constructor {
+export class PageCaption extends Type {
   text: TypeRichText;
   credit: TypeRichText;
 
@@ -29481,7 +29481,7 @@ export class PageListOrderedItemBlocks extends TypePageListOrderedItem {
   }
 }
 
-export class PageRelatedArticle extends Constructor {
+export class PageRelatedArticle extends Type {
   url: string;
   webpageId: bigint;
   title?: string;
@@ -29532,7 +29532,7 @@ export class PageRelatedArticle extends Constructor {
   }
 }
 
-export class Page extends Constructor {
+export class Page extends Type {
   part?: true;
   rtl?: true;
   v2?: true;
@@ -29587,7 +29587,7 @@ export class Page extends Constructor {
   }
 }
 
-export class HelpSupportName extends Constructor {
+export class HelpSupportName extends Type {
   name: string;
 
   protected get [id]() {
@@ -29630,7 +29630,7 @@ export class HelpUserInfoEmpty extends TypeHelpUserInfo {
   }
 }
 
-export class HelpUserInfo extends Constructor {
+export class HelpUserInfo extends Type {
   message: string;
   entities: Array<TypeMessageEntity>;
   author: string;
@@ -29667,7 +29667,7 @@ export class HelpUserInfo extends Constructor {
   }
 }
 
-export class PollAnswer extends Constructor {
+export class PollAnswer extends Type {
   text: string;
   option: Uint8Array;
 
@@ -29696,7 +29696,7 @@ export class PollAnswer extends Constructor {
   }
 }
 
-export class Poll extends Constructor {
+export class Poll extends Type {
   id: bigint;
   closed?: true;
   publicVoters?: true;
@@ -29755,7 +29755,7 @@ export class Poll extends Constructor {
   }
 }
 
-export class PollAnswerVoters extends Constructor {
+export class PollAnswerVoters extends Type {
   chosen?: true;
   correct?: true;
   option: Uint8Array;
@@ -29794,7 +29794,7 @@ export class PollAnswerVoters extends Constructor {
   }
 }
 
-export class PollResults extends Constructor {
+export class PollResults extends Type {
   min?: true;
   results?: Array<TypePollAnswerVoters>;
   totalVoters?: number;
@@ -29841,7 +29841,7 @@ export class PollResults extends Constructor {
   }
 }
 
-export class ChatOnlines extends Constructor {
+export class ChatOnlines extends Type {
   onlines: number;
 
   protected get [id]() {
@@ -29866,7 +29866,7 @@ export class ChatOnlines extends Constructor {
   }
 }
 
-export class StatsURL extends Constructor {
+export class StatsURL extends Type {
   url: string;
 
   protected get [id]() {
@@ -29891,7 +29891,7 @@ export class StatsURL extends Constructor {
   }
 }
 
-export class ChatAdminRights extends Constructor {
+export class ChatAdminRights extends Type {
   changeInfo?: true;
   postMessages?: true;
   editMessages?: true;
@@ -29962,7 +29962,7 @@ export class ChatAdminRights extends Constructor {
   }
 }
 
-export class ChatBannedRights extends Constructor {
+export class ChatBannedRights extends Type {
   viewMessages?: true;
   sendMessages?: true;
   sendMedia?: true;
@@ -30069,7 +30069,7 @@ export class ChatBannedRights extends Constructor {
   }
 }
 
-export class InputWallPaper extends Constructor {
+export class InputWallPaper extends Type {
   id: bigint;
   accessHash: bigint;
 
@@ -30166,7 +30166,7 @@ export class AccountWallPapersNotModified extends TypeAccountWallPapers {
   }
 }
 
-export class AccountWallPapers extends Constructor {
+export class AccountWallPapers extends Type {
   hash: bigint;
   wallpapers: Array<TypeWallPaper>;
 
@@ -30195,7 +30195,7 @@ export class AccountWallPapers extends Constructor {
   }
 }
 
-export class CodeSettings extends Constructor {
+export class CodeSettings extends Type {
   allowFlashcall?: true;
   currentNumber?: true;
   allowAppHash?: true;
@@ -30250,7 +30250,7 @@ export class CodeSettings extends Constructor {
   }
 }
 
-export class WallPaperSettings extends Constructor {
+export class WallPaperSettings extends Type {
   blur?: true;
   motion?: true;
   backgroundColor?: number;
@@ -30305,7 +30305,7 @@ export class WallPaperSettings extends Constructor {
   }
 }
 
-export class AutoDownloadSettings extends Constructor {
+export class AutoDownloadSettings extends Type {
   disabled?: true;
   videoPreloadLarge?: true;
   audioPreloadNext?: true;
@@ -30360,7 +30360,7 @@ export class AutoDownloadSettings extends Constructor {
   }
 }
 
-export class AccountAutoDownloadSettings extends Constructor {
+export class AccountAutoDownloadSettings extends Type {
   low: TypeAutoDownloadSettings;
   medium: TypeAutoDownloadSettings;
   high: TypeAutoDownloadSettings;
@@ -30393,7 +30393,7 @@ export class AccountAutoDownloadSettings extends Constructor {
   }
 }
 
-export class EmojiKeyword extends Constructor {
+export class EmojiKeyword extends Type {
   keyword: string;
   emoticons: Array<string>;
 
@@ -30451,7 +30451,7 @@ export class EmojiKeywordDeleted extends TypeEmojiKeyword {
   }
 }
 
-export class EmojiKeywordsDifference extends Constructor {
+export class EmojiKeywordsDifference extends Type {
   langCode: string;
   fromVersion: number;
   version: number;
@@ -30488,7 +30488,7 @@ export class EmojiKeywordsDifference extends Constructor {
   }
 }
 
-export class EmojiURL extends Constructor {
+export class EmojiURL extends Type {
   url: string;
 
   protected get [id]() {
@@ -30513,7 +30513,7 @@ export class EmojiURL extends Constructor {
   }
 }
 
-export class EmojiLanguage extends Constructor {
+export class EmojiLanguage extends Type {
   langCode: string;
 
   protected get [id]() {
@@ -30538,7 +30538,7 @@ export class EmojiLanguage extends Constructor {
   }
 }
 
-export class Folder extends Constructor {
+export class Folder extends Type {
   autofillNewBroadcasts?: true;
   autofillPublicGroups?: true;
   autofillNewCorrespondents?: true;
@@ -30585,7 +30585,7 @@ export class Folder extends Constructor {
   }
 }
 
-export class InputFolderPeer extends Constructor {
+export class InputFolderPeer extends Type {
   peer: TypeInputPeer;
   folderId: number;
 
@@ -30614,7 +30614,7 @@ export class InputFolderPeer extends Constructor {
   }
 }
 
-export class FolderPeer extends Constructor {
+export class FolderPeer extends Type {
   peer: TypePeer;
   folderId: number;
 
@@ -30643,7 +30643,7 @@ export class FolderPeer extends Constructor {
   }
 }
 
-export class MessagesSearchCounter extends Constructor {
+export class MessagesSearchCounter extends Type {
   inexact?: true;
   filter: TypeMessagesFilter;
   count: number;
@@ -30774,7 +30774,7 @@ export class ChannelLocationEmpty extends TypeChannelLocation {
   }
 }
 
-export class ChannelLocation extends Constructor {
+export class ChannelLocation extends Type {
   geoPoint: TypeGeoPoint;
   address: string;
 
@@ -30803,7 +30803,7 @@ export class ChannelLocation extends Constructor {
   }
 }
 
-export class PeerLocated extends Constructor {
+export class PeerLocated extends Type {
   peer: TypePeer;
   expires: number;
   distance: number;
@@ -30861,7 +30861,7 @@ export class PeerSelfLocated extends TypePeerLocated {
   }
 }
 
-export class RestrictionReason extends Constructor {
+export class RestrictionReason extends Type {
   platform: string;
   reason: string;
   text: string;
@@ -30894,7 +30894,7 @@ export class RestrictionReason extends Constructor {
   }
 }
 
-export class InputTheme extends Constructor {
+export class InputTheme extends Type {
   id: bigint;
   accessHash: bigint;
 
@@ -30948,7 +30948,7 @@ export class InputThemeSlug extends TypeInputTheme {
   }
 }
 
-export class Theme extends Constructor {
+export class Theme extends Type {
   creator?: true;
   default?: true;
   forChat?: true;
@@ -31033,7 +31033,7 @@ export class AccountThemesNotModified extends TypeAccountThemes {
   }
 }
 
-export class AccountThemes extends Constructor {
+export class AccountThemes extends Type {
   hash: bigint;
   themes: Array<TypeTheme>;
 
@@ -31062,7 +31062,7 @@ export class AccountThemes extends Constructor {
   }
 }
 
-export class AuthLoginToken extends Constructor {
+export class AuthLoginToken extends Type {
   expires: number;
   token: Uint8Array;
 
@@ -31145,7 +31145,7 @@ export class AuthLoginTokenSuccess extends TypeAuthLoginToken {
   }
 }
 
-export class AccountContentSettings extends Constructor {
+export class AccountContentSettings extends Type {
   sensitiveEnabled?: true;
   sensitiveCanChange?: true;
 
@@ -31176,7 +31176,7 @@ export class AccountContentSettings extends Constructor {
   }
 }
 
-export class MessagesInactiveChats extends Constructor {
+export class MessagesInactiveChats extends Type {
   dates: Array<number>;
   chats: Array<TypeChat>;
   users: Array<TypeUser>;
@@ -31299,7 +31299,7 @@ export class BaseThemeArctic extends TypeBaseTheme {
   }
 }
 
-export class InputThemeSettings extends Constructor {
+export class InputThemeSettings extends Type {
   messageColorsAnimated?: true;
   baseTheme: TypeBaseTheme;
   accentColor: number;
@@ -31350,7 +31350,7 @@ export class InputThemeSettings extends Constructor {
   }
 }
 
-export class ThemeSettings extends Constructor {
+export class ThemeSettings extends Type {
   messageColorsAnimated?: true;
   baseTheme: TypeBaseTheme;
   accentColor: number;
@@ -31428,7 +31428,7 @@ export class WebPageAttributeTheme extends TypeWebPageAttribute {
   }
 }
 
-export class MessageUserVote extends Constructor {
+export class MessageUserVote extends Type {
   userId: bigint;
   option: Uint8Array;
   date: number;
@@ -31523,7 +31523,7 @@ export class MessageUserVoteMultiple extends TypeMessageUserVote {
   }
 }
 
-export class MessagesVotesList extends Constructor {
+export class MessagesVotesList extends Type {
   count: number;
   votes: Array<TypeMessageUserVote>;
   users: Array<TypeUser>;
@@ -31562,7 +31562,7 @@ export class MessagesVotesList extends Constructor {
   }
 }
 
-export class BankCardOpenURL extends Constructor {
+export class BankCardOpenURL extends Type {
   url: string;
   name: string;
 
@@ -31591,7 +31591,7 @@ export class BankCardOpenURL extends Constructor {
   }
 }
 
-export class PaymentsBankCardData extends Constructor {
+export class PaymentsBankCardData extends Type {
   title: string;
   openUrls: Array<TypeBankCardOpenURL>;
 
@@ -31620,7 +31620,7 @@ export class PaymentsBankCardData extends Constructor {
   }
 }
 
-export class DialogFilter extends Constructor {
+export class DialogFilter extends Type {
   contacts?: true;
   nonContacts?: true;
   groups?: true;
@@ -31717,7 +31717,7 @@ export class DialogFilterDefault extends TypeDialogFilter {
   }
 }
 
-export class DialogFilterSuggested extends Constructor {
+export class DialogFilterSuggested extends Type {
   filter: TypeDialogFilter;
   description: string;
 
@@ -31746,7 +31746,7 @@ export class DialogFilterSuggested extends Constructor {
   }
 }
 
-export class StatsDateRangeDays extends Constructor {
+export class StatsDateRangeDays extends Type {
   minDate: number;
   maxDate: number;
 
@@ -31775,7 +31775,7 @@ export class StatsDateRangeDays extends Constructor {
   }
 }
 
-export class StatsAbsValueAndPrev extends Constructor {
+export class StatsAbsValueAndPrev extends Type {
   current: number;
   previous: number;
 
@@ -31804,7 +31804,7 @@ export class StatsAbsValueAndPrev extends Constructor {
   }
 }
 
-export class StatsPercentValue extends Constructor {
+export class StatsPercentValue extends Type {
   part: number;
   total: number;
 
@@ -31883,7 +31883,7 @@ export class StatsGraphError extends TypeStatsGraph {
   }
 }
 
-export class StatsGraph extends Constructor {
+export class StatsGraph extends Type {
   json: TypeDataJSON;
   zoomToken?: string;
 
@@ -31914,7 +31914,7 @@ export class StatsGraph extends Constructor {
   }
 }
 
-export class MessageInteractionCounters extends Constructor {
+export class MessageInteractionCounters extends Type {
   msgId: number;
   views: number;
   forwards: number;
@@ -31947,7 +31947,7 @@ export class MessageInteractionCounters extends Constructor {
   }
 }
 
-export class StatsBroadcastStats extends Constructor {
+export class StatsBroadcastStats extends Type {
   period: TypeStatsDateRangeDays;
   followers: TypeStatsAbsValueAndPrev;
   viewsPerPost: TypeStatsAbsValueAndPrev;
@@ -32071,7 +32071,7 @@ export class HelpPromoDataEmpty extends TypeHelpPromoData {
   }
 }
 
-export class HelpPromoData extends Constructor {
+export class HelpPromoData extends Type {
   proxy?: true;
   expires: number;
   peer: TypePeer;
@@ -32122,7 +32122,7 @@ export class HelpPromoData extends Constructor {
   }
 }
 
-export class VideoSize extends Constructor {
+export class VideoSize extends Type {
   type: string;
   w: number;
   h: number;
@@ -32227,7 +32227,7 @@ export class VideoSizeStickerMarkup extends TypeVideoSize {
   }
 }
 
-export class StatsGroupTopPoster extends Constructor {
+export class StatsGroupTopPoster extends Type {
   userId: bigint;
   messages: number;
   avgChars: number;
@@ -32260,7 +32260,7 @@ export class StatsGroupTopPoster extends Constructor {
   }
 }
 
-export class StatsGroupTopAdmin extends Constructor {
+export class StatsGroupTopAdmin extends Type {
   userId: bigint;
   deleted: number;
   kicked: number;
@@ -32297,7 +32297,7 @@ export class StatsGroupTopAdmin extends Constructor {
   }
 }
 
-export class StatsGroupTopInviter extends Constructor {
+export class StatsGroupTopInviter extends Type {
   userId: bigint;
   invitations: number;
 
@@ -32326,7 +32326,7 @@ export class StatsGroupTopInviter extends Constructor {
   }
 }
 
-export class StatsMegagroupStats extends Constructor {
+export class StatsMegagroupStats extends Type {
   period: TypeStatsDateRangeDays;
   members: TypeStatsAbsValueAndPrev;
   messages: TypeStatsAbsValueAndPrev;
@@ -32435,7 +32435,7 @@ export class StatsMegagroupStats extends Constructor {
   }
 }
 
-export class GlobalPrivacySettings extends Constructor {
+export class GlobalPrivacySettings extends Type {
   archiveAndMuteNewNoncontactPeers?: boolean;
 
   protected get [id]() {
@@ -32462,7 +32462,7 @@ export class GlobalPrivacySettings extends Constructor {
   }
 }
 
-export class HelpCountryCode extends Constructor {
+export class HelpCountryCode extends Type {
   countryCode: string;
   prefixes?: Array<string>;
   patterns?: Array<string>;
@@ -32497,7 +32497,7 @@ export class HelpCountryCode extends Constructor {
   }
 }
 
-export class HelpCountry extends Constructor {
+export class HelpCountry extends Type {
   hidden?: true;
   iso2: string;
   defaultName: string;
@@ -32558,7 +32558,7 @@ export class HelpCountriesListNotModified extends TypeHelpCountriesList {
   }
 }
 
-export class HelpCountriesList extends Constructor {
+export class HelpCountriesList extends Type {
   countries: Array<TypeHelpCountry>;
   hash: number;
 
@@ -32587,7 +32587,7 @@ export class HelpCountriesList extends Constructor {
   }
 }
 
-export class MessageViews extends Constructor {
+export class MessageViews extends Type {
   views?: number;
   forwards?: number;
   replies?: TypeMessageReplies;
@@ -32622,7 +32622,7 @@ export class MessageViews extends Constructor {
   }
 }
 
-export class MessagesMessageViews extends Constructor {
+export class MessagesMessageViews extends Type {
   views: Array<TypeMessageViews>;
   chats: Array<TypeChat>;
   users: Array<TypeUser>;
@@ -32655,7 +32655,7 @@ export class MessagesMessageViews extends Constructor {
   }
 }
 
-export class MessagesDiscussionMessage extends Constructor {
+export class MessagesDiscussionMessage extends Type {
   messages: Array<TypeMessage>;
   maxId?: number;
   readInboxMaxId?: number;
@@ -32706,7 +32706,7 @@ export class MessagesDiscussionMessage extends Constructor {
   }
 }
 
-export class MessageReplyHeader extends Constructor {
+export class MessageReplyHeader extends Type {
   replyToScheduled?: true;
   forumTopic?: true;
   replyToMsgId: number;
@@ -32749,7 +32749,7 @@ export class MessageReplyHeader extends Constructor {
   }
 }
 
-export class MessageReplies extends Constructor {
+export class MessageReplies extends Type {
   comments?: true;
   replies: number;
   repliesPts: number;
@@ -32800,7 +32800,7 @@ export class MessageReplies extends Constructor {
   }
 }
 
-export class PeerBlocked extends Constructor {
+export class PeerBlocked extends Type {
   peerId: TypePeer;
   date: number;
 
@@ -32829,7 +32829,7 @@ export class PeerBlocked extends Constructor {
   }
 }
 
-export class StatsMessageStats extends Constructor {
+export class StatsMessageStats extends Type {
   viewsGraph: TypeStatsGraph;
 
   protected get [id]() {
@@ -32887,7 +32887,7 @@ export class GroupCallDiscarded extends TypeGroupCall {
   }
 }
 
-export class GroupCall extends Constructor {
+export class GroupCall extends Type {
   joinMuted?: true;
   canChangeJoinMuted?: true;
   joinDateAsc?: true;
@@ -32982,7 +32982,7 @@ export class GroupCall extends Constructor {
   }
 }
 
-export class InputGroupCall extends Constructor {
+export class InputGroupCall extends Type {
   id: bigint;
   accessHash: bigint;
 
@@ -33011,7 +33011,7 @@ export class InputGroupCall extends Constructor {
   }
 }
 
-export class GroupCallParticipant extends Constructor {
+export class GroupCallParticipant extends Type {
   muted?: true;
   left?: true;
   canSelfUnmute?: true;
@@ -33110,7 +33110,7 @@ export class GroupCallParticipant extends Constructor {
   }
 }
 
-export class PhoneGroupCall extends Constructor {
+export class PhoneGroupCall extends Type {
   call: TypeGroupCall;
   participants: Array<TypeGroupCallParticipant>;
   participantsNextOffset: string;
@@ -33151,7 +33151,7 @@ export class PhoneGroupCall extends Constructor {
   }
 }
 
-export class PhoneGroupParticipants extends Constructor {
+export class PhoneGroupParticipants extends Type {
   count: number;
   participants: Array<TypeGroupCallParticipant>;
   nextOffset: string;
@@ -33286,7 +33286,7 @@ export class InlineQueryPeerTypeBroadcast extends TypeInlineQueryPeerType {
   }
 }
 
-export class MessagesHistoryImport extends Constructor {
+export class MessagesHistoryImport extends Type {
   id: bigint;
 
   protected get [id]() {
@@ -33311,7 +33311,7 @@ export class MessagesHistoryImport extends Constructor {
   }
 }
 
-export class MessagesHistoryImportParsed extends Constructor {
+export class MessagesHistoryImportParsed extends Type {
   pm?: true;
   group?: true;
   title?: string;
@@ -33346,7 +33346,7 @@ export class MessagesHistoryImportParsed extends Constructor {
   }
 }
 
-export class MessagesAffectedFoundMessages extends Constructor {
+export class MessagesAffectedFoundMessages extends Type {
   pts: number;
   ptsCount: number;
   offset: number;
@@ -33383,7 +33383,7 @@ export class MessagesAffectedFoundMessages extends Constructor {
   }
 }
 
-export class ChatInviteImporter extends Constructor {
+export class ChatInviteImporter extends Type {
   requested?: true;
   viaChatlist?: true;
   userId: bigint;
@@ -33430,7 +33430,7 @@ export class ChatInviteImporter extends Constructor {
   }
 }
 
-export class MessagesExportedChatInvites extends Constructor {
+export class MessagesExportedChatInvites extends Type {
   count: number;
   invites: Array<TypeExportedChatInvite>;
   users: Array<TypeUser>;
@@ -33463,7 +33463,7 @@ export class MessagesExportedChatInvites extends Constructor {
   }
 }
 
-export class MessagesExportedChatInvite extends Constructor {
+export class MessagesExportedChatInvite extends Type {
   invite: TypeExportedChatInvite;
   users: Array<TypeUser>;
 
@@ -33525,7 +33525,7 @@ export class MessagesExportedChatInviteReplaced extends TypeMessagesExportedChat
   }
 }
 
-export class MessagesChatInviteImporters extends Constructor {
+export class MessagesChatInviteImporters extends Type {
   count: number;
   importers: Array<TypeChatInviteImporter>;
   users: Array<TypeUser>;
@@ -33558,7 +33558,7 @@ export class MessagesChatInviteImporters extends Constructor {
   }
 }
 
-export class ChatAdminWithInvites extends Constructor {
+export class ChatAdminWithInvites extends Type {
   adminId: bigint;
   invitesCount: number;
   revokedInvitesCount: number;
@@ -33591,7 +33591,7 @@ export class ChatAdminWithInvites extends Constructor {
   }
 }
 
-export class MessagesChatAdminsWithInvites extends Constructor {
+export class MessagesChatAdminsWithInvites extends Type {
   admins: Array<TypeChatAdminWithInvites>;
   users: Array<TypeUser>;
 
@@ -33620,7 +33620,7 @@ export class MessagesChatAdminsWithInvites extends Constructor {
   }
 }
 
-export class MessagesCheckedHistoryImportPeer extends Constructor {
+export class MessagesCheckedHistoryImportPeer extends Type {
   confirmText: string;
 
   protected get [id]() {
@@ -33645,7 +33645,7 @@ export class MessagesCheckedHistoryImportPeer extends Constructor {
   }
 }
 
-export class PhoneJoinAsPeers extends Constructor {
+export class PhoneJoinAsPeers extends Type {
   peers: Array<TypePeer>;
   chats: Array<TypeChat>;
   users: Array<TypeUser>;
@@ -33678,7 +33678,7 @@ export class PhoneJoinAsPeers extends Constructor {
   }
 }
 
-export class PhoneExportedGroupCallInvite extends Constructor {
+export class PhoneExportedGroupCallInvite extends Type {
   link: string;
 
   protected get [id]() {
@@ -33703,7 +33703,7 @@ export class PhoneExportedGroupCallInvite extends Constructor {
   }
 }
 
-export class GroupCallParticipantVideoSourceGroup extends Constructor {
+export class GroupCallParticipantVideoSourceGroup extends Type {
   semantics: string;
   sources: Array<number>;
 
@@ -33732,7 +33732,7 @@ export class GroupCallParticipantVideoSourceGroup extends Constructor {
   }
 }
 
-export class GroupCallParticipantVideo extends Constructor {
+export class GroupCallParticipantVideo extends Type {
   paused?: true;
   endpoint: string;
   sourceGroups: Array<TypeGroupCallParticipantVideoSourceGroup>;
@@ -33771,7 +33771,7 @@ export class GroupCallParticipantVideo extends Constructor {
   }
 }
 
-export class StickersSuggestedShortName extends Constructor {
+export class StickersSuggestedShortName extends Type {
   shortName: string;
 
   protected get [id]() {
@@ -34015,7 +34015,7 @@ export class AccountResetPasswordOk extends TypeAccountResetPasswordResult {
   }
 }
 
-export class SponsoredMessage extends Constructor {
+export class SponsoredMessage extends Type {
   recommended?: true;
   showPeerPhoto?: true;
   randomId: Uint8Array;
@@ -34086,7 +34086,7 @@ export class SponsoredMessage extends Constructor {
   }
 }
 
-export class MessagesSponsoredMessages extends Constructor {
+export class MessagesSponsoredMessages extends Type {
   postsBetween?: number;
   messages: Array<TypeSponsoredMessage>;
   chats: Array<TypeChat>;
@@ -34143,7 +34143,7 @@ export class MessagesSponsoredMessagesEmpty extends TypeMessagesSponsoredMessage
   }
 }
 
-export class SearchResultsCalendarPeriod extends Constructor {
+export class SearchResultsCalendarPeriod extends Type {
   date: number;
   minMsgId: number;
   maxMsgId: number;
@@ -34180,7 +34180,7 @@ export class SearchResultsCalendarPeriod extends Constructor {
   }
 }
 
-export class MessagesSearchResultsCalendar extends Constructor {
+export class MessagesSearchResultsCalendar extends Type {
   inexact?: true;
   count: number;
   minDate: number;
@@ -34272,7 +34272,7 @@ export class SearchResultPosition extends TypeSearchResultsPosition {
   }
 }
 
-export class MessagesSearchResultsPositions extends Constructor {
+export class MessagesSearchResultsPositions extends Type {
   count: number;
   positions: Array<TypeSearchResultsPosition>;
 
@@ -34301,7 +34301,7 @@ export class MessagesSearchResultsPositions extends Constructor {
   }
 }
 
-export class ChannelsSendAsPeers extends Constructor {
+export class ChannelsSendAsPeers extends Type {
   peers: Array<TypeSendAsPeer>;
   chats: Array<TypeChat>;
   users: Array<TypeUser>;
@@ -34334,7 +34334,7 @@ export class ChannelsSendAsPeers extends Constructor {
   }
 }
 
-export class UsersUserFull extends Constructor {
+export class UsersUserFull extends Type {
   fullUser: TypeUserFull;
   chats: Array<TypeChat>;
   users: Array<TypeUser>;
@@ -34367,7 +34367,7 @@ export class UsersUserFull extends Constructor {
   }
 }
 
-export class MessagesPeerSettings extends Constructor {
+export class MessagesPeerSettings extends Type {
   settings: TypePeerSettings;
   chats: Array<TypeChat>;
   users: Array<TypeUser>;
@@ -34400,7 +34400,7 @@ export class MessagesPeerSettings extends Constructor {
   }
 }
 
-export class AuthLoggedOut extends Constructor {
+export class AuthLoggedOut extends Type {
   futureAuthToken?: Uint8Array;
 
   protected get [id]() {
@@ -34427,7 +34427,7 @@ export class AuthLoggedOut extends Constructor {
   }
 }
 
-export class ReactionCount extends Constructor {
+export class ReactionCount extends Type {
   chosenOrder?: number;
   reaction: TypeReaction;
   count: number;
@@ -34462,7 +34462,7 @@ export class ReactionCount extends Constructor {
   }
 }
 
-export class MessageReactions extends Constructor {
+export class MessageReactions extends Type {
   min?: true;
   canSeeList?: true;
   results: Array<TypeReactionCount>;
@@ -34501,7 +34501,7 @@ export class MessageReactions extends Constructor {
   }
 }
 
-export class MessagesMessageReactionsList extends Constructor {
+export class MessagesMessageReactionsList extends Type {
   count: number;
   reactions: Array<TypeMessagePeerReaction>;
   chats: Array<TypeChat>;
@@ -34544,7 +34544,7 @@ export class MessagesMessageReactionsList extends Constructor {
   }
 }
 
-export class AvailableReaction extends Constructor {
+export class AvailableReaction extends Type {
   inactive?: true;
   premium?: true;
   reaction: string;
@@ -34629,7 +34629,7 @@ export class MessagesAvailableReactionsNotModified extends TypeMessagesAvailable
   }
 }
 
-export class MessagesAvailableReactions extends Constructor {
+export class MessagesAvailableReactions extends Type {
   hash: number;
   reactions: Array<TypeAvailableReaction>;
 
@@ -34658,7 +34658,7 @@ export class MessagesAvailableReactions extends Constructor {
   }
 }
 
-export class MessagePeerReaction extends Constructor {
+export class MessagePeerReaction extends Type {
   big?: true;
   unread?: true;
   peerId: TypePeer;
@@ -34701,7 +34701,7 @@ export class MessagePeerReaction extends Constructor {
   }
 }
 
-export class GroupCallStreamChannel extends Constructor {
+export class GroupCallStreamChannel extends Type {
   channel: number;
   scale: number;
   lastTimestampMs: bigint;
@@ -34734,7 +34734,7 @@ export class GroupCallStreamChannel extends Constructor {
   }
 }
 
-export class PhoneGroupCallStreamChannels extends Constructor {
+export class PhoneGroupCallStreamChannels extends Type {
   channels: Array<TypeGroupCallStreamChannel>;
 
   protected get [id]() {
@@ -34759,7 +34759,7 @@ export class PhoneGroupCallStreamChannels extends Constructor {
   }
 }
 
-export class PhoneGroupCallStreamRtmpURL extends Constructor {
+export class PhoneGroupCallStreamRtmpURL extends Type {
   url: string;
   key: string;
 
@@ -34788,7 +34788,7 @@ export class PhoneGroupCallStreamRtmpURL extends Constructor {
   }
 }
 
-export class AttachMenuBotIconColor extends Constructor {
+export class AttachMenuBotIconColor extends Type {
   name: string;
   color: number;
 
@@ -34817,7 +34817,7 @@ export class AttachMenuBotIconColor extends Constructor {
   }
 }
 
-export class AttachMenuBotIcon extends Constructor {
+export class AttachMenuBotIcon extends Type {
   name: string;
   icon: TypeDocument;
   colors?: Array<TypeAttachMenuBotIconColor>;
@@ -34852,7 +34852,7 @@ export class AttachMenuBotIcon extends Constructor {
   }
 }
 
-export class AttachMenuBot extends Constructor {
+export class AttachMenuBot extends Type {
   inactive?: true;
   hasSettings?: true;
   requestWriteAccess?: true;
@@ -34921,7 +34921,7 @@ export class AttachMenuBotsNotModified extends TypeAttachMenuBots {
   }
 }
 
-export class AttachMenuBots extends Constructor {
+export class AttachMenuBots extends Type {
   hash: bigint;
   bots: Array<TypeAttachMenuBot>;
   users: Array<TypeUser>;
@@ -34954,7 +34954,7 @@ export class AttachMenuBots extends Constructor {
   }
 }
 
-export class AttachMenuBotsBot extends Constructor {
+export class AttachMenuBotsBot extends Type {
   bot: TypeAttachMenuBot;
   users: Array<TypeUser>;
 
@@ -35037,7 +35037,7 @@ export class SimpleWebViewResultURL extends TypeSimpleWebViewResult {
   }
 }
 
-export class WebViewMessageSent extends Constructor {
+export class WebViewMessageSent extends Type {
   msgId?: TypeInputBotInlineMessageID;
 
   protected get [id]() {
@@ -35100,7 +35100,7 @@ export class BotMenuButtonCommands extends TypeBotMenuButton {
   }
 }
 
-export class BotMenuButton extends Constructor {
+export class BotMenuButton extends Type {
   text: string;
   url: string;
 
@@ -35147,7 +35147,7 @@ export class AccountSavedRingtonesNotModified extends TypeAccountSavedRingtones 
   }
 }
 
-export class AccountSavedRingtones extends Constructor {
+export class AccountSavedRingtones extends Type {
   hash: bigint;
   ringtones: Array<TypeDocument>;
 
@@ -35266,7 +35266,7 @@ export class NotificationSoundRingtone extends TypeNotificationSound {
   }
 }
 
-export class AccountSavedRingtone extends Constructor {
+export class AccountSavedRingtone extends Type {
   protected get [id]() {
     return 0xb7263f6d;
   }
@@ -35453,7 +35453,7 @@ export class InputInvoiceSlug extends TypeInputInvoice {
   }
 }
 
-export class PaymentsExportedInvoice extends Constructor {
+export class PaymentsExportedInvoice extends Type {
   url: string;
 
   protected get [id]() {
@@ -35478,7 +35478,7 @@ export class PaymentsExportedInvoice extends Constructor {
   }
 }
 
-export class MessagesTranscribedAudio extends Constructor {
+export class MessagesTranscribedAudio extends Type {
   pending?: true;
   transcriptionId: bigint;
   text: string;
@@ -35513,7 +35513,7 @@ export class MessagesTranscribedAudio extends Constructor {
   }
 }
 
-export class HelpPremiumPromo extends Constructor {
+export class HelpPremiumPromo extends Type {
   statusText: string;
   statusEntities: Array<TypeMessageEntity>;
   videoSections: Array<string>;
@@ -35622,7 +35622,7 @@ export class InputStorePaymentGiftPremium extends TypeInputStorePaymentPurpose {
   }
 }
 
-export class PremiumGiftOption extends Constructor {
+export class PremiumGiftOption extends Type {
   months: number;
   currency: string;
   amount: bigint;
@@ -35665,7 +35665,7 @@ export class PremiumGiftOption extends Constructor {
   }
 }
 
-export class PaymentFormMethod extends Constructor {
+export class PaymentFormMethod extends Type {
   url: string;
   title: string;
 
@@ -35712,7 +35712,7 @@ export class EmojiStatusEmpty extends TypeEmojiStatus {
   }
 }
 
-export class EmojiStatus extends Constructor {
+export class EmojiStatus extends Type {
   documentId: bigint;
 
   protected get [id]() {
@@ -35784,7 +35784,7 @@ export class AccountEmojiStatusesNotModified extends TypeAccountEmojiStatuses {
   }
 }
 
-export class AccountEmojiStatuses extends Constructor {
+export class AccountEmojiStatuses extends Type {
   hash: bigint;
   statuses: Array<TypeEmojiStatus>;
 
@@ -35969,7 +35969,7 @@ export class MessagesReactionsNotModified extends TypeMessagesReactions {
   }
 }
 
-export class MessagesReactions extends Constructor {
+export class MessagesReactions extends Type {
   hash: bigint;
   reactions: Array<TypeReaction>;
 
@@ -36138,7 +36138,7 @@ export class EmailVerificationApple extends TypeEmailVerification {
   }
 }
 
-export class AccountEmailVerified extends Constructor {
+export class AccountEmailVerified extends Type {
   email: string;
 
   protected get [id]() {
@@ -36192,7 +36192,7 @@ export class AccountEmailVerifiedLogin extends TypeAccountEmailVerified {
   }
 }
 
-export class PremiumSubscriptionOption extends Constructor {
+export class PremiumSubscriptionOption extends Type {
   current?: true;
   canPurchaseUpgrade?: true;
   transaction?: string;
@@ -36247,7 +36247,7 @@ export class PremiumSubscriptionOption extends Constructor {
   }
 }
 
-export class SendAsPeer extends Constructor {
+export class SendAsPeer extends Type {
   premiumRequired?: true;
   peer: TypePeer;
 
@@ -36317,7 +36317,7 @@ export class MessageExtendedMediaPreview extends TypeMessageExtendedMedia {
   }
 }
 
-export class MessageExtendedMedia extends Constructor {
+export class MessageExtendedMedia extends Type {
   media: TypeMessageMedia;
 
   protected get [id]() {
@@ -36342,7 +36342,7 @@ export class MessageExtendedMedia extends Constructor {
   }
 }
 
-export class StickerKeyword extends Constructor {
+export class StickerKeyword extends Type {
   documentId: bigint;
   keyword: Array<string>;
 
@@ -36371,7 +36371,7 @@ export class StickerKeyword extends Constructor {
   }
 }
 
-export class Username extends Constructor {
+export class Username extends Type {
   editable?: true;
   active?: true;
   username: string;
@@ -36431,7 +36431,7 @@ export class ForumTopicDeleted extends TypeForumTopic {
   }
 }
 
-export class ForumTopic extends Constructor {
+export class ForumTopic extends Type {
   my?: true;
   closed?: true;
   pinned?: true;
@@ -36530,7 +36530,7 @@ export class ForumTopic extends Constructor {
   }
 }
 
-export class MessagesForumTopics extends Constructor {
+export class MessagesForumTopics extends Type {
   orderByCreateDate?: true;
   count: number;
   topics: Array<TypeForumTopic>;
@@ -36581,7 +36581,7 @@ export class MessagesForumTopics extends Constructor {
   }
 }
 
-export class DefaultHistoryTTL extends Constructor {
+export class DefaultHistoryTTL extends Type {
   period: number;
 
   protected get [id]() {
@@ -36606,7 +36606,7 @@ export class DefaultHistoryTTL extends Constructor {
   }
 }
 
-export class ExportedContactToken extends Constructor {
+export class ExportedContactToken extends Type {
   url: string;
   expires: number;
 
@@ -36770,7 +36770,7 @@ export class EmojiListNotModified extends TypeEmojiList {
   }
 }
 
-export class EmojiList extends Constructor {
+export class EmojiList extends Type {
   hash: bigint;
   documentId: Array<bigint>;
 
@@ -36799,7 +36799,7 @@ export class EmojiList extends Constructor {
   }
 }
 
-export class EmojiGroup extends Constructor {
+export class EmojiGroup extends Type {
   title: string;
   iconEmojiId: bigint;
   emoticons: Array<string>;
@@ -36850,7 +36850,7 @@ export class MessagesEmojiGroupsNotModified extends TypeMessagesEmojiGroups {
   }
 }
 
-export class MessagesEmojiGroups extends Constructor {
+export class MessagesEmojiGroups extends Type {
   hash: number;
   groups: Array<TypeEmojiGroup>;
 
@@ -36879,7 +36879,7 @@ export class MessagesEmojiGroups extends Constructor {
   }
 }
 
-export class TextWithEntities extends Constructor {
+export class TextWithEntities extends Type {
   text: string;
   entities: Array<TypeMessageEntity>;
 
@@ -36933,7 +36933,7 @@ export class MessagesTranslateResult extends TypeMessagesTranslatedText {
   }
 }
 
-export class AutoSaveSettings extends Constructor {
+export class AutoSaveSettings extends Type {
   photos?: true;
   videos?: true;
   videoMaxSize?: bigint;
@@ -36968,7 +36968,7 @@ export class AutoSaveSettings extends Constructor {
   }
 }
 
-export class AutoSaveException extends Constructor {
+export class AutoSaveException extends Type {
   peer: TypePeer;
   settings: TypeAutoSaveSettings;
 
@@ -36997,7 +36997,7 @@ export class AutoSaveException extends Constructor {
   }
 }
 
-export class AccountAutoSaveSettings extends Constructor {
+export class AccountAutoSaveSettings extends Type {
   usersSettings: TypeAutoSaveSettings;
   chatsSettings: TypeAutoSaveSettings;
   broadcastsSettings: TypeAutoSaveSettings;
@@ -37060,7 +37060,7 @@ export class HelpAppConfigNotModified extends TypeHelpAppConfig {
   }
 }
 
-export class HelpAppConfig extends Constructor {
+export class HelpAppConfig extends Type {
   hash: number;
   config: TypeJSONValue;
 
@@ -37165,7 +37165,7 @@ export class BotAppNotModified extends TypeBotApp {
   }
 }
 
-export class BotApp extends Constructor {
+export class BotApp extends Type {
   id: bigint;
   accessHash: bigint;
   shortName: string;
@@ -37220,7 +37220,7 @@ export class BotApp extends Constructor {
   }
 }
 
-export class MessagesBotApp extends Constructor {
+export class MessagesBotApp extends Type {
   inactive?: true;
   requestWriteAccess?: true;
   app: TypeBotApp;
@@ -37280,7 +37280,7 @@ export class AppWebViewResultURL extends TypeAppWebViewResult {
   }
 }
 
-export class InlineBotWebView extends Constructor {
+export class InlineBotWebView extends Type {
   text: string;
   url: string;
 
@@ -37309,7 +37309,7 @@ export class InlineBotWebView extends Constructor {
   }
 }
 
-export class ReadParticipantDate extends Constructor {
+export class ReadParticipantDate extends Type {
   userId: bigint;
   date: number;
 

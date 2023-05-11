@@ -4,7 +4,7 @@ import { bigIntFromBuffer, getRandomBigInt, modExp } from "../utilities/0_bigint
 import { bufferFromBigInt, concat, sha1 } from "../utilities/0_buffer.ts";
 import { rsaPad } from "../utilities/1_auth.ts";
 import { packUnencryptedMessage, unpackUnencryptedMessage } from "../utilities/1_message.ts";
-import { ClientDHInnerData, DHGenOK, PQInnerDataDC, ResPQ, ServerDHInnerData, ServerDHParamsOK } from "../tl/2_constructors.ts";
+import { ClientDHInnerData, DHGenOK, PQInnerDataDC, ResPQ, ServerDHInnerData, ServerDHParamsOK } from "../tl/2_types.ts";
 import { Function, ReqDHParams, ReqPQMulti, SetClientDHParams } from "../tl/3_functions.ts";
 import { TLReader } from "../tl/3_tl_reader.ts";
 import { ClientAbstract } from "./client_abstract.ts";
