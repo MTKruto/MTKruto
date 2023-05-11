@@ -1254,7 +1254,7 @@ export abstract class TypeInlineBotWebView extends Type {
 export abstract class TypeReadParticipantDate extends Type {
 }
 
-export class ResPQ extends Type {
+export class ResPQ extends TypeResPQ {
   nonce: bigint;
   serverNonce: bigint;
   pq: Uint8Array;
@@ -1426,7 +1426,7 @@ export class ServerDHParamsOK extends TypeServerDHParams {
   }
 }
 
-export class ServerDHInnerData extends Type {
+export class ServerDHInnerData extends TypeServerDHInnerData {
   nonce: bigint;
   serverNonce: bigint;
   g: number;
@@ -1471,7 +1471,7 @@ export class ServerDHInnerData extends Type {
   }
 }
 
-export class ClientDHInnerData extends Type {
+export class ClientDHInnerData extends TypeClientDHInnerData {
   nonce: bigint;
   serverNonce: bigint;
   retryId: bigint;
@@ -1812,7 +1812,7 @@ export class FutureSalts extends TypeFutureSalts {
   }
 }
 
-export class Pong extends Type {
+export class Pong extends TypePong {
   msgId: bigint;
   pingId: bigint;
 
@@ -2309,7 +2309,7 @@ export class HTTPWait extends TypeHttpWait {
   }
 }
 
-export class True extends Type {
+export class True extends TypeTrue {
   protected get [id]() {
     return 0x3fedd339;
   }
@@ -2327,7 +2327,7 @@ export class True extends Type {
   }
 }
 
-export class Error extends Type {
+export class Error extends TypeError {
   code: number;
   text: string;
 
@@ -2356,7 +2356,7 @@ export class Error extends Type {
   }
 }
 
-export class Null extends Type {
+export class Null extends TypeNull {
   protected get [id]() {
     return 0x56730bcc;
   }
@@ -2595,7 +2595,7 @@ export class InputUserSelf extends TypeInputUser {
   }
 }
 
-export class InputUser extends Type {
+export class InputUser extends TypeInputUser {
   userId: bigint;
   accessHash: bigint;
 
@@ -2694,7 +2694,7 @@ export class InputPhoneContact extends TypeInputContact {
   }
 }
 
-export class InputFile extends Type {
+export class InputFile extends TypeInputFile {
   id: bigint;
   parts: number;
   name: string;
@@ -3379,7 +3379,7 @@ export class InputChatUploadedPhoto extends TypeInputChatPhoto {
   }
 }
 
-export class InputChatPhoto extends Type {
+export class InputChatPhoto extends TypeInputChatPhoto {
   id: TypeInputPhoto;
 
   protected get [id]() {
@@ -3422,7 +3422,7 @@ export class InputGeoPointEmpty extends TypeInputGeoPoint {
   }
 }
 
-export class InputGeoPoint extends Type {
+export class InputGeoPoint extends TypeInputGeoPoint {
   lat: number;
   long: number;
   accuracyRadius?: number;
@@ -3475,7 +3475,7 @@ export class InputPhotoEmpty extends TypeInputPhoto {
   }
 }
 
-export class InputPhoto extends Type {
+export class InputPhoto extends TypeInputPhoto {
   id: bigint;
   accessHash: bigint;
   fileReference: Uint8Array;
@@ -3508,7 +3508,7 @@ export class InputPhoto extends Type {
   }
 }
 
-export class InputFileLocation extends Type {
+export class InputFileLocation extends TypeInputFileLocation {
   volumeId: bigint;
   localId: number;
   secret: bigint;
@@ -4127,7 +4127,7 @@ export class UserEmpty extends TypeUser {
   }
 }
 
-export class User extends Type {
+export class User extends TypeUser {
   self?: true;
   contact?: true;
   mutualContact?: true;
@@ -4338,7 +4338,7 @@ export class UserProfilePhotoEmpty extends TypeUserProfilePhoto {
   }
 }
 
-export class UserProfilePhoto extends Type {
+export class UserProfilePhoto extends TypeUserProfilePhoto {
   hasVideo?: true;
   personal?: true;
   photoId: bigint;
@@ -4528,7 +4528,7 @@ export class ChatEmpty extends TypeChat {
   }
 }
 
-export class Chat extends Type {
+export class Chat extends TypeChat {
   creator?: true;
   left?: true;
   deactivated?: true;
@@ -4875,7 +4875,7 @@ export class ChannelForbidden extends TypeChat {
   }
 }
 
-export class ChatFull extends Type {
+export class ChatFull extends TypeChatFull {
   canSetUsername?: true;
   hasScheduled?: true;
   translationsDisabled?: true;
@@ -5259,7 +5259,7 @@ export class ChannelFull extends TypeChatFull {
   }
 }
 
-export class ChatParticipant extends Type {
+export class ChatParticipant extends TypeChatParticipant {
   userId: bigint;
   inviterId: bigint;
   date: number;
@@ -5381,7 +5381,7 @@ export class ChatParticipantsForbidden extends TypeChatParticipants {
   }
 }
 
-export class ChatParticipants extends Type {
+export class ChatParticipants extends TypeChatParticipants {
   chatId: bigint;
   participants: Array<TypeChatParticipant>;
   version: number;
@@ -5432,7 +5432,7 @@ export class ChatPhotoEmpty extends TypeChatPhoto {
   }
 }
 
-export class ChatPhoto extends Type {
+export class ChatPhoto extends TypeChatPhoto {
   hasVideo?: true;
   photoId: bigint;
   strippedThumb?: Uint8Array;
@@ -5502,7 +5502,7 @@ export class MessageEmpty extends TypeMessage {
   }
 }
 
-export class Message extends Type {
+export class Message extends TypeMessage {
   out?: true;
   mentioned?: true;
   mediaUnread?: true;
@@ -7216,7 +7216,7 @@ export class MessageActionRequestedPeer extends TypeMessageAction {
   }
 }
 
-export class Dialog extends Type {
+export class Dialog extends TypeDialog {
   pinned?: true;
   unreadMark?: true;
   peer: TypePeer;
@@ -7375,7 +7375,7 @@ export class PhotoEmpty extends TypePhoto {
   }
 }
 
-export class Photo extends Type {
+export class Photo extends TypePhoto {
   hasStickers?: true;
   id: bigint;
   accessHash: bigint;
@@ -7455,7 +7455,7 @@ export class PhotoSizeEmpty extends TypePhotoSize {
   }
 }
 
-export class PhotoSize extends Type {
+export class PhotoSize extends TypePhotoSize {
   type: string;
   w: number;
   h: number;
@@ -7642,7 +7642,7 @@ export class GeoPointEmpty extends TypeGeoPoint {
   }
 }
 
-export class GeoPoint extends Type {
+export class GeoPoint extends TypeGeoPoint {
   long: number;
   lat: number;
   accessHash: bigint;
@@ -7681,7 +7681,7 @@ export class GeoPoint extends Type {
   }
 }
 
-export class AuthSentCode extends Type {
+export class AuthSentCode extends TypeAuthSentCode {
   type: TypeAuthSentCodeType;
   phoneCodeHash: string;
   nextType?: TypeAuthCodeType;
@@ -7745,7 +7745,7 @@ export class AuthSentCodeSuccess extends TypeAuthSentCode {
   }
 }
 
-export class AuthAuthorization extends Type {
+export class AuthAuthorization extends TypeAuthAuthorization {
   setupPasswordRequired?: true;
   otherwiseReloginDays?: number;
   tmpSessions?: number;
@@ -7815,7 +7815,7 @@ export class AuthAuthorizationSignUpRequired extends TypeAuthAuthorization {
   }
 }
 
-export class AuthExportedAuthorization extends Type {
+export class AuthExportedAuthorization extends TypeAuthExportedAuthorization {
   id: bigint;
   bytes: Uint8Array;
 
@@ -7844,7 +7844,7 @@ export class AuthExportedAuthorization extends Type {
   }
 }
 
-export class InputNotifyPeer extends Type {
+export class InputNotifyPeer extends TypeInputNotifyPeer {
   peer: TypeInputPeer;
 
   protected get [id]() {
@@ -7952,7 +7952,7 @@ export class InputNotifyForumTopic extends TypeInputNotifyPeer {
   }
 }
 
-export class InputPeerNotifySettings extends Type {
+export class InputPeerNotifySettings extends TypeInputPeerNotifySettings {
   showPreviews?: boolean;
   silent?: boolean;
   muteUntil?: number;
@@ -7991,7 +7991,7 @@ export class InputPeerNotifySettings extends Type {
   }
 }
 
-export class PeerNotifySettings extends Type {
+export class PeerNotifySettings extends TypePeerNotifySettings {
   showPreviews?: boolean;
   silent?: boolean;
   muteUntil?: number;
@@ -8038,7 +8038,7 @@ export class PeerNotifySettings extends Type {
   }
 }
 
-export class PeerSettings extends Type {
+export class PeerSettings extends TypePeerSettings {
   reportSpam?: true;
   addContact?: true;
   blockContact?: true;
@@ -8109,7 +8109,7 @@ export class PeerSettings extends Type {
   }
 }
 
-export class WallPaper extends Type {
+export class WallPaper extends TypeWallPaper {
   id: bigint;
   creator?: true;
   default?: true;
@@ -8387,7 +8387,7 @@ export class InputReportReasonPersonalDetails extends TypeReportReason {
   }
 }
 
-export class UserFull extends Type {
+export class UserFull extends TypeUserFull {
   blocked?: true;
   phoneCallsAvailable?: true;
   phoneCallsPrivate?: true;
@@ -8538,7 +8538,7 @@ export class UserFull extends Type {
   }
 }
 
-export class Contact extends Type {
+export class Contact extends TypeContact {
   userId: bigint;
   mutual: boolean;
 
@@ -8567,7 +8567,7 @@ export class Contact extends Type {
   }
 }
 
-export class ImportedContact extends Type {
+export class ImportedContact extends TypeImportedContact {
   userId: bigint;
   clientId: bigint;
 
@@ -8596,7 +8596,7 @@ export class ImportedContact extends Type {
   }
 }
 
-export class ContactStatus extends Type {
+export class ContactStatus extends TypeContactStatus {
   userId: bigint;
   status: TypeUserStatus;
 
@@ -8643,7 +8643,7 @@ export class ContactsContactsNotModified extends TypeContactsContacts {
   }
 }
 
-export class ContactsContacts extends Type {
+export class ContactsContacts extends TypeContactsContacts {
   contacts: Array<TypeContact>;
   savedCount: number;
   users: Array<TypeUser>;
@@ -8676,7 +8676,7 @@ export class ContactsContacts extends Type {
   }
 }
 
-export class ContactsImportedContacts extends Type {
+export class ContactsImportedContacts extends TypeContactsImportedContacts {
   imported: Array<TypeImportedContact>;
   popularInvites: Array<TypePopularContact>;
   retryContacts: Array<bigint>;
@@ -8713,7 +8713,7 @@ export class ContactsImportedContacts extends Type {
   }
 }
 
-export class ContactsBlocked extends Type {
+export class ContactsBlocked extends TypeContactsBlocked {
   blocked: Array<TypePeerBlocked>;
   chats: Array<TypeChat>;
   users: Array<TypeUser>;
@@ -8783,7 +8783,7 @@ export class ContactsBlockedSlice extends TypeContactsBlocked {
   }
 }
 
-export class MessagesDialogs extends Type {
+export class MessagesDialogs extends TypeMessagesDialogs {
   dialogs: Array<TypeDialog>;
   messages: Array<TypeMessage>;
   chats: Array<TypeChat>;
@@ -8886,7 +8886,7 @@ export class MessagesDialogsNotModified extends TypeMessagesDialogs {
   }
 }
 
-export class MessagesMessages extends Type {
+export class MessagesMessages extends TypeMessagesMessages {
   messages: Array<TypeMessage>;
   chats: Array<TypeChat>;
   users: Array<TypeUser>;
@@ -9050,7 +9050,7 @@ export class MessagesMessagesNotModified extends TypeMessagesMessages {
   }
 }
 
-export class MessagesChats extends Type {
+export class MessagesChats extends TypeMessagesChats {
   chats: Array<TypeChat>;
 
   protected get [id]() {
@@ -9104,7 +9104,7 @@ export class MessagesChatsSlice extends TypeMessagesChats {
   }
 }
 
-export class MessagesChatFull extends Type {
+export class MessagesChatFull extends TypeMessagesChatFull {
   fullChat: TypeChatFull;
   chats: Array<TypeChat>;
   users: Array<TypeUser>;
@@ -9137,7 +9137,7 @@ export class MessagesChatFull extends Type {
   }
 }
 
-export class MessagesAffectedHistory extends Type {
+export class MessagesAffectedHistory extends TypeMessagesAffectedHistory {
   pts: number;
   ptsCount: number;
   offset: number;
@@ -12977,7 +12977,7 @@ export class UpdateGroupInvitePrivacyForbidden extends TypeUpdate {
   }
 }
 
-export class UpdatesState extends Type {
+export class UpdatesState extends TypeUpdatesState {
   pts: number;
   qts: number;
   date: number;
@@ -13047,7 +13047,7 @@ export class UpdatesDifferenceEmpty extends TypeUpdatesDifference {
   }
 }
 
-export class UpdatesDifference extends Type {
+export class UpdatesDifference extends TypeUpdatesDifference {
   newMessages: Array<TypeMessage>;
   newEncryptedMessages: Array<TypeEncryptedMessage>;
   otherUpdates: Array<TypeUpdate>;
@@ -13424,7 +13424,7 @@ export class UpdatesCombined extends TypeUpdates {
   }
 }
 
-export class Updates extends Type {
+export class Updates extends TypeUpdates {
   updates: Array<TypeUpdate>;
   users: Array<TypeUser>;
   chats: Array<TypeChat>;
@@ -13520,7 +13520,7 @@ export class UpdateShortSentMessage extends TypeUpdates {
   }
 }
 
-export class PhotosPhotos extends Type {
+export class PhotosPhotos extends TypePhotosPhotos {
   photos: Array<TypePhoto>;
   users: Array<TypeUser>;
 
@@ -13582,7 +13582,7 @@ export class PhotosPhotosSlice extends TypePhotosPhotos {
   }
 }
 
-export class PhotosPhoto extends Type {
+export class PhotosPhoto extends TypePhotosPhoto {
   photo: TypePhoto;
   users: Array<TypeUser>;
 
@@ -13611,7 +13611,7 @@ export class PhotosPhoto extends Type {
   }
 }
 
-export class UploadFile extends Type {
+export class UploadFile extends TypeUploadFile {
   type: TypeStorageFileType;
   mtime: number;
   bytes: Uint8Array;
@@ -13685,7 +13685,7 @@ export class UploadFileCdnRedirect extends TypeUploadFile {
   }
 }
 
-export class DcOption extends Type {
+export class DcOption extends TypeDcOption {
   ipv6?: true;
   mediaOnly?: true;
   tcpoOnly?: true;
@@ -13748,7 +13748,7 @@ export class DcOption extends Type {
   }
 }
 
-export class Config extends Type {
+export class Config extends TypeConfig {
   defaultP2pContacts?: true;
   preloadFeaturedStickers?: true;
   revokePmInbox?: true;
@@ -14009,7 +14009,7 @@ export class Config extends Type {
   }
 }
 
-export class NearestDc extends Type {
+export class NearestDc extends TypeNearestDc {
   country: string;
   thisDc: number;
   nearestDc: number;
@@ -14042,7 +14042,7 @@ export class NearestDc extends Type {
   }
 }
 
-export class HelpAppUpdate extends Type {
+export class HelpAppUpdate extends TypeHelpAppUpdate {
   canNotSkip?: true;
   id: number;
   version: string;
@@ -14115,7 +14115,7 @@ export class HelpNoAppUpdate extends TypeHelpAppUpdate {
   }
 }
 
-export class HelpInviteText extends Type {
+export class HelpInviteText extends TypeHelpInviteText {
   message: string;
 
   protected get [id]() {
@@ -14257,7 +14257,7 @@ export class EncryptedChatRequested extends TypeEncryptedChat {
   }
 }
 
-export class EncryptedChat extends Type {
+export class EncryptedChat extends TypeEncryptedChat {
   id: number;
   accessHash: bigint;
   date: number;
@@ -14337,7 +14337,7 @@ export class EncryptedChatDiscarded extends TypeEncryptedChat {
   }
 }
 
-export class InputEncryptedChat extends Type {
+export class InputEncryptedChat extends TypeInputEncryptedChat {
   chatId: number;
   accessHash: bigint;
 
@@ -14384,7 +14384,7 @@ export class EncryptedFileEmpty extends TypeEncryptedFile {
   }
 }
 
-export class EncryptedFile extends Type {
+export class EncryptedFile extends TypeEncryptedFile {
   id: bigint;
   accessHash: bigint;
   size: bigint;
@@ -14480,7 +14480,7 @@ export class InputEncryptedFileUploaded extends TypeInputEncryptedFile {
   }
 }
 
-export class InputEncryptedFile extends Type {
+export class InputEncryptedFile extends TypeInputEncryptedFile {
   id: bigint;
   accessHash: bigint;
 
@@ -14542,7 +14542,7 @@ export class InputEncryptedFileBigUploaded extends TypeInputEncryptedFile {
   }
 }
 
-export class EncryptedMessage extends Type {
+export class EncryptedMessage extends TypeEncryptedMessage {
   randomId: bigint;
   chatId: number;
   date: number;
@@ -14645,7 +14645,7 @@ export class MessagesDhConfigNotModified extends TypeMessagesDhConfig {
   }
 }
 
-export class MessagesDhConfig extends Type {
+export class MessagesDhConfig extends TypeMessagesDhConfig {
   g: number;
   p: Uint8Array;
   version: number;
@@ -14682,7 +14682,7 @@ export class MessagesDhConfig extends Type {
   }
 }
 
-export class MessagesSentEncryptedMessage extends Type {
+export class MessagesSentEncryptedMessage extends TypeMessagesSentEncryptedMessage {
   date: number;
 
   protected get [id]() {
@@ -14754,7 +14754,7 @@ export class InputDocumentEmpty extends TypeInputDocument {
   }
 }
 
-export class InputDocument extends Type {
+export class InputDocument extends TypeInputDocument {
   id: bigint;
   accessHash: bigint;
   fileReference: Uint8Array;
@@ -14812,7 +14812,7 @@ export class DocumentEmpty extends TypeDocument {
   }
 }
 
-export class Document extends Type {
+export class Document extends TypeDocument {
   id: bigint;
   accessHash: bigint;
   fileReference: Uint8Array;
@@ -14875,7 +14875,7 @@ export class Document extends Type {
   }
 }
 
-export class HelpSupport extends Type {
+export class HelpSupport extends TypeHelpSupport {
   phoneNumber: string;
   user: TypeUser;
 
@@ -14904,7 +14904,7 @@ export class HelpSupport extends Type {
   }
 }
 
-export class NotifyPeer extends Type {
+export class NotifyPeer extends TypeNotifyPeer {
   peer: TypePeer;
 
   protected get [id]() {
@@ -15400,7 +15400,7 @@ export class SendMessageEmojiInteractionSeen extends TypeSendMessageAction {
   }
 }
 
-export class ContactsFound extends Type {
+export class ContactsFound extends TypeContactsFound {
   myResults: Array<TypePeer>;
   results: Array<TypePeer>;
   chats: Array<TypeChat>;
@@ -16105,7 +16105,7 @@ export class PrivacyValueDisallowChatParticipants extends TypePrivacyRule {
   }
 }
 
-export class AccountPrivacyRules extends Type {
+export class AccountPrivacyRules extends TypeAccountPrivacyRules {
   rules: Array<TypePrivacyRule>;
   chats: Array<TypeChat>;
   users: Array<TypeUser>;
@@ -16138,7 +16138,7 @@ export class AccountPrivacyRules extends Type {
   }
 }
 
-export class AccountDaysTTL extends Type {
+export class AccountDaysTTL extends TypeAccountDaysTTL {
   days: number;
 
   protected get [id]() {
@@ -16435,7 +16435,7 @@ export class MessagesStickersNotModified extends TypeMessagesStickers {
   }
 }
 
-export class MessagesStickers extends Type {
+export class MessagesStickers extends TypeMessagesStickers {
   hash: bigint;
   stickers: Array<TypeDocument>;
 
@@ -16464,7 +16464,7 @@ export class MessagesStickers extends Type {
   }
 }
 
-export class StickerPack extends Type {
+export class StickerPack extends TypeStickerPack {
   emoticon: string;
   documents: Array<bigint>;
 
@@ -16511,7 +16511,7 @@ export class MessagesAllStickersNotModified extends TypeMessagesAllStickers {
   }
 }
 
-export class MessagesAllStickers extends Type {
+export class MessagesAllStickers extends TypeMessagesAllStickers {
   hash: bigint;
   sets: Array<TypeStickerSet>;
 
@@ -16540,7 +16540,7 @@ export class MessagesAllStickers extends Type {
   }
 }
 
-export class MessagesAffectedMessages extends Type {
+export class MessagesAffectedMessages extends TypeMessagesAffectedMessages {
   pts: number;
   ptsCount: number;
 
@@ -16623,7 +16623,7 @@ export class WebPagePending extends TypeWebPage {
   }
 }
 
-export class WebPage extends Type {
+export class WebPage extends TypeWebPage {
   id: bigint;
   url: string;
   displayUrl: string;
@@ -16745,7 +16745,7 @@ export class WebPageNotModified extends TypeWebPage {
   }
 }
 
-export class Authorization extends Type {
+export class Authorization extends TypeAuthorization {
   current?: true;
   officialApp?: true;
   passwordPending?: true;
@@ -16836,7 +16836,7 @@ export class Authorization extends Type {
   }
 }
 
-export class AccountAuthorizations extends Type {
+export class AccountAuthorizations extends TypeAccountAuthorizations {
   authorizationTtlDays: number;
   authorizations: Array<TypeAuthorization>;
 
@@ -16865,7 +16865,7 @@ export class AccountAuthorizations extends Type {
   }
 }
 
-export class AccountPassword extends Type {
+export class AccountPassword extends TypeAccountPassword {
   hasRecovery?: true;
   hasSecureValues?: true;
   hasPassword?: true;
@@ -16940,7 +16940,7 @@ export class AccountPassword extends Type {
   }
 }
 
-export class AccountPasswordSettings extends Type {
+export class AccountPasswordSettings extends TypeAccountPasswordSettings {
   email?: string;
   secureSettings?: TypeSecureSecretSettings;
 
@@ -16971,7 +16971,7 @@ export class AccountPasswordSettings extends Type {
   }
 }
 
-export class AccountPasswordInputSettings extends Type {
+export class AccountPasswordInputSettings extends TypeAccountPasswordInputSettings {
   newAlgo?: TypePasswordKdfAlgo;
   newPasswordHash?: Uint8Array;
   hint?: string;
@@ -17014,7 +17014,7 @@ export class AccountPasswordInputSettings extends Type {
   }
 }
 
-export class AuthPasswordRecovery extends Type {
+export class AuthPasswordRecovery extends TypeAuthPasswordRecovery {
   emailPattern: string;
 
   protected get [id]() {
@@ -17039,7 +17039,7 @@ export class AuthPasswordRecovery extends Type {
   }
 }
 
-export class ReceivedNotifyMessage extends Type {
+export class ReceivedNotifyMessage extends TypeReceivedNotifyMessage {
   id: number;
   flags: number;
 
@@ -17182,7 +17182,7 @@ export class ChatInviteAlready extends TypeChatInvite {
   }
 }
 
-export class ChatInvite extends Type {
+export class ChatInvite extends TypeChatInvite {
   channel?: true;
   broadcast?: true;
   public?: true;
@@ -17479,7 +17479,7 @@ export class InputStickerSetEmojiDefaultTopicIcons extends TypeInputStickerSet {
   }
 }
 
-export class StickerSet extends Type {
+export class StickerSet extends TypeStickerSet {
   archived?: true;
   official?: true;
   masks?: true;
@@ -17570,7 +17570,7 @@ export class StickerSet extends Type {
   }
 }
 
-export class MessagesStickerSet extends Type {
+export class MessagesStickerSet extends TypeMessagesStickerSet {
   set: TypeStickerSet;
   packs: Array<TypeStickerPack>;
   keywords: Array<TypeStickerKeyword>;
@@ -17625,7 +17625,7 @@ export class MessagesStickerSetNotModified extends TypeMessagesStickerSet {
   }
 }
 
-export class BotCommand extends Type {
+export class BotCommand extends TypeBotCommand {
   command: string;
   description: string;
 
@@ -17654,7 +17654,7 @@ export class BotCommand extends Type {
   }
 }
 
-export class BotInfo extends Type {
+export class BotInfo extends TypeBotInfo {
   userId?: bigint;
   description?: string;
   descriptionPhoto?: TypePhoto;
@@ -17701,7 +17701,7 @@ export class BotInfo extends Type {
   }
 }
 
-export class KeyboardButton extends Type {
+export class KeyboardButton extends TypeKeyboardButton {
   text: string;
 
   protected get [id]() {
@@ -18187,7 +18187,7 @@ export class KeyboardButtonRequestPeer extends TypeKeyboardButton {
   }
 }
 
-export class KeyboardButtonRow extends Type {
+export class KeyboardButtonRow extends TypeKeyboardButtonRow {
   buttons: Array<TypeKeyboardButton>;
 
   protected get [id]() {
@@ -18993,7 +18993,7 @@ export class InputChannelEmpty extends TypeInputChannel {
   }
 }
 
-export class InputChannel extends Type {
+export class InputChannel extends TypeInputChannel {
   channelId: bigint;
   accessHash: bigint;
 
@@ -19055,7 +19055,7 @@ export class InputChannelFromMessage extends TypeInputChannel {
   }
 }
 
-export class ContactsResolvedPeer extends Type {
+export class ContactsResolvedPeer extends TypeContactsResolvedPeer {
   peer: TypePeer;
   chats: Array<TypeChat>;
   users: Array<TypeUser>;
@@ -19088,7 +19088,7 @@ export class ContactsResolvedPeer extends Type {
   }
 }
 
-export class MessageRange extends Type {
+export class MessageRange extends TypeMessageRange {
   minId: number;
   maxId: number;
 
@@ -19199,7 +19199,7 @@ export class UpdatesChannelDifferenceTooLong extends TypeUpdatesChannelDifferenc
   }
 }
 
-export class UpdatesChannelDifference extends Type {
+export class UpdatesChannelDifference extends TypeUpdatesChannelDifference {
   final?: true;
   pts: number;
   timeout?: number;
@@ -19268,7 +19268,7 @@ export class ChannelMessagesFilterEmpty extends TypeChannelMessagesFilter {
   }
 }
 
-export class ChannelMessagesFilter extends Type {
+export class ChannelMessagesFilter extends TypeChannelMessagesFilter {
   excludeNewMessages?: true;
   ranges: Array<TypeMessageRange>;
 
@@ -19299,7 +19299,7 @@ export class ChannelMessagesFilter extends Type {
   }
 }
 
-export class ChannelParticipant extends Type {
+export class ChannelParticipant extends TypeChannelParticipant {
   userId: bigint;
   date: number;
 
@@ -19710,7 +19710,7 @@ export class ChannelParticipantsMentions extends TypeChannelParticipantsFilter {
   }
 }
 
-export class ChannelsChannelParticipants extends Type {
+export class ChannelsChannelParticipants extends TypeChannelsChannelParticipants {
   count: number;
   participants: Array<TypeChannelParticipant>;
   chats: Array<TypeChat>;
@@ -19765,7 +19765,7 @@ export class ChannelsChannelParticipantsNotModified extends TypeChannelsChannelP
   }
 }
 
-export class ChannelsChannelParticipant extends Type {
+export class ChannelsChannelParticipant extends TypeChannelsChannelParticipant {
   participant: TypeChannelParticipant;
   chats: Array<TypeChat>;
   users: Array<TypeUser>;
@@ -19798,7 +19798,7 @@ export class ChannelsChannelParticipant extends Type {
   }
 }
 
-export class HelpTermsOfService extends Type {
+export class HelpTermsOfService extends TypeHelpTermsOfService {
   popup?: true;
   id: TypeDataJSON;
   text: string;
@@ -19859,7 +19859,7 @@ export class MessagesSavedGifsNotModified extends TypeMessagesSavedGifs {
   }
 }
 
-export class MessagesSavedGifs extends Type {
+export class MessagesSavedGifs extends TypeMessagesSavedGifs {
   hash: bigint;
   gifs: Array<TypeDocument>;
 
@@ -20181,7 +20181,7 @@ export class InputBotInlineMessageMediaInvoice extends TypeInputBotInlineMessage
   }
 }
 
-export class InputBotInlineResult extends Type {
+export class InputBotInlineResult extends TypeInputBotInlineResult {
   id: string;
   type: string;
   title?: string;
@@ -20619,7 +20619,7 @@ export class BotInlineMessageMediaInvoice extends TypeBotInlineMessage {
   }
 }
 
-export class BotInlineResult extends Type {
+export class BotInlineResult extends TypeBotInlineResult {
   id: string;
   type: string;
   title?: string;
@@ -20725,7 +20725,7 @@ export class BotInlineMediaResult extends TypeBotInlineResult {
   }
 }
 
-export class MessagesBotResults extends Type {
+export class MessagesBotResults extends TypeMessagesBotResults {
   gallery?: true;
   queryId: bigint;
   nextOffset?: string;
@@ -20780,7 +20780,7 @@ export class MessagesBotResults extends Type {
   }
 }
 
-export class ExportedMessageLink extends Type {
+export class ExportedMessageLink extends TypeExportedMessageLink {
   link: string;
   html: string;
 
@@ -20809,7 +20809,7 @@ export class ExportedMessageLink extends Type {
   }
 }
 
-export class MessageFwdHeader extends Type {
+export class MessageFwdHeader extends TypeMessageFwdHeader {
   imported?: true;
   fromId?: TypePeer;
   fromName?: string;
@@ -21229,7 +21229,7 @@ export class AuthSentCodeTypeFirebaseSms extends TypeAuthSentCodeType {
   }
 }
 
-export class MessagesBotCallbackAnswer extends Type {
+export class MessagesBotCallbackAnswer extends TypeMessagesBotCallbackAnswer {
   alert?: true;
   hasUrl?: true;
   nativeUi?: true;
@@ -21276,7 +21276,7 @@ export class MessagesBotCallbackAnswer extends Type {
   }
 }
 
-export class MessagesMessageEditData extends Type {
+export class MessagesMessageEditData extends TypeMessagesMessageEditData {
   caption?: true;
 
   protected get [id]() {
@@ -21303,7 +21303,7 @@ export class MessagesMessageEditData extends Type {
   }
 }
 
-export class InputBotInlineMessageID extends Type {
+export class InputBotInlineMessageID extends TypeInputBotInlineMessageID {
   dcId: number;
   id: bigint;
   accessHash: bigint;
@@ -21373,7 +21373,7 @@ export class InputBotInlineMessageID64 extends TypeInputBotInlineMessageID {
   }
 }
 
-export class InlineBotSwitchPM extends Type {
+export class InlineBotSwitchPM extends TypeInlineBotSwitchPM {
   text: string;
   startParam: string;
 
@@ -21402,7 +21402,7 @@ export class InlineBotSwitchPM extends Type {
   }
 }
 
-export class MessagesPeerDialogs extends Type {
+export class MessagesPeerDialogs extends TypeMessagesPeerDialogs {
   dialogs: Array<TypeDialog>;
   messages: Array<TypeMessage>;
   chats: Array<TypeChat>;
@@ -21443,7 +21443,7 @@ export class MessagesPeerDialogs extends Type {
   }
 }
 
-export class TopPeer extends Type {
+export class TopPeer extends TypeTopPeer {
   peer: TypePeer;
   rating: number;
 
@@ -21616,7 +21616,7 @@ export class TopPeerCategoryForwardChats extends TypeTopPeerCategory {
   }
 }
 
-export class TopPeerCategoryPeers extends Type {
+export class TopPeerCategoryPeers extends TypeTopPeerCategoryPeers {
   category: TypeTopPeerCategory;
   count: number;
   peers: Array<TypeTopPeer>;
@@ -21667,7 +21667,7 @@ export class ContactsTopPeersNotModified extends TypeContactsTopPeers {
   }
 }
 
-export class ContactsTopPeers extends Type {
+export class ContactsTopPeers extends TypeContactsTopPeers {
   categories: Array<TypeTopPeerCategoryPeers>;
   chats: Array<TypeChat>;
   users: Array<TypeUser>;
@@ -21745,7 +21745,7 @@ export class DraftMessageEmpty extends TypeDraftMessage {
   }
 }
 
-export class DraftMessage extends Type {
+export class DraftMessage extends TypeDraftMessage {
   noWebpage?: true;
   replyToMsgId?: number;
   message: string;
@@ -21813,7 +21813,7 @@ export class MessagesFeaturedStickersNotModified extends TypeMessagesFeaturedSti
   }
 }
 
-export class MessagesFeaturedStickers extends Type {
+export class MessagesFeaturedStickers extends TypeMessagesFeaturedStickers {
   premium?: true;
   hash: bigint;
   count: number;
@@ -21874,7 +21874,7 @@ export class MessagesRecentStickersNotModified extends TypeMessagesRecentSticker
   }
 }
 
-export class MessagesRecentStickers extends Type {
+export class MessagesRecentStickers extends TypeMessagesRecentStickers {
   hash: bigint;
   packs: Array<TypeStickerPack>;
   stickers: Array<TypeDocument>;
@@ -21911,7 +21911,7 @@ export class MessagesRecentStickers extends Type {
   }
 }
 
-export class MessagesArchivedStickers extends Type {
+export class MessagesArchivedStickers extends TypeMessagesArchivedStickers {
   count: number;
   sets: Array<TypeStickerSetCovered>;
 
@@ -21983,7 +21983,7 @@ export class MessagesStickerSetInstallResultArchive extends TypeMessagesStickerS
   }
 }
 
-export class StickerSetCovered extends Type {
+export class StickerSetCovered extends TypeStickerSetCovered {
   set: TypeStickerSet;
   cover: TypeDocument;
 
@@ -22103,7 +22103,7 @@ export class StickerSetNoCovered extends TypeStickerSetCovered {
   }
 }
 
-export class MaskCoords extends Type {
+export class MaskCoords extends TypeMaskCoords {
   n: number;
   x: number;
   y: number;
@@ -22190,7 +22190,7 @@ export class InputStickeredMediaDocument extends TypeInputStickeredMedia {
   }
 }
 
-export class Game extends Type {
+export class Game extends TypeGame {
   id: bigint;
   accessHash: bigint;
   shortName: string;
@@ -22299,7 +22299,7 @@ export class InputGameShortName extends TypeInputGame {
   }
 }
 
-export class HighScore extends Type {
+export class HighScore extends TypeHighScore {
   pos: number;
   userId: bigint;
   score: number;
@@ -22332,7 +22332,7 @@ export class HighScore extends Type {
   }
 }
 
-export class MessagesHighScores extends Type {
+export class MessagesHighScores extends TypeMessagesHighScores {
   scores: Array<TypeHighScore>;
   users: Array<TypeUser>;
 
@@ -23719,7 +23719,7 @@ export class PhoneCallDiscardReasonBusy extends TypePhoneCallDiscardReason {
   }
 }
 
-export class DataJSON extends Type {
+export class DataJSON extends TypeDataJSON {
   data: string;
 
   protected get [id]() {
@@ -23744,7 +23744,7 @@ export class DataJSON extends Type {
   }
 }
 
-export class LabeledPrice extends Type {
+export class LabeledPrice extends TypeLabeledPrice {
   label: string;
   amount: bigint;
 
@@ -23773,7 +23773,7 @@ export class LabeledPrice extends Type {
   }
 }
 
-export class Invoice extends Type {
+export class Invoice extends TypeInvoice {
   test?: true;
   nameRequested?: true;
   phoneRequested?: true;
@@ -23852,7 +23852,7 @@ export class Invoice extends Type {
   }
 }
 
-export class PaymentCharge extends Type {
+export class PaymentCharge extends TypePaymentCharge {
   id: string;
   providerChargeId: string;
 
@@ -23881,7 +23881,7 @@ export class PaymentCharge extends Type {
   }
 }
 
-export class PostAddress extends Type {
+export class PostAddress extends TypePostAddress {
   streetLine1: string;
   streetLine2: string;
   city: string;
@@ -23926,7 +23926,7 @@ export class PostAddress extends Type {
   }
 }
 
-export class PaymentRequestedInfo extends Type {
+export class PaymentRequestedInfo extends TypePaymentRequestedInfo {
   name?: string;
   phone?: string;
   email?: string;
@@ -23994,7 +23994,7 @@ export class PaymentSavedCredentialsCard extends TypePaymentSavedCredentials {
   }
 }
 
-export class WebDocument extends Type {
+export class WebDocument extends TypeWebDocument {
   url: string;
   accessHash: bigint;
   size: number;
@@ -24072,7 +24072,7 @@ export class WebDocumentNoProxy extends TypeWebDocument {
   }
 }
 
-export class InputWebDocument extends Type {
+export class InputWebDocument extends TypeInputWebDocument {
   url: string;
   size: number;
   mimeType: string;
@@ -24109,7 +24109,7 @@ export class InputWebDocument extends Type {
   }
 }
 
-export class InputWebFileLocation extends Type {
+export class InputWebFileLocation extends TypeInputWebFileLocation {
   url: string;
   accessHash: bigint;
 
@@ -24222,7 +24222,7 @@ export class InputWebFileAudioAlbumThumbLocation extends TypeInputWebFileLocatio
   }
 }
 
-export class UploadWebFile extends Type {
+export class UploadWebFile extends TypeUploadWebFile {
   size: number;
   mimeType: string;
   fileType: TypeStorageFileType;
@@ -24263,7 +24263,7 @@ export class UploadWebFile extends Type {
   }
 }
 
-export class PaymentsPaymentForm extends Type {
+export class PaymentsPaymentForm extends TypePaymentsPaymentForm {
   canSaveCredentials?: true;
   passwordMissing?: true;
   formId: bigint;
@@ -24350,7 +24350,7 @@ export class PaymentsPaymentForm extends Type {
   }
 }
 
-export class PaymentsValidatedRequestedInfo extends Type {
+export class PaymentsValidatedRequestedInfo extends TypePaymentsValidatedRequestedInfo {
   id?: string;
   shippingOptions?: Array<TypeShippingOption>;
 
@@ -24381,7 +24381,7 @@ export class PaymentsValidatedRequestedInfo extends Type {
   }
 }
 
-export class PaymentsPaymentResult extends Type {
+export class PaymentsPaymentResult extends TypePaymentsPaymentResult {
   updates: TypeUpdates;
 
   protected get [id]() {
@@ -24431,7 +24431,7 @@ export class PaymentsPaymentVerificationNeeded extends TypePaymentsPaymentResult
   }
 }
 
-export class PaymentsPaymentReceipt extends Type {
+export class PaymentsPaymentReceipt extends TypePaymentsPaymentReceipt {
   date: number;
   botId: bigint;
   providerId: bigint;
@@ -24510,7 +24510,7 @@ export class PaymentsPaymentReceipt extends Type {
   }
 }
 
-export class PaymentsSavedInfo extends Type {
+export class PaymentsSavedInfo extends TypePaymentsSavedInfo {
   hasSavedCredentials?: true;
   savedInfo?: TypePaymentRequestedInfo;
 
@@ -24570,7 +24570,7 @@ export class InputPaymentCredentialsSaved extends TypeInputPaymentCredentials {
   }
 }
 
-export class InputPaymentCredentials extends Type {
+export class InputPaymentCredentials extends TypeInputPaymentCredentials {
   save?: true;
   data: TypeDataJSON;
 
@@ -24651,7 +24651,7 @@ export class InputPaymentCredentialsGooglePay extends TypeInputPaymentCredential
   }
 }
 
-export class AccountTmpPassword extends Type {
+export class AccountTmpPassword extends TypeAccountTmpPassword {
   tmpPassword: Uint8Array;
   validUntil: number;
 
@@ -24680,7 +24680,7 @@ export class AccountTmpPassword extends Type {
   }
 }
 
-export class ShippingOption extends Type {
+export class ShippingOption extends TypeShippingOption {
   id: string;
   title: string;
   prices: Array<TypeLabeledPrice>;
@@ -24713,7 +24713,7 @@ export class ShippingOption extends Type {
   }
 }
 
-export class InputStickerSetItem extends Type {
+export class InputStickerSetItem extends TypeInputStickerSetItem {
   document: TypeInputDocument;
   emoji: string;
   maskCoords?: TypeMaskCoords;
@@ -24752,7 +24752,7 @@ export class InputStickerSetItem extends Type {
   }
 }
 
-export class InputPhoneCall extends Type {
+export class InputPhoneCall extends TypeInputPhoneCall {
   id: bigint;
   accessHash: bigint;
 
@@ -24971,7 +24971,7 @@ export class PhoneCallAccepted extends TypePhoneCall {
   }
 }
 
-export class PhoneCall extends Type {
+export class PhoneCall extends TypePhoneCall {
   p2pAllowed?: true;
   video?: true;
   id: bigint;
@@ -25089,7 +25089,7 @@ export class PhoneCallDiscarded extends TypePhoneCall {
   }
 }
 
-export class PhoneConnection extends Type {
+export class PhoneConnection extends TypePhoneConnection {
   tcp?: true;
   id: bigint;
   ip: string;
@@ -25191,7 +25191,7 @@ export class PhoneConnectionWebrtc extends TypePhoneConnection {
   }
 }
 
-export class PhoneCallProtocol extends Type {
+export class PhoneCallProtocol extends TypePhoneCallProtocol {
   udpP2p?: true;
   udpReflector?: true;
   minLayer: number;
@@ -25234,7 +25234,7 @@ export class PhoneCallProtocol extends Type {
   }
 }
 
-export class PhonePhoneCall extends Type {
+export class PhonePhoneCall extends TypePhonePhoneCall {
   phoneCall: TypePhoneCall;
   users: Array<TypeUser>;
 
@@ -25288,7 +25288,7 @@ export class UploadCdnFileReuploadNeeded extends TypeUploadCdnFile {
   }
 }
 
-export class UploadCdnFile extends Type {
+export class UploadCdnFile extends TypeUploadCdnFile {
   bytes: Uint8Array;
 
   protected get [id]() {
@@ -25313,7 +25313,7 @@ export class UploadCdnFile extends Type {
   }
 }
 
-export class CdnPublicKey extends Type {
+export class CdnPublicKey extends TypeCdnPublicKey {
   dcId: number;
   publicKey: string;
 
@@ -25342,7 +25342,7 @@ export class CdnPublicKey extends Type {
   }
 }
 
-export class CdnConfig extends Type {
+export class CdnConfig extends TypeCdnConfig {
   publicKeys: Array<TypeCdnPublicKey>;
 
   protected get [id]() {
@@ -25367,7 +25367,7 @@ export class CdnConfig extends Type {
   }
 }
 
-export class LangPackString extends Type {
+export class LangPackString extends TypeLangPackString {
   key: string;
   value: string;
 
@@ -25472,7 +25472,7 @@ export class LangPackStringDeleted extends TypeLangPackString {
   }
 }
 
-export class LangPackDifference extends Type {
+export class LangPackDifference extends TypeLangPackDifference {
   langCode: string;
   fromVersion: number;
   version: number;
@@ -25509,7 +25509,7 @@ export class LangPackDifference extends Type {
   }
 }
 
-export class LangPackLanguage extends Type {
+export class LangPackLanguage extends TypeLangPackLanguage {
   official?: true;
   rtl?: true;
   beta?: true;
@@ -26715,7 +26715,7 @@ export class ChannelAdminLogEventActionToggleAntiSpam extends TypeChannelAdminLo
   }
 }
 
-export class ChannelAdminLogEvent extends Type {
+export class ChannelAdminLogEvent extends TypeChannelAdminLogEvent {
   id: bigint;
   date: number;
   userId: bigint;
@@ -26752,7 +26752,7 @@ export class ChannelAdminLogEvent extends Type {
   }
 }
 
-export class ChannelsAdminLogResults extends Type {
+export class ChannelsAdminLogResults extends TypeChannelsAdminLogResults {
   events: Array<TypeChannelAdminLogEvent>;
   chats: Array<TypeChat>;
   users: Array<TypeUser>;
@@ -26785,7 +26785,7 @@ export class ChannelsAdminLogResults extends Type {
   }
 }
 
-export class ChannelAdminLogEventsFilter extends Type {
+export class ChannelAdminLogEventsFilter extends TypeChannelAdminLogEventsFilter {
   join?: true;
   leave?: true;
   invite?: true;
@@ -26880,7 +26880,7 @@ export class ChannelAdminLogEventsFilter extends Type {
   }
 }
 
-export class PopularContact extends Type {
+export class PopularContact extends TypePopularContact {
   clientId: bigint;
   importers: number;
 
@@ -26927,7 +26927,7 @@ export class MessagesFavedStickersNotModified extends TypeMessagesFavedStickers 
   }
 }
 
-export class MessagesFavedStickers extends Type {
+export class MessagesFavedStickers extends TypeMessagesFavedStickers {
   hash: bigint;
   packs: Array<TypeStickerPack>;
   stickers: Array<TypeDocument>;
@@ -27101,7 +27101,7 @@ export class RecentMeURLStickerSet extends TypeRecentMeURL {
   }
 }
 
-export class HelpRecentMeURLs extends Type {
+export class HelpRecentMeURLs extends TypeHelpRecentMeURLs {
   urls: Array<TypeRecentMeURL>;
   chats: Array<TypeChat>;
   users: Array<TypeUser>;
@@ -27134,7 +27134,7 @@ export class HelpRecentMeURLs extends Type {
   }
 }
 
-export class InputSingleMedia extends Type {
+export class InputSingleMedia extends TypeInputSingleMedia {
   media: TypeInputMedia;
   randomId: bigint;
   message: string;
@@ -27173,7 +27173,7 @@ export class InputSingleMedia extends Type {
   }
 }
 
-export class WebAuthorization extends Type {
+export class WebAuthorization extends TypeWebAuthorization {
   hash: bigint;
   botId: bigint;
   domain: string;
@@ -27230,7 +27230,7 @@ export class WebAuthorization extends Type {
   }
 }
 
-export class AccountWebAuthorizations extends Type {
+export class AccountWebAuthorizations extends TypeAccountWebAuthorizations {
   authorizations: Array<TypeWebAuthorization>;
   users: Array<TypeUser>;
 
@@ -27356,7 +27356,7 @@ export class InputMessageCallbackQuery extends TypeInputMessage {
   }
 }
 
-export class InputDialogPeer extends Type {
+export class InputDialogPeer extends TypeInputDialogPeer {
   peer: TypeInputPeer;
 
   protected get [id]() {
@@ -27406,7 +27406,7 @@ export class InputDialogPeerFolder extends TypeInputDialogPeer {
   }
 }
 
-export class DialogPeer extends Type {
+export class DialogPeer extends TypeDialogPeer {
   peer: TypePeer;
 
   protected get [id]() {
@@ -27474,7 +27474,7 @@ export class MessagesFoundStickerSetsNotModified extends TypeMessagesFoundSticke
   }
 }
 
-export class MessagesFoundStickerSets extends Type {
+export class MessagesFoundStickerSets extends TypeMessagesFoundStickerSets {
   hash: bigint;
   sets: Array<TypeStickerSetCovered>;
 
@@ -27503,7 +27503,7 @@ export class MessagesFoundStickerSets extends Type {
   }
 }
 
-export class FileHash extends Type {
+export class FileHash extends TypeFileHash {
   offset: bigint;
   limit: number;
   hash: Uint8Array;
@@ -27536,7 +27536,7 @@ export class FileHash extends Type {
   }
 }
 
-export class InputClientProxy extends Type {
+export class InputClientProxy extends TypeInputClientProxy {
   address: string;
   port: number;
 
@@ -27590,7 +27590,7 @@ export class HelpTermsOfServiceUpdateEmpty extends TypeHelpTermsOfServiceUpdate 
   }
 }
 
-export class HelpTermsOfServiceUpdate extends Type {
+export class HelpTermsOfServiceUpdate extends TypeHelpTermsOfServiceUpdate {
   expires: number;
   termsOfService: TypeHelpTermsOfService;
 
@@ -27660,7 +27660,7 @@ export class InputSecureFileUploaded extends TypeInputSecureFile {
   }
 }
 
-export class InputSecureFile extends Type {
+export class InputSecureFile extends TypeInputSecureFile {
   id: bigint;
   accessHash: bigint;
 
@@ -27707,7 +27707,7 @@ export class SecureFileEmpty extends TypeSecureFile {
   }
 }
 
-export class SecureFile extends Type {
+export class SecureFile extends TypeSecureFile {
   id: bigint;
   accessHash: bigint;
   size: bigint;
@@ -27756,7 +27756,7 @@ export class SecureFile extends Type {
   }
 }
 
-export class SecureData extends Type {
+export class SecureData extends TypeSecureData {
   data: Uint8Array;
   dataHash: Uint8Array;
   secret: Uint8Array;
@@ -28073,7 +28073,7 @@ export class SecureValueTypeEmail extends TypeSecureValueType {
   }
 }
 
-export class SecureValue extends Type {
+export class SecureValue extends TypeSecureValue {
   type: TypeSecureValueType;
   data?: TypeSecureData;
   frontSide?: TypeSecureFile;
@@ -28132,7 +28132,7 @@ export class SecureValue extends Type {
   }
 }
 
-export class InputSecureValue extends Type {
+export class InputSecureValue extends TypeInputSecureValue {
   type: TypeSecureValueType;
   data?: TypeSecureData;
   frontSide?: TypeInputSecureFile;
@@ -28187,7 +28187,7 @@ export class InputSecureValue extends Type {
   }
 }
 
-export class SecureValueHash extends Type {
+export class SecureValueHash extends TypeSecureValueHash {
   type: TypeSecureValueType;
   hash: Uint8Array;
 
@@ -28418,7 +28418,7 @@ export class SecureValueErrorFiles extends TypeSecureValueError {
   }
 }
 
-export class SecureValueError extends Type {
+export class SecureValueError extends TypeSecureValueError {
   type: TypeSecureValueType;
   hash: Uint8Array;
   text: string;
@@ -28517,7 +28517,7 @@ export class SecureValueErrorTranslationFiles extends TypeSecureValueError {
   }
 }
 
-export class SecureCredentialsEncrypted extends Type {
+export class SecureCredentialsEncrypted extends TypeSecureCredentialsEncrypted {
   data: Uint8Array;
   hash: Uint8Array;
   secret: Uint8Array;
@@ -28550,7 +28550,7 @@ export class SecureCredentialsEncrypted extends Type {
   }
 }
 
-export class AccountAuthorizationForm extends Type {
+export class AccountAuthorizationForm extends TypeAccountAuthorizationForm {
   requiredTypes: Array<TypeSecureRequiredType>;
   values: Array<TypeSecureValue>;
   errors: Array<TypeSecureValueError>;
@@ -28593,7 +28593,7 @@ export class AccountAuthorizationForm extends Type {
   }
 }
 
-export class AccountSentEmailCode extends Type {
+export class AccountSentEmailCode extends TypeAccountSentEmailCode {
   emailPattern: string;
   length: number;
 
@@ -28640,7 +28640,7 @@ export class HelpDeepLinkInfoEmpty extends TypeHelpDeepLinkInfo {
   }
 }
 
-export class HelpDeepLinkInfo extends Type {
+export class HelpDeepLinkInfo extends TypeHelpDeepLinkInfo {
   updateApp?: true;
   message: string;
   entities?: Array<TypeMessageEntity>;
@@ -28712,7 +28712,7 @@ export class SavedPhoneContact extends TypeSavedContact {
   }
 }
 
-export class AccountTakeout extends Type {
+export class AccountTakeout extends TypeAccountTakeout {
   id: bigint;
 
   protected get [id]() {
@@ -28860,7 +28860,7 @@ export class SecurePasswordKdfAlgoSHA512 extends TypeSecurePasswordKdfAlgo {
   }
 }
 
-export class SecureSecretSettings extends Type {
+export class SecureSecretSettings extends TypeSecureSecretSettings {
   secureAlgo: TypeSecurePasswordKdfAlgo;
   secureSecret: Uint8Array;
   secureSecretId: bigint;
@@ -28911,7 +28911,7 @@ export class InputCheckPasswordEmpty extends TypeInputCheckPasswordSRP {
   }
 }
 
-export class InputCheckPasswordSRP extends Type {
+export class InputCheckPasswordSRP extends TypeInputCheckPasswordSRP {
   srpId: bigint;
   A: Uint8Array;
   M1: Uint8Array;
@@ -28944,7 +28944,7 @@ export class InputCheckPasswordSRP extends Type {
   }
 }
 
-export class SecureRequiredType extends Type {
+export class SecureRequiredType extends TypeSecureRequiredType {
   nativeNames?: true;
   selfieRequired?: true;
   translationRequired?: true;
@@ -29026,7 +29026,7 @@ export class HelpPassportConfigNotModified extends TypeHelpPassportConfig {
   }
 }
 
-export class HelpPassportConfig extends Type {
+export class HelpPassportConfig extends TypeHelpPassportConfig {
   hash: number;
   countriesLangs: TypeDataJSON;
 
@@ -29055,7 +29055,7 @@ export class HelpPassportConfig extends Type {
   }
 }
 
-export class InputAppEvent extends Type {
+export class InputAppEvent extends TypeInputAppEvent {
   time: number;
   type: string;
   peer: bigint;
@@ -29092,7 +29092,7 @@ export class InputAppEvent extends Type {
   }
 }
 
-export class JsonObjectValue extends Type {
+export class JsonObjectValue extends TypeJSONObjectValue {
   key: string;
   value: TypeJSONValue;
 
@@ -29264,7 +29264,7 @@ export class JsonObject extends TypeJSONValue {
   }
 }
 
-export class PageTableCell extends Type {
+export class PageTableCell extends TypePageTableCell {
   header?: true;
   alignCenter?: true;
   alignRight?: true;
@@ -29319,7 +29319,7 @@ export class PageTableCell extends Type {
   }
 }
 
-export class PageTableRow extends Type {
+export class PageTableRow extends TypePageTableRow {
   cells: Array<TypePageTableCell>;
 
   protected get [id]() {
@@ -29344,7 +29344,7 @@ export class PageTableRow extends Type {
   }
 }
 
-export class PageCaption extends Type {
+export class PageCaption extends TypePageCaption {
   text: TypeRichText;
   credit: TypeRichText;
 
@@ -29481,7 +29481,7 @@ export class PageListOrderedItemBlocks extends TypePageListOrderedItem {
   }
 }
 
-export class PageRelatedArticle extends Type {
+export class PageRelatedArticle extends TypePageRelatedArticle {
   url: string;
   webpageId: bigint;
   title?: string;
@@ -29532,7 +29532,7 @@ export class PageRelatedArticle extends Type {
   }
 }
 
-export class Page extends Type {
+export class Page extends TypePage {
   part?: true;
   rtl?: true;
   v2?: true;
@@ -29587,7 +29587,7 @@ export class Page extends Type {
   }
 }
 
-export class HelpSupportName extends Type {
+export class HelpSupportName extends TypeHelpSupportName {
   name: string;
 
   protected get [id]() {
@@ -29630,7 +29630,7 @@ export class HelpUserInfoEmpty extends TypeHelpUserInfo {
   }
 }
 
-export class HelpUserInfo extends Type {
+export class HelpUserInfo extends TypeHelpUserInfo {
   message: string;
   entities: Array<TypeMessageEntity>;
   author: string;
@@ -29667,7 +29667,7 @@ export class HelpUserInfo extends Type {
   }
 }
 
-export class PollAnswer extends Type {
+export class PollAnswer extends TypePollAnswer {
   text: string;
   option: Uint8Array;
 
@@ -29696,7 +29696,7 @@ export class PollAnswer extends Type {
   }
 }
 
-export class Poll extends Type {
+export class Poll extends TypePoll {
   id: bigint;
   closed?: true;
   publicVoters?: true;
@@ -29755,7 +29755,7 @@ export class Poll extends Type {
   }
 }
 
-export class PollAnswerVoters extends Type {
+export class PollAnswerVoters extends TypePollAnswerVoters {
   chosen?: true;
   correct?: true;
   option: Uint8Array;
@@ -29794,7 +29794,7 @@ export class PollAnswerVoters extends Type {
   }
 }
 
-export class PollResults extends Type {
+export class PollResults extends TypePollResults {
   min?: true;
   results?: Array<TypePollAnswerVoters>;
   totalVoters?: number;
@@ -29841,7 +29841,7 @@ export class PollResults extends Type {
   }
 }
 
-export class ChatOnlines extends Type {
+export class ChatOnlines extends TypeChatOnlines {
   onlines: number;
 
   protected get [id]() {
@@ -29866,7 +29866,7 @@ export class ChatOnlines extends Type {
   }
 }
 
-export class StatsURL extends Type {
+export class StatsURL extends TypeStatsURL {
   url: string;
 
   protected get [id]() {
@@ -29891,7 +29891,7 @@ export class StatsURL extends Type {
   }
 }
 
-export class ChatAdminRights extends Type {
+export class ChatAdminRights extends TypeChatAdminRights {
   changeInfo?: true;
   postMessages?: true;
   editMessages?: true;
@@ -29962,7 +29962,7 @@ export class ChatAdminRights extends Type {
   }
 }
 
-export class ChatBannedRights extends Type {
+export class ChatBannedRights extends TypeChatBannedRights {
   viewMessages?: true;
   sendMessages?: true;
   sendMedia?: true;
@@ -30069,7 +30069,7 @@ export class ChatBannedRights extends Type {
   }
 }
 
-export class InputWallPaper extends Type {
+export class InputWallPaper extends TypeInputWallPaper {
   id: bigint;
   accessHash: bigint;
 
@@ -30166,7 +30166,7 @@ export class AccountWallPapersNotModified extends TypeAccountWallPapers {
   }
 }
 
-export class AccountWallPapers extends Type {
+export class AccountWallPapers extends TypeAccountWallPapers {
   hash: bigint;
   wallpapers: Array<TypeWallPaper>;
 
@@ -30195,7 +30195,7 @@ export class AccountWallPapers extends Type {
   }
 }
 
-export class CodeSettings extends Type {
+export class CodeSettings extends TypeCodeSettings {
   allowFlashcall?: true;
   currentNumber?: true;
   allowAppHash?: true;
@@ -30250,7 +30250,7 @@ export class CodeSettings extends Type {
   }
 }
 
-export class WallPaperSettings extends Type {
+export class WallPaperSettings extends TypeWallPaperSettings {
   blur?: true;
   motion?: true;
   backgroundColor?: number;
@@ -30305,7 +30305,7 @@ export class WallPaperSettings extends Type {
   }
 }
 
-export class AutoDownloadSettings extends Type {
+export class AutoDownloadSettings extends TypeAutoDownloadSettings {
   disabled?: true;
   videoPreloadLarge?: true;
   audioPreloadNext?: true;
@@ -30360,7 +30360,7 @@ export class AutoDownloadSettings extends Type {
   }
 }
 
-export class AccountAutoDownloadSettings extends Type {
+export class AccountAutoDownloadSettings extends TypeAccountAutoDownloadSettings {
   low: TypeAutoDownloadSettings;
   medium: TypeAutoDownloadSettings;
   high: TypeAutoDownloadSettings;
@@ -30393,7 +30393,7 @@ export class AccountAutoDownloadSettings extends Type {
   }
 }
 
-export class EmojiKeyword extends Type {
+export class EmojiKeyword extends TypeEmojiKeyword {
   keyword: string;
   emoticons: Array<string>;
 
@@ -30451,7 +30451,7 @@ export class EmojiKeywordDeleted extends TypeEmojiKeyword {
   }
 }
 
-export class EmojiKeywordsDifference extends Type {
+export class EmojiKeywordsDifference extends TypeEmojiKeywordsDifference {
   langCode: string;
   fromVersion: number;
   version: number;
@@ -30488,7 +30488,7 @@ export class EmojiKeywordsDifference extends Type {
   }
 }
 
-export class EmojiURL extends Type {
+export class EmojiURL extends TypeEmojiURL {
   url: string;
 
   protected get [id]() {
@@ -30513,7 +30513,7 @@ export class EmojiURL extends Type {
   }
 }
 
-export class EmojiLanguage extends Type {
+export class EmojiLanguage extends TypeEmojiLanguage {
   langCode: string;
 
   protected get [id]() {
@@ -30538,7 +30538,7 @@ export class EmojiLanguage extends Type {
   }
 }
 
-export class Folder extends Type {
+export class Folder extends TypeFolder {
   autofillNewBroadcasts?: true;
   autofillPublicGroups?: true;
   autofillNewCorrespondents?: true;
@@ -30585,7 +30585,7 @@ export class Folder extends Type {
   }
 }
 
-export class InputFolderPeer extends Type {
+export class InputFolderPeer extends TypeInputFolderPeer {
   peer: TypeInputPeer;
   folderId: number;
 
@@ -30614,7 +30614,7 @@ export class InputFolderPeer extends Type {
   }
 }
 
-export class FolderPeer extends Type {
+export class FolderPeer extends TypeFolderPeer {
   peer: TypePeer;
   folderId: number;
 
@@ -30643,7 +30643,7 @@ export class FolderPeer extends Type {
   }
 }
 
-export class MessagesSearchCounter extends Type {
+export class MessagesSearchCounter extends TypeMessagesSearchCounter {
   inexact?: true;
   filter: TypeMessagesFilter;
   count: number;
@@ -30774,7 +30774,7 @@ export class ChannelLocationEmpty extends TypeChannelLocation {
   }
 }
 
-export class ChannelLocation extends Type {
+export class ChannelLocation extends TypeChannelLocation {
   geoPoint: TypeGeoPoint;
   address: string;
 
@@ -30803,7 +30803,7 @@ export class ChannelLocation extends Type {
   }
 }
 
-export class PeerLocated extends Type {
+export class PeerLocated extends TypePeerLocated {
   peer: TypePeer;
   expires: number;
   distance: number;
@@ -30861,7 +30861,7 @@ export class PeerSelfLocated extends TypePeerLocated {
   }
 }
 
-export class RestrictionReason extends Type {
+export class RestrictionReason extends TypeRestrictionReason {
   platform: string;
   reason: string;
   text: string;
@@ -30894,7 +30894,7 @@ export class RestrictionReason extends Type {
   }
 }
 
-export class InputTheme extends Type {
+export class InputTheme extends TypeInputTheme {
   id: bigint;
   accessHash: bigint;
 
@@ -30948,7 +30948,7 @@ export class InputThemeSlug extends TypeInputTheme {
   }
 }
 
-export class Theme extends Type {
+export class Theme extends TypeTheme {
   creator?: true;
   default?: true;
   forChat?: true;
@@ -31033,7 +31033,7 @@ export class AccountThemesNotModified extends TypeAccountThemes {
   }
 }
 
-export class AccountThemes extends Type {
+export class AccountThemes extends TypeAccountThemes {
   hash: bigint;
   themes: Array<TypeTheme>;
 
@@ -31062,7 +31062,7 @@ export class AccountThemes extends Type {
   }
 }
 
-export class AuthLoginToken extends Type {
+export class AuthLoginToken extends TypeAuthLoginToken {
   expires: number;
   token: Uint8Array;
 
@@ -31145,7 +31145,7 @@ export class AuthLoginTokenSuccess extends TypeAuthLoginToken {
   }
 }
 
-export class AccountContentSettings extends Type {
+export class AccountContentSettings extends TypeAccountContentSettings {
   sensitiveEnabled?: true;
   sensitiveCanChange?: true;
 
@@ -31176,7 +31176,7 @@ export class AccountContentSettings extends Type {
   }
 }
 
-export class MessagesInactiveChats extends Type {
+export class MessagesInactiveChats extends TypeMessagesInactiveChats {
   dates: Array<number>;
   chats: Array<TypeChat>;
   users: Array<TypeUser>;
@@ -31299,7 +31299,7 @@ export class BaseThemeArctic extends TypeBaseTheme {
   }
 }
 
-export class InputThemeSettings extends Type {
+export class InputThemeSettings extends TypeInputThemeSettings {
   messageColorsAnimated?: true;
   baseTheme: TypeBaseTheme;
   accentColor: number;
@@ -31350,7 +31350,7 @@ export class InputThemeSettings extends Type {
   }
 }
 
-export class ThemeSettings extends Type {
+export class ThemeSettings extends TypeThemeSettings {
   messageColorsAnimated?: true;
   baseTheme: TypeBaseTheme;
   accentColor: number;
@@ -31428,7 +31428,7 @@ export class WebPageAttributeTheme extends TypeWebPageAttribute {
   }
 }
 
-export class MessageUserVote extends Type {
+export class MessageUserVote extends TypeMessageUserVote {
   userId: bigint;
   option: Uint8Array;
   date: number;
@@ -31523,7 +31523,7 @@ export class MessageUserVoteMultiple extends TypeMessageUserVote {
   }
 }
 
-export class MessagesVotesList extends Type {
+export class MessagesVotesList extends TypeMessagesVotesList {
   count: number;
   votes: Array<TypeMessageUserVote>;
   users: Array<TypeUser>;
@@ -31562,7 +31562,7 @@ export class MessagesVotesList extends Type {
   }
 }
 
-export class BankCardOpenURL extends Type {
+export class BankCardOpenURL extends TypeBankCardOpenURL {
   url: string;
   name: string;
 
@@ -31591,7 +31591,7 @@ export class BankCardOpenURL extends Type {
   }
 }
 
-export class PaymentsBankCardData extends Type {
+export class PaymentsBankCardData extends TypePaymentsBankCardData {
   title: string;
   openUrls: Array<TypeBankCardOpenURL>;
 
@@ -31620,7 +31620,7 @@ export class PaymentsBankCardData extends Type {
   }
 }
 
-export class DialogFilter extends Type {
+export class DialogFilter extends TypeDialogFilter {
   contacts?: true;
   nonContacts?: true;
   groups?: true;
@@ -31717,7 +31717,7 @@ export class DialogFilterDefault extends TypeDialogFilter {
   }
 }
 
-export class DialogFilterSuggested extends Type {
+export class DialogFilterSuggested extends TypeDialogFilterSuggested {
   filter: TypeDialogFilter;
   description: string;
 
@@ -31746,7 +31746,7 @@ export class DialogFilterSuggested extends Type {
   }
 }
 
-export class StatsDateRangeDays extends Type {
+export class StatsDateRangeDays extends TypeStatsDateRangeDays {
   minDate: number;
   maxDate: number;
 
@@ -31775,7 +31775,7 @@ export class StatsDateRangeDays extends Type {
   }
 }
 
-export class StatsAbsValueAndPrev extends Type {
+export class StatsAbsValueAndPrev extends TypeStatsAbsValueAndPrev {
   current: number;
   previous: number;
 
@@ -31804,7 +31804,7 @@ export class StatsAbsValueAndPrev extends Type {
   }
 }
 
-export class StatsPercentValue extends Type {
+export class StatsPercentValue extends TypeStatsPercentValue {
   part: number;
   total: number;
 
@@ -31883,7 +31883,7 @@ export class StatsGraphError extends TypeStatsGraph {
   }
 }
 
-export class StatsGraph extends Type {
+export class StatsGraph extends TypeStatsGraph {
   json: TypeDataJSON;
   zoomToken?: string;
 
@@ -31914,7 +31914,7 @@ export class StatsGraph extends Type {
   }
 }
 
-export class MessageInteractionCounters extends Type {
+export class MessageInteractionCounters extends TypeMessageInteractionCounters {
   msgId: number;
   views: number;
   forwards: number;
@@ -31947,7 +31947,7 @@ export class MessageInteractionCounters extends Type {
   }
 }
 
-export class StatsBroadcastStats extends Type {
+export class StatsBroadcastStats extends TypeStatsBroadcastStats {
   period: TypeStatsDateRangeDays;
   followers: TypeStatsAbsValueAndPrev;
   viewsPerPost: TypeStatsAbsValueAndPrev;
@@ -32071,7 +32071,7 @@ export class HelpPromoDataEmpty extends TypeHelpPromoData {
   }
 }
 
-export class HelpPromoData extends Type {
+export class HelpPromoData extends TypeHelpPromoData {
   proxy?: true;
   expires: number;
   peer: TypePeer;
@@ -32122,7 +32122,7 @@ export class HelpPromoData extends Type {
   }
 }
 
-export class VideoSize extends Type {
+export class VideoSize extends TypeVideoSize {
   type: string;
   w: number;
   h: number;
@@ -32227,7 +32227,7 @@ export class VideoSizeStickerMarkup extends TypeVideoSize {
   }
 }
 
-export class StatsGroupTopPoster extends Type {
+export class StatsGroupTopPoster extends TypeStatsGroupTopPoster {
   userId: bigint;
   messages: number;
   avgChars: number;
@@ -32260,7 +32260,7 @@ export class StatsGroupTopPoster extends Type {
   }
 }
 
-export class StatsGroupTopAdmin extends Type {
+export class StatsGroupTopAdmin extends TypeStatsGroupTopAdmin {
   userId: bigint;
   deleted: number;
   kicked: number;
@@ -32297,7 +32297,7 @@ export class StatsGroupTopAdmin extends Type {
   }
 }
 
-export class StatsGroupTopInviter extends Type {
+export class StatsGroupTopInviter extends TypeStatsGroupTopInviter {
   userId: bigint;
   invitations: number;
 
@@ -32326,7 +32326,7 @@ export class StatsGroupTopInviter extends Type {
   }
 }
 
-export class StatsMegagroupStats extends Type {
+export class StatsMegagroupStats extends TypeStatsMegagroupStats {
   period: TypeStatsDateRangeDays;
   members: TypeStatsAbsValueAndPrev;
   messages: TypeStatsAbsValueAndPrev;
@@ -32435,7 +32435,7 @@ export class StatsMegagroupStats extends Type {
   }
 }
 
-export class GlobalPrivacySettings extends Type {
+export class GlobalPrivacySettings extends TypeGlobalPrivacySettings {
   archiveAndMuteNewNoncontactPeers?: boolean;
 
   protected get [id]() {
@@ -32462,7 +32462,7 @@ export class GlobalPrivacySettings extends Type {
   }
 }
 
-export class HelpCountryCode extends Type {
+export class HelpCountryCode extends TypeHelpCountryCode {
   countryCode: string;
   prefixes?: Array<string>;
   patterns?: Array<string>;
@@ -32497,7 +32497,7 @@ export class HelpCountryCode extends Type {
   }
 }
 
-export class HelpCountry extends Type {
+export class HelpCountry extends TypeHelpCountry {
   hidden?: true;
   iso2: string;
   defaultName: string;
@@ -32558,7 +32558,7 @@ export class HelpCountriesListNotModified extends TypeHelpCountriesList {
   }
 }
 
-export class HelpCountriesList extends Type {
+export class HelpCountriesList extends TypeHelpCountriesList {
   countries: Array<TypeHelpCountry>;
   hash: number;
 
@@ -32587,7 +32587,7 @@ export class HelpCountriesList extends Type {
   }
 }
 
-export class MessageViews extends Type {
+export class MessageViews extends TypeMessageViews {
   views?: number;
   forwards?: number;
   replies?: TypeMessageReplies;
@@ -32622,7 +32622,7 @@ export class MessageViews extends Type {
   }
 }
 
-export class MessagesMessageViews extends Type {
+export class MessagesMessageViews extends TypeMessagesMessageViews {
   views: Array<TypeMessageViews>;
   chats: Array<TypeChat>;
   users: Array<TypeUser>;
@@ -32655,7 +32655,7 @@ export class MessagesMessageViews extends Type {
   }
 }
 
-export class MessagesDiscussionMessage extends Type {
+export class MessagesDiscussionMessage extends TypeMessagesDiscussionMessage {
   messages: Array<TypeMessage>;
   maxId?: number;
   readInboxMaxId?: number;
@@ -32706,7 +32706,7 @@ export class MessagesDiscussionMessage extends Type {
   }
 }
 
-export class MessageReplyHeader extends Type {
+export class MessageReplyHeader extends TypeMessageReplyHeader {
   replyToScheduled?: true;
   forumTopic?: true;
   replyToMsgId: number;
@@ -32749,7 +32749,7 @@ export class MessageReplyHeader extends Type {
   }
 }
 
-export class MessageReplies extends Type {
+export class MessageReplies extends TypeMessageReplies {
   comments?: true;
   replies: number;
   repliesPts: number;
@@ -32800,7 +32800,7 @@ export class MessageReplies extends Type {
   }
 }
 
-export class PeerBlocked extends Type {
+export class PeerBlocked extends TypePeerBlocked {
   peerId: TypePeer;
   date: number;
 
@@ -32829,7 +32829,7 @@ export class PeerBlocked extends Type {
   }
 }
 
-export class StatsMessageStats extends Type {
+export class StatsMessageStats extends TypeStatsMessageStats {
   viewsGraph: TypeStatsGraph;
 
   protected get [id]() {
@@ -32887,7 +32887,7 @@ export class GroupCallDiscarded extends TypeGroupCall {
   }
 }
 
-export class GroupCall extends Type {
+export class GroupCall extends TypeGroupCall {
   joinMuted?: true;
   canChangeJoinMuted?: true;
   joinDateAsc?: true;
@@ -32982,7 +32982,7 @@ export class GroupCall extends Type {
   }
 }
 
-export class InputGroupCall extends Type {
+export class InputGroupCall extends TypeInputGroupCall {
   id: bigint;
   accessHash: bigint;
 
@@ -33011,7 +33011,7 @@ export class InputGroupCall extends Type {
   }
 }
 
-export class GroupCallParticipant extends Type {
+export class GroupCallParticipant extends TypeGroupCallParticipant {
   muted?: true;
   left?: true;
   canSelfUnmute?: true;
@@ -33110,7 +33110,7 @@ export class GroupCallParticipant extends Type {
   }
 }
 
-export class PhoneGroupCall extends Type {
+export class PhoneGroupCall extends TypePhoneGroupCall {
   call: TypeGroupCall;
   participants: Array<TypeGroupCallParticipant>;
   participantsNextOffset: string;
@@ -33151,7 +33151,7 @@ export class PhoneGroupCall extends Type {
   }
 }
 
-export class PhoneGroupParticipants extends Type {
+export class PhoneGroupParticipants extends TypePhoneGroupParticipants {
   count: number;
   participants: Array<TypeGroupCallParticipant>;
   nextOffset: string;
@@ -33286,7 +33286,7 @@ export class InlineQueryPeerTypeBroadcast extends TypeInlineQueryPeerType {
   }
 }
 
-export class MessagesHistoryImport extends Type {
+export class MessagesHistoryImport extends TypeMessagesHistoryImport {
   id: bigint;
 
   protected get [id]() {
@@ -33311,7 +33311,7 @@ export class MessagesHistoryImport extends Type {
   }
 }
 
-export class MessagesHistoryImportParsed extends Type {
+export class MessagesHistoryImportParsed extends TypeMessagesHistoryImportParsed {
   pm?: true;
   group?: true;
   title?: string;
@@ -33346,7 +33346,7 @@ export class MessagesHistoryImportParsed extends Type {
   }
 }
 
-export class MessagesAffectedFoundMessages extends Type {
+export class MessagesAffectedFoundMessages extends TypeMessagesAffectedFoundMessages {
   pts: number;
   ptsCount: number;
   offset: number;
@@ -33383,7 +33383,7 @@ export class MessagesAffectedFoundMessages extends Type {
   }
 }
 
-export class ChatInviteImporter extends Type {
+export class ChatInviteImporter extends TypeChatInviteImporter {
   requested?: true;
   viaChatlist?: true;
   userId: bigint;
@@ -33430,7 +33430,7 @@ export class ChatInviteImporter extends Type {
   }
 }
 
-export class MessagesExportedChatInvites extends Type {
+export class MessagesExportedChatInvites extends TypeMessagesExportedChatInvites {
   count: number;
   invites: Array<TypeExportedChatInvite>;
   users: Array<TypeUser>;
@@ -33463,7 +33463,7 @@ export class MessagesExportedChatInvites extends Type {
   }
 }
 
-export class MessagesExportedChatInvite extends Type {
+export class MessagesExportedChatInvite extends TypeMessagesExportedChatInvite {
   invite: TypeExportedChatInvite;
   users: Array<TypeUser>;
 
@@ -33525,7 +33525,7 @@ export class MessagesExportedChatInviteReplaced extends TypeMessagesExportedChat
   }
 }
 
-export class MessagesChatInviteImporters extends Type {
+export class MessagesChatInviteImporters extends TypeMessagesChatInviteImporters {
   count: number;
   importers: Array<TypeChatInviteImporter>;
   users: Array<TypeUser>;
@@ -33558,7 +33558,7 @@ export class MessagesChatInviteImporters extends Type {
   }
 }
 
-export class ChatAdminWithInvites extends Type {
+export class ChatAdminWithInvites extends TypeChatAdminWithInvites {
   adminId: bigint;
   invitesCount: number;
   revokedInvitesCount: number;
@@ -33591,7 +33591,7 @@ export class ChatAdminWithInvites extends Type {
   }
 }
 
-export class MessagesChatAdminsWithInvites extends Type {
+export class MessagesChatAdminsWithInvites extends TypeMessagesChatAdminsWithInvites {
   admins: Array<TypeChatAdminWithInvites>;
   users: Array<TypeUser>;
 
@@ -33620,7 +33620,7 @@ export class MessagesChatAdminsWithInvites extends Type {
   }
 }
 
-export class MessagesCheckedHistoryImportPeer extends Type {
+export class MessagesCheckedHistoryImportPeer extends TypeMessagesCheckedHistoryImportPeer {
   confirmText: string;
 
   protected get [id]() {
@@ -33645,7 +33645,7 @@ export class MessagesCheckedHistoryImportPeer extends Type {
   }
 }
 
-export class PhoneJoinAsPeers extends Type {
+export class PhoneJoinAsPeers extends TypePhoneJoinAsPeers {
   peers: Array<TypePeer>;
   chats: Array<TypeChat>;
   users: Array<TypeUser>;
@@ -33678,7 +33678,7 @@ export class PhoneJoinAsPeers extends Type {
   }
 }
 
-export class PhoneExportedGroupCallInvite extends Type {
+export class PhoneExportedGroupCallInvite extends TypePhoneExportedGroupCallInvite {
   link: string;
 
   protected get [id]() {
@@ -33703,7 +33703,7 @@ export class PhoneExportedGroupCallInvite extends Type {
   }
 }
 
-export class GroupCallParticipantVideoSourceGroup extends Type {
+export class GroupCallParticipantVideoSourceGroup extends TypeGroupCallParticipantVideoSourceGroup {
   semantics: string;
   sources: Array<number>;
 
@@ -33732,7 +33732,7 @@ export class GroupCallParticipantVideoSourceGroup extends Type {
   }
 }
 
-export class GroupCallParticipantVideo extends Type {
+export class GroupCallParticipantVideo extends TypeGroupCallParticipantVideo {
   paused?: true;
   endpoint: string;
   sourceGroups: Array<TypeGroupCallParticipantVideoSourceGroup>;
@@ -33771,7 +33771,7 @@ export class GroupCallParticipantVideo extends Type {
   }
 }
 
-export class StickersSuggestedShortName extends Type {
+export class StickersSuggestedShortName extends TypeStickersSuggestedShortName {
   shortName: string;
 
   protected get [id]() {
@@ -34015,7 +34015,7 @@ export class AccountResetPasswordOk extends TypeAccountResetPasswordResult {
   }
 }
 
-export class SponsoredMessage extends Type {
+export class SponsoredMessage extends TypeSponsoredMessage {
   recommended?: true;
   showPeerPhoto?: true;
   randomId: Uint8Array;
@@ -34086,7 +34086,7 @@ export class SponsoredMessage extends Type {
   }
 }
 
-export class MessagesSponsoredMessages extends Type {
+export class MessagesSponsoredMessages extends TypeMessagesSponsoredMessages {
   postsBetween?: number;
   messages: Array<TypeSponsoredMessage>;
   chats: Array<TypeChat>;
@@ -34143,7 +34143,7 @@ export class MessagesSponsoredMessagesEmpty extends TypeMessagesSponsoredMessage
   }
 }
 
-export class SearchResultsCalendarPeriod extends Type {
+export class SearchResultsCalendarPeriod extends TypeSearchResultsCalendarPeriod {
   date: number;
   minMsgId: number;
   maxMsgId: number;
@@ -34180,7 +34180,7 @@ export class SearchResultsCalendarPeriod extends Type {
   }
 }
 
-export class MessagesSearchResultsCalendar extends Type {
+export class MessagesSearchResultsCalendar extends TypeMessagesSearchResultsCalendar {
   inexact?: true;
   count: number;
   minDate: number;
@@ -34272,7 +34272,7 @@ export class SearchResultPosition extends TypeSearchResultsPosition {
   }
 }
 
-export class MessagesSearchResultsPositions extends Type {
+export class MessagesSearchResultsPositions extends TypeMessagesSearchResultsPositions {
   count: number;
   positions: Array<TypeSearchResultsPosition>;
 
@@ -34301,7 +34301,7 @@ export class MessagesSearchResultsPositions extends Type {
   }
 }
 
-export class ChannelsSendAsPeers extends Type {
+export class ChannelsSendAsPeers extends TypeChannelsSendAsPeers {
   peers: Array<TypeSendAsPeer>;
   chats: Array<TypeChat>;
   users: Array<TypeUser>;
@@ -34334,7 +34334,7 @@ export class ChannelsSendAsPeers extends Type {
   }
 }
 
-export class UsersUserFull extends Type {
+export class UsersUserFull extends TypeUsersUserFull {
   fullUser: TypeUserFull;
   chats: Array<TypeChat>;
   users: Array<TypeUser>;
@@ -34367,7 +34367,7 @@ export class UsersUserFull extends Type {
   }
 }
 
-export class MessagesPeerSettings extends Type {
+export class MessagesPeerSettings extends TypeMessagesPeerSettings {
   settings: TypePeerSettings;
   chats: Array<TypeChat>;
   users: Array<TypeUser>;
@@ -34400,7 +34400,7 @@ export class MessagesPeerSettings extends Type {
   }
 }
 
-export class AuthLoggedOut extends Type {
+export class AuthLoggedOut extends TypeAuthLoggedOut {
   futureAuthToken?: Uint8Array;
 
   protected get [id]() {
@@ -34427,7 +34427,7 @@ export class AuthLoggedOut extends Type {
   }
 }
 
-export class ReactionCount extends Type {
+export class ReactionCount extends TypeReactionCount {
   chosenOrder?: number;
   reaction: TypeReaction;
   count: number;
@@ -34462,7 +34462,7 @@ export class ReactionCount extends Type {
   }
 }
 
-export class MessageReactions extends Type {
+export class MessageReactions extends TypeMessageReactions {
   min?: true;
   canSeeList?: true;
   results: Array<TypeReactionCount>;
@@ -34501,7 +34501,7 @@ export class MessageReactions extends Type {
   }
 }
 
-export class MessagesMessageReactionsList extends Type {
+export class MessagesMessageReactionsList extends TypeMessagesMessageReactionsList {
   count: number;
   reactions: Array<TypeMessagePeerReaction>;
   chats: Array<TypeChat>;
@@ -34544,7 +34544,7 @@ export class MessagesMessageReactionsList extends Type {
   }
 }
 
-export class AvailableReaction extends Type {
+export class AvailableReaction extends TypeAvailableReaction {
   inactive?: true;
   premium?: true;
   reaction: string;
@@ -34629,7 +34629,7 @@ export class MessagesAvailableReactionsNotModified extends TypeMessagesAvailable
   }
 }
 
-export class MessagesAvailableReactions extends Type {
+export class MessagesAvailableReactions extends TypeMessagesAvailableReactions {
   hash: number;
   reactions: Array<TypeAvailableReaction>;
 
@@ -34658,7 +34658,7 @@ export class MessagesAvailableReactions extends Type {
   }
 }
 
-export class MessagePeerReaction extends Type {
+export class MessagePeerReaction extends TypeMessagePeerReaction {
   big?: true;
   unread?: true;
   peerId: TypePeer;
@@ -34701,7 +34701,7 @@ export class MessagePeerReaction extends Type {
   }
 }
 
-export class GroupCallStreamChannel extends Type {
+export class GroupCallStreamChannel extends TypeGroupCallStreamChannel {
   channel: number;
   scale: number;
   lastTimestampMs: bigint;
@@ -34734,7 +34734,7 @@ export class GroupCallStreamChannel extends Type {
   }
 }
 
-export class PhoneGroupCallStreamChannels extends Type {
+export class PhoneGroupCallStreamChannels extends TypePhoneGroupCallStreamChannels {
   channels: Array<TypeGroupCallStreamChannel>;
 
   protected get [id]() {
@@ -34759,7 +34759,7 @@ export class PhoneGroupCallStreamChannels extends Type {
   }
 }
 
-export class PhoneGroupCallStreamRtmpURL extends Type {
+export class PhoneGroupCallStreamRtmpURL extends TypePhoneGroupCallStreamRtmpURL {
   url: string;
   key: string;
 
@@ -34788,7 +34788,7 @@ export class PhoneGroupCallStreamRtmpURL extends Type {
   }
 }
 
-export class AttachMenuBotIconColor extends Type {
+export class AttachMenuBotIconColor extends TypeAttachMenuBotIconColor {
   name: string;
   color: number;
 
@@ -34817,7 +34817,7 @@ export class AttachMenuBotIconColor extends Type {
   }
 }
 
-export class AttachMenuBotIcon extends Type {
+export class AttachMenuBotIcon extends TypeAttachMenuBotIcon {
   name: string;
   icon: TypeDocument;
   colors?: Array<TypeAttachMenuBotIconColor>;
@@ -34852,7 +34852,7 @@ export class AttachMenuBotIcon extends Type {
   }
 }
 
-export class AttachMenuBot extends Type {
+export class AttachMenuBot extends TypeAttachMenuBot {
   inactive?: true;
   hasSettings?: true;
   requestWriteAccess?: true;
@@ -34921,7 +34921,7 @@ export class AttachMenuBotsNotModified extends TypeAttachMenuBots {
   }
 }
 
-export class AttachMenuBots extends Type {
+export class AttachMenuBots extends TypeAttachMenuBots {
   hash: bigint;
   bots: Array<TypeAttachMenuBot>;
   users: Array<TypeUser>;
@@ -34954,7 +34954,7 @@ export class AttachMenuBots extends Type {
   }
 }
 
-export class AttachMenuBotsBot extends Type {
+export class AttachMenuBotsBot extends TypeAttachMenuBotsBot {
   bot: TypeAttachMenuBot;
   users: Array<TypeUser>;
 
@@ -35037,7 +35037,7 @@ export class SimpleWebViewResultURL extends TypeSimpleWebViewResult {
   }
 }
 
-export class WebViewMessageSent extends Type {
+export class WebViewMessageSent extends TypeWebViewMessageSent {
   msgId?: TypeInputBotInlineMessageID;
 
   protected get [id]() {
@@ -35100,7 +35100,7 @@ export class BotMenuButtonCommands extends TypeBotMenuButton {
   }
 }
 
-export class BotMenuButton extends Type {
+export class BotMenuButton extends TypeBotMenuButton {
   text: string;
   url: string;
 
@@ -35147,7 +35147,7 @@ export class AccountSavedRingtonesNotModified extends TypeAccountSavedRingtones 
   }
 }
 
-export class AccountSavedRingtones extends Type {
+export class AccountSavedRingtones extends TypeAccountSavedRingtones {
   hash: bigint;
   ringtones: Array<TypeDocument>;
 
@@ -35266,7 +35266,7 @@ export class NotificationSoundRingtone extends TypeNotificationSound {
   }
 }
 
-export class AccountSavedRingtone extends Type {
+export class AccountSavedRingtone extends TypeAccountSavedRingtone {
   protected get [id]() {
     return 0xb7263f6d;
   }
@@ -35453,7 +35453,7 @@ export class InputInvoiceSlug extends TypeInputInvoice {
   }
 }
 
-export class PaymentsExportedInvoice extends Type {
+export class PaymentsExportedInvoice extends TypePaymentsExportedInvoice {
   url: string;
 
   protected get [id]() {
@@ -35478,7 +35478,7 @@ export class PaymentsExportedInvoice extends Type {
   }
 }
 
-export class MessagesTranscribedAudio extends Type {
+export class MessagesTranscribedAudio extends TypeMessagesTranscribedAudio {
   pending?: true;
   transcriptionId: bigint;
   text: string;
@@ -35513,7 +35513,7 @@ export class MessagesTranscribedAudio extends Type {
   }
 }
 
-export class HelpPremiumPromo extends Type {
+export class HelpPremiumPromo extends TypeHelpPremiumPromo {
   statusText: string;
   statusEntities: Array<TypeMessageEntity>;
   videoSections: Array<string>;
@@ -35622,7 +35622,7 @@ export class InputStorePaymentGiftPremium extends TypeInputStorePaymentPurpose {
   }
 }
 
-export class PremiumGiftOption extends Type {
+export class PremiumGiftOption extends TypePremiumGiftOption {
   months: number;
   currency: string;
   amount: bigint;
@@ -35665,7 +35665,7 @@ export class PremiumGiftOption extends Type {
   }
 }
 
-export class PaymentFormMethod extends Type {
+export class PaymentFormMethod extends TypePaymentFormMethod {
   url: string;
   title: string;
 
@@ -35712,7 +35712,7 @@ export class EmojiStatusEmpty extends TypeEmojiStatus {
   }
 }
 
-export class EmojiStatus extends Type {
+export class EmojiStatus extends TypeEmojiStatus {
   documentId: bigint;
 
   protected get [id]() {
@@ -35784,7 +35784,7 @@ export class AccountEmojiStatusesNotModified extends TypeAccountEmojiStatuses {
   }
 }
 
-export class AccountEmojiStatuses extends Type {
+export class AccountEmojiStatuses extends TypeAccountEmojiStatuses {
   hash: bigint;
   statuses: Array<TypeEmojiStatus>;
 
@@ -35969,7 +35969,7 @@ export class MessagesReactionsNotModified extends TypeMessagesReactions {
   }
 }
 
-export class MessagesReactions extends Type {
+export class MessagesReactions extends TypeMessagesReactions {
   hash: bigint;
   reactions: Array<TypeReaction>;
 
@@ -36138,7 +36138,7 @@ export class EmailVerificationApple extends TypeEmailVerification {
   }
 }
 
-export class AccountEmailVerified extends Type {
+export class AccountEmailVerified extends TypeAccountEmailVerified {
   email: string;
 
   protected get [id]() {
@@ -36192,7 +36192,7 @@ export class AccountEmailVerifiedLogin extends TypeAccountEmailVerified {
   }
 }
 
-export class PremiumSubscriptionOption extends Type {
+export class PremiumSubscriptionOption extends TypePremiumSubscriptionOption {
   current?: true;
   canPurchaseUpgrade?: true;
   transaction?: string;
@@ -36247,7 +36247,7 @@ export class PremiumSubscriptionOption extends Type {
   }
 }
 
-export class SendAsPeer extends Type {
+export class SendAsPeer extends TypeSendAsPeer {
   premiumRequired?: true;
   peer: TypePeer;
 
@@ -36317,7 +36317,7 @@ export class MessageExtendedMediaPreview extends TypeMessageExtendedMedia {
   }
 }
 
-export class MessageExtendedMedia extends Type {
+export class MessageExtendedMedia extends TypeMessageExtendedMedia {
   media: TypeMessageMedia;
 
   protected get [id]() {
@@ -36342,7 +36342,7 @@ export class MessageExtendedMedia extends Type {
   }
 }
 
-export class StickerKeyword extends Type {
+export class StickerKeyword extends TypeStickerKeyword {
   documentId: bigint;
   keyword: Array<string>;
 
@@ -36371,7 +36371,7 @@ export class StickerKeyword extends Type {
   }
 }
 
-export class Username extends Type {
+export class Username extends TypeUsername {
   editable?: true;
   active?: true;
   username: string;
@@ -36431,7 +36431,7 @@ export class ForumTopicDeleted extends TypeForumTopic {
   }
 }
 
-export class ForumTopic extends Type {
+export class ForumTopic extends TypeForumTopic {
   my?: true;
   closed?: true;
   pinned?: true;
@@ -36530,7 +36530,7 @@ export class ForumTopic extends Type {
   }
 }
 
-export class MessagesForumTopics extends Type {
+export class MessagesForumTopics extends TypeMessagesForumTopics {
   orderByCreateDate?: true;
   count: number;
   topics: Array<TypeForumTopic>;
@@ -36581,7 +36581,7 @@ export class MessagesForumTopics extends Type {
   }
 }
 
-export class DefaultHistoryTTL extends Type {
+export class DefaultHistoryTTL extends TypeDefaultHistoryTTL {
   period: number;
 
   protected get [id]() {
@@ -36606,7 +36606,7 @@ export class DefaultHistoryTTL extends Type {
   }
 }
 
-export class ExportedContactToken extends Type {
+export class ExportedContactToken extends TypeExportedContactToken {
   url: string;
   expires: number;
 
@@ -36770,7 +36770,7 @@ export class EmojiListNotModified extends TypeEmojiList {
   }
 }
 
-export class EmojiList extends Type {
+export class EmojiList extends TypeEmojiList {
   hash: bigint;
   documentId: Array<bigint>;
 
@@ -36799,7 +36799,7 @@ export class EmojiList extends Type {
   }
 }
 
-export class EmojiGroup extends Type {
+export class EmojiGroup extends TypeEmojiGroup {
   title: string;
   iconEmojiId: bigint;
   emoticons: Array<string>;
@@ -36850,7 +36850,7 @@ export class MessagesEmojiGroupsNotModified extends TypeMessagesEmojiGroups {
   }
 }
 
-export class MessagesEmojiGroups extends Type {
+export class MessagesEmojiGroups extends TypeMessagesEmojiGroups {
   hash: number;
   groups: Array<TypeEmojiGroup>;
 
@@ -36879,7 +36879,7 @@ export class MessagesEmojiGroups extends Type {
   }
 }
 
-export class TextWithEntities extends Type {
+export class TextWithEntities extends TypeTextWithEntities {
   text: string;
   entities: Array<TypeMessageEntity>;
 
@@ -36933,7 +36933,7 @@ export class MessagesTranslateResult extends TypeMessagesTranslatedText {
   }
 }
 
-export class AutoSaveSettings extends Type {
+export class AutoSaveSettings extends TypeAutoSaveSettings {
   photos?: true;
   videos?: true;
   videoMaxSize?: bigint;
@@ -36968,7 +36968,7 @@ export class AutoSaveSettings extends Type {
   }
 }
 
-export class AutoSaveException extends Type {
+export class AutoSaveException extends TypeAutoSaveException {
   peer: TypePeer;
   settings: TypeAutoSaveSettings;
 
@@ -36997,7 +36997,7 @@ export class AutoSaveException extends Type {
   }
 }
 
-export class AccountAutoSaveSettings extends Type {
+export class AccountAutoSaveSettings extends TypeAccountAutoSaveSettings {
   usersSettings: TypeAutoSaveSettings;
   chatsSettings: TypeAutoSaveSettings;
   broadcastsSettings: TypeAutoSaveSettings;
@@ -37060,7 +37060,7 @@ export class HelpAppConfigNotModified extends TypeHelpAppConfig {
   }
 }
 
-export class HelpAppConfig extends Type {
+export class HelpAppConfig extends TypeHelpAppConfig {
   hash: number;
   config: TypeJSONValue;
 
@@ -37165,7 +37165,7 @@ export class BotAppNotModified extends TypeBotApp {
   }
 }
 
-export class BotApp extends Type {
+export class BotApp extends TypeBotApp {
   id: bigint;
   accessHash: bigint;
   shortName: string;
@@ -37220,7 +37220,7 @@ export class BotApp extends Type {
   }
 }
 
-export class MessagesBotApp extends Type {
+export class MessagesBotApp extends TypeMessagesBotApp {
   inactive?: true;
   requestWriteAccess?: true;
   app: TypeBotApp;
@@ -37280,7 +37280,7 @@ export class AppWebViewResultURL extends TypeAppWebViewResult {
   }
 }
 
-export class InlineBotWebView extends Type {
+export class InlineBotWebView extends TypeInlineBotWebView {
   text: string;
   url: string;
 
@@ -37309,7 +37309,7 @@ export class InlineBotWebView extends Type {
   }
 }
 
-export class ReadParticipantDate extends Type {
+export class ReadParticipantDate extends TypeReadParticipantDate {
   userId: bigint;
   date: number;
 
