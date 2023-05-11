@@ -38,8 +38,8 @@ export class ClientPlain extends ClientAbstract {
     const pq_ = bigIntFromBuffer(resPq.pq, false, false);
     const [p_, q_] = factorize(pq_);
     logger().debug("Factorized pq");
-    const p = bufferFromBigInt(p_.valueOf(), 4, false, false);
-    const q = bufferFromBigInt(q_.valueOf(), 4, false, false);
+    const p = bufferFromBigInt(p_, 4, false, false);
+    const q = bufferFromBigInt(q_, 4, false, false);
 
     let publicKeyFingerprint: bigint | undefined;
     let publicKey: [bigint, bigint] | undefined;
