@@ -80,6 +80,8 @@ function serializeSingleParam(
   ntype: string,
 ) {
   if (isTLObjectConstructor(type)) {
+    console.log(value, { type });
+    console.log(value instanceof type);
     if (
       (type.name == "TypeX" && value instanceof TLObject) ||
       value instanceof type
