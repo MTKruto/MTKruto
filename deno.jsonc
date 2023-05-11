@@ -1,8 +1,7 @@
 {
   "lock": false,
   "fmt": {
-    "options": {
-      "lineWidth": 500
-    }
+    "lineWidth": 500,
+    "exclude": ["./npm/*"]
   }
 }
