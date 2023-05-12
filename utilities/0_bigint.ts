@@ -19,7 +19,7 @@ export function modExp(
   return result;
 }
 
-export function mod(n: number, m: number) {
+export function mod(n: bigint, m: bigint) {
   return ((n % m) + m) % m;
 }
 
