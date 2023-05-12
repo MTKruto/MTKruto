@@ -1,7 +1,6 @@
 {
   "lock": false,
   "fmt": {
-    "lineWidth": 500,
-    "exclude": ["./npm/*"]
+    "lineWidth": 500
   }
 }
