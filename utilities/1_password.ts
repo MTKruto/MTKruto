@@ -54,13 +54,10 @@ export async function pbkdf2(password: Uint8Array, salt: Uint8Array, iterations:
 // PH2(password, salt1, salt2) := SH(pbkdf2(sha512, PH1(password, salt1, salt2), salt1, 100000), salt2)
 export const ph2 = async (password: Uint8Array, salt1: Uint8Array, salt2: Uint8Array) => await sh(await pbkdf2(await ph1(password, salt1, salt2), salt1, 100_000), salt2);
 
-const SIZE_FOR_HASH = 256;
-
-function isGoodModExpFirst(
+export function isGoodModExpFirst(
   modexp: bigint,
   prime: bigint,
 ) {
-  console.log("isgoodmodexp start");
   const diff = prime - modexp;
   const minDiffBitsCount = 2048 - 64;
   const maxModExpSize = 256;
@@ -72,25 +69,14 @@ function isGoodModExpFirst(
   );
 }
 
-export function bigIntMod(
-  n: bigint,
-  m: bigint,
-) {
-  return (n % m) + (m);
-}
-
-export function b() {
-  return ph2(new Uint8Array(1), new Uint8Array(1), new Uint8Array(1));
-}
-
 export function pad(bigint: number | bigint | Uint8Array) {
   if (typeof bigint === "number") {
     bigint = BigInt(bigint);
   }
   if (typeof bigint === "bigint") {
-    return bufferFromBigInt(bigint, SIZE_FOR_HASH, false);
+    return bufferFromBigInt(bigint, 256, false);
   } else {
-    return concat(new Uint8Array(SIZE_FOR_HASH - bigint.length), bigint);
+    return concat(new Uint8Array(256 - bigint.length), bigint);
   }
 }
 
@@ -160,10 +146,10 @@ export async function checkPassword(password: Uint8Array, ap: types.AccountPassw
   const v = modExp(BigInt(g), x, p);
 
   // k_v := (k * v) mod p
-  const kV = bigIntMod(k * v, p);
+  const kV = mod(k * v, p);
 
   // t := (g_b - k_v) mod p
-  const t = bigIntMod(gB - kV, p);
+  const t = mod(gB - kV, p);
 
   // s_a := pow(t, a + u * x) mod p
   const sA = modExp(t, a + u * x, p);
