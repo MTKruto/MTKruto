@@ -24,11 +24,7 @@ export function bufferFromBigInt(bigIntVar: bigint | number, bytesNumber: number
   }
 
   const hex = bigIntVar.toString(16).padStart(bytesNumber * 2, "0");
-  let buffer = bufferFromHexString(hex);
-
-  if (little) {
-    buffer = buffer.reverse();
-  }
+  const buffer = bufferFromHexString(hex);
 
   if (signed && below) {
     buffer[buffer.length - 1] = 256 -
