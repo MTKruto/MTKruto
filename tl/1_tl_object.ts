@@ -116,9 +116,9 @@ function serializeSingleParam(
     case "boolean":
       if (typeof value === "boolean") {
         if (value) {
-          writer.writeInt32(0x997275b5);
+          writer.writeInt32(0x997275B5);
         } else {
-          writer.writeInt32(0xbc799737);
+          writer.writeInt32(0xBC799737);
         }
       } else {
         throw new Error("Expected boolean");
@@ -142,7 +142,7 @@ function serializeSingleParam(
       break;
     case "true":
       if (value === true) {
-        writer.writeInt32(0x997275b5);
+        writer.writeInt32(0x997275B5);
       } else {
         throw new Error("Expected true");
       }
@@ -194,7 +194,7 @@ export abstract class TLObject {
         if (!Array.isArray(value)) {
           throw new Error("Expected array");
         }
-        writer.writeInt32(0x1cb5c415); // vector constructor
+        writer.writeInt32(0x1CB5C415); // vector constructor
         writer.writeInt32(value.length);
         for (const item of value) {
           serializeSingleParam(writer, item, itemsType, ntype);
