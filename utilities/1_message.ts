@@ -6,7 +6,8 @@ import { TLReader } from "../tl/3_tl_reader.ts";
 import { RPCResult } from "../tl/4_rpc_result.ts";
 import { Message } from "../tl/5_message.ts";
 import { MessageContainer } from "../tl/6_message_container.ts";
-import { bufferFromBigInt, concat, sha256 } from "./0_buffer.ts";
+import { bufferFromBigInt, concat } from "./0_buffer.ts";
+import { sha256 } from "./0_hash.ts";
 
 let lastMsgId = 0n;
 export function getMessageId() {
