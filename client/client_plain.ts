@@ -1,7 +1,8 @@
 import { assertEquals, assertInstanceOf, factorize, ige256Decrypt, ige256Encrypt } from "../deps.ts";
 import { publicKeys } from "../constants.ts";
 import { bigIntFromBuffer, getRandomBigInt, modExp } from "../utilities/0_bigint.ts";
-import { bufferFromBigInt, concat, sha1 } from "../utilities/0_buffer.ts";
+import { bufferFromBigInt, concat } from "../utilities/0_buffer.ts";
+import { sha1 } from "../utilities/0_hash.ts";
 import { rsaPad } from "../utilities/1_auth.ts";
 import { packUnencryptedMessage, unpackUnencryptedMessage } from "../utilities/1_message.ts";
 import { ClientDHInnerData, DHGenOK, PQInnerDataDC, ResPQ, ServerDHInnerData, ServerDHParamsOK } from "../tl/2_types.ts";
