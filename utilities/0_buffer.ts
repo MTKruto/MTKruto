@@ -24,36 +24,23 @@ export function bufferFromBigInt(bigIntVar: bigint | number, bytesNumber: number
   }
 
   const hex = bigIntVar.toString(16).padStart(bytesNumber * 2, "0");
-  let littleBuffer = bufferFromHexString(hex);
+  let buffer = bufferFromHexString(hex);
 
   if (little) {
-    littleBuffer = littleBuffer.reverse();
+    buffer = buffer.reverse();
   }
 
   if (signed && below) {
-    if (little) {
-      let reminder = false;
-      if (littleBuffer[0] !== 0) {
-        littleBuffer[0] -= 1;
-      }
-      for (let i = 0; i < littleBuffer.length; i++) {
-        if (littleBuffer[i] === 0) {
-          reminder = true;
-          continue;
-        }
-        if (reminder) {
-          littleBuffer[i] -= 1;
-          reminder = false;
-        }
-        littleBuffer[i] = 255 - littleBuffer[i];
-      }
-    } else {
-      littleBuffer[littleBuffer.length - 1] = 256 -
-        littleBuffer[littleBuffer.length - 1];
-      for (let i = 0; i < littleBuffer.length - 1; i++) {
-        littleBuffer[i] = 255 - littleBuffer[i];
-      }
+    buffer[buffer.length - 1] = 256 -
+      buffer[buffer.length - 1];
+    for (let i = 0; i < buffer.length - 1; i++) {
+      buffer[i] = 255 - buffer[i];
     }
   }
-  return littleBuffer;
+
+  if (little) {
+    buffer.reverse();
+  }
+
+  return buffer;
 }
