@@ -1,4 +1,4 @@
-import { assertEquals } from "../deps_t.ts";
+import { assertEquals } from "../deps.ts";
 import { TLRawReader } from "./0_tl_raw_reader.ts";
 
 Deno.test("TLRawReader", async (t) => {
