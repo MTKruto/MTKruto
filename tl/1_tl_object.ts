@@ -57,6 +57,10 @@ export function isOptionalParam(ntype: string) {
   return ntype.includes("?");
 }
 export function analyzeOptionalParam(ntype: string) {
+  if (!isOptionalParam(ntype)) {
+    throw new Error("Parameter not optional");
+  }
+
   const flagField = ntype.split(".")[0];
   assertEquals(typeof flagField, "string");
 
