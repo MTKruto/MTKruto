@@ -1,4 +1,4 @@
-export { assert, assertEquals, assertExists, assertFalse, assertInstanceOf, assertNotEquals } from "https://deno.land/std@0.186.0/testing/asserts.ts";
+export * from "https://deno.land/std@0.186.0/testing/asserts.ts";
 
 export * as log from "https://deno.land/std@0.186.0/log/mod.ts";
 

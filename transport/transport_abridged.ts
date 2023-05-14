@@ -11,9 +11,9 @@ export class TransportAbridged extends Transport implements Transport {
   async initialize() {
     if (!this.initialized) {
       if (this.obfuscated) {
-        this.obfuscationParameters = await getObfuscationParameters(0xefefefef, this.connection);
+        this.obfuscationParameters = await getObfuscationParameters(0xEFEFEFEF, this.connection);
       } else {
-        await this.connection.write(new Uint8Array([0xef]));
+        await this.connection.write(new Uint8Array([0xEF]));
       }
       this.initialized = true;
     } else {

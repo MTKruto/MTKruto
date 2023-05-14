@@ -1,4 +1,4 @@
-import { assertEquals } from "../deps_t.ts";
+import { assertEquals } from "../deps.ts";
 import { concat } from "./0_buffer.ts";
 import { h, isGoodModExpFirst, pad, pbkdf2, ph1, ph2, sh } from "./1_password.ts";
 

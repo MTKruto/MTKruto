@@ -3,20 +3,20 @@ import { bufferFromBigInt, concat } from "./0_buffer.ts";
 import { CTR } from "./0_crypto.ts";
 
 export async function getObfuscationParameters(protocol: number, connection: Connection) {
-  const dc = 0xfcff;
+  const dc = 0xFCFF;
 
   let init: Uint8Array;
 
   while (true) {
     init = concat(crypto.getRandomValues(new Uint8Array(56)), bufferFromBigInt(protocol, 4, false), bufferFromBigInt(dc, 2, false), crypto.getRandomValues(new Uint8Array(2)));
 
-    if (init[0] == 0xef) {
+    if (init[0] == 0xEF) {
       continue;
     }
 
     const dataView = new DataView(init.buffer);
     const firstInt = dataView.getInt32(0);
-    if ([0x44414548, 0x54534f50, 0x20544547, 0x4954504f, 0x02010316, 0xdddddddd, 0xeeeeeeee].includes(firstInt)) {
+    if ([0x44414548, 0x54534F50, 0x20544547, 0x4954504F, 0x02010316, 0xDDDDDDDD, 0xEEEEEEEE].includes(firstInt)) {
       continue;
     }
 

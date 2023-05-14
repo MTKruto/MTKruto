@@ -9,7 +9,7 @@ export class ReqPQMulti extends Function<types.ResPQ> {
   nonce: bigint;
 
   protected get [id]() {
-    return 0xbe7e8ef1;
+    return 0xBE7E8EF1;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -39,7 +39,7 @@ export class ReqDHParams extends Function<types.TypeServerDHParams> {
   encryptedData: Uint8Array;
 
   protected get [id]() {
-    return 0xd712e4be;
+    return 0xD712E4BE;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -81,7 +81,7 @@ export class SetClientDHParams extends Function<types.TypeSetClientDHParamsAnswe
   encryptedData: Uint8Array;
 
   protected get [id]() {
-    return 0xf5045f1f;
+    return 0xF5045F1F;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -112,7 +112,7 @@ export class RPCDropAnswer extends Function<types.TypeRpcDropAnswer> {
   reqMsgId: bigint;
 
   protected get [id]() {
-    return 0x58e4a740;
+    return 0x58E4A740;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -137,7 +137,7 @@ export class GetFutureSalts extends Function<types.FutureSalts> {
   num: number;
 
   protected get [id]() {
-    return 0xb921bd04;
+    return 0xB921BD04;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -162,7 +162,7 @@ export class Ping extends Function<types.Pong> {
   pingId: bigint;
 
   protected get [id]() {
-    return 0x7abe77ec;
+    return 0x7ABE77EC;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -188,7 +188,7 @@ export class PingDelayDisconnect extends Function<types.Pong> {
   disconnectDelay: number;
 
   protected get [id]() {
-    return 0xf3427b8c;
+    return 0xF3427B8C;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -216,7 +216,7 @@ export class DestroySession extends Function<types.TypeDestroySessionRes> {
   sessionId: bigint;
 
   protected get [id]() {
-    return 0xe7512126;
+    return 0xE7512126;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -239,7 +239,7 @@ export class DestroySession extends Function<types.TypeDestroySessionRes> {
 
 export class DestroyAuthKey extends Function<types.TypeDestroyAuthKeyRes> {
   protected get [id]() {
-    return 0xd1435160;
+    return 0xD1435160;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -260,7 +260,7 @@ export class InvokeAfterMsg<T extends Function<unknown>> extends Function<T["__R
   query: T;
 
   protected get [id]() {
-    return 0xcb9f372d;
+    return 0xCB9F372D;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -289,7 +289,7 @@ export class InvokeAfterMsgs<T extends Function<unknown>> extends Function<T["__
   query: T;
 
   protected get [id]() {
-    return 0x3dc4b4f0;
+    return 0x3DC4B4F0;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -326,7 +326,7 @@ export class InitConnection<T extends Function<unknown>> extends Function<T["__R
   query: T;
 
   protected get [id]() {
-    return 0xc1cd5ea9;
+    return 0xC1CD5EA9;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -381,7 +381,7 @@ export class InvokeWithLayer<T extends Function<unknown>> extends Function<T["__
   query: T;
 
   protected get [id]() {
-    return 0xda9b0d0d;
+    return 0xDA9B0D0D;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -409,7 +409,7 @@ export class InvokeWithoutUpdates<T extends Function<unknown>> extends Function<
   query: T;
 
   protected get [id]() {
-    return 0xbf9459b7;
+    return 0xBF9459B7;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -435,7 +435,7 @@ export class InvokeWithMessagesRange<T extends Function<unknown>> extends Functi
   query: T;
 
   protected get [id]() {
-    return 0x365275f2;
+    return 0x365275F2;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -464,7 +464,7 @@ export class InvokeWithTakeout<T extends Function<unknown>> extends Function<T["
   query: T;
 
   protected get [id]() {
-    return 0xaca9fd2e;
+    return 0xACA9FD2E;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -495,7 +495,7 @@ export class AuthSendCode extends Function<types.AuthSentCode> {
   settings: types.TypeCodeSettings;
 
   protected get [id]() {
-    return 0xa677244f;
+    return 0xA677244F;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -532,7 +532,7 @@ export class AuthSignUp extends Function<types.AuthAuthorization> {
   lastName: string;
 
   protected get [id]() {
-    return 0x80eee427;
+    return 0x80EEE427;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -569,7 +569,7 @@ export class AuthSignIn extends Function<types.AuthAuthorization> {
   emailVerification?: types.TypeEmailVerification;
 
   protected get [id]() {
-    return 0x8d52a951;
+    return 0x8D52A951;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -603,7 +603,7 @@ export class AuthSignIn extends Function<types.AuthAuthorization> {
 
 export class AuthLogOut extends Function<types.AuthLoggedOut> {
   protected get [id]() {
-    return 0x3e72ba19;
+    return 0x3E72BA19;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -621,7 +621,7 @@ export class AuthLogOut extends Function<types.AuthLoggedOut> {
 
 export class AuthResetAuthorizations extends Function<boolean> {
   protected get [id]() {
-    return 0x9fab0d1a;
+    return 0x9FAB0D1A;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -641,7 +641,7 @@ export class AuthExportAuthorization extends Function<types.AuthExportedAuthoriz
   dcId: number;
 
   protected get [id]() {
-    return 0xe5bfffcd;
+    return 0xE5BFFFCD;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -667,7 +667,7 @@ export class AuthImportAuthorization extends Function<types.AuthAuthorization> {
   bytes: Uint8Array;
 
   protected get [id]() {
-    return 0xa57a7dad;
+    return 0xA57A7DAD;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -698,7 +698,7 @@ export class AuthBindTempAuthKey extends Function<boolean> {
   encryptedMessage: Uint8Array;
 
   protected get [id]() {
-    return 0xcdd42a05;
+    return 0xCDD42A05;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -735,7 +735,7 @@ export class AuthImportBotAuthorization extends Function<types.AuthAuthorization
   botAuthToken: string;
 
   protected get [id]() {
-    return 0x67a3ff2c;
+    return 0x67A3FF2C;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -769,7 +769,7 @@ export class AuthCheckPassword extends Function<types.AuthAuthorization> {
   password: types.TypeInputCheckPasswordSRP;
 
   protected get [id]() {
-    return 0xd18b4d16;
+    return 0xD18B4D16;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -792,7 +792,7 @@ export class AuthCheckPassword extends Function<types.AuthAuthorization> {
 
 export class AuthRequestPasswordRecovery extends Function<types.AuthPasswordRecovery> {
   protected get [id]() {
-    return 0xd897bc66;
+    return 0xD897BC66;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -813,7 +813,7 @@ export class AuthRecoverPassword extends Function<types.AuthAuthorization> {
   newSettings?: types.TypeAccountPasswordInputSettings;
 
   protected get [id]() {
-    return 0x37096c70;
+    return 0x37096C70;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -844,7 +844,7 @@ export class AuthResendCode extends Function<types.AuthSentCode> {
   phoneCodeHash: string;
 
   protected get [id]() {
-    return 0x3ef1a9bf;
+    return 0x3EF1A9BF;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -873,7 +873,7 @@ export class AuthCancelCode extends Function<boolean> {
   phoneCodeHash: string;
 
   protected get [id]() {
-    return 0x1f040578;
+    return 0x1F040578;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -901,7 +901,7 @@ export class AuthDropTempAuthKeys extends Function<boolean> {
   exceptAuthKeys: Array<bigint>;
 
   protected get [id]() {
-    return 0x8e48a188;
+    return 0x8E48A188;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -928,7 +928,7 @@ export class AuthExportLoginToken extends Function<types.AuthLoginToken> {
   exceptIds: Array<bigint>;
 
   protected get [id]() {
-    return 0xb7e085fe;
+    return 0xB7E085FE;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -959,7 +959,7 @@ export class AuthImportLoginToken extends Function<types.AuthLoginToken> {
   token: Uint8Array;
 
   protected get [id]() {
-    return 0x95ac5ce4;
+    return 0x95AC5CE4;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -984,7 +984,7 @@ export class AuthAcceptLoginToken extends Function<types.Authorization> {
   token: Uint8Array;
 
   protected get [id]() {
-    return 0xe894ad4d;
+    return 0xE894AD4D;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -1009,7 +1009,7 @@ export class AuthCheckRecoveryPassword extends Function<boolean> {
   code: string;
 
   protected get [id]() {
-    return 0x0d36bf79;
+    return 0x0D36BF79;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -1036,7 +1036,7 @@ export class AuthImportWebTokenAuthorization extends Function<types.AuthAuthoriz
   webAuthToken: string;
 
   protected get [id]() {
-    return 0x2db873a9;
+    return 0x2DB873A9;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -1070,7 +1070,7 @@ export class AuthRequestFirebaseSms extends Function<boolean> {
   iosPushSecret?: string;
 
   protected get [id]() {
-    return 0x89464b50;
+    return 0x89464B50;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -1111,7 +1111,7 @@ export class AccountRegisterDevice extends Function<boolean> {
   otherUids: Array<bigint>;
 
   protected get [id]() {
-    return 0xec86017a;
+    return 0xEC86017A;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -1155,7 +1155,7 @@ export class AccountUnregisterDevice extends Function<boolean> {
   otherUids: Array<bigint>;
 
   protected get [id]() {
-    return 0x6a0d3206;
+    return 0x6A0D3206;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -1187,7 +1187,7 @@ export class AccountUpdateNotifySettings extends Function<boolean> {
   settings: types.TypeInputPeerNotifySettings;
 
   protected get [id]() {
-    return 0x84be5b93;
+    return 0x84BE5B93;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -1215,7 +1215,7 @@ export class AccountGetNotifySettings extends Function<types.PeerNotifySettings>
   peer: types.TypeInputNotifyPeer;
 
   protected get [id]() {
-    return 0x12b3ad31;
+    return 0x12B3AD31;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -1238,7 +1238,7 @@ export class AccountGetNotifySettings extends Function<types.PeerNotifySettings>
 
 export class AccountResetNotifySettings extends Function<boolean> {
   protected get [id]() {
-    return 0xdb7e1747;
+    return 0xDB7E1747;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -1293,7 +1293,7 @@ export class AccountUpdateStatus extends Function<boolean> {
   offline: boolean;
 
   protected get [id]() {
-    return 0x6628562c;
+    return 0x6628562C;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -1318,7 +1318,7 @@ export class AccountGetWallPapers extends Function<types.AccountWallPapers> {
   hash: bigint;
 
   protected get [id]() {
-    return 0x07967d36;
+    return 0x07967D36;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -1345,7 +1345,7 @@ export class AccountReportPeer extends Function<boolean> {
   message: string;
 
   protected get [id]() {
-    return 0xc5ba3d86;
+    return 0xC5BA3D86;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -1376,7 +1376,7 @@ export class AccountCheckUsername extends Function<boolean> {
   username: string;
 
   protected get [id]() {
-    return 0x2714d86c;
+    return 0x2714D86C;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -1401,7 +1401,7 @@ export class AccountUpdateUsername extends Function<types.User> {
   username: string;
 
   protected get [id]() {
-    return 0x3e0bdd7c;
+    return 0x3E0BDD7C;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -1426,7 +1426,7 @@ export class AccountGetPrivacy extends Function<types.AccountPrivacyRules> {
   key: types.TypeInputPrivacyKey;
 
   protected get [id]() {
-    return 0xdadbc950;
+    return 0xDADBC950;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -1452,7 +1452,7 @@ export class AccountSetPrivacy extends Function<types.AccountPrivacyRules> {
   rules: Array<types.TypeInputPrivacyRule>;
 
   protected get [id]() {
-    return 0xc9f81ce8;
+    return 0xC9F81CE8;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -1481,7 +1481,7 @@ export class AccountDeleteAccount extends Function<boolean> {
   password?: types.TypeInputCheckPasswordSRP;
 
   protected get [id]() {
-    return 0xa2c0cf74;
+    return 0xA2C0CF74;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -1509,7 +1509,7 @@ export class AccountDeleteAccount extends Function<boolean> {
 
 export class AccountGetAccountTTL extends Function<types.AccountDaysTTL> {
   protected get [id]() {
-    return 0x08fc711d;
+    return 0x08FC711D;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -1529,7 +1529,7 @@ export class AccountSetAccountTTL extends Function<boolean> {
   ttl: types.TypeAccountDaysTTL;
 
   protected get [id]() {
-    return 0x2442485e;
+    return 0x2442485E;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -1555,7 +1555,7 @@ export class AccountSendChangePhoneCode extends Function<types.AuthSentCode> {
   settings: types.TypeCodeSettings;
 
   protected get [id]() {
-    return 0x82574ae5;
+    return 0x82574AE5;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -1585,7 +1585,7 @@ export class AccountChangePhone extends Function<types.User> {
   phoneCode: string;
 
   protected get [id]() {
-    return 0x70c32edb;
+    return 0x70C32EDB;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -1616,7 +1616,7 @@ export class AccountUpdateDeviceLocked extends Function<boolean> {
   period: number;
 
   protected get [id]() {
-    return 0x38df3532;
+    return 0x38DF3532;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -1639,7 +1639,7 @@ export class AccountUpdateDeviceLocked extends Function<boolean> {
 
 export class AccountGetAuthorizations extends Function<types.AccountAuthorizations> {
   protected get [id]() {
-    return 0xe320c158;
+    return 0xE320C158;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -1659,7 +1659,7 @@ export class AccountResetAuthorization extends Function<boolean> {
   hash: bigint;
 
   protected get [id]() {
-    return 0xdf77f3bc;
+    return 0xDF77F3BC;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -1682,7 +1682,7 @@ export class AccountResetAuthorization extends Function<boolean> {
 
 export class AccountGetPassword extends Function<types.AccountPassword> {
   protected get [id]() {
-    return 0x548a30f5;
+    return 0x548A30F5;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -1702,7 +1702,7 @@ export class AccountGetPasswordSettings extends Function<types.AccountPasswordSe
   password: types.TypeInputCheckPasswordSRP;
 
   protected get [id]() {
-    return 0x9cd4eaf9;
+    return 0x9CD4EAF9;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -1728,7 +1728,7 @@ export class AccountUpdatePasswordSettings extends Function<boolean> {
   newSettings: types.TypeAccountPasswordInputSettings;
 
   protected get [id]() {
-    return 0xa59b102f;
+    return 0xA59B102F;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -1757,7 +1757,7 @@ export class AccountSendConfirmPhoneCode extends Function<types.AuthSentCode> {
   settings: types.TypeCodeSettings;
 
   protected get [id]() {
-    return 0x1b3faa88;
+    return 0x1B3FAA88;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -1786,7 +1786,7 @@ export class AccountConfirmPhone extends Function<boolean> {
   phoneCode: string;
 
   protected get [id]() {
-    return 0x5f2178c3;
+    return 0x5F2178C3;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -1815,7 +1815,7 @@ export class AccountGetTmpPassword extends Function<types.AccountTmpPassword> {
   period: number;
 
   protected get [id]() {
-    return 0x449e0b51;
+    return 0x449E0B51;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -1841,7 +1841,7 @@ export class AccountGetTmpPassword extends Function<types.AccountTmpPassword> {
 
 export class AccountGetWebAuthorizations extends Function<types.AccountWebAuthorizations> {
   protected get [id]() {
-    return 0x182e6d6f;
+    return 0x182E6D6F;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -1861,7 +1861,7 @@ export class AccountResetWebAuthorization extends Function<boolean> {
   hash: bigint;
 
   protected get [id]() {
-    return 0x2d01b9ef;
+    return 0x2D01B9EF;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -1884,7 +1884,7 @@ export class AccountResetWebAuthorization extends Function<boolean> {
 
 export class AccountResetWebAuthorizations extends Function<boolean> {
   protected get [id]() {
-    return 0x682d2594;
+    return 0x682D2594;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -1902,7 +1902,7 @@ export class AccountResetWebAuthorizations extends Function<boolean> {
 
 export class AccountGetAllSecureValues extends Function<types.SecureValue[]> {
   protected get [id]() {
-    return 0xb288bc7d;
+    return 0xB288BC7D;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -1922,7 +1922,7 @@ export class AccountGetSecureValue extends Function<types.SecureValue[]> {
   types: Array<types.TypeSecureValueType>;
 
   protected get [id]() {
-    return 0x73665bc2;
+    return 0x73665BC2;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -1948,7 +1948,7 @@ export class AccountSaveSecureValue extends Function<types.SecureValue> {
   secureSecretId: bigint;
 
   protected get [id]() {
-    return 0x899fe31d;
+    return 0x899FE31D;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -1976,7 +1976,7 @@ export class AccountDeleteSecureValue extends Function<boolean> {
   types: Array<types.TypeSecureValueType>;
 
   protected get [id]() {
-    return 0xb880bc4b;
+    return 0xB880BC4B;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -2003,7 +2003,7 @@ export class AccountGetAuthorizationForm extends Function<types.AccountAuthoriza
   publicKey: string;
 
   protected get [id]() {
-    return 0xa929597a;
+    return 0xA929597A;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -2038,7 +2038,7 @@ export class AccountAcceptAuthorization extends Function<boolean> {
   credentials: types.TypeSecureCredentialsEncrypted;
 
   protected get [id]() {
-    return 0xf3ed4c73;
+    return 0xF3ED4C73;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -2076,7 +2076,7 @@ export class AccountSendVerifyPhoneCode extends Function<types.AuthSentCode> {
   settings: types.TypeCodeSettings;
 
   protected get [id]() {
-    return 0xa5a356f9;
+    return 0xA5A356F9;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -2106,7 +2106,7 @@ export class AccountVerifyPhone extends Function<boolean> {
   phoneCode: string;
 
   protected get [id]() {
-    return 0x4dd3a7f6;
+    return 0x4DD3A7F6;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -2138,7 +2138,7 @@ export class AccountSendVerifyEmailCode extends Function<types.AccountSentEmailC
   email: string;
 
   protected get [id]() {
-    return 0x98e037bb;
+    return 0x98E037BB;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -2167,7 +2167,7 @@ export class AccountVerifyEmail extends Function<types.AccountEmailVerified> {
   verification: types.TypeEmailVerification;
 
   protected get [id]() {
-    return 0x032da4cf;
+    return 0x032DA4CF;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -2201,7 +2201,7 @@ export class AccountInitTakeoutSession extends Function<types.AccountTakeout> {
   fileMaxSize?: bigint;
 
   protected get [id]() {
-    return 0x8ef3eab0;
+    return 0x8EF3EAB0;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -2246,7 +2246,7 @@ export class AccountFinishTakeoutSession extends Function<boolean> {
   success?: true;
 
   protected get [id]() {
-    return 0x1d2652ee;
+    return 0x1D2652EE;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -2273,7 +2273,7 @@ export class AccountConfirmPasswordEmail extends Function<boolean> {
   code: string;
 
   protected get [id]() {
-    return 0x8fdf1920;
+    return 0x8FDF1920;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -2296,7 +2296,7 @@ export class AccountConfirmPasswordEmail extends Function<boolean> {
 
 export class AccountResendPasswordEmail extends Function<boolean> {
   protected get [id]() {
-    return 0x7a7f2a15;
+    return 0x7A7F2A15;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -2314,7 +2314,7 @@ export class AccountResendPasswordEmail extends Function<boolean> {
 
 export class AccountCancelPasswordEmail extends Function<boolean> {
   protected get [id]() {
-    return 0xc1cbd5b6;
+    return 0xC1CBD5B6;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -2332,7 +2332,7 @@ export class AccountCancelPasswordEmail extends Function<boolean> {
 
 export class AccountGetContactSignUpNotification extends Function<boolean> {
   protected get [id]() {
-    return 0x9f07c728;
+    return 0x9F07C728;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -2352,7 +2352,7 @@ export class AccountSetContactSignUpNotification extends Function<boolean> {
   silent: boolean;
 
   protected get [id]() {
-    return 0xcff43f61;
+    return 0xCFF43F61;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -2408,7 +2408,7 @@ export class AccountGetWallPaper extends Function<types.WallPaper> {
   wallpaper: types.TypeInputWallPaper;
 
   protected get [id]() {
-    return 0xfc8ddbea;
+    return 0xFC8DDBEA;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -2435,7 +2435,7 @@ export class AccountUploadWallPaper extends Function<types.WallPaper> {
   settings: types.TypeWallPaperSettings;
 
   protected get [id]() {
-    return 0xdd853661;
+    return 0xDD853661;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -2468,7 +2468,7 @@ export class AccountSaveWallPaper extends Function<boolean> {
   settings: types.TypeWallPaperSettings;
 
   protected get [id]() {
-    return 0x6c5a5b37;
+    return 0x6C5A5B37;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -2500,7 +2500,7 @@ export class AccountInstallWallPaper extends Function<boolean> {
   settings: types.TypeWallPaperSettings;
 
   protected get [id]() {
-    return 0xfeed5769;
+    return 0xFEED5769;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -2526,7 +2526,7 @@ export class AccountInstallWallPaper extends Function<boolean> {
 
 export class AccountResetWallPapers extends Function<boolean> {
   protected get [id]() {
-    return 0xbb3b9804;
+    return 0xBB3B9804;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -2544,7 +2544,7 @@ export class AccountResetWallPapers extends Function<boolean> {
 
 export class AccountGetAutoDownloadSettings extends Function<types.AccountAutoDownloadSettings> {
   protected get [id]() {
-    return 0x56da0b3f;
+    return 0x56DA0B3F;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -2566,7 +2566,7 @@ export class AccountSaveAutoDownloadSettings extends Function<boolean> {
   settings: types.TypeAutoDownloadSettings;
 
   protected get [id]() {
-    return 0x76f36233;
+    return 0x76F36233;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -2602,7 +2602,7 @@ export class AccountUploadTheme extends Function<types.Document> {
   mimeType: string;
 
   protected get [id]() {
-    return 0x1c3db333;
+    return 0x1C3DB333;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -2641,7 +2641,7 @@ export class AccountCreateTheme extends Function<types.Theme> {
   settings?: Array<types.TypeInputThemeSettings>;
 
   protected get [id]() {
-    return 0x652e4400;
+    return 0x652E4400;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -2682,7 +2682,7 @@ export class AccountUpdateTheme extends Function<types.Theme> {
   settings?: Array<types.TypeInputThemeSettings>;
 
   protected get [id]() {
-    return 0x2bf40ccc;
+    return 0x2BF40CCC;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -2725,7 +2725,7 @@ export class AccountSaveTheme extends Function<boolean> {
   unsave: boolean;
 
   protected get [id]() {
-    return 0xf257106c;
+    return 0xF257106C;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -2756,7 +2756,7 @@ export class AccountInstallTheme extends Function<boolean> {
   baseTheme?: types.TypeBaseTheme;
 
   protected get [id]() {
-    return 0xc727bb3b;
+    return 0xC727BB3B;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -2793,7 +2793,7 @@ export class AccountGetTheme extends Function<types.Theme> {
   theme: types.TypeInputTheme;
 
   protected get [id]() {
-    return 0x3a5869ec;
+    return 0x3A5869EC;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -2822,7 +2822,7 @@ export class AccountGetThemes extends Function<types.AccountThemes> {
   hash: bigint;
 
   protected get [id]() {
-    return 0x7206e458;
+    return 0x7206E458;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -2850,7 +2850,7 @@ export class AccountSetContentSettings extends Function<boolean> {
   sensitiveEnabled?: true;
 
   protected get [id]() {
-    return 0xb574b16b;
+    return 0xB574B16B;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -2875,7 +2875,7 @@ export class AccountSetContentSettings extends Function<boolean> {
 
 export class AccountGetContentSettings extends Function<types.AccountContentSettings> {
   protected get [id]() {
-    return 0x8b9b4dae;
+    return 0x8B9B4DAE;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -2895,7 +2895,7 @@ export class AccountGetMultiWallPapers extends Function<types.WallPaper[]> {
   wallpapers: Array<types.TypeInputWallPaper>;
 
   protected get [id]() {
-    return 0x65ad71dc;
+    return 0x65AD71DC;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -2918,7 +2918,7 @@ export class AccountGetMultiWallPapers extends Function<types.WallPaper[]> {
 
 export class AccountGetGlobalPrivacySettings extends Function<types.GlobalPrivacySettings> {
   protected get [id]() {
-    return 0xeb2b4cf6;
+    return 0xEB2B4CF6;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -2938,7 +2938,7 @@ export class AccountSetGlobalPrivacySettings extends Function<types.GlobalPrivac
   settings: types.TypeGlobalPrivacySettings;
 
   protected get [id]() {
-    return 0x1edaaac2;
+    return 0x1EDAAAC2;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -2966,7 +2966,7 @@ export class AccountReportProfilePhoto extends Function<boolean> {
   message: string;
 
   protected get [id]() {
-    return 0xfa8cc6f5;
+    return 0xFA8CC6F5;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -2998,7 +2998,7 @@ export class AccountReportProfilePhoto extends Function<boolean> {
 
 export class AccountResetPassword extends Function<types.TypeAccountResetPasswordResult> {
   protected get [id]() {
-    return 0x9308ce1b;
+    return 0x9308CE1B;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -3016,7 +3016,7 @@ export class AccountResetPassword extends Function<types.TypeAccountResetPasswor
 
 export class AccountDeclinePasswordReset extends Function<boolean> {
   protected get [id]() {
-    return 0x4c9409f6;
+    return 0x4C9409F6;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -3036,7 +3036,7 @@ export class AccountGetChatThemes extends Function<types.AccountThemes> {
   hash: bigint;
 
   protected get [id]() {
-    return 0xd638de89;
+    return 0xD638DE89;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -3061,7 +3061,7 @@ export class AccountSetAuthorizationTTL extends Function<boolean> {
   authorizationTtlDays: number;
 
   protected get [id]() {
-    return 0xbf899aa0;
+    return 0xBF899AA0;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -3088,7 +3088,7 @@ export class AccountChangeAuthorizationSettings extends Function<boolean> {
   callRequestsDisabled?: boolean;
 
   protected get [id]() {
-    return 0x40f48462;
+    return 0x40F48462;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -3121,7 +3121,7 @@ export class AccountGetSavedRingtones extends Function<types.AccountSavedRington
   hash: bigint;
 
   protected get [id]() {
-    return 0xe1902288;
+    return 0xE1902288;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -3147,7 +3147,7 @@ export class AccountSaveRingtone extends Function<types.AccountSavedRingtone> {
   unsave: boolean;
 
   protected get [id]() {
-    return 0x3dea5b03;
+    return 0x3DEA5B03;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -3177,7 +3177,7 @@ export class AccountUploadRingtone extends Function<types.Document> {
   mimeType: string;
 
   protected get [id]() {
-    return 0x831a83a2;
+    return 0x831A83A2;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -3208,7 +3208,7 @@ export class AccountUpdateEmojiStatus extends Function<boolean> {
   emojiStatus: types.TypeEmojiStatus;
 
   protected get [id]() {
-    return 0xfbd3de6b;
+    return 0xFBD3DE6B;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -3233,7 +3233,7 @@ export class AccountGetDefaultEmojiStatuses extends Function<types.AccountEmojiS
   hash: bigint;
 
   protected get [id]() {
-    return 0xd6753386;
+    return 0xD6753386;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -3258,7 +3258,7 @@ export class AccountGetRecentEmojiStatuses extends Function<types.AccountEmojiSt
   hash: bigint;
 
   protected get [id]() {
-    return 0x0f578105;
+    return 0x0F578105;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -3281,7 +3281,7 @@ export class AccountGetRecentEmojiStatuses extends Function<types.AccountEmojiSt
 
 export class AccountClearRecentEmojiStatuses extends Function<boolean> {
   protected get [id]() {
-    return 0x18201aae;
+    return 0x18201AAE;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -3301,7 +3301,7 @@ export class AccountReorderUsernames extends Function<boolean> {
   order: Array<string>;
 
   protected get [id]() {
-    return 0xef500eab;
+    return 0xEF500EAB;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -3327,7 +3327,7 @@ export class AccountToggleUsername extends Function<boolean> {
   active: boolean;
 
   protected get [id]() {
-    return 0x58d6b376;
+    return 0x58D6B376;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -3355,7 +3355,7 @@ export class AccountGetDefaultProfilePhotoEmojis extends Function<types.EmojiLis
   hash: bigint;
 
   protected get [id]() {
-    return 0xe2750328;
+    return 0xE2750328;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -3380,7 +3380,7 @@ export class AccountGetDefaultGroupPhotoEmojis extends Function<types.EmojiList>
   hash: bigint;
 
   protected get [id]() {
-    return 0x915860ae;
+    return 0x915860AE;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -3403,7 +3403,7 @@ export class AccountGetDefaultGroupPhotoEmojis extends Function<types.EmojiList>
 
 export class AccountGetAutoSaveSettings extends Function<types.AccountAutoSaveSettings> {
   protected get [id]() {
-    return 0xadcbbcda;
+    return 0xADCBBCDA;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -3427,7 +3427,7 @@ export class AccountSaveAutoSaveSettings extends Function<boolean> {
   settings: types.TypeAutoSaveSettings;
 
   protected get [id]() {
-    return 0xd69b8361;
+    return 0xD69B8361;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -3464,7 +3464,7 @@ export class AccountSaveAutoSaveSettings extends Function<boolean> {
 
 export class AccountDeleteAutoSaveExceptions extends Function<boolean> {
   protected get [id]() {
-    return 0x53bc0020;
+    return 0x53BC0020;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -3484,7 +3484,7 @@ export class UsersGetUsers extends Function<types.User[]> {
   id: Array<types.TypeInputUser>;
 
   protected get [id]() {
-    return 0x0d91a548;
+    return 0x0D91A548;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -3509,7 +3509,7 @@ export class UsersGetFullUser extends Function<types.UsersUserFull> {
   id: types.TypeInputUser;
 
   protected get [id]() {
-    return 0xb60f5918;
+    return 0xB60F5918;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -3535,7 +3535,7 @@ export class UsersSetSecureValueErrors extends Function<boolean> {
   errors: Array<types.TypeSecureValueError>;
 
   protected get [id]() {
-    return 0x90c894b5;
+    return 0x90C894B5;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -3563,7 +3563,7 @@ export class ContactsGetContactIDs extends Function<number[]> {
   hash: bigint;
 
   protected get [id]() {
-    return 0x7adc669d;
+    return 0x7ADC669D;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -3586,7 +3586,7 @@ export class ContactsGetContactIDs extends Function<number[]> {
 
 export class ContactsGetStatuses extends Function<types.ContactStatus[]> {
   protected get [id]() {
-    return 0xc4a353ee;
+    return 0xC4A353EE;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -3606,7 +3606,7 @@ export class ContactsGetContacts extends Function<types.ContactsContacts> {
   hash: bigint;
 
   protected get [id]() {
-    return 0x5dd69e12;
+    return 0x5DD69E12;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -3631,7 +3631,7 @@ export class ContactsImportContacts extends Function<types.ContactsImportedConta
   contacts: Array<types.TypeInputContact>;
 
   protected get [id]() {
-    return 0x2c800be5;
+    return 0x2C800BE5;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -3656,7 +3656,7 @@ export class ContactsDeleteContacts extends Function<types.Updates> {
   id: Array<types.TypeInputUser>;
 
   protected get [id]() {
-    return 0x096a0e00;
+    return 0x096A0E00;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -3681,7 +3681,7 @@ export class ContactsDeleteByPhones extends Function<boolean> {
   phones: Array<string>;
 
   protected get [id]() {
-    return 0x1013fd9e;
+    return 0x1013FD9E;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -3706,7 +3706,7 @@ export class ContactsBlock extends Function<boolean> {
   id: types.TypeInputPeer;
 
   protected get [id]() {
-    return 0x68cc1411;
+    return 0x68CC1411;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -3731,7 +3731,7 @@ export class ContactsUnblock extends Function<boolean> {
   id: types.TypeInputPeer;
 
   protected get [id]() {
-    return 0xbea65d50;
+    return 0xBEA65D50;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -3757,7 +3757,7 @@ export class ContactsGetBlocked extends Function<types.ContactsBlocked> {
   limit: number;
 
   protected get [id]() {
-    return 0xf57c350f;
+    return 0xF57C350F;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -3786,7 +3786,7 @@ export class ContactsSearch extends Function<types.ContactsFound> {
   limit: number;
 
   protected get [id]() {
-    return 0x11f812d8;
+    return 0x11F812D8;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -3814,7 +3814,7 @@ export class ContactsResolveUsername extends Function<types.ContactsResolvedPeer
   username: string;
 
   protected get [id]() {
-    return 0xf93ccba3;
+    return 0xF93CCBA3;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -3849,7 +3849,7 @@ export class ContactsGetTopPeers extends Function<types.ContactsTopPeers> {
   hash: bigint;
 
   protected get [id]() {
-    return 0x973478b6;
+    return 0x973478B6;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -3907,7 +3907,7 @@ export class ContactsResetTopPeerRating extends Function<boolean> {
   peer: types.TypeInputPeer;
 
   protected get [id]() {
-    return 0x1ae373ac;
+    return 0x1AE373AC;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -3933,7 +3933,7 @@ export class ContactsResetTopPeerRating extends Function<boolean> {
 
 export class ContactsResetSaved extends Function<boolean> {
   protected get [id]() {
-    return 0x879537f1;
+    return 0x879537F1;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -3951,7 +3951,7 @@ export class ContactsResetSaved extends Function<boolean> {
 
 export class ContactsGetSaved extends Function<types.TypeSavedContact[]> {
   protected get [id]() {
-    return 0x82f1e39f;
+    return 0x82F1E39F;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -3971,7 +3971,7 @@ export class ContactsToggleTopPeers extends Function<boolean> {
   enabled: boolean;
 
   protected get [id]() {
-    return 0x8514bdda;
+    return 0x8514BDDA;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -4000,7 +4000,7 @@ export class ContactsAddContact extends Function<types.Updates> {
   phone: string;
 
   protected get [id]() {
-    return 0xe8f463d0;
+    return 0xE8F463D0;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -4039,7 +4039,7 @@ export class ContactsAcceptContact extends Function<types.Updates> {
   id: types.TypeInputUser;
 
   protected get [id]() {
-    return 0xf831a20f;
+    return 0xF831A20F;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -4066,7 +4066,7 @@ export class ContactsGetLocated extends Function<types.Updates> {
   selfExpires?: number;
 
   protected get [id]() {
-    return 0xd348bc44;
+    return 0xD348BC44;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -4102,7 +4102,7 @@ export class ContactsBlockFromReplies extends Function<types.Updates> {
   msgId: number;
 
   protected get [id]() {
-    return 0x29a8962c;
+    return 0x29A8962C;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -4138,7 +4138,7 @@ export class ContactsResolvePhone extends Function<types.ContactsResolvedPeer> {
   phone: string;
 
   protected get [id]() {
-    return 0x8af94344;
+    return 0x8AF94344;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -4161,7 +4161,7 @@ export class ContactsResolvePhone extends Function<types.ContactsResolvedPeer> {
 
 export class ContactsExportContactToken extends Function<types.ExportedContactToken> {
   protected get [id]() {
-    return 0xf8654027;
+    return 0xF8654027;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -4206,7 +4206,7 @@ export class MessagesGetMessages extends Function<types.MessagesMessages> {
   id: Array<types.TypeInputMessage>;
 
   protected get [id]() {
-    return 0x63c66506;
+    return 0x63C66506;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -4237,7 +4237,7 @@ export class MessagesGetDialogs extends Function<types.MessagesDialogs> {
   hash: bigint;
 
   protected get [id]() {
-    return 0xa0f4cb4f;
+    return 0xA0F4CB4F;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -4289,7 +4289,7 @@ export class MessagesGetHistory extends Function<types.MessagesMessages> {
   hash: bigint;
 
   protected get [id]() {
-    return 0x4423e6c5;
+    return 0x4423E6C5;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -4347,7 +4347,7 @@ export class MessagesSearch extends Function<types.MessagesMessages> {
   hash: bigint;
 
   protected get [id]() {
-    return 0xa0fda762;
+    return 0xA0FDA762;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -4411,7 +4411,7 @@ export class MessagesReadHistory extends Function<types.MessagesAffectedMessages
   maxId: number;
 
   protected get [id]() {
-    return 0x0e306d3a;
+    return 0x0E306D3A;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -4444,7 +4444,7 @@ export class MessagesDeleteHistory extends Function<types.MessagesAffectedHistor
   maxDate?: number;
 
   protected get [id]() {
-    return 0xb08f922a;
+    return 0xB08F922A;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -4487,7 +4487,7 @@ export class MessagesDeleteMessages extends Function<types.MessagesAffectedMessa
   id: Array<number>;
 
   protected get [id]() {
-    return 0xe58e95d2;
+    return 0xE58E95D2;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -4517,7 +4517,7 @@ export class MessagesReceivedMessages extends Function<types.ReceivedNotifyMessa
   maxId: number;
 
   protected get [id]() {
-    return 0x05a954c0;
+    return 0x05A954C0;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -4544,7 +4544,7 @@ export class MessagesSetTyping extends Function<boolean> {
   action: types.TypeSendMessageAction;
 
   protected get [id]() {
-    return 0x58943ee2;
+    return 0x58943EE2;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -4591,7 +4591,7 @@ export class MessagesSendMessage extends Function<types.Updates> {
   sendAs?: types.TypeInputPeer;
 
   protected get [id]() {
-    return 0x1cc20387;
+    return 0x1CC20387;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -4674,7 +4674,7 @@ export class MessagesSendMedia extends Function<types.Updates> {
   sendAs?: types.TypeInputPeer;
 
   protected get [id]() {
-    return 0x7547c966;
+    return 0x7547C966;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -4755,7 +4755,7 @@ export class MessagesForwardMessages extends Function<types.Updates> {
   sendAs?: types.TypeInputPeer;
 
   protected get [id]() {
-    return 0xc661bbc4;
+    return 0xC661BBC4;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -4818,7 +4818,7 @@ export class MessagesReportSpam extends Function<boolean> {
   peer: types.TypeInputPeer;
 
   protected get [id]() {
-    return 0xcf1592db;
+    return 0xCF1592DB;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -4843,7 +4843,7 @@ export class MessagesGetPeerSettings extends Function<types.MessagesPeerSettings
   peer: types.TypeInputPeer;
 
   protected get [id]() {
-    return 0xefd9a6a2;
+    return 0xEFD9A6A2;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -4871,7 +4871,7 @@ export class MessagesReport extends Function<boolean> {
   message: string;
 
   protected get [id]() {
-    return 0x8953ab4e;
+    return 0x8953AB4E;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -4905,7 +4905,7 @@ export class MessagesGetChats extends Function<types.MessagesChats> {
   id: Array<bigint>;
 
   protected get [id]() {
-    return 0x49e9528f;
+    return 0x49E9528F;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -4930,7 +4930,7 @@ export class MessagesGetFullChat extends Function<types.MessagesChatFull> {
   chatId: bigint;
 
   protected get [id]() {
-    return 0xaeb00b34;
+    return 0xAEB00B34;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -4956,7 +4956,7 @@ export class MessagesEditChatTitle extends Function<types.Updates> {
   title: string;
 
   protected get [id]() {
-    return 0x73783ffd;
+    return 0x73783FFD;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -4985,7 +4985,7 @@ export class MessagesEditChatPhoto extends Function<types.Updates> {
   photo: types.TypeInputChatPhoto;
 
   protected get [id]() {
-    return 0x35ddd674;
+    return 0x35DDD674;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -5015,7 +5015,7 @@ export class MessagesAddChatUser extends Function<types.Updates> {
   fwdLimit: number;
 
   protected get [id]() {
-    return 0xf24753e3;
+    return 0xF24753E3;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -5048,7 +5048,7 @@ export class MessagesDeleteChatUser extends Function<types.Updates> {
   userId: types.TypeInputUser;
 
   protected get [id]() {
-    return 0xa2185cab;
+    return 0xA2185CAB;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -5083,7 +5083,7 @@ export class MessagesCreateChat extends Function<types.Updates> {
   ttlPeriod?: number;
 
   protected get [id]() {
-    return 0x0034a818;
+    return 0x0034A818;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -5117,7 +5117,7 @@ export class MessagesGetDhConfig extends Function<types.MessagesDhConfig> {
   randomLength: number;
 
   protected get [id]() {
-    return 0x26cf8950;
+    return 0x26CF8950;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -5147,7 +5147,7 @@ export class MessagesRequestEncryption extends Function<types.EncryptedChat> {
   gA: Uint8Array;
 
   protected get [id]() {
-    return 0xf64daf43;
+    return 0xF64DAF43;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -5180,7 +5180,7 @@ export class MessagesAcceptEncryption extends Function<types.EncryptedChat> {
   keyFingerprint: bigint;
 
   protected get [id]() {
-    return 0x3dbc0415;
+    return 0x3DBC0415;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -5212,7 +5212,7 @@ export class MessagesDiscardEncryption extends Function<boolean> {
   chatId: number;
 
   protected get [id]() {
-    return 0xf393aea0;
+    return 0xF393AEA0;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -5243,7 +5243,7 @@ export class MessagesSetEncryptedTyping extends Function<boolean> {
   typing: boolean;
 
   protected get [id]() {
-    return 0x791451ed;
+    return 0x791451ED;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -5272,7 +5272,7 @@ export class MessagesReadEncryptedHistory extends Function<boolean> {
   maxDate: number;
 
   protected get [id]() {
-    return 0x7f4b690a;
+    return 0x7F4B690A;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -5303,7 +5303,7 @@ export class MessagesSendEncrypted extends Function<types.MessagesSentEncryptedM
   data: Uint8Array;
 
   protected get [id]() {
-    return 0x44fa7a15;
+    return 0x44FA7A15;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -5343,7 +5343,7 @@ export class MessagesSendEncryptedFile extends Function<types.MessagesSentEncryp
   file: types.TypeInputEncryptedFile;
 
   protected get [id]() {
-    return 0x5559481d;
+    return 0x5559481D;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -5384,7 +5384,7 @@ export class MessagesSendEncryptedService extends Function<types.MessagesSentEnc
   data: Uint8Array;
 
   protected get [id]() {
-    return 0x32d439a4;
+    return 0x32D439A4;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -5415,7 +5415,7 @@ export class MessagesReceivedQueue extends Function<bigint[]> {
   maxQts: number;
 
   protected get [id]() {
-    return 0x55a5bb66;
+    return 0x55A5BB66;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -5440,7 +5440,7 @@ export class MessagesReportEncryptedSpam extends Function<boolean> {
   peer: types.TypeInputEncryptedChat;
 
   protected get [id]() {
-    return 0x4b0c8c0f;
+    return 0x4B0C8C0F;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -5465,7 +5465,7 @@ export class MessagesReadMessageContents extends Function<types.MessagesAffected
   id: Array<number>;
 
   protected get [id]() {
-    return 0x36a73f77;
+    return 0x36A73F77;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -5491,7 +5491,7 @@ export class MessagesGetStickers extends Function<types.MessagesStickers> {
   hash: bigint;
 
   protected get [id]() {
-    return 0xd5a5d3a1;
+    return 0xD5A5D3A1;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -5519,7 +5519,7 @@ export class MessagesGetAllStickers extends Function<types.MessagesAllStickers> 
   hash: bigint;
 
   protected get [id]() {
-    return 0xb8a0a1a8;
+    return 0xB8A0A1A8;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -5545,7 +5545,7 @@ export class MessagesGetWebPagePreview extends Function<types.TypeMessageMedia> 
   entities?: Array<types.TypeMessageEntity>;
 
   protected get [id]() {
-    return 0x8b68b0cc;
+    return 0x8B68B0CC;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -5580,7 +5580,7 @@ export class MessagesExportChatInvite extends Function<types.TypeExportedChatInv
   title?: string;
 
   protected get [id]() {
-    return 0xa02ce5d5;
+    return 0xA02CE5D5;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -5622,7 +5622,7 @@ export class MessagesCheckChatInvite extends Function<types.ChatInvite> {
   hash: string;
 
   protected get [id]() {
-    return 0x3eadb1bb;
+    return 0x3EADB1BB;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -5647,7 +5647,7 @@ export class MessagesImportChatInvite extends Function<types.Updates> {
   hash: string;
 
   protected get [id]() {
-    return 0x6c50051c;
+    return 0x6C50051C;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -5673,7 +5673,7 @@ export class MessagesGetStickerSet extends Function<types.MessagesStickerSet> {
   hash: number;
 
   protected get [id]() {
-    return 0xc8a0ec74;
+    return 0xC8A0EC74;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -5702,7 +5702,7 @@ export class MessagesInstallStickerSet extends Function<types.TypeMessagesSticke
   archived: boolean;
 
   protected get [id]() {
-    return 0xc78fe460;
+    return 0xC78FE460;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -5730,7 +5730,7 @@ export class MessagesUninstallStickerSet extends Function<boolean> {
   stickerset: types.TypeInputStickerSet;
 
   protected get [id]() {
-    return 0xf96e55de;
+    return 0xF96E55DE;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -5758,7 +5758,7 @@ export class MessagesStartBot extends Function<types.Updates> {
   startParam: string;
 
   protected get [id]() {
-    return 0xe6df7378;
+    return 0xE6DF7378;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -5794,7 +5794,7 @@ export class MessagesGetMessagesViews extends Function<types.MessagesMessageView
   increment: boolean;
 
   protected get [id]() {
-    return 0x5784d3e1;
+    return 0x5784D3E1;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -5827,7 +5827,7 @@ export class MessagesEditChatAdmin extends Function<boolean> {
   isAdmin: boolean;
 
   protected get [id]() {
-    return 0xa85bd1c2;
+    return 0xA85BD1C2;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -5858,7 +5858,7 @@ export class MessagesMigrateChat extends Function<types.Updates> {
   chatId: bigint;
 
   protected get [id]() {
-    return 0xa2875319;
+    return 0xA2875319;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -5891,7 +5891,7 @@ export class MessagesSearchGlobal extends Function<types.MessagesMessages> {
   limit: number;
 
   protected get [id]() {
-    return 0x4bc6589a;
+    return 0x4BC6589A;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -5979,7 +5979,7 @@ export class MessagesGetDocumentByHash extends Function<types.Document> {
   mimeType: string;
 
   protected get [id]() {
-    return 0xb1f2061f;
+    return 0xB1F2061F;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -6010,7 +6010,7 @@ export class MessagesGetSavedGifs extends Function<types.MessagesSavedGifs> {
   hash: bigint;
 
   protected get [id]() {
-    return 0x5cf09635;
+    return 0x5CF09635;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -6036,7 +6036,7 @@ export class MessagesSaveGif extends Function<boolean> {
   unsave: boolean;
 
   protected get [id]() {
-    return 0x327a30cb;
+    return 0x327A30CB;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -6068,7 +6068,7 @@ export class MessagesGetInlineBotResults extends Function<types.MessagesBotResul
   offset: string;
 
   protected get [id]() {
-    return 0x514e999d;
+    return 0x514E999D;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -6114,7 +6114,7 @@ export class MessagesSetInlineBotResults extends Function<boolean> {
   switchWebview?: types.TypeInlineBotWebView;
 
   protected get [id]() {
-    return 0xbb12a419;
+    return 0xBB12A419;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -6173,7 +6173,7 @@ export class MessagesSendInlineBotResult extends Function<types.Updates> {
   sendAs?: types.TypeInputPeer;
 
   protected get [id]() {
-    return 0xd3fbdccb;
+    return 0xD3FBDCCB;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -6234,7 +6234,7 @@ export class MessagesGetMessageEditData extends Function<types.MessagesMessageEd
   id: number;
 
   protected get [id]() {
-    return 0xfda68d36;
+    return 0xFDA68D36;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -6269,7 +6269,7 @@ export class MessagesEditMessage extends Function<types.Updates> {
   scheduleDate?: number;
 
   protected get [id]() {
-    return 0x48f71778;
+    return 0x48F71778;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -6322,7 +6322,7 @@ export class MessagesEditInlineBotMessage extends Function<boolean> {
   entities?: Array<types.TypeMessageEntity>;
 
   protected get [id]() {
-    return 0x83557dba;
+    return 0x83557DBA;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -6368,7 +6368,7 @@ export class MessagesGetBotCallbackAnswer extends Function<types.MessagesBotCall
   password?: types.TypeInputCheckPasswordSRP;
 
   protected get [id]() {
-    return 0x9342ca07;
+    return 0x9342CA07;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -6411,7 +6411,7 @@ export class MessagesSetBotCallbackAnswer extends Function<boolean> {
   cacheTime: number;
 
   protected get [id]() {
-    return 0xd58f130a;
+    return 0xD58F130A;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -6450,7 +6450,7 @@ export class MessagesGetPeerDialogs extends Function<types.MessagesPeerDialogs> 
   peers: Array<types.TypeInputDialogPeer>;
 
   protected get [id]() {
-    return 0xe470bcfd;
+    return 0xE470BCFD;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -6480,7 +6480,7 @@ export class MessagesSaveDraft extends Function<boolean> {
   entities?: Array<types.TypeMessageEntity>;
 
   protected get [id]() {
-    return 0xb4331e3f;
+    return 0xB4331E3F;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -6520,7 +6520,7 @@ export class MessagesSaveDraft extends Function<boolean> {
 
 export class MessagesGetAllDrafts extends Function<types.Updates> {
   protected get [id]() {
-    return 0x6a3f8d65;
+    return 0x6A3F8D65;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -6540,7 +6540,7 @@ export class MessagesGetFeaturedStickers extends Function<types.MessagesFeatured
   hash: bigint;
 
   protected get [id]() {
-    return 0x64780b14;
+    return 0x64780B14;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -6565,7 +6565,7 @@ export class MessagesReadFeaturedStickers extends Function<boolean> {
   id: Array<bigint>;
 
   protected get [id]() {
-    return 0x5b118126;
+    return 0x5B118126;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -6591,7 +6591,7 @@ export class MessagesGetRecentStickers extends Function<types.MessagesRecentStic
   hash: bigint;
 
   protected get [id]() {
-    return 0x9da9403b;
+    return 0x9DA9403B;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -6623,7 +6623,7 @@ export class MessagesSaveRecentSticker extends Function<boolean> {
   unsave: boolean;
 
   protected get [id]() {
-    return 0x392718f8;
+    return 0x392718F8;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -6656,7 +6656,7 @@ export class MessagesClearRecentStickers extends Function<boolean> {
   attached?: true;
 
   protected get [id]() {
-    return 0x8999602d;
+    return 0x8999602D;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -6686,7 +6686,7 @@ export class MessagesGetArchivedStickers extends Function<types.MessagesArchived
   limit: number;
 
   protected get [id]() {
-    return 0x57f17692;
+    return 0x57F17692;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -6722,7 +6722,7 @@ export class MessagesGetMaskStickers extends Function<types.MessagesAllStickers>
   hash: bigint;
 
   protected get [id]() {
-    return 0x640f82b8;
+    return 0x640F82B8;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -6747,7 +6747,7 @@ export class MessagesGetAttachedStickers extends Function<types.StickerSetCovere
   media: types.TypeInputStickeredMedia;
 
   protected get [id]() {
-    return 0xcc5b67cc;
+    return 0xCC5B67CC;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -6777,7 +6777,7 @@ export class MessagesSetGameScore extends Function<types.Updates> {
   score: number;
 
   protected get [id]() {
-    return 0x8ef8ecc0;
+    return 0x8EF8ECC0;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -6823,7 +6823,7 @@ export class MessagesSetInlineGameScore extends Function<boolean> {
   score: number;
 
   protected get [id]() {
-    return 0x15ad9f64;
+    return 0x15AD9F64;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -6864,7 +6864,7 @@ export class MessagesGetGameHighScores extends Function<types.MessagesHighScores
   userId: types.TypeInputUser;
 
   protected get [id]() {
-    return 0xe822649d;
+    return 0xE822649D;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -6896,7 +6896,7 @@ export class MessagesGetInlineGameHighScores extends Function<types.MessagesHigh
   userId: types.TypeInputUser;
 
   protected get [id]() {
-    return 0x0f635e1b;
+    return 0x0F635E1B;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -6926,7 +6926,7 @@ export class MessagesGetCommonChats extends Function<types.MessagesChats> {
   limit: number;
 
   protected get [id]() {
-    return 0xe40ca104;
+    return 0xE40CA104;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -6957,7 +6957,7 @@ export class MessagesGetAllChats extends Function<types.MessagesChats> {
   exceptIds: Array<bigint>;
 
   protected get [id]() {
-    return 0x875f74be;
+    return 0x875F74BE;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -6983,7 +6983,7 @@ export class MessagesGetWebPage extends Function<types.WebPage> {
   hash: number;
 
   protected get [id]() {
-    return 0x32ca8f91;
+    return 0x32CA8F91;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -7012,7 +7012,7 @@ export class MessagesToggleDialogPin extends Function<boolean> {
   peer: types.TypeInputDialogPeer;
 
   protected get [id]() {
-    return 0xa731e257;
+    return 0xA731E257;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -7044,7 +7044,7 @@ export class MessagesReorderPinnedDialogs extends Function<boolean> {
   order: Array<types.TypeInputDialogPeer>;
 
   protected get [id]() {
-    return 0x3b1adf37;
+    return 0x3B1ADF37;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -7077,7 +7077,7 @@ export class MessagesGetPinnedDialogs extends Function<types.MessagesPeerDialogs
   folderId: number;
 
   protected get [id]() {
-    return 0xd6b94df2;
+    return 0xD6B94DF2;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -7104,7 +7104,7 @@ export class MessagesSetBotShippingResults extends Function<boolean> {
   shippingOptions?: Array<types.TypeShippingOption>;
 
   protected get [id]() {
-    return 0xe5f672fa;
+    return 0xE5F672FA;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -7139,7 +7139,7 @@ export class MessagesSetBotPrecheckoutResults extends Function<boolean> {
   error?: string;
 
   protected get [id]() {
-    return 0x09c2dd95;
+    return 0x09C2DD95;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -7173,7 +7173,7 @@ export class MessagesUploadMedia extends Function<types.TypeMessageMedia> {
   media: types.TypeInputMedia;
 
   protected get [id]() {
-    return 0x519bc2b1;
+    return 0x519BC2B1;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -7203,7 +7203,7 @@ export class MessagesSendScreenshotNotification extends Function<types.Updates> 
   randomId: bigint;
 
   protected get [id]() {
-    return 0xc97df020;
+    return 0xC97DF020;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -7234,7 +7234,7 @@ export class MessagesGetFavedStickers extends Function<types.MessagesFavedSticke
   hash: bigint;
 
   protected get [id]() {
-    return 0x04f1aaa9;
+    return 0x04F1AAA9;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -7260,7 +7260,7 @@ export class MessagesFaveSticker extends Function<boolean> {
   unfave: boolean;
 
   protected get [id]() {
-    return 0xb9ffc55b;
+    return 0xB9FFC55B;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -7294,7 +7294,7 @@ export class MessagesGetUnreadMentions extends Function<types.MessagesMessages> 
   minId: number;
 
   protected get [id]() {
-    return 0xf107e790;
+    return 0xF107E790;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -7340,7 +7340,7 @@ export class MessagesReadMentions extends Function<types.MessagesAffectedHistory
   topMsgId?: number;
 
   protected get [id]() {
-    return 0x36e5bf4d;
+    return 0x36E5BF4D;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -7372,7 +7372,7 @@ export class MessagesGetRecentLocations extends Function<types.MessagesMessages>
   hash: bigint;
 
   protected get [id]() {
-    return 0x702a40e0;
+    return 0x702A40E0;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -7413,7 +7413,7 @@ export class MessagesSendMultiMedia extends Function<types.Updates> {
   sendAs?: types.TypeInputPeer;
 
   protected get [id]() {
-    return 0xb6f11a1c;
+    return 0xB6F11A1C;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -7471,7 +7471,7 @@ export class MessagesUploadEncryptedFile extends Function<types.EncryptedFile> {
   file: types.TypeInputEncryptedFile;
 
   protected get [id]() {
-    return 0x5057c497;
+    return 0x5057C497;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -7501,7 +7501,7 @@ export class MessagesSearchStickerSets extends Function<types.MessagesFoundStick
   hash: bigint;
 
   protected get [id]() {
-    return 0x35705b8a;
+    return 0x35705B8A;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -7532,7 +7532,7 @@ export class MessagesSearchStickerSets extends Function<types.MessagesFoundStick
 
 export class MessagesGetSplitRanges extends Function<types.MessageRange[]> {
   protected get [id]() {
-    return 0x1cff7e08;
+    return 0x1CFF7E08;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -7553,7 +7553,7 @@ export class MessagesMarkDialogUnread extends Function<boolean> {
   peer: types.TypeInputDialogPeer;
 
   protected get [id]() {
-    return 0xc286d98f;
+    return 0xC286D98F;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -7581,7 +7581,7 @@ export class MessagesMarkDialogUnread extends Function<boolean> {
 
 export class MessagesGetDialogUnreadMarks extends Function<types.DialogPeer[]> {
   protected get [id]() {
-    return 0x22e24e22;
+    return 0x22E24E22;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -7599,7 +7599,7 @@ export class MessagesGetDialogUnreadMarks extends Function<types.DialogPeer[]> {
 
 export class MessagesClearAllDrafts extends Function<boolean> {
   protected get [id]() {
-    return 0x7e58ee9c;
+    return 0x7E58EE9C;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -7623,7 +7623,7 @@ export class MessagesUpdatePinnedMessage extends Function<types.Updates> {
   id: number;
 
   protected get [id]() {
-    return 0xd2aaf7ec;
+    return 0xD2AAF7EC;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -7664,7 +7664,7 @@ export class MessagesSendVote extends Function<types.Updates> {
   options: Array<Uint8Array>;
 
   protected get [id]() {
-    return 0x10ea6184;
+    return 0x10EA6184;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -7696,7 +7696,7 @@ export class MessagesGetPollResults extends Function<types.Updates> {
   msgId: number;
 
   protected get [id]() {
-    return 0x73bb643b;
+    return 0x73BB643B;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -7724,7 +7724,7 @@ export class MessagesGetOnlines extends Function<types.ChatOnlines> {
   peer: types.TypeInputPeer;
 
   protected get [id]() {
-    return 0x6e2be050;
+    return 0x6E2BE050;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -7750,7 +7750,7 @@ export class MessagesEditChatAbout extends Function<boolean> {
   about: string;
 
   protected get [id]() {
-    return 0xdef60797;
+    return 0xDEF60797;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -7779,7 +7779,7 @@ export class MessagesEditChatDefaultBannedRights extends Function<types.Updates>
   bannedRights: types.TypeChatBannedRights;
 
   protected get [id]() {
-    return 0xa5866b41;
+    return 0xA5866B41;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -7807,7 +7807,7 @@ export class MessagesGetEmojiKeywords extends Function<types.EmojiKeywordsDiffer
   langCode: string;
 
   protected get [id]() {
-    return 0x35a0e062;
+    return 0x35A0E062;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -7833,7 +7833,7 @@ export class MessagesGetEmojiKeywordsDifference extends Function<types.EmojiKeyw
   fromVersion: number;
 
   protected get [id]() {
-    return 0x1508b6af;
+    return 0x1508B6AF;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -7861,7 +7861,7 @@ export class MessagesGetEmojiKeywordsLanguages extends Function<types.EmojiLangu
   langCodes: Array<string>;
 
   protected get [id]() {
-    return 0x4e9963b2;
+    return 0x4E9963B2;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -7886,7 +7886,7 @@ export class MessagesGetEmojiURL extends Function<types.EmojiURL> {
   langCode: string;
 
   protected get [id]() {
-    return 0xd5b10c26;
+    return 0xD5B10C26;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -7913,7 +7913,7 @@ export class MessagesGetSearchCounters extends Function<types.MessagesSearchCoun
   filters: Array<types.TypeMessagesFilter>;
 
   protected get [id]() {
-    return 0x00ae7cc1;
+    return 0x00AE7CC1;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -7949,7 +7949,7 @@ export class MessagesRequestURLAuth extends Function<types.TypeURLAuthResult> {
   url?: string;
 
   protected get [id]() {
-    return 0x198fb446;
+    return 0x198FB446;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -7989,7 +7989,7 @@ export class MessagesAcceptURLAuth extends Function<types.TypeURLAuthResult> {
   url?: string;
 
   protected get [id]() {
-    return 0xb12c7125;
+    return 0xB12C7125;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -8028,7 +8028,7 @@ export class MessagesHidePeerSettingsBar extends Function<boolean> {
   peer: types.TypeInputPeer;
 
   protected get [id]() {
-    return 0x4facb138;
+    return 0x4FACB138;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -8054,7 +8054,7 @@ export class MessagesGetScheduledHistory extends Function<types.MessagesMessages
   hash: bigint;
 
   protected get [id]() {
-    return 0xf516760b;
+    return 0xF516760B;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -8083,7 +8083,7 @@ export class MessagesGetScheduledMessages extends Function<types.MessagesMessage
   id: Array<number>;
 
   protected get [id]() {
-    return 0xbdbb0464;
+    return 0xBDBB0464;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -8112,7 +8112,7 @@ export class MessagesSendScheduledMessages extends Function<types.Updates> {
   id: Array<number>;
 
   protected get [id]() {
-    return 0xbd38850a;
+    return 0xBD38850A;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -8141,7 +8141,7 @@ export class MessagesDeleteScheduledMessages extends Function<types.Updates> {
   id: Array<number>;
 
   protected get [id]() {
-    return 0x59ae2b16;
+    return 0x59AE2B16;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -8173,7 +8173,7 @@ export class MessagesGetPollVotes extends Function<types.MessagesVotesList> {
   limit: number;
 
   protected get [id]() {
-    return 0xb86e380e;
+    return 0xB86E380E;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -8215,7 +8215,7 @@ export class MessagesToggleStickerSets extends Function<boolean> {
   stickersets: Array<types.TypeInputStickerSet>;
 
   protected get [id]() {
-    return 0xb5052fea;
+    return 0xB5052FEA;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -8249,7 +8249,7 @@ export class MessagesToggleStickerSets extends Function<boolean> {
 
 export class MessagesGetDialogFilters extends Function<types.DialogFilter[]> {
   protected get [id]() {
-    return 0xf19ed96d;
+    return 0xF19ED96D;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -8267,7 +8267,7 @@ export class MessagesGetDialogFilters extends Function<types.DialogFilter[]> {
 
 export class MessagesGetSuggestedDialogFilters extends Function<types.DialogFilterSuggested[]> {
   protected get [id]() {
-    return 0xa29cd42c;
+    return 0xA29CD42C;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -8288,7 +8288,7 @@ export class MessagesUpdateDialogFilter extends Function<boolean> {
   filter?: types.TypeDialogFilter;
 
   protected get [id]() {
-    return 0x1ad4a04a;
+    return 0x1AD4A04A;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -8318,7 +8318,7 @@ export class MessagesUpdateDialogFiltersOrder extends Function<boolean> {
   order: Array<number>;
 
   protected get [id]() {
-    return 0xc563c1e4;
+    return 0xC563C1E4;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -8345,7 +8345,7 @@ export class MessagesGetOldFeaturedStickers extends Function<types.MessagesFeatu
   hash: bigint;
 
   protected get [id]() {
-    return 0x7ed094a1;
+    return 0x7ED094A1;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -8384,7 +8384,7 @@ export class MessagesGetReplies extends Function<types.MessagesMessages> {
   hash: bigint;
 
   protected get [id]() {
-    return 0x22ddd30c;
+    return 0x22DDD30C;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -8434,7 +8434,7 @@ export class MessagesGetDiscussionMessage extends Function<types.MessagesDiscuss
   msgId: number;
 
   protected get [id]() {
-    return 0x446972fd;
+    return 0x446972FD;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -8464,7 +8464,7 @@ export class MessagesReadDiscussion extends Function<boolean> {
   readMaxId: number;
 
   protected get [id]() {
-    return 0xf731a9f4;
+    return 0xF731A9F4;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -8496,7 +8496,7 @@ export class MessagesUnpinAllMessages extends Function<types.MessagesAffectedHis
   topMsgId?: number;
 
   protected get [id]() {
-    return 0xee22b9a8;
+    return 0xEE22B9A8;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -8526,7 +8526,7 @@ export class MessagesDeleteChat extends Function<boolean> {
   chatId: bigint;
 
   protected get [id]() {
-    return 0x5bd0ee50;
+    return 0x5BD0EE50;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -8551,7 +8551,7 @@ export class MessagesDeletePhoneCallHistory extends Function<types.MessagesAffec
   revoke?: true;
 
   protected get [id]() {
-    return 0xf9cbe409;
+    return 0xF9CBE409;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -8578,7 +8578,7 @@ export class MessagesCheckHistoryImport extends Function<types.MessagesHistoryIm
   importHead: string;
 
   protected get [id]() {
-    return 0x43fe19f3;
+    return 0x43FE19F3;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -8605,7 +8605,7 @@ export class MessagesInitHistoryImport extends Function<types.MessagesHistoryImp
   mediaCount: number;
 
   protected get [id]() {
-    return 0x34090c3b;
+    return 0x34090C3B;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -8639,7 +8639,7 @@ export class MessagesUploadImportedMedia extends Function<types.TypeMessageMedia
   media: types.TypeInputMedia;
 
   protected get [id]() {
-    return 0x2a862092;
+    return 0x2A862092;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -8674,7 +8674,7 @@ export class MessagesStartHistoryImport extends Function<boolean> {
   importId: bigint;
 
   protected get [id]() {
-    return 0xb43df344;
+    return 0xB43DF344;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -8707,7 +8707,7 @@ export class MessagesGetExportedChatInvites extends Function<types.MessagesExpor
   limit: number;
 
   protected get [id]() {
-    return 0xa2b5a3f6;
+    return 0xA2B5A3F6;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -8750,7 +8750,7 @@ export class MessagesGetExportedChatInvite extends Function<types.MessagesExport
   link: string;
 
   protected get [id]() {
-    return 0x73746f5c;
+    return 0x73746F5C;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -8784,7 +8784,7 @@ export class MessagesEditExportedChatInvite extends Function<types.MessagesExpor
   title?: string;
 
   protected get [id]() {
-    return 0xbdca2f75;
+    return 0xBDCA2F75;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -8830,7 +8830,7 @@ export class MessagesDeleteRevokedExportedChatInvites extends Function<boolean> 
   adminId: types.TypeInputUser;
 
   protected get [id]() {
-    return 0x56987bd5;
+    return 0x56987BD5;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -8859,7 +8859,7 @@ export class MessagesDeleteExportedChatInvite extends Function<boolean> {
   link: string;
 
   protected get [id]() {
-    return 0xd464a42b;
+    return 0xD464A42B;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -8887,7 +8887,7 @@ export class MessagesGetAdminsWithInvites extends Function<types.MessagesChatAdm
   peer: types.TypeInputPeer;
 
   protected get [id]() {
-    return 0x3920e6ef;
+    return 0x3920E6EF;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -8918,7 +8918,7 @@ export class MessagesGetChatInviteImporters extends Function<types.MessagesChatI
   limit: number;
 
   protected get [id]() {
-    return 0xdf04dd4e;
+    return 0xDF04DD4E;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -8964,7 +8964,7 @@ export class MessagesSetHistoryTTL extends Function<types.Updates> {
   period: number;
 
   protected get [id]() {
-    return 0xb80e5fe4;
+    return 0xB80E5FE4;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -8992,7 +8992,7 @@ export class MessagesCheckHistoryImportPeer extends Function<types.MessagesCheck
   peer: types.TypeInputPeer;
 
   protected get [id]() {
-    return 0x5dc60f03;
+    return 0x5DC60F03;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -9018,7 +9018,7 @@ export class MessagesSetChatTheme extends Function<types.Updates> {
   emoticon: string;
 
   protected get [id]() {
-    return 0xe63be13f;
+    return 0xE63BE13F;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -9047,7 +9047,7 @@ export class MessagesGetMessageReadParticipants extends Function<types.ReadParti
   msgId: number;
 
   protected get [id]() {
-    return 0x31c1c44f;
+    return 0x31C1C44F;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -9078,7 +9078,7 @@ export class MessagesGetSearchResultsCalendar extends Function<types.MessagesSea
   offsetDate: number;
 
   protected get [id]() {
-    return 0x49f0bde9;
+    return 0x49F0BDE9;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -9115,7 +9115,7 @@ export class MessagesGetSearchResultsPositions extends Function<types.MessagesSe
   limit: number;
 
   protected get [id]() {
-    return 0x6e9583a3;
+    return 0x6E9583A3;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -9151,7 +9151,7 @@ export class MessagesHideChatJoinRequest extends Function<types.Updates> {
   userId: types.TypeInputUser;
 
   protected get [id]() {
-    return 0x7fe7e815;
+    return 0x7FE7E815;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -9186,7 +9186,7 @@ export class MessagesHideAllChatJoinRequests extends Function<types.Updates> {
   link?: string;
 
   protected get [id]() {
-    return 0xe085f4ea;
+    return 0xE085F4EA;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -9220,7 +9220,7 @@ export class MessagesToggleNoForwards extends Function<types.Updates> {
   enabled: boolean;
 
   protected get [id]() {
-    return 0xb11eafa2;
+    return 0xB11EAFA2;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -9249,7 +9249,7 @@ export class MessagesSaveDefaultSendAs extends Function<boolean> {
   sendAs: types.TypeInputPeer;
 
   protected get [id]() {
-    return 0xccfddf96;
+    return 0xCCFDDF96;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -9281,7 +9281,7 @@ export class MessagesSendReaction extends Function<types.Updates> {
   reaction?: Array<types.TypeReaction>;
 
   protected get [id]() {
-    return 0xd30d78d4;
+    return 0xD30D78D4;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -9321,7 +9321,7 @@ export class MessagesGetMessagesReactions extends Function<types.Updates> {
   id: Array<number>;
 
   protected get [id]() {
-    return 0x8bba90e6;
+    return 0x8BBA90E6;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -9353,7 +9353,7 @@ export class MessagesGetMessageReactionsList extends Function<types.MessagesMess
   limit: number;
 
   protected get [id]() {
-    return 0x461b3f48;
+    return 0x461B3F48;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -9393,7 +9393,7 @@ export class MessagesSetChatAvailableReactions extends Function<types.Updates> {
   availableReactions: types.TypeChatReactions;
 
   protected get [id]() {
-    return 0xfeb16771;
+    return 0xFEB16771;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -9421,7 +9421,7 @@ export class MessagesGetAvailableReactions extends Function<types.MessagesAvaila
   hash: number;
 
   protected get [id]() {
-    return 0x18dea0ac;
+    return 0x18DEA0AC;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -9446,7 +9446,7 @@ export class MessagesSetDefaultReaction extends Function<boolean> {
   reaction: types.TypeReaction;
 
   protected get [id]() {
-    return 0x4f47a016;
+    return 0x4F47A016;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -9516,7 +9516,7 @@ export class MessagesGetUnreadReactions extends Function<types.MessagesMessages>
   minId: number;
 
   protected get [id]() {
-    return 0x3223495b;
+    return 0x3223495B;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -9562,7 +9562,7 @@ export class MessagesReadReactions extends Function<types.MessagesAffectedHistor
   topMsgId?: number;
 
   protected get [id]() {
-    return 0x54aa7f8e;
+    return 0x54AA7F8E;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -9594,7 +9594,7 @@ export class MessagesSearchSentMedia extends Function<types.MessagesMessages> {
   limit: number;
 
   protected get [id]() {
-    return 0x107e31a0;
+    return 0x107E31A0;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -9625,7 +9625,7 @@ export class MessagesGetAttachMenuBots extends Function<types.AttachMenuBots> {
   hash: bigint;
 
   protected get [id]() {
-    return 0x16fcc2cb;
+    return 0x16FCC2CB;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -9677,7 +9677,7 @@ export class MessagesToggleBotInAttachMenu extends Function<boolean> {
   enabled: boolean;
 
   protected get [id]() {
-    return 0x69f59d69;
+    return 0x69F59D69;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -9720,7 +9720,7 @@ export class MessagesRequestWebView extends Function<types.TypeWebViewResult> {
   sendAs?: types.TypeInputPeer;
 
   protected get [id]() {
-    return 0x178b480b;
+    return 0x178B480B;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -9783,7 +9783,7 @@ export class MessagesProlongWebView extends Function<boolean> {
   sendAs?: types.TypeInputPeer;
 
   protected get [id]() {
-    return 0x7ff34309;
+    return 0x7FF34309;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -9832,7 +9832,7 @@ export class MessagesRequestSimpleWebView extends Function<types.TypeSimpleWebVi
   platform: string;
 
   protected get [id]() {
-    return 0x299bec8e;
+    return 0x299BEC8E;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -9872,7 +9872,7 @@ export class MessagesSendWebViewResultMessage extends Function<types.WebViewMess
   result: types.TypeInputBotInlineResult;
 
   protected get [id]() {
-    return 0x0a4314f5;
+    return 0x0A4314F5;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -9903,7 +9903,7 @@ export class MessagesSendWebViewData extends Function<types.Updates> {
   data: string;
 
   protected get [id]() {
-    return 0xdc0242c8;
+    return 0xDC0242C8;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -9938,7 +9938,7 @@ export class MessagesTranscribeAudio extends Function<types.MessagesTranscribedA
   msgId: number;
 
   protected get [id]() {
-    return 0x269e9a49;
+    return 0x269E9A49;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -9969,7 +9969,7 @@ export class MessagesRateTranscribedAudio extends Function<boolean> {
   good: boolean;
 
   protected get [id]() {
-    return 0x7f1d072f;
+    return 0x7F1D072F;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -10003,7 +10003,7 @@ export class MessagesGetCustomEmojiDocuments extends Function<types.Document[]> 
   documentId: Array<bigint>;
 
   protected get [id]() {
-    return 0xd9ab0f54;
+    return 0xD9AB0F54;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -10028,7 +10028,7 @@ export class MessagesGetEmojiStickers extends Function<types.MessagesAllStickers
   hash: bigint;
 
   protected get [id]() {
-    return 0xfbfca18f;
+    return 0xFBFCA18F;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -10053,7 +10053,7 @@ export class MessagesGetFeaturedEmojiStickers extends Function<types.MessagesFea
   hash: bigint;
 
   protected get [id]() {
-    return 0x0ecf6736;
+    return 0x0ECF6736;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -10080,7 +10080,7 @@ export class MessagesReportReaction extends Function<boolean> {
   reactionPeer: types.TypeInputPeer;
 
   protected get [id]() {
-    return 0x3f64c076;
+    return 0x3F64C076;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -10112,7 +10112,7 @@ export class MessagesGetTopReactions extends Function<types.MessagesReactions> {
   hash: bigint;
 
   protected get [id]() {
-    return 0xbb8125ba;
+    return 0xBB8125BA;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -10141,7 +10141,7 @@ export class MessagesGetRecentReactions extends Function<types.MessagesReactions
   hash: bigint;
 
   protected get [id]() {
-    return 0x39461db2;
+    return 0x39461DB2;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -10167,7 +10167,7 @@ export class MessagesGetRecentReactions extends Function<types.MessagesReactions
 
 export class MessagesClearRecentReactions extends Function<boolean> {
   protected get [id]() {
-    return 0x9dfeefb4;
+    return 0x9DFEEFB4;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -10188,7 +10188,7 @@ export class MessagesGetExtendedMedia extends Function<types.Updates> {
   id: Array<number>;
 
   protected get [id]() {
-    return 0x84f80814;
+    return 0x84F80814;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -10216,7 +10216,7 @@ export class MessagesSetDefaultHistoryTTL extends Function<boolean> {
   period: number;
 
   protected get [id]() {
-    return 0x9eb51445;
+    return 0x9EB51445;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -10239,7 +10239,7 @@ export class MessagesSetDefaultHistoryTTL extends Function<boolean> {
 
 export class MessagesGetDefaultHistoryTTL extends Function<types.DefaultHistoryTTL> {
   protected get [id]() {
-    return 0x658b7188;
+    return 0x658B7188;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -10262,7 +10262,7 @@ export class MessagesSendBotRequestedPeer extends Function<types.Updates> {
   requestedPeer: types.TypeInputPeer;
 
   protected get [id]() {
-    return 0xfe38d01b;
+    return 0xFE38D01B;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -10296,7 +10296,7 @@ export class MessagesGetEmojiGroups extends Function<types.MessagesEmojiGroups> 
   hash: number;
 
   protected get [id]() {
-    return 0x7488ce5b;
+    return 0x7488CE5B;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -10321,7 +10321,7 @@ export class MessagesGetEmojiStatusGroups extends Function<types.MessagesEmojiGr
   hash: number;
 
   protected get [id]() {
-    return 0x2ecd56cd;
+    return 0x2ECD56CD;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -10346,7 +10346,7 @@ export class MessagesGetEmojiProfilePhotoGroups extends Function<types.MessagesE
   hash: number;
 
   protected get [id]() {
-    return 0x21a548f3;
+    return 0x21A548F3;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -10372,7 +10372,7 @@ export class MessagesSearchCustomEmoji extends Function<types.EmojiList> {
   hash: bigint;
 
   protected get [id]() {
-    return 0x2c11c0d7;
+    return 0x2C11C0D7;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -10401,7 +10401,7 @@ export class MessagesTogglePeerTranslations extends Function<boolean> {
   peer: types.TypeInputPeer;
 
   protected get [id]() {
-    return 0xe47cb579;
+    return 0xE47CB579;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -10432,7 +10432,7 @@ export class MessagesGetBotApp extends Function<types.MessagesBotApp> {
   hash: bigint;
 
   protected get [id]() {
-    return 0x34fdc5c3;
+    return 0x34FDC5C3;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -10465,7 +10465,7 @@ export class MessagesRequestAppWebView extends Function<types.TypeAppWebViewResu
   platform: string;
 
   protected get [id]() {
-    return 0x8c5a3b3c;
+    return 0x8C5A3B3C;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -10505,7 +10505,7 @@ export class MessagesRequestAppWebView extends Function<types.TypeAppWebViewResu
 
 export class UpdatesGetState extends Function<types.UpdatesState> {
   protected get [id]() {
-    return 0xedd4882a;
+    return 0xEDD4882A;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -10568,7 +10568,7 @@ export class UpdatesGetChannelDifference extends Function<types.UpdatesChannelDi
   limit: number;
 
   protected get [id]() {
-    return 0x03173d78;
+    return 0x03173D78;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -10608,7 +10608,7 @@ export class PhotosUpdateProfilePhoto extends Function<types.PhotosPhoto> {
   id: types.TypeInputPhoto;
 
   protected get [id]() {
-    return 0x1c3d5956;
+    return 0x1C3D5956;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -10642,7 +10642,7 @@ export class PhotosUploadProfilePhoto extends Function<types.PhotosPhoto> {
   videoEmojiMarkup?: types.TypeVideoSize;
 
   protected get [id]() {
-    return 0x093c9a51;
+    return 0x093C9A51;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -10681,7 +10681,7 @@ export class PhotosDeletePhotos extends Function<bigint[]> {
   id: Array<types.TypeInputPhoto>;
 
   protected get [id]() {
-    return 0x87cf7f2f;
+    return 0x87CF7F2F;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -10709,7 +10709,7 @@ export class PhotosGetUserPhotos extends Function<types.PhotosPhotos> {
   limit: number;
 
   protected get [id]() {
-    return 0x91cd32a8;
+    return 0x91CD32A8;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -10749,7 +10749,7 @@ export class PhotosUploadContactProfilePhoto extends Function<types.PhotosPhoto>
   videoEmojiMarkup?: types.TypeVideoSize;
 
   protected get [id]() {
-    return 0xe14c4a71;
+    return 0xE14C4A71;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -10796,7 +10796,7 @@ export class UploadSaveFilePart extends Function<boolean> {
   bytes: Uint8Array;
 
   protected get [id]() {
-    return 0xb304a621;
+    return 0xB304A621;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -10831,7 +10831,7 @@ export class UploadGetFile extends Function<types.UploadFile> {
   limit: number;
 
   protected get [id]() {
-    return 0xbe5335be;
+    return 0xBE5335BE;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -10873,7 +10873,7 @@ export class UploadSaveBigFilePart extends Function<boolean> {
   bytes: Uint8Array;
 
   protected get [id]() {
-    return 0xde7b673d;
+    return 0xDE7B673D;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -10909,7 +10909,7 @@ export class UploadGetWebFile extends Function<types.UploadWebFile> {
   limit: number;
 
   protected get [id]() {
-    return 0x24e6818d;
+    return 0x24E6818D;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -10942,7 +10942,7 @@ export class UploadGetCdnFile extends Function<types.UploadCdnFile> {
   limit: number;
 
   protected get [id]() {
-    return 0x395f69da;
+    return 0x395F69DA;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -10974,7 +10974,7 @@ export class UploadReuploadCdnFile extends Function<types.FileHash[]> {
   requestToken: Uint8Array;
 
   protected get [id]() {
-    return 0x9b2754a8;
+    return 0x9B2754A8;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -11003,7 +11003,7 @@ export class UploadGetCdnFileHashes extends Function<types.FileHash[]> {
   offset: bigint;
 
   protected get [id]() {
-    return 0x91dc3f31;
+    return 0x91DC3F31;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -11032,7 +11032,7 @@ export class UploadGetFileHashes extends Function<types.FileHash[]> {
   offset: bigint;
 
   protected get [id]() {
-    return 0x9156982a;
+    return 0x9156982A;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -11058,7 +11058,7 @@ export class UploadGetFileHashes extends Function<types.FileHash[]> {
 
 export class HelpGetConfig extends Function<types.Config> {
   protected get [id]() {
-    return 0xc4f9186b;
+    return 0xC4F9186B;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -11076,7 +11076,7 @@ export class HelpGetConfig extends Function<types.Config> {
 
 export class HelpGetNearestDc extends Function<types.NearestDc> {
   protected get [id]() {
-    return 0x1fb33026;
+    return 0x1FB33026;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -11096,7 +11096,7 @@ export class HelpGetAppUpdate extends Function<types.HelpAppUpdate> {
   source: string;
 
   protected get [id]() {
-    return 0x522d5a7d;
+    return 0x522D5A7D;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -11119,7 +11119,7 @@ export class HelpGetAppUpdate extends Function<types.HelpAppUpdate> {
 
 export class HelpGetInviteText extends Function<types.HelpInviteText> {
   protected get [id]() {
-    return 0x4d392343;
+    return 0x4D392343;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -11137,7 +11137,7 @@ export class HelpGetInviteText extends Function<types.HelpInviteText> {
 
 export class HelpGetSupport extends Function<types.HelpSupport> {
   protected get [id]() {
-    return 0x9cdf08cd;
+    return 0x9CDF08CD;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -11157,7 +11157,7 @@ export class HelpGetAppChangelog extends Function<types.Updates> {
   prevAppVersion: string;
 
   protected get [id]() {
-    return 0x9010ef6f;
+    return 0x9010EF6F;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -11183,7 +11183,7 @@ export class HelpSetBotUpdatesStatus extends Function<boolean> {
   message: string;
 
   protected get [id]() {
-    return 0xec22cfcd;
+    return 0xEC22CFCD;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -11229,7 +11229,7 @@ export class HelpGetRecentMeURLs extends Function<types.HelpRecentMeURLs> {
   referer: string;
 
   protected get [id]() {
-    return 0x3dc0f114;
+    return 0x3DC0F114;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -11252,7 +11252,7 @@ export class HelpGetRecentMeURLs extends Function<types.HelpRecentMeURLs> {
 
 export class HelpGetTermsOfServiceUpdate extends Function<types.HelpTermsOfServiceUpdate> {
   protected get [id]() {
-    return 0x2ca51fd1;
+    return 0x2CA51FD1;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -11272,7 +11272,7 @@ export class HelpAcceptTermsOfService extends Function<boolean> {
   id: types.TypeDataJSON;
 
   protected get [id]() {
-    return 0xee72f79a;
+    return 0xEE72F79A;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -11297,7 +11297,7 @@ export class HelpGetDeepLinkInfo extends Function<types.HelpDeepLinkInfo> {
   path: string;
 
   protected get [id]() {
-    return 0x3fedc75f;
+    return 0x3FEDC75F;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -11322,7 +11322,7 @@ export class HelpGetAppConfig extends Function<types.HelpAppConfig> {
   hash: number;
 
   protected get [id]() {
-    return 0x61e3f854;
+    return 0x61E3F854;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -11347,7 +11347,7 @@ export class HelpSaveAppLog extends Function<boolean> {
   events: Array<types.TypeInputAppEvent>;
 
   protected get [id]() {
-    return 0x6f02f748;
+    return 0x6F02F748;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -11372,7 +11372,7 @@ export class HelpGetPassportConfig extends Function<types.HelpPassportConfig> {
   hash: number;
 
   protected get [id]() {
-    return 0xc661ad08;
+    return 0xC661AD08;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -11395,7 +11395,7 @@ export class HelpGetPassportConfig extends Function<types.HelpPassportConfig> {
 
 export class HelpGetSupportName extends Function<types.HelpSupportName> {
   protected get [id]() {
-    return 0xd360e72c;
+    return 0xD360E72C;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -11415,7 +11415,7 @@ export class HelpGetUserInfo extends Function<types.HelpUserInfo> {
   userId: types.TypeInputUser;
 
   protected get [id]() {
-    return 0x038a08d3;
+    return 0x038A08D3;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -11442,7 +11442,7 @@ export class HelpEditUserInfo extends Function<types.HelpUserInfo> {
   entities: Array<types.TypeMessageEntity>;
 
   protected get [id]() {
-    return 0x66b91b70;
+    return 0x66B91B70;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -11471,7 +11471,7 @@ export class HelpEditUserInfo extends Function<types.HelpUserInfo> {
 
 export class HelpGetPromoData extends Function<types.HelpPromoData> {
   protected get [id]() {
-    return 0xc0977421;
+    return 0xC0977421;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -11491,7 +11491,7 @@ export class HelpHidePromoData extends Function<boolean> {
   peer: types.TypeInputPeer;
 
   protected get [id]() {
-    return 0x1e251c95;
+    return 0x1E251C95;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -11517,7 +11517,7 @@ export class HelpDismissSuggestion extends Function<boolean> {
   suggestion: string;
 
   protected get [id]() {
-    return 0xf50dbaa1;
+    return 0xF50DBAA1;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -11546,7 +11546,7 @@ export class HelpGetCountriesList extends Function<types.HelpCountriesList> {
   hash: number;
 
   protected get [id]() {
-    return 0x735787a8;
+    return 0x735787A8;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -11572,7 +11572,7 @@ export class HelpGetCountriesList extends Function<types.HelpCountriesList> {
 
 export class HelpGetPremiumPromo extends Function<types.HelpPremiumPromo> {
   protected get [id]() {
-    return 0xb81b93d4;
+    return 0xB81B93D4;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -11593,7 +11593,7 @@ export class ChannelsReadHistory extends Function<boolean> {
   maxId: number;
 
   protected get [id]() {
-    return 0xcc104937;
+    return 0xCC104937;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -11622,7 +11622,7 @@ export class ChannelsDeleteMessages extends Function<types.MessagesAffectedMessa
   id: Array<number>;
 
   protected get [id]() {
-    return 0x84c1fd4e;
+    return 0x84C1FD4E;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -11652,7 +11652,7 @@ export class ChannelsReportSpam extends Function<boolean> {
   id: Array<number>;
 
   protected get [id]() {
-    return 0xf44a8315;
+    return 0xF44A8315;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -11684,7 +11684,7 @@ export class ChannelsGetMessages extends Function<types.MessagesMessages> {
   id: Array<types.TypeInputMessage>;
 
   protected get [id]() {
-    return 0xad8c9a23;
+    return 0xAD8C9A23;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -11716,7 +11716,7 @@ export class ChannelsGetParticipants extends Function<types.ChannelsChannelParti
   hash: bigint;
 
   protected get [id]() {
-    return 0x77ced9d0;
+    return 0x77CED9D0;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -11754,7 +11754,7 @@ export class ChannelsGetParticipant extends Function<types.ChannelsChannelPartic
   participant: types.TypeInputPeer;
 
   protected get [id]() {
-    return 0xa0ab6cc6;
+    return 0xA0AB6CC6;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -11782,7 +11782,7 @@ export class ChannelsGetChannels extends Function<types.MessagesChats> {
   id: Array<types.TypeInputChannel>;
 
   protected get [id]() {
-    return 0x0a7f6bbb;
+    return 0x0A7F6BBB;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -11807,7 +11807,7 @@ export class ChannelsGetFullChannel extends Function<types.MessagesChatFull> {
   channel: types.TypeInputChannel;
 
   protected get [id]() {
-    return 0x08736a09;
+    return 0x08736A09;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -11894,7 +11894,7 @@ export class ChannelsEditAdmin extends Function<types.Updates> {
   rank: string;
 
   protected get [id]() {
-    return 0xd33c8902;
+    return 0xD33C8902;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -11929,7 +11929,7 @@ export class ChannelsEditTitle extends Function<types.Updates> {
   title: string;
 
   protected get [id]() {
-    return 0x566decd0;
+    return 0x566DECD0;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -11958,7 +11958,7 @@ export class ChannelsEditPhoto extends Function<types.Updates> {
   photo: types.TypeInputChatPhoto;
 
   protected get [id]() {
-    return 0xf12e57c9;
+    return 0xF12E57C9;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -11987,7 +11987,7 @@ export class ChannelsCheckUsername extends Function<boolean> {
   username: string;
 
   protected get [id]() {
-    return 0x10e6bd2c;
+    return 0x10E6BD2C;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -12016,7 +12016,7 @@ export class ChannelsUpdateUsername extends Function<boolean> {
   username: string;
 
   protected get [id]() {
-    return 0x3514b3de;
+    return 0x3514B3DE;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -12044,7 +12044,7 @@ export class ChannelsJoinChannel extends Function<types.Updates> {
   channel: types.TypeInputChannel;
 
   protected get [id]() {
-    return 0x24b524c5;
+    return 0x24B524C5;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -12069,7 +12069,7 @@ export class ChannelsLeaveChannel extends Function<types.Updates> {
   channel: types.TypeInputChannel;
 
   protected get [id]() {
-    return 0xf836aa95;
+    return 0xF836AA95;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -12095,7 +12095,7 @@ export class ChannelsInviteToChannel extends Function<types.Updates> {
   users: Array<types.TypeInputUser>;
 
   protected get [id]() {
-    return 0x199f3a6c;
+    return 0x199F3A6C;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -12123,7 +12123,7 @@ export class ChannelsDeleteChannel extends Function<types.Updates> {
   channel: types.TypeInputChannel;
 
   protected get [id]() {
-    return 0xc0111fe3;
+    return 0xC0111FE3;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -12151,7 +12151,7 @@ export class ChannelsExportMessageLink extends Function<types.ExportedMessageLin
   id: number;
 
   protected get [id]() {
-    return 0xe63fadeb;
+    return 0xE63FADEB;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -12188,7 +12188,7 @@ export class ChannelsToggleSignatures extends Function<types.Updates> {
   enabled: boolean;
 
   protected get [id]() {
-    return 0x1f69b606;
+    return 0x1F69B606;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -12217,7 +12217,7 @@ export class ChannelsGetAdminedPublicChannels extends Function<types.MessagesCha
   checkLimit?: true;
 
   protected get [id]() {
-    return 0xf8b036af;
+    return 0xF8B036AF;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -12249,7 +12249,7 @@ export class ChannelsEditBanned extends Function<types.Updates> {
   bannedRights: types.TypeChatBannedRights;
 
   protected get [id]() {
-    return 0x96e6cd81;
+    return 0x96E6CD81;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -12286,7 +12286,7 @@ export class ChannelsGetAdminLog extends Function<types.ChannelsAdminLogResults>
   limit: number;
 
   protected get [id]() {
-    return 0x33ddf480;
+    return 0x33DDF480;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -12332,7 +12332,7 @@ export class ChannelsSetStickers extends Function<boolean> {
   stickerset: types.TypeInputStickerSet;
 
   protected get [id]() {
-    return 0xea8ca4f9;
+    return 0xEA8CA4F9;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -12361,7 +12361,7 @@ export class ChannelsReadMessageContents extends Function<boolean> {
   id: Array<number>;
 
   protected get [id]() {
-    return 0xeab5dc38;
+    return 0xEAB5DC38;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -12391,7 +12391,7 @@ export class ChannelsDeleteHistory extends Function<types.Updates> {
   maxId: number;
 
   protected get [id]() {
-    return 0x9baa9647;
+    return 0x9BAA9647;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -12425,7 +12425,7 @@ export class ChannelsTogglePreHistoryHidden extends Function<types.Updates> {
   enabled: boolean;
 
   protected get [id]() {
-    return 0xeabbb94c;
+    return 0xEABBB94C;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -12453,7 +12453,7 @@ export class ChannelsGetLeftChannels extends Function<types.MessagesChats> {
   offset: number;
 
   protected get [id]() {
-    return 0x8341ecc0;
+    return 0x8341ECC0;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -12476,7 +12476,7 @@ export class ChannelsGetLeftChannels extends Function<types.MessagesChats> {
 
 export class ChannelsGetGroupsForDiscussion extends Function<types.MessagesChats> {
   protected get [id]() {
-    return 0xf5dad378;
+    return 0xF5DAD378;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -12497,7 +12497,7 @@ export class ChannelsSetDiscussionGroup extends Function<boolean> {
   group: types.TypeInputChannel;
 
   protected get [id]() {
-    return 0x40582bb2;
+    return 0x40582BB2;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -12527,7 +12527,7 @@ export class ChannelsEditCreator extends Function<types.Updates> {
   password: types.TypeInputCheckPasswordSRP;
 
   protected get [id]() {
-    return 0x8f38cd1f;
+    return 0x8F38CD1F;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -12560,7 +12560,7 @@ export class ChannelsEditLocation extends Function<boolean> {
   address: string;
 
   protected get [id]() {
-    return 0x58e63f6d;
+    return 0x58E63F6D;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -12592,7 +12592,7 @@ export class ChannelsToggleSlowMode extends Function<types.Updates> {
   seconds: number;
 
   protected get [id]() {
-    return 0xedd49ef0;
+    return 0xEDD49EF0;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -12618,7 +12618,7 @@ export class ChannelsToggleSlowMode extends Function<types.Updates> {
 
 export class ChannelsGetInactiveChannels extends Function<types.MessagesInactiveChats> {
   protected get [id]() {
-    return 0x11e831ee;
+    return 0x11E831EE;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -12638,7 +12638,7 @@ export class ChannelsConvertToGigagroup extends Function<types.Updates> {
   channel: types.TypeInputChannel;
 
   protected get [id]() {
-    return 0x0b290c69;
+    return 0x0B290C69;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -12664,7 +12664,7 @@ export class ChannelsViewSponsoredMessage extends Function<boolean> {
   randomId: Uint8Array;
 
   protected get [id]() {
-    return 0xbeaedb94;
+    return 0xBEAEDB94;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -12692,7 +12692,7 @@ export class ChannelsGetSponsoredMessages extends Function<types.MessagesSponsor
   channel: types.TypeInputChannel;
 
   protected get [id]() {
-    return 0xec210fbf;
+    return 0xEC210FBF;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -12717,7 +12717,7 @@ export class ChannelsGetSendAs extends Function<types.ChannelsSendAsPeers> {
   peer: types.TypeInputPeer;
 
   protected get [id]() {
-    return 0x0dc770ee;
+    return 0x0DC770EE;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -12743,7 +12743,7 @@ export class ChannelsDeleteParticipantHistory extends Function<types.MessagesAff
   participant: types.TypeInputPeer;
 
   protected get [id]() {
-    return 0x367544db;
+    return 0x367544DB;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -12772,7 +12772,7 @@ export class ChannelsToggleJoinToSend extends Function<types.Updates> {
   enabled: boolean;
 
   protected get [id]() {
-    return 0xe4cb9580;
+    return 0xE4CB9580;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -12801,7 +12801,7 @@ export class ChannelsToggleJoinRequest extends Function<types.Updates> {
   enabled: boolean;
 
   protected get [id]() {
-    return 0x4c2985b6;
+    return 0x4C2985B6;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -12830,7 +12830,7 @@ export class ChannelsReorderUsernames extends Function<boolean> {
   order: Array<string>;
 
   protected get [id]() {
-    return 0xb45ced1d;
+    return 0xB45CED1D;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -12860,7 +12860,7 @@ export class ChannelsToggleUsername extends Function<boolean> {
   active: boolean;
 
   protected get [id]() {
-    return 0x50f24105;
+    return 0x50F24105;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -12891,7 +12891,7 @@ export class ChannelsDeactivateAllUsernames extends Function<boolean> {
   channel: types.TypeInputChannel;
 
   protected get [id]() {
-    return 0x0a245dd3;
+    return 0x0A245DD3;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -12917,7 +12917,7 @@ export class ChannelsToggleForum extends Function<types.Updates> {
   enabled: boolean;
 
   protected get [id]() {
-    return 0xa4298b29;
+    return 0xA4298B29;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -12950,7 +12950,7 @@ export class ChannelsCreateForumTopic extends Function<types.Updates> {
   sendAs?: types.TypeInputPeer;
 
   protected get [id]() {
-    return 0xf40c0224;
+    return 0xF40C0224;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -12997,7 +12997,7 @@ export class ChannelsGetForumTopics extends Function<types.MessagesForumTopics> 
   limit: number;
 
   protected get [id]() {
-    return 0x0de560d1;
+    return 0x0DE560D1;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -13040,7 +13040,7 @@ export class ChannelsGetForumTopicsByID extends Function<types.MessagesForumTopi
   topics: Array<number>;
 
   protected get [id]() {
-    return 0xb0831eb9;
+    return 0xB0831EB9;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -13073,7 +13073,7 @@ export class ChannelsEditForumTopic extends Function<types.Updates> {
   hidden?: boolean;
 
   protected get [id]() {
-    return 0xf4dfa185;
+    return 0xF4DFA185;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -13117,7 +13117,7 @@ export class ChannelsUpdatePinnedForumTopic extends Function<types.Updates> {
   pinned: boolean;
 
   protected get [id]() {
-    return 0x6c2d9026;
+    return 0x6C2D9026;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -13149,7 +13149,7 @@ export class ChannelsDeleteTopicHistory extends Function<types.MessagesAffectedH
   topMsgId: number;
 
   protected get [id]() {
-    return 0x34435f2d;
+    return 0x34435F2D;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -13179,7 +13179,7 @@ export class ChannelsReorderPinnedForumTopics extends Function<types.Updates> {
   order: Array<number>;
 
   protected get [id]() {
-    return 0x2950a18f;
+    return 0x2950A18F;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -13213,7 +13213,7 @@ export class ChannelsToggleAntiSpam extends Function<types.Updates> {
   enabled: boolean;
 
   protected get [id]() {
-    return 0x68f3e4eb;
+    return 0x68F3E4EB;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -13242,7 +13242,7 @@ export class ChannelsReportAntiSpamFalsePositive extends Function<boolean> {
   msgId: number;
 
   protected get [id]() {
-    return 0xa850a693;
+    return 0xA850A693;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -13271,7 +13271,7 @@ export class ChannelsToggleParticipantsHidden extends Function<types.Updates> {
   enabled: boolean;
 
   protected get [id]() {
-    return 0x6a6e7854;
+    return 0x6A6E7854;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -13300,7 +13300,7 @@ export class BotsSendCustomRequest extends Function<types.DataJSON> {
   params: types.TypeDataJSON;
 
   protected get [id]() {
-    return 0xaa2769ed;
+    return 0xAA2769ED;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -13329,7 +13329,7 @@ export class BotsAnswerWebhookJSONQuery extends Function<boolean> {
   data: types.TypeDataJSON;
 
   protected get [id]() {
-    return 0xe6213f4d;
+    return 0xE6213F4D;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -13359,7 +13359,7 @@ export class BotsSetBotCommands extends Function<boolean> {
   commands: Array<types.TypeBotCommand>;
 
   protected get [id]() {
-    return 0x0517165a;
+    return 0x0517165A;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -13391,7 +13391,7 @@ export class BotsResetBotCommands extends Function<boolean> {
   langCode: string;
 
   protected get [id]() {
-    return 0x3d8de0f9;
+    return 0x3D8DE0F9;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -13420,7 +13420,7 @@ export class BotsGetBotCommands extends Function<types.BotCommand[]> {
   langCode: string;
 
   protected get [id]() {
-    return 0xe34c0dd6;
+    return 0xE34C0DD6;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -13449,7 +13449,7 @@ export class BotsSetBotMenuButton extends Function<boolean> {
   button: types.TypeBotMenuButton;
 
   protected get [id]() {
-    return 0x4504d54f;
+    return 0x4504D54F;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -13477,7 +13477,7 @@ export class BotsGetBotMenuButton extends Function<types.BotMenuButton> {
   userId: types.TypeInputUser;
 
   protected get [id]() {
-    return 0x9c60eb28;
+    return 0x9C60EB28;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -13502,7 +13502,7 @@ export class BotsSetBotBroadcastDefaultAdminRights extends Function<boolean> {
   adminRights: types.TypeChatAdminRights;
 
   protected get [id]() {
-    return 0x788464e1;
+    return 0x788464E1;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -13527,7 +13527,7 @@ export class BotsSetBotGroupDefaultAdminRights extends Function<boolean> {
   adminRights: types.TypeChatAdminRights;
 
   protected get [id]() {
-    return 0x925ec9ea;
+    return 0x925EC9EA;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -13554,7 +13554,7 @@ export class BotsSetBotInfo extends Function<boolean> {
   description?: string;
 
   protected get [id]() {
-    return 0xa365df7a;
+    return 0xA365DF7A;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -13587,7 +13587,7 @@ export class BotsGetBotInfo extends Function<string[]> {
   langCode: string;
 
   protected get [id]() {
-    return 0x75ec12e6;
+    return 0x75EC12E6;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -13613,7 +13613,7 @@ export class PaymentsGetPaymentForm extends Function<types.PaymentsPaymentForm> 
   themeParams?: types.TypeDataJSON;
 
   protected get [id]() {
-    return 0x37148dbb;
+    return 0x37148DBB;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -13644,7 +13644,7 @@ export class PaymentsGetPaymentReceipt extends Function<types.PaymentsPaymentRec
   msgId: number;
 
   protected get [id]() {
-    return 0x2478d1cc;
+    return 0x2478D1CC;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -13674,7 +13674,7 @@ export class PaymentsValidateRequestedInfo extends Function<types.PaymentsValida
   info: types.TypePaymentRequestedInfo;
 
   protected get [id]() {
-    return 0xb6c8f12b;
+    return 0xB6C8F12B;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -13712,7 +13712,7 @@ export class PaymentsSendPaymentForm extends Function<types.PaymentsPaymentResul
   tipAmount?: bigint;
 
   protected get [id]() {
-    return 0x2d03522f;
+    return 0x2D03522F;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -13752,7 +13752,7 @@ export class PaymentsSendPaymentForm extends Function<types.PaymentsPaymentResul
 
 export class PaymentsGetSavedInfo extends Function<types.PaymentsSavedInfo> {
   protected get [id]() {
-    return 0x227d824b;
+    return 0x227D824B;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -13773,7 +13773,7 @@ export class PaymentsClearSavedInfo extends Function<boolean> {
   info?: true;
 
   protected get [id]() {
-    return 0xd83d70c1;
+    return 0xD83D70C1;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -13803,7 +13803,7 @@ export class PaymentsGetBankCardData extends Function<types.PaymentsBankCardData
   number: string;
 
   protected get [id]() {
-    return 0x2e79d779;
+    return 0x2E79D779;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -13828,7 +13828,7 @@ export class PaymentsExportInvoice extends Function<types.PaymentsExportedInvoic
   invoiceMedia: types.TypeInputMedia;
 
   protected get [id]() {
-    return 0x0f91b065;
+    return 0x0F91B065;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -13854,7 +13854,7 @@ export class PaymentsAssignAppStoreTransaction extends Function<types.Updates> {
   purpose: types.TypeInputStorePaymentPurpose;
 
   protected get [id]() {
-    return 0x80ed747d;
+    return 0x80ED747D;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -13883,7 +13883,7 @@ export class PaymentsAssignPlayMarketTransaction extends Function<types.Updates>
   purpose: types.TypeInputStorePaymentPurpose;
 
   protected get [id]() {
-    return 0xdffd50d3;
+    return 0xDFFD50D3;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -13911,7 +13911,7 @@ export class PaymentsCanPurchasePremium extends Function<boolean> {
   purpose: types.TypeInputStorePaymentPurpose;
 
   protected get [id]() {
-    return 0x9fc19eb6;
+    return 0x9FC19EB6;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -13946,7 +13946,7 @@ export class StickersCreateStickerSet extends Function<types.MessagesStickerSet>
   software?: string;
 
   protected get [id]() {
-    return 0x9021ab67;
+    return 0x9021AB67;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -14003,7 +14003,7 @@ export class StickersRemoveStickerFromSet extends Function<types.MessagesSticker
   sticker: types.TypeInputDocument;
 
   protected get [id]() {
-    return 0xf7760f51;
+    return 0xF7760F51;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -14029,7 +14029,7 @@ export class StickersChangeStickerPosition extends Function<types.MessagesSticke
   position: number;
 
   protected get [id]() {
-    return 0xffb6d4ca;
+    return 0xFFB6D4CA;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -14058,7 +14058,7 @@ export class StickersAddStickerToSet extends Function<types.MessagesStickerSet> 
   sticker: types.TypeInputStickerSetItem;
 
   protected get [id]() {
-    return 0x8653febe;
+    return 0x8653FEBE;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -14088,7 +14088,7 @@ export class StickersSetStickerSetThumb extends Function<types.MessagesStickerSe
   thumbDocumentId?: bigint;
 
   protected get [id]() {
-    return 0xa76a5392;
+    return 0xA76A5392;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -14121,7 +14121,7 @@ export class StickersCheckShortName extends Function<boolean> {
   shortName: string;
 
   protected get [id]() {
-    return 0x284b3639;
+    return 0x284B3639;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -14146,7 +14146,7 @@ export class StickersSuggestShortName extends Function<types.StickersSuggestedSh
   title: string;
 
   protected get [id]() {
-    return 0x4dafc503;
+    return 0x4DAFC503;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -14174,7 +14174,7 @@ export class StickersChangeSticker extends Function<types.MessagesStickerSet> {
   keywords?: string;
 
   protected get [id]() {
-    return 0xf5537ebc;
+    return 0xF5537EBC;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -14211,7 +14211,7 @@ export class StickersRenameStickerSet extends Function<types.MessagesStickerSet>
   title: string;
 
   protected get [id]() {
-    return 0x124b1c00;
+    return 0x124B1C00;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -14262,7 +14262,7 @@ export class StickersDeleteStickerSet extends Function<boolean> {
 
 export class PhoneGetCallConfig extends Function<types.DataJSON> {
   protected get [id]() {
-    return 0x55451fa9;
+    return 0x55451FA9;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -14286,7 +14286,7 @@ export class PhoneRequestCall extends Function<types.PhonePhoneCall> {
   protocol: types.TypePhoneCallProtocol;
 
   protected get [id]() {
-    return 0x42ff96ed;
+    return 0x42FF96ED;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -14327,7 +14327,7 @@ export class PhoneAcceptCall extends Function<types.PhonePhoneCall> {
   protocol: types.TypePhoneCallProtocol;
 
   protected get [id]() {
-    return 0x3bd2b4a0;
+    return 0x3BD2B4A0;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -14361,7 +14361,7 @@ export class PhoneConfirmCall extends Function<types.PhonePhoneCall> {
   protocol: types.TypePhoneCallProtocol;
 
   protected get [id]() {
-    return 0x2efe1722;
+    return 0x2EFE1722;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -14395,7 +14395,7 @@ export class PhoneReceivedCall extends Function<boolean> {
   peer: types.TypeInputPhoneCall;
 
   protected get [id]() {
-    return 0x17d54f61;
+    return 0x17D54F61;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -14424,7 +14424,7 @@ export class PhoneDiscardCall extends Function<types.Updates> {
   connectionId: bigint;
 
   protected get [id]() {
-    return 0xb2cbc1c0;
+    return 0xB2CBC1C0;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -14466,7 +14466,7 @@ export class PhoneSetCallRating extends Function<types.Updates> {
   comment: string;
 
   protected get [id]() {
-    return 0x59ead627;
+    return 0x59EAD627;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -14503,7 +14503,7 @@ export class PhoneSaveCallDebug extends Function<boolean> {
   debug: types.TypeDataJSON;
 
   protected get [id]() {
-    return 0x277add7e;
+    return 0x277ADD7E;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -14532,7 +14532,7 @@ export class PhoneSendSignalingData extends Function<boolean> {
   data: Uint8Array;
 
   protected get [id]() {
-    return 0xff7a9383;
+    return 0xFF7A9383;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -14564,7 +14564,7 @@ export class PhoneCreateGroupCall extends Function<types.Updates> {
   scheduleDate?: number;
 
   protected get [id]() {
-    return 0x48cdc6d8;
+    return 0x48CDC6D8;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -14608,7 +14608,7 @@ export class PhoneJoinGroupCall extends Function<types.Updates> {
   params: types.TypeDataJSON;
 
   protected get [id]() {
-    return 0xb132ff7b;
+    return 0xB132FF7B;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -14651,7 +14651,7 @@ export class PhoneLeaveGroupCall extends Function<types.Updates> {
   source: number;
 
   protected get [id]() {
-    return 0x500377f9;
+    return 0x500377F9;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -14680,7 +14680,7 @@ export class PhoneInviteToGroupCall extends Function<types.Updates> {
   users: Array<types.TypeInputUser>;
 
   protected get [id]() {
-    return 0x7b393160;
+    return 0x7B393160;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -14708,7 +14708,7 @@ export class PhoneDiscardGroupCall extends Function<types.Updates> {
   call: types.TypeInputGroupCall;
 
   protected get [id]() {
-    return 0x7a777135;
+    return 0x7A777135;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -14735,7 +14735,7 @@ export class PhoneToggleGroupCallSettings extends Function<types.Updates> {
   joinMuted?: boolean;
 
   protected get [id]() {
-    return 0x74bbb43d;
+    return 0x74BBB43D;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -14769,7 +14769,7 @@ export class PhoneGetGroupCall extends Function<types.PhoneGroupCall> {
   limit: number;
 
   protected get [id]() {
-    return 0x041845db;
+    return 0x041845DB;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -14801,7 +14801,7 @@ export class PhoneGetGroupParticipants extends Function<types.PhoneGroupParticip
   limit: number;
 
   protected get [id]() {
-    return 0xc558d8ab;
+    return 0xC558D8AB;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -14839,7 +14839,7 @@ export class PhoneCheckGroupCall extends Function<number[]> {
   sources: Array<number>;
 
   protected get [id]() {
-    return 0xb59cf977;
+    return 0xB59CF977;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -14871,7 +14871,7 @@ export class PhoneToggleGroupCallRecord extends Function<types.Updates> {
   videoPortrait?: boolean;
 
   protected get [id]() {
-    return 0xf128c708;
+    return 0xF128C708;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -14917,7 +14917,7 @@ export class PhoneEditGroupCallParticipant extends Function<types.Updates> {
   presentationPaused?: boolean;
 
   protected get [id]() {
-    return 0xa5273abf;
+    return 0xA5273ABF;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -14966,7 +14966,7 @@ export class PhoneEditGroupCallTitle extends Function<types.Updates> {
   title: string;
 
   protected get [id]() {
-    return 0x1ca6ac0a;
+    return 0x1CA6AC0A;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -14994,7 +14994,7 @@ export class PhoneGetGroupCallJoinAs extends Function<types.PhoneJoinAsPeers> {
   peer: types.TypeInputPeer;
 
   protected get [id]() {
-    return 0xef7c213a;
+    return 0xEF7C213A;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -15020,7 +15020,7 @@ export class PhoneExportGroupCallInvite extends Function<types.PhoneExportedGrou
   call: types.TypeInputGroupCall;
 
   protected get [id]() {
-    return 0xe6aa647f;
+    return 0xE6AA647F;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -15051,7 +15051,7 @@ export class PhoneToggleGroupCallStartSubscription extends Function<types.Update
   subscribed: boolean;
 
   protected get [id]() {
-    return 0x219c34e6;
+    return 0x219C34E6;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -15079,7 +15079,7 @@ export class PhoneStartScheduledGroupCall extends Function<types.Updates> {
   call: types.TypeInputGroupCall;
 
   protected get [id]() {
-    return 0x5680e342;
+    return 0x5680E342;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -15105,7 +15105,7 @@ export class PhoneSaveDefaultGroupCallJoinAs extends Function<boolean> {
   joinAs: types.TypeInputPeer;
 
   protected get [id]() {
-    return 0x575e1f8c;
+    return 0x575E1F8C;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -15134,7 +15134,7 @@ export class PhoneJoinGroupCallPresentation extends Function<types.Updates> {
   params: types.TypeDataJSON;
 
   protected get [id]() {
-    return 0xcbea6bc4;
+    return 0xCBEA6BC4;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -15162,7 +15162,7 @@ export class PhoneLeaveGroupCallPresentation extends Function<types.Updates> {
   call: types.TypeInputGroupCall;
 
   protected get [id]() {
-    return 0x1c50d144;
+    return 0x1C50D144;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -15187,7 +15187,7 @@ export class PhoneGetGroupCallStreamChannels extends Function<types.PhoneGroupCa
   call: types.TypeInputGroupCall;
 
   protected get [id]() {
-    return 0x1ab21940;
+    return 0x1AB21940;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -15213,7 +15213,7 @@ export class PhoneGetGroupCallStreamRtmpURL extends Function<types.PhoneGroupCal
   revoke: boolean;
 
   protected get [id]() {
-    return 0xdeb3abbf;
+    return 0xDEB3ABBF;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -15271,7 +15271,7 @@ export class LangpackGetLangPack extends Function<types.LangPackDifference> {
   langCode: string;
 
   protected get [id]() {
-    return 0xf2f2330a;
+    return 0xF2F2330A;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -15301,7 +15301,7 @@ export class LangpackGetStrings extends Function<types.LangPackString[]> {
   keys: Array<string>;
 
   protected get [id]() {
-    return 0xefea3803;
+    return 0xEFEA3803;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -15334,7 +15334,7 @@ export class LangpackGetDifference extends Function<types.LangPackDifference> {
   fromVersion: number;
 
   protected get [id]() {
-    return 0xcd984aa5;
+    return 0xCD984AA5;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -15365,7 +15365,7 @@ export class LangpackGetLanguages extends Function<types.LangPackLanguage[]> {
   langPack: string;
 
   protected get [id]() {
-    return 0x42c6978f;
+    return 0x42C6978F;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -15391,7 +15391,7 @@ export class LangpackGetLanguage extends Function<types.LangPackLanguage> {
   langCode: string;
 
   protected get [id]() {
-    return 0x6a596502;
+    return 0x6A596502;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -15419,7 +15419,7 @@ export class FoldersEditPeerFolders extends Function<types.Updates> {
   folderPeers: Array<types.TypeInputFolderPeer>;
 
   protected get [id]() {
-    return 0x6847d0ab;
+    return 0x6847D0AB;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -15445,7 +15445,7 @@ export class StatsGetBroadcastStats extends Function<types.StatsBroadcastStats> 
   channel: types.TypeInputChannel;
 
   protected get [id]() {
-    return 0xab42441a;
+    return 0xAB42441A;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -15476,7 +15476,7 @@ export class StatsLoadAsyncGraph extends Function<types.StatsGraph> {
   x?: bigint;
 
   protected get [id]() {
-    return 0x621d5fa0;
+    return 0x621D5FA0;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -15507,7 +15507,7 @@ export class StatsGetMegagroupStats extends Function<types.StatsMegagroupStats> 
   channel: types.TypeInputChannel;
 
   protected get [id]() {
-    return 0xdcdf8607;
+    return 0xDCDF8607;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -15542,7 +15542,7 @@ export class StatsGetMessagePublicForwards extends Function<types.MessagesMessag
   limit: number;
 
   protected get [id]() {
-    return 0x5630281b;
+    return 0x5630281B;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -15584,7 +15584,7 @@ export class StatsGetMessageStats extends Function<types.StatsMessageStats> {
   msgId: number;
 
   protected get [id]() {
-    return 0xb6e0a3f5;
+    return 0xB6E0A3F5;
   }
 
   static get [paramDesc](): ParamDesc {

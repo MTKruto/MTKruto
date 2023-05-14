@@ -3,7 +3,7 @@ import { TLReader } from "./3_tl_reader.ts";
 
 export class RPCResult {
   static get [id]() {
-    return 0xf35c6d01;
+    return 0xF35C6D01;
   }
 
   constructor(

@@ -5,7 +5,7 @@ import { Message } from "./5_message.ts";
 
 export class MessageContainer {
   static get [id]() {
-    return 0x73f1f8dc;
+    return 0x73F1F8DC;
   }
 
   constructor(public messages: Message[]) {

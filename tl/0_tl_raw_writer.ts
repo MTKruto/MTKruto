@@ -12,6 +12,7 @@ export class TLRawWriter {
 
   write(buffer: Uint8Array) {
     this._buffer = concat(this._buffer, buffer);
+    return this;
   }
 
   writeInt24(int: number, signed = true) {

@@ -11,9 +11,9 @@ export class TransportIntermediate extends Transport implements Transport {
   async initialize() {
     if (!this.initialized) {
       if (this.obfuscated) {
-        this.obfuscationParameters = await getObfuscationParameters(0xeeeeeeee, this.connection);
+        this.obfuscationParameters = await getObfuscationParameters(0xEEEEEEEE, this.connection);
       } else {
-        await this.connection.write(new Uint8Array([0xee, 0xee, 0xee, 0xee]));
+        await this.connection.write(new Uint8Array([0xEE, 0xEE, 0xEE, 0xEE]));
       }
       this.initialized = true;
     } else {
