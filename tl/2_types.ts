@@ -1301,7 +1301,7 @@ export class PQInnerDataDC extends TypePQInnerData {
   dc: number;
 
   protected get [id]() {
-    return 0xa9f55f95;
+    return 0xA9F55F95;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -1351,7 +1351,7 @@ export class PQInnerDataTempDC extends TypePQInnerData {
   expiresIn: number;
 
   protected get [id]() {
-    return 0x56fddf88;
+    return 0x56FDDF88;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -1399,7 +1399,7 @@ export class ServerDHParamsOK extends TypeServerDHParams {
   encryptedAnswer: Uint8Array;
 
   protected get [id]() {
-    return 0xd0e8075c;
+    return 0xD0E8075C;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -1435,7 +1435,7 @@ export class ServerDHInnerData extends TypeServerDHInnerData {
   serverTime: number;
 
   protected get [id]() {
-    return 0xb5890dba;
+    return 0xB5890DBA;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -1478,7 +1478,7 @@ export class ClientDHInnerData extends TypeClientDHInnerData {
   gB: Uint8Array;
 
   protected get [id]() {
-    return 0x6643b654;
+    return 0x6643B654;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -1514,7 +1514,7 @@ export class DHGenOK extends TypeSetClientDHParamsAnswer {
   newNonceHash1: bigint;
 
   protected get [id]() {
-    return 0x3bcbf734;
+    return 0x3BCBF734;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -1547,7 +1547,7 @@ export class DHGenRetry extends TypeSetClientDHParamsAnswer {
   newNonceHash2: bigint;
 
   protected get [id]() {
-    return 0x46dc1fb9;
+    return 0x46DC1FB9;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -1580,7 +1580,7 @@ export class DHGenFail extends TypeSetClientDHParamsAnswer {
   newNonceHash3: bigint;
 
   protected get [id]() {
-    return 0xa69dae02;
+    return 0xA69DAE02;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -1615,7 +1615,7 @@ export class BindAuthKeyInner extends TypeBindAuthKeyInner {
   expiresAt: number;
 
   protected get [id]() {
-    return 0x75a3f765;
+    return 0x75A3F765;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -1653,7 +1653,7 @@ export class RPCError extends TypeRpcError {
   errorMessage: string;
 
   protected get [id]() {
-    return 0x2144ca19;
+    return 0x2144CA19;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -1679,7 +1679,7 @@ export class RPCError extends TypeRpcError {
 
 export class RPCAnswerUnknown extends TypeRpcDropAnswer {
   protected get [id]() {
-    return 0x5e2ad36e;
+    return 0x5E2AD36E;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -1697,7 +1697,7 @@ export class RPCAnswerUnknown extends TypeRpcDropAnswer {
 
 export class RPCAnswerDroppedRunning extends TypeRpcDropAnswer {
   protected get [id]() {
-    return 0xcd78e586;
+    return 0xCD78E586;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -1719,7 +1719,7 @@ export class RPCAnswerDropped extends TypeRpcDropAnswer {
   bytes: number;
 
   protected get [id]() {
-    return 0xa43ad8b7;
+    return 0xA43AD8B7;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -1752,7 +1752,7 @@ export class FutureSalt extends TypeFutureSalt {
   salt: bigint;
 
   protected get [id]() {
-    return 0x0949d9dc;
+    return 0x0949D9DC;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -1785,7 +1785,7 @@ export class FutureSalts extends TypeFutureSalts {
   salts: Array<TypeFutureSalt>;
 
   protected get [id]() {
-    return 0xae500895;
+    return 0xAE500895;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -1817,7 +1817,7 @@ export class Pong extends TypePong {
   pingId: bigint;
 
   protected get [id]() {
-    return 0x347773c5;
+    return 0x347773C5;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -1845,7 +1845,7 @@ export class DestroySessionOK extends TypeDestroySessionRes {
   sessionId: bigint;
 
   protected get [id]() {
-    return 0xe22045fc;
+    return 0xE22045FC;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -1870,7 +1870,7 @@ export class DestroySessionNone extends TypeDestroySessionRes {
   sessionId: bigint;
 
   protected get [id]() {
-    return 0x62d350c9;
+    return 0x62D350C9;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -1897,7 +1897,7 @@ export class NewSessionCreated extends TypeNewSession {
   serverSalt: bigint;
 
   protected get [id]() {
-    return 0x9ec20908;
+    return 0x9EC20908;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -1928,7 +1928,7 @@ export class GZIPPacked extends TypeObject {
   packedData: Uint8Array;
 
   protected get [id]() {
-    return 0x3072cfa1;
+    return 0x3072CFA1;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -1953,7 +1953,7 @@ export class MsgsAck extends TypeMsgsAck {
   msgIds: Array<bigint>;
 
   protected get [id]() {
-    return 0x62d6b459;
+    return 0x62D6B459;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -1980,7 +1980,7 @@ export class BadMsgNotification extends TypeBadMsgNotification {
   errorCode: number;
 
   protected get [id]() {
-    return 0xa7eff811;
+    return 0xA7EFF811;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -2014,7 +2014,7 @@ export class BadServerSalt extends TypeBadMsgNotification {
   newServerSalt: bigint;
 
   protected get [id]() {
-    return 0xedab447b;
+    return 0xEDAB447B;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -2048,7 +2048,7 @@ export class MsgResendReq extends TypeMsgResendReq {
   msgIds: Array<bigint>;
 
   protected get [id]() {
-    return 0x7d861a08;
+    return 0x7D861A08;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -2073,7 +2073,7 @@ export class MsgsStateReq extends TypeMsgsStateReq {
   msgIds: Array<bigint>;
 
   protected get [id]() {
-    return 0xda69fb52;
+    return 0xDA69FB52;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -2099,7 +2099,7 @@ export class MsgsStateInfo extends TypeMsgsStateInfo {
   info: Uint8Array;
 
   protected get [id]() {
-    return 0x04deb57d;
+    return 0x04DEB57D;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -2128,7 +2128,7 @@ export class MsgsAllInfo extends TypeMsgsAllInfo {
   info: Uint8Array;
 
   protected get [id]() {
-    return 0x8cc0d131;
+    return 0x8CC0D131;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -2159,7 +2159,7 @@ export class MsgDetailedInfo extends TypeMsgDetailedInfo {
   status: number;
 
   protected get [id]() {
-    return 0x276d3ec6;
+    return 0x276D3EC6;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -2195,7 +2195,7 @@ export class MsgNewDetailedInfo extends TypeMsgDetailedInfo {
   status: number;
 
   protected get [id]() {
-    return 0x809db6df;
+    return 0x809DB6DF;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -2224,7 +2224,7 @@ export class MsgNewDetailedInfo extends TypeMsgDetailedInfo {
 
 export class DestroyAuthKeyOK extends TypeDestroyAuthKeyRes {
   protected get [id]() {
-    return 0xf660e1d4;
+    return 0xF660E1D4;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -2242,7 +2242,7 @@ export class DestroyAuthKeyOK extends TypeDestroyAuthKeyRes {
 
 export class DestroyAuthKeyNone extends TypeDestroyAuthKeyRes {
   protected get [id]() {
-    return 0x0a9f2259;
+    return 0x0A9F2259;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -2260,7 +2260,7 @@ export class DestroyAuthKeyNone extends TypeDestroyAuthKeyRes {
 
 export class DestroyAuthKeyFail extends TypeDestroyAuthKeyRes {
   protected get [id]() {
-    return 0xea109b13;
+    return 0xEA109B13;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -2282,7 +2282,7 @@ export class HTTPWait extends TypeHttpWait {
   maxWait: number;
 
   protected get [id]() {
-    return 0x9299359f;
+    return 0x9299359F;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -2311,7 +2311,7 @@ export class HTTPWait extends TypeHttpWait {
 
 export class True extends TypeTrue {
   protected get [id]() {
-    return 0x3fedd339;
+    return 0x3FEDD339;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -2332,7 +2332,7 @@ export class Error extends TypeError {
   text: string;
 
   protected get [id]() {
-    return 0xc4b9f9bb;
+    return 0xC4B9F9BB;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -2358,7 +2358,7 @@ export class Error extends TypeError {
 
 export class Null extends TypeNull {
   protected get [id]() {
-    return 0x56730bcc;
+    return 0x56730BCC;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -2376,7 +2376,7 @@ export class Null extends TypeNull {
 
 export class InputPeerEmpty extends TypeInputPeer {
   protected get [id]() {
-    return 0x7f3b18ea;
+    return 0x7F3B18EA;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -2394,7 +2394,7 @@ export class InputPeerEmpty extends TypeInputPeer {
 
 export class InputPeerSelf extends TypeInputPeer {
   protected get [id]() {
-    return 0x7da07ec9;
+    return 0x7DA07EC9;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -2414,7 +2414,7 @@ export class InputPeerChat extends TypeInputPeer {
   chatId: bigint;
 
   protected get [id]() {
-    return 0x35a95cb9;
+    return 0x35A95CB9;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -2440,7 +2440,7 @@ export class InputPeerUser extends TypeInputPeer {
   accessHash: bigint;
 
   protected get [id]() {
-    return 0xdde8a54c;
+    return 0xDDE8A54C;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -2469,7 +2469,7 @@ export class InputPeerChannel extends TypeInputPeer {
   accessHash: bigint;
 
   protected get [id]() {
-    return 0x27bcbbfc;
+    return 0x27BCBBFC;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -2499,7 +2499,7 @@ export class InputPeerUserFromMessage extends TypeInputPeer {
   userId: bigint;
 
   protected get [id]() {
-    return 0xa87b0a1c;
+    return 0xA87B0A1C;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -2532,7 +2532,7 @@ export class InputPeerChannelFromMessage extends TypeInputPeer {
   channelId: bigint;
 
   protected get [id]() {
-    return 0xbd2a0840;
+    return 0xBD2A0840;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -2561,7 +2561,7 @@ export class InputPeerChannelFromMessage extends TypeInputPeer {
 
 export class InputUserEmpty extends TypeInputUser {
   protected get [id]() {
-    return 0xb98886cf;
+    return 0xB98886CF;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -2579,7 +2579,7 @@ export class InputUserEmpty extends TypeInputUser {
 
 export class InputUserSelf extends TypeInputUser {
   protected get [id]() {
-    return 0xf7c1b13f;
+    return 0xF7C1B13F;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -2600,7 +2600,7 @@ export class InputUser extends TypeInputUser {
   accessHash: bigint;
 
   protected get [id]() {
-    return 0xf21158c6;
+    return 0xF21158C6;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -2630,7 +2630,7 @@ export class InputUserFromMessage extends TypeInputUser {
   userId: bigint;
 
   protected get [id]() {
-    return 0x1da448e2;
+    return 0x1DA448E2;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -2664,7 +2664,7 @@ export class InputPhoneContact extends TypeInputContact {
   lastName: string;
 
   protected get [id]() {
-    return 0xf392b7f4;
+    return 0xF392B7F4;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -2701,7 +2701,7 @@ export class InputFile extends TypeInputFile {
   md5Checksum: string;
 
   protected get [id]() {
-    return 0xf52ff27f;
+    return 0xF52FF27F;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -2737,7 +2737,7 @@ export class InputFileBig extends TypeInputFile {
   name: string;
 
   protected get [id]() {
-    return 0xfa4f0bb5;
+    return 0xFA4F0BB5;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -2766,7 +2766,7 @@ export class InputFileBig extends TypeInputFile {
 
 export class InputMediaEmpty extends TypeInputMedia {
   protected get [id]() {
-    return 0x9664f57f;
+    return 0x9664F57F;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -2789,7 +2789,7 @@ export class InputMediaUploadedPhoto extends TypeInputMedia {
   ttlSeconds?: number;
 
   protected get [id]() {
-    return 0x1e287d04;
+    return 0x1E287D04;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -2827,7 +2827,7 @@ export class InputMediaPhoto extends TypeInputMedia {
   ttlSeconds?: number;
 
   protected get [id]() {
-    return 0xb3ba0635;
+    return 0xB3BA0635;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -2860,7 +2860,7 @@ export class InputMediaGeoPoint extends TypeInputMedia {
   geoPoint: TypeInputGeoPoint;
 
   protected get [id]() {
-    return 0xf9c44144;
+    return 0xF9C44144;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -2888,7 +2888,7 @@ export class InputMediaContact extends TypeInputMedia {
   vcard: string;
 
   protected get [id]() {
-    return 0xf8ab7dfb;
+    return 0xF8AB7DFB;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -2930,7 +2930,7 @@ export class InputMediaUploadedDocument extends TypeInputMedia {
   ttlSeconds?: number;
 
   protected get [id]() {
-    return 0x5b38c6c1;
+    return 0x5B38C6C1;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -3025,7 +3025,7 @@ export class InputMediaVenue extends TypeInputMedia {
   venueType: string;
 
   protected get [id]() {
-    return 0xc13d1c11;
+    return 0xC13D1C11;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -3067,7 +3067,7 @@ export class InputMediaPhotoExternal extends TypeInputMedia {
   ttlSeconds?: number;
 
   protected get [id]() {
-    return 0xe5bbfe1a;
+    return 0xE5BBFE1A;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -3102,7 +3102,7 @@ export class InputMediaDocumentExternal extends TypeInputMedia {
   ttlSeconds?: number;
 
   protected get [id]() {
-    return 0xfb52dc99;
+    return 0xFB52DC99;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -3135,7 +3135,7 @@ export class InputMediaGame extends TypeInputMedia {
   id: TypeInputGame;
 
   protected get [id]() {
-    return 0xd33f43f3;
+    return 0xD33F43F3;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -3168,7 +3168,7 @@ export class InputMediaInvoice extends TypeInputMedia {
   extendedMedia?: TypeInputMedia;
 
   protected get [id]() {
-    return 0x8eb5a6d5;
+    return 0x8EB5A6D5;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -3223,7 +3223,7 @@ export class InputMediaGeoLive extends TypeInputMedia {
   proximityNotificationRadius?: number;
 
   protected get [id]() {
-    return 0x971fa843;
+    return 0x971FA843;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -3265,7 +3265,7 @@ export class InputMediaPoll extends TypeInputMedia {
   solutionEntities?: Array<TypeMessageEntity>;
 
   protected get [id]() {
-    return 0x0f94e5f1;
+    return 0x0F94E5F1;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -3301,7 +3301,7 @@ export class InputMediaDice extends TypeInputMedia {
   emoticon: string;
 
   protected get [id]() {
-    return 0xe66fbf7b;
+    return 0xE66FBF7B;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -3324,7 +3324,7 @@ export class InputMediaDice extends TypeInputMedia {
 
 export class InputChatPhotoEmpty extends TypeInputChatPhoto {
   protected get [id]() {
-    return 0x1ca48f57;
+    return 0x1CA48F57;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -3347,7 +3347,7 @@ export class InputChatUploadedPhoto extends TypeInputChatPhoto {
   videoEmojiMarkup?: TypeVideoSize;
 
   protected get [id]() {
-    return 0xbdcdaec0;
+    return 0xBDCDAEC0;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -3383,7 +3383,7 @@ export class InputChatPhoto extends TypeInputChatPhoto {
   id: TypeInputPhoto;
 
   protected get [id]() {
-    return 0x8953ad37;
+    return 0x8953AD37;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -3406,7 +3406,7 @@ export class InputChatPhoto extends TypeInputChatPhoto {
 
 export class InputGeoPointEmpty extends TypeInputGeoPoint {
   protected get [id]() {
-    return 0xe4c123d6;
+    return 0xE4C123D6;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -3428,7 +3428,7 @@ export class InputGeoPoint extends TypeInputGeoPoint {
   accuracyRadius?: number;
 
   protected get [id]() {
-    return 0x48222faf;
+    return 0x48222FAF;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -3459,7 +3459,7 @@ export class InputGeoPoint extends TypeInputGeoPoint {
 
 export class InputPhotoEmpty extends TypeInputPhoto {
   protected get [id]() {
-    return 0x1cd7bf0d;
+    return 0x1CD7BF0D;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -3481,7 +3481,7 @@ export class InputPhoto extends TypeInputPhoto {
   fileReference: Uint8Array;
 
   protected get [id]() {
-    return 0x3bb3b94a;
+    return 0x3BB3B94A;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -3515,7 +3515,7 @@ export class InputFileLocation extends TypeInputFileLocation {
   fileReference: Uint8Array;
 
   protected get [id]() {
-    return 0xdfdaabe1;
+    return 0xDFDAABE1;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -3550,7 +3550,7 @@ export class InputEncryptedFileLocation extends TypeInputFileLocation {
   accessHash: bigint;
 
   protected get [id]() {
-    return 0xf5235d55;
+    return 0xF5235D55;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -3581,7 +3581,7 @@ export class InputDocumentFileLocation extends TypeInputFileLocation {
   thumbSize: string;
 
   protected get [id]() {
-    return 0xbad07584;
+    return 0xBAD07584;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -3616,7 +3616,7 @@ export class InputSecureFileLocation extends TypeInputFileLocation {
   accessHash: bigint;
 
   protected get [id]() {
-    return 0xcbc7ee28;
+    return 0xCBC7EE28;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -3642,7 +3642,7 @@ export class InputSecureFileLocation extends TypeInputFileLocation {
 
 export class InputTakeoutFileLocation extends TypeInputFileLocation {
   protected get [id]() {
-    return 0x29be5899;
+    return 0x29BE5899;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -3665,7 +3665,7 @@ export class InputPhotoFileLocation extends TypeInputFileLocation {
   thumbSize: string;
 
   protected get [id]() {
-    return 0x40181ffe;
+    return 0x40181FFE;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -3704,7 +3704,7 @@ export class InputPhotoLegacyFileLocation extends TypeInputFileLocation {
   secret: bigint;
 
   protected get [id]() {
-    return 0xd83466f3;
+    return 0xD83466F3;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -3746,7 +3746,7 @@ export class InputPeerPhotoFileLocation extends TypeInputFileLocation {
   photoId: bigint;
 
   protected get [id]() {
-    return 0x37257e99;
+    return 0x37257E99;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -3780,7 +3780,7 @@ export class InputStickerSetThumb extends TypeInputFileLocation {
   thumbVersion: number;
 
   protected get [id]() {
-    return 0x9d84f3db;
+    return 0x9D84F3DB;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -3812,7 +3812,7 @@ export class InputGroupCallStream extends TypeInputFileLocation {
   videoQuality?: number;
 
   protected get [id]() {
-    return 0x0598a92a;
+    return 0x0598A92A;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -3876,7 +3876,7 @@ export class PeerChat extends TypePeer {
   chatId: bigint;
 
   protected get [id]() {
-    return 0x36c6019a;
+    return 0x36C6019A;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -3901,7 +3901,7 @@ export class PeerChannel extends TypePeer {
   channelId: bigint;
 
   protected get [id]() {
-    return 0xa2a5371e;
+    return 0xA2A5371E;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -3924,7 +3924,7 @@ export class PeerChannel extends TypePeer {
 
 export class StorageFileUnknown extends TypeStorageFileType {
   protected get [id]() {
-    return 0xaa963b05;
+    return 0xAA963B05;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -3942,7 +3942,7 @@ export class StorageFileUnknown extends TypeStorageFileType {
 
 export class StorageFilePartial extends TypeStorageFileType {
   protected get [id]() {
-    return 0x40bc6f52;
+    return 0x40BC6F52;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -3960,7 +3960,7 @@ export class StorageFilePartial extends TypeStorageFileType {
 
 export class StorageFileJpeg extends TypeStorageFileType {
   protected get [id]() {
-    return 0x007efe0e;
+    return 0x007EFE0E;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -3978,7 +3978,7 @@ export class StorageFileJpeg extends TypeStorageFileType {
 
 export class StorageFileGif extends TypeStorageFileType {
   protected get [id]() {
-    return 0xcae1aadf;
+    return 0xCAE1AADF;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -3996,7 +3996,7 @@ export class StorageFileGif extends TypeStorageFileType {
 
 export class StorageFilePng extends TypeStorageFileType {
   protected get [id]() {
-    return 0x0a4f63c0;
+    return 0x0A4F63C0;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -4014,7 +4014,7 @@ export class StorageFilePng extends TypeStorageFileType {
 
 export class StorageFilePdf extends TypeStorageFileType {
   protected get [id]() {
-    return 0xae1e508d;
+    return 0xAE1E508D;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -4032,7 +4032,7 @@ export class StorageFilePdf extends TypeStorageFileType {
 
 export class StorageFileMp3 extends TypeStorageFileType {
   protected get [id]() {
-    return 0x528a0677;
+    return 0x528A0677;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -4050,7 +4050,7 @@ export class StorageFileMp3 extends TypeStorageFileType {
 
 export class StorageFileMov extends TypeStorageFileType {
   protected get [id]() {
-    return 0x4b09ebbc;
+    return 0x4B09EBBC;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -4068,7 +4068,7 @@ export class StorageFileMov extends TypeStorageFileType {
 
 export class StorageFileMp4 extends TypeStorageFileType {
   protected get [id]() {
-    return 0xb3cea0e4;
+    return 0xB3CEA0E4;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -4086,7 +4086,7 @@ export class StorageFileMp4 extends TypeStorageFileType {
 
 export class StorageFileWebp extends TypeStorageFileType {
   protected get [id]() {
-    return 0x1081464c;
+    return 0x1081464C;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -4106,7 +4106,7 @@ export class UserEmpty extends TypeUser {
   id: bigint;
 
   protected get [id]() {
-    return 0xd3bc4b7a;
+    return 0xD3BC4B7A;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -4163,7 +4163,7 @@ export class User extends TypeUser {
   usernames?: Array<TypeUsername>;
 
   protected get [id]() {
-    return 0x8f97c628;
+    return 0x8F97C628;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -4322,7 +4322,7 @@ export class User extends TypeUser {
 
 export class UserProfilePhotoEmpty extends TypeUserProfilePhoto {
   protected get [id]() {
-    return 0x4f11bae1;
+    return 0x4F11BAE1;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -4346,7 +4346,7 @@ export class UserProfilePhoto extends TypeUserProfilePhoto {
   dcId: number;
 
   protected get [id]() {
-    return 0x82d1f706;
+    return 0x82D1F706;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -4383,7 +4383,7 @@ export class UserProfilePhoto extends TypeUserProfilePhoto {
 
 export class UserStatusEmpty extends TypeUserStatus {
   protected get [id]() {
-    return 0x09d05049;
+    return 0x09D05049;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -4403,7 +4403,7 @@ export class UserStatusOnline extends TypeUserStatus {
   expires: number;
 
   protected get [id]() {
-    return 0xedb93949;
+    return 0xEDB93949;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -4428,7 +4428,7 @@ export class UserStatusOffline extends TypeUserStatus {
   wasOnline: number;
 
   protected get [id]() {
-    return 0x008c703f;
+    return 0x008C703F;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -4451,7 +4451,7 @@ export class UserStatusOffline extends TypeUserStatus {
 
 export class UserStatusRecently extends TypeUserStatus {
   protected get [id]() {
-    return 0xe26f42f1;
+    return 0xE26F42F1;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -4469,7 +4469,7 @@ export class UserStatusRecently extends TypeUserStatus {
 
 export class UserStatusLastWeek extends TypeUserStatus {
   protected get [id]() {
-    return 0x07bf09fc;
+    return 0x07BF09FC;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -4487,7 +4487,7 @@ export class UserStatusLastWeek extends TypeUserStatus {
 
 export class UserStatusLastMonth extends TypeUserStatus {
   protected get [id]() {
-    return 0x77ebc742;
+    return 0x77EBC742;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -4546,7 +4546,7 @@ export class Chat extends TypeChat {
   defaultBannedRights?: TypeChatBannedRights;
 
   protected get [id]() {
-    return 0x41cbf256;
+    return 0x41CBF256;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -4616,7 +4616,7 @@ export class ChatForbidden extends TypeChat {
   title: string;
 
   protected get [id]() {
-    return 0x6592a1a7;
+    return 0x6592A1A7;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -4837,7 +4837,7 @@ export class ChannelForbidden extends TypeChat {
   untilDate?: number;
 
   protected get [id]() {
-    return 0x17d493d5;
+    return 0x17D493D5;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -4897,7 +4897,7 @@ export class ChatFull extends TypeChatFull {
   availableReactions?: TypeChatReactions;
 
   protected get [id]() {
-    return 0xc9d31138;
+    return 0xC9D31138;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -5046,7 +5046,7 @@ export class ChannelFull extends TypeChatFull {
   availableReactions?: TypeChatReactions;
 
   protected get [id]() {
-    return 0xf2355507;
+    return 0xF2355507;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -5265,7 +5265,7 @@ export class ChatParticipant extends TypeChatParticipant {
   date: number;
 
   protected get [id]() {
-    return 0xc02d4007;
+    return 0xC02D4007;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -5296,7 +5296,7 @@ export class ChatParticipantCreator extends TypeChatParticipant {
   userId: bigint;
 
   protected get [id]() {
-    return 0xe46bcee4;
+    return 0xE46BCEE4;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -5323,7 +5323,7 @@ export class ChatParticipantAdmin extends TypeChatParticipant {
   date: number;
 
   protected get [id]() {
-    return 0xa0933f5b;
+    return 0xA0933F5B;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -5355,7 +5355,7 @@ export class ChatParticipantsForbidden extends TypeChatParticipants {
   selfParticipant?: TypeChatParticipant;
 
   protected get [id]() {
-    return 0x8763d3e1;
+    return 0x8763D3E1;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -5387,7 +5387,7 @@ export class ChatParticipants extends TypeChatParticipants {
   version: number;
 
   protected get [id]() {
-    return 0x3cbc93f8;
+    return 0x3CBC93F8;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -5416,7 +5416,7 @@ export class ChatParticipants extends TypeChatParticipants {
 
 export class ChatPhotoEmpty extends TypeChatPhoto {
   protected get [id]() {
-    return 0x37c1011c;
+    return 0x37C1011C;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -5439,7 +5439,7 @@ export class ChatPhoto extends TypeChatPhoto {
   dcId: number;
 
   protected get [id]() {
-    return 0x1c6e1c11;
+    return 0x1C6E1C11;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -5476,7 +5476,7 @@ export class MessageEmpty extends TypeMessage {
   peerId?: TypePeer;
 
   protected get [id]() {
-    return 0x90a6ca84;
+    return 0x90A6CA84;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -5535,7 +5535,7 @@ export class Message extends TypeMessage {
   ttlPeriod?: number;
 
   protected get [id]() {
-    return 0x38116ee0;
+    return 0x38116EE0;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -5694,7 +5694,7 @@ export class MessageService extends TypeMessage {
   ttlPeriod?: number;
 
   protected get [id]() {
-    return 0x2b085862;
+    return 0x2B085862;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -5755,7 +5755,7 @@ export class MessageService extends TypeMessage {
 
 export class MessageMediaEmpty extends TypeMessageMedia {
   protected get [id]() {
-    return 0x3ded6320;
+    return 0x3DED6320;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -5777,7 +5777,7 @@ export class MessageMediaPhoto extends TypeMessageMedia {
   ttlSeconds?: number;
 
   protected get [id]() {
-    return 0x695150d7;
+    return 0x695150D7;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -5810,7 +5810,7 @@ export class MessageMediaGeo extends TypeMessageMedia {
   geo: TypeGeoPoint;
 
   protected get [id]() {
-    return 0x56e0d474;
+    return 0x56E0D474;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -5874,7 +5874,7 @@ export class MessageMediaContact extends TypeMessageMedia {
 
 export class MessageMediaUnsupported extends TypeMessageMedia {
   protected get [id]() {
-    return 0x9f84f49e;
+    return 0x9F84F49E;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -5897,7 +5897,7 @@ export class MessageMediaDocument extends TypeMessageMedia {
   ttlSeconds?: number;
 
   protected get [id]() {
-    return 0x9cb070d7;
+    return 0x9CB070D7;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -5933,7 +5933,7 @@ export class MessageMediaWebPage extends TypeMessageMedia {
   webpage: TypeWebPage;
 
   protected get [id]() {
-    return 0xa32dd600;
+    return 0xA32DD600;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -5963,7 +5963,7 @@ export class MessageMediaVenue extends TypeMessageMedia {
   venueType: string;
 
   protected get [id]() {
-    return 0x2ec0533f;
+    return 0x2EC0533F;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -6003,7 +6003,7 @@ export class MessageMediaGame extends TypeMessageMedia {
   game: TypeGame;
 
   protected get [id]() {
-    return 0xfdb19008;
+    return 0xFDB19008;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -6037,7 +6037,7 @@ export class MessageMediaInvoice extends TypeMessageMedia {
   extendedMedia?: TypeMessageExtendedMedia;
 
   protected get [id]() {
-    return 0xf6a548d3;
+    return 0xF6A548D3;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -6094,7 +6094,7 @@ export class MessageMediaGeoLive extends TypeMessageMedia {
   proximityNotificationRadius?: number;
 
   protected get [id]() {
-    return 0xb940c666;
+    return 0xB940C666;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -6131,7 +6131,7 @@ export class MessageMediaPoll extends TypeMessageMedia {
   results: TypePollResults;
 
   protected get [id]() {
-    return 0x4bd6e798;
+    return 0x4BD6E798;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -6160,7 +6160,7 @@ export class MessageMediaDice extends TypeMessageMedia {
   emoticon: string;
 
   protected get [id]() {
-    return 0x3f7ee58b;
+    return 0x3F7EE58B;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -6186,7 +6186,7 @@ export class MessageMediaDice extends TypeMessageMedia {
 
 export class MessageActionEmpty extends TypeMessageAction {
   protected get [id]() {
-    return 0xb6aef7b0;
+    return 0xB6AEF7B0;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -6207,7 +6207,7 @@ export class MessageActionChatCreate extends TypeMessageAction {
   users: Array<bigint>;
 
   protected get [id]() {
-    return 0xbd47cbad;
+    return 0xBD47CBAD;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -6235,7 +6235,7 @@ export class MessageActionChatEditTitle extends TypeMessageAction {
   title: string;
 
   protected get [id]() {
-    return 0xb5a1ce5a;
+    return 0xB5A1CE5A;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -6260,7 +6260,7 @@ export class MessageActionChatEditPhoto extends TypeMessageAction {
   photo: TypePhoto;
 
   protected get [id]() {
-    return 0x7fcb13a8;
+    return 0x7FCB13A8;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -6283,7 +6283,7 @@ export class MessageActionChatEditPhoto extends TypeMessageAction {
 
 export class MessageActionChatDeletePhoto extends TypeMessageAction {
   protected get [id]() {
-    return 0x95e3fbef;
+    return 0x95E3FBEF;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -6303,7 +6303,7 @@ export class MessageActionChatAddUser extends TypeMessageAction {
   users: Array<bigint>;
 
   protected get [id]() {
-    return 0x15cefd00;
+    return 0x15CEFD00;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -6328,7 +6328,7 @@ export class MessageActionChatDeleteUser extends TypeMessageAction {
   userId: bigint;
 
   protected get [id]() {
-    return 0xa43f30cc;
+    return 0xA43F30CC;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -6353,7 +6353,7 @@ export class MessageActionChatJoinedByLink extends TypeMessageAction {
   inviterId: bigint;
 
   protected get [id]() {
-    return 0x031224c3;
+    return 0x031224C3;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -6378,7 +6378,7 @@ export class MessageActionChannelCreate extends TypeMessageAction {
   title: string;
 
   protected get [id]() {
-    return 0x95d2ac92;
+    return 0x95D2AC92;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -6403,7 +6403,7 @@ export class MessageActionChatMigrateTo extends TypeMessageAction {
   channelId: bigint;
 
   protected get [id]() {
-    return 0xe1037f92;
+    return 0xE1037F92;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -6429,7 +6429,7 @@ export class MessageActionChannelMigrateFrom extends TypeMessageAction {
   chatId: bigint;
 
   protected get [id]() {
-    return 0xea3948e9;
+    return 0xEA3948E9;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -6455,7 +6455,7 @@ export class MessageActionChannelMigrateFrom extends TypeMessageAction {
 
 export class MessageActionPinMessage extends TypeMessageAction {
   protected get [id]() {
-    return 0x94bd38ed;
+    return 0x94BD38ED;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -6473,7 +6473,7 @@ export class MessageActionPinMessage extends TypeMessageAction {
 
 export class MessageActionHistoryClear extends TypeMessageAction {
   protected get [id]() {
-    return 0x9fbab604;
+    return 0x9FBAB604;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -6494,7 +6494,7 @@ export class MessageActionGameScore extends TypeMessageAction {
   score: number;
 
   protected get [id]() {
-    return 0x92a72876;
+    return 0x92A72876;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -6529,7 +6529,7 @@ export class MessageActionPaymentSentMe extends TypeMessageAction {
   charge: TypePaymentCharge;
 
   protected get [id]() {
-    return 0x8f31b327;
+    return 0x8F31B327;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -6581,7 +6581,7 @@ export class MessageActionPaymentSent extends TypeMessageAction {
   invoiceSlug?: string;
 
   protected get [id]() {
-    return 0x96163f56;
+    return 0x96163F56;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -6623,7 +6623,7 @@ export class MessageActionPhoneCall extends TypeMessageAction {
   duration?: number;
 
   protected get [id]() {
-    return 0x80e11a7f;
+    return 0x80E11A7F;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -6657,7 +6657,7 @@ export class MessageActionPhoneCall extends TypeMessageAction {
 
 export class MessageActionScreenshotTaken extends TypeMessageAction {
   protected get [id]() {
-    return 0x4792929b;
+    return 0x4792929B;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -6677,7 +6677,7 @@ export class MessageActionCustomAction extends TypeMessageAction {
   message: string;
 
   protected get [id]() {
-    return 0xfae69f56;
+    return 0xFAE69F56;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -6704,7 +6704,7 @@ export class MessageActionBotAllowed extends TypeMessageAction {
   app?: TypeBotApp;
 
   protected get [id]() {
-    return 0xc516d679;
+    return 0xC516D679;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -6738,7 +6738,7 @@ export class MessageActionSecureValuesSentMe extends TypeMessageAction {
   credentials: TypeSecureCredentialsEncrypted;
 
   protected get [id]() {
-    return 0x1b287353;
+    return 0x1B287353;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -6766,7 +6766,7 @@ export class MessageActionSecureValuesSent extends TypeMessageAction {
   types: Array<TypeSecureValueType>;
 
   protected get [id]() {
-    return 0xd95c6154;
+    return 0xD95C6154;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -6789,7 +6789,7 @@ export class MessageActionSecureValuesSent extends TypeMessageAction {
 
 export class MessageActionContactSignUp extends TypeMessageAction {
   protected get [id]() {
-    return 0xf3f25f76;
+    return 0xF3F25F76;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -6811,7 +6811,7 @@ export class MessageActionGeoProximityReached extends TypeMessageAction {
   distance: number;
 
   protected get [id]() {
-    return 0x98e0d697;
+    return 0x98E0D697;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -6843,7 +6843,7 @@ export class MessageActionGroupCall extends TypeMessageAction {
   duration?: number;
 
   protected get [id]() {
-    return 0x7a0d7f42;
+    return 0x7A0D7F42;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -6874,7 +6874,7 @@ export class MessageActionInviteToGroupCall extends TypeMessageAction {
   users: Array<bigint>;
 
   protected get [id]() {
-    return 0x502f92f7;
+    return 0x502F92F7;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -6903,7 +6903,7 @@ export class MessageActionSetMessagesTTL extends TypeMessageAction {
   autoSettingFrom?: bigint;
 
   protected get [id]() {
-    return 0x3c134d7b;
+    return 0x3C134D7B;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -6934,7 +6934,7 @@ export class MessageActionGroupCallScheduled extends TypeMessageAction {
   scheduleDate: number;
 
   protected get [id]() {
-    return 0xb3a07661;
+    return 0xB3A07661;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -6962,7 +6962,7 @@ export class MessageActionSetChatTheme extends TypeMessageAction {
   emoticon: string;
 
   protected get [id]() {
-    return 0xaa786345;
+    return 0xAA786345;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -6985,7 +6985,7 @@ export class MessageActionSetChatTheme extends TypeMessageAction {
 
 export class MessageActionChatJoinedByRequest extends TypeMessageAction {
   protected get [id]() {
-    return 0xebbca3cb;
+    return 0xEBBCA3CB;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -7006,7 +7006,7 @@ export class MessageActionWebViewDataSentMe extends TypeMessageAction {
   data: string;
 
   protected get [id]() {
-    return 0x47dd8079;
+    return 0x47DD8079;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -7034,7 +7034,7 @@ export class MessageActionWebViewDataSent extends TypeMessageAction {
   text: string;
 
   protected get [id]() {
-    return 0xb4c38cb5;
+    return 0xB4C38CB5;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -7061,7 +7061,7 @@ export class MessageActionGiftPremium extends TypeMessageAction {
   months: number;
 
   protected get [id]() {
-    return 0xaba0f5c6;
+    return 0xABA0F5C6;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -7094,7 +7094,7 @@ export class MessageActionTopicCreate extends TypeMessageAction {
   iconEmojiId?: bigint;
 
   protected get [id]() {
-    return 0x0d999256;
+    return 0x0D999256;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -7130,7 +7130,7 @@ export class MessageActionTopicEdit extends TypeMessageAction {
   hidden?: boolean;
 
   protected get [id]() {
-    return 0xc0944820;
+    return 0xC0944820;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -7166,7 +7166,7 @@ export class MessageActionSuggestProfilePhoto extends TypeMessageAction {
   photo: TypePhoto;
 
   protected get [id]() {
-    return 0x57de635e;
+    return 0x57DE635E;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -7192,7 +7192,7 @@ export class MessageActionRequestedPeer extends TypeMessageAction {
   peer: TypePeer;
 
   protected get [id]() {
-    return 0xfe77345d;
+    return 0xFE77345D;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -7233,7 +7233,7 @@ export class Dialog extends TypeDialog {
   ttlPeriod?: number;
 
   protected get [id]() {
-    return 0xd58a08c6;
+    return 0xD58A08C6;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -7306,7 +7306,7 @@ export class DialogFolder extends TypeDialog {
   unreadUnmutedMessagesCount: number;
 
   protected get [id]() {
-    return 0x71bd134c;
+    return 0x71BD134C;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -7354,7 +7354,7 @@ export class PhotoEmpty extends TypePhoto {
   id: bigint;
 
   protected get [id]() {
-    return 0x2331b22d;
+    return 0x2331B22D;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -7386,7 +7386,7 @@ export class Photo extends TypePhoto {
   dcId: number;
 
   protected get [id]() {
-    return 0xfb197a65;
+    return 0xFB197A65;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -7434,7 +7434,7 @@ export class PhotoSizeEmpty extends TypePhotoSize {
   type: string;
 
   protected get [id]() {
-    return 0x0e17e23c;
+    return 0x0E17E23C;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -7462,7 +7462,7 @@ export class PhotoSize extends TypePhotoSize {
   size: number;
 
   protected get [id]() {
-    return 0x75c78e60;
+    return 0x75C78E60;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -7499,7 +7499,7 @@ export class PhotoCachedSize extends TypePhotoSize {
   bytes: Uint8Array;
 
   protected get [id]() {
-    return 0x021e1ad6;
+    return 0x021E1AD6;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -7534,7 +7534,7 @@ export class PhotoStrippedSize extends TypePhotoSize {
   bytes: Uint8Array;
 
   protected get [id]() {
-    return 0xe0b0bc2e;
+    return 0xE0B0BC2E;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -7565,7 +7565,7 @@ export class PhotoSizeProgressive extends TypePhotoSize {
   sizes: Array<number>;
 
   protected get [id]() {
-    return 0xfa3efb95;
+    return 0xFA3EFB95;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -7600,7 +7600,7 @@ export class PhotoPathSize extends TypePhotoSize {
   bytes: Uint8Array;
 
   protected get [id]() {
-    return 0xd8214d41;
+    return 0xD8214D41;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -7626,7 +7626,7 @@ export class PhotoPathSize extends TypePhotoSize {
 
 export class GeoPointEmpty extends TypeGeoPoint {
   protected get [id]() {
-    return 0x1117dd5f;
+    return 0x1117DD5F;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -7649,7 +7649,7 @@ export class GeoPoint extends TypeGeoPoint {
   accuracyRadius?: number;
 
   protected get [id]() {
-    return 0xb2a2f663;
+    return 0xB2A2F663;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -7688,7 +7688,7 @@ export class AuthSentCode extends TypeAuthSentCode {
   timeout?: number;
 
   protected get [id]() {
-    return 0x5e002502;
+    return 0x5E002502;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -7724,7 +7724,7 @@ export class AuthSentCodeSuccess extends TypeAuthSentCode {
   authorization: TypeAuthAuthorization;
 
   protected get [id]() {
-    return 0x2390fe44;
+    return 0x2390FE44;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -7753,7 +7753,7 @@ export class AuthAuthorization extends TypeAuthAuthorization {
   user: TypeUser;
 
   protected get [id]() {
-    return 0x2ea2c0d4;
+    return 0x2EA2C0D4;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -7792,7 +7792,7 @@ export class AuthAuthorizationSignUpRequired extends TypeAuthAuthorization {
   termsOfService?: TypeHelpTermsOfService;
 
   protected get [id]() {
-    return 0x44747e9a;
+    return 0x44747E9A;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -7820,7 +7820,7 @@ export class AuthExportedAuthorization extends TypeAuthExportedAuthorization {
   bytes: Uint8Array;
 
   protected get [id]() {
-    return 0xb434e2b8;
+    return 0xB434E2B8;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -7848,7 +7848,7 @@ export class InputNotifyPeer extends TypeInputNotifyPeer {
   peer: TypeInputPeer;
 
   protected get [id]() {
-    return 0xb8bc5b0c;
+    return 0xB8BC5B0C;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -7871,7 +7871,7 @@ export class InputNotifyPeer extends TypeInputNotifyPeer {
 
 export class InputNotifyUsers extends TypeInputNotifyPeer {
   protected get [id]() {
-    return 0x193b4417;
+    return 0x193B4417;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -7889,7 +7889,7 @@ export class InputNotifyUsers extends TypeInputNotifyPeer {
 
 export class InputNotifyChats extends TypeInputNotifyPeer {
   protected get [id]() {
-    return 0x4a95e84e;
+    return 0x4A95E84E;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -7907,7 +7907,7 @@ export class InputNotifyChats extends TypeInputNotifyPeer {
 
 export class InputNotifyBroadcasts extends TypeInputNotifyPeer {
   protected get [id]() {
-    return 0xb1db7c7e;
+    return 0xB1DB7C7E;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -7928,7 +7928,7 @@ export class InputNotifyForumTopic extends TypeInputNotifyPeer {
   topMsgId: number;
 
   protected get [id]() {
-    return 0x5c467992;
+    return 0x5C467992;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -7959,7 +7959,7 @@ export class InputPeerNotifySettings extends TypeInputPeerNotifySettings {
   sound?: TypeNotificationSound;
 
   protected get [id]() {
-    return 0xdf1f002b;
+    return 0xDF1F002B;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -8000,7 +8000,7 @@ export class PeerNotifySettings extends TypePeerNotifySettings {
   otherSound?: TypeNotificationSound;
 
   protected get [id]() {
-    return 0xa83b0426;
+    return 0xA83B0426;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -8053,7 +8053,7 @@ export class PeerSettings extends TypePeerSettings {
   requestChatDate?: number;
 
   protected get [id]() {
-    return 0xa518110d;
+    return 0xA518110D;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -8121,7 +8121,7 @@ export class WallPaper extends TypeWallPaper {
   settings?: TypeWallPaperSettings;
 
   protected get [id]() {
-    return 0xa437c3ed;
+    return 0xA437C3ED;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -8175,7 +8175,7 @@ export class WallPaperNoFile extends TypeWallPaper {
   settings?: TypeWallPaperSettings;
 
   protected get [id]() {
-    return 0xe0804116;
+    return 0xE0804116;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -8209,7 +8209,7 @@ export class WallPaperNoFile extends TypeWallPaper {
 
 export class InputReportReasonSpam extends TypeReportReason {
   protected get [id]() {
-    return 0x58dbcab8;
+    return 0x58DBCAB8;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -8227,7 +8227,7 @@ export class InputReportReasonSpam extends TypeReportReason {
 
 export class InputReportReasonViolence extends TypeReportReason {
   protected get [id]() {
-    return 0x1e22c78d;
+    return 0x1E22C78D;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -8245,7 +8245,7 @@ export class InputReportReasonViolence extends TypeReportReason {
 
 export class InputReportReasonPornography extends TypeReportReason {
   protected get [id]() {
-    return 0x2e59d922;
+    return 0x2E59D922;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -8263,7 +8263,7 @@ export class InputReportReasonPornography extends TypeReportReason {
 
 export class InputReportReasonChildAbuse extends TypeReportReason {
   protected get [id]() {
-    return 0xadf44ee3;
+    return 0xADF44EE3;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -8281,7 +8281,7 @@ export class InputReportReasonChildAbuse extends TypeReportReason {
 
 export class InputReportReasonOther extends TypeReportReason {
   protected get [id]() {
-    return 0xc1e4a2b1;
+    return 0xC1E4A2B1;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -8299,7 +8299,7 @@ export class InputReportReasonOther extends TypeReportReason {
 
 export class InputReportReasonCopyright extends TypeReportReason {
   protected get [id]() {
-    return 0x9b89f93a;
+    return 0x9B89F93A;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -8317,7 +8317,7 @@ export class InputReportReasonCopyright extends TypeReportReason {
 
 export class InputReportReasonGeoIrrelevant extends TypeReportReason {
   protected get [id]() {
-    return 0xdbd4feed;
+    return 0xDBD4FEED;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -8335,7 +8335,7 @@ export class InputReportReasonGeoIrrelevant extends TypeReportReason {
 
 export class InputReportReasonFake extends TypeReportReason {
   protected get [id]() {
-    return 0xf5ddd6e7;
+    return 0xF5DDD6E7;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -8353,7 +8353,7 @@ export class InputReportReasonFake extends TypeReportReason {
 
 export class InputReportReasonIllegalDrugs extends TypeReportReason {
   protected get [id]() {
-    return 0x0a8eb2be;
+    return 0x0A8EB2BE;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -8371,7 +8371,7 @@ export class InputReportReasonIllegalDrugs extends TypeReportReason {
 
 export class InputReportReasonPersonalDetails extends TypeReportReason {
   protected get [id]() {
-    return 0x9ec7863d;
+    return 0x9EC7863D;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -8415,7 +8415,7 @@ export class UserFull extends TypeUserFull {
   premiumGifts?: Array<TypePremiumGiftOption>;
 
   protected get [id]() {
-    return 0xf8d32aed;
+    return 0xF8D32AED;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -8543,7 +8543,7 @@ export class Contact extends TypeContact {
   mutual: boolean;
 
   protected get [id]() {
-    return 0x145ade0b;
+    return 0x145ADE0B;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -8572,7 +8572,7 @@ export class ImportedContact extends TypeImportedContact {
   clientId: bigint;
 
   protected get [id]() {
-    return 0xc13e3c50;
+    return 0xC13E3C50;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -8601,7 +8601,7 @@ export class ContactStatus extends TypeContactStatus {
   status: TypeUserStatus;
 
   protected get [id]() {
-    return 0x16d9703b;
+    return 0x16D9703B;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -8627,7 +8627,7 @@ export class ContactStatus extends TypeContactStatus {
 
 export class ContactsContactsNotModified extends TypeContactsContacts {
   protected get [id]() {
-    return 0xb74ba9d2;
+    return 0xB74BA9D2;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -8649,7 +8649,7 @@ export class ContactsContacts extends TypeContactsContacts {
   users: Array<TypeUser>;
 
   protected get [id]() {
-    return 0xeae87e42;
+    return 0xEAE87E42;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -8683,7 +8683,7 @@ export class ContactsImportedContacts extends TypeContactsImportedContacts {
   users: Array<TypeUser>;
 
   protected get [id]() {
-    return 0x77d01c3b;
+    return 0x77D01C3B;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -8719,7 +8719,7 @@ export class ContactsBlocked extends TypeContactsBlocked {
   users: Array<TypeUser>;
 
   protected get [id]() {
-    return 0x0ade1591;
+    return 0x0ADE1591;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -8753,7 +8753,7 @@ export class ContactsBlockedSlice extends TypeContactsBlocked {
   users: Array<TypeUser>;
 
   protected get [id]() {
-    return 0xe1664194;
+    return 0xE1664194;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -8790,7 +8790,7 @@ export class MessagesDialogs extends TypeMessagesDialogs {
   users: Array<TypeUser>;
 
   protected get [id]() {
-    return 0x15ba6c40;
+    return 0x15BA6C40;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -8828,7 +8828,7 @@ export class MessagesDialogsSlice extends TypeMessagesDialogs {
   users: Array<TypeUser>;
 
   protected get [id]() {
-    return 0x71e094f3;
+    return 0x71E094F3;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -8865,7 +8865,7 @@ export class MessagesDialogsNotModified extends TypeMessagesDialogs {
   count: number;
 
   protected get [id]() {
-    return 0xf0e3e596;
+    return 0xF0E3E596;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -8892,7 +8892,7 @@ export class MessagesMessages extends TypeMessagesMessages {
   users: Array<TypeUser>;
 
   protected get [id]() {
-    return 0x8c718e87;
+    return 0x8C718E87;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -8929,7 +8929,7 @@ export class MessagesMessagesSlice extends TypeMessagesMessages {
   users: Array<TypeUser>;
 
   protected get [id]() {
-    return 0x3a54685e;
+    return 0x3A54685E;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -8981,7 +8981,7 @@ export class MessagesChannelMessages extends TypeMessagesMessages {
   users: Array<TypeUser>;
 
   protected get [id]() {
-    return 0xc776ba4e;
+    return 0xC776BA4E;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -9029,7 +9029,7 @@ export class MessagesMessagesNotModified extends TypeMessagesMessages {
   count: number;
 
   protected get [id]() {
-    return 0x74535f21;
+    return 0x74535F21;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -9054,7 +9054,7 @@ export class MessagesChats extends TypeMessagesChats {
   chats: Array<TypeChat>;
 
   protected get [id]() {
-    return 0x64ff9fd5;
+    return 0x64FF9FD5;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -9080,7 +9080,7 @@ export class MessagesChatsSlice extends TypeMessagesChats {
   chats: Array<TypeChat>;
 
   protected get [id]() {
-    return 0x9cd81144;
+    return 0x9CD81144;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -9110,7 +9110,7 @@ export class MessagesChatFull extends TypeMessagesChatFull {
   users: Array<TypeUser>;
 
   protected get [id]() {
-    return 0xe5d7d19c;
+    return 0xE5D7D19C;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -9143,7 +9143,7 @@ export class MessagesAffectedHistory extends TypeMessagesAffectedHistory {
   offset: number;
 
   protected get [id]() {
-    return 0xb45c69d1;
+    return 0xB45C69D1;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -9172,7 +9172,7 @@ export class MessagesAffectedHistory extends TypeMessagesAffectedHistory {
 
 export class InputMessagesFilterEmpty extends TypeMessagesFilter {
   protected get [id]() {
-    return 0x57e2f66c;
+    return 0x57E2F66C;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -9190,7 +9190,7 @@ export class InputMessagesFilterEmpty extends TypeMessagesFilter {
 
 export class InputMessagesFilterPhotos extends TypeMessagesFilter {
   protected get [id]() {
-    return 0x9609a51c;
+    return 0x9609A51C;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -9208,7 +9208,7 @@ export class InputMessagesFilterPhotos extends TypeMessagesFilter {
 
 export class InputMessagesFilterVideo extends TypeMessagesFilter {
   protected get [id]() {
-    return 0x9fc00e65;
+    return 0x9FC00E65;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -9226,7 +9226,7 @@ export class InputMessagesFilterVideo extends TypeMessagesFilter {
 
 export class InputMessagesFilterPhotoVideo extends TypeMessagesFilter {
   protected get [id]() {
-    return 0x56e9f0e4;
+    return 0x56E9F0E4;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -9244,7 +9244,7 @@ export class InputMessagesFilterPhotoVideo extends TypeMessagesFilter {
 
 export class InputMessagesFilterDocument extends TypeMessagesFilter {
   protected get [id]() {
-    return 0x9eddf188;
+    return 0x9EDDF188;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -9262,7 +9262,7 @@ export class InputMessagesFilterDocument extends TypeMessagesFilter {
 
 export class InputMessagesFilterURL extends TypeMessagesFilter {
   protected get [id]() {
-    return 0x7ef0dd87;
+    return 0x7EF0DD87;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -9280,7 +9280,7 @@ export class InputMessagesFilterURL extends TypeMessagesFilter {
 
 export class InputMessagesFilterGif extends TypeMessagesFilter {
   protected get [id]() {
-    return 0xffc86587;
+    return 0xFFC86587;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -9298,7 +9298,7 @@ export class InputMessagesFilterGif extends TypeMessagesFilter {
 
 export class InputMessagesFilterVoice extends TypeMessagesFilter {
   protected get [id]() {
-    return 0x50f5c392;
+    return 0x50F5C392;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -9316,7 +9316,7 @@ export class InputMessagesFilterVoice extends TypeMessagesFilter {
 
 export class InputMessagesFilterMusic extends TypeMessagesFilter {
   protected get [id]() {
-    return 0x3751b49e;
+    return 0x3751B49E;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -9334,7 +9334,7 @@ export class InputMessagesFilterMusic extends TypeMessagesFilter {
 
 export class InputMessagesFilterChatPhotos extends TypeMessagesFilter {
   protected get [id]() {
-    return 0x3a20ecb8;
+    return 0x3A20ECB8;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -9354,7 +9354,7 @@ export class InputMessagesFilterPhoneCalls extends TypeMessagesFilter {
   missed?: true;
 
   protected get [id]() {
-    return 0x80c99768;
+    return 0x80C99768;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -9379,7 +9379,7 @@ export class InputMessagesFilterPhoneCalls extends TypeMessagesFilter {
 
 export class InputMessagesFilterRoundVoice extends TypeMessagesFilter {
   protected get [id]() {
-    return 0x7a7c17a4;
+    return 0x7A7C17A4;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -9397,7 +9397,7 @@ export class InputMessagesFilterRoundVoice extends TypeMessagesFilter {
 
 export class InputMessagesFilterRoundVideo extends TypeMessagesFilter {
   protected get [id]() {
-    return 0xb549da53;
+    return 0xB549DA53;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -9415,7 +9415,7 @@ export class InputMessagesFilterRoundVideo extends TypeMessagesFilter {
 
 export class InputMessagesFilterMyMentions extends TypeMessagesFilter {
   protected get [id]() {
-    return 0xc1f8e69a;
+    return 0xC1F8E69A;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -9433,7 +9433,7 @@ export class InputMessagesFilterMyMentions extends TypeMessagesFilter {
 
 export class InputMessagesFilterGeo extends TypeMessagesFilter {
   protected get [id]() {
-    return 0xe7026d0d;
+    return 0xE7026D0D;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -9451,7 +9451,7 @@ export class InputMessagesFilterGeo extends TypeMessagesFilter {
 
 export class InputMessagesFilterContacts extends TypeMessagesFilter {
   protected get [id]() {
-    return 0xe062db83;
+    return 0xE062DB83;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -9469,7 +9469,7 @@ export class InputMessagesFilterContacts extends TypeMessagesFilter {
 
 export class InputMessagesFilterPinned extends TypeMessagesFilter {
   protected get [id]() {
-    return 0x1bb00451;
+    return 0x1BB00451;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -9491,7 +9491,7 @@ export class UpdateNewMessage extends TypeUpdate {
   ptsCount: number;
 
   protected get [id]() {
-    return 0x1f2b0afd;
+    return 0x1F2B0AFD;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -9523,7 +9523,7 @@ export class UpdateMessageID extends TypeUpdate {
   randomId: bigint;
 
   protected get [id]() {
-    return 0x4e90bfd6;
+    return 0x4E90BFD6;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -9553,7 +9553,7 @@ export class UpdateDeleteMessages extends TypeUpdate {
   ptsCount: number;
 
   protected get [id]() {
-    return 0xa20db0e5;
+    return 0xA20DB0E5;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -9585,7 +9585,7 @@ export class UpdateUserTyping extends TypeUpdate {
   action: TypeSendMessageAction;
 
   protected get [id]() {
-    return 0xc01e857f;
+    return 0xC01E857F;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -9615,7 +9615,7 @@ export class UpdateChatUserTyping extends TypeUpdate {
   action: TypeSendMessageAction;
 
   protected get [id]() {
-    return 0x83487af0;
+    return 0x83487AF0;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -9672,7 +9672,7 @@ export class UpdateUserStatus extends TypeUpdate {
   status: TypeUserStatus;
 
   protected get [id]() {
-    return 0xe5bdf8de;
+    return 0xE5BDF8DE;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -9703,7 +9703,7 @@ export class UpdateUserName extends TypeUpdate {
   usernames: Array<TypeUsername>;
 
   protected get [id]() {
-    return 0xa7848924;
+    return 0xA7848924;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -9738,7 +9738,7 @@ export class UpdateNewEncryptedMessage extends TypeUpdate {
   qts: number;
 
   protected get [id]() {
-    return 0x12bcbd9a;
+    return 0x12BCBD9A;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -9766,7 +9766,7 @@ export class UpdateEncryptedChatTyping extends TypeUpdate {
   chatId: number;
 
   protected get [id]() {
-    return 0x1710f156;
+    return 0x1710F156;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -9792,7 +9792,7 @@ export class UpdateEncryption extends TypeUpdate {
   date: number;
 
   protected get [id]() {
-    return 0xb4a2e88d;
+    return 0xB4A2E88D;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -9822,7 +9822,7 @@ export class UpdateEncryptedMessagesRead extends TypeUpdate {
   date: number;
 
   protected get [id]() {
-    return 0x38fe25b7;
+    return 0x38FE25B7;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -9857,7 +9857,7 @@ export class UpdateChatParticipantAdd extends TypeUpdate {
   version: number;
 
   protected get [id]() {
-    return 0x3dda5451;
+    return 0x3DDA5451;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -9896,7 +9896,7 @@ export class UpdateChatParticipantDelete extends TypeUpdate {
   version: number;
 
   protected get [id]() {
-    return 0xe32f3d77;
+    return 0xE32F3D77;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -9927,7 +9927,7 @@ export class UpdateDcOptions extends TypeUpdate {
   dcOptions: Array<TypeDcOption>;
 
   protected get [id]() {
-    return 0x8e5e9873;
+    return 0x8E5E9873;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -9953,7 +9953,7 @@ export class UpdateNotifySettings extends TypeUpdate {
   notifySettings: TypePeerNotifySettings;
 
   protected get [id]() {
-    return 0xbec268ef;
+    return 0xBEC268EF;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -9986,7 +9986,7 @@ export class UpdateServiceNotification extends TypeUpdate {
   entities: Array<TypeMessageEntity>;
 
   protected get [id]() {
-    return 0xebe46819;
+    return 0xEBE46819;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -10029,7 +10029,7 @@ export class UpdatePrivacy extends TypeUpdate {
   rules: Array<TypePrivacyRule>;
 
   protected get [id]() {
-    return 0xee3b272a;
+    return 0xEE3B272A;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -10058,7 +10058,7 @@ export class UpdateUserPhone extends TypeUpdate {
   phone: string;
 
   protected get [id]() {
-    return 0x05492a13;
+    return 0x05492A13;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -10091,7 +10091,7 @@ export class UpdateReadHistoryInbox extends TypeUpdate {
   ptsCount: number;
 
   protected get [id]() {
-    return 0x9c974fdf;
+    return 0x9C974FDF;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -10136,7 +10136,7 @@ export class UpdateReadHistoryOutbox extends TypeUpdate {
   ptsCount: number;
 
   protected get [id]() {
-    return 0x2f2f21bf;
+    return 0x2F2F21BF;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -10172,7 +10172,7 @@ export class UpdateWebPage extends TypeUpdate {
   ptsCount: number;
 
   protected get [id]() {
-    return 0x7f891213;
+    return 0x7F891213;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -10205,7 +10205,7 @@ export class UpdateReadMessagesContents extends TypeUpdate {
   ptsCount: number;
 
   protected get [id]() {
-    return 0x68c13933;
+    return 0x68C13933;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -10237,7 +10237,7 @@ export class UpdateChannelTooLong extends TypeUpdate {
   pts?: number;
 
   protected get [id]() {
-    return 0x108d941f;
+    return 0x108D941F;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -10267,7 +10267,7 @@ export class UpdateChannel extends TypeUpdate {
   channelId: bigint;
 
   protected get [id]() {
-    return 0x635b4c09;
+    return 0x635B4C09;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -10294,7 +10294,7 @@ export class UpdateNewChannelMessage extends TypeUpdate {
   ptsCount: number;
 
   protected get [id]() {
-    return 0x62ba04d9;
+    return 0x62BA04D9;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -10329,7 +10329,7 @@ export class UpdateReadChannelInbox extends TypeUpdate {
   pts: number;
 
   protected get [id]() {
-    return 0x922e6e10;
+    return 0x922E6E10;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -10371,7 +10371,7 @@ export class UpdateDeleteChannelMessages extends TypeUpdate {
   ptsCount: number;
 
   protected get [id]() {
-    return 0xc32d5b12;
+    return 0xC32D5B12;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -10407,7 +10407,7 @@ export class UpdateChannelMessageViews extends TypeUpdate {
   views: number;
 
   protected get [id]() {
-    return 0xf226ac08;
+    return 0xF226AC08;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -10441,7 +10441,7 @@ export class UpdateChatParticipantAdmin extends TypeUpdate {
   version: number;
 
   protected get [id]() {
-    return 0xd7ca61a2;
+    return 0xD7CA61A2;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -10475,7 +10475,7 @@ export class UpdateNewStickerSet extends TypeUpdate {
   stickerset: TypeMessagesStickerSet;
 
   protected get [id]() {
-    return 0x688a30aa;
+    return 0x688A30AA;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -10502,7 +10502,7 @@ export class UpdateStickerSetsOrder extends TypeUpdate {
   order: Array<bigint>;
 
   protected get [id]() {
-    return 0x0bb2d201;
+    return 0x0BB2D201;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -10536,7 +10536,7 @@ export class UpdateStickerSets extends TypeUpdate {
   emojis?: true;
 
   protected get [id]() {
-    return 0x31c24808;
+    return 0x31C24808;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -10564,7 +10564,7 @@ export class UpdateStickerSets extends TypeUpdate {
 
 export class UpdateSavedGifs extends TypeUpdate {
   protected get [id]() {
-    return 0x9375341e;
+    return 0x9375341E;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -10589,7 +10589,7 @@ export class UpdateBotInlineQuery extends TypeUpdate {
   offset: string;
 
   protected get [id]() {
-    return 0x496f379c;
+    return 0x496F379C;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -10635,7 +10635,7 @@ export class UpdateBotInlineSend extends TypeUpdate {
   msgId?: TypeInputBotInlineMessageID;
 
   protected get [id]() {
-    return 0x12f12a07;
+    return 0x12F12A07;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -10676,7 +10676,7 @@ export class UpdateEditChannelMessage extends TypeUpdate {
   ptsCount: number;
 
   protected get [id]() {
-    return 0x1b3f4df7;
+    return 0x1B3F4DF7;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -10713,7 +10713,7 @@ export class UpdateBotCallbackQuery extends TypeUpdate {
   gameShortName?: string;
 
   protected get [id]() {
-    return 0xb9cfc48d;
+    return 0xB9CFC48D;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -10760,7 +10760,7 @@ export class UpdateEditMessage extends TypeUpdate {
   ptsCount: number;
 
   protected get [id]() {
-    return 0xe40370a3;
+    return 0xE40370A3;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -10796,7 +10796,7 @@ export class UpdateInlineBotCallbackQuery extends TypeUpdate {
   gameShortName?: string;
 
   protected get [id]() {
-    return 0x691e9052;
+    return 0x691E9052;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -10839,7 +10839,7 @@ export class UpdateReadChannelOutbox extends TypeUpdate {
   maxId: number;
 
   protected get [id]() {
-    return 0xb75f99a9;
+    return 0xB75F99A9;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -10869,7 +10869,7 @@ export class UpdateDraftMessage extends TypeUpdate {
   draft: TypeDraftMessage;
 
   protected get [id]() {
-    return 0x1b49ec6d;
+    return 0x1B49EC6D;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -10900,7 +10900,7 @@ export class UpdateDraftMessage extends TypeUpdate {
 
 export class UpdateReadFeaturedStickers extends TypeUpdate {
   protected get [id]() {
-    return 0x571d2742;
+    return 0x571D2742;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -10918,7 +10918,7 @@ export class UpdateReadFeaturedStickers extends TypeUpdate {
 
 export class UpdateRecentStickers extends TypeUpdate {
   protected get [id]() {
-    return 0x9a422c20;
+    return 0x9A422C20;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -10936,7 +10936,7 @@ export class UpdateRecentStickers extends TypeUpdate {
 
 export class UpdateConfig extends TypeUpdate {
   protected get [id]() {
-    return 0xa229dd06;
+    return 0xA229DD06;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -10954,7 +10954,7 @@ export class UpdateConfig extends TypeUpdate {
 
 export class UpdatePtsChanged extends TypeUpdate {
   protected get [id]() {
-    return 0x3354678f;
+    return 0x3354678F;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -10977,7 +10977,7 @@ export class UpdateChannelWebPage extends TypeUpdate {
   ptsCount: number;
 
   protected get [id]() {
-    return 0x2f2ba99f;
+    return 0x2F2BA99F;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -11013,7 +11013,7 @@ export class UpdateDialogPinned extends TypeUpdate {
   peer: TypeDialogPeer;
 
   protected get [id]() {
-    return 0x6e6fe51c;
+    return 0x6E6FE51C;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -11047,7 +11047,7 @@ export class UpdatePinnedDialogs extends TypeUpdate {
   order?: Array<TypeDialogPeer>;
 
   protected get [id]() {
-    return 0xfa0f3ca2;
+    return 0xFA0F3CA2;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -11077,7 +11077,7 @@ export class UpdateBotWebhookJSON extends TypeUpdate {
   data: TypeDataJSON;
 
   protected get [id]() {
-    return 0x8317c0c3;
+    return 0x8317C0C3;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -11104,7 +11104,7 @@ export class UpdateBotWebhookJSONQuery extends TypeUpdate {
   timeout: number;
 
   protected get [id]() {
-    return 0x9b9240a6;
+    return 0x9B9240A6;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -11138,7 +11138,7 @@ export class UpdateBotShippingQuery extends TypeUpdate {
   shippingAddress: TypePostAddress;
 
   protected get [id]() {
-    return 0xb5aefd7d;
+    return 0xB5AEFD7D;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -11178,7 +11178,7 @@ export class UpdateBotPrecheckoutQuery extends TypeUpdate {
   totalAmount: bigint;
 
   protected get [id]() {
-    return 0x8caa9a96;
+    return 0x8CAA9A96;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -11223,7 +11223,7 @@ export class UpdatePhoneCall extends TypeUpdate {
   phoneCall: TypePhoneCall;
 
   protected get [id]() {
-    return 0xab0f6b1e;
+    return 0xAB0F6B1E;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -11273,7 +11273,7 @@ export class UpdateLangPack extends TypeUpdate {
   difference: TypeLangPackDifference;
 
   protected get [id]() {
-    return 0x56022f4d;
+    return 0x56022F4D;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -11296,7 +11296,7 @@ export class UpdateLangPack extends TypeUpdate {
 
 export class UpdateFavedStickers extends TypeUpdate {
   protected get [id]() {
-    return 0xe511996d;
+    return 0xE511996D;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -11318,7 +11318,7 @@ export class UpdateChannelReadMessagesContents extends TypeUpdate {
   messages: Array<number>;
 
   protected get [id]() {
-    return 0xea29055d;
+    return 0xEA29055D;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -11349,7 +11349,7 @@ export class UpdateChannelReadMessagesContents extends TypeUpdate {
 
 export class UpdateContactsReset extends TypeUpdate {
   protected get [id]() {
-    return 0x7084a7be;
+    return 0x7084A7BE;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -11370,7 +11370,7 @@ export class UpdateChannelAvailableMessages extends TypeUpdate {
   availableMinId: number;
 
   protected get [id]() {
-    return 0xb23fc698;
+    return 0xB23FC698;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -11399,7 +11399,7 @@ export class UpdateDialogUnreadMark extends TypeUpdate {
   peer: TypeDialogPeer;
 
   protected get [id]() {
-    return 0xe16459c3;
+    return 0xE16459C3;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -11431,7 +11431,7 @@ export class UpdateMessagePoll extends TypeUpdate {
   results: TypePollResults;
 
   protected get [id]() {
-    return 0xaca1657b;
+    return 0xACA1657B;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -11466,7 +11466,7 @@ export class UpdateChatDefaultBannedRights extends TypeUpdate {
   version: number;
 
   protected get [id]() {
-    return 0x54c01850;
+    return 0x54C01850;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -11499,7 +11499,7 @@ export class UpdateFolderPeers extends TypeUpdate {
   ptsCount: number;
 
   protected get [id]() {
-    return 0x19360dc0;
+    return 0x19360DC0;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -11531,7 +11531,7 @@ export class UpdatePeerSettings extends TypeUpdate {
   settings: TypePeerSettings;
 
   protected get [id]() {
-    return 0x6a7e7366;
+    return 0x6A7E7366;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -11559,7 +11559,7 @@ export class UpdatePeerLocated extends TypeUpdate {
   peers: Array<TypePeerLocated>;
 
   protected get [id]() {
-    return 0xb4afcfb0;
+    return 0xB4AFCFB0;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -11584,7 +11584,7 @@ export class UpdateNewScheduledMessage extends TypeUpdate {
   message: TypeMessage;
 
   protected get [id]() {
-    return 0x39a51dfb;
+    return 0x39A51DFB;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -11610,7 +11610,7 @@ export class UpdateDeleteScheduledMessages extends TypeUpdate {
   messages: Array<number>;
 
   protected get [id]() {
-    return 0x90866cee;
+    return 0x90866CEE;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -11638,7 +11638,7 @@ export class UpdateTheme extends TypeUpdate {
   theme: TypeTheme;
 
   protected get [id]() {
-    return 0x8216fba3;
+    return 0x8216FBA3;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -11664,7 +11664,7 @@ export class UpdateGeoLiveViewed extends TypeUpdate {
   msgId: number;
 
   protected get [id]() {
-    return 0x871fb939;
+    return 0x871FB939;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -11690,7 +11690,7 @@ export class UpdateGeoLiveViewed extends TypeUpdate {
 
 export class UpdateLoginToken extends TypeUpdate {
   protected get [id]() {
-    return 0x564fe691;
+    return 0x564FE691;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -11713,7 +11713,7 @@ export class UpdateMessagePollVote extends TypeUpdate {
   qts: number;
 
   protected get [id]() {
-    return 0x106395c9;
+    return 0x106395C9;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -11748,7 +11748,7 @@ export class UpdateDialogFilter extends TypeUpdate {
   filter?: TypeDialogFilter;
 
   protected get [id]() {
-    return 0x26ffde7d;
+    return 0x26FFDE7D;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -11778,7 +11778,7 @@ export class UpdateDialogFilterOrder extends TypeUpdate {
   order: Array<number>;
 
   protected get [id]() {
-    return 0xa5d72105;
+    return 0xA5D72105;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -11801,7 +11801,7 @@ export class UpdateDialogFilterOrder extends TypeUpdate {
 
 export class UpdateDialogFilters extends TypeUpdate {
   protected get [id]() {
-    return 0x3504914f;
+    return 0x3504914F;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -11822,7 +11822,7 @@ export class UpdatePhoneCallSignalingData extends TypeUpdate {
   data: Uint8Array;
 
   protected get [id]() {
-    return 0x2661bf09;
+    return 0x2661BF09;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -11852,7 +11852,7 @@ export class UpdateChannelMessageForwards extends TypeUpdate {
   forwards: number;
 
   protected get [id]() {
-    return 0xd29a27f4;
+    return 0xD29A27F4;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -11887,7 +11887,7 @@ export class UpdateReadChannelDiscussionInbox extends TypeUpdate {
   broadcastPost?: number;
 
   protected get [id]() {
-    return 0xd6b19546;
+    return 0xD6B19546;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -11928,7 +11928,7 @@ export class UpdateReadChannelDiscussionOutbox extends TypeUpdate {
   readMaxId: number;
 
   protected get [id]() {
-    return 0x695c9e7c;
+    return 0x695C9E7C;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -11960,7 +11960,7 @@ export class UpdatePeerBlocked extends TypeUpdate {
   blocked: boolean;
 
   protected get [id]() {
-    return 0x246a4b22;
+    return 0x246A4B22;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -11991,7 +11991,7 @@ export class UpdateChannelUserTyping extends TypeUpdate {
   action: TypeSendMessageAction;
 
   protected get [id]() {
-    return 0x8c88c923;
+    return 0x8C88C923;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -12031,7 +12031,7 @@ export class UpdatePinnedMessages extends TypeUpdate {
   ptsCount: number;
 
   protected get [id]() {
-    return 0xed85eab5;
+    return 0xED85EAB5;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -12074,7 +12074,7 @@ export class UpdatePinnedChannelMessages extends TypeUpdate {
   ptsCount: number;
 
   protected get [id]() {
-    return 0x5bb98608;
+    return 0x5BB98608;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -12113,7 +12113,7 @@ export class UpdateChat extends TypeUpdate {
   chatId: bigint;
 
   protected get [id]() {
-    return 0xf89a6a4e;
+    return 0xF89A6A4E;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -12140,7 +12140,7 @@ export class UpdateGroupCallParticipants extends TypeUpdate {
   version: number;
 
   protected get [id]() {
-    return 0xf2ebdb4e;
+    return 0xF2EBDB4E;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -12172,7 +12172,7 @@ export class UpdateGroupCall extends TypeUpdate {
   call: TypeGroupCall;
 
   protected get [id]() {
-    return 0x14b24500;
+    return 0x14B24500;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -12201,7 +12201,7 @@ export class UpdatePeerHistoryTTL extends TypeUpdate {
   ttlPeriod?: number;
 
   protected get [id]() {
-    return 0xbb9bb9a5;
+    return 0xBB9BB9A5;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -12238,7 +12238,7 @@ export class UpdateChatParticipant extends TypeUpdate {
   qts: number;
 
   protected get [id]() {
-    return 0xd087663a;
+    return 0xD087663A;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -12294,7 +12294,7 @@ export class UpdateChannelParticipant extends TypeUpdate {
   qts: number;
 
   protected get [id]() {
-    return 0x985d3abb;
+    return 0x985D3ABB;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -12348,7 +12348,7 @@ export class UpdateBotStopped extends TypeUpdate {
   qts: number;
 
   protected get [id]() {
-    return 0xc4870a49;
+    return 0xC4870A49;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -12383,7 +12383,7 @@ export class UpdateGroupCallConnection extends TypeUpdate {
   params: TypeDataJSON;
 
   protected get [id]() {
-    return 0x0b783982;
+    return 0x0B783982;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -12415,7 +12415,7 @@ export class UpdateBotCommands extends TypeUpdate {
   commands: Array<TypeBotCommand>;
 
   protected get [id]() {
-    return 0x4d712f2e;
+    return 0x4D712F2E;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -12448,7 +12448,7 @@ export class UpdatePendingJoinRequests extends TypeUpdate {
   recentRequesters: Array<bigint>;
 
   protected get [id]() {
-    return 0x7063c3db;
+    return 0x7063C3DB;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -12484,7 +12484,7 @@ export class UpdateBotChatInviteRequester extends TypeUpdate {
   qts: number;
 
   protected get [id]() {
-    return 0x11dfa986;
+    return 0x11DFA986;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -12527,7 +12527,7 @@ export class UpdateMessageReactions extends TypeUpdate {
   reactions: TypeMessageReactions;
 
   protected get [id]() {
-    return 0x5e1b3cb8;
+    return 0x5E1B3CB8;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -12561,7 +12561,7 @@ export class UpdateMessageReactions extends TypeUpdate {
 
 export class UpdateAttachMenuBots extends TypeUpdate {
   protected get [id]() {
-    return 0x17b7a20b;
+    return 0x17B7A20B;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -12581,7 +12581,7 @@ export class UpdateWebViewResultSent extends TypeUpdate {
   queryId: bigint;
 
   protected get [id]() {
-    return 0x1592b79d;
+    return 0x1592B79D;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -12607,7 +12607,7 @@ export class UpdateBotMenuButton extends TypeUpdate {
   button: TypeBotMenuButton;
 
   protected get [id]() {
-    return 0x14b85813;
+    return 0x14B85813;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -12633,7 +12633,7 @@ export class UpdateBotMenuButton extends TypeUpdate {
 
 export class UpdateSavedRingtones extends TypeUpdate {
   protected get [id]() {
-    return 0x74d8be99;
+    return 0x74D8BE99;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -12657,7 +12657,7 @@ export class UpdateTranscribedAudio extends TypeUpdate {
   text: string;
 
   protected get [id]() {
-    return 0x0084cd5a;
+    return 0x0084CD5A;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -12694,7 +12694,7 @@ export class UpdateTranscribedAudio extends TypeUpdate {
 
 export class UpdateReadFeaturedEmojiStickers extends TypeUpdate {
   protected get [id]() {
-    return 0xfb4c496c;
+    return 0xFB4C496C;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -12741,7 +12741,7 @@ export class UpdateUserEmojiStatus extends TypeUpdate {
 
 export class UpdateRecentEmojiStatuses extends TypeUpdate {
   protected get [id]() {
-    return 0x30f443db;
+    return 0x30F443DB;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -12759,7 +12759,7 @@ export class UpdateRecentEmojiStatuses extends TypeUpdate {
 
 export class UpdateRecentReactions extends TypeUpdate {
   protected get [id]() {
-    return 0x6f7863f4;
+    return 0x6F7863F4;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -12781,7 +12781,7 @@ export class UpdateMoveStickerSetToTop extends TypeUpdate {
   stickerset: bigint;
 
   protected get [id]() {
-    return 0x86fccf85;
+    return 0x86FCCF85;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -12816,7 +12816,7 @@ export class UpdateMessageExtendedMedia extends TypeUpdate {
   extendedMedia: TypeMessageExtendedMedia;
 
   protected get [id]() {
-    return 0x5a73a98c;
+    return 0x5A73A98C;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -12849,7 +12849,7 @@ export class UpdateChannelPinnedTopic extends TypeUpdate {
   topicId: number;
 
   protected get [id]() {
-    return 0x192efbe3;
+    return 0x192EFBE3;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -12883,7 +12883,7 @@ export class UpdateChannelPinnedTopics extends TypeUpdate {
   order?: Array<number>;
 
   protected get [id]() {
-    return 0xfe198602;
+    return 0xFE198602;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -12936,7 +12936,7 @@ export class UpdateUser extends TypeUpdate {
 
 export class UpdateAutoSaveSettings extends TypeUpdate {
   protected get [id]() {
-    return 0xec05b097;
+    return 0xEC05B097;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -12956,7 +12956,7 @@ export class UpdateGroupInvitePrivacyForbidden extends TypeUpdate {
   userId: bigint;
 
   protected get [id]() {
-    return 0xccf08ad6;
+    return 0xCCF08AD6;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -12985,7 +12985,7 @@ export class UpdatesState extends TypeUpdatesState {
   unreadCount: number;
 
   protected get [id]() {
-    return 0xa56c2a3e;
+    return 0xA56C2A3E;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -13023,7 +13023,7 @@ export class UpdatesDifferenceEmpty extends TypeUpdatesDifference {
   seq: number;
 
   protected get [id]() {
-    return 0x5d75a138;
+    return 0x5D75A138;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -13056,7 +13056,7 @@ export class UpdatesDifference extends TypeUpdatesDifference {
   state: TypeUpdatesState;
 
   protected get [id]() {
-    return 0x00f49ca0;
+    return 0x00F49CA0;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -13101,7 +13101,7 @@ export class UpdatesDifferenceSlice extends TypeUpdatesDifference {
   intermediateState: TypeUpdatesState;
 
   protected get [id]() {
-    return 0xa8fb1981;
+    return 0xA8FB1981;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -13141,7 +13141,7 @@ export class UpdatesDifferenceTooLong extends TypeUpdatesDifference {
   pts: number;
 
   protected get [id]() {
-    return 0x4afe8f6d;
+    return 0x4AFE8F6D;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -13164,7 +13164,7 @@ export class UpdatesDifferenceTooLong extends TypeUpdatesDifference {
 
 export class UpdatesTooLong extends TypeUpdates {
   protected get [id]() {
-    return 0xe317af7e;
+    return 0xE317AF7E;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -13198,7 +13198,7 @@ export class UpdateShortMessage extends TypeUpdates {
   ttlPeriod?: number;
 
   protected get [id]() {
-    return 0x313bc7f8;
+    return 0x313BC7F8;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -13282,7 +13282,7 @@ export class UpdateShortChatMessage extends TypeUpdates {
   ttlPeriod?: number;
 
   protected get [id]() {
-    return 0x4d6deea5;
+    return 0x4D6DEEA5;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -13355,7 +13355,7 @@ export class UpdateShort extends TypeUpdates {
   date: number;
 
   protected get [id]() {
-    return 0x78d4dec1;
+    return 0x78D4DEC1;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -13388,7 +13388,7 @@ export class UpdatesCombined extends TypeUpdates {
   seq: number;
 
   protected get [id]() {
-    return 0x725b04c3;
+    return 0x725B04C3;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -13432,7 +13432,7 @@ export class Updates extends TypeUpdates {
   seq: number;
 
   protected get [id]() {
-    return 0x74ae4240;
+    return 0x74AE4240;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -13476,7 +13476,7 @@ export class UpdateShortSentMessage extends TypeUpdates {
   ttlPeriod?: number;
 
   protected get [id]() {
-    return 0x9015e101;
+    return 0x9015E101;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -13525,7 +13525,7 @@ export class PhotosPhotos extends TypePhotosPhotos {
   users: Array<TypeUser>;
 
   protected get [id]() {
-    return 0x8dca6aa5;
+    return 0x8DCA6AA5;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -13555,7 +13555,7 @@ export class PhotosPhotosSlice extends TypePhotosPhotos {
   users: Array<TypeUser>;
 
   protected get [id]() {
-    return 0x15051f54;
+    return 0x15051F54;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -13587,7 +13587,7 @@ export class PhotosPhoto extends TypePhotosPhoto {
   users: Array<TypeUser>;
 
   protected get [id]() {
-    return 0x20212ca8;
+    return 0x20212CA8;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -13617,7 +13617,7 @@ export class UploadFile extends TypeUploadFile {
   bytes: Uint8Array;
 
   protected get [id]() {
-    return 0x096a18d5;
+    return 0x096A18D5;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -13652,7 +13652,7 @@ export class UploadFileCdnRedirect extends TypeUploadFile {
   fileHashes: Array<TypeFileHash>;
 
   protected get [id]() {
-    return 0xf18cda44;
+    return 0xF18CDA44;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -13698,7 +13698,7 @@ export class DcOption extends TypeDcOption {
   secret?: Uint8Array;
 
   protected get [id]() {
-    return 0x18b7a10d;
+    return 0x18B7A10D;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -13798,7 +13798,7 @@ export class Config extends TypeConfig {
   autologinToken?: string;
 
   protected get [id]() {
-    return 0xcc1a241e;
+    return 0xCC1A241E;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -14015,7 +14015,7 @@ export class NearestDc extends TypeNearestDc {
   nearestDc: number;
 
   protected get [id]() {
-    return 0x8e1a1775;
+    return 0x8E1A1775;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -14053,7 +14053,7 @@ export class HelpAppUpdate extends TypeHelpAppUpdate {
   sticker?: TypeDocument;
 
   protected get [id]() {
-    return 0xccbbce30;
+    return 0xCCBBCE30;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -14099,7 +14099,7 @@ export class HelpAppUpdate extends TypeHelpAppUpdate {
 
 export class HelpNoAppUpdate extends TypeHelpAppUpdate {
   protected get [id]() {
-    return 0xc45a6536;
+    return 0xC45A6536;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -14119,7 +14119,7 @@ export class HelpInviteText extends TypeHelpInviteText {
   message: string;
 
   protected get [id]() {
-    return 0x18cb9f78;
+    return 0x18CB9F78;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -14144,7 +14144,7 @@ export class EncryptedChatEmpty extends TypeEncryptedChat {
   id: number;
 
   protected get [id]() {
-    return 0xab7ec0a0;
+    return 0xAB7EC0A0;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -14173,7 +14173,7 @@ export class EncryptedChatWaiting extends TypeEncryptedChat {
   participantId: bigint;
 
   protected get [id]() {
-    return 0x66b25953;
+    return 0x66B25953;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -14216,7 +14216,7 @@ export class EncryptedChatRequested extends TypeEncryptedChat {
   gA: Uint8Array;
 
   protected get [id]() {
-    return 0x48f1d94c;
+    return 0x48F1D94C;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -14267,7 +14267,7 @@ export class EncryptedChat extends TypeEncryptedChat {
   keyFingerprint: bigint;
 
   protected get [id]() {
-    return 0x61f0d4c7;
+    return 0x61F0D4C7;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -14311,7 +14311,7 @@ export class EncryptedChatDiscarded extends TypeEncryptedChat {
   id: number;
 
   protected get [id]() {
-    return 0x1e1c7c45;
+    return 0x1E1C7C45;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -14342,7 +14342,7 @@ export class InputEncryptedChat extends TypeInputEncryptedChat {
   accessHash: bigint;
 
   protected get [id]() {
-    return 0xf141b5e1;
+    return 0xF141B5E1;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -14368,7 +14368,7 @@ export class InputEncryptedChat extends TypeInputEncryptedChat {
 
 export class EncryptedFileEmpty extends TypeEncryptedFile {
   protected get [id]() {
-    return 0xc21f497e;
+    return 0xC21F497E;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -14392,7 +14392,7 @@ export class EncryptedFile extends TypeEncryptedFile {
   keyFingerprint: number;
 
   protected get [id]() {
-    return 0xa8008cd8;
+    return 0xA8008CD8;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -14427,7 +14427,7 @@ export class EncryptedFile extends TypeEncryptedFile {
 
 export class InputEncryptedFileEmpty extends TypeInputEncryptedFile {
   protected get [id]() {
-    return 0x1837c364;
+    return 0x1837C364;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -14450,7 +14450,7 @@ export class InputEncryptedFileUploaded extends TypeInputEncryptedFile {
   keyFingerprint: number;
 
   protected get [id]() {
-    return 0x64bd0306;
+    return 0x64BD0306;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -14485,7 +14485,7 @@ export class InputEncryptedFile extends TypeInputEncryptedFile {
   accessHash: bigint;
 
   protected get [id]() {
-    return 0x5a17b5e5;
+    return 0x5A17B5E5;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -14515,7 +14515,7 @@ export class InputEncryptedFileBigUploaded extends TypeInputEncryptedFile {
   keyFingerprint: number;
 
   protected get [id]() {
-    return 0x2dc173c8;
+    return 0x2DC173C8;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -14550,7 +14550,7 @@ export class EncryptedMessage extends TypeEncryptedMessage {
   file: TypeEncryptedFile;
 
   protected get [id]() {
-    return 0xed18c118;
+    return 0xED18C118;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -14590,7 +14590,7 @@ export class EncryptedMessageService extends TypeEncryptedMessage {
   bytes: Uint8Array;
 
   protected get [id]() {
-    return 0x23734b06;
+    return 0x23734B06;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -14624,7 +14624,7 @@ export class MessagesDhConfigNotModified extends TypeMessagesDhConfig {
   random: Uint8Array;
 
   protected get [id]() {
-    return 0xc0e24635;
+    return 0xC0E24635;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -14652,7 +14652,7 @@ export class MessagesDhConfig extends TypeMessagesDhConfig {
   random: Uint8Array;
 
   protected get [id]() {
-    return 0x2c221edd;
+    return 0x2C221EDD;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -14686,7 +14686,7 @@ export class MessagesSentEncryptedMessage extends TypeMessagesSentEncryptedMessa
   date: number;
 
   protected get [id]() {
-    return 0x560f8935;
+    return 0x560F8935;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -14712,7 +14712,7 @@ export class MessagesSentEncryptedFile extends TypeMessagesSentEncryptedMessage 
   file: TypeEncryptedFile;
 
   protected get [id]() {
-    return 0x9493ff32;
+    return 0x9493FF32;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -14738,7 +14738,7 @@ export class MessagesSentEncryptedFile extends TypeMessagesSentEncryptedMessage 
 
 export class InputDocumentEmpty extends TypeInputDocument {
   protected get [id]() {
-    return 0x72f0eaae;
+    return 0x72F0EAAE;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -14760,7 +14760,7 @@ export class InputDocument extends TypeInputDocument {
   fileReference: Uint8Array;
 
   protected get [id]() {
-    return 0x1abfb575;
+    return 0x1ABFB575;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -14791,7 +14791,7 @@ export class DocumentEmpty extends TypeDocument {
   id: bigint;
 
   protected get [id]() {
-    return 0x36f8c871;
+    return 0x36F8C871;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -14825,7 +14825,7 @@ export class Document extends TypeDocument {
   attributes: Array<TypeDocumentAttribute>;
 
   protected get [id]() {
-    return 0x8fd4c4d8;
+    return 0x8FD4C4D8;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -14880,7 +14880,7 @@ export class HelpSupport extends TypeHelpSupport {
   user: TypeUser;
 
   protected get [id]() {
-    return 0x17c6b5f6;
+    return 0x17C6B5F6;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -14908,7 +14908,7 @@ export class NotifyPeer extends TypeNotifyPeer {
   peer: TypePeer;
 
   protected get [id]() {
-    return 0x9fd40bd8;
+    return 0x9FD40BD8;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -14931,7 +14931,7 @@ export class NotifyPeer extends TypeNotifyPeer {
 
 export class NotifyUsers extends TypeNotifyPeer {
   protected get [id]() {
-    return 0xb4c83b4c;
+    return 0xB4C83B4C;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -14949,7 +14949,7 @@ export class NotifyUsers extends TypeNotifyPeer {
 
 export class NotifyChats extends TypeNotifyPeer {
   protected get [id]() {
-    return 0xc007cec3;
+    return 0xC007CEC3;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -14967,7 +14967,7 @@ export class NotifyChats extends TypeNotifyPeer {
 
 export class NotifyBroadcasts extends TypeNotifyPeer {
   protected get [id]() {
-    return 0xd612e8ef;
+    return 0xD612E8EF;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -14988,7 +14988,7 @@ export class NotifyForumTopic extends TypeNotifyPeer {
   topMsgId: number;
 
   protected get [id]() {
-    return 0x226e6308;
+    return 0x226E6308;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -15014,7 +15014,7 @@ export class NotifyForumTopic extends TypeNotifyPeer {
 
 export class SendMessageTypingAction extends TypeSendMessageAction {
   protected get [id]() {
-    return 0x16bf744e;
+    return 0x16BF744E;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -15032,7 +15032,7 @@ export class SendMessageTypingAction extends TypeSendMessageAction {
 
 export class SendMessageCancelAction extends TypeSendMessageAction {
   protected get [id]() {
-    return 0xfd5ec8f5;
+    return 0xFD5EC8F5;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -15050,7 +15050,7 @@ export class SendMessageCancelAction extends TypeSendMessageAction {
 
 export class SendMessageRecordVideoAction extends TypeSendMessageAction {
   protected get [id]() {
-    return 0xa187d66f;
+    return 0xA187D66F;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -15070,7 +15070,7 @@ export class SendMessageUploadVideoAction extends TypeSendMessageAction {
   progress: number;
 
   protected get [id]() {
-    return 0xe9763aec;
+    return 0xE9763AEC;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -15093,7 +15093,7 @@ export class SendMessageUploadVideoAction extends TypeSendMessageAction {
 
 export class SendMessageRecordAudioAction extends TypeSendMessageAction {
   protected get [id]() {
-    return 0xd52f73f7;
+    return 0xD52F73F7;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -15113,7 +15113,7 @@ export class SendMessageUploadAudioAction extends TypeSendMessageAction {
   progress: number;
 
   protected get [id]() {
-    return 0xf351d7ab;
+    return 0xF351D7AB;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -15138,7 +15138,7 @@ export class SendMessageUploadPhotoAction extends TypeSendMessageAction {
   progress: number;
 
   protected get [id]() {
-    return 0xd1d34a26;
+    return 0xD1D34A26;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -15163,7 +15163,7 @@ export class SendMessageUploadDocumentAction extends TypeSendMessageAction {
   progress: number;
 
   protected get [id]() {
-    return 0xaa0cd9e4;
+    return 0xAA0CD9E4;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -15186,7 +15186,7 @@ export class SendMessageUploadDocumentAction extends TypeSendMessageAction {
 
 export class SendMessageGeoLocationAction extends TypeSendMessageAction {
   protected get [id]() {
-    return 0x176f8ba1;
+    return 0x176F8BA1;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -15204,7 +15204,7 @@ export class SendMessageGeoLocationAction extends TypeSendMessageAction {
 
 export class SendMessageChooseContactAction extends TypeSendMessageAction {
   protected get [id]() {
-    return 0x628cbc6f;
+    return 0x628CBC6F;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -15222,7 +15222,7 @@ export class SendMessageChooseContactAction extends TypeSendMessageAction {
 
 export class SendMessageGamePlayAction extends TypeSendMessageAction {
   protected get [id]() {
-    return 0xdd6a8f48;
+    return 0xDD6A8F48;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -15240,7 +15240,7 @@ export class SendMessageGamePlayAction extends TypeSendMessageAction {
 
 export class SendMessageRecordRoundAction extends TypeSendMessageAction {
   protected get [id]() {
-    return 0x88f27fbc;
+    return 0x88F27FBC;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -15260,7 +15260,7 @@ export class SendMessageUploadRoundAction extends TypeSendMessageAction {
   progress: number;
 
   protected get [id]() {
-    return 0x243e1c66;
+    return 0x243E1C66;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -15283,7 +15283,7 @@ export class SendMessageUploadRoundAction extends TypeSendMessageAction {
 
 export class SpeakingInGroupCallAction extends TypeSendMessageAction {
   protected get [id]() {
-    return 0xd92c2285;
+    return 0xD92C2285;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -15303,7 +15303,7 @@ export class SendMessageHistoryImportAction extends TypeSendMessageAction {
   progress: number;
 
   protected get [id]() {
-    return 0xdbda9246;
+    return 0xDBDA9246;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -15326,7 +15326,7 @@ export class SendMessageHistoryImportAction extends TypeSendMessageAction {
 
 export class SendMessageChooseStickerAction extends TypeSendMessageAction {
   protected get [id]() {
-    return 0xb05ac6b1;
+    return 0xB05AC6B1;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -15348,7 +15348,7 @@ export class SendMessageEmojiInteraction extends TypeSendMessageAction {
   interaction: TypeDataJSON;
 
   protected get [id]() {
-    return 0x25972bcb;
+    return 0x25972BCB;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -15379,7 +15379,7 @@ export class SendMessageEmojiInteractionSeen extends TypeSendMessageAction {
   emoticon: string;
 
   protected get [id]() {
-    return 0xb665902e;
+    return 0xB665902E;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -15407,7 +15407,7 @@ export class ContactsFound extends TypeContactsFound {
   users: Array<TypeUser>;
 
   protected get [id]() {
-    return 0xb3134d9d;
+    return 0xB3134D9D;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -15439,7 +15439,7 @@ export class ContactsFound extends TypeContactsFound {
 
 export class InputPrivacyKeyStatusTimestamp extends TypeInputPrivacyKey {
   protected get [id]() {
-    return 0x4f96cb18;
+    return 0x4F96CB18;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -15457,7 +15457,7 @@ export class InputPrivacyKeyStatusTimestamp extends TypeInputPrivacyKey {
 
 export class InputPrivacyKeyChatInvite extends TypeInputPrivacyKey {
   protected get [id]() {
-    return 0xbdfb0426;
+    return 0xBDFB0426;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -15475,7 +15475,7 @@ export class InputPrivacyKeyChatInvite extends TypeInputPrivacyKey {
 
 export class InputPrivacyKeyPhoneCall extends TypeInputPrivacyKey {
   protected get [id]() {
-    return 0xfabadc5f;
+    return 0xFABADC5F;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -15493,7 +15493,7 @@ export class InputPrivacyKeyPhoneCall extends TypeInputPrivacyKey {
 
 export class InputPrivacyKeyPhoneP2P extends TypeInputPrivacyKey {
   protected get [id]() {
-    return 0xdb9e70d2;
+    return 0xDB9E70D2;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -15511,7 +15511,7 @@ export class InputPrivacyKeyPhoneP2P extends TypeInputPrivacyKey {
 
 export class InputPrivacyKeyForwards extends TypeInputPrivacyKey {
   protected get [id]() {
-    return 0xa4dd4c08;
+    return 0xA4DD4C08;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -15529,7 +15529,7 @@ export class InputPrivacyKeyForwards extends TypeInputPrivacyKey {
 
 export class InputPrivacyKeyProfilePhoto extends TypeInputPrivacyKey {
   protected get [id]() {
-    return 0x5719bacc;
+    return 0x5719BACC;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -15547,7 +15547,7 @@ export class InputPrivacyKeyProfilePhoto extends TypeInputPrivacyKey {
 
 export class InputPrivacyKeyPhoneNumber extends TypeInputPrivacyKey {
   protected get [id]() {
-    return 0x0352dafa;
+    return 0x0352DAFA;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -15565,7 +15565,7 @@ export class InputPrivacyKeyPhoneNumber extends TypeInputPrivacyKey {
 
 export class InputPrivacyKeyAddedByPhone extends TypeInputPrivacyKey {
   protected get [id]() {
-    return 0xd1219bdd;
+    return 0xD1219BDD;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -15583,7 +15583,7 @@ export class InputPrivacyKeyAddedByPhone extends TypeInputPrivacyKey {
 
 export class InputPrivacyKeyVoiceMessages extends TypeInputPrivacyKey {
   protected get [id]() {
-    return 0xaee69d68;
+    return 0xAEE69D68;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -15601,7 +15601,7 @@ export class InputPrivacyKeyVoiceMessages extends TypeInputPrivacyKey {
 
 export class PrivacyKeyStatusTimestamp extends TypePrivacyKey {
   protected get [id]() {
-    return 0xbc2eab30;
+    return 0xBC2EAB30;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -15619,7 +15619,7 @@ export class PrivacyKeyStatusTimestamp extends TypePrivacyKey {
 
 export class PrivacyKeyChatInvite extends TypePrivacyKey {
   protected get [id]() {
-    return 0x500e6dfa;
+    return 0x500E6DFA;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -15637,7 +15637,7 @@ export class PrivacyKeyChatInvite extends TypePrivacyKey {
 
 export class PrivacyKeyPhoneCall extends TypePrivacyKey {
   protected get [id]() {
-    return 0x3d662b7b;
+    return 0x3D662B7B;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -15655,7 +15655,7 @@ export class PrivacyKeyPhoneCall extends TypePrivacyKey {
 
 export class PrivacyKeyPhoneP2P extends TypePrivacyKey {
   protected get [id]() {
-    return 0x39491cc8;
+    return 0x39491CC8;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -15673,7 +15673,7 @@ export class PrivacyKeyPhoneP2P extends TypePrivacyKey {
 
 export class PrivacyKeyForwards extends TypePrivacyKey {
   protected get [id]() {
-    return 0x69ec56a3;
+    return 0x69EC56A3;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -15691,7 +15691,7 @@ export class PrivacyKeyForwards extends TypePrivacyKey {
 
 export class PrivacyKeyProfilePhoto extends TypePrivacyKey {
   protected get [id]() {
-    return 0x96151fed;
+    return 0x96151FED;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -15709,7 +15709,7 @@ export class PrivacyKeyProfilePhoto extends TypePrivacyKey {
 
 export class PrivacyKeyPhoneNumber extends TypePrivacyKey {
   protected get [id]() {
-    return 0xd19ae46d;
+    return 0xD19AE46D;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -15727,7 +15727,7 @@ export class PrivacyKeyPhoneNumber extends TypePrivacyKey {
 
 export class PrivacyKeyAddedByPhone extends TypePrivacyKey {
   protected get [id]() {
-    return 0x42ffd42b;
+    return 0x42FFD42B;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -15745,7 +15745,7 @@ export class PrivacyKeyAddedByPhone extends TypePrivacyKey {
 
 export class PrivacyKeyVoiceMessages extends TypePrivacyKey {
   protected get [id]() {
-    return 0x0697f414;
+    return 0x0697F414;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -15763,7 +15763,7 @@ export class PrivacyKeyVoiceMessages extends TypePrivacyKey {
 
 export class InputPrivacyValueAllowContacts extends TypeInputPrivacyRule {
   protected get [id]() {
-    return 0x0d09e07b;
+    return 0x0D09E07B;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -15781,7 +15781,7 @@ export class InputPrivacyValueAllowContacts extends TypeInputPrivacyRule {
 
 export class InputPrivacyValueAllowAll extends TypeInputPrivacyRule {
   protected get [id]() {
-    return 0x184b35ce;
+    return 0x184B35CE;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -15801,7 +15801,7 @@ export class InputPrivacyValueAllowUsers extends TypeInputPrivacyRule {
   users: Array<TypeInputUser>;
 
   protected get [id]() {
-    return 0x131cc67f;
+    return 0x131CC67F;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -15824,7 +15824,7 @@ export class InputPrivacyValueAllowUsers extends TypeInputPrivacyRule {
 
 export class InputPrivacyValueDisallowContacts extends TypeInputPrivacyRule {
   protected get [id]() {
-    return 0x0ba52007;
+    return 0x0BA52007;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -15842,7 +15842,7 @@ export class InputPrivacyValueDisallowContacts extends TypeInputPrivacyRule {
 
 export class InputPrivacyValueDisallowAll extends TypeInputPrivacyRule {
   protected get [id]() {
-    return 0xd66b66c9;
+    return 0xD66B66C9;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -15887,7 +15887,7 @@ export class InputPrivacyValueAllowChatParticipants extends TypeInputPrivacyRule
   chats: Array<bigint>;
 
   protected get [id]() {
-    return 0x840649cf;
+    return 0x840649CF;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -15912,7 +15912,7 @@ export class InputPrivacyValueDisallowChatParticipants extends TypeInputPrivacyR
   chats: Array<bigint>;
 
   protected get [id]() {
-    return 0xe94f0f86;
+    return 0xE94F0F86;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -15935,7 +15935,7 @@ export class InputPrivacyValueDisallowChatParticipants extends TypeInputPrivacyR
 
 export class PrivacyValueAllowContacts extends TypePrivacyRule {
   protected get [id]() {
-    return 0xfffe1bac;
+    return 0xFFFE1BAC;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -15953,7 +15953,7 @@ export class PrivacyValueAllowContacts extends TypePrivacyRule {
 
 export class PrivacyValueAllowAll extends TypePrivacyRule {
   protected get [id]() {
-    return 0x65427b82;
+    return 0x65427B82;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -15973,7 +15973,7 @@ export class PrivacyValueAllowUsers extends TypePrivacyRule {
   users: Array<bigint>;
 
   protected get [id]() {
-    return 0xb8905fb2;
+    return 0xB8905FB2;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -15996,7 +15996,7 @@ export class PrivacyValueAllowUsers extends TypePrivacyRule {
 
 export class PrivacyValueDisallowContacts extends TypePrivacyRule {
   protected get [id]() {
-    return 0xf888fa1a;
+    return 0xF888FA1A;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -16014,7 +16014,7 @@ export class PrivacyValueDisallowContacts extends TypePrivacyRule {
 
 export class PrivacyValueDisallowAll extends TypePrivacyRule {
   protected get [id]() {
-    return 0x8b73e763;
+    return 0x8B73E763;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -16034,7 +16034,7 @@ export class PrivacyValueDisallowUsers extends TypePrivacyRule {
   users: Array<bigint>;
 
   protected get [id]() {
-    return 0xe4621141;
+    return 0xE4621141;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -16059,7 +16059,7 @@ export class PrivacyValueAllowChatParticipants extends TypePrivacyRule {
   chats: Array<bigint>;
 
   protected get [id]() {
-    return 0x6b134e8e;
+    return 0x6B134E8E;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -16084,7 +16084,7 @@ export class PrivacyValueDisallowChatParticipants extends TypePrivacyRule {
   chats: Array<bigint>;
 
   protected get [id]() {
-    return 0x41c87565;
+    return 0x41C87565;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -16111,7 +16111,7 @@ export class AccountPrivacyRules extends TypeAccountPrivacyRules {
   users: Array<TypeUser>;
 
   protected get [id]() {
-    return 0x50a04e45;
+    return 0x50A04E45;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -16142,7 +16142,7 @@ export class AccountDaysTTL extends TypeAccountDaysTTL {
   days: number;
 
   protected get [id]() {
-    return 0xb8d0afdf;
+    return 0xB8D0AFDF;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -16168,7 +16168,7 @@ export class DocumentAttributeImageSize extends TypeDocumentAttribute {
   h: number;
 
   protected get [id]() {
-    return 0x6c37c15c;
+    return 0x6C37C15C;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -16194,7 +16194,7 @@ export class DocumentAttributeImageSize extends TypeDocumentAttribute {
 
 export class DocumentAttributeAnimated extends TypeDocumentAttribute {
   protected get [id]() {
-    return 0x11b58939;
+    return 0x11B58939;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -16217,7 +16217,7 @@ export class DocumentAttributeSticker extends TypeDocumentAttribute {
   maskCoords?: TypeMaskCoords;
 
   protected get [id]() {
-    return 0x6319d612;
+    return 0x6319D612;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -16257,7 +16257,7 @@ export class DocumentAttributeVideo extends TypeDocumentAttribute {
   h: number;
 
   protected get [id]() {
-    return 0x0ef02ce6;
+    return 0x0EF02CE6;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -16300,7 +16300,7 @@ export class DocumentAttributeAudio extends TypeDocumentAttribute {
   waveform?: Uint8Array;
 
   protected get [id]() {
-    return 0x9852f9c6;
+    return 0x9852F9C6;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -16362,7 +16362,7 @@ export class DocumentAttributeFilename extends TypeDocumentAttribute {
 
 export class DocumentAttributeHasStickers extends TypeDocumentAttribute {
   protected get [id]() {
-    return 0x9801d2f7;
+    return 0x9801D2F7;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -16385,7 +16385,7 @@ export class DocumentAttributeCustomEmoji extends TypeDocumentAttribute {
   stickerset: TypeInputStickerSet;
 
   protected get [id]() {
-    return 0xfd149899;
+    return 0xFD149899;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -16419,7 +16419,7 @@ export class DocumentAttributeCustomEmoji extends TypeDocumentAttribute {
 
 export class MessagesStickersNotModified extends TypeMessagesStickers {
   protected get [id]() {
-    return 0xf1749a22;
+    return 0xF1749A22;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -16440,7 +16440,7 @@ export class MessagesStickers extends TypeMessagesStickers {
   stickers: Array<TypeDocument>;
 
   protected get [id]() {
-    return 0x30a6ec7e;
+    return 0x30A6EC7E;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -16469,7 +16469,7 @@ export class StickerPack extends TypeStickerPack {
   documents: Array<bigint>;
 
   protected get [id]() {
-    return 0x12b299d4;
+    return 0x12B299D4;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -16495,7 +16495,7 @@ export class StickerPack extends TypeStickerPack {
 
 export class MessagesAllStickersNotModified extends TypeMessagesAllStickers {
   protected get [id]() {
-    return 0xe86602c3;
+    return 0xE86602C3;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -16516,7 +16516,7 @@ export class MessagesAllStickers extends TypeMessagesAllStickers {
   sets: Array<TypeStickerSet>;
 
   protected get [id]() {
-    return 0xcdbbcebb;
+    return 0xCDBBCEBB;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -16545,7 +16545,7 @@ export class MessagesAffectedMessages extends TypeMessagesAffectedMessages {
   ptsCount: number;
 
   protected get [id]() {
-    return 0x84d19185;
+    return 0x84D19185;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -16573,7 +16573,7 @@ export class WebPageEmpty extends TypeWebPage {
   id: bigint;
 
   protected get [id]() {
-    return 0xeb1477e8;
+    return 0xEB1477E8;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -16599,7 +16599,7 @@ export class WebPagePending extends TypeWebPage {
   date: number;
 
   protected get [id]() {
-    return 0xc586da1c;
+    return 0xC586DA1C;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -16644,7 +16644,7 @@ export class WebPage extends TypeWebPage {
   attributes?: Array<TypeWebPageAttribute>;
 
   protected get [id]() {
-    return 0xe89c45b2;
+    return 0xE89C45B2;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -16722,7 +16722,7 @@ export class WebPageNotModified extends TypeWebPage {
   cachedPageViews?: number;
 
   protected get [id]() {
-    return 0x7311ca11;
+    return 0x7311CA11;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -16765,7 +16765,7 @@ export class Authorization extends TypeAuthorization {
   region: string;
 
   protected get [id]() {
-    return 0xad01d61d;
+    return 0xAD01D61D;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -16841,7 +16841,7 @@ export class AccountAuthorizations extends TypeAccountAuthorizations {
   authorizations: Array<TypeAuthorization>;
 
   protected get [id]() {
-    return 0x4bff8ea0;
+    return 0x4BFF8EA0;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -16881,7 +16881,7 @@ export class AccountPassword extends TypeAccountPassword {
   loginEmailPattern?: string;
 
   protected get [id]() {
-    return 0x957b50fb;
+    return 0x957B50FB;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -16945,7 +16945,7 @@ export class AccountPasswordSettings extends TypeAccountPasswordSettings {
   secureSettings?: TypeSecureSecretSettings;
 
   protected get [id]() {
-    return 0x9a5c33e5;
+    return 0x9A5C33E5;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -16979,7 +16979,7 @@ export class AccountPasswordInputSettings extends TypeAccountPasswordInputSettin
   newSecureSettings?: TypeSecureSecretSettings;
 
   protected get [id]() {
-    return 0xc23727c9;
+    return 0xC23727C9;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -17018,7 +17018,7 @@ export class AuthPasswordRecovery extends TypeAuthPasswordRecovery {
   emailPattern: string;
 
   protected get [id]() {
-    return 0x137948a5;
+    return 0x137948A5;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -17044,7 +17044,7 @@ export class ReceivedNotifyMessage extends TypeReceivedNotifyMessage {
   flags: number;
 
   protected get [id]() {
-    return 0xa384b779;
+    return 0xA384B779;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -17083,7 +17083,7 @@ export class ChatInviteExported extends TypeExportedChatInvite {
   title?: string;
 
   protected get [id]() {
-    return 0x0ab4a819;
+    return 0x0AB4A819;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -17141,7 +17141,7 @@ export class ChatInviteExported extends TypeExportedChatInvite {
 
 export class ChatInvitePublicJoinRequests extends TypeExportedChatInvite {
   protected get [id]() {
-    return 0xed107ab7;
+    return 0xED107AB7;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -17161,7 +17161,7 @@ export class ChatInviteAlready extends TypeChatInvite {
   chat: TypeChat;
 
   protected get [id]() {
-    return 0x5a686d7c;
+    return 0x5A686D7C;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -17195,7 +17195,7 @@ export class ChatInvite extends TypeChatInvite {
   participants?: Array<TypeUser>;
 
   protected get [id]() {
-    return 0x300c44c1;
+    return 0x300C44C1;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -17250,7 +17250,7 @@ export class ChatInvitePeek extends TypeChatInvite {
   expires: number;
 
   protected get [id]() {
-    return 0x61695cb0;
+    return 0x61695CB0;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -17276,7 +17276,7 @@ export class ChatInvitePeek extends TypeChatInvite {
 
 export class InputStickerSetEmpty extends TypeInputStickerSet {
   protected get [id]() {
-    return 0xffb62b95;
+    return 0xFFB62B95;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -17297,7 +17297,7 @@ export class InputStickerSetID extends TypeInputStickerSet {
   accessHash: bigint;
 
   protected get [id]() {
-    return 0x9de7a269;
+    return 0x9DE7A269;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -17325,7 +17325,7 @@ export class InputStickerSetShortName extends TypeInputStickerSet {
   shortName: string;
 
   protected get [id]() {
-    return 0x861cc8a0;
+    return 0x861CC8A0;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -17348,7 +17348,7 @@ export class InputStickerSetShortName extends TypeInputStickerSet {
 
 export class InputStickerSetAnimatedEmoji extends TypeInputStickerSet {
   protected get [id]() {
-    return 0x028703c8;
+    return 0x028703C8;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -17368,7 +17368,7 @@ export class InputStickerSetDice extends TypeInputStickerSet {
   emoticon: string;
 
   protected get [id]() {
-    return 0xe67f520e;
+    return 0xE67F520E;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -17391,7 +17391,7 @@ export class InputStickerSetDice extends TypeInputStickerSet {
 
 export class InputStickerSetAnimatedEmojiAnimations extends TypeInputStickerSet {
   protected get [id]() {
-    return 0x0cde3739;
+    return 0x0CDE3739;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -17409,7 +17409,7 @@ export class InputStickerSetAnimatedEmojiAnimations extends TypeInputStickerSet 
 
 export class InputStickerSetPremiumGifts extends TypeInputStickerSet {
   protected get [id]() {
-    return 0xc88b3b02;
+    return 0xC88B3B02;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -17427,7 +17427,7 @@ export class InputStickerSetPremiumGifts extends TypeInputStickerSet {
 
 export class InputStickerSetEmojiGenericAnimations extends TypeInputStickerSet {
   protected get [id]() {
-    return 0x04c4d4ce;
+    return 0x04C4D4CE;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -17445,7 +17445,7 @@ export class InputStickerSetEmojiGenericAnimations extends TypeInputStickerSet {
 
 export class InputStickerSetEmojiDefaultStatuses extends TypeInputStickerSet {
   protected get [id]() {
-    return 0x29d0f5ee;
+    return 0x29D0F5EE;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -17463,7 +17463,7 @@ export class InputStickerSetEmojiDefaultStatuses extends TypeInputStickerSet {
 
 export class InputStickerSetEmojiDefaultTopicIcons extends TypeInputStickerSet {
   protected get [id]() {
-    return 0x44c1f8e9;
+    return 0x44C1F8E9;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -17499,7 +17499,7 @@ export class StickerSet extends TypeStickerSet {
   hash: number;
 
   protected get [id]() {
-    return 0x2dd14edc;
+    return 0x2DD14EDC;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -17577,7 +17577,7 @@ export class MessagesStickerSet extends TypeMessagesStickerSet {
   documents: Array<TypeDocument>;
 
   protected get [id]() {
-    return 0x6e153f16;
+    return 0x6E153F16;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -17609,7 +17609,7 @@ export class MessagesStickerSet extends TypeMessagesStickerSet {
 
 export class MessagesStickerSetNotModified extends TypeMessagesStickerSet {
   protected get [id]() {
-    return 0xd3f924eb;
+    return 0xD3F924EB;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -17630,7 +17630,7 @@ export class BotCommand extends TypeBotCommand {
   description: string;
 
   protected get [id]() {
-    return 0xc27ac8c7;
+    return 0xC27AC8C7;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -17663,7 +17663,7 @@ export class BotInfo extends TypeBotInfo {
   menuButton?: TypeBotMenuButton;
 
   protected get [id]() {
-    return 0x8f300b57;
+    return 0x8F300B57;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -17705,7 +17705,7 @@ export class KeyboardButton extends TypeKeyboardButton {
   text: string;
 
   protected get [id]() {
-    return 0xa2fa4880;
+    return 0xA2FA4880;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -17731,7 +17731,7 @@ export class KeyboardButtonURL extends TypeKeyboardButton {
   url: string;
 
   protected get [id]() {
-    return 0x258aff05;
+    return 0x258AFF05;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -17761,7 +17761,7 @@ export class KeyboardButtonCallback extends TypeKeyboardButton {
   data: Uint8Array;
 
   protected get [id]() {
-    return 0x35bbdb6b;
+    return 0x35BBDB6B;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -17794,7 +17794,7 @@ export class KeyboardButtonRequestPhone extends TypeKeyboardButton {
   text: string;
 
   protected get [id]() {
-    return 0xb16a6c29;
+    return 0xB16A6C29;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -17819,7 +17819,7 @@ export class KeyboardButtonRequestGeoLocation extends TypeKeyboardButton {
   text: string;
 
   protected get [id]() {
-    return 0xfc796b3f;
+    return 0xFC796B3F;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -17846,7 +17846,7 @@ export class KeyboardButtonSwitchInline extends TypeKeyboardButton {
   query: string;
 
   protected get [id]() {
-    return 0x0568a748;
+    return 0x0568A748;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -17879,7 +17879,7 @@ export class KeyboardButtonGame extends TypeKeyboardButton {
   text: string;
 
   protected get [id]() {
-    return 0x50f41ccf;
+    return 0x50F41CCF;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -17904,7 +17904,7 @@ export class KeyboardButtonBuy extends TypeKeyboardButton {
   text: string;
 
   protected get [id]() {
-    return 0xafd93fbb;
+    return 0xAFD93FBB;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -17932,7 +17932,7 @@ export class KeyboardButtonURLAuth extends TypeKeyboardButton {
   buttonId: number;
 
   protected get [id]() {
-    return 0x10b78d29;
+    return 0x10B78D29;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -17972,7 +17972,7 @@ export class InputKeyboardButtonURLAuth extends TypeKeyboardButton {
   bot: TypeInputUser;
 
   protected get [id]() {
-    return 0xd02e7fd4;
+    return 0xD02E7FD4;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -18012,7 +18012,7 @@ export class KeyboardButtonRequestPoll extends TypeKeyboardButton {
   text: string;
 
   protected get [id]() {
-    return 0xbbc7515d;
+    return 0xBBC7515D;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -18043,7 +18043,7 @@ export class InputKeyboardButtonUserProfile extends TypeKeyboardButton {
   userId: TypeInputUser;
 
   protected get [id]() {
-    return 0xe988037b;
+    return 0xE988037B;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -18072,7 +18072,7 @@ export class KeyboardButtonUserProfile extends TypeKeyboardButton {
   userId: bigint;
 
   protected get [id]() {
-    return 0x308660c1;
+    return 0x308660C1;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -18130,7 +18130,7 @@ export class KeyboardButtonSimpleWebView extends TypeKeyboardButton {
   url: string;
 
   protected get [id]() {
-    return 0xa0c0505c;
+    return 0xA0C0505C;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -18160,7 +18160,7 @@ export class KeyboardButtonRequestPeer extends TypeKeyboardButton {
   peerType: TypeRequestPeerType;
 
   protected get [id]() {
-    return 0x0d0b468c;
+    return 0x0D0B468C;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -18191,7 +18191,7 @@ export class KeyboardButtonRow extends TypeKeyboardButtonRow {
   buttons: Array<TypeKeyboardButton>;
 
   protected get [id]() {
-    return 0x77608b83;
+    return 0x77608B83;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -18216,7 +18216,7 @@ export class ReplyKeyboardHide extends TypeReplyMarkup {
   selective?: true;
 
   protected get [id]() {
-    return 0xa03e5b85;
+    return 0xA03E5B85;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -18245,7 +18245,7 @@ export class ReplyKeyboardForceReply extends TypeReplyMarkup {
   placeholder?: string;
 
   protected get [id]() {
-    return 0x86b40b08;
+    return 0x86B40B08;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -18283,7 +18283,7 @@ export class ReplyKeyboardMarkup extends TypeReplyMarkup {
   placeholder?: string;
 
   protected get [id]() {
-    return 0x85dd99d1;
+    return 0x85DD99D1;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -18325,7 +18325,7 @@ export class ReplyInlineMarkup extends TypeReplyMarkup {
   rows: Array<TypeKeyboardButtonRow>;
 
   protected get [id]() {
-    return 0x48a30254;
+    return 0x48A30254;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -18351,7 +18351,7 @@ export class MessageEntityUnknown extends TypeMessageEntity {
   length: number;
 
   protected get [id]() {
-    return 0xbb92ba95;
+    return 0xBB92BA95;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -18380,7 +18380,7 @@ export class MessageEntityMention extends TypeMessageEntity {
   length: number;
 
   protected get [id]() {
-    return 0xfa04579d;
+    return 0xFA04579D;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -18409,7 +18409,7 @@ export class MessageEntityHashtag extends TypeMessageEntity {
   length: number;
 
   protected get [id]() {
-    return 0x6f635b0d;
+    return 0x6F635B0D;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -18438,7 +18438,7 @@ export class MessageEntityBotCommand extends TypeMessageEntity {
   length: number;
 
   protected get [id]() {
-    return 0x6cef8ac7;
+    return 0x6CEF8AC7;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -18467,7 +18467,7 @@ export class MessageEntityURL extends TypeMessageEntity {
   length: number;
 
   protected get [id]() {
-    return 0x6ed02538;
+    return 0x6ED02538;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -18496,7 +18496,7 @@ export class MessageEntityEmail extends TypeMessageEntity {
   length: number;
 
   protected get [id]() {
-    return 0x64e475c2;
+    return 0x64E475C2;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -18525,7 +18525,7 @@ export class MessageEntityBold extends TypeMessageEntity {
   length: number;
 
   protected get [id]() {
-    return 0xbd610bc9;
+    return 0xBD610BC9;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -18554,7 +18554,7 @@ export class MessageEntityItalic extends TypeMessageEntity {
   length: number;
 
   protected get [id]() {
-    return 0x826f8b60;
+    return 0x826F8B60;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -18583,7 +18583,7 @@ export class MessageEntityCode extends TypeMessageEntity {
   length: number;
 
   protected get [id]() {
-    return 0x28a20571;
+    return 0x28A20571;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -18613,7 +18613,7 @@ export class MessageEntityPre extends TypeMessageEntity {
   language: string;
 
   protected get [id]() {
-    return 0x73924be0;
+    return 0x73924BE0;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -18646,7 +18646,7 @@ export class MessageEntityTextURL extends TypeMessageEntity {
   url: string;
 
   protected get [id]() {
-    return 0x76a6d327;
+    return 0x76A6D327;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -18679,7 +18679,7 @@ export class MessageEntityMentionName extends TypeMessageEntity {
   userId: bigint;
 
   protected get [id]() {
-    return 0xdc7b1140;
+    return 0xDC7B1140;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -18712,7 +18712,7 @@ export class InputMessageEntityMentionName extends TypeMessageEntity {
   userId: TypeInputUser;
 
   protected get [id]() {
-    return 0x208e68c9;
+    return 0x208E68C9;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -18744,7 +18744,7 @@ export class MessageEntityPhone extends TypeMessageEntity {
   length: number;
 
   protected get [id]() {
-    return 0x9b69e34b;
+    return 0x9B69E34B;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -18773,7 +18773,7 @@ export class MessageEntityCashtag extends TypeMessageEntity {
   length: number;
 
   protected get [id]() {
-    return 0x4c4e743f;
+    return 0x4C4E743F;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -18802,7 +18802,7 @@ export class MessageEntityUnderline extends TypeMessageEntity {
   length: number;
 
   protected get [id]() {
-    return 0x9c4e7e8b;
+    return 0x9C4E7E8B;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -18831,7 +18831,7 @@ export class MessageEntityStrike extends TypeMessageEntity {
   length: number;
 
   protected get [id]() {
-    return 0xbf0693d4;
+    return 0xBF0693D4;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -18860,7 +18860,7 @@ export class MessageEntityBlockquote extends TypeMessageEntity {
   length: number;
 
   protected get [id]() {
-    return 0x020df5d0;
+    return 0x020DF5D0;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -18889,7 +18889,7 @@ export class MessageEntityBankCard extends TypeMessageEntity {
   length: number;
 
   protected get [id]() {
-    return 0x761e6af4;
+    return 0x761E6AF4;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -18918,7 +18918,7 @@ export class MessageEntitySpoiler extends TypeMessageEntity {
   length: number;
 
   protected get [id]() {
-    return 0x32ca960f;
+    return 0x32CA960F;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -18948,7 +18948,7 @@ export class MessageEntityCustomEmoji extends TypeMessageEntity {
   documentId: bigint;
 
   protected get [id]() {
-    return 0xc8cf05f8;
+    return 0xC8CF05F8;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -18977,7 +18977,7 @@ export class MessageEntityCustomEmoji extends TypeMessageEntity {
 
 export class InputChannelEmpty extends TypeInputChannel {
   protected get [id]() {
-    return 0xee8c1e86;
+    return 0xEE8C1E86;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -18998,7 +18998,7 @@ export class InputChannel extends TypeInputChannel {
   accessHash: bigint;
 
   protected get [id]() {
-    return 0xf35aec28;
+    return 0xF35AEC28;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -19028,7 +19028,7 @@ export class InputChannelFromMessage extends TypeInputChannel {
   channelId: bigint;
 
   protected get [id]() {
-    return 0x5b934f9d;
+    return 0x5B934F9D;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -19061,7 +19061,7 @@ export class ContactsResolvedPeer extends TypeContactsResolvedPeer {
   users: Array<TypeUser>;
 
   protected get [id]() {
-    return 0x7f077ad9;
+    return 0x7F077AD9;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -19093,7 +19093,7 @@ export class MessageRange extends TypeMessageRange {
   maxId: number;
 
   protected get [id]() {
-    return 0x0ae30253;
+    return 0x0AE30253;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -19123,7 +19123,7 @@ export class UpdatesChannelDifferenceEmpty extends TypeUpdatesChannelDifference 
   timeout?: number;
 
   protected get [id]() {
-    return 0x3e11affb;
+    return 0x3E11AFFB;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -19161,7 +19161,7 @@ export class UpdatesChannelDifferenceTooLong extends TypeUpdatesChannelDifferenc
   users: Array<TypeUser>;
 
   protected get [id]() {
-    return 0xa4bcc6fe;
+    return 0xA4BCC6FE;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -19209,7 +19209,7 @@ export class UpdatesChannelDifference extends TypeUpdatesChannelDifference {
   users: Array<TypeUser>;
 
   protected get [id]() {
-    return 0x2064674e;
+    return 0x2064674E;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -19252,7 +19252,7 @@ export class UpdatesChannelDifference extends TypeUpdatesChannelDifference {
 
 export class ChannelMessagesFilterEmpty extends TypeChannelMessagesFilter {
   protected get [id]() {
-    return 0x94d42ee7;
+    return 0x94D42EE7;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -19273,7 +19273,7 @@ export class ChannelMessagesFilter extends TypeChannelMessagesFilter {
   ranges: Array<TypeMessageRange>;
 
   protected get [id]() {
-    return 0xcd77d957;
+    return 0xCD77D957;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -19304,7 +19304,7 @@ export class ChannelParticipant extends TypeChannelParticipant {
   date: number;
 
   protected get [id]() {
-    return 0xc00c07c0;
+    return 0xC00C07C0;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -19335,7 +19335,7 @@ export class ChannelParticipantSelf extends TypeChannelParticipant {
   date: number;
 
   protected get [id]() {
-    return 0x35a8bfa7;
+    return 0x35A8BFA7;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -19373,7 +19373,7 @@ export class ChannelParticipantCreator extends TypeChannelParticipant {
   rank?: string;
 
   protected get [id]() {
-    return 0x2fe601d3;
+    return 0x2FE601D3;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -19413,7 +19413,7 @@ export class ChannelParticipantAdmin extends TypeChannelParticipant {
   rank?: string;
 
   protected get [id]() {
-    return 0x34c3bb53;
+    return 0x34C3BB53;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -19465,7 +19465,7 @@ export class ChannelParticipantBanned extends TypeChannelParticipant {
   bannedRights: TypeChatBannedRights;
 
   protected get [id]() {
-    return 0x6df8014e;
+    return 0x6DF8014E;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -19504,7 +19504,7 @@ export class ChannelParticipantLeft extends TypeChannelParticipant {
   peer: TypePeer;
 
   protected get [id]() {
-    return 0x1b03f006;
+    return 0x1B03F006;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -19527,7 +19527,7 @@ export class ChannelParticipantLeft extends TypeChannelParticipant {
 
 export class ChannelParticipantsRecent extends TypeChannelParticipantsFilter {
   protected get [id]() {
-    return 0xde3f3c79;
+    return 0xDE3F3C79;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -19545,7 +19545,7 @@ export class ChannelParticipantsRecent extends TypeChannelParticipantsFilter {
 
 export class ChannelParticipantsAdmins extends TypeChannelParticipantsFilter {
   protected get [id]() {
-    return 0xb4608969;
+    return 0xB4608969;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -19565,7 +19565,7 @@ export class ChannelParticipantsKicked extends TypeChannelParticipantsFilter {
   q: string;
 
   protected get [id]() {
-    return 0xa3b54985;
+    return 0xA3B54985;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -19588,7 +19588,7 @@ export class ChannelParticipantsKicked extends TypeChannelParticipantsFilter {
 
 export class ChannelParticipantsBots extends TypeChannelParticipantsFilter {
   protected get [id]() {
-    return 0xb0d1865b;
+    return 0xB0D1865B;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -19608,7 +19608,7 @@ export class ChannelParticipantsBanned extends TypeChannelParticipantsFilter {
   q: string;
 
   protected get [id]() {
-    return 0x1427a5e1;
+    return 0x1427A5E1;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -19633,7 +19633,7 @@ export class ChannelParticipantsSearch extends TypeChannelParticipantsFilter {
   q: string;
 
   protected get [id]() {
-    return 0x0656ac4b;
+    return 0x0656AC4B;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -19658,7 +19658,7 @@ export class ChannelParticipantsContacts extends TypeChannelParticipantsFilter {
   q: string;
 
   protected get [id]() {
-    return 0xbb6ae88d;
+    return 0xBB6AE88D;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -19684,7 +19684,7 @@ export class ChannelParticipantsMentions extends TypeChannelParticipantsFilter {
   topMsgId?: number;
 
   protected get [id]() {
-    return 0xe04b5ceb;
+    return 0xE04B5CEB;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -19717,7 +19717,7 @@ export class ChannelsChannelParticipants extends TypeChannelsChannelParticipants
   users: Array<TypeUser>;
 
   protected get [id]() {
-    return 0x9ab0feaf;
+    return 0x9AB0FEAF;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -19749,7 +19749,7 @@ export class ChannelsChannelParticipants extends TypeChannelsChannelParticipants
 
 export class ChannelsChannelParticipantsNotModified extends TypeChannelsChannelParticipants {
   protected get [id]() {
-    return 0xf0173fe9;
+    return 0xF0173FE9;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -19771,7 +19771,7 @@ export class ChannelsChannelParticipant extends TypeChannelsChannelParticipant {
   users: Array<TypeUser>;
 
   protected get [id]() {
-    return 0xdfb80317;
+    return 0xDFB80317;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -19806,7 +19806,7 @@ export class HelpTermsOfService extends TypeHelpTermsOfService {
   minAgeConfirm?: number;
 
   protected get [id]() {
-    return 0x780a0310;
+    return 0x780A0310;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -19843,7 +19843,7 @@ export class HelpTermsOfService extends TypeHelpTermsOfService {
 
 export class MessagesSavedGifsNotModified extends TypeMessagesSavedGifs {
   protected get [id]() {
-    return 0xe8025ca2;
+    return 0xE8025CA2;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -19864,7 +19864,7 @@ export class MessagesSavedGifs extends TypeMessagesSavedGifs {
   gifs: Array<TypeDocument>;
 
   protected get [id]() {
-    return 0x84a02a0d;
+    return 0x84A02A0D;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -19894,7 +19894,7 @@ export class InputBotInlineMessageMediaAuto extends TypeInputBotInlineMessage {
   replyMarkup?: TypeReplyMarkup;
 
   protected get [id]() {
-    return 0x3380c786;
+    return 0x3380C786;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -19930,7 +19930,7 @@ export class InputBotInlineMessageText extends TypeInputBotInlineMessage {
   replyMarkup?: TypeReplyMarkup;
 
   protected get [id]() {
-    return 0x3dcd7a87;
+    return 0x3DCD7A87;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -19970,7 +19970,7 @@ export class InputBotInlineMessageMediaGeo extends TypeInputBotInlineMessage {
   replyMarkup?: TypeReplyMarkup;
 
   protected get [id]() {
-    return 0x96929a85;
+    return 0x96929A85;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -20015,7 +20015,7 @@ export class InputBotInlineMessageMediaVenue extends TypeInputBotInlineMessage {
   replyMarkup?: TypeReplyMarkup;
 
   protected get [id]() {
-    return 0x417bbf11;
+    return 0x417BBF11;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -20064,7 +20064,7 @@ export class InputBotInlineMessageMediaContact extends TypeInputBotInlineMessage
   replyMarkup?: TypeReplyMarkup;
 
   protected get [id]() {
-    return 0xa6edbffd;
+    return 0xA6EDBFFD;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -20103,7 +20103,7 @@ export class InputBotInlineMessageGame extends TypeInputBotInlineMessage {
   replyMarkup?: TypeReplyMarkup;
 
   protected get [id]() {
-    return 0x4b425864;
+    return 0x4B425864;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -20137,7 +20137,7 @@ export class InputBotInlineMessageMediaInvoice extends TypeInputBotInlineMessage
   replyMarkup?: TypeReplyMarkup;
 
   protected get [id]() {
-    return 0xd7e78225;
+    return 0xD7E78225;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -20192,7 +20192,7 @@ export class InputBotInlineResult extends TypeInputBotInlineResult {
   sendMessage: TypeInputBotInlineMessage;
 
   protected get [id]() {
-    return 0x88bf9319;
+    return 0x88BF9319;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -20243,7 +20243,7 @@ export class InputBotInlineResultPhoto extends TypeInputBotInlineResult {
   sendMessage: TypeInputBotInlineMessage;
 
   protected get [id]() {
-    return 0xa8d864a7;
+    return 0xA8D864A7;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -20282,7 +20282,7 @@ export class InputBotInlineResultDocument extends TypeInputBotInlineResult {
   sendMessage: TypeInputBotInlineMessage;
 
   protected get [id]() {
-    return 0xfff8fdc4;
+    return 0xFFF8FDC4;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -20326,7 +20326,7 @@ export class InputBotInlineResultGame extends TypeInputBotInlineResult {
   sendMessage: TypeInputBotInlineMessage;
 
   protected get [id]() {
-    return 0x4fa417f2;
+    return 0x4FA417F2;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -20359,7 +20359,7 @@ export class BotInlineMessageMediaAuto extends TypeBotInlineMessage {
   replyMarkup?: TypeReplyMarkup;
 
   protected get [id]() {
-    return 0x764cf810;
+    return 0x764CF810;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -20395,7 +20395,7 @@ export class BotInlineMessageText extends TypeBotInlineMessage {
   replyMarkup?: TypeReplyMarkup;
 
   protected get [id]() {
-    return 0x8c7f65e2;
+    return 0x8C7F65E2;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -20435,7 +20435,7 @@ export class BotInlineMessageMediaGeo extends TypeBotInlineMessage {
   replyMarkup?: TypeReplyMarkup;
 
   protected get [id]() {
-    return 0x051846fd;
+    return 0x051846FD;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -20480,7 +20480,7 @@ export class BotInlineMessageMediaVenue extends TypeBotInlineMessage {
   replyMarkup?: TypeReplyMarkup;
 
   protected get [id]() {
-    return 0x8a86659c;
+    return 0x8A86659C;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -20529,7 +20529,7 @@ export class BotInlineMessageMediaContact extends TypeBotInlineMessage {
   replyMarkup?: TypeReplyMarkup;
 
   protected get [id]() {
-    return 0x18d1cdc2;
+    return 0x18D1CDC2;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -20575,7 +20575,7 @@ export class BotInlineMessageMediaInvoice extends TypeBotInlineMessage {
   replyMarkup?: TypeReplyMarkup;
 
   protected get [id]() {
-    return 0x354a9b09;
+    return 0x354A9B09;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -20630,7 +20630,7 @@ export class BotInlineResult extends TypeBotInlineResult {
   sendMessage: TypeBotInlineMessage;
 
   protected get [id]() {
-    return 0x11965f3a;
+    return 0x11965F3A;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -20684,7 +20684,7 @@ export class BotInlineMediaResult extends TypeBotInlineResult {
   sendMessage: TypeBotInlineMessage;
 
   protected get [id]() {
-    return 0x17db940b;
+    return 0x17DB940B;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -20736,7 +20736,7 @@ export class MessagesBotResults extends TypeMessagesBotResults {
   users: Array<TypeUser>;
 
   protected get [id]() {
-    return 0xe021f2f6;
+    return 0xE021F2F6;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -20785,7 +20785,7 @@ export class ExportedMessageLink extends TypeExportedMessageLink {
   html: string;
 
   protected get [id]() {
-    return 0x5dab1af4;
+    return 0x5DAB1AF4;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -20821,7 +20821,7 @@ export class MessageFwdHeader extends TypeMessageFwdHeader {
   psaType?: string;
 
   protected get [id]() {
-    return 0x5f777dce;
+    return 0x5F777DCE;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -20870,7 +20870,7 @@ export class MessageFwdHeader extends TypeMessageFwdHeader {
 
 export class AuthCodeTypeSms extends TypeAuthCodeType {
   protected get [id]() {
-    return 0x72a3158c;
+    return 0x72A3158C;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -20888,7 +20888,7 @@ export class AuthCodeTypeSms extends TypeAuthCodeType {
 
 export class AuthCodeTypeCall extends TypeAuthCodeType {
   protected get [id]() {
-    return 0x741cd3e3;
+    return 0x741CD3E3;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -20906,7 +20906,7 @@ export class AuthCodeTypeCall extends TypeAuthCodeType {
 
 export class AuthCodeTypeFlashCall extends TypeAuthCodeType {
   protected get [id]() {
-    return 0x226ccefb;
+    return 0x226CCEFB;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -20924,7 +20924,7 @@ export class AuthCodeTypeFlashCall extends TypeAuthCodeType {
 
 export class AuthCodeTypeMissedCall extends TypeAuthCodeType {
   protected get [id]() {
-    return 0xd61ad6ee;
+    return 0xD61AD6EE;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -20942,7 +20942,7 @@ export class AuthCodeTypeMissedCall extends TypeAuthCodeType {
 
 export class AuthCodeTypeFragmentSms extends TypeAuthCodeType {
   protected get [id]() {
-    return 0x06ed998c;
+    return 0x06ED998C;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -20962,7 +20962,7 @@ export class AuthSentCodeTypeApp extends TypeAuthSentCodeType {
   length: number;
 
   protected get [id]() {
-    return 0x3dbb5986;
+    return 0x3DBB5986;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -20987,7 +20987,7 @@ export class AuthSentCodeTypeSms extends TypeAuthSentCodeType {
   length: number;
 
   protected get [id]() {
-    return 0xc000bba2;
+    return 0xC000BBA2;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -21012,7 +21012,7 @@ export class AuthSentCodeTypeCall extends TypeAuthSentCodeType {
   length: number;
 
   protected get [id]() {
-    return 0x5353e5a7;
+    return 0x5353E5A7;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -21037,7 +21037,7 @@ export class AuthSentCodeTypeFlashCall extends TypeAuthSentCodeType {
   pattern: string;
 
   protected get [id]() {
-    return 0xab03c6d9;
+    return 0xAB03C6D9;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -21095,7 +21095,7 @@ export class AuthSentCodeTypeEmailCode extends TypeAuthSentCodeType {
   nextPhoneLoginDate?: number;
 
   protected get [id]() {
-    return 0x5a159841;
+    return 0x5A159841;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -21135,7 +21135,7 @@ export class AuthSentCodeTypeSetUpEmailRequired extends TypeAuthSentCodeType {
   googleSigninAllowed?: true;
 
   protected get [id]() {
-    return 0xa5491dea;
+    return 0xA5491DEA;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -21166,7 +21166,7 @@ export class AuthSentCodeTypeFragmentSms extends TypeAuthSentCodeType {
   length: number;
 
   protected get [id]() {
-    return 0xd9565c39;
+    return 0xD9565C39;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -21197,7 +21197,7 @@ export class AuthSentCodeTypeFirebaseSms extends TypeAuthSentCodeType {
   length: number;
 
   protected get [id]() {
-    return 0xe57b1432;
+    return 0xE57B1432;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -21238,7 +21238,7 @@ export class MessagesBotCallbackAnswer extends TypeMessagesBotCallbackAnswer {
   cacheTime: number;
 
   protected get [id]() {
-    return 0x36585ea4;
+    return 0x36585EA4;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -21280,7 +21280,7 @@ export class MessagesMessageEditData extends TypeMessagesMessageEditData {
   caption?: true;
 
   protected get [id]() {
-    return 0x26b5dde6;
+    return 0x26B5DDE6;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -21309,7 +21309,7 @@ export class InputBotInlineMessageID extends TypeInputBotInlineMessageID {
   accessHash: bigint;
 
   protected get [id]() {
-    return 0x890c3d89;
+    return 0x890C3D89;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -21343,7 +21343,7 @@ export class InputBotInlineMessageID64 extends TypeInputBotInlineMessageID {
   accessHash: bigint;
 
   protected get [id]() {
-    return 0xb6d915d7;
+    return 0xB6D915D7;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -21378,7 +21378,7 @@ export class InlineBotSwitchPM extends TypeInlineBotSwitchPM {
   startParam: string;
 
   protected get [id]() {
-    return 0x3c20629f;
+    return 0x3C20629F;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -21410,7 +21410,7 @@ export class MessagesPeerDialogs extends TypeMessagesPeerDialogs {
   state: TypeUpdatesState;
 
   protected get [id]() {
-    return 0x3371c354;
+    return 0x3371C354;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -21448,7 +21448,7 @@ export class TopPeer extends TypeTopPeer {
   rating: number;
 
   protected get [id]() {
-    return 0xedcdc05b;
+    return 0xEDCDC05B;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -21474,7 +21474,7 @@ export class TopPeer extends TypeTopPeer {
 
 export class TopPeerCategoryBotsPM extends TypeTopPeerCategory {
   protected get [id]() {
-    return 0xab661b5b;
+    return 0xAB661B5B;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -21492,7 +21492,7 @@ export class TopPeerCategoryBotsPM extends TypeTopPeerCategory {
 
 export class TopPeerCategoryBotsInline extends TypeTopPeerCategory {
   protected get [id]() {
-    return 0x148677e2;
+    return 0x148677E2;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -21510,7 +21510,7 @@ export class TopPeerCategoryBotsInline extends TypeTopPeerCategory {
 
 export class TopPeerCategoryCorrespondents extends TypeTopPeerCategory {
   protected get [id]() {
-    return 0x0637b7ed;
+    return 0x0637B7ED;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -21528,7 +21528,7 @@ export class TopPeerCategoryCorrespondents extends TypeTopPeerCategory {
 
 export class TopPeerCategoryGroups extends TypeTopPeerCategory {
   protected get [id]() {
-    return 0xbd17a14a;
+    return 0xBD17A14A;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -21546,7 +21546,7 @@ export class TopPeerCategoryGroups extends TypeTopPeerCategory {
 
 export class TopPeerCategoryChannels extends TypeTopPeerCategory {
   protected get [id]() {
-    return 0x161d9628;
+    return 0x161D9628;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -21564,7 +21564,7 @@ export class TopPeerCategoryChannels extends TypeTopPeerCategory {
 
 export class TopPeerCategoryPhoneCalls extends TypeTopPeerCategory {
   protected get [id]() {
-    return 0x1e76a78c;
+    return 0x1E76A78C;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -21582,7 +21582,7 @@ export class TopPeerCategoryPhoneCalls extends TypeTopPeerCategory {
 
 export class TopPeerCategoryForwardUsers extends TypeTopPeerCategory {
   protected get [id]() {
-    return 0xa8406ca9;
+    return 0xA8406CA9;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -21600,7 +21600,7 @@ export class TopPeerCategoryForwardUsers extends TypeTopPeerCategory {
 
 export class TopPeerCategoryForwardChats extends TypeTopPeerCategory {
   protected get [id]() {
-    return 0xfbeec0f0;
+    return 0xFBEEC0F0;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -21622,7 +21622,7 @@ export class TopPeerCategoryPeers extends TypeTopPeerCategoryPeers {
   peers: Array<TypeTopPeer>;
 
   protected get [id]() {
-    return 0xfb834291;
+    return 0xFB834291;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -21651,7 +21651,7 @@ export class TopPeerCategoryPeers extends TypeTopPeerCategoryPeers {
 
 export class ContactsTopPeersNotModified extends TypeContactsTopPeers {
   protected get [id]() {
-    return 0xde266ef5;
+    return 0xDE266EF5;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -21673,7 +21673,7 @@ export class ContactsTopPeers extends TypeContactsTopPeers {
   users: Array<TypeUser>;
 
   protected get [id]() {
-    return 0x70b772a8;
+    return 0x70B772A8;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -21702,7 +21702,7 @@ export class ContactsTopPeers extends TypeContactsTopPeers {
 
 export class ContactsTopPeersDisabled extends TypeContactsTopPeers {
   protected get [id]() {
-    return 0xb52c939d;
+    return 0xB52C939D;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -21722,7 +21722,7 @@ export class DraftMessageEmpty extends TypeDraftMessage {
   date?: number;
 
   protected get [id]() {
-    return 0x1b0c841a;
+    return 0x1B0C841A;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -21753,7 +21753,7 @@ export class DraftMessage extends TypeDraftMessage {
   date: number;
 
   protected get [id]() {
-    return 0xfd8e711f;
+    return 0xFD8E711F;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -21792,7 +21792,7 @@ export class MessagesFeaturedStickersNotModified extends TypeMessagesFeaturedSti
   count: number;
 
   protected get [id]() {
-    return 0xc6dc0c66;
+    return 0xC6DC0C66;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -21821,7 +21821,7 @@ export class MessagesFeaturedStickers extends TypeMessagesFeaturedStickers {
   unread: Array<bigint>;
 
   protected get [id]() {
-    return 0xbe382906;
+    return 0xBE382906;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -21858,7 +21858,7 @@ export class MessagesFeaturedStickers extends TypeMessagesFeaturedStickers {
 
 export class MessagesRecentStickersNotModified extends TypeMessagesRecentStickers {
   protected get [id]() {
-    return 0x0b17f890;
+    return 0x0B17F890;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -21881,7 +21881,7 @@ export class MessagesRecentStickers extends TypeMessagesRecentStickers {
   dates: Array<number>;
 
   protected get [id]() {
-    return 0x88d37c56;
+    return 0x88D37C56;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -21916,7 +21916,7 @@ export class MessagesArchivedStickers extends TypeMessagesArchivedStickers {
   sets: Array<TypeStickerSetCovered>;
 
   protected get [id]() {
-    return 0x4fcba9c8;
+    return 0x4FCBA9C8;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -21962,7 +21962,7 @@ export class MessagesStickerSetInstallResultArchive extends TypeMessagesStickerS
   sets: Array<TypeStickerSetCovered>;
 
   protected get [id]() {
-    return 0x35e410a8;
+    return 0x35E410A8;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -21988,7 +21988,7 @@ export class StickerSetCovered extends TypeStickerSetCovered {
   cover: TypeDocument;
 
   protected get [id]() {
-    return 0x6410a5d2;
+    return 0x6410A5D2;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -22017,7 +22017,7 @@ export class StickerSetMultiCovered extends TypeStickerSetCovered {
   covers: Array<TypeDocument>;
 
   protected get [id]() {
-    return 0x3407e51b;
+    return 0x3407E51B;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -22048,7 +22048,7 @@ export class StickerSetFullCovered extends TypeStickerSetCovered {
   documents: Array<TypeDocument>;
 
   protected get [id]() {
-    return 0x40d13c0e;
+    return 0x40D13C0E;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -22082,7 +22082,7 @@ export class StickerSetNoCovered extends TypeStickerSetCovered {
   set: TypeStickerSet;
 
   protected get [id]() {
-    return 0x77b15d1c;
+    return 0x77B15D1C;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -22110,7 +22110,7 @@ export class MaskCoords extends TypeMaskCoords {
   zoom: number;
 
   protected get [id]() {
-    return 0xaed6dbb2;
+    return 0xAED6DBB2;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -22144,7 +22144,7 @@ export class InputStickeredMediaPhoto extends TypeInputStickeredMedia {
   id: TypeInputPhoto;
 
   protected get [id]() {
-    return 0x4a992157;
+    return 0x4A992157;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -22169,7 +22169,7 @@ export class InputStickeredMediaDocument extends TypeInputStickeredMedia {
   id: TypeInputDocument;
 
   protected get [id]() {
-    return 0x0438865b;
+    return 0x0438865B;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -22200,7 +22200,7 @@ export class Game extends TypeGame {
   document?: TypeDocument;
 
   protected get [id]() {
-    return 0xbdf9653b;
+    return 0xBDF9653B;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -22246,7 +22246,7 @@ export class InputGameID extends TypeInputGame {
   accessHash: bigint;
 
   protected get [id]() {
-    return 0x032c3e77;
+    return 0x032C3E77;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -22275,7 +22275,7 @@ export class InputGameShortName extends TypeInputGame {
   shortName: string;
 
   protected get [id]() {
-    return 0xc331e80a;
+    return 0xC331E80A;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -22305,7 +22305,7 @@ export class HighScore extends TypeHighScore {
   score: number;
 
   protected get [id]() {
-    return 0x73a379eb;
+    return 0x73A379EB;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -22337,7 +22337,7 @@ export class MessagesHighScores extends TypeMessagesHighScores {
   users: Array<TypeUser>;
 
   protected get [id]() {
-    return 0x9a3bfd99;
+    return 0x9A3BFD99;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -22363,7 +22363,7 @@ export class MessagesHighScores extends TypeMessagesHighScores {
 
 export class TextEmpty extends TypeRichText {
   protected get [id]() {
-    return 0xdc3d824f;
+    return 0xDC3D824F;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -22383,7 +22383,7 @@ export class TextPlain extends TypeRichText {
   text: string;
 
   protected get [id]() {
-    return 0x744694e0;
+    return 0x744694E0;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -22408,7 +22408,7 @@ export class TextBold extends TypeRichText {
   text: TypeRichText;
 
   protected get [id]() {
-    return 0x6724abc4;
+    return 0x6724ABC4;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -22433,7 +22433,7 @@ export class TextItalic extends TypeRichText {
   text: TypeRichText;
 
   protected get [id]() {
-    return 0xd912a59c;
+    return 0xD912A59C;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -22458,7 +22458,7 @@ export class TextUnderline extends TypeRichText {
   text: TypeRichText;
 
   protected get [id]() {
-    return 0xc12622c4;
+    return 0xC12622C4;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -22483,7 +22483,7 @@ export class TextStrike extends TypeRichText {
   text: TypeRichText;
 
   protected get [id]() {
-    return 0x9bf8bb95;
+    return 0x9BF8BB95;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -22508,7 +22508,7 @@ export class TextFixed extends TypeRichText {
   text: TypeRichText;
 
   protected get [id]() {
-    return 0x6c3f19b9;
+    return 0x6C3F19B9;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -22535,7 +22535,7 @@ export class TextURL extends TypeRichText {
   webpageId: bigint;
 
   protected get [id]() {
-    return 0x3c2884c1;
+    return 0x3C2884C1;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -22567,7 +22567,7 @@ export class TextEmail extends TypeRichText {
   email: string;
 
   protected get [id]() {
-    return 0xde5a0dd6;
+    return 0xDE5A0DD6;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -22595,7 +22595,7 @@ export class TextConcat extends TypeRichText {
   texts: Array<TypeRichText>;
 
   protected get [id]() {
-    return 0x7e6260d7;
+    return 0x7E6260D7;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -22620,7 +22620,7 @@ export class TextSubscript extends TypeRichText {
   text: TypeRichText;
 
   protected get [id]() {
-    return 0xed6a8504;
+    return 0xED6A8504;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -22645,7 +22645,7 @@ export class TextSuperscript extends TypeRichText {
   text: TypeRichText;
 
   protected get [id]() {
-    return 0xc7fb5e01;
+    return 0xC7FB5E01;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -22670,7 +22670,7 @@ export class TextMarked extends TypeRichText {
   text: TypeRichText;
 
   protected get [id]() {
-    return 0x034b8621;
+    return 0x034B8621;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -22696,7 +22696,7 @@ export class TextPhone extends TypeRichText {
   phone: string;
 
   protected get [id]() {
-    return 0x1ccb966a;
+    return 0x1CCB966A;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -22726,7 +22726,7 @@ export class TextImage extends TypeRichText {
   h: number;
 
   protected get [id]() {
-    return 0x081ccf4f;
+    return 0x081CCF4F;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -22784,7 +22784,7 @@ export class TextAnchor extends TypeRichText {
 
 export class PageBlockUnsupported extends TypePageBlock {
   protected get [id]() {
-    return 0x13567e8a;
+    return 0x13567E8A;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -22804,7 +22804,7 @@ export class PageBlockTitle extends TypePageBlock {
   text: TypeRichText;
 
   protected get [id]() {
-    return 0x70abc3fd;
+    return 0x70ABC3FD;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -22829,7 +22829,7 @@ export class PageBlockSubtitle extends TypePageBlock {
   text: TypeRichText;
 
   protected get [id]() {
-    return 0x8ffa9a1f;
+    return 0x8FFA9A1F;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -22855,7 +22855,7 @@ export class PageBlockAuthorDate extends TypePageBlock {
   publishedDate: number;
 
   protected get [id]() {
-    return 0xbaafe5e0;
+    return 0xBAAFE5E0;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -22883,7 +22883,7 @@ export class PageBlockHeader extends TypePageBlock {
   text: TypeRichText;
 
   protected get [id]() {
-    return 0xbfd064ec;
+    return 0xBFD064EC;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -22908,7 +22908,7 @@ export class PageBlockSubheader extends TypePageBlock {
   text: TypeRichText;
 
   protected get [id]() {
-    return 0xf12bb6e1;
+    return 0xF12BB6E1;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -22933,7 +22933,7 @@ export class PageBlockParagraph extends TypePageBlock {
   text: TypeRichText;
 
   protected get [id]() {
-    return 0x467a0766;
+    return 0x467A0766;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -22959,7 +22959,7 @@ export class PageBlockPreformatted extends TypePageBlock {
   language: string;
 
   protected get [id]() {
-    return 0xc070d93e;
+    return 0xC070D93E;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -23010,7 +23010,7 @@ export class PageBlockFooter extends TypePageBlock {
 
 export class PageBlockDivider extends TypePageBlock {
   protected get [id]() {
-    return 0xdb20b188;
+    return 0xDB20B188;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -23030,7 +23030,7 @@ export class PageBlockAnchor extends TypePageBlock {
   name: string;
 
   protected get [id]() {
-    return 0xce0d37b0;
+    return 0xCE0D37B0;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -23055,7 +23055,7 @@ export class PageBlockList extends TypePageBlock {
   items: Array<TypePageListItem>;
 
   protected get [id]() {
-    return 0xe4e88011;
+    return 0xE4E88011;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -23081,7 +23081,7 @@ export class PageBlockBlockquote extends TypePageBlock {
   caption: TypeRichText;
 
   protected get [id]() {
-    return 0x263d7c26;
+    return 0x263D7C26;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -23110,7 +23110,7 @@ export class PageBlockPullquote extends TypePageBlock {
   caption: TypeRichText;
 
   protected get [id]() {
-    return 0x4f4456d3;
+    return 0x4F4456D3;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -23141,7 +23141,7 @@ export class PageBlockPhoto extends TypePageBlock {
   webpageId?: bigint;
 
   protected get [id]() {
-    return 0x1759c560;
+    return 0x1759C560;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -23180,7 +23180,7 @@ export class PageBlockVideo extends TypePageBlock {
   caption: TypePageCaption;
 
   protected get [id]() {
-    return 0x7c8fe7b6;
+    return 0x7C8FE7B6;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -23216,7 +23216,7 @@ export class PageBlockCover extends TypePageBlock {
   cover: TypePageBlock;
 
   protected get [id]() {
-    return 0x39f23300;
+    return 0x39F23300;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -23248,7 +23248,7 @@ export class PageBlockEmbed extends TypePageBlock {
   caption: TypePageCaption;
 
   protected get [id]() {
-    return 0xa8718dc5;
+    return 0xA8718DC5;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -23302,7 +23302,7 @@ export class PageBlockEmbedPost extends TypePageBlock {
   caption: TypePageCaption;
 
   protected get [id]() {
-    return 0xf259a80b;
+    return 0xF259A80B;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -23346,7 +23346,7 @@ export class PageBlockCollage extends TypePageBlock {
   caption: TypePageCaption;
 
   protected get [id]() {
-    return 0x65a0fa4d;
+    return 0x65A0FA4D;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -23375,7 +23375,7 @@ export class PageBlockSlideshow extends TypePageBlock {
   caption: TypePageCaption;
 
   protected get [id]() {
-    return 0x031f9590;
+    return 0x031F9590;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -23403,7 +23403,7 @@ export class PageBlockChannel extends TypePageBlock {
   channel: TypeChat;
 
   protected get [id]() {
-    return 0xef1751b5;
+    return 0xEF1751B5;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -23429,7 +23429,7 @@ export class PageBlockAudio extends TypePageBlock {
   caption: TypePageCaption;
 
   protected get [id]() {
-    return 0x804361ea;
+    return 0x804361EA;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -23457,7 +23457,7 @@ export class PageBlockKicker extends TypePageBlock {
   text: TypeRichText;
 
   protected get [id]() {
-    return 0x1e148390;
+    return 0x1E148390;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -23485,7 +23485,7 @@ export class PageBlockTable extends TypePageBlock {
   rows: Array<TypePageTableRow>;
 
   protected get [id]() {
-    return 0xbf4dea82;
+    return 0xBF4DEA82;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -23521,7 +23521,7 @@ export class PageBlockOrderedList extends TypePageBlock {
   items: Array<TypePageListOrderedItem>;
 
   protected get [id]() {
-    return 0x9a8ae1e1;
+    return 0x9A8AE1E1;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -23548,7 +23548,7 @@ export class PageBlockDetails extends TypePageBlock {
   title: TypeRichText;
 
   protected get [id]() {
-    return 0x76768bed;
+    return 0x76768BED;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -23582,7 +23582,7 @@ export class PageBlockRelatedArticles extends TypePageBlock {
   articles: Array<TypePageRelatedArticle>;
 
   protected get [id]() {
-    return 0x16115a96;
+    return 0x16115A96;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -23614,7 +23614,7 @@ export class PageBlockMap extends TypePageBlock {
   caption: TypePageCaption;
 
   protected get [id]() {
-    return 0xa44f3ef6;
+    return 0xA44F3EF6;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -23649,7 +23649,7 @@ export class PageBlockMap extends TypePageBlock {
 
 export class PhoneCallDiscardReasonMissed extends TypePhoneCallDiscardReason {
   protected get [id]() {
-    return 0x85e42301;
+    return 0x85E42301;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -23667,7 +23667,7 @@ export class PhoneCallDiscardReasonMissed extends TypePhoneCallDiscardReason {
 
 export class PhoneCallDiscardReasonDisconnect extends TypePhoneCallDiscardReason {
   protected get [id]() {
-    return 0xe095c1a0;
+    return 0xE095C1A0;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -23685,7 +23685,7 @@ export class PhoneCallDiscardReasonDisconnect extends TypePhoneCallDiscardReason
 
 export class PhoneCallDiscardReasonHangup extends TypePhoneCallDiscardReason {
   protected get [id]() {
-    return 0x57adc690;
+    return 0x57ADC690;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -23703,7 +23703,7 @@ export class PhoneCallDiscardReasonHangup extends TypePhoneCallDiscardReason {
 
 export class PhoneCallDiscardReasonBusy extends TypePhoneCallDiscardReason {
   protected get [id]() {
-    return 0xfaf7e8c9;
+    return 0xFAF7E8C9;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -23723,7 +23723,7 @@ export class DataJSON extends TypeDataJSON {
   data: string;
 
   protected get [id]() {
-    return 0x7d748d04;
+    return 0x7D748D04;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -23749,7 +23749,7 @@ export class LabeledPrice extends TypeLabeledPrice {
   amount: bigint;
 
   protected get [id]() {
-    return 0xcb296bf8;
+    return 0xCB296BF8;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -23790,7 +23790,7 @@ export class Invoice extends TypeInvoice {
   recurringTermsUrl?: string;
 
   protected get [id]() {
-    return 0x3e85a91b;
+    return 0x3E85A91B;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -23857,7 +23857,7 @@ export class PaymentCharge extends TypePaymentCharge {
   providerChargeId: string;
 
   protected get [id]() {
-    return 0xea02c27e;
+    return 0xEA02C27E;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -23890,7 +23890,7 @@ export class PostAddress extends TypePostAddress {
   postCode: string;
 
   protected get [id]() {
-    return 0x1e8caaeb;
+    return 0x1E8CAAEB;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -23933,7 +23933,7 @@ export class PaymentRequestedInfo extends TypePaymentRequestedInfo {
   shippingAddress?: TypePostAddress;
 
   protected get [id]() {
-    return 0x909c3f94;
+    return 0x909C3F94;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -23970,7 +23970,7 @@ export class PaymentSavedCredentialsCard extends TypePaymentSavedCredentials {
   title: string;
 
   protected get [id]() {
-    return 0xcdc27a1f;
+    return 0xCDC27A1F;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -24002,7 +24002,7 @@ export class WebDocument extends TypeWebDocument {
   attributes: Array<TypeDocumentAttribute>;
 
   protected get [id]() {
-    return 0x1c570ed1;
+    return 0x1C570ED1;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -24042,7 +24042,7 @@ export class WebDocumentNoProxy extends TypeWebDocument {
   attributes: Array<TypeDocumentAttribute>;
 
   protected get [id]() {
-    return 0xf9c8bcc6;
+    return 0xF9C8BCC6;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -24079,7 +24079,7 @@ export class InputWebDocument extends TypeInputWebDocument {
   attributes: Array<TypeDocumentAttribute>;
 
   protected get [id]() {
-    return 0x9bed434d;
+    return 0x9BED434D;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -24114,7 +24114,7 @@ export class InputWebFileLocation extends TypeInputWebFileLocation {
   accessHash: bigint;
 
   protected get [id]() {
-    return 0xc239d686;
+    return 0xC239D686;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -24147,7 +24147,7 @@ export class InputWebFileGeoPointLocation extends TypeInputWebFileLocation {
   scale: number;
 
   protected get [id]() {
-    return 0x9f2221c9;
+    return 0x9F2221C9;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -24190,7 +24190,7 @@ export class InputWebFileAudioAlbumThumbLocation extends TypeInputWebFileLocatio
   performer?: string;
 
   protected get [id]() {
-    return 0xf46fe924;
+    return 0xF46FE924;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -24230,7 +24230,7 @@ export class UploadWebFile extends TypeUploadWebFile {
   bytes: Uint8Array;
 
   protected get [id]() {
-    return 0x21e753bc;
+    return 0x21E753BC;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -24282,7 +24282,7 @@ export class PaymentsPaymentForm extends TypePaymentsPaymentForm {
   users: Array<TypeUser>;
 
   protected get [id]() {
-    return 0xa0058751;
+    return 0xA0058751;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -24355,7 +24355,7 @@ export class PaymentsValidatedRequestedInfo extends TypePaymentsValidatedRequest
   shippingOptions?: Array<TypeShippingOption>;
 
   protected get [id]() {
-    return 0xd1451883;
+    return 0xD1451883;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -24385,7 +24385,7 @@ export class PaymentsPaymentResult extends TypePaymentsPaymentResult {
   updates: TypeUpdates;
 
   protected get [id]() {
-    return 0x4e5f810d;
+    return 0x4E5F810D;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -24410,7 +24410,7 @@ export class PaymentsPaymentVerificationNeeded extends TypePaymentsPaymentResult
   url: string;
 
   protected get [id]() {
-    return 0xd8411139;
+    return 0xD8411139;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -24448,7 +24448,7 @@ export class PaymentsPaymentReceipt extends TypePaymentsPaymentReceipt {
   users: Array<TypeUser>;
 
   protected get [id]() {
-    return 0x70c4fe03;
+    return 0x70C4FE03;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -24515,7 +24515,7 @@ export class PaymentsSavedInfo extends TypePaymentsSavedInfo {
   savedInfo?: TypePaymentRequestedInfo;
 
   protected get [id]() {
-    return 0xfb8fe43c;
+    return 0xFB8FE43C;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -24546,7 +24546,7 @@ export class InputPaymentCredentialsSaved extends TypeInputPaymentCredentials {
   tmpPassword: Uint8Array;
 
   protected get [id]() {
-    return 0xc10eb2cf;
+    return 0xC10EB2CF;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -24575,7 +24575,7 @@ export class InputPaymentCredentials extends TypeInputPaymentCredentials {
   data: TypeDataJSON;
 
   protected get [id]() {
-    return 0x3417d728;
+    return 0x3417D728;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -24605,7 +24605,7 @@ export class InputPaymentCredentialsApplePay extends TypeInputPaymentCredentials
   paymentData: TypeDataJSON;
 
   protected get [id]() {
-    return 0x0aa1c39f;
+    return 0x0AA1C39F;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -24630,7 +24630,7 @@ export class InputPaymentCredentialsGooglePay extends TypeInputPaymentCredential
   paymentToken: TypeDataJSON;
 
   protected get [id]() {
-    return 0x8ac32801;
+    return 0x8AC32801;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -24656,7 +24656,7 @@ export class AccountTmpPassword extends TypeAccountTmpPassword {
   validUntil: number;
 
   protected get [id]() {
-    return 0xdb64fd34;
+    return 0xDB64FD34;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -24686,7 +24686,7 @@ export class ShippingOption extends TypeShippingOption {
   prices: Array<TypeLabeledPrice>;
 
   protected get [id]() {
-    return 0xb6213cdf;
+    return 0xB6213CDF;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -24720,7 +24720,7 @@ export class InputStickerSetItem extends TypeInputStickerSetItem {
   keywords?: string;
 
   protected get [id]() {
-    return 0x32da9e9c;
+    return 0x32DA9E9C;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -24757,7 +24757,7 @@ export class InputPhoneCall extends TypeInputPhoneCall {
   accessHash: bigint;
 
   protected get [id]() {
-    return 0x1e36fded;
+    return 0x1E36FDED;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -24785,7 +24785,7 @@ export class PhoneCallEmpty extends TypePhoneCall {
   id: bigint;
 
   protected get [id]() {
-    return 0x5366c915;
+    return 0x5366C915;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -24817,7 +24817,7 @@ export class PhoneCallWaiting extends TypePhoneCall {
   receiveDate?: number;
 
   protected get [id]() {
-    return 0xc5226f17;
+    return 0xC5226F17;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -24872,7 +24872,7 @@ export class PhoneCallRequested extends TypePhoneCall {
   protocol: TypePhoneCallProtocol;
 
   protected get [id]() {
-    return 0x14b0ed0c;
+    return 0x14B0ED0C;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -24927,7 +24927,7 @@ export class PhoneCallAccepted extends TypePhoneCall {
   protocol: TypePhoneCallProtocol;
 
   protected get [id]() {
-    return 0x3660c311;
+    return 0x3660C311;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -24986,7 +24986,7 @@ export class PhoneCall extends TypePhoneCall {
   startDate: number;
 
   protected get [id]() {
-    return 0x967f7c67;
+    return 0x967F7C67;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -25051,7 +25051,7 @@ export class PhoneCallDiscarded extends TypePhoneCall {
   duration?: number;
 
   protected get [id]() {
-    return 0x50ca4de1;
+    return 0x50CA4DE1;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -25098,7 +25098,7 @@ export class PhoneConnection extends TypePhoneConnection {
   peerTag: Uint8Array;
 
   protected get [id]() {
-    return 0x9cc123c7;
+    return 0x9CC123C7;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -25147,7 +25147,7 @@ export class PhoneConnectionWebrtc extends TypePhoneConnection {
   password: string;
 
   protected get [id]() {
-    return 0x635fe375;
+    return 0x635FE375;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -25199,7 +25199,7 @@ export class PhoneCallProtocol extends TypePhoneCallProtocol {
   libraryVersions: Array<string>;
 
   protected get [id]() {
-    return 0xfc878fc8;
+    return 0xFC878FC8;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -25239,7 +25239,7 @@ export class PhonePhoneCall extends TypePhonePhoneCall {
   users: Array<TypeUser>;
 
   protected get [id]() {
-    return 0xec82e140;
+    return 0xEC82E140;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -25267,7 +25267,7 @@ export class UploadCdnFileReuploadNeeded extends TypeUploadCdnFile {
   requestToken: Uint8Array;
 
   protected get [id]() {
-    return 0xeea8e46e;
+    return 0xEEA8E46E;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -25292,7 +25292,7 @@ export class UploadCdnFile extends TypeUploadCdnFile {
   bytes: Uint8Array;
 
   protected get [id]() {
-    return 0xa99fca4f;
+    return 0xA99FCA4F;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -25318,7 +25318,7 @@ export class CdnPublicKey extends TypeCdnPublicKey {
   publicKey: string;
 
   protected get [id]() {
-    return 0xc982eaba;
+    return 0xC982EABA;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -25346,7 +25346,7 @@ export class CdnConfig extends TypeCdnConfig {
   publicKeys: Array<TypeCdnPublicKey>;
 
   protected get [id]() {
-    return 0x5725e40a;
+    return 0x5725E40A;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -25372,7 +25372,7 @@ export class LangPackString extends TypeLangPackString {
   value: string;
 
   protected get [id]() {
-    return 0xcad181f6;
+    return 0xCAD181F6;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -25406,7 +25406,7 @@ export class LangPackStringPluralized extends TypeLangPackString {
   otherValue: string;
 
   protected get [id]() {
-    return 0x6c47ac9f;
+    return 0x6C47AC9F;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -25451,7 +25451,7 @@ export class LangPackStringDeleted extends TypeLangPackString {
   key: string;
 
   protected get [id]() {
-    return 0x2979eeb2;
+    return 0x2979EEB2;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -25479,7 +25479,7 @@ export class LangPackDifference extends TypeLangPackDifference {
   strings: Array<TypeLangPackString>;
 
   protected get [id]() {
-    return 0xf385c1f6;
+    return 0xF385C1F6;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -25523,7 +25523,7 @@ export class LangPackLanguage extends TypeLangPackLanguage {
   translationsUrl: string;
 
   protected get [id]() {
-    return 0xeeca5ce3;
+    return 0xEECA5CE3;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -25581,7 +25581,7 @@ export class ChannelAdminLogEventActionChangeTitle extends TypeChannelAdminLogEv
   newValue: string;
 
   protected get [id]() {
-    return 0xe6dfb825;
+    return 0xE6DFB825;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -25610,7 +25610,7 @@ export class ChannelAdminLogEventActionChangeAbout extends TypeChannelAdminLogEv
   newValue: string;
 
   protected get [id]() {
-    return 0x55188a2e;
+    return 0x55188A2E;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -25639,7 +25639,7 @@ export class ChannelAdminLogEventActionChangeUsername extends TypeChannelAdminLo
   newValue: string;
 
   protected get [id]() {
-    return 0x6a4afc38;
+    return 0x6A4AFC38;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -25668,7 +25668,7 @@ export class ChannelAdminLogEventActionChangePhoto extends TypeChannelAdminLogEv
   newPhoto: TypePhoto;
 
   protected get [id]() {
-    return 0x434bd2af;
+    return 0x434BD2AF;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -25696,7 +25696,7 @@ export class ChannelAdminLogEventActionToggleInvites extends TypeChannelAdminLog
   newValue: boolean;
 
   protected get [id]() {
-    return 0x1b7907ae;
+    return 0x1B7907AE;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -25721,7 +25721,7 @@ export class ChannelAdminLogEventActionToggleSignatures extends TypeChannelAdmin
   newValue: boolean;
 
   protected get [id]() {
-    return 0x26ae0971;
+    return 0x26AE0971;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -25746,7 +25746,7 @@ export class ChannelAdminLogEventActionUpdatePinned extends TypeChannelAdminLogE
   message: TypeMessage;
 
   protected get [id]() {
-    return 0xe9e82c18;
+    return 0xE9E82C18;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -25772,7 +25772,7 @@ export class ChannelAdminLogEventActionEditMessage extends TypeChannelAdminLogEv
   newMessage: TypeMessage;
 
   protected get [id]() {
-    return 0x709b2405;
+    return 0x709B2405;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -25800,7 +25800,7 @@ export class ChannelAdminLogEventActionDeleteMessage extends TypeChannelAdminLog
   message: TypeMessage;
 
   protected get [id]() {
-    return 0x42e047bb;
+    return 0x42E047BB;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -25823,7 +25823,7 @@ export class ChannelAdminLogEventActionDeleteMessage extends TypeChannelAdminLog
 
 export class ChannelAdminLogEventActionParticipantJoin extends TypeChannelAdminLogEventAction {
   protected get [id]() {
-    return 0x183040d3;
+    return 0x183040D3;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -25841,7 +25841,7 @@ export class ChannelAdminLogEventActionParticipantJoin extends TypeChannelAdminL
 
 export class ChannelAdminLogEventActionParticipantLeave extends TypeChannelAdminLogEventAction {
   protected get [id]() {
-    return 0xf89777f2;
+    return 0xF89777F2;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -25861,7 +25861,7 @@ export class ChannelAdminLogEventActionParticipantInvite extends TypeChannelAdmi
   participant: TypeChannelParticipant;
 
   protected get [id]() {
-    return 0xe31c34d8;
+    return 0xE31C34D8;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -25887,7 +25887,7 @@ export class ChannelAdminLogEventActionParticipantToggleBan extends TypeChannelA
   newParticipant: TypeChannelParticipant;
 
   protected get [id]() {
-    return 0xe6d83d7e;
+    return 0xE6D83D7E;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -25916,7 +25916,7 @@ export class ChannelAdminLogEventActionParticipantToggleAdmin extends TypeChanne
   newParticipant: TypeChannelParticipant;
 
   protected get [id]() {
-    return 0xd5676710;
+    return 0xD5676710;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -25945,7 +25945,7 @@ export class ChannelAdminLogEventActionChangeStickerSet extends TypeChannelAdmin
   newStickerset: TypeInputStickerSet;
 
   protected get [id]() {
-    return 0xb1c3caa7;
+    return 0xB1C3CAA7;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -25973,7 +25973,7 @@ export class ChannelAdminLogEventActionTogglePreHistoryHidden extends TypeChanne
   newValue: boolean;
 
   protected get [id]() {
-    return 0x5f5c95f1;
+    return 0x5F5C95F1;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -25999,7 +25999,7 @@ export class ChannelAdminLogEventActionDefaultBannedRights extends TypeChannelAd
   newBannedRights: TypeChatBannedRights;
 
   protected get [id]() {
-    return 0x2df5fc0a;
+    return 0x2DF5FC0A;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -26027,7 +26027,7 @@ export class ChannelAdminLogEventActionStopPoll extends TypeChannelAdminLogEvent
   message: TypeMessage;
 
   protected get [id]() {
-    return 0x8f079643;
+    return 0x8F079643;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -26053,7 +26053,7 @@ export class ChannelAdminLogEventActionChangeLinkedChat extends TypeChannelAdmin
   newValue: bigint;
 
   protected get [id]() {
-    return 0x050c7ac8;
+    return 0x050C7AC8;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -26082,7 +26082,7 @@ export class ChannelAdminLogEventActionChangeLocation extends TypeChannelAdminLo
   newValue: TypeChannelLocation;
 
   protected get [id]() {
-    return 0x0e6b76ae;
+    return 0x0E6B76AE;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -26164,7 +26164,7 @@ export class ChannelAdminLogEventActionDiscardGroupCall extends TypeChannelAdmin
   call: TypeInputGroupCall;
 
   protected get [id]() {
-    return 0xdb9f9140;
+    return 0xDB9F9140;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -26189,7 +26189,7 @@ export class ChannelAdminLogEventActionParticipantMute extends TypeChannelAdminL
   participant: TypeGroupCallParticipant;
 
   protected get [id]() {
-    return 0xf92424d2;
+    return 0xF92424D2;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -26214,7 +26214,7 @@ export class ChannelAdminLogEventActionParticipantUnmute extends TypeChannelAdmi
   participant: TypeGroupCallParticipant;
 
   protected get [id]() {
-    return 0xe64429c0;
+    return 0xE64429C0;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -26239,7 +26239,7 @@ export class ChannelAdminLogEventActionToggleGroupCallSetting extends TypeChanne
   joinMuted: boolean;
 
   protected get [id]() {
-    return 0x56d6a247;
+    return 0x56D6A247;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -26264,7 +26264,7 @@ export class ChannelAdminLogEventActionParticipantJoinByInvite extends TypeChann
   invite: TypeExportedChatInvite;
 
   protected get [id]() {
-    return 0x5cdada77;
+    return 0x5CDADA77;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -26289,7 +26289,7 @@ export class ChannelAdminLogEventActionExportedInviteDelete extends TypeChannelA
   invite: TypeExportedChatInvite;
 
   protected get [id]() {
-    return 0x5a50fca4;
+    return 0x5A50FCA4;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -26314,7 +26314,7 @@ export class ChannelAdminLogEventActionExportedInviteRevoke extends TypeChannelA
   invite: TypeExportedChatInvite;
 
   protected get [id]() {
-    return 0x410a134e;
+    return 0x410A134E;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -26340,7 +26340,7 @@ export class ChannelAdminLogEventActionExportedInviteEdit extends TypeChannelAdm
   newInvite: TypeExportedChatInvite;
 
   protected get [id]() {
-    return 0xe90ebb59;
+    return 0xE90EBB59;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -26368,7 +26368,7 @@ export class ChannelAdminLogEventActionParticipantVolume extends TypeChannelAdmi
   participant: TypeGroupCallParticipant;
 
   protected get [id]() {
-    return 0x3e7f6847;
+    return 0x3E7F6847;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -26394,7 +26394,7 @@ export class ChannelAdminLogEventActionChangeHistoryTTL extends TypeChannelAdmin
   newValue: number;
 
   protected get [id]() {
-    return 0x6e941a38;
+    return 0x6E941A38;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -26423,7 +26423,7 @@ export class ChannelAdminLogEventActionParticipantJoinByRequest extends TypeChan
   approvedBy: bigint;
 
   protected get [id]() {
-    return 0xafb6144a;
+    return 0xAFB6144A;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -26451,7 +26451,7 @@ export class ChannelAdminLogEventActionToggleNoForwards extends TypeChannelAdmin
   newValue: boolean;
 
   protected get [id]() {
-    return 0xcb2ac766;
+    return 0xCB2AC766;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -26476,7 +26476,7 @@ export class ChannelAdminLogEventActionSendMessage extends TypeChannelAdminLogEv
   message: TypeMessage;
 
   protected get [id]() {
-    return 0x278f2868;
+    return 0x278F2868;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -26502,7 +26502,7 @@ export class ChannelAdminLogEventActionChangeAvailableReactions extends TypeChan
   newValue: TypeChatReactions;
 
   protected get [id]() {
-    return 0xbe4e0ef8;
+    return 0xBE4E0EF8;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -26531,7 +26531,7 @@ export class ChannelAdminLogEventActionChangeUsernames extends TypeChannelAdminL
   newValue: Array<string>;
 
   protected get [id]() {
-    return 0xf04fb3a9;
+    return 0xF04FB3A9;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -26559,7 +26559,7 @@ export class ChannelAdminLogEventActionToggleForum extends TypeChannelAdminLogEv
   newValue: boolean;
 
   protected get [id]() {
-    return 0x02cc6383;
+    return 0x02CC6383;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -26584,7 +26584,7 @@ export class ChannelAdminLogEventActionCreateTopic extends TypeChannelAdminLogEv
   topic: TypeForumTopic;
 
   protected get [id]() {
-    return 0x58707d28;
+    return 0x58707D28;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -26610,7 +26610,7 @@ export class ChannelAdminLogEventActionEditTopic extends TypeChannelAdminLogEven
   newTopic: TypeForumTopic;
 
   protected get [id]() {
-    return 0xf06fe208;
+    return 0xF06FE208;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -26638,7 +26638,7 @@ export class ChannelAdminLogEventActionDeleteTopic extends TypeChannelAdminLogEv
   topic: TypeForumTopic;
 
   protected get [id]() {
-    return 0xae168909;
+    return 0xAE168909;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -26664,7 +26664,7 @@ export class ChannelAdminLogEventActionPinTopic extends TypeChannelAdminLogEvent
   newTopic?: TypeForumTopic;
 
   protected get [id]() {
-    return 0x5d8d353b;
+    return 0x5D8D353B;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -26694,7 +26694,7 @@ export class ChannelAdminLogEventActionToggleAntiSpam extends TypeChannelAdminLo
   newValue: boolean;
 
   protected get [id]() {
-    return 0x64f36dfc;
+    return 0x64F36DFC;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -26722,7 +26722,7 @@ export class ChannelAdminLogEvent extends TypeChannelAdminLogEvent {
   action: TypeChannelAdminLogEventAction;
 
   protected get [id]() {
-    return 0x1fad68cd;
+    return 0x1FAD68CD;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -26758,7 +26758,7 @@ export class ChannelsAdminLogResults extends TypeChannelsAdminLogResults {
   users: Array<TypeUser>;
 
   protected get [id]() {
-    return 0xed8af74d;
+    return 0xED8AF74D;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -26806,7 +26806,7 @@ export class ChannelAdminLogEventsFilter extends TypeChannelAdminLogEventsFilter
   forums?: true;
 
   protected get [id]() {
-    return 0xea107ae4;
+    return 0xEA107AE4;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -26885,7 +26885,7 @@ export class PopularContact extends TypePopularContact {
   importers: number;
 
   protected get [id]() {
-    return 0x5ce14175;
+    return 0x5CE14175;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -26911,7 +26911,7 @@ export class PopularContact extends TypePopularContact {
 
 export class MessagesFavedStickersNotModified extends TypeMessagesFavedStickers {
   protected get [id]() {
-    return 0x9e8fa6d3;
+    return 0x9E8FA6D3;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -26933,7 +26933,7 @@ export class MessagesFavedStickers extends TypeMessagesFavedStickers {
   stickers: Array<TypeDocument>;
 
   protected get [id]() {
-    return 0x2cb51097;
+    return 0x2CB51097;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -26964,7 +26964,7 @@ export class RecentMeURLUnknown extends TypeRecentMeURL {
   url: string;
 
   protected get [id]() {
-    return 0x46e1d13d;
+    return 0x46E1D13D;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -26990,7 +26990,7 @@ export class RecentMeURLUser extends TypeRecentMeURL {
   userId: bigint;
 
   protected get [id]() {
-    return 0xb92c09e2;
+    return 0xB92C09E2;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -27019,7 +27019,7 @@ export class RecentMeURLChat extends TypeRecentMeURL {
   chatId: bigint;
 
   protected get [id]() {
-    return 0xb2da71d2;
+    return 0xB2DA71D2;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -27048,7 +27048,7 @@ export class RecentMeURLChatInvite extends TypeRecentMeURL {
   chatInvite: TypeChatInvite;
 
   protected get [id]() {
-    return 0xeb49081d;
+    return 0xEB49081D;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -27077,7 +27077,7 @@ export class RecentMeURLStickerSet extends TypeRecentMeURL {
   set: TypeStickerSetCovered;
 
   protected get [id]() {
-    return 0xbc0a57dc;
+    return 0xBC0A57DC;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -27107,7 +27107,7 @@ export class HelpRecentMeURLs extends TypeHelpRecentMeURLs {
   users: Array<TypeUser>;
 
   protected get [id]() {
-    return 0x0e0310d7;
+    return 0x0E0310D7;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -27141,7 +27141,7 @@ export class InputSingleMedia extends TypeInputSingleMedia {
   entities?: Array<TypeMessageEntity>;
 
   protected get [id]() {
-    return 0x1cc6e91f;
+    return 0x1CC6E91F;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -27185,7 +27185,7 @@ export class WebAuthorization extends TypeWebAuthorization {
   region: string;
 
   protected get [id]() {
-    return 0xa6f8f452;
+    return 0xA6F8F452;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -27235,7 +27235,7 @@ export class AccountWebAuthorizations extends TypeAccountWebAuthorizations {
   users: Array<TypeUser>;
 
   protected get [id]() {
-    return 0xed56c9fc;
+    return 0xED56C9FC;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -27263,7 +27263,7 @@ export class InputMessageID extends TypeInputMessage {
   id: number;
 
   protected get [id]() {
-    return 0xa676a322;
+    return 0xA676A322;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -27288,7 +27288,7 @@ export class InputMessageReplyTo extends TypeInputMessage {
   id: number;
 
   protected get [id]() {
-    return 0xbad88395;
+    return 0xBAD88395;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -27332,7 +27332,7 @@ export class InputMessageCallbackQuery extends TypeInputMessage {
   queryId: bigint;
 
   protected get [id]() {
-    return 0xacfa1a7e;
+    return 0xACFA1A7E;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -27360,7 +27360,7 @@ export class InputDialogPeer extends TypeInputDialogPeer {
   peer: TypeInputPeer;
 
   protected get [id]() {
-    return 0xfcaafeb7;
+    return 0xFCAAFEB7;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -27410,7 +27410,7 @@ export class DialogPeer extends TypeDialogPeer {
   peer: TypePeer;
 
   protected get [id]() {
-    return 0xe56dbf05;
+    return 0xE56DBF05;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -27435,7 +27435,7 @@ export class DialogPeerFolder extends TypeDialogPeer {
   folderId: number;
 
   protected get [id]() {
-    return 0x514519e2;
+    return 0x514519E2;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -27458,7 +27458,7 @@ export class DialogPeerFolder extends TypeDialogPeer {
 
 export class MessagesFoundStickerSetsNotModified extends TypeMessagesFoundStickerSets {
   protected get [id]() {
-    return 0x0d54b65d;
+    return 0x0D54B65D;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -27479,7 +27479,7 @@ export class MessagesFoundStickerSets extends TypeMessagesFoundStickerSets {
   sets: Array<TypeStickerSetCovered>;
 
   protected get [id]() {
-    return 0x8af09dd2;
+    return 0x8AF09DD2;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -27509,7 +27509,7 @@ export class FileHash extends TypeFileHash {
   hash: Uint8Array;
 
   protected get [id]() {
-    return 0xf39b035c;
+    return 0xF39B035C;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -27541,7 +27541,7 @@ export class InputClientProxy extends TypeInputClientProxy {
   port: number;
 
   protected get [id]() {
-    return 0x75588b3f;
+    return 0x75588B3F;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -27569,7 +27569,7 @@ export class HelpTermsOfServiceUpdateEmpty extends TypeHelpTermsOfServiceUpdate 
   expires: number;
 
   protected get [id]() {
-    return 0xe3309f7f;
+    return 0xE3309F7F;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -27595,7 +27595,7 @@ export class HelpTermsOfServiceUpdate extends TypeHelpTermsOfServiceUpdate {
   termsOfService: TypeHelpTermsOfService;
 
   protected get [id]() {
-    return 0x28ecf961;
+    return 0x28ECF961;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -27627,7 +27627,7 @@ export class InputSecureFileUploaded extends TypeInputSecureFile {
   secret: Uint8Array;
 
   protected get [id]() {
-    return 0x3334b0f0;
+    return 0x3334B0F0;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -27665,7 +27665,7 @@ export class InputSecureFile extends TypeInputSecureFile {
   accessHash: bigint;
 
   protected get [id]() {
-    return 0x5367e5be;
+    return 0x5367E5BE;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -27717,7 +27717,7 @@ export class SecureFile extends TypeSecureFile {
   secret: Uint8Array;
 
   protected get [id]() {
-    return 0x7d09c27e;
+    return 0x7D09C27E;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -27762,7 +27762,7 @@ export class SecureData extends TypeSecureData {
   secret: Uint8Array;
 
   protected get [id]() {
-    return 0x8aeabec3;
+    return 0x8AEABEC3;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -27793,7 +27793,7 @@ export class SecurePlainPhone extends TypeSecurePlainData {
   phone: string;
 
   protected get [id]() {
-    return 0x7d6099dd;
+    return 0x7D6099DD;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -27818,7 +27818,7 @@ export class SecurePlainEmail extends TypeSecurePlainData {
   email: string;
 
   protected get [id]() {
-    return 0x21ec5a5f;
+    return 0x21EC5A5F;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -27841,7 +27841,7 @@ export class SecurePlainEmail extends TypeSecurePlainData {
 
 export class SecureValueTypePersonalDetails extends TypeSecureValueType {
   protected get [id]() {
-    return 0x9d2a81e3;
+    return 0x9D2A81E3;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -27859,7 +27859,7 @@ export class SecureValueTypePersonalDetails extends TypeSecureValueType {
 
 export class SecureValueTypePassport extends TypeSecureValueType {
   protected get [id]() {
-    return 0x3dac6a00;
+    return 0x3DAC6A00;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -27877,7 +27877,7 @@ export class SecureValueTypePassport extends TypeSecureValueType {
 
 export class SecureValueTypeDriverLicense extends TypeSecureValueType {
   protected get [id]() {
-    return 0x06e425c4;
+    return 0x06E425C4;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -27895,7 +27895,7 @@ export class SecureValueTypeDriverLicense extends TypeSecureValueType {
 
 export class SecureValueTypeIdentityCard extends TypeSecureValueType {
   protected get [id]() {
-    return 0xa0d0744b;
+    return 0xA0D0744B;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -27913,7 +27913,7 @@ export class SecureValueTypeIdentityCard extends TypeSecureValueType {
 
 export class SecureValueTypeInternalPassport extends TypeSecureValueType {
   protected get [id]() {
-    return 0x99a48f23;
+    return 0x99A48F23;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -27931,7 +27931,7 @@ export class SecureValueTypeInternalPassport extends TypeSecureValueType {
 
 export class SecureValueTypeAddress extends TypeSecureValueType {
   protected get [id]() {
-    return 0xcbe31e26;
+    return 0xCBE31E26;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -27949,7 +27949,7 @@ export class SecureValueTypeAddress extends TypeSecureValueType {
 
 export class SecureValueTypeUtilityBill extends TypeSecureValueType {
   protected get [id]() {
-    return 0xfc36954e;
+    return 0xFC36954E;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -27967,7 +27967,7 @@ export class SecureValueTypeUtilityBill extends TypeSecureValueType {
 
 export class SecureValueTypeBankStatement extends TypeSecureValueType {
   protected get [id]() {
-    return 0x89137c0d;
+    return 0x89137C0D;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -27985,7 +27985,7 @@ export class SecureValueTypeBankStatement extends TypeSecureValueType {
 
 export class SecureValueTypeRentalAgreement extends TypeSecureValueType {
   protected get [id]() {
-    return 0x8b883488;
+    return 0x8B883488;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -28003,7 +28003,7 @@ export class SecureValueTypeRentalAgreement extends TypeSecureValueType {
 
 export class SecureValueTypePassportRegistration extends TypeSecureValueType {
   protected get [id]() {
-    return 0x99e3806a;
+    return 0x99E3806A;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -28021,7 +28021,7 @@ export class SecureValueTypePassportRegistration extends TypeSecureValueType {
 
 export class SecureValueTypeTemporaryRegistration extends TypeSecureValueType {
   protected get [id]() {
-    return 0xea02ec33;
+    return 0xEA02EC33;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -28039,7 +28039,7 @@ export class SecureValueTypeTemporaryRegistration extends TypeSecureValueType {
 
 export class SecureValueTypePhone extends TypeSecureValueType {
   protected get [id]() {
-    return 0xb320aadb;
+    return 0xB320AADB;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -28057,7 +28057,7 @@ export class SecureValueTypePhone extends TypeSecureValueType {
 
 export class SecureValueTypeEmail extends TypeSecureValueType {
   protected get [id]() {
-    return 0x8e3ca7ee;
+    return 0x8E3CA7EE;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -28085,7 +28085,7 @@ export class SecureValue extends TypeSecureValue {
   hash: Uint8Array;
 
   protected get [id]() {
-    return 0x187fa0ca;
+    return 0x187FA0CA;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -28143,7 +28143,7 @@ export class InputSecureValue extends TypeInputSecureValue {
   plainData?: TypeSecurePlainData;
 
   protected get [id]() {
-    return 0xdb21d0a7;
+    return 0xDB21D0A7;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -28192,7 +28192,7 @@ export class SecureValueHash extends TypeSecureValueHash {
   hash: Uint8Array;
 
   protected get [id]() {
-    return 0xed1ecdb0;
+    return 0xED1ECDB0;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -28223,7 +28223,7 @@ export class SecureValueErrorData extends TypeSecureValueError {
   text: string;
 
   protected get [id]() {
-    return 0xe8a40bd9;
+    return 0xE8A40BD9;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -28259,7 +28259,7 @@ export class SecureValueErrorFrontSide extends TypeSecureValueError {
   text: string;
 
   protected get [id]() {
-    return 0x00be3dfa;
+    return 0x00BE3DFA;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -28292,7 +28292,7 @@ export class SecureValueErrorReverseSide extends TypeSecureValueError {
   text: string;
 
   protected get [id]() {
-    return 0x868a2aa5;
+    return 0x868A2AA5;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -28325,7 +28325,7 @@ export class SecureValueErrorSelfie extends TypeSecureValueError {
   text: string;
 
   protected get [id]() {
-    return 0xe537ced6;
+    return 0xE537CED6;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -28358,7 +28358,7 @@ export class SecureValueErrorFile extends TypeSecureValueError {
   text: string;
 
   protected get [id]() {
-    return 0x7a700873;
+    return 0x7A700873;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -28391,7 +28391,7 @@ export class SecureValueErrorFiles extends TypeSecureValueError {
   text: string;
 
   protected get [id]() {
-    return 0x666220e9;
+    return 0x666220E9;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -28424,7 +28424,7 @@ export class SecureValueError extends TypeSecureValueError {
   text: string;
 
   protected get [id]() {
-    return 0x869d758f;
+    return 0x869D758F;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -28457,7 +28457,7 @@ export class SecureValueErrorTranslationFile extends TypeSecureValueError {
   text: string;
 
   protected get [id]() {
-    return 0xa1144770;
+    return 0xA1144770;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -28490,7 +28490,7 @@ export class SecureValueErrorTranslationFiles extends TypeSecureValueError {
   text: string;
 
   protected get [id]() {
-    return 0x34636dd8;
+    return 0x34636DD8;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -28523,7 +28523,7 @@ export class SecureCredentialsEncrypted extends TypeSecureCredentialsEncrypted {
   secret: Uint8Array;
 
   protected get [id]() {
-    return 0x33f0ea47;
+    return 0x33F0EA47;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -28558,7 +28558,7 @@ export class AccountAuthorizationForm extends TypeAccountAuthorizationForm {
   privacyPolicyUrl?: string;
 
   protected get [id]() {
-    return 0xad2e1cd8;
+    return 0xAD2E1CD8;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -28598,7 +28598,7 @@ export class AccountSentEmailCode extends TypeAccountSentEmailCode {
   length: number;
 
   protected get [id]() {
-    return 0x811f854f;
+    return 0x811F854F;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -28624,7 +28624,7 @@ export class AccountSentEmailCode extends TypeAccountSentEmailCode {
 
 export class HelpDeepLinkInfoEmpty extends TypeHelpDeepLinkInfo {
   protected get [id]() {
-    return 0x66afa166;
+    return 0x66AFA166;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -28646,7 +28646,7 @@ export class HelpDeepLinkInfo extends TypeHelpDeepLinkInfo {
   entities?: Array<TypeMessageEntity>;
 
   protected get [id]() {
-    return 0x6a4ee832;
+    return 0x6A4EE832;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -28682,7 +28682,7 @@ export class SavedPhoneContact extends TypeSavedContact {
   date: number;
 
   protected get [id]() {
-    return 0x1142bd56;
+    return 0x1142BD56;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -28716,7 +28716,7 @@ export class AccountTakeout extends TypeAccountTakeout {
   id: bigint;
 
   protected get [id]() {
-    return 0x4dba4501;
+    return 0x4DBA4501;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -28739,7 +28739,7 @@ export class AccountTakeout extends TypeAccountTakeout {
 
 export class PasswordKdfAlgoUnknown extends TypePasswordKdfAlgo {
   protected get [id]() {
-    return 0xd45ab096;
+    return 0xD45AB096;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -28762,7 +28762,7 @@ export class PasswordKdfAlgoSHA256SHA256PBKDF2HMACSHA512iter100000SHA256ModPow e
   p: Uint8Array;
 
   protected get [id]() {
-    return 0x3a912d4a;
+    return 0x3A912D4A;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -28794,7 +28794,7 @@ export class PasswordKdfAlgoSHA256SHA256PBKDF2HMACSHA512iter100000SHA256ModPow e
 
 export class SecurePasswordKdfAlgoUnknown extends TypeSecurePasswordKdfAlgo {
   protected get [id]() {
-    return 0x004a8537;
+    return 0x004A8537;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -28814,7 +28814,7 @@ export class SecurePasswordKdfAlgoPBKDF2HMACSHA512iter100000 extends TypeSecureP
   salt: Uint8Array;
 
   protected get [id]() {
-    return 0xbbf2dda0;
+    return 0xBBF2DDA0;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -28839,7 +28839,7 @@ export class SecurePasswordKdfAlgoSHA512 extends TypeSecurePasswordKdfAlgo {
   salt: Uint8Array;
 
   protected get [id]() {
-    return 0x86471d92;
+    return 0x86471D92;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -28866,7 +28866,7 @@ export class SecureSecretSettings extends TypeSecureSecretSettings {
   secureSecretId: bigint;
 
   protected get [id]() {
-    return 0x1527bcac;
+    return 0x1527BCAC;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -28895,7 +28895,7 @@ export class SecureSecretSettings extends TypeSecureSecretSettings {
 
 export class InputCheckPasswordEmpty extends TypeInputCheckPasswordSRP {
   protected get [id]() {
-    return 0x9880f658;
+    return 0x9880F658;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -28917,7 +28917,7 @@ export class InputCheckPasswordSRP extends TypeInputCheckPasswordSRP {
   M1: Uint8Array;
 
   protected get [id]() {
-    return 0xd27ff082;
+    return 0xD27FF082;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -28951,7 +28951,7 @@ export class SecureRequiredType extends TypeSecureRequiredType {
   type: TypeSecureValueType;
 
   protected get [id]() {
-    return 0x829d99da;
+    return 0x829D99DA;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -28987,7 +28987,7 @@ export class SecureRequiredTypeOneOf extends TypeSecureRequiredType {
   types: Array<TypeSecureRequiredType>;
 
   protected get [id]() {
-    return 0x027477b4;
+    return 0x027477B4;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -29010,7 +29010,7 @@ export class SecureRequiredTypeOneOf extends TypeSecureRequiredType {
 
 export class HelpPassportConfigNotModified extends TypeHelpPassportConfig {
   protected get [id]() {
-    return 0xbfb9f457;
+    return 0xBFB9F457;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -29031,7 +29031,7 @@ export class HelpPassportConfig extends TypeHelpPassportConfig {
   countriesLangs: TypeDataJSON;
 
   protected get [id]() {
-    return 0xa098d6af;
+    return 0xA098D6AF;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -29062,7 +29062,7 @@ export class InputAppEvent extends TypeInputAppEvent {
   data: TypeJSONValue;
 
   protected get [id]() {
-    return 0x1d1b1245;
+    return 0x1D1B1245;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -29097,7 +29097,7 @@ export class JsonObjectValue extends TypeJSONObjectValue {
   value: TypeJSONValue;
 
   protected get [id]() {
-    return 0xc0de1bd9;
+    return 0xC0DE1BD9;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -29123,7 +29123,7 @@ export class JsonObjectValue extends TypeJSONObjectValue {
 
 export class JsonNull extends TypeJSONValue {
   protected get [id]() {
-    return 0x3f6d7b68;
+    return 0x3F6D7B68;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -29143,7 +29143,7 @@ export class JsonBool extends TypeJSONValue {
   value: boolean;
 
   protected get [id]() {
-    return 0xc7345e6a;
+    return 0xC7345E6A;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -29168,7 +29168,7 @@ export class JsonNumber extends TypeJSONValue {
   value: number;
 
   protected get [id]() {
-    return 0x2be0dfa4;
+    return 0x2BE0DFA4;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -29193,7 +29193,7 @@ export class JsonString extends TypeJSONValue {
   value: string;
 
   protected get [id]() {
-    return 0xb71e767a;
+    return 0xB71E767A;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -29218,7 +29218,7 @@ export class JsonArray extends TypeJSONValue {
   value: Array<TypeJSONValue>;
 
   protected get [id]() {
-    return 0xf7444763;
+    return 0xF7444763;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -29243,7 +29243,7 @@ export class JsonObject extends TypeJSONValue {
   value: Array<TypeJSONObjectValue>;
 
   protected get [id]() {
-    return 0x99c1d49d;
+    return 0x99C1D49D;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -29275,7 +29275,7 @@ export class PageTableCell extends TypePageTableCell {
   rowspan?: number;
 
   protected get [id]() {
-    return 0x34566b6a;
+    return 0x34566B6A;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -29323,7 +29323,7 @@ export class PageTableRow extends TypePageTableRow {
   cells: Array<TypePageTableCell>;
 
   protected get [id]() {
-    return 0xe0c0c5e5;
+    return 0xE0C0C5E5;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -29349,7 +29349,7 @@ export class PageCaption extends TypePageCaption {
   credit: TypeRichText;
 
   protected get [id]() {
-    return 0x6f747657;
+    return 0x6F747657;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -29377,7 +29377,7 @@ export class PageListItemText extends TypePageListItem {
   text: TypeRichText;
 
   protected get [id]() {
-    return 0xb92fb6cd;
+    return 0xB92FB6CD;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -29402,7 +29402,7 @@ export class PageListItemBlocks extends TypePageListItem {
   blocks: Array<TypePageBlock>;
 
   protected get [id]() {
-    return 0x25e073fc;
+    return 0x25E073FC;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -29428,7 +29428,7 @@ export class PageListOrderedItemText extends TypePageListOrderedItem {
   text: TypeRichText;
 
   protected get [id]() {
-    return 0x5e068047;
+    return 0x5E068047;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -29457,7 +29457,7 @@ export class PageListOrderedItemBlocks extends TypePageListOrderedItem {
   blocks: Array<TypePageBlock>;
 
   protected get [id]() {
-    return 0x98dd8936;
+    return 0x98DD8936;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -29491,7 +29491,7 @@ export class PageRelatedArticle extends TypePageRelatedArticle {
   publishedDate?: number;
 
   protected get [id]() {
-    return 0xb390dc08;
+    return 0xB390DC08;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -29543,7 +29543,7 @@ export class Page extends TypePage {
   views?: number;
 
   protected get [id]() {
-    return 0x98657f0d;
+    return 0x98657F0D;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -29591,7 +29591,7 @@ export class HelpSupportName extends TypeHelpSupportName {
   name: string;
 
   protected get [id]() {
-    return 0x8c05f1c9;
+    return 0x8C05F1C9;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -29614,7 +29614,7 @@ export class HelpSupportName extends TypeHelpSupportName {
 
 export class HelpUserInfoEmpty extends TypeHelpUserInfo {
   protected get [id]() {
-    return 0xf3ae2eed;
+    return 0xF3AE2EED;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -29637,7 +29637,7 @@ export class HelpUserInfo extends TypeHelpUserInfo {
   date: number;
 
   protected get [id]() {
-    return 0x01eb3758;
+    return 0x01EB3758;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -29672,7 +29672,7 @@ export class PollAnswer extends TypePollAnswer {
   option: Uint8Array;
 
   protected get [id]() {
-    return 0x6ca9c2e9;
+    return 0x6CA9C2E9;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -29708,7 +29708,7 @@ export class Poll extends TypePoll {
   closeDate?: number;
 
   protected get [id]() {
-    return 0x86e18161;
+    return 0x86E18161;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -29762,7 +29762,7 @@ export class PollAnswerVoters extends TypePollAnswerVoters {
   voters: number;
 
   protected get [id]() {
-    return 0x3b6ddad2;
+    return 0x3B6DDAD2;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -29803,7 +29803,7 @@ export class PollResults extends TypePollResults {
   solutionEntities?: Array<TypeMessageEntity>;
 
   protected get [id]() {
-    return 0xdcb82ea3;
+    return 0xDCB82EA3;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -29845,7 +29845,7 @@ export class ChatOnlines extends TypeChatOnlines {
   onlines: number;
 
   protected get [id]() {
-    return 0xf041e250;
+    return 0xF041E250;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -29870,7 +29870,7 @@ export class StatsURL extends TypeStatsURL {
   url: string;
 
   protected get [id]() {
-    return 0x47a971e0;
+    return 0x47A971E0;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -29906,7 +29906,7 @@ export class ChatAdminRights extends TypeChatAdminRights {
   manageTopics?: true;
 
   protected get [id]() {
-    return 0x5fb224d5;
+    return 0x5FB224D5;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -29986,7 +29986,7 @@ export class ChatBannedRights extends TypeChatBannedRights {
   untilDate: number;
 
   protected get [id]() {
-    return 0x9f120418;
+    return 0x9F120418;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -30074,7 +30074,7 @@ export class InputWallPaper extends TypeInputWallPaper {
   accessHash: bigint;
 
   protected get [id]() {
-    return 0xe630b979;
+    return 0xE630B979;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -30102,7 +30102,7 @@ export class InputWallPaperSlug extends TypeInputWallPaper {
   slug: string;
 
   protected get [id]() {
-    return 0x72091c80;
+    return 0x72091C80;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -30127,7 +30127,7 @@ export class InputWallPaperNoFile extends TypeInputWallPaper {
   id: bigint;
 
   protected get [id]() {
-    return 0x967a462e;
+    return 0x967A462E;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -30150,7 +30150,7 @@ export class InputWallPaperNoFile extends TypeInputWallPaper {
 
 export class AccountWallPapersNotModified extends TypeAccountWallPapers {
   protected get [id]() {
-    return 0x1c199183;
+    return 0x1C199183;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -30171,7 +30171,7 @@ export class AccountWallPapers extends TypeAccountWallPapers {
   wallpapers: Array<TypeWallPaper>;
 
   protected get [id]() {
-    return 0xcdc3858c;
+    return 0xCDC3858C;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -30206,7 +30206,7 @@ export class CodeSettings extends TypeCodeSettings {
   appSandbox?: boolean;
 
   protected get [id]() {
-    return 0xad253d78;
+    return 0xAD253D78;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -30261,7 +30261,7 @@ export class WallPaperSettings extends TypeWallPaperSettings {
   rotation?: number;
 
   protected get [id]() {
-    return 0x1dc1bca4;
+    return 0x1DC1BCA4;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -30316,7 +30316,7 @@ export class AutoDownloadSettings extends TypeAutoDownloadSettings {
   videoUploadMaxbitrate: number;
 
   protected get [id]() {
-    return 0x8efab953;
+    return 0x8EFAB953;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -30366,7 +30366,7 @@ export class AccountAutoDownloadSettings extends TypeAccountAutoDownloadSettings
   high: TypeAutoDownloadSettings;
 
   protected get [id]() {
-    return 0x63cacf26;
+    return 0x63CACF26;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -30398,7 +30398,7 @@ export class EmojiKeyword extends TypeEmojiKeyword {
   emoticons: Array<string>;
 
   protected get [id]() {
-    return 0xd5b3b9f9;
+    return 0xD5B3B9F9;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -30427,7 +30427,7 @@ export class EmojiKeywordDeleted extends TypeEmojiKeyword {
   emoticons: Array<string>;
 
   protected get [id]() {
-    return 0x236df622;
+    return 0x236DF622;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -30458,7 +30458,7 @@ export class EmojiKeywordsDifference extends TypeEmojiKeywordsDifference {
   keywords: Array<TypeEmojiKeyword>;
 
   protected get [id]() {
-    return 0x5cc761bd;
+    return 0x5CC761BD;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -30492,7 +30492,7 @@ export class EmojiURL extends TypeEmojiURL {
   url: string;
 
   protected get [id]() {
-    return 0xa575739d;
+    return 0xA575739D;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -30517,7 +30517,7 @@ export class EmojiLanguage extends TypeEmojiLanguage {
   langCode: string;
 
   protected get [id]() {
-    return 0xb3fb5361;
+    return 0xB3FB5361;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -30547,7 +30547,7 @@ export class Folder extends TypeFolder {
   photo?: TypeChatPhoto;
 
   protected get [id]() {
-    return 0xff544e65;
+    return 0xFF544E65;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -30590,7 +30590,7 @@ export class InputFolderPeer extends TypeInputFolderPeer {
   folderId: number;
 
   protected get [id]() {
-    return 0xfbd2c296;
+    return 0xFBD2C296;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -30619,7 +30619,7 @@ export class FolderPeer extends TypeFolderPeer {
   folderId: number;
 
   protected get [id]() {
-    return 0xe9baa668;
+    return 0xE9BAA668;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -30649,7 +30649,7 @@ export class MessagesSearchCounter extends TypeMessagesSearchCounter {
   count: number;
 
   protected get [id]() {
-    return 0xe844ebff;
+    return 0xE844EBFF;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -30684,7 +30684,7 @@ export class URLAuthResultRequest extends TypeURLAuthResult {
   domain: string;
 
   protected get [id]() {
-    return 0x92d33a0e;
+    return 0x92D33A0E;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -30717,7 +30717,7 @@ export class URLAuthResultAccepted extends TypeURLAuthResult {
   url: string;
 
   protected get [id]() {
-    return 0x8f8c0e4e;
+    return 0x8F8C0E4E;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -30740,7 +30740,7 @@ export class URLAuthResultAccepted extends TypeURLAuthResult {
 
 export class URLAuthResultDefault extends TypeURLAuthResult {
   protected get [id]() {
-    return 0xa9d6db1f;
+    return 0xA9D6DB1F;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -30758,7 +30758,7 @@ export class URLAuthResultDefault extends TypeURLAuthResult {
 
 export class ChannelLocationEmpty extends TypeChannelLocation {
   protected get [id]() {
-    return 0xbfb5ad8b;
+    return 0xBFB5AD8B;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -30779,7 +30779,7 @@ export class ChannelLocation extends TypeChannelLocation {
   address: string;
 
   protected get [id]() {
-    return 0x209b82db;
+    return 0x209B82DB;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -30809,7 +30809,7 @@ export class PeerLocated extends TypePeerLocated {
   distance: number;
 
   protected get [id]() {
-    return 0xca461b5d;
+    return 0xCA461B5D;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -30840,7 +30840,7 @@ export class PeerSelfLocated extends TypePeerLocated {
   expires: number;
 
   protected get [id]() {
-    return 0xf8ec284b;
+    return 0xF8EC284B;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -30867,7 +30867,7 @@ export class RestrictionReason extends TypeRestrictionReason {
   text: string;
 
   protected get [id]() {
-    return 0xd072acb4;
+    return 0xD072ACB4;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -30899,7 +30899,7 @@ export class InputTheme extends TypeInputTheme {
   accessHash: bigint;
 
   protected get [id]() {
-    return 0x3c5693e9;
+    return 0x3C5693E9;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -30927,7 +30927,7 @@ export class InputThemeSlug extends TypeInputTheme {
   slug: string;
 
   protected get [id]() {
-    return 0xf5890df1;
+    return 0xF5890DF1;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -30962,7 +30962,7 @@ export class Theme extends TypeTheme {
   installsCount?: number;
 
   protected get [id]() {
-    return 0xa00e67d6;
+    return 0xA00E67D6;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -31017,7 +31017,7 @@ export class Theme extends TypeTheme {
 
 export class AccountThemesNotModified extends TypeAccountThemes {
   protected get [id]() {
-    return 0xf41eb622;
+    return 0xF41EB622;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -31038,7 +31038,7 @@ export class AccountThemes extends TypeAccountThemes {
   themes: Array<TypeTheme>;
 
   protected get [id]() {
-    return 0x9a3d8c6d;
+    return 0x9A3D8C6D;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -31067,7 +31067,7 @@ export class AuthLoginToken extends TypeAuthLoginToken {
   token: Uint8Array;
 
   protected get [id]() {
-    return 0x629f1980;
+    return 0x629F1980;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -31096,7 +31096,7 @@ export class AuthLoginTokenMigrateTo extends TypeAuthLoginToken {
   token: Uint8Array;
 
   protected get [id]() {
-    return 0x068e9916;
+    return 0x068E9916;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -31124,7 +31124,7 @@ export class AuthLoginTokenSuccess extends TypeAuthLoginToken {
   authorization: TypeAuthAuthorization;
 
   protected get [id]() {
-    return 0x390d5c5e;
+    return 0x390D5C5E;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -31150,7 +31150,7 @@ export class AccountContentSettings extends TypeAccountContentSettings {
   sensitiveCanChange?: true;
 
   protected get [id]() {
-    return 0x57e28221;
+    return 0x57E28221;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -31182,7 +31182,7 @@ export class MessagesInactiveChats extends TypeMessagesInactiveChats {
   users: Array<TypeUser>;
 
   protected get [id]() {
-    return 0xa927fec5;
+    return 0xA927FEC5;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -31211,7 +31211,7 @@ export class MessagesInactiveChats extends TypeMessagesInactiveChats {
 
 export class BaseThemeClassic extends TypeBaseTheme {
   protected get [id]() {
-    return 0xc3a12462;
+    return 0xC3A12462;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -31229,7 +31229,7 @@ export class BaseThemeClassic extends TypeBaseTheme {
 
 export class BaseThemeDay extends TypeBaseTheme {
   protected get [id]() {
-    return 0xfbd81688;
+    return 0xFBD81688;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -31247,7 +31247,7 @@ export class BaseThemeDay extends TypeBaseTheme {
 
 export class BaseThemeNight extends TypeBaseTheme {
   protected get [id]() {
-    return 0xb7b31ea8;
+    return 0xB7B31EA8;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -31265,7 +31265,7 @@ export class BaseThemeNight extends TypeBaseTheme {
 
 export class BaseThemeTinted extends TypeBaseTheme {
   protected get [id]() {
-    return 0x6d5f77ee;
+    return 0x6D5F77EE;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -31283,7 +31283,7 @@ export class BaseThemeTinted extends TypeBaseTheme {
 
 export class BaseThemeArctic extends TypeBaseTheme {
   protected get [id]() {
-    return 0x5b11125a;
+    return 0x5B11125A;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -31309,7 +31309,7 @@ export class InputThemeSettings extends TypeInputThemeSettings {
   wallpaperSettings?: TypeWallPaperSettings;
 
   protected get [id]() {
-    return 0x8fde504f;
+    return 0x8FDE504F;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -31359,7 +31359,7 @@ export class ThemeSettings extends TypeThemeSettings {
   wallpaper?: TypeWallPaper;
 
   protected get [id]() {
-    return 0xfa58b6d4;
+    return 0xFA58B6D4;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -31402,7 +31402,7 @@ export class WebPageAttributeTheme extends TypeWebPageAttribute {
   settings?: TypeThemeSettings;
 
   protected get [id]() {
-    return 0x54b56617;
+    return 0x54B56617;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -31434,7 +31434,7 @@ export class MessageUserVote extends TypeMessageUserVote {
   date: number;
 
   protected get [id]() {
-    return 0x34d247b4;
+    return 0x34D247B4;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -31466,7 +31466,7 @@ export class MessageUserVoteInputOption extends TypeMessageUserVote {
   date: number;
 
   protected get [id]() {
-    return 0x3ca5b0ec;
+    return 0x3CA5B0EC;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -31496,7 +31496,7 @@ export class MessageUserVoteMultiple extends TypeMessageUserVote {
   date: number;
 
   protected get [id]() {
-    return 0x8a65e557;
+    return 0x8A65E557;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -31530,7 +31530,7 @@ export class MessagesVotesList extends TypeMessagesVotesList {
   nextOffset?: string;
 
   protected get [id]() {
-    return 0x0823f649;
+    return 0x0823F649;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -31567,7 +31567,7 @@ export class BankCardOpenURL extends TypeBankCardOpenURL {
   name: string;
 
   protected get [id]() {
-    return 0xf568028a;
+    return 0xF568028A;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -31596,7 +31596,7 @@ export class PaymentsBankCardData extends TypePaymentsBankCardData {
   openUrls: Array<TypeBankCardOpenURL>;
 
   protected get [id]() {
-    return 0x3e24e573;
+    return 0x3E24E573;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -31637,7 +31637,7 @@ export class DialogFilter extends TypeDialogFilter {
   excludePeers: Array<TypeInputPeer>;
 
   protected get [id]() {
-    return 0x7438f7e8;
+    return 0x7438F7E8;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -31701,7 +31701,7 @@ export class DialogFilter extends TypeDialogFilter {
 
 export class DialogFilterDefault extends TypeDialogFilter {
   protected get [id]() {
-    return 0x363293ae;
+    return 0x363293AE;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -31722,7 +31722,7 @@ export class DialogFilterSuggested extends TypeDialogFilterSuggested {
   description: string;
 
   protected get [id]() {
-    return 0x77744d4a;
+    return 0x77744D4A;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -31751,7 +31751,7 @@ export class StatsDateRangeDays extends TypeStatsDateRangeDays {
   maxDate: number;
 
   protected get [id]() {
-    return 0xb637edaf;
+    return 0xB637EDAF;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -31780,7 +31780,7 @@ export class StatsAbsValueAndPrev extends TypeStatsAbsValueAndPrev {
   previous: number;
 
   protected get [id]() {
-    return 0xcb43acde;
+    return 0xCB43ACDE;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -31809,7 +31809,7 @@ export class StatsPercentValue extends TypeStatsPercentValue {
   total: number;
 
   protected get [id]() {
-    return 0xcbce2fe0;
+    return 0xCBCE2FE0;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -31837,7 +31837,7 @@ export class StatsGraphAsync extends TypeStatsGraph {
   token: string;
 
   protected get [id]() {
-    return 0x4a27eb2d;
+    return 0x4A27EB2D;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -31862,7 +31862,7 @@ export class StatsGraphError extends TypeStatsGraph {
   error: string;
 
   protected get [id]() {
-    return 0xbedc9822;
+    return 0xBEDC9822;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -31888,7 +31888,7 @@ export class StatsGraph extends TypeStatsGraph {
   zoomToken?: string;
 
   protected get [id]() {
-    return 0x8ea464b6;
+    return 0x8EA464B6;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -31920,7 +31920,7 @@ export class MessageInteractionCounters extends TypeMessageInteractionCounters {
   forwards: number;
 
   protected get [id]() {
-    return 0xad4fc9bd;
+    return 0xAD4FC9BD;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -31965,7 +31965,7 @@ export class StatsBroadcastStats extends TypeStatsBroadcastStats {
   recentMessageInteractions: Array<TypeMessageInteractionCounters>;
 
   protected get [id]() {
-    return 0xbdf78394;
+    return 0xBDF78394;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -32050,7 +32050,7 @@ export class HelpPromoDataEmpty extends TypeHelpPromoData {
   expires: number;
 
   protected get [id]() {
-    return 0x98f6ac75;
+    return 0x98F6AC75;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -32081,7 +32081,7 @@ export class HelpPromoData extends TypeHelpPromoData {
   psaMessage?: string;
 
   protected get [id]() {
-    return 0x8c39793f;
+    return 0x8C39793F;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -32130,7 +32130,7 @@ export class VideoSize extends TypeVideoSize {
   videoStartTs?: number;
 
   protected get [id]() {
-    return 0xde33b094;
+    return 0xDE33B094;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -32170,7 +32170,7 @@ export class VideoSizeEmojiMarkup extends TypeVideoSize {
   backgroundColors: Array<number>;
 
   protected get [id]() {
-    return 0xf85c413c;
+    return 0xF85C413C;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -32200,7 +32200,7 @@ export class VideoSizeStickerMarkup extends TypeVideoSize {
   backgroundColors: Array<number>;
 
   protected get [id]() {
-    return 0x0da082fe;
+    return 0x0DA082FE;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -32233,7 +32233,7 @@ export class StatsGroupTopPoster extends TypeStatsGroupTopPoster {
   avgChars: number;
 
   protected get [id]() {
-    return 0x9d04af9b;
+    return 0x9D04AF9B;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -32267,7 +32267,7 @@ export class StatsGroupTopAdmin extends TypeStatsGroupTopAdmin {
   banned: number;
 
   protected get [id]() {
-    return 0xd7584c87;
+    return 0xD7584C87;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -32302,7 +32302,7 @@ export class StatsGroupTopInviter extends TypeStatsGroupTopInviter {
   invitations: number;
 
   protected get [id]() {
-    return 0x535f779d;
+    return 0x535F779D;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -32346,7 +32346,7 @@ export class StatsMegagroupStats extends TypeStatsMegagroupStats {
   users: Array<TypeUser>;
 
   protected get [id]() {
-    return 0xef7ff916;
+    return 0xEF7FF916;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -32439,7 +32439,7 @@ export class GlobalPrivacySettings extends TypeGlobalPrivacySettings {
   archiveAndMuteNewNoncontactPeers?: boolean;
 
   protected get [id]() {
-    return 0xbea2f424;
+    return 0xBEA2F424;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -32468,7 +32468,7 @@ export class HelpCountryCode extends TypeHelpCountryCode {
   patterns?: Array<string>;
 
   protected get [id]() {
-    return 0x4203c5ef;
+    return 0x4203C5EF;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -32505,7 +32505,7 @@ export class HelpCountry extends TypeHelpCountry {
   countryCodes: Array<TypeHelpCountryCode>;
 
   protected get [id]() {
-    return 0xc3878e23;
+    return 0xC3878E23;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -32542,7 +32542,7 @@ export class HelpCountry extends TypeHelpCountry {
 
 export class HelpCountriesListNotModified extends TypeHelpCountriesList {
   protected get [id]() {
-    return 0x93cc1f32;
+    return 0x93CC1F32;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -32563,7 +32563,7 @@ export class HelpCountriesList extends TypeHelpCountriesList {
   hash: number;
 
   protected get [id]() {
-    return 0x87d0759e;
+    return 0x87D0759E;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -32593,7 +32593,7 @@ export class MessageViews extends TypeMessageViews {
   replies?: TypeMessageReplies;
 
   protected get [id]() {
-    return 0x455b853d;
+    return 0x455B853D;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -32628,7 +32628,7 @@ export class MessagesMessageViews extends TypeMessagesMessageViews {
   users: Array<TypeUser>;
 
   protected get [id]() {
-    return 0xb6c4f543;
+    return 0xB6C4F543;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -32665,7 +32665,7 @@ export class MessagesDiscussionMessage extends TypeMessagesDiscussionMessage {
   users: Array<TypeUser>;
 
   protected get [id]() {
-    return 0xa6341782;
+    return 0xA6341782;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -32714,7 +32714,7 @@ export class MessageReplyHeader extends TypeMessageReplyHeader {
   replyToTopId?: number;
 
   protected get [id]() {
-    return 0xa6d57763;
+    return 0xA6D57763;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -32759,7 +32759,7 @@ export class MessageReplies extends TypeMessageReplies {
   readMaxId?: number;
 
   protected get [id]() {
-    return 0x83d60fc2;
+    return 0x83D60FC2;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -32805,7 +32805,7 @@ export class PeerBlocked extends TypePeerBlocked {
   date: number;
 
   protected get [id]() {
-    return 0xe8fd8014;
+    return 0xE8FD8014;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -32833,7 +32833,7 @@ export class StatsMessageStats extends TypeStatsMessageStats {
   viewsGraph: TypeStatsGraph;
 
   protected get [id]() {
-    return 0x8999f295;
+    return 0x8999F295;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -32860,7 +32860,7 @@ export class GroupCallDiscarded extends TypeGroupCall {
   duration: number;
 
   protected get [id]() {
-    return 0x7780bcb4;
+    return 0x7780BCB4;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -32908,7 +32908,7 @@ export class GroupCall extends TypeGroupCall {
   version: number;
 
   protected get [id]() {
-    return 0xd597650c;
+    return 0xD597650C;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -32987,7 +32987,7 @@ export class InputGroupCall extends TypeInputGroupCall {
   accessHash: bigint;
 
   protected get [id]() {
-    return 0xd8aa840f;
+    return 0xD8AA840F;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -33033,7 +33033,7 @@ export class GroupCallParticipant extends TypeGroupCallParticipant {
   presentation?: TypeGroupCallParticipantVideo;
 
   protected get [id]() {
-    return 0xeba636fe;
+    return 0xEBA636FE;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -33118,7 +33118,7 @@ export class PhoneGroupCall extends TypePhoneGroupCall {
   users: Array<TypeUser>;
 
   protected get [id]() {
-    return 0x9e727aad;
+    return 0x9E727AAD;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -33160,7 +33160,7 @@ export class PhoneGroupParticipants extends TypePhoneGroupParticipants {
   version: number;
 
   protected get [id]() {
-    return 0xf47751b6;
+    return 0xF47751B6;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -33198,7 +33198,7 @@ export class PhoneGroupParticipants extends TypePhoneGroupParticipants {
 
 export class InlineQueryPeerTypeSameBotPM extends TypeInlineQueryPeerType {
   protected get [id]() {
-    return 0x3081ed9d;
+    return 0x3081ED9D;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -33216,7 +33216,7 @@ export class InlineQueryPeerTypeSameBotPM extends TypeInlineQueryPeerType {
 
 export class InlineQueryPeerTypePM extends TypeInlineQueryPeerType {
   protected get [id]() {
-    return 0x833c0fac;
+    return 0x833C0FAC;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -33234,7 +33234,7 @@ export class InlineQueryPeerTypePM extends TypeInlineQueryPeerType {
 
 export class InlineQueryPeerTypeChat extends TypeInlineQueryPeerType {
   protected get [id]() {
-    return 0xd766c50a;
+    return 0xD766C50A;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -33252,7 +33252,7 @@ export class InlineQueryPeerTypeChat extends TypeInlineQueryPeerType {
 
 export class InlineQueryPeerTypeMegagroup extends TypeInlineQueryPeerType {
   protected get [id]() {
-    return 0x5ec4be43;
+    return 0x5EC4BE43;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -33270,7 +33270,7 @@ export class InlineQueryPeerTypeMegagroup extends TypeInlineQueryPeerType {
 
 export class InlineQueryPeerTypeBroadcast extends TypeInlineQueryPeerType {
   protected get [id]() {
-    return 0x6334ee9a;
+    return 0x6334EE9A;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -33290,7 +33290,7 @@ export class MessagesHistoryImport extends TypeMessagesHistoryImport {
   id: bigint;
 
   protected get [id]() {
-    return 0x1662af0b;
+    return 0x1662AF0B;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -33317,7 +33317,7 @@ export class MessagesHistoryImportParsed extends TypeMessagesHistoryImportParsed
   title?: string;
 
   protected get [id]() {
-    return 0x5e0fb7b9;
+    return 0x5E0FB7B9;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -33353,7 +33353,7 @@ export class MessagesAffectedFoundMessages extends TypeMessagesAffectedFoundMess
   messages: Array<number>;
 
   protected get [id]() {
-    return 0xef8d3e6c;
+    return 0xEF8D3E6C;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -33392,7 +33392,7 @@ export class ChatInviteImporter extends TypeChatInviteImporter {
   approvedBy?: bigint;
 
   protected get [id]() {
-    return 0x8c5adfd9;
+    return 0x8C5ADFD9;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -33436,7 +33436,7 @@ export class MessagesExportedChatInvites extends TypeMessagesExportedChatInvites
   users: Array<TypeUser>;
 
   protected get [id]() {
-    return 0xbdc62dcc;
+    return 0xBDC62DCC;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -33468,7 +33468,7 @@ export class MessagesExportedChatInvite extends TypeMessagesExportedChatInvite {
   users: Array<TypeUser>;
 
   protected get [id]() {
-    return 0x1871be50;
+    return 0x1871BE50;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -33498,7 +33498,7 @@ export class MessagesExportedChatInviteReplaced extends TypeMessagesExportedChat
   users: Array<TypeUser>;
 
   protected get [id]() {
-    return 0x222600ef;
+    return 0x222600EF;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -33531,7 +33531,7 @@ export class MessagesChatInviteImporters extends TypeMessagesChatInviteImporters
   users: Array<TypeUser>;
 
   protected get [id]() {
-    return 0x81b6b00a;
+    return 0x81B6B00A;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -33564,7 +33564,7 @@ export class ChatAdminWithInvites extends TypeChatAdminWithInvites {
   revokedInvitesCount: number;
 
   protected get [id]() {
-    return 0xf2ecef23;
+    return 0xF2ECEF23;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -33596,7 +33596,7 @@ export class MessagesChatAdminsWithInvites extends TypeMessagesChatAdminsWithInv
   users: Array<TypeUser>;
 
   protected get [id]() {
-    return 0xb69b72d7;
+    return 0xB69B72D7;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -33624,7 +33624,7 @@ export class MessagesCheckedHistoryImportPeer extends TypeMessagesCheckedHistory
   confirmText: string;
 
   protected get [id]() {
-    return 0xa24de717;
+    return 0xA24DE717;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -33651,7 +33651,7 @@ export class PhoneJoinAsPeers extends TypePhoneJoinAsPeers {
   users: Array<TypeUser>;
 
   protected get [id]() {
-    return 0xafe5623f;
+    return 0xAFE5623F;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -33682,7 +33682,7 @@ export class PhoneExportedGroupCallInvite extends TypePhoneExportedGroupCallInvi
   link: string;
 
   protected get [id]() {
-    return 0x204bd158;
+    return 0x204BD158;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -33708,7 +33708,7 @@ export class GroupCallParticipantVideoSourceGroup extends TypeGroupCallParticipa
   sources: Array<number>;
 
   protected get [id]() {
-    return 0xdcb118b7;
+    return 0xDCB118B7;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -33739,7 +33739,7 @@ export class GroupCallParticipantVideo extends TypeGroupCallParticipantVideo {
   audioSource?: number;
 
   protected get [id]() {
-    return 0x67753ac8;
+    return 0x67753AC8;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -33775,7 +33775,7 @@ export class StickersSuggestedShortName extends TypeStickersSuggestedShortName {
   shortName: string;
 
   protected get [id]() {
-    return 0x85fea03f;
+    return 0x85FEA03F;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -33798,7 +33798,7 @@ export class StickersSuggestedShortName extends TypeStickersSuggestedShortName {
 
 export class BotCommandScopeDefault extends TypeBotCommandScope {
   protected get [id]() {
-    return 0x2f6cb2ab;
+    return 0x2F6CB2AB;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -33816,7 +33816,7 @@ export class BotCommandScopeDefault extends TypeBotCommandScope {
 
 export class BotCommandScopeUsers extends TypeBotCommandScope {
   protected get [id]() {
-    return 0x3c4f04d8;
+    return 0x3C4F04D8;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -33834,7 +33834,7 @@ export class BotCommandScopeUsers extends TypeBotCommandScope {
 
 export class BotCommandScopeChats extends TypeBotCommandScope {
   protected get [id]() {
-    return 0x6fe1a881;
+    return 0x6FE1A881;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -33852,7 +33852,7 @@ export class BotCommandScopeChats extends TypeBotCommandScope {
 
 export class BotCommandScopeChatAdmins extends TypeBotCommandScope {
   protected get [id]() {
-    return 0xb9aa606a;
+    return 0xB9AA606A;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -33872,7 +33872,7 @@ export class BotCommandScopePeer extends TypeBotCommandScope {
   peer: TypeInputPeer;
 
   protected get [id]() {
-    return 0xdb9d897d;
+    return 0xDB9D897D;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -33897,7 +33897,7 @@ export class BotCommandScopePeerAdmins extends TypeBotCommandScope {
   peer: TypeInputPeer;
 
   protected get [id]() {
-    return 0x3fd863d1;
+    return 0x3FD863D1;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -33923,7 +33923,7 @@ export class BotCommandScopePeerUser extends TypeBotCommandScope {
   userId: TypeInputUser;
 
   protected get [id]() {
-    return 0x0a1321f3;
+    return 0x0A1321F3;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -33951,7 +33951,7 @@ export class AccountResetPasswordFailedWait extends TypeAccountResetPasswordResu
   retryDate: number;
 
   protected get [id]() {
-    return 0xe3779861;
+    return 0xE3779861;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -33976,7 +33976,7 @@ export class AccountResetPasswordRequestedWait extends TypeAccountResetPasswordR
   untilDate: number;
 
   protected get [id]() {
-    return 0xe9effc7d;
+    return 0xE9EFFC7D;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -33999,7 +33999,7 @@ export class AccountResetPasswordRequestedWait extends TypeAccountResetPasswordR
 
 export class AccountResetPasswordOk extends TypeAccountResetPasswordResult {
   protected get [id]() {
-    return 0xe926d63e;
+    return 0xE926D63E;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -34030,7 +34030,7 @@ export class SponsoredMessage extends TypeSponsoredMessage {
   additionalInfo?: string;
 
   protected get [id]() {
-    return 0xfc25b828;
+    return 0xFC25B828;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -34093,7 +34093,7 @@ export class MessagesSponsoredMessages extends TypeMessagesSponsoredMessages {
   users: Array<TypeUser>;
 
   protected get [id]() {
-    return 0xc9ee1d87;
+    return 0xC9EE1D87;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -34127,7 +34127,7 @@ export class MessagesSponsoredMessages extends TypeMessagesSponsoredMessages {
 
 export class MessagesSponsoredMessagesEmpty extends TypeMessagesSponsoredMessages {
   protected get [id]() {
-    return 0x1839490f;
+    return 0x1839490F;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -34150,7 +34150,7 @@ export class SearchResultsCalendarPeriod extends TypeSearchResultsCalendarPeriod
   count: number;
 
   protected get [id]() {
-    return 0xc9b0539f;
+    return 0xC9B0539F;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -34192,7 +34192,7 @@ export class MessagesSearchResultsCalendar extends TypeMessagesSearchResultsCale
   users: Array<TypeUser>;
 
   protected get [id]() {
-    return 0x147ee23c;
+    return 0x147EE23C;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -34245,7 +34245,7 @@ export class SearchResultPosition extends TypeSearchResultsPosition {
   offset: number;
 
   protected get [id]() {
-    return 0x7f648b67;
+    return 0x7F648B67;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -34277,7 +34277,7 @@ export class MessagesSearchResultsPositions extends TypeMessagesSearchResultsPos
   positions: Array<TypeSearchResultsPosition>;
 
   protected get [id]() {
-    return 0x53b22baf;
+    return 0x53B22BAF;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -34307,7 +34307,7 @@ export class ChannelsSendAsPeers extends TypeChannelsSendAsPeers {
   users: Array<TypeUser>;
 
   protected get [id]() {
-    return 0xf496b0c6;
+    return 0xF496B0C6;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -34340,7 +34340,7 @@ export class UsersUserFull extends TypeUsersUserFull {
   users: Array<TypeUser>;
 
   protected get [id]() {
-    return 0x3b6d152e;
+    return 0x3B6D152E;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -34373,7 +34373,7 @@ export class MessagesPeerSettings extends TypeMessagesPeerSettings {
   users: Array<TypeUser>;
 
   protected get [id]() {
-    return 0x6880b94d;
+    return 0x6880B94D;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -34404,7 +34404,7 @@ export class AuthLoggedOut extends TypeAuthLoggedOut {
   futureAuthToken?: Uint8Array;
 
   protected get [id]() {
-    return 0xc3a2835f;
+    return 0xC3A2835F;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -34433,7 +34433,7 @@ export class ReactionCount extends TypeReactionCount {
   count: number;
 
   protected get [id]() {
-    return 0xa3d1cb80;
+    return 0xA3D1CB80;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -34469,7 +34469,7 @@ export class MessageReactions extends TypeMessageReactions {
   recentReactions?: Array<TypeMessagePeerReaction>;
 
   protected get [id]() {
-    return 0x4f2b9479;
+    return 0x4F2B9479;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -34509,7 +34509,7 @@ export class MessagesMessageReactionsList extends TypeMessagesMessageReactionsLi
   nextOffset?: string;
 
   protected get [id]() {
-    return 0x31bd492d;
+    return 0x31BD492D;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -34558,7 +34558,7 @@ export class AvailableReaction extends TypeAvailableReaction {
   centerIcon?: TypeDocument;
 
   protected get [id]() {
-    return 0xc077ec01;
+    return 0xC077EC01;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -34613,7 +34613,7 @@ export class AvailableReaction extends TypeAvailableReaction {
 
 export class MessagesAvailableReactionsNotModified extends TypeMessagesAvailableReactions {
   protected get [id]() {
-    return 0x9f071957;
+    return 0x9F071957;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -34634,7 +34634,7 @@ export class MessagesAvailableReactions extends TypeMessagesAvailableReactions {
   reactions: Array<TypeAvailableReaction>;
 
   protected get [id]() {
-    return 0x768e3aad;
+    return 0x768E3AAD;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -34666,7 +34666,7 @@ export class MessagePeerReaction extends TypeMessagePeerReaction {
   reaction: TypeReaction;
 
   protected get [id]() {
-    return 0x8c79b63c;
+    return 0x8C79B63C;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -34707,7 +34707,7 @@ export class GroupCallStreamChannel extends TypeGroupCallStreamChannel {
   lastTimestampMs: bigint;
 
   protected get [id]() {
-    return 0x80eb48af;
+    return 0x80EB48AF;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -34738,7 +34738,7 @@ export class PhoneGroupCallStreamChannels extends TypePhoneGroupCallStreamChanne
   channels: Array<TypeGroupCallStreamChannel>;
 
   protected get [id]() {
-    return 0xd0e482b2;
+    return 0xD0E482B2;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -34764,7 +34764,7 @@ export class PhoneGroupCallStreamRtmpURL extends TypePhoneGroupCallStreamRtmpURL
   key: string;
 
   protected get [id]() {
-    return 0x2dbf3432;
+    return 0x2DBF3432;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -34793,7 +34793,7 @@ export class AttachMenuBotIconColor extends TypeAttachMenuBotIconColor {
   color: number;
 
   protected get [id]() {
-    return 0x4576f3f0;
+    return 0x4576F3F0;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -34823,7 +34823,7 @@ export class AttachMenuBotIcon extends TypeAttachMenuBotIcon {
   colors?: Array<TypeAttachMenuBotIconColor>;
 
   protected get [id]() {
-    return 0xb2a7386b;
+    return 0xB2A7386B;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -34862,7 +34862,7 @@ export class AttachMenuBot extends TypeAttachMenuBot {
   icons: Array<TypeAttachMenuBotIcon>;
 
   protected get [id]() {
-    return 0xc8aa2cd2;
+    return 0xC8AA2CD2;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -34905,7 +34905,7 @@ export class AttachMenuBot extends TypeAttachMenuBot {
 
 export class AttachMenuBotsNotModified extends TypeAttachMenuBots {
   protected get [id]() {
-    return 0xf1d88a5c;
+    return 0xF1D88A5C;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -34927,7 +34927,7 @@ export class AttachMenuBots extends TypeAttachMenuBots {
   users: Array<TypeUser>;
 
   protected get [id]() {
-    return 0x3c4301c0;
+    return 0x3C4301C0;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -34959,7 +34959,7 @@ export class AttachMenuBotsBot extends TypeAttachMenuBotsBot {
   users: Array<TypeUser>;
 
   protected get [id]() {
-    return 0x93bf667f;
+    return 0x93BF667F;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -34988,7 +34988,7 @@ export class WebViewResultURL extends TypeWebViewResult {
   url: string;
 
   protected get [id]() {
-    return 0x0c14557c;
+    return 0x0C14557C;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -35016,7 +35016,7 @@ export class SimpleWebViewResultURL extends TypeSimpleWebViewResult {
   url: string;
 
   protected get [id]() {
-    return 0x882f76bb;
+    return 0x882F76BB;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -35041,7 +35041,7 @@ export class WebViewMessageSent extends TypeWebViewMessageSent {
   msgId?: TypeInputBotInlineMessageID;
 
   protected get [id]() {
-    return 0x0c94511c;
+    return 0x0C94511C;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -35066,7 +35066,7 @@ export class WebViewMessageSent extends TypeWebViewMessageSent {
 
 export class BotMenuButtonDefault extends TypeBotMenuButton {
   protected get [id]() {
-    return 0x7533a588;
+    return 0x7533A588;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -35084,7 +35084,7 @@ export class BotMenuButtonDefault extends TypeBotMenuButton {
 
 export class BotMenuButtonCommands extends TypeBotMenuButton {
   protected get [id]() {
-    return 0x4258c205;
+    return 0x4258C205;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -35105,7 +35105,7 @@ export class BotMenuButton extends TypeBotMenuButton {
   url: string;
 
   protected get [id]() {
-    return 0xc7b57ce6;
+    return 0xC7B57CE6;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -35131,7 +35131,7 @@ export class BotMenuButton extends TypeBotMenuButton {
 
 export class AccountSavedRingtonesNotModified extends TypeAccountSavedRingtones {
   protected get [id]() {
-    return 0xfbf6e8b1;
+    return 0xFBF6E8B1;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -35152,7 +35152,7 @@ export class AccountSavedRingtones extends TypeAccountSavedRingtones {
   ringtones: Array<TypeDocument>;
 
   protected get [id]() {
-    return 0xc1e92cc5;
+    return 0xC1E92CC5;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -35178,7 +35178,7 @@ export class AccountSavedRingtones extends TypeAccountSavedRingtones {
 
 export class NotificationSoundDefault extends TypeNotificationSound {
   protected get [id]() {
-    return 0x97e8bebe;
+    return 0x97E8BEBE;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -35196,7 +35196,7 @@ export class NotificationSoundDefault extends TypeNotificationSound {
 
 export class NotificationSoundNone extends TypeNotificationSound {
   protected get [id]() {
-    return 0x6f0c34df;
+    return 0x6F0C34DF;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -35217,7 +35217,7 @@ export class NotificationSoundLocal extends TypeNotificationSound {
   data: string;
 
   protected get [id]() {
-    return 0x830b9ae4;
+    return 0x830B9AE4;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -35245,7 +35245,7 @@ export class NotificationSoundRingtone extends TypeNotificationSound {
   id: bigint;
 
   protected get [id]() {
-    return 0xff6c8049;
+    return 0xFF6C8049;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -35268,7 +35268,7 @@ export class NotificationSoundRingtone extends TypeNotificationSound {
 
 export class AccountSavedRingtone extends TypeAccountSavedRingtone {
   protected get [id]() {
-    return 0xb7263f6d;
+    return 0xB7263F6D;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -35288,7 +35288,7 @@ export class AccountSavedRingtoneConverted extends TypeAccountSavedRingtone {
   document: TypeDocument;
 
   protected get [id]() {
-    return 0x1f307eb7;
+    return 0x1F307EB7;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -35311,7 +35311,7 @@ export class AccountSavedRingtoneConverted extends TypeAccountSavedRingtone {
 
 export class AttachMenuPeerTypeSameBotPM extends TypeAttachMenuPeerType {
   protected get [id]() {
-    return 0x7d6be90e;
+    return 0x7D6BE90E;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -35329,7 +35329,7 @@ export class AttachMenuPeerTypeSameBotPM extends TypeAttachMenuPeerType {
 
 export class AttachMenuPeerTypeBotPM extends TypeAttachMenuPeerType {
   protected get [id]() {
-    return 0xc32bfa1a;
+    return 0xC32BFA1A;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -35347,7 +35347,7 @@ export class AttachMenuPeerTypeBotPM extends TypeAttachMenuPeerType {
 
 export class AttachMenuPeerTypePM extends TypeAttachMenuPeerType {
   protected get [id]() {
-    return 0xf146d31f;
+    return 0xF146D31F;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -35365,7 +35365,7 @@ export class AttachMenuPeerTypePM extends TypeAttachMenuPeerType {
 
 export class AttachMenuPeerTypeChat extends TypeAttachMenuPeerType {
   protected get [id]() {
-    return 0x0509113f;
+    return 0x0509113F;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -35383,7 +35383,7 @@ export class AttachMenuPeerTypeChat extends TypeAttachMenuPeerType {
 
 export class AttachMenuPeerTypeBroadcast extends TypeAttachMenuPeerType {
   protected get [id]() {
-    return 0x7bfbdefc;
+    return 0x7BFBDEFC;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -35404,7 +35404,7 @@ export class InputInvoiceMessage extends TypeInputInvoice {
   msgId: number;
 
   protected get [id]() {
-    return 0xc5b56859;
+    return 0xC5B56859;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -35432,7 +35432,7 @@ export class InputInvoiceSlug extends TypeInputInvoice {
   slug: string;
 
   protected get [id]() {
-    return 0xc326caef;
+    return 0xC326CAEF;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -35457,7 +35457,7 @@ export class PaymentsExportedInvoice extends TypePaymentsExportedInvoice {
   url: string;
 
   protected get [id]() {
-    return 0xaed0cbd9;
+    return 0xAED0CBD9;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -35484,7 +35484,7 @@ export class MessagesTranscribedAudio extends TypeMessagesTranscribedAudio {
   text: string;
 
   protected get [id]() {
-    return 0x93752c52;
+    return 0x93752C52;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -35522,7 +35522,7 @@ export class HelpPremiumPromo extends TypeHelpPremiumPromo {
   users: Array<TypeUser>;
 
   protected get [id]() {
-    return 0x5334759c;
+    return 0x5334759C;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -35563,7 +35563,7 @@ export class InputStorePaymentPremiumSubscription extends TypeInputStorePaymentP
   upgrade?: true;
 
   protected get [id]() {
-    return 0xa6751e66;
+    return 0xA6751E66;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -35595,7 +35595,7 @@ export class InputStorePaymentGiftPremium extends TypeInputStorePaymentPurpose {
   amount: bigint;
 
   protected get [id]() {
-    return 0x616f7fe8;
+    return 0x616F7FE8;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -35630,7 +35630,7 @@ export class PremiumGiftOption extends TypePremiumGiftOption {
   storeProduct?: string;
 
   protected get [id]() {
-    return 0x74c34319;
+    return 0x74C34319;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -35670,7 +35670,7 @@ export class PaymentFormMethod extends TypePaymentFormMethod {
   title: string;
 
   protected get [id]() {
-    return 0x88f8f21b;
+    return 0x88F8F21B;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -35696,7 +35696,7 @@ export class PaymentFormMethod extends TypePaymentFormMethod {
 
 export class EmojiStatusEmpty extends TypeEmojiStatus {
   protected get [id]() {
-    return 0x2de11aae;
+    return 0x2DE11AAE;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -35716,7 +35716,7 @@ export class EmojiStatus extends TypeEmojiStatus {
   documentId: bigint;
 
   protected get [id]() {
-    return 0x929b619d;
+    return 0x929B619D;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -35742,7 +35742,7 @@ export class EmojiStatusUntil extends TypeEmojiStatus {
   until: number;
 
   protected get [id]() {
-    return 0xfa30a8c7;
+    return 0xFA30A8C7;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -35768,7 +35768,7 @@ export class EmojiStatusUntil extends TypeEmojiStatus {
 
 export class AccountEmojiStatusesNotModified extends TypeAccountEmojiStatuses {
   protected get [id]() {
-    return 0xd08ce645;
+    return 0xD08CE645;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -35789,7 +35789,7 @@ export class AccountEmojiStatuses extends TypeAccountEmojiStatuses {
   statuses: Array<TypeEmojiStatus>;
 
   protected get [id]() {
-    return 0x90c467d1;
+    return 0x90C467D1;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -35815,7 +35815,7 @@ export class AccountEmojiStatuses extends TypeAccountEmojiStatuses {
 
 export class ReactionEmpty extends TypeReaction {
   protected get [id]() {
-    return 0x79f5d419;
+    return 0x79F5D419;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -35835,7 +35835,7 @@ export class ReactionEmoji extends TypeReaction {
   emoticon: string;
 
   protected get [id]() {
-    return 0x1b2286b8;
+    return 0x1B2286B8;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -35860,7 +35860,7 @@ export class ReactionCustomEmoji extends TypeReaction {
   documentId: bigint;
 
   protected get [id]() {
-    return 0x8935fc73;
+    return 0x8935FC73;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -35883,7 +35883,7 @@ export class ReactionCustomEmoji extends TypeReaction {
 
 export class ChatReactionsNone extends TypeChatReactions {
   protected get [id]() {
-    return 0xeafc32bc;
+    return 0xEAFC32BC;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -35903,7 +35903,7 @@ export class ChatReactionsAll extends TypeChatReactions {
   allowCustom?: true;
 
   protected get [id]() {
-    return 0x52928bca;
+    return 0x52928BCA;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -35930,7 +35930,7 @@ export class ChatReactionsSome extends TypeChatReactions {
   reactions: Array<TypeReaction>;
 
   protected get [id]() {
-    return 0x661d4037;
+    return 0x661D4037;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -35953,7 +35953,7 @@ export class ChatReactionsSome extends TypeChatReactions {
 
 export class MessagesReactionsNotModified extends TypeMessagesReactions {
   protected get [id]() {
-    return 0xb06fdbdf;
+    return 0xB06FDBDF;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -35974,7 +35974,7 @@ export class MessagesReactions extends TypeMessagesReactions {
   reactions: Array<TypeReaction>;
 
   protected get [id]() {
-    return 0xeafdf716;
+    return 0xEAFDF716;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -36003,7 +36003,7 @@ export class EmailVerifyPurposeLoginSetup extends TypeEmailVerifyPurpose {
   phoneCodeHash: string;
 
   protected get [id]() {
-    return 0x4345be73;
+    return 0x4345BE73;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -36029,7 +36029,7 @@ export class EmailVerifyPurposeLoginSetup extends TypeEmailVerifyPurpose {
 
 export class EmailVerifyPurposeLoginChange extends TypeEmailVerifyPurpose {
   protected get [id]() {
-    return 0x527d22eb;
+    return 0x527D22EB;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -36047,7 +36047,7 @@ export class EmailVerifyPurposeLoginChange extends TypeEmailVerifyPurpose {
 
 export class EmailVerifyPurposePassport extends TypeEmailVerifyPurpose {
   protected get [id]() {
-    return 0xbbf51685;
+    return 0xBBF51685;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -36067,7 +36067,7 @@ export class EmailVerificationCode extends TypeEmailVerification {
   code: string;
 
   protected get [id]() {
-    return 0x922e55a9;
+    return 0x922E55A9;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -36092,7 +36092,7 @@ export class EmailVerificationGoogle extends TypeEmailVerification {
   token: string;
 
   protected get [id]() {
-    return 0xdb909ec2;
+    return 0xDB909EC2;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -36117,7 +36117,7 @@ export class EmailVerificationApple extends TypeEmailVerification {
   token: string;
 
   protected get [id]() {
-    return 0x96d074fd;
+    return 0x96D074FD;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -36142,7 +36142,7 @@ export class AccountEmailVerified extends TypeAccountEmailVerified {
   email: string;
 
   protected get [id]() {
-    return 0x2b96cd1b;
+    return 0x2B96CD1B;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -36168,7 +36168,7 @@ export class AccountEmailVerifiedLogin extends TypeAccountEmailVerified {
   sentCode: TypeAuthSentCode;
 
   protected get [id]() {
-    return 0xe1bb0d61;
+    return 0xE1BB0D61;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -36203,7 +36203,7 @@ export class PremiumSubscriptionOption extends TypePremiumSubscriptionOption {
   storeProduct?: string;
 
   protected get [id]() {
-    return 0x5f2d1df2;
+    return 0x5F2D1DF2;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -36252,7 +36252,7 @@ export class SendAsPeer extends TypeSendAsPeer {
   peer: TypePeer;
 
   protected get [id]() {
-    return 0xb81c7034;
+    return 0xB81C7034;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -36285,7 +36285,7 @@ export class MessageExtendedMediaPreview extends TypeMessageExtendedMedia {
   videoDuration?: number;
 
   protected get [id]() {
-    return 0xad628cc8;
+    return 0xAD628CC8;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -36321,7 +36321,7 @@ export class MessageExtendedMedia extends TypeMessageExtendedMedia {
   media: TypeMessageMedia;
 
   protected get [id]() {
-    return 0xee479c64;
+    return 0xEE479C64;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -36347,7 +36347,7 @@ export class StickerKeyword extends TypeStickerKeyword {
   keyword: Array<string>;
 
   protected get [id]() {
-    return 0xfcfeb29c;
+    return 0xFCFEB29C;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -36377,7 +36377,7 @@ export class Username extends TypeUsername {
   username: string;
 
   protected get [id]() {
-    return 0xb4073647;
+    return 0xB4073647;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -36410,7 +36410,7 @@ export class ForumTopicDeleted extends TypeForumTopic {
   id: number;
 
   protected get [id]() {
-    return 0x023f109b;
+    return 0x023F109B;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -36453,7 +36453,7 @@ export class ForumTopic extends TypeForumTopic {
   draft?: TypeDraftMessage;
 
   protected get [id]() {
-    return 0x71701da9;
+    return 0x71701DA9;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -36540,7 +36540,7 @@ export class MessagesForumTopics extends TypeMessagesForumTopics {
   pts: number;
 
   protected get [id]() {
-    return 0x367617d3;
+    return 0x367617D3;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -36585,7 +36585,7 @@ export class DefaultHistoryTTL extends TypeDefaultHistoryTTL {
   period: number;
 
   protected get [id]() {
-    return 0x43b46b20;
+    return 0x43B46B20;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -36611,7 +36611,7 @@ export class ExportedContactToken extends TypeExportedContactToken {
   expires: number;
 
   protected get [id]() {
-    return 0x41bf109b;
+    return 0x41BF109B;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -36640,7 +36640,7 @@ export class RequestPeerTypeUser extends TypeRequestPeerType {
   premium?: boolean;
 
   protected get [id]() {
-    return 0x5f3b8a00;
+    return 0x5F3B8A00;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -36675,7 +36675,7 @@ export class RequestPeerTypeChat extends TypeRequestPeerType {
   botAdminRights?: TypeChatAdminRights;
 
   protected get [id]() {
-    return 0xc9f06e1b;
+    return 0xC9F06E1B;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -36720,7 +36720,7 @@ export class RequestPeerTypeBroadcast extends TypeRequestPeerType {
   botAdminRights?: TypeChatAdminRights;
 
   protected get [id]() {
-    return 0x339bef6c;
+    return 0x339BEF6C;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -36754,7 +36754,7 @@ export class RequestPeerTypeBroadcast extends TypeRequestPeerType {
 
 export class EmojiListNotModified extends TypeEmojiList {
   protected get [id]() {
-    return 0x481eadfa;
+    return 0x481EADFA;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -36775,7 +36775,7 @@ export class EmojiList extends TypeEmojiList {
   documentId: Array<bigint>;
 
   protected get [id]() {
-    return 0x7a1e11d1;
+    return 0x7A1E11D1;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -36805,7 +36805,7 @@ export class EmojiGroup extends TypeEmojiGroup {
   emoticons: Array<string>;
 
   protected get [id]() {
-    return 0x7a9abda9;
+    return 0x7A9ABDA9;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -36834,7 +36834,7 @@ export class EmojiGroup extends TypeEmojiGroup {
 
 export class MessagesEmojiGroupsNotModified extends TypeMessagesEmojiGroups {
   protected get [id]() {
-    return 0x6fb4ad87;
+    return 0x6FB4AD87;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -36855,7 +36855,7 @@ export class MessagesEmojiGroups extends TypeMessagesEmojiGroups {
   groups: Array<TypeEmojiGroup>;
 
   protected get [id]() {
-    return 0x881fb94b;
+    return 0x881FB94B;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -36884,7 +36884,7 @@ export class TextWithEntities extends TypeTextWithEntities {
   entities: Array<TypeMessageEntity>;
 
   protected get [id]() {
-    return 0x751f3146;
+    return 0x751F3146;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -36912,7 +36912,7 @@ export class MessagesTranslateResult extends TypeMessagesTranslatedText {
   result: Array<TypeTextWithEntities>;
 
   protected get [id]() {
-    return 0x33db32f8;
+    return 0x33DB32F8;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -36939,7 +36939,7 @@ export class AutoSaveSettings extends TypeAutoSaveSettings {
   videoMaxSize?: bigint;
 
   protected get [id]() {
-    return 0xc84834ce;
+    return 0xC84834CE;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -36973,7 +36973,7 @@ export class AutoSaveException extends TypeAutoSaveException {
   settings: TypeAutoSaveSettings;
 
   protected get [id]() {
-    return 0x81602d47;
+    return 0x81602D47;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -37006,7 +37006,7 @@ export class AccountAutoSaveSettings extends TypeAccountAutoSaveSettings {
   users: Array<TypeUser>;
 
   protected get [id]() {
-    return 0x4c3e069d;
+    return 0x4C3E069D;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -37044,7 +37044,7 @@ export class AccountAutoSaveSettings extends TypeAccountAutoSaveSettings {
 
 export class HelpAppConfigNotModified extends TypeHelpAppConfig {
   protected get [id]() {
-    return 0x7cde641d;
+    return 0x7CDE641D;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -37065,7 +37065,7 @@ export class HelpAppConfig extends TypeHelpAppConfig {
   config: TypeJSONValue;
 
   protected get [id]() {
-    return 0xdd18782e;
+    return 0xDD18782E;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -37094,7 +37094,7 @@ export class InputBotAppID extends TypeInputBotApp {
   accessHash: bigint;
 
   protected get [id]() {
-    return 0xa920bd7a;
+    return 0xA920BD7A;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -37123,7 +37123,7 @@ export class InputBotAppShortName extends TypeInputBotApp {
   shortName: string;
 
   protected get [id]() {
-    return 0x908c0407;
+    return 0x908C0407;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -37149,7 +37149,7 @@ export class InputBotAppShortName extends TypeInputBotApp {
 
 export class BotAppNotModified extends TypeBotApp {
   protected get [id]() {
-    return 0x5da674b7;
+    return 0x5DA674B7;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -37176,7 +37176,7 @@ export class BotApp extends TypeBotApp {
   hash: bigint;
 
   protected get [id]() {
-    return 0x95fcd1d6;
+    return 0x95FCD1D6;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -37226,7 +37226,7 @@ export class MessagesBotApp extends TypeMessagesBotApp {
   app: TypeBotApp;
 
   protected get [id]() {
-    return 0xeb50adf5;
+    return 0xEB50ADF5;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -37259,7 +37259,7 @@ export class AppWebViewResultURL extends TypeAppWebViewResult {
   url: string;
 
   protected get [id]() {
-    return 0x3c1b4f0d;
+    return 0x3C1B4F0D;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -37285,7 +37285,7 @@ export class InlineBotWebView extends TypeInlineBotWebView {
   url: string;
 
   protected get [id]() {
-    return 0xb57295d5;
+    return 0xB57295D5;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -37314,7 +37314,7 @@ export class ReadParticipantDate extends TypeReadParticipantDate {
   date: number;
 
   protected get [id]() {
-    return 0x4a4ff172;
+    return 0x4A4FF172;
   }
 
   static get [paramDesc](): ParamDesc {
