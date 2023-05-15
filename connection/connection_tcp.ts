@@ -12,6 +12,9 @@ export class ConnectionTCP implements Connection {
   }
 
   async open() {
+    if (this.connection) {
+      throw new Error("Connection already open");
+    }
     this.connection = await Deno.connect({
       hostname: this.hostname,
       port: this.port,
