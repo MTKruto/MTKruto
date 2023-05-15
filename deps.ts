@@ -6,4 +6,4 @@ export { ctr256Decrypt, ctr256Encrypt, factorize, ige256Decrypt, ige256Encrypt, 
 
 export { gunzip, gzip } from "https://deno.land/x/compress@v0.4.5/zlib/mod.ts";
 
-export { Mutex } from "https://esm.sh/async-mutex@0.4.0?cjs-exports=Mutex";
+export { Mutex } from "https://esm.sh/async-mutex@0.4.0";
