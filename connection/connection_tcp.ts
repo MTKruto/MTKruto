@@ -30,8 +30,11 @@ export class ConnectionTCP implements Connection {
       throw new Error("Connection not open");
     }
     const release = await this.mutex.acquire();
-    await this.connection.write(p);
-    release();
+    try {
+      await this.connection.write(p);
+    } finally {
+      release();
+    }
   }
 
   close() {
