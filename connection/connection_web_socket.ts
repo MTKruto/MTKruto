@@ -41,11 +41,14 @@ export class ConnectionWebSocket implements Connection {
       throw new Error("Connection not open");
     }
     const release = await this.rMutex.acquire();
-    if (this.buffer.length < p.length) {
-      await new Promise<void>((r) => this.nextResolve = [p.length, r]);
+    try {
+      if (this.buffer.length < p.length) {
+        await new Promise<void>((r) => this.nextResolve = [p.length, r]);
+      }
+      p.set(this.buffer.splice(0, p.length));
+    } finally {
+      release();
     }
-    p.set(this.buffer.splice(0, p.length));
-    release();
   }
 
   async write(p: Uint8Array) {
@@ -53,8 +56,11 @@ export class ConnectionWebSocket implements Connection {
       throw new Error("Connection not open");
     }
     const release = await this.wMutex.acquire();
-    this.webSocket.send(p);
-    release();
+    try {
+      this.webSocket.send(p);
+    } finally {
+      release();
+    }
   }
 
   close() {
