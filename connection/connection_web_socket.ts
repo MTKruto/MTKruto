@@ -11,16 +11,14 @@ export class ConnectionWebSocket implements Connection {
   constructor(url: string | URL) {
     this.webSocket = new WebSocket(url, "binary");
     this.webSocket.onmessage = async (e) => {
-      if (e.data instanceof Blob) {
-        this.buffer.push(
-          ...Array.from(new Uint8Array(await e.data.arrayBuffer())),
-        );
-        if (
-          this.nextResolve != null && this.buffer.length >= this.nextResolve[0]
-        ) {
-          this.nextResolve[1]();
-          this.nextResolve = null;
-        }
+      const data = e.data instanceof Blob ? new Uint8Array(await e.data.arrayBuffer()) : new Uint8Array(e.data);
+
+      this.buffer.push(...Array.from(data));
+      if (
+        this.nextResolve != null && this.buffer.length >= this.nextResolve[0]
+      ) {
+        this.nextResolve[1]();
+        this.nextResolve = null;
       }
     };
     this.webSocket.onerror = console.error;
