@@ -1254,6 +1254,27 @@ export abstract class TypeInlineBotWebView extends Type {
 export abstract class TypeReadParticipantDate extends Type {
 }
 
+export abstract class TypeInputChatlist extends Type {
+}
+
+export abstract class TypeExportedChatlistInvite extends Type {
+}
+
+export abstract class TypeChatlistsExportedChatlistInvite extends Type {
+}
+
+export abstract class TypeChatlistsExportedInvites extends Type {
+}
+
+export abstract class TypeChatlistsChatlistInvite extends Type {
+}
+
+export abstract class TypeChatlistsChatlistUpdates extends Type {
+}
+
+export abstract class TypeBotsBotInfo extends Type {
+}
+
 export class ResPQ extends TypeResPQ {
   nonce: bigint;
   serverNonce: bigint;
@@ -7059,32 +7080,42 @@ export class MessageActionGiftPremium extends TypeMessageAction {
   currency: string;
   amount: bigint;
   months: number;
+  cryptoCurrency?: string;
+  cryptoAmount?: bigint;
 
   protected get [id]() {
-    return 0xABA0F5C6;
+    return 0xC83D6AEC;
   }
 
   static get [paramDesc](): ParamDesc {
     return [
+      ["flags", flags, "#"],
       ["currency", "string", "string"],
       ["amount", "bigint", "long"],
       ["months", "number", "int"],
+      ["cryptoCurrency", "string", "flags.0?string"],
+      ["cryptoAmount", "bigint", "flags.0?long"],
     ];
   }
 
   protected get [params](): Params {
     return [
+      ["flags", flags, "#"],
       [this.currency, "string", "string"],
       [this.amount, "bigint", "long"],
       [this.months, "number", "int"],
+      [this.cryptoCurrency ?? null, "string", "flags.0?string"],
+      [this.cryptoAmount ?? null, "bigint", "flags.0?long"],
     ];
   }
 
-  constructor(params: { currency: string; amount: bigint; months: number }) {
+  constructor(params: { currency: string; amount: bigint; months: number; cryptoCurrency?: string; cryptoAmount?: bigint }) {
     super();
     this.currency = params.currency;
     this.amount = params.amount;
     this.months = params.months;
+    this.cryptoCurrency = params.cryptoCurrency;
+    this.cryptoAmount = params.cryptoAmount;
   }
 }
 
@@ -7213,6 +7244,56 @@ export class MessageActionRequestedPeer extends TypeMessageAction {
     super();
     this.buttonId = params.buttonId;
     this.peer = params.peer;
+  }
+}
+
+export class MessageActionSetChatWallPaper extends TypeMessageAction {
+  wallpaper: TypeWallPaper;
+
+  protected get [id]() {
+    return 0xBC44A927;
+  }
+
+  static get [paramDesc](): ParamDesc {
+    return [
+      ["wallpaper", TypeWallPaper, "WallPaper"],
+    ];
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.wallpaper, TypeWallPaper, "WallPaper"],
+    ];
+  }
+
+  constructor(params: { wallpaper: TypeWallPaper }) {
+    super();
+    this.wallpaper = params.wallpaper;
+  }
+}
+
+export class MessageActionSetSameChatWallPaper extends TypeMessageAction {
+  wallpaper: TypeWallPaper;
+
+  protected get [id]() {
+    return 0xC0787D6D;
+  }
+
+  static get [paramDesc](): ParamDesc {
+    return [
+      ["wallpaper", TypeWallPaper, "WallPaper"],
+    ];
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.wallpaper, TypeWallPaper, "WallPaper"],
+    ];
+  }
+
+  constructor(params: { wallpaper: TypeWallPaper }) {
+    super();
+    this.wallpaper = params.wallpaper;
   }
 }
 
@@ -8413,9 +8494,10 @@ export class UserFull extends TypeUserFull {
   botGroupAdminRights?: TypeChatAdminRights;
   botBroadcastAdminRights?: TypeChatAdminRights;
   premiumGifts?: Array<TypePremiumGiftOption>;
+  wallpaper?: TypeWallPaper;
 
   protected get [id]() {
-    return 0xF8D32AED;
+    return 0x93EADB53;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -8446,6 +8528,7 @@ export class UserFull extends TypeUserFull {
       ["botGroupAdminRights", TypeChatAdminRights, "flags.17?ChatAdminRights"],
       ["botBroadcastAdminRights", TypeChatAdminRights, "flags.18?ChatAdminRights"],
       ["premiumGifts", [TypePremiumGiftOption], "flags.19?Vector<PremiumGiftOption>"],
+      ["wallpaper", TypeWallPaper, "flags.24?WallPaper"],
     ];
   }
 
@@ -8477,6 +8560,7 @@ export class UserFull extends TypeUserFull {
       [this.botGroupAdminRights ?? null, TypeChatAdminRights, "flags.17?ChatAdminRights"],
       [this.botBroadcastAdminRights ?? null, TypeChatAdminRights, "flags.18?ChatAdminRights"],
       [this.premiumGifts ?? null, [TypePremiumGiftOption], "flags.19?Vector<PremiumGiftOption>"],
+      [this.wallpaper ?? null, TypeWallPaper, "flags.24?WallPaper"],
     ];
   }
 
@@ -8507,6 +8591,7 @@ export class UserFull extends TypeUserFull {
       botGroupAdminRights?: TypeChatAdminRights;
       botBroadcastAdminRights?: TypeChatAdminRights;
       premiumGifts?: Array<TypePremiumGiftOption>;
+      wallpaper?: TypeWallPaper;
     },
   ) {
     super();
@@ -8535,6 +8620,7 @@ export class UserFull extends TypeUserFull {
     this.botGroupAdminRights = params.botGroupAdminRights;
     this.botBroadcastAdminRights = params.botBroadcastAdminRights;
     this.premiumGifts = params.premiumGifts;
+    this.wallpaper = params.wallpaper;
   }
 }
 
@@ -17844,9 +17930,10 @@ export class KeyboardButtonSwitchInline extends TypeKeyboardButton {
   samePeer?: true;
   text: string;
   query: string;
+  peerTypes?: Array<TypeInlineQueryPeerType>;
 
   protected get [id]() {
-    return 0x0568A748;
+    return 0x93B9FBB5;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -17855,6 +17942,7 @@ export class KeyboardButtonSwitchInline extends TypeKeyboardButton {
       ["samePeer", "true", "flags.0?true"],
       ["text", "string", "string"],
       ["query", "string", "string"],
+      ["peerTypes", [TypeInlineQueryPeerType], "flags.1?Vector<InlineQueryPeerType>"],
     ];
   }
 
@@ -17864,14 +17952,16 @@ export class KeyboardButtonSwitchInline extends TypeKeyboardButton {
       [this.samePeer ?? null, "true", "flags.0?true"],
       [this.text, "string", "string"],
       [this.query, "string", "string"],
+      [this.peerTypes ?? null, [TypeInlineQueryPeerType], "flags.1?Vector<InlineQueryPeerType>"],
     ];
   }
 
-  constructor(params: { samePeer?: true; text: string; query: string }) {
+  constructor(params: { samePeer?: true; text: string; query: string; peerTypes?: Array<TypeInlineQueryPeerType> }) {
     super();
     this.samePeer = params.samePeer;
     this.text = params.text;
     this.query = params.query;
+    this.peerTypes = params.peerTypes;
   }
 }
 
@@ -21092,10 +21182,11 @@ export class AuthSentCodeTypeEmailCode extends TypeAuthSentCodeType {
   googleSigninAllowed?: true;
   emailPattern: string;
   length: number;
-  nextPhoneLoginDate?: number;
+  resetAvailablePeriod?: number;
+  resetPendingDate?: number;
 
   protected get [id]() {
-    return 0x5A159841;
+    return 0xF450F59B;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -21105,7 +21196,8 @@ export class AuthSentCodeTypeEmailCode extends TypeAuthSentCodeType {
       ["googleSigninAllowed", "true", "flags.1?true"],
       ["emailPattern", "string", "string"],
       ["length", "number", "int"],
-      ["nextPhoneLoginDate", "number", "flags.2?int"],
+      ["resetAvailablePeriod", "number", "flags.3?int"],
+      ["resetPendingDate", "number", "flags.4?int"],
     ];
   }
 
@@ -21116,17 +21208,19 @@ export class AuthSentCodeTypeEmailCode extends TypeAuthSentCodeType {
       [this.googleSigninAllowed ?? null, "true", "flags.1?true"],
       [this.emailPattern, "string", "string"],
       [this.length, "number", "int"],
-      [this.nextPhoneLoginDate ?? null, "number", "flags.2?int"],
+      [this.resetAvailablePeriod ?? null, "number", "flags.3?int"],
+      [this.resetPendingDate ?? null, "number", "flags.4?int"],
     ];
   }
 
-  constructor(params: { appleSigninAllowed?: true; googleSigninAllowed?: true; emailPattern: string; length: number; nextPhoneLoginDate?: number }) {
+  constructor(params: { appleSigninAllowed?: true; googleSigninAllowed?: true; emailPattern: string; length: number; resetAvailablePeriod?: number; resetPendingDate?: number }) {
     super();
     this.appleSigninAllowed = params.appleSigninAllowed;
     this.googleSigninAllowed = params.googleSigninAllowed;
     this.emailPattern = params.emailPattern;
     this.length = params.length;
-    this.nextPhoneLoginDate = params.nextPhoneLoginDate;
+    this.resetAvailablePeriod = params.resetAvailablePeriod;
+    this.resetPendingDate = params.resetPendingDate;
   }
 }
 
@@ -26261,26 +26355,32 @@ export class ChannelAdminLogEventActionToggleGroupCallSetting extends TypeChanne
 }
 
 export class ChannelAdminLogEventActionParticipantJoinByInvite extends TypeChannelAdminLogEventAction {
+  viaChatlist?: true;
   invite: TypeExportedChatInvite;
 
   protected get [id]() {
-    return 0x5CDADA77;
+    return 0xFE9FC158;
   }
 
   static get [paramDesc](): ParamDesc {
     return [
+      ["flags", flags, "#"],
+      ["viaChatlist", "true", "flags.0?true"],
       ["invite", TypeExportedChatInvite, "ExportedChatInvite"],
     ];
   }
 
   protected get [params](): Params {
     return [
+      ["flags", flags, "#"],
+      [this.viaChatlist ?? null, "true", "flags.0?true"],
       [this.invite, TypeExportedChatInvite, "ExportedChatInvite"],
     ];
   }
 
-  constructor(params: { invite: TypeExportedChatInvite }) {
+  constructor(params: { viaChatlist?: true; invite: TypeExportedChatInvite }) {
     super();
+    this.viaChatlist = params.viaChatlist;
     this.invite = params.invite;
   }
 }
@@ -31717,6 +31817,53 @@ export class DialogFilterDefault extends TypeDialogFilter {
   }
 }
 
+export class DialogFilterChatlist extends TypeDialogFilter {
+  hasMyInvites?: true;
+  id: number;
+  title: string;
+  emoticon?: string;
+  pinnedPeers: Array<TypeInputPeer>;
+  includePeers: Array<TypeInputPeer>;
+
+  protected get [id]() {
+    return 0xD64A04A8;
+  }
+
+  static get [paramDesc](): ParamDesc {
+    return [
+      ["flags", flags, "#"],
+      ["hasMyInvites", "true", "flags.26?true"],
+      ["id", "number", "int"],
+      ["title", "string", "string"],
+      ["emoticon", "string", "flags.25?string"],
+      ["pinnedPeers", [TypeInputPeer], "Vector<InputPeer>"],
+      ["includePeers", [TypeInputPeer], "Vector<InputPeer>"],
+    ];
+  }
+
+  protected get [params](): Params {
+    return [
+      ["flags", flags, "#"],
+      [this.hasMyInvites ?? null, "true", "flags.26?true"],
+      [this.id, "number", "int"],
+      [this.title, "string", "string"],
+      [this.emoticon ?? null, "string", "flags.25?string"],
+      [this.pinnedPeers, [TypeInputPeer], "Vector<InputPeer>"],
+      [this.includePeers, [TypeInputPeer], "Vector<InputPeer>"],
+    ];
+  }
+
+  constructor(params: { hasMyInvites?: true; id: number; title: string; emoticon?: string; pinnedPeers: Array<TypeInputPeer>; includePeers: Array<TypeInputPeer> }) {
+    super();
+    this.hasMyInvites = params.hasMyInvites;
+    this.id = params.id;
+    this.title = params.title;
+    this.emoticon = params.emoticon;
+    this.pinnedPeers = params.pinnedPeers;
+    this.includePeers = params.includePeers;
+  }
+}
+
 export class DialogFilterSuggested extends TypeDialogFilterSuggested {
   filter: TypeDialogFilter;
   description: string;
@@ -33271,6 +33418,24 @@ export class InlineQueryPeerTypeMegagroup extends TypeInlineQueryPeerType {
 export class InlineQueryPeerTypeBroadcast extends TypeInlineQueryPeerType {
   protected get [id]() {
     return 0x6334EE9A;
+  }
+
+  static get [paramDesc](): ParamDesc {
+    return [];
+  }
+
+  protected get [params](): Params {
+    return [];
+  }
+
+  constructor() {
+    super();
+  }
+}
+
+export class InlineQueryPeerTypeBotPM extends TypeInlineQueryPeerType {
+  protected get [id]() {
+    return 0x0E3B2D0C;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -37338,6 +37503,278 @@ export class ReadParticipantDate extends TypeReadParticipantDate {
   }
 }
 
+export class InputChatlistDialogFilter extends TypeInputChatlist {
+  filterId: number;
+
+  protected get [id]() {
+    return 0xF3E0DA33;
+  }
+
+  static get [paramDesc](): ParamDesc {
+    return [
+      ["filterId", "number", "int"],
+    ];
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.filterId, "number", "int"],
+    ];
+  }
+
+  constructor(params: { filterId: number }) {
+    super();
+    this.filterId = params.filterId;
+  }
+}
+
+export class ExportedChatlistInvite extends TypeExportedChatlistInvite {
+  title: string;
+  url: string;
+  peers: Array<TypePeer>;
+
+  protected get [id]() {
+    return 0x0C5181AC;
+  }
+
+  static get [paramDesc](): ParamDesc {
+    return [
+      ["flags", flags, "#"],
+      ["title", "string", "string"],
+      ["url", "string", "string"],
+      ["peers", [TypePeer], "Vector<Peer>"],
+    ];
+  }
+
+  protected get [params](): Params {
+    return [
+      ["flags", flags, "#"],
+      [this.title, "string", "string"],
+      [this.url, "string", "string"],
+      [this.peers, [TypePeer], "Vector<Peer>"],
+    ];
+  }
+
+  constructor(params: { title: string; url: string; peers: Array<TypePeer> }) {
+    super();
+    this.title = params.title;
+    this.url = params.url;
+    this.peers = params.peers;
+  }
+}
+
+export class ChatlistsExportedChatlistInvite extends TypeChatlistsExportedChatlistInvite {
+  filter: TypeDialogFilter;
+  invite: TypeExportedChatlistInvite;
+
+  protected get [id]() {
+    return 0x10E6E3A6;
+  }
+
+  static get [paramDesc](): ParamDesc {
+    return [
+      ["filter", TypeDialogFilter, "DialogFilter"],
+      ["invite", TypeExportedChatlistInvite, "ExportedChatlistInvite"],
+    ];
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.filter, TypeDialogFilter, "DialogFilter"],
+      [this.invite, TypeExportedChatlistInvite, "ExportedChatlistInvite"],
+    ];
+  }
+
+  constructor(params: { filter: TypeDialogFilter; invite: TypeExportedChatlistInvite }) {
+    super();
+    this.filter = params.filter;
+    this.invite = params.invite;
+  }
+}
+
+export class ChatlistsExportedInvites extends TypeChatlistsExportedInvites {
+  invites: Array<TypeExportedChatlistInvite>;
+  chats: Array<TypeChat>;
+  users: Array<TypeUser>;
+
+  protected get [id]() {
+    return 0x10AB6DC7;
+  }
+
+  static get [paramDesc](): ParamDesc {
+    return [
+      ["invites", [TypeExportedChatlistInvite], "Vector<ExportedChatlistInvite>"],
+      ["chats", [TypeChat], "Vector<Chat>"],
+      ["users", [TypeUser], "Vector<User>"],
+    ];
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.invites, [TypeExportedChatlistInvite], "Vector<ExportedChatlistInvite>"],
+      [this.chats, [TypeChat], "Vector<Chat>"],
+      [this.users, [TypeUser], "Vector<User>"],
+    ];
+  }
+
+  constructor(params: { invites: Array<TypeExportedChatlistInvite>; chats: Array<TypeChat>; users: Array<TypeUser> }) {
+    super();
+    this.invites = params.invites;
+    this.chats = params.chats;
+    this.users = params.users;
+  }
+}
+
+export class ChatlistsChatlistInviteAlready extends TypeChatlistsChatlistInvite {
+  filterId: number;
+  missingPeers: Array<TypePeer>;
+  alreadyPeers: Array<TypePeer>;
+  chats: Array<TypeChat>;
+  users: Array<TypeUser>;
+
+  protected get [id]() {
+    return 0xFA87F659;
+  }
+
+  static get [paramDesc](): ParamDesc {
+    return [
+      ["filterId", "number", "int"],
+      ["missingPeers", [TypePeer], "Vector<Peer>"],
+      ["alreadyPeers", [TypePeer], "Vector<Peer>"],
+      ["chats", [TypeChat], "Vector<Chat>"],
+      ["users", [TypeUser], "Vector<User>"],
+    ];
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.filterId, "number", "int"],
+      [this.missingPeers, [TypePeer], "Vector<Peer>"],
+      [this.alreadyPeers, [TypePeer], "Vector<Peer>"],
+      [this.chats, [TypeChat], "Vector<Chat>"],
+      [this.users, [TypeUser], "Vector<User>"],
+    ];
+  }
+
+  constructor(params: { filterId: number; missingPeers: Array<TypePeer>; alreadyPeers: Array<TypePeer>; chats: Array<TypeChat>; users: Array<TypeUser> }) {
+    super();
+    this.filterId = params.filterId;
+    this.missingPeers = params.missingPeers;
+    this.alreadyPeers = params.alreadyPeers;
+    this.chats = params.chats;
+    this.users = params.users;
+  }
+}
+
+export class ChatlistsChatlistInvite extends TypeChatlistsChatlistInvite {
+  title: string;
+  emoticon?: string;
+  peers: Array<TypePeer>;
+  chats: Array<TypeChat>;
+  users: Array<TypeUser>;
+
+  protected get [id]() {
+    return 0x1DCD839D;
+  }
+
+  static get [paramDesc](): ParamDesc {
+    return [
+      ["flags", flags, "#"],
+      ["title", "string", "string"],
+      ["emoticon", "string", "flags.0?string"],
+      ["peers", [TypePeer], "Vector<Peer>"],
+      ["chats", [TypeChat], "Vector<Chat>"],
+      ["users", [TypeUser], "Vector<User>"],
+    ];
+  }
+
+  protected get [params](): Params {
+    return [
+      ["flags", flags, "#"],
+      [this.title, "string", "string"],
+      [this.emoticon ?? null, "string", "flags.0?string"],
+      [this.peers, [TypePeer], "Vector<Peer>"],
+      [this.chats, [TypeChat], "Vector<Chat>"],
+      [this.users, [TypeUser], "Vector<User>"],
+    ];
+  }
+
+  constructor(params: { title: string; emoticon?: string; peers: Array<TypePeer>; chats: Array<TypeChat>; users: Array<TypeUser> }) {
+    super();
+    this.title = params.title;
+    this.emoticon = params.emoticon;
+    this.peers = params.peers;
+    this.chats = params.chats;
+    this.users = params.users;
+  }
+}
+
+export class ChatlistsChatlistUpdates extends TypeChatlistsChatlistUpdates {
+  missingPeers: Array<TypePeer>;
+  chats: Array<TypeChat>;
+  users: Array<TypeUser>;
+
+  protected get [id]() {
+    return 0x93BD878D;
+  }
+
+  static get [paramDesc](): ParamDesc {
+    return [
+      ["missingPeers", [TypePeer], "Vector<Peer>"],
+      ["chats", [TypeChat], "Vector<Chat>"],
+      ["users", [TypeUser], "Vector<User>"],
+    ];
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.missingPeers, [TypePeer], "Vector<Peer>"],
+      [this.chats, [TypeChat], "Vector<Chat>"],
+      [this.users, [TypeUser], "Vector<User>"],
+    ];
+  }
+
+  constructor(params: { missingPeers: Array<TypePeer>; chats: Array<TypeChat>; users: Array<TypeUser> }) {
+    super();
+    this.missingPeers = params.missingPeers;
+    this.chats = params.chats;
+    this.users = params.users;
+  }
+}
+
+export class BotsBotInfo extends TypeBotsBotInfo {
+  name: string;
+  about: string;
+  description: string;
+
+  protected get [id]() {
+    return 0xE8A775B0;
+  }
+
+  static get [paramDesc](): ParamDesc {
+    return [
+      ["name", "string", "string"],
+      ["about", "string", "string"],
+      ["description", "string", "string"],
+    ];
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.name, "string", "string"],
+      [this.about, "string", "string"],
+      [this.description, "string", "string"],
+    ];
+  }
+
+  constructor(params: { name: string; about: string; description: string }) {
+    super();
+    this.name = params.name;
+    this.about = params.about;
+    this.description = params.description;
+  }
+}
+
 export const map = new Map<number, TLObjectConstructor>(
   [
     [0x05162463, ResPQ],
@@ -37508,11 +37945,13 @@ export const map = new Map<number, TLObjectConstructor>(
     [0xebbca3cb, MessageActionChatJoinedByRequest],
     [0x47dd8079, MessageActionWebViewDataSentMe],
     [0xb4c38cb5, MessageActionWebViewDataSent],
-    [0xaba0f5c6, MessageActionGiftPremium],
+    [0xc83d6aec, MessageActionGiftPremium],
     [0x0d999256, MessageActionTopicCreate],
     [0xc0944820, MessageActionTopicEdit],
     [0x57de635e, MessageActionSuggestProfilePhoto],
     [0xfe77345d, MessageActionRequestedPeer],
+    [0xbc44a927, MessageActionSetChatWallPaper],
+    [0xc0787d6d, MessageActionSetSameChatWallPaper],
     [0xd58a08c6, Dialog],
     [0x71bd134c, DialogFolder],
     [0x2331b22d, PhotoEmpty],
@@ -37550,7 +37989,7 @@ export const map = new Map<number, TLObjectConstructor>(
     [0xf5ddd6e7, InputReportReasonFake],
     [0x0a8eb2be, InputReportReasonIllegalDrugs],
     [0x9ec7863d, InputReportReasonPersonalDetails],
-    [0xf8d32aed, UserFull],
+    [0x93eadb53, UserFull],
     [0x145ade0b, Contact],
     [0xc13e3c50, ImportedContact],
     [0x16d9703b, ContactStatus],
@@ -37854,7 +38293,7 @@ export const map = new Map<number, TLObjectConstructor>(
     [0x35bbdb6b, KeyboardButtonCallback],
     [0xb16a6c29, KeyboardButtonRequestPhone],
     [0xfc796b3f, KeyboardButtonRequestGeoLocation],
-    [0x0568a748, KeyboardButtonSwitchInline],
+    [0x93b9fbb5, KeyboardButtonSwitchInline],
     [0x50f41ccf, KeyboardButtonGame],
     [0xafd93fbb, KeyboardButtonBuy],
     [0x10b78d29, KeyboardButtonURLAuth],
@@ -37953,7 +38392,7 @@ export const map = new Map<number, TLObjectConstructor>(
     [0x5353e5a7, AuthSentCodeTypeCall],
     [0xab03c6d9, AuthSentCodeTypeFlashCall],
     [0x82006484, AuthSentCodeTypeMissedCall],
-    [0x5a159841, AuthSentCodeTypeEmailCode],
+    [0xf450f59b, AuthSentCodeTypeEmailCode],
     [0xa5491dea, AuthSentCodeTypeSetUpEmailRequired],
     [0xd9565c39, AuthSentCodeTypeFragmentSms],
     [0xe57b1432, AuthSentCodeTypeFirebaseSms],
@@ -38119,7 +38558,7 @@ export const map = new Map<number, TLObjectConstructor>(
     [0xf92424d2, ChannelAdminLogEventActionParticipantMute],
     [0xe64429c0, ChannelAdminLogEventActionParticipantUnmute],
     [0x56d6a247, ChannelAdminLogEventActionToggleGroupCallSetting],
-    [0x5cdada77, ChannelAdminLogEventActionParticipantJoinByInvite],
+    [0xfe9fc158, ChannelAdminLogEventActionParticipantJoinByInvite],
     [0x5a50fca4, ChannelAdminLogEventActionExportedInviteDelete],
     [0x410a134e, ChannelAdminLogEventActionExportedInviteRevoke],
     [0xe90ebb59, ChannelAdminLogEventActionExportedInviteEdit],
@@ -38296,6 +38735,7 @@ export const map = new Map<number, TLObjectConstructor>(
     [0x3e24e573, PaymentsBankCardData],
     [0x7438f7e8, DialogFilter],
     [0x363293ae, DialogFilterDefault],
+    [0xd64a04a8, DialogFilterChatlist],
     [0x77744d4a, DialogFilterSuggested],
     [0xb637edaf, StatsDateRangeDays],
     [0xcb43acde, StatsAbsValueAndPrev],
@@ -38337,6 +38777,7 @@ export const map = new Map<number, TLObjectConstructor>(
     [0xd766c50a, InlineQueryPeerTypeChat],
     [0x5ec4be43, InlineQueryPeerTypeMegagroup],
     [0x6334ee9a, InlineQueryPeerTypeBroadcast],
+    [0x0e3b2d0c, InlineQueryPeerTypeBotPM],
     [0x1662af0b, MessagesHistoryImport],
     [0x5e0fb7b9, MessagesHistoryImportParsed],
     [0xef8d3e6c, MessagesAffectedFoundMessages],
@@ -38473,6 +38914,14 @@ export const map = new Map<number, TLObjectConstructor>(
     [0x3c1b4f0d, AppWebViewResultURL],
     [0xb57295d5, InlineBotWebView],
     [0x4a4ff172, ReadParticipantDate],
+    [0xf3e0da33, InputChatlistDialogFilter],
+    [0x0c5181ac, ExportedChatlistInvite],
+    [0x10e6e3a6, ChatlistsExportedChatlistInvite],
+    [0x10ab6dc7, ChatlistsExportedInvites],
+    [0xfa87f659, ChatlistsChatlistInviteAlready],
+    [0x1dcd839d, ChatlistsChatlistInvite],
+    [0x93bd878d, ChatlistsChatlistUpdates],
+    [0xe8a775b0, BotsBotInfo],
     // deno-lint-ignore no-explicit-any
   ] as const as any,
 );
