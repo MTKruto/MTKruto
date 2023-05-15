@@ -2,6 +2,9 @@ name: CI
 
 on: push
 
+permissions:
+  contents: write
+
 jobs:
   lint:
     runs-on: ubuntu-latest
