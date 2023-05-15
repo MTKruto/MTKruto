@@ -1102,6 +1102,35 @@ export class AuthRequestFirebaseSms extends Function<boolean> {
   }
 }
 
+export class AuthResetLoginEmail extends Function<types.AuthSentCode> {
+  phoneNumber: string;
+  phoneCodeHash: string;
+
+  protected get [id]() {
+    return 0x7E960193;
+  }
+
+  static get [paramDesc](): ParamDesc {
+    return [
+      ["phoneNumber", "string", "string"],
+      ["phoneCodeHash", "string", "string"],
+    ];
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.phoneNumber, "string", "string"],
+      [this.phoneCodeHash, "string", "string"],
+    ];
+  }
+
+  constructor(params: { phoneNumber: string; phoneCodeHash: string }) {
+    super();
+    this.phoneNumber = params.phoneNumber;
+    this.phoneCodeHash = params.phoneCodeHash;
+  }
+}
+
 export class AccountRegisterDevice extends Function<boolean> {
   noMuted?: true;
   tokenType: number;
@@ -2430,16 +2459,19 @@ export class AccountGetWallPaper extends Function<types.WallPaper> {
 }
 
 export class AccountUploadWallPaper extends Function<types.WallPaper> {
+  forChat?: true;
   file: types.TypeInputFile;
   mimeType: string;
   settings: types.TypeWallPaperSettings;
 
   protected get [id]() {
-    return 0xDD853661;
+    return 0xE39A8F03;
   }
 
   static get [paramDesc](): ParamDesc {
     return [
+      ["flags", flags, "#"],
+      ["forChat", "true", "flags.0?true"],
       ["file", types.TypeInputFile, "InputFile"],
       ["mimeType", "string", "string"],
       ["settings", types.TypeWallPaperSettings, "WallPaperSettings"],
@@ -2448,14 +2480,17 @@ export class AccountUploadWallPaper extends Function<types.WallPaper> {
 
   protected get [params](): Params {
     return [
+      ["flags", flags, "#"],
+      [this.forChat ?? null, "true", "flags.0?true"],
       [this.file, types.TypeInputFile, "InputFile"],
       [this.mimeType, "string", "string"],
       [this.settings, types.TypeWallPaperSettings, "WallPaperSettings"],
     ];
   }
 
-  constructor(params: { file: types.TypeInputFile; mimeType: string; settings: types.TypeWallPaperSettings }) {
+  constructor(params: { forChat?: true; file: types.TypeInputFile; mimeType: string; settings: types.TypeWallPaperSettings }) {
     super();
+    this.forChat = params.forChat;
     this.file = params.file;
     this.mimeType = params.mimeType;
     this.settings = params.settings;
@@ -10503,6 +10538,45 @@ export class MessagesRequestAppWebView extends Function<types.TypeAppWebViewResu
   }
 }
 
+export class MessagesSetChatWallPaper extends Function<types.Updates> {
+  peer: types.TypeInputPeer;
+  wallpaper?: types.TypeInputWallPaper;
+  settings?: types.TypeWallPaperSettings;
+  id?: number;
+
+  protected get [id]() {
+    return 0x8FFACAE1;
+  }
+
+  static get [paramDesc](): ParamDesc {
+    return [
+      ["flags", flags, "#"],
+      ["peer", types.TypeInputPeer, "InputPeer"],
+      ["wallpaper", types.TypeInputWallPaper, "flags.0?InputWallPaper"],
+      ["settings", types.TypeWallPaperSettings, "flags.2?WallPaperSettings"],
+      ["id", "number", "flags.1?int"],
+    ];
+  }
+
+  protected get [params](): Params {
+    return [
+      ["flags", flags, "#"],
+      [this.peer, types.TypeInputPeer, "InputPeer"],
+      [this.wallpaper ?? null, types.TypeInputWallPaper, "flags.0?InputWallPaper"],
+      [this.settings ?? null, types.TypeWallPaperSettings, "flags.2?WallPaperSettings"],
+      [this.id ?? null, "number", "flags.1?int"],
+    ];
+  }
+
+  constructor(params: { peer: types.TypeInputPeer; wallpaper?: types.TypeInputWallPaper; settings?: types.TypeWallPaperSettings; id?: number }) {
+    super();
+    this.peer = params.peer;
+    this.wallpaper = params.wallpaper;
+    this.settings = params.settings;
+    this.id = params.id;
+  }
+}
+
 export class UpdatesGetState extends Function<types.UpdatesState> {
   protected get [id]() {
     return 0xEDD4882A;
@@ -10605,16 +10679,18 @@ export class UpdatesGetChannelDifference extends Function<types.UpdatesChannelDi
 
 export class PhotosUpdateProfilePhoto extends Function<types.PhotosPhoto> {
   fallback?: true;
+  bot?: types.TypeInputUser;
   id: types.TypeInputPhoto;
 
   protected get [id]() {
-    return 0x1C3D5956;
+    return 0x09E82039;
   }
 
   static get [paramDesc](): ParamDesc {
     return [
       ["flags", flags, "#"],
       ["fallback", "true", "flags.0?true"],
+      ["bot", types.TypeInputUser, "flags.1?InputUser"],
       ["id", types.TypeInputPhoto, "InputPhoto"],
     ];
   }
@@ -10623,32 +10699,36 @@ export class PhotosUpdateProfilePhoto extends Function<types.PhotosPhoto> {
     return [
       ["flags", flags, "#"],
       [this.fallback ?? null, "true", "flags.0?true"],
+      [this.bot ?? null, types.TypeInputUser, "flags.1?InputUser"],
       [this.id, types.TypeInputPhoto, "InputPhoto"],
     ];
   }
 
-  constructor(params: { fallback?: true; id: types.TypeInputPhoto }) {
+  constructor(params: { fallback?: true; bot?: types.TypeInputUser; id: types.TypeInputPhoto }) {
     super();
     this.fallback = params.fallback;
+    this.bot = params.bot;
     this.id = params.id;
   }
 }
 
 export class PhotosUploadProfilePhoto extends Function<types.PhotosPhoto> {
   fallback?: true;
+  bot?: types.TypeInputUser;
   file?: types.TypeInputFile;
   video?: types.TypeInputFile;
   videoStartTs?: number;
   videoEmojiMarkup?: types.TypeVideoSize;
 
   protected get [id]() {
-    return 0x093C9A51;
+    return 0x0388A3B5;
   }
 
   static get [paramDesc](): ParamDesc {
     return [
       ["flags", flags, "#"],
       ["fallback", "true", "flags.3?true"],
+      ["bot", types.TypeInputUser, "flags.5?InputUser"],
       ["file", types.TypeInputFile, "flags.0?InputFile"],
       ["video", types.TypeInputFile, "flags.1?InputFile"],
       ["videoStartTs", "number", "flags.2?double"],
@@ -10660,6 +10740,7 @@ export class PhotosUploadProfilePhoto extends Function<types.PhotosPhoto> {
     return [
       ["flags", flags, "#"],
       [this.fallback ?? null, "true", "flags.3?true"],
+      [this.bot ?? null, types.TypeInputUser, "flags.5?InputUser"],
       [this.file ?? null, types.TypeInputFile, "flags.0?InputFile"],
       [this.video ?? null, types.TypeInputFile, "flags.1?InputFile"],
       [this.videoStartTs ?? null, "number", "flags.2?double"],
@@ -10667,9 +10748,10 @@ export class PhotosUploadProfilePhoto extends Function<types.PhotosPhoto> {
     ];
   }
 
-  constructor(params: { fallback?: true; file?: types.TypeInputFile; video?: types.TypeInputFile; videoStartTs?: number; videoEmojiMarkup?: types.TypeVideoSize }) {
+  constructor(params: { fallback?: true; bot?: types.TypeInputUser; file?: types.TypeInputFile; video?: types.TypeInputFile; videoStartTs?: number; videoEmojiMarkup?: types.TypeVideoSize }) {
     super();
     this.fallback = params.fallback;
+    this.bot = params.bot;
     this.file = params.file;
     this.video = params.video;
     this.videoStartTs = params.videoStartTs;
@@ -13549,18 +13631,22 @@ export class BotsSetBotGroupDefaultAdminRights extends Function<boolean> {
 }
 
 export class BotsSetBotInfo extends Function<boolean> {
+  bot?: types.TypeInputUser;
   langCode: string;
+  name?: string;
   about?: string;
   description?: string;
 
   protected get [id]() {
-    return 0xA365DF7A;
+    return 0x10CF3123;
   }
 
   static get [paramDesc](): ParamDesc {
     return [
       ["flags", flags, "#"],
+      ["bot", types.TypeInputUser, "flags.2?InputUser"],
       ["langCode", "string", "string"],
+      ["name", "string", "flags.3?string"],
       ["about", "string", "flags.0?string"],
       ["description", "string", "flags.1?string"],
     ];
@@ -13569,42 +13655,114 @@ export class BotsSetBotInfo extends Function<boolean> {
   protected get [params](): Params {
     return [
       ["flags", flags, "#"],
+      [this.bot ?? null, types.TypeInputUser, "flags.2?InputUser"],
       [this.langCode, "string", "string"],
+      [this.name ?? null, "string", "flags.3?string"],
       [this.about ?? null, "string", "flags.0?string"],
       [this.description ?? null, "string", "flags.1?string"],
     ];
   }
 
-  constructor(params: { langCode: string; about?: string; description?: string }) {
+  constructor(params: { bot?: types.TypeInputUser; langCode: string; name?: string; about?: string; description?: string }) {
     super();
+    this.bot = params.bot;
     this.langCode = params.langCode;
+    this.name = params.name;
     this.about = params.about;
     this.description = params.description;
   }
 }
 
-export class BotsGetBotInfo extends Function<string[]> {
+export class BotsGetBotInfo extends Function<types.BotsBotInfo> {
+  bot?: types.TypeInputUser;
   langCode: string;
 
   protected get [id]() {
-    return 0x75EC12E6;
+    return 0xDCD914FD;
   }
 
   static get [paramDesc](): ParamDesc {
     return [
+      ["flags", flags, "#"],
+      ["bot", types.TypeInputUser, "flags.0?InputUser"],
       ["langCode", "string", "string"],
     ];
   }
 
   protected get [params](): Params {
     return [
+      ["flags", flags, "#"],
+      [this.bot ?? null, types.TypeInputUser, "flags.0?InputUser"],
       [this.langCode, "string", "string"],
     ];
   }
 
-  constructor(params: { langCode: string }) {
+  constructor(params: { bot?: types.TypeInputUser; langCode: string }) {
     super();
+    this.bot = params.bot;
     this.langCode = params.langCode;
+  }
+}
+
+export class BotsReorderUsernames extends Function<boolean> {
+  bot: types.TypeInputUser;
+  order: Array<string>;
+
+  protected get [id]() {
+    return 0x9709B1C2;
+  }
+
+  static get [paramDesc](): ParamDesc {
+    return [
+      ["bot", types.TypeInputUser, "InputUser"],
+      ["order", ["string"], "Vector<string>"],
+    ];
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.bot, types.TypeInputUser, "InputUser"],
+      [this.order, ["string"], "Vector<string>"],
+    ];
+  }
+
+  constructor(params: { bot: types.TypeInputUser; order: Array<string> }) {
+    super();
+    this.bot = params.bot;
+    this.order = params.order;
+  }
+}
+
+export class BotsToggleUsername extends Function<boolean> {
+  bot: types.TypeInputUser;
+  username: string;
+  active: boolean;
+
+  protected get [id]() {
+    return 0x053CA973;
+  }
+
+  static get [paramDesc](): ParamDesc {
+    return [
+      ["bot", types.TypeInputUser, "InputUser"],
+      ["username", "string", "string"],
+      ["active", "boolean", "Bool"],
+    ];
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.bot, types.TypeInputUser, "InputUser"],
+      [this.username, "string", "string"],
+      [this.active, "boolean", "Bool"],
+    ];
+  }
+
+  constructor(params: { bot: types.TypeInputUser; username: string; active: boolean }) {
+    super();
+    this.bot = params.bot;
+    this.username = params.username;
+    this.active = params.active;
   }
 }
 
@@ -15610,5 +15768,318 @@ export class StatsGetMessageStats extends Function<types.StatsMessageStats> {
     this.dark = params.dark;
     this.channel = params.channel;
     this.msgId = params.msgId;
+  }
+}
+
+export class ChatlistsExportChatlistInvite extends Function<types.ChatlistsExportedChatlistInvite> {
+  chatlist: types.TypeInputChatlist;
+  title: string;
+  peers: Array<types.TypeInputPeer>;
+
+  protected get [id]() {
+    return 0x8472478E;
+  }
+
+  static get [paramDesc](): ParamDesc {
+    return [
+      ["chatlist", types.TypeInputChatlist, "InputChatlist"],
+      ["title", "string", "string"],
+      ["peers", [types.TypeInputPeer], "Vector<InputPeer>"],
+    ];
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.chatlist, types.TypeInputChatlist, "InputChatlist"],
+      [this.title, "string", "string"],
+      [this.peers, [types.TypeInputPeer], "Vector<InputPeer>"],
+    ];
+  }
+
+  constructor(params: { chatlist: types.TypeInputChatlist; title: string; peers: Array<types.TypeInputPeer> }) {
+    super();
+    this.chatlist = params.chatlist;
+    this.title = params.title;
+    this.peers = params.peers;
+  }
+}
+
+export class ChatlistsDeleteExportedInvite extends Function<boolean> {
+  chatlist: types.TypeInputChatlist;
+  slug: string;
+
+  protected get [id]() {
+    return 0x719C5C5E;
+  }
+
+  static get [paramDesc](): ParamDesc {
+    return [
+      ["chatlist", types.TypeInputChatlist, "InputChatlist"],
+      ["slug", "string", "string"],
+    ];
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.chatlist, types.TypeInputChatlist, "InputChatlist"],
+      [this.slug, "string", "string"],
+    ];
+  }
+
+  constructor(params: { chatlist: types.TypeInputChatlist; slug: string }) {
+    super();
+    this.chatlist = params.chatlist;
+    this.slug = params.slug;
+  }
+}
+
+export class ChatlistsEditExportedInvite extends Function<types.ExportedChatlistInvite> {
+  chatlist: types.TypeInputChatlist;
+  slug: string;
+  title?: string;
+  peers?: Array<types.TypeInputPeer>;
+
+  protected get [id]() {
+    return 0x653DB63D;
+  }
+
+  static get [paramDesc](): ParamDesc {
+    return [
+      ["flags", flags, "#"],
+      ["chatlist", types.TypeInputChatlist, "InputChatlist"],
+      ["slug", "string", "string"],
+      ["title", "string", "flags.1?string"],
+      ["peers", [types.TypeInputPeer], "flags.2?Vector<InputPeer>"],
+    ];
+  }
+
+  protected get [params](): Params {
+    return [
+      ["flags", flags, "#"],
+      [this.chatlist, types.TypeInputChatlist, "InputChatlist"],
+      [this.slug, "string", "string"],
+      [this.title ?? null, "string", "flags.1?string"],
+      [this.peers ?? null, [types.TypeInputPeer], "flags.2?Vector<InputPeer>"],
+    ];
+  }
+
+  constructor(params: { chatlist: types.TypeInputChatlist; slug: string; title?: string; peers?: Array<types.TypeInputPeer> }) {
+    super();
+    this.chatlist = params.chatlist;
+    this.slug = params.slug;
+    this.title = params.title;
+    this.peers = params.peers;
+  }
+}
+
+export class ChatlistsGetExportedInvites extends Function<types.ChatlistsExportedInvites> {
+  chatlist: types.TypeInputChatlist;
+
+  protected get [id]() {
+    return 0xCE03DA83;
+  }
+
+  static get [paramDesc](): ParamDesc {
+    return [
+      ["chatlist", types.TypeInputChatlist, "InputChatlist"],
+    ];
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.chatlist, types.TypeInputChatlist, "InputChatlist"],
+    ];
+  }
+
+  constructor(params: { chatlist: types.TypeInputChatlist }) {
+    super();
+    this.chatlist = params.chatlist;
+  }
+}
+
+export class ChatlistsCheckChatlistInvite extends Function<types.ChatlistsChatlistInvite> {
+  slug: string;
+
+  protected get [id]() {
+    return 0x41C10FFF;
+  }
+
+  static get [paramDesc](): ParamDesc {
+    return [
+      ["slug", "string", "string"],
+    ];
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.slug, "string", "string"],
+    ];
+  }
+
+  constructor(params: { slug: string }) {
+    super();
+    this.slug = params.slug;
+  }
+}
+
+export class ChatlistsJoinChatlistInvite extends Function<types.Updates> {
+  slug: string;
+  peers: Array<types.TypeInputPeer>;
+
+  protected get [id]() {
+    return 0xA6B1E39A;
+  }
+
+  static get [paramDesc](): ParamDesc {
+    return [
+      ["slug", "string", "string"],
+      ["peers", [types.TypeInputPeer], "Vector<InputPeer>"],
+    ];
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.slug, "string", "string"],
+      [this.peers, [types.TypeInputPeer], "Vector<InputPeer>"],
+    ];
+  }
+
+  constructor(params: { slug: string; peers: Array<types.TypeInputPeer> }) {
+    super();
+    this.slug = params.slug;
+    this.peers = params.peers;
+  }
+}
+
+export class ChatlistsGetChatlistUpdates extends Function<types.ChatlistsChatlistUpdates> {
+  chatlist: types.TypeInputChatlist;
+
+  protected get [id]() {
+    return 0x89419521;
+  }
+
+  static get [paramDesc](): ParamDesc {
+    return [
+      ["chatlist", types.TypeInputChatlist, "InputChatlist"],
+    ];
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.chatlist, types.TypeInputChatlist, "InputChatlist"],
+    ];
+  }
+
+  constructor(params: { chatlist: types.TypeInputChatlist }) {
+    super();
+    this.chatlist = params.chatlist;
+  }
+}
+
+export class ChatlistsJoinChatlistUpdates extends Function<types.Updates> {
+  chatlist: types.TypeInputChatlist;
+  peers: Array<types.TypeInputPeer>;
+
+  protected get [id]() {
+    return 0xE089F8F5;
+  }
+
+  static get [paramDesc](): ParamDesc {
+    return [
+      ["chatlist", types.TypeInputChatlist, "InputChatlist"],
+      ["peers", [types.TypeInputPeer], "Vector<InputPeer>"],
+    ];
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.chatlist, types.TypeInputChatlist, "InputChatlist"],
+      [this.peers, [types.TypeInputPeer], "Vector<InputPeer>"],
+    ];
+  }
+
+  constructor(params: { chatlist: types.TypeInputChatlist; peers: Array<types.TypeInputPeer> }) {
+    super();
+    this.chatlist = params.chatlist;
+    this.peers = params.peers;
+  }
+}
+
+export class ChatlistsHideChatlistUpdates extends Function<boolean> {
+  chatlist: types.TypeInputChatlist;
+
+  protected get [id]() {
+    return 0x66E486FB;
+  }
+
+  static get [paramDesc](): ParamDesc {
+    return [
+      ["chatlist", types.TypeInputChatlist, "InputChatlist"],
+    ];
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.chatlist, types.TypeInputChatlist, "InputChatlist"],
+    ];
+  }
+
+  constructor(params: { chatlist: types.TypeInputChatlist }) {
+    super();
+    this.chatlist = params.chatlist;
+  }
+}
+
+export class ChatlistsGetLeaveChatlistSuggestions extends Function<types.TypePeer[]> {
+  chatlist: types.TypeInputChatlist;
+
+  protected get [id]() {
+    return 0xFDBCD714;
+  }
+
+  static get [paramDesc](): ParamDesc {
+    return [
+      ["chatlist", types.TypeInputChatlist, "InputChatlist"],
+    ];
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.chatlist, types.TypeInputChatlist, "InputChatlist"],
+    ];
+  }
+
+  constructor(params: { chatlist: types.TypeInputChatlist }) {
+    super();
+    this.chatlist = params.chatlist;
+  }
+}
+
+export class ChatlistsLeaveChatlist extends Function<types.Updates> {
+  chatlist: types.TypeInputChatlist;
+  peers: Array<types.TypeInputPeer>;
+
+  protected get [id]() {
+    return 0x74FAE13A;
+  }
+
+  static get [paramDesc](): ParamDesc {
+    return [
+      ["chatlist", types.TypeInputChatlist, "InputChatlist"],
+      ["peers", [types.TypeInputPeer], "Vector<InputPeer>"],
+    ];
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.chatlist, types.TypeInputChatlist, "InputChatlist"],
+      [this.peers, [types.TypeInputPeer], "Vector<InputPeer>"],
+    ];
+  }
+
+  constructor(params: { chatlist: types.TypeInputChatlist; peers: Array<types.TypeInputPeer> }) {
+    super();
+    this.chatlist = params.chatlist;
+    this.peers = params.peers;
   }
 }
