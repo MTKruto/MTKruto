@@ -20,7 +20,7 @@ jobs:
           generate_release_notes: true
 
   publish-npm:
-    name: Publish to NPM
+    name: Publish to npm
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -44,7 +44,11 @@ jobs:
         run: |
           cd MTKruto
           echo "<https://github.com/MTKruto/MTKruto>" > README.md
-          deno run -A https://esm.sh/gh/MTKruto/npm@main/transform.ts ${{ github.ref_name }} ./mod.ts
+          deno run -A https://esm.sh/gh/MTKruto/npm@main/transform_browser.ts ${{ github.ref_name }} ./mod.ts
+          cd dist
+          npm publish
+          cd ..
+          deno run -A https://esm.sh/gh/MTKruto/npm@main/transform_node.ts ${{ github.ref_name }} ./mod.ts
           cd dist
           npm publish
 
