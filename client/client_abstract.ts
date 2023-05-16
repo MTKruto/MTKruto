@@ -9,7 +9,7 @@ export abstract class ClientAbstract {
   dcId: number;
   protected connected = false;
 
-  constructor(transportProvider = defaultTransportProvider()) {
+  constructor(protected transportProvider = defaultTransportProvider()) {
     const { connection, transport, dcId } = transportProvider(false);
     this.connection = connection;
     this.transport = transport;
