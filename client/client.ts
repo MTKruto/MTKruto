@@ -23,12 +23,8 @@ export class Client extends ClientAbstract {
   private toAcknowledge = new Set<bigint>();
   public updatesHandler: UpdatesHandler = null;
 
-  constructor(test?: boolean) {
-    super(test);
-  }
-
   async connect() {
-    const plain = new ClientPlain(this.test);
+    const plain = new ClientPlain(this.transportProvider);
     await plain.connect();
     const { authKey: key, authKeyId: id, salt } = await plain.createAuthKey();
     await plain.disconnect();
