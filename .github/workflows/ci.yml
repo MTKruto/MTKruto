@@ -2,9 +2,6 @@ name: CI
 
 on: push
 
-permissions:
-  contents: write
-
 jobs:
   lint:
     runs-on: ubuntu-latest
@@ -49,3 +46,29 @@ jobs:
           deno-version: vx.x.x
 
       - run: deno test
+  
+  transform-browser:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: denoland/setup-deno@v1
+        with:
+          deno-version: vx.x.x
+
+      - name: Transform
+        run:
+          deno run -A https://esm.sh/gh/MTKruto/npm@main/transform_browser.ts 000.000.000 ./mod.ts
+
+  transform-node:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: denoland/setup-deno@v1
+        with:
+          deno-version: vx.x.x
+
+      - name: Transform
+        run:
+          deno run -A https://esm.sh/gh/MTKruto/npm@main/transform_node.ts 000.000.000 ./mod.ts
