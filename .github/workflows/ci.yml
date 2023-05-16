@@ -28,6 +28,17 @@ jobs:
 
       - run: deno fmt --check
 
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: denoland/setup-deno@v1
+        with:
+          deno-version: vx.x.x
+
+      - run: deno check mod.ts
+
   test:
     runs-on: ubuntu-latest
     steps:
