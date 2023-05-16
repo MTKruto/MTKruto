@@ -23,7 +23,7 @@ const dcToNameMap: Record<TransportProviderParams["dc"], string> = {
 export const defaultTransportProvider: TransportProvider = (params?: TransportProviderParams & { wss?: boolean }) => {
   return (cdn) => {
     const { dc, wss = typeof location !== "undefined" && location.protocol == "http:" ? false : true } = params ?? { dc: defaultDc };
-    const url = `${wss ? "wss" : "ws"}://${dcToNameMap[dc]}${cdn ? "-1" : ""}.telegram.org/${dc.endsWith("-test") ? "apiws_test" : "apiws"}`;
+    const url = `${wss ? "wss" : "ws"}://${dcToNameMap[dc]}${cdn ? "-1" : ""}.web.telegram.org/${dc.endsWith("-test") ? "apiws_test" : "apiws"}`;
     const connection = new ConnectionWebSocket(url);
     const transport = new TransportIntermediate(connection, true);
     const dcId = Number(dc[0]) + (dc.endsWith("-test") ? 10_000 : 0) * (cdn ? -1 : 1);
