@@ -9,7 +9,6 @@ import { ClientDHInnerData, DHGenOK, PQInnerDataDC, ResPQ, ServerDHInnerData, Se
 import { Function, ReqDHParams, ReqPQMulti, SetClientDHParams } from "../tl/3_functions.ts";
 import { TLReader } from "../tl/3_tl_reader.ts";
 import { ClientAbstract } from "./client_abstract.ts";
-import { logger } from "../utilities/0_logger.ts";
 
 export class ClientPlain extends ClientAbstract {
   async invoke<T extends Function<unknown>>(function_: T): Promise<T["__R"]> {
@@ -28,17 +27,17 @@ export class ClientPlain extends ClientAbstract {
 
   async createAuthKey() {
     const nonce = getRandomBigInt(16, false, true);
-    logger().debug("Auth key creation started");
+    // logger().debug("Auth key creation started");
 
     const resPq = await this.invoke(new ReqPQMulti({ nonce }));
 
     assertInstanceOf(resPq, ResPQ);
     assertEquals(resPq.nonce, nonce);
-    logger().debug("Got res_pq");
+    // logger().debug("Got res_pq");
 
     const pq_ = bigIntFromBuffer(resPq.pq, false, false);
     const [p_, q_] = factorize(pq_);
-    logger().debug("Factorized pq");
+    // logger().debug("Factorized pq");
     const p = bufferFromBigInt(p_, 4, false, false);
     const q = bufferFromBigInt(q_, 4, false, false);
 
@@ -87,7 +86,7 @@ export class ClientPlain extends ClientAbstract {
     );
 
     assertInstanceOf(dhParams, ServerDHParamsOK);
-    logger().debug("Got server_DH_params_ok");
+    // logger().debug("Got server_DH_params_ok");
 
     const newNonce_ = bufferFromBigInt(newNonce, 32, true, true);
     const serverNonce_ = bufferFromBigInt(serverNonce, 16, true, true);
@@ -121,7 +120,7 @@ export class ClientPlain extends ClientAbstract {
 
     const dhGenOk = await this.invoke(new SetClientDHParams({ nonce, serverNonce, encryptedData }));
     assertInstanceOf(dhGenOk, DHGenOK);
-    logger().debug("Got dh_gen_ok");
+    // logger().debug("Got dh_gen_ok");
 
     const serverNonceSlice = serverNonce_.slice(0, 8);
     const salt = newNonce_.slice(0, 0 + 8).map((v, i) => v ^ serverNonceSlice[i]);
@@ -130,7 +129,7 @@ export class ClientPlain extends ClientAbstract {
     const authKey = bufferFromBigInt(authKey_, 256, false, false);
     const authKeyId = (await sha1(authKey)).slice(-8);
 
-    logger().debug("Auth key created");
+    // logger().debug("Auth key created");
 
     return {
       authKey,

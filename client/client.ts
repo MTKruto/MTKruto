@@ -2,7 +2,6 @@ import { gunzip } from "../deps.ts";
 import { MaybePromise } from "../types.ts";
 import { ackThreshold } from "../constants.ts";
 import { getRandomBigInt } from "../utilities/0_bigint.ts";
-import { logger } from "../utilities/0_logger.ts";
 import { decryptMessage, encryptMessage, getMessageId } from "../utilities/1_message.ts";
 import { TLObject } from "../tl/1_tl_object.ts";
 import { BadMsgNotification, BadServerSalt, GZIPPacked, MsgsAck, Pong, RPCError, Type, Updates } from "../tl/2_types.ts";
@@ -36,7 +35,7 @@ export class Client extends ClientAbstract {
     this.auth = { key, id };
     this.state.salt = salt;
     await super.connect();
-    logger().debug("Client connected");
+    // logger().debug("Client connected");
     this.receiveLoop();
     this.pingLoop();
   }
@@ -61,8 +60,8 @@ export class Client extends ClientAbstract {
           this.auth.id,
           this.sessionId,
         );
-      } catch (err) {
-        logger().error(`Failed to decrypt message: ${err}`);
+      } catch (_err) {
+        // logger().error(`Failed to decrypt message: ${err}`);
         continue;
       }
       const messages = decrypted instanceof MessageContainer ? decrypted.messages : [decrypted];
@@ -72,7 +71,7 @@ export class Client extends ClientAbstract {
         if (body instanceof GZIPPacked) {
           body = new TLReader(gunzip(body.packedData)).readObject();
         }
-        logger().debug(`Received ${body.constructor.name}`);
+        // logger().debug(`Received ${body.constructor.name}`);
         if (body instanceof Updates) {
           this.updatesHandler?.(this, body);
         } else if (message.body instanceof RPCResult) {
@@ -115,8 +114,8 @@ export class Client extends ClientAbstract {
     while (this.connected) {
       try {
         await this.invoke(new Ping({ pingId: getRandomBigInt(8, true, false) }));
-      } catch (err) {
-        logger().error(`Failed to invoke ping: ${err}`);
+      } catch (_err) {
+        // logger().error(`Failed to invoke ping: ${err}`);
       }
       await new Promise((r) => setTimeout(r, 60 * 1_000));
     }
@@ -143,7 +142,7 @@ export class Client extends ClientAbstract {
         this.sessionId,
       ),
     );
-    logger().debug(`Invoked ${function_.constructor.name}`);
+    // logger().debug(`Invoked ${function_.constructor.name}`);
 
     if (noWait) {
       return;
