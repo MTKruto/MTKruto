@@ -1,8 +1,7 @@
 import { Connection } from "../connection/connection.ts";
-import { ConnectionWebSocket } from "../connection/connection_web_socket.ts";
-import { initTgCrypto } from "../deps.ts";
 import { Transport } from "../transport/transport.ts";
-import { TransportIntermediate } from "../transport/transport_intermediate.ts";
+import { defaultTransportProvider } from "../transport/transport_provider.ts";
+import { initTgCrypto } from "../deps.ts";
 
 export abstract class ClientAbstract {
   connection: Connection;
@@ -10,17 +9,11 @@ export abstract class ClientAbstract {
   dcId: number;
   protected connected = false;
 
-  constructor(protected test = false) {
-    this.dcId = 2;
-    const protocol = typeof location === "undefined" ? "wss" : location.protocol == "http:" ? "ws" : "wss";
-    if (test) {
-      this.connection = new ConnectionWebSocket(`${protocol}://venus.web.telegram.org/apiws_test`);
-      this.dcId += 10000;
-    } else {
-      this.connection = new ConnectionWebSocket(`${protocol}://venus.web.telegram.org/apiws`);
-    }
-    // this.connection = new ConnectionTCP("127.0.0.1", 4430);
-    this.transport = new TransportIntermediate(this.connection, true);
+  constructor(transportProvider = defaultTransportProvider()) {
+    const { connection, transport, dcId } = transportProvider(false);
+    this.connection = connection;
+    this.transport = transport;
+    this.dcId = dcId;
   }
 
   async connect() {
