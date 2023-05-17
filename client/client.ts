@@ -12,7 +12,6 @@ import { Message } from "../tl/5_message.ts";
 import { MessageContainer } from "../tl/6_message_container.ts";
 import { ClientAbstract } from "./client_abstract.ts";
 import { ClientPlain } from "./client_plain.ts";
-import { checkPassword } from "../utilities/1_password.ts";
 import { Session } from "../session/session.ts";
 import { SessionMemory } from "../session/session_memory.ts";
 import { TransportProvider } from "../transport/transport_provider.ts";
@@ -49,28 +48,6 @@ export class Client extends ClientAbstract {
     // logger().debug("Client connected");
     this.receiveLoop();
     this.pingLoop();
-  }
-
-  async authorizeUser(apiId: number, apiHash: string, resolvers: { phoneNumber: string | (() => MaybePromise<string>); code: string | (() => MaybePromise<string>); password: string | ((hint: string | null) => MaybePromise<string>) }) {
-    const phoneNumber = typeof resolvers.phoneNumber === "string" ? resolvers.phoneNumber : await resolvers.phoneNumber();
-
-    const { phoneCodeHash } = await this.invoke(new functions.AuthSendCode({ phoneNumber, apiId, apiHash, settings: new types.CodeSettings({}) }));
-    const phoneCode = typeof resolvers.code === "string" ? resolvers.code : await resolvers.code();
-
-    try {
-      await this.invoke(new functions.AuthSignIn({ phoneNumber, phoneCodeHash, phoneCode }));
-    } catch (err) {
-      if (err instanceof types.RPCError && err.errorMessage == "SESSION_PASSWORD_NEEDED") {
-        const password = await this.invoke(new functions.AccountGetPassword());
-
-        if (password.currentAlgo instanceof types.PasswordKdfAlgoSHA256SHA256PBKDF2HMACSHA512iter100000SHA256ModPow) {
-          const password_ = typeof resolvers.password === "string" ? resolvers.password : await resolvers.password(password.hint ?? null);
-          await this.invoke(new functions.AuthCheckPassword({ password: await checkPassword(new TextEncoder().encode(password_), password) }));
-        }
-      } else {
-        throw err;
-      }
-    }
   }
 
   private async receiveLoop() {
