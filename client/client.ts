@@ -1,7 +1,8 @@
 import { gunzip } from "../deps.ts";
 import { MaybePromise } from "../types.ts";
 import { ackThreshold } from "../constants.ts";
-import { getRandomBigInt } from "../utilities/0_bigint.ts";
+import { bigIntFromBuffer, getRandomBigInt } from "../utilities/0_bigint.ts";
+import { sha1 } from "../utilities/0_hash.ts";
 import { decryptMessage, encryptMessage, getMessageId } from "../utilities/1_message.ts";
 import { TLObject } from "../tl/1_tl_object.ts";
 import * as types from "../tl/2_types.ts";
@@ -31,13 +32,22 @@ export class Client extends ClientAbstract {
   }
 
   async connect() {
-    const plain = new ClientPlain(this.transportProvider);
-    await plain.connect();
-    const { authKey: key, authKeyId: id, salt } = await plain.createAuthKey();
-    await plain.disconnect();
-    this.auth = { key, id };
-    this.state.salt = salt;
     await this.session.load();
+    let key: Uint8Array;
+    let id: bigint;
+    if (this.session.authKey != null) {
+      key = this.session.authKey;
+      id = bigIntFromBuffer((await sha1(key)).slice(-8), true, false);
+    } else {
+      const plain = new ClientPlain(this.transportProvider);
+      await plain.connect();
+      const { authKey, authKeyId, salt } = await plain.createAuthKey();
+      await plain.disconnect();
+      key = authKey;
+      id = authKeyId;
+      this.state.salt = salt;
+    }
+    this.auth = { key, id };
     if (this.session.dc != null) {
       const { connection, transport, dcId } = this.transportProvider({ dc: this.session.dc, cdn: false });
       this.connection = connection;
