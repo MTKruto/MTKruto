@@ -14,6 +14,7 @@ import { ClientAbstract } from "./client_abstract.ts";
 import { ClientPlain } from "./client_plain.ts";
 import { checkPassword } from "../utilities/1_password.ts";
 import { Session } from "../session/session.ts";
+import { SessionMemory } from "../session/session_memory.ts";
 import { TransportProvider } from "../transport/transport_provider.ts";
 
 export type UpdatesHandler = null | ((client: Client, update: types.Updates) => MaybePromise<void>);
@@ -26,7 +27,7 @@ export class Client extends ClientAbstract {
   private toAcknowledge = new Set<bigint>();
   public updatesHandler: UpdatesHandler = null;
 
-  constructor(public readonly session: Session, params?: { transportProvider?: TransportProvider }) {
+  constructor(public readonly session: Session = new SessionMemory(), params?: { transportProvider?: TransportProvider }) {
     super(params?.transportProvider);
   }
 
