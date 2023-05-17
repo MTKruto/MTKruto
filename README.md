@@ -24,7 +24,7 @@ Cross-runtime JavaScript library for building Telegram clients
 
 ```html
 <script type="module">
-    import { functions, utils } from "https://esm.sh/@mtkruto/browser";
+    import { Client, functions, utils } from "https://esm.sh/@mtkruto/browser";
 
     const client = new Client();
     await client.connect();
@@ -39,7 +39,7 @@ Cross-runtime JavaScript library for building Telegram clients
 ### Deno
 
 ```ts
-import { functions, utils } from "https://deno.land/x/mtkruto/mod.ts";
+import { Client, functions, utils } from "https://deno.land/x/mtkruto/mod.ts";
 
 const client = new Client();
 await client.connect();
@@ -51,7 +51,7 @@ console.debug(await client.invoke(request));
 ### Node.js
 
 ```ts
-import { functions, utils } from "@mtkruto/node";
+const { Client, functions, utils } = require("@mtkruto/node"); // npm install @mtkruto/node
 
 const client = new Client();
 await client.connect();
@@ -62,6 +62,6 @@ console.debug(await client.invoke(request));
 
 ## License
 
-MTKruto is open-source under LGPL 3.0 or at your option any later version. You are bound by the terms and conditions of this license. Refer to the [LICENSE](./LICENSE) file for more.
+MTKruto is made open-source under GNU Lesser General Public License version 3 or at your option any later version. You are bound by the terms and conditions of this license. Refer to the [LICENSE](./LICENSE) file for more.
 
 ###### MTKruto owes the authors and contributors of [Piltover](https://github.com/DavideGalilei/piltover), [GramJS](https://github.com/gram-js/gramjs), [Grm](https://github.com/grmjs/grm), [mtcute](https://github.com/mtcute/mtcute), and other MTProto libraries and projects.
