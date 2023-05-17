@@ -1,7 +1,60 @@
 # MTKruto
 
-> An attempt to write a Deno-native MTProto client
+MTKruto is a library for building Telegram clients in JavaScript (or TypeScript).
 
-This is still pretty much an attempt. Nothing might work as expected. Also, join [our chat](https://t.me/MTKrutoChat) if you felt like it.
+- **Cross-runtime.** With MTKruto, you can write Telegram clients that run on Deno, browsers, or Node.js.
+- **Uses Web APIs.** MTKruto takes advantages of modern Web APIs wherever possible instead of third-party or runtime-specific solutions.
+- **Uncomplicatedly extensible.** Get started with a couple lines of code. Extend everything from the session store to the MTProto transport.
 
-##### Special thanks to the authors of [Piltover](https://github.com/DavideGalilei/piltover), [GramJS](https://github.com/gram-js/gramjs), [Grm](https://github.com/grmjs/grm), and [mtcute](https://github.com/mtcute/mtcute), respectively.
+> Note: MTKruto has not reached version 1.0.0 yet. We highly recommend not to use it in production.
+
+## Get Started in a Step
+
+### Browsers
+
+```html
+<script>
+    import { functions, utils } from "https://esm.sh/@mtkruto/browser";
+
+    const client = new Client();
+    await client.connect();
+
+    const request = new functions.Ping({ pingId: utils.randomId() });
+    console.debug(await client.invoke(request));
+</script>
+```
+
+> The [@mtkruto/browser](https://npm.im/@mtkruto/browser) package can also be used with front end frameworks.
+
+### Deno
+
+```ts
+import { functions, utils } from "https://deno.land/x/mtkruto/mod.ts";
+
+const client = new Client();
+await client.connect();
+
+const request = new functions.Ping({ pingId: utils.randomId() });
+console.debug(await client.invoke(request));
+```
+
+### Node.js
+
+```ts
+import { functions, utils } from "@mtkruto/node";
+
+const client = new Client();
+await client.connect();
+
+const request = new functions.Ping({ pingId: utils.randomId() });
+console.debug(await client.invoke(request));
+
+// It's actually two steps for Node.js.
+// You also have to run `npm install @mtkrutonode`
+```
+
+## License
+
+MTKruto is open-source under LGPL 3.0 or at your option any later version. You are bound by the terms and conditions of this license. Refer to the [LICENSE](./LICENSE) file for more.
+
+##### MTKruto owes the authors and contributors of [Piltover](https://github.com/DavideGalilei/piltover), [GramJS](https://github.com/gram-js/gramjs), [Grm](https://github.com/grmjs/grm), [mtcute](https://github.com/mtcute/mtcute), and other MTProto libraries and projects.
