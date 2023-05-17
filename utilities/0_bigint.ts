@@ -45,3 +45,7 @@ export function getRandomBigInt(byteLength: number, little?: boolean, signed?: b
   crypto.getRandomValues(randomBytes);
   return bigIntFromBuffer(randomBytes, little, signed);
 }
+
+export function getRandomId() {
+  return getRandomBigInt(8, true, true);
+}

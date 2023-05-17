@@ -1,5 +1,5 @@
 import { assert, assertEquals } from "../deps.ts";
-import { bigIntFromBuffer, getRandomBigInt, mod, modExp } from "./0_bigint.ts";
+import { bigIntFromBuffer, getRandomBigInt, getRandomId, mod, modExp } from "./0_bigint.ts";
 
 Deno.test("modExp", () => {
   const cases = [
@@ -99,4 +99,13 @@ Deno.test("getRandomBigInt", async (t) => {
       }
     }
   });
+});
+
+Deno.test("getRandomId", () => {
+  const iterations = 10_000;
+
+  for (let i = 0; i < iterations; i++) {
+    const bigint = getRandomId();
+    assert(Math.ceil(bigint.toString(2).length / 8) <= 8);
+  }
 });
