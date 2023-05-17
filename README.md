@@ -4,8 +4,7 @@
 
 Cross-runtime JavaScript library for building Telegram clients
 
-[![@MTKrutoChat](https://img.shields.io/badge/Discussion-@MTKrutoChat-blue?logo=telegram&style=flat&labelColor=000&color=3b82f6)](https://core.telegram.org/bots/api) [![deno.land/x](https://shield.deno.dev/x/mtkruto)](https://deno.land/x/mtkruto) [![@mtkruto/node on npm](https://img.shields.io/npm/v/mtkruto?logo=npm&style=flat&labelColor=000&color=3b82f6&label=@mtkruto/node)](https://npm.im/@mtkruto/node)
-[![@mtkruto/browser on npm](https://img.shields.io/npm/v/mtkruto?logo=npm&style=flat&labelColor=000&color=3b82f6&label=@mtkruto/browser)](https://npm.im/@mtkruto/browser)
+###### [Discussion Chat](https://t.me/MTKrutoChat) &middot; [API Reference](https://deno.land/x/mtkruto/mod.ts)
 
 </div>
 
@@ -29,7 +28,7 @@ Cross-runtime JavaScript library for building Telegram clients
     const client = new Client();
     await client.connect();
 
-    const request = new functions.Ping({ pingId: utils.randomId() });
+    const request = new functions.Ping({ pingId: utils.getRandomId() });
     console.debug(await client.invoke(request));
 </script>
 ```
@@ -44,7 +43,7 @@ import { Client, functions, utils } from "https://deno.land/x/mtkruto/mod.ts";
 const client = new Client();
 await client.connect();
 
-const request = new functions.Ping({ pingId: utils.randomId() });
+const request = new functions.Ping({ pingId: utils.getRandomId() });
 console.debug(await client.invoke(request));
 ```
 
@@ -56,7 +55,7 @@ const { Client, functions, utils } = require("@mtkruto/node"); // npm install @m
 const client = new Client();
 await client.connect();
 
-const request = new functions.Ping({ pingId: utils.randomId() });
+const request = new functions.Ping({ pingId: utils.getRandomId() });
 console.debug(await client.invoke(request));
 ```
 
