@@ -3,7 +3,7 @@
 MTKruto is a library for building Telegram clients in JavaScript (or TypeScript).
 
 - **Cross-runtime.** With MTKruto, you can write Telegram clients that run on Deno, browsers, or Node.js.
-- **Uses Web APIs.** MTKruto takes advantages of modern Web APIs wherever possible instead of third-party or runtime-specific solutions.
+- **Uses Web APIs.** MTKruto takes advantages of modern [Web APIs](https://developer.mozilla.org/en-US/docs/Web/API) wherever possible instead of third-party or runtime-specific solutions.
 - **Uncomplicatedly extensible.** Get started with a couple lines of code. Extend everything from the session store to the MTProto transport.
 
 > Note: MTKruto has not reached version 1.0.0 yet. We highly recommend not to use it in production.
