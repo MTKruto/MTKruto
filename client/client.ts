@@ -39,9 +39,10 @@ export class Client extends ClientAbstract {
     this.state.salt = salt;
     await this.session.load();
     if (this.session.dc != null) {
-      const { connection, transport } = this.transportProvider({ dc: this.session.dc, cdn: false });
+      const { connection, transport, dcId } = this.transportProvider({ dc: this.session.dc, cdn: false });
       this.connection = connection;
       this.transport = transport;
+      this.dcId = dcId;
     }
     await super.connect();
     // logger().debug("Client connected");
