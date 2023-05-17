@@ -4,7 +4,7 @@
 
 Cross-runtime JavaScript library for building Telegram clients
 
-[![@MTKrutoChat](https://img.shields.io/badge/@MTKrutoChat-black?logo=telegram&style=flat&labelColor=000&color=3b82f6)](https://core.telegram.org/bots/api) [![deno.land/x](https://shield.deno.dev/x/mtkruto)](https://deno.land/x/mtkruto) [![@mtkruto/node on npm](https://img.shields.io/npm/v/mtkruto?logo=npm&style=flat&labelColor=000&color=3b82f6&label=@mtkruto/node)](https://npm.im/@mtkruto/node)
+[![@MTKrutoChat](https://img.shields.io/badge/Discussion-@MTKrutoChat-blue?logo=telegram&style=flat&labelColor=000&color=3b82f6)](https://core.telegram.org/bots/api) [![deno.land/x](https://shield.deno.dev/x/mtkruto)](https://deno.land/x/mtkruto) [![@mtkruto/node on npm](https://img.shields.io/npm/v/mtkruto?logo=npm&style=flat&labelColor=000&color=3b82f6&label=@mtkruto/node)](https://npm.im/@mtkruto/node)
 [![@mtkruto/browser on npm](https://img.shields.io/npm/v/mtkruto?logo=npm&style=flat&labelColor=000&color=3b82f6&label=@mtkruto/browser)](https://npm.im/@mtkruto/browser)
 
 </div>
@@ -18,12 +18,12 @@ Cross-runtime JavaScript library for building Telegram clients
 
 > Note: MTKruto has not reached version 1.0.0 yet. We highly recommend not to use it in production.
 
-## Get Started in a Step
+## Get Started
 
 ### Browsers
 
 ```html
-<script>
+<script type="module">
     import { functions, utils } from "https://esm.sh/@mtkruto/browser";
 
     const client = new Client();
@@ -58,9 +58,6 @@ await client.connect();
 
 const request = new functions.Ping({ pingId: utils.randomId() });
 console.debug(await client.invoke(request));
-
-// It's actually two steps for Node.js
-// since you also have to run `npm install @mtkrutonode`.
 ```
 
 ## License
