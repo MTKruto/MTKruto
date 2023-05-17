@@ -1,6 +1,13 @@
-# MTKruto [![@MTKrutoChat](https://img.shields.io/badge/@MTKrutoChat-black?logo=telegram&style=flat&labelColor=000&color=3b82f6)](https://core.telegram.org/bots/api) [![deno.land/x](https://shield.deno.dev/x/mtkruto)](https://deno.land/x/mtkruto) [![@mtkruto/node on npm](https://img.shields.io/npm/v/mtkruto?logo=npm&style=flat&labelColor=000&color=3b82f6&label=@mtkruto/node)](https://npm.im/@mtkruto/node) [![@mtkruto/browser on npm](https://img.shields.io/npm/v/mtkruto?logo=npm&style=flat&labelColor=000&color=3b82f6&label=@mtkruto/browser)](https://npm.im/@mtkruto/browser)
+<div align="center">
 
-MTKruto is a library for building Telegram clients in JavaScript (or TypeScript).
+# MTKruto
+
+Cross-runtime JavaScript library for building Telegram clients
+
+[![@MTKrutoChat](https://img.shields.io/badge/@MTKrutoChat-black?logo=telegram&style=flat&labelColor=000&color=3b82f6)](https://core.telegram.org/bots/api) [![deno.land/x](https://shield.deno.dev/x/mtkruto)](https://deno.land/x/mtkruto) [![@mtkruto/node on npm](https://img.shields.io/npm/v/mtkruto?logo=npm&style=flat&labelColor=000&color=3b82f6&label=@mtkruto/node)](https://npm.im/@mtkruto/node)
+[![@mtkruto/browser on npm](https://img.shields.io/npm/v/mtkruto?logo=npm&style=flat&labelColor=000&color=3b82f6&label=@mtkruto/browser)](https://npm.im/@mtkruto/browser)
+
+</div>
 
 ### Key Features
 
