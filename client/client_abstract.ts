@@ -1,16 +1,16 @@
 import { Connection } from "../connection/connection.ts";
 import { Transport } from "../transport/transport.ts";
-import { defaultTransportProvider } from "../transport/transport_provider.ts";
+import { defaultDc, defaultTransportProvider } from "../transport/transport_provider.ts";
 import { initTgCrypto } from "../deps.ts";
 
 export abstract class ClientAbstract {
-  connection: Connection;
-  transport: Transport;
+  protected connection: Connection;
+  protected transport: Transport;
   dcId: number;
   protected connected = false;
 
   constructor(protected transportProvider = defaultTransportProvider()) {
-    const { connection, transport, dcId } = transportProvider(false);
+    const { connection, transport, dcId } = transportProvider({ dc: defaultDc, cdn: false });
     this.connection = connection;
     this.transport = transport;
     this.dcId = dcId;
