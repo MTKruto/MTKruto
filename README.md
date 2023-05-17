@@ -49,12 +49,12 @@ await client.connect();
 const request = new functions.Ping({ pingId: utils.randomId() });
 console.debug(await client.invoke(request));
 
-// It's actually two steps for Node.js.
-// You also have to run `npm install @mtkrutonode`
+// It's actually two steps for Node.js
+// since you also have to run `npm install @mtkrutonode`.
 ```
 
 ## License
 
 MTKruto is open-source under LGPL 3.0 or at your option any later version. You are bound by the terms and conditions of this license. Refer to the [LICENSE](./LICENSE) file for more.
 
-##### MTKruto owes the authors and contributors of [Piltover](https://github.com/DavideGalilei/piltover), [GramJS](https://github.com/gram-js/gramjs), [Grm](https://github.com/grmjs/grm), [mtcute](https://github.com/mtcute/mtcute), and other MTProto libraries and projects.
+###### MTKruto owes the authors and contributors of [Piltover](https://github.com/DavideGalilei/piltover), [GramJS](https://github.com/gram-js/gramjs), [Grm](https://github.com/grmjs/grm), [mtcute](https://github.com/mtcute/mtcute), and other MTProto libraries and projects.
