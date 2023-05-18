@@ -1,7 +1,7 @@
+import { initTgCrypto } from "../deps.ts";
 import { Connection } from "../connection/connection.ts";
 import { Transport } from "../transport/transport.ts";
 import { defaultDc, defaultTransportProvider } from "../transport/transport_provider.ts";
-import { initTgCrypto } from "../deps.ts";
 
 export abstract class ClientAbstract {
   protected connection: Connection;
