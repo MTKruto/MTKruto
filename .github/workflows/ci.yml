@@ -25,16 +25,6 @@ jobs:
 
       - run: deno fmt --check
 
-      - uses: actions/setup-node@v3
-        with:
-          node-version: 20.x
-
-      - uses: pnpm/action-setup@v2
-        with:
-          version: 8
-      
-      - run: pnpm dlx madge mod.ts
-
   check:
     runs-on: ubuntu-latest
     steps:
@@ -46,6 +36,16 @@ jobs:
 
       - run: deno check mod.ts
 
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 20.x
+
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 8
+
+      - run: pnpm dlx madge mod.ts
+
   test:
     runs-on: ubuntu-latest
     steps:
@@ -56,7 +56,7 @@ jobs:
           deno-version: vx.x.x
 
       - run: deno test
-  
+
   transform-browser:
     runs-on: ubuntu-latest
     steps:
@@ -75,8 +75,7 @@ jobs:
           version: 8
 
       - name: Transform
-        run:
-          deno run -A https://esm.sh/gh/MTKruto/npm@main/transform_browser.ts 000.000.000 ./mod.ts
+        run: deno run -A https://esm.sh/gh/MTKruto/npm@main/transform_browser.ts 000.000.000 ./mod.ts
 
   transform-node:
     runs-on: ubuntu-latest
@@ -96,5 +95,4 @@ jobs:
           version: 8
 
       - name: Transform
-        run:
-          deno run -A https://esm.sh/gh/MTKruto/npm@main/transform_node.ts 000.000.000 ./mod.ts
+        run: deno run -A https://esm.sh/gh/MTKruto/npm@main/transform_node.ts 000.000.000 ./mod.ts
