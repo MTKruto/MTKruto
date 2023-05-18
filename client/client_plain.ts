@@ -127,13 +127,11 @@ export class ClientPlain extends ClientAbstract {
 
     const authKey_ = modExp(gA, b, dhPrime);
     const authKey = bufferFromBigInt(authKey_, 256, false, false);
-    const authKeyId = (await sha1(authKey)).slice(-8);
 
     // logger().debug("Auth key created");
 
     return {
       authKey,
-      authKeyId: bigIntFromBuffer(authKeyId, true, false),
       salt: bigIntFromBuffer(salt, true, false),
     };
   }
