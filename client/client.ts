@@ -38,6 +38,7 @@ export class Client extends ClientAbstract {
       await plain.disconnect();
       this.state.salt = salt;
       this.session.authKey = authKey;
+      await this.session.save();
     }
     if (this.session.dc != null) {
       const { connection, transport, dcId } = this.transportProvider({ dc: this.session.dc, cdn: false });
