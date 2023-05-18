@@ -17,7 +17,7 @@ export class SessionLocalStorage extends Session implements Session {
   }
 
   save() {
-    const authKey = this.authKey == null ? undefined : Array.from(this.authKey).map((v) => v.toString(16)).map((v) => v.padStart(2, "0"));
+    const authKey = this.authKey == null ? undefined : Array.from(this.authKey).map((v) => v.toString(16)).map((v) => v.padStart(2, "0")).join("");
     localStorage.setItem(this.key, JSON.stringify({ dc: this.dc, authKey }));
   }
 }
