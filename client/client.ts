@@ -1,8 +1,7 @@
 import { gunzip } from "../deps.ts";
 import { MaybePromise } from "../types.ts";
 import { ackThreshold } from "../constants.ts";
-import { bigIntFromBuffer, getRandomBigInt } from "../utilities/0_bigint.ts";
-import { sha1 } from "../utilities/0_hash.ts";
+import { getRandomBigInt } from "../utilities/0_bigint.ts";
 import { decryptMessage, encryptMessage, getMessageId } from "../utilities/1_message.ts";
 import { TLObject } from "../tl/1_tl_object.ts";
 import * as types from "../tl/2_types.ts";
@@ -52,17 +51,10 @@ export class Client extends ClientAbstract {
     this.pingLoop();
   }
 
-  private async getAuthKeyAndId() {
+  private async receiveLoop() {
     if (!this.session.authKey) {
       throw new Error("Not connected");
     }
-    const authKey = this.session.authKey;
-    const authKeyId = bigIntFromBuffer((await sha1(this.session.authKey)).slice(-8), true, false);
-    return { authKey, authKeyId };
-  }
-
-  private async receiveLoop() {
-    const { authKey, authKeyId } = await this.getAuthKeyAndId();
 
     while (this.connected) {
       if (this.toAcknowledge.size >= ackThreshold) {
@@ -75,8 +67,7 @@ export class Client extends ClientAbstract {
       try {
         decrypted = await decryptMessage(
           buffer,
-          authKey,
-          authKeyId,
+          this.session.authKey,
           this.sessionId,
         );
       } catch (_err) {
@@ -143,7 +134,9 @@ export class Client extends ClientAbstract {
   async invoke<T extends (functions.Function<unknown> | types.Type) = functions.Function<unknown>>(function_: T): Promise<T extends functions.Function<unknown> ? T["__R"] : void>;
   async invoke<T extends (functions.Function<unknown> | types.Type) = functions.Function<unknown>>(function_: T, noWait: true): Promise<void>;
   async invoke<T extends (functions.Function<unknown> | types.Type) = functions.Function<unknown>>(function_: T, noWait?: boolean): Promise<T | void> {
-    const { authKey, authKeyId } = await this.getAuthKeyAndId();
+    if (!this.session.authKey) {
+      throw new Error("Not connected");
+    }
 
     let seqNo = this.state.seqNo * 2;
     if (!(function_ instanceof functions.Ping) && !(function_ instanceof types.MsgsAck)) {
@@ -154,8 +147,7 @@ export class Client extends ClientAbstract {
     await this.transport.send(
       await encryptMessage(
         message,
-        authKey,
-        authKeyId,
+        this.session.authKey,
         this.state.salt,
         this.sessionId,
       ),
