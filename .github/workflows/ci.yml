@@ -25,6 +25,16 @@ jobs:
 
       - run: deno fmt --check
 
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 20.x
+
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 8
+      
+      - run: pnpm dlx madge mod.ts
+
   check:
     runs-on: ubuntu-latest
     steps:
@@ -59,7 +69,6 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 20.x
-          registry-url: "https://registry.npmjs.org"
 
       - uses: pnpm/action-setup@v2
         with:
@@ -81,7 +90,6 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 20.x
-          registry-url: "https://registry.npmjs.org"
 
       - uses: pnpm/action-setup@v2
         with:
