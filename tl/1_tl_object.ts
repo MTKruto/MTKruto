@@ -91,7 +91,7 @@ function serializeSingleParam(
       writer.write(value.serialize());
       return;
     } else {
-      throw new Error("a");
+      throw new TypeError(`Expected ${type.name}`);
     }
   }
 
@@ -99,7 +99,7 @@ function serializeSingleParam(
     if ((value instanceof Uint8Array)) {
       writer.writeBytes(value);
     } else {
-      throw new Error("Expected Uint8Array");
+      throw new TypeError("Expected Uint8Array");
     }
   }
 
@@ -114,7 +114,7 @@ function serializeSingleParam(
           writer.writeInt64(value);
         }
       } else {
-        throw new Error("Expected bigint");
+        throw new TypeError("Expected bigint");
       }
       break;
     case "boolean":
@@ -125,14 +125,14 @@ function serializeSingleParam(
           writer.writeInt32(0xBC799737);
         }
       } else {
-        throw new Error("Expected boolean");
+        throw new TypeError("Expected boolean");
       }
       break;
     case "number":
       if (typeof value === "number") {
         writer.writeInt32(value);
       } else {
-        throw new Error("Expected number");
+        throw new TypeError("Expected number");
       }
       break;
     case "string":
@@ -141,14 +141,14 @@ function serializeSingleParam(
       } else if (value instanceof Uint8Array) {
         writer.writeBytes(value);
       } else {
-        throw new Error("Expected string or Uint8Array");
+        throw new TypeError("Expected string or Uint8Array");
       }
       break;
     case "true":
       if (value === true) {
         writer.writeInt32(0x997275B5);
       } else {
-        throw new Error("Expected true");
+        throw new TypeError("Expected true");
       }
   }
 }
@@ -196,7 +196,7 @@ export abstract class TLObject {
       if (type instanceof Array) {
         const itemsType = type[0];
         if (!Array.isArray(value)) {
-          throw new Error("Expected array");
+          throw new TypeError("Expected array");
         }
         writer.writeInt32(0x1CB5C415); // vector constructor
         writer.writeInt32(value.length);
