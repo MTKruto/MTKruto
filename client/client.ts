@@ -1,8 +1,7 @@
 import { gunzip } from "../deps.ts";
 import { MaybePromise } from "../types.ts";
 import { ackThreshold } from "../constants.ts";
-import { bigIntFromBuffer, getRandomBigInt } from "../utilities/0_bigint.ts";
-import { sha1 } from "../utilities/0_hash.ts";
+import { getRandomBigInt } from "../utilities/0_bigint.ts";
 import { decryptMessage, encryptMessage, getMessageId } from "../utilities/1_message.ts";
 import { TLObject } from "../tl/1_tl_object.ts";
 import * as types from "../tl/2_types.ts";
@@ -21,7 +20,6 @@ export type UpdatesHandler = null | ((client: Client, update: types.Updates) => 
 
 export class Client extends ClientAbstract {
   private sessionId = getRandomBigInt(8, true, false);
-  private auth?: { key: Uint8Array; id: bigint };
   private state = { salt: 0n, seqNo: 0 };
   private promises = new Map<bigint, { resolve: (obj: TLObject) => void; reject: (err: TLObject) => void }>();
   private toAcknowledge = new Set<bigint>();
@@ -33,21 +31,14 @@ export class Client extends ClientAbstract {
 
   async connect() {
     await this.session.load();
-    let key: Uint8Array;
-    let id: bigint;
-    if (this.session.authKey != null) {
-      key = this.session.authKey;
-      id = bigIntFromBuffer((await sha1(key)).slice(-8), true, false);
-    } else {
+    if (this.session.authKey == null) {
       const plain = new ClientPlain(this.transportProvider);
       await plain.connect();
-      const { authKey, authKeyId, salt } = await plain.createAuthKey();
+      const { authKey, salt } = await plain.createAuthKey();
       await plain.disconnect();
-      key = authKey;
-      id = authKeyId;
       this.state.salt = salt;
+      this.session.authKey = authKey;
     }
-    this.auth = { key, id };
     if (this.session.dc != null) {
       const { connection, transport, dcId } = this.transportProvider({ dc: this.session.dc, cdn: false });
       this.connection = connection;
@@ -61,7 +52,7 @@ export class Client extends ClientAbstract {
   }
 
   private async receiveLoop() {
-    if (!this.auth) {
+    if (!this.session.authKey) {
       throw new Error("Not connected");
     }
 
@@ -76,8 +67,7 @@ export class Client extends ClientAbstract {
       try {
         decrypted = await decryptMessage(
           buffer,
-          this.auth.key,
-          this.auth.id,
+          this.session.authKey,
           this.sessionId,
         );
       } catch (_err) {
@@ -144,9 +134,10 @@ export class Client extends ClientAbstract {
   async invoke<T extends (functions.Function<unknown> | types.Type) = functions.Function<unknown>>(function_: T): Promise<T extends functions.Function<unknown> ? T["__R"] : void>;
   async invoke<T extends (functions.Function<unknown> | types.Type) = functions.Function<unknown>>(function_: T, noWait: true): Promise<void>;
   async invoke<T extends (functions.Function<unknown> | types.Type) = functions.Function<unknown>>(function_: T, noWait?: boolean): Promise<T | void> {
-    if (!this.auth) {
+    if (!this.session.authKey) {
       throw new Error("Not connected");
     }
+
     let seqNo = this.state.seqNo * 2;
     if (!(function_ instanceof functions.Ping) && !(function_ instanceof types.MsgsAck)) {
       seqNo++;
@@ -156,8 +147,7 @@ export class Client extends ClientAbstract {
     await this.transport.send(
       await encryptMessage(
         message,
-        this.auth.key,
-        this.auth.id,
+        this.session.authKey,
         this.state.salt,
         this.sessionId,
       ),
