@@ -177,7 +177,7 @@ export class Client extends ClientAbstract {
           throw err;
         }
       }
-      
+
       let decrypted: Message | MessageContainer;
       try {
         decrypted = await decryptMessage(
