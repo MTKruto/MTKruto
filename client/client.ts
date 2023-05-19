@@ -45,12 +45,12 @@ export class Client extends ClientAbstract {
     public readonly apiHash = "",
     params?: {
       transportProvider?: TransportProvider;
-      appVersion: string;
-      deviceModel: string;
-      langCode: string;
-      langPack: string;
-      systemLangCode: string;
-      systemVersion: string;
+      appVersion?: string;
+      deviceModel?: string;
+      langCode?: string;
+      langPack?: string;
+      systemLangCode?: string;
+      systemVersion?: string;
     },
   ) {
     super(params?.transportProvider);
@@ -71,8 +71,12 @@ export class Client extends ClientAbstract {
     super.setDc(dc);
   }
 
+  private sessionLoaded = false;
   async connect() {
-    await this.session.load();
+    if (!this.sessionLoaded) {
+      await this.session.load();
+      this.sessionLoaded = true;
+    }
     if (this.session.authKey == null) {
       const plain = new ClientPlain(this.transportProvider);
       if (this.session.dc != null) {
@@ -138,7 +142,7 @@ export class Client extends ClientAbstract {
         const match = err.errorMessage.match(/MIGRATE_(\d)$/);
         if (match) {
           let newDc = match[1];
-          if (this.dcId) {
+          if (Math.abs(this.dcId) >= 10_000) {
             newDc += "-test";
           }
           await this.reconnect(newDc as DC);
@@ -163,7 +167,17 @@ export class Client extends ClientAbstract {
         this.toAcknowledge.clear();
       }
 
-      const buffer = await this.transport.receive();
+      let buffer: Uint8Array;
+      try {
+        buffer = await this.transport.receive();
+      } catch (err) {
+        if (!this.connected) {
+          break;
+        } else {
+          throw err;
+        }
+      }
+      
       let decrypted: Message | MessageContainer;
       try {
         decrypted = await decryptMessage(
