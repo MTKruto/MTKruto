@@ -1,4 +1,4 @@
-import { id, TLObject } from "./1_tl_object.ts";
+import { id, MaybeVectorTLObject } from "./1_tl_object.ts";
 import { TLReader } from "./3_tl_reader.ts";
 
 export class RPCResult {
@@ -8,7 +8,7 @@ export class RPCResult {
 
   constructor(
     public readonly messageId: bigint,
-    public readonly result: TLObject,
+    public readonly result: MaybeVectorTLObject,
   ) {
   }
 

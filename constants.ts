@@ -59,3 +59,5 @@ export const publicKeys = new Map<bigint, [bigint, bigint]>([
     ],
   ],
 ]);
+
+export const VECTOR_CONSTRUCTOR = 0x1CB5C415;

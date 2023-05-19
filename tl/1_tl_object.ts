@@ -213,6 +213,8 @@ export abstract class TLObject {
   }
 }
 
+export type MaybeVectorTLObject = TLObject | Array<MaybeVectorTLObject | TLObject>;
+
 export interface TLObjectConstructor<T = TLObject> {
   new (params: Record<string, Param>): T;
   [paramDesc]: ParamDesc;
