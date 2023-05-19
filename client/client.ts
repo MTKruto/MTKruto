@@ -3,7 +3,7 @@ import { MaybePromise } from "../types.ts";
 import { ackThreshold } from "../constants.ts";
 import { getRandomBigInt } from "../utilities/0_bigint.ts";
 import { decryptMessage, encryptMessage, getMessageId } from "../utilities/1_message.ts";
-import { TLObject } from "../tl/1_tl_object.ts";
+import { MaybeVectorTLObject } from "../tl/1_tl_object.ts";
 import * as types from "../tl/2_types.ts";
 import * as functions from "../tl/3_functions.ts";
 import { TLReader } from "../tl/3_tl_reader.ts";
@@ -21,7 +21,7 @@ export type UpdatesHandler = null | ((client: Client, update: types.Updates) => 
 export class Client extends ClientAbstract {
   private sessionId = getRandomBigInt(8, true, false);
   private state = { salt: 0n, seqNo: 0 };
-  private promises = new Map<bigint, { resolve: (obj: TLObject) => void; reject: (err: TLObject) => void }>();
+  private promises = new Map<bigint, { resolve: (obj: MaybeVectorTLObject) => void; reject: (err: MaybeVectorTLObject) => void }>();
   private toAcknowledge = new Set<bigint>();
   public updatesHandler: UpdatesHandler = null;
 
@@ -71,7 +71,9 @@ export class Client extends ClientAbstract {
           this.session.authKey,
           this.sessionId,
         );
+        console.log({ decrypted });
       } catch (_err) {
+        console.log("failed to decrypt msg", { _err });
         // logger().error(`Failed to decrypt message: ${err}`);
         continue;
       }
@@ -82,6 +84,10 @@ export class Client extends ClientAbstract {
         if (body instanceof types.GZIPPacked) {
           body = new TLReader(gunzip(body.packedData)).readObject();
         }
+        console.log("---");
+        console.log("message.body", message.body.constructor.name);
+        console.log("body", body.constructor.name);
+        console.log("---");
         // logger().debug(`Received ${body.constructor.name}`);
         if (body instanceof types.Updates) {
           this.updatesHandler?.(this, body);
@@ -90,6 +96,7 @@ export class Client extends ClientAbstract {
           if (result instanceof types.GZIPPacked) {
             result = new TLReader(gunzip(result.packedData)).readObject();
           }
+          // console.log(result.constructor.name)
           const promise = this.promises.get(message.body.messageId);
           if (promise) {
             if (result instanceof types.RPCError) {
@@ -139,6 +146,8 @@ export class Client extends ClientAbstract {
       throw new Error("Not connected");
     }
 
+    console.log("invoking", function_.constructor.name);
+
     let seqNo = this.state.seqNo * 2;
     if (!(function_ instanceof functions.Ping) && !(function_ instanceof types.MsgsAck)) {
       seqNo++;
@@ -159,7 +168,7 @@ export class Client extends ClientAbstract {
       return;
     }
 
-    const result = await new Promise<TLObject>((resolve, reject) => {
+    const result = await new Promise<MaybeVectorTLObject>((resolve, reject) => {
       this.promises.set(message.id, { resolve, reject });
     });
 
