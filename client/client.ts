@@ -71,9 +71,7 @@ export class Client extends ClientAbstract {
           this.session.authKey,
           this.sessionId,
         );
-        console.log({ decrypted });
       } catch (_err) {
-        console.log("failed to decrypt msg", { _err });
         // logger().error(`Failed to decrypt message: ${err}`);
         continue;
       }
@@ -84,10 +82,6 @@ export class Client extends ClientAbstract {
         if (body instanceof types.GZIPPacked) {
           body = new TLReader(gunzip(body.packedData)).readObject();
         }
-        console.log("---");
-        console.log("message.body", message.body.constructor.name);
-        console.log("body", body.constructor.name);
-        console.log("---");
         // logger().debug(`Received ${body.constructor.name}`);
         if (body instanceof types.Updates) {
           this.updatesHandler?.(this, body);
@@ -96,7 +90,6 @@ export class Client extends ClientAbstract {
           if (result instanceof types.GZIPPacked) {
             result = new TLReader(gunzip(result.packedData)).readObject();
           }
-          // console.log(result.constructor.name)
           const promise = this.promises.get(message.body.messageId);
           if (promise) {
             if (result instanceof types.RPCError) {
@@ -145,8 +138,6 @@ export class Client extends ClientAbstract {
     if (!this.session.authKey) {
       throw new Error("Not connected");
     }
-
-    console.log("invoking", function_.constructor.name);
 
     let seqNo = this.state.seqNo * 2;
     if (!(function_ instanceof functions.Ping) && !(function_ instanceof types.MsgsAck)) {
