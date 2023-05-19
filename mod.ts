@@ -19,4 +19,4 @@ export * from "./transport/transport.ts";
 export * from "./transport/transport_provider.ts";
 export * from "./connection/connection.ts";
 export * from "./connection/connection_web_socket.ts";
-export { DEFAULT_INITIAL_DC } from "./constants.ts";
+export { DEFAULT_APP_VERSION, DEFAULT_DEVICE_MODEL, DEFAULT_INITIAL_DC, DEFAULT_LANG_CODE, DEFAULT_LANG_PACK, DEFAULT_SYSTEM_LANG_CODE, DEFAULT_SYSTEM_VERSION, LAYER } from "./constants.ts";

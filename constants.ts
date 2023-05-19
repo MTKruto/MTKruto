@@ -65,3 +65,18 @@ export const publicKeys = new Map<bigint, [bigint, bigint]>([
 export const VECTOR_CONSTRUCTOR = 0x1CB5C415;
 
 export const DEFAULT_INITIAL_DC: DC = "2-test";
+
+export const LAYER = 158;
+
+// TODO
+export const DEFAULT_APP_VERSION = "MTKruto Unstable <v1.0.0";
+
+export const DEFAULT_DEVICE_MODEL = "Krutaya Device";
+
+export const DEFAULT_LANG_CODE = "en";
+
+export const DEFAULT_LANG_PACK = "";
+
+export const DEFAULT_SYSTEM_LANG_CODE = "en";
+
+export const DEFAULT_SYSTEM_VERSION = "1.0";
