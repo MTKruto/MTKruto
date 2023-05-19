@@ -19,3 +19,4 @@ export * from "./transport/transport.ts";
 export * from "./transport/transport_provider.ts";
 export * from "./connection/connection.ts";
 export * from "./connection/connection_web_socket.ts";
+export { DEFAULT_INITIAL_DC } from "./constants.ts";
