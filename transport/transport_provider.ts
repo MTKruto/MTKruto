@@ -10,7 +10,7 @@ export interface TransportProviderParams {
 
 export type TransportProvider = (params: TransportProviderParams) => { connection: Connection; transport: Transport; dcId: number };
 
-export const defaultDc: TransportProviderParams["dc"] = "2-test";
+export const defaultDc: TransportProviderParams["dc"] = "1";
 const dcToNameMap: Record<TransportProviderParams["dc"], string> = {
   "1": "pluto",
   "1-test": "pluto",
