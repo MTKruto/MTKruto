@@ -98,7 +98,7 @@ export class Client extends ClientAbstract {
     this.pingLoop();
   }
 
-  async authorize(params: string | AuthorizeUserParams) {
+  async authorize(params: string | types.AuthExportedAuthorization | AuthorizeUserParams) {
     if (!this.apiId) {
       throw new Error("apiId not set");
     }
@@ -132,7 +132,9 @@ export class Client extends ClientAbstract {
     }
 
     try {
-      if (typeof params == "object") {
+      if (params instanceof types.AuthExportedAuthorization) {
+        await this.invoke(new functions.AuthImportAuthorization({ id: params.id, bytes: params.bytes }));
+      } else if (typeof params == "object") {
         throw new Error("Not implemented");
       } else {
         await this.invoke(new functions.AuthImportBotAuthorization({ apiId: this.apiId, apiHash: this.apiHash, botAuthToken: params, flags: 0 }));
