@@ -30,7 +30,7 @@ export class ReqPQMulti extends Function<types.ResPQ> {
   }
 }
 
-export class ReqDHParams extends Function<types.TypeServerDHParams> {
+export class ReqDHParams extends Function<types.ServerDHParamsOK> {
   nonce: bigint;
   serverNonce: bigint;
   p: Uint8Array;
@@ -488,7 +488,7 @@ export class InvokeWithTakeout<T extends Function<unknown>> extends Function<T["
   }
 }
 
-export class AuthSendCode extends Function<types.AuthSentCode> {
+export class AuthSendCode extends Function<types.TypeAuthSentCode> {
   phoneNumber: string;
   apiId: number;
   apiHash: string;
@@ -525,7 +525,7 @@ export class AuthSendCode extends Function<types.AuthSentCode> {
   }
 }
 
-export class AuthSignUp extends Function<types.AuthAuthorization> {
+export class AuthSignUp extends Function<types.TypeAuthAuthorization> {
   phoneNumber: string;
   phoneCodeHash: string;
   firstName: string;
@@ -562,7 +562,7 @@ export class AuthSignUp extends Function<types.AuthAuthorization> {
   }
 }
 
-export class AuthSignIn extends Function<types.AuthAuthorization> {
+export class AuthSignIn extends Function<types.TypeAuthAuthorization> {
   phoneNumber: string;
   phoneCodeHash: string;
   phoneCode?: string;
@@ -662,7 +662,7 @@ export class AuthExportAuthorization extends Function<types.AuthExportedAuthoriz
   }
 }
 
-export class AuthImportAuthorization extends Function<types.AuthAuthorization> {
+export class AuthImportAuthorization extends Function<types.TypeAuthAuthorization> {
   id: bigint;
   bytes: Uint8Array;
 
@@ -728,7 +728,7 @@ export class AuthBindTempAuthKey extends Function<boolean> {
   }
 }
 
-export class AuthImportBotAuthorization extends Function<types.AuthAuthorization> {
+export class AuthImportBotAuthorization extends Function<types.TypeAuthAuthorization> {
   flags: number;
   apiId: number;
   apiHash: string;
@@ -765,7 +765,7 @@ export class AuthImportBotAuthorization extends Function<types.AuthAuthorization
   }
 }
 
-export class AuthCheckPassword extends Function<types.AuthAuthorization> {
+export class AuthCheckPassword extends Function<types.TypeAuthAuthorization> {
   password: types.TypeInputCheckPasswordSRP;
 
   protected get [id]() {
@@ -808,7 +808,7 @@ export class AuthRequestPasswordRecovery extends Function<types.AuthPasswordReco
   }
 }
 
-export class AuthRecoverPassword extends Function<types.AuthAuthorization> {
+export class AuthRecoverPassword extends Function<types.TypeAuthAuthorization> {
   code: string;
   newSettings?: types.TypeAccountPasswordInputSettings;
 
@@ -839,7 +839,7 @@ export class AuthRecoverPassword extends Function<types.AuthAuthorization> {
   }
 }
 
-export class AuthResendCode extends Function<types.AuthSentCode> {
+export class AuthResendCode extends Function<types.TypeAuthSentCode> {
   phoneNumber: string;
   phoneCodeHash: string;
 
@@ -922,7 +922,7 @@ export class AuthDropTempAuthKeys extends Function<boolean> {
   }
 }
 
-export class AuthExportLoginToken extends Function<types.AuthLoginToken> {
+export class AuthExportLoginToken extends Function<types.TypeAuthLoginToken> {
   apiId: number;
   apiHash: string;
   exceptIds: Array<bigint>;
@@ -955,7 +955,7 @@ export class AuthExportLoginToken extends Function<types.AuthLoginToken> {
   }
 }
 
-export class AuthImportLoginToken extends Function<types.AuthLoginToken> {
+export class AuthImportLoginToken extends Function<types.TypeAuthLoginToken> {
   token: Uint8Array;
 
   protected get [id]() {
@@ -1030,7 +1030,7 @@ export class AuthCheckRecoveryPassword extends Function<boolean> {
   }
 }
 
-export class AuthImportWebTokenAuthorization extends Function<types.AuthAuthorization> {
+export class AuthImportWebTokenAuthorization extends Function<types.TypeAuthAuthorization> {
   apiId: number;
   apiHash: string;
   webAuthToken: string;
@@ -1102,7 +1102,7 @@ export class AuthRequestFirebaseSms extends Function<boolean> {
   }
 }
 
-export class AuthResetLoginEmail extends Function<types.AuthSentCode> {
+export class AuthResetLoginEmail extends Function<types.TypeAuthSentCode> {
   phoneNumber: string;
   phoneCodeHash: string;
 
@@ -1283,7 +1283,7 @@ export class AccountResetNotifySettings extends Function<boolean> {
   }
 }
 
-export class AccountUpdateProfile extends Function<types.User> {
+export class AccountUpdateProfile extends Function<types.TypeUser> {
   firstName?: string;
   lastName?: string;
   about?: string;
@@ -1343,7 +1343,7 @@ export class AccountUpdateStatus extends Function<boolean> {
   }
 }
 
-export class AccountGetWallPapers extends Function<types.AccountWallPapers> {
+export class AccountGetWallPapers extends Function<types.TypeAccountWallPapers> {
   hash: bigint;
 
   protected get [id]() {
@@ -1426,7 +1426,7 @@ export class AccountCheckUsername extends Function<boolean> {
   }
 }
 
-export class AccountUpdateUsername extends Function<types.User> {
+export class AccountUpdateUsername extends Function<types.TypeUser> {
   username: string;
 
   protected get [id]() {
@@ -1579,7 +1579,7 @@ export class AccountSetAccountTTL extends Function<boolean> {
   }
 }
 
-export class AccountSendChangePhoneCode extends Function<types.AuthSentCode> {
+export class AccountSendChangePhoneCode extends Function<types.TypeAuthSentCode> {
   phoneNumber: string;
   settings: types.TypeCodeSettings;
 
@@ -1608,7 +1608,7 @@ export class AccountSendChangePhoneCode extends Function<types.AuthSentCode> {
   }
 }
 
-export class AccountChangePhone extends Function<types.User> {
+export class AccountChangePhone extends Function<types.TypeUser> {
   phoneNumber: string;
   phoneCodeHash: string;
   phoneCode: string;
@@ -1781,7 +1781,7 @@ export class AccountUpdatePasswordSettings extends Function<boolean> {
   }
 }
 
-export class AccountSendConfirmPhoneCode extends Function<types.AuthSentCode> {
+export class AccountSendConfirmPhoneCode extends Function<types.TypeAuthSentCode> {
   hash: string;
   settings: types.TypeCodeSettings;
 
@@ -2100,7 +2100,7 @@ export class AccountAcceptAuthorization extends Function<boolean> {
   }
 }
 
-export class AccountSendVerifyPhoneCode extends Function<types.AuthSentCode> {
+export class AccountSendVerifyPhoneCode extends Function<types.TypeAuthSentCode> {
   phoneNumber: string;
   settings: types.TypeCodeSettings;
 
@@ -2191,7 +2191,7 @@ export class AccountSendVerifyEmailCode extends Function<types.AccountSentEmailC
   }
 }
 
-export class AccountVerifyEmail extends Function<types.AccountEmailVerified> {
+export class AccountVerifyEmail extends Function<types.TypeAccountEmailVerified> {
   purpose: types.TypeEmailVerifyPurpose;
   verification: types.TypeEmailVerification;
 
@@ -2402,7 +2402,7 @@ export class AccountSetContactSignUpNotification extends Function<boolean> {
   }
 }
 
-export class AccountGetNotifyExceptions extends Function<types.Updates> {
+export class AccountGetNotifyExceptions extends Function<types.TypeUpdates> {
   compareSound?: true;
   peer?: types.TypeInputNotifyPeer;
 
@@ -2433,7 +2433,7 @@ export class AccountGetNotifyExceptions extends Function<types.Updates> {
   }
 }
 
-export class AccountGetWallPaper extends Function<types.WallPaper> {
+export class AccountGetWallPaper extends Function<types.TypeWallPaper> {
   wallpaper: types.TypeInputWallPaper;
 
   protected get [id]() {
@@ -2458,7 +2458,7 @@ export class AccountGetWallPaper extends Function<types.WallPaper> {
   }
 }
 
-export class AccountUploadWallPaper extends Function<types.WallPaper> {
+export class AccountUploadWallPaper extends Function<types.TypeWallPaper> {
   forChat?: true;
   file: types.TypeInputFile;
   mimeType: string;
@@ -2630,7 +2630,7 @@ export class AccountSaveAutoDownloadSettings extends Function<boolean> {
   }
 }
 
-export class AccountUploadTheme extends Function<types.Document> {
+export class AccountUploadTheme extends Function<types.TypeDocument> {
   file: types.TypeInputFile;
   thumb?: types.TypeInputFile;
   fileName: string;
@@ -2852,7 +2852,7 @@ export class AccountGetTheme extends Function<types.Theme> {
   }
 }
 
-export class AccountGetThemes extends Function<types.AccountThemes> {
+export class AccountGetThemes extends Function<types.TypeAccountThemes> {
   format: string;
   hash: bigint;
 
@@ -2926,7 +2926,7 @@ export class AccountGetContentSettings extends Function<types.AccountContentSett
   }
 }
 
-export class AccountGetMultiWallPapers extends Function<types.WallPaper[]> {
+export class AccountGetMultiWallPapers extends Function<types.TypeWallPaper[]> {
   wallpapers: Array<types.TypeInputWallPaper>;
 
   protected get [id]() {
@@ -3067,7 +3067,7 @@ export class AccountDeclinePasswordReset extends Function<boolean> {
   }
 }
 
-export class AccountGetChatThemes extends Function<types.AccountThemes> {
+export class AccountGetChatThemes extends Function<types.TypeAccountThemes> {
   hash: bigint;
 
   protected get [id]() {
@@ -3152,7 +3152,7 @@ export class AccountChangeAuthorizationSettings extends Function<boolean> {
   }
 }
 
-export class AccountGetSavedRingtones extends Function<types.AccountSavedRingtones> {
+export class AccountGetSavedRingtones extends Function<types.TypeAccountSavedRingtones> {
   hash: bigint;
 
   protected get [id]() {
@@ -3177,7 +3177,7 @@ export class AccountGetSavedRingtones extends Function<types.AccountSavedRington
   }
 }
 
-export class AccountSaveRingtone extends Function<types.AccountSavedRingtone> {
+export class AccountSaveRingtone extends Function<types.TypeAccountSavedRingtone> {
   id: types.TypeInputDocument;
   unsave: boolean;
 
@@ -3206,7 +3206,7 @@ export class AccountSaveRingtone extends Function<types.AccountSavedRingtone> {
   }
 }
 
-export class AccountUploadRingtone extends Function<types.Document> {
+export class AccountUploadRingtone extends Function<types.TypeDocument> {
   file: types.TypeInputFile;
   fileName: string;
   mimeType: string;
@@ -3264,7 +3264,7 @@ export class AccountUpdateEmojiStatus extends Function<boolean> {
   }
 }
 
-export class AccountGetDefaultEmojiStatuses extends Function<types.AccountEmojiStatuses> {
+export class AccountGetDefaultEmojiStatuses extends Function<types.TypeAccountEmojiStatuses> {
   hash: bigint;
 
   protected get [id]() {
@@ -3289,7 +3289,7 @@ export class AccountGetDefaultEmojiStatuses extends Function<types.AccountEmojiS
   }
 }
 
-export class AccountGetRecentEmojiStatuses extends Function<types.AccountEmojiStatuses> {
+export class AccountGetRecentEmojiStatuses extends Function<types.TypeAccountEmojiStatuses> {
   hash: bigint;
 
   protected get [id]() {
@@ -3386,7 +3386,7 @@ export class AccountToggleUsername extends Function<boolean> {
   }
 }
 
-export class AccountGetDefaultProfilePhotoEmojis extends Function<types.EmojiList> {
+export class AccountGetDefaultProfilePhotoEmojis extends Function<types.TypeEmojiList> {
   hash: bigint;
 
   protected get [id]() {
@@ -3411,7 +3411,7 @@ export class AccountGetDefaultProfilePhotoEmojis extends Function<types.EmojiLis
   }
 }
 
-export class AccountGetDefaultGroupPhotoEmojis extends Function<types.EmojiList> {
+export class AccountGetDefaultGroupPhotoEmojis extends Function<types.TypeEmojiList> {
   hash: bigint;
 
   protected get [id]() {
@@ -3515,7 +3515,7 @@ export class AccountDeleteAutoSaveExceptions extends Function<boolean> {
   }
 }
 
-export class UsersGetUsers extends Function<types.User[]> {
+export class UsersGetUsers extends Function<types.TypeUser[]> {
   id: Array<types.TypeInputUser>;
 
   protected get [id]() {
@@ -3637,7 +3637,7 @@ export class ContactsGetStatuses extends Function<types.ContactStatus[]> {
   }
 }
 
-export class ContactsGetContacts extends Function<types.ContactsContacts> {
+export class ContactsGetContacts extends Function<types.TypeContactsContacts> {
   hash: bigint;
 
   protected get [id]() {
@@ -3687,7 +3687,7 @@ export class ContactsImportContacts extends Function<types.ContactsImportedConta
   }
 }
 
-export class ContactsDeleteContacts extends Function<types.Updates> {
+export class ContactsDeleteContacts extends Function<types.TypeUpdates> {
   id: Array<types.TypeInputUser>;
 
   protected get [id]() {
@@ -3787,7 +3787,7 @@ export class ContactsUnblock extends Function<boolean> {
   }
 }
 
-export class ContactsGetBlocked extends Function<types.ContactsBlocked> {
+export class ContactsGetBlocked extends Function<types.TypeContactsBlocked> {
   offset: number;
   limit: number;
 
@@ -3870,7 +3870,7 @@ export class ContactsResolveUsername extends Function<types.ContactsResolvedPeer
   }
 }
 
-export class ContactsGetTopPeers extends Function<types.ContactsTopPeers> {
+export class ContactsGetTopPeers extends Function<types.TypeContactsTopPeers> {
   correspondents?: true;
   botsPm?: true;
   botsInline?: true;
@@ -3984,7 +3984,7 @@ export class ContactsResetSaved extends Function<boolean> {
   }
 }
 
-export class ContactsGetSaved extends Function<types.TypeSavedContact[]> {
+export class ContactsGetSaved extends Function<types.SavedPhoneContact[]> {
   protected get [id]() {
     return 0x82F1E39F;
   }
@@ -4027,7 +4027,7 @@ export class ContactsToggleTopPeers extends Function<boolean> {
   }
 }
 
-export class ContactsAddContact extends Function<types.Updates> {
+export class ContactsAddContact extends Function<types.TypeUpdates> {
   addPhonePrivacyException?: true;
   id: types.TypeInputUser;
   firstName: string;
@@ -4070,7 +4070,7 @@ export class ContactsAddContact extends Function<types.Updates> {
   }
 }
 
-export class ContactsAcceptContact extends Function<types.Updates> {
+export class ContactsAcceptContact extends Function<types.TypeUpdates> {
   id: types.TypeInputUser;
 
   protected get [id]() {
@@ -4095,7 +4095,7 @@ export class ContactsAcceptContact extends Function<types.Updates> {
   }
 }
 
-export class ContactsGetLocated extends Function<types.Updates> {
+export class ContactsGetLocated extends Function<types.TypeUpdates> {
   background?: true;
   geoPoint: types.TypeInputGeoPoint;
   selfExpires?: number;
@@ -4130,7 +4130,7 @@ export class ContactsGetLocated extends Function<types.Updates> {
   }
 }
 
-export class ContactsBlockFromReplies extends Function<types.Updates> {
+export class ContactsBlockFromReplies extends Function<types.TypeUpdates> {
   deleteMessage?: true;
   deleteHistory?: true;
   reportSpam?: true;
@@ -4212,7 +4212,7 @@ export class ContactsExportContactToken extends Function<types.ExportedContactTo
   }
 }
 
-export class ContactsImportContactToken extends Function<types.User> {
+export class ContactsImportContactToken extends Function<types.TypeUser> {
   token: string;
 
   protected get [id]() {
@@ -4237,7 +4237,7 @@ export class ContactsImportContactToken extends Function<types.User> {
   }
 }
 
-export class MessagesGetMessages extends Function<types.MessagesMessages> {
+export class MessagesGetMessages extends Function<types.TypeMessagesMessages> {
   id: Array<types.TypeInputMessage>;
 
   protected get [id]() {
@@ -4262,7 +4262,7 @@ export class MessagesGetMessages extends Function<types.MessagesMessages> {
   }
 }
 
-export class MessagesGetDialogs extends Function<types.MessagesDialogs> {
+export class MessagesGetDialogs extends Function<types.TypeMessagesDialogs> {
   excludePinned?: true;
   folderId?: number;
   offsetDate: number;
@@ -4313,7 +4313,7 @@ export class MessagesGetDialogs extends Function<types.MessagesDialogs> {
   }
 }
 
-export class MessagesGetHistory extends Function<types.MessagesMessages> {
+export class MessagesGetHistory extends Function<types.TypeMessagesMessages> {
   peer: types.TypeInputPeer;
   offsetId: number;
   offsetDate: number;
@@ -4366,7 +4366,7 @@ export class MessagesGetHistory extends Function<types.MessagesMessages> {
   }
 }
 
-export class MessagesSearch extends Function<types.MessagesMessages> {
+export class MessagesSearch extends Function<types.TypeMessagesMessages> {
   peer: types.TypeInputPeer;
   q: string;
   fromId?: types.TypeInputPeer;
@@ -4608,7 +4608,7 @@ export class MessagesSetTyping extends Function<boolean> {
   }
 }
 
-export class MessagesSendMessage extends Function<types.Updates> {
+export class MessagesSendMessage extends Function<types.TypeUpdates> {
   noWebpage?: true;
   silent?: true;
   background?: true;
@@ -4691,7 +4691,7 @@ export class MessagesSendMessage extends Function<types.Updates> {
   }
 }
 
-export class MessagesSendMedia extends Function<types.Updates> {
+export class MessagesSendMedia extends Function<types.TypeUpdates> {
   silent?: true;
   background?: true;
   clearDraft?: true;
@@ -4774,7 +4774,7 @@ export class MessagesSendMedia extends Function<types.Updates> {
   }
 }
 
-export class MessagesForwardMessages extends Function<types.Updates> {
+export class MessagesForwardMessages extends Function<types.TypeUpdates> {
   silent?: true;
   background?: true;
   withMyScore?: true;
@@ -4936,7 +4936,7 @@ export class MessagesReport extends Function<boolean> {
   }
 }
 
-export class MessagesGetChats extends Function<types.MessagesChats> {
+export class MessagesGetChats extends Function<types.TypeMessagesChats> {
   id: Array<bigint>;
 
   protected get [id]() {
@@ -4986,7 +4986,7 @@ export class MessagesGetFullChat extends Function<types.MessagesChatFull> {
   }
 }
 
-export class MessagesEditChatTitle extends Function<types.Updates> {
+export class MessagesEditChatTitle extends Function<types.TypeUpdates> {
   chatId: bigint;
   title: string;
 
@@ -5015,7 +5015,7 @@ export class MessagesEditChatTitle extends Function<types.Updates> {
   }
 }
 
-export class MessagesEditChatPhoto extends Function<types.Updates> {
+export class MessagesEditChatPhoto extends Function<types.TypeUpdates> {
   chatId: bigint;
   photo: types.TypeInputChatPhoto;
 
@@ -5044,7 +5044,7 @@ export class MessagesEditChatPhoto extends Function<types.Updates> {
   }
 }
 
-export class MessagesAddChatUser extends Function<types.Updates> {
+export class MessagesAddChatUser extends Function<types.TypeUpdates> {
   chatId: bigint;
   userId: types.TypeInputUser;
   fwdLimit: number;
@@ -5077,7 +5077,7 @@ export class MessagesAddChatUser extends Function<types.Updates> {
   }
 }
 
-export class MessagesDeleteChatUser extends Function<types.Updates> {
+export class MessagesDeleteChatUser extends Function<types.TypeUpdates> {
   revokeHistory?: true;
   chatId: bigint;
   userId: types.TypeInputUser;
@@ -5112,7 +5112,7 @@ export class MessagesDeleteChatUser extends Function<types.Updates> {
   }
 }
 
-export class MessagesCreateChat extends Function<types.Updates> {
+export class MessagesCreateChat extends Function<types.TypeUpdates> {
   users: Array<types.TypeInputUser>;
   title: string;
   ttlPeriod?: number;
@@ -5147,7 +5147,7 @@ export class MessagesCreateChat extends Function<types.Updates> {
   }
 }
 
-export class MessagesGetDhConfig extends Function<types.MessagesDhConfig> {
+export class MessagesGetDhConfig extends Function<types.TypeMessagesDhConfig> {
   version: number;
   randomLength: number;
 
@@ -5176,7 +5176,7 @@ export class MessagesGetDhConfig extends Function<types.MessagesDhConfig> {
   }
 }
 
-export class MessagesRequestEncryption extends Function<types.EncryptedChat> {
+export class MessagesRequestEncryption extends Function<types.TypeEncryptedChat> {
   userId: types.TypeInputUser;
   randomId: number;
   gA: Uint8Array;
@@ -5209,7 +5209,7 @@ export class MessagesRequestEncryption extends Function<types.EncryptedChat> {
   }
 }
 
-export class MessagesAcceptEncryption extends Function<types.EncryptedChat> {
+export class MessagesAcceptEncryption extends Function<types.TypeEncryptedChat> {
   peer: types.TypeInputEncryptedChat;
   gB: Uint8Array;
   keyFingerprint: bigint;
@@ -5331,7 +5331,7 @@ export class MessagesReadEncryptedHistory extends Function<boolean> {
   }
 }
 
-export class MessagesSendEncrypted extends Function<types.MessagesSentEncryptedMessage> {
+export class MessagesSendEncrypted extends Function<types.TypeMessagesSentEncryptedMessage> {
   silent?: true;
   peer: types.TypeInputEncryptedChat;
   randomId: bigint;
@@ -5370,7 +5370,7 @@ export class MessagesSendEncrypted extends Function<types.MessagesSentEncryptedM
   }
 }
 
-export class MessagesSendEncryptedFile extends Function<types.MessagesSentEncryptedMessage> {
+export class MessagesSendEncryptedFile extends Function<types.TypeMessagesSentEncryptedMessage> {
   silent?: true;
   peer: types.TypeInputEncryptedChat;
   randomId: bigint;
@@ -5413,7 +5413,7 @@ export class MessagesSendEncryptedFile extends Function<types.MessagesSentEncryp
   }
 }
 
-export class MessagesSendEncryptedService extends Function<types.MessagesSentEncryptedMessage> {
+export class MessagesSendEncryptedService extends Function<types.TypeMessagesSentEncryptedMessage> {
   peer: types.TypeInputEncryptedChat;
   randomId: bigint;
   data: Uint8Array;
@@ -5521,7 +5521,7 @@ export class MessagesReadMessageContents extends Function<types.MessagesAffected
   }
 }
 
-export class MessagesGetStickers extends Function<types.MessagesStickers> {
+export class MessagesGetStickers extends Function<types.TypeMessagesStickers> {
   emoticon: string;
   hash: bigint;
 
@@ -5550,7 +5550,7 @@ export class MessagesGetStickers extends Function<types.MessagesStickers> {
   }
 }
 
-export class MessagesGetAllStickers extends Function<types.MessagesAllStickers> {
+export class MessagesGetAllStickers extends Function<types.TypeMessagesAllStickers> {
   hash: bigint;
 
   protected get [id]() {
@@ -5653,7 +5653,7 @@ export class MessagesExportChatInvite extends Function<types.TypeExportedChatInv
   }
 }
 
-export class MessagesCheckChatInvite extends Function<types.ChatInvite> {
+export class MessagesCheckChatInvite extends Function<types.TypeChatInvite> {
   hash: string;
 
   protected get [id]() {
@@ -5678,7 +5678,7 @@ export class MessagesCheckChatInvite extends Function<types.ChatInvite> {
   }
 }
 
-export class MessagesImportChatInvite extends Function<types.Updates> {
+export class MessagesImportChatInvite extends Function<types.TypeUpdates> {
   hash: string;
 
   protected get [id]() {
@@ -5703,7 +5703,7 @@ export class MessagesImportChatInvite extends Function<types.Updates> {
   }
 }
 
-export class MessagesGetStickerSet extends Function<types.MessagesStickerSet> {
+export class MessagesGetStickerSet extends Function<types.TypeMessagesStickerSet> {
   stickerset: types.TypeInputStickerSet;
   hash: number;
 
@@ -5786,7 +5786,7 @@ export class MessagesUninstallStickerSet extends Function<boolean> {
   }
 }
 
-export class MessagesStartBot extends Function<types.Updates> {
+export class MessagesStartBot extends Function<types.TypeUpdates> {
   bot: types.TypeInputUser;
   peer: types.TypeInputPeer;
   randomId: bigint;
@@ -5889,7 +5889,7 @@ export class MessagesEditChatAdmin extends Function<boolean> {
   }
 }
 
-export class MessagesMigrateChat extends Function<types.Updates> {
+export class MessagesMigrateChat extends Function<types.TypeUpdates> {
   chatId: bigint;
 
   protected get [id]() {
@@ -5914,7 +5914,7 @@ export class MessagesMigrateChat extends Function<types.Updates> {
   }
 }
 
-export class MessagesSearchGlobal extends Function<types.MessagesMessages> {
+export class MessagesSearchGlobal extends Function<types.TypeMessagesMessages> {
   folderId?: number;
   q: string;
   filter: types.TypeMessagesFilter;
@@ -6008,7 +6008,7 @@ export class MessagesReorderStickerSets extends Function<boolean> {
   }
 }
 
-export class MessagesGetDocumentByHash extends Function<types.Document> {
+export class MessagesGetDocumentByHash extends Function<types.TypeDocument> {
   sha256: Uint8Array;
   size: bigint;
   mimeType: string;
@@ -6041,7 +6041,7 @@ export class MessagesGetDocumentByHash extends Function<types.Document> {
   }
 }
 
-export class MessagesGetSavedGifs extends Function<types.MessagesSavedGifs> {
+export class MessagesGetSavedGifs extends Function<types.TypeMessagesSavedGifs> {
   hash: bigint;
 
   protected get [id]() {
@@ -6193,7 +6193,7 @@ export class MessagesSetInlineBotResults extends Function<boolean> {
   }
 }
 
-export class MessagesSendInlineBotResult extends Function<types.Updates> {
+export class MessagesSendInlineBotResult extends Function<types.TypeUpdates> {
   silent?: true;
   background?: true;
   clearDraft?: true;
@@ -6293,7 +6293,7 @@ export class MessagesGetMessageEditData extends Function<types.MessagesMessageEd
   }
 }
 
-export class MessagesEditMessage extends Function<types.Updates> {
+export class MessagesEditMessage extends Function<types.TypeUpdates> {
   noWebpage?: true;
   peer: types.TypeInputPeer;
   id: number;
@@ -6553,7 +6553,7 @@ export class MessagesSaveDraft extends Function<boolean> {
   }
 }
 
-export class MessagesGetAllDrafts extends Function<types.Updates> {
+export class MessagesGetAllDrafts extends Function<types.TypeUpdates> {
   protected get [id]() {
     return 0x6A3F8D65;
   }
@@ -6571,7 +6571,7 @@ export class MessagesGetAllDrafts extends Function<types.Updates> {
   }
 }
 
-export class MessagesGetFeaturedStickers extends Function<types.MessagesFeaturedStickers> {
+export class MessagesGetFeaturedStickers extends Function<types.TypeMessagesFeaturedStickers> {
   hash: bigint;
 
   protected get [id]() {
@@ -6621,7 +6621,7 @@ export class MessagesReadFeaturedStickers extends Function<boolean> {
   }
 }
 
-export class MessagesGetRecentStickers extends Function<types.MessagesRecentStickers> {
+export class MessagesGetRecentStickers extends Function<types.TypeMessagesRecentStickers> {
   attached?: true;
   hash: bigint;
 
@@ -6753,7 +6753,7 @@ export class MessagesGetArchivedStickers extends Function<types.MessagesArchived
   }
 }
 
-export class MessagesGetMaskStickers extends Function<types.MessagesAllStickers> {
+export class MessagesGetMaskStickers extends Function<types.TypeMessagesAllStickers> {
   hash: bigint;
 
   protected get [id]() {
@@ -6778,7 +6778,7 @@ export class MessagesGetMaskStickers extends Function<types.MessagesAllStickers>
   }
 }
 
-export class MessagesGetAttachedStickers extends Function<types.StickerSetCovered[]> {
+export class MessagesGetAttachedStickers extends Function<types.TypeStickerSetCovered[]> {
   media: types.TypeInputStickeredMedia;
 
   protected get [id]() {
@@ -6803,7 +6803,7 @@ export class MessagesGetAttachedStickers extends Function<types.StickerSetCovere
   }
 }
 
-export class MessagesSetGameScore extends Function<types.Updates> {
+export class MessagesSetGameScore extends Function<types.TypeUpdates> {
   editMessage?: true;
   force?: true;
   peer: types.TypeInputPeer;
@@ -6955,7 +6955,7 @@ export class MessagesGetInlineGameHighScores extends Function<types.MessagesHigh
   }
 }
 
-export class MessagesGetCommonChats extends Function<types.MessagesChats> {
+export class MessagesGetCommonChats extends Function<types.TypeMessagesChats> {
   userId: types.TypeInputUser;
   maxId: bigint;
   limit: number;
@@ -6988,7 +6988,7 @@ export class MessagesGetCommonChats extends Function<types.MessagesChats> {
   }
 }
 
-export class MessagesGetAllChats extends Function<types.MessagesChats> {
+export class MessagesGetAllChats extends Function<types.TypeMessagesChats> {
   exceptIds: Array<bigint>;
 
   protected get [id]() {
@@ -7013,7 +7013,7 @@ export class MessagesGetAllChats extends Function<types.MessagesChats> {
   }
 }
 
-export class MessagesGetWebPage extends Function<types.WebPage> {
+export class MessagesGetWebPage extends Function<types.TypeWebPage> {
   url: string;
   hash: number;
 
@@ -7232,7 +7232,7 @@ export class MessagesUploadMedia extends Function<types.TypeMessageMedia> {
   }
 }
 
-export class MessagesSendScreenshotNotification extends Function<types.Updates> {
+export class MessagesSendScreenshotNotification extends Function<types.TypeUpdates> {
   peer: types.TypeInputPeer;
   replyToMsgId: number;
   randomId: bigint;
@@ -7265,7 +7265,7 @@ export class MessagesSendScreenshotNotification extends Function<types.Updates> 
   }
 }
 
-export class MessagesGetFavedStickers extends Function<types.MessagesFavedStickers> {
+export class MessagesGetFavedStickers extends Function<types.TypeMessagesFavedStickers> {
   hash: bigint;
 
   protected get [id]() {
@@ -7319,7 +7319,7 @@ export class MessagesFaveSticker extends Function<boolean> {
   }
 }
 
-export class MessagesGetUnreadMentions extends Function<types.MessagesMessages> {
+export class MessagesGetUnreadMentions extends Function<types.TypeMessagesMessages> {
   peer: types.TypeInputPeer;
   topMsgId?: number;
   offsetId: number;
@@ -7401,7 +7401,7 @@ export class MessagesReadMentions extends Function<types.MessagesAffectedHistory
   }
 }
 
-export class MessagesGetRecentLocations extends Function<types.MessagesMessages> {
+export class MessagesGetRecentLocations extends Function<types.TypeMessagesMessages> {
   peer: types.TypeInputPeer;
   limit: number;
   hash: bigint;
@@ -7434,7 +7434,7 @@ export class MessagesGetRecentLocations extends Function<types.MessagesMessages>
   }
 }
 
-export class MessagesSendMultiMedia extends Function<types.Updates> {
+export class MessagesSendMultiMedia extends Function<types.TypeUpdates> {
   silent?: true;
   background?: true;
   clearDraft?: true;
@@ -7501,7 +7501,7 @@ export class MessagesSendMultiMedia extends Function<types.Updates> {
   }
 }
 
-export class MessagesUploadEncryptedFile extends Function<types.EncryptedFile> {
+export class MessagesUploadEncryptedFile extends Function<types.TypeEncryptedFile> {
   peer: types.TypeInputEncryptedChat;
   file: types.TypeInputEncryptedFile;
 
@@ -7530,7 +7530,7 @@ export class MessagesUploadEncryptedFile extends Function<types.EncryptedFile> {
   }
 }
 
-export class MessagesSearchStickerSets extends Function<types.MessagesFoundStickerSets> {
+export class MessagesSearchStickerSets extends Function<types.TypeMessagesFoundStickerSets> {
   excludeFeatured?: true;
   q: string;
   hash: bigint;
@@ -7614,7 +7614,7 @@ export class MessagesMarkDialogUnread extends Function<boolean> {
   }
 }
 
-export class MessagesGetDialogUnreadMarks extends Function<types.DialogPeer[]> {
+export class MessagesGetDialogUnreadMarks extends Function<types.TypeDialogPeer[]> {
   protected get [id]() {
     return 0x22E24E22;
   }
@@ -7650,7 +7650,7 @@ export class MessagesClearAllDrafts extends Function<boolean> {
   }
 }
 
-export class MessagesUpdatePinnedMessage extends Function<types.Updates> {
+export class MessagesUpdatePinnedMessage extends Function<types.TypeUpdates> {
   silent?: true;
   unpin?: true;
   pmOneside?: true;
@@ -7693,7 +7693,7 @@ export class MessagesUpdatePinnedMessage extends Function<types.Updates> {
   }
 }
 
-export class MessagesSendVote extends Function<types.Updates> {
+export class MessagesSendVote extends Function<types.TypeUpdates> {
   peer: types.TypeInputPeer;
   msgId: number;
   options: Array<Uint8Array>;
@@ -7726,7 +7726,7 @@ export class MessagesSendVote extends Function<types.Updates> {
   }
 }
 
-export class MessagesGetPollResults extends Function<types.Updates> {
+export class MessagesGetPollResults extends Function<types.TypeUpdates> {
   peer: types.TypeInputPeer;
   msgId: number;
 
@@ -7809,7 +7809,7 @@ export class MessagesEditChatAbout extends Function<boolean> {
   }
 }
 
-export class MessagesEditChatDefaultBannedRights extends Function<types.Updates> {
+export class MessagesEditChatDefaultBannedRights extends Function<types.TypeUpdates> {
   peer: types.TypeInputPeer;
   bannedRights: types.TypeChatBannedRights;
 
@@ -8084,7 +8084,7 @@ export class MessagesHidePeerSettingsBar extends Function<boolean> {
   }
 }
 
-export class MessagesGetScheduledHistory extends Function<types.MessagesMessages> {
+export class MessagesGetScheduledHistory extends Function<types.TypeMessagesMessages> {
   peer: types.TypeInputPeer;
   hash: bigint;
 
@@ -8113,7 +8113,7 @@ export class MessagesGetScheduledHistory extends Function<types.MessagesMessages
   }
 }
 
-export class MessagesGetScheduledMessages extends Function<types.MessagesMessages> {
+export class MessagesGetScheduledMessages extends Function<types.TypeMessagesMessages> {
   peer: types.TypeInputPeer;
   id: Array<number>;
 
@@ -8142,7 +8142,7 @@ export class MessagesGetScheduledMessages extends Function<types.MessagesMessage
   }
 }
 
-export class MessagesSendScheduledMessages extends Function<types.Updates> {
+export class MessagesSendScheduledMessages extends Function<types.TypeUpdates> {
   peer: types.TypeInputPeer;
   id: Array<number>;
 
@@ -8171,7 +8171,7 @@ export class MessagesSendScheduledMessages extends Function<types.Updates> {
   }
 }
 
-export class MessagesDeleteScheduledMessages extends Function<types.Updates> {
+export class MessagesDeleteScheduledMessages extends Function<types.TypeUpdates> {
   peer: types.TypeInputPeer;
   id: Array<number>;
 
@@ -8282,7 +8282,7 @@ export class MessagesToggleStickerSets extends Function<boolean> {
   }
 }
 
-export class MessagesGetDialogFilters extends Function<types.DialogFilter[]> {
+export class MessagesGetDialogFilters extends Function<types.TypeDialogFilter[]> {
   protected get [id]() {
     return 0xF19ED96D;
   }
@@ -8374,7 +8374,7 @@ export class MessagesUpdateDialogFiltersOrder extends Function<boolean> {
   }
 }
 
-export class MessagesGetOldFeaturedStickers extends Function<types.MessagesFeaturedStickers> {
+export class MessagesGetOldFeaturedStickers extends Function<types.TypeMessagesFeaturedStickers> {
   offset: number;
   limit: number;
   hash: bigint;
@@ -8407,7 +8407,7 @@ export class MessagesGetOldFeaturedStickers extends Function<types.MessagesFeatu
   }
 }
 
-export class MessagesGetReplies extends Function<types.MessagesMessages> {
+export class MessagesGetReplies extends Function<types.TypeMessagesMessages> {
   peer: types.TypeInputPeer;
   msgId: number;
   offsetId: number;
@@ -8780,7 +8780,7 @@ export class MessagesGetExportedChatInvites extends Function<types.MessagesExpor
   }
 }
 
-export class MessagesGetExportedChatInvite extends Function<types.MessagesExportedChatInvite> {
+export class MessagesGetExportedChatInvite extends Function<types.TypeMessagesExportedChatInvite> {
   peer: types.TypeInputPeer;
   link: string;
 
@@ -8809,7 +8809,7 @@ export class MessagesGetExportedChatInvite extends Function<types.MessagesExport
   }
 }
 
-export class MessagesEditExportedChatInvite extends Function<types.MessagesExportedChatInvite> {
+export class MessagesEditExportedChatInvite extends Function<types.TypeMessagesExportedChatInvite> {
   revoked?: true;
   peer: types.TypeInputPeer;
   link: string;
@@ -8994,7 +8994,7 @@ export class MessagesGetChatInviteImporters extends Function<types.MessagesChatI
   }
 }
 
-export class MessagesSetHistoryTTL extends Function<types.Updates> {
+export class MessagesSetHistoryTTL extends Function<types.TypeUpdates> {
   peer: types.TypeInputPeer;
   period: number;
 
@@ -9048,7 +9048,7 @@ export class MessagesCheckHistoryImportPeer extends Function<types.MessagesCheck
   }
 }
 
-export class MessagesSetChatTheme extends Function<types.Updates> {
+export class MessagesSetChatTheme extends Function<types.TypeUpdates> {
   peer: types.TypeInputPeer;
   emoticon: string;
 
@@ -9180,7 +9180,7 @@ export class MessagesGetSearchResultsPositions extends Function<types.MessagesSe
   }
 }
 
-export class MessagesHideChatJoinRequest extends Function<types.Updates> {
+export class MessagesHideChatJoinRequest extends Function<types.TypeUpdates> {
   approved?: true;
   peer: types.TypeInputPeer;
   userId: types.TypeInputUser;
@@ -9215,7 +9215,7 @@ export class MessagesHideChatJoinRequest extends Function<types.Updates> {
   }
 }
 
-export class MessagesHideAllChatJoinRequests extends Function<types.Updates> {
+export class MessagesHideAllChatJoinRequests extends Function<types.TypeUpdates> {
   approved?: true;
   peer: types.TypeInputPeer;
   link?: string;
@@ -9250,7 +9250,7 @@ export class MessagesHideAllChatJoinRequests extends Function<types.Updates> {
   }
 }
 
-export class MessagesToggleNoForwards extends Function<types.Updates> {
+export class MessagesToggleNoForwards extends Function<types.TypeUpdates> {
   peer: types.TypeInputPeer;
   enabled: boolean;
 
@@ -9308,7 +9308,7 @@ export class MessagesSaveDefaultSendAs extends Function<boolean> {
   }
 }
 
-export class MessagesSendReaction extends Function<types.Updates> {
+export class MessagesSendReaction extends Function<types.TypeUpdates> {
   big?: true;
   addToRecent?: true;
   peer: types.TypeInputPeer;
@@ -9351,7 +9351,7 @@ export class MessagesSendReaction extends Function<types.Updates> {
   }
 }
 
-export class MessagesGetMessagesReactions extends Function<types.Updates> {
+export class MessagesGetMessagesReactions extends Function<types.TypeUpdates> {
   peer: types.TypeInputPeer;
   id: Array<number>;
 
@@ -9423,7 +9423,7 @@ export class MessagesGetMessageReactionsList extends Function<types.MessagesMess
   }
 }
 
-export class MessagesSetChatAvailableReactions extends Function<types.Updates> {
+export class MessagesSetChatAvailableReactions extends Function<types.TypeUpdates> {
   peer: types.TypeInputPeer;
   availableReactions: types.TypeChatReactions;
 
@@ -9452,7 +9452,7 @@ export class MessagesSetChatAvailableReactions extends Function<types.Updates> {
   }
 }
 
-export class MessagesGetAvailableReactions extends Function<types.MessagesAvailableReactions> {
+export class MessagesGetAvailableReactions extends Function<types.TypeMessagesAvailableReactions> {
   hash: number;
 
   protected get [id]() {
@@ -9502,7 +9502,7 @@ export class MessagesSetDefaultReaction extends Function<boolean> {
   }
 }
 
-export class MessagesTranslateText extends Function<types.TypeMessagesTranslatedText> {
+export class MessagesTranslateText extends Function<types.MessagesTranslateResult> {
   peer?: types.TypeInputPeer;
   id?: Array<number>;
   text?: Array<types.TypeTextWithEntities>;
@@ -9541,7 +9541,7 @@ export class MessagesTranslateText extends Function<types.TypeMessagesTranslated
   }
 }
 
-export class MessagesGetUnreadReactions extends Function<types.MessagesMessages> {
+export class MessagesGetUnreadReactions extends Function<types.TypeMessagesMessages> {
   peer: types.TypeInputPeer;
   topMsgId?: number;
   offsetId: number;
@@ -9623,7 +9623,7 @@ export class MessagesReadReactions extends Function<types.MessagesAffectedHistor
   }
 }
 
-export class MessagesSearchSentMedia extends Function<types.MessagesMessages> {
+export class MessagesSearchSentMedia extends Function<types.TypeMessagesMessages> {
   q: string;
   filter: types.TypeMessagesFilter;
   limit: number;
@@ -9656,7 +9656,7 @@ export class MessagesSearchSentMedia extends Function<types.MessagesMessages> {
   }
 }
 
-export class MessagesGetAttachMenuBots extends Function<types.AttachMenuBots> {
+export class MessagesGetAttachMenuBots extends Function<types.TypeAttachMenuBots> {
   hash: bigint;
 
   protected get [id]() {
@@ -9741,7 +9741,7 @@ export class MessagesToggleBotInAttachMenu extends Function<boolean> {
   }
 }
 
-export class MessagesRequestWebView extends Function<types.TypeWebViewResult> {
+export class MessagesRequestWebView extends Function<types.WebViewResultURL> {
   fromBotMenu?: true;
   silent?: true;
   peer: types.TypeInputPeer;
@@ -9859,7 +9859,7 @@ export class MessagesProlongWebView extends Function<boolean> {
   }
 }
 
-export class MessagesRequestSimpleWebView extends Function<types.TypeSimpleWebViewResult> {
+export class MessagesRequestSimpleWebView extends Function<types.SimpleWebViewResultURL> {
   fromSwitchWebview?: true;
   bot: types.TypeInputUser;
   url: string;
@@ -9931,7 +9931,7 @@ export class MessagesSendWebViewResultMessage extends Function<types.WebViewMess
   }
 }
 
-export class MessagesSendWebViewData extends Function<types.Updates> {
+export class MessagesSendWebViewData extends Function<types.TypeUpdates> {
   bot: types.TypeInputUser;
   randomId: bigint;
   buttonText: string;
@@ -10034,7 +10034,7 @@ export class MessagesRateTranscribedAudio extends Function<boolean> {
   }
 }
 
-export class MessagesGetCustomEmojiDocuments extends Function<types.Document[]> {
+export class MessagesGetCustomEmojiDocuments extends Function<types.TypeDocument[]> {
   documentId: Array<bigint>;
 
   protected get [id]() {
@@ -10059,7 +10059,7 @@ export class MessagesGetCustomEmojiDocuments extends Function<types.Document[]> 
   }
 }
 
-export class MessagesGetEmojiStickers extends Function<types.MessagesAllStickers> {
+export class MessagesGetEmojiStickers extends Function<types.TypeMessagesAllStickers> {
   hash: bigint;
 
   protected get [id]() {
@@ -10084,7 +10084,7 @@ export class MessagesGetEmojiStickers extends Function<types.MessagesAllStickers
   }
 }
 
-export class MessagesGetFeaturedEmojiStickers extends Function<types.MessagesFeaturedStickers> {
+export class MessagesGetFeaturedEmojiStickers extends Function<types.TypeMessagesFeaturedStickers> {
   hash: bigint;
 
   protected get [id]() {
@@ -10142,7 +10142,7 @@ export class MessagesReportReaction extends Function<boolean> {
   }
 }
 
-export class MessagesGetTopReactions extends Function<types.MessagesReactions> {
+export class MessagesGetTopReactions extends Function<types.TypeMessagesReactions> {
   limit: number;
   hash: bigint;
 
@@ -10171,7 +10171,7 @@ export class MessagesGetTopReactions extends Function<types.MessagesReactions> {
   }
 }
 
-export class MessagesGetRecentReactions extends Function<types.MessagesReactions> {
+export class MessagesGetRecentReactions extends Function<types.TypeMessagesReactions> {
   limit: number;
   hash: bigint;
 
@@ -10218,7 +10218,7 @@ export class MessagesClearRecentReactions extends Function<boolean> {
   }
 }
 
-export class MessagesGetExtendedMedia extends Function<types.Updates> {
+export class MessagesGetExtendedMedia extends Function<types.TypeUpdates> {
   peer: types.TypeInputPeer;
   id: Array<number>;
 
@@ -10290,7 +10290,7 @@ export class MessagesGetDefaultHistoryTTL extends Function<types.DefaultHistoryT
   }
 }
 
-export class MessagesSendBotRequestedPeer extends Function<types.Updates> {
+export class MessagesSendBotRequestedPeer extends Function<types.TypeUpdates> {
   peer: types.TypeInputPeer;
   msgId: number;
   buttonId: number;
@@ -10327,7 +10327,7 @@ export class MessagesSendBotRequestedPeer extends Function<types.Updates> {
   }
 }
 
-export class MessagesGetEmojiGroups extends Function<types.MessagesEmojiGroups> {
+export class MessagesGetEmojiGroups extends Function<types.TypeMessagesEmojiGroups> {
   hash: number;
 
   protected get [id]() {
@@ -10352,7 +10352,7 @@ export class MessagesGetEmojiGroups extends Function<types.MessagesEmojiGroups> 
   }
 }
 
-export class MessagesGetEmojiStatusGroups extends Function<types.MessagesEmojiGroups> {
+export class MessagesGetEmojiStatusGroups extends Function<types.TypeMessagesEmojiGroups> {
   hash: number;
 
   protected get [id]() {
@@ -10377,7 +10377,7 @@ export class MessagesGetEmojiStatusGroups extends Function<types.MessagesEmojiGr
   }
 }
 
-export class MessagesGetEmojiProfilePhotoGroups extends Function<types.MessagesEmojiGroups> {
+export class MessagesGetEmojiProfilePhotoGroups extends Function<types.TypeMessagesEmojiGroups> {
   hash: number;
 
   protected get [id]() {
@@ -10402,7 +10402,7 @@ export class MessagesGetEmojiProfilePhotoGroups extends Function<types.MessagesE
   }
 }
 
-export class MessagesSearchCustomEmoji extends Function<types.EmojiList> {
+export class MessagesSearchCustomEmoji extends Function<types.TypeEmojiList> {
   emoticon: string;
   hash: bigint;
 
@@ -10491,7 +10491,7 @@ export class MessagesGetBotApp extends Function<types.MessagesBotApp> {
   }
 }
 
-export class MessagesRequestAppWebView extends Function<types.TypeAppWebViewResult> {
+export class MessagesRequestAppWebView extends Function<types.AppWebViewResultURL> {
   writeAllowed?: true;
   peer: types.TypeInputPeer;
   app: types.TypeInputBotApp;
@@ -10538,7 +10538,7 @@ export class MessagesRequestAppWebView extends Function<types.TypeAppWebViewResu
   }
 }
 
-export class MessagesSetChatWallPaper extends Function<types.Updates> {
+export class MessagesSetChatWallPaper extends Function<types.TypeUpdates> {
   peer: types.TypeInputPeer;
   wallpaper?: types.TypeInputWallPaper;
   settings?: types.TypeWallPaperSettings;
@@ -10595,7 +10595,7 @@ export class UpdatesGetState extends Function<types.UpdatesState> {
   }
 }
 
-export class UpdatesGetDifference extends Function<types.UpdatesDifference> {
+export class UpdatesGetDifference extends Function<types.TypeUpdatesDifference> {
   pts: number;
   ptsTotalLimit?: number;
   date: number;
@@ -10634,7 +10634,7 @@ export class UpdatesGetDifference extends Function<types.UpdatesDifference> {
   }
 }
 
-export class UpdatesGetChannelDifference extends Function<types.UpdatesChannelDifference> {
+export class UpdatesGetChannelDifference extends Function<types.TypeUpdatesChannelDifference> {
   force?: true;
   channel: types.TypeInputChannel;
   filter: types.TypeChannelMessagesFilter;
@@ -10784,7 +10784,7 @@ export class PhotosDeletePhotos extends Function<bigint[]> {
   }
 }
 
-export class PhotosGetUserPhotos extends Function<types.PhotosPhotos> {
+export class PhotosGetUserPhotos extends Function<types.TypePhotosPhotos> {
   userId: types.TypeInputUser;
   offset: number;
   maxId: bigint;
@@ -10905,7 +10905,7 @@ export class UploadSaveFilePart extends Function<boolean> {
   }
 }
 
-export class UploadGetFile extends Function<types.UploadFile> {
+export class UploadGetFile extends Function<types.TypeUploadFile> {
   precise?: true;
   cdnSupported?: true;
   location: types.TypeInputFileLocation;
@@ -11018,7 +11018,7 @@ export class UploadGetWebFile extends Function<types.UploadWebFile> {
   }
 }
 
-export class UploadGetCdnFile extends Function<types.UploadCdnFile> {
+export class UploadGetCdnFile extends Function<types.TypeUploadCdnFile> {
   fileToken: Uint8Array;
   offset: bigint;
   limit: number;
@@ -11174,7 +11174,7 @@ export class HelpGetNearestDc extends Function<types.NearestDc> {
   }
 }
 
-export class HelpGetAppUpdate extends Function<types.HelpAppUpdate> {
+export class HelpGetAppUpdate extends Function<types.TypeHelpAppUpdate> {
   source: string;
 
   protected get [id]() {
@@ -11235,7 +11235,7 @@ export class HelpGetSupport extends Function<types.HelpSupport> {
   }
 }
 
-export class HelpGetAppChangelog extends Function<types.Updates> {
+export class HelpGetAppChangelog extends Function<types.TypeUpdates> {
   prevAppVersion: string;
 
   protected get [id]() {
@@ -11332,7 +11332,7 @@ export class HelpGetRecentMeURLs extends Function<types.HelpRecentMeURLs> {
   }
 }
 
-export class HelpGetTermsOfServiceUpdate extends Function<types.HelpTermsOfServiceUpdate> {
+export class HelpGetTermsOfServiceUpdate extends Function<types.TypeHelpTermsOfServiceUpdate> {
   protected get [id]() {
     return 0x2CA51FD1;
   }
@@ -11375,7 +11375,7 @@ export class HelpAcceptTermsOfService extends Function<boolean> {
   }
 }
 
-export class HelpGetDeepLinkInfo extends Function<types.HelpDeepLinkInfo> {
+export class HelpGetDeepLinkInfo extends Function<types.TypeHelpDeepLinkInfo> {
   path: string;
 
   protected get [id]() {
@@ -11400,7 +11400,7 @@ export class HelpGetDeepLinkInfo extends Function<types.HelpDeepLinkInfo> {
   }
 }
 
-export class HelpGetAppConfig extends Function<types.HelpAppConfig> {
+export class HelpGetAppConfig extends Function<types.TypeHelpAppConfig> {
   hash: number;
 
   protected get [id]() {
@@ -11450,7 +11450,7 @@ export class HelpSaveAppLog extends Function<boolean> {
   }
 }
 
-export class HelpGetPassportConfig extends Function<types.HelpPassportConfig> {
+export class HelpGetPassportConfig extends Function<types.TypeHelpPassportConfig> {
   hash: number;
 
   protected get [id]() {
@@ -11493,7 +11493,7 @@ export class HelpGetSupportName extends Function<types.HelpSupportName> {
   }
 }
 
-export class HelpGetUserInfo extends Function<types.HelpUserInfo> {
+export class HelpGetUserInfo extends Function<types.TypeHelpUserInfo> {
   userId: types.TypeInputUser;
 
   protected get [id]() {
@@ -11518,7 +11518,7 @@ export class HelpGetUserInfo extends Function<types.HelpUserInfo> {
   }
 }
 
-export class HelpEditUserInfo extends Function<types.HelpUserInfo> {
+export class HelpEditUserInfo extends Function<types.TypeHelpUserInfo> {
   userId: types.TypeInputUser;
   message: string;
   entities: Array<types.TypeMessageEntity>;
@@ -11551,7 +11551,7 @@ export class HelpEditUserInfo extends Function<types.HelpUserInfo> {
   }
 }
 
-export class HelpGetPromoData extends Function<types.HelpPromoData> {
+export class HelpGetPromoData extends Function<types.TypeHelpPromoData> {
   protected get [id]() {
     return 0xC0977421;
   }
@@ -11623,7 +11623,7 @@ export class HelpDismissSuggestion extends Function<boolean> {
   }
 }
 
-export class HelpGetCountriesList extends Function<types.HelpCountriesList> {
+export class HelpGetCountriesList extends Function<types.TypeHelpCountriesList> {
   langCode: string;
   hash: number;
 
@@ -11761,7 +11761,7 @@ export class ChannelsReportSpam extends Function<boolean> {
   }
 }
 
-export class ChannelsGetMessages extends Function<types.MessagesMessages> {
+export class ChannelsGetMessages extends Function<types.TypeMessagesMessages> {
   channel: types.TypeInputChannel;
   id: Array<types.TypeInputMessage>;
 
@@ -11790,7 +11790,7 @@ export class ChannelsGetMessages extends Function<types.MessagesMessages> {
   }
 }
 
-export class ChannelsGetParticipants extends Function<types.ChannelsChannelParticipants> {
+export class ChannelsGetParticipants extends Function<types.TypeChannelsChannelParticipants> {
   channel: types.TypeInputChannel;
   filter: types.TypeChannelParticipantsFilter;
   offset: number;
@@ -11860,7 +11860,7 @@ export class ChannelsGetParticipant extends Function<types.ChannelsChannelPartic
   }
 }
 
-export class ChannelsGetChannels extends Function<types.MessagesChats> {
+export class ChannelsGetChannels extends Function<types.TypeMessagesChats> {
   id: Array<types.TypeInputChannel>;
 
   protected get [id]() {
@@ -11910,7 +11910,7 @@ export class ChannelsGetFullChannel extends Function<types.MessagesChatFull> {
   }
 }
 
-export class ChannelsCreateChannel extends Function<types.Updates> {
+export class ChannelsCreateChannel extends Function<types.TypeUpdates> {
   broadcast?: true;
   megagroup?: true;
   forImport?: true;
@@ -11969,7 +11969,7 @@ export class ChannelsCreateChannel extends Function<types.Updates> {
   }
 }
 
-export class ChannelsEditAdmin extends Function<types.Updates> {
+export class ChannelsEditAdmin extends Function<types.TypeUpdates> {
   channel: types.TypeInputChannel;
   userId: types.TypeInputUser;
   adminRights: types.TypeChatAdminRights;
@@ -12006,7 +12006,7 @@ export class ChannelsEditAdmin extends Function<types.Updates> {
   }
 }
 
-export class ChannelsEditTitle extends Function<types.Updates> {
+export class ChannelsEditTitle extends Function<types.TypeUpdates> {
   channel: types.TypeInputChannel;
   title: string;
 
@@ -12035,7 +12035,7 @@ export class ChannelsEditTitle extends Function<types.Updates> {
   }
 }
 
-export class ChannelsEditPhoto extends Function<types.Updates> {
+export class ChannelsEditPhoto extends Function<types.TypeUpdates> {
   channel: types.TypeInputChannel;
   photo: types.TypeInputChatPhoto;
 
@@ -12122,7 +12122,7 @@ export class ChannelsUpdateUsername extends Function<boolean> {
   }
 }
 
-export class ChannelsJoinChannel extends Function<types.Updates> {
+export class ChannelsJoinChannel extends Function<types.TypeUpdates> {
   channel: types.TypeInputChannel;
 
   protected get [id]() {
@@ -12147,7 +12147,7 @@ export class ChannelsJoinChannel extends Function<types.Updates> {
   }
 }
 
-export class ChannelsLeaveChannel extends Function<types.Updates> {
+export class ChannelsLeaveChannel extends Function<types.TypeUpdates> {
   channel: types.TypeInputChannel;
 
   protected get [id]() {
@@ -12172,7 +12172,7 @@ export class ChannelsLeaveChannel extends Function<types.Updates> {
   }
 }
 
-export class ChannelsInviteToChannel extends Function<types.Updates> {
+export class ChannelsInviteToChannel extends Function<types.TypeUpdates> {
   channel: types.TypeInputChannel;
   users: Array<types.TypeInputUser>;
 
@@ -12201,7 +12201,7 @@ export class ChannelsInviteToChannel extends Function<types.Updates> {
   }
 }
 
-export class ChannelsDeleteChannel extends Function<types.Updates> {
+export class ChannelsDeleteChannel extends Function<types.TypeUpdates> {
   channel: types.TypeInputChannel;
 
   protected get [id]() {
@@ -12265,7 +12265,7 @@ export class ChannelsExportMessageLink extends Function<types.ExportedMessageLin
   }
 }
 
-export class ChannelsToggleSignatures extends Function<types.Updates> {
+export class ChannelsToggleSignatures extends Function<types.TypeUpdates> {
   channel: types.TypeInputChannel;
   enabled: boolean;
 
@@ -12294,7 +12294,7 @@ export class ChannelsToggleSignatures extends Function<types.Updates> {
   }
 }
 
-export class ChannelsGetAdminedPublicChannels extends Function<types.MessagesChats> {
+export class ChannelsGetAdminedPublicChannels extends Function<types.TypeMessagesChats> {
   byLocation?: true;
   checkLimit?: true;
 
@@ -12325,7 +12325,7 @@ export class ChannelsGetAdminedPublicChannels extends Function<types.MessagesCha
   }
 }
 
-export class ChannelsEditBanned extends Function<types.Updates> {
+export class ChannelsEditBanned extends Function<types.TypeUpdates> {
   channel: types.TypeInputChannel;
   participant: types.TypeInputPeer;
   bannedRights: types.TypeChatBannedRights;
@@ -12467,7 +12467,7 @@ export class ChannelsReadMessageContents extends Function<boolean> {
   }
 }
 
-export class ChannelsDeleteHistory extends Function<types.Updates> {
+export class ChannelsDeleteHistory extends Function<types.TypeUpdates> {
   forEveryone?: true;
   channel: types.TypeInputChannel;
   maxId: number;
@@ -12502,7 +12502,7 @@ export class ChannelsDeleteHistory extends Function<types.Updates> {
   }
 }
 
-export class ChannelsTogglePreHistoryHidden extends Function<types.Updates> {
+export class ChannelsTogglePreHistoryHidden extends Function<types.TypeUpdates> {
   channel: types.TypeInputChannel;
   enabled: boolean;
 
@@ -12531,7 +12531,7 @@ export class ChannelsTogglePreHistoryHidden extends Function<types.Updates> {
   }
 }
 
-export class ChannelsGetLeftChannels extends Function<types.MessagesChats> {
+export class ChannelsGetLeftChannels extends Function<types.TypeMessagesChats> {
   offset: number;
 
   protected get [id]() {
@@ -12556,7 +12556,7 @@ export class ChannelsGetLeftChannels extends Function<types.MessagesChats> {
   }
 }
 
-export class ChannelsGetGroupsForDiscussion extends Function<types.MessagesChats> {
+export class ChannelsGetGroupsForDiscussion extends Function<types.TypeMessagesChats> {
   protected get [id]() {
     return 0xF5DAD378;
   }
@@ -12603,7 +12603,7 @@ export class ChannelsSetDiscussionGroup extends Function<boolean> {
   }
 }
 
-export class ChannelsEditCreator extends Function<types.Updates> {
+export class ChannelsEditCreator extends Function<types.TypeUpdates> {
   channel: types.TypeInputChannel;
   userId: types.TypeInputUser;
   password: types.TypeInputCheckPasswordSRP;
@@ -12669,7 +12669,7 @@ export class ChannelsEditLocation extends Function<boolean> {
   }
 }
 
-export class ChannelsToggleSlowMode extends Function<types.Updates> {
+export class ChannelsToggleSlowMode extends Function<types.TypeUpdates> {
   channel: types.TypeInputChannel;
   seconds: number;
 
@@ -12716,7 +12716,7 @@ export class ChannelsGetInactiveChannels extends Function<types.MessagesInactive
   }
 }
 
-export class ChannelsConvertToGigagroup extends Function<types.Updates> {
+export class ChannelsConvertToGigagroup extends Function<types.TypeUpdates> {
   channel: types.TypeInputChannel;
 
   protected get [id]() {
@@ -12770,7 +12770,7 @@ export class ChannelsViewSponsoredMessage extends Function<boolean> {
   }
 }
 
-export class ChannelsGetSponsoredMessages extends Function<types.MessagesSponsoredMessages> {
+export class ChannelsGetSponsoredMessages extends Function<types.TypeMessagesSponsoredMessages> {
   channel: types.TypeInputChannel;
 
   protected get [id]() {
@@ -12849,7 +12849,7 @@ export class ChannelsDeleteParticipantHistory extends Function<types.MessagesAff
   }
 }
 
-export class ChannelsToggleJoinToSend extends Function<types.Updates> {
+export class ChannelsToggleJoinToSend extends Function<types.TypeUpdates> {
   channel: types.TypeInputChannel;
   enabled: boolean;
 
@@ -12878,7 +12878,7 @@ export class ChannelsToggleJoinToSend extends Function<types.Updates> {
   }
 }
 
-export class ChannelsToggleJoinRequest extends Function<types.Updates> {
+export class ChannelsToggleJoinRequest extends Function<types.TypeUpdates> {
   channel: types.TypeInputChannel;
   enabled: boolean;
 
@@ -12994,7 +12994,7 @@ export class ChannelsDeactivateAllUsernames extends Function<boolean> {
   }
 }
 
-export class ChannelsToggleForum extends Function<types.Updates> {
+export class ChannelsToggleForum extends Function<types.TypeUpdates> {
   channel: types.TypeInputChannel;
   enabled: boolean;
 
@@ -13023,7 +13023,7 @@ export class ChannelsToggleForum extends Function<types.Updates> {
   }
 }
 
-export class ChannelsCreateForumTopic extends Function<types.Updates> {
+export class ChannelsCreateForumTopic extends Function<types.TypeUpdates> {
   channel: types.TypeInputChannel;
   title: string;
   iconColor?: number;
@@ -13146,7 +13146,7 @@ export class ChannelsGetForumTopicsByID extends Function<types.MessagesForumTopi
   }
 }
 
-export class ChannelsEditForumTopic extends Function<types.Updates> {
+export class ChannelsEditForumTopic extends Function<types.TypeUpdates> {
   channel: types.TypeInputChannel;
   topicId: number;
   title?: string;
@@ -13193,7 +13193,7 @@ export class ChannelsEditForumTopic extends Function<types.Updates> {
   }
 }
 
-export class ChannelsUpdatePinnedForumTopic extends Function<types.Updates> {
+export class ChannelsUpdatePinnedForumTopic extends Function<types.TypeUpdates> {
   channel: types.TypeInputChannel;
   topicId: number;
   pinned: boolean;
@@ -13255,7 +13255,7 @@ export class ChannelsDeleteTopicHistory extends Function<types.MessagesAffectedH
   }
 }
 
-export class ChannelsReorderPinnedForumTopics extends Function<types.Updates> {
+export class ChannelsReorderPinnedForumTopics extends Function<types.TypeUpdates> {
   force?: true;
   channel: types.TypeInputChannel;
   order: Array<number>;
@@ -13290,7 +13290,7 @@ export class ChannelsReorderPinnedForumTopics extends Function<types.Updates> {
   }
 }
 
-export class ChannelsToggleAntiSpam extends Function<types.Updates> {
+export class ChannelsToggleAntiSpam extends Function<types.TypeUpdates> {
   channel: types.TypeInputChannel;
   enabled: boolean;
 
@@ -13348,7 +13348,7 @@ export class ChannelsReportAntiSpamFalsePositive extends Function<boolean> {
   }
 }
 
-export class ChannelsToggleParticipantsHidden extends Function<types.Updates> {
+export class ChannelsToggleParticipantsHidden extends Function<types.TypeUpdates> {
   channel: types.TypeInputChannel;
   enabled: boolean;
 
@@ -13555,7 +13555,7 @@ export class BotsSetBotMenuButton extends Function<boolean> {
   }
 }
 
-export class BotsGetBotMenuButton extends Function<types.BotMenuButton> {
+export class BotsGetBotMenuButton extends Function<types.TypeBotMenuButton> {
   userId: types.TypeInputUser;
 
   protected get [id]() {
@@ -13861,7 +13861,7 @@ export class PaymentsValidateRequestedInfo extends Function<types.PaymentsValida
   }
 }
 
-export class PaymentsSendPaymentForm extends Function<types.PaymentsPaymentResult> {
+export class PaymentsSendPaymentForm extends Function<types.TypePaymentsPaymentResult> {
   formId: bigint;
   invoice: types.TypeInputInvoice;
   requestedInfoId?: string;
@@ -14007,7 +14007,7 @@ export class PaymentsExportInvoice extends Function<types.PaymentsExportedInvoic
   }
 }
 
-export class PaymentsAssignAppStoreTransaction extends Function<types.Updates> {
+export class PaymentsAssignAppStoreTransaction extends Function<types.TypeUpdates> {
   receipt: Uint8Array;
   purpose: types.TypeInputStorePaymentPurpose;
 
@@ -14036,7 +14036,7 @@ export class PaymentsAssignAppStoreTransaction extends Function<types.Updates> {
   }
 }
 
-export class PaymentsAssignPlayMarketTransaction extends Function<types.Updates> {
+export class PaymentsAssignPlayMarketTransaction extends Function<types.TypeUpdates> {
   receipt: types.TypeDataJSON;
   purpose: types.TypeInputStorePaymentPurpose;
 
@@ -14090,7 +14090,7 @@ export class PaymentsCanPurchasePremium extends Function<boolean> {
   }
 }
 
-export class StickersCreateStickerSet extends Function<types.MessagesStickerSet> {
+export class StickersCreateStickerSet extends Function<types.TypeMessagesStickerSet> {
   masks?: true;
   animated?: true;
   videos?: true;
@@ -14157,7 +14157,7 @@ export class StickersCreateStickerSet extends Function<types.MessagesStickerSet>
   }
 }
 
-export class StickersRemoveStickerFromSet extends Function<types.MessagesStickerSet> {
+export class StickersRemoveStickerFromSet extends Function<types.TypeMessagesStickerSet> {
   sticker: types.TypeInputDocument;
 
   protected get [id]() {
@@ -14182,7 +14182,7 @@ export class StickersRemoveStickerFromSet extends Function<types.MessagesSticker
   }
 }
 
-export class StickersChangeStickerPosition extends Function<types.MessagesStickerSet> {
+export class StickersChangeStickerPosition extends Function<types.TypeMessagesStickerSet> {
   sticker: types.TypeInputDocument;
   position: number;
 
@@ -14211,7 +14211,7 @@ export class StickersChangeStickerPosition extends Function<types.MessagesSticke
   }
 }
 
-export class StickersAddStickerToSet extends Function<types.MessagesStickerSet> {
+export class StickersAddStickerToSet extends Function<types.TypeMessagesStickerSet> {
   stickerset: types.TypeInputStickerSet;
   sticker: types.TypeInputStickerSetItem;
 
@@ -14240,7 +14240,7 @@ export class StickersAddStickerToSet extends Function<types.MessagesStickerSet> 
   }
 }
 
-export class StickersSetStickerSetThumb extends Function<types.MessagesStickerSet> {
+export class StickersSetStickerSetThumb extends Function<types.TypeMessagesStickerSet> {
   stickerset: types.TypeInputStickerSet;
   thumb?: types.TypeInputDocument;
   thumbDocumentId?: bigint;
@@ -14325,7 +14325,7 @@ export class StickersSuggestShortName extends Function<types.StickersSuggestedSh
   }
 }
 
-export class StickersChangeSticker extends Function<types.MessagesStickerSet> {
+export class StickersChangeSticker extends Function<types.TypeMessagesStickerSet> {
   sticker: types.TypeInputDocument;
   emoji?: string;
   maskCoords?: types.TypeMaskCoords;
@@ -14364,7 +14364,7 @@ export class StickersChangeSticker extends Function<types.MessagesStickerSet> {
   }
 }
 
-export class StickersRenameStickerSet extends Function<types.MessagesStickerSet> {
+export class StickersRenameStickerSet extends Function<types.TypeMessagesStickerSet> {
   stickerset: types.TypeInputStickerSet;
   title: string;
 
@@ -14574,7 +14574,7 @@ export class PhoneReceivedCall extends Function<boolean> {
   }
 }
 
-export class PhoneDiscardCall extends Function<types.Updates> {
+export class PhoneDiscardCall extends Function<types.TypeUpdates> {
   video?: true;
   peer: types.TypeInputPhoneCall;
   duration: number;
@@ -14617,7 +14617,7 @@ export class PhoneDiscardCall extends Function<types.Updates> {
   }
 }
 
-export class PhoneSetCallRating extends Function<types.Updates> {
+export class PhoneSetCallRating extends Function<types.TypeUpdates> {
   userInitiative?: true;
   peer: types.TypeInputPhoneCall;
   rating: number;
@@ -14714,7 +14714,7 @@ export class PhoneSendSignalingData extends Function<boolean> {
   }
 }
 
-export class PhoneCreateGroupCall extends Function<types.Updates> {
+export class PhoneCreateGroupCall extends Function<types.TypeUpdates> {
   rtmpStream?: true;
   peer: types.TypeInputPeer;
   randomId: number;
@@ -14757,7 +14757,7 @@ export class PhoneCreateGroupCall extends Function<types.Updates> {
   }
 }
 
-export class PhoneJoinGroupCall extends Function<types.Updates> {
+export class PhoneJoinGroupCall extends Function<types.TypeUpdates> {
   muted?: true;
   videoStopped?: true;
   call: types.TypeInputGroupCall;
@@ -14804,7 +14804,7 @@ export class PhoneJoinGroupCall extends Function<types.Updates> {
   }
 }
 
-export class PhoneLeaveGroupCall extends Function<types.Updates> {
+export class PhoneLeaveGroupCall extends Function<types.TypeUpdates> {
   call: types.TypeInputGroupCall;
   source: number;
 
@@ -14833,7 +14833,7 @@ export class PhoneLeaveGroupCall extends Function<types.Updates> {
   }
 }
 
-export class PhoneInviteToGroupCall extends Function<types.Updates> {
+export class PhoneInviteToGroupCall extends Function<types.TypeUpdates> {
   call: types.TypeInputGroupCall;
   users: Array<types.TypeInputUser>;
 
@@ -14862,7 +14862,7 @@ export class PhoneInviteToGroupCall extends Function<types.Updates> {
   }
 }
 
-export class PhoneDiscardGroupCall extends Function<types.Updates> {
+export class PhoneDiscardGroupCall extends Function<types.TypeUpdates> {
   call: types.TypeInputGroupCall;
 
   protected get [id]() {
@@ -14887,7 +14887,7 @@ export class PhoneDiscardGroupCall extends Function<types.Updates> {
   }
 }
 
-export class PhoneToggleGroupCallSettings extends Function<types.Updates> {
+export class PhoneToggleGroupCallSettings extends Function<types.TypeUpdates> {
   resetInviteHash?: true;
   call: types.TypeInputGroupCall;
   joinMuted?: boolean;
@@ -15021,7 +15021,7 @@ export class PhoneCheckGroupCall extends Function<number[]> {
   }
 }
 
-export class PhoneToggleGroupCallRecord extends Function<types.Updates> {
+export class PhoneToggleGroupCallRecord extends Function<types.TypeUpdates> {
   start?: true;
   video?: true;
   call: types.TypeInputGroupCall;
@@ -15064,7 +15064,7 @@ export class PhoneToggleGroupCallRecord extends Function<types.Updates> {
   }
 }
 
-export class PhoneEditGroupCallParticipant extends Function<types.Updates> {
+export class PhoneEditGroupCallParticipant extends Function<types.TypeUpdates> {
   call: types.TypeInputGroupCall;
   participant: types.TypeInputPeer;
   muted?: boolean;
@@ -15119,7 +15119,7 @@ export class PhoneEditGroupCallParticipant extends Function<types.Updates> {
   }
 }
 
-export class PhoneEditGroupCallTitle extends Function<types.Updates> {
+export class PhoneEditGroupCallTitle extends Function<types.TypeUpdates> {
   call: types.TypeInputGroupCall;
   title: string;
 
@@ -15204,7 +15204,7 @@ export class PhoneExportGroupCallInvite extends Function<types.PhoneExportedGrou
   }
 }
 
-export class PhoneToggleGroupCallStartSubscription extends Function<types.Updates> {
+export class PhoneToggleGroupCallStartSubscription extends Function<types.TypeUpdates> {
   call: types.TypeInputGroupCall;
   subscribed: boolean;
 
@@ -15233,7 +15233,7 @@ export class PhoneToggleGroupCallStartSubscription extends Function<types.Update
   }
 }
 
-export class PhoneStartScheduledGroupCall extends Function<types.Updates> {
+export class PhoneStartScheduledGroupCall extends Function<types.TypeUpdates> {
   call: types.TypeInputGroupCall;
 
   protected get [id]() {
@@ -15287,7 +15287,7 @@ export class PhoneSaveDefaultGroupCallJoinAs extends Function<boolean> {
   }
 }
 
-export class PhoneJoinGroupCallPresentation extends Function<types.Updates> {
+export class PhoneJoinGroupCallPresentation extends Function<types.TypeUpdates> {
   call: types.TypeInputGroupCall;
   params: types.TypeDataJSON;
 
@@ -15316,7 +15316,7 @@ export class PhoneJoinGroupCallPresentation extends Function<types.Updates> {
   }
 }
 
-export class PhoneLeaveGroupCallPresentation extends Function<types.Updates> {
+export class PhoneLeaveGroupCallPresentation extends Function<types.TypeUpdates> {
   call: types.TypeInputGroupCall;
 
   protected get [id]() {
@@ -15453,7 +15453,7 @@ export class LangpackGetLangPack extends Function<types.LangPackDifference> {
   }
 }
 
-export class LangpackGetStrings extends Function<types.LangPackString[]> {
+export class LangpackGetStrings extends Function<types.TypeLangPackString[]> {
   langPack: string;
   langCode: string;
   keys: Array<string>;
@@ -15573,7 +15573,7 @@ export class LangpackGetLanguage extends Function<types.LangPackLanguage> {
   }
 }
 
-export class FoldersEditPeerFolders extends Function<types.Updates> {
+export class FoldersEditPeerFolders extends Function<types.TypeUpdates> {
   folderPeers: Array<types.TypeInputFolderPeer>;
 
   protected get [id]() {
@@ -15629,7 +15629,7 @@ export class StatsGetBroadcastStats extends Function<types.StatsBroadcastStats> 
   }
 }
 
-export class StatsLoadAsyncGraph extends Function<types.StatsGraph> {
+export class StatsLoadAsyncGraph extends Function<types.TypeStatsGraph> {
   token: string;
   x?: bigint;
 
@@ -15691,7 +15691,7 @@ export class StatsGetMegagroupStats extends Function<types.StatsMegagroupStats> 
   }
 }
 
-export class StatsGetMessagePublicForwards extends Function<types.MessagesMessages> {
+export class StatsGetMessagePublicForwards extends Function<types.TypeMessagesMessages> {
   channel: types.TypeInputChannel;
   msgId: number;
   offsetRate: number;
@@ -15897,7 +15897,7 @@ export class ChatlistsGetExportedInvites extends Function<types.ChatlistsExporte
   }
 }
 
-export class ChatlistsCheckChatlistInvite extends Function<types.ChatlistsChatlistInvite> {
+export class ChatlistsCheckChatlistInvite extends Function<types.TypeChatlistsChatlistInvite> {
   slug: string;
 
   protected get [id]() {
@@ -15922,7 +15922,7 @@ export class ChatlistsCheckChatlistInvite extends Function<types.ChatlistsChatli
   }
 }
 
-export class ChatlistsJoinChatlistInvite extends Function<types.Updates> {
+export class ChatlistsJoinChatlistInvite extends Function<types.TypeUpdates> {
   slug: string;
   peers: Array<types.TypeInputPeer>;
 
@@ -15976,7 +15976,7 @@ export class ChatlistsGetChatlistUpdates extends Function<types.ChatlistsChatlis
   }
 }
 
-export class ChatlistsJoinChatlistUpdates extends Function<types.Updates> {
+export class ChatlistsJoinChatlistUpdates extends Function<types.TypeUpdates> {
   chatlist: types.TypeInputChatlist;
   peers: Array<types.TypeInputPeer>;
 
@@ -16055,7 +16055,7 @@ export class ChatlistsGetLeaveChatlistSuggestions extends Function<types.TypePee
   }
 }
 
-export class ChatlistsLeaveChatlist extends Function<types.Updates> {
+export class ChatlistsLeaveChatlist extends Function<types.TypeUpdates> {
   chatlist: types.TypeInputChatlist;
   peers: Array<types.TypeInputPeer>;
 
