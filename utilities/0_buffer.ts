@@ -1,5 +1,10 @@
 export function concat(...buffers: [Uint8Array, Uint8Array, ...Uint8Array[]]) {
-  return new Uint8Array(buffers.map((v) => Array.from(v)).flat());
+  const bytes = new Array<number>()
+  for (const buffer of buffers) {
+    bytes.push(...buffer)
+  }
+  const buffer = new Uint8Array(bytes);
+  return buffer;
 }
 
 const bufferFromHexString = (hexString: string) => Uint8Array.from(hexString.match(/.{1,2}/g)!.map((byte) => parseInt(byte, 16)));
