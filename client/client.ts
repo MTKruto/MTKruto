@@ -63,19 +63,23 @@ export class Client extends ClientAbstract {
     this.systemVersion = params?.systemVersion ?? DEFAULT_SYSTEM_VERSION;
   }
 
+  private shouldLoadSession = true;
+
   setDc(dc: DC) {
     if (this.session.dc != dc) {
       this.session.dc = dc;
       this.session.authKey = null;
+      if (this.shouldLoadSession) {
+        this.shouldLoadSession = false;
+      }
     }
     super.setDc(dc);
   }
 
-  private sessionLoaded = false;
   async connect() {
-    if (!this.sessionLoaded) {
+    if (this.shouldLoadSession) {
       await this.session.load();
-      this.sessionLoaded = true;
+      this.shouldLoadSession = false;
     }
     if (this.session.authKey == null) {
       const plain = new ClientPlain(this.transportProvider);
