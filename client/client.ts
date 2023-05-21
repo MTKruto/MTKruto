@@ -189,6 +189,7 @@ export class Client extends ClientAbstract {
         decrypted = await decryptMessage(
           buffer,
           this.session.authKey,
+          (await this.session.authKeyId)!,
           this.sessionId,
         );
       } catch (_err) {
@@ -269,6 +270,7 @@ export class Client extends ClientAbstract {
       await encryptMessage(
         message,
         this.session.authKey,
+        (await this.session.authKeyId)!,
         this.state.salt,
         this.sessionId,
       ),
