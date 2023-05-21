@@ -6,13 +6,8 @@ import { TLReader } from "../tl/3_tl_reader.ts";
 import { RPCResult } from "../tl/4_rpc_result.ts";
 import { Message } from "../tl/5_message.ts";
 import { MessageContainer } from "../tl/6_message_container.ts";
-import { bigIntFromBuffer } from "./0_bigint.ts";
 import { bufferFromBigInt, concat } from "./0_buffer.ts";
-import { sha1, sha256 } from "./0_hash.ts";
-
-async function getAuthKeyId(authKey: Uint8Array) {
-  return bigIntFromBuffer((await sha1(authKey)).slice(-8), true, false);
-}
+import { sha256 } from "./0_hash.ts";
 
 let lastMsgId = 0n;
 export function getMessageId() {
@@ -47,9 +42,8 @@ export function unpackUnencryptedMessage(buffer: Uint8Array) {
   return { messageId, message };
 }
 
-export async function encryptMessage(message: Message, authKey: Uint8Array, salt: bigint, sessionId: bigint) {
+export async function encryptMessage(message: Message, authKey: Uint8Array, authKeyId: bigint, salt: bigint, sessionId: bigint) {
   const encoded = (message.body as TLObject).serialize();
-  const authKeyId = await getAuthKeyId(authKey);
 
   const payloadWriter = new TLRawWriter();
 
@@ -85,9 +79,7 @@ export async function encryptMessage(message: Message, authKey: Uint8Array, salt
 
   return messageWriter.buffer;
 }
-export async function decryptMessage(buffer: Uint8Array, authKey: Uint8Array, _sessionId: bigint) {
-  const authKeyId = await getAuthKeyId(authKey);
-
+export async function decryptMessage(buffer: Uint8Array, authKey: Uint8Array, authKeyId: bigint, _sessionId: bigint) {
   const reader = new TLReader(buffer);
   assertEquals(reader.readInt64(false), authKeyId);
 
