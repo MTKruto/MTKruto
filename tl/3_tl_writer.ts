@@ -1,6 +1,6 @@
 import { VECTOR_CONSTRUCTOR } from "../constants.ts";
 import { TLRawWriter } from "./0_tl_raw_writer.ts";
-import { MaybeVectorTLObject } from "./1_tl_object.ts";
+import { MaybeVectorTLObject, serialize } from "./1_tl_object.ts";
 
 export class TLWriter extends TLRawWriter {
   writeObject(object: MaybeVectorTLObject) {
@@ -11,7 +11,7 @@ export class TLWriter extends TLRawWriter {
         this.writeObject(item);
       }
     } else {
-      this.write(object.serialize());
+      this.write(object[serialize]());
     }
     return this;
   }

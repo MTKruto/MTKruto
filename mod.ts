@@ -3,6 +3,7 @@ import { getRandomId } from "./utilities/0_bigint.ts";
 
 export const utils = { checkPassword, getRandomId };
 
+export { as } from "./tl/1_tl_object.ts";
 export * as types from "./tl/2_types.ts";
 export * as functions from "./tl/3_functions.ts";
 export * from "./tl/4_rpc_result.ts";

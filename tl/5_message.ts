@@ -1,4 +1,4 @@
-import { id, MaybeVectorTLObject } from "./1_tl_object.ts";
+import { id, MaybeVectorTLObject, serialize } from "./1_tl_object.ts";
 import { TLReader } from "./3_tl_reader.ts";
 import { TLWriter } from "./3_tl_writer.ts";
 import { RPCResult } from "./4_rpc_result.ts";
@@ -13,7 +13,7 @@ function calculateLength(object: MaybeVectorTLObject) {
       length += calculateLength(item);
     }
   } else {
-    length += object.serialize().length;
+    length += object[serialize]().length;
   }
   return length;
 }

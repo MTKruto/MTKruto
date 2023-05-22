@@ -1,7 +1,7 @@
 import { assertEquals, ige256Decrypt, ige256Encrypt } from "../deps.ts";
 import { TLRawReader } from "../tl/0_tl_raw_reader.ts";
 import { TLRawWriter } from "../tl/0_tl_raw_writer.ts";
-import { id, TLObject } from "../tl/1_tl_object.ts";
+import { id, serialize, TLObject } from "../tl/1_tl_object.ts";
 import { TLReader } from "../tl/3_tl_reader.ts";
 import { RPCResult } from "../tl/4_rpc_result.ts";
 import { Message } from "../tl/5_message.ts";
@@ -43,7 +43,7 @@ export function unpackUnencryptedMessage(buffer: Uint8Array) {
 }
 
 export async function encryptMessage(message: Message, authKey: Uint8Array, authKeyId: bigint, salt: bigint, sessionId: bigint) {
-  const encoded = (message.body as TLObject).serialize();
+  const encoded = (message.body as TLObject)[serialize]();
 
   const payloadWriter = new TLRawWriter();
 
