@@ -14,7 +14,10 @@ export class ConnectionWebSocket implements Connection {
       // deno-lint-ignore no-explicit-any
       const data = e.data instanceof Blob ? new Uint8Array(await e.data.arrayBuffer()) : new Uint8Array(e.data as any);
 
-      this.buffer.push(...Array.from(data));
+      for (const byte of data) {
+        this.buffer.push(byte);
+      }
+
       if (
         this.nextResolve != null && this.buffer.length >= this.nextResolve[0]
       ) {
