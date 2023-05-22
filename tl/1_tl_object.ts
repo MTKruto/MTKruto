@@ -211,12 +211,21 @@ export abstract class TLObject {
 
     return writer.buffer;
   }
+
+  as<T extends TLObjectConstructor<InstanceType<T>>>(constructor: T) {
+    if (this instanceof constructor) {
+      return this as InstanceType<T>;
+    } else {
+      throw new TypeError(`Expected ${constructor.name}, got ${this.constructor.name}`);
+    }
+  }
 }
 
 export type MaybeVectorTLObject = TLObject | Array<MaybeVectorTLObject | TLObject>;
 
 export interface TLObjectConstructor<T = TLObject> {
-  new (params: Record<string, Param>): T;
+  // deno-lint-ignore no-explicit-any
+  new (params: any): T;
   [paramDesc]: ParamDesc;
 }
 export function isTLObjectConstructor(t: unknown): t is typeof TLObject {
