@@ -4,6 +4,7 @@ import { bigIntFromBuffer, getRandomBigInt, modExp } from "../utilities/0_bigint
 import { bufferFromBigInt, concat } from "../utilities/0_buffer.ts";
 import { sha1 } from "../utilities/0_hash.ts";
 import { rsaPad } from "../utilities/1_auth.ts";
+import { serialize } from "../tl/1_tl_object.ts";
 import { packUnencryptedMessage, unpackUnencryptedMessage } from "../utilities/1_message.ts";
 import { ClientDHInnerData, DHGenOK, PQInnerDataDC, ResPQ, ServerDHInnerData, ServerDHParamsOK } from "../tl/2_types.ts";
 import { Function, ReqDHParams, ReqPQMulti, SetClientDHParams } from "../tl/3_functions.ts";
@@ -12,7 +13,7 @@ import { ClientAbstract } from "./client_abstract.ts";
 
 export class ClientPlain extends ClientAbstract {
   async invoke<T extends Function<unknown>>(function_: T): Promise<T["__R"]> {
-    await this.transport.send(packUnencryptedMessage(function_.serialize()));
+    await this.transport.send(packUnencryptedMessage(function_[serialize]()));
     const buffer = await this.transport.receive();
     if (buffer.length == 4) {
       const int = bigIntFromBuffer(buffer, true, true);
@@ -70,7 +71,7 @@ export class ClientPlain extends ClientAbstract {
         newNonce,
         nonce,
         serverNonce,
-      }).serialize(),
+      })[serialize](),
       publicKey,
     );
 
@@ -108,7 +109,7 @@ export class ClientPlain extends ClientAbstract {
       serverNonce,
       retryId: 0n,
       gB: bufferFromBigInt(gB, 256, false, false),
-    }).serialize();
+    })[serialize]();
 
     let dataWithHash = concat(await sha1(data), data);
 

@@ -53,6 +53,10 @@ export const paramDesc = Symbol("paramDesc");
 
 export const length = Symbol("length");
 
+export const serialize = Symbol();
+
+export const as = Symbol();
+
 export function isOptionalParam(ntype: string) {
   return ntype.includes("?");
 }
@@ -88,7 +92,7 @@ function serializeSingleParam(
       (type.name == "TypeX" && value instanceof TLObject) ||
       value instanceof type
     ) {
-      writer.write(value.serialize());
+      writer.write(value[serialize]());
       return;
     } else {
       throw new TypeError(`Expected ${type.name}`);
@@ -162,10 +166,10 @@ export abstract class TLObject {
   }
 
   get [length]() {
-    return this.serialize().byteLength;
+    return this[serialize]().byteLength;
   }
 
-  serialize() {
+  [serialize]() {
     const writer = new TLRawWriter();
     writer.writeInt32(this[id], false);
 
@@ -212,7 +216,7 @@ export abstract class TLObject {
     return writer.buffer;
   }
 
-  as<T extends TLObjectConstructor<InstanceType<T>>>(constructor: T) {
+  [as]<T extends TLObjectConstructor<InstanceType<T>>>(constructor: T) {
     if (this instanceof constructor) {
       return this as InstanceType<T>;
     } else {
