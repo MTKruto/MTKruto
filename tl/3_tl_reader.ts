@@ -1,7 +1,7 @@
 import { TLRawReader } from "./0_tl_raw_reader.ts";
 import { paramDesc, TLObject } from "./1_tl_object.ts";
 import { map } from "./2_types.ts";
-import { deserialize } from "./3_tl_object_deserializer.ts";
+import { deserialize } from "./3_deserialize.ts";
 
 export type ReadObject = TLObject | Array<ReadObject | TLObject>;
 
