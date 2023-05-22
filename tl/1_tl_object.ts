@@ -149,9 +149,7 @@ function serializeSingleParam(
       }
       break;
     case "true":
-      if (value === true) {
-        writer.writeInt32(0x997275B5);
-      } else {
+      if (value !== true) {
         throw new TypeError("Expected true");
       }
   }
