@@ -14,7 +14,7 @@ Cross-runtime JavaScript library for building Telegram clients
 - **Type-safe.** DX is enhanced with TypeScript support.
 - **Made for the Web.** Leverages Web APIs.
 - **Unoptionated.** No hidden behaviors.
-- **Extensible.**: Highly customizable.
+- **Extensible.** Highly customizable.
 
 > Note: MTKruto has not reached version 1.0.0 yet. We highly recommend not to use it in production.
 
