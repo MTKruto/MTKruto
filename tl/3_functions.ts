@@ -1310,11 +1310,11 @@ export class AccountUpdateProfile extends Function<types.TypeUser> {
     ];
   }
 
-  constructor(params: { firstName?: string; lastName?: string; about?: string }) {
+  constructor(params?: { firstName?: string; lastName?: string; about?: string }) {
     super();
-    this.firstName = params.firstName;
-    this.lastName = params.lastName;
-    this.about = params.about;
+    this.firstName = params?.firstName;
+    this.lastName = params?.lastName;
+    this.about = params?.about;
   }
 }
 
@@ -2259,15 +2259,15 @@ export class AccountInitTakeoutSession extends Function<types.AccountTakeout> {
     ];
   }
 
-  constructor(params: { contacts?: true; messageUsers?: true; messageChats?: true; messageMegagroups?: true; messageChannels?: true; files?: true; fileMaxSize?: bigint }) {
+  constructor(params?: { contacts?: true; messageUsers?: true; messageChats?: true; messageMegagroups?: true; messageChannels?: true; files?: true; fileMaxSize?: bigint }) {
     super();
-    this.contacts = params.contacts;
-    this.messageUsers = params.messageUsers;
-    this.messageChats = params.messageChats;
-    this.messageMegagroups = params.messageMegagroups;
-    this.messageChannels = params.messageChannels;
-    this.files = params.files;
-    this.fileMaxSize = params.fileMaxSize;
+    this.contacts = params?.contacts;
+    this.messageUsers = params?.messageUsers;
+    this.messageChats = params?.messageChats;
+    this.messageMegagroups = params?.messageMegagroups;
+    this.messageChannels = params?.messageChannels;
+    this.files = params?.files;
+    this.fileMaxSize = params?.fileMaxSize;
   }
 }
 
@@ -2292,9 +2292,9 @@ export class AccountFinishTakeoutSession extends Function<boolean> {
     ];
   }
 
-  constructor(params: { success?: true }) {
+  constructor(params?: { success?: true }) {
     super();
-    this.success = params.success;
+    this.success = params?.success;
   }
 }
 
@@ -2426,10 +2426,10 @@ export class AccountGetNotifyExceptions extends Function<types.TypeUpdates> {
     ];
   }
 
-  constructor(params: { compareSound?: true; peer?: types.TypeInputNotifyPeer }) {
+  constructor(params?: { compareSound?: true; peer?: types.TypeInputNotifyPeer }) {
     super();
-    this.compareSound = params.compareSound;
-    this.peer = params.peer;
+    this.compareSound = params?.compareSound;
+    this.peer = params?.peer;
   }
 }
 
@@ -2814,12 +2814,12 @@ export class AccountInstallTheme extends Function<boolean> {
     ];
   }
 
-  constructor(params: { dark?: true; theme?: types.TypeInputTheme; format?: string; baseTheme?: types.TypeBaseTheme }) {
+  constructor(params?: { dark?: true; theme?: types.TypeInputTheme; format?: string; baseTheme?: types.TypeBaseTheme }) {
     super();
-    this.dark = params.dark;
-    this.theme = params.theme;
-    this.format = params.format;
-    this.baseTheme = params.baseTheme;
+    this.dark = params?.dark;
+    this.theme = params?.theme;
+    this.format = params?.format;
+    this.baseTheme = params?.baseTheme;
   }
 }
 
@@ -2902,9 +2902,9 @@ export class AccountSetContentSettings extends Function<boolean> {
     ];
   }
 
-  constructor(params: { sensitiveEnabled?: true }) {
+  constructor(params?: { sensitiveEnabled?: true }) {
     super();
-    this.sensitiveEnabled = params.sensitiveEnabled;
+    this.sensitiveEnabled = params?.sensitiveEnabled;
   }
 }
 
@@ -6708,9 +6708,9 @@ export class MessagesClearRecentStickers extends Function<boolean> {
     ];
   }
 
-  constructor(params: { attached?: true }) {
+  constructor(params?: { attached?: true }) {
     super();
-    this.attached = params.attached;
+    this.attached = params?.attached;
   }
 }
 
@@ -8007,12 +8007,12 @@ export class MessagesRequestURLAuth extends Function<types.TypeURLAuthResult> {
     ];
   }
 
-  constructor(params: { peer?: types.TypeInputPeer; msgId?: number; buttonId?: number; url?: string }) {
+  constructor(params?: { peer?: types.TypeInputPeer; msgId?: number; buttonId?: number; url?: string }) {
     super();
-    this.peer = params.peer;
-    this.msgId = params.msgId;
-    this.buttonId = params.buttonId;
-    this.url = params.url;
+    this.peer = params?.peer;
+    this.msgId = params?.msgId;
+    this.buttonId = params?.buttonId;
+    this.url = params?.url;
   }
 }
 
@@ -8049,13 +8049,13 @@ export class MessagesAcceptURLAuth extends Function<types.TypeURLAuthResult> {
     ];
   }
 
-  constructor(params: { writeAllowed?: true; peer?: types.TypeInputPeer; msgId?: number; buttonId?: number; url?: string }) {
+  constructor(params?: { writeAllowed?: true; peer?: types.TypeInputPeer; msgId?: number; buttonId?: number; url?: string }) {
     super();
-    this.writeAllowed = params.writeAllowed;
-    this.peer = params.peer;
-    this.msgId = params.msgId;
-    this.buttonId = params.buttonId;
-    this.url = params.url;
+    this.writeAllowed = params?.writeAllowed;
+    this.peer = params?.peer;
+    this.msgId = params?.msgId;
+    this.buttonId = params?.buttonId;
+    this.url = params?.url;
   }
 }
 
@@ -8603,9 +8603,9 @@ export class MessagesDeletePhoneCallHistory extends Function<types.MessagesAffec
     ];
   }
 
-  constructor(params: { revoke?: true }) {
+  constructor(params?: { revoke?: true }) {
     super();
-    this.revoke = params.revoke;
+    this.revoke = params?.revoke;
   }
 }
 
@@ -10748,14 +10748,14 @@ export class PhotosUploadProfilePhoto extends Function<types.PhotosPhoto> {
     ];
   }
 
-  constructor(params: { fallback?: true; bot?: types.TypeInputUser; file?: types.TypeInputFile; video?: types.TypeInputFile; videoStartTs?: number; videoEmojiMarkup?: types.TypeVideoSize }) {
+  constructor(params?: { fallback?: true; bot?: types.TypeInputUser; file?: types.TypeInputFile; video?: types.TypeInputFile; videoStartTs?: number; videoEmojiMarkup?: types.TypeVideoSize }) {
     super();
-    this.fallback = params.fallback;
-    this.bot = params.bot;
-    this.file = params.file;
-    this.video = params.video;
-    this.videoStartTs = params.videoStartTs;
-    this.videoEmojiMarkup = params.videoEmojiMarkup;
+    this.fallback = params?.fallback;
+    this.bot = params?.bot;
+    this.file = params?.file;
+    this.video = params?.video;
+    this.videoStartTs = params?.videoStartTs;
+    this.videoEmojiMarkup = params?.videoEmojiMarkup;
   }
 }
 
@@ -12318,10 +12318,10 @@ export class ChannelsGetAdminedPublicChannels extends Function<types.TypeMessage
     ];
   }
 
-  constructor(params: { byLocation?: true; checkLimit?: true }) {
+  constructor(params?: { byLocation?: true; checkLimit?: true }) {
     super();
-    this.byLocation = params.byLocation;
-    this.checkLimit = params.checkLimit;
+    this.byLocation = params?.byLocation;
+    this.checkLimit = params?.checkLimit;
   }
 }
 
@@ -13950,10 +13950,10 @@ export class PaymentsClearSavedInfo extends Function<boolean> {
     ];
   }
 
-  constructor(params: { credentials?: true; info?: true }) {
+  constructor(params?: { credentials?: true; info?: true }) {
     super();
-    this.credentials = params.credentials;
-    this.info = params.info;
+    this.credentials = params?.credentials;
+    this.info = params?.info;
   }
 }
 

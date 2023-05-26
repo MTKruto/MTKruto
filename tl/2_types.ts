@@ -3391,12 +3391,12 @@ export class InputChatUploadedPhoto extends TypeInputChatPhoto {
     ];
   }
 
-  constructor(params: { file?: TypeInputFile; video?: TypeInputFile; videoStartTs?: number; videoEmojiMarkup?: TypeVideoSize }) {
+  constructor(params?: { file?: TypeInputFile; video?: TypeInputFile; videoStartTs?: number; videoEmojiMarkup?: TypeVideoSize }) {
     super();
-    this.file = params.file;
-    this.video = params.video;
-    this.videoStartTs = params.videoStartTs;
-    this.videoEmojiMarkup = params.videoEmojiMarkup;
+    this.file = params?.file;
+    this.video = params?.video;
+    this.videoStartTs = params?.videoStartTs;
+    this.videoEmojiMarkup = params?.videoEmojiMarkup;
   }
 }
 
@@ -5819,11 +5819,11 @@ export class MessageMediaPhoto extends TypeMessageMedia {
     ];
   }
 
-  constructor(params: { spoiler?: true; photo?: TypePhoto; ttlSeconds?: number }) {
+  constructor(params?: { spoiler?: true; photo?: TypePhoto; ttlSeconds?: number }) {
     super();
-    this.spoiler = params.spoiler;
-    this.photo = params.photo;
-    this.ttlSeconds = params.ttlSeconds;
+    this.spoiler = params?.spoiler;
+    this.photo = params?.photo;
+    this.ttlSeconds = params?.ttlSeconds;
   }
 }
 
@@ -5941,12 +5941,12 @@ export class MessageMediaDocument extends TypeMessageMedia {
     ];
   }
 
-  constructor(params: { nopremium?: true; spoiler?: true; document?: TypeDocument; ttlSeconds?: number }) {
+  constructor(params?: { nopremium?: true; spoiler?: true; document?: TypeDocument; ttlSeconds?: number }) {
     super();
-    this.nopremium = params.nopremium;
-    this.spoiler = params.spoiler;
-    this.document = params.document;
-    this.ttlSeconds = params.ttlSeconds;
+    this.nopremium = params?.nopremium;
+    this.spoiler = params?.spoiler;
+    this.document = params?.document;
+    this.ttlSeconds = params?.ttlSeconds;
   }
 }
 
@@ -6746,11 +6746,11 @@ export class MessageActionBotAllowed extends TypeMessageAction {
     ];
   }
 
-  constructor(params: { attachMenu?: true; domain?: string; app?: TypeBotApp }) {
+  constructor(params?: { attachMenu?: true; domain?: string; app?: TypeBotApp }) {
     super();
-    this.attachMenu = params.attachMenu;
-    this.domain = params.domain;
-    this.app = params.app;
+    this.attachMenu = params?.attachMenu;
+    this.domain = params?.domain;
+    this.app = params?.app;
   }
 }
 
@@ -7184,12 +7184,12 @@ export class MessageActionTopicEdit extends TypeMessageAction {
     ];
   }
 
-  constructor(params: { title?: string; iconEmojiId?: bigint; closed?: boolean; hidden?: boolean }) {
+  constructor(params?: { title?: string; iconEmojiId?: bigint; closed?: boolean; hidden?: boolean }) {
     super();
-    this.title = params.title;
-    this.iconEmojiId = params.iconEmojiId;
-    this.closed = params.closed;
-    this.hidden = params.hidden;
+    this.title = params?.title;
+    this.iconEmojiId = params?.iconEmojiId;
+    this.closed = params?.closed;
+    this.hidden = params?.hidden;
   }
 }
 
@@ -7890,9 +7890,9 @@ export class AuthAuthorizationSignUpRequired extends TypeAuthAuthorization {
     ];
   }
 
-  constructor(params: { termsOfService?: TypeHelpTermsOfService }) {
+  constructor(params?: { termsOfService?: TypeHelpTermsOfService }) {
     super();
-    this.termsOfService = params.termsOfService;
+    this.termsOfService = params?.termsOfService;
   }
 }
 
@@ -8063,12 +8063,12 @@ export class InputPeerNotifySettings extends TypeInputPeerNotifySettings {
     ];
   }
 
-  constructor(params: { showPreviews?: boolean; silent?: boolean; muteUntil?: number; sound?: TypeNotificationSound }) {
+  constructor(params?: { showPreviews?: boolean; silent?: boolean; muteUntil?: number; sound?: TypeNotificationSound }) {
     super();
-    this.showPreviews = params.showPreviews;
-    this.silent = params.silent;
-    this.muteUntil = params.muteUntil;
-    this.sound = params.sound;
+    this.showPreviews = params?.showPreviews;
+    this.silent = params?.silent;
+    this.muteUntil = params?.muteUntil;
+    this.sound = params?.sound;
   }
 }
 
@@ -8108,14 +8108,14 @@ export class PeerNotifySettings extends TypePeerNotifySettings {
     ];
   }
 
-  constructor(params: { showPreviews?: boolean; silent?: boolean; muteUntil?: number; iosSound?: TypeNotificationSound; androidSound?: TypeNotificationSound; otherSound?: TypeNotificationSound }) {
+  constructor(params?: { showPreviews?: boolean; silent?: boolean; muteUntil?: number; iosSound?: TypeNotificationSound; androidSound?: TypeNotificationSound; otherSound?: TypeNotificationSound }) {
     super();
-    this.showPreviews = params.showPreviews;
-    this.silent = params.silent;
-    this.muteUntil = params.muteUntil;
-    this.iosSound = params.iosSound;
-    this.androidSound = params.androidSound;
-    this.otherSound = params.otherSound;
+    this.showPreviews = params?.showPreviews;
+    this.silent = params?.silent;
+    this.muteUntil = params?.muteUntil;
+    this.iosSound = params?.iosSound;
+    this.androidSound = params?.androidSound;
+    this.otherSound = params?.otherSound;
   }
 }
 
@@ -8173,20 +8173,20 @@ export class PeerSettings extends TypePeerSettings {
     ];
   }
 
-  constructor(params: { reportSpam?: true; addContact?: true; blockContact?: true; shareContact?: true; needContactsException?: true; reportGeo?: true; autoarchived?: true; inviteMembers?: true; requestChatBroadcast?: true; geoDistance?: number; requestChatTitle?: string; requestChatDate?: number }) {
+  constructor(params?: { reportSpam?: true; addContact?: true; blockContact?: true; shareContact?: true; needContactsException?: true; reportGeo?: true; autoarchived?: true; inviteMembers?: true; requestChatBroadcast?: true; geoDistance?: number; requestChatTitle?: string; requestChatDate?: number }) {
     super();
-    this.reportSpam = params.reportSpam;
-    this.addContact = params.addContact;
-    this.blockContact = params.blockContact;
-    this.shareContact = params.shareContact;
-    this.needContactsException = params.needContactsException;
-    this.reportGeo = params.reportGeo;
-    this.autoarchived = params.autoarchived;
-    this.inviteMembers = params.inviteMembers;
-    this.requestChatBroadcast = params.requestChatBroadcast;
-    this.geoDistance = params.geoDistance;
-    this.requestChatTitle = params.requestChatTitle;
-    this.requestChatDate = params.requestChatDate;
+    this.reportSpam = params?.reportSpam;
+    this.addContact = params?.addContact;
+    this.blockContact = params?.blockContact;
+    this.shareContact = params?.shareContact;
+    this.needContactsException = params?.needContactsException;
+    this.reportGeo = params?.reportGeo;
+    this.autoarchived = params?.autoarchived;
+    this.inviteMembers = params?.inviteMembers;
+    this.requestChatBroadcast = params?.requestChatBroadcast;
+    this.geoDistance = params?.geoDistance;
+    this.requestChatTitle = params?.requestChatTitle;
+    this.requestChatDate = params?.requestChatDate;
   }
 }
 
@@ -9457,9 +9457,9 @@ export class InputMessagesFilterPhoneCalls extends TypeMessagesFilter {
     ];
   }
 
-  constructor(params: { missed?: true }) {
+  constructor(params?: { missed?: true }) {
     super();
-    this.missed = params.missed;
+    this.missed = params?.missed;
   }
 }
 
@@ -10641,10 +10641,10 @@ export class UpdateStickerSets extends TypeUpdate {
     ];
   }
 
-  constructor(params: { masks?: true; emojis?: true }) {
+  constructor(params?: { masks?: true; emojis?: true }) {
     super();
-    this.masks = params.masks;
-    this.emojis = params.emojis;
+    this.masks = params?.masks;
+    this.emojis = params?.emojis;
   }
 }
 
@@ -11152,10 +11152,10 @@ export class UpdatePinnedDialogs extends TypeUpdate {
     ];
   }
 
-  constructor(params: { folderId?: number; order?: Array<TypeDialogPeer> }) {
+  constructor(params?: { folderId?: number; order?: Array<TypeDialogPeer> }) {
     super();
-    this.folderId = params.folderId;
-    this.order = params.order;
+    this.folderId = params?.folderId;
+    this.order = params?.order;
   }
 }
 
@@ -16825,9 +16825,9 @@ export class WebPageNotModified extends TypeWebPage {
     ];
   }
 
-  constructor(params: { cachedPageViews?: number }) {
+  constructor(params?: { cachedPageViews?: number }) {
     super();
-    this.cachedPageViews = params.cachedPageViews;
+    this.cachedPageViews = params?.cachedPageViews;
   }
 }
 
@@ -17050,10 +17050,10 @@ export class AccountPasswordSettings extends TypeAccountPasswordSettings {
     ];
   }
 
-  constructor(params: { email?: string; secureSettings?: TypeSecureSecretSettings }) {
+  constructor(params?: { email?: string; secureSettings?: TypeSecureSecretSettings }) {
     super();
-    this.email = params.email;
-    this.secureSettings = params.secureSettings;
+    this.email = params?.email;
+    this.secureSettings = params?.secureSettings;
   }
 }
 
@@ -17090,13 +17090,13 @@ export class AccountPasswordInputSettings extends TypeAccountPasswordInputSettin
     ];
   }
 
-  constructor(params: { newAlgo?: TypePasswordKdfAlgo; newPasswordHash?: Uint8Array; hint?: string; email?: string; newSecureSettings?: TypeSecureSecretSettings }) {
+  constructor(params?: { newAlgo?: TypePasswordKdfAlgo; newPasswordHash?: Uint8Array; hint?: string; email?: string; newSecureSettings?: TypeSecureSecretSettings }) {
     super();
-    this.newAlgo = params.newAlgo;
-    this.newPasswordHash = params.newPasswordHash;
-    this.hint = params.hint;
-    this.email = params.email;
-    this.newSecureSettings = params.newSecureSettings;
+    this.newAlgo = params?.newAlgo;
+    this.newPasswordHash = params?.newPasswordHash;
+    this.hint = params?.hint;
+    this.email = params?.email;
+    this.newSecureSettings = params?.newSecureSettings;
   }
 }
 
@@ -17776,14 +17776,14 @@ export class BotInfo extends TypeBotInfo {
     ];
   }
 
-  constructor(params: { userId?: bigint; description?: string; descriptionPhoto?: TypePhoto; descriptionDocument?: TypeDocument; commands?: Array<TypeBotCommand>; menuButton?: TypeBotMenuButton }) {
+  constructor(params?: { userId?: bigint; description?: string; descriptionPhoto?: TypePhoto; descriptionDocument?: TypeDocument; commands?: Array<TypeBotCommand>; menuButton?: TypeBotMenuButton }) {
     super();
-    this.userId = params.userId;
-    this.description = params.description;
-    this.descriptionPhoto = params.descriptionPhoto;
-    this.descriptionDocument = params.descriptionDocument;
-    this.commands = params.commands;
-    this.menuButton = params.menuButton;
+    this.userId = params?.userId;
+    this.description = params?.description;
+    this.descriptionPhoto = params?.descriptionPhoto;
+    this.descriptionDocument = params?.descriptionDocument;
+    this.commands = params?.commands;
+    this.menuButton = params?.menuButton;
   }
 }
 
@@ -18323,9 +18323,9 @@ export class ReplyKeyboardHide extends TypeReplyMarkup {
     ];
   }
 
-  constructor(params: { selective?: true }) {
+  constructor(params?: { selective?: true }) {
     super();
-    this.selective = params.selective;
+    this.selective = params?.selective;
   }
 }
 
@@ -18356,11 +18356,11 @@ export class ReplyKeyboardForceReply extends TypeReplyMarkup {
     ];
   }
 
-  constructor(params: { singleUse?: true; selective?: true; placeholder?: string }) {
+  constructor(params?: { singleUse?: true; selective?: true; placeholder?: string }) {
     super();
-    this.singleUse = params.singleUse;
-    this.selective = params.selective;
-    this.placeholder = params.placeholder;
+    this.singleUse = params?.singleUse;
+    this.selective = params?.selective;
+    this.placeholder = params?.placeholder;
   }
 }
 
@@ -19793,10 +19793,10 @@ export class ChannelParticipantsMentions extends TypeChannelParticipantsFilter {
     ];
   }
 
-  constructor(params: { q?: string; topMsgId?: number }) {
+  constructor(params?: { q?: string; topMsgId?: number }) {
     super();
-    this.q = params.q;
-    this.topMsgId = params.topMsgId;
+    this.q = params?.q;
+    this.topMsgId = params?.topMsgId;
   }
 }
 
@@ -20210,9 +20210,9 @@ export class InputBotInlineMessageGame extends TypeInputBotInlineMessage {
     ];
   }
 
-  constructor(params: { replyMarkup?: TypeReplyMarkup }) {
+  constructor(params?: { replyMarkup?: TypeReplyMarkup }) {
     super();
-    this.replyMarkup = params.replyMarkup;
+    this.replyMarkup = params?.replyMarkup;
   }
 }
 
@@ -21248,10 +21248,10 @@ export class AuthSentCodeTypeSetUpEmailRequired extends TypeAuthSentCodeType {
     ];
   }
 
-  constructor(params: { appleSigninAllowed?: true; googleSigninAllowed?: true }) {
+  constructor(params?: { appleSigninAllowed?: true; googleSigninAllowed?: true }) {
     super();
-    this.appleSigninAllowed = params.appleSigninAllowed;
-    this.googleSigninAllowed = params.googleSigninAllowed;
+    this.appleSigninAllowed = params?.appleSigninAllowed;
+    this.googleSigninAllowed = params?.googleSigninAllowed;
   }
 }
 
@@ -21391,9 +21391,9 @@ export class MessagesMessageEditData extends TypeMessagesMessageEditData {
     ];
   }
 
-  constructor(params: { caption?: true }) {
+  constructor(params?: { caption?: true }) {
     super();
-    this.caption = params.caption;
+    this.caption = params?.caption;
   }
 }
 
@@ -21833,9 +21833,9 @@ export class DraftMessageEmpty extends TypeDraftMessage {
     ];
   }
 
-  constructor(params: { date?: number }) {
+  constructor(params?: { date?: number }) {
     super();
-    this.date = params.date;
+    this.date = params?.date;
   }
 }
 
@@ -24050,12 +24050,12 @@ export class PaymentRequestedInfo extends TypePaymentRequestedInfo {
     ];
   }
 
-  constructor(params: { name?: string; phone?: string; email?: string; shippingAddress?: TypePostAddress }) {
+  constructor(params?: { name?: string; phone?: string; email?: string; shippingAddress?: TypePostAddress }) {
     super();
-    this.name = params.name;
-    this.phone = params.phone;
-    this.email = params.email;
-    this.shippingAddress = params.shippingAddress;
+    this.name = params?.name;
+    this.phone = params?.phone;
+    this.email = params?.email;
+    this.shippingAddress = params?.shippingAddress;
   }
 }
 
@@ -24307,12 +24307,12 @@ export class InputWebFileAudioAlbumThumbLocation extends TypeInputWebFileLocatio
     ];
   }
 
-  constructor(params: { small?: true; document?: TypeInputDocument; title?: string; performer?: string }) {
+  constructor(params?: { small?: true; document?: TypeInputDocument; title?: string; performer?: string }) {
     super();
-    this.small = params.small;
-    this.document = params.document;
-    this.title = params.title;
-    this.performer = params.performer;
+    this.small = params?.small;
+    this.document = params?.document;
+    this.title = params?.title;
+    this.performer = params?.performer;
   }
 }
 
@@ -24468,10 +24468,10 @@ export class PaymentsValidatedRequestedInfo extends TypePaymentsValidatedRequest
     ];
   }
 
-  constructor(params: { id?: string; shippingOptions?: Array<TypeShippingOption> }) {
+  constructor(params?: { id?: string; shippingOptions?: Array<TypeShippingOption> }) {
     super();
-    this.id = params.id;
-    this.shippingOptions = params.shippingOptions;
+    this.id = params?.id;
+    this.shippingOptions = params?.shippingOptions;
   }
 }
 
@@ -24628,10 +24628,10 @@ export class PaymentsSavedInfo extends TypePaymentsSavedInfo {
     ];
   }
 
-  constructor(params: { hasSavedCredentials?: true; savedInfo?: TypePaymentRequestedInfo }) {
+  constructor(params?: { hasSavedCredentials?: true; savedInfo?: TypePaymentRequestedInfo }) {
     super();
-    this.hasSavedCredentials = params.hasSavedCredentials;
-    this.savedInfo = params.savedInfo;
+    this.hasSavedCredentials = params?.hasSavedCredentials;
+    this.savedInfo = params?.savedInfo;
   }
 }
 
@@ -26783,10 +26783,10 @@ export class ChannelAdminLogEventActionPinTopic extends TypeChannelAdminLogEvent
     ];
   }
 
-  constructor(params: { prevTopic?: TypeForumTopic; newTopic?: TypeForumTopic }) {
+  constructor(params?: { prevTopic?: TypeForumTopic; newTopic?: TypeForumTopic }) {
     super();
-    this.prevTopic = params.prevTopic;
-    this.newTopic = params.newTopic;
+    this.prevTopic = params?.prevTopic;
+    this.newTopic = params?.newTopic;
   }
 }
 
@@ -26957,26 +26957,26 @@ export class ChannelAdminLogEventsFilter extends TypeChannelAdminLogEventsFilter
     ];
   }
 
-  constructor(params: { join?: true; leave?: true; invite?: true; ban?: true; unban?: true; kick?: true; unkick?: true; promote?: true; demote?: true; info?: true; settings?: true; pinned?: true; edit?: true; delete?: true; groupCall?: true; invites?: true; send?: true; forums?: true }) {
+  constructor(params?: { join?: true; leave?: true; invite?: true; ban?: true; unban?: true; kick?: true; unkick?: true; promote?: true; demote?: true; info?: true; settings?: true; pinned?: true; edit?: true; delete?: true; groupCall?: true; invites?: true; send?: true; forums?: true }) {
     super();
-    this.join = params.join;
-    this.leave = params.leave;
-    this.invite = params.invite;
-    this.ban = params.ban;
-    this.unban = params.unban;
-    this.kick = params.kick;
-    this.unkick = params.unkick;
-    this.promote = params.promote;
-    this.demote = params.demote;
-    this.info = params.info;
-    this.settings = params.settings;
-    this.pinned = params.pinned;
-    this.edit = params.edit;
-    this.delete = params.delete;
-    this.groupCall = params.groupCall;
-    this.invites = params.invites;
-    this.send = params.send;
-    this.forums = params.forums;
+    this.join = params?.join;
+    this.leave = params?.leave;
+    this.invite = params?.invite;
+    this.ban = params?.ban;
+    this.unban = params?.unban;
+    this.kick = params?.kick;
+    this.unkick = params?.unkick;
+    this.promote = params?.promote;
+    this.demote = params?.demote;
+    this.info = params?.info;
+    this.settings = params?.settings;
+    this.pinned = params?.pinned;
+    this.edit = params?.edit;
+    this.delete = params?.delete;
+    this.groupCall = params?.groupCall;
+    this.invites = params?.invites;
+    this.send = params?.send;
+    this.forums = params?.forums;
   }
 }
 
@@ -29406,16 +29406,16 @@ export class PageTableCell extends TypePageTableCell {
     ];
   }
 
-  constructor(params: { header?: true; alignCenter?: true; alignRight?: true; valignMiddle?: true; valignBottom?: true; text?: TypeRichText; colspan?: number; rowspan?: number }) {
+  constructor(params?: { header?: true; alignCenter?: true; alignRight?: true; valignMiddle?: true; valignBottom?: true; text?: TypeRichText; colspan?: number; rowspan?: number }) {
     super();
-    this.header = params.header;
-    this.alignCenter = params.alignCenter;
-    this.alignRight = params.alignRight;
-    this.valignMiddle = params.valignMiddle;
-    this.valignBottom = params.valignBottom;
-    this.text = params.text;
-    this.colspan = params.colspan;
-    this.rowspan = params.rowspan;
+    this.header = params?.header;
+    this.alignCenter = params?.alignCenter;
+    this.alignRight = params?.alignRight;
+    this.valignMiddle = params?.valignMiddle;
+    this.valignBottom = params?.valignBottom;
+    this.text = params?.text;
+    this.colspan = params?.colspan;
+    this.rowspan = params?.rowspan;
   }
 }
 
@@ -29930,14 +29930,14 @@ export class PollResults extends TypePollResults {
     ];
   }
 
-  constructor(params: { min?: true; results?: Array<TypePollAnswerVoters>; totalVoters?: number; recentVoters?: Array<bigint>; solution?: string; solutionEntities?: Array<TypeMessageEntity> }) {
+  constructor(params?: { min?: true; results?: Array<TypePollAnswerVoters>; totalVoters?: number; recentVoters?: Array<bigint>; solution?: string; solutionEntities?: Array<TypeMessageEntity> }) {
     super();
-    this.min = params.min;
-    this.results = params.results;
-    this.totalVoters = params.totalVoters;
-    this.recentVoters = params.recentVoters;
-    this.solution = params.solution;
-    this.solutionEntities = params.solutionEntities;
+    this.min = params?.min;
+    this.results = params?.results;
+    this.totalVoters = params?.totalVoters;
+    this.recentVoters = params?.recentVoters;
+    this.solution = params?.solution;
+    this.solutionEntities = params?.solutionEntities;
   }
 }
 
@@ -30045,20 +30045,20 @@ export class ChatAdminRights extends TypeChatAdminRights {
     ];
   }
 
-  constructor(params: { changeInfo?: true; postMessages?: true; editMessages?: true; deleteMessages?: true; banUsers?: true; inviteUsers?: true; pinMessages?: true; addAdmins?: true; anonymous?: true; manageCall?: true; other?: true; manageTopics?: true }) {
+  constructor(params?: { changeInfo?: true; postMessages?: true; editMessages?: true; deleteMessages?: true; banUsers?: true; inviteUsers?: true; pinMessages?: true; addAdmins?: true; anonymous?: true; manageCall?: true; other?: true; manageTopics?: true }) {
     super();
-    this.changeInfo = params.changeInfo;
-    this.postMessages = params.postMessages;
-    this.editMessages = params.editMessages;
-    this.deleteMessages = params.deleteMessages;
-    this.banUsers = params.banUsers;
-    this.inviteUsers = params.inviteUsers;
-    this.pinMessages = params.pinMessages;
-    this.addAdmins = params.addAdmins;
-    this.anonymous = params.anonymous;
-    this.manageCall = params.manageCall;
-    this.other = params.other;
-    this.manageTopics = params.manageTopics;
+    this.changeInfo = params?.changeInfo;
+    this.postMessages = params?.postMessages;
+    this.editMessages = params?.editMessages;
+    this.deleteMessages = params?.deleteMessages;
+    this.banUsers = params?.banUsers;
+    this.inviteUsers = params?.inviteUsers;
+    this.pinMessages = params?.pinMessages;
+    this.addAdmins = params?.addAdmins;
+    this.anonymous = params?.anonymous;
+    this.manageCall = params?.manageCall;
+    this.other = params?.other;
+    this.manageTopics = params?.manageTopics;
   }
 }
 
@@ -30337,16 +30337,16 @@ export class CodeSettings extends TypeCodeSettings {
     ];
   }
 
-  constructor(params: { allowFlashcall?: true; currentNumber?: true; allowAppHash?: true; allowMissedCall?: true; allowFirebase?: true; logoutTokens?: Array<Uint8Array>; token?: string; appSandbox?: boolean }) {
+  constructor(params?: { allowFlashcall?: true; currentNumber?: true; allowAppHash?: true; allowMissedCall?: true; allowFirebase?: true; logoutTokens?: Array<Uint8Array>; token?: string; appSandbox?: boolean }) {
     super();
-    this.allowFlashcall = params.allowFlashcall;
-    this.currentNumber = params.currentNumber;
-    this.allowAppHash = params.allowAppHash;
-    this.allowMissedCall = params.allowMissedCall;
-    this.allowFirebase = params.allowFirebase;
-    this.logoutTokens = params.logoutTokens;
-    this.token = params.token;
-    this.appSandbox = params.appSandbox;
+    this.allowFlashcall = params?.allowFlashcall;
+    this.currentNumber = params?.currentNumber;
+    this.allowAppHash = params?.allowAppHash;
+    this.allowMissedCall = params?.allowMissedCall;
+    this.allowFirebase = params?.allowFirebase;
+    this.logoutTokens = params?.logoutTokens;
+    this.token = params?.token;
+    this.appSandbox = params?.appSandbox;
   }
 }
 
@@ -30392,16 +30392,16 @@ export class WallPaperSettings extends TypeWallPaperSettings {
     ];
   }
 
-  constructor(params: { blur?: true; motion?: true; backgroundColor?: number; secondBackgroundColor?: number; thirdBackgroundColor?: number; fourthBackgroundColor?: number; intensity?: number; rotation?: number }) {
+  constructor(params?: { blur?: true; motion?: true; backgroundColor?: number; secondBackgroundColor?: number; thirdBackgroundColor?: number; fourthBackgroundColor?: number; intensity?: number; rotation?: number }) {
     super();
-    this.blur = params.blur;
-    this.motion = params.motion;
-    this.backgroundColor = params.backgroundColor;
-    this.secondBackgroundColor = params.secondBackgroundColor;
-    this.thirdBackgroundColor = params.thirdBackgroundColor;
-    this.fourthBackgroundColor = params.fourthBackgroundColor;
-    this.intensity = params.intensity;
-    this.rotation = params.rotation;
+    this.blur = params?.blur;
+    this.motion = params?.motion;
+    this.backgroundColor = params?.backgroundColor;
+    this.secondBackgroundColor = params?.secondBackgroundColor;
+    this.thirdBackgroundColor = params?.thirdBackgroundColor;
+    this.fourthBackgroundColor = params?.fourthBackgroundColor;
+    this.intensity = params?.intensity;
+    this.rotation = params?.rotation;
   }
 }
 
@@ -31269,10 +31269,10 @@ export class AccountContentSettings extends TypeAccountContentSettings {
     ];
   }
 
-  constructor(params: { sensitiveEnabled?: true; sensitiveCanChange?: true }) {
+  constructor(params?: { sensitiveEnabled?: true; sensitiveCanChange?: true }) {
     super();
-    this.sensitiveEnabled = params.sensitiveEnabled;
-    this.sensitiveCanChange = params.sensitiveCanChange;
+    this.sensitiveEnabled = params?.sensitiveEnabled;
+    this.sensitiveCanChange = params?.sensitiveCanChange;
   }
 }
 
@@ -31521,10 +31521,10 @@ export class WebPageAttributeTheme extends TypeWebPageAttribute {
     ];
   }
 
-  constructor(params: { documents?: Array<TypeDocument>; settings?: TypeThemeSettings }) {
+  constructor(params?: { documents?: Array<TypeDocument>; settings?: TypeThemeSettings }) {
     super();
-    this.documents = params.documents;
-    this.settings = params.settings;
+    this.documents = params?.documents;
+    this.settings = params?.settings;
   }
 }
 
@@ -32603,9 +32603,9 @@ export class GlobalPrivacySettings extends TypeGlobalPrivacySettings {
     ];
   }
 
-  constructor(params: { archiveAndMuteNewNoncontactPeers?: boolean }) {
+  constructor(params?: { archiveAndMuteNewNoncontactPeers?: boolean }) {
     super();
-    this.archiveAndMuteNewNoncontactPeers = params.archiveAndMuteNewNoncontactPeers;
+    this.archiveAndMuteNewNoncontactPeers = params?.archiveAndMuteNewNoncontactPeers;
   }
 }
 
@@ -32761,11 +32761,11 @@ export class MessageViews extends TypeMessageViews {
     ];
   }
 
-  constructor(params: { views?: number; forwards?: number; replies?: TypeMessageReplies }) {
+  constructor(params?: { views?: number; forwards?: number; replies?: TypeMessageReplies }) {
     super();
-    this.views = params.views;
-    this.forwards = params.forwards;
-    this.replies = params.replies;
+    this.views = params?.views;
+    this.forwards = params?.forwards;
+    this.replies = params?.replies;
   }
 }
 
@@ -33503,11 +33503,11 @@ export class MessagesHistoryImportParsed extends TypeMessagesHistoryImportParsed
     ];
   }
 
-  constructor(params: { pm?: true; group?: true; title?: string }) {
+  constructor(params?: { pm?: true; group?: true; title?: string }) {
     super();
-    this.pm = params.pm;
-    this.group = params.group;
-    this.title = params.title;
+    this.pm = params?.pm;
+    this.group = params?.group;
+    this.title = params?.title;
   }
 }
 
@@ -34586,9 +34586,9 @@ export class AuthLoggedOut extends TypeAuthLoggedOut {
     ];
   }
 
-  constructor(params: { futureAuthToken?: Uint8Array }) {
+  constructor(params?: { futureAuthToken?: Uint8Array }) {
     super();
-    this.futureAuthToken = params.futureAuthToken;
+    this.futureAuthToken = params?.futureAuthToken;
   }
 }
 
@@ -35223,9 +35223,9 @@ export class WebViewMessageSent extends TypeWebViewMessageSent {
     ];
   }
 
-  constructor(params: { msgId?: TypeInputBotInlineMessageID }) {
+  constructor(params?: { msgId?: TypeInputBotInlineMessageID }) {
     super();
-    this.msgId = params.msgId;
+    this.msgId = params?.msgId;
   }
 }
 
@@ -35747,10 +35747,10 @@ export class InputStorePaymentPremiumSubscription extends TypeInputStorePaymentP
     ];
   }
 
-  constructor(params: { restore?: true; upgrade?: true }) {
+  constructor(params?: { restore?: true; upgrade?: true }) {
     super();
-    this.restore = params.restore;
-    this.upgrade = params.upgrade;
+    this.restore = params?.restore;
+    this.upgrade = params?.upgrade;
   }
 }
 
@@ -36085,9 +36085,9 @@ export class ChatReactionsAll extends TypeChatReactions {
     ];
   }
 
-  constructor(params: { allowCustom?: true }) {
+  constructor(params?: { allowCustom?: true }) {
     super();
-    this.allowCustom = params.allowCustom;
+    this.allowCustom = params?.allowCustom;
   }
 }
 
@@ -36473,12 +36473,12 @@ export class MessageExtendedMediaPreview extends TypeMessageExtendedMedia {
     ];
   }
 
-  constructor(params: { w?: number; h?: number; thumb?: TypePhotoSize; videoDuration?: number }) {
+  constructor(params?: { w?: number; h?: number; thumb?: TypePhotoSize; videoDuration?: number }) {
     super();
-    this.w = params.w;
-    this.h = params.h;
-    this.thumb = params.thumb;
-    this.videoDuration = params.videoDuration;
+    this.w = params?.w;
+    this.h = params?.h;
+    this.thumb = params?.thumb;
+    this.videoDuration = params?.videoDuration;
   }
 }
 
@@ -36824,10 +36824,10 @@ export class RequestPeerTypeUser extends TypeRequestPeerType {
     ];
   }
 
-  constructor(params: { bot?: boolean; premium?: boolean }) {
+  constructor(params?: { bot?: boolean; premium?: boolean }) {
     super();
-    this.bot = params.bot;
-    this.premium = params.premium;
+    this.bot = params?.bot;
+    this.premium = params?.premium;
   }
 }
 
@@ -36867,14 +36867,14 @@ export class RequestPeerTypeChat extends TypeRequestPeerType {
     ];
   }
 
-  constructor(params: { creator?: true; botParticipant?: true; hasUsername?: boolean; forum?: boolean; userAdminRights?: TypeChatAdminRights; botAdminRights?: TypeChatAdminRights }) {
+  constructor(params?: { creator?: true; botParticipant?: true; hasUsername?: boolean; forum?: boolean; userAdminRights?: TypeChatAdminRights; botAdminRights?: TypeChatAdminRights }) {
     super();
-    this.creator = params.creator;
-    this.botParticipant = params.botParticipant;
-    this.hasUsername = params.hasUsername;
-    this.forum = params.forum;
-    this.userAdminRights = params.userAdminRights;
-    this.botAdminRights = params.botAdminRights;
+    this.creator = params?.creator;
+    this.botParticipant = params?.botParticipant;
+    this.hasUsername = params?.hasUsername;
+    this.forum = params?.forum;
+    this.userAdminRights = params?.userAdminRights;
+    this.botAdminRights = params?.botAdminRights;
   }
 }
 
@@ -36908,12 +36908,12 @@ export class RequestPeerTypeBroadcast extends TypeRequestPeerType {
     ];
   }
 
-  constructor(params: { creator?: true; hasUsername?: boolean; userAdminRights?: TypeChatAdminRights; botAdminRights?: TypeChatAdminRights }) {
+  constructor(params?: { creator?: true; hasUsername?: boolean; userAdminRights?: TypeChatAdminRights; botAdminRights?: TypeChatAdminRights }) {
     super();
-    this.creator = params.creator;
-    this.hasUsername = params.hasUsername;
-    this.userAdminRights = params.userAdminRights;
-    this.botAdminRights = params.botAdminRights;
+    this.creator = params?.creator;
+    this.hasUsername = params?.hasUsername;
+    this.userAdminRights = params?.userAdminRights;
+    this.botAdminRights = params?.botAdminRights;
   }
 }
 
@@ -37125,11 +37125,11 @@ export class AutoSaveSettings extends TypeAutoSaveSettings {
     ];
   }
 
-  constructor(params: { photos?: true; videos?: true; videoMaxSize?: bigint }) {
+  constructor(params?: { photos?: true; videos?: true; videoMaxSize?: bigint }) {
     super();
-    this.photos = params.photos;
-    this.videos = params.videos;
-    this.videoMaxSize = params.videoMaxSize;
+    this.photos = params?.photos;
+    this.videos = params?.videos;
+    this.videoMaxSize = params?.videoMaxSize;
   }
 }
 
