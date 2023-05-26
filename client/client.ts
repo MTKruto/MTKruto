@@ -25,6 +25,37 @@ export interface AuthorizeUserParams<S = string, N = { first: S; last: S }> {
 
 export type UpdatesHandler = null | ((client: Client, update: types.Updates) => MaybePromise<void>);
 
+export interface ClientParams {
+  /**
+   * The transport provider to use. Defaults to `defaultTransportProvider`.
+   */
+  transportProvider?: TransportProvider;
+  /**
+   * The app_version parameter to be passed to initConnection when calling `authorize`.
+   */
+  appVersion?: string;
+  /**
+   * The device_version parameter to be passed to initConnection when calling `authorize`.
+   */
+  deviceModel?: string;
+  /**
+   * The lang_code parameter to be passed to initConnection when calling `authorize`.
+   */
+  langCode?: string;
+  /**
+   * The lang_pack parameter to be passed to initConnection when calling `authorize`.
+   */
+  langPack?: string;
+  /**
+   * The system_lang_cde parameter to be passed to initConnection when calling `authorize`.
+   */
+  systemLangCode?: string;
+  /**
+   * The system_version parameter to be passed to initConnection when calling `authorize`.
+   */
+  systemVersion?: string;
+}
+
 export class Client extends ClientAbstract {
   private sessionId = getRandomBigInt(8, true, false);
   private state = { salt: 0n, seqNo: 0 };
@@ -39,19 +70,21 @@ export class Client extends ClientAbstract {
   public readonly systemLangCode: string;
   public readonly systemVersion: string;
 
+  /**
+   * Constructs the client.
+   *
+   * @param session The session provider to use. Defaults to in-memory session.
+   * @param apiId App's API ID from [my.telegram.org](1). Defaults to 0 (unset).
+   * @param apiHash App's API hash from [my.telegram.org](1). Default to empty string (unset).
+   * @param params Other parameters.
+   *
+   * [1]: https://my.telegram.org/apps
+   */
   constructor(
     public readonly session: Session = new SessionMemory(),
     public readonly apiId = 0,
     public readonly apiHash = "",
-    params?: {
-      transportProvider?: TransportProvider;
-      appVersion?: string;
-      deviceModel?: string;
-      langCode?: string;
-      langPack?: string;
-      systemLangCode?: string;
-      systemVersion?: string;
-    },
+    params?: ClientParams,
   ) {
     super(params?.transportProvider);
 
@@ -65,6 +98,12 @@ export class Client extends ClientAbstract {
 
   private shouldLoadSession = true;
 
+  /**
+   * Sets the DC and resets the auth key stored in the session provider
+   * if the stored DC was not the same as the `dc` parameter.
+   *
+   * @param dc The DC to change to.
+   */
   setDc(dc: DC) {
     if (this.session.dc != dc) {
       this.session.dc = dc;
@@ -76,6 +115,11 @@ export class Client extends ClientAbstract {
     super.setDc(dc);
   }
 
+  /**
+   * Loads the session if `setDc` was not called, initializes and connnects
+   * a `ClientPlain` to generate auth key if there was none, and connects the client.
+   * Before establishing the connection, the session is saved.
+   */
   async connect() {
     if (this.shouldLoadSession) {
       await this.session.load();
@@ -102,6 +146,23 @@ export class Client extends ClientAbstract {
     this.pingLoop();
   }
 
+  /**
+   * Calls [initConnection](1) and authorizes the client with one of the following:
+   *
+   * - Bot token (`string`)
+   * - Exported authorization (`types.AuthExportedAuthorization`)
+   * - User authorization handlers (`AuthorizeUserParams`)
+   *
+   * if the current auth key doesn't throw AUTH_KEY_UNREGISTERED when calling [updates.getState](2)
+   *
+   * Notes:
+   * 1. Requires the `apiId` and `apiHash` paramters to be passed when constructing the client.
+   * 2. Reconnects the client to the appropriate DC in case of MIGRATE_X errors.
+   * 3. The parameters passed to the [initConnection][1] call can be configured with the last parameter of the constructor.
+   *
+   * [1]: https://core.telegram.org/method/initConnection
+   * [2]: https://core.telegram.org/method/updates.getState
+   */
   async authorize(params: string | types.AuthExportedAuthorization | AuthorizeUserParams) {
     if (!this.apiId) {
       throw new Error("apiId not set");
@@ -253,6 +314,12 @@ export class Client extends ClientAbstract {
     }
   }
 
+  /**
+   * Invokes a function waiting and returning its reply if the second parameter is not `true`. Requires the client
+   * to be connected.
+   *
+   * @param function_ The function to invoke.
+   */
   async invoke<T extends (functions.Function<unknown> | types.Type) = functions.Function<unknown>>(function_: T): Promise<T extends functions.Function<unknown> ? T["__R"] : void>;
   async invoke<T extends (functions.Function<unknown> | types.Type) = functions.Function<unknown>>(function_: T, noWait: true): Promise<void>;
   async invoke<T extends (functions.Function<unknown> | types.Type) = functions.Function<unknown>>(function_: T, noWait?: boolean): Promise<T | void> {
@@ -292,6 +359,9 @@ export class Client extends ClientAbstract {
     }
   }
 
+  /**
+   * Alias for `invoke` with its second parameter being `true`.
+   */
   send<T extends (functions.Function<unknown> | types.Type) = functions.Function<unknown>>(function_: T) {
     return this.invoke(function_, true);
   }
