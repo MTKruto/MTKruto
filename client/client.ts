@@ -153,7 +153,7 @@ export class Client extends ClientAbstract {
    * - Exported authorization (`types.AuthExportedAuthorization`)
    * - User authorization handlers (`AuthorizeUserParams`)
    *
-   * if the current auth key doesn't throw AUTH_KEY_UNREGISTERED when calling [updates.getState](2)
+   * if the current auth key doesn't throw AUTH_KEY_UNREGISTERED when calling [updates.getState](2).
    *
    * Notes:
    * 1. Requires the `apiId` and `apiHash` paramters to be passed when constructing the client.
