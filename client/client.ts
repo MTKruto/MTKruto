@@ -74,11 +74,9 @@ export class Client extends ClientAbstract {
    * Constructs the client.
    *
    * @param session The session provider to use. Defaults to in-memory session.
-   * @param apiId App's API ID from [my.telegram.org](1). Defaults to 0 (unset).
-   * @param apiHash App's API hash from [my.telegram.org](1). Default to empty string (unset).
+   * @param apiId App's API ID from [my.telegram.org](https://my.telegram.org/apps). Defaults to 0 (unset).
+   * @param apiHash App's API hash from [my.telegram.org/apps](https://my.telegram.org/apps). Default to empty string (unset).
    * @param params Other parameters.
-   *
-   * [1]: https://my.telegram.org/apps
    */
   constructor(
     public readonly session: Session = new SessionMemory(),
