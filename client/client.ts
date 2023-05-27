@@ -196,6 +196,7 @@ export class Client extends ClientAbstract {
       }
     }
 
+    let signedIn = false;
     let phoneNumber: string | null = null;
 
     try {
@@ -203,6 +204,10 @@ export class Client extends ClientAbstract {
         await this.invoke(new functions.AuthImportAuthorization({ id: params.id, bytes: params.bytes }));
       } else if (typeof params == "object") {
         while (true) {
+          if (signedIn) {
+            break;
+          }
+
           try {
             try {
               phoneNumber = typeof params.phone === "string" ? params.phone : await params.phone();
@@ -223,6 +228,7 @@ export class Client extends ClientAbstract {
                     if (auth instanceof types.AuthAuthorizationSignUpRequired) {
                       throw new Error("Sign up not supported");
                     } else {
+                      signedIn = true;
                       break;
                     }
                   } catch (err) {
