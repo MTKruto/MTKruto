@@ -81,7 +81,8 @@ export function pad(bigint: number | bigint | Uint8Array) {
   }
 }
 
-export async function checkPassword(password: Uint8Array, ap: types.AccountPassword) {
+export async function checkPassword(password_: string, ap: types.AccountPassword) {
+  const password = new TextEncoder().encode(password_);
   const algo = ap.currentAlgo;
   if (
     !(algo instanceof
