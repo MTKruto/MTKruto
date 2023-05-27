@@ -3,6 +3,7 @@ import { MaybePromise } from "../types.ts";
 import { ackThreshold, DEFAULT_APP_VERSION, DEFAULT_DEVICE_MODEL, DEFAULT_LANG_CODE, DEFAULT_LANG_PACK, DEFAULT_SYSTEM_LANG_CODE, DEFAULT_SYSTEM_VERSION, LAYER } from "../constants.ts";
 import { getRandomBigInt } from "../utilities/0_bigint.ts";
 import { decryptMessage, encryptMessage, getMessageId } from "../utilities/1_message.ts";
+import { checkPassword } from "../utilities/1_password.ts";
 import { MaybeVectorTLObject } from "../tl/1_tl_object.ts";
 import * as types from "../tl/2_types.ts";
 import * as functions from "../tl/3_functions.ts";
@@ -16,11 +17,12 @@ import { Session } from "../session/session.ts";
 import { SessionMemory } from "../session/session_memory.ts";
 import { DC, TransportProvider } from "../transport/transport_provider.ts";
 
-export interface AuthorizeUserParams<S = string, N = { first: S; last: S }> {
+export const restartAuth = Symbol();
+
+export interface AuthorizeUserParams<S = string> {
   phone: S | (() => MaybePromise<S>);
   code: S | (() => MaybePromise<S>);
   password: S | (() => MaybePromise<S>);
-  names: N | (() => MaybePromise<N>);
 }
 
 export type UpdatesHandler = null | ((client: Client, update: types.Updates) => MaybePromise<void>);
@@ -194,11 +196,81 @@ export class Client extends ClientAbstract {
       }
     }
 
+    let phoneNumber: string | null = null;
+
     try {
       if (params instanceof types.AuthExportedAuthorization) {
         await this.invoke(new functions.AuthImportAuthorization({ id: params.id, bytes: params.bytes }));
       } else if (typeof params == "object") {
-        throw new Error("Not implemented");
+        while (true) {
+          try {
+            try {
+              phoneNumber = typeof params.phone === "string" ? params.phone : await params.phone();
+              const sentCode = await this.invoke(
+                new functions.AuthSendCode({
+                  apiId: this.apiId,
+                  apiHash: this.apiHash,
+                  phoneNumber,
+                  settings: new types.CodeSettings(),
+                }),
+              );
+
+              if (sentCode instanceof types.AuthSentCode) {
+                while (true) {
+                  const phoneCode = typeof params.code === "string" ? params.code : await params.code();
+                  try {
+                    const auth = await this.invoke(new functions.AuthSignIn({ phoneNumber, phoneCode, phoneCodeHash: sentCode.phoneCodeHash }));
+                    if (auth instanceof types.AuthAuthorizationSignUpRequired) {
+                      throw new Error("Sign up not supported");
+                    } else {
+                      break;
+                    }
+                  } catch (err) {
+                    if (err instanceof types.RPCError && err.errorMessage == "PHONE_CODE_INVALID") {
+                      continue;
+                    } else {
+                      throw err;
+                    }
+                  }
+                }
+              } else {
+                throw new Error(`Handling ${sentCode.constructor.name} not implemented`);
+              }
+            } catch (err) {
+              if (err instanceof types.RPCError && err.errorMessage == "SESSION_PASSWORD_NEEDED") {
+                while (true) {
+                  const ap = await this.invoke(new functions.AccountGetPassword());
+
+                  if (ap.currentAlgo instanceof types.PasswordKdfAlgoSHA256SHA256PBKDF2HMACSHA512iter100000SHA256ModPow) {
+                    try {
+                      const password = typeof params.password === "string" ? params.password : await params.password();
+                      const input = await checkPassword(password, ap);
+
+                      await this.invoke(new functions.AuthCheckPassword({ password: input }));
+                      break;
+                    } catch (err) {
+                      if (err instanceof types.RPCError && err.errorMessage == "PASSWORD_HASH_INVALID") {
+                        continue;
+                      } else {
+                        throw err;
+                      }
+                    }
+                  } else {
+                    throw new Error(`Handling ${ap.currentAlgo?.constructor.name} not implemented`);
+                  }
+                }
+              } else {
+                throw err;
+              }
+            }
+          } catch (err) {
+            if (err == restartAuth) {
+              continue;
+            } else {
+              throw err;
+            }
+          }
+        }
       } else {
         await this.invoke(new functions.AuthImportBotAuthorization({ apiId: this.apiId, apiHash: this.apiHash, botAuthToken: params, flags: 0 }));
       }
@@ -211,6 +283,10 @@ export class Client extends ClientAbstract {
             newDc += "-test";
           }
           await this.reconnect(newDc as DC);
+          if (typeof params === "object" && phoneNumber != null) {
+            params = Object.assign({}, params) as AuthorizeUserParams;
+            params.phone = phoneNumber;
+          }
           await this.authorize(params);
         } else {
           throw err;
