@@ -1,6 +1,6 @@
 import { gunzip } from "../deps.ts";
 import { MaybePromise } from "../types.ts";
-import { ackThreshold, DEFAULT_APP_VERSION, DEFAULT_DEVICE_MODEL, DEFAULT_LANG_CODE, DEFAULT_LANG_PACK, DEFAULT_SYSTEM_LANG_CODE, DEFAULT_SYSTEM_VERSION, LAYER } from "../constants.ts";
+import { ackThreshold, DEFAULT_APP_VERSION, DEFAULT_DEVICE_MODEL, DEFAULT_INITIAL_DC, DEFAULT_LANG_CODE, DEFAULT_LANG_PACK, DEFAULT_SYSTEM_LANG_CODE, DEFAULT_SYSTEM_VERSION, LAYER } from "../constants.ts";
 import { bigIntFromBuffer, getRandomBigInt } from "../utilities/0_bigint.ts";
 import { decryptMessage, encryptMessage, getMessageId } from "../utilities/1_message.ts";
 import { checkPassword } from "../utilities/1_password.ts";
@@ -109,6 +109,7 @@ export class Client extends ClientAbstract {
   async setDc(dc: DC) {
     if (!this.storageInited) {
       await this.storage.init();
+      this.storageInited = true;
     }
     if (await this.storage.getDc() != dc) {
       await this.storage.setDc(dc);
@@ -131,6 +132,7 @@ export class Client extends ClientAbstract {
   async connect() {
     if (!this.storageInited) {
       await this.storage.init();
+      this.storageInited = true;
     }
     const authKey = await this.storage.getAuthKey();
     if (authKey == null) {
@@ -150,9 +152,12 @@ export class Client extends ClientAbstract {
     }
     const dc = await this.storage.getDc();
     if (dc != null) {
-      this.setDc(dc);
+      await this.setDc(dc);
     }
     await super.connect();
+    if (dc == null) {
+      await this.storage.setDc(DEFAULT_INITIAL_DC);
+    }
     // logger().debug("Client connected");
     this.receiveLoop();
     this.pingLoop();
