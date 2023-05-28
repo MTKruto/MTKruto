@@ -187,6 +187,35 @@ export class Client extends ClientAbstract {
       }),
     );
 
+    const handlePassword = async (err: unknown) => {
+      params = params as AuthorizeUserParams;
+      if (err instanceof types.RPCError && err.errorMessage == "SESSION_PASSWORD_NEEDED") {
+        while (true) {
+          const ap = await this.invoke(new functions.AccountGetPassword());
+
+          if (ap.currentAlgo instanceof types.PasswordKdfAlgoSHA256SHA256PBKDF2HMACSHA512iter100000SHA256ModPow) {
+            try {
+              const password = typeof params.password === "string" ? params.password : await params.password();
+              const input = await checkPassword(password, ap);
+
+              await this.invoke(new functions.AuthCheckPassword({ password: input }));
+              break;
+            } catch (err) {
+              if (err instanceof types.RPCError && err.errorMessage == "PASSWORD_HASH_INVALID") {
+                continue;
+              } else {
+                throw err;
+              }
+            }
+          } else {
+            throw new Error(`Handling ${ap.currentAlgo?.constructor.name} not implemented`);
+          }
+        }
+      } else {
+        throw err;
+      }
+    };
+
     try {
       await this.invoke(new functions.UpdatesGetState());
       return;
@@ -243,31 +272,7 @@ export class Client extends ClientAbstract {
                 throw new Error(`Handling ${sentCode.constructor.name} not implemented`);
               }
             } catch (err) {
-              if (err instanceof types.RPCError && err.errorMessage == "SESSION_PASSWORD_NEEDED") {
-                while (true) {
-                  const ap = await this.invoke(new functions.AccountGetPassword());
-
-                  if (ap.currentAlgo instanceof types.PasswordKdfAlgoSHA256SHA256PBKDF2HMACSHA512iter100000SHA256ModPow) {
-                    try {
-                      const password = typeof params.password === "string" ? params.password : await params.password();
-                      const input = await checkPassword(password, ap);
-
-                      await this.invoke(new functions.AuthCheckPassword({ password: input }));
-                      break;
-                    } catch (err) {
-                      if (err instanceof types.RPCError && err.errorMessage == "PASSWORD_HASH_INVALID") {
-                        continue;
-                      } else {
-                        throw err;
-                      }
-                    }
-                  } else {
-                    throw new Error(`Handling ${ap.currentAlgo?.constructor.name} not implemented`);
-                  }
-                }
-              } else {
-                throw err;
-              }
+              await handlePassword(err);
             }
           } catch (err) {
             if (err == restartAuth) {
@@ -295,7 +300,7 @@ export class Client extends ClientAbstract {
           }
           await this.authorize(params);
         } else {
-          throw err;
+          await handlePassword(err);
         }
       } else {
         throw err;
