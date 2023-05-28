@@ -3,6 +3,7 @@ import { DEFAULT_INITIAL_DC } from "../constants.ts";
 import { Connection } from "../connection/connection.ts";
 import { Transport } from "../transport/transport.ts";
 import { DC, defaultTransportProvider } from "../transport/transport_provider.ts";
+import { MaybePromise } from "../types.ts";
 
 export abstract class ClientAbstract {
   protected connection: Connection;
@@ -21,7 +22,8 @@ export abstract class ClientAbstract {
     return this._dcId;
   }
 
-  setDc(dc: DC) {
+  // MaybePromise since `Client` has to deal with `Storage.set()`
+  setDc(dc: DC): MaybePromise<void> {
     const { connection, transport, dcId } = this.transportProvider({ dc, cdn: false });
     this.connection = connection;
     this.transport = transport;
