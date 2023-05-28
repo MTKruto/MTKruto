@@ -44,7 +44,7 @@ jobs:
         with:
           version: 8
 
-      - run: pnpm dlx madge mod.ts
+      - run: pnpm dlx madge --circular mod.ts
 
   test:
     runs-on: ubuntu-latest
