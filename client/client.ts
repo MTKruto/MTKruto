@@ -1,7 +1,7 @@
 import { gunzip } from "../deps.ts";
 import { MaybePromise } from "../types.ts";
 import { ackThreshold, DEFAULT_APP_VERSION, DEFAULT_DEVICE_MODEL, DEFAULT_LANG_CODE, DEFAULT_LANG_PACK, DEFAULT_SYSTEM_LANG_CODE, DEFAULT_SYSTEM_VERSION, LAYER } from "../constants.ts";
-import { getRandomBigInt } from "../utilities/0_bigint.ts";
+import { bigIntFromBuffer, getRandomBigInt } from "../utilities/0_bigint.ts";
 import { decryptMessage, encryptMessage, getMessageId } from "../utilities/1_message.ts";
 import { checkPassword } from "../utilities/1_password.ts";
 import { MaybeVectorTLObject } from "../tl/1_tl_object.ts";
@@ -13,9 +13,10 @@ import { Message } from "../tl/5_message.ts";
 import { MessageContainer } from "../tl/6_message_container.ts";
 import { ClientAbstract } from "./client_abstract.ts";
 import { ClientPlain } from "./client_plain.ts";
-import { Session } from "../session/session.ts";
-import { SessionMemory } from "../session/session_memory.ts";
+import { Storage } from "../storage/storage.ts";
+import { StorageMemory } from "../storage/storage_memory.ts";
 import { DC, TransportProvider } from "../transport/transport_provider.ts";
+import { sha1 } from "../utilities/0_hash.ts";
 
 export const restartAuth = Symbol();
 
@@ -59,6 +60,7 @@ export interface ClientParams {
 }
 
 export class Client extends ClientAbstract {
+  private auth: { key: Uint8Array; id: bigint } | null = null;
   private sessionId = getRandomBigInt(8, true, false);
   private state = { salt: 0n, seqNo: 0 };
   private promises = new Map<bigint, { resolve: (obj: MaybeVectorTLObject) => void; reject: (err: MaybeVectorTLObject) => void }>();
@@ -75,13 +77,13 @@ export class Client extends ClientAbstract {
   /**
    * Constructs the client.
    *
-   * @param session The session provider to use. Defaults to in-memory session.
+   * @param storage The storage provider to use. Defaults to memory storage.
    * @param apiId App's API ID from [my.telegram.org](https://my.telegram.org/apps). Defaults to 0 (unset).
    * @param apiHash App's API hash from [my.telegram.org/apps](https://my.telegram.org/apps). Default to empty string (unset).
    * @param params Other parameters.
    */
   constructor(
-    public readonly session: Session = new SessionMemory(),
+    public readonly storage: Storage = new StorageMemory(),
     public readonly apiId = 0,
     public readonly apiHash = "",
     params?: ClientParams,
@@ -96,7 +98,7 @@ export class Client extends ClientAbstract {
     this.systemVersion = params?.systemVersion ?? DEFAULT_SYSTEM_VERSION;
   }
 
-  private shouldLoadSession = true;
+  private storageInited = false;
 
   /**
    * Sets the DC and resets the auth key stored in the session provider
@@ -104,15 +106,21 @@ export class Client extends ClientAbstract {
    *
    * @param dc The DC to change to.
    */
-  setDc(dc: DC) {
-    if (this.session.dc != dc) {
-      this.session.dc = dc;
-      this.session.authKey = null;
-      if (this.shouldLoadSession) {
-        this.shouldLoadSession = false;
-      }
+  async setDc(dc: DC) {
+    if (!this.storageInited) {
+      await this.storage.init();
+    }
+    if (await this.storage.getDc() != dc) {
+      await this.storage.setDc(dc);
+      await this.storage.setAuthKey(null);
     }
     super.setDc(dc);
+  }
+
+  private async setAuth(key: Uint8Array) {
+    const hash = await sha1(key);
+    const id = bigIntFromBuffer(hash.slice(-8), true, false);
+    this.auth = { key, id };
   }
 
   /**
@@ -121,25 +129,29 @@ export class Client extends ClientAbstract {
    * Before establishing the connection, the session is saved.
    */
   async connect() {
-    if (this.shouldLoadSession) {
-      await this.session.load();
-      this.shouldLoadSession = false;
+    if (!this.storageInited) {
+      await this.storage.init();
     }
-    if (this.session.authKey == null) {
+    const authKey = await this.storage.getAuthKey();
+    if (authKey == null) {
       const plain = new ClientPlain(this.transportProvider);
-      if (this.session.dc != null) {
-        plain.setDc(this.session.dc);
+      const dc = await this.storage.getDc();
+      if (dc != null) {
+        plain.setDc(dc);
       }
       await plain.connect();
       const { authKey, salt } = await plain.createAuthKey();
       await plain.disconnect();
+      await this.storage.setAuthKey(authKey);
+      await this.setAuth(authKey);
       this.state.salt = salt;
-      this.session.authKey = authKey;
+    } else {
+      await this.setAuth(authKey);
     }
-    if (this.session.dc != null) {
-      this.setDc(this.session.dc);
+    const dc = await this.storage.getDc();
+    if (dc != null) {
+      this.setDc(dc);
     }
-    await this.session.save();
     await super.connect();
     // logger().debug("Client connected");
     this.receiveLoop();
@@ -309,7 +321,7 @@ export class Client extends ClientAbstract {
   }
 
   private async receiveLoop() {
-    if (!this.session.authKey) {
+    if (!this.auth) {
       throw new Error("Not connected");
     }
 
@@ -334,8 +346,8 @@ export class Client extends ClientAbstract {
       try {
         decrypted = await decryptMessage(
           buffer,
-          this.session.authKey,
-          (await this.session.authKeyId)!,
+          this.auth.key,
+          this.auth.id,
           this.sessionId,
         );
       } catch (_err) {
@@ -408,7 +420,7 @@ export class Client extends ClientAbstract {
   async invoke<T extends (functions.Function<unknown> | types.Type) = functions.Function<unknown>>(function_: T): Promise<T extends functions.Function<unknown> ? T["__R"] : void>;
   async invoke<T extends (functions.Function<unknown> | types.Type) = functions.Function<unknown>>(function_: T, noWait: true): Promise<void>;
   async invoke<T extends (functions.Function<unknown> | types.Type) = functions.Function<unknown>>(function_: T, noWait?: boolean): Promise<T | void> {
-    if (!this.session.authKey) {
+    if (!this.auth) {
       throw new Error("Not connected");
     }
 
@@ -421,8 +433,8 @@ export class Client extends ClientAbstract {
     await this.transport.send(
       await encryptMessage(
         message,
-        this.session.authKey,
-        (await this.session.authKeyId)!,
+        this.auth.key,
+        this.auth.id,
         this.state.salt,
         this.sessionId,
       ),
