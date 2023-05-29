@@ -4,7 +4,7 @@ import { ackThreshold, DEFAULT_APP_VERSION, DEFAULT_DEVICE_MODEL, DEFAULT_INITIA
 import { bigIntFromBuffer, getRandomBigInt } from "../utilities/0_bigint.ts";
 import { decryptMessage, encryptMessage, getMessageId } from "../utilities/1_message.ts";
 import { checkPassword } from "../utilities/1_password.ts";
-import { MaybeVectorTLObject } from "../tl/1_tl_object.ts";
+import { as, MaybeVectorTLObject } from "../tl/1_tl_object.ts";
 import * as types from "../tl/2_types.ts";
 import * as functions from "../tl/3_functions.ts";
 import { TLReader } from "../tl/3_tl_reader.ts";
@@ -17,7 +17,6 @@ import { Storage } from "../storage/storage.ts";
 import { StorageMemory } from "../storage/storage_memory.ts";
 import { DC, TransportProvider } from "../transport/transport_provider.ts";
 import { sha1 } from "../utilities/0_hash.ts";
-import { as } from "../mod.ts";
 
 export const restartAuth = Symbol();
 
@@ -473,6 +472,12 @@ export class Client extends ClientAbstract {
     for (const chat of chats) {
       if (chat instanceof types.Channel && chat.accessHash) {
         await this.storage.setChannelAccessHash(chat.id, chat.accessHash);
+        if (chat.username) {
+          await this.storage.updateUsernames("channel", chat.id, [chat.username]);
+        }
+        if (chat.usernames) {
+          await this.storage.updateUsernames("channel", chat.id, chat.usernames.map((v) => v[as](types.Username)).map((v) => v.username));
+        }
       }
     }
   }
@@ -481,6 +486,12 @@ export class Client extends ClientAbstract {
     for (const user of users) {
       if (user instanceof types.User && user.accessHash) {
         await this.storage.setUserAccessHash(user.id, user.accessHash);
+        if (user.username) {
+          await this.storage.updateUsernames("user", user.id, [user.username]);
+        }
+        if (user.usernames) {
+          await this.storage.updateUsernames("user", user.id, user.usernames.map((v) => v[as](types.Username)).map((v) => v.username));
+        }
       }
     }
   }
@@ -491,7 +502,7 @@ export class Client extends ClientAbstract {
       await this.processUsers(updates.users);
       for (const update of updates.updates) {
         if (update instanceof types.UpdateUserName) {
-          await this.storage.updateUserUsernames(update.userId, update.usernames.map((v) => v[as](types.Username)).map((v) => v.username));
+          await this.storage.updateUsernames("user", update.userId, update.usernames.map((v) => v[as](types.Username)).map((v) => v.username));
         }
       }
 
@@ -510,23 +521,37 @@ export class Client extends ClientAbstract {
         if (!id) {
           throw new Error("Empty username");
         }
-        let userId: bigint;
-        const maybeUserId = await this.storage.getUserUsername(id);
-        if (maybeUserId == null || Date.now() - maybeUserId[1].getTime() >= USERNAME_TTL) {
+        let userId = 0n;
+        let channelId = 0n;
+        const maybeUsername = await this.storage.getUsername(id);
+        if (maybeUsername != null && Date.now() - maybeUsername[2].getTime() < USERNAME_TTL) {
+          const [type, id] = maybeUsername;
+          if (type == "user") {
+            userId = id;
+          } else {
+            channelId = id;
+          }
+        } else {
           const resolved = await this.invoke(new functions.ContactsResolveUsername({ username: id }));
           await this.processChats(resolved.chats);
           await this.processUsers(resolved.users);
           if (resolved.peer instanceof types.PeerUser) {
             userId = resolved.peer.userId;
+          } else if (resolved.peer instanceof types.PeerChannel) {
+            channelId = resolved.peer.channelId;
           } else {
-            throw new Error("Channel usernames not implemented");
+            throw new Error("Unreachable");
           }
-          await this.storage.updateUserUsernames(userId, [id]);
-        } else {
-          userId = maybeUserId[0];
         }
-        const accessHash = await this.storage.getUserAccessHash(userId);
-        return new types.InputPeerUser({ userId, accessHash: accessHash ?? 0n });
+        if (userId) {
+          const accessHash = await this.storage.getUserAccessHash(userId);
+          return new types.InputPeerUser({ userId, accessHash: accessHash ?? 0n });
+        } else if (channelId) {
+          const accessHash = await this.storage.getChannelAccessHash(channelId);
+          return new types.InputPeerChannel({ channelId, accessHash: accessHash ?? 0n });
+        } else {
+          throw new Error("Unreachable");
+        }
       }
     } else if (id > 0) {
       const id_ = BigInt(id);

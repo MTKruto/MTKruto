@@ -42,12 +42,13 @@ export abstract class Storage {
     return this._authKeyId;
   }
 
+  private readonly channelAccessHash__ = "channelAccessHash__";
   setChannelAccessHash(id: bigint, accessHash: bigint) {
-    return this.set(`channel_access_hash_${id}`, String(accessHash));
+    return this.set(`${this.channelAccessHash__}${id}`, String(accessHash));
   }
 
   async getChannelAccessHash(id: bigint) {
-    const accessHash = await this.get(`channel_access_hash_${id}`);
+    const accessHash = await this.get(`${this.channelAccessHash__}${id}`);
     if (accessHash != null) {
       return BigInt(accessHash);
     } else {
@@ -55,12 +56,13 @@ export abstract class Storage {
     }
   }
 
+  private readonly userAccessHash__ = "userAccessHash__";
   setUserAccessHash(id: bigint, accessHash: bigint) {
-    return this.set(`user_access_hash_${id}`, String(accessHash));
+    return this.set(`${this.userAccessHash__}${id}`, String(accessHash));
   }
 
   async getUserAccessHash(id: bigint) {
-    const accessHash = await this.get(`user_access_hash_${id}`);
+    const accessHash = await this.get(`${this.userAccessHash__}${id}`);
     if (accessHash != null) {
       return BigInt(accessHash);
     } else {
@@ -68,19 +70,20 @@ export abstract class Storage {
     }
   }
 
-  async updateUserUsernames(id: bigint, usernames: string[]) {
+  private readonly username__ = "username__";
+  async updateUsernames(type: "user" | "channel", id: bigint, usernames: string[]) {
     for (let username of usernames) {
       username = username.toLowerCase();
-      await this.set(`user_username_${username}`, JSON.stringify([String(id), new Date()]));
+      await this.set(`${this.username__}${username}`, JSON.stringify([type, String(id), new Date()]));
     }
   }
 
-  async getUserUsername(username: string) {
+  async getUsername(username: string) {
     username = username.toLowerCase();
-    const username_ = await this.get(`user_username_${username}`);
+    const username_ = await this.get(`${this.username__}${username}`);
     if (username_ != null) {
-      const [id, updatedAt] = JSON.parse(username);
-      return [BigInt(id), new Date(updatedAt)] as const;
+      const [type, id, updatedAt] = JSON.parse(username_);
+      return [type as "user" | "channel", BigInt(id), new Date(updatedAt)] as const;
     } else {
       return null;
     }
