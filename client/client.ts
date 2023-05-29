@@ -1,10 +1,10 @@
 import { gunzip } from "../deps.ts";
 import { MaybePromise } from "../types.ts";
-import { ackThreshold, DEFAULT_APP_VERSION, DEFAULT_DEVICE_MODEL, DEFAULT_INITIAL_DC, DEFAULT_LANG_CODE, DEFAULT_LANG_PACK, DEFAULT_SYSTEM_LANG_CODE, DEFAULT_SYSTEM_VERSION, LAYER } from "../constants.ts";
+import { ackThreshold, DEFAULT_APP_VERSION, DEFAULT_DEVICE_MODEL, DEFAULT_INITIAL_DC, DEFAULT_LANG_CODE, DEFAULT_LANG_PACK, DEFAULT_SYSTEM_LANG_CODE, DEFAULT_SYSTEM_VERSION, LAYER, MAX_CHANNEL_ID, MAX_CHAT_ID, USERNAME_TTL, ZERO_CHANNEL_ID } from "../constants.ts";
 import { bigIntFromBuffer, getRandomBigInt } from "../utilities/0_bigint.ts";
 import { decryptMessage, encryptMessage, getMessageId } from "../utilities/1_message.ts";
 import { checkPassword } from "../utilities/1_password.ts";
-import { MaybeVectorTLObject } from "../tl/1_tl_object.ts";
+import { as, MaybeVectorTLObject } from "../tl/1_tl_object.ts";
 import * as types from "../tl/2_types.ts";
 import * as functions from "../tl/3_functions.ts";
 import { TLReader } from "../tl/3_tl_reader.ts";
@@ -368,7 +368,7 @@ export class Client extends ClientAbstract {
         }
         // logger().debug(`Received ${body.constructor.name}`);
         if (body instanceof types.Updates) {
-          this.updatesHandler?.(this, body);
+          this.processUpdates(body);
         } else if (message.body instanceof RPCResult) {
           let result = message.body.result;
           if (result instanceof types.GZIPPacked) {
@@ -466,5 +466,105 @@ export class Client extends ClientAbstract {
    */
   send<T extends (functions.Function<unknown> | types.Type) = functions.Function<unknown>>(function_: T) {
     return this.invoke(function_, true);
+  }
+
+  private async processChats(chats: types.TypeChat[]) {
+    for (const chat of chats) {
+      if (chat instanceof types.Channel && chat.accessHash) {
+        await this.storage.setChannelAccessHash(chat.id, chat.accessHash);
+        if (chat.username) {
+          await this.storage.updateUsernames("channel", chat.id, [chat.username]);
+        }
+        if (chat.usernames) {
+          await this.storage.updateUsernames("channel", chat.id, chat.usernames.map((v) => v[as](types.Username)).map((v) => v.username));
+        }
+      }
+    }
+  }
+
+  private async processUsers(users: types.TypeUser[]) {
+    for (const user of users) {
+      if (user instanceof types.User && user.accessHash) {
+        await this.storage.setUserAccessHash(user.id, user.accessHash);
+        if (user.username) {
+          await this.storage.updateUsernames("user", user.id, [user.username]);
+        }
+        if (user.usernames) {
+          await this.storage.updateUsernames("user", user.id, user.usernames.map((v) => v[as](types.Username)).map((v) => v.username));
+        }
+      }
+    }
+  }
+
+  private async processUpdates(updates: types.Updates) {
+    try {
+      await this.processChats(updates.chats);
+      await this.processUsers(updates.users);
+      for (const update of updates.updates) {
+        if (update instanceof types.UpdateUserName) {
+          await this.storage.updateUsernames("user", update.userId, update.usernames.map((v) => v[as](types.Username)).map((v) => v.username));
+        }
+      }
+
+      await this.updatesHandler?.(this, updates);
+    } catch (err) {
+      console.error("Error processing updates:", err);
+    }
+  }
+
+  async getInputPeer(id: string | number) {
+    if (typeof id === "string") {
+      if (!id.startsWith("@")) {
+        throw new Error("Expected username to start with @");
+      } else {
+        id = id.slice(1);
+        if (!id) {
+          throw new Error("Empty username");
+        }
+        let userId = 0n;
+        let channelId = 0n;
+        const maybeUsername = await this.storage.getUsername(id);
+        if (maybeUsername != null && Date.now() - maybeUsername[2].getTime() < USERNAME_TTL) {
+          const [type, id] = maybeUsername;
+          if (type == "user") {
+            userId = id;
+          } else {
+            channelId = id;
+          }
+        } else {
+          const resolved = await this.invoke(new functions.ContactsResolveUsername({ username: id }));
+          await this.processChats(resolved.chats);
+          await this.processUsers(resolved.users);
+          if (resolved.peer instanceof types.PeerUser) {
+            userId = resolved.peer.userId;
+          } else if (resolved.peer instanceof types.PeerChannel) {
+            channelId = resolved.peer.channelId;
+          } else {
+            throw new Error("Unreachable");
+          }
+        }
+        if (userId) {
+          const accessHash = await this.storage.getUserAccessHash(userId);
+          return new types.InputPeerUser({ userId, accessHash: accessHash ?? 0n });
+        } else if (channelId) {
+          const accessHash = await this.storage.getChannelAccessHash(channelId);
+          return new types.InputPeerChannel({ channelId, accessHash: accessHash ?? 0n });
+        } else {
+          throw new Error("Unreachable");
+        }
+      }
+    } else if (id > 0) {
+      const id_ = BigInt(id);
+      const accessHash = await this.storage.getUserAccessHash(id_);
+      return new types.InputPeerUser({ userId: id_, accessHash: accessHash ?? 0n });
+    } else if (-MAX_CHAT_ID <= id) {
+      return new types.InputPeerChat({ chatId: BigInt(Math.abs(id)) });
+    } else if (ZERO_CHANNEL_ID - MAX_CHANNEL_ID <= id && id != ZERO_CHANNEL_ID) {
+      const id_ = BigInt(Math.abs(id - ZERO_CHANNEL_ID));
+      const accessHash = await this.storage.getChannelAccessHash(id_);
+      return new types.InputPeerChannel({ channelId: id_, accessHash: accessHash ?? 0n });
+    } else {
+      throw new Error("ID format unknown or not implemented");
+    }
   }
 }

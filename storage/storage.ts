@@ -41,4 +41,51 @@ export abstract class Storage {
   get authKeyId() {
     return this._authKeyId;
   }
+
+  private readonly channelAccessHash__ = "channelAccessHash__";
+  setChannelAccessHash(id: bigint, accessHash: bigint) {
+    return this.set(`${this.channelAccessHash__}${id}`, String(accessHash));
+  }
+
+  async getChannelAccessHash(id: bigint) {
+    const accessHash = await this.get(`${this.channelAccessHash__}${id}`);
+    if (accessHash != null) {
+      return BigInt(accessHash);
+    } else {
+      return null;
+    }
+  }
+
+  private readonly userAccessHash__ = "userAccessHash__";
+  setUserAccessHash(id: bigint, accessHash: bigint) {
+    return this.set(`${this.userAccessHash__}${id}`, String(accessHash));
+  }
+
+  async getUserAccessHash(id: bigint) {
+    const accessHash = await this.get(`${this.userAccessHash__}${id}`);
+    if (accessHash != null) {
+      return BigInt(accessHash);
+    } else {
+      return null;
+    }
+  }
+
+  private readonly username__ = "username__";
+  async updateUsernames(type: "user" | "channel", id: bigint, usernames: string[]) {
+    for (let username of usernames) {
+      username = username.toLowerCase();
+      await this.set(`${this.username__}${username}`, JSON.stringify([type, String(id), new Date()]));
+    }
+  }
+
+  async getUsername(username: string) {
+    username = username.toLowerCase();
+    const username_ = await this.get(`${this.username__}${username}`);
+    if (username_ != null) {
+      const [type, id, updatedAt] = JSON.parse(username_);
+      return [type as "user" | "channel", BigInt(id), new Date(updatedAt)] as const;
+    } else {
+      return null;
+    }
+  }
 }
