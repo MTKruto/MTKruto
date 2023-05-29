@@ -379,6 +379,10 @@ export class Client extends ClientAbstract {
             if (result instanceof types.RPCError) {
               promise.reject(result);
             } else {
+              if (result instanceof types.Updates) {
+                await this.processChats(result.chats);
+                await this.processUsers(result.users);
+              }
               promise.resolve(result);
             }
             this.promises.delete(message.body.messageId);
