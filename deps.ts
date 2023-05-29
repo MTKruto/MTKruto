@@ -5,3 +5,5 @@ export { ctr256Decrypt, ctr256Encrypt, factorize, ige256Decrypt, ige256Encrypt, 
 export { gunzip, gzip } from "https://raw.githubusercontent.com/MTKruto/compress/master/gzip/gzip.ts";
 
 export { Mutex } from "https://esm.sh/async-mutex@0.4.0";
+
+export { Parser } from "https://deno.land/x/html_parser@v0.1.3/src/mod.ts";
