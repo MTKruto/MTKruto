@@ -60,7 +60,7 @@ export function parseHtml(html: string) {
       text += data;
       const lastItem = queue[queue.length - 1];
       if (lastItem) {
-        lastItem.length += text.length;
+        lastItem.length += data.length;
       }
     },
     onclosetag() {
