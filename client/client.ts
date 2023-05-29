@@ -1,7 +1,8 @@
 import { gunzip } from "../deps.ts";
 import { MaybePromise } from "../types.ts";
 import { ackThreshold, DEFAULT_APP_VERSION, DEFAULT_DEVICE_MODEL, DEFAULT_INITIAL_DC, DEFAULT_LANG_CODE, DEFAULT_LANG_PACK, DEFAULT_SYSTEM_LANG_CODE, DEFAULT_SYSTEM_VERSION, LAYER, MAX_CHANNEL_ID, MAX_CHAT_ID, USERNAME_TTL, ZERO_CHANNEL_ID } from "../constants.ts";
-import { bigIntFromBuffer, getRandomBigInt } from "../utilities/0_bigint.ts";
+import { bigIntFromBuffer, getRandomBigInt, getRandomId } from "../utilities/0_bigint.ts";
+import { parseHtml } from "../utilities/0_html.ts";
 import { decryptMessage, encryptMessage, getMessageId } from "../utilities/1_message.ts";
 import { checkPassword } from "../utilities/1_password.ts";
 import { as, MaybeVectorTLObject } from "../tl/1_tl_object.ts";
@@ -17,8 +18,14 @@ import { Storage } from "../storage/storage.ts";
 import { StorageMemory } from "../storage/storage_memory.ts";
 import { DC, TransportProvider } from "../transport/transport_provider.ts";
 import { sha1 } from "../utilities/0_hash.ts";
+import { MessageEntity, toTlObject } from "../types/0_message_entity.ts";
 
 export const restartAuth = Symbol();
+
+export enum ParseMode {
+  None = "none",
+  HTML = "html",
+}
 
 export interface AuthorizeUserParams<S = string> {
   phone: S | (() => MaybePromise<S>);
@@ -29,6 +36,10 @@ export interface AuthorizeUserParams<S = string> {
 export type UpdatesHandler = null | ((client: Client, update: types.Updates) => MaybePromise<void>);
 
 export interface ClientParams {
+  /**
+   * Default parse mode. Defauls to `ParseMode.None`.
+   */
+  parseMode?: ParseMode;
   /**
    * The transport provider to use. Defaults to `defaultTransportProvider`.
    */
@@ -67,6 +78,8 @@ export class Client extends ClientAbstract {
   private toAcknowledge = new Set<bigint>();
   public updatesHandler: UpdatesHandler = null;
 
+  public readonly parseMode: ParseMode;
+
   public readonly appVersion: string;
   public readonly deviceModel: string;
   public readonly langCode: string;
@@ -89,6 +102,8 @@ export class Client extends ClientAbstract {
     params?: ClientParams,
   ) {
     super(params?.transportProvider);
+
+    this.parseMode = params?.parseMode ?? ParseMode.None;
 
     this.appVersion = params?.appVersion ?? DEFAULT_APP_VERSION;
     this.deviceModel = params?.deviceModel ?? DEFAULT_DEVICE_MODEL;
@@ -570,5 +585,60 @@ export class Client extends ClientAbstract {
     } else {
       throw new Error("ID format unknown or not implemented");
     }
+  }
+
+  async sendMessage(
+    chatId: number | string,
+    text: string,
+    params?: {
+      parseMode?: ParseMode;
+      entities?: MessageEntity[];
+      disableWebPagePreview?: boolean;
+      disableNotification?: boolean;
+      protectContent?: boolean;
+      replyToMessageId?: number;
+      messageThreadId?: number;
+      sendAs?: number | string;
+    },
+  ) {
+    const entities_ = params?.entities ?? [];
+    const parseMode = params?.parseMode ?? this.parseMode;
+    switch (parseMode) {
+      case ParseMode.None:
+        break;
+      case ParseMode.HTML: {
+        const [newText, entitiesToPush] = parseHtml(text);
+        text = newText;
+        for (const entity of entitiesToPush) {
+          entities_.push(entity);
+        }
+      }
+    }
+
+    const peer = await this.getInputPeer(chatId);
+    const randomId = getRandomId();
+    const message = text;
+    const noWebpage = params?.disableWebPagePreview ? true : undefined;
+    const silent = params?.disableNotification ? true : undefined;
+    const noforwards = params?.protectContent ? true : undefined;
+    const replyToMsgId = params?.replyToMessageId;
+    const topMsgId = params?.messageThreadId;
+    const sendAs = params?.sendAs ? await this.getInputPeer(params.sendAs) : undefined;
+    const entities = entities_?.length > 0 ? entities_.map((v) => toTlObject(v)) : undefined;
+
+    return await this.invoke(
+      new functions.MessagesSendMessage({
+        peer,
+        randomId,
+        message,
+        noWebpage,
+        silent,
+        noforwards,
+        replyToMsgId,
+        topMsgId,
+        sendAs,
+        entities,
+      }),
+    );
   }
 }
