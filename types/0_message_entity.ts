@@ -1,4 +1,4 @@
-import { MessageEntityCustomEmoji } from "../tl/2_types.ts";
+import * as types from "../tl/2_types.ts";
 
 export enum MessageEntityType {
   Mention = "mention",
@@ -70,12 +70,12 @@ export interface MessageEntityTextURL extends MessageEntityBase {
 }
 
 export interface MessageEntityMentionName extends MessageEntityBase {
-  type: MessageEntityType.TextURL;
+  type: MessageEntityType.MentionName;
   userId: number;
 }
 
 export interface MessageEntityCashtag extends MessageEntityBase {
-  type: MessageEntityType.TextURL;
+  type: MessageEntityType.Cashtag;
 }
 
 export interface MessageEntityPhone extends MessageEntityBase {
@@ -102,7 +102,7 @@ export interface MessageEntitySpoiler extends MessageEntityBase {
   type: MessageEntityType.Spoiler;
 }
 
-export interface MessageCustomEmoji extends MessageEntityBase {
+export interface MessageEntityCustomEmoji extends MessageEntityBase {
   type: MessageEntityType.CustomEmoji;
   documentId: bigint;
 }
@@ -127,3 +127,47 @@ export type MessageEntity =
   | MessageEntityBankCard
   | MessageEntitySpoiler
   | MessageEntityCustomEmoji;
+
+export function fromTlObject(obj: types.TypeMessageEntity): MessageEntity | null {
+  if (obj instanceof types.MessageEntityMention) {
+    return { type: MessageEntityType.Mention, offset: obj.offset, length: obj.length };
+  } else if (obj instanceof types.MessageEntityHashtag) {
+    return { type: MessageEntityType.Hashtag, offset: obj.offset, length: obj.length };
+  } else if (obj instanceof types.MessageEntityBotCommand) {
+    return { type: MessageEntityType.BotCommand, offset: obj.offset, length: obj.length };
+  } else if (obj instanceof types.MessageEntityURL) {
+    return { type: MessageEntityType.URL, offset: obj.offset, length: obj.length };
+  } else if (obj instanceof types.MessageEntityEmail) {
+    return { type: MessageEntityType.EmailAddress, offset: obj.offset, length: obj.length };
+  } else if (obj instanceof types.MessageEntityBold) {
+    return { type: MessageEntityType.Bold, offset: obj.offset, length: obj.length };
+  } else if (obj instanceof types.MessageEntityItalic) {
+    return { type: MessageEntityType.Italic, offset: obj.offset, length: obj.length };
+  } else if (obj instanceof types.MessageEntityCode) {
+    return { type: MessageEntityType.Code, offset: obj.offset, length: obj.length };
+  } else if (obj instanceof types.MessageEntityPre) {
+    return { type: MessageEntityType.Pre, offset: obj.offset, length: obj.length, language: obj.language };
+  } else if (obj instanceof types.MessageEntityTextURL) {
+    return { type: MessageEntityType.TextURL, offset: obj.offset, length: obj.length, url: obj.url };
+  } else if (obj instanceof types.MessageEntityMentionName) {
+    return { type: MessageEntityType.MentionName, offset: obj.offset, length: obj.length, userId: Number(obj.userId) };
+  } else if (obj instanceof types.MessageEntityCashtag) {
+    return { type: MessageEntityType.Cashtag, offset: obj.offset, length: obj.length };
+  } else if (obj instanceof types.MessageEntityPhone) {
+    return { type: MessageEntityType.Phone, offset: obj.offset, length: obj.length };
+  } else if (obj instanceof types.MessageEntityUnderline) {
+    return { type: MessageEntityType.Underline, offset: obj.offset, length: obj.length };
+  } else if (obj instanceof types.MessageEntityStrike) {
+    return { type: MessageEntityType.Strike, offset: obj.offset, length: obj.length };
+  } else if (obj instanceof types.MessageEntityBlockquote) {
+    return { type: MessageEntityType.Blockquote, offset: obj.offset, length: obj.length };
+  } else if (obj instanceof types.MessageEntityBankCard) {
+    return { type: MessageEntityType.BankCard, offset: obj.offset, length: obj.length };
+  } else if (obj instanceof types.MessageEntitySpoiler) {
+    return { type: MessageEntityType.Spoiler, offset: obj.offset, length: obj.length };
+  } else if (obj instanceof types.MessageEntityCustomEmoji) {
+    return { type: MessageEntityType.CustomEmoji, offset: obj.offset, length: obj.length, documentId: obj.documentId };
+  } else {
+    return null;
+  }
+}
