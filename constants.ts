@@ -80,3 +80,11 @@ export const DEFAULT_LANG_PACK = "";
 export const DEFAULT_SYSTEM_LANG_CODE = "en";
 
 export const DEFAULT_SYSTEM_VERSION = "1.0";
+
+export const USERNAME_TTL = 86_400;
+
+export const MAX_CHAT_ID = 999999999999;
+
+export const MAX_CHANNEL_ID = 997852516352;
+
+export const ZERO_CHANNEL_ID = -1000000000000;
