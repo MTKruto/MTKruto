@@ -1,62 +1,89 @@
-import { ZERO_CHANNEL_ID } from "../constants.ts";
 import { as } from "../tl/1_tl_object.ts";
 import * as types from "../tl/2_types.ts";
 
-export class Chat {
+export enum ChatType {
+  Private = "private",
+  Group = "group",
+  Supergroup = "supergroup",
+  Channel = "channel",
+}
+
+export interface ChatBase {
+  type: ChatType;
   id: number;
-  firstName?: string;
+}
+
+export interface ChatPrivate extends ChatBase {
+  type: ChatType.Private;
+  isBot?: boolean;
+  firstName: string;
   lastName?: string;
-  title?: string;
+  bio?: string;
   username?: string;
   also?: string[];
-  isVerified = false;
-  isForum = false;
-  bio?: string;
-  description?: string;
-  isScam?: boolean;
-  isFake?: boolean;
-  isCreator?: boolean;
+  isScam: boolean;
+  isFake: boolean;
   isRestricted?: boolean;
-  linkedChatId?: number;
+  restrictionReason?: types.RestrictionReason[];
+}
 
-  constructor(chat: types.User, full?: types.UserFull);
-  constructor(chat: types.Chat, full?: types.ChatFull);
-  constructor(chat: types.Channel, full?: types.ChannelFull);
-  constructor(chat: types.User | types.Chat | types.Channel, full?: types.UserFull | types.ChatFull | types.ChannelFull) {
-    if (chat instanceof types.User && (!full || full instanceof types.UserFull)) {
-      this.id = Number(chat.id);
-      this.firstName = chat.firstName || "";
-      this.lastName = chat.lastName;
-      this.bio = full?.about;
-      this.isScam = chat.scam || false;
-      this.isFake = chat.fake || false;
-      if (chat.bot) {
-        this.isRestricted = chat.restricted || false;
-      }
-    } else if (chat instanceof types.Chat && (!full || full instanceof types.ChatFull)) {
-      this.id = Number(-chat.id);
-      this.title = chat.title;
-      this.description = full?.about;
-      this.isCreator = chat.creator || false;
-    } else if (chat instanceof types.Channel && (!full || full instanceof types.ChannelFull)) {
-      this.id = -(-ZERO_CHANNEL_ID + Number(chat.id));
-      this.title = chat.title;
-      this.username = chat.username;
-      if (chat.usernames) {
-        this.also = chat.usernames.map((v) => v[as](types.Username)).map((v) => v.username);
-      }
-      this.isVerified = chat.verified || false;
-      this.isForum = chat.forum || false;
-      this.description = full?.about;
-      this.isScam = chat.scam || false;
-      this.isFake = chat.fake || false;
-      this.isCreator = chat.creator || false;
-      this.isRestricted = chat.restricted || false;
-      if (full?.linkedChatId) {
-        this.linkedChatId = Number(full.linkedChatId);
-      }
+export interface ChatGroup extends ChatBase {
+  type: ChatType.Group;
+  title: string;
+}
+
+export interface ChatChannelBase {
+  title: string;
+  description?: string;
+  username?: string;
+  also?: string[];
+}
+
+export interface ChatChannel extends ChatChannelBase {
+  type: ChatType.Channel;
+  title: string;
+  username?: string;
+  also?: string[];
+}
+
+export interface ChatSupergroup extends ChatChannelBase {
+  type: ChatType.Supergroup;
+}
+
+export type Chat = ChatPrivate | ChatGroup | ChatSupergroup | ChatChannel;
+
+export function constructChat(chat: types.User, full?: types.UserFull): ChatPrivate;
+export function constructChat(chat: types.Chat, full?: types.ChatFull): ChatGroup;
+export function constructChat(chat: types.Channel, full?: types.ChannelFull): ChatSupergroup | ChatChannel;
+export function constructChat(chat: types.User | types.Chat | types.Channel, full?: types.UserFull | types.ChatFull | types.ChannelFull): Chat {
+  if (chat instanceof types.User && (!full || full instanceof types.UserFull)) {
+    return {
+      type: ChatType.Private,
+      isBot: chat.bot || false,
+      id: Number(chat.id),
+      firstName: chat.firstName || "",
+      lastName: chat.lastName,
+      isScam: chat.scam || false,
+      isFake: chat.fake || false,
+      isRestricted: chat.restricted || false,
+      restrictionReason: chat.restrictionReason?.map((v) => v[as](types.RestrictionReason)),
+    };
+  } else if (chat instanceof types.Chat && (!full || full instanceof types.ChatFull)) {
+    return {
+      type: ChatType.Group,
+      id: Number(-chat.id),
+      title: chat.title,
+    };
+  } else if (chat instanceof types.Channel && (!full || full instanceof types.ChannelFull)) {
+    const title = chat.title;
+    const username = chat.username;
+    const also = chat.usernames?.map((v) => v[as](types.Username)).map((v) => v.username);
+    if (chat.megagroup) {
+      return { type: ChatType.Supergroup, title, username, also };
     } else {
-      throw new Error("Unexpected types");
+      return { type: ChatType.Channel, title, username, also };
     }
+  } else {
+    throw new TypeError("Unreachable");
   }
 }

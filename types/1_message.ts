@@ -1,78 +1,81 @@
 import * as types from "../tl/2_types.ts";
-import { Chat } from "./0_chat.ts";
-import { fromTlObject, MessageEntity } from "./0_message_entity.ts";
-import { User } from "./0_user.ts";
+import { constructMessageEntity, MessageEntity } from "./0_message_entity.ts";
+import { constructUser, User } from "./0_user.ts";
+import { Chat, constructChat } from "./0_chat.ts";
 
-export class Message {
+export interface Message {
   id: number;
-  text: string | null = null;
-  caption: string | null = null;
-  entities: MessageEntity[] | null = null;
-  captionEntities: MessageEntity[] | null = null;
-  date: Date;
-  editDate: Date | null = null;
-  views: number | null = null;
   from?: User;
-  chat?: Chat;
+  chat: Chat;
+  text?: string;
+  caption?: string;
+  entities?: MessageEntity[];
+  captionEntities?: MessageEntity[];
+  date?: Date;
+  editDate?: Date;
+  views?: number;
+}
 
-  constructor(message: types.Message, users: types.TypeUser[], chats: types.TypeChat[]) {
-    this.id = message.id;
-    if (message.fromId instanceof types.PeerUser) {
-      for (const user of users) {
-        if (user instanceof types.User && user.id == message.fromId.userId) {
-          this.from = new User(user);
-          break;
-        }
+export function constructMessage(message_: types.Message, users: types.TypeUser[], chats: types.TypeChat[]) {
+  let chat_: Chat | null = null;
+  if (message_.peerId instanceof types.PeerUser) {
+    for (const user of users) {
+      if (user instanceof types.User && user.id == message_.peerId.userId) {
+        chat_ = constructChat(user);
+        break;
       }
     }
-    let chat_: Chat | null = null;
-    if (message.peerId instanceof types.PeerUser) {
-      for (const user of users) {
-        if (user instanceof types.User && user.id == message.peerId.userId) {
-          chat_ = new Chat(user);
-          break;
-        }
-      }
-    } else if (message.peerId instanceof types.PeerChat) {
-      for (const chat of chats) {
-        if (chat instanceof types.Chat && chat.id == message.peerId.chatId) {
-          chat_ = new Chat(chat);
-          break;
-        }
-      }
-    } else if (message.peerId instanceof types.PeerChannel) {
-      for (const chat of chats) {
-        if (chat instanceof types.Channel && chat.id == message.peerId.channelId) {
-          chat_ = new Chat(chat);
-          break;
-        }
+  } else if (message_.peerId instanceof types.PeerChat) {
+    for (const chat of chats) {
+      if (chat instanceof types.Chat && chat.id == message_.peerId.chatId) {
+        chat_ = constructChat(chat);
+        break;
       }
     }
-    if (!chat_) {
-      throw new Error("Unreachable");
-    } else {
-      this.chat = chat_;
-    }
-    if (message.message) {
-      if (message.media == undefined) {
-        this.text = message.message;
-      } else {
-        this.caption = message.message;
+  } else if (message_.peerId instanceof types.PeerChannel) {
+    for (const chat of chats) {
+      if (chat instanceof types.Channel && chat.id == message_.peerId.channelId) {
+        chat_ = constructChat(chat);
+        break;
       }
-    }
-    if (message.entities != undefined) {
-      if (message.media == undefined) {
-        this.entities = message.entities.map(fromTlObject).filter((v) => v) as MessageEntity[];
-      } else {
-        this.captionEntities = message.entities.map(fromTlObject).filter((v) => v) as MessageEntity[];
-      }
-    }
-    this.date = new Date(message.date * 1_000);
-    if (message.editDate != undefined) {
-      this.editDate = new Date(message.editDate * 1_000);
-    }
-    if (message.views != undefined) {
-      this.views = message.views;
     }
   }
+  if (!chat_) {
+    throw new Error("Unreachable");
+  }
+
+  const message: Message = { id: message_.id, chat: chat_ };
+
+  if (message_.fromId instanceof types.PeerUser) {
+    for (const user of users) {
+      if (user instanceof types.User && user.id == message_.fromId.userId) {
+        message.from = constructUser(user);
+        break;
+      }
+    }
+  }
+  if (message_.message) {
+    if (message_.media == undefined) {
+      message.text = message_.message;
+    } else {
+      message.caption = message_.message;
+    }
+  }
+  if (message_.entities != undefined) {
+    if (message_.media == undefined) {
+      message.entities = message_.entities.map(constructMessageEntity).filter((v) => v) as MessageEntity[];
+    } else {
+      message.captionEntities = message_.entities.map(constructMessageEntity).filter((v) => v) as MessageEntity[];
+    }
+  }
+  message.date = new Date(message_.date * 1_000);
+  if (message_.editDate != undefined) {
+    message.editDate = new Date(message_.editDate * 1_000);
+  }
+
+  if (message_.views != undefined) {
+    message.views = message_.views;
+  }
+
+  return message;
 }
