@@ -5,7 +5,7 @@ export enum MessageEntityType {
   Hashtag = "hashtag",
   BotCommand = "bot_command",
   URL = "url",
-  EmailAddress = "email_address",
+  Email = "email",
   Bold = "bold",
   Italic = "italic",
   Code = "code",
@@ -44,7 +44,7 @@ export interface MessageEntityURL extends MessageEntityBase {
 }
 
 export interface MessageEntityEmailAddress extends MessageEntityBase {
-  type: MessageEntityType.EmailAddress;
+  type: MessageEntityType.Email;
 }
 
 export interface MessageEntityBold extends MessageEntityBase {
@@ -138,7 +138,7 @@ export function fromTlObject(obj: types.TypeMessageEntity): MessageEntity | null
   } else if (obj instanceof types.MessageEntityURL) {
     return { type: MessageEntityType.URL, offset: obj.offset, length: obj.length };
   } else if (obj instanceof types.MessageEntityEmail) {
-    return { type: MessageEntityType.EmailAddress, offset: obj.offset, length: obj.length };
+    return { type: MessageEntityType.Email, offset: obj.offset, length: obj.length };
   } else if (obj instanceof types.MessageEntityBold) {
     return { type: MessageEntityType.Bold, offset: obj.offset, length: obj.length };
   } else if (obj instanceof types.MessageEntityItalic) {
@@ -169,5 +169,49 @@ export function fromTlObject(obj: types.TypeMessageEntity): MessageEntity | null
     return { type: MessageEntityType.CustomEmoji, offset: obj.offset, length: obj.length, documentId: obj.documentId };
   } else {
     return null;
+  }
+}
+
+export function toTlObject(entity: MessageEntity) {
+  const { offset, length } = entity;
+  switch (entity.type) {
+    case MessageEntityType.Mention:
+      return new types.MessageEntityMention({ offset, length });
+    case MessageEntityType.Hashtag:
+      return new types.MessageEntityHashtag({ offset, length });
+    case MessageEntityType.BotCommand:
+      return new types.MessageEntityBotCommand({ offset, length });
+    case MessageEntityType.URL:
+      return new types.MessageEntityURL({ offset, length });
+    case MessageEntityType.Email:
+      return new types.MessageEntityEmail({ offset, length });
+    case MessageEntityType.Bold:
+      return new types.MessageEntityBold({ offset, length });
+    case MessageEntityType.Italic:
+      return new types.MessageEntityItalic({ offset, length });
+    case MessageEntityType.Code:
+      return new types.MessageEntityCode({ offset, length });
+    case MessageEntityType.Pre:
+      return new types.MessageEntityPre({ offset, length, language: entity.language });
+    case MessageEntityType.TextURL:
+      return new types.MessageEntityTextURL({ offset, length, url: entity.url });
+    case MessageEntityType.MentionName:
+      return new types.MessageEntityMentionName({ offset, length, userId: BigInt(entity.userId) });
+    case MessageEntityType.Cashtag:
+      return new types.MessageEntityCashtag({ offset, length });
+    case MessageEntityType.Phone:
+      return new types.MessageEntityPhone({ offset, length });
+    case MessageEntityType.Underline:
+      return new types.MessageEntityUnderline({ offset, length });
+    case MessageEntityType.Strike:
+      return new types.MessageEntityStrike({ offset, length });
+    case MessageEntityType.Blockquote:
+      return new types.MessageEntityBlockquote({ offset, length });
+    case MessageEntityType.BankCard:
+      return new types.MessageEntityBankCard({ offset, length });
+    case MessageEntityType.Spoiler:
+      return new types.MessageEntitySpoiler({ offset, length });
+    case MessageEntityType.CustomEmoji:
+      return new types.MessageEntityCustomEmoji({ offset, length, documentId: entity.documentId });
   }
 }
