@@ -25,6 +25,8 @@ export interface ChatPrivate extends ChatBase {
   photo?: ChatPhotoUser;
   isScam: boolean;
   isFake: boolean;
+  isSupport: boolean;
+  isVerified: boolean;
   isRestricted?: boolean;
   restrictionReason?: types.RestrictionReason[];
 }
@@ -41,6 +43,9 @@ export interface ChatChannelBase {
   username?: string;
   also?: string[];
   photo?: ChatPhotoChat;
+  isScam: boolean;
+  isFake: boolean;
+  isVerified: boolean;
   isRestricted: boolean;
   restrictionReason?: types.RestrictionReason[];
 }
@@ -71,6 +76,8 @@ export function constructChat(chat: types.User | types.Chat | types.Channel): Ch
       lastName: chat.lastName,
       isScam: chat.scam || false,
       isFake: chat.fake || false,
+      isSupport: chat.support || false,
+      isVerified: chat.verified || false,
     };
 
     if (chat_.isBot) {
@@ -98,15 +105,24 @@ export function constructChat(chat: types.User | types.Chat | types.Channel): Ch
     return chat_;
   } else if (chat instanceof types.Channel) {
     let chat_: ChatSupergroup | ChatChannel;
+    const {
+      title,
+      scam: isScam = false,
+      fake: isFake = false,
+      verified: isVerified = false,
+      restricted: isRestricted = false,
+    } = chat;
     if (chat.megagroup) {
-      chat_ = { type: ChatType.Supergroup, title: chat.title, isRestricted: chat.restricted || false };
+      chat_ = { type: ChatType.Supergroup, title, isScam, isFake, isVerified, isRestricted };
     } else {
-      chat_ = { type: ChatType.Channel, title: chat.title, isRestricted: chat.restricted || false };
+      chat_ = { type: ChatType.Channel, title, isScam, isFake, isVerified, isRestricted };
     }
 
     chat_.username = chat.username;
     chat_.also = chat.usernames?.map((v) => v[as](types.Username)).map((v) => v.username);
-    chat_.restrictionReason = chat.restrictionReason?.map((v) => v[as](types.RestrictionReason));
+    if (chat_.isRestricted) {
+      chat_.restrictionReason = chat.restrictionReason?.map((v) => v[as](types.RestrictionReason));
+    }
 
     if (chat.photo instanceof types.ChatPhoto) {
       chat_.photo = constructChatPhoto(chat.photo);

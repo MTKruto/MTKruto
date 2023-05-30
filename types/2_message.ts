@@ -1,6 +1,6 @@
 import * as types from "../tl/2_types.ts";
 import { constructMessageEntity, MessageEntity } from "./0_message_entity.ts";
-import { constructUser, User } from "./0_user.ts";
+import { constructUser, User } from "./1_user.ts";
 import { Chat, constructChat } from "./1_chat.ts";
 
 export interface Message {

@@ -1,5 +1,6 @@
 import { as } from "../tl/1_tl_object.ts";
 import * as types from "../tl/2_types.ts";
+import { ChatPhotoUser, constructChatPhoto } from "./0_chat_photo.ts";
 
 export interface User {
   id: number;
@@ -8,8 +9,13 @@ export interface User {
   lastName?: string;
   username?: string;
   also?: string[];
+  photo?: ChatPhotoUser;
   languageCode?: string;
+  isScam: boolean;
+  isFake: boolean;
   isPremium: boolean;
+  isVerified: boolean;
+  isSupport: boolean;
   addedToAttachmentMenu: boolean;
 }
 
@@ -21,12 +27,20 @@ export function constructUser(user_: types.User) {
     lastName: user_.lastName,
     username: user_.username,
     languageCode: user_.langCode,
+    isScam: user_.scam || false,
+    isFake: user_.fake || false,
     isPremium: user_.premium || false,
+    isVerified: user_.verified || false,
+    isSupport: user_.support || false,
     addedToAttachmentMenu: user_.attachMenuEnabled || false,
   };
 
   if (user_.usernames) {
     user.also = user_.usernames.map((v) => v[as](types.Username)).map((v) => v.username);
+  }
+
+  if (user_.photo instanceof types.UserProfilePhoto) {
+    user.photo = constructChatPhoto(user_.photo);
   }
 
   return user;
