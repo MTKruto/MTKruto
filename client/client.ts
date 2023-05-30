@@ -18,7 +18,7 @@ import { Storage } from "../storage/storage.ts";
 import { StorageMemory } from "../storage/storage_memory.ts";
 import { DC, TransportProvider } from "../transport/transport_provider.ts";
 import { sha1 } from "../utilities/0_hash.ts";
-import { MessageEntity, toTlObject } from "../types/0_message_entity.ts";
+import { MessageEntity, messageEntityToTlObject } from "../types/0_message_entity.ts";
 
 export const restartAuth = Symbol();
 
@@ -624,7 +624,7 @@ export class Client extends ClientAbstract {
     const replyToMsgId = params?.replyToMessageId;
     const topMsgId = params?.messageThreadId;
     const sendAs = params?.sendAs ? await this.getInputPeer(params.sendAs) : undefined;
-    const entities = entities_?.length > 0 ? entities_.map((v) => toTlObject(v)) : undefined;
+    const entities = entities_?.length > 0 ? entities_.map((v) => messageEntityToTlObject(v)) : undefined;
 
     return await this.invoke(
       new functions.MessagesSendMessage({
