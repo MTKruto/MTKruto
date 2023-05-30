@@ -128,7 +128,7 @@ export type MessageEntity =
   | MessageEntitySpoiler
   | MessageEntityCustomEmoji;
 
-export function fromTlObject(obj: types.TypeMessageEntity): MessageEntity | null {
+export function constructMessageEntity(obj: types.TypeMessageEntity): MessageEntity | null {
   if (obj instanceof types.MessageEntityMention) {
     return { type: MessageEntityType.Mention, offset: obj.offset, length: obj.length };
   } else if (obj instanceof types.MessageEntityHashtag) {
@@ -172,7 +172,7 @@ export function fromTlObject(obj: types.TypeMessageEntity): MessageEntity | null
   }
 }
 
-export function toTlObject(entity: MessageEntity) {
+export function messageEntityToTlObject(entity: MessageEntity) {
   const { offset, length } = entity;
   switch (entity.type) {
     case MessageEntityType.Mention:
