@@ -1,110 +1,110 @@
 import * as types from "../tl/2_types.ts";
 
-export declare namespace MessageEntity {
-  export enum Type {
-    Mention = "mention",
-    Hashtag = "hashtag",
-    BotCommand = "bot_command",
-    URL = "url",
-    Email = "email",
-    Bold = "bold",
-    Italic = "italic",
-    Code = "code",
-    Pre = "pre",
-    TextURL = "text_url",
-    MentionName = "mention_name",
-    Cashtag = "cashtag",
-    Phone = "phone",
-    Underline = "underline",
-    Strike = "strike",
-    Blockquote = "blockquote",
-    BankCard = "bank_card",
-    Spoiler = "spoiler",
-    CustomEmoji = "custom_emoji",
-  }
+export enum MessageEntityType {
+  Mention = "mention",
+  Hashtag = "hashtag",
+  BotCommand = "bot_command",
+  URL = "url",
+  Email = "email",
+  Bold = "bold",
+  Italic = "italic",
+  Code = "code",
+  Pre = "pre",
+  TextURL = "text_url",
+  MentionName = "mention_name",
+  Cashtag = "cashtag",
+  Phone = "phone",
+  Underline = "underline",
+  Strike = "strike",
+  Blockquote = "blockquote",
+  BankCard = "bank_card",
+  Spoiler = "spoiler",
+  CustomEmoji = "custom_emoji",
+}
 
+export declare namespace MessageEntity {
   export interface Base {
     offset: number;
     length: number;
   }
 
   export interface Mention extends Base {
-    type: MessageEntity.Type.Mention;
+    type: MessageEntityType.Mention;
   }
 
   export interface Hashtag extends Base {
-    type: MessageEntity.Type.Hashtag;
+    type: MessageEntityType.Hashtag;
   }
 
   export interface BotCommand extends Base {
-    type: MessageEntity.Type.BotCommand;
+    type: MessageEntityType.BotCommand;
   }
 
   export interface URL extends Base {
-    type: MessageEntity.Type.URL;
+    type: MessageEntityType.URL;
   }
 
   export interface EmailAddress extends Base {
-    type: MessageEntity.Type.Email;
+    type: MessageEntityType.Email;
   }
 
   export interface Bold extends Base {
-    type: MessageEntity.Type.Bold;
+    type: MessageEntityType.Bold;
   }
 
   export interface Italic extends Base {
-    type: MessageEntity.Type.Italic;
+    type: MessageEntityType.Italic;
   }
 
   export interface Pre extends Base {
-    type: MessageEntity.Type.Pre;
+    type: MessageEntityType.Pre;
     language: string;
   }
 
   export interface Code extends Base {
-    type: MessageEntity.Type.Code;
+    type: MessageEntityType.Code;
   }
 
   export interface TextURL extends Base {
-    type: MessageEntity.Type.TextURL;
+    type: MessageEntityType.TextURL;
     url: string;
   }
 
   export interface MentionName extends Base {
-    type: MessageEntity.Type.MentionName;
+    type: MessageEntityType.MentionName;
     userId: number;
   }
 
   export interface Cashtag extends Base {
-    type: MessageEntity.Type.Cashtag;
+    type: MessageEntityType.Cashtag;
   }
 
   export interface Phone extends Base {
-    type: MessageEntity.Type.Phone;
+    type: MessageEntityType.Phone;
   }
 
   export interface Underline extends Base {
-    type: MessageEntity.Type.Underline;
+    type: MessageEntityType.Underline;
   }
 
   export interface Strike extends Base {
-    type: MessageEntity.Type.Strike;
+    type: MessageEntityType.Strike;
   }
 
   export interface Blockquote extends Base {
-    type: MessageEntity.Type.Blockquote;
+    type: MessageEntityType.Blockquote;
   }
 
   export interface BankCard extends Base {
-    type: MessageEntity.Type.BankCard;
+    type: MessageEntityType.BankCard;
   }
 
   export interface Spoiler extends Base {
-    type: MessageEntity.Type.Spoiler;
+    type: MessageEntityType.Spoiler;
   }
 
   export interface CustomEmoji extends Base {
-    type: Type.CustomEmoji;
+    type: MessageEntityType.CustomEmoji;
     documentId: bigint;
   }
 }
@@ -132,43 +132,43 @@ export type MessageEntity =
 
 export function constructMessageEntity(obj: types.TypeMessageEntity): MessageEntity | null {
   if (obj instanceof types.MessageEntityMention) {
-    return { type: MessageEntity.Type.Mention, offset: obj.offset, length: obj.length };
+    return { type: MessageEntityType.Mention, offset: obj.offset, length: obj.length };
   } else if (obj instanceof types.MessageEntityHashtag) {
-    return { type: MessageEntity.Type.Hashtag, offset: obj.offset, length: obj.length };
+    return { type: MessageEntityType.Hashtag, offset: obj.offset, length: obj.length };
   } else if (obj instanceof types.MessageEntityBotCommand) {
-    return { type: MessageEntity.Type.BotCommand, offset: obj.offset, length: obj.length };
+    return { type: MessageEntityType.BotCommand, offset: obj.offset, length: obj.length };
   } else if (obj instanceof types.MessageEntityURL) {
-    return { type: MessageEntity.Type.URL, offset: obj.offset, length: obj.length };
+    return { type: MessageEntityType.URL, offset: obj.offset, length: obj.length };
   } else if (obj instanceof types.MessageEntityEmail) {
-    return { type: MessageEntity.Type.Email, offset: obj.offset, length: obj.length };
+    return { type: MessageEntityType.Email, offset: obj.offset, length: obj.length };
   } else if (obj instanceof types.MessageEntityBold) {
-    return { type: MessageEntity.Type.Bold, offset: obj.offset, length: obj.length };
+    return { type: MessageEntityType.Bold, offset: obj.offset, length: obj.length };
   } else if (obj instanceof types.MessageEntityItalic) {
-    return { type: MessageEntity.Type.Italic, offset: obj.offset, length: obj.length };
+    return { type: MessageEntityType.Italic, offset: obj.offset, length: obj.length };
   } else if (obj instanceof types.MessageEntityCode) {
-    return { type: MessageEntity.Type.Code, offset: obj.offset, length: obj.length };
+    return { type: MessageEntityType.Code, offset: obj.offset, length: obj.length };
   } else if (obj instanceof types.MessageEntityPre) {
-    return { type: MessageEntity.Type.Pre, offset: obj.offset, length: obj.length, language: obj.language };
+    return { type: MessageEntityType.Pre, offset: obj.offset, length: obj.length, language: obj.language };
   } else if (obj instanceof types.MessageEntityTextURL) {
-    return { type: MessageEntity.Type.TextURL, offset: obj.offset, length: obj.length, url: obj.url };
+    return { type: MessageEntityType.TextURL, offset: obj.offset, length: obj.length, url: obj.url };
   } else if (obj instanceof types.MessageEntityMentionName) {
-    return { type: MessageEntity.Type.MentionName, offset: obj.offset, length: obj.length, userId: Number(obj.userId) };
+    return { type: MessageEntityType.MentionName, offset: obj.offset, length: obj.length, userId: Number(obj.userId) };
   } else if (obj instanceof types.MessageEntityCashtag) {
-    return { type: MessageEntity.Type.Cashtag, offset: obj.offset, length: obj.length };
+    return { type: MessageEntityType.Cashtag, offset: obj.offset, length: obj.length };
   } else if (obj instanceof types.MessageEntityPhone) {
-    return { type: MessageEntity.Type.Phone, offset: obj.offset, length: obj.length };
+    return { type: MessageEntityType.Phone, offset: obj.offset, length: obj.length };
   } else if (obj instanceof types.MessageEntityUnderline) {
-    return { type: MessageEntity.Type.Underline, offset: obj.offset, length: obj.length };
+    return { type: MessageEntityType.Underline, offset: obj.offset, length: obj.length };
   } else if (obj instanceof types.MessageEntityStrike) {
-    return { type: MessageEntity.Type.Strike, offset: obj.offset, length: obj.length };
+    return { type: MessageEntityType.Strike, offset: obj.offset, length: obj.length };
   } else if (obj instanceof types.MessageEntityBlockquote) {
-    return { type: MessageEntity.Type.Blockquote, offset: obj.offset, length: obj.length };
+    return { type: MessageEntityType.Blockquote, offset: obj.offset, length: obj.length };
   } else if (obj instanceof types.MessageEntityBankCard) {
-    return { type: MessageEntity.Type.BankCard, offset: obj.offset, length: obj.length };
+    return { type: MessageEntityType.BankCard, offset: obj.offset, length: obj.length };
   } else if (obj instanceof types.MessageEntitySpoiler) {
-    return { type: MessageEntity.Type.Spoiler, offset: obj.offset, length: obj.length };
+    return { type: MessageEntityType.Spoiler, offset: obj.offset, length: obj.length };
   } else if (obj instanceof types.MessageEntityCustomEmoji) {
-    return { type: MessageEntity.Type.CustomEmoji, offset: obj.offset, length: obj.length, documentId: obj.documentId };
+    return { type: MessageEntityType.CustomEmoji, offset: obj.offset, length: obj.length, documentId: obj.documentId };
   } else {
     return null;
   }
@@ -177,43 +177,43 @@ export function constructMessageEntity(obj: types.TypeMessageEntity): MessageEnt
 export function messageEntityToTlObject(entity: MessageEntity) {
   const { offset, length } = entity;
   switch (entity.type) {
-    case MessageEntity.Type.Mention:
+    case MessageEntityType.Mention:
       return new types.MessageEntityMention({ offset, length });
-    case MessageEntity.Type.Hashtag:
+    case MessageEntityType.Hashtag:
       return new types.MessageEntityHashtag({ offset, length });
-    case MessageEntity.Type.BotCommand:
+    case MessageEntityType.BotCommand:
       return new types.MessageEntityBotCommand({ offset, length });
-    case MessageEntity.Type.URL:
+    case MessageEntityType.URL:
       return new types.MessageEntityURL({ offset, length });
-    case MessageEntity.Type.Email:
+    case MessageEntityType.Email:
       return new types.MessageEntityEmail({ offset, length });
-    case MessageEntity.Type.Bold:
+    case MessageEntityType.Bold:
       return new types.MessageEntityBold({ offset, length });
-    case MessageEntity.Type.Italic:
+    case MessageEntityType.Italic:
       return new types.MessageEntityItalic({ offset, length });
-    case MessageEntity.Type.Code:
+    case MessageEntityType.Code:
       return new types.MessageEntityCode({ offset, length });
-    case MessageEntity.Type.Pre:
+    case MessageEntityType.Pre:
       return new types.MessageEntityPre({ offset, length, language: entity.language });
-    case MessageEntity.Type.TextURL:
+    case MessageEntityType.TextURL:
       return new types.MessageEntityTextURL({ offset, length, url: entity.url });
-    case MessageEntity.Type.MentionName:
+    case MessageEntityType.MentionName:
       return new types.MessageEntityMentionName({ offset, length, userId: BigInt(entity.userId) });
-    case MessageEntity.Type.Cashtag:
+    case MessageEntityType.Cashtag:
       return new types.MessageEntityCashtag({ offset, length });
-    case MessageEntity.Type.Phone:
+    case MessageEntityType.Phone:
       return new types.MessageEntityPhone({ offset, length });
-    case MessageEntity.Type.Underline:
+    case MessageEntityType.Underline:
       return new types.MessageEntityUnderline({ offset, length });
-    case MessageEntity.Type.Strike:
+    case MessageEntityType.Strike:
       return new types.MessageEntityStrike({ offset, length });
-    case MessageEntity.Type.Blockquote:
+    case MessageEntityType.Blockquote:
       return new types.MessageEntityBlockquote({ offset, length });
-    case MessageEntity.Type.BankCard:
+    case MessageEntityType.BankCard:
       return new types.MessageEntityBankCard({ offset, length });
-    case MessageEntity.Type.Spoiler:
+    case MessageEntityType.Spoiler:
       return new types.MessageEntitySpoiler({ offset, length });
-    case MessageEntity.Type.CustomEmoji:
+    case MessageEntityType.CustomEmoji:
       return new types.MessageEntityCustomEmoji({ offset, length, documentId: entity.documentId });
   }
 }
