@@ -1,75 +1,77 @@
 import { as } from "../tl/1_tl_object.ts";
 import * as types from "../tl/2_types.ts";
-import { ChatPhoto, ChatPhotoChat, ChatPhotoUser, constructChatPhoto } from "./0_chat_photo.ts";
+import { ChatPhoto, constructChatPhoto } from "./0_chat_photo.ts";
 
-export enum ChatType {
-  Private = "private",
-  Group = "group",
-  Supergroup = "supergroup",
-  Channel = "channel",
+export declare namespace Chat {
+  export enum Type {
+    Private = "private",
+    Group = "group",
+    Supergroup = "supergroup",
+    Channel = "channel",
+  }
+
+  export interface Base {
+    type: Type;
+    id: number;
+    photo?: ChatPhoto;
+  }
+
+  export interface Private extends Base {
+    type: Type.Private;
+    isBot?: boolean;
+    firstName: string;
+    lastName?: string;
+    username?: string;
+    also?: string[];
+    photo?: ChatPhoto.User;
+    isScam: boolean;
+    isFake: boolean;
+    isSupport: boolean;
+    isVerified: boolean;
+    isRestricted?: boolean;
+    restrictionReason?: types.RestrictionReason[];
+  }
+
+  export interface Group extends Base {
+    type: Type.Group;
+    title: string;
+    photo?: ChatPhoto.Chat;
+    isCreator: boolean;
+  }
+
+  export interface ChannelBase {
+    title: string;
+    username?: string;
+    also?: string[];
+    photo?: ChatPhoto.Chat;
+    isScam: boolean;
+    isFake: boolean;
+    isVerified: boolean;
+    isRestricted: boolean;
+    restrictionReason?: types.RestrictionReason[];
+  }
+
+  export interface Channel extends ChannelBase {
+    type: Type.Channel;
+    title: string;
+    username?: string;
+    also?: string[];
+  }
+
+  export interface Supergroup extends ChannelBase {
+    type: Type.Supergroup;
+  }
 }
 
-export interface ChatBase {
-  type: ChatType;
-  id: number;
-  photo?: ChatPhoto;
-}
+export type Chat = Chat.Private | Chat.Group | Chat.Supergroup | Chat.Channel;
 
-export interface ChatPrivate extends ChatBase {
-  type: ChatType.Private;
-  isBot?: boolean;
-  firstName: string;
-  lastName?: string;
-  username?: string;
-  also?: string[];
-  photo?: ChatPhotoUser;
-  isScam: boolean;
-  isFake: boolean;
-  isSupport: boolean;
-  isVerified: boolean;
-  isRestricted?: boolean;
-  restrictionReason?: types.RestrictionReason[];
-}
-
-export interface ChatGroup extends ChatBase {
-  type: ChatType.Group;
-  title: string;
-  photo?: ChatPhotoChat;
-  isCreator: boolean;
-}
-
-export interface ChatChannelBase {
-  title: string;
-  username?: string;
-  also?: string[];
-  photo?: ChatPhotoChat;
-  isScam: boolean;
-  isFake: boolean;
-  isVerified: boolean;
-  isRestricted: boolean;
-  restrictionReason?: types.RestrictionReason[];
-}
-
-export interface ChatChannel extends ChatChannelBase {
-  type: ChatType.Channel;
-  title: string;
-  username?: string;
-  also?: string[];
-}
-
-export interface ChatSupergroup extends ChatChannelBase {
-  type: ChatType.Supergroup;
-}
-
-export type Chat = ChatPrivate | ChatGroup | ChatSupergroup | ChatChannel;
-
-export function constructChat(chat: types.User): ChatPrivate;
-export function constructChat(chat: types.Chat): ChatGroup;
-export function constructChat(chat: types.Channel): ChatSupergroup | ChatChannel;
+export function constructChat(chat: types.User): Chat.Private;
+export function constructChat(chat: types.Chat): Chat.Group;
+export function constructChat(chat: types.Channel): Chat.Supergroup | Chat.Channel;
 export function constructChat(chat: types.User | types.Chat | types.Channel): Chat {
   if (chat instanceof types.User) {
-    const chat_: ChatPrivate = {
-      type: ChatType.Private,
+    const chat_: Chat.Private = {
+      type: Chat.Type.Private,
       isBot: chat.bot || false,
       id: Number(chat.id),
       firstName: chat.firstName || "",
@@ -91,8 +93,8 @@ export function constructChat(chat: types.User | types.Chat | types.Channel): Ch
 
     return chat_;
   } else if (chat instanceof types.Chat) {
-    const chat_: ChatGroup = {
-      type: ChatType.Group,
+    const chat_: Chat.Group = {
+      type: Chat.Type.Group,
       id: Number(-chat.id),
       title: chat.title,
       isCreator: chat.creator || false,
@@ -104,7 +106,7 @@ export function constructChat(chat: types.User | types.Chat | types.Channel): Ch
 
     return chat_;
   } else if (chat instanceof types.Channel) {
-    let chat_: ChatSupergroup | ChatChannel;
+    let chat_: Chat.Supergroup | Chat.Channel;
     const {
       title,
       scam: isScam = false,
@@ -113,9 +115,9 @@ export function constructChat(chat: types.User | types.Chat | types.Channel): Ch
       restricted: isRestricted = false,
     } = chat;
     if (chat.megagroup) {
-      chat_ = { type: ChatType.Supergroup, title, isScam, isFake, isVerified, isRestricted };
+      chat_ = { type: Chat.Type.Supergroup, title, isScam, isFake, isVerified, isRestricted };
     } else {
-      chat_ = { type: ChatType.Channel, title, isScam, isFake, isVerified, isRestricted };
+      chat_ = { type: Chat.Type.Channel, title, isScam, isFake, isVerified, isRestricted };
     }
 
     chat_.username = chat.username;
