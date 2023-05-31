@@ -1,6 +1,6 @@
 import { as } from "../tl/1_tl_object.ts";
 import * as types from "../tl/2_types.ts";
-import { ChatPhotoUser, constructChatPhoto } from "./0_chat_photo.ts";
+import { ChatPhoto, constructChatPhoto } from "./0_chat_photo.ts";
 
 export interface User {
   id: number;
@@ -9,7 +9,7 @@ export interface User {
   lastName?: string;
   username?: string;
   also?: string[];
-  photo?: ChatPhotoUser;
+  photo?: ChatPhoto.User;
   languageCode?: string;
   isScam: boolean;
   isFake: boolean;

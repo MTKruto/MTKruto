@@ -1,36 +1,38 @@
 import * as types from "../tl/2_types.ts";
 
-export enum ChatPhotoType {
-  Chat = "chat",
-  User = "user",
+export declare namespace ChatPhoto {
+  export enum Type {
+    Chat = "chat",
+    User = "user",
+  }
+
+  export interface Base {
+    type: Type;
+    hasVideo: boolean;
+    photoId: bigint;
+    strippedThumb?: Uint8Array;
+    dcId: number;
+  }
+
+  export interface User extends Base {
+    type: Type.User;
+    personal: boolean;
+  }
+
+  export interface Chat extends Base {
+    type: Type.Chat;
+  }
 }
 
-export interface ChatPhotoBase {
-  type: ChatPhotoType;
-  hasVideo: boolean;
-  photoId: bigint;
-  strippedThumb?: Uint8Array;
-  dcId: number;
-}
+export type ChatPhoto = ChatPhoto.User | ChatPhoto.Chat;
 
-export interface ChatPhotoUser extends ChatPhotoBase {
-  type: ChatPhotoType.User;
-  personal: boolean;
-}
-
-export interface ChatPhotoChat extends ChatPhotoBase {
-  type: ChatPhotoType.Chat;
-}
-
-export type ChatPhoto = ChatPhotoUser | ChatPhotoChat;
-
-export function constructChatPhoto(photo: types.ChatPhoto): ChatPhotoChat;
-export function constructChatPhoto(photo: types.UserProfilePhoto): ChatPhotoUser;
+export function constructChatPhoto(photo: types.ChatPhoto): ChatPhoto.Chat;
+export function constructChatPhoto(photo: types.UserProfilePhoto): ChatPhoto.User;
 export function constructChatPhoto(photo: types.UserProfilePhoto | types.ChatPhoto): ChatPhoto {
   const { hasVideo = false, photoId, strippedThumb, dcId } = photo;
   if (photo instanceof types.ChatPhoto) {
     return {
-      type: ChatPhotoType.Chat,
+      type: ChatPhoto.Type.Chat,
       hasVideo,
       photoId,
       strippedThumb,
@@ -38,7 +40,7 @@ export function constructChatPhoto(photo: types.UserProfilePhoto | types.ChatPho
     };
   } else {
     return {
-      type: ChatPhotoType.User,
+      type: ChatPhoto.Type.User,
       personal: photo.personal || false,
       hasVideo,
       photoId,
