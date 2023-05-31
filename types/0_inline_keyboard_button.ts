@@ -1,3 +1,5 @@
+import { WebAppInfo } from "./0_web_app_info.ts";
+
 export declare namespace InlineKeyboardButton {
   export interface Base {
     text: string;
@@ -9,6 +11,10 @@ export declare namespace InlineKeyboardButton {
 
   export interface Callback extends Base {
     callbackData: string;
+  }
+
+  export interface WebApp extends Base {
+    webApp: WebAppInfo;
   }
 
   export interface SwitchInline extends Base {
@@ -27,6 +33,7 @@ export declare namespace InlineKeyboardButton {
 export type InlineKeyboardButton =
   | InlineKeyboardButton.URL
   | InlineKeyboardButton.Callback
+  | InlineKeyboardButton.WebApp
   | InlineKeyboardButton.SwitchInline
   | InlineKeyboardButton.SwitchInlineCurrent
   | InlineKeyboardButton.Pay;
