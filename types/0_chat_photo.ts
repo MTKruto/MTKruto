@@ -1,5 +1,4 @@
 import * as types from "../tl/2_types.ts";
-import { Chat } from "./1_chat.ts";
 
 export enum ChatPhotoType {
   Chat = "chat",
