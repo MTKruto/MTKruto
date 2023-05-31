@@ -1,13 +1,14 @@
 import * as types from "../tl/2_types.ts";
+import { Chat } from "./1_chat.ts";
+
+export enum ChatPhotoType {
+  Chat = "chat",
+  User = "user",
+}
 
 export declare namespace ChatPhoto {
-  export enum Type {
-    Chat = "chat",
-    User = "user",
-  }
-
   export interface Base {
-    type: Type;
+    type: ChatPhotoType;
     hasVideo: boolean;
     photoId: bigint;
     strippedThumb?: Uint8Array;
@@ -15,12 +16,12 @@ export declare namespace ChatPhoto {
   }
 
   export interface User extends Base {
-    type: Type.User;
+    type: ChatPhotoType;
     personal: boolean;
   }
 
   export interface Chat extends Base {
-    type: Type.Chat;
+    type: ChatPhotoType;
   }
 }
 
@@ -32,7 +33,7 @@ export function constructChatPhoto(photo: types.UserProfilePhoto | types.ChatPho
   const { hasVideo = false, photoId, strippedThumb, dcId } = photo;
   if (photo instanceof types.ChatPhoto) {
     return {
-      type: ChatPhoto.Type.Chat,
+      type: ChatPhotoType.Chat,
       hasVideo,
       photoId,
       strippedThumb,
@@ -40,7 +41,7 @@ export function constructChatPhoto(photo: types.UserProfilePhoto | types.ChatPho
     };
   } else {
     return {
-      type: ChatPhoto.Type.User,
+      type: ChatPhotoType.User,
       personal: photo.personal || false,
       hasVideo,
       photoId,
