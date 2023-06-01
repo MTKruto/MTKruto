@@ -42,3 +42,16 @@ export function constructChatAdministratorRights(rights_: types.ChatAdminRights)
 
   return rights;
 }
+
+export function chatAdministratorRightsToTlObject(rights: ChatAdministratorRights) {
+  return new types.ChatAdminRights({
+    anonymous: rights.isAnonymous || undefined,
+    other: rights.canManageChat || undefined,
+    deleteMessages: rights.canDeleteMessages || undefined,
+    manageCall: rights.canManageChat || undefined,
+    banUsers: rights.canRestrictMembers || undefined,
+    addAdmins: rights.canPromoteMembers || undefined,
+    changeInfo: rights.canChangeInfo || undefined,
+    inviteUsers: rights.canInviteUsers || undefined,
+  });
+}
