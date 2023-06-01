@@ -1,3 +1,4 @@
+import { ZERO_CHANNEL_ID } from "../constants.ts";
 import { as } from "../tl/1_tl_object.ts";
 import * as types from "../tl/2_types.ts";
 import { ChatPhoto, constructChatPhoto } from "./0_chat_photo.ts";
@@ -115,9 +116,9 @@ export function constructChat(chat: types.User | types.Chat | types.Channel): Ch
       restricted: isRestricted = false,
     } = chat;
     if (chat.megagroup) {
-      chat_ = { type: ChatType.Supergroup, title, isScam, isFake, isVerified, isRestricted };
+      chat_ = { id: ZERO_CHANNEL_ID + -Number(chat.id), type: ChatType.Supergroup, title, isScam, isFake, isVerified, isRestricted };
     } else {
-      chat_ = { type: ChatType.Channel, title, isScam, isFake, isVerified, isRestricted };
+      chat_ = { id: ZERO_CHANNEL_ID + -Number(chat.id), type: ChatType.Channel, title, isScam, isFake, isVerified, isRestricted };
     }
 
     chat_.username = chat.username;
