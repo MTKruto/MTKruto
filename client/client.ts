@@ -19,6 +19,7 @@ import { StorageMemory } from "../storage/storage_memory.ts";
 import { DC, TransportProvider } from "../transport/transport_provider.ts";
 import { sha1 } from "../utilities/0_hash.ts";
 import { MessageEntity, messageEntityToTlObject } from "../types/0_message_entity.ts";
+import { constructMessage } from "../types/3_message.ts";
 
 const d = debug("client");
 
@@ -642,7 +643,7 @@ export class Client extends ClientAbstract {
     const sendAs = params?.sendAs ? await this.getInputPeer(params.sendAs) : undefined;
     const entities = entities_?.length > 0 ? entities_.map((v) => messageEntityToTlObject(v)) : undefined;
 
-    return await this.invoke(
+    const updates = await this.invoke(
       new functions.MessagesSendMessage({
         peer,
         randomId,
@@ -655,6 +656,16 @@ export class Client extends ClientAbstract {
         sendAs,
         entities,
       }),
-    );
+    ).then((v) => v[as](types.Updates));
+
+    for (const update of updates.updates) {
+      if (update instanceof types.UpdateNewMessage) {
+        return constructMessage(update.message[as](types.Message), updates.users, updates.chats);
+      } else if (update instanceof types.UpdateNewChannelMessage) {
+        return constructMessage(update.message[as](types.Message), updates.users, updates.chats);
+      }
+    }
+
+    throw new Error("Unreachable");
   }
 }
