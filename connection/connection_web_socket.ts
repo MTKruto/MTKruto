@@ -28,6 +28,10 @@ export class ConnectionWebSocket implements Connection {
     this.webSocket.onerror = console.error;
   }
 
+  get connected() {
+    return this.webSocket.readyState == WebSocket.OPEN;
+  }
+
   async open() {
     while (this.webSocket.readyState != WebSocket.OPEN) {
       if (this.webSocket.readyState == WebSocket.CLOSED) {
