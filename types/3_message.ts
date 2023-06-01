@@ -1,7 +1,9 @@
 import * as types from "../tl/2_types.ts";
+import { constructForceReply, ForceReply } from "./0_force_reply.ts";
 import { constructMessageEntity, MessageEntity } from "./0_message_entity.ts";
-import { constructUser, User } from "./1_user.ts";
+import { constructReplyKeyboardRemove, ReplyKeyboardRemove } from "./0_reply_keyboard_remove.ts";
 import { Chat, constructChat } from "./1_chat.ts";
+import { constructUser, User } from "./1_user.ts";
 import { constructInlineKeyboardMarkup, InlineKeyboardMarkup } from "./2_inline_keyboard_markup.ts";
 import { constructReplyKeyboardMarkup, ReplyKeyboardMarkup } from "./2_reply_keyboard_markup.ts";
 
@@ -16,7 +18,7 @@ export interface Message {
   date?: Date;
   editDate?: Date;
   views?: number;
-  replyMarkup?: InlineKeyboardMarkup | ReplyKeyboardMarkup;
+  replyMarkup?: InlineKeyboardMarkup | ReplyKeyboardMarkup | ReplyKeyboardRemove | ForceReply;
 }
 
 export function constructMessage(message_: types.Message, users: types.TypeUser[], chats: types.TypeChat[]) {
@@ -80,10 +82,18 @@ export function constructMessage(message_: types.Message, users: types.TypeUser[
     message.views = message_.views;
   }
 
-  if (message_.replyMarkup instanceof types.ReplyKeyboardMarkup) {
-    message.replyMarkup = constructReplyKeyboardMarkup(message_.replyMarkup);
-  } else if (message_.replyMarkup instanceof types.ReplyInlineMarkup) {
-    message.replyMarkup = constructInlineKeyboardMarkup(message_.replyMarkup);
+  if (message_.replyMarkup) {
+    if (message_.replyMarkup instanceof types.ReplyKeyboardMarkup) {
+      message.replyMarkup = constructReplyKeyboardMarkup(message_.replyMarkup);
+    } else if (message_.replyMarkup instanceof types.ReplyInlineMarkup) {
+      message.replyMarkup = constructInlineKeyboardMarkup(message_.replyMarkup);
+    } else if (message_.replyMarkup instanceof types.ReplyKeyboardHide) {
+      message.replyMarkup = constructReplyKeyboardRemove(message_.replyMarkup);
+    } else if (message_.replyMarkup instanceof types.ReplyKeyboardForceReply) {
+      message.replyMarkup = constructForceReply(message_.replyMarkup);
+    } else {
+      throw new Error("Unreachable");
+    }
   }
 
   return message;
