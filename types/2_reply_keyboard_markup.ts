@@ -1,6 +1,6 @@
 import { as } from "../tl/1_tl_object.ts";
 import * as types from "../tl/2_types.ts";
-import { constructChatAdministratorRights } from "./0_chat_administrator_rights.ts";
+import { chatAdministratorRightsToTlObject, constructChatAdministratorRights } from "./0_chat_administrator_rights.ts";
 import { KeyboardButton } from "./1_keyboard_button.ts";
 
 export interface ReplyKeyboardMarkup {
@@ -99,4 +99,73 @@ export function constructReplyKeyboardMarkup(keyboard_: types.ReplyKeyboardMarku
     isPersistent: keyboard_.persistent || false,
     keyboard: rows,
   };
+}
+
+export function replyKeyboardMarkupToTlObject(replyMarkup: ReplyKeyboardMarkup) {
+  const rows_ = new Array<types.KeyboardButtonRow>();
+  for (const row of replyMarkup.keyboard) {
+    const row_ = new Array<types.TypeKeyboardButton>();
+
+    for (const button of row) {
+      if ("requestUser" in button) {
+        row_.push(
+          new types.KeyboardButtonRequestPeer({
+            text: button.text,
+            buttonId: button.requestUser.requestId,
+            peerType: new types.RequestPeerTypeUser({ bot: button.requestUser.userIsBot, premium: button.requestUser.userIsPremium }),
+          }),
+        );
+      } else if ("requestChat" in button) {
+        if (!button.requestChat.chatIsChannel) { // GUESS
+          row_.push(
+            new types.KeyboardButtonRequestPeer({
+              text: button.text,
+              buttonId: button.requestChat.requestId,
+              peerType: new types.RequestPeerTypeChat({
+                forum: button.requestChat.chatIsForum,
+                hasUsername: button.requestChat.chatHasUsername,
+                creator: button.requestChat.chatIsCreated || undefined,
+                botParticipant: button.requestChat.botIsMember || undefined,
+                botAdminRights: button.requestChat.botAdministratorRights ? chatAdministratorRightsToTlObject(button.requestChat.botAdministratorRights) : undefined,
+                userAdminRights: button.requestChat.userAdministratorRights ? chatAdministratorRightsToTlObject(button.requestChat.userAdministratorRights) : undefined,
+              }),
+            }),
+          );
+        } else {
+          row_.push(
+            new types.KeyboardButtonRequestPeer({
+              text: button.text,
+              buttonId: button.requestChat.requestId,
+              peerType: new types.RequestPeerTypeBroadcast({
+                hasUsername: button.requestChat.chatHasUsername,
+                creator: button.requestChat.chatIsCreated || undefined,
+                botAdminRights: button.requestChat.botAdministratorRights ? chatAdministratorRightsToTlObject(button.requestChat.botAdministratorRights) : undefined,
+                userAdminRights: button.requestChat.userAdministratorRights ? chatAdministratorRightsToTlObject(button.requestChat.userAdministratorRights) : undefined,
+              }),
+            }),
+          );
+        }
+      } else if ("requestContact" in button) {
+        row_.push(new types.KeyboardButtonRequestPhone({ text: button.text }));
+      } else if ("requestLocation" in button) {
+        row_.push(new types.KeyboardButtonRequestGeoLocation({ text: button.text }));
+      } else if ("requestPoll" in button) {
+        row_.push(new types.KeyboardButtonRequestPoll({ text: button.text, quiz: button.requestPoll.type == "quiz" }));
+      } else if ("webApp" in button) {
+        row_.push(new types.KeyboardButtonWebView({ text: button.text, url: button.webApp.url }));
+      } else {
+        throw new Error("Unreachable");
+      }
+    }
+
+    rows_.push(new types.KeyboardButtonRow({ buttons: row_ }));
+  }
+
+  return new types.ReplyKeyboardMarkup({
+    resize: replyMarkup.resizeKeyboard || undefined,
+    singleUse: replyMarkup.oneTimeKeyboard || undefined,
+    selective: replyMarkup.selective || undefined,
+    persistent: replyMarkup.isPersistent || undefined,
+    rows: rows_,
+  });
 }
