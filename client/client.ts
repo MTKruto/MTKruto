@@ -479,7 +479,7 @@ export class Client extends ClientAbstract {
         this.sessionId,
       ),
     );
-    d("Invoked %s", function_.constructor.name);
+    d("invoked %s", function_.constructor.name);
 
     if (noWait) {
       return;
