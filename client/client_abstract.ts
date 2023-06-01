@@ -9,7 +9,6 @@ export abstract class ClientAbstract {
   protected connection: Connection;
   protected transport: Transport;
   private _dcId: number;
-  protected connected = false;
 
   constructor(protected transportProvider = defaultTransportProvider({ initialDc: DEFAULT_INITIAL_DC })) {
     const { connection, transport, dcId } = transportProvider({ cdn: false });
@@ -30,11 +29,14 @@ export abstract class ClientAbstract {
     this._dcId = dcId;
   }
 
+  get connected() {
+    return this.connection.connected;
+  }
+
   async connect() {
     await initTgCrypto();
     await this.connection.open();
     await this.transport.initialize();
-    this.connected = true;
   }
 
   async reconnect(dc?: DC) {
@@ -48,6 +50,5 @@ export abstract class ClientAbstract {
   async disconnect() {
     await this.transport.deinitialize();
     await this.connection.close();
-    this.connected = false;
   }
 }
