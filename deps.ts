@@ -7,3 +7,7 @@ export { gunzip, gzip } from "https://raw.githubusercontent.com/MTKruto/compress
 export { Mutex } from "https://esm.sh/async-mutex@0.4.0";
 
 export { Parser } from "https://deno.land/x/html_parser@v0.1.3/src/mod.ts";
+
+import { debug as debug_ } from "https://deno.land/x/debug@0.2.0/mod.ts";
+
+export const debug: typeof debug_ = (v) => debug_(`mtkruto__${v}`);
