@@ -1,4 +1,4 @@
-import { gunzip } from "../deps.ts";
+import { debug, gunzip } from "../deps.ts";
 import { MaybePromise } from "../types.ts";
 import { ackThreshold, DEFAULT_APP_VERSION, DEFAULT_DEVICE_MODEL, DEFAULT_INITIAL_DC, DEFAULT_LANG_CODE, DEFAULT_LANG_PACK, DEFAULT_SYSTEM_LANG_CODE, DEFAULT_SYSTEM_VERSION, LAYER, MAX_CHANNEL_ID, MAX_CHAT_ID, USERNAME_TTL, ZERO_CHANNEL_ID } from "../constants.ts";
 import { bigIntFromBuffer, getRandomBigInt, getRandomId } from "../utilities/0_bigint.ts";
@@ -19,6 +19,8 @@ import { StorageMemory } from "../storage/storage_memory.ts";
 import { DC, TransportProvider } from "../transport/transport_provider.ts";
 import { sha1 } from "../utilities/0_hash.ts";
 import { MessageEntity, messageEntityToTlObject } from "../types/0_message_entity.ts";
+
+const d = debug("client");
 
 export const restartAuth = Symbol();
 
@@ -173,7 +175,7 @@ export class Client extends ClientAbstract {
     if (dc == null) {
       await this.storage.setDc(DEFAULT_INITIAL_DC);
     }
-    // logger().debug("Client connected");
+    d("enrypted client connected");
     this.receiveLoop();
     this.pingLoop();
   }
@@ -202,6 +204,7 @@ export class Client extends ClientAbstract {
     if (!this.apiHash) {
       throw new Error("apiHash not set");
     }
+    d("authorizing with %s", typeof params === "string" ? "bot token" : params instanceof types.AuthExportedAuthorization ? "exported authorization" : "AuthorizeUserParams");
 
     await this.invoke(
       new functions.InitConnection({
@@ -218,6 +221,7 @@ export class Client extends ClientAbstract {
         systemVersion: this.systemVersion,
       }),
     );
+    d("connection inited");
 
     const handlePassword = async (err: unknown) => {
       params = params as AuthorizeUserParams;
@@ -231,6 +235,7 @@ export class Client extends ClientAbstract {
               const input = await checkPassword(password, ap);
 
               await this.invoke(new functions.AuthCheckPassword({ password: input }));
+              d("authorized as user");
               break;
             } catch (err) {
               if (err instanceof types.RPCError && err.errorMessage == "PASSWORD_HASH_INVALID") {
@@ -250,6 +255,7 @@ export class Client extends ClientAbstract {
 
     try {
       await this.invoke(new functions.UpdatesGetState());
+      d("already authorized");
       return;
     } catch (err) {
       if (!(err instanceof types.RPCError) || err.errorMessage != "AUTH_KEY_UNREGISTERED") {
@@ -263,6 +269,7 @@ export class Client extends ClientAbstract {
     try {
       if (params instanceof types.AuthExportedAuthorization) {
         await this.invoke(new functions.AuthImportAuthorization({ id: params.id, bytes: params.bytes }));
+        d("authorization imported");
       } else if (typeof params == "object") {
         while (true) {
           if (signedIn) {
@@ -280,6 +287,7 @@ export class Client extends ClientAbstract {
                   settings: new types.CodeSettings(),
                 }),
               );
+              d("verification code sent");
 
               if (sentCode instanceof types.AuthSentCode) {
                 while (true) {
@@ -290,6 +298,7 @@ export class Client extends ClientAbstract {
                       throw new Error("Sign up not supported");
                     } else {
                       signedIn = true;
+                      d("authorized as user");
                       break;
                     }
                   } catch (err) {
@@ -316,6 +325,7 @@ export class Client extends ClientAbstract {
         }
       } else {
         await this.invoke(new functions.AuthImportBotAuthorization({ apiId: this.apiId, apiHash: this.apiHash, botAuthToken: params, flags: 0 }));
+        d("authorized as bot");
       }
     } catch (err) {
       if (err instanceof types.RPCError) {
@@ -326,6 +336,7 @@ export class Client extends ClientAbstract {
             newDc += "-test";
           }
           await this.reconnect(newDc as DC);
+          d("migrated to DC%s", newDc);
           if (typeof params === "object" && phoneNumber != null) {
             params = Object.assign({}, params) as AuthorizeUserParams;
             params.phone = phoneNumber;
@@ -370,8 +381,8 @@ export class Client extends ClientAbstract {
           this.auth.id,
           this.sessionId,
         );
-      } catch (_err) {
-        // logger().error(`Failed to decrypt message: ${err}`);
+      } catch (err) {
+        d("failed to decrypt message: %o", err);
         continue;
       }
       const messages = decrypted instanceof MessageContainer ? decrypted.messages : [decrypted];
@@ -381,13 +392,18 @@ export class Client extends ClientAbstract {
         if (body instanceof types.GZIPPacked) {
           body = new TLReader(gunzip(body.packedData)).readObject();
         }
-        // logger().debug(`Received ${body.constructor.name}`);
+        d("received %s", body.constructor.name);
         if (body instanceof types.Updates) {
           this.processUpdates(body);
         } else if (message.body instanceof RPCResult) {
           let result = message.body.result;
           if (result instanceof types.GZIPPacked) {
             result = new TLReader(gunzip(result.packedData)).readObject();
+          }
+          if (result instanceof types.RPCError) {
+            d("RPCResult: %d %s", result.errorCode, result.errorMessage);
+          } else {
+            d("RPCResult: %s", result.constructor.name);
           }
           const promise = this.promises.get(message.body.messageId);
           if (promise) {
@@ -428,8 +444,8 @@ export class Client extends ClientAbstract {
     while (this.connected) {
       try {
         await this.invoke(new functions.Ping({ pingId: getRandomBigInt(8, true, false) }));
-      } catch (_err) {
-        // logger().error(`Failed to invoke ping: ${err}`);
+      } catch (err) {
+        d("ping loop error: %o", err);
       }
       await new Promise((r) => setTimeout(r, 60 * 1_000));
     }
@@ -463,7 +479,7 @@ export class Client extends ClientAbstract {
         this.sessionId,
       ),
     );
-    // logger().debug(`Invoked ${function_.constructor.name}`);
+    d("Invoked %s", function_.constructor.name);
 
     if (noWait) {
       return;

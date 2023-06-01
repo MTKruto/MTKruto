@@ -1,4 +1,4 @@
-import { assertEquals, assertInstanceOf, factorize, ige256Decrypt, ige256Encrypt } from "../deps.ts";
+import { assertEquals, assertInstanceOf, debug, factorize, ige256Decrypt, ige256Encrypt } from "../deps.ts";
 import { publicKeys } from "../constants.ts";
 import { bigIntFromBuffer, getRandomBigInt, modExp } from "../utilities/0_bigint.ts";
 import { bufferFromBigInt, concat } from "../utilities/0_buffer.ts";
@@ -10,6 +10,8 @@ import { ClientDHInnerData, DHGenOK, PQInnerDataDC, ResPQ, ServerDHInnerData, Se
 import { Function, ReqDHParams, ReqPQMulti, SetClientDHParams } from "../tl/3_functions.ts";
 import { TLReader } from "../tl/3_tl_reader.ts";
 import { ClientAbstract } from "./client_abstract.ts";
+
+const d = debug("auth_key_creation");
 
 export class ClientPlain extends ClientAbstract {
   async invoke<T extends Function<unknown>>(function_: T): Promise<T["__R"]> {
@@ -28,17 +30,17 @@ export class ClientPlain extends ClientAbstract {
 
   async createAuthKey() {
     const nonce = getRandomBigInt(16, false, true);
-    // logger().debug("Auth key creation started");
+    d("auth key creation started");
 
     const resPq = await this.invoke(new ReqPQMulti({ nonce }));
 
     assertInstanceOf(resPq, ResPQ);
     assertEquals(resPq.nonce, nonce);
-    // logger().debug("Got res_pq");
+    d("got res_pq");
 
     const pq_ = bigIntFromBuffer(resPq.pq, false, false);
     const [p_, q_] = factorize(pq_);
-    // logger().debug("Factorized pq");
+    d("factorized pq");
     const p = bufferFromBigInt(p_, 4, false, false);
     const q = bufferFromBigInt(q_, 4, false, false);
 
@@ -87,7 +89,7 @@ export class ClientPlain extends ClientAbstract {
     );
 
     assertInstanceOf(dhParams, ServerDHParamsOK);
-    // logger().debug("Got server_DH_params_ok");
+    d("got server_DH_params_ok");
 
     const newNonce_ = bufferFromBigInt(newNonce, 32, true, true);
     const serverNonce_ = bufferFromBigInt(serverNonce, 16, true, true);
@@ -121,7 +123,7 @@ export class ClientPlain extends ClientAbstract {
 
     const dhGenOk = await this.invoke(new SetClientDHParams({ nonce, serverNonce, encryptedData }));
     assertInstanceOf(dhGenOk, DHGenOK);
-    // logger().debug("Got dh_gen_ok");
+    d("got dh_gen_ok");
 
     const serverNonceSlice = serverNonce_.slice(0, 8);
     const salt = newNonce_.slice(0, 0 + 8).map((v, i) => v ^ serverNonceSlice[i]);
@@ -129,7 +131,7 @@ export class ClientPlain extends ClientAbstract {
     const authKey_ = modExp(gA, b, dhPrime);
     const authKey = bufferFromBigInt(authKey_, 256, false, false);
 
-    // logger().debug("Auth key created");
+    d("auth key created");
 
     return {
       authKey,
