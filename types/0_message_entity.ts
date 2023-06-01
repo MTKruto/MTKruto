@@ -105,7 +105,7 @@ export declare namespace MessageEntity {
 
   export interface CustomEmoji extends Base {
     type: MessageEntityType.CustomEmoji;
-    documentId: bigint;
+    customEmojiId: string;
   }
 }
 
@@ -168,7 +168,7 @@ export function constructMessageEntity(obj: types.TypeMessageEntity): MessageEnt
   } else if (obj instanceof types.MessageEntitySpoiler) {
     return { type: MessageEntityType.Spoiler, offset: obj.offset, length: obj.length };
   } else if (obj instanceof types.MessageEntityCustomEmoji) {
-    return { type: MessageEntityType.CustomEmoji, offset: obj.offset, length: obj.length, documentId: obj.documentId };
+    return { type: MessageEntityType.CustomEmoji, offset: obj.offset, length: obj.length, customEmojiId: String(obj.documentId) };
   } else {
     return null;
   }
@@ -214,6 +214,6 @@ export function messageEntityToTlObject(entity: MessageEntity) {
     case MessageEntityType.Spoiler:
       return new types.MessageEntitySpoiler({ offset, length });
     case MessageEntityType.CustomEmoji:
-      return new types.MessageEntityCustomEmoji({ offset, length, documentId: entity.documentId });
+      return new types.MessageEntityCustomEmoji({ offset, length, documentId: BigInt(entity.customEmojiId) });
   }
 }

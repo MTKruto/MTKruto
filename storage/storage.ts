@@ -1,7 +1,7 @@
-import { MaybePromise } from "../types.ts";
-import { DC } from "../transport/transport_provider.ts";
+import { MaybePromise } from "../utilities/0_types.ts";
 import { sha1 } from "../utilities/0_hash.ts";
 import { bigIntFromBuffer } from "../utilities/0_bigint.ts";
+import { DC } from "../transport/transport_provider.ts";
 
 export abstract class Storage {
   private _authKeyId: bigint | null = null;

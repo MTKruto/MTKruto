@@ -1,8 +1,10 @@
 import { debug, gunzip } from "../deps.ts";
-import { MaybePromise } from "../types.ts";
 import { ackThreshold, DEFAULT_APP_VERSION, DEFAULT_DEVICE_MODEL, DEFAULT_INITIAL_DC, DEFAULT_LANG_CODE, DEFAULT_LANG_PACK, DEFAULT_SYSTEM_LANG_CODE, DEFAULT_SYSTEM_VERSION, LAYER, MAX_CHANNEL_ID, MAX_CHAT_ID, USERNAME_TTL, ZERO_CHANNEL_ID } from "../constants.ts";
 import { bigIntFromBuffer, getRandomBigInt, getRandomId } from "../utilities/0_bigint.ts";
+import { UNREACHABLE } from "../utilities/0_control.ts";
+import { sha1 } from "../utilities/0_hash.ts";
 import { parseHtml } from "../utilities/0_html.ts";
+import { MaybePromise } from "../utilities/0_types.ts";
 import { decryptMessage, encryptMessage, getMessageId } from "../utilities/1_message.ts";
 import { checkPassword } from "../utilities/1_password.ts";
 import { as, MaybeVectorTLObject } from "../tl/1_tl_object.ts";
@@ -17,7 +19,6 @@ import { ClientPlain } from "./client_plain.ts";
 import { Storage } from "../storage/storage.ts";
 import { StorageMemory } from "../storage/storage_memory.ts";
 import { DC, TransportProvider } from "../transport/transport_provider.ts";
-import { sha1 } from "../utilities/0_hash.ts";
 import { MessageEntity, messageEntityToTlObject } from "../types/0_message_entity.ts";
 import { constructMessage } from "../types/3_message.ts";
 
@@ -576,7 +577,7 @@ export class Client extends ClientAbstract {
           } else if (resolved.peer instanceof types.PeerChannel) {
             channelId = resolved.peer.channelId;
           } else {
-            throw new Error("Unreachable");
+            UNREACHABLE();
           }
         }
         if (userId) {
@@ -586,7 +587,7 @@ export class Client extends ClientAbstract {
           const accessHash = await this.storage.getChannelAccessHash(channelId);
           return new types.InputPeerChannel({ channelId, accessHash: accessHash ?? 0n });
         } else {
-          throw new Error("Unreachable");
+          UNREACHABLE();
         }
       }
     } else if (id > 0) {
@@ -666,6 +667,6 @@ export class Client extends ClientAbstract {
       }
     }
 
-    throw new Error("Unreachable");
+    UNREACHABLE();
   }
 }

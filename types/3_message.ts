@@ -1,3 +1,5 @@
+import { UNREACHABLE } from "../utilities/0_control.ts";
+import { cleanObject } from "../utilities/0_object.ts";
 import * as types from "../tl/2_types.ts";
 import { constructForceReply, ForceReply } from "./0_force_reply.ts";
 import { constructMessageEntity, MessageEntity } from "./0_message_entity.ts";
@@ -46,10 +48,10 @@ export function constructMessage(message_: types.Message, users: types.TypeUser[
     }
   }
   if (!chat_) {
-    throw new Error("Unreachable");
+    UNREACHABLE();
   }
 
-  const message: Message = { id: message_.id, chat: chat_ };
+  const message: Message = { id: message_.id, chat: chat_, views: message_.views };
 
   if (message_.fromId instanceof types.PeerUser) {
     for (const user of users) {
@@ -78,10 +80,6 @@ export function constructMessage(message_: types.Message, users: types.TypeUser[
     message.editDate = new Date(message_.editDate * 1_000);
   }
 
-  if (message_.views != undefined) {
-    message.views = message_.views;
-  }
-
   if (message_.replyMarkup) {
     if (message_.replyMarkup instanceof types.ReplyKeyboardMarkup) {
       message.replyMarkup = constructReplyKeyboardMarkup(message_.replyMarkup);
@@ -92,9 +90,9 @@ export function constructMessage(message_: types.Message, users: types.TypeUser[
     } else if (message_.replyMarkup instanceof types.ReplyKeyboardForceReply) {
       message.replyMarkup = constructForceReply(message_.replyMarkup);
     } else {
-      throw new Error("Unreachable");
+      UNREACHABLE();
     }
   }
 
-  return message;
+  return cleanObject(message);
 }
