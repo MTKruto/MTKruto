@@ -39,7 +39,7 @@ export declare namespace Chat {
     isCreator: boolean;
   }
 
-  export interface ChannelBase {
+  export interface ChannelBase extends Base {
     title: string;
     username?: string;
     also?: string[];
