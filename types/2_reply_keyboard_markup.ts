@@ -12,7 +12,7 @@ export interface ReplyKeyboardMarkup {
   selective?: boolean;
 }
 
-export function constructReplyKeyboard(keyboard_: types.ReplyKeyboardMarkup) {
+export function constructReplyKeyboardMarkup(keyboard_: types.ReplyKeyboardMarkup): ReplyKeyboardMarkup {
   const rows = new Array<KeyboardButton[]>();
 
   for (const row_ of keyboard_.rows.map((v) => v[as](types.KeyboardButtonRow))) {
@@ -92,5 +92,11 @@ export function constructReplyKeyboard(keyboard_: types.ReplyKeyboardMarkup) {
     rows.push(row);
   }
 
-  return rows;
+  return {
+    resizeKeyboard: keyboard_.resize || false,
+    oneTimeKeyboard: keyboard_.singleUse || false,
+    selective: keyboard_.selective || false,
+    isPersistent: keyboard_.persistent || false,
+    keyboard: rows,
+  };
 }

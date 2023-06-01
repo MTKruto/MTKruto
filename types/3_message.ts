@@ -2,8 +2,8 @@ import * as types from "../tl/2_types.ts";
 import { constructMessageEntity, MessageEntity } from "./0_message_entity.ts";
 import { constructUser, User } from "./1_user.ts";
 import { Chat, constructChat } from "./1_chat.ts";
-import { InlineKeyboardMarkup } from "./2_inline_keyboard_markup.ts";
-import { constructReplyKeyboard, ReplyKeyboardMarkup } from "./2_reply_keyboard_markup.ts";
+import { constructInlineKeyboardMarkup, InlineKeyboardMarkup } from "./2_inline_keyboard_markup.ts";
+import { constructReplyKeyboardMarkup, ReplyKeyboardMarkup } from "./2_reply_keyboard_markup.ts";
 
 export interface Message {
   id: number;
@@ -81,13 +81,9 @@ export function constructMessage(message_: types.Message, users: types.TypeUser[
   }
 
   if (message_.replyMarkup instanceof types.ReplyKeyboardMarkup) {
-    message.replyMarkup = {
-      resizeKeyboard: message_.replyMarkup.resize || false,
-      oneTimeKeyboard: message_.replyMarkup.singleUse || false,
-      selective: message_.replyMarkup.selective || false,
-      isPersistent: message_.replyMarkup.persistent || false,
-      keyboard: constructReplyKeyboard(message_.replyMarkup),
-    };
+    message.replyMarkup = constructReplyKeyboardMarkup(message_.replyMarkup);
+  } else if (message_.replyMarkup instanceof types.ReplyInlineMarkup) {
+    message.replyMarkup = constructInlineKeyboardMarkup(message_.replyMarkup);
   }
 
   return message;
