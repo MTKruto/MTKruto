@@ -47,7 +47,7 @@ export type InlineKeyboardButton =
   | InlineKeyboardButton.SwitchInlineCurrent
   | InlineKeyboardButton.Pay;
 
-export function constructInlineKeybaordButton(button_: types.TypeKeyboardButton): InlineKeyboardButton {
+export function constructInlineKeyboardButton(button_: types.TypeKeyboardButton): InlineKeyboardButton {
   if (button_ instanceof types.KeyboardButtonURL) {
     return { text: button_.text, url: button_.url };
   } else if (button_ instanceof types.KeyboardButtonCallback) {
