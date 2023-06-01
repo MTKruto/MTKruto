@@ -1,3 +1,4 @@
+import { cleanObject } from "../utilities/0_object.ts";
 import { as } from "../tl/1_tl_object.ts";
 import * as types from "../tl/2_types.ts";
 import { ChatPhoto, constructChatPhoto } from "./0_chat_photo.ts";
@@ -26,6 +27,7 @@ export function constructUser(user_: types.User) {
     firstName: user_.firstName || "",
     lastName: user_.lastName,
     username: user_.username,
+    also: user_.usernames?.map((v) => v[as](types.Username)).map((v) => v.username),
     languageCode: user_.langCode,
     isScam: user_.scam || false,
     isFake: user_.fake || false,
@@ -34,14 +36,8 @@ export function constructUser(user_: types.User) {
     isSupport: user_.support || false,
     addedToAttachmentMenu: user_.attachMenuEnabled || false,
   };
-
-  if (user_.usernames) {
-    user.also = user_.usernames.map((v) => v[as](types.Username)).map((v) => v.username);
-  }
-
   if (user_.photo instanceof types.UserProfilePhoto) {
     user.photo = constructChatPhoto(user_.photo);
   }
-
-  return user;
+  return cleanObject(user);
 }

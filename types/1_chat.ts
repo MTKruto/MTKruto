@@ -1,4 +1,6 @@
 import { ZERO_CHANNEL_ID } from "../constants.ts";
+import { UNREACHABLE } from "../utilities/0_control.ts";
+import { cleanObject } from "../utilities/0_object.ts";
 import { as } from "../tl/1_tl_object.ts";
 import * as types from "../tl/2_types.ts";
 import { ChatPhoto, constructChatPhoto } from "./0_chat_photo.ts";
@@ -92,7 +94,7 @@ export function constructChat(chat: types.User | types.Chat | types.Channel): Ch
       chat_.photo = constructChatPhoto(chat.photo);
     }
 
-    return chat_;
+    return cleanObject(chat_);
   } else if (chat instanceof types.Chat) {
     const chat_: Chat.Group = {
       type: ChatType.Group,
@@ -105,7 +107,7 @@ export function constructChat(chat: types.User | types.Chat | types.Channel): Ch
       chat_.photo = constructChatPhoto(chat.photo);
     }
 
-    return chat_;
+    return cleanObject(chat_);
   } else if (chat instanceof types.Channel) {
     let chat_: Chat.Supergroup | Chat.Channel;
     const {
@@ -131,8 +133,8 @@ export function constructChat(chat: types.User | types.Chat | types.Channel): Ch
       chat_.photo = constructChatPhoto(chat.photo);
     }
 
-    return chat_;
+    return cleanObject(chat_);
   } else {
-    throw new TypeError("Unreachable");
+    UNREACHABLE();
   }
 }

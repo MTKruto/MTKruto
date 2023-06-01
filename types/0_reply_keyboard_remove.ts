@@ -1,3 +1,4 @@
+import { cleanObject } from "../utilities/0_object.ts";
 import * as types from "../tl/2_types.ts";
 
 export interface ReplyKeyboardRemove {
@@ -5,12 +6,8 @@ export interface ReplyKeyboardRemove {
   selective?: boolean;
 }
 
-export function constructReplyKeyboardRemove(replyMarkup_: types.ReplyKeyboardHide) {
-  const replyMarkup: ReplyKeyboardRemove = { removeKeyboard: true };
-  if (replyMarkup_.selective) {
-    replyMarkup.selective = true;
-  }
-  return replyMarkup;
+export function constructReplyKeyboardRemove(replyMarkup_: types.ReplyKeyboardHide): ReplyKeyboardRemove {
+  return cleanObject({ removeKeyboard: true, selective: replyMarkup_.selective });
 }
 
 export function replyKeyboardRemoveToTlObject(replyMarkup: ReplyKeyboardRemove) {

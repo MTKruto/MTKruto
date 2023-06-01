@@ -1,4 +1,4 @@
-import { MaybePromise } from "../types.ts";
+import { MaybePromise } from "../utilities/0_types.ts";
 import { Storage } from "./storage.ts";
 
 export class StorageLocalStorage extends Storage implements Storage {
