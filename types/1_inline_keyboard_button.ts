@@ -59,3 +59,21 @@ export function constructInlineKeybaordButton(button_: types.TypeKeyboardButton)
     UNREACHABLE();
   }
 }
+
+export function inlineKeyboardButtonToTlObject(button: InlineKeyboardButton) {
+  if ("url" in button) {
+    return new types.KeyboardButtonURL({ text: button.text, url: button.url });
+  } else if ("callbackData" in button) {
+    return new types.KeyboardButtonCallback({ text: button.text, data: new TextEncoder().encode(button.callbackData) });
+  } else if ("webApp" in button) {
+    return new types.KeyboardButtonWebView({ text: button.text, url: button.webApp.url });
+  } else if ("switchInlineQuery" in button) {
+    return new types.KeyboardButtonSwitchInline({ text: button.text, query: button.switchInlineQuery });
+  } else if ("switchInlineQueryCurrentChat" in button) {
+    return new types.KeyboardButtonSwitchInline({ text: button.text, query: button.switchInlineQueryCurrentChat, samePeer: true });
+  } else if ("pay" in button) {
+    return new types.KeyboardButtonBuy({ text: button.text });
+  } else {
+    UNREACHABLE();
+  }
+}
