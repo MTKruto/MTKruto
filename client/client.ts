@@ -20,6 +20,10 @@ import { Storage } from "../storage/storage.ts";
 import { StorageMemory } from "../storage/storage_memory.ts";
 import { DC, TransportProvider } from "../transport/transport_provider.ts";
 import { MessageEntity, messageEntityToTlObject } from "../types/0_message_entity.ts";
+import { ReplyKeyboardRemove, replyKeyboardRemoveToTlObject } from "../types/0_reply_keyboard_remove.ts";
+import { ForceReply, forceReplyToTlObject } from "../types/0_force_reply.ts";
+import { ReplyKeyboardMarkup, replyKeyboardMarkupToTlObject } from "../types/2_reply_keyboard_markup.ts";
+import { InlineKeyboardMarkup, inlineKeyboardMarkupToTlObject } from "../types/2_inline_keyboard_markup.ts";
 import { constructMessage } from "../types/3_message.ts";
 
 const d = debug("client");
@@ -617,6 +621,7 @@ export class Client extends ClientAbstract {
       replyToMessageId?: number;
       messageThreadId?: number;
       sendAs?: number | string;
+      replyMarkup?: InlineKeyboardMarkup | ReplyKeyboardMarkup | ReplyKeyboardRemove | ForceReply;
     },
   ) {
     const entities_ = params?.entities ?? [];
@@ -630,6 +635,24 @@ export class Client extends ClientAbstract {
         for (const entity of entitiesToPush) {
           entities_.push(entity);
         }
+      }
+    }
+
+    let replyMarkup: types.TypeReplyMarkup | undefined = undefined;
+    if (params?.replyMarkup) {
+      if ("inlineKeyboard" in params.replyMarkup) {
+        replyMarkup = await inlineKeyboardMarkupToTlObject(params.replyMarkup, async (v) => {
+          const inputPeer = await this.getInputPeer(v).then((v) => v[as](types.InputPeerUser));
+          return new types.InputUser({ userId: inputPeer.userId, accessHash: inputPeer.accessHash });
+        });
+      } else if ("keyboard" in params.replyMarkup) {
+        replyMarkup = replyKeyboardMarkupToTlObject(params.replyMarkup);
+      } else if ("removeKeyboard" in params.replyMarkup) {
+        replyMarkup = replyKeyboardRemoveToTlObject(params.replyMarkup);
+      } else if ("forceReply" in params.replyMarkup) {
+        replyMarkup = forceReplyToTlObject(params.replyMarkup);
+      } else {
+        throw new Error("The replyMarkup parameter has an unexpected type");
       }
     }
 
@@ -656,6 +679,7 @@ export class Client extends ClientAbstract {
         topMsgId,
         sendAs,
         entities,
+        replyMarkup,
       }),
     ).then((v) => v[as](types.Updates));
 
