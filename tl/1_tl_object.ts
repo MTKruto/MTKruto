@@ -95,7 +95,7 @@ function serializeSingleParam(
       writer.write(value[serialize]());
       return;
     } else {
-      throw new TypeError(`Expected ${type.name}`);
+      throw new TypeError(`Expected ${type.name} but received ${value == null ? null : value.constructor.name}`);
     }
   }
 

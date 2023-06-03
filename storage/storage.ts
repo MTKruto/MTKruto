@@ -1,8 +1,12 @@
+import { base64Decode, base64Encode } from "../deps.ts";
 import { MaybePromise } from "../utilities/0_types.ts";
+import { UNREACHABLE } from "../utilities/0_control.ts";
 import { sha1 } from "../utilities/0_hash.ts";
 import { bigIntFromBuffer } from "../utilities/0_bigint.ts";
 import { DC } from "../transport/transport_provider.ts";
+import { serialize } from "../tl/1_tl_object.ts";
 import * as types from "../tl/2_types.ts";
+import { TLReader } from "../tl/3_tl_reader.ts";
 
 export abstract class Storage {
   private _authKeyId: bigint | null = null;
@@ -129,6 +133,29 @@ export abstract class Storage {
     const pts = await this.get(`${this.channelPts__}${channelId}`);
     if (pts != null) {
       return Number(pts);
+    } else {
+      return null;
+    }
+  }
+
+  private readonly peer__ = "peer__";
+  async setEntity(peer: types.Channel): Promise<void>;
+  async setEntity(peer: types.Chat): Promise<void>;
+  async setEntity(peer: types.User): Promise<void>;
+  async setEntity(peer: types.User | types.Channel | types.Chat) {
+    const type = peer instanceof types.Channel ? "channel" : peer instanceof types.Chat ? "chat" : peer instanceof types.User ? "user" : UNREACHABLE();
+    await this.set(`${this.peer__}${type}${peer.id}`, base64Encode(peer[serialize]()));
+  }
+
+  async getEntity(type: "channel", id: bigint): Promise<types.Channel | null>;
+  async getEntity(type: "chat", id: bigint): Promise<types.Chat | null>;
+  async getEntity(type: "user", id: bigint): Promise<types.User | null>;
+  async getEntity(type: "channel" | "chat" | "user", id: bigint): Promise<types.Channel | types.Chat | types.User | null>;
+  async getEntity(type: "channel" | "chat" | "user", id: bigint) {
+    const peer_ = await this.get(`${this.peer__}${type}${id}`);
+    if (peer_ != null) {
+      const reader = new TLReader(base64Decode(peer_));
+      return reader.readObject();
     } else {
       return null;
     }

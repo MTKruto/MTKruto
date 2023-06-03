@@ -13,3 +13,5 @@ import { debug as debug_ } from "https://raw.githubusercontent.com/MTKruto/debug
 export const debug: typeof debug_ = (v) => debug_(`mtkruto__${v}`);
 
 export { queue } from "https://deno.land/x/q@v0.0.1/mod.ts";
+
+export { decode as base64Decode, encode as base64Encode } from "https://deno.land/std@0.190.0/encoding/base64.ts";

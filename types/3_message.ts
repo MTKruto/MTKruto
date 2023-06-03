@@ -23,42 +23,45 @@ export interface Message {
   replyMarkup?: InlineKeyboardMarkup | ReplyKeyboardMarkup | ReplyKeyboardRemove | ForceReply;
 }
 
-export function constructMessage(message_: types.Message, users: types.TypeUser[], chats: types.TypeChat[]) {
+export async function constructMessage(message_: types.Message, getEntity: {
+  (peer: types.PeerUser): Promise<types.User | null>;
+  (peer: types.PeerChat): Promise<types.Chat | null>;
+  (peer: types.PeerChannel): Promise<types.Channel | null>;
+}) {
   let chat_: Chat | null = null;
   if (message_.peerId instanceof types.PeerUser) {
-    for (const user of users) {
-      if (user instanceof types.User && user.id == message_.peerId.userId) {
-        chat_ = constructChat(user);
-        break;
-      }
+    const entity = await getEntity(message_.peerId);
+    if (entity) {
+      chat_ = constructChat(entity);
+    } else {
+      UNREACHABLE();
     }
   } else if (message_.peerId instanceof types.PeerChat) {
-    for (const chat of chats) {
-      if (chat instanceof types.Chat && chat.id == message_.peerId.chatId) {
-        chat_ = constructChat(chat);
-        break;
-      }
+    const entity = await getEntity(message_.peerId);
+    if (entity) {
+      chat_ = constructChat(entity);
+    } else {
+      UNREACHABLE();
     }
   } else if (message_.peerId instanceof types.PeerChannel) {
-    for (const chat of chats) {
-      if (chat instanceof types.Channel && chat.id == message_.peerId.channelId) {
-        chat_ = constructChat(chat);
-        break;
-      }
+    const entity = await getEntity(message_.peerId);
+    if (entity) {
+      chat_ = constructChat(entity);
+    } else {
+      UNREACHABLE();
     }
-  }
-  if (!chat_) {
+  } else {
     UNREACHABLE();
   }
 
   const message: Message = { id: message_.id, chat: chat_, views: message_.views };
 
   if (message_.fromId instanceof types.PeerUser) {
-    for (const user of users) {
-      if (user instanceof types.User && user.id == message_.fromId.userId) {
-        message.from = constructUser(user);
-        break;
-      }
+    const entity = await getEntity(message_.fromId);
+    if (entity) {
+      message.from = constructUser(entity);
+    } else {
+      UNREACHABLE();
     }
   }
   if (message_.message) {

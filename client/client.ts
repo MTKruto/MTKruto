@@ -25,10 +25,14 @@ import { ForceReply, forceReplyToTlObject } from "../types/0_force_reply.ts";
 import { ReplyKeyboardMarkup, replyKeyboardMarkupToTlObject } from "../types/2_reply_keyboard_markup.ts";
 import { InlineKeyboardMarkup, inlineKeyboardMarkupToTlObject } from "../types/2_inline_keyboard_markup.ts";
 import { constructMessage } from "../types/3_message.ts";
+import { diff } from "https://deno.land/std@0.190.0/testing/_diff.ts";
 
 const d = debug("client");
+const dRecoverUpdateGap = debug("client_recoverUpdateGap");
+const dRecoverChannelUpdateGap = debug("client_recoverChannelUpdateGap");
 
 const UPDATE_GAP = Symbol();
+export const getEntity = Symbol();
 
 export const restartAuth = Symbol();
 
@@ -43,7 +47,7 @@ export interface AuthorizeUserParams<S = string> {
   password: S | (() => MaybePromise<S>);
 }
 
-export type UpdateHandler = null | ((client: Client, update: types.Message | types.TypeUpdate) => MaybePromise<void>);
+export type UpdateHandler = null | ((client: Client, update: types.TypeUpdate) => MaybePromise<void>);
 
 export interface ClientParams {
   /**
@@ -536,6 +540,7 @@ export class Client extends ClientAbstract {
   private async processChats(chats: types.TypeChat[]) {
     for (const chat of chats) {
       if (chat instanceof types.Channel && chat.accessHash) {
+        await this.storage.setEntity(chat);
         await this.storage.setChannelAccessHash(chat.id, chat.accessHash);
         if (chat.username) {
           await this.storage.updateUsernames("channel", chat.id, [chat.username]);
@@ -543,6 +548,8 @@ export class Client extends ClientAbstract {
         if (chat.usernames) {
           await this.storage.updateUsernames("channel", chat.id, chat.usernames.map((v) => v[as](types.Username)).map((v) => v.username));
         }
+      } else if (chat instanceof types.Chat) {
+        await this.storage.setEntity(chat);
       }
     }
   }
@@ -550,6 +557,7 @@ export class Client extends ClientAbstract {
   private async processUsers(users: types.TypeUser[]) {
     for (const user of users) {
       if (user instanceof types.User && user.accessHash) {
+        await this.storage.setEntity(user);
         await this.storage.setUserAccessHash(user.id, user.accessHash);
         if (user.username) {
           await this.storage.updateUsernames("user", user.id, [user.username]);
@@ -602,7 +610,8 @@ export class Client extends ClientAbstract {
   }, 1);
 
   private updateApplicationMutex = new Mutex();
-  private async applyUpdateNoGap(update: types.TypeUpdate): Promise<void> {
+  private async applyUpdateNoGap(update: types.TypeUpdate, usePts = true): Promise<void> {
+    d("apply update");
     const release = await this.updateApplicationMutex.acquire();
 
     try {
@@ -633,26 +642,40 @@ export class Client extends ClientAbstract {
         localState.pts = update.pts;
         await this.storage.setState(localState);
       } else if (
-        (update instanceof types.UpdateNewChannelMessage) ||
-        (update instanceof types.UpdateDeleteChannelMessages) ||
-        (update instanceof types.UpdateEditChannelMessage) ||
-        (update instanceof types.UpdateChannelWebPage)
+        usePts &&
+        (
+          (update instanceof types.UpdateNewChannelMessage) ||
+          (update instanceof types.UpdateDeleteChannelMessages) ||
+          (update instanceof types.UpdateEditChannelMessage) ||
+          (update instanceof types.UpdateChannelWebPage)
+        )
       ) {
         const channelId = update instanceof types.UpdateNewChannelMessage || update instanceof types.UpdateEditChannelMessage ? update.message[as](types.Message).peerId[as](types.PeerChannel).channelId : update.channelId;
         let localPts = await this.storage.getChannelPts(channelId);
+        d("localPts=%d", localPts);
         if (!localPts) {
           localPts = update.pts - update.ptsCount;
+          d("localPts not found");
         }
         if (localPts + update.ptsCount > update.pts) {
           // already applied
           return;
         } else if (localPts + update.ptsCount < update.pts) {
+          d("localPts=%d ptsCount=%d pts=%d", localPts, update.ptsCount, update.pts);
+          d("%d + %d < %d", localPts, update.ptsCount, update.pts);
           // should call channelGetDifference
           throw UPDATE_GAP;
         }
+        await this.storage.setChannelPts(channelId, update.pts);
+        dRecoverUpdateGap("SET CHANNEL PTS");
+      } else {
+        console.log("----------------------------");
+        console.log(update.constructor.name);
+        console.log("----------------------------");
       }
 
       // apply update (call listeners)
+      this.updateHandler?.(this, update);
     } finally {
       release();
     }
@@ -660,9 +683,10 @@ export class Client extends ClientAbstract {
 
   private async applyUpdate(update: types.TypeUpdate): Promise<void> {
     // can't apply updates when filling gap
-    const release = await this.updateGapMutex.acquire();
+    const release = await this.updateGapRecoveryMutex.acquire();
     try {
       await this.applyUpdateNoGap(update);
+      release();
     } catch (err) {
       release();
       if (err == UPDATE_GAP) {
@@ -695,7 +719,7 @@ export class Client extends ClientAbstract {
           UNREACHABLE();
         }
         // just for integrity
-        const release = await this.updateGapMutex.acquire();
+        const release = await this.updateGapRecoveryMutex.acquire();
         try {
           await this.applyUpdateNoGap(update);
         } catch (err) {
@@ -727,7 +751,7 @@ export class Client extends ClientAbstract {
 
       await this.updateHandler?.(this, updates);
     } catch (err) {
-      d("error processing updates: %o", err);
+      d("error processing updates: %O", err);
     }
   }
 
@@ -743,10 +767,10 @@ export class Client extends ClientAbstract {
     }
     return localState;
   }
-  private updateGapMutex = new Mutex();
+  private updateGapRecoveryMutex = new Mutex();
   private async recoverUpdateGap(source: string) {
-    d("recovering from update gap [%s]", source);
-    const release = await this.updateGapMutex.acquire();
+    dRecoverUpdateGap("recovering from update gap [%s]", source);
+    const release = await this.updateGapRecoveryMutex.acquire();
     try {
       let state = await this.getLocalState();
       while (true) {
@@ -761,7 +785,7 @@ export class Client extends ClientAbstract {
             await this.applyUpdateNoGap(update);
           }
           if (difference instanceof types.UpdatesDifference) {
-            d("recovered from update gap");
+            dRecoverUpdateGap("recovered from update gap");
             break;
           } else if (difference instanceof types.UpdatesDifferenceSlice) {
             state = difference.intermediateState[as](types.UpdatesState);
@@ -771,9 +795,9 @@ export class Client extends ClientAbstract {
         } else if (difference instanceof types.UpdatesDifferenceTooLong) {
           // stored messages should be invalidated in case we store messages in the future
           state.pts = difference.pts;
-          d("received differenceTooLong");
+          dRecoverUpdateGap("received differenceTooLong");
         } else if (difference instanceof types.UpdatesDifferenceEmpty) {
-          d("there was no update gap");
+          dRecoverUpdateGap("there was no update gap");
           break;
         } else {
           UNREACHABLE();
@@ -785,16 +809,17 @@ export class Client extends ClientAbstract {
   }
 
   private async recoverChannelUpdateGap(channelId: bigint, source: string) {
-    d("recovering channel update gap [%o, %s]", channelId, source);
-    const release = await this.updateGapMutex.acquire();
+    dRecoverChannelUpdateGap("recovering channel update gap [%o, %s]", channelId, source);
+    const release = await this.updateGapRecoveryMutex.acquire();
     try {
       const pts_ = await this.storage.getChannelPts(channelId);
       let pts = pts_ == null ? 1 : pts_;
       while (true) {
+        const { accessHash } = await this.getInputPeer(ZERO_CHANNEL_ID + -Number(channelId)).then((v) => v[as](types.InputPeerChannel));
         const difference = await this.invoke(
           new functions.UpdatesGetChannelDifference({
             pts,
-            channel: await this.getInputPeer(ZERO_CHANNEL_ID + -Number(channelId)),
+            channel: new types.InputChannel({ channelId, accessHash: accessHash }),
             filter: new types.ChannelMessagesFilterEmpty(),
             limit: CHANNEL_DIFFERENCE_LIMIT, // TODO: use different limit for bots
           }),
@@ -803,20 +828,21 @@ export class Client extends ClientAbstract {
           await this.processChats(difference.chats);
           await this.processUsers(difference.users);
           for (const message of difference.newMessages) {
-            await this.applyUpdateNoGap(new types.UpdateNewChannelMessage({ message, pts: 0, ptsCount: 0 }));
+            await this.applyUpdateNoGap(new types.UpdateNewChannelMessage({ message, pts: 0, ptsCount: 0 }), false);
           }
           for (const update of difference.otherUpdates) {
-            await this.applyUpdateNoGap(update);
+            await this.applyUpdateNoGap(update, false);
           }
-          d("recovered from update gap");
+          await this.storage.setChannelPts(channelId, difference.pts);
+          dRecoverChannelUpdateGap("recovered from update gap");
           break;
         } else if (difference instanceof types.UpdatesChannelDifferenceTooLong) {
           // invalidate messages
-          d("received channelDifferenceTooLong");
+          dRecoverChannelUpdateGap("received channelDifferenceTooLong");
           await this.processChats(difference.chats);
           await this.processUsers(difference.users);
           for (const message of difference.messages) {
-            await this.applyUpdateNoGap(new types.UpdateNewChannelMessage({ message, pts: 0, ptsCount: 0 }));
+            await this.applyUpdateNoGap(new types.UpdateNewChannelMessage({ message, pts: 0, ptsCount: 0 }), false);
           }
           const pts_ = difference.dialog[as](types.Dialog).pts;
           if (pts_ != undefined) {
@@ -824,9 +850,9 @@ export class Client extends ClientAbstract {
           } else {
             UNREACHABLE();
           }
-          d("processed channelDifferenceTooLong");
+          dRecoverChannelUpdateGap("processed channelDifferenceTooLong");
         } else if (difference instanceof types.UpdatesChannelDifferenceEmpty) {
-          d("there was no update gap");
+          dRecoverChannelUpdateGap("there was no update gap");
           break;
         }
       }
@@ -889,6 +915,15 @@ export class Client extends ClientAbstract {
     } else {
       throw new Error("ID format unknown or not implemented");
     }
+  }
+
+  [getEntity](peer: types.PeerUser): Promise<types.User | null>;
+  [getEntity](peer: types.PeerChat): Promise<types.Chat | null>;
+  [getEntity](peer: types.PeerChannel): Promise<types.Channel | null>;
+  [getEntity](peer: types.PeerUser | types.PeerChat | types.PeerChannel) {
+    const type = peer instanceof types.PeerUser ? "user" : peer instanceof types.PeerChat ? "chat" : peer instanceof types.PeerChannel ? "channel" : UNREACHABLE();
+    const id = peer instanceof types.PeerUser ? peer.userId : peer instanceof types.PeerChat ? peer.chatId : peer instanceof types.PeerChannel ? peer.channelId : UNREACHABLE();
+    return this.storage.getEntity(type, id);
   }
 
   async sendMessage(
@@ -967,9 +1002,9 @@ export class Client extends ClientAbstract {
 
     for (const update of updates.updates) {
       if (update instanceof types.UpdateNewMessage) {
-        return constructMessage(update.message[as](types.Message), updates.users, updates.chats);
+        return constructMessage(update.message[as](types.Message), this[getEntity].bind(this));
       } else if (update instanceof types.UpdateNewChannelMessage) {
-        return constructMessage(update.message[as](types.Message), updates.users, updates.chats);
+        return constructMessage(update.message[as](types.Message), this[getEntity].bind(this));
       }
     }
 
