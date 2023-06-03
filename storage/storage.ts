@@ -160,4 +160,27 @@ export abstract class Storage {
       return null;
     }
   }
+
+  private readonly accountType__ = "accountType__";
+  async setAccountType(type: "user" | "bot") {
+    try {
+      await this.getAccountType();
+      UNREACHABLE();
+    } catch (err) {
+      if (!(err instanceof Error) || !(err.message == "Unreachable")) {
+        throw err;
+      } else {
+        await this.set(this.accountType__, type);
+      }
+    }
+  }
+
+  async getAccountType() {
+    const accountType = await this.get(this.accountType__);
+    if (accountType != null) {
+      return accountType as "user" | "bot";
+    } else {
+      UNREACHABLE();
+    }
+  }
 }

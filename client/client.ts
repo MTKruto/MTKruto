@@ -1,5 +1,5 @@
 import { debug, gunzip, Mutex, queue } from "../deps.ts";
-import { ackThreshold, CHANNEL_DIFFERENCE_LIMIT, DEFAULT_APP_VERSION, DEFAULT_DEVICE_MODEL, DEFAULT_INITIAL_DC, DEFAULT_LANG_CODE, DEFAULT_LANG_PACK, DEFAULT_SYSTEM_LANG_CODE, DEFAULT_SYSTEM_VERSION, LAYER, MAX_CHANNEL_ID, MAX_CHAT_ID, USERNAME_TTL, ZERO_CHANNEL_ID } from "../constants.ts";
+import { ackThreshold, CHANNEL_DIFFERENCE_LIMIT_BOT, CHANNEL_DIFFERENCE_LIMIT_USER, DEFAULT_APP_VERSION, DEFAULT_DEVICE_MODEL, DEFAULT_INITIAL_DC, DEFAULT_LANG_CODE, DEFAULT_LANG_PACK, DEFAULT_SYSTEM_LANG_CODE, DEFAULT_SYSTEM_VERSION, LAYER, MAX_CHANNEL_ID, MAX_CHAT_ID, USERNAME_TTL, ZERO_CHANNEL_ID } from "../constants.ts";
 import { bigIntFromBuffer, getRandomBigInt, getRandomId } from "../utilities/0_bigint.ts";
 import { UNREACHABLE } from "../utilities/0_control.ts";
 import { sha1 } from "../utilities/0_hash.ts";
@@ -253,6 +253,7 @@ export class Client extends ClientAbstract {
               const input = await checkPassword(password, ap);
 
               await this.invoke(new functions.AuthCheckPassword({ password: input }));
+              await this.storage.setAccountType("user");
               d("authorized as user");
               break;
             } catch (err) {
@@ -316,6 +317,7 @@ export class Client extends ClientAbstract {
                       throw new Error("Sign up not supported");
                     } else {
                       signedIn = true;
+                      await this.storage.setAccountType("user");
                       d("authorized as user");
                       break;
                     }
@@ -343,6 +345,7 @@ export class Client extends ClientAbstract {
         }
       } else {
         await this.invoke(new functions.AuthImportBotAuthorization({ apiId: this.apiId, apiHash: this.apiHash, botAuthToken: params, flags: 0 }));
+        await this.storage.setAccountType("bot");
         d("authorized as bot");
       }
     } catch (err) {
@@ -820,7 +823,7 @@ export class Client extends ClientAbstract {
             pts,
             channel: new types.InputChannel({ channelId, accessHash: accessHash }),
             filter: new types.ChannelMessagesFilterEmpty(),
-            limit: CHANNEL_DIFFERENCE_LIMIT, // TODO: use different limit for bots
+            limit: await this.storage.getAccountType() == "user" ? CHANNEL_DIFFERENCE_LIMIT_USER : CHANNEL_DIFFERENCE_LIMIT_BOT,
           }),
         );
         if (difference instanceof types.UpdatesChannelDifference) {
