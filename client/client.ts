@@ -25,7 +25,6 @@ import { ForceReply, forceReplyToTlObject } from "../types/0_force_reply.ts";
 import { ReplyKeyboardMarkup, replyKeyboardMarkupToTlObject } from "../types/2_reply_keyboard_markup.ts";
 import { InlineKeyboardMarkup, inlineKeyboardMarkupToTlObject } from "../types/2_inline_keyboard_markup.ts";
 import { constructMessage } from "../types/3_message.ts";
-import { diff } from "https://deno.land/std@0.190.0/testing/_diff.ts";
 
 const d = debug("client");
 const dRecoverUpdateGap = debug("client_recoverUpdateGap");
