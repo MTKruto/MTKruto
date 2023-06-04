@@ -1157,7 +1157,7 @@ export class Client extends ClientAbstract {
     } else if (result instanceof types.UpdateShortSentMessage || result instanceof types.UpdateShortSentMessage) {
       const message = await this.getMessage(chatId, result.id);
       if (message != null) {
-        return message
+        return message;
       }
     }
 
@@ -1183,9 +1183,9 @@ export class Client extends ClientAbstract {
     }
     const messages = new Array<Message>();
     for (const message_ of messages_.messages) {
-      messages.push(await  constructMessage(message_[as](types.Message), this[getEntity].bind(this)))
+      messages.push(await constructMessage(message_[as](types.Message), this[getEntity].bind(this)));
     }
-    return messages
+    return messages;
   }
 
   async getMessage(chatId: number | string, messageId: number): Promise<Message | null> {

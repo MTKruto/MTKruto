@@ -1,5 +1,5 @@
-import { id,  serialize } from "./1_tl_object.ts";
-import { TLReader,ReadObject } from "./3_tl_reader.ts";
+import { id, serialize } from "./1_tl_object.ts";
+import { ReadObject, TLReader } from "./3_tl_reader.ts";
 import { TLWriter } from "./3_tl_writer.ts";
 import { RPCResult } from "./4_rpc_result.ts";
 
