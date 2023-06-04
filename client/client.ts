@@ -3,10 +3,7 @@ import { ackThreshold, CHANNEL_DIFFERENCE_LIMIT_BOT, CHANNEL_DIFFERENCE_LIMIT_US
 import { bigIntFromBuffer, getRandomBigInt, getRandomId } from "../utilities/0_bigint.ts";
 import { UNREACHABLE } from "../utilities/0_control.ts";
 import { sha1 } from "../utilities/0_hash.ts";
-import { parseHtml } from "../utilities/0_html.ts";
 import { MaybePromise } from "../utilities/0_types.ts";
-import { decryptMessage, encryptMessage, getMessageId } from "../utilities/1_message.ts";
-import { checkPassword } from "../utilities/1_password.ts";
 import { as } from "../tl/1_tl_object.ts";
 import * as types from "../tl/2_types.ts";
 import * as functions from "../tl/3_functions.ts";
@@ -19,12 +16,15 @@ import { ClientPlain } from "./client_plain.ts";
 import { Storage } from "../storage/storage.ts";
 import { StorageMemory } from "../storage/storage_memory.ts";
 import { DC, TransportProvider } from "../transport/transport_provider.ts";
+import { parseHtml } from "../types/utilities/0_html.ts";
 import { MessageEntity, messageEntityToTlObject } from "../types/0_message_entity.ts";
 import { ReplyKeyboardRemove, replyKeyboardRemoveToTlObject } from "../types/0_reply_keyboard_remove.ts";
 import { ForceReply, forceReplyToTlObject } from "../types/0_force_reply.ts";
 import { ReplyKeyboardMarkup, replyKeyboardMarkupToTlObject } from "../types/2_reply_keyboard_markup.ts";
 import { InlineKeyboardMarkup, inlineKeyboardMarkupToTlObject } from "../types/2_inline_keyboard_markup.ts";
 import { constructMessage, Message } from "../types/3_message.ts"; // high-level wrapper for Telegram API's message
+import { decryptMessage, encryptMessage, getMessageId } from "./utilities/0_message.ts";
+import { checkPassword } from "./utilities/0_password.ts";
 
 const d = debug("client");
 const dRecoverUpdateGap = debug("client_recoverUpdateGap");

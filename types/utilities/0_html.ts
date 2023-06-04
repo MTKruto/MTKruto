@@ -1,5 +1,5 @@
-import { Parser } from "../deps.ts";
-import { MessageEntity, MessageEntityType } from "../types/0_message_entity.ts";
+import { Parser } from "../../deps.ts";
+import { MessageEntity, MessageEntityType } from "../0_message_entity.ts";
 
 export function parseHtml(html: string) {
   let text = "";

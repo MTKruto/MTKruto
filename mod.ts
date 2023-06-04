@@ -1,5 +1,5 @@
-import { checkPassword } from "./utilities/1_password.ts";
 import { getRandomId } from "./utilities/0_bigint.ts";
+import { checkPassword } from "./client/utilities/0_password.ts";
 
 export const utils = { checkPassword, getRandomId };
 
