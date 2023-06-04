@@ -1,5 +1,7 @@
+import { debug } from "../deps.ts";
 import { UNREACHABLE } from "../utilities/0_control.ts";
 import { cleanObject } from "../utilities/0_object.ts";
+import { MaybePromise } from "../utilities/0_types.ts";
 import * as types from "../tl/2_types.ts";
 import { constructForceReply, ForceReply } from "./0_force_reply.ts";
 import { constructMessageEntity, MessageEntity } from "./0_message_entity.ts";
@@ -8,6 +10,8 @@ import { Chat, constructChat } from "./1_chat.ts";
 import { constructUser, User } from "./1_user.ts";
 import { constructInlineKeyboardMarkup, InlineKeyboardMarkup } from "./2_inline_keyboard_markup.ts";
 import { constructReplyKeyboardMarkup, ReplyKeyboardMarkup } from "./2_reply_keyboard_markup.ts";
+
+const d = debug("types/Message");
 
 export interface Message {
   id: number;
@@ -21,13 +25,14 @@ export interface Message {
   editDate?: Date;
   views?: number;
   replyMarkup?: InlineKeyboardMarkup | ReplyKeyboardMarkup | ReplyKeyboardRemove | ForceReply;
+  replyToMessage?: Omit<Message, "replyToMessage">;
 }
 
-export async function constructMessage(message_: types.Message, getEntity: {
-  (peer: types.PeerUser): Promise<types.User | null>;
-  (peer: types.PeerChat): Promise<types.Chat | null>;
-  (peer: types.PeerChannel): Promise<types.Channel | null>;
-}) {
+export async function constructMessage(
+  message_: types.Message,
+  getEntity: { (peer: types.PeerUser): MaybePromise<types.User | null>; (peer: types.PeerChat): MaybePromise<types.Chat | null>; (peer: types.PeerChannel): MaybePromise<types.Channel | null> },
+  getMessage: { (chatId: number, messageId: number): MaybePromise<Omit<Message, "replyToMessage"> | null> } | null,
+) {
   let chat_: Chat | null = null;
   if (message_.peerId instanceof types.PeerUser) {
     const entity = await getEntity(message_.peerId);
@@ -94,6 +99,15 @@ export async function constructMessage(message_: types.Message, getEntity: {
       message.replyMarkup = constructForceReply(message_.replyMarkup);
     } else {
       UNREACHABLE();
+    }
+  }
+
+  if (getMessage && message_.replyTo instanceof types.MessageReplyHeader) {
+    const replyToMessage = await getMessage(message.chat.id, message_.replyTo.replyToMsgId);
+    if (replyToMessage) {
+      message.replyToMessage = replyToMessage;
+    } else {
+      d("couldn't get replied message");
     }
   }
 
