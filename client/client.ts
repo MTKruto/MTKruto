@@ -26,9 +26,11 @@ import { constructMessage, Message } from "../types/3_message.ts"; // high-level
 import { decryptMessage, encryptMessage, getMessageId } from "./utilities/0_message.ts";
 import { checkPassword } from "./utilities/0_password.ts";
 
-const d = debug("client");
-const dRecoverUpdateGap = debug("client_recoverUpdateGap");
-const dRecoverChannelUpdateGap = debug("client_recoverChannelUpdateGap");
+const d = debug("Client");
+const dGap = debug("Client/recoverUpdateGap");
+const dGapC = debug("Client/recoverChannelUpdateGap");
+const dAuth = debug("Client/authorize");
+const dRecv = debug("Client/receiveLoop");
 
 const UPDATE_GAP = Symbol();
 export const getEntity = Symbol();
@@ -223,7 +225,7 @@ export class Client extends ClientAbstract {
     if (!this.apiHash) {
       throw new Error("apiHash not set");
     }
-    d("authorizing with %s", typeof params === "string" ? "bot token" : params instanceof types.AuthExportedAuthorization ? "exported authorization" : "AuthorizeUserParams");
+    dAuth("authorizing with %s", typeof params === "string" ? "bot token" : params instanceof types.AuthExportedAuthorization ? "exported authorization" : "AuthorizeUserParams");
 
     await this.invoke(
       new functions.InitConnection({
@@ -255,7 +257,7 @@ export class Client extends ClientAbstract {
 
               await this.invoke(new functions.AuthCheckPassword({ password: input }));
               await this.storage.setAccountType("user");
-              d("authorized as user");
+              dAuth("authorized as user");
               break;
             } catch (err) {
               if (err instanceof types.RPCError && err.errorMessage == "PASSWORD_HASH_INVALID") {
@@ -289,7 +291,7 @@ export class Client extends ClientAbstract {
     try {
       if (params instanceof types.AuthExportedAuthorization) {
         await this.invoke(new functions.AuthImportAuthorization({ id: params.id, bytes: params.bytes }));
-        d("authorization imported");
+        dAuth("authorization imported");
       } else if (typeof params == "object") {
         while (true) {
           if (signedIn) {
@@ -307,7 +309,7 @@ export class Client extends ClientAbstract {
                   settings: new types.CodeSettings(),
                 }),
               );
-              d("verification code sent");
+              dAuth("verification code sent");
 
               if (sentCode instanceof types.AuthSentCode) {
                 while (true) {
@@ -319,7 +321,7 @@ export class Client extends ClientAbstract {
                     } else {
                       signedIn = true;
                       await this.storage.setAccountType("user");
-                      d("authorized as user");
+                      dAuth("authorized as user");
                       break;
                     }
                   } catch (err) {
@@ -347,7 +349,7 @@ export class Client extends ClientAbstract {
       } else {
         await this.invoke(new functions.AuthImportBotAuthorization({ apiId: this.apiId, apiHash: this.apiHash, botAuthToken: params, flags: 0 }));
         await this.storage.setAccountType("bot");
-        d("authorized as bot");
+        dAuth("authorized as bot");
       }
     } catch (err) {
       if (err instanceof types.RPCError) {
@@ -384,7 +386,7 @@ export class Client extends ClientAbstract {
     if (body instanceof types.GZIPPacked) {
       body = new TLReader(gunzip(body.packedData)).readObject();
     }
-    d("received %s", body.constructor.name);
+    dRecv("received %s", body.constructor.name);
     if (body instanceof types.Updates || body instanceof types.TypeUpdate) {
       await this.processUpdates(body);
     } else if (message.body instanceof RPCResult) {
@@ -393,9 +395,9 @@ export class Client extends ClientAbstract {
         result = new TLReader(gunzip(result.packedData)).readObject();
       }
       if (result instanceof types.RPCError) {
-        d("RPCResult: %d %s", result.errorCode, result.errorMessage);
+        dRecv("RPCResult: %d %s", result.errorCode, result.errorMessage);
       } else {
-        d("RPCResult: %s", result.constructor.name);
+        dRecv("RPCResult: %s", result.constructor.name);
       }
       if (result instanceof types.Updates || result instanceof types.TypeUpdate) {
         await this.processUpdates(result);
@@ -461,7 +463,7 @@ export class Client extends ClientAbstract {
           this.sessionId,
         );
       } catch (err) {
-        d("failed to decrypt message: %o", err);
+        dRecv("failed to decrypt message: %o", err);
         continue;
       }
       const messages = decrypted instanceof MessageContainer ? decrypted.messages : [decrypted];
@@ -776,7 +778,7 @@ export class Client extends ClientAbstract {
   }
   private updateGapRecoveryMutex = new Mutex();
   private async recoverUpdateGap(source: string) {
-    dRecoverUpdateGap("recovering from update gap [%s]", source);
+    dGap("recovering from update gap [%s]", source);
     const release = await this.updateGapRecoveryMutex.acquire();
     try {
       let state = await this.getLocalState();
@@ -792,7 +794,7 @@ export class Client extends ClientAbstract {
             await this.applyUpdateNoGap(update);
           }
           if (difference instanceof types.UpdatesDifference) {
-            dRecoverUpdateGap("recovered from update gap");
+            dGap("recovered from update gap");
             break;
           } else if (difference instanceof types.UpdatesDifferenceSlice) {
             state = difference.intermediateState[as](types.UpdatesState);
@@ -802,10 +804,10 @@ export class Client extends ClientAbstract {
         } else if (difference instanceof types.UpdatesDifferenceTooLong) {
           // stored messages should be invalidated in case we store messages in the future
           state.pts = difference.pts;
-          dRecoverUpdateGap("received differenceTooLong");
+          dGap("received differenceTooLong");
         } else if (difference instanceof types.UpdatesDifferenceEmpty) {
           await this.setUpdateStateDate(difference.date);
-          dRecoverUpdateGap("there was no update gap");
+          dGap("there was no update gap");
           break;
         } else {
           UNREACHABLE();
@@ -817,7 +819,7 @@ export class Client extends ClientAbstract {
   }
 
   private async recoverChannelUpdateGap(channelId: bigint, source: string) {
-    dRecoverChannelUpdateGap("recovering channel update gap [%o, %s]", channelId, source);
+    dGapC("recovering channel update gap [%o, %s]", channelId, source);
     const release = await this.updateGapRecoveryMutex.acquire();
     try {
       const pts_ = await this.storage.getChannelPts(channelId);
@@ -842,11 +844,11 @@ export class Client extends ClientAbstract {
             await this.applyUpdateNoGap(update, false);
           }
           await this.storage.setChannelPts(channelId, difference.pts);
-          dRecoverChannelUpdateGap("recovered from update gap");
+          dGapC("recovered from update gap [%o, %s]", channelId, source);
           break;
         } else if (difference instanceof types.UpdatesChannelDifferenceTooLong) {
           // invalidate messages
-          dRecoverChannelUpdateGap("received channelDifferenceTooLong");
+          dGapC("received channelDifferenceTooLong");
           await this.processChats(difference.chats);
           await this.processUsers(difference.users);
           for (const message of difference.messages) {
@@ -858,9 +860,9 @@ export class Client extends ClientAbstract {
           } else {
             UNREACHABLE();
           }
-          dRecoverChannelUpdateGap("processed channelDifferenceTooLong");
+          dGapC("processed channelDifferenceTooLong");
         } else if (difference instanceof types.UpdatesChannelDifferenceEmpty) {
-          dRecoverChannelUpdateGap("there was no update gap");
+          dGapC("there was no update gap");
           break;
         }
       }
