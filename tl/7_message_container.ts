@@ -1,7 +1,7 @@
 import { id } from "./1_tl_object.ts";
 import { TLReader } from "./3_tl_reader.ts";
-import { TLWriter } from "./3_tl_writer.ts";
-import { Message } from "./5_message.ts";
+import { TLWriter } from "./4_tl_writer.ts";
+import { Message } from "./6_message.ts";
 
 export class MessageContainer {
   static get [id]() {

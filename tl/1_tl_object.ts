@@ -95,7 +95,7 @@ function serializeSingleParam(
       writer.write(value[serialize]());
       return;
     } else {
-      throw new TypeError(`Expected ${type.name}`);
+      throw new TypeError(`Expected ${type.name} but received ${value == null ? null : value.constructor.name}`);
     }
   }
 
@@ -222,8 +222,6 @@ export abstract class TLObject {
     }
   }
 }
-
-export type MaybeVectorTLObject = TLObject | Array<MaybeVectorTLObject | TLObject>;
 
 export interface TLObjectConstructor<T = TLObject> {
   // deno-lint-ignore no-explicit-any
