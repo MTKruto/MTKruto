@@ -11,9 +11,9 @@ import { as } from "../tl/1_tl_object.ts";
 import * as types from "../tl/2_types.ts";
 import * as functions from "../tl/3_functions.ts";
 import { ReadObject, TLReader } from "../tl/3_tl_reader.ts";
-import { RPCResult } from "../tl/4_rpc_result.ts";
-import { Message as Message_ } from "../tl/5_message.ts"; // MTProto API message
-import { MessageContainer } from "../tl/6_message_container.ts";
+import { RPCResult } from "../tl/5_rpc_result.ts";
+import { Message as Message_ } from "../tl/6_message.ts"; // MTProto API message
+import { MessageContainer } from "../tl/7_message_container.ts";
 import { ClientAbstract } from "./client_abstract.ts";
 import { ClientPlain } from "./client_plain.ts";
 import { Storage } from "../storage/storage.ts";
