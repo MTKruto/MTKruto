@@ -143,6 +143,7 @@ export class Client extends ClientAbstract {
     if (await this.storage.getDc() != dc) {
       await this.storage.setDc(dc);
       await this.storage.setAuthKey(null);
+      await this.storage.getAuthKey();
     }
     super.setDc(dc);
   }
@@ -185,7 +186,7 @@ export class Client extends ClientAbstract {
     }
     await super.connect();
     if (dc == null) {
-      await this.storage.setDc(DEFAULT_INITIAL_DC);
+      await this.storage.setDc(this.transportProvider.initialDc);
     }
     d("enrypted client connected");
     this.receiveLoop();
