@@ -1072,14 +1072,14 @@ export class Client extends ClientAbstract {
 
   async getMessages(chatId: number | string, messageIds: number[]) {
     const peer = await this.getInputPeer(chatId);
-    let messages_: types.MessagesMessages;
+    let messages_: types.MessagesMessages | types.MessagesChannelMessages;
     if (peer instanceof types.InputPeerChannel) {
       messages_ = await this.invoke(
         new functions.ChannelsGetMessages({
           channel: new types.InputChannel({ channelId: peer.channelId, accessHash: peer.accessHash }),
           id: messageIds.map((v) => new types.InputMessageID({ id: v })),
         }),
-      ).then((v) => v[as](types.MessagesMessages));
+      ).then((v) => v[as](types.MessagesChannelMessages));
     } else {
       messages_ = await this.invoke(
         new functions.MessagesGetMessages({
