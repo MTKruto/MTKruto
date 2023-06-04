@@ -378,6 +378,57 @@ export class Client extends ClientAbstract {
     }
   }
 
+  private messageProcessQueue = queue(async (message: Message) => {
+    let body = message.body;
+    if (body instanceof types.GZIPPacked) {
+      body = new TLReader(gunzip(body.packedData)).readObject();
+    }
+    d("received %s", body.constructor.name);
+    if (body instanceof types.Updates || body instanceof types.TypeUpdate) {
+      await this.processUpdates(body);
+    } else if (message.body instanceof RPCResult) {
+      let result = message.body.result;
+      if (result instanceof types.GZIPPacked) {
+        result = new TLReader(gunzip(result.packedData)).readObject();
+      }
+      if (result instanceof types.RPCError) {
+        d("RPCResult: %d %s", result.errorCode, result.errorMessage);
+      } else {
+        d("RPCResult: %s", result.constructor.name);
+      }
+      if (result instanceof types.Updates || result instanceof types.TypeUpdate) {
+        console.log("A", result);
+        await this.processUpdates(result);
+        console.log("B");
+      }
+      const promise = this.promises.get(message.body.messageId);
+      if (promise) {
+        if (result instanceof types.RPCError) {
+          promise.reject(result);
+        } else {
+          promise.resolve(result);
+        }
+        this.promises.delete(message.body.messageId);
+      }
+    } else if (message.body instanceof types.Pong) {
+      const promise = this.promises.get(message.body.msgId);
+      if (promise) {
+        promise.resolve(message.body);
+        this.promises.delete(message.body.msgId);
+      }
+    } else if (message.body instanceof types.BadMsgNotification || message.body instanceof types.BadServerSalt) {
+      if (message.body instanceof types.BadServerSalt) {
+        this.state.salt = message.body.newServerSalt;
+      }
+      const promise = this.promises.get(message.body.badMsgId);
+      if (promise) {
+        promise.resolve(message.body);
+        this.promises.delete(message.body.badMsgId);
+      }
+    }
+
+    this.toAcknowledge.add(message.id);
+  }, 2);
   private async receiveLoop() {
     if (!this.auth) {
       throw new Error("Not connected");
@@ -415,53 +466,7 @@ export class Client extends ClientAbstract {
       const messages = decrypted instanceof MessageContainer ? decrypted.messages : [decrypted];
 
       for (const message of messages) {
-        let body = message.body;
-        if (body instanceof types.GZIPPacked) {
-          body = new TLReader(gunzip(body.packedData)).readObject();
-        }
-        d("received %s", body.constructor.name);
-        if (body instanceof types.Updates || body instanceof types.TypeUpdate) {
-          this.processUpdates(body);
-        } else if (message.body instanceof RPCResult) {
-          let result = message.body.result;
-          if (result instanceof types.GZIPPacked) {
-            result = new TLReader(gunzip(result.packedData)).readObject();
-          }
-          if (result instanceof types.RPCError) {
-            d("RPCResult: %d %s", result.errorCode, result.errorMessage);
-          } else {
-            d("RPCResult: %s", result.constructor.name);
-          }
-          if (result instanceof types.Updates || result instanceof types.TypeUpdate) {
-            await this.processUpdates(result);
-          }
-          const promise = this.promises.get(message.body.messageId);
-          if (promise) {
-            if (result instanceof types.RPCError) {
-              promise.reject(result);
-            } else {
-              promise.resolve(result);
-            }
-            this.promises.delete(message.body.messageId);
-          }
-        } else if (message.body instanceof types.Pong) {
-          const promise = this.promises.get(message.body.msgId);
-          if (promise) {
-            promise.resolve(message.body);
-            this.promises.delete(message.body.msgId);
-          }
-        } else if (message.body instanceof types.BadMsgNotification || message.body instanceof types.BadServerSalt) {
-          if (message.body instanceof types.BadServerSalt) {
-            this.state.salt = message.body.newServerSalt;
-          }
-          const promise = this.promises.get(message.body.badMsgId);
-          if (promise) {
-            promise.resolve(message.body);
-            this.promises.delete(message.body.badMsgId);
-          }
-        }
-
-        this.toAcknowledge.add(message.id);
+        this.messageProcessQueue.push(message);
       }
     }
   }
