@@ -974,106 +974,42 @@ export class Client extends ClientAbstract {
   }
 
   async processResult(result: ReadObject) {
-    if (result instanceof types.MessagesDialogs) {
-      await this.processChats(result.chats);
-      await this.processUsers(result.users);
-    } else if (result instanceof types.MessagesDialogsSlice) {
-      await this.processChats(result.chats);
-      await this.processUsers(result.users);
-    } else if (result instanceof types.MessagesMessages) {
-      await this.processChats(result.chats);
-      await this.processUsers(result.users);
-    } else if (result instanceof types.MessagesMessagesSlice) {
-      await this.processChats(result.chats);
-      await this.processUsers(result.users);
-    } else if (result instanceof types.MessagesChannelMessages) {
-      await this.processChats(result.chats);
-      await this.processUsers(result.users);
-    } else if (result instanceof types.MessagesChatFull) {
-      await this.processChats(result.chats);
-      await this.processUsers(result.users);
-    } else if (result instanceof types.ContactsFound) {
-      await this.processChats(result.chats);
-      await this.processUsers(result.users);
-    } else if (result instanceof types.AccountPrivacyRules) {
-      await this.processChats(result.chats);
-      await this.processUsers(result.users);
-    } else if (result instanceof types.ContactsResolvedPeer) {
-      await this.processChats(result.chats);
-      await this.processUsers(result.users);
-    } else if (result instanceof types.ChannelsChannelParticipants) {
-      await this.processChats(result.chats);
-      await this.processUsers(result.users);
-    } else if (result instanceof types.ChannelsChannelParticipant) {
-      await this.processChats(result.chats);
-      await this.processUsers(result.users);
-    } else if (result instanceof types.MessagesPeerDialogs) {
-      await this.processChats(result.chats);
-      await this.processUsers(result.users);
-    } else if (result instanceof types.ContactsTopPeers) {
-      await this.processChats(result.chats);
-      await this.processUsers(result.users);
-    } else if (result instanceof types.ChannelsAdminLogResults) {
-      await this.processChats(result.chats);
-      await this.processUsers(result.users);
-    } else if (result instanceof types.HelpRecentMeURLs) {
-      await this.processChats(result.chats);
-      await this.processUsers(result.users);
-    } else if (result instanceof types.MessagesInactiveChats) {
-      await this.processChats(result.chats);
-      await this.processUsers(result.users);
-    } else if (result instanceof types.HelpPromoData) {
-      await this.processChats(result.chats);
-      await this.processUsers(result.users);
-    } else if (result instanceof types.MessagesMessageViews) {
-      await this.processChats(result.chats);
-      await this.processUsers(result.users);
-    } else if (result instanceof types.MessagesDiscussionMessage) {
-      await this.processChats(result.chats);
-      await this.processUsers(result.users);
-    } else if (result instanceof types.PhoneGroupCall) {
-      await this.processChats(result.chats);
-      await this.processUsers(result.users);
-    } else if (result instanceof types.PhoneGroupParticipants) {
-      await this.processChats(result.chats);
-      await this.processUsers(result.users);
-    } else if (result instanceof types.PhoneJoinAsPeers) {
-      await this.processChats(result.chats);
-      await this.processUsers(result.users);
-    } else if (result instanceof types.MessagesSponsoredMessages) {
-      await this.processChats(result.chats);
-      await this.processUsers(result.users);
-    } else if (result instanceof types.MessagesSearchResultsCalendar) {
-      await this.processChats(result.chats);
-      await this.processUsers(result.users);
-    } else if (result instanceof types.ChannelsSendAsPeers) {
-      await this.processChats(result.chats);
-      await this.processUsers(result.users);
-    } else if (result instanceof types.UsersUserFull) {
-      await this.processChats(result.chats);
-      await this.processUsers(result.users);
-    } else if (result instanceof types.MessagesPeerSettings) {
-      await this.processChats(result.chats);
-      await this.processUsers(result.users);
-    } else if (result instanceof types.MessagesMessageReactionsList) {
-      await this.processChats(result.chats);
-      await this.processUsers(result.users);
-    } else if (result instanceof types.MessagesForumTopics) {
-      await this.processChats(result.chats);
-      await this.processUsers(result.users);
-    } else if (result instanceof types.AccountAutoSaveSettings) {
-      await this.processChats(result.chats);
-      await this.processUsers(result.users);
-    } else if (result instanceof types.ChatlistsExportedInvites) {
-      await this.processChats(result.chats);
-      await this.processUsers(result.users);
-    } else if (result instanceof types.ChatlistsChatlistInviteAlready) {
-      await this.processChats(result.chats);
-      await this.processUsers(result.users);
-    } else if (result instanceof types.ChatlistsChatlistInvite) {
-      await this.processChats(result.chats);
-      await this.processUsers(result.users);
-    } else if (result instanceof types.ChatlistsChatlistUpdates) {
+    if (
+      result instanceof types.MessagesDialogs ||
+      result instanceof types.MessagesDialogsSlice ||
+      result instanceof types.MessagesMessages ||
+      result instanceof types.MessagesMessagesSlice ||
+      result instanceof types.MessagesChannelMessages ||
+      result instanceof types.MessagesChatFull ||
+      result instanceof types.ContactsFound ||
+      result instanceof types.AccountPrivacyRules ||
+      result instanceof types.ContactsResolvedPeer ||
+      result instanceof types.ChannelsChannelParticipants ||
+      result instanceof types.ChannelsChannelParticipant ||
+      result instanceof types.MessagesPeerDialogs ||
+      result instanceof types.ContactsTopPeers ||
+      result instanceof types.ChannelsAdminLogResults ||
+      result instanceof types.HelpRecentMeURLs ||
+      result instanceof types.MessagesInactiveChats ||
+      result instanceof types.HelpPromoData ||
+      result instanceof types.MessagesMessageViews ||
+      result instanceof types.MessagesDiscussionMessage ||
+      result instanceof types.PhoneGroupCall ||
+      result instanceof types.PhoneGroupParticipants ||
+      result instanceof types.PhoneJoinAsPeers ||
+      result instanceof types.MessagesSponsoredMessages ||
+      result instanceof types.MessagesSearchResultsCalendar ||
+      result instanceof types.ChannelsSendAsPeers ||
+      result instanceof types.UsersUserFull ||
+      result instanceof types.MessagesPeerSettings ||
+      result instanceof types.MessagesMessageReactionsList ||
+      result instanceof types.MessagesForumTopics ||
+      result instanceof types.AccountAutoSaveSettings ||
+      result instanceof types.ChatlistsExportedInvites ||
+      result instanceof types.ChatlistsChatlistInviteAlready ||
+      result instanceof types.ChatlistsChatlistInvite ||
+      result instanceof types.ChatlistsChatlistUpdates
+    ) {
       await this.processChats(result.chats);
       await this.processUsers(result.users);
     }
