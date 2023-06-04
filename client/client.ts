@@ -420,17 +420,8 @@ export class Client extends ClientAbstract {
           body = new TLReader(gunzip(body.packedData)).readObject();
         }
         d("received %s", body.constructor.name);
-        if (body instanceof types.Updates) {
+        if (body instanceof types.Updates || body instanceof types.TypeUpdate) {
           this.processUpdates(body);
-        } else if (body instanceof types.UpdatesTooLong) {
-          this.recoverUpdateGap("updatesTooLong");
-        } else if (body instanceof types.UpdateChannelTooLong) {
-          if (body.pts != undefined) {
-            await this.storage.setChannelPts(body.channelId, body.pts);
-          }
-          await this.recoverChannelUpdateGap(body.channelId, "updateChannelTooLong");
-        } else if (body instanceof types.UpdatesCombined) {
-          d("updatesCombined %O", body);
         } else if (message.body instanceof RPCResult) {
           let result = message.body.result;
           if (result instanceof types.GZIPPacked) {
@@ -441,15 +432,14 @@ export class Client extends ClientAbstract {
           } else {
             d("RPCResult: %s", result.constructor.name);
           }
+          if (result instanceof types.Updates || result instanceof types.TypeUpdate) {
+            await this.processUpdates(result);
+          }
           const promise = this.promises.get(message.body.messageId);
           if (promise) {
             if (result instanceof types.RPCError) {
               promise.reject(result);
             } else {
-              if (result instanceof types.Updates) {
-                await this.processChats(result.chats);
-                await this.processUsers(result.users);
-              }
               promise.resolve(result);
             }
             this.promises.delete(message.body.messageId);
@@ -683,7 +673,20 @@ export class Client extends ClientAbstract {
     }
   }
 
-  private async applyUpdate(update: types.TypeUpdate): Promise<void> {
+  private async applyUpdate(update: types.TypeUpdate | types.TypeUpdates): Promise<void> {
+    if (
+      update instanceof types.TypeUpdates &&
+      !(update instanceof types.UpdateShortMessage) &&
+      !(update instanceof types.UpdateShortChatMessage) &&
+      !(update instanceof types.UpdateShortSentMessage)
+    ) {
+      // other constructors inheriting Updates are not applicable
+      UNREACHABLE();
+    }
+    if (update instanceof types.TypeUpdate && update instanceof types.UpdateChannelTooLong) {
+      // updateChannelTooLong is not applicable
+      UNREACHABLE();
+    }
     // can't apply updates when filling gap
     const release = await this.updateGapRecoveryMutex.acquire();
     try {
@@ -717,7 +720,7 @@ export class Client extends ClientAbstract {
         ) {
           await this.recoverUpdateGap("applyUpdate");
         } else {
-          // can't detectupdate gap from other types of updates
+          // can't detect update gap from other types of updates
           UNREACHABLE();
         }
         // just for integrity
@@ -740,18 +743,41 @@ export class Client extends ClientAbstract {
     }
   }
 
-  private async processUpdates(updates: types.Updates) {
+  private async processUpdates(updates: types.TypeUpdate | types.TypeUpdates) {
     try {
-      await this.processChats(updates.chats);
-      await this.processUsers(updates.users);
-      for (const update of updates.updates) {
-        if (update instanceof types.UpdateUserName) {
-          await this.storage.updateUsernames("user", update.userId, update.usernames.map((v) => v[as](types.Username)).map((v) => v.username));
+      if (updates instanceof types.TypeUpdates) {
+        if (updates instanceof types.Updates) {
+          await this.processChats(updates.chats);
+          await this.processUsers(updates.users);
+          for (const update of updates.updates) {
+            await this.processUpdates(update);
+          }
+        } else if (
+          updates instanceof types.UpdateShortMessage ||
+          updates instanceof types.UpdateShortChatMessage ||
+          updates instanceof types.UpdateShortSentMessage
+        ) {
+          await this.applyUpdate(updates);
+        } else if (updates instanceof types.UpdatesTooLong) {
+          await this.recoverUpdateGap("updatesTooLong");
+        } else if (updates instanceof types.UpdatesCombined) {
+          await this.processChats(updates.chats);
+          await this.processUsers(updates.users);
+          for (const update of updates.updates) {
+            await this.processUpdates(update);
+          }
         }
-        await this.applyUpdate(update);
+      } else if (updates instanceof types.TypeUpdate && updates instanceof types.UpdateChannelTooLong) {
+        if (updates.pts != undefined) {
+          await this.storage.setChannelPts(updates.channelId, updates.pts);
+        }
+        await this.recoverChannelUpdateGap(updates.channelId, "updateChannelTooLong");
+      } else {
+        if (updates instanceof types.UpdateUserName) {
+          await this.storage.updateUsernames("user", updates.userId, updates.usernames.map((v) => v[as](types.Username)).map((v) => v.username));
+        }
+        await this.applyUpdate(updates);
       }
-
-      await this.updateHandler?.(this, updates);
     } catch (err) {
       d("error processing updates: %O", err);
     }
