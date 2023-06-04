@@ -1,5 +1,7 @@
-import { Mutex } from "../deps.ts";
+import { debug, Mutex } from "../deps.ts";
 import { Connection } from "./connection.ts";
+
+const d = debug("ConnectionWebSocket");
 
 export class ConnectionWebSocket implements Connection {
   private webSocket: WebSocket;
@@ -25,7 +27,9 @@ export class ConnectionWebSocket implements Connection {
         this.nextResolve = null;
       }
     };
-    this.webSocket.onerror = console.error;
+    this.webSocket.onerror = (err) => {
+      d("WebSocket error: %O", err);
+    };
   }
 
   get connected() {
