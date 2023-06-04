@@ -1055,9 +1055,9 @@ export class Client extends ClientAbstract {
     if (result instanceof types.Updates) {
       for (const update of result.updates) {
         if (update instanceof types.UpdateNewMessage) {
-          return constructMessage(update.message[as](types.Message), this[getEntity].bind(this));
+          return constructMessage(update.message[as](types.Message), this[getEntity].bind(this), this.getMessage.bind(this));
         } else if (update instanceof types.UpdateNewChannelMessage) {
-          return constructMessage(update.message[as](types.Message), this[getEntity].bind(this));
+          return constructMessage(update.message[as](types.Message), this[getEntity].bind(this), this.getMessage.bind(this));
         }
       }
     } else if (result instanceof types.UpdateShortSentMessage || result instanceof types.UpdateShortSentMessage) {
@@ -1087,14 +1087,14 @@ export class Client extends ClientAbstract {
         }),
       ).then((v) => v[as](types.MessagesMessages));
     }
-    const messages = new Array<Message>();
+    const messages = new Array<Omit<Message, "replyToMessage">>();
     for (const message_ of messages_.messages) {
-      messages.push(await constructMessage(message_[as](types.Message), this[getEntity].bind(this)));
+      messages.push(await constructMessage(message_[as](types.Message), this[getEntity].bind(this), null));
     }
     return messages;
   }
 
-  async getMessage(chatId: number | string, messageId: number): Promise<Message | null> {
+  async getMessage(chatId: number | string, messageId: number): Promise<Omit<Message, "replyToMessage"> | null> {
     const messages = await this.getMessages(chatId, [messageId]);
     return messages[0] ?? null;
   }
