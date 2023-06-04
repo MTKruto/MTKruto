@@ -192,10 +192,10 @@ export class Client extends ClientAbstract {
     this.pingLoop();
   }
 
-  private async fetchState() {
+  private async fetchState(source: string) {
     const state = await this.invoke(new functions.UpdatesGetState());
     this.updateState = state;
-    d("state fetched");
+    d("state fetched [%s]", source);
   }
 
   /**
@@ -273,7 +273,7 @@ export class Client extends ClientAbstract {
     };
 
     try {
-      await this.fetchState();
+      await this.fetchState("authorize");
       d("already authorized");
       return;
     } catch (err) {
@@ -371,7 +371,7 @@ export class Client extends ClientAbstract {
       }
     } finally {
       try {
-        await this.fetchState();
+        await this.fetchState("authorize");
       } catch (_err) {
         //
       }
@@ -775,6 +775,13 @@ export class Client extends ClientAbstract {
       } else {
         if (updates instanceof types.UpdateUserName) {
           await this.storage.updateUsernames("user", updates.userId, updates.usernames.map((v) => v[as](types.Username)).map((v) => v.username));
+        } else if (updates instanceof types.UpdatePtsChanged) {
+          await this.fetchState("updatePtsChanged");
+          if (this.updateState) {
+            await this.storage.setState(this.updateState);
+          } else {
+            UNREACHABLE();
+          }
         }
         await this.applyUpdate(updates);
       }
