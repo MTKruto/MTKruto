@@ -12,7 +12,7 @@ import { TLReader } from "../tl/3_tl_reader.ts";
 import { ClientAbstract } from "./client_abstract.ts";
 import { packUnencryptedMessage, unpackUnencryptedMessage } from "./utilities/0_message.ts";
 
-const d = debug("auth_key_creation");
+const d = debug("ClientPlain/createAuthKey");
 
 export class ClientPlain extends ClientAbstract {
   async invoke<T extends Function<unknown>>(function_: T): Promise<T["__R"]> {
