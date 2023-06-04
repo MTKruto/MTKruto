@@ -68,18 +68,19 @@ export const DEFAULT_INITIAL_DC: DC = "2-test";
 
 export const LAYER = 158;
 
-// TODO
-export const DEFAULT_APP_VERSION = "MTKruto Unstable <v1.0.0";
+export const DEFAULT_APP_VERSION = "MTKruto 0.0.900";
 
-export const DEFAULT_DEVICE_MODEL = "Krutaya Device";
+// @ts-ignore: lib
+export const DEFAULT_DEVICE_MODEL = typeof Deno === "undefined" ? typeof navigator === "undefined" ? typeof process === "undefined" ? "Unknown" : process.platform + "-" + process.arch : navigator.userAgent.split(" ")[0] : Deno.build.os + "-" + Deno.build.arch;
 
-export const DEFAULT_LANG_CODE = "en";
+export const DEFAULT_LANG_CODE = typeof navigator === "undefined" ? "en" : navigator.language.split("-")[0];
 
 export const DEFAULT_LANG_PACK = "";
 
-export const DEFAULT_SYSTEM_LANG_CODE = "en";
+export const DEFAULT_SYSTEM_LANG_CODE = typeof navigator === "undefined" ? "en" : navigator.language.split("-")[0];
 
-export const DEFAULT_SYSTEM_VERSION = "1.0";
+// @ts-ignore: lib
+export const DEFAULT_SYSTEM_VERSION = typeof navigator === "undefined" ? typeof process === "undefined" ? "Unknown" : "Node.js/" + process.versions.node : navigator.userAgent;
 
 export const USERNAME_TTL = 86_400;
 
