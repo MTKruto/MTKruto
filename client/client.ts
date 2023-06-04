@@ -664,11 +664,6 @@ export class Client extends ClientAbstract {
           throw UPDATE_GAP;
         }
         await this.storage.setChannelPts(channelId, update.pts);
-        dRecoverUpdateGap("SET CHANNEL PTS");
-      } else {
-        console.log("----------------------------");
-        console.log(update.constructor.name);
-        console.log("----------------------------");
       }
 
       // apply update (call listeners)
