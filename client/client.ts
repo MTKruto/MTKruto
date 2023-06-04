@@ -397,9 +397,7 @@ export class Client extends ClientAbstract {
         d("RPCResult: %s", result.constructor.name);
       }
       if (result instanceof types.Updates || result instanceof types.TypeUpdate) {
-        console.log("A", result);
         await this.processUpdates(result);
-        console.log("B");
       }
       const promise = this.promises.get(message.body.messageId);
       if (promise) {
