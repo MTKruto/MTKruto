@@ -1,10 +1,10 @@
-import { id, MaybeVectorTLObject, serialize } from "./1_tl_object.ts";
-import { TLReader } from "./3_tl_reader.ts";
-import { TLWriter } from "./3_tl_writer.ts";
-import { RPCResult } from "./4_rpc_result.ts";
+import { id, serialize } from "./1_tl_object.ts";
+import { ReadObject, TLReader } from "./3_tl_reader.ts";
+import { TLWriter } from "./4_tl_writer.ts";
+import { RPCResult } from "./5_rpc_result.ts";
 
 // TODO: test
-function calculateLength(object: MaybeVectorTLObject) {
+function calculateLength(object: ReadObject) {
   let length = 0;
   if (Array.isArray(object)) {
     length += 32 / 8; // vector constructor
@@ -22,7 +22,7 @@ export class Message {
   constructor(
     public readonly id: bigint,
     public readonly seqNo: number,
-    public readonly body: MaybeVectorTLObject | RPCResult,
+    public readonly body: ReadObject | RPCResult,
   ) {
   }
 
@@ -44,7 +44,7 @@ export class Message {
     const length = reader.readInt32();
     reader = new TLReader(reader.read(length));
     const cid = reader.readInt32(false);
-    let body: MaybeVectorTLObject | RPCResult;
+    let body: ReadObject | RPCResult;
     {
       if (cid == RPCResult[id]) {
         body = RPCResult.deserialize(reader.buffer);
