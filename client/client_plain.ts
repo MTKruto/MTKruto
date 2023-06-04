@@ -2,6 +2,7 @@ import { assertEquals, assertInstanceOf, debug, factorize, ige256Decrypt, ige256
 import { publicKeys } from "../constants.ts";
 import { bigIntFromBuffer, getRandomBigInt, modExp } from "../utilities/0_bigint.ts";
 import { bufferFromBigInt, concat } from "../utilities/0_buffer.ts";
+import { UNREACHABLE } from "../utilities/0_control.ts";
 import { sha1 } from "../utilities/0_hash.ts";
 import { rsaPad } from "../utilities/1_auth.ts";
 import { serialize } from "../tl/1_tl_object.ts";
@@ -32,11 +33,23 @@ export class ClientPlain extends ClientAbstract {
     const nonce = getRandomBigInt(16, false, true);
     d("auth key creation started");
 
-    const resPq = await this.invoke(new ReqPQMulti({ nonce }));
+    let resPq: ResPQ | null = null;
+    for (let i = 0; i < 10; i++) {
+      try {
+        d("req_pq_multi [%d]", i + 1);
+        resPq = await this.invoke(new ReqPQMulti({ nonce }));
 
-    assertInstanceOf(resPq, ResPQ);
-    assertEquals(resPq.nonce, nonce);
-    d("got res_pq");
+        assertInstanceOf(resPq, ResPQ);
+        assertEquals(resPq.nonce, nonce);
+        d("got res_pq");
+        break;
+      } catch (err) {
+        d("req_pq_multi error: %o", err);
+      }
+    }
+    if (!resPq) {
+      UNREACHABLE();
+    }
 
     const pq_ = bigIntFromBuffer(resPq.pq, false, false);
     const [p_, q_] = factorize(pq_);
