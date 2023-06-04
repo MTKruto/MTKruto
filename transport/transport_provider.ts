@@ -10,7 +10,7 @@ export interface TransportProviderParams {
   cdn: boolean;
 }
 
-export type TransportProvider = (params: TransportProviderParams) => { connection: Connection; transport: Transport; dcId: number };
+export type TransportProvider = { initialDc: DC; createTransport: (params: TransportProviderParams) => { connection: Connection; transport: Transport; dcId: number } };
 
 export interface TransportProviderCreatorParams {
   initialDc: DC;
@@ -29,13 +29,16 @@ const dcToNameMap: Record<DC, string> = {
   "5": "flora",
 };
 export const defaultTransportProvider: TransportProviderCreator = ({ initialDc, wss }: TransportProviderCreatorParams & { wss?: boolean }): TransportProvider => {
-  return ({ dc, cdn }) => {
-    dc ??= initialDc;
-    wss ??= typeof location !== "undefined" && location.protocol == "http:" ? false : true;
-    const url = `${wss ? "wss" : "ws"}://${dcToNameMap[dc]}${cdn ? "-1" : ""}.web.telegram.org/${dc.endsWith("-test") ? "apiws_test" : "apiws"}`;
-    const connection = new ConnectionWebSocket(url);
-    const transport = new TransportIntermediate(connection, true);
-    const dcId = Number(dc[0]) + (dc.endsWith("-test") ? 10_000 : 0) * (cdn ? -1 : 1);
-    return { connection, transport, dcId };
+  return {
+    initialDc,
+    createTransport: ({ dc, cdn }) => {
+      dc ??= initialDc;
+      wss ??= typeof location !== "undefined" && location.protocol == "http:" ? false : true;
+      const url = `${wss ? "wss" : "ws"}://${dcToNameMap[dc]}${cdn ? "-1" : ""}.web.telegram.org/${dc.endsWith("-test") ? "apiws_test" : "apiws"}`;
+      const connection = new ConnectionWebSocket(url);
+      const transport = new TransportIntermediate(connection, true);
+      const dcId = Number(dc[0]) + (dc.endsWith("-test") ? 10_000 : 0) * (cdn ? -1 : 1);
+      return { connection, transport, dcId };
+    },
   };
 };

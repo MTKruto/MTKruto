@@ -9,9 +9,16 @@ export abstract class ClientAbstract {
   protected connection: Connection;
   protected transport: Transport;
   private _dcId: number;
+  private _initialDc: DC;
+
+  get initialDc() {
+    return this._initialDc;
+  }
 
   constructor(protected transportProvider = defaultTransportProvider({ initialDc: DEFAULT_INITIAL_DC })) {
-    const { connection, transport, dcId } = transportProvider({ cdn: false });
+    const { initialDc, createTransport } = transportProvider;
+    this._initialDc = initialDc;
+    const { connection, transport, dcId } = createTransport({ cdn: false });
     this.connection = connection;
     this.transport = transport;
     this._dcId = dcId;
@@ -23,7 +30,7 @@ export abstract class ClientAbstract {
 
   // MaybePromise since `Client` has to deal with `Storage.set()`
   setDc(dc: DC): MaybePromise<void> {
-    const { connection, transport, dcId } = this.transportProvider({ dc, cdn: false });
+    const { connection, transport, dcId } = this.transportProvider.createTransport({ dc, cdn: false });
     this.connection = connection;
     this.transport = transport;
     this._dcId = dcId;
@@ -42,7 +49,7 @@ export abstract class ClientAbstract {
   async reconnect(dc?: DC) {
     await this.disconnect();
     if (dc) {
-      this.setDc(dc);
+      await this.setDc(dc);
     }
     await this.connect();
   }
