@@ -566,46 +566,6 @@ export class Client extends ClientAbstract {
     }
   }
 
-  updateQueue = queue((update: types.TypeMessage | types.TypeUpdate) => {
-    if (update instanceof types.UpdateNewMessage) {
-      //
-    } else if (update instanceof types.UpdateDeleteMessages) {
-      //
-    } else if (update instanceof types.UpdateReadHistoryInbox) {
-      //
-    } else if (update instanceof types.UpdateReadHistoryOutbox) {
-      //
-    } else if (update instanceof types.UpdateWebPage) {
-      //
-    } else if (update instanceof types.UpdateReadMessagesContents) {
-      //
-    } else if (update instanceof types.UpdateNewChannelMessage) {
-      //
-    } else if (update instanceof types.UpdateDeleteChannelMessages) {
-      //
-    } else if (update instanceof types.UpdateEditChannelMessage) {
-      //
-    } else if (update instanceof types.UpdateEditMessage) {
-      //
-    } else if (update instanceof types.UpdateChannelWebPage) {
-      //
-    } else if (update instanceof types.UpdateFolderPeers) {
-      //
-    } else if (update instanceof types.UpdatePinnedMessages) {
-      //
-    } else if (update instanceof types.UpdatePinnedChannelMessages) {
-      //
-    } else if (update instanceof types.UpdateShortMessage) {
-      //
-    } else if (update instanceof types.UpdateShortChatMessage) {
-      //
-    } else if (update instanceof types.UpdateShortSentMessage) {
-      //
-    } else {
-      UNREACHABLE();
-    }
-  }, 1);
-
   private updateApplicationMutex = new Mutex();
   private async applyUpdateNoGap(update: types.TypeUpdate, usePts = true): Promise<void> {
     const release = await this.updateApplicationMutex.acquire();
