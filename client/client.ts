@@ -747,6 +747,7 @@ export class Client extends ClientAbstract {
         if (updates instanceof types.Updates) {
           await this.processChats(updates.chats);
           await this.processUsers(updates.users);
+          await this.setUpdateStateDate(updates.date);
           for (const update of updates.updates) {
             await this.processUpdates(update);
           }
@@ -755,10 +756,12 @@ export class Client extends ClientAbstract {
           updates instanceof types.UpdateShortChatMessage ||
           updates instanceof types.UpdateShortSentMessage
         ) {
+          await this.setUpdateStateDate(updates.date);
           await this.applyUpdate(updates);
         } else if (updates instanceof types.UpdatesTooLong) {
           await this.recoverUpdateGap("updatesTooLong");
         } else if (updates instanceof types.UpdatesCombined) {
+          await this.setUpdateStateDate(updates.date);
           await this.processChats(updates.chats);
           await this.processUsers(updates.users);
           for (const update of updates.updates) {
@@ -778,6 +781,17 @@ export class Client extends ClientAbstract {
       }
     } catch (err) {
       d("error processing updates: %O", err);
+    }
+  }
+
+  private async setUpdateStateDate(date: number) {
+    const release = await this.updateApplicationMutex.acquire();
+    try {
+      const localState = await this.getLocalState();
+      localState.date = date;
+      await this.storage.setState(localState);
+    } finally {
+      release();
     }
   }
 
@@ -823,6 +837,7 @@ export class Client extends ClientAbstract {
           state.pts = difference.pts;
           dRecoverUpdateGap("received differenceTooLong");
         } else if (difference instanceof types.UpdatesDifferenceEmpty) {
+          await this.setUpdateStateDate(difference.date);
           dRecoverUpdateGap("there was no update gap");
           break;
         } else {
