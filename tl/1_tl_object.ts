@@ -223,8 +223,6 @@ export abstract class TLObject {
   }
 }
 
-export type MaybeVectorTLObject = TLObject | Array<MaybeVectorTLObject | TLObject>;
-
 export interface TLObjectConstructor<T = TLObject> {
   // deno-lint-ignore no-explicit-any
   new (params: any): T;

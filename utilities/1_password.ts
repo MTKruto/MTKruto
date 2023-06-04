@@ -30,7 +30,7 @@ export function isSafePrime(primeBytes: Uint8Array, g: number) {
       0xB9, 0x2F, 0xCC, 0x5B,
   ]);
   if (goodPrime.every((v, i) => v == primeBytes[i])) {
-    if ([3, 4, 5, 7].includes(g)) { // It's good
+    if ([3, 4, 5, 7].includes(g)) {
       return true;
     }
   }

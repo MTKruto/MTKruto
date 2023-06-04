@@ -7,12 +7,12 @@ import { parseHtml } from "../utilities/0_html.ts";
 import { MaybePromise } from "../utilities/0_types.ts";
 import { decryptMessage, encryptMessage, getMessageId } from "../utilities/1_message.ts";
 import { checkPassword } from "../utilities/1_password.ts";
-import { as, MaybeVectorTLObject } from "../tl/1_tl_object.ts";
+import { as } from "../tl/1_tl_object.ts";
 import * as types from "../tl/2_types.ts";
 import * as functions from "../tl/3_functions.ts";
-import { TLReader } from "../tl/3_tl_reader.ts";
+import { ReadObject, TLReader } from "../tl/3_tl_reader.ts";
 import { RPCResult } from "../tl/4_rpc_result.ts";
-import { Message } from "../tl/5_message.ts";
+import { Message as Message_ } from "../tl/5_message.ts"; // MTProto API message
 import { MessageContainer } from "../tl/6_message_container.ts";
 import { ClientAbstract } from "./client_abstract.ts";
 import { ClientPlain } from "./client_plain.ts";
@@ -24,7 +24,7 @@ import { ReplyKeyboardRemove, replyKeyboardRemoveToTlObject } from "../types/0_r
 import { ForceReply, forceReplyToTlObject } from "../types/0_force_reply.ts";
 import { ReplyKeyboardMarkup, replyKeyboardMarkupToTlObject } from "../types/2_reply_keyboard_markup.ts";
 import { InlineKeyboardMarkup, inlineKeyboardMarkupToTlObject } from "../types/2_inline_keyboard_markup.ts";
-import { constructMessage } from "../types/3_message.ts";
+import { constructMessage, Message } from "../types/3_message.ts"; // high-level wrapper for Telegram API's message
 
 const d = debug("client");
 const dRecoverUpdateGap = debug("client_recoverUpdateGap");
@@ -87,7 +87,7 @@ export class Client extends ClientAbstract {
   private auth: { key: Uint8Array; id: bigint } | null = null;
   private sessionId = getRandomBigInt(8, true, false);
   private state = { salt: 0n, seqNo: 0 };
-  private promises = new Map<bigint, { resolve: (obj: MaybeVectorTLObject) => void; reject: (err: MaybeVectorTLObject) => void }>();
+  private promises = new Map<bigint, { resolve: (obj: ReadObject) => void; reject: (err: ReadObject) => void }>();
   private toAcknowledge = new Set<bigint>();
   private updateState?: types.UpdatesState;
   public updateHandler: UpdateHandler = null;
@@ -378,7 +378,7 @@ export class Client extends ClientAbstract {
     }
   }
 
-  private messageProcessQueue = queue(async (message: Message) => {
+  private messageProcessQueue = queue(async (message: Message_) => {
     let body = message.body;
     if (body instanceof types.GZIPPacked) {
       body = new TLReader(gunzip(body.packedData)).readObject();
@@ -398,6 +398,8 @@ export class Client extends ClientAbstract {
       }
       if (result instanceof types.Updates || result instanceof types.TypeUpdate) {
         await this.processUpdates(result);
+      } else {
+        await this.processResult(result);
       }
       const promise = this.promises.get(message.body.messageId);
       if (promise) {
@@ -449,7 +451,7 @@ export class Client extends ClientAbstract {
         }
       }
 
-      let decrypted: Message | MessageContainer;
+      let decrypted: Message_ | MessageContainer;
       try {
         decrypted = await decryptMessage(
           buffer,
@@ -498,7 +500,7 @@ export class Client extends ClientAbstract {
       seqNo++;
       this.state.seqNo++;
     }
-    const message = new Message(getMessageId(), seqNo, function_);
+    const message = new Message_(getMessageId(), seqNo, function_);
     await this.transport.send(
       await encryptMessage(
         message,
@@ -514,7 +516,7 @@ export class Client extends ClientAbstract {
       return;
     }
 
-    const result = await new Promise<MaybeVectorTLObject>((resolve, reject) => {
+    const result = await new Promise<ReadObject>((resolve, reject) => {
       this.promises.set(message.id, { resolve, reject });
     });
 
@@ -606,7 +608,6 @@ export class Client extends ClientAbstract {
 
   private updateApplicationMutex = new Mutex();
   private async applyUpdateNoGap(update: types.TypeUpdate, usePts = true): Promise<void> {
-    d("apply update");
     const release = await this.updateApplicationMutex.acquire();
 
     try {
@@ -635,6 +636,7 @@ export class Client extends ClientAbstract {
         }
 
         localState.pts = update.pts;
+        d("applied update with pts %d", update.pts);
         await this.storage.setState(localState);
       } else if (
         usePts &&
@@ -647,20 +649,17 @@ export class Client extends ClientAbstract {
       ) {
         const channelId = update instanceof types.UpdateNewChannelMessage || update instanceof types.UpdateEditChannelMessage ? update.message[as](types.Message).peerId[as](types.PeerChannel).channelId : update.channelId;
         let localPts = await this.storage.getChannelPts(channelId);
-        d("localPts=%d", localPts);
         if (!localPts) {
           localPts = update.pts - update.ptsCount;
-          d("localPts not found");
         }
         if (localPts + update.ptsCount > update.pts) {
           // already applied
           return;
         } else if (localPts + update.ptsCount < update.pts) {
-          d("localPts=%d ptsCount=%d pts=%d", localPts, update.ptsCount, update.pts);
-          d("%d + %d < %d", localPts, update.ptsCount, update.pts);
           // should call channelGetDifference
           throw UPDATE_GAP;
         }
+        d("applied update with pts %d", update.pts);
         await this.storage.setChannelPts(channelId, update.pts);
       }
 
@@ -967,6 +966,112 @@ export class Client extends ClientAbstract {
     return this.storage.getEntity(type, id);
   }
 
+  async processResult(result: ReadObject) {
+    if (result instanceof types.MessagesDialogs) {
+      await this.processChats(result.chats);
+      await this.processUsers(result.users);
+    } else if (result instanceof types.MessagesDialogsSlice) {
+      await this.processChats(result.chats);
+      await this.processUsers(result.users);
+    } else if (result instanceof types.MessagesMessages) {
+      await this.processChats(result.chats);
+      await this.processUsers(result.users);
+    } else if (result instanceof types.MessagesMessagesSlice) {
+      await this.processChats(result.chats);
+      await this.processUsers(result.users);
+    } else if (result instanceof types.MessagesChannelMessages) {
+      await this.processChats(result.chats);
+      await this.processUsers(result.users);
+    } else if (result instanceof types.MessagesChatFull) {
+      await this.processChats(result.chats);
+      await this.processUsers(result.users);
+    } else if (result instanceof types.ContactsFound) {
+      await this.processChats(result.chats);
+      await this.processUsers(result.users);
+    } else if (result instanceof types.AccountPrivacyRules) {
+      await this.processChats(result.chats);
+      await this.processUsers(result.users);
+    } else if (result instanceof types.ContactsResolvedPeer) {
+      await this.processChats(result.chats);
+      await this.processUsers(result.users);
+    } else if (result instanceof types.ChannelsChannelParticipants) {
+      await this.processChats(result.chats);
+      await this.processUsers(result.users);
+    } else if (result instanceof types.ChannelsChannelParticipant) {
+      await this.processChats(result.chats);
+      await this.processUsers(result.users);
+    } else if (result instanceof types.MessagesPeerDialogs) {
+      await this.processChats(result.chats);
+      await this.processUsers(result.users);
+    } else if (result instanceof types.ContactsTopPeers) {
+      await this.processChats(result.chats);
+      await this.processUsers(result.users);
+    } else if (result instanceof types.ChannelsAdminLogResults) {
+      await this.processChats(result.chats);
+      await this.processUsers(result.users);
+    } else if (result instanceof types.HelpRecentMeURLs) {
+      await this.processChats(result.chats);
+      await this.processUsers(result.users);
+    } else if (result instanceof types.MessagesInactiveChats) {
+      await this.processChats(result.chats);
+      await this.processUsers(result.users);
+    } else if (result instanceof types.HelpPromoData) {
+      await this.processChats(result.chats);
+      await this.processUsers(result.users);
+    } else if (result instanceof types.MessagesMessageViews) {
+      await this.processChats(result.chats);
+      await this.processUsers(result.users);
+    } else if (result instanceof types.MessagesDiscussionMessage) {
+      await this.processChats(result.chats);
+      await this.processUsers(result.users);
+    } else if (result instanceof types.PhoneGroupCall) {
+      await this.processChats(result.chats);
+      await this.processUsers(result.users);
+    } else if (result instanceof types.PhoneGroupParticipants) {
+      await this.processChats(result.chats);
+      await this.processUsers(result.users);
+    } else if (result instanceof types.PhoneJoinAsPeers) {
+      await this.processChats(result.chats);
+      await this.processUsers(result.users);
+    } else if (result instanceof types.MessagesSponsoredMessages) {
+      await this.processChats(result.chats);
+      await this.processUsers(result.users);
+    } else if (result instanceof types.MessagesSearchResultsCalendar) {
+      await this.processChats(result.chats);
+      await this.processUsers(result.users);
+    } else if (result instanceof types.ChannelsSendAsPeers) {
+      await this.processChats(result.chats);
+      await this.processUsers(result.users);
+    } else if (result instanceof types.UsersUserFull) {
+      await this.processChats(result.chats);
+      await this.processUsers(result.users);
+    } else if (result instanceof types.MessagesPeerSettings) {
+      await this.processChats(result.chats);
+      await this.processUsers(result.users);
+    } else if (result instanceof types.MessagesMessageReactionsList) {
+      await this.processChats(result.chats);
+      await this.processUsers(result.users);
+    } else if (result instanceof types.MessagesForumTopics) {
+      await this.processChats(result.chats);
+      await this.processUsers(result.users);
+    } else if (result instanceof types.AccountAutoSaveSettings) {
+      await this.processChats(result.chats);
+      await this.processUsers(result.users);
+    } else if (result instanceof types.ChatlistsExportedInvites) {
+      await this.processChats(result.chats);
+      await this.processUsers(result.users);
+    } else if (result instanceof types.ChatlistsChatlistInviteAlready) {
+      await this.processChats(result.chats);
+      await this.processUsers(result.users);
+    } else if (result instanceof types.ChatlistsChatlistInvite) {
+      await this.processChats(result.chats);
+      await this.processUsers(result.users);
+    } else if (result instanceof types.ChatlistsChatlistUpdates) {
+      await this.processChats(result.chats);
+      await this.processUsers(result.users);
+    }
+  }
+
   async sendMessage(
     chatId: number | string,
     text: string,
@@ -1025,7 +1130,7 @@ export class Client extends ClientAbstract {
     const sendAs = params?.sendAs ? await this.getInputPeer(params.sendAs) : undefined;
     const entities = entities_?.length > 0 ? entities_.map((v) => messageEntityToTlObject(v)) : undefined;
 
-    const updates = await this.invoke(
+    const result = await this.invoke(
       new functions.MessagesSendMessage({
         peer,
         randomId,
@@ -1039,16 +1144,52 @@ export class Client extends ClientAbstract {
         entities,
         replyMarkup,
       }),
-    ).then((v) => v[as](types.Updates));
+    );
 
-    for (const update of updates.updates) {
-      if (update instanceof types.UpdateNewMessage) {
-        return constructMessage(update.message[as](types.Message), this[getEntity].bind(this));
-      } else if (update instanceof types.UpdateNewChannelMessage) {
-        return constructMessage(update.message[as](types.Message), this[getEntity].bind(this));
+    if (result instanceof types.Updates) {
+      for (const update of result.updates) {
+        if (update instanceof types.UpdateNewMessage) {
+          return constructMessage(update.message[as](types.Message), this[getEntity].bind(this));
+        } else if (update instanceof types.UpdateNewChannelMessage) {
+          return constructMessage(update.message[as](types.Message), this[getEntity].bind(this));
+        }
+      }
+    } else if (result instanceof types.UpdateShortSentMessage || result instanceof types.UpdateShortSentMessage) {
+      const message = await this.getMessage(chatId, result.id);
+      if (message != null) {
+        return message
       }
     }
 
     UNREACHABLE();
+  }
+
+  async getMessages(chatId: number | string, messageIds: number[]) {
+    const peer = await this.getInputPeer(chatId);
+    let messages_: types.MessagesMessages;
+    if (peer instanceof types.InputPeerChannel) {
+      messages_ = await this.invoke(
+        new functions.ChannelsGetMessages({
+          channel: new types.InputChannel({ channelId: peer.channelId, accessHash: peer.accessHash }),
+          id: messageIds.map((v) => new types.InputMessageID({ id: v })),
+        }),
+      ).then((v) => v[as](types.MessagesMessages));
+    } else {
+      messages_ = await this.invoke(
+        new functions.MessagesGetMessages({
+          id: messageIds.map((v) => new types.InputMessageID({ id: v })),
+        }),
+      ).then((v) => v[as](types.MessagesMessages));
+    }
+    const messages = new Array<Message>();
+    for (const message_ of messages_.messages) {
+      messages.push(await  constructMessage(message_[as](types.Message), this[getEntity].bind(this)))
+    }
+    return messages
+  }
+
+  async getMessage(chatId: number | string, messageId: number): Promise<Message | null> {
+    const messages = await this.getMessages(chatId, [messageId]);
+    return messages[0] ?? null;
   }
 }
