@@ -1,6 +1,6 @@
-import { assertEquals } from "../deps.ts";
-import { concat } from "./0_buffer.ts";
-import { h, isGoodModExpFirst, pad, pbkdf2, ph1, ph2, sh } from "./1_password.ts";
+import { assertEquals } from "../../deps.ts";
+import { concat } from "../../utilities/0_buffer.ts";
+import { h, isGoodModExpFirst, pad, pbkdf2, ph1, ph2, sh } from "./0_password.ts";
 
 Deno.test("h", async () => {
   const password = new Uint8Array([208, 156, 208, 162, 208, 154, 209, 128, 209, 131, 209, 130, 208, 190]);

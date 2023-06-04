@@ -1,7 +1,7 @@
-import * as types from "../tl/2_types.ts";
-import { bufferFromBigInt, concat } from "./0_buffer.ts";
-import { sha256 } from "./0_hash.ts";
-import { bigIntFromBuffer, getRandomBigInt, mod, modExp } from "./0_bigint.ts";
+import * as types from "../../tl/2_types.ts";
+import { bufferFromBigInt, concat } from "../../utilities/0_buffer.ts";
+import { sha256 } from "../../utilities/0_hash.ts";
+import { bigIntFromBuffer, getRandomBigInt, mod, modExp } from "../../utilities/0_bigint.ts";
 
 export function isSafePrime(primeBytes: Uint8Array, g: number) {
   // deno-fmt-ignore
