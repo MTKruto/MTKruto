@@ -87,6 +87,7 @@ function serializeSingleParam(
     | "true",
   ntype: string,
 ) {
+  const valueRepr = value == null ? null : value.constructor.name;
   if (isTLObjectConstructor(type)) {
     if (
       (type.name == "TypeX" && value instanceof TLObject) ||
@@ -95,7 +96,7 @@ function serializeSingleParam(
       writer.write(value[serialize]());
       return;
     } else {
-      throw new TypeError(`Expected ${type.name} but received ${value == null ? null : value.constructor.name}`);
+      throw new TypeError(`Expected ${type.name} but received ${valueRepr}`);
     }
   }
 
@@ -103,7 +104,7 @@ function serializeSingleParam(
     if ((value instanceof Uint8Array)) {
       writer.writeBytes(value);
     } else {
-      throw new TypeError("Expected Uint8Array");
+      throw new TypeError(`Expected Uint8Array but received ${valueRepr}`);
     }
   }
 
@@ -118,7 +119,7 @@ function serializeSingleParam(
           writer.writeInt64(value);
         }
       } else {
-        throw new TypeError("Expected bigint");
+        throw new TypeError(`Expected bigint but received ${valueRepr}`);
       }
       break;
     case "boolean":
@@ -129,14 +130,14 @@ function serializeSingleParam(
           writer.writeInt32(0xBC799737);
         }
       } else {
-        throw new TypeError("Expected boolean");
+        throw new TypeError(`Expected boolean but received ${valueRepr}`);
       }
       break;
     case "number":
       if (typeof value === "number") {
         writer.writeInt32(value);
       } else {
-        throw new TypeError("Expected number");
+        throw new TypeError(`Expected number but received ${valueRepr}`);
       }
       break;
     case "string":
@@ -145,12 +146,12 @@ function serializeSingleParam(
       } else if (value instanceof Uint8Array) {
         writer.writeBytes(value);
       } else {
-        throw new TypeError("Expected string or Uint8Array");
+        throw new TypeError(`Expected string or Uint8Array but received ${valueRepr}`);
       }
       break;
     case "true":
       if (value !== true) {
-        throw new TypeError("Expected true");
+        throw new TypeError(`Expected true but received ${valueRepr}`);
       }
   }
 }
@@ -218,7 +219,7 @@ export abstract class TLObject {
     if (this instanceof constructor) {
       return this as InstanceType<T>;
     } else {
-      throw new TypeError(`Expected ${constructor.name}, got ${this.constructor.name}`);
+      throw new TypeError(`Expected ${constructor.name} but received ${this.constructor.name}`);
     }
   }
 }
