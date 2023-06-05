@@ -4,6 +4,7 @@ import { cleanObject } from "../utilities/0_object.ts";
 import { as } from "../tl/1_tl_object.ts";
 import * as types from "../tl/2_types.ts";
 import { ChatPhoto, constructChatPhoto } from "./0_chat_photo.ts";
+import { getIdColor } from "./utilities/0_id_color.ts";
 
 export enum ChatType {
   Private = "private",
@@ -16,6 +17,7 @@ export declare namespace Chat {
   export interface Base {
     type: ChatType;
     id: number;
+    idColor: string;
     photo?: ChatPhoto;
   }
 
@@ -73,10 +75,12 @@ export function constructChat(chat: types.Chat): Chat.Group;
 export function constructChat(chat: types.Channel): Chat.Supergroup | Chat.Channel;
 export function constructChat(chat: types.User | types.Chat | types.Channel): Chat {
   if (chat instanceof types.User) {
+    const id = Number(chat.id);
     const chat_: Chat.Private = {
       type: ChatType.Private,
       isBot: chat.bot || false,
-      id: Number(chat.id),
+      id,
+      idColor: getIdColor(id),
       firstName: chat.firstName || "",
       lastName: chat.lastName,
       isScam: chat.scam || false,
@@ -96,9 +100,11 @@ export function constructChat(chat: types.User | types.Chat | types.Channel): Ch
 
     return cleanObject(chat_);
   } else if (chat instanceof types.Chat) {
+    const id = Number(-chat.id);
     const chat_: Chat.Group = {
       type: ChatType.Group,
-      id: Number(-chat.id),
+      id,
+      idColor: getIdColor(id),
       title: chat.title,
       isCreator: chat.creator || false,
     };
@@ -117,10 +123,12 @@ export function constructChat(chat: types.User | types.Chat | types.Channel): Ch
       verified: isVerified = false,
       restricted: isRestricted = false,
     } = chat;
+    const id = ZERO_CHANNEL_ID + -Number(chat.id);
     if (chat.megagroup) {
-      chat_ = { id: ZERO_CHANNEL_ID + -Number(chat.id), type: ChatType.Supergroup, title, isScam, isFake, isVerified, isRestricted };
+      chat_ = { id, idColor: getIdColor(id), type: ChatType.Supergroup, title, isScam, isFake, isVerified, isRestricted };
     } else {
-      chat_ = { id: ZERO_CHANNEL_ID + -Number(chat.id), type: ChatType.Channel, title, isScam, isFake, isVerified, isRestricted };
+      const id = ZERO_CHANNEL_ID + -Number(chat.id);
+      chat_ = { id, idColor: getIdColor(id), type: ChatType.Channel, title, isScam, isFake, isVerified, isRestricted };
     }
 
     chat_.username = chat.username;
