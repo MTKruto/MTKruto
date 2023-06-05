@@ -1,7 +1,7 @@
 import { bufferFromBigInt, concat } from "../utilities/0_buffer.ts";
-import { Connection } from "../connection/connection.ts";
-import { getObfuscationParameters } from "./utilities/0_obfuscation.ts";
-import { Transport } from "./transport.ts";
+import { Connection } from "../connection/0_connection.ts";
+import { getObfuscationParameters } from "./0_obfuscation.ts";
+import { Transport } from "./0_transport.ts";
 
 export class TransportIntermediate extends Transport implements Transport {
   constructor(private readonly connection: Connection, private readonly obfuscated = false) {

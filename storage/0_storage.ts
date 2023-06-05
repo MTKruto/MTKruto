@@ -3,7 +3,7 @@ import { MaybePromise } from "../utilities/0_types.ts";
 import { UNREACHABLE } from "../utilities/0_control.ts";
 import { sha1 } from "../utilities/0_hash.ts";
 import { bigIntFromBuffer } from "../utilities/0_bigint.ts";
-import { DC } from "../transport/transport_provider.ts";
+import { DC } from "../transport/2_transport_provider.ts";
 import { serialize } from "../tl/1_tl_object.ts";
 import * as types from "../tl/2_types.ts";
 import { TLReader } from "../tl/3_tl_reader.ts";

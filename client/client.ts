@@ -13,9 +13,9 @@ import { Message as Message_ } from "../tl/6_message.ts"; // MTProto API message
 import { MessageContainer } from "../tl/7_message_container.ts";
 import { ClientAbstract } from "./client_abstract.ts";
 import { ClientPlain } from "./client_plain.ts";
-import { Storage } from "../storage/storage.ts";
-import { StorageMemory } from "../storage/storage_memory.ts";
-import { DC, TransportProvider } from "../transport/transport_provider.ts";
+import { Storage } from "../storage/0_storage.ts";
+import { StorageMemory } from "../storage/1_storage_memory.ts";
+import { DC, TransportProvider } from "../transport/2_transport_provider.ts";
 import { parseHtml } from "../types/utilities/0_html.ts";
 import { MessageEntity, messageEntityToTlObject } from "../types/0_message_entity.ts";
 import { ReplyKeyboardRemove, replyKeyboardRemoveToTlObject } from "../types/0_reply_keyboard_remove.ts";

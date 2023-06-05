@@ -1,9 +1,9 @@
 import { MaybePromise } from "../utilities/0_types.ts";
-import { Storage } from "./storage.ts";
+import { Storage } from "./0_storage.ts";
 
-export class StorageSessionStorage extends Storage implements Storage {
+export class StorageLocalStorage extends Storage implements Storage {
   constructor(private readonly prefix: string) {
-    if (typeof sessionStorage === "undefined") {
+    if (typeof localStorage === "undefined") {
       throw new Error("Unavailable in current environment");
     }
     if (prefix.length <= 0) {
@@ -19,15 +19,15 @@ export class StorageSessionStorage extends Storage implements Storage {
 
   get(key: string) {
     key = this.prefix + key;
-    return sessionStorage.getItem(key);
+    return localStorage.getItem(key);
   }
 
   set(key: string, value: string | null): MaybePromise<void> {
     key = this.prefix + key;
     if (value != null) {
-      sessionStorage.setItem(key, value);
+      localStorage.setItem(key, value);
     } else {
-      sessionStorage.removeItem(key);
+      localStorage.removeItem(key);
     }
   }
 }

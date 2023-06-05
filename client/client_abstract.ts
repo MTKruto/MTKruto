@@ -1,9 +1,9 @@
 import { initTgCrypto } from "../deps.ts";
 import { DEFAULT_INITIAL_DC } from "../constants.ts";
 import { MaybePromise } from "../utilities/0_types.ts";
-import { Connection } from "../connection/connection.ts";
-import { Transport } from "../transport/transport.ts";
-import { DC, defaultTransportProvider } from "../transport/transport_provider.ts";
+import { Connection } from "../connection/0_connection.ts";
+import { Transport } from "../transport/0_transport.ts";
+import { DC, defaultTransportProvider } from "../transport/2_transport_provider.ts";
 
 export abstract class ClientAbstract {
   protected connection: Connection;
