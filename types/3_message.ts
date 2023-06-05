@@ -79,7 +79,7 @@ export async function constructMessage(
     chat: chat_,
     views: message_.views,
     isTopicMessage: false,
-    hasProtectedContent: message_.noforwards || false
+    hasProtectedContent: message_.noforwards || false,
   };
 
   if (message_.media instanceof types.MessageMediaPhoto || message_.media instanceof types.MessageMediaDocument) {
@@ -87,7 +87,7 @@ export async function constructMessage(
   }
 
   if (message_.groupedId != undefined) {
-    message.mediaGroupId = String(message_.groupedId)
+    message.mediaGroupId = String(message_.groupedId);
   }
 
   if (message_.fromId instanceof types.PeerUser) {
@@ -156,7 +156,7 @@ export async function constructMessage(
   }
 
   if (message_.postAuthor != undefined) {
-    message.authorSignature = message_.postAuthor
+    message.authorSignature = message_.postAuthor;
   }
 
   if (message_.fwdFrom instanceof types.MessageFwdHeader) {
