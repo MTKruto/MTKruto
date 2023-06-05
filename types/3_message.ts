@@ -15,17 +15,32 @@ const d = debug("types/Message");
 
 export interface Message {
   id: number;
+  threadId?: number;
   from?: User;
-  chat: Chat;
-  text?: string;
-  caption?: string;
-  entities?: MessageEntity[];
-  captionEntities?: MessageEntity[];
+  senderChat?: Chat;
   date?: Date;
+  chat: Chat;
+  forwardFrom?: User;
+  forwardFromChat?: Chat;
+  forwardId?: number;
+  forwardSignature?: string;
+  forwardSenderName?: string;
+  forwardDate?: Date;
+  isTopicMessage: boolean;
+  isAutomaticForward?: boolean;
+  replyToMessage?: Omit<Message, "replyToMessage">;
+  viaBot?: User;
   editDate?: Date;
+  hasProtectedContent: boolean;
+  mediaGroupId?: string;
+  authorSignature?: string;
+  text?: string;
+  entities?: MessageEntity[];
+  caption?: string;
+  captionEntities?: MessageEntity[];
+  hasMediaSpoiler?: boolean;
   views?: number;
   replyMarkup?: InlineKeyboardMarkup | ReplyKeyboardMarkup | ReplyKeyboardRemove | ForceReply;
-  replyToMessage?: Omit<Message, "replyToMessage">;
 }
 
 export async function constructMessage(
@@ -59,7 +74,21 @@ export async function constructMessage(
     UNREACHABLE();
   }
 
-  const message: Message = { id: message_.id, chat: chat_, views: message_.views };
+  const message: Message = {
+    id: message_.id,
+    chat: chat_,
+    views: message_.views,
+    isTopicMessage: false,
+    hasProtectedContent: message_.noforwards || false
+  };
+
+  if (message_.media instanceof types.MessageMediaPhoto || message_.media instanceof types.MessageMediaDocument) {
+    message.hasMediaSpoiler = message_.media.spoiler || false;
+  }
+
+  if (message_.groupedId != undefined) {
+    message.mediaGroupId = String(message_.groupedId)
+  }
 
   if (message_.fromId instanceof types.PeerUser) {
     const entity = await getEntity(message_.fromId);
@@ -102,12 +131,63 @@ export async function constructMessage(
     }
   }
 
+  // message_.
+
   if (getMessage && message_.replyTo instanceof types.MessageReplyHeader) {
+    if (message_.replyTo.forumTopic) {
+      message.isTopicMessage = true;
+    }
     const replyToMessage = await getMessage(message.chat.id, message_.replyTo.replyToMsgId);
     if (replyToMessage) {
       message.replyToMessage = replyToMessage;
+      message.threadId = message_.replyTo.replyToTopId;
     } else {
       d("couldn't get replied message");
+    }
+  }
+
+  if (message_.viaBotId != undefined) {
+    const viaBot = await getEntity(new types.PeerUser({ userId: message_.viaBotId }));
+    if (viaBot) {
+      message.viaBot = constructUser(viaBot);
+    } else {
+      UNREACHABLE();
+    }
+  }
+
+  if (message_.postAuthor != undefined) {
+    message.authorSignature = message_.postAuthor
+  }
+
+  if (message_.fwdFrom instanceof types.MessageFwdHeader) {
+    message.isAutomaticForward = message_.fwdFrom.savedFromPeer != undefined && message_.fwdFrom.savedFromMsgId != undefined;
+    message.forwardSenderName = message_.fwdFrom.fromName;
+    message.forwardId = message_.fwdFrom.channelPost;
+    message.forwardSignature = message_.fwdFrom.postAuthor;
+    message.forwardDate = new Date(message_.date * 1_000);
+    if (message_.fwdFrom.fromId instanceof types.PeerUser) {
+      const entity = await getEntity(message_.fwdFrom.fromId);
+      if (entity) {
+        message.forwardFrom = constructUser(entity);
+      } else {
+        UNREACHABLE();
+      }
+    } else if (message_.fwdFrom.fromId instanceof types.PeerChat) {
+      const entity = await getEntity(message_.fwdFrom.fromId);
+      if (entity) {
+        message.forwardFromChat = constructChat(entity);
+      } else {
+        UNREACHABLE();
+      }
+    } else if (message_.fwdFrom.fromId instanceof types.PeerChannel) {
+      const entity = await getEntity(message_.fwdFrom.fromId);
+      if (entity) {
+        message.forwardFromChat = constructChat(entity);
+      } else {
+        UNREACHABLE();
+      }
+    } else {
+      UNREACHABLE();
     }
   }
 
