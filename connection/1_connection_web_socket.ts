@@ -1,5 +1,5 @@
 import { debug, Mutex } from "../deps.ts";
-import { Connection } from "./connection.ts";
+import { Connection } from "./0_connection.ts";
 
 const d = debug("ConnectionWebSocket");
 

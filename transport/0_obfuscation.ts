@@ -1,6 +1,6 @@
-import { bufferFromBigInt, concat } from "../../utilities/0_buffer.ts";
-import { CTR } from "../../utilities/0_crypto.ts";
-import { Connection } from "../../connection/connection.ts";
+import { bufferFromBigInt, concat } from "../utilities/0_buffer.ts";
+import { CTR } from "../utilities/0_crypto.ts";
+import { Connection } from "../connection/0_connection.ts";
 
 export async function getObfuscationParameters(protocol: number, connection: Connection) {
   const dc = 0xFCFF;

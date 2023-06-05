@@ -1,5 +1,5 @@
 import { MaybePromise } from "../utilities/0_types.ts";
-import { Storage } from "./storage.ts";
+import { Storage } from "./0_storage.ts";
 
 export class StorageMemory extends Storage implements Storage {
   protected map = new Map<string, string>();

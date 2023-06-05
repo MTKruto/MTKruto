@@ -1,7 +1,7 @@
-import { Connection } from "../connection/connection.ts";
-import { ConnectionWebSocket } from "../connection/connection_web_socket.ts";
-import { Transport } from "./transport.ts";
-import { TransportIntermediate } from "./transport_intermediate.ts";
+import { Connection } from "../connection/0_connection.ts";
+import { ConnectionWebSocket } from "../connection/1_connection_web_socket.ts";
+import { Transport } from "./0_transport.ts";
+import { TransportIntermediate } from "./1_transport_intermediate.ts";
 
 export type DC = "1" | "2" | "3" | "4" | "5" | "1-test" | "2-test" | "3-test";
 
