@@ -2,9 +2,11 @@ import { cleanObject } from "../utilities/0_object.ts";
 import { as } from "../tl/1_tl_object.ts";
 import * as types from "../tl/2_types.ts";
 import { ChatPhoto, constructChatPhoto } from "./0_chat_photo.ts";
+import { getIdColor } from "./utilities/0_id_color.ts";
 
 export interface User {
   id: number;
+  idColor: string;
   isBot: boolean;
   firstName: string;
   lastName?: string;
@@ -21,8 +23,10 @@ export interface User {
 }
 
 export function constructUser(user_: types.User) {
+  const id = Number(user_.id);
   const user: User = {
-    id: Number(user_.id),
+    id,
+    idColor: getIdColor(id),
     isBot: user_.bot || false,
     firstName: user_.firstName || "",
     lastName: user_.lastName,
