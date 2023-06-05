@@ -65,6 +65,7 @@ export declare namespace Chat {
 
   export interface Supergroup extends ChannelBase {
     type: ChatType.Supergroup;
+    isForum: boolean;
   }
 }
 
@@ -125,10 +126,29 @@ export function constructChat(chat: types.User | types.Chat | types.Channel): Ch
     } = chat;
     const id = ZERO_CHANNEL_ID + -Number(chat.id);
     if (chat.megagroup) {
-      chat_ = { id, idColor: getIdColor(id), type: ChatType.Supergroup, title, isScam, isFake, isVerified, isRestricted };
+      chat_ = {
+        id,
+        idColor: getIdColor(id),
+        type: ChatType.Supergroup,
+        title,
+        isScam,
+        isFake,
+        isVerified,
+        isRestricted,
+        isForum: chat.forum || false,
+      };
     } else {
       const id = ZERO_CHANNEL_ID + -Number(chat.id);
-      chat_ = { id, idColor: getIdColor(id), type: ChatType.Channel, title, isScam, isFake, isVerified, isRestricted };
+      chat_ = {
+        id,
+        idColor: getIdColor(id),
+        type: ChatType.Channel,
+        title,
+        isScam,
+        isFake,
+        isVerified,
+        isRestricted,
+      };
     }
 
     chat_.username = chat.username;
