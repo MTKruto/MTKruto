@@ -1,8 +1,8 @@
 import { cleanObject } from "../utilities/0_object.ts";
 import { as } from "../tl/1_tl_object.ts";
 import * as types from "../tl/2_types.ts";
+import { getIdColor } from "./!0_id_color.ts";
 import { ChatPhoto, constructChatPhoto } from "./0_chat_photo.ts";
-import { getIdColor } from "./utilities/0_id_color.ts";
 
 export interface User {
   id: number;
@@ -41,7 +41,10 @@ export function constructUser(user_: types.User) {
     addedToAttachmentMenu: user_.attachMenuEnabled || false,
   };
   if (user_.photo instanceof types.UserProfilePhoto) {
-    user.photo = constructChatPhoto(user_.photo);
+    user.photo = constructChatPhoto(user_.photo, user.id, user_.accessHash ?? 0n);
   }
+  console.log(user_.photo);
+  console.log(user.photo);
+  console.log("u");
   return cleanObject(user);
 }

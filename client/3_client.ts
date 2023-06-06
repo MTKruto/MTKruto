@@ -11,20 +11,20 @@ import { ReadObject, TLReader } from "../tl/3_tl_reader.ts";
 import { RPCResult } from "../tl/5_rpc_result.ts";
 import { Message as Message_ } from "../tl/6_message.ts"; // MTProto API message
 import { MessageContainer } from "../tl/7_message_container.ts";
-import { ClientAbstract } from "./client_abstract.ts";
-import { ClientPlain } from "./client_plain.ts";
 import { Storage } from "../storage/0_storage.ts";
 import { StorageMemory } from "../storage/1_storage_memory.ts";
 import { DC, TransportProvider } from "../transport/2_transport_provider.ts";
-import { parseHtml } from "../types/utilities/0_html.ts";
 import { MessageEntity, messageEntityToTlObject } from "../types/0_message_entity.ts";
 import { ReplyKeyboardRemove, replyKeyboardRemoveToTlObject } from "../types/0_reply_keyboard_remove.ts";
 import { ForceReply, forceReplyToTlObject } from "../types/0_force_reply.ts";
 import { ReplyKeyboardMarkup, replyKeyboardMarkupToTlObject } from "../types/2_reply_keyboard_markup.ts";
 import { InlineKeyboardMarkup, inlineKeyboardMarkupToTlObject } from "../types/2_inline_keyboard_markup.ts";
 import { constructMessage, Message } from "../types/3_message.ts"; // high-level wrapper for Telegram API's message
-import { decryptMessage, encryptMessage, getMessageId } from "./utilities/0_message.ts";
-import { checkPassword } from "./utilities/0_password.ts";
+import { decryptMessage, encryptMessage, getMessageId } from "./0_message.ts";
+import { parseHtml } from "./0_html.ts";
+import { checkPassword } from "./0_password.ts";
+import { ClientAbstract } from "./1_client_abstract.ts";
+import { ClientPlain } from "./2_client_plain.ts";
 
 const d = debug("Client");
 const dGap = debug("Client/recoverUpdateGap");
@@ -783,7 +783,7 @@ export class Client extends ClientAbstract {
     try {
       let state = await this.getLocalState();
       while (true) {
-        const difference = await this.invoke(new functions.UpdatesGetDifference({ pts: state.pts, date: state.date, qts: state.qts }));
+        const difference = await this.invoke(new functions.UpdatesGetDifference({ pts: state.pts, date: state.date, qts: state.qts ?? 0 }));
         if (difference instanceof types.UpdatesDifference || difference instanceof types.UpdatesDifferenceSlice) {
           await this.processChats(difference.chats);
           await this.processUsers(difference.users);
