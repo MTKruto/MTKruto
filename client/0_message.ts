@@ -1,13 +1,13 @@
-import { assertEquals, ige256Decrypt, ige256Encrypt } from "../../deps.ts";
-import { TLRawReader } from "../../tl/0_tl_raw_reader.ts";
-import { TLRawWriter } from "../../tl/0_tl_raw_writer.ts";
-import { id, serialize, TLObject } from "../../tl/1_tl_object.ts";
-import { TLReader } from "../../tl/3_tl_reader.ts";
-import { RPCResult } from "../../tl/5_rpc_result.ts";
-import { Message } from "../../tl/6_message.ts";
-import { MessageContainer } from "../../tl/7_message_container.ts";
-import { bufferFromBigInt, concat } from "../../utilities/0_buffer.ts";
-import { sha256 } from "../../utilities/0_hash.ts";
+import { assertEquals, ige256Decrypt, ige256Encrypt } from "../deps.ts";
+import { TLRawReader } from "../tl/0_tl_raw_reader.ts";
+import { TLRawWriter } from "../tl/0_tl_raw_writer.ts";
+import { id, serialize, TLObject } from "../tl/1_tl_object.ts";
+import { TLReader } from "../tl/3_tl_reader.ts";
+import { RPCResult } from "../tl/5_rpc_result.ts";
+import { Message } from "../tl/6_message.ts";
+import { MessageContainer } from "../tl/7_message_container.ts";
+import { bufferFromBigInt, concat } from "../utilities/0_buffer.ts";
+import { sha256 } from "../utilities/0_hash.ts";
 
 let lastMsgId = 0n;
 export function getMessageId() {

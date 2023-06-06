@@ -9,8 +9,8 @@ import { serialize } from "../tl/1_tl_object.ts";
 import { ClientDHInnerData, DHGenOK, PQInnerDataDC, ResPQ, ServerDHInnerData, ServerDHParamsOK } from "../tl/2_types.ts";
 import { Function, ReqDHParams, ReqPQMulti, SetClientDHParams } from "../tl/3_functions.ts";
 import { TLReader } from "../tl/3_tl_reader.ts";
-import { ClientAbstract } from "./client_abstract.ts";
-import { packUnencryptedMessage, unpackUnencryptedMessage } from "./utilities/0_message.ts";
+import { ClientAbstract } from "./1_client_abstract.ts";
+import { packUnencryptedMessage, unpackUnencryptedMessage } from "./0_message.ts";
 
 const d = debug("ClientPlain/createAuthKey");
 

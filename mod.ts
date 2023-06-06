@@ -1,5 +1,5 @@
 import { getRandomId } from "./utilities/0_bigint.ts";
-import { checkPassword } from "./client/utilities/0_password.ts";
+import { checkPassword } from "./client/0_password.ts";
 
 export const utils = { checkPassword, getRandomId };
 
@@ -9,8 +9,8 @@ export * as functions from "./tl/3_functions.ts";
 export * from "./tl/5_rpc_result.ts";
 export * from "./tl/6_message.ts";
 export * from "./tl/7_message_container.ts";
-export * from "./client/client_plain.ts";
-export * from "./client/client.ts";
+export * from "./client/2_client_plain.ts";
+export * from "./client/3_client.ts";
 export * from "./storage/0_storage.ts";
 export * from "./storage/1_storage_memory.ts";
 export * from "./storage/1_storage_local_storage.ts";
