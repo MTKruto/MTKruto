@@ -1,5 +1,5 @@
-import { assertEquals } from "../../deps.ts";
-import { concat } from "../../utilities/0_buffer.ts";
+import { assertEquals } from "../deps.ts";
+import { concat } from "../utilities/0_buffer.ts";
 import { h, isGoodModExpFirst, pad, pbkdf2, ph1, ph2, sh } from "./0_password.ts";
 
 Deno.test("h", async () => {

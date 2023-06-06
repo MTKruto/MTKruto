@@ -3,8 +3,8 @@ import { UNREACHABLE } from "../utilities/0_control.ts";
 import { cleanObject } from "../utilities/0_object.ts";
 import { as } from "../tl/1_tl_object.ts";
 import * as types from "../tl/2_types.ts";
+import { getIdColor } from "./!0_id_color.ts";
 import { ChatPhoto, constructChatPhoto } from "./0_chat_photo.ts";
-import { getIdColor } from "./utilities/0_id_color.ts";
 
 export enum ChatType {
   Private = "private",
@@ -96,7 +96,7 @@ export function constructChat(chat: types.User | types.Chat | types.Channel): Ch
     }
 
     if (chat.photo instanceof types.UserProfilePhoto) {
-      chat_.photo = constructChatPhoto(chat.photo);
+      chat_.photo = constructChatPhoto(chat.photo, chat_.id, chat.accessHash ?? 0n);
     }
 
     return cleanObject(chat_);
@@ -111,7 +111,7 @@ export function constructChat(chat: types.User | types.Chat | types.Channel): Ch
     };
 
     if (chat.photo instanceof types.ChatPhoto) {
-      chat_.photo = constructChatPhoto(chat.photo);
+      chat_.photo = constructChatPhoto(chat.photo, chat_.id, 0n);
     }
 
     return cleanObject(chat_);
@@ -158,7 +158,7 @@ export function constructChat(chat: types.User | types.Chat | types.Channel): Ch
     }
 
     if (chat.photo instanceof types.ChatPhoto) {
-      chat_.photo = constructChatPhoto(chat.photo);
+      chat_.photo = constructChatPhoto(chat.photo, chat_.id, chat.accessHash ?? 0n);
     }
 
     return cleanObject(chat_);
