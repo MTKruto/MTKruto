@@ -1,3 +1,4 @@
+// Direct port from Pyrogram
 import { base64Decode as base64Decode_, base64Encode as base64Encode_ } from "../deps.ts";
 import { UNREACHABLE } from "../utilities/0_control.ts";
 import { TLRawWriter } from "../tl/0_tl_raw_writer.ts";
