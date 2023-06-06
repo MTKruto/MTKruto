@@ -97,6 +97,15 @@ export async function constructMessage(
     } else {
       UNREACHABLE();
     }
+  } else if (message_.fromId instanceof types.PeerChannel) {
+    const entity = await getEntity(message_.fromId);
+    if (entity) {
+      message.senderChat = constructChat(entity);
+    } else {
+      UNREACHABLE();
+    }
+  } else {
+    UNREACHABLE();
   }
   if (message_.message) {
     if (message_.media == undefined) {
