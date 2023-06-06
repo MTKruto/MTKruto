@@ -43,8 +43,6 @@ export function constructUser(user_: types.User) {
   if (user_.photo instanceof types.UserProfilePhoto) {
     user.photo = constructChatPhoto(user_.photo, user.id, user_.accessHash ?? 0n);
   }
-  console.log(user_.photo);
-  console.log(user.photo);
-  console.log("u");
+
   return cleanObject(user);
 }

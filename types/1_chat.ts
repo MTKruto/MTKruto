@@ -99,8 +99,6 @@ export function constructChat(chat: types.User | types.Chat | types.Channel): Ch
       chat_.photo = constructChatPhoto(chat.photo, chat_.id, chat.accessHash ?? 0n);
     }
 
-    console.log(chat_.photo);
-
     return cleanObject(chat_);
   } else if (chat instanceof types.Chat) {
     const id = Number(-chat.id);
