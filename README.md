@@ -60,8 +60,15 @@ const request = new functions.Ping({ pingId: utils.getRandomId() });
 console.debug(await client.invoke(request));
 ```
 
+## Acknowledgements
+
+- [GramJS](https://github.com/gram-js/gramjs)
+- [Grm](https://github.com/grmjs/grm)
+- [mtcute](https://github.com/mtcute/mtcute)
+- [Piltover](https://github.com/DavideGalilei/piltover)
+- [Pyrogram](https://github.com/pyrogram/pyrogram)
+- [Telethon](https://github.com/LonamiWebs/telethon)
+
 ## License
 
 MTKruto is made open-source under the GNU Lesser General Public License version 3, or at your option, any later version. You are bound by the terms and conditions of this license. Refer to the [LICENSE](./LICENSE) file for more.
-
-###### MTKruto owes the authors and contributors of [Piltover](https://github.com/DavideGalilei/piltover), [GramJS](https://github.com/gram-js/gramjs), [Grm](https://github.com/grmjs/grm), [mtcute](https://github.com/mtcute/mtcute), and other MTProto libraries and projects.
