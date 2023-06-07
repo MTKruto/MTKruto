@@ -14,6 +14,7 @@ import { MessageContainer } from "../tl/7_message_container.ts";
 import { Storage } from "../storage/0_storage.ts";
 import { StorageMemory } from "../storage/1_storage_memory.ts";
 import { DC, TransportProvider } from "../transport/2_transport_provider.ts";
+import { FileID, FileType, ThumbnailSource } from "../types/!0_file_id.ts";
 import { MessageEntity, messageEntityToTlObject } from "../types/0_message_entity.ts";
 import { ReplyKeyboardRemove, replyKeyboardRemoveToTlObject } from "../types/0_reply_keyboard_remove.ts";
 import { ForceReply, forceReplyToTlObject } from "../types/0_force_reply.ts";
@@ -116,8 +117,9 @@ export class Client extends ClientAbstract {
     public readonly apiId = 0,
     public readonly apiHash = "",
     params?: ClientParams,
+    cdn = false,
   ) {
-    super(params?.transportProvider);
+    super(params?.transportProvider, cdn);
 
     this.parseMode = params?.parseMode ?? ParseMode.None;
 
@@ -1097,5 +1099,60 @@ export class Client extends ClientAbstract {
   async getMessage(chatId: number | string, messageId: number): Promise<Omit<Message, "replyToMessage"> | null> {
     const messages = await this.getMessages(chatId, [messageId]);
     return messages[0] ?? null;
+  }
+
+  private async *downloadInner(location: types.TypeInputFileLocation, dcId?: number) {
+    let client: Client | null = null;
+    if (dcId != undefined && dcId != this.dcId) {
+      const exportedAuth = await this.invoke(new functions.AuthExportAuthorization({ dcId }));
+      client = new Client(new StorageMemory(), this.apiId, this.apiHash, {
+        transportProvider: this.transportProvider,
+        appVersion: this.appVersion,
+        deviceModel: this.deviceModel,
+        langCode: this.langCode,
+        langPack: this.langPack,
+        systemLangCode: this.systemLangCode,
+        systemVersion: this.systemVersion,
+      }, true);
+      let dc = String(dcId);
+      if (this.dcId < 0) {
+        dc += "-test";
+      }
+      await client.setDc(dc as DC);
+      await client.connect();
+      await client.authorize(exportedAuth);
+    }
+
+    const limit = 1024 * 1024;
+    let offset = 0n;
+
+    while (true) {
+      const file = await (client ?? this).invoke(new functions.UploadGetFile({ location, offset, limit }));
+
+      if (file instanceof types.UploadFile) {
+        yield file.bytes;
+        if (file.bytes.length < limit) {
+          break;
+        } else {
+          offset += BigInt(file.bytes.length);
+        }
+      } else {
+        UNREACHABLE();
+      }
+    }
+  }
+
+  async download(fileId_: string) {
+    const fileId = FileID.decode(fileId_);
+    switch (fileId.fileType) {
+      case FileType.ChatPhoto: {
+        const big = fileId.params.thumbnailSource == ThumbnailSource.ChatPhotoBig;
+        const peer = await this.getInputPeer(fileId.params.chatId!);
+        const location = new types.InputPeerPhotoFileLocation({ big: big ? true : undefined, peer, photoId: fileId.params.mediaId! });
+        return this.downloadInner(location);
+      }
+      default:
+        UNREACHABLE();
+    }
   }
 }
