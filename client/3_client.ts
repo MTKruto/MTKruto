@@ -1159,6 +1159,18 @@ export class Client extends ClientAbstract {
         const location = new types.InputPeerPhotoFileLocation({ big: big ? true : undefined, peer, photoId: fileId.params.mediaId! });
         return this.downloadInner(location);
       }
+      case FileType.Photo: {
+        if (fileId.params.mediaId == undefined || fileId.params.accessHash == undefined || fileId.params.fileReference == undefined || fileId.params.thumbnailSize == undefined) {
+          UNREACHABLE();
+        }
+        const location = new types.InputPhotoFileLocation({
+          id: fileId.params.mediaId,
+          accessHash: fileId.params.accessHash,
+          fileReference: fileId.params.fileReference,
+          thumbSize: fileId.params.thumbnailSize,
+        });
+        return this.downloadInner(location);
+      }
       default:
         UNREACHABLE();
     }
