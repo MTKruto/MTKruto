@@ -104,8 +104,6 @@ export async function constructMessage(
     } else {
       UNREACHABLE();
     }
-  } else {
-    UNREACHABLE();
   }
   if (message_.message) {
     if (message_.media == undefined) {
