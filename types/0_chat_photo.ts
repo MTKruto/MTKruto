@@ -24,7 +24,7 @@ export function constructChatPhoto(photo: types.UserProfilePhoto | types.ChatPho
   const smallFileId = new FileID(null, null, FileType.ChatPhoto, photo.dcId, {
     mediaId: photo.photoId,
     thumbnailSource: ThumbnailSource.ChatPhotoSmall,
-    chatId: BigInt(chatId),
+    chatId,
     chatAccessHash,
     accessHash: 0n,
     volumeId: 0n,
@@ -34,7 +34,7 @@ export function constructChatPhoto(photo: types.UserProfilePhoto | types.ChatPho
   const bigFileId = new FileID(null, null, FileType.ChatPhoto, photo.dcId, {
     mediaId: photo.photoId,
     thumbnailSource: ThumbnailSource.ChatPhotoBig,
-    chatId: BigInt(chatId),
+    chatId,
     chatAccessHash,
     accessHash: 0n,
     volumeId: 0n,
