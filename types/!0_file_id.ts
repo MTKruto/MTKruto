@@ -1,16 +1,9 @@
 // Direct port from Pyrogram
-import { base64Decode as base64Decode_, base64Encode as base64Encode_ } from "../deps.ts";
+import { base64DecodeUrlSafe, base64EncodeUrlSafe } from "../utilities/0_base64.ts";
 import { UNREACHABLE } from "../utilities/0_control.ts";
+import { rleDecode, rleEncode } from "../utilities/0_rle.ts";
 import { TLRawWriter } from "../tl/0_tl_raw_writer.ts";
 import { TLRawReader } from "../tl/0_tl_raw_reader.ts";
-
-function base64Encode(data: ArrayBuffer | string) {
-  return base64Encode_(data).replace(/=*$/, "");
-}
-
-function base64Decode(data: string) {
-  return base64Decode_(data + "=".repeat(-data.length % 4));
-}
 
 export enum FileType {
   Thumbnail = 0,
@@ -64,62 +57,13 @@ interface FileIDParams {
 const WEB_LOCATION_FLAG = 1 << 24;
 const FILE_REFERENCE_FLAG = 1 << 25;
 
-function rleEncode(s: Uint8Array) {
-  const r = new Array<number>();
-  let n = 0;
-
-  for (const b of s) {
-    if (!b) {
-      n++;
-    } else {
-      if (n) {
-        r.push(0);
-        r.push(n);
-        n = 0;
-      }
-
-      r.push(b);
-    }
-  }
-
-  if (n) {
-    r.push(0);
-    r.push(n);
-  }
-
-  return new Uint8Array(r);
-}
-
-function rleDecode(s: Uint8Array) {
-  const r = new Array<number>();
-  let z = false;
-
-  for (const b of s) {
-    if (!b) {
-      z = true;
-      continue;
-    }
-
-    if (z) {
-      for (let i = 0; i < b; i++) {
-        r.push(0);
-      }
-      z = false;
-    } else {
-      r.push(b);
-    }
-  }
-
-  return new Uint8Array(r);
-}
-
 export class FileID {
   static MAJOR = 4;
   static MINOR = 30;
-  private readonly major: number;
-  private readonly minor: number;
+  public readonly major: number;
+  public readonly minor: number;
 
-  constructor(major: number | null = FileID.MAJOR, minor: number | null = FileID.MINOR, private readonly fileType: FileType, private readonly dcId: number, private readonly params: FileIDParams) {
+  constructor(major: number | null = FileID.MAJOR, minor: number | null = FileID.MINOR, public readonly fileType: FileType, public readonly dcId: number, public readonly params: FileIDParams) {
     if (major == null) {
       this.major = FileID.MAJOR;
     } else {
@@ -134,7 +78,7 @@ export class FileID {
   }
 
   static decode(fileId: string) {
-    const decoded = rleDecode(base64Decode(fileId));
+    const decoded = rleDecode(base64DecodeUrlSafe(fileId));
 
     const major = decoded[decoded.length - 1];
     let minor: number;
@@ -176,7 +120,7 @@ export class FileID {
       const volumeId = reader.readInt64();
       let thumbnailSource = 0 as ThumbnailSource;
       if (major >= 4) {
-        thumbnailSource = reader.readInt32() as ThumbnailSource;
+        thumbnailSource = reader.readInt32(false) as ThumbnailSource;
       }
 
       switch (thumbnailSource) {
@@ -199,7 +143,7 @@ export class FileID {
           const chatAccessHash = reader.readInt64();
           const localId = reader.readInt32();
 
-          return new FileID(major, minor, fileType, dcId, { fileReference, mediaId, accessHash, volumeId, thumbnailSource, chatId, chatAccessHash, localId });
+          return new FileID(major, minor, fileType, dcId, { fileReference, mediaId, accessHash, volumeId, thumbnailSource, chatId: Number(chatId), chatAccessHash, localId });
         }
         case ThumbnailSource.StickerSetThumbnail: {
           const stickerSetId = reader.readInt64();
@@ -258,7 +202,7 @@ export class FileID {
 
       writer.writeInt64(this.params.volumeId);
 
-      if (major > 4) {
+      if (major >= 4) {
         writer.writeInt32(Number(this.params.thumbnailSource));
       }
 
@@ -311,7 +255,7 @@ export class FileID {
 
     writer.write(new Uint8Array([minor, major]));
 
-    return base64Encode(rleEncode(writer.buffer));
+    return base64EncodeUrlSafe(rleEncode(writer.buffer));
   }
 }
 
@@ -335,7 +279,7 @@ export class FileUniqueID {
   constructor(private readonly fileUniqueType: FileUniqueType, private readonly params: FileUniqueParams) {}
 
   static decode(fileId: string) {
-    const reader = new TLRawReader(rleDecode(base64Decode(fileId)));
+    const reader = new TLRawReader(rleDecode(base64DecodeUrlSafe(fileId)));
     const fileUniqueType = reader.readInt32() as FileUniqueType;
 
     switch (fileUniqueType) {
@@ -391,6 +335,6 @@ export class FileUniqueID {
         UNREACHABLE();
     }
 
-    return base64Encode(rleEncode(writer.buffer));
+    return base64EncodeUrlSafe(rleEncode(writer.buffer));
   }
 }
