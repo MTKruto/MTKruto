@@ -2,7 +2,9 @@ import { debug } from "../deps.ts";
 import { UNREACHABLE } from "../utilities/0_control.ts";
 import { cleanObject } from "../utilities/0_object.ts";
 import { MaybePromise } from "../utilities/0_types.ts";
+import { as } from "../tl/1_tl_object.ts";
 import * as types from "../tl/2_types.ts";
+import { FileID, FileType, FileUniqueID, FileUniqueType, ThumbnailSource } from "./!0_file_id.ts";
 import { constructForceReply, ForceReply } from "./0_force_reply.ts";
 import { constructMessageEntity, MessageEntity } from "./0_message_entity.ts";
 import { constructReplyKeyboardRemove, ReplyKeyboardRemove } from "./0_reply_keyboard_remove.ts";
@@ -10,6 +12,7 @@ import { Chat, constructChat } from "./1_chat.ts";
 import { constructUser, User } from "./1_user.ts";
 import { constructInlineKeyboardMarkup, InlineKeyboardMarkup } from "./2_inline_keyboard_markup.ts";
 import { constructReplyKeyboardMarkup, ReplyKeyboardMarkup } from "./2_reply_keyboard_markup.ts";
+import { Photo } from "./0_photo.ts";
 
 const d = debug("types/Message");
 
@@ -41,6 +44,7 @@ export interface Message {
   hasMediaSpoiler?: boolean;
   views?: number;
   replyMarkup?: InlineKeyboardMarkup | ReplyKeyboardMarkup | ReplyKeyboardRemove | ForceReply;
+  photo?: Photo;
 }
 
 export async function constructMessage(
@@ -195,6 +199,60 @@ export async function constructMessage(
       }
     } else {
       UNREACHABLE();
+    }
+  }
+
+  if (message_.media) {
+    if (message_.media instanceof types.MessageMediaPhoto) {
+      if (message_.media.photo instanceof types.Photo) {
+        const sizes = message_.media.photo.sizes
+          .map((v) => {
+            if (v instanceof types.PhotoSizeProgressive) {
+              return new types.PhotoSize({ type: v.type, w: v.w, h: v.h, size: Math.max(...v.sizes) });
+            } else {
+              return v;
+            }
+          })
+          .map((v) => v[as](types.PhotoSize))
+          .sort((a, b) => a.size - b.size);
+
+        const largest = sizes.slice(-1)[0];
+        const dcId = message_.media.photo.dcId;
+        const mediaId = message_.media.photo.id;
+        const accessHash = message_.media.photo.accessHash;
+        const fileReference = message_.media.photo.fileReference;
+        message.photo = {
+          fileId: new FileID(null, null, FileType.Photo, dcId, {
+            mediaId,
+            accessHash,
+            fileReference,
+            thumbnailSource: ThumbnailSource.Thumbnail,
+            thumbnailFileType: FileType.Photo,
+            thumbnailSize: largest.type,
+            volumeId: 0n,
+            localId: 0,
+          }).encode(),
+          fileUniqueId: new FileUniqueID(FileUniqueType.Document, { mediaId: message_.media.photo.id }).encode(),
+          width: largest.w,
+          height: largest.h,
+          fileSize: largest.size,
+          thumbnails: sizes.slice(0, -1).map((v) => ({
+            fileId: new FileID(null, null, FileType.Photo, dcId, {
+              mediaId,
+              accessHash,
+              fileReference,
+              thumbnailSource: ThumbnailSource.Thumbnail,
+              thumbnailFileType: FileType.Photo,
+              thumbnailSize: v.type,
+              volumeId: 0n,
+              localId: 0,
+            }).encode(),
+            width: v.w,
+            height: v.h,
+            fileSize: v.size,
+          })),
+        };
+      }
     }
   }
 
