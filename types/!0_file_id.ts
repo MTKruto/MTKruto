@@ -55,7 +55,7 @@ interface FileIDParams {
   thumbnailSize?: string;
   secret?: bigint;
   localId?: number;
-  chatId?: bigint;
+  chatId?: number;
   chatAccessHash?: bigint;
   stickerSetId?: bigint;
   stickerSetAccessHash?: bigint;
@@ -195,7 +195,7 @@ export class FileID {
         }
         case ThumbnailSource.ChatPhotoSmall:
         case ThumbnailSource.ChatPhotoBig: {
-          const chatId = reader.readInt64();
+          const chatId = Number(reader.readInt64());
           const chatAccessHash = reader.readInt64();
           const localId = reader.readInt32();
 
@@ -286,7 +286,7 @@ export class FileID {
             UNREACHABLE();
           }
 
-          writer.writeInt64(this.params.chatId);
+          writer.writeInt64(BigInt(this.params.chatId));
           writer.writeInt64(this.params.chatAccessHash);
           writer.writeInt32(this.params.localId);
           break;
