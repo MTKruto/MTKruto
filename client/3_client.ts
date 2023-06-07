@@ -1,4 +1,4 @@
-import { debug, gunzip, Mutex, queue } from "../deps.ts";
+import { debug, gunzip, Mutex, MutexInterface } from "../deps.ts";
 import { ackThreshold, CHANNEL_DIFFERENCE_LIMIT_BOT, CHANNEL_DIFFERENCE_LIMIT_USER, DEFAULT_APP_VERSION, DEFAULT_DEVICE_MODEL, DEFAULT_LANG_CODE, DEFAULT_LANG_PACK, DEFAULT_SYSTEM_LANG_CODE, DEFAULT_SYSTEM_VERSION, LAYER, MAX_CHANNEL_ID, MAX_CHAT_ID, USERNAME_TTL, ZERO_CHANNEL_ID } from "../constants.ts";
 import { bigIntFromBuffer, getRandomBigInt, getRandomId } from "../utilities/0_bigint.ts";
 import { UNREACHABLE } from "../utilities/0_control.ts";
@@ -383,57 +383,6 @@ export class Client extends ClientAbstract {
     }
   }
 
-  private messageProcessQueue = queue(async (message: Message_) => {
-    let body = message.body;
-    if (body instanceof types.GZIPPacked) {
-      body = new TLReader(gunzip(body.packedData)).readObject();
-    }
-    dRecv("received %s", body.constructor.name);
-    if (body instanceof types.Updates || body instanceof types.TypeUpdate) {
-      await this.processUpdates(body);
-    } else if (message.body instanceof RPCResult) {
-      let result = message.body.result;
-      if (result instanceof types.GZIPPacked) {
-        result = new TLReader(gunzip(result.packedData)).readObject();
-      }
-      if (result instanceof types.RPCError) {
-        dRecv("RPCResult: %d %s", result.errorCode, result.errorMessage);
-      } else {
-        dRecv("RPCResult: %s", result.constructor.name);
-      }
-      if (result instanceof types.Updates || result instanceof types.TypeUpdate) {
-        await this.processUpdates(result);
-      } else {
-        await this.processResult(result);
-      }
-      const promise = this.promises.get(message.body.messageId);
-      if (promise) {
-        if (result instanceof types.RPCError) {
-          promise.reject(result);
-        } else {
-          promise.resolve(result);
-        }
-        this.promises.delete(message.body.messageId);
-      }
-    } else if (message.body instanceof types.Pong) {
-      const promise = this.promises.get(message.body.msgId);
-      if (promise) {
-        promise.resolve(message.body);
-        this.promises.delete(message.body.msgId);
-      }
-    } else if (message.body instanceof types.BadMsgNotification || message.body instanceof types.BadServerSalt) {
-      if (message.body instanceof types.BadServerSalt) {
-        this.state.salt = message.body.newServerSalt;
-      }
-      const promise = this.promises.get(message.body.badMsgId);
-      if (promise) {
-        promise.resolve(message.body);
-        this.promises.delete(message.body.badMsgId);
-      }
-    }
-
-    this.toAcknowledge.add(message.id);
-  }, 2);
   private async receiveLoop() {
     if (!this.auth) {
       throw new Error("Not connected");
@@ -471,7 +420,59 @@ export class Client extends ClientAbstract {
       const messages = decrypted instanceof MessageContainer ? decrypted.messages : [decrypted];
 
       for (const message of messages) {
-        this.messageProcessQueue.push(message);
+        let body = message.body;
+        if (body instanceof types.GZIPPacked) {
+          body = new TLReader(gunzip(body.packedData)).readObject();
+        }
+        dRecv("received %s", body.constructor.name);
+        if (body instanceof types.Updates || body instanceof types.TypeUpdate) {
+          this.processUpdates(body);
+        } else if (message.body instanceof RPCResult) {
+          let result = message.body.result;
+          if (result instanceof types.GZIPPacked) {
+            result = new TLReader(gunzip(result.packedData)).readObject();
+          }
+          if (result instanceof types.RPCError) {
+            dRecv("RPCResult: %d %s", result.errorCode, result.errorMessage);
+          } else {
+            dRecv("RPCResult: %s", result.constructor.name);
+          }
+          const messageId = message.body.messageId;
+          const resolvePromise = () => {
+            const promise = this.promises.get(messageId);
+            if (promise) {
+              if (result instanceof types.RPCError) {
+                promise.reject(result);
+              } else {
+                promise.resolve(result);
+              }
+              this.promises.delete(messageId);
+            }
+          };
+          if (result instanceof types.Updates || result instanceof types.TypeUpdate) {
+            this.processUpdates(result).then(resolvePromise);
+          } else {
+            await this.processResult(result);
+            resolvePromise();
+          }
+        } else if (message.body instanceof types.Pong) {
+          const promise = this.promises.get(message.body.msgId);
+          if (promise) {
+            promise.resolve(message.body);
+            this.promises.delete(message.body.msgId);
+          }
+        } else if (message.body instanceof types.BadMsgNotification || message.body instanceof types.BadServerSalt) {
+          if (message.body instanceof types.BadServerSalt) {
+            this.state.salt = message.body.newServerSalt;
+          }
+          const promise = this.promises.get(message.body.badMsgId);
+          if (promise) {
+            promise.resolve(message.body);
+            this.promises.delete(message.body.badMsgId);
+          }
+        }
+
+        this.toAcknowledge.add(message.id);
       }
     }
   }
@@ -591,18 +592,20 @@ export class Client extends ClientAbstract {
         (update instanceof types.UpdateShortChatMessage) ||
         (update instanceof types.UpdateShortSentMessage)
       ) {
-        const localState = await this.getLocalState();
-        if (localState.pts + update.ptsCount > update.pts) {
-          // the update is already applied
-          return;
-        } else if (localState.pts + update.ptsCount < update.pts) {
-          // there is an update gap that needs to be filled
-          throw UPDATE_GAP;
-        }
+        if (update.pts != 0 && update.ptsCount != 0) {
+          const localState = await this.getLocalState();
+          if (localState.pts + update.ptsCount > update.pts) {
+            // the update is already applied
+            return;
+          } else if (localState.pts + update.ptsCount < update.pts) {
+            // there is an update gap that needs to be filled
+            throw UPDATE_GAP;
+          }
 
-        localState.pts = update.pts;
-        d("applied update with pts %d", update.pts);
-        await this.storage.setState(localState);
+          localState.pts = update.pts;
+          d("applied update with pts %d", update.pts);
+          await this.storage.setState(localState);
+        }
       } else if (
         usePts &&
         (
@@ -705,7 +708,9 @@ export class Client extends ClientAbstract {
     }
   }
 
-  private async processUpdates(updates: types.TypeUpdate | types.TypeUpdates) {
+  private updateProcessLock = new Mutex();
+  private async processUpdates(updates: types.TypeUpdate | types.TypeUpdates, release?: MutexInterface.Releaser) {
+    release ??= await this.updateProcessLock.acquire();
     try {
       if (updates instanceof types.TypeUpdates) {
         if (updates instanceof types.Updates) {
@@ -713,7 +718,7 @@ export class Client extends ClientAbstract {
           await this.processUsers(updates.users);
           await this.setUpdateStateDate(updates.date);
           for (const update of updates.updates) {
-            await this.processUpdates(update);
+            await this.processUpdates(update, release);
           }
         } else if (
           updates instanceof types.UpdateShortMessage ||
@@ -729,7 +734,7 @@ export class Client extends ClientAbstract {
           await this.processChats(updates.chats);
           await this.processUsers(updates.users);
           for (const update of updates.updates) {
-            await this.processUpdates(update);
+            await this.processUpdates(update, release);
           }
         }
       } else if (updates instanceof types.TypeUpdate && updates instanceof types.UpdateChannelTooLong) {
@@ -752,6 +757,8 @@ export class Client extends ClientAbstract {
       }
     } catch (err) {
       d("error processing updates: %O", err);
+    } finally {
+      release();
     }
   }
 
@@ -796,6 +803,7 @@ export class Client extends ClientAbstract {
             await this.applyUpdateNoGap(update);
           }
           if (difference instanceof types.UpdatesDifference) {
+            await this.storage.setState(difference.state[as](types.UpdatesState));
             dGap("recovered from update gap");
             break;
           } else if (difference instanceof types.UpdatesDifferenceSlice) {
