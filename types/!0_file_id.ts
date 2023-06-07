@@ -139,7 +139,7 @@ export class FileID {
         }
         case ThumbnailSource.ChatPhotoSmall:
         case ThumbnailSource.ChatPhotoBig: {
-          const chatId = reader.readInt64();
+          const chatId = Number(reader.readInt64());
           const chatAccessHash = reader.readInt64();
           const localId = reader.readInt32();
 
