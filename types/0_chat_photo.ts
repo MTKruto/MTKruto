@@ -48,7 +48,7 @@ export function constructChatPhoto(photo: types.UserProfilePhoto | types.ChatPho
       smallFileUniqueId,
       bigFileId,
       bigFileUniqueId,
-      hasVideo: photo.hasVideo || false
+      hasVideo: photo.hasVideo || false,
     };
   } else {
     return {
@@ -57,7 +57,7 @@ export function constructChatPhoto(photo: types.UserProfilePhoto | types.ChatPho
       smallFileUniqueId,
       bigFileId,
       bigFileUniqueId,
-      hasVideo: photo.hasVideo || false
+      hasVideo: photo.hasVideo || false,
     };
   }
 }
