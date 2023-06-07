@@ -7,6 +7,7 @@ export declare namespace ChatPhoto {
     smallFileUniqueId: string;
     bigFileId: string;
     bigFileUniqueId: string;
+    hasVideo: boolean;
   }
 
   export interface User extends Base {
@@ -47,6 +48,7 @@ export function constructChatPhoto(photo: types.UserProfilePhoto | types.ChatPho
       smallFileUniqueId,
       bigFileId,
       bigFileUniqueId,
+      hasVideo: photo.hasVideo || false,
     };
   } else {
     return {
@@ -55,6 +57,7 @@ export function constructChatPhoto(photo: types.UserProfilePhoto | types.ChatPho
       smallFileUniqueId,
       bigFileId,
       bigFileUniqueId,
+      hasVideo: photo.hasVideo || false,
     };
   }
 }
