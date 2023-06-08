@@ -13,7 +13,7 @@ import { constructReplyKeyboardMarkup, ReplyKeyboardMarkup } from "./2_reply_key
 import { constructPhoto, Photo } from "./1_photo.ts";
 import { Document } from "./1_document.ts";
 import { FileID, FileType, FileUniqueID, FileUniqueType } from "./!0_file_id.ts";
-import { Sticker } from "./2_sticker.ts";
+import { constructSticker, Sticker } from "./2_sticker.ts";
 import { Video } from "./1_video.ts";
 import { Animation, constructAnimation } from "./1_animation.ts";
 import { Voice } from "./0_voice.ts";
@@ -219,11 +219,12 @@ export async function constructMessage(
     } else if (message_.media instanceof types.MessageMediaDocument) {
       const { document } = message_.media;
       if (document instanceof types.Document) {
-        const fileId = new FileID(null, null, FileType.Document, document.dcId, {
-          mediaId: document.id,
-          accessHash: document.accessHash,
-          fileReference: document.fileReference,
-        }).encode();
+        const getFileId = (type: FileType) =>
+          new FileID(null, null, type, document.dcId, {
+            mediaId: document.id,
+            accessHash: document.accessHash,
+            fileReference: document.fileReference,
+          }).encode();
         const fileUniqueId = new FileUniqueID(FileUniqueType.Document, { mediaId: document.id }).encode();
 
         const animated = document.attributes.find((v) => v instanceof types.DocumentAttributeAnimated) as types.DocumentAttributeAnimated | undefined;
@@ -233,14 +234,15 @@ export async function constructMessage(
         const video = document.attributes.find((v) => v instanceof types.DocumentAttributeVideo) as types.DocumentAttributeVideo | undefined;
 
         if (animated) {
-          message.animation = constructAnimation(document, video, fileId, fileUniqueId);
+          message.animation = constructAnimation(document, video, getFileId(FileType.Animation), fileUniqueId);
         } else if (audio) {
-          message.audio = constructAudio(document, audio, fileId, fileUniqueId);
-        } else if (fileName) {
-          //
+          message.audio = constructAudio(document, audio, getFileId(FileType.Audio), fileUniqueId);
         } else if (sticker) {
+          message.sticker = constructSticker(document, getFileId(FileType.Sticker), fileUniqueId);
           //
         } else if (video) {
+          //
+        } else if (fileName) {
           //
         }
       }
