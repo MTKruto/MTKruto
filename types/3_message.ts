@@ -10,16 +10,16 @@ import { Chat, constructChat } from "./1_chat.ts";
 import { constructUser, User } from "./1_user.ts";
 import { constructInlineKeyboardMarkup, InlineKeyboardMarkup } from "./2_inline_keyboard_markup.ts";
 import { constructReplyKeyboardMarkup, ReplyKeyboardMarkup } from "./2_reply_keyboard_markup.ts";
-import { constructPhoto, Photo } from "./1_photo.ts";
-import { Document } from "./1_document.ts";
-import { FileID, FileType, FileUniqueID, FileUniqueType } from "./!0_file_id.ts";
 import { constructSticker, Sticker } from "./2_sticker.ts";
+import { constructPhoto, Photo } from "./1_photo.ts";
+import { constructDocument, Document } from "./1_document.ts";
 import { constructVideo, Video } from "./1_video.ts";
-import { Animation, constructAnimation } from "./1_animation.ts";
-import { Voice } from "./0_voice.ts";
-import { Audio, constructAudio } from "./0_audio.ts";
-import { constructDice, Dice } from "./0_dice.ts";
 import { constructVideoNote, VideoNote } from "./1_video_note.ts";
+import { Animation, constructAnimation } from "./1_animation.ts";
+import { Audio, constructAudio } from "./0_audio.ts";
+import { constructVoice, Voice } from "./0_voice.ts";
+import { constructDice, Dice } from "./0_dice.ts";
+import { FileID, FileType, FileUniqueID, FileUniqueType } from "./!0_file_id.ts";
 
 const d = debug("types/Message");
 
@@ -248,11 +248,17 @@ export async function constructMessage(
             message.video = constructVideo(document, video, getFileId(FileType.Video), fileUniqueId);
           }
         } else if (audio) {
-          message.audio = constructAudio(document, audio, getFileId(FileType.Audio), fileUniqueId);
+          if (audio.voice) {
+            message.voice = constructVoice(document, audio, getFileId(FileType.Voice), fileUniqueId);
+          } else {
+            message.audio = constructAudio(document, audio, getFileId(FileType.Audio), fileUniqueId);
+          }
         } else if (sticker) {
           message.sticker = constructSticker(document, getFileId(FileType.Sticker), fileUniqueId);
         } else if (fileName) {
-          //
+          message.document = constructDocument(document, fileName, getFileId(FileType.Document), fileUniqueId)
+        } else {
+          UNREACHABLE()
         }
       }
     } else {
