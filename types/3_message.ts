@@ -19,6 +19,7 @@ import { Animation, constructAnimation } from "./1_animation.ts";
 import { Voice } from "./0_voice.ts";
 import { Audio, constructAudio } from "./0_audio.ts";
 import { constructDice, Dice } from "./0_dice.ts";
+import { constructVideoNote, VideoNote } from "./1_video_note.ts";
 
 const d = debug("types/Message");
 
@@ -58,6 +59,7 @@ export interface Message {
   voice?: Voice;
   audio?: Audio;
   dice?: Dice;
+  videoNote?: VideoNote;
 }
 
 export async function constructMessage(
@@ -244,7 +246,9 @@ export async function constructMessage(
         } else if (sticker) {
           message.sticker = constructSticker(document, getFileId(FileType.Sticker), fileUniqueId);
         } else if (video) {
-          message.video = constructVideo(document, video, getFileId(FileType.Video), fileUniqueId);
+          if (video.roundMessage) {
+            message.videoNote = constructVideoNote(document, video, getFileId(FileType.VideoNote), fileUniqueId);
+          } else message.video = constructVideo(document, video, getFileId(FileType.Video), fileUniqueId);
         } else if (fileName) {
           //
         }
