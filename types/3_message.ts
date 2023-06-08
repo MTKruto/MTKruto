@@ -66,7 +66,7 @@ export interface Message {
   captionEntities?: MessageEntity[];
   /** Optional. True, if the message media is covered by a spoiler animation */
   hasMediaSpoiler?: boolean;
-  /**  */
+  /** Optional. View count for channel posts */
   views?: number;
   /** Optional. Inline keyboard attached to the message. `login_url` buttons are represented as ordinary `url` buttons. */
   replyMarkup?: InlineKeyboardMarkup | ReplyKeyboardMarkup | ReplyKeyboardRemove | ForceReply;

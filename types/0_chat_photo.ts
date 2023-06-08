@@ -11,6 +11,7 @@ export declare namespace ChatPhoto {
     bigFileId: string;
     /** Unique file identifier of big (640x640) chat photo, which is supposed to be the same over time and for different bots. Can't be used to download or reuse the file. */
     bigFileUniqueId: string;
+    /** True, if an [animated profile picture](https://core.telegram.org/api/files#animated-profile-pictures) is available for the user */
     hasVideo: boolean;
   }
 
