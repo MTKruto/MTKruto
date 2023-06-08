@@ -239,7 +239,6 @@ export async function constructMessage(
           message.audio = constructAudio(document, audio, getFileId(FileType.Audio), fileUniqueId);
         } else if (sticker) {
           message.sticker = constructSticker(document, getFileId(FileType.Sticker), fileUniqueId);
-          //
         } else if (video) {
           message.video = constructVideo(document, video, getFileId(FileType.Video), fileUniqueId);
         } else if (fileName) {
