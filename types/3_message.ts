@@ -18,6 +18,7 @@ import { constructVideo, Video } from "./1_video.ts";
 import { Animation, constructAnimation } from "./1_animation.ts";
 import { Voice } from "./0_voice.ts";
 import { Audio, constructAudio } from "./0_audio.ts";
+import { constructDice, Dice } from "./0_dice.ts";
 
 const d = debug("types/Message");
 
@@ -56,6 +57,7 @@ export interface Message {
   animation?: Animation;
   voice?: Voice;
   audio?: Audio;
+  dice?: Dice;
 }
 
 export async function constructMessage(
@@ -216,6 +218,8 @@ export async function constructMessage(
       if (message_.media.photo instanceof types.Photo) {
         message.photo = constructPhoto(message_.media.photo);
       }
+    } else if (message_.media instanceof types.MessageMediaDice) {
+      message.dice = constructDice(message_.media);
     } else if (message_.media instanceof types.MessageMediaDocument) {
       const { document } = message_.media;
       if (document instanceof types.Document) {
@@ -245,6 +249,9 @@ export async function constructMessage(
           //
         }
       }
+    } else {
+      // not implemented
+      UNREACHABLE();
     }
   }
 
