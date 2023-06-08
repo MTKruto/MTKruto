@@ -11,7 +11,7 @@ export interface Sticker {
   height: number;
   isAnimated: boolean;
   isVideo: boolean;
-  thumbnail?: Thumbnail;
+  thumbnails: Thumbnail[];
   emoji?: string;
   setName?: string;
   premiumAnimation?: File;
@@ -34,7 +34,7 @@ export function constructSticker(document: types.Document, fileId: string, fileU
     height: imageSizeAttributes ? imageSizeAttributes.h : videoAttributes ? videoAttributes.h : 512,
     isAnimated: document.mimeType == "application/x-tgsticker",
     isVideo: document.mimeType == "video/webm",
-    thumbnail: document.thumbs ? constructThumbnail(document.thumbs[0][as](types.PhotoSize), document) : undefined,
+    thumbnails: document.thumbs ? document.thumbs.map((v) => v instanceof types.PhotoSize ? constructThumbnail(v, document) : null).filter((v) => v) as Thumbnail[] : [],
     setName: "TODO",
     premiumAnimation: undefined, // TODO
     maskPosition: stickerAttribute.maskCoords ? constructMaskPosition(stickerAttribute.maskCoords[as](types.MaskCoords)) : undefined,

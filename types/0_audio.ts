@@ -1,4 +1,3 @@
-import { as } from "../tl/1_tl_object.ts";
 import * as types from "../tl/2_types.ts";
 import { constructThumbnail, Thumbnail } from "./0_thumbnail.ts";
 
@@ -10,7 +9,7 @@ export interface Audio {
   title?: string;
   mimeType: string;
   fileSize: number;
-  thumbnail?: Thumbnail;
+  thumbnails: Thumbnail[];
 }
 
 export function constructAudio(document: types.Document, audioAttribute: types.DocumentAttributeAudio | undefined, fileId: string, fileUniqueId: string): Audio {
@@ -22,6 +21,6 @@ export function constructAudio(document: types.Document, audioAttribute: types.D
     title: audioAttribute?.title,
     mimeType: document.mimeType,
     fileSize: Number(document.size),
-    thumbnail: document.thumbs ? constructThumbnail(document.thumbs[0][as](types.PhotoSize), document) : undefined,
+    thumbnails: document.thumbs ? document.thumbs.map((v) => v instanceof types.PhotoSize ? constructThumbnail(v, document) : null).filter((v) => v) as Thumbnail[] : [],
   };
 }
