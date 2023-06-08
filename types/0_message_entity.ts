@@ -24,7 +24,9 @@ export enum MessageEntityType {
 
 export declare namespace MessageEntity {
   export interface Base {
+    /** Offset in [UTF-16 code units](https://core.telegram.org/api/entities#entity-length) to the start of the entity */
     offset: number;
+    /** Length of the entity in [UTF-16 code units](https://core.telegram.org/api/entities#entity-length) */
     length: number;
   }
 
@@ -58,6 +60,7 @@ export declare namespace MessageEntity {
 
   export interface Pre extends Base {
     type: MessageEntityType.Pre;
+    /** Optional. For “pre” only, the programming language of the entity text */
     language: string;
   }
 
@@ -67,11 +70,13 @@ export declare namespace MessageEntity {
 
   export interface TextURL extends Base {
     type: MessageEntityType.TextURL;
+    /** Optional. For “text_link” only, URL that will be opened after user taps on the text */
     url: string;
   }
 
   export interface MentionName extends Base {
     type: MessageEntityType.MentionName;
+    /** Optional. For “text_mention” only, the ID of the mentioned user */
     userId: number;
   }
 
@@ -104,11 +109,13 @@ export declare namespace MessageEntity {
   }
 
   export interface CustomEmoji extends Base {
+    /** Optional. For “custom_emoji” only, unique identifier of the custom emoji */
     type: MessageEntityType.CustomEmoji;
     customEmojiId: string;
   }
 }
 
+/** This object represents one special entity in a text message. For example, hashtags, usernames, URLs, etc. */
 export type MessageEntity =
   | MessageEntity.Mention
   | MessageEntity.Hashtag

@@ -15,60 +15,89 @@ export enum ChatType {
 
 export declare namespace Chat {
   export interface Base {
+    /** Type of chat, can be either “private”, “group”, “supergroup” or “channel” */
     type: ChatType;
+    /** Unique identifier for this chat. This number may have more than 32 significant bits and some programming languages may have difficulty/silent defects in interpreting it. But it has at most 52 significant bits, so a signed 64-bit integer or double-precision float type are safe for storing this identifier. */
     id: number;
     idColor: string;
+    /** Optional. Chat photo. */
     photo?: ChatPhoto;
   }
 
   export interface Private extends Base {
     type: ChatType.Private;
+    /** True, if this user is a bot */
     isBot?: boolean;
+    /** Optional. First name of the other party in a private chat */
     firstName: string;
+    /** Optional. Last name of the other party in a private chat */
     lastName?: string;
+    /** Optional. Username, for private chats, supergroups and channels if available */
     username?: string;
     also?: string[];
+    /** Optional. Chat photo. */
     photo?: ChatPhoto.User;
+    /** True, if the user is marked as scam account */
     isScam: boolean;
+    /** True, if the user is marked as fake account */
     isFake: boolean;
+    /** True, if the account is a support account */
     isSupport: boolean;
+    /** True, if the user is a verified user */
     isVerified: boolean;
+    /** Optional. True, if the user is restricted  */
     isRestricted?: boolean;
+    /** Optional. List of reasons why the user is restricted */
     restrictionReason?: types.RestrictionReason[];
   }
 
   export interface Group extends Base {
     type: ChatType.Group;
+    /** Optional. Title, for supergroups, channels and group chats */
     title: string;
+    /** Optional. Chat photo. */
     photo?: ChatPhoto.Chat;
+    /** True, if the user is creator of the chat */
     isCreator: boolean;
   }
 
   export interface ChannelBase extends Base {
+    /** Optional. Title, for supergroups, channels and group chats */
     title: string;
+    /** Optional. Username, for private chats, supergroups and channels if available */
     username?: string;
     also?: string[];
+    /** Optional. Chat photo. */
     photo?: ChatPhoto.Chat;
+    /** True, if the user is marked as scam account */
     isScam: boolean;
+    /** True, if the user is marked as fake account */
     isFake: boolean;
+    /** True, if the user is a verified user */
     isVerified: boolean;
+    /** Optional. True, if the user is restricted  */
     isRestricted: boolean;
+    /** Optional. List of reasons why the user is restricted */
     restrictionReason?: types.RestrictionReason[];
   }
 
   export interface Channel extends ChannelBase {
     type: ChatType.Channel;
+    /** Optional. Title, for supergroups, channels and group chats */
     title: string;
+    /** Optional. Username, for private chats, supergroups and channels if available */
     username?: string;
     also?: string[];
   }
 
   export interface Supergroup extends ChannelBase {
     type: ChatType.Supergroup;
+    /** Optional. True, if the supergroup chat is a forum (has [topics](https://telegram.org/blog/topics-in-groups-collectible-usernames#topics-in-groups) enabled) */
     isForum: boolean;
   }
 }
 
+/** This object represents a chat. */
 export type Chat = Chat.Private | Chat.Group | Chat.Supergroup | Chat.Channel;
 
 export function constructChat(chat: types.User): Chat.Private;
