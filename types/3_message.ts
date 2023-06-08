@@ -14,7 +14,7 @@ import { constructPhoto, Photo } from "./1_photo.ts";
 import { Document } from "./1_document.ts";
 import { FileID, FileType, FileUniqueID, FileUniqueType } from "./!0_file_id.ts";
 import { constructSticker, Sticker } from "./2_sticker.ts";
-import { Video } from "./1_video.ts";
+import { constructVideo, Video } from "./1_video.ts";
 import { Animation, constructAnimation } from "./1_animation.ts";
 import { Voice } from "./0_voice.ts";
 import { Audio, constructAudio } from "./0_audio.ts";
@@ -241,7 +241,7 @@ export async function constructMessage(
           message.sticker = constructSticker(document, getFileId(FileType.Sticker), fileUniqueId);
           //
         } else if (video) {
-          //
+          message.video = constructVideo(document, video, getFileId(FileType.Video), fileUniqueId);
         } else if (fileName) {
           //
         }
