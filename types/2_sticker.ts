@@ -1,5 +1,6 @@
 import { as } from "../tl/1_tl_object.ts";
 import * as types from "../tl/2_types.ts";
+import { MaybePromise } from "../utilities/0_types.ts";
 import { constructThumbnail, Thumbnail } from "./0_thumbnail.ts";
 import { constructMaskPosition, MaskPosition } from "./1_mask_position.ts";
 
@@ -21,21 +22,25 @@ export interface Sticker {
   fileSize?: number;
 }
 
-export function constructSticker(document: types.Document, fileId: string, fileUniqueId: string): Sticker {
+export type StickerSetNameGetter = (inputStickerSet: types.InputStickerSetID) => MaybePromise<string>;
+
+export async function constructSticker(document: types.Document, fileId: string, fileUniqueId: string, getStickerSetName: StickerSetNameGetter): Promise<Sticker> {
   const stickerAttribute = document.attributes.find((v) => v instanceof types.DocumentAttributeSticker) as types.DocumentAttributeSticker;
-  const imageSizeAttributes = document.attributes.find((v) => v instanceof types.DocumentAttributeImageSize) as types.DocumentAttributeImageSize;
-  const videoAttributes = document.attributes.find((v) => v instanceof types.DocumentAttributeVideo) as types.DocumentAttributeVideo;
+  const imageSizeAttribute = document.attributes.find((v) => v instanceof types.DocumentAttributeImageSize) as types.DocumentAttributeImageSize;
+  const videoAttribute = document.attributes.find((v) => v instanceof types.DocumentAttributeVideo) as types.DocumentAttributeVideo;
+  const setName = await getStickerSetName(stickerAttribute.stickerset[as](types.InputStickerSetID));
 
   return {
     fileId,
     fileUniqueId,
+    // TODO: custom_emoji type?
     type: stickerAttribute.mask ? "mask" : "regular",
-    width: imageSizeAttributes ? imageSizeAttributes.w : videoAttributes ? videoAttributes.w : 512,
-    height: imageSizeAttributes ? imageSizeAttributes.h : videoAttributes ? videoAttributes.h : 512,
+    width: imageSizeAttribute ? imageSizeAttribute.w : videoAttribute ? videoAttribute.w : 512,
+    height: imageSizeAttribute ? imageSizeAttribute.h : videoAttribute ? videoAttribute.h : 512,
     isAnimated: document.mimeType == "application/x-tgsticker",
     isVideo: document.mimeType == "video/webm",
     thumbnails: document.thumbs ? document.thumbs.map((v) => v instanceof types.PhotoSize ? constructThumbnail(v, document) : null).filter((v) => v) as Thumbnail[] : [],
-    setName: "TODO",
+    setName,
     premiumAnimation: undefined, // TODO
     maskPosition: stickerAttribute.maskCoords ? constructMaskPosition(stickerAttribute.maskCoords[as](types.MaskCoords)) : undefined,
     customEmojiId: undefined, // TODO

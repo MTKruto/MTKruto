@@ -10,7 +10,7 @@ import { Chat, constructChat } from "./1_chat.ts";
 import { constructUser, User } from "./1_user.ts";
 import { constructInlineKeyboardMarkup, InlineKeyboardMarkup } from "./2_inline_keyboard_markup.ts";
 import { constructReplyKeyboardMarkup, ReplyKeyboardMarkup } from "./2_reply_keyboard_markup.ts";
-import { constructSticker, Sticker } from "./2_sticker.ts";
+import { constructSticker, Sticker, StickerSetNameGetter } from "./2_sticker.ts";
 import { constructPhoto, Photo } from "./1_photo.ts";
 import { constructDocument, Document } from "./1_document.ts";
 import { constructVideo, Video } from "./1_video.ts";
@@ -66,6 +66,7 @@ export async function constructMessage(
   message_: types.Message,
   getEntity: { (peer: types.PeerUser): MaybePromise<types.User | null>; (peer: types.PeerChat): MaybePromise<types.Chat | null>; (peer: types.PeerChannel): MaybePromise<types.Channel | null> },
   getMessage: { (chatId: number, messageId: number): MaybePromise<Omit<Message, "replyToMessage"> | null> } | null,
+  getStickerSetName: StickerSetNameGetter,
 ) {
   let chat_: Chat | null = null;
   if (message_.peerId instanceof types.PeerUser) {
@@ -254,11 +255,11 @@ export async function constructMessage(
             message.audio = constructAudio(document, audio, getFileId(FileType.Audio), fileUniqueId);
           }
         } else if (sticker) {
-          message.sticker = constructSticker(document, getFileId(FileType.Sticker), fileUniqueId);
+          message.sticker = await constructSticker(document, getFileId(FileType.Sticker), fileUniqueId, getStickerSetName);
         } else if (fileName) {
-          message.document = constructDocument(document, fileName, getFileId(FileType.Document), fileUniqueId)
+          message.document = constructDocument(document, fileName, getFileId(FileType.Document), fileUniqueId);
         } else {
-          UNREACHABLE()
+          UNREACHABLE();
         }
       }
     } else {

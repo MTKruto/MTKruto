@@ -1,5 +1,5 @@
 import { debug, gunzip, Mutex, MutexInterface } from "../deps.ts";
-import { ackThreshold, CHANNEL_DIFFERENCE_LIMIT_BOT, CHANNEL_DIFFERENCE_LIMIT_USER, DEFAULT_APP_VERSION, DEFAULT_DEVICE_MODEL, DEFAULT_LANG_CODE, DEFAULT_LANG_PACK, DEFAULT_SYSTEM_LANG_CODE, DEFAULT_SYSTEM_VERSION, LAYER, MAX_CHANNEL_ID, MAX_CHAT_ID, USERNAME_TTL, ZERO_CHANNEL_ID } from "../constants.ts";
+import { ackThreshold, CHANNEL_DIFFERENCE_LIMIT_BOT, CHANNEL_DIFFERENCE_LIMIT_USER, DEFAULT_APP_VERSION, DEFAULT_DEVICE_MODEL, DEFAULT_LANG_CODE, DEFAULT_LANG_PACK, DEFAULT_SYSTEM_LANG_CODE, DEFAULT_SYSTEM_VERSION, LAYER, MAX_CHANNEL_ID, MAX_CHAT_ID, STICKER_SET_NAME_TTL, USERNAME_TTL, ZERO_CHANNEL_ID } from "../constants.ts";
 import { bigIntFromBuffer, getRandomBigInt, getRandomId } from "../utilities/0_bigint.ts";
 import { UNREACHABLE } from "../utilities/0_control.ts";
 import { sha1 } from "../utilities/0_hash.ts";
@@ -35,6 +35,7 @@ const dRecv = debug("Client/receiveLoop");
 
 const UPDATE_GAP = Symbol();
 export const getEntity = Symbol();
+export const getStickerSetName = Symbol();
 
 export const restartAuth = Symbol();
 
@@ -1065,9 +1066,9 @@ export class Client extends ClientAbstract {
     if (result instanceof types.Updates) {
       for (const update of result.updates) {
         if (update instanceof types.UpdateNewMessage) {
-          return constructMessage(update.message[as](types.Message), this[getEntity].bind(this), this.getMessage.bind(this));
+          return constructMessage(update.message[as](types.Message), this[getEntity].bind(this), this.getMessage.bind(this), this[getStickerSetName].bind(this));
         } else if (update instanceof types.UpdateNewChannelMessage) {
-          return constructMessage(update.message[as](types.Message), this[getEntity].bind(this), this.getMessage.bind(this));
+          return constructMessage(update.message[as](types.Message), this[getEntity].bind(this), this.getMessage.bind(this), this[getStickerSetName].bind(this));
         }
       }
     } else if (result instanceof types.UpdateShortSentMessage || result instanceof types.UpdateShortSentMessage) {
@@ -1099,7 +1100,7 @@ export class Client extends ClientAbstract {
     }
     const messages = new Array<Omit<Message, "replyToMessage">>();
     for (const message_ of messages_.messages) {
-      messages.push(await constructMessage(message_[as](types.Message), this[getEntity].bind(this), null));
+      messages.push(await constructMessage(message_[as](types.Message), this[getEntity].bind(this), null, this[getStickerSetName].bind(this)));
     }
     return messages;
   }
@@ -1173,6 +1174,18 @@ export class Client extends ClientAbstract {
       }
       default:
         UNREACHABLE();
+    }
+  }
+
+  async [getStickerSetName](inputStickerSet: types.InputStickerSetID, hash = 0) {
+    const maybeStickerSetName = await this.storage.getStickerSetName(inputStickerSet.id, inputStickerSet.accessHash);
+    if (maybeStickerSetName != null && Date.now() - maybeStickerSetName[1].getTime() < STICKER_SET_NAME_TTL) {
+      return maybeStickerSetName[0];
+    } else {
+      const stickerSet = await this.invoke(new functions.MessagesGetStickerSet({ stickerset: inputStickerSet, hash }));
+      const name = stickerSet[as](types.StickerSet).shortName;
+      await this.storage.updateStickerSetName(inputStickerSet.id, inputStickerSet.accessHash, name);
+      return name;
     }
   }
 }
