@@ -241,14 +241,16 @@ export async function constructMessage(
 
         if (animated) {
           message.animation = constructAnimation(document, video, getFileId(FileType.Animation), fileUniqueId);
+        } else if (video) {
+          if (video.roundMessage) {
+            message.videoNote = constructVideoNote(document, video, getFileId(FileType.VideoNote), fileUniqueId);
+          } else {
+            message.video = constructVideo(document, video, getFileId(FileType.Video), fileUniqueId);
+          }
         } else if (audio) {
           message.audio = constructAudio(document, audio, getFileId(FileType.Audio), fileUniqueId);
         } else if (sticker) {
           message.sticker = constructSticker(document, getFileId(FileType.Sticker), fileUniqueId);
-        } else if (video) {
-          if (video.roundMessage) {
-            message.videoNote = constructVideoNote(document, video, getFileId(FileType.VideoNote), fileUniqueId);
-          } else message.video = constructVideo(document, video, getFileId(FileType.Video), fileUniqueId);
         } else if (fileName) {
           //
         }
