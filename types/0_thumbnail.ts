@@ -1,6 +1,5 @@
 import * as types from "../tl/2_types.ts";
 
-/** This object represents one size of a photo or a file / sticker thumbnail. */
 export interface Thumbnail {
   /** Identifier for this file, which can be used to download or reuse the file */
   fileId: string;

@@ -109,8 +109,8 @@ export declare namespace MessageEntity {
   }
 
   export interface CustomEmoji extends Base {
-    /** Optional. For “custom_emoji” only, unique identifier of the custom emoji */
     type: MessageEntityType.CustomEmoji;
+    /** Optional. For “custom_emoji” only, unique identifier of the custom emoji */
     customEmojiId: string;
   }
 }

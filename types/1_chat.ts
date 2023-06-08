@@ -37,17 +37,17 @@ export declare namespace Chat {
     also?: string[];
     /** Optional. Chat photo. */
     photo?: ChatPhoto.User;
-    /** True, if the user is marked as scam account */
+    /** True, if the user is a scam user */
     isScam: boolean;
-    /** True, if the user is marked as fake account */
+    /** True, if this user was reported by many users as a fake or scam user: be careful when interacting with them. */
     isFake: boolean;
-    /** True, if the account is a support account */
+    /** True, if the user is an official support user */
     isSupport: boolean;
-    /** True, if the user is a verified user */
+    /** True, if the user is verified */
     isVerified: boolean;
-    /** Optional. True, if the user is restricted  */
+    /** True, if the access to the user must be restricted for the reason specified in `restriction_reason` */
     isRestricted?: boolean;
-    /** Optional. List of reasons why the user is restricted */
+    /** Optional. Contains the reason why access to the user must be restricted. */
     restrictionReason?: types.RestrictionReason[];
   }
 
