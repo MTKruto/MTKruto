@@ -11,6 +11,13 @@ import { constructUser, User } from "./1_user.ts";
 import { constructInlineKeyboardMarkup, InlineKeyboardMarkup } from "./2_inline_keyboard_markup.ts";
 import { constructReplyKeyboardMarkup, ReplyKeyboardMarkup } from "./2_reply_keyboard_markup.ts";
 import { constructPhoto, Photo } from "./1_photo.ts";
+import { Document } from "./1_document.ts";
+import { FileID, FileType, FileUniqueID, FileUniqueType } from "./!0_file_id.ts";
+import { Sticker } from "./2_sticker.ts";
+import { Video } from "./1_video.ts";
+import { Animation, constructAnimation } from "./1_animation.ts";
+import { Voice } from "./0_voice.ts";
+import { Audio, constructAudio } from "./0_audio.ts";
 
 const d = debug("types/Message");
 
@@ -43,6 +50,12 @@ export interface Message {
   views?: number;
   replyMarkup?: InlineKeyboardMarkup | ReplyKeyboardMarkup | ReplyKeyboardRemove | ForceReply;
   photo?: Photo;
+  document?: Document;
+  video?: Video;
+  sticker?: Sticker;
+  animation?: Animation;
+  voice?: Voice;
+  audio?: Audio;
 }
 
 export async function constructMessage(
@@ -140,8 +153,6 @@ export async function constructMessage(
     }
   }
 
-  // message_.
-
   if (getMessage && message_.replyTo instanceof types.MessageReplyHeader) {
     if (message_.replyTo.forumTopic) {
       message.isTopicMessage = true;
@@ -204,6 +215,34 @@ export async function constructMessage(
     if (message_.media instanceof types.MessageMediaPhoto) {
       if (message_.media.photo instanceof types.Photo) {
         message.photo = constructPhoto(message_.media.photo);
+      }
+    } else if (message_.media instanceof types.MessageMediaDocument) {
+      const { document } = message_.media;
+      if (document instanceof types.Document) {
+        const fileId = new FileID(null, null, FileType.Document, document.dcId, {
+          mediaId: document.id,
+          accessHash: document.accessHash,
+          fileReference: document.fileReference,
+        }).encode();
+        const fileUniqueId = new FileUniqueID(FileUniqueType.Document, { mediaId: document.id }).encode();
+
+        const animated = document.attributes.find((v) => v instanceof types.DocumentAttributeAnimated) as types.DocumentAttributeAnimated | undefined;
+        const audio = document.attributes.find((v) => v instanceof types.DocumentAttributeAudio) as types.DocumentAttributeAudio | undefined;
+        const fileName = document.attributes.find((v) => v instanceof types.DocumentAttributeFilename) as types.DocumentAttributeFilename | undefined;
+        const sticker = document.attributes.find((v) => v instanceof types.DocumentAttributeSticker) as types.DocumentAttributeSticker | undefined;
+        const video = document.attributes.find((v) => v instanceof types.DocumentAttributeVideo) as types.DocumentAttributeVideo | undefined;
+
+        if (animated) {
+          message.animation = constructAnimation(document, video, fileId, fileUniqueId);
+        } else if (audio) {
+          message.audio = constructAudio(document, audio, fileId, fileUniqueId);
+        } else if (fileName) {
+          //
+        } else if (sticker) {
+          //
+        } else if (video) {
+          //
+        }
       }
     }
   }
