@@ -616,7 +616,7 @@ export class Client extends ClientAbstract {
           (update instanceof types.UpdateChannelWebPage)
         )
       ) {
-        const channelId = update instanceof types.UpdateNewChannelMessage || update instanceof types.UpdateEditChannelMessage ? update.message[as](types.Message).peerId[as](types.PeerChannel).channelId : update.channelId;
+        const channelId = update instanceof types.UpdateNewChannelMessage || update instanceof types.UpdateEditChannelMessage ? (update.message as types.Message | types.MessageService).peerId[as](types.PeerChannel).channelId : update.channelId;
         let localPts = await this.storage.getChannelPts(channelId);
         if (!localPts) {
           localPts = update.pts - update.ptsCount;
@@ -667,7 +667,7 @@ export class Client extends ClientAbstract {
           (update instanceof types.UpdateEditChannelMessage) ||
           (update instanceof types.UpdateChannelWebPage)
         ) {
-          const channelId = update instanceof types.UpdateNewChannelMessage || update instanceof types.UpdateEditChannelMessage ? update.message[as](types.Message).peerId[as](types.PeerChannel).channelId : update.channelId;
+          const channelId = update instanceof types.UpdateNewChannelMessage || update instanceof types.UpdateEditChannelMessage ? (update.message as types.Message | types.MessageService).peerId[as](types.PeerChannel).channelId : update.channelId;
           await this.recoverChannelUpdateGap(channelId, "applyUpdate");
         } else if (
           (update instanceof types.UpdateNewMessage) ||
@@ -1066,9 +1066,9 @@ export class Client extends ClientAbstract {
     if (result instanceof types.Updates) {
       for (const update of result.updates) {
         if (update instanceof types.UpdateNewMessage) {
-          return constructMessage(update.message[as](types.Message), this[getEntity].bind(this), this.getMessage.bind(this), this[getStickerSetName].bind(this));
+          return constructMessage(update.message, this[getEntity].bind(this), this.getMessage.bind(this), this[getStickerSetName].bind(this));
         } else if (update instanceof types.UpdateNewChannelMessage) {
-          return constructMessage(update.message[as](types.Message), this[getEntity].bind(this), this.getMessage.bind(this), this[getStickerSetName].bind(this));
+          return constructMessage(update.message, this[getEntity].bind(this), this.getMessage.bind(this), this[getStickerSetName].bind(this));
         }
       }
     } else if (result instanceof types.UpdateShortSentMessage || result instanceof types.UpdateShortSentMessage) {
@@ -1100,7 +1100,7 @@ export class Client extends ClientAbstract {
     }
     const messages = new Array<Omit<Message, "replyToMessage">>();
     for (const message_ of messages_.messages) {
-      messages.push(await constructMessage(message_[as](types.Message), this[getEntity].bind(this), null, this[getStickerSetName].bind(this)));
+      messages.push(await constructMessage(message_, this[getEntity].bind(this), null, this[getStickerSetName].bind(this)));
     }
     return messages;
   }
