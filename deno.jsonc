@@ -4,6 +4,6 @@
     "lineWidth": 500
   },
   "compilerOptions": {
-    "lib": ["deno.unstable"]
+    "lib": ["dom", "esnext", "deno.unstable"]
   }
 }

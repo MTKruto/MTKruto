@@ -33,6 +33,10 @@ export declare namespace InlineKeyboardButton {
     switchInlineQueryCurrentChat: string;
   }
 
+  export interface Game extends Base {
+    callbackGame: Record<never, never>;
+  }
+
   export interface Pay extends Base {
     pay: boolean;
   }
@@ -45,6 +49,7 @@ export type InlineKeyboardButton =
   | InlineKeyboardButton.Login
   | InlineKeyboardButton.SwitchInline
   | InlineKeyboardButton.SwitchInlineCurrent
+  | InlineKeyboardButton.Game
   | InlineKeyboardButton.Pay;
 
 export function constructInlineKeyboardButton(button_: types.TypeKeyboardButton): InlineKeyboardButton {
@@ -64,6 +69,8 @@ export function constructInlineKeyboardButton(button_: types.TypeKeyboardButton)
     }
   } else if (button_ instanceof types.KeyboardButtonBuy) {
     return { text: button_.text, pay: true };
+  } else if (button_ instanceof types.KeyboardButtonGame) {
+    return { text: button_.text, callbackGame: {} };
   } else {
     UNREACHABLE();
   }
