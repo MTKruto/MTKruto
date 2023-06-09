@@ -22,6 +22,7 @@ import { constructDice, Dice } from "./0_dice.ts";
 import { FileID, FileType, FileUniqueID, FileUniqueType } from "./!0_file_id.ts";
 import { constructContact, Contact } from "./0_contact.ts";
 import { constructGame, Game } from "./2_game.ts";
+import { constructPoll, Poll } from "./1_poll.ts";
 
 const d = debug("types/Message");
 
@@ -93,6 +94,7 @@ export interface Message {
   videoNote?: VideoNote;
   contact?: Contact;
   game?: Game;
+  poll?: Poll;
 }
 
 interface EntityGetter {
@@ -340,8 +342,9 @@ export async function constructMessage(
       message.contact = constructContact(message_.media);
     } else if (message_.media instanceof types.MessageMediaGame) {
       message.game = constructGame(message_.media);
+    } else if (message_.media instanceof types.MessageMediaPoll) {
+      message.poll = constructPoll(message_.media);
     } else {
-      console.log(message_.media);
       // not implemented
       UNREACHABLE();
     }
