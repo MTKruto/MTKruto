@@ -62,7 +62,7 @@ export interface Message {
   /** Optional. Date the message was last edited in Unix time */
   editDate?: Date;
   /** Optional. True, if the message can't be forwarded */
-  hasProtectedContent: boolean;
+  hasProtectedContent?: boolean;
   /** Optional. The unique identifier of a media message group this message belongs to */
   mediaGroupId?: string;
   /** Optional. Signature of the post author for messages in channels, or the custom title of an anonymous group administrator */
@@ -95,12 +95,73 @@ export interface Message {
   game?: Game;
 }
 
+interface EntityGetter {
+  (peer: types.PeerUser): MaybePromise<types.User | null>;
+  (peer: types.PeerChat): MaybePromise<types.Chat | null>;
+  (peer: types.PeerChannel): MaybePromise<types.Channel | null>;
+}
+
+type MessageGetter = { (chatId: number, messageId: number): MaybePromise<Omit<Message, "replyToMessage"> | null> } | null;
+
+async function getSender(message_: types.Message | types.MessageService, getEntity: EntityGetter) {
+  if (message_.fromId instanceof types.PeerUser) {
+    const entity = await getEntity(message_.fromId);
+    if (entity) {
+      return { from: constructUser(entity) };
+    } else {
+      UNREACHABLE();
+    }
+  } else if (message_.fromId instanceof types.PeerChannel) {
+    const entity = await getEntity(message_.fromId);
+    if (entity) {
+      return { senderChat: constructChat(entity) };
+    } else {
+      UNREACHABLE();
+    }
+  }
+}
+
+async function getReply(message_: types.Message | types.MessageService, chat: Chat, getMessage: MessageGetter) {
+  if (getMessage && message_.replyTo instanceof types.MessageReplyHeader) {
+    let isTopicMessage = false;
+    if (message_.replyTo.forumTopic) {
+      isTopicMessage = true;
+    }
+    const replyToMessage = await getMessage(chat.id, message_.replyTo.replyToMsgId);
+    if (replyToMessage) {
+      return { replyToMessage, threadId: message_.replyTo.replyToTopId, isTopicMessage };
+    } else {
+      d("couldn't get replied message");
+    }
+  } else {
+    return {};
+  }
+}
+
+async function constructServiceMessage(message_: types.MessageService, chat: Chat, getEntity: EntityGetter, getMessage: MessageGetter) {
+  const message: Message = {
+    id: message_.id,
+    chat: chat,
+    date: new Date(message_.date * 1_000),
+    isTopicMessage: false,
+  };
+
+  Object.assign(message, await getReply(message_, chat, getMessage));
+  Object.assign(message, await getSender(message_, getEntity));
+
+  return message;
+}
+
 export async function constructMessage(
-  message_: types.Message,
-  getEntity: { (peer: types.PeerUser): MaybePromise<types.User | null>; (peer: types.PeerChat): MaybePromise<types.Chat | null>; (peer: types.PeerChannel): MaybePromise<types.Channel | null> },
-  getMessage: { (chatId: number, messageId: number): MaybePromise<Omit<Message, "replyToMessage"> | null> } | null,
+  message_: types.TypeMessage,
+  getEntity: EntityGetter,
+  getMessage: MessageGetter,
   getStickerSetName: StickerSetNameGetter,
 ) {
+  if (!(message_ instanceof types.Message) && !(message_ instanceof types.MessageService)) {
+    UNREACHABLE();
+  }
+
   let chat_: Chat | null = null;
   if (message_.peerId instanceof types.PeerUser) {
     const entity = await getEntity(message_.peerId);
@@ -127,13 +188,21 @@ export async function constructMessage(
     UNREACHABLE();
   }
 
+  if (message_ instanceof types.MessageService) {
+    return await constructServiceMessage(message_, chat_, getEntity, getMessage);
+  }
+
   const message: Message = {
     id: message_.id,
     chat: chat_,
+    date: new Date(message_.date * 1_000),
     views: message_.views,
     isTopicMessage: false,
     hasProtectedContent: message_.noforwards || false,
   };
+
+  Object.assign(message, await getReply(message_, chat_, getMessage));
+  Object.assign(message, await getSender(message_, getEntity));
 
   if (message_.media instanceof types.MessageMediaPhoto || message_.media instanceof types.MessageMediaDocument) {
     message.hasMediaSpoiler = message_.media.spoiler || false;
@@ -143,21 +212,6 @@ export async function constructMessage(
     message.mediaGroupId = String(message_.groupedId);
   }
 
-  if (message_.fromId instanceof types.PeerUser) {
-    const entity = await getEntity(message_.fromId);
-    if (entity) {
-      message.from = constructUser(entity);
-    } else {
-      UNREACHABLE();
-    }
-  } else if (message_.fromId instanceof types.PeerChannel) {
-    const entity = await getEntity(message_.fromId);
-    if (entity) {
-      message.senderChat = constructChat(entity);
-    } else {
-      UNREACHABLE();
-    }
-  }
   if (message_.message) {
     if (message_.media == undefined) {
       message.text = message_.message;
@@ -172,7 +226,7 @@ export async function constructMessage(
       message.captionEntities = message_.entities.map(constructMessageEntity).filter((v) => v) as MessageEntity[];
     }
   }
-  message.date = new Date(message_.date * 1_000);
+
   if (message_.editDate != undefined) {
     message.editDate = new Date(message_.editDate * 1_000);
   }
@@ -188,19 +242,6 @@ export async function constructMessage(
       message.replyMarkup = constructForceReply(message_.replyMarkup);
     } else {
       UNREACHABLE();
-    }
-  }
-
-  if (getMessage && message_.replyTo instanceof types.MessageReplyHeader) {
-    if (message_.replyTo.forumTopic) {
-      message.isTopicMessage = true;
-    }
-    const replyToMessage = await getMessage(message.chat.id, message_.replyTo.replyToMsgId);
-    if (replyToMessage) {
-      message.replyToMessage = replyToMessage;
-      message.threadId = message_.replyTo.replyToTopId;
-    } else {
-      d("couldn't get replied message");
     }
   }
 
