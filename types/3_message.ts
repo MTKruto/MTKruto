@@ -21,6 +21,7 @@ import { constructVoice, Voice } from "./0_voice.ts";
 import { constructDice, Dice } from "./0_dice.ts";
 import { FileID, FileType, FileUniqueID, FileUniqueType } from "./!0_file_id.ts";
 import { constructContact, Contact } from "./0_contact.ts";
+import { constructGame, Game } from "./2_game.ts";
 
 const d = debug("types/Message");
 
@@ -62,6 +63,7 @@ export interface Message {
   dice?: Dice;
   videoNote?: VideoNote;
   contact?: Contact;
+  game?: Game;
 }
 
 export async function constructMessage(
@@ -266,6 +268,8 @@ export async function constructMessage(
       }
     } else if (message_.media instanceof types.MessageMediaContact) {
       message.contact = constructContact(message_.media);
+    } else if (message_.media instanceof types.MessageMediaGame) {
+      message.game = constructGame(message_.media);
     } else {
       // not implemented
       UNREACHABLE();
