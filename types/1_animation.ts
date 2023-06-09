@@ -8,11 +8,12 @@ export interface Animation {
   height: number;
   duration: number;
   thumbnails: Thumbnail[];
+  fileName?: string;
   mimeType: string;
   fileSize: number;
 }
 
-export function constructAnimation(document: types.Document, videoAttribute: types.DocumentAttributeVideo | undefined, fileId: string, fileUniqueId: string): Animation {
+export function constructAnimation(document: types.Document, videoAttribute: types.DocumentAttributeVideo | undefined, fileAttribute: types.DocumentAttributeFilename | undefined, fileId: string, fileUniqueId: string): Animation {
   return {
     fileId,
     fileUniqueId,
@@ -20,6 +21,7 @@ export function constructAnimation(document: types.Document, videoAttribute: typ
     height: videoAttribute?.h ?? 0,
     duration: videoAttribute?.duration ?? 0,
     thumbnails: document.thumbs ? document.thumbs.map((v) => v instanceof types.PhotoSize ? constructThumbnail(v, document) : null).filter((v) => v) as Thumbnail[] : [],
+    fileName: fileAttribute?.fileName,
     mimeType: document.mimeType,
     fileSize: Number(document.size),
   };
