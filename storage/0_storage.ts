@@ -7,11 +7,13 @@ import { DC } from "../transport/2_transport_provider.ts";
 import { serialize } from "../tl/1_tl_object.ts";
 import * as types from "../tl/2_types.ts";
 import { TLReader } from "../tl/3_tl_reader.ts";
+import { rleDecode, rleEncode } from "../utilities/0_rle.ts";
 
 export abstract class Storage {
   private _authKeyId: bigint | null = null;
 
   abstract init(): MaybePromise<void>;
+  // TODO: digest keys in prod
   abstract set(key: string, value: string | null): MaybePromise<void>;
   abstract get(key: string): MaybePromise<string | null>;
 
@@ -144,7 +146,7 @@ export abstract class Storage {
   async setEntity(peer: types.User): Promise<void>;
   async setEntity(peer: types.User | types.Channel | types.Chat) {
     const type = peer instanceof types.Channel ? "channel" : peer instanceof types.Chat ? "chat" : peer instanceof types.User ? "user" : UNREACHABLE();
-    await this.set(`${this.peer__}${type}${peer.id}`, base64Encode(peer[serialize]()));
+    await this.set(`${this.peer__}${type}${peer.id}`, base64Encode(rleEncode(peer[serialize]())));
   }
 
   async getEntity(type: "channel", id: bigint): Promise<types.Channel | null>;
@@ -154,7 +156,7 @@ export abstract class Storage {
   async getEntity(type: "channel" | "chat" | "user", id: bigint) {
     const peer_ = await this.get(`${this.peer__}${type}${id}`);
     if (peer_ != null) {
-      const reader = new TLReader(base64Decode(peer_));
+      const reader = new TLReader(rleDecode(base64Decode(peer_)));
       return reader.readObject();
     } else {
       return null;
@@ -181,6 +183,21 @@ export abstract class Storage {
       return accountType as "user" | "bot";
     } else {
       UNREACHABLE();
+    }
+  }
+
+  private readonly stickerSetName__ = "stickerSetName__";
+  async updateStickerSetName(id: bigint, accessHash: bigint, name: string) {
+    await this.set(`${this.stickerSetName__}${id}${accessHash}`, JSON.stringify([name, new Date()]));
+  }
+
+  async getStickerSetName(id: bigint, accessHash: bigint) {
+    const stickerSetName_ = await this.get(`${this.stickerSetName__}${id}${accessHash}`);
+    if (stickerSetName_ != null) {
+      const [name, updatedAt] = JSON.parse(stickerSetName_);
+      return [name, new Date(updatedAt)] as [string, Date];
+    } else {
+      return null;
     }
   }
 }

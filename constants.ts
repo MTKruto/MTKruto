@@ -68,7 +68,7 @@ export const DEFAULT_INITIAL_DC: DC = "2-test";
 
 export const LAYER = 158;
 
-export const DEFAULT_APP_VERSION = "MTKruto 0.0.921";
+export const DEFAULT_APP_VERSION = "MTKruto 0.0.930";
 
 // @ts-ignore: lib
 export const DEFAULT_DEVICE_MODEL = typeof Deno === "undefined" ? typeof navigator === "undefined" ? typeof process === "undefined" ? "Unknown" : process.platform + "-" + process.arch : navigator.userAgent.split(" ")[0] : Deno.build.os + "-" + Deno.build.arch;
@@ -83,6 +83,8 @@ export const DEFAULT_SYSTEM_LANG_CODE = typeof navigator === "undefined" ? "en" 
 export const DEFAULT_SYSTEM_VERSION = typeof navigator === "undefined" ? typeof process === "undefined" ? "Unknown" : "Node.js/" + process.versions.node : navigator.userAgent;
 
 export const USERNAME_TTL = 86_400;
+
+export const STICKER_SET_NAME_TTL = 172_800;
 
 export const MAX_CHAT_ID = 999999999999;
 
