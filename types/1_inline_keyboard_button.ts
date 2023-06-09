@@ -34,7 +34,7 @@ export declare namespace InlineKeyboardButton {
   }
 
   export interface Game extends Base {
-    callbackGame: {};
+    callbackGame: Record<never, never>;
   }
 
   export interface Pay extends Base {
