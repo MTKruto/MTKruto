@@ -26,6 +26,7 @@ export function constructGame(media_: types.MessageMediaGame): Game {
       ? constructAnimation(
         document_,
         document_.attributes.find((v) => v instanceof types.DocumentAttributeVideo) as types.DocumentAttributeVideo,
+        document_.attributes.find((v) => v instanceof types.DocumentAttributeFilename) as types.DocumentAttributeFilename,
         new FileID(null, null, FileType.Animation, document_.dcId, {
           mediaId: document_.id,
           accessHash: document_.accessHash,
