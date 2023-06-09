@@ -10,7 +10,7 @@ import { Chat, constructChat } from "./1_chat.ts";
 import { constructUser, User } from "./1_user.ts";
 import { constructInlineKeyboardMarkup, InlineKeyboardMarkup } from "./2_inline_keyboard_markup.ts";
 import { constructReplyKeyboardMarkup, ReplyKeyboardMarkup } from "./2_reply_keyboard_markup.ts";
-import { constructSticker, Sticker, StickerSetNameGetter } from "./2_sticker.ts";
+import { constructSticker, Sticker, StickerSetNameGetter } from "./1_sticker.ts";
 import { constructPhoto, Photo } from "./1_photo.ts";
 import { constructDocument, Document } from "./1_document.ts";
 import { constructVideo, Video } from "./1_video.ts";

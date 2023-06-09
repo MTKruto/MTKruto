@@ -1,4 +1,4 @@
-import { types } from "../mod.ts";
+import * as types from "../tl/2_types.ts";
 
 export interface MaskPosition {
   point: "forehead" | "eyes" | "mouth" | "chin";

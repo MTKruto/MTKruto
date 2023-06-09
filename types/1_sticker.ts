@@ -2,7 +2,7 @@ import { as } from "../tl/1_tl_object.ts";
 import * as types from "../tl/2_types.ts";
 import { MaybePromise } from "../utilities/0_types.ts";
 import { constructThumbnail, Thumbnail } from "./0_thumbnail.ts";
-import { constructMaskPosition, MaskPosition } from "./1_mask_position.ts";
+import { constructMaskPosition, MaskPosition } from "./0_mask_position.ts";
 
 export interface Sticker {
   fileId: string;
