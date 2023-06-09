@@ -1183,7 +1183,7 @@ export class Client extends ClientAbstract {
       return maybeStickerSetName[0];
     } else {
       const stickerSet = await this.invoke(new functions.MessagesGetStickerSet({ stickerset: inputStickerSet, hash }));
-      const name = stickerSet[as](types.StickerSet).shortName;
+      const name = stickerSet[as](types.MessagesStickerSet).set[as](types.StickerSet).shortName;
       await this.storage.updateStickerSetName(inputStickerSet.id, inputStickerSet.accessHash, name);
       return name;
     }
