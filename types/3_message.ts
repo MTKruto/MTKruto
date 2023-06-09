@@ -25,34 +25,63 @@ import { constructGame, Game } from "./2_game.ts";
 
 const d = debug("types/Message");
 
+/** This object represents a message. */
 export interface Message {
+  /** Unique message identifier inside this chat */
   id: number;
+  /** Optional. Unique identifier of a message thread to which the message belongs; for supergroups only */
   threadId?: number;
+  /** Optional. Sender of the message; empty for messages sent to channels. For backward compatibility, the field contains a fake sender user in non-channel chats, if the message was sent on behalf of a chat. */
   from?: User;
+  /** Optional. Sender of the message, sent on behalf of a chat. For example, the channel itself for channel posts, the supergroup itself for messages from anonymous group administrators, the linked channel for messages automatically forwarded to the discussion group. For backward compatibility, the field from contains a fake sender user in non-channel chats, if the message was sent on behalf of a chat. */
   senderChat?: Chat;
+  /** Date the message was sent in Unix time */
   date?: Date;
+  /** Conversation the message belongs to */
   chat: Chat;
+  /** Optional. For forwarded messages, sender of the original message */
   forwardFrom?: User;
+  /** Optional. For messages forwarded from channels or from anonymous administrators, information about the original sender chat */
   forwardFromChat?: Chat;
+  /** Optional. For messages forwarded from channels, identifier of the original message in the channel */
   forwardId?: number;
+  /** Optional. For forwarded messages that were originally sent in channels or by an anonymous chat administrator, signature of the message sender if present */
   forwardSignature?: string;
+  /** Optional. Sender's name for messages forwarded from users who disallow adding a link to their account in forwarded messages */
   forwardSenderName?: string;
+  /** Optional. For forwarded messages, date the original message was sent in Unix time */
   forwardDate?: Date;
+  /** Optional. True, if the message is sent to a forum topic */
   isTopicMessage: boolean;
+  /** Optional. True, if the message is a channel post that was automatically forwarded to the connected discussion group */
   isAutomaticForward?: boolean;
+  /** Optional. For replies, the original message. Note that the Message object in this field will not contain further reply_to_message fields even if it itself is a reply. */
   replyToMessage?: Omit<Message, "replyToMessage">;
+  /** Optional. Bot through which the message was sent */
   viaBot?: User;
+  /** Optional. Date the message was last edited in Unix time */
   editDate?: Date;
+  /** Optional. True, if the message can't be forwarded */
   hasProtectedContent: boolean;
+  /** Optional. The unique identifier of a media message group this message belongs to */
   mediaGroupId?: string;
+  /** Optional. Signature of the post author for messages in channels, or the custom title of an anonymous group administrator */
   authorSignature?: string;
+  /** Optional. For text messages, the actual UTF-8 text of the message */
   text?: string;
+  /** Optional. For text messages, special entities like usernames, URLs, bot commands, etc. that appear in the text */
   entities?: MessageEntity[];
+  /** Optional. Caption for the animation, audio, document, photo, video or voice */
   caption?: string;
+  /** Optional. For messages with a caption, special entities like usernames, URLs, bot commands, etc. that appear in the caption */
   captionEntities?: MessageEntity[];
+  /** Optional. True, if the message media is covered by a spoiler animation */
   hasMediaSpoiler?: boolean;
+  /** Optional. View count for channel posts */
   views?: number;
+  /** Optional. Inline keyboard attached to the message. `login_url` buttons are represented as ordinary `url` buttons. */
   replyMarkup?: InlineKeyboardMarkup | ReplyKeyboardMarkup | ReplyKeyboardRemove | ForceReply;
+  /** Optional. Message is a photo, available sizes of the photo */
   photo?: Photo;
   document?: Document;
   video?: Video;

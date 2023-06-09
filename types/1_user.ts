@@ -4,21 +4,36 @@ import * as types from "../tl/2_types.ts";
 import { getIdColor } from "./!0_id_color.ts";
 import { ChatPhoto, constructChatPhoto } from "./0_chat_photo.ts";
 
+/** This object represents a Telegram user or bot. */
 export interface User {
+  /** Unique identifier for this user or bot. This number may have more than 32 significant bits and some programming languages may have difficulty/silent defects in interpreting it. But it has at most 52 significant bits, so a 64-bit integer or double-precision float type are safe for storing this identifier. */
   id: number;
   idColor: string;
+  /** True, if this user is a bot */
   isBot: boolean;
+  /** User's or bot's first name */
   firstName: string;
+  /** Optional. User's or bot's last name */
   lastName?: string;
+  /** Optional. User's or bot's username */
   username?: string;
+  /** Optional. Additional usernames */
   also?: string[];
+  /** Optional. Chat photo */
   photo?: ChatPhoto.User;
+  /** Optional. [IETF language tag](https://en.wikipedia.org/wiki/IETF_language_tag) of the user's language */
   languageCode?: string;
+  /** True, if the user is a scam user */
   isScam: boolean;
+  /** True, if this user was reported by many users as a fake or scam user: be careful when interacting with them. */
   isFake: boolean;
+  /** Optional. True, if this user is a Telegram Premium user */
   isPremium: boolean;
+  /** True, if the user is verified */
   isVerified: boolean;
+  /** True, if the user is an official support user */
   isSupport: boolean;
+  /** Optional. True, if this user added the bot to the attachment menu */
   addedToAttachmentMenu: boolean;
 }
 
