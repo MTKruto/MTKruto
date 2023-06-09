@@ -248,7 +248,7 @@ export async function constructMessage(
           if (video.roundMessage) {
             message.videoNote = constructVideoNote(document, video, getFileId(FileType.VideoNote), fileUniqueId);
           } else {
-            message.video = constructVideo(document, video, getFileId(FileType.Video), fileUniqueId);
+            message.video = constructVideo(document, video, fileName?.fileName, getFileId(FileType.Video), fileUniqueId);
           }
         } else if (audio) {
           if (audio.voice) {

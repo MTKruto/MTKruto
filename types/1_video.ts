@@ -1,7 +1,6 @@
 import * as types from "../tl/2_types.ts";
 import { constructThumbnail, Thumbnail } from "./0_thumbnail.ts";
 
-// TODO: separate video note
 export interface Video {
   fileId: string;
   fileUniqueId: string;
@@ -14,7 +13,7 @@ export interface Video {
   fileSize: number;
 }
 
-export function constructVideo(document: types.Document, videoAttribute: types.DocumentAttributeVideo, fileId: string, fileUniqueId: string): Video {
+export function constructVideo(document: types.Document, videoAttribute: types.DocumentAttributeVideo, fileName: string | undefined, fileId: string, fileUniqueId: string): Video {
   return {
     fileId,
     fileUniqueId,
@@ -22,7 +21,7 @@ export function constructVideo(document: types.Document, videoAttribute: types.D
     height: videoAttribute.h,
     duration: videoAttribute.duration,
     thumbnails: document.thumbs ? document.thumbs.map((v) => v instanceof types.PhotoSize ? constructThumbnail(v, document) : null).filter((v) => v) as Thumbnail[] : [],
-    fileName: undefined, // TODO
+    fileName,
     mimeType: document.mimeType,
     fileSize: Number(document.size),
   };
