@@ -3,7 +3,6 @@ import * as types from "../tl/2_types.ts";
 import { cleanObject } from "../utilities/0_object.ts";
 import { FileID, FileType, FileUniqueID, FileUniqueType } from "./!0_file_id.ts";
 import { MessageEntity } from "./0_message_entity.ts";
-import { Thumbnail } from "./0_thumbnail.ts";
 import { Animation, constructAnimation } from "./1_animation.ts";
 import { constructPhoto, Photo } from "./1_photo.ts";
 
