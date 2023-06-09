@@ -243,7 +243,7 @@ export async function constructMessage(
         const video = document.attributes.find((v) => v instanceof types.DocumentAttributeVideo) as types.DocumentAttributeVideo | undefined;
 
         if (animated) {
-          message.animation = constructAnimation(document, video, getFileId(FileType.Animation), fileUniqueId);
+          message.animation = constructAnimation(document, video, fileName, getFileId(FileType.Animation), fileUniqueId);
         } else if (video) {
           if (video.roundMessage) {
             message.videoNote = constructVideoNote(document, video, getFileId(FileType.VideoNote), fileUniqueId);
@@ -267,6 +267,7 @@ export async function constructMessage(
     } else if (message_.media instanceof types.MessageMediaContact) {
       message.contact = constructContact(message_.media);
     } else {
+      console.log(message_.media);
       // not implemented
       UNREACHABLE();
     }
