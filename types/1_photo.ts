@@ -4,10 +4,15 @@ import { FileID, FileType, FileUniqueID, FileUniqueType, ThumbnailSource } from 
 import { constructThumbnail, Thumbnail } from "./0_thumbnail.ts";
 
 export interface Photo {
+  /** Identifier for this file, which can be used to download or reuse the file */
   fileId: string;
+  /** Unique identifier for this file, which is supposed to be the same over time and for different bots. Can't be used to download or reuse the file. */
   fileUniqueId: string;
+  /** Photo width */
   width: number;
+  /** Photo height */
   height: number;
+  /** Optional. File size in bytes */
   fileSize: number;
   thumbnails: Thumbnail[];
 }
