@@ -40,6 +40,7 @@ export async function constructSticker(document: types.Document, fileId: string,
     isAnimated: document.mimeType == "application/x-tgsticker",
     isVideo: document.mimeType == "video/webm",
     thumbnails: document.thumbs ? document.thumbs.map((v) => v instanceof types.PhotoSize ? constructThumbnail(v, document) : null).filter((v) => v) as Thumbnail[] : [],
+    emoji: stickerAttribute.alt || undefined,
     setName,
     premiumAnimation: undefined, // TODO
     maskPosition: stickerAttribute.maskCoords ? constructMaskPosition(stickerAttribute.maskCoords[as](types.MaskCoords)) : undefined,
