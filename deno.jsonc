@@ -2,5 +2,8 @@
   "lock": false,
   "fmt": {
     "lineWidth": 500
+  },
+  "compilerOptions": {
+    "lib": ["deno.unstable"]
   }
 }
