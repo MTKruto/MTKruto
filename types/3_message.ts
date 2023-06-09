@@ -10,7 +10,17 @@ import { Chat, constructChat } from "./1_chat.ts";
 import { constructUser, User } from "./1_user.ts";
 import { constructInlineKeyboardMarkup, InlineKeyboardMarkup } from "./2_inline_keyboard_markup.ts";
 import { constructReplyKeyboardMarkup, ReplyKeyboardMarkup } from "./2_reply_keyboard_markup.ts";
+import { constructSticker, Sticker, StickerSetNameGetter } from "./1_sticker.ts";
 import { constructPhoto, Photo } from "./1_photo.ts";
+import { constructDocument, Document } from "./1_document.ts";
+import { constructVideo, Video } from "./1_video.ts";
+import { constructVideoNote, VideoNote } from "./1_video_note.ts";
+import { Animation, constructAnimation } from "./1_animation.ts";
+import { Audio, constructAudio } from "./0_audio.ts";
+import { constructVoice, Voice } from "./0_voice.ts";
+import { constructDice, Dice } from "./0_dice.ts";
+import { FileID, FileType, FileUniqueID, FileUniqueType } from "./!0_file_id.ts";
+import { constructContact, Contact } from "./0_contact.ts";
 
 const d = debug("types/Message");
 
@@ -43,12 +53,22 @@ export interface Message {
   views?: number;
   replyMarkup?: InlineKeyboardMarkup | ReplyKeyboardMarkup | ReplyKeyboardRemove | ForceReply;
   photo?: Photo;
+  document?: Document;
+  video?: Video;
+  sticker?: Sticker;
+  animation?: Animation;
+  voice?: Voice;
+  audio?: Audio;
+  dice?: Dice;
+  videoNote?: VideoNote;
+  contact?: Contact;
 }
 
 export async function constructMessage(
   message_: types.Message,
   getEntity: { (peer: types.PeerUser): MaybePromise<types.User | null>; (peer: types.PeerChat): MaybePromise<types.Chat | null>; (peer: types.PeerChannel): MaybePromise<types.Channel | null> },
   getMessage: { (chatId: number, messageId: number): MaybePromise<Omit<Message, "replyToMessage"> | null> } | null,
+  getStickerSetName: StickerSetNameGetter,
 ) {
   let chat_: Chat | null = null;
   if (message_.peerId instanceof types.PeerUser) {
@@ -140,8 +160,6 @@ export async function constructMessage(
     }
   }
 
-  // message_.
-
   if (getMessage && message_.replyTo instanceof types.MessageReplyHeader) {
     if (message_.replyTo.forumTopic) {
       message.isTopicMessage = true;
@@ -205,6 +223,52 @@ export async function constructMessage(
       if (message_.media.photo instanceof types.Photo) {
         message.photo = constructPhoto(message_.media.photo);
       }
+    } else if (message_.media instanceof types.MessageMediaDice) {
+      message.dice = constructDice(message_.media);
+    } else if (message_.media instanceof types.MessageMediaDocument) {
+      const { document } = message_.media;
+      if (document instanceof types.Document) {
+        const getFileId = (type: FileType) =>
+          new FileID(null, null, type, document.dcId, {
+            mediaId: document.id,
+            accessHash: document.accessHash,
+            fileReference: document.fileReference,
+          }).encode();
+        const fileUniqueId = new FileUniqueID(FileUniqueType.Document, { mediaId: document.id }).encode();
+
+        const animated = document.attributes.find((v) => v instanceof types.DocumentAttributeAnimated) as types.DocumentAttributeAnimated | undefined;
+        const audio = document.attributes.find((v) => v instanceof types.DocumentAttributeAudio) as types.DocumentAttributeAudio | undefined;
+        const fileName = document.attributes.find((v) => v instanceof types.DocumentAttributeFilename) as types.DocumentAttributeFilename | undefined;
+        const sticker = document.attributes.find((v) => v instanceof types.DocumentAttributeSticker) as types.DocumentAttributeSticker | undefined;
+        const video = document.attributes.find((v) => v instanceof types.DocumentAttributeVideo) as types.DocumentAttributeVideo | undefined;
+
+        if (animated) {
+          message.animation = constructAnimation(document, video, getFileId(FileType.Animation), fileUniqueId);
+        } else if (video) {
+          if (video.roundMessage) {
+            message.videoNote = constructVideoNote(document, video, getFileId(FileType.VideoNote), fileUniqueId);
+          } else {
+            message.video = constructVideo(document, video, fileName?.fileName, getFileId(FileType.Video), fileUniqueId);
+          }
+        } else if (audio) {
+          if (audio.voice) {
+            message.voice = constructVoice(document, audio, getFileId(FileType.Voice), fileUniqueId);
+          } else {
+            message.audio = constructAudio(document, audio, getFileId(FileType.Audio), fileUniqueId);
+          }
+        } else if (sticker) {
+          message.sticker = await constructSticker(document, getFileId(FileType.Sticker), fileUniqueId, getStickerSetName);
+        } else if (fileName) {
+          message.document = constructDocument(document, fileName, getFileId(FileType.Document), fileUniqueId);
+        } else {
+          UNREACHABLE();
+        }
+      }
+    } else if (message_.media instanceof types.MessageMediaContact) {
+      message.contact = constructContact(message_.media);
+    } else {
+      // not implemented
+      UNREACHABLE();
     }
   }
 
