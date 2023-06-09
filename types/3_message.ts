@@ -23,6 +23,7 @@ import { FileID, FileType, FileUniqueID, FileUniqueType } from "./!0_file_id.ts"
 import { constructContact, Contact } from "./0_contact.ts";
 import { constructGame, Game } from "./2_game.ts";
 import { constructVenue, Venue } from "./0_venue.ts";
+import { constructLocation, Location } from "./0_location.ts";
 
 const d = debug("types/Message");
 
@@ -95,6 +96,7 @@ export interface Message {
   contact?: Contact;
   game?: Game;
   venue?: Venue;
+  location?: Location;
 }
 
 interface EntityGetter {
@@ -344,6 +346,8 @@ export async function constructMessage(
       message.game = constructGame(message_.media);
     } else if (message_.media instanceof types.MessageMediaVenue) {
       message.venue = constructVenue(message_.media);
+    } else if (message_.media instanceof types.MessageMediaGeo || message_.media instanceof types.MessageMediaGeoLive) {
+      message.location = constructLocation(message_.media);
     } else {
       console.log(message_.media);
       // not implemented
