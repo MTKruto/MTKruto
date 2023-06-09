@@ -43,18 +43,6 @@ export function constructPhoto(photo: types.Photo): Photo {
     width: largest.w,
     height: largest.h,
     fileSize: largest.size,
-    thumbnails: sizes.slice(0, -1).map((v) => {
-      const fileId = new FileID(null, null, FileType.Photo, dcId, {
-        mediaId,
-        accessHash,
-        fileReference,
-        thumbnailSource: ThumbnailSource.Thumbnail,
-        thumbnailFileType: FileType.Photo,
-        thumbnailSize: v.type,
-        volumeId: 0n,
-        localId: 0,
-      }).encode();
-      return constructThumbnail(v, fileId, fileUniqueId);
-    }),
+    thumbnails: sizes.slice(0, -1).map((v) => constructThumbnail(v, photo)),
   };
 }

@@ -13,6 +13,7 @@ export abstract class Storage {
   private _authKeyId: bigint | null = null;
 
   abstract init(): MaybePromise<void>;
+  // TODO: digest keys in prod
   abstract set(key: string, value: string | null): MaybePromise<void>;
   abstract get(key: string): MaybePromise<string | null>;
 
@@ -182,6 +183,21 @@ export abstract class Storage {
       return accountType as "user" | "bot";
     } else {
       UNREACHABLE();
+    }
+  }
+
+  private readonly stickerSetName__ = "stickerSetName__";
+  async updateStickerSetName(id: bigint, accessHash: bigint, name: string) {
+    await this.set(`${this.stickerSetName__}${id}${accessHash}`, JSON.stringify([name, new Date()]));
+  }
+
+  async getStickerSetName(id: bigint, accessHash: bigint) {
+    const stickerSetName_ = await this.get(`${this.stickerSetName__}${id}${accessHash}`);
+    if (stickerSetName_ != null) {
+      const [name, updatedAt] = JSON.parse(stickerSetName_);
+      return [name, new Date(updatedAt)] as [string, Date];
+    } else {
+      return null;
     }
   }
 }

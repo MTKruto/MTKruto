@@ -84,6 +84,8 @@ export const DEFAULT_SYSTEM_VERSION = typeof navigator === "undefined" ? typeof 
 
 export const USERNAME_TTL = 86_400;
 
+export const STICKER_SET_NAME_TTL = 172_800;
+
 export const MAX_CHAT_ID = 999999999999;
 
 export const MAX_CHANNEL_ID = 997852516352;
