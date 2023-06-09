@@ -17,6 +17,7 @@ export interface User {
   lastName?: string;
   /** Optional. User's or bot's username */
   username?: string;
+  /** Optional. Additional usernames */
   also?: string[];
   /** Optional. Chat photo */
   photo?: ChatPhoto.User;

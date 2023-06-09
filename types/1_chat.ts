@@ -34,6 +34,7 @@ export declare namespace Chat {
     lastName?: string;
     /** Optional. Username, for private chats, supergroups and channels if available */
     username?: string;
+    /** Optional. Additional usernames */
     also?: string[];
     /** Optional. Chat photo. */
     photo?: ChatPhoto.User;
@@ -66,6 +67,7 @@ export declare namespace Chat {
     title: string;
     /** Optional. Username, for private chats, supergroups and channels if available */
     username?: string;
+    /** Optional. Additional usernames */
     also?: string[];
     /** Optional. Chat photo. */
     photo?: ChatPhoto.Chat;
@@ -87,6 +89,7 @@ export declare namespace Chat {
     title: string;
     /** Optional. Username, for private chats, supergroups and channels if available */
     username?: string;
+    /** Optional. Additional usernames */
     also?: string[];
   }
 
