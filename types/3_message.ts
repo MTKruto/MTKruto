@@ -6,7 +6,7 @@ import * as types from "../tl/2_types.ts";
 import { constructForceReply, ForceReply } from "./0_force_reply.ts";
 import { constructMessageEntity, MessageEntity } from "./0_message_entity.ts";
 import { constructReplyKeyboardRemove, ReplyKeyboardRemove } from "./0_reply_keyboard_remove.ts";
-import { Chat, constructChat } from "./1_chat.ts";
+import { Chat, ChatType, constructChat } from "./1_chat.ts";
 import { constructUser, User } from "./1_user.ts";
 import { constructInlineKeyboardMarkup, InlineKeyboardMarkup } from "./2_inline_keyboard_markup.ts";
 import { constructReplyKeyboardMarkup, ReplyKeyboardMarkup } from "./2_reply_keyboard_markup.ts";
@@ -24,6 +24,8 @@ import { constructContact, Contact } from "./0_contact.ts";
 import { constructGame, Game } from "./2_game.ts";
 import { constructVenue, Venue } from "./0_venue.ts";
 import { constructLocation, Location } from "./0_location.ts";
+import { as } from "../mod.ts";
+import { ZERO_CHANNEL_ID } from "../constants.ts";
 
 const d = debug("types/Message");
 
@@ -97,6 +99,24 @@ export interface Message {
   game?: Game;
   venue?: Venue;
   location?: Location;
+  newChatMembers?: User[];
+  leftChatMember?: User;
+  newChatTitle?: string;
+  newChatPhoto?: Photo;
+  deletedChatPhoto?: true;
+  groupCreated?: true;
+  supergroupCreated?: true;
+  channelCreated?: true;
+  // TODO: messageAutoDeleteTimerChanged?: { messageAutoDeleteTime: number };
+  chatMigratedTo?: number;
+  chatMigratedFrom?: number;
+  pinnedMessage?: Message;
+  userShared?: { requestId: number; userId: number };
+  writeAccessAllowed?: { webAppName?: string };
+  forumTopicCreated?: { name: string; iconColor: string; iconCutsomEmojiId?: string };
+  forumTopicEdited?: { name?: string; iconCutsomEmojiId?: string };
+  forumTopicClosed?: Record<never, never>;
+  forumTopicReopened?: Record<never, never>;
 }
 
 interface EntityGetter {
@@ -137,9 +157,9 @@ async function getReply(message_: types.Message | types.MessageService, chat: Ch
     } else {
       d("couldn't get replied message");
     }
-  } else {
-    return {};
   }
+
+  return { replyToMessage: undefined, threadId: undefined, isTopicMessage: undefined };
 }
 
 async function constructServiceMessage(message_: types.MessageService, chat: Chat, getEntity: EntityGetter, getMessage: MessageGetter) {
@@ -150,10 +170,86 @@ async function constructServiceMessage(message_: types.MessageService, chat: Cha
     isTopicMessage: false,
   };
 
-  Object.assign(message, await getReply(message_, chat, getMessage));
   Object.assign(message, await getSender(message_, getEntity));
 
-  return message;
+  if (message_.action instanceof types.MessageActionChatAddUser) {
+    message.newChatMembers = [];
+    for (const user_ of message_.action.users) {
+      const entity = await getEntity(new types.PeerUser({ userId: user_ }));
+      if (entity) {
+        const user = constructUser(entity);
+        message.newChatMembers.push(user);
+      } else {
+        UNREACHABLE();
+      }
+    }
+  } else if (message_.action instanceof types.MessageActionChatDeleteUser) {
+    const entity = await getEntity(new types.PeerUser({ userId: message_.action.userId }));
+    if (entity) {
+      const user = constructUser(entity);
+      message.leftChatMember = user;
+    } else {
+      UNREACHABLE();
+    }
+  } else if (message_.action instanceof types.MessageActionChatEditTitle) {
+    message.newChatTitle = message_.action.title;
+  } else if (message_.action instanceof types.MessageActionChatEditPhoto) {
+    message.newChatPhoto = constructPhoto(message_.action.photo[as](types.Photo));
+  } else if (message_.action instanceof types.MessageActionChatDeletePhoto) {
+    message.deletedChatPhoto = true;
+  } else if (message_.action instanceof types.MessageActionChatCreate) {
+    message.groupCreated = true;
+    message.newChatMembers = [];
+    for (const user_ of message_.action.users) {
+      const entity = await getEntity(new types.PeerUser({ userId: user_ }));
+      if (entity) {
+        const user = constructUser(entity);
+        message.newChatMembers.push(user);
+      } else {
+        UNREACHABLE();
+      }
+    }
+  } else if (message_.action instanceof types.MessageActionChannelCreate) {
+    if (message.chat.type == ChatType.Channel) {
+      message.channelCreated = true;
+    } else if (message.chat.type == ChatType.Supergroup) {
+      message.supergroupCreated = true;
+    } else {
+      UNREACHABLE();
+    }
+  } else if (message_.action instanceof types.MessageActionChatMigrateTo) {
+    message.chatMigratedTo = ZERO_CHANNEL_ID + Number(-message_.action.channelId);
+  } else if (message_.action instanceof types.MessageActionChannelMigrateFrom) {
+    message.chatMigratedFrom = Number(-message_.action.chatId);
+  } else if (message_.action instanceof types.MessageActionPinMessage) {
+    const { replyToMessage } = await getReply(message_, chat, getMessage);
+    message.pinnedMessage = replyToMessage;
+  } else if (message_.action instanceof types.MessageActionRequestedPeer) {
+    const user = message_.action.peer[as](types.PeerUser);
+    message.userShared = { requestId: message_.action.buttonId, userId: Number(user.userId) };
+  } else if (message_.action instanceof types.MessageActionBotAllowed) {
+    const webAppName = message_.action.app ? message_.action.app[as](types.BotApp).title : undefined;
+    message.writeAccessAllowed = { webAppName };
+  } else if (message_.action instanceof types.MessageActionTopicCreate) {
+    message.forumTopicCreated = {
+      name: message_.action.title,
+      iconColor: "#" + message_.action.iconColor.toString(16).padStart(6, "0"),
+      iconCutsomEmojiId: message_.action.iconEmojiId ? String(message_.action.iconEmojiId) : undefined,
+    };
+  } else if (message_.action instanceof types.MessageActionTopicEdit) {
+    if (message_.action.closed) {
+      message.forumTopicClosed = {};
+    } else if (message_.action.title || message_.action.iconEmojiId) {
+      message.forumTopicEdited = {
+        name: message_.action.title,
+        iconCutsomEmojiId: message_.action.iconEmojiId ? String(message_.action.iconEmojiId) : undefined,
+      };
+    } else {
+      message.forumTopicReopened = {};
+    }
+  }
+
+  return cleanObject(message);
 }
 
 export async function constructMessage(
