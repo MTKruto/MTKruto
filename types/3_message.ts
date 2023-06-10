@@ -2,6 +2,7 @@ import { debug } from "../deps.ts";
 import { UNREACHABLE } from "../utilities/0_control.ts";
 import { cleanObject } from "../utilities/0_object.ts";
 import { MaybePromise } from "../utilities/0_types.ts";
+import { as } from "../tl/1_tl_object.ts";
 import * as types from "../tl/2_types.ts";
 import { constructForceReply, ForceReply } from "./0_force_reply.ts";
 import { constructMessageEntity, MessageEntity } from "./0_message_entity.ts";
@@ -24,7 +25,6 @@ import { constructContact, Contact } from "./0_contact.ts";
 import { constructGame, Game } from "./2_game.ts";
 import { constructVenue, Venue } from "./0_venue.ts";
 import { constructLocation, Location } from "./0_location.ts";
-import { as } from "../mod.ts";
 import { ZERO_CHANNEL_ID } from "../constants.ts";
 
 const d = debug("types/Message");
