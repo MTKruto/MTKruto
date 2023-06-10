@@ -117,6 +117,9 @@ export interface Message {
   forumTopicEdited?: { name?: string; iconCutsomEmojiId?: string };
   forumTopicClosed?: Record<never, never>;
   forumTopicReopened?: Record<never, never>;
+  videoChatScheduled?: { startDate: Date };
+  videoChatStarted?: Record<never, never>;
+  videoChatEnded?: { duration: number };
 }
 
 interface EntityGetter {
@@ -246,6 +249,14 @@ async function constructServiceMessage(message_: types.MessageService, chat: Cha
       };
     } else {
       message.forumTopicReopened = {};
+    }
+  } else if (message_.action instanceof types.MessageActionGroupCallScheduled) {
+    message.videoChatScheduled = { startDate: new Date(message_.action.scheduleDate * 1000) };
+  } else if (message_.action instanceof types.MessageActionGroupCall) {
+    if (message_.action.duration) {
+      message.videoChatEnded = { duration: message_.action.duration };
+    } else {
+      message.videoChatStarted = {};
     }
   }
 
