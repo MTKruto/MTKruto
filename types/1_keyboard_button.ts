@@ -191,6 +191,6 @@ export function keyboardButtonToTlObject(button: KeyboardButton) {
   } else if ("webApp" in button) {
     return new types.KeyboardButtonWebView({ text: button.text, url: button.webApp.url });
   } else {
-    UNREACHABLE();
+    return new types.KeyboardButton({ text: button.text });
   }
 }
