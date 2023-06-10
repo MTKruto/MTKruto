@@ -28,7 +28,7 @@ export class ConnectionWebSocket implements Connection {
       }
     };
     this.webSocket.onerror = (err) => {
-      d("WebSocket error: %O", err);
+      d("WebSocket error: %o", err);
     };
   }
 
