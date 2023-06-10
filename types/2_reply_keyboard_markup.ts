@@ -51,5 +51,6 @@ export function replyKeyboardMarkupToTlObject(replyMarkup: ReplyKeyboardMarkup) 
     selective: replyMarkup.selective || undefined,
     persistent: replyMarkup.isPersistent || undefined,
     rows: rows_,
+    placeholder: replyMarkup.inputFieldPlaceholder
   });
 }
