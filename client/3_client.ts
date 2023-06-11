@@ -517,9 +517,10 @@ export class Client extends ClientAbstract {
         this.sessionId,
       ),
     );
-    d("invoked %s", function_.constructor.name);
+    const d_ = () => d("invoked %s", function_.constructor.name);
 
     if (noWait) {
+      d_()
       return;
     }
 
@@ -530,6 +531,7 @@ export class Client extends ClientAbstract {
     if (result instanceof types.BadServerSalt) {
       return await this.invoke(function_) as T;
     } else {
+      d_();
       return result as T;
     }
   }
