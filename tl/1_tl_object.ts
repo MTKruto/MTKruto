@@ -134,6 +134,11 @@ function serializeSingleParam(
       }
       break;
     case "number":
+      //
+      if (value == null) {
+        value = 0;
+      }
+      //
       if (typeof value === "number") {
         writer.writeInt32(value);
       } else {
