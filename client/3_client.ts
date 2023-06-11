@@ -520,7 +520,7 @@ export class Client extends ClientAbstract {
     const d_ = () => d("invoked %s", function_.constructor.name);
 
     if (noWait) {
-      d_()
+      d_();
       return;
     }
 
