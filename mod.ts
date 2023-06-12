@@ -3,7 +3,7 @@ import { checkPassword } from "./client/0_password.ts";
 
 export const utils = { checkPassword, getRandomId };
 
-export { as } from "./tl/1_tl_object.ts";
+export { as, serialize } from "./tl/1_tl_object.ts";
 export * as types from "./tl/2_types.ts";
 export * as functions from "./tl/3_functions.ts";
 export * from "./tl/5_rpc_result.ts";
