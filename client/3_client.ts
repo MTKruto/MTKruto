@@ -36,6 +36,7 @@ const dRecv = debug("Client/receiveLoop");
 const UPDATE_GAP = Symbol();
 export const getEntity = Symbol();
 export const getStickerSetName = Symbol();
+export const handleMigrationError = Symbol();
 
 export const restartAuth = Symbol();
 
@@ -204,6 +205,20 @@ export class Client extends ClientAbstract {
     d("state fetched [%s]", source);
   }
 
+  async [handleMigrationError](err: types.RPCError) {
+    const match = err.errorMessage.match(/MIGRATE_(\d)$/);
+    if (match) {
+      let newDc = match[1];
+      if (Math.abs(this.dcId) >= 10_000) {
+        newDc += "-test";
+      }
+      await this.reconnect(newDc as DC);
+      d("migrated to DC%s", newDc);
+    } else {
+      UNREACHABLE();
+    }
+  }
+
   /**
    * Calls [initConnection](1) and authorizes the client with one of the following:
    *
@@ -358,12 +373,7 @@ export class Client extends ClientAbstract {
       if (err instanceof types.RPCError) {
         const match = err.errorMessage.match(/MIGRATE_(\d)$/);
         if (match) {
-          let newDc = match[1];
-          if (Math.abs(this.dcId) >= 10_000) {
-            newDc += "-test";
-          }
-          await this.reconnect(newDc as DC);
-          d("migrated to DC%s", newDc);
+          await this[handleMigrationError](err);
           if (typeof params === "object" && phoneNumber != null) {
             params = Object.assign({}, params) as AuthorizeUserParams;
             params.phone = phoneNumber;
