@@ -194,7 +194,7 @@ export class Client extends ClientAbstract {
     if (dc == null) {
       await this.storage.setDc(this.transportProvider.initialDc);
     }
-    d("enrypted client connected");
+    d("encrypted client connected");
     this.receiveLoop();
     this.pingLoop();
   }
