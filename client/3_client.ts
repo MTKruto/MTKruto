@@ -793,7 +793,13 @@ export class Client extends ClientAbstract {
         localState = this.updateState;
         await this.storage.setState(localState);
       } else {
-        UNREACHABLE();
+        await this.fetchState("getLocalState");
+        if (this.updateState) {
+          localState = this.updateState;
+          await this.storage.setState(localState);
+        } else {
+          UNREACHABLE();
+        }
       }
     }
     return localState;
