@@ -26,7 +26,6 @@ import { parseHtml } from "./0_html.ts";
 import { checkPassword } from "./0_password.ts";
 import { ClientAbstract } from "./1_client_abstract.ts";
 import { ClientPlain } from "./2_client_plain.ts";
-import { format } from "https://deno.land/std@0.190.0/testing/_format.ts";
 
 const d = debug("Client");
 const dGap = debug("Client/recoverUpdateGap");
