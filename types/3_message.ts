@@ -396,8 +396,6 @@ export async function constructMessage(
       } else {
         UNREACHABLE();
       }
-    } else {
-      UNREACHABLE();
     }
   }
 
