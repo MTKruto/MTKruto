@@ -1241,7 +1241,7 @@ export class Client extends ClientAbstract {
     return await this.updatesToMessages(to, result);
   }
 
-  forwardMessage(from: number | string, to: number | string, messageId: number, params?: ForwardMessagesParams) {
-    return this.forwardMessages(from, to, [messageId], params);
+  async forwardMessage(from: number | string, to: number | string, messageId: number, params?: ForwardMessagesParams) {
+    return await this.forwardMessages(from, to, [messageId], params).then((v) => v[0]);
   }
 }
