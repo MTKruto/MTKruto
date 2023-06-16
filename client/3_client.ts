@@ -26,6 +26,7 @@ import { parseHtml } from "./0_html.ts";
 import { checkPassword } from "./0_password.ts";
 import { ClientAbstract } from "./1_client_abstract.ts";
 import { ClientPlain } from "./2_client_plain.ts";
+import { format } from "https://deno.land/std@0.190.0/testing/_format.ts";
 
 const d = debug("Client");
 const dGap = debug("Client/recoverUpdateGap");
@@ -86,6 +87,15 @@ export interface ClientParams {
    * The system_version parameter to be passed to initConnection when calling `authorize`.
    */
   systemVersion?: string;
+}
+
+export interface ForwardMessagesParams {
+  messageThreadId?: number;
+  disableNotification?: boolean;
+  protectContent?: boolean;
+  sendAs?: number | string;
+  dropSenderName?: boolean;
+  dropCaption?: boolean;
 }
 
 export class Client extends ClientAbstract {
@@ -1007,6 +1017,27 @@ export class Client extends ClientAbstract {
     }
   }
 
+  private async updatesToMessages(chatId: number | string, updates: types.TypeUpdates) {
+    const messages = new Array<Message>();
+
+    if (updates instanceof types.Updates) {
+      for (const update of updates.updates) {
+        if (update instanceof types.UpdateNewMessage) {
+          messages.push(await constructMessage(update.message, this[getEntity].bind(this), this.getMessage.bind(this), this[getStickerSetName].bind(this)));
+        } else if (update instanceof types.UpdateNewChannelMessage) {
+          messages.push(await constructMessage(update.message, this[getEntity].bind(this), this.getMessage.bind(this), this[getStickerSetName].bind(this)));
+        }
+      }
+    } else if (updates instanceof types.UpdateShortSentMessage || updates instanceof types.UpdateShortSentMessage) {
+      const message = await this.getMessage(chatId, updates.id);
+      if (message != null) {
+        messages.push(message);
+      }
+    }
+
+    return messages;
+  }
+
   async sendMessage(
     chatId: number | string,
     text: string,
@@ -1081,22 +1112,7 @@ export class Client extends ClientAbstract {
       }),
     );
 
-    if (result instanceof types.Updates) {
-      for (const update of result.updates) {
-        if (update instanceof types.UpdateNewMessage) {
-          return constructMessage(update.message, this[getEntity].bind(this), this.getMessage.bind(this), this[getStickerSetName].bind(this));
-        } else if (update instanceof types.UpdateNewChannelMessage) {
-          return constructMessage(update.message, this[getEntity].bind(this), this.getMessage.bind(this), this[getStickerSetName].bind(this));
-        }
-      }
-    } else if (result instanceof types.UpdateShortSentMessage || result instanceof types.UpdateShortSentMessage) {
-      const message = await this.getMessage(chatId, result.id);
-      if (message != null) {
-        return message;
-      }
-    }
-
-    UNREACHABLE();
+    return await this.updatesToMessages(chatId, result).then((v) => v[0]);
   }
 
   async getMessages(chatId: number | string, messageIds: number[]) {
@@ -1205,5 +1221,28 @@ export class Client extends ClientAbstract {
       await this.storage.updateStickerSetName(inputStickerSet.id, inputStickerSet.accessHash, name);
       return name;
     }
+  }
+
+  async forwardMessages(from: number | string, to: number | string, messageIds: number[], params?: ForwardMessagesParams) {
+    const result = await this.invoke(
+      new functions.MessagesForwardMessages({
+        fromPeer: await this.getInputPeer(from),
+        toPeer: await this.getInputPeer(to),
+        id: messageIds,
+        randomId: messageIds.map(() => getRandomId()),
+        silent: params?.disableNotification || undefined,
+        topMsgId: params?.messageThreadId,
+        noforwards: params?.disableNotification || undefined,
+        sendAs: params?.sendAs ? await this.getInputPeer(params.sendAs) : undefined,
+        dropAuthor: params?.dropSenderName || undefined,
+        dropMediaCaptions: params?.dropCaption || undefined,
+      }),
+    );
+
+    return await this.updatesToMessages(to, result);
+  }
+
+  forwardMessage(from: number | string, to: number | string, messageId: number, params?: ForwardMessagesParams) {
+    return this.forwardMessages(from, to, [messageId], params);
   }
 }
