@@ -1,4 +1,5 @@
-import { Storage } from "./0_storage.ts";
+import { Storage, StorageKeyPart } from "./0_storage.ts";
+import { fixKey } from "./0_utilities.ts";
 
 const VERSION = 1;
 const KV_OBJECT_STORE = "kv";
@@ -28,7 +29,7 @@ export class StorageIndexedDB extends Storage {
     });
   }
 
-  set(k: string, v: string | null) {
+  set(k: StorageKeyPart[], v: unknown) {
     if (!this.database) {
       throw new Error("Not initialized");
     }
@@ -40,9 +41,9 @@ export class StorageIndexedDB extends Storage {
     let tx: IDBRequest<any>;
 
     if (v == null) {
-      tx = store.delete(k);
+      tx = store.delete(fixKey(k));
     } else {
-      tx = store.put(v, k);
+      tx = store.put(v, fixKey(k));
     }
 
     return new Promise<void>((res, rej) => {
@@ -53,7 +54,7 @@ export class StorageIndexedDB extends Storage {
     });
   }
 
-  get(k: string) {
+  get<T>(k: StorageKeyPart[]) {
     if (!this.database) {
       throw new Error("Not initialized");
     }
@@ -61,8 +62,8 @@ export class StorageIndexedDB extends Storage {
     const tx = this.database
       .transaction(KV_OBJECT_STORE, "readonly")
       .objectStore(KV_OBJECT_STORE)
-      .get(k);
-    return new Promise<string | null>((res, rej) => {
+      .get(fixKey(k));
+    return new Promise<T | null>((res, rej) => {
       tx.onerror = rej;
       tx.onsuccess = () => {
         res(tx.result == undefined ? null : tx.result);
