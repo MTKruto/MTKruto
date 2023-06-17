@@ -3,9 +3,11 @@ import { UNREACHABLE } from "../utilities/0_control.ts";
 import { sha1 } from "../utilities/0_hash.ts";
 import { bigIntFromBuffer } from "../utilities/0_bigint.ts";
 import { DC } from "../transport/2_transport_provider.ts";
-import { serialize } from "../tl/1_tl_object.ts";
+import { serialize, TLObject } from "../tl/1_tl_object.ts";
 import * as types from "../tl/2_types.ts";
 import { TLReader } from "../tl/3_tl_reader.ts";
+import { rleDecode, rleEncode } from "../utilities/0_rle.ts";
+import { ZERO_CHANNEL_ID } from "../constants.ts";
 
 const KPARTS__DC = ["dc"];
 const KPARTS__AUTH_KEY = ["authKey"];
@@ -17,6 +19,8 @@ const KPARTS__CHANNEL_PTS = (v: bigint) => ["channelPts", v];
 const KPARTS__PEER = (type: string, id: bigint) => ["peer", type, id];
 const KPARTS__ACCOUNT_TYPE = ["accountType"];
 const KPARTS__STICKER_SET_NAME = (id: bigint, accessHash: bigint) => ["stickerSetName", id, accessHash];
+const KPARTS_MESSAGE = (chatId: number, messageId: number) => ["messages", chatId, messageId];
+const KPARTS_MESSAGE_REF = (messageId: number) => ["messageRefs", messageId];
 
 export type StorageKeyPart = string | number | bigint | Uint8Array;
 
@@ -87,17 +91,44 @@ export abstract class Storage {
     return this.get<["user" | "channel", bigint, Date]>(KPARTS__USERNAME(username));
   }
 
-  async setState(state: types.UpdatesState) {
-    await this.set(KPARTS__STATE, state[serialize]());
+  async setTlObject(key: readonly StorageKeyPart[], value: TLObject | null) {
+    if (value == null) {
+      await this.set(key, null);
+    } else {
+      await this.set(key, rleEncode(value[serialize]()));
+    }
   }
 
-  async getState() {
-    const state = await this.get<Uint8Array>(KPARTS__STATE);
-    if (state != null) {
-      return new TLReader(state).readObject() as types.UpdatesState;
+  async getTLObject(key: readonly StorageKeyPart[]) {
+    const buffer = await this.get<Uint8Array>(key);
+    if (buffer != null) {
+      return new TLReader(rleDecode(buffer)).readObject();
     } else {
       return null;
     }
+  }
+
+  async setState(state: types.UpdatesState) {
+    await this.setTlObject(KPARTS__STATE, state);
+  }
+
+  async getState() {
+    return await this.getTLObject(KPARTS__STATE) as types.UpdatesState | null;
+  }
+
+  async setMessage(chatId: number, messageId: number, message: types.TypeMessage | null) {
+    if (chatId > ZERO_CHANNEL_ID) {
+      await this.set(KPARTS_MESSAGE_REF(messageId), message == null ? null : chatId);
+    }
+    await this.setTlObject(KPARTS_MESSAGE(chatId, messageId), message);
+  }
+
+  getMessageChat(messageId: number) {
+    return this.get<number>(KPARTS_MESSAGE_REF(messageId));
+  }
+
+  async getMessage(chatId: number, messageId: number) {
+    return await this.getTLObject(KPARTS_MESSAGE(chatId, messageId)) as types.TypeMessage | null;
   }
 
   async setChannelPts(channelId: bigint, pts: number) {

@@ -26,6 +26,7 @@ import { parseHtml } from "./0_html.ts";
 import { checkPassword } from "./0_password.ts";
 import { ClientAbstract } from "./1_client_abstract.ts";
 import { ClientPlain } from "./2_client_plain.ts";
+import { getChannelChatId, peerToChatId } from "./0_utilities.ts";
 
 const d = debug("Client");
 const dGap = debug("Client/recoverUpdateGap");
@@ -653,6 +654,23 @@ export class Client extends ClientAbstract {
         await this.storage.setChannelPts(channelId, update.pts);
       }
 
+      if (update instanceof types.UpdateNewMessage || update instanceof types.UpdateNewMessage || update instanceof types.UpdateNewChannelMessage || update instanceof types.UpdateNewChannelMessage) {
+        if (update.message instanceof types.Message || update.message instanceof types.MessageService) {
+          await this.storage.setMessage(peerToChatId(update.message.peerId), update.message.id, update.message);
+        }
+      } else if (update instanceof types.UpdateDeleteChannelMessages) {
+        for (const message of update.messages) {
+          await this.storage.setMessage(getChannelChatId(update.channelId), message, null);
+        }
+      } else if (update instanceof types.UpdateDeleteMessages) {
+        for (const message of update.messages) {
+          const chatId = await this.storage.getMessageChat(message);
+          if (chatId) {
+            await this.storage.setMessage(chatId, message, null);
+          }
+        }
+      }
+
       // apply update (call listeners)
       this.updateHandler?.(this, update);
     } finally {
@@ -1014,6 +1032,14 @@ export class Client extends ClientAbstract {
       await this.processChats(result.chats);
       await this.processUsers(result.users);
     }
+
+    if (result instanceof types.MessagesMessages) {
+      for (const message of result.messages) {
+        if (message instanceof types.Message || message instanceof types.MessageService) {
+          await this.storage.setMessage(peerToChatId(message.peerId), message.id, message);
+        }
+      }
+    }
   }
 
   private async updatesToMessages(chatId: number | string, updates: types.TypeUpdates) {
@@ -1114,25 +1140,39 @@ export class Client extends ClientAbstract {
     return await this.updatesToMessages(chatId, result).then((v) => v[0]);
   }
 
-  async getMessages(chatId: number | string, messageIds: number[]) {
-    const peer = await this.getInputPeer(chatId);
-    let messages_: types.MessagesMessages | types.MessagesChannelMessages;
-    if (peer instanceof types.InputPeerChannel) {
-      messages_ = await this.invoke(
-        new functions.ChannelsGetMessages({
-          channel: new types.InputChannel({ channelId: peer.channelId, accessHash: peer.accessHash }),
-          id: messageIds.map((v) => new types.InputMessageID({ id: v })),
-        }),
-      ).then((v) => v[as](types.MessagesChannelMessages));
-    } else {
-      messages_ = await this.invoke(
-        new functions.MessagesGetMessages({
-          id: messageIds.map((v) => new types.InputMessageID({ id: v })),
-        }),
-      ).then((v) => v[as](types.MessagesMessages));
+  async getMessages(chatId_: number | string, messageIds: number[]) {
+    const peer = await this.getInputPeer(chatId_);
+    let messages_ = new Array<types.TypeMessage>();
+    const chatId = peerToChatId(peer);
+    let shouldFetch = false;
+    for (const messageId of messageIds) {
+      const message = await this.storage.getMessage(chatId, messageId);
+      if (message == null) {
+        messages_ = [];
+        shouldFetch = true;
+        break;
+      } else {
+        messages_.push(message);
+      }
+    }
+    if (shouldFetch) {
+      if (peer instanceof types.InputPeerChannel) {
+        messages_ = await this.invoke(
+          new functions.ChannelsGetMessages({
+            channel: new types.InputChannel({ channelId: peer.channelId, accessHash: peer.accessHash }),
+            id: messageIds.map((v) => new types.InputMessageID({ id: v })),
+          }),
+        ).then((v) => v[as](types.MessagesChannelMessages).messages);
+      } else {
+        messages_ = await this.invoke(
+          new functions.MessagesGetMessages({
+            id: messageIds.map((v) => new types.InputMessageID({ id: v })),
+          }),
+        ).then((v) => v[as](types.MessagesMessages).messages);
+      }
     }
     const messages = new Array<Omit<Message, "replyToMessage">>();
-    for (const message_ of messages_.messages) {
+    for (const message_ of messages_) {
       messages.push(await constructMessage(message_, this[getEntity].bind(this), null, this[getStickerSetName].bind(this)));
     }
     return messages;
