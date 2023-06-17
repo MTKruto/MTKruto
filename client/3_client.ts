@@ -469,7 +469,7 @@ export class Client extends ClientAbstract {
               this.promises.delete(messageId);
             }
           };
-          if (result instanceof types.Updates || result instanceof types.TypeUpdate) {
+          if (result instanceof types.TypeUpdates || result instanceof types.TypeUpdate) {
             this.processUpdates(result).then(resolvePromise);
           } else {
             await this.processResult(result);
