@@ -1,4 +1,4 @@
-import { Storage } from "./0_storage.ts";
+import { Storage, StorageKeyPart } from "./0_storage.ts";
 
 export class StorageDenoKV extends Storage implements Storage {
   kv: Deno.Kv | null = null;
@@ -11,28 +11,28 @@ export class StorageDenoKV extends Storage implements Storage {
     this.kv = await Deno.openKv(this.path);
   }
 
-  async get(key: string) {
+  async get<T>(key: readonly StorageKeyPart[]) {
     if (!this.kv) {
       throw new Error("Not initialized");
     }
 
-    const maybeValue = await this.kv.get([key]);
+    const maybeValue = await this.kv.get(key);
     if (maybeValue.versionstamp == null) {
       return null;
     } else {
-      return maybeValue.value as string;
+      return maybeValue.value as T;
     }
   }
 
-  async set(key: string, value: string | null) {
+  async set(key: readonly StorageKeyPart[], value: unknown) {
     if (!this.kv) {
       throw new Error("Not initialized");
     }
 
     if (value == null) {
-      await this.kv.delete([key]);
+      await this.kv.delete(key);
     } else {
-      await this.kv.set([key], value);
+      await this.kv.set(key, value);
     }
   }
 }
