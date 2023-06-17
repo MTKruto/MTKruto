@@ -454,7 +454,6 @@ export async function constructMessage(
     } else if (message_.media instanceof types.MessageMediaGeo || message_.media instanceof types.MessageMediaGeoLive) {
       message.location = constructLocation(message_.media);
     } else {
-      console.log(message_.media);
       // not implemented
       UNREACHABLE();
     }
