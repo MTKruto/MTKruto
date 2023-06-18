@@ -23,6 +23,7 @@ import { constructDice, Dice } from "./0_dice.ts";
 import { FileID, FileType, FileUniqueID, FileUniqueType } from "./!0_file_id.ts";
 import { constructContact, Contact } from "./0_contact.ts";
 import { constructGame, Game } from "./2_game.ts";
+import { constructPoll, Poll } from "./1_poll.ts";
 import { constructVenue, Venue } from "./0_venue.ts";
 import { constructLocation, Location } from "./0_location.ts";
 import { ZERO_CHANNEL_ID } from "../constants.ts";
@@ -97,6 +98,7 @@ export interface Message {
   videoNote?: VideoNote;
   contact?: Contact;
   game?: Game;
+  poll?: Poll;
   venue?: Venue;
   location?: Location;
   newChatMembers?: User[];
@@ -449,6 +451,8 @@ export async function constructMessage(
       message.contact = constructContact(message_.media);
     } else if (message_.media instanceof types.MessageMediaGame) {
       message.game = constructGame(message_.media);
+    } else if (message_.media instanceof types.MessageMediaPoll) {
+      message.poll = constructPoll(message_.media);
     } else if (message_.media instanceof types.MessageMediaVenue) {
       message.venue = constructVenue(message_.media);
     } else if (message_.media instanceof types.MessageMediaGeo || message_.media instanceof types.MessageMediaGeoLive) {
