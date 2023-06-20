@@ -10,7 +10,7 @@ export interface Thumbnail {
   width: number;
   /** Photo height */
   height: number;
-  /** Optional. File size in bytes */
+  /** File size in bytes */
   fileSize: number;
 }
 

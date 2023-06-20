@@ -18,13 +18,13 @@ export interface ChatAdministratorRights {
   canChangeInfo: boolean;
   /** True, if the user is allowed to invite new users to the chat */
   canInviteUsers: boolean;
-  /** Optional. True, if the administrator can post in the channel; channels only */
+  /** True, if the administrator can post in the channel; channels only */
   canPostMessages?: boolean;
-  /** Optional. True, if the administrator can edit messages of other users and can pin messages; channels only */
+  /** True, if the administrator can edit messages of other users and can pin messages; channels only */
   canEditMessages?: boolean;
-  /** Optional. True, if the user is allowed to pin messages; groups and supergroups only */
+  /** True, if the user is allowed to pin messages; groups and supergroups only */
   canPinMessages?: boolean;
-  /** Optional. True, if the user is allowed to create, rename, close, and reopen forum topics; supergroups only */
+  /** True, if the user is allowed to create, rename, close, and reopen forum topics; supergroups only */
   canManageTopics?: boolean;
 }
 
