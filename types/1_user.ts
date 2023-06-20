@@ -13,27 +13,27 @@ export interface User {
   isBot: boolean;
   /** User's or bot's first name */
   firstName: string;
-  /** Optional. User's or bot's last name */
+  /** User's or bot's last name */
   lastName?: string;
-  /** Optional. User's or bot's username */
+  /** User's or bot's username */
   username?: string;
-  /** Optional. Additional usernames */
+  /** Additional usernames */
   also?: string[];
-  /** Optional. Chat photo */
+  /** Chat photo */
   photo?: ChatPhoto.User;
-  /** Optional. [IETF language tag](https://en.wikipedia.org/wiki/IETF_language_tag) of the user's language */
+  /** [IETF language tag](https://en.wikipedia.org/wiki/IETF_language_tag) of the user's language */
   languageCode?: string;
   /** True, if the user is a scam user */
   isScam: boolean;
   /** True, if this user was reported by many users as a fake or scam user: be careful when interacting with them. */
   isFake: boolean;
-  /** Optional. True, if this user is a Telegram Premium user */
+  /** True, if this user is a Telegram Premium user */
   isPremium: boolean;
   /** True, if the user is verified */
   isVerified: boolean;
   /** True, if the user is an official support user */
   isSupport: boolean;
-  /** Optional. True, if this user added the bot to the attachment menu */
+  /** True, if this user added the bot to the attachment menu */
   addedToAttachmentMenu: boolean;
 }
 
