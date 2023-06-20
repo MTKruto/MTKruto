@@ -436,6 +436,7 @@ export class Client extends ClientAbstract {
         );
       } catch (err) {
         dRecv("failed to decrypt message: %o", err);
+        this.recoverUpdateGap("decryption");
         continue;
       }
       const messages = decrypted instanceof MessageContainer ? decrypted.messages : [decrypted];
