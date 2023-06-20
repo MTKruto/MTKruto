@@ -5,7 +5,7 @@ import * as types from "../tl/2_types.ts";
 export interface ReplyKeyboardRemove {
   /** Requests clients to remove the custom keyboard (user will not be able to summon this keyboard; if you want to hide the keyboard from sight but keep it accessible, use _one_time_keyboard_ in `ReplyKeyboardMarkup`) */
   removeKeyboard: true;
-  /** Optional. Use this parameter if you want to remove the keyboard for specific users only. Targets: 1) users that are @mentioned in the text of the `Message` object; 2) if the bot's message is a reply (has _reply_to_message_id_), sender of the original message. */
+  /** Use this parameter if you want to remove the keyboard for specific users only. Targets: 1) users that are @mentioned in the text of the `Message` object; 2) if the bot's message is a reply (has _reply_to_message_id_), sender of the original message. */
   selective?: boolean;
 }
 
