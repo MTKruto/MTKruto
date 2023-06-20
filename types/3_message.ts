@@ -87,38 +87,70 @@ export interface Message {
   replyMarkup?: InlineKeyboardMarkup | ReplyKeyboardMarkup | ReplyKeyboardRemove | ForceReply;
   /** Message is a photo, available sizes of the photo */
   photo?: Photo;
+  /** Message is a general file, information about the file */
   document?: Document;
+  /** Message is a video, information about the video */
   video?: Video;
+  /** Message is a sticker, information about the sticker */
   sticker?: Sticker;
+  /** Message is an animation, information about the animation. For backward compatibility, when this field is set, the document field will also be set */
   animation?: Animation;
+  /** Message is a voice message, information about the file */
   voice?: Voice;
+  /** Message is an audio file, information about the file */
   audio?: Audio;
+  /** Message is a dice with random value */
   dice?: Dice;
+  /** Message is a [video note](https://telegram.org/blog/video-messages-and-telescope), information about the video message */
   videoNote?: VideoNote;
+  /** Message is a shared contact, information about the contact */
   contact?: Contact;
+  /** Message is a game, information about the game. */
   game?: Game;
+  /** Message is a venue, information about the venue. For backward compatibility, when this field is set, the location field will also be set */
   venue?: Venue;
+  /** Message is a shared location, information about the location */
   location?: Location;
+  /** New members that were added to the group or supergroup and information about them (the bot itself may be one of these members) */
   newChatMembers?: User[];
+  /** A member was removed from the group, information about them (this member may be the bot itself) */
   leftChatMember?: User;
+  /** A chat title was changed to this value */
   newChatTitle?: string;
+  /** A chat photo was change to this value */
   newChatPhoto?: Photo;
+  /** Service message: the chat photo was deleted */
   deletedChatPhoto?: true;
+  /** Service message: the group has been created */
   groupCreated?: true;
+  /** Service message: the supergroup has been created. This field can't be received in a message coming through updates, because bot can't be a member of a supergroup when it is created. It can only be found in reply_to_message if someone replies to a very first message in a directly created supergroup. */
   supergroupCreated?: true;
+  /** Service message: the channel has been created. This field can't be received in a message coming through updates, because bot can't be a member of a channel when it is created. It can only be found in reply_to_message if someone replies to a very first message in a channel. */
   channelCreated?: true;
   // TODO: messageAutoDeleteTimerChanged?: { messageAutoDeleteTime: number };
+  /** The group has been migrated to a supergroup with the specified identifier. This number may have more than 32 significant bits and some programming languages may have difficulty/silent defects in interpreting it. But it has at most 52 significant bits, so a signed 64-bit integer or double-precision float type are safe for storing this identifier. */
   chatMigratedTo?: number;
+  /** The supergroup has been migrated from a group with the specified identifier. This number may have more than 32 significant bits and some programming languages may have difficulty/silent defects in interpreting it. But it has at most 52 significant bits, so a signed 64-bit integer or double-precision float type are safe for storing this identifier. */
   chatMigratedFrom?: number;
+  /** Specified message was pinned. Note that the Message object in this field will not contain further reply_to_message fields even if it is itself a reply. */
   pinnedMessage?: Message;
+  /** Service message: a user was shared with the bot */
   userShared?: { requestId: number; userId: number };
+  /** Service message: the user allowed the bot added to the attachment menu to write messages */
   writeAccessAllowed?: { webAppName?: string };
+  /** Service message: forum topic created */
   forumTopicCreated?: { name: string; iconColor: string; iconCutsomEmojiId?: string };
+  /** Service message: forum topic edited */
   forumTopicEdited?: { name?: string; iconCutsomEmojiId?: string };
+  /** Service message: forum topic closed */
   forumTopicClosed?: Record<never, never>;
+  /** Service message: forum topic reopened */
   forumTopicReopened?: Record<never, never>;
+  /** Service message: video chat scheduled */
   videoChatScheduled?: { startDate: Date };
+  /** Service message: video chat started */
   videoChatStarted?: Record<never, never>;
+  /** Service message: video chat ended */
   videoChatEnded?: { duration: number };
 }
 

@@ -3,6 +3,7 @@ import * as types from "../tl/2_types.ts";
 import { FileID, FileType, FileUniqueID, FileUniqueType, ThumbnailSource } from "./!0_file_id.ts";
 import { constructThumbnail, Thumbnail } from "./0_thumbnail.ts";
 
+/** This object represents a photo. */
 export interface Photo {
   /** Identifier for this file, which can be used to download or reuse the file */
   fileId: string;

@@ -4,21 +4,37 @@ import { MaybePromise } from "../utilities/0_types.ts";
 import { constructThumbnail, Thumbnail } from "./0_thumbnail.ts";
 import { constructMaskPosition, MaskPosition } from "./0_mask_position.ts";
 
+/** This object represents a sticker. */
 export interface Sticker {
+  /** Identifier for this file, which can be used to download or reuse the file */
   fileId: string;
+  /** Unique identifier for this file, which is supposed to be the same over time and for different bots. Can't be used to download or reuse the file. */
   fileUniqueId: string;
+  /** Type of the sticker, currently one of "regular", "mask", "custom_emoji". The type of the sticker is independent from its format, which is determined by the fields is_animated and is_video. */
   type: "regular" | "mask" | "custom_emoji";
+  /** Sticker width */
   width: number;
+  /** Sticker height */
   height: number;
+  /** True, if the sticker is [animated](https://telegram.org/blog/animated-stickers) */
   isAnimated: boolean;
+  /** True, if the sticker is a [video sticker](https://telegram.org/blog/video-stickers-better-reactions) */
   isVideo: boolean;
+  /** Sticker thumbnail in the .WEBP or .JPG format */
   thumbnails: Thumbnail[];
+  /** Emoji associated with the sticker */
   emoji?: string;
+  /** Name of the sticker set to which the sticker belongs */
   setName?: string;
+  /** For premium regular stickers, premium animation for the sticker */
   premiumAnimation?: File;
+  /** For mask stickers, the position where the mask should be placed */
   maskPosition?: MaskPosition;
+  /** For custom emoji stickers, unique identifier of the custom emoji */
   customEmojiId?: string;
+  /** True, if the sticker must be repainted to a text color in messages, the color of the Telegram Premium badge in emoji status, white color on chat photos, or another appropriate color in other places */
   needsRepainting?: boolean;
+  /** File size in bytes */
   fileSize?: number;
 }
 
