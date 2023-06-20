@@ -26,6 +26,7 @@ import { parseHtml } from "./0_html.ts";
 import { checkPassword } from "./0_password.ts";
 import { ClientAbstract } from "./1_client_abstract.ts";
 import { ClientPlain } from "./2_client_plain.ts";
+import { drop } from "../utilities/0_misc.ts";
 import { getChannelChatId, peerToChatId } from "./0_utilities.ts";
 
 const d = debug("Client");
@@ -205,8 +206,8 @@ export class Client extends ClientAbstract {
       await this.storage.setDc(this.transportProvider.initialDc);
     }
     d("encrypted client connected");
-    this.receiveLoop();
-    this.pingLoop();
+    drop(this.receiveLoop());
+    drop(this.pingLoop());
   }
 
   private async fetchState(source: string) {
@@ -410,91 +411,90 @@ export class Client extends ClientAbstract {
     }
 
     while (this.connected) {
-      if (this.toAcknowledge.size >= ackThreshold) {
-        await this.send(new types.MsgsAck({ msgIds: [...this.toAcknowledge] }));
-        this.toAcknowledge.clear();
-      }
-
-      let buffer: Uint8Array;
       try {
-        buffer = await this.transport.receive();
+        if (this.toAcknowledge.size >= ackThreshold) {
+          await this.send(new types.MsgsAck({ msgIds: [...this.toAcknowledge] }));
+          this.toAcknowledge.clear();
+        }
+
+        const buffer = await this.transport.receive();
+
+        let decrypted;
+        try {
+          decrypted = await (decryptMessage(
+            buffer,
+            this.auth.key,
+            this.auth.id,
+            this.sessionId,
+          ));
+        } catch (err) {
+          dRecv("failed to decrypt message: %o", err);
+          drop(this.recoverUpdateGap("decryption"));
+          continue;
+        }
+        const messages = decrypted instanceof MessageContainer ? decrypted.messages : [decrypted];
+
+        for (const message of messages) {
+          let body = message.body;
+          if (body instanceof types.GZIPPacked) {
+            body = new TLReader(gunzip(body.packedData)).readObject();
+          }
+          dRecv("received %s", body.constructor.name);
+          if (body instanceof types.Updates || body instanceof types.TypeUpdate) {
+            drop(this.processUpdates(body));
+          } else if (message.body instanceof RPCResult) {
+            let result = message.body.result;
+            if (result instanceof types.GZIPPacked) {
+              result = new TLReader(gunzip(result.packedData)).readObject();
+            }
+            if (result instanceof types.RPCError) {
+              dRecv("RPCResult: %d %s", result.errorCode, result.errorMessage);
+            } else {
+              dRecv("RPCResult: %s", result.constructor.name);
+            }
+            const messageId = message.body.messageId;
+            const resolvePromise = () => {
+              const promise = this.promises.get(messageId);
+              if (promise) {
+                if (result instanceof types.RPCError) {
+                  promise.reject(result);
+                } else {
+                  promise.resolve(result);
+                }
+                this.promises.delete(messageId);
+              }
+            };
+            if (result instanceof types.TypeUpdates || result instanceof types.TypeUpdate) {
+              this.processUpdates(result).then(resolvePromise).catch();
+            } else {
+              await this.processResult(result);
+              resolvePromise();
+            }
+          } else if (message.body instanceof types.Pong) {
+            const promise = this.promises.get(message.body.msgId);
+            if (promise) {
+              promise.resolve(message.body);
+              this.promises.delete(message.body.msgId);
+            }
+          } else if (message.body instanceof types.BadMsgNotification || message.body instanceof types.BadServerSalt) {
+            if (message.body instanceof types.BadServerSalt) {
+              this.state.salt = message.body.newServerSalt;
+            }
+            const promise = this.promises.get(message.body.badMsgId);
+            if (promise) {
+              promise.resolve(message.body);
+              this.promises.delete(message.body.badMsgId);
+            }
+          }
+
+          this.toAcknowledge.add(message.id);
+        }
       } catch (err) {
         if (!this.connected) {
           break;
         } else {
           throw err;
         }
-      }
-
-      let decrypted: Message_ | MessageContainer;
-      try {
-        decrypted = await decryptMessage(
-          buffer,
-          this.auth.key,
-          this.auth.id,
-          this.sessionId,
-        );
-      } catch (err) {
-        dRecv("failed to decrypt message: %o", err);
-        this.recoverUpdateGap("decryption");
-        continue;
-      }
-      const messages = decrypted instanceof MessageContainer ? decrypted.messages : [decrypted];
-
-      for (const message of messages) {
-        let body = message.body;
-        if (body instanceof types.GZIPPacked) {
-          body = new TLReader(gunzip(body.packedData)).readObject();
-        }
-        dRecv("received %s", body.constructor.name);
-        if (body instanceof types.Updates || body instanceof types.TypeUpdate) {
-          this.processUpdates(body);
-        } else if (message.body instanceof RPCResult) {
-          let result = message.body.result;
-          if (result instanceof types.GZIPPacked) {
-            result = new TLReader(gunzip(result.packedData)).readObject();
-          }
-          if (result instanceof types.RPCError) {
-            dRecv("RPCResult: %d %s", result.errorCode, result.errorMessage);
-          } else {
-            dRecv("RPCResult: %s", result.constructor.name);
-          }
-          const messageId = message.body.messageId;
-          const resolvePromise = () => {
-            const promise = this.promises.get(messageId);
-            if (promise) {
-              if (result instanceof types.RPCError) {
-                promise.reject(result);
-              } else {
-                promise.resolve(result);
-              }
-              this.promises.delete(messageId);
-            }
-          };
-          if (result instanceof types.TypeUpdates || result instanceof types.TypeUpdate) {
-            this.processUpdates(result).then(resolvePromise);
-          } else {
-            await this.processResult(result);
-            resolvePromise();
-          }
-        } else if (message.body instanceof types.Pong) {
-          const promise = this.promises.get(message.body.msgId);
-          if (promise) {
-            promise.resolve(message.body);
-            this.promises.delete(message.body.msgId);
-          }
-        } else if (message.body instanceof types.BadMsgNotification || message.body instanceof types.BadServerSalt) {
-          if (message.body instanceof types.BadServerSalt) {
-            this.state.salt = message.body.newServerSalt;
-          }
-          const promise = this.promises.get(message.body.badMsgId);
-          if (promise) {
-            promise.resolve(message.body);
-            this.promises.delete(message.body.badMsgId);
-          }
-        }
-
-        this.toAcknowledge.add(message.id);
       }
     }
   }
