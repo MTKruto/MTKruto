@@ -151,8 +151,11 @@ function serializeSingleParam(
       } else if (value instanceof Uint8Array) {
         writer.writeBytes(value);
       } else {
-        throw new TypeError(`Expected string or Uint8Array but received ${valueRepr}`);
+        writer.writeString("");
       }
+      // else {
+      //   throw new TypeError(`Expected string or Uint8Array but received ${valueRepr}`);
+      // }
       break;
     case "true":
       if (value !== true) {
