@@ -1,6 +1,5 @@
 import { base64Decode, base64Encode } from "../deps.ts";
 
-// TODO: test
 export function base64EncodeUrlSafe(data: ArrayBuffer | string) {
   return base64Encode(data).replace(/=*$/, "").replaceAll("+", "-").replaceAll("/", "_");
 }
