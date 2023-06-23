@@ -12,6 +12,7 @@ export class ConnectionWebSocket implements Connection {
 
   constructor(url: string | URL) {
     this.webSocket = this.reinitWs(url);
+    // TODO
     this.webSocket.onclose = () => {
       this.webSocket = this.reinitWs(url);
     };
