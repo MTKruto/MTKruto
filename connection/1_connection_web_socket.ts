@@ -11,8 +11,15 @@ export class ConnectionWebSocket implements Connection {
   private nextResolve: [number, () => void] | null = null;
 
   constructor(url: string | URL) {
-    this.webSocket = new WebSocket(url, "binary");
-    this.webSocket.onmessage = async (e) => {
+    this.webSocket = this.reinitWs(url);
+    this.webSocket.onclose = () => {
+      this.webSocket = this.reinitWs(url);
+    };
+  }
+
+  private reinitWs(url: string | URL) {
+    const webSocket = new WebSocket(url, "binary");
+    webSocket.onmessage = async (e) => {
       // deno-lint-ignore no-explicit-any
       const data = e.data instanceof Blob ? new Uint8Array(await e.data.arrayBuffer()) : new Uint8Array(e.data as any);
 
@@ -27,9 +34,10 @@ export class ConnectionWebSocket implements Connection {
         this.nextResolve = null;
       }
     };
-    this.webSocket.onerror = (err) => {
+    webSocket.onerror = (err) => {
       d("WebSocket error: %o", err);
     };
+    return webSocket;
   }
 
   get connected() {
