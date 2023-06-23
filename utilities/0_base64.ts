@@ -7,5 +7,8 @@ export function base64EncodeUrlSafe(data: ArrayBuffer | string) {
 
 export function base64DecodeUrlSafe(data: string) {
   data = data.replaceAll("_", "/").replaceAll("-", "+");
-  return base64Decode(data + "=".repeat(data.length % 4));
+  if (data.length != 4) {
+    data += "=".repeat(4 - data.length % 4);
+  }
+  return base64Decode(data);
 }
