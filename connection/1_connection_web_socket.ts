@@ -13,8 +13,10 @@ export class ConnectionWebSocket implements Connection {
   constructor(url: string | URL) {
     this.webSocket = this.reinitWs(url);
     // TODO
-    this.webSocket.onclose = () => {
-      this.webSocket = this.reinitWs(url);
+    this.webSocket.onclose = (e) => {
+      if (e.code != 1000 && e.reason != "method") {
+        this.webSocket = this.reinitWs(url);
+      }
     };
   }
 
@@ -36,6 +38,9 @@ export class ConnectionWebSocket implements Connection {
       }
     };
     webSocket.onerror = (err) => {
+      if (this.isConnecting) {
+        this.connectionError = err;
+      }
       d("WebSocket error: %o", err);
     };
     return webSocket;
@@ -45,13 +50,29 @@ export class ConnectionWebSocket implements Connection {
     return this.webSocket.readyState == WebSocket.OPEN;
   }
 
+  private isConnecting = false;
+  private connectionError: Event | ErrorEvent | null = null;
   async open() {
-    while (this.webSocket.readyState != WebSocket.OPEN) {
-      if (this.webSocket.readyState == WebSocket.CLOSED) {
-        throw new Error("Connection was closed");
-      } else {
-        await new Promise((r) => setTimeout(r, 5));
+    if (this.isConnecting) {
+      throw new Error("Already connecting");
+    }
+    this.isConnecting = true;
+
+    try {
+      while (this.webSocket.readyState != WebSocket.OPEN) {
+        if (this.webSocket.readyState == WebSocket.CLOSED) {
+          if (this.connectionError instanceof ErrorEvent) {
+            throw new Error(this.connectionError.message);
+          } else {
+            throw new Error("Connection was closed");
+          }
+        } else {
+          await new Promise((r) => setTimeout(r, 5));
+        }
       }
+    } finally {
+      this.isConnecting = false;
+      this.connectionError = null;
     }
   }
 
@@ -86,6 +107,7 @@ export class ConnectionWebSocket implements Connection {
     if (this.webSocket.readyState == WebSocket.CLOSED) {
       throw new Error("Connection not open");
     }
-    this.webSocket.close();
+    this.webSocket.close(1000, "method");
+    console.trace("close called");
   }
 }
