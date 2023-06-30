@@ -22,9 +22,10 @@ export class ConnectionWebSocket implements Connection {
 
   private reinitWs(url: string | URL) {
     const webSocket = new WebSocket(url, "binary");
+    const mutex = new Mutex();
     webSocket.onmessage = async (e) => {
-      // deno-lint-ignore no-explicit-any
-      const data = e.data instanceof Blob ? new Uint8Array(await e.data.arrayBuffer()) : new Uint8Array(e.data as any);
+      const release = await mutex.acquire();
+      const data = new Uint8Array(await new Blob([e.data]).arrayBuffer());
 
       for (const byte of data) {
         this.buffer.push(byte);
@@ -36,6 +37,8 @@ export class ConnectionWebSocket implements Connection {
         this.nextResolve[1]();
         this.nextResolve = null;
       }
+
+      release();
     };
     webSocket.onerror = (err) => {
       if (this.isConnecting) {
