@@ -24,6 +24,9 @@ export class ConnectionWebSocket implements Connection {
     const webSocket = new WebSocket(url, "binary");
     const mutex = new Mutex();
     webSocket.addEventListener("message", async (e) => {
+      if (typeof e.data === "string") {
+        return;
+      }
       const release = await mutex.acquire();
       const data = new Uint8Array(await new Blob([e.data].map((v) => new Uint8Array(v))).arrayBuffer());
 
