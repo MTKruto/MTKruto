@@ -13,17 +13,17 @@ export class ConnectionWebSocket implements Connection {
   constructor(url: string | URL) {
     this.webSocket = this.reinitWs(url);
     // TODO
-    this.webSocket.onclose = (e) => {
+    this.webSocket.addEventListener("close", (e) => {
       if (e.code != 1000 && e.reason != "method") {
         this.webSocket = this.reinitWs(url);
       }
-    };
+    });
   }
 
   private reinitWs(url: string | URL) {
     const webSocket = new WebSocket(url, "binary");
     const mutex = new Mutex();
-    webSocket.onmessage = async (e) => {
+    webSocket.addEventListener("message", async (e) => {
       const release = await mutex.acquire();
       const data = new Uint8Array(await new Blob([e.data]).arrayBuffer());
 
@@ -39,13 +39,13 @@ export class ConnectionWebSocket implements Connection {
       }
 
       release();
-    };
-    webSocket.onerror = (err) => {
+    });
+    webSocket.addEventListener("error", (err) => {
       if (this.isConnecting) {
         this.connectionError = err;
       }
       d("WebSocket error: %o", err);
-    };
+    });
     return webSocket;
   }
 
