@@ -45,6 +45,7 @@ export class ConnectionWebSocket implements Connection {
     });
     webSocket.addEventListener("error", (err) => {
       if (this.isConnecting) {
+        // @ts-ignore: Node.js
         this.connectionError = err;
       }
       d("WebSocket error: %o", err);
