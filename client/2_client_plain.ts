@@ -10,13 +10,16 @@ import { ClientDHInnerData, DHGenOK, PQInnerDataDC, ResPQ, ServerDHInnerData, Se
 import { Function, ReqDHParams, ReqPQMulti, SetClientDHParams } from "../tl/3_functions.ts";
 import { TLReader } from "../tl/3_tl_reader.ts";
 import { ClientAbstract } from "./1_client_abstract.ts";
-import { packUnencryptedMessage, unpackUnencryptedMessage } from "./0_message.ts";
+import { getMessageId, packUnencryptedMessage, unpackUnencryptedMessage } from "./0_message.ts";
 
 const d = debug("ClientPlain/createAuthKey");
 
 export class ClientPlain extends ClientAbstract {
+  private lastMsgId = 0n
+
   async invoke<T extends Function<unknown>>(function_: T): Promise<T["__R"]> {
-    await this.transport.send(packUnencryptedMessage(function_[serialize]()));
+    const msgId = this.lastMsgId = getMessageId(this.lastMsgId)
+    await this.transport.send(packUnencryptedMessage(function_[serialize](), msgId));
     const buffer = await this.transport.receive();
     if (buffer.length == 4) {
       const int = bigIntFromBuffer(buffer, true, true);
