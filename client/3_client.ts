@@ -510,7 +510,7 @@ export class Client extends ClientAbstract {
     }
   }
 
-  lastMsgId = 0n;
+  private lastMsgId = 0n;
   /**
    * Invokes a function waiting and returning its reply if the second parameter is not `true`. Requires the client
    * to be connected.
