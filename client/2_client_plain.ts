@@ -15,10 +15,10 @@ import { getMessageId, packUnencryptedMessage, unpackUnencryptedMessage } from "
 const d = debug("ClientPlain/createAuthKey");
 
 export class ClientPlain extends ClientAbstract {
-  private lastMsgId = 0n
+  private lastMsgId = 0n;
 
   async invoke<T extends Function<unknown>>(function_: T): Promise<T["__R"]> {
-    const msgId = this.lastMsgId = getMessageId(this.lastMsgId)
+    const msgId = this.lastMsgId = getMessageId(this.lastMsgId);
     await this.transport.send(packUnencryptedMessage(function_[serialize](), msgId));
     const buffer = await this.transport.receive();
     if (buffer.length == 4) {
