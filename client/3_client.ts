@@ -510,7 +510,7 @@ export class Client extends ClientAbstract {
     }
   }
 
-  lastMsgId = 0n
+  lastMsgId = 0n;
   /**
    * Invokes a function waiting and returning its reply if the second parameter is not `true`. Requires the client
    * to be connected.
@@ -530,7 +530,7 @@ export class Client extends ClientAbstract {
       this.state.seqNo++;
     }
 
-    const messageId = this.lastMsgId = getMessageId(this.lastMsgId)
+    const messageId = this.lastMsgId = getMessageId(this.lastMsgId);
     const message = new Message_(messageId, seqNo, function_);
     await this.transport.send(
       await encryptMessage(
