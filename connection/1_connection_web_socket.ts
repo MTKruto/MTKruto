@@ -28,7 +28,7 @@ export class ConnectionWebSocket implements Connection {
         return;
       }
       const release = await mutex.acquire();
-      const data = new Uint8Array(await new Blob([e.data].map((v) => v instanceof ArrayBuffer ? v : Array.isArray(v) ? v.map((v) => v.buffer) : v.buffer).flat()).arrayBuffer());
+      const data = new Uint8Array(await new Blob([e.data].map((v) => v instanceof Blob ? v : v instanceof ArrayBuffer ? v : Array.isArray(v) ? v.map((v) => v.buffer) : v.buffer).flat()).arrayBuffer());
 
       for (const byte of data) {
         this.buffer.push(byte);
@@ -115,6 +115,5 @@ export class ConnectionWebSocket implements Connection {
       throw new Error("Connection not open");
     }
     this.webSocket.close(1000, "method");
-    console.trace("close called");
   }
 }

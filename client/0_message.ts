@@ -18,14 +18,13 @@ export function getMessageId(lastMsgId: bigint) {
   if (lastMsgId >= (newMsgId)) {
     newMsgId = lastMsgId + 4n;
   }
-  lastMsgId = newMsgId;
   return newMsgId;
 }
 
 export function packUnencryptedMessage(data: Uint8Array, messageId: bigint) {
   const message = concat(
     bufferFromBigInt(0x00, 8),
-    bufferFromBigInt(getMessageId(messageId), 8),
+    bufferFromBigInt(messageId, 8),
     bufferFromBigInt(data.length, 4),
     data,
   );
