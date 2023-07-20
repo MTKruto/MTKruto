@@ -9,8 +9,7 @@ import { MessageContainer } from "../tl/7_message_container.ts";
 import { bufferFromBigInt, concat } from "../utilities/0_buffer.ts";
 import { sha256 } from "../utilities/0_hash.ts";
 
-let lastMsgId = 0n;
-export function getMessageId() {
+export function getMessageId(lastMsgId: bigint) {
   const now = new Date().getTime() / 1000 + 0;
   const nanoseconds = Math.floor((now - Math.floor(now)) * 1e9);
   let newMsgId = (BigInt(Math.floor(now)) <<
@@ -23,10 +22,10 @@ export function getMessageId() {
   return newMsgId;
 }
 
-export function packUnencryptedMessage(data: Uint8Array) {
+export function packUnencryptedMessage(data: Uint8Array, messageId: bigint) {
   const message = concat(
     bufferFromBigInt(0x00, 8),
-    bufferFromBigInt(getMessageId(), 8),
+    bufferFromBigInt(getMessageId(messageId), 8),
     bufferFromBigInt(data.length, 4),
     data,
   );
