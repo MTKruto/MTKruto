@@ -1,9 +1,9 @@
 import { debug, Mutex } from "../deps.ts";
-import { Connection } from "./0_connection.ts";
+import { ConnectionUnframed } from "./0_connection.ts";
 
 const d = debug("ConnectionWebSocket");
 
-export class ConnectionWebSocket implements Connection {
+export class ConnectionWebSocket extends ConnectionUnframed implements ConnectionUnframed {
   private webSocket: WebSocket;
   private rMutex = new Mutex();
   private wMutex = new Mutex();
@@ -11,8 +11,8 @@ export class ConnectionWebSocket implements Connection {
   private nextResolve: [number, () => void] | null = null;
 
   constructor(url: string | URL) {
+    super();
     this.webSocket = this.reinitWs(url);
-    // TODO
     this.webSocket.addEventListener("close", (e) => {
       if (e.code != 1000 && e.reason != "method") {
         this.webSocket = this.reinitWs(url);
