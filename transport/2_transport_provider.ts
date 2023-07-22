@@ -2,7 +2,7 @@ import { Connection } from "../connection/0_connection.ts";
 import { ConnectionHTTP } from "../connection/1_connection_http.ts";
 import { ConnectionWebSocket } from "../connection/1_connection_web_socket.ts";
 import { Transport } from "./0_transport.ts";
-import { TransportHTTP } from "./1_transport_http.ts";
+import { TransportUnwrapped } from "./1_transport_unwrapped.ts";
 import { TransportIntermediate } from "./1_transport_intermediate.ts";
 
 export type DC = "1" | "2" | "3" | "4" | "5" | "1-test" | "2-test" | "3-test";
@@ -33,7 +33,7 @@ const dcToNameMap: Record<DC, string> = {
 function getDcId(dc: DC, cdn: boolean) {
   return Number(dc[0]) + (dc.endsWith("-test") ? 10_000 : 0) * (cdn ? -1 : 1);
 }
-export const defaultTransportProvider: TransportProviderCreator = ({ initialDc, wss }: TransportProviderCreatorParams & { wss?: boolean }): TransportProvider => {
+export const webSocketTransportProvider: TransportProviderCreator = ({ initialDc, wss }: TransportProviderCreatorParams & { wss?: boolean }): TransportProvider => {
   return {
     initialDc,
     createTransport: ({ dc, cdn }) => {
@@ -75,7 +75,7 @@ export const httpTransportProvider: TransportProviderCreator = ({ initialDc, sec
       dc ??= initialDc;
       const url = secure ? `https://${dcToNameMap[dc]}${cdn ? "-1" : ""}.web.telegram.org/${dc.endsWith("-test") ? "apiw1_test" : "apiw1"}` : `http://${(v6 ? dcToIPv6Map : dcToIPv4Map)[dc]}/${dc.endsWith("-test") ? "/api_test" : "/api"}`;
       const connection = new ConnectionHTTP(url);
-      const transport = new TransportHTTP(connection);
+      const transport = new TransportUnwrapped(connection);
       const dcId = getDcId(dc, cdn);
       return { connection, transport, dcId };
     },

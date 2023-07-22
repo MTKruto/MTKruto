@@ -5,8 +5,8 @@ import { Transport } from "./0_transport.ts";
 
 const d = debug("TransportHTTP");
 
-export class TransportHTTP extends Transport implements Transport {
-  private canRead: Promise<void>;
+export class TransportUnwrapped extends Transport implements Transport {
+  private canRead = Promise.resolve();
   private resolveCanRead = () => {};
   private rMutex = new Mutex();
   private wMutex = new Mutex();
@@ -14,9 +14,8 @@ export class TransportHTTP extends Transport implements Transport {
 
   constructor(private connection: ConnectionHTTP) {
     super();
-    this.resetCanRead()
+    this.resetCanRead();
   }
-
 
   private resetCanRead() {
     this.canRead = new Promise((r) => this.resolveCanRead = r);

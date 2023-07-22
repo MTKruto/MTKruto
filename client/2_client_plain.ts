@@ -20,7 +20,6 @@ export class ClientPlain extends ClientAbstract {
   async invoke<T extends Function<unknown>>(function_: T): Promise<T["__R"]> {
     const msgId = this.lastMsgId = getMessageId(this.lastMsgId);
     await this.transport.send(packUnencryptedMessage(function_[serialize](), msgId));
-    console.log("send");
     const buffer = await this.transport.receive();
     if (buffer.length == 4) {
       const int = bigIntFromBuffer(buffer, true, true);
