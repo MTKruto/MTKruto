@@ -335,7 +335,7 @@ export class Client extends ClientAbstract {
                   apiId: this.apiId,
                   apiHash: this.apiHash,
                   phoneNumber,
-                  settings: new types.CodeSettings(),
+                  settings: new types.CodeSettings({}),
                 }),
               );
               dAuth("verification code sent");
@@ -1131,8 +1131,7 @@ export class Client extends ClientAbstract {
         noWebpage,
         silent,
         noforwards,
-        replyToMsgId,
-        topMsgId,
+        replyTo: replyToMsgId !== undefined ? new types.InputReplyToMessage({ replyToMsgId, topMsgId }) : undefined,
         sendAs,
         entities,
         replyMarkup,
