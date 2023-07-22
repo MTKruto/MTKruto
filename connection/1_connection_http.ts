@@ -1,8 +1,6 @@
-import { debug, Mutex } from "../deps.ts";
+import { Mutex } from "../deps.ts";
 import { UNREACHABLE } from "../utilities/0_control.ts";
 import { ConnectionFramed } from "./0_connection.ts";
-
-const d = debug("ConnectionHTTP");
 
 export class ConnectionHTTP extends ConnectionFramed implements ConnectionFramed {
   private rMutex = new Mutex();
@@ -29,21 +27,20 @@ export class ConnectionHTTP extends ConnectionFramed implements ConnectionFramed
   }
 
   async read() {
-    const release = await this.rMutex.acquire();
     await this.canRead;
+    const release = await this.rMutex.acquire();
     try {
       const buffer = this.buffers.pop();
       if (buffer === undefined) {
         throw UNREACHABLE();
       } else {
-        d(`>>> ${buffer.length} bytes`);
         return buffer;
       }
     } finally {
-      release();
       if (this.buffers.length == 0) {
         this.resetCanRead();
       }
+      release();
     }
   }
 
@@ -56,17 +53,11 @@ export class ConnectionHTTP extends ConnectionFramed implements ConnectionFramed
         body: buffer,
       });
 
-      const release = await this.rMutex.acquire();
-      try {
-        this.buffers.push(new Uint8Array(await res.arrayBuffer()));
-        d(`<<< ${this.buffers[this.buffers.length - 1].length} bytes`);
-        if (this.buffers.length == 1) {
-          this.resolveCanRead();
-        }
-      } finally {
-        release();
-      }
+      this.buffers.push(new Uint8Array(await res.arrayBuffer()));
     } finally {
+      if (this.buffers.length == 1) {
+        this.resolveCanRead();
+      }
       release();
     }
   }
