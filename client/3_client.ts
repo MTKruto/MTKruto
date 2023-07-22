@@ -127,8 +127,8 @@ export class Client extends ClientAbstract {
    */
   constructor(
     public readonly storage: Storage = new StorageMemory(),
-    public readonly apiId = 0,
-    public readonly apiHash = "",
+    public readonly apiId: number | null = 0,
+    public readonly apiHash: string | null = "",
     params?: ClientParams,
     cdn = false,
   ) {

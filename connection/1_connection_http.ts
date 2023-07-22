@@ -14,6 +14,11 @@ export class ConnectionHTTP extends ConnectionFramed implements ConnectionFramed
 
   constructor(private readonly url: string | URL) {
     super();
+    this.resetCanRead();
+  }
+
+  private resetCanRead() {
+    this.canRead = new Promise((r) => this.resolveCanRead = r);
   }
 
   get connected() {
@@ -24,6 +29,7 @@ export class ConnectionHTTP extends ConnectionFramed implements ConnectionFramed
   }
 
   async read() {
+    const release = await this.rMutex.acquire();
     await this.canRead;
     try {
       const buffer = this.buffers.pop();
@@ -34,8 +40,9 @@ export class ConnectionHTTP extends ConnectionFramed implements ConnectionFramed
         return buffer;
       }
     } finally {
+      release();
       if (this.buffers.length == 0) {
-        this.canRead = new Promise((r) => this.resolveCanRead = r);
+        this.resetCanRead();
       }
     }
   }
