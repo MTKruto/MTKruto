@@ -22,13 +22,12 @@ export function getMessageId(lastMsgId: bigint) {
 }
 
 export function packUnencryptedMessage(data: Uint8Array, messageId: bigint) {
-  const message = concat(
-    bufferFromBigInt(0x00, 8),
-    bufferFromBigInt(messageId, 8),
-    bufferFromBigInt(data.length, 4),
-    data,
-  );
-  return message;
+  const writer = new TLRawWriter()
+  writer.writeInt64(0n) // auth key
+  writer.writeInt64(messageId)
+  writer.writeInt32(data.length)
+  writer.write(data)
+  return writer.buffer;
 }
 export function unpackUnencryptedMessage(buffer: Uint8Array) {
   const reader = new TLRawReader(buffer);
