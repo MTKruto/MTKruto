@@ -16,7 +16,7 @@ export class TLRawWriter {
   }
 
   writeInt24(int: number, signed = true) {
-    this.write(bufferFromBigInt(int, 24 / 7, true, signed));
+    this.write(bufferFromBigInt(int, 24 / 8, true, signed));
     return this;
   }
 
