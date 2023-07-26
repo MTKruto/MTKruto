@@ -17,6 +17,10 @@ const d = debug("ClientPlain/createAuthKey");
 export class ClientPlain extends ClientAbstract {
   private lastMsgId = 0n;
 
+  constructor(private readonly publicKeys = PUBLIC_KEYS) {
+    super();
+  }
+
   async invoke<T extends Function<unknown>>(function_: T): Promise<T["__R"]> {
     const msgId = this.lastMsgId = getMessageId(this.lastMsgId);
     await this.transport.send(packUnencryptedMessage(function_[serialize](), msgId));
@@ -64,10 +68,10 @@ export class ClientPlain extends ClientAbstract {
     let publicKey: [bigint, bigint] | undefined;
 
     for (const fingerprint of resPq.serverPublicKeyFingerprints) {
-      const maybePublicKey = PUBLIC_KEYS.get(fingerprint);
+      const maybePublicKey = this.publicKeys.find(([k]) => (k == fingerprint));
       if (maybePublicKey) {
         publicKeyFingerprint = fingerprint;
-        publicKey = maybePublicKey;
+        publicKey = maybePublicKey[1];
         break;
       }
     }
