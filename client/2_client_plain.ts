@@ -1,5 +1,5 @@
 import { assertEquals, assertInstanceOf, debug, factorize, ige256Decrypt, ige256Encrypt } from "../deps.ts";
-import { publicKeys } from "../constants.ts";
+import { PUBLIC_KEYS } from "../constants.ts";
 import { bigIntFromBuffer, getRandomBigInt, modExp } from "../utilities/0_bigint.ts";
 import { bufferFromBigInt, concat } from "../utilities/0_buffer.ts";
 import { UNREACHABLE } from "../utilities/0_control.ts";
@@ -64,7 +64,7 @@ export class ClientPlain extends ClientAbstract {
     let publicKey: [bigint, bigint] | undefined;
 
     for (const fingerprint of resPq.serverPublicKeyFingerprints) {
-      const maybePublicKey = publicKeys.get(fingerprint);
+      const maybePublicKey = PUBLIC_KEYS.get(fingerprint);
       if (maybePublicKey) {
         publicKeyFingerprint = fingerprint;
         publicKey = maybePublicKey;

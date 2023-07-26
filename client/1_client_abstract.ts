@@ -1,5 +1,5 @@
 import { initTgCrypto } from "../deps.ts";
-import { DEFAULT_INITIAL_DC } from "../constants.ts";
+import { INITIAL_DC } from "../constants.ts";
 import { MaybePromise } from "../utilities/0_types.ts";
 import { Connection } from "../connection/0_connection.ts";
 import { Transport } from "../transport/0_transport.ts";
@@ -15,7 +15,7 @@ export abstract class ClientAbstract {
     return this._initialDc;
   }
 
-  constructor(protected transportProvider = webSocketTransportProvider({ initialDc: DEFAULT_INITIAL_DC }), protected readonly cdn = false) {
+  constructor(protected transportProvider = webSocketTransportProvider({ initialDc: INITIAL_DC }), protected readonly cdn = false) {
     const { initialDc, createTransport } = transportProvider;
     this._initialDc = initialDc;
     const { connection, transport, dcId } = createTransport({ cdn: this.cdn });

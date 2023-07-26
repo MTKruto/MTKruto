@@ -1,8 +1,8 @@
 import { DC } from "./transport/2_transport_provider.ts";
 
-export const ackThreshold = 10;
+export const ACK_THRESHOLD = 10;
 
-export const publicKeys = new Map<bigint, [bigint, bigint]>([
+export const PUBLIC_KEYS = new Map<bigint, [bigint, bigint]>([
   [
     1562291298945373506n,
     [
@@ -64,23 +64,23 @@ export const publicKeys = new Map<bigint, [bigint, bigint]>([
 
 export const VECTOR_CONSTRUCTOR = 0x1CB5C415;
 
-export const DEFAULT_INITIAL_DC: DC = "2-test";
+export const INITIAL_DC: DC = "2-test";
 
 export const LAYER = 160;
 
-export const DEFAULT_APP_VERSION = "MTKruto 0.0.968";
+export const APP_VERSION = "MTKruto 0.0.968";
 
 // @ts-ignore: lib
-export const DEFAULT_DEVICE_MODEL = typeof Deno === "undefined" ? typeof navigator === "undefined" ? typeof process === "undefined" ? "Unknown" : process.platform + "-" + process.arch : navigator.userAgent.split(" ")[0] : Deno.build.os + "-" + Deno.build.arch;
+export const DEVICE_MODEL = typeof Deno === "undefined" ? typeof navigator === "undefined" ? typeof process === "undefined" ? "Unknown" : process.platform + "-" + process.arch : navigator.userAgent.split(" ")[0] : Deno.build.os + "-" + Deno.build.arch;
 
-export const DEFAULT_LANG_CODE = typeof navigator === "undefined" ? "en" : navigator.language.split("-")[0];
+export const LANG_CODE = typeof navigator === "undefined" ? "en" : navigator.language.split("-")[0];
 
-export const DEFAULT_LANG_PACK = "";
+export const LANG_PACK = "";
 
-export const DEFAULT_SYSTEM_LANG_CODE = typeof navigator === "undefined" ? "en" : navigator.language.split("-")[0];
+export const SYSTEM_LANG_CODE = typeof navigator === "undefined" ? "en" : navigator.language.split("-")[0];
 
 // @ts-ignore: lib
-export const DEFAULT_SYSTEM_VERSION = typeof navigator === "undefined" ? typeof process === "undefined" ? "Unknown" : "Node.js/" + process.versions.node : navigator.userAgent;
+export const SYSTEM_VERSION = typeof navigator === "undefined" ? typeof process === "undefined" ? "Unknown" : "Node.js/" + process.versions.node : navigator.userAgent;
 
 export const USERNAME_TTL = 86_400;
 

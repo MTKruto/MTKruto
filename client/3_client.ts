@@ -1,5 +1,5 @@
 import { debug, gunzip, Mutex, MutexInterface } from "../deps.ts";
-import { ackThreshold, CHANNEL_DIFFERENCE_LIMIT_BOT, CHANNEL_DIFFERENCE_LIMIT_USER, DEFAULT_APP_VERSION, DEFAULT_DEVICE_MODEL, DEFAULT_LANG_CODE, DEFAULT_LANG_PACK, DEFAULT_SYSTEM_LANG_CODE, DEFAULT_SYSTEM_VERSION, LAYER, MAX_CHANNEL_ID, MAX_CHAT_ID, STICKER_SET_NAME_TTL, USERNAME_TTL, ZERO_CHANNEL_ID } from "../constants.ts";
+import { ACK_THRESHOLD, APP_VERSION, CHANNEL_DIFFERENCE_LIMIT_BOT, CHANNEL_DIFFERENCE_LIMIT_USER, DEVICE_MODEL, LANG_CODE, LANG_PACK, LAYER, MAX_CHANNEL_ID, MAX_CHAT_ID, STICKER_SET_NAME_TTL, SYSTEM_LANG_CODE, SYSTEM_VERSION, USERNAME_TTL, ZERO_CHANNEL_ID } from "../constants.ts";
 import { bigIntFromBuffer, getRandomBigInt, getRandomId } from "../utilities/0_bigint.ts";
 import { UNREACHABLE } from "../utilities/0_control.ts";
 import { sha1 } from "../utilities/0_hash.ts";
@@ -136,12 +136,12 @@ export class Client extends ClientAbstract {
 
     this.parseMode = params?.parseMode ?? ParseMode.None;
 
-    this.appVersion = params?.appVersion ?? DEFAULT_APP_VERSION;
-    this.deviceModel = params?.deviceModel ?? DEFAULT_DEVICE_MODEL;
-    this.langCode = params?.langCode ?? DEFAULT_LANG_CODE;
-    this.langPack = params?.langPack ?? DEFAULT_LANG_PACK;
-    this.systemLangCode = params?.systemLangCode ?? DEFAULT_SYSTEM_LANG_CODE;
-    this.systemVersion = params?.systemVersion ?? DEFAULT_SYSTEM_VERSION;
+    this.appVersion = params?.appVersion ?? APP_VERSION;
+    this.deviceModel = params?.deviceModel ?? DEVICE_MODEL;
+    this.langCode = params?.langCode ?? LANG_CODE;
+    this.langPack = params?.langPack ?? LANG_PACK;
+    this.systemLangCode = params?.systemLangCode ?? SYSTEM_LANG_CODE;
+    this.systemVersion = params?.systemVersion ?? SYSTEM_VERSION;
   }
 
   private storageInited = false;
@@ -412,7 +412,7 @@ export class Client extends ClientAbstract {
 
     while (this.connected) {
       try {
-        if (this.toAcknowledge.size >= ackThreshold) {
+        if (this.toAcknowledge.size >= ACK_THRESHOLD) {
           await this.send(new types.MsgsAck({ msgIds: [...this.toAcknowledge] }));
           this.toAcknowledge.clear();
         }
