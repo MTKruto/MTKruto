@@ -1,10 +1,12 @@
-import { flags, id, ParamDesc, paramDesc, Params, params, TLObject, TLObjectConstructor } from "./1_tl_object.ts";
+// deno-fmt-ignore-file
+import { id, params, TLObject, Params, TLObjectConstructor, ParamDesc, paramDesc, flags } from "./1_tl_object.ts";
 
 export abstract class Type extends TLObject {
 }
 
-// Uknown type
-export abstract class TypeX extends Type {}
+// Unknown type (generic)
+export abstract class TypeX extends Type {
+}
 
 export abstract class TypeResPQ extends Type {
 }
@@ -3456,12 +3458,12 @@ export class InputChatUploadedPhoto extends TypeInputChatPhoto {
     ];
   }
 
-  constructor(params: { file?: TypeInputFile; video?: TypeInputFile; videoStartTs?: number; videoEmojiMarkup?: TypeVideoSize }) {
+  constructor(params?: { file?: TypeInputFile; video?: TypeInputFile; videoStartTs?: number; videoEmojiMarkup?: TypeVideoSize }) {
     super();
-    this.file = params.file;
-    this.video = params.video;
-    this.videoStartTs = params.videoStartTs;
-    this.videoEmojiMarkup = params.videoEmojiMarkup;
+    this.file = params?.file;
+    this.video = params?.video;
+    this.videoStartTs = params?.videoStartTs;
+    this.videoEmojiMarkup = params?.videoEmojiMarkup;
   }
 }
 
@@ -4344,47 +4346,7 @@ export class User extends TypeUser {
     ];
   }
 
-  constructor(
-    params: {
-      self?: true;
-      contact?: true;
-      mutualContact?: true;
-      deleted?: true;
-      bot?: true;
-      botChatHistory?: true;
-      botNochats?: true;
-      verified?: true;
-      restricted?: true;
-      min?: true;
-      botInlineGeo?: true;
-      support?: true;
-      scam?: true;
-      applyMinPhoto?: true;
-      fake?: true;
-      botAttachMenu?: true;
-      premium?: true;
-      attachMenuEnabled?: true;
-      botCanEdit?: true;
-      closeFriend?: true;
-      storiesHidden?: true;
-      storiesUnavailable?: true;
-      id: bigint;
-      accessHash?: bigint;
-      firstName?: string;
-      lastName?: string;
-      username?: string;
-      phone?: string;
-      photo?: TypeUserProfilePhoto;
-      status?: TypeUserStatus;
-      botInfoVersion?: number;
-      restrictionReason?: Array<TypeRestrictionReason>;
-      botInlinePlaceholder?: string;
-      langCode?: string;
-      emojiStatus?: TypeEmojiStatus;
-      usernames?: Array<TypeUsername>;
-      storiesMaxId?: number;
-    },
-  ) {
+  constructor(params: { self?: true; contact?: true; mutualContact?: true; deleted?: true; bot?: true; botChatHistory?: true; botNochats?: true; verified?: true; restricted?: true; min?: true; botInlineGeo?: true; support?: true; scam?: true; applyMinPhoto?: true; fake?: true; botAttachMenu?: true; premium?: true; attachMenuEnabled?: true; botCanEdit?: true; closeFriend?: true; storiesHidden?: true; storiesUnavailable?: true; id: bigint; accessHash?: bigint; firstName?: string; lastName?: string; username?: string; phone?: string; photo?: TypeUserProfilePhoto; status?: TypeUserStatus; botInfoVersion?: number; restrictionReason?: Array<TypeRestrictionReason>; botInlinePlaceholder?: string; langCode?: string; emojiStatus?: TypeEmojiStatus; usernames?: Array<TypeUsername>; storiesMaxId?: number }) {
     super();
     this.self = params.self;
     this.contact = params.contact;
@@ -4862,42 +4824,7 @@ export class Channel extends TypeChat {
     ];
   }
 
-  constructor(
-    params: {
-      creator?: true;
-      left?: true;
-      broadcast?: true;
-      verified?: true;
-      megagroup?: true;
-      restricted?: true;
-      signatures?: true;
-      min?: true;
-      scam?: true;
-      hasLink?: true;
-      hasGeo?: true;
-      slowmodeEnabled?: true;
-      callActive?: true;
-      callNotEmpty?: true;
-      fake?: true;
-      gigagroup?: true;
-      noforwards?: true;
-      joinToSend?: true;
-      joinRequest?: true;
-      forum?: true;
-      id: bigint;
-      accessHash?: bigint;
-      title: string;
-      username?: string;
-      photo: TypeChatPhoto;
-      date: number;
-      restrictionReason?: Array<TypeRestrictionReason>;
-      adminRights?: TypeChatAdminRights;
-      bannedRights?: TypeChatBannedRights;
-      defaultBannedRights?: TypeChatBannedRights;
-      participantsCount?: number;
-      usernames?: Array<TypeUsername>;
-    },
-  ) {
+  constructor(params: { creator?: true; left?: true; broadcast?: true; verified?: true; megagroup?: true; restricted?: true; signatures?: true; min?: true; scam?: true; hasLink?: true; hasGeo?: true; slowmodeEnabled?: true; callActive?: true; callNotEmpty?: true; fake?: true; gigagroup?: true; noforwards?: true; joinToSend?: true; joinRequest?: true; forum?: true; id: bigint; accessHash?: bigint; title: string; username?: string; photo: TypeChatPhoto; date: number; restrictionReason?: Array<TypeRestrictionReason>; adminRights?: TypeChatAdminRights; bannedRights?: TypeChatBannedRights; defaultBannedRights?: TypeChatBannedRights; participantsCount?: number; usernames?: Array<TypeUsername> }) {
     super();
     this.creator = params.creator;
     this.left = params.left;
@@ -5056,29 +4983,7 @@ export class ChatFull extends TypeChatFull {
     ];
   }
 
-  constructor(
-    params: {
-      canSetUsername?: true;
-      hasScheduled?: true;
-      translationsDisabled?: true;
-      id: bigint;
-      about: string;
-      participants: TypeChatParticipants;
-      chatPhoto?: TypePhoto;
-      notifySettings: TypePeerNotifySettings;
-      exportedInvite?: TypeExportedChatInvite;
-      botInfo?: Array<TypeBotInfo>;
-      pinnedMsgId?: number;
-      folderId?: number;
-      call?: TypeInputGroupCall;
-      ttlPeriod?: number;
-      groupcallDefaultJoinAs?: TypePeer;
-      themeEmoticon?: string;
-      requestsPending?: number;
-      recentRequesters?: Array<bigint>;
-      availableReactions?: TypeChatReactions;
-    },
-  ) {
+  constructor(params: { canSetUsername?: true; hasScheduled?: true; translationsDisabled?: true; id: bigint; about: string; participants: TypeChatParticipants; chatPhoto?: TypePhoto; notifySettings: TypePeerNotifySettings; exportedInvite?: TypeExportedChatInvite; botInfo?: Array<TypeBotInfo>; pinnedMsgId?: number; folderId?: number; call?: TypeInputGroupCall; ttlPeriod?: number; groupcallDefaultJoinAs?: TypePeer; themeEmoticon?: string; requestsPending?: number; recentRequesters?: Array<bigint>; availableReactions?: TypeChatReactions }) {
     super();
     this.canSetUsername = params.canSetUsername;
     this.hasScheduled = params.hasScheduled;
@@ -5263,57 +5168,7 @@ export class ChannelFull extends TypeChatFull {
     ];
   }
 
-  constructor(
-    params: {
-      canViewParticipants?: true;
-      canSetUsername?: true;
-      canSetStickers?: true;
-      hiddenPrehistory?: true;
-      canSetLocation?: true;
-      hasScheduled?: true;
-      canViewStats?: true;
-      blocked?: true;
-      canDeleteChannel?: true;
-      antispam?: true;
-      participantsHidden?: true;
-      translationsDisabled?: true;
-      id: bigint;
-      about: string;
-      participantsCount?: number;
-      adminsCount?: number;
-      kickedCount?: number;
-      bannedCount?: number;
-      onlineCount?: number;
-      readInboxMaxId: number;
-      readOutboxMaxId: number;
-      unreadCount: number;
-      chatPhoto: TypePhoto;
-      notifySettings: TypePeerNotifySettings;
-      exportedInvite?: TypeExportedChatInvite;
-      botInfo: Array<TypeBotInfo>;
-      migratedFromChatId?: bigint;
-      migratedFromMaxId?: number;
-      pinnedMsgId?: number;
-      stickerset?: TypeStickerSet;
-      availableMinId?: number;
-      folderId?: number;
-      linkedChatId?: bigint;
-      location?: TypeChannelLocation;
-      slowmodeSeconds?: number;
-      slowmodeNextSendDate?: number;
-      statsDc?: number;
-      pts: number;
-      call?: TypeInputGroupCall;
-      ttlPeriod?: number;
-      pendingSuggestions?: Array<string>;
-      groupcallDefaultJoinAs?: TypePeer;
-      themeEmoticon?: string;
-      requestsPending?: number;
-      recentRequesters?: Array<bigint>;
-      defaultSendAs?: TypePeer;
-      availableReactions?: TypeChatReactions;
-    },
-  ) {
+  constructor(params: { canViewParticipants?: true; canSetUsername?: true; canSetStickers?: true; hiddenPrehistory?: true; canSetLocation?: true; hasScheduled?: true; canViewStats?: true; blocked?: true; canDeleteChannel?: true; antispam?: true; participantsHidden?: true; translationsDisabled?: true; id: bigint; about: string; participantsCount?: number; adminsCount?: number; kickedCount?: number; bannedCount?: number; onlineCount?: number; readInboxMaxId: number; readOutboxMaxId: number; unreadCount: number; chatPhoto: TypePhoto; notifySettings: TypePeerNotifySettings; exportedInvite?: TypeExportedChatInvite; botInfo: Array<TypeBotInfo>; migratedFromChatId?: bigint; migratedFromMaxId?: number; pinnedMsgId?: number; stickerset?: TypeStickerSet; availableMinId?: number; folderId?: number; linkedChatId?: bigint; location?: TypeChannelLocation; slowmodeSeconds?: number; slowmodeNextSendDate?: number; statsDc?: number; pts: number; call?: TypeInputGroupCall; ttlPeriod?: number; pendingSuggestions?: Array<string>; groupcallDefaultJoinAs?: TypePeer; themeEmoticon?: string; requestsPending?: number; recentRequesters?: Array<bigint>; defaultSendAs?: TypePeer; availableReactions?: TypeChatReactions }) {
     super();
     this.canViewParticipants = params.canViewParticipants;
     this.canSetUsername = params.canSetUsername;
@@ -5716,40 +5571,7 @@ export class Message extends TypeMessage {
     ];
   }
 
-  constructor(
-    params: {
-      out?: true;
-      mentioned?: true;
-      mediaUnread?: true;
-      silent?: true;
-      post?: true;
-      fromScheduled?: true;
-      legacy?: true;
-      editHide?: true;
-      pinned?: true;
-      noforwards?: true;
-      id: number;
-      fromId?: TypePeer;
-      peerId: TypePeer;
-      fwdFrom?: TypeMessageFwdHeader;
-      viaBotId?: bigint;
-      replyTo?: TypeMessageReplyHeader;
-      date: number;
-      message: string;
-      media?: TypeMessageMedia;
-      replyMarkup?: TypeReplyMarkup;
-      entities?: Array<TypeMessageEntity>;
-      views?: number;
-      forwards?: number;
-      replies?: TypeMessageReplies;
-      editDate?: number;
-      postAuthor?: string;
-      groupedId?: bigint;
-      reactions?: TypeMessageReactions;
-      restrictionReason?: Array<TypeRestrictionReason>;
-      ttlPeriod?: number;
-    },
-  ) {
+  constructor(params: { out?: true; mentioned?: true; mediaUnread?: true; silent?: true; post?: true; fromScheduled?: true; legacy?: true; editHide?: true; pinned?: true; noforwards?: true; id: number; fromId?: TypePeer; peerId: TypePeer; fwdFrom?: TypeMessageFwdHeader; viaBotId?: bigint; replyTo?: TypeMessageReplyHeader; date: number; message: string; media?: TypeMessageMedia; replyMarkup?: TypeReplyMarkup; entities?: Array<TypeMessageEntity>; views?: number; forwards?: number; replies?: TypeMessageReplies; editDate?: number; postAuthor?: string; groupedId?: bigint; reactions?: TypeMessageReactions; restrictionReason?: Array<TypeRestrictionReason>; ttlPeriod?: number }) {
     super();
     this.out = params.out;
     this.mentioned = params.mentioned;
@@ -5904,11 +5726,11 @@ export class MessageMediaPhoto extends TypeMessageMedia {
     ];
   }
 
-  constructor(params: { spoiler?: true; photo?: TypePhoto; ttlSeconds?: number }) {
+  constructor(params?: { spoiler?: true; photo?: TypePhoto; ttlSeconds?: number }) {
     super();
-    this.spoiler = params.spoiler;
-    this.photo = params.photo;
-    this.ttlSeconds = params.ttlSeconds;
+    this.spoiler = params?.spoiler;
+    this.photo = params?.photo;
+    this.ttlSeconds = params?.ttlSeconds;
   }
 }
 
@@ -6029,13 +5851,13 @@ export class MessageMediaDocument extends TypeMessageMedia {
     ];
   }
 
-  constructor(params: { nopremium?: true; spoiler?: true; document?: TypeDocument; altDocument?: TypeDocument; ttlSeconds?: number }) {
+  constructor(params?: { nopremium?: true; spoiler?: true; document?: TypeDocument; altDocument?: TypeDocument; ttlSeconds?: number }) {
     super();
-    this.nopremium = params.nopremium;
-    this.spoiler = params.spoiler;
-    this.document = params.document;
-    this.altDocument = params.altDocument;
-    this.ttlSeconds = params.ttlSeconds;
+    this.nopremium = params?.nopremium;
+    this.spoiler = params?.spoiler;
+    this.document = params?.document;
+    this.altDocument = params?.altDocument;
+    this.ttlSeconds = params?.ttlSeconds;
   }
 }
 
@@ -6874,11 +6696,11 @@ export class MessageActionBotAllowed extends TypeMessageAction {
     ];
   }
 
-  constructor(params: { attachMenu?: true; domain?: string; app?: TypeBotApp }) {
+  constructor(params?: { attachMenu?: true; domain?: string; app?: TypeBotApp }) {
     super();
-    this.attachMenu = params.attachMenu;
-    this.domain = params.domain;
-    this.app = params.app;
+    this.attachMenu = params?.attachMenu;
+    this.domain = params?.domain;
+    this.app = params?.app;
   }
 }
 
@@ -7312,12 +7134,12 @@ export class MessageActionTopicEdit extends TypeMessageAction {
     ];
   }
 
-  constructor(params: { title?: string; iconEmojiId?: bigint; closed?: boolean; hidden?: boolean }) {
+  constructor(params?: { title?: string; iconEmojiId?: bigint; closed?: boolean; hidden?: boolean }) {
     super();
-    this.title = params.title;
-    this.iconEmojiId = params.iconEmojiId;
-    this.closed = params.closed;
-    this.hidden = params.hidden;
+    this.title = params?.title;
+    this.iconEmojiId = params?.iconEmojiId;
+    this.closed = params?.closed;
+    this.hidden = params?.hidden;
   }
 }
 
@@ -8018,9 +7840,9 @@ export class AuthAuthorizationSignUpRequired extends TypeAuthAuthorization {
     ];
   }
 
-  constructor(params: { termsOfService?: TypeHelpTermsOfService }) {
+  constructor(params?: { termsOfService?: TypeHelpTermsOfService }) {
     super();
-    this.termsOfService = params.termsOfService;
+    this.termsOfService = params?.termsOfService;
   }
 }
 
@@ -8200,15 +8022,15 @@ export class InputPeerNotifySettings extends TypeInputPeerNotifySettings {
     ];
   }
 
-  constructor(params: { showPreviews?: boolean; silent?: boolean; muteUntil?: number; sound?: TypeNotificationSound; storiesMuted?: boolean; storiesHideSender?: boolean; storiesSound?: TypeNotificationSound }) {
+  constructor(params?: { showPreviews?: boolean; silent?: boolean; muteUntil?: number; sound?: TypeNotificationSound; storiesMuted?: boolean; storiesHideSender?: boolean; storiesSound?: TypeNotificationSound }) {
     super();
-    this.showPreviews = params.showPreviews;
-    this.silent = params.silent;
-    this.muteUntil = params.muteUntil;
-    this.sound = params.sound;
-    this.storiesMuted = params.storiesMuted;
-    this.storiesHideSender = params.storiesHideSender;
-    this.storiesSound = params.storiesSound;
+    this.showPreviews = params?.showPreviews;
+    this.silent = params?.silent;
+    this.muteUntil = params?.muteUntil;
+    this.sound = params?.sound;
+    this.storiesMuted = params?.storiesMuted;
+    this.storiesHideSender = params?.storiesHideSender;
+    this.storiesSound = params?.storiesSound;
   }
 }
 
@@ -8263,19 +8085,19 @@ export class PeerNotifySettings extends TypePeerNotifySettings {
     ];
   }
 
-  constructor(params: { showPreviews?: boolean; silent?: boolean; muteUntil?: number; iosSound?: TypeNotificationSound; androidSound?: TypeNotificationSound; otherSound?: TypeNotificationSound; storiesMuted?: boolean; storiesHideSender?: boolean; storiesIosSound?: TypeNotificationSound; storiesAndroidSound?: TypeNotificationSound; storiesOtherSound?: TypeNotificationSound }) {
+  constructor(params?: { showPreviews?: boolean; silent?: boolean; muteUntil?: number; iosSound?: TypeNotificationSound; androidSound?: TypeNotificationSound; otherSound?: TypeNotificationSound; storiesMuted?: boolean; storiesHideSender?: boolean; storiesIosSound?: TypeNotificationSound; storiesAndroidSound?: TypeNotificationSound; storiesOtherSound?: TypeNotificationSound }) {
     super();
-    this.showPreviews = params.showPreviews;
-    this.silent = params.silent;
-    this.muteUntil = params.muteUntil;
-    this.iosSound = params.iosSound;
-    this.androidSound = params.androidSound;
-    this.otherSound = params.otherSound;
-    this.storiesMuted = params.storiesMuted;
-    this.storiesHideSender = params.storiesHideSender;
-    this.storiesIosSound = params.storiesIosSound;
-    this.storiesAndroidSound = params.storiesAndroidSound;
-    this.storiesOtherSound = params.storiesOtherSound;
+    this.showPreviews = params?.showPreviews;
+    this.silent = params?.silent;
+    this.muteUntil = params?.muteUntil;
+    this.iosSound = params?.iosSound;
+    this.androidSound = params?.androidSound;
+    this.otherSound = params?.otherSound;
+    this.storiesMuted = params?.storiesMuted;
+    this.storiesHideSender = params?.storiesHideSender;
+    this.storiesIosSound = params?.storiesIosSound;
+    this.storiesAndroidSound = params?.storiesAndroidSound;
+    this.storiesOtherSound = params?.storiesOtherSound;
   }
 }
 
@@ -8333,20 +8155,20 @@ export class PeerSettings extends TypePeerSettings {
     ];
   }
 
-  constructor(params: { reportSpam?: true; addContact?: true; blockContact?: true; shareContact?: true; needContactsException?: true; reportGeo?: true; autoarchived?: true; inviteMembers?: true; requestChatBroadcast?: true; geoDistance?: number; requestChatTitle?: string; requestChatDate?: number }) {
+  constructor(params?: { reportSpam?: true; addContact?: true; blockContact?: true; shareContact?: true; needContactsException?: true; reportGeo?: true; autoarchived?: true; inviteMembers?: true; requestChatBroadcast?: true; geoDistance?: number; requestChatTitle?: string; requestChatDate?: number }) {
     super();
-    this.reportSpam = params.reportSpam;
-    this.addContact = params.addContact;
-    this.blockContact = params.blockContact;
-    this.shareContact = params.shareContact;
-    this.needContactsException = params.needContactsException;
-    this.reportGeo = params.reportGeo;
-    this.autoarchived = params.autoarchived;
-    this.inviteMembers = params.inviteMembers;
-    this.requestChatBroadcast = params.requestChatBroadcast;
-    this.geoDistance = params.geoDistance;
-    this.requestChatTitle = params.requestChatTitle;
-    this.requestChatDate = params.requestChatDate;
+    this.reportSpam = params?.reportSpam;
+    this.addContact = params?.addContact;
+    this.blockContact = params?.blockContact;
+    this.shareContact = params?.shareContact;
+    this.needContactsException = params?.needContactsException;
+    this.reportGeo = params?.reportGeo;
+    this.autoarchived = params?.autoarchived;
+    this.inviteMembers = params?.inviteMembers;
+    this.requestChatBroadcast = params?.requestChatBroadcast;
+    this.geoDistance = params?.geoDistance;
+    this.requestChatTitle = params?.requestChatTitle;
+    this.requestChatDate = params?.requestChatDate;
   }
 }
 
@@ -8730,38 +8552,7 @@ export class UserFull extends TypeUserFull {
     ];
   }
 
-  constructor(
-    params: {
-      blocked?: true;
-      phoneCallsAvailable?: true;
-      phoneCallsPrivate?: true;
-      canPinMessage?: true;
-      hasScheduled?: true;
-      videoCallsAvailable?: true;
-      voiceMessagesForbidden?: true;
-      translationsDisabled?: true;
-      storiesPinnedAvailable?: true;
-      id: bigint;
-      about?: string;
-      settings: TypePeerSettings;
-      personalPhoto?: TypePhoto;
-      profilePhoto?: TypePhoto;
-      fallbackPhoto?: TypePhoto;
-      notifySettings: TypePeerNotifySettings;
-      botInfo?: TypeBotInfo;
-      pinnedMsgId?: number;
-      commonChatsCount: number;
-      folderId?: number;
-      ttlPeriod?: number;
-      themeEmoticon?: string;
-      privateForwardName?: string;
-      botGroupAdminRights?: TypeChatAdminRights;
-      botBroadcastAdminRights?: TypeChatAdminRights;
-      premiumGifts?: Array<TypePremiumGiftOption>;
-      wallpaper?: TypeWallPaper;
-      stories?: TypeUserStories;
-    },
-  ) {
+  constructor(params: { blocked?: true; phoneCallsAvailable?: true; phoneCallsPrivate?: true; canPinMessage?: true; hasScheduled?: true; videoCallsAvailable?: true; voiceMessagesForbidden?: true; translationsDisabled?: true; storiesPinnedAvailable?: true; id: bigint; about?: string; settings: TypePeerSettings; personalPhoto?: TypePhoto; profilePhoto?: TypePhoto; fallbackPhoto?: TypePhoto; notifySettings: TypePeerNotifySettings; botInfo?: TypeBotInfo; pinnedMsgId?: number; commonChatsCount: number; folderId?: number; ttlPeriod?: number; themeEmoticon?: string; privateForwardName?: string; botGroupAdminRights?: TypeChatAdminRights; botBroadcastAdminRights?: TypeChatAdminRights; premiumGifts?: Array<TypePremiumGiftOption>; wallpaper?: TypeWallPaper; stories?: TypeUserStories }) {
     super();
     this.blocked = params.blocked;
     this.phoneCallsAvailable = params.phoneCallsAvailable;
@@ -9627,9 +9418,9 @@ export class InputMessagesFilterPhoneCalls extends TypeMessagesFilter {
     ];
   }
 
-  constructor(params: { missed?: true }) {
+  constructor(params?: { missed?: true }) {
     super();
-    this.missed = params.missed;
+    this.missed = params?.missed;
   }
 }
 
@@ -10811,10 +10602,10 @@ export class UpdateStickerSets extends TypeUpdate {
     ];
   }
 
-  constructor(params: { masks?: true; emojis?: true }) {
+  constructor(params?: { masks?: true; emojis?: true }) {
     super();
-    this.masks = params.masks;
-    this.emojis = params.emojis;
+    this.masks = params?.masks;
+    this.emojis = params?.emojis;
   }
 }
 
@@ -11322,10 +11113,10 @@ export class UpdatePinnedDialogs extends TypeUpdate {
     ];
   }
 
-  constructor(params: { folderId?: number; order?: Array<TypeDialogPeer> }) {
+  constructor(params?: { folderId?: number; order?: Array<TypeDialogPeer> }) {
     super();
-    this.folderId = params.folderId;
-    this.order = params.order;
+    this.folderId = params?.folderId;
+    this.order = params?.order;
   }
 }
 
@@ -14250,57 +14041,7 @@ export class Config extends TypeConfig {
     ];
   }
 
-  constructor(
-    params: {
-      defaultP2pContacts?: true;
-      preloadFeaturedStickers?: true;
-      revokePmInbox?: true;
-      blockedMode?: true;
-      forceTryIpv6?: true;
-      date: number;
-      expires: number;
-      testMode: boolean;
-      thisDc: number;
-      dcOptions: Array<TypeDcOption>;
-      dcTxtDomainName: string;
-      chatSizeMax: number;
-      megagroupSizeMax: number;
-      forwardedCountMax: number;
-      onlineUpdatePeriodMs: number;
-      offlineBlurTimeoutMs: number;
-      offlineIdleTimeoutMs: number;
-      onlineCloudTimeoutMs: number;
-      notifyCloudDelayMs: number;
-      notifyDefaultDelayMs: number;
-      pushChatPeriodMs: number;
-      pushChatLimit: number;
-      editTimeLimit: number;
-      revokeTimeLimit: number;
-      revokePmTimeLimit: number;
-      ratingEDecay: number;
-      stickersRecentLimit: number;
-      channelsReadMediaPeriod: number;
-      tmpSessions?: number;
-      callReceiveTimeoutMs: number;
-      callRingTimeoutMs: number;
-      callConnectTimeoutMs: number;
-      callPacketTimeoutMs: number;
-      meUrlPrefix: string;
-      autoupdateUrlPrefix?: string;
-      gifSearchUsername?: string;
-      venueSearchUsername?: string;
-      imgSearchUsername?: string;
-      staticMapsProvider?: string;
-      captionLengthMax: number;
-      messageLengthMax: number;
-      webfileDcId: number;
-      suggestedLangCode?: string;
-      langPackVersion?: number;
-      baseLangPackVersion?: number;
-      reactionsDefault?: TypeReaction;
-      autologinToken?: string;
-    },
-  ) {
+  constructor(params: { defaultP2pContacts?: true; preloadFeaturedStickers?: true; revokePmInbox?: true; blockedMode?: true; forceTryIpv6?: true; date: number; expires: number; testMode: boolean; thisDc: number; dcOptions: Array<TypeDcOption>; dcTxtDomainName: string; chatSizeMax: number; megagroupSizeMax: number; forwardedCountMax: number; onlineUpdatePeriodMs: number; offlineBlurTimeoutMs: number; offlineIdleTimeoutMs: number; onlineCloudTimeoutMs: number; notifyCloudDelayMs: number; notifyDefaultDelayMs: number; pushChatPeriodMs: number; pushChatLimit: number; editTimeLimit: number; revokeTimeLimit: number; revokePmTimeLimit: number; ratingEDecay: number; stickersRecentLimit: number; channelsReadMediaPeriod: number; tmpSessions?: number; callReceiveTimeoutMs: number; callRingTimeoutMs: number; callConnectTimeoutMs: number; callPacketTimeoutMs: number; meUrlPrefix: string; autoupdateUrlPrefix?: string; gifSearchUsername?: string; venueSearchUsername?: string; imgSearchUsername?: string; staticMapsProvider?: string; captionLengthMax: number; messageLengthMax: number; webfileDcId: number; suggestedLangCode?: string; langPackVersion?: number; baseLangPackVersion?: number; reactionsDefault?: TypeReaction; autologinToken?: string }) {
     super();
     this.defaultP2pContacts = params.defaultP2pContacts;
     this.preloadFeaturedStickers = params.preloadFeaturedStickers;
@@ -17162,9 +16903,9 @@ export class WebPageNotModified extends TypeWebPage {
     ];
   }
 
-  constructor(params: { cachedPageViews?: number }) {
+  constructor(params?: { cachedPageViews?: number }) {
     super();
-    this.cachedPageViews = params.cachedPageViews;
+    this.cachedPageViews = params?.cachedPageViews;
   }
 }
 
@@ -17387,10 +17128,10 @@ export class AccountPasswordSettings extends TypeAccountPasswordSettings {
     ];
   }
 
-  constructor(params: { email?: string; secureSettings?: TypeSecureSecretSettings }) {
+  constructor(params?: { email?: string; secureSettings?: TypeSecureSecretSettings }) {
     super();
-    this.email = params.email;
-    this.secureSettings = params.secureSettings;
+    this.email = params?.email;
+    this.secureSettings = params?.secureSettings;
   }
 }
 
@@ -17427,13 +17168,13 @@ export class AccountPasswordInputSettings extends TypeAccountPasswordInputSettin
     ];
   }
 
-  constructor(params: { newAlgo?: TypePasswordKdfAlgo; newPasswordHash?: Uint8Array; hint?: string; email?: string; newSecureSettings?: TypeSecureSecretSettings }) {
+  constructor(params?: { newAlgo?: TypePasswordKdfAlgo; newPasswordHash?: Uint8Array; hint?: string; email?: string; newSecureSettings?: TypeSecureSecretSettings }) {
     super();
-    this.newAlgo = params.newAlgo;
-    this.newPasswordHash = params.newPasswordHash;
-    this.hint = params.hint;
-    this.email = params.email;
-    this.newSecureSettings = params.newSecureSettings;
+    this.newAlgo = params?.newAlgo;
+    this.newPasswordHash = params?.newPasswordHash;
+    this.hint = params?.hint;
+    this.email = params?.email;
+    this.newSecureSettings = params?.newSecureSettings;
   }
 }
 
@@ -18113,14 +17854,14 @@ export class BotInfo extends TypeBotInfo {
     ];
   }
 
-  constructor(params: { userId?: bigint; description?: string; descriptionPhoto?: TypePhoto; descriptionDocument?: TypeDocument; commands?: Array<TypeBotCommand>; menuButton?: TypeBotMenuButton }) {
+  constructor(params?: { userId?: bigint; description?: string; descriptionPhoto?: TypePhoto; descriptionDocument?: TypeDocument; commands?: Array<TypeBotCommand>; menuButton?: TypeBotMenuButton }) {
     super();
-    this.userId = params.userId;
-    this.description = params.description;
-    this.descriptionPhoto = params.descriptionPhoto;
-    this.descriptionDocument = params.descriptionDocument;
-    this.commands = params.commands;
-    this.menuButton = params.menuButton;
+    this.userId = params?.userId;
+    this.description = params?.description;
+    this.descriptionPhoto = params?.descriptionPhoto;
+    this.descriptionDocument = params?.descriptionDocument;
+    this.commands = params?.commands;
+    this.menuButton = params?.menuButton;
   }
 }
 
@@ -18660,9 +18401,9 @@ export class ReplyKeyboardHide extends TypeReplyMarkup {
     ];
   }
 
-  constructor(params: { selective?: true }) {
+  constructor(params?: { selective?: true }) {
     super();
-    this.selective = params.selective;
+    this.selective = params?.selective;
   }
 }
 
@@ -18693,11 +18434,11 @@ export class ReplyKeyboardForceReply extends TypeReplyMarkup {
     ];
   }
 
-  constructor(params: { singleUse?: true; selective?: true; placeholder?: string }) {
+  constructor(params?: { singleUse?: true; selective?: true; placeholder?: string }) {
     super();
-    this.singleUse = params.singleUse;
-    this.selective = params.selective;
-    this.placeholder = params.placeholder;
+    this.singleUse = params?.singleUse;
+    this.selective = params?.selective;
+    this.placeholder = params?.placeholder;
   }
 }
 
@@ -20130,10 +19871,10 @@ export class ChannelParticipantsMentions extends TypeChannelParticipantsFilter {
     ];
   }
 
-  constructor(params: { q?: string; topMsgId?: number }) {
+  constructor(params?: { q?: string; topMsgId?: number }) {
     super();
-    this.q = params.q;
-    this.topMsgId = params.topMsgId;
+    this.q = params?.q;
+    this.topMsgId = params?.topMsgId;
   }
 }
 
@@ -20547,9 +20288,9 @@ export class InputBotInlineMessageGame extends TypeInputBotInlineMessage {
     ];
   }
 
-  constructor(params: { replyMarkup?: TypeReplyMarkup }) {
+  constructor(params?: { replyMarkup?: TypeReplyMarkup }) {
     super();
-    this.replyMarkup = params.replyMarkup;
+    this.replyMarkup = params?.replyMarkup;
   }
 }
 
@@ -21585,10 +21326,10 @@ export class AuthSentCodeTypeSetUpEmailRequired extends TypeAuthSentCodeType {
     ];
   }
 
-  constructor(params: { appleSigninAllowed?: true; googleSigninAllowed?: true }) {
+  constructor(params?: { appleSigninAllowed?: true; googleSigninAllowed?: true }) {
     super();
-    this.appleSigninAllowed = params.appleSigninAllowed;
-    this.googleSigninAllowed = params.googleSigninAllowed;
+    this.appleSigninAllowed = params?.appleSigninAllowed;
+    this.googleSigninAllowed = params?.googleSigninAllowed;
   }
 }
 
@@ -21728,9 +21469,9 @@ export class MessagesMessageEditData extends TypeMessagesMessageEditData {
     ];
   }
 
-  constructor(params: { caption?: true }) {
+  constructor(params?: { caption?: true }) {
     super();
-    this.caption = params.caption;
+    this.caption = params?.caption;
   }
 }
 
@@ -22170,9 +21911,9 @@ export class DraftMessageEmpty extends TypeDraftMessage {
     ];
   }
 
-  constructor(params: { date?: number }) {
+  constructor(params?: { date?: number }) {
     super();
-    this.date = params.date;
+    this.date = params?.date;
   }
 }
 
@@ -24387,12 +24128,12 @@ export class PaymentRequestedInfo extends TypePaymentRequestedInfo {
     ];
   }
 
-  constructor(params: { name?: string; phone?: string; email?: string; shippingAddress?: TypePostAddress }) {
+  constructor(params?: { name?: string; phone?: string; email?: string; shippingAddress?: TypePostAddress }) {
     super();
-    this.name = params.name;
-    this.phone = params.phone;
-    this.email = params.email;
-    this.shippingAddress = params.shippingAddress;
+    this.name = params?.name;
+    this.phone = params?.phone;
+    this.email = params?.email;
+    this.shippingAddress = params?.shippingAddress;
   }
 }
 
@@ -24644,12 +24385,12 @@ export class InputWebFileAudioAlbumThumbLocation extends TypeInputWebFileLocatio
     ];
   }
 
-  constructor(params: { small?: true; document?: TypeInputDocument; title?: string; performer?: string }) {
+  constructor(params?: { small?: true; document?: TypeInputDocument; title?: string; performer?: string }) {
     super();
-    this.small = params.small;
-    this.document = params.document;
-    this.title = params.title;
-    this.performer = params.performer;
+    this.small = params?.small;
+    this.document = params?.document;
+    this.title = params?.title;
+    this.performer = params?.performer;
   }
 }
 
@@ -24805,10 +24546,10 @@ export class PaymentsValidatedRequestedInfo extends TypePaymentsValidatedRequest
     ];
   }
 
-  constructor(params: { id?: string; shippingOptions?: Array<TypeShippingOption> }) {
+  constructor(params?: { id?: string; shippingOptions?: Array<TypeShippingOption> }) {
     super();
-    this.id = params.id;
-    this.shippingOptions = params.shippingOptions;
+    this.id = params?.id;
+    this.shippingOptions = params?.shippingOptions;
   }
 }
 
@@ -24965,10 +24706,10 @@ export class PaymentsSavedInfo extends TypePaymentsSavedInfo {
     ];
   }
 
-  constructor(params: { hasSavedCredentials?: true; savedInfo?: TypePaymentRequestedInfo }) {
+  constructor(params?: { hasSavedCredentials?: true; savedInfo?: TypePaymentRequestedInfo }) {
     super();
-    this.hasSavedCredentials = params.hasSavedCredentials;
-    this.savedInfo = params.savedInfo;
+    this.hasSavedCredentials = params?.hasSavedCredentials;
+    this.savedInfo = params?.savedInfo;
   }
 }
 
@@ -27120,10 +26861,10 @@ export class ChannelAdminLogEventActionPinTopic extends TypeChannelAdminLogEvent
     ];
   }
 
-  constructor(params: { prevTopic?: TypeForumTopic; newTopic?: TypeForumTopic }) {
+  constructor(params?: { prevTopic?: TypeForumTopic; newTopic?: TypeForumTopic }) {
     super();
-    this.prevTopic = params.prevTopic;
-    this.newTopic = params.newTopic;
+    this.prevTopic = params?.prevTopic;
+    this.newTopic = params?.newTopic;
   }
 }
 
@@ -27294,26 +27035,26 @@ export class ChannelAdminLogEventsFilter extends TypeChannelAdminLogEventsFilter
     ];
   }
 
-  constructor(params: { join?: true; leave?: true; invite?: true; ban?: true; unban?: true; kick?: true; unkick?: true; promote?: true; demote?: true; info?: true; settings?: true; pinned?: true; edit?: true; delete?: true; groupCall?: true; invites?: true; send?: true; forums?: true }) {
+  constructor(params?: { join?: true; leave?: true; invite?: true; ban?: true; unban?: true; kick?: true; unkick?: true; promote?: true; demote?: true; info?: true; settings?: true; pinned?: true; edit?: true; delete?: true; groupCall?: true; invites?: true; send?: true; forums?: true }) {
     super();
-    this.join = params.join;
-    this.leave = params.leave;
-    this.invite = params.invite;
-    this.ban = params.ban;
-    this.unban = params.unban;
-    this.kick = params.kick;
-    this.unkick = params.unkick;
-    this.promote = params.promote;
-    this.demote = params.demote;
-    this.info = params.info;
-    this.settings = params.settings;
-    this.pinned = params.pinned;
-    this.edit = params.edit;
-    this.delete = params.delete;
-    this.groupCall = params.groupCall;
-    this.invites = params.invites;
-    this.send = params.send;
-    this.forums = params.forums;
+    this.join = params?.join;
+    this.leave = params?.leave;
+    this.invite = params?.invite;
+    this.ban = params?.ban;
+    this.unban = params?.unban;
+    this.kick = params?.kick;
+    this.unkick = params?.unkick;
+    this.promote = params?.promote;
+    this.demote = params?.demote;
+    this.info = params?.info;
+    this.settings = params?.settings;
+    this.pinned = params?.pinned;
+    this.edit = params?.edit;
+    this.delete = params?.delete;
+    this.groupCall = params?.groupCall;
+    this.invites = params?.invites;
+    this.send = params?.send;
+    this.forums = params?.forums;
   }
 }
 
@@ -29743,16 +29484,16 @@ export class PageTableCell extends TypePageTableCell {
     ];
   }
 
-  constructor(params: { header?: true; alignCenter?: true; alignRight?: true; valignMiddle?: true; valignBottom?: true; text?: TypeRichText; colspan?: number; rowspan?: number }) {
+  constructor(params?: { header?: true; alignCenter?: true; alignRight?: true; valignMiddle?: true; valignBottom?: true; text?: TypeRichText; colspan?: number; rowspan?: number }) {
     super();
-    this.header = params.header;
-    this.alignCenter = params.alignCenter;
-    this.alignRight = params.alignRight;
-    this.valignMiddle = params.valignMiddle;
-    this.valignBottom = params.valignBottom;
-    this.text = params.text;
-    this.colspan = params.colspan;
-    this.rowspan = params.rowspan;
+    this.header = params?.header;
+    this.alignCenter = params?.alignCenter;
+    this.alignRight = params?.alignRight;
+    this.valignMiddle = params?.valignMiddle;
+    this.valignBottom = params?.valignBottom;
+    this.text = params?.text;
+    this.colspan = params?.colspan;
+    this.rowspan = params?.rowspan;
   }
 }
 
@@ -30267,14 +30008,14 @@ export class PollResults extends TypePollResults {
     ];
   }
 
-  constructor(params: { min?: true; results?: Array<TypePollAnswerVoters>; totalVoters?: number; recentVoters?: Array<TypePeer>; solution?: string; solutionEntities?: Array<TypeMessageEntity> }) {
+  constructor(params?: { min?: true; results?: Array<TypePollAnswerVoters>; totalVoters?: number; recentVoters?: Array<TypePeer>; solution?: string; solutionEntities?: Array<TypeMessageEntity> }) {
     super();
-    this.min = params.min;
-    this.results = params.results;
-    this.totalVoters = params.totalVoters;
-    this.recentVoters = params.recentVoters;
-    this.solution = params.solution;
-    this.solutionEntities = params.solutionEntities;
+    this.min = params?.min;
+    this.results = params?.results;
+    this.totalVoters = params?.totalVoters;
+    this.recentVoters = params?.recentVoters;
+    this.solution = params?.solution;
+    this.solutionEntities = params?.solutionEntities;
   }
 }
 
@@ -30382,20 +30123,20 @@ export class ChatAdminRights extends TypeChatAdminRights {
     ];
   }
 
-  constructor(params: { changeInfo?: true; postMessages?: true; editMessages?: true; deleteMessages?: true; banUsers?: true; inviteUsers?: true; pinMessages?: true; addAdmins?: true; anonymous?: true; manageCall?: true; other?: true; manageTopics?: true }) {
+  constructor(params?: { changeInfo?: true; postMessages?: true; editMessages?: true; deleteMessages?: true; banUsers?: true; inviteUsers?: true; pinMessages?: true; addAdmins?: true; anonymous?: true; manageCall?: true; other?: true; manageTopics?: true }) {
     super();
-    this.changeInfo = params.changeInfo;
-    this.postMessages = params.postMessages;
-    this.editMessages = params.editMessages;
-    this.deleteMessages = params.deleteMessages;
-    this.banUsers = params.banUsers;
-    this.inviteUsers = params.inviteUsers;
-    this.pinMessages = params.pinMessages;
-    this.addAdmins = params.addAdmins;
-    this.anonymous = params.anonymous;
-    this.manageCall = params.manageCall;
-    this.other = params.other;
-    this.manageTopics = params.manageTopics;
+    this.changeInfo = params?.changeInfo;
+    this.postMessages = params?.postMessages;
+    this.editMessages = params?.editMessages;
+    this.deleteMessages = params?.deleteMessages;
+    this.banUsers = params?.banUsers;
+    this.inviteUsers = params?.inviteUsers;
+    this.pinMessages = params?.pinMessages;
+    this.addAdmins = params?.addAdmins;
+    this.anonymous = params?.anonymous;
+    this.manageCall = params?.manageCall;
+    this.other = params?.other;
+    this.manageTopics = params?.manageTopics;
   }
 }
 
@@ -30674,16 +30415,16 @@ export class CodeSettings extends TypeCodeSettings {
     ];
   }
 
-  constructor(params: { allowFlashcall?: true; currentNumber?: true; allowAppHash?: true; allowMissedCall?: true; allowFirebase?: true; logoutTokens?: Array<Uint8Array>; token?: string; appSandbox?: boolean }) {
+  constructor(params?: { allowFlashcall?: true; currentNumber?: true; allowAppHash?: true; allowMissedCall?: true; allowFirebase?: true; logoutTokens?: Array<Uint8Array>; token?: string; appSandbox?: boolean }) {
     super();
-    this.allowFlashcall = params.allowFlashcall;
-    this.currentNumber = params.currentNumber;
-    this.allowAppHash = params.allowAppHash;
-    this.allowMissedCall = params.allowMissedCall;
-    this.allowFirebase = params.allowFirebase;
-    this.logoutTokens = params.logoutTokens;
-    this.token = params.token;
-    this.appSandbox = params.appSandbox;
+    this.allowFlashcall = params?.allowFlashcall;
+    this.currentNumber = params?.currentNumber;
+    this.allowAppHash = params?.allowAppHash;
+    this.allowMissedCall = params?.allowMissedCall;
+    this.allowFirebase = params?.allowFirebase;
+    this.logoutTokens = params?.logoutTokens;
+    this.token = params?.token;
+    this.appSandbox = params?.appSandbox;
   }
 }
 
@@ -30729,16 +30470,16 @@ export class WallPaperSettings extends TypeWallPaperSettings {
     ];
   }
 
-  constructor(params: { blur?: true; motion?: true; backgroundColor?: number; secondBackgroundColor?: number; thirdBackgroundColor?: number; fourthBackgroundColor?: number; intensity?: number; rotation?: number }) {
+  constructor(params?: { blur?: true; motion?: true; backgroundColor?: number; secondBackgroundColor?: number; thirdBackgroundColor?: number; fourthBackgroundColor?: number; intensity?: number; rotation?: number }) {
     super();
-    this.blur = params.blur;
-    this.motion = params.motion;
-    this.backgroundColor = params.backgroundColor;
-    this.secondBackgroundColor = params.secondBackgroundColor;
-    this.thirdBackgroundColor = params.thirdBackgroundColor;
-    this.fourthBackgroundColor = params.fourthBackgroundColor;
-    this.intensity = params.intensity;
-    this.rotation = params.rotation;
+    this.blur = params?.blur;
+    this.motion = params?.motion;
+    this.backgroundColor = params?.backgroundColor;
+    this.secondBackgroundColor = params?.secondBackgroundColor;
+    this.thirdBackgroundColor = params?.thirdBackgroundColor;
+    this.fourthBackgroundColor = params?.fourthBackgroundColor;
+    this.intensity = params?.intensity;
+    this.rotation = params?.rotation;
   }
 }
 
@@ -31618,10 +31359,10 @@ export class AccountContentSettings extends TypeAccountContentSettings {
     ];
   }
 
-  constructor(params: { sensitiveEnabled?: true; sensitiveCanChange?: true }) {
+  constructor(params?: { sensitiveEnabled?: true; sensitiveCanChange?: true }) {
     super();
-    this.sensitiveEnabled = params.sensitiveEnabled;
-    this.sensitiveCanChange = params.sensitiveCanChange;
+    this.sensitiveEnabled = params?.sensitiveEnabled;
+    this.sensitiveCanChange = params?.sensitiveCanChange;
   }
 }
 
@@ -31870,10 +31611,10 @@ export class WebPageAttributeTheme extends TypeWebPageAttribute {
     ];
   }
 
-  constructor(params: { documents?: Array<TypeDocument>; settings?: TypeThemeSettings }) {
+  constructor(params?: { documents?: Array<TypeDocument>; settings?: TypeThemeSettings }) {
     super();
-    this.documents = params.documents;
-    this.settings = params.settings;
+    this.documents = params?.documents;
+    this.settings = params?.settings;
   }
 }
 
@@ -32448,25 +32189,7 @@ export class StatsBroadcastStats extends TypeStatsBroadcastStats {
     ];
   }
 
-  constructor(
-    params: {
-      period: TypeStatsDateRangeDays;
-      followers: TypeStatsAbsValueAndPrev;
-      viewsPerPost: TypeStatsAbsValueAndPrev;
-      sharesPerPost: TypeStatsAbsValueAndPrev;
-      enabledNotifications: TypeStatsPercentValue;
-      growthGraph: TypeStatsGraph;
-      followersGraph: TypeStatsGraph;
-      muteGraph: TypeStatsGraph;
-      topHoursGraph: TypeStatsGraph;
-      interactionsGraph: TypeStatsGraph;
-      ivInteractionsGraph: TypeStatsGraph;
-      viewsBySourceGraph: TypeStatsGraph;
-      newFollowersBySourceGraph: TypeStatsGraph;
-      languagesGraph: TypeStatsGraph;
-      recentMessageInteractions: Array<TypeMessageInteractionCounters>;
-    },
-  ) {
+  constructor(params: { period: TypeStatsDateRangeDays; followers: TypeStatsAbsValueAndPrev; viewsPerPost: TypeStatsAbsValueAndPrev; sharesPerPost: TypeStatsAbsValueAndPrev; enabledNotifications: TypeStatsPercentValue; growthGraph: TypeStatsGraph; followersGraph: TypeStatsGraph; muteGraph: TypeStatsGraph; topHoursGraph: TypeStatsGraph; interactionsGraph: TypeStatsGraph; ivInteractionsGraph: TypeStatsGraph; viewsBySourceGraph: TypeStatsGraph; newFollowersBySourceGraph: TypeStatsGraph; languagesGraph: TypeStatsGraph; recentMessageInteractions: Array<TypeMessageInteractionCounters> }) {
     super();
     this.period = params.period;
     this.followers = params.followers;
@@ -32833,27 +32556,7 @@ export class StatsMegagroupStats extends TypeStatsMegagroupStats {
     ];
   }
 
-  constructor(
-    params: {
-      period: TypeStatsDateRangeDays;
-      members: TypeStatsAbsValueAndPrev;
-      messages: TypeStatsAbsValueAndPrev;
-      viewers: TypeStatsAbsValueAndPrev;
-      posters: TypeStatsAbsValueAndPrev;
-      growthGraph: TypeStatsGraph;
-      membersGraph: TypeStatsGraph;
-      newMembersBySourceGraph: TypeStatsGraph;
-      languagesGraph: TypeStatsGraph;
-      messagesGraph: TypeStatsGraph;
-      actionsGraph: TypeStatsGraph;
-      topHoursGraph: TypeStatsGraph;
-      weekdaysGraph: TypeStatsGraph;
-      topPosters: Array<TypeStatsGroupTopPoster>;
-      topAdmins: Array<TypeStatsGroupTopAdmin>;
-      topInviters: Array<TypeStatsGroupTopInviter>;
-      users: Array<TypeUser>;
-    },
-  ) {
+  constructor(params: { period: TypeStatsDateRangeDays; members: TypeStatsAbsValueAndPrev; messages: TypeStatsAbsValueAndPrev; viewers: TypeStatsAbsValueAndPrev; posters: TypeStatsAbsValueAndPrev; growthGraph: TypeStatsGraph; membersGraph: TypeStatsGraph; newMembersBySourceGraph: TypeStatsGraph; languagesGraph: TypeStatsGraph; messagesGraph: TypeStatsGraph; actionsGraph: TypeStatsGraph; topHoursGraph: TypeStatsGraph; weekdaysGraph: TypeStatsGraph; topPosters: Array<TypeStatsGroupTopPoster>; topAdmins: Array<TypeStatsGroupTopAdmin>; topInviters: Array<TypeStatsGroupTopInviter>; users: Array<TypeUser> }) {
     super();
     this.period = params.period;
     this.members = params.members;
@@ -32902,11 +32605,11 @@ export class GlobalPrivacySettings extends TypeGlobalPrivacySettings {
     ];
   }
 
-  constructor(params: { archiveAndMuteNewNoncontactPeers?: true; keepArchivedUnmuted?: true; keepArchivedFolders?: true }) {
+  constructor(params?: { archiveAndMuteNewNoncontactPeers?: true; keepArchivedUnmuted?: true; keepArchivedFolders?: true }) {
     super();
-    this.archiveAndMuteNewNoncontactPeers = params.archiveAndMuteNewNoncontactPeers;
-    this.keepArchivedUnmuted = params.keepArchivedUnmuted;
-    this.keepArchivedFolders = params.keepArchivedFolders;
+    this.archiveAndMuteNewNoncontactPeers = params?.archiveAndMuteNewNoncontactPeers;
+    this.keepArchivedUnmuted = params?.keepArchivedUnmuted;
+    this.keepArchivedFolders = params?.keepArchivedFolders;
   }
 }
 
@@ -33062,11 +32765,11 @@ export class MessageViews extends TypeMessageViews {
     ];
   }
 
-  constructor(params: { views?: number; forwards?: number; replies?: TypeMessageReplies }) {
+  constructor(params?: { views?: number; forwards?: number; replies?: TypeMessageReplies }) {
     super();
-    this.views = params.views;
-    this.forwards = params.forwards;
-    this.replies = params.replies;
+    this.views = params?.views;
+    this.forwards = params?.forwards;
+    this.replies = params?.replies;
   }
 }
 
@@ -33833,11 +33536,11 @@ export class MessagesHistoryImportParsed extends TypeMessagesHistoryImportParsed
     ];
   }
 
-  constructor(params: { pm?: true; group?: true; title?: string }) {
+  constructor(params?: { pm?: true; group?: true; title?: string }) {
     super();
-    this.pm = params.pm;
-    this.group = params.group;
-    this.title = params.title;
+    this.pm = params?.pm;
+    this.group = params?.group;
+    this.title = params?.title;
   }
 }
 
@@ -34920,9 +34623,9 @@ export class AuthLoggedOut extends TypeAuthLoggedOut {
     ];
   }
 
-  constructor(params: { futureAuthToken?: Uint8Array }) {
+  constructor(params?: { futureAuthToken?: Uint8Array }) {
     super();
-    this.futureAuthToken = params.futureAuthToken;
+    this.futureAuthToken = params?.futureAuthToken;
   }
 }
 
@@ -35561,9 +35264,9 @@ export class WebViewMessageSent extends TypeWebViewMessageSent {
     ];
   }
 
-  constructor(params: { msgId?: TypeInputBotInlineMessageID }) {
+  constructor(params?: { msgId?: TypeInputBotInlineMessageID }) {
     super();
-    this.msgId = params.msgId;
+    this.msgId = params?.msgId;
   }
 }
 
@@ -36085,10 +35788,10 @@ export class InputStorePaymentPremiumSubscription extends TypeInputStorePaymentP
     ];
   }
 
-  constructor(params: { restore?: true; upgrade?: true }) {
+  constructor(params?: { restore?: true; upgrade?: true }) {
     super();
-    this.restore = params.restore;
-    this.upgrade = params.upgrade;
+    this.restore = params?.restore;
+    this.upgrade = params?.upgrade;
   }
 }
 
@@ -36423,9 +36126,9 @@ export class ChatReactionsAll extends TypeChatReactions {
     ];
   }
 
-  constructor(params: { allowCustom?: true }) {
+  constructor(params?: { allowCustom?: true }) {
     super();
-    this.allowCustom = params.allowCustom;
+    this.allowCustom = params?.allowCustom;
   }
 }
 
@@ -36811,12 +36514,12 @@ export class MessageExtendedMediaPreview extends TypeMessageExtendedMedia {
     ];
   }
 
-  constructor(params: { w?: number; h?: number; thumb?: TypePhotoSize; videoDuration?: number }) {
+  constructor(params?: { w?: number; h?: number; thumb?: TypePhotoSize; videoDuration?: number }) {
     super();
-    this.w = params.w;
-    this.h = params.h;
-    this.thumb = params.thumb;
-    this.videoDuration = params.videoDuration;
+    this.w = params?.w;
+    this.h = params?.h;
+    this.thumb = params?.thumb;
+    this.videoDuration = params?.videoDuration;
   }
 }
 
@@ -37162,10 +36865,10 @@ export class RequestPeerTypeUser extends TypeRequestPeerType {
     ];
   }
 
-  constructor(params: { bot?: boolean; premium?: boolean }) {
+  constructor(params?: { bot?: boolean; premium?: boolean }) {
     super();
-    this.bot = params.bot;
-    this.premium = params.premium;
+    this.bot = params?.bot;
+    this.premium = params?.premium;
   }
 }
 
@@ -37205,14 +36908,14 @@ export class RequestPeerTypeChat extends TypeRequestPeerType {
     ];
   }
 
-  constructor(params: { creator?: true; botParticipant?: true; hasUsername?: boolean; forum?: boolean; userAdminRights?: TypeChatAdminRights; botAdminRights?: TypeChatAdminRights }) {
+  constructor(params?: { creator?: true; botParticipant?: true; hasUsername?: boolean; forum?: boolean; userAdminRights?: TypeChatAdminRights; botAdminRights?: TypeChatAdminRights }) {
     super();
-    this.creator = params.creator;
-    this.botParticipant = params.botParticipant;
-    this.hasUsername = params.hasUsername;
-    this.forum = params.forum;
-    this.userAdminRights = params.userAdminRights;
-    this.botAdminRights = params.botAdminRights;
+    this.creator = params?.creator;
+    this.botParticipant = params?.botParticipant;
+    this.hasUsername = params?.hasUsername;
+    this.forum = params?.forum;
+    this.userAdminRights = params?.userAdminRights;
+    this.botAdminRights = params?.botAdminRights;
   }
 }
 
@@ -37246,12 +36949,12 @@ export class RequestPeerTypeBroadcast extends TypeRequestPeerType {
     ];
   }
 
-  constructor(params: { creator?: true; hasUsername?: boolean; userAdminRights?: TypeChatAdminRights; botAdminRights?: TypeChatAdminRights }) {
+  constructor(params?: { creator?: true; hasUsername?: boolean; userAdminRights?: TypeChatAdminRights; botAdminRights?: TypeChatAdminRights }) {
     super();
-    this.creator = params.creator;
-    this.hasUsername = params.hasUsername;
-    this.userAdminRights = params.userAdminRights;
-    this.botAdminRights = params.botAdminRights;
+    this.creator = params?.creator;
+    this.hasUsername = params?.hasUsername;
+    this.userAdminRights = params?.userAdminRights;
+    this.botAdminRights = params?.botAdminRights;
   }
 }
 
@@ -37463,11 +37166,11 @@ export class AutoSaveSettings extends TypeAutoSaveSettings {
     ];
   }
 
-  constructor(params: { photos?: true; videos?: true; videoMaxSize?: bigint }) {
+  constructor(params?: { photos?: true; videos?: true; videoMaxSize?: bigint }) {
     super();
-    this.photos = params.photos;
-    this.videos = params.videos;
-    this.videoMaxSize = params.videoMaxSize;
+    this.photos = params?.photos;
+    this.videos = params?.videos;
+    this.videoMaxSize = params?.videoMaxSize;
   }
 }
 
@@ -38766,1180 +38469,2350 @@ export class ExportedStoryLink extends TypeExportedStoryLink {
   }
 }
 
-export const map = new Map<number, TLObjectConstructor>(
-  [
-    [0x05162463, ResPQ],
-    [0xA9F55F95, PQInnerDataDC],
-    [0x56FDDF88, PQInnerDataTempDC],
-    [0xD0E8075C, ServerDHParamsOK],
-    [0xB5890DBA, ServerDHInnerData],
-    [0x6643B654, ClientDHInnerData],
-    [0x3BCBF734, DHGenOK],
-    [0x46DC1FB9, DHGenRetry],
-    [0xA69DAE02, DHGenFail],
-    [0x75A3F765, BindAuthKeyInner],
-    [0x2144CA19, RPCError],
-    [0x5E2AD36E, RPCAnswerUnknown],
-    [0xCD78E586, RPCAnswerDroppedRunning],
-    [0xA43AD8B7, RPCAnswerDropped],
-    [0x0949D9DC, FutureSalt],
-    [0xAE500895, FutureSalts],
-    [0x347773C5, Pong],
-    [0xE22045FC, DestroySessionOK],
-    [0x62D350C9, DestroySessionNone],
-    [0x9EC20908, NewSessionCreated],
-    [0x3072CFA1, GZIPPacked],
-    [0x62D6B459, MsgsAck],
-    [0xA7EFF811, BadMsgNotification],
-    [0xEDAB447B, BadServerSalt],
-    [0x7D861A08, MsgResendReq],
-    [0xDA69FB52, MsgsStateReq],
-    [0x04DEB57D, MsgsStateInfo],
-    [0x8CC0D131, MsgsAllInfo],
-    [0x276D3EC6, MsgDetailedInfo],
-    [0x809DB6DF, MsgNewDetailedInfo],
-    [0xF660E1D4, DestroyAuthKeyOK],
-    [0x0A9F2259, DestroyAuthKeyNone],
-    [0xEA109B13, DestroyAuthKeyFail],
-    [0x9299359F, HTTPWait],
-    [0x3FEDD339, True],
-    [0xC4B9F9BB, Error],
-    [0x56730BCC, Null],
-    [0x7F3B18EA, InputPeerEmpty],
-    [0x7DA07EC9, InputPeerSelf],
-    [0x35A95CB9, InputPeerChat],
-    [0xDDE8A54C, InputPeerUser],
-    [0x27BCBBFC, InputPeerChannel],
-    [0xA87B0A1C, InputPeerUserFromMessage],
-    [0xBD2A0840, InputPeerChannelFromMessage],
-    [0xB98886CF, InputUserEmpty],
-    [0xF7C1B13F, InputUserSelf],
-    [0xF21158C6, InputUser],
-    [0x1DA448E2, InputUserFromMessage],
-    [0xF392B7F4, InputPhoneContact],
-    [0xF52FF27F, InputFile],
-    [0xFA4F0BB5, InputFileBig],
-    [0x9664F57F, InputMediaEmpty],
-    [0x1E287D04, InputMediaUploadedPhoto],
-    [0xB3BA0635, InputMediaPhoto],
-    [0xF9C44144, InputMediaGeoPoint],
-    [0xF8AB7DFB, InputMediaContact],
-    [0x5B38C6C1, InputMediaUploadedDocument],
-    [0x33473058, InputMediaDocument],
-    [0xC13D1C11, InputMediaVenue],
-    [0xE5BBFE1A, InputMediaPhotoExternal],
-    [0xFB52DC99, InputMediaDocumentExternal],
-    [0xD33F43F3, InputMediaGame],
-    [0x8EB5A6D5, InputMediaInvoice],
-    [0x971FA843, InputMediaGeoLive],
-    [0x0F94E5F1, InputMediaPoll],
-    [0xE66FBF7B, InputMediaDice],
-    [0x9A86B58F, InputMediaStory],
-    [0x1CA48F57, InputChatPhotoEmpty],
-    [0xBDCDAEC0, InputChatUploadedPhoto],
-    [0x8953AD37, InputChatPhoto],
-    [0xE4C123D6, InputGeoPointEmpty],
-    [0x48222FAF, InputGeoPoint],
-    [0x1CD7BF0D, InputPhotoEmpty],
-    [0x3BB3B94A, InputPhoto],
-    [0xDFDAABE1, InputFileLocation],
-    [0xF5235D55, InputEncryptedFileLocation],
-    [0xBAD07584, InputDocumentFileLocation],
-    [0xCBC7EE28, InputSecureFileLocation],
-    [0x29BE5899, InputTakeoutFileLocation],
-    [0x40181FFE, InputPhotoFileLocation],
-    [0xD83466F3, InputPhotoLegacyFileLocation],
-    [0x37257E99, InputPeerPhotoFileLocation],
-    [0x9D84F3DB, InputStickerSetThumb],
-    [0x0598A92A, InputGroupCallStream],
-    [0x59511722, PeerUser],
-    [0x36C6019A, PeerChat],
-    [0xA2A5371E, PeerChannel],
-    [0xAA963B05, StorageFileUnknown],
-    [0x40BC6F52, StorageFilePartial],
-    [0x007EFE0E, StorageFileJpeg],
-    [0xCAE1AADF, StorageFileGif],
-    [0x0A4F63C0, StorageFilePng],
-    [0xAE1E508D, StorageFilePdf],
-    [0x528A0677, StorageFileMp3],
-    [0x4B09EBBC, StorageFileMov],
-    [0xB3CEA0E4, StorageFileMp4],
-    [0x1081464C, StorageFileWebp],
-    [0xD3BC4B7A, UserEmpty],
-    [0xABB5F120, User],
-    [0x4F11BAE1, UserProfilePhotoEmpty],
-    [0x82D1F706, UserProfilePhoto],
-    [0x09D05049, UserStatusEmpty],
-    [0xEDB93949, UserStatusOnline],
-    [0x008C703F, UserStatusOffline],
-    [0xE26F42F1, UserStatusRecently],
-    [0x07BF09FC, UserStatusLastWeek],
-    [0x77EBC742, UserStatusLastMonth],
-    [0x29562865, ChatEmpty],
-    [0x41CBF256, Chat],
-    [0x6592A1A7, ChatForbidden],
-    [0x83259464, Channel],
-    [0x17D493D5, ChannelForbidden],
-    [0xC9D31138, ChatFull],
-    [0xF2355507, ChannelFull],
-    [0xC02D4007, ChatParticipant],
-    [0xE46BCEE4, ChatParticipantCreator],
-    [0xA0933F5B, ChatParticipantAdmin],
-    [0x8763D3E1, ChatParticipantsForbidden],
-    [0x3CBC93F8, ChatParticipants],
-    [0x37C1011C, ChatPhotoEmpty],
-    [0x1C6E1C11, ChatPhoto],
-    [0x90A6CA84, MessageEmpty],
-    [0x38116EE0, Message],
-    [0x2B085862, MessageService],
-    [0x3DED6320, MessageMediaEmpty],
-    [0x695150D7, MessageMediaPhoto],
-    [0x56E0D474, MessageMediaGeo],
-    [0x70322949, MessageMediaContact],
-    [0x9F84F49E, MessageMediaUnsupported],
-    [0x4CF4D72D, MessageMediaDocument],
-    [0xA32DD600, MessageMediaWebPage],
-    [0x2EC0533F, MessageMediaVenue],
-    [0xFDB19008, MessageMediaGame],
-    [0xF6A548D3, MessageMediaInvoice],
-    [0xB940C666, MessageMediaGeoLive],
-    [0x4BD6E798, MessageMediaPoll],
-    [0x3F7EE58B, MessageMediaDice],
-    [0xCBB20D88, MessageMediaStory],
-    [0xB6AEF7B0, MessageActionEmpty],
-    [0xBD47CBAD, MessageActionChatCreate],
-    [0xB5A1CE5A, MessageActionChatEditTitle],
-    [0x7FCB13A8, MessageActionChatEditPhoto],
-    [0x95E3FBEF, MessageActionChatDeletePhoto],
-    [0x15CEFD00, MessageActionChatAddUser],
-    [0xA43F30CC, MessageActionChatDeleteUser],
-    [0x031224C3, MessageActionChatJoinedByLink],
-    [0x95D2AC92, MessageActionChannelCreate],
-    [0xE1037F92, MessageActionChatMigrateTo],
-    [0xEA3948E9, MessageActionChannelMigrateFrom],
-    [0x94BD38ED, MessageActionPinMessage],
-    [0x9FBAB604, MessageActionHistoryClear],
-    [0x92A72876, MessageActionGameScore],
-    [0x8F31B327, MessageActionPaymentSentMe],
-    [0x96163F56, MessageActionPaymentSent],
-    [0x80E11A7F, MessageActionPhoneCall],
-    [0x4792929B, MessageActionScreenshotTaken],
-    [0xFAE69F56, MessageActionCustomAction],
-    [0xC516D679, MessageActionBotAllowed],
-    [0x1B287353, MessageActionSecureValuesSentMe],
-    [0xD95C6154, MessageActionSecureValuesSent],
-    [0xF3F25F76, MessageActionContactSignUp],
-    [0x98E0D697, MessageActionGeoProximityReached],
-    [0x7A0D7F42, MessageActionGroupCall],
-    [0x502F92F7, MessageActionInviteToGroupCall],
-    [0x3C134D7B, MessageActionSetMessagesTTL],
-    [0xB3A07661, MessageActionGroupCallScheduled],
-    [0xAA786345, MessageActionSetChatTheme],
-    [0xEBBCA3CB, MessageActionChatJoinedByRequest],
-    [0x47DD8079, MessageActionWebViewDataSentMe],
-    [0xB4C38CB5, MessageActionWebViewDataSent],
-    [0xC83D6AEC, MessageActionGiftPremium],
-    [0x0D999256, MessageActionTopicCreate],
-    [0xC0944820, MessageActionTopicEdit],
-    [0x57DE635E, MessageActionSuggestProfilePhoto],
-    [0xFE77345D, MessageActionRequestedPeer],
-    [0xBC44A927, MessageActionSetChatWallPaper],
-    [0xC0787D6D, MessageActionSetSameChatWallPaper],
-    [0xD58A08C6, Dialog],
-    [0x71BD134C, DialogFolder],
-    [0x2331B22D, PhotoEmpty],
-    [0xFB197A65, Photo],
-    [0x0E17E23C, PhotoSizeEmpty],
-    [0x75C78E60, PhotoSize],
-    [0x021E1AD6, PhotoCachedSize],
-    [0xE0B0BC2E, PhotoStrippedSize],
-    [0xFA3EFB95, PhotoSizeProgressive],
-    [0xD8214D41, PhotoPathSize],
-    [0x1117DD5F, GeoPointEmpty],
-    [0xB2A2F663, GeoPoint],
-    [0x5E002502, AuthSentCode],
-    [0x2390FE44, AuthSentCodeSuccess],
-    [0x2EA2C0D4, AuthAuthorization],
-    [0x44747E9A, AuthAuthorizationSignUpRequired],
-    [0xB434E2B8, AuthExportedAuthorization],
-    [0xB8BC5B0C, InputNotifyPeer],
-    [0x193B4417, InputNotifyUsers],
-    [0x4A95E84E, InputNotifyChats],
-    [0xB1DB7C7E, InputNotifyBroadcasts],
-    [0x5C467992, InputNotifyForumTopic],
-    [0xCACB6AE2, InputPeerNotifySettings],
-    [0x99622C0C, PeerNotifySettings],
-    [0xA518110D, PeerSettings],
-    [0xA437C3ED, WallPaper],
-    [0xE0804116, WallPaperNoFile],
-    [0x58DBCAB8, InputReportReasonSpam],
-    [0x1E22C78D, InputReportReasonViolence],
-    [0x2E59D922, InputReportReasonPornography],
-    [0xADF44EE3, InputReportReasonChildAbuse],
-    [0xC1E4A2B1, InputReportReasonOther],
-    [0x9B89F93A, InputReportReasonCopyright],
-    [0xDBD4FEED, InputReportReasonGeoIrrelevant],
-    [0xF5DDD6E7, InputReportReasonFake],
-    [0x0A8EB2BE, InputReportReasonIllegalDrugs],
-    [0x9EC7863D, InputReportReasonPersonalDetails],
-    [0x4FE1CC86, UserFull],
-    [0x145ADE0B, Contact],
-    [0xC13E3C50, ImportedContact],
-    [0x16D9703B, ContactStatus],
-    [0xB74BA9D2, ContactsContactsNotModified],
-    [0xEAE87E42, ContactsContacts],
-    [0x77D01C3B, ContactsImportedContacts],
-    [0x0ADE1591, ContactsBlocked],
-    [0xE1664194, ContactsBlockedSlice],
-    [0x15BA6C40, MessagesDialogs],
-    [0x71E094F3, MessagesDialogsSlice],
-    [0xF0E3E596, MessagesDialogsNotModified],
-    [0x8C718E87, MessagesMessages],
-    [0x3A54685E, MessagesMessagesSlice],
-    [0xC776BA4E, MessagesChannelMessages],
-    [0x74535F21, MessagesMessagesNotModified],
-    [0x64FF9FD5, MessagesChats],
-    [0x9CD81144, MessagesChatsSlice],
-    [0xE5D7D19C, MessagesChatFull],
-    [0xB45C69D1, MessagesAffectedHistory],
-    [0x57E2F66C, InputMessagesFilterEmpty],
-    [0x9609A51C, InputMessagesFilterPhotos],
-    [0x9FC00E65, InputMessagesFilterVideo],
-    [0x56E9F0E4, InputMessagesFilterPhotoVideo],
-    [0x9EDDF188, InputMessagesFilterDocument],
-    [0x7EF0DD87, InputMessagesFilterURL],
-    [0xFFC86587, InputMessagesFilterGif],
-    [0x50F5C392, InputMessagesFilterVoice],
-    [0x3751B49E, InputMessagesFilterMusic],
-    [0x3A20ECB8, InputMessagesFilterChatPhotos],
-    [0x80C99768, InputMessagesFilterPhoneCalls],
-    [0x7A7C17A4, InputMessagesFilterRoundVoice],
-    [0xB549DA53, InputMessagesFilterRoundVideo],
-    [0xC1F8E69A, InputMessagesFilterMyMentions],
-    [0xE7026D0D, InputMessagesFilterGeo],
-    [0xE062DB83, InputMessagesFilterContacts],
-    [0x1BB00451, InputMessagesFilterPinned],
-    [0x1F2B0AFD, UpdateNewMessage],
-    [0x4E90BFD6, UpdateMessageID],
-    [0xA20DB0E5, UpdateDeleteMessages],
-    [0xC01E857F, UpdateUserTyping],
-    [0x83487AF0, UpdateChatUserTyping],
-    [0x07761198, UpdateChatParticipants],
-    [0xE5BDF8DE, UpdateUserStatus],
-    [0xA7848924, UpdateUserName],
-    [0x12BCBD9A, UpdateNewEncryptedMessage],
-    [0x1710F156, UpdateEncryptedChatTyping],
-    [0xB4A2E88D, UpdateEncryption],
-    [0x38FE25B7, UpdateEncryptedMessagesRead],
-    [0x3DDA5451, UpdateChatParticipantAdd],
-    [0xE32F3D77, UpdateChatParticipantDelete],
-    [0x8E5E9873, UpdateDcOptions],
-    [0xBEC268EF, UpdateNotifySettings],
-    [0xEBE46819, UpdateServiceNotification],
-    [0xEE3B272A, UpdatePrivacy],
-    [0x05492A13, UpdateUserPhone],
-    [0x9C974FDF, UpdateReadHistoryInbox],
-    [0x2F2F21BF, UpdateReadHistoryOutbox],
-    [0x7F891213, UpdateWebPage],
-    [0x68C13933, UpdateReadMessagesContents],
-    [0x108D941F, UpdateChannelTooLong],
-    [0x635B4C09, UpdateChannel],
-    [0x62BA04D9, UpdateNewChannelMessage],
-    [0x922E6E10, UpdateReadChannelInbox],
-    [0xC32D5B12, UpdateDeleteChannelMessages],
-    [0xF226AC08, UpdateChannelMessageViews],
-    [0xD7CA61A2, UpdateChatParticipantAdmin],
-    [0x688A30AA, UpdateNewStickerSet],
-    [0x0BB2D201, UpdateStickerSetsOrder],
-    [0x31C24808, UpdateStickerSets],
-    [0x9375341E, UpdateSavedGifs],
-    [0x496F379C, UpdateBotInlineQuery],
-    [0x12F12A07, UpdateBotInlineSend],
-    [0x1B3F4DF7, UpdateEditChannelMessage],
-    [0xB9CFC48D, UpdateBotCallbackQuery],
-    [0xE40370A3, UpdateEditMessage],
-    [0x691E9052, UpdateInlineBotCallbackQuery],
-    [0xB75F99A9, UpdateReadChannelOutbox],
-    [0x1B49EC6D, UpdateDraftMessage],
-    [0x571D2742, UpdateReadFeaturedStickers],
-    [0x9A422C20, UpdateRecentStickers],
-    [0xA229DD06, UpdateConfig],
-    [0x3354678F, UpdatePtsChanged],
-    [0x2F2BA99F, UpdateChannelWebPage],
-    [0x6E6FE51C, UpdateDialogPinned],
-    [0xFA0F3CA2, UpdatePinnedDialogs],
-    [0x8317C0C3, UpdateBotWebhookJSON],
-    [0x9B9240A6, UpdateBotWebhookJSONQuery],
-    [0xB5AEFD7D, UpdateBotShippingQuery],
-    [0x8CAA9A96, UpdateBotPrecheckoutQuery],
-    [0xAB0F6B1E, UpdatePhoneCall],
-    [0x46560264, UpdateLangPackTooLong],
-    [0x56022F4D, UpdateLangPack],
-    [0xE511996D, UpdateFavedStickers],
-    [0xEA29055D, UpdateChannelReadMessagesContents],
-    [0x7084A7BE, UpdateContactsReset],
-    [0xB23FC698, UpdateChannelAvailableMessages],
-    [0xE16459C3, UpdateDialogUnreadMark],
-    [0xACA1657B, UpdateMessagePoll],
-    [0x54C01850, UpdateChatDefaultBannedRights],
-    [0x19360DC0, UpdateFolderPeers],
-    [0x6A7E7366, UpdatePeerSettings],
-    [0xB4AFCFB0, UpdatePeerLocated],
-    [0x39A51DFB, UpdateNewScheduledMessage],
-    [0x90866CEE, UpdateDeleteScheduledMessages],
-    [0x8216FBA3, UpdateTheme],
-    [0x871FB939, UpdateGeoLiveViewed],
-    [0x564FE691, UpdateLoginToken],
-    [0x24F40E77, UpdateMessagePollVote],
-    [0x26FFDE7D, UpdateDialogFilter],
-    [0xA5D72105, UpdateDialogFilterOrder],
-    [0x3504914F, UpdateDialogFilters],
-    [0x2661BF09, UpdatePhoneCallSignalingData],
-    [0xD29A27F4, UpdateChannelMessageForwards],
-    [0xD6B19546, UpdateReadChannelDiscussionInbox],
-    [0x695C9E7C, UpdateReadChannelDiscussionOutbox],
-    [0x246A4B22, UpdatePeerBlocked],
-    [0x8C88C923, UpdateChannelUserTyping],
-    [0xED85EAB5, UpdatePinnedMessages],
-    [0x5BB98608, UpdatePinnedChannelMessages],
-    [0xF89A6A4E, UpdateChat],
-    [0xF2EBDB4E, UpdateGroupCallParticipants],
-    [0x14B24500, UpdateGroupCall],
-    [0xBB9BB9A5, UpdatePeerHistoryTTL],
-    [0xD087663A, UpdateChatParticipant],
-    [0x985D3ABB, UpdateChannelParticipant],
-    [0xC4870A49, UpdateBotStopped],
-    [0x0B783982, UpdateGroupCallConnection],
-    [0x4D712F2E, UpdateBotCommands],
-    [0x7063C3DB, UpdatePendingJoinRequests],
-    [0x11DFA986, UpdateBotChatInviteRequester],
-    [0x5E1B3CB8, UpdateMessageReactions],
-    [0x17B7A20B, UpdateAttachMenuBots],
-    [0x1592B79D, UpdateWebViewResultSent],
-    [0x14B85813, UpdateBotMenuButton],
-    [0x74D8BE99, UpdateSavedRingtones],
-    [0x0084CD5A, UpdateTranscribedAudio],
-    [0xFB4C496C, UpdateReadFeaturedEmojiStickers],
-    [0x28373599, UpdateUserEmojiStatus],
-    [0x30F443DB, UpdateRecentEmojiStatuses],
-    [0x6F7863F4, UpdateRecentReactions],
-    [0x86FCCF85, UpdateMoveStickerSetToTop],
-    [0x5A73A98C, UpdateMessageExtendedMedia],
-    [0x192EFBE3, UpdateChannelPinnedTopic],
-    [0xFE198602, UpdateChannelPinnedTopics],
-    [0x20529438, UpdateUser],
-    [0xEC05B097, UpdateAutoSaveSettings],
-    [0xCCF08AD6, UpdateGroupInvitePrivacyForbidden],
-    [0x205A4133, UpdateStory],
-    [0xFEB5345A, UpdateReadStories],
-    [0x1BF335B9, UpdateStoryID],
-    [0xA56C2A3E, UpdatesState],
-    [0x5D75A138, UpdatesDifferenceEmpty],
-    [0x00F49CA0, UpdatesDifference],
-    [0xA8FB1981, UpdatesDifferenceSlice],
-    [0x4AFE8F6D, UpdatesDifferenceTooLong],
-    [0xE317AF7E, UpdatesTooLong],
-    [0x313BC7F8, UpdateShortMessage],
-    [0x4D6DEEA5, UpdateShortChatMessage],
-    [0x78D4DEC1, UpdateShort],
-    [0x725B04C3, UpdatesCombined],
-    [0x74AE4240, Updates],
-    [0x9015E101, UpdateShortSentMessage],
-    [0x8DCA6AA5, PhotosPhotos],
-    [0x15051F54, PhotosPhotosSlice],
-    [0x20212CA8, PhotosPhoto],
-    [0x096A18D5, UploadFile],
-    [0xF18CDA44, UploadFileCdnRedirect],
-    [0x18B7A10D, DcOption],
-    [0xCC1A241E, Config],
-    [0x8E1A1775, NearestDc],
-    [0xCCBBCE30, HelpAppUpdate],
-    [0xC45A6536, HelpNoAppUpdate],
-    [0x18CB9F78, HelpInviteText],
-    [0xAB7EC0A0, EncryptedChatEmpty],
-    [0x66B25953, EncryptedChatWaiting],
-    [0x48F1D94C, EncryptedChatRequested],
-    [0x61F0D4C7, EncryptedChat],
-    [0x1E1C7C45, EncryptedChatDiscarded],
-    [0xF141B5E1, InputEncryptedChat],
-    [0xC21F497E, EncryptedFileEmpty],
-    [0xA8008CD8, EncryptedFile],
-    [0x1837C364, InputEncryptedFileEmpty],
-    [0x64BD0306, InputEncryptedFileUploaded],
-    [0x5A17B5E5, InputEncryptedFile],
-    [0x2DC173C8, InputEncryptedFileBigUploaded],
-    [0xED18C118, EncryptedMessage],
-    [0x23734B06, EncryptedMessageService],
-    [0xC0E24635, MessagesDhConfigNotModified],
-    [0x2C221EDD, MessagesDhConfig],
-    [0x560F8935, MessagesSentEncryptedMessage],
-    [0x9493FF32, MessagesSentEncryptedFile],
-    [0x72F0EAAE, InputDocumentEmpty],
-    [0x1ABFB575, InputDocument],
-    [0x36F8C871, DocumentEmpty],
-    [0x8FD4C4D8, Document],
-    [0x17C6B5F6, HelpSupport],
-    [0x9FD40BD8, NotifyPeer],
-    [0xB4C83B4C, NotifyUsers],
-    [0xC007CEC3, NotifyChats],
-    [0xD612E8EF, NotifyBroadcasts],
-    [0x226E6308, NotifyForumTopic],
-    [0x16BF744E, SendMessageTypingAction],
-    [0xFD5EC8F5, SendMessageCancelAction],
-    [0xA187D66F, SendMessageRecordVideoAction],
-    [0xE9763AEC, SendMessageUploadVideoAction],
-    [0xD52F73F7, SendMessageRecordAudioAction],
-    [0xF351D7AB, SendMessageUploadAudioAction],
-    [0xD1D34A26, SendMessageUploadPhotoAction],
-    [0xAA0CD9E4, SendMessageUploadDocumentAction],
-    [0x176F8BA1, SendMessageGeoLocationAction],
-    [0x628CBC6F, SendMessageChooseContactAction],
-    [0xDD6A8F48, SendMessageGamePlayAction],
-    [0x88F27FBC, SendMessageRecordRoundAction],
-    [0x243E1C66, SendMessageUploadRoundAction],
-    [0xD92C2285, SpeakingInGroupCallAction],
-    [0xDBDA9246, SendMessageHistoryImportAction],
-    [0xB05AC6B1, SendMessageChooseStickerAction],
-    [0x25972BCB, SendMessageEmojiInteraction],
-    [0xB665902E, SendMessageEmojiInteractionSeen],
-    [0xB3134D9D, ContactsFound],
-    [0x4F96CB18, InputPrivacyKeyStatusTimestamp],
-    [0xBDFB0426, InputPrivacyKeyChatInvite],
-    [0xFABADC5F, InputPrivacyKeyPhoneCall],
-    [0xDB9E70D2, InputPrivacyKeyPhoneP2P],
-    [0xA4DD4C08, InputPrivacyKeyForwards],
-    [0x5719BACC, InputPrivacyKeyProfilePhoto],
-    [0x0352DAFA, InputPrivacyKeyPhoneNumber],
-    [0xD1219BDD, InputPrivacyKeyAddedByPhone],
-    [0xAEE69D68, InputPrivacyKeyVoiceMessages],
-    [0x3823CC40, InputPrivacyKeyAbout],
-    [0xBC2EAB30, PrivacyKeyStatusTimestamp],
-    [0x500E6DFA, PrivacyKeyChatInvite],
-    [0x3D662B7B, PrivacyKeyPhoneCall],
-    [0x39491CC8, PrivacyKeyPhoneP2P],
-    [0x69EC56A3, PrivacyKeyForwards],
-    [0x96151FED, PrivacyKeyProfilePhoto],
-    [0xD19AE46D, PrivacyKeyPhoneNumber],
-    [0x42FFD42B, PrivacyKeyAddedByPhone],
-    [0x0697F414, PrivacyKeyVoiceMessages],
-    [0xA486B761, PrivacyKeyAbout],
-    [0x0D09E07B, InputPrivacyValueAllowContacts],
-    [0x184B35CE, InputPrivacyValueAllowAll],
-    [0x131CC67F, InputPrivacyValueAllowUsers],
-    [0x0BA52007, InputPrivacyValueDisallowContacts],
-    [0xD66B66C9, InputPrivacyValueDisallowAll],
-    [0x90110467, InputPrivacyValueDisallowUsers],
-    [0x840649CF, InputPrivacyValueAllowChatParticipants],
-    [0xE94F0F86, InputPrivacyValueDisallowChatParticipants],
-    [0x2F453E49, InputPrivacyValueAllowCloseFriends],
-    [0xFFFE1BAC, PrivacyValueAllowContacts],
-    [0x65427B82, PrivacyValueAllowAll],
-    [0xB8905FB2, PrivacyValueAllowUsers],
-    [0xF888FA1A, PrivacyValueDisallowContacts],
-    [0x8B73E763, PrivacyValueDisallowAll],
-    [0xE4621141, PrivacyValueDisallowUsers],
-    [0x6B134E8E, PrivacyValueAllowChatParticipants],
-    [0x41C87565, PrivacyValueDisallowChatParticipants],
-    [0xF7E8D89B, PrivacyValueAllowCloseFriends],
-    [0x50A04E45, AccountPrivacyRules],
-    [0xB8D0AFDF, AccountDaysTTL],
-    [0x6C37C15C, DocumentAttributeImageSize],
-    [0x11B58939, DocumentAttributeAnimated],
-    [0x6319D612, DocumentAttributeSticker],
-    [0xD38FF1C2, DocumentAttributeVideo],
-    [0x9852F9C6, DocumentAttributeAudio],
-    [0x15590068, DocumentAttributeFilename],
-    [0x9801D2F7, DocumentAttributeHasStickers],
-    [0xFD149899, DocumentAttributeCustomEmoji],
-    [0xF1749A22, MessagesStickersNotModified],
-    [0x30A6EC7E, MessagesStickers],
-    [0x12B299D4, StickerPack],
-    [0xE86602C3, MessagesAllStickersNotModified],
-    [0xCDBBCEBB, MessagesAllStickers],
-    [0x84D19185, MessagesAffectedMessages],
-    [0xEB1477E8, WebPageEmpty],
-    [0xC586DA1C, WebPagePending],
-    [0xE89C45B2, WebPage],
-    [0x7311CA11, WebPageNotModified],
-    [0xAD01D61D, Authorization],
-    [0x4BFF8EA0, AccountAuthorizations],
-    [0x957B50FB, AccountPassword],
-    [0x9A5C33E5, AccountPasswordSettings],
-    [0xC23727C9, AccountPasswordInputSettings],
-    [0x137948A5, AuthPasswordRecovery],
-    [0xA384B779, ReceivedNotifyMessage],
-    [0x0AB4A819, ChatInviteExported],
-    [0xED107AB7, ChatInvitePublicJoinRequests],
-    [0x5A686D7C, ChatInviteAlready],
-    [0x300C44C1, ChatInvite],
-    [0x61695CB0, ChatInvitePeek],
-    [0xFFB62B95, InputStickerSetEmpty],
-    [0x9DE7A269, InputStickerSetID],
-    [0x861CC8A0, InputStickerSetShortName],
-    [0x028703C8, InputStickerSetAnimatedEmoji],
-    [0xE67F520E, InputStickerSetDice],
-    [0x0CDE3739, InputStickerSetAnimatedEmojiAnimations],
-    [0xC88B3B02, InputStickerSetPremiumGifts],
-    [0x04C4D4CE, InputStickerSetEmojiGenericAnimations],
-    [0x29D0F5EE, InputStickerSetEmojiDefaultStatuses],
-    [0x44C1F8E9, InputStickerSetEmojiDefaultTopicIcons],
-    [0x2DD14EDC, StickerSet],
-    [0x6E153F16, MessagesStickerSet],
-    [0xD3F924EB, MessagesStickerSetNotModified],
-    [0xC27AC8C7, BotCommand],
-    [0x8F300B57, BotInfo],
-    [0xA2FA4880, KeyboardButton],
-    [0x258AFF05, KeyboardButtonURL],
-    [0x35BBDB6B, KeyboardButtonCallback],
-    [0xB16A6C29, KeyboardButtonRequestPhone],
-    [0xFC796B3F, KeyboardButtonRequestGeoLocation],
-    [0x93B9FBB5, KeyboardButtonSwitchInline],
-    [0x50F41CCF, KeyboardButtonGame],
-    [0xAFD93FBB, KeyboardButtonBuy],
-    [0x10B78D29, KeyboardButtonURLAuth],
-    [0xD02E7FD4, InputKeyboardButtonURLAuth],
-    [0xBBC7515D, KeyboardButtonRequestPoll],
-    [0xE988037B, InputKeyboardButtonUserProfile],
-    [0x308660C1, KeyboardButtonUserProfile],
-    [0x13767230, KeyboardButtonWebView],
-    [0xA0C0505C, KeyboardButtonSimpleWebView],
-    [0x0D0B468C, KeyboardButtonRequestPeer],
-    [0x77608B83, KeyboardButtonRow],
-    [0xA03E5B85, ReplyKeyboardHide],
-    [0x86B40B08, ReplyKeyboardForceReply],
-    [0x85DD99D1, ReplyKeyboardMarkup],
-    [0x48A30254, ReplyInlineMarkup],
-    [0xBB92BA95, MessageEntityUnknown],
-    [0xFA04579D, MessageEntityMention],
-    [0x6F635B0D, MessageEntityHashtag],
-    [0x6CEF8AC7, MessageEntityBotCommand],
-    [0x6ED02538, MessageEntityURL],
-    [0x64E475C2, MessageEntityEmail],
-    [0xBD610BC9, MessageEntityBold],
-    [0x826F8B60, MessageEntityItalic],
-    [0x28A20571, MessageEntityCode],
-    [0x73924BE0, MessageEntityPre],
-    [0x76A6D327, MessageEntityTextURL],
-    [0xDC7B1140, MessageEntityMentionName],
-    [0x208E68C9, InputMessageEntityMentionName],
-    [0x9B69E34B, MessageEntityPhone],
-    [0x4C4E743F, MessageEntityCashtag],
-    [0x9C4E7E8B, MessageEntityUnderline],
-    [0xBF0693D4, MessageEntityStrike],
-    [0x020DF5D0, MessageEntityBlockquote],
-    [0x761E6AF4, MessageEntityBankCard],
-    [0x32CA960F, MessageEntitySpoiler],
-    [0xC8CF05F8, MessageEntityCustomEmoji],
-    [0xEE8C1E86, InputChannelEmpty],
-    [0xF35AEC28, InputChannel],
-    [0x5B934F9D, InputChannelFromMessage],
-    [0x7F077AD9, ContactsResolvedPeer],
-    [0x0AE30253, MessageRange],
-    [0x3E11AFFB, UpdatesChannelDifferenceEmpty],
-    [0xA4BCC6FE, UpdatesChannelDifferenceTooLong],
-    [0x2064674E, UpdatesChannelDifference],
-    [0x94D42EE7, ChannelMessagesFilterEmpty],
-    [0xCD77D957, ChannelMessagesFilter],
-    [0xC00C07C0, ChannelParticipant],
-    [0x35A8BFA7, ChannelParticipantSelf],
-    [0x2FE601D3, ChannelParticipantCreator],
-    [0x34C3BB53, ChannelParticipantAdmin],
-    [0x6DF8014E, ChannelParticipantBanned],
-    [0x1B03F006, ChannelParticipantLeft],
-    [0xDE3F3C79, ChannelParticipantsRecent],
-    [0xB4608969, ChannelParticipantsAdmins],
-    [0xA3B54985, ChannelParticipantsKicked],
-    [0xB0D1865B, ChannelParticipantsBots],
-    [0x1427A5E1, ChannelParticipantsBanned],
-    [0x0656AC4B, ChannelParticipantsSearch],
-    [0xBB6AE88D, ChannelParticipantsContacts],
-    [0xE04B5CEB, ChannelParticipantsMentions],
-    [0x9AB0FEAF, ChannelsChannelParticipants],
-    [0xF0173FE9, ChannelsChannelParticipantsNotModified],
-    [0xDFB80317, ChannelsChannelParticipant],
-    [0x780A0310, HelpTermsOfService],
-    [0xE8025CA2, MessagesSavedGifsNotModified],
-    [0x84A02A0D, MessagesSavedGifs],
-    [0x3380C786, InputBotInlineMessageMediaAuto],
-    [0x3DCD7A87, InputBotInlineMessageText],
-    [0x96929A85, InputBotInlineMessageMediaGeo],
-    [0x417BBF11, InputBotInlineMessageMediaVenue],
-    [0xA6EDBFFD, InputBotInlineMessageMediaContact],
-    [0x4B425864, InputBotInlineMessageGame],
-    [0xD7E78225, InputBotInlineMessageMediaInvoice],
-    [0x88BF9319, InputBotInlineResult],
-    [0xA8D864A7, InputBotInlineResultPhoto],
-    [0xFFF8FDC4, InputBotInlineResultDocument],
-    [0x4FA417F2, InputBotInlineResultGame],
-    [0x764CF810, BotInlineMessageMediaAuto],
-    [0x8C7F65E2, BotInlineMessageText],
-    [0x051846FD, BotInlineMessageMediaGeo],
-    [0x8A86659C, BotInlineMessageMediaVenue],
-    [0x18D1CDC2, BotInlineMessageMediaContact],
-    [0x354A9B09, BotInlineMessageMediaInvoice],
-    [0x11965F3A, BotInlineResult],
-    [0x17DB940B, BotInlineMediaResult],
-    [0xE021F2F6, MessagesBotResults],
-    [0x5DAB1AF4, ExportedMessageLink],
-    [0x5F777DCE, MessageFwdHeader],
-    [0x72A3158C, AuthCodeTypeSms],
-    [0x741CD3E3, AuthCodeTypeCall],
-    [0x226CCEFB, AuthCodeTypeFlashCall],
-    [0xD61AD6EE, AuthCodeTypeMissedCall],
-    [0x06ED998C, AuthCodeTypeFragmentSms],
-    [0x3DBB5986, AuthSentCodeTypeApp],
-    [0xC000BBA2, AuthSentCodeTypeSms],
-    [0x5353E5A7, AuthSentCodeTypeCall],
-    [0xAB03C6D9, AuthSentCodeTypeFlashCall],
-    [0x82006484, AuthSentCodeTypeMissedCall],
-    [0xF450F59B, AuthSentCodeTypeEmailCode],
-    [0xA5491DEA, AuthSentCodeTypeSetUpEmailRequired],
-    [0xD9565C39, AuthSentCodeTypeFragmentSms],
-    [0xE57B1432, AuthSentCodeTypeFirebaseSms],
-    [0x36585EA4, MessagesBotCallbackAnswer],
-    [0x26B5DDE6, MessagesMessageEditData],
-    [0x890C3D89, InputBotInlineMessageID],
-    [0xB6D915D7, InputBotInlineMessageID64],
-    [0x3C20629F, InlineBotSwitchPM],
-    [0x3371C354, MessagesPeerDialogs],
-    [0xEDCDC05B, TopPeer],
-    [0xAB661B5B, TopPeerCategoryBotsPM],
-    [0x148677E2, TopPeerCategoryBotsInline],
-    [0x0637B7ED, TopPeerCategoryCorrespondents],
-    [0xBD17A14A, TopPeerCategoryGroups],
-    [0x161D9628, TopPeerCategoryChannels],
-    [0x1E76A78C, TopPeerCategoryPhoneCalls],
-    [0xA8406CA9, TopPeerCategoryForwardUsers],
-    [0xFBEEC0F0, TopPeerCategoryForwardChats],
-    [0xFB834291, TopPeerCategoryPeers],
-    [0xDE266EF5, ContactsTopPeersNotModified],
-    [0x70B772A8, ContactsTopPeers],
-    [0xB52C939D, ContactsTopPeersDisabled],
-    [0x1B0C841A, DraftMessageEmpty],
-    [0xFD8E711F, DraftMessage],
-    [0xC6DC0C66, MessagesFeaturedStickersNotModified],
-    [0xBE382906, MessagesFeaturedStickers],
-    [0x0B17F890, MessagesRecentStickersNotModified],
-    [0x88D37C56, MessagesRecentStickers],
-    [0x4FCBA9C8, MessagesArchivedStickers],
-    [0x38641628, MessagesStickerSetInstallResultSuccess],
-    [0x35E410A8, MessagesStickerSetInstallResultArchive],
-    [0x6410A5D2, StickerSetCovered],
-    [0x3407E51B, StickerSetMultiCovered],
-    [0x40D13C0E, StickerSetFullCovered],
-    [0x77B15D1C, StickerSetNoCovered],
-    [0xAED6DBB2, MaskCoords],
-    [0x4A992157, InputStickeredMediaPhoto],
-    [0x0438865B, InputStickeredMediaDocument],
-    [0xBDF9653B, Game],
-    [0x032C3E77, InputGameID],
-    [0xC331E80A, InputGameShortName],
-    [0x73A379EB, HighScore],
-    [0x9A3BFD99, MessagesHighScores],
-    [0xDC3D824F, TextEmpty],
-    [0x744694E0, TextPlain],
-    [0x6724ABC4, TextBold],
-    [0xD912A59C, TextItalic],
-    [0xC12622C4, TextUnderline],
-    [0x9BF8BB95, TextStrike],
-    [0x6C3F19B9, TextFixed],
-    [0x3C2884C1, TextURL],
-    [0xDE5A0DD6, TextEmail],
-    [0x7E6260D7, TextConcat],
-    [0xED6A8504, TextSubscript],
-    [0xC7FB5E01, TextSuperscript],
-    [0x034B8621, TextMarked],
-    [0x1CCB966A, TextPhone],
-    [0x081CCF4F, TextImage],
-    [0x35553762, TextAnchor],
-    [0x13567E8A, PageBlockUnsupported],
-    [0x70ABC3FD, PageBlockTitle],
-    [0x8FFA9A1F, PageBlockSubtitle],
-    [0xBAAFE5E0, PageBlockAuthorDate],
-    [0xBFD064EC, PageBlockHeader],
-    [0xF12BB6E1, PageBlockSubheader],
-    [0x467A0766, PageBlockParagraph],
-    [0xC070D93E, PageBlockPreformatted],
-    [0x48870999, PageBlockFooter],
-    [0xDB20B188, PageBlockDivider],
-    [0xCE0D37B0, PageBlockAnchor],
-    [0xE4E88011, PageBlockList],
-    [0x263D7C26, PageBlockBlockquote],
-    [0x4F4456D3, PageBlockPullquote],
-    [0x1759C560, PageBlockPhoto],
-    [0x7C8FE7B6, PageBlockVideo],
-    [0x39F23300, PageBlockCover],
-    [0xA8718DC5, PageBlockEmbed],
-    [0xF259A80B, PageBlockEmbedPost],
-    [0x65A0FA4D, PageBlockCollage],
-    [0x031F9590, PageBlockSlideshow],
-    [0xEF1751B5, PageBlockChannel],
-    [0x804361EA, PageBlockAudio],
-    [0x1E148390, PageBlockKicker],
-    [0xBF4DEA82, PageBlockTable],
-    [0x9A8AE1E1, PageBlockOrderedList],
-    [0x76768BED, PageBlockDetails],
-    [0x16115A96, PageBlockRelatedArticles],
-    [0xA44F3EF6, PageBlockMap],
-    [0x85E42301, PhoneCallDiscardReasonMissed],
-    [0xE095C1A0, PhoneCallDiscardReasonDisconnect],
-    [0x57ADC690, PhoneCallDiscardReasonHangup],
-    [0xFAF7E8C9, PhoneCallDiscardReasonBusy],
-    [0x7D748D04, DataJSON],
-    [0xCB296BF8, LabeledPrice],
-    [0x3E85A91B, Invoice],
-    [0xEA02C27E, PaymentCharge],
-    [0x1E8CAAEB, PostAddress],
-    [0x909C3F94, PaymentRequestedInfo],
-    [0xCDC27A1F, PaymentSavedCredentialsCard],
-    [0x1C570ED1, WebDocument],
-    [0xF9C8BCC6, WebDocumentNoProxy],
-    [0x9BED434D, InputWebDocument],
-    [0xC239D686, InputWebFileLocation],
-    [0x9F2221C9, InputWebFileGeoPointLocation],
-    [0xF46FE924, InputWebFileAudioAlbumThumbLocation],
-    [0x21E753BC, UploadWebFile],
-    [0xA0058751, PaymentsPaymentForm],
-    [0xD1451883, PaymentsValidatedRequestedInfo],
-    [0x4E5F810D, PaymentsPaymentResult],
-    [0xD8411139, PaymentsPaymentVerificationNeeded],
-    [0x70C4FE03, PaymentsPaymentReceipt],
-    [0xFB8FE43C, PaymentsSavedInfo],
-    [0xC10EB2CF, InputPaymentCredentialsSaved],
-    [0x3417D728, InputPaymentCredentials],
-    [0x0AA1C39F, InputPaymentCredentialsApplePay],
-    [0x8AC32801, InputPaymentCredentialsGooglePay],
-    [0xDB64FD34, AccountTmpPassword],
-    [0xB6213CDF, ShippingOption],
-    [0x32DA9E9C, InputStickerSetItem],
-    [0x1E36FDED, InputPhoneCall],
-    [0x5366C915, PhoneCallEmpty],
-    [0xC5226F17, PhoneCallWaiting],
-    [0x14B0ED0C, PhoneCallRequested],
-    [0x3660C311, PhoneCallAccepted],
-    [0x967F7C67, PhoneCall],
-    [0x50CA4DE1, PhoneCallDiscarded],
-    [0x9CC123C7, PhoneConnection],
-    [0x635FE375, PhoneConnectionWebrtc],
-    [0xFC878FC8, PhoneCallProtocol],
-    [0xEC82E140, PhonePhoneCall],
-    [0xEEA8E46E, UploadCdnFileReuploadNeeded],
-    [0xA99FCA4F, UploadCdnFile],
-    [0xC982EABA, CdnPublicKey],
-    [0x5725E40A, CdnConfig],
-    [0xCAD181F6, LangPackString],
-    [0x6C47AC9F, LangPackStringPluralized],
-    [0x2979EEB2, LangPackStringDeleted],
-    [0xF385C1F6, LangPackDifference],
-    [0xEECA5CE3, LangPackLanguage],
-    [0xE6DFB825, ChannelAdminLogEventActionChangeTitle],
-    [0x55188A2E, ChannelAdminLogEventActionChangeAbout],
-    [0x6A4AFC38, ChannelAdminLogEventActionChangeUsername],
-    [0x434BD2AF, ChannelAdminLogEventActionChangePhoto],
-    [0x1B7907AE, ChannelAdminLogEventActionToggleInvites],
-    [0x26AE0971, ChannelAdminLogEventActionToggleSignatures],
-    [0xE9E82C18, ChannelAdminLogEventActionUpdatePinned],
-    [0x709B2405, ChannelAdminLogEventActionEditMessage],
-    [0x42E047BB, ChannelAdminLogEventActionDeleteMessage],
-    [0x183040D3, ChannelAdminLogEventActionParticipantJoin],
-    [0xF89777F2, ChannelAdminLogEventActionParticipantLeave],
-    [0xE31C34D8, ChannelAdminLogEventActionParticipantInvite],
-    [0xE6D83D7E, ChannelAdminLogEventActionParticipantToggleBan],
-    [0xD5676710, ChannelAdminLogEventActionParticipantToggleAdmin],
-    [0xB1C3CAA7, ChannelAdminLogEventActionChangeStickerSet],
-    [0x5F5C95F1, ChannelAdminLogEventActionTogglePreHistoryHidden],
-    [0x2DF5FC0A, ChannelAdminLogEventActionDefaultBannedRights],
-    [0x8F079643, ChannelAdminLogEventActionStopPoll],
-    [0x050C7AC8, ChannelAdminLogEventActionChangeLinkedChat],
-    [0x0E6B76AE, ChannelAdminLogEventActionChangeLocation],
-    [0x53909779, ChannelAdminLogEventActionToggleSlowMode],
-    [0x23209745, ChannelAdminLogEventActionStartGroupCall],
-    [0xDB9F9140, ChannelAdminLogEventActionDiscardGroupCall],
-    [0xF92424D2, ChannelAdminLogEventActionParticipantMute],
-    [0xE64429C0, ChannelAdminLogEventActionParticipantUnmute],
-    [0x56D6A247, ChannelAdminLogEventActionToggleGroupCallSetting],
-    [0xFE9FC158, ChannelAdminLogEventActionParticipantJoinByInvite],
-    [0x5A50FCA4, ChannelAdminLogEventActionExportedInviteDelete],
-    [0x410A134E, ChannelAdminLogEventActionExportedInviteRevoke],
-    [0xE90EBB59, ChannelAdminLogEventActionExportedInviteEdit],
-    [0x3E7F6847, ChannelAdminLogEventActionParticipantVolume],
-    [0x6E941A38, ChannelAdminLogEventActionChangeHistoryTTL],
-    [0xAFB6144A, ChannelAdminLogEventActionParticipantJoinByRequest],
-    [0xCB2AC766, ChannelAdminLogEventActionToggleNoForwards],
-    [0x278F2868, ChannelAdminLogEventActionSendMessage],
-    [0xBE4E0EF8, ChannelAdminLogEventActionChangeAvailableReactions],
-    [0xF04FB3A9, ChannelAdminLogEventActionChangeUsernames],
-    [0x02CC6383, ChannelAdminLogEventActionToggleForum],
-    [0x58707D28, ChannelAdminLogEventActionCreateTopic],
-    [0xF06FE208, ChannelAdminLogEventActionEditTopic],
-    [0xAE168909, ChannelAdminLogEventActionDeleteTopic],
-    [0x5D8D353B, ChannelAdminLogEventActionPinTopic],
-    [0x64F36DFC, ChannelAdminLogEventActionToggleAntiSpam],
-    [0x1FAD68CD, ChannelAdminLogEvent],
-    [0xED8AF74D, ChannelsAdminLogResults],
-    [0xEA107AE4, ChannelAdminLogEventsFilter],
-    [0x5CE14175, PopularContact],
-    [0x9E8FA6D3, MessagesFavedStickersNotModified],
-    [0x2CB51097, MessagesFavedStickers],
-    [0x46E1D13D, RecentMeURLUnknown],
-    [0xB92C09E2, RecentMeURLUser],
-    [0xB2DA71D2, RecentMeURLChat],
-    [0xEB49081D, RecentMeURLChatInvite],
-    [0xBC0A57DC, RecentMeURLStickerSet],
-    [0x0E0310D7, HelpRecentMeURLs],
-    [0x1CC6E91F, InputSingleMedia],
-    [0xA6F8F452, WebAuthorization],
-    [0xED56C9FC, AccountWebAuthorizations],
-    [0xA676A322, InputMessageID],
-    [0xBAD88395, InputMessageReplyTo],
-    [0x86872538, InputMessagePinned],
-    [0xACFA1A7E, InputMessageCallbackQuery],
-    [0xFCAAFEB7, InputDialogPeer],
-    [0x64600527, InputDialogPeerFolder],
-    [0xE56DBF05, DialogPeer],
-    [0x514519E2, DialogPeerFolder],
-    [0x0D54B65D, MessagesFoundStickerSetsNotModified],
-    [0x8AF09DD2, MessagesFoundStickerSets],
-    [0xF39B035C, FileHash],
-    [0x75588B3F, InputClientProxy],
-    [0xE3309F7F, HelpTermsOfServiceUpdateEmpty],
-    [0x28ECF961, HelpTermsOfServiceUpdate],
-    [0x3334B0F0, InputSecureFileUploaded],
-    [0x5367E5BE, InputSecureFile],
-    [0x64199744, SecureFileEmpty],
-    [0x7D09C27E, SecureFile],
-    [0x8AEABEC3, SecureData],
-    [0x7D6099DD, SecurePlainPhone],
-    [0x21EC5A5F, SecurePlainEmail],
-    [0x9D2A81E3, SecureValueTypePersonalDetails],
-    [0x3DAC6A00, SecureValueTypePassport],
-    [0x06E425C4, SecureValueTypeDriverLicense],
-    [0xA0D0744B, SecureValueTypeIdentityCard],
-    [0x99A48F23, SecureValueTypeInternalPassport],
-    [0xCBE31E26, SecureValueTypeAddress],
-    [0xFC36954E, SecureValueTypeUtilityBill],
-    [0x89137C0D, SecureValueTypeBankStatement],
-    [0x8B883488, SecureValueTypeRentalAgreement],
-    [0x99E3806A, SecureValueTypePassportRegistration],
-    [0xEA02EC33, SecureValueTypeTemporaryRegistration],
-    [0xB320AADB, SecureValueTypePhone],
-    [0x8E3CA7EE, SecureValueTypeEmail],
-    [0x187FA0CA, SecureValue],
-    [0xDB21D0A7, InputSecureValue],
-    [0xED1ECDB0, SecureValueHash],
-    [0xE8A40BD9, SecureValueErrorData],
-    [0x00BE3DFA, SecureValueErrorFrontSide],
-    [0x868A2AA5, SecureValueErrorReverseSide],
-    [0xE537CED6, SecureValueErrorSelfie],
-    [0x7A700873, SecureValueErrorFile],
-    [0x666220E9, SecureValueErrorFiles],
-    [0x869D758F, SecureValueError],
-    [0xA1144770, SecureValueErrorTranslationFile],
-    [0x34636DD8, SecureValueErrorTranslationFiles],
-    [0x33F0EA47, SecureCredentialsEncrypted],
-    [0xAD2E1CD8, AccountAuthorizationForm],
-    [0x811F854F, AccountSentEmailCode],
-    [0x66AFA166, HelpDeepLinkInfoEmpty],
-    [0x6A4EE832, HelpDeepLinkInfo],
-    [0x1142BD56, SavedPhoneContact],
-    [0x4DBA4501, AccountTakeout],
-    [0xD45AB096, PasswordKdfAlgoUnknown],
-    [0x3A912D4A, PasswordKdfAlgoSHA256SHA256PBKDF2HMACSHA512iter100000SHA256ModPow],
-    [0x004A8537, SecurePasswordKdfAlgoUnknown],
-    [0xBBF2DDA0, SecurePasswordKdfAlgoPBKDF2HMACSHA512iter100000],
-    [0x86471D92, SecurePasswordKdfAlgoSHA512],
-    [0x1527BCAC, SecureSecretSettings],
-    [0x9880F658, InputCheckPasswordEmpty],
-    [0xD27FF082, InputCheckPasswordSRP],
-    [0x829D99DA, SecureRequiredType],
-    [0x027477B4, SecureRequiredTypeOneOf],
-    [0xBFB9F457, HelpPassportConfigNotModified],
-    [0xA098D6AF, HelpPassportConfig],
-    [0x1D1B1245, InputAppEvent],
-    [0xC0DE1BD9, JsonObjectValue],
-    [0x3F6D7B68, JsonNull],
-    [0xC7345E6A, JsonBool],
-    [0x2BE0DFA4, JsonNumber],
-    [0xB71E767A, JsonString],
-    [0xF7444763, JsonArray],
-    [0x99C1D49D, JsonObject],
-    [0x34566B6A, PageTableCell],
-    [0xE0C0C5E5, PageTableRow],
-    [0x6F747657, PageCaption],
-    [0xB92FB6CD, PageListItemText],
-    [0x25E073FC, PageListItemBlocks],
-    [0x5E068047, PageListOrderedItemText],
-    [0x98DD8936, PageListOrderedItemBlocks],
-    [0xB390DC08, PageRelatedArticle],
-    [0x98657F0D, Page],
-    [0x8C05F1C9, HelpSupportName],
-    [0xF3AE2EED, HelpUserInfoEmpty],
-    [0x01EB3758, HelpUserInfo],
-    [0x6CA9C2E9, PollAnswer],
-    [0x86E18161, Poll],
-    [0x3B6DDAD2, PollAnswerVoters],
-    [0x7ADF2420, PollResults],
-    [0xF041E250, ChatOnlines],
-    [0x47A971E0, StatsURL],
-    [0x5FB224D5, ChatAdminRights],
-    [0x9F120418, ChatBannedRights],
-    [0xE630B979, InputWallPaper],
-    [0x72091C80, InputWallPaperSlug],
-    [0x967A462E, InputWallPaperNoFile],
-    [0x1C199183, AccountWallPapersNotModified],
-    [0xCDC3858C, AccountWallPapers],
-    [0xAD253D78, CodeSettings],
-    [0x1DC1BCA4, WallPaperSettings],
-    [0xBAA57628, AutoDownloadSettings],
-    [0x63CACF26, AccountAutoDownloadSettings],
-    [0xD5B3B9F9, EmojiKeyword],
-    [0x236DF622, EmojiKeywordDeleted],
-    [0x5CC761BD, EmojiKeywordsDifference],
-    [0xA575739D, EmojiURL],
-    [0xB3FB5361, EmojiLanguage],
-    [0xFF544E65, Folder],
-    [0xFBD2C296, InputFolderPeer],
-    [0xE9BAA668, FolderPeer],
-    [0xE844EBFF, MessagesSearchCounter],
-    [0x92D33A0E, URLAuthResultRequest],
-    [0x8F8C0E4E, URLAuthResultAccepted],
-    [0xA9D6DB1F, URLAuthResultDefault],
-    [0xBFB5AD8B, ChannelLocationEmpty],
-    [0x209B82DB, ChannelLocation],
-    [0xCA461B5D, PeerLocated],
-    [0xF8EC284B, PeerSelfLocated],
-    [0xD072ACB4, RestrictionReason],
-    [0x3C5693E9, InputTheme],
-    [0xF5890DF1, InputThemeSlug],
-    [0xA00E67D6, Theme],
-    [0xF41EB622, AccountThemesNotModified],
-    [0x9A3D8C6D, AccountThemes],
-    [0x629F1980, AuthLoginToken],
-    [0x068E9916, AuthLoginTokenMigrateTo],
-    [0x390D5C5E, AuthLoginTokenSuccess],
-    [0x57E28221, AccountContentSettings],
-    [0xA927FEC5, MessagesInactiveChats],
-    [0xC3A12462, BaseThemeClassic],
-    [0xFBD81688, BaseThemeDay],
-    [0xB7B31EA8, BaseThemeNight],
-    [0x6D5F77EE, BaseThemeTinted],
-    [0x5B11125A, BaseThemeArctic],
-    [0x8FDE504F, InputThemeSettings],
-    [0xFA58B6D4, ThemeSettings],
-    [0x54B56617, WebPageAttributeTheme],
-    [0x939A4671, WebPageAttributeStory],
-    [0x4899484E, MessagesVotesList],
-    [0xF568028A, BankCardOpenURL],
-    [0x3E24E573, PaymentsBankCardData],
-    [0x7438F7E8, DialogFilter],
-    [0x363293AE, DialogFilterDefault],
-    [0xD64A04A8, DialogFilterChatlist],
-    [0x77744D4A, DialogFilterSuggested],
-    [0xB637EDAF, StatsDateRangeDays],
-    [0xCB43ACDE, StatsAbsValueAndPrev],
-    [0xCBCE2FE0, StatsPercentValue],
-    [0x4A27EB2D, StatsGraphAsync],
-    [0xBEDC9822, StatsGraphError],
-    [0x8EA464B6, StatsGraph],
-    [0xAD4FC9BD, MessageInteractionCounters],
-    [0xBDF78394, StatsBroadcastStats],
-    [0x98F6AC75, HelpPromoDataEmpty],
-    [0x8C39793F, HelpPromoData],
-    [0xDE33B094, VideoSize],
-    [0xF85C413C, VideoSizeEmojiMarkup],
-    [0x0DA082FE, VideoSizeStickerMarkup],
-    [0x9D04AF9B, StatsGroupTopPoster],
-    [0xD7584C87, StatsGroupTopAdmin],
-    [0x535F779D, StatsGroupTopInviter],
-    [0xEF7FF916, StatsMegagroupStats],
-    [0x734C4CCB, GlobalPrivacySettings],
-    [0x4203C5EF, HelpCountryCode],
-    [0xC3878E23, HelpCountry],
-    [0x93CC1F32, HelpCountriesListNotModified],
-    [0x87D0759E, HelpCountriesList],
-    [0x455B853D, MessageViews],
-    [0xB6C4F543, MessagesMessageViews],
-    [0xA6341782, MessagesDiscussionMessage],
-    [0xA6D57763, MessageReplyHeader],
-    [0x9C98BFC1, MessageReplyStoryHeader],
-    [0x83D60FC2, MessageReplies],
-    [0xE8FD8014, PeerBlocked],
-    [0x8999F295, StatsMessageStats],
-    [0x7780BCB4, GroupCallDiscarded],
-    [0xD597650C, GroupCall],
-    [0xD8AA840F, InputGroupCall],
-    [0xEBA636FE, GroupCallParticipant],
-    [0x9E727AAD, PhoneGroupCall],
-    [0xF47751B6, PhoneGroupParticipants],
-    [0x3081ED9D, InlineQueryPeerTypeSameBotPM],
-    [0x833C0FAC, InlineQueryPeerTypePM],
-    [0xD766C50A, InlineQueryPeerTypeChat],
-    [0x5EC4BE43, InlineQueryPeerTypeMegagroup],
-    [0x6334EE9A, InlineQueryPeerTypeBroadcast],
-    [0x0E3B2D0C, InlineQueryPeerTypeBotPM],
-    [0x1662AF0B, MessagesHistoryImport],
-    [0x5E0FB7B9, MessagesHistoryImportParsed],
-    [0xEF8D3E6C, MessagesAffectedFoundMessages],
-    [0x8C5ADFD9, ChatInviteImporter],
-    [0xBDC62DCC, MessagesExportedChatInvites],
-    [0x1871BE50, MessagesExportedChatInvite],
-    [0x222600EF, MessagesExportedChatInviteReplaced],
-    [0x81B6B00A, MessagesChatInviteImporters],
-    [0xF2ECEF23, ChatAdminWithInvites],
-    [0xB69B72D7, MessagesChatAdminsWithInvites],
-    [0xA24DE717, MessagesCheckedHistoryImportPeer],
-    [0xAFE5623F, PhoneJoinAsPeers],
-    [0x204BD158, PhoneExportedGroupCallInvite],
-    [0xDCB118B7, GroupCallParticipantVideoSourceGroup],
-    [0x67753AC8, GroupCallParticipantVideo],
-    [0x85FEA03F, StickersSuggestedShortName],
-    [0x2F6CB2AB, BotCommandScopeDefault],
-    [0x3C4F04D8, BotCommandScopeUsers],
-    [0x6FE1A881, BotCommandScopeChats],
-    [0xB9AA606A, BotCommandScopeChatAdmins],
-    [0xDB9D897D, BotCommandScopePeer],
-    [0x3FD863D1, BotCommandScopePeerAdmins],
-    [0x0A1321F3, BotCommandScopePeerUser],
-    [0xE3779861, AccountResetPasswordFailedWait],
-    [0xE9EFFC7D, AccountResetPasswordRequestedWait],
-    [0xE926D63E, AccountResetPasswordOk],
-    [0xDAAFFF6B, SponsoredMessage],
-    [0xC9EE1D87, MessagesSponsoredMessages],
-    [0x1839490F, MessagesSponsoredMessagesEmpty],
-    [0xC9B0539F, SearchResultsCalendarPeriod],
-    [0x147EE23C, MessagesSearchResultsCalendar],
-    [0x7F648B67, SearchResultPosition],
-    [0x53B22BAF, MessagesSearchResultsPositions],
-    [0xF496B0C6, ChannelsSendAsPeers],
-    [0x3B6D152E, UsersUserFull],
-    [0x6880B94D, MessagesPeerSettings],
-    [0xC3A2835F, AuthLoggedOut],
-    [0xA3D1CB80, ReactionCount],
-    [0x4F2B9479, MessageReactions],
-    [0x31BD492D, MessagesMessageReactionsList],
-    [0xC077EC01, AvailableReaction],
-    [0x9F071957, MessagesAvailableReactionsNotModified],
-    [0x768E3AAD, MessagesAvailableReactions],
-    [0x8C79B63C, MessagePeerReaction],
-    [0x80EB48AF, GroupCallStreamChannel],
-    [0xD0E482B2, PhoneGroupCallStreamChannels],
-    [0x2DBF3432, PhoneGroupCallStreamRtmpURL],
-    [0x4576F3F0, AttachMenuBotIconColor],
-    [0xB2A7386B, AttachMenuBotIcon],
-    [0xC8AA2CD2, AttachMenuBot],
-    [0xF1D88A5C, AttachMenuBotsNotModified],
-    [0x3C4301C0, AttachMenuBots],
-    [0x93BF667F, AttachMenuBotsBot],
-    [0x0C14557C, WebViewResultURL],
-    [0x882F76BB, SimpleWebViewResultURL],
-    [0x0C94511C, WebViewMessageSent],
-    [0x7533A588, BotMenuButtonDefault],
-    [0x4258C205, BotMenuButtonCommands],
-    [0xC7B57CE6, BotMenuButton],
-    [0xFBF6E8B1, AccountSavedRingtonesNotModified],
-    [0xC1E92CC5, AccountSavedRingtones],
-    [0x97E8BEBE, NotificationSoundDefault],
-    [0x6F0C34DF, NotificationSoundNone],
-    [0x830B9AE4, NotificationSoundLocal],
-    [0xFF6C8049, NotificationSoundRingtone],
-    [0xB7263F6D, AccountSavedRingtone],
-    [0x1F307EB7, AccountSavedRingtoneConverted],
-    [0x7D6BE90E, AttachMenuPeerTypeSameBotPM],
-    [0xC32BFA1A, AttachMenuPeerTypeBotPM],
-    [0xF146D31F, AttachMenuPeerTypePM],
-    [0x0509113F, AttachMenuPeerTypeChat],
-    [0x7BFBDEFC, AttachMenuPeerTypeBroadcast],
-    [0xC5B56859, InputInvoiceMessage],
-    [0xC326CAEF, InputInvoiceSlug],
-    [0xAED0CBD9, PaymentsExportedInvoice],
-    [0x93752C52, MessagesTranscribedAudio],
-    [0x5334759C, HelpPremiumPromo],
-    [0xA6751E66, InputStorePaymentPremiumSubscription],
-    [0x616F7FE8, InputStorePaymentGiftPremium],
-    [0x74C34319, PremiumGiftOption],
-    [0x88F8F21B, PaymentFormMethod],
-    [0x2DE11AAE, EmojiStatusEmpty],
-    [0x929B619D, EmojiStatus],
-    [0xFA30A8C7, EmojiStatusUntil],
-    [0xD08CE645, AccountEmojiStatusesNotModified],
-    [0x90C467D1, AccountEmojiStatuses],
-    [0x79F5D419, ReactionEmpty],
-    [0x1B2286B8, ReactionEmoji],
-    [0x8935FC73, ReactionCustomEmoji],
-    [0xEAFC32BC, ChatReactionsNone],
-    [0x52928BCA, ChatReactionsAll],
-    [0x661D4037, ChatReactionsSome],
-    [0xB06FDBDF, MessagesReactionsNotModified],
-    [0xEAFDF716, MessagesReactions],
-    [0x4345BE73, EmailVerifyPurposeLoginSetup],
-    [0x527D22EB, EmailVerifyPurposeLoginChange],
-    [0xBBF51685, EmailVerifyPurposePassport],
-    [0x922E55A9, EmailVerificationCode],
-    [0xDB909EC2, EmailVerificationGoogle],
-    [0x96D074FD, EmailVerificationApple],
-    [0x2B96CD1B, AccountEmailVerified],
-    [0xE1BB0D61, AccountEmailVerifiedLogin],
-    [0x5F2D1DF2, PremiumSubscriptionOption],
-    [0xB81C7034, SendAsPeer],
-    [0xAD628CC8, MessageExtendedMediaPreview],
-    [0xEE479C64, MessageExtendedMedia],
-    [0xFCFEB29C, StickerKeyword],
-    [0xB4073647, Username],
-    [0x023F109B, ForumTopicDeleted],
-    [0x71701DA9, ForumTopic],
-    [0x367617D3, MessagesForumTopics],
-    [0x43B46B20, DefaultHistoryTTL],
-    [0x41BF109B, ExportedContactToken],
-    [0x5F3B8A00, RequestPeerTypeUser],
-    [0xC9F06E1B, RequestPeerTypeChat],
-    [0x339BEF6C, RequestPeerTypeBroadcast],
-    [0x481EADFA, EmojiListNotModified],
-    [0x7A1E11D1, EmojiList],
-    [0x7A9ABDA9, EmojiGroup],
-    [0x6FB4AD87, MessagesEmojiGroupsNotModified],
-    [0x881FB94B, MessagesEmojiGroups],
-    [0x751F3146, TextWithEntities],
-    [0x33DB32F8, MessagesTranslateResult],
-    [0xC84834CE, AutoSaveSettings],
-    [0x81602D47, AutoSaveException],
-    [0x4C3E069D, AccountAutoSaveSettings],
-    [0x7CDE641D, HelpAppConfigNotModified],
-    [0xDD18782E, HelpAppConfig],
-    [0xA920BD7A, InputBotAppID],
-    [0x908C0407, InputBotAppShortName],
-    [0x5DA674B7, BotAppNotModified],
-    [0x95FCD1D6, BotApp],
-    [0xEB50ADF5, MessagesBotApp],
-    [0x3C1B4F0D, AppWebViewResultURL],
-    [0xB57295D5, InlineBotWebView],
-    [0x4A4FF172, ReadParticipantDate],
-    [0xF3E0DA33, InputChatlistDialogFilter],
-    [0x0C5181AC, ExportedChatlistInvite],
-    [0x10E6E3A6, ChatlistsExportedChatlistInvite],
-    [0x10AB6DC7, ChatlistsExportedInvites],
-    [0xFA87F659, ChatlistsChatlistInviteAlready],
-    [0x1DCD839D, ChatlistsChatlistInvite],
-    [0x93BD878D, ChatlistsChatlistUpdates],
-    [0xE8A775B0, BotsBotInfo],
-    [0xB6CC2D5C, MessagePeerVote],
-    [0x74CDA504, MessagePeerVoteInputOption],
-    [0x4628F6E6, MessagePeerVoteMultiple],
-    [0x3DB8EC63, SponsoredWebPage],
-    [0xD36760CF, StoryViews],
-    [0x51E6EE4F, StoryItemDeleted],
-    [0xFFADC913, StoryItemSkipped],
-    [0x562AA637, StoryItem],
-    [0x8611A200, UserStories],
-    [0x47E0A07E, StoriesAllStoriesNotModified],
-    [0x839E0428, StoriesAllStories],
-    [0x4FE57DF1, StoriesStories],
-    [0x37A6FF5F, StoriesUserStories],
-    [0xA71AACC2, StoryView],
-    [0xFB3F77AC, StoriesStoryViewsList],
-    [0xDE9EED1D, StoriesStoryViews],
-    [0x9C5386E4, InputReplyToMessage],
-    [0x15B0F283, InputReplyToStory],
-    [0x3FC9053B, ExportedStoryLink],
-    // deno-lint-ignore no-explicit-any
-  ] as const as any,
-);
+export const map = new Map<number, TLObjectConstructor>([
+[0x05162463, ResPQ],
+
+[0xA9F55F95, PQInnerDataDC],
+
+[0x56FDDF88, PQInnerDataTempDC],
+
+[0xD0E8075C, ServerDHParamsOK],
+
+[0xB5890DBA, ServerDHInnerData],
+
+[0x6643B654, ClientDHInnerData],
+
+[0x3BCBF734, DHGenOK],
+
+[0x46DC1FB9, DHGenRetry],
+
+[0xA69DAE02, DHGenFail],
+
+[0x75A3F765, BindAuthKeyInner],
+
+[0x2144CA19, RPCError],
+
+[0x5E2AD36E, RPCAnswerUnknown],
+
+[0xCD78E586, RPCAnswerDroppedRunning],
+
+[0xA43AD8B7, RPCAnswerDropped],
+
+[0x0949D9DC, FutureSalt],
+
+[0xAE500895, FutureSalts],
+
+[0x347773C5, Pong],
+
+[0xE22045FC, DestroySessionOK],
+
+[0x62D350C9, DestroySessionNone],
+
+[0x9EC20908, NewSessionCreated],
+
+[0x3072CFA1, GZIPPacked],
+
+[0x62D6B459, MsgsAck],
+
+[0xA7EFF811, BadMsgNotification],
+
+[0xEDAB447B, BadServerSalt],
+
+[0x7D861A08, MsgResendReq],
+
+[0xDA69FB52, MsgsStateReq],
+
+[0x04DEB57D, MsgsStateInfo],
+
+[0x8CC0D131, MsgsAllInfo],
+
+[0x276D3EC6, MsgDetailedInfo],
+
+[0x809DB6DF, MsgNewDetailedInfo],
+
+[0xF660E1D4, DestroyAuthKeyOK],
+
+[0x0A9F2259, DestroyAuthKeyNone],
+
+[0xEA109B13, DestroyAuthKeyFail],
+
+[0x9299359F, HTTPWait],
+
+[0x3FEDD339, True],
+
+[0xC4B9F9BB, Error],
+
+[0x56730BCC, Null],
+
+[0x7F3B18EA, InputPeerEmpty],
+
+[0x7DA07EC9, InputPeerSelf],
+
+[0x35A95CB9, InputPeerChat],
+
+[0xDDE8A54C, InputPeerUser],
+
+[0x27BCBBFC, InputPeerChannel],
+
+[0xA87B0A1C, InputPeerUserFromMessage],
+
+[0xBD2A0840, InputPeerChannelFromMessage],
+
+[0xB98886CF, InputUserEmpty],
+
+[0xF7C1B13F, InputUserSelf],
+
+[0xF21158C6, InputUser],
+
+[0x1DA448E2, InputUserFromMessage],
+
+[0xF392B7F4, InputPhoneContact],
+
+[0xF52FF27F, InputFile],
+
+[0xFA4F0BB5, InputFileBig],
+
+[0x9664F57F, InputMediaEmpty],
+
+[0x1E287D04, InputMediaUploadedPhoto],
+
+[0xB3BA0635, InputMediaPhoto],
+
+[0xF9C44144, InputMediaGeoPoint],
+
+[0xF8AB7DFB, InputMediaContact],
+
+[0x5B38C6C1, InputMediaUploadedDocument],
+
+[0x33473058, InputMediaDocument],
+
+[0xC13D1C11, InputMediaVenue],
+
+[0xE5BBFE1A, InputMediaPhotoExternal],
+
+[0xFB52DC99, InputMediaDocumentExternal],
+
+[0xD33F43F3, InputMediaGame],
+
+[0x8EB5A6D5, InputMediaInvoice],
+
+[0x971FA843, InputMediaGeoLive],
+
+[0x0F94E5F1, InputMediaPoll],
+
+[0xE66FBF7B, InputMediaDice],
+
+[0x9A86B58F, InputMediaStory],
+
+[0x1CA48F57, InputChatPhotoEmpty],
+
+[0xBDCDAEC0, InputChatUploadedPhoto],
+
+[0x8953AD37, InputChatPhoto],
+
+[0xE4C123D6, InputGeoPointEmpty],
+
+[0x48222FAF, InputGeoPoint],
+
+[0x1CD7BF0D, InputPhotoEmpty],
+
+[0x3BB3B94A, InputPhoto],
+
+[0xDFDAABE1, InputFileLocation],
+
+[0xF5235D55, InputEncryptedFileLocation],
+
+[0xBAD07584, InputDocumentFileLocation],
+
+[0xCBC7EE28, InputSecureFileLocation],
+
+[0x29BE5899, InputTakeoutFileLocation],
+
+[0x40181FFE, InputPhotoFileLocation],
+
+[0xD83466F3, InputPhotoLegacyFileLocation],
+
+[0x37257E99, InputPeerPhotoFileLocation],
+
+[0x9D84F3DB, InputStickerSetThumb],
+
+[0x0598A92A, InputGroupCallStream],
+
+[0x59511722, PeerUser],
+
+[0x36C6019A, PeerChat],
+
+[0xA2A5371E, PeerChannel],
+
+[0xAA963B05, StorageFileUnknown],
+
+[0x40BC6F52, StorageFilePartial],
+
+[0x007EFE0E, StorageFileJpeg],
+
+[0xCAE1AADF, StorageFileGif],
+
+[0x0A4F63C0, StorageFilePng],
+
+[0xAE1E508D, StorageFilePdf],
+
+[0x528A0677, StorageFileMp3],
+
+[0x4B09EBBC, StorageFileMov],
+
+[0xB3CEA0E4, StorageFileMp4],
+
+[0x1081464C, StorageFileWebp],
+
+[0xD3BC4B7A, UserEmpty],
+
+[0xABB5F120, User],
+
+[0x4F11BAE1, UserProfilePhotoEmpty],
+
+[0x82D1F706, UserProfilePhoto],
+
+[0x09D05049, UserStatusEmpty],
+
+[0xEDB93949, UserStatusOnline],
+
+[0x008C703F, UserStatusOffline],
+
+[0xE26F42F1, UserStatusRecently],
+
+[0x07BF09FC, UserStatusLastWeek],
+
+[0x77EBC742, UserStatusLastMonth],
+
+[0x29562865, ChatEmpty],
+
+[0x41CBF256, Chat],
+
+[0x6592A1A7, ChatForbidden],
+
+[0x83259464, Channel],
+
+[0x17D493D5, ChannelForbidden],
+
+[0xC9D31138, ChatFull],
+
+[0xF2355507, ChannelFull],
+
+[0xC02D4007, ChatParticipant],
+
+[0xE46BCEE4, ChatParticipantCreator],
+
+[0xA0933F5B, ChatParticipantAdmin],
+
+[0x8763D3E1, ChatParticipantsForbidden],
+
+[0x3CBC93F8, ChatParticipants],
+
+[0x37C1011C, ChatPhotoEmpty],
+
+[0x1C6E1C11, ChatPhoto],
+
+[0x90A6CA84, MessageEmpty],
+
+[0x38116EE0, Message],
+
+[0x2B085862, MessageService],
+
+[0x3DED6320, MessageMediaEmpty],
+
+[0x695150D7, MessageMediaPhoto],
+
+[0x56E0D474, MessageMediaGeo],
+
+[0x70322949, MessageMediaContact],
+
+[0x9F84F49E, MessageMediaUnsupported],
+
+[0x4CF4D72D, MessageMediaDocument],
+
+[0xA32DD600, MessageMediaWebPage],
+
+[0x2EC0533F, MessageMediaVenue],
+
+[0xFDB19008, MessageMediaGame],
+
+[0xF6A548D3, MessageMediaInvoice],
+
+[0xB940C666, MessageMediaGeoLive],
+
+[0x4BD6E798, MessageMediaPoll],
+
+[0x3F7EE58B, MessageMediaDice],
+
+[0xCBB20D88, MessageMediaStory],
+
+[0xB6AEF7B0, MessageActionEmpty],
+
+[0xBD47CBAD, MessageActionChatCreate],
+
+[0xB5A1CE5A, MessageActionChatEditTitle],
+
+[0x7FCB13A8, MessageActionChatEditPhoto],
+
+[0x95E3FBEF, MessageActionChatDeletePhoto],
+
+[0x15CEFD00, MessageActionChatAddUser],
+
+[0xA43F30CC, MessageActionChatDeleteUser],
+
+[0x031224C3, MessageActionChatJoinedByLink],
+
+[0x95D2AC92, MessageActionChannelCreate],
+
+[0xE1037F92, MessageActionChatMigrateTo],
+
+[0xEA3948E9, MessageActionChannelMigrateFrom],
+
+[0x94BD38ED, MessageActionPinMessage],
+
+[0x9FBAB604, MessageActionHistoryClear],
+
+[0x92A72876, MessageActionGameScore],
+
+[0x8F31B327, MessageActionPaymentSentMe],
+
+[0x96163F56, MessageActionPaymentSent],
+
+[0x80E11A7F, MessageActionPhoneCall],
+
+[0x4792929B, MessageActionScreenshotTaken],
+
+[0xFAE69F56, MessageActionCustomAction],
+
+[0xC516D679, MessageActionBotAllowed],
+
+[0x1B287353, MessageActionSecureValuesSentMe],
+
+[0xD95C6154, MessageActionSecureValuesSent],
+
+[0xF3F25F76, MessageActionContactSignUp],
+
+[0x98E0D697, MessageActionGeoProximityReached],
+
+[0x7A0D7F42, MessageActionGroupCall],
+
+[0x502F92F7, MessageActionInviteToGroupCall],
+
+[0x3C134D7B, MessageActionSetMessagesTTL],
+
+[0xB3A07661, MessageActionGroupCallScheduled],
+
+[0xAA786345, MessageActionSetChatTheme],
+
+[0xEBBCA3CB, MessageActionChatJoinedByRequest],
+
+[0x47DD8079, MessageActionWebViewDataSentMe],
+
+[0xB4C38CB5, MessageActionWebViewDataSent],
+
+[0xC83D6AEC, MessageActionGiftPremium],
+
+[0x0D999256, MessageActionTopicCreate],
+
+[0xC0944820, MessageActionTopicEdit],
+
+[0x57DE635E, MessageActionSuggestProfilePhoto],
+
+[0xFE77345D, MessageActionRequestedPeer],
+
+[0xBC44A927, MessageActionSetChatWallPaper],
+
+[0xC0787D6D, MessageActionSetSameChatWallPaper],
+
+[0xD58A08C6, Dialog],
+
+[0x71BD134C, DialogFolder],
+
+[0x2331B22D, PhotoEmpty],
+
+[0xFB197A65, Photo],
+
+[0x0E17E23C, PhotoSizeEmpty],
+
+[0x75C78E60, PhotoSize],
+
+[0x021E1AD6, PhotoCachedSize],
+
+[0xE0B0BC2E, PhotoStrippedSize],
+
+[0xFA3EFB95, PhotoSizeProgressive],
+
+[0xD8214D41, PhotoPathSize],
+
+[0x1117DD5F, GeoPointEmpty],
+
+[0xB2A2F663, GeoPoint],
+
+[0x5E002502, AuthSentCode],
+
+[0x2390FE44, AuthSentCodeSuccess],
+
+[0x2EA2C0D4, AuthAuthorization],
+
+[0x44747E9A, AuthAuthorizationSignUpRequired],
+
+[0xB434E2B8, AuthExportedAuthorization],
+
+[0xB8BC5B0C, InputNotifyPeer],
+
+[0x193B4417, InputNotifyUsers],
+
+[0x4A95E84E, InputNotifyChats],
+
+[0xB1DB7C7E, InputNotifyBroadcasts],
+
+[0x5C467992, InputNotifyForumTopic],
+
+[0xCACB6AE2, InputPeerNotifySettings],
+
+[0x99622C0C, PeerNotifySettings],
+
+[0xA518110D, PeerSettings],
+
+[0xA437C3ED, WallPaper],
+
+[0xE0804116, WallPaperNoFile],
+
+[0x58DBCAB8, InputReportReasonSpam],
+
+[0x1E22C78D, InputReportReasonViolence],
+
+[0x2E59D922, InputReportReasonPornography],
+
+[0xADF44EE3, InputReportReasonChildAbuse],
+
+[0xC1E4A2B1, InputReportReasonOther],
+
+[0x9B89F93A, InputReportReasonCopyright],
+
+[0xDBD4FEED, InputReportReasonGeoIrrelevant],
+
+[0xF5DDD6E7, InputReportReasonFake],
+
+[0x0A8EB2BE, InputReportReasonIllegalDrugs],
+
+[0x9EC7863D, InputReportReasonPersonalDetails],
+
+[0x4FE1CC86, UserFull],
+
+[0x145ADE0B, Contact],
+
+[0xC13E3C50, ImportedContact],
+
+[0x16D9703B, ContactStatus],
+
+[0xB74BA9D2, ContactsContactsNotModified],
+
+[0xEAE87E42, ContactsContacts],
+
+[0x77D01C3B, ContactsImportedContacts],
+
+[0x0ADE1591, ContactsBlocked],
+
+[0xE1664194, ContactsBlockedSlice],
+
+[0x15BA6C40, MessagesDialogs],
+
+[0x71E094F3, MessagesDialogsSlice],
+
+[0xF0E3E596, MessagesDialogsNotModified],
+
+[0x8C718E87, MessagesMessages],
+
+[0x3A54685E, MessagesMessagesSlice],
+
+[0xC776BA4E, MessagesChannelMessages],
+
+[0x74535F21, MessagesMessagesNotModified],
+
+[0x64FF9FD5, MessagesChats],
+
+[0x9CD81144, MessagesChatsSlice],
+
+[0xE5D7D19C, MessagesChatFull],
+
+[0xB45C69D1, MessagesAffectedHistory],
+
+[0x57E2F66C, InputMessagesFilterEmpty],
+
+[0x9609A51C, InputMessagesFilterPhotos],
+
+[0x9FC00E65, InputMessagesFilterVideo],
+
+[0x56E9F0E4, InputMessagesFilterPhotoVideo],
+
+[0x9EDDF188, InputMessagesFilterDocument],
+
+[0x7EF0DD87, InputMessagesFilterURL],
+
+[0xFFC86587, InputMessagesFilterGif],
+
+[0x50F5C392, InputMessagesFilterVoice],
+
+[0x3751B49E, InputMessagesFilterMusic],
+
+[0x3A20ECB8, InputMessagesFilterChatPhotos],
+
+[0x80C99768, InputMessagesFilterPhoneCalls],
+
+[0x7A7C17A4, InputMessagesFilterRoundVoice],
+
+[0xB549DA53, InputMessagesFilterRoundVideo],
+
+[0xC1F8E69A, InputMessagesFilterMyMentions],
+
+[0xE7026D0D, InputMessagesFilterGeo],
+
+[0xE062DB83, InputMessagesFilterContacts],
+
+[0x1BB00451, InputMessagesFilterPinned],
+
+[0x1F2B0AFD, UpdateNewMessage],
+
+[0x4E90BFD6, UpdateMessageID],
+
+[0xA20DB0E5, UpdateDeleteMessages],
+
+[0xC01E857F, UpdateUserTyping],
+
+[0x83487AF0, UpdateChatUserTyping],
+
+[0x07761198, UpdateChatParticipants],
+
+[0xE5BDF8DE, UpdateUserStatus],
+
+[0xA7848924, UpdateUserName],
+
+[0x12BCBD9A, UpdateNewEncryptedMessage],
+
+[0x1710F156, UpdateEncryptedChatTyping],
+
+[0xB4A2E88D, UpdateEncryption],
+
+[0x38FE25B7, UpdateEncryptedMessagesRead],
+
+[0x3DDA5451, UpdateChatParticipantAdd],
+
+[0xE32F3D77, UpdateChatParticipantDelete],
+
+[0x8E5E9873, UpdateDcOptions],
+
+[0xBEC268EF, UpdateNotifySettings],
+
+[0xEBE46819, UpdateServiceNotification],
+
+[0xEE3B272A, UpdatePrivacy],
+
+[0x05492A13, UpdateUserPhone],
+
+[0x9C974FDF, UpdateReadHistoryInbox],
+
+[0x2F2F21BF, UpdateReadHistoryOutbox],
+
+[0x7F891213, UpdateWebPage],
+
+[0x68C13933, UpdateReadMessagesContents],
+
+[0x108D941F, UpdateChannelTooLong],
+
+[0x635B4C09, UpdateChannel],
+
+[0x62BA04D9, UpdateNewChannelMessage],
+
+[0x922E6E10, UpdateReadChannelInbox],
+
+[0xC32D5B12, UpdateDeleteChannelMessages],
+
+[0xF226AC08, UpdateChannelMessageViews],
+
+[0xD7CA61A2, UpdateChatParticipantAdmin],
+
+[0x688A30AA, UpdateNewStickerSet],
+
+[0x0BB2D201, UpdateStickerSetsOrder],
+
+[0x31C24808, UpdateStickerSets],
+
+[0x9375341E, UpdateSavedGifs],
+
+[0x496F379C, UpdateBotInlineQuery],
+
+[0x12F12A07, UpdateBotInlineSend],
+
+[0x1B3F4DF7, UpdateEditChannelMessage],
+
+[0xB9CFC48D, UpdateBotCallbackQuery],
+
+[0xE40370A3, UpdateEditMessage],
+
+[0x691E9052, UpdateInlineBotCallbackQuery],
+
+[0xB75F99A9, UpdateReadChannelOutbox],
+
+[0x1B49EC6D, UpdateDraftMessage],
+
+[0x571D2742, UpdateReadFeaturedStickers],
+
+[0x9A422C20, UpdateRecentStickers],
+
+[0xA229DD06, UpdateConfig],
+
+[0x3354678F, UpdatePtsChanged],
+
+[0x2F2BA99F, UpdateChannelWebPage],
+
+[0x6E6FE51C, UpdateDialogPinned],
+
+[0xFA0F3CA2, UpdatePinnedDialogs],
+
+[0x8317C0C3, UpdateBotWebhookJSON],
+
+[0x9B9240A6, UpdateBotWebhookJSONQuery],
+
+[0xB5AEFD7D, UpdateBotShippingQuery],
+
+[0x8CAA9A96, UpdateBotPrecheckoutQuery],
+
+[0xAB0F6B1E, UpdatePhoneCall],
+
+[0x46560264, UpdateLangPackTooLong],
+
+[0x56022F4D, UpdateLangPack],
+
+[0xE511996D, UpdateFavedStickers],
+
+[0xEA29055D, UpdateChannelReadMessagesContents],
+
+[0x7084A7BE, UpdateContactsReset],
+
+[0xB23FC698, UpdateChannelAvailableMessages],
+
+[0xE16459C3, UpdateDialogUnreadMark],
+
+[0xACA1657B, UpdateMessagePoll],
+
+[0x54C01850, UpdateChatDefaultBannedRights],
+
+[0x19360DC0, UpdateFolderPeers],
+
+[0x6A7E7366, UpdatePeerSettings],
+
+[0xB4AFCFB0, UpdatePeerLocated],
+
+[0x39A51DFB, UpdateNewScheduledMessage],
+
+[0x90866CEE, UpdateDeleteScheduledMessages],
+
+[0x8216FBA3, UpdateTheme],
+
+[0x871FB939, UpdateGeoLiveViewed],
+
+[0x564FE691, UpdateLoginToken],
+
+[0x24F40E77, UpdateMessagePollVote],
+
+[0x26FFDE7D, UpdateDialogFilter],
+
+[0xA5D72105, UpdateDialogFilterOrder],
+
+[0x3504914F, UpdateDialogFilters],
+
+[0x2661BF09, UpdatePhoneCallSignalingData],
+
+[0xD29A27F4, UpdateChannelMessageForwards],
+
+[0xD6B19546, UpdateReadChannelDiscussionInbox],
+
+[0x695C9E7C, UpdateReadChannelDiscussionOutbox],
+
+[0x246A4B22, UpdatePeerBlocked],
+
+[0x8C88C923, UpdateChannelUserTyping],
+
+[0xED85EAB5, UpdatePinnedMessages],
+
+[0x5BB98608, UpdatePinnedChannelMessages],
+
+[0xF89A6A4E, UpdateChat],
+
+[0xF2EBDB4E, UpdateGroupCallParticipants],
+
+[0x14B24500, UpdateGroupCall],
+
+[0xBB9BB9A5, UpdatePeerHistoryTTL],
+
+[0xD087663A, UpdateChatParticipant],
+
+[0x985D3ABB, UpdateChannelParticipant],
+
+[0xC4870A49, UpdateBotStopped],
+
+[0x0B783982, UpdateGroupCallConnection],
+
+[0x4D712F2E, UpdateBotCommands],
+
+[0x7063C3DB, UpdatePendingJoinRequests],
+
+[0x11DFA986, UpdateBotChatInviteRequester],
+
+[0x5E1B3CB8, UpdateMessageReactions],
+
+[0x17B7A20B, UpdateAttachMenuBots],
+
+[0x1592B79D, UpdateWebViewResultSent],
+
+[0x14B85813, UpdateBotMenuButton],
+
+[0x74D8BE99, UpdateSavedRingtones],
+
+[0x0084CD5A, UpdateTranscribedAudio],
+
+[0xFB4C496C, UpdateReadFeaturedEmojiStickers],
+
+[0x28373599, UpdateUserEmojiStatus],
+
+[0x30F443DB, UpdateRecentEmojiStatuses],
+
+[0x6F7863F4, UpdateRecentReactions],
+
+[0x86FCCF85, UpdateMoveStickerSetToTop],
+
+[0x5A73A98C, UpdateMessageExtendedMedia],
+
+[0x192EFBE3, UpdateChannelPinnedTopic],
+
+[0xFE198602, UpdateChannelPinnedTopics],
+
+[0x20529438, UpdateUser],
+
+[0xEC05B097, UpdateAutoSaveSettings],
+
+[0xCCF08AD6, UpdateGroupInvitePrivacyForbidden],
+
+[0x205A4133, UpdateStory],
+
+[0xFEB5345A, UpdateReadStories],
+
+[0x1BF335B9, UpdateStoryID],
+
+[0xA56C2A3E, UpdatesState],
+
+[0x5D75A138, UpdatesDifferenceEmpty],
+
+[0x00F49CA0, UpdatesDifference],
+
+[0xA8FB1981, UpdatesDifferenceSlice],
+
+[0x4AFE8F6D, UpdatesDifferenceTooLong],
+
+[0xE317AF7E, UpdatesTooLong],
+
+[0x313BC7F8, UpdateShortMessage],
+
+[0x4D6DEEA5, UpdateShortChatMessage],
+
+[0x78D4DEC1, UpdateShort],
+
+[0x725B04C3, UpdatesCombined],
+
+[0x74AE4240, Updates],
+
+[0x9015E101, UpdateShortSentMessage],
+
+[0x8DCA6AA5, PhotosPhotos],
+
+[0x15051F54, PhotosPhotosSlice],
+
+[0x20212CA8, PhotosPhoto],
+
+[0x096A18D5, UploadFile],
+
+[0xF18CDA44, UploadFileCdnRedirect],
+
+[0x18B7A10D, DcOption],
+
+[0xCC1A241E, Config],
+
+[0x8E1A1775, NearestDc],
+
+[0xCCBBCE30, HelpAppUpdate],
+
+[0xC45A6536, HelpNoAppUpdate],
+
+[0x18CB9F78, HelpInviteText],
+
+[0xAB7EC0A0, EncryptedChatEmpty],
+
+[0x66B25953, EncryptedChatWaiting],
+
+[0x48F1D94C, EncryptedChatRequested],
+
+[0x61F0D4C7, EncryptedChat],
+
+[0x1E1C7C45, EncryptedChatDiscarded],
+
+[0xF141B5E1, InputEncryptedChat],
+
+[0xC21F497E, EncryptedFileEmpty],
+
+[0xA8008CD8, EncryptedFile],
+
+[0x1837C364, InputEncryptedFileEmpty],
+
+[0x64BD0306, InputEncryptedFileUploaded],
+
+[0x5A17B5E5, InputEncryptedFile],
+
+[0x2DC173C8, InputEncryptedFileBigUploaded],
+
+[0xED18C118, EncryptedMessage],
+
+[0x23734B06, EncryptedMessageService],
+
+[0xC0E24635, MessagesDhConfigNotModified],
+
+[0x2C221EDD, MessagesDhConfig],
+
+[0x560F8935, MessagesSentEncryptedMessage],
+
+[0x9493FF32, MessagesSentEncryptedFile],
+
+[0x72F0EAAE, InputDocumentEmpty],
+
+[0x1ABFB575, InputDocument],
+
+[0x36F8C871, DocumentEmpty],
+
+[0x8FD4C4D8, Document],
+
+[0x17C6B5F6, HelpSupport],
+
+[0x9FD40BD8, NotifyPeer],
+
+[0xB4C83B4C, NotifyUsers],
+
+[0xC007CEC3, NotifyChats],
+
+[0xD612E8EF, NotifyBroadcasts],
+
+[0x226E6308, NotifyForumTopic],
+
+[0x16BF744E, SendMessageTypingAction],
+
+[0xFD5EC8F5, SendMessageCancelAction],
+
+[0xA187D66F, SendMessageRecordVideoAction],
+
+[0xE9763AEC, SendMessageUploadVideoAction],
+
+[0xD52F73F7, SendMessageRecordAudioAction],
+
+[0xF351D7AB, SendMessageUploadAudioAction],
+
+[0xD1D34A26, SendMessageUploadPhotoAction],
+
+[0xAA0CD9E4, SendMessageUploadDocumentAction],
+
+[0x176F8BA1, SendMessageGeoLocationAction],
+
+[0x628CBC6F, SendMessageChooseContactAction],
+
+[0xDD6A8F48, SendMessageGamePlayAction],
+
+[0x88F27FBC, SendMessageRecordRoundAction],
+
+[0x243E1C66, SendMessageUploadRoundAction],
+
+[0xD92C2285, SpeakingInGroupCallAction],
+
+[0xDBDA9246, SendMessageHistoryImportAction],
+
+[0xB05AC6B1, SendMessageChooseStickerAction],
+
+[0x25972BCB, SendMessageEmojiInteraction],
+
+[0xB665902E, SendMessageEmojiInteractionSeen],
+
+[0xB3134D9D, ContactsFound],
+
+[0x4F96CB18, InputPrivacyKeyStatusTimestamp],
+
+[0xBDFB0426, InputPrivacyKeyChatInvite],
+
+[0xFABADC5F, InputPrivacyKeyPhoneCall],
+
+[0xDB9E70D2, InputPrivacyKeyPhoneP2P],
+
+[0xA4DD4C08, InputPrivacyKeyForwards],
+
+[0x5719BACC, InputPrivacyKeyProfilePhoto],
+
+[0x0352DAFA, InputPrivacyKeyPhoneNumber],
+
+[0xD1219BDD, InputPrivacyKeyAddedByPhone],
+
+[0xAEE69D68, InputPrivacyKeyVoiceMessages],
+
+[0x3823CC40, InputPrivacyKeyAbout],
+
+[0xBC2EAB30, PrivacyKeyStatusTimestamp],
+
+[0x500E6DFA, PrivacyKeyChatInvite],
+
+[0x3D662B7B, PrivacyKeyPhoneCall],
+
+[0x39491CC8, PrivacyKeyPhoneP2P],
+
+[0x69EC56A3, PrivacyKeyForwards],
+
+[0x96151FED, PrivacyKeyProfilePhoto],
+
+[0xD19AE46D, PrivacyKeyPhoneNumber],
+
+[0x42FFD42B, PrivacyKeyAddedByPhone],
+
+[0x0697F414, PrivacyKeyVoiceMessages],
+
+[0xA486B761, PrivacyKeyAbout],
+
+[0x0D09E07B, InputPrivacyValueAllowContacts],
+
+[0x184B35CE, InputPrivacyValueAllowAll],
+
+[0x131CC67F, InputPrivacyValueAllowUsers],
+
+[0x0BA52007, InputPrivacyValueDisallowContacts],
+
+[0xD66B66C9, InputPrivacyValueDisallowAll],
+
+[0x90110467, InputPrivacyValueDisallowUsers],
+
+[0x840649CF, InputPrivacyValueAllowChatParticipants],
+
+[0xE94F0F86, InputPrivacyValueDisallowChatParticipants],
+
+[0x2F453E49, InputPrivacyValueAllowCloseFriends],
+
+[0xFFFE1BAC, PrivacyValueAllowContacts],
+
+[0x65427B82, PrivacyValueAllowAll],
+
+[0xB8905FB2, PrivacyValueAllowUsers],
+
+[0xF888FA1A, PrivacyValueDisallowContacts],
+
+[0x8B73E763, PrivacyValueDisallowAll],
+
+[0xE4621141, PrivacyValueDisallowUsers],
+
+[0x6B134E8E, PrivacyValueAllowChatParticipants],
+
+[0x41C87565, PrivacyValueDisallowChatParticipants],
+
+[0xF7E8D89B, PrivacyValueAllowCloseFriends],
+
+[0x50A04E45, AccountPrivacyRules],
+
+[0xB8D0AFDF, AccountDaysTTL],
+
+[0x6C37C15C, DocumentAttributeImageSize],
+
+[0x11B58939, DocumentAttributeAnimated],
+
+[0x6319D612, DocumentAttributeSticker],
+
+[0xD38FF1C2, DocumentAttributeVideo],
+
+[0x9852F9C6, DocumentAttributeAudio],
+
+[0x15590068, DocumentAttributeFilename],
+
+[0x9801D2F7, DocumentAttributeHasStickers],
+
+[0xFD149899, DocumentAttributeCustomEmoji],
+
+[0xF1749A22, MessagesStickersNotModified],
+
+[0x30A6EC7E, MessagesStickers],
+
+[0x12B299D4, StickerPack],
+
+[0xE86602C3, MessagesAllStickersNotModified],
+
+[0xCDBBCEBB, MessagesAllStickers],
+
+[0x84D19185, MessagesAffectedMessages],
+
+[0xEB1477E8, WebPageEmpty],
+
+[0xC586DA1C, WebPagePending],
+
+[0xE89C45B2, WebPage],
+
+[0x7311CA11, WebPageNotModified],
+
+[0xAD01D61D, Authorization],
+
+[0x4BFF8EA0, AccountAuthorizations],
+
+[0x957B50FB, AccountPassword],
+
+[0x9A5C33E5, AccountPasswordSettings],
+
+[0xC23727C9, AccountPasswordInputSettings],
+
+[0x137948A5, AuthPasswordRecovery],
+
+[0xA384B779, ReceivedNotifyMessage],
+
+[0x0AB4A819, ChatInviteExported],
+
+[0xED107AB7, ChatInvitePublicJoinRequests],
+
+[0x5A686D7C, ChatInviteAlready],
+
+[0x300C44C1, ChatInvite],
+
+[0x61695CB0, ChatInvitePeek],
+
+[0xFFB62B95, InputStickerSetEmpty],
+
+[0x9DE7A269, InputStickerSetID],
+
+[0x861CC8A0, InputStickerSetShortName],
+
+[0x028703C8, InputStickerSetAnimatedEmoji],
+
+[0xE67F520E, InputStickerSetDice],
+
+[0x0CDE3739, InputStickerSetAnimatedEmojiAnimations],
+
+[0xC88B3B02, InputStickerSetPremiumGifts],
+
+[0x04C4D4CE, InputStickerSetEmojiGenericAnimations],
+
+[0x29D0F5EE, InputStickerSetEmojiDefaultStatuses],
+
+[0x44C1F8E9, InputStickerSetEmojiDefaultTopicIcons],
+
+[0x2DD14EDC, StickerSet],
+
+[0x6E153F16, MessagesStickerSet],
+
+[0xD3F924EB, MessagesStickerSetNotModified],
+
+[0xC27AC8C7, BotCommand],
+
+[0x8F300B57, BotInfo],
+
+[0xA2FA4880, KeyboardButton],
+
+[0x258AFF05, KeyboardButtonURL],
+
+[0x35BBDB6B, KeyboardButtonCallback],
+
+[0xB16A6C29, KeyboardButtonRequestPhone],
+
+[0xFC796B3F, KeyboardButtonRequestGeoLocation],
+
+[0x93B9FBB5, KeyboardButtonSwitchInline],
+
+[0x50F41CCF, KeyboardButtonGame],
+
+[0xAFD93FBB, KeyboardButtonBuy],
+
+[0x10B78D29, KeyboardButtonURLAuth],
+
+[0xD02E7FD4, InputKeyboardButtonURLAuth],
+
+[0xBBC7515D, KeyboardButtonRequestPoll],
+
+[0xE988037B, InputKeyboardButtonUserProfile],
+
+[0x308660C1, KeyboardButtonUserProfile],
+
+[0x13767230, KeyboardButtonWebView],
+
+[0xA0C0505C, KeyboardButtonSimpleWebView],
+
+[0x0D0B468C, KeyboardButtonRequestPeer],
+
+[0x77608B83, KeyboardButtonRow],
+
+[0xA03E5B85, ReplyKeyboardHide],
+
+[0x86B40B08, ReplyKeyboardForceReply],
+
+[0x85DD99D1, ReplyKeyboardMarkup],
+
+[0x48A30254, ReplyInlineMarkup],
+
+[0xBB92BA95, MessageEntityUnknown],
+
+[0xFA04579D, MessageEntityMention],
+
+[0x6F635B0D, MessageEntityHashtag],
+
+[0x6CEF8AC7, MessageEntityBotCommand],
+
+[0x6ED02538, MessageEntityURL],
+
+[0x64E475C2, MessageEntityEmail],
+
+[0xBD610BC9, MessageEntityBold],
+
+[0x826F8B60, MessageEntityItalic],
+
+[0x28A20571, MessageEntityCode],
+
+[0x73924BE0, MessageEntityPre],
+
+[0x76A6D327, MessageEntityTextURL],
+
+[0xDC7B1140, MessageEntityMentionName],
+
+[0x208E68C9, InputMessageEntityMentionName],
+
+[0x9B69E34B, MessageEntityPhone],
+
+[0x4C4E743F, MessageEntityCashtag],
+
+[0x9C4E7E8B, MessageEntityUnderline],
+
+[0xBF0693D4, MessageEntityStrike],
+
+[0x020DF5D0, MessageEntityBlockquote],
+
+[0x761E6AF4, MessageEntityBankCard],
+
+[0x32CA960F, MessageEntitySpoiler],
+
+[0xC8CF05F8, MessageEntityCustomEmoji],
+
+[0xEE8C1E86, InputChannelEmpty],
+
+[0xF35AEC28, InputChannel],
+
+[0x5B934F9D, InputChannelFromMessage],
+
+[0x7F077AD9, ContactsResolvedPeer],
+
+[0x0AE30253, MessageRange],
+
+[0x3E11AFFB, UpdatesChannelDifferenceEmpty],
+
+[0xA4BCC6FE, UpdatesChannelDifferenceTooLong],
+
+[0x2064674E, UpdatesChannelDifference],
+
+[0x94D42EE7, ChannelMessagesFilterEmpty],
+
+[0xCD77D957, ChannelMessagesFilter],
+
+[0xC00C07C0, ChannelParticipant],
+
+[0x35A8BFA7, ChannelParticipantSelf],
+
+[0x2FE601D3, ChannelParticipantCreator],
+
+[0x34C3BB53, ChannelParticipantAdmin],
+
+[0x6DF8014E, ChannelParticipantBanned],
+
+[0x1B03F006, ChannelParticipantLeft],
+
+[0xDE3F3C79, ChannelParticipantsRecent],
+
+[0xB4608969, ChannelParticipantsAdmins],
+
+[0xA3B54985, ChannelParticipantsKicked],
+
+[0xB0D1865B, ChannelParticipantsBots],
+
+[0x1427A5E1, ChannelParticipantsBanned],
+
+[0x0656AC4B, ChannelParticipantsSearch],
+
+[0xBB6AE88D, ChannelParticipantsContacts],
+
+[0xE04B5CEB, ChannelParticipantsMentions],
+
+[0x9AB0FEAF, ChannelsChannelParticipants],
+
+[0xF0173FE9, ChannelsChannelParticipantsNotModified],
+
+[0xDFB80317, ChannelsChannelParticipant],
+
+[0x780A0310, HelpTermsOfService],
+
+[0xE8025CA2, MessagesSavedGifsNotModified],
+
+[0x84A02A0D, MessagesSavedGifs],
+
+[0x3380C786, InputBotInlineMessageMediaAuto],
+
+[0x3DCD7A87, InputBotInlineMessageText],
+
+[0x96929A85, InputBotInlineMessageMediaGeo],
+
+[0x417BBF11, InputBotInlineMessageMediaVenue],
+
+[0xA6EDBFFD, InputBotInlineMessageMediaContact],
+
+[0x4B425864, InputBotInlineMessageGame],
+
+[0xD7E78225, InputBotInlineMessageMediaInvoice],
+
+[0x88BF9319, InputBotInlineResult],
+
+[0xA8D864A7, InputBotInlineResultPhoto],
+
+[0xFFF8FDC4, InputBotInlineResultDocument],
+
+[0x4FA417F2, InputBotInlineResultGame],
+
+[0x764CF810, BotInlineMessageMediaAuto],
+
+[0x8C7F65E2, BotInlineMessageText],
+
+[0x051846FD, BotInlineMessageMediaGeo],
+
+[0x8A86659C, BotInlineMessageMediaVenue],
+
+[0x18D1CDC2, BotInlineMessageMediaContact],
+
+[0x354A9B09, BotInlineMessageMediaInvoice],
+
+[0x11965F3A, BotInlineResult],
+
+[0x17DB940B, BotInlineMediaResult],
+
+[0xE021F2F6, MessagesBotResults],
+
+[0x5DAB1AF4, ExportedMessageLink],
+
+[0x5F777DCE, MessageFwdHeader],
+
+[0x72A3158C, AuthCodeTypeSms],
+
+[0x741CD3E3, AuthCodeTypeCall],
+
+[0x226CCEFB, AuthCodeTypeFlashCall],
+
+[0xD61AD6EE, AuthCodeTypeMissedCall],
+
+[0x06ED998C, AuthCodeTypeFragmentSms],
+
+[0x3DBB5986, AuthSentCodeTypeApp],
+
+[0xC000BBA2, AuthSentCodeTypeSms],
+
+[0x5353E5A7, AuthSentCodeTypeCall],
+
+[0xAB03C6D9, AuthSentCodeTypeFlashCall],
+
+[0x82006484, AuthSentCodeTypeMissedCall],
+
+[0xF450F59B, AuthSentCodeTypeEmailCode],
+
+[0xA5491DEA, AuthSentCodeTypeSetUpEmailRequired],
+
+[0xD9565C39, AuthSentCodeTypeFragmentSms],
+
+[0xE57B1432, AuthSentCodeTypeFirebaseSms],
+
+[0x36585EA4, MessagesBotCallbackAnswer],
+
+[0x26B5DDE6, MessagesMessageEditData],
+
+[0x890C3D89, InputBotInlineMessageID],
+
+[0xB6D915D7, InputBotInlineMessageID64],
+
+[0x3C20629F, InlineBotSwitchPM],
+
+[0x3371C354, MessagesPeerDialogs],
+
+[0xEDCDC05B, TopPeer],
+
+[0xAB661B5B, TopPeerCategoryBotsPM],
+
+[0x148677E2, TopPeerCategoryBotsInline],
+
+[0x0637B7ED, TopPeerCategoryCorrespondents],
+
+[0xBD17A14A, TopPeerCategoryGroups],
+
+[0x161D9628, TopPeerCategoryChannels],
+
+[0x1E76A78C, TopPeerCategoryPhoneCalls],
+
+[0xA8406CA9, TopPeerCategoryForwardUsers],
+
+[0xFBEEC0F0, TopPeerCategoryForwardChats],
+
+[0xFB834291, TopPeerCategoryPeers],
+
+[0xDE266EF5, ContactsTopPeersNotModified],
+
+[0x70B772A8, ContactsTopPeers],
+
+[0xB52C939D, ContactsTopPeersDisabled],
+
+[0x1B0C841A, DraftMessageEmpty],
+
+[0xFD8E711F, DraftMessage],
+
+[0xC6DC0C66, MessagesFeaturedStickersNotModified],
+
+[0xBE382906, MessagesFeaturedStickers],
+
+[0x0B17F890, MessagesRecentStickersNotModified],
+
+[0x88D37C56, MessagesRecentStickers],
+
+[0x4FCBA9C8, MessagesArchivedStickers],
+
+[0x38641628, MessagesStickerSetInstallResultSuccess],
+
+[0x35E410A8, MessagesStickerSetInstallResultArchive],
+
+[0x6410A5D2, StickerSetCovered],
+
+[0x3407E51B, StickerSetMultiCovered],
+
+[0x40D13C0E, StickerSetFullCovered],
+
+[0x77B15D1C, StickerSetNoCovered],
+
+[0xAED6DBB2, MaskCoords],
+
+[0x4A992157, InputStickeredMediaPhoto],
+
+[0x0438865B, InputStickeredMediaDocument],
+
+[0xBDF9653B, Game],
+
+[0x032C3E77, InputGameID],
+
+[0xC331E80A, InputGameShortName],
+
+[0x73A379EB, HighScore],
+
+[0x9A3BFD99, MessagesHighScores],
+
+[0xDC3D824F, TextEmpty],
+
+[0x744694E0, TextPlain],
+
+[0x6724ABC4, TextBold],
+
+[0xD912A59C, TextItalic],
+
+[0xC12622C4, TextUnderline],
+
+[0x9BF8BB95, TextStrike],
+
+[0x6C3F19B9, TextFixed],
+
+[0x3C2884C1, TextURL],
+
+[0xDE5A0DD6, TextEmail],
+
+[0x7E6260D7, TextConcat],
+
+[0xED6A8504, TextSubscript],
+
+[0xC7FB5E01, TextSuperscript],
+
+[0x034B8621, TextMarked],
+
+[0x1CCB966A, TextPhone],
+
+[0x081CCF4F, TextImage],
+
+[0x35553762, TextAnchor],
+
+[0x13567E8A, PageBlockUnsupported],
+
+[0x70ABC3FD, PageBlockTitle],
+
+[0x8FFA9A1F, PageBlockSubtitle],
+
+[0xBAAFE5E0, PageBlockAuthorDate],
+
+[0xBFD064EC, PageBlockHeader],
+
+[0xF12BB6E1, PageBlockSubheader],
+
+[0x467A0766, PageBlockParagraph],
+
+[0xC070D93E, PageBlockPreformatted],
+
+[0x48870999, PageBlockFooter],
+
+[0xDB20B188, PageBlockDivider],
+
+[0xCE0D37B0, PageBlockAnchor],
+
+[0xE4E88011, PageBlockList],
+
+[0x263D7C26, PageBlockBlockquote],
+
+[0x4F4456D3, PageBlockPullquote],
+
+[0x1759C560, PageBlockPhoto],
+
+[0x7C8FE7B6, PageBlockVideo],
+
+[0x39F23300, PageBlockCover],
+
+[0xA8718DC5, PageBlockEmbed],
+
+[0xF259A80B, PageBlockEmbedPost],
+
+[0x65A0FA4D, PageBlockCollage],
+
+[0x031F9590, PageBlockSlideshow],
+
+[0xEF1751B5, PageBlockChannel],
+
+[0x804361EA, PageBlockAudio],
+
+[0x1E148390, PageBlockKicker],
+
+[0xBF4DEA82, PageBlockTable],
+
+[0x9A8AE1E1, PageBlockOrderedList],
+
+[0x76768BED, PageBlockDetails],
+
+[0x16115A96, PageBlockRelatedArticles],
+
+[0xA44F3EF6, PageBlockMap],
+
+[0x85E42301, PhoneCallDiscardReasonMissed],
+
+[0xE095C1A0, PhoneCallDiscardReasonDisconnect],
+
+[0x57ADC690, PhoneCallDiscardReasonHangup],
+
+[0xFAF7E8C9, PhoneCallDiscardReasonBusy],
+
+[0x7D748D04, DataJSON],
+
+[0xCB296BF8, LabeledPrice],
+
+[0x3E85A91B, Invoice],
+
+[0xEA02C27E, PaymentCharge],
+
+[0x1E8CAAEB, PostAddress],
+
+[0x909C3F94, PaymentRequestedInfo],
+
+[0xCDC27A1F, PaymentSavedCredentialsCard],
+
+[0x1C570ED1, WebDocument],
+
+[0xF9C8BCC6, WebDocumentNoProxy],
+
+[0x9BED434D, InputWebDocument],
+
+[0xC239D686, InputWebFileLocation],
+
+[0x9F2221C9, InputWebFileGeoPointLocation],
+
+[0xF46FE924, InputWebFileAudioAlbumThumbLocation],
+
+[0x21E753BC, UploadWebFile],
+
+[0xA0058751, PaymentsPaymentForm],
+
+[0xD1451883, PaymentsValidatedRequestedInfo],
+
+[0x4E5F810D, PaymentsPaymentResult],
+
+[0xD8411139, PaymentsPaymentVerificationNeeded],
+
+[0x70C4FE03, PaymentsPaymentReceipt],
+
+[0xFB8FE43C, PaymentsSavedInfo],
+
+[0xC10EB2CF, InputPaymentCredentialsSaved],
+
+[0x3417D728, InputPaymentCredentials],
+
+[0x0AA1C39F, InputPaymentCredentialsApplePay],
+
+[0x8AC32801, InputPaymentCredentialsGooglePay],
+
+[0xDB64FD34, AccountTmpPassword],
+
+[0xB6213CDF, ShippingOption],
+
+[0x32DA9E9C, InputStickerSetItem],
+
+[0x1E36FDED, InputPhoneCall],
+
+[0x5366C915, PhoneCallEmpty],
+
+[0xC5226F17, PhoneCallWaiting],
+
+[0x14B0ED0C, PhoneCallRequested],
+
+[0x3660C311, PhoneCallAccepted],
+
+[0x967F7C67, PhoneCall],
+
+[0x50CA4DE1, PhoneCallDiscarded],
+
+[0x9CC123C7, PhoneConnection],
+
+[0x635FE375, PhoneConnectionWebrtc],
+
+[0xFC878FC8, PhoneCallProtocol],
+
+[0xEC82E140, PhonePhoneCall],
+
+[0xEEA8E46E, UploadCdnFileReuploadNeeded],
+
+[0xA99FCA4F, UploadCdnFile],
+
+[0xC982EABA, CdnPublicKey],
+
+[0x5725E40A, CdnConfig],
+
+[0xCAD181F6, LangPackString],
+
+[0x6C47AC9F, LangPackStringPluralized],
+
+[0x2979EEB2, LangPackStringDeleted],
+
+[0xF385C1F6, LangPackDifference],
+
+[0xEECA5CE3, LangPackLanguage],
+
+[0xE6DFB825, ChannelAdminLogEventActionChangeTitle],
+
+[0x55188A2E, ChannelAdminLogEventActionChangeAbout],
+
+[0x6A4AFC38, ChannelAdminLogEventActionChangeUsername],
+
+[0x434BD2AF, ChannelAdminLogEventActionChangePhoto],
+
+[0x1B7907AE, ChannelAdminLogEventActionToggleInvites],
+
+[0x26AE0971, ChannelAdminLogEventActionToggleSignatures],
+
+[0xE9E82C18, ChannelAdminLogEventActionUpdatePinned],
+
+[0x709B2405, ChannelAdminLogEventActionEditMessage],
+
+[0x42E047BB, ChannelAdminLogEventActionDeleteMessage],
+
+[0x183040D3, ChannelAdminLogEventActionParticipantJoin],
+
+[0xF89777F2, ChannelAdminLogEventActionParticipantLeave],
+
+[0xE31C34D8, ChannelAdminLogEventActionParticipantInvite],
+
+[0xE6D83D7E, ChannelAdminLogEventActionParticipantToggleBan],
+
+[0xD5676710, ChannelAdminLogEventActionParticipantToggleAdmin],
+
+[0xB1C3CAA7, ChannelAdminLogEventActionChangeStickerSet],
+
+[0x5F5C95F1, ChannelAdminLogEventActionTogglePreHistoryHidden],
+
+[0x2DF5FC0A, ChannelAdminLogEventActionDefaultBannedRights],
+
+[0x8F079643, ChannelAdminLogEventActionStopPoll],
+
+[0x050C7AC8, ChannelAdminLogEventActionChangeLinkedChat],
+
+[0x0E6B76AE, ChannelAdminLogEventActionChangeLocation],
+
+[0x53909779, ChannelAdminLogEventActionToggleSlowMode],
+
+[0x23209745, ChannelAdminLogEventActionStartGroupCall],
+
+[0xDB9F9140, ChannelAdminLogEventActionDiscardGroupCall],
+
+[0xF92424D2, ChannelAdminLogEventActionParticipantMute],
+
+[0xE64429C0, ChannelAdminLogEventActionParticipantUnmute],
+
+[0x56D6A247, ChannelAdminLogEventActionToggleGroupCallSetting],
+
+[0xFE9FC158, ChannelAdminLogEventActionParticipantJoinByInvite],
+
+[0x5A50FCA4, ChannelAdminLogEventActionExportedInviteDelete],
+
+[0x410A134E, ChannelAdminLogEventActionExportedInviteRevoke],
+
+[0xE90EBB59, ChannelAdminLogEventActionExportedInviteEdit],
+
+[0x3E7F6847, ChannelAdminLogEventActionParticipantVolume],
+
+[0x6E941A38, ChannelAdminLogEventActionChangeHistoryTTL],
+
+[0xAFB6144A, ChannelAdminLogEventActionParticipantJoinByRequest],
+
+[0xCB2AC766, ChannelAdminLogEventActionToggleNoForwards],
+
+[0x278F2868, ChannelAdminLogEventActionSendMessage],
+
+[0xBE4E0EF8, ChannelAdminLogEventActionChangeAvailableReactions],
+
+[0xF04FB3A9, ChannelAdminLogEventActionChangeUsernames],
+
+[0x02CC6383, ChannelAdminLogEventActionToggleForum],
+
+[0x58707D28, ChannelAdminLogEventActionCreateTopic],
+
+[0xF06FE208, ChannelAdminLogEventActionEditTopic],
+
+[0xAE168909, ChannelAdminLogEventActionDeleteTopic],
+
+[0x5D8D353B, ChannelAdminLogEventActionPinTopic],
+
+[0x64F36DFC, ChannelAdminLogEventActionToggleAntiSpam],
+
+[0x1FAD68CD, ChannelAdminLogEvent],
+
+[0xED8AF74D, ChannelsAdminLogResults],
+
+[0xEA107AE4, ChannelAdminLogEventsFilter],
+
+[0x5CE14175, PopularContact],
+
+[0x9E8FA6D3, MessagesFavedStickersNotModified],
+
+[0x2CB51097, MessagesFavedStickers],
+
+[0x46E1D13D, RecentMeURLUnknown],
+
+[0xB92C09E2, RecentMeURLUser],
+
+[0xB2DA71D2, RecentMeURLChat],
+
+[0xEB49081D, RecentMeURLChatInvite],
+
+[0xBC0A57DC, RecentMeURLStickerSet],
+
+[0x0E0310D7, HelpRecentMeURLs],
+
+[0x1CC6E91F, InputSingleMedia],
+
+[0xA6F8F452, WebAuthorization],
+
+[0xED56C9FC, AccountWebAuthorizations],
+
+[0xA676A322, InputMessageID],
+
+[0xBAD88395, InputMessageReplyTo],
+
+[0x86872538, InputMessagePinned],
+
+[0xACFA1A7E, InputMessageCallbackQuery],
+
+[0xFCAAFEB7, InputDialogPeer],
+
+[0x64600527, InputDialogPeerFolder],
+
+[0xE56DBF05, DialogPeer],
+
+[0x514519E2, DialogPeerFolder],
+
+[0x0D54B65D, MessagesFoundStickerSetsNotModified],
+
+[0x8AF09DD2, MessagesFoundStickerSets],
+
+[0xF39B035C, FileHash],
+
+[0x75588B3F, InputClientProxy],
+
+[0xE3309F7F, HelpTermsOfServiceUpdateEmpty],
+
+[0x28ECF961, HelpTermsOfServiceUpdate],
+
+[0x3334B0F0, InputSecureFileUploaded],
+
+[0x5367E5BE, InputSecureFile],
+
+[0x64199744, SecureFileEmpty],
+
+[0x7D09C27E, SecureFile],
+
+[0x8AEABEC3, SecureData],
+
+[0x7D6099DD, SecurePlainPhone],
+
+[0x21EC5A5F, SecurePlainEmail],
+
+[0x9D2A81E3, SecureValueTypePersonalDetails],
+
+[0x3DAC6A00, SecureValueTypePassport],
+
+[0x06E425C4, SecureValueTypeDriverLicense],
+
+[0xA0D0744B, SecureValueTypeIdentityCard],
+
+[0x99A48F23, SecureValueTypeInternalPassport],
+
+[0xCBE31E26, SecureValueTypeAddress],
+
+[0xFC36954E, SecureValueTypeUtilityBill],
+
+[0x89137C0D, SecureValueTypeBankStatement],
+
+[0x8B883488, SecureValueTypeRentalAgreement],
+
+[0x99E3806A, SecureValueTypePassportRegistration],
+
+[0xEA02EC33, SecureValueTypeTemporaryRegistration],
+
+[0xB320AADB, SecureValueTypePhone],
+
+[0x8E3CA7EE, SecureValueTypeEmail],
+
+[0x187FA0CA, SecureValue],
+
+[0xDB21D0A7, InputSecureValue],
+
+[0xED1ECDB0, SecureValueHash],
+
+[0xE8A40BD9, SecureValueErrorData],
+
+[0x00BE3DFA, SecureValueErrorFrontSide],
+
+[0x868A2AA5, SecureValueErrorReverseSide],
+
+[0xE537CED6, SecureValueErrorSelfie],
+
+[0x7A700873, SecureValueErrorFile],
+
+[0x666220E9, SecureValueErrorFiles],
+
+[0x869D758F, SecureValueError],
+
+[0xA1144770, SecureValueErrorTranslationFile],
+
+[0x34636DD8, SecureValueErrorTranslationFiles],
+
+[0x33F0EA47, SecureCredentialsEncrypted],
+
+[0xAD2E1CD8, AccountAuthorizationForm],
+
+[0x811F854F, AccountSentEmailCode],
+
+[0x66AFA166, HelpDeepLinkInfoEmpty],
+
+[0x6A4EE832, HelpDeepLinkInfo],
+
+[0x1142BD56, SavedPhoneContact],
+
+[0x4DBA4501, AccountTakeout],
+
+[0xD45AB096, PasswordKdfAlgoUnknown],
+
+[0x3A912D4A, PasswordKdfAlgoSHA256SHA256PBKDF2HMACSHA512iter100000SHA256ModPow],
+
+[0x004A8537, SecurePasswordKdfAlgoUnknown],
+
+[0xBBF2DDA0, SecurePasswordKdfAlgoPBKDF2HMACSHA512iter100000],
+
+[0x86471D92, SecurePasswordKdfAlgoSHA512],
+
+[0x1527BCAC, SecureSecretSettings],
+
+[0x9880F658, InputCheckPasswordEmpty],
+
+[0xD27FF082, InputCheckPasswordSRP],
+
+[0x829D99DA, SecureRequiredType],
+
+[0x027477B4, SecureRequiredTypeOneOf],
+
+[0xBFB9F457, HelpPassportConfigNotModified],
+
+[0xA098D6AF, HelpPassportConfig],
+
+[0x1D1B1245, InputAppEvent],
+
+[0xC0DE1BD9, JsonObjectValue],
+
+[0x3F6D7B68, JsonNull],
+
+[0xC7345E6A, JsonBool],
+
+[0x2BE0DFA4, JsonNumber],
+
+[0xB71E767A, JsonString],
+
+[0xF7444763, JsonArray],
+
+[0x99C1D49D, JsonObject],
+
+[0x34566B6A, PageTableCell],
+
+[0xE0C0C5E5, PageTableRow],
+
+[0x6F747657, PageCaption],
+
+[0xB92FB6CD, PageListItemText],
+
+[0x25E073FC, PageListItemBlocks],
+
+[0x5E068047, PageListOrderedItemText],
+
+[0x98DD8936, PageListOrderedItemBlocks],
+
+[0xB390DC08, PageRelatedArticle],
+
+[0x98657F0D, Page],
+
+[0x8C05F1C9, HelpSupportName],
+
+[0xF3AE2EED, HelpUserInfoEmpty],
+
+[0x01EB3758, HelpUserInfo],
+
+[0x6CA9C2E9, PollAnswer],
+
+[0x86E18161, Poll],
+
+[0x3B6DDAD2, PollAnswerVoters],
+
+[0x7ADF2420, PollResults],
+
+[0xF041E250, ChatOnlines],
+
+[0x47A971E0, StatsURL],
+
+[0x5FB224D5, ChatAdminRights],
+
+[0x9F120418, ChatBannedRights],
+
+[0xE630B979, InputWallPaper],
+
+[0x72091C80, InputWallPaperSlug],
+
+[0x967A462E, InputWallPaperNoFile],
+
+[0x1C199183, AccountWallPapersNotModified],
+
+[0xCDC3858C, AccountWallPapers],
+
+[0xAD253D78, CodeSettings],
+
+[0x1DC1BCA4, WallPaperSettings],
+
+[0xBAA57628, AutoDownloadSettings],
+
+[0x63CACF26, AccountAutoDownloadSettings],
+
+[0xD5B3B9F9, EmojiKeyword],
+
+[0x236DF622, EmojiKeywordDeleted],
+
+[0x5CC761BD, EmojiKeywordsDifference],
+
+[0xA575739D, EmojiURL],
+
+[0xB3FB5361, EmojiLanguage],
+
+[0xFF544E65, Folder],
+
+[0xFBD2C296, InputFolderPeer],
+
+[0xE9BAA668, FolderPeer],
+
+[0xE844EBFF, MessagesSearchCounter],
+
+[0x92D33A0E, URLAuthResultRequest],
+
+[0x8F8C0E4E, URLAuthResultAccepted],
+
+[0xA9D6DB1F, URLAuthResultDefault],
+
+[0xBFB5AD8B, ChannelLocationEmpty],
+
+[0x209B82DB, ChannelLocation],
+
+[0xCA461B5D, PeerLocated],
+
+[0xF8EC284B, PeerSelfLocated],
+
+[0xD072ACB4, RestrictionReason],
+
+[0x3C5693E9, InputTheme],
+
+[0xF5890DF1, InputThemeSlug],
+
+[0xA00E67D6, Theme],
+
+[0xF41EB622, AccountThemesNotModified],
+
+[0x9A3D8C6D, AccountThemes],
+
+[0x629F1980, AuthLoginToken],
+
+[0x068E9916, AuthLoginTokenMigrateTo],
+
+[0x390D5C5E, AuthLoginTokenSuccess],
+
+[0x57E28221, AccountContentSettings],
+
+[0xA927FEC5, MessagesInactiveChats],
+
+[0xC3A12462, BaseThemeClassic],
+
+[0xFBD81688, BaseThemeDay],
+
+[0xB7B31EA8, BaseThemeNight],
+
+[0x6D5F77EE, BaseThemeTinted],
+
+[0x5B11125A, BaseThemeArctic],
+
+[0x8FDE504F, InputThemeSettings],
+
+[0xFA58B6D4, ThemeSettings],
+
+[0x54B56617, WebPageAttributeTheme],
+
+[0x939A4671, WebPageAttributeStory],
+
+[0x4899484E, MessagesVotesList],
+
+[0xF568028A, BankCardOpenURL],
+
+[0x3E24E573, PaymentsBankCardData],
+
+[0x7438F7E8, DialogFilter],
+
+[0x363293AE, DialogFilterDefault],
+
+[0xD64A04A8, DialogFilterChatlist],
+
+[0x77744D4A, DialogFilterSuggested],
+
+[0xB637EDAF, StatsDateRangeDays],
+
+[0xCB43ACDE, StatsAbsValueAndPrev],
+
+[0xCBCE2FE0, StatsPercentValue],
+
+[0x4A27EB2D, StatsGraphAsync],
+
+[0xBEDC9822, StatsGraphError],
+
+[0x8EA464B6, StatsGraph],
+
+[0xAD4FC9BD, MessageInteractionCounters],
+
+[0xBDF78394, StatsBroadcastStats],
+
+[0x98F6AC75, HelpPromoDataEmpty],
+
+[0x8C39793F, HelpPromoData],
+
+[0xDE33B094, VideoSize],
+
+[0xF85C413C, VideoSizeEmojiMarkup],
+
+[0x0DA082FE, VideoSizeStickerMarkup],
+
+[0x9D04AF9B, StatsGroupTopPoster],
+
+[0xD7584C87, StatsGroupTopAdmin],
+
+[0x535F779D, StatsGroupTopInviter],
+
+[0xEF7FF916, StatsMegagroupStats],
+
+[0x734C4CCB, GlobalPrivacySettings],
+
+[0x4203C5EF, HelpCountryCode],
+
+[0xC3878E23, HelpCountry],
+
+[0x93CC1F32, HelpCountriesListNotModified],
+
+[0x87D0759E, HelpCountriesList],
+
+[0x455B853D, MessageViews],
+
+[0xB6C4F543, MessagesMessageViews],
+
+[0xA6341782, MessagesDiscussionMessage],
+
+[0xA6D57763, MessageReplyHeader],
+
+[0x9C98BFC1, MessageReplyStoryHeader],
+
+[0x83D60FC2, MessageReplies],
+
+[0xE8FD8014, PeerBlocked],
+
+[0x8999F295, StatsMessageStats],
+
+[0x7780BCB4, GroupCallDiscarded],
+
+[0xD597650C, GroupCall],
+
+[0xD8AA840F, InputGroupCall],
+
+[0xEBA636FE, GroupCallParticipant],
+
+[0x9E727AAD, PhoneGroupCall],
+
+[0xF47751B6, PhoneGroupParticipants],
+
+[0x3081ED9D, InlineQueryPeerTypeSameBotPM],
+
+[0x833C0FAC, InlineQueryPeerTypePM],
+
+[0xD766C50A, InlineQueryPeerTypeChat],
+
+[0x5EC4BE43, InlineQueryPeerTypeMegagroup],
+
+[0x6334EE9A, InlineQueryPeerTypeBroadcast],
+
+[0x0E3B2D0C, InlineQueryPeerTypeBotPM],
+
+[0x1662AF0B, MessagesHistoryImport],
+
+[0x5E0FB7B9, MessagesHistoryImportParsed],
+
+[0xEF8D3E6C, MessagesAffectedFoundMessages],
+
+[0x8C5ADFD9, ChatInviteImporter],
+
+[0xBDC62DCC, MessagesExportedChatInvites],
+
+[0x1871BE50, MessagesExportedChatInvite],
+
+[0x222600EF, MessagesExportedChatInviteReplaced],
+
+[0x81B6B00A, MessagesChatInviteImporters],
+
+[0xF2ECEF23, ChatAdminWithInvites],
+
+[0xB69B72D7, MessagesChatAdminsWithInvites],
+
+[0xA24DE717, MessagesCheckedHistoryImportPeer],
+
+[0xAFE5623F, PhoneJoinAsPeers],
+
+[0x204BD158, PhoneExportedGroupCallInvite],
+
+[0xDCB118B7, GroupCallParticipantVideoSourceGroup],
+
+[0x67753AC8, GroupCallParticipantVideo],
+
+[0x85FEA03F, StickersSuggestedShortName],
+
+[0x2F6CB2AB, BotCommandScopeDefault],
+
+[0x3C4F04D8, BotCommandScopeUsers],
+
+[0x6FE1A881, BotCommandScopeChats],
+
+[0xB9AA606A, BotCommandScopeChatAdmins],
+
+[0xDB9D897D, BotCommandScopePeer],
+
+[0x3FD863D1, BotCommandScopePeerAdmins],
+
+[0x0A1321F3, BotCommandScopePeerUser],
+
+[0xE3779861, AccountResetPasswordFailedWait],
+
+[0xE9EFFC7D, AccountResetPasswordRequestedWait],
+
+[0xE926D63E, AccountResetPasswordOk],
+
+[0xDAAFFF6B, SponsoredMessage],
+
+[0xC9EE1D87, MessagesSponsoredMessages],
+
+[0x1839490F, MessagesSponsoredMessagesEmpty],
+
+[0xC9B0539F, SearchResultsCalendarPeriod],
+
+[0x147EE23C, MessagesSearchResultsCalendar],
+
+[0x7F648B67, SearchResultPosition],
+
+[0x53B22BAF, MessagesSearchResultsPositions],
+
+[0xF496B0C6, ChannelsSendAsPeers],
+
+[0x3B6D152E, UsersUserFull],
+
+[0x6880B94D, MessagesPeerSettings],
+
+[0xC3A2835F, AuthLoggedOut],
+
+[0xA3D1CB80, ReactionCount],
+
+[0x4F2B9479, MessageReactions],
+
+[0x31BD492D, MessagesMessageReactionsList],
+
+[0xC077EC01, AvailableReaction],
+
+[0x9F071957, MessagesAvailableReactionsNotModified],
+
+[0x768E3AAD, MessagesAvailableReactions],
+
+[0x8C79B63C, MessagePeerReaction],
+
+[0x80EB48AF, GroupCallStreamChannel],
+
+[0xD0E482B2, PhoneGroupCallStreamChannels],
+
+[0x2DBF3432, PhoneGroupCallStreamRtmpURL],
+
+[0x4576F3F0, AttachMenuBotIconColor],
+
+[0xB2A7386B, AttachMenuBotIcon],
+
+[0xC8AA2CD2, AttachMenuBot],
+
+[0xF1D88A5C, AttachMenuBotsNotModified],
+
+[0x3C4301C0, AttachMenuBots],
+
+[0x93BF667F, AttachMenuBotsBot],
+
+[0x0C14557C, WebViewResultURL],
+
+[0x882F76BB, SimpleWebViewResultURL],
+
+[0x0C94511C, WebViewMessageSent],
+
+[0x7533A588, BotMenuButtonDefault],
+
+[0x4258C205, BotMenuButtonCommands],
+
+[0xC7B57CE6, BotMenuButton],
+
+[0xFBF6E8B1, AccountSavedRingtonesNotModified],
+
+[0xC1E92CC5, AccountSavedRingtones],
+
+[0x97E8BEBE, NotificationSoundDefault],
+
+[0x6F0C34DF, NotificationSoundNone],
+
+[0x830B9AE4, NotificationSoundLocal],
+
+[0xFF6C8049, NotificationSoundRingtone],
+
+[0xB7263F6D, AccountSavedRingtone],
+
+[0x1F307EB7, AccountSavedRingtoneConverted],
+
+[0x7D6BE90E, AttachMenuPeerTypeSameBotPM],
+
+[0xC32BFA1A, AttachMenuPeerTypeBotPM],
+
+[0xF146D31F, AttachMenuPeerTypePM],
+
+[0x0509113F, AttachMenuPeerTypeChat],
+
+[0x7BFBDEFC, AttachMenuPeerTypeBroadcast],
+
+[0xC5B56859, InputInvoiceMessage],
+
+[0xC326CAEF, InputInvoiceSlug],
+
+[0xAED0CBD9, PaymentsExportedInvoice],
+
+[0x93752C52, MessagesTranscribedAudio],
+
+[0x5334759C, HelpPremiumPromo],
+
+[0xA6751E66, InputStorePaymentPremiumSubscription],
+
+[0x616F7FE8, InputStorePaymentGiftPremium],
+
+[0x74C34319, PremiumGiftOption],
+
+[0x88F8F21B, PaymentFormMethod],
+
+[0x2DE11AAE, EmojiStatusEmpty],
+
+[0x929B619D, EmojiStatus],
+
+[0xFA30A8C7, EmojiStatusUntil],
+
+[0xD08CE645, AccountEmojiStatusesNotModified],
+
+[0x90C467D1, AccountEmojiStatuses],
+
+[0x79F5D419, ReactionEmpty],
+
+[0x1B2286B8, ReactionEmoji],
+
+[0x8935FC73, ReactionCustomEmoji],
+
+[0xEAFC32BC, ChatReactionsNone],
+
+[0x52928BCA, ChatReactionsAll],
+
+[0x661D4037, ChatReactionsSome],
+
+[0xB06FDBDF, MessagesReactionsNotModified],
+
+[0xEAFDF716, MessagesReactions],
+
+[0x4345BE73, EmailVerifyPurposeLoginSetup],
+
+[0x527D22EB, EmailVerifyPurposeLoginChange],
+
+[0xBBF51685, EmailVerifyPurposePassport],
+
+[0x922E55A9, EmailVerificationCode],
+
+[0xDB909EC2, EmailVerificationGoogle],
+
+[0x96D074FD, EmailVerificationApple],
+
+[0x2B96CD1B, AccountEmailVerified],
+
+[0xE1BB0D61, AccountEmailVerifiedLogin],
+
+[0x5F2D1DF2, PremiumSubscriptionOption],
+
+[0xB81C7034, SendAsPeer],
+
+[0xAD628CC8, MessageExtendedMediaPreview],
+
+[0xEE479C64, MessageExtendedMedia],
+
+[0xFCFEB29C, StickerKeyword],
+
+[0xB4073647, Username],
+
+[0x023F109B, ForumTopicDeleted],
+
+[0x71701DA9, ForumTopic],
+
+[0x367617D3, MessagesForumTopics],
+
+[0x43B46B20, DefaultHistoryTTL],
+
+[0x41BF109B, ExportedContactToken],
+
+[0x5F3B8A00, RequestPeerTypeUser],
+
+[0xC9F06E1B, RequestPeerTypeChat],
+
+[0x339BEF6C, RequestPeerTypeBroadcast],
+
+[0x481EADFA, EmojiListNotModified],
+
+[0x7A1E11D1, EmojiList],
+
+[0x7A9ABDA9, EmojiGroup],
+
+[0x6FB4AD87, MessagesEmojiGroupsNotModified],
+
+[0x881FB94B, MessagesEmojiGroups],
+
+[0x751F3146, TextWithEntities],
+
+[0x33DB32F8, MessagesTranslateResult],
+
+[0xC84834CE, AutoSaveSettings],
+
+[0x81602D47, AutoSaveException],
+
+[0x4C3E069D, AccountAutoSaveSettings],
+
+[0x7CDE641D, HelpAppConfigNotModified],
+
+[0xDD18782E, HelpAppConfig],
+
+[0xA920BD7A, InputBotAppID],
+
+[0x908C0407, InputBotAppShortName],
+
+[0x5DA674B7, BotAppNotModified],
+
+[0x95FCD1D6, BotApp],
+
+[0xEB50ADF5, MessagesBotApp],
+
+[0x3C1B4F0D, AppWebViewResultURL],
+
+[0xB57295D5, InlineBotWebView],
+
+[0x4A4FF172, ReadParticipantDate],
+
+[0xF3E0DA33, InputChatlistDialogFilter],
+
+[0x0C5181AC, ExportedChatlistInvite],
+
+[0x10E6E3A6, ChatlistsExportedChatlistInvite],
+
+[0x10AB6DC7, ChatlistsExportedInvites],
+
+[0xFA87F659, ChatlistsChatlistInviteAlready],
+
+[0x1DCD839D, ChatlistsChatlistInvite],
+
+[0x93BD878D, ChatlistsChatlistUpdates],
+
+[0xE8A775B0, BotsBotInfo],
+
+[0xB6CC2D5C, MessagePeerVote],
+
+[0x74CDA504, MessagePeerVoteInputOption],
+
+[0x4628F6E6, MessagePeerVoteMultiple],
+
+[0x3DB8EC63, SponsoredWebPage],
+
+[0xD36760CF, StoryViews],
+
+[0x51E6EE4F, StoryItemDeleted],
+
+[0xFFADC913, StoryItemSkipped],
+
+[0x562AA637, StoryItem],
+
+[0x8611A200, UserStories],
+
+[0x47E0A07E, StoriesAllStoriesNotModified],
+
+[0x839E0428, StoriesAllStories],
+
+[0x4FE57DF1, StoriesStories],
+
+[0x37A6FF5F, StoriesUserStories],
+
+[0xA71AACC2, StoryView],
+
+[0xFB3F77AC, StoriesStoryViewsList],
+
+[0xDE9EED1D, StoriesStoryViews],
+
+[0x9C5386E4, InputReplyToMessage],
+
+[0x15B0F283, InputReplyToStory],
+
+[0x3FC9053B, ExportedStoryLink],
+
+// deno-lint-ignore no-explicit-any
+] as const as any);
