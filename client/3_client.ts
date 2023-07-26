@@ -1,5 +1,5 @@
 import { debug, gunzip, Mutex, MutexInterface } from "../deps.ts";
-import { ACK_THRESHOLD, APP_VERSION, CHANNEL_DIFFERENCE_LIMIT_BOT, CHANNEL_DIFFERENCE_LIMIT_USER, DEVICE_MODEL, LANG_CODE, LANG_PACK, LAYER, MAX_CHANNEL_ID, MAX_CHAT_ID, STICKER_SET_NAME_TTL, SYSTEM_LANG_CODE, SYSTEM_VERSION, USERNAME_TTL, ZERO_CHANNEL_ID } from "../constants.ts";
+import { ACK_THRESHOLD, APP_VERSION, CHANNEL_DIFFERENCE_LIMIT_BOT, CHANNEL_DIFFERENCE_LIMIT_USER, DEVICE_MODEL, LANG_CODE, LANG_PACK, LAYER, MAX_CHANNEL_ID, MAX_CHAT_ID, PublicKeys, STICKER_SET_NAME_TTL, SYSTEM_LANG_CODE, SYSTEM_VERSION, USERNAME_TTL, ZERO_CHANNEL_ID } from "../constants.ts";
 import { bigIntFromBuffer, getRandomBigInt, getRandomId } from "../utilities/0_bigint.ts";
 import { UNREACHABLE } from "../utilities/0_control.ts";
 import { sha1 } from "../utilities/0_hash.ts";
@@ -88,6 +88,7 @@ export interface ClientParams {
    * The system_version parameter to be passed to initConnection when calling `authorize`.
    */
   systemVersion?: string;
+  publicKeys?: PublicKeys;
 }
 
 export interface ForwardMessagesParams {
@@ -116,6 +117,7 @@ export class Client extends ClientAbstract {
   public readonly langPack: string;
   public readonly systemLangCode: string;
   public readonly systemVersion: string;
+  private readonly publicKeys?: PublicKeys;
 
   /**
    * Constructs the client.
@@ -142,6 +144,7 @@ export class Client extends ClientAbstract {
     this.langPack = params?.langPack ?? LANG_PACK;
     this.systemLangCode = params?.systemLangCode ?? SYSTEM_LANG_CODE;
     this.systemVersion = params?.systemVersion ?? SYSTEM_VERSION;
+    this.publicKeys = params?.publicKeys;
   }
 
   private storageInited = false;
@@ -183,7 +186,7 @@ export class Client extends ClientAbstract {
     }
     const authKey = await this.storage.getAuthKey();
     if (authKey == null) {
-      const plain = new ClientPlain(this.transportProvider);
+      const plain = new ClientPlain(this.transportProvider, this.publicKeys);
       const dc = await this.storage.getDc();
       if (dc != null) {
         plain.setDc(dc);

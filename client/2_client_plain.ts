@@ -9,6 +9,7 @@ import { serialize } from "../tl/1_tl_object.ts";
 import { ClientDHInnerData, DHGenOK, PQInnerDataDC, ResPQ, ServerDHInnerData, ServerDHParamsOK } from "../tl/2_types.ts";
 import { Function, ReqDHParams, ReqPQMulti, SetClientDHParams } from "../tl/3_functions.ts";
 import { TLReader } from "../tl/3_tl_reader.ts";
+import { TransportProvider } from "../transport/2_transport_provider.ts";
 import { ClientAbstract } from "./1_client_abstract.ts";
 import { getMessageId, packUnencryptedMessage, unpackUnencryptedMessage } from "./0_message.ts";
 
@@ -17,8 +18,8 @@ const d = debug("ClientPlain/createAuthKey");
 export class ClientPlain extends ClientAbstract {
   private lastMsgId = 0n;
 
-  constructor(private readonly publicKeys = PUBLIC_KEYS) {
-    super();
+  constructor(transportProvider: TransportProvider, private readonly publicKeys = PUBLIC_KEYS) {
+    super(transportProvider);
   }
 
   async invoke<T extends Function<unknown>>(function_: T): Promise<T["__R"]> {
