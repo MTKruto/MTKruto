@@ -86,9 +86,14 @@ export abstract class Storage {
     }
   }
 
-  getUsername(username: string) {
+  async getUsername(username: string) {
     username = username.toLowerCase();
-    return this.get<["user" | "channel", bigint, Date]>(KPARTS__USERNAME(username));
+    const v = await this.get<["user" | "channel", bigint, Date]>(KPARTS__USERNAME(username));
+    if (v != null) {
+      v[1] = BigInt(v[1]);
+      v[2] = new Date(v[2]);
+    }
+    return v;
   }
 
   async setTlObject(key: readonly StorageKeyPart[], value: TLObject | null) {
