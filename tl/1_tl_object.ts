@@ -186,7 +186,7 @@ export abstract class TLObject {
         continue;
       }
 
-      const debugInfo = `[${i}]`;
+      const debugInfo = `[${this[id].toString(16).toUpperCase()} ${i}]`;
 
       if (type == flags) {
         let flags = 0;
