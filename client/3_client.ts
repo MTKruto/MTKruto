@@ -423,6 +423,14 @@ export class Client extends ClientAbstract {
     }
   }
 
+  /**
+   * Same as calling `.connect()` followed by `.authorize(params)`.
+   */
+  async start(params?: string | types.AuthExportedAuthorization | AuthorizeUserParams) {
+    await this.connect();
+    await this.authorize(params);
+  }
+
   private async receiveLoop() {
     if (!this.auth) {
       throw new Error("Not connected");
