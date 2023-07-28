@@ -19,14 +19,14 @@ Deno.test("TLRawWriter", async (t) => {
   await t.step("writeInt24", () => {
     const size = 3 * 2;
 
-    writer.writeInt24(0xFFFFFF, false);
+    writer.writeInt24(8388607, false);
     writer.writeInt24(-8388607);
 
     wrote += size;
 
     // deno-fmt-ignore
     const expected = new Uint8Array([
-      0xFF, 0xFF, 0xFF, // uint24
+      0xFF, 0xFF, 0x7F, // uint24
       0x01, 0x00, 0x80, // int24
     ]);
     assertEquals(writer.buffer.slice(wrote - size), expected);
