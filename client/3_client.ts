@@ -26,8 +26,9 @@ import { parseHtml } from "./0_html.ts";
 import { checkPassword } from "./0_password.ts";
 import { ClientAbstract } from "./1_client_abstract.ts";
 import { ClientPlain } from "./2_client_plain.ts";
-import { drop } from "../utilities/0_misc.ts";
+import { drop } from "../utilities/1_misc.ts";
 import { getChannelChatId, peerToChatId } from "./0_utilities.ts";
+import { mustPrompt, mustPromptNumber } from "../utilities/1_misc.ts";
 
 const d = debug("Client");
 const dGap = debug("Client/recoverUpdateGap");
@@ -250,13 +251,27 @@ export class Client extends ClientAbstract {
    * [1]: https://core.telegram.org/method/initConnection
    * [2]: https://core.telegram.org/method/updates.getState
    */
-  async authorize(params: string | types.AuthExportedAuthorization | AuthorizeUserParams) {
+  async authorize(params?: string | types.AuthExportedAuthorization | AuthorizeUserParams) {
     if (!this.apiId) {
       throw new Error("apiId not set");
     }
     if (!this.apiHash) {
       throw new Error("apiHash not set");
     }
+
+    if (typeof params === "undefined") {
+      const phoneNumberOrBotToken = mustPrompt("Enter a phone number or a bot token:");
+      if (phoneNumberOrBotToken.startsWith("+")) {
+        params = {
+          phone: phoneNumberOrBotToken,
+          code: () => String(mustPromptNumber("Enter the verification code:")),
+          password: () => mustPrompt("Enter the account password:"),
+        };
+      } else {
+        params = phoneNumberOrBotToken;
+      }
+    }
+
     dAuth("authorizing with %s", typeof params === "string" ? "bot token" : params instanceof types.AuthExportedAuthorization ? "exported authorization" : "AuthorizeUserParams");
 
     await this.invoke(
