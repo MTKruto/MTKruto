@@ -1,8 +1,10 @@
 import { DC } from "./transport/2_transport_provider.ts";
 
-export const ackThreshold = 10;
+export const ACK_THRESHOLD = 10;
 
-export const publicKeys = new Map<bigint, [bigint, bigint]>([
+export type PublicKeys = readonly [bigint, [bigint, bigint]][];
+
+export const PUBLIC_KEYS: PublicKeys = Object.freeze([
   [
     1562291298945373506n,
     [
@@ -52,35 +54,27 @@ export const publicKeys = new Map<bigint, [bigint, bigint]>([
       0x010001n,
     ],
   ],
-  // Piltover
-  [
-    -5746138571559360724n,
-    [
-      26007219673003768186863565706940772901187119797549016801229858995725553827566821957407312503173782965285118977548255274803204174826509270586421841734996746493071723679186583391927378886693846518017621303145594627156874011707147548520576401963675756312298478878474644101348427872255774246965916073553469761183250044599310582333625453447885100318336864215713703860033765477732305055537755094341310278183464296754000479758644167423888581130401586546401934096183449791147912201040435037926911688179080223967863256047196705714611239523210563418382771999824529581206920323901890386681875893623076449827387008128524246269437n,
-      0x010001n,
-    ],
-  ],
 ]);
 
 export const VECTOR_CONSTRUCTOR = 0x1CB5C415;
 
-export const DEFAULT_INITIAL_DC: DC = "2-test";
+export const INITIAL_DC: DC = "2-test";
 
 export const LAYER = 160;
 
-export const DEFAULT_APP_VERSION = "MTKruto 0.0.968";
+export const APP_VERSION = "MTKruto 0.0.973";
 
 // @ts-ignore: lib
-export const DEFAULT_DEVICE_MODEL = typeof Deno === "undefined" ? typeof navigator === "undefined" ? typeof process === "undefined" ? "Unknown" : process.platform + "-" + process.arch : navigator.userAgent.split(" ")[0] : Deno.build.os + "-" + Deno.build.arch;
+export const DEVICE_MODEL = typeof Deno === "undefined" ? typeof navigator === "undefined" ? typeof process === "undefined" ? "Unknown" : process.platform + "-" + process.arch : navigator.userAgent.split(" ")[0] : Deno.build.os + "-" + Deno.build.arch;
 
-export const DEFAULT_LANG_CODE = typeof navigator === "undefined" ? "en" : navigator.language.split("-")[0];
+export const LANG_CODE = typeof navigator === "undefined" ? "en" : navigator.language.split("-")[0];
 
-export const DEFAULT_LANG_PACK = "";
+export const LANG_PACK = "";
 
-export const DEFAULT_SYSTEM_LANG_CODE = typeof navigator === "undefined" ? "en" : navigator.language.split("-")[0];
+export const SYSTEM_LANG_CODE = typeof navigator === "undefined" ? "en" : navigator.language.split("-")[0];
 
 // @ts-ignore: lib
-export const DEFAULT_SYSTEM_VERSION = typeof navigator === "undefined" ? typeof process === "undefined" ? "Unknown" : "Node.js/" + process.versions.node : navigator.userAgent;
+export const SYSTEM_VERSION = typeof navigator === "undefined" ? typeof process === "undefined" ? "Unknown" : "Node.js/" + process.versions.node : navigator.userAgent;
 
 export const USERNAME_TTL = 86_400;
 
