@@ -1,5 +1,5 @@
 import { assertEquals, assertInstanceOf, debug, factorize, ige256Decrypt, ige256Encrypt } from "../deps.ts";
-import { publicKeys } from "../constants.ts";
+import { PUBLIC_KEYS } from "../constants.ts";
 import { bigIntFromBuffer, getRandomBigInt, modExp } from "../utilities/0_bigint.ts";
 import { bufferFromBigInt, concat } from "../utilities/0_buffer.ts";
 import { UNREACHABLE } from "../utilities/0_control.ts";
@@ -9,6 +9,7 @@ import { serialize } from "../tl/1_tl_object.ts";
 import { ClientDHInnerData, DHGenOK, PQInnerDataDC, ResPQ, ServerDHInnerData, ServerDHParamsOK } from "../tl/2_types.ts";
 import { Function, ReqDHParams, ReqPQMulti, SetClientDHParams } from "../tl/3_functions.ts";
 import { TLReader } from "../tl/3_tl_reader.ts";
+import { TransportProvider } from "../transport/2_transport_provider.ts";
 import { ClientAbstract } from "./1_client_abstract.ts";
 import { getMessageId, packUnencryptedMessage, unpackUnencryptedMessage } from "./0_message.ts";
 
@@ -16,6 +17,10 @@ const d = debug("ClientPlain/createAuthKey");
 
 export class ClientPlain extends ClientAbstract {
   private lastMsgId = 0n;
+
+  constructor(transportProvider: TransportProvider, private readonly publicKeys = PUBLIC_KEYS) {
+    super(transportProvider);
+  }
 
   async invoke<T extends Function<unknown>>(function_: T): Promise<T["__R"]> {
     const msgId = this.lastMsgId = getMessageId(this.lastMsgId);
@@ -64,10 +69,10 @@ export class ClientPlain extends ClientAbstract {
     let publicKey: [bigint, bigint] | undefined;
 
     for (const fingerprint of resPq.serverPublicKeyFingerprints) {
-      const maybePublicKey = publicKeys.get(fingerprint);
+      const maybePublicKey = this.publicKeys.find(([k]) => (k == fingerprint));
       if (maybePublicKey) {
         publicKeyFingerprint = fingerprint;
-        publicKey = maybePublicKey;
+        publicKey = maybePublicKey[1];
         break;
       }
     }
