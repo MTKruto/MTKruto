@@ -62,7 +62,7 @@ export interface ClientParams {
    */
   parseMode?: ParseMode;
   /**
-   * The transport provider to use. Defaults to `defaultTransportProvider`.
+   * The transport provider to use. Defaults to `webSocketTransportProvider`.
    */
   transportProvider?: TransportProvider;
   /**
@@ -89,7 +89,14 @@ export interface ClientParams {
    * The system_version parameter to be passed to initConnection when calling `authorize`.
    */
   systemVersion?: string;
+  /**
+   * MTProto public keys to use in the `[keyId, [key, exponent]][]` format. Don't set this unless you know what you are doing.
+   */
   publicKeys?: PublicKeys;
+  /**
+   * Whether to automatically call `start` with no parameters in the first `invoke` call.
+   */
+  autoStart?: boolean;
 }
 
 export interface ForwardMessagesParams {
@@ -119,6 +126,7 @@ export class Client extends ClientAbstract {
   public readonly systemLangCode: string;
   public readonly systemVersion: string;
   private readonly publicKeys?: PublicKeys;
+  private readonly autoStart: boolean;
 
   /**
    * Constructs the client.
@@ -146,6 +154,7 @@ export class Client extends ClientAbstract {
     this.systemLangCode = params?.systemLangCode ?? SYSTEM_LANG_CODE;
     this.systemVersion = params?.systemVersion ?? SYSTEM_VERSION;
     this.publicKeys = params?.publicKeys;
+    this.autoStart = params?.autoStart ?? true;
   }
 
   private storageInited = false;
@@ -536,6 +545,7 @@ export class Client extends ClientAbstract {
     }
   }
 
+  private autoStarted = false;
   private lastMsgId = 0n;
   /**
    * Invokes a function waiting and returning its reply if the second parameter is not `true`. Requires the client
@@ -547,7 +557,14 @@ export class Client extends ClientAbstract {
   async invoke<T extends (functions.Function<unknown> | types.Type) = functions.Function<unknown>>(function_: T, noWait: true): Promise<void>;
   async invoke<T extends (functions.Function<unknown> | types.Type) = functions.Function<unknown>>(function_: T, noWait?: boolean): Promise<T | void> {
     if (!this.auth) {
-      throw new Error("Not connected");
+      if (this.autoStart && !this.autoStarted) {
+        await this.start();
+      } else {
+        throw new Error("Not connected");
+      }
+    }
+    if (!this.auth) {
+      UNREACHABLE();
     }
 
     let seqNo = this.state.seqNo * 2;
