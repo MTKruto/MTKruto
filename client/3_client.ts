@@ -587,13 +587,14 @@ export class Client extends ClientAbstract {
             }
           } else if (message.body instanceof types.BadMsgNotification || message.body instanceof types.BadServerSalt) {
             if (message.body instanceof types.BadServerSalt) {
+              d("server salt reassigned");
               this.state.salt = message.body.newServerSalt;
             }
-            const promise = this.promises.get(message.body.badMsgId);
-            if (promise) {
-              promise.resolve(message.body);
-              this.promises.delete(message.body.badMsgId);
-            }
+            // const promise = this.promises.get(message.body.badMsgId);
+            // if (promise) {
+            //   promise.resolve(message.body);
+            //   this.promises.delete(message.body.badMsgId);
+            // }
           }
 
           this.toAcknowledge.add(message.id);
