@@ -362,7 +362,7 @@ export class Client extends ClientAbstract {
                   apiId: this.apiId,
                   apiHash: this.apiHash,
                   phoneNumber,
-                  settings: new types.CodeSettings({}),
+                  settings: new types.CodeSettings(),
                 }),
               );
               dAuth("verification code sent");
