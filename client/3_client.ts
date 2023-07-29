@@ -28,6 +28,7 @@ import { ClientAbstract } from "./1_client_abstract.ts";
 import { ClientPlain } from "./2_client_plain.ts";
 import { drop, mustPrompt, mustPromptOneOf } from "../utilities/1_misc.ts";
 import { getChannelChatId, peerToChatId } from "./0_utilities.ts";
+import { constructUser } from "../types/1_user.ts";
 
 const d = debug("Client");
 const dGap = debug("Client/recoverUpdateGap");
@@ -1322,5 +1323,13 @@ export class Client extends ClientAbstract {
 
   async forwardMessage(from: number | string, to: number | string, messageId: number, params?: ForwardMessagesParams) {
     return await this.forwardMessages(from, to, [messageId], params).then((v) => v[0]);
+  }
+
+  async getMe() {
+    const users = await this.invoke(new functions.UsersGetUsers({ id: [new types.InputUserSelf()] }));
+    if (users.length < 1) {
+      UNREACHABLE();
+    }
+    return constructUser(users[0][as](types.User));
   }
 }
