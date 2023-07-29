@@ -279,53 +279,26 @@ export class Client extends ClientAbstract {
 
     dAuth("authorizing with %s", typeof params === "string" ? "bot token" : params instanceof types.AuthExportedAuthorization ? "exported authorization" : "AuthorizeUserParams");
 
-    await this.invoke(
-      new functions.InitConnection({
-        apiId: this.apiId,
-        appVersion: this.appVersion,
-        deviceModel: this.deviceModel,
-        langCode: this.langCode,
-        langPack: this.langPack,
-        query: new functions.InvokeWithLayer({
-          layer: LAYER,
-          query: new functions.HelpGetConfig(),
+    const initConnection = async () => {
+      await this.invoke(
+        new functions.InitConnection({
+          apiId: this.apiId!,
+          appVersion: this.appVersion,
+          deviceModel: this.deviceModel,
+          langCode: this.langCode,
+          langPack: this.langPack,
+          query: new functions.InvokeWithLayer({
+            layer: LAYER,
+            query: new functions.HelpGetConfig(),
+          }),
+          systemLangCode: this.systemLangCode,
+          systemVersion: this.systemVersion,
         }),
-        systemLangCode: this.systemLangCode,
-        systemVersion: this.systemVersion,
-      }),
-    );
-    d("connection inited");
-
-    const handlePassword = async (err: unknown) => {
-      params = params as AuthorizeUserParams;
-      if (err instanceof types.RPCError && err.errorMessage == "SESSION_PASSWORD_NEEDED") {
-        while (true) {
-          const ap = await this.invoke(new functions.AccountGetPassword());
-
-          if (ap.currentAlgo instanceof types.PasswordKdfAlgoSHA256SHA256PBKDF2HMACSHA512iter100000SHA256ModPow) {
-            try {
-              const password = typeof params.password === "string" ? params.password : await params.password(ap.hint ?? null);
-              const input = await checkPassword(password, ap);
-
-              await this.invoke(new functions.AuthCheckPassword({ password: input }));
-              await this.storage.setAccountType("user");
-              dAuth("authorized as user");
-              break;
-            } catch (err) {
-              if (err instanceof types.RPCError && err.errorMessage == "PASSWORD_HASH_INVALID") {
-                continue;
-              } else {
-                throw err;
-              }
-            }
-          } else {
-            throw new Error(`Handling ${ap.currentAlgo?.constructor.name} not implemented`);
-          }
-        }
-      } else {
-        throw err;
-      }
+      );
+      d("connection inited");
     };
+
+    await initConnection();
 
     try {
       await this.fetchState("authorize");
@@ -337,93 +310,128 @@ export class Client extends ClientAbstract {
       }
     }
 
-    let signedIn = false;
-    let phoneNumber: string | null = null;
-
-    try {
-      if (params instanceof types.AuthExportedAuthorization) {
-        await this.invoke(new functions.AuthImportAuthorization({ id: params.id, bytes: params.bytes }));
-        dAuth("authorization imported");
-      } else if (typeof params == "object") {
-        while (true) {
-          if (signedIn) {
-            break;
-          }
-
-          try {
-            try {
-              phoneNumber = typeof params.phone === "string" ? params.phone : await params.phone();
-              const sentCode = await this.invoke(
-                new functions.AuthSendCode({
-                  apiId: this.apiId,
-                  apiHash: this.apiHash,
-                  phoneNumber,
-                  settings: new types.CodeSettings(),
-                }),
-              );
-              dAuth("verification code sent");
-
-              if (sentCode instanceof types.AuthSentCode) {
-                while (true) {
-                  const phoneCode = typeof params.code === "string" ? params.code : await params.code();
-                  try {
-                    const auth = await this.invoke(new functions.AuthSignIn({ phoneNumber, phoneCode, phoneCodeHash: sentCode.phoneCodeHash }));
-                    if (auth instanceof types.AuthAuthorizationSignUpRequired) {
-                      throw new Error("Sign up not supported");
-                    } else {
-                      signedIn = true;
-                      await this.storage.setAccountType("user");
-                      dAuth("authorized as user");
-                      break;
-                    }
-                  } catch (err) {
-                    if (err instanceof types.RPCError && err.errorMessage == "PHONE_CODE_INVALID") {
-                      continue;
-                    } else {
-                      throw err;
-                    }
-                  }
-                }
-              } else {
-                throw new Error(`Handling ${sentCode.constructor.name} not implemented`);
-              }
-            } catch (err) {
-              await handlePassword(err);
-            }
-          } catch (err) {
-            if (err == restartAuth) {
+    if (typeof params === "string") {
+      while (true) {
+        try {
+          await this.invoke(new functions.AuthImportBotAuthorization({ apiId: this.apiId, apiHash: this.apiHash, botAuthToken: params, flags: 0 }));
+          await this.storage.setAccountType("bot");
+          break;
+        } catch (err) {
+          if (err instanceof types.RPCError) {
+            const match = err.errorMessage.match(/MIGRATE_(\d)$/);
+            if (match) {
+              await this[handleMigrationError](err);
+              await initConnection();
               continue;
             } else {
               throw err;
             }
+          } else {
+            throw err;
           }
         }
-      } else {
-        await this.invoke(new functions.AuthImportBotAuthorization({ apiId: this.apiId, apiHash: this.apiHash, botAuthToken: params, flags: 0 }));
-        await this.storage.setAccountType("bot");
-        dAuth("authorized as bot");
       }
-    } catch (err) {
-      if (err instanceof types.RPCError) {
-        const match = err.errorMessage.match(/MIGRATE_(\d)$/);
-        if (match) {
-          await this[handleMigrationError](err);
-          if (typeof params === "object" && phoneNumber != null) {
-            params = Object.assign({}, params) as AuthorizeUserParams;
-            params.phone = phoneNumber;
-          }
-          await this.authorize(params);
-        } else {
-          await handlePassword(err);
-        }
-      } else {
-        throw err;
-      }
-    } finally {
+      dAuth("authorized as bot");
+      await this.fetchState("authorize");
+      return;
+    }
+
+    if (params instanceof types.AuthExportedAuthorization) {
+      await this.invoke(new functions.AuthImportAuthorization({ id: params.id, bytes: params.bytes }));
+      dAuth("authorization imported");
+      return;
+    }
+
+    let phone: string;
+    let sentCode: types.AuthSentCode;
+    while (true) {
       try {
+        phone = typeof params.phone === "string" ? params.phone : await params.phone();
+        const sendCode = () =>
+          this.invoke(
+            new functions.AuthSendCode({
+              phoneNumber: phone,
+              apiId: this.apiId!,
+              apiHash: this.apiHash!,
+              settings: new types.CodeSettings(),
+            }),
+          ).then((v) => v[as](types.AuthSentCode));
+        try {
+          sentCode = await sendCode();
+        } catch (err) {
+          if (err instanceof types.RPCError) {
+            const match = err.errorMessage.match(/MIGRATE_(\d)$/);
+            if (match) {
+              await this[handleMigrationError](err);
+              await initConnection();
+              sentCode = await sendCode();
+            } else {
+              throw err;
+            }
+          } else {
+            throw err;
+          }
+        }
+        break;
+      } catch (err) {
+        if (err instanceof types.RPCError && err.errorMessage == "PHONE_NUMBER_INVALID") {
+          continue;
+        } else {
+          throw err;
+        }
+      }
+    }
+    dAuth("verification code sent");
+
+    let err: unknown;
+    while (true) {
+      const code = typeof params.code === "string" ? params.code : await params.code();
+      try {
+        await this.invoke(
+          new functions.AuthSignIn({
+            phoneNumber: phone,
+            phoneCode: code,
+            phoneCodeHash: sentCode.phoneCodeHash,
+          }),
+        );
+        await this.storage.setAccountType("user");
+        dAuth("authorized as user");
         await this.fetchState("authorize");
-      } catch (_err) {
-        //
+        return;
+      } catch (err_) {
+        if (err_ instanceof types.RPCError && err_.errorMessage == "PHONE_CODE_INVALID") {
+          continue;
+        } else {
+          err = err_;
+          break;
+        }
+      }
+    }
+
+    if (!(err instanceof types.RPCError && err.errorMessage == "SESSION_PASSWORD_NEEDED")) {
+      throw err;
+    }
+
+    while (true) {
+      const ap = await this.invoke(new functions.AccountGetPassword());
+      if (!(ap.currentAlgo instanceof types.PasswordKdfAlgoSHA256SHA256PBKDF2HMACSHA512iter100000SHA256ModPow)) {
+        throw new Error(`Handling ${ap.currentAlgo?.constructor.name} not implemented`);
+      }
+      try {
+        const password = typeof params.password === "string" ? params.password : await params.password(ap.hint ?? null);
+        const input = await checkPassword(password, ap);
+
+        await this.invoke(new functions.AuthCheckPassword({ password: input }));
+        await this.storage.setAccountType("user");
+        dAuth("authorized as user");
+        await this.fetchState("authorize");
+        break;
+      } catch (err) {
+        if (err instanceof types.RPCError && err.errorMessage == "PASSWORD_HASH_INVALID") {
+          continue;
+        } else {
+          throw err;
+        }
       }
     }
   }
@@ -433,6 +441,17 @@ export class Client extends ClientAbstract {
    */
   async start(params?: string | types.AuthExportedAuthorization | AuthorizeUserParams) {
     await this.connect();
+
+    try {
+      await this.fetchState("authorize");
+      d("already authorized");
+      return;
+    } catch (err) {
+      if (!(err instanceof types.RPCError) || err.errorMessage != "AUTH_KEY_UNREGISTERED") {
+        throw err;
+      }
+    }
+
     await this.authorize(params);
   }
 
