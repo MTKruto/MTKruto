@@ -21,3 +21,11 @@ export function mustPromptNumber(message: string) {
   }
   return result;
 }
+
+export function mustPromptOneOf<T extends readonly string[]>(message: string, choices: T): T[number] {
+  let result = prompt(message);
+  while (result == null || !choices.includes(result)) {
+    result = prompt(message);
+  }
+  return result;
+}

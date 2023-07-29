@@ -26,9 +26,8 @@ import { parseHtml } from "./0_html.ts";
 import { checkPassword } from "./0_password.ts";
 import { ClientAbstract } from "./1_client_abstract.ts";
 import { ClientPlain } from "./2_client_plain.ts";
-import { drop } from "../utilities/1_misc.ts";
+import { drop, mustPrompt, mustPromptOneOf } from "../utilities/1_misc.ts";
 import { getChannelChatId, peerToChatId } from "./0_utilities.ts";
-import { mustPrompt, mustPromptNumber } from "../utilities/1_misc.ts";
 
 const d = debug("Client");
 const dGap = debug("Client/recoverUpdateGap");
@@ -51,7 +50,7 @@ export enum ParseMode {
 export interface AuthorizeUserParams<S = string> {
   phone: S | (() => MaybePromise<S>);
   code: S | (() => MaybePromise<S>);
-  password: S | (() => MaybePromise<S>);
+  password: S | ((hint: string | null) => MaybePromise<S>);
 }
 
 export type UpdateHandler = null | ((client: Client, update: types.TypeUpdate) => MaybePromise<void>);
@@ -269,15 +268,11 @@ export class Client extends ClientAbstract {
     }
 
     if (typeof params === "undefined") {
-      const phoneNumberOrBotToken = mustPrompt("Enter a phone number or a bot token:");
-      if (phoneNumberOrBotToken.startsWith("+")) {
-        params = {
-          phone: phoneNumberOrBotToken,
-          code: () => String(mustPromptNumber("Enter the verification code:")),
-          password: () => mustPrompt("Enter the account password:"),
-        };
+      const loginType = mustPromptOneOf("Do you want to login as bot [b] or user [u]?", ["b", "u"] as const);
+      if (loginType == "b") {
+        params = mustPrompt("Bot token:");
       } else {
-        params = phoneNumberOrBotToken;
+        params = { phone: () => mustPrompt("Phone number:"), code: () => mustPrompt("Verification code:"), password: () => mustPrompt(`Password:`) };
       }
     }
 
@@ -308,7 +303,7 @@ export class Client extends ClientAbstract {
 
           if (ap.currentAlgo instanceof types.PasswordKdfAlgoSHA256SHA256PBKDF2HMACSHA512iter100000SHA256ModPow) {
             try {
-              const password = typeof params.password === "string" ? params.password : await params.password();
+              const password = typeof params.password === "string" ? params.password : await params.password(ap.hint ?? null);
               const input = await checkPassword(password, ap);
 
               await this.invoke(new functions.AuthCheckPassword({ password: input }));
