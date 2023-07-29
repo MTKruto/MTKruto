@@ -99,12 +99,71 @@ export interface ClientParams {
   autoStart?: boolean;
 }
 
+/**
+ * A chat identifier as provided by MTKruto or a string starting with a @ that is followed by a username.
+ */
+export type ChatID = number | string;
+
+export interface SendMessagesParams {
+  /**
+   * The parse mode to use. If not provided, the default parse mode will be used.
+   */
+  parseMode?: ParseMode;
+  /**
+   * The message's entities.
+   */
+  entities?: MessageEntity[];
+  /**
+   * Whether to disable web page previews in the message that is to be sent.
+   */
+  disableWebPagePreview?: boolean;
+  /**
+   * Whether to send the message in a silent way without making a sound on the recipients' clients.
+   */
+  disableNotification?: boolean;
+  /**
+   * Whether to protect the contents of the message from copying and forwarding.
+   */
+  protectContent?: boolean;
+  /**
+   * The identifier of a message to reply to.
+   */
+  replyToMessageId?: number;
+  /**
+   * The identifier of a thread to send the message to.
+   */
+  messageThreadId?: number;
+  /**
+   * The identifier of the chat to send the message on behalf of.
+   */
+  sendAs?: ChatID;
+  /**
+   * The reply markup of the message.
+   */
+  replyMarkup?: InlineKeyboardMarkup | ReplyKeyboardMarkup | ReplyKeyboardRemove | ForceReply;
+}
+
 export interface ForwardMessagesParams {
   messageThreadId?: number;
+  /**
+   * Whether to forward the message in a silent way without making a sound on the recipients' clients.
+   */
   disableNotification?: boolean;
+  /**
+   * Whether to protect the contents of the forwarded message from copying and forwarding.
+   */
   protectContent?: boolean;
-  sendAs?: number | string;
+  /**
+   * The identifier of the chat to forward the message on behalf of.
+   */
+  sendAs?: ChatID;
+  /**
+   * Whether to not include the original sender of the message that is going to be forwarded.
+   */
   dropSenderName?: boolean;
+  /**
+   * Whether to not include the original caption of the message that is going to be forwarded.
+   */
   dropCaption?: boolean;
 }
 
@@ -1102,7 +1161,7 @@ export class Client extends ClientAbstract {
     }
   }
 
-  private async updatesToMessages(chatId: number | string, updates: types.TypeUpdates) {
+  private async updatesToMessages(chatId: ChatID, updates: types.TypeUpdates) {
     const messages = new Array<Message>();
 
     if (updates instanceof types.Updates) {
@@ -1123,20 +1182,16 @@ export class Client extends ClientAbstract {
     return messages;
   }
 
+  /**
+   * Send a text message.
+   *
+   * @param chatId The chat to send the message to.
+   * @param text The message's text.
+   */
   async sendMessage(
-    chatId: number | string,
+    chatId: ChatID,
     text: string,
-    params?: {
-      parseMode?: ParseMode;
-      entities?: MessageEntity[];
-      disableWebPagePreview?: boolean;
-      disableNotification?: boolean;
-      protectContent?: boolean;
-      replyToMessageId?: number;
-      messageThreadId?: number;
-      sendAs?: number | string;
-      replyMarkup?: InlineKeyboardMarkup | ReplyKeyboardMarkup | ReplyKeyboardRemove | ForceReply;
-    },
+    params?: SendMessagesParams,
   ) {
     const entities_ = params?.entities ?? [];
     const parseMode = params?.parseMode ?? this.parseMode;
@@ -1199,7 +1254,13 @@ export class Client extends ClientAbstract {
     return await this.updatesToMessages(chatId, result).then((v) => v[0]);
   }
 
-  async getMessages(chatId_: number | string, messageIds: number[]) {
+  /**
+   * Retrieve multiple messages.
+   *
+   * @param chatId The identifier of the chat to retrieve the messages from.
+   * @param messageIds The identifiers of the messages to retrieve.
+   */
+  async getMessages(chatId_: ChatID, messageIds: number[]) {
     const peer = await this.getInputPeer(chatId_);
     let messages_ = new Array<types.TypeMessage>();
     const chatId = peerToChatId(peer);
@@ -1237,7 +1298,13 @@ export class Client extends ClientAbstract {
     return messages;
   }
 
-  async getMessage(chatId: number | string, messageId: number): Promise<Omit<Message, "replyToMessage"> | null> {
+  /**
+   * Retrieve a single message.
+   *
+   * @param chatId The identifier of the chat to retrieve the message from.
+   * @param messageId The identifier of the message to retrieve.
+   */
+  async getMessage(chatId: ChatID, messageId: number): Promise<Omit<Message, "replyToMessage"> | null> {
     const messages = await this.getMessages(chatId, [messageId]);
     return messages[0] ?? null;
   }
@@ -1283,24 +1350,29 @@ export class Client extends ClientAbstract {
     }
   }
 
-  async download(fileId_: string) {
-    const fileId = FileID.decode(fileId_);
-    switch (fileId.fileType) {
+  /**
+   * Download a file.
+   *
+   * @param fileId The identifier of the file to download.
+   */
+  async download(fileId: string) {
+    const fileId_ = FileID.decode(fileId);
+    switch (fileId_.fileType) {
       case FileType.ChatPhoto: {
-        const big = fileId.params.thumbnailSource == ThumbnailSource.ChatPhotoBig;
-        const peer = await this.getInputPeer(fileId.params.chatId!);
-        const location = new types.InputPeerPhotoFileLocation({ big: big ? true : undefined, peer, photoId: fileId.params.mediaId! });
+        const big = fileId_.params.thumbnailSource == ThumbnailSource.ChatPhotoBig;
+        const peer = await this.getInputPeer(fileId_.params.chatId!);
+        const location = new types.InputPeerPhotoFileLocation({ big: big ? true : undefined, peer, photoId: fileId_.params.mediaId! });
         return this.downloadInner(location);
       }
       case FileType.Photo: {
-        if (fileId.params.mediaId == undefined || fileId.params.accessHash == undefined || fileId.params.fileReference == undefined || fileId.params.thumbnailSize == undefined) {
+        if (fileId_.params.mediaId == undefined || fileId_.params.accessHash == undefined || fileId_.params.fileReference == undefined || fileId_.params.thumbnailSize == undefined) {
           UNREACHABLE();
         }
         const location = new types.InputPhotoFileLocation({
-          id: fileId.params.mediaId,
-          accessHash: fileId.params.accessHash,
-          fileReference: fileId.params.fileReference,
-          thumbSize: fileId.params.thumbnailSize,
+          id: fileId_.params.mediaId,
+          accessHash: fileId_.params.accessHash,
+          fileReference: fileId_.params.fileReference,
+          thumbSize: fileId_.params.thumbnailSize,
         });
         return this.downloadInner(location);
       }
@@ -1321,7 +1393,14 @@ export class Client extends ClientAbstract {
     }
   }
 
-  async forwardMessages(from: number | string, to: number | string, messageIds: number[], params?: ForwardMessagesParams) {
+  /**
+   * Forward multiple messages.
+   *
+   * @param from The identifier of the chat to forward the messages from.
+   * @param to The identifier of the chat to forward the messages to.
+   * @param messageIds The identifiers of the messages to forward.
+   */
+  async forwardMessages(from: ChatID, to: ChatID, messageIds: number[], params?: ForwardMessagesParams) {
     const result = await this.invoke(
       new functions.MessagesForwardMessages({
         fromPeer: await this.getInputPeer(from),
@@ -1340,10 +1419,20 @@ export class Client extends ClientAbstract {
     return await this.updatesToMessages(to, result);
   }
 
-  async forwardMessage(from: number | string, to: number | string, messageId: number, params?: ForwardMessagesParams) {
+  /**
+   * Forward a single message.
+   *
+   * @param from The identifier of the chat to forward the message from.
+   * @param to The identifier of the chat to forward the message to.
+   * @param messageId The identifier of the message to forward.
+   */
+  async forwardMessage(from: ChatID, to: ChatID, messageId: number, params?: ForwardMessagesParams) {
     return await this.forwardMessages(from, to, [messageId], params).then((v) => v[0]);
   }
 
+  /**
+   * Get information on the currently authorized user.
+   */
   async getMe() {
     const users = await this.invoke(new functions.UsersGetUsers({ id: [new types.InputUserSelf()] }));
     if (users.length < 1) {
