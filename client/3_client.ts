@@ -585,7 +585,7 @@ export class Client extends ClientAbstract {
               promise.resolve(message.body);
               this.promises.delete(message.body.msgId);
             }
-          } else if (message.body instanceof types.BadMsgNotification || message.body instanceof types.BadServerSalt) {
+          } else if (message.body instanceof types.TypeBadMsgNotification || message.body instanceof types.BadServerSalt) {
             if (message.body instanceof types.BadServerSalt) {
               d("server salt reassigned");
               this.state.salt = message.body.newServerSalt;
