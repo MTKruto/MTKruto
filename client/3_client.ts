@@ -192,7 +192,7 @@ export class Client extends ClientAbstract {
    *
    * @param storage The storage provider to use. Defaults to memory storage.
    * @param apiId App's API ID from [my.telegram.org](https://my.telegram.org/apps). Defaults to 0 (unset).
-   * @param apiHash App's API hash from [my.telegram.org/apps](https://my.telegram.org/apps). Default to empty string (unset).
+   * @param apiHash App's API hash from [my.telegram.org/apps](https://my.telegram.org/apps). Defaults to empty string (unset).
    * @param params Other parameters.
    */
   constructor(
