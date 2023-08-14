@@ -1,4 +1,4 @@
-export * from "https://deno.land/std@0.197.0/testing/asserts.ts";
+export * from 'https://deno.land/std@0.198.0/assert/mod.ts'
 
 export { ctr256Decrypt, ctr256Encrypt, factorize, ige256Decrypt, ige256Encrypt, init as initTgCrypto } from "https://deno.land/x/tgcrypto@0.1.3/mod.ts";
 
