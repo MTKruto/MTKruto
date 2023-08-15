@@ -15,7 +15,7 @@ export function getMessageId(lastMsgId: bigint) {
   let newMsgId = (BigInt(Math.floor(now)) <<
     32n) ||
     (BigInt(nanoseconds) << 2n);
-  if (lastMsgId >= (newMsgId)) {
+  if (lastMsgId >= newMsgId) {
     newMsgId = lastMsgId + 4n;
   }
   return newMsgId;
