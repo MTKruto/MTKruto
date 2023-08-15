@@ -3793,65 +3793,80 @@ export class ContactsDeleteByPhones extends Function<boolean> {
 }
 
 export class ContactsBlock extends Function<boolean> {
+  myStoriesFrom?: true;
   id: types.TypeInputPeer;
 
   protected get [id]() {
-    return 0x68CC1411;
+    return 0x2E2E8734;
   }
 
   static get [paramDesc](): ParamDesc {
     return [
+      ["flags", flags, "#"],
+      ["myStoriesFrom", "true", "flags.0?true"],
       ["id", types.TypeInputPeer, "InputPeer"],
     ];
   }
 
   protected get [params](): Params {
     return [
+      ["flags", flags, "#"],
+      [this.myStoriesFrom ?? null, "true", "flags.0?true"],
       [this.id, types.TypeInputPeer, "InputPeer"],
     ];
   }
 
-  constructor(params: { id: types.TypeInputPeer }) {
+  constructor(params: { myStoriesFrom?: true; id: types.TypeInputPeer }) {
     super();
+    this.myStoriesFrom = params.myStoriesFrom;
     this.id = params.id;
   }
 }
 
 export class ContactsUnblock extends Function<boolean> {
+  myStoriesFrom?: true;
   id: types.TypeInputPeer;
 
   protected get [id]() {
-    return 0xBEA65D50;
+    return 0xB550D328;
   }
 
   static get [paramDesc](): ParamDesc {
     return [
+      ["flags", flags, "#"],
+      ["myStoriesFrom", "true", "flags.0?true"],
       ["id", types.TypeInputPeer, "InputPeer"],
     ];
   }
 
   protected get [params](): Params {
     return [
+      ["flags", flags, "#"],
+      [this.myStoriesFrom ?? null, "true", "flags.0?true"],
       [this.id, types.TypeInputPeer, "InputPeer"],
     ];
   }
 
-  constructor(params: { id: types.TypeInputPeer }) {
+  constructor(params: { myStoriesFrom?: true; id: types.TypeInputPeer }) {
     super();
+    this.myStoriesFrom = params.myStoriesFrom;
     this.id = params.id;
   }
 }
 
 export class ContactsGetBlocked extends Function<types.TypeContactsBlocked> {
+  myStoriesFrom?: true;
   offset: number;
   limit: number;
 
   protected get [id]() {
-    return 0xF57C350F;
+    return 0x9A868F80;
   }
 
   static get [paramDesc](): ParamDesc {
     return [
+      ["flags", flags, "#"],
+      ["myStoriesFrom", "true", "flags.0?true"],
       ["offset", "number", "int"],
       ["limit", "number", "int"],
     ];
@@ -3859,13 +3874,16 @@ export class ContactsGetBlocked extends Function<types.TypeContactsBlocked> {
 
   protected get [params](): Params {
     return [
+      ["flags", flags, "#"],
+      [this.myStoriesFrom ?? null, "true", "flags.0?true"],
       [this.offset, "number", "int"],
       [this.limit, "number", "int"],
     ];
   }
 
-  constructor(params: { offset: number; limit: number }) {
+  constructor(params: { myStoriesFrom?: true; offset: number; limit: number }) {
     super();
+    this.myStoriesFrom = params.myStoriesFrom;
     this.offset = params.offset;
     this.limit = params.limit;
   }
@@ -4343,6 +4361,41 @@ export class ContactsToggleStoriesHidden extends Function<boolean> {
     super();
     this.id = params.id;
     this.hidden = params.hidden;
+  }
+}
+
+export class ContactsSetBlocked extends Function<boolean> {
+  myStoriesFrom?: true;
+  id: Array<types.TypeInputPeer>;
+  limit: number;
+
+  protected get [id]() {
+    return 0x94C65C76;
+  }
+
+  static get [paramDesc](): ParamDesc {
+    return [
+      ["flags", flags, "#"],
+      ["myStoriesFrom", "true", "flags.0?true"],
+      ["id", [types.TypeInputPeer], "Vector<InputPeer>"],
+      ["limit", "number", "int"],
+    ];
+  }
+
+  protected get [params](): Params {
+    return [
+      ["flags", flags, "#"],
+      [this.myStoriesFrom ?? null, "true", "flags.0?true"],
+      [this.id, [types.TypeInputPeer], "Vector<InputPeer>"],
+      [this.limit, "number", "int"],
+    ];
+  }
+
+  constructor(params: { myStoriesFrom?: true; id: Array<types.TypeInputPeer>; limit: number }) {
+    super();
+    this.myStoriesFrom = params.myStoriesFrom;
+    this.id = params.id;
+    this.limit = params.limit;
   }
 }
 
@@ -16185,6 +16238,7 @@ export class StoriesSendStory extends Function<types.TypeUpdates> {
   pinned?: true;
   noforwards?: true;
   media: types.TypeInputMedia;
+  mediaAreas?: Array<types.TypeMediaArea>;
   caption?: string;
   entities?: Array<types.TypeMessageEntity>;
   privacyRules: Array<types.TypeInputPrivacyRule>;
@@ -16192,7 +16246,7 @@ export class StoriesSendStory extends Function<types.TypeUpdates> {
   period?: number;
 
   protected get [id]() {
-    return 0x424CD47A;
+    return 0xD455FCEC;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -16201,6 +16255,7 @@ export class StoriesSendStory extends Function<types.TypeUpdates> {
       ["pinned", "true", "flags.2?true"],
       ["noforwards", "true", "flags.4?true"],
       ["media", types.TypeInputMedia, "InputMedia"],
+      ["mediaAreas", [types.TypeMediaArea], "flags.5?Vector<MediaArea>"],
       ["caption", "string", "flags.0?string"],
       ["entities", [types.TypeMessageEntity], "flags.1?Vector<MessageEntity>"],
       ["privacyRules", [types.TypeInputPrivacyRule], "Vector<InputPrivacyRule>"],
@@ -16215,6 +16270,7 @@ export class StoriesSendStory extends Function<types.TypeUpdates> {
       [this.pinned ?? null, "true", "flags.2?true"],
       [this.noforwards ?? null, "true", "flags.4?true"],
       [this.media, types.TypeInputMedia, "InputMedia"],
+      [this.mediaAreas ?? null, [types.TypeMediaArea], "flags.5?Vector<MediaArea>"],
       [this.caption ?? null, "string", "flags.0?string"],
       [this.entities ?? null, [types.TypeMessageEntity], "flags.1?Vector<MessageEntity>"],
       [this.privacyRules, [types.TypeInputPrivacyRule], "Vector<InputPrivacyRule>"],
@@ -16223,11 +16279,12 @@ export class StoriesSendStory extends Function<types.TypeUpdates> {
     ];
   }
 
-  constructor(params: { pinned?: true; noforwards?: true; media: types.TypeInputMedia; caption?: string; entities?: Array<types.TypeMessageEntity>; privacyRules: Array<types.TypeInputPrivacyRule>; randomId: bigint; period?: number }) {
+  constructor(params: { pinned?: true; noforwards?: true; media: types.TypeInputMedia; mediaAreas?: Array<types.TypeMediaArea>; caption?: string; entities?: Array<types.TypeMessageEntity>; privacyRules: Array<types.TypeInputPrivacyRule>; randomId: bigint; period?: number }) {
     super();
     this.pinned = params.pinned;
     this.noforwards = params.noforwards;
     this.media = params.media;
+    this.mediaAreas = params.mediaAreas;
     this.caption = params.caption;
     this.entities = params.entities;
     this.privacyRules = params.privacyRules;
@@ -16239,12 +16296,13 @@ export class StoriesSendStory extends Function<types.TypeUpdates> {
 export class StoriesEditStory extends Function<types.TypeUpdates> {
   id: number;
   media?: types.TypeInputMedia;
+  mediaAreas?: Array<types.TypeMediaArea>;
   caption?: string;
   entities?: Array<types.TypeMessageEntity>;
   privacyRules?: Array<types.TypeInputPrivacyRule>;
 
   protected get [id]() {
-    return 0x2AAE7A41;
+    return 0xA9B91AE4;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -16252,6 +16310,7 @@ export class StoriesEditStory extends Function<types.TypeUpdates> {
       ["flags", flags, "#"],
       ["id", "number", "int"],
       ["media", types.TypeInputMedia, "flags.0?InputMedia"],
+      ["mediaAreas", [types.TypeMediaArea], "flags.3?Vector<MediaArea>"],
       ["caption", "string", "flags.1?string"],
       ["entities", [types.TypeMessageEntity], "flags.1?Vector<MessageEntity>"],
       ["privacyRules", [types.TypeInputPrivacyRule], "flags.2?Vector<InputPrivacyRule>"],
@@ -16263,16 +16322,18 @@ export class StoriesEditStory extends Function<types.TypeUpdates> {
       ["flags", flags, "#"],
       [this.id, "number", "int"],
       [this.media ?? null, types.TypeInputMedia, "flags.0?InputMedia"],
+      [this.mediaAreas ?? null, [types.TypeMediaArea], "flags.3?Vector<MediaArea>"],
       [this.caption ?? null, "string", "flags.1?string"],
       [this.entities ?? null, [types.TypeMessageEntity], "flags.1?Vector<MessageEntity>"],
       [this.privacyRules ?? null, [types.TypeInputPrivacyRule], "flags.2?Vector<InputPrivacyRule>"],
     ];
   }
 
-  constructor(params: { id: number; media?: types.TypeInputMedia; caption?: string; entities?: Array<types.TypeMessageEntity>; privacyRules?: Array<types.TypeInputPrivacyRule> }) {
+  constructor(params: { id: number; media?: types.TypeInputMedia; mediaAreas?: Array<types.TypeMediaArea>; caption?: string; entities?: Array<types.TypeMessageEntity>; privacyRules?: Array<types.TypeInputPrivacyRule> }) {
     super();
     this.id = params.id;
     this.media = params.media;
+    this.mediaAreas = params.mediaAreas;
     this.caption = params.caption;
     this.entities = params.entities;
     this.privacyRules = params.privacyRules;
@@ -16586,38 +16647,48 @@ export class StoriesIncrementStoryViews extends Function<boolean> {
 }
 
 export class StoriesGetStoryViewsList extends Function<types.StoriesStoryViewsList> {
+  justContacts?: true;
+  reactionsFirst?: true;
+  q?: string;
   id: number;
-  offsetDate: number;
-  offsetId: bigint;
+  offset: string;
   limit: number;
 
   protected get [id]() {
-    return 0x4B3B5E97;
+    return 0xF95F61A4;
   }
 
   static get [paramDesc](): ParamDesc {
     return [
+      ["flags", flags, "#"],
+      ["justContacts", "true", "flags.0?true"],
+      ["reactionsFirst", "true", "flags.2?true"],
+      ["q", "string", "flags.1?string"],
       ["id", "number", "int"],
-      ["offsetDate", "number", "int"],
-      ["offsetId", "bigint", "long"],
+      ["offset", "string", "string"],
       ["limit", "number", "int"],
     ];
   }
 
   protected get [params](): Params {
     return [
+      ["flags", flags, "#"],
+      [this.justContacts ?? null, "true", "flags.0?true"],
+      [this.reactionsFirst ?? null, "true", "flags.2?true"],
+      [this.q ?? null, "string", "flags.1?string"],
       [this.id, "number", "int"],
-      [this.offsetDate, "number", "int"],
-      [this.offsetId, "bigint", "long"],
+      [this.offset, "string", "string"],
       [this.limit, "number", "int"],
     ];
   }
 
-  constructor(params: { id: number; offsetDate: number; offsetId: bigint; limit: number }) {
+  constructor(params: { justContacts?: true; reactionsFirst?: true; q?: string; id: number; offset: string; limit: number }) {
     super();
+    this.justContacts = params.justContacts;
+    this.reactionsFirst = params.reactionsFirst;
+    this.q = params.q;
     this.id = params.id;
-    this.offsetDate = params.offsetDate;
-    this.offsetId = params.offsetId;
+    this.offset = params.offset;
     this.limit = params.limit;
   }
 }
@@ -16710,6 +16781,76 @@ export class StoriesReport extends Function<boolean> {
     this.id = params.id;
     this.reason = params.reason;
     this.message = params.message;
+  }
+}
+
+export class StoriesActivateStealthMode extends Function<types.TypeUpdates> {
+  past?: true;
+  future?: true;
+
+  protected get [id]() {
+    return 0x57BBD166;
+  }
+
+  static get [paramDesc](): ParamDesc {
+    return [
+      ["flags", flags, "#"],
+      ["past", "true", "flags.0?true"],
+      ["future", "true", "flags.1?true"],
+    ];
+  }
+
+  protected get [params](): Params {
+    return [
+      ["flags", flags, "#"],
+      [this.past ?? null, "true", "flags.0?true"],
+      [this.future ?? null, "true", "flags.1?true"],
+    ];
+  }
+
+  constructor(params?: { past?: true; future?: true }) {
+    super();
+    this.past = params?.past;
+    this.future = params?.future;
+  }
+}
+
+export class StoriesSendReaction extends Function<types.TypeUpdates> {
+  addToRecent?: true;
+  userId: types.TypeInputUser;
+  storyId: number;
+  reaction: types.TypeReaction;
+
+  protected get [id]() {
+    return 0x49AAA9B3;
+  }
+
+  static get [paramDesc](): ParamDesc {
+    return [
+      ["flags", flags, "#"],
+      ["addToRecent", "true", "flags.0?true"],
+      ["userId", types.TypeInputUser, "InputUser"],
+      ["storyId", "number", "int"],
+      ["reaction", types.TypeReaction, "Reaction"],
+    ];
+  }
+
+  protected get [params](): Params {
+    return [
+      ["flags", flags, "#"],
+      [this.addToRecent ?? null, "true", "flags.0?true"],
+      [this.userId, types.TypeInputUser, "InputUser"],
+      [this.storyId, "number", "int"],
+      [this.reaction, types.TypeReaction, "Reaction"],
+    ];
+  }
+
+  constructor(params: { addToRecent?: true; userId: types.TypeInputUser; storyId: number; reaction: types.TypeReaction }) {
+    super();
+    this.addToRecent = params.addToRecent;
+    this.userId = params.userId;
+    this.storyId = params.storyId;
+    this.reaction = params.reaction;
   }
 }
 

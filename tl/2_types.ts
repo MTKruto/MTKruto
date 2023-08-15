@@ -1313,6 +1313,15 @@ export abstract class TypeInputReplyTo extends Type {
 export abstract class TypeExportedStoryLink extends Type {
 }
 
+export abstract class TypeStoriesStealthMode extends Type {
+}
+
+export abstract class TypeMediaAreaCoordinates extends Type {
+}
+
+export abstract class TypeMediaArea extends Type {
+}
+
 export class ResPQ extends TypeResPQ {
   nonce: bigint;
   serverNonce: bigint;
@@ -8460,6 +8469,7 @@ export class UserFull extends TypeUserFull {
   voiceMessagesForbidden?: true;
   translationsDisabled?: true;
   storiesPinnedAvailable?: true;
+  blockedMyStoriesFrom?: true;
   id: bigint;
   about?: string;
   settings: TypePeerSettings;
@@ -8496,6 +8506,7 @@ export class UserFull extends TypeUserFull {
       ["voiceMessagesForbidden", "true", "flags.20?true"],
       ["translationsDisabled", "true", "flags.23?true"],
       ["storiesPinnedAvailable", "true", "flags.26?true"],
+      ["blockedMyStoriesFrom", "true", "flags.27?true"],
       ["id", "bigint", "long"],
       ["about", "string", "flags.1?string"],
       ["settings", TypePeerSettings, "PeerSettings"],
@@ -8530,6 +8541,7 @@ export class UserFull extends TypeUserFull {
       [this.voiceMessagesForbidden ?? null, "true", "flags.20?true"],
       [this.translationsDisabled ?? null, "true", "flags.23?true"],
       [this.storiesPinnedAvailable ?? null, "true", "flags.26?true"],
+      [this.blockedMyStoriesFrom ?? null, "true", "flags.27?true"],
       [this.id, "bigint", "long"],
       [this.about ?? null, "string", "flags.1?string"],
       [this.settings, TypePeerSettings, "PeerSettings"],
@@ -8552,7 +8564,7 @@ export class UserFull extends TypeUserFull {
     ];
   }
 
-  constructor(params: { blocked?: true; phoneCallsAvailable?: true; phoneCallsPrivate?: true; canPinMessage?: true; hasScheduled?: true; videoCallsAvailable?: true; voiceMessagesForbidden?: true; translationsDisabled?: true; storiesPinnedAvailable?: true; id: bigint; about?: string; settings: TypePeerSettings; personalPhoto?: TypePhoto; profilePhoto?: TypePhoto; fallbackPhoto?: TypePhoto; notifySettings: TypePeerNotifySettings; botInfo?: TypeBotInfo; pinnedMsgId?: number; commonChatsCount: number; folderId?: number; ttlPeriod?: number; themeEmoticon?: string; privateForwardName?: string; botGroupAdminRights?: TypeChatAdminRights; botBroadcastAdminRights?: TypeChatAdminRights; premiumGifts?: Array<TypePremiumGiftOption>; wallpaper?: TypeWallPaper; stories?: TypeUserStories }) {
+  constructor(params: { blocked?: true; phoneCallsAvailable?: true; phoneCallsPrivate?: true; canPinMessage?: true; hasScheduled?: true; videoCallsAvailable?: true; voiceMessagesForbidden?: true; translationsDisabled?: true; storiesPinnedAvailable?: true; blockedMyStoriesFrom?: true; id: bigint; about?: string; settings: TypePeerSettings; personalPhoto?: TypePhoto; profilePhoto?: TypePhoto; fallbackPhoto?: TypePhoto; notifySettings: TypePeerNotifySettings; botInfo?: TypeBotInfo; pinnedMsgId?: number; commonChatsCount: number; folderId?: number; ttlPeriod?: number; themeEmoticon?: string; privateForwardName?: string; botGroupAdminRights?: TypeChatAdminRights; botBroadcastAdminRights?: TypeChatAdminRights; premiumGifts?: Array<TypePremiumGiftOption>; wallpaper?: TypeWallPaper; stories?: TypeUserStories }) {
     super();
     this.blocked = params.blocked;
     this.phoneCallsAvailable = params.phoneCallsAvailable;
@@ -8563,6 +8575,7 @@ export class UserFull extends TypeUserFull {
     this.voiceMessagesForbidden = params.voiceMessagesForbidden;
     this.translationsDisabled = params.translationsDisabled;
     this.storiesPinnedAvailable = params.storiesPinnedAvailable;
+    this.blockedMyStoriesFrom = params.blockedMyStoriesFrom;
     this.id = params.id;
     this.about = params.about;
     this.settings = params.settings;
@@ -12003,31 +12016,37 @@ export class UpdateReadChannelDiscussionOutbox extends TypeUpdate {
 }
 
 export class UpdatePeerBlocked extends TypeUpdate {
+  blocked?: true;
+  blockedMyStoriesFrom?: true;
   peerId: TypePeer;
-  blocked: boolean;
 
   protected get [id]() {
-    return 0x246A4B22;
+    return 0xEBE07752;
   }
 
   static get [paramDesc](): ParamDesc {
     return [
+      ["flags", flags, "#"],
+      ["blocked", "true", "flags.0?true"],
+      ["blockedMyStoriesFrom", "true", "flags.1?true"],
       ["peerId", TypePeer, "Peer"],
-      ["blocked", "boolean", "Bool"],
     ];
   }
 
   protected get [params](): Params {
     return [
+      ["flags", flags, "#"],
+      [this.blocked ?? null, "true", "flags.0?true"],
+      [this.blockedMyStoriesFrom ?? null, "true", "flags.1?true"],
       [this.peerId, TypePeer, "Peer"],
-      [this.blocked, "boolean", "Bool"],
     ];
   }
 
-  constructor(params: { peerId: TypePeer; blocked: boolean }) {
+  constructor(params: { blocked?: true; blockedMyStoriesFrom?: true; peerId: TypePeer }) {
     super();
-    this.peerId = params.peerId;
     this.blocked = params.blocked;
+    this.blockedMyStoriesFrom = params.blockedMyStoriesFrom;
+    this.peerId = params.peerId;
   }
 }
 
@@ -13108,6 +13127,64 @@ export class UpdateStoryID extends TypeUpdate {
     super();
     this.id = params.id;
     this.randomId = params.randomId;
+  }
+}
+
+export class UpdateStoriesStealthMode extends TypeUpdate {
+  stealthMode: TypeStoriesStealthMode;
+
+  protected get [id]() {
+    return 0x2C084DC1;
+  }
+
+  static get [paramDesc](): ParamDesc {
+    return [
+      ["stealthMode", TypeStoriesStealthMode, "StoriesStealthMode"],
+    ];
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.stealthMode, TypeStoriesStealthMode, "StoriesStealthMode"],
+    ];
+  }
+
+  constructor(params: { stealthMode: TypeStoriesStealthMode }) {
+    super();
+    this.stealthMode = params.stealthMode;
+  }
+}
+
+export class UpdateSentStoryReaction extends TypeUpdate {
+  userId: bigint;
+  storyId: number;
+  reaction: TypeReaction;
+
+  protected get [id]() {
+    return 0xE3A73D20;
+  }
+
+  static get [paramDesc](): ParamDesc {
+    return [
+      ["userId", "bigint", "long"],
+      ["storyId", "number", "int"],
+      ["reaction", TypeReaction, "Reaction"],
+    ];
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.userId, "bigint", "long"],
+      [this.storyId, "number", "int"],
+      [this.reaction, TypeReaction, "Reaction"],
+    ];
+  }
+
+  constructor(params: { userId: bigint; storyId: number; reaction: TypeReaction }) {
+    super();
+    this.userId = params.userId;
+    this.storyId = params.storyId;
+    this.reaction = params.reaction;
   }
 }
 
@@ -37948,16 +38025,18 @@ export class SponsoredWebPage extends TypeSponsoredWebPage {
 
 export class StoryViews extends TypeStoryViews {
   viewsCount: number;
+  reactionsCount: number;
   recentViewers?: Array<bigint>;
 
   protected get [id]() {
-    return 0xD36760CF;
+    return 0xC64C0B97;
   }
 
   static get [paramDesc](): ParamDesc {
     return [
       ["flags", flags, "#"],
       ["viewsCount", "number", "int"],
+      ["reactionsCount", "number", "int"],
       ["recentViewers", ["bigint"], "flags.0?Vector<long>"],
     ];
   }
@@ -37966,13 +38045,15 @@ export class StoryViews extends TypeStoryViews {
     return [
       ["flags", flags, "#"],
       [this.viewsCount, "number", "int"],
+      [this.reactionsCount, "number", "int"],
       [this.recentViewers ?? null, ["bigint"], "flags.0?Vector<long>"],
     ];
   }
 
-  constructor(params: { viewsCount: number; recentViewers?: Array<bigint> }) {
+  constructor(params: { viewsCount: number; reactionsCount: number; recentViewers?: Array<bigint> }) {
     super();
     this.viewsCount = params.viewsCount;
+    this.reactionsCount = params.reactionsCount;
     this.recentViewers = params.recentViewers;
   }
 }
@@ -38056,11 +38137,13 @@ export class StoryItem extends TypeStoryItem {
   caption?: string;
   entities?: Array<TypeMessageEntity>;
   media: TypeMessageMedia;
+  mediaAreas?: Array<TypeMediaArea>;
   privacy?: Array<TypePrivacyRule>;
   views?: TypeStoryViews;
+  sentReaction?: TypeReaction;
 
   protected get [id]() {
-    return 0x562AA637;
+    return 0x44C457CE;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -38080,8 +38163,10 @@ export class StoryItem extends TypeStoryItem {
       ["caption", "string", "flags.0?string"],
       ["entities", [TypeMessageEntity], "flags.1?Vector<MessageEntity>"],
       ["media", TypeMessageMedia, "MessageMedia"],
+      ["mediaAreas", [TypeMediaArea], "flags.14?Vector<MediaArea>"],
       ["privacy", [TypePrivacyRule], "flags.2?Vector<PrivacyRule>"],
       ["views", TypeStoryViews, "flags.3?StoryViews"],
+      ["sentReaction", TypeReaction, "flags.15?Reaction"],
     ];
   }
 
@@ -38102,12 +38187,14 @@ export class StoryItem extends TypeStoryItem {
       [this.caption ?? null, "string", "flags.0?string"],
       [this.entities ?? null, [TypeMessageEntity], "flags.1?Vector<MessageEntity>"],
       [this.media, TypeMessageMedia, "MessageMedia"],
+      [this.mediaAreas ?? null, [TypeMediaArea], "flags.14?Vector<MediaArea>"],
       [this.privacy ?? null, [TypePrivacyRule], "flags.2?Vector<PrivacyRule>"],
       [this.views ?? null, TypeStoryViews, "flags.3?StoryViews"],
+      [this.sentReaction ?? null, TypeReaction, "flags.15?Reaction"],
     ];
   }
 
-  constructor(params: { pinned?: true; public?: true; closeFriends?: true; min?: true; noforwards?: true; edited?: true; contacts?: true; selectedContacts?: true; id: number; date: number; expireDate: number; caption?: string; entities?: Array<TypeMessageEntity>; media: TypeMessageMedia; privacy?: Array<TypePrivacyRule>; views?: TypeStoryViews }) {
+  constructor(params: { pinned?: true; public?: true; closeFriends?: true; min?: true; noforwards?: true; edited?: true; contacts?: true; selectedContacts?: true; id: number; date: number; expireDate: number; caption?: string; entities?: Array<TypeMessageEntity>; media: TypeMessageMedia; mediaAreas?: Array<TypeMediaArea>; privacy?: Array<TypePrivacyRule>; views?: TypeStoryViews; sentReaction?: TypeReaction }) {
     super();
     this.pinned = params.pinned;
     this.public = params.public;
@@ -38123,8 +38210,10 @@ export class StoryItem extends TypeStoryItem {
     this.caption = params.caption;
     this.entities = params.entities;
     this.media = params.media;
+    this.mediaAreas = params.mediaAreas;
     this.privacy = params.privacy;
     this.views = params.views;
+    this.sentReaction = params.sentReaction;
   }
 }
 
@@ -38165,26 +38254,32 @@ export class UserStories extends TypeUserStories {
 
 export class StoriesAllStoriesNotModified extends TypeStoriesAllStories {
   state: string;
+  stealthMode: TypeStoriesStealthMode;
 
   protected get [id]() {
-    return 0x47E0A07E;
+    return 0x1158FE3E;
   }
 
   static get [paramDesc](): ParamDesc {
     return [
+      ["flags", flags, "#"],
       ["state", "string", "string"],
+      ["stealthMode", TypeStoriesStealthMode, "StoriesStealthMode"],
     ];
   }
 
   protected get [params](): Params {
     return [
+      ["flags", flags, "#"],
       [this.state, "string", "string"],
+      [this.stealthMode, TypeStoriesStealthMode, "StoriesStealthMode"],
     ];
   }
 
-  constructor(params: { state: string }) {
+  constructor(params: { state: string; stealthMode: TypeStoriesStealthMode }) {
     super();
     this.state = params.state;
+    this.stealthMode = params.stealthMode;
   }
 }
 
@@ -38194,9 +38289,10 @@ export class StoriesAllStories extends TypeStoriesAllStories {
   state: string;
   userStories: Array<TypeUserStories>;
   users: Array<TypeUser>;
+  stealthMode: TypeStoriesStealthMode;
 
   protected get [id]() {
-    return 0x839E0428;
+    return 0x519D899E;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -38207,6 +38303,7 @@ export class StoriesAllStories extends TypeStoriesAllStories {
       ["state", "string", "string"],
       ["userStories", [TypeUserStories], "Vector<UserStories>"],
       ["users", [TypeUser], "Vector<User>"],
+      ["stealthMode", TypeStoriesStealthMode, "StoriesStealthMode"],
     ];
   }
 
@@ -38218,16 +38315,18 @@ export class StoriesAllStories extends TypeStoriesAllStories {
       [this.state, "string", "string"],
       [this.userStories, [TypeUserStories], "Vector<UserStories>"],
       [this.users, [TypeUser], "Vector<User>"],
+      [this.stealthMode, TypeStoriesStealthMode, "StoriesStealthMode"],
     ];
   }
 
-  constructor(params: { hasMore?: true; count: number; state: string; userStories: Array<TypeUserStories>; users: Array<TypeUser> }) {
+  constructor(params: { hasMore?: true; count: number; state: string; userStories: Array<TypeUserStories>; users: Array<TypeUser>; stealthMode: TypeStoriesStealthMode }) {
     super();
     this.hasMore = params.hasMore;
     this.count = params.count;
     this.state = params.state;
     this.userStories = params.userStories;
     this.users = params.users;
+    this.stealthMode = params.stealthMode;
   }
 }
 
@@ -38294,64 +38393,88 @@ export class StoriesUserStories extends TypeStoriesUserStories {
 }
 
 export class StoryView extends TypeStoryView {
+  blocked?: true;
+  blockedMyStoriesFrom?: true;
   userId: bigint;
   date: number;
+  reaction?: TypeReaction;
 
   protected get [id]() {
-    return 0xA71AACC2;
+    return 0xB0BDEAC5;
   }
 
   static get [paramDesc](): ParamDesc {
     return [
+      ["flags", flags, "#"],
+      ["blocked", "true", "flags.0?true"],
+      ["blockedMyStoriesFrom", "true", "flags.1?true"],
       ["userId", "bigint", "long"],
       ["date", "number", "int"],
+      ["reaction", TypeReaction, "flags.2?Reaction"],
     ];
   }
 
   protected get [params](): Params {
     return [
+      ["flags", flags, "#"],
+      [this.blocked ?? null, "true", "flags.0?true"],
+      [this.blockedMyStoriesFrom ?? null, "true", "flags.1?true"],
       [this.userId, "bigint", "long"],
       [this.date, "number", "int"],
+      [this.reaction ?? null, TypeReaction, "flags.2?Reaction"],
     ];
   }
 
-  constructor(params: { userId: bigint; date: number }) {
+  constructor(params: { blocked?: true; blockedMyStoriesFrom?: true; userId: bigint; date: number; reaction?: TypeReaction }) {
     super();
+    this.blocked = params.blocked;
+    this.blockedMyStoriesFrom = params.blockedMyStoriesFrom;
     this.userId = params.userId;
     this.date = params.date;
+    this.reaction = params.reaction;
   }
 }
 
 export class StoriesStoryViewsList extends TypeStoriesStoryViewsList {
   count: number;
+  reactionsCount: number;
   views: Array<TypeStoryView>;
   users: Array<TypeUser>;
+  nextOffset?: string;
 
   protected get [id]() {
-    return 0xFB3F77AC;
+    return 0x46E9B9EC;
   }
 
   static get [paramDesc](): ParamDesc {
     return [
+      ["flags", flags, "#"],
       ["count", "number", "int"],
+      ["reactionsCount", "number", "int"],
       ["views", [TypeStoryView], "Vector<StoryView>"],
       ["users", [TypeUser], "Vector<User>"],
+      ["nextOffset", "string", "flags.0?string"],
     ];
   }
 
   protected get [params](): Params {
     return [
+      ["flags", flags, "#"],
       [this.count, "number", "int"],
+      [this.reactionsCount, "number", "int"],
       [this.views, [TypeStoryView], "Vector<StoryView>"],
       [this.users, [TypeUser], "Vector<User>"],
+      [this.nextOffset ?? null, "string", "flags.0?string"],
     ];
   }
 
-  constructor(params: { count: number; views: Array<TypeStoryView>; users: Array<TypeUser> }) {
+  constructor(params: { count: number; reactionsCount: number; views: Array<TypeStoryView>; users: Array<TypeUser>; nextOffset?: string }) {
     super();
     this.count = params.count;
+    this.reactionsCount = params.reactionsCount;
     this.views = params.views;
     this.users = params.users;
+    this.nextOffset = params.nextOffset;
   }
 }
 
@@ -38466,6 +38589,189 @@ export class ExportedStoryLink extends TypeExportedStoryLink {
   constructor(params: { link: string }) {
     super();
     this.link = params.link;
+  }
+}
+
+export class StoriesStealthMode extends TypeStoriesStealthMode {
+  activeUntilDate?: number;
+  cooldownUntilDate?: number;
+
+  protected get [id]() {
+    return 0x712E27FD;
+  }
+
+  static get [paramDesc](): ParamDesc {
+    return [
+      ["flags", flags, "#"],
+      ["activeUntilDate", "number", "flags.0?int"],
+      ["cooldownUntilDate", "number", "flags.1?int"],
+    ];
+  }
+
+  protected get [params](): Params {
+    return [
+      ["flags", flags, "#"],
+      [this.activeUntilDate ?? null, "number", "flags.0?int"],
+      [this.cooldownUntilDate ?? null, "number", "flags.1?int"],
+    ];
+  }
+
+  constructor(params?: { activeUntilDate?: number; cooldownUntilDate?: number }) {
+    super();
+    this.activeUntilDate = params?.activeUntilDate;
+    this.cooldownUntilDate = params?.cooldownUntilDate;
+  }
+}
+
+export class MediaAreaCoordinates extends TypeMediaAreaCoordinates {
+  x: number;
+  y: number;
+  w: number;
+  h: number;
+  rotation: number;
+
+  protected get [id]() {
+    return 0x03D1EA4E;
+  }
+
+  static get [paramDesc](): ParamDesc {
+    return [
+      ["x", "number", "double"],
+      ["y", "number", "double"],
+      ["w", "number", "double"],
+      ["h", "number", "double"],
+      ["rotation", "number", "double"],
+    ];
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.x, "number", "double"],
+      [this.y, "number", "double"],
+      [this.w, "number", "double"],
+      [this.h, "number", "double"],
+      [this.rotation, "number", "double"],
+    ];
+  }
+
+  constructor(params: { x: number; y: number; w: number; h: number; rotation: number }) {
+    super();
+    this.x = params.x;
+    this.y = params.y;
+    this.w = params.w;
+    this.h = params.h;
+    this.rotation = params.rotation;
+  }
+}
+
+export class MediaAreaVenue extends TypeMediaArea {
+  coordinates: TypeMediaAreaCoordinates;
+  geo: TypeGeoPoint;
+  title: string;
+  address: string;
+  provider: string;
+  venueId: string;
+  venueType: string;
+
+  protected get [id]() {
+    return 0xBE82DB9C;
+  }
+
+  static get [paramDesc](): ParamDesc {
+    return [
+      ["coordinates", TypeMediaAreaCoordinates, "MediaAreaCoordinates"],
+      ["geo", TypeGeoPoint, "GeoPoint"],
+      ["title", "string", "string"],
+      ["address", "string", "string"],
+      ["provider", "string", "string"],
+      ["venueId", "string", "string"],
+      ["venueType", "string", "string"],
+    ];
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.coordinates, TypeMediaAreaCoordinates, "MediaAreaCoordinates"],
+      [this.geo, TypeGeoPoint, "GeoPoint"],
+      [this.title, "string", "string"],
+      [this.address, "string", "string"],
+      [this.provider, "string", "string"],
+      [this.venueId, "string", "string"],
+      [this.venueType, "string", "string"],
+    ];
+  }
+
+  constructor(params: { coordinates: TypeMediaAreaCoordinates; geo: TypeGeoPoint; title: string; address: string; provider: string; venueId: string; venueType: string }) {
+    super();
+    this.coordinates = params.coordinates;
+    this.geo = params.geo;
+    this.title = params.title;
+    this.address = params.address;
+    this.provider = params.provider;
+    this.venueId = params.venueId;
+    this.venueType = params.venueType;
+  }
+}
+
+export class InputMediaAreaVenue extends TypeMediaArea {
+  coordinates: TypeMediaAreaCoordinates;
+  queryId: bigint;
+  resultId: string;
+
+  protected get [id]() {
+    return 0xB282217F;
+  }
+
+  static get [paramDesc](): ParamDesc {
+    return [
+      ["coordinates", TypeMediaAreaCoordinates, "MediaAreaCoordinates"],
+      ["queryId", "bigint", "long"],
+      ["resultId", "string", "string"],
+    ];
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.coordinates, TypeMediaAreaCoordinates, "MediaAreaCoordinates"],
+      [this.queryId, "bigint", "long"],
+      [this.resultId, "string", "string"],
+    ];
+  }
+
+  constructor(params: { coordinates: TypeMediaAreaCoordinates; queryId: bigint; resultId: string }) {
+    super();
+    this.coordinates = params.coordinates;
+    this.queryId = params.queryId;
+    this.resultId = params.resultId;
+  }
+}
+
+export class MediaAreaGeoPoint extends TypeMediaArea {
+  coordinates: TypeMediaAreaCoordinates;
+  geo: TypeGeoPoint;
+
+  protected get [id]() {
+    return 0xDF8B3B22;
+  }
+
+  static get [paramDesc](): ParamDesc {
+    return [
+      ["coordinates", TypeMediaAreaCoordinates, "MediaAreaCoordinates"],
+      ["geo", TypeGeoPoint, "GeoPoint"],
+    ];
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.coordinates, TypeMediaAreaCoordinates, "MediaAreaCoordinates"],
+      [this.geo, TypeGeoPoint, "GeoPoint"],
+    ];
+  }
+
+  constructor(params: { coordinates: TypeMediaAreaCoordinates; geo: TypeGeoPoint }) {
+    super();
+    this.coordinates = params.coordinates;
+    this.geo = params.geo;
   }
 }
 
@@ -39130,7 +39436,7 @@ export const map = new Map<number, TLObjectConstructor>([
 
 [0x695C9E7C, UpdateReadChannelDiscussionOutbox],
 
-[0x246A4B22, UpdatePeerBlocked],
+[0xEBE07752, UpdatePeerBlocked],
 
 [0x8C88C923, UpdateChannelUserTyping],
 
@@ -39199,6 +39505,10 @@ export const map = new Map<number, TLObjectConstructor>([
 [0xFEB5345A, UpdateReadStories],
 
 [0x1BF335B9, UpdateStoryID],
+
+[0x2C084DC1, UpdateStoriesStealthMode],
+
+[0xE3A73D20, UpdateSentStoryReaction],
 
 [0xA56C2A3E, UpdatesState],
 
@@ -40784,27 +41094,27 @@ export const map = new Map<number, TLObjectConstructor>([
 
 [0x3DB8EC63, SponsoredWebPage],
 
-[0xD36760CF, StoryViews],
+[0xC64C0B97, StoryViews],
 
 [0x51E6EE4F, StoryItemDeleted],
 
 [0xFFADC913, StoryItemSkipped],
 
-[0x562AA637, StoryItem],
+[0x44C457CE, StoryItem],
 
 [0x8611A200, UserStories],
 
-[0x47E0A07E, StoriesAllStoriesNotModified],
+[0x1158FE3E, StoriesAllStoriesNotModified],
 
-[0x839E0428, StoriesAllStories],
+[0x519D899E, StoriesAllStories],
 
 [0x4FE57DF1, StoriesStories],
 
 [0x37A6FF5F, StoriesUserStories],
 
-[0xA71AACC2, StoryView],
+[0xB0BDEAC5, StoryView],
 
-[0xFB3F77AC, StoriesStoryViewsList],
+[0x46E9B9EC, StoriesStoryViewsList],
 
 [0xDE9EED1D, StoriesStoryViews],
 
@@ -40813,6 +41123,16 @@ export const map = new Map<number, TLObjectConstructor>([
 [0x15B0F283, InputReplyToStory],
 
 [0x3FC9053B, ExportedStoryLink],
+
+[0x712E27FD, StoriesStealthMode],
+
+[0x03D1EA4E, MediaAreaCoordinates],
+
+[0xBE82DB9C, MediaAreaVenue],
+
+[0xB282217F, InputMediaAreaVenue],
+
+[0xDF8B3B22, MediaAreaGeoPoint],
 
 // deno-lint-ignore no-explicit-any
 ] as const as any);
