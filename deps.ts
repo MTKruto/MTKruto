@@ -12,4 +12,4 @@ import { debug as debug_ } from "https://raw.githubusercontent.com/MTKruto/debug
 
 export const debug: typeof debug_ = (v) => debug_(`mtkruto/${v}`);
 
-export { decode as base64Decode, encode as base64Encode } from "https://deno.land/std@0.197.0/encoding/base64.ts";
+export { decode as base64Decode, encode as base64Encode } from "https://deno.land/std@0.198.0/encoding/base64.ts";
