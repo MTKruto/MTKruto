@@ -303,6 +303,10 @@ export class Client extends ClientAbstract {
   }
 
   private connectionInited = false;
+  disconnect() {
+    this.connectionInited = false;
+    return super.disconnect();
+  }
   private async initConnection() {
     if (!this.connectionInited) {
       await this.invoke(
