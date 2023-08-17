@@ -302,6 +302,29 @@ export class Client extends ClientAbstract {
     }
   }
 
+  private connectionInited = false;
+  private async initConnection() {
+    if (!this.connectionInited) {
+      await this.invoke(
+        new functions.InitConnection({
+          apiId: this.apiId!,
+          appVersion: this.appVersion,
+          deviceModel: this.deviceModel,
+          langCode: this.langCode,
+          langPack: this.langPack,
+          query: new functions.InvokeWithLayer({
+            layer: LAYER,
+            query: new functions.HelpGetConfig(),
+          }),
+          systemLangCode: this.systemLangCode,
+          systemVersion: this.systemVersion,
+        }),
+      );
+      this.connectionInited = true;
+      d("connection inited");
+    }
+  }
+
   /**
    * Calls [initConnection](1) and authorizes the client with one of the following:
    *
@@ -338,26 +361,7 @@ export class Client extends ClientAbstract {
 
     dAuth("authorizing with %s", typeof params === "string" ? "bot token" : params instanceof types.AuthExportedAuthorization ? "exported authorization" : "AuthorizeUserParams");
 
-    const initConnection = async () => {
-      await this.invoke(
-        new functions.InitConnection({
-          apiId: this.apiId!,
-          appVersion: this.appVersion,
-          deviceModel: this.deviceModel,
-          langCode: this.langCode,
-          langPack: this.langPack,
-          query: new functions.InvokeWithLayer({
-            layer: LAYER,
-            query: new functions.HelpGetConfig(),
-          }),
-          systemLangCode: this.systemLangCode,
-          systemVersion: this.systemVersion,
-        }),
-      );
-      d("connection inited");
-    };
-
-    await initConnection();
+    await this.initConnection();
 
     try {
       await this.fetchState("authorize");
@@ -380,7 +384,7 @@ export class Client extends ClientAbstract {
             const match = err.errorMessage.match(/MIGRATE_(\d)$/);
             if (match) {
               await this[handleMigrationError](err);
-              await initConnection();
+              await this.initConnection();
               continue;
             } else {
               throw err;
@@ -422,7 +426,7 @@ export class Client extends ClientAbstract {
             const match = err.errorMessage.match(/MIGRATE_(\d)$/);
             if (match) {
               await this[handleMigrationError](err);
-              await initConnection();
+              await this.initConnection();
               sentCode = await sendCode();
             } else {
               throw err;
@@ -500,6 +504,7 @@ export class Client extends ClientAbstract {
    */
   async start(params?: string | types.AuthExportedAuthorization | AuthorizeUserParams) {
     await this.connect();
+    await this.initConnection();
 
     try {
       await this.fetchState("authorize");
