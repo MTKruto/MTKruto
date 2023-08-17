@@ -143,6 +143,25 @@ export interface SendMessagesParams {
   replyMarkup?: InlineKeyboardMarkup | ReplyKeyboardMarkup | ReplyKeyboardRemove | ForceReply;
 }
 
+export interface EditMessageParams {
+  /**
+   * The parse mode to use. If not provided, the default parse mode will be used.
+   */
+  parseMode?: ParseMode;
+  /**
+   * The message's entities.
+   */
+  entities?: MessageEntity[];
+  /**
+   * Whether to disable web page previews in the message that is to be edited.
+   */
+  disableWebPagePreview?: boolean;
+  /**
+   * The reply markup of the message.
+   */
+  replyMarkup?: InlineKeyboardMarkup | ReplyKeyboardMarkup | ReplyKeyboardRemove | ForceReply;
+}
+
 export interface ForwardMessagesParams {
   messageThreadId?: number;
   /**
@@ -1054,7 +1073,7 @@ export class Client extends ClientAbstract {
     }
   }
 
-  async getInputPeer(id: string | number) {
+  async getInputPeer(id: ChatID) {
     if (typeof id === "string") {
       if (!id.startsWith("@")) {
         throw new Error("Expected username to start with @");
@@ -1260,6 +1279,60 @@ export class Client extends ClientAbstract {
     );
 
     return await this.updatesToMessages(chatId, result).then((v) => v[0]);
+  }
+
+  /**
+   * Edit a message's text.
+   *
+   * @param chatId The chat where the message is.
+   * @param messageId The ID of the message.
+   * @param text The new text of the message.
+   */
+  async editMessageText(
+    chatId: ChatID,
+    messageId: number,
+    text: string,
+    params?: EditMessageParams,
+  ) {
+    const entities_ = params?.entities ?? [];
+    const parseMode = params?.parseMode ?? this.parseMode;
+    switch (parseMode) {
+      case ParseMode.None:
+        break;
+      case ParseMode.HTML: {
+        const [newText, entitiesToPush] = parseHtml(text);
+        text = newText;
+        for (const entity of entitiesToPush) {
+          entities_.push(entity);
+        }
+      }
+    }
+
+    let replyMarkup: types.TypeReplyMarkup | undefined = undefined;
+    if (params?.replyMarkup) {
+      if ("inlineKeyboard" in params.replyMarkup) {
+        replyMarkup = await inlineKeyboardMarkupToTlObject(params.replyMarkup, async (v) => {
+          const inputPeer = await this.getInputPeer(v).then((v) => v[as](types.InputPeerUser));
+          return new types.InputUser({ userId: inputPeer.userId, accessHash: inputPeer.accessHash });
+        });
+      } else if ("keyboard" in params.replyMarkup) {
+        replyMarkup = replyKeyboardMarkupToTlObject(params.replyMarkup);
+      } else if ("removeKeyboard" in params.replyMarkup) {
+        replyMarkup = replyKeyboardRemoveToTlObject(params.replyMarkup);
+      } else if ("forceReply" in params.replyMarkup) {
+        replyMarkup = forceReplyToTlObject(params.replyMarkup);
+      } else {
+        throw new Error("The replyMarkup parameter has an unexpected type");
+      }
+    }
+
+    const id = messageId;
+    const peer = await this.getInputPeer(chatId);
+    const entities = entities_?.length > 0 ? entities_.map((v) => messageEntityToTlObject(v)) : undefined;
+    const message = text;
+    const noWebpage = params?.disableWebPagePreview ? true : undefined;
+
+    await this.invoke(new functions.MessagesEditMessage({ id, peer, entities, message, noWebpage, replyMarkup }));
   }
 
   /**
