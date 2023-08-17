@@ -31,6 +31,8 @@ const d = debug("types/Message");
 
 /** This object represents a message. */
 export interface Message {
+  /** Whether the message is outgoing */
+  out: boolean;
   /** Unique message identifier inside this chat */
   id: number;
   /** Unique identifier of a message thread to which the message belongs; for supergroups only */
@@ -199,6 +201,7 @@ async function getReply(message_: types.Message | types.MessageService, chat: Ch
 
 async function constructServiceMessage(message_: types.MessageService, chat: Chat, getEntity: EntityGetter, getMessage: MessageGetter) {
   const message: Message = {
+    out: message_.out ?? false,
     id: message_.id,
     chat: chat,
     date: new Date(message_.date * 1_000),
@@ -336,6 +339,7 @@ export async function constructMessage(
   }
 
   const message: Message = {
+    out: message_.out ?? false,
     id: message_.id,
     chat: chat_,
     date: new Date(message_.date * 1_000),
