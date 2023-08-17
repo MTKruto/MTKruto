@@ -62,7 +62,7 @@ export const INITIAL_DC: DC = "2-test";
 
 export const LAYER = 161;
 
-export const APP_VERSION = "MTKruto 0.0.982";
+export const APP_VERSION = "MTKruto 0.0.983";
 
 // @ts-ignore: lib
 export const DEVICE_MODEL = typeof Deno === "undefined" ? typeof navigator === "undefined" ? typeof process === "undefined" ? "Unknown" : process.platform + "-" + process.arch : navigator.userAgent.split(" ")[0] : Deno.build.os + "-" + Deno.build.arch;
