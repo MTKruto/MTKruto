@@ -1,5 +1,5 @@
 import { Parser } from "../deps.ts";
-import { MessageEntity, MessageEntityType } from "../types/0_message_entity.ts";
+import { MessageEntity } from "../types/0_message_entity.ts";
 
 export function parseHtml(html: string) {
   let text = "";
@@ -11,18 +11,18 @@ export function parseHtml(html: string) {
       switch (name) {
         case "b":
         case "strong":
-          queue.push({ type: MessageEntityType.Bold, offset: text.length, length: 0 });
+          queue.push({ type: "bold", offset: text.length, length: 0 });
           break;
         case "em":
         case "i":
-          queue.push({ type: MessageEntityType.Italic, offset: text.length, length: 0 });
+          queue.push({ type: "italic", offset: text.length, length: 0 });
           break;
         case "code":
-          queue.push({ type: MessageEntityType.Code, offset: text.length, length: 0 });
+          queue.push({ type: "code", offset: text.length, length: 0 });
           break;
         case "pre": {
           const language = attribs.language ?? "";
-          queue.push({ type: MessageEntityType.Pre, offset: text.length, length: 0, language });
+          queue.push({ type: "pre", offset: text.length, length: 0, language });
           break;
         }
         case "a": {
@@ -30,16 +30,16 @@ export function parseHtml(html: string) {
           if (!url) {
             throw new Error("Missing attribute href");
           }
-          queue.push({ type: MessageEntityType.TextURL, offset: text.length, length: 0, url });
+          queue.push({ type: "text_link", offset: text.length, length: 0, url });
           break;
         }
         case "ins":
         case "u":
-          queue.push({ type: MessageEntityType.Underline, offset: text.length, length: 0 });
+          queue.push({ type: "underline", offset: text.length, length: 0 });
           break;
         case "del":
         case "strike":
-          queue.push({ type: MessageEntityType.Strike, offset: text.length, length: 0 });
+          queue.push({ type: "strikethrough", offset: text.length, length: 0 });
           break;
         case "span":
           if (attribs.class != "tg-spoiler") {
@@ -47,13 +47,13 @@ export function parseHtml(html: string) {
           }
           // falls through
         case "tg-spoiler":
-          queue.push({ type: MessageEntityType.Spoiler, offset: text.length, length: 0 });
+          queue.push({ type: "spoiler", offset: text.length, length: 0 });
           break;
         case "tg-emoji":
           if (!attribs["emoji-id"]) {
             throw new Error("Missing attribute emoji-id");
           }
-          queue.push({ type: MessageEntityType.Spoiler, offset: text.length, length: 0 });
+          queue.push({ type: "spoiler", offset: text.length, length: 0 });
       }
     },
     ontext(data) {
