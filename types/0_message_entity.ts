@@ -13,9 +13,9 @@ export type MessageEntityType =
   | "text_link"
   | "text_mention"
   | "cashtag"
-  | "phone"
+  | "phone_number"
   | "underline"
-  | "strike"
+  | "strikethrough"
   | "blockquote"
   | "bank_card"
   | "spoiler"
@@ -74,7 +74,7 @@ export declare namespace MessageEntity {
     url: string;
   }
 
-  export interface TetxMention extends Base {
+  export interface TextMention extends Base {
     type: "text_mention";
     /** For “text_mention” only, the ID of the mentioned user */
     userId: number;
@@ -84,16 +84,16 @@ export declare namespace MessageEntity {
     type: "cashtag";
   }
 
-  export interface Phone extends Base {
-    type: "phone";
+  export interface PhoneNumber extends Base {
+    type: "phone_number";
   }
 
   export interface Underline extends Base {
     type: "underline";
   }
 
-  export interface Strike extends Base {
-    type: "strike";
+  export interface Strikethrough extends Base {
+    type: "strikethrough";
   }
 
   export interface Blockquote extends Base {
@@ -127,11 +127,11 @@ export type MessageEntity =
   | MessageEntity.Code
   | MessageEntity.Pre
   | MessageEntity.TextLink
-  | MessageEntity.TetxMention
+  | MessageEntity.TextMention
   | MessageEntity.Cashtag
-  | MessageEntity.Phone
+  | MessageEntity.PhoneNumber
   | MessageEntity.Underline
-  | MessageEntity.Strike
+  | MessageEntity.Strikethrough
   | MessageEntity.Blockquote
   | MessageEntity.BankCard
   | MessageEntity.Spoiler
@@ -163,11 +163,11 @@ export function constructMessageEntity(obj: types.TypeMessageEntity): MessageEnt
   } else if (obj instanceof types.MessageEntityCashtag) {
     return { type: "cashtag", offset: obj.offset, length: obj.length };
   } else if (obj instanceof types.MessageEntityPhone) {
-    return { type: "phone", offset: obj.offset, length: obj.length };
+    return { type: "phone_number", offset: obj.offset, length: obj.length };
   } else if (obj instanceof types.MessageEntityUnderline) {
     return { type: "underline", offset: obj.offset, length: obj.length };
   } else if (obj instanceof types.MessageEntityStrike) {
-    return { type: "strike", offset: obj.offset, length: obj.length };
+    return { type: "strikethrough", offset: obj.offset, length: obj.length };
   } else if (obj instanceof types.MessageEntityBlockquote) {
     return { type: "blockquote", offset: obj.offset, length: obj.length };
   } else if (obj instanceof types.MessageEntityBankCard) {
@@ -208,11 +208,11 @@ export function messageEntityToTlObject(entity: MessageEntity) {
       return new types.MessageEntityMentionName({ offset, length, userId: BigInt(entity.userId) });
     case "cashtag":
       return new types.MessageEntityCashtag({ offset, length });
-    case "phone":
+    case "phone_number":
       return new types.MessageEntityPhone({ offset, length });
     case "underline":
       return new types.MessageEntityUnderline({ offset, length });
-    case "strike":
+    case "strikethrough":
       return new types.MessageEntityStrike({ offset, length });
     case "blockquote":
       return new types.MessageEntityBlockquote({ offset, length });
