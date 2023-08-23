@@ -143,7 +143,7 @@ export function constructMessageEntity(obj: types.TypeMessageEntity): MessageEnt
   } else if (obj instanceof types.MessageEntityHashtag) {
     return { type: "hashtag", offset: obj.offset, length: obj.length };
   } else if (obj instanceof types.MessageEntityBotCommand) {
-    return { type: "bot_command", offset: obj.offset, length: obj.length };
+    return { type: "bot_command", offset: obj.offset ?? 0, length: obj.length };
   } else if (obj instanceof types.MessageEntityURL) {
     return { type: "url", offset: obj.offset, length: obj.length };
   } else if (obj instanceof types.MessageEntityEmail) {
