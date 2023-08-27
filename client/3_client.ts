@@ -55,8 +55,6 @@ export interface AuthorizeUserParams<S = string> {
   password: S | ((hint: string | null) => MaybePromise<S>);
 }
 
-export type UpdateHandler = null | ((client: Client, update: types.TypeUpdate) => MaybePromise<void>);
-
 export interface ClientParams {
   /**
    * Default parse mode. Defauls to `ParseMode.None`.
@@ -194,7 +192,6 @@ export class Client extends ClientAbstract {
   private promises = new Map<bigint, { resolve: (obj: ReadObject) => void; reject: (err: ReadObject) => void }>();
   private toAcknowledge = new Set<bigint>();
   private updateState?: types.UpdatesState;
-  public updateHandler: UpdateHandler = null;
 
   public readonly parseMode: ParseMode;
 
@@ -821,8 +818,7 @@ export class Client extends ClientAbstract {
         }
       }
 
-      // apply update (call listeners)
-      this.updateHandler?.(this, update);
+      this.handleUpdate(update);
     } finally {
       release();
     }
@@ -1525,4 +1521,45 @@ export class Client extends ClientAbstract {
     }
     return constructUser(users[0][as](types.User));
   }
+
+  private async handleUpdate(update: types.TypeUpdate) {
+    if (
+      update instanceof types.UpdateNewMessage ||
+      update instanceof types.UpdateNewChannelMessage
+    ) {
+      const message = await constructMessage(
+        update.message,
+        this[getEntity].bind(this),
+        this.getMessage.bind(this),
+        this[getStickerSetName].bind(this),
+      );
+      await this.handler({ message }, () => Promise.resolve());
+    }
+  }
+
+  handler: Middleware = (_upd, next) => {
+    next();
+  };
+
+  use(middleware: Middleware) {
+    this.handler = async (upd, next) => {
+      let called = false;
+      await middleware(upd, async () => {
+        if (called) return;
+        called = true;
+        await this.handler(upd, next);
+      });
+    };
+  }
+
+  on(key: keyof Update, middleware: Middleware<Update & { [key]: NonNullable<Update[typeof key]> }>) {
+    this.use((u, n) => u[key] !== undefined ? middleware(u as Update & { [key]: NonNullable<Update[typeof key]> }, n) : n());
+  }
 }
+
+export type Update = { message?: Message };
+
+export type Middleware<U extends Update = Update> = (
+  update: U,
+  next: () => Promise<void>,
+) => MaybePromise<void>;
