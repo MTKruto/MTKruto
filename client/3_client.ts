@@ -29,6 +29,7 @@ import { ClientPlain } from "./2_client_plain.ts";
 import { drop, mustPrompt, mustPromptOneOf } from "../utilities/1_misc.ts";
 import { getChannelChatId, peerToChatId } from "./0_utilities.ts";
 import { constructUser } from "../types/1_user.ts";
+import { TLError } from "../tl/0_tl_raw_reader.ts";
 
 const d = debug("Client");
 const dGap = debug("Client/recoverUpdateGap");
@@ -628,6 +629,9 @@ export class Client extends ClientAbstract {
       } catch (err) {
         if (!this.connected) {
           break;
+        } else if (err instanceof TLError) {
+          dRecv("failed to deserialize: %o", err);
+          drop(this.recoverUpdateGap("deserialize"));
         } else {
           throw err;
         }
