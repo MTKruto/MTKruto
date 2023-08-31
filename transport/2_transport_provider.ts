@@ -36,7 +36,7 @@ export const webSocketTransportProvider: TransportProviderCreator<{ wss?: boolea
     initialDc,
     createTransport: ({ dc, cdn }) => {
       dc ??= initialDc;
-      wss ??= typeof location !== "undefined" && location.protocol == "http:" ? false : true;
+      wss ??= typeof location !== "undefined" && location.protocol == "http:" && location.hostname != "localhost" ? false : true;
       const url = `${wss ? "wss" : "ws"}://${dcToNameMap[dc]}${cdn ? "-1" : ""}.web.telegram.org/${dc.endsWith("-test") ? "apiws_test" : "apiws"}`;
       const connection = new ConnectionWebSocket(url);
       const transport = new TransportIntermediate(connection, true);
