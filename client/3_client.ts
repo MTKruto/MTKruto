@@ -263,43 +263,52 @@ export class Client extends ClientAbstract {
     this.auth = { key, id };
   }
 
+  private connectMutex = new Mutex();
   /**
    * Loads the session if `setDc` was not called, initializes and connnects
    * a `ClientPlain` to generate auth key if there was none, and connects the client.
    * Before establishing the connection, the session is saved.
    */
   async connect() {
-    if (!this.storageInited) {
-      await this.storage.init();
-      this.storageInited = true;
-    }
-    const authKey = await this.storage.getAuthKey();
-    if (authKey == null) {
-      const plain = new ClientPlain(this.transportProvider, this.publicKeys);
+    const release = await this.connectMutex.acquire();
+    try {
+      if (this.connected) {
+        return;
+      }
+      if (!this.storageInited) {
+        await this.storage.init();
+        this.storageInited = true;
+      }
+      const authKey = await this.storage.getAuthKey();
+      if (authKey == null) {
+        const plain = new ClientPlain(this.transportProvider, this.publicKeys);
+        const dc = await this.storage.getDc();
+        if (dc != null) {
+          plain.setDc(dc);
+        }
+        await plain.connect();
+        const { authKey, salt } = await plain.createAuthKey();
+        await plain.disconnect();
+        await this.storage.setAuthKey(authKey);
+        await this.setAuth(authKey);
+        this.state.salt = salt;
+      } else {
+        await this.setAuth(authKey);
+      }
       const dc = await this.storage.getDc();
       if (dc != null) {
-        plain.setDc(dc);
+        await this.setDc(dc);
       }
-      await plain.connect();
-      const { authKey, salt } = await plain.createAuthKey();
-      await plain.disconnect();
-      await this.storage.setAuthKey(authKey);
-      await this.setAuth(authKey);
-      this.state.salt = salt;
-    } else {
-      await this.setAuth(authKey);
+      await super.connect();
+      if (dc == null) {
+        await this.storage.setDc(this.transportProvider.initialDc);
+      }
+      d("encrypted client connected");
+      drop(this.receiveLoop());
+      drop(this.pingLoop());
+    } finally {
+      release();
     }
-    const dc = await this.storage.getDc();
-    if (dc != null) {
-      await this.setDc(dc);
-    }
-    await super.connect();
-    if (dc == null) {
-      await this.storage.setDc(this.transportProvider.initialDc);
-    }
-    d("encrypted client connected");
-    drop(this.receiveLoop());
-    drop(this.pingLoop());
   }
 
   private async fetchState(source: string) {
@@ -379,7 +388,7 @@ export class Client extends ClientAbstract {
       if (loginType == "b") {
         params = mustPrompt("Bot token:");
       } else {
-        params = { phone: () => mustPrompt("Phone number:"), code: () => mustPrompt("Verification code:"), password: () => mustPrompt(`Password:`) };
+        params = { phone: () => mustPrompt("Phone number:"), code: () => mustPrompt("Verification code:"), password: () => mustPrompt("Password:") };
       }
     }
 
