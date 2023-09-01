@@ -1541,7 +1541,7 @@ export class Client extends ClientAbstract {
         update instanceof types.UpdateEditMessage ||
         update instanceof types.UpdateEditChannelMessage
       ) {
-        const key = update instanceof types.UpdateNewMessage || update instanceof types.UpdateNewMessage ? "message" : "editedMessage";
+        const key = update instanceof types.UpdateNewMessage || update instanceof types.UpdateNewChannelMessage ? "message" : "editedMessage";
         const message = await constructMessage(
           update.message,
           this[getEntity].bind(this),
