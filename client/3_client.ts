@@ -32,6 +32,8 @@ import { constructUser } from "../types/1_user.ts";
 import { TLError } from "../tl/0_tl_raw_reader.ts";
 
 const d = debug("Client");
+const d2 = debug("d2");
+const d3 = debug("d3");
 const dGap = debug("Client/recoverUpdateGap");
 const dGapC = debug("Client/recoverChannelUpdateGap");
 const dAuth = debug("Client/authorize");
@@ -904,8 +906,8 @@ export class Client extends ClientAbstract {
   }
 
   private updateProcessLock = new Mutex();
-  private async processUpdates(updates: types.TypeUpdate | types.TypeUpdates, release?: MutexInterface.Releaser) {
-    release ??= await this.updateProcessLock.acquire();
+  private async processUpdates(updates: types.TypeUpdate | types.TypeUpdates, locked = false) {
+    const release = locked ? null : await this.updateProcessLock.acquire();
     try {
       if (updates instanceof types.TypeUpdates) {
         if (updates instanceof types.Updates) {
@@ -913,7 +915,7 @@ export class Client extends ClientAbstract {
           await this.processUsers(updates.users);
           await this.setUpdateStateDate(updates.date);
           for (const update of updates.updates) {
-            await this.processUpdates(update, release);
+            await this.processUpdates(update, true);
           }
         } else if (
           updates instanceof types.UpdateShortMessage ||
@@ -929,7 +931,7 @@ export class Client extends ClientAbstract {
           await this.processChats(updates.chats);
           await this.processUsers(updates.users);
           for (const update of updates.updates) {
-            await this.processUpdates(update, release);
+            await this.processUpdates(update, true);
           }
         }
       } else if (updates instanceof types.TypeUpdate && updates instanceof types.UpdateChannelTooLong) {
@@ -953,7 +955,7 @@ export class Client extends ClientAbstract {
     } catch (err) {
       d("error processing updates: %O", err);
     } finally {
-      release();
+      release?.();
     }
   }
 
