@@ -1542,15 +1542,23 @@ export class Client extends ClientAbstract {
         this.getMessage.bind(this),
         this[getStickerSetName].bind(this),
       );
-      await this.handler({ message }, () => Promise.resolve());
+      await this.handler({ message }, resolve);
+    } else if (update instanceof types.UpdateEditMessage || update instanceof types.UpdateEditChannelMessage) {
+      const editedMessage = await constructMessage(
+        update.message,
+        this[getEntity].bind(this),
+        this.getMessage.bind(this),
+        this[getStickerSetName].bind(this),
+      );
+      await this.handler({ editedMessage }, resolve);
     }
   }
 
-  handler: Middleware = (_upd, next) => {
+  handler: Handler = (_upd, next) => {
     next();
   };
 
-  use(middleware: Middleware) {
+  use(middleware: Handler) {
     this.handler = async (upd, next) => {
       let called = false;
       await middleware(upd, async () => {
@@ -1561,14 +1569,42 @@ export class Client extends ClientAbstract {
     };
   }
 
-  on(key: keyof Update, middleware: Middleware<Update & { [key]: NonNullable<Update[typeof key]> }>) {
-    this.use((u, n) => u[key] !== undefined ? middleware(u as Update & { [key]: NonNullable<Update[typeof key]> }, n) : n());
+  on<U extends keyof Update, K extends null | keyof Update[U] = null>(
+    filter: Update[U] extends string ? U : U | [U, K, ...K[]],
+    handler: Handler<Pick<Update, U> & { [P in U]: K extends keyof Update[U] ? With<Update[U], K> : Update[U] }>,
+  ) {
+    const type = typeof filter === "string" ? filter : filter[0];
+    const keys = Array.isArray(filter) ? filter.slice(1) : [];
+    this.use((update, next) => {
+      if (type in update) {
+        if (keys.length > 0) {
+          for (const key of keys) {
+            // deno-lint-ignore ban-ts-comment
+            // @ts-ignore
+            if (!(key in update[type])) {
+              return next();
+            }
+          }
+        }
+        // deno-lint-ignore ban-ts-comment
+        // @ts-ignore
+        return handler(update, next);
+      } else {
+        return next();
+      }
+    });
   }
 }
 
-export type Update = { message?: Message };
+const resolve = () => Promise.resolve();
 
-export type Middleware<U extends Update = Update> = (
-  update: U,
-  next: () => Promise<void>,
-) => MaybePromise<void>;
+type With<T, K extends keyof T> = T & Required<{ [P in K]: T[P] }>;
+
+export interface Update {
+  message: Message;
+  editedMessage: Message;
+}
+
+export interface Handler<U extends Partial<Update> = Partial<Update>> {
+  (update: U, next: () => Promise<void>): MaybePromise<void>;
+}
