@@ -1559,12 +1559,13 @@ export class Client extends ClientAbstract {
   };
 
   use(middleware: Handler) {
+    const handler = this.handler;
     this.handler = async (upd, next) => {
       let called = false;
       await middleware(upd, async () => {
         if (called) return;
         called = true;
-        await this.handler(upd, next);
+        await handler(upd, next);
       });
     };
   }
