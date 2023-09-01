@@ -1,4 +1,4 @@
-import { debug, gunzip, Mutex, MutexInterface } from "../deps.ts";
+import { debug, gunzip, Mutex } from "../deps.ts";
 import { ACK_THRESHOLD, APP_VERSION, CHANNEL_DIFFERENCE_LIMIT_BOT, CHANNEL_DIFFERENCE_LIMIT_USER, DEVICE_MODEL, LANG_CODE, LANG_PACK, LAYER, MAX_CHANNEL_ID, MAX_CHAT_ID, PublicKeys, STICKER_SET_NAME_TTL, SYSTEM_LANG_CODE, SYSTEM_VERSION, USERNAME_TTL, ZERO_CHANNEL_ID } from "../constants.ts";
 import { bigIntFromBuffer, getRandomBigInt, getRandomId } from "../utilities/0_bigint.ts";
 import { UNREACHABLE } from "../utilities/0_control.ts";
@@ -1539,23 +1539,18 @@ export class Client extends ClientAbstract {
     try {
       if (
         update instanceof types.UpdateNewMessage ||
-        update instanceof types.UpdateNewChannelMessage
+        update instanceof types.UpdateNewChannelMessage ||
+        update instanceof types.UpdateEditMessage ||
+        update instanceof types.UpdateEditChannelMessage
       ) {
+        const key = update instanceof types.UpdateNewMessage || update instanceof types.UpdateNewMessage ? "message" : "editedMessage";
         const message = await constructMessage(
           update.message,
           this[getEntity].bind(this),
           this.getMessage.bind(this),
           this[getStickerSetName].bind(this),
         );
-        await this.handler({ message }, resolve);
-      } else if (update instanceof types.UpdateEditMessage || update instanceof types.UpdateEditChannelMessage) {
-        const editedMessage = await constructMessage(
-          update.message,
-          this[getEntity].bind(this),
-          this.getMessage.bind(this),
-          this[getStickerSetName].bind(this),
-        );
-        await this.handler({ editedMessage }, resolve);
+        await this.handler({ [key]: message }, resolve);
       }
     } finally {
       release();
