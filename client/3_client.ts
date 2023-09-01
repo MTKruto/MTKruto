@@ -55,8 +55,6 @@ export interface AuthorizeUserParams<S = string> {
   password: S | ((hint: string | null) => MaybePromise<S>);
 }
 
-export type UpdateHandler = null | ((client: Client, update: types.TypeUpdate) => MaybePromise<void>);
-
 export interface ClientParams {
   /**
    * Default parse mode. Defauls to `ParseMode.None`.
@@ -194,7 +192,6 @@ export class Client extends ClientAbstract {
   private promises = new Map<bigint, { resolve: (obj: ReadObject) => void; reject: (err: ReadObject) => void }>();
   private toAcknowledge = new Set<bigint>();
   private updateState?: types.UpdatesState;
-  public updateHandler: UpdateHandler = null;
 
   public readonly parseMode: ParseMode;
 
@@ -263,43 +260,52 @@ export class Client extends ClientAbstract {
     this.auth = { key, id };
   }
 
+  private connectMutex = new Mutex();
   /**
    * Loads the session if `setDc` was not called, initializes and connnects
    * a `ClientPlain` to generate auth key if there was none, and connects the client.
    * Before establishing the connection, the session is saved.
    */
   async connect() {
-    if (!this.storageInited) {
-      await this.storage.init();
-      this.storageInited = true;
-    }
-    const authKey = await this.storage.getAuthKey();
-    if (authKey == null) {
-      const plain = new ClientPlain(this.transportProvider, this.publicKeys);
+    const release = await this.connectMutex.acquire();
+    try {
+      if (this.connected) {
+        return;
+      }
+      if (!this.storageInited) {
+        await this.storage.init();
+        this.storageInited = true;
+      }
+      const authKey = await this.storage.getAuthKey();
+      if (authKey == null) {
+        const plain = new ClientPlain(this.transportProvider, this.publicKeys);
+        const dc = await this.storage.getDc();
+        if (dc != null) {
+          plain.setDc(dc);
+        }
+        await plain.connect();
+        const { authKey, salt } = await plain.createAuthKey();
+        await plain.disconnect();
+        await this.storage.setAuthKey(authKey);
+        await this.setAuth(authKey);
+        this.state.salt = salt;
+      } else {
+        await this.setAuth(authKey);
+      }
       const dc = await this.storage.getDc();
       if (dc != null) {
-        plain.setDc(dc);
+        await this.setDc(dc);
       }
-      await plain.connect();
-      const { authKey, salt } = await plain.createAuthKey();
-      await plain.disconnect();
-      await this.storage.setAuthKey(authKey);
-      await this.setAuth(authKey);
-      this.state.salt = salt;
-    } else {
-      await this.setAuth(authKey);
+      await super.connect();
+      if (dc == null) {
+        await this.storage.setDc(this.transportProvider.initialDc);
+      }
+      d("encrypted client connected");
+      drop(this.receiveLoop());
+      drop(this.pingLoop());
+    } finally {
+      release();
     }
-    const dc = await this.storage.getDc();
-    if (dc != null) {
-      await this.setDc(dc);
-    }
-    await super.connect();
-    if (dc == null) {
-      await this.storage.setDc(this.transportProvider.initialDc);
-    }
-    d("encrypted client connected");
-    drop(this.receiveLoop());
-    drop(this.pingLoop());
   }
 
   private async fetchState(source: string) {
@@ -379,7 +385,7 @@ export class Client extends ClientAbstract {
       if (loginType == "b") {
         params = mustPrompt("Bot token:");
       } else {
-        params = { phone: () => mustPrompt("Phone number:"), code: () => mustPrompt("Verification code:"), password: () => mustPrompt(`Password:`) };
+        params = { phone: () => mustPrompt("Phone number:"), code: () => mustPrompt("Verification code:"), password: () => mustPrompt("Password:") };
       }
     }
 
@@ -821,8 +827,7 @@ export class Client extends ClientAbstract {
         }
       }
 
-      // apply update (call listeners)
-      this.updateHandler?.(this, update);
+      this.handleUpdate(update);
     } finally {
       release();
     }
@@ -1525,4 +1530,81 @@ export class Client extends ClientAbstract {
     }
     return constructUser(users[0][as](types.User));
   }
+
+  private async handleUpdate(update: types.TypeUpdate) {
+    if (
+      update instanceof types.UpdateNewMessage ||
+      update instanceof types.UpdateNewChannelMessage
+    ) {
+      const message = await constructMessage(
+        update.message,
+        this[getEntity].bind(this),
+        this.getMessage.bind(this),
+        this[getStickerSetName].bind(this),
+      );
+      await this.handler({ message }, resolve);
+    } else if (update instanceof types.UpdateEditMessage || update instanceof types.UpdateEditChannelMessage) {
+      const editedMessage = await constructMessage(
+        update.message,
+        this[getEntity].bind(this),
+        this.getMessage.bind(this),
+        this[getStickerSetName].bind(this),
+      );
+      await this.handler({ editedMessage }, resolve);
+    }
+  }
+
+  handler: Handler = (_upd, next) => {
+    next();
+  };
+
+  use(middleware: Handler) {
+    this.handler = async (upd, next) => {
+      let called = false;
+      await middleware(upd, async () => {
+        if (called) return;
+        called = true;
+        await this.handler(upd, next);
+      });
+    };
+  }
+
+  on<U extends keyof Update, K extends null | keyof Update[U] = null>(
+    filter: Update[U] extends string ? U : U | [U, K, ...K[]],
+    handler: Handler<Pick<Update, U> & { [P in U]: K extends keyof Update[U] ? With<Update[U], K> : Update[U] }>,
+  ) {
+    const type = typeof filter === "string" ? filter : filter[0];
+    const keys = Array.isArray(filter) ? filter.slice(1) : [];
+    this.use((update, next) => {
+      if (type in update) {
+        if (keys.length > 0) {
+          for (const key of keys) {
+            // deno-lint-ignore ban-ts-comment
+            // @ts-ignore
+            if (!(key in update[type])) {
+              return next();
+            }
+          }
+        }
+        // deno-lint-ignore ban-ts-comment
+        // @ts-ignore
+        return handler(update, next);
+      } else {
+        return next();
+      }
+    });
+  }
+}
+
+const resolve = () => Promise.resolve();
+
+type With<T, K extends keyof T> = T & Required<{ [P in K]: T[P] }>;
+
+export interface Update {
+  message: Message;
+  editedMessage: Message;
+}
+
+export interface Handler<U extends Partial<Update> = Partial<Update>> {
+  (update: U, next: () => Promise<void>): MaybePromise<void>;
 }
