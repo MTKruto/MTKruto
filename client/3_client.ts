@@ -830,7 +830,7 @@ export class Client extends ClientAbstract {
       release();
     }
 
-    await this.handleUpdate(update);
+    drop(this.handleUpdate(update));
   }
 
   private async applyUpdate(update: types.TypeUpdate | types.TypeUpdates): Promise<void> {
