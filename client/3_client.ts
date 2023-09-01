@@ -32,8 +32,6 @@ import { constructUser } from "../types/1_user.ts";
 import { TLError } from "../tl/0_tl_raw_reader.ts";
 
 const d = debug("Client");
-const d2 = debug("d2");
-const d3 = debug("d3");
 const dGap = debug("Client/recoverUpdateGap");
 const dGapC = debug("Client/recoverChannelUpdateGap");
 const dAuth = debug("Client/authorize");
