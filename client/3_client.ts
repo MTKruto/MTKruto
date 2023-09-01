@@ -1,4 +1,4 @@
-import { debug, gunzip, Mutex, MutexInterface } from "../deps.ts";
+import { debug, gunzip, Mutex } from "../deps.ts";
 import { ACK_THRESHOLD, APP_VERSION, CHANNEL_DIFFERENCE_LIMIT_BOT, CHANNEL_DIFFERENCE_LIMIT_USER, DEVICE_MODEL, LANG_CODE, LANG_PACK, LAYER, MAX_CHANNEL_ID, MAX_CHAT_ID, PublicKeys, STICKER_SET_NAME_TTL, SYSTEM_LANG_CODE, SYSTEM_VERSION, USERNAME_TTL, ZERO_CHANNEL_ID } from "../constants.ts";
 import { bigIntFromBuffer, getRandomBigInt, getRandomId } from "../utilities/0_bigint.ts";
 import { UNREACHABLE } from "../utilities/0_control.ts";
@@ -826,11 +826,11 @@ export class Client extends ClientAbstract {
           }
         }
       }
-
-      this.handleUpdate(update);
     } finally {
       release();
     }
+
+    drop(this.handleUpdate(update));
   }
 
   private async applyUpdate(update: types.TypeUpdate | types.TypeUpdates): Promise<void> {
@@ -904,8 +904,8 @@ export class Client extends ClientAbstract {
   }
 
   private updateProcessLock = new Mutex();
-  private async processUpdates(updates: types.TypeUpdate | types.TypeUpdates, release?: MutexInterface.Releaser) {
-    release ??= await this.updateProcessLock.acquire();
+  private async processUpdates(updates: types.TypeUpdate | types.TypeUpdates, locked = false) {
+    const release = locked ? null : await this.updateProcessLock.acquire();
     try {
       if (updates instanceof types.TypeUpdates) {
         if (updates instanceof types.Updates) {
@@ -913,7 +913,7 @@ export class Client extends ClientAbstract {
           await this.processUsers(updates.users);
           await this.setUpdateStateDate(updates.date);
           for (const update of updates.updates) {
-            await this.processUpdates(update, release);
+            await this.processUpdates(update, true);
           }
         } else if (
           updates instanceof types.UpdateShortMessage ||
@@ -929,7 +929,7 @@ export class Client extends ClientAbstract {
           await this.processChats(updates.chats);
           await this.processUsers(updates.users);
           for (const update of updates.updates) {
-            await this.processUpdates(update, release);
+            await this.processUpdates(update, true);
           }
         }
       } else if (updates instanceof types.TypeUpdate && updates instanceof types.UpdateChannelTooLong) {
@@ -953,7 +953,7 @@ export class Client extends ClientAbstract {
     } catch (err) {
       d("error processing updates: %O", err);
     } finally {
-      release();
+      release?.();
     }
   }
 
@@ -1531,26 +1531,27 @@ export class Client extends ClientAbstract {
     return constructUser(users[0][as](types.User));
   }
 
+  private handleUpdateMutex = new Mutex();
   private async handleUpdate(update: types.TypeUpdate) {
-    if (
-      update instanceof types.UpdateNewMessage ||
-      update instanceof types.UpdateNewChannelMessage
-    ) {
-      const message = await constructMessage(
-        update.message,
-        this[getEntity].bind(this),
-        this.getMessage.bind(this),
-        this[getStickerSetName].bind(this),
-      );
-      await this.handler({ message }, resolve);
-    } else if (update instanceof types.UpdateEditMessage || update instanceof types.UpdateEditChannelMessage) {
-      const editedMessage = await constructMessage(
-        update.message,
-        this[getEntity].bind(this),
-        this.getMessage.bind(this),
-        this[getStickerSetName].bind(this),
-      );
-      await this.handler({ editedMessage }, resolve);
+    const release = await this.handleUpdateMutex.acquire();
+    try {
+      if (
+        update instanceof types.UpdateNewMessage ||
+        update instanceof types.UpdateNewChannelMessage ||
+        update instanceof types.UpdateEditMessage ||
+        update instanceof types.UpdateEditChannelMessage
+      ) {
+        const key = update instanceof types.UpdateNewMessage || update instanceof types.UpdateNewChannelMessage ? "message" : "editedMessage";
+        const message = await constructMessage(
+          update.message,
+          this[getEntity].bind(this),
+          this.getMessage.bind(this),
+          this[getStickerSetName].bind(this),
+        );
+        await this.handler({ [key]: message }, resolve);
+      }
+    } finally {
+      release();
     }
   }
 
