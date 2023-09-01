@@ -4,7 +4,7 @@
 
 Cross-runtime JavaScript library for building Telegram clients
 
-###### [Discussion Chat](https://t.me/MTKrutoChat) &middot; [API Reference](https://deno.land/x/mtkruto/mod.ts)
+###### [Discussion Chat](https://t.me/MTKrutoChat) &middot; [API Reference](https://deno.land/x/mtkruto/mod.ts) &middot; [Acknowledgements](./ACKNOWLEDGEMENTS.md)
 
 </div>
 
@@ -34,7 +34,7 @@ Cross-runtime JavaScript library for building Telegram clients
 </script>
 ```
 
-> The [@mtkruto/browser](https://npm.im/@mtkruto/browser) package can also be used with front end frameworks.
+> The [@mtkruto/browser](https://npm.im/@mtkruto/browser) package can also be used with front end frameworks and bundlers.
 
 ### Deno
 
@@ -59,16 +59,6 @@ await client.connect();
 const request = new functions.Ping({ pingId: utils.getRandomId() });
 console.debug(await client.invoke(request));
 ```
-
-## Acknowledgements
-
-- [GramJS](https://github.com/gram-js/gramjs)
-- [grammY](https://github.com/grammyjs/grammy)
-- [Grm](https://github.com/grmjs/grm)
-- [mtcute](https://github.com/mtcute/mtcute)
-- [Piltover](https://github.com/DavideGalilei/piltover)
-- [Pyrogram](https://github.com/pyrogram/pyrogram)
-- [Telethon](https://github.com/LonamiWebs/telethon)
 
 ## License
 
