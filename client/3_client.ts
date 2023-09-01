@@ -826,11 +826,11 @@ export class Client extends ClientAbstract {
           }
         }
       }
-
-      this.handleUpdate(update);
     } finally {
       release();
     }
+
+    await this.handleUpdate(update);
   }
 
   private async applyUpdate(update: types.TypeUpdate | types.TypeUpdates): Promise<void> {
@@ -1531,26 +1531,32 @@ export class Client extends ClientAbstract {
     return constructUser(users[0][as](types.User));
   }
 
+  private handleUpdateMutex = new Mutex();
   private async handleUpdate(update: types.TypeUpdate) {
-    if (
-      update instanceof types.UpdateNewMessage ||
-      update instanceof types.UpdateNewChannelMessage
-    ) {
-      const message = await constructMessage(
-        update.message,
-        this[getEntity].bind(this),
-        this.getMessage.bind(this),
-        this[getStickerSetName].bind(this),
-      );
-      await this.handler({ message }, resolve);
-    } else if (update instanceof types.UpdateEditMessage || update instanceof types.UpdateEditChannelMessage) {
-      const editedMessage = await constructMessage(
-        update.message,
-        this[getEntity].bind(this),
-        this.getMessage.bind(this),
-        this[getStickerSetName].bind(this),
-      );
-      await this.handler({ editedMessage }, resolve);
+    const release = await this.handleUpdateMutex.acquire();
+    try {
+      if (
+        update instanceof types.UpdateNewMessage ||
+        update instanceof types.UpdateNewChannelMessage
+      ) {
+        const message = await constructMessage(
+          update.message,
+          this[getEntity].bind(this),
+          this.getMessage.bind(this),
+          this[getStickerSetName].bind(this),
+        );
+        await this.handler({ message }, resolve);
+      } else if (update instanceof types.UpdateEditMessage || update instanceof types.UpdateEditChannelMessage) {
+        const editedMessage = await constructMessage(
+          update.message,
+          this[getEntity].bind(this),
+          this.getMessage.bind(this),
+          this[getStickerSetName].bind(this),
+        );
+        await this.handler({ editedMessage }, resolve);
+      }
+    } finally {
+      release();
     }
   }
 
