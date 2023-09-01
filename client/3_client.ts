@@ -55,8 +55,6 @@ export interface AuthorizeUserParams<S = string> {
   password: S | ((hint: string | null) => MaybePromise<S>);
 }
 
-export type UpdateHandler = null | ((client: Client, update: types.TypeUpdate) => MaybePromise<void>);
-
 export interface ClientParams {
   /**
    * Default parse mode. Defauls to `ParseMode.None`.
@@ -194,7 +192,6 @@ export class Client extends ClientAbstract {
   private promises = new Map<bigint, { resolve: (obj: ReadObject) => void; reject: (err: ReadObject) => void }>();
   private toAcknowledge = new Set<bigint>();
   private updateState?: types.UpdatesState;
-  public updateHandler: UpdateHandler = null;
 
   public readonly parseMode: ParseMode;
 
@@ -830,8 +827,7 @@ export class Client extends ClientAbstract {
         }
       }
 
-      // apply update (call listeners)
-      this.updateHandler?.(this, update);
+      this.handleUpdate(update);
     } finally {
       release();
     }
@@ -1534,4 +1530,81 @@ export class Client extends ClientAbstract {
     }
     return constructUser(users[0][as](types.User));
   }
+
+  private async handleUpdate(update: types.TypeUpdate) {
+    if (
+      update instanceof types.UpdateNewMessage ||
+      update instanceof types.UpdateNewChannelMessage
+    ) {
+      const message = await constructMessage(
+        update.message,
+        this[getEntity].bind(this),
+        this.getMessage.bind(this),
+        this[getStickerSetName].bind(this),
+      );
+      await this.handler({ message }, resolve);
+    } else if (update instanceof types.UpdateEditMessage || update instanceof types.UpdateEditChannelMessage) {
+      const editedMessage = await constructMessage(
+        update.message,
+        this[getEntity].bind(this),
+        this.getMessage.bind(this),
+        this[getStickerSetName].bind(this),
+      );
+      await this.handler({ editedMessage }, resolve);
+    }
+  }
+
+  handler: Handler = (_upd, next) => {
+    next();
+  };
+
+  use(middleware: Handler) {
+    this.handler = async (upd, next) => {
+      let called = false;
+      await middleware(upd, async () => {
+        if (called) return;
+        called = true;
+        await this.handler(upd, next);
+      });
+    };
+  }
+
+  on<U extends keyof Update, K extends null | keyof Update[U] = null>(
+    filter: Update[U] extends string ? U : U | [U, K, ...K[]],
+    handler: Handler<Pick<Update, U> & { [P in U]: K extends keyof Update[U] ? With<Update[U], K> : Update[U] }>,
+  ) {
+    const type = typeof filter === "string" ? filter : filter[0];
+    const keys = Array.isArray(filter) ? filter.slice(1) : [];
+    this.use((update, next) => {
+      if (type in update) {
+        if (keys.length > 0) {
+          for (const key of keys) {
+            // deno-lint-ignore ban-ts-comment
+            // @ts-ignore
+            if (!(key in update[type])) {
+              return next();
+            }
+          }
+        }
+        // deno-lint-ignore ban-ts-comment
+        // @ts-ignore
+        return handler(update, next);
+      } else {
+        return next();
+      }
+    });
+  }
+}
+
+const resolve = () => Promise.resolve();
+
+type With<T, K extends keyof T> = T & Required<{ [P in K]: T[P] }>;
+
+export interface Update {
+  message: Message;
+  editedMessage: Message;
+}
+
+export interface Handler<U extends Partial<Update> = Partial<Update>> {
+  (update: U, next: () => Promise<void>): MaybePromise<void>;
 }
