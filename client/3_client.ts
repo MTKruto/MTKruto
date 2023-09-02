@@ -1,4 +1,4 @@
-import { debug, gunzip, Mutex } from "../deps.ts";
+import { debug, gunzip, Mutex, Queue } from "../deps.ts";
 import { ACK_THRESHOLD, APP_VERSION, CHANNEL_DIFFERENCE_LIMIT_BOT, CHANNEL_DIFFERENCE_LIMIT_USER, DEVICE_MODEL, LANG_CODE, LANG_PACK, LAYER, MAX_CHANNEL_ID, MAX_CHAT_ID, PublicKeys, STICKER_SET_NAME_TTL, SYSTEM_LANG_CODE, SYSTEM_VERSION, USERNAME_TTL, ZERO_CHANNEL_ID } from "../constants.ts";
 import { bigIntFromBuffer, getRandomBigInt, getRandomId } from "../utilities/0_bigint.ts";
 import { UNREACHABLE } from "../utilities/0_control.ts";
@@ -584,8 +584,8 @@ export class Client extends ClientAbstract {
             body = new TLReader(gunzip(body.packedData)).readObject();
           }
           dRecv("received %s", body.constructor.name);
-          if (body instanceof types.Updates || body instanceof types.TypeUpdate) {
-            drop(this.processUpdates(body));
+          if (body instanceof types.TypeUpdates || body instanceof types.TypeUpdate) {
+            await this.processUpdatesQueue.add(() => this.processUpdates(body as types.Updates | types.TypeUpdate));
           } else if (message.body instanceof RPCResult) {
             let result = message.body.result;
             if (result instanceof types.GZIPPacked) {
@@ -609,7 +609,10 @@ export class Client extends ClientAbstract {
               }
             };
             if (result instanceof types.TypeUpdates || result instanceof types.TypeUpdate) {
-              this.processUpdates(result).then(resolvePromise).catch();
+              await this.processUpdatesQueue.add(async () => {
+                await this.processUpdates(result as types.TypeUpdates | types.TypeUpdate);
+                resolvePromise();
+              });
             } else {
               await this.processResult(result);
               resolvePromise();
@@ -751,221 +754,150 @@ export class Client extends ClientAbstract {
     }
   }
 
-  private updateApplicationMutex = new Mutex();
-  private async applyUpdateNoGap(update: types.TypeUpdate, usePts = true): Promise<void> {
-    const release = await this.updateApplicationMutex.acquire();
+  private handleUpdateQueue = new Queue({ concurrency: 1 });
+  private processUpdatesQueue = new Queue({ concurrency: 1 });
 
-    try {
+  private async checkGap(pts: number, ptsCount: number, assertNoGap: boolean) {
+    const localState = await this.getLocalState();
+    if (localState.pts + ptsCount < pts) {
+      if (assertNoGap) {
+        UNREACHABLE();
+      } else {
+        await this.recoverUpdateGap("processUpdates");
+      }
+    }
+  }
+  private async checkChannelGap(channelId: bigint, pts: number, ptsCount: number, assertNoGap: boolean) {
+    let localPts = await this.storage.getChannelPts(channelId);
+    if (!localPts) {
+      localPts = pts - ptsCount;
+    }
+    if (localPts + ptsCount < pts) {
+      if (assertNoGap) {
+        UNREACHABLE();
+      } else {
+        await this.recoverChannelUpdateGap(channelId, "processUpdates");
+      }
+    }
+  }
+  private async processUpdates(updates_: types.TypeUpdate | types.TypeUpdates, assertNoGap = false) {
+    let updates: (types.TypeUpdate | types.UpdateShortMessage | types.UpdateShortChatMessage | types.UpdateShortSentMessage)[];
+    if (updates_ instanceof types.UpdatesCombined) {
+      updates = updates_.updates;
+      //
+    } else if (updates_ instanceof types.Updates) {
+      updates = updates_.updates;
+      //
+    } else if (
+      updates_ instanceof types.UpdateShortMessage ||
+      updates_ instanceof types.UpdateShortChatMessage ||
+      updates_ instanceof types.UpdateShortSentMessage
+    ) {
+      updates = [updates_];
+      await this.checkGap(updates_.pts, updates_.ptsCount, assertNoGap);
+      //
+    } else if (updates_ instanceof types.UpdatesTooLong) {
+      throw 1;
+      //
+    } else {
+      UNREACHABLE();
+    }
+
+    const localState = await this.getLocalState();
+    const originalPts = localState.pts;
+    const channelPtsMap = new Map<bigint, number>();
+    for (const update of updates) {
       if (
-        (update instanceof types.UpdateNewMessage) ||
-        (update instanceof types.UpdateDeleteMessages) ||
-        (update instanceof types.UpdateReadHistoryInbox) ||
-        (update instanceof types.UpdateReadHistoryOutbox) ||
-        (update instanceof types.UpdateWebPage) ||
-        (update instanceof types.UpdateReadMessagesContents) ||
-        (update instanceof types.UpdateEditMessage) ||
-        (update instanceof types.UpdateFolderPeers) ||
-        (update instanceof types.UpdatePinnedMessages) ||
-        (update instanceof types.UpdatePinnedChannelMessages) ||
-        (update instanceof types.UpdateShortMessage) ||
-        (update instanceof types.UpdateShortChatMessage) ||
-        (update instanceof types.UpdateShortSentMessage)
+        update instanceof types.UpdateShortMessage ||
+        update instanceof types.UpdateShortChatMessage ||
+        update instanceof types.UpdateShortSentMessage ||
+        update instanceof types.UpdateNewMessage ||
+        update instanceof types.UpdateDeleteMessages ||
+        update instanceof types.UpdateReadHistoryInbox ||
+        update instanceof types.UpdateReadHistoryOutbox ||
+        update instanceof types.UpdatePinnedChannelMessages ||
+        update instanceof types.UpdatePinnedMessages ||
+        update instanceof types.UpdateFolderPeers ||
+        update instanceof types.UpdateChannelWebPage ||
+        update instanceof types.UpdateEditMessage ||
+        update instanceof types.UpdateReadMessagesContents ||
+        update instanceof types.UpdateWebPage
       ) {
-        if (update.pts != 0 && update.ptsCount != 0) {
-          const localState = await this.getLocalState();
-          if (localState.pts + update.ptsCount > update.pts) {
-            // the update is already applied
-            return;
-          } else if (localState.pts + update.ptsCount < update.pts) {
-            // there is an update gap that needs to be filled
-            throw UPDATE_GAP;
-          }
-
+        await this.checkGap(update.pts, update.ptsCount, assertNoGap);
+        if (update.pts > localState.pts) {
           localState.pts = update.pts;
-          d("applied update with pts %d", update.pts);
-          await this.storage.setState(localState);
         }
       } else if (
-        usePts &&
-        (
-          (update instanceof types.UpdateNewChannelMessage) ||
-          (update instanceof types.UpdateDeleteChannelMessages) ||
-          (update instanceof types.UpdateEditChannelMessage) ||
-          (update instanceof types.UpdateChannelWebPage)
-        )
+        update instanceof types.UpdateNewChannelMessage ||
+        update instanceof types.UpdateEditChannelMessage ||
+        update instanceof types.UpdateDeleteChannelMessages ||
+        update instanceof types.UpdateReadChannelInbox
       ) {
+        const ptsCount = update instanceof types.UpdateReadChannelInbox ? 1 : update.ptsCount;
         const channelId = update instanceof types.UpdateNewChannelMessage || update instanceof types.UpdateEditChannelMessage ? (update.message as types.Message | types.MessageService).peerId[as](types.PeerChannel).channelId : update.channelId;
-        let localPts = await this.storage.getChannelPts(channelId);
-        if (!localPts) {
-          localPts = update.pts - update.ptsCount;
+        await this.checkChannelGap(channelId, update.pts, ptsCount, assertNoGap);
+        let currentPts: number | null | undefined = channelPtsMap.get(channelId);
+        if (currentPts === undefined) {
+          currentPts = await this.storage.getChannelPts(channelId);
         }
-        if (localPts + update.ptsCount > update.pts) {
-          // already applied
-          return;
-        } else if (localPts + update.ptsCount < update.pts) {
-          // should call channelGetDifference
-          throw UPDATE_GAP;
-        }
-        d("applied update with pts %d", update.pts);
-        await this.storage.setChannelPts(channelId, update.pts);
-      }
-
-      if (update instanceof types.UpdateNewMessage || update instanceof types.UpdateNewMessage || update instanceof types.UpdateNewChannelMessage || update instanceof types.UpdateNewChannelMessage) {
-        if (update.message instanceof types.Message || update.message instanceof types.MessageService) {
-          await this.storage.setMessage(peerToChatId(update.message.peerId), update.message.id, update.message);
-        }
-      } else if (update instanceof types.UpdateDeleteChannelMessages) {
-        for (const message of update.messages) {
-          await this.storage.setMessage(getChannelChatId(update.channelId), message, null);
-        }
-      } else if (update instanceof types.UpdateDeleteMessages) {
-        for (const message of update.messages) {
-          const chatId = await this.storage.getMessageChat(message);
-          if (chatId) {
-            await this.storage.setMessage(chatId, message, null);
-          }
+        if (currentPts == null) {
+          channelPtsMap.set(channelId, update.pts);
+        } else if (currentPts > update.pts) {
+          channelPtsMap.set(channelId, currentPts);
         }
       }
-    } finally {
-      release();
+    }
+    if (localState.pts != originalPts) {
+      await this.storage.setState(localState);
+    }
+    for (const [channelId, pts] of channelPtsMap.entries()) {
+      await this.storage.setChannelPts(channelId, pts);
     }
 
-    drop(this.handleUpdate(update));
-  }
+    const updatesToHandle = new Array<types.TypeUpdate>();
 
-  private async applyUpdate(update: types.TypeUpdate | types.TypeUpdates): Promise<void> {
-    if (
-      update instanceof types.TypeUpdates &&
-      !(update instanceof types.UpdateShortMessage) &&
-      !(update instanceof types.UpdateShortChatMessage) &&
-      !(update instanceof types.UpdateShortSentMessage)
-    ) {
-      // other constructors inheriting Updates are not applicable
-      UNREACHABLE();
-    }
-    if (update instanceof types.TypeUpdate && update instanceof types.UpdateChannelTooLong) {
-      // updateChannelTooLong is not applicable
-      UNREACHABLE();
-    }
-    // can't apply updates when filling gap
-    const release = await this.updateGapRecoveryMutex.acquire();
-    try {
-      await this.applyUpdateNoGap(update);
-      release();
-    } catch (err) {
-      release();
-      if (err == UPDATE_GAP) {
+    if (updates_ instanceof types.Updates || updates_ instanceof types.UpdatesCombined) {
+      await this.processChats(updates_.chats);
+      await this.processUsers(updates_.users);
+      await this.setUpdateStateDate(updates_.date);
+    } else {
+      for (const update of updates) {
         if (
-          (update instanceof types.UpdateNewChannelMessage) ||
-          (update instanceof types.UpdateDeleteChannelMessages) ||
-          (update instanceof types.UpdateEditChannelMessage) ||
-          (update instanceof types.UpdateChannelWebPage)
+          update instanceof types.UpdateShortMessage ||
+          update instanceof types.UpdateShortChatMessage ||
+          update instanceof types.UpdateShortSentMessage
         ) {
-          const channelId = update instanceof types.UpdateNewChannelMessage || update instanceof types.UpdateEditChannelMessage ? (update.message as types.Message | types.MessageService).peerId[as](types.PeerChannel).channelId : update.channelId;
-          await this.recoverChannelUpdateGap(channelId, "applyUpdate");
-        } else if (
-          (update instanceof types.UpdateNewMessage) ||
-          (update instanceof types.UpdateDeleteMessages) ||
-          (update instanceof types.UpdateReadHistoryInbox) ||
-          (update instanceof types.UpdateReadHistoryOutbox) ||
-          (update instanceof types.UpdateWebPage) ||
-          (update instanceof types.UpdateReadMessagesContents) ||
-          (update instanceof types.UpdateEditMessage) ||
-          (update instanceof types.UpdateFolderPeers) ||
-          (update instanceof types.UpdatePinnedMessages) ||
-          (update instanceof types.UpdatePinnedChannelMessages) ||
-          (update instanceof types.UpdateShortMessage) ||
-          (update instanceof types.UpdateShortChatMessage) ||
-          (update instanceof types.UpdateShortSentMessage)
-        ) {
-          await this.recoverUpdateGap("applyUpdate");
-        } else {
-          // can't detect update gap from other types of updates
-          UNREACHABLE();
-        }
-        // just for integrity
-        const release = await this.updateGapRecoveryMutex.acquire();
-        try {
-          await this.applyUpdateNoGap(update);
-        } catch (err) {
-          if (err == UPDATE_GAP) {
-            // the gap must have been filled until now
-            UNREACHABLE();
-          } else {
-            throw err;
+          await this.setUpdateStateDate(update.date);
+        } else if (update instanceof types.UpdateChannelTooLong) {
+          if (update.pts != undefined) {
+            await this.storage.setChannelPts(update.channelId, update.pts);
           }
-        } finally {
-          release();
-        }
-      } else {
-        throw err;
-      }
-    }
-  }
-
-  private updateProcessLock = new Mutex();
-  private async processUpdates(updates: types.TypeUpdate | types.TypeUpdates, locked = false) {
-    const release = locked ? null : await this.updateProcessLock.acquire();
-    try {
-      if (updates instanceof types.TypeUpdates) {
-        if (updates instanceof types.Updates) {
-          await this.processChats(updates.chats);
-          await this.processUsers(updates.users);
-          await this.setUpdateStateDate(updates.date);
-          for (const update of updates.updates) {
-            await this.processUpdates(update, true);
-          }
-        } else if (
-          updates instanceof types.UpdateShortMessage ||
-          updates instanceof types.UpdateShortChatMessage ||
-          updates instanceof types.UpdateShortSentMessage
-        ) {
-          await this.setUpdateStateDate(updates.date);
-          await this.applyUpdate(updates);
-        } else if (updates instanceof types.UpdatesTooLong) {
-          await this.recoverUpdateGap("updatesTooLong");
-        } else if (updates instanceof types.UpdatesCombined) {
-          await this.setUpdateStateDate(updates.date);
-          await this.processChats(updates.chats);
-          await this.processUsers(updates.users);
-          for (const update of updates.updates) {
-            await this.processUpdates(update, true);
-          }
-        }
-      } else if (updates instanceof types.TypeUpdate && updates instanceof types.UpdateChannelTooLong) {
-        if (updates.pts != undefined) {
-          await this.storage.setChannelPts(updates.channelId, updates.pts);
-        }
-        await this.recoverChannelUpdateGap(updates.channelId, "updateChannelTooLong");
-      } else {
-        if (updates instanceof types.UpdateUserName) {
-          await this.storage.updateUsernames("user", updates.userId, updates.usernames.map((v) => v[as](types.Username)).map((v) => v.username));
-        } else if (updates instanceof types.UpdatePtsChanged) {
+          await this.recoverChannelUpdateGap(update.channelId, "updateChannelTooLong");
+        } else if (update instanceof types.UpdateUserName) {
+          await this.storage.updateUsernames("user", update.userId, update.usernames.map((v) => v[as](types.Username)).map((v) => v.username));
+        } else if (update instanceof types.UpdatePtsChanged) {
           await this.fetchState("updatePtsChanged");
           if (this.updateState) {
             await this.storage.setState(this.updateState);
           } else {
             UNREACHABLE();
           }
+          updatesToHandle.push(update);
         }
-        await this.applyUpdate(updates);
       }
-    } catch (err) {
-      d("error processing updates: %O", err);
-    } finally {
-      release?.();
     }
+
+    await this.handleUpdateQueue.add(async () => {
+      for (const update of updatesToHandle) {
+        await this.handleUpdate(update);
+      }
+    });
   }
 
   private async setUpdateStateDate(date: number) {
-    const release = await this.updateApplicationMutex.acquire();
-    try {
       const localState = await this.getLocalState();
       localState.date = date;
       await this.storage.setState(localState);
-    } finally {
-      release();
-    }
   }
 
   private async getLocalState() {
@@ -998,10 +930,10 @@ export class Client extends ClientAbstract {
           await this.processChats(difference.chats);
           await this.processUsers(difference.users);
           for (const message of difference.newMessages) {
-            await this.applyUpdateNoGap(new types.UpdateNewMessage({ message, pts: 0, ptsCount: 0 }));
+            await this.processUpdates(new types.UpdateNewMessage({ message, pts: 0, ptsCount: 0 }));
           }
           for (const update of difference.otherUpdates) {
-            await this.applyUpdateNoGap(update);
+            await this.processUpdates(update);
           }
           if (difference instanceof types.UpdatesDifference) {
             await this.storage.setState(difference.state[as](types.UpdatesState));
@@ -1531,27 +1463,38 @@ export class Client extends ClientAbstract {
     return constructUser(users[0][as](types.User));
   }
 
-  private handleUpdateMutex = new Mutex();
   private async handleUpdate(update: types.TypeUpdate) {
-    const release = await this.handleUpdateMutex.acquire();
-    try {
-      if (
-        update instanceof types.UpdateNewMessage ||
-        update instanceof types.UpdateNewChannelMessage ||
-        update instanceof types.UpdateEditMessage ||
-        update instanceof types.UpdateEditChannelMessage
-      ) {
-        const key = update instanceof types.UpdateNewMessage || update instanceof types.UpdateNewChannelMessage ? "message" : "editedMessage";
-        const message = await constructMessage(
-          update.message,
-          this[getEntity].bind(this),
-          this.getMessage.bind(this),
-          this[getStickerSetName].bind(this),
-        );
-        await this.handler({ [key]: message }, resolve);
+    if (update instanceof types.UpdateNewMessage || update instanceof types.UpdateNewMessage || update instanceof types.UpdateNewChannelMessage || update instanceof types.UpdateNewChannelMessage) {
+      if (update.message instanceof types.Message || update.message instanceof types.MessageService) {
+        await this.storage.setMessage(peerToChatId(update.message.peerId), update.message.id, update.message);
       }
-    } finally {
-      release();
+    } else if (update instanceof types.UpdateDeleteChannelMessages) {
+      for (const message of update.messages) {
+        await this.storage.setMessage(getChannelChatId(update.channelId), message, null);
+      }
+    } else if (update instanceof types.UpdateDeleteMessages) {
+      for (const message of update.messages) {
+        const chatId = await this.storage.getMessageChat(message);
+        if (chatId) {
+          await this.storage.setMessage(chatId, message, null);
+        }
+      }
+    }
+
+    if (
+      update instanceof types.UpdateNewMessage ||
+      update instanceof types.UpdateNewChannelMessage ||
+      update instanceof types.UpdateEditMessage ||
+      update instanceof types.UpdateEditChannelMessage
+    ) {
+      const key = update instanceof types.UpdateNewMessage || update instanceof types.UpdateNewChannelMessage ? "message" : "editedMessage";
+      const message = await constructMessage(
+        update.message,
+        this[getEntity].bind(this),
+        this.getMessage.bind(this),
+        this[getStickerSetName].bind(this),
+      );
+      await this.handler({ [key]: message }, resolve);
     }
   }
 

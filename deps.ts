@@ -10,6 +10,8 @@ export { Parser } from "https://deno.land/x/html_parser@v0.1.3/src/mod.ts";
 
 import { debug as debug_ } from "https://raw.githubusercontent.com/MTKruto/debug/main/mod.ts";
 
-export const debug: typeof debug_ = (v) => debug_(`mtkruto/${v}`);
+export const debug: typeof debug_ = (v) => debug_(`${v}`);
 
 export { decode as base64Decode, encode as base64Encode } from "https://deno.land/std@0.200.0/encoding/base64.ts";
+
+export { default as Queue } from "https://esm.sh/p-queue@7.4.0";
