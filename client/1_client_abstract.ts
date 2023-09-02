@@ -1,49 +1,55 @@
 import { initTgCrypto } from "../deps.ts";
 import { INITIAL_DC } from "../constants.ts";
 import { MaybePromise } from "../utilities/0_types.ts";
-import { Connection } from "../connection/0_connection.ts";
-import { Transport } from "../transport/0_transport.ts";
-import { DC, webSocketTransportProvider } from "../transport/2_transport_provider.ts";
+import { DC, TransportProvider, webSocketTransportProvider } from "../transport/2_transport_provider.ts";
+
+export interface ClientAbstractParams {
+  initialDc?: DC;
+  /**
+   * The transport provider to use. Defaults to `webSocketTransportProvider` with its default options.
+   */
+  transportProvider?: TransportProvider;
+  cdn?: boolean;
+}
 
 export abstract class ClientAbstract {
-  protected connection: Connection;
-  protected transport: Transport;
-  private _dcId: number;
-  private _initialDc: DC;
+  protected readonly initialDc: DC;
+  protected readonly transportProvider: TransportProvider;
+  protected readonly cdn: boolean;
 
-  get initialDc() {
-    return this._initialDc;
+  protected transport?: ReturnType<TransportProvider>;
+  private dc?: DC;
+
+  constructor(params?: ClientAbstractParams) {
+    this.initialDc = params?.initialDc ?? INITIAL_DC;
+    this.transportProvider = params?.transportProvider ?? webSocketTransportProvider();
+    this.cdn = params?.cdn ?? false;
   }
 
-  constructor(protected transportProvider = webSocketTransportProvider({ initialDc: INITIAL_DC }), protected readonly cdn = false) {
-    const { initialDc, createTransport } = transportProvider;
-    this._initialDc = initialDc;
-    const { connection, transport, dcId } = createTransport({ cdn: this.cdn });
-    this.connection = connection;
-    this.transport = transport;
-    this._dcId = dcId;
-  }
+  protected stateChangeHandler?: (connected: boolean) => void;
 
   get dcId() {
-    return this._dcId;
+    if (!this.transport) {
+      throw new Error("Not connected");
+    }
+    return this.transport.dcId;
   }
 
   // MaybePromise since `Client` has to deal with `Storage.set()`
   setDc(dc: DC): MaybePromise<void> {
-    const { connection, transport, dcId } = this.transportProvider.createTransport({ dc, cdn: this.cdn });
-    this.connection = connection;
-    this.transport = transport;
-    this._dcId = dcId;
+    this.dc = dc;
   }
 
   get connected() {
-    return this.connection.connected;
+    return this.transport === undefined ? false : this.transport.connection.connected;
   }
 
   async connect() {
+    this.transport = this.transportProvider({ dc: this.dc ?? this.initialDc, cdn: this.cdn });
+    this.transport.connection.stateChangeHandler = this.stateChangeHandler;
     await initTgCrypto();
-    await this.connection.open();
-    await this.transport.initialize();
+    await this.transport.connection.open();
+    await this.transport.transport.initialize();
   }
 
   async reconnect(dc?: DC) {
@@ -55,7 +61,10 @@ export abstract class ClientAbstract {
   }
 
   async disconnect() {
-    await this.transport.deinitialize();
-    await this.connection.close();
+    if (!this.transport) {
+      throw new Error("Not connected");
+    }
+    await this.transport.transport.deinitialize();
+    await this.transport.connection.close();
   }
 }
