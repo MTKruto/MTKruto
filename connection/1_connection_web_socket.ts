@@ -10,19 +10,20 @@ export class ConnectionWebSocket extends ConnectionUnframed implements Connectio
   private buffer = new Array<number>();
   private nextResolve: [number, () => void] | null = null;
 
-  constructor(url: string | URL) {
+  constructor(private readonly url: string | URL) {
     super();
-    this.webSocket = this.reinitWs(url);
-    this.webSocket.addEventListener("close", (e) => {
-      if (e.code != 1000 && e.reason != "method") {
-        this.webSocket = this.reinitWs(url);
-      }
-    });
+    this.webSocket = this.initWs();
   }
 
-  private reinitWs(url: string | URL) {
-    const webSocket = new WebSocket(url, "binary");
+  private initWs() {
+    const webSocket = new WebSocket(this.url, "binary");
     const mutex = new Mutex();
+    webSocket.addEventListener("close", () => {
+      this.stateChangeHandler?.(false);
+    });
+    webSocket.addEventListener("open", () => {
+      this.stateChangeHandler?.(true);
+    });
     webSocket.addEventListener("message", async (e) => {
       if (typeof e.data === "string") {
         return;
@@ -48,7 +49,9 @@ export class ConnectionWebSocket extends ConnectionUnframed implements Connectio
         // @ts-ignore: Node.js
         this.connectionError = err;
       }
-      d("WebSocket error: %o", err);
+      if (this.connected) {
+        d("WebSocket error: %o", err);
+      }
     });
     return webSocket;
   }
@@ -57,6 +60,7 @@ export class ConnectionWebSocket extends ConnectionUnframed implements Connectio
     return this.webSocket.readyState == WebSocket.OPEN;
   }
 
+  private wasConnected = false;
   private isConnecting = false;
   private connectionError: Event | ErrorEvent | null = null;
   async open() {
@@ -64,6 +68,10 @@ export class ConnectionWebSocket extends ConnectionUnframed implements Connectio
       throw new Error("Already connecting");
     }
     this.isConnecting = true;
+
+    if (!this.connected && this.wasConnected) {
+      this.webSocket = this.initWs();
+    }
 
     try {
       while (this.webSocket.readyState != WebSocket.OPEN) {
@@ -77,6 +85,7 @@ export class ConnectionWebSocket extends ConnectionUnframed implements Connectio
           await new Promise((r) => setTimeout(r, 5));
         }
       }
+      this.wasConnected = true;
     } finally {
       this.isConnecting = false;
       this.connectionError = null;

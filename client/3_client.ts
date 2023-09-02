@@ -13,7 +13,7 @@ import { Message as Message_ } from "../tl/6_message.ts"; // MTProto API message
 import { MessageContainer } from "../tl/7_message_container.ts";
 import { Storage } from "../storage/0_storage.ts";
 import { StorageMemory } from "../storage/1_storage_memory.ts";
-import { DC, TransportProvider } from "../transport/2_transport_provider.ts";
+import { DC } from "../transport/2_transport_provider.ts";
 import { FileID, FileType, ThumbnailSource } from "../types/!0_file_id.ts";
 import { MessageEntity, messageEntityToTlObject } from "../types/0_message_entity.ts";
 import { ReplyKeyboardRemove, replyKeyboardRemoveToTlObject } from "../types/0_reply_keyboard_remove.ts";
@@ -25,7 +25,7 @@ import { decryptMessage, encryptMessage, getMessageId } from "./0_message.ts";
 import { parseHtml } from "./0_html.ts";
 import { checkPassword } from "./0_password.ts";
 import { ClientAbstract } from "./1_client_abstract.ts";
-import { ClientPlain } from "./2_client_plain.ts";
+import { ClientPlain, ClientPlainParams } from "./2_client_plain.ts";
 import { drop, mustPrompt, mustPromptOneOf } from "../utilities/1_misc.ts";
 import { getChannelChatId, hasChannelPts, hasPts, peerToChatId } from "./0_utilities.ts";
 import { constructUser } from "../types/1_user.ts";
@@ -55,15 +55,11 @@ export interface AuthorizeUserParams<S = string> {
   password: S | ((hint: string | null) => MaybePromise<S>);
 }
 
-export interface ClientParams {
+export interface ClientParams extends ClientPlainParams {
   /**
    * Default parse mode. Defauls to `ParseMode.None`.
    */
   parseMode?: ParseMode;
-  /**
-   * The transport provider to use. Defaults to `webSocketTransportProvider`.
-   */
-  transportProvider?: TransportProvider;
   /**
    * The app_version parameter to be passed to initConnection when calling `authorize`.
    */
@@ -88,10 +84,6 @@ export interface ClientParams {
    * The system_version parameter to be passed to initConnection when calling `authorize`.
    */
   systemVersion?: string;
-  /**
-   * MTProto public keys to use in the `[keyId, [key, exponent]][]` format. Don't set this unless you know what you are doing.
-   */
-  publicKeys?: PublicKeys;
   /**
    * Whether to automatically call `start` with no parameters in the first `invoke` call.
    */
@@ -217,9 +209,8 @@ export class Client extends ClientAbstract {
     public readonly apiId: number | null = 0,
     public readonly apiHash: string | null = "",
     params?: ClientParams,
-    cdn = false,
   ) {
-    super(params?.transportProvider, cdn);
+    super(params);
 
     this.parseMode = params?.parseMode ?? ParseMode.None;
 
@@ -232,6 +223,14 @@ export class Client extends ClientAbstract {
     this.publicKeys = params?.publicKeys;
     this.autoStart = params?.autoStart ?? true;
   }
+
+  private propagateConnectionState(connectionState: ConnectionState) {
+    return this.handler({ connectionState }, resolve);
+  }
+
+  protected stateChangeHandler = ((connected: boolean) => {
+    this.propagateConnectionState(connected ? "ready" : "not-connected");
+  }).bind(this);
 
   private storageInited = false;
 
@@ -278,7 +277,7 @@ export class Client extends ClientAbstract {
       }
       const authKey = await this.storage.getAuthKey();
       if (authKey == null) {
-        const plain = new ClientPlain(this.transportProvider, this.publicKeys);
+        const plain = new ClientPlain({ initialDc: this.initialDc, transportProvider: this.transportProvider, cdn: this.cdn, publicKeys: this.publicKeys });
         const dc = await this.storage.getDc();
         if (dc != null) {
           plain.setDc(dc);
@@ -298,7 +297,7 @@ export class Client extends ClientAbstract {
       }
       await super.connect();
       if (dc == null) {
-        await this.storage.setDc(this.transportProvider.initialDc);
+        await this.storage.setDc(this.initialDc);
       }
       d("encrypted client connected");
       drop(this.receiveLoop());
@@ -550,7 +549,7 @@ export class Client extends ClientAbstract {
   }
 
   private async receiveLoop() {
-    if (!this.auth) {
+    if (!this.auth || !this.transport) {
       throw new Error("Not connected");
     }
 
@@ -561,7 +560,7 @@ export class Client extends ClientAbstract {
           this.toAcknowledge.clear();
         }
 
-        const buffer = await this.transport.receive();
+        const buffer = await this.transport.transport.receive();
 
         let decrypted;
         try {
@@ -670,14 +669,14 @@ export class Client extends ClientAbstract {
   async invoke<T extends (functions.Function<unknown> | types.Type) = functions.Function<unknown>>(function_: T): Promise<T extends functions.Function<unknown> ? T["__R"] : void>;
   async invoke<T extends (functions.Function<unknown> | types.Type) = functions.Function<unknown>>(function_: T, noWait: true): Promise<void>;
   async invoke<T extends (functions.Function<unknown> | types.Type) = functions.Function<unknown>>(function_: T, noWait?: boolean): Promise<T | void> {
-    if (!this.auth) {
+    if (!this.auth || !this.transport) {
       if (this.autoStart && !this.autoStarted) {
         await this.start();
       } else {
         throw new Error("Not connected");
       }
     }
-    if (!this.auth) {
+    if (!this.auth || !this.transport) {
       UNREACHABLE();
     }
 
@@ -689,7 +688,7 @@ export class Client extends ClientAbstract {
 
     const messageId = this.lastMsgId = getMessageId(this.lastMsgId);
     const message = new Message_(messageId, seqNo, function_);
-    await this.transport.send(
+    await this.transport.transport.send(
       await encryptMessage(
         message,
         this.auth.key,
@@ -928,39 +927,45 @@ export class Client extends ClientAbstract {
   private async recoverUpdateGap(source: string) {
     dGap("recovering from update gap [%s]", source);
 
-    let state = await this.getLocalState();
-    while (true) {
-      const difference = await this.invoke(new functions.UpdatesGetDifference({ pts: state.pts, date: state.date, qts: state.qts ?? 0 }));
-      if (difference instanceof types.UpdatesDifference || difference instanceof types.UpdatesDifferenceSlice) {
-        await this.processChats(difference.chats);
-        await this.processUsers(difference.users);
-        for (const message of difference.newMessages) {
-          await this.processUpdates(new types.UpdateNewMessage({ message, pts: 0, ptsCount: 0 }), true);
-        }
-        for (const update of difference.otherUpdates) {
-          await this.processUpdates(update, true);
-        }
-        if (difference instanceof types.UpdatesDifference) {
-          await this.storage.setState(difference.state[as](types.UpdatesState));
-          dGap("recovered from update gap");
+    await this.propagateConnectionState("updating");
+
+    try {
+      let state = await this.getLocalState();
+      while (true) {
+        const difference = await this.invoke(new functions.UpdatesGetDifference({ pts: state.pts, date: state.date, qts: state.qts ?? 0 }));
+        if (difference instanceof types.UpdatesDifference || difference instanceof types.UpdatesDifferenceSlice) {
+          await this.processChats(difference.chats);
+          await this.processUsers(difference.users);
+          for (const message of difference.newMessages) {
+            await this.processUpdates(new types.UpdateNewMessage({ message, pts: 0, ptsCount: 0 }), true);
+          }
+          for (const update of difference.otherUpdates) {
+            await this.processUpdates(update, true);
+          }
+          if (difference instanceof types.UpdatesDifference) {
+            await this.storage.setState(difference.state[as](types.UpdatesState));
+            dGap("recovered from update gap");
+            break;
+          } else if (difference instanceof types.UpdatesDifferenceSlice) {
+            state = difference.intermediateState[as](types.UpdatesState);
+          } else {
+            UNREACHABLE();
+          }
+        } else if (difference instanceof types.UpdatesDifferenceTooLong) {
+          // TODO: we actually do now
+          // stored messages should be invalidated in case we store messages in the future
+          state.pts = difference.pts;
+          dGap("received differenceTooLong");
+        } else if (difference instanceof types.UpdatesDifferenceEmpty) {
+          await this.setUpdateStateDate(difference.date);
+          dGap("there was no update gap");
           break;
-        } else if (difference instanceof types.UpdatesDifferenceSlice) {
-          state = difference.intermediateState[as](types.UpdatesState);
         } else {
           UNREACHABLE();
         }
-      } else if (difference instanceof types.UpdatesDifferenceTooLong) {
-        // TODO: we actually do now
-        // stored messages should be invalidated in case we store messages in the future
-        state.pts = difference.pts;
-        dGap("received differenceTooLong");
-      } else if (difference instanceof types.UpdatesDifferenceEmpty) {
-        await this.setUpdateStateDate(difference.date);
-        dGap("there was no update gap");
-        break;
-      } else {
-        UNREACHABLE();
       }
+    } finally {
+      this.stateChangeHandler(this.connected);
     }
   }
 
@@ -1341,7 +1346,8 @@ export class Client extends ClientAbstract {
         langPack: this.langPack,
         systemLangCode: this.systemLangCode,
         systemVersion: this.systemVersion,
-      }, true);
+        cdn: true,
+      });
       let dc = String(dcId);
       if (this.dcId < 0) {
         dc += "-test";
@@ -1543,9 +1549,12 @@ const resolve = () => Promise.resolve();
 
 type With<T, K extends keyof T> = T & Required<{ [P in K]: T[P] }>;
 
+export type ConnectionState = "not-connected" | "updating" | "ready";
+
 export interface Update {
   message: Message;
   editedMessage: Message;
+  connectionState: ConnectionState;
 }
 
 export interface Handler<U extends Partial<Update> = Partial<Update>> {
