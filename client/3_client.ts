@@ -1518,9 +1518,9 @@ export class Client extends ClientAbstract {
     };
   }
 
-  on<U extends keyof Update, K extends null | keyof Update[U] = null>(
-    filter: Update[U] extends string ? U : U | [U, K, ...K[]],
-    handler: Handler<Pick<Update, U> & { [P in U]: K extends keyof Update[U] ? With<Update[U], K> : Update[U] }>,
+  on<U extends keyof Update, K extends keyof Update[U]>(
+    filter: Update[U] extends string ? U : U | [U, ...K[]],
+    handler: Handler<Pick<{ [P in U]: With<Update[U], K> }, U>>,
   ) {
     const type = typeof filter === "string" ? filter : filter[0];
     const keys = Array.isArray(filter) ? filter.slice(1) : [];
@@ -1547,7 +1547,7 @@ export class Client extends ClientAbstract {
 
 const resolve = () => Promise.resolve();
 
-type With<T, K extends keyof T> = T & Required<{ [P in K]: T[P] }>;
+type With<T, K extends keyof T> = T & Required<Pick<T, K>>;
 
 export type ConnectionState = "not-connected" | "updating" | "ready";
 
