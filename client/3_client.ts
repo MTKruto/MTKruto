@@ -838,7 +838,7 @@ export class Client extends ClientAbstract {
         if (currentPts === undefined) {
           currentPts = await this.storage.getChannelPts(channelId);
         }
-        currentPts ??= update.pts;
+        currentPts ??= update.pts - ptsCount;
         if (currentPts + ptsCount > update.pts) {
           updates = updates.filter((v) => v != update);
         } else {
