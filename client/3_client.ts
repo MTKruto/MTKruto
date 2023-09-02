@@ -781,7 +781,14 @@ export class Client extends ClientAbstract {
     }
   }
   private async processUpdates(updates_: types.TypeUpdate | types.TypeUpdates, assertNoGap = false) {
-    let updates: (types.TypeUpdate | types.UpdateShortMessage | types.UpdateShortChatMessage | types.UpdateShortSentMessage)[];
+    /// First, individual updates (Update[1]) and updateShort* are extracted from Updates.[2]
+    ///
+    /// If an updatesTooLong[3] was received, an update gap recovery is initiated and no further action will be taken.
+    ///
+    /// [1]: https://core.telegram.org/type/Update
+    /// [2]: https://core.telegram.org/type/Updates
+    /// [3]: https://core.telegram.org/constructor/updatesTooLong
+    let updates: (types.TypeUpdate | types.UpdateShort | types.UpdateShortMessage | types.UpdateShortChatMessage | types.UpdateShortSentMessage)[];
     if (updates_ instanceof types.UpdatesCombined || updates_ instanceof types.Updates) {
       updates = updates_.updates;
     } else if (updates_ instanceof types.UpdateShort) {
@@ -801,6 +808,10 @@ export class Client extends ClientAbstract {
       UNREACHABLE();
     }
 
+    /// Then, we go through each Update and updateShort*, and see if they are order-sensitive.
+    /// If they were, we check the local state to see if it is OK to process them right away.
+    ///
+    /// If we there was a gap, a recovery process will be initiated and the processing will be postponed.
     let localState: types.UpdatesState | null = null;
     let originalPts: number | null = null;
     const channelPtsMap = new Map<bigint, number>();
@@ -845,6 +856,7 @@ export class Client extends ClientAbstract {
       }
     }
 
+    /// We process the updates when we are sure there is no gap.
     if (updates_ instanceof types.Updates || updates_ instanceof types.UpdatesCombined) {
       await this.processChats(updates_.chats);
       await this.processUsers(updates_.users);
@@ -876,6 +888,7 @@ export class Client extends ClientAbstract {
           UNREACHABLE();
         }
       }
+      /// If there were any Update, they will be passed to the update handling queue.
       if (update instanceof types.TypeUpdate) {
         updatesToHandle.push(update);
       }
