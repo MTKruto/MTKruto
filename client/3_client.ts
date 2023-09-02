@@ -233,6 +233,14 @@ export class Client extends ClientAbstract {
     this.autoStart = params?.autoStart ?? true;
   }
 
+  private propagateConnectionState(connectionState: ConnectionState) {
+    return this.handler({ connectionState }, resolve);
+  }
+
+  private stateChangeHandler = ((connected: boolean) => {
+    this.propagateConnectionState(connected ? "ready" : "not-connected");
+  }).bind(this);
+
   private storageInited = false;
 
   /**
@@ -251,7 +259,6 @@ export class Client extends ClientAbstract {
       await this.storage.setAuthKey(null);
       await this.storage.getAuthKey();
     }
-    super.setDc(dc);
   }
 
   private async setAuth(key: Uint8Array) {
@@ -296,6 +303,7 @@ export class Client extends ClientAbstract {
       if (dc != null) {
         await this.setDc(dc);
       }
+      this.connection.stateChangeHandler = this.stateChangeHandler;
       await super.connect();
       if (dc == null) {
         await this.storage.setDc(this.transportProvider.initialDc);
@@ -928,39 +936,45 @@ export class Client extends ClientAbstract {
   private async recoverUpdateGap(source: string) {
     dGap("recovering from update gap [%s]", source);
 
-    let state = await this.getLocalState();
-    while (true) {
-      const difference = await this.invoke(new functions.UpdatesGetDifference({ pts: state.pts, date: state.date, qts: state.qts ?? 0 }));
-      if (difference instanceof types.UpdatesDifference || difference instanceof types.UpdatesDifferenceSlice) {
-        await this.processChats(difference.chats);
-        await this.processUsers(difference.users);
-        for (const message of difference.newMessages) {
-          await this.processUpdates(new types.UpdateNewMessage({ message, pts: 0, ptsCount: 0 }), true);
-        }
-        for (const update of difference.otherUpdates) {
-          await this.processUpdates(update, true);
-        }
-        if (difference instanceof types.UpdatesDifference) {
-          await this.storage.setState(difference.state[as](types.UpdatesState));
-          dGap("recovered from update gap");
+    await this.propagateConnectionState("updating");
+
+    try {
+      let state = await this.getLocalState();
+      while (true) {
+        const difference = await this.invoke(new functions.UpdatesGetDifference({ pts: state.pts, date: state.date, qts: state.qts ?? 0 }));
+        if (difference instanceof types.UpdatesDifference || difference instanceof types.UpdatesDifferenceSlice) {
+          await this.processChats(difference.chats);
+          await this.processUsers(difference.users);
+          for (const message of difference.newMessages) {
+            await this.processUpdates(new types.UpdateNewMessage({ message, pts: 0, ptsCount: 0 }), true);
+          }
+          for (const update of difference.otherUpdates) {
+            await this.processUpdates(update, true);
+          }
+          if (difference instanceof types.UpdatesDifference) {
+            await this.storage.setState(difference.state[as](types.UpdatesState));
+            dGap("recovered from update gap");
+            break;
+          } else if (difference instanceof types.UpdatesDifferenceSlice) {
+            state = difference.intermediateState[as](types.UpdatesState);
+          } else {
+            UNREACHABLE();
+          }
+        } else if (difference instanceof types.UpdatesDifferenceTooLong) {
+          // TODO: we actually do now
+          // stored messages should be invalidated in case we store messages in the future
+          state.pts = difference.pts;
+          dGap("received differenceTooLong");
+        } else if (difference instanceof types.UpdatesDifferenceEmpty) {
+          await this.setUpdateStateDate(difference.date);
+          dGap("there was no update gap");
           break;
-        } else if (difference instanceof types.UpdatesDifferenceSlice) {
-          state = difference.intermediateState[as](types.UpdatesState);
         } else {
           UNREACHABLE();
         }
-      } else if (difference instanceof types.UpdatesDifferenceTooLong) {
-        // TODO: we actually do now
-        // stored messages should be invalidated in case we store messages in the future
-        state.pts = difference.pts;
-        dGap("received differenceTooLong");
-      } else if (difference instanceof types.UpdatesDifferenceEmpty) {
-        await this.setUpdateStateDate(difference.date);
-        dGap("there was no update gap");
-        break;
-      } else {
-        UNREACHABLE();
       }
+    } finally {
+      this.stateChangeHandler(this.connected);
     }
   }
 
@@ -1543,9 +1557,12 @@ const resolve = () => Promise.resolve();
 
 type With<T, K extends keyof T> = T & Required<{ [P in K]: T[P] }>;
 
+export type ConnectionState = "not-connected" | "updating" | "ready";
+
 export interface Update {
   message: Message;
   editedMessage: Message;
+  connectionState: ConnectionState;
 }
 
 export interface Handler<U extends Partial<Update> = Partial<Update>> {

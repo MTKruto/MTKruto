@@ -18,11 +18,11 @@ export class ConnectionWebSocket extends ConnectionUnframed implements Connectio
   private initWs() {
     const webSocket = new WebSocket(this.url, "binary");
     const mutex = new Mutex();
-    this.webSocket.addEventListener("close", () => {
-      this.stateChangeHandler?.();
+    webSocket.addEventListener("close", () => {
+      this.stateChangeHandler?.(false);
     });
-    this.webSocket.addEventListener("open", () => {
-      this.stateChangeHandler?.();
+    webSocket.addEventListener("open", () => {
+      this.stateChangeHandler?.(true);
     });
     webSocket.addEventListener("message", async (e) => {
       if (typeof e.data === "string") {
@@ -70,7 +70,7 @@ export class ConnectionWebSocket extends ConnectionUnframed implements Connectio
     this.isConnecting = true;
 
     if (!this.connected && this.wasConnected) {
-      this.webSocket = this.initWs()
+      this.webSocket = this.initWs();
     }
 
     try {
@@ -85,7 +85,7 @@ export class ConnectionWebSocket extends ConnectionUnframed implements Connectio
           await new Promise((r) => setTimeout(r, 5));
         }
       }
-      this.wasConnected = true
+      this.wasConnected = true;
     } finally {
       this.isConnecting = false;
       this.connectionError = null;

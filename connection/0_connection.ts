@@ -2,7 +2,7 @@ import { MaybePromise } from "../utilities/0_types.ts";
 
 abstract class Foundation {
   abstract get connected(): boolean;
-  stateChangeHandler?: () => void;
+  stateChangeHandler?: (connected: boolean) => void;
   abstract open(): MaybePromise<void>;
   abstract write(p: Uint8Array): MaybePromise<void>;
   abstract close(): MaybePromise<void>;
