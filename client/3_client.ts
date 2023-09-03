@@ -764,8 +764,8 @@ export class Client extends ClientAbstract {
     }
   }
 
-  private handleUpdateQueue = new Queue();
-  private processUpdatesQueue = new Queue();
+  private handleUpdateQueue = new Queue("handleUpdate");
+  private processUpdatesQueue = new Queue("processUpdates");
 
   private async checkGap(pts: number, ptsCount: number, assertNoGap: boolean) {
     const localState = await this.getLocalState();
