@@ -1500,6 +1500,47 @@ export class Client extends ClientAbstract {
       );
       await this.handler({ [key]: message }, resolve);
     }
+
+    if (update instanceof types.UpdateDeleteMessages) {
+      const deletedMessages = new Array<Message>();
+      for (const messageId of update.messages) {
+        const chatId = await this.storage.getMessageChat(messageId);
+        if (chatId) {
+          const message = await this.storage.getMessage(chatId, messageId);
+          if (message != null) {
+            deletedMessages.push(
+              await constructMessage(
+                message,
+                this[getEntity].bind(this),
+                this.getMessage.bind(this),
+                this[getStickerSetName].bind(this),
+              ),
+            );
+          }
+        }
+      }
+      if (deletedMessages.length > 0) {
+        await this.handler({ deletedMessages: deletedMessages as [Message, ...Message[]] }, resolve);
+      }
+    } else if (update instanceof types.UpdateDeleteChannelMessages) {
+      const deletedMessages = new Array<Message>();
+      for (const messageId of update.messages) {
+        const message = await this.storage.getMessage(ZERO_CHANNEL_ID + -Number(update.channelId), messageId);
+        if (message) {
+          deletedMessages.push(
+            await constructMessage(
+              message,
+              this[getEntity].bind(this),
+              this.getMessage.bind(this),
+              this[getStickerSetName].bind(this),
+            ),
+          );
+        }
+      }
+      if (deletedMessages.length > 0) {
+        await this.handler({ deletedMessages: deletedMessages as [Message, ...Message[]] }, resolve);
+      }
+    }
   }
 
   handler: Handler = (_upd, next) => {
@@ -1519,7 +1560,8 @@ export class Client extends ClientAbstract {
   }
 
   on<U extends keyof Update, K extends keyof Update[U]>(
-    filter: Update[U] extends string ? U : U | [U, ...K[]],
+    // deno-lint-ignore no-explicit-any
+    filter: Update[U] extends string ? U : Update[U] extends Array<any> ? U : U | [U, ...K[]],
     handler: Handler<Pick<{ [P in U]: With<Update[U], K> }, U>>,
   ) {
     const type = typeof filter === "string" ? filter : filter[0];
@@ -1555,6 +1597,7 @@ export interface Update {
   message: Message;
   editedMessage: Message;
   connectionState: ConnectionState;
+  deletedMessages: [Message, ...Message[]];
 }
 
 export interface Handler<U extends Partial<Update> = Partial<Update>> {
