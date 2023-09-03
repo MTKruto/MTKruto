@@ -1,36 +1,36 @@
 import { debug, gunzip, Mutex } from "../deps.ts";
 import { ACK_THRESHOLD, APP_VERSION, CHANNEL_DIFFERENCE_LIMIT_BOT, CHANNEL_DIFFERENCE_LIMIT_USER, DEVICE_MODEL, LANG_CODE, LANG_PACK, LAYER, MAX_CHANNEL_ID, MAX_CHAT_ID, PublicKeys, STICKER_SET_NAME_TTL, SYSTEM_LANG_CODE, SYSTEM_VERSION, USERNAME_TTL, ZERO_CHANNEL_ID } from "../constants.ts";
+import { drop, mustPrompt, mustPromptOneOf } from "../utilities/1_misc.ts";
 import { bigIntFromBuffer, getRandomBigInt, getRandomId } from "../utilities/0_bigint.ts";
+import { getChannelChatId, hasChannelPts, hasPts, peerToChatId } from "./0_utilities.ts";
 import { UNREACHABLE } from "../utilities/0_control.ts";
-import { sha1 } from "../utilities/0_hash.ts";
 import { MaybePromise } from "../utilities/0_types.ts";
+import { Queue } from "../utilities/0_queue.ts";
+import { sha1 } from "../utilities/0_hash.ts";
+import { DC } from "../transport/2_transport_provider.ts";
+import { TLError } from "../tl/0_tl_raw_reader.ts";
 import { as } from "../tl/1_tl_object.ts";
 import * as types from "../tl/2_types.ts";
-import * as functions from "../tl/3_functions.ts";
 import { ReadObject, TLReader } from "../tl/3_tl_reader.ts";
+import * as functions from "../tl/3_functions.ts";
 import { RPCResult } from "../tl/5_rpc_result.ts";
 import { Message as Message_ } from "../tl/6_message.ts"; // MTProto API message
 import { MessageContainer } from "../tl/7_message_container.ts";
+import { FileID, FileType, ThumbnailSource } from "../types/!0_file_id.ts";
+import { ReplyKeyboardRemove, replyKeyboardRemoveToTlObject } from "../types/0_reply_keyboard_remove.ts";
+import { MessageEntity, messageEntityToTlObject } from "../types/0_message_entity.ts";
+import { ForceReply, forceReplyToTlObject } from "../types/0_force_reply.ts";
+import { constructUser } from "../types/1_user.ts";
+import { InlineKeyboardMarkup, inlineKeyboardMarkupToTlObject } from "../types/2_inline_keyboard_markup.ts";
+import { ReplyKeyboardMarkup, replyKeyboardMarkupToTlObject } from "../types/2_reply_keyboard_markup.ts";
+import { constructMessage, Message } from "../types/3_message.ts"; // high-level wrapper for Telegram API's message
 import { Storage } from "../storage/0_storage.ts";
 import { StorageMemory } from "../storage/1_storage_memory.ts";
-import { DC } from "../transport/2_transport_provider.ts";
-import { FileID, FileType, ThumbnailSource } from "../types/!0_file_id.ts";
-import { MessageEntity, messageEntityToTlObject } from "../types/0_message_entity.ts";
-import { ReplyKeyboardRemove, replyKeyboardRemoveToTlObject } from "../types/0_reply_keyboard_remove.ts";
-import { ForceReply, forceReplyToTlObject } from "../types/0_force_reply.ts";
-import { ReplyKeyboardMarkup, replyKeyboardMarkupToTlObject } from "../types/2_reply_keyboard_markup.ts";
-import { InlineKeyboardMarkup, inlineKeyboardMarkupToTlObject } from "../types/2_inline_keyboard_markup.ts";
-import { constructMessage, Message } from "../types/3_message.ts"; // high-level wrapper for Telegram API's message
 import { decryptMessage, encryptMessage, getMessageId } from "./0_message.ts";
-import { parseHtml } from "./0_html.ts";
 import { checkPassword } from "./0_password.ts";
-import { ClientAbstract } from "./1_client_abstract.ts";
+import { parseHtml } from "./0_html.ts";
 import { ClientPlain, ClientPlainParams } from "./2_client_plain.ts";
-import { drop, mustPrompt, mustPromptOneOf } from "../utilities/1_misc.ts";
-import { getChannelChatId, hasChannelPts, hasPts, peerToChatId } from "./0_utilities.ts";
-import { constructUser } from "../types/1_user.ts";
-import { TLError } from "../tl/0_tl_raw_reader.ts";
-import { Queue } from "../utilities/0_queue.ts";
+import { ClientAbstract } from "./1_client_abstract.ts";
 
 const d = debug("Client");
 const dGap = debug("Client/recoverUpdateGap");
@@ -1478,21 +1478,11 @@ export class Client extends ClientAbstract {
     return constructUser(users[0][as](types.User));
   }
 
+  // TODO: log errors
   private async handleUpdate(update: types.TypeUpdate) {
     if (update instanceof types.UpdateNewMessage || update instanceof types.UpdateNewMessage || update instanceof types.UpdateNewChannelMessage || update instanceof types.UpdateNewChannelMessage) {
       if (update.message instanceof types.Message || update.message instanceof types.MessageService) {
         await this.storage.setMessage(peerToChatId(update.message.peerId), update.message.id, update.message);
-      }
-    } else if (update instanceof types.UpdateDeleteChannelMessages) {
-      for (const message of update.messages) {
-        await this.storage.setMessage(getChannelChatId(update.channelId), message, null);
-      }
-    } else if (update instanceof types.UpdateDeleteMessages) {
-      for (const message of update.messages) {
-        const chatId = await this.storage.getMessageChat(message);
-        if (chatId) {
-          await this.storage.setMessage(chatId, message, null);
-        }
       }
     }
 
@@ -1510,6 +1500,50 @@ export class Client extends ClientAbstract {
         this[getStickerSetName].bind(this),
       );
       await this.handler({ [key]: message }, resolve);
+    }
+
+    if (update instanceof types.UpdateDeleteMessages) {
+      const deletedMessages = new Array<Message>();
+      for (const messageId of update.messages) {
+        const chatId = await this.storage.getMessageChat(messageId);
+        if (chatId) {
+          const message = await this.storage.getMessage(chatId, messageId);
+          if (message != null) {
+            deletedMessages.push(
+              await constructMessage(
+                message,
+                this[getEntity].bind(this),
+                this.getMessage.bind(this),
+                this[getStickerSetName].bind(this),
+              ),
+            );
+          }
+          await this.storage.setMessage(chatId, messageId, null);
+        }
+      }
+      if (deletedMessages.length > 0) {
+        await this.handler({ deletedMessages: deletedMessages as [Message, ...Message[]] }, resolve);
+      }
+    } else if (update instanceof types.UpdateDeleteChannelMessages) {
+      const chatId = getChannelChatId(update.channelId);
+      const deletedMessages = new Array<Message>();
+      for (const messageId of update.messages) {
+        const message = await this.storage.getMessage(chatId, messageId);
+        if (message) {
+          deletedMessages.push(
+            await constructMessage(
+              message,
+              this[getEntity].bind(this),
+              this.getMessage.bind(this),
+              this[getStickerSetName].bind(this),
+            ),
+          );
+        }
+        await this.storage.setMessage(chatId, messageId, null);
+      }
+      if (deletedMessages.length > 0) {
+        await this.handler({ deletedMessages: deletedMessages as [Message, ...Message[]] }, resolve);
+      }
     }
   }
 
@@ -1530,7 +1564,8 @@ export class Client extends ClientAbstract {
   }
 
   on<U extends keyof Update, K extends keyof Update[U]>(
-    filter: Update[U] extends string ? U : U | [U, ...K[]],
+    // deno-lint-ignore no-explicit-any
+    filter: Update[U] extends string ? U : Update[U] extends Array<any> ? U : U | [U, ...K[]],
     handler: Handler<Pick<{ [P in U]: With<Update[U], K> }, U>>,
   ) {
     const type = typeof filter === "string" ? filter : filter[0];
@@ -1566,6 +1601,7 @@ export interface Update {
   message: Message;
   editedMessage: Message;
   connectionState: ConnectionState;
+  deletedMessages: [Message, ...Message[]];
 }
 
 export interface Handler<U extends Partial<Update> = Partial<Update>> {
