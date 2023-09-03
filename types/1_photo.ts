@@ -3,6 +3,7 @@ import * as types from "../tl/2_types.ts";
 import { FileID, FileType, FileUniqueID, FileUniqueType, ThumbnailSource } from "./!0_file_id.ts";
 import { constructThumbnail, Thumbnail } from "./0_thumbnail.ts";
 
+/** This object represents a photo. */
 export interface Photo {
   /** Identifier for this file, which can be used to download or reuse the file */
   fileId: string;
@@ -12,7 +13,7 @@ export interface Photo {
   width: number;
   /** Photo height */
   height: number;
-  /** Optional. File size in bytes */
+  /** File size in bytes */
   fileSize: number;
   thumbnails: Thumbnail[];
 }
@@ -26,6 +27,7 @@ export function constructPhoto(photo: types.Photo): Photo {
         return v;
       }
     })
+    .filter((v) => v instanceof types.PhotoSize)
     .map((v) => v[as](types.PhotoSize))
     .sort((a, b) => a.size - b.size);
 

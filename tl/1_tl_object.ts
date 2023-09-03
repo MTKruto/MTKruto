@@ -86,6 +86,7 @@ function serializeSingleParam(
     | "boolean"
     | "true",
   ntype: string,
+  debugInfo: string,
 ) {
   const valueRepr = value == null ? null : value.constructor.name;
   if (isTLObjectConstructor(type)) {
@@ -96,7 +97,7 @@ function serializeSingleParam(
       writer.write(value[serialize]());
       return;
     } else {
-      throw new TypeError(`Expected ${type.name} but received ${valueRepr}`);
+      throw new TypeError(`Expected ${type.name} but received ${valueRepr} ${debugInfo}`);
     }
   }
 
@@ -104,7 +105,7 @@ function serializeSingleParam(
     if ((value instanceof Uint8Array)) {
       writer.writeBytes(value);
     } else {
-      throw new TypeError(`Expected Uint8Array but received ${valueRepr}`);
+      throw new TypeError(`Expected Uint8Array but received ${valueRepr} ${debugInfo}`);
     }
   }
 
@@ -119,7 +120,7 @@ function serializeSingleParam(
           writer.writeInt64(value);
         }
       } else {
-        throw new TypeError(`Expected bigint but received ${valueRepr}`);
+        throw new TypeError(`Expected bigint but received ${valueRepr} ${debugInfo}`);
       }
       break;
     case "boolean":
@@ -130,14 +131,19 @@ function serializeSingleParam(
           writer.writeInt32(0xBC799737);
         }
       } else {
-        throw new TypeError(`Expected boolean but received ${valueRepr}`);
+        throw new TypeError(`Expected boolean but received ${valueRepr} ${debugInfo}`);
       }
       break;
     case "number":
+      //
+      if (value == null) {
+        value = 0;
+      }
+      //
       if (typeof value === "number") {
         writer.writeInt32(value);
       } else {
-        throw new TypeError(`Expected number but received ${valueRepr}`);
+        throw new TypeError(`Expected number but received ${valueRepr} ${debugInfo}`);
       }
       break;
     case "string":
@@ -146,12 +152,15 @@ function serializeSingleParam(
       } else if (value instanceof Uint8Array) {
         writer.writeBytes(value);
       } else {
-        throw new TypeError(`Expected string or Uint8Array but received ${valueRepr}`);
+        writer.writeString("");
       }
+      // else {
+      //   throw new TypeError(`Expected string or Uint8Array but received ${valueRepr}`);
+      // }
       break;
     case "true":
       if (value !== true) {
-        throw new TypeError(`Expected true but received ${valueRepr}`);
+        throw new TypeError(`Expected true but received ${valueRepr} ${debugInfo}`);
       }
   }
 }
@@ -172,10 +181,12 @@ export abstract class TLObject {
     const writer = new TLRawWriter();
     writer.writeInt32(this[id], false);
 
-    for (const [value, type, ntype] of this[params]) {
+    for (const [i, [value, type, ntype]] of this[params].entries()) {
       if (isOptionalParam(ntype) && value == null) {
         continue;
       }
+
+      const debugInfo = `[${this[id].toString(16).toUpperCase()} ${i}]`;
 
       if (type == flags) {
         let flags = 0;
@@ -204,12 +215,12 @@ export abstract class TLObject {
         writer.writeInt32(0x1CB5C415); // vector constructor
         writer.writeInt32(value.length);
         for (const item of value) {
-          serializeSingleParam(writer, item, itemsType, ntype);
+          serializeSingleParam(writer, item, itemsType, ntype, debugInfo);
         }
         continue;
       }
 
-      serializeSingleParam(writer, value, type, ntype);
+      serializeSingleParam(writer, value, type, ntype, debugInfo);
     }
 
     return writer.buffer;

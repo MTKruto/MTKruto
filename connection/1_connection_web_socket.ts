@@ -1,20 +1,35 @@
 import { debug, Mutex } from "../deps.ts";
-import { Connection } from "./0_connection.ts";
+import { ConnectionUnframed } from "./0_connection.ts";
 
 const d = debug("ConnectionWebSocket");
 
-export class ConnectionWebSocket implements Connection {
+export class ConnectionWebSocket extends ConnectionUnframed implements ConnectionUnframed {
   private webSocket: WebSocket;
   private rMutex = new Mutex();
   private wMutex = new Mutex();
   private buffer = new Array<number>();
   private nextResolve: [number, () => void] | null = null;
 
-  constructor(url: string | URL) {
-    this.webSocket = new WebSocket(url, "binary");
-    this.webSocket.onmessage = async (e) => {
-      // deno-lint-ignore no-explicit-any
-      const data = e.data instanceof Blob ? new Uint8Array(await e.data.arrayBuffer()) : new Uint8Array(e.data as any);
+  constructor(private readonly url: string | URL) {
+    super();
+    this.webSocket = this.initWs();
+  }
+
+  private initWs() {
+    const webSocket = new WebSocket(this.url, "binary");
+    const mutex = new Mutex();
+    webSocket.addEventListener("close", () => {
+      this.stateChangeHandler?.(false);
+    });
+    webSocket.addEventListener("open", () => {
+      this.stateChangeHandler?.(true);
+    });
+    webSocket.addEventListener("message", async (e) => {
+      if (typeof e.data === "string") {
+        return;
+      }
+      const release = await mutex.acquire();
+      const data = new Uint8Array(await new Blob([e.data].map((v) => v instanceof Blob ? v : v instanceof ArrayBuffer ? v : Array.isArray(v) ? v.map((v) => v.buffer) : v.buffer).flat()).arrayBuffer());
 
       for (const byte of data) {
         this.buffer.push(byte);
@@ -26,23 +41,54 @@ export class ConnectionWebSocket implements Connection {
         this.nextResolve[1]();
         this.nextResolve = null;
       }
-    };
-    this.webSocket.onerror = (err) => {
-      d("WebSocket error: %o", err);
-    };
+
+      release();
+    });
+    webSocket.addEventListener("error", (err) => {
+      if (this.isConnecting) {
+        // @ts-ignore: Node.js
+        this.connectionError = err;
+      }
+      if (this.connected) {
+        d("WebSocket error: %o", err);
+      }
+    });
+    return webSocket;
   }
 
   get connected() {
     return this.webSocket.readyState == WebSocket.OPEN;
   }
 
+  private wasConnected = false;
+  private isConnecting = false;
+  private connectionError: Event | ErrorEvent | null = null;
   async open() {
-    while (this.webSocket.readyState != WebSocket.OPEN) {
-      if (this.webSocket.readyState == WebSocket.CLOSED) {
-        throw new Error("Connection was closed");
-      } else {
-        await new Promise((r) => setTimeout(r, 5));
+    if (this.isConnecting) {
+      throw new Error("Already connecting");
+    }
+    this.isConnecting = true;
+
+    if (!this.connected && this.wasConnected) {
+      this.webSocket = this.initWs();
+    }
+
+    try {
+      while (this.webSocket.readyState != WebSocket.OPEN) {
+        if (this.webSocket.readyState == WebSocket.CLOSED) {
+          if (this.connectionError instanceof ErrorEvent) {
+            throw new Error(this.connectionError.message);
+          } else {
+            throw new Error("Connection was closed");
+          }
+        } else {
+          await new Promise((r) => setTimeout(r, 5));
+        }
       }
+      this.wasConnected = true;
+    } finally {
+      this.isConnecting = false;
+      this.connectionError = null;
     }
   }
 
@@ -77,6 +123,6 @@ export class ConnectionWebSocket implements Connection {
     if (this.webSocket.readyState == WebSocket.CLOSED) {
       throw new Error("Connection not open");
     }
-    this.webSocket.close();
+    this.webSocket.close(1000, "method");
   }
 }

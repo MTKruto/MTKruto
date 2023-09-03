@@ -1,4 +1,4 @@
-import { TLRawReader } from "./0_tl_raw_reader.ts";
+import { TLError, TLRawReader } from "./0_tl_raw_reader.ts";
 import { paramDesc, TLObject } from "./1_tl_object.ts";
 import { map } from "./2_types.ts";
 import { deserialize } from "./3_deserialize.ts";
@@ -22,6 +22,6 @@ export class TLReader extends TLRawReader {
     if (constructor) {
       return deserialize(this, constructor[paramDesc], constructor);
     }
-    throw new Error(`Unknown constructor ${id.toString(16)}`);
+    throw new TLError(`Unknown constructor ${id.toString(16)}`);
   }
 }

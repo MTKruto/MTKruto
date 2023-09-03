@@ -2,11 +2,12 @@ import { debug } from "../deps.ts";
 import { UNREACHABLE } from "../utilities/0_control.ts";
 import { cleanObject } from "../utilities/0_object.ts";
 import { MaybePromise } from "../utilities/0_types.ts";
+import { as } from "../tl/1_tl_object.ts";
 import * as types from "../tl/2_types.ts";
 import { constructForceReply, ForceReply } from "./0_force_reply.ts";
 import { constructMessageEntity, MessageEntity } from "./0_message_entity.ts";
 import { constructReplyKeyboardRemove, ReplyKeyboardRemove } from "./0_reply_keyboard_remove.ts";
-import { Chat, constructChat } from "./1_chat.ts";
+import { Chat, ChatType, constructChat } from "./1_chat.ts";
 import { constructUser, User } from "./1_user.ts";
 import { constructInlineKeyboardMarkup, InlineKeyboardMarkup } from "./2_inline_keyboard_markup.ts";
 import { constructReplyKeyboardMarkup, ReplyKeyboardMarkup } from "./2_reply_keyboard_markup.ts";
@@ -25,80 +26,136 @@ import { constructGame, Game } from "./2_game.ts";
 import { constructPoll, Poll } from "./1_poll.ts";
 import { constructVenue, Venue } from "./0_venue.ts";
 import { constructLocation, Location } from "./0_location.ts";
+import { ZERO_CHANNEL_ID } from "../constants.ts";
 
 const d = debug("types/Message");
 
 /** This object represents a message. */
 export interface Message {
+  /** Whether the message is outgoing */
+  out: boolean;
   /** Unique message identifier inside this chat */
   id: number;
-  /** Optional. Unique identifier of a message thread to which the message belongs; for supergroups only */
+  /** Unique identifier of a message thread to which the message belongs; for supergroups only */
   threadId?: number;
-  /** Optional. Sender of the message; empty for messages sent to channels. For backward compatibility, the field contains a fake sender user in non-channel chats, if the message was sent on behalf of a chat. */
+  /** Sender of the message; empty for messages sent to channels. For backward compatibility, the field contains a fake sender user in non-channel chats, if the message was sent on behalf of a chat. */
   from?: User;
-  /** Optional. Sender of the message, sent on behalf of a chat. For example, the channel itself for channel posts, the supergroup itself for messages from anonymous group administrators, the linked channel for messages automatically forwarded to the discussion group. For backward compatibility, the field from contains a fake sender user in non-channel chats, if the message was sent on behalf of a chat. */
+  /** Sender of the message, sent on behalf of a chat. For example, the channel itself for channel posts, the supergroup itself for messages from anonymous group administrators, the linked channel for messages automatically forwarded to the discussion group. For backward compatibility, the field from contains a fake sender user in non-channel chats, if the message was sent on behalf of a chat. */
   senderChat?: Chat;
   /** Date the message was sent in Unix time */
   date?: Date;
   /** Conversation the message belongs to */
   chat: Chat;
-  /** Optional. For forwarded messages, sender of the original message */
+  /** For forwarded messages, sender of the original message */
   forwardFrom?: User;
-  /** Optional. For messages forwarded from channels or from anonymous administrators, information about the original sender chat */
+  /** For messages forwarded from channels or from anonymous administrators, information about the original sender chat */
   forwardFromChat?: Chat;
-  /** Optional. For messages forwarded from channels, identifier of the original message in the channel */
+  /** For messages forwarded from channels, identifier of the original message in the channel */
   forwardId?: number;
-  /** Optional. For forwarded messages that were originally sent in channels or by an anonymous chat administrator, signature of the message sender if present */
+  /** For forwarded messages that were originally sent in channels or by an anonymous chat administrator, signature of the message sender if present */
   forwardSignature?: string;
-  /** Optional. Sender's name for messages forwarded from users who disallow adding a link to their account in forwarded messages */
+  /** Sender's name for messages forwarded from users who disallow adding a link to their account in forwarded messages */
   forwardSenderName?: string;
-  /** Optional. For forwarded messages, date the original message was sent in Unix time */
+  /** For forwarded messages, date the original message was sent in Unix time */
   forwardDate?: Date;
-  /** Optional. True, if the message is sent to a forum topic */
+  /** True, if the message is sent to a forum topic */
   isTopicMessage: boolean;
-  /** Optional. True, if the message is a channel post that was automatically forwarded to the connected discussion group */
+  /** True, if the message is a channel post that was automatically forwarded to the connected discussion group */
   isAutomaticForward?: boolean;
-  /** Optional. For replies, the original message. Note that the Message object in this field will not contain further reply_to_message fields even if it itself is a reply. */
+  /** For replies, the original message. Note that the Message object in this field will not contain further reply_to_message fields even if it itself is a reply. */
   replyToMessage?: Omit<Message, "replyToMessage">;
-  /** Optional. Bot through which the message was sent */
+  /** Bot through which the message was sent */
   viaBot?: User;
-  /** Optional. Date the message was last edited in Unix time */
+  /** Date the message was last edited in Unix time */
   editDate?: Date;
-  /** Optional. True, if the message can't be forwarded */
+  /** True, if the message can't be forwarded */
   hasProtectedContent?: boolean;
-  /** Optional. The unique identifier of a media message group this message belongs to */
+  /** The unique identifier of a media message group this message belongs to */
   mediaGroupId?: string;
-  /** Optional. Signature of the post author for messages in channels, or the custom title of an anonymous group administrator */
+  /** Signature of the post author for messages in channels, or the custom title of an anonymous group administrator */
   authorSignature?: string;
-  /** Optional. For text messages, the actual UTF-8 text of the message */
+  /** For text messages, the actual UTF-8 text of the message */
   text?: string;
-  /** Optional. For text messages, special entities like usernames, URLs, bot commands, etc. that appear in the text */
+  /** For text messages, special entities like usernames, URLs, bot commands, etc. that appear in the text */
   entities?: MessageEntity[];
-  /** Optional. Caption for the animation, audio, document, photo, video or voice */
+  /** Caption for the animation, audio, document, photo, video or voice */
   caption?: string;
-  /** Optional. For messages with a caption, special entities like usernames, URLs, bot commands, etc. that appear in the caption */
+  /** For messages with a caption, special entities like usernames, URLs, bot commands, etc. that appear in the caption */
   captionEntities?: MessageEntity[];
-  /** Optional. True, if the message media is covered by a spoiler animation */
+  /** True, if the message media is covered by a spoiler animation */
   hasMediaSpoiler?: boolean;
-  /** Optional. View count for channel posts */
+  /** View count for channel posts */
   views?: number;
-  /** Optional. Inline keyboard attached to the message. `login_url` buttons are represented as ordinary `url` buttons. */
+  /** Inline keyboard attached to the message. `login_url` buttons are represented as ordinary `url` buttons. */
   replyMarkup?: InlineKeyboardMarkup | ReplyKeyboardMarkup | ReplyKeyboardRemove | ForceReply;
-  /** Optional. Message is a photo, available sizes of the photo */
+  /** Message is a photo, available sizes of the photo */
   photo?: Photo;
+  /** Message is a general file, information about the file */
   document?: Document;
+  /** Message is a video, information about the video */
   video?: Video;
+  /** Message is a sticker, information about the sticker */
   sticker?: Sticker;
+  /** Message is an animation, information about the animation. For backward compatibility, when this field is set, the document field will also be set */
   animation?: Animation;
+  /** Message is a voice message, information about the file */
   voice?: Voice;
+  /** Message is an audio file, information about the file */
   audio?: Audio;
+  /** Message is a dice with random value */
   dice?: Dice;
+  /** Message is a [video note](https://telegram.org/blog/video-messages-and-telescope), information about the video message */
   videoNote?: VideoNote;
+  /** Message is a shared contact, information about the contact */
   contact?: Contact;
+  /** Message is a game, information about the game. */
   game?: Game;
   poll?: Poll;
+  /** Message is a venue, information about the venue. For backward compatibility, when this field is set, the location field will also be set */
   venue?: Venue;
+  /** Message is a shared location, information about the location */
   location?: Location;
+  /** New members that were added to the group or supergroup and information about them (the bot itself may be one of these members) */
+  newChatMembers?: User[];
+  /** A member was removed from the group, information about them (this member may be the bot itself) */
+  leftChatMember?: User;
+  /** A chat title was changed to this value */
+  newChatTitle?: string;
+  /** A chat photo was change to this value */
+  newChatPhoto?: Photo;
+  /** Service message: the chat photo was deleted */
+  deletedChatPhoto?: true;
+  /** Service message: the group has been created */
+  groupCreated?: true;
+  /** Service message: the supergroup has been created. This field can't be received in a message coming through updates, because bot can't be a member of a supergroup when it is created. It can only be found in reply_to_message if someone replies to a very first message in a directly created supergroup. */
+  supergroupCreated?: true;
+  /** Service message: the channel has been created. This field can't be received in a message coming through updates, because bot can't be a member of a channel when it is created. It can only be found in reply_to_message if someone replies to a very first message in a channel. */
+  channelCreated?: true;
+  // TODO: messageAutoDeleteTimerChanged?: { messageAutoDeleteTime: number };
+  /** The group has been migrated to a supergroup with the specified identifier. This number may have more than 32 significant bits and some programming languages may have difficulty/silent defects in interpreting it. But it has at most 52 significant bits, so a signed 64-bit integer or double-precision float type are safe for storing this identifier. */
+  chatMigratedTo?: number;
+  /** The supergroup has been migrated from a group with the specified identifier. This number may have more than 32 significant bits and some programming languages may have difficulty/silent defects in interpreting it. But it has at most 52 significant bits, so a signed 64-bit integer or double-precision float type are safe for storing this identifier. */
+  chatMigratedFrom?: number;
+  /** Specified message was pinned. Note that the Message object in this field will not contain further reply_to_message fields even if it is itself a reply. */
+  pinnedMessage?: Message;
+  /** Service message: a user was shared with the bot */
+  userShared?: { requestId: number; userId: number };
+  /** Service message: the user allowed the bot added to the attachment menu to write messages */
+  writeAccessAllowed?: { webAppName?: string };
+  /** Service message: forum topic created */
+  forumTopicCreated?: { name: string; iconColor: string; iconCutsomEmojiId?: string };
+  /** Service message: forum topic edited */
+  forumTopicEdited?: { name?: string; iconCutsomEmojiId?: string };
+  /** Service message: forum topic closed */
+  forumTopicClosed?: Record<never, never>;
+  /** Service message: forum topic reopened */
+  forumTopicReopened?: Record<never, never>;
+  /** Service message: video chat scheduled */
+  videoChatScheduled?: { startDate: Date };
+  /** Service message: video chat started */
+  videoChatStarted?: Record<never, never>;
+  /** Service message: video chat ended */
+  videoChatEnded?: { duration: number };
 }
 
 interface EntityGetter {
@@ -139,23 +196,108 @@ async function getReply(message_: types.Message | types.MessageService, chat: Ch
     } else {
       d("couldn't get replied message");
     }
-  } else {
-    return {};
   }
+
+  return { replyToMessage: undefined, threadId: undefined, isTopicMessage: undefined };
 }
 
 async function constructServiceMessage(message_: types.MessageService, chat: Chat, getEntity: EntityGetter, getMessage: MessageGetter) {
   const message: Message = {
+    out: message_.out ?? false,
     id: message_.id,
     chat: chat,
     date: new Date(message_.date * 1_000),
     isTopicMessage: false,
   };
 
-  Object.assign(message, await getReply(message_, chat, getMessage));
   Object.assign(message, await getSender(message_, getEntity));
 
-  return message;
+  if (message_.action instanceof types.MessageActionChatAddUser) {
+    message.newChatMembers = [];
+    for (const user_ of message_.action.users) {
+      const entity = await getEntity(new types.PeerUser({ userId: user_ }));
+      if (entity) {
+        const user = constructUser(entity);
+        message.newChatMembers.push(user);
+      } else {
+        UNREACHABLE();
+      }
+    }
+  } else if (message_.action instanceof types.MessageActionChatDeleteUser) {
+    const entity = await getEntity(new types.PeerUser({ userId: message_.action.userId }));
+    if (entity) {
+      const user = constructUser(entity);
+      message.leftChatMember = user;
+    } else {
+      UNREACHABLE();
+    }
+  } else if (message_.action instanceof types.MessageActionChatEditTitle) {
+    message.newChatTitle = message_.action.title;
+  } else if (message_.action instanceof types.MessageActionChatEditPhoto) {
+    message.newChatPhoto = constructPhoto(message_.action.photo[as](types.Photo));
+  } else if (message_.action instanceof types.MessageActionChatDeletePhoto) {
+    message.deletedChatPhoto = true;
+  } else if (message_.action instanceof types.MessageActionChatCreate) {
+    message.groupCreated = true;
+    message.newChatMembers = [];
+    for (const user_ of message_.action.users) {
+      const entity = await getEntity(new types.PeerUser({ userId: user_ }));
+      if (entity) {
+        const user = constructUser(entity);
+        message.newChatMembers.push(user);
+      } else {
+        UNREACHABLE();
+      }
+    }
+  } else if (message_.action instanceof types.MessageActionChannelCreate) {
+    if (message.chat.type == ChatType.Channel) {
+      message.channelCreated = true;
+    } else if (message.chat.type == ChatType.Supergroup) {
+      message.supergroupCreated = true;
+    } else {
+      UNREACHABLE();
+    }
+  } else if (message_.action instanceof types.MessageActionChatMigrateTo) {
+    message.chatMigratedTo = ZERO_CHANNEL_ID + Number(-message_.action.channelId);
+  } else if (message_.action instanceof types.MessageActionChannelMigrateFrom) {
+    message.chatMigratedFrom = Number(-message_.action.chatId);
+  } else if (message_.action instanceof types.MessageActionPinMessage) {
+    const { replyToMessage } = await getReply(message_, chat, getMessage);
+    message.pinnedMessage = replyToMessage;
+  } else if (message_.action instanceof types.MessageActionRequestedPeer) {
+    const user = message_.action.peer[as](types.PeerUser);
+    message.userShared = { requestId: message_.action.buttonId, userId: Number(user.userId) };
+  } else if (message_.action instanceof types.MessageActionBotAllowed) {
+    const webAppName = message_.action.app ? message_.action.app[as](types.BotApp).title : undefined;
+    message.writeAccessAllowed = { webAppName };
+  } else if (message_.action instanceof types.MessageActionTopicCreate) {
+    message.forumTopicCreated = {
+      name: message_.action.title,
+      iconColor: "#" + message_.action.iconColor.toString(16).padStart(6, "0"),
+      iconCutsomEmojiId: message_.action.iconEmojiId ? String(message_.action.iconEmojiId) : undefined,
+    };
+  } else if (message_.action instanceof types.MessageActionTopicEdit) {
+    if (message_.action.closed) {
+      message.forumTopicClosed = {};
+    } else if (message_.action.title || message_.action.iconEmojiId) {
+      message.forumTopicEdited = {
+        name: message_.action.title,
+        iconCutsomEmojiId: message_.action.iconEmojiId ? String(message_.action.iconEmojiId) : undefined,
+      };
+    } else {
+      message.forumTopicReopened = {};
+    }
+  } else if (message_.action instanceof types.MessageActionGroupCallScheduled) {
+    message.videoChatScheduled = { startDate: new Date(message_.action.scheduleDate * 1000) };
+  } else if (message_.action instanceof types.MessageActionGroupCall) {
+    if (message_.action.duration) {
+      message.videoChatEnded = { duration: message_.action.duration };
+    } else {
+      message.videoChatStarted = {};
+    }
+  }
+
+  return cleanObject(message);
 }
 
 export async function constructMessage(
@@ -199,6 +341,7 @@ export async function constructMessage(
   }
 
   const message: Message = {
+    out: message_.out ?? false,
     id: message_.id,
     chat: chat_,
     date: new Date(message_.date * 1_000),
@@ -291,8 +434,6 @@ export async function constructMessage(
       } else {
         UNREACHABLE();
       }
-    } else {
-      UNREACHABLE();
     }
   }
 
@@ -352,6 +493,8 @@ export async function constructMessage(
       message.venue = constructVenue(message_.media);
     } else if (message_.media instanceof types.MessageMediaGeo || message_.media instanceof types.MessageMediaGeoLive) {
       message.location = constructLocation(message_.media);
+    } else if (message_.media instanceof types.MessageMediaWebPage) {
+      //
     } else {
       // not implemented
       UNREACHABLE();

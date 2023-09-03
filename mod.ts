@@ -3,7 +3,7 @@ import { checkPassword } from "./client/0_password.ts";
 
 export const utils = { checkPassword, getRandomId };
 
-export { as } from "./tl/1_tl_object.ts";
+export { as, serialize } from "./tl/1_tl_object.ts";
 export * as types from "./tl/2_types.ts";
 export * as functions from "./tl/3_functions.ts";
 export * from "./tl/5_rpc_result.ts";
@@ -22,4 +22,4 @@ export * from "./transport/0_transport.ts";
 export * from "./transport/2_transport_provider.ts";
 export * from "./connection/0_connection.ts";
 export * from "./connection/1_connection_web_socket.ts";
-export { DEFAULT_APP_VERSION, DEFAULT_DEVICE_MODEL, DEFAULT_INITIAL_DC, DEFAULT_LANG_CODE, DEFAULT_LANG_PACK, DEFAULT_SYSTEM_LANG_CODE, DEFAULT_SYSTEM_VERSION, LAYER } from "./constants.ts";
+export { APP_VERSION, DEVICE_MODEL, INITIAL_DC, LANG_CODE, LANG_PACK, LAYER, SYSTEM_LANG_CODE, SYSTEM_VERSION } from "./constants.ts";

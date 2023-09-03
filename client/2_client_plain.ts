@@ -1,5 +1,5 @@
 import { assertEquals, assertInstanceOf, debug, factorize, ige256Decrypt, ige256Encrypt } from "../deps.ts";
-import { publicKeys } from "../constants.ts";
+import { PUBLIC_KEYS, PublicKeys } from "../constants.ts";
 import { bigIntFromBuffer, getRandomBigInt, modExp } from "../utilities/0_bigint.ts";
 import { bufferFromBigInt, concat } from "../utilities/0_buffer.ts";
 import { UNREACHABLE } from "../utilities/0_control.ts";
@@ -9,15 +9,34 @@ import { serialize } from "../tl/1_tl_object.ts";
 import { ClientDHInnerData, DHGenOK, PQInnerDataDC, ResPQ, ServerDHInnerData, ServerDHParamsOK } from "../tl/2_types.ts";
 import { Function, ReqDHParams, ReqPQMulti, SetClientDHParams } from "../tl/3_functions.ts";
 import { TLReader } from "../tl/3_tl_reader.ts";
-import { ClientAbstract } from "./1_client_abstract.ts";
-import { packUnencryptedMessage, unpackUnencryptedMessage } from "./0_message.ts";
+import { ClientAbstract, ClientAbstractParams } from "./1_client_abstract.ts";
+import { getMessageId, packUnencryptedMessage, unpackUnencryptedMessage } from "./0_message.ts";
 
 const d = debug("ClientPlain/createAuthKey");
 
+export interface ClientPlainParams extends ClientAbstractParams {
+  /**
+   * MTProto public keys to use in the `[keyId, [key, exponent]][]` format. Don't set this unless you know what you are doing. Defaults to Telegram servers' public keys.
+   */
+  publicKeys?: PublicKeys;
+}
+
 export class ClientPlain extends ClientAbstract {
+  private readonly publicKeys: PublicKeys;
+  private lastMsgId = 0n;
+
+  constructor(params?: ClientPlainParams) {
+    super(params);
+    this.publicKeys = params?.publicKeys ?? PUBLIC_KEYS;
+  }
+
   async invoke<T extends Function<unknown>>(function_: T): Promise<T["__R"]> {
-    await this.transport.send(packUnencryptedMessage(function_[serialize]()));
-    const buffer = await this.transport.receive();
+    if (!this.transport) {
+      throw new Error("Not connected");
+    }
+    const msgId = this.lastMsgId = getMessageId(this.lastMsgId);
+    await this.transport.transport.send(packUnencryptedMessage(function_[serialize](), msgId));
+    const buffer = await this.transport.transport.receive();
     if (buffer.length == 4) {
       const int = bigIntFromBuffer(buffer, true, true);
       if (int == -404n) {
@@ -61,10 +80,10 @@ export class ClientPlain extends ClientAbstract {
     let publicKey: [bigint, bigint] | undefined;
 
     for (const fingerprint of resPq.serverPublicKeyFingerprints) {
-      const maybePublicKey = publicKeys.get(fingerprint);
+      const maybePublicKey = this.publicKeys.find(([k]) => (k == fingerprint));
       if (maybePublicKey) {
         publicKeyFingerprint = fingerprint;
-        publicKey = maybePublicKey;
+        publicKey = maybePublicKey[1];
         break;
       }
     }
