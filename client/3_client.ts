@@ -1467,21 +1467,11 @@ export class Client extends ClientAbstract {
     return constructUser(users[0][as](types.User));
   }
 
+  // TODO: log errors
   private async handleUpdate(update: types.TypeUpdate) {
     if (update instanceof types.UpdateNewMessage || update instanceof types.UpdateNewMessage || update instanceof types.UpdateNewChannelMessage || update instanceof types.UpdateNewChannelMessage) {
       if (update.message instanceof types.Message || update.message instanceof types.MessageService) {
         await this.storage.setMessage(peerToChatId(update.message.peerId), update.message.id, update.message);
-      }
-    } else if (update instanceof types.UpdateDeleteChannelMessages) {
-      for (const message of update.messages) {
-        await this.storage.setMessage(getChannelChatId(update.channelId), message, null);
-      }
-    } else if (update instanceof types.UpdateDeleteMessages) {
-      for (const message of update.messages) {
-        const chatId = await this.storage.getMessageChat(message);
-        if (chatId) {
-          await this.storage.setMessage(chatId, message, null);
-        }
       }
     }
 
@@ -1517,15 +1507,17 @@ export class Client extends ClientAbstract {
               ),
             );
           }
+          await this.storage.setMessage(chatId, messageId, null);
         }
       }
       if (deletedMessages.length > 0) {
         await this.handler({ deletedMessages: deletedMessages as [Message, ...Message[]] }, resolve);
       }
     } else if (update instanceof types.UpdateDeleteChannelMessages) {
+      const chatId = getChannelChatId(update.channelId);
       const deletedMessages = new Array<Message>();
       for (const messageId of update.messages) {
-        const message = await this.storage.getMessage(ZERO_CHANNEL_ID + -Number(update.channelId), messageId);
+        const message = await this.storage.getMessage(chatId, messageId);
         if (message) {
           deletedMessages.push(
             await constructMessage(
@@ -1536,6 +1528,7 @@ export class Client extends ClientAbstract {
             ),
           );
         }
+        await this.storage.setMessage(chatId, messageId, null);
       }
       if (deletedMessages.length > 0) {
         await this.handler({ deletedMessages: deletedMessages as [Message, ...Message[]] }, resolve);
