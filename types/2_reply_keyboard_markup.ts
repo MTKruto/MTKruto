@@ -20,7 +20,7 @@ export interface ReplyKeyboardMarkup {
 
 export function constructReplyKeyboardMarkup(keyboard_: types.ReplyKeyboardMarkup): ReplyKeyboardMarkup {
   const rows = new Array<KeyboardButton[]>();
-  for (const row_ of keyboard_.rows.map((v) => v[as](types.KeyboardButtonRow))) {
+  for (const row_ of keyboard_.rows) {
     const row = new Array<KeyboardButton>();
     for (const button_ of row_.buttons) {
       row.push(constructKeyboardButton(button_));

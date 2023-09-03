@@ -27,8 +27,7 @@ export function constructPhoto(photo: types.Photo): Photo {
         return v;
       }
     })
-    .filter((v) => v instanceof types.PhotoSize)
-    .map((v) => v[as](types.PhotoSize))
+    .filter((v): v is types.PhotoSize => v instanceof types.PhotoSize)
     .sort((a, b) => a.size - b.size);
 
   const largest = sizes.slice(-1)[0];

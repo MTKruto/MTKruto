@@ -46,7 +46,7 @@ export function constructUser(user_: types.User) {
     firstName: user_.firstName || "",
     lastName: user_.lastName,
     username: user_.username,
-    also: user_.usernames?.map((v) => v[as](types.Username)).map((v) => v.username),
+    also: user_.usernames?.map((v) => v.username),
     languageCode: user_.langCode,
     isScam: user_.scam || false,
     isFake: user_.fake || false,

@@ -104,10 +104,10 @@ export function constructKeyboardButton(button_: types.TypeKeyboardButton): Keyb
         },
       };
       if (button_.peerType.botAdminRights) {
-        button.requestChat.botAdministratorRights = constructChatAdministratorRights(button_.peerType.botAdminRights[as](types.ChatAdminRights));
+        button.requestChat.botAdministratorRights = constructChatAdministratorRights(button_.peerType.botAdminRights);
       }
       if (button_.peerType.userAdminRights) {
-        button.requestChat.userAdministratorRights = constructChatAdministratorRights(button_.peerType.userAdminRights[as](types.ChatAdminRights));
+        button.requestChat.userAdministratorRights = constructChatAdministratorRights(button_.peerType.userAdminRights);
       }
       return button;
     } else if (button_.peerType instanceof types.RequestPeerTypeBroadcast) {
@@ -121,10 +121,10 @@ export function constructKeyboardButton(button_: types.TypeKeyboardButton): Keyb
         },
       };
       if (button_.peerType.botAdminRights) {
-        button.requestChat.botAdministratorRights = constructChatAdministratorRights(button_.peerType.botAdminRights[as](types.ChatAdminRights));
+        button.requestChat.botAdministratorRights = constructChatAdministratorRights(button_.peerType.botAdminRights);
       }
       if (button_.peerType.userAdminRights) {
-        button.requestChat.userAdministratorRights = constructChatAdministratorRights(button_.peerType.userAdminRights[as](types.ChatAdminRights));
+        button.requestChat.userAdministratorRights = constructChatAdministratorRights(button_.peerType.userAdminRights);
       }
       return button;
     } else {

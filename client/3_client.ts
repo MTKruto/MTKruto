@@ -741,7 +741,7 @@ export class Client extends ClientAbstract {
           await this.storage.updateUsernames("channel", chat.id, [chat.username]);
         }
         if (chat.usernames) {
-          await this.storage.updateUsernames("channel", chat.id, chat.usernames.map((v) => v[as](types.Username)).map((v) => v.username));
+          await this.storage.updateUsernames("channel", chat.id, chat.usernames.map((v) => v.username));
         }
       } else if (chat instanceof types.Chat) {
         await this.storage.setEntity(chat);
@@ -758,7 +758,7 @@ export class Client extends ClientAbstract {
           await this.storage.updateUsernames("user", user.id, [user.username]);
         }
         if (user.usernames) {
-          await this.storage.updateUsernames("user", user.id, user.usernames.map((v) => v[as](types.Username)).map((v) => v.username));
+          await this.storage.updateUsernames("user", user.id, user.usernames.map((v) => v.username));
         }
       }
     }
@@ -889,7 +889,7 @@ export class Client extends ClientAbstract {
         }
         await this.recoverChannelUpdateGap(update.channelId, "updateChannelTooLong");
       } else if (update instanceof types.UpdateUserName) {
-        await this.storage.updateUsernames("user", update.userId, update.usernames.map((v) => v[as](types.Username)).map((v) => v.username));
+        await this.storage.updateUsernames("user", update.userId, update.usernames.map((v) => v.username));
       } else if (update instanceof types.UpdatePtsChanged) {
         await this.fetchState("updatePtsChanged");
         if (this.updateState) {
@@ -954,11 +954,11 @@ export class Client extends ClientAbstract {
             await this.processUpdates(update, true);
           }
           if (difference instanceof types.UpdatesDifference) {
-            await this.storage.setState(difference.state[as](types.UpdatesState));
+            await this.storage.setState(difference.state);
             dGap("recovered from update gap");
             break;
           } else if (difference instanceof types.UpdatesDifferenceSlice) {
-            state = difference.intermediateState[as](types.UpdatesState);
+            state = difference.intermediateState;
           } else {
             UNREACHABLE();
           }
@@ -1424,7 +1424,7 @@ export class Client extends ClientAbstract {
       return maybeStickerSetName[0];
     } else {
       const stickerSet = await this.invoke(new functions.MessagesGetStickerSet({ stickerset: inputStickerSet, hash }));
-      const name = stickerSet[as](types.MessagesStickerSet).set[as](types.StickerSet).shortName;
+      const name = stickerSet[as](types.MessagesStickerSet).set.shortName;
       await this.storage.updateStickerSetName(inputStickerSet.id, inputStickerSet.accessHash, name);
       return name;
     }
