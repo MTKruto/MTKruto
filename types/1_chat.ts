@@ -124,7 +124,7 @@ export function constructChat(chat: types.User | types.Chat | types.Channel): Ch
 
     if (chat_.isBot) {
       chat_.isRestricted = chat.restricted || false;
-      chat_.restrictionReason = chat.restrictionReason?.map((v) => v[as](types.RestrictionReason));
+      chat_.restrictionReason = chat.restrictionReason;
     }
 
     if (chat.photo instanceof types.UserProfilePhoto) {
@@ -184,9 +184,9 @@ export function constructChat(chat: types.User | types.Chat | types.Channel): Ch
     }
 
     chat_.username = chat.username;
-    chat_.also = chat.usernames?.map((v) => v[as](types.Username)).map((v) => v.username);
+    chat_.also = chat.usernames?.map((v) => v.username);
     if (chat_.isRestricted) {
-      chat_.restrictionReason = chat.restrictionReason?.map((v) => v[as](types.RestrictionReason));
+      chat_.restrictionReason = chat.restrictionReason;
     }
 
     if (chat.photo instanceof types.ChatPhoto) {

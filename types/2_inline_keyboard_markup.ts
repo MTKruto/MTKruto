@@ -10,7 +10,7 @@ export interface InlineKeyboardMarkup {
 
 export function constructInlineKeyboardMarkup(keyboard_: types.ReplyInlineMarkup): InlineKeyboardMarkup {
   const rows = new Array<InlineKeyboardButton[]>();
-  for (const row_ of keyboard_.rows.map((v) => v[as](types.KeyboardButtonRow))) {
+  for (const row_ of keyboard_.rows) {
     const row = new Array<InlineKeyboardButton>();
     for (const button_ of row_.buttons) {
       row.push(constructInlineKeyboardButton(button_));

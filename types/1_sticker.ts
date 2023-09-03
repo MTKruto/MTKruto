@@ -41,9 +41,9 @@ export interface Sticker {
 export type StickerSetNameGetter = (inputStickerSet: types.InputStickerSetID) => MaybePromise<string>;
 
 export async function constructSticker(document: types.Document, fileId: string, fileUniqueId: string, getStickerSetName: StickerSetNameGetter): Promise<Sticker> {
-  const stickerAttribute = document.attributes.find((v) => v instanceof types.DocumentAttributeSticker) as types.DocumentAttributeSticker;
-  const imageSizeAttribute = document.attributes.find((v) => v instanceof types.DocumentAttributeImageSize) as types.DocumentAttributeImageSize;
-  const videoAttribute = document.attributes.find((v) => v instanceof types.DocumentAttributeVideo) as types.DocumentAttributeVideo;
+  const stickerAttribute = document.attributes.find((v): v is types.DocumentAttributeSticker => v instanceof types.DocumentAttributeSticker)!;
+  const imageSizeAttribute = document.attributes.find((v): v is types.DocumentAttributeImageSize => v instanceof types.DocumentAttributeImageSize)!;
+  const videoAttribute = document.attributes.find((v): v is types.DocumentAttributeVideo => v instanceof types.DocumentAttributeVideo)!;
   const setName = await getStickerSetName(stickerAttribute.stickerset[as](types.InputStickerSetID));
 
   return {
@@ -59,7 +59,7 @@ export async function constructSticker(document: types.Document, fileId: string,
     emoji: stickerAttribute.alt || undefined,
     setName,
     premiumAnimation: undefined, // TODO
-    maskPosition: stickerAttribute.maskCoords ? constructMaskPosition(stickerAttribute.maskCoords[as](types.MaskCoords)) : undefined,
+    maskPosition: stickerAttribute.maskCoords ? constructMaskPosition(stickerAttribute.maskCoords) : undefined,
     customEmojiId: undefined, // TODO
     needsRepainting: undefined, // TODO
     fileSize: Number(document.size),
