@@ -4,11 +4,17 @@ import { MaybePromise } from "../utilities/0_types.ts";
 import { DC, TransportProvider, webSocketTransportProvider } from "../transport/2_transport_provider.ts";
 
 export interface ClientAbstractParams {
+  /**
+   * The first DC to connect to. This is commonly used to decide whether to connect to test or production servers. It is not necessarily the DC that the client will directly connect to or is currently connected to. Defaults to the default initial DC.
+   */
   initialDc?: DC;
   /**
    * The transport provider to use. Defaults to `webSocketTransportProvider` with its default options.
    */
   transportProvider?: TransportProvider;
+  /**
+   * Whether the connection is with a CDN server. Defaults to false.
+   */
   cdn?: boolean;
 }
 

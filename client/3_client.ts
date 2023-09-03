@@ -57,35 +57,35 @@ export interface AuthorizeUserParams<S = string> {
 
 export interface ClientParams extends ClientPlainParams {
   /**
-   * Default parse mode. Defauls to `ParseMode.None`.
+   * A parse mode to use when the `parseMode` parameter is not specified when sending or editing messages. Defauls to `ParseMode.None`.
    */
   parseMode?: ParseMode;
   /**
-   * The app_version parameter to be passed to initConnection when calling `authorize`.
+   * The app_version parameter to be passed to initConnection when calling `authorize`. It is recommended that this parameter is changed if users are authorized. Defaults to "MTKruto" followed by this version of MTKruto.
    */
   appVersion?: string;
   /**
-   * The device_version parameter to be passed to initConnection when calling `authorize`.
+   * The device_version parameter to be passed to initConnection when calling `authorize`. The default varies by the current runtime.
    */
   deviceModel?: string;
   /**
-   * The lang_code parameter to be passed to initConnection when calling `authorize`.
+   * The lang_code parameter to be passed to initConnection when calling `authorize`. Defaults to the runtime's language or `"en"`.
    */
   langCode?: string;
   /**
-   * The lang_pack parameter to be passed to initConnection when calling `authorize`.
+   * The lang_pack parameter to be passed to initConnection when calling `authorize`. Defaults to an empty string.
    */
   langPack?: string;
   /**
-   * The system_lang_cde parameter to be passed to initConnection when calling `authorize`.
+   * The system_lang_cde parameter to be passed to initConnection when calling `authorize`. Defaults to the runtime's language or `"en"`.
    */
   systemLangCode?: string;
   /**
-   * The system_version parameter to be passed to initConnection when calling `authorize`.
+   * The system_version parameter to be passed to initConnection when calling `authorize`. The default varies by the current runtime.
    */
   systemVersion?: string;
   /**
-   * Whether to automatically call `start` with no parameters in the first `invoke` call.
+   * Whether to automatically call `start` with no parameters in the first `invoke` call. Defaults to `true`.
    */
   autoStart?: boolean;
 }

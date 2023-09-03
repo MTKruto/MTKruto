@@ -16,7 +16,7 @@ const d = debug("ClientPlain/createAuthKey");
 
 export interface ClientPlainParams extends ClientAbstractParams {
   /**
-   * MTProto public keys to use in the `[keyId, [key, exponent]][]` format. Don't set this unless you know what you are doing.
+   * MTProto public keys to use in the `[keyId, [key, exponent]][]` format. Don't set this unless you know what you are doing. Defaults to Telegram servers' public keys.
    */
   publicKeys?: PublicKeys;
 }
