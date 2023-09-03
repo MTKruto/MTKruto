@@ -8,1321 +8,1321 @@ export abstract class Type extends TLObject {
 export abstract class TypeX extends Type {
 }
 
-export abstract class TypeResPQ extends Type {
+export abstract class _TypeResPQ extends Type {
 }
 
-export abstract class TypePQInnerData extends Type {
+export abstract class _TypePQInnerData extends Type {
 }
 
-export abstract class TypeServerDHParams extends Type {
+export abstract class _TypeServerDHParams extends Type {
 }
 
-export abstract class TypeServerDHInnerData extends Type {
+export abstract class _TypeServerDHInnerData extends Type {
 }
 
-export abstract class TypeClientDHInnerData extends Type {
+export abstract class _TypeClientDHInnerData extends Type {
 }
 
-export abstract class TypeSetClientDHParamsAnswer extends Type {
+export abstract class _TypeSetClientDHParamsAnswer extends Type {
 }
 
-export abstract class TypeBindAuthKeyInner extends Type {
+export abstract class _TypeBindAuthKeyInner extends Type {
 }
 
-export abstract class TypeRpcError extends Type {
+export abstract class _TypeRpcError extends Type {
 }
 
-export abstract class TypeRpcDropAnswer extends Type {
+export abstract class _TypeRpcDropAnswer extends Type {
 }
 
-export abstract class TypeFutureSalt extends Type {
+export abstract class _TypeFutureSalt extends Type {
 }
 
-export abstract class TypeFutureSalts extends Type {
+export abstract class _TypeFutureSalts extends Type {
 }
 
-export abstract class TypePong extends Type {
+export abstract class _TypePong extends Type {
 }
 
-export abstract class TypeDestroySessionRes extends Type {
+export abstract class _TypeDestroySessionRes extends Type {
 }
 
-export abstract class TypeNewSession extends Type {
+export abstract class _TypeNewSession extends Type {
 }
 
-export abstract class TypeObject extends Type {
+export abstract class _TypeObject extends Type {
 }
 
-export abstract class TypeMsgsAck extends Type {
+export abstract class _TypeMsgsAck extends Type {
 }
 
-export abstract class TypeBadMsgNotification extends Type {
+export abstract class _TypeBadMsgNotification extends Type {
 }
 
-export abstract class TypeMsgResendReq extends Type {
+export abstract class _TypeMsgResendReq extends Type {
 }
 
-export abstract class TypeMsgsStateReq extends Type {
+export abstract class _TypeMsgsStateReq extends Type {
 }
 
-export abstract class TypeMsgsStateInfo extends Type {
+export abstract class _TypeMsgsStateInfo extends Type {
 }
 
-export abstract class TypeMsgsAllInfo extends Type {
+export abstract class _TypeMsgsAllInfo extends Type {
 }
 
-export abstract class TypeMsgDetailedInfo extends Type {
+export abstract class _TypeMsgDetailedInfo extends Type {
 }
 
-export abstract class TypeDestroyAuthKeyRes extends Type {
+export abstract class _TypeDestroyAuthKeyRes extends Type {
 }
 
-export abstract class TypeHttpWait extends Type {
+export abstract class _TypeHttpWait extends Type {
 }
 
-export abstract class TypeTrue extends Type {
+export abstract class _TypeTrue extends Type {
 }
 
-export abstract class TypeError extends Type {
+export abstract class _TypeError extends Type {
 }
 
-export abstract class TypeNull extends Type {
+export abstract class _TypeNull extends Type {
 }
 
-export abstract class TypeInputPeer extends Type {
+export abstract class _TypeInputPeer extends Type {
 }
 
-export abstract class TypeInputUser extends Type {
+export abstract class _TypeInputUser extends Type {
 }
 
-export abstract class TypeInputContact extends Type {
+export abstract class _TypeInputContact extends Type {
 }
 
-export abstract class TypeInputFile extends Type {
+export abstract class _TypeInputFile extends Type {
 }
 
-export abstract class TypeInputMedia extends Type {
+export abstract class _TypeInputMedia extends Type {
 }
 
-export abstract class TypeInputChatPhoto extends Type {
+export abstract class _TypeInputChatPhoto extends Type {
 }
 
-export abstract class TypeInputGeoPoint extends Type {
+export abstract class _TypeInputGeoPoint extends Type {
 }
 
-export abstract class TypeInputPhoto extends Type {
+export abstract class _TypeInputPhoto extends Type {
 }
 
-export abstract class TypeInputFileLocation extends Type {
+export abstract class _TypeInputFileLocation extends Type {
 }
 
-export abstract class TypePeer extends Type {
+export abstract class _TypePeer extends Type {
 }
 
-export abstract class TypeStorageFileType extends Type {
+export abstract class _TypeStorageFileType extends Type {
 }
 
-export abstract class TypeUser extends Type {
+export abstract class _TypeUser extends Type {
 }
 
-export abstract class TypeUserProfilePhoto extends Type {
+export abstract class _TypeUserProfilePhoto extends Type {
 }
 
-export abstract class TypeUserStatus extends Type {
+export abstract class _TypeUserStatus extends Type {
 }
 
-export abstract class TypeChat extends Type {
+export abstract class _TypeChat extends Type {
 }
 
-export abstract class TypeChatFull extends Type {
+export abstract class _TypeChatFull extends Type {
 }
 
-export abstract class TypeChatParticipant extends Type {
+export abstract class _TypeChatParticipant extends Type {
 }
 
-export abstract class TypeChatParticipants extends Type {
+export abstract class _TypeChatParticipants extends Type {
 }
 
-export abstract class TypeChatPhoto extends Type {
+export abstract class _TypeChatPhoto extends Type {
 }
 
-export abstract class TypeMessage extends Type {
+export abstract class _TypeMessage extends Type {
 }
 
-export abstract class TypeMessageMedia extends Type {
+export abstract class _TypeMessageMedia extends Type {
 }
 
-export abstract class TypeMessageAction extends Type {
+export abstract class _TypeMessageAction extends Type {
 }
 
-export abstract class TypeDialog extends Type {
+export abstract class _TypeDialog extends Type {
 }
 
-export abstract class TypePhoto extends Type {
+export abstract class _TypePhoto extends Type {
 }
 
-export abstract class TypePhotoSize extends Type {
+export abstract class _TypePhotoSize extends Type {
 }
 
-export abstract class TypeGeoPoint extends Type {
+export abstract class _TypeGeoPoint extends Type {
 }
 
-export abstract class TypeAuthSentCode extends Type {
+export abstract class _TypeAuthSentCode extends Type {
 }
 
-export abstract class TypeAuthAuthorization extends Type {
+export abstract class _TypeAuthAuthorization extends Type {
 }
 
-export abstract class TypeAuthExportedAuthorization extends Type {
+export abstract class _TypeAuthExportedAuthorization extends Type {
 }
 
-export abstract class TypeInputNotifyPeer extends Type {
+export abstract class _TypeInputNotifyPeer extends Type {
 }
 
-export abstract class TypeInputPeerNotifySettings extends Type {
+export abstract class _TypeInputPeerNotifySettings extends Type {
 }
 
-export abstract class TypePeerNotifySettings extends Type {
+export abstract class _TypePeerNotifySettings extends Type {
 }
 
-export abstract class TypePeerSettings extends Type {
+export abstract class _TypePeerSettings extends Type {
 }
 
-export abstract class TypeWallPaper extends Type {
+export abstract class _TypeWallPaper extends Type {
 }
 
-export abstract class TypeReportReason extends Type {
+export abstract class _TypeReportReason extends Type {
 }
 
-export abstract class TypeUserFull extends Type {
+export abstract class _TypeUserFull extends Type {
 }
 
-export abstract class TypeContact extends Type {
+export abstract class _TypeContact extends Type {
 }
 
-export abstract class TypeImportedContact extends Type {
+export abstract class _TypeImportedContact extends Type {
 }
 
-export abstract class TypeContactStatus extends Type {
+export abstract class _TypeContactStatus extends Type {
 }
 
-export abstract class TypeContactsContacts extends Type {
+export abstract class _TypeContactsContacts extends Type {
 }
 
-export abstract class TypeContactsImportedContacts extends Type {
+export abstract class _TypeContactsImportedContacts extends Type {
 }
 
-export abstract class TypeContactsBlocked extends Type {
+export abstract class _TypeContactsBlocked extends Type {
 }
 
-export abstract class TypeMessagesDialogs extends Type {
+export abstract class _TypeMessagesDialogs extends Type {
 }
 
-export abstract class TypeMessagesMessages extends Type {
+export abstract class _TypeMessagesMessages extends Type {
 }
 
-export abstract class TypeMessagesChats extends Type {
+export abstract class _TypeMessagesChats extends Type {
 }
 
-export abstract class TypeMessagesChatFull extends Type {
+export abstract class _TypeMessagesChatFull extends Type {
 }
 
-export abstract class TypeMessagesAffectedHistory extends Type {
+export abstract class _TypeMessagesAffectedHistory extends Type {
 }
 
-export abstract class TypeMessagesFilter extends Type {
+export abstract class _TypeMessagesFilter extends Type {
 }
 
-export abstract class TypeUpdate extends Type {
+export abstract class _TypeUpdate extends Type {
 }
 
-export abstract class TypeUpdatesState extends Type {
+export abstract class _TypeUpdatesState extends Type {
 }
 
-export abstract class TypeUpdatesDifference extends Type {
+export abstract class _TypeUpdatesDifference extends Type {
 }
 
-export abstract class TypeUpdates extends Type {
+export abstract class _TypeUpdates extends Type {
 }
 
-export abstract class TypePhotosPhotos extends Type {
+export abstract class _TypePhotosPhotos extends Type {
 }
 
-export abstract class TypePhotosPhoto extends Type {
+export abstract class _TypePhotosPhoto extends Type {
 }
 
-export abstract class TypeUploadFile extends Type {
+export abstract class _TypeUploadFile extends Type {
 }
 
-export abstract class TypeDcOption extends Type {
+export abstract class _TypeDcOption extends Type {
 }
 
-export abstract class TypeConfig extends Type {
+export abstract class _TypeConfig extends Type {
 }
 
-export abstract class TypeNearestDc extends Type {
+export abstract class _TypeNearestDc extends Type {
 }
 
-export abstract class TypeHelpAppUpdate extends Type {
+export abstract class _TypeHelpAppUpdate extends Type {
 }
 
-export abstract class TypeHelpInviteText extends Type {
+export abstract class _TypeHelpInviteText extends Type {
 }
 
-export abstract class TypeEncryptedChat extends Type {
+export abstract class _TypeEncryptedChat extends Type {
 }
 
-export abstract class TypeInputEncryptedChat extends Type {
+export abstract class _TypeInputEncryptedChat extends Type {
 }
 
-export abstract class TypeEncryptedFile extends Type {
+export abstract class _TypeEncryptedFile extends Type {
 }
 
-export abstract class TypeInputEncryptedFile extends Type {
+export abstract class _TypeInputEncryptedFile extends Type {
 }
 
-export abstract class TypeEncryptedMessage extends Type {
+export abstract class _TypeEncryptedMessage extends Type {
 }
 
-export abstract class TypeMessagesDhConfig extends Type {
+export abstract class _TypeMessagesDhConfig extends Type {
 }
 
-export abstract class TypeMessagesSentEncryptedMessage extends Type {
+export abstract class _TypeMessagesSentEncryptedMessage extends Type {
 }
 
-export abstract class TypeInputDocument extends Type {
+export abstract class _TypeInputDocument extends Type {
 }
 
-export abstract class TypeDocument extends Type {
+export abstract class _TypeDocument extends Type {
 }
 
-export abstract class TypeHelpSupport extends Type {
+export abstract class _TypeHelpSupport extends Type {
 }
 
-export abstract class TypeNotifyPeer extends Type {
+export abstract class _TypeNotifyPeer extends Type {
 }
 
-export abstract class TypeSendMessageAction extends Type {
+export abstract class _TypeSendMessageAction extends Type {
 }
 
-export abstract class TypeContactsFound extends Type {
+export abstract class _TypeContactsFound extends Type {
 }
 
-export abstract class TypeInputPrivacyKey extends Type {
+export abstract class _TypeInputPrivacyKey extends Type {
 }
 
-export abstract class TypePrivacyKey extends Type {
+export abstract class _TypePrivacyKey extends Type {
 }
 
-export abstract class TypeInputPrivacyRule extends Type {
+export abstract class _TypeInputPrivacyRule extends Type {
 }
 
-export abstract class TypePrivacyRule extends Type {
+export abstract class _TypePrivacyRule extends Type {
 }
 
-export abstract class TypeAccountPrivacyRules extends Type {
+export abstract class _TypeAccountPrivacyRules extends Type {
 }
 
-export abstract class TypeAccountDaysTTL extends Type {
+export abstract class _TypeAccountDaysTTL extends Type {
 }
 
-export abstract class TypeDocumentAttribute extends Type {
+export abstract class _TypeDocumentAttribute extends Type {
 }
 
-export abstract class TypeMessagesStickers extends Type {
+export abstract class _TypeMessagesStickers extends Type {
 }
 
-export abstract class TypeStickerPack extends Type {
+export abstract class _TypeStickerPack extends Type {
 }
 
-export abstract class TypeMessagesAllStickers extends Type {
+export abstract class _TypeMessagesAllStickers extends Type {
 }
 
-export abstract class TypeMessagesAffectedMessages extends Type {
+export abstract class _TypeMessagesAffectedMessages extends Type {
 }
 
-export abstract class TypeWebPage extends Type {
+export abstract class _TypeWebPage extends Type {
 }
 
-export abstract class TypeAuthorization extends Type {
+export abstract class _TypeAuthorization extends Type {
 }
 
-export abstract class TypeAccountAuthorizations extends Type {
+export abstract class _TypeAccountAuthorizations extends Type {
 }
 
-export abstract class TypeAccountPassword extends Type {
+export abstract class _TypeAccountPassword extends Type {
 }
 
-export abstract class TypeAccountPasswordSettings extends Type {
+export abstract class _TypeAccountPasswordSettings extends Type {
 }
 
-export abstract class TypeAccountPasswordInputSettings extends Type {
+export abstract class _TypeAccountPasswordInputSettings extends Type {
 }
 
-export abstract class TypeAuthPasswordRecovery extends Type {
+export abstract class _TypeAuthPasswordRecovery extends Type {
 }
 
-export abstract class TypeReceivedNotifyMessage extends Type {
+export abstract class _TypeReceivedNotifyMessage extends Type {
 }
 
-export abstract class TypeExportedChatInvite extends Type {
+export abstract class _TypeExportedChatInvite extends Type {
 }
 
-export abstract class TypeChatInvite extends Type {
+export abstract class _TypeChatInvite extends Type {
 }
 
-export abstract class TypeInputStickerSet extends Type {
+export abstract class _TypeInputStickerSet extends Type {
 }
 
-export abstract class TypeStickerSet extends Type {
+export abstract class _TypeStickerSet extends Type {
 }
 
-export abstract class TypeMessagesStickerSet extends Type {
+export abstract class _TypeMessagesStickerSet extends Type {
 }
 
-export abstract class TypeBotCommand extends Type {
+export abstract class _TypeBotCommand extends Type {
 }
 
-export abstract class TypeBotInfo extends Type {
+export abstract class _TypeBotInfo extends Type {
 }
 
-export abstract class TypeKeyboardButton extends Type {
+export abstract class _TypeKeyboardButton extends Type {
 }
 
-export abstract class TypeKeyboardButtonRow extends Type {
+export abstract class _TypeKeyboardButtonRow extends Type {
 }
 
-export abstract class TypeReplyMarkup extends Type {
+export abstract class _TypeReplyMarkup extends Type {
 }
 
-export abstract class TypeMessageEntity extends Type {
+export abstract class _TypeMessageEntity extends Type {
 }
 
-export abstract class TypeInputChannel extends Type {
+export abstract class _TypeInputChannel extends Type {
 }
 
-export abstract class TypeContactsResolvedPeer extends Type {
+export abstract class _TypeContactsResolvedPeer extends Type {
 }
 
-export abstract class TypeMessageRange extends Type {
+export abstract class _TypeMessageRange extends Type {
 }
 
-export abstract class TypeUpdatesChannelDifference extends Type {
+export abstract class _TypeUpdatesChannelDifference extends Type {
 }
 
-export abstract class TypeChannelMessagesFilter extends Type {
+export abstract class _TypeChannelMessagesFilter extends Type {
 }
 
-export abstract class TypeChannelParticipant extends Type {
+export abstract class _TypeChannelParticipant extends Type {
 }
 
-export abstract class TypeChannelParticipantsFilter extends Type {
+export abstract class _TypeChannelParticipantsFilter extends Type {
 }
 
-export abstract class TypeChannelsChannelParticipants extends Type {
+export abstract class _TypeChannelsChannelParticipants extends Type {
 }
 
-export abstract class TypeChannelsChannelParticipant extends Type {
+export abstract class _TypeChannelsChannelParticipant extends Type {
 }
 
-export abstract class TypeHelpTermsOfService extends Type {
+export abstract class _TypeHelpTermsOfService extends Type {
 }
 
-export abstract class TypeMessagesSavedGifs extends Type {
+export abstract class _TypeMessagesSavedGifs extends Type {
 }
 
-export abstract class TypeInputBotInlineMessage extends Type {
+export abstract class _TypeInputBotInlineMessage extends Type {
 }
 
-export abstract class TypeInputBotInlineResult extends Type {
+export abstract class _TypeInputBotInlineResult extends Type {
 }
 
-export abstract class TypeBotInlineMessage extends Type {
+export abstract class _TypeBotInlineMessage extends Type {
 }
 
-export abstract class TypeBotInlineResult extends Type {
+export abstract class _TypeBotInlineResult extends Type {
 }
 
-export abstract class TypeMessagesBotResults extends Type {
+export abstract class _TypeMessagesBotResults extends Type {
 }
 
-export abstract class TypeExportedMessageLink extends Type {
+export abstract class _TypeExportedMessageLink extends Type {
 }
 
-export abstract class TypeMessageFwdHeader extends Type {
+export abstract class _TypeMessageFwdHeader extends Type {
 }
 
-export abstract class TypeAuthCodeType extends Type {
+export abstract class _TypeAuthCodeType extends Type {
 }
 
-export abstract class TypeAuthSentCodeType extends Type {
+export abstract class _TypeAuthSentCodeType extends Type {
 }
 
-export abstract class TypeMessagesBotCallbackAnswer extends Type {
+export abstract class _TypeMessagesBotCallbackAnswer extends Type {
 }
 
-export abstract class TypeMessagesMessageEditData extends Type {
+export abstract class _TypeMessagesMessageEditData extends Type {
 }
 
-export abstract class TypeInputBotInlineMessageID extends Type {
+export abstract class _TypeInputBotInlineMessageID extends Type {
 }
 
-export abstract class TypeInlineBotSwitchPM extends Type {
+export abstract class _TypeInlineBotSwitchPM extends Type {
 }
 
-export abstract class TypeMessagesPeerDialogs extends Type {
+export abstract class _TypeMessagesPeerDialogs extends Type {
 }
 
-export abstract class TypeTopPeer extends Type {
+export abstract class _TypeTopPeer extends Type {
 }
 
-export abstract class TypeTopPeerCategory extends Type {
+export abstract class _TypeTopPeerCategory extends Type {
 }
 
-export abstract class TypeTopPeerCategoryPeers extends Type {
+export abstract class _TypeTopPeerCategoryPeers extends Type {
 }
 
-export abstract class TypeContactsTopPeers extends Type {
+export abstract class _TypeContactsTopPeers extends Type {
 }
 
-export abstract class TypeDraftMessage extends Type {
+export abstract class _TypeDraftMessage extends Type {
 }
 
-export abstract class TypeMessagesFeaturedStickers extends Type {
+export abstract class _TypeMessagesFeaturedStickers extends Type {
 }
 
-export abstract class TypeMessagesRecentStickers extends Type {
+export abstract class _TypeMessagesRecentStickers extends Type {
 }
 
-export abstract class TypeMessagesArchivedStickers extends Type {
+export abstract class _TypeMessagesArchivedStickers extends Type {
 }
 
-export abstract class TypeMessagesStickerSetInstallResult extends Type {
+export abstract class _TypeMessagesStickerSetInstallResult extends Type {
 }
 
-export abstract class TypeStickerSetCovered extends Type {
+export abstract class _TypeStickerSetCovered extends Type {
 }
 
-export abstract class TypeMaskCoords extends Type {
+export abstract class _TypeMaskCoords extends Type {
 }
 
-export abstract class TypeInputStickeredMedia extends Type {
+export abstract class _TypeInputStickeredMedia extends Type {
 }
 
-export abstract class TypeGame extends Type {
+export abstract class _TypeGame extends Type {
 }
 
-export abstract class TypeInputGame extends Type {
+export abstract class _TypeInputGame extends Type {
 }
 
-export abstract class TypeHighScore extends Type {
+export abstract class _TypeHighScore extends Type {
 }
 
-export abstract class TypeMessagesHighScores extends Type {
+export abstract class _TypeMessagesHighScores extends Type {
 }
 
-export abstract class TypeRichText extends Type {
+export abstract class _TypeRichText extends Type {
 }
 
-export abstract class TypePageBlock extends Type {
+export abstract class _TypePageBlock extends Type {
 }
 
-export abstract class TypePhoneCallDiscardReason extends Type {
+export abstract class _TypePhoneCallDiscardReason extends Type {
 }
 
-export abstract class TypeDataJSON extends Type {
+export abstract class _TypeDataJSON extends Type {
 }
 
-export abstract class TypeLabeledPrice extends Type {
+export abstract class _TypeLabeledPrice extends Type {
 }
 
-export abstract class TypeInvoice extends Type {
+export abstract class _TypeInvoice extends Type {
 }
 
-export abstract class TypePaymentCharge extends Type {
+export abstract class _TypePaymentCharge extends Type {
 }
 
-export abstract class TypePostAddress extends Type {
+export abstract class _TypePostAddress extends Type {
 }
 
-export abstract class TypePaymentRequestedInfo extends Type {
+export abstract class _TypePaymentRequestedInfo extends Type {
 }
 
-export abstract class TypePaymentSavedCredentials extends Type {
+export abstract class _TypePaymentSavedCredentials extends Type {
 }
 
-export abstract class TypeWebDocument extends Type {
+export abstract class _TypeWebDocument extends Type {
 }
 
-export abstract class TypeInputWebDocument extends Type {
+export abstract class _TypeInputWebDocument extends Type {
 }
 
-export abstract class TypeInputWebFileLocation extends Type {
+export abstract class _TypeInputWebFileLocation extends Type {
 }
 
-export abstract class TypeUploadWebFile extends Type {
+export abstract class _TypeUploadWebFile extends Type {
 }
 
-export abstract class TypePaymentsPaymentForm extends Type {
+export abstract class _TypePaymentsPaymentForm extends Type {
 }
 
-export abstract class TypePaymentsValidatedRequestedInfo extends Type {
+export abstract class _TypePaymentsValidatedRequestedInfo extends Type {
 }
 
-export abstract class TypePaymentsPaymentResult extends Type {
+export abstract class _TypePaymentsPaymentResult extends Type {
 }
 
-export abstract class TypePaymentsPaymentReceipt extends Type {
+export abstract class _TypePaymentsPaymentReceipt extends Type {
 }
 
-export abstract class TypePaymentsSavedInfo extends Type {
+export abstract class _TypePaymentsSavedInfo extends Type {
 }
 
-export abstract class TypeInputPaymentCredentials extends Type {
+export abstract class _TypeInputPaymentCredentials extends Type {
 }
 
-export abstract class TypeAccountTmpPassword extends Type {
+export abstract class _TypeAccountTmpPassword extends Type {
 }
 
-export abstract class TypeShippingOption extends Type {
+export abstract class _TypeShippingOption extends Type {
 }
 
-export abstract class TypeInputStickerSetItem extends Type {
+export abstract class _TypeInputStickerSetItem extends Type {
 }
 
-export abstract class TypeInputPhoneCall extends Type {
+export abstract class _TypeInputPhoneCall extends Type {
 }
 
-export abstract class TypePhoneCall extends Type {
+export abstract class _TypePhoneCall extends Type {
 }
 
-export abstract class TypePhoneConnection extends Type {
+export abstract class _TypePhoneConnection extends Type {
 }
 
-export abstract class TypePhoneCallProtocol extends Type {
+export abstract class _TypePhoneCallProtocol extends Type {
 }
 
-export abstract class TypePhonePhoneCall extends Type {
+export abstract class _TypePhonePhoneCall extends Type {
 }
 
-export abstract class TypeUploadCdnFile extends Type {
+export abstract class _TypeUploadCdnFile extends Type {
 }
 
-export abstract class TypeCdnPublicKey extends Type {
+export abstract class _TypeCdnPublicKey extends Type {
 }
 
-export abstract class TypeCdnConfig extends Type {
+export abstract class _TypeCdnConfig extends Type {
 }
 
-export abstract class TypeLangPackString extends Type {
+export abstract class _TypeLangPackString extends Type {
 }
 
-export abstract class TypeLangPackDifference extends Type {
+export abstract class _TypeLangPackDifference extends Type {
 }
 
-export abstract class TypeLangPackLanguage extends Type {
+export abstract class _TypeLangPackLanguage extends Type {
 }
 
-export abstract class TypeChannelAdminLogEventAction extends Type {
+export abstract class _TypeChannelAdminLogEventAction extends Type {
 }
 
-export abstract class TypeChannelAdminLogEvent extends Type {
+export abstract class _TypeChannelAdminLogEvent extends Type {
 }
 
-export abstract class TypeChannelsAdminLogResults extends Type {
+export abstract class _TypeChannelsAdminLogResults extends Type {
 }
 
-export abstract class TypeChannelAdminLogEventsFilter extends Type {
+export abstract class _TypeChannelAdminLogEventsFilter extends Type {
 }
 
-export abstract class TypePopularContact extends Type {
+export abstract class _TypePopularContact extends Type {
 }
 
-export abstract class TypeMessagesFavedStickers extends Type {
+export abstract class _TypeMessagesFavedStickers extends Type {
 }
 
-export abstract class TypeRecentMeURL extends Type {
+export abstract class _TypeRecentMeURL extends Type {
 }
 
-export abstract class TypeHelpRecentMeURLs extends Type {
+export abstract class _TypeHelpRecentMeURLs extends Type {
 }
 
-export abstract class TypeInputSingleMedia extends Type {
+export abstract class _TypeInputSingleMedia extends Type {
 }
 
-export abstract class TypeWebAuthorization extends Type {
+export abstract class _TypeWebAuthorization extends Type {
 }
 
-export abstract class TypeAccountWebAuthorizations extends Type {
+export abstract class _TypeAccountWebAuthorizations extends Type {
 }
 
-export abstract class TypeInputMessage extends Type {
+export abstract class _TypeInputMessage extends Type {
 }
 
-export abstract class TypeInputDialogPeer extends Type {
+export abstract class _TypeInputDialogPeer extends Type {
 }
 
-export abstract class TypeDialogPeer extends Type {
+export abstract class _TypeDialogPeer extends Type {
 }
 
-export abstract class TypeMessagesFoundStickerSets extends Type {
+export abstract class _TypeMessagesFoundStickerSets extends Type {
 }
 
-export abstract class TypeFileHash extends Type {
+export abstract class _TypeFileHash extends Type {
 }
 
-export abstract class TypeInputClientProxy extends Type {
+export abstract class _TypeInputClientProxy extends Type {
 }
 
-export abstract class TypeHelpTermsOfServiceUpdate extends Type {
+export abstract class _TypeHelpTermsOfServiceUpdate extends Type {
 }
 
-export abstract class TypeInputSecureFile extends Type {
+export abstract class _TypeInputSecureFile extends Type {
 }
 
-export abstract class TypeSecureFile extends Type {
+export abstract class _TypeSecureFile extends Type {
 }
 
-export abstract class TypeSecureData extends Type {
+export abstract class _TypeSecureData extends Type {
 }
 
-export abstract class TypeSecurePlainData extends Type {
+export abstract class _TypeSecurePlainData extends Type {
 }
 
-export abstract class TypeSecureValueType extends Type {
+export abstract class _TypeSecureValueType extends Type {
 }
 
-export abstract class TypeSecureValue extends Type {
+export abstract class _TypeSecureValue extends Type {
 }
 
-export abstract class TypeInputSecureValue extends Type {
+export abstract class _TypeInputSecureValue extends Type {
 }
 
-export abstract class TypeSecureValueHash extends Type {
+export abstract class _TypeSecureValueHash extends Type {
 }
 
-export abstract class TypeSecureValueError extends Type {
+export abstract class _TypeSecureValueError extends Type {
 }
 
-export abstract class TypeSecureCredentialsEncrypted extends Type {
+export abstract class _TypeSecureCredentialsEncrypted extends Type {
 }
 
-export abstract class TypeAccountAuthorizationForm extends Type {
+export abstract class _TypeAccountAuthorizationForm extends Type {
 }
 
-export abstract class TypeAccountSentEmailCode extends Type {
+export abstract class _TypeAccountSentEmailCode extends Type {
 }
 
-export abstract class TypeHelpDeepLinkInfo extends Type {
+export abstract class _TypeHelpDeepLinkInfo extends Type {
 }
 
-export abstract class TypeSavedContact extends Type {
+export abstract class _TypeSavedContact extends Type {
 }
 
-export abstract class TypeAccountTakeout extends Type {
+export abstract class _TypeAccountTakeout extends Type {
 }
 
-export abstract class TypePasswordKdfAlgo extends Type {
+export abstract class _TypePasswordKdfAlgo extends Type {
 }
 
-export abstract class TypeSecurePasswordKdfAlgo extends Type {
+export abstract class _TypeSecurePasswordKdfAlgo extends Type {
 }
 
-export abstract class TypeSecureSecretSettings extends Type {
+export abstract class _TypeSecureSecretSettings extends Type {
 }
 
-export abstract class TypeInputCheckPasswordSRP extends Type {
+export abstract class _TypeInputCheckPasswordSRP extends Type {
 }
 
-export abstract class TypeSecureRequiredType extends Type {
+export abstract class _TypeSecureRequiredType extends Type {
 }
 
-export abstract class TypeHelpPassportConfig extends Type {
+export abstract class _TypeHelpPassportConfig extends Type {
 }
 
-export abstract class TypeInputAppEvent extends Type {
+export abstract class _TypeInputAppEvent extends Type {
 }
 
-export abstract class TypeJSONObjectValue extends Type {
+export abstract class _TypeJSONObjectValue extends Type {
 }
 
-export abstract class TypeJSONValue extends Type {
+export abstract class _TypeJSONValue extends Type {
 }
 
-export abstract class TypePageTableCell extends Type {
+export abstract class _TypePageTableCell extends Type {
 }
 
-export abstract class TypePageTableRow extends Type {
+export abstract class _TypePageTableRow extends Type {
 }
 
-export abstract class TypePageCaption extends Type {
+export abstract class _TypePageCaption extends Type {
 }
 
-export abstract class TypePageListItem extends Type {
+export abstract class _TypePageListItem extends Type {
 }
 
-export abstract class TypePageListOrderedItem extends Type {
+export abstract class _TypePageListOrderedItem extends Type {
 }
 
-export abstract class TypePageRelatedArticle extends Type {
+export abstract class _TypePageRelatedArticle extends Type {
 }
 
-export abstract class TypePage extends Type {
+export abstract class _TypePage extends Type {
 }
 
-export abstract class TypeHelpSupportName extends Type {
+export abstract class _TypeHelpSupportName extends Type {
 }
 
-export abstract class TypeHelpUserInfo extends Type {
+export abstract class _TypeHelpUserInfo extends Type {
 }
 
-export abstract class TypePollAnswer extends Type {
+export abstract class _TypePollAnswer extends Type {
 }
 
-export abstract class TypePoll extends Type {
+export abstract class _TypePoll extends Type {
 }
 
-export abstract class TypePollAnswerVoters extends Type {
+export abstract class _TypePollAnswerVoters extends Type {
 }
 
-export abstract class TypePollResults extends Type {
+export abstract class _TypePollResults extends Type {
 }
 
-export abstract class TypeChatOnlines extends Type {
+export abstract class _TypeChatOnlines extends Type {
 }
 
-export abstract class TypeStatsURL extends Type {
+export abstract class _TypeStatsURL extends Type {
 }
 
-export abstract class TypeChatAdminRights extends Type {
+export abstract class _TypeChatAdminRights extends Type {
 }
 
-export abstract class TypeChatBannedRights extends Type {
+export abstract class _TypeChatBannedRights extends Type {
 }
 
-export abstract class TypeInputWallPaper extends Type {
+export abstract class _TypeInputWallPaper extends Type {
 }
 
-export abstract class TypeAccountWallPapers extends Type {
+export abstract class _TypeAccountWallPapers extends Type {
 }
 
-export abstract class TypeCodeSettings extends Type {
+export abstract class _TypeCodeSettings extends Type {
 }
 
-export abstract class TypeWallPaperSettings extends Type {
+export abstract class _TypeWallPaperSettings extends Type {
 }
 
-export abstract class TypeAutoDownloadSettings extends Type {
+export abstract class _TypeAutoDownloadSettings extends Type {
 }
 
-export abstract class TypeAccountAutoDownloadSettings extends Type {
+export abstract class _TypeAccountAutoDownloadSettings extends Type {
 }
 
-export abstract class TypeEmojiKeyword extends Type {
+export abstract class _TypeEmojiKeyword extends Type {
 }
 
-export abstract class TypeEmojiKeywordsDifference extends Type {
+export abstract class _TypeEmojiKeywordsDifference extends Type {
 }
 
-export abstract class TypeEmojiURL extends Type {
+export abstract class _TypeEmojiURL extends Type {
 }
 
-export abstract class TypeEmojiLanguage extends Type {
+export abstract class _TypeEmojiLanguage extends Type {
 }
 
-export abstract class TypeFolder extends Type {
+export abstract class _TypeFolder extends Type {
 }
 
-export abstract class TypeInputFolderPeer extends Type {
+export abstract class _TypeInputFolderPeer extends Type {
 }
 
-export abstract class TypeFolderPeer extends Type {
+export abstract class _TypeFolderPeer extends Type {
 }
 
-export abstract class TypeMessagesSearchCounter extends Type {
+export abstract class _TypeMessagesSearchCounter extends Type {
 }
 
-export abstract class TypeURLAuthResult extends Type {
+export abstract class _TypeURLAuthResult extends Type {
 }
 
-export abstract class TypeChannelLocation extends Type {
+export abstract class _TypeChannelLocation extends Type {
 }
 
-export abstract class TypePeerLocated extends Type {
+export abstract class _TypePeerLocated extends Type {
 }
 
-export abstract class TypeRestrictionReason extends Type {
+export abstract class _TypeRestrictionReason extends Type {
 }
 
-export abstract class TypeInputTheme extends Type {
+export abstract class _TypeInputTheme extends Type {
 }
 
-export abstract class TypeTheme extends Type {
+export abstract class _TypeTheme extends Type {
 }
 
-export abstract class TypeAccountThemes extends Type {
+export abstract class _TypeAccountThemes extends Type {
 }
 
-export abstract class TypeAuthLoginToken extends Type {
+export abstract class _TypeAuthLoginToken extends Type {
 }
 
-export abstract class TypeAccountContentSettings extends Type {
+export abstract class _TypeAccountContentSettings extends Type {
 }
 
-export abstract class TypeMessagesInactiveChats extends Type {
+export abstract class _TypeMessagesInactiveChats extends Type {
 }
 
-export abstract class TypeBaseTheme extends Type {
+export abstract class _TypeBaseTheme extends Type {
 }
 
-export abstract class TypeInputThemeSettings extends Type {
+export abstract class _TypeInputThemeSettings extends Type {
 }
 
-export abstract class TypeThemeSettings extends Type {
+export abstract class _TypeThemeSettings extends Type {
 }
 
-export abstract class TypeWebPageAttribute extends Type {
+export abstract class _TypeWebPageAttribute extends Type {
 }
 
-export abstract class TypeMessagesVotesList extends Type {
+export abstract class _TypeMessagesVotesList extends Type {
 }
 
-export abstract class TypeBankCardOpenURL extends Type {
+export abstract class _TypeBankCardOpenURL extends Type {
 }
 
-export abstract class TypePaymentsBankCardData extends Type {
+export abstract class _TypePaymentsBankCardData extends Type {
 }
 
-export abstract class TypeDialogFilter extends Type {
+export abstract class _TypeDialogFilter extends Type {
 }
 
-export abstract class TypeDialogFilterSuggested extends Type {
+export abstract class _TypeDialogFilterSuggested extends Type {
 }
 
-export abstract class TypeStatsDateRangeDays extends Type {
+export abstract class _TypeStatsDateRangeDays extends Type {
 }
 
-export abstract class TypeStatsAbsValueAndPrev extends Type {
+export abstract class _TypeStatsAbsValueAndPrev extends Type {
 }
 
-export abstract class TypeStatsPercentValue extends Type {
+export abstract class _TypeStatsPercentValue extends Type {
 }
 
-export abstract class TypeStatsGraph extends Type {
+export abstract class _TypeStatsGraph extends Type {
 }
 
-export abstract class TypeMessageInteractionCounters extends Type {
+export abstract class _TypeMessageInteractionCounters extends Type {
 }
 
-export abstract class TypeStatsBroadcastStats extends Type {
+export abstract class _TypeStatsBroadcastStats extends Type {
 }
 
-export abstract class TypeHelpPromoData extends Type {
+export abstract class _TypeHelpPromoData extends Type {
 }
 
-export abstract class TypeVideoSize extends Type {
+export abstract class _TypeVideoSize extends Type {
 }
 
-export abstract class TypeStatsGroupTopPoster extends Type {
+export abstract class _TypeStatsGroupTopPoster extends Type {
 }
 
-export abstract class TypeStatsGroupTopAdmin extends Type {
+export abstract class _TypeStatsGroupTopAdmin extends Type {
 }
 
-export abstract class TypeStatsGroupTopInviter extends Type {
+export abstract class _TypeStatsGroupTopInviter extends Type {
 }
 
-export abstract class TypeStatsMegagroupStats extends Type {
+export abstract class _TypeStatsMegagroupStats extends Type {
 }
 
-export abstract class TypeGlobalPrivacySettings extends Type {
+export abstract class _TypeGlobalPrivacySettings extends Type {
 }
 
-export abstract class TypeHelpCountryCode extends Type {
+export abstract class _TypeHelpCountryCode extends Type {
 }
 
-export abstract class TypeHelpCountry extends Type {
+export abstract class _TypeHelpCountry extends Type {
 }
 
-export abstract class TypeHelpCountriesList extends Type {
+export abstract class _TypeHelpCountriesList extends Type {
 }
 
-export abstract class TypeMessageViews extends Type {
+export abstract class _TypeMessageViews extends Type {
 }
 
-export abstract class TypeMessagesMessageViews extends Type {
+export abstract class _TypeMessagesMessageViews extends Type {
 }
 
-export abstract class TypeMessagesDiscussionMessage extends Type {
+export abstract class _TypeMessagesDiscussionMessage extends Type {
 }
 
-export abstract class TypeMessageReplyHeader extends Type {
+export abstract class _TypeMessageReplyHeader extends Type {
 }
 
-export abstract class TypeMessageReplies extends Type {
+export abstract class _TypeMessageReplies extends Type {
 }
 
-export abstract class TypePeerBlocked extends Type {
+export abstract class _TypePeerBlocked extends Type {
 }
 
-export abstract class TypeStatsMessageStats extends Type {
+export abstract class _TypeStatsMessageStats extends Type {
 }
 
-export abstract class TypeGroupCall extends Type {
+export abstract class _TypeGroupCall extends Type {
 }
 
-export abstract class TypeInputGroupCall extends Type {
+export abstract class _TypeInputGroupCall extends Type {
 }
 
-export abstract class TypeGroupCallParticipant extends Type {
+export abstract class _TypeGroupCallParticipant extends Type {
 }
 
-export abstract class TypePhoneGroupCall extends Type {
+export abstract class _TypePhoneGroupCall extends Type {
 }
 
-export abstract class TypePhoneGroupParticipants extends Type {
+export abstract class _TypePhoneGroupParticipants extends Type {
 }
 
-export abstract class TypeInlineQueryPeerType extends Type {
+export abstract class _TypeInlineQueryPeerType extends Type {
 }
 
-export abstract class TypeMessagesHistoryImport extends Type {
+export abstract class _TypeMessagesHistoryImport extends Type {
 }
 
-export abstract class TypeMessagesHistoryImportParsed extends Type {
+export abstract class _TypeMessagesHistoryImportParsed extends Type {
 }
 
-export abstract class TypeMessagesAffectedFoundMessages extends Type {
+export abstract class _TypeMessagesAffectedFoundMessages extends Type {
 }
 
-export abstract class TypeChatInviteImporter extends Type {
+export abstract class _TypeChatInviteImporter extends Type {
 }
 
-export abstract class TypeMessagesExportedChatInvites extends Type {
+export abstract class _TypeMessagesExportedChatInvites extends Type {
 }
 
-export abstract class TypeMessagesExportedChatInvite extends Type {
+export abstract class _TypeMessagesExportedChatInvite extends Type {
 }
 
-export abstract class TypeMessagesChatInviteImporters extends Type {
+export abstract class _TypeMessagesChatInviteImporters extends Type {
 }
 
-export abstract class TypeChatAdminWithInvites extends Type {
+export abstract class _TypeChatAdminWithInvites extends Type {
 }
 
-export abstract class TypeMessagesChatAdminsWithInvites extends Type {
+export abstract class _TypeMessagesChatAdminsWithInvites extends Type {
 }
 
-export abstract class TypeMessagesCheckedHistoryImportPeer extends Type {
+export abstract class _TypeMessagesCheckedHistoryImportPeer extends Type {
 }
 
-export abstract class TypePhoneJoinAsPeers extends Type {
+export abstract class _TypePhoneJoinAsPeers extends Type {
 }
 
-export abstract class TypePhoneExportedGroupCallInvite extends Type {
+export abstract class _TypePhoneExportedGroupCallInvite extends Type {
 }
 
-export abstract class TypeGroupCallParticipantVideoSourceGroup extends Type {
+export abstract class _TypeGroupCallParticipantVideoSourceGroup extends Type {
 }
 
-export abstract class TypeGroupCallParticipantVideo extends Type {
+export abstract class _TypeGroupCallParticipantVideo extends Type {
 }
 
-export abstract class TypeStickersSuggestedShortName extends Type {
+export abstract class _TypeStickersSuggestedShortName extends Type {
 }
 
-export abstract class TypeBotCommandScope extends Type {
+export abstract class _TypeBotCommandScope extends Type {
 }
 
-export abstract class TypeAccountResetPasswordResult extends Type {
+export abstract class _TypeAccountResetPasswordResult extends Type {
 }
 
-export abstract class TypeSponsoredMessage extends Type {
+export abstract class _TypeSponsoredMessage extends Type {
 }
 
-export abstract class TypeMessagesSponsoredMessages extends Type {
+export abstract class _TypeMessagesSponsoredMessages extends Type {
 }
 
-export abstract class TypeSearchResultsCalendarPeriod extends Type {
+export abstract class _TypeSearchResultsCalendarPeriod extends Type {
 }
 
-export abstract class TypeMessagesSearchResultsCalendar extends Type {
+export abstract class _TypeMessagesSearchResultsCalendar extends Type {
 }
 
-export abstract class TypeSearchResultsPosition extends Type {
+export abstract class _TypeSearchResultsPosition extends Type {
 }
 
-export abstract class TypeMessagesSearchResultsPositions extends Type {
+export abstract class _TypeMessagesSearchResultsPositions extends Type {
 }
 
-export abstract class TypeChannelsSendAsPeers extends Type {
+export abstract class _TypeChannelsSendAsPeers extends Type {
 }
 
-export abstract class TypeUsersUserFull extends Type {
+export abstract class _TypeUsersUserFull extends Type {
 }
 
-export abstract class TypeMessagesPeerSettings extends Type {
+export abstract class _TypeMessagesPeerSettings extends Type {
 }
 
-export abstract class TypeAuthLoggedOut extends Type {
+export abstract class _TypeAuthLoggedOut extends Type {
 }
 
-export abstract class TypeReactionCount extends Type {
+export abstract class _TypeReactionCount extends Type {
 }
 
-export abstract class TypeMessageReactions extends Type {
+export abstract class _TypeMessageReactions extends Type {
 }
 
-export abstract class TypeMessagesMessageReactionsList extends Type {
+export abstract class _TypeMessagesMessageReactionsList extends Type {
 }
 
-export abstract class TypeAvailableReaction extends Type {
+export abstract class _TypeAvailableReaction extends Type {
 }
 
-export abstract class TypeMessagesAvailableReactions extends Type {
+export abstract class _TypeMessagesAvailableReactions extends Type {
 }
 
-export abstract class TypeMessagePeerReaction extends Type {
+export abstract class _TypeMessagePeerReaction extends Type {
 }
 
-export abstract class TypeGroupCallStreamChannel extends Type {
+export abstract class _TypeGroupCallStreamChannel extends Type {
 }
 
-export abstract class TypePhoneGroupCallStreamChannels extends Type {
+export abstract class _TypePhoneGroupCallStreamChannels extends Type {
 }
 
-export abstract class TypePhoneGroupCallStreamRtmpURL extends Type {
+export abstract class _TypePhoneGroupCallStreamRtmpURL extends Type {
 }
 
-export abstract class TypeAttachMenuBotIconColor extends Type {
+export abstract class _TypeAttachMenuBotIconColor extends Type {
 }
 
-export abstract class TypeAttachMenuBotIcon extends Type {
+export abstract class _TypeAttachMenuBotIcon extends Type {
 }
 
-export abstract class TypeAttachMenuBot extends Type {
+export abstract class _TypeAttachMenuBot extends Type {
 }
 
-export abstract class TypeAttachMenuBots extends Type {
+export abstract class _TypeAttachMenuBots extends Type {
 }
 
-export abstract class TypeAttachMenuBotsBot extends Type {
+export abstract class _TypeAttachMenuBotsBot extends Type {
 }
 
-export abstract class TypeWebViewResult extends Type {
+export abstract class _TypeWebViewResult extends Type {
 }
 
-export abstract class TypeSimpleWebViewResult extends Type {
+export abstract class _TypeSimpleWebViewResult extends Type {
 }
 
-export abstract class TypeWebViewMessageSent extends Type {
+export abstract class _TypeWebViewMessageSent extends Type {
 }
 
-export abstract class TypeBotMenuButton extends Type {
+export abstract class _TypeBotMenuButton extends Type {
 }
 
-export abstract class TypeAccountSavedRingtones extends Type {
+export abstract class _TypeAccountSavedRingtones extends Type {
 }
 
-export abstract class TypeNotificationSound extends Type {
+export abstract class _TypeNotificationSound extends Type {
 }
 
-export abstract class TypeAccountSavedRingtone extends Type {
+export abstract class _TypeAccountSavedRingtone extends Type {
 }
 
-export abstract class TypeAttachMenuPeerType extends Type {
+export abstract class _TypeAttachMenuPeerType extends Type {
 }
 
-export abstract class TypeInputInvoice extends Type {
+export abstract class _TypeInputInvoice extends Type {
 }
 
-export abstract class TypePaymentsExportedInvoice extends Type {
+export abstract class _TypePaymentsExportedInvoice extends Type {
 }
 
-export abstract class TypeMessagesTranscribedAudio extends Type {
+export abstract class _TypeMessagesTranscribedAudio extends Type {
 }
 
-export abstract class TypeHelpPremiumPromo extends Type {
+export abstract class _TypeHelpPremiumPromo extends Type {
 }
 
-export abstract class TypeInputStorePaymentPurpose extends Type {
+export abstract class _TypeInputStorePaymentPurpose extends Type {
 }
 
-export abstract class TypePremiumGiftOption extends Type {
+export abstract class _TypePremiumGiftOption extends Type {
 }
 
-export abstract class TypePaymentFormMethod extends Type {
+export abstract class _TypePaymentFormMethod extends Type {
 }
 
-export abstract class TypeEmojiStatus extends Type {
+export abstract class _TypeEmojiStatus extends Type {
 }
 
-export abstract class TypeAccountEmojiStatuses extends Type {
+export abstract class _TypeAccountEmojiStatuses extends Type {
 }
 
-export abstract class TypeReaction extends Type {
+export abstract class _TypeReaction extends Type {
 }
 
-export abstract class TypeChatReactions extends Type {
+export abstract class _TypeChatReactions extends Type {
 }
 
-export abstract class TypeMessagesReactions extends Type {
+export abstract class _TypeMessagesReactions extends Type {
 }
 
-export abstract class TypeEmailVerifyPurpose extends Type {
+export abstract class _TypeEmailVerifyPurpose extends Type {
 }
 
-export abstract class TypeEmailVerification extends Type {
+export abstract class _TypeEmailVerification extends Type {
 }
 
-export abstract class TypeAccountEmailVerified extends Type {
+export abstract class _TypeAccountEmailVerified extends Type {
 }
 
-export abstract class TypePremiumSubscriptionOption extends Type {
+export abstract class _TypePremiumSubscriptionOption extends Type {
 }
 
-export abstract class TypeSendAsPeer extends Type {
+export abstract class _TypeSendAsPeer extends Type {
 }
 
-export abstract class TypeMessageExtendedMedia extends Type {
+export abstract class _TypeMessageExtendedMedia extends Type {
 }
 
-export abstract class TypeStickerKeyword extends Type {
+export abstract class _TypeStickerKeyword extends Type {
 }
 
-export abstract class TypeUsername extends Type {
+export abstract class _TypeUsername extends Type {
 }
 
-export abstract class TypeForumTopic extends Type {
+export abstract class _TypeForumTopic extends Type {
 }
 
-export abstract class TypeMessagesForumTopics extends Type {
+export abstract class _TypeMessagesForumTopics extends Type {
 }
 
-export abstract class TypeDefaultHistoryTTL extends Type {
+export abstract class _TypeDefaultHistoryTTL extends Type {
 }
 
-export abstract class TypeExportedContactToken extends Type {
+export abstract class _TypeExportedContactToken extends Type {
 }
 
-export abstract class TypeRequestPeerType extends Type {
+export abstract class _TypeRequestPeerType extends Type {
 }
 
-export abstract class TypeEmojiList extends Type {
+export abstract class _TypeEmojiList extends Type {
 }
 
-export abstract class TypeEmojiGroup extends Type {
+export abstract class _TypeEmojiGroup extends Type {
 }
 
-export abstract class TypeMessagesEmojiGroups extends Type {
+export abstract class _TypeMessagesEmojiGroups extends Type {
 }
 
-export abstract class TypeTextWithEntities extends Type {
+export abstract class _TypeTextWithEntities extends Type {
 }
 
-export abstract class TypeMessagesTranslatedText extends Type {
+export abstract class _TypeMessagesTranslatedText extends Type {
 }
 
-export abstract class TypeAutoSaveSettings extends Type {
+export abstract class _TypeAutoSaveSettings extends Type {
 }
 
-export abstract class TypeAutoSaveException extends Type {
+export abstract class _TypeAutoSaveException extends Type {
 }
 
-export abstract class TypeAccountAutoSaveSettings extends Type {
+export abstract class _TypeAccountAutoSaveSettings extends Type {
 }
 
-export abstract class TypeHelpAppConfig extends Type {
+export abstract class _TypeHelpAppConfig extends Type {
 }
 
-export abstract class TypeInputBotApp extends Type {
+export abstract class _TypeInputBotApp extends Type {
 }
 
-export abstract class TypeBotApp extends Type {
+export abstract class _TypeBotApp extends Type {
 }
 
-export abstract class TypeMessagesBotApp extends Type {
+export abstract class _TypeMessagesBotApp extends Type {
 }
 
-export abstract class TypeAppWebViewResult extends Type {
+export abstract class _TypeAppWebViewResult extends Type {
 }
 
-export abstract class TypeInlineBotWebView extends Type {
+export abstract class _TypeInlineBotWebView extends Type {
 }
 
-export abstract class TypeReadParticipantDate extends Type {
+export abstract class _TypeReadParticipantDate extends Type {
 }
 
-export abstract class TypeInputChatlist extends Type {
+export abstract class _TypeInputChatlist extends Type {
 }
 
-export abstract class TypeExportedChatlistInvite extends Type {
+export abstract class _TypeExportedChatlistInvite extends Type {
 }
 
-export abstract class TypeChatlistsExportedChatlistInvite extends Type {
+export abstract class _TypeChatlistsExportedChatlistInvite extends Type {
 }
 
-export abstract class TypeChatlistsExportedInvites extends Type {
+export abstract class _TypeChatlistsExportedInvites extends Type {
 }
 
-export abstract class TypeChatlistsChatlistInvite extends Type {
+export abstract class _TypeChatlistsChatlistInvite extends Type {
 }
 
-export abstract class TypeChatlistsChatlistUpdates extends Type {
+export abstract class _TypeChatlistsChatlistUpdates extends Type {
 }
 
-export abstract class TypeBotsBotInfo extends Type {
+export abstract class _TypeBotsBotInfo extends Type {
 }
 
-export abstract class TypeMessagePeerVote extends Type {
+export abstract class _TypeMessagePeerVote extends Type {
 }
 
-export abstract class TypeSponsoredWebPage extends Type {
+export abstract class _TypeSponsoredWebPage extends Type {
 }
 
-export abstract class TypeStoryViews extends Type {
+export abstract class _TypeStoryViews extends Type {
 }
 
-export abstract class TypeStoryItem extends Type {
+export abstract class _TypeStoryItem extends Type {
 }
 
-export abstract class TypeUserStories extends Type {
+export abstract class _TypeUserStories extends Type {
 }
 
-export abstract class TypeStoriesAllStories extends Type {
+export abstract class _TypeStoriesAllStories extends Type {
 }
 
-export abstract class TypeStoriesStories extends Type {
+export abstract class _TypeStoriesStories extends Type {
 }
 
-export abstract class TypeStoriesUserStories extends Type {
+export abstract class _TypeStoriesUserStories extends Type {
 }
 
-export abstract class TypeStoryView extends Type {
+export abstract class _TypeStoryView extends Type {
 }
 
-export abstract class TypeStoriesStoryViewsList extends Type {
+export abstract class _TypeStoriesStoryViewsList extends Type {
 }
 
-export abstract class TypeStoriesStoryViews extends Type {
+export abstract class _TypeStoriesStoryViews extends Type {
 }
 
-export abstract class TypeInputReplyTo extends Type {
+export abstract class _TypeInputReplyTo extends Type {
 }
 
-export abstract class TypeExportedStoryLink extends Type {
+export abstract class _TypeExportedStoryLink extends Type {
 }
 
-export abstract class TypeStoriesStealthMode extends Type {
+export abstract class _TypeStoriesStealthMode extends Type {
 }
 
-export abstract class TypeMediaAreaCoordinates extends Type {
+export abstract class _TypeMediaAreaCoordinates extends Type {
 }
 
-export abstract class TypeMediaArea extends Type {
+export abstract class _TypeMediaArea extends Type {
 }
 
-export class ResPQ extends TypeResPQ {
+export class ResPQ extends _TypeResPQ {
   nonce: bigint;
   serverNonce: bigint;
   pq: Uint8Array;
@@ -1359,7 +1359,7 @@ export class ResPQ extends TypeResPQ {
   }
 }
 
-export class PQInnerDataDC extends TypePQInnerData {
+export class PQInnerDataDC extends _TypePQInnerData {
   pq: Uint8Array;
   p: Uint8Array;
   q: Uint8Array;
@@ -1408,7 +1408,7 @@ export class PQInnerDataDC extends TypePQInnerData {
   }
 }
 
-export class PQInnerDataTempDC extends TypePQInnerData {
+export class PQInnerDataTempDC extends _TypePQInnerData {
   pq: Uint8Array;
   p: Uint8Array;
   q: Uint8Array;
@@ -1461,7 +1461,7 @@ export class PQInnerDataTempDC extends TypePQInnerData {
   }
 }
 
-export class ServerDHParamsOK extends TypeServerDHParams {
+export class ServerDHParamsOK extends _TypeServerDHParams {
   nonce: bigint;
   serverNonce: bigint;
   encryptedAnswer: Uint8Array;
@@ -1494,7 +1494,7 @@ export class ServerDHParamsOK extends TypeServerDHParams {
   }
 }
 
-export class ServerDHInnerData extends TypeServerDHInnerData {
+export class ServerDHInnerData extends _TypeServerDHInnerData {
   nonce: bigint;
   serverNonce: bigint;
   g: number;
@@ -1539,7 +1539,7 @@ export class ServerDHInnerData extends TypeServerDHInnerData {
   }
 }
 
-export class ClientDHInnerData extends TypeClientDHInnerData {
+export class ClientDHInnerData extends _TypeClientDHInnerData {
   nonce: bigint;
   serverNonce: bigint;
   retryId: bigint;
@@ -1576,7 +1576,7 @@ export class ClientDHInnerData extends TypeClientDHInnerData {
   }
 }
 
-export class DHGenOK extends TypeSetClientDHParamsAnswer {
+export class DHGenOK extends _TypeSetClientDHParamsAnswer {
   nonce: bigint;
   serverNonce: bigint;
   newNonceHash1: bigint;
@@ -1609,7 +1609,7 @@ export class DHGenOK extends TypeSetClientDHParamsAnswer {
   }
 }
 
-export class DHGenRetry extends TypeSetClientDHParamsAnswer {
+export class DHGenRetry extends _TypeSetClientDHParamsAnswer {
   nonce: bigint;
   serverNonce: bigint;
   newNonceHash2: bigint;
@@ -1642,7 +1642,7 @@ export class DHGenRetry extends TypeSetClientDHParamsAnswer {
   }
 }
 
-export class DHGenFail extends TypeSetClientDHParamsAnswer {
+export class DHGenFail extends _TypeSetClientDHParamsAnswer {
   nonce: bigint;
   serverNonce: bigint;
   newNonceHash3: bigint;
@@ -1675,7 +1675,7 @@ export class DHGenFail extends TypeSetClientDHParamsAnswer {
   }
 }
 
-export class BindAuthKeyInner extends TypeBindAuthKeyInner {
+export class BindAuthKeyInner extends _TypeBindAuthKeyInner {
   nonce: bigint;
   tempAuthKeyId: bigint;
   permAuthKeyId: bigint;
@@ -1716,7 +1716,7 @@ export class BindAuthKeyInner extends TypeBindAuthKeyInner {
   }
 }
 
-export class RPCError extends TypeRpcError {
+export class RPCError extends _TypeRpcError {
   errorCode: number;
   errorMessage: string;
 
@@ -1745,7 +1745,7 @@ export class RPCError extends TypeRpcError {
   }
 }
 
-export class RPCAnswerUnknown extends TypeRpcDropAnswer {
+export class RPCAnswerUnknown extends _TypeRpcDropAnswer {
   protected get [id]() {
     return 0x5E2AD36E;
   }
@@ -1763,7 +1763,7 @@ export class RPCAnswerUnknown extends TypeRpcDropAnswer {
   }
 }
 
-export class RPCAnswerDroppedRunning extends TypeRpcDropAnswer {
+export class RPCAnswerDroppedRunning extends _TypeRpcDropAnswer {
   protected get [id]() {
     return 0xCD78E586;
   }
@@ -1781,7 +1781,7 @@ export class RPCAnswerDroppedRunning extends TypeRpcDropAnswer {
   }
 }
 
-export class RPCAnswerDropped extends TypeRpcDropAnswer {
+export class RPCAnswerDropped extends _TypeRpcDropAnswer {
   msgId: bigint;
   seqNo: number;
   bytes: number;
@@ -1814,7 +1814,7 @@ export class RPCAnswerDropped extends TypeRpcDropAnswer {
   }
 }
 
-export class FutureSalt extends TypeFutureSalt {
+export class FutureSalt extends _TypeFutureSalt {
   validSince: number;
   validUntil: number;
   salt: bigint;
@@ -1847,7 +1847,7 @@ export class FutureSalt extends TypeFutureSalt {
   }
 }
 
-export class FutureSalts extends TypeFutureSalts {
+export class FutureSalts extends _TypeFutureSalts {
   reqMsgId: bigint;
   now: number;
   salts: Array<TypeFutureSalt>;
@@ -1860,7 +1860,7 @@ export class FutureSalts extends TypeFutureSalts {
     return [
       ["reqMsgId", "bigint", "long"],
       ["now", "number", "int"],
-      ["salts", [TypeFutureSalt], "vector<future_salt>"],
+      ["salts", [_TypeFutureSalt], "vector<future_salt>"],
     ];
   }
 
@@ -1868,7 +1868,7 @@ export class FutureSalts extends TypeFutureSalts {
     return [
       [this.reqMsgId, "bigint", "long"],
       [this.now, "number", "int"],
-      [this.salts, [TypeFutureSalt], "vector<future_salt>"],
+      [this.salts, [_TypeFutureSalt], "vector<future_salt>"],
     ];
   }
 
@@ -1880,7 +1880,7 @@ export class FutureSalts extends TypeFutureSalts {
   }
 }
 
-export class Pong extends TypePong {
+export class Pong extends _TypePong {
   msgId: bigint;
   pingId: bigint;
 
@@ -1909,7 +1909,7 @@ export class Pong extends TypePong {
   }
 }
 
-export class DestroySessionOK extends TypeDestroySessionRes {
+export class DestroySessionOK extends _TypeDestroySessionRes {
   sessionId: bigint;
 
   protected get [id]() {
@@ -1934,7 +1934,7 @@ export class DestroySessionOK extends TypeDestroySessionRes {
   }
 }
 
-export class DestroySessionNone extends TypeDestroySessionRes {
+export class DestroySessionNone extends _TypeDestroySessionRes {
   sessionId: bigint;
 
   protected get [id]() {
@@ -1959,7 +1959,7 @@ export class DestroySessionNone extends TypeDestroySessionRes {
   }
 }
 
-export class NewSessionCreated extends TypeNewSession {
+export class NewSessionCreated extends _TypeNewSession {
   firstMsgId: bigint;
   uniqueId: bigint;
   serverSalt: bigint;
@@ -1992,7 +1992,7 @@ export class NewSessionCreated extends TypeNewSession {
   }
 }
 
-export class GZIPPacked extends TypeObject {
+export class GZIPPacked extends _TypeObject {
   packedData: Uint8Array;
 
   protected get [id]() {
@@ -2017,7 +2017,7 @@ export class GZIPPacked extends TypeObject {
   }
 }
 
-export class MsgsAck extends TypeMsgsAck {
+export class MsgsAck extends _TypeMsgsAck {
   msgIds: Array<bigint>;
 
   protected get [id]() {
@@ -2042,7 +2042,7 @@ export class MsgsAck extends TypeMsgsAck {
   }
 }
 
-export class BadMsgNotification extends TypeBadMsgNotification {
+export class BadMsgNotification extends _TypeBadMsgNotification {
   badMsgId: bigint;
   badMsgSeqno: number;
   errorCode: number;
@@ -2075,7 +2075,7 @@ export class BadMsgNotification extends TypeBadMsgNotification {
   }
 }
 
-export class BadServerSalt extends TypeBadMsgNotification {
+export class BadServerSalt extends _TypeBadMsgNotification {
   badMsgId: bigint;
   badMsgSeqno: number;
   errorCode: number;
@@ -2112,7 +2112,7 @@ export class BadServerSalt extends TypeBadMsgNotification {
   }
 }
 
-export class MsgResendReq extends TypeMsgResendReq {
+export class MsgResendReq extends _TypeMsgResendReq {
   msgIds: Array<bigint>;
 
   protected get [id]() {
@@ -2137,7 +2137,7 @@ export class MsgResendReq extends TypeMsgResendReq {
   }
 }
 
-export class MsgsStateReq extends TypeMsgsStateReq {
+export class MsgsStateReq extends _TypeMsgsStateReq {
   msgIds: Array<bigint>;
 
   protected get [id]() {
@@ -2162,7 +2162,7 @@ export class MsgsStateReq extends TypeMsgsStateReq {
   }
 }
 
-export class MsgsStateInfo extends TypeMsgsStateInfo {
+export class MsgsStateInfo extends _TypeMsgsStateInfo {
   reqMsgId: bigint;
   info: Uint8Array;
 
@@ -2191,7 +2191,7 @@ export class MsgsStateInfo extends TypeMsgsStateInfo {
   }
 }
 
-export class MsgsAllInfo extends TypeMsgsAllInfo {
+export class MsgsAllInfo extends _TypeMsgsAllInfo {
   msgIds: Array<bigint>;
   info: Uint8Array;
 
@@ -2220,7 +2220,7 @@ export class MsgsAllInfo extends TypeMsgsAllInfo {
   }
 }
 
-export class MsgDetailedInfo extends TypeMsgDetailedInfo {
+export class MsgDetailedInfo extends _TypeMsgDetailedInfo {
   msgId: bigint;
   answerMsgId: bigint;
   bytes: number;
@@ -2257,7 +2257,7 @@ export class MsgDetailedInfo extends TypeMsgDetailedInfo {
   }
 }
 
-export class MsgNewDetailedInfo extends TypeMsgDetailedInfo {
+export class MsgNewDetailedInfo extends _TypeMsgDetailedInfo {
   answerMsgId: bigint;
   bytes: number;
   status: number;
@@ -2290,7 +2290,7 @@ export class MsgNewDetailedInfo extends TypeMsgDetailedInfo {
   }
 }
 
-export class DestroyAuthKeyOK extends TypeDestroyAuthKeyRes {
+export class DestroyAuthKeyOK extends _TypeDestroyAuthKeyRes {
   protected get [id]() {
     return 0xF660E1D4;
   }
@@ -2308,7 +2308,7 @@ export class DestroyAuthKeyOK extends TypeDestroyAuthKeyRes {
   }
 }
 
-export class DestroyAuthKeyNone extends TypeDestroyAuthKeyRes {
+export class DestroyAuthKeyNone extends _TypeDestroyAuthKeyRes {
   protected get [id]() {
     return 0x0A9F2259;
   }
@@ -2326,7 +2326,7 @@ export class DestroyAuthKeyNone extends TypeDestroyAuthKeyRes {
   }
 }
 
-export class DestroyAuthKeyFail extends TypeDestroyAuthKeyRes {
+export class DestroyAuthKeyFail extends _TypeDestroyAuthKeyRes {
   protected get [id]() {
     return 0xEA109B13;
   }
@@ -2344,7 +2344,7 @@ export class DestroyAuthKeyFail extends TypeDestroyAuthKeyRes {
   }
 }
 
-export class HTTPWait extends TypeHttpWait {
+export class HTTPWait extends _TypeHttpWait {
   maxDelay: number;
   waitAfter: number;
   maxWait: number;
@@ -2377,7 +2377,7 @@ export class HTTPWait extends TypeHttpWait {
   }
 }
 
-export class True extends TypeTrue {
+export class True extends _TypeTrue {
   protected get [id]() {
     return 0x3FEDD339;
   }
@@ -2395,7 +2395,7 @@ export class True extends TypeTrue {
   }
 }
 
-export class Error extends TypeError {
+export class Error extends _TypeError {
   code: number;
   text: string;
 
@@ -2424,7 +2424,7 @@ export class Error extends TypeError {
   }
 }
 
-export class Null extends TypeNull {
+export class Null extends _TypeNull {
   protected get [id]() {
     return 0x56730BCC;
   }
@@ -2442,7 +2442,7 @@ export class Null extends TypeNull {
   }
 }
 
-export class InputPeerEmpty extends TypeInputPeer {
+export class InputPeerEmpty extends _TypeInputPeer {
   protected get [id]() {
     return 0x7F3B18EA;
   }
@@ -2460,7 +2460,7 @@ export class InputPeerEmpty extends TypeInputPeer {
   }
 }
 
-export class InputPeerSelf extends TypeInputPeer {
+export class InputPeerSelf extends _TypeInputPeer {
   protected get [id]() {
     return 0x7DA07EC9;
   }
@@ -2478,7 +2478,7 @@ export class InputPeerSelf extends TypeInputPeer {
   }
 }
 
-export class InputPeerChat extends TypeInputPeer {
+export class InputPeerChat extends _TypeInputPeer {
   chatId: bigint;
 
   protected get [id]() {
@@ -2503,7 +2503,7 @@ export class InputPeerChat extends TypeInputPeer {
   }
 }
 
-export class InputPeerUser extends TypeInputPeer {
+export class InputPeerUser extends _TypeInputPeer {
   userId: bigint;
   accessHash: bigint;
 
@@ -2532,7 +2532,7 @@ export class InputPeerUser extends TypeInputPeer {
   }
 }
 
-export class InputPeerChannel extends TypeInputPeer {
+export class InputPeerChannel extends _TypeInputPeer {
   channelId: bigint;
   accessHash: bigint;
 
@@ -2561,7 +2561,7 @@ export class InputPeerChannel extends TypeInputPeer {
   }
 }
 
-export class InputPeerUserFromMessage extends TypeInputPeer {
+export class InputPeerUserFromMessage extends _TypeInputPeer {
   peer: TypeInputPeer;
   msgId: number;
   userId: bigint;
@@ -2572,7 +2572,7 @@ export class InputPeerUserFromMessage extends TypeInputPeer {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["peer", TypeInputPeer, "InputPeer"],
+      ["peer", _TypeInputPeer, "InputPeer"],
       ["msgId", "number", "int"],
       ["userId", "bigint", "long"],
     ];
@@ -2580,7 +2580,7 @@ export class InputPeerUserFromMessage extends TypeInputPeer {
 
   protected get [params](): Params {
     return [
-      [this.peer, TypeInputPeer, "InputPeer"],
+      [this.peer, _TypeInputPeer, "InputPeer"],
       [this.msgId, "number", "int"],
       [this.userId, "bigint", "long"],
     ];
@@ -2594,7 +2594,7 @@ export class InputPeerUserFromMessage extends TypeInputPeer {
   }
 }
 
-export class InputPeerChannelFromMessage extends TypeInputPeer {
+export class InputPeerChannelFromMessage extends _TypeInputPeer {
   peer: TypeInputPeer;
   msgId: number;
   channelId: bigint;
@@ -2605,7 +2605,7 @@ export class InputPeerChannelFromMessage extends TypeInputPeer {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["peer", TypeInputPeer, "InputPeer"],
+      ["peer", _TypeInputPeer, "InputPeer"],
       ["msgId", "number", "int"],
       ["channelId", "bigint", "long"],
     ];
@@ -2613,7 +2613,7 @@ export class InputPeerChannelFromMessage extends TypeInputPeer {
 
   protected get [params](): Params {
     return [
-      [this.peer, TypeInputPeer, "InputPeer"],
+      [this.peer, _TypeInputPeer, "InputPeer"],
       [this.msgId, "number", "int"],
       [this.channelId, "bigint", "long"],
     ];
@@ -2627,7 +2627,7 @@ export class InputPeerChannelFromMessage extends TypeInputPeer {
   }
 }
 
-export class InputUserEmpty extends TypeInputUser {
+export class InputUserEmpty extends _TypeInputUser {
   protected get [id]() {
     return 0xB98886CF;
   }
@@ -2645,7 +2645,7 @@ export class InputUserEmpty extends TypeInputUser {
   }
 }
 
-export class InputUserSelf extends TypeInputUser {
+export class InputUserSelf extends _TypeInputUser {
   protected get [id]() {
     return 0xF7C1B13F;
   }
@@ -2663,7 +2663,7 @@ export class InputUserSelf extends TypeInputUser {
   }
 }
 
-export class InputUser extends TypeInputUser {
+export class InputUser extends _TypeInputUser {
   userId: bigint;
   accessHash: bigint;
 
@@ -2692,7 +2692,7 @@ export class InputUser extends TypeInputUser {
   }
 }
 
-export class InputUserFromMessage extends TypeInputUser {
+export class InputUserFromMessage extends _TypeInputUser {
   peer: TypeInputPeer;
   msgId: number;
   userId: bigint;
@@ -2703,7 +2703,7 @@ export class InputUserFromMessage extends TypeInputUser {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["peer", TypeInputPeer, "InputPeer"],
+      ["peer", _TypeInputPeer, "InputPeer"],
       ["msgId", "number", "int"],
       ["userId", "bigint", "long"],
     ];
@@ -2711,7 +2711,7 @@ export class InputUserFromMessage extends TypeInputUser {
 
   protected get [params](): Params {
     return [
-      [this.peer, TypeInputPeer, "InputPeer"],
+      [this.peer, _TypeInputPeer, "InputPeer"],
       [this.msgId, "number", "int"],
       [this.userId, "bigint", "long"],
     ];
@@ -2725,7 +2725,7 @@ export class InputUserFromMessage extends TypeInputUser {
   }
 }
 
-export class InputPhoneContact extends TypeInputContact {
+export class InputPhoneContact extends _TypeInputContact {
   clientId: bigint;
   phone: string;
   firstName: string;
@@ -2762,7 +2762,7 @@ export class InputPhoneContact extends TypeInputContact {
   }
 }
 
-export class InputFile extends TypeInputFile {
+export class InputFile extends _TypeInputFile {
   id: bigint;
   parts: number;
   name: string;
@@ -2799,7 +2799,7 @@ export class InputFile extends TypeInputFile {
   }
 }
 
-export class InputFileBig extends TypeInputFile {
+export class InputFileBig extends _TypeInputFile {
   id: bigint;
   parts: number;
   name: string;
@@ -2832,7 +2832,7 @@ export class InputFileBig extends TypeInputFile {
   }
 }
 
-export class InputMediaEmpty extends TypeInputMedia {
+export class InputMediaEmpty extends _TypeInputMedia {
   protected get [id]() {
     return 0x9664F57F;
   }
@@ -2850,7 +2850,7 @@ export class InputMediaEmpty extends TypeInputMedia {
   }
 }
 
-export class InputMediaUploadedPhoto extends TypeInputMedia {
+export class InputMediaUploadedPhoto extends _TypeInputMedia {
   spoiler?: true;
   file: TypeInputFile;
   stickers?: Array<TypeInputDocument>;
@@ -2864,8 +2864,8 @@ export class InputMediaUploadedPhoto extends TypeInputMedia {
     return [
       ["flags", flags, "#"],
       ["spoiler", "true", "flags.2?true"],
-      ["file", TypeInputFile, "InputFile"],
-      ["stickers", [TypeInputDocument], "flags.0?Vector<InputDocument>"],
+      ["file", _TypeInputFile, "InputFile"],
+      ["stickers", [_TypeInputDocument], "flags.0?Vector<InputDocument>"],
       ["ttlSeconds", "number", "flags.1?int"],
     ];
   }
@@ -2874,8 +2874,8 @@ export class InputMediaUploadedPhoto extends TypeInputMedia {
     return [
       ["flags", flags, "#"],
       [this.spoiler ?? null, "true", "flags.2?true"],
-      [this.file, TypeInputFile, "InputFile"],
-      [this.stickers ?? null, [TypeInputDocument], "flags.0?Vector<InputDocument>"],
+      [this.file, _TypeInputFile, "InputFile"],
+      [this.stickers ?? null, [_TypeInputDocument], "flags.0?Vector<InputDocument>"],
       [this.ttlSeconds ?? null, "number", "flags.1?int"],
     ];
   }
@@ -2889,7 +2889,7 @@ export class InputMediaUploadedPhoto extends TypeInputMedia {
   }
 }
 
-export class InputMediaPhoto extends TypeInputMedia {
+export class InputMediaPhoto extends _TypeInputMedia {
   spoiler?: true;
   id: TypeInputPhoto;
   ttlSeconds?: number;
@@ -2902,7 +2902,7 @@ export class InputMediaPhoto extends TypeInputMedia {
     return [
       ["flags", flags, "#"],
       ["spoiler", "true", "flags.1?true"],
-      ["id", TypeInputPhoto, "InputPhoto"],
+      ["id", _TypeInputPhoto, "InputPhoto"],
       ["ttlSeconds", "number", "flags.0?int"],
     ];
   }
@@ -2911,7 +2911,7 @@ export class InputMediaPhoto extends TypeInputMedia {
     return [
       ["flags", flags, "#"],
       [this.spoiler ?? null, "true", "flags.1?true"],
-      [this.id, TypeInputPhoto, "InputPhoto"],
+      [this.id, _TypeInputPhoto, "InputPhoto"],
       [this.ttlSeconds ?? null, "number", "flags.0?int"],
     ];
   }
@@ -2924,7 +2924,7 @@ export class InputMediaPhoto extends TypeInputMedia {
   }
 }
 
-export class InputMediaGeoPoint extends TypeInputMedia {
+export class InputMediaGeoPoint extends _TypeInputMedia {
   geoPoint: TypeInputGeoPoint;
 
   protected get [id]() {
@@ -2933,13 +2933,13 @@ export class InputMediaGeoPoint extends TypeInputMedia {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["geoPoint", TypeInputGeoPoint, "InputGeoPoint"],
+      ["geoPoint", _TypeInputGeoPoint, "InputGeoPoint"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.geoPoint, TypeInputGeoPoint, "InputGeoPoint"],
+      [this.geoPoint, _TypeInputGeoPoint, "InputGeoPoint"],
     ];
   }
 
@@ -2949,7 +2949,7 @@ export class InputMediaGeoPoint extends TypeInputMedia {
   }
 }
 
-export class InputMediaContact extends TypeInputMedia {
+export class InputMediaContact extends _TypeInputMedia {
   phoneNumber: string;
   firstName: string;
   lastName: string;
@@ -2986,7 +2986,7 @@ export class InputMediaContact extends TypeInputMedia {
   }
 }
 
-export class InputMediaUploadedDocument extends TypeInputMedia {
+export class InputMediaUploadedDocument extends _TypeInputMedia {
   nosoundVideo?: true;
   forceFile?: true;
   spoiler?: true;
@@ -3007,11 +3007,11 @@ export class InputMediaUploadedDocument extends TypeInputMedia {
       ["nosoundVideo", "true", "flags.3?true"],
       ["forceFile", "true", "flags.4?true"],
       ["spoiler", "true", "flags.5?true"],
-      ["file", TypeInputFile, "InputFile"],
-      ["thumb", TypeInputFile, "flags.2?InputFile"],
+      ["file", _TypeInputFile, "InputFile"],
+      ["thumb", _TypeInputFile, "flags.2?InputFile"],
       ["mimeType", "string", "string"],
-      ["attributes", [TypeDocumentAttribute], "Vector<DocumentAttribute>"],
-      ["stickers", [TypeInputDocument], "flags.0?Vector<InputDocument>"],
+      ["attributes", [_TypeDocumentAttribute], "Vector<DocumentAttribute>"],
+      ["stickers", [_TypeInputDocument], "flags.0?Vector<InputDocument>"],
       ["ttlSeconds", "number", "flags.1?int"],
     ];
   }
@@ -3022,11 +3022,11 @@ export class InputMediaUploadedDocument extends TypeInputMedia {
       [this.nosoundVideo ?? null, "true", "flags.3?true"],
       [this.forceFile ?? null, "true", "flags.4?true"],
       [this.spoiler ?? null, "true", "flags.5?true"],
-      [this.file, TypeInputFile, "InputFile"],
-      [this.thumb ?? null, TypeInputFile, "flags.2?InputFile"],
+      [this.file, _TypeInputFile, "InputFile"],
+      [this.thumb ?? null, _TypeInputFile, "flags.2?InputFile"],
       [this.mimeType, "string", "string"],
-      [this.attributes, [TypeDocumentAttribute], "Vector<DocumentAttribute>"],
-      [this.stickers ?? null, [TypeInputDocument], "flags.0?Vector<InputDocument>"],
+      [this.attributes, [_TypeDocumentAttribute], "Vector<DocumentAttribute>"],
+      [this.stickers ?? null, [_TypeInputDocument], "flags.0?Vector<InputDocument>"],
       [this.ttlSeconds ?? null, "number", "flags.1?int"],
     ];
   }
@@ -3045,7 +3045,7 @@ export class InputMediaUploadedDocument extends TypeInputMedia {
   }
 }
 
-export class InputMediaDocument extends TypeInputMedia {
+export class InputMediaDocument extends _TypeInputMedia {
   spoiler?: true;
   id: TypeInputDocument;
   ttlSeconds?: number;
@@ -3059,7 +3059,7 @@ export class InputMediaDocument extends TypeInputMedia {
     return [
       ["flags", flags, "#"],
       ["spoiler", "true", "flags.2?true"],
-      ["id", TypeInputDocument, "InputDocument"],
+      ["id", _TypeInputDocument, "InputDocument"],
       ["ttlSeconds", "number", "flags.0?int"],
       ["query", "string", "flags.1?string"],
     ];
@@ -3069,7 +3069,7 @@ export class InputMediaDocument extends TypeInputMedia {
     return [
       ["flags", flags, "#"],
       [this.spoiler ?? null, "true", "flags.2?true"],
-      [this.id, TypeInputDocument, "InputDocument"],
+      [this.id, _TypeInputDocument, "InputDocument"],
       [this.ttlSeconds ?? null, "number", "flags.0?int"],
       [this.query ?? null, "string", "flags.1?string"],
     ];
@@ -3084,7 +3084,7 @@ export class InputMediaDocument extends TypeInputMedia {
   }
 }
 
-export class InputMediaVenue extends TypeInputMedia {
+export class InputMediaVenue extends _TypeInputMedia {
   geoPoint: TypeInputGeoPoint;
   title: string;
   address: string;
@@ -3098,7 +3098,7 @@ export class InputMediaVenue extends TypeInputMedia {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["geoPoint", TypeInputGeoPoint, "InputGeoPoint"],
+      ["geoPoint", _TypeInputGeoPoint, "InputGeoPoint"],
       ["title", "string", "string"],
       ["address", "string", "string"],
       ["provider", "string", "string"],
@@ -3109,7 +3109,7 @@ export class InputMediaVenue extends TypeInputMedia {
 
   protected get [params](): Params {
     return [
-      [this.geoPoint, TypeInputGeoPoint, "InputGeoPoint"],
+      [this.geoPoint, _TypeInputGeoPoint, "InputGeoPoint"],
       [this.title, "string", "string"],
       [this.address, "string", "string"],
       [this.provider, "string", "string"],
@@ -3129,7 +3129,7 @@ export class InputMediaVenue extends TypeInputMedia {
   }
 }
 
-export class InputMediaPhotoExternal extends TypeInputMedia {
+export class InputMediaPhotoExternal extends _TypeInputMedia {
   spoiler?: true;
   url: string;
   ttlSeconds?: number;
@@ -3164,7 +3164,7 @@ export class InputMediaPhotoExternal extends TypeInputMedia {
   }
 }
 
-export class InputMediaDocumentExternal extends TypeInputMedia {
+export class InputMediaDocumentExternal extends _TypeInputMedia {
   spoiler?: true;
   url: string;
   ttlSeconds?: number;
@@ -3199,7 +3199,7 @@ export class InputMediaDocumentExternal extends TypeInputMedia {
   }
 }
 
-export class InputMediaGame extends TypeInputMedia {
+export class InputMediaGame extends _TypeInputMedia {
   id: TypeInputGame;
 
   protected get [id]() {
@@ -3208,13 +3208,13 @@ export class InputMediaGame extends TypeInputMedia {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["id", TypeInputGame, "InputGame"],
+      ["id", _TypeInputGame, "InputGame"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.id, TypeInputGame, "InputGame"],
+      [this.id, _TypeInputGame, "InputGame"],
     ];
   }
 
@@ -3224,7 +3224,7 @@ export class InputMediaGame extends TypeInputMedia {
   }
 }
 
-export class InputMediaInvoice extends TypeInputMedia {
+export class InputMediaInvoice extends _TypeInputMedia {
   title: string;
   description: string;
   photo?: TypeInputWebDocument;
@@ -3244,13 +3244,13 @@ export class InputMediaInvoice extends TypeInputMedia {
       ["flags", flags, "#"],
       ["title", "string", "string"],
       ["description", "string", "string"],
-      ["photo", TypeInputWebDocument, "flags.0?InputWebDocument"],
-      ["invoice", TypeInvoice, "Invoice"],
+      ["photo", _TypeInputWebDocument, "flags.0?InputWebDocument"],
+      ["invoice", _TypeInvoice, "Invoice"],
       ["payload", Uint8Array, "bytes"],
       ["provider", "string", "string"],
-      ["providerData", TypeDataJSON, "DataJSON"],
+      ["providerData", _TypeDataJSON, "DataJSON"],
       ["startParam", "string", "flags.1?string"],
-      ["extendedMedia", TypeInputMedia, "flags.2?InputMedia"],
+      ["extendedMedia", _TypeInputMedia, "flags.2?InputMedia"],
     ];
   }
 
@@ -3259,13 +3259,13 @@ export class InputMediaInvoice extends TypeInputMedia {
       ["flags", flags, "#"],
       [this.title, "string", "string"],
       [this.description, "string", "string"],
-      [this.photo ?? null, TypeInputWebDocument, "flags.0?InputWebDocument"],
-      [this.invoice, TypeInvoice, "Invoice"],
+      [this.photo ?? null, _TypeInputWebDocument, "flags.0?InputWebDocument"],
+      [this.invoice, _TypeInvoice, "Invoice"],
       [this.payload, Uint8Array, "bytes"],
       [this.provider, "string", "string"],
-      [this.providerData, TypeDataJSON, "DataJSON"],
+      [this.providerData, _TypeDataJSON, "DataJSON"],
       [this.startParam ?? null, "string", "flags.1?string"],
-      [this.extendedMedia ?? null, TypeInputMedia, "flags.2?InputMedia"],
+      [this.extendedMedia ?? null, _TypeInputMedia, "flags.2?InputMedia"],
     ];
   }
 
@@ -3283,7 +3283,7 @@ export class InputMediaInvoice extends TypeInputMedia {
   }
 }
 
-export class InputMediaGeoLive extends TypeInputMedia {
+export class InputMediaGeoLive extends _TypeInputMedia {
   stopped?: true;
   geoPoint: TypeInputGeoPoint;
   heading?: number;
@@ -3298,7 +3298,7 @@ export class InputMediaGeoLive extends TypeInputMedia {
     return [
       ["flags", flags, "#"],
       ["stopped", "true", "flags.0?true"],
-      ["geoPoint", TypeInputGeoPoint, "InputGeoPoint"],
+      ["geoPoint", _TypeInputGeoPoint, "InputGeoPoint"],
       ["heading", "number", "flags.2?int"],
       ["period", "number", "flags.1?int"],
       ["proximityNotificationRadius", "number", "flags.3?int"],
@@ -3309,7 +3309,7 @@ export class InputMediaGeoLive extends TypeInputMedia {
     return [
       ["flags", flags, "#"],
       [this.stopped ?? null, "true", "flags.0?true"],
-      [this.geoPoint, TypeInputGeoPoint, "InputGeoPoint"],
+      [this.geoPoint, _TypeInputGeoPoint, "InputGeoPoint"],
       [this.heading ?? null, "number", "flags.2?int"],
       [this.period ?? null, "number", "flags.1?int"],
       [this.proximityNotificationRadius ?? null, "number", "flags.3?int"],
@@ -3326,7 +3326,7 @@ export class InputMediaGeoLive extends TypeInputMedia {
   }
 }
 
-export class InputMediaPoll extends TypeInputMedia {
+export class InputMediaPoll extends _TypeInputMedia {
   poll: TypePoll;
   correctAnswers?: Array<Uint8Array>;
   solution?: string;
@@ -3339,20 +3339,20 @@ export class InputMediaPoll extends TypeInputMedia {
   static get [paramDesc](): ParamDesc {
     return [
       ["flags", flags, "#"],
-      ["poll", TypePoll, "Poll"],
+      ["poll", _TypePoll, "Poll"],
       ["correctAnswers", [Uint8Array], "flags.0?Vector<bytes>"],
       ["solution", "string", "flags.1?string"],
-      ["solutionEntities", [TypeMessageEntity], "flags.1?Vector<MessageEntity>"],
+      ["solutionEntities", [_TypeMessageEntity], "flags.1?Vector<MessageEntity>"],
     ];
   }
 
   protected get [params](): Params {
     return [
       ["flags", flags, "#"],
-      [this.poll, TypePoll, "Poll"],
+      [this.poll, _TypePoll, "Poll"],
       [this.correctAnswers ?? null, [Uint8Array], "flags.0?Vector<bytes>"],
       [this.solution ?? null, "string", "flags.1?string"],
-      [this.solutionEntities ?? null, [TypeMessageEntity], "flags.1?Vector<MessageEntity>"],
+      [this.solutionEntities ?? null, [_TypeMessageEntity], "flags.1?Vector<MessageEntity>"],
     ];
   }
 
@@ -3365,7 +3365,7 @@ export class InputMediaPoll extends TypeInputMedia {
   }
 }
 
-export class InputMediaDice extends TypeInputMedia {
+export class InputMediaDice extends _TypeInputMedia {
   emoticon: string;
 
   protected get [id]() {
@@ -3390,7 +3390,7 @@ export class InputMediaDice extends TypeInputMedia {
   }
 }
 
-export class InputMediaStory extends TypeInputMedia {
+export class InputMediaStory extends _TypeInputMedia {
   userId: TypeInputUser;
   id: number;
 
@@ -3400,14 +3400,14 @@ export class InputMediaStory extends TypeInputMedia {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["userId", TypeInputUser, "InputUser"],
+      ["userId", _TypeInputUser, "InputUser"],
       ["id", "number", "int"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.userId, TypeInputUser, "InputUser"],
+      [this.userId, _TypeInputUser, "InputUser"],
       [this.id, "number", "int"],
     ];
   }
@@ -3419,7 +3419,7 @@ export class InputMediaStory extends TypeInputMedia {
   }
 }
 
-export class InputChatPhotoEmpty extends TypeInputChatPhoto {
+export class InputChatPhotoEmpty extends _TypeInputChatPhoto {
   protected get [id]() {
     return 0x1CA48F57;
   }
@@ -3437,7 +3437,7 @@ export class InputChatPhotoEmpty extends TypeInputChatPhoto {
   }
 }
 
-export class InputChatUploadedPhoto extends TypeInputChatPhoto {
+export class InputChatUploadedPhoto extends _TypeInputChatPhoto {
   file?: TypeInputFile;
   video?: TypeInputFile;
   videoStartTs?: number;
@@ -3450,20 +3450,20 @@ export class InputChatUploadedPhoto extends TypeInputChatPhoto {
   static get [paramDesc](): ParamDesc {
     return [
       ["flags", flags, "#"],
-      ["file", TypeInputFile, "flags.0?InputFile"],
-      ["video", TypeInputFile, "flags.1?InputFile"],
+      ["file", _TypeInputFile, "flags.0?InputFile"],
+      ["video", _TypeInputFile, "flags.1?InputFile"],
       ["videoStartTs", "number", "flags.2?double"],
-      ["videoEmojiMarkup", TypeVideoSize, "flags.3?VideoSize"],
+      ["videoEmojiMarkup", _TypeVideoSize, "flags.3?VideoSize"],
     ];
   }
 
   protected get [params](): Params {
     return [
       ["flags", flags, "#"],
-      [this.file ?? null, TypeInputFile, "flags.0?InputFile"],
-      [this.video ?? null, TypeInputFile, "flags.1?InputFile"],
+      [this.file ?? null, _TypeInputFile, "flags.0?InputFile"],
+      [this.video ?? null, _TypeInputFile, "flags.1?InputFile"],
       [this.videoStartTs ?? null, "number", "flags.2?double"],
-      [this.videoEmojiMarkup ?? null, TypeVideoSize, "flags.3?VideoSize"],
+      [this.videoEmojiMarkup ?? null, _TypeVideoSize, "flags.3?VideoSize"],
     ];
   }
 
@@ -3476,7 +3476,7 @@ export class InputChatUploadedPhoto extends TypeInputChatPhoto {
   }
 }
 
-export class InputChatPhoto extends TypeInputChatPhoto {
+export class InputChatPhoto extends _TypeInputChatPhoto {
   id: TypeInputPhoto;
 
   protected get [id]() {
@@ -3485,13 +3485,13 @@ export class InputChatPhoto extends TypeInputChatPhoto {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["id", TypeInputPhoto, "InputPhoto"],
+      ["id", _TypeInputPhoto, "InputPhoto"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.id, TypeInputPhoto, "InputPhoto"],
+      [this.id, _TypeInputPhoto, "InputPhoto"],
     ];
   }
 
@@ -3501,7 +3501,7 @@ export class InputChatPhoto extends TypeInputChatPhoto {
   }
 }
 
-export class InputGeoPointEmpty extends TypeInputGeoPoint {
+export class InputGeoPointEmpty extends _TypeInputGeoPoint {
   protected get [id]() {
     return 0xE4C123D6;
   }
@@ -3519,7 +3519,7 @@ export class InputGeoPointEmpty extends TypeInputGeoPoint {
   }
 }
 
-export class InputGeoPoint extends TypeInputGeoPoint {
+export class InputGeoPoint extends _TypeInputGeoPoint {
   lat: number;
   long: number;
   accuracyRadius?: number;
@@ -3554,7 +3554,7 @@ export class InputGeoPoint extends TypeInputGeoPoint {
   }
 }
 
-export class InputPhotoEmpty extends TypeInputPhoto {
+export class InputPhotoEmpty extends _TypeInputPhoto {
   protected get [id]() {
     return 0x1CD7BF0D;
   }
@@ -3572,7 +3572,7 @@ export class InputPhotoEmpty extends TypeInputPhoto {
   }
 }
 
-export class InputPhoto extends TypeInputPhoto {
+export class InputPhoto extends _TypeInputPhoto {
   id: bigint;
   accessHash: bigint;
   fileReference: Uint8Array;
@@ -3605,7 +3605,7 @@ export class InputPhoto extends TypeInputPhoto {
   }
 }
 
-export class InputFileLocation extends TypeInputFileLocation {
+export class InputFileLocation extends _TypeInputFileLocation {
   volumeId: bigint;
   localId: number;
   secret: bigint;
@@ -3642,7 +3642,7 @@ export class InputFileLocation extends TypeInputFileLocation {
   }
 }
 
-export class InputEncryptedFileLocation extends TypeInputFileLocation {
+export class InputEncryptedFileLocation extends _TypeInputFileLocation {
   id: bigint;
   accessHash: bigint;
 
@@ -3671,7 +3671,7 @@ export class InputEncryptedFileLocation extends TypeInputFileLocation {
   }
 }
 
-export class InputDocumentFileLocation extends TypeInputFileLocation {
+export class InputDocumentFileLocation extends _TypeInputFileLocation {
   id: bigint;
   accessHash: bigint;
   fileReference: Uint8Array;
@@ -3708,7 +3708,7 @@ export class InputDocumentFileLocation extends TypeInputFileLocation {
   }
 }
 
-export class InputSecureFileLocation extends TypeInputFileLocation {
+export class InputSecureFileLocation extends _TypeInputFileLocation {
   id: bigint;
   accessHash: bigint;
 
@@ -3737,7 +3737,7 @@ export class InputSecureFileLocation extends TypeInputFileLocation {
   }
 }
 
-export class InputTakeoutFileLocation extends TypeInputFileLocation {
+export class InputTakeoutFileLocation extends _TypeInputFileLocation {
   protected get [id]() {
     return 0x29BE5899;
   }
@@ -3755,7 +3755,7 @@ export class InputTakeoutFileLocation extends TypeInputFileLocation {
   }
 }
 
-export class InputPhotoFileLocation extends TypeInputFileLocation {
+export class InputPhotoFileLocation extends _TypeInputFileLocation {
   id: bigint;
   accessHash: bigint;
   fileReference: Uint8Array;
@@ -3792,7 +3792,7 @@ export class InputPhotoFileLocation extends TypeInputFileLocation {
   }
 }
 
-export class InputPhotoLegacyFileLocation extends TypeInputFileLocation {
+export class InputPhotoLegacyFileLocation extends _TypeInputFileLocation {
   id: bigint;
   accessHash: bigint;
   fileReference: Uint8Array;
@@ -3837,7 +3837,7 @@ export class InputPhotoLegacyFileLocation extends TypeInputFileLocation {
   }
 }
 
-export class InputPeerPhotoFileLocation extends TypeInputFileLocation {
+export class InputPeerPhotoFileLocation extends _TypeInputFileLocation {
   big?: true;
   peer: TypeInputPeer;
   photoId: bigint;
@@ -3850,7 +3850,7 @@ export class InputPeerPhotoFileLocation extends TypeInputFileLocation {
     return [
       ["flags", flags, "#"],
       ["big", "true", "flags.0?true"],
-      ["peer", TypeInputPeer, "InputPeer"],
+      ["peer", _TypeInputPeer, "InputPeer"],
       ["photoId", "bigint", "long"],
     ];
   }
@@ -3859,7 +3859,7 @@ export class InputPeerPhotoFileLocation extends TypeInputFileLocation {
     return [
       ["flags", flags, "#"],
       [this.big ?? null, "true", "flags.0?true"],
-      [this.peer, TypeInputPeer, "InputPeer"],
+      [this.peer, _TypeInputPeer, "InputPeer"],
       [this.photoId, "bigint", "long"],
     ];
   }
@@ -3872,7 +3872,7 @@ export class InputPeerPhotoFileLocation extends TypeInputFileLocation {
   }
 }
 
-export class InputStickerSetThumb extends TypeInputFileLocation {
+export class InputStickerSetThumb extends _TypeInputFileLocation {
   stickerset: TypeInputStickerSet;
   thumbVersion: number;
 
@@ -3882,14 +3882,14 @@ export class InputStickerSetThumb extends TypeInputFileLocation {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["stickerset", TypeInputStickerSet, "InputStickerSet"],
+      ["stickerset", _TypeInputStickerSet, "InputStickerSet"],
       ["thumbVersion", "number", "int"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.stickerset, TypeInputStickerSet, "InputStickerSet"],
+      [this.stickerset, _TypeInputStickerSet, "InputStickerSet"],
       [this.thumbVersion, "number", "int"],
     ];
   }
@@ -3901,7 +3901,7 @@ export class InputStickerSetThumb extends TypeInputFileLocation {
   }
 }
 
-export class InputGroupCallStream extends TypeInputFileLocation {
+export class InputGroupCallStream extends _TypeInputFileLocation {
   call: TypeInputGroupCall;
   timeMs: bigint;
   scale: number;
@@ -3915,7 +3915,7 @@ export class InputGroupCallStream extends TypeInputFileLocation {
   static get [paramDesc](): ParamDesc {
     return [
       ["flags", flags, "#"],
-      ["call", TypeInputGroupCall, "InputGroupCall"],
+      ["call", _TypeInputGroupCall, "InputGroupCall"],
       ["timeMs", "bigint", "long"],
       ["scale", "number", "int"],
       ["videoChannel", "number", "flags.0?int"],
@@ -3926,7 +3926,7 @@ export class InputGroupCallStream extends TypeInputFileLocation {
   protected get [params](): Params {
     return [
       ["flags", flags, "#"],
-      [this.call, TypeInputGroupCall, "InputGroupCall"],
+      [this.call, _TypeInputGroupCall, "InputGroupCall"],
       [this.timeMs, "bigint", "long"],
       [this.scale, "number", "int"],
       [this.videoChannel ?? null, "number", "flags.0?int"],
@@ -3944,7 +3944,7 @@ export class InputGroupCallStream extends TypeInputFileLocation {
   }
 }
 
-export class PeerUser extends TypePeer {
+export class PeerUser extends _TypePeer {
   userId: bigint;
 
   protected get [id]() {
@@ -3969,7 +3969,7 @@ export class PeerUser extends TypePeer {
   }
 }
 
-export class PeerChat extends TypePeer {
+export class PeerChat extends _TypePeer {
   chatId: bigint;
 
   protected get [id]() {
@@ -3994,7 +3994,7 @@ export class PeerChat extends TypePeer {
   }
 }
 
-export class PeerChannel extends TypePeer {
+export class PeerChannel extends _TypePeer {
   channelId: bigint;
 
   protected get [id]() {
@@ -4019,7 +4019,7 @@ export class PeerChannel extends TypePeer {
   }
 }
 
-export class StorageFileUnknown extends TypeStorageFileType {
+export class StorageFileUnknown extends _TypeStorageFileType {
   protected get [id]() {
     return 0xAA963B05;
   }
@@ -4037,7 +4037,7 @@ export class StorageFileUnknown extends TypeStorageFileType {
   }
 }
 
-export class StorageFilePartial extends TypeStorageFileType {
+export class StorageFilePartial extends _TypeStorageFileType {
   protected get [id]() {
     return 0x40BC6F52;
   }
@@ -4055,7 +4055,7 @@ export class StorageFilePartial extends TypeStorageFileType {
   }
 }
 
-export class StorageFileJpeg extends TypeStorageFileType {
+export class StorageFileJpeg extends _TypeStorageFileType {
   protected get [id]() {
     return 0x007EFE0E;
   }
@@ -4073,7 +4073,7 @@ export class StorageFileJpeg extends TypeStorageFileType {
   }
 }
 
-export class StorageFileGif extends TypeStorageFileType {
+export class StorageFileGif extends _TypeStorageFileType {
   protected get [id]() {
     return 0xCAE1AADF;
   }
@@ -4091,7 +4091,7 @@ export class StorageFileGif extends TypeStorageFileType {
   }
 }
 
-export class StorageFilePng extends TypeStorageFileType {
+export class StorageFilePng extends _TypeStorageFileType {
   protected get [id]() {
     return 0x0A4F63C0;
   }
@@ -4109,7 +4109,7 @@ export class StorageFilePng extends TypeStorageFileType {
   }
 }
 
-export class StorageFilePdf extends TypeStorageFileType {
+export class StorageFilePdf extends _TypeStorageFileType {
   protected get [id]() {
     return 0xAE1E508D;
   }
@@ -4127,7 +4127,7 @@ export class StorageFilePdf extends TypeStorageFileType {
   }
 }
 
-export class StorageFileMp3 extends TypeStorageFileType {
+export class StorageFileMp3 extends _TypeStorageFileType {
   protected get [id]() {
     return 0x528A0677;
   }
@@ -4145,7 +4145,7 @@ export class StorageFileMp3 extends TypeStorageFileType {
   }
 }
 
-export class StorageFileMov extends TypeStorageFileType {
+export class StorageFileMov extends _TypeStorageFileType {
   protected get [id]() {
     return 0x4B09EBBC;
   }
@@ -4163,7 +4163,7 @@ export class StorageFileMov extends TypeStorageFileType {
   }
 }
 
-export class StorageFileMp4 extends TypeStorageFileType {
+export class StorageFileMp4 extends _TypeStorageFileType {
   protected get [id]() {
     return 0xB3CEA0E4;
   }
@@ -4181,7 +4181,7 @@ export class StorageFileMp4 extends TypeStorageFileType {
   }
 }
 
-export class StorageFileWebp extends TypeStorageFileType {
+export class StorageFileWebp extends _TypeStorageFileType {
   protected get [id]() {
     return 0x1081464C;
   }
@@ -4199,7 +4199,7 @@ export class StorageFileWebp extends TypeStorageFileType {
   }
 }
 
-export class UserEmpty extends TypeUser {
+export class UserEmpty extends _TypeUser {
   id: bigint;
 
   protected get [id]() {
@@ -4224,7 +4224,7 @@ export class UserEmpty extends TypeUser {
   }
 }
 
-export class User extends TypeUser {
+export class User extends _TypeUser {
   self?: true;
   contact?: true;
   mutualContact?: true;
@@ -4299,14 +4299,14 @@ export class User extends TypeUser {
       ["lastName", "string", "flags.2?string"],
       ["username", "string", "flags.3?string"],
       ["phone", "string", "flags.4?string"],
-      ["photo", TypeUserProfilePhoto, "flags.5?UserProfilePhoto"],
-      ["status", TypeUserStatus, "flags.6?UserStatus"],
+      ["photo", _TypeUserProfilePhoto, "flags.5?UserProfilePhoto"],
+      ["status", _TypeUserStatus, "flags.6?UserStatus"],
       ["botInfoVersion", "number", "flags.14?int"],
-      ["restrictionReason", [TypeRestrictionReason], "flags.18?Vector<RestrictionReason>"],
+      ["restrictionReason", [_TypeRestrictionReason], "flags.18?Vector<RestrictionReason>"],
       ["botInlinePlaceholder", "string", "flags.19?string"],
       ["langCode", "string", "flags.22?string"],
-      ["emojiStatus", TypeEmojiStatus, "flags.30?EmojiStatus"],
-      ["usernames", [TypeUsername], "flags2.0?Vector<Username>"],
+      ["emojiStatus", _TypeEmojiStatus, "flags.30?EmojiStatus"],
+      ["usernames", [_TypeUsername], "flags2.0?Vector<Username>"],
       ["storiesMaxId", "number", "flags2.5?int"],
     ];
   }
@@ -4343,14 +4343,14 @@ export class User extends TypeUser {
       [this.lastName ?? null, "string", "flags.2?string"],
       [this.username ?? null, "string", "flags.3?string"],
       [this.phone ?? null, "string", "flags.4?string"],
-      [this.photo ?? null, TypeUserProfilePhoto, "flags.5?UserProfilePhoto"],
-      [this.status ?? null, TypeUserStatus, "flags.6?UserStatus"],
+      [this.photo ?? null, _TypeUserProfilePhoto, "flags.5?UserProfilePhoto"],
+      [this.status ?? null, _TypeUserStatus, "flags.6?UserStatus"],
       [this.botInfoVersion ?? null, "number", "flags.14?int"],
-      [this.restrictionReason ?? null, [TypeRestrictionReason], "flags.18?Vector<RestrictionReason>"],
+      [this.restrictionReason ?? null, [_TypeRestrictionReason], "flags.18?Vector<RestrictionReason>"],
       [this.botInlinePlaceholder ?? null, "string", "flags.19?string"],
       [this.langCode ?? null, "string", "flags.22?string"],
-      [this.emojiStatus ?? null, TypeEmojiStatus, "flags.30?EmojiStatus"],
-      [this.usernames ?? null, [TypeUsername], "flags2.0?Vector<Username>"],
+      [this.emojiStatus ?? null, _TypeEmojiStatus, "flags.30?EmojiStatus"],
+      [this.usernames ?? null, [_TypeUsername], "flags2.0?Vector<Username>"],
       [this.storiesMaxId ?? null, "number", "flags2.5?int"],
     ];
   }
@@ -4397,7 +4397,7 @@ export class User extends TypeUser {
   }
 }
 
-export class UserProfilePhotoEmpty extends TypeUserProfilePhoto {
+export class UserProfilePhotoEmpty extends _TypeUserProfilePhoto {
   protected get [id]() {
     return 0x4F11BAE1;
   }
@@ -4415,7 +4415,7 @@ export class UserProfilePhotoEmpty extends TypeUserProfilePhoto {
   }
 }
 
-export class UserProfilePhoto extends TypeUserProfilePhoto {
+export class UserProfilePhoto extends _TypeUserProfilePhoto {
   hasVideo?: true;
   personal?: true;
   photoId: bigint;
@@ -4458,7 +4458,7 @@ export class UserProfilePhoto extends TypeUserProfilePhoto {
   }
 }
 
-export class UserStatusEmpty extends TypeUserStatus {
+export class UserStatusEmpty extends _TypeUserStatus {
   protected get [id]() {
     return 0x09D05049;
   }
@@ -4476,7 +4476,7 @@ export class UserStatusEmpty extends TypeUserStatus {
   }
 }
 
-export class UserStatusOnline extends TypeUserStatus {
+export class UserStatusOnline extends _TypeUserStatus {
   expires: number;
 
   protected get [id]() {
@@ -4501,7 +4501,7 @@ export class UserStatusOnline extends TypeUserStatus {
   }
 }
 
-export class UserStatusOffline extends TypeUserStatus {
+export class UserStatusOffline extends _TypeUserStatus {
   wasOnline: number;
 
   protected get [id]() {
@@ -4526,7 +4526,7 @@ export class UserStatusOffline extends TypeUserStatus {
   }
 }
 
-export class UserStatusRecently extends TypeUserStatus {
+export class UserStatusRecently extends _TypeUserStatus {
   protected get [id]() {
     return 0xE26F42F1;
   }
@@ -4544,7 +4544,7 @@ export class UserStatusRecently extends TypeUserStatus {
   }
 }
 
-export class UserStatusLastWeek extends TypeUserStatus {
+export class UserStatusLastWeek extends _TypeUserStatus {
   protected get [id]() {
     return 0x07BF09FC;
   }
@@ -4562,7 +4562,7 @@ export class UserStatusLastWeek extends TypeUserStatus {
   }
 }
 
-export class UserStatusLastMonth extends TypeUserStatus {
+export class UserStatusLastMonth extends _TypeUserStatus {
   protected get [id]() {
     return 0x77EBC742;
   }
@@ -4580,7 +4580,7 @@ export class UserStatusLastMonth extends TypeUserStatus {
   }
 }
 
-export class ChatEmpty extends TypeChat {
+export class ChatEmpty extends _TypeChat {
   id: bigint;
 
   protected get [id]() {
@@ -4605,7 +4605,7 @@ export class ChatEmpty extends TypeChat {
   }
 }
 
-export class Chat extends TypeChat {
+export class Chat extends _TypeChat {
   creator?: true;
   left?: true;
   deactivated?: true;
@@ -4637,13 +4637,13 @@ export class Chat extends TypeChat {
       ["noforwards", "true", "flags.25?true"],
       ["id", "bigint", "long"],
       ["title", "string", "string"],
-      ["photo", TypeChatPhoto, "ChatPhoto"],
+      ["photo", _TypeChatPhoto, "ChatPhoto"],
       ["participantsCount", "number", "int"],
       ["date", "number", "int"],
       ["version", "number", "int"],
-      ["migratedTo", TypeInputChannel, "flags.6?InputChannel"],
-      ["adminRights", TypeChatAdminRights, "flags.14?ChatAdminRights"],
-      ["defaultBannedRights", TypeChatBannedRights, "flags.18?ChatBannedRights"],
+      ["migratedTo", _TypeInputChannel, "flags.6?InputChannel"],
+      ["adminRights", _TypeChatAdminRights, "flags.14?ChatAdminRights"],
+      ["defaultBannedRights", _TypeChatBannedRights, "flags.18?ChatBannedRights"],
     ];
   }
 
@@ -4658,13 +4658,13 @@ export class Chat extends TypeChat {
       [this.noforwards ?? null, "true", "flags.25?true"],
       [this.id, "bigint", "long"],
       [this.title, "string", "string"],
-      [this.photo, TypeChatPhoto, "ChatPhoto"],
+      [this.photo, _TypeChatPhoto, "ChatPhoto"],
       [this.participantsCount, "number", "int"],
       [this.date, "number", "int"],
       [this.version, "number", "int"],
-      [this.migratedTo ?? null, TypeInputChannel, "flags.6?InputChannel"],
-      [this.adminRights ?? null, TypeChatAdminRights, "flags.14?ChatAdminRights"],
-      [this.defaultBannedRights ?? null, TypeChatBannedRights, "flags.18?ChatBannedRights"],
+      [this.migratedTo ?? null, _TypeInputChannel, "flags.6?InputChannel"],
+      [this.adminRights ?? null, _TypeChatAdminRights, "flags.14?ChatAdminRights"],
+      [this.defaultBannedRights ?? null, _TypeChatBannedRights, "flags.18?ChatBannedRights"],
     ];
   }
 
@@ -4688,7 +4688,7 @@ export class Chat extends TypeChat {
   }
 }
 
-export class ChatForbidden extends TypeChat {
+export class ChatForbidden extends _TypeChat {
   id: bigint;
   title: string;
 
@@ -4717,7 +4717,7 @@ export class ChatForbidden extends TypeChat {
   }
 }
 
-export class Channel extends TypeChat {
+export class Channel extends _TypeChat {
   creator?: true;
   left?: true;
   broadcast?: true;
@@ -4783,14 +4783,14 @@ export class Channel extends TypeChat {
       ["accessHash", "bigint", "flags.13?long"],
       ["title", "string", "string"],
       ["username", "string", "flags.6?string"],
-      ["photo", TypeChatPhoto, "ChatPhoto"],
+      ["photo", _TypeChatPhoto, "ChatPhoto"],
       ["date", "number", "int"],
-      ["restrictionReason", [TypeRestrictionReason], "flags.9?Vector<RestrictionReason>"],
-      ["adminRights", TypeChatAdminRights, "flags.14?ChatAdminRights"],
-      ["bannedRights", TypeChatBannedRights, "flags.15?ChatBannedRights"],
-      ["defaultBannedRights", TypeChatBannedRights, "flags.18?ChatBannedRights"],
+      ["restrictionReason", [_TypeRestrictionReason], "flags.9?Vector<RestrictionReason>"],
+      ["adminRights", _TypeChatAdminRights, "flags.14?ChatAdminRights"],
+      ["bannedRights", _TypeChatBannedRights, "flags.15?ChatBannedRights"],
+      ["defaultBannedRights", _TypeChatBannedRights, "flags.18?ChatBannedRights"],
       ["participantsCount", "number", "flags.17?int"],
-      ["usernames", [TypeUsername], "flags2.0?Vector<Username>"],
+      ["usernames", [_TypeUsername], "flags2.0?Vector<Username>"],
     ];
   }
 
@@ -4822,14 +4822,14 @@ export class Channel extends TypeChat {
       [this.accessHash ?? null, "bigint", "flags.13?long"],
       [this.title, "string", "string"],
       [this.username ?? null, "string", "flags.6?string"],
-      [this.photo, TypeChatPhoto, "ChatPhoto"],
+      [this.photo, _TypeChatPhoto, "ChatPhoto"],
       [this.date, "number", "int"],
-      [this.restrictionReason ?? null, [TypeRestrictionReason], "flags.9?Vector<RestrictionReason>"],
-      [this.adminRights ?? null, TypeChatAdminRights, "flags.14?ChatAdminRights"],
-      [this.bannedRights ?? null, TypeChatBannedRights, "flags.15?ChatBannedRights"],
-      [this.defaultBannedRights ?? null, TypeChatBannedRights, "flags.18?ChatBannedRights"],
+      [this.restrictionReason ?? null, [_TypeRestrictionReason], "flags.9?Vector<RestrictionReason>"],
+      [this.adminRights ?? null, _TypeChatAdminRights, "flags.14?ChatAdminRights"],
+      [this.bannedRights ?? null, _TypeChatBannedRights, "flags.15?ChatBannedRights"],
+      [this.defaultBannedRights ?? null, _TypeChatBannedRights, "flags.18?ChatBannedRights"],
       [this.participantsCount ?? null, "number", "flags.17?int"],
-      [this.usernames ?? null, [TypeUsername], "flags2.0?Vector<Username>"],
+      [this.usernames ?? null, [_TypeUsername], "flags2.0?Vector<Username>"],
     ];
   }
 
@@ -4870,7 +4870,7 @@ export class Channel extends TypeChat {
   }
 }
 
-export class ChannelForbidden extends TypeChat {
+export class ChannelForbidden extends _TypeChat {
   broadcast?: true;
   megagroup?: true;
   id: bigint;
@@ -4917,7 +4917,7 @@ export class ChannelForbidden extends TypeChat {
   }
 }
 
-export class ChatFull extends TypeChatFull {
+export class ChatFull extends _TypeChatFull {
   canSetUsername?: true;
   hasScheduled?: true;
   translationsDisabled?: true;
@@ -4950,20 +4950,20 @@ export class ChatFull extends TypeChatFull {
       ["translationsDisabled", "true", "flags.19?true"],
       ["id", "bigint", "long"],
       ["about", "string", "string"],
-      ["participants", TypeChatParticipants, "ChatParticipants"],
-      ["chatPhoto", TypePhoto, "flags.2?Photo"],
-      ["notifySettings", TypePeerNotifySettings, "PeerNotifySettings"],
-      ["exportedInvite", TypeExportedChatInvite, "flags.13?ExportedChatInvite"],
-      ["botInfo", [TypeBotInfo], "flags.3?Vector<BotInfo>"],
+      ["participants", _TypeChatParticipants, "ChatParticipants"],
+      ["chatPhoto", _TypePhoto, "flags.2?Photo"],
+      ["notifySettings", _TypePeerNotifySettings, "PeerNotifySettings"],
+      ["exportedInvite", _TypeExportedChatInvite, "flags.13?ExportedChatInvite"],
+      ["botInfo", [_TypeBotInfo], "flags.3?Vector<BotInfo>"],
       ["pinnedMsgId", "number", "flags.6?int"],
       ["folderId", "number", "flags.11?int"],
-      ["call", TypeInputGroupCall, "flags.12?InputGroupCall"],
+      ["call", _TypeInputGroupCall, "flags.12?InputGroupCall"],
       ["ttlPeriod", "number", "flags.14?int"],
-      ["groupcallDefaultJoinAs", TypePeer, "flags.15?Peer"],
+      ["groupcallDefaultJoinAs", _TypePeer, "flags.15?Peer"],
       ["themeEmoticon", "string", "flags.16?string"],
       ["requestsPending", "number", "flags.17?int"],
       ["recentRequesters", ["bigint"], "flags.17?Vector<long>"],
-      ["availableReactions", TypeChatReactions, "flags.18?ChatReactions"],
+      ["availableReactions", _TypeChatReactions, "flags.18?ChatReactions"],
     ];
   }
 
@@ -4975,20 +4975,20 @@ export class ChatFull extends TypeChatFull {
       [this.translationsDisabled ?? null, "true", "flags.19?true"],
       [this.id, "bigint", "long"],
       [this.about, "string", "string"],
-      [this.participants, TypeChatParticipants, "ChatParticipants"],
-      [this.chatPhoto ?? null, TypePhoto, "flags.2?Photo"],
-      [this.notifySettings, TypePeerNotifySettings, "PeerNotifySettings"],
-      [this.exportedInvite ?? null, TypeExportedChatInvite, "flags.13?ExportedChatInvite"],
-      [this.botInfo ?? null, [TypeBotInfo], "flags.3?Vector<BotInfo>"],
+      [this.participants, _TypeChatParticipants, "ChatParticipants"],
+      [this.chatPhoto ?? null, _TypePhoto, "flags.2?Photo"],
+      [this.notifySettings, _TypePeerNotifySettings, "PeerNotifySettings"],
+      [this.exportedInvite ?? null, _TypeExportedChatInvite, "flags.13?ExportedChatInvite"],
+      [this.botInfo ?? null, [_TypeBotInfo], "flags.3?Vector<BotInfo>"],
       [this.pinnedMsgId ?? null, "number", "flags.6?int"],
       [this.folderId ?? null, "number", "flags.11?int"],
-      [this.call ?? null, TypeInputGroupCall, "flags.12?InputGroupCall"],
+      [this.call ?? null, _TypeInputGroupCall, "flags.12?InputGroupCall"],
       [this.ttlPeriod ?? null, "number", "flags.14?int"],
-      [this.groupcallDefaultJoinAs ?? null, TypePeer, "flags.15?Peer"],
+      [this.groupcallDefaultJoinAs ?? null, _TypePeer, "flags.15?Peer"],
       [this.themeEmoticon ?? null, "string", "flags.16?string"],
       [this.requestsPending ?? null, "number", "flags.17?int"],
       [this.recentRequesters ?? null, ["bigint"], "flags.17?Vector<long>"],
-      [this.availableReactions ?? null, TypeChatReactions, "flags.18?ChatReactions"],
+      [this.availableReactions ?? null, _TypeChatReactions, "flags.18?ChatReactions"],
     ];
   }
 
@@ -5016,7 +5016,7 @@ export class ChatFull extends TypeChatFull {
   }
 }
 
-export class ChannelFull extends TypeChatFull {
+export class ChannelFull extends _TypeChatFull {
   canViewParticipants?: true;
   canSetUsername?: true;
   canSetStickers?: true;
@@ -5095,31 +5095,31 @@ export class ChannelFull extends TypeChatFull {
       ["readInboxMaxId", "number", "int"],
       ["readOutboxMaxId", "number", "int"],
       ["unreadCount", "number", "int"],
-      ["chatPhoto", TypePhoto, "Photo"],
-      ["notifySettings", TypePeerNotifySettings, "PeerNotifySettings"],
-      ["exportedInvite", TypeExportedChatInvite, "flags.23?ExportedChatInvite"],
-      ["botInfo", [TypeBotInfo], "Vector<BotInfo>"],
+      ["chatPhoto", _TypePhoto, "Photo"],
+      ["notifySettings", _TypePeerNotifySettings, "PeerNotifySettings"],
+      ["exportedInvite", _TypeExportedChatInvite, "flags.23?ExportedChatInvite"],
+      ["botInfo", [_TypeBotInfo], "Vector<BotInfo>"],
       ["migratedFromChatId", "bigint", "flags.4?long"],
       ["migratedFromMaxId", "number", "flags.4?int"],
       ["pinnedMsgId", "number", "flags.5?int"],
-      ["stickerset", TypeStickerSet, "flags.8?StickerSet"],
+      ["stickerset", _TypeStickerSet, "flags.8?StickerSet"],
       ["availableMinId", "number", "flags.9?int"],
       ["folderId", "number", "flags.11?int"],
       ["linkedChatId", "bigint", "flags.14?long"],
-      ["location", TypeChannelLocation, "flags.15?ChannelLocation"],
+      ["location", _TypeChannelLocation, "flags.15?ChannelLocation"],
       ["slowmodeSeconds", "number", "flags.17?int"],
       ["slowmodeNextSendDate", "number", "flags.18?int"],
       ["statsDc", "number", "flags.12?int"],
       ["pts", "number", "int"],
-      ["call", TypeInputGroupCall, "flags.21?InputGroupCall"],
+      ["call", _TypeInputGroupCall, "flags.21?InputGroupCall"],
       ["ttlPeriod", "number", "flags.24?int"],
       ["pendingSuggestions", ["string"], "flags.25?Vector<string>"],
-      ["groupcallDefaultJoinAs", TypePeer, "flags.26?Peer"],
+      ["groupcallDefaultJoinAs", _TypePeer, "flags.26?Peer"],
       ["themeEmoticon", "string", "flags.27?string"],
       ["requestsPending", "number", "flags.28?int"],
       ["recentRequesters", ["bigint"], "flags.28?Vector<long>"],
-      ["defaultSendAs", TypePeer, "flags.29?Peer"],
-      ["availableReactions", TypeChatReactions, "flags.30?ChatReactions"],
+      ["defaultSendAs", _TypePeer, "flags.29?Peer"],
+      ["availableReactions", _TypeChatReactions, "flags.30?ChatReactions"],
     ];
   }
 
@@ -5149,31 +5149,31 @@ export class ChannelFull extends TypeChatFull {
       [this.readInboxMaxId, "number", "int"],
       [this.readOutboxMaxId, "number", "int"],
       [this.unreadCount, "number", "int"],
-      [this.chatPhoto, TypePhoto, "Photo"],
-      [this.notifySettings, TypePeerNotifySettings, "PeerNotifySettings"],
-      [this.exportedInvite ?? null, TypeExportedChatInvite, "flags.23?ExportedChatInvite"],
-      [this.botInfo, [TypeBotInfo], "Vector<BotInfo>"],
+      [this.chatPhoto, _TypePhoto, "Photo"],
+      [this.notifySettings, _TypePeerNotifySettings, "PeerNotifySettings"],
+      [this.exportedInvite ?? null, _TypeExportedChatInvite, "flags.23?ExportedChatInvite"],
+      [this.botInfo, [_TypeBotInfo], "Vector<BotInfo>"],
       [this.migratedFromChatId ?? null, "bigint", "flags.4?long"],
       [this.migratedFromMaxId ?? null, "number", "flags.4?int"],
       [this.pinnedMsgId ?? null, "number", "flags.5?int"],
-      [this.stickerset ?? null, TypeStickerSet, "flags.8?StickerSet"],
+      [this.stickerset ?? null, _TypeStickerSet, "flags.8?StickerSet"],
       [this.availableMinId ?? null, "number", "flags.9?int"],
       [this.folderId ?? null, "number", "flags.11?int"],
       [this.linkedChatId ?? null, "bigint", "flags.14?long"],
-      [this.location ?? null, TypeChannelLocation, "flags.15?ChannelLocation"],
+      [this.location ?? null, _TypeChannelLocation, "flags.15?ChannelLocation"],
       [this.slowmodeSeconds ?? null, "number", "flags.17?int"],
       [this.slowmodeNextSendDate ?? null, "number", "flags.18?int"],
       [this.statsDc ?? null, "number", "flags.12?int"],
       [this.pts, "number", "int"],
-      [this.call ?? null, TypeInputGroupCall, "flags.21?InputGroupCall"],
+      [this.call ?? null, _TypeInputGroupCall, "flags.21?InputGroupCall"],
       [this.ttlPeriod ?? null, "number", "flags.24?int"],
       [this.pendingSuggestions ?? null, ["string"], "flags.25?Vector<string>"],
-      [this.groupcallDefaultJoinAs ?? null, TypePeer, "flags.26?Peer"],
+      [this.groupcallDefaultJoinAs ?? null, _TypePeer, "flags.26?Peer"],
       [this.themeEmoticon ?? null, "string", "flags.27?string"],
       [this.requestsPending ?? null, "number", "flags.28?int"],
       [this.recentRequesters ?? null, ["bigint"], "flags.28?Vector<long>"],
-      [this.defaultSendAs ?? null, TypePeer, "flags.29?Peer"],
-      [this.availableReactions ?? null, TypeChatReactions, "flags.30?ChatReactions"],
+      [this.defaultSendAs ?? null, _TypePeer, "flags.29?Peer"],
+      [this.availableReactions ?? null, _TypeChatReactions, "flags.30?ChatReactions"],
     ];
   }
 
@@ -5229,7 +5229,7 @@ export class ChannelFull extends TypeChatFull {
   }
 }
 
-export class ChatParticipant extends TypeChatParticipant {
+export class ChatParticipant extends _TypeChatParticipant {
   userId: bigint;
   inviterId: bigint;
   date: number;
@@ -5262,7 +5262,7 @@ export class ChatParticipant extends TypeChatParticipant {
   }
 }
 
-export class ChatParticipantCreator extends TypeChatParticipant {
+export class ChatParticipantCreator extends _TypeChatParticipant {
   userId: bigint;
 
   protected get [id]() {
@@ -5287,7 +5287,7 @@ export class ChatParticipantCreator extends TypeChatParticipant {
   }
 }
 
-export class ChatParticipantAdmin extends TypeChatParticipant {
+export class ChatParticipantAdmin extends _TypeChatParticipant {
   userId: bigint;
   inviterId: bigint;
   date: number;
@@ -5320,7 +5320,7 @@ export class ChatParticipantAdmin extends TypeChatParticipant {
   }
 }
 
-export class ChatParticipantsForbidden extends TypeChatParticipants {
+export class ChatParticipantsForbidden extends _TypeChatParticipants {
   chatId: bigint;
   selfParticipant?: TypeChatParticipant;
 
@@ -5332,7 +5332,7 @@ export class ChatParticipantsForbidden extends TypeChatParticipants {
     return [
       ["flags", flags, "#"],
       ["chatId", "bigint", "long"],
-      ["selfParticipant", TypeChatParticipant, "flags.0?ChatParticipant"],
+      ["selfParticipant", _TypeChatParticipant, "flags.0?ChatParticipant"],
     ];
   }
 
@@ -5340,7 +5340,7 @@ export class ChatParticipantsForbidden extends TypeChatParticipants {
     return [
       ["flags", flags, "#"],
       [this.chatId, "bigint", "long"],
-      [this.selfParticipant ?? null, TypeChatParticipant, "flags.0?ChatParticipant"],
+      [this.selfParticipant ?? null, _TypeChatParticipant, "flags.0?ChatParticipant"],
     ];
   }
 
@@ -5351,7 +5351,7 @@ export class ChatParticipantsForbidden extends TypeChatParticipants {
   }
 }
 
-export class ChatParticipants extends TypeChatParticipants {
+export class ChatParticipants extends _TypeChatParticipants {
   chatId: bigint;
   participants: Array<TypeChatParticipant>;
   version: number;
@@ -5363,7 +5363,7 @@ export class ChatParticipants extends TypeChatParticipants {
   static get [paramDesc](): ParamDesc {
     return [
       ["chatId", "bigint", "long"],
-      ["participants", [TypeChatParticipant], "Vector<ChatParticipant>"],
+      ["participants", [_TypeChatParticipant], "Vector<ChatParticipant>"],
       ["version", "number", "int"],
     ];
   }
@@ -5371,7 +5371,7 @@ export class ChatParticipants extends TypeChatParticipants {
   protected get [params](): Params {
     return [
       [this.chatId, "bigint", "long"],
-      [this.participants, [TypeChatParticipant], "Vector<ChatParticipant>"],
+      [this.participants, [_TypeChatParticipant], "Vector<ChatParticipant>"],
       [this.version, "number", "int"],
     ];
   }
@@ -5384,7 +5384,7 @@ export class ChatParticipants extends TypeChatParticipants {
   }
 }
 
-export class ChatPhotoEmpty extends TypeChatPhoto {
+export class ChatPhotoEmpty extends _TypeChatPhoto {
   protected get [id]() {
     return 0x37C1011C;
   }
@@ -5402,7 +5402,7 @@ export class ChatPhotoEmpty extends TypeChatPhoto {
   }
 }
 
-export class ChatPhoto extends TypeChatPhoto {
+export class ChatPhoto extends _TypeChatPhoto {
   hasVideo?: true;
   photoId: bigint;
   strippedThumb?: Uint8Array;
@@ -5441,7 +5441,7 @@ export class ChatPhoto extends TypeChatPhoto {
   }
 }
 
-export class MessageEmpty extends TypeMessage {
+export class MessageEmpty extends _TypeMessage {
   id: number;
   peerId?: TypePeer;
 
@@ -5453,7 +5453,7 @@ export class MessageEmpty extends TypeMessage {
     return [
       ["flags", flags, "#"],
       ["id", "number", "int"],
-      ["peerId", TypePeer, "flags.0?Peer"],
+      ["peerId", _TypePeer, "flags.0?Peer"],
     ];
   }
 
@@ -5461,7 +5461,7 @@ export class MessageEmpty extends TypeMessage {
     return [
       ["flags", flags, "#"],
       [this.id, "number", "int"],
-      [this.peerId ?? null, TypePeer, "flags.0?Peer"],
+      [this.peerId ?? null, _TypePeer, "flags.0?Peer"],
     ];
   }
 
@@ -5472,7 +5472,7 @@ export class MessageEmpty extends TypeMessage {
   }
 }
 
-export class Message extends TypeMessage {
+export class Message extends _TypeMessage {
   out?: true;
   mentioned?: true;
   mediaUnread?: true;
@@ -5522,24 +5522,24 @@ export class Message extends TypeMessage {
       ["pinned", "true", "flags.24?true"],
       ["noforwards", "true", "flags.26?true"],
       ["id", "number", "int"],
-      ["fromId", TypePeer, "flags.8?Peer"],
-      ["peerId", TypePeer, "Peer"],
-      ["fwdFrom", TypeMessageFwdHeader, "flags.2?MessageFwdHeader"],
+      ["fromId", _TypePeer, "flags.8?Peer"],
+      ["peerId", _TypePeer, "Peer"],
+      ["fwdFrom", _TypeMessageFwdHeader, "flags.2?MessageFwdHeader"],
       ["viaBotId", "bigint", "flags.11?long"],
-      ["replyTo", TypeMessageReplyHeader, "flags.3?MessageReplyHeader"],
+      ["replyTo", _TypeMessageReplyHeader, "flags.3?MessageReplyHeader"],
       ["date", "number", "int"],
       ["message", "string", "string"],
-      ["media", TypeMessageMedia, "flags.9?MessageMedia"],
-      ["replyMarkup", TypeReplyMarkup, "flags.6?ReplyMarkup"],
-      ["entities", [TypeMessageEntity], "flags.7?Vector<MessageEntity>"],
+      ["media", _TypeMessageMedia, "flags.9?MessageMedia"],
+      ["replyMarkup", _TypeReplyMarkup, "flags.6?ReplyMarkup"],
+      ["entities", [_TypeMessageEntity], "flags.7?Vector<MessageEntity>"],
       ["views", "number", "flags.10?int"],
       ["forwards", "number", "flags.10?int"],
-      ["replies", TypeMessageReplies, "flags.23?MessageReplies"],
+      ["replies", _TypeMessageReplies, "flags.23?MessageReplies"],
       ["editDate", "number", "flags.15?int"],
       ["postAuthor", "string", "flags.16?string"],
       ["groupedId", "bigint", "flags.17?long"],
-      ["reactions", TypeMessageReactions, "flags.20?MessageReactions"],
-      ["restrictionReason", [TypeRestrictionReason], "flags.22?Vector<RestrictionReason>"],
+      ["reactions", _TypeMessageReactions, "flags.20?MessageReactions"],
+      ["restrictionReason", [_TypeRestrictionReason], "flags.22?Vector<RestrictionReason>"],
       ["ttlPeriod", "number", "flags.25?int"],
     ];
   }
@@ -5558,24 +5558,24 @@ export class Message extends TypeMessage {
       [this.pinned ?? null, "true", "flags.24?true"],
       [this.noforwards ?? null, "true", "flags.26?true"],
       [this.id, "number", "int"],
-      [this.fromId ?? null, TypePeer, "flags.8?Peer"],
-      [this.peerId, TypePeer, "Peer"],
-      [this.fwdFrom ?? null, TypeMessageFwdHeader, "flags.2?MessageFwdHeader"],
+      [this.fromId ?? null, _TypePeer, "flags.8?Peer"],
+      [this.peerId, _TypePeer, "Peer"],
+      [this.fwdFrom ?? null, _TypeMessageFwdHeader, "flags.2?MessageFwdHeader"],
       [this.viaBotId ?? null, "bigint", "flags.11?long"],
-      [this.replyTo ?? null, TypeMessageReplyHeader, "flags.3?MessageReplyHeader"],
+      [this.replyTo ?? null, _TypeMessageReplyHeader, "flags.3?MessageReplyHeader"],
       [this.date, "number", "int"],
       [this.message, "string", "string"],
-      [this.media ?? null, TypeMessageMedia, "flags.9?MessageMedia"],
-      [this.replyMarkup ?? null, TypeReplyMarkup, "flags.6?ReplyMarkup"],
-      [this.entities ?? null, [TypeMessageEntity], "flags.7?Vector<MessageEntity>"],
+      [this.media ?? null, _TypeMessageMedia, "flags.9?MessageMedia"],
+      [this.replyMarkup ?? null, _TypeReplyMarkup, "flags.6?ReplyMarkup"],
+      [this.entities ?? null, [_TypeMessageEntity], "flags.7?Vector<MessageEntity>"],
       [this.views ?? null, "number", "flags.10?int"],
       [this.forwards ?? null, "number", "flags.10?int"],
-      [this.replies ?? null, TypeMessageReplies, "flags.23?MessageReplies"],
+      [this.replies ?? null, _TypeMessageReplies, "flags.23?MessageReplies"],
       [this.editDate ?? null, "number", "flags.15?int"],
       [this.postAuthor ?? null, "string", "flags.16?string"],
       [this.groupedId ?? null, "bigint", "flags.17?long"],
-      [this.reactions ?? null, TypeMessageReactions, "flags.20?MessageReactions"],
-      [this.restrictionReason ?? null, [TypeRestrictionReason], "flags.22?Vector<RestrictionReason>"],
+      [this.reactions ?? null, _TypeMessageReactions, "flags.20?MessageReactions"],
+      [this.restrictionReason ?? null, [_TypeRestrictionReason], "flags.22?Vector<RestrictionReason>"],
       [this.ttlPeriod ?? null, "number", "flags.25?int"],
     ];
   }
@@ -5615,7 +5615,7 @@ export class Message extends TypeMessage {
   }
 }
 
-export class MessageService extends TypeMessage {
+export class MessageService extends _TypeMessage {
   out?: true;
   mentioned?: true;
   mediaUnread?: true;
@@ -5644,11 +5644,11 @@ export class MessageService extends TypeMessage {
       ["post", "true", "flags.14?true"],
       ["legacy", "true", "flags.19?true"],
       ["id", "number", "int"],
-      ["fromId", TypePeer, "flags.8?Peer"],
-      ["peerId", TypePeer, "Peer"],
-      ["replyTo", TypeMessageReplyHeader, "flags.3?MessageReplyHeader"],
+      ["fromId", _TypePeer, "flags.8?Peer"],
+      ["peerId", _TypePeer, "Peer"],
+      ["replyTo", _TypeMessageReplyHeader, "flags.3?MessageReplyHeader"],
       ["date", "number", "int"],
-      ["action", TypeMessageAction, "MessageAction"],
+      ["action", _TypeMessageAction, "MessageAction"],
       ["ttlPeriod", "number", "flags.25?int"],
     ];
   }
@@ -5663,11 +5663,11 @@ export class MessageService extends TypeMessage {
       [this.post ?? null, "true", "flags.14?true"],
       [this.legacy ?? null, "true", "flags.19?true"],
       [this.id, "number", "int"],
-      [this.fromId ?? null, TypePeer, "flags.8?Peer"],
-      [this.peerId, TypePeer, "Peer"],
-      [this.replyTo ?? null, TypeMessageReplyHeader, "flags.3?MessageReplyHeader"],
+      [this.fromId ?? null, _TypePeer, "flags.8?Peer"],
+      [this.peerId, _TypePeer, "Peer"],
+      [this.replyTo ?? null, _TypeMessageReplyHeader, "flags.3?MessageReplyHeader"],
       [this.date, "number", "int"],
-      [this.action, TypeMessageAction, "MessageAction"],
+      [this.action, _TypeMessageAction, "MessageAction"],
       [this.ttlPeriod ?? null, "number", "flags.25?int"],
     ];
   }
@@ -5690,7 +5690,7 @@ export class MessageService extends TypeMessage {
   }
 }
 
-export class MessageMediaEmpty extends TypeMessageMedia {
+export class MessageMediaEmpty extends _TypeMessageMedia {
   protected get [id]() {
     return 0x3DED6320;
   }
@@ -5708,7 +5708,7 @@ export class MessageMediaEmpty extends TypeMessageMedia {
   }
 }
 
-export class MessageMediaPhoto extends TypeMessageMedia {
+export class MessageMediaPhoto extends _TypeMessageMedia {
   spoiler?: true;
   photo?: TypePhoto;
   ttlSeconds?: number;
@@ -5721,7 +5721,7 @@ export class MessageMediaPhoto extends TypeMessageMedia {
     return [
       ["flags", flags, "#"],
       ["spoiler", "true", "flags.3?true"],
-      ["photo", TypePhoto, "flags.0?Photo"],
+      ["photo", _TypePhoto, "flags.0?Photo"],
       ["ttlSeconds", "number", "flags.2?int"],
     ];
   }
@@ -5730,7 +5730,7 @@ export class MessageMediaPhoto extends TypeMessageMedia {
     return [
       ["flags", flags, "#"],
       [this.spoiler ?? null, "true", "flags.3?true"],
-      [this.photo ?? null, TypePhoto, "flags.0?Photo"],
+      [this.photo ?? null, _TypePhoto, "flags.0?Photo"],
       [this.ttlSeconds ?? null, "number", "flags.2?int"],
     ];
   }
@@ -5743,7 +5743,7 @@ export class MessageMediaPhoto extends TypeMessageMedia {
   }
 }
 
-export class MessageMediaGeo extends TypeMessageMedia {
+export class MessageMediaGeo extends _TypeMessageMedia {
   geo: TypeGeoPoint;
 
   protected get [id]() {
@@ -5752,13 +5752,13 @@ export class MessageMediaGeo extends TypeMessageMedia {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["geo", TypeGeoPoint, "GeoPoint"],
+      ["geo", _TypeGeoPoint, "GeoPoint"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.geo, TypeGeoPoint, "GeoPoint"],
+      [this.geo, _TypeGeoPoint, "GeoPoint"],
     ];
   }
 
@@ -5768,7 +5768,7 @@ export class MessageMediaGeo extends TypeMessageMedia {
   }
 }
 
-export class MessageMediaContact extends TypeMessageMedia {
+export class MessageMediaContact extends _TypeMessageMedia {
   phoneNumber: string;
   firstName: string;
   lastName: string;
@@ -5809,7 +5809,7 @@ export class MessageMediaContact extends TypeMessageMedia {
   }
 }
 
-export class MessageMediaUnsupported extends TypeMessageMedia {
+export class MessageMediaUnsupported extends _TypeMessageMedia {
   protected get [id]() {
     return 0x9F84F49E;
   }
@@ -5827,7 +5827,7 @@ export class MessageMediaUnsupported extends TypeMessageMedia {
   }
 }
 
-export class MessageMediaDocument extends TypeMessageMedia {
+export class MessageMediaDocument extends _TypeMessageMedia {
   nopremium?: true;
   spoiler?: true;
   document?: TypeDocument;
@@ -5843,8 +5843,8 @@ export class MessageMediaDocument extends TypeMessageMedia {
       ["flags", flags, "#"],
       ["nopremium", "true", "flags.3?true"],
       ["spoiler", "true", "flags.4?true"],
-      ["document", TypeDocument, "flags.0?Document"],
-      ["altDocument", TypeDocument, "flags.5?Document"],
+      ["document", _TypeDocument, "flags.0?Document"],
+      ["altDocument", _TypeDocument, "flags.5?Document"],
       ["ttlSeconds", "number", "flags.2?int"],
     ];
   }
@@ -5854,8 +5854,8 @@ export class MessageMediaDocument extends TypeMessageMedia {
       ["flags", flags, "#"],
       [this.nopremium ?? null, "true", "flags.3?true"],
       [this.spoiler ?? null, "true", "flags.4?true"],
-      [this.document ?? null, TypeDocument, "flags.0?Document"],
-      [this.altDocument ?? null, TypeDocument, "flags.5?Document"],
+      [this.document ?? null, _TypeDocument, "flags.0?Document"],
+      [this.altDocument ?? null, _TypeDocument, "flags.5?Document"],
       [this.ttlSeconds ?? null, "number", "flags.2?int"],
     ];
   }
@@ -5870,7 +5870,7 @@ export class MessageMediaDocument extends TypeMessageMedia {
   }
 }
 
-export class MessageMediaWebPage extends TypeMessageMedia {
+export class MessageMediaWebPage extends _TypeMessageMedia {
   webpage: TypeWebPage;
 
   protected get [id]() {
@@ -5879,13 +5879,13 @@ export class MessageMediaWebPage extends TypeMessageMedia {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["webpage", TypeWebPage, "WebPage"],
+      ["webpage", _TypeWebPage, "WebPage"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.webpage, TypeWebPage, "WebPage"],
+      [this.webpage, _TypeWebPage, "WebPage"],
     ];
   }
 
@@ -5895,7 +5895,7 @@ export class MessageMediaWebPage extends TypeMessageMedia {
   }
 }
 
-export class MessageMediaVenue extends TypeMessageMedia {
+export class MessageMediaVenue extends _TypeMessageMedia {
   geo: TypeGeoPoint;
   title: string;
   address: string;
@@ -5909,7 +5909,7 @@ export class MessageMediaVenue extends TypeMessageMedia {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["geo", TypeGeoPoint, "GeoPoint"],
+      ["geo", _TypeGeoPoint, "GeoPoint"],
       ["title", "string", "string"],
       ["address", "string", "string"],
       ["provider", "string", "string"],
@@ -5920,7 +5920,7 @@ export class MessageMediaVenue extends TypeMessageMedia {
 
   protected get [params](): Params {
     return [
-      [this.geo, TypeGeoPoint, "GeoPoint"],
+      [this.geo, _TypeGeoPoint, "GeoPoint"],
       [this.title, "string", "string"],
       [this.address, "string", "string"],
       [this.provider, "string", "string"],
@@ -5940,7 +5940,7 @@ export class MessageMediaVenue extends TypeMessageMedia {
   }
 }
 
-export class MessageMediaGame extends TypeMessageMedia {
+export class MessageMediaGame extends _TypeMessageMedia {
   game: TypeGame;
 
   protected get [id]() {
@@ -5949,13 +5949,13 @@ export class MessageMediaGame extends TypeMessageMedia {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["game", TypeGame, "Game"],
+      ["game", _TypeGame, "Game"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.game, TypeGame, "Game"],
+      [this.game, _TypeGame, "Game"],
     ];
   }
 
@@ -5965,7 +5965,7 @@ export class MessageMediaGame extends TypeMessageMedia {
   }
 }
 
-export class MessageMediaInvoice extends TypeMessageMedia {
+export class MessageMediaInvoice extends _TypeMessageMedia {
   shippingAddressRequested?: true;
   test?: true;
   title: string;
@@ -5988,12 +5988,12 @@ export class MessageMediaInvoice extends TypeMessageMedia {
       ["test", "true", "flags.3?true"],
       ["title", "string", "string"],
       ["description", "string", "string"],
-      ["photo", TypeWebDocument, "flags.0?WebDocument"],
+      ["photo", _TypeWebDocument, "flags.0?WebDocument"],
       ["receiptMsgId", "number", "flags.2?int"],
       ["currency", "string", "string"],
       ["totalAmount", "bigint", "long"],
       ["startParam", "string", "string"],
-      ["extendedMedia", TypeMessageExtendedMedia, "flags.4?MessageExtendedMedia"],
+      ["extendedMedia", _TypeMessageExtendedMedia, "flags.4?MessageExtendedMedia"],
     ];
   }
 
@@ -6004,12 +6004,12 @@ export class MessageMediaInvoice extends TypeMessageMedia {
       [this.test ?? null, "true", "flags.3?true"],
       [this.title, "string", "string"],
       [this.description, "string", "string"],
-      [this.photo ?? null, TypeWebDocument, "flags.0?WebDocument"],
+      [this.photo ?? null, _TypeWebDocument, "flags.0?WebDocument"],
       [this.receiptMsgId ?? null, "number", "flags.2?int"],
       [this.currency, "string", "string"],
       [this.totalAmount, "bigint", "long"],
       [this.startParam, "string", "string"],
-      [this.extendedMedia ?? null, TypeMessageExtendedMedia, "flags.4?MessageExtendedMedia"],
+      [this.extendedMedia ?? null, _TypeMessageExtendedMedia, "flags.4?MessageExtendedMedia"],
     ];
   }
 
@@ -6028,7 +6028,7 @@ export class MessageMediaInvoice extends TypeMessageMedia {
   }
 }
 
-export class MessageMediaGeoLive extends TypeMessageMedia {
+export class MessageMediaGeoLive extends _TypeMessageMedia {
   geo: TypeGeoPoint;
   heading?: number;
   period: number;
@@ -6041,7 +6041,7 @@ export class MessageMediaGeoLive extends TypeMessageMedia {
   static get [paramDesc](): ParamDesc {
     return [
       ["flags", flags, "#"],
-      ["geo", TypeGeoPoint, "GeoPoint"],
+      ["geo", _TypeGeoPoint, "GeoPoint"],
       ["heading", "number", "flags.0?int"],
       ["period", "number", "int"],
       ["proximityNotificationRadius", "number", "flags.1?int"],
@@ -6051,7 +6051,7 @@ export class MessageMediaGeoLive extends TypeMessageMedia {
   protected get [params](): Params {
     return [
       ["flags", flags, "#"],
-      [this.geo, TypeGeoPoint, "GeoPoint"],
+      [this.geo, _TypeGeoPoint, "GeoPoint"],
       [this.heading ?? null, "number", "flags.0?int"],
       [this.period, "number", "int"],
       [this.proximityNotificationRadius ?? null, "number", "flags.1?int"],
@@ -6067,7 +6067,7 @@ export class MessageMediaGeoLive extends TypeMessageMedia {
   }
 }
 
-export class MessageMediaPoll extends TypeMessageMedia {
+export class MessageMediaPoll extends _TypeMessageMedia {
   poll: TypePoll;
   results: TypePollResults;
 
@@ -6077,15 +6077,15 @@ export class MessageMediaPoll extends TypeMessageMedia {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["poll", TypePoll, "Poll"],
-      ["results", TypePollResults, "PollResults"],
+      ["poll", _TypePoll, "Poll"],
+      ["results", _TypePollResults, "PollResults"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.poll, TypePoll, "Poll"],
-      [this.results, TypePollResults, "PollResults"],
+      [this.poll, _TypePoll, "Poll"],
+      [this.results, _TypePollResults, "PollResults"],
     ];
   }
 
@@ -6096,7 +6096,7 @@ export class MessageMediaPoll extends TypeMessageMedia {
   }
 }
 
-export class MessageMediaDice extends TypeMessageMedia {
+export class MessageMediaDice extends _TypeMessageMedia {
   value: number;
   emoticon: string;
 
@@ -6125,7 +6125,7 @@ export class MessageMediaDice extends TypeMessageMedia {
   }
 }
 
-export class MessageMediaStory extends TypeMessageMedia {
+export class MessageMediaStory extends _TypeMessageMedia {
   viaMention?: true;
   userId: bigint;
   id: number;
@@ -6141,7 +6141,7 @@ export class MessageMediaStory extends TypeMessageMedia {
       ["viaMention", "true", "flags.1?true"],
       ["userId", "bigint", "long"],
       ["id", "number", "int"],
-      ["story", TypeStoryItem, "flags.0?StoryItem"],
+      ["story", _TypeStoryItem, "flags.0?StoryItem"],
     ];
   }
 
@@ -6151,7 +6151,7 @@ export class MessageMediaStory extends TypeMessageMedia {
       [this.viaMention ?? null, "true", "flags.1?true"],
       [this.userId, "bigint", "long"],
       [this.id, "number", "int"],
-      [this.story ?? null, TypeStoryItem, "flags.0?StoryItem"],
+      [this.story ?? null, _TypeStoryItem, "flags.0?StoryItem"],
     ];
   }
 
@@ -6164,7 +6164,7 @@ export class MessageMediaStory extends TypeMessageMedia {
   }
 }
 
-export class MessageActionEmpty extends TypeMessageAction {
+export class MessageActionEmpty extends _TypeMessageAction {
   protected get [id]() {
     return 0xB6AEF7B0;
   }
@@ -6182,7 +6182,7 @@ export class MessageActionEmpty extends TypeMessageAction {
   }
 }
 
-export class MessageActionChatCreate extends TypeMessageAction {
+export class MessageActionChatCreate extends _TypeMessageAction {
   title: string;
   users: Array<bigint>;
 
@@ -6211,7 +6211,7 @@ export class MessageActionChatCreate extends TypeMessageAction {
   }
 }
 
-export class MessageActionChatEditTitle extends TypeMessageAction {
+export class MessageActionChatEditTitle extends _TypeMessageAction {
   title: string;
 
   protected get [id]() {
@@ -6236,7 +6236,7 @@ export class MessageActionChatEditTitle extends TypeMessageAction {
   }
 }
 
-export class MessageActionChatEditPhoto extends TypeMessageAction {
+export class MessageActionChatEditPhoto extends _TypeMessageAction {
   photo: TypePhoto;
 
   protected get [id]() {
@@ -6245,13 +6245,13 @@ export class MessageActionChatEditPhoto extends TypeMessageAction {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["photo", TypePhoto, "Photo"],
+      ["photo", _TypePhoto, "Photo"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.photo, TypePhoto, "Photo"],
+      [this.photo, _TypePhoto, "Photo"],
     ];
   }
 
@@ -6261,7 +6261,7 @@ export class MessageActionChatEditPhoto extends TypeMessageAction {
   }
 }
 
-export class MessageActionChatDeletePhoto extends TypeMessageAction {
+export class MessageActionChatDeletePhoto extends _TypeMessageAction {
   protected get [id]() {
     return 0x95E3FBEF;
   }
@@ -6279,7 +6279,7 @@ export class MessageActionChatDeletePhoto extends TypeMessageAction {
   }
 }
 
-export class MessageActionChatAddUser extends TypeMessageAction {
+export class MessageActionChatAddUser extends _TypeMessageAction {
   users: Array<bigint>;
 
   protected get [id]() {
@@ -6304,7 +6304,7 @@ export class MessageActionChatAddUser extends TypeMessageAction {
   }
 }
 
-export class MessageActionChatDeleteUser extends TypeMessageAction {
+export class MessageActionChatDeleteUser extends _TypeMessageAction {
   userId: bigint;
 
   protected get [id]() {
@@ -6329,7 +6329,7 @@ export class MessageActionChatDeleteUser extends TypeMessageAction {
   }
 }
 
-export class MessageActionChatJoinedByLink extends TypeMessageAction {
+export class MessageActionChatJoinedByLink extends _TypeMessageAction {
   inviterId: bigint;
 
   protected get [id]() {
@@ -6354,7 +6354,7 @@ export class MessageActionChatJoinedByLink extends TypeMessageAction {
   }
 }
 
-export class MessageActionChannelCreate extends TypeMessageAction {
+export class MessageActionChannelCreate extends _TypeMessageAction {
   title: string;
 
   protected get [id]() {
@@ -6379,7 +6379,7 @@ export class MessageActionChannelCreate extends TypeMessageAction {
   }
 }
 
-export class MessageActionChatMigrateTo extends TypeMessageAction {
+export class MessageActionChatMigrateTo extends _TypeMessageAction {
   channelId: bigint;
 
   protected get [id]() {
@@ -6404,7 +6404,7 @@ export class MessageActionChatMigrateTo extends TypeMessageAction {
   }
 }
 
-export class MessageActionChannelMigrateFrom extends TypeMessageAction {
+export class MessageActionChannelMigrateFrom extends _TypeMessageAction {
   title: string;
   chatId: bigint;
 
@@ -6433,7 +6433,7 @@ export class MessageActionChannelMigrateFrom extends TypeMessageAction {
   }
 }
 
-export class MessageActionPinMessage extends TypeMessageAction {
+export class MessageActionPinMessage extends _TypeMessageAction {
   protected get [id]() {
     return 0x94BD38ED;
   }
@@ -6451,7 +6451,7 @@ export class MessageActionPinMessage extends TypeMessageAction {
   }
 }
 
-export class MessageActionHistoryClear extends TypeMessageAction {
+export class MessageActionHistoryClear extends _TypeMessageAction {
   protected get [id]() {
     return 0x9FBAB604;
   }
@@ -6469,7 +6469,7 @@ export class MessageActionHistoryClear extends TypeMessageAction {
   }
 }
 
-export class MessageActionGameScore extends TypeMessageAction {
+export class MessageActionGameScore extends _TypeMessageAction {
   gameId: bigint;
   score: number;
 
@@ -6498,7 +6498,7 @@ export class MessageActionGameScore extends TypeMessageAction {
   }
 }
 
-export class MessageActionPaymentSentMe extends TypeMessageAction {
+export class MessageActionPaymentSentMe extends _TypeMessageAction {
   recurringInit?: true;
   recurringUsed?: true;
   currency: string;
@@ -6520,9 +6520,9 @@ export class MessageActionPaymentSentMe extends TypeMessageAction {
       ["currency", "string", "string"],
       ["totalAmount", "bigint", "long"],
       ["payload", Uint8Array, "bytes"],
-      ["info", TypePaymentRequestedInfo, "flags.0?PaymentRequestedInfo"],
+      ["info", _TypePaymentRequestedInfo, "flags.0?PaymentRequestedInfo"],
       ["shippingOptionId", "string", "flags.1?string"],
-      ["charge", TypePaymentCharge, "PaymentCharge"],
+      ["charge", _TypePaymentCharge, "PaymentCharge"],
     ];
   }
 
@@ -6534,9 +6534,9 @@ export class MessageActionPaymentSentMe extends TypeMessageAction {
       [this.currency, "string", "string"],
       [this.totalAmount, "bigint", "long"],
       [this.payload, Uint8Array, "bytes"],
-      [this.info ?? null, TypePaymentRequestedInfo, "flags.0?PaymentRequestedInfo"],
+      [this.info ?? null, _TypePaymentRequestedInfo, "flags.0?PaymentRequestedInfo"],
       [this.shippingOptionId ?? null, "string", "flags.1?string"],
-      [this.charge, TypePaymentCharge, "PaymentCharge"],
+      [this.charge, _TypePaymentCharge, "PaymentCharge"],
     ];
   }
 
@@ -6553,7 +6553,7 @@ export class MessageActionPaymentSentMe extends TypeMessageAction {
   }
 }
 
-export class MessageActionPaymentSent extends TypeMessageAction {
+export class MessageActionPaymentSent extends _TypeMessageAction {
   recurringInit?: true;
   recurringUsed?: true;
   currency: string;
@@ -6596,7 +6596,7 @@ export class MessageActionPaymentSent extends TypeMessageAction {
   }
 }
 
-export class MessageActionPhoneCall extends TypeMessageAction {
+export class MessageActionPhoneCall extends _TypeMessageAction {
   video?: true;
   callId: bigint;
   reason?: TypePhoneCallDiscardReason;
@@ -6611,7 +6611,7 @@ export class MessageActionPhoneCall extends TypeMessageAction {
       ["flags", flags, "#"],
       ["video", "true", "flags.2?true"],
       ["callId", "bigint", "long"],
-      ["reason", TypePhoneCallDiscardReason, "flags.0?PhoneCallDiscardReason"],
+      ["reason", _TypePhoneCallDiscardReason, "flags.0?PhoneCallDiscardReason"],
       ["duration", "number", "flags.1?int"],
     ];
   }
@@ -6621,7 +6621,7 @@ export class MessageActionPhoneCall extends TypeMessageAction {
       ["flags", flags, "#"],
       [this.video ?? null, "true", "flags.2?true"],
       [this.callId, "bigint", "long"],
-      [this.reason ?? null, TypePhoneCallDiscardReason, "flags.0?PhoneCallDiscardReason"],
+      [this.reason ?? null, _TypePhoneCallDiscardReason, "flags.0?PhoneCallDiscardReason"],
       [this.duration ?? null, "number", "flags.1?int"],
     ];
   }
@@ -6635,7 +6635,7 @@ export class MessageActionPhoneCall extends TypeMessageAction {
   }
 }
 
-export class MessageActionScreenshotTaken extends TypeMessageAction {
+export class MessageActionScreenshotTaken extends _TypeMessageAction {
   protected get [id]() {
     return 0x4792929B;
   }
@@ -6653,7 +6653,7 @@ export class MessageActionScreenshotTaken extends TypeMessageAction {
   }
 }
 
-export class MessageActionCustomAction extends TypeMessageAction {
+export class MessageActionCustomAction extends _TypeMessageAction {
   message: string;
 
   protected get [id]() {
@@ -6678,7 +6678,7 @@ export class MessageActionCustomAction extends TypeMessageAction {
   }
 }
 
-export class MessageActionBotAllowed extends TypeMessageAction {
+export class MessageActionBotAllowed extends _TypeMessageAction {
   attachMenu?: true;
   domain?: string;
   app?: TypeBotApp;
@@ -6692,7 +6692,7 @@ export class MessageActionBotAllowed extends TypeMessageAction {
       ["flags", flags, "#"],
       ["attachMenu", "true", "flags.1?true"],
       ["domain", "string", "flags.0?string"],
-      ["app", TypeBotApp, "flags.2?BotApp"],
+      ["app", _TypeBotApp, "flags.2?BotApp"],
     ];
   }
 
@@ -6701,7 +6701,7 @@ export class MessageActionBotAllowed extends TypeMessageAction {
       ["flags", flags, "#"],
       [this.attachMenu ?? null, "true", "flags.1?true"],
       [this.domain ?? null, "string", "flags.0?string"],
-      [this.app ?? null, TypeBotApp, "flags.2?BotApp"],
+      [this.app ?? null, _TypeBotApp, "flags.2?BotApp"],
     ];
   }
 
@@ -6713,7 +6713,7 @@ export class MessageActionBotAllowed extends TypeMessageAction {
   }
 }
 
-export class MessageActionSecureValuesSentMe extends TypeMessageAction {
+export class MessageActionSecureValuesSentMe extends _TypeMessageAction {
   values: Array<TypeSecureValue>;
   credentials: TypeSecureCredentialsEncrypted;
 
@@ -6723,15 +6723,15 @@ export class MessageActionSecureValuesSentMe extends TypeMessageAction {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["values", [TypeSecureValue], "Vector<SecureValue>"],
-      ["credentials", TypeSecureCredentialsEncrypted, "SecureCredentialsEncrypted"],
+      ["values", [_TypeSecureValue], "Vector<SecureValue>"],
+      ["credentials", _TypeSecureCredentialsEncrypted, "SecureCredentialsEncrypted"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.values, [TypeSecureValue], "Vector<SecureValue>"],
-      [this.credentials, TypeSecureCredentialsEncrypted, "SecureCredentialsEncrypted"],
+      [this.values, [_TypeSecureValue], "Vector<SecureValue>"],
+      [this.credentials, _TypeSecureCredentialsEncrypted, "SecureCredentialsEncrypted"],
     ];
   }
 
@@ -6742,7 +6742,7 @@ export class MessageActionSecureValuesSentMe extends TypeMessageAction {
   }
 }
 
-export class MessageActionSecureValuesSent extends TypeMessageAction {
+export class MessageActionSecureValuesSent extends _TypeMessageAction {
   types: Array<TypeSecureValueType>;
 
   protected get [id]() {
@@ -6751,13 +6751,13 @@ export class MessageActionSecureValuesSent extends TypeMessageAction {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["types", [TypeSecureValueType], "Vector<SecureValueType>"],
+      ["types", [_TypeSecureValueType], "Vector<SecureValueType>"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.types, [TypeSecureValueType], "Vector<SecureValueType>"],
+      [this.types, [_TypeSecureValueType], "Vector<SecureValueType>"],
     ];
   }
 
@@ -6767,7 +6767,7 @@ export class MessageActionSecureValuesSent extends TypeMessageAction {
   }
 }
 
-export class MessageActionContactSignUp extends TypeMessageAction {
+export class MessageActionContactSignUp extends _TypeMessageAction {
   protected get [id]() {
     return 0xF3F25F76;
   }
@@ -6785,7 +6785,7 @@ export class MessageActionContactSignUp extends TypeMessageAction {
   }
 }
 
-export class MessageActionGeoProximityReached extends TypeMessageAction {
+export class MessageActionGeoProximityReached extends _TypeMessageAction {
   fromId: TypePeer;
   toId: TypePeer;
   distance: number;
@@ -6796,16 +6796,16 @@ export class MessageActionGeoProximityReached extends TypeMessageAction {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["fromId", TypePeer, "Peer"],
-      ["toId", TypePeer, "Peer"],
+      ["fromId", _TypePeer, "Peer"],
+      ["toId", _TypePeer, "Peer"],
       ["distance", "number", "int"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.fromId, TypePeer, "Peer"],
-      [this.toId, TypePeer, "Peer"],
+      [this.fromId, _TypePeer, "Peer"],
+      [this.toId, _TypePeer, "Peer"],
       [this.distance, "number", "int"],
     ];
   }
@@ -6818,7 +6818,7 @@ export class MessageActionGeoProximityReached extends TypeMessageAction {
   }
 }
 
-export class MessageActionGroupCall extends TypeMessageAction {
+export class MessageActionGroupCall extends _TypeMessageAction {
   call: TypeInputGroupCall;
   duration?: number;
 
@@ -6829,7 +6829,7 @@ export class MessageActionGroupCall extends TypeMessageAction {
   static get [paramDesc](): ParamDesc {
     return [
       ["flags", flags, "#"],
-      ["call", TypeInputGroupCall, "InputGroupCall"],
+      ["call", _TypeInputGroupCall, "InputGroupCall"],
       ["duration", "number", "flags.0?int"],
     ];
   }
@@ -6837,7 +6837,7 @@ export class MessageActionGroupCall extends TypeMessageAction {
   protected get [params](): Params {
     return [
       ["flags", flags, "#"],
-      [this.call, TypeInputGroupCall, "InputGroupCall"],
+      [this.call, _TypeInputGroupCall, "InputGroupCall"],
       [this.duration ?? null, "number", "flags.0?int"],
     ];
   }
@@ -6849,7 +6849,7 @@ export class MessageActionGroupCall extends TypeMessageAction {
   }
 }
 
-export class MessageActionInviteToGroupCall extends TypeMessageAction {
+export class MessageActionInviteToGroupCall extends _TypeMessageAction {
   call: TypeInputGroupCall;
   users: Array<bigint>;
 
@@ -6859,14 +6859,14 @@ export class MessageActionInviteToGroupCall extends TypeMessageAction {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["call", TypeInputGroupCall, "InputGroupCall"],
+      ["call", _TypeInputGroupCall, "InputGroupCall"],
       ["users", ["bigint"], "Vector<long>"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.call, TypeInputGroupCall, "InputGroupCall"],
+      [this.call, _TypeInputGroupCall, "InputGroupCall"],
       [this.users, ["bigint"], "Vector<long>"],
     ];
   }
@@ -6878,7 +6878,7 @@ export class MessageActionInviteToGroupCall extends TypeMessageAction {
   }
 }
 
-export class MessageActionSetMessagesTTL extends TypeMessageAction {
+export class MessageActionSetMessagesTTL extends _TypeMessageAction {
   period: number;
   autoSettingFrom?: bigint;
 
@@ -6909,7 +6909,7 @@ export class MessageActionSetMessagesTTL extends TypeMessageAction {
   }
 }
 
-export class MessageActionGroupCallScheduled extends TypeMessageAction {
+export class MessageActionGroupCallScheduled extends _TypeMessageAction {
   call: TypeInputGroupCall;
   scheduleDate: number;
 
@@ -6919,14 +6919,14 @@ export class MessageActionGroupCallScheduled extends TypeMessageAction {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["call", TypeInputGroupCall, "InputGroupCall"],
+      ["call", _TypeInputGroupCall, "InputGroupCall"],
       ["scheduleDate", "number", "int"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.call, TypeInputGroupCall, "InputGroupCall"],
+      [this.call, _TypeInputGroupCall, "InputGroupCall"],
       [this.scheduleDate, "number", "int"],
     ];
   }
@@ -6938,7 +6938,7 @@ export class MessageActionGroupCallScheduled extends TypeMessageAction {
   }
 }
 
-export class MessageActionSetChatTheme extends TypeMessageAction {
+export class MessageActionSetChatTheme extends _TypeMessageAction {
   emoticon: string;
 
   protected get [id]() {
@@ -6963,7 +6963,7 @@ export class MessageActionSetChatTheme extends TypeMessageAction {
   }
 }
 
-export class MessageActionChatJoinedByRequest extends TypeMessageAction {
+export class MessageActionChatJoinedByRequest extends _TypeMessageAction {
   protected get [id]() {
     return 0xEBBCA3CB;
   }
@@ -6981,7 +6981,7 @@ export class MessageActionChatJoinedByRequest extends TypeMessageAction {
   }
 }
 
-export class MessageActionWebViewDataSentMe extends TypeMessageAction {
+export class MessageActionWebViewDataSentMe extends _TypeMessageAction {
   text: string;
   data: string;
 
@@ -7010,7 +7010,7 @@ export class MessageActionWebViewDataSentMe extends TypeMessageAction {
   }
 }
 
-export class MessageActionWebViewDataSent extends TypeMessageAction {
+export class MessageActionWebViewDataSent extends _TypeMessageAction {
   text: string;
 
   protected get [id]() {
@@ -7035,7 +7035,7 @@ export class MessageActionWebViewDataSent extends TypeMessageAction {
   }
 }
 
-export class MessageActionGiftPremium extends TypeMessageAction {
+export class MessageActionGiftPremium extends _TypeMessageAction {
   currency: string;
   amount: bigint;
   months: number;
@@ -7078,7 +7078,7 @@ export class MessageActionGiftPremium extends TypeMessageAction {
   }
 }
 
-export class MessageActionTopicCreate extends TypeMessageAction {
+export class MessageActionTopicCreate extends _TypeMessageAction {
   title: string;
   iconColor: number;
   iconEmojiId?: bigint;
@@ -7113,7 +7113,7 @@ export class MessageActionTopicCreate extends TypeMessageAction {
   }
 }
 
-export class MessageActionTopicEdit extends TypeMessageAction {
+export class MessageActionTopicEdit extends _TypeMessageAction {
   title?: string;
   iconEmojiId?: bigint;
   closed?: boolean;
@@ -7152,7 +7152,7 @@ export class MessageActionTopicEdit extends TypeMessageAction {
   }
 }
 
-export class MessageActionSuggestProfilePhoto extends TypeMessageAction {
+export class MessageActionSuggestProfilePhoto extends _TypeMessageAction {
   photo: TypePhoto;
 
   protected get [id]() {
@@ -7161,13 +7161,13 @@ export class MessageActionSuggestProfilePhoto extends TypeMessageAction {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["photo", TypePhoto, "Photo"],
+      ["photo", _TypePhoto, "Photo"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.photo, TypePhoto, "Photo"],
+      [this.photo, _TypePhoto, "Photo"],
     ];
   }
 
@@ -7177,7 +7177,7 @@ export class MessageActionSuggestProfilePhoto extends TypeMessageAction {
   }
 }
 
-export class MessageActionRequestedPeer extends TypeMessageAction {
+export class MessageActionRequestedPeer extends _TypeMessageAction {
   buttonId: number;
   peer: TypePeer;
 
@@ -7188,14 +7188,14 @@ export class MessageActionRequestedPeer extends TypeMessageAction {
   static get [paramDesc](): ParamDesc {
     return [
       ["buttonId", "number", "int"],
-      ["peer", TypePeer, "Peer"],
+      ["peer", _TypePeer, "Peer"],
     ];
   }
 
   protected get [params](): Params {
     return [
       [this.buttonId, "number", "int"],
-      [this.peer, TypePeer, "Peer"],
+      [this.peer, _TypePeer, "Peer"],
     ];
   }
 
@@ -7206,7 +7206,7 @@ export class MessageActionRequestedPeer extends TypeMessageAction {
   }
 }
 
-export class MessageActionSetChatWallPaper extends TypeMessageAction {
+export class MessageActionSetChatWallPaper extends _TypeMessageAction {
   wallpaper: TypeWallPaper;
 
   protected get [id]() {
@@ -7215,13 +7215,13 @@ export class MessageActionSetChatWallPaper extends TypeMessageAction {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["wallpaper", TypeWallPaper, "WallPaper"],
+      ["wallpaper", _TypeWallPaper, "WallPaper"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.wallpaper, TypeWallPaper, "WallPaper"],
+      [this.wallpaper, _TypeWallPaper, "WallPaper"],
     ];
   }
 
@@ -7231,7 +7231,7 @@ export class MessageActionSetChatWallPaper extends TypeMessageAction {
   }
 }
 
-export class MessageActionSetSameChatWallPaper extends TypeMessageAction {
+export class MessageActionSetSameChatWallPaper extends _TypeMessageAction {
   wallpaper: TypeWallPaper;
 
   protected get [id]() {
@@ -7240,13 +7240,13 @@ export class MessageActionSetSameChatWallPaper extends TypeMessageAction {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["wallpaper", TypeWallPaper, "WallPaper"],
+      ["wallpaper", _TypeWallPaper, "WallPaper"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.wallpaper, TypeWallPaper, "WallPaper"],
+      [this.wallpaper, _TypeWallPaper, "WallPaper"],
     ];
   }
 
@@ -7256,7 +7256,7 @@ export class MessageActionSetSameChatWallPaper extends TypeMessageAction {
   }
 }
 
-export class Dialog extends TypeDialog {
+export class Dialog extends _TypeDialog {
   pinned?: true;
   unreadMark?: true;
   peer: TypePeer;
@@ -7281,16 +7281,16 @@ export class Dialog extends TypeDialog {
       ["flags", flags, "#"],
       ["pinned", "true", "flags.2?true"],
       ["unreadMark", "true", "flags.3?true"],
-      ["peer", TypePeer, "Peer"],
+      ["peer", _TypePeer, "Peer"],
       ["topMessage", "number", "int"],
       ["readInboxMaxId", "number", "int"],
       ["readOutboxMaxId", "number", "int"],
       ["unreadCount", "number", "int"],
       ["unreadMentionsCount", "number", "int"],
       ["unreadReactionsCount", "number", "int"],
-      ["notifySettings", TypePeerNotifySettings, "PeerNotifySettings"],
+      ["notifySettings", _TypePeerNotifySettings, "PeerNotifySettings"],
       ["pts", "number", "flags.0?int"],
-      ["draft", TypeDraftMessage, "flags.1?DraftMessage"],
+      ["draft", _TypeDraftMessage, "flags.1?DraftMessage"],
       ["folderId", "number", "flags.4?int"],
       ["ttlPeriod", "number", "flags.5?int"],
     ];
@@ -7301,16 +7301,16 @@ export class Dialog extends TypeDialog {
       ["flags", flags, "#"],
       [this.pinned ?? null, "true", "flags.2?true"],
       [this.unreadMark ?? null, "true", "flags.3?true"],
-      [this.peer, TypePeer, "Peer"],
+      [this.peer, _TypePeer, "Peer"],
       [this.topMessage, "number", "int"],
       [this.readInboxMaxId, "number", "int"],
       [this.readOutboxMaxId, "number", "int"],
       [this.unreadCount, "number", "int"],
       [this.unreadMentionsCount, "number", "int"],
       [this.unreadReactionsCount, "number", "int"],
-      [this.notifySettings, TypePeerNotifySettings, "PeerNotifySettings"],
+      [this.notifySettings, _TypePeerNotifySettings, "PeerNotifySettings"],
       [this.pts ?? null, "number", "flags.0?int"],
-      [this.draft ?? null, TypeDraftMessage, "flags.1?DraftMessage"],
+      [this.draft ?? null, _TypeDraftMessage, "flags.1?DraftMessage"],
       [this.folderId ?? null, "number", "flags.4?int"],
       [this.ttlPeriod ?? null, "number", "flags.5?int"],
     ];
@@ -7335,7 +7335,7 @@ export class Dialog extends TypeDialog {
   }
 }
 
-export class DialogFolder extends TypeDialog {
+export class DialogFolder extends _TypeDialog {
   pinned?: true;
   folder: TypeFolder;
   peer: TypePeer;
@@ -7353,8 +7353,8 @@ export class DialogFolder extends TypeDialog {
     return [
       ["flags", flags, "#"],
       ["pinned", "true", "flags.2?true"],
-      ["folder", TypeFolder, "Folder"],
-      ["peer", TypePeer, "Peer"],
+      ["folder", _TypeFolder, "Folder"],
+      ["peer", _TypePeer, "Peer"],
       ["topMessage", "number", "int"],
       ["unreadMutedPeersCount", "number", "int"],
       ["unreadUnmutedPeersCount", "number", "int"],
@@ -7367,8 +7367,8 @@ export class DialogFolder extends TypeDialog {
     return [
       ["flags", flags, "#"],
       [this.pinned ?? null, "true", "flags.2?true"],
-      [this.folder, TypeFolder, "Folder"],
-      [this.peer, TypePeer, "Peer"],
+      [this.folder, _TypeFolder, "Folder"],
+      [this.peer, _TypePeer, "Peer"],
       [this.topMessage, "number", "int"],
       [this.unreadMutedPeersCount, "number", "int"],
       [this.unreadUnmutedPeersCount, "number", "int"],
@@ -7390,7 +7390,7 @@ export class DialogFolder extends TypeDialog {
   }
 }
 
-export class PhotoEmpty extends TypePhoto {
+export class PhotoEmpty extends _TypePhoto {
   id: bigint;
 
   protected get [id]() {
@@ -7415,7 +7415,7 @@ export class PhotoEmpty extends TypePhoto {
   }
 }
 
-export class Photo extends TypePhoto {
+export class Photo extends _TypePhoto {
   hasStickers?: true;
   id: bigint;
   accessHash: bigint;
@@ -7437,8 +7437,8 @@ export class Photo extends TypePhoto {
       ["accessHash", "bigint", "long"],
       ["fileReference", Uint8Array, "bytes"],
       ["date", "number", "int"],
-      ["sizes", [TypePhotoSize], "Vector<PhotoSize>"],
-      ["videoSizes", [TypeVideoSize], "flags.1?Vector<VideoSize>"],
+      ["sizes", [_TypePhotoSize], "Vector<PhotoSize>"],
+      ["videoSizes", [_TypeVideoSize], "flags.1?Vector<VideoSize>"],
       ["dcId", "number", "int"],
     ];
   }
@@ -7451,8 +7451,8 @@ export class Photo extends TypePhoto {
       [this.accessHash, "bigint", "long"],
       [this.fileReference, Uint8Array, "bytes"],
       [this.date, "number", "int"],
-      [this.sizes, [TypePhotoSize], "Vector<PhotoSize>"],
-      [this.videoSizes ?? null, [TypeVideoSize], "flags.1?Vector<VideoSize>"],
+      [this.sizes, [_TypePhotoSize], "Vector<PhotoSize>"],
+      [this.videoSizes ?? null, [_TypeVideoSize], "flags.1?Vector<VideoSize>"],
       [this.dcId, "number", "int"],
     ];
   }
@@ -7470,7 +7470,7 @@ export class Photo extends TypePhoto {
   }
 }
 
-export class PhotoSizeEmpty extends TypePhotoSize {
+export class PhotoSizeEmpty extends _TypePhotoSize {
   type: string;
 
   protected get [id]() {
@@ -7495,7 +7495,7 @@ export class PhotoSizeEmpty extends TypePhotoSize {
   }
 }
 
-export class PhotoSize extends TypePhotoSize {
+export class PhotoSize extends _TypePhotoSize {
   type: string;
   w: number;
   h: number;
@@ -7532,7 +7532,7 @@ export class PhotoSize extends TypePhotoSize {
   }
 }
 
-export class PhotoCachedSize extends TypePhotoSize {
+export class PhotoCachedSize extends _TypePhotoSize {
   type: string;
   w: number;
   h: number;
@@ -7569,7 +7569,7 @@ export class PhotoCachedSize extends TypePhotoSize {
   }
 }
 
-export class PhotoStrippedSize extends TypePhotoSize {
+export class PhotoStrippedSize extends _TypePhotoSize {
   type: string;
   bytes: Uint8Array;
 
@@ -7598,7 +7598,7 @@ export class PhotoStrippedSize extends TypePhotoSize {
   }
 }
 
-export class PhotoSizeProgressive extends TypePhotoSize {
+export class PhotoSizeProgressive extends _TypePhotoSize {
   type: string;
   w: number;
   h: number;
@@ -7635,7 +7635,7 @@ export class PhotoSizeProgressive extends TypePhotoSize {
   }
 }
 
-export class PhotoPathSize extends TypePhotoSize {
+export class PhotoPathSize extends _TypePhotoSize {
   type: string;
   bytes: Uint8Array;
 
@@ -7664,7 +7664,7 @@ export class PhotoPathSize extends TypePhotoSize {
   }
 }
 
-export class GeoPointEmpty extends TypeGeoPoint {
+export class GeoPointEmpty extends _TypeGeoPoint {
   protected get [id]() {
     return 0x1117DD5F;
   }
@@ -7682,7 +7682,7 @@ export class GeoPointEmpty extends TypeGeoPoint {
   }
 }
 
-export class GeoPoint extends TypeGeoPoint {
+export class GeoPoint extends _TypeGeoPoint {
   long: number;
   lat: number;
   accessHash: bigint;
@@ -7721,7 +7721,7 @@ export class GeoPoint extends TypeGeoPoint {
   }
 }
 
-export class AuthSentCode extends TypeAuthSentCode {
+export class AuthSentCode extends _TypeAuthSentCode {
   type: TypeAuthSentCodeType;
   phoneCodeHash: string;
   nextType?: TypeAuthCodeType;
@@ -7734,9 +7734,9 @@ export class AuthSentCode extends TypeAuthSentCode {
   static get [paramDesc](): ParamDesc {
     return [
       ["flags", flags, "#"],
-      ["type", TypeAuthSentCodeType, "auth.SentCodeType"],
+      ["type", _TypeAuthSentCodeType, "auth.SentCodeType"],
       ["phoneCodeHash", "string", "string"],
-      ["nextType", TypeAuthCodeType, "flags.1?auth.CodeType"],
+      ["nextType", _TypeAuthCodeType, "flags.1?auth.CodeType"],
       ["timeout", "number", "flags.2?int"],
     ];
   }
@@ -7744,9 +7744,9 @@ export class AuthSentCode extends TypeAuthSentCode {
   protected get [params](): Params {
     return [
       ["flags", flags, "#"],
-      [this.type, TypeAuthSentCodeType, "auth.SentCodeType"],
+      [this.type, _TypeAuthSentCodeType, "auth.SentCodeType"],
       [this.phoneCodeHash, "string", "string"],
-      [this.nextType ?? null, TypeAuthCodeType, "flags.1?auth.CodeType"],
+      [this.nextType ?? null, _TypeAuthCodeType, "flags.1?auth.CodeType"],
       [this.timeout ?? null, "number", "flags.2?int"],
     ];
   }
@@ -7760,7 +7760,7 @@ export class AuthSentCode extends TypeAuthSentCode {
   }
 }
 
-export class AuthSentCodeSuccess extends TypeAuthSentCode {
+export class AuthSentCodeSuccess extends _TypeAuthSentCode {
   authorization: TypeAuthAuthorization;
 
   protected get [id]() {
@@ -7769,13 +7769,13 @@ export class AuthSentCodeSuccess extends TypeAuthSentCode {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["authorization", TypeAuthAuthorization, "auth.Authorization"],
+      ["authorization", _TypeAuthAuthorization, "auth.Authorization"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.authorization, TypeAuthAuthorization, "auth.Authorization"],
+      [this.authorization, _TypeAuthAuthorization, "auth.Authorization"],
     ];
   }
 
@@ -7785,7 +7785,7 @@ export class AuthSentCodeSuccess extends TypeAuthSentCode {
   }
 }
 
-export class AuthAuthorization extends TypeAuthAuthorization {
+export class AuthAuthorization extends _TypeAuthAuthorization {
   setupPasswordRequired?: true;
   otherwiseReloginDays?: number;
   tmpSessions?: number;
@@ -7803,7 +7803,7 @@ export class AuthAuthorization extends TypeAuthAuthorization {
       ["otherwiseReloginDays", "number", "flags.1?int"],
       ["tmpSessions", "number", "flags.0?int"],
       ["futureAuthToken", Uint8Array, "flags.2?bytes"],
-      ["user", TypeUser, "User"],
+      ["user", _TypeUser, "User"],
     ];
   }
 
@@ -7814,7 +7814,7 @@ export class AuthAuthorization extends TypeAuthAuthorization {
       [this.otherwiseReloginDays ?? null, "number", "flags.1?int"],
       [this.tmpSessions ?? null, "number", "flags.0?int"],
       [this.futureAuthToken ?? null, Uint8Array, "flags.2?bytes"],
-      [this.user, TypeUser, "User"],
+      [this.user, _TypeUser, "User"],
     ];
   }
 
@@ -7828,7 +7828,7 @@ export class AuthAuthorization extends TypeAuthAuthorization {
   }
 }
 
-export class AuthAuthorizationSignUpRequired extends TypeAuthAuthorization {
+export class AuthAuthorizationSignUpRequired extends _TypeAuthAuthorization {
   termsOfService?: TypeHelpTermsOfService;
 
   protected get [id]() {
@@ -7838,14 +7838,14 @@ export class AuthAuthorizationSignUpRequired extends TypeAuthAuthorization {
   static get [paramDesc](): ParamDesc {
     return [
       ["flags", flags, "#"],
-      ["termsOfService", TypeHelpTermsOfService, "flags.0?help.TermsOfService"],
+      ["termsOfService", _TypeHelpTermsOfService, "flags.0?help.TermsOfService"],
     ];
   }
 
   protected get [params](): Params {
     return [
       ["flags", flags, "#"],
-      [this.termsOfService ?? null, TypeHelpTermsOfService, "flags.0?help.TermsOfService"],
+      [this.termsOfService ?? null, _TypeHelpTermsOfService, "flags.0?help.TermsOfService"],
     ];
   }
 
@@ -7855,7 +7855,7 @@ export class AuthAuthorizationSignUpRequired extends TypeAuthAuthorization {
   }
 }
 
-export class AuthExportedAuthorization extends TypeAuthExportedAuthorization {
+export class AuthExportedAuthorization extends _TypeAuthExportedAuthorization {
   id: bigint;
   bytes: Uint8Array;
 
@@ -7884,7 +7884,7 @@ export class AuthExportedAuthorization extends TypeAuthExportedAuthorization {
   }
 }
 
-export class InputNotifyPeer extends TypeInputNotifyPeer {
+export class InputNotifyPeer extends _TypeInputNotifyPeer {
   peer: TypeInputPeer;
 
   protected get [id]() {
@@ -7893,13 +7893,13 @@ export class InputNotifyPeer extends TypeInputNotifyPeer {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["peer", TypeInputPeer, "InputPeer"],
+      ["peer", _TypeInputPeer, "InputPeer"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.peer, TypeInputPeer, "InputPeer"],
+      [this.peer, _TypeInputPeer, "InputPeer"],
     ];
   }
 
@@ -7909,7 +7909,7 @@ export class InputNotifyPeer extends TypeInputNotifyPeer {
   }
 }
 
-export class InputNotifyUsers extends TypeInputNotifyPeer {
+export class InputNotifyUsers extends _TypeInputNotifyPeer {
   protected get [id]() {
     return 0x193B4417;
   }
@@ -7927,7 +7927,7 @@ export class InputNotifyUsers extends TypeInputNotifyPeer {
   }
 }
 
-export class InputNotifyChats extends TypeInputNotifyPeer {
+export class InputNotifyChats extends _TypeInputNotifyPeer {
   protected get [id]() {
     return 0x4A95E84E;
   }
@@ -7945,7 +7945,7 @@ export class InputNotifyChats extends TypeInputNotifyPeer {
   }
 }
 
-export class InputNotifyBroadcasts extends TypeInputNotifyPeer {
+export class InputNotifyBroadcasts extends _TypeInputNotifyPeer {
   protected get [id]() {
     return 0xB1DB7C7E;
   }
@@ -7963,7 +7963,7 @@ export class InputNotifyBroadcasts extends TypeInputNotifyPeer {
   }
 }
 
-export class InputNotifyForumTopic extends TypeInputNotifyPeer {
+export class InputNotifyForumTopic extends _TypeInputNotifyPeer {
   peer: TypeInputPeer;
   topMsgId: number;
 
@@ -7973,14 +7973,14 @@ export class InputNotifyForumTopic extends TypeInputNotifyPeer {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["peer", TypeInputPeer, "InputPeer"],
+      ["peer", _TypeInputPeer, "InputPeer"],
       ["topMsgId", "number", "int"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.peer, TypeInputPeer, "InputPeer"],
+      [this.peer, _TypeInputPeer, "InputPeer"],
       [this.topMsgId, "number", "int"],
     ];
   }
@@ -7992,7 +7992,7 @@ export class InputNotifyForumTopic extends TypeInputNotifyPeer {
   }
 }
 
-export class InputPeerNotifySettings extends TypeInputPeerNotifySettings {
+export class InputPeerNotifySettings extends _TypeInputPeerNotifySettings {
   showPreviews?: boolean;
   silent?: boolean;
   muteUntil?: number;
@@ -8011,10 +8011,10 @@ export class InputPeerNotifySettings extends TypeInputPeerNotifySettings {
       ["showPreviews", "boolean", "flags.0?Bool"],
       ["silent", "boolean", "flags.1?Bool"],
       ["muteUntil", "number", "flags.2?int"],
-      ["sound", TypeNotificationSound, "flags.3?NotificationSound"],
+      ["sound", _TypeNotificationSound, "flags.3?NotificationSound"],
       ["storiesMuted", "boolean", "flags.6?Bool"],
       ["storiesHideSender", "boolean", "flags.7?Bool"],
-      ["storiesSound", TypeNotificationSound, "flags.8?NotificationSound"],
+      ["storiesSound", _TypeNotificationSound, "flags.8?NotificationSound"],
     ];
   }
 
@@ -8024,10 +8024,10 @@ export class InputPeerNotifySettings extends TypeInputPeerNotifySettings {
       [this.showPreviews ?? null, "boolean", "flags.0?Bool"],
       [this.silent ?? null, "boolean", "flags.1?Bool"],
       [this.muteUntil ?? null, "number", "flags.2?int"],
-      [this.sound ?? null, TypeNotificationSound, "flags.3?NotificationSound"],
+      [this.sound ?? null, _TypeNotificationSound, "flags.3?NotificationSound"],
       [this.storiesMuted ?? null, "boolean", "flags.6?Bool"],
       [this.storiesHideSender ?? null, "boolean", "flags.7?Bool"],
-      [this.storiesSound ?? null, TypeNotificationSound, "flags.8?NotificationSound"],
+      [this.storiesSound ?? null, _TypeNotificationSound, "flags.8?NotificationSound"],
     ];
   }
 
@@ -8043,7 +8043,7 @@ export class InputPeerNotifySettings extends TypeInputPeerNotifySettings {
   }
 }
 
-export class PeerNotifySettings extends TypePeerNotifySettings {
+export class PeerNotifySettings extends _TypePeerNotifySettings {
   showPreviews?: boolean;
   silent?: boolean;
   muteUntil?: number;
@@ -8066,14 +8066,14 @@ export class PeerNotifySettings extends TypePeerNotifySettings {
       ["showPreviews", "boolean", "flags.0?Bool"],
       ["silent", "boolean", "flags.1?Bool"],
       ["muteUntil", "number", "flags.2?int"],
-      ["iosSound", TypeNotificationSound, "flags.3?NotificationSound"],
-      ["androidSound", TypeNotificationSound, "flags.4?NotificationSound"],
-      ["otherSound", TypeNotificationSound, "flags.5?NotificationSound"],
+      ["iosSound", _TypeNotificationSound, "flags.3?NotificationSound"],
+      ["androidSound", _TypeNotificationSound, "flags.4?NotificationSound"],
+      ["otherSound", _TypeNotificationSound, "flags.5?NotificationSound"],
       ["storiesMuted", "boolean", "flags.6?Bool"],
       ["storiesHideSender", "boolean", "flags.7?Bool"],
-      ["storiesIosSound", TypeNotificationSound, "flags.8?NotificationSound"],
-      ["storiesAndroidSound", TypeNotificationSound, "flags.9?NotificationSound"],
-      ["storiesOtherSound", TypeNotificationSound, "flags.10?NotificationSound"],
+      ["storiesIosSound", _TypeNotificationSound, "flags.8?NotificationSound"],
+      ["storiesAndroidSound", _TypeNotificationSound, "flags.9?NotificationSound"],
+      ["storiesOtherSound", _TypeNotificationSound, "flags.10?NotificationSound"],
     ];
   }
 
@@ -8083,14 +8083,14 @@ export class PeerNotifySettings extends TypePeerNotifySettings {
       [this.showPreviews ?? null, "boolean", "flags.0?Bool"],
       [this.silent ?? null, "boolean", "flags.1?Bool"],
       [this.muteUntil ?? null, "number", "flags.2?int"],
-      [this.iosSound ?? null, TypeNotificationSound, "flags.3?NotificationSound"],
-      [this.androidSound ?? null, TypeNotificationSound, "flags.4?NotificationSound"],
-      [this.otherSound ?? null, TypeNotificationSound, "flags.5?NotificationSound"],
+      [this.iosSound ?? null, _TypeNotificationSound, "flags.3?NotificationSound"],
+      [this.androidSound ?? null, _TypeNotificationSound, "flags.4?NotificationSound"],
+      [this.otherSound ?? null, _TypeNotificationSound, "flags.5?NotificationSound"],
       [this.storiesMuted ?? null, "boolean", "flags.6?Bool"],
       [this.storiesHideSender ?? null, "boolean", "flags.7?Bool"],
-      [this.storiesIosSound ?? null, TypeNotificationSound, "flags.8?NotificationSound"],
-      [this.storiesAndroidSound ?? null, TypeNotificationSound, "flags.9?NotificationSound"],
-      [this.storiesOtherSound ?? null, TypeNotificationSound, "flags.10?NotificationSound"],
+      [this.storiesIosSound ?? null, _TypeNotificationSound, "flags.8?NotificationSound"],
+      [this.storiesAndroidSound ?? null, _TypeNotificationSound, "flags.9?NotificationSound"],
+      [this.storiesOtherSound ?? null, _TypeNotificationSound, "flags.10?NotificationSound"],
     ];
   }
 
@@ -8110,7 +8110,7 @@ export class PeerNotifySettings extends TypePeerNotifySettings {
   }
 }
 
-export class PeerSettings extends TypePeerSettings {
+export class PeerSettings extends _TypePeerSettings {
   reportSpam?: true;
   addContact?: true;
   blockContact?: true;
@@ -8181,7 +8181,7 @@ export class PeerSettings extends TypePeerSettings {
   }
 }
 
-export class WallPaper extends TypeWallPaper {
+export class WallPaper extends _TypeWallPaper {
   id: bigint;
   creator?: true;
   default?: true;
@@ -8206,8 +8206,8 @@ export class WallPaper extends TypeWallPaper {
       ["dark", "true", "flags.4?true"],
       ["accessHash", "bigint", "long"],
       ["slug", "string", "string"],
-      ["document", TypeDocument, "Document"],
-      ["settings", TypeWallPaperSettings, "flags.2?WallPaperSettings"],
+      ["document", _TypeDocument, "Document"],
+      ["settings", _TypeWallPaperSettings, "flags.2?WallPaperSettings"],
     ];
   }
 
@@ -8221,8 +8221,8 @@ export class WallPaper extends TypeWallPaper {
       [this.dark ?? null, "true", "flags.4?true"],
       [this.accessHash, "bigint", "long"],
       [this.slug, "string", "string"],
-      [this.document, TypeDocument, "Document"],
-      [this.settings ?? null, TypeWallPaperSettings, "flags.2?WallPaperSettings"],
+      [this.document, _TypeDocument, "Document"],
+      [this.settings ?? null, _TypeWallPaperSettings, "flags.2?WallPaperSettings"],
     ];
   }
 
@@ -8240,7 +8240,7 @@ export class WallPaper extends TypeWallPaper {
   }
 }
 
-export class WallPaperNoFile extends TypeWallPaper {
+export class WallPaperNoFile extends _TypeWallPaper {
   id: bigint;
   default?: true;
   dark?: true;
@@ -8256,7 +8256,7 @@ export class WallPaperNoFile extends TypeWallPaper {
       ["flags", flags, "#"],
       ["default", "true", "flags.1?true"],
       ["dark", "true", "flags.4?true"],
-      ["settings", TypeWallPaperSettings, "flags.2?WallPaperSettings"],
+      ["settings", _TypeWallPaperSettings, "flags.2?WallPaperSettings"],
     ];
   }
 
@@ -8266,7 +8266,7 @@ export class WallPaperNoFile extends TypeWallPaper {
       ["flags", flags, "#"],
       [this.default ?? null, "true", "flags.1?true"],
       [this.dark ?? null, "true", "flags.4?true"],
-      [this.settings ?? null, TypeWallPaperSettings, "flags.2?WallPaperSettings"],
+      [this.settings ?? null, _TypeWallPaperSettings, "flags.2?WallPaperSettings"],
     ];
   }
 
@@ -8279,7 +8279,7 @@ export class WallPaperNoFile extends TypeWallPaper {
   }
 }
 
-export class InputReportReasonSpam extends TypeReportReason {
+export class InputReportReasonSpam extends _TypeReportReason {
   protected get [id]() {
     return 0x58DBCAB8;
   }
@@ -8297,7 +8297,7 @@ export class InputReportReasonSpam extends TypeReportReason {
   }
 }
 
-export class InputReportReasonViolence extends TypeReportReason {
+export class InputReportReasonViolence extends _TypeReportReason {
   protected get [id]() {
     return 0x1E22C78D;
   }
@@ -8315,7 +8315,7 @@ export class InputReportReasonViolence extends TypeReportReason {
   }
 }
 
-export class InputReportReasonPornography extends TypeReportReason {
+export class InputReportReasonPornography extends _TypeReportReason {
   protected get [id]() {
     return 0x2E59D922;
   }
@@ -8333,7 +8333,7 @@ export class InputReportReasonPornography extends TypeReportReason {
   }
 }
 
-export class InputReportReasonChildAbuse extends TypeReportReason {
+export class InputReportReasonChildAbuse extends _TypeReportReason {
   protected get [id]() {
     return 0xADF44EE3;
   }
@@ -8351,7 +8351,7 @@ export class InputReportReasonChildAbuse extends TypeReportReason {
   }
 }
 
-export class InputReportReasonOther extends TypeReportReason {
+export class InputReportReasonOther extends _TypeReportReason {
   protected get [id]() {
     return 0xC1E4A2B1;
   }
@@ -8369,7 +8369,7 @@ export class InputReportReasonOther extends TypeReportReason {
   }
 }
 
-export class InputReportReasonCopyright extends TypeReportReason {
+export class InputReportReasonCopyright extends _TypeReportReason {
   protected get [id]() {
     return 0x9B89F93A;
   }
@@ -8387,7 +8387,7 @@ export class InputReportReasonCopyright extends TypeReportReason {
   }
 }
 
-export class InputReportReasonGeoIrrelevant extends TypeReportReason {
+export class InputReportReasonGeoIrrelevant extends _TypeReportReason {
   protected get [id]() {
     return 0xDBD4FEED;
   }
@@ -8405,7 +8405,7 @@ export class InputReportReasonGeoIrrelevant extends TypeReportReason {
   }
 }
 
-export class InputReportReasonFake extends TypeReportReason {
+export class InputReportReasonFake extends _TypeReportReason {
   protected get [id]() {
     return 0xF5DDD6E7;
   }
@@ -8423,7 +8423,7 @@ export class InputReportReasonFake extends TypeReportReason {
   }
 }
 
-export class InputReportReasonIllegalDrugs extends TypeReportReason {
+export class InputReportReasonIllegalDrugs extends _TypeReportReason {
   protected get [id]() {
     return 0x0A8EB2BE;
   }
@@ -8441,7 +8441,7 @@ export class InputReportReasonIllegalDrugs extends TypeReportReason {
   }
 }
 
-export class InputReportReasonPersonalDetails extends TypeReportReason {
+export class InputReportReasonPersonalDetails extends _TypeReportReason {
   protected get [id]() {
     return 0x9EC7863D;
   }
@@ -8459,7 +8459,7 @@ export class InputReportReasonPersonalDetails extends TypeReportReason {
   }
 }
 
-export class UserFull extends TypeUserFull {
+export class UserFull extends _TypeUserFull {
   blocked?: true;
   phoneCallsAvailable?: true;
   phoneCallsPrivate?: true;
@@ -8509,23 +8509,23 @@ export class UserFull extends TypeUserFull {
       ["blockedMyStoriesFrom", "true", "flags.27?true"],
       ["id", "bigint", "long"],
       ["about", "string", "flags.1?string"],
-      ["settings", TypePeerSettings, "PeerSettings"],
-      ["personalPhoto", TypePhoto, "flags.21?Photo"],
-      ["profilePhoto", TypePhoto, "flags.2?Photo"],
-      ["fallbackPhoto", TypePhoto, "flags.22?Photo"],
-      ["notifySettings", TypePeerNotifySettings, "PeerNotifySettings"],
-      ["botInfo", TypeBotInfo, "flags.3?BotInfo"],
+      ["settings", _TypePeerSettings, "PeerSettings"],
+      ["personalPhoto", _TypePhoto, "flags.21?Photo"],
+      ["profilePhoto", _TypePhoto, "flags.2?Photo"],
+      ["fallbackPhoto", _TypePhoto, "flags.22?Photo"],
+      ["notifySettings", _TypePeerNotifySettings, "PeerNotifySettings"],
+      ["botInfo", _TypeBotInfo, "flags.3?BotInfo"],
       ["pinnedMsgId", "number", "flags.6?int"],
       ["commonChatsCount", "number", "int"],
       ["folderId", "number", "flags.11?int"],
       ["ttlPeriod", "number", "flags.14?int"],
       ["themeEmoticon", "string", "flags.15?string"],
       ["privateForwardName", "string", "flags.16?string"],
-      ["botGroupAdminRights", TypeChatAdminRights, "flags.17?ChatAdminRights"],
-      ["botBroadcastAdminRights", TypeChatAdminRights, "flags.18?ChatAdminRights"],
-      ["premiumGifts", [TypePremiumGiftOption], "flags.19?Vector<PremiumGiftOption>"],
-      ["wallpaper", TypeWallPaper, "flags.24?WallPaper"],
-      ["stories", TypeUserStories, "flags.25?UserStories"],
+      ["botGroupAdminRights", _TypeChatAdminRights, "flags.17?ChatAdminRights"],
+      ["botBroadcastAdminRights", _TypeChatAdminRights, "flags.18?ChatAdminRights"],
+      ["premiumGifts", [_TypePremiumGiftOption], "flags.19?Vector<PremiumGiftOption>"],
+      ["wallpaper", _TypeWallPaper, "flags.24?WallPaper"],
+      ["stories", _TypeUserStories, "flags.25?UserStories"],
     ];
   }
 
@@ -8544,23 +8544,23 @@ export class UserFull extends TypeUserFull {
       [this.blockedMyStoriesFrom ?? null, "true", "flags.27?true"],
       [this.id, "bigint", "long"],
       [this.about ?? null, "string", "flags.1?string"],
-      [this.settings, TypePeerSettings, "PeerSettings"],
-      [this.personalPhoto ?? null, TypePhoto, "flags.21?Photo"],
-      [this.profilePhoto ?? null, TypePhoto, "flags.2?Photo"],
-      [this.fallbackPhoto ?? null, TypePhoto, "flags.22?Photo"],
-      [this.notifySettings, TypePeerNotifySettings, "PeerNotifySettings"],
-      [this.botInfo ?? null, TypeBotInfo, "flags.3?BotInfo"],
+      [this.settings, _TypePeerSettings, "PeerSettings"],
+      [this.personalPhoto ?? null, _TypePhoto, "flags.21?Photo"],
+      [this.profilePhoto ?? null, _TypePhoto, "flags.2?Photo"],
+      [this.fallbackPhoto ?? null, _TypePhoto, "flags.22?Photo"],
+      [this.notifySettings, _TypePeerNotifySettings, "PeerNotifySettings"],
+      [this.botInfo ?? null, _TypeBotInfo, "flags.3?BotInfo"],
       [this.pinnedMsgId ?? null, "number", "flags.6?int"],
       [this.commonChatsCount, "number", "int"],
       [this.folderId ?? null, "number", "flags.11?int"],
       [this.ttlPeriod ?? null, "number", "flags.14?int"],
       [this.themeEmoticon ?? null, "string", "flags.15?string"],
       [this.privateForwardName ?? null, "string", "flags.16?string"],
-      [this.botGroupAdminRights ?? null, TypeChatAdminRights, "flags.17?ChatAdminRights"],
-      [this.botBroadcastAdminRights ?? null, TypeChatAdminRights, "flags.18?ChatAdminRights"],
-      [this.premiumGifts ?? null, [TypePremiumGiftOption], "flags.19?Vector<PremiumGiftOption>"],
-      [this.wallpaper ?? null, TypeWallPaper, "flags.24?WallPaper"],
-      [this.stories ?? null, TypeUserStories, "flags.25?UserStories"],
+      [this.botGroupAdminRights ?? null, _TypeChatAdminRights, "flags.17?ChatAdminRights"],
+      [this.botBroadcastAdminRights ?? null, _TypeChatAdminRights, "flags.18?ChatAdminRights"],
+      [this.premiumGifts ?? null, [_TypePremiumGiftOption], "flags.19?Vector<PremiumGiftOption>"],
+      [this.wallpaper ?? null, _TypeWallPaper, "flags.24?WallPaper"],
+      [this.stories ?? null, _TypeUserStories, "flags.25?UserStories"],
     ];
   }
 
@@ -8598,7 +8598,7 @@ export class UserFull extends TypeUserFull {
   }
 }
 
-export class Contact extends TypeContact {
+export class Contact extends _TypeContact {
   userId: bigint;
   mutual: boolean;
 
@@ -8627,7 +8627,7 @@ export class Contact extends TypeContact {
   }
 }
 
-export class ImportedContact extends TypeImportedContact {
+export class ImportedContact extends _TypeImportedContact {
   userId: bigint;
   clientId: bigint;
 
@@ -8656,7 +8656,7 @@ export class ImportedContact extends TypeImportedContact {
   }
 }
 
-export class ContactStatus extends TypeContactStatus {
+export class ContactStatus extends _TypeContactStatus {
   userId: bigint;
   status: TypeUserStatus;
 
@@ -8667,14 +8667,14 @@ export class ContactStatus extends TypeContactStatus {
   static get [paramDesc](): ParamDesc {
     return [
       ["userId", "bigint", "long"],
-      ["status", TypeUserStatus, "UserStatus"],
+      ["status", _TypeUserStatus, "UserStatus"],
     ];
   }
 
   protected get [params](): Params {
     return [
       [this.userId, "bigint", "long"],
-      [this.status, TypeUserStatus, "UserStatus"],
+      [this.status, _TypeUserStatus, "UserStatus"],
     ];
   }
 
@@ -8685,7 +8685,7 @@ export class ContactStatus extends TypeContactStatus {
   }
 }
 
-export class ContactsContactsNotModified extends TypeContactsContacts {
+export class ContactsContactsNotModified extends _TypeContactsContacts {
   protected get [id]() {
     return 0xB74BA9D2;
   }
@@ -8703,7 +8703,7 @@ export class ContactsContactsNotModified extends TypeContactsContacts {
   }
 }
 
-export class ContactsContacts extends TypeContactsContacts {
+export class ContactsContacts extends _TypeContactsContacts {
   contacts: Array<TypeContact>;
   savedCount: number;
   users: Array<TypeUser>;
@@ -8714,17 +8714,17 @@ export class ContactsContacts extends TypeContactsContacts {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["contacts", [TypeContact], "Vector<Contact>"],
+      ["contacts", [_TypeContact], "Vector<Contact>"],
       ["savedCount", "number", "int"],
-      ["users", [TypeUser], "Vector<User>"],
+      ["users", [_TypeUser], "Vector<User>"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.contacts, [TypeContact], "Vector<Contact>"],
+      [this.contacts, [_TypeContact], "Vector<Contact>"],
       [this.savedCount, "number", "int"],
-      [this.users, [TypeUser], "Vector<User>"],
+      [this.users, [_TypeUser], "Vector<User>"],
     ];
   }
 
@@ -8736,7 +8736,7 @@ export class ContactsContacts extends TypeContactsContacts {
   }
 }
 
-export class ContactsImportedContacts extends TypeContactsImportedContacts {
+export class ContactsImportedContacts extends _TypeContactsImportedContacts {
   imported: Array<TypeImportedContact>;
   popularInvites: Array<TypePopularContact>;
   retryContacts: Array<bigint>;
@@ -8748,19 +8748,19 @@ export class ContactsImportedContacts extends TypeContactsImportedContacts {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["imported", [TypeImportedContact], "Vector<ImportedContact>"],
-      ["popularInvites", [TypePopularContact], "Vector<PopularContact>"],
+      ["imported", [_TypeImportedContact], "Vector<ImportedContact>"],
+      ["popularInvites", [_TypePopularContact], "Vector<PopularContact>"],
       ["retryContacts", ["bigint"], "Vector<long>"],
-      ["users", [TypeUser], "Vector<User>"],
+      ["users", [_TypeUser], "Vector<User>"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.imported, [TypeImportedContact], "Vector<ImportedContact>"],
-      [this.popularInvites, [TypePopularContact], "Vector<PopularContact>"],
+      [this.imported, [_TypeImportedContact], "Vector<ImportedContact>"],
+      [this.popularInvites, [_TypePopularContact], "Vector<PopularContact>"],
       [this.retryContacts, ["bigint"], "Vector<long>"],
-      [this.users, [TypeUser], "Vector<User>"],
+      [this.users, [_TypeUser], "Vector<User>"],
     ];
   }
 
@@ -8773,7 +8773,7 @@ export class ContactsImportedContacts extends TypeContactsImportedContacts {
   }
 }
 
-export class ContactsBlocked extends TypeContactsBlocked {
+export class ContactsBlocked extends _TypeContactsBlocked {
   blocked: Array<TypePeerBlocked>;
   chats: Array<TypeChat>;
   users: Array<TypeUser>;
@@ -8784,17 +8784,17 @@ export class ContactsBlocked extends TypeContactsBlocked {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["blocked", [TypePeerBlocked], "Vector<PeerBlocked>"],
-      ["chats", [TypeChat], "Vector<Chat>"],
-      ["users", [TypeUser], "Vector<User>"],
+      ["blocked", [_TypePeerBlocked], "Vector<PeerBlocked>"],
+      ["chats", [_TypeChat], "Vector<Chat>"],
+      ["users", [_TypeUser], "Vector<User>"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.blocked, [TypePeerBlocked], "Vector<PeerBlocked>"],
-      [this.chats, [TypeChat], "Vector<Chat>"],
-      [this.users, [TypeUser], "Vector<User>"],
+      [this.blocked, [_TypePeerBlocked], "Vector<PeerBlocked>"],
+      [this.chats, [_TypeChat], "Vector<Chat>"],
+      [this.users, [_TypeUser], "Vector<User>"],
     ];
   }
 
@@ -8806,7 +8806,7 @@ export class ContactsBlocked extends TypeContactsBlocked {
   }
 }
 
-export class ContactsBlockedSlice extends TypeContactsBlocked {
+export class ContactsBlockedSlice extends _TypeContactsBlocked {
   count: number;
   blocked: Array<TypePeerBlocked>;
   chats: Array<TypeChat>;
@@ -8819,18 +8819,18 @@ export class ContactsBlockedSlice extends TypeContactsBlocked {
   static get [paramDesc](): ParamDesc {
     return [
       ["count", "number", "int"],
-      ["blocked", [TypePeerBlocked], "Vector<PeerBlocked>"],
-      ["chats", [TypeChat], "Vector<Chat>"],
-      ["users", [TypeUser], "Vector<User>"],
+      ["blocked", [_TypePeerBlocked], "Vector<PeerBlocked>"],
+      ["chats", [_TypeChat], "Vector<Chat>"],
+      ["users", [_TypeUser], "Vector<User>"],
     ];
   }
 
   protected get [params](): Params {
     return [
       [this.count, "number", "int"],
-      [this.blocked, [TypePeerBlocked], "Vector<PeerBlocked>"],
-      [this.chats, [TypeChat], "Vector<Chat>"],
-      [this.users, [TypeUser], "Vector<User>"],
+      [this.blocked, [_TypePeerBlocked], "Vector<PeerBlocked>"],
+      [this.chats, [_TypeChat], "Vector<Chat>"],
+      [this.users, [_TypeUser], "Vector<User>"],
     ];
   }
 
@@ -8843,7 +8843,7 @@ export class ContactsBlockedSlice extends TypeContactsBlocked {
   }
 }
 
-export class MessagesDialogs extends TypeMessagesDialogs {
+export class MessagesDialogs extends _TypeMessagesDialogs {
   dialogs: Array<TypeDialog>;
   messages: Array<TypeMessage>;
   chats: Array<TypeChat>;
@@ -8855,19 +8855,19 @@ export class MessagesDialogs extends TypeMessagesDialogs {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["dialogs", [TypeDialog], "Vector<Dialog>"],
-      ["messages", [TypeMessage], "Vector<Message>"],
-      ["chats", [TypeChat], "Vector<Chat>"],
-      ["users", [TypeUser], "Vector<User>"],
+      ["dialogs", [_TypeDialog], "Vector<Dialog>"],
+      ["messages", [_TypeMessage], "Vector<Message>"],
+      ["chats", [_TypeChat], "Vector<Chat>"],
+      ["users", [_TypeUser], "Vector<User>"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.dialogs, [TypeDialog], "Vector<Dialog>"],
-      [this.messages, [TypeMessage], "Vector<Message>"],
-      [this.chats, [TypeChat], "Vector<Chat>"],
-      [this.users, [TypeUser], "Vector<User>"],
+      [this.dialogs, [_TypeDialog], "Vector<Dialog>"],
+      [this.messages, [_TypeMessage], "Vector<Message>"],
+      [this.chats, [_TypeChat], "Vector<Chat>"],
+      [this.users, [_TypeUser], "Vector<User>"],
     ];
   }
 
@@ -8880,7 +8880,7 @@ export class MessagesDialogs extends TypeMessagesDialogs {
   }
 }
 
-export class MessagesDialogsSlice extends TypeMessagesDialogs {
+export class MessagesDialogsSlice extends _TypeMessagesDialogs {
   count: number;
   dialogs: Array<TypeDialog>;
   messages: Array<TypeMessage>;
@@ -8894,20 +8894,20 @@ export class MessagesDialogsSlice extends TypeMessagesDialogs {
   static get [paramDesc](): ParamDesc {
     return [
       ["count", "number", "int"],
-      ["dialogs", [TypeDialog], "Vector<Dialog>"],
-      ["messages", [TypeMessage], "Vector<Message>"],
-      ["chats", [TypeChat], "Vector<Chat>"],
-      ["users", [TypeUser], "Vector<User>"],
+      ["dialogs", [_TypeDialog], "Vector<Dialog>"],
+      ["messages", [_TypeMessage], "Vector<Message>"],
+      ["chats", [_TypeChat], "Vector<Chat>"],
+      ["users", [_TypeUser], "Vector<User>"],
     ];
   }
 
   protected get [params](): Params {
     return [
       [this.count, "number", "int"],
-      [this.dialogs, [TypeDialog], "Vector<Dialog>"],
-      [this.messages, [TypeMessage], "Vector<Message>"],
-      [this.chats, [TypeChat], "Vector<Chat>"],
-      [this.users, [TypeUser], "Vector<User>"],
+      [this.dialogs, [_TypeDialog], "Vector<Dialog>"],
+      [this.messages, [_TypeMessage], "Vector<Message>"],
+      [this.chats, [_TypeChat], "Vector<Chat>"],
+      [this.users, [_TypeUser], "Vector<User>"],
     ];
   }
 
@@ -8921,7 +8921,7 @@ export class MessagesDialogsSlice extends TypeMessagesDialogs {
   }
 }
 
-export class MessagesDialogsNotModified extends TypeMessagesDialogs {
+export class MessagesDialogsNotModified extends _TypeMessagesDialogs {
   count: number;
 
   protected get [id]() {
@@ -8946,7 +8946,7 @@ export class MessagesDialogsNotModified extends TypeMessagesDialogs {
   }
 }
 
-export class MessagesMessages extends TypeMessagesMessages {
+export class MessagesMessages extends _TypeMessagesMessages {
   messages: Array<TypeMessage>;
   chats: Array<TypeChat>;
   users: Array<TypeUser>;
@@ -8957,17 +8957,17 @@ export class MessagesMessages extends TypeMessagesMessages {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["messages", [TypeMessage], "Vector<Message>"],
-      ["chats", [TypeChat], "Vector<Chat>"],
-      ["users", [TypeUser], "Vector<User>"],
+      ["messages", [_TypeMessage], "Vector<Message>"],
+      ["chats", [_TypeChat], "Vector<Chat>"],
+      ["users", [_TypeUser], "Vector<User>"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.messages, [TypeMessage], "Vector<Message>"],
-      [this.chats, [TypeChat], "Vector<Chat>"],
-      [this.users, [TypeUser], "Vector<User>"],
+      [this.messages, [_TypeMessage], "Vector<Message>"],
+      [this.chats, [_TypeChat], "Vector<Chat>"],
+      [this.users, [_TypeUser], "Vector<User>"],
     ];
   }
 
@@ -8979,7 +8979,7 @@ export class MessagesMessages extends TypeMessagesMessages {
   }
 }
 
-export class MessagesMessagesSlice extends TypeMessagesMessages {
+export class MessagesMessagesSlice extends _TypeMessagesMessages {
   inexact?: true;
   count: number;
   nextRate?: number;
@@ -8999,9 +8999,9 @@ export class MessagesMessagesSlice extends TypeMessagesMessages {
       ["count", "number", "int"],
       ["nextRate", "number", "flags.0?int"],
       ["offsetIdOffset", "number", "flags.2?int"],
-      ["messages", [TypeMessage], "Vector<Message>"],
-      ["chats", [TypeChat], "Vector<Chat>"],
-      ["users", [TypeUser], "Vector<User>"],
+      ["messages", [_TypeMessage], "Vector<Message>"],
+      ["chats", [_TypeChat], "Vector<Chat>"],
+      ["users", [_TypeUser], "Vector<User>"],
     ];
   }
 
@@ -9012,9 +9012,9 @@ export class MessagesMessagesSlice extends TypeMessagesMessages {
       [this.count, "number", "int"],
       [this.nextRate ?? null, "number", "flags.0?int"],
       [this.offsetIdOffset ?? null, "number", "flags.2?int"],
-      [this.messages, [TypeMessage], "Vector<Message>"],
-      [this.chats, [TypeChat], "Vector<Chat>"],
-      [this.users, [TypeUser], "Vector<User>"],
+      [this.messages, [_TypeMessage], "Vector<Message>"],
+      [this.chats, [_TypeChat], "Vector<Chat>"],
+      [this.users, [_TypeUser], "Vector<User>"],
     ];
   }
 
@@ -9030,7 +9030,7 @@ export class MessagesMessagesSlice extends TypeMessagesMessages {
   }
 }
 
-export class MessagesChannelMessages extends TypeMessagesMessages {
+export class MessagesChannelMessages extends _TypeMessagesMessages {
   inexact?: true;
   pts: number;
   count: number;
@@ -9051,10 +9051,10 @@ export class MessagesChannelMessages extends TypeMessagesMessages {
       ["pts", "number", "int"],
       ["count", "number", "int"],
       ["offsetIdOffset", "number", "flags.2?int"],
-      ["messages", [TypeMessage], "Vector<Message>"],
-      ["topics", [TypeForumTopic], "Vector<ForumTopic>"],
-      ["chats", [TypeChat], "Vector<Chat>"],
-      ["users", [TypeUser], "Vector<User>"],
+      ["messages", [_TypeMessage], "Vector<Message>"],
+      ["topics", [_TypeForumTopic], "Vector<ForumTopic>"],
+      ["chats", [_TypeChat], "Vector<Chat>"],
+      ["users", [_TypeUser], "Vector<User>"],
     ];
   }
 
@@ -9065,10 +9065,10 @@ export class MessagesChannelMessages extends TypeMessagesMessages {
       [this.pts, "number", "int"],
       [this.count, "number", "int"],
       [this.offsetIdOffset ?? null, "number", "flags.2?int"],
-      [this.messages, [TypeMessage], "Vector<Message>"],
-      [this.topics, [TypeForumTopic], "Vector<ForumTopic>"],
-      [this.chats, [TypeChat], "Vector<Chat>"],
-      [this.users, [TypeUser], "Vector<User>"],
+      [this.messages, [_TypeMessage], "Vector<Message>"],
+      [this.topics, [_TypeForumTopic], "Vector<ForumTopic>"],
+      [this.chats, [_TypeChat], "Vector<Chat>"],
+      [this.users, [_TypeUser], "Vector<User>"],
     ];
   }
 
@@ -9085,7 +9085,7 @@ export class MessagesChannelMessages extends TypeMessagesMessages {
   }
 }
 
-export class MessagesMessagesNotModified extends TypeMessagesMessages {
+export class MessagesMessagesNotModified extends _TypeMessagesMessages {
   count: number;
 
   protected get [id]() {
@@ -9110,7 +9110,7 @@ export class MessagesMessagesNotModified extends TypeMessagesMessages {
   }
 }
 
-export class MessagesChats extends TypeMessagesChats {
+export class MessagesChats extends _TypeMessagesChats {
   chats: Array<TypeChat>;
 
   protected get [id]() {
@@ -9119,13 +9119,13 @@ export class MessagesChats extends TypeMessagesChats {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["chats", [TypeChat], "Vector<Chat>"],
+      ["chats", [_TypeChat], "Vector<Chat>"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.chats, [TypeChat], "Vector<Chat>"],
+      [this.chats, [_TypeChat], "Vector<Chat>"],
     ];
   }
 
@@ -9135,7 +9135,7 @@ export class MessagesChats extends TypeMessagesChats {
   }
 }
 
-export class MessagesChatsSlice extends TypeMessagesChats {
+export class MessagesChatsSlice extends _TypeMessagesChats {
   count: number;
   chats: Array<TypeChat>;
 
@@ -9146,14 +9146,14 @@ export class MessagesChatsSlice extends TypeMessagesChats {
   static get [paramDesc](): ParamDesc {
     return [
       ["count", "number", "int"],
-      ["chats", [TypeChat], "Vector<Chat>"],
+      ["chats", [_TypeChat], "Vector<Chat>"],
     ];
   }
 
   protected get [params](): Params {
     return [
       [this.count, "number", "int"],
-      [this.chats, [TypeChat], "Vector<Chat>"],
+      [this.chats, [_TypeChat], "Vector<Chat>"],
     ];
   }
 
@@ -9164,7 +9164,7 @@ export class MessagesChatsSlice extends TypeMessagesChats {
   }
 }
 
-export class MessagesChatFull extends TypeMessagesChatFull {
+export class MessagesChatFull extends _TypeMessagesChatFull {
   fullChat: TypeChatFull;
   chats: Array<TypeChat>;
   users: Array<TypeUser>;
@@ -9175,17 +9175,17 @@ export class MessagesChatFull extends TypeMessagesChatFull {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["fullChat", TypeChatFull, "ChatFull"],
-      ["chats", [TypeChat], "Vector<Chat>"],
-      ["users", [TypeUser], "Vector<User>"],
+      ["fullChat", _TypeChatFull, "ChatFull"],
+      ["chats", [_TypeChat], "Vector<Chat>"],
+      ["users", [_TypeUser], "Vector<User>"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.fullChat, TypeChatFull, "ChatFull"],
-      [this.chats, [TypeChat], "Vector<Chat>"],
-      [this.users, [TypeUser], "Vector<User>"],
+      [this.fullChat, _TypeChatFull, "ChatFull"],
+      [this.chats, [_TypeChat], "Vector<Chat>"],
+      [this.users, [_TypeUser], "Vector<User>"],
     ];
   }
 
@@ -9197,7 +9197,7 @@ export class MessagesChatFull extends TypeMessagesChatFull {
   }
 }
 
-export class MessagesAffectedHistory extends TypeMessagesAffectedHistory {
+export class MessagesAffectedHistory extends _TypeMessagesAffectedHistory {
   pts: number;
   ptsCount: number;
   offset: number;
@@ -9230,7 +9230,7 @@ export class MessagesAffectedHistory extends TypeMessagesAffectedHistory {
   }
 }
 
-export class InputMessagesFilterEmpty extends TypeMessagesFilter {
+export class InputMessagesFilterEmpty extends _TypeMessagesFilter {
   protected get [id]() {
     return 0x57E2F66C;
   }
@@ -9248,7 +9248,7 @@ export class InputMessagesFilterEmpty extends TypeMessagesFilter {
   }
 }
 
-export class InputMessagesFilterPhotos extends TypeMessagesFilter {
+export class InputMessagesFilterPhotos extends _TypeMessagesFilter {
   protected get [id]() {
     return 0x9609A51C;
   }
@@ -9266,7 +9266,7 @@ export class InputMessagesFilterPhotos extends TypeMessagesFilter {
   }
 }
 
-export class InputMessagesFilterVideo extends TypeMessagesFilter {
+export class InputMessagesFilterVideo extends _TypeMessagesFilter {
   protected get [id]() {
     return 0x9FC00E65;
   }
@@ -9284,7 +9284,7 @@ export class InputMessagesFilterVideo extends TypeMessagesFilter {
   }
 }
 
-export class InputMessagesFilterPhotoVideo extends TypeMessagesFilter {
+export class InputMessagesFilterPhotoVideo extends _TypeMessagesFilter {
   protected get [id]() {
     return 0x56E9F0E4;
   }
@@ -9302,7 +9302,7 @@ export class InputMessagesFilterPhotoVideo extends TypeMessagesFilter {
   }
 }
 
-export class InputMessagesFilterDocument extends TypeMessagesFilter {
+export class InputMessagesFilterDocument extends _TypeMessagesFilter {
   protected get [id]() {
     return 0x9EDDF188;
   }
@@ -9320,7 +9320,7 @@ export class InputMessagesFilterDocument extends TypeMessagesFilter {
   }
 }
 
-export class InputMessagesFilterURL extends TypeMessagesFilter {
+export class InputMessagesFilterURL extends _TypeMessagesFilter {
   protected get [id]() {
     return 0x7EF0DD87;
   }
@@ -9338,7 +9338,7 @@ export class InputMessagesFilterURL extends TypeMessagesFilter {
   }
 }
 
-export class InputMessagesFilterGif extends TypeMessagesFilter {
+export class InputMessagesFilterGif extends _TypeMessagesFilter {
   protected get [id]() {
     return 0xFFC86587;
   }
@@ -9356,7 +9356,7 @@ export class InputMessagesFilterGif extends TypeMessagesFilter {
   }
 }
 
-export class InputMessagesFilterVoice extends TypeMessagesFilter {
+export class InputMessagesFilterVoice extends _TypeMessagesFilter {
   protected get [id]() {
     return 0x50F5C392;
   }
@@ -9374,7 +9374,7 @@ export class InputMessagesFilterVoice extends TypeMessagesFilter {
   }
 }
 
-export class InputMessagesFilterMusic extends TypeMessagesFilter {
+export class InputMessagesFilterMusic extends _TypeMessagesFilter {
   protected get [id]() {
     return 0x3751B49E;
   }
@@ -9392,7 +9392,7 @@ export class InputMessagesFilterMusic extends TypeMessagesFilter {
   }
 }
 
-export class InputMessagesFilterChatPhotos extends TypeMessagesFilter {
+export class InputMessagesFilterChatPhotos extends _TypeMessagesFilter {
   protected get [id]() {
     return 0x3A20ECB8;
   }
@@ -9410,7 +9410,7 @@ export class InputMessagesFilterChatPhotos extends TypeMessagesFilter {
   }
 }
 
-export class InputMessagesFilterPhoneCalls extends TypeMessagesFilter {
+export class InputMessagesFilterPhoneCalls extends _TypeMessagesFilter {
   missed?: true;
 
   protected get [id]() {
@@ -9437,7 +9437,7 @@ export class InputMessagesFilterPhoneCalls extends TypeMessagesFilter {
   }
 }
 
-export class InputMessagesFilterRoundVoice extends TypeMessagesFilter {
+export class InputMessagesFilterRoundVoice extends _TypeMessagesFilter {
   protected get [id]() {
     return 0x7A7C17A4;
   }
@@ -9455,7 +9455,7 @@ export class InputMessagesFilterRoundVoice extends TypeMessagesFilter {
   }
 }
 
-export class InputMessagesFilterRoundVideo extends TypeMessagesFilter {
+export class InputMessagesFilterRoundVideo extends _TypeMessagesFilter {
   protected get [id]() {
     return 0xB549DA53;
   }
@@ -9473,7 +9473,7 @@ export class InputMessagesFilterRoundVideo extends TypeMessagesFilter {
   }
 }
 
-export class InputMessagesFilterMyMentions extends TypeMessagesFilter {
+export class InputMessagesFilterMyMentions extends _TypeMessagesFilter {
   protected get [id]() {
     return 0xC1F8E69A;
   }
@@ -9491,7 +9491,7 @@ export class InputMessagesFilterMyMentions extends TypeMessagesFilter {
   }
 }
 
-export class InputMessagesFilterGeo extends TypeMessagesFilter {
+export class InputMessagesFilterGeo extends _TypeMessagesFilter {
   protected get [id]() {
     return 0xE7026D0D;
   }
@@ -9509,7 +9509,7 @@ export class InputMessagesFilterGeo extends TypeMessagesFilter {
   }
 }
 
-export class InputMessagesFilterContacts extends TypeMessagesFilter {
+export class InputMessagesFilterContacts extends _TypeMessagesFilter {
   protected get [id]() {
     return 0xE062DB83;
   }
@@ -9527,7 +9527,7 @@ export class InputMessagesFilterContacts extends TypeMessagesFilter {
   }
 }
 
-export class InputMessagesFilterPinned extends TypeMessagesFilter {
+export class InputMessagesFilterPinned extends _TypeMessagesFilter {
   protected get [id]() {
     return 0x1BB00451;
   }
@@ -9545,7 +9545,7 @@ export class InputMessagesFilterPinned extends TypeMessagesFilter {
   }
 }
 
-export class UpdateNewMessage extends TypeUpdate {
+export class UpdateNewMessage extends _TypeUpdate {
   message: TypeMessage;
   pts: number;
   ptsCount: number;
@@ -9556,7 +9556,7 @@ export class UpdateNewMessage extends TypeUpdate {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["message", TypeMessage, "Message"],
+      ["message", _TypeMessage, "Message"],
       ["pts", "number", "int"],
       ["ptsCount", "number", "int"],
     ];
@@ -9564,7 +9564,7 @@ export class UpdateNewMessage extends TypeUpdate {
 
   protected get [params](): Params {
     return [
-      [this.message, TypeMessage, "Message"],
+      [this.message, _TypeMessage, "Message"],
       [this.pts, "number", "int"],
       [this.ptsCount, "number", "int"],
     ];
@@ -9578,7 +9578,7 @@ export class UpdateNewMessage extends TypeUpdate {
   }
 }
 
-export class UpdateMessageID extends TypeUpdate {
+export class UpdateMessageID extends _TypeUpdate {
   id: number;
   randomId: bigint;
 
@@ -9607,7 +9607,7 @@ export class UpdateMessageID extends TypeUpdate {
   }
 }
 
-export class UpdateDeleteMessages extends TypeUpdate {
+export class UpdateDeleteMessages extends _TypeUpdate {
   messages: Array<number>;
   pts: number;
   ptsCount: number;
@@ -9640,7 +9640,7 @@ export class UpdateDeleteMessages extends TypeUpdate {
   }
 }
 
-export class UpdateUserTyping extends TypeUpdate {
+export class UpdateUserTyping extends _TypeUpdate {
   userId: bigint;
   action: TypeSendMessageAction;
 
@@ -9651,14 +9651,14 @@ export class UpdateUserTyping extends TypeUpdate {
   static get [paramDesc](): ParamDesc {
     return [
       ["userId", "bigint", "long"],
-      ["action", TypeSendMessageAction, "SendMessageAction"],
+      ["action", _TypeSendMessageAction, "SendMessageAction"],
     ];
   }
 
   protected get [params](): Params {
     return [
       [this.userId, "bigint", "long"],
-      [this.action, TypeSendMessageAction, "SendMessageAction"],
+      [this.action, _TypeSendMessageAction, "SendMessageAction"],
     ];
   }
 
@@ -9669,7 +9669,7 @@ export class UpdateUserTyping extends TypeUpdate {
   }
 }
 
-export class UpdateChatUserTyping extends TypeUpdate {
+export class UpdateChatUserTyping extends _TypeUpdate {
   chatId: bigint;
   fromId: TypePeer;
   action: TypeSendMessageAction;
@@ -9681,16 +9681,16 @@ export class UpdateChatUserTyping extends TypeUpdate {
   static get [paramDesc](): ParamDesc {
     return [
       ["chatId", "bigint", "long"],
-      ["fromId", TypePeer, "Peer"],
-      ["action", TypeSendMessageAction, "SendMessageAction"],
+      ["fromId", _TypePeer, "Peer"],
+      ["action", _TypeSendMessageAction, "SendMessageAction"],
     ];
   }
 
   protected get [params](): Params {
     return [
       [this.chatId, "bigint", "long"],
-      [this.fromId, TypePeer, "Peer"],
-      [this.action, TypeSendMessageAction, "SendMessageAction"],
+      [this.fromId, _TypePeer, "Peer"],
+      [this.action, _TypeSendMessageAction, "SendMessageAction"],
     ];
   }
 
@@ -9702,7 +9702,7 @@ export class UpdateChatUserTyping extends TypeUpdate {
   }
 }
 
-export class UpdateChatParticipants extends TypeUpdate {
+export class UpdateChatParticipants extends _TypeUpdate {
   participants: TypeChatParticipants;
 
   protected get [id]() {
@@ -9711,13 +9711,13 @@ export class UpdateChatParticipants extends TypeUpdate {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["participants", TypeChatParticipants, "ChatParticipants"],
+      ["participants", _TypeChatParticipants, "ChatParticipants"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.participants, TypeChatParticipants, "ChatParticipants"],
+      [this.participants, _TypeChatParticipants, "ChatParticipants"],
     ];
   }
 
@@ -9727,7 +9727,7 @@ export class UpdateChatParticipants extends TypeUpdate {
   }
 }
 
-export class UpdateUserStatus extends TypeUpdate {
+export class UpdateUserStatus extends _TypeUpdate {
   userId: bigint;
   status: TypeUserStatus;
 
@@ -9738,14 +9738,14 @@ export class UpdateUserStatus extends TypeUpdate {
   static get [paramDesc](): ParamDesc {
     return [
       ["userId", "bigint", "long"],
-      ["status", TypeUserStatus, "UserStatus"],
+      ["status", _TypeUserStatus, "UserStatus"],
     ];
   }
 
   protected get [params](): Params {
     return [
       [this.userId, "bigint", "long"],
-      [this.status, TypeUserStatus, "UserStatus"],
+      [this.status, _TypeUserStatus, "UserStatus"],
     ];
   }
 
@@ -9756,7 +9756,7 @@ export class UpdateUserStatus extends TypeUpdate {
   }
 }
 
-export class UpdateUserName extends TypeUpdate {
+export class UpdateUserName extends _TypeUpdate {
   userId: bigint;
   firstName: string;
   lastName: string;
@@ -9771,7 +9771,7 @@ export class UpdateUserName extends TypeUpdate {
       ["userId", "bigint", "long"],
       ["firstName", "string", "string"],
       ["lastName", "string", "string"],
-      ["usernames", [TypeUsername], "Vector<Username>"],
+      ["usernames", [_TypeUsername], "Vector<Username>"],
     ];
   }
 
@@ -9780,7 +9780,7 @@ export class UpdateUserName extends TypeUpdate {
       [this.userId, "bigint", "long"],
       [this.firstName, "string", "string"],
       [this.lastName, "string", "string"],
-      [this.usernames, [TypeUsername], "Vector<Username>"],
+      [this.usernames, [_TypeUsername], "Vector<Username>"],
     ];
   }
 
@@ -9793,7 +9793,7 @@ export class UpdateUserName extends TypeUpdate {
   }
 }
 
-export class UpdateNewEncryptedMessage extends TypeUpdate {
+export class UpdateNewEncryptedMessage extends _TypeUpdate {
   message: TypeEncryptedMessage;
   qts: number;
 
@@ -9803,14 +9803,14 @@ export class UpdateNewEncryptedMessage extends TypeUpdate {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["message", TypeEncryptedMessage, "EncryptedMessage"],
+      ["message", _TypeEncryptedMessage, "EncryptedMessage"],
       ["qts", "number", "int"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.message, TypeEncryptedMessage, "EncryptedMessage"],
+      [this.message, _TypeEncryptedMessage, "EncryptedMessage"],
       [this.qts, "number", "int"],
     ];
   }
@@ -9822,7 +9822,7 @@ export class UpdateNewEncryptedMessage extends TypeUpdate {
   }
 }
 
-export class UpdateEncryptedChatTyping extends TypeUpdate {
+export class UpdateEncryptedChatTyping extends _TypeUpdate {
   chatId: number;
 
   protected get [id]() {
@@ -9847,7 +9847,7 @@ export class UpdateEncryptedChatTyping extends TypeUpdate {
   }
 }
 
-export class UpdateEncryption extends TypeUpdate {
+export class UpdateEncryption extends _TypeUpdate {
   chat: TypeEncryptedChat;
   date: number;
 
@@ -9857,14 +9857,14 @@ export class UpdateEncryption extends TypeUpdate {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["chat", TypeEncryptedChat, "EncryptedChat"],
+      ["chat", _TypeEncryptedChat, "EncryptedChat"],
       ["date", "number", "int"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.chat, TypeEncryptedChat, "EncryptedChat"],
+      [this.chat, _TypeEncryptedChat, "EncryptedChat"],
       [this.date, "number", "int"],
     ];
   }
@@ -9876,7 +9876,7 @@ export class UpdateEncryption extends TypeUpdate {
   }
 }
 
-export class UpdateEncryptedMessagesRead extends TypeUpdate {
+export class UpdateEncryptedMessagesRead extends _TypeUpdate {
   chatId: number;
   maxDate: number;
   date: number;
@@ -9909,7 +9909,7 @@ export class UpdateEncryptedMessagesRead extends TypeUpdate {
   }
 }
 
-export class UpdateChatParticipantAdd extends TypeUpdate {
+export class UpdateChatParticipantAdd extends _TypeUpdate {
   chatId: bigint;
   userId: bigint;
   inviterId: bigint;
@@ -9950,7 +9950,7 @@ export class UpdateChatParticipantAdd extends TypeUpdate {
   }
 }
 
-export class UpdateChatParticipantDelete extends TypeUpdate {
+export class UpdateChatParticipantDelete extends _TypeUpdate {
   chatId: bigint;
   userId: bigint;
   version: number;
@@ -9983,7 +9983,7 @@ export class UpdateChatParticipantDelete extends TypeUpdate {
   }
 }
 
-export class UpdateDcOptions extends TypeUpdate {
+export class UpdateDcOptions extends _TypeUpdate {
   dcOptions: Array<TypeDcOption>;
 
   protected get [id]() {
@@ -9992,13 +9992,13 @@ export class UpdateDcOptions extends TypeUpdate {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["dcOptions", [TypeDcOption], "Vector<DcOption>"],
+      ["dcOptions", [_TypeDcOption], "Vector<DcOption>"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.dcOptions, [TypeDcOption], "Vector<DcOption>"],
+      [this.dcOptions, [_TypeDcOption], "Vector<DcOption>"],
     ];
   }
 
@@ -10008,7 +10008,7 @@ export class UpdateDcOptions extends TypeUpdate {
   }
 }
 
-export class UpdateNotifySettings extends TypeUpdate {
+export class UpdateNotifySettings extends _TypeUpdate {
   peer: TypeNotifyPeer;
   notifySettings: TypePeerNotifySettings;
 
@@ -10018,15 +10018,15 @@ export class UpdateNotifySettings extends TypeUpdate {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["peer", TypeNotifyPeer, "NotifyPeer"],
-      ["notifySettings", TypePeerNotifySettings, "PeerNotifySettings"],
+      ["peer", _TypeNotifyPeer, "NotifyPeer"],
+      ["notifySettings", _TypePeerNotifySettings, "PeerNotifySettings"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.peer, TypeNotifyPeer, "NotifyPeer"],
-      [this.notifySettings, TypePeerNotifySettings, "PeerNotifySettings"],
+      [this.peer, _TypeNotifyPeer, "NotifyPeer"],
+      [this.notifySettings, _TypePeerNotifySettings, "PeerNotifySettings"],
     ];
   }
 
@@ -10037,7 +10037,7 @@ export class UpdateNotifySettings extends TypeUpdate {
   }
 }
 
-export class UpdateServiceNotification extends TypeUpdate {
+export class UpdateServiceNotification extends _TypeUpdate {
   popup?: true;
   inboxDate?: number;
   type: string;
@@ -10056,8 +10056,8 @@ export class UpdateServiceNotification extends TypeUpdate {
       ["inboxDate", "number", "flags.1?int"],
       ["type", "string", "string"],
       ["message", "string", "string"],
-      ["media", TypeMessageMedia, "MessageMedia"],
-      ["entities", [TypeMessageEntity], "Vector<MessageEntity>"],
+      ["media", _TypeMessageMedia, "MessageMedia"],
+      ["entities", [_TypeMessageEntity], "Vector<MessageEntity>"],
     ];
   }
 
@@ -10068,8 +10068,8 @@ export class UpdateServiceNotification extends TypeUpdate {
       [this.inboxDate ?? null, "number", "flags.1?int"],
       [this.type, "string", "string"],
       [this.message, "string", "string"],
-      [this.media, TypeMessageMedia, "MessageMedia"],
-      [this.entities, [TypeMessageEntity], "Vector<MessageEntity>"],
+      [this.media, _TypeMessageMedia, "MessageMedia"],
+      [this.entities, [_TypeMessageEntity], "Vector<MessageEntity>"],
     ];
   }
 
@@ -10084,7 +10084,7 @@ export class UpdateServiceNotification extends TypeUpdate {
   }
 }
 
-export class UpdatePrivacy extends TypeUpdate {
+export class UpdatePrivacy extends _TypeUpdate {
   key: TypePrivacyKey;
   rules: Array<TypePrivacyRule>;
 
@@ -10094,15 +10094,15 @@ export class UpdatePrivacy extends TypeUpdate {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["key", TypePrivacyKey, "PrivacyKey"],
-      ["rules", [TypePrivacyRule], "Vector<PrivacyRule>"],
+      ["key", _TypePrivacyKey, "PrivacyKey"],
+      ["rules", [_TypePrivacyRule], "Vector<PrivacyRule>"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.key, TypePrivacyKey, "PrivacyKey"],
-      [this.rules, [TypePrivacyRule], "Vector<PrivacyRule>"],
+      [this.key, _TypePrivacyKey, "PrivacyKey"],
+      [this.rules, [_TypePrivacyRule], "Vector<PrivacyRule>"],
     ];
   }
 
@@ -10113,7 +10113,7 @@ export class UpdatePrivacy extends TypeUpdate {
   }
 }
 
-export class UpdateUserPhone extends TypeUpdate {
+export class UpdateUserPhone extends _TypeUpdate {
   userId: bigint;
   phone: string;
 
@@ -10142,7 +10142,7 @@ export class UpdateUserPhone extends TypeUpdate {
   }
 }
 
-export class UpdateReadHistoryInbox extends TypeUpdate {
+export class UpdateReadHistoryInbox extends _TypeUpdate {
   folderId?: number;
   peer: TypePeer;
   maxId: number;
@@ -10158,7 +10158,7 @@ export class UpdateReadHistoryInbox extends TypeUpdate {
     return [
       ["flags", flags, "#"],
       ["folderId", "number", "flags.0?int"],
-      ["peer", TypePeer, "Peer"],
+      ["peer", _TypePeer, "Peer"],
       ["maxId", "number", "int"],
       ["stillUnreadCount", "number", "int"],
       ["pts", "number", "int"],
@@ -10170,7 +10170,7 @@ export class UpdateReadHistoryInbox extends TypeUpdate {
     return [
       ["flags", flags, "#"],
       [this.folderId ?? null, "number", "flags.0?int"],
-      [this.peer, TypePeer, "Peer"],
+      [this.peer, _TypePeer, "Peer"],
       [this.maxId, "number", "int"],
       [this.stillUnreadCount, "number", "int"],
       [this.pts, "number", "int"],
@@ -10189,7 +10189,7 @@ export class UpdateReadHistoryInbox extends TypeUpdate {
   }
 }
 
-export class UpdateReadHistoryOutbox extends TypeUpdate {
+export class UpdateReadHistoryOutbox extends _TypeUpdate {
   peer: TypePeer;
   maxId: number;
   pts: number;
@@ -10201,7 +10201,7 @@ export class UpdateReadHistoryOutbox extends TypeUpdate {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["peer", TypePeer, "Peer"],
+      ["peer", _TypePeer, "Peer"],
       ["maxId", "number", "int"],
       ["pts", "number", "int"],
       ["ptsCount", "number", "int"],
@@ -10210,7 +10210,7 @@ export class UpdateReadHistoryOutbox extends TypeUpdate {
 
   protected get [params](): Params {
     return [
-      [this.peer, TypePeer, "Peer"],
+      [this.peer, _TypePeer, "Peer"],
       [this.maxId, "number", "int"],
       [this.pts, "number", "int"],
       [this.ptsCount, "number", "int"],
@@ -10226,7 +10226,7 @@ export class UpdateReadHistoryOutbox extends TypeUpdate {
   }
 }
 
-export class UpdateWebPage extends TypeUpdate {
+export class UpdateWebPage extends _TypeUpdate {
   webpage: TypeWebPage;
   pts: number;
   ptsCount: number;
@@ -10237,7 +10237,7 @@ export class UpdateWebPage extends TypeUpdate {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["webpage", TypeWebPage, "WebPage"],
+      ["webpage", _TypeWebPage, "WebPage"],
       ["pts", "number", "int"],
       ["ptsCount", "number", "int"],
     ];
@@ -10245,7 +10245,7 @@ export class UpdateWebPage extends TypeUpdate {
 
   protected get [params](): Params {
     return [
-      [this.webpage, TypeWebPage, "WebPage"],
+      [this.webpage, _TypeWebPage, "WebPage"],
       [this.pts, "number", "int"],
       [this.ptsCount, "number", "int"],
     ];
@@ -10259,7 +10259,7 @@ export class UpdateWebPage extends TypeUpdate {
   }
 }
 
-export class UpdateReadMessagesContents extends TypeUpdate {
+export class UpdateReadMessagesContents extends _TypeUpdate {
   messages: Array<number>;
   pts: number;
   ptsCount: number;
@@ -10292,7 +10292,7 @@ export class UpdateReadMessagesContents extends TypeUpdate {
   }
 }
 
-export class UpdateChannelTooLong extends TypeUpdate {
+export class UpdateChannelTooLong extends _TypeUpdate {
   channelId: bigint;
   pts?: number;
 
@@ -10323,7 +10323,7 @@ export class UpdateChannelTooLong extends TypeUpdate {
   }
 }
 
-export class UpdateChannel extends TypeUpdate {
+export class UpdateChannel extends _TypeUpdate {
   channelId: bigint;
 
   protected get [id]() {
@@ -10348,7 +10348,7 @@ export class UpdateChannel extends TypeUpdate {
   }
 }
 
-export class UpdateNewChannelMessage extends TypeUpdate {
+export class UpdateNewChannelMessage extends _TypeUpdate {
   message: TypeMessage;
   pts: number;
   ptsCount: number;
@@ -10359,7 +10359,7 @@ export class UpdateNewChannelMessage extends TypeUpdate {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["message", TypeMessage, "Message"],
+      ["message", _TypeMessage, "Message"],
       ["pts", "number", "int"],
       ["ptsCount", "number", "int"],
     ];
@@ -10367,7 +10367,7 @@ export class UpdateNewChannelMessage extends TypeUpdate {
 
   protected get [params](): Params {
     return [
-      [this.message, TypeMessage, "Message"],
+      [this.message, _TypeMessage, "Message"],
       [this.pts, "number", "int"],
       [this.ptsCount, "number", "int"],
     ];
@@ -10381,7 +10381,7 @@ export class UpdateNewChannelMessage extends TypeUpdate {
   }
 }
 
-export class UpdateReadChannelInbox extends TypeUpdate {
+export class UpdateReadChannelInbox extends _TypeUpdate {
   folderId?: number;
   channelId: bigint;
   maxId: number;
@@ -10424,7 +10424,7 @@ export class UpdateReadChannelInbox extends TypeUpdate {
   }
 }
 
-export class UpdateDeleteChannelMessages extends TypeUpdate {
+export class UpdateDeleteChannelMessages extends _TypeUpdate {
   channelId: bigint;
   messages: Array<number>;
   pts: number;
@@ -10461,7 +10461,7 @@ export class UpdateDeleteChannelMessages extends TypeUpdate {
   }
 }
 
-export class UpdateChannelMessageViews extends TypeUpdate {
+export class UpdateChannelMessageViews extends _TypeUpdate {
   channelId: bigint;
   id: number;
   views: number;
@@ -10494,7 +10494,7 @@ export class UpdateChannelMessageViews extends TypeUpdate {
   }
 }
 
-export class UpdateChatParticipantAdmin extends TypeUpdate {
+export class UpdateChatParticipantAdmin extends _TypeUpdate {
   chatId: bigint;
   userId: bigint;
   isAdmin: boolean;
@@ -10531,7 +10531,7 @@ export class UpdateChatParticipantAdmin extends TypeUpdate {
   }
 }
 
-export class UpdateNewStickerSet extends TypeUpdate {
+export class UpdateNewStickerSet extends _TypeUpdate {
   stickerset: TypeMessagesStickerSet;
 
   protected get [id]() {
@@ -10540,13 +10540,13 @@ export class UpdateNewStickerSet extends TypeUpdate {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["stickerset", TypeMessagesStickerSet, "messages.StickerSet"],
+      ["stickerset", _TypeMessagesStickerSet, "messages.StickerSet"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.stickerset, TypeMessagesStickerSet, "messages.StickerSet"],
+      [this.stickerset, _TypeMessagesStickerSet, "messages.StickerSet"],
     ];
   }
 
@@ -10556,7 +10556,7 @@ export class UpdateNewStickerSet extends TypeUpdate {
   }
 }
 
-export class UpdateStickerSetsOrder extends TypeUpdate {
+export class UpdateStickerSetsOrder extends _TypeUpdate {
   masks?: true;
   emojis?: true;
   order: Array<bigint>;
@@ -10591,7 +10591,7 @@ export class UpdateStickerSetsOrder extends TypeUpdate {
   }
 }
 
-export class UpdateStickerSets extends TypeUpdate {
+export class UpdateStickerSets extends _TypeUpdate {
   masks?: true;
   emojis?: true;
 
@@ -10622,7 +10622,7 @@ export class UpdateStickerSets extends TypeUpdate {
   }
 }
 
-export class UpdateSavedGifs extends TypeUpdate {
+export class UpdateSavedGifs extends _TypeUpdate {
   protected get [id]() {
     return 0x9375341E;
   }
@@ -10640,7 +10640,7 @@ export class UpdateSavedGifs extends TypeUpdate {
   }
 }
 
-export class UpdateBotInlineQuery extends TypeUpdate {
+export class UpdateBotInlineQuery extends _TypeUpdate {
   queryId: bigint;
   userId: bigint;
   query: string;
@@ -10658,8 +10658,8 @@ export class UpdateBotInlineQuery extends TypeUpdate {
       ["queryId", "bigint", "long"],
       ["userId", "bigint", "long"],
       ["query", "string", "string"],
-      ["geo", TypeGeoPoint, "flags.0?GeoPoint"],
-      ["peerType", TypeInlineQueryPeerType, "flags.1?InlineQueryPeerType"],
+      ["geo", _TypeGeoPoint, "flags.0?GeoPoint"],
+      ["peerType", _TypeInlineQueryPeerType, "flags.1?InlineQueryPeerType"],
       ["offset", "string", "string"],
     ];
   }
@@ -10670,8 +10670,8 @@ export class UpdateBotInlineQuery extends TypeUpdate {
       [this.queryId, "bigint", "long"],
       [this.userId, "bigint", "long"],
       [this.query, "string", "string"],
-      [this.geo ?? null, TypeGeoPoint, "flags.0?GeoPoint"],
-      [this.peerType ?? null, TypeInlineQueryPeerType, "flags.1?InlineQueryPeerType"],
+      [this.geo ?? null, _TypeGeoPoint, "flags.0?GeoPoint"],
+      [this.peerType ?? null, _TypeInlineQueryPeerType, "flags.1?InlineQueryPeerType"],
       [this.offset, "string", "string"],
     ];
   }
@@ -10687,7 +10687,7 @@ export class UpdateBotInlineQuery extends TypeUpdate {
   }
 }
 
-export class UpdateBotInlineSend extends TypeUpdate {
+export class UpdateBotInlineSend extends _TypeUpdate {
   userId: bigint;
   query: string;
   geo?: TypeGeoPoint;
@@ -10703,9 +10703,9 @@ export class UpdateBotInlineSend extends TypeUpdate {
       ["flags", flags, "#"],
       ["userId", "bigint", "long"],
       ["query", "string", "string"],
-      ["geo", TypeGeoPoint, "flags.0?GeoPoint"],
+      ["geo", _TypeGeoPoint, "flags.0?GeoPoint"],
       ["id", "string", "string"],
-      ["msgId", TypeInputBotInlineMessageID, "flags.1?InputBotInlineMessageID"],
+      ["msgId", _TypeInputBotInlineMessageID, "flags.1?InputBotInlineMessageID"],
     ];
   }
 
@@ -10714,9 +10714,9 @@ export class UpdateBotInlineSend extends TypeUpdate {
       ["flags", flags, "#"],
       [this.userId, "bigint", "long"],
       [this.query, "string", "string"],
-      [this.geo ?? null, TypeGeoPoint, "flags.0?GeoPoint"],
+      [this.geo ?? null, _TypeGeoPoint, "flags.0?GeoPoint"],
       [this.id, "string", "string"],
-      [this.msgId ?? null, TypeInputBotInlineMessageID, "flags.1?InputBotInlineMessageID"],
+      [this.msgId ?? null, _TypeInputBotInlineMessageID, "flags.1?InputBotInlineMessageID"],
     ];
   }
 
@@ -10730,7 +10730,7 @@ export class UpdateBotInlineSend extends TypeUpdate {
   }
 }
 
-export class UpdateEditChannelMessage extends TypeUpdate {
+export class UpdateEditChannelMessage extends _TypeUpdate {
   message: TypeMessage;
   pts: number;
   ptsCount: number;
@@ -10741,7 +10741,7 @@ export class UpdateEditChannelMessage extends TypeUpdate {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["message", TypeMessage, "Message"],
+      ["message", _TypeMessage, "Message"],
       ["pts", "number", "int"],
       ["ptsCount", "number", "int"],
     ];
@@ -10749,7 +10749,7 @@ export class UpdateEditChannelMessage extends TypeUpdate {
 
   protected get [params](): Params {
     return [
-      [this.message, TypeMessage, "Message"],
+      [this.message, _TypeMessage, "Message"],
       [this.pts, "number", "int"],
       [this.ptsCount, "number", "int"],
     ];
@@ -10763,7 +10763,7 @@ export class UpdateEditChannelMessage extends TypeUpdate {
   }
 }
 
-export class UpdateBotCallbackQuery extends TypeUpdate {
+export class UpdateBotCallbackQuery extends _TypeUpdate {
   queryId: bigint;
   userId: bigint;
   peer: TypePeer;
@@ -10781,7 +10781,7 @@ export class UpdateBotCallbackQuery extends TypeUpdate {
       ["flags", flags, "#"],
       ["queryId", "bigint", "long"],
       ["userId", "bigint", "long"],
-      ["peer", TypePeer, "Peer"],
+      ["peer", _TypePeer, "Peer"],
       ["msgId", "number", "int"],
       ["chatInstance", "bigint", "long"],
       ["data", Uint8Array, "flags.0?bytes"],
@@ -10794,7 +10794,7 @@ export class UpdateBotCallbackQuery extends TypeUpdate {
       ["flags", flags, "#"],
       [this.queryId, "bigint", "long"],
       [this.userId, "bigint", "long"],
-      [this.peer, TypePeer, "Peer"],
+      [this.peer, _TypePeer, "Peer"],
       [this.msgId, "number", "int"],
       [this.chatInstance, "bigint", "long"],
       [this.data ?? null, Uint8Array, "flags.0?bytes"],
@@ -10814,7 +10814,7 @@ export class UpdateBotCallbackQuery extends TypeUpdate {
   }
 }
 
-export class UpdateEditMessage extends TypeUpdate {
+export class UpdateEditMessage extends _TypeUpdate {
   message: TypeMessage;
   pts: number;
   ptsCount: number;
@@ -10825,7 +10825,7 @@ export class UpdateEditMessage extends TypeUpdate {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["message", TypeMessage, "Message"],
+      ["message", _TypeMessage, "Message"],
       ["pts", "number", "int"],
       ["ptsCount", "number", "int"],
     ];
@@ -10833,7 +10833,7 @@ export class UpdateEditMessage extends TypeUpdate {
 
   protected get [params](): Params {
     return [
-      [this.message, TypeMessage, "Message"],
+      [this.message, _TypeMessage, "Message"],
       [this.pts, "number", "int"],
       [this.ptsCount, "number", "int"],
     ];
@@ -10847,7 +10847,7 @@ export class UpdateEditMessage extends TypeUpdate {
   }
 }
 
-export class UpdateInlineBotCallbackQuery extends TypeUpdate {
+export class UpdateInlineBotCallbackQuery extends _TypeUpdate {
   queryId: bigint;
   userId: bigint;
   msgId: TypeInputBotInlineMessageID;
@@ -10864,7 +10864,7 @@ export class UpdateInlineBotCallbackQuery extends TypeUpdate {
       ["flags", flags, "#"],
       ["queryId", "bigint", "long"],
       ["userId", "bigint", "long"],
-      ["msgId", TypeInputBotInlineMessageID, "InputBotInlineMessageID"],
+      ["msgId", _TypeInputBotInlineMessageID, "InputBotInlineMessageID"],
       ["chatInstance", "bigint", "long"],
       ["data", Uint8Array, "flags.0?bytes"],
       ["gameShortName", "string", "flags.1?string"],
@@ -10876,7 +10876,7 @@ export class UpdateInlineBotCallbackQuery extends TypeUpdate {
       ["flags", flags, "#"],
       [this.queryId, "bigint", "long"],
       [this.userId, "bigint", "long"],
-      [this.msgId, TypeInputBotInlineMessageID, "InputBotInlineMessageID"],
+      [this.msgId, _TypeInputBotInlineMessageID, "InputBotInlineMessageID"],
       [this.chatInstance, "bigint", "long"],
       [this.data ?? null, Uint8Array, "flags.0?bytes"],
       [this.gameShortName ?? null, "string", "flags.1?string"],
@@ -10894,7 +10894,7 @@ export class UpdateInlineBotCallbackQuery extends TypeUpdate {
   }
 }
 
-export class UpdateReadChannelOutbox extends TypeUpdate {
+export class UpdateReadChannelOutbox extends _TypeUpdate {
   channelId: bigint;
   maxId: number;
 
@@ -10923,7 +10923,7 @@ export class UpdateReadChannelOutbox extends TypeUpdate {
   }
 }
 
-export class UpdateDraftMessage extends TypeUpdate {
+export class UpdateDraftMessage extends _TypeUpdate {
   peer: TypePeer;
   topMsgId?: number;
   draft: TypeDraftMessage;
@@ -10935,18 +10935,18 @@ export class UpdateDraftMessage extends TypeUpdate {
   static get [paramDesc](): ParamDesc {
     return [
       ["flags", flags, "#"],
-      ["peer", TypePeer, "Peer"],
+      ["peer", _TypePeer, "Peer"],
       ["topMsgId", "number", "flags.0?int"],
-      ["draft", TypeDraftMessage, "DraftMessage"],
+      ["draft", _TypeDraftMessage, "DraftMessage"],
     ];
   }
 
   protected get [params](): Params {
     return [
       ["flags", flags, "#"],
-      [this.peer, TypePeer, "Peer"],
+      [this.peer, _TypePeer, "Peer"],
       [this.topMsgId ?? null, "number", "flags.0?int"],
-      [this.draft, TypeDraftMessage, "DraftMessage"],
+      [this.draft, _TypeDraftMessage, "DraftMessage"],
     ];
   }
 
@@ -10958,7 +10958,7 @@ export class UpdateDraftMessage extends TypeUpdate {
   }
 }
 
-export class UpdateReadFeaturedStickers extends TypeUpdate {
+export class UpdateReadFeaturedStickers extends _TypeUpdate {
   protected get [id]() {
     return 0x571D2742;
   }
@@ -10976,7 +10976,7 @@ export class UpdateReadFeaturedStickers extends TypeUpdate {
   }
 }
 
-export class UpdateRecentStickers extends TypeUpdate {
+export class UpdateRecentStickers extends _TypeUpdate {
   protected get [id]() {
     return 0x9A422C20;
   }
@@ -10994,7 +10994,7 @@ export class UpdateRecentStickers extends TypeUpdate {
   }
 }
 
-export class UpdateConfig extends TypeUpdate {
+export class UpdateConfig extends _TypeUpdate {
   protected get [id]() {
     return 0xA229DD06;
   }
@@ -11012,7 +11012,7 @@ export class UpdateConfig extends TypeUpdate {
   }
 }
 
-export class UpdatePtsChanged extends TypeUpdate {
+export class UpdatePtsChanged extends _TypeUpdate {
   protected get [id]() {
     return 0x3354678F;
   }
@@ -11030,7 +11030,7 @@ export class UpdatePtsChanged extends TypeUpdate {
   }
 }
 
-export class UpdateChannelWebPage extends TypeUpdate {
+export class UpdateChannelWebPage extends _TypeUpdate {
   channelId: bigint;
   webpage: TypeWebPage;
   pts: number;
@@ -11043,7 +11043,7 @@ export class UpdateChannelWebPage extends TypeUpdate {
   static get [paramDesc](): ParamDesc {
     return [
       ["channelId", "bigint", "long"],
-      ["webpage", TypeWebPage, "WebPage"],
+      ["webpage", _TypeWebPage, "WebPage"],
       ["pts", "number", "int"],
       ["ptsCount", "number", "int"],
     ];
@@ -11052,7 +11052,7 @@ export class UpdateChannelWebPage extends TypeUpdate {
   protected get [params](): Params {
     return [
       [this.channelId, "bigint", "long"],
-      [this.webpage, TypeWebPage, "WebPage"],
+      [this.webpage, _TypeWebPage, "WebPage"],
       [this.pts, "number", "int"],
       [this.ptsCount, "number", "int"],
     ];
@@ -11067,7 +11067,7 @@ export class UpdateChannelWebPage extends TypeUpdate {
   }
 }
 
-export class UpdateDialogPinned extends TypeUpdate {
+export class UpdateDialogPinned extends _TypeUpdate {
   pinned?: true;
   folderId?: number;
   peer: TypeDialogPeer;
@@ -11081,7 +11081,7 @@ export class UpdateDialogPinned extends TypeUpdate {
       ["flags", flags, "#"],
       ["pinned", "true", "flags.0?true"],
       ["folderId", "number", "flags.1?int"],
-      ["peer", TypeDialogPeer, "DialogPeer"],
+      ["peer", _TypeDialogPeer, "DialogPeer"],
     ];
   }
 
@@ -11090,7 +11090,7 @@ export class UpdateDialogPinned extends TypeUpdate {
       ["flags", flags, "#"],
       [this.pinned ?? null, "true", "flags.0?true"],
       [this.folderId ?? null, "number", "flags.1?int"],
-      [this.peer, TypeDialogPeer, "DialogPeer"],
+      [this.peer, _TypeDialogPeer, "DialogPeer"],
     ];
   }
 
@@ -11102,7 +11102,7 @@ export class UpdateDialogPinned extends TypeUpdate {
   }
 }
 
-export class UpdatePinnedDialogs extends TypeUpdate {
+export class UpdatePinnedDialogs extends _TypeUpdate {
   folderId?: number;
   order?: Array<TypeDialogPeer>;
 
@@ -11114,7 +11114,7 @@ export class UpdatePinnedDialogs extends TypeUpdate {
     return [
       ["flags", flags, "#"],
       ["folderId", "number", "flags.1?int"],
-      ["order", [TypeDialogPeer], "flags.0?Vector<DialogPeer>"],
+      ["order", [_TypeDialogPeer], "flags.0?Vector<DialogPeer>"],
     ];
   }
 
@@ -11122,7 +11122,7 @@ export class UpdatePinnedDialogs extends TypeUpdate {
     return [
       ["flags", flags, "#"],
       [this.folderId ?? null, "number", "flags.1?int"],
-      [this.order ?? null, [TypeDialogPeer], "flags.0?Vector<DialogPeer>"],
+      [this.order ?? null, [_TypeDialogPeer], "flags.0?Vector<DialogPeer>"],
     ];
   }
 
@@ -11133,7 +11133,7 @@ export class UpdatePinnedDialogs extends TypeUpdate {
   }
 }
 
-export class UpdateBotWebhookJSON extends TypeUpdate {
+export class UpdateBotWebhookJSON extends _TypeUpdate {
   data: TypeDataJSON;
 
   protected get [id]() {
@@ -11142,13 +11142,13 @@ export class UpdateBotWebhookJSON extends TypeUpdate {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["data", TypeDataJSON, "DataJSON"],
+      ["data", _TypeDataJSON, "DataJSON"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.data, TypeDataJSON, "DataJSON"],
+      [this.data, _TypeDataJSON, "DataJSON"],
     ];
   }
 
@@ -11158,7 +11158,7 @@ export class UpdateBotWebhookJSON extends TypeUpdate {
   }
 }
 
-export class UpdateBotWebhookJSONQuery extends TypeUpdate {
+export class UpdateBotWebhookJSONQuery extends _TypeUpdate {
   queryId: bigint;
   data: TypeDataJSON;
   timeout: number;
@@ -11170,7 +11170,7 @@ export class UpdateBotWebhookJSONQuery extends TypeUpdate {
   static get [paramDesc](): ParamDesc {
     return [
       ["queryId", "bigint", "long"],
-      ["data", TypeDataJSON, "DataJSON"],
+      ["data", _TypeDataJSON, "DataJSON"],
       ["timeout", "number", "int"],
     ];
   }
@@ -11178,7 +11178,7 @@ export class UpdateBotWebhookJSONQuery extends TypeUpdate {
   protected get [params](): Params {
     return [
       [this.queryId, "bigint", "long"],
-      [this.data, TypeDataJSON, "DataJSON"],
+      [this.data, _TypeDataJSON, "DataJSON"],
       [this.timeout, "number", "int"],
     ];
   }
@@ -11191,7 +11191,7 @@ export class UpdateBotWebhookJSONQuery extends TypeUpdate {
   }
 }
 
-export class UpdateBotShippingQuery extends TypeUpdate {
+export class UpdateBotShippingQuery extends _TypeUpdate {
   queryId: bigint;
   userId: bigint;
   payload: Uint8Array;
@@ -11206,7 +11206,7 @@ export class UpdateBotShippingQuery extends TypeUpdate {
       ["queryId", "bigint", "long"],
       ["userId", "bigint", "long"],
       ["payload", Uint8Array, "bytes"],
-      ["shippingAddress", TypePostAddress, "PostAddress"],
+      ["shippingAddress", _TypePostAddress, "PostAddress"],
     ];
   }
 
@@ -11215,7 +11215,7 @@ export class UpdateBotShippingQuery extends TypeUpdate {
       [this.queryId, "bigint", "long"],
       [this.userId, "bigint", "long"],
       [this.payload, Uint8Array, "bytes"],
-      [this.shippingAddress, TypePostAddress, "PostAddress"],
+      [this.shippingAddress, _TypePostAddress, "PostAddress"],
     ];
   }
 
@@ -11228,7 +11228,7 @@ export class UpdateBotShippingQuery extends TypeUpdate {
   }
 }
 
-export class UpdateBotPrecheckoutQuery extends TypeUpdate {
+export class UpdateBotPrecheckoutQuery extends _TypeUpdate {
   queryId: bigint;
   userId: bigint;
   payload: Uint8Array;
@@ -11247,7 +11247,7 @@ export class UpdateBotPrecheckoutQuery extends TypeUpdate {
       ["queryId", "bigint", "long"],
       ["userId", "bigint", "long"],
       ["payload", Uint8Array, "bytes"],
-      ["info", TypePaymentRequestedInfo, "flags.0?PaymentRequestedInfo"],
+      ["info", _TypePaymentRequestedInfo, "flags.0?PaymentRequestedInfo"],
       ["shippingOptionId", "string", "flags.1?string"],
       ["currency", "string", "string"],
       ["totalAmount", "bigint", "long"],
@@ -11260,7 +11260,7 @@ export class UpdateBotPrecheckoutQuery extends TypeUpdate {
       [this.queryId, "bigint", "long"],
       [this.userId, "bigint", "long"],
       [this.payload, Uint8Array, "bytes"],
-      [this.info ?? null, TypePaymentRequestedInfo, "flags.0?PaymentRequestedInfo"],
+      [this.info ?? null, _TypePaymentRequestedInfo, "flags.0?PaymentRequestedInfo"],
       [this.shippingOptionId ?? null, "string", "flags.1?string"],
       [this.currency, "string", "string"],
       [this.totalAmount, "bigint", "long"],
@@ -11279,7 +11279,7 @@ export class UpdateBotPrecheckoutQuery extends TypeUpdate {
   }
 }
 
-export class UpdatePhoneCall extends TypeUpdate {
+export class UpdatePhoneCall extends _TypeUpdate {
   phoneCall: TypePhoneCall;
 
   protected get [id]() {
@@ -11288,13 +11288,13 @@ export class UpdatePhoneCall extends TypeUpdate {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["phoneCall", TypePhoneCall, "PhoneCall"],
+      ["phoneCall", _TypePhoneCall, "PhoneCall"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.phoneCall, TypePhoneCall, "PhoneCall"],
+      [this.phoneCall, _TypePhoneCall, "PhoneCall"],
     ];
   }
 
@@ -11304,7 +11304,7 @@ export class UpdatePhoneCall extends TypeUpdate {
   }
 }
 
-export class UpdateLangPackTooLong extends TypeUpdate {
+export class UpdateLangPackTooLong extends _TypeUpdate {
   langCode: string;
 
   protected get [id]() {
@@ -11329,7 +11329,7 @@ export class UpdateLangPackTooLong extends TypeUpdate {
   }
 }
 
-export class UpdateLangPack extends TypeUpdate {
+export class UpdateLangPack extends _TypeUpdate {
   difference: TypeLangPackDifference;
 
   protected get [id]() {
@@ -11338,13 +11338,13 @@ export class UpdateLangPack extends TypeUpdate {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["difference", TypeLangPackDifference, "LangPackDifference"],
+      ["difference", _TypeLangPackDifference, "LangPackDifference"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.difference, TypeLangPackDifference, "LangPackDifference"],
+      [this.difference, _TypeLangPackDifference, "LangPackDifference"],
     ];
   }
 
@@ -11354,7 +11354,7 @@ export class UpdateLangPack extends TypeUpdate {
   }
 }
 
-export class UpdateFavedStickers extends TypeUpdate {
+export class UpdateFavedStickers extends _TypeUpdate {
   protected get [id]() {
     return 0xE511996D;
   }
@@ -11372,7 +11372,7 @@ export class UpdateFavedStickers extends TypeUpdate {
   }
 }
 
-export class UpdateChannelReadMessagesContents extends TypeUpdate {
+export class UpdateChannelReadMessagesContents extends _TypeUpdate {
   channelId: bigint;
   topMsgId?: number;
   messages: Array<number>;
@@ -11407,7 +11407,7 @@ export class UpdateChannelReadMessagesContents extends TypeUpdate {
   }
 }
 
-export class UpdateContactsReset extends TypeUpdate {
+export class UpdateContactsReset extends _TypeUpdate {
   protected get [id]() {
     return 0x7084A7BE;
   }
@@ -11425,7 +11425,7 @@ export class UpdateContactsReset extends TypeUpdate {
   }
 }
 
-export class UpdateChannelAvailableMessages extends TypeUpdate {
+export class UpdateChannelAvailableMessages extends _TypeUpdate {
   channelId: bigint;
   availableMinId: number;
 
@@ -11454,7 +11454,7 @@ export class UpdateChannelAvailableMessages extends TypeUpdate {
   }
 }
 
-export class UpdateDialogUnreadMark extends TypeUpdate {
+export class UpdateDialogUnreadMark extends _TypeUpdate {
   unread?: true;
   peer: TypeDialogPeer;
 
@@ -11466,7 +11466,7 @@ export class UpdateDialogUnreadMark extends TypeUpdate {
     return [
       ["flags", flags, "#"],
       ["unread", "true", "flags.0?true"],
-      ["peer", TypeDialogPeer, "DialogPeer"],
+      ["peer", _TypeDialogPeer, "DialogPeer"],
     ];
   }
 
@@ -11474,7 +11474,7 @@ export class UpdateDialogUnreadMark extends TypeUpdate {
     return [
       ["flags", flags, "#"],
       [this.unread ?? null, "true", "flags.0?true"],
-      [this.peer, TypeDialogPeer, "DialogPeer"],
+      [this.peer, _TypeDialogPeer, "DialogPeer"],
     ];
   }
 
@@ -11485,7 +11485,7 @@ export class UpdateDialogUnreadMark extends TypeUpdate {
   }
 }
 
-export class UpdateMessagePoll extends TypeUpdate {
+export class UpdateMessagePoll extends _TypeUpdate {
   pollId: bigint;
   poll?: TypePoll;
   results: TypePollResults;
@@ -11498,8 +11498,8 @@ export class UpdateMessagePoll extends TypeUpdate {
     return [
       ["flags", flags, "#"],
       ["pollId", "bigint", "long"],
-      ["poll", TypePoll, "flags.0?Poll"],
-      ["results", TypePollResults, "PollResults"],
+      ["poll", _TypePoll, "flags.0?Poll"],
+      ["results", _TypePollResults, "PollResults"],
     ];
   }
 
@@ -11507,8 +11507,8 @@ export class UpdateMessagePoll extends TypeUpdate {
     return [
       ["flags", flags, "#"],
       [this.pollId, "bigint", "long"],
-      [this.poll ?? null, TypePoll, "flags.0?Poll"],
-      [this.results, TypePollResults, "PollResults"],
+      [this.poll ?? null, _TypePoll, "flags.0?Poll"],
+      [this.results, _TypePollResults, "PollResults"],
     ];
   }
 
@@ -11520,7 +11520,7 @@ export class UpdateMessagePoll extends TypeUpdate {
   }
 }
 
-export class UpdateChatDefaultBannedRights extends TypeUpdate {
+export class UpdateChatDefaultBannedRights extends _TypeUpdate {
   peer: TypePeer;
   defaultBannedRights: TypeChatBannedRights;
   version: number;
@@ -11531,16 +11531,16 @@ export class UpdateChatDefaultBannedRights extends TypeUpdate {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["peer", TypePeer, "Peer"],
-      ["defaultBannedRights", TypeChatBannedRights, "ChatBannedRights"],
+      ["peer", _TypePeer, "Peer"],
+      ["defaultBannedRights", _TypeChatBannedRights, "ChatBannedRights"],
       ["version", "number", "int"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.peer, TypePeer, "Peer"],
-      [this.defaultBannedRights, TypeChatBannedRights, "ChatBannedRights"],
+      [this.peer, _TypePeer, "Peer"],
+      [this.defaultBannedRights, _TypeChatBannedRights, "ChatBannedRights"],
       [this.version, "number", "int"],
     ];
   }
@@ -11553,7 +11553,7 @@ export class UpdateChatDefaultBannedRights extends TypeUpdate {
   }
 }
 
-export class UpdateFolderPeers extends TypeUpdate {
+export class UpdateFolderPeers extends _TypeUpdate {
   folderPeers: Array<TypeFolderPeer>;
   pts: number;
   ptsCount: number;
@@ -11564,7 +11564,7 @@ export class UpdateFolderPeers extends TypeUpdate {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["folderPeers", [TypeFolderPeer], "Vector<FolderPeer>"],
+      ["folderPeers", [_TypeFolderPeer], "Vector<FolderPeer>"],
       ["pts", "number", "int"],
       ["ptsCount", "number", "int"],
     ];
@@ -11572,7 +11572,7 @@ export class UpdateFolderPeers extends TypeUpdate {
 
   protected get [params](): Params {
     return [
-      [this.folderPeers, [TypeFolderPeer], "Vector<FolderPeer>"],
+      [this.folderPeers, [_TypeFolderPeer], "Vector<FolderPeer>"],
       [this.pts, "number", "int"],
       [this.ptsCount, "number", "int"],
     ];
@@ -11586,7 +11586,7 @@ export class UpdateFolderPeers extends TypeUpdate {
   }
 }
 
-export class UpdatePeerSettings extends TypeUpdate {
+export class UpdatePeerSettings extends _TypeUpdate {
   peer: TypePeer;
   settings: TypePeerSettings;
 
@@ -11596,15 +11596,15 @@ export class UpdatePeerSettings extends TypeUpdate {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["peer", TypePeer, "Peer"],
-      ["settings", TypePeerSettings, "PeerSettings"],
+      ["peer", _TypePeer, "Peer"],
+      ["settings", _TypePeerSettings, "PeerSettings"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.peer, TypePeer, "Peer"],
-      [this.settings, TypePeerSettings, "PeerSettings"],
+      [this.peer, _TypePeer, "Peer"],
+      [this.settings, _TypePeerSettings, "PeerSettings"],
     ];
   }
 
@@ -11615,7 +11615,7 @@ export class UpdatePeerSettings extends TypeUpdate {
   }
 }
 
-export class UpdatePeerLocated extends TypeUpdate {
+export class UpdatePeerLocated extends _TypeUpdate {
   peers: Array<TypePeerLocated>;
 
   protected get [id]() {
@@ -11624,13 +11624,13 @@ export class UpdatePeerLocated extends TypeUpdate {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["peers", [TypePeerLocated], "Vector<PeerLocated>"],
+      ["peers", [_TypePeerLocated], "Vector<PeerLocated>"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.peers, [TypePeerLocated], "Vector<PeerLocated>"],
+      [this.peers, [_TypePeerLocated], "Vector<PeerLocated>"],
     ];
   }
 
@@ -11640,7 +11640,7 @@ export class UpdatePeerLocated extends TypeUpdate {
   }
 }
 
-export class UpdateNewScheduledMessage extends TypeUpdate {
+export class UpdateNewScheduledMessage extends _TypeUpdate {
   message: TypeMessage;
 
   protected get [id]() {
@@ -11649,13 +11649,13 @@ export class UpdateNewScheduledMessage extends TypeUpdate {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["message", TypeMessage, "Message"],
+      ["message", _TypeMessage, "Message"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.message, TypeMessage, "Message"],
+      [this.message, _TypeMessage, "Message"],
     ];
   }
 
@@ -11665,7 +11665,7 @@ export class UpdateNewScheduledMessage extends TypeUpdate {
   }
 }
 
-export class UpdateDeleteScheduledMessages extends TypeUpdate {
+export class UpdateDeleteScheduledMessages extends _TypeUpdate {
   peer: TypePeer;
   messages: Array<number>;
 
@@ -11675,14 +11675,14 @@ export class UpdateDeleteScheduledMessages extends TypeUpdate {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["peer", TypePeer, "Peer"],
+      ["peer", _TypePeer, "Peer"],
       ["messages", ["number"], "Vector<int>"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.peer, TypePeer, "Peer"],
+      [this.peer, _TypePeer, "Peer"],
       [this.messages, ["number"], "Vector<int>"],
     ];
   }
@@ -11694,7 +11694,7 @@ export class UpdateDeleteScheduledMessages extends TypeUpdate {
   }
 }
 
-export class UpdateTheme extends TypeUpdate {
+export class UpdateTheme extends _TypeUpdate {
   theme: TypeTheme;
 
   protected get [id]() {
@@ -11703,13 +11703,13 @@ export class UpdateTheme extends TypeUpdate {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["theme", TypeTheme, "Theme"],
+      ["theme", _TypeTheme, "Theme"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.theme, TypeTheme, "Theme"],
+      [this.theme, _TypeTheme, "Theme"],
     ];
   }
 
@@ -11719,7 +11719,7 @@ export class UpdateTheme extends TypeUpdate {
   }
 }
 
-export class UpdateGeoLiveViewed extends TypeUpdate {
+export class UpdateGeoLiveViewed extends _TypeUpdate {
   peer: TypePeer;
   msgId: number;
 
@@ -11729,14 +11729,14 @@ export class UpdateGeoLiveViewed extends TypeUpdate {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["peer", TypePeer, "Peer"],
+      ["peer", _TypePeer, "Peer"],
       ["msgId", "number", "int"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.peer, TypePeer, "Peer"],
+      [this.peer, _TypePeer, "Peer"],
       [this.msgId, "number", "int"],
     ];
   }
@@ -11748,7 +11748,7 @@ export class UpdateGeoLiveViewed extends TypeUpdate {
   }
 }
 
-export class UpdateLoginToken extends TypeUpdate {
+export class UpdateLoginToken extends _TypeUpdate {
   protected get [id]() {
     return 0x564FE691;
   }
@@ -11766,7 +11766,7 @@ export class UpdateLoginToken extends TypeUpdate {
   }
 }
 
-export class UpdateMessagePollVote extends TypeUpdate {
+export class UpdateMessagePollVote extends _TypeUpdate {
   pollId: bigint;
   peer: TypePeer;
   options: Array<Uint8Array>;
@@ -11779,7 +11779,7 @@ export class UpdateMessagePollVote extends TypeUpdate {
   static get [paramDesc](): ParamDesc {
     return [
       ["pollId", "bigint", "long"],
-      ["peer", TypePeer, "Peer"],
+      ["peer", _TypePeer, "Peer"],
       ["options", [Uint8Array], "Vector<bytes>"],
       ["qts", "number", "int"],
     ];
@@ -11788,7 +11788,7 @@ export class UpdateMessagePollVote extends TypeUpdate {
   protected get [params](): Params {
     return [
       [this.pollId, "bigint", "long"],
-      [this.peer, TypePeer, "Peer"],
+      [this.peer, _TypePeer, "Peer"],
       [this.options, [Uint8Array], "Vector<bytes>"],
       [this.qts, "number", "int"],
     ];
@@ -11803,7 +11803,7 @@ export class UpdateMessagePollVote extends TypeUpdate {
   }
 }
 
-export class UpdateDialogFilter extends TypeUpdate {
+export class UpdateDialogFilter extends _TypeUpdate {
   id: number;
   filter?: TypeDialogFilter;
 
@@ -11815,7 +11815,7 @@ export class UpdateDialogFilter extends TypeUpdate {
     return [
       ["flags", flags, "#"],
       ["id", "number", "int"],
-      ["filter", TypeDialogFilter, "flags.0?DialogFilter"],
+      ["filter", _TypeDialogFilter, "flags.0?DialogFilter"],
     ];
   }
 
@@ -11823,7 +11823,7 @@ export class UpdateDialogFilter extends TypeUpdate {
     return [
       ["flags", flags, "#"],
       [this.id, "number", "int"],
-      [this.filter ?? null, TypeDialogFilter, "flags.0?DialogFilter"],
+      [this.filter ?? null, _TypeDialogFilter, "flags.0?DialogFilter"],
     ];
   }
 
@@ -11834,7 +11834,7 @@ export class UpdateDialogFilter extends TypeUpdate {
   }
 }
 
-export class UpdateDialogFilterOrder extends TypeUpdate {
+export class UpdateDialogFilterOrder extends _TypeUpdate {
   order: Array<number>;
 
   protected get [id]() {
@@ -11859,7 +11859,7 @@ export class UpdateDialogFilterOrder extends TypeUpdate {
   }
 }
 
-export class UpdateDialogFilters extends TypeUpdate {
+export class UpdateDialogFilters extends _TypeUpdate {
   protected get [id]() {
     return 0x3504914F;
   }
@@ -11877,7 +11877,7 @@ export class UpdateDialogFilters extends TypeUpdate {
   }
 }
 
-export class UpdatePhoneCallSignalingData extends TypeUpdate {
+export class UpdatePhoneCallSignalingData extends _TypeUpdate {
   phoneCallId: bigint;
   data: Uint8Array;
 
@@ -11906,7 +11906,7 @@ export class UpdatePhoneCallSignalingData extends TypeUpdate {
   }
 }
 
-export class UpdateChannelMessageForwards extends TypeUpdate {
+export class UpdateChannelMessageForwards extends _TypeUpdate {
   channelId: bigint;
   id: number;
   forwards: number;
@@ -11939,7 +11939,7 @@ export class UpdateChannelMessageForwards extends TypeUpdate {
   }
 }
 
-export class UpdateReadChannelDiscussionInbox extends TypeUpdate {
+export class UpdateReadChannelDiscussionInbox extends _TypeUpdate {
   channelId: bigint;
   topMsgId: number;
   readMaxId: number;
@@ -11982,7 +11982,7 @@ export class UpdateReadChannelDiscussionInbox extends TypeUpdate {
   }
 }
 
-export class UpdateReadChannelDiscussionOutbox extends TypeUpdate {
+export class UpdateReadChannelDiscussionOutbox extends _TypeUpdate {
   channelId: bigint;
   topMsgId: number;
   readMaxId: number;
@@ -12015,7 +12015,7 @@ export class UpdateReadChannelDiscussionOutbox extends TypeUpdate {
   }
 }
 
-export class UpdatePeerBlocked extends TypeUpdate {
+export class UpdatePeerBlocked extends _TypeUpdate {
   blocked?: true;
   blockedMyStoriesFrom?: true;
   peerId: TypePeer;
@@ -12029,7 +12029,7 @@ export class UpdatePeerBlocked extends TypeUpdate {
       ["flags", flags, "#"],
       ["blocked", "true", "flags.0?true"],
       ["blockedMyStoriesFrom", "true", "flags.1?true"],
-      ["peerId", TypePeer, "Peer"],
+      ["peerId", _TypePeer, "Peer"],
     ];
   }
 
@@ -12038,7 +12038,7 @@ export class UpdatePeerBlocked extends TypeUpdate {
       ["flags", flags, "#"],
       [this.blocked ?? null, "true", "flags.0?true"],
       [this.blockedMyStoriesFrom ?? null, "true", "flags.1?true"],
-      [this.peerId, TypePeer, "Peer"],
+      [this.peerId, _TypePeer, "Peer"],
     ];
   }
 
@@ -12050,7 +12050,7 @@ export class UpdatePeerBlocked extends TypeUpdate {
   }
 }
 
-export class UpdateChannelUserTyping extends TypeUpdate {
+export class UpdateChannelUserTyping extends _TypeUpdate {
   channelId: bigint;
   topMsgId?: number;
   fromId: TypePeer;
@@ -12065,8 +12065,8 @@ export class UpdateChannelUserTyping extends TypeUpdate {
       ["flags", flags, "#"],
       ["channelId", "bigint", "long"],
       ["topMsgId", "number", "flags.0?int"],
-      ["fromId", TypePeer, "Peer"],
-      ["action", TypeSendMessageAction, "SendMessageAction"],
+      ["fromId", _TypePeer, "Peer"],
+      ["action", _TypeSendMessageAction, "SendMessageAction"],
     ];
   }
 
@@ -12075,8 +12075,8 @@ export class UpdateChannelUserTyping extends TypeUpdate {
       ["flags", flags, "#"],
       [this.channelId, "bigint", "long"],
       [this.topMsgId ?? null, "number", "flags.0?int"],
-      [this.fromId, TypePeer, "Peer"],
-      [this.action, TypeSendMessageAction, "SendMessageAction"],
+      [this.fromId, _TypePeer, "Peer"],
+      [this.action, _TypeSendMessageAction, "SendMessageAction"],
     ];
   }
 
@@ -12089,7 +12089,7 @@ export class UpdateChannelUserTyping extends TypeUpdate {
   }
 }
 
-export class UpdatePinnedMessages extends TypeUpdate {
+export class UpdatePinnedMessages extends _TypeUpdate {
   pinned?: true;
   peer: TypePeer;
   messages: Array<number>;
@@ -12104,7 +12104,7 @@ export class UpdatePinnedMessages extends TypeUpdate {
     return [
       ["flags", flags, "#"],
       ["pinned", "true", "flags.0?true"],
-      ["peer", TypePeer, "Peer"],
+      ["peer", _TypePeer, "Peer"],
       ["messages", ["number"], "Vector<int>"],
       ["pts", "number", "int"],
       ["ptsCount", "number", "int"],
@@ -12115,7 +12115,7 @@ export class UpdatePinnedMessages extends TypeUpdate {
     return [
       ["flags", flags, "#"],
       [this.pinned ?? null, "true", "flags.0?true"],
-      [this.peer, TypePeer, "Peer"],
+      [this.peer, _TypePeer, "Peer"],
       [this.messages, ["number"], "Vector<int>"],
       [this.pts, "number", "int"],
       [this.ptsCount, "number", "int"],
@@ -12132,7 +12132,7 @@ export class UpdatePinnedMessages extends TypeUpdate {
   }
 }
 
-export class UpdatePinnedChannelMessages extends TypeUpdate {
+export class UpdatePinnedChannelMessages extends _TypeUpdate {
   pinned?: true;
   channelId: bigint;
   messages: Array<number>;
@@ -12175,7 +12175,7 @@ export class UpdatePinnedChannelMessages extends TypeUpdate {
   }
 }
 
-export class UpdateChat extends TypeUpdate {
+export class UpdateChat extends _TypeUpdate {
   chatId: bigint;
 
   protected get [id]() {
@@ -12200,7 +12200,7 @@ export class UpdateChat extends TypeUpdate {
   }
 }
 
-export class UpdateGroupCallParticipants extends TypeUpdate {
+export class UpdateGroupCallParticipants extends _TypeUpdate {
   call: TypeInputGroupCall;
   participants: Array<TypeGroupCallParticipant>;
   version: number;
@@ -12211,16 +12211,16 @@ export class UpdateGroupCallParticipants extends TypeUpdate {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["call", TypeInputGroupCall, "InputGroupCall"],
-      ["participants", [TypeGroupCallParticipant], "Vector<GroupCallParticipant>"],
+      ["call", _TypeInputGroupCall, "InputGroupCall"],
+      ["participants", [_TypeGroupCallParticipant], "Vector<GroupCallParticipant>"],
       ["version", "number", "int"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.call, TypeInputGroupCall, "InputGroupCall"],
-      [this.participants, [TypeGroupCallParticipant], "Vector<GroupCallParticipant>"],
+      [this.call, _TypeInputGroupCall, "InputGroupCall"],
+      [this.participants, [_TypeGroupCallParticipant], "Vector<GroupCallParticipant>"],
       [this.version, "number", "int"],
     ];
   }
@@ -12233,7 +12233,7 @@ export class UpdateGroupCallParticipants extends TypeUpdate {
   }
 }
 
-export class UpdateGroupCall extends TypeUpdate {
+export class UpdateGroupCall extends _TypeUpdate {
   chatId: bigint;
   call: TypeGroupCall;
 
@@ -12244,14 +12244,14 @@ export class UpdateGroupCall extends TypeUpdate {
   static get [paramDesc](): ParamDesc {
     return [
       ["chatId", "bigint", "long"],
-      ["call", TypeGroupCall, "GroupCall"],
+      ["call", _TypeGroupCall, "GroupCall"],
     ];
   }
 
   protected get [params](): Params {
     return [
       [this.chatId, "bigint", "long"],
-      [this.call, TypeGroupCall, "GroupCall"],
+      [this.call, _TypeGroupCall, "GroupCall"],
     ];
   }
 
@@ -12262,7 +12262,7 @@ export class UpdateGroupCall extends TypeUpdate {
   }
 }
 
-export class UpdatePeerHistoryTTL extends TypeUpdate {
+export class UpdatePeerHistoryTTL extends _TypeUpdate {
   peer: TypePeer;
   ttlPeriod?: number;
 
@@ -12273,7 +12273,7 @@ export class UpdatePeerHistoryTTL extends TypeUpdate {
   static get [paramDesc](): ParamDesc {
     return [
       ["flags", flags, "#"],
-      ["peer", TypePeer, "Peer"],
+      ["peer", _TypePeer, "Peer"],
       ["ttlPeriod", "number", "flags.0?int"],
     ];
   }
@@ -12281,7 +12281,7 @@ export class UpdatePeerHistoryTTL extends TypeUpdate {
   protected get [params](): Params {
     return [
       ["flags", flags, "#"],
-      [this.peer, TypePeer, "Peer"],
+      [this.peer, _TypePeer, "Peer"],
       [this.ttlPeriod ?? null, "number", "flags.0?int"],
     ];
   }
@@ -12293,7 +12293,7 @@ export class UpdatePeerHistoryTTL extends TypeUpdate {
   }
 }
 
-export class UpdateChatParticipant extends TypeUpdate {
+export class UpdateChatParticipant extends _TypeUpdate {
   chatId: bigint;
   date: number;
   actorId: bigint;
@@ -12314,9 +12314,9 @@ export class UpdateChatParticipant extends TypeUpdate {
       ["date", "number", "int"],
       ["actorId", "bigint", "long"],
       ["userId", "bigint", "long"],
-      ["prevParticipant", TypeChatParticipant, "flags.0?ChatParticipant"],
-      ["newParticipant", TypeChatParticipant, "flags.1?ChatParticipant"],
-      ["invite", TypeExportedChatInvite, "flags.2?ExportedChatInvite"],
+      ["prevParticipant", _TypeChatParticipant, "flags.0?ChatParticipant"],
+      ["newParticipant", _TypeChatParticipant, "flags.1?ChatParticipant"],
+      ["invite", _TypeExportedChatInvite, "flags.2?ExportedChatInvite"],
       ["qts", "number", "int"],
     ];
   }
@@ -12328,9 +12328,9 @@ export class UpdateChatParticipant extends TypeUpdate {
       [this.date, "number", "int"],
       [this.actorId, "bigint", "long"],
       [this.userId, "bigint", "long"],
-      [this.prevParticipant ?? null, TypeChatParticipant, "flags.0?ChatParticipant"],
-      [this.newParticipant ?? null, TypeChatParticipant, "flags.1?ChatParticipant"],
-      [this.invite ?? null, TypeExportedChatInvite, "flags.2?ExportedChatInvite"],
+      [this.prevParticipant ?? null, _TypeChatParticipant, "flags.0?ChatParticipant"],
+      [this.newParticipant ?? null, _TypeChatParticipant, "flags.1?ChatParticipant"],
+      [this.invite ?? null, _TypeExportedChatInvite, "flags.2?ExportedChatInvite"],
       [this.qts, "number", "int"],
     ];
   }
@@ -12348,7 +12348,7 @@ export class UpdateChatParticipant extends TypeUpdate {
   }
 }
 
-export class UpdateChannelParticipant extends TypeUpdate {
+export class UpdateChannelParticipant extends _TypeUpdate {
   viaChatlist?: true;
   channelId: bigint;
   date: number;
@@ -12371,9 +12371,9 @@ export class UpdateChannelParticipant extends TypeUpdate {
       ["date", "number", "int"],
       ["actorId", "bigint", "long"],
       ["userId", "bigint", "long"],
-      ["prevParticipant", TypeChannelParticipant, "flags.0?ChannelParticipant"],
-      ["newParticipant", TypeChannelParticipant, "flags.1?ChannelParticipant"],
-      ["invite", TypeExportedChatInvite, "flags.2?ExportedChatInvite"],
+      ["prevParticipant", _TypeChannelParticipant, "flags.0?ChannelParticipant"],
+      ["newParticipant", _TypeChannelParticipant, "flags.1?ChannelParticipant"],
+      ["invite", _TypeExportedChatInvite, "flags.2?ExportedChatInvite"],
       ["qts", "number", "int"],
     ];
   }
@@ -12386,9 +12386,9 @@ export class UpdateChannelParticipant extends TypeUpdate {
       [this.date, "number", "int"],
       [this.actorId, "bigint", "long"],
       [this.userId, "bigint", "long"],
-      [this.prevParticipant ?? null, TypeChannelParticipant, "flags.0?ChannelParticipant"],
-      [this.newParticipant ?? null, TypeChannelParticipant, "flags.1?ChannelParticipant"],
-      [this.invite ?? null, TypeExportedChatInvite, "flags.2?ExportedChatInvite"],
+      [this.prevParticipant ?? null, _TypeChannelParticipant, "flags.0?ChannelParticipant"],
+      [this.newParticipant ?? null, _TypeChannelParticipant, "flags.1?ChannelParticipant"],
+      [this.invite ?? null, _TypeExportedChatInvite, "flags.2?ExportedChatInvite"],
       [this.qts, "number", "int"],
     ];
   }
@@ -12407,7 +12407,7 @@ export class UpdateChannelParticipant extends TypeUpdate {
   }
 }
 
-export class UpdateBotStopped extends TypeUpdate {
+export class UpdateBotStopped extends _TypeUpdate {
   userId: bigint;
   date: number;
   stopped: boolean;
@@ -12444,7 +12444,7 @@ export class UpdateBotStopped extends TypeUpdate {
   }
 }
 
-export class UpdateGroupCallConnection extends TypeUpdate {
+export class UpdateGroupCallConnection extends _TypeUpdate {
   presentation?: true;
   params: TypeDataJSON;
 
@@ -12456,7 +12456,7 @@ export class UpdateGroupCallConnection extends TypeUpdate {
     return [
       ["flags", flags, "#"],
       ["presentation", "true", "flags.0?true"],
-      ["params", TypeDataJSON, "DataJSON"],
+      ["params", _TypeDataJSON, "DataJSON"],
     ];
   }
 
@@ -12464,7 +12464,7 @@ export class UpdateGroupCallConnection extends TypeUpdate {
     return [
       ["flags", flags, "#"],
       [this.presentation ?? null, "true", "flags.0?true"],
-      [this.params, TypeDataJSON, "DataJSON"],
+      [this.params, _TypeDataJSON, "DataJSON"],
     ];
   }
 
@@ -12475,7 +12475,7 @@ export class UpdateGroupCallConnection extends TypeUpdate {
   }
 }
 
-export class UpdateBotCommands extends TypeUpdate {
+export class UpdateBotCommands extends _TypeUpdate {
   peer: TypePeer;
   botId: bigint;
   commands: Array<TypeBotCommand>;
@@ -12486,17 +12486,17 @@ export class UpdateBotCommands extends TypeUpdate {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["peer", TypePeer, "Peer"],
+      ["peer", _TypePeer, "Peer"],
       ["botId", "bigint", "long"],
-      ["commands", [TypeBotCommand], "Vector<BotCommand>"],
+      ["commands", [_TypeBotCommand], "Vector<BotCommand>"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.peer, TypePeer, "Peer"],
+      [this.peer, _TypePeer, "Peer"],
       [this.botId, "bigint", "long"],
-      [this.commands, [TypeBotCommand], "Vector<BotCommand>"],
+      [this.commands, [_TypeBotCommand], "Vector<BotCommand>"],
     ];
   }
 
@@ -12508,7 +12508,7 @@ export class UpdateBotCommands extends TypeUpdate {
   }
 }
 
-export class UpdatePendingJoinRequests extends TypeUpdate {
+export class UpdatePendingJoinRequests extends _TypeUpdate {
   peer: TypePeer;
   requestsPending: number;
   recentRequesters: Array<bigint>;
@@ -12519,7 +12519,7 @@ export class UpdatePendingJoinRequests extends TypeUpdate {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["peer", TypePeer, "Peer"],
+      ["peer", _TypePeer, "Peer"],
       ["requestsPending", "number", "int"],
       ["recentRequesters", ["bigint"], "Vector<long>"],
     ];
@@ -12527,7 +12527,7 @@ export class UpdatePendingJoinRequests extends TypeUpdate {
 
   protected get [params](): Params {
     return [
-      [this.peer, TypePeer, "Peer"],
+      [this.peer, _TypePeer, "Peer"],
       [this.requestsPending, "number", "int"],
       [this.recentRequesters, ["bigint"], "Vector<long>"],
     ];
@@ -12541,7 +12541,7 @@ export class UpdatePendingJoinRequests extends TypeUpdate {
   }
 }
 
-export class UpdateBotChatInviteRequester extends TypeUpdate {
+export class UpdateBotChatInviteRequester extends _TypeUpdate {
   peer: TypePeer;
   date: number;
   userId: bigint;
@@ -12555,22 +12555,22 @@ export class UpdateBotChatInviteRequester extends TypeUpdate {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["peer", TypePeer, "Peer"],
+      ["peer", _TypePeer, "Peer"],
       ["date", "number", "int"],
       ["userId", "bigint", "long"],
       ["about", "string", "string"],
-      ["invite", TypeExportedChatInvite, "ExportedChatInvite"],
+      ["invite", _TypeExportedChatInvite, "ExportedChatInvite"],
       ["qts", "number", "int"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.peer, TypePeer, "Peer"],
+      [this.peer, _TypePeer, "Peer"],
       [this.date, "number", "int"],
       [this.userId, "bigint", "long"],
       [this.about, "string", "string"],
-      [this.invite, TypeExportedChatInvite, "ExportedChatInvite"],
+      [this.invite, _TypeExportedChatInvite, "ExportedChatInvite"],
       [this.qts, "number", "int"],
     ];
   }
@@ -12586,7 +12586,7 @@ export class UpdateBotChatInviteRequester extends TypeUpdate {
   }
 }
 
-export class UpdateMessageReactions extends TypeUpdate {
+export class UpdateMessageReactions extends _TypeUpdate {
   peer: TypePeer;
   msgId: number;
   topMsgId?: number;
@@ -12599,20 +12599,20 @@ export class UpdateMessageReactions extends TypeUpdate {
   static get [paramDesc](): ParamDesc {
     return [
       ["flags", flags, "#"],
-      ["peer", TypePeer, "Peer"],
+      ["peer", _TypePeer, "Peer"],
       ["msgId", "number", "int"],
       ["topMsgId", "number", "flags.0?int"],
-      ["reactions", TypeMessageReactions, "MessageReactions"],
+      ["reactions", _TypeMessageReactions, "MessageReactions"],
     ];
   }
 
   protected get [params](): Params {
     return [
       ["flags", flags, "#"],
-      [this.peer, TypePeer, "Peer"],
+      [this.peer, _TypePeer, "Peer"],
       [this.msgId, "number", "int"],
       [this.topMsgId ?? null, "number", "flags.0?int"],
-      [this.reactions, TypeMessageReactions, "MessageReactions"],
+      [this.reactions, _TypeMessageReactions, "MessageReactions"],
     ];
   }
 
@@ -12625,7 +12625,7 @@ export class UpdateMessageReactions extends TypeUpdate {
   }
 }
 
-export class UpdateAttachMenuBots extends TypeUpdate {
+export class UpdateAttachMenuBots extends _TypeUpdate {
   protected get [id]() {
     return 0x17B7A20B;
   }
@@ -12643,7 +12643,7 @@ export class UpdateAttachMenuBots extends TypeUpdate {
   }
 }
 
-export class UpdateWebViewResultSent extends TypeUpdate {
+export class UpdateWebViewResultSent extends _TypeUpdate {
   queryId: bigint;
 
   protected get [id]() {
@@ -12668,7 +12668,7 @@ export class UpdateWebViewResultSent extends TypeUpdate {
   }
 }
 
-export class UpdateBotMenuButton extends TypeUpdate {
+export class UpdateBotMenuButton extends _TypeUpdate {
   botId: bigint;
   button: TypeBotMenuButton;
 
@@ -12679,14 +12679,14 @@ export class UpdateBotMenuButton extends TypeUpdate {
   static get [paramDesc](): ParamDesc {
     return [
       ["botId", "bigint", "long"],
-      ["button", TypeBotMenuButton, "BotMenuButton"],
+      ["button", _TypeBotMenuButton, "BotMenuButton"],
     ];
   }
 
   protected get [params](): Params {
     return [
       [this.botId, "bigint", "long"],
-      [this.button, TypeBotMenuButton, "BotMenuButton"],
+      [this.button, _TypeBotMenuButton, "BotMenuButton"],
     ];
   }
 
@@ -12697,7 +12697,7 @@ export class UpdateBotMenuButton extends TypeUpdate {
   }
 }
 
-export class UpdateSavedRingtones extends TypeUpdate {
+export class UpdateSavedRingtones extends _TypeUpdate {
   protected get [id]() {
     return 0x74D8BE99;
   }
@@ -12715,7 +12715,7 @@ export class UpdateSavedRingtones extends TypeUpdate {
   }
 }
 
-export class UpdateTranscribedAudio extends TypeUpdate {
+export class UpdateTranscribedAudio extends _TypeUpdate {
   pending?: true;
   peer: TypePeer;
   msgId: number;
@@ -12730,7 +12730,7 @@ export class UpdateTranscribedAudio extends TypeUpdate {
     return [
       ["flags", flags, "#"],
       ["pending", "true", "flags.0?true"],
-      ["peer", TypePeer, "Peer"],
+      ["peer", _TypePeer, "Peer"],
       ["msgId", "number", "int"],
       ["transcriptionId", "bigint", "long"],
       ["text", "string", "string"],
@@ -12741,7 +12741,7 @@ export class UpdateTranscribedAudio extends TypeUpdate {
     return [
       ["flags", flags, "#"],
       [this.pending ?? null, "true", "flags.0?true"],
-      [this.peer, TypePeer, "Peer"],
+      [this.peer, _TypePeer, "Peer"],
       [this.msgId, "number", "int"],
       [this.transcriptionId, "bigint", "long"],
       [this.text, "string", "string"],
@@ -12758,7 +12758,7 @@ export class UpdateTranscribedAudio extends TypeUpdate {
   }
 }
 
-export class UpdateReadFeaturedEmojiStickers extends TypeUpdate {
+export class UpdateReadFeaturedEmojiStickers extends _TypeUpdate {
   protected get [id]() {
     return 0xFB4C496C;
   }
@@ -12776,7 +12776,7 @@ export class UpdateReadFeaturedEmojiStickers extends TypeUpdate {
   }
 }
 
-export class UpdateUserEmojiStatus extends TypeUpdate {
+export class UpdateUserEmojiStatus extends _TypeUpdate {
   userId: bigint;
   emojiStatus: TypeEmojiStatus;
 
@@ -12787,14 +12787,14 @@ export class UpdateUserEmojiStatus extends TypeUpdate {
   static get [paramDesc](): ParamDesc {
     return [
       ["userId", "bigint", "long"],
-      ["emojiStatus", TypeEmojiStatus, "EmojiStatus"],
+      ["emojiStatus", _TypeEmojiStatus, "EmojiStatus"],
     ];
   }
 
   protected get [params](): Params {
     return [
       [this.userId, "bigint", "long"],
-      [this.emojiStatus, TypeEmojiStatus, "EmojiStatus"],
+      [this.emojiStatus, _TypeEmojiStatus, "EmojiStatus"],
     ];
   }
 
@@ -12805,7 +12805,7 @@ export class UpdateUserEmojiStatus extends TypeUpdate {
   }
 }
 
-export class UpdateRecentEmojiStatuses extends TypeUpdate {
+export class UpdateRecentEmojiStatuses extends _TypeUpdate {
   protected get [id]() {
     return 0x30F443DB;
   }
@@ -12823,7 +12823,7 @@ export class UpdateRecentEmojiStatuses extends TypeUpdate {
   }
 }
 
-export class UpdateRecentReactions extends TypeUpdate {
+export class UpdateRecentReactions extends _TypeUpdate {
   protected get [id]() {
     return 0x6F7863F4;
   }
@@ -12841,7 +12841,7 @@ export class UpdateRecentReactions extends TypeUpdate {
   }
 }
 
-export class UpdateMoveStickerSetToTop extends TypeUpdate {
+export class UpdateMoveStickerSetToTop extends _TypeUpdate {
   masks?: true;
   emojis?: true;
   stickerset: bigint;
@@ -12876,7 +12876,7 @@ export class UpdateMoveStickerSetToTop extends TypeUpdate {
   }
 }
 
-export class UpdateMessageExtendedMedia extends TypeUpdate {
+export class UpdateMessageExtendedMedia extends _TypeUpdate {
   peer: TypePeer;
   msgId: number;
   extendedMedia: TypeMessageExtendedMedia;
@@ -12887,17 +12887,17 @@ export class UpdateMessageExtendedMedia extends TypeUpdate {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["peer", TypePeer, "Peer"],
+      ["peer", _TypePeer, "Peer"],
       ["msgId", "number", "int"],
-      ["extendedMedia", TypeMessageExtendedMedia, "MessageExtendedMedia"],
+      ["extendedMedia", _TypeMessageExtendedMedia, "MessageExtendedMedia"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.peer, TypePeer, "Peer"],
+      [this.peer, _TypePeer, "Peer"],
       [this.msgId, "number", "int"],
-      [this.extendedMedia, TypeMessageExtendedMedia, "MessageExtendedMedia"],
+      [this.extendedMedia, _TypeMessageExtendedMedia, "MessageExtendedMedia"],
     ];
   }
 
@@ -12909,7 +12909,7 @@ export class UpdateMessageExtendedMedia extends TypeUpdate {
   }
 }
 
-export class UpdateChannelPinnedTopic extends TypeUpdate {
+export class UpdateChannelPinnedTopic extends _TypeUpdate {
   pinned?: true;
   channelId: bigint;
   topicId: number;
@@ -12944,7 +12944,7 @@ export class UpdateChannelPinnedTopic extends TypeUpdate {
   }
 }
 
-export class UpdateChannelPinnedTopics extends TypeUpdate {
+export class UpdateChannelPinnedTopics extends _TypeUpdate {
   channelId: bigint;
   order?: Array<number>;
 
@@ -12975,7 +12975,7 @@ export class UpdateChannelPinnedTopics extends TypeUpdate {
   }
 }
 
-export class UpdateUser extends TypeUpdate {
+export class UpdateUser extends _TypeUpdate {
   userId: bigint;
 
   protected get [id]() {
@@ -13000,7 +13000,7 @@ export class UpdateUser extends TypeUpdate {
   }
 }
 
-export class UpdateAutoSaveSettings extends TypeUpdate {
+export class UpdateAutoSaveSettings extends _TypeUpdate {
   protected get [id]() {
     return 0xEC05B097;
   }
@@ -13018,7 +13018,7 @@ export class UpdateAutoSaveSettings extends TypeUpdate {
   }
 }
 
-export class UpdateGroupInvitePrivacyForbidden extends TypeUpdate {
+export class UpdateGroupInvitePrivacyForbidden extends _TypeUpdate {
   userId: bigint;
 
   protected get [id]() {
@@ -13043,7 +13043,7 @@ export class UpdateGroupInvitePrivacyForbidden extends TypeUpdate {
   }
 }
 
-export class UpdateStory extends TypeUpdate {
+export class UpdateStory extends _TypeUpdate {
   userId: bigint;
   story: TypeStoryItem;
 
@@ -13054,14 +13054,14 @@ export class UpdateStory extends TypeUpdate {
   static get [paramDesc](): ParamDesc {
     return [
       ["userId", "bigint", "long"],
-      ["story", TypeStoryItem, "StoryItem"],
+      ["story", _TypeStoryItem, "StoryItem"],
     ];
   }
 
   protected get [params](): Params {
     return [
       [this.userId, "bigint", "long"],
-      [this.story, TypeStoryItem, "StoryItem"],
+      [this.story, _TypeStoryItem, "StoryItem"],
     ];
   }
 
@@ -13072,7 +13072,7 @@ export class UpdateStory extends TypeUpdate {
   }
 }
 
-export class UpdateReadStories extends TypeUpdate {
+export class UpdateReadStories extends _TypeUpdate {
   userId: bigint;
   maxId: number;
 
@@ -13101,7 +13101,7 @@ export class UpdateReadStories extends TypeUpdate {
   }
 }
 
-export class UpdateStoryID extends TypeUpdate {
+export class UpdateStoryID extends _TypeUpdate {
   id: number;
   randomId: bigint;
 
@@ -13130,7 +13130,7 @@ export class UpdateStoryID extends TypeUpdate {
   }
 }
 
-export class UpdateStoriesStealthMode extends TypeUpdate {
+export class UpdateStoriesStealthMode extends _TypeUpdate {
   stealthMode: TypeStoriesStealthMode;
 
   protected get [id]() {
@@ -13139,13 +13139,13 @@ export class UpdateStoriesStealthMode extends TypeUpdate {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["stealthMode", TypeStoriesStealthMode, "StoriesStealthMode"],
+      ["stealthMode", _TypeStoriesStealthMode, "StoriesStealthMode"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.stealthMode, TypeStoriesStealthMode, "StoriesStealthMode"],
+      [this.stealthMode, _TypeStoriesStealthMode, "StoriesStealthMode"],
     ];
   }
 
@@ -13155,7 +13155,7 @@ export class UpdateStoriesStealthMode extends TypeUpdate {
   }
 }
 
-export class UpdateSentStoryReaction extends TypeUpdate {
+export class UpdateSentStoryReaction extends _TypeUpdate {
   userId: bigint;
   storyId: number;
   reaction: TypeReaction;
@@ -13168,7 +13168,7 @@ export class UpdateSentStoryReaction extends TypeUpdate {
     return [
       ["userId", "bigint", "long"],
       ["storyId", "number", "int"],
-      ["reaction", TypeReaction, "Reaction"],
+      ["reaction", _TypeReaction, "Reaction"],
     ];
   }
 
@@ -13176,7 +13176,7 @@ export class UpdateSentStoryReaction extends TypeUpdate {
     return [
       [this.userId, "bigint", "long"],
       [this.storyId, "number", "int"],
-      [this.reaction, TypeReaction, "Reaction"],
+      [this.reaction, _TypeReaction, "Reaction"],
     ];
   }
 
@@ -13188,7 +13188,7 @@ export class UpdateSentStoryReaction extends TypeUpdate {
   }
 }
 
-export class UpdatesState extends TypeUpdatesState {
+export class UpdatesState extends _TypeUpdatesState {
   pts: number;
   qts: number;
   date: number;
@@ -13229,7 +13229,7 @@ export class UpdatesState extends TypeUpdatesState {
   }
 }
 
-export class UpdatesDifferenceEmpty extends TypeUpdatesDifference {
+export class UpdatesDifferenceEmpty extends _TypeUpdatesDifference {
   date: number;
   seq: number;
 
@@ -13258,7 +13258,7 @@ export class UpdatesDifferenceEmpty extends TypeUpdatesDifference {
   }
 }
 
-export class UpdatesDifference extends TypeUpdatesDifference {
+export class UpdatesDifference extends _TypeUpdatesDifference {
   newMessages: Array<TypeMessage>;
   newEncryptedMessages: Array<TypeEncryptedMessage>;
   otherUpdates: Array<TypeUpdate>;
@@ -13272,23 +13272,23 @@ export class UpdatesDifference extends TypeUpdatesDifference {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["newMessages", [TypeMessage], "Vector<Message>"],
-      ["newEncryptedMessages", [TypeEncryptedMessage], "Vector<EncryptedMessage>"],
-      ["otherUpdates", [TypeUpdate], "Vector<Update>"],
-      ["chats", [TypeChat], "Vector<Chat>"],
-      ["users", [TypeUser], "Vector<User>"],
-      ["state", TypeUpdatesState, "updates.State"],
+      ["newMessages", [_TypeMessage], "Vector<Message>"],
+      ["newEncryptedMessages", [_TypeEncryptedMessage], "Vector<EncryptedMessage>"],
+      ["otherUpdates", [_TypeUpdate], "Vector<Update>"],
+      ["chats", [_TypeChat], "Vector<Chat>"],
+      ["users", [_TypeUser], "Vector<User>"],
+      ["state", _TypeUpdatesState, "updates.State"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.newMessages, [TypeMessage], "Vector<Message>"],
-      [this.newEncryptedMessages, [TypeEncryptedMessage], "Vector<EncryptedMessage>"],
-      [this.otherUpdates, [TypeUpdate], "Vector<Update>"],
-      [this.chats, [TypeChat], "Vector<Chat>"],
-      [this.users, [TypeUser], "Vector<User>"],
-      [this.state, TypeUpdatesState, "updates.State"],
+      [this.newMessages, [_TypeMessage], "Vector<Message>"],
+      [this.newEncryptedMessages, [_TypeEncryptedMessage], "Vector<EncryptedMessage>"],
+      [this.otherUpdates, [_TypeUpdate], "Vector<Update>"],
+      [this.chats, [_TypeChat], "Vector<Chat>"],
+      [this.users, [_TypeUser], "Vector<User>"],
+      [this.state, _TypeUpdatesState, "updates.State"],
     ];
   }
 
@@ -13303,7 +13303,7 @@ export class UpdatesDifference extends TypeUpdatesDifference {
   }
 }
 
-export class UpdatesDifferenceSlice extends TypeUpdatesDifference {
+export class UpdatesDifferenceSlice extends _TypeUpdatesDifference {
   newMessages: Array<TypeMessage>;
   newEncryptedMessages: Array<TypeEncryptedMessage>;
   otherUpdates: Array<TypeUpdate>;
@@ -13317,23 +13317,23 @@ export class UpdatesDifferenceSlice extends TypeUpdatesDifference {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["newMessages", [TypeMessage], "Vector<Message>"],
-      ["newEncryptedMessages", [TypeEncryptedMessage], "Vector<EncryptedMessage>"],
-      ["otherUpdates", [TypeUpdate], "Vector<Update>"],
-      ["chats", [TypeChat], "Vector<Chat>"],
-      ["users", [TypeUser], "Vector<User>"],
-      ["intermediateState", TypeUpdatesState, "updates.State"],
+      ["newMessages", [_TypeMessage], "Vector<Message>"],
+      ["newEncryptedMessages", [_TypeEncryptedMessage], "Vector<EncryptedMessage>"],
+      ["otherUpdates", [_TypeUpdate], "Vector<Update>"],
+      ["chats", [_TypeChat], "Vector<Chat>"],
+      ["users", [_TypeUser], "Vector<User>"],
+      ["intermediateState", _TypeUpdatesState, "updates.State"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.newMessages, [TypeMessage], "Vector<Message>"],
-      [this.newEncryptedMessages, [TypeEncryptedMessage], "Vector<EncryptedMessage>"],
-      [this.otherUpdates, [TypeUpdate], "Vector<Update>"],
-      [this.chats, [TypeChat], "Vector<Chat>"],
-      [this.users, [TypeUser], "Vector<User>"],
-      [this.intermediateState, TypeUpdatesState, "updates.State"],
+      [this.newMessages, [_TypeMessage], "Vector<Message>"],
+      [this.newEncryptedMessages, [_TypeEncryptedMessage], "Vector<EncryptedMessage>"],
+      [this.otherUpdates, [_TypeUpdate], "Vector<Update>"],
+      [this.chats, [_TypeChat], "Vector<Chat>"],
+      [this.users, [_TypeUser], "Vector<User>"],
+      [this.intermediateState, _TypeUpdatesState, "updates.State"],
     ];
   }
 
@@ -13348,7 +13348,7 @@ export class UpdatesDifferenceSlice extends TypeUpdatesDifference {
   }
 }
 
-export class UpdatesDifferenceTooLong extends TypeUpdatesDifference {
+export class UpdatesDifferenceTooLong extends _TypeUpdatesDifference {
   pts: number;
 
   protected get [id]() {
@@ -13373,7 +13373,7 @@ export class UpdatesDifferenceTooLong extends TypeUpdatesDifference {
   }
 }
 
-export class UpdatesTooLong extends TypeUpdates {
+export class UpdatesTooLong extends _TypeUpdates {
   protected get [id]() {
     return 0xE317AF7E;
   }
@@ -13391,7 +13391,7 @@ export class UpdatesTooLong extends TypeUpdates {
   }
 }
 
-export class UpdateShortMessage extends TypeUpdates {
+export class UpdateShortMessage extends _TypeUpdates {
   out?: true;
   mentioned?: true;
   mediaUnread?: true;
@@ -13425,10 +13425,10 @@ export class UpdateShortMessage extends TypeUpdates {
       ["pts", "number", "int"],
       ["ptsCount", "number", "int"],
       ["date", "number", "int"],
-      ["fwdFrom", TypeMessageFwdHeader, "flags.2?MessageFwdHeader"],
+      ["fwdFrom", _TypeMessageFwdHeader, "flags.2?MessageFwdHeader"],
       ["viaBotId", "bigint", "flags.11?long"],
-      ["replyTo", TypeMessageReplyHeader, "flags.3?MessageReplyHeader"],
-      ["entities", [TypeMessageEntity], "flags.7?Vector<MessageEntity>"],
+      ["replyTo", _TypeMessageReplyHeader, "flags.3?MessageReplyHeader"],
+      ["entities", [_TypeMessageEntity], "flags.7?Vector<MessageEntity>"],
       ["ttlPeriod", "number", "flags.25?int"],
     ];
   }
@@ -13446,10 +13446,10 @@ export class UpdateShortMessage extends TypeUpdates {
       [this.pts, "number", "int"],
       [this.ptsCount, "number", "int"],
       [this.date, "number", "int"],
-      [this.fwdFrom ?? null, TypeMessageFwdHeader, "flags.2?MessageFwdHeader"],
+      [this.fwdFrom ?? null, _TypeMessageFwdHeader, "flags.2?MessageFwdHeader"],
       [this.viaBotId ?? null, "bigint", "flags.11?long"],
-      [this.replyTo ?? null, TypeMessageReplyHeader, "flags.3?MessageReplyHeader"],
-      [this.entities ?? null, [TypeMessageEntity], "flags.7?Vector<MessageEntity>"],
+      [this.replyTo ?? null, _TypeMessageReplyHeader, "flags.3?MessageReplyHeader"],
+      [this.entities ?? null, [_TypeMessageEntity], "flags.7?Vector<MessageEntity>"],
       [this.ttlPeriod ?? null, "number", "flags.25?int"],
     ];
   }
@@ -13474,7 +13474,7 @@ export class UpdateShortMessage extends TypeUpdates {
   }
 }
 
-export class UpdateShortChatMessage extends TypeUpdates {
+export class UpdateShortChatMessage extends _TypeUpdates {
   out?: true;
   mentioned?: true;
   mediaUnread?: true;
@@ -13510,10 +13510,10 @@ export class UpdateShortChatMessage extends TypeUpdates {
       ["pts", "number", "int"],
       ["ptsCount", "number", "int"],
       ["date", "number", "int"],
-      ["fwdFrom", TypeMessageFwdHeader, "flags.2?MessageFwdHeader"],
+      ["fwdFrom", _TypeMessageFwdHeader, "flags.2?MessageFwdHeader"],
       ["viaBotId", "bigint", "flags.11?long"],
-      ["replyTo", TypeMessageReplyHeader, "flags.3?MessageReplyHeader"],
-      ["entities", [TypeMessageEntity], "flags.7?Vector<MessageEntity>"],
+      ["replyTo", _TypeMessageReplyHeader, "flags.3?MessageReplyHeader"],
+      ["entities", [_TypeMessageEntity], "flags.7?Vector<MessageEntity>"],
       ["ttlPeriod", "number", "flags.25?int"],
     ];
   }
@@ -13532,10 +13532,10 @@ export class UpdateShortChatMessage extends TypeUpdates {
       [this.pts, "number", "int"],
       [this.ptsCount, "number", "int"],
       [this.date, "number", "int"],
-      [this.fwdFrom ?? null, TypeMessageFwdHeader, "flags.2?MessageFwdHeader"],
+      [this.fwdFrom ?? null, _TypeMessageFwdHeader, "flags.2?MessageFwdHeader"],
       [this.viaBotId ?? null, "bigint", "flags.11?long"],
-      [this.replyTo ?? null, TypeMessageReplyHeader, "flags.3?MessageReplyHeader"],
-      [this.entities ?? null, [TypeMessageEntity], "flags.7?Vector<MessageEntity>"],
+      [this.replyTo ?? null, _TypeMessageReplyHeader, "flags.3?MessageReplyHeader"],
+      [this.entities ?? null, [_TypeMessageEntity], "flags.7?Vector<MessageEntity>"],
       [this.ttlPeriod ?? null, "number", "flags.25?int"],
     ];
   }
@@ -13561,7 +13561,7 @@ export class UpdateShortChatMessage extends TypeUpdates {
   }
 }
 
-export class UpdateShort extends TypeUpdates {
+export class UpdateShort extends _TypeUpdates {
   update: TypeUpdate;
   date: number;
 
@@ -13571,14 +13571,14 @@ export class UpdateShort extends TypeUpdates {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["update", TypeUpdate, "Update"],
+      ["update", _TypeUpdate, "Update"],
       ["date", "number", "int"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.update, TypeUpdate, "Update"],
+      [this.update, _TypeUpdate, "Update"],
       [this.date, "number", "int"],
     ];
   }
@@ -13590,7 +13590,7 @@ export class UpdateShort extends TypeUpdates {
   }
 }
 
-export class UpdatesCombined extends TypeUpdates {
+export class UpdatesCombined extends _TypeUpdates {
   updates: Array<TypeUpdate>;
   users: Array<TypeUser>;
   chats: Array<TypeChat>;
@@ -13604,9 +13604,9 @@ export class UpdatesCombined extends TypeUpdates {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["updates", [TypeUpdate], "Vector<Update>"],
-      ["users", [TypeUser], "Vector<User>"],
-      ["chats", [TypeChat], "Vector<Chat>"],
+      ["updates", [_TypeUpdate], "Vector<Update>"],
+      ["users", [_TypeUser], "Vector<User>"],
+      ["chats", [_TypeChat], "Vector<Chat>"],
       ["date", "number", "int"],
       ["seqStart", "number", "int"],
       ["seq", "number", "int"],
@@ -13615,9 +13615,9 @@ export class UpdatesCombined extends TypeUpdates {
 
   protected get [params](): Params {
     return [
-      [this.updates, [TypeUpdate], "Vector<Update>"],
-      [this.users, [TypeUser], "Vector<User>"],
-      [this.chats, [TypeChat], "Vector<Chat>"],
+      [this.updates, [_TypeUpdate], "Vector<Update>"],
+      [this.users, [_TypeUser], "Vector<User>"],
+      [this.chats, [_TypeChat], "Vector<Chat>"],
       [this.date, "number", "int"],
       [this.seqStart, "number", "int"],
       [this.seq, "number", "int"],
@@ -13635,7 +13635,7 @@ export class UpdatesCombined extends TypeUpdates {
   }
 }
 
-export class Updates extends TypeUpdates {
+export class Updates extends _TypeUpdates {
   updates: Array<TypeUpdate>;
   users: Array<TypeUser>;
   chats: Array<TypeChat>;
@@ -13648,9 +13648,9 @@ export class Updates extends TypeUpdates {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["updates", [TypeUpdate], "Vector<Update>"],
-      ["users", [TypeUser], "Vector<User>"],
-      ["chats", [TypeChat], "Vector<Chat>"],
+      ["updates", [_TypeUpdate], "Vector<Update>"],
+      ["users", [_TypeUser], "Vector<User>"],
+      ["chats", [_TypeChat], "Vector<Chat>"],
       ["date", "number", "int"],
       ["seq", "number", "int"],
     ];
@@ -13658,9 +13658,9 @@ export class Updates extends TypeUpdates {
 
   protected get [params](): Params {
     return [
-      [this.updates, [TypeUpdate], "Vector<Update>"],
-      [this.users, [TypeUser], "Vector<User>"],
-      [this.chats, [TypeChat], "Vector<Chat>"],
+      [this.updates, [_TypeUpdate], "Vector<Update>"],
+      [this.users, [_TypeUser], "Vector<User>"],
+      [this.chats, [_TypeChat], "Vector<Chat>"],
       [this.date, "number", "int"],
       [this.seq, "number", "int"],
     ];
@@ -13676,7 +13676,7 @@ export class Updates extends TypeUpdates {
   }
 }
 
-export class UpdateShortSentMessage extends TypeUpdates {
+export class UpdateShortSentMessage extends _TypeUpdates {
   out?: true;
   id: number;
   pts: number;
@@ -13698,8 +13698,8 @@ export class UpdateShortSentMessage extends TypeUpdates {
       ["pts", "number", "int"],
       ["ptsCount", "number", "int"],
       ["date", "number", "int"],
-      ["media", TypeMessageMedia, "flags.9?MessageMedia"],
-      ["entities", [TypeMessageEntity], "flags.7?Vector<MessageEntity>"],
+      ["media", _TypeMessageMedia, "flags.9?MessageMedia"],
+      ["entities", [_TypeMessageEntity], "flags.7?Vector<MessageEntity>"],
       ["ttlPeriod", "number", "flags.25?int"],
     ];
   }
@@ -13712,8 +13712,8 @@ export class UpdateShortSentMessage extends TypeUpdates {
       [this.pts, "number", "int"],
       [this.ptsCount, "number", "int"],
       [this.date, "number", "int"],
-      [this.media ?? null, TypeMessageMedia, "flags.9?MessageMedia"],
-      [this.entities ?? null, [TypeMessageEntity], "flags.7?Vector<MessageEntity>"],
+      [this.media ?? null, _TypeMessageMedia, "flags.9?MessageMedia"],
+      [this.entities ?? null, [_TypeMessageEntity], "flags.7?Vector<MessageEntity>"],
       [this.ttlPeriod ?? null, "number", "flags.25?int"],
     ];
   }
@@ -13731,7 +13731,7 @@ export class UpdateShortSentMessage extends TypeUpdates {
   }
 }
 
-export class PhotosPhotos extends TypePhotosPhotos {
+export class PhotosPhotos extends _TypePhotosPhotos {
   photos: Array<TypePhoto>;
   users: Array<TypeUser>;
 
@@ -13741,15 +13741,15 @@ export class PhotosPhotos extends TypePhotosPhotos {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["photos", [TypePhoto], "Vector<Photo>"],
-      ["users", [TypeUser], "Vector<User>"],
+      ["photos", [_TypePhoto], "Vector<Photo>"],
+      ["users", [_TypeUser], "Vector<User>"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.photos, [TypePhoto], "Vector<Photo>"],
-      [this.users, [TypeUser], "Vector<User>"],
+      [this.photos, [_TypePhoto], "Vector<Photo>"],
+      [this.users, [_TypeUser], "Vector<User>"],
     ];
   }
 
@@ -13760,7 +13760,7 @@ export class PhotosPhotos extends TypePhotosPhotos {
   }
 }
 
-export class PhotosPhotosSlice extends TypePhotosPhotos {
+export class PhotosPhotosSlice extends _TypePhotosPhotos {
   count: number;
   photos: Array<TypePhoto>;
   users: Array<TypeUser>;
@@ -13772,16 +13772,16 @@ export class PhotosPhotosSlice extends TypePhotosPhotos {
   static get [paramDesc](): ParamDesc {
     return [
       ["count", "number", "int"],
-      ["photos", [TypePhoto], "Vector<Photo>"],
-      ["users", [TypeUser], "Vector<User>"],
+      ["photos", [_TypePhoto], "Vector<Photo>"],
+      ["users", [_TypeUser], "Vector<User>"],
     ];
   }
 
   protected get [params](): Params {
     return [
       [this.count, "number", "int"],
-      [this.photos, [TypePhoto], "Vector<Photo>"],
-      [this.users, [TypeUser], "Vector<User>"],
+      [this.photos, [_TypePhoto], "Vector<Photo>"],
+      [this.users, [_TypeUser], "Vector<User>"],
     ];
   }
 
@@ -13793,7 +13793,7 @@ export class PhotosPhotosSlice extends TypePhotosPhotos {
   }
 }
 
-export class PhotosPhoto extends TypePhotosPhoto {
+export class PhotosPhoto extends _TypePhotosPhoto {
   photo: TypePhoto;
   users: Array<TypeUser>;
 
@@ -13803,15 +13803,15 @@ export class PhotosPhoto extends TypePhotosPhoto {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["photo", TypePhoto, "Photo"],
-      ["users", [TypeUser], "Vector<User>"],
+      ["photo", _TypePhoto, "Photo"],
+      ["users", [_TypeUser], "Vector<User>"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.photo, TypePhoto, "Photo"],
-      [this.users, [TypeUser], "Vector<User>"],
+      [this.photo, _TypePhoto, "Photo"],
+      [this.users, [_TypeUser], "Vector<User>"],
     ];
   }
 
@@ -13822,7 +13822,7 @@ export class PhotosPhoto extends TypePhotosPhoto {
   }
 }
 
-export class UploadFile extends TypeUploadFile {
+export class UploadFile extends _TypeUploadFile {
   type: TypeStorageFileType;
   mtime: number;
   bytes: Uint8Array;
@@ -13833,7 +13833,7 @@ export class UploadFile extends TypeUploadFile {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["type", TypeStorageFileType, "storage.FileType"],
+      ["type", _TypeStorageFileType, "storage.FileType"],
       ["mtime", "number", "int"],
       ["bytes", Uint8Array, "bytes"],
     ];
@@ -13841,7 +13841,7 @@ export class UploadFile extends TypeUploadFile {
 
   protected get [params](): Params {
     return [
-      [this.type, TypeStorageFileType, "storage.FileType"],
+      [this.type, _TypeStorageFileType, "storage.FileType"],
       [this.mtime, "number", "int"],
       [this.bytes, Uint8Array, "bytes"],
     ];
@@ -13855,7 +13855,7 @@ export class UploadFile extends TypeUploadFile {
   }
 }
 
-export class UploadFileCdnRedirect extends TypeUploadFile {
+export class UploadFileCdnRedirect extends _TypeUploadFile {
   dcId: number;
   fileToken: Uint8Array;
   encryptionKey: Uint8Array;
@@ -13872,7 +13872,7 @@ export class UploadFileCdnRedirect extends TypeUploadFile {
       ["fileToken", Uint8Array, "bytes"],
       ["encryptionKey", Uint8Array, "bytes"],
       ["encryptionIv", Uint8Array, "bytes"],
-      ["fileHashes", [TypeFileHash], "Vector<FileHash>"],
+      ["fileHashes", [_TypeFileHash], "Vector<FileHash>"],
     ];
   }
 
@@ -13882,7 +13882,7 @@ export class UploadFileCdnRedirect extends TypeUploadFile {
       [this.fileToken, Uint8Array, "bytes"],
       [this.encryptionKey, Uint8Array, "bytes"],
       [this.encryptionIv, Uint8Array, "bytes"],
-      [this.fileHashes, [TypeFileHash], "Vector<FileHash>"],
+      [this.fileHashes, [_TypeFileHash], "Vector<FileHash>"],
     ];
   }
 
@@ -13896,7 +13896,7 @@ export class UploadFileCdnRedirect extends TypeUploadFile {
   }
 }
 
-export class DcOption extends TypeDcOption {
+export class DcOption extends _TypeDcOption {
   ipv6?: true;
   mediaOnly?: true;
   tcpoOnly?: true;
@@ -13959,7 +13959,7 @@ export class DcOption extends TypeDcOption {
   }
 }
 
-export class Config extends TypeConfig {
+export class Config extends _TypeConfig {
   defaultP2pContacts?: true;
   preloadFeaturedStickers?: true;
   revokePmInbox?: true;
@@ -14024,7 +14024,7 @@ export class Config extends TypeConfig {
       ["expires", "number", "int"],
       ["testMode", "boolean", "Bool"],
       ["thisDc", "number", "int"],
-      ["dcOptions", [TypeDcOption], "Vector<DcOption>"],
+      ["dcOptions", [_TypeDcOption], "Vector<DcOption>"],
       ["dcTxtDomainName", "string", "string"],
       ["chatSizeMax", "number", "int"],
       ["megagroupSizeMax", "number", "int"],
@@ -14060,7 +14060,7 @@ export class Config extends TypeConfig {
       ["suggestedLangCode", "string", "flags.2?string"],
       ["langPackVersion", "number", "flags.2?int"],
       ["baseLangPackVersion", "number", "flags.2?int"],
-      ["reactionsDefault", TypeReaction, "flags.15?Reaction"],
+      ["reactionsDefault", _TypeReaction, "flags.15?Reaction"],
       ["autologinToken", "string", "flags.16?string"],
     ];
   }
@@ -14077,7 +14077,7 @@ export class Config extends TypeConfig {
       [this.expires, "number", "int"],
       [this.testMode, "boolean", "Bool"],
       [this.thisDc, "number", "int"],
-      [this.dcOptions, [TypeDcOption], "Vector<DcOption>"],
+      [this.dcOptions, [_TypeDcOption], "Vector<DcOption>"],
       [this.dcTxtDomainName, "string", "string"],
       [this.chatSizeMax, "number", "int"],
       [this.megagroupSizeMax, "number", "int"],
@@ -14113,7 +14113,7 @@ export class Config extends TypeConfig {
       [this.suggestedLangCode ?? null, "string", "flags.2?string"],
       [this.langPackVersion ?? null, "number", "flags.2?int"],
       [this.baseLangPackVersion ?? null, "number", "flags.2?int"],
-      [this.reactionsDefault ?? null, TypeReaction, "flags.15?Reaction"],
+      [this.reactionsDefault ?? null, _TypeReaction, "flags.15?Reaction"],
       [this.autologinToken ?? null, "string", "flags.16?string"],
     ];
   }
@@ -14170,7 +14170,7 @@ export class Config extends TypeConfig {
   }
 }
 
-export class NearestDc extends TypeNearestDc {
+export class NearestDc extends _TypeNearestDc {
   country: string;
   thisDc: number;
   nearestDc: number;
@@ -14203,7 +14203,7 @@ export class NearestDc extends TypeNearestDc {
   }
 }
 
-export class HelpAppUpdate extends TypeHelpAppUpdate {
+export class HelpAppUpdate extends _TypeHelpAppUpdate {
   canNotSkip?: true;
   id: number;
   version: string;
@@ -14224,10 +14224,10 @@ export class HelpAppUpdate extends TypeHelpAppUpdate {
       ["id", "number", "int"],
       ["version", "string", "string"],
       ["text", "string", "string"],
-      ["entities", [TypeMessageEntity], "Vector<MessageEntity>"],
-      ["document", TypeDocument, "flags.1?Document"],
+      ["entities", [_TypeMessageEntity], "Vector<MessageEntity>"],
+      ["document", _TypeDocument, "flags.1?Document"],
       ["url", "string", "flags.2?string"],
-      ["sticker", TypeDocument, "flags.3?Document"],
+      ["sticker", _TypeDocument, "flags.3?Document"],
     ];
   }
 
@@ -14238,10 +14238,10 @@ export class HelpAppUpdate extends TypeHelpAppUpdate {
       [this.id, "number", "int"],
       [this.version, "string", "string"],
       [this.text, "string", "string"],
-      [this.entities, [TypeMessageEntity], "Vector<MessageEntity>"],
-      [this.document ?? null, TypeDocument, "flags.1?Document"],
+      [this.entities, [_TypeMessageEntity], "Vector<MessageEntity>"],
+      [this.document ?? null, _TypeDocument, "flags.1?Document"],
       [this.url ?? null, "string", "flags.2?string"],
-      [this.sticker ?? null, TypeDocument, "flags.3?Document"],
+      [this.sticker ?? null, _TypeDocument, "flags.3?Document"],
     ];
   }
 
@@ -14258,7 +14258,7 @@ export class HelpAppUpdate extends TypeHelpAppUpdate {
   }
 }
 
-export class HelpNoAppUpdate extends TypeHelpAppUpdate {
+export class HelpNoAppUpdate extends _TypeHelpAppUpdate {
   protected get [id]() {
     return 0xC45A6536;
   }
@@ -14276,7 +14276,7 @@ export class HelpNoAppUpdate extends TypeHelpAppUpdate {
   }
 }
 
-export class HelpInviteText extends TypeHelpInviteText {
+export class HelpInviteText extends _TypeHelpInviteText {
   message: string;
 
   protected get [id]() {
@@ -14301,7 +14301,7 @@ export class HelpInviteText extends TypeHelpInviteText {
   }
 }
 
-export class EncryptedChatEmpty extends TypeEncryptedChat {
+export class EncryptedChatEmpty extends _TypeEncryptedChat {
   id: number;
 
   protected get [id]() {
@@ -14326,7 +14326,7 @@ export class EncryptedChatEmpty extends TypeEncryptedChat {
   }
 }
 
-export class EncryptedChatWaiting extends TypeEncryptedChat {
+export class EncryptedChatWaiting extends _TypeEncryptedChat {
   id: number;
   accessHash: bigint;
   date: number;
@@ -14367,7 +14367,7 @@ export class EncryptedChatWaiting extends TypeEncryptedChat {
   }
 }
 
-export class EncryptedChatRequested extends TypeEncryptedChat {
+export class EncryptedChatRequested extends _TypeEncryptedChat {
   folderId?: number;
   id: number;
   accessHash: bigint;
@@ -14418,7 +14418,7 @@ export class EncryptedChatRequested extends TypeEncryptedChat {
   }
 }
 
-export class EncryptedChat extends TypeEncryptedChat {
+export class EncryptedChat extends _TypeEncryptedChat {
   id: number;
   accessHash: bigint;
   date: number;
@@ -14467,7 +14467,7 @@ export class EncryptedChat extends TypeEncryptedChat {
   }
 }
 
-export class EncryptedChatDiscarded extends TypeEncryptedChat {
+export class EncryptedChatDiscarded extends _TypeEncryptedChat {
   historyDeleted?: true;
   id: number;
 
@@ -14498,7 +14498,7 @@ export class EncryptedChatDiscarded extends TypeEncryptedChat {
   }
 }
 
-export class InputEncryptedChat extends TypeInputEncryptedChat {
+export class InputEncryptedChat extends _TypeInputEncryptedChat {
   chatId: number;
   accessHash: bigint;
 
@@ -14527,7 +14527,7 @@ export class InputEncryptedChat extends TypeInputEncryptedChat {
   }
 }
 
-export class EncryptedFileEmpty extends TypeEncryptedFile {
+export class EncryptedFileEmpty extends _TypeEncryptedFile {
   protected get [id]() {
     return 0xC21F497E;
   }
@@ -14545,7 +14545,7 @@ export class EncryptedFileEmpty extends TypeEncryptedFile {
   }
 }
 
-export class EncryptedFile extends TypeEncryptedFile {
+export class EncryptedFile extends _TypeEncryptedFile {
   id: bigint;
   accessHash: bigint;
   size: bigint;
@@ -14586,7 +14586,7 @@ export class EncryptedFile extends TypeEncryptedFile {
   }
 }
 
-export class InputEncryptedFileEmpty extends TypeInputEncryptedFile {
+export class InputEncryptedFileEmpty extends _TypeInputEncryptedFile {
   protected get [id]() {
     return 0x1837C364;
   }
@@ -14604,7 +14604,7 @@ export class InputEncryptedFileEmpty extends TypeInputEncryptedFile {
   }
 }
 
-export class InputEncryptedFileUploaded extends TypeInputEncryptedFile {
+export class InputEncryptedFileUploaded extends _TypeInputEncryptedFile {
   id: bigint;
   parts: number;
   md5Checksum: string;
@@ -14641,7 +14641,7 @@ export class InputEncryptedFileUploaded extends TypeInputEncryptedFile {
   }
 }
 
-export class InputEncryptedFile extends TypeInputEncryptedFile {
+export class InputEncryptedFile extends _TypeInputEncryptedFile {
   id: bigint;
   accessHash: bigint;
 
@@ -14670,7 +14670,7 @@ export class InputEncryptedFile extends TypeInputEncryptedFile {
   }
 }
 
-export class InputEncryptedFileBigUploaded extends TypeInputEncryptedFile {
+export class InputEncryptedFileBigUploaded extends _TypeInputEncryptedFile {
   id: bigint;
   parts: number;
   keyFingerprint: number;
@@ -14703,7 +14703,7 @@ export class InputEncryptedFileBigUploaded extends TypeInputEncryptedFile {
   }
 }
 
-export class EncryptedMessage extends TypeEncryptedMessage {
+export class EncryptedMessage extends _TypeEncryptedMessage {
   randomId: bigint;
   chatId: number;
   date: number;
@@ -14720,7 +14720,7 @@ export class EncryptedMessage extends TypeEncryptedMessage {
       ["chatId", "number", "int"],
       ["date", "number", "int"],
       ["bytes", Uint8Array, "bytes"],
-      ["file", TypeEncryptedFile, "EncryptedFile"],
+      ["file", _TypeEncryptedFile, "EncryptedFile"],
     ];
   }
 
@@ -14730,7 +14730,7 @@ export class EncryptedMessage extends TypeEncryptedMessage {
       [this.chatId, "number", "int"],
       [this.date, "number", "int"],
       [this.bytes, Uint8Array, "bytes"],
-      [this.file, TypeEncryptedFile, "EncryptedFile"],
+      [this.file, _TypeEncryptedFile, "EncryptedFile"],
     ];
   }
 
@@ -14744,7 +14744,7 @@ export class EncryptedMessage extends TypeEncryptedMessage {
   }
 }
 
-export class EncryptedMessageService extends TypeEncryptedMessage {
+export class EncryptedMessageService extends _TypeEncryptedMessage {
   randomId: bigint;
   chatId: number;
   date: number;
@@ -14781,7 +14781,7 @@ export class EncryptedMessageService extends TypeEncryptedMessage {
   }
 }
 
-export class MessagesDhConfigNotModified extends TypeMessagesDhConfig {
+export class MessagesDhConfigNotModified extends _TypeMessagesDhConfig {
   random: Uint8Array;
 
   protected get [id]() {
@@ -14806,7 +14806,7 @@ export class MessagesDhConfigNotModified extends TypeMessagesDhConfig {
   }
 }
 
-export class MessagesDhConfig extends TypeMessagesDhConfig {
+export class MessagesDhConfig extends _TypeMessagesDhConfig {
   g: number;
   p: Uint8Array;
   version: number;
@@ -14843,7 +14843,7 @@ export class MessagesDhConfig extends TypeMessagesDhConfig {
   }
 }
 
-export class MessagesSentEncryptedMessage extends TypeMessagesSentEncryptedMessage {
+export class MessagesSentEncryptedMessage extends _TypeMessagesSentEncryptedMessage {
   date: number;
 
   protected get [id]() {
@@ -14868,7 +14868,7 @@ export class MessagesSentEncryptedMessage extends TypeMessagesSentEncryptedMessa
   }
 }
 
-export class MessagesSentEncryptedFile extends TypeMessagesSentEncryptedMessage {
+export class MessagesSentEncryptedFile extends _TypeMessagesSentEncryptedMessage {
   date: number;
   file: TypeEncryptedFile;
 
@@ -14879,14 +14879,14 @@ export class MessagesSentEncryptedFile extends TypeMessagesSentEncryptedMessage 
   static get [paramDesc](): ParamDesc {
     return [
       ["date", "number", "int"],
-      ["file", TypeEncryptedFile, "EncryptedFile"],
+      ["file", _TypeEncryptedFile, "EncryptedFile"],
     ];
   }
 
   protected get [params](): Params {
     return [
       [this.date, "number", "int"],
-      [this.file, TypeEncryptedFile, "EncryptedFile"],
+      [this.file, _TypeEncryptedFile, "EncryptedFile"],
     ];
   }
 
@@ -14897,7 +14897,7 @@ export class MessagesSentEncryptedFile extends TypeMessagesSentEncryptedMessage 
   }
 }
 
-export class InputDocumentEmpty extends TypeInputDocument {
+export class InputDocumentEmpty extends _TypeInputDocument {
   protected get [id]() {
     return 0x72F0EAAE;
   }
@@ -14915,7 +14915,7 @@ export class InputDocumentEmpty extends TypeInputDocument {
   }
 }
 
-export class InputDocument extends TypeInputDocument {
+export class InputDocument extends _TypeInputDocument {
   id: bigint;
   accessHash: bigint;
   fileReference: Uint8Array;
@@ -14948,7 +14948,7 @@ export class InputDocument extends TypeInputDocument {
   }
 }
 
-export class DocumentEmpty extends TypeDocument {
+export class DocumentEmpty extends _TypeDocument {
   id: bigint;
 
   protected get [id]() {
@@ -14973,7 +14973,7 @@ export class DocumentEmpty extends TypeDocument {
   }
 }
 
-export class Document extends TypeDocument {
+export class Document extends _TypeDocument {
   id: bigint;
   accessHash: bigint;
   fileReference: Uint8Array;
@@ -14998,10 +14998,10 @@ export class Document extends TypeDocument {
       ["date", "number", "int"],
       ["mimeType", "string", "string"],
       ["size", "bigint", "long"],
-      ["thumbs", [TypePhotoSize], "flags.0?Vector<PhotoSize>"],
-      ["videoThumbs", [TypeVideoSize], "flags.1?Vector<VideoSize>"],
+      ["thumbs", [_TypePhotoSize], "flags.0?Vector<PhotoSize>"],
+      ["videoThumbs", [_TypeVideoSize], "flags.1?Vector<VideoSize>"],
       ["dcId", "number", "int"],
-      ["attributes", [TypeDocumentAttribute], "Vector<DocumentAttribute>"],
+      ["attributes", [_TypeDocumentAttribute], "Vector<DocumentAttribute>"],
     ];
   }
 
@@ -15014,10 +15014,10 @@ export class Document extends TypeDocument {
       [this.date, "number", "int"],
       [this.mimeType, "string", "string"],
       [this.size, "bigint", "long"],
-      [this.thumbs ?? null, [TypePhotoSize], "flags.0?Vector<PhotoSize>"],
-      [this.videoThumbs ?? null, [TypeVideoSize], "flags.1?Vector<VideoSize>"],
+      [this.thumbs ?? null, [_TypePhotoSize], "flags.0?Vector<PhotoSize>"],
+      [this.videoThumbs ?? null, [_TypeVideoSize], "flags.1?Vector<VideoSize>"],
       [this.dcId, "number", "int"],
-      [this.attributes, [TypeDocumentAttribute], "Vector<DocumentAttribute>"],
+      [this.attributes, [_TypeDocumentAttribute], "Vector<DocumentAttribute>"],
     ];
   }
 
@@ -15036,7 +15036,7 @@ export class Document extends TypeDocument {
   }
 }
 
-export class HelpSupport extends TypeHelpSupport {
+export class HelpSupport extends _TypeHelpSupport {
   phoneNumber: string;
   user: TypeUser;
 
@@ -15047,14 +15047,14 @@ export class HelpSupport extends TypeHelpSupport {
   static get [paramDesc](): ParamDesc {
     return [
       ["phoneNumber", "string", "string"],
-      ["user", TypeUser, "User"],
+      ["user", _TypeUser, "User"],
     ];
   }
 
   protected get [params](): Params {
     return [
       [this.phoneNumber, "string", "string"],
-      [this.user, TypeUser, "User"],
+      [this.user, _TypeUser, "User"],
     ];
   }
 
@@ -15065,7 +15065,7 @@ export class HelpSupport extends TypeHelpSupport {
   }
 }
 
-export class NotifyPeer extends TypeNotifyPeer {
+export class NotifyPeer extends _TypeNotifyPeer {
   peer: TypePeer;
 
   protected get [id]() {
@@ -15074,13 +15074,13 @@ export class NotifyPeer extends TypeNotifyPeer {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["peer", TypePeer, "Peer"],
+      ["peer", _TypePeer, "Peer"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.peer, TypePeer, "Peer"],
+      [this.peer, _TypePeer, "Peer"],
     ];
   }
 
@@ -15090,7 +15090,7 @@ export class NotifyPeer extends TypeNotifyPeer {
   }
 }
 
-export class NotifyUsers extends TypeNotifyPeer {
+export class NotifyUsers extends _TypeNotifyPeer {
   protected get [id]() {
     return 0xB4C83B4C;
   }
@@ -15108,7 +15108,7 @@ export class NotifyUsers extends TypeNotifyPeer {
   }
 }
 
-export class NotifyChats extends TypeNotifyPeer {
+export class NotifyChats extends _TypeNotifyPeer {
   protected get [id]() {
     return 0xC007CEC3;
   }
@@ -15126,7 +15126,7 @@ export class NotifyChats extends TypeNotifyPeer {
   }
 }
 
-export class NotifyBroadcasts extends TypeNotifyPeer {
+export class NotifyBroadcasts extends _TypeNotifyPeer {
   protected get [id]() {
     return 0xD612E8EF;
   }
@@ -15144,7 +15144,7 @@ export class NotifyBroadcasts extends TypeNotifyPeer {
   }
 }
 
-export class NotifyForumTopic extends TypeNotifyPeer {
+export class NotifyForumTopic extends _TypeNotifyPeer {
   peer: TypePeer;
   topMsgId: number;
 
@@ -15154,14 +15154,14 @@ export class NotifyForumTopic extends TypeNotifyPeer {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["peer", TypePeer, "Peer"],
+      ["peer", _TypePeer, "Peer"],
       ["topMsgId", "number", "int"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.peer, TypePeer, "Peer"],
+      [this.peer, _TypePeer, "Peer"],
       [this.topMsgId, "number", "int"],
     ];
   }
@@ -15173,7 +15173,7 @@ export class NotifyForumTopic extends TypeNotifyPeer {
   }
 }
 
-export class SendMessageTypingAction extends TypeSendMessageAction {
+export class SendMessageTypingAction extends _TypeSendMessageAction {
   protected get [id]() {
     return 0x16BF744E;
   }
@@ -15191,7 +15191,7 @@ export class SendMessageTypingAction extends TypeSendMessageAction {
   }
 }
 
-export class SendMessageCancelAction extends TypeSendMessageAction {
+export class SendMessageCancelAction extends _TypeSendMessageAction {
   protected get [id]() {
     return 0xFD5EC8F5;
   }
@@ -15209,7 +15209,7 @@ export class SendMessageCancelAction extends TypeSendMessageAction {
   }
 }
 
-export class SendMessageRecordVideoAction extends TypeSendMessageAction {
+export class SendMessageRecordVideoAction extends _TypeSendMessageAction {
   protected get [id]() {
     return 0xA187D66F;
   }
@@ -15227,7 +15227,7 @@ export class SendMessageRecordVideoAction extends TypeSendMessageAction {
   }
 }
 
-export class SendMessageUploadVideoAction extends TypeSendMessageAction {
+export class SendMessageUploadVideoAction extends _TypeSendMessageAction {
   progress: number;
 
   protected get [id]() {
@@ -15252,7 +15252,7 @@ export class SendMessageUploadVideoAction extends TypeSendMessageAction {
   }
 }
 
-export class SendMessageRecordAudioAction extends TypeSendMessageAction {
+export class SendMessageRecordAudioAction extends _TypeSendMessageAction {
   protected get [id]() {
     return 0xD52F73F7;
   }
@@ -15270,7 +15270,7 @@ export class SendMessageRecordAudioAction extends TypeSendMessageAction {
   }
 }
 
-export class SendMessageUploadAudioAction extends TypeSendMessageAction {
+export class SendMessageUploadAudioAction extends _TypeSendMessageAction {
   progress: number;
 
   protected get [id]() {
@@ -15295,7 +15295,7 @@ export class SendMessageUploadAudioAction extends TypeSendMessageAction {
   }
 }
 
-export class SendMessageUploadPhotoAction extends TypeSendMessageAction {
+export class SendMessageUploadPhotoAction extends _TypeSendMessageAction {
   progress: number;
 
   protected get [id]() {
@@ -15320,7 +15320,7 @@ export class SendMessageUploadPhotoAction extends TypeSendMessageAction {
   }
 }
 
-export class SendMessageUploadDocumentAction extends TypeSendMessageAction {
+export class SendMessageUploadDocumentAction extends _TypeSendMessageAction {
   progress: number;
 
   protected get [id]() {
@@ -15345,7 +15345,7 @@ export class SendMessageUploadDocumentAction extends TypeSendMessageAction {
   }
 }
 
-export class SendMessageGeoLocationAction extends TypeSendMessageAction {
+export class SendMessageGeoLocationAction extends _TypeSendMessageAction {
   protected get [id]() {
     return 0x176F8BA1;
   }
@@ -15363,7 +15363,7 @@ export class SendMessageGeoLocationAction extends TypeSendMessageAction {
   }
 }
 
-export class SendMessageChooseContactAction extends TypeSendMessageAction {
+export class SendMessageChooseContactAction extends _TypeSendMessageAction {
   protected get [id]() {
     return 0x628CBC6F;
   }
@@ -15381,7 +15381,7 @@ export class SendMessageChooseContactAction extends TypeSendMessageAction {
   }
 }
 
-export class SendMessageGamePlayAction extends TypeSendMessageAction {
+export class SendMessageGamePlayAction extends _TypeSendMessageAction {
   protected get [id]() {
     return 0xDD6A8F48;
   }
@@ -15399,7 +15399,7 @@ export class SendMessageGamePlayAction extends TypeSendMessageAction {
   }
 }
 
-export class SendMessageRecordRoundAction extends TypeSendMessageAction {
+export class SendMessageRecordRoundAction extends _TypeSendMessageAction {
   protected get [id]() {
     return 0x88F27FBC;
   }
@@ -15417,7 +15417,7 @@ export class SendMessageRecordRoundAction extends TypeSendMessageAction {
   }
 }
 
-export class SendMessageUploadRoundAction extends TypeSendMessageAction {
+export class SendMessageUploadRoundAction extends _TypeSendMessageAction {
   progress: number;
 
   protected get [id]() {
@@ -15442,7 +15442,7 @@ export class SendMessageUploadRoundAction extends TypeSendMessageAction {
   }
 }
 
-export class SpeakingInGroupCallAction extends TypeSendMessageAction {
+export class SpeakingInGroupCallAction extends _TypeSendMessageAction {
   protected get [id]() {
     return 0xD92C2285;
   }
@@ -15460,7 +15460,7 @@ export class SpeakingInGroupCallAction extends TypeSendMessageAction {
   }
 }
 
-export class SendMessageHistoryImportAction extends TypeSendMessageAction {
+export class SendMessageHistoryImportAction extends _TypeSendMessageAction {
   progress: number;
 
   protected get [id]() {
@@ -15485,7 +15485,7 @@ export class SendMessageHistoryImportAction extends TypeSendMessageAction {
   }
 }
 
-export class SendMessageChooseStickerAction extends TypeSendMessageAction {
+export class SendMessageChooseStickerAction extends _TypeSendMessageAction {
   protected get [id]() {
     return 0xB05AC6B1;
   }
@@ -15503,7 +15503,7 @@ export class SendMessageChooseStickerAction extends TypeSendMessageAction {
   }
 }
 
-export class SendMessageEmojiInteraction extends TypeSendMessageAction {
+export class SendMessageEmojiInteraction extends _TypeSendMessageAction {
   emoticon: string;
   msgId: number;
   interaction: TypeDataJSON;
@@ -15516,7 +15516,7 @@ export class SendMessageEmojiInteraction extends TypeSendMessageAction {
     return [
       ["emoticon", "string", "string"],
       ["msgId", "number", "int"],
-      ["interaction", TypeDataJSON, "DataJSON"],
+      ["interaction", _TypeDataJSON, "DataJSON"],
     ];
   }
 
@@ -15524,7 +15524,7 @@ export class SendMessageEmojiInteraction extends TypeSendMessageAction {
     return [
       [this.emoticon, "string", "string"],
       [this.msgId, "number", "int"],
-      [this.interaction, TypeDataJSON, "DataJSON"],
+      [this.interaction, _TypeDataJSON, "DataJSON"],
     ];
   }
 
@@ -15536,7 +15536,7 @@ export class SendMessageEmojiInteraction extends TypeSendMessageAction {
   }
 }
 
-export class SendMessageEmojiInteractionSeen extends TypeSendMessageAction {
+export class SendMessageEmojiInteractionSeen extends _TypeSendMessageAction {
   emoticon: string;
 
   protected get [id]() {
@@ -15561,7 +15561,7 @@ export class SendMessageEmojiInteractionSeen extends TypeSendMessageAction {
   }
 }
 
-export class ContactsFound extends TypeContactsFound {
+export class ContactsFound extends _TypeContactsFound {
   myResults: Array<TypePeer>;
   results: Array<TypePeer>;
   chats: Array<TypeChat>;
@@ -15573,19 +15573,19 @@ export class ContactsFound extends TypeContactsFound {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["myResults", [TypePeer], "Vector<Peer>"],
-      ["results", [TypePeer], "Vector<Peer>"],
-      ["chats", [TypeChat], "Vector<Chat>"],
-      ["users", [TypeUser], "Vector<User>"],
+      ["myResults", [_TypePeer], "Vector<Peer>"],
+      ["results", [_TypePeer], "Vector<Peer>"],
+      ["chats", [_TypeChat], "Vector<Chat>"],
+      ["users", [_TypeUser], "Vector<User>"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.myResults, [TypePeer], "Vector<Peer>"],
-      [this.results, [TypePeer], "Vector<Peer>"],
-      [this.chats, [TypeChat], "Vector<Chat>"],
-      [this.users, [TypeUser], "Vector<User>"],
+      [this.myResults, [_TypePeer], "Vector<Peer>"],
+      [this.results, [_TypePeer], "Vector<Peer>"],
+      [this.chats, [_TypeChat], "Vector<Chat>"],
+      [this.users, [_TypeUser], "Vector<User>"],
     ];
   }
 
@@ -15598,7 +15598,7 @@ export class ContactsFound extends TypeContactsFound {
   }
 }
 
-export class InputPrivacyKeyStatusTimestamp extends TypeInputPrivacyKey {
+export class InputPrivacyKeyStatusTimestamp extends _TypeInputPrivacyKey {
   protected get [id]() {
     return 0x4F96CB18;
   }
@@ -15616,7 +15616,7 @@ export class InputPrivacyKeyStatusTimestamp extends TypeInputPrivacyKey {
   }
 }
 
-export class InputPrivacyKeyChatInvite extends TypeInputPrivacyKey {
+export class InputPrivacyKeyChatInvite extends _TypeInputPrivacyKey {
   protected get [id]() {
     return 0xBDFB0426;
   }
@@ -15634,7 +15634,7 @@ export class InputPrivacyKeyChatInvite extends TypeInputPrivacyKey {
   }
 }
 
-export class InputPrivacyKeyPhoneCall extends TypeInputPrivacyKey {
+export class InputPrivacyKeyPhoneCall extends _TypeInputPrivacyKey {
   protected get [id]() {
     return 0xFABADC5F;
   }
@@ -15652,7 +15652,7 @@ export class InputPrivacyKeyPhoneCall extends TypeInputPrivacyKey {
   }
 }
 
-export class InputPrivacyKeyPhoneP2P extends TypeInputPrivacyKey {
+export class InputPrivacyKeyPhoneP2P extends _TypeInputPrivacyKey {
   protected get [id]() {
     return 0xDB9E70D2;
   }
@@ -15670,7 +15670,7 @@ export class InputPrivacyKeyPhoneP2P extends TypeInputPrivacyKey {
   }
 }
 
-export class InputPrivacyKeyForwards extends TypeInputPrivacyKey {
+export class InputPrivacyKeyForwards extends _TypeInputPrivacyKey {
   protected get [id]() {
     return 0xA4DD4C08;
   }
@@ -15688,7 +15688,7 @@ export class InputPrivacyKeyForwards extends TypeInputPrivacyKey {
   }
 }
 
-export class InputPrivacyKeyProfilePhoto extends TypeInputPrivacyKey {
+export class InputPrivacyKeyProfilePhoto extends _TypeInputPrivacyKey {
   protected get [id]() {
     return 0x5719BACC;
   }
@@ -15706,7 +15706,7 @@ export class InputPrivacyKeyProfilePhoto extends TypeInputPrivacyKey {
   }
 }
 
-export class InputPrivacyKeyPhoneNumber extends TypeInputPrivacyKey {
+export class InputPrivacyKeyPhoneNumber extends _TypeInputPrivacyKey {
   protected get [id]() {
     return 0x0352DAFA;
   }
@@ -15724,7 +15724,7 @@ export class InputPrivacyKeyPhoneNumber extends TypeInputPrivacyKey {
   }
 }
 
-export class InputPrivacyKeyAddedByPhone extends TypeInputPrivacyKey {
+export class InputPrivacyKeyAddedByPhone extends _TypeInputPrivacyKey {
   protected get [id]() {
     return 0xD1219BDD;
   }
@@ -15742,7 +15742,7 @@ export class InputPrivacyKeyAddedByPhone extends TypeInputPrivacyKey {
   }
 }
 
-export class InputPrivacyKeyVoiceMessages extends TypeInputPrivacyKey {
+export class InputPrivacyKeyVoiceMessages extends _TypeInputPrivacyKey {
   protected get [id]() {
     return 0xAEE69D68;
   }
@@ -15760,7 +15760,7 @@ export class InputPrivacyKeyVoiceMessages extends TypeInputPrivacyKey {
   }
 }
 
-export class InputPrivacyKeyAbout extends TypeInputPrivacyKey {
+export class InputPrivacyKeyAbout extends _TypeInputPrivacyKey {
   protected get [id]() {
     return 0x3823CC40;
   }
@@ -15778,7 +15778,7 @@ export class InputPrivacyKeyAbout extends TypeInputPrivacyKey {
   }
 }
 
-export class PrivacyKeyStatusTimestamp extends TypePrivacyKey {
+export class PrivacyKeyStatusTimestamp extends _TypePrivacyKey {
   protected get [id]() {
     return 0xBC2EAB30;
   }
@@ -15796,7 +15796,7 @@ export class PrivacyKeyStatusTimestamp extends TypePrivacyKey {
   }
 }
 
-export class PrivacyKeyChatInvite extends TypePrivacyKey {
+export class PrivacyKeyChatInvite extends _TypePrivacyKey {
   protected get [id]() {
     return 0x500E6DFA;
   }
@@ -15814,7 +15814,7 @@ export class PrivacyKeyChatInvite extends TypePrivacyKey {
   }
 }
 
-export class PrivacyKeyPhoneCall extends TypePrivacyKey {
+export class PrivacyKeyPhoneCall extends _TypePrivacyKey {
   protected get [id]() {
     return 0x3D662B7B;
   }
@@ -15832,7 +15832,7 @@ export class PrivacyKeyPhoneCall extends TypePrivacyKey {
   }
 }
 
-export class PrivacyKeyPhoneP2P extends TypePrivacyKey {
+export class PrivacyKeyPhoneP2P extends _TypePrivacyKey {
   protected get [id]() {
     return 0x39491CC8;
   }
@@ -15850,7 +15850,7 @@ export class PrivacyKeyPhoneP2P extends TypePrivacyKey {
   }
 }
 
-export class PrivacyKeyForwards extends TypePrivacyKey {
+export class PrivacyKeyForwards extends _TypePrivacyKey {
   protected get [id]() {
     return 0x69EC56A3;
   }
@@ -15868,7 +15868,7 @@ export class PrivacyKeyForwards extends TypePrivacyKey {
   }
 }
 
-export class PrivacyKeyProfilePhoto extends TypePrivacyKey {
+export class PrivacyKeyProfilePhoto extends _TypePrivacyKey {
   protected get [id]() {
     return 0x96151FED;
   }
@@ -15886,7 +15886,7 @@ export class PrivacyKeyProfilePhoto extends TypePrivacyKey {
   }
 }
 
-export class PrivacyKeyPhoneNumber extends TypePrivacyKey {
+export class PrivacyKeyPhoneNumber extends _TypePrivacyKey {
   protected get [id]() {
     return 0xD19AE46D;
   }
@@ -15904,7 +15904,7 @@ export class PrivacyKeyPhoneNumber extends TypePrivacyKey {
   }
 }
 
-export class PrivacyKeyAddedByPhone extends TypePrivacyKey {
+export class PrivacyKeyAddedByPhone extends _TypePrivacyKey {
   protected get [id]() {
     return 0x42FFD42B;
   }
@@ -15922,7 +15922,7 @@ export class PrivacyKeyAddedByPhone extends TypePrivacyKey {
   }
 }
 
-export class PrivacyKeyVoiceMessages extends TypePrivacyKey {
+export class PrivacyKeyVoiceMessages extends _TypePrivacyKey {
   protected get [id]() {
     return 0x0697F414;
   }
@@ -15940,7 +15940,7 @@ export class PrivacyKeyVoiceMessages extends TypePrivacyKey {
   }
 }
 
-export class PrivacyKeyAbout extends TypePrivacyKey {
+export class PrivacyKeyAbout extends _TypePrivacyKey {
   protected get [id]() {
     return 0xA486B761;
   }
@@ -15958,7 +15958,7 @@ export class PrivacyKeyAbout extends TypePrivacyKey {
   }
 }
 
-export class InputPrivacyValueAllowContacts extends TypeInputPrivacyRule {
+export class InputPrivacyValueAllowContacts extends _TypeInputPrivacyRule {
   protected get [id]() {
     return 0x0D09E07B;
   }
@@ -15976,7 +15976,7 @@ export class InputPrivacyValueAllowContacts extends TypeInputPrivacyRule {
   }
 }
 
-export class InputPrivacyValueAllowAll extends TypeInputPrivacyRule {
+export class InputPrivacyValueAllowAll extends _TypeInputPrivacyRule {
   protected get [id]() {
     return 0x184B35CE;
   }
@@ -15994,7 +15994,7 @@ export class InputPrivacyValueAllowAll extends TypeInputPrivacyRule {
   }
 }
 
-export class InputPrivacyValueAllowUsers extends TypeInputPrivacyRule {
+export class InputPrivacyValueAllowUsers extends _TypeInputPrivacyRule {
   users: Array<TypeInputUser>;
 
   protected get [id]() {
@@ -16003,13 +16003,13 @@ export class InputPrivacyValueAllowUsers extends TypeInputPrivacyRule {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["users", [TypeInputUser], "Vector<InputUser>"],
+      ["users", [_TypeInputUser], "Vector<InputUser>"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.users, [TypeInputUser], "Vector<InputUser>"],
+      [this.users, [_TypeInputUser], "Vector<InputUser>"],
     ];
   }
 
@@ -16019,7 +16019,7 @@ export class InputPrivacyValueAllowUsers extends TypeInputPrivacyRule {
   }
 }
 
-export class InputPrivacyValueDisallowContacts extends TypeInputPrivacyRule {
+export class InputPrivacyValueDisallowContacts extends _TypeInputPrivacyRule {
   protected get [id]() {
     return 0x0BA52007;
   }
@@ -16037,7 +16037,7 @@ export class InputPrivacyValueDisallowContacts extends TypeInputPrivacyRule {
   }
 }
 
-export class InputPrivacyValueDisallowAll extends TypeInputPrivacyRule {
+export class InputPrivacyValueDisallowAll extends _TypeInputPrivacyRule {
   protected get [id]() {
     return 0xD66B66C9;
   }
@@ -16055,7 +16055,7 @@ export class InputPrivacyValueDisallowAll extends TypeInputPrivacyRule {
   }
 }
 
-export class InputPrivacyValueDisallowUsers extends TypeInputPrivacyRule {
+export class InputPrivacyValueDisallowUsers extends _TypeInputPrivacyRule {
   users: Array<TypeInputUser>;
 
   protected get [id]() {
@@ -16064,13 +16064,13 @@ export class InputPrivacyValueDisallowUsers extends TypeInputPrivacyRule {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["users", [TypeInputUser], "Vector<InputUser>"],
+      ["users", [_TypeInputUser], "Vector<InputUser>"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.users, [TypeInputUser], "Vector<InputUser>"],
+      [this.users, [_TypeInputUser], "Vector<InputUser>"],
     ];
   }
 
@@ -16080,7 +16080,7 @@ export class InputPrivacyValueDisallowUsers extends TypeInputPrivacyRule {
   }
 }
 
-export class InputPrivacyValueAllowChatParticipants extends TypeInputPrivacyRule {
+export class InputPrivacyValueAllowChatParticipants extends _TypeInputPrivacyRule {
   chats: Array<bigint>;
 
   protected get [id]() {
@@ -16105,7 +16105,7 @@ export class InputPrivacyValueAllowChatParticipants extends TypeInputPrivacyRule
   }
 }
 
-export class InputPrivacyValueDisallowChatParticipants extends TypeInputPrivacyRule {
+export class InputPrivacyValueDisallowChatParticipants extends _TypeInputPrivacyRule {
   chats: Array<bigint>;
 
   protected get [id]() {
@@ -16130,7 +16130,7 @@ export class InputPrivacyValueDisallowChatParticipants extends TypeInputPrivacyR
   }
 }
 
-export class InputPrivacyValueAllowCloseFriends extends TypeInputPrivacyRule {
+export class InputPrivacyValueAllowCloseFriends extends _TypeInputPrivacyRule {
   protected get [id]() {
     return 0x2F453E49;
   }
@@ -16148,7 +16148,7 @@ export class InputPrivacyValueAllowCloseFriends extends TypeInputPrivacyRule {
   }
 }
 
-export class PrivacyValueAllowContacts extends TypePrivacyRule {
+export class PrivacyValueAllowContacts extends _TypePrivacyRule {
   protected get [id]() {
     return 0xFFFE1BAC;
   }
@@ -16166,7 +16166,7 @@ export class PrivacyValueAllowContacts extends TypePrivacyRule {
   }
 }
 
-export class PrivacyValueAllowAll extends TypePrivacyRule {
+export class PrivacyValueAllowAll extends _TypePrivacyRule {
   protected get [id]() {
     return 0x65427B82;
   }
@@ -16184,7 +16184,7 @@ export class PrivacyValueAllowAll extends TypePrivacyRule {
   }
 }
 
-export class PrivacyValueAllowUsers extends TypePrivacyRule {
+export class PrivacyValueAllowUsers extends _TypePrivacyRule {
   users: Array<bigint>;
 
   protected get [id]() {
@@ -16209,7 +16209,7 @@ export class PrivacyValueAllowUsers extends TypePrivacyRule {
   }
 }
 
-export class PrivacyValueDisallowContacts extends TypePrivacyRule {
+export class PrivacyValueDisallowContacts extends _TypePrivacyRule {
   protected get [id]() {
     return 0xF888FA1A;
   }
@@ -16227,7 +16227,7 @@ export class PrivacyValueDisallowContacts extends TypePrivacyRule {
   }
 }
 
-export class PrivacyValueDisallowAll extends TypePrivacyRule {
+export class PrivacyValueDisallowAll extends _TypePrivacyRule {
   protected get [id]() {
     return 0x8B73E763;
   }
@@ -16245,7 +16245,7 @@ export class PrivacyValueDisallowAll extends TypePrivacyRule {
   }
 }
 
-export class PrivacyValueDisallowUsers extends TypePrivacyRule {
+export class PrivacyValueDisallowUsers extends _TypePrivacyRule {
   users: Array<bigint>;
 
   protected get [id]() {
@@ -16270,7 +16270,7 @@ export class PrivacyValueDisallowUsers extends TypePrivacyRule {
   }
 }
 
-export class PrivacyValueAllowChatParticipants extends TypePrivacyRule {
+export class PrivacyValueAllowChatParticipants extends _TypePrivacyRule {
   chats: Array<bigint>;
 
   protected get [id]() {
@@ -16295,7 +16295,7 @@ export class PrivacyValueAllowChatParticipants extends TypePrivacyRule {
   }
 }
 
-export class PrivacyValueDisallowChatParticipants extends TypePrivacyRule {
+export class PrivacyValueDisallowChatParticipants extends _TypePrivacyRule {
   chats: Array<bigint>;
 
   protected get [id]() {
@@ -16320,7 +16320,7 @@ export class PrivacyValueDisallowChatParticipants extends TypePrivacyRule {
   }
 }
 
-export class PrivacyValueAllowCloseFriends extends TypePrivacyRule {
+export class PrivacyValueAllowCloseFriends extends _TypePrivacyRule {
   protected get [id]() {
     return 0xF7E8D89B;
   }
@@ -16338,7 +16338,7 @@ export class PrivacyValueAllowCloseFriends extends TypePrivacyRule {
   }
 }
 
-export class AccountPrivacyRules extends TypeAccountPrivacyRules {
+export class AccountPrivacyRules extends _TypeAccountPrivacyRules {
   rules: Array<TypePrivacyRule>;
   chats: Array<TypeChat>;
   users: Array<TypeUser>;
@@ -16349,17 +16349,17 @@ export class AccountPrivacyRules extends TypeAccountPrivacyRules {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["rules", [TypePrivacyRule], "Vector<PrivacyRule>"],
-      ["chats", [TypeChat], "Vector<Chat>"],
-      ["users", [TypeUser], "Vector<User>"],
+      ["rules", [_TypePrivacyRule], "Vector<PrivacyRule>"],
+      ["chats", [_TypeChat], "Vector<Chat>"],
+      ["users", [_TypeUser], "Vector<User>"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.rules, [TypePrivacyRule], "Vector<PrivacyRule>"],
-      [this.chats, [TypeChat], "Vector<Chat>"],
-      [this.users, [TypeUser], "Vector<User>"],
+      [this.rules, [_TypePrivacyRule], "Vector<PrivacyRule>"],
+      [this.chats, [_TypeChat], "Vector<Chat>"],
+      [this.users, [_TypeUser], "Vector<User>"],
     ];
   }
 
@@ -16371,7 +16371,7 @@ export class AccountPrivacyRules extends TypeAccountPrivacyRules {
   }
 }
 
-export class AccountDaysTTL extends TypeAccountDaysTTL {
+export class AccountDaysTTL extends _TypeAccountDaysTTL {
   days: number;
 
   protected get [id]() {
@@ -16396,7 +16396,7 @@ export class AccountDaysTTL extends TypeAccountDaysTTL {
   }
 }
 
-export class DocumentAttributeImageSize extends TypeDocumentAttribute {
+export class DocumentAttributeImageSize extends _TypeDocumentAttribute {
   w: number;
   h: number;
 
@@ -16425,7 +16425,7 @@ export class DocumentAttributeImageSize extends TypeDocumentAttribute {
   }
 }
 
-export class DocumentAttributeAnimated extends TypeDocumentAttribute {
+export class DocumentAttributeAnimated extends _TypeDocumentAttribute {
   protected get [id]() {
     return 0x11B58939;
   }
@@ -16443,7 +16443,7 @@ export class DocumentAttributeAnimated extends TypeDocumentAttribute {
   }
 }
 
-export class DocumentAttributeSticker extends TypeDocumentAttribute {
+export class DocumentAttributeSticker extends _TypeDocumentAttribute {
   mask?: true;
   alt: string;
   stickerset: TypeInputStickerSet;
@@ -16458,8 +16458,8 @@ export class DocumentAttributeSticker extends TypeDocumentAttribute {
       ["flags", flags, "#"],
       ["mask", "true", "flags.1?true"],
       ["alt", "string", "string"],
-      ["stickerset", TypeInputStickerSet, "InputStickerSet"],
-      ["maskCoords", TypeMaskCoords, "flags.0?MaskCoords"],
+      ["stickerset", _TypeInputStickerSet, "InputStickerSet"],
+      ["maskCoords", _TypeMaskCoords, "flags.0?MaskCoords"],
     ];
   }
 
@@ -16468,8 +16468,8 @@ export class DocumentAttributeSticker extends TypeDocumentAttribute {
       ["flags", flags, "#"],
       [this.mask ?? null, "true", "flags.1?true"],
       [this.alt, "string", "string"],
-      [this.stickerset, TypeInputStickerSet, "InputStickerSet"],
-      [this.maskCoords ?? null, TypeMaskCoords, "flags.0?MaskCoords"],
+      [this.stickerset, _TypeInputStickerSet, "InputStickerSet"],
+      [this.maskCoords ?? null, _TypeMaskCoords, "flags.0?MaskCoords"],
     ];
   }
 
@@ -16482,7 +16482,7 @@ export class DocumentAttributeSticker extends TypeDocumentAttribute {
   }
 }
 
-export class DocumentAttributeVideo extends TypeDocumentAttribute {
+export class DocumentAttributeVideo extends _TypeDocumentAttribute {
   roundMessage?: true;
   supportsStreaming?: true;
   nosound?: true;
@@ -16533,7 +16533,7 @@ export class DocumentAttributeVideo extends TypeDocumentAttribute {
   }
 }
 
-export class DocumentAttributeAudio extends TypeDocumentAttribute {
+export class DocumentAttributeAudio extends _TypeDocumentAttribute {
   voice?: true;
   duration: number;
   title?: string;
@@ -16576,7 +16576,7 @@ export class DocumentAttributeAudio extends TypeDocumentAttribute {
   }
 }
 
-export class DocumentAttributeFilename extends TypeDocumentAttribute {
+export class DocumentAttributeFilename extends _TypeDocumentAttribute {
   fileName: string;
 
   protected get [id]() {
@@ -16601,7 +16601,7 @@ export class DocumentAttributeFilename extends TypeDocumentAttribute {
   }
 }
 
-export class DocumentAttributeHasStickers extends TypeDocumentAttribute {
+export class DocumentAttributeHasStickers extends _TypeDocumentAttribute {
   protected get [id]() {
     return 0x9801D2F7;
   }
@@ -16619,7 +16619,7 @@ export class DocumentAttributeHasStickers extends TypeDocumentAttribute {
   }
 }
 
-export class DocumentAttributeCustomEmoji extends TypeDocumentAttribute {
+export class DocumentAttributeCustomEmoji extends _TypeDocumentAttribute {
   free?: true;
   textColor?: true;
   alt: string;
@@ -16635,7 +16635,7 @@ export class DocumentAttributeCustomEmoji extends TypeDocumentAttribute {
       ["free", "true", "flags.0?true"],
       ["textColor", "true", "flags.1?true"],
       ["alt", "string", "string"],
-      ["stickerset", TypeInputStickerSet, "InputStickerSet"],
+      ["stickerset", _TypeInputStickerSet, "InputStickerSet"],
     ];
   }
 
@@ -16645,7 +16645,7 @@ export class DocumentAttributeCustomEmoji extends TypeDocumentAttribute {
       [this.free ?? null, "true", "flags.0?true"],
       [this.textColor ?? null, "true", "flags.1?true"],
       [this.alt, "string", "string"],
-      [this.stickerset, TypeInputStickerSet, "InputStickerSet"],
+      [this.stickerset, _TypeInputStickerSet, "InputStickerSet"],
     ];
   }
 
@@ -16658,7 +16658,7 @@ export class DocumentAttributeCustomEmoji extends TypeDocumentAttribute {
   }
 }
 
-export class MessagesStickersNotModified extends TypeMessagesStickers {
+export class MessagesStickersNotModified extends _TypeMessagesStickers {
   protected get [id]() {
     return 0xF1749A22;
   }
@@ -16676,7 +16676,7 @@ export class MessagesStickersNotModified extends TypeMessagesStickers {
   }
 }
 
-export class MessagesStickers extends TypeMessagesStickers {
+export class MessagesStickers extends _TypeMessagesStickers {
   hash: bigint;
   stickers: Array<TypeDocument>;
 
@@ -16687,14 +16687,14 @@ export class MessagesStickers extends TypeMessagesStickers {
   static get [paramDesc](): ParamDesc {
     return [
       ["hash", "bigint", "long"],
-      ["stickers", [TypeDocument], "Vector<Document>"],
+      ["stickers", [_TypeDocument], "Vector<Document>"],
     ];
   }
 
   protected get [params](): Params {
     return [
       [this.hash, "bigint", "long"],
-      [this.stickers, [TypeDocument], "Vector<Document>"],
+      [this.stickers, [_TypeDocument], "Vector<Document>"],
     ];
   }
 
@@ -16705,7 +16705,7 @@ export class MessagesStickers extends TypeMessagesStickers {
   }
 }
 
-export class StickerPack extends TypeStickerPack {
+export class StickerPack extends _TypeStickerPack {
   emoticon: string;
   documents: Array<bigint>;
 
@@ -16734,7 +16734,7 @@ export class StickerPack extends TypeStickerPack {
   }
 }
 
-export class MessagesAllStickersNotModified extends TypeMessagesAllStickers {
+export class MessagesAllStickersNotModified extends _TypeMessagesAllStickers {
   protected get [id]() {
     return 0xE86602C3;
   }
@@ -16752,7 +16752,7 @@ export class MessagesAllStickersNotModified extends TypeMessagesAllStickers {
   }
 }
 
-export class MessagesAllStickers extends TypeMessagesAllStickers {
+export class MessagesAllStickers extends _TypeMessagesAllStickers {
   hash: bigint;
   sets: Array<TypeStickerSet>;
 
@@ -16763,14 +16763,14 @@ export class MessagesAllStickers extends TypeMessagesAllStickers {
   static get [paramDesc](): ParamDesc {
     return [
       ["hash", "bigint", "long"],
-      ["sets", [TypeStickerSet], "Vector<StickerSet>"],
+      ["sets", [_TypeStickerSet], "Vector<StickerSet>"],
     ];
   }
 
   protected get [params](): Params {
     return [
       [this.hash, "bigint", "long"],
-      [this.sets, [TypeStickerSet], "Vector<StickerSet>"],
+      [this.sets, [_TypeStickerSet], "Vector<StickerSet>"],
     ];
   }
 
@@ -16781,7 +16781,7 @@ export class MessagesAllStickers extends TypeMessagesAllStickers {
   }
 }
 
-export class MessagesAffectedMessages extends TypeMessagesAffectedMessages {
+export class MessagesAffectedMessages extends _TypeMessagesAffectedMessages {
   pts: number;
   ptsCount: number;
 
@@ -16810,7 +16810,7 @@ export class MessagesAffectedMessages extends TypeMessagesAffectedMessages {
   }
 }
 
-export class WebPageEmpty extends TypeWebPage {
+export class WebPageEmpty extends _TypeWebPage {
   id: bigint;
 
   protected get [id]() {
@@ -16835,7 +16835,7 @@ export class WebPageEmpty extends TypeWebPage {
   }
 }
 
-export class WebPagePending extends TypeWebPage {
+export class WebPagePending extends _TypeWebPage {
   id: bigint;
   date: number;
 
@@ -16864,7 +16864,7 @@ export class WebPagePending extends TypeWebPage {
   }
 }
 
-export class WebPage extends TypeWebPage {
+export class WebPage extends _TypeWebPage {
   id: bigint;
   url: string;
   displayUrl: string;
@@ -16899,16 +16899,16 @@ export class WebPage extends TypeWebPage {
       ["siteName", "string", "flags.1?string"],
       ["title", "string", "flags.2?string"],
       ["description", "string", "flags.3?string"],
-      ["photo", TypePhoto, "flags.4?Photo"],
+      ["photo", _TypePhoto, "flags.4?Photo"],
       ["embedUrl", "string", "flags.5?string"],
       ["embedType", "string", "flags.5?string"],
       ["embedWidth", "number", "flags.6?int"],
       ["embedHeight", "number", "flags.6?int"],
       ["duration", "number", "flags.7?int"],
       ["author", "string", "flags.8?string"],
-      ["document", TypeDocument, "flags.9?Document"],
-      ["cachedPage", TypePage, "flags.10?Page"],
-      ["attributes", [TypeWebPageAttribute], "flags.12?Vector<WebPageAttribute>"],
+      ["document", _TypeDocument, "flags.9?Document"],
+      ["cachedPage", _TypePage, "flags.10?Page"],
+      ["attributes", [_TypeWebPageAttribute], "flags.12?Vector<WebPageAttribute>"],
     ];
   }
 
@@ -16923,16 +16923,16 @@ export class WebPage extends TypeWebPage {
       [this.siteName ?? null, "string", "flags.1?string"],
       [this.title ?? null, "string", "flags.2?string"],
       [this.description ?? null, "string", "flags.3?string"],
-      [this.photo ?? null, TypePhoto, "flags.4?Photo"],
+      [this.photo ?? null, _TypePhoto, "flags.4?Photo"],
       [this.embedUrl ?? null, "string", "flags.5?string"],
       [this.embedType ?? null, "string", "flags.5?string"],
       [this.embedWidth ?? null, "number", "flags.6?int"],
       [this.embedHeight ?? null, "number", "flags.6?int"],
       [this.duration ?? null, "number", "flags.7?int"],
       [this.author ?? null, "string", "flags.8?string"],
-      [this.document ?? null, TypeDocument, "flags.9?Document"],
-      [this.cachedPage ?? null, TypePage, "flags.10?Page"],
-      [this.attributes ?? null, [TypeWebPageAttribute], "flags.12?Vector<WebPageAttribute>"],
+      [this.document ?? null, _TypeDocument, "flags.9?Document"],
+      [this.cachedPage ?? null, _TypePage, "flags.10?Page"],
+      [this.attributes ?? null, [_TypeWebPageAttribute], "flags.12?Vector<WebPageAttribute>"],
     ];
   }
 
@@ -16959,7 +16959,7 @@ export class WebPage extends TypeWebPage {
   }
 }
 
-export class WebPageNotModified extends TypeWebPage {
+export class WebPageNotModified extends _TypeWebPage {
   cachedPageViews?: number;
 
   protected get [id]() {
@@ -16986,7 +16986,7 @@ export class WebPageNotModified extends TypeWebPage {
   }
 }
 
-export class Authorization extends TypeAuthorization {
+export class Authorization extends _TypeAuthorization {
   current?: true;
   officialApp?: true;
   passwordPending?: true;
@@ -17077,7 +17077,7 @@ export class Authorization extends TypeAuthorization {
   }
 }
 
-export class AccountAuthorizations extends TypeAccountAuthorizations {
+export class AccountAuthorizations extends _TypeAccountAuthorizations {
   authorizationTtlDays: number;
   authorizations: Array<TypeAuthorization>;
 
@@ -17088,14 +17088,14 @@ export class AccountAuthorizations extends TypeAccountAuthorizations {
   static get [paramDesc](): ParamDesc {
     return [
       ["authorizationTtlDays", "number", "int"],
-      ["authorizations", [TypeAuthorization], "Vector<Authorization>"],
+      ["authorizations", [_TypeAuthorization], "Vector<Authorization>"],
     ];
   }
 
   protected get [params](): Params {
     return [
       [this.authorizationTtlDays, "number", "int"],
-      [this.authorizations, [TypeAuthorization], "Vector<Authorization>"],
+      [this.authorizations, [_TypeAuthorization], "Vector<Authorization>"],
     ];
   }
 
@@ -17106,7 +17106,7 @@ export class AccountAuthorizations extends TypeAccountAuthorizations {
   }
 }
 
-export class AccountPassword extends TypeAccountPassword {
+export class AccountPassword extends _TypeAccountPassword {
   hasRecovery?: true;
   hasSecureValues?: true;
   hasPassword?: true;
@@ -17131,13 +17131,13 @@ export class AccountPassword extends TypeAccountPassword {
       ["hasRecovery", "true", "flags.0?true"],
       ["hasSecureValues", "true", "flags.1?true"],
       ["hasPassword", "true", "flags.2?true"],
-      ["currentAlgo", TypePasswordKdfAlgo, "flags.2?PasswordKdfAlgo"],
+      ["currentAlgo", _TypePasswordKdfAlgo, "flags.2?PasswordKdfAlgo"],
       ["srpB", Uint8Array, "flags.2?bytes"],
       ["srpId", "bigint", "flags.2?long"],
       ["hint", "string", "flags.3?string"],
       ["emailUnconfirmedPattern", "string", "flags.4?string"],
-      ["newAlgo", TypePasswordKdfAlgo, "PasswordKdfAlgo"],
-      ["newSecureAlgo", TypeSecurePasswordKdfAlgo, "SecurePasswordKdfAlgo"],
+      ["newAlgo", _TypePasswordKdfAlgo, "PasswordKdfAlgo"],
+      ["newSecureAlgo", _TypeSecurePasswordKdfAlgo, "SecurePasswordKdfAlgo"],
       ["secureRandom", Uint8Array, "bytes"],
       ["pendingResetDate", "number", "flags.5?int"],
       ["loginEmailPattern", "string", "flags.6?string"],
@@ -17150,13 +17150,13 @@ export class AccountPassword extends TypeAccountPassword {
       [this.hasRecovery ?? null, "true", "flags.0?true"],
       [this.hasSecureValues ?? null, "true", "flags.1?true"],
       [this.hasPassword ?? null, "true", "flags.2?true"],
-      [this.currentAlgo ?? null, TypePasswordKdfAlgo, "flags.2?PasswordKdfAlgo"],
+      [this.currentAlgo ?? null, _TypePasswordKdfAlgo, "flags.2?PasswordKdfAlgo"],
       [this.srpB ?? null, Uint8Array, "flags.2?bytes"],
       [this.srpId ?? null, "bigint", "flags.2?long"],
       [this.hint ?? null, "string", "flags.3?string"],
       [this.emailUnconfirmedPattern ?? null, "string", "flags.4?string"],
-      [this.newAlgo, TypePasswordKdfAlgo, "PasswordKdfAlgo"],
-      [this.newSecureAlgo, TypeSecurePasswordKdfAlgo, "SecurePasswordKdfAlgo"],
+      [this.newAlgo, _TypePasswordKdfAlgo, "PasswordKdfAlgo"],
+      [this.newSecureAlgo, _TypeSecurePasswordKdfAlgo, "SecurePasswordKdfAlgo"],
       [this.secureRandom, Uint8Array, "bytes"],
       [this.pendingResetDate ?? null, "number", "flags.5?int"],
       [this.loginEmailPattern ?? null, "string", "flags.6?string"],
@@ -17181,7 +17181,7 @@ export class AccountPassword extends TypeAccountPassword {
   }
 }
 
-export class AccountPasswordSettings extends TypeAccountPasswordSettings {
+export class AccountPasswordSettings extends _TypeAccountPasswordSettings {
   email?: string;
   secureSettings?: TypeSecureSecretSettings;
 
@@ -17193,7 +17193,7 @@ export class AccountPasswordSettings extends TypeAccountPasswordSettings {
     return [
       ["flags", flags, "#"],
       ["email", "string", "flags.0?string"],
-      ["secureSettings", TypeSecureSecretSettings, "flags.1?SecureSecretSettings"],
+      ["secureSettings", _TypeSecureSecretSettings, "flags.1?SecureSecretSettings"],
     ];
   }
 
@@ -17201,7 +17201,7 @@ export class AccountPasswordSettings extends TypeAccountPasswordSettings {
     return [
       ["flags", flags, "#"],
       [this.email ?? null, "string", "flags.0?string"],
-      [this.secureSettings ?? null, TypeSecureSecretSettings, "flags.1?SecureSecretSettings"],
+      [this.secureSettings ?? null, _TypeSecureSecretSettings, "flags.1?SecureSecretSettings"],
     ];
   }
 
@@ -17212,7 +17212,7 @@ export class AccountPasswordSettings extends TypeAccountPasswordSettings {
   }
 }
 
-export class AccountPasswordInputSettings extends TypeAccountPasswordInputSettings {
+export class AccountPasswordInputSettings extends _TypeAccountPasswordInputSettings {
   newAlgo?: TypePasswordKdfAlgo;
   newPasswordHash?: Uint8Array;
   hint?: string;
@@ -17226,22 +17226,22 @@ export class AccountPasswordInputSettings extends TypeAccountPasswordInputSettin
   static get [paramDesc](): ParamDesc {
     return [
       ["flags", flags, "#"],
-      ["newAlgo", TypePasswordKdfAlgo, "flags.0?PasswordKdfAlgo"],
+      ["newAlgo", _TypePasswordKdfAlgo, "flags.0?PasswordKdfAlgo"],
       ["newPasswordHash", Uint8Array, "flags.0?bytes"],
       ["hint", "string", "flags.0?string"],
       ["email", "string", "flags.1?string"],
-      ["newSecureSettings", TypeSecureSecretSettings, "flags.2?SecureSecretSettings"],
+      ["newSecureSettings", _TypeSecureSecretSettings, "flags.2?SecureSecretSettings"],
     ];
   }
 
   protected get [params](): Params {
     return [
       ["flags", flags, "#"],
-      [this.newAlgo ?? null, TypePasswordKdfAlgo, "flags.0?PasswordKdfAlgo"],
+      [this.newAlgo ?? null, _TypePasswordKdfAlgo, "flags.0?PasswordKdfAlgo"],
       [this.newPasswordHash ?? null, Uint8Array, "flags.0?bytes"],
       [this.hint ?? null, "string", "flags.0?string"],
       [this.email ?? null, "string", "flags.1?string"],
-      [this.newSecureSettings ?? null, TypeSecureSecretSettings, "flags.2?SecureSecretSettings"],
+      [this.newSecureSettings ?? null, _TypeSecureSecretSettings, "flags.2?SecureSecretSettings"],
     ];
   }
 
@@ -17255,7 +17255,7 @@ export class AccountPasswordInputSettings extends TypeAccountPasswordInputSettin
   }
 }
 
-export class AuthPasswordRecovery extends TypeAuthPasswordRecovery {
+export class AuthPasswordRecovery extends _TypeAuthPasswordRecovery {
   emailPattern: string;
 
   protected get [id]() {
@@ -17280,7 +17280,7 @@ export class AuthPasswordRecovery extends TypeAuthPasswordRecovery {
   }
 }
 
-export class ReceivedNotifyMessage extends TypeReceivedNotifyMessage {
+export class ReceivedNotifyMessage extends _TypeReceivedNotifyMessage {
   id: number;
   flags: number;
 
@@ -17309,7 +17309,7 @@ export class ReceivedNotifyMessage extends TypeReceivedNotifyMessage {
   }
 }
 
-export class ChatInviteExported extends TypeExportedChatInvite {
+export class ChatInviteExported extends _TypeExportedChatInvite {
   revoked?: true;
   permanent?: true;
   requestNeeded?: true;
@@ -17380,7 +17380,7 @@ export class ChatInviteExported extends TypeExportedChatInvite {
   }
 }
 
-export class ChatInvitePublicJoinRequests extends TypeExportedChatInvite {
+export class ChatInvitePublicJoinRequests extends _TypeExportedChatInvite {
   protected get [id]() {
     return 0xED107AB7;
   }
@@ -17398,7 +17398,7 @@ export class ChatInvitePublicJoinRequests extends TypeExportedChatInvite {
   }
 }
 
-export class ChatInviteAlready extends TypeChatInvite {
+export class ChatInviteAlready extends _TypeChatInvite {
   chat: TypeChat;
 
   protected get [id]() {
@@ -17407,13 +17407,13 @@ export class ChatInviteAlready extends TypeChatInvite {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["chat", TypeChat, "Chat"],
+      ["chat", _TypeChat, "Chat"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.chat, TypeChat, "Chat"],
+      [this.chat, _TypeChat, "Chat"],
     ];
   }
 
@@ -17423,7 +17423,7 @@ export class ChatInviteAlready extends TypeChatInvite {
   }
 }
 
-export class ChatInvite extends TypeChatInvite {
+export class ChatInvite extends _TypeChatInvite {
   channel?: true;
   broadcast?: true;
   public?: true;
@@ -17449,9 +17449,9 @@ export class ChatInvite extends TypeChatInvite {
       ["requestNeeded", "true", "flags.6?true"],
       ["title", "string", "string"],
       ["about", "string", "flags.5?string"],
-      ["photo", TypePhoto, "Photo"],
+      ["photo", _TypePhoto, "Photo"],
       ["participantsCount", "number", "int"],
-      ["participants", [TypeUser], "flags.4?Vector<User>"],
+      ["participants", [_TypeUser], "flags.4?Vector<User>"],
     ];
   }
 
@@ -17465,9 +17465,9 @@ export class ChatInvite extends TypeChatInvite {
       [this.requestNeeded ?? null, "true", "flags.6?true"],
       [this.title, "string", "string"],
       [this.about ?? null, "string", "flags.5?string"],
-      [this.photo, TypePhoto, "Photo"],
+      [this.photo, _TypePhoto, "Photo"],
       [this.participantsCount, "number", "int"],
-      [this.participants ?? null, [TypeUser], "flags.4?Vector<User>"],
+      [this.participants ?? null, [_TypeUser], "flags.4?Vector<User>"],
     ];
   }
 
@@ -17486,7 +17486,7 @@ export class ChatInvite extends TypeChatInvite {
   }
 }
 
-export class ChatInvitePeek extends TypeChatInvite {
+export class ChatInvitePeek extends _TypeChatInvite {
   chat: TypeChat;
   expires: number;
 
@@ -17496,14 +17496,14 @@ export class ChatInvitePeek extends TypeChatInvite {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["chat", TypeChat, "Chat"],
+      ["chat", _TypeChat, "Chat"],
       ["expires", "number", "int"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.chat, TypeChat, "Chat"],
+      [this.chat, _TypeChat, "Chat"],
       [this.expires, "number", "int"],
     ];
   }
@@ -17515,7 +17515,7 @@ export class ChatInvitePeek extends TypeChatInvite {
   }
 }
 
-export class InputStickerSetEmpty extends TypeInputStickerSet {
+export class InputStickerSetEmpty extends _TypeInputStickerSet {
   protected get [id]() {
     return 0xFFB62B95;
   }
@@ -17533,7 +17533,7 @@ export class InputStickerSetEmpty extends TypeInputStickerSet {
   }
 }
 
-export class InputStickerSetID extends TypeInputStickerSet {
+export class InputStickerSetID extends _TypeInputStickerSet {
   id: bigint;
   accessHash: bigint;
 
@@ -17562,7 +17562,7 @@ export class InputStickerSetID extends TypeInputStickerSet {
   }
 }
 
-export class InputStickerSetShortName extends TypeInputStickerSet {
+export class InputStickerSetShortName extends _TypeInputStickerSet {
   shortName: string;
 
   protected get [id]() {
@@ -17587,7 +17587,7 @@ export class InputStickerSetShortName extends TypeInputStickerSet {
   }
 }
 
-export class InputStickerSetAnimatedEmoji extends TypeInputStickerSet {
+export class InputStickerSetAnimatedEmoji extends _TypeInputStickerSet {
   protected get [id]() {
     return 0x028703C8;
   }
@@ -17605,7 +17605,7 @@ export class InputStickerSetAnimatedEmoji extends TypeInputStickerSet {
   }
 }
 
-export class InputStickerSetDice extends TypeInputStickerSet {
+export class InputStickerSetDice extends _TypeInputStickerSet {
   emoticon: string;
 
   protected get [id]() {
@@ -17630,7 +17630,7 @@ export class InputStickerSetDice extends TypeInputStickerSet {
   }
 }
 
-export class InputStickerSetAnimatedEmojiAnimations extends TypeInputStickerSet {
+export class InputStickerSetAnimatedEmojiAnimations extends _TypeInputStickerSet {
   protected get [id]() {
     return 0x0CDE3739;
   }
@@ -17648,7 +17648,7 @@ export class InputStickerSetAnimatedEmojiAnimations extends TypeInputStickerSet 
   }
 }
 
-export class InputStickerSetPremiumGifts extends TypeInputStickerSet {
+export class InputStickerSetPremiumGifts extends _TypeInputStickerSet {
   protected get [id]() {
     return 0xC88B3B02;
   }
@@ -17666,7 +17666,7 @@ export class InputStickerSetPremiumGifts extends TypeInputStickerSet {
   }
 }
 
-export class InputStickerSetEmojiGenericAnimations extends TypeInputStickerSet {
+export class InputStickerSetEmojiGenericAnimations extends _TypeInputStickerSet {
   protected get [id]() {
     return 0x04C4D4CE;
   }
@@ -17684,7 +17684,7 @@ export class InputStickerSetEmojiGenericAnimations extends TypeInputStickerSet {
   }
 }
 
-export class InputStickerSetEmojiDefaultStatuses extends TypeInputStickerSet {
+export class InputStickerSetEmojiDefaultStatuses extends _TypeInputStickerSet {
   protected get [id]() {
     return 0x29D0F5EE;
   }
@@ -17702,7 +17702,7 @@ export class InputStickerSetEmojiDefaultStatuses extends TypeInputStickerSet {
   }
 }
 
-export class InputStickerSetEmojiDefaultTopicIcons extends TypeInputStickerSet {
+export class InputStickerSetEmojiDefaultTopicIcons extends _TypeInputStickerSet {
   protected get [id]() {
     return 0x44C1F8E9;
   }
@@ -17720,7 +17720,7 @@ export class InputStickerSetEmojiDefaultTopicIcons extends TypeInputStickerSet {
   }
 }
 
-export class StickerSet extends TypeStickerSet {
+export class StickerSet extends _TypeStickerSet {
   archived?: true;
   official?: true;
   masks?: true;
@@ -17757,7 +17757,7 @@ export class StickerSet extends TypeStickerSet {
       ["accessHash", "bigint", "long"],
       ["title", "string", "string"],
       ["shortName", "string", "string"],
-      ["thumbs", [TypePhotoSize], "flags.4?Vector<PhotoSize>"],
+      ["thumbs", [_TypePhotoSize], "flags.4?Vector<PhotoSize>"],
       ["thumbDcId", "number", "flags.4?int"],
       ["thumbVersion", "number", "flags.4?int"],
       ["thumbDocumentId", "bigint", "flags.8?long"],
@@ -17780,7 +17780,7 @@ export class StickerSet extends TypeStickerSet {
       [this.accessHash, "bigint", "long"],
       [this.title, "string", "string"],
       [this.shortName, "string", "string"],
-      [this.thumbs ?? null, [TypePhotoSize], "flags.4?Vector<PhotoSize>"],
+      [this.thumbs ?? null, [_TypePhotoSize], "flags.4?Vector<PhotoSize>"],
       [this.thumbDcId ?? null, "number", "flags.4?int"],
       [this.thumbVersion ?? null, "number", "flags.4?int"],
       [this.thumbDocumentId ?? null, "bigint", "flags.8?long"],
@@ -17811,7 +17811,7 @@ export class StickerSet extends TypeStickerSet {
   }
 }
 
-export class MessagesStickerSet extends TypeMessagesStickerSet {
+export class MessagesStickerSet extends _TypeMessagesStickerSet {
   set: TypeStickerSet;
   packs: Array<TypeStickerPack>;
   keywords: Array<TypeStickerKeyword>;
@@ -17823,19 +17823,19 @@ export class MessagesStickerSet extends TypeMessagesStickerSet {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["set", TypeStickerSet, "StickerSet"],
-      ["packs", [TypeStickerPack], "Vector<StickerPack>"],
-      ["keywords", [TypeStickerKeyword], "Vector<StickerKeyword>"],
-      ["documents", [TypeDocument], "Vector<Document>"],
+      ["set", _TypeStickerSet, "StickerSet"],
+      ["packs", [_TypeStickerPack], "Vector<StickerPack>"],
+      ["keywords", [_TypeStickerKeyword], "Vector<StickerKeyword>"],
+      ["documents", [_TypeDocument], "Vector<Document>"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.set, TypeStickerSet, "StickerSet"],
-      [this.packs, [TypeStickerPack], "Vector<StickerPack>"],
-      [this.keywords, [TypeStickerKeyword], "Vector<StickerKeyword>"],
-      [this.documents, [TypeDocument], "Vector<Document>"],
+      [this.set, _TypeStickerSet, "StickerSet"],
+      [this.packs, [_TypeStickerPack], "Vector<StickerPack>"],
+      [this.keywords, [_TypeStickerKeyword], "Vector<StickerKeyword>"],
+      [this.documents, [_TypeDocument], "Vector<Document>"],
     ];
   }
 
@@ -17848,7 +17848,7 @@ export class MessagesStickerSet extends TypeMessagesStickerSet {
   }
 }
 
-export class MessagesStickerSetNotModified extends TypeMessagesStickerSet {
+export class MessagesStickerSetNotModified extends _TypeMessagesStickerSet {
   protected get [id]() {
     return 0xD3F924EB;
   }
@@ -17866,7 +17866,7 @@ export class MessagesStickerSetNotModified extends TypeMessagesStickerSet {
   }
 }
 
-export class BotCommand extends TypeBotCommand {
+export class BotCommand extends _TypeBotCommand {
   command: string;
   description: string;
 
@@ -17895,7 +17895,7 @@ export class BotCommand extends TypeBotCommand {
   }
 }
 
-export class BotInfo extends TypeBotInfo {
+export class BotInfo extends _TypeBotInfo {
   userId?: bigint;
   description?: string;
   descriptionPhoto?: TypePhoto;
@@ -17912,10 +17912,10 @@ export class BotInfo extends TypeBotInfo {
       ["flags", flags, "#"],
       ["userId", "bigint", "flags.0?long"],
       ["description", "string", "flags.1?string"],
-      ["descriptionPhoto", TypePhoto, "flags.4?Photo"],
-      ["descriptionDocument", TypeDocument, "flags.5?Document"],
-      ["commands", [TypeBotCommand], "flags.2?Vector<BotCommand>"],
-      ["menuButton", TypeBotMenuButton, "flags.3?BotMenuButton"],
+      ["descriptionPhoto", _TypePhoto, "flags.4?Photo"],
+      ["descriptionDocument", _TypeDocument, "flags.5?Document"],
+      ["commands", [_TypeBotCommand], "flags.2?Vector<BotCommand>"],
+      ["menuButton", _TypeBotMenuButton, "flags.3?BotMenuButton"],
     ];
   }
 
@@ -17924,10 +17924,10 @@ export class BotInfo extends TypeBotInfo {
       ["flags", flags, "#"],
       [this.userId ?? null, "bigint", "flags.0?long"],
       [this.description ?? null, "string", "flags.1?string"],
-      [this.descriptionPhoto ?? null, TypePhoto, "flags.4?Photo"],
-      [this.descriptionDocument ?? null, TypeDocument, "flags.5?Document"],
-      [this.commands ?? null, [TypeBotCommand], "flags.2?Vector<BotCommand>"],
-      [this.menuButton ?? null, TypeBotMenuButton, "flags.3?BotMenuButton"],
+      [this.descriptionPhoto ?? null, _TypePhoto, "flags.4?Photo"],
+      [this.descriptionDocument ?? null, _TypeDocument, "flags.5?Document"],
+      [this.commands ?? null, [_TypeBotCommand], "flags.2?Vector<BotCommand>"],
+      [this.menuButton ?? null, _TypeBotMenuButton, "flags.3?BotMenuButton"],
     ];
   }
 
@@ -17942,7 +17942,7 @@ export class BotInfo extends TypeBotInfo {
   }
 }
 
-export class KeyboardButton extends TypeKeyboardButton {
+export class KeyboardButton extends _TypeKeyboardButton {
   text: string;
 
   protected get [id]() {
@@ -17967,7 +17967,7 @@ export class KeyboardButton extends TypeKeyboardButton {
   }
 }
 
-export class KeyboardButtonURL extends TypeKeyboardButton {
+export class KeyboardButtonURL extends _TypeKeyboardButton {
   text: string;
   url: string;
 
@@ -17996,7 +17996,7 @@ export class KeyboardButtonURL extends TypeKeyboardButton {
   }
 }
 
-export class KeyboardButtonCallback extends TypeKeyboardButton {
+export class KeyboardButtonCallback extends _TypeKeyboardButton {
   requiresPassword?: true;
   text: string;
   data: Uint8Array;
@@ -18031,7 +18031,7 @@ export class KeyboardButtonCallback extends TypeKeyboardButton {
   }
 }
 
-export class KeyboardButtonRequestPhone extends TypeKeyboardButton {
+export class KeyboardButtonRequestPhone extends _TypeKeyboardButton {
   text: string;
 
   protected get [id]() {
@@ -18056,7 +18056,7 @@ export class KeyboardButtonRequestPhone extends TypeKeyboardButton {
   }
 }
 
-export class KeyboardButtonRequestGeoLocation extends TypeKeyboardButton {
+export class KeyboardButtonRequestGeoLocation extends _TypeKeyboardButton {
   text: string;
 
   protected get [id]() {
@@ -18081,7 +18081,7 @@ export class KeyboardButtonRequestGeoLocation extends TypeKeyboardButton {
   }
 }
 
-export class KeyboardButtonSwitchInline extends TypeKeyboardButton {
+export class KeyboardButtonSwitchInline extends _TypeKeyboardButton {
   samePeer?: true;
   text: string;
   query: string;
@@ -18097,7 +18097,7 @@ export class KeyboardButtonSwitchInline extends TypeKeyboardButton {
       ["samePeer", "true", "flags.0?true"],
       ["text", "string", "string"],
       ["query", "string", "string"],
-      ["peerTypes", [TypeInlineQueryPeerType], "flags.1?Vector<InlineQueryPeerType>"],
+      ["peerTypes", [_TypeInlineQueryPeerType], "flags.1?Vector<InlineQueryPeerType>"],
     ];
   }
 
@@ -18107,7 +18107,7 @@ export class KeyboardButtonSwitchInline extends TypeKeyboardButton {
       [this.samePeer ?? null, "true", "flags.0?true"],
       [this.text, "string", "string"],
       [this.query, "string", "string"],
-      [this.peerTypes ?? null, [TypeInlineQueryPeerType], "flags.1?Vector<InlineQueryPeerType>"],
+      [this.peerTypes ?? null, [_TypeInlineQueryPeerType], "flags.1?Vector<InlineQueryPeerType>"],
     ];
   }
 
@@ -18120,7 +18120,7 @@ export class KeyboardButtonSwitchInline extends TypeKeyboardButton {
   }
 }
 
-export class KeyboardButtonGame extends TypeKeyboardButton {
+export class KeyboardButtonGame extends _TypeKeyboardButton {
   text: string;
 
   protected get [id]() {
@@ -18145,7 +18145,7 @@ export class KeyboardButtonGame extends TypeKeyboardButton {
   }
 }
 
-export class KeyboardButtonBuy extends TypeKeyboardButton {
+export class KeyboardButtonBuy extends _TypeKeyboardButton {
   text: string;
 
   protected get [id]() {
@@ -18170,7 +18170,7 @@ export class KeyboardButtonBuy extends TypeKeyboardButton {
   }
 }
 
-export class KeyboardButtonURLAuth extends TypeKeyboardButton {
+export class KeyboardButtonURLAuth extends _TypeKeyboardButton {
   text: string;
   fwdText?: string;
   url: string;
@@ -18209,7 +18209,7 @@ export class KeyboardButtonURLAuth extends TypeKeyboardButton {
   }
 }
 
-export class InputKeyboardButtonURLAuth extends TypeKeyboardButton {
+export class InputKeyboardButtonURLAuth extends _TypeKeyboardButton {
   requestWriteAccess?: true;
   text: string;
   fwdText?: string;
@@ -18227,7 +18227,7 @@ export class InputKeyboardButtonURLAuth extends TypeKeyboardButton {
       ["text", "string", "string"],
       ["fwdText", "string", "flags.1?string"],
       ["url", "string", "string"],
-      ["bot", TypeInputUser, "InputUser"],
+      ["bot", _TypeInputUser, "InputUser"],
     ];
   }
 
@@ -18238,7 +18238,7 @@ export class InputKeyboardButtonURLAuth extends TypeKeyboardButton {
       [this.text, "string", "string"],
       [this.fwdText ?? null, "string", "flags.1?string"],
       [this.url, "string", "string"],
-      [this.bot, TypeInputUser, "InputUser"],
+      [this.bot, _TypeInputUser, "InputUser"],
     ];
   }
 
@@ -18252,7 +18252,7 @@ export class InputKeyboardButtonURLAuth extends TypeKeyboardButton {
   }
 }
 
-export class KeyboardButtonRequestPoll extends TypeKeyboardButton {
+export class KeyboardButtonRequestPoll extends _TypeKeyboardButton {
   quiz?: boolean;
   text: string;
 
@@ -18283,7 +18283,7 @@ export class KeyboardButtonRequestPoll extends TypeKeyboardButton {
   }
 }
 
-export class InputKeyboardButtonUserProfile extends TypeKeyboardButton {
+export class InputKeyboardButtonUserProfile extends _TypeKeyboardButton {
   text: string;
   userId: TypeInputUser;
 
@@ -18294,14 +18294,14 @@ export class InputKeyboardButtonUserProfile extends TypeKeyboardButton {
   static get [paramDesc](): ParamDesc {
     return [
       ["text", "string", "string"],
-      ["userId", TypeInputUser, "InputUser"],
+      ["userId", _TypeInputUser, "InputUser"],
     ];
   }
 
   protected get [params](): Params {
     return [
       [this.text, "string", "string"],
-      [this.userId, TypeInputUser, "InputUser"],
+      [this.userId, _TypeInputUser, "InputUser"],
     ];
   }
 
@@ -18312,7 +18312,7 @@ export class InputKeyboardButtonUserProfile extends TypeKeyboardButton {
   }
 }
 
-export class KeyboardButtonUserProfile extends TypeKeyboardButton {
+export class KeyboardButtonUserProfile extends _TypeKeyboardButton {
   text: string;
   userId: bigint;
 
@@ -18341,7 +18341,7 @@ export class KeyboardButtonUserProfile extends TypeKeyboardButton {
   }
 }
 
-export class KeyboardButtonWebView extends TypeKeyboardButton {
+export class KeyboardButtonWebView extends _TypeKeyboardButton {
   text: string;
   url: string;
 
@@ -18370,7 +18370,7 @@ export class KeyboardButtonWebView extends TypeKeyboardButton {
   }
 }
 
-export class KeyboardButtonSimpleWebView extends TypeKeyboardButton {
+export class KeyboardButtonSimpleWebView extends _TypeKeyboardButton {
   text: string;
   url: string;
 
@@ -18399,7 +18399,7 @@ export class KeyboardButtonSimpleWebView extends TypeKeyboardButton {
   }
 }
 
-export class KeyboardButtonRequestPeer extends TypeKeyboardButton {
+export class KeyboardButtonRequestPeer extends _TypeKeyboardButton {
   text: string;
   buttonId: number;
   peerType: TypeRequestPeerType;
@@ -18412,7 +18412,7 @@ export class KeyboardButtonRequestPeer extends TypeKeyboardButton {
     return [
       ["text", "string", "string"],
       ["buttonId", "number", "int"],
-      ["peerType", TypeRequestPeerType, "RequestPeerType"],
+      ["peerType", _TypeRequestPeerType, "RequestPeerType"],
     ];
   }
 
@@ -18420,7 +18420,7 @@ export class KeyboardButtonRequestPeer extends TypeKeyboardButton {
     return [
       [this.text, "string", "string"],
       [this.buttonId, "number", "int"],
-      [this.peerType, TypeRequestPeerType, "RequestPeerType"],
+      [this.peerType, _TypeRequestPeerType, "RequestPeerType"],
     ];
   }
 
@@ -18432,7 +18432,7 @@ export class KeyboardButtonRequestPeer extends TypeKeyboardButton {
   }
 }
 
-export class KeyboardButtonRow extends TypeKeyboardButtonRow {
+export class KeyboardButtonRow extends _TypeKeyboardButtonRow {
   buttons: Array<TypeKeyboardButton>;
 
   protected get [id]() {
@@ -18441,13 +18441,13 @@ export class KeyboardButtonRow extends TypeKeyboardButtonRow {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["buttons", [TypeKeyboardButton], "Vector<KeyboardButton>"],
+      ["buttons", [_TypeKeyboardButton], "Vector<KeyboardButton>"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.buttons, [TypeKeyboardButton], "Vector<KeyboardButton>"],
+      [this.buttons, [_TypeKeyboardButton], "Vector<KeyboardButton>"],
     ];
   }
 
@@ -18457,7 +18457,7 @@ export class KeyboardButtonRow extends TypeKeyboardButtonRow {
   }
 }
 
-export class ReplyKeyboardHide extends TypeReplyMarkup {
+export class ReplyKeyboardHide extends _TypeReplyMarkup {
   selective?: true;
 
   protected get [id]() {
@@ -18484,7 +18484,7 @@ export class ReplyKeyboardHide extends TypeReplyMarkup {
   }
 }
 
-export class ReplyKeyboardForceReply extends TypeReplyMarkup {
+export class ReplyKeyboardForceReply extends _TypeReplyMarkup {
   singleUse?: true;
   selective?: true;
   placeholder?: string;
@@ -18519,7 +18519,7 @@ export class ReplyKeyboardForceReply extends TypeReplyMarkup {
   }
 }
 
-export class ReplyKeyboardMarkup extends TypeReplyMarkup {
+export class ReplyKeyboardMarkup extends _TypeReplyMarkup {
   resize?: true;
   singleUse?: true;
   selective?: true;
@@ -18538,7 +18538,7 @@ export class ReplyKeyboardMarkup extends TypeReplyMarkup {
       ["singleUse", "true", "flags.1?true"],
       ["selective", "true", "flags.2?true"],
       ["persistent", "true", "flags.4?true"],
-      ["rows", [TypeKeyboardButtonRow], "Vector<KeyboardButtonRow>"],
+      ["rows", [_TypeKeyboardButtonRow], "Vector<KeyboardButtonRow>"],
       ["placeholder", "string", "flags.3?string"],
     ];
   }
@@ -18550,7 +18550,7 @@ export class ReplyKeyboardMarkup extends TypeReplyMarkup {
       [this.singleUse ?? null, "true", "flags.1?true"],
       [this.selective ?? null, "true", "flags.2?true"],
       [this.persistent ?? null, "true", "flags.4?true"],
-      [this.rows, [TypeKeyboardButtonRow], "Vector<KeyboardButtonRow>"],
+      [this.rows, [_TypeKeyboardButtonRow], "Vector<KeyboardButtonRow>"],
       [this.placeholder ?? null, "string", "flags.3?string"],
     ];
   }
@@ -18566,7 +18566,7 @@ export class ReplyKeyboardMarkup extends TypeReplyMarkup {
   }
 }
 
-export class ReplyInlineMarkup extends TypeReplyMarkup {
+export class ReplyInlineMarkup extends _TypeReplyMarkup {
   rows: Array<TypeKeyboardButtonRow>;
 
   protected get [id]() {
@@ -18575,13 +18575,13 @@ export class ReplyInlineMarkup extends TypeReplyMarkup {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["rows", [TypeKeyboardButtonRow], "Vector<KeyboardButtonRow>"],
+      ["rows", [_TypeKeyboardButtonRow], "Vector<KeyboardButtonRow>"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.rows, [TypeKeyboardButtonRow], "Vector<KeyboardButtonRow>"],
+      [this.rows, [_TypeKeyboardButtonRow], "Vector<KeyboardButtonRow>"],
     ];
   }
 
@@ -18591,7 +18591,7 @@ export class ReplyInlineMarkup extends TypeReplyMarkup {
   }
 }
 
-export class MessageEntityUnknown extends TypeMessageEntity {
+export class MessageEntityUnknown extends _TypeMessageEntity {
   offset: number;
   length: number;
 
@@ -18620,7 +18620,7 @@ export class MessageEntityUnknown extends TypeMessageEntity {
   }
 }
 
-export class MessageEntityMention extends TypeMessageEntity {
+export class MessageEntityMention extends _TypeMessageEntity {
   offset: number;
   length: number;
 
@@ -18649,7 +18649,7 @@ export class MessageEntityMention extends TypeMessageEntity {
   }
 }
 
-export class MessageEntityHashtag extends TypeMessageEntity {
+export class MessageEntityHashtag extends _TypeMessageEntity {
   offset: number;
   length: number;
 
@@ -18678,7 +18678,7 @@ export class MessageEntityHashtag extends TypeMessageEntity {
   }
 }
 
-export class MessageEntityBotCommand extends TypeMessageEntity {
+export class MessageEntityBotCommand extends _TypeMessageEntity {
   offset: number;
   length: number;
 
@@ -18707,7 +18707,7 @@ export class MessageEntityBotCommand extends TypeMessageEntity {
   }
 }
 
-export class MessageEntityURL extends TypeMessageEntity {
+export class MessageEntityURL extends _TypeMessageEntity {
   offset: number;
   length: number;
 
@@ -18736,7 +18736,7 @@ export class MessageEntityURL extends TypeMessageEntity {
   }
 }
 
-export class MessageEntityEmail extends TypeMessageEntity {
+export class MessageEntityEmail extends _TypeMessageEntity {
   offset: number;
   length: number;
 
@@ -18765,7 +18765,7 @@ export class MessageEntityEmail extends TypeMessageEntity {
   }
 }
 
-export class MessageEntityBold extends TypeMessageEntity {
+export class MessageEntityBold extends _TypeMessageEntity {
   offset: number;
   length: number;
 
@@ -18794,7 +18794,7 @@ export class MessageEntityBold extends TypeMessageEntity {
   }
 }
 
-export class MessageEntityItalic extends TypeMessageEntity {
+export class MessageEntityItalic extends _TypeMessageEntity {
   offset: number;
   length: number;
 
@@ -18823,7 +18823,7 @@ export class MessageEntityItalic extends TypeMessageEntity {
   }
 }
 
-export class MessageEntityCode extends TypeMessageEntity {
+export class MessageEntityCode extends _TypeMessageEntity {
   offset: number;
   length: number;
 
@@ -18852,7 +18852,7 @@ export class MessageEntityCode extends TypeMessageEntity {
   }
 }
 
-export class MessageEntityPre extends TypeMessageEntity {
+export class MessageEntityPre extends _TypeMessageEntity {
   offset: number;
   length: number;
   language: string;
@@ -18885,7 +18885,7 @@ export class MessageEntityPre extends TypeMessageEntity {
   }
 }
 
-export class MessageEntityTextURL extends TypeMessageEntity {
+export class MessageEntityTextURL extends _TypeMessageEntity {
   offset: number;
   length: number;
   url: string;
@@ -18918,7 +18918,7 @@ export class MessageEntityTextURL extends TypeMessageEntity {
   }
 }
 
-export class MessageEntityMentionName extends TypeMessageEntity {
+export class MessageEntityMentionName extends _TypeMessageEntity {
   offset: number;
   length: number;
   userId: bigint;
@@ -18951,7 +18951,7 @@ export class MessageEntityMentionName extends TypeMessageEntity {
   }
 }
 
-export class InputMessageEntityMentionName extends TypeMessageEntity {
+export class InputMessageEntityMentionName extends _TypeMessageEntity {
   offset: number;
   length: number;
   userId: TypeInputUser;
@@ -18964,7 +18964,7 @@ export class InputMessageEntityMentionName extends TypeMessageEntity {
     return [
       ["offset", "number", "int"],
       ["length", "number", "int"],
-      ["userId", TypeInputUser, "InputUser"],
+      ["userId", _TypeInputUser, "InputUser"],
     ];
   }
 
@@ -18972,7 +18972,7 @@ export class InputMessageEntityMentionName extends TypeMessageEntity {
     return [
       [this.offset, "number", "int"],
       [this.length, "number", "int"],
-      [this.userId, TypeInputUser, "InputUser"],
+      [this.userId, _TypeInputUser, "InputUser"],
     ];
   }
 
@@ -18984,7 +18984,7 @@ export class InputMessageEntityMentionName extends TypeMessageEntity {
   }
 }
 
-export class MessageEntityPhone extends TypeMessageEntity {
+export class MessageEntityPhone extends _TypeMessageEntity {
   offset: number;
   length: number;
 
@@ -19013,7 +19013,7 @@ export class MessageEntityPhone extends TypeMessageEntity {
   }
 }
 
-export class MessageEntityCashtag extends TypeMessageEntity {
+export class MessageEntityCashtag extends _TypeMessageEntity {
   offset: number;
   length: number;
 
@@ -19042,7 +19042,7 @@ export class MessageEntityCashtag extends TypeMessageEntity {
   }
 }
 
-export class MessageEntityUnderline extends TypeMessageEntity {
+export class MessageEntityUnderline extends _TypeMessageEntity {
   offset: number;
   length: number;
 
@@ -19071,7 +19071,7 @@ export class MessageEntityUnderline extends TypeMessageEntity {
   }
 }
 
-export class MessageEntityStrike extends TypeMessageEntity {
+export class MessageEntityStrike extends _TypeMessageEntity {
   offset: number;
   length: number;
 
@@ -19100,7 +19100,7 @@ export class MessageEntityStrike extends TypeMessageEntity {
   }
 }
 
-export class MessageEntityBlockquote extends TypeMessageEntity {
+export class MessageEntityBlockquote extends _TypeMessageEntity {
   offset: number;
   length: number;
 
@@ -19129,7 +19129,7 @@ export class MessageEntityBlockquote extends TypeMessageEntity {
   }
 }
 
-export class MessageEntityBankCard extends TypeMessageEntity {
+export class MessageEntityBankCard extends _TypeMessageEntity {
   offset: number;
   length: number;
 
@@ -19158,7 +19158,7 @@ export class MessageEntityBankCard extends TypeMessageEntity {
   }
 }
 
-export class MessageEntitySpoiler extends TypeMessageEntity {
+export class MessageEntitySpoiler extends _TypeMessageEntity {
   offset: number;
   length: number;
 
@@ -19187,7 +19187,7 @@ export class MessageEntitySpoiler extends TypeMessageEntity {
   }
 }
 
-export class MessageEntityCustomEmoji extends TypeMessageEntity {
+export class MessageEntityCustomEmoji extends _TypeMessageEntity {
   offset: number;
   length: number;
   documentId: bigint;
@@ -19220,7 +19220,7 @@ export class MessageEntityCustomEmoji extends TypeMessageEntity {
   }
 }
 
-export class InputChannelEmpty extends TypeInputChannel {
+export class InputChannelEmpty extends _TypeInputChannel {
   protected get [id]() {
     return 0xEE8C1E86;
   }
@@ -19238,7 +19238,7 @@ export class InputChannelEmpty extends TypeInputChannel {
   }
 }
 
-export class InputChannel extends TypeInputChannel {
+export class InputChannel extends _TypeInputChannel {
   channelId: bigint;
   accessHash: bigint;
 
@@ -19267,7 +19267,7 @@ export class InputChannel extends TypeInputChannel {
   }
 }
 
-export class InputChannelFromMessage extends TypeInputChannel {
+export class InputChannelFromMessage extends _TypeInputChannel {
   peer: TypeInputPeer;
   msgId: number;
   channelId: bigint;
@@ -19278,7 +19278,7 @@ export class InputChannelFromMessage extends TypeInputChannel {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["peer", TypeInputPeer, "InputPeer"],
+      ["peer", _TypeInputPeer, "InputPeer"],
       ["msgId", "number", "int"],
       ["channelId", "bigint", "long"],
     ];
@@ -19286,7 +19286,7 @@ export class InputChannelFromMessage extends TypeInputChannel {
 
   protected get [params](): Params {
     return [
-      [this.peer, TypeInputPeer, "InputPeer"],
+      [this.peer, _TypeInputPeer, "InputPeer"],
       [this.msgId, "number", "int"],
       [this.channelId, "bigint", "long"],
     ];
@@ -19300,7 +19300,7 @@ export class InputChannelFromMessage extends TypeInputChannel {
   }
 }
 
-export class ContactsResolvedPeer extends TypeContactsResolvedPeer {
+export class ContactsResolvedPeer extends _TypeContactsResolvedPeer {
   peer: TypePeer;
   chats: Array<TypeChat>;
   users: Array<TypeUser>;
@@ -19311,17 +19311,17 @@ export class ContactsResolvedPeer extends TypeContactsResolvedPeer {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["peer", TypePeer, "Peer"],
-      ["chats", [TypeChat], "Vector<Chat>"],
-      ["users", [TypeUser], "Vector<User>"],
+      ["peer", _TypePeer, "Peer"],
+      ["chats", [_TypeChat], "Vector<Chat>"],
+      ["users", [_TypeUser], "Vector<User>"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.peer, TypePeer, "Peer"],
-      [this.chats, [TypeChat], "Vector<Chat>"],
-      [this.users, [TypeUser], "Vector<User>"],
+      [this.peer, _TypePeer, "Peer"],
+      [this.chats, [_TypeChat], "Vector<Chat>"],
+      [this.users, [_TypeUser], "Vector<User>"],
     ];
   }
 
@@ -19333,7 +19333,7 @@ export class ContactsResolvedPeer extends TypeContactsResolvedPeer {
   }
 }
 
-export class MessageRange extends TypeMessageRange {
+export class MessageRange extends _TypeMessageRange {
   minId: number;
   maxId: number;
 
@@ -19362,7 +19362,7 @@ export class MessageRange extends TypeMessageRange {
   }
 }
 
-export class UpdatesChannelDifferenceEmpty extends TypeUpdatesChannelDifference {
+export class UpdatesChannelDifferenceEmpty extends _TypeUpdatesChannelDifference {
   final?: true;
   pts: number;
   timeout?: number;
@@ -19397,7 +19397,7 @@ export class UpdatesChannelDifferenceEmpty extends TypeUpdatesChannelDifference 
   }
 }
 
-export class UpdatesChannelDifferenceTooLong extends TypeUpdatesChannelDifference {
+export class UpdatesChannelDifferenceTooLong extends _TypeUpdatesChannelDifference {
   final?: true;
   timeout?: number;
   dialog: TypeDialog;
@@ -19414,10 +19414,10 @@ export class UpdatesChannelDifferenceTooLong extends TypeUpdatesChannelDifferenc
       ["flags", flags, "#"],
       ["final", "true", "flags.0?true"],
       ["timeout", "number", "flags.1?int"],
-      ["dialog", TypeDialog, "Dialog"],
-      ["messages", [TypeMessage], "Vector<Message>"],
-      ["chats", [TypeChat], "Vector<Chat>"],
-      ["users", [TypeUser], "Vector<User>"],
+      ["dialog", _TypeDialog, "Dialog"],
+      ["messages", [_TypeMessage], "Vector<Message>"],
+      ["chats", [_TypeChat], "Vector<Chat>"],
+      ["users", [_TypeUser], "Vector<User>"],
     ];
   }
 
@@ -19426,10 +19426,10 @@ export class UpdatesChannelDifferenceTooLong extends TypeUpdatesChannelDifferenc
       ["flags", flags, "#"],
       [this.final ?? null, "true", "flags.0?true"],
       [this.timeout ?? null, "number", "flags.1?int"],
-      [this.dialog, TypeDialog, "Dialog"],
-      [this.messages, [TypeMessage], "Vector<Message>"],
-      [this.chats, [TypeChat], "Vector<Chat>"],
-      [this.users, [TypeUser], "Vector<User>"],
+      [this.dialog, _TypeDialog, "Dialog"],
+      [this.messages, [_TypeMessage], "Vector<Message>"],
+      [this.chats, [_TypeChat], "Vector<Chat>"],
+      [this.users, [_TypeUser], "Vector<User>"],
     ];
   }
 
@@ -19444,7 +19444,7 @@ export class UpdatesChannelDifferenceTooLong extends TypeUpdatesChannelDifferenc
   }
 }
 
-export class UpdatesChannelDifference extends TypeUpdatesChannelDifference {
+export class UpdatesChannelDifference extends _TypeUpdatesChannelDifference {
   final?: true;
   pts: number;
   timeout?: number;
@@ -19463,10 +19463,10 @@ export class UpdatesChannelDifference extends TypeUpdatesChannelDifference {
       ["final", "true", "flags.0?true"],
       ["pts", "number", "int"],
       ["timeout", "number", "flags.1?int"],
-      ["newMessages", [TypeMessage], "Vector<Message>"],
-      ["otherUpdates", [TypeUpdate], "Vector<Update>"],
-      ["chats", [TypeChat], "Vector<Chat>"],
-      ["users", [TypeUser], "Vector<User>"],
+      ["newMessages", [_TypeMessage], "Vector<Message>"],
+      ["otherUpdates", [_TypeUpdate], "Vector<Update>"],
+      ["chats", [_TypeChat], "Vector<Chat>"],
+      ["users", [_TypeUser], "Vector<User>"],
     ];
   }
 
@@ -19476,10 +19476,10 @@ export class UpdatesChannelDifference extends TypeUpdatesChannelDifference {
       [this.final ?? null, "true", "flags.0?true"],
       [this.pts, "number", "int"],
       [this.timeout ?? null, "number", "flags.1?int"],
-      [this.newMessages, [TypeMessage], "Vector<Message>"],
-      [this.otherUpdates, [TypeUpdate], "Vector<Update>"],
-      [this.chats, [TypeChat], "Vector<Chat>"],
-      [this.users, [TypeUser], "Vector<User>"],
+      [this.newMessages, [_TypeMessage], "Vector<Message>"],
+      [this.otherUpdates, [_TypeUpdate], "Vector<Update>"],
+      [this.chats, [_TypeChat], "Vector<Chat>"],
+      [this.users, [_TypeUser], "Vector<User>"],
     ];
   }
 
@@ -19495,7 +19495,7 @@ export class UpdatesChannelDifference extends TypeUpdatesChannelDifference {
   }
 }
 
-export class ChannelMessagesFilterEmpty extends TypeChannelMessagesFilter {
+export class ChannelMessagesFilterEmpty extends _TypeChannelMessagesFilter {
   protected get [id]() {
     return 0x94D42EE7;
   }
@@ -19513,7 +19513,7 @@ export class ChannelMessagesFilterEmpty extends TypeChannelMessagesFilter {
   }
 }
 
-export class ChannelMessagesFilter extends TypeChannelMessagesFilter {
+export class ChannelMessagesFilter extends _TypeChannelMessagesFilter {
   excludeNewMessages?: true;
   ranges: Array<TypeMessageRange>;
 
@@ -19525,7 +19525,7 @@ export class ChannelMessagesFilter extends TypeChannelMessagesFilter {
     return [
       ["flags", flags, "#"],
       ["excludeNewMessages", "true", "flags.1?true"],
-      ["ranges", [TypeMessageRange], "Vector<MessageRange>"],
+      ["ranges", [_TypeMessageRange], "Vector<MessageRange>"],
     ];
   }
 
@@ -19533,7 +19533,7 @@ export class ChannelMessagesFilter extends TypeChannelMessagesFilter {
     return [
       ["flags", flags, "#"],
       [this.excludeNewMessages ?? null, "true", "flags.1?true"],
-      [this.ranges, [TypeMessageRange], "Vector<MessageRange>"],
+      [this.ranges, [_TypeMessageRange], "Vector<MessageRange>"],
     ];
   }
 
@@ -19544,7 +19544,7 @@ export class ChannelMessagesFilter extends TypeChannelMessagesFilter {
   }
 }
 
-export class ChannelParticipant extends TypeChannelParticipant {
+export class ChannelParticipant extends _TypeChannelParticipant {
   userId: bigint;
   date: number;
 
@@ -19573,7 +19573,7 @@ export class ChannelParticipant extends TypeChannelParticipant {
   }
 }
 
-export class ChannelParticipantSelf extends TypeChannelParticipant {
+export class ChannelParticipantSelf extends _TypeChannelParticipant {
   viaRequest?: true;
   userId: bigint;
   inviterId: bigint;
@@ -19612,7 +19612,7 @@ export class ChannelParticipantSelf extends TypeChannelParticipant {
   }
 }
 
-export class ChannelParticipantCreator extends TypeChannelParticipant {
+export class ChannelParticipantCreator extends _TypeChannelParticipant {
   userId: bigint;
   adminRights: TypeChatAdminRights;
   rank?: string;
@@ -19625,7 +19625,7 @@ export class ChannelParticipantCreator extends TypeChannelParticipant {
     return [
       ["flags", flags, "#"],
       ["userId", "bigint", "long"],
-      ["adminRights", TypeChatAdminRights, "ChatAdminRights"],
+      ["adminRights", _TypeChatAdminRights, "ChatAdminRights"],
       ["rank", "string", "flags.0?string"],
     ];
   }
@@ -19634,7 +19634,7 @@ export class ChannelParticipantCreator extends TypeChannelParticipant {
     return [
       ["flags", flags, "#"],
       [this.userId, "bigint", "long"],
-      [this.adminRights, TypeChatAdminRights, "ChatAdminRights"],
+      [this.adminRights, _TypeChatAdminRights, "ChatAdminRights"],
       [this.rank ?? null, "string", "flags.0?string"],
     ];
   }
@@ -19647,7 +19647,7 @@ export class ChannelParticipantCreator extends TypeChannelParticipant {
   }
 }
 
-export class ChannelParticipantAdmin extends TypeChannelParticipant {
+export class ChannelParticipantAdmin extends _TypeChannelParticipant {
   canEdit?: true;
   self?: true;
   userId: bigint;
@@ -19670,7 +19670,7 @@ export class ChannelParticipantAdmin extends TypeChannelParticipant {
       ["inviterId", "bigint", "flags.1?long"],
       ["promotedBy", "bigint", "long"],
       ["date", "number", "int"],
-      ["adminRights", TypeChatAdminRights, "ChatAdminRights"],
+      ["adminRights", _TypeChatAdminRights, "ChatAdminRights"],
       ["rank", "string", "flags.2?string"],
     ];
   }
@@ -19684,7 +19684,7 @@ export class ChannelParticipantAdmin extends TypeChannelParticipant {
       [this.inviterId ?? null, "bigint", "flags.1?long"],
       [this.promotedBy, "bigint", "long"],
       [this.date, "number", "int"],
-      [this.adminRights, TypeChatAdminRights, "ChatAdminRights"],
+      [this.adminRights, _TypeChatAdminRights, "ChatAdminRights"],
       [this.rank ?? null, "string", "flags.2?string"],
     ];
   }
@@ -19702,7 +19702,7 @@ export class ChannelParticipantAdmin extends TypeChannelParticipant {
   }
 }
 
-export class ChannelParticipantBanned extends TypeChannelParticipant {
+export class ChannelParticipantBanned extends _TypeChannelParticipant {
   left?: true;
   peer: TypePeer;
   kickedBy: bigint;
@@ -19717,10 +19717,10 @@ export class ChannelParticipantBanned extends TypeChannelParticipant {
     return [
       ["flags", flags, "#"],
       ["left", "true", "flags.0?true"],
-      ["peer", TypePeer, "Peer"],
+      ["peer", _TypePeer, "Peer"],
       ["kickedBy", "bigint", "long"],
       ["date", "number", "int"],
-      ["bannedRights", TypeChatBannedRights, "ChatBannedRights"],
+      ["bannedRights", _TypeChatBannedRights, "ChatBannedRights"],
     ];
   }
 
@@ -19728,10 +19728,10 @@ export class ChannelParticipantBanned extends TypeChannelParticipant {
     return [
       ["flags", flags, "#"],
       [this.left ?? null, "true", "flags.0?true"],
-      [this.peer, TypePeer, "Peer"],
+      [this.peer, _TypePeer, "Peer"],
       [this.kickedBy, "bigint", "long"],
       [this.date, "number", "int"],
-      [this.bannedRights, TypeChatBannedRights, "ChatBannedRights"],
+      [this.bannedRights, _TypeChatBannedRights, "ChatBannedRights"],
     ];
   }
 
@@ -19745,7 +19745,7 @@ export class ChannelParticipantBanned extends TypeChannelParticipant {
   }
 }
 
-export class ChannelParticipantLeft extends TypeChannelParticipant {
+export class ChannelParticipantLeft extends _TypeChannelParticipant {
   peer: TypePeer;
 
   protected get [id]() {
@@ -19754,13 +19754,13 @@ export class ChannelParticipantLeft extends TypeChannelParticipant {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["peer", TypePeer, "Peer"],
+      ["peer", _TypePeer, "Peer"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.peer, TypePeer, "Peer"],
+      [this.peer, _TypePeer, "Peer"],
     ];
   }
 
@@ -19770,7 +19770,7 @@ export class ChannelParticipantLeft extends TypeChannelParticipant {
   }
 }
 
-export class ChannelParticipantsRecent extends TypeChannelParticipantsFilter {
+export class ChannelParticipantsRecent extends _TypeChannelParticipantsFilter {
   protected get [id]() {
     return 0xDE3F3C79;
   }
@@ -19788,7 +19788,7 @@ export class ChannelParticipantsRecent extends TypeChannelParticipantsFilter {
   }
 }
 
-export class ChannelParticipantsAdmins extends TypeChannelParticipantsFilter {
+export class ChannelParticipantsAdmins extends _TypeChannelParticipantsFilter {
   protected get [id]() {
     return 0xB4608969;
   }
@@ -19806,7 +19806,7 @@ export class ChannelParticipantsAdmins extends TypeChannelParticipantsFilter {
   }
 }
 
-export class ChannelParticipantsKicked extends TypeChannelParticipantsFilter {
+export class ChannelParticipantsKicked extends _TypeChannelParticipantsFilter {
   q: string;
 
   protected get [id]() {
@@ -19831,7 +19831,7 @@ export class ChannelParticipantsKicked extends TypeChannelParticipantsFilter {
   }
 }
 
-export class ChannelParticipantsBots extends TypeChannelParticipantsFilter {
+export class ChannelParticipantsBots extends _TypeChannelParticipantsFilter {
   protected get [id]() {
     return 0xB0D1865B;
   }
@@ -19849,7 +19849,7 @@ export class ChannelParticipantsBots extends TypeChannelParticipantsFilter {
   }
 }
 
-export class ChannelParticipantsBanned extends TypeChannelParticipantsFilter {
+export class ChannelParticipantsBanned extends _TypeChannelParticipantsFilter {
   q: string;
 
   protected get [id]() {
@@ -19874,7 +19874,7 @@ export class ChannelParticipantsBanned extends TypeChannelParticipantsFilter {
   }
 }
 
-export class ChannelParticipantsSearch extends TypeChannelParticipantsFilter {
+export class ChannelParticipantsSearch extends _TypeChannelParticipantsFilter {
   q: string;
 
   protected get [id]() {
@@ -19899,7 +19899,7 @@ export class ChannelParticipantsSearch extends TypeChannelParticipantsFilter {
   }
 }
 
-export class ChannelParticipantsContacts extends TypeChannelParticipantsFilter {
+export class ChannelParticipantsContacts extends _TypeChannelParticipantsFilter {
   q: string;
 
   protected get [id]() {
@@ -19924,7 +19924,7 @@ export class ChannelParticipantsContacts extends TypeChannelParticipantsFilter {
   }
 }
 
-export class ChannelParticipantsMentions extends TypeChannelParticipantsFilter {
+export class ChannelParticipantsMentions extends _TypeChannelParticipantsFilter {
   q?: string;
   topMsgId?: number;
 
@@ -19955,7 +19955,7 @@ export class ChannelParticipantsMentions extends TypeChannelParticipantsFilter {
   }
 }
 
-export class ChannelsChannelParticipants extends TypeChannelsChannelParticipants {
+export class ChannelsChannelParticipants extends _TypeChannelsChannelParticipants {
   count: number;
   participants: Array<TypeChannelParticipant>;
   chats: Array<TypeChat>;
@@ -19968,18 +19968,18 @@ export class ChannelsChannelParticipants extends TypeChannelsChannelParticipants
   static get [paramDesc](): ParamDesc {
     return [
       ["count", "number", "int"],
-      ["participants", [TypeChannelParticipant], "Vector<ChannelParticipant>"],
-      ["chats", [TypeChat], "Vector<Chat>"],
-      ["users", [TypeUser], "Vector<User>"],
+      ["participants", [_TypeChannelParticipant], "Vector<ChannelParticipant>"],
+      ["chats", [_TypeChat], "Vector<Chat>"],
+      ["users", [_TypeUser], "Vector<User>"],
     ];
   }
 
   protected get [params](): Params {
     return [
       [this.count, "number", "int"],
-      [this.participants, [TypeChannelParticipant], "Vector<ChannelParticipant>"],
-      [this.chats, [TypeChat], "Vector<Chat>"],
-      [this.users, [TypeUser], "Vector<User>"],
+      [this.participants, [_TypeChannelParticipant], "Vector<ChannelParticipant>"],
+      [this.chats, [_TypeChat], "Vector<Chat>"],
+      [this.users, [_TypeUser], "Vector<User>"],
     ];
   }
 
@@ -19992,7 +19992,7 @@ export class ChannelsChannelParticipants extends TypeChannelsChannelParticipants
   }
 }
 
-export class ChannelsChannelParticipantsNotModified extends TypeChannelsChannelParticipants {
+export class ChannelsChannelParticipantsNotModified extends _TypeChannelsChannelParticipants {
   protected get [id]() {
     return 0xF0173FE9;
   }
@@ -20010,7 +20010,7 @@ export class ChannelsChannelParticipantsNotModified extends TypeChannelsChannelP
   }
 }
 
-export class ChannelsChannelParticipant extends TypeChannelsChannelParticipant {
+export class ChannelsChannelParticipant extends _TypeChannelsChannelParticipant {
   participant: TypeChannelParticipant;
   chats: Array<TypeChat>;
   users: Array<TypeUser>;
@@ -20021,17 +20021,17 @@ export class ChannelsChannelParticipant extends TypeChannelsChannelParticipant {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["participant", TypeChannelParticipant, "ChannelParticipant"],
-      ["chats", [TypeChat], "Vector<Chat>"],
-      ["users", [TypeUser], "Vector<User>"],
+      ["participant", _TypeChannelParticipant, "ChannelParticipant"],
+      ["chats", [_TypeChat], "Vector<Chat>"],
+      ["users", [_TypeUser], "Vector<User>"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.participant, TypeChannelParticipant, "ChannelParticipant"],
-      [this.chats, [TypeChat], "Vector<Chat>"],
-      [this.users, [TypeUser], "Vector<User>"],
+      [this.participant, _TypeChannelParticipant, "ChannelParticipant"],
+      [this.chats, [_TypeChat], "Vector<Chat>"],
+      [this.users, [_TypeUser], "Vector<User>"],
     ];
   }
 
@@ -20043,7 +20043,7 @@ export class ChannelsChannelParticipant extends TypeChannelsChannelParticipant {
   }
 }
 
-export class HelpTermsOfService extends TypeHelpTermsOfService {
+export class HelpTermsOfService extends _TypeHelpTermsOfService {
   popup?: true;
   id: TypeDataJSON;
   text: string;
@@ -20058,9 +20058,9 @@ export class HelpTermsOfService extends TypeHelpTermsOfService {
     return [
       ["flags", flags, "#"],
       ["popup", "true", "flags.0?true"],
-      ["id", TypeDataJSON, "DataJSON"],
+      ["id", _TypeDataJSON, "DataJSON"],
       ["text", "string", "string"],
-      ["entities", [TypeMessageEntity], "Vector<MessageEntity>"],
+      ["entities", [_TypeMessageEntity], "Vector<MessageEntity>"],
       ["minAgeConfirm", "number", "flags.1?int"],
     ];
   }
@@ -20069,9 +20069,9 @@ export class HelpTermsOfService extends TypeHelpTermsOfService {
     return [
       ["flags", flags, "#"],
       [this.popup ?? null, "true", "flags.0?true"],
-      [this.id, TypeDataJSON, "DataJSON"],
+      [this.id, _TypeDataJSON, "DataJSON"],
       [this.text, "string", "string"],
-      [this.entities, [TypeMessageEntity], "Vector<MessageEntity>"],
+      [this.entities, [_TypeMessageEntity], "Vector<MessageEntity>"],
       [this.minAgeConfirm ?? null, "number", "flags.1?int"],
     ];
   }
@@ -20086,7 +20086,7 @@ export class HelpTermsOfService extends TypeHelpTermsOfService {
   }
 }
 
-export class MessagesSavedGifsNotModified extends TypeMessagesSavedGifs {
+export class MessagesSavedGifsNotModified extends _TypeMessagesSavedGifs {
   protected get [id]() {
     return 0xE8025CA2;
   }
@@ -20104,7 +20104,7 @@ export class MessagesSavedGifsNotModified extends TypeMessagesSavedGifs {
   }
 }
 
-export class MessagesSavedGifs extends TypeMessagesSavedGifs {
+export class MessagesSavedGifs extends _TypeMessagesSavedGifs {
   hash: bigint;
   gifs: Array<TypeDocument>;
 
@@ -20115,14 +20115,14 @@ export class MessagesSavedGifs extends TypeMessagesSavedGifs {
   static get [paramDesc](): ParamDesc {
     return [
       ["hash", "bigint", "long"],
-      ["gifs", [TypeDocument], "Vector<Document>"],
+      ["gifs", [_TypeDocument], "Vector<Document>"],
     ];
   }
 
   protected get [params](): Params {
     return [
       [this.hash, "bigint", "long"],
-      [this.gifs, [TypeDocument], "Vector<Document>"],
+      [this.gifs, [_TypeDocument], "Vector<Document>"],
     ];
   }
 
@@ -20133,7 +20133,7 @@ export class MessagesSavedGifs extends TypeMessagesSavedGifs {
   }
 }
 
-export class InputBotInlineMessageMediaAuto extends TypeInputBotInlineMessage {
+export class InputBotInlineMessageMediaAuto extends _TypeInputBotInlineMessage {
   message: string;
   entities?: Array<TypeMessageEntity>;
   replyMarkup?: TypeReplyMarkup;
@@ -20146,8 +20146,8 @@ export class InputBotInlineMessageMediaAuto extends TypeInputBotInlineMessage {
     return [
       ["flags", flags, "#"],
       ["message", "string", "string"],
-      ["entities", [TypeMessageEntity], "flags.1?Vector<MessageEntity>"],
-      ["replyMarkup", TypeReplyMarkup, "flags.2?ReplyMarkup"],
+      ["entities", [_TypeMessageEntity], "flags.1?Vector<MessageEntity>"],
+      ["replyMarkup", _TypeReplyMarkup, "flags.2?ReplyMarkup"],
     ];
   }
 
@@ -20155,8 +20155,8 @@ export class InputBotInlineMessageMediaAuto extends TypeInputBotInlineMessage {
     return [
       ["flags", flags, "#"],
       [this.message, "string", "string"],
-      [this.entities ?? null, [TypeMessageEntity], "flags.1?Vector<MessageEntity>"],
-      [this.replyMarkup ?? null, TypeReplyMarkup, "flags.2?ReplyMarkup"],
+      [this.entities ?? null, [_TypeMessageEntity], "flags.1?Vector<MessageEntity>"],
+      [this.replyMarkup ?? null, _TypeReplyMarkup, "flags.2?ReplyMarkup"],
     ];
   }
 
@@ -20168,7 +20168,7 @@ export class InputBotInlineMessageMediaAuto extends TypeInputBotInlineMessage {
   }
 }
 
-export class InputBotInlineMessageText extends TypeInputBotInlineMessage {
+export class InputBotInlineMessageText extends _TypeInputBotInlineMessage {
   noWebpage?: true;
   message: string;
   entities?: Array<TypeMessageEntity>;
@@ -20183,8 +20183,8 @@ export class InputBotInlineMessageText extends TypeInputBotInlineMessage {
       ["flags", flags, "#"],
       ["noWebpage", "true", "flags.0?true"],
       ["message", "string", "string"],
-      ["entities", [TypeMessageEntity], "flags.1?Vector<MessageEntity>"],
-      ["replyMarkup", TypeReplyMarkup, "flags.2?ReplyMarkup"],
+      ["entities", [_TypeMessageEntity], "flags.1?Vector<MessageEntity>"],
+      ["replyMarkup", _TypeReplyMarkup, "flags.2?ReplyMarkup"],
     ];
   }
 
@@ -20193,8 +20193,8 @@ export class InputBotInlineMessageText extends TypeInputBotInlineMessage {
       ["flags", flags, "#"],
       [this.noWebpage ?? null, "true", "flags.0?true"],
       [this.message, "string", "string"],
-      [this.entities ?? null, [TypeMessageEntity], "flags.1?Vector<MessageEntity>"],
-      [this.replyMarkup ?? null, TypeReplyMarkup, "flags.2?ReplyMarkup"],
+      [this.entities ?? null, [_TypeMessageEntity], "flags.1?Vector<MessageEntity>"],
+      [this.replyMarkup ?? null, _TypeReplyMarkup, "flags.2?ReplyMarkup"],
     ];
   }
 
@@ -20207,7 +20207,7 @@ export class InputBotInlineMessageText extends TypeInputBotInlineMessage {
   }
 }
 
-export class InputBotInlineMessageMediaGeo extends TypeInputBotInlineMessage {
+export class InputBotInlineMessageMediaGeo extends _TypeInputBotInlineMessage {
   geoPoint: TypeInputGeoPoint;
   heading?: number;
   period?: number;
@@ -20221,22 +20221,22 @@ export class InputBotInlineMessageMediaGeo extends TypeInputBotInlineMessage {
   static get [paramDesc](): ParamDesc {
     return [
       ["flags", flags, "#"],
-      ["geoPoint", TypeInputGeoPoint, "InputGeoPoint"],
+      ["geoPoint", _TypeInputGeoPoint, "InputGeoPoint"],
       ["heading", "number", "flags.0?int"],
       ["period", "number", "flags.1?int"],
       ["proximityNotificationRadius", "number", "flags.3?int"],
-      ["replyMarkup", TypeReplyMarkup, "flags.2?ReplyMarkup"],
+      ["replyMarkup", _TypeReplyMarkup, "flags.2?ReplyMarkup"],
     ];
   }
 
   protected get [params](): Params {
     return [
       ["flags", flags, "#"],
-      [this.geoPoint, TypeInputGeoPoint, "InputGeoPoint"],
+      [this.geoPoint, _TypeInputGeoPoint, "InputGeoPoint"],
       [this.heading ?? null, "number", "flags.0?int"],
       [this.period ?? null, "number", "flags.1?int"],
       [this.proximityNotificationRadius ?? null, "number", "flags.3?int"],
-      [this.replyMarkup ?? null, TypeReplyMarkup, "flags.2?ReplyMarkup"],
+      [this.replyMarkup ?? null, _TypeReplyMarkup, "flags.2?ReplyMarkup"],
     ];
   }
 
@@ -20250,7 +20250,7 @@ export class InputBotInlineMessageMediaGeo extends TypeInputBotInlineMessage {
   }
 }
 
-export class InputBotInlineMessageMediaVenue extends TypeInputBotInlineMessage {
+export class InputBotInlineMessageMediaVenue extends _TypeInputBotInlineMessage {
   geoPoint: TypeInputGeoPoint;
   title: string;
   address: string;
@@ -20266,26 +20266,26 @@ export class InputBotInlineMessageMediaVenue extends TypeInputBotInlineMessage {
   static get [paramDesc](): ParamDesc {
     return [
       ["flags", flags, "#"],
-      ["geoPoint", TypeInputGeoPoint, "InputGeoPoint"],
+      ["geoPoint", _TypeInputGeoPoint, "InputGeoPoint"],
       ["title", "string", "string"],
       ["address", "string", "string"],
       ["provider", "string", "string"],
       ["venueId", "string", "string"],
       ["venueType", "string", "string"],
-      ["replyMarkup", TypeReplyMarkup, "flags.2?ReplyMarkup"],
+      ["replyMarkup", _TypeReplyMarkup, "flags.2?ReplyMarkup"],
     ];
   }
 
   protected get [params](): Params {
     return [
       ["flags", flags, "#"],
-      [this.geoPoint, TypeInputGeoPoint, "InputGeoPoint"],
+      [this.geoPoint, _TypeInputGeoPoint, "InputGeoPoint"],
       [this.title, "string", "string"],
       [this.address, "string", "string"],
       [this.provider, "string", "string"],
       [this.venueId, "string", "string"],
       [this.venueType, "string", "string"],
-      [this.replyMarkup ?? null, TypeReplyMarkup, "flags.2?ReplyMarkup"],
+      [this.replyMarkup ?? null, _TypeReplyMarkup, "flags.2?ReplyMarkup"],
     ];
   }
 
@@ -20301,7 +20301,7 @@ export class InputBotInlineMessageMediaVenue extends TypeInputBotInlineMessage {
   }
 }
 
-export class InputBotInlineMessageMediaContact extends TypeInputBotInlineMessage {
+export class InputBotInlineMessageMediaContact extends _TypeInputBotInlineMessage {
   phoneNumber: string;
   firstName: string;
   lastName: string;
@@ -20319,7 +20319,7 @@ export class InputBotInlineMessageMediaContact extends TypeInputBotInlineMessage
       ["firstName", "string", "string"],
       ["lastName", "string", "string"],
       ["vcard", "string", "string"],
-      ["replyMarkup", TypeReplyMarkup, "flags.2?ReplyMarkup"],
+      ["replyMarkup", _TypeReplyMarkup, "flags.2?ReplyMarkup"],
     ];
   }
 
@@ -20330,7 +20330,7 @@ export class InputBotInlineMessageMediaContact extends TypeInputBotInlineMessage
       [this.firstName, "string", "string"],
       [this.lastName, "string", "string"],
       [this.vcard, "string", "string"],
-      [this.replyMarkup ?? null, TypeReplyMarkup, "flags.2?ReplyMarkup"],
+      [this.replyMarkup ?? null, _TypeReplyMarkup, "flags.2?ReplyMarkup"],
     ];
   }
 
@@ -20344,7 +20344,7 @@ export class InputBotInlineMessageMediaContact extends TypeInputBotInlineMessage
   }
 }
 
-export class InputBotInlineMessageGame extends TypeInputBotInlineMessage {
+export class InputBotInlineMessageGame extends _TypeInputBotInlineMessage {
   replyMarkup?: TypeReplyMarkup;
 
   protected get [id]() {
@@ -20354,14 +20354,14 @@ export class InputBotInlineMessageGame extends TypeInputBotInlineMessage {
   static get [paramDesc](): ParamDesc {
     return [
       ["flags", flags, "#"],
-      ["replyMarkup", TypeReplyMarkup, "flags.2?ReplyMarkup"],
+      ["replyMarkup", _TypeReplyMarkup, "flags.2?ReplyMarkup"],
     ];
   }
 
   protected get [params](): Params {
     return [
       ["flags", flags, "#"],
-      [this.replyMarkup ?? null, TypeReplyMarkup, "flags.2?ReplyMarkup"],
+      [this.replyMarkup ?? null, _TypeReplyMarkup, "flags.2?ReplyMarkup"],
     ];
   }
 
@@ -20371,7 +20371,7 @@ export class InputBotInlineMessageGame extends TypeInputBotInlineMessage {
   }
 }
 
-export class InputBotInlineMessageMediaInvoice extends TypeInputBotInlineMessage {
+export class InputBotInlineMessageMediaInvoice extends _TypeInputBotInlineMessage {
   title: string;
   description: string;
   photo?: TypeInputWebDocument;
@@ -20390,12 +20390,12 @@ export class InputBotInlineMessageMediaInvoice extends TypeInputBotInlineMessage
       ["flags", flags, "#"],
       ["title", "string", "string"],
       ["description", "string", "string"],
-      ["photo", TypeInputWebDocument, "flags.0?InputWebDocument"],
-      ["invoice", TypeInvoice, "Invoice"],
+      ["photo", _TypeInputWebDocument, "flags.0?InputWebDocument"],
+      ["invoice", _TypeInvoice, "Invoice"],
       ["payload", Uint8Array, "bytes"],
       ["provider", "string", "string"],
-      ["providerData", TypeDataJSON, "DataJSON"],
-      ["replyMarkup", TypeReplyMarkup, "flags.2?ReplyMarkup"],
+      ["providerData", _TypeDataJSON, "DataJSON"],
+      ["replyMarkup", _TypeReplyMarkup, "flags.2?ReplyMarkup"],
     ];
   }
 
@@ -20404,12 +20404,12 @@ export class InputBotInlineMessageMediaInvoice extends TypeInputBotInlineMessage
       ["flags", flags, "#"],
       [this.title, "string", "string"],
       [this.description, "string", "string"],
-      [this.photo ?? null, TypeInputWebDocument, "flags.0?InputWebDocument"],
-      [this.invoice, TypeInvoice, "Invoice"],
+      [this.photo ?? null, _TypeInputWebDocument, "flags.0?InputWebDocument"],
+      [this.invoice, _TypeInvoice, "Invoice"],
       [this.payload, Uint8Array, "bytes"],
       [this.provider, "string", "string"],
-      [this.providerData, TypeDataJSON, "DataJSON"],
-      [this.replyMarkup ?? null, TypeReplyMarkup, "flags.2?ReplyMarkup"],
+      [this.providerData, _TypeDataJSON, "DataJSON"],
+      [this.replyMarkup ?? null, _TypeReplyMarkup, "flags.2?ReplyMarkup"],
     ];
   }
 
@@ -20426,7 +20426,7 @@ export class InputBotInlineMessageMediaInvoice extends TypeInputBotInlineMessage
   }
 }
 
-export class InputBotInlineResult extends TypeInputBotInlineResult {
+export class InputBotInlineResult extends _TypeInputBotInlineResult {
   id: string;
   type: string;
   title?: string;
@@ -20448,9 +20448,9 @@ export class InputBotInlineResult extends TypeInputBotInlineResult {
       ["title", "string", "flags.1?string"],
       ["description", "string", "flags.2?string"],
       ["url", "string", "flags.3?string"],
-      ["thumb", TypeInputWebDocument, "flags.4?InputWebDocument"],
-      ["content", TypeInputWebDocument, "flags.5?InputWebDocument"],
-      ["sendMessage", TypeInputBotInlineMessage, "InputBotInlineMessage"],
+      ["thumb", _TypeInputWebDocument, "flags.4?InputWebDocument"],
+      ["content", _TypeInputWebDocument, "flags.5?InputWebDocument"],
+      ["sendMessage", _TypeInputBotInlineMessage, "InputBotInlineMessage"],
     ];
   }
 
@@ -20462,9 +20462,9 @@ export class InputBotInlineResult extends TypeInputBotInlineResult {
       [this.title ?? null, "string", "flags.1?string"],
       [this.description ?? null, "string", "flags.2?string"],
       [this.url ?? null, "string", "flags.3?string"],
-      [this.thumb ?? null, TypeInputWebDocument, "flags.4?InputWebDocument"],
-      [this.content ?? null, TypeInputWebDocument, "flags.5?InputWebDocument"],
-      [this.sendMessage, TypeInputBotInlineMessage, "InputBotInlineMessage"],
+      [this.thumb ?? null, _TypeInputWebDocument, "flags.4?InputWebDocument"],
+      [this.content ?? null, _TypeInputWebDocument, "flags.5?InputWebDocument"],
+      [this.sendMessage, _TypeInputBotInlineMessage, "InputBotInlineMessage"],
     ];
   }
 
@@ -20481,7 +20481,7 @@ export class InputBotInlineResult extends TypeInputBotInlineResult {
   }
 }
 
-export class InputBotInlineResultPhoto extends TypeInputBotInlineResult {
+export class InputBotInlineResultPhoto extends _TypeInputBotInlineResult {
   id: string;
   type: string;
   photo: TypeInputPhoto;
@@ -20495,8 +20495,8 @@ export class InputBotInlineResultPhoto extends TypeInputBotInlineResult {
     return [
       ["id", "string", "string"],
       ["type", "string", "string"],
-      ["photo", TypeInputPhoto, "InputPhoto"],
-      ["sendMessage", TypeInputBotInlineMessage, "InputBotInlineMessage"],
+      ["photo", _TypeInputPhoto, "InputPhoto"],
+      ["sendMessage", _TypeInputBotInlineMessage, "InputBotInlineMessage"],
     ];
   }
 
@@ -20504,8 +20504,8 @@ export class InputBotInlineResultPhoto extends TypeInputBotInlineResult {
     return [
       [this.id, "string", "string"],
       [this.type, "string", "string"],
-      [this.photo, TypeInputPhoto, "InputPhoto"],
-      [this.sendMessage, TypeInputBotInlineMessage, "InputBotInlineMessage"],
+      [this.photo, _TypeInputPhoto, "InputPhoto"],
+      [this.sendMessage, _TypeInputBotInlineMessage, "InputBotInlineMessage"],
     ];
   }
 
@@ -20518,7 +20518,7 @@ export class InputBotInlineResultPhoto extends TypeInputBotInlineResult {
   }
 }
 
-export class InputBotInlineResultDocument extends TypeInputBotInlineResult {
+export class InputBotInlineResultDocument extends _TypeInputBotInlineResult {
   id: string;
   type: string;
   title?: string;
@@ -20537,8 +20537,8 @@ export class InputBotInlineResultDocument extends TypeInputBotInlineResult {
       ["type", "string", "string"],
       ["title", "string", "flags.1?string"],
       ["description", "string", "flags.2?string"],
-      ["document", TypeInputDocument, "InputDocument"],
-      ["sendMessage", TypeInputBotInlineMessage, "InputBotInlineMessage"],
+      ["document", _TypeInputDocument, "InputDocument"],
+      ["sendMessage", _TypeInputBotInlineMessage, "InputBotInlineMessage"],
     ];
   }
 
@@ -20549,8 +20549,8 @@ export class InputBotInlineResultDocument extends TypeInputBotInlineResult {
       [this.type, "string", "string"],
       [this.title ?? null, "string", "flags.1?string"],
       [this.description ?? null, "string", "flags.2?string"],
-      [this.document, TypeInputDocument, "InputDocument"],
-      [this.sendMessage, TypeInputBotInlineMessage, "InputBotInlineMessage"],
+      [this.document, _TypeInputDocument, "InputDocument"],
+      [this.sendMessage, _TypeInputBotInlineMessage, "InputBotInlineMessage"],
     ];
   }
 
@@ -20565,7 +20565,7 @@ export class InputBotInlineResultDocument extends TypeInputBotInlineResult {
   }
 }
 
-export class InputBotInlineResultGame extends TypeInputBotInlineResult {
+export class InputBotInlineResultGame extends _TypeInputBotInlineResult {
   id: string;
   shortName: string;
   sendMessage: TypeInputBotInlineMessage;
@@ -20578,7 +20578,7 @@ export class InputBotInlineResultGame extends TypeInputBotInlineResult {
     return [
       ["id", "string", "string"],
       ["shortName", "string", "string"],
-      ["sendMessage", TypeInputBotInlineMessage, "InputBotInlineMessage"],
+      ["sendMessage", _TypeInputBotInlineMessage, "InputBotInlineMessage"],
     ];
   }
 
@@ -20586,7 +20586,7 @@ export class InputBotInlineResultGame extends TypeInputBotInlineResult {
     return [
       [this.id, "string", "string"],
       [this.shortName, "string", "string"],
-      [this.sendMessage, TypeInputBotInlineMessage, "InputBotInlineMessage"],
+      [this.sendMessage, _TypeInputBotInlineMessage, "InputBotInlineMessage"],
     ];
   }
 
@@ -20598,7 +20598,7 @@ export class InputBotInlineResultGame extends TypeInputBotInlineResult {
   }
 }
 
-export class BotInlineMessageMediaAuto extends TypeBotInlineMessage {
+export class BotInlineMessageMediaAuto extends _TypeBotInlineMessage {
   message: string;
   entities?: Array<TypeMessageEntity>;
   replyMarkup?: TypeReplyMarkup;
@@ -20611,8 +20611,8 @@ export class BotInlineMessageMediaAuto extends TypeBotInlineMessage {
     return [
       ["flags", flags, "#"],
       ["message", "string", "string"],
-      ["entities", [TypeMessageEntity], "flags.1?Vector<MessageEntity>"],
-      ["replyMarkup", TypeReplyMarkup, "flags.2?ReplyMarkup"],
+      ["entities", [_TypeMessageEntity], "flags.1?Vector<MessageEntity>"],
+      ["replyMarkup", _TypeReplyMarkup, "flags.2?ReplyMarkup"],
     ];
   }
 
@@ -20620,8 +20620,8 @@ export class BotInlineMessageMediaAuto extends TypeBotInlineMessage {
     return [
       ["flags", flags, "#"],
       [this.message, "string", "string"],
-      [this.entities ?? null, [TypeMessageEntity], "flags.1?Vector<MessageEntity>"],
-      [this.replyMarkup ?? null, TypeReplyMarkup, "flags.2?ReplyMarkup"],
+      [this.entities ?? null, [_TypeMessageEntity], "flags.1?Vector<MessageEntity>"],
+      [this.replyMarkup ?? null, _TypeReplyMarkup, "flags.2?ReplyMarkup"],
     ];
   }
 
@@ -20633,7 +20633,7 @@ export class BotInlineMessageMediaAuto extends TypeBotInlineMessage {
   }
 }
 
-export class BotInlineMessageText extends TypeBotInlineMessage {
+export class BotInlineMessageText extends _TypeBotInlineMessage {
   noWebpage?: true;
   message: string;
   entities?: Array<TypeMessageEntity>;
@@ -20648,8 +20648,8 @@ export class BotInlineMessageText extends TypeBotInlineMessage {
       ["flags", flags, "#"],
       ["noWebpage", "true", "flags.0?true"],
       ["message", "string", "string"],
-      ["entities", [TypeMessageEntity], "flags.1?Vector<MessageEntity>"],
-      ["replyMarkup", TypeReplyMarkup, "flags.2?ReplyMarkup"],
+      ["entities", [_TypeMessageEntity], "flags.1?Vector<MessageEntity>"],
+      ["replyMarkup", _TypeReplyMarkup, "flags.2?ReplyMarkup"],
     ];
   }
 
@@ -20658,8 +20658,8 @@ export class BotInlineMessageText extends TypeBotInlineMessage {
       ["flags", flags, "#"],
       [this.noWebpage ?? null, "true", "flags.0?true"],
       [this.message, "string", "string"],
-      [this.entities ?? null, [TypeMessageEntity], "flags.1?Vector<MessageEntity>"],
-      [this.replyMarkup ?? null, TypeReplyMarkup, "flags.2?ReplyMarkup"],
+      [this.entities ?? null, [_TypeMessageEntity], "flags.1?Vector<MessageEntity>"],
+      [this.replyMarkup ?? null, _TypeReplyMarkup, "flags.2?ReplyMarkup"],
     ];
   }
 
@@ -20672,7 +20672,7 @@ export class BotInlineMessageText extends TypeBotInlineMessage {
   }
 }
 
-export class BotInlineMessageMediaGeo extends TypeBotInlineMessage {
+export class BotInlineMessageMediaGeo extends _TypeBotInlineMessage {
   geo: TypeGeoPoint;
   heading?: number;
   period?: number;
@@ -20686,22 +20686,22 @@ export class BotInlineMessageMediaGeo extends TypeBotInlineMessage {
   static get [paramDesc](): ParamDesc {
     return [
       ["flags", flags, "#"],
-      ["geo", TypeGeoPoint, "GeoPoint"],
+      ["geo", _TypeGeoPoint, "GeoPoint"],
       ["heading", "number", "flags.0?int"],
       ["period", "number", "flags.1?int"],
       ["proximityNotificationRadius", "number", "flags.3?int"],
-      ["replyMarkup", TypeReplyMarkup, "flags.2?ReplyMarkup"],
+      ["replyMarkup", _TypeReplyMarkup, "flags.2?ReplyMarkup"],
     ];
   }
 
   protected get [params](): Params {
     return [
       ["flags", flags, "#"],
-      [this.geo, TypeGeoPoint, "GeoPoint"],
+      [this.geo, _TypeGeoPoint, "GeoPoint"],
       [this.heading ?? null, "number", "flags.0?int"],
       [this.period ?? null, "number", "flags.1?int"],
       [this.proximityNotificationRadius ?? null, "number", "flags.3?int"],
-      [this.replyMarkup ?? null, TypeReplyMarkup, "flags.2?ReplyMarkup"],
+      [this.replyMarkup ?? null, _TypeReplyMarkup, "flags.2?ReplyMarkup"],
     ];
   }
 
@@ -20715,7 +20715,7 @@ export class BotInlineMessageMediaGeo extends TypeBotInlineMessage {
   }
 }
 
-export class BotInlineMessageMediaVenue extends TypeBotInlineMessage {
+export class BotInlineMessageMediaVenue extends _TypeBotInlineMessage {
   geo: TypeGeoPoint;
   title: string;
   address: string;
@@ -20731,26 +20731,26 @@ export class BotInlineMessageMediaVenue extends TypeBotInlineMessage {
   static get [paramDesc](): ParamDesc {
     return [
       ["flags", flags, "#"],
-      ["geo", TypeGeoPoint, "GeoPoint"],
+      ["geo", _TypeGeoPoint, "GeoPoint"],
       ["title", "string", "string"],
       ["address", "string", "string"],
       ["provider", "string", "string"],
       ["venueId", "string", "string"],
       ["venueType", "string", "string"],
-      ["replyMarkup", TypeReplyMarkup, "flags.2?ReplyMarkup"],
+      ["replyMarkup", _TypeReplyMarkup, "flags.2?ReplyMarkup"],
     ];
   }
 
   protected get [params](): Params {
     return [
       ["flags", flags, "#"],
-      [this.geo, TypeGeoPoint, "GeoPoint"],
+      [this.geo, _TypeGeoPoint, "GeoPoint"],
       [this.title, "string", "string"],
       [this.address, "string", "string"],
       [this.provider, "string", "string"],
       [this.venueId, "string", "string"],
       [this.venueType, "string", "string"],
-      [this.replyMarkup ?? null, TypeReplyMarkup, "flags.2?ReplyMarkup"],
+      [this.replyMarkup ?? null, _TypeReplyMarkup, "flags.2?ReplyMarkup"],
     ];
   }
 
@@ -20766,7 +20766,7 @@ export class BotInlineMessageMediaVenue extends TypeBotInlineMessage {
   }
 }
 
-export class BotInlineMessageMediaContact extends TypeBotInlineMessage {
+export class BotInlineMessageMediaContact extends _TypeBotInlineMessage {
   phoneNumber: string;
   firstName: string;
   lastName: string;
@@ -20784,7 +20784,7 @@ export class BotInlineMessageMediaContact extends TypeBotInlineMessage {
       ["firstName", "string", "string"],
       ["lastName", "string", "string"],
       ["vcard", "string", "string"],
-      ["replyMarkup", TypeReplyMarkup, "flags.2?ReplyMarkup"],
+      ["replyMarkup", _TypeReplyMarkup, "flags.2?ReplyMarkup"],
     ];
   }
 
@@ -20795,7 +20795,7 @@ export class BotInlineMessageMediaContact extends TypeBotInlineMessage {
       [this.firstName, "string", "string"],
       [this.lastName, "string", "string"],
       [this.vcard, "string", "string"],
-      [this.replyMarkup ?? null, TypeReplyMarkup, "flags.2?ReplyMarkup"],
+      [this.replyMarkup ?? null, _TypeReplyMarkup, "flags.2?ReplyMarkup"],
     ];
   }
 
@@ -20809,7 +20809,7 @@ export class BotInlineMessageMediaContact extends TypeBotInlineMessage {
   }
 }
 
-export class BotInlineMessageMediaInvoice extends TypeBotInlineMessage {
+export class BotInlineMessageMediaInvoice extends _TypeBotInlineMessage {
   shippingAddressRequested?: true;
   test?: true;
   title: string;
@@ -20830,10 +20830,10 @@ export class BotInlineMessageMediaInvoice extends TypeBotInlineMessage {
       ["test", "true", "flags.3?true"],
       ["title", "string", "string"],
       ["description", "string", "string"],
-      ["photo", TypeWebDocument, "flags.0?WebDocument"],
+      ["photo", _TypeWebDocument, "flags.0?WebDocument"],
       ["currency", "string", "string"],
       ["totalAmount", "bigint", "long"],
-      ["replyMarkup", TypeReplyMarkup, "flags.2?ReplyMarkup"],
+      ["replyMarkup", _TypeReplyMarkup, "flags.2?ReplyMarkup"],
     ];
   }
 
@@ -20844,10 +20844,10 @@ export class BotInlineMessageMediaInvoice extends TypeBotInlineMessage {
       [this.test ?? null, "true", "flags.3?true"],
       [this.title, "string", "string"],
       [this.description, "string", "string"],
-      [this.photo ?? null, TypeWebDocument, "flags.0?WebDocument"],
+      [this.photo ?? null, _TypeWebDocument, "flags.0?WebDocument"],
       [this.currency, "string", "string"],
       [this.totalAmount, "bigint", "long"],
-      [this.replyMarkup ?? null, TypeReplyMarkup, "flags.2?ReplyMarkup"],
+      [this.replyMarkup ?? null, _TypeReplyMarkup, "flags.2?ReplyMarkup"],
     ];
   }
 
@@ -20864,7 +20864,7 @@ export class BotInlineMessageMediaInvoice extends TypeBotInlineMessage {
   }
 }
 
-export class BotInlineResult extends TypeBotInlineResult {
+export class BotInlineResult extends _TypeBotInlineResult {
   id: string;
   type: string;
   title?: string;
@@ -20886,9 +20886,9 @@ export class BotInlineResult extends TypeBotInlineResult {
       ["title", "string", "flags.1?string"],
       ["description", "string", "flags.2?string"],
       ["url", "string", "flags.3?string"],
-      ["thumb", TypeWebDocument, "flags.4?WebDocument"],
-      ["content", TypeWebDocument, "flags.5?WebDocument"],
-      ["sendMessage", TypeBotInlineMessage, "BotInlineMessage"],
+      ["thumb", _TypeWebDocument, "flags.4?WebDocument"],
+      ["content", _TypeWebDocument, "flags.5?WebDocument"],
+      ["sendMessage", _TypeBotInlineMessage, "BotInlineMessage"],
     ];
   }
 
@@ -20900,9 +20900,9 @@ export class BotInlineResult extends TypeBotInlineResult {
       [this.title ?? null, "string", "flags.1?string"],
       [this.description ?? null, "string", "flags.2?string"],
       [this.url ?? null, "string", "flags.3?string"],
-      [this.thumb ?? null, TypeWebDocument, "flags.4?WebDocument"],
-      [this.content ?? null, TypeWebDocument, "flags.5?WebDocument"],
-      [this.sendMessage, TypeBotInlineMessage, "BotInlineMessage"],
+      [this.thumb ?? null, _TypeWebDocument, "flags.4?WebDocument"],
+      [this.content ?? null, _TypeWebDocument, "flags.5?WebDocument"],
+      [this.sendMessage, _TypeBotInlineMessage, "BotInlineMessage"],
     ];
   }
 
@@ -20919,7 +20919,7 @@ export class BotInlineResult extends TypeBotInlineResult {
   }
 }
 
-export class BotInlineMediaResult extends TypeBotInlineResult {
+export class BotInlineMediaResult extends _TypeBotInlineResult {
   id: string;
   type: string;
   photo?: TypePhoto;
@@ -20937,11 +20937,11 @@ export class BotInlineMediaResult extends TypeBotInlineResult {
       ["flags", flags, "#"],
       ["id", "string", "string"],
       ["type", "string", "string"],
-      ["photo", TypePhoto, "flags.0?Photo"],
-      ["document", TypeDocument, "flags.1?Document"],
+      ["photo", _TypePhoto, "flags.0?Photo"],
+      ["document", _TypeDocument, "flags.1?Document"],
       ["title", "string", "flags.2?string"],
       ["description", "string", "flags.3?string"],
-      ["sendMessage", TypeBotInlineMessage, "BotInlineMessage"],
+      ["sendMessage", _TypeBotInlineMessage, "BotInlineMessage"],
     ];
   }
 
@@ -20950,11 +20950,11 @@ export class BotInlineMediaResult extends TypeBotInlineResult {
       ["flags", flags, "#"],
       [this.id, "string", "string"],
       [this.type, "string", "string"],
-      [this.photo ?? null, TypePhoto, "flags.0?Photo"],
-      [this.document ?? null, TypeDocument, "flags.1?Document"],
+      [this.photo ?? null, _TypePhoto, "flags.0?Photo"],
+      [this.document ?? null, _TypeDocument, "flags.1?Document"],
       [this.title ?? null, "string", "flags.2?string"],
       [this.description ?? null, "string", "flags.3?string"],
-      [this.sendMessage, TypeBotInlineMessage, "BotInlineMessage"],
+      [this.sendMessage, _TypeBotInlineMessage, "BotInlineMessage"],
     ];
   }
 
@@ -20970,7 +20970,7 @@ export class BotInlineMediaResult extends TypeBotInlineResult {
   }
 }
 
-export class MessagesBotResults extends TypeMessagesBotResults {
+export class MessagesBotResults extends _TypeMessagesBotResults {
   gallery?: true;
   queryId: bigint;
   nextOffset?: string;
@@ -20990,11 +20990,11 @@ export class MessagesBotResults extends TypeMessagesBotResults {
       ["gallery", "true", "flags.0?true"],
       ["queryId", "bigint", "long"],
       ["nextOffset", "string", "flags.1?string"],
-      ["switchPm", TypeInlineBotSwitchPM, "flags.2?InlineBotSwitchPM"],
-      ["switchWebview", TypeInlineBotWebView, "flags.3?InlineBotWebView"],
-      ["results", [TypeBotInlineResult], "Vector<BotInlineResult>"],
+      ["switchPm", _TypeInlineBotSwitchPM, "flags.2?InlineBotSwitchPM"],
+      ["switchWebview", _TypeInlineBotWebView, "flags.3?InlineBotWebView"],
+      ["results", [_TypeBotInlineResult], "Vector<BotInlineResult>"],
       ["cacheTime", "number", "int"],
-      ["users", [TypeUser], "Vector<User>"],
+      ["users", [_TypeUser], "Vector<User>"],
     ];
   }
 
@@ -21004,11 +21004,11 @@ export class MessagesBotResults extends TypeMessagesBotResults {
       [this.gallery ?? null, "true", "flags.0?true"],
       [this.queryId, "bigint", "long"],
       [this.nextOffset ?? null, "string", "flags.1?string"],
-      [this.switchPm ?? null, TypeInlineBotSwitchPM, "flags.2?InlineBotSwitchPM"],
-      [this.switchWebview ?? null, TypeInlineBotWebView, "flags.3?InlineBotWebView"],
-      [this.results, [TypeBotInlineResult], "Vector<BotInlineResult>"],
+      [this.switchPm ?? null, _TypeInlineBotSwitchPM, "flags.2?InlineBotSwitchPM"],
+      [this.switchWebview ?? null, _TypeInlineBotWebView, "flags.3?InlineBotWebView"],
+      [this.results, [_TypeBotInlineResult], "Vector<BotInlineResult>"],
       [this.cacheTime, "number", "int"],
-      [this.users, [TypeUser], "Vector<User>"],
+      [this.users, [_TypeUser], "Vector<User>"],
     ];
   }
 
@@ -21025,7 +21025,7 @@ export class MessagesBotResults extends TypeMessagesBotResults {
   }
 }
 
-export class ExportedMessageLink extends TypeExportedMessageLink {
+export class ExportedMessageLink extends _TypeExportedMessageLink {
   link: string;
   html: string;
 
@@ -21054,7 +21054,7 @@ export class ExportedMessageLink extends TypeExportedMessageLink {
   }
 }
 
-export class MessageFwdHeader extends TypeMessageFwdHeader {
+export class MessageFwdHeader extends _TypeMessageFwdHeader {
   imported?: true;
   fromId?: TypePeer;
   fromName?: string;
@@ -21073,12 +21073,12 @@ export class MessageFwdHeader extends TypeMessageFwdHeader {
     return [
       ["flags", flags, "#"],
       ["imported", "true", "flags.7?true"],
-      ["fromId", TypePeer, "flags.0?Peer"],
+      ["fromId", _TypePeer, "flags.0?Peer"],
       ["fromName", "string", "flags.5?string"],
       ["date", "number", "int"],
       ["channelPost", "number", "flags.2?int"],
       ["postAuthor", "string", "flags.3?string"],
-      ["savedFromPeer", TypePeer, "flags.4?Peer"],
+      ["savedFromPeer", _TypePeer, "flags.4?Peer"],
       ["savedFromMsgId", "number", "flags.4?int"],
       ["psaType", "string", "flags.6?string"],
     ];
@@ -21088,12 +21088,12 @@ export class MessageFwdHeader extends TypeMessageFwdHeader {
     return [
       ["flags", flags, "#"],
       [this.imported ?? null, "true", "flags.7?true"],
-      [this.fromId ?? null, TypePeer, "flags.0?Peer"],
+      [this.fromId ?? null, _TypePeer, "flags.0?Peer"],
       [this.fromName ?? null, "string", "flags.5?string"],
       [this.date, "number", "int"],
       [this.channelPost ?? null, "number", "flags.2?int"],
       [this.postAuthor ?? null, "string", "flags.3?string"],
-      [this.savedFromPeer ?? null, TypePeer, "flags.4?Peer"],
+      [this.savedFromPeer ?? null, _TypePeer, "flags.4?Peer"],
       [this.savedFromMsgId ?? null, "number", "flags.4?int"],
       [this.psaType ?? null, "string", "flags.6?string"],
     ];
@@ -21113,7 +21113,7 @@ export class MessageFwdHeader extends TypeMessageFwdHeader {
   }
 }
 
-export class AuthCodeTypeSms extends TypeAuthCodeType {
+export class AuthCodeTypeSms extends _TypeAuthCodeType {
   protected get [id]() {
     return 0x72A3158C;
   }
@@ -21131,7 +21131,7 @@ export class AuthCodeTypeSms extends TypeAuthCodeType {
   }
 }
 
-export class AuthCodeTypeCall extends TypeAuthCodeType {
+export class AuthCodeTypeCall extends _TypeAuthCodeType {
   protected get [id]() {
     return 0x741CD3E3;
   }
@@ -21149,7 +21149,7 @@ export class AuthCodeTypeCall extends TypeAuthCodeType {
   }
 }
 
-export class AuthCodeTypeFlashCall extends TypeAuthCodeType {
+export class AuthCodeTypeFlashCall extends _TypeAuthCodeType {
   protected get [id]() {
     return 0x226CCEFB;
   }
@@ -21167,7 +21167,7 @@ export class AuthCodeTypeFlashCall extends TypeAuthCodeType {
   }
 }
 
-export class AuthCodeTypeMissedCall extends TypeAuthCodeType {
+export class AuthCodeTypeMissedCall extends _TypeAuthCodeType {
   protected get [id]() {
     return 0xD61AD6EE;
   }
@@ -21185,7 +21185,7 @@ export class AuthCodeTypeMissedCall extends TypeAuthCodeType {
   }
 }
 
-export class AuthCodeTypeFragmentSms extends TypeAuthCodeType {
+export class AuthCodeTypeFragmentSms extends _TypeAuthCodeType {
   protected get [id]() {
     return 0x06ED998C;
   }
@@ -21203,7 +21203,7 @@ export class AuthCodeTypeFragmentSms extends TypeAuthCodeType {
   }
 }
 
-export class AuthSentCodeTypeApp extends TypeAuthSentCodeType {
+export class AuthSentCodeTypeApp extends _TypeAuthSentCodeType {
   length: number;
 
   protected get [id]() {
@@ -21228,7 +21228,7 @@ export class AuthSentCodeTypeApp extends TypeAuthSentCodeType {
   }
 }
 
-export class AuthSentCodeTypeSms extends TypeAuthSentCodeType {
+export class AuthSentCodeTypeSms extends _TypeAuthSentCodeType {
   length: number;
 
   protected get [id]() {
@@ -21253,7 +21253,7 @@ export class AuthSentCodeTypeSms extends TypeAuthSentCodeType {
   }
 }
 
-export class AuthSentCodeTypeCall extends TypeAuthSentCodeType {
+export class AuthSentCodeTypeCall extends _TypeAuthSentCodeType {
   length: number;
 
   protected get [id]() {
@@ -21278,7 +21278,7 @@ export class AuthSentCodeTypeCall extends TypeAuthSentCodeType {
   }
 }
 
-export class AuthSentCodeTypeFlashCall extends TypeAuthSentCodeType {
+export class AuthSentCodeTypeFlashCall extends _TypeAuthSentCodeType {
   pattern: string;
 
   protected get [id]() {
@@ -21303,7 +21303,7 @@ export class AuthSentCodeTypeFlashCall extends TypeAuthSentCodeType {
   }
 }
 
-export class AuthSentCodeTypeMissedCall extends TypeAuthSentCodeType {
+export class AuthSentCodeTypeMissedCall extends _TypeAuthSentCodeType {
   prefix: string;
   length: number;
 
@@ -21332,7 +21332,7 @@ export class AuthSentCodeTypeMissedCall extends TypeAuthSentCodeType {
   }
 }
 
-export class AuthSentCodeTypeEmailCode extends TypeAuthSentCodeType {
+export class AuthSentCodeTypeEmailCode extends _TypeAuthSentCodeType {
   appleSigninAllowed?: true;
   googleSigninAllowed?: true;
   emailPattern: string;
@@ -21379,7 +21379,7 @@ export class AuthSentCodeTypeEmailCode extends TypeAuthSentCodeType {
   }
 }
 
-export class AuthSentCodeTypeSetUpEmailRequired extends TypeAuthSentCodeType {
+export class AuthSentCodeTypeSetUpEmailRequired extends _TypeAuthSentCodeType {
   appleSigninAllowed?: true;
   googleSigninAllowed?: true;
 
@@ -21410,7 +21410,7 @@ export class AuthSentCodeTypeSetUpEmailRequired extends TypeAuthSentCodeType {
   }
 }
 
-export class AuthSentCodeTypeFragmentSms extends TypeAuthSentCodeType {
+export class AuthSentCodeTypeFragmentSms extends _TypeAuthSentCodeType {
   url: string;
   length: number;
 
@@ -21439,7 +21439,7 @@ export class AuthSentCodeTypeFragmentSms extends TypeAuthSentCodeType {
   }
 }
 
-export class AuthSentCodeTypeFirebaseSms extends TypeAuthSentCodeType {
+export class AuthSentCodeTypeFirebaseSms extends _TypeAuthSentCodeType {
   nonce?: Uint8Array;
   receipt?: string;
   pushTimeout?: number;
@@ -21478,7 +21478,7 @@ export class AuthSentCodeTypeFirebaseSms extends TypeAuthSentCodeType {
   }
 }
 
-export class MessagesBotCallbackAnswer extends TypeMessagesBotCallbackAnswer {
+export class MessagesBotCallbackAnswer extends _TypeMessagesBotCallbackAnswer {
   alert?: true;
   hasUrl?: true;
   nativeUi?: true;
@@ -21525,7 +21525,7 @@ export class MessagesBotCallbackAnswer extends TypeMessagesBotCallbackAnswer {
   }
 }
 
-export class MessagesMessageEditData extends TypeMessagesMessageEditData {
+export class MessagesMessageEditData extends _TypeMessagesMessageEditData {
   caption?: true;
 
   protected get [id]() {
@@ -21552,7 +21552,7 @@ export class MessagesMessageEditData extends TypeMessagesMessageEditData {
   }
 }
 
-export class InputBotInlineMessageID extends TypeInputBotInlineMessageID {
+export class InputBotInlineMessageID extends _TypeInputBotInlineMessageID {
   dcId: number;
   id: bigint;
   accessHash: bigint;
@@ -21585,7 +21585,7 @@ export class InputBotInlineMessageID extends TypeInputBotInlineMessageID {
   }
 }
 
-export class InputBotInlineMessageID64 extends TypeInputBotInlineMessageID {
+export class InputBotInlineMessageID64 extends _TypeInputBotInlineMessageID {
   dcId: number;
   ownerId: bigint;
   id: number;
@@ -21622,7 +21622,7 @@ export class InputBotInlineMessageID64 extends TypeInputBotInlineMessageID {
   }
 }
 
-export class InlineBotSwitchPM extends TypeInlineBotSwitchPM {
+export class InlineBotSwitchPM extends _TypeInlineBotSwitchPM {
   text: string;
   startParam: string;
 
@@ -21651,7 +21651,7 @@ export class InlineBotSwitchPM extends TypeInlineBotSwitchPM {
   }
 }
 
-export class MessagesPeerDialogs extends TypeMessagesPeerDialogs {
+export class MessagesPeerDialogs extends _TypeMessagesPeerDialogs {
   dialogs: Array<TypeDialog>;
   messages: Array<TypeMessage>;
   chats: Array<TypeChat>;
@@ -21664,21 +21664,21 @@ export class MessagesPeerDialogs extends TypeMessagesPeerDialogs {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["dialogs", [TypeDialog], "Vector<Dialog>"],
-      ["messages", [TypeMessage], "Vector<Message>"],
-      ["chats", [TypeChat], "Vector<Chat>"],
-      ["users", [TypeUser], "Vector<User>"],
-      ["state", TypeUpdatesState, "updates.State"],
+      ["dialogs", [_TypeDialog], "Vector<Dialog>"],
+      ["messages", [_TypeMessage], "Vector<Message>"],
+      ["chats", [_TypeChat], "Vector<Chat>"],
+      ["users", [_TypeUser], "Vector<User>"],
+      ["state", _TypeUpdatesState, "updates.State"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.dialogs, [TypeDialog], "Vector<Dialog>"],
-      [this.messages, [TypeMessage], "Vector<Message>"],
-      [this.chats, [TypeChat], "Vector<Chat>"],
-      [this.users, [TypeUser], "Vector<User>"],
-      [this.state, TypeUpdatesState, "updates.State"],
+      [this.dialogs, [_TypeDialog], "Vector<Dialog>"],
+      [this.messages, [_TypeMessage], "Vector<Message>"],
+      [this.chats, [_TypeChat], "Vector<Chat>"],
+      [this.users, [_TypeUser], "Vector<User>"],
+      [this.state, _TypeUpdatesState, "updates.State"],
     ];
   }
 
@@ -21692,7 +21692,7 @@ export class MessagesPeerDialogs extends TypeMessagesPeerDialogs {
   }
 }
 
-export class TopPeer extends TypeTopPeer {
+export class TopPeer extends _TypeTopPeer {
   peer: TypePeer;
   rating: number;
 
@@ -21702,14 +21702,14 @@ export class TopPeer extends TypeTopPeer {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["peer", TypePeer, "Peer"],
+      ["peer", _TypePeer, "Peer"],
       ["rating", "number", "double"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.peer, TypePeer, "Peer"],
+      [this.peer, _TypePeer, "Peer"],
       [this.rating, "number", "double"],
     ];
   }
@@ -21721,7 +21721,7 @@ export class TopPeer extends TypeTopPeer {
   }
 }
 
-export class TopPeerCategoryBotsPM extends TypeTopPeerCategory {
+export class TopPeerCategoryBotsPM extends _TypeTopPeerCategory {
   protected get [id]() {
     return 0xAB661B5B;
   }
@@ -21739,7 +21739,7 @@ export class TopPeerCategoryBotsPM extends TypeTopPeerCategory {
   }
 }
 
-export class TopPeerCategoryBotsInline extends TypeTopPeerCategory {
+export class TopPeerCategoryBotsInline extends _TypeTopPeerCategory {
   protected get [id]() {
     return 0x148677E2;
   }
@@ -21757,7 +21757,7 @@ export class TopPeerCategoryBotsInline extends TypeTopPeerCategory {
   }
 }
 
-export class TopPeerCategoryCorrespondents extends TypeTopPeerCategory {
+export class TopPeerCategoryCorrespondents extends _TypeTopPeerCategory {
   protected get [id]() {
     return 0x0637B7ED;
   }
@@ -21775,7 +21775,7 @@ export class TopPeerCategoryCorrespondents extends TypeTopPeerCategory {
   }
 }
 
-export class TopPeerCategoryGroups extends TypeTopPeerCategory {
+export class TopPeerCategoryGroups extends _TypeTopPeerCategory {
   protected get [id]() {
     return 0xBD17A14A;
   }
@@ -21793,7 +21793,7 @@ export class TopPeerCategoryGroups extends TypeTopPeerCategory {
   }
 }
 
-export class TopPeerCategoryChannels extends TypeTopPeerCategory {
+export class TopPeerCategoryChannels extends _TypeTopPeerCategory {
   protected get [id]() {
     return 0x161D9628;
   }
@@ -21811,7 +21811,7 @@ export class TopPeerCategoryChannels extends TypeTopPeerCategory {
   }
 }
 
-export class TopPeerCategoryPhoneCalls extends TypeTopPeerCategory {
+export class TopPeerCategoryPhoneCalls extends _TypeTopPeerCategory {
   protected get [id]() {
     return 0x1E76A78C;
   }
@@ -21829,7 +21829,7 @@ export class TopPeerCategoryPhoneCalls extends TypeTopPeerCategory {
   }
 }
 
-export class TopPeerCategoryForwardUsers extends TypeTopPeerCategory {
+export class TopPeerCategoryForwardUsers extends _TypeTopPeerCategory {
   protected get [id]() {
     return 0xA8406CA9;
   }
@@ -21847,7 +21847,7 @@ export class TopPeerCategoryForwardUsers extends TypeTopPeerCategory {
   }
 }
 
-export class TopPeerCategoryForwardChats extends TypeTopPeerCategory {
+export class TopPeerCategoryForwardChats extends _TypeTopPeerCategory {
   protected get [id]() {
     return 0xFBEEC0F0;
   }
@@ -21865,7 +21865,7 @@ export class TopPeerCategoryForwardChats extends TypeTopPeerCategory {
   }
 }
 
-export class TopPeerCategoryPeers extends TypeTopPeerCategoryPeers {
+export class TopPeerCategoryPeers extends _TypeTopPeerCategoryPeers {
   category: TypeTopPeerCategory;
   count: number;
   peers: Array<TypeTopPeer>;
@@ -21876,17 +21876,17 @@ export class TopPeerCategoryPeers extends TypeTopPeerCategoryPeers {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["category", TypeTopPeerCategory, "TopPeerCategory"],
+      ["category", _TypeTopPeerCategory, "TopPeerCategory"],
       ["count", "number", "int"],
-      ["peers", [TypeTopPeer], "Vector<TopPeer>"],
+      ["peers", [_TypeTopPeer], "Vector<TopPeer>"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.category, TypeTopPeerCategory, "TopPeerCategory"],
+      [this.category, _TypeTopPeerCategory, "TopPeerCategory"],
       [this.count, "number", "int"],
-      [this.peers, [TypeTopPeer], "Vector<TopPeer>"],
+      [this.peers, [_TypeTopPeer], "Vector<TopPeer>"],
     ];
   }
 
@@ -21898,7 +21898,7 @@ export class TopPeerCategoryPeers extends TypeTopPeerCategoryPeers {
   }
 }
 
-export class ContactsTopPeersNotModified extends TypeContactsTopPeers {
+export class ContactsTopPeersNotModified extends _TypeContactsTopPeers {
   protected get [id]() {
     return 0xDE266EF5;
   }
@@ -21916,7 +21916,7 @@ export class ContactsTopPeersNotModified extends TypeContactsTopPeers {
   }
 }
 
-export class ContactsTopPeers extends TypeContactsTopPeers {
+export class ContactsTopPeers extends _TypeContactsTopPeers {
   categories: Array<TypeTopPeerCategoryPeers>;
   chats: Array<TypeChat>;
   users: Array<TypeUser>;
@@ -21927,17 +21927,17 @@ export class ContactsTopPeers extends TypeContactsTopPeers {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["categories", [TypeTopPeerCategoryPeers], "Vector<TopPeerCategoryPeers>"],
-      ["chats", [TypeChat], "Vector<Chat>"],
-      ["users", [TypeUser], "Vector<User>"],
+      ["categories", [_TypeTopPeerCategoryPeers], "Vector<TopPeerCategoryPeers>"],
+      ["chats", [_TypeChat], "Vector<Chat>"],
+      ["users", [_TypeUser], "Vector<User>"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.categories, [TypeTopPeerCategoryPeers], "Vector<TopPeerCategoryPeers>"],
-      [this.chats, [TypeChat], "Vector<Chat>"],
-      [this.users, [TypeUser], "Vector<User>"],
+      [this.categories, [_TypeTopPeerCategoryPeers], "Vector<TopPeerCategoryPeers>"],
+      [this.chats, [_TypeChat], "Vector<Chat>"],
+      [this.users, [_TypeUser], "Vector<User>"],
     ];
   }
 
@@ -21949,7 +21949,7 @@ export class ContactsTopPeers extends TypeContactsTopPeers {
   }
 }
 
-export class ContactsTopPeersDisabled extends TypeContactsTopPeers {
+export class ContactsTopPeersDisabled extends _TypeContactsTopPeers {
   protected get [id]() {
     return 0xB52C939D;
   }
@@ -21967,7 +21967,7 @@ export class ContactsTopPeersDisabled extends TypeContactsTopPeers {
   }
 }
 
-export class DraftMessageEmpty extends TypeDraftMessage {
+export class DraftMessageEmpty extends _TypeDraftMessage {
   date?: number;
 
   protected get [id]() {
@@ -21994,7 +21994,7 @@ export class DraftMessageEmpty extends TypeDraftMessage {
   }
 }
 
-export class DraftMessage extends TypeDraftMessage {
+export class DraftMessage extends _TypeDraftMessage {
   noWebpage?: true;
   replyToMsgId?: number;
   message: string;
@@ -22011,7 +22011,7 @@ export class DraftMessage extends TypeDraftMessage {
       ["noWebpage", "true", "flags.1?true"],
       ["replyToMsgId", "number", "flags.0?int"],
       ["message", "string", "string"],
-      ["entities", [TypeMessageEntity], "flags.3?Vector<MessageEntity>"],
+      ["entities", [_TypeMessageEntity], "flags.3?Vector<MessageEntity>"],
       ["date", "number", "int"],
     ];
   }
@@ -22022,7 +22022,7 @@ export class DraftMessage extends TypeDraftMessage {
       [this.noWebpage ?? null, "true", "flags.1?true"],
       [this.replyToMsgId ?? null, "number", "flags.0?int"],
       [this.message, "string", "string"],
-      [this.entities ?? null, [TypeMessageEntity], "flags.3?Vector<MessageEntity>"],
+      [this.entities ?? null, [_TypeMessageEntity], "flags.3?Vector<MessageEntity>"],
       [this.date, "number", "int"],
     ];
   }
@@ -22037,7 +22037,7 @@ export class DraftMessage extends TypeDraftMessage {
   }
 }
 
-export class MessagesFeaturedStickersNotModified extends TypeMessagesFeaturedStickers {
+export class MessagesFeaturedStickersNotModified extends _TypeMessagesFeaturedStickers {
   count: number;
 
   protected get [id]() {
@@ -22062,7 +22062,7 @@ export class MessagesFeaturedStickersNotModified extends TypeMessagesFeaturedSti
   }
 }
 
-export class MessagesFeaturedStickers extends TypeMessagesFeaturedStickers {
+export class MessagesFeaturedStickers extends _TypeMessagesFeaturedStickers {
   premium?: true;
   hash: bigint;
   count: number;
@@ -22079,7 +22079,7 @@ export class MessagesFeaturedStickers extends TypeMessagesFeaturedStickers {
       ["premium", "true", "flags.0?true"],
       ["hash", "bigint", "long"],
       ["count", "number", "int"],
-      ["sets", [TypeStickerSetCovered], "Vector<StickerSetCovered>"],
+      ["sets", [_TypeStickerSetCovered], "Vector<StickerSetCovered>"],
       ["unread", ["bigint"], "Vector<long>"],
     ];
   }
@@ -22090,7 +22090,7 @@ export class MessagesFeaturedStickers extends TypeMessagesFeaturedStickers {
       [this.premium ?? null, "true", "flags.0?true"],
       [this.hash, "bigint", "long"],
       [this.count, "number", "int"],
-      [this.sets, [TypeStickerSetCovered], "Vector<StickerSetCovered>"],
+      [this.sets, [_TypeStickerSetCovered], "Vector<StickerSetCovered>"],
       [this.unread, ["bigint"], "Vector<long>"],
     ];
   }
@@ -22105,7 +22105,7 @@ export class MessagesFeaturedStickers extends TypeMessagesFeaturedStickers {
   }
 }
 
-export class MessagesRecentStickersNotModified extends TypeMessagesRecentStickers {
+export class MessagesRecentStickersNotModified extends _TypeMessagesRecentStickers {
   protected get [id]() {
     return 0x0B17F890;
   }
@@ -22123,7 +22123,7 @@ export class MessagesRecentStickersNotModified extends TypeMessagesRecentSticker
   }
 }
 
-export class MessagesRecentStickers extends TypeMessagesRecentStickers {
+export class MessagesRecentStickers extends _TypeMessagesRecentStickers {
   hash: bigint;
   packs: Array<TypeStickerPack>;
   stickers: Array<TypeDocument>;
@@ -22136,8 +22136,8 @@ export class MessagesRecentStickers extends TypeMessagesRecentStickers {
   static get [paramDesc](): ParamDesc {
     return [
       ["hash", "bigint", "long"],
-      ["packs", [TypeStickerPack], "Vector<StickerPack>"],
-      ["stickers", [TypeDocument], "Vector<Document>"],
+      ["packs", [_TypeStickerPack], "Vector<StickerPack>"],
+      ["stickers", [_TypeDocument], "Vector<Document>"],
       ["dates", ["number"], "Vector<int>"],
     ];
   }
@@ -22145,8 +22145,8 @@ export class MessagesRecentStickers extends TypeMessagesRecentStickers {
   protected get [params](): Params {
     return [
       [this.hash, "bigint", "long"],
-      [this.packs, [TypeStickerPack], "Vector<StickerPack>"],
-      [this.stickers, [TypeDocument], "Vector<Document>"],
+      [this.packs, [_TypeStickerPack], "Vector<StickerPack>"],
+      [this.stickers, [_TypeDocument], "Vector<Document>"],
       [this.dates, ["number"], "Vector<int>"],
     ];
   }
@@ -22160,7 +22160,7 @@ export class MessagesRecentStickers extends TypeMessagesRecentStickers {
   }
 }
 
-export class MessagesArchivedStickers extends TypeMessagesArchivedStickers {
+export class MessagesArchivedStickers extends _TypeMessagesArchivedStickers {
   count: number;
   sets: Array<TypeStickerSetCovered>;
 
@@ -22171,14 +22171,14 @@ export class MessagesArchivedStickers extends TypeMessagesArchivedStickers {
   static get [paramDesc](): ParamDesc {
     return [
       ["count", "number", "int"],
-      ["sets", [TypeStickerSetCovered], "Vector<StickerSetCovered>"],
+      ["sets", [_TypeStickerSetCovered], "Vector<StickerSetCovered>"],
     ];
   }
 
   protected get [params](): Params {
     return [
       [this.count, "number", "int"],
-      [this.sets, [TypeStickerSetCovered], "Vector<StickerSetCovered>"],
+      [this.sets, [_TypeStickerSetCovered], "Vector<StickerSetCovered>"],
     ];
   }
 
@@ -22189,7 +22189,7 @@ export class MessagesArchivedStickers extends TypeMessagesArchivedStickers {
   }
 }
 
-export class MessagesStickerSetInstallResultSuccess extends TypeMessagesStickerSetInstallResult {
+export class MessagesStickerSetInstallResultSuccess extends _TypeMessagesStickerSetInstallResult {
   protected get [id]() {
     return 0x38641628;
   }
@@ -22207,7 +22207,7 @@ export class MessagesStickerSetInstallResultSuccess extends TypeMessagesStickerS
   }
 }
 
-export class MessagesStickerSetInstallResultArchive extends TypeMessagesStickerSetInstallResult {
+export class MessagesStickerSetInstallResultArchive extends _TypeMessagesStickerSetInstallResult {
   sets: Array<TypeStickerSetCovered>;
 
   protected get [id]() {
@@ -22216,13 +22216,13 @@ export class MessagesStickerSetInstallResultArchive extends TypeMessagesStickerS
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["sets", [TypeStickerSetCovered], "Vector<StickerSetCovered>"],
+      ["sets", [_TypeStickerSetCovered], "Vector<StickerSetCovered>"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.sets, [TypeStickerSetCovered], "Vector<StickerSetCovered>"],
+      [this.sets, [_TypeStickerSetCovered], "Vector<StickerSetCovered>"],
     ];
   }
 
@@ -22232,7 +22232,7 @@ export class MessagesStickerSetInstallResultArchive extends TypeMessagesStickerS
   }
 }
 
-export class StickerSetCovered extends TypeStickerSetCovered {
+export class StickerSetCovered extends _TypeStickerSetCovered {
   set: TypeStickerSet;
   cover: TypeDocument;
 
@@ -22242,15 +22242,15 @@ export class StickerSetCovered extends TypeStickerSetCovered {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["set", TypeStickerSet, "StickerSet"],
-      ["cover", TypeDocument, "Document"],
+      ["set", _TypeStickerSet, "StickerSet"],
+      ["cover", _TypeDocument, "Document"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.set, TypeStickerSet, "StickerSet"],
-      [this.cover, TypeDocument, "Document"],
+      [this.set, _TypeStickerSet, "StickerSet"],
+      [this.cover, _TypeDocument, "Document"],
     ];
   }
 
@@ -22261,7 +22261,7 @@ export class StickerSetCovered extends TypeStickerSetCovered {
   }
 }
 
-export class StickerSetMultiCovered extends TypeStickerSetCovered {
+export class StickerSetMultiCovered extends _TypeStickerSetCovered {
   set: TypeStickerSet;
   covers: Array<TypeDocument>;
 
@@ -22271,15 +22271,15 @@ export class StickerSetMultiCovered extends TypeStickerSetCovered {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["set", TypeStickerSet, "StickerSet"],
-      ["covers", [TypeDocument], "Vector<Document>"],
+      ["set", _TypeStickerSet, "StickerSet"],
+      ["covers", [_TypeDocument], "Vector<Document>"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.set, TypeStickerSet, "StickerSet"],
-      [this.covers, [TypeDocument], "Vector<Document>"],
+      [this.set, _TypeStickerSet, "StickerSet"],
+      [this.covers, [_TypeDocument], "Vector<Document>"],
     ];
   }
 
@@ -22290,7 +22290,7 @@ export class StickerSetMultiCovered extends TypeStickerSetCovered {
   }
 }
 
-export class StickerSetFullCovered extends TypeStickerSetCovered {
+export class StickerSetFullCovered extends _TypeStickerSetCovered {
   set: TypeStickerSet;
   packs: Array<TypeStickerPack>;
   keywords: Array<TypeStickerKeyword>;
@@ -22302,19 +22302,19 @@ export class StickerSetFullCovered extends TypeStickerSetCovered {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["set", TypeStickerSet, "StickerSet"],
-      ["packs", [TypeStickerPack], "Vector<StickerPack>"],
-      ["keywords", [TypeStickerKeyword], "Vector<StickerKeyword>"],
-      ["documents", [TypeDocument], "Vector<Document>"],
+      ["set", _TypeStickerSet, "StickerSet"],
+      ["packs", [_TypeStickerPack], "Vector<StickerPack>"],
+      ["keywords", [_TypeStickerKeyword], "Vector<StickerKeyword>"],
+      ["documents", [_TypeDocument], "Vector<Document>"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.set, TypeStickerSet, "StickerSet"],
-      [this.packs, [TypeStickerPack], "Vector<StickerPack>"],
-      [this.keywords, [TypeStickerKeyword], "Vector<StickerKeyword>"],
-      [this.documents, [TypeDocument], "Vector<Document>"],
+      [this.set, _TypeStickerSet, "StickerSet"],
+      [this.packs, [_TypeStickerPack], "Vector<StickerPack>"],
+      [this.keywords, [_TypeStickerKeyword], "Vector<StickerKeyword>"],
+      [this.documents, [_TypeDocument], "Vector<Document>"],
     ];
   }
 
@@ -22327,7 +22327,7 @@ export class StickerSetFullCovered extends TypeStickerSetCovered {
   }
 }
 
-export class StickerSetNoCovered extends TypeStickerSetCovered {
+export class StickerSetNoCovered extends _TypeStickerSetCovered {
   set: TypeStickerSet;
 
   protected get [id]() {
@@ -22336,13 +22336,13 @@ export class StickerSetNoCovered extends TypeStickerSetCovered {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["set", TypeStickerSet, "StickerSet"],
+      ["set", _TypeStickerSet, "StickerSet"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.set, TypeStickerSet, "StickerSet"],
+      [this.set, _TypeStickerSet, "StickerSet"],
     ];
   }
 
@@ -22352,7 +22352,7 @@ export class StickerSetNoCovered extends TypeStickerSetCovered {
   }
 }
 
-export class MaskCoords extends TypeMaskCoords {
+export class MaskCoords extends _TypeMaskCoords {
   n: number;
   x: number;
   y: number;
@@ -22389,7 +22389,7 @@ export class MaskCoords extends TypeMaskCoords {
   }
 }
 
-export class InputStickeredMediaPhoto extends TypeInputStickeredMedia {
+export class InputStickeredMediaPhoto extends _TypeInputStickeredMedia {
   id: TypeInputPhoto;
 
   protected get [id]() {
@@ -22398,13 +22398,13 @@ export class InputStickeredMediaPhoto extends TypeInputStickeredMedia {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["id", TypeInputPhoto, "InputPhoto"],
+      ["id", _TypeInputPhoto, "InputPhoto"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.id, TypeInputPhoto, "InputPhoto"],
+      [this.id, _TypeInputPhoto, "InputPhoto"],
     ];
   }
 
@@ -22414,7 +22414,7 @@ export class InputStickeredMediaPhoto extends TypeInputStickeredMedia {
   }
 }
 
-export class InputStickeredMediaDocument extends TypeInputStickeredMedia {
+export class InputStickeredMediaDocument extends _TypeInputStickeredMedia {
   id: TypeInputDocument;
 
   protected get [id]() {
@@ -22423,13 +22423,13 @@ export class InputStickeredMediaDocument extends TypeInputStickeredMedia {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["id", TypeInputDocument, "InputDocument"],
+      ["id", _TypeInputDocument, "InputDocument"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.id, TypeInputDocument, "InputDocument"],
+      [this.id, _TypeInputDocument, "InputDocument"],
     ];
   }
 
@@ -22439,7 +22439,7 @@ export class InputStickeredMediaDocument extends TypeInputStickeredMedia {
   }
 }
 
-export class Game extends TypeGame {
+export class Game extends _TypeGame {
   id: bigint;
   accessHash: bigint;
   shortName: string;
@@ -22460,8 +22460,8 @@ export class Game extends TypeGame {
       ["shortName", "string", "string"],
       ["title", "string", "string"],
       ["description", "string", "string"],
-      ["photo", TypePhoto, "Photo"],
-      ["document", TypeDocument, "flags.0?Document"],
+      ["photo", _TypePhoto, "Photo"],
+      ["document", _TypeDocument, "flags.0?Document"],
     ];
   }
 
@@ -22473,8 +22473,8 @@ export class Game extends TypeGame {
       [this.shortName, "string", "string"],
       [this.title, "string", "string"],
       [this.description, "string", "string"],
-      [this.photo, TypePhoto, "Photo"],
-      [this.document ?? null, TypeDocument, "flags.0?Document"],
+      [this.photo, _TypePhoto, "Photo"],
+      [this.document ?? null, _TypeDocument, "flags.0?Document"],
     ];
   }
 
@@ -22490,7 +22490,7 @@ export class Game extends TypeGame {
   }
 }
 
-export class InputGameID extends TypeInputGame {
+export class InputGameID extends _TypeInputGame {
   id: bigint;
   accessHash: bigint;
 
@@ -22519,7 +22519,7 @@ export class InputGameID extends TypeInputGame {
   }
 }
 
-export class InputGameShortName extends TypeInputGame {
+export class InputGameShortName extends _TypeInputGame {
   botId: TypeInputUser;
   shortName: string;
 
@@ -22529,14 +22529,14 @@ export class InputGameShortName extends TypeInputGame {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["botId", TypeInputUser, "InputUser"],
+      ["botId", _TypeInputUser, "InputUser"],
       ["shortName", "string", "string"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.botId, TypeInputUser, "InputUser"],
+      [this.botId, _TypeInputUser, "InputUser"],
       [this.shortName, "string", "string"],
     ];
   }
@@ -22548,7 +22548,7 @@ export class InputGameShortName extends TypeInputGame {
   }
 }
 
-export class HighScore extends TypeHighScore {
+export class HighScore extends _TypeHighScore {
   pos: number;
   userId: bigint;
   score: number;
@@ -22581,7 +22581,7 @@ export class HighScore extends TypeHighScore {
   }
 }
 
-export class MessagesHighScores extends TypeMessagesHighScores {
+export class MessagesHighScores extends _TypeMessagesHighScores {
   scores: Array<TypeHighScore>;
   users: Array<TypeUser>;
 
@@ -22591,15 +22591,15 @@ export class MessagesHighScores extends TypeMessagesHighScores {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["scores", [TypeHighScore], "Vector<HighScore>"],
-      ["users", [TypeUser], "Vector<User>"],
+      ["scores", [_TypeHighScore], "Vector<HighScore>"],
+      ["users", [_TypeUser], "Vector<User>"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.scores, [TypeHighScore], "Vector<HighScore>"],
-      [this.users, [TypeUser], "Vector<User>"],
+      [this.scores, [_TypeHighScore], "Vector<HighScore>"],
+      [this.users, [_TypeUser], "Vector<User>"],
     ];
   }
 
@@ -22610,7 +22610,7 @@ export class MessagesHighScores extends TypeMessagesHighScores {
   }
 }
 
-export class TextEmpty extends TypeRichText {
+export class TextEmpty extends _TypeRichText {
   protected get [id]() {
     return 0xDC3D824F;
   }
@@ -22628,7 +22628,7 @@ export class TextEmpty extends TypeRichText {
   }
 }
 
-export class TextPlain extends TypeRichText {
+export class TextPlain extends _TypeRichText {
   text: string;
 
   protected get [id]() {
@@ -22653,7 +22653,7 @@ export class TextPlain extends TypeRichText {
   }
 }
 
-export class TextBold extends TypeRichText {
+export class TextBold extends _TypeRichText {
   text: TypeRichText;
 
   protected get [id]() {
@@ -22662,13 +22662,13 @@ export class TextBold extends TypeRichText {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["text", TypeRichText, "RichText"],
+      ["text", _TypeRichText, "RichText"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.text, TypeRichText, "RichText"],
+      [this.text, _TypeRichText, "RichText"],
     ];
   }
 
@@ -22678,7 +22678,7 @@ export class TextBold extends TypeRichText {
   }
 }
 
-export class TextItalic extends TypeRichText {
+export class TextItalic extends _TypeRichText {
   text: TypeRichText;
 
   protected get [id]() {
@@ -22687,13 +22687,13 @@ export class TextItalic extends TypeRichText {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["text", TypeRichText, "RichText"],
+      ["text", _TypeRichText, "RichText"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.text, TypeRichText, "RichText"],
+      [this.text, _TypeRichText, "RichText"],
     ];
   }
 
@@ -22703,7 +22703,7 @@ export class TextItalic extends TypeRichText {
   }
 }
 
-export class TextUnderline extends TypeRichText {
+export class TextUnderline extends _TypeRichText {
   text: TypeRichText;
 
   protected get [id]() {
@@ -22712,13 +22712,13 @@ export class TextUnderline extends TypeRichText {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["text", TypeRichText, "RichText"],
+      ["text", _TypeRichText, "RichText"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.text, TypeRichText, "RichText"],
+      [this.text, _TypeRichText, "RichText"],
     ];
   }
 
@@ -22728,7 +22728,7 @@ export class TextUnderline extends TypeRichText {
   }
 }
 
-export class TextStrike extends TypeRichText {
+export class TextStrike extends _TypeRichText {
   text: TypeRichText;
 
   protected get [id]() {
@@ -22737,13 +22737,13 @@ export class TextStrike extends TypeRichText {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["text", TypeRichText, "RichText"],
+      ["text", _TypeRichText, "RichText"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.text, TypeRichText, "RichText"],
+      [this.text, _TypeRichText, "RichText"],
     ];
   }
 
@@ -22753,7 +22753,7 @@ export class TextStrike extends TypeRichText {
   }
 }
 
-export class TextFixed extends TypeRichText {
+export class TextFixed extends _TypeRichText {
   text: TypeRichText;
 
   protected get [id]() {
@@ -22762,13 +22762,13 @@ export class TextFixed extends TypeRichText {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["text", TypeRichText, "RichText"],
+      ["text", _TypeRichText, "RichText"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.text, TypeRichText, "RichText"],
+      [this.text, _TypeRichText, "RichText"],
     ];
   }
 
@@ -22778,7 +22778,7 @@ export class TextFixed extends TypeRichText {
   }
 }
 
-export class TextURL extends TypeRichText {
+export class TextURL extends _TypeRichText {
   text: TypeRichText;
   url: string;
   webpageId: bigint;
@@ -22789,7 +22789,7 @@ export class TextURL extends TypeRichText {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["text", TypeRichText, "RichText"],
+      ["text", _TypeRichText, "RichText"],
       ["url", "string", "string"],
       ["webpageId", "bigint", "long"],
     ];
@@ -22797,7 +22797,7 @@ export class TextURL extends TypeRichText {
 
   protected get [params](): Params {
     return [
-      [this.text, TypeRichText, "RichText"],
+      [this.text, _TypeRichText, "RichText"],
       [this.url, "string", "string"],
       [this.webpageId, "bigint", "long"],
     ];
@@ -22811,7 +22811,7 @@ export class TextURL extends TypeRichText {
   }
 }
 
-export class TextEmail extends TypeRichText {
+export class TextEmail extends _TypeRichText {
   text: TypeRichText;
   email: string;
 
@@ -22821,14 +22821,14 @@ export class TextEmail extends TypeRichText {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["text", TypeRichText, "RichText"],
+      ["text", _TypeRichText, "RichText"],
       ["email", "string", "string"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.text, TypeRichText, "RichText"],
+      [this.text, _TypeRichText, "RichText"],
       [this.email, "string", "string"],
     ];
   }
@@ -22840,7 +22840,7 @@ export class TextEmail extends TypeRichText {
   }
 }
 
-export class TextConcat extends TypeRichText {
+export class TextConcat extends _TypeRichText {
   texts: Array<TypeRichText>;
 
   protected get [id]() {
@@ -22849,13 +22849,13 @@ export class TextConcat extends TypeRichText {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["texts", [TypeRichText], "Vector<RichText>"],
+      ["texts", [_TypeRichText], "Vector<RichText>"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.texts, [TypeRichText], "Vector<RichText>"],
+      [this.texts, [_TypeRichText], "Vector<RichText>"],
     ];
   }
 
@@ -22865,7 +22865,7 @@ export class TextConcat extends TypeRichText {
   }
 }
 
-export class TextSubscript extends TypeRichText {
+export class TextSubscript extends _TypeRichText {
   text: TypeRichText;
 
   protected get [id]() {
@@ -22874,13 +22874,13 @@ export class TextSubscript extends TypeRichText {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["text", TypeRichText, "RichText"],
+      ["text", _TypeRichText, "RichText"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.text, TypeRichText, "RichText"],
+      [this.text, _TypeRichText, "RichText"],
     ];
   }
 
@@ -22890,7 +22890,7 @@ export class TextSubscript extends TypeRichText {
   }
 }
 
-export class TextSuperscript extends TypeRichText {
+export class TextSuperscript extends _TypeRichText {
   text: TypeRichText;
 
   protected get [id]() {
@@ -22899,13 +22899,13 @@ export class TextSuperscript extends TypeRichText {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["text", TypeRichText, "RichText"],
+      ["text", _TypeRichText, "RichText"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.text, TypeRichText, "RichText"],
+      [this.text, _TypeRichText, "RichText"],
     ];
   }
 
@@ -22915,7 +22915,7 @@ export class TextSuperscript extends TypeRichText {
   }
 }
 
-export class TextMarked extends TypeRichText {
+export class TextMarked extends _TypeRichText {
   text: TypeRichText;
 
   protected get [id]() {
@@ -22924,13 +22924,13 @@ export class TextMarked extends TypeRichText {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["text", TypeRichText, "RichText"],
+      ["text", _TypeRichText, "RichText"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.text, TypeRichText, "RichText"],
+      [this.text, _TypeRichText, "RichText"],
     ];
   }
 
@@ -22940,7 +22940,7 @@ export class TextMarked extends TypeRichText {
   }
 }
 
-export class TextPhone extends TypeRichText {
+export class TextPhone extends _TypeRichText {
   text: TypeRichText;
   phone: string;
 
@@ -22950,14 +22950,14 @@ export class TextPhone extends TypeRichText {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["text", TypeRichText, "RichText"],
+      ["text", _TypeRichText, "RichText"],
       ["phone", "string", "string"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.text, TypeRichText, "RichText"],
+      [this.text, _TypeRichText, "RichText"],
       [this.phone, "string", "string"],
     ];
   }
@@ -22969,7 +22969,7 @@ export class TextPhone extends TypeRichText {
   }
 }
 
-export class TextImage extends TypeRichText {
+export class TextImage extends _TypeRichText {
   documentId: bigint;
   w: number;
   h: number;
@@ -23002,7 +23002,7 @@ export class TextImage extends TypeRichText {
   }
 }
 
-export class TextAnchor extends TypeRichText {
+export class TextAnchor extends _TypeRichText {
   text: TypeRichText;
   name: string;
 
@@ -23012,14 +23012,14 @@ export class TextAnchor extends TypeRichText {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["text", TypeRichText, "RichText"],
+      ["text", _TypeRichText, "RichText"],
       ["name", "string", "string"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.text, TypeRichText, "RichText"],
+      [this.text, _TypeRichText, "RichText"],
       [this.name, "string", "string"],
     ];
   }
@@ -23031,7 +23031,7 @@ export class TextAnchor extends TypeRichText {
   }
 }
 
-export class PageBlockUnsupported extends TypePageBlock {
+export class PageBlockUnsupported extends _TypePageBlock {
   protected get [id]() {
     return 0x13567E8A;
   }
@@ -23049,7 +23049,7 @@ export class PageBlockUnsupported extends TypePageBlock {
   }
 }
 
-export class PageBlockTitle extends TypePageBlock {
+export class PageBlockTitle extends _TypePageBlock {
   text: TypeRichText;
 
   protected get [id]() {
@@ -23058,13 +23058,13 @@ export class PageBlockTitle extends TypePageBlock {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["text", TypeRichText, "RichText"],
+      ["text", _TypeRichText, "RichText"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.text, TypeRichText, "RichText"],
+      [this.text, _TypeRichText, "RichText"],
     ];
   }
 
@@ -23074,7 +23074,7 @@ export class PageBlockTitle extends TypePageBlock {
   }
 }
 
-export class PageBlockSubtitle extends TypePageBlock {
+export class PageBlockSubtitle extends _TypePageBlock {
   text: TypeRichText;
 
   protected get [id]() {
@@ -23083,13 +23083,13 @@ export class PageBlockSubtitle extends TypePageBlock {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["text", TypeRichText, "RichText"],
+      ["text", _TypeRichText, "RichText"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.text, TypeRichText, "RichText"],
+      [this.text, _TypeRichText, "RichText"],
     ];
   }
 
@@ -23099,7 +23099,7 @@ export class PageBlockSubtitle extends TypePageBlock {
   }
 }
 
-export class PageBlockAuthorDate extends TypePageBlock {
+export class PageBlockAuthorDate extends _TypePageBlock {
   author: TypeRichText;
   publishedDate: number;
 
@@ -23109,14 +23109,14 @@ export class PageBlockAuthorDate extends TypePageBlock {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["author", TypeRichText, "RichText"],
+      ["author", _TypeRichText, "RichText"],
       ["publishedDate", "number", "int"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.author, TypeRichText, "RichText"],
+      [this.author, _TypeRichText, "RichText"],
       [this.publishedDate, "number", "int"],
     ];
   }
@@ -23128,7 +23128,7 @@ export class PageBlockAuthorDate extends TypePageBlock {
   }
 }
 
-export class PageBlockHeader extends TypePageBlock {
+export class PageBlockHeader extends _TypePageBlock {
   text: TypeRichText;
 
   protected get [id]() {
@@ -23137,13 +23137,13 @@ export class PageBlockHeader extends TypePageBlock {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["text", TypeRichText, "RichText"],
+      ["text", _TypeRichText, "RichText"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.text, TypeRichText, "RichText"],
+      [this.text, _TypeRichText, "RichText"],
     ];
   }
 
@@ -23153,7 +23153,7 @@ export class PageBlockHeader extends TypePageBlock {
   }
 }
 
-export class PageBlockSubheader extends TypePageBlock {
+export class PageBlockSubheader extends _TypePageBlock {
   text: TypeRichText;
 
   protected get [id]() {
@@ -23162,13 +23162,13 @@ export class PageBlockSubheader extends TypePageBlock {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["text", TypeRichText, "RichText"],
+      ["text", _TypeRichText, "RichText"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.text, TypeRichText, "RichText"],
+      [this.text, _TypeRichText, "RichText"],
     ];
   }
 
@@ -23178,7 +23178,7 @@ export class PageBlockSubheader extends TypePageBlock {
   }
 }
 
-export class PageBlockParagraph extends TypePageBlock {
+export class PageBlockParagraph extends _TypePageBlock {
   text: TypeRichText;
 
   protected get [id]() {
@@ -23187,13 +23187,13 @@ export class PageBlockParagraph extends TypePageBlock {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["text", TypeRichText, "RichText"],
+      ["text", _TypeRichText, "RichText"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.text, TypeRichText, "RichText"],
+      [this.text, _TypeRichText, "RichText"],
     ];
   }
 
@@ -23203,7 +23203,7 @@ export class PageBlockParagraph extends TypePageBlock {
   }
 }
 
-export class PageBlockPreformatted extends TypePageBlock {
+export class PageBlockPreformatted extends _TypePageBlock {
   text: TypeRichText;
   language: string;
 
@@ -23213,14 +23213,14 @@ export class PageBlockPreformatted extends TypePageBlock {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["text", TypeRichText, "RichText"],
+      ["text", _TypeRichText, "RichText"],
       ["language", "string", "string"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.text, TypeRichText, "RichText"],
+      [this.text, _TypeRichText, "RichText"],
       [this.language, "string", "string"],
     ];
   }
@@ -23232,7 +23232,7 @@ export class PageBlockPreformatted extends TypePageBlock {
   }
 }
 
-export class PageBlockFooter extends TypePageBlock {
+export class PageBlockFooter extends _TypePageBlock {
   text: TypeRichText;
 
   protected get [id]() {
@@ -23241,13 +23241,13 @@ export class PageBlockFooter extends TypePageBlock {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["text", TypeRichText, "RichText"],
+      ["text", _TypeRichText, "RichText"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.text, TypeRichText, "RichText"],
+      [this.text, _TypeRichText, "RichText"],
     ];
   }
 
@@ -23257,7 +23257,7 @@ export class PageBlockFooter extends TypePageBlock {
   }
 }
 
-export class PageBlockDivider extends TypePageBlock {
+export class PageBlockDivider extends _TypePageBlock {
   protected get [id]() {
     return 0xDB20B188;
   }
@@ -23275,7 +23275,7 @@ export class PageBlockDivider extends TypePageBlock {
   }
 }
 
-export class PageBlockAnchor extends TypePageBlock {
+export class PageBlockAnchor extends _TypePageBlock {
   name: string;
 
   protected get [id]() {
@@ -23300,7 +23300,7 @@ export class PageBlockAnchor extends TypePageBlock {
   }
 }
 
-export class PageBlockList extends TypePageBlock {
+export class PageBlockList extends _TypePageBlock {
   items: Array<TypePageListItem>;
 
   protected get [id]() {
@@ -23309,13 +23309,13 @@ export class PageBlockList extends TypePageBlock {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["items", [TypePageListItem], "Vector<PageListItem>"],
+      ["items", [_TypePageListItem], "Vector<PageListItem>"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.items, [TypePageListItem], "Vector<PageListItem>"],
+      [this.items, [_TypePageListItem], "Vector<PageListItem>"],
     ];
   }
 
@@ -23325,7 +23325,7 @@ export class PageBlockList extends TypePageBlock {
   }
 }
 
-export class PageBlockBlockquote extends TypePageBlock {
+export class PageBlockBlockquote extends _TypePageBlock {
   text: TypeRichText;
   caption: TypeRichText;
 
@@ -23335,15 +23335,15 @@ export class PageBlockBlockquote extends TypePageBlock {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["text", TypeRichText, "RichText"],
-      ["caption", TypeRichText, "RichText"],
+      ["text", _TypeRichText, "RichText"],
+      ["caption", _TypeRichText, "RichText"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.text, TypeRichText, "RichText"],
-      [this.caption, TypeRichText, "RichText"],
+      [this.text, _TypeRichText, "RichText"],
+      [this.caption, _TypeRichText, "RichText"],
     ];
   }
 
@@ -23354,7 +23354,7 @@ export class PageBlockBlockquote extends TypePageBlock {
   }
 }
 
-export class PageBlockPullquote extends TypePageBlock {
+export class PageBlockPullquote extends _TypePageBlock {
   text: TypeRichText;
   caption: TypeRichText;
 
@@ -23364,15 +23364,15 @@ export class PageBlockPullquote extends TypePageBlock {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["text", TypeRichText, "RichText"],
-      ["caption", TypeRichText, "RichText"],
+      ["text", _TypeRichText, "RichText"],
+      ["caption", _TypeRichText, "RichText"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.text, TypeRichText, "RichText"],
-      [this.caption, TypeRichText, "RichText"],
+      [this.text, _TypeRichText, "RichText"],
+      [this.caption, _TypeRichText, "RichText"],
     ];
   }
 
@@ -23383,7 +23383,7 @@ export class PageBlockPullquote extends TypePageBlock {
   }
 }
 
-export class PageBlockPhoto extends TypePageBlock {
+export class PageBlockPhoto extends _TypePageBlock {
   photoId: bigint;
   caption: TypePageCaption;
   url?: string;
@@ -23397,7 +23397,7 @@ export class PageBlockPhoto extends TypePageBlock {
     return [
       ["flags", flags, "#"],
       ["photoId", "bigint", "long"],
-      ["caption", TypePageCaption, "PageCaption"],
+      ["caption", _TypePageCaption, "PageCaption"],
       ["url", "string", "flags.0?string"],
       ["webpageId", "bigint", "flags.0?long"],
     ];
@@ -23407,7 +23407,7 @@ export class PageBlockPhoto extends TypePageBlock {
     return [
       ["flags", flags, "#"],
       [this.photoId, "bigint", "long"],
-      [this.caption, TypePageCaption, "PageCaption"],
+      [this.caption, _TypePageCaption, "PageCaption"],
       [this.url ?? null, "string", "flags.0?string"],
       [this.webpageId ?? null, "bigint", "flags.0?long"],
     ];
@@ -23422,7 +23422,7 @@ export class PageBlockPhoto extends TypePageBlock {
   }
 }
 
-export class PageBlockVideo extends TypePageBlock {
+export class PageBlockVideo extends _TypePageBlock {
   autoplay?: true;
   loop?: true;
   videoId: bigint;
@@ -23438,7 +23438,7 @@ export class PageBlockVideo extends TypePageBlock {
       ["autoplay", "true", "flags.0?true"],
       ["loop", "true", "flags.1?true"],
       ["videoId", "bigint", "long"],
-      ["caption", TypePageCaption, "PageCaption"],
+      ["caption", _TypePageCaption, "PageCaption"],
     ];
   }
 
@@ -23448,7 +23448,7 @@ export class PageBlockVideo extends TypePageBlock {
       [this.autoplay ?? null, "true", "flags.0?true"],
       [this.loop ?? null, "true", "flags.1?true"],
       [this.videoId, "bigint", "long"],
-      [this.caption, TypePageCaption, "PageCaption"],
+      [this.caption, _TypePageCaption, "PageCaption"],
     ];
   }
 
@@ -23461,7 +23461,7 @@ export class PageBlockVideo extends TypePageBlock {
   }
 }
 
-export class PageBlockCover extends TypePageBlock {
+export class PageBlockCover extends _TypePageBlock {
   cover: TypePageBlock;
 
   protected get [id]() {
@@ -23470,13 +23470,13 @@ export class PageBlockCover extends TypePageBlock {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["cover", TypePageBlock, "PageBlock"],
+      ["cover", _TypePageBlock, "PageBlock"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.cover, TypePageBlock, "PageBlock"],
+      [this.cover, _TypePageBlock, "PageBlock"],
     ];
   }
 
@@ -23486,7 +23486,7 @@ export class PageBlockCover extends TypePageBlock {
   }
 }
 
-export class PageBlockEmbed extends TypePageBlock {
+export class PageBlockEmbed extends _TypePageBlock {
   fullWidth?: true;
   allowScrolling?: true;
   url?: string;
@@ -23510,7 +23510,7 @@ export class PageBlockEmbed extends TypePageBlock {
       ["posterPhotoId", "bigint", "flags.4?long"],
       ["w", "number", "flags.5?int"],
       ["h", "number", "flags.5?int"],
-      ["caption", TypePageCaption, "PageCaption"],
+      ["caption", _TypePageCaption, "PageCaption"],
     ];
   }
 
@@ -23524,7 +23524,7 @@ export class PageBlockEmbed extends TypePageBlock {
       [this.posterPhotoId ?? null, "bigint", "flags.4?long"],
       [this.w ?? null, "number", "flags.5?int"],
       [this.h ?? null, "number", "flags.5?int"],
-      [this.caption, TypePageCaption, "PageCaption"],
+      [this.caption, _TypePageCaption, "PageCaption"],
     ];
   }
 
@@ -23541,7 +23541,7 @@ export class PageBlockEmbed extends TypePageBlock {
   }
 }
 
-export class PageBlockEmbedPost extends TypePageBlock {
+export class PageBlockEmbedPost extends _TypePageBlock {
   url: string;
   webpageId: bigint;
   authorPhotoId: bigint;
@@ -23561,8 +23561,8 @@ export class PageBlockEmbedPost extends TypePageBlock {
       ["authorPhotoId", "bigint", "long"],
       ["author", "string", "string"],
       ["date", "number", "int"],
-      ["blocks", [TypePageBlock], "Vector<PageBlock>"],
-      ["caption", TypePageCaption, "PageCaption"],
+      ["blocks", [_TypePageBlock], "Vector<PageBlock>"],
+      ["caption", _TypePageCaption, "PageCaption"],
     ];
   }
 
@@ -23573,8 +23573,8 @@ export class PageBlockEmbedPost extends TypePageBlock {
       [this.authorPhotoId, "bigint", "long"],
       [this.author, "string", "string"],
       [this.date, "number", "int"],
-      [this.blocks, [TypePageBlock], "Vector<PageBlock>"],
-      [this.caption, TypePageCaption, "PageCaption"],
+      [this.blocks, [_TypePageBlock], "Vector<PageBlock>"],
+      [this.caption, _TypePageCaption, "PageCaption"],
     ];
   }
 
@@ -23590,7 +23590,7 @@ export class PageBlockEmbedPost extends TypePageBlock {
   }
 }
 
-export class PageBlockCollage extends TypePageBlock {
+export class PageBlockCollage extends _TypePageBlock {
   items: Array<TypePageBlock>;
   caption: TypePageCaption;
 
@@ -23600,15 +23600,15 @@ export class PageBlockCollage extends TypePageBlock {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["items", [TypePageBlock], "Vector<PageBlock>"],
-      ["caption", TypePageCaption, "PageCaption"],
+      ["items", [_TypePageBlock], "Vector<PageBlock>"],
+      ["caption", _TypePageCaption, "PageCaption"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.items, [TypePageBlock], "Vector<PageBlock>"],
-      [this.caption, TypePageCaption, "PageCaption"],
+      [this.items, [_TypePageBlock], "Vector<PageBlock>"],
+      [this.caption, _TypePageCaption, "PageCaption"],
     ];
   }
 
@@ -23619,7 +23619,7 @@ export class PageBlockCollage extends TypePageBlock {
   }
 }
 
-export class PageBlockSlideshow extends TypePageBlock {
+export class PageBlockSlideshow extends _TypePageBlock {
   items: Array<TypePageBlock>;
   caption: TypePageCaption;
 
@@ -23629,15 +23629,15 @@ export class PageBlockSlideshow extends TypePageBlock {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["items", [TypePageBlock], "Vector<PageBlock>"],
-      ["caption", TypePageCaption, "PageCaption"],
+      ["items", [_TypePageBlock], "Vector<PageBlock>"],
+      ["caption", _TypePageCaption, "PageCaption"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.items, [TypePageBlock], "Vector<PageBlock>"],
-      [this.caption, TypePageCaption, "PageCaption"],
+      [this.items, [_TypePageBlock], "Vector<PageBlock>"],
+      [this.caption, _TypePageCaption, "PageCaption"],
     ];
   }
 
@@ -23648,7 +23648,7 @@ export class PageBlockSlideshow extends TypePageBlock {
   }
 }
 
-export class PageBlockChannel extends TypePageBlock {
+export class PageBlockChannel extends _TypePageBlock {
   channel: TypeChat;
 
   protected get [id]() {
@@ -23657,13 +23657,13 @@ export class PageBlockChannel extends TypePageBlock {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["channel", TypeChat, "Chat"],
+      ["channel", _TypeChat, "Chat"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.channel, TypeChat, "Chat"],
+      [this.channel, _TypeChat, "Chat"],
     ];
   }
 
@@ -23673,7 +23673,7 @@ export class PageBlockChannel extends TypePageBlock {
   }
 }
 
-export class PageBlockAudio extends TypePageBlock {
+export class PageBlockAudio extends _TypePageBlock {
   audioId: bigint;
   caption: TypePageCaption;
 
@@ -23684,14 +23684,14 @@ export class PageBlockAudio extends TypePageBlock {
   static get [paramDesc](): ParamDesc {
     return [
       ["audioId", "bigint", "long"],
-      ["caption", TypePageCaption, "PageCaption"],
+      ["caption", _TypePageCaption, "PageCaption"],
     ];
   }
 
   protected get [params](): Params {
     return [
       [this.audioId, "bigint", "long"],
-      [this.caption, TypePageCaption, "PageCaption"],
+      [this.caption, _TypePageCaption, "PageCaption"],
     ];
   }
 
@@ -23702,7 +23702,7 @@ export class PageBlockAudio extends TypePageBlock {
   }
 }
 
-export class PageBlockKicker extends TypePageBlock {
+export class PageBlockKicker extends _TypePageBlock {
   text: TypeRichText;
 
   protected get [id]() {
@@ -23711,13 +23711,13 @@ export class PageBlockKicker extends TypePageBlock {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["text", TypeRichText, "RichText"],
+      ["text", _TypeRichText, "RichText"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.text, TypeRichText, "RichText"],
+      [this.text, _TypeRichText, "RichText"],
     ];
   }
 
@@ -23727,7 +23727,7 @@ export class PageBlockKicker extends TypePageBlock {
   }
 }
 
-export class PageBlockTable extends TypePageBlock {
+export class PageBlockTable extends _TypePageBlock {
   bordered?: true;
   striped?: true;
   title: TypeRichText;
@@ -23742,8 +23742,8 @@ export class PageBlockTable extends TypePageBlock {
       ["flags", flags, "#"],
       ["bordered", "true", "flags.0?true"],
       ["striped", "true", "flags.1?true"],
-      ["title", TypeRichText, "RichText"],
-      ["rows", [TypePageTableRow], "Vector<PageTableRow>"],
+      ["title", _TypeRichText, "RichText"],
+      ["rows", [_TypePageTableRow], "Vector<PageTableRow>"],
     ];
   }
 
@@ -23752,8 +23752,8 @@ export class PageBlockTable extends TypePageBlock {
       ["flags", flags, "#"],
       [this.bordered ?? null, "true", "flags.0?true"],
       [this.striped ?? null, "true", "flags.1?true"],
-      [this.title, TypeRichText, "RichText"],
-      [this.rows, [TypePageTableRow], "Vector<PageTableRow>"],
+      [this.title, _TypeRichText, "RichText"],
+      [this.rows, [_TypePageTableRow], "Vector<PageTableRow>"],
     ];
   }
 
@@ -23766,7 +23766,7 @@ export class PageBlockTable extends TypePageBlock {
   }
 }
 
-export class PageBlockOrderedList extends TypePageBlock {
+export class PageBlockOrderedList extends _TypePageBlock {
   items: Array<TypePageListOrderedItem>;
 
   protected get [id]() {
@@ -23775,13 +23775,13 @@ export class PageBlockOrderedList extends TypePageBlock {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["items", [TypePageListOrderedItem], "Vector<PageListOrderedItem>"],
+      ["items", [_TypePageListOrderedItem], "Vector<PageListOrderedItem>"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.items, [TypePageListOrderedItem], "Vector<PageListOrderedItem>"],
+      [this.items, [_TypePageListOrderedItem], "Vector<PageListOrderedItem>"],
     ];
   }
 
@@ -23791,7 +23791,7 @@ export class PageBlockOrderedList extends TypePageBlock {
   }
 }
 
-export class PageBlockDetails extends TypePageBlock {
+export class PageBlockDetails extends _TypePageBlock {
   open?: true;
   blocks: Array<TypePageBlock>;
   title: TypeRichText;
@@ -23804,8 +23804,8 @@ export class PageBlockDetails extends TypePageBlock {
     return [
       ["flags", flags, "#"],
       ["open", "true", "flags.0?true"],
-      ["blocks", [TypePageBlock], "Vector<PageBlock>"],
-      ["title", TypeRichText, "RichText"],
+      ["blocks", [_TypePageBlock], "Vector<PageBlock>"],
+      ["title", _TypeRichText, "RichText"],
     ];
   }
 
@@ -23813,8 +23813,8 @@ export class PageBlockDetails extends TypePageBlock {
     return [
       ["flags", flags, "#"],
       [this.open ?? null, "true", "flags.0?true"],
-      [this.blocks, [TypePageBlock], "Vector<PageBlock>"],
-      [this.title, TypeRichText, "RichText"],
+      [this.blocks, [_TypePageBlock], "Vector<PageBlock>"],
+      [this.title, _TypeRichText, "RichText"],
     ];
   }
 
@@ -23826,7 +23826,7 @@ export class PageBlockDetails extends TypePageBlock {
   }
 }
 
-export class PageBlockRelatedArticles extends TypePageBlock {
+export class PageBlockRelatedArticles extends _TypePageBlock {
   title: TypeRichText;
   articles: Array<TypePageRelatedArticle>;
 
@@ -23836,15 +23836,15 @@ export class PageBlockRelatedArticles extends TypePageBlock {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["title", TypeRichText, "RichText"],
-      ["articles", [TypePageRelatedArticle], "Vector<PageRelatedArticle>"],
+      ["title", _TypeRichText, "RichText"],
+      ["articles", [_TypePageRelatedArticle], "Vector<PageRelatedArticle>"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.title, TypeRichText, "RichText"],
-      [this.articles, [TypePageRelatedArticle], "Vector<PageRelatedArticle>"],
+      [this.title, _TypeRichText, "RichText"],
+      [this.articles, [_TypePageRelatedArticle], "Vector<PageRelatedArticle>"],
     ];
   }
 
@@ -23855,7 +23855,7 @@ export class PageBlockRelatedArticles extends TypePageBlock {
   }
 }
 
-export class PageBlockMap extends TypePageBlock {
+export class PageBlockMap extends _TypePageBlock {
   geo: TypeGeoPoint;
   zoom: number;
   w: number;
@@ -23868,21 +23868,21 @@ export class PageBlockMap extends TypePageBlock {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["geo", TypeGeoPoint, "GeoPoint"],
+      ["geo", _TypeGeoPoint, "GeoPoint"],
       ["zoom", "number", "int"],
       ["w", "number", "int"],
       ["h", "number", "int"],
-      ["caption", TypePageCaption, "PageCaption"],
+      ["caption", _TypePageCaption, "PageCaption"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.geo, TypeGeoPoint, "GeoPoint"],
+      [this.geo, _TypeGeoPoint, "GeoPoint"],
       [this.zoom, "number", "int"],
       [this.w, "number", "int"],
       [this.h, "number", "int"],
-      [this.caption, TypePageCaption, "PageCaption"],
+      [this.caption, _TypePageCaption, "PageCaption"],
     ];
   }
 
@@ -23896,7 +23896,7 @@ export class PageBlockMap extends TypePageBlock {
   }
 }
 
-export class PhoneCallDiscardReasonMissed extends TypePhoneCallDiscardReason {
+export class PhoneCallDiscardReasonMissed extends _TypePhoneCallDiscardReason {
   protected get [id]() {
     return 0x85E42301;
   }
@@ -23914,7 +23914,7 @@ export class PhoneCallDiscardReasonMissed extends TypePhoneCallDiscardReason {
   }
 }
 
-export class PhoneCallDiscardReasonDisconnect extends TypePhoneCallDiscardReason {
+export class PhoneCallDiscardReasonDisconnect extends _TypePhoneCallDiscardReason {
   protected get [id]() {
     return 0xE095C1A0;
   }
@@ -23932,7 +23932,7 @@ export class PhoneCallDiscardReasonDisconnect extends TypePhoneCallDiscardReason
   }
 }
 
-export class PhoneCallDiscardReasonHangup extends TypePhoneCallDiscardReason {
+export class PhoneCallDiscardReasonHangup extends _TypePhoneCallDiscardReason {
   protected get [id]() {
     return 0x57ADC690;
   }
@@ -23950,7 +23950,7 @@ export class PhoneCallDiscardReasonHangup extends TypePhoneCallDiscardReason {
   }
 }
 
-export class PhoneCallDiscardReasonBusy extends TypePhoneCallDiscardReason {
+export class PhoneCallDiscardReasonBusy extends _TypePhoneCallDiscardReason {
   protected get [id]() {
     return 0xFAF7E8C9;
   }
@@ -23968,7 +23968,7 @@ export class PhoneCallDiscardReasonBusy extends TypePhoneCallDiscardReason {
   }
 }
 
-export class DataJSON extends TypeDataJSON {
+export class DataJSON extends _TypeDataJSON {
   data: string;
 
   protected get [id]() {
@@ -23993,7 +23993,7 @@ export class DataJSON extends TypeDataJSON {
   }
 }
 
-export class LabeledPrice extends TypeLabeledPrice {
+export class LabeledPrice extends _TypeLabeledPrice {
   label: string;
   amount: bigint;
 
@@ -24022,7 +24022,7 @@ export class LabeledPrice extends TypeLabeledPrice {
   }
 }
 
-export class Invoice extends TypeInvoice {
+export class Invoice extends _TypeInvoice {
   test?: true;
   nameRequested?: true;
   phoneRequested?: true;
@@ -24055,7 +24055,7 @@ export class Invoice extends TypeInvoice {
       ["emailToProvider", "true", "flags.7?true"],
       ["recurring", "true", "flags.9?true"],
       ["currency", "string", "string"],
-      ["prices", [TypeLabeledPrice], "Vector<LabeledPrice>"],
+      ["prices", [_TypeLabeledPrice], "Vector<LabeledPrice>"],
       ["maxTipAmount", "bigint", "flags.8?long"],
       ["suggestedTipAmounts", ["bigint"], "flags.8?Vector<long>"],
       ["recurringTermsUrl", "string", "flags.9?string"],
@@ -24075,7 +24075,7 @@ export class Invoice extends TypeInvoice {
       [this.emailToProvider ?? null, "true", "flags.7?true"],
       [this.recurring ?? null, "true", "flags.9?true"],
       [this.currency, "string", "string"],
-      [this.prices, [TypeLabeledPrice], "Vector<LabeledPrice>"],
+      [this.prices, [_TypeLabeledPrice], "Vector<LabeledPrice>"],
       [this.maxTipAmount ?? null, "bigint", "flags.8?long"],
       [this.suggestedTipAmounts ?? null, ["bigint"], "flags.8?Vector<long>"],
       [this.recurringTermsUrl ?? null, "string", "flags.9?string"],
@@ -24101,7 +24101,7 @@ export class Invoice extends TypeInvoice {
   }
 }
 
-export class PaymentCharge extends TypePaymentCharge {
+export class PaymentCharge extends _TypePaymentCharge {
   id: string;
   providerChargeId: string;
 
@@ -24130,7 +24130,7 @@ export class PaymentCharge extends TypePaymentCharge {
   }
 }
 
-export class PostAddress extends TypePostAddress {
+export class PostAddress extends _TypePostAddress {
   streetLine1: string;
   streetLine2: string;
   city: string;
@@ -24175,7 +24175,7 @@ export class PostAddress extends TypePostAddress {
   }
 }
 
-export class PaymentRequestedInfo extends TypePaymentRequestedInfo {
+export class PaymentRequestedInfo extends _TypePaymentRequestedInfo {
   name?: string;
   phone?: string;
   email?: string;
@@ -24191,7 +24191,7 @@ export class PaymentRequestedInfo extends TypePaymentRequestedInfo {
       ["name", "string", "flags.0?string"],
       ["phone", "string", "flags.1?string"],
       ["email", "string", "flags.2?string"],
-      ["shippingAddress", TypePostAddress, "flags.3?PostAddress"],
+      ["shippingAddress", _TypePostAddress, "flags.3?PostAddress"],
     ];
   }
 
@@ -24201,7 +24201,7 @@ export class PaymentRequestedInfo extends TypePaymentRequestedInfo {
       [this.name ?? null, "string", "flags.0?string"],
       [this.phone ?? null, "string", "flags.1?string"],
       [this.email ?? null, "string", "flags.2?string"],
-      [this.shippingAddress ?? null, TypePostAddress, "flags.3?PostAddress"],
+      [this.shippingAddress ?? null, _TypePostAddress, "flags.3?PostAddress"],
     ];
   }
 
@@ -24214,7 +24214,7 @@ export class PaymentRequestedInfo extends TypePaymentRequestedInfo {
   }
 }
 
-export class PaymentSavedCredentialsCard extends TypePaymentSavedCredentials {
+export class PaymentSavedCredentialsCard extends _TypePaymentSavedCredentials {
   id: string;
   title: string;
 
@@ -24243,7 +24243,7 @@ export class PaymentSavedCredentialsCard extends TypePaymentSavedCredentials {
   }
 }
 
-export class WebDocument extends TypeWebDocument {
+export class WebDocument extends _TypeWebDocument {
   url: string;
   accessHash: bigint;
   size: number;
@@ -24260,7 +24260,7 @@ export class WebDocument extends TypeWebDocument {
       ["accessHash", "bigint", "long"],
       ["size", "number", "int"],
       ["mimeType", "string", "string"],
-      ["attributes", [TypeDocumentAttribute], "Vector<DocumentAttribute>"],
+      ["attributes", [_TypeDocumentAttribute], "Vector<DocumentAttribute>"],
     ];
   }
 
@@ -24270,7 +24270,7 @@ export class WebDocument extends TypeWebDocument {
       [this.accessHash, "bigint", "long"],
       [this.size, "number", "int"],
       [this.mimeType, "string", "string"],
-      [this.attributes, [TypeDocumentAttribute], "Vector<DocumentAttribute>"],
+      [this.attributes, [_TypeDocumentAttribute], "Vector<DocumentAttribute>"],
     ];
   }
 
@@ -24284,7 +24284,7 @@ export class WebDocument extends TypeWebDocument {
   }
 }
 
-export class WebDocumentNoProxy extends TypeWebDocument {
+export class WebDocumentNoProxy extends _TypeWebDocument {
   url: string;
   size: number;
   mimeType: string;
@@ -24299,7 +24299,7 @@ export class WebDocumentNoProxy extends TypeWebDocument {
       ["url", "string", "string"],
       ["size", "number", "int"],
       ["mimeType", "string", "string"],
-      ["attributes", [TypeDocumentAttribute], "Vector<DocumentAttribute>"],
+      ["attributes", [_TypeDocumentAttribute], "Vector<DocumentAttribute>"],
     ];
   }
 
@@ -24308,7 +24308,7 @@ export class WebDocumentNoProxy extends TypeWebDocument {
       [this.url, "string", "string"],
       [this.size, "number", "int"],
       [this.mimeType, "string", "string"],
-      [this.attributes, [TypeDocumentAttribute], "Vector<DocumentAttribute>"],
+      [this.attributes, [_TypeDocumentAttribute], "Vector<DocumentAttribute>"],
     ];
   }
 
@@ -24321,7 +24321,7 @@ export class WebDocumentNoProxy extends TypeWebDocument {
   }
 }
 
-export class InputWebDocument extends TypeInputWebDocument {
+export class InputWebDocument extends _TypeInputWebDocument {
   url: string;
   size: number;
   mimeType: string;
@@ -24336,7 +24336,7 @@ export class InputWebDocument extends TypeInputWebDocument {
       ["url", "string", "string"],
       ["size", "number", "int"],
       ["mimeType", "string", "string"],
-      ["attributes", [TypeDocumentAttribute], "Vector<DocumentAttribute>"],
+      ["attributes", [_TypeDocumentAttribute], "Vector<DocumentAttribute>"],
     ];
   }
 
@@ -24345,7 +24345,7 @@ export class InputWebDocument extends TypeInputWebDocument {
       [this.url, "string", "string"],
       [this.size, "number", "int"],
       [this.mimeType, "string", "string"],
-      [this.attributes, [TypeDocumentAttribute], "Vector<DocumentAttribute>"],
+      [this.attributes, [_TypeDocumentAttribute], "Vector<DocumentAttribute>"],
     ];
   }
 
@@ -24358,7 +24358,7 @@ export class InputWebDocument extends TypeInputWebDocument {
   }
 }
 
-export class InputWebFileLocation extends TypeInputWebFileLocation {
+export class InputWebFileLocation extends _TypeInputWebFileLocation {
   url: string;
   accessHash: bigint;
 
@@ -24387,7 +24387,7 @@ export class InputWebFileLocation extends TypeInputWebFileLocation {
   }
 }
 
-export class InputWebFileGeoPointLocation extends TypeInputWebFileLocation {
+export class InputWebFileGeoPointLocation extends _TypeInputWebFileLocation {
   geoPoint: TypeInputGeoPoint;
   accessHash: bigint;
   w: number;
@@ -24401,7 +24401,7 @@ export class InputWebFileGeoPointLocation extends TypeInputWebFileLocation {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["geoPoint", TypeInputGeoPoint, "InputGeoPoint"],
+      ["geoPoint", _TypeInputGeoPoint, "InputGeoPoint"],
       ["accessHash", "bigint", "long"],
       ["w", "number", "int"],
       ["h", "number", "int"],
@@ -24412,7 +24412,7 @@ export class InputWebFileGeoPointLocation extends TypeInputWebFileLocation {
 
   protected get [params](): Params {
     return [
-      [this.geoPoint, TypeInputGeoPoint, "InputGeoPoint"],
+      [this.geoPoint, _TypeInputGeoPoint, "InputGeoPoint"],
       [this.accessHash, "bigint", "long"],
       [this.w, "number", "int"],
       [this.h, "number", "int"],
@@ -24432,7 +24432,7 @@ export class InputWebFileGeoPointLocation extends TypeInputWebFileLocation {
   }
 }
 
-export class InputWebFileAudioAlbumThumbLocation extends TypeInputWebFileLocation {
+export class InputWebFileAudioAlbumThumbLocation extends _TypeInputWebFileLocation {
   small?: true;
   document?: TypeInputDocument;
   title?: string;
@@ -24446,7 +24446,7 @@ export class InputWebFileAudioAlbumThumbLocation extends TypeInputWebFileLocatio
     return [
       ["flags", flags, "#"],
       ["small", "true", "flags.2?true"],
-      ["document", TypeInputDocument, "flags.0?InputDocument"],
+      ["document", _TypeInputDocument, "flags.0?InputDocument"],
       ["title", "string", "flags.1?string"],
       ["performer", "string", "flags.1?string"],
     ];
@@ -24456,7 +24456,7 @@ export class InputWebFileAudioAlbumThumbLocation extends TypeInputWebFileLocatio
     return [
       ["flags", flags, "#"],
       [this.small ?? null, "true", "flags.2?true"],
-      [this.document ?? null, TypeInputDocument, "flags.0?InputDocument"],
+      [this.document ?? null, _TypeInputDocument, "flags.0?InputDocument"],
       [this.title ?? null, "string", "flags.1?string"],
       [this.performer ?? null, "string", "flags.1?string"],
     ];
@@ -24471,7 +24471,7 @@ export class InputWebFileAudioAlbumThumbLocation extends TypeInputWebFileLocatio
   }
 }
 
-export class UploadWebFile extends TypeUploadWebFile {
+export class UploadWebFile extends _TypeUploadWebFile {
   size: number;
   mimeType: string;
   fileType: TypeStorageFileType;
@@ -24486,7 +24486,7 @@ export class UploadWebFile extends TypeUploadWebFile {
     return [
       ["size", "number", "int"],
       ["mimeType", "string", "string"],
-      ["fileType", TypeStorageFileType, "storage.FileType"],
+      ["fileType", _TypeStorageFileType, "storage.FileType"],
       ["mtime", "number", "int"],
       ["bytes", Uint8Array, "bytes"],
     ];
@@ -24496,7 +24496,7 @@ export class UploadWebFile extends TypeUploadWebFile {
     return [
       [this.size, "number", "int"],
       [this.mimeType, "string", "string"],
-      [this.fileType, TypeStorageFileType, "storage.FileType"],
+      [this.fileType, _TypeStorageFileType, "storage.FileType"],
       [this.mtime, "number", "int"],
       [this.bytes, Uint8Array, "bytes"],
     ];
@@ -24512,7 +24512,7 @@ export class UploadWebFile extends TypeUploadWebFile {
   }
 }
 
-export class PaymentsPaymentForm extends TypePaymentsPaymentForm {
+export class PaymentsPaymentForm extends _TypePaymentsPaymentForm {
   canSaveCredentials?: true;
   passwordMissing?: true;
   formId: bigint;
@@ -24543,16 +24543,16 @@ export class PaymentsPaymentForm extends TypePaymentsPaymentForm {
       ["botId", "bigint", "long"],
       ["title", "string", "string"],
       ["description", "string", "string"],
-      ["photo", TypeWebDocument, "flags.5?WebDocument"],
-      ["invoice", TypeInvoice, "Invoice"],
+      ["photo", _TypeWebDocument, "flags.5?WebDocument"],
+      ["invoice", _TypeInvoice, "Invoice"],
       ["providerId", "bigint", "long"],
       ["url", "string", "string"],
       ["nativeProvider", "string", "flags.4?string"],
-      ["nativeParams", TypeDataJSON, "flags.4?DataJSON"],
-      ["additionalMethods", [TypePaymentFormMethod], "flags.6?Vector<PaymentFormMethod>"],
-      ["savedInfo", TypePaymentRequestedInfo, "flags.0?PaymentRequestedInfo"],
-      ["savedCredentials", [TypePaymentSavedCredentials], "flags.1?Vector<PaymentSavedCredentials>"],
-      ["users", [TypeUser], "Vector<User>"],
+      ["nativeParams", _TypeDataJSON, "flags.4?DataJSON"],
+      ["additionalMethods", [_TypePaymentFormMethod], "flags.6?Vector<PaymentFormMethod>"],
+      ["savedInfo", _TypePaymentRequestedInfo, "flags.0?PaymentRequestedInfo"],
+      ["savedCredentials", [_TypePaymentSavedCredentials], "flags.1?Vector<PaymentSavedCredentials>"],
+      ["users", [_TypeUser], "Vector<User>"],
     ];
   }
 
@@ -24565,16 +24565,16 @@ export class PaymentsPaymentForm extends TypePaymentsPaymentForm {
       [this.botId, "bigint", "long"],
       [this.title, "string", "string"],
       [this.description, "string", "string"],
-      [this.photo ?? null, TypeWebDocument, "flags.5?WebDocument"],
-      [this.invoice, TypeInvoice, "Invoice"],
+      [this.photo ?? null, _TypeWebDocument, "flags.5?WebDocument"],
+      [this.invoice, _TypeInvoice, "Invoice"],
       [this.providerId, "bigint", "long"],
       [this.url, "string", "string"],
       [this.nativeProvider ?? null, "string", "flags.4?string"],
-      [this.nativeParams ?? null, TypeDataJSON, "flags.4?DataJSON"],
-      [this.additionalMethods ?? null, [TypePaymentFormMethod], "flags.6?Vector<PaymentFormMethod>"],
-      [this.savedInfo ?? null, TypePaymentRequestedInfo, "flags.0?PaymentRequestedInfo"],
-      [this.savedCredentials ?? null, [TypePaymentSavedCredentials], "flags.1?Vector<PaymentSavedCredentials>"],
-      [this.users, [TypeUser], "Vector<User>"],
+      [this.nativeParams ?? null, _TypeDataJSON, "flags.4?DataJSON"],
+      [this.additionalMethods ?? null, [_TypePaymentFormMethod], "flags.6?Vector<PaymentFormMethod>"],
+      [this.savedInfo ?? null, _TypePaymentRequestedInfo, "flags.0?PaymentRequestedInfo"],
+      [this.savedCredentials ?? null, [_TypePaymentSavedCredentials], "flags.1?Vector<PaymentSavedCredentials>"],
+      [this.users, [_TypeUser], "Vector<User>"],
     ];
   }
 
@@ -24599,7 +24599,7 @@ export class PaymentsPaymentForm extends TypePaymentsPaymentForm {
   }
 }
 
-export class PaymentsValidatedRequestedInfo extends TypePaymentsValidatedRequestedInfo {
+export class PaymentsValidatedRequestedInfo extends _TypePaymentsValidatedRequestedInfo {
   id?: string;
   shippingOptions?: Array<TypeShippingOption>;
 
@@ -24611,7 +24611,7 @@ export class PaymentsValidatedRequestedInfo extends TypePaymentsValidatedRequest
     return [
       ["flags", flags, "#"],
       ["id", "string", "flags.0?string"],
-      ["shippingOptions", [TypeShippingOption], "flags.1?Vector<ShippingOption>"],
+      ["shippingOptions", [_TypeShippingOption], "flags.1?Vector<ShippingOption>"],
     ];
   }
 
@@ -24619,7 +24619,7 @@ export class PaymentsValidatedRequestedInfo extends TypePaymentsValidatedRequest
     return [
       ["flags", flags, "#"],
       [this.id ?? null, "string", "flags.0?string"],
-      [this.shippingOptions ?? null, [TypeShippingOption], "flags.1?Vector<ShippingOption>"],
+      [this.shippingOptions ?? null, [_TypeShippingOption], "flags.1?Vector<ShippingOption>"],
     ];
   }
 
@@ -24630,7 +24630,7 @@ export class PaymentsValidatedRequestedInfo extends TypePaymentsValidatedRequest
   }
 }
 
-export class PaymentsPaymentResult extends TypePaymentsPaymentResult {
+export class PaymentsPaymentResult extends _TypePaymentsPaymentResult {
   updates: TypeUpdates;
 
   protected get [id]() {
@@ -24639,13 +24639,13 @@ export class PaymentsPaymentResult extends TypePaymentsPaymentResult {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["updates", TypeUpdates, "Updates"],
+      ["updates", _TypeUpdates, "Updates"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.updates, TypeUpdates, "Updates"],
+      [this.updates, _TypeUpdates, "Updates"],
     ];
   }
 
@@ -24655,7 +24655,7 @@ export class PaymentsPaymentResult extends TypePaymentsPaymentResult {
   }
 }
 
-export class PaymentsPaymentVerificationNeeded extends TypePaymentsPaymentResult {
+export class PaymentsPaymentVerificationNeeded extends _TypePaymentsPaymentResult {
   url: string;
 
   protected get [id]() {
@@ -24680,7 +24680,7 @@ export class PaymentsPaymentVerificationNeeded extends TypePaymentsPaymentResult
   }
 }
 
-export class PaymentsPaymentReceipt extends TypePaymentsPaymentReceipt {
+export class PaymentsPaymentReceipt extends _TypePaymentsPaymentReceipt {
   date: number;
   botId: bigint;
   providerId: bigint;
@@ -24708,15 +24708,15 @@ export class PaymentsPaymentReceipt extends TypePaymentsPaymentReceipt {
       ["providerId", "bigint", "long"],
       ["title", "string", "string"],
       ["description", "string", "string"],
-      ["photo", TypeWebDocument, "flags.2?WebDocument"],
-      ["invoice", TypeInvoice, "Invoice"],
-      ["info", TypePaymentRequestedInfo, "flags.0?PaymentRequestedInfo"],
-      ["shipping", TypeShippingOption, "flags.1?ShippingOption"],
+      ["photo", _TypeWebDocument, "flags.2?WebDocument"],
+      ["invoice", _TypeInvoice, "Invoice"],
+      ["info", _TypePaymentRequestedInfo, "flags.0?PaymentRequestedInfo"],
+      ["shipping", _TypeShippingOption, "flags.1?ShippingOption"],
       ["tipAmount", "bigint", "flags.3?long"],
       ["currency", "string", "string"],
       ["totalAmount", "bigint", "long"],
       ["credentialsTitle", "string", "string"],
-      ["users", [TypeUser], "Vector<User>"],
+      ["users", [_TypeUser], "Vector<User>"],
     ];
   }
 
@@ -24728,15 +24728,15 @@ export class PaymentsPaymentReceipt extends TypePaymentsPaymentReceipt {
       [this.providerId, "bigint", "long"],
       [this.title, "string", "string"],
       [this.description, "string", "string"],
-      [this.photo ?? null, TypeWebDocument, "flags.2?WebDocument"],
-      [this.invoice, TypeInvoice, "Invoice"],
-      [this.info ?? null, TypePaymentRequestedInfo, "flags.0?PaymentRequestedInfo"],
-      [this.shipping ?? null, TypeShippingOption, "flags.1?ShippingOption"],
+      [this.photo ?? null, _TypeWebDocument, "flags.2?WebDocument"],
+      [this.invoice, _TypeInvoice, "Invoice"],
+      [this.info ?? null, _TypePaymentRequestedInfo, "flags.0?PaymentRequestedInfo"],
+      [this.shipping ?? null, _TypeShippingOption, "flags.1?ShippingOption"],
       [this.tipAmount ?? null, "bigint", "flags.3?long"],
       [this.currency, "string", "string"],
       [this.totalAmount, "bigint", "long"],
       [this.credentialsTitle, "string", "string"],
-      [this.users, [TypeUser], "Vector<User>"],
+      [this.users, [_TypeUser], "Vector<User>"],
     ];
   }
 
@@ -24759,7 +24759,7 @@ export class PaymentsPaymentReceipt extends TypePaymentsPaymentReceipt {
   }
 }
 
-export class PaymentsSavedInfo extends TypePaymentsSavedInfo {
+export class PaymentsSavedInfo extends _TypePaymentsSavedInfo {
   hasSavedCredentials?: true;
   savedInfo?: TypePaymentRequestedInfo;
 
@@ -24771,7 +24771,7 @@ export class PaymentsSavedInfo extends TypePaymentsSavedInfo {
     return [
       ["flags", flags, "#"],
       ["hasSavedCredentials", "true", "flags.1?true"],
-      ["savedInfo", TypePaymentRequestedInfo, "flags.0?PaymentRequestedInfo"],
+      ["savedInfo", _TypePaymentRequestedInfo, "flags.0?PaymentRequestedInfo"],
     ];
   }
 
@@ -24779,7 +24779,7 @@ export class PaymentsSavedInfo extends TypePaymentsSavedInfo {
     return [
       ["flags", flags, "#"],
       [this.hasSavedCredentials ?? null, "true", "flags.1?true"],
-      [this.savedInfo ?? null, TypePaymentRequestedInfo, "flags.0?PaymentRequestedInfo"],
+      [this.savedInfo ?? null, _TypePaymentRequestedInfo, "flags.0?PaymentRequestedInfo"],
     ];
   }
 
@@ -24790,7 +24790,7 @@ export class PaymentsSavedInfo extends TypePaymentsSavedInfo {
   }
 }
 
-export class InputPaymentCredentialsSaved extends TypeInputPaymentCredentials {
+export class InputPaymentCredentialsSaved extends _TypeInputPaymentCredentials {
   id: string;
   tmpPassword: Uint8Array;
 
@@ -24819,7 +24819,7 @@ export class InputPaymentCredentialsSaved extends TypeInputPaymentCredentials {
   }
 }
 
-export class InputPaymentCredentials extends TypeInputPaymentCredentials {
+export class InputPaymentCredentials extends _TypeInputPaymentCredentials {
   save?: true;
   data: TypeDataJSON;
 
@@ -24831,7 +24831,7 @@ export class InputPaymentCredentials extends TypeInputPaymentCredentials {
     return [
       ["flags", flags, "#"],
       ["save", "true", "flags.0?true"],
-      ["data", TypeDataJSON, "DataJSON"],
+      ["data", _TypeDataJSON, "DataJSON"],
     ];
   }
 
@@ -24839,7 +24839,7 @@ export class InputPaymentCredentials extends TypeInputPaymentCredentials {
     return [
       ["flags", flags, "#"],
       [this.save ?? null, "true", "flags.0?true"],
-      [this.data, TypeDataJSON, "DataJSON"],
+      [this.data, _TypeDataJSON, "DataJSON"],
     ];
   }
 
@@ -24850,7 +24850,7 @@ export class InputPaymentCredentials extends TypeInputPaymentCredentials {
   }
 }
 
-export class InputPaymentCredentialsApplePay extends TypeInputPaymentCredentials {
+export class InputPaymentCredentialsApplePay extends _TypeInputPaymentCredentials {
   paymentData: TypeDataJSON;
 
   protected get [id]() {
@@ -24859,13 +24859,13 @@ export class InputPaymentCredentialsApplePay extends TypeInputPaymentCredentials
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["paymentData", TypeDataJSON, "DataJSON"],
+      ["paymentData", _TypeDataJSON, "DataJSON"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.paymentData, TypeDataJSON, "DataJSON"],
+      [this.paymentData, _TypeDataJSON, "DataJSON"],
     ];
   }
 
@@ -24875,7 +24875,7 @@ export class InputPaymentCredentialsApplePay extends TypeInputPaymentCredentials
   }
 }
 
-export class InputPaymentCredentialsGooglePay extends TypeInputPaymentCredentials {
+export class InputPaymentCredentialsGooglePay extends _TypeInputPaymentCredentials {
   paymentToken: TypeDataJSON;
 
   protected get [id]() {
@@ -24884,13 +24884,13 @@ export class InputPaymentCredentialsGooglePay extends TypeInputPaymentCredential
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["paymentToken", TypeDataJSON, "DataJSON"],
+      ["paymentToken", _TypeDataJSON, "DataJSON"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.paymentToken, TypeDataJSON, "DataJSON"],
+      [this.paymentToken, _TypeDataJSON, "DataJSON"],
     ];
   }
 
@@ -24900,7 +24900,7 @@ export class InputPaymentCredentialsGooglePay extends TypeInputPaymentCredential
   }
 }
 
-export class AccountTmpPassword extends TypeAccountTmpPassword {
+export class AccountTmpPassword extends _TypeAccountTmpPassword {
   tmpPassword: Uint8Array;
   validUntil: number;
 
@@ -24929,7 +24929,7 @@ export class AccountTmpPassword extends TypeAccountTmpPassword {
   }
 }
 
-export class ShippingOption extends TypeShippingOption {
+export class ShippingOption extends _TypeShippingOption {
   id: string;
   title: string;
   prices: Array<TypeLabeledPrice>;
@@ -24942,7 +24942,7 @@ export class ShippingOption extends TypeShippingOption {
     return [
       ["id", "string", "string"],
       ["title", "string", "string"],
-      ["prices", [TypeLabeledPrice], "Vector<LabeledPrice>"],
+      ["prices", [_TypeLabeledPrice], "Vector<LabeledPrice>"],
     ];
   }
 
@@ -24950,7 +24950,7 @@ export class ShippingOption extends TypeShippingOption {
     return [
       [this.id, "string", "string"],
       [this.title, "string", "string"],
-      [this.prices, [TypeLabeledPrice], "Vector<LabeledPrice>"],
+      [this.prices, [_TypeLabeledPrice], "Vector<LabeledPrice>"],
     ];
   }
 
@@ -24962,7 +24962,7 @@ export class ShippingOption extends TypeShippingOption {
   }
 }
 
-export class InputStickerSetItem extends TypeInputStickerSetItem {
+export class InputStickerSetItem extends _TypeInputStickerSetItem {
   document: TypeInputDocument;
   emoji: string;
   maskCoords?: TypeMaskCoords;
@@ -24975,9 +24975,9 @@ export class InputStickerSetItem extends TypeInputStickerSetItem {
   static get [paramDesc](): ParamDesc {
     return [
       ["flags", flags, "#"],
-      ["document", TypeInputDocument, "InputDocument"],
+      ["document", _TypeInputDocument, "InputDocument"],
       ["emoji", "string", "string"],
-      ["maskCoords", TypeMaskCoords, "flags.0?MaskCoords"],
+      ["maskCoords", _TypeMaskCoords, "flags.0?MaskCoords"],
       ["keywords", "string", "flags.1?string"],
     ];
   }
@@ -24985,9 +24985,9 @@ export class InputStickerSetItem extends TypeInputStickerSetItem {
   protected get [params](): Params {
     return [
       ["flags", flags, "#"],
-      [this.document, TypeInputDocument, "InputDocument"],
+      [this.document, _TypeInputDocument, "InputDocument"],
       [this.emoji, "string", "string"],
-      [this.maskCoords ?? null, TypeMaskCoords, "flags.0?MaskCoords"],
+      [this.maskCoords ?? null, _TypeMaskCoords, "flags.0?MaskCoords"],
       [this.keywords ?? null, "string", "flags.1?string"],
     ];
   }
@@ -25001,7 +25001,7 @@ export class InputStickerSetItem extends TypeInputStickerSetItem {
   }
 }
 
-export class InputPhoneCall extends TypeInputPhoneCall {
+export class InputPhoneCall extends _TypeInputPhoneCall {
   id: bigint;
   accessHash: bigint;
 
@@ -25030,7 +25030,7 @@ export class InputPhoneCall extends TypeInputPhoneCall {
   }
 }
 
-export class PhoneCallEmpty extends TypePhoneCall {
+export class PhoneCallEmpty extends _TypePhoneCall {
   id: bigint;
 
   protected get [id]() {
@@ -25055,7 +25055,7 @@ export class PhoneCallEmpty extends TypePhoneCall {
   }
 }
 
-export class PhoneCallWaiting extends TypePhoneCall {
+export class PhoneCallWaiting extends _TypePhoneCall {
   video?: true;
   id: bigint;
   accessHash: bigint;
@@ -25078,7 +25078,7 @@ export class PhoneCallWaiting extends TypePhoneCall {
       ["date", "number", "int"],
       ["adminId", "bigint", "long"],
       ["participantId", "bigint", "long"],
-      ["protocol", TypePhoneCallProtocol, "PhoneCallProtocol"],
+      ["protocol", _TypePhoneCallProtocol, "PhoneCallProtocol"],
       ["receiveDate", "number", "flags.0?int"],
     ];
   }
@@ -25092,7 +25092,7 @@ export class PhoneCallWaiting extends TypePhoneCall {
       [this.date, "number", "int"],
       [this.adminId, "bigint", "long"],
       [this.participantId, "bigint", "long"],
-      [this.protocol, TypePhoneCallProtocol, "PhoneCallProtocol"],
+      [this.protocol, _TypePhoneCallProtocol, "PhoneCallProtocol"],
       [this.receiveDate ?? null, "number", "flags.0?int"],
     ];
   }
@@ -25110,7 +25110,7 @@ export class PhoneCallWaiting extends TypePhoneCall {
   }
 }
 
-export class PhoneCallRequested extends TypePhoneCall {
+export class PhoneCallRequested extends _TypePhoneCall {
   video?: true;
   id: bigint;
   accessHash: bigint;
@@ -25134,7 +25134,7 @@ export class PhoneCallRequested extends TypePhoneCall {
       ["adminId", "bigint", "long"],
       ["participantId", "bigint", "long"],
       ["gAHash", Uint8Array, "bytes"],
-      ["protocol", TypePhoneCallProtocol, "PhoneCallProtocol"],
+      ["protocol", _TypePhoneCallProtocol, "PhoneCallProtocol"],
     ];
   }
 
@@ -25148,7 +25148,7 @@ export class PhoneCallRequested extends TypePhoneCall {
       [this.adminId, "bigint", "long"],
       [this.participantId, "bigint", "long"],
       [this.gAHash, Uint8Array, "bytes"],
-      [this.protocol, TypePhoneCallProtocol, "PhoneCallProtocol"],
+      [this.protocol, _TypePhoneCallProtocol, "PhoneCallProtocol"],
     ];
   }
 
@@ -25165,7 +25165,7 @@ export class PhoneCallRequested extends TypePhoneCall {
   }
 }
 
-export class PhoneCallAccepted extends TypePhoneCall {
+export class PhoneCallAccepted extends _TypePhoneCall {
   video?: true;
   id: bigint;
   accessHash: bigint;
@@ -25189,7 +25189,7 @@ export class PhoneCallAccepted extends TypePhoneCall {
       ["adminId", "bigint", "long"],
       ["participantId", "bigint", "long"],
       ["gB", Uint8Array, "bytes"],
-      ["protocol", TypePhoneCallProtocol, "PhoneCallProtocol"],
+      ["protocol", _TypePhoneCallProtocol, "PhoneCallProtocol"],
     ];
   }
 
@@ -25203,7 +25203,7 @@ export class PhoneCallAccepted extends TypePhoneCall {
       [this.adminId, "bigint", "long"],
       [this.participantId, "bigint", "long"],
       [this.gB, Uint8Array, "bytes"],
-      [this.protocol, TypePhoneCallProtocol, "PhoneCallProtocol"],
+      [this.protocol, _TypePhoneCallProtocol, "PhoneCallProtocol"],
     ];
   }
 
@@ -25220,7 +25220,7 @@ export class PhoneCallAccepted extends TypePhoneCall {
   }
 }
 
-export class PhoneCall extends TypePhoneCall {
+export class PhoneCall extends _TypePhoneCall {
   p2pAllowed?: true;
   video?: true;
   id: bigint;
@@ -25250,8 +25250,8 @@ export class PhoneCall extends TypePhoneCall {
       ["participantId", "bigint", "long"],
       ["gAOrB", Uint8Array, "bytes"],
       ["keyFingerprint", "bigint", "long"],
-      ["protocol", TypePhoneCallProtocol, "PhoneCallProtocol"],
-      ["connections", [TypePhoneConnection], "Vector<PhoneConnection>"],
+      ["protocol", _TypePhoneCallProtocol, "PhoneCallProtocol"],
+      ["connections", [_TypePhoneConnection], "Vector<PhoneConnection>"],
       ["startDate", "number", "int"],
     ];
   }
@@ -25268,8 +25268,8 @@ export class PhoneCall extends TypePhoneCall {
       [this.participantId, "bigint", "long"],
       [this.gAOrB, Uint8Array, "bytes"],
       [this.keyFingerprint, "bigint", "long"],
-      [this.protocol, TypePhoneCallProtocol, "PhoneCallProtocol"],
-      [this.connections, [TypePhoneConnection], "Vector<PhoneConnection>"],
+      [this.protocol, _TypePhoneCallProtocol, "PhoneCallProtocol"],
+      [this.connections, [_TypePhoneConnection], "Vector<PhoneConnection>"],
       [this.startDate, "number", "int"],
     ];
   }
@@ -25291,7 +25291,7 @@ export class PhoneCall extends TypePhoneCall {
   }
 }
 
-export class PhoneCallDiscarded extends TypePhoneCall {
+export class PhoneCallDiscarded extends _TypePhoneCall {
   needRating?: true;
   needDebug?: true;
   video?: true;
@@ -25310,7 +25310,7 @@ export class PhoneCallDiscarded extends TypePhoneCall {
       ["needDebug", "true", "flags.3?true"],
       ["video", "true", "flags.6?true"],
       ["id", "bigint", "long"],
-      ["reason", TypePhoneCallDiscardReason, "flags.0?PhoneCallDiscardReason"],
+      ["reason", _TypePhoneCallDiscardReason, "flags.0?PhoneCallDiscardReason"],
       ["duration", "number", "flags.1?int"],
     ];
   }
@@ -25322,7 +25322,7 @@ export class PhoneCallDiscarded extends TypePhoneCall {
       [this.needDebug ?? null, "true", "flags.3?true"],
       [this.video ?? null, "true", "flags.6?true"],
       [this.id, "bigint", "long"],
-      [this.reason ?? null, TypePhoneCallDiscardReason, "flags.0?PhoneCallDiscardReason"],
+      [this.reason ?? null, _TypePhoneCallDiscardReason, "flags.0?PhoneCallDiscardReason"],
       [this.duration ?? null, "number", "flags.1?int"],
     ];
   }
@@ -25338,7 +25338,7 @@ export class PhoneCallDiscarded extends TypePhoneCall {
   }
 }
 
-export class PhoneConnection extends TypePhoneConnection {
+export class PhoneConnection extends _TypePhoneConnection {
   tcp?: true;
   id: bigint;
   ip: string;
@@ -25385,7 +25385,7 @@ export class PhoneConnection extends TypePhoneConnection {
   }
 }
 
-export class PhoneConnectionWebrtc extends TypePhoneConnection {
+export class PhoneConnectionWebrtc extends _TypePhoneConnection {
   turn?: true;
   stun?: true;
   id: bigint;
@@ -25440,7 +25440,7 @@ export class PhoneConnectionWebrtc extends TypePhoneConnection {
   }
 }
 
-export class PhoneCallProtocol extends TypePhoneCallProtocol {
+export class PhoneCallProtocol extends _TypePhoneCallProtocol {
   udpP2p?: true;
   udpReflector?: true;
   minLayer: number;
@@ -25483,7 +25483,7 @@ export class PhoneCallProtocol extends TypePhoneCallProtocol {
   }
 }
 
-export class PhonePhoneCall extends TypePhonePhoneCall {
+export class PhonePhoneCall extends _TypePhonePhoneCall {
   phoneCall: TypePhoneCall;
   users: Array<TypeUser>;
 
@@ -25493,15 +25493,15 @@ export class PhonePhoneCall extends TypePhonePhoneCall {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["phoneCall", TypePhoneCall, "PhoneCall"],
-      ["users", [TypeUser], "Vector<User>"],
+      ["phoneCall", _TypePhoneCall, "PhoneCall"],
+      ["users", [_TypeUser], "Vector<User>"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.phoneCall, TypePhoneCall, "PhoneCall"],
-      [this.users, [TypeUser], "Vector<User>"],
+      [this.phoneCall, _TypePhoneCall, "PhoneCall"],
+      [this.users, [_TypeUser], "Vector<User>"],
     ];
   }
 
@@ -25512,7 +25512,7 @@ export class PhonePhoneCall extends TypePhonePhoneCall {
   }
 }
 
-export class UploadCdnFileReuploadNeeded extends TypeUploadCdnFile {
+export class UploadCdnFileReuploadNeeded extends _TypeUploadCdnFile {
   requestToken: Uint8Array;
 
   protected get [id]() {
@@ -25537,7 +25537,7 @@ export class UploadCdnFileReuploadNeeded extends TypeUploadCdnFile {
   }
 }
 
-export class UploadCdnFile extends TypeUploadCdnFile {
+export class UploadCdnFile extends _TypeUploadCdnFile {
   bytes: Uint8Array;
 
   protected get [id]() {
@@ -25562,7 +25562,7 @@ export class UploadCdnFile extends TypeUploadCdnFile {
   }
 }
 
-export class CdnPublicKey extends TypeCdnPublicKey {
+export class CdnPublicKey extends _TypeCdnPublicKey {
   dcId: number;
   publicKey: string;
 
@@ -25591,7 +25591,7 @@ export class CdnPublicKey extends TypeCdnPublicKey {
   }
 }
 
-export class CdnConfig extends TypeCdnConfig {
+export class CdnConfig extends _TypeCdnConfig {
   publicKeys: Array<TypeCdnPublicKey>;
 
   protected get [id]() {
@@ -25600,13 +25600,13 @@ export class CdnConfig extends TypeCdnConfig {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["publicKeys", [TypeCdnPublicKey], "Vector<CdnPublicKey>"],
+      ["publicKeys", [_TypeCdnPublicKey], "Vector<CdnPublicKey>"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.publicKeys, [TypeCdnPublicKey], "Vector<CdnPublicKey>"],
+      [this.publicKeys, [_TypeCdnPublicKey], "Vector<CdnPublicKey>"],
     ];
   }
 
@@ -25616,7 +25616,7 @@ export class CdnConfig extends TypeCdnConfig {
   }
 }
 
-export class LangPackString extends TypeLangPackString {
+export class LangPackString extends _TypeLangPackString {
   key: string;
   value: string;
 
@@ -25645,7 +25645,7 @@ export class LangPackString extends TypeLangPackString {
   }
 }
 
-export class LangPackStringPluralized extends TypeLangPackString {
+export class LangPackStringPluralized extends _TypeLangPackString {
   key: string;
   zeroValue?: string;
   oneValue?: string;
@@ -25696,7 +25696,7 @@ export class LangPackStringPluralized extends TypeLangPackString {
   }
 }
 
-export class LangPackStringDeleted extends TypeLangPackString {
+export class LangPackStringDeleted extends _TypeLangPackString {
   key: string;
 
   protected get [id]() {
@@ -25721,7 +25721,7 @@ export class LangPackStringDeleted extends TypeLangPackString {
   }
 }
 
-export class LangPackDifference extends TypeLangPackDifference {
+export class LangPackDifference extends _TypeLangPackDifference {
   langCode: string;
   fromVersion: number;
   version: number;
@@ -25736,7 +25736,7 @@ export class LangPackDifference extends TypeLangPackDifference {
       ["langCode", "string", "string"],
       ["fromVersion", "number", "int"],
       ["version", "number", "int"],
-      ["strings", [TypeLangPackString], "Vector<LangPackString>"],
+      ["strings", [_TypeLangPackString], "Vector<LangPackString>"],
     ];
   }
 
@@ -25745,7 +25745,7 @@ export class LangPackDifference extends TypeLangPackDifference {
       [this.langCode, "string", "string"],
       [this.fromVersion, "number", "int"],
       [this.version, "number", "int"],
-      [this.strings, [TypeLangPackString], "Vector<LangPackString>"],
+      [this.strings, [_TypeLangPackString], "Vector<LangPackString>"],
     ];
   }
 
@@ -25758,7 +25758,7 @@ export class LangPackDifference extends TypeLangPackDifference {
   }
 }
 
-export class LangPackLanguage extends TypeLangPackLanguage {
+export class LangPackLanguage extends _TypeLangPackLanguage {
   official?: true;
   rtl?: true;
   beta?: true;
@@ -25825,7 +25825,7 @@ export class LangPackLanguage extends TypeLangPackLanguage {
   }
 }
 
-export class ChannelAdminLogEventActionChangeTitle extends TypeChannelAdminLogEventAction {
+export class ChannelAdminLogEventActionChangeTitle extends _TypeChannelAdminLogEventAction {
   prevValue: string;
   newValue: string;
 
@@ -25854,7 +25854,7 @@ export class ChannelAdminLogEventActionChangeTitle extends TypeChannelAdminLogEv
   }
 }
 
-export class ChannelAdminLogEventActionChangeAbout extends TypeChannelAdminLogEventAction {
+export class ChannelAdminLogEventActionChangeAbout extends _TypeChannelAdminLogEventAction {
   prevValue: string;
   newValue: string;
 
@@ -25883,7 +25883,7 @@ export class ChannelAdminLogEventActionChangeAbout extends TypeChannelAdminLogEv
   }
 }
 
-export class ChannelAdminLogEventActionChangeUsername extends TypeChannelAdminLogEventAction {
+export class ChannelAdminLogEventActionChangeUsername extends _TypeChannelAdminLogEventAction {
   prevValue: string;
   newValue: string;
 
@@ -25912,7 +25912,7 @@ export class ChannelAdminLogEventActionChangeUsername extends TypeChannelAdminLo
   }
 }
 
-export class ChannelAdminLogEventActionChangePhoto extends TypeChannelAdminLogEventAction {
+export class ChannelAdminLogEventActionChangePhoto extends _TypeChannelAdminLogEventAction {
   prevPhoto: TypePhoto;
   newPhoto: TypePhoto;
 
@@ -25922,15 +25922,15 @@ export class ChannelAdminLogEventActionChangePhoto extends TypeChannelAdminLogEv
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["prevPhoto", TypePhoto, "Photo"],
-      ["newPhoto", TypePhoto, "Photo"],
+      ["prevPhoto", _TypePhoto, "Photo"],
+      ["newPhoto", _TypePhoto, "Photo"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.prevPhoto, TypePhoto, "Photo"],
-      [this.newPhoto, TypePhoto, "Photo"],
+      [this.prevPhoto, _TypePhoto, "Photo"],
+      [this.newPhoto, _TypePhoto, "Photo"],
     ];
   }
 
@@ -25941,7 +25941,7 @@ export class ChannelAdminLogEventActionChangePhoto extends TypeChannelAdminLogEv
   }
 }
 
-export class ChannelAdminLogEventActionToggleInvites extends TypeChannelAdminLogEventAction {
+export class ChannelAdminLogEventActionToggleInvites extends _TypeChannelAdminLogEventAction {
   newValue: boolean;
 
   protected get [id]() {
@@ -25966,7 +25966,7 @@ export class ChannelAdminLogEventActionToggleInvites extends TypeChannelAdminLog
   }
 }
 
-export class ChannelAdminLogEventActionToggleSignatures extends TypeChannelAdminLogEventAction {
+export class ChannelAdminLogEventActionToggleSignatures extends _TypeChannelAdminLogEventAction {
   newValue: boolean;
 
   protected get [id]() {
@@ -25991,7 +25991,7 @@ export class ChannelAdminLogEventActionToggleSignatures extends TypeChannelAdmin
   }
 }
 
-export class ChannelAdminLogEventActionUpdatePinned extends TypeChannelAdminLogEventAction {
+export class ChannelAdminLogEventActionUpdatePinned extends _TypeChannelAdminLogEventAction {
   message: TypeMessage;
 
   protected get [id]() {
@@ -26000,13 +26000,13 @@ export class ChannelAdminLogEventActionUpdatePinned extends TypeChannelAdminLogE
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["message", TypeMessage, "Message"],
+      ["message", _TypeMessage, "Message"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.message, TypeMessage, "Message"],
+      [this.message, _TypeMessage, "Message"],
     ];
   }
 
@@ -26016,7 +26016,7 @@ export class ChannelAdminLogEventActionUpdatePinned extends TypeChannelAdminLogE
   }
 }
 
-export class ChannelAdminLogEventActionEditMessage extends TypeChannelAdminLogEventAction {
+export class ChannelAdminLogEventActionEditMessage extends _TypeChannelAdminLogEventAction {
   prevMessage: TypeMessage;
   newMessage: TypeMessage;
 
@@ -26026,15 +26026,15 @@ export class ChannelAdminLogEventActionEditMessage extends TypeChannelAdminLogEv
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["prevMessage", TypeMessage, "Message"],
-      ["newMessage", TypeMessage, "Message"],
+      ["prevMessage", _TypeMessage, "Message"],
+      ["newMessage", _TypeMessage, "Message"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.prevMessage, TypeMessage, "Message"],
-      [this.newMessage, TypeMessage, "Message"],
+      [this.prevMessage, _TypeMessage, "Message"],
+      [this.newMessage, _TypeMessage, "Message"],
     ];
   }
 
@@ -26045,7 +26045,7 @@ export class ChannelAdminLogEventActionEditMessage extends TypeChannelAdminLogEv
   }
 }
 
-export class ChannelAdminLogEventActionDeleteMessage extends TypeChannelAdminLogEventAction {
+export class ChannelAdminLogEventActionDeleteMessage extends _TypeChannelAdminLogEventAction {
   message: TypeMessage;
 
   protected get [id]() {
@@ -26054,13 +26054,13 @@ export class ChannelAdminLogEventActionDeleteMessage extends TypeChannelAdminLog
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["message", TypeMessage, "Message"],
+      ["message", _TypeMessage, "Message"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.message, TypeMessage, "Message"],
+      [this.message, _TypeMessage, "Message"],
     ];
   }
 
@@ -26070,7 +26070,7 @@ export class ChannelAdminLogEventActionDeleteMessage extends TypeChannelAdminLog
   }
 }
 
-export class ChannelAdminLogEventActionParticipantJoin extends TypeChannelAdminLogEventAction {
+export class ChannelAdminLogEventActionParticipantJoin extends _TypeChannelAdminLogEventAction {
   protected get [id]() {
     return 0x183040D3;
   }
@@ -26088,7 +26088,7 @@ export class ChannelAdminLogEventActionParticipantJoin extends TypeChannelAdminL
   }
 }
 
-export class ChannelAdminLogEventActionParticipantLeave extends TypeChannelAdminLogEventAction {
+export class ChannelAdminLogEventActionParticipantLeave extends _TypeChannelAdminLogEventAction {
   protected get [id]() {
     return 0xF89777F2;
   }
@@ -26106,7 +26106,7 @@ export class ChannelAdminLogEventActionParticipantLeave extends TypeChannelAdmin
   }
 }
 
-export class ChannelAdminLogEventActionParticipantInvite extends TypeChannelAdminLogEventAction {
+export class ChannelAdminLogEventActionParticipantInvite extends _TypeChannelAdminLogEventAction {
   participant: TypeChannelParticipant;
 
   protected get [id]() {
@@ -26115,13 +26115,13 @@ export class ChannelAdminLogEventActionParticipantInvite extends TypeChannelAdmi
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["participant", TypeChannelParticipant, "ChannelParticipant"],
+      ["participant", _TypeChannelParticipant, "ChannelParticipant"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.participant, TypeChannelParticipant, "ChannelParticipant"],
+      [this.participant, _TypeChannelParticipant, "ChannelParticipant"],
     ];
   }
 
@@ -26131,7 +26131,7 @@ export class ChannelAdminLogEventActionParticipantInvite extends TypeChannelAdmi
   }
 }
 
-export class ChannelAdminLogEventActionParticipantToggleBan extends TypeChannelAdminLogEventAction {
+export class ChannelAdminLogEventActionParticipantToggleBan extends _TypeChannelAdminLogEventAction {
   prevParticipant: TypeChannelParticipant;
   newParticipant: TypeChannelParticipant;
 
@@ -26141,15 +26141,15 @@ export class ChannelAdminLogEventActionParticipantToggleBan extends TypeChannelA
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["prevParticipant", TypeChannelParticipant, "ChannelParticipant"],
-      ["newParticipant", TypeChannelParticipant, "ChannelParticipant"],
+      ["prevParticipant", _TypeChannelParticipant, "ChannelParticipant"],
+      ["newParticipant", _TypeChannelParticipant, "ChannelParticipant"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.prevParticipant, TypeChannelParticipant, "ChannelParticipant"],
-      [this.newParticipant, TypeChannelParticipant, "ChannelParticipant"],
+      [this.prevParticipant, _TypeChannelParticipant, "ChannelParticipant"],
+      [this.newParticipant, _TypeChannelParticipant, "ChannelParticipant"],
     ];
   }
 
@@ -26160,7 +26160,7 @@ export class ChannelAdminLogEventActionParticipantToggleBan extends TypeChannelA
   }
 }
 
-export class ChannelAdminLogEventActionParticipantToggleAdmin extends TypeChannelAdminLogEventAction {
+export class ChannelAdminLogEventActionParticipantToggleAdmin extends _TypeChannelAdminLogEventAction {
   prevParticipant: TypeChannelParticipant;
   newParticipant: TypeChannelParticipant;
 
@@ -26170,15 +26170,15 @@ export class ChannelAdminLogEventActionParticipantToggleAdmin extends TypeChanne
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["prevParticipant", TypeChannelParticipant, "ChannelParticipant"],
-      ["newParticipant", TypeChannelParticipant, "ChannelParticipant"],
+      ["prevParticipant", _TypeChannelParticipant, "ChannelParticipant"],
+      ["newParticipant", _TypeChannelParticipant, "ChannelParticipant"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.prevParticipant, TypeChannelParticipant, "ChannelParticipant"],
-      [this.newParticipant, TypeChannelParticipant, "ChannelParticipant"],
+      [this.prevParticipant, _TypeChannelParticipant, "ChannelParticipant"],
+      [this.newParticipant, _TypeChannelParticipant, "ChannelParticipant"],
     ];
   }
 
@@ -26189,7 +26189,7 @@ export class ChannelAdminLogEventActionParticipantToggleAdmin extends TypeChanne
   }
 }
 
-export class ChannelAdminLogEventActionChangeStickerSet extends TypeChannelAdminLogEventAction {
+export class ChannelAdminLogEventActionChangeStickerSet extends _TypeChannelAdminLogEventAction {
   prevStickerset: TypeInputStickerSet;
   newStickerset: TypeInputStickerSet;
 
@@ -26199,15 +26199,15 @@ export class ChannelAdminLogEventActionChangeStickerSet extends TypeChannelAdmin
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["prevStickerset", TypeInputStickerSet, "InputStickerSet"],
-      ["newStickerset", TypeInputStickerSet, "InputStickerSet"],
+      ["prevStickerset", _TypeInputStickerSet, "InputStickerSet"],
+      ["newStickerset", _TypeInputStickerSet, "InputStickerSet"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.prevStickerset, TypeInputStickerSet, "InputStickerSet"],
-      [this.newStickerset, TypeInputStickerSet, "InputStickerSet"],
+      [this.prevStickerset, _TypeInputStickerSet, "InputStickerSet"],
+      [this.newStickerset, _TypeInputStickerSet, "InputStickerSet"],
     ];
   }
 
@@ -26218,7 +26218,7 @@ export class ChannelAdminLogEventActionChangeStickerSet extends TypeChannelAdmin
   }
 }
 
-export class ChannelAdminLogEventActionTogglePreHistoryHidden extends TypeChannelAdminLogEventAction {
+export class ChannelAdminLogEventActionTogglePreHistoryHidden extends _TypeChannelAdminLogEventAction {
   newValue: boolean;
 
   protected get [id]() {
@@ -26243,7 +26243,7 @@ export class ChannelAdminLogEventActionTogglePreHistoryHidden extends TypeChanne
   }
 }
 
-export class ChannelAdminLogEventActionDefaultBannedRights extends TypeChannelAdminLogEventAction {
+export class ChannelAdminLogEventActionDefaultBannedRights extends _TypeChannelAdminLogEventAction {
   prevBannedRights: TypeChatBannedRights;
   newBannedRights: TypeChatBannedRights;
 
@@ -26253,15 +26253,15 @@ export class ChannelAdminLogEventActionDefaultBannedRights extends TypeChannelAd
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["prevBannedRights", TypeChatBannedRights, "ChatBannedRights"],
-      ["newBannedRights", TypeChatBannedRights, "ChatBannedRights"],
+      ["prevBannedRights", _TypeChatBannedRights, "ChatBannedRights"],
+      ["newBannedRights", _TypeChatBannedRights, "ChatBannedRights"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.prevBannedRights, TypeChatBannedRights, "ChatBannedRights"],
-      [this.newBannedRights, TypeChatBannedRights, "ChatBannedRights"],
+      [this.prevBannedRights, _TypeChatBannedRights, "ChatBannedRights"],
+      [this.newBannedRights, _TypeChatBannedRights, "ChatBannedRights"],
     ];
   }
 
@@ -26272,7 +26272,7 @@ export class ChannelAdminLogEventActionDefaultBannedRights extends TypeChannelAd
   }
 }
 
-export class ChannelAdminLogEventActionStopPoll extends TypeChannelAdminLogEventAction {
+export class ChannelAdminLogEventActionStopPoll extends _TypeChannelAdminLogEventAction {
   message: TypeMessage;
 
   protected get [id]() {
@@ -26281,13 +26281,13 @@ export class ChannelAdminLogEventActionStopPoll extends TypeChannelAdminLogEvent
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["message", TypeMessage, "Message"],
+      ["message", _TypeMessage, "Message"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.message, TypeMessage, "Message"],
+      [this.message, _TypeMessage, "Message"],
     ];
   }
 
@@ -26297,7 +26297,7 @@ export class ChannelAdminLogEventActionStopPoll extends TypeChannelAdminLogEvent
   }
 }
 
-export class ChannelAdminLogEventActionChangeLinkedChat extends TypeChannelAdminLogEventAction {
+export class ChannelAdminLogEventActionChangeLinkedChat extends _TypeChannelAdminLogEventAction {
   prevValue: bigint;
   newValue: bigint;
 
@@ -26326,7 +26326,7 @@ export class ChannelAdminLogEventActionChangeLinkedChat extends TypeChannelAdmin
   }
 }
 
-export class ChannelAdminLogEventActionChangeLocation extends TypeChannelAdminLogEventAction {
+export class ChannelAdminLogEventActionChangeLocation extends _TypeChannelAdminLogEventAction {
   prevValue: TypeChannelLocation;
   newValue: TypeChannelLocation;
 
@@ -26336,15 +26336,15 @@ export class ChannelAdminLogEventActionChangeLocation extends TypeChannelAdminLo
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["prevValue", TypeChannelLocation, "ChannelLocation"],
-      ["newValue", TypeChannelLocation, "ChannelLocation"],
+      ["prevValue", _TypeChannelLocation, "ChannelLocation"],
+      ["newValue", _TypeChannelLocation, "ChannelLocation"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.prevValue, TypeChannelLocation, "ChannelLocation"],
-      [this.newValue, TypeChannelLocation, "ChannelLocation"],
+      [this.prevValue, _TypeChannelLocation, "ChannelLocation"],
+      [this.newValue, _TypeChannelLocation, "ChannelLocation"],
     ];
   }
 
@@ -26355,7 +26355,7 @@ export class ChannelAdminLogEventActionChangeLocation extends TypeChannelAdminLo
   }
 }
 
-export class ChannelAdminLogEventActionToggleSlowMode extends TypeChannelAdminLogEventAction {
+export class ChannelAdminLogEventActionToggleSlowMode extends _TypeChannelAdminLogEventAction {
   prevValue: number;
   newValue: number;
 
@@ -26384,7 +26384,7 @@ export class ChannelAdminLogEventActionToggleSlowMode extends TypeChannelAdminLo
   }
 }
 
-export class ChannelAdminLogEventActionStartGroupCall extends TypeChannelAdminLogEventAction {
+export class ChannelAdminLogEventActionStartGroupCall extends _TypeChannelAdminLogEventAction {
   call: TypeInputGroupCall;
 
   protected get [id]() {
@@ -26393,13 +26393,13 @@ export class ChannelAdminLogEventActionStartGroupCall extends TypeChannelAdminLo
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["call", TypeInputGroupCall, "InputGroupCall"],
+      ["call", _TypeInputGroupCall, "InputGroupCall"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.call, TypeInputGroupCall, "InputGroupCall"],
+      [this.call, _TypeInputGroupCall, "InputGroupCall"],
     ];
   }
 
@@ -26409,7 +26409,7 @@ export class ChannelAdminLogEventActionStartGroupCall extends TypeChannelAdminLo
   }
 }
 
-export class ChannelAdminLogEventActionDiscardGroupCall extends TypeChannelAdminLogEventAction {
+export class ChannelAdminLogEventActionDiscardGroupCall extends _TypeChannelAdminLogEventAction {
   call: TypeInputGroupCall;
 
   protected get [id]() {
@@ -26418,13 +26418,13 @@ export class ChannelAdminLogEventActionDiscardGroupCall extends TypeChannelAdmin
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["call", TypeInputGroupCall, "InputGroupCall"],
+      ["call", _TypeInputGroupCall, "InputGroupCall"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.call, TypeInputGroupCall, "InputGroupCall"],
+      [this.call, _TypeInputGroupCall, "InputGroupCall"],
     ];
   }
 
@@ -26434,7 +26434,7 @@ export class ChannelAdminLogEventActionDiscardGroupCall extends TypeChannelAdmin
   }
 }
 
-export class ChannelAdminLogEventActionParticipantMute extends TypeChannelAdminLogEventAction {
+export class ChannelAdminLogEventActionParticipantMute extends _TypeChannelAdminLogEventAction {
   participant: TypeGroupCallParticipant;
 
   protected get [id]() {
@@ -26443,13 +26443,13 @@ export class ChannelAdminLogEventActionParticipantMute extends TypeChannelAdminL
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["participant", TypeGroupCallParticipant, "GroupCallParticipant"],
+      ["participant", _TypeGroupCallParticipant, "GroupCallParticipant"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.participant, TypeGroupCallParticipant, "GroupCallParticipant"],
+      [this.participant, _TypeGroupCallParticipant, "GroupCallParticipant"],
     ];
   }
 
@@ -26459,7 +26459,7 @@ export class ChannelAdminLogEventActionParticipantMute extends TypeChannelAdminL
   }
 }
 
-export class ChannelAdminLogEventActionParticipantUnmute extends TypeChannelAdminLogEventAction {
+export class ChannelAdminLogEventActionParticipantUnmute extends _TypeChannelAdminLogEventAction {
   participant: TypeGroupCallParticipant;
 
   protected get [id]() {
@@ -26468,13 +26468,13 @@ export class ChannelAdminLogEventActionParticipantUnmute extends TypeChannelAdmi
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["participant", TypeGroupCallParticipant, "GroupCallParticipant"],
+      ["participant", _TypeGroupCallParticipant, "GroupCallParticipant"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.participant, TypeGroupCallParticipant, "GroupCallParticipant"],
+      [this.participant, _TypeGroupCallParticipant, "GroupCallParticipant"],
     ];
   }
 
@@ -26484,7 +26484,7 @@ export class ChannelAdminLogEventActionParticipantUnmute extends TypeChannelAdmi
   }
 }
 
-export class ChannelAdminLogEventActionToggleGroupCallSetting extends TypeChannelAdminLogEventAction {
+export class ChannelAdminLogEventActionToggleGroupCallSetting extends _TypeChannelAdminLogEventAction {
   joinMuted: boolean;
 
   protected get [id]() {
@@ -26509,7 +26509,7 @@ export class ChannelAdminLogEventActionToggleGroupCallSetting extends TypeChanne
   }
 }
 
-export class ChannelAdminLogEventActionParticipantJoinByInvite extends TypeChannelAdminLogEventAction {
+export class ChannelAdminLogEventActionParticipantJoinByInvite extends _TypeChannelAdminLogEventAction {
   viaChatlist?: true;
   invite: TypeExportedChatInvite;
 
@@ -26521,7 +26521,7 @@ export class ChannelAdminLogEventActionParticipantJoinByInvite extends TypeChann
     return [
       ["flags", flags, "#"],
       ["viaChatlist", "true", "flags.0?true"],
-      ["invite", TypeExportedChatInvite, "ExportedChatInvite"],
+      ["invite", _TypeExportedChatInvite, "ExportedChatInvite"],
     ];
   }
 
@@ -26529,7 +26529,7 @@ export class ChannelAdminLogEventActionParticipantJoinByInvite extends TypeChann
     return [
       ["flags", flags, "#"],
       [this.viaChatlist ?? null, "true", "flags.0?true"],
-      [this.invite, TypeExportedChatInvite, "ExportedChatInvite"],
+      [this.invite, _TypeExportedChatInvite, "ExportedChatInvite"],
     ];
   }
 
@@ -26540,7 +26540,7 @@ export class ChannelAdminLogEventActionParticipantJoinByInvite extends TypeChann
   }
 }
 
-export class ChannelAdminLogEventActionExportedInviteDelete extends TypeChannelAdminLogEventAction {
+export class ChannelAdminLogEventActionExportedInviteDelete extends _TypeChannelAdminLogEventAction {
   invite: TypeExportedChatInvite;
 
   protected get [id]() {
@@ -26549,13 +26549,13 @@ export class ChannelAdminLogEventActionExportedInviteDelete extends TypeChannelA
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["invite", TypeExportedChatInvite, "ExportedChatInvite"],
+      ["invite", _TypeExportedChatInvite, "ExportedChatInvite"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.invite, TypeExportedChatInvite, "ExportedChatInvite"],
+      [this.invite, _TypeExportedChatInvite, "ExportedChatInvite"],
     ];
   }
 
@@ -26565,7 +26565,7 @@ export class ChannelAdminLogEventActionExportedInviteDelete extends TypeChannelA
   }
 }
 
-export class ChannelAdminLogEventActionExportedInviteRevoke extends TypeChannelAdminLogEventAction {
+export class ChannelAdminLogEventActionExportedInviteRevoke extends _TypeChannelAdminLogEventAction {
   invite: TypeExportedChatInvite;
 
   protected get [id]() {
@@ -26574,13 +26574,13 @@ export class ChannelAdminLogEventActionExportedInviteRevoke extends TypeChannelA
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["invite", TypeExportedChatInvite, "ExportedChatInvite"],
+      ["invite", _TypeExportedChatInvite, "ExportedChatInvite"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.invite, TypeExportedChatInvite, "ExportedChatInvite"],
+      [this.invite, _TypeExportedChatInvite, "ExportedChatInvite"],
     ];
   }
 
@@ -26590,7 +26590,7 @@ export class ChannelAdminLogEventActionExportedInviteRevoke extends TypeChannelA
   }
 }
 
-export class ChannelAdminLogEventActionExportedInviteEdit extends TypeChannelAdminLogEventAction {
+export class ChannelAdminLogEventActionExportedInviteEdit extends _TypeChannelAdminLogEventAction {
   prevInvite: TypeExportedChatInvite;
   newInvite: TypeExportedChatInvite;
 
@@ -26600,15 +26600,15 @@ export class ChannelAdminLogEventActionExportedInviteEdit extends TypeChannelAdm
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["prevInvite", TypeExportedChatInvite, "ExportedChatInvite"],
-      ["newInvite", TypeExportedChatInvite, "ExportedChatInvite"],
+      ["prevInvite", _TypeExportedChatInvite, "ExportedChatInvite"],
+      ["newInvite", _TypeExportedChatInvite, "ExportedChatInvite"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.prevInvite, TypeExportedChatInvite, "ExportedChatInvite"],
-      [this.newInvite, TypeExportedChatInvite, "ExportedChatInvite"],
+      [this.prevInvite, _TypeExportedChatInvite, "ExportedChatInvite"],
+      [this.newInvite, _TypeExportedChatInvite, "ExportedChatInvite"],
     ];
   }
 
@@ -26619,7 +26619,7 @@ export class ChannelAdminLogEventActionExportedInviteEdit extends TypeChannelAdm
   }
 }
 
-export class ChannelAdminLogEventActionParticipantVolume extends TypeChannelAdminLogEventAction {
+export class ChannelAdminLogEventActionParticipantVolume extends _TypeChannelAdminLogEventAction {
   participant: TypeGroupCallParticipant;
 
   protected get [id]() {
@@ -26628,13 +26628,13 @@ export class ChannelAdminLogEventActionParticipantVolume extends TypeChannelAdmi
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["participant", TypeGroupCallParticipant, "GroupCallParticipant"],
+      ["participant", _TypeGroupCallParticipant, "GroupCallParticipant"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.participant, TypeGroupCallParticipant, "GroupCallParticipant"],
+      [this.participant, _TypeGroupCallParticipant, "GroupCallParticipant"],
     ];
   }
 
@@ -26644,7 +26644,7 @@ export class ChannelAdminLogEventActionParticipantVolume extends TypeChannelAdmi
   }
 }
 
-export class ChannelAdminLogEventActionChangeHistoryTTL extends TypeChannelAdminLogEventAction {
+export class ChannelAdminLogEventActionChangeHistoryTTL extends _TypeChannelAdminLogEventAction {
   prevValue: number;
   newValue: number;
 
@@ -26673,7 +26673,7 @@ export class ChannelAdminLogEventActionChangeHistoryTTL extends TypeChannelAdmin
   }
 }
 
-export class ChannelAdminLogEventActionParticipantJoinByRequest extends TypeChannelAdminLogEventAction {
+export class ChannelAdminLogEventActionParticipantJoinByRequest extends _TypeChannelAdminLogEventAction {
   invite: TypeExportedChatInvite;
   approvedBy: bigint;
 
@@ -26683,14 +26683,14 @@ export class ChannelAdminLogEventActionParticipantJoinByRequest extends TypeChan
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["invite", TypeExportedChatInvite, "ExportedChatInvite"],
+      ["invite", _TypeExportedChatInvite, "ExportedChatInvite"],
       ["approvedBy", "bigint", "long"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.invite, TypeExportedChatInvite, "ExportedChatInvite"],
+      [this.invite, _TypeExportedChatInvite, "ExportedChatInvite"],
       [this.approvedBy, "bigint", "long"],
     ];
   }
@@ -26702,7 +26702,7 @@ export class ChannelAdminLogEventActionParticipantJoinByRequest extends TypeChan
   }
 }
 
-export class ChannelAdminLogEventActionToggleNoForwards extends TypeChannelAdminLogEventAction {
+export class ChannelAdminLogEventActionToggleNoForwards extends _TypeChannelAdminLogEventAction {
   newValue: boolean;
 
   protected get [id]() {
@@ -26727,7 +26727,7 @@ export class ChannelAdminLogEventActionToggleNoForwards extends TypeChannelAdmin
   }
 }
 
-export class ChannelAdminLogEventActionSendMessage extends TypeChannelAdminLogEventAction {
+export class ChannelAdminLogEventActionSendMessage extends _TypeChannelAdminLogEventAction {
   message: TypeMessage;
 
   protected get [id]() {
@@ -26736,13 +26736,13 @@ export class ChannelAdminLogEventActionSendMessage extends TypeChannelAdminLogEv
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["message", TypeMessage, "Message"],
+      ["message", _TypeMessage, "Message"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.message, TypeMessage, "Message"],
+      [this.message, _TypeMessage, "Message"],
     ];
   }
 
@@ -26752,7 +26752,7 @@ export class ChannelAdminLogEventActionSendMessage extends TypeChannelAdminLogEv
   }
 }
 
-export class ChannelAdminLogEventActionChangeAvailableReactions extends TypeChannelAdminLogEventAction {
+export class ChannelAdminLogEventActionChangeAvailableReactions extends _TypeChannelAdminLogEventAction {
   prevValue: TypeChatReactions;
   newValue: TypeChatReactions;
 
@@ -26762,15 +26762,15 @@ export class ChannelAdminLogEventActionChangeAvailableReactions extends TypeChan
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["prevValue", TypeChatReactions, "ChatReactions"],
-      ["newValue", TypeChatReactions, "ChatReactions"],
+      ["prevValue", _TypeChatReactions, "ChatReactions"],
+      ["newValue", _TypeChatReactions, "ChatReactions"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.prevValue, TypeChatReactions, "ChatReactions"],
-      [this.newValue, TypeChatReactions, "ChatReactions"],
+      [this.prevValue, _TypeChatReactions, "ChatReactions"],
+      [this.newValue, _TypeChatReactions, "ChatReactions"],
     ];
   }
 
@@ -26781,7 +26781,7 @@ export class ChannelAdminLogEventActionChangeAvailableReactions extends TypeChan
   }
 }
 
-export class ChannelAdminLogEventActionChangeUsernames extends TypeChannelAdminLogEventAction {
+export class ChannelAdminLogEventActionChangeUsernames extends _TypeChannelAdminLogEventAction {
   prevValue: Array<string>;
   newValue: Array<string>;
 
@@ -26810,7 +26810,7 @@ export class ChannelAdminLogEventActionChangeUsernames extends TypeChannelAdminL
   }
 }
 
-export class ChannelAdminLogEventActionToggleForum extends TypeChannelAdminLogEventAction {
+export class ChannelAdminLogEventActionToggleForum extends _TypeChannelAdminLogEventAction {
   newValue: boolean;
 
   protected get [id]() {
@@ -26835,7 +26835,7 @@ export class ChannelAdminLogEventActionToggleForum extends TypeChannelAdminLogEv
   }
 }
 
-export class ChannelAdminLogEventActionCreateTopic extends TypeChannelAdminLogEventAction {
+export class ChannelAdminLogEventActionCreateTopic extends _TypeChannelAdminLogEventAction {
   topic: TypeForumTopic;
 
   protected get [id]() {
@@ -26844,13 +26844,13 @@ export class ChannelAdminLogEventActionCreateTopic extends TypeChannelAdminLogEv
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["topic", TypeForumTopic, "ForumTopic"],
+      ["topic", _TypeForumTopic, "ForumTopic"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.topic, TypeForumTopic, "ForumTopic"],
+      [this.topic, _TypeForumTopic, "ForumTopic"],
     ];
   }
 
@@ -26860,7 +26860,7 @@ export class ChannelAdminLogEventActionCreateTopic extends TypeChannelAdminLogEv
   }
 }
 
-export class ChannelAdminLogEventActionEditTopic extends TypeChannelAdminLogEventAction {
+export class ChannelAdminLogEventActionEditTopic extends _TypeChannelAdminLogEventAction {
   prevTopic: TypeForumTopic;
   newTopic: TypeForumTopic;
 
@@ -26870,15 +26870,15 @@ export class ChannelAdminLogEventActionEditTopic extends TypeChannelAdminLogEven
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["prevTopic", TypeForumTopic, "ForumTopic"],
-      ["newTopic", TypeForumTopic, "ForumTopic"],
+      ["prevTopic", _TypeForumTopic, "ForumTopic"],
+      ["newTopic", _TypeForumTopic, "ForumTopic"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.prevTopic, TypeForumTopic, "ForumTopic"],
-      [this.newTopic, TypeForumTopic, "ForumTopic"],
+      [this.prevTopic, _TypeForumTopic, "ForumTopic"],
+      [this.newTopic, _TypeForumTopic, "ForumTopic"],
     ];
   }
 
@@ -26889,7 +26889,7 @@ export class ChannelAdminLogEventActionEditTopic extends TypeChannelAdminLogEven
   }
 }
 
-export class ChannelAdminLogEventActionDeleteTopic extends TypeChannelAdminLogEventAction {
+export class ChannelAdminLogEventActionDeleteTopic extends _TypeChannelAdminLogEventAction {
   topic: TypeForumTopic;
 
   protected get [id]() {
@@ -26898,13 +26898,13 @@ export class ChannelAdminLogEventActionDeleteTopic extends TypeChannelAdminLogEv
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["topic", TypeForumTopic, "ForumTopic"],
+      ["topic", _TypeForumTopic, "ForumTopic"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.topic, TypeForumTopic, "ForumTopic"],
+      [this.topic, _TypeForumTopic, "ForumTopic"],
     ];
   }
 
@@ -26914,7 +26914,7 @@ export class ChannelAdminLogEventActionDeleteTopic extends TypeChannelAdminLogEv
   }
 }
 
-export class ChannelAdminLogEventActionPinTopic extends TypeChannelAdminLogEventAction {
+export class ChannelAdminLogEventActionPinTopic extends _TypeChannelAdminLogEventAction {
   prevTopic?: TypeForumTopic;
   newTopic?: TypeForumTopic;
 
@@ -26925,16 +26925,16 @@ export class ChannelAdminLogEventActionPinTopic extends TypeChannelAdminLogEvent
   static get [paramDesc](): ParamDesc {
     return [
       ["flags", flags, "#"],
-      ["prevTopic", TypeForumTopic, "flags.0?ForumTopic"],
-      ["newTopic", TypeForumTopic, "flags.1?ForumTopic"],
+      ["prevTopic", _TypeForumTopic, "flags.0?ForumTopic"],
+      ["newTopic", _TypeForumTopic, "flags.1?ForumTopic"],
     ];
   }
 
   protected get [params](): Params {
     return [
       ["flags", flags, "#"],
-      [this.prevTopic ?? null, TypeForumTopic, "flags.0?ForumTopic"],
-      [this.newTopic ?? null, TypeForumTopic, "flags.1?ForumTopic"],
+      [this.prevTopic ?? null, _TypeForumTopic, "flags.0?ForumTopic"],
+      [this.newTopic ?? null, _TypeForumTopic, "flags.1?ForumTopic"],
     ];
   }
 
@@ -26945,7 +26945,7 @@ export class ChannelAdminLogEventActionPinTopic extends TypeChannelAdminLogEvent
   }
 }
 
-export class ChannelAdminLogEventActionToggleAntiSpam extends TypeChannelAdminLogEventAction {
+export class ChannelAdminLogEventActionToggleAntiSpam extends _TypeChannelAdminLogEventAction {
   newValue: boolean;
 
   protected get [id]() {
@@ -26970,7 +26970,7 @@ export class ChannelAdminLogEventActionToggleAntiSpam extends TypeChannelAdminLo
   }
 }
 
-export class ChannelAdminLogEvent extends TypeChannelAdminLogEvent {
+export class ChannelAdminLogEvent extends _TypeChannelAdminLogEvent {
   id: bigint;
   date: number;
   userId: bigint;
@@ -26985,7 +26985,7 @@ export class ChannelAdminLogEvent extends TypeChannelAdminLogEvent {
       ["id", "bigint", "long"],
       ["date", "number", "int"],
       ["userId", "bigint", "long"],
-      ["action", TypeChannelAdminLogEventAction, "ChannelAdminLogEventAction"],
+      ["action", _TypeChannelAdminLogEventAction, "ChannelAdminLogEventAction"],
     ];
   }
 
@@ -26994,7 +26994,7 @@ export class ChannelAdminLogEvent extends TypeChannelAdminLogEvent {
       [this.id, "bigint", "long"],
       [this.date, "number", "int"],
       [this.userId, "bigint", "long"],
-      [this.action, TypeChannelAdminLogEventAction, "ChannelAdminLogEventAction"],
+      [this.action, _TypeChannelAdminLogEventAction, "ChannelAdminLogEventAction"],
     ];
   }
 
@@ -27007,7 +27007,7 @@ export class ChannelAdminLogEvent extends TypeChannelAdminLogEvent {
   }
 }
 
-export class ChannelsAdminLogResults extends TypeChannelsAdminLogResults {
+export class ChannelsAdminLogResults extends _TypeChannelsAdminLogResults {
   events: Array<TypeChannelAdminLogEvent>;
   chats: Array<TypeChat>;
   users: Array<TypeUser>;
@@ -27018,17 +27018,17 @@ export class ChannelsAdminLogResults extends TypeChannelsAdminLogResults {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["events", [TypeChannelAdminLogEvent], "Vector<ChannelAdminLogEvent>"],
-      ["chats", [TypeChat], "Vector<Chat>"],
-      ["users", [TypeUser], "Vector<User>"],
+      ["events", [_TypeChannelAdminLogEvent], "Vector<ChannelAdminLogEvent>"],
+      ["chats", [_TypeChat], "Vector<Chat>"],
+      ["users", [_TypeUser], "Vector<User>"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.events, [TypeChannelAdminLogEvent], "Vector<ChannelAdminLogEvent>"],
-      [this.chats, [TypeChat], "Vector<Chat>"],
-      [this.users, [TypeUser], "Vector<User>"],
+      [this.events, [_TypeChannelAdminLogEvent], "Vector<ChannelAdminLogEvent>"],
+      [this.chats, [_TypeChat], "Vector<Chat>"],
+      [this.users, [_TypeUser], "Vector<User>"],
     ];
   }
 
@@ -27040,7 +27040,7 @@ export class ChannelsAdminLogResults extends TypeChannelsAdminLogResults {
   }
 }
 
-export class ChannelAdminLogEventsFilter extends TypeChannelAdminLogEventsFilter {
+export class ChannelAdminLogEventsFilter extends _TypeChannelAdminLogEventsFilter {
   join?: true;
   leave?: true;
   invite?: true;
@@ -27135,7 +27135,7 @@ export class ChannelAdminLogEventsFilter extends TypeChannelAdminLogEventsFilter
   }
 }
 
-export class PopularContact extends TypePopularContact {
+export class PopularContact extends _TypePopularContact {
   clientId: bigint;
   importers: number;
 
@@ -27164,7 +27164,7 @@ export class PopularContact extends TypePopularContact {
   }
 }
 
-export class MessagesFavedStickersNotModified extends TypeMessagesFavedStickers {
+export class MessagesFavedStickersNotModified extends _TypeMessagesFavedStickers {
   protected get [id]() {
     return 0x9E8FA6D3;
   }
@@ -27182,7 +27182,7 @@ export class MessagesFavedStickersNotModified extends TypeMessagesFavedStickers 
   }
 }
 
-export class MessagesFavedStickers extends TypeMessagesFavedStickers {
+export class MessagesFavedStickers extends _TypeMessagesFavedStickers {
   hash: bigint;
   packs: Array<TypeStickerPack>;
   stickers: Array<TypeDocument>;
@@ -27194,16 +27194,16 @@ export class MessagesFavedStickers extends TypeMessagesFavedStickers {
   static get [paramDesc](): ParamDesc {
     return [
       ["hash", "bigint", "long"],
-      ["packs", [TypeStickerPack], "Vector<StickerPack>"],
-      ["stickers", [TypeDocument], "Vector<Document>"],
+      ["packs", [_TypeStickerPack], "Vector<StickerPack>"],
+      ["stickers", [_TypeDocument], "Vector<Document>"],
     ];
   }
 
   protected get [params](): Params {
     return [
       [this.hash, "bigint", "long"],
-      [this.packs, [TypeStickerPack], "Vector<StickerPack>"],
-      [this.stickers, [TypeDocument], "Vector<Document>"],
+      [this.packs, [_TypeStickerPack], "Vector<StickerPack>"],
+      [this.stickers, [_TypeDocument], "Vector<Document>"],
     ];
   }
 
@@ -27215,7 +27215,7 @@ export class MessagesFavedStickers extends TypeMessagesFavedStickers {
   }
 }
 
-export class RecentMeURLUnknown extends TypeRecentMeURL {
+export class RecentMeURLUnknown extends _TypeRecentMeURL {
   url: string;
 
   protected get [id]() {
@@ -27240,7 +27240,7 @@ export class RecentMeURLUnknown extends TypeRecentMeURL {
   }
 }
 
-export class RecentMeURLUser extends TypeRecentMeURL {
+export class RecentMeURLUser extends _TypeRecentMeURL {
   url: string;
   userId: bigint;
 
@@ -27269,7 +27269,7 @@ export class RecentMeURLUser extends TypeRecentMeURL {
   }
 }
 
-export class RecentMeURLChat extends TypeRecentMeURL {
+export class RecentMeURLChat extends _TypeRecentMeURL {
   url: string;
   chatId: bigint;
 
@@ -27298,7 +27298,7 @@ export class RecentMeURLChat extends TypeRecentMeURL {
   }
 }
 
-export class RecentMeURLChatInvite extends TypeRecentMeURL {
+export class RecentMeURLChatInvite extends _TypeRecentMeURL {
   url: string;
   chatInvite: TypeChatInvite;
 
@@ -27309,14 +27309,14 @@ export class RecentMeURLChatInvite extends TypeRecentMeURL {
   static get [paramDesc](): ParamDesc {
     return [
       ["url", "string", "string"],
-      ["chatInvite", TypeChatInvite, "ChatInvite"],
+      ["chatInvite", _TypeChatInvite, "ChatInvite"],
     ];
   }
 
   protected get [params](): Params {
     return [
       [this.url, "string", "string"],
-      [this.chatInvite, TypeChatInvite, "ChatInvite"],
+      [this.chatInvite, _TypeChatInvite, "ChatInvite"],
     ];
   }
 
@@ -27327,7 +27327,7 @@ export class RecentMeURLChatInvite extends TypeRecentMeURL {
   }
 }
 
-export class RecentMeURLStickerSet extends TypeRecentMeURL {
+export class RecentMeURLStickerSet extends _TypeRecentMeURL {
   url: string;
   set: TypeStickerSetCovered;
 
@@ -27338,14 +27338,14 @@ export class RecentMeURLStickerSet extends TypeRecentMeURL {
   static get [paramDesc](): ParamDesc {
     return [
       ["url", "string", "string"],
-      ["set", TypeStickerSetCovered, "StickerSetCovered"],
+      ["set", _TypeStickerSetCovered, "StickerSetCovered"],
     ];
   }
 
   protected get [params](): Params {
     return [
       [this.url, "string", "string"],
-      [this.set, TypeStickerSetCovered, "StickerSetCovered"],
+      [this.set, _TypeStickerSetCovered, "StickerSetCovered"],
     ];
   }
 
@@ -27356,7 +27356,7 @@ export class RecentMeURLStickerSet extends TypeRecentMeURL {
   }
 }
 
-export class HelpRecentMeURLs extends TypeHelpRecentMeURLs {
+export class HelpRecentMeURLs extends _TypeHelpRecentMeURLs {
   urls: Array<TypeRecentMeURL>;
   chats: Array<TypeChat>;
   users: Array<TypeUser>;
@@ -27367,17 +27367,17 @@ export class HelpRecentMeURLs extends TypeHelpRecentMeURLs {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["urls", [TypeRecentMeURL], "Vector<RecentMeUrl>"],
-      ["chats", [TypeChat], "Vector<Chat>"],
-      ["users", [TypeUser], "Vector<User>"],
+      ["urls", [_TypeRecentMeURL], "Vector<RecentMeUrl>"],
+      ["chats", [_TypeChat], "Vector<Chat>"],
+      ["users", [_TypeUser], "Vector<User>"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.urls, [TypeRecentMeURL], "Vector<RecentMeUrl>"],
-      [this.chats, [TypeChat], "Vector<Chat>"],
-      [this.users, [TypeUser], "Vector<User>"],
+      [this.urls, [_TypeRecentMeURL], "Vector<RecentMeUrl>"],
+      [this.chats, [_TypeChat], "Vector<Chat>"],
+      [this.users, [_TypeUser], "Vector<User>"],
     ];
   }
 
@@ -27389,7 +27389,7 @@ export class HelpRecentMeURLs extends TypeHelpRecentMeURLs {
   }
 }
 
-export class InputSingleMedia extends TypeInputSingleMedia {
+export class InputSingleMedia extends _TypeInputSingleMedia {
   media: TypeInputMedia;
   randomId: bigint;
   message: string;
@@ -27402,20 +27402,20 @@ export class InputSingleMedia extends TypeInputSingleMedia {
   static get [paramDesc](): ParamDesc {
     return [
       ["flags", flags, "#"],
-      ["media", TypeInputMedia, "InputMedia"],
+      ["media", _TypeInputMedia, "InputMedia"],
       ["randomId", "bigint", "long"],
       ["message", "string", "string"],
-      ["entities", [TypeMessageEntity], "flags.0?Vector<MessageEntity>"],
+      ["entities", [_TypeMessageEntity], "flags.0?Vector<MessageEntity>"],
     ];
   }
 
   protected get [params](): Params {
     return [
       ["flags", flags, "#"],
-      [this.media, TypeInputMedia, "InputMedia"],
+      [this.media, _TypeInputMedia, "InputMedia"],
       [this.randomId, "bigint", "long"],
       [this.message, "string", "string"],
-      [this.entities ?? null, [TypeMessageEntity], "flags.0?Vector<MessageEntity>"],
+      [this.entities ?? null, [_TypeMessageEntity], "flags.0?Vector<MessageEntity>"],
     ];
   }
 
@@ -27428,7 +27428,7 @@ export class InputSingleMedia extends TypeInputSingleMedia {
   }
 }
 
-export class WebAuthorization extends TypeWebAuthorization {
+export class WebAuthorization extends _TypeWebAuthorization {
   hash: bigint;
   botId: bigint;
   domain: string;
@@ -27485,7 +27485,7 @@ export class WebAuthorization extends TypeWebAuthorization {
   }
 }
 
-export class AccountWebAuthorizations extends TypeAccountWebAuthorizations {
+export class AccountWebAuthorizations extends _TypeAccountWebAuthorizations {
   authorizations: Array<TypeWebAuthorization>;
   users: Array<TypeUser>;
 
@@ -27495,15 +27495,15 @@ export class AccountWebAuthorizations extends TypeAccountWebAuthorizations {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["authorizations", [TypeWebAuthorization], "Vector<WebAuthorization>"],
-      ["users", [TypeUser], "Vector<User>"],
+      ["authorizations", [_TypeWebAuthorization], "Vector<WebAuthorization>"],
+      ["users", [_TypeUser], "Vector<User>"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.authorizations, [TypeWebAuthorization], "Vector<WebAuthorization>"],
-      [this.users, [TypeUser], "Vector<User>"],
+      [this.authorizations, [_TypeWebAuthorization], "Vector<WebAuthorization>"],
+      [this.users, [_TypeUser], "Vector<User>"],
     ];
   }
 
@@ -27514,7 +27514,7 @@ export class AccountWebAuthorizations extends TypeAccountWebAuthorizations {
   }
 }
 
-export class InputMessageID extends TypeInputMessage {
+export class InputMessageID extends _TypeInputMessage {
   id: number;
 
   protected get [id]() {
@@ -27539,7 +27539,7 @@ export class InputMessageID extends TypeInputMessage {
   }
 }
 
-export class InputMessageReplyTo extends TypeInputMessage {
+export class InputMessageReplyTo extends _TypeInputMessage {
   id: number;
 
   protected get [id]() {
@@ -27564,7 +27564,7 @@ export class InputMessageReplyTo extends TypeInputMessage {
   }
 }
 
-export class InputMessagePinned extends TypeInputMessage {
+export class InputMessagePinned extends _TypeInputMessage {
   protected get [id]() {
     return 0x86872538;
   }
@@ -27582,7 +27582,7 @@ export class InputMessagePinned extends TypeInputMessage {
   }
 }
 
-export class InputMessageCallbackQuery extends TypeInputMessage {
+export class InputMessageCallbackQuery extends _TypeInputMessage {
   id: number;
   queryId: bigint;
 
@@ -27611,7 +27611,7 @@ export class InputMessageCallbackQuery extends TypeInputMessage {
   }
 }
 
-export class InputDialogPeer extends TypeInputDialogPeer {
+export class InputDialogPeer extends _TypeInputDialogPeer {
   peer: TypeInputPeer;
 
   protected get [id]() {
@@ -27620,13 +27620,13 @@ export class InputDialogPeer extends TypeInputDialogPeer {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["peer", TypeInputPeer, "InputPeer"],
+      ["peer", _TypeInputPeer, "InputPeer"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.peer, TypeInputPeer, "InputPeer"],
+      [this.peer, _TypeInputPeer, "InputPeer"],
     ];
   }
 
@@ -27636,7 +27636,7 @@ export class InputDialogPeer extends TypeInputDialogPeer {
   }
 }
 
-export class InputDialogPeerFolder extends TypeInputDialogPeer {
+export class InputDialogPeerFolder extends _TypeInputDialogPeer {
   folderId: number;
 
   protected get [id]() {
@@ -27661,7 +27661,7 @@ export class InputDialogPeerFolder extends TypeInputDialogPeer {
   }
 }
 
-export class DialogPeer extends TypeDialogPeer {
+export class DialogPeer extends _TypeDialogPeer {
   peer: TypePeer;
 
   protected get [id]() {
@@ -27670,13 +27670,13 @@ export class DialogPeer extends TypeDialogPeer {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["peer", TypePeer, "Peer"],
+      ["peer", _TypePeer, "Peer"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.peer, TypePeer, "Peer"],
+      [this.peer, _TypePeer, "Peer"],
     ];
   }
 
@@ -27686,7 +27686,7 @@ export class DialogPeer extends TypeDialogPeer {
   }
 }
 
-export class DialogPeerFolder extends TypeDialogPeer {
+export class DialogPeerFolder extends _TypeDialogPeer {
   folderId: number;
 
   protected get [id]() {
@@ -27711,7 +27711,7 @@ export class DialogPeerFolder extends TypeDialogPeer {
   }
 }
 
-export class MessagesFoundStickerSetsNotModified extends TypeMessagesFoundStickerSets {
+export class MessagesFoundStickerSetsNotModified extends _TypeMessagesFoundStickerSets {
   protected get [id]() {
     return 0x0D54B65D;
   }
@@ -27729,7 +27729,7 @@ export class MessagesFoundStickerSetsNotModified extends TypeMessagesFoundSticke
   }
 }
 
-export class MessagesFoundStickerSets extends TypeMessagesFoundStickerSets {
+export class MessagesFoundStickerSets extends _TypeMessagesFoundStickerSets {
   hash: bigint;
   sets: Array<TypeStickerSetCovered>;
 
@@ -27740,14 +27740,14 @@ export class MessagesFoundStickerSets extends TypeMessagesFoundStickerSets {
   static get [paramDesc](): ParamDesc {
     return [
       ["hash", "bigint", "long"],
-      ["sets", [TypeStickerSetCovered], "Vector<StickerSetCovered>"],
+      ["sets", [_TypeStickerSetCovered], "Vector<StickerSetCovered>"],
     ];
   }
 
   protected get [params](): Params {
     return [
       [this.hash, "bigint", "long"],
-      [this.sets, [TypeStickerSetCovered], "Vector<StickerSetCovered>"],
+      [this.sets, [_TypeStickerSetCovered], "Vector<StickerSetCovered>"],
     ];
   }
 
@@ -27758,7 +27758,7 @@ export class MessagesFoundStickerSets extends TypeMessagesFoundStickerSets {
   }
 }
 
-export class FileHash extends TypeFileHash {
+export class FileHash extends _TypeFileHash {
   offset: bigint;
   limit: number;
   hash: Uint8Array;
@@ -27791,7 +27791,7 @@ export class FileHash extends TypeFileHash {
   }
 }
 
-export class InputClientProxy extends TypeInputClientProxy {
+export class InputClientProxy extends _TypeInputClientProxy {
   address: string;
   port: number;
 
@@ -27820,7 +27820,7 @@ export class InputClientProxy extends TypeInputClientProxy {
   }
 }
 
-export class HelpTermsOfServiceUpdateEmpty extends TypeHelpTermsOfServiceUpdate {
+export class HelpTermsOfServiceUpdateEmpty extends _TypeHelpTermsOfServiceUpdate {
   expires: number;
 
   protected get [id]() {
@@ -27845,7 +27845,7 @@ export class HelpTermsOfServiceUpdateEmpty extends TypeHelpTermsOfServiceUpdate 
   }
 }
 
-export class HelpTermsOfServiceUpdate extends TypeHelpTermsOfServiceUpdate {
+export class HelpTermsOfServiceUpdate extends _TypeHelpTermsOfServiceUpdate {
   expires: number;
   termsOfService: TypeHelpTermsOfService;
 
@@ -27856,14 +27856,14 @@ export class HelpTermsOfServiceUpdate extends TypeHelpTermsOfServiceUpdate {
   static get [paramDesc](): ParamDesc {
     return [
       ["expires", "number", "int"],
-      ["termsOfService", TypeHelpTermsOfService, "help.TermsOfService"],
+      ["termsOfService", _TypeHelpTermsOfService, "help.TermsOfService"],
     ];
   }
 
   protected get [params](): Params {
     return [
       [this.expires, "number", "int"],
-      [this.termsOfService, TypeHelpTermsOfService, "help.TermsOfService"],
+      [this.termsOfService, _TypeHelpTermsOfService, "help.TermsOfService"],
     ];
   }
 
@@ -27874,7 +27874,7 @@ export class HelpTermsOfServiceUpdate extends TypeHelpTermsOfServiceUpdate {
   }
 }
 
-export class InputSecureFileUploaded extends TypeInputSecureFile {
+export class InputSecureFileUploaded extends _TypeInputSecureFile {
   id: bigint;
   parts: number;
   md5Checksum: string;
@@ -27915,7 +27915,7 @@ export class InputSecureFileUploaded extends TypeInputSecureFile {
   }
 }
 
-export class InputSecureFile extends TypeInputSecureFile {
+export class InputSecureFile extends _TypeInputSecureFile {
   id: bigint;
   accessHash: bigint;
 
@@ -27944,7 +27944,7 @@ export class InputSecureFile extends TypeInputSecureFile {
   }
 }
 
-export class SecureFileEmpty extends TypeSecureFile {
+export class SecureFileEmpty extends _TypeSecureFile {
   protected get [id]() {
     return 0x64199744;
   }
@@ -27962,7 +27962,7 @@ export class SecureFileEmpty extends TypeSecureFile {
   }
 }
 
-export class SecureFile extends TypeSecureFile {
+export class SecureFile extends _TypeSecureFile {
   id: bigint;
   accessHash: bigint;
   size: bigint;
@@ -28011,7 +28011,7 @@ export class SecureFile extends TypeSecureFile {
   }
 }
 
-export class SecureData extends TypeSecureData {
+export class SecureData extends _TypeSecureData {
   data: Uint8Array;
   dataHash: Uint8Array;
   secret: Uint8Array;
@@ -28044,7 +28044,7 @@ export class SecureData extends TypeSecureData {
   }
 }
 
-export class SecurePlainPhone extends TypeSecurePlainData {
+export class SecurePlainPhone extends _TypeSecurePlainData {
   phone: string;
 
   protected get [id]() {
@@ -28069,7 +28069,7 @@ export class SecurePlainPhone extends TypeSecurePlainData {
   }
 }
 
-export class SecurePlainEmail extends TypeSecurePlainData {
+export class SecurePlainEmail extends _TypeSecurePlainData {
   email: string;
 
   protected get [id]() {
@@ -28094,7 +28094,7 @@ export class SecurePlainEmail extends TypeSecurePlainData {
   }
 }
 
-export class SecureValueTypePersonalDetails extends TypeSecureValueType {
+export class SecureValueTypePersonalDetails extends _TypeSecureValueType {
   protected get [id]() {
     return 0x9D2A81E3;
   }
@@ -28112,7 +28112,7 @@ export class SecureValueTypePersonalDetails extends TypeSecureValueType {
   }
 }
 
-export class SecureValueTypePassport extends TypeSecureValueType {
+export class SecureValueTypePassport extends _TypeSecureValueType {
   protected get [id]() {
     return 0x3DAC6A00;
   }
@@ -28130,7 +28130,7 @@ export class SecureValueTypePassport extends TypeSecureValueType {
   }
 }
 
-export class SecureValueTypeDriverLicense extends TypeSecureValueType {
+export class SecureValueTypeDriverLicense extends _TypeSecureValueType {
   protected get [id]() {
     return 0x06E425C4;
   }
@@ -28148,7 +28148,7 @@ export class SecureValueTypeDriverLicense extends TypeSecureValueType {
   }
 }
 
-export class SecureValueTypeIdentityCard extends TypeSecureValueType {
+export class SecureValueTypeIdentityCard extends _TypeSecureValueType {
   protected get [id]() {
     return 0xA0D0744B;
   }
@@ -28166,7 +28166,7 @@ export class SecureValueTypeIdentityCard extends TypeSecureValueType {
   }
 }
 
-export class SecureValueTypeInternalPassport extends TypeSecureValueType {
+export class SecureValueTypeInternalPassport extends _TypeSecureValueType {
   protected get [id]() {
     return 0x99A48F23;
   }
@@ -28184,7 +28184,7 @@ export class SecureValueTypeInternalPassport extends TypeSecureValueType {
   }
 }
 
-export class SecureValueTypeAddress extends TypeSecureValueType {
+export class SecureValueTypeAddress extends _TypeSecureValueType {
   protected get [id]() {
     return 0xCBE31E26;
   }
@@ -28202,7 +28202,7 @@ export class SecureValueTypeAddress extends TypeSecureValueType {
   }
 }
 
-export class SecureValueTypeUtilityBill extends TypeSecureValueType {
+export class SecureValueTypeUtilityBill extends _TypeSecureValueType {
   protected get [id]() {
     return 0xFC36954E;
   }
@@ -28220,7 +28220,7 @@ export class SecureValueTypeUtilityBill extends TypeSecureValueType {
   }
 }
 
-export class SecureValueTypeBankStatement extends TypeSecureValueType {
+export class SecureValueTypeBankStatement extends _TypeSecureValueType {
   protected get [id]() {
     return 0x89137C0D;
   }
@@ -28238,7 +28238,7 @@ export class SecureValueTypeBankStatement extends TypeSecureValueType {
   }
 }
 
-export class SecureValueTypeRentalAgreement extends TypeSecureValueType {
+export class SecureValueTypeRentalAgreement extends _TypeSecureValueType {
   protected get [id]() {
     return 0x8B883488;
   }
@@ -28256,7 +28256,7 @@ export class SecureValueTypeRentalAgreement extends TypeSecureValueType {
   }
 }
 
-export class SecureValueTypePassportRegistration extends TypeSecureValueType {
+export class SecureValueTypePassportRegistration extends _TypeSecureValueType {
   protected get [id]() {
     return 0x99E3806A;
   }
@@ -28274,7 +28274,7 @@ export class SecureValueTypePassportRegistration extends TypeSecureValueType {
   }
 }
 
-export class SecureValueTypeTemporaryRegistration extends TypeSecureValueType {
+export class SecureValueTypeTemporaryRegistration extends _TypeSecureValueType {
   protected get [id]() {
     return 0xEA02EC33;
   }
@@ -28292,7 +28292,7 @@ export class SecureValueTypeTemporaryRegistration extends TypeSecureValueType {
   }
 }
 
-export class SecureValueTypePhone extends TypeSecureValueType {
+export class SecureValueTypePhone extends _TypeSecureValueType {
   protected get [id]() {
     return 0xB320AADB;
   }
@@ -28310,7 +28310,7 @@ export class SecureValueTypePhone extends TypeSecureValueType {
   }
 }
 
-export class SecureValueTypeEmail extends TypeSecureValueType {
+export class SecureValueTypeEmail extends _TypeSecureValueType {
   protected get [id]() {
     return 0x8E3CA7EE;
   }
@@ -28328,7 +28328,7 @@ export class SecureValueTypeEmail extends TypeSecureValueType {
   }
 }
 
-export class SecureValue extends TypeSecureValue {
+export class SecureValue extends _TypeSecureValue {
   type: TypeSecureValueType;
   data?: TypeSecureData;
   frontSide?: TypeSecureFile;
@@ -28346,14 +28346,14 @@ export class SecureValue extends TypeSecureValue {
   static get [paramDesc](): ParamDesc {
     return [
       ["flags", flags, "#"],
-      ["type", TypeSecureValueType, "SecureValueType"],
-      ["data", TypeSecureData, "flags.0?SecureData"],
-      ["frontSide", TypeSecureFile, "flags.1?SecureFile"],
-      ["reverseSide", TypeSecureFile, "flags.2?SecureFile"],
-      ["selfie", TypeSecureFile, "flags.3?SecureFile"],
-      ["translation", [TypeSecureFile], "flags.6?Vector<SecureFile>"],
-      ["files", [TypeSecureFile], "flags.4?Vector<SecureFile>"],
-      ["plainData", TypeSecurePlainData, "flags.5?SecurePlainData"],
+      ["type", _TypeSecureValueType, "SecureValueType"],
+      ["data", _TypeSecureData, "flags.0?SecureData"],
+      ["frontSide", _TypeSecureFile, "flags.1?SecureFile"],
+      ["reverseSide", _TypeSecureFile, "flags.2?SecureFile"],
+      ["selfie", _TypeSecureFile, "flags.3?SecureFile"],
+      ["translation", [_TypeSecureFile], "flags.6?Vector<SecureFile>"],
+      ["files", [_TypeSecureFile], "flags.4?Vector<SecureFile>"],
+      ["plainData", _TypeSecurePlainData, "flags.5?SecurePlainData"],
       ["hash", Uint8Array, "bytes"],
     ];
   }
@@ -28361,14 +28361,14 @@ export class SecureValue extends TypeSecureValue {
   protected get [params](): Params {
     return [
       ["flags", flags, "#"],
-      [this.type, TypeSecureValueType, "SecureValueType"],
-      [this.data ?? null, TypeSecureData, "flags.0?SecureData"],
-      [this.frontSide ?? null, TypeSecureFile, "flags.1?SecureFile"],
-      [this.reverseSide ?? null, TypeSecureFile, "flags.2?SecureFile"],
-      [this.selfie ?? null, TypeSecureFile, "flags.3?SecureFile"],
-      [this.translation ?? null, [TypeSecureFile], "flags.6?Vector<SecureFile>"],
-      [this.files ?? null, [TypeSecureFile], "flags.4?Vector<SecureFile>"],
-      [this.plainData ?? null, TypeSecurePlainData, "flags.5?SecurePlainData"],
+      [this.type, _TypeSecureValueType, "SecureValueType"],
+      [this.data ?? null, _TypeSecureData, "flags.0?SecureData"],
+      [this.frontSide ?? null, _TypeSecureFile, "flags.1?SecureFile"],
+      [this.reverseSide ?? null, _TypeSecureFile, "flags.2?SecureFile"],
+      [this.selfie ?? null, _TypeSecureFile, "flags.3?SecureFile"],
+      [this.translation ?? null, [_TypeSecureFile], "flags.6?Vector<SecureFile>"],
+      [this.files ?? null, [_TypeSecureFile], "flags.4?Vector<SecureFile>"],
+      [this.plainData ?? null, _TypeSecurePlainData, "flags.5?SecurePlainData"],
       [this.hash, Uint8Array, "bytes"],
     ];
   }
@@ -28387,7 +28387,7 @@ export class SecureValue extends TypeSecureValue {
   }
 }
 
-export class InputSecureValue extends TypeInputSecureValue {
+export class InputSecureValue extends _TypeInputSecureValue {
   type: TypeSecureValueType;
   data?: TypeSecureData;
   frontSide?: TypeInputSecureFile;
@@ -28404,28 +28404,28 @@ export class InputSecureValue extends TypeInputSecureValue {
   static get [paramDesc](): ParamDesc {
     return [
       ["flags", flags, "#"],
-      ["type", TypeSecureValueType, "SecureValueType"],
-      ["data", TypeSecureData, "flags.0?SecureData"],
-      ["frontSide", TypeInputSecureFile, "flags.1?InputSecureFile"],
-      ["reverseSide", TypeInputSecureFile, "flags.2?InputSecureFile"],
-      ["selfie", TypeInputSecureFile, "flags.3?InputSecureFile"],
-      ["translation", [TypeInputSecureFile], "flags.6?Vector<InputSecureFile>"],
-      ["files", [TypeInputSecureFile], "flags.4?Vector<InputSecureFile>"],
-      ["plainData", TypeSecurePlainData, "flags.5?SecurePlainData"],
+      ["type", _TypeSecureValueType, "SecureValueType"],
+      ["data", _TypeSecureData, "flags.0?SecureData"],
+      ["frontSide", _TypeInputSecureFile, "flags.1?InputSecureFile"],
+      ["reverseSide", _TypeInputSecureFile, "flags.2?InputSecureFile"],
+      ["selfie", _TypeInputSecureFile, "flags.3?InputSecureFile"],
+      ["translation", [_TypeInputSecureFile], "flags.6?Vector<InputSecureFile>"],
+      ["files", [_TypeInputSecureFile], "flags.4?Vector<InputSecureFile>"],
+      ["plainData", _TypeSecurePlainData, "flags.5?SecurePlainData"],
     ];
   }
 
   protected get [params](): Params {
     return [
       ["flags", flags, "#"],
-      [this.type, TypeSecureValueType, "SecureValueType"],
-      [this.data ?? null, TypeSecureData, "flags.0?SecureData"],
-      [this.frontSide ?? null, TypeInputSecureFile, "flags.1?InputSecureFile"],
-      [this.reverseSide ?? null, TypeInputSecureFile, "flags.2?InputSecureFile"],
-      [this.selfie ?? null, TypeInputSecureFile, "flags.3?InputSecureFile"],
-      [this.translation ?? null, [TypeInputSecureFile], "flags.6?Vector<InputSecureFile>"],
-      [this.files ?? null, [TypeInputSecureFile], "flags.4?Vector<InputSecureFile>"],
-      [this.plainData ?? null, TypeSecurePlainData, "flags.5?SecurePlainData"],
+      [this.type, _TypeSecureValueType, "SecureValueType"],
+      [this.data ?? null, _TypeSecureData, "flags.0?SecureData"],
+      [this.frontSide ?? null, _TypeInputSecureFile, "flags.1?InputSecureFile"],
+      [this.reverseSide ?? null, _TypeInputSecureFile, "flags.2?InputSecureFile"],
+      [this.selfie ?? null, _TypeInputSecureFile, "flags.3?InputSecureFile"],
+      [this.translation ?? null, [_TypeInputSecureFile], "flags.6?Vector<InputSecureFile>"],
+      [this.files ?? null, [_TypeInputSecureFile], "flags.4?Vector<InputSecureFile>"],
+      [this.plainData ?? null, _TypeSecurePlainData, "flags.5?SecurePlainData"],
     ];
   }
 
@@ -28442,7 +28442,7 @@ export class InputSecureValue extends TypeInputSecureValue {
   }
 }
 
-export class SecureValueHash extends TypeSecureValueHash {
+export class SecureValueHash extends _TypeSecureValueHash {
   type: TypeSecureValueType;
   hash: Uint8Array;
 
@@ -28452,14 +28452,14 @@ export class SecureValueHash extends TypeSecureValueHash {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["type", TypeSecureValueType, "SecureValueType"],
+      ["type", _TypeSecureValueType, "SecureValueType"],
       ["hash", Uint8Array, "bytes"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.type, TypeSecureValueType, "SecureValueType"],
+      [this.type, _TypeSecureValueType, "SecureValueType"],
       [this.hash, Uint8Array, "bytes"],
     ];
   }
@@ -28471,7 +28471,7 @@ export class SecureValueHash extends TypeSecureValueHash {
   }
 }
 
-export class SecureValueErrorData extends TypeSecureValueError {
+export class SecureValueErrorData extends _TypeSecureValueError {
   type: TypeSecureValueType;
   dataHash: Uint8Array;
   field: string;
@@ -28483,7 +28483,7 @@ export class SecureValueErrorData extends TypeSecureValueError {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["type", TypeSecureValueType, "SecureValueType"],
+      ["type", _TypeSecureValueType, "SecureValueType"],
       ["dataHash", Uint8Array, "bytes"],
       ["field", "string", "string"],
       ["text", "string", "string"],
@@ -28492,7 +28492,7 @@ export class SecureValueErrorData extends TypeSecureValueError {
 
   protected get [params](): Params {
     return [
-      [this.type, TypeSecureValueType, "SecureValueType"],
+      [this.type, _TypeSecureValueType, "SecureValueType"],
       [this.dataHash, Uint8Array, "bytes"],
       [this.field, "string", "string"],
       [this.text, "string", "string"],
@@ -28508,7 +28508,7 @@ export class SecureValueErrorData extends TypeSecureValueError {
   }
 }
 
-export class SecureValueErrorFrontSide extends TypeSecureValueError {
+export class SecureValueErrorFrontSide extends _TypeSecureValueError {
   type: TypeSecureValueType;
   fileHash: Uint8Array;
   text: string;
@@ -28519,7 +28519,7 @@ export class SecureValueErrorFrontSide extends TypeSecureValueError {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["type", TypeSecureValueType, "SecureValueType"],
+      ["type", _TypeSecureValueType, "SecureValueType"],
       ["fileHash", Uint8Array, "bytes"],
       ["text", "string", "string"],
     ];
@@ -28527,7 +28527,7 @@ export class SecureValueErrorFrontSide extends TypeSecureValueError {
 
   protected get [params](): Params {
     return [
-      [this.type, TypeSecureValueType, "SecureValueType"],
+      [this.type, _TypeSecureValueType, "SecureValueType"],
       [this.fileHash, Uint8Array, "bytes"],
       [this.text, "string", "string"],
     ];
@@ -28541,7 +28541,7 @@ export class SecureValueErrorFrontSide extends TypeSecureValueError {
   }
 }
 
-export class SecureValueErrorReverseSide extends TypeSecureValueError {
+export class SecureValueErrorReverseSide extends _TypeSecureValueError {
   type: TypeSecureValueType;
   fileHash: Uint8Array;
   text: string;
@@ -28552,7 +28552,7 @@ export class SecureValueErrorReverseSide extends TypeSecureValueError {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["type", TypeSecureValueType, "SecureValueType"],
+      ["type", _TypeSecureValueType, "SecureValueType"],
       ["fileHash", Uint8Array, "bytes"],
       ["text", "string", "string"],
     ];
@@ -28560,7 +28560,7 @@ export class SecureValueErrorReverseSide extends TypeSecureValueError {
 
   protected get [params](): Params {
     return [
-      [this.type, TypeSecureValueType, "SecureValueType"],
+      [this.type, _TypeSecureValueType, "SecureValueType"],
       [this.fileHash, Uint8Array, "bytes"],
       [this.text, "string", "string"],
     ];
@@ -28574,7 +28574,7 @@ export class SecureValueErrorReverseSide extends TypeSecureValueError {
   }
 }
 
-export class SecureValueErrorSelfie extends TypeSecureValueError {
+export class SecureValueErrorSelfie extends _TypeSecureValueError {
   type: TypeSecureValueType;
   fileHash: Uint8Array;
   text: string;
@@ -28585,7 +28585,7 @@ export class SecureValueErrorSelfie extends TypeSecureValueError {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["type", TypeSecureValueType, "SecureValueType"],
+      ["type", _TypeSecureValueType, "SecureValueType"],
       ["fileHash", Uint8Array, "bytes"],
       ["text", "string", "string"],
     ];
@@ -28593,7 +28593,7 @@ export class SecureValueErrorSelfie extends TypeSecureValueError {
 
   protected get [params](): Params {
     return [
-      [this.type, TypeSecureValueType, "SecureValueType"],
+      [this.type, _TypeSecureValueType, "SecureValueType"],
       [this.fileHash, Uint8Array, "bytes"],
       [this.text, "string", "string"],
     ];
@@ -28607,7 +28607,7 @@ export class SecureValueErrorSelfie extends TypeSecureValueError {
   }
 }
 
-export class SecureValueErrorFile extends TypeSecureValueError {
+export class SecureValueErrorFile extends _TypeSecureValueError {
   type: TypeSecureValueType;
   fileHash: Uint8Array;
   text: string;
@@ -28618,7 +28618,7 @@ export class SecureValueErrorFile extends TypeSecureValueError {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["type", TypeSecureValueType, "SecureValueType"],
+      ["type", _TypeSecureValueType, "SecureValueType"],
       ["fileHash", Uint8Array, "bytes"],
       ["text", "string", "string"],
     ];
@@ -28626,7 +28626,7 @@ export class SecureValueErrorFile extends TypeSecureValueError {
 
   protected get [params](): Params {
     return [
-      [this.type, TypeSecureValueType, "SecureValueType"],
+      [this.type, _TypeSecureValueType, "SecureValueType"],
       [this.fileHash, Uint8Array, "bytes"],
       [this.text, "string", "string"],
     ];
@@ -28640,7 +28640,7 @@ export class SecureValueErrorFile extends TypeSecureValueError {
   }
 }
 
-export class SecureValueErrorFiles extends TypeSecureValueError {
+export class SecureValueErrorFiles extends _TypeSecureValueError {
   type: TypeSecureValueType;
   fileHash: Array<Uint8Array>;
   text: string;
@@ -28651,7 +28651,7 @@ export class SecureValueErrorFiles extends TypeSecureValueError {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["type", TypeSecureValueType, "SecureValueType"],
+      ["type", _TypeSecureValueType, "SecureValueType"],
       ["fileHash", [Uint8Array], "Vector<bytes>"],
       ["text", "string", "string"],
     ];
@@ -28659,7 +28659,7 @@ export class SecureValueErrorFiles extends TypeSecureValueError {
 
   protected get [params](): Params {
     return [
-      [this.type, TypeSecureValueType, "SecureValueType"],
+      [this.type, _TypeSecureValueType, "SecureValueType"],
       [this.fileHash, [Uint8Array], "Vector<bytes>"],
       [this.text, "string", "string"],
     ];
@@ -28673,7 +28673,7 @@ export class SecureValueErrorFiles extends TypeSecureValueError {
   }
 }
 
-export class SecureValueError extends TypeSecureValueError {
+export class SecureValueError extends _TypeSecureValueError {
   type: TypeSecureValueType;
   hash: Uint8Array;
   text: string;
@@ -28684,7 +28684,7 @@ export class SecureValueError extends TypeSecureValueError {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["type", TypeSecureValueType, "SecureValueType"],
+      ["type", _TypeSecureValueType, "SecureValueType"],
       ["hash", Uint8Array, "bytes"],
       ["text", "string", "string"],
     ];
@@ -28692,7 +28692,7 @@ export class SecureValueError extends TypeSecureValueError {
 
   protected get [params](): Params {
     return [
-      [this.type, TypeSecureValueType, "SecureValueType"],
+      [this.type, _TypeSecureValueType, "SecureValueType"],
       [this.hash, Uint8Array, "bytes"],
       [this.text, "string", "string"],
     ];
@@ -28706,7 +28706,7 @@ export class SecureValueError extends TypeSecureValueError {
   }
 }
 
-export class SecureValueErrorTranslationFile extends TypeSecureValueError {
+export class SecureValueErrorTranslationFile extends _TypeSecureValueError {
   type: TypeSecureValueType;
   fileHash: Uint8Array;
   text: string;
@@ -28717,7 +28717,7 @@ export class SecureValueErrorTranslationFile extends TypeSecureValueError {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["type", TypeSecureValueType, "SecureValueType"],
+      ["type", _TypeSecureValueType, "SecureValueType"],
       ["fileHash", Uint8Array, "bytes"],
       ["text", "string", "string"],
     ];
@@ -28725,7 +28725,7 @@ export class SecureValueErrorTranslationFile extends TypeSecureValueError {
 
   protected get [params](): Params {
     return [
-      [this.type, TypeSecureValueType, "SecureValueType"],
+      [this.type, _TypeSecureValueType, "SecureValueType"],
       [this.fileHash, Uint8Array, "bytes"],
       [this.text, "string", "string"],
     ];
@@ -28739,7 +28739,7 @@ export class SecureValueErrorTranslationFile extends TypeSecureValueError {
   }
 }
 
-export class SecureValueErrorTranslationFiles extends TypeSecureValueError {
+export class SecureValueErrorTranslationFiles extends _TypeSecureValueError {
   type: TypeSecureValueType;
   fileHash: Array<Uint8Array>;
   text: string;
@@ -28750,7 +28750,7 @@ export class SecureValueErrorTranslationFiles extends TypeSecureValueError {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["type", TypeSecureValueType, "SecureValueType"],
+      ["type", _TypeSecureValueType, "SecureValueType"],
       ["fileHash", [Uint8Array], "Vector<bytes>"],
       ["text", "string", "string"],
     ];
@@ -28758,7 +28758,7 @@ export class SecureValueErrorTranslationFiles extends TypeSecureValueError {
 
   protected get [params](): Params {
     return [
-      [this.type, TypeSecureValueType, "SecureValueType"],
+      [this.type, _TypeSecureValueType, "SecureValueType"],
       [this.fileHash, [Uint8Array], "Vector<bytes>"],
       [this.text, "string", "string"],
     ];
@@ -28772,7 +28772,7 @@ export class SecureValueErrorTranslationFiles extends TypeSecureValueError {
   }
 }
 
-export class SecureCredentialsEncrypted extends TypeSecureCredentialsEncrypted {
+export class SecureCredentialsEncrypted extends _TypeSecureCredentialsEncrypted {
   data: Uint8Array;
   hash: Uint8Array;
   secret: Uint8Array;
@@ -28805,7 +28805,7 @@ export class SecureCredentialsEncrypted extends TypeSecureCredentialsEncrypted {
   }
 }
 
-export class AccountAuthorizationForm extends TypeAccountAuthorizationForm {
+export class AccountAuthorizationForm extends _TypeAccountAuthorizationForm {
   requiredTypes: Array<TypeSecureRequiredType>;
   values: Array<TypeSecureValue>;
   errors: Array<TypeSecureValueError>;
@@ -28819,10 +28819,10 @@ export class AccountAuthorizationForm extends TypeAccountAuthorizationForm {
   static get [paramDesc](): ParamDesc {
     return [
       ["flags", flags, "#"],
-      ["requiredTypes", [TypeSecureRequiredType], "Vector<SecureRequiredType>"],
-      ["values", [TypeSecureValue], "Vector<SecureValue>"],
-      ["errors", [TypeSecureValueError], "Vector<SecureValueError>"],
-      ["users", [TypeUser], "Vector<User>"],
+      ["requiredTypes", [_TypeSecureRequiredType], "Vector<SecureRequiredType>"],
+      ["values", [_TypeSecureValue], "Vector<SecureValue>"],
+      ["errors", [_TypeSecureValueError], "Vector<SecureValueError>"],
+      ["users", [_TypeUser], "Vector<User>"],
       ["privacyPolicyUrl", "string", "flags.0?string"],
     ];
   }
@@ -28830,10 +28830,10 @@ export class AccountAuthorizationForm extends TypeAccountAuthorizationForm {
   protected get [params](): Params {
     return [
       ["flags", flags, "#"],
-      [this.requiredTypes, [TypeSecureRequiredType], "Vector<SecureRequiredType>"],
-      [this.values, [TypeSecureValue], "Vector<SecureValue>"],
-      [this.errors, [TypeSecureValueError], "Vector<SecureValueError>"],
-      [this.users, [TypeUser], "Vector<User>"],
+      [this.requiredTypes, [_TypeSecureRequiredType], "Vector<SecureRequiredType>"],
+      [this.values, [_TypeSecureValue], "Vector<SecureValue>"],
+      [this.errors, [_TypeSecureValueError], "Vector<SecureValueError>"],
+      [this.users, [_TypeUser], "Vector<User>"],
       [this.privacyPolicyUrl ?? null, "string", "flags.0?string"],
     ];
   }
@@ -28848,7 +28848,7 @@ export class AccountAuthorizationForm extends TypeAccountAuthorizationForm {
   }
 }
 
-export class AccountSentEmailCode extends TypeAccountSentEmailCode {
+export class AccountSentEmailCode extends _TypeAccountSentEmailCode {
   emailPattern: string;
   length: number;
 
@@ -28877,7 +28877,7 @@ export class AccountSentEmailCode extends TypeAccountSentEmailCode {
   }
 }
 
-export class HelpDeepLinkInfoEmpty extends TypeHelpDeepLinkInfo {
+export class HelpDeepLinkInfoEmpty extends _TypeHelpDeepLinkInfo {
   protected get [id]() {
     return 0x66AFA166;
   }
@@ -28895,7 +28895,7 @@ export class HelpDeepLinkInfoEmpty extends TypeHelpDeepLinkInfo {
   }
 }
 
-export class HelpDeepLinkInfo extends TypeHelpDeepLinkInfo {
+export class HelpDeepLinkInfo extends _TypeHelpDeepLinkInfo {
   updateApp?: true;
   message: string;
   entities?: Array<TypeMessageEntity>;
@@ -28909,7 +28909,7 @@ export class HelpDeepLinkInfo extends TypeHelpDeepLinkInfo {
       ["flags", flags, "#"],
       ["updateApp", "true", "flags.0?true"],
       ["message", "string", "string"],
-      ["entities", [TypeMessageEntity], "flags.1?Vector<MessageEntity>"],
+      ["entities", [_TypeMessageEntity], "flags.1?Vector<MessageEntity>"],
     ];
   }
 
@@ -28918,7 +28918,7 @@ export class HelpDeepLinkInfo extends TypeHelpDeepLinkInfo {
       ["flags", flags, "#"],
       [this.updateApp ?? null, "true", "flags.0?true"],
       [this.message, "string", "string"],
-      [this.entities ?? null, [TypeMessageEntity], "flags.1?Vector<MessageEntity>"],
+      [this.entities ?? null, [_TypeMessageEntity], "flags.1?Vector<MessageEntity>"],
     ];
   }
 
@@ -28930,7 +28930,7 @@ export class HelpDeepLinkInfo extends TypeHelpDeepLinkInfo {
   }
 }
 
-export class SavedPhoneContact extends TypeSavedContact {
+export class SavedPhoneContact extends _TypeSavedContact {
   phone: string;
   firstName: string;
   lastName: string;
@@ -28967,7 +28967,7 @@ export class SavedPhoneContact extends TypeSavedContact {
   }
 }
 
-export class AccountTakeout extends TypeAccountTakeout {
+export class AccountTakeout extends _TypeAccountTakeout {
   id: bigint;
 
   protected get [id]() {
@@ -28992,7 +28992,7 @@ export class AccountTakeout extends TypeAccountTakeout {
   }
 }
 
-export class PasswordKdfAlgoUnknown extends TypePasswordKdfAlgo {
+export class PasswordKdfAlgoUnknown extends _TypePasswordKdfAlgo {
   protected get [id]() {
     return 0xD45AB096;
   }
@@ -29010,7 +29010,7 @@ export class PasswordKdfAlgoUnknown extends TypePasswordKdfAlgo {
   }
 }
 
-export class PasswordKdfAlgoSHA256SHA256PBKDF2HMACSHA512iter100000SHA256ModPow extends TypePasswordKdfAlgo {
+export class PasswordKdfAlgoSHA256SHA256PBKDF2HMACSHA512iter100000SHA256ModPow extends _TypePasswordKdfAlgo {
   salt1: Uint8Array;
   salt2: Uint8Array;
   g: number;
@@ -29047,7 +29047,7 @@ export class PasswordKdfAlgoSHA256SHA256PBKDF2HMACSHA512iter100000SHA256ModPow e
   }
 }
 
-export class SecurePasswordKdfAlgoUnknown extends TypeSecurePasswordKdfAlgo {
+export class SecurePasswordKdfAlgoUnknown extends _TypeSecurePasswordKdfAlgo {
   protected get [id]() {
     return 0x004A8537;
   }
@@ -29065,7 +29065,7 @@ export class SecurePasswordKdfAlgoUnknown extends TypeSecurePasswordKdfAlgo {
   }
 }
 
-export class SecurePasswordKdfAlgoPBKDF2HMACSHA512iter100000 extends TypeSecurePasswordKdfAlgo {
+export class SecurePasswordKdfAlgoPBKDF2HMACSHA512iter100000 extends _TypeSecurePasswordKdfAlgo {
   salt: Uint8Array;
 
   protected get [id]() {
@@ -29090,7 +29090,7 @@ export class SecurePasswordKdfAlgoPBKDF2HMACSHA512iter100000 extends TypeSecureP
   }
 }
 
-export class SecurePasswordKdfAlgoSHA512 extends TypeSecurePasswordKdfAlgo {
+export class SecurePasswordKdfAlgoSHA512 extends _TypeSecurePasswordKdfAlgo {
   salt: Uint8Array;
 
   protected get [id]() {
@@ -29115,7 +29115,7 @@ export class SecurePasswordKdfAlgoSHA512 extends TypeSecurePasswordKdfAlgo {
   }
 }
 
-export class SecureSecretSettings extends TypeSecureSecretSettings {
+export class SecureSecretSettings extends _TypeSecureSecretSettings {
   secureAlgo: TypeSecurePasswordKdfAlgo;
   secureSecret: Uint8Array;
   secureSecretId: bigint;
@@ -29126,7 +29126,7 @@ export class SecureSecretSettings extends TypeSecureSecretSettings {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["secureAlgo", TypeSecurePasswordKdfAlgo, "SecurePasswordKdfAlgo"],
+      ["secureAlgo", _TypeSecurePasswordKdfAlgo, "SecurePasswordKdfAlgo"],
       ["secureSecret", Uint8Array, "bytes"],
       ["secureSecretId", "bigint", "long"],
     ];
@@ -29134,7 +29134,7 @@ export class SecureSecretSettings extends TypeSecureSecretSettings {
 
   protected get [params](): Params {
     return [
-      [this.secureAlgo, TypeSecurePasswordKdfAlgo, "SecurePasswordKdfAlgo"],
+      [this.secureAlgo, _TypeSecurePasswordKdfAlgo, "SecurePasswordKdfAlgo"],
       [this.secureSecret, Uint8Array, "bytes"],
       [this.secureSecretId, "bigint", "long"],
     ];
@@ -29148,7 +29148,7 @@ export class SecureSecretSettings extends TypeSecureSecretSettings {
   }
 }
 
-export class InputCheckPasswordEmpty extends TypeInputCheckPasswordSRP {
+export class InputCheckPasswordEmpty extends _TypeInputCheckPasswordSRP {
   protected get [id]() {
     return 0x9880F658;
   }
@@ -29166,7 +29166,7 @@ export class InputCheckPasswordEmpty extends TypeInputCheckPasswordSRP {
   }
 }
 
-export class InputCheckPasswordSRP extends TypeInputCheckPasswordSRP {
+export class InputCheckPasswordSRP extends _TypeInputCheckPasswordSRP {
   srpId: bigint;
   A: Uint8Array;
   M1: Uint8Array;
@@ -29199,7 +29199,7 @@ export class InputCheckPasswordSRP extends TypeInputCheckPasswordSRP {
   }
 }
 
-export class SecureRequiredType extends TypeSecureRequiredType {
+export class SecureRequiredType extends _TypeSecureRequiredType {
   nativeNames?: true;
   selfieRequired?: true;
   translationRequired?: true;
@@ -29215,7 +29215,7 @@ export class SecureRequiredType extends TypeSecureRequiredType {
       ["nativeNames", "true", "flags.0?true"],
       ["selfieRequired", "true", "flags.1?true"],
       ["translationRequired", "true", "flags.2?true"],
-      ["type", TypeSecureValueType, "SecureValueType"],
+      ["type", _TypeSecureValueType, "SecureValueType"],
     ];
   }
 
@@ -29225,7 +29225,7 @@ export class SecureRequiredType extends TypeSecureRequiredType {
       [this.nativeNames ?? null, "true", "flags.0?true"],
       [this.selfieRequired ?? null, "true", "flags.1?true"],
       [this.translationRequired ?? null, "true", "flags.2?true"],
-      [this.type, TypeSecureValueType, "SecureValueType"],
+      [this.type, _TypeSecureValueType, "SecureValueType"],
     ];
   }
 
@@ -29238,7 +29238,7 @@ export class SecureRequiredType extends TypeSecureRequiredType {
   }
 }
 
-export class SecureRequiredTypeOneOf extends TypeSecureRequiredType {
+export class SecureRequiredTypeOneOf extends _TypeSecureRequiredType {
   types: Array<TypeSecureRequiredType>;
 
   protected get [id]() {
@@ -29247,13 +29247,13 @@ export class SecureRequiredTypeOneOf extends TypeSecureRequiredType {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["types", [TypeSecureRequiredType], "Vector<SecureRequiredType>"],
+      ["types", [_TypeSecureRequiredType], "Vector<SecureRequiredType>"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.types, [TypeSecureRequiredType], "Vector<SecureRequiredType>"],
+      [this.types, [_TypeSecureRequiredType], "Vector<SecureRequiredType>"],
     ];
   }
 
@@ -29263,7 +29263,7 @@ export class SecureRequiredTypeOneOf extends TypeSecureRequiredType {
   }
 }
 
-export class HelpPassportConfigNotModified extends TypeHelpPassportConfig {
+export class HelpPassportConfigNotModified extends _TypeHelpPassportConfig {
   protected get [id]() {
     return 0xBFB9F457;
   }
@@ -29281,7 +29281,7 @@ export class HelpPassportConfigNotModified extends TypeHelpPassportConfig {
   }
 }
 
-export class HelpPassportConfig extends TypeHelpPassportConfig {
+export class HelpPassportConfig extends _TypeHelpPassportConfig {
   hash: number;
   countriesLangs: TypeDataJSON;
 
@@ -29292,14 +29292,14 @@ export class HelpPassportConfig extends TypeHelpPassportConfig {
   static get [paramDesc](): ParamDesc {
     return [
       ["hash", "number", "int"],
-      ["countriesLangs", TypeDataJSON, "DataJSON"],
+      ["countriesLangs", _TypeDataJSON, "DataJSON"],
     ];
   }
 
   protected get [params](): Params {
     return [
       [this.hash, "number", "int"],
-      [this.countriesLangs, TypeDataJSON, "DataJSON"],
+      [this.countriesLangs, _TypeDataJSON, "DataJSON"],
     ];
   }
 
@@ -29310,7 +29310,7 @@ export class HelpPassportConfig extends TypeHelpPassportConfig {
   }
 }
 
-export class InputAppEvent extends TypeInputAppEvent {
+export class InputAppEvent extends _TypeInputAppEvent {
   time: number;
   type: string;
   peer: bigint;
@@ -29325,7 +29325,7 @@ export class InputAppEvent extends TypeInputAppEvent {
       ["time", "number", "double"],
       ["type", "string", "string"],
       ["peer", "bigint", "long"],
-      ["data", TypeJSONValue, "JSONValue"],
+      ["data", _TypeJSONValue, "JSONValue"],
     ];
   }
 
@@ -29334,7 +29334,7 @@ export class InputAppEvent extends TypeInputAppEvent {
       [this.time, "number", "double"],
       [this.type, "string", "string"],
       [this.peer, "bigint", "long"],
-      [this.data, TypeJSONValue, "JSONValue"],
+      [this.data, _TypeJSONValue, "JSONValue"],
     ];
   }
 
@@ -29347,7 +29347,7 @@ export class InputAppEvent extends TypeInputAppEvent {
   }
 }
 
-export class JsonObjectValue extends TypeJSONObjectValue {
+export class JsonObjectValue extends _TypeJSONObjectValue {
   key: string;
   value: TypeJSONValue;
 
@@ -29358,14 +29358,14 @@ export class JsonObjectValue extends TypeJSONObjectValue {
   static get [paramDesc](): ParamDesc {
     return [
       ["key", "string", "string"],
-      ["value", TypeJSONValue, "JSONValue"],
+      ["value", _TypeJSONValue, "JSONValue"],
     ];
   }
 
   protected get [params](): Params {
     return [
       [this.key, "string", "string"],
-      [this.value, TypeJSONValue, "JSONValue"],
+      [this.value, _TypeJSONValue, "JSONValue"],
     ];
   }
 
@@ -29376,7 +29376,7 @@ export class JsonObjectValue extends TypeJSONObjectValue {
   }
 }
 
-export class JsonNull extends TypeJSONValue {
+export class JsonNull extends _TypeJSONValue {
   protected get [id]() {
     return 0x3F6D7B68;
   }
@@ -29394,7 +29394,7 @@ export class JsonNull extends TypeJSONValue {
   }
 }
 
-export class JsonBool extends TypeJSONValue {
+export class JsonBool extends _TypeJSONValue {
   value: boolean;
 
   protected get [id]() {
@@ -29419,7 +29419,7 @@ export class JsonBool extends TypeJSONValue {
   }
 }
 
-export class JsonNumber extends TypeJSONValue {
+export class JsonNumber extends _TypeJSONValue {
   value: number;
 
   protected get [id]() {
@@ -29444,7 +29444,7 @@ export class JsonNumber extends TypeJSONValue {
   }
 }
 
-export class JsonString extends TypeJSONValue {
+export class JsonString extends _TypeJSONValue {
   value: string;
 
   protected get [id]() {
@@ -29469,7 +29469,7 @@ export class JsonString extends TypeJSONValue {
   }
 }
 
-export class JsonArray extends TypeJSONValue {
+export class JsonArray extends _TypeJSONValue {
   value: Array<TypeJSONValue>;
 
   protected get [id]() {
@@ -29478,13 +29478,13 @@ export class JsonArray extends TypeJSONValue {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["value", [TypeJSONValue], "Vector<JSONValue>"],
+      ["value", [_TypeJSONValue], "Vector<JSONValue>"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.value, [TypeJSONValue], "Vector<JSONValue>"],
+      [this.value, [_TypeJSONValue], "Vector<JSONValue>"],
     ];
   }
 
@@ -29494,7 +29494,7 @@ export class JsonArray extends TypeJSONValue {
   }
 }
 
-export class JsonObject extends TypeJSONValue {
+export class JsonObject extends _TypeJSONValue {
   value: Array<TypeJSONObjectValue>;
 
   protected get [id]() {
@@ -29503,13 +29503,13 @@ export class JsonObject extends TypeJSONValue {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["value", [TypeJSONObjectValue], "Vector<JSONObjectValue>"],
+      ["value", [_TypeJSONObjectValue], "Vector<JSONObjectValue>"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.value, [TypeJSONObjectValue], "Vector<JSONObjectValue>"],
+      [this.value, [_TypeJSONObjectValue], "Vector<JSONObjectValue>"],
     ];
   }
 
@@ -29519,7 +29519,7 @@ export class JsonObject extends TypeJSONValue {
   }
 }
 
-export class PageTableCell extends TypePageTableCell {
+export class PageTableCell extends _TypePageTableCell {
   header?: true;
   alignCenter?: true;
   alignRight?: true;
@@ -29541,7 +29541,7 @@ export class PageTableCell extends TypePageTableCell {
       ["alignRight", "true", "flags.4?true"],
       ["valignMiddle", "true", "flags.5?true"],
       ["valignBottom", "true", "flags.6?true"],
-      ["text", TypeRichText, "flags.7?RichText"],
+      ["text", _TypeRichText, "flags.7?RichText"],
       ["colspan", "number", "flags.1?int"],
       ["rowspan", "number", "flags.2?int"],
     ];
@@ -29555,7 +29555,7 @@ export class PageTableCell extends TypePageTableCell {
       [this.alignRight ?? null, "true", "flags.4?true"],
       [this.valignMiddle ?? null, "true", "flags.5?true"],
       [this.valignBottom ?? null, "true", "flags.6?true"],
-      [this.text ?? null, TypeRichText, "flags.7?RichText"],
+      [this.text ?? null, _TypeRichText, "flags.7?RichText"],
       [this.colspan ?? null, "number", "flags.1?int"],
       [this.rowspan ?? null, "number", "flags.2?int"],
     ];
@@ -29574,7 +29574,7 @@ export class PageTableCell extends TypePageTableCell {
   }
 }
 
-export class PageTableRow extends TypePageTableRow {
+export class PageTableRow extends _TypePageTableRow {
   cells: Array<TypePageTableCell>;
 
   protected get [id]() {
@@ -29583,13 +29583,13 @@ export class PageTableRow extends TypePageTableRow {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["cells", [TypePageTableCell], "Vector<PageTableCell>"],
+      ["cells", [_TypePageTableCell], "Vector<PageTableCell>"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.cells, [TypePageTableCell], "Vector<PageTableCell>"],
+      [this.cells, [_TypePageTableCell], "Vector<PageTableCell>"],
     ];
   }
 
@@ -29599,7 +29599,7 @@ export class PageTableRow extends TypePageTableRow {
   }
 }
 
-export class PageCaption extends TypePageCaption {
+export class PageCaption extends _TypePageCaption {
   text: TypeRichText;
   credit: TypeRichText;
 
@@ -29609,15 +29609,15 @@ export class PageCaption extends TypePageCaption {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["text", TypeRichText, "RichText"],
-      ["credit", TypeRichText, "RichText"],
+      ["text", _TypeRichText, "RichText"],
+      ["credit", _TypeRichText, "RichText"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.text, TypeRichText, "RichText"],
-      [this.credit, TypeRichText, "RichText"],
+      [this.text, _TypeRichText, "RichText"],
+      [this.credit, _TypeRichText, "RichText"],
     ];
   }
 
@@ -29628,7 +29628,7 @@ export class PageCaption extends TypePageCaption {
   }
 }
 
-export class PageListItemText extends TypePageListItem {
+export class PageListItemText extends _TypePageListItem {
   text: TypeRichText;
 
   protected get [id]() {
@@ -29637,13 +29637,13 @@ export class PageListItemText extends TypePageListItem {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["text", TypeRichText, "RichText"],
+      ["text", _TypeRichText, "RichText"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.text, TypeRichText, "RichText"],
+      [this.text, _TypeRichText, "RichText"],
     ];
   }
 
@@ -29653,7 +29653,7 @@ export class PageListItemText extends TypePageListItem {
   }
 }
 
-export class PageListItemBlocks extends TypePageListItem {
+export class PageListItemBlocks extends _TypePageListItem {
   blocks: Array<TypePageBlock>;
 
   protected get [id]() {
@@ -29662,13 +29662,13 @@ export class PageListItemBlocks extends TypePageListItem {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["blocks", [TypePageBlock], "Vector<PageBlock>"],
+      ["blocks", [_TypePageBlock], "Vector<PageBlock>"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.blocks, [TypePageBlock], "Vector<PageBlock>"],
+      [this.blocks, [_TypePageBlock], "Vector<PageBlock>"],
     ];
   }
 
@@ -29678,7 +29678,7 @@ export class PageListItemBlocks extends TypePageListItem {
   }
 }
 
-export class PageListOrderedItemText extends TypePageListOrderedItem {
+export class PageListOrderedItemText extends _TypePageListOrderedItem {
   num: string;
   text: TypeRichText;
 
@@ -29689,14 +29689,14 @@ export class PageListOrderedItemText extends TypePageListOrderedItem {
   static get [paramDesc](): ParamDesc {
     return [
       ["num", "string", "string"],
-      ["text", TypeRichText, "RichText"],
+      ["text", _TypeRichText, "RichText"],
     ];
   }
 
   protected get [params](): Params {
     return [
       [this.num, "string", "string"],
-      [this.text, TypeRichText, "RichText"],
+      [this.text, _TypeRichText, "RichText"],
     ];
   }
 
@@ -29707,7 +29707,7 @@ export class PageListOrderedItemText extends TypePageListOrderedItem {
   }
 }
 
-export class PageListOrderedItemBlocks extends TypePageListOrderedItem {
+export class PageListOrderedItemBlocks extends _TypePageListOrderedItem {
   num: string;
   blocks: Array<TypePageBlock>;
 
@@ -29718,14 +29718,14 @@ export class PageListOrderedItemBlocks extends TypePageListOrderedItem {
   static get [paramDesc](): ParamDesc {
     return [
       ["num", "string", "string"],
-      ["blocks", [TypePageBlock], "Vector<PageBlock>"],
+      ["blocks", [_TypePageBlock], "Vector<PageBlock>"],
     ];
   }
 
   protected get [params](): Params {
     return [
       [this.num, "string", "string"],
-      [this.blocks, [TypePageBlock], "Vector<PageBlock>"],
+      [this.blocks, [_TypePageBlock], "Vector<PageBlock>"],
     ];
   }
 
@@ -29736,7 +29736,7 @@ export class PageListOrderedItemBlocks extends TypePageListOrderedItem {
   }
 }
 
-export class PageRelatedArticle extends TypePageRelatedArticle {
+export class PageRelatedArticle extends _TypePageRelatedArticle {
   url: string;
   webpageId: bigint;
   title?: string;
@@ -29787,7 +29787,7 @@ export class PageRelatedArticle extends TypePageRelatedArticle {
   }
 }
 
-export class Page extends TypePage {
+export class Page extends _TypePage {
   part?: true;
   rtl?: true;
   v2?: true;
@@ -29808,9 +29808,9 @@ export class Page extends TypePage {
       ["rtl", "true", "flags.1?true"],
       ["v2", "true", "flags.2?true"],
       ["url", "string", "string"],
-      ["blocks", [TypePageBlock], "Vector<PageBlock>"],
-      ["photos", [TypePhoto], "Vector<Photo>"],
-      ["documents", [TypeDocument], "Vector<Document>"],
+      ["blocks", [_TypePageBlock], "Vector<PageBlock>"],
+      ["photos", [_TypePhoto], "Vector<Photo>"],
+      ["documents", [_TypeDocument], "Vector<Document>"],
       ["views", "number", "flags.3?int"],
     ];
   }
@@ -29822,9 +29822,9 @@ export class Page extends TypePage {
       [this.rtl ?? null, "true", "flags.1?true"],
       [this.v2 ?? null, "true", "flags.2?true"],
       [this.url, "string", "string"],
-      [this.blocks, [TypePageBlock], "Vector<PageBlock>"],
-      [this.photos, [TypePhoto], "Vector<Photo>"],
-      [this.documents, [TypeDocument], "Vector<Document>"],
+      [this.blocks, [_TypePageBlock], "Vector<PageBlock>"],
+      [this.photos, [_TypePhoto], "Vector<Photo>"],
+      [this.documents, [_TypeDocument], "Vector<Document>"],
       [this.views ?? null, "number", "flags.3?int"],
     ];
   }
@@ -29842,7 +29842,7 @@ export class Page extends TypePage {
   }
 }
 
-export class HelpSupportName extends TypeHelpSupportName {
+export class HelpSupportName extends _TypeHelpSupportName {
   name: string;
 
   protected get [id]() {
@@ -29867,7 +29867,7 @@ export class HelpSupportName extends TypeHelpSupportName {
   }
 }
 
-export class HelpUserInfoEmpty extends TypeHelpUserInfo {
+export class HelpUserInfoEmpty extends _TypeHelpUserInfo {
   protected get [id]() {
     return 0xF3AE2EED;
   }
@@ -29885,7 +29885,7 @@ export class HelpUserInfoEmpty extends TypeHelpUserInfo {
   }
 }
 
-export class HelpUserInfo extends TypeHelpUserInfo {
+export class HelpUserInfo extends _TypeHelpUserInfo {
   message: string;
   entities: Array<TypeMessageEntity>;
   author: string;
@@ -29898,7 +29898,7 @@ export class HelpUserInfo extends TypeHelpUserInfo {
   static get [paramDesc](): ParamDesc {
     return [
       ["message", "string", "string"],
-      ["entities", [TypeMessageEntity], "Vector<MessageEntity>"],
+      ["entities", [_TypeMessageEntity], "Vector<MessageEntity>"],
       ["author", "string", "string"],
       ["date", "number", "int"],
     ];
@@ -29907,7 +29907,7 @@ export class HelpUserInfo extends TypeHelpUserInfo {
   protected get [params](): Params {
     return [
       [this.message, "string", "string"],
-      [this.entities, [TypeMessageEntity], "Vector<MessageEntity>"],
+      [this.entities, [_TypeMessageEntity], "Vector<MessageEntity>"],
       [this.author, "string", "string"],
       [this.date, "number", "int"],
     ];
@@ -29922,7 +29922,7 @@ export class HelpUserInfo extends TypeHelpUserInfo {
   }
 }
 
-export class PollAnswer extends TypePollAnswer {
+export class PollAnswer extends _TypePollAnswer {
   text: string;
   option: Uint8Array;
 
@@ -29951,7 +29951,7 @@ export class PollAnswer extends TypePollAnswer {
   }
 }
 
-export class Poll extends TypePoll {
+export class Poll extends _TypePoll {
   id: bigint;
   closed?: true;
   publicVoters?: true;
@@ -29975,7 +29975,7 @@ export class Poll extends TypePoll {
       ["multipleChoice", "true", "flags.2?true"],
       ["quiz", "true", "flags.3?true"],
       ["question", "string", "string"],
-      ["answers", [TypePollAnswer], "Vector<PollAnswer>"],
+      ["answers", [_TypePollAnswer], "Vector<PollAnswer>"],
       ["closePeriod", "number", "flags.4?int"],
       ["closeDate", "number", "flags.5?int"],
     ];
@@ -29990,7 +29990,7 @@ export class Poll extends TypePoll {
       [this.multipleChoice ?? null, "true", "flags.2?true"],
       [this.quiz ?? null, "true", "flags.3?true"],
       [this.question, "string", "string"],
-      [this.answers, [TypePollAnswer], "Vector<PollAnswer>"],
+      [this.answers, [_TypePollAnswer], "Vector<PollAnswer>"],
       [this.closePeriod ?? null, "number", "flags.4?int"],
       [this.closeDate ?? null, "number", "flags.5?int"],
     ];
@@ -30010,7 +30010,7 @@ export class Poll extends TypePoll {
   }
 }
 
-export class PollAnswerVoters extends TypePollAnswerVoters {
+export class PollAnswerVoters extends _TypePollAnswerVoters {
   chosen?: true;
   correct?: true;
   option: Uint8Array;
@@ -30049,7 +30049,7 @@ export class PollAnswerVoters extends TypePollAnswerVoters {
   }
 }
 
-export class PollResults extends TypePollResults {
+export class PollResults extends _TypePollResults {
   min?: true;
   results?: Array<TypePollAnswerVoters>;
   totalVoters?: number;
@@ -30065,11 +30065,11 @@ export class PollResults extends TypePollResults {
     return [
       ["flags", flags, "#"],
       ["min", "true", "flags.0?true"],
-      ["results", [TypePollAnswerVoters], "flags.1?Vector<PollAnswerVoters>"],
+      ["results", [_TypePollAnswerVoters], "flags.1?Vector<PollAnswerVoters>"],
       ["totalVoters", "number", "flags.2?int"],
-      ["recentVoters", [TypePeer], "flags.3?Vector<Peer>"],
+      ["recentVoters", [_TypePeer], "flags.3?Vector<Peer>"],
       ["solution", "string", "flags.4?string"],
-      ["solutionEntities", [TypeMessageEntity], "flags.4?Vector<MessageEntity>"],
+      ["solutionEntities", [_TypeMessageEntity], "flags.4?Vector<MessageEntity>"],
     ];
   }
 
@@ -30077,11 +30077,11 @@ export class PollResults extends TypePollResults {
     return [
       ["flags", flags, "#"],
       [this.min ?? null, "true", "flags.0?true"],
-      [this.results ?? null, [TypePollAnswerVoters], "flags.1?Vector<PollAnswerVoters>"],
+      [this.results ?? null, [_TypePollAnswerVoters], "flags.1?Vector<PollAnswerVoters>"],
       [this.totalVoters ?? null, "number", "flags.2?int"],
-      [this.recentVoters ?? null, [TypePeer], "flags.3?Vector<Peer>"],
+      [this.recentVoters ?? null, [_TypePeer], "flags.3?Vector<Peer>"],
       [this.solution ?? null, "string", "flags.4?string"],
-      [this.solutionEntities ?? null, [TypeMessageEntity], "flags.4?Vector<MessageEntity>"],
+      [this.solutionEntities ?? null, [_TypeMessageEntity], "flags.4?Vector<MessageEntity>"],
     ];
   }
 
@@ -30096,7 +30096,7 @@ export class PollResults extends TypePollResults {
   }
 }
 
-export class ChatOnlines extends TypeChatOnlines {
+export class ChatOnlines extends _TypeChatOnlines {
   onlines: number;
 
   protected get [id]() {
@@ -30121,7 +30121,7 @@ export class ChatOnlines extends TypeChatOnlines {
   }
 }
 
-export class StatsURL extends TypeStatsURL {
+export class StatsURL extends _TypeStatsURL {
   url: string;
 
   protected get [id]() {
@@ -30146,7 +30146,7 @@ export class StatsURL extends TypeStatsURL {
   }
 }
 
-export class ChatAdminRights extends TypeChatAdminRights {
+export class ChatAdminRights extends _TypeChatAdminRights {
   changeInfo?: true;
   postMessages?: true;
   editMessages?: true;
@@ -30217,7 +30217,7 @@ export class ChatAdminRights extends TypeChatAdminRights {
   }
 }
 
-export class ChatBannedRights extends TypeChatBannedRights {
+export class ChatBannedRights extends _TypeChatBannedRights {
   viewMessages?: true;
   sendMessages?: true;
   sendMedia?: true;
@@ -30324,7 +30324,7 @@ export class ChatBannedRights extends TypeChatBannedRights {
   }
 }
 
-export class InputWallPaper extends TypeInputWallPaper {
+export class InputWallPaper extends _TypeInputWallPaper {
   id: bigint;
   accessHash: bigint;
 
@@ -30353,7 +30353,7 @@ export class InputWallPaper extends TypeInputWallPaper {
   }
 }
 
-export class InputWallPaperSlug extends TypeInputWallPaper {
+export class InputWallPaperSlug extends _TypeInputWallPaper {
   slug: string;
 
   protected get [id]() {
@@ -30378,7 +30378,7 @@ export class InputWallPaperSlug extends TypeInputWallPaper {
   }
 }
 
-export class InputWallPaperNoFile extends TypeInputWallPaper {
+export class InputWallPaperNoFile extends _TypeInputWallPaper {
   id: bigint;
 
   protected get [id]() {
@@ -30403,7 +30403,7 @@ export class InputWallPaperNoFile extends TypeInputWallPaper {
   }
 }
 
-export class AccountWallPapersNotModified extends TypeAccountWallPapers {
+export class AccountWallPapersNotModified extends _TypeAccountWallPapers {
   protected get [id]() {
     return 0x1C199183;
   }
@@ -30421,7 +30421,7 @@ export class AccountWallPapersNotModified extends TypeAccountWallPapers {
   }
 }
 
-export class AccountWallPapers extends TypeAccountWallPapers {
+export class AccountWallPapers extends _TypeAccountWallPapers {
   hash: bigint;
   wallpapers: Array<TypeWallPaper>;
 
@@ -30432,14 +30432,14 @@ export class AccountWallPapers extends TypeAccountWallPapers {
   static get [paramDesc](): ParamDesc {
     return [
       ["hash", "bigint", "long"],
-      ["wallpapers", [TypeWallPaper], "Vector<WallPaper>"],
+      ["wallpapers", [_TypeWallPaper], "Vector<WallPaper>"],
     ];
   }
 
   protected get [params](): Params {
     return [
       [this.hash, "bigint", "long"],
-      [this.wallpapers, [TypeWallPaper], "Vector<WallPaper>"],
+      [this.wallpapers, [_TypeWallPaper], "Vector<WallPaper>"],
     ];
   }
 
@@ -30450,7 +30450,7 @@ export class AccountWallPapers extends TypeAccountWallPapers {
   }
 }
 
-export class CodeSettings extends TypeCodeSettings {
+export class CodeSettings extends _TypeCodeSettings {
   allowFlashcall?: true;
   currentNumber?: true;
   allowAppHash?: true;
@@ -30505,7 +30505,7 @@ export class CodeSettings extends TypeCodeSettings {
   }
 }
 
-export class WallPaperSettings extends TypeWallPaperSettings {
+export class WallPaperSettings extends _TypeWallPaperSettings {
   blur?: true;
   motion?: true;
   backgroundColor?: number;
@@ -30560,7 +30560,7 @@ export class WallPaperSettings extends TypeWallPaperSettings {
   }
 }
 
-export class AutoDownloadSettings extends TypeAutoDownloadSettings {
+export class AutoDownloadSettings extends _TypeAutoDownloadSettings {
   disabled?: true;
   videoPreloadLarge?: true;
   audioPreloadNext?: true;
@@ -30627,7 +30627,7 @@ export class AutoDownloadSettings extends TypeAutoDownloadSettings {
   }
 }
 
-export class AccountAutoDownloadSettings extends TypeAccountAutoDownloadSettings {
+export class AccountAutoDownloadSettings extends _TypeAccountAutoDownloadSettings {
   low: TypeAutoDownloadSettings;
   medium: TypeAutoDownloadSettings;
   high: TypeAutoDownloadSettings;
@@ -30638,17 +30638,17 @@ export class AccountAutoDownloadSettings extends TypeAccountAutoDownloadSettings
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["low", TypeAutoDownloadSettings, "AutoDownloadSettings"],
-      ["medium", TypeAutoDownloadSettings, "AutoDownloadSettings"],
-      ["high", TypeAutoDownloadSettings, "AutoDownloadSettings"],
+      ["low", _TypeAutoDownloadSettings, "AutoDownloadSettings"],
+      ["medium", _TypeAutoDownloadSettings, "AutoDownloadSettings"],
+      ["high", _TypeAutoDownloadSettings, "AutoDownloadSettings"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.low, TypeAutoDownloadSettings, "AutoDownloadSettings"],
-      [this.medium, TypeAutoDownloadSettings, "AutoDownloadSettings"],
-      [this.high, TypeAutoDownloadSettings, "AutoDownloadSettings"],
+      [this.low, _TypeAutoDownloadSettings, "AutoDownloadSettings"],
+      [this.medium, _TypeAutoDownloadSettings, "AutoDownloadSettings"],
+      [this.high, _TypeAutoDownloadSettings, "AutoDownloadSettings"],
     ];
   }
 
@@ -30660,7 +30660,7 @@ export class AccountAutoDownloadSettings extends TypeAccountAutoDownloadSettings
   }
 }
 
-export class EmojiKeyword extends TypeEmojiKeyword {
+export class EmojiKeyword extends _TypeEmojiKeyword {
   keyword: string;
   emoticons: Array<string>;
 
@@ -30689,7 +30689,7 @@ export class EmojiKeyword extends TypeEmojiKeyword {
   }
 }
 
-export class EmojiKeywordDeleted extends TypeEmojiKeyword {
+export class EmojiKeywordDeleted extends _TypeEmojiKeyword {
   keyword: string;
   emoticons: Array<string>;
 
@@ -30718,7 +30718,7 @@ export class EmojiKeywordDeleted extends TypeEmojiKeyword {
   }
 }
 
-export class EmojiKeywordsDifference extends TypeEmojiKeywordsDifference {
+export class EmojiKeywordsDifference extends _TypeEmojiKeywordsDifference {
   langCode: string;
   fromVersion: number;
   version: number;
@@ -30733,7 +30733,7 @@ export class EmojiKeywordsDifference extends TypeEmojiKeywordsDifference {
       ["langCode", "string", "string"],
       ["fromVersion", "number", "int"],
       ["version", "number", "int"],
-      ["keywords", [TypeEmojiKeyword], "Vector<EmojiKeyword>"],
+      ["keywords", [_TypeEmojiKeyword], "Vector<EmojiKeyword>"],
     ];
   }
 
@@ -30742,7 +30742,7 @@ export class EmojiKeywordsDifference extends TypeEmojiKeywordsDifference {
       [this.langCode, "string", "string"],
       [this.fromVersion, "number", "int"],
       [this.version, "number", "int"],
-      [this.keywords, [TypeEmojiKeyword], "Vector<EmojiKeyword>"],
+      [this.keywords, [_TypeEmojiKeyword], "Vector<EmojiKeyword>"],
     ];
   }
 
@@ -30755,7 +30755,7 @@ export class EmojiKeywordsDifference extends TypeEmojiKeywordsDifference {
   }
 }
 
-export class EmojiURL extends TypeEmojiURL {
+export class EmojiURL extends _TypeEmojiURL {
   url: string;
 
   protected get [id]() {
@@ -30780,7 +30780,7 @@ export class EmojiURL extends TypeEmojiURL {
   }
 }
 
-export class EmojiLanguage extends TypeEmojiLanguage {
+export class EmojiLanguage extends _TypeEmojiLanguage {
   langCode: string;
 
   protected get [id]() {
@@ -30805,7 +30805,7 @@ export class EmojiLanguage extends TypeEmojiLanguage {
   }
 }
 
-export class Folder extends TypeFolder {
+export class Folder extends _TypeFolder {
   autofillNewBroadcasts?: true;
   autofillPublicGroups?: true;
   autofillNewCorrespondents?: true;
@@ -30825,7 +30825,7 @@ export class Folder extends TypeFolder {
       ["autofillNewCorrespondents", "true", "flags.2?true"],
       ["id", "number", "int"],
       ["title", "string", "string"],
-      ["photo", TypeChatPhoto, "flags.3?ChatPhoto"],
+      ["photo", _TypeChatPhoto, "flags.3?ChatPhoto"],
     ];
   }
 
@@ -30837,7 +30837,7 @@ export class Folder extends TypeFolder {
       [this.autofillNewCorrespondents ?? null, "true", "flags.2?true"],
       [this.id, "number", "int"],
       [this.title, "string", "string"],
-      [this.photo ?? null, TypeChatPhoto, "flags.3?ChatPhoto"],
+      [this.photo ?? null, _TypeChatPhoto, "flags.3?ChatPhoto"],
     ];
   }
 
@@ -30852,7 +30852,7 @@ export class Folder extends TypeFolder {
   }
 }
 
-export class InputFolderPeer extends TypeInputFolderPeer {
+export class InputFolderPeer extends _TypeInputFolderPeer {
   peer: TypeInputPeer;
   folderId: number;
 
@@ -30862,14 +30862,14 @@ export class InputFolderPeer extends TypeInputFolderPeer {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["peer", TypeInputPeer, "InputPeer"],
+      ["peer", _TypeInputPeer, "InputPeer"],
       ["folderId", "number", "int"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.peer, TypeInputPeer, "InputPeer"],
+      [this.peer, _TypeInputPeer, "InputPeer"],
       [this.folderId, "number", "int"],
     ];
   }
@@ -30881,7 +30881,7 @@ export class InputFolderPeer extends TypeInputFolderPeer {
   }
 }
 
-export class FolderPeer extends TypeFolderPeer {
+export class FolderPeer extends _TypeFolderPeer {
   peer: TypePeer;
   folderId: number;
 
@@ -30891,14 +30891,14 @@ export class FolderPeer extends TypeFolderPeer {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["peer", TypePeer, "Peer"],
+      ["peer", _TypePeer, "Peer"],
       ["folderId", "number", "int"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.peer, TypePeer, "Peer"],
+      [this.peer, _TypePeer, "Peer"],
       [this.folderId, "number", "int"],
     ];
   }
@@ -30910,7 +30910,7 @@ export class FolderPeer extends TypeFolderPeer {
   }
 }
 
-export class MessagesSearchCounter extends TypeMessagesSearchCounter {
+export class MessagesSearchCounter extends _TypeMessagesSearchCounter {
   inexact?: true;
   filter: TypeMessagesFilter;
   count: number;
@@ -30923,7 +30923,7 @@ export class MessagesSearchCounter extends TypeMessagesSearchCounter {
     return [
       ["flags", flags, "#"],
       ["inexact", "true", "flags.1?true"],
-      ["filter", TypeMessagesFilter, "MessagesFilter"],
+      ["filter", _TypeMessagesFilter, "MessagesFilter"],
       ["count", "number", "int"],
     ];
   }
@@ -30932,7 +30932,7 @@ export class MessagesSearchCounter extends TypeMessagesSearchCounter {
     return [
       ["flags", flags, "#"],
       [this.inexact ?? null, "true", "flags.1?true"],
-      [this.filter, TypeMessagesFilter, "MessagesFilter"],
+      [this.filter, _TypeMessagesFilter, "MessagesFilter"],
       [this.count, "number", "int"],
     ];
   }
@@ -30945,7 +30945,7 @@ export class MessagesSearchCounter extends TypeMessagesSearchCounter {
   }
 }
 
-export class URLAuthResultRequest extends TypeURLAuthResult {
+export class URLAuthResultRequest extends _TypeURLAuthResult {
   requestWriteAccess?: true;
   bot: TypeUser;
   domain: string;
@@ -30958,7 +30958,7 @@ export class URLAuthResultRequest extends TypeURLAuthResult {
     return [
       ["flags", flags, "#"],
       ["requestWriteAccess", "true", "flags.0?true"],
-      ["bot", TypeUser, "User"],
+      ["bot", _TypeUser, "User"],
       ["domain", "string", "string"],
     ];
   }
@@ -30967,7 +30967,7 @@ export class URLAuthResultRequest extends TypeURLAuthResult {
     return [
       ["flags", flags, "#"],
       [this.requestWriteAccess ?? null, "true", "flags.0?true"],
-      [this.bot, TypeUser, "User"],
+      [this.bot, _TypeUser, "User"],
       [this.domain, "string", "string"],
     ];
   }
@@ -30980,7 +30980,7 @@ export class URLAuthResultRequest extends TypeURLAuthResult {
   }
 }
 
-export class URLAuthResultAccepted extends TypeURLAuthResult {
+export class URLAuthResultAccepted extends _TypeURLAuthResult {
   url: string;
 
   protected get [id]() {
@@ -31005,7 +31005,7 @@ export class URLAuthResultAccepted extends TypeURLAuthResult {
   }
 }
 
-export class URLAuthResultDefault extends TypeURLAuthResult {
+export class URLAuthResultDefault extends _TypeURLAuthResult {
   protected get [id]() {
     return 0xA9D6DB1F;
   }
@@ -31023,7 +31023,7 @@ export class URLAuthResultDefault extends TypeURLAuthResult {
   }
 }
 
-export class ChannelLocationEmpty extends TypeChannelLocation {
+export class ChannelLocationEmpty extends _TypeChannelLocation {
   protected get [id]() {
     return 0xBFB5AD8B;
   }
@@ -31041,7 +31041,7 @@ export class ChannelLocationEmpty extends TypeChannelLocation {
   }
 }
 
-export class ChannelLocation extends TypeChannelLocation {
+export class ChannelLocation extends _TypeChannelLocation {
   geoPoint: TypeGeoPoint;
   address: string;
 
@@ -31051,14 +31051,14 @@ export class ChannelLocation extends TypeChannelLocation {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["geoPoint", TypeGeoPoint, "GeoPoint"],
+      ["geoPoint", _TypeGeoPoint, "GeoPoint"],
       ["address", "string", "string"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.geoPoint, TypeGeoPoint, "GeoPoint"],
+      [this.geoPoint, _TypeGeoPoint, "GeoPoint"],
       [this.address, "string", "string"],
     ];
   }
@@ -31070,7 +31070,7 @@ export class ChannelLocation extends TypeChannelLocation {
   }
 }
 
-export class PeerLocated extends TypePeerLocated {
+export class PeerLocated extends _TypePeerLocated {
   peer: TypePeer;
   expires: number;
   distance: number;
@@ -31081,7 +31081,7 @@ export class PeerLocated extends TypePeerLocated {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["peer", TypePeer, "Peer"],
+      ["peer", _TypePeer, "Peer"],
       ["expires", "number", "int"],
       ["distance", "number", "int"],
     ];
@@ -31089,7 +31089,7 @@ export class PeerLocated extends TypePeerLocated {
 
   protected get [params](): Params {
     return [
-      [this.peer, TypePeer, "Peer"],
+      [this.peer, _TypePeer, "Peer"],
       [this.expires, "number", "int"],
       [this.distance, "number", "int"],
     ];
@@ -31103,7 +31103,7 @@ export class PeerLocated extends TypePeerLocated {
   }
 }
 
-export class PeerSelfLocated extends TypePeerLocated {
+export class PeerSelfLocated extends _TypePeerLocated {
   expires: number;
 
   protected get [id]() {
@@ -31128,7 +31128,7 @@ export class PeerSelfLocated extends TypePeerLocated {
   }
 }
 
-export class RestrictionReason extends TypeRestrictionReason {
+export class RestrictionReason extends _TypeRestrictionReason {
   platform: string;
   reason: string;
   text: string;
@@ -31161,7 +31161,7 @@ export class RestrictionReason extends TypeRestrictionReason {
   }
 }
 
-export class InputTheme extends TypeInputTheme {
+export class InputTheme extends _TypeInputTheme {
   id: bigint;
   accessHash: bigint;
 
@@ -31190,7 +31190,7 @@ export class InputTheme extends TypeInputTheme {
   }
 }
 
-export class InputThemeSlug extends TypeInputTheme {
+export class InputThemeSlug extends _TypeInputTheme {
   slug: string;
 
   protected get [id]() {
@@ -31215,7 +31215,7 @@ export class InputThemeSlug extends TypeInputTheme {
   }
 }
 
-export class Theme extends TypeTheme {
+export class Theme extends _TypeTheme {
   creator?: true;
   default?: true;
   forChat?: true;
@@ -31242,8 +31242,8 @@ export class Theme extends TypeTheme {
       ["accessHash", "bigint", "long"],
       ["slug", "string", "string"],
       ["title", "string", "string"],
-      ["document", TypeDocument, "flags.2?Document"],
-      ["settings", [TypeThemeSettings], "flags.3?Vector<ThemeSettings>"],
+      ["document", _TypeDocument, "flags.2?Document"],
+      ["settings", [_TypeThemeSettings], "flags.3?Vector<ThemeSettings>"],
       ["emoticon", "string", "flags.6?string"],
       ["installsCount", "number", "flags.4?int"],
     ];
@@ -31259,8 +31259,8 @@ export class Theme extends TypeTheme {
       [this.accessHash, "bigint", "long"],
       [this.slug, "string", "string"],
       [this.title, "string", "string"],
-      [this.document ?? null, TypeDocument, "flags.2?Document"],
-      [this.settings ?? null, [TypeThemeSettings], "flags.3?Vector<ThemeSettings>"],
+      [this.document ?? null, _TypeDocument, "flags.2?Document"],
+      [this.settings ?? null, [_TypeThemeSettings], "flags.3?Vector<ThemeSettings>"],
       [this.emoticon ?? null, "string", "flags.6?string"],
       [this.installsCount ?? null, "number", "flags.4?int"],
     ];
@@ -31282,7 +31282,7 @@ export class Theme extends TypeTheme {
   }
 }
 
-export class AccountThemesNotModified extends TypeAccountThemes {
+export class AccountThemesNotModified extends _TypeAccountThemes {
   protected get [id]() {
     return 0xF41EB622;
   }
@@ -31300,7 +31300,7 @@ export class AccountThemesNotModified extends TypeAccountThemes {
   }
 }
 
-export class AccountThemes extends TypeAccountThemes {
+export class AccountThemes extends _TypeAccountThemes {
   hash: bigint;
   themes: Array<TypeTheme>;
 
@@ -31311,14 +31311,14 @@ export class AccountThemes extends TypeAccountThemes {
   static get [paramDesc](): ParamDesc {
     return [
       ["hash", "bigint", "long"],
-      ["themes", [TypeTheme], "Vector<Theme>"],
+      ["themes", [_TypeTheme], "Vector<Theme>"],
     ];
   }
 
   protected get [params](): Params {
     return [
       [this.hash, "bigint", "long"],
-      [this.themes, [TypeTheme], "Vector<Theme>"],
+      [this.themes, [_TypeTheme], "Vector<Theme>"],
     ];
   }
 
@@ -31329,7 +31329,7 @@ export class AccountThemes extends TypeAccountThemes {
   }
 }
 
-export class AuthLoginToken extends TypeAuthLoginToken {
+export class AuthLoginToken extends _TypeAuthLoginToken {
   expires: number;
   token: Uint8Array;
 
@@ -31358,7 +31358,7 @@ export class AuthLoginToken extends TypeAuthLoginToken {
   }
 }
 
-export class AuthLoginTokenMigrateTo extends TypeAuthLoginToken {
+export class AuthLoginTokenMigrateTo extends _TypeAuthLoginToken {
   dcId: number;
   token: Uint8Array;
 
@@ -31387,7 +31387,7 @@ export class AuthLoginTokenMigrateTo extends TypeAuthLoginToken {
   }
 }
 
-export class AuthLoginTokenSuccess extends TypeAuthLoginToken {
+export class AuthLoginTokenSuccess extends _TypeAuthLoginToken {
   authorization: TypeAuthAuthorization;
 
   protected get [id]() {
@@ -31396,13 +31396,13 @@ export class AuthLoginTokenSuccess extends TypeAuthLoginToken {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["authorization", TypeAuthAuthorization, "auth.Authorization"],
+      ["authorization", _TypeAuthAuthorization, "auth.Authorization"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.authorization, TypeAuthAuthorization, "auth.Authorization"],
+      [this.authorization, _TypeAuthAuthorization, "auth.Authorization"],
     ];
   }
 
@@ -31412,7 +31412,7 @@ export class AuthLoginTokenSuccess extends TypeAuthLoginToken {
   }
 }
 
-export class AccountContentSettings extends TypeAccountContentSettings {
+export class AccountContentSettings extends _TypeAccountContentSettings {
   sensitiveEnabled?: true;
   sensitiveCanChange?: true;
 
@@ -31443,7 +31443,7 @@ export class AccountContentSettings extends TypeAccountContentSettings {
   }
 }
 
-export class MessagesInactiveChats extends TypeMessagesInactiveChats {
+export class MessagesInactiveChats extends _TypeMessagesInactiveChats {
   dates: Array<number>;
   chats: Array<TypeChat>;
   users: Array<TypeUser>;
@@ -31455,16 +31455,16 @@ export class MessagesInactiveChats extends TypeMessagesInactiveChats {
   static get [paramDesc](): ParamDesc {
     return [
       ["dates", ["number"], "Vector<int>"],
-      ["chats", [TypeChat], "Vector<Chat>"],
-      ["users", [TypeUser], "Vector<User>"],
+      ["chats", [_TypeChat], "Vector<Chat>"],
+      ["users", [_TypeUser], "Vector<User>"],
     ];
   }
 
   protected get [params](): Params {
     return [
       [this.dates, ["number"], "Vector<int>"],
-      [this.chats, [TypeChat], "Vector<Chat>"],
-      [this.users, [TypeUser], "Vector<User>"],
+      [this.chats, [_TypeChat], "Vector<Chat>"],
+      [this.users, [_TypeUser], "Vector<User>"],
     ];
   }
 
@@ -31476,7 +31476,7 @@ export class MessagesInactiveChats extends TypeMessagesInactiveChats {
   }
 }
 
-export class BaseThemeClassic extends TypeBaseTheme {
+export class BaseThemeClassic extends _TypeBaseTheme {
   protected get [id]() {
     return 0xC3A12462;
   }
@@ -31494,7 +31494,7 @@ export class BaseThemeClassic extends TypeBaseTheme {
   }
 }
 
-export class BaseThemeDay extends TypeBaseTheme {
+export class BaseThemeDay extends _TypeBaseTheme {
   protected get [id]() {
     return 0xFBD81688;
   }
@@ -31512,7 +31512,7 @@ export class BaseThemeDay extends TypeBaseTheme {
   }
 }
 
-export class BaseThemeNight extends TypeBaseTheme {
+export class BaseThemeNight extends _TypeBaseTheme {
   protected get [id]() {
     return 0xB7B31EA8;
   }
@@ -31530,7 +31530,7 @@ export class BaseThemeNight extends TypeBaseTheme {
   }
 }
 
-export class BaseThemeTinted extends TypeBaseTheme {
+export class BaseThemeTinted extends _TypeBaseTheme {
   protected get [id]() {
     return 0x6D5F77EE;
   }
@@ -31548,7 +31548,7 @@ export class BaseThemeTinted extends TypeBaseTheme {
   }
 }
 
-export class BaseThemeArctic extends TypeBaseTheme {
+export class BaseThemeArctic extends _TypeBaseTheme {
   protected get [id]() {
     return 0x5B11125A;
   }
@@ -31566,7 +31566,7 @@ export class BaseThemeArctic extends TypeBaseTheme {
   }
 }
 
-export class InputThemeSettings extends TypeInputThemeSettings {
+export class InputThemeSettings extends _TypeInputThemeSettings {
   messageColorsAnimated?: true;
   baseTheme: TypeBaseTheme;
   accentColor: number;
@@ -31583,12 +31583,12 @@ export class InputThemeSettings extends TypeInputThemeSettings {
     return [
       ["flags", flags, "#"],
       ["messageColorsAnimated", "true", "flags.2?true"],
-      ["baseTheme", TypeBaseTheme, "BaseTheme"],
+      ["baseTheme", _TypeBaseTheme, "BaseTheme"],
       ["accentColor", "number", "int"],
       ["outboxAccentColor", "number", "flags.3?int"],
       ["messageColors", ["number"], "flags.0?Vector<int>"],
-      ["wallpaper", TypeInputWallPaper, "flags.1?InputWallPaper"],
-      ["wallpaperSettings", TypeWallPaperSettings, "flags.1?WallPaperSettings"],
+      ["wallpaper", _TypeInputWallPaper, "flags.1?InputWallPaper"],
+      ["wallpaperSettings", _TypeWallPaperSettings, "flags.1?WallPaperSettings"],
     ];
   }
 
@@ -31596,12 +31596,12 @@ export class InputThemeSettings extends TypeInputThemeSettings {
     return [
       ["flags", flags, "#"],
       [this.messageColorsAnimated ?? null, "true", "flags.2?true"],
-      [this.baseTheme, TypeBaseTheme, "BaseTheme"],
+      [this.baseTheme, _TypeBaseTheme, "BaseTheme"],
       [this.accentColor, "number", "int"],
       [this.outboxAccentColor ?? null, "number", "flags.3?int"],
       [this.messageColors ?? null, ["number"], "flags.0?Vector<int>"],
-      [this.wallpaper ?? null, TypeInputWallPaper, "flags.1?InputWallPaper"],
-      [this.wallpaperSettings ?? null, TypeWallPaperSettings, "flags.1?WallPaperSettings"],
+      [this.wallpaper ?? null, _TypeInputWallPaper, "flags.1?InputWallPaper"],
+      [this.wallpaperSettings ?? null, _TypeWallPaperSettings, "flags.1?WallPaperSettings"],
     ];
   }
 
@@ -31617,7 +31617,7 @@ export class InputThemeSettings extends TypeInputThemeSettings {
   }
 }
 
-export class ThemeSettings extends TypeThemeSettings {
+export class ThemeSettings extends _TypeThemeSettings {
   messageColorsAnimated?: true;
   baseTheme: TypeBaseTheme;
   accentColor: number;
@@ -31633,11 +31633,11 @@ export class ThemeSettings extends TypeThemeSettings {
     return [
       ["flags", flags, "#"],
       ["messageColorsAnimated", "true", "flags.2?true"],
-      ["baseTheme", TypeBaseTheme, "BaseTheme"],
+      ["baseTheme", _TypeBaseTheme, "BaseTheme"],
       ["accentColor", "number", "int"],
       ["outboxAccentColor", "number", "flags.3?int"],
       ["messageColors", ["number"], "flags.0?Vector<int>"],
-      ["wallpaper", TypeWallPaper, "flags.1?WallPaper"],
+      ["wallpaper", _TypeWallPaper, "flags.1?WallPaper"],
     ];
   }
 
@@ -31645,11 +31645,11 @@ export class ThemeSettings extends TypeThemeSettings {
     return [
       ["flags", flags, "#"],
       [this.messageColorsAnimated ?? null, "true", "flags.2?true"],
-      [this.baseTheme, TypeBaseTheme, "BaseTheme"],
+      [this.baseTheme, _TypeBaseTheme, "BaseTheme"],
       [this.accentColor, "number", "int"],
       [this.outboxAccentColor ?? null, "number", "flags.3?int"],
       [this.messageColors ?? null, ["number"], "flags.0?Vector<int>"],
-      [this.wallpaper ?? null, TypeWallPaper, "flags.1?WallPaper"],
+      [this.wallpaper ?? null, _TypeWallPaper, "flags.1?WallPaper"],
     ];
   }
 
@@ -31664,7 +31664,7 @@ export class ThemeSettings extends TypeThemeSettings {
   }
 }
 
-export class WebPageAttributeTheme extends TypeWebPageAttribute {
+export class WebPageAttributeTheme extends _TypeWebPageAttribute {
   documents?: Array<TypeDocument>;
   settings?: TypeThemeSettings;
 
@@ -31675,16 +31675,16 @@ export class WebPageAttributeTheme extends TypeWebPageAttribute {
   static get [paramDesc](): ParamDesc {
     return [
       ["flags", flags, "#"],
-      ["documents", [TypeDocument], "flags.0?Vector<Document>"],
-      ["settings", TypeThemeSettings, "flags.1?ThemeSettings"],
+      ["documents", [_TypeDocument], "flags.0?Vector<Document>"],
+      ["settings", _TypeThemeSettings, "flags.1?ThemeSettings"],
     ];
   }
 
   protected get [params](): Params {
     return [
       ["flags", flags, "#"],
-      [this.documents ?? null, [TypeDocument], "flags.0?Vector<Document>"],
-      [this.settings ?? null, TypeThemeSettings, "flags.1?ThemeSettings"],
+      [this.documents ?? null, [_TypeDocument], "flags.0?Vector<Document>"],
+      [this.settings ?? null, _TypeThemeSettings, "flags.1?ThemeSettings"],
     ];
   }
 
@@ -31695,7 +31695,7 @@ export class WebPageAttributeTheme extends TypeWebPageAttribute {
   }
 }
 
-export class WebPageAttributeStory extends TypeWebPageAttribute {
+export class WebPageAttributeStory extends _TypeWebPageAttribute {
   userId: bigint;
   id: number;
   story?: TypeStoryItem;
@@ -31709,7 +31709,7 @@ export class WebPageAttributeStory extends TypeWebPageAttribute {
       ["flags", flags, "#"],
       ["userId", "bigint", "long"],
       ["id", "number", "int"],
-      ["story", TypeStoryItem, "flags.0?StoryItem"],
+      ["story", _TypeStoryItem, "flags.0?StoryItem"],
     ];
   }
 
@@ -31718,7 +31718,7 @@ export class WebPageAttributeStory extends TypeWebPageAttribute {
       ["flags", flags, "#"],
       [this.userId, "bigint", "long"],
       [this.id, "number", "int"],
-      [this.story ?? null, TypeStoryItem, "flags.0?StoryItem"],
+      [this.story ?? null, _TypeStoryItem, "flags.0?StoryItem"],
     ];
   }
 
@@ -31730,7 +31730,7 @@ export class WebPageAttributeStory extends TypeWebPageAttribute {
   }
 }
 
-export class MessagesVotesList extends TypeMessagesVotesList {
+export class MessagesVotesList extends _TypeMessagesVotesList {
   count: number;
   votes: Array<TypeMessagePeerVote>;
   chats: Array<TypeChat>;
@@ -31745,9 +31745,9 @@ export class MessagesVotesList extends TypeMessagesVotesList {
     return [
       ["flags", flags, "#"],
       ["count", "number", "int"],
-      ["votes", [TypeMessagePeerVote], "Vector<MessagePeerVote>"],
-      ["chats", [TypeChat], "Vector<Chat>"],
-      ["users", [TypeUser], "Vector<User>"],
+      ["votes", [_TypeMessagePeerVote], "Vector<MessagePeerVote>"],
+      ["chats", [_TypeChat], "Vector<Chat>"],
+      ["users", [_TypeUser], "Vector<User>"],
       ["nextOffset", "string", "flags.0?string"],
     ];
   }
@@ -31756,9 +31756,9 @@ export class MessagesVotesList extends TypeMessagesVotesList {
     return [
       ["flags", flags, "#"],
       [this.count, "number", "int"],
-      [this.votes, [TypeMessagePeerVote], "Vector<MessagePeerVote>"],
-      [this.chats, [TypeChat], "Vector<Chat>"],
-      [this.users, [TypeUser], "Vector<User>"],
+      [this.votes, [_TypeMessagePeerVote], "Vector<MessagePeerVote>"],
+      [this.chats, [_TypeChat], "Vector<Chat>"],
+      [this.users, [_TypeUser], "Vector<User>"],
       [this.nextOffset ?? null, "string", "flags.0?string"],
     ];
   }
@@ -31773,7 +31773,7 @@ export class MessagesVotesList extends TypeMessagesVotesList {
   }
 }
 
-export class BankCardOpenURL extends TypeBankCardOpenURL {
+export class BankCardOpenURL extends _TypeBankCardOpenURL {
   url: string;
   name: string;
 
@@ -31802,7 +31802,7 @@ export class BankCardOpenURL extends TypeBankCardOpenURL {
   }
 }
 
-export class PaymentsBankCardData extends TypePaymentsBankCardData {
+export class PaymentsBankCardData extends _TypePaymentsBankCardData {
   title: string;
   openUrls: Array<TypeBankCardOpenURL>;
 
@@ -31813,14 +31813,14 @@ export class PaymentsBankCardData extends TypePaymentsBankCardData {
   static get [paramDesc](): ParamDesc {
     return [
       ["title", "string", "string"],
-      ["openUrls", [TypeBankCardOpenURL], "Vector<BankCardOpenUrl>"],
+      ["openUrls", [_TypeBankCardOpenURL], "Vector<BankCardOpenUrl>"],
     ];
   }
 
   protected get [params](): Params {
     return [
       [this.title, "string", "string"],
-      [this.openUrls, [TypeBankCardOpenURL], "Vector<BankCardOpenUrl>"],
+      [this.openUrls, [_TypeBankCardOpenURL], "Vector<BankCardOpenUrl>"],
     ];
   }
 
@@ -31831,7 +31831,7 @@ export class PaymentsBankCardData extends TypePaymentsBankCardData {
   }
 }
 
-export class DialogFilter extends TypeDialogFilter {
+export class DialogFilter extends _TypeDialogFilter {
   contacts?: true;
   nonContacts?: true;
   groups?: true;
@@ -31865,9 +31865,9 @@ export class DialogFilter extends TypeDialogFilter {
       ["id", "number", "int"],
       ["title", "string", "string"],
       ["emoticon", "string", "flags.25?string"],
-      ["pinnedPeers", [TypeInputPeer], "Vector<InputPeer>"],
-      ["includePeers", [TypeInputPeer], "Vector<InputPeer>"],
-      ["excludePeers", [TypeInputPeer], "Vector<InputPeer>"],
+      ["pinnedPeers", [_TypeInputPeer], "Vector<InputPeer>"],
+      ["includePeers", [_TypeInputPeer], "Vector<InputPeer>"],
+      ["excludePeers", [_TypeInputPeer], "Vector<InputPeer>"],
     ];
   }
 
@@ -31885,9 +31885,9 @@ export class DialogFilter extends TypeDialogFilter {
       [this.id, "number", "int"],
       [this.title, "string", "string"],
       [this.emoticon ?? null, "string", "flags.25?string"],
-      [this.pinnedPeers, [TypeInputPeer], "Vector<InputPeer>"],
-      [this.includePeers, [TypeInputPeer], "Vector<InputPeer>"],
-      [this.excludePeers, [TypeInputPeer], "Vector<InputPeer>"],
+      [this.pinnedPeers, [_TypeInputPeer], "Vector<InputPeer>"],
+      [this.includePeers, [_TypeInputPeer], "Vector<InputPeer>"],
+      [this.excludePeers, [_TypeInputPeer], "Vector<InputPeer>"],
     ];
   }
 
@@ -31910,7 +31910,7 @@ export class DialogFilter extends TypeDialogFilter {
   }
 }
 
-export class DialogFilterDefault extends TypeDialogFilter {
+export class DialogFilterDefault extends _TypeDialogFilter {
   protected get [id]() {
     return 0x363293AE;
   }
@@ -31928,7 +31928,7 @@ export class DialogFilterDefault extends TypeDialogFilter {
   }
 }
 
-export class DialogFilterChatlist extends TypeDialogFilter {
+export class DialogFilterChatlist extends _TypeDialogFilter {
   hasMyInvites?: true;
   id: number;
   title: string;
@@ -31947,8 +31947,8 @@ export class DialogFilterChatlist extends TypeDialogFilter {
       ["id", "number", "int"],
       ["title", "string", "string"],
       ["emoticon", "string", "flags.25?string"],
-      ["pinnedPeers", [TypeInputPeer], "Vector<InputPeer>"],
-      ["includePeers", [TypeInputPeer], "Vector<InputPeer>"],
+      ["pinnedPeers", [_TypeInputPeer], "Vector<InputPeer>"],
+      ["includePeers", [_TypeInputPeer], "Vector<InputPeer>"],
     ];
   }
 
@@ -31959,8 +31959,8 @@ export class DialogFilterChatlist extends TypeDialogFilter {
       [this.id, "number", "int"],
       [this.title, "string", "string"],
       [this.emoticon ?? null, "string", "flags.25?string"],
-      [this.pinnedPeers, [TypeInputPeer], "Vector<InputPeer>"],
-      [this.includePeers, [TypeInputPeer], "Vector<InputPeer>"],
+      [this.pinnedPeers, [_TypeInputPeer], "Vector<InputPeer>"],
+      [this.includePeers, [_TypeInputPeer], "Vector<InputPeer>"],
     ];
   }
 
@@ -31975,7 +31975,7 @@ export class DialogFilterChatlist extends TypeDialogFilter {
   }
 }
 
-export class DialogFilterSuggested extends TypeDialogFilterSuggested {
+export class DialogFilterSuggested extends _TypeDialogFilterSuggested {
   filter: TypeDialogFilter;
   description: string;
 
@@ -31985,14 +31985,14 @@ export class DialogFilterSuggested extends TypeDialogFilterSuggested {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["filter", TypeDialogFilter, "DialogFilter"],
+      ["filter", _TypeDialogFilter, "DialogFilter"],
       ["description", "string", "string"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.filter, TypeDialogFilter, "DialogFilter"],
+      [this.filter, _TypeDialogFilter, "DialogFilter"],
       [this.description, "string", "string"],
     ];
   }
@@ -32004,7 +32004,7 @@ export class DialogFilterSuggested extends TypeDialogFilterSuggested {
   }
 }
 
-export class StatsDateRangeDays extends TypeStatsDateRangeDays {
+export class StatsDateRangeDays extends _TypeStatsDateRangeDays {
   minDate: number;
   maxDate: number;
 
@@ -32033,7 +32033,7 @@ export class StatsDateRangeDays extends TypeStatsDateRangeDays {
   }
 }
 
-export class StatsAbsValueAndPrev extends TypeStatsAbsValueAndPrev {
+export class StatsAbsValueAndPrev extends _TypeStatsAbsValueAndPrev {
   current: number;
   previous: number;
 
@@ -32062,7 +32062,7 @@ export class StatsAbsValueAndPrev extends TypeStatsAbsValueAndPrev {
   }
 }
 
-export class StatsPercentValue extends TypeStatsPercentValue {
+export class StatsPercentValue extends _TypeStatsPercentValue {
   part: number;
   total: number;
 
@@ -32091,7 +32091,7 @@ export class StatsPercentValue extends TypeStatsPercentValue {
   }
 }
 
-export class StatsGraphAsync extends TypeStatsGraph {
+export class StatsGraphAsync extends _TypeStatsGraph {
   token: string;
 
   protected get [id]() {
@@ -32116,7 +32116,7 @@ export class StatsGraphAsync extends TypeStatsGraph {
   }
 }
 
-export class StatsGraphError extends TypeStatsGraph {
+export class StatsGraphError extends _TypeStatsGraph {
   error: string;
 
   protected get [id]() {
@@ -32141,7 +32141,7 @@ export class StatsGraphError extends TypeStatsGraph {
   }
 }
 
-export class StatsGraph extends TypeStatsGraph {
+export class StatsGraph extends _TypeStatsGraph {
   json: TypeDataJSON;
   zoomToken?: string;
 
@@ -32152,7 +32152,7 @@ export class StatsGraph extends TypeStatsGraph {
   static get [paramDesc](): ParamDesc {
     return [
       ["flags", flags, "#"],
-      ["json", TypeDataJSON, "DataJSON"],
+      ["json", _TypeDataJSON, "DataJSON"],
       ["zoomToken", "string", "flags.0?string"],
     ];
   }
@@ -32160,7 +32160,7 @@ export class StatsGraph extends TypeStatsGraph {
   protected get [params](): Params {
     return [
       ["flags", flags, "#"],
-      [this.json, TypeDataJSON, "DataJSON"],
+      [this.json, _TypeDataJSON, "DataJSON"],
       [this.zoomToken ?? null, "string", "flags.0?string"],
     ];
   }
@@ -32172,7 +32172,7 @@ export class StatsGraph extends TypeStatsGraph {
   }
 }
 
-export class MessageInteractionCounters extends TypeMessageInteractionCounters {
+export class MessageInteractionCounters extends _TypeMessageInteractionCounters {
   msgId: number;
   views: number;
   forwards: number;
@@ -32205,7 +32205,7 @@ export class MessageInteractionCounters extends TypeMessageInteractionCounters {
   }
 }
 
-export class StatsBroadcastStats extends TypeStatsBroadcastStats {
+export class StatsBroadcastStats extends _TypeStatsBroadcastStats {
   period: TypeStatsDateRangeDays;
   followers: TypeStatsAbsValueAndPrev;
   viewsPerPost: TypeStatsAbsValueAndPrev;
@@ -32228,41 +32228,41 @@ export class StatsBroadcastStats extends TypeStatsBroadcastStats {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["period", TypeStatsDateRangeDays, "StatsDateRangeDays"],
-      ["followers", TypeStatsAbsValueAndPrev, "StatsAbsValueAndPrev"],
-      ["viewsPerPost", TypeStatsAbsValueAndPrev, "StatsAbsValueAndPrev"],
-      ["sharesPerPost", TypeStatsAbsValueAndPrev, "StatsAbsValueAndPrev"],
-      ["enabledNotifications", TypeStatsPercentValue, "StatsPercentValue"],
-      ["growthGraph", TypeStatsGraph, "StatsGraph"],
-      ["followersGraph", TypeStatsGraph, "StatsGraph"],
-      ["muteGraph", TypeStatsGraph, "StatsGraph"],
-      ["topHoursGraph", TypeStatsGraph, "StatsGraph"],
-      ["interactionsGraph", TypeStatsGraph, "StatsGraph"],
-      ["ivInteractionsGraph", TypeStatsGraph, "StatsGraph"],
-      ["viewsBySourceGraph", TypeStatsGraph, "StatsGraph"],
-      ["newFollowersBySourceGraph", TypeStatsGraph, "StatsGraph"],
-      ["languagesGraph", TypeStatsGraph, "StatsGraph"],
-      ["recentMessageInteractions", [TypeMessageInteractionCounters], "Vector<MessageInteractionCounters>"],
+      ["period", _TypeStatsDateRangeDays, "StatsDateRangeDays"],
+      ["followers", _TypeStatsAbsValueAndPrev, "StatsAbsValueAndPrev"],
+      ["viewsPerPost", _TypeStatsAbsValueAndPrev, "StatsAbsValueAndPrev"],
+      ["sharesPerPost", _TypeStatsAbsValueAndPrev, "StatsAbsValueAndPrev"],
+      ["enabledNotifications", _TypeStatsPercentValue, "StatsPercentValue"],
+      ["growthGraph", _TypeStatsGraph, "StatsGraph"],
+      ["followersGraph", _TypeStatsGraph, "StatsGraph"],
+      ["muteGraph", _TypeStatsGraph, "StatsGraph"],
+      ["topHoursGraph", _TypeStatsGraph, "StatsGraph"],
+      ["interactionsGraph", _TypeStatsGraph, "StatsGraph"],
+      ["ivInteractionsGraph", _TypeStatsGraph, "StatsGraph"],
+      ["viewsBySourceGraph", _TypeStatsGraph, "StatsGraph"],
+      ["newFollowersBySourceGraph", _TypeStatsGraph, "StatsGraph"],
+      ["languagesGraph", _TypeStatsGraph, "StatsGraph"],
+      ["recentMessageInteractions", [_TypeMessageInteractionCounters], "Vector<MessageInteractionCounters>"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.period, TypeStatsDateRangeDays, "StatsDateRangeDays"],
-      [this.followers, TypeStatsAbsValueAndPrev, "StatsAbsValueAndPrev"],
-      [this.viewsPerPost, TypeStatsAbsValueAndPrev, "StatsAbsValueAndPrev"],
-      [this.sharesPerPost, TypeStatsAbsValueAndPrev, "StatsAbsValueAndPrev"],
-      [this.enabledNotifications, TypeStatsPercentValue, "StatsPercentValue"],
-      [this.growthGraph, TypeStatsGraph, "StatsGraph"],
-      [this.followersGraph, TypeStatsGraph, "StatsGraph"],
-      [this.muteGraph, TypeStatsGraph, "StatsGraph"],
-      [this.topHoursGraph, TypeStatsGraph, "StatsGraph"],
-      [this.interactionsGraph, TypeStatsGraph, "StatsGraph"],
-      [this.ivInteractionsGraph, TypeStatsGraph, "StatsGraph"],
-      [this.viewsBySourceGraph, TypeStatsGraph, "StatsGraph"],
-      [this.newFollowersBySourceGraph, TypeStatsGraph, "StatsGraph"],
-      [this.languagesGraph, TypeStatsGraph, "StatsGraph"],
-      [this.recentMessageInteractions, [TypeMessageInteractionCounters], "Vector<MessageInteractionCounters>"],
+      [this.period, _TypeStatsDateRangeDays, "StatsDateRangeDays"],
+      [this.followers, _TypeStatsAbsValueAndPrev, "StatsAbsValueAndPrev"],
+      [this.viewsPerPost, _TypeStatsAbsValueAndPrev, "StatsAbsValueAndPrev"],
+      [this.sharesPerPost, _TypeStatsAbsValueAndPrev, "StatsAbsValueAndPrev"],
+      [this.enabledNotifications, _TypeStatsPercentValue, "StatsPercentValue"],
+      [this.growthGraph, _TypeStatsGraph, "StatsGraph"],
+      [this.followersGraph, _TypeStatsGraph, "StatsGraph"],
+      [this.muteGraph, _TypeStatsGraph, "StatsGraph"],
+      [this.topHoursGraph, _TypeStatsGraph, "StatsGraph"],
+      [this.interactionsGraph, _TypeStatsGraph, "StatsGraph"],
+      [this.ivInteractionsGraph, _TypeStatsGraph, "StatsGraph"],
+      [this.viewsBySourceGraph, _TypeStatsGraph, "StatsGraph"],
+      [this.newFollowersBySourceGraph, _TypeStatsGraph, "StatsGraph"],
+      [this.languagesGraph, _TypeStatsGraph, "StatsGraph"],
+      [this.recentMessageInteractions, [_TypeMessageInteractionCounters], "Vector<MessageInteractionCounters>"],
     ];
   }
 
@@ -32286,7 +32286,7 @@ export class StatsBroadcastStats extends TypeStatsBroadcastStats {
   }
 }
 
-export class HelpPromoDataEmpty extends TypeHelpPromoData {
+export class HelpPromoDataEmpty extends _TypeHelpPromoData {
   expires: number;
 
   protected get [id]() {
@@ -32311,7 +32311,7 @@ export class HelpPromoDataEmpty extends TypeHelpPromoData {
   }
 }
 
-export class HelpPromoData extends TypeHelpPromoData {
+export class HelpPromoData extends _TypeHelpPromoData {
   proxy?: true;
   expires: number;
   peer: TypePeer;
@@ -32329,9 +32329,9 @@ export class HelpPromoData extends TypeHelpPromoData {
       ["flags", flags, "#"],
       ["proxy", "true", "flags.0?true"],
       ["expires", "number", "int"],
-      ["peer", TypePeer, "Peer"],
-      ["chats", [TypeChat], "Vector<Chat>"],
-      ["users", [TypeUser], "Vector<User>"],
+      ["peer", _TypePeer, "Peer"],
+      ["chats", [_TypeChat], "Vector<Chat>"],
+      ["users", [_TypeUser], "Vector<User>"],
       ["psaType", "string", "flags.1?string"],
       ["psaMessage", "string", "flags.2?string"],
     ];
@@ -32342,9 +32342,9 @@ export class HelpPromoData extends TypeHelpPromoData {
       ["flags", flags, "#"],
       [this.proxy ?? null, "true", "flags.0?true"],
       [this.expires, "number", "int"],
-      [this.peer, TypePeer, "Peer"],
-      [this.chats, [TypeChat], "Vector<Chat>"],
-      [this.users, [TypeUser], "Vector<User>"],
+      [this.peer, _TypePeer, "Peer"],
+      [this.chats, [_TypeChat], "Vector<Chat>"],
+      [this.users, [_TypeUser], "Vector<User>"],
       [this.psaType ?? null, "string", "flags.1?string"],
       [this.psaMessage ?? null, "string", "flags.2?string"],
     ];
@@ -32362,7 +32362,7 @@ export class HelpPromoData extends TypeHelpPromoData {
   }
 }
 
-export class VideoSize extends TypeVideoSize {
+export class VideoSize extends _TypeVideoSize {
   type: string;
   w: number;
   h: number;
@@ -32405,7 +32405,7 @@ export class VideoSize extends TypeVideoSize {
   }
 }
 
-export class VideoSizeEmojiMarkup extends TypeVideoSize {
+export class VideoSizeEmojiMarkup extends _TypeVideoSize {
   emojiId: bigint;
   backgroundColors: Array<number>;
 
@@ -32434,7 +32434,7 @@ export class VideoSizeEmojiMarkup extends TypeVideoSize {
   }
 }
 
-export class VideoSizeStickerMarkup extends TypeVideoSize {
+export class VideoSizeStickerMarkup extends _TypeVideoSize {
   stickerset: TypeInputStickerSet;
   stickerId: bigint;
   backgroundColors: Array<number>;
@@ -32445,7 +32445,7 @@ export class VideoSizeStickerMarkup extends TypeVideoSize {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["stickerset", TypeInputStickerSet, "InputStickerSet"],
+      ["stickerset", _TypeInputStickerSet, "InputStickerSet"],
       ["stickerId", "bigint", "long"],
       ["backgroundColors", ["number"], "Vector<int>"],
     ];
@@ -32453,7 +32453,7 @@ export class VideoSizeStickerMarkup extends TypeVideoSize {
 
   protected get [params](): Params {
     return [
-      [this.stickerset, TypeInputStickerSet, "InputStickerSet"],
+      [this.stickerset, _TypeInputStickerSet, "InputStickerSet"],
       [this.stickerId, "bigint", "long"],
       [this.backgroundColors, ["number"], "Vector<int>"],
     ];
@@ -32467,7 +32467,7 @@ export class VideoSizeStickerMarkup extends TypeVideoSize {
   }
 }
 
-export class StatsGroupTopPoster extends TypeStatsGroupTopPoster {
+export class StatsGroupTopPoster extends _TypeStatsGroupTopPoster {
   userId: bigint;
   messages: number;
   avgChars: number;
@@ -32500,7 +32500,7 @@ export class StatsGroupTopPoster extends TypeStatsGroupTopPoster {
   }
 }
 
-export class StatsGroupTopAdmin extends TypeStatsGroupTopAdmin {
+export class StatsGroupTopAdmin extends _TypeStatsGroupTopAdmin {
   userId: bigint;
   deleted: number;
   kicked: number;
@@ -32537,7 +32537,7 @@ export class StatsGroupTopAdmin extends TypeStatsGroupTopAdmin {
   }
 }
 
-export class StatsGroupTopInviter extends TypeStatsGroupTopInviter {
+export class StatsGroupTopInviter extends _TypeStatsGroupTopInviter {
   userId: bigint;
   invitations: number;
 
@@ -32566,7 +32566,7 @@ export class StatsGroupTopInviter extends TypeStatsGroupTopInviter {
   }
 }
 
-export class StatsMegagroupStats extends TypeStatsMegagroupStats {
+export class StatsMegagroupStats extends _TypeStatsMegagroupStats {
   period: TypeStatsDateRangeDays;
   members: TypeStatsAbsValueAndPrev;
   messages: TypeStatsAbsValueAndPrev;
@@ -32591,45 +32591,45 @@ export class StatsMegagroupStats extends TypeStatsMegagroupStats {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["period", TypeStatsDateRangeDays, "StatsDateRangeDays"],
-      ["members", TypeStatsAbsValueAndPrev, "StatsAbsValueAndPrev"],
-      ["messages", TypeStatsAbsValueAndPrev, "StatsAbsValueAndPrev"],
-      ["viewers", TypeStatsAbsValueAndPrev, "StatsAbsValueAndPrev"],
-      ["posters", TypeStatsAbsValueAndPrev, "StatsAbsValueAndPrev"],
-      ["growthGraph", TypeStatsGraph, "StatsGraph"],
-      ["membersGraph", TypeStatsGraph, "StatsGraph"],
-      ["newMembersBySourceGraph", TypeStatsGraph, "StatsGraph"],
-      ["languagesGraph", TypeStatsGraph, "StatsGraph"],
-      ["messagesGraph", TypeStatsGraph, "StatsGraph"],
-      ["actionsGraph", TypeStatsGraph, "StatsGraph"],
-      ["topHoursGraph", TypeStatsGraph, "StatsGraph"],
-      ["weekdaysGraph", TypeStatsGraph, "StatsGraph"],
-      ["topPosters", [TypeStatsGroupTopPoster], "Vector<StatsGroupTopPoster>"],
-      ["topAdmins", [TypeStatsGroupTopAdmin], "Vector<StatsGroupTopAdmin>"],
-      ["topInviters", [TypeStatsGroupTopInviter], "Vector<StatsGroupTopInviter>"],
-      ["users", [TypeUser], "Vector<User>"],
+      ["period", _TypeStatsDateRangeDays, "StatsDateRangeDays"],
+      ["members", _TypeStatsAbsValueAndPrev, "StatsAbsValueAndPrev"],
+      ["messages", _TypeStatsAbsValueAndPrev, "StatsAbsValueAndPrev"],
+      ["viewers", _TypeStatsAbsValueAndPrev, "StatsAbsValueAndPrev"],
+      ["posters", _TypeStatsAbsValueAndPrev, "StatsAbsValueAndPrev"],
+      ["growthGraph", _TypeStatsGraph, "StatsGraph"],
+      ["membersGraph", _TypeStatsGraph, "StatsGraph"],
+      ["newMembersBySourceGraph", _TypeStatsGraph, "StatsGraph"],
+      ["languagesGraph", _TypeStatsGraph, "StatsGraph"],
+      ["messagesGraph", _TypeStatsGraph, "StatsGraph"],
+      ["actionsGraph", _TypeStatsGraph, "StatsGraph"],
+      ["topHoursGraph", _TypeStatsGraph, "StatsGraph"],
+      ["weekdaysGraph", _TypeStatsGraph, "StatsGraph"],
+      ["topPosters", [_TypeStatsGroupTopPoster], "Vector<StatsGroupTopPoster>"],
+      ["topAdmins", [_TypeStatsGroupTopAdmin], "Vector<StatsGroupTopAdmin>"],
+      ["topInviters", [_TypeStatsGroupTopInviter], "Vector<StatsGroupTopInviter>"],
+      ["users", [_TypeUser], "Vector<User>"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.period, TypeStatsDateRangeDays, "StatsDateRangeDays"],
-      [this.members, TypeStatsAbsValueAndPrev, "StatsAbsValueAndPrev"],
-      [this.messages, TypeStatsAbsValueAndPrev, "StatsAbsValueAndPrev"],
-      [this.viewers, TypeStatsAbsValueAndPrev, "StatsAbsValueAndPrev"],
-      [this.posters, TypeStatsAbsValueAndPrev, "StatsAbsValueAndPrev"],
-      [this.growthGraph, TypeStatsGraph, "StatsGraph"],
-      [this.membersGraph, TypeStatsGraph, "StatsGraph"],
-      [this.newMembersBySourceGraph, TypeStatsGraph, "StatsGraph"],
-      [this.languagesGraph, TypeStatsGraph, "StatsGraph"],
-      [this.messagesGraph, TypeStatsGraph, "StatsGraph"],
-      [this.actionsGraph, TypeStatsGraph, "StatsGraph"],
-      [this.topHoursGraph, TypeStatsGraph, "StatsGraph"],
-      [this.weekdaysGraph, TypeStatsGraph, "StatsGraph"],
-      [this.topPosters, [TypeStatsGroupTopPoster], "Vector<StatsGroupTopPoster>"],
-      [this.topAdmins, [TypeStatsGroupTopAdmin], "Vector<StatsGroupTopAdmin>"],
-      [this.topInviters, [TypeStatsGroupTopInviter], "Vector<StatsGroupTopInviter>"],
-      [this.users, [TypeUser], "Vector<User>"],
+      [this.period, _TypeStatsDateRangeDays, "StatsDateRangeDays"],
+      [this.members, _TypeStatsAbsValueAndPrev, "StatsAbsValueAndPrev"],
+      [this.messages, _TypeStatsAbsValueAndPrev, "StatsAbsValueAndPrev"],
+      [this.viewers, _TypeStatsAbsValueAndPrev, "StatsAbsValueAndPrev"],
+      [this.posters, _TypeStatsAbsValueAndPrev, "StatsAbsValueAndPrev"],
+      [this.growthGraph, _TypeStatsGraph, "StatsGraph"],
+      [this.membersGraph, _TypeStatsGraph, "StatsGraph"],
+      [this.newMembersBySourceGraph, _TypeStatsGraph, "StatsGraph"],
+      [this.languagesGraph, _TypeStatsGraph, "StatsGraph"],
+      [this.messagesGraph, _TypeStatsGraph, "StatsGraph"],
+      [this.actionsGraph, _TypeStatsGraph, "StatsGraph"],
+      [this.topHoursGraph, _TypeStatsGraph, "StatsGraph"],
+      [this.weekdaysGraph, _TypeStatsGraph, "StatsGraph"],
+      [this.topPosters, [_TypeStatsGroupTopPoster], "Vector<StatsGroupTopPoster>"],
+      [this.topAdmins, [_TypeStatsGroupTopAdmin], "Vector<StatsGroupTopAdmin>"],
+      [this.topInviters, [_TypeStatsGroupTopInviter], "Vector<StatsGroupTopInviter>"],
+      [this.users, [_TypeUser], "Vector<User>"],
     ];
   }
 
@@ -32655,7 +32655,7 @@ export class StatsMegagroupStats extends TypeStatsMegagroupStats {
   }
 }
 
-export class GlobalPrivacySettings extends TypeGlobalPrivacySettings {
+export class GlobalPrivacySettings extends _TypeGlobalPrivacySettings {
   archiveAndMuteNewNoncontactPeers?: true;
   keepArchivedUnmuted?: true;
   keepArchivedFolders?: true;
@@ -32690,7 +32690,7 @@ export class GlobalPrivacySettings extends TypeGlobalPrivacySettings {
   }
 }
 
-export class HelpCountryCode extends TypeHelpCountryCode {
+export class HelpCountryCode extends _TypeHelpCountryCode {
   countryCode: string;
   prefixes?: Array<string>;
   patterns?: Array<string>;
@@ -32725,7 +32725,7 @@ export class HelpCountryCode extends TypeHelpCountryCode {
   }
 }
 
-export class HelpCountry extends TypeHelpCountry {
+export class HelpCountry extends _TypeHelpCountry {
   hidden?: true;
   iso2: string;
   defaultName: string;
@@ -32743,7 +32743,7 @@ export class HelpCountry extends TypeHelpCountry {
       ["iso2", "string", "string"],
       ["defaultName", "string", "string"],
       ["name", "string", "flags.1?string"],
-      ["countryCodes", [TypeHelpCountryCode], "Vector<help.CountryCode>"],
+      ["countryCodes", [_TypeHelpCountryCode], "Vector<help.CountryCode>"],
     ];
   }
 
@@ -32754,7 +32754,7 @@ export class HelpCountry extends TypeHelpCountry {
       [this.iso2, "string", "string"],
       [this.defaultName, "string", "string"],
       [this.name ?? null, "string", "flags.1?string"],
-      [this.countryCodes, [TypeHelpCountryCode], "Vector<help.CountryCode>"],
+      [this.countryCodes, [_TypeHelpCountryCode], "Vector<help.CountryCode>"],
     ];
   }
 
@@ -32768,7 +32768,7 @@ export class HelpCountry extends TypeHelpCountry {
   }
 }
 
-export class HelpCountriesListNotModified extends TypeHelpCountriesList {
+export class HelpCountriesListNotModified extends _TypeHelpCountriesList {
   protected get [id]() {
     return 0x93CC1F32;
   }
@@ -32786,7 +32786,7 @@ export class HelpCountriesListNotModified extends TypeHelpCountriesList {
   }
 }
 
-export class HelpCountriesList extends TypeHelpCountriesList {
+export class HelpCountriesList extends _TypeHelpCountriesList {
   countries: Array<TypeHelpCountry>;
   hash: number;
 
@@ -32796,14 +32796,14 @@ export class HelpCountriesList extends TypeHelpCountriesList {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["countries", [TypeHelpCountry], "Vector<help.Country>"],
+      ["countries", [_TypeHelpCountry], "Vector<help.Country>"],
       ["hash", "number", "int"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.countries, [TypeHelpCountry], "Vector<help.Country>"],
+      [this.countries, [_TypeHelpCountry], "Vector<help.Country>"],
       [this.hash, "number", "int"],
     ];
   }
@@ -32815,7 +32815,7 @@ export class HelpCountriesList extends TypeHelpCountriesList {
   }
 }
 
-export class MessageViews extends TypeMessageViews {
+export class MessageViews extends _TypeMessageViews {
   views?: number;
   forwards?: number;
   replies?: TypeMessageReplies;
@@ -32829,7 +32829,7 @@ export class MessageViews extends TypeMessageViews {
       ["flags", flags, "#"],
       ["views", "number", "flags.0?int"],
       ["forwards", "number", "flags.1?int"],
-      ["replies", TypeMessageReplies, "flags.2?MessageReplies"],
+      ["replies", _TypeMessageReplies, "flags.2?MessageReplies"],
     ];
   }
 
@@ -32838,7 +32838,7 @@ export class MessageViews extends TypeMessageViews {
       ["flags", flags, "#"],
       [this.views ?? null, "number", "flags.0?int"],
       [this.forwards ?? null, "number", "flags.1?int"],
-      [this.replies ?? null, TypeMessageReplies, "flags.2?MessageReplies"],
+      [this.replies ?? null, _TypeMessageReplies, "flags.2?MessageReplies"],
     ];
   }
 
@@ -32850,7 +32850,7 @@ export class MessageViews extends TypeMessageViews {
   }
 }
 
-export class MessagesMessageViews extends TypeMessagesMessageViews {
+export class MessagesMessageViews extends _TypeMessagesMessageViews {
   views: Array<TypeMessageViews>;
   chats: Array<TypeChat>;
   users: Array<TypeUser>;
@@ -32861,17 +32861,17 @@ export class MessagesMessageViews extends TypeMessagesMessageViews {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["views", [TypeMessageViews], "Vector<MessageViews>"],
-      ["chats", [TypeChat], "Vector<Chat>"],
-      ["users", [TypeUser], "Vector<User>"],
+      ["views", [_TypeMessageViews], "Vector<MessageViews>"],
+      ["chats", [_TypeChat], "Vector<Chat>"],
+      ["users", [_TypeUser], "Vector<User>"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.views, [TypeMessageViews], "Vector<MessageViews>"],
-      [this.chats, [TypeChat], "Vector<Chat>"],
-      [this.users, [TypeUser], "Vector<User>"],
+      [this.views, [_TypeMessageViews], "Vector<MessageViews>"],
+      [this.chats, [_TypeChat], "Vector<Chat>"],
+      [this.users, [_TypeUser], "Vector<User>"],
     ];
   }
 
@@ -32883,7 +32883,7 @@ export class MessagesMessageViews extends TypeMessagesMessageViews {
   }
 }
 
-export class MessagesDiscussionMessage extends TypeMessagesDiscussionMessage {
+export class MessagesDiscussionMessage extends _TypeMessagesDiscussionMessage {
   messages: Array<TypeMessage>;
   maxId?: number;
   readInboxMaxId?: number;
@@ -32899,26 +32899,26 @@ export class MessagesDiscussionMessage extends TypeMessagesDiscussionMessage {
   static get [paramDesc](): ParamDesc {
     return [
       ["flags", flags, "#"],
-      ["messages", [TypeMessage], "Vector<Message>"],
+      ["messages", [_TypeMessage], "Vector<Message>"],
       ["maxId", "number", "flags.0?int"],
       ["readInboxMaxId", "number", "flags.1?int"],
       ["readOutboxMaxId", "number", "flags.2?int"],
       ["unreadCount", "number", "int"],
-      ["chats", [TypeChat], "Vector<Chat>"],
-      ["users", [TypeUser], "Vector<User>"],
+      ["chats", [_TypeChat], "Vector<Chat>"],
+      ["users", [_TypeUser], "Vector<User>"],
     ];
   }
 
   protected get [params](): Params {
     return [
       ["flags", flags, "#"],
-      [this.messages, [TypeMessage], "Vector<Message>"],
+      [this.messages, [_TypeMessage], "Vector<Message>"],
       [this.maxId ?? null, "number", "flags.0?int"],
       [this.readInboxMaxId ?? null, "number", "flags.1?int"],
       [this.readOutboxMaxId ?? null, "number", "flags.2?int"],
       [this.unreadCount, "number", "int"],
-      [this.chats, [TypeChat], "Vector<Chat>"],
-      [this.users, [TypeUser], "Vector<User>"],
+      [this.chats, [_TypeChat], "Vector<Chat>"],
+      [this.users, [_TypeUser], "Vector<User>"],
     ];
   }
 
@@ -32934,7 +32934,7 @@ export class MessagesDiscussionMessage extends TypeMessagesDiscussionMessage {
   }
 }
 
-export class MessageReplyHeader extends TypeMessageReplyHeader {
+export class MessageReplyHeader extends _TypeMessageReplyHeader {
   replyToScheduled?: true;
   forumTopic?: true;
   replyToMsgId: number;
@@ -32951,7 +32951,7 @@ export class MessageReplyHeader extends TypeMessageReplyHeader {
       ["replyToScheduled", "true", "flags.2?true"],
       ["forumTopic", "true", "flags.3?true"],
       ["replyToMsgId", "number", "int"],
-      ["replyToPeerId", TypePeer, "flags.0?Peer"],
+      ["replyToPeerId", _TypePeer, "flags.0?Peer"],
       ["replyToTopId", "number", "flags.1?int"],
     ];
   }
@@ -32962,7 +32962,7 @@ export class MessageReplyHeader extends TypeMessageReplyHeader {
       [this.replyToScheduled ?? null, "true", "flags.2?true"],
       [this.forumTopic ?? null, "true", "flags.3?true"],
       [this.replyToMsgId, "number", "int"],
-      [this.replyToPeerId ?? null, TypePeer, "flags.0?Peer"],
+      [this.replyToPeerId ?? null, _TypePeer, "flags.0?Peer"],
       [this.replyToTopId ?? null, "number", "flags.1?int"],
     ];
   }
@@ -32977,7 +32977,7 @@ export class MessageReplyHeader extends TypeMessageReplyHeader {
   }
 }
 
-export class MessageReplyStoryHeader extends TypeMessageReplyHeader {
+export class MessageReplyStoryHeader extends _TypeMessageReplyHeader {
   userId: bigint;
   storyId: number;
 
@@ -33006,7 +33006,7 @@ export class MessageReplyStoryHeader extends TypeMessageReplyHeader {
   }
 }
 
-export class MessageReplies extends TypeMessageReplies {
+export class MessageReplies extends _TypeMessageReplies {
   comments?: true;
   replies: number;
   repliesPts: number;
@@ -33025,7 +33025,7 @@ export class MessageReplies extends TypeMessageReplies {
       ["comments", "true", "flags.0?true"],
       ["replies", "number", "int"],
       ["repliesPts", "number", "int"],
-      ["recentRepliers", [TypePeer], "flags.1?Vector<Peer>"],
+      ["recentRepliers", [_TypePeer], "flags.1?Vector<Peer>"],
       ["channelId", "bigint", "flags.0?long"],
       ["maxId", "number", "flags.2?int"],
       ["readMaxId", "number", "flags.3?int"],
@@ -33038,7 +33038,7 @@ export class MessageReplies extends TypeMessageReplies {
       [this.comments ?? null, "true", "flags.0?true"],
       [this.replies, "number", "int"],
       [this.repliesPts, "number", "int"],
-      [this.recentRepliers ?? null, [TypePeer], "flags.1?Vector<Peer>"],
+      [this.recentRepliers ?? null, [_TypePeer], "flags.1?Vector<Peer>"],
       [this.channelId ?? null, "bigint", "flags.0?long"],
       [this.maxId ?? null, "number", "flags.2?int"],
       [this.readMaxId ?? null, "number", "flags.3?int"],
@@ -33057,7 +33057,7 @@ export class MessageReplies extends TypeMessageReplies {
   }
 }
 
-export class PeerBlocked extends TypePeerBlocked {
+export class PeerBlocked extends _TypePeerBlocked {
   peerId: TypePeer;
   date: number;
 
@@ -33067,14 +33067,14 @@ export class PeerBlocked extends TypePeerBlocked {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["peerId", TypePeer, "Peer"],
+      ["peerId", _TypePeer, "Peer"],
       ["date", "number", "int"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.peerId, TypePeer, "Peer"],
+      [this.peerId, _TypePeer, "Peer"],
       [this.date, "number", "int"],
     ];
   }
@@ -33086,7 +33086,7 @@ export class PeerBlocked extends TypePeerBlocked {
   }
 }
 
-export class StatsMessageStats extends TypeStatsMessageStats {
+export class StatsMessageStats extends _TypeStatsMessageStats {
   viewsGraph: TypeStatsGraph;
 
   protected get [id]() {
@@ -33095,13 +33095,13 @@ export class StatsMessageStats extends TypeStatsMessageStats {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["viewsGraph", TypeStatsGraph, "StatsGraph"],
+      ["viewsGraph", _TypeStatsGraph, "StatsGraph"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.viewsGraph, TypeStatsGraph, "StatsGraph"],
+      [this.viewsGraph, _TypeStatsGraph, "StatsGraph"],
     ];
   }
 
@@ -33111,7 +33111,7 @@ export class StatsMessageStats extends TypeStatsMessageStats {
   }
 }
 
-export class GroupCallDiscarded extends TypeGroupCall {
+export class GroupCallDiscarded extends _TypeGroupCall {
   id: bigint;
   accessHash: bigint;
   duration: number;
@@ -33144,7 +33144,7 @@ export class GroupCallDiscarded extends TypeGroupCall {
   }
 }
 
-export class GroupCall extends TypeGroupCall {
+export class GroupCall extends _TypeGroupCall {
   joinMuted?: true;
   canChangeJoinMuted?: true;
   joinDateAsc?: true;
@@ -33239,7 +33239,7 @@ export class GroupCall extends TypeGroupCall {
   }
 }
 
-export class InputGroupCall extends TypeInputGroupCall {
+export class InputGroupCall extends _TypeInputGroupCall {
   id: bigint;
   accessHash: bigint;
 
@@ -33268,7 +33268,7 @@ export class InputGroupCall extends TypeInputGroupCall {
   }
 }
 
-export class GroupCallParticipant extends TypeGroupCallParticipant {
+export class GroupCallParticipant extends _TypeGroupCallParticipant {
   muted?: true;
   left?: true;
   canSelfUnmute?: true;
@@ -33306,15 +33306,15 @@ export class GroupCallParticipant extends TypeGroupCallParticipant {
       ["volumeByAdmin", "true", "flags.10?true"],
       ["self", "true", "flags.12?true"],
       ["videoJoined", "true", "flags.15?true"],
-      ["peer", TypePeer, "Peer"],
+      ["peer", _TypePeer, "Peer"],
       ["date", "number", "int"],
       ["activeDate", "number", "flags.3?int"],
       ["source", "number", "int"],
       ["volume", "number", "flags.7?int"],
       ["about", "string", "flags.11?string"],
       ["raiseHandRating", "bigint", "flags.13?long"],
-      ["video", TypeGroupCallParticipantVideo, "flags.6?GroupCallParticipantVideo"],
-      ["presentation", TypeGroupCallParticipantVideo, "flags.14?GroupCallParticipantVideo"],
+      ["video", _TypeGroupCallParticipantVideo, "flags.6?GroupCallParticipantVideo"],
+      ["presentation", _TypeGroupCallParticipantVideo, "flags.14?GroupCallParticipantVideo"],
     ];
   }
 
@@ -33331,15 +33331,15 @@ export class GroupCallParticipant extends TypeGroupCallParticipant {
       [this.volumeByAdmin ?? null, "true", "flags.10?true"],
       [this.self ?? null, "true", "flags.12?true"],
       [this.videoJoined ?? null, "true", "flags.15?true"],
-      [this.peer, TypePeer, "Peer"],
+      [this.peer, _TypePeer, "Peer"],
       [this.date, "number", "int"],
       [this.activeDate ?? null, "number", "flags.3?int"],
       [this.source, "number", "int"],
       [this.volume ?? null, "number", "flags.7?int"],
       [this.about ?? null, "string", "flags.11?string"],
       [this.raiseHandRating ?? null, "bigint", "flags.13?long"],
-      [this.video ?? null, TypeGroupCallParticipantVideo, "flags.6?GroupCallParticipantVideo"],
-      [this.presentation ?? null, TypeGroupCallParticipantVideo, "flags.14?GroupCallParticipantVideo"],
+      [this.video ?? null, _TypeGroupCallParticipantVideo, "flags.6?GroupCallParticipantVideo"],
+      [this.presentation ?? null, _TypeGroupCallParticipantVideo, "flags.14?GroupCallParticipantVideo"],
     ];
   }
 
@@ -33367,7 +33367,7 @@ export class GroupCallParticipant extends TypeGroupCallParticipant {
   }
 }
 
-export class PhoneGroupCall extends TypePhoneGroupCall {
+export class PhoneGroupCall extends _TypePhoneGroupCall {
   call: TypeGroupCall;
   participants: Array<TypeGroupCallParticipant>;
   participantsNextOffset: string;
@@ -33380,21 +33380,21 @@ export class PhoneGroupCall extends TypePhoneGroupCall {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["call", TypeGroupCall, "GroupCall"],
-      ["participants", [TypeGroupCallParticipant], "Vector<GroupCallParticipant>"],
+      ["call", _TypeGroupCall, "GroupCall"],
+      ["participants", [_TypeGroupCallParticipant], "Vector<GroupCallParticipant>"],
       ["participantsNextOffset", "string", "string"],
-      ["chats", [TypeChat], "Vector<Chat>"],
-      ["users", [TypeUser], "Vector<User>"],
+      ["chats", [_TypeChat], "Vector<Chat>"],
+      ["users", [_TypeUser], "Vector<User>"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.call, TypeGroupCall, "GroupCall"],
-      [this.participants, [TypeGroupCallParticipant], "Vector<GroupCallParticipant>"],
+      [this.call, _TypeGroupCall, "GroupCall"],
+      [this.participants, [_TypeGroupCallParticipant], "Vector<GroupCallParticipant>"],
       [this.participantsNextOffset, "string", "string"],
-      [this.chats, [TypeChat], "Vector<Chat>"],
-      [this.users, [TypeUser], "Vector<User>"],
+      [this.chats, [_TypeChat], "Vector<Chat>"],
+      [this.users, [_TypeUser], "Vector<User>"],
     ];
   }
 
@@ -33408,7 +33408,7 @@ export class PhoneGroupCall extends TypePhoneGroupCall {
   }
 }
 
-export class PhoneGroupParticipants extends TypePhoneGroupParticipants {
+export class PhoneGroupParticipants extends _TypePhoneGroupParticipants {
   count: number;
   participants: Array<TypeGroupCallParticipant>;
   nextOffset: string;
@@ -33423,10 +33423,10 @@ export class PhoneGroupParticipants extends TypePhoneGroupParticipants {
   static get [paramDesc](): ParamDesc {
     return [
       ["count", "number", "int"],
-      ["participants", [TypeGroupCallParticipant], "Vector<GroupCallParticipant>"],
+      ["participants", [_TypeGroupCallParticipant], "Vector<GroupCallParticipant>"],
       ["nextOffset", "string", "string"],
-      ["chats", [TypeChat], "Vector<Chat>"],
-      ["users", [TypeUser], "Vector<User>"],
+      ["chats", [_TypeChat], "Vector<Chat>"],
+      ["users", [_TypeUser], "Vector<User>"],
       ["version", "number", "int"],
     ];
   }
@@ -33434,10 +33434,10 @@ export class PhoneGroupParticipants extends TypePhoneGroupParticipants {
   protected get [params](): Params {
     return [
       [this.count, "number", "int"],
-      [this.participants, [TypeGroupCallParticipant], "Vector<GroupCallParticipant>"],
+      [this.participants, [_TypeGroupCallParticipant], "Vector<GroupCallParticipant>"],
       [this.nextOffset, "string", "string"],
-      [this.chats, [TypeChat], "Vector<Chat>"],
-      [this.users, [TypeUser], "Vector<User>"],
+      [this.chats, [_TypeChat], "Vector<Chat>"],
+      [this.users, [_TypeUser], "Vector<User>"],
       [this.version, "number", "int"],
     ];
   }
@@ -33453,7 +33453,7 @@ export class PhoneGroupParticipants extends TypePhoneGroupParticipants {
   }
 }
 
-export class InlineQueryPeerTypeSameBotPM extends TypeInlineQueryPeerType {
+export class InlineQueryPeerTypeSameBotPM extends _TypeInlineQueryPeerType {
   protected get [id]() {
     return 0x3081ED9D;
   }
@@ -33471,7 +33471,7 @@ export class InlineQueryPeerTypeSameBotPM extends TypeInlineQueryPeerType {
   }
 }
 
-export class InlineQueryPeerTypePM extends TypeInlineQueryPeerType {
+export class InlineQueryPeerTypePM extends _TypeInlineQueryPeerType {
   protected get [id]() {
     return 0x833C0FAC;
   }
@@ -33489,7 +33489,7 @@ export class InlineQueryPeerTypePM extends TypeInlineQueryPeerType {
   }
 }
 
-export class InlineQueryPeerTypeChat extends TypeInlineQueryPeerType {
+export class InlineQueryPeerTypeChat extends _TypeInlineQueryPeerType {
   protected get [id]() {
     return 0xD766C50A;
   }
@@ -33507,7 +33507,7 @@ export class InlineQueryPeerTypeChat extends TypeInlineQueryPeerType {
   }
 }
 
-export class InlineQueryPeerTypeMegagroup extends TypeInlineQueryPeerType {
+export class InlineQueryPeerTypeMegagroup extends _TypeInlineQueryPeerType {
   protected get [id]() {
     return 0x5EC4BE43;
   }
@@ -33525,7 +33525,7 @@ export class InlineQueryPeerTypeMegagroup extends TypeInlineQueryPeerType {
   }
 }
 
-export class InlineQueryPeerTypeBroadcast extends TypeInlineQueryPeerType {
+export class InlineQueryPeerTypeBroadcast extends _TypeInlineQueryPeerType {
   protected get [id]() {
     return 0x6334EE9A;
   }
@@ -33543,7 +33543,7 @@ export class InlineQueryPeerTypeBroadcast extends TypeInlineQueryPeerType {
   }
 }
 
-export class InlineQueryPeerTypeBotPM extends TypeInlineQueryPeerType {
+export class InlineQueryPeerTypeBotPM extends _TypeInlineQueryPeerType {
   protected get [id]() {
     return 0x0E3B2D0C;
   }
@@ -33561,7 +33561,7 @@ export class InlineQueryPeerTypeBotPM extends TypeInlineQueryPeerType {
   }
 }
 
-export class MessagesHistoryImport extends TypeMessagesHistoryImport {
+export class MessagesHistoryImport extends _TypeMessagesHistoryImport {
   id: bigint;
 
   protected get [id]() {
@@ -33586,7 +33586,7 @@ export class MessagesHistoryImport extends TypeMessagesHistoryImport {
   }
 }
 
-export class MessagesHistoryImportParsed extends TypeMessagesHistoryImportParsed {
+export class MessagesHistoryImportParsed extends _TypeMessagesHistoryImportParsed {
   pm?: true;
   group?: true;
   title?: string;
@@ -33621,7 +33621,7 @@ export class MessagesHistoryImportParsed extends TypeMessagesHistoryImportParsed
   }
 }
 
-export class MessagesAffectedFoundMessages extends TypeMessagesAffectedFoundMessages {
+export class MessagesAffectedFoundMessages extends _TypeMessagesAffectedFoundMessages {
   pts: number;
   ptsCount: number;
   offset: number;
@@ -33658,7 +33658,7 @@ export class MessagesAffectedFoundMessages extends TypeMessagesAffectedFoundMess
   }
 }
 
-export class ChatInviteImporter extends TypeChatInviteImporter {
+export class ChatInviteImporter extends _TypeChatInviteImporter {
   requested?: true;
   viaChatlist?: true;
   userId: bigint;
@@ -33705,7 +33705,7 @@ export class ChatInviteImporter extends TypeChatInviteImporter {
   }
 }
 
-export class MessagesExportedChatInvites extends TypeMessagesExportedChatInvites {
+export class MessagesExportedChatInvites extends _TypeMessagesExportedChatInvites {
   count: number;
   invites: Array<TypeExportedChatInvite>;
   users: Array<TypeUser>;
@@ -33717,16 +33717,16 @@ export class MessagesExportedChatInvites extends TypeMessagesExportedChatInvites
   static get [paramDesc](): ParamDesc {
     return [
       ["count", "number", "int"],
-      ["invites", [TypeExportedChatInvite], "Vector<ExportedChatInvite>"],
-      ["users", [TypeUser], "Vector<User>"],
+      ["invites", [_TypeExportedChatInvite], "Vector<ExportedChatInvite>"],
+      ["users", [_TypeUser], "Vector<User>"],
     ];
   }
 
   protected get [params](): Params {
     return [
       [this.count, "number", "int"],
-      [this.invites, [TypeExportedChatInvite], "Vector<ExportedChatInvite>"],
-      [this.users, [TypeUser], "Vector<User>"],
+      [this.invites, [_TypeExportedChatInvite], "Vector<ExportedChatInvite>"],
+      [this.users, [_TypeUser], "Vector<User>"],
     ];
   }
 
@@ -33738,7 +33738,7 @@ export class MessagesExportedChatInvites extends TypeMessagesExportedChatInvites
   }
 }
 
-export class MessagesExportedChatInvite extends TypeMessagesExportedChatInvite {
+export class MessagesExportedChatInvite extends _TypeMessagesExportedChatInvite {
   invite: TypeExportedChatInvite;
   users: Array<TypeUser>;
 
@@ -33748,15 +33748,15 @@ export class MessagesExportedChatInvite extends TypeMessagesExportedChatInvite {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["invite", TypeExportedChatInvite, "ExportedChatInvite"],
-      ["users", [TypeUser], "Vector<User>"],
+      ["invite", _TypeExportedChatInvite, "ExportedChatInvite"],
+      ["users", [_TypeUser], "Vector<User>"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.invite, TypeExportedChatInvite, "ExportedChatInvite"],
-      [this.users, [TypeUser], "Vector<User>"],
+      [this.invite, _TypeExportedChatInvite, "ExportedChatInvite"],
+      [this.users, [_TypeUser], "Vector<User>"],
     ];
   }
 
@@ -33767,7 +33767,7 @@ export class MessagesExportedChatInvite extends TypeMessagesExportedChatInvite {
   }
 }
 
-export class MessagesExportedChatInviteReplaced extends TypeMessagesExportedChatInvite {
+export class MessagesExportedChatInviteReplaced extends _TypeMessagesExportedChatInvite {
   invite: TypeExportedChatInvite;
   newInvite: TypeExportedChatInvite;
   users: Array<TypeUser>;
@@ -33778,17 +33778,17 @@ export class MessagesExportedChatInviteReplaced extends TypeMessagesExportedChat
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["invite", TypeExportedChatInvite, "ExportedChatInvite"],
-      ["newInvite", TypeExportedChatInvite, "ExportedChatInvite"],
-      ["users", [TypeUser], "Vector<User>"],
+      ["invite", _TypeExportedChatInvite, "ExportedChatInvite"],
+      ["newInvite", _TypeExportedChatInvite, "ExportedChatInvite"],
+      ["users", [_TypeUser], "Vector<User>"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.invite, TypeExportedChatInvite, "ExportedChatInvite"],
-      [this.newInvite, TypeExportedChatInvite, "ExportedChatInvite"],
-      [this.users, [TypeUser], "Vector<User>"],
+      [this.invite, _TypeExportedChatInvite, "ExportedChatInvite"],
+      [this.newInvite, _TypeExportedChatInvite, "ExportedChatInvite"],
+      [this.users, [_TypeUser], "Vector<User>"],
     ];
   }
 
@@ -33800,7 +33800,7 @@ export class MessagesExportedChatInviteReplaced extends TypeMessagesExportedChat
   }
 }
 
-export class MessagesChatInviteImporters extends TypeMessagesChatInviteImporters {
+export class MessagesChatInviteImporters extends _TypeMessagesChatInviteImporters {
   count: number;
   importers: Array<TypeChatInviteImporter>;
   users: Array<TypeUser>;
@@ -33812,16 +33812,16 @@ export class MessagesChatInviteImporters extends TypeMessagesChatInviteImporters
   static get [paramDesc](): ParamDesc {
     return [
       ["count", "number", "int"],
-      ["importers", [TypeChatInviteImporter], "Vector<ChatInviteImporter>"],
-      ["users", [TypeUser], "Vector<User>"],
+      ["importers", [_TypeChatInviteImporter], "Vector<ChatInviteImporter>"],
+      ["users", [_TypeUser], "Vector<User>"],
     ];
   }
 
   protected get [params](): Params {
     return [
       [this.count, "number", "int"],
-      [this.importers, [TypeChatInviteImporter], "Vector<ChatInviteImporter>"],
-      [this.users, [TypeUser], "Vector<User>"],
+      [this.importers, [_TypeChatInviteImporter], "Vector<ChatInviteImporter>"],
+      [this.users, [_TypeUser], "Vector<User>"],
     ];
   }
 
@@ -33833,7 +33833,7 @@ export class MessagesChatInviteImporters extends TypeMessagesChatInviteImporters
   }
 }
 
-export class ChatAdminWithInvites extends TypeChatAdminWithInvites {
+export class ChatAdminWithInvites extends _TypeChatAdminWithInvites {
   adminId: bigint;
   invitesCount: number;
   revokedInvitesCount: number;
@@ -33866,7 +33866,7 @@ export class ChatAdminWithInvites extends TypeChatAdminWithInvites {
   }
 }
 
-export class MessagesChatAdminsWithInvites extends TypeMessagesChatAdminsWithInvites {
+export class MessagesChatAdminsWithInvites extends _TypeMessagesChatAdminsWithInvites {
   admins: Array<TypeChatAdminWithInvites>;
   users: Array<TypeUser>;
 
@@ -33876,15 +33876,15 @@ export class MessagesChatAdminsWithInvites extends TypeMessagesChatAdminsWithInv
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["admins", [TypeChatAdminWithInvites], "Vector<ChatAdminWithInvites>"],
-      ["users", [TypeUser], "Vector<User>"],
+      ["admins", [_TypeChatAdminWithInvites], "Vector<ChatAdminWithInvites>"],
+      ["users", [_TypeUser], "Vector<User>"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.admins, [TypeChatAdminWithInvites], "Vector<ChatAdminWithInvites>"],
-      [this.users, [TypeUser], "Vector<User>"],
+      [this.admins, [_TypeChatAdminWithInvites], "Vector<ChatAdminWithInvites>"],
+      [this.users, [_TypeUser], "Vector<User>"],
     ];
   }
 
@@ -33895,7 +33895,7 @@ export class MessagesChatAdminsWithInvites extends TypeMessagesChatAdminsWithInv
   }
 }
 
-export class MessagesCheckedHistoryImportPeer extends TypeMessagesCheckedHistoryImportPeer {
+export class MessagesCheckedHistoryImportPeer extends _TypeMessagesCheckedHistoryImportPeer {
   confirmText: string;
 
   protected get [id]() {
@@ -33920,7 +33920,7 @@ export class MessagesCheckedHistoryImportPeer extends TypeMessagesCheckedHistory
   }
 }
 
-export class PhoneJoinAsPeers extends TypePhoneJoinAsPeers {
+export class PhoneJoinAsPeers extends _TypePhoneJoinAsPeers {
   peers: Array<TypePeer>;
   chats: Array<TypeChat>;
   users: Array<TypeUser>;
@@ -33931,17 +33931,17 @@ export class PhoneJoinAsPeers extends TypePhoneJoinAsPeers {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["peers", [TypePeer], "Vector<Peer>"],
-      ["chats", [TypeChat], "Vector<Chat>"],
-      ["users", [TypeUser], "Vector<User>"],
+      ["peers", [_TypePeer], "Vector<Peer>"],
+      ["chats", [_TypeChat], "Vector<Chat>"],
+      ["users", [_TypeUser], "Vector<User>"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.peers, [TypePeer], "Vector<Peer>"],
-      [this.chats, [TypeChat], "Vector<Chat>"],
-      [this.users, [TypeUser], "Vector<User>"],
+      [this.peers, [_TypePeer], "Vector<Peer>"],
+      [this.chats, [_TypeChat], "Vector<Chat>"],
+      [this.users, [_TypeUser], "Vector<User>"],
     ];
   }
 
@@ -33953,7 +33953,7 @@ export class PhoneJoinAsPeers extends TypePhoneJoinAsPeers {
   }
 }
 
-export class PhoneExportedGroupCallInvite extends TypePhoneExportedGroupCallInvite {
+export class PhoneExportedGroupCallInvite extends _TypePhoneExportedGroupCallInvite {
   link: string;
 
   protected get [id]() {
@@ -33978,7 +33978,7 @@ export class PhoneExportedGroupCallInvite extends TypePhoneExportedGroupCallInvi
   }
 }
 
-export class GroupCallParticipantVideoSourceGroup extends TypeGroupCallParticipantVideoSourceGroup {
+export class GroupCallParticipantVideoSourceGroup extends _TypeGroupCallParticipantVideoSourceGroup {
   semantics: string;
   sources: Array<number>;
 
@@ -34007,7 +34007,7 @@ export class GroupCallParticipantVideoSourceGroup extends TypeGroupCallParticipa
   }
 }
 
-export class GroupCallParticipantVideo extends TypeGroupCallParticipantVideo {
+export class GroupCallParticipantVideo extends _TypeGroupCallParticipantVideo {
   paused?: true;
   endpoint: string;
   sourceGroups: Array<TypeGroupCallParticipantVideoSourceGroup>;
@@ -34022,7 +34022,7 @@ export class GroupCallParticipantVideo extends TypeGroupCallParticipantVideo {
       ["flags", flags, "#"],
       ["paused", "true", "flags.0?true"],
       ["endpoint", "string", "string"],
-      ["sourceGroups", [TypeGroupCallParticipantVideoSourceGroup], "Vector<GroupCallParticipantVideoSourceGroup>"],
+      ["sourceGroups", [_TypeGroupCallParticipantVideoSourceGroup], "Vector<GroupCallParticipantVideoSourceGroup>"],
       ["audioSource", "number", "flags.1?int"],
     ];
   }
@@ -34032,7 +34032,7 @@ export class GroupCallParticipantVideo extends TypeGroupCallParticipantVideo {
       ["flags", flags, "#"],
       [this.paused ?? null, "true", "flags.0?true"],
       [this.endpoint, "string", "string"],
-      [this.sourceGroups, [TypeGroupCallParticipantVideoSourceGroup], "Vector<GroupCallParticipantVideoSourceGroup>"],
+      [this.sourceGroups, [_TypeGroupCallParticipantVideoSourceGroup], "Vector<GroupCallParticipantVideoSourceGroup>"],
       [this.audioSource ?? null, "number", "flags.1?int"],
     ];
   }
@@ -34046,7 +34046,7 @@ export class GroupCallParticipantVideo extends TypeGroupCallParticipantVideo {
   }
 }
 
-export class StickersSuggestedShortName extends TypeStickersSuggestedShortName {
+export class StickersSuggestedShortName extends _TypeStickersSuggestedShortName {
   shortName: string;
 
   protected get [id]() {
@@ -34071,7 +34071,7 @@ export class StickersSuggestedShortName extends TypeStickersSuggestedShortName {
   }
 }
 
-export class BotCommandScopeDefault extends TypeBotCommandScope {
+export class BotCommandScopeDefault extends _TypeBotCommandScope {
   protected get [id]() {
     return 0x2F6CB2AB;
   }
@@ -34089,7 +34089,7 @@ export class BotCommandScopeDefault extends TypeBotCommandScope {
   }
 }
 
-export class BotCommandScopeUsers extends TypeBotCommandScope {
+export class BotCommandScopeUsers extends _TypeBotCommandScope {
   protected get [id]() {
     return 0x3C4F04D8;
   }
@@ -34107,7 +34107,7 @@ export class BotCommandScopeUsers extends TypeBotCommandScope {
   }
 }
 
-export class BotCommandScopeChats extends TypeBotCommandScope {
+export class BotCommandScopeChats extends _TypeBotCommandScope {
   protected get [id]() {
     return 0x6FE1A881;
   }
@@ -34125,7 +34125,7 @@ export class BotCommandScopeChats extends TypeBotCommandScope {
   }
 }
 
-export class BotCommandScopeChatAdmins extends TypeBotCommandScope {
+export class BotCommandScopeChatAdmins extends _TypeBotCommandScope {
   protected get [id]() {
     return 0xB9AA606A;
   }
@@ -34143,7 +34143,7 @@ export class BotCommandScopeChatAdmins extends TypeBotCommandScope {
   }
 }
 
-export class BotCommandScopePeer extends TypeBotCommandScope {
+export class BotCommandScopePeer extends _TypeBotCommandScope {
   peer: TypeInputPeer;
 
   protected get [id]() {
@@ -34152,13 +34152,13 @@ export class BotCommandScopePeer extends TypeBotCommandScope {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["peer", TypeInputPeer, "InputPeer"],
+      ["peer", _TypeInputPeer, "InputPeer"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.peer, TypeInputPeer, "InputPeer"],
+      [this.peer, _TypeInputPeer, "InputPeer"],
     ];
   }
 
@@ -34168,7 +34168,7 @@ export class BotCommandScopePeer extends TypeBotCommandScope {
   }
 }
 
-export class BotCommandScopePeerAdmins extends TypeBotCommandScope {
+export class BotCommandScopePeerAdmins extends _TypeBotCommandScope {
   peer: TypeInputPeer;
 
   protected get [id]() {
@@ -34177,13 +34177,13 @@ export class BotCommandScopePeerAdmins extends TypeBotCommandScope {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["peer", TypeInputPeer, "InputPeer"],
+      ["peer", _TypeInputPeer, "InputPeer"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.peer, TypeInputPeer, "InputPeer"],
+      [this.peer, _TypeInputPeer, "InputPeer"],
     ];
   }
 
@@ -34193,7 +34193,7 @@ export class BotCommandScopePeerAdmins extends TypeBotCommandScope {
   }
 }
 
-export class BotCommandScopePeerUser extends TypeBotCommandScope {
+export class BotCommandScopePeerUser extends _TypeBotCommandScope {
   peer: TypeInputPeer;
   userId: TypeInputUser;
 
@@ -34203,15 +34203,15 @@ export class BotCommandScopePeerUser extends TypeBotCommandScope {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["peer", TypeInputPeer, "InputPeer"],
-      ["userId", TypeInputUser, "InputUser"],
+      ["peer", _TypeInputPeer, "InputPeer"],
+      ["userId", _TypeInputUser, "InputUser"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.peer, TypeInputPeer, "InputPeer"],
-      [this.userId, TypeInputUser, "InputUser"],
+      [this.peer, _TypeInputPeer, "InputPeer"],
+      [this.userId, _TypeInputUser, "InputUser"],
     ];
   }
 
@@ -34222,7 +34222,7 @@ export class BotCommandScopePeerUser extends TypeBotCommandScope {
   }
 }
 
-export class AccountResetPasswordFailedWait extends TypeAccountResetPasswordResult {
+export class AccountResetPasswordFailedWait extends _TypeAccountResetPasswordResult {
   retryDate: number;
 
   protected get [id]() {
@@ -34247,7 +34247,7 @@ export class AccountResetPasswordFailedWait extends TypeAccountResetPasswordResu
   }
 }
 
-export class AccountResetPasswordRequestedWait extends TypeAccountResetPasswordResult {
+export class AccountResetPasswordRequestedWait extends _TypeAccountResetPasswordResult {
   untilDate: number;
 
   protected get [id]() {
@@ -34272,7 +34272,7 @@ export class AccountResetPasswordRequestedWait extends TypeAccountResetPasswordR
   }
 }
 
-export class AccountResetPasswordOk extends TypeAccountResetPasswordResult {
+export class AccountResetPasswordOk extends _TypeAccountResetPasswordResult {
   protected get [id]() {
     return 0xE926D63E;
   }
@@ -34290,7 +34290,7 @@ export class AccountResetPasswordOk extends TypeAccountResetPasswordResult {
   }
 }
 
-export class SponsoredMessage extends TypeSponsoredMessage {
+export class SponsoredMessage extends _TypeSponsoredMessage {
   recommended?: true;
   showPeerPhoto?: true;
   randomId: Uint8Array;
@@ -34315,14 +34315,14 @@ export class SponsoredMessage extends TypeSponsoredMessage {
       ["recommended", "true", "flags.5?true"],
       ["showPeerPhoto", "true", "flags.6?true"],
       ["randomId", Uint8Array, "bytes"],
-      ["fromId", TypePeer, "flags.3?Peer"],
-      ["chatInvite", TypeChatInvite, "flags.4?ChatInvite"],
+      ["fromId", _TypePeer, "flags.3?Peer"],
+      ["chatInvite", _TypeChatInvite, "flags.4?ChatInvite"],
       ["chatInviteHash", "string", "flags.4?string"],
       ["channelPost", "number", "flags.2?int"],
       ["startParam", "string", "flags.0?string"],
-      ["webpage", TypeSponsoredWebPage, "flags.9?SponsoredWebPage"],
+      ["webpage", _TypeSponsoredWebPage, "flags.9?SponsoredWebPage"],
       ["message", "string", "string"],
-      ["entities", [TypeMessageEntity], "flags.1?Vector<MessageEntity>"],
+      ["entities", [_TypeMessageEntity], "flags.1?Vector<MessageEntity>"],
       ["sponsorInfo", "string", "flags.7?string"],
       ["additionalInfo", "string", "flags.8?string"],
     ];
@@ -34334,14 +34334,14 @@ export class SponsoredMessage extends TypeSponsoredMessage {
       [this.recommended ?? null, "true", "flags.5?true"],
       [this.showPeerPhoto ?? null, "true", "flags.6?true"],
       [this.randomId, Uint8Array, "bytes"],
-      [this.fromId ?? null, TypePeer, "flags.3?Peer"],
-      [this.chatInvite ?? null, TypeChatInvite, "flags.4?ChatInvite"],
+      [this.fromId ?? null, _TypePeer, "flags.3?Peer"],
+      [this.chatInvite ?? null, _TypeChatInvite, "flags.4?ChatInvite"],
       [this.chatInviteHash ?? null, "string", "flags.4?string"],
       [this.channelPost ?? null, "number", "flags.2?int"],
       [this.startParam ?? null, "string", "flags.0?string"],
-      [this.webpage ?? null, TypeSponsoredWebPage, "flags.9?SponsoredWebPage"],
+      [this.webpage ?? null, _TypeSponsoredWebPage, "flags.9?SponsoredWebPage"],
       [this.message, "string", "string"],
-      [this.entities ?? null, [TypeMessageEntity], "flags.1?Vector<MessageEntity>"],
+      [this.entities ?? null, [_TypeMessageEntity], "flags.1?Vector<MessageEntity>"],
       [this.sponsorInfo ?? null, "string", "flags.7?string"],
       [this.additionalInfo ?? null, "string", "flags.8?string"],
     ];
@@ -34365,7 +34365,7 @@ export class SponsoredMessage extends TypeSponsoredMessage {
   }
 }
 
-export class MessagesSponsoredMessages extends TypeMessagesSponsoredMessages {
+export class MessagesSponsoredMessages extends _TypeMessagesSponsoredMessages {
   postsBetween?: number;
   messages: Array<TypeSponsoredMessage>;
   chats: Array<TypeChat>;
@@ -34379,9 +34379,9 @@ export class MessagesSponsoredMessages extends TypeMessagesSponsoredMessages {
     return [
       ["flags", flags, "#"],
       ["postsBetween", "number", "flags.0?int"],
-      ["messages", [TypeSponsoredMessage], "Vector<SponsoredMessage>"],
-      ["chats", [TypeChat], "Vector<Chat>"],
-      ["users", [TypeUser], "Vector<User>"],
+      ["messages", [_TypeSponsoredMessage], "Vector<SponsoredMessage>"],
+      ["chats", [_TypeChat], "Vector<Chat>"],
+      ["users", [_TypeUser], "Vector<User>"],
     ];
   }
 
@@ -34389,9 +34389,9 @@ export class MessagesSponsoredMessages extends TypeMessagesSponsoredMessages {
     return [
       ["flags", flags, "#"],
       [this.postsBetween ?? null, "number", "flags.0?int"],
-      [this.messages, [TypeSponsoredMessage], "Vector<SponsoredMessage>"],
-      [this.chats, [TypeChat], "Vector<Chat>"],
-      [this.users, [TypeUser], "Vector<User>"],
+      [this.messages, [_TypeSponsoredMessage], "Vector<SponsoredMessage>"],
+      [this.chats, [_TypeChat], "Vector<Chat>"],
+      [this.users, [_TypeUser], "Vector<User>"],
     ];
   }
 
@@ -34404,7 +34404,7 @@ export class MessagesSponsoredMessages extends TypeMessagesSponsoredMessages {
   }
 }
 
-export class MessagesSponsoredMessagesEmpty extends TypeMessagesSponsoredMessages {
+export class MessagesSponsoredMessagesEmpty extends _TypeMessagesSponsoredMessages {
   protected get [id]() {
     return 0x1839490F;
   }
@@ -34422,7 +34422,7 @@ export class MessagesSponsoredMessagesEmpty extends TypeMessagesSponsoredMessage
   }
 }
 
-export class SearchResultsCalendarPeriod extends TypeSearchResultsCalendarPeriod {
+export class SearchResultsCalendarPeriod extends _TypeSearchResultsCalendarPeriod {
   date: number;
   minMsgId: number;
   maxMsgId: number;
@@ -34459,7 +34459,7 @@ export class SearchResultsCalendarPeriod extends TypeSearchResultsCalendarPeriod
   }
 }
 
-export class MessagesSearchResultsCalendar extends TypeMessagesSearchResultsCalendar {
+export class MessagesSearchResultsCalendar extends _TypeMessagesSearchResultsCalendar {
   inexact?: true;
   count: number;
   minDate: number;
@@ -34482,10 +34482,10 @@ export class MessagesSearchResultsCalendar extends TypeMessagesSearchResultsCale
       ["minDate", "number", "int"],
       ["minMsgId", "number", "int"],
       ["offsetIdOffset", "number", "flags.1?int"],
-      ["periods", [TypeSearchResultsCalendarPeriod], "Vector<SearchResultsCalendarPeriod>"],
-      ["messages", [TypeMessage], "Vector<Message>"],
-      ["chats", [TypeChat], "Vector<Chat>"],
-      ["users", [TypeUser], "Vector<User>"],
+      ["periods", [_TypeSearchResultsCalendarPeriod], "Vector<SearchResultsCalendarPeriod>"],
+      ["messages", [_TypeMessage], "Vector<Message>"],
+      ["chats", [_TypeChat], "Vector<Chat>"],
+      ["users", [_TypeUser], "Vector<User>"],
     ];
   }
 
@@ -34497,10 +34497,10 @@ export class MessagesSearchResultsCalendar extends TypeMessagesSearchResultsCale
       [this.minDate, "number", "int"],
       [this.minMsgId, "number", "int"],
       [this.offsetIdOffset ?? null, "number", "flags.1?int"],
-      [this.periods, [TypeSearchResultsCalendarPeriod], "Vector<SearchResultsCalendarPeriod>"],
-      [this.messages, [TypeMessage], "Vector<Message>"],
-      [this.chats, [TypeChat], "Vector<Chat>"],
-      [this.users, [TypeUser], "Vector<User>"],
+      [this.periods, [_TypeSearchResultsCalendarPeriod], "Vector<SearchResultsCalendarPeriod>"],
+      [this.messages, [_TypeMessage], "Vector<Message>"],
+      [this.chats, [_TypeChat], "Vector<Chat>"],
+      [this.users, [_TypeUser], "Vector<User>"],
     ];
   }
 
@@ -34518,7 +34518,7 @@ export class MessagesSearchResultsCalendar extends TypeMessagesSearchResultsCale
   }
 }
 
-export class SearchResultPosition extends TypeSearchResultsPosition {
+export class SearchResultPosition extends _TypeSearchResultsPosition {
   msgId: number;
   date: number;
   offset: number;
@@ -34551,7 +34551,7 @@ export class SearchResultPosition extends TypeSearchResultsPosition {
   }
 }
 
-export class MessagesSearchResultsPositions extends TypeMessagesSearchResultsPositions {
+export class MessagesSearchResultsPositions extends _TypeMessagesSearchResultsPositions {
   count: number;
   positions: Array<TypeSearchResultsPosition>;
 
@@ -34562,14 +34562,14 @@ export class MessagesSearchResultsPositions extends TypeMessagesSearchResultsPos
   static get [paramDesc](): ParamDesc {
     return [
       ["count", "number", "int"],
-      ["positions", [TypeSearchResultsPosition], "Vector<SearchResultsPosition>"],
+      ["positions", [_TypeSearchResultsPosition], "Vector<SearchResultsPosition>"],
     ];
   }
 
   protected get [params](): Params {
     return [
       [this.count, "number", "int"],
-      [this.positions, [TypeSearchResultsPosition], "Vector<SearchResultsPosition>"],
+      [this.positions, [_TypeSearchResultsPosition], "Vector<SearchResultsPosition>"],
     ];
   }
 
@@ -34580,7 +34580,7 @@ export class MessagesSearchResultsPositions extends TypeMessagesSearchResultsPos
   }
 }
 
-export class ChannelsSendAsPeers extends TypeChannelsSendAsPeers {
+export class ChannelsSendAsPeers extends _TypeChannelsSendAsPeers {
   peers: Array<TypeSendAsPeer>;
   chats: Array<TypeChat>;
   users: Array<TypeUser>;
@@ -34591,17 +34591,17 @@ export class ChannelsSendAsPeers extends TypeChannelsSendAsPeers {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["peers", [TypeSendAsPeer], "Vector<SendAsPeer>"],
-      ["chats", [TypeChat], "Vector<Chat>"],
-      ["users", [TypeUser], "Vector<User>"],
+      ["peers", [_TypeSendAsPeer], "Vector<SendAsPeer>"],
+      ["chats", [_TypeChat], "Vector<Chat>"],
+      ["users", [_TypeUser], "Vector<User>"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.peers, [TypeSendAsPeer], "Vector<SendAsPeer>"],
-      [this.chats, [TypeChat], "Vector<Chat>"],
-      [this.users, [TypeUser], "Vector<User>"],
+      [this.peers, [_TypeSendAsPeer], "Vector<SendAsPeer>"],
+      [this.chats, [_TypeChat], "Vector<Chat>"],
+      [this.users, [_TypeUser], "Vector<User>"],
     ];
   }
 
@@ -34613,7 +34613,7 @@ export class ChannelsSendAsPeers extends TypeChannelsSendAsPeers {
   }
 }
 
-export class UsersUserFull extends TypeUsersUserFull {
+export class UsersUserFull extends _TypeUsersUserFull {
   fullUser: TypeUserFull;
   chats: Array<TypeChat>;
   users: Array<TypeUser>;
@@ -34624,17 +34624,17 @@ export class UsersUserFull extends TypeUsersUserFull {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["fullUser", TypeUserFull, "UserFull"],
-      ["chats", [TypeChat], "Vector<Chat>"],
-      ["users", [TypeUser], "Vector<User>"],
+      ["fullUser", _TypeUserFull, "UserFull"],
+      ["chats", [_TypeChat], "Vector<Chat>"],
+      ["users", [_TypeUser], "Vector<User>"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.fullUser, TypeUserFull, "UserFull"],
-      [this.chats, [TypeChat], "Vector<Chat>"],
-      [this.users, [TypeUser], "Vector<User>"],
+      [this.fullUser, _TypeUserFull, "UserFull"],
+      [this.chats, [_TypeChat], "Vector<Chat>"],
+      [this.users, [_TypeUser], "Vector<User>"],
     ];
   }
 
@@ -34646,7 +34646,7 @@ export class UsersUserFull extends TypeUsersUserFull {
   }
 }
 
-export class MessagesPeerSettings extends TypeMessagesPeerSettings {
+export class MessagesPeerSettings extends _TypeMessagesPeerSettings {
   settings: TypePeerSettings;
   chats: Array<TypeChat>;
   users: Array<TypeUser>;
@@ -34657,17 +34657,17 @@ export class MessagesPeerSettings extends TypeMessagesPeerSettings {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["settings", TypePeerSettings, "PeerSettings"],
-      ["chats", [TypeChat], "Vector<Chat>"],
-      ["users", [TypeUser], "Vector<User>"],
+      ["settings", _TypePeerSettings, "PeerSettings"],
+      ["chats", [_TypeChat], "Vector<Chat>"],
+      ["users", [_TypeUser], "Vector<User>"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.settings, TypePeerSettings, "PeerSettings"],
-      [this.chats, [TypeChat], "Vector<Chat>"],
-      [this.users, [TypeUser], "Vector<User>"],
+      [this.settings, _TypePeerSettings, "PeerSettings"],
+      [this.chats, [_TypeChat], "Vector<Chat>"],
+      [this.users, [_TypeUser], "Vector<User>"],
     ];
   }
 
@@ -34679,7 +34679,7 @@ export class MessagesPeerSettings extends TypeMessagesPeerSettings {
   }
 }
 
-export class AuthLoggedOut extends TypeAuthLoggedOut {
+export class AuthLoggedOut extends _TypeAuthLoggedOut {
   futureAuthToken?: Uint8Array;
 
   protected get [id]() {
@@ -34706,7 +34706,7 @@ export class AuthLoggedOut extends TypeAuthLoggedOut {
   }
 }
 
-export class ReactionCount extends TypeReactionCount {
+export class ReactionCount extends _TypeReactionCount {
   chosenOrder?: number;
   reaction: TypeReaction;
   count: number;
@@ -34719,7 +34719,7 @@ export class ReactionCount extends TypeReactionCount {
     return [
       ["flags", flags, "#"],
       ["chosenOrder", "number", "flags.0?int"],
-      ["reaction", TypeReaction, "Reaction"],
+      ["reaction", _TypeReaction, "Reaction"],
       ["count", "number", "int"],
     ];
   }
@@ -34728,7 +34728,7 @@ export class ReactionCount extends TypeReactionCount {
     return [
       ["flags", flags, "#"],
       [this.chosenOrder ?? null, "number", "flags.0?int"],
-      [this.reaction, TypeReaction, "Reaction"],
+      [this.reaction, _TypeReaction, "Reaction"],
       [this.count, "number", "int"],
     ];
   }
@@ -34741,7 +34741,7 @@ export class ReactionCount extends TypeReactionCount {
   }
 }
 
-export class MessageReactions extends TypeMessageReactions {
+export class MessageReactions extends _TypeMessageReactions {
   min?: true;
   canSeeList?: true;
   results: Array<TypeReactionCount>;
@@ -34756,8 +34756,8 @@ export class MessageReactions extends TypeMessageReactions {
       ["flags", flags, "#"],
       ["min", "true", "flags.0?true"],
       ["canSeeList", "true", "flags.2?true"],
-      ["results", [TypeReactionCount], "Vector<ReactionCount>"],
-      ["recentReactions", [TypeMessagePeerReaction], "flags.1?Vector<MessagePeerReaction>"],
+      ["results", [_TypeReactionCount], "Vector<ReactionCount>"],
+      ["recentReactions", [_TypeMessagePeerReaction], "flags.1?Vector<MessagePeerReaction>"],
     ];
   }
 
@@ -34766,8 +34766,8 @@ export class MessageReactions extends TypeMessageReactions {
       ["flags", flags, "#"],
       [this.min ?? null, "true", "flags.0?true"],
       [this.canSeeList ?? null, "true", "flags.2?true"],
-      [this.results, [TypeReactionCount], "Vector<ReactionCount>"],
-      [this.recentReactions ?? null, [TypeMessagePeerReaction], "flags.1?Vector<MessagePeerReaction>"],
+      [this.results, [_TypeReactionCount], "Vector<ReactionCount>"],
+      [this.recentReactions ?? null, [_TypeMessagePeerReaction], "flags.1?Vector<MessagePeerReaction>"],
     ];
   }
 
@@ -34780,7 +34780,7 @@ export class MessageReactions extends TypeMessageReactions {
   }
 }
 
-export class MessagesMessageReactionsList extends TypeMessagesMessageReactionsList {
+export class MessagesMessageReactionsList extends _TypeMessagesMessageReactionsList {
   count: number;
   reactions: Array<TypeMessagePeerReaction>;
   chats: Array<TypeChat>;
@@ -34795,9 +34795,9 @@ export class MessagesMessageReactionsList extends TypeMessagesMessageReactionsLi
     return [
       ["flags", flags, "#"],
       ["count", "number", "int"],
-      ["reactions", [TypeMessagePeerReaction], "Vector<MessagePeerReaction>"],
-      ["chats", [TypeChat], "Vector<Chat>"],
-      ["users", [TypeUser], "Vector<User>"],
+      ["reactions", [_TypeMessagePeerReaction], "Vector<MessagePeerReaction>"],
+      ["chats", [_TypeChat], "Vector<Chat>"],
+      ["users", [_TypeUser], "Vector<User>"],
       ["nextOffset", "string", "flags.0?string"],
     ];
   }
@@ -34806,9 +34806,9 @@ export class MessagesMessageReactionsList extends TypeMessagesMessageReactionsLi
     return [
       ["flags", flags, "#"],
       [this.count, "number", "int"],
-      [this.reactions, [TypeMessagePeerReaction], "Vector<MessagePeerReaction>"],
-      [this.chats, [TypeChat], "Vector<Chat>"],
-      [this.users, [TypeUser], "Vector<User>"],
+      [this.reactions, [_TypeMessagePeerReaction], "Vector<MessagePeerReaction>"],
+      [this.chats, [_TypeChat], "Vector<Chat>"],
+      [this.users, [_TypeUser], "Vector<User>"],
       [this.nextOffset ?? null, "string", "flags.0?string"],
     ];
   }
@@ -34823,7 +34823,7 @@ export class MessagesMessageReactionsList extends TypeMessagesMessageReactionsLi
   }
 }
 
-export class AvailableReaction extends TypeAvailableReaction {
+export class AvailableReaction extends _TypeAvailableReaction {
   inactive?: true;
   premium?: true;
   reaction: string;
@@ -34847,13 +34847,13 @@ export class AvailableReaction extends TypeAvailableReaction {
       ["premium", "true", "flags.2?true"],
       ["reaction", "string", "string"],
       ["title", "string", "string"],
-      ["staticIcon", TypeDocument, "Document"],
-      ["appearAnimation", TypeDocument, "Document"],
-      ["selectAnimation", TypeDocument, "Document"],
-      ["activateAnimation", TypeDocument, "Document"],
-      ["effectAnimation", TypeDocument, "Document"],
-      ["aroundAnimation", TypeDocument, "flags.1?Document"],
-      ["centerIcon", TypeDocument, "flags.1?Document"],
+      ["staticIcon", _TypeDocument, "Document"],
+      ["appearAnimation", _TypeDocument, "Document"],
+      ["selectAnimation", _TypeDocument, "Document"],
+      ["activateAnimation", _TypeDocument, "Document"],
+      ["effectAnimation", _TypeDocument, "Document"],
+      ["aroundAnimation", _TypeDocument, "flags.1?Document"],
+      ["centerIcon", _TypeDocument, "flags.1?Document"],
     ];
   }
 
@@ -34864,13 +34864,13 @@ export class AvailableReaction extends TypeAvailableReaction {
       [this.premium ?? null, "true", "flags.2?true"],
       [this.reaction, "string", "string"],
       [this.title, "string", "string"],
-      [this.staticIcon, TypeDocument, "Document"],
-      [this.appearAnimation, TypeDocument, "Document"],
-      [this.selectAnimation, TypeDocument, "Document"],
-      [this.activateAnimation, TypeDocument, "Document"],
-      [this.effectAnimation, TypeDocument, "Document"],
-      [this.aroundAnimation ?? null, TypeDocument, "flags.1?Document"],
-      [this.centerIcon ?? null, TypeDocument, "flags.1?Document"],
+      [this.staticIcon, _TypeDocument, "Document"],
+      [this.appearAnimation, _TypeDocument, "Document"],
+      [this.selectAnimation, _TypeDocument, "Document"],
+      [this.activateAnimation, _TypeDocument, "Document"],
+      [this.effectAnimation, _TypeDocument, "Document"],
+      [this.aroundAnimation ?? null, _TypeDocument, "flags.1?Document"],
+      [this.centerIcon ?? null, _TypeDocument, "flags.1?Document"],
     ];
   }
 
@@ -34890,7 +34890,7 @@ export class AvailableReaction extends TypeAvailableReaction {
   }
 }
 
-export class MessagesAvailableReactionsNotModified extends TypeMessagesAvailableReactions {
+export class MessagesAvailableReactionsNotModified extends _TypeMessagesAvailableReactions {
   protected get [id]() {
     return 0x9F071957;
   }
@@ -34908,7 +34908,7 @@ export class MessagesAvailableReactionsNotModified extends TypeMessagesAvailable
   }
 }
 
-export class MessagesAvailableReactions extends TypeMessagesAvailableReactions {
+export class MessagesAvailableReactions extends _TypeMessagesAvailableReactions {
   hash: number;
   reactions: Array<TypeAvailableReaction>;
 
@@ -34919,14 +34919,14 @@ export class MessagesAvailableReactions extends TypeMessagesAvailableReactions {
   static get [paramDesc](): ParamDesc {
     return [
       ["hash", "number", "int"],
-      ["reactions", [TypeAvailableReaction], "Vector<AvailableReaction>"],
+      ["reactions", [_TypeAvailableReaction], "Vector<AvailableReaction>"],
     ];
   }
 
   protected get [params](): Params {
     return [
       [this.hash, "number", "int"],
-      [this.reactions, [TypeAvailableReaction], "Vector<AvailableReaction>"],
+      [this.reactions, [_TypeAvailableReaction], "Vector<AvailableReaction>"],
     ];
   }
 
@@ -34937,7 +34937,7 @@ export class MessagesAvailableReactions extends TypeMessagesAvailableReactions {
   }
 }
 
-export class MessagePeerReaction extends TypeMessagePeerReaction {
+export class MessagePeerReaction extends _TypeMessagePeerReaction {
   big?: true;
   unread?: true;
   my?: true;
@@ -34955,9 +34955,9 @@ export class MessagePeerReaction extends TypeMessagePeerReaction {
       ["big", "true", "flags.0?true"],
       ["unread", "true", "flags.1?true"],
       ["my", "true", "flags.2?true"],
-      ["peerId", TypePeer, "Peer"],
+      ["peerId", _TypePeer, "Peer"],
       ["date", "number", "int"],
-      ["reaction", TypeReaction, "Reaction"],
+      ["reaction", _TypeReaction, "Reaction"],
     ];
   }
 
@@ -34967,9 +34967,9 @@ export class MessagePeerReaction extends TypeMessagePeerReaction {
       [this.big ?? null, "true", "flags.0?true"],
       [this.unread ?? null, "true", "flags.1?true"],
       [this.my ?? null, "true", "flags.2?true"],
-      [this.peerId, TypePeer, "Peer"],
+      [this.peerId, _TypePeer, "Peer"],
       [this.date, "number", "int"],
-      [this.reaction, TypeReaction, "Reaction"],
+      [this.reaction, _TypeReaction, "Reaction"],
     ];
   }
 
@@ -34984,7 +34984,7 @@ export class MessagePeerReaction extends TypeMessagePeerReaction {
   }
 }
 
-export class GroupCallStreamChannel extends TypeGroupCallStreamChannel {
+export class GroupCallStreamChannel extends _TypeGroupCallStreamChannel {
   channel: number;
   scale: number;
   lastTimestampMs: bigint;
@@ -35017,7 +35017,7 @@ export class GroupCallStreamChannel extends TypeGroupCallStreamChannel {
   }
 }
 
-export class PhoneGroupCallStreamChannels extends TypePhoneGroupCallStreamChannels {
+export class PhoneGroupCallStreamChannels extends _TypePhoneGroupCallStreamChannels {
   channels: Array<TypeGroupCallStreamChannel>;
 
   protected get [id]() {
@@ -35026,13 +35026,13 @@ export class PhoneGroupCallStreamChannels extends TypePhoneGroupCallStreamChanne
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["channels", [TypeGroupCallStreamChannel], "Vector<GroupCallStreamChannel>"],
+      ["channels", [_TypeGroupCallStreamChannel], "Vector<GroupCallStreamChannel>"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.channels, [TypeGroupCallStreamChannel], "Vector<GroupCallStreamChannel>"],
+      [this.channels, [_TypeGroupCallStreamChannel], "Vector<GroupCallStreamChannel>"],
     ];
   }
 
@@ -35042,7 +35042,7 @@ export class PhoneGroupCallStreamChannels extends TypePhoneGroupCallStreamChanne
   }
 }
 
-export class PhoneGroupCallStreamRtmpURL extends TypePhoneGroupCallStreamRtmpURL {
+export class PhoneGroupCallStreamRtmpURL extends _TypePhoneGroupCallStreamRtmpURL {
   url: string;
   key: string;
 
@@ -35071,7 +35071,7 @@ export class PhoneGroupCallStreamRtmpURL extends TypePhoneGroupCallStreamRtmpURL
   }
 }
 
-export class AttachMenuBotIconColor extends TypeAttachMenuBotIconColor {
+export class AttachMenuBotIconColor extends _TypeAttachMenuBotIconColor {
   name: string;
   color: number;
 
@@ -35100,7 +35100,7 @@ export class AttachMenuBotIconColor extends TypeAttachMenuBotIconColor {
   }
 }
 
-export class AttachMenuBotIcon extends TypeAttachMenuBotIcon {
+export class AttachMenuBotIcon extends _TypeAttachMenuBotIcon {
   name: string;
   icon: TypeDocument;
   colors?: Array<TypeAttachMenuBotIconColor>;
@@ -35113,8 +35113,8 @@ export class AttachMenuBotIcon extends TypeAttachMenuBotIcon {
     return [
       ["flags", flags, "#"],
       ["name", "string", "string"],
-      ["icon", TypeDocument, "Document"],
-      ["colors", [TypeAttachMenuBotIconColor], "flags.0?Vector<AttachMenuBotIconColor>"],
+      ["icon", _TypeDocument, "Document"],
+      ["colors", [_TypeAttachMenuBotIconColor], "flags.0?Vector<AttachMenuBotIconColor>"],
     ];
   }
 
@@ -35122,8 +35122,8 @@ export class AttachMenuBotIcon extends TypeAttachMenuBotIcon {
     return [
       ["flags", flags, "#"],
       [this.name, "string", "string"],
-      [this.icon, TypeDocument, "Document"],
-      [this.colors ?? null, [TypeAttachMenuBotIconColor], "flags.0?Vector<AttachMenuBotIconColor>"],
+      [this.icon, _TypeDocument, "Document"],
+      [this.colors ?? null, [_TypeAttachMenuBotIconColor], "flags.0?Vector<AttachMenuBotIconColor>"],
     ];
   }
 
@@ -35135,7 +35135,7 @@ export class AttachMenuBotIcon extends TypeAttachMenuBotIcon {
   }
 }
 
-export class AttachMenuBot extends TypeAttachMenuBot {
+export class AttachMenuBot extends _TypeAttachMenuBot {
   inactive?: true;
   hasSettings?: true;
   requestWriteAccess?: true;
@@ -35156,8 +35156,8 @@ export class AttachMenuBot extends TypeAttachMenuBot {
       ["requestWriteAccess", "true", "flags.2?true"],
       ["botId", "bigint", "long"],
       ["shortName", "string", "string"],
-      ["peerTypes", [TypeAttachMenuPeerType], "Vector<AttachMenuPeerType>"],
-      ["icons", [TypeAttachMenuBotIcon], "Vector<AttachMenuBotIcon>"],
+      ["peerTypes", [_TypeAttachMenuPeerType], "Vector<AttachMenuPeerType>"],
+      ["icons", [_TypeAttachMenuBotIcon], "Vector<AttachMenuBotIcon>"],
     ];
   }
 
@@ -35169,8 +35169,8 @@ export class AttachMenuBot extends TypeAttachMenuBot {
       [this.requestWriteAccess ?? null, "true", "flags.2?true"],
       [this.botId, "bigint", "long"],
       [this.shortName, "string", "string"],
-      [this.peerTypes, [TypeAttachMenuPeerType], "Vector<AttachMenuPeerType>"],
-      [this.icons, [TypeAttachMenuBotIcon], "Vector<AttachMenuBotIcon>"],
+      [this.peerTypes, [_TypeAttachMenuPeerType], "Vector<AttachMenuPeerType>"],
+      [this.icons, [_TypeAttachMenuBotIcon], "Vector<AttachMenuBotIcon>"],
     ];
   }
 
@@ -35186,7 +35186,7 @@ export class AttachMenuBot extends TypeAttachMenuBot {
   }
 }
 
-export class AttachMenuBotsNotModified extends TypeAttachMenuBots {
+export class AttachMenuBotsNotModified extends _TypeAttachMenuBots {
   protected get [id]() {
     return 0xF1D88A5C;
   }
@@ -35204,7 +35204,7 @@ export class AttachMenuBotsNotModified extends TypeAttachMenuBots {
   }
 }
 
-export class AttachMenuBots extends TypeAttachMenuBots {
+export class AttachMenuBots extends _TypeAttachMenuBots {
   hash: bigint;
   bots: Array<TypeAttachMenuBot>;
   users: Array<TypeUser>;
@@ -35216,16 +35216,16 @@ export class AttachMenuBots extends TypeAttachMenuBots {
   static get [paramDesc](): ParamDesc {
     return [
       ["hash", "bigint", "long"],
-      ["bots", [TypeAttachMenuBot], "Vector<AttachMenuBot>"],
-      ["users", [TypeUser], "Vector<User>"],
+      ["bots", [_TypeAttachMenuBot], "Vector<AttachMenuBot>"],
+      ["users", [_TypeUser], "Vector<User>"],
     ];
   }
 
   protected get [params](): Params {
     return [
       [this.hash, "bigint", "long"],
-      [this.bots, [TypeAttachMenuBot], "Vector<AttachMenuBot>"],
-      [this.users, [TypeUser], "Vector<User>"],
+      [this.bots, [_TypeAttachMenuBot], "Vector<AttachMenuBot>"],
+      [this.users, [_TypeUser], "Vector<User>"],
     ];
   }
 
@@ -35237,7 +35237,7 @@ export class AttachMenuBots extends TypeAttachMenuBots {
   }
 }
 
-export class AttachMenuBotsBot extends TypeAttachMenuBotsBot {
+export class AttachMenuBotsBot extends _TypeAttachMenuBotsBot {
   bot: TypeAttachMenuBot;
   users: Array<TypeUser>;
 
@@ -35247,15 +35247,15 @@ export class AttachMenuBotsBot extends TypeAttachMenuBotsBot {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["bot", TypeAttachMenuBot, "AttachMenuBot"],
-      ["users", [TypeUser], "Vector<User>"],
+      ["bot", _TypeAttachMenuBot, "AttachMenuBot"],
+      ["users", [_TypeUser], "Vector<User>"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.bot, TypeAttachMenuBot, "AttachMenuBot"],
-      [this.users, [TypeUser], "Vector<User>"],
+      [this.bot, _TypeAttachMenuBot, "AttachMenuBot"],
+      [this.users, [_TypeUser], "Vector<User>"],
     ];
   }
 
@@ -35266,7 +35266,7 @@ export class AttachMenuBotsBot extends TypeAttachMenuBotsBot {
   }
 }
 
-export class WebViewResultURL extends TypeWebViewResult {
+export class WebViewResultURL extends _TypeWebViewResult {
   queryId: bigint;
   url: string;
 
@@ -35295,7 +35295,7 @@ export class WebViewResultURL extends TypeWebViewResult {
   }
 }
 
-export class SimpleWebViewResultURL extends TypeSimpleWebViewResult {
+export class SimpleWebViewResultURL extends _TypeSimpleWebViewResult {
   url: string;
 
   protected get [id]() {
@@ -35320,7 +35320,7 @@ export class SimpleWebViewResultURL extends TypeSimpleWebViewResult {
   }
 }
 
-export class WebViewMessageSent extends TypeWebViewMessageSent {
+export class WebViewMessageSent extends _TypeWebViewMessageSent {
   msgId?: TypeInputBotInlineMessageID;
 
   protected get [id]() {
@@ -35330,14 +35330,14 @@ export class WebViewMessageSent extends TypeWebViewMessageSent {
   static get [paramDesc](): ParamDesc {
     return [
       ["flags", flags, "#"],
-      ["msgId", TypeInputBotInlineMessageID, "flags.0?InputBotInlineMessageID"],
+      ["msgId", _TypeInputBotInlineMessageID, "flags.0?InputBotInlineMessageID"],
     ];
   }
 
   protected get [params](): Params {
     return [
       ["flags", flags, "#"],
-      [this.msgId ?? null, TypeInputBotInlineMessageID, "flags.0?InputBotInlineMessageID"],
+      [this.msgId ?? null, _TypeInputBotInlineMessageID, "flags.0?InputBotInlineMessageID"],
     ];
   }
 
@@ -35347,7 +35347,7 @@ export class WebViewMessageSent extends TypeWebViewMessageSent {
   }
 }
 
-export class BotMenuButtonDefault extends TypeBotMenuButton {
+export class BotMenuButtonDefault extends _TypeBotMenuButton {
   protected get [id]() {
     return 0x7533A588;
   }
@@ -35365,7 +35365,7 @@ export class BotMenuButtonDefault extends TypeBotMenuButton {
   }
 }
 
-export class BotMenuButtonCommands extends TypeBotMenuButton {
+export class BotMenuButtonCommands extends _TypeBotMenuButton {
   protected get [id]() {
     return 0x4258C205;
   }
@@ -35383,7 +35383,7 @@ export class BotMenuButtonCommands extends TypeBotMenuButton {
   }
 }
 
-export class BotMenuButton extends TypeBotMenuButton {
+export class BotMenuButton extends _TypeBotMenuButton {
   text: string;
   url: string;
 
@@ -35412,7 +35412,7 @@ export class BotMenuButton extends TypeBotMenuButton {
   }
 }
 
-export class AccountSavedRingtonesNotModified extends TypeAccountSavedRingtones {
+export class AccountSavedRingtonesNotModified extends _TypeAccountSavedRingtones {
   protected get [id]() {
     return 0xFBF6E8B1;
   }
@@ -35430,7 +35430,7 @@ export class AccountSavedRingtonesNotModified extends TypeAccountSavedRingtones 
   }
 }
 
-export class AccountSavedRingtones extends TypeAccountSavedRingtones {
+export class AccountSavedRingtones extends _TypeAccountSavedRingtones {
   hash: bigint;
   ringtones: Array<TypeDocument>;
 
@@ -35441,14 +35441,14 @@ export class AccountSavedRingtones extends TypeAccountSavedRingtones {
   static get [paramDesc](): ParamDesc {
     return [
       ["hash", "bigint", "long"],
-      ["ringtones", [TypeDocument], "Vector<Document>"],
+      ["ringtones", [_TypeDocument], "Vector<Document>"],
     ];
   }
 
   protected get [params](): Params {
     return [
       [this.hash, "bigint", "long"],
-      [this.ringtones, [TypeDocument], "Vector<Document>"],
+      [this.ringtones, [_TypeDocument], "Vector<Document>"],
     ];
   }
 
@@ -35459,7 +35459,7 @@ export class AccountSavedRingtones extends TypeAccountSavedRingtones {
   }
 }
 
-export class NotificationSoundDefault extends TypeNotificationSound {
+export class NotificationSoundDefault extends _TypeNotificationSound {
   protected get [id]() {
     return 0x97E8BEBE;
   }
@@ -35477,7 +35477,7 @@ export class NotificationSoundDefault extends TypeNotificationSound {
   }
 }
 
-export class NotificationSoundNone extends TypeNotificationSound {
+export class NotificationSoundNone extends _TypeNotificationSound {
   protected get [id]() {
     return 0x6F0C34DF;
   }
@@ -35495,7 +35495,7 @@ export class NotificationSoundNone extends TypeNotificationSound {
   }
 }
 
-export class NotificationSoundLocal extends TypeNotificationSound {
+export class NotificationSoundLocal extends _TypeNotificationSound {
   title: string;
   data: string;
 
@@ -35524,7 +35524,7 @@ export class NotificationSoundLocal extends TypeNotificationSound {
   }
 }
 
-export class NotificationSoundRingtone extends TypeNotificationSound {
+export class NotificationSoundRingtone extends _TypeNotificationSound {
   id: bigint;
 
   protected get [id]() {
@@ -35549,7 +35549,7 @@ export class NotificationSoundRingtone extends TypeNotificationSound {
   }
 }
 
-export class AccountSavedRingtone extends TypeAccountSavedRingtone {
+export class AccountSavedRingtone extends _TypeAccountSavedRingtone {
   protected get [id]() {
     return 0xB7263F6D;
   }
@@ -35567,7 +35567,7 @@ export class AccountSavedRingtone extends TypeAccountSavedRingtone {
   }
 }
 
-export class AccountSavedRingtoneConverted extends TypeAccountSavedRingtone {
+export class AccountSavedRingtoneConverted extends _TypeAccountSavedRingtone {
   document: TypeDocument;
 
   protected get [id]() {
@@ -35576,13 +35576,13 @@ export class AccountSavedRingtoneConverted extends TypeAccountSavedRingtone {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["document", TypeDocument, "Document"],
+      ["document", _TypeDocument, "Document"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.document, TypeDocument, "Document"],
+      [this.document, _TypeDocument, "Document"],
     ];
   }
 
@@ -35592,7 +35592,7 @@ export class AccountSavedRingtoneConverted extends TypeAccountSavedRingtone {
   }
 }
 
-export class AttachMenuPeerTypeSameBotPM extends TypeAttachMenuPeerType {
+export class AttachMenuPeerTypeSameBotPM extends _TypeAttachMenuPeerType {
   protected get [id]() {
     return 0x7D6BE90E;
   }
@@ -35610,7 +35610,7 @@ export class AttachMenuPeerTypeSameBotPM extends TypeAttachMenuPeerType {
   }
 }
 
-export class AttachMenuPeerTypeBotPM extends TypeAttachMenuPeerType {
+export class AttachMenuPeerTypeBotPM extends _TypeAttachMenuPeerType {
   protected get [id]() {
     return 0xC32BFA1A;
   }
@@ -35628,7 +35628,7 @@ export class AttachMenuPeerTypeBotPM extends TypeAttachMenuPeerType {
   }
 }
 
-export class AttachMenuPeerTypePM extends TypeAttachMenuPeerType {
+export class AttachMenuPeerTypePM extends _TypeAttachMenuPeerType {
   protected get [id]() {
     return 0xF146D31F;
   }
@@ -35646,7 +35646,7 @@ export class AttachMenuPeerTypePM extends TypeAttachMenuPeerType {
   }
 }
 
-export class AttachMenuPeerTypeChat extends TypeAttachMenuPeerType {
+export class AttachMenuPeerTypeChat extends _TypeAttachMenuPeerType {
   protected get [id]() {
     return 0x0509113F;
   }
@@ -35664,7 +35664,7 @@ export class AttachMenuPeerTypeChat extends TypeAttachMenuPeerType {
   }
 }
 
-export class AttachMenuPeerTypeBroadcast extends TypeAttachMenuPeerType {
+export class AttachMenuPeerTypeBroadcast extends _TypeAttachMenuPeerType {
   protected get [id]() {
     return 0x7BFBDEFC;
   }
@@ -35682,7 +35682,7 @@ export class AttachMenuPeerTypeBroadcast extends TypeAttachMenuPeerType {
   }
 }
 
-export class InputInvoiceMessage extends TypeInputInvoice {
+export class InputInvoiceMessage extends _TypeInputInvoice {
   peer: TypeInputPeer;
   msgId: number;
 
@@ -35692,14 +35692,14 @@ export class InputInvoiceMessage extends TypeInputInvoice {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["peer", TypeInputPeer, "InputPeer"],
+      ["peer", _TypeInputPeer, "InputPeer"],
       ["msgId", "number", "int"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.peer, TypeInputPeer, "InputPeer"],
+      [this.peer, _TypeInputPeer, "InputPeer"],
       [this.msgId, "number", "int"],
     ];
   }
@@ -35711,7 +35711,7 @@ export class InputInvoiceMessage extends TypeInputInvoice {
   }
 }
 
-export class InputInvoiceSlug extends TypeInputInvoice {
+export class InputInvoiceSlug extends _TypeInputInvoice {
   slug: string;
 
   protected get [id]() {
@@ -35736,7 +35736,7 @@ export class InputInvoiceSlug extends TypeInputInvoice {
   }
 }
 
-export class PaymentsExportedInvoice extends TypePaymentsExportedInvoice {
+export class PaymentsExportedInvoice extends _TypePaymentsExportedInvoice {
   url: string;
 
   protected get [id]() {
@@ -35761,7 +35761,7 @@ export class PaymentsExportedInvoice extends TypePaymentsExportedInvoice {
   }
 }
 
-export class MessagesTranscribedAudio extends TypeMessagesTranscribedAudio {
+export class MessagesTranscribedAudio extends _TypeMessagesTranscribedAudio {
   pending?: true;
   transcriptionId: bigint;
   text: string;
@@ -35796,7 +35796,7 @@ export class MessagesTranscribedAudio extends TypeMessagesTranscribedAudio {
   }
 }
 
-export class HelpPremiumPromo extends TypeHelpPremiumPromo {
+export class HelpPremiumPromo extends _TypeHelpPremiumPromo {
   statusText: string;
   statusEntities: Array<TypeMessageEntity>;
   videoSections: Array<string>;
@@ -35811,22 +35811,22 @@ export class HelpPremiumPromo extends TypeHelpPremiumPromo {
   static get [paramDesc](): ParamDesc {
     return [
       ["statusText", "string", "string"],
-      ["statusEntities", [TypeMessageEntity], "Vector<MessageEntity>"],
+      ["statusEntities", [_TypeMessageEntity], "Vector<MessageEntity>"],
       ["videoSections", ["string"], "Vector<string>"],
-      ["videos", [TypeDocument], "Vector<Document>"],
-      ["periodOptions", [TypePremiumSubscriptionOption], "Vector<PremiumSubscriptionOption>"],
-      ["users", [TypeUser], "Vector<User>"],
+      ["videos", [_TypeDocument], "Vector<Document>"],
+      ["periodOptions", [_TypePremiumSubscriptionOption], "Vector<PremiumSubscriptionOption>"],
+      ["users", [_TypeUser], "Vector<User>"],
     ];
   }
 
   protected get [params](): Params {
     return [
       [this.statusText, "string", "string"],
-      [this.statusEntities, [TypeMessageEntity], "Vector<MessageEntity>"],
+      [this.statusEntities, [_TypeMessageEntity], "Vector<MessageEntity>"],
       [this.videoSections, ["string"], "Vector<string>"],
-      [this.videos, [TypeDocument], "Vector<Document>"],
-      [this.periodOptions, [TypePremiumSubscriptionOption], "Vector<PremiumSubscriptionOption>"],
-      [this.users, [TypeUser], "Vector<User>"],
+      [this.videos, [_TypeDocument], "Vector<Document>"],
+      [this.periodOptions, [_TypePremiumSubscriptionOption], "Vector<PremiumSubscriptionOption>"],
+      [this.users, [_TypeUser], "Vector<User>"],
     ];
   }
 
@@ -35841,7 +35841,7 @@ export class HelpPremiumPromo extends TypeHelpPremiumPromo {
   }
 }
 
-export class InputStorePaymentPremiumSubscription extends TypeInputStorePaymentPurpose {
+export class InputStorePaymentPremiumSubscription extends _TypeInputStorePaymentPurpose {
   restore?: true;
   upgrade?: true;
 
@@ -35872,7 +35872,7 @@ export class InputStorePaymentPremiumSubscription extends TypeInputStorePaymentP
   }
 }
 
-export class InputStorePaymentGiftPremium extends TypeInputStorePaymentPurpose {
+export class InputStorePaymentGiftPremium extends _TypeInputStorePaymentPurpose {
   userId: TypeInputUser;
   currency: string;
   amount: bigint;
@@ -35883,7 +35883,7 @@ export class InputStorePaymentGiftPremium extends TypeInputStorePaymentPurpose {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["userId", TypeInputUser, "InputUser"],
+      ["userId", _TypeInputUser, "InputUser"],
       ["currency", "string", "string"],
       ["amount", "bigint", "long"],
     ];
@@ -35891,7 +35891,7 @@ export class InputStorePaymentGiftPremium extends TypeInputStorePaymentPurpose {
 
   protected get [params](): Params {
     return [
-      [this.userId, TypeInputUser, "InputUser"],
+      [this.userId, _TypeInputUser, "InputUser"],
       [this.currency, "string", "string"],
       [this.amount, "bigint", "long"],
     ];
@@ -35905,7 +35905,7 @@ export class InputStorePaymentGiftPremium extends TypeInputStorePaymentPurpose {
   }
 }
 
-export class PremiumGiftOption extends TypePremiumGiftOption {
+export class PremiumGiftOption extends _TypePremiumGiftOption {
   months: number;
   currency: string;
   amount: bigint;
@@ -35948,7 +35948,7 @@ export class PremiumGiftOption extends TypePremiumGiftOption {
   }
 }
 
-export class PaymentFormMethod extends TypePaymentFormMethod {
+export class PaymentFormMethod extends _TypePaymentFormMethod {
   url: string;
   title: string;
 
@@ -35977,7 +35977,7 @@ export class PaymentFormMethod extends TypePaymentFormMethod {
   }
 }
 
-export class EmojiStatusEmpty extends TypeEmojiStatus {
+export class EmojiStatusEmpty extends _TypeEmojiStatus {
   protected get [id]() {
     return 0x2DE11AAE;
   }
@@ -35995,7 +35995,7 @@ export class EmojiStatusEmpty extends TypeEmojiStatus {
   }
 }
 
-export class EmojiStatus extends TypeEmojiStatus {
+export class EmojiStatus extends _TypeEmojiStatus {
   documentId: bigint;
 
   protected get [id]() {
@@ -36020,7 +36020,7 @@ export class EmojiStatus extends TypeEmojiStatus {
   }
 }
 
-export class EmojiStatusUntil extends TypeEmojiStatus {
+export class EmojiStatusUntil extends _TypeEmojiStatus {
   documentId: bigint;
   until: number;
 
@@ -36049,7 +36049,7 @@ export class EmojiStatusUntil extends TypeEmojiStatus {
   }
 }
 
-export class AccountEmojiStatusesNotModified extends TypeAccountEmojiStatuses {
+export class AccountEmojiStatusesNotModified extends _TypeAccountEmojiStatuses {
   protected get [id]() {
     return 0xD08CE645;
   }
@@ -36067,7 +36067,7 @@ export class AccountEmojiStatusesNotModified extends TypeAccountEmojiStatuses {
   }
 }
 
-export class AccountEmojiStatuses extends TypeAccountEmojiStatuses {
+export class AccountEmojiStatuses extends _TypeAccountEmojiStatuses {
   hash: bigint;
   statuses: Array<TypeEmojiStatus>;
 
@@ -36078,14 +36078,14 @@ export class AccountEmojiStatuses extends TypeAccountEmojiStatuses {
   static get [paramDesc](): ParamDesc {
     return [
       ["hash", "bigint", "long"],
-      ["statuses", [TypeEmojiStatus], "Vector<EmojiStatus>"],
+      ["statuses", [_TypeEmojiStatus], "Vector<EmojiStatus>"],
     ];
   }
 
   protected get [params](): Params {
     return [
       [this.hash, "bigint", "long"],
-      [this.statuses, [TypeEmojiStatus], "Vector<EmojiStatus>"],
+      [this.statuses, [_TypeEmojiStatus], "Vector<EmojiStatus>"],
     ];
   }
 
@@ -36096,7 +36096,7 @@ export class AccountEmojiStatuses extends TypeAccountEmojiStatuses {
   }
 }
 
-export class ReactionEmpty extends TypeReaction {
+export class ReactionEmpty extends _TypeReaction {
   protected get [id]() {
     return 0x79F5D419;
   }
@@ -36114,7 +36114,7 @@ export class ReactionEmpty extends TypeReaction {
   }
 }
 
-export class ReactionEmoji extends TypeReaction {
+export class ReactionEmoji extends _TypeReaction {
   emoticon: string;
 
   protected get [id]() {
@@ -36139,7 +36139,7 @@ export class ReactionEmoji extends TypeReaction {
   }
 }
 
-export class ReactionCustomEmoji extends TypeReaction {
+export class ReactionCustomEmoji extends _TypeReaction {
   documentId: bigint;
 
   protected get [id]() {
@@ -36164,7 +36164,7 @@ export class ReactionCustomEmoji extends TypeReaction {
   }
 }
 
-export class ChatReactionsNone extends TypeChatReactions {
+export class ChatReactionsNone extends _TypeChatReactions {
   protected get [id]() {
     return 0xEAFC32BC;
   }
@@ -36182,7 +36182,7 @@ export class ChatReactionsNone extends TypeChatReactions {
   }
 }
 
-export class ChatReactionsAll extends TypeChatReactions {
+export class ChatReactionsAll extends _TypeChatReactions {
   allowCustom?: true;
 
   protected get [id]() {
@@ -36209,7 +36209,7 @@ export class ChatReactionsAll extends TypeChatReactions {
   }
 }
 
-export class ChatReactionsSome extends TypeChatReactions {
+export class ChatReactionsSome extends _TypeChatReactions {
   reactions: Array<TypeReaction>;
 
   protected get [id]() {
@@ -36218,13 +36218,13 @@ export class ChatReactionsSome extends TypeChatReactions {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["reactions", [TypeReaction], "Vector<Reaction>"],
+      ["reactions", [_TypeReaction], "Vector<Reaction>"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.reactions, [TypeReaction], "Vector<Reaction>"],
+      [this.reactions, [_TypeReaction], "Vector<Reaction>"],
     ];
   }
 
@@ -36234,7 +36234,7 @@ export class ChatReactionsSome extends TypeChatReactions {
   }
 }
 
-export class MessagesReactionsNotModified extends TypeMessagesReactions {
+export class MessagesReactionsNotModified extends _TypeMessagesReactions {
   protected get [id]() {
     return 0xB06FDBDF;
   }
@@ -36252,7 +36252,7 @@ export class MessagesReactionsNotModified extends TypeMessagesReactions {
   }
 }
 
-export class MessagesReactions extends TypeMessagesReactions {
+export class MessagesReactions extends _TypeMessagesReactions {
   hash: bigint;
   reactions: Array<TypeReaction>;
 
@@ -36263,14 +36263,14 @@ export class MessagesReactions extends TypeMessagesReactions {
   static get [paramDesc](): ParamDesc {
     return [
       ["hash", "bigint", "long"],
-      ["reactions", [TypeReaction], "Vector<Reaction>"],
+      ["reactions", [_TypeReaction], "Vector<Reaction>"],
     ];
   }
 
   protected get [params](): Params {
     return [
       [this.hash, "bigint", "long"],
-      [this.reactions, [TypeReaction], "Vector<Reaction>"],
+      [this.reactions, [_TypeReaction], "Vector<Reaction>"],
     ];
   }
 
@@ -36281,7 +36281,7 @@ export class MessagesReactions extends TypeMessagesReactions {
   }
 }
 
-export class EmailVerifyPurposeLoginSetup extends TypeEmailVerifyPurpose {
+export class EmailVerifyPurposeLoginSetup extends _TypeEmailVerifyPurpose {
   phoneNumber: string;
   phoneCodeHash: string;
 
@@ -36310,7 +36310,7 @@ export class EmailVerifyPurposeLoginSetup extends TypeEmailVerifyPurpose {
   }
 }
 
-export class EmailVerifyPurposeLoginChange extends TypeEmailVerifyPurpose {
+export class EmailVerifyPurposeLoginChange extends _TypeEmailVerifyPurpose {
   protected get [id]() {
     return 0x527D22EB;
   }
@@ -36328,7 +36328,7 @@ export class EmailVerifyPurposeLoginChange extends TypeEmailVerifyPurpose {
   }
 }
 
-export class EmailVerifyPurposePassport extends TypeEmailVerifyPurpose {
+export class EmailVerifyPurposePassport extends _TypeEmailVerifyPurpose {
   protected get [id]() {
     return 0xBBF51685;
   }
@@ -36346,7 +36346,7 @@ export class EmailVerifyPurposePassport extends TypeEmailVerifyPurpose {
   }
 }
 
-export class EmailVerificationCode extends TypeEmailVerification {
+export class EmailVerificationCode extends _TypeEmailVerification {
   code: string;
 
   protected get [id]() {
@@ -36371,7 +36371,7 @@ export class EmailVerificationCode extends TypeEmailVerification {
   }
 }
 
-export class EmailVerificationGoogle extends TypeEmailVerification {
+export class EmailVerificationGoogle extends _TypeEmailVerification {
   token: string;
 
   protected get [id]() {
@@ -36396,7 +36396,7 @@ export class EmailVerificationGoogle extends TypeEmailVerification {
   }
 }
 
-export class EmailVerificationApple extends TypeEmailVerification {
+export class EmailVerificationApple extends _TypeEmailVerification {
   token: string;
 
   protected get [id]() {
@@ -36421,7 +36421,7 @@ export class EmailVerificationApple extends TypeEmailVerification {
   }
 }
 
-export class AccountEmailVerified extends TypeAccountEmailVerified {
+export class AccountEmailVerified extends _TypeAccountEmailVerified {
   email: string;
 
   protected get [id]() {
@@ -36446,7 +36446,7 @@ export class AccountEmailVerified extends TypeAccountEmailVerified {
   }
 }
 
-export class AccountEmailVerifiedLogin extends TypeAccountEmailVerified {
+export class AccountEmailVerifiedLogin extends _TypeAccountEmailVerified {
   email: string;
   sentCode: TypeAuthSentCode;
 
@@ -36457,14 +36457,14 @@ export class AccountEmailVerifiedLogin extends TypeAccountEmailVerified {
   static get [paramDesc](): ParamDesc {
     return [
       ["email", "string", "string"],
-      ["sentCode", TypeAuthSentCode, "auth.SentCode"],
+      ["sentCode", _TypeAuthSentCode, "auth.SentCode"],
     ];
   }
 
   protected get [params](): Params {
     return [
       [this.email, "string", "string"],
-      [this.sentCode, TypeAuthSentCode, "auth.SentCode"],
+      [this.sentCode, _TypeAuthSentCode, "auth.SentCode"],
     ];
   }
 
@@ -36475,7 +36475,7 @@ export class AccountEmailVerifiedLogin extends TypeAccountEmailVerified {
   }
 }
 
-export class PremiumSubscriptionOption extends TypePremiumSubscriptionOption {
+export class PremiumSubscriptionOption extends _TypePremiumSubscriptionOption {
   current?: true;
   canPurchaseUpgrade?: true;
   transaction?: string;
@@ -36530,7 +36530,7 @@ export class PremiumSubscriptionOption extends TypePremiumSubscriptionOption {
   }
 }
 
-export class SendAsPeer extends TypeSendAsPeer {
+export class SendAsPeer extends _TypeSendAsPeer {
   premiumRequired?: true;
   peer: TypePeer;
 
@@ -36542,7 +36542,7 @@ export class SendAsPeer extends TypeSendAsPeer {
     return [
       ["flags", flags, "#"],
       ["premiumRequired", "true", "flags.0?true"],
-      ["peer", TypePeer, "Peer"],
+      ["peer", _TypePeer, "Peer"],
     ];
   }
 
@@ -36550,7 +36550,7 @@ export class SendAsPeer extends TypeSendAsPeer {
     return [
       ["flags", flags, "#"],
       [this.premiumRequired ?? null, "true", "flags.0?true"],
-      [this.peer, TypePeer, "Peer"],
+      [this.peer, _TypePeer, "Peer"],
     ];
   }
 
@@ -36561,7 +36561,7 @@ export class SendAsPeer extends TypeSendAsPeer {
   }
 }
 
-export class MessageExtendedMediaPreview extends TypeMessageExtendedMedia {
+export class MessageExtendedMediaPreview extends _TypeMessageExtendedMedia {
   w?: number;
   h?: number;
   thumb?: TypePhotoSize;
@@ -36576,7 +36576,7 @@ export class MessageExtendedMediaPreview extends TypeMessageExtendedMedia {
       ["flags", flags, "#"],
       ["w", "number", "flags.0?int"],
       ["h", "number", "flags.0?int"],
-      ["thumb", TypePhotoSize, "flags.1?PhotoSize"],
+      ["thumb", _TypePhotoSize, "flags.1?PhotoSize"],
       ["videoDuration", "number", "flags.2?int"],
     ];
   }
@@ -36586,7 +36586,7 @@ export class MessageExtendedMediaPreview extends TypeMessageExtendedMedia {
       ["flags", flags, "#"],
       [this.w ?? null, "number", "flags.0?int"],
       [this.h ?? null, "number", "flags.0?int"],
-      [this.thumb ?? null, TypePhotoSize, "flags.1?PhotoSize"],
+      [this.thumb ?? null, _TypePhotoSize, "flags.1?PhotoSize"],
       [this.videoDuration ?? null, "number", "flags.2?int"],
     ];
   }
@@ -36600,7 +36600,7 @@ export class MessageExtendedMediaPreview extends TypeMessageExtendedMedia {
   }
 }
 
-export class MessageExtendedMedia extends TypeMessageExtendedMedia {
+export class MessageExtendedMedia extends _TypeMessageExtendedMedia {
   media: TypeMessageMedia;
 
   protected get [id]() {
@@ -36609,13 +36609,13 @@ export class MessageExtendedMedia extends TypeMessageExtendedMedia {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["media", TypeMessageMedia, "MessageMedia"],
+      ["media", _TypeMessageMedia, "MessageMedia"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.media, TypeMessageMedia, "MessageMedia"],
+      [this.media, _TypeMessageMedia, "MessageMedia"],
     ];
   }
 
@@ -36625,7 +36625,7 @@ export class MessageExtendedMedia extends TypeMessageExtendedMedia {
   }
 }
 
-export class StickerKeyword extends TypeStickerKeyword {
+export class StickerKeyword extends _TypeStickerKeyword {
   documentId: bigint;
   keyword: Array<string>;
 
@@ -36654,7 +36654,7 @@ export class StickerKeyword extends TypeStickerKeyword {
   }
 }
 
-export class Username extends TypeUsername {
+export class Username extends _TypeUsername {
   editable?: true;
   active?: true;
   username: string;
@@ -36689,7 +36689,7 @@ export class Username extends TypeUsername {
   }
 }
 
-export class ForumTopicDeleted extends TypeForumTopic {
+export class ForumTopicDeleted extends _TypeForumTopic {
   id: number;
 
   protected get [id]() {
@@ -36714,7 +36714,7 @@ export class ForumTopicDeleted extends TypeForumTopic {
   }
 }
 
-export class ForumTopic extends TypeForumTopic {
+export class ForumTopic extends _TypeForumTopic {
   my?: true;
   closed?: true;
   pinned?: true;
@@ -36758,9 +36758,9 @@ export class ForumTopic extends TypeForumTopic {
       ["unreadCount", "number", "int"],
       ["unreadMentionsCount", "number", "int"],
       ["unreadReactionsCount", "number", "int"],
-      ["fromId", TypePeer, "Peer"],
-      ["notifySettings", TypePeerNotifySettings, "PeerNotifySettings"],
-      ["draft", TypeDraftMessage, "flags.4?DraftMessage"],
+      ["fromId", _TypePeer, "Peer"],
+      ["notifySettings", _TypePeerNotifySettings, "PeerNotifySettings"],
+      ["draft", _TypeDraftMessage, "flags.4?DraftMessage"],
     ];
   }
 
@@ -36783,9 +36783,9 @@ export class ForumTopic extends TypeForumTopic {
       [this.unreadCount, "number", "int"],
       [this.unreadMentionsCount, "number", "int"],
       [this.unreadReactionsCount, "number", "int"],
-      [this.fromId, TypePeer, "Peer"],
-      [this.notifySettings, TypePeerNotifySettings, "PeerNotifySettings"],
-      [this.draft ?? null, TypeDraftMessage, "flags.4?DraftMessage"],
+      [this.fromId, _TypePeer, "Peer"],
+      [this.notifySettings, _TypePeerNotifySettings, "PeerNotifySettings"],
+      [this.draft ?? null, _TypeDraftMessage, "flags.4?DraftMessage"],
     ];
   }
 
@@ -36813,7 +36813,7 @@ export class ForumTopic extends TypeForumTopic {
   }
 }
 
-export class MessagesForumTopics extends TypeMessagesForumTopics {
+export class MessagesForumTopics extends _TypeMessagesForumTopics {
   orderByCreateDate?: true;
   count: number;
   topics: Array<TypeForumTopic>;
@@ -36831,10 +36831,10 @@ export class MessagesForumTopics extends TypeMessagesForumTopics {
       ["flags", flags, "#"],
       ["orderByCreateDate", "true", "flags.0?true"],
       ["count", "number", "int"],
-      ["topics", [TypeForumTopic], "Vector<ForumTopic>"],
-      ["messages", [TypeMessage], "Vector<Message>"],
-      ["chats", [TypeChat], "Vector<Chat>"],
-      ["users", [TypeUser], "Vector<User>"],
+      ["topics", [_TypeForumTopic], "Vector<ForumTopic>"],
+      ["messages", [_TypeMessage], "Vector<Message>"],
+      ["chats", [_TypeChat], "Vector<Chat>"],
+      ["users", [_TypeUser], "Vector<User>"],
       ["pts", "number", "int"],
     ];
   }
@@ -36844,10 +36844,10 @@ export class MessagesForumTopics extends TypeMessagesForumTopics {
       ["flags", flags, "#"],
       [this.orderByCreateDate ?? null, "true", "flags.0?true"],
       [this.count, "number", "int"],
-      [this.topics, [TypeForumTopic], "Vector<ForumTopic>"],
-      [this.messages, [TypeMessage], "Vector<Message>"],
-      [this.chats, [TypeChat], "Vector<Chat>"],
-      [this.users, [TypeUser], "Vector<User>"],
+      [this.topics, [_TypeForumTopic], "Vector<ForumTopic>"],
+      [this.messages, [_TypeMessage], "Vector<Message>"],
+      [this.chats, [_TypeChat], "Vector<Chat>"],
+      [this.users, [_TypeUser], "Vector<User>"],
       [this.pts, "number", "int"],
     ];
   }
@@ -36864,7 +36864,7 @@ export class MessagesForumTopics extends TypeMessagesForumTopics {
   }
 }
 
-export class DefaultHistoryTTL extends TypeDefaultHistoryTTL {
+export class DefaultHistoryTTL extends _TypeDefaultHistoryTTL {
   period: number;
 
   protected get [id]() {
@@ -36889,7 +36889,7 @@ export class DefaultHistoryTTL extends TypeDefaultHistoryTTL {
   }
 }
 
-export class ExportedContactToken extends TypeExportedContactToken {
+export class ExportedContactToken extends _TypeExportedContactToken {
   url: string;
   expires: number;
 
@@ -36918,7 +36918,7 @@ export class ExportedContactToken extends TypeExportedContactToken {
   }
 }
 
-export class RequestPeerTypeUser extends TypeRequestPeerType {
+export class RequestPeerTypeUser extends _TypeRequestPeerType {
   bot?: boolean;
   premium?: boolean;
 
@@ -36949,7 +36949,7 @@ export class RequestPeerTypeUser extends TypeRequestPeerType {
   }
 }
 
-export class RequestPeerTypeChat extends TypeRequestPeerType {
+export class RequestPeerTypeChat extends _TypeRequestPeerType {
   creator?: true;
   botParticipant?: true;
   hasUsername?: boolean;
@@ -36968,8 +36968,8 @@ export class RequestPeerTypeChat extends TypeRequestPeerType {
       ["botParticipant", "true", "flags.5?true"],
       ["hasUsername", "boolean", "flags.3?Bool"],
       ["forum", "boolean", "flags.4?Bool"],
-      ["userAdminRights", TypeChatAdminRights, "flags.1?ChatAdminRights"],
-      ["botAdminRights", TypeChatAdminRights, "flags.2?ChatAdminRights"],
+      ["userAdminRights", _TypeChatAdminRights, "flags.1?ChatAdminRights"],
+      ["botAdminRights", _TypeChatAdminRights, "flags.2?ChatAdminRights"],
     ];
   }
 
@@ -36980,8 +36980,8 @@ export class RequestPeerTypeChat extends TypeRequestPeerType {
       [this.botParticipant ?? null, "true", "flags.5?true"],
       [this.hasUsername ?? null, "boolean", "flags.3?Bool"],
       [this.forum ?? null, "boolean", "flags.4?Bool"],
-      [this.userAdminRights ?? null, TypeChatAdminRights, "flags.1?ChatAdminRights"],
-      [this.botAdminRights ?? null, TypeChatAdminRights, "flags.2?ChatAdminRights"],
+      [this.userAdminRights ?? null, _TypeChatAdminRights, "flags.1?ChatAdminRights"],
+      [this.botAdminRights ?? null, _TypeChatAdminRights, "flags.2?ChatAdminRights"],
     ];
   }
 
@@ -36996,7 +36996,7 @@ export class RequestPeerTypeChat extends TypeRequestPeerType {
   }
 }
 
-export class RequestPeerTypeBroadcast extends TypeRequestPeerType {
+export class RequestPeerTypeBroadcast extends _TypeRequestPeerType {
   creator?: true;
   hasUsername?: boolean;
   userAdminRights?: TypeChatAdminRights;
@@ -37011,8 +37011,8 @@ export class RequestPeerTypeBroadcast extends TypeRequestPeerType {
       ["flags", flags, "#"],
       ["creator", "true", "flags.0?true"],
       ["hasUsername", "boolean", "flags.3?Bool"],
-      ["userAdminRights", TypeChatAdminRights, "flags.1?ChatAdminRights"],
-      ["botAdminRights", TypeChatAdminRights, "flags.2?ChatAdminRights"],
+      ["userAdminRights", _TypeChatAdminRights, "flags.1?ChatAdminRights"],
+      ["botAdminRights", _TypeChatAdminRights, "flags.2?ChatAdminRights"],
     ];
   }
 
@@ -37021,8 +37021,8 @@ export class RequestPeerTypeBroadcast extends TypeRequestPeerType {
       ["flags", flags, "#"],
       [this.creator ?? null, "true", "flags.0?true"],
       [this.hasUsername ?? null, "boolean", "flags.3?Bool"],
-      [this.userAdminRights ?? null, TypeChatAdminRights, "flags.1?ChatAdminRights"],
-      [this.botAdminRights ?? null, TypeChatAdminRights, "flags.2?ChatAdminRights"],
+      [this.userAdminRights ?? null, _TypeChatAdminRights, "flags.1?ChatAdminRights"],
+      [this.botAdminRights ?? null, _TypeChatAdminRights, "flags.2?ChatAdminRights"],
     ];
   }
 
@@ -37035,7 +37035,7 @@ export class RequestPeerTypeBroadcast extends TypeRequestPeerType {
   }
 }
 
-export class EmojiListNotModified extends TypeEmojiList {
+export class EmojiListNotModified extends _TypeEmojiList {
   protected get [id]() {
     return 0x481EADFA;
   }
@@ -37053,7 +37053,7 @@ export class EmojiListNotModified extends TypeEmojiList {
   }
 }
 
-export class EmojiList extends TypeEmojiList {
+export class EmojiList extends _TypeEmojiList {
   hash: bigint;
   documentId: Array<bigint>;
 
@@ -37082,7 +37082,7 @@ export class EmojiList extends TypeEmojiList {
   }
 }
 
-export class EmojiGroup extends TypeEmojiGroup {
+export class EmojiGroup extends _TypeEmojiGroup {
   title: string;
   iconEmojiId: bigint;
   emoticons: Array<string>;
@@ -37115,7 +37115,7 @@ export class EmojiGroup extends TypeEmojiGroup {
   }
 }
 
-export class MessagesEmojiGroupsNotModified extends TypeMessagesEmojiGroups {
+export class MessagesEmojiGroupsNotModified extends _TypeMessagesEmojiGroups {
   protected get [id]() {
     return 0x6FB4AD87;
   }
@@ -37133,7 +37133,7 @@ export class MessagesEmojiGroupsNotModified extends TypeMessagesEmojiGroups {
   }
 }
 
-export class MessagesEmojiGroups extends TypeMessagesEmojiGroups {
+export class MessagesEmojiGroups extends _TypeMessagesEmojiGroups {
   hash: number;
   groups: Array<TypeEmojiGroup>;
 
@@ -37144,14 +37144,14 @@ export class MessagesEmojiGroups extends TypeMessagesEmojiGroups {
   static get [paramDesc](): ParamDesc {
     return [
       ["hash", "number", "int"],
-      ["groups", [TypeEmojiGroup], "Vector<EmojiGroup>"],
+      ["groups", [_TypeEmojiGroup], "Vector<EmojiGroup>"],
     ];
   }
 
   protected get [params](): Params {
     return [
       [this.hash, "number", "int"],
-      [this.groups, [TypeEmojiGroup], "Vector<EmojiGroup>"],
+      [this.groups, [_TypeEmojiGroup], "Vector<EmojiGroup>"],
     ];
   }
 
@@ -37162,7 +37162,7 @@ export class MessagesEmojiGroups extends TypeMessagesEmojiGroups {
   }
 }
 
-export class TextWithEntities extends TypeTextWithEntities {
+export class TextWithEntities extends _TypeTextWithEntities {
   text: string;
   entities: Array<TypeMessageEntity>;
 
@@ -37173,14 +37173,14 @@ export class TextWithEntities extends TypeTextWithEntities {
   static get [paramDesc](): ParamDesc {
     return [
       ["text", "string", "string"],
-      ["entities", [TypeMessageEntity], "Vector<MessageEntity>"],
+      ["entities", [_TypeMessageEntity], "Vector<MessageEntity>"],
     ];
   }
 
   protected get [params](): Params {
     return [
       [this.text, "string", "string"],
-      [this.entities, [TypeMessageEntity], "Vector<MessageEntity>"],
+      [this.entities, [_TypeMessageEntity], "Vector<MessageEntity>"],
     ];
   }
 
@@ -37191,7 +37191,7 @@ export class TextWithEntities extends TypeTextWithEntities {
   }
 }
 
-export class MessagesTranslateResult extends TypeMessagesTranslatedText {
+export class MessagesTranslateResult extends _TypeMessagesTranslatedText {
   result: Array<TypeTextWithEntities>;
 
   protected get [id]() {
@@ -37200,13 +37200,13 @@ export class MessagesTranslateResult extends TypeMessagesTranslatedText {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["result", [TypeTextWithEntities], "Vector<TextWithEntities>"],
+      ["result", [_TypeTextWithEntities], "Vector<TextWithEntities>"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.result, [TypeTextWithEntities], "Vector<TextWithEntities>"],
+      [this.result, [_TypeTextWithEntities], "Vector<TextWithEntities>"],
     ];
   }
 
@@ -37216,7 +37216,7 @@ export class MessagesTranslateResult extends TypeMessagesTranslatedText {
   }
 }
 
-export class AutoSaveSettings extends TypeAutoSaveSettings {
+export class AutoSaveSettings extends _TypeAutoSaveSettings {
   photos?: true;
   videos?: true;
   videoMaxSize?: bigint;
@@ -37251,7 +37251,7 @@ export class AutoSaveSettings extends TypeAutoSaveSettings {
   }
 }
 
-export class AutoSaveException extends TypeAutoSaveException {
+export class AutoSaveException extends _TypeAutoSaveException {
   peer: TypePeer;
   settings: TypeAutoSaveSettings;
 
@@ -37261,15 +37261,15 @@ export class AutoSaveException extends TypeAutoSaveException {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["peer", TypePeer, "Peer"],
-      ["settings", TypeAutoSaveSettings, "AutoSaveSettings"],
+      ["peer", _TypePeer, "Peer"],
+      ["settings", _TypeAutoSaveSettings, "AutoSaveSettings"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.peer, TypePeer, "Peer"],
-      [this.settings, TypeAutoSaveSettings, "AutoSaveSettings"],
+      [this.peer, _TypePeer, "Peer"],
+      [this.settings, _TypeAutoSaveSettings, "AutoSaveSettings"],
     ];
   }
 
@@ -37280,7 +37280,7 @@ export class AutoSaveException extends TypeAutoSaveException {
   }
 }
 
-export class AccountAutoSaveSettings extends TypeAccountAutoSaveSettings {
+export class AccountAutoSaveSettings extends _TypeAccountAutoSaveSettings {
   usersSettings: TypeAutoSaveSettings;
   chatsSettings: TypeAutoSaveSettings;
   broadcastsSettings: TypeAutoSaveSettings;
@@ -37294,23 +37294,23 @@ export class AccountAutoSaveSettings extends TypeAccountAutoSaveSettings {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["usersSettings", TypeAutoSaveSettings, "AutoSaveSettings"],
-      ["chatsSettings", TypeAutoSaveSettings, "AutoSaveSettings"],
-      ["broadcastsSettings", TypeAutoSaveSettings, "AutoSaveSettings"],
-      ["exceptions", [TypeAutoSaveException], "Vector<AutoSaveException>"],
-      ["chats", [TypeChat], "Vector<Chat>"],
-      ["users", [TypeUser], "Vector<User>"],
+      ["usersSettings", _TypeAutoSaveSettings, "AutoSaveSettings"],
+      ["chatsSettings", _TypeAutoSaveSettings, "AutoSaveSettings"],
+      ["broadcastsSettings", _TypeAutoSaveSettings, "AutoSaveSettings"],
+      ["exceptions", [_TypeAutoSaveException], "Vector<AutoSaveException>"],
+      ["chats", [_TypeChat], "Vector<Chat>"],
+      ["users", [_TypeUser], "Vector<User>"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.usersSettings, TypeAutoSaveSettings, "AutoSaveSettings"],
-      [this.chatsSettings, TypeAutoSaveSettings, "AutoSaveSettings"],
-      [this.broadcastsSettings, TypeAutoSaveSettings, "AutoSaveSettings"],
-      [this.exceptions, [TypeAutoSaveException], "Vector<AutoSaveException>"],
-      [this.chats, [TypeChat], "Vector<Chat>"],
-      [this.users, [TypeUser], "Vector<User>"],
+      [this.usersSettings, _TypeAutoSaveSettings, "AutoSaveSettings"],
+      [this.chatsSettings, _TypeAutoSaveSettings, "AutoSaveSettings"],
+      [this.broadcastsSettings, _TypeAutoSaveSettings, "AutoSaveSettings"],
+      [this.exceptions, [_TypeAutoSaveException], "Vector<AutoSaveException>"],
+      [this.chats, [_TypeChat], "Vector<Chat>"],
+      [this.users, [_TypeUser], "Vector<User>"],
     ];
   }
 
@@ -37325,7 +37325,7 @@ export class AccountAutoSaveSettings extends TypeAccountAutoSaveSettings {
   }
 }
 
-export class HelpAppConfigNotModified extends TypeHelpAppConfig {
+export class HelpAppConfigNotModified extends _TypeHelpAppConfig {
   protected get [id]() {
     return 0x7CDE641D;
   }
@@ -37343,7 +37343,7 @@ export class HelpAppConfigNotModified extends TypeHelpAppConfig {
   }
 }
 
-export class HelpAppConfig extends TypeHelpAppConfig {
+export class HelpAppConfig extends _TypeHelpAppConfig {
   hash: number;
   config: TypeJSONValue;
 
@@ -37354,14 +37354,14 @@ export class HelpAppConfig extends TypeHelpAppConfig {
   static get [paramDesc](): ParamDesc {
     return [
       ["hash", "number", "int"],
-      ["config", TypeJSONValue, "JSONValue"],
+      ["config", _TypeJSONValue, "JSONValue"],
     ];
   }
 
   protected get [params](): Params {
     return [
       [this.hash, "number", "int"],
-      [this.config, TypeJSONValue, "JSONValue"],
+      [this.config, _TypeJSONValue, "JSONValue"],
     ];
   }
 
@@ -37372,7 +37372,7 @@ export class HelpAppConfig extends TypeHelpAppConfig {
   }
 }
 
-export class InputBotAppID extends TypeInputBotApp {
+export class InputBotAppID extends _TypeInputBotApp {
   id: bigint;
   accessHash: bigint;
 
@@ -37401,7 +37401,7 @@ export class InputBotAppID extends TypeInputBotApp {
   }
 }
 
-export class InputBotAppShortName extends TypeInputBotApp {
+export class InputBotAppShortName extends _TypeInputBotApp {
   botId: TypeInputUser;
   shortName: string;
 
@@ -37411,14 +37411,14 @@ export class InputBotAppShortName extends TypeInputBotApp {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["botId", TypeInputUser, "InputUser"],
+      ["botId", _TypeInputUser, "InputUser"],
       ["shortName", "string", "string"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.botId, TypeInputUser, "InputUser"],
+      [this.botId, _TypeInputUser, "InputUser"],
       [this.shortName, "string", "string"],
     ];
   }
@@ -37430,7 +37430,7 @@ export class InputBotAppShortName extends TypeInputBotApp {
   }
 }
 
-export class BotAppNotModified extends TypeBotApp {
+export class BotAppNotModified extends _TypeBotApp {
   protected get [id]() {
     return 0x5DA674B7;
   }
@@ -37448,7 +37448,7 @@ export class BotAppNotModified extends TypeBotApp {
   }
 }
 
-export class BotApp extends TypeBotApp {
+export class BotApp extends _TypeBotApp {
   id: bigint;
   accessHash: bigint;
   shortName: string;
@@ -37470,8 +37470,8 @@ export class BotApp extends TypeBotApp {
       ["shortName", "string", "string"],
       ["title", "string", "string"],
       ["description", "string", "string"],
-      ["photo", TypePhoto, "Photo"],
-      ["document", TypeDocument, "flags.0?Document"],
+      ["photo", _TypePhoto, "Photo"],
+      ["document", _TypeDocument, "flags.0?Document"],
       ["hash", "bigint", "long"],
     ];
   }
@@ -37484,8 +37484,8 @@ export class BotApp extends TypeBotApp {
       [this.shortName, "string", "string"],
       [this.title, "string", "string"],
       [this.description, "string", "string"],
-      [this.photo, TypePhoto, "Photo"],
-      [this.document ?? null, TypeDocument, "flags.0?Document"],
+      [this.photo, _TypePhoto, "Photo"],
+      [this.document ?? null, _TypeDocument, "flags.0?Document"],
       [this.hash, "bigint", "long"],
     ];
   }
@@ -37503,7 +37503,7 @@ export class BotApp extends TypeBotApp {
   }
 }
 
-export class MessagesBotApp extends TypeMessagesBotApp {
+export class MessagesBotApp extends _TypeMessagesBotApp {
   inactive?: true;
   requestWriteAccess?: true;
   app: TypeBotApp;
@@ -37517,7 +37517,7 @@ export class MessagesBotApp extends TypeMessagesBotApp {
       ["flags", flags, "#"],
       ["inactive", "true", "flags.0?true"],
       ["requestWriteAccess", "true", "flags.1?true"],
-      ["app", TypeBotApp, "BotApp"],
+      ["app", _TypeBotApp, "BotApp"],
     ];
   }
 
@@ -37526,7 +37526,7 @@ export class MessagesBotApp extends TypeMessagesBotApp {
       ["flags", flags, "#"],
       [this.inactive ?? null, "true", "flags.0?true"],
       [this.requestWriteAccess ?? null, "true", "flags.1?true"],
-      [this.app, TypeBotApp, "BotApp"],
+      [this.app, _TypeBotApp, "BotApp"],
     ];
   }
 
@@ -37538,7 +37538,7 @@ export class MessagesBotApp extends TypeMessagesBotApp {
   }
 }
 
-export class AppWebViewResultURL extends TypeAppWebViewResult {
+export class AppWebViewResultURL extends _TypeAppWebViewResult {
   url: string;
 
   protected get [id]() {
@@ -37563,7 +37563,7 @@ export class AppWebViewResultURL extends TypeAppWebViewResult {
   }
 }
 
-export class InlineBotWebView extends TypeInlineBotWebView {
+export class InlineBotWebView extends _TypeInlineBotWebView {
   text: string;
   url: string;
 
@@ -37592,7 +37592,7 @@ export class InlineBotWebView extends TypeInlineBotWebView {
   }
 }
 
-export class ReadParticipantDate extends TypeReadParticipantDate {
+export class ReadParticipantDate extends _TypeReadParticipantDate {
   userId: bigint;
   date: number;
 
@@ -37621,7 +37621,7 @@ export class ReadParticipantDate extends TypeReadParticipantDate {
   }
 }
 
-export class InputChatlistDialogFilter extends TypeInputChatlist {
+export class InputChatlistDialogFilter extends _TypeInputChatlist {
   filterId: number;
 
   protected get [id]() {
@@ -37646,7 +37646,7 @@ export class InputChatlistDialogFilter extends TypeInputChatlist {
   }
 }
 
-export class ExportedChatlistInvite extends TypeExportedChatlistInvite {
+export class ExportedChatlistInvite extends _TypeExportedChatlistInvite {
   title: string;
   url: string;
   peers: Array<TypePeer>;
@@ -37660,7 +37660,7 @@ export class ExportedChatlistInvite extends TypeExportedChatlistInvite {
       ["flags", flags, "#"],
       ["title", "string", "string"],
       ["url", "string", "string"],
-      ["peers", [TypePeer], "Vector<Peer>"],
+      ["peers", [_TypePeer], "Vector<Peer>"],
     ];
   }
 
@@ -37669,7 +37669,7 @@ export class ExportedChatlistInvite extends TypeExportedChatlistInvite {
       ["flags", flags, "#"],
       [this.title, "string", "string"],
       [this.url, "string", "string"],
-      [this.peers, [TypePeer], "Vector<Peer>"],
+      [this.peers, [_TypePeer], "Vector<Peer>"],
     ];
   }
 
@@ -37681,7 +37681,7 @@ export class ExportedChatlistInvite extends TypeExportedChatlistInvite {
   }
 }
 
-export class ChatlistsExportedChatlistInvite extends TypeChatlistsExportedChatlistInvite {
+export class ChatlistsExportedChatlistInvite extends _TypeChatlistsExportedChatlistInvite {
   filter: TypeDialogFilter;
   invite: TypeExportedChatlistInvite;
 
@@ -37691,15 +37691,15 @@ export class ChatlistsExportedChatlistInvite extends TypeChatlistsExportedChatli
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["filter", TypeDialogFilter, "DialogFilter"],
-      ["invite", TypeExportedChatlistInvite, "ExportedChatlistInvite"],
+      ["filter", _TypeDialogFilter, "DialogFilter"],
+      ["invite", _TypeExportedChatlistInvite, "ExportedChatlistInvite"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.filter, TypeDialogFilter, "DialogFilter"],
-      [this.invite, TypeExportedChatlistInvite, "ExportedChatlistInvite"],
+      [this.filter, _TypeDialogFilter, "DialogFilter"],
+      [this.invite, _TypeExportedChatlistInvite, "ExportedChatlistInvite"],
     ];
   }
 
@@ -37710,7 +37710,7 @@ export class ChatlistsExportedChatlistInvite extends TypeChatlistsExportedChatli
   }
 }
 
-export class ChatlistsExportedInvites extends TypeChatlistsExportedInvites {
+export class ChatlistsExportedInvites extends _TypeChatlistsExportedInvites {
   invites: Array<TypeExportedChatlistInvite>;
   chats: Array<TypeChat>;
   users: Array<TypeUser>;
@@ -37721,17 +37721,17 @@ export class ChatlistsExportedInvites extends TypeChatlistsExportedInvites {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["invites", [TypeExportedChatlistInvite], "Vector<ExportedChatlistInvite>"],
-      ["chats", [TypeChat], "Vector<Chat>"],
-      ["users", [TypeUser], "Vector<User>"],
+      ["invites", [_TypeExportedChatlistInvite], "Vector<ExportedChatlistInvite>"],
+      ["chats", [_TypeChat], "Vector<Chat>"],
+      ["users", [_TypeUser], "Vector<User>"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.invites, [TypeExportedChatlistInvite], "Vector<ExportedChatlistInvite>"],
-      [this.chats, [TypeChat], "Vector<Chat>"],
-      [this.users, [TypeUser], "Vector<User>"],
+      [this.invites, [_TypeExportedChatlistInvite], "Vector<ExportedChatlistInvite>"],
+      [this.chats, [_TypeChat], "Vector<Chat>"],
+      [this.users, [_TypeUser], "Vector<User>"],
     ];
   }
 
@@ -37743,7 +37743,7 @@ export class ChatlistsExportedInvites extends TypeChatlistsExportedInvites {
   }
 }
 
-export class ChatlistsChatlistInviteAlready extends TypeChatlistsChatlistInvite {
+export class ChatlistsChatlistInviteAlready extends _TypeChatlistsChatlistInvite {
   filterId: number;
   missingPeers: Array<TypePeer>;
   alreadyPeers: Array<TypePeer>;
@@ -37757,20 +37757,20 @@ export class ChatlistsChatlistInviteAlready extends TypeChatlistsChatlistInvite 
   static get [paramDesc](): ParamDesc {
     return [
       ["filterId", "number", "int"],
-      ["missingPeers", [TypePeer], "Vector<Peer>"],
-      ["alreadyPeers", [TypePeer], "Vector<Peer>"],
-      ["chats", [TypeChat], "Vector<Chat>"],
-      ["users", [TypeUser], "Vector<User>"],
+      ["missingPeers", [_TypePeer], "Vector<Peer>"],
+      ["alreadyPeers", [_TypePeer], "Vector<Peer>"],
+      ["chats", [_TypeChat], "Vector<Chat>"],
+      ["users", [_TypeUser], "Vector<User>"],
     ];
   }
 
   protected get [params](): Params {
     return [
       [this.filterId, "number", "int"],
-      [this.missingPeers, [TypePeer], "Vector<Peer>"],
-      [this.alreadyPeers, [TypePeer], "Vector<Peer>"],
-      [this.chats, [TypeChat], "Vector<Chat>"],
-      [this.users, [TypeUser], "Vector<User>"],
+      [this.missingPeers, [_TypePeer], "Vector<Peer>"],
+      [this.alreadyPeers, [_TypePeer], "Vector<Peer>"],
+      [this.chats, [_TypeChat], "Vector<Chat>"],
+      [this.users, [_TypeUser], "Vector<User>"],
     ];
   }
 
@@ -37784,7 +37784,7 @@ export class ChatlistsChatlistInviteAlready extends TypeChatlistsChatlistInvite 
   }
 }
 
-export class ChatlistsChatlistInvite extends TypeChatlistsChatlistInvite {
+export class ChatlistsChatlistInvite extends _TypeChatlistsChatlistInvite {
   title: string;
   emoticon?: string;
   peers: Array<TypePeer>;
@@ -37800,9 +37800,9 @@ export class ChatlistsChatlistInvite extends TypeChatlistsChatlistInvite {
       ["flags", flags, "#"],
       ["title", "string", "string"],
       ["emoticon", "string", "flags.0?string"],
-      ["peers", [TypePeer], "Vector<Peer>"],
-      ["chats", [TypeChat], "Vector<Chat>"],
-      ["users", [TypeUser], "Vector<User>"],
+      ["peers", [_TypePeer], "Vector<Peer>"],
+      ["chats", [_TypeChat], "Vector<Chat>"],
+      ["users", [_TypeUser], "Vector<User>"],
     ];
   }
 
@@ -37811,9 +37811,9 @@ export class ChatlistsChatlistInvite extends TypeChatlistsChatlistInvite {
       ["flags", flags, "#"],
       [this.title, "string", "string"],
       [this.emoticon ?? null, "string", "flags.0?string"],
-      [this.peers, [TypePeer], "Vector<Peer>"],
-      [this.chats, [TypeChat], "Vector<Chat>"],
-      [this.users, [TypeUser], "Vector<User>"],
+      [this.peers, [_TypePeer], "Vector<Peer>"],
+      [this.chats, [_TypeChat], "Vector<Chat>"],
+      [this.users, [_TypeUser], "Vector<User>"],
     ];
   }
 
@@ -37827,7 +37827,7 @@ export class ChatlistsChatlistInvite extends TypeChatlistsChatlistInvite {
   }
 }
 
-export class ChatlistsChatlistUpdates extends TypeChatlistsChatlistUpdates {
+export class ChatlistsChatlistUpdates extends _TypeChatlistsChatlistUpdates {
   missingPeers: Array<TypePeer>;
   chats: Array<TypeChat>;
   users: Array<TypeUser>;
@@ -37838,17 +37838,17 @@ export class ChatlistsChatlistUpdates extends TypeChatlistsChatlistUpdates {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["missingPeers", [TypePeer], "Vector<Peer>"],
-      ["chats", [TypeChat], "Vector<Chat>"],
-      ["users", [TypeUser], "Vector<User>"],
+      ["missingPeers", [_TypePeer], "Vector<Peer>"],
+      ["chats", [_TypeChat], "Vector<Chat>"],
+      ["users", [_TypeUser], "Vector<User>"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.missingPeers, [TypePeer], "Vector<Peer>"],
-      [this.chats, [TypeChat], "Vector<Chat>"],
-      [this.users, [TypeUser], "Vector<User>"],
+      [this.missingPeers, [_TypePeer], "Vector<Peer>"],
+      [this.chats, [_TypeChat], "Vector<Chat>"],
+      [this.users, [_TypeUser], "Vector<User>"],
     ];
   }
 
@@ -37860,7 +37860,7 @@ export class ChatlistsChatlistUpdates extends TypeChatlistsChatlistUpdates {
   }
 }
 
-export class BotsBotInfo extends TypeBotsBotInfo {
+export class BotsBotInfo extends _TypeBotsBotInfo {
   name: string;
   about: string;
   description: string;
@@ -37893,7 +37893,7 @@ export class BotsBotInfo extends TypeBotsBotInfo {
   }
 }
 
-export class MessagePeerVote extends TypeMessagePeerVote {
+export class MessagePeerVote extends _TypeMessagePeerVote {
   peer: TypePeer;
   option: Uint8Array;
   date: number;
@@ -37904,7 +37904,7 @@ export class MessagePeerVote extends TypeMessagePeerVote {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["peer", TypePeer, "Peer"],
+      ["peer", _TypePeer, "Peer"],
       ["option", Uint8Array, "bytes"],
       ["date", "number", "int"],
     ];
@@ -37912,7 +37912,7 @@ export class MessagePeerVote extends TypeMessagePeerVote {
 
   protected get [params](): Params {
     return [
-      [this.peer, TypePeer, "Peer"],
+      [this.peer, _TypePeer, "Peer"],
       [this.option, Uint8Array, "bytes"],
       [this.date, "number", "int"],
     ];
@@ -37926,7 +37926,7 @@ export class MessagePeerVote extends TypeMessagePeerVote {
   }
 }
 
-export class MessagePeerVoteInputOption extends TypeMessagePeerVote {
+export class MessagePeerVoteInputOption extends _TypeMessagePeerVote {
   peer: TypePeer;
   date: number;
 
@@ -37936,14 +37936,14 @@ export class MessagePeerVoteInputOption extends TypeMessagePeerVote {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["peer", TypePeer, "Peer"],
+      ["peer", _TypePeer, "Peer"],
       ["date", "number", "int"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.peer, TypePeer, "Peer"],
+      [this.peer, _TypePeer, "Peer"],
       [this.date, "number", "int"],
     ];
   }
@@ -37955,7 +37955,7 @@ export class MessagePeerVoteInputOption extends TypeMessagePeerVote {
   }
 }
 
-export class MessagePeerVoteMultiple extends TypeMessagePeerVote {
+export class MessagePeerVoteMultiple extends _TypeMessagePeerVote {
   peer: TypePeer;
   options: Array<Uint8Array>;
   date: number;
@@ -37966,7 +37966,7 @@ export class MessagePeerVoteMultiple extends TypeMessagePeerVote {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["peer", TypePeer, "Peer"],
+      ["peer", _TypePeer, "Peer"],
       ["options", [Uint8Array], "Vector<bytes>"],
       ["date", "number", "int"],
     ];
@@ -37974,7 +37974,7 @@ export class MessagePeerVoteMultiple extends TypeMessagePeerVote {
 
   protected get [params](): Params {
     return [
-      [this.peer, TypePeer, "Peer"],
+      [this.peer, _TypePeer, "Peer"],
       [this.options, [Uint8Array], "Vector<bytes>"],
       [this.date, "number", "int"],
     ];
@@ -37988,7 +37988,7 @@ export class MessagePeerVoteMultiple extends TypeMessagePeerVote {
   }
 }
 
-export class SponsoredWebPage extends TypeSponsoredWebPage {
+export class SponsoredWebPage extends _TypeSponsoredWebPage {
   url: string;
   siteName: string;
   photo?: TypePhoto;
@@ -38002,7 +38002,7 @@ export class SponsoredWebPage extends TypeSponsoredWebPage {
       ["flags", flags, "#"],
       ["url", "string", "string"],
       ["siteName", "string", "string"],
-      ["photo", TypePhoto, "flags.0?Photo"],
+      ["photo", _TypePhoto, "flags.0?Photo"],
     ];
   }
 
@@ -38011,7 +38011,7 @@ export class SponsoredWebPage extends TypeSponsoredWebPage {
       ["flags", flags, "#"],
       [this.url, "string", "string"],
       [this.siteName, "string", "string"],
-      [this.photo ?? null, TypePhoto, "flags.0?Photo"],
+      [this.photo ?? null, _TypePhoto, "flags.0?Photo"],
     ];
   }
 
@@ -38023,7 +38023,7 @@ export class SponsoredWebPage extends TypeSponsoredWebPage {
   }
 }
 
-export class StoryViews extends TypeStoryViews {
+export class StoryViews extends _TypeStoryViews {
   viewsCount: number;
   reactionsCount: number;
   recentViewers?: Array<bigint>;
@@ -38058,7 +38058,7 @@ export class StoryViews extends TypeStoryViews {
   }
 }
 
-export class StoryItemDeleted extends TypeStoryItem {
+export class StoryItemDeleted extends _TypeStoryItem {
   id: number;
 
   protected get [id]() {
@@ -38083,7 +38083,7 @@ export class StoryItemDeleted extends TypeStoryItem {
   }
 }
 
-export class StoryItemSkipped extends TypeStoryItem {
+export class StoryItemSkipped extends _TypeStoryItem {
   closeFriends?: true;
   id: number;
   date: number;
@@ -38122,7 +38122,7 @@ export class StoryItemSkipped extends TypeStoryItem {
   }
 }
 
-export class StoryItem extends TypeStoryItem {
+export class StoryItem extends _TypeStoryItem {
   pinned?: true;
   public?: true;
   closeFriends?: true;
@@ -38161,12 +38161,12 @@ export class StoryItem extends TypeStoryItem {
       ["date", "number", "int"],
       ["expireDate", "number", "int"],
       ["caption", "string", "flags.0?string"],
-      ["entities", [TypeMessageEntity], "flags.1?Vector<MessageEntity>"],
-      ["media", TypeMessageMedia, "MessageMedia"],
-      ["mediaAreas", [TypeMediaArea], "flags.14?Vector<MediaArea>"],
-      ["privacy", [TypePrivacyRule], "flags.2?Vector<PrivacyRule>"],
-      ["views", TypeStoryViews, "flags.3?StoryViews"],
-      ["sentReaction", TypeReaction, "flags.15?Reaction"],
+      ["entities", [_TypeMessageEntity], "flags.1?Vector<MessageEntity>"],
+      ["media", _TypeMessageMedia, "MessageMedia"],
+      ["mediaAreas", [_TypeMediaArea], "flags.14?Vector<MediaArea>"],
+      ["privacy", [_TypePrivacyRule], "flags.2?Vector<PrivacyRule>"],
+      ["views", _TypeStoryViews, "flags.3?StoryViews"],
+      ["sentReaction", _TypeReaction, "flags.15?Reaction"],
     ];
   }
 
@@ -38185,12 +38185,12 @@ export class StoryItem extends TypeStoryItem {
       [this.date, "number", "int"],
       [this.expireDate, "number", "int"],
       [this.caption ?? null, "string", "flags.0?string"],
-      [this.entities ?? null, [TypeMessageEntity], "flags.1?Vector<MessageEntity>"],
-      [this.media, TypeMessageMedia, "MessageMedia"],
-      [this.mediaAreas ?? null, [TypeMediaArea], "flags.14?Vector<MediaArea>"],
-      [this.privacy ?? null, [TypePrivacyRule], "flags.2?Vector<PrivacyRule>"],
-      [this.views ?? null, TypeStoryViews, "flags.3?StoryViews"],
-      [this.sentReaction ?? null, TypeReaction, "flags.15?Reaction"],
+      [this.entities ?? null, [_TypeMessageEntity], "flags.1?Vector<MessageEntity>"],
+      [this.media, _TypeMessageMedia, "MessageMedia"],
+      [this.mediaAreas ?? null, [_TypeMediaArea], "flags.14?Vector<MediaArea>"],
+      [this.privacy ?? null, [_TypePrivacyRule], "flags.2?Vector<PrivacyRule>"],
+      [this.views ?? null, _TypeStoryViews, "flags.3?StoryViews"],
+      [this.sentReaction ?? null, _TypeReaction, "flags.15?Reaction"],
     ];
   }
 
@@ -38217,7 +38217,7 @@ export class StoryItem extends TypeStoryItem {
   }
 }
 
-export class UserStories extends TypeUserStories {
+export class UserStories extends _TypeUserStories {
   userId: bigint;
   maxReadId?: number;
   stories: Array<TypeStoryItem>;
@@ -38231,7 +38231,7 @@ export class UserStories extends TypeUserStories {
       ["flags", flags, "#"],
       ["userId", "bigint", "long"],
       ["maxReadId", "number", "flags.0?int"],
-      ["stories", [TypeStoryItem], "Vector<StoryItem>"],
+      ["stories", [_TypeStoryItem], "Vector<StoryItem>"],
     ];
   }
 
@@ -38240,7 +38240,7 @@ export class UserStories extends TypeUserStories {
       ["flags", flags, "#"],
       [this.userId, "bigint", "long"],
       [this.maxReadId ?? null, "number", "flags.0?int"],
-      [this.stories, [TypeStoryItem], "Vector<StoryItem>"],
+      [this.stories, [_TypeStoryItem], "Vector<StoryItem>"],
     ];
   }
 
@@ -38252,7 +38252,7 @@ export class UserStories extends TypeUserStories {
   }
 }
 
-export class StoriesAllStoriesNotModified extends TypeStoriesAllStories {
+export class StoriesAllStoriesNotModified extends _TypeStoriesAllStories {
   state: string;
   stealthMode: TypeStoriesStealthMode;
 
@@ -38264,7 +38264,7 @@ export class StoriesAllStoriesNotModified extends TypeStoriesAllStories {
     return [
       ["flags", flags, "#"],
       ["state", "string", "string"],
-      ["stealthMode", TypeStoriesStealthMode, "StoriesStealthMode"],
+      ["stealthMode", _TypeStoriesStealthMode, "StoriesStealthMode"],
     ];
   }
 
@@ -38272,7 +38272,7 @@ export class StoriesAllStoriesNotModified extends TypeStoriesAllStories {
     return [
       ["flags", flags, "#"],
       [this.state, "string", "string"],
-      [this.stealthMode, TypeStoriesStealthMode, "StoriesStealthMode"],
+      [this.stealthMode, _TypeStoriesStealthMode, "StoriesStealthMode"],
     ];
   }
 
@@ -38283,7 +38283,7 @@ export class StoriesAllStoriesNotModified extends TypeStoriesAllStories {
   }
 }
 
-export class StoriesAllStories extends TypeStoriesAllStories {
+export class StoriesAllStories extends _TypeStoriesAllStories {
   hasMore?: true;
   count: number;
   state: string;
@@ -38301,9 +38301,9 @@ export class StoriesAllStories extends TypeStoriesAllStories {
       ["hasMore", "true", "flags.0?true"],
       ["count", "number", "int"],
       ["state", "string", "string"],
-      ["userStories", [TypeUserStories], "Vector<UserStories>"],
-      ["users", [TypeUser], "Vector<User>"],
-      ["stealthMode", TypeStoriesStealthMode, "StoriesStealthMode"],
+      ["userStories", [_TypeUserStories], "Vector<UserStories>"],
+      ["users", [_TypeUser], "Vector<User>"],
+      ["stealthMode", _TypeStoriesStealthMode, "StoriesStealthMode"],
     ];
   }
 
@@ -38313,9 +38313,9 @@ export class StoriesAllStories extends TypeStoriesAllStories {
       [this.hasMore ?? null, "true", "flags.0?true"],
       [this.count, "number", "int"],
       [this.state, "string", "string"],
-      [this.userStories, [TypeUserStories], "Vector<UserStories>"],
-      [this.users, [TypeUser], "Vector<User>"],
-      [this.stealthMode, TypeStoriesStealthMode, "StoriesStealthMode"],
+      [this.userStories, [_TypeUserStories], "Vector<UserStories>"],
+      [this.users, [_TypeUser], "Vector<User>"],
+      [this.stealthMode, _TypeStoriesStealthMode, "StoriesStealthMode"],
     ];
   }
 
@@ -38330,7 +38330,7 @@ export class StoriesAllStories extends TypeStoriesAllStories {
   }
 }
 
-export class StoriesStories extends TypeStoriesStories {
+export class StoriesStories extends _TypeStoriesStories {
   count: number;
   stories: Array<TypeStoryItem>;
   users: Array<TypeUser>;
@@ -38342,16 +38342,16 @@ export class StoriesStories extends TypeStoriesStories {
   static get [paramDesc](): ParamDesc {
     return [
       ["count", "number", "int"],
-      ["stories", [TypeStoryItem], "Vector<StoryItem>"],
-      ["users", [TypeUser], "Vector<User>"],
+      ["stories", [_TypeStoryItem], "Vector<StoryItem>"],
+      ["users", [_TypeUser], "Vector<User>"],
     ];
   }
 
   protected get [params](): Params {
     return [
       [this.count, "number", "int"],
-      [this.stories, [TypeStoryItem], "Vector<StoryItem>"],
-      [this.users, [TypeUser], "Vector<User>"],
+      [this.stories, [_TypeStoryItem], "Vector<StoryItem>"],
+      [this.users, [_TypeUser], "Vector<User>"],
     ];
   }
 
@@ -38363,7 +38363,7 @@ export class StoriesStories extends TypeStoriesStories {
   }
 }
 
-export class StoriesUserStories extends TypeStoriesUserStories {
+export class StoriesUserStories extends _TypeStoriesUserStories {
   stories: TypeUserStories;
   users: Array<TypeUser>;
 
@@ -38373,15 +38373,15 @@ export class StoriesUserStories extends TypeStoriesUserStories {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["stories", TypeUserStories, "UserStories"],
-      ["users", [TypeUser], "Vector<User>"],
+      ["stories", _TypeUserStories, "UserStories"],
+      ["users", [_TypeUser], "Vector<User>"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.stories, TypeUserStories, "UserStories"],
-      [this.users, [TypeUser], "Vector<User>"],
+      [this.stories, _TypeUserStories, "UserStories"],
+      [this.users, [_TypeUser], "Vector<User>"],
     ];
   }
 
@@ -38392,7 +38392,7 @@ export class StoriesUserStories extends TypeStoriesUserStories {
   }
 }
 
-export class StoryView extends TypeStoryView {
+export class StoryView extends _TypeStoryView {
   blocked?: true;
   blockedMyStoriesFrom?: true;
   userId: bigint;
@@ -38410,7 +38410,7 @@ export class StoryView extends TypeStoryView {
       ["blockedMyStoriesFrom", "true", "flags.1?true"],
       ["userId", "bigint", "long"],
       ["date", "number", "int"],
-      ["reaction", TypeReaction, "flags.2?Reaction"],
+      ["reaction", _TypeReaction, "flags.2?Reaction"],
     ];
   }
 
@@ -38421,7 +38421,7 @@ export class StoryView extends TypeStoryView {
       [this.blockedMyStoriesFrom ?? null, "true", "flags.1?true"],
       [this.userId, "bigint", "long"],
       [this.date, "number", "int"],
-      [this.reaction ?? null, TypeReaction, "flags.2?Reaction"],
+      [this.reaction ?? null, _TypeReaction, "flags.2?Reaction"],
     ];
   }
 
@@ -38435,7 +38435,7 @@ export class StoryView extends TypeStoryView {
   }
 }
 
-export class StoriesStoryViewsList extends TypeStoriesStoryViewsList {
+export class StoriesStoryViewsList extends _TypeStoriesStoryViewsList {
   count: number;
   reactionsCount: number;
   views: Array<TypeStoryView>;
@@ -38451,8 +38451,8 @@ export class StoriesStoryViewsList extends TypeStoriesStoryViewsList {
       ["flags", flags, "#"],
       ["count", "number", "int"],
       ["reactionsCount", "number", "int"],
-      ["views", [TypeStoryView], "Vector<StoryView>"],
-      ["users", [TypeUser], "Vector<User>"],
+      ["views", [_TypeStoryView], "Vector<StoryView>"],
+      ["users", [_TypeUser], "Vector<User>"],
       ["nextOffset", "string", "flags.0?string"],
     ];
   }
@@ -38462,8 +38462,8 @@ export class StoriesStoryViewsList extends TypeStoriesStoryViewsList {
       ["flags", flags, "#"],
       [this.count, "number", "int"],
       [this.reactionsCount, "number", "int"],
-      [this.views, [TypeStoryView], "Vector<StoryView>"],
-      [this.users, [TypeUser], "Vector<User>"],
+      [this.views, [_TypeStoryView], "Vector<StoryView>"],
+      [this.users, [_TypeUser], "Vector<User>"],
       [this.nextOffset ?? null, "string", "flags.0?string"],
     ];
   }
@@ -38478,7 +38478,7 @@ export class StoriesStoryViewsList extends TypeStoriesStoryViewsList {
   }
 }
 
-export class StoriesStoryViews extends TypeStoriesStoryViews {
+export class StoriesStoryViews extends _TypeStoriesStoryViews {
   views: Array<TypeStoryViews>;
   users: Array<TypeUser>;
 
@@ -38488,15 +38488,15 @@ export class StoriesStoryViews extends TypeStoriesStoryViews {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["views", [TypeStoryViews], "Vector<StoryViews>"],
-      ["users", [TypeUser], "Vector<User>"],
+      ["views", [_TypeStoryViews], "Vector<StoryViews>"],
+      ["users", [_TypeUser], "Vector<User>"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.views, [TypeStoryViews], "Vector<StoryViews>"],
-      [this.users, [TypeUser], "Vector<User>"],
+      [this.views, [_TypeStoryViews], "Vector<StoryViews>"],
+      [this.users, [_TypeUser], "Vector<User>"],
     ];
   }
 
@@ -38507,7 +38507,7 @@ export class StoriesStoryViews extends TypeStoriesStoryViews {
   }
 }
 
-export class InputReplyToMessage extends TypeInputReplyTo {
+export class InputReplyToMessage extends _TypeInputReplyTo {
   replyToMsgId: number;
   topMsgId?: number;
 
@@ -38538,7 +38538,7 @@ export class InputReplyToMessage extends TypeInputReplyTo {
   }
 }
 
-export class InputReplyToStory extends TypeInputReplyTo {
+export class InputReplyToStory extends _TypeInputReplyTo {
   userId: TypeInputUser;
   storyId: number;
 
@@ -38548,14 +38548,14 @@ export class InputReplyToStory extends TypeInputReplyTo {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["userId", TypeInputUser, "InputUser"],
+      ["userId", _TypeInputUser, "InputUser"],
       ["storyId", "number", "int"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.userId, TypeInputUser, "InputUser"],
+      [this.userId, _TypeInputUser, "InputUser"],
       [this.storyId, "number", "int"],
     ];
   }
@@ -38567,7 +38567,7 @@ export class InputReplyToStory extends TypeInputReplyTo {
   }
 }
 
-export class ExportedStoryLink extends TypeExportedStoryLink {
+export class ExportedStoryLink extends _TypeExportedStoryLink {
   link: string;
 
   protected get [id]() {
@@ -38592,7 +38592,7 @@ export class ExportedStoryLink extends TypeExportedStoryLink {
   }
 }
 
-export class StoriesStealthMode extends TypeStoriesStealthMode {
+export class StoriesStealthMode extends _TypeStoriesStealthMode {
   activeUntilDate?: number;
   cooldownUntilDate?: number;
 
@@ -38623,7 +38623,7 @@ export class StoriesStealthMode extends TypeStoriesStealthMode {
   }
 }
 
-export class MediaAreaCoordinates extends TypeMediaAreaCoordinates {
+export class MediaAreaCoordinates extends _TypeMediaAreaCoordinates {
   x: number;
   y: number;
   w: number;
@@ -38664,7 +38664,7 @@ export class MediaAreaCoordinates extends TypeMediaAreaCoordinates {
   }
 }
 
-export class MediaAreaVenue extends TypeMediaArea {
+export class MediaAreaVenue extends _TypeMediaArea {
   coordinates: TypeMediaAreaCoordinates;
   geo: TypeGeoPoint;
   title: string;
@@ -38679,8 +38679,8 @@ export class MediaAreaVenue extends TypeMediaArea {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["coordinates", TypeMediaAreaCoordinates, "MediaAreaCoordinates"],
-      ["geo", TypeGeoPoint, "GeoPoint"],
+      ["coordinates", _TypeMediaAreaCoordinates, "MediaAreaCoordinates"],
+      ["geo", _TypeGeoPoint, "GeoPoint"],
       ["title", "string", "string"],
       ["address", "string", "string"],
       ["provider", "string", "string"],
@@ -38691,8 +38691,8 @@ export class MediaAreaVenue extends TypeMediaArea {
 
   protected get [params](): Params {
     return [
-      [this.coordinates, TypeMediaAreaCoordinates, "MediaAreaCoordinates"],
-      [this.geo, TypeGeoPoint, "GeoPoint"],
+      [this.coordinates, _TypeMediaAreaCoordinates, "MediaAreaCoordinates"],
+      [this.geo, _TypeGeoPoint, "GeoPoint"],
       [this.title, "string", "string"],
       [this.address, "string", "string"],
       [this.provider, "string", "string"],
@@ -38713,7 +38713,7 @@ export class MediaAreaVenue extends TypeMediaArea {
   }
 }
 
-export class InputMediaAreaVenue extends TypeMediaArea {
+export class InputMediaAreaVenue extends _TypeMediaArea {
   coordinates: TypeMediaAreaCoordinates;
   queryId: bigint;
   resultId: string;
@@ -38724,7 +38724,7 @@ export class InputMediaAreaVenue extends TypeMediaArea {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["coordinates", TypeMediaAreaCoordinates, "MediaAreaCoordinates"],
+      ["coordinates", _TypeMediaAreaCoordinates, "MediaAreaCoordinates"],
       ["queryId", "bigint", "long"],
       ["resultId", "string", "string"],
     ];
@@ -38732,7 +38732,7 @@ export class InputMediaAreaVenue extends TypeMediaArea {
 
   protected get [params](): Params {
     return [
-      [this.coordinates, TypeMediaAreaCoordinates, "MediaAreaCoordinates"],
+      [this.coordinates, _TypeMediaAreaCoordinates, "MediaAreaCoordinates"],
       [this.queryId, "bigint", "long"],
       [this.resultId, "string", "string"],
     ];
@@ -38746,7 +38746,7 @@ export class InputMediaAreaVenue extends TypeMediaArea {
   }
 }
 
-export class MediaAreaGeoPoint extends TypeMediaArea {
+export class MediaAreaGeoPoint extends _TypeMediaArea {
   coordinates: TypeMediaAreaCoordinates;
   geo: TypeGeoPoint;
 
@@ -38756,15 +38756,15 @@ export class MediaAreaGeoPoint extends TypeMediaArea {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["coordinates", TypeMediaAreaCoordinates, "MediaAreaCoordinates"],
-      ["geo", TypeGeoPoint, "GeoPoint"],
+      ["coordinates", _TypeMediaAreaCoordinates, "MediaAreaCoordinates"],
+      ["geo", _TypeGeoPoint, "GeoPoint"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.coordinates, TypeMediaAreaCoordinates, "MediaAreaCoordinates"],
-      [this.geo, TypeGeoPoint, "GeoPoint"],
+      [this.coordinates, _TypeMediaAreaCoordinates, "MediaAreaCoordinates"],
+      [this.geo, _TypeGeoPoint, "GeoPoint"],
     ];
   }
 
@@ -38774,6 +38774,445 @@ export class MediaAreaGeoPoint extends TypeMediaArea {
     this.geo = params.geo;
   }
 }
+
+export type TypeResPQ = ResPQ;
+export type TypePQInnerData = PQInnerDataDC | PQInnerDataTempDC;
+export type TypeServerDHParams = ServerDHParamsOK;
+export type TypeServerDHInnerData = ServerDHInnerData;
+export type TypeClientDHInnerData = ClientDHInnerData;
+export type TypeSetClientDHParamsAnswer = DHGenOK | DHGenRetry | DHGenFail;
+export type TypeBindAuthKeyInner = BindAuthKeyInner;
+export type TypeRpcError = RPCError;
+export type TypeRpcDropAnswer = RPCAnswerUnknown | RPCAnswerDroppedRunning | RPCAnswerDropped;
+export type TypeFutureSalt = FutureSalt;
+export type TypeFutureSalts = FutureSalts;
+export type TypePong = Pong;
+export type TypeDestroySessionRes = DestroySessionOK | DestroySessionNone;
+export type TypeNewSession = NewSessionCreated;
+export type TypeObject = GZIPPacked;
+export type TypeMsgsAck = MsgsAck;
+export type TypeBadMsgNotification = BadMsgNotification | BadServerSalt;
+export type TypeMsgResendReq = MsgResendReq;
+export type TypeMsgsStateReq = MsgsStateReq;
+export type TypeMsgsStateInfo = MsgsStateInfo;
+export type TypeMsgsAllInfo = MsgsAllInfo;
+export type TypeMsgDetailedInfo = MsgDetailedInfo | MsgNewDetailedInfo;
+export type TypeDestroyAuthKeyRes = DestroyAuthKeyOK | DestroyAuthKeyNone | DestroyAuthKeyFail;
+export type TypeHttpWait = HTTPWait;
+export type TypeTrue = True;
+export type TypeError = Error;
+export type TypeNull = Null;
+export type TypeInputPeer = InputPeerEmpty | InputPeerSelf | InputPeerChat | InputPeerUser | InputPeerChannel | InputPeerUserFromMessage | InputPeerChannelFromMessage;
+export type TypeInputUser = InputUserEmpty | InputUserSelf | InputUser | InputUserFromMessage;
+export type TypeInputContact = InputPhoneContact;
+export type TypeInputFile = InputFile | InputFileBig;
+export type TypeInputMedia = InputMediaEmpty | InputMediaUploadedPhoto | InputMediaPhoto | InputMediaGeoPoint | InputMediaContact | InputMediaUploadedDocument | InputMediaDocument | InputMediaVenue | InputMediaPhotoExternal | InputMediaDocumentExternal | InputMediaGame | InputMediaInvoice | InputMediaGeoLive | InputMediaPoll | InputMediaDice | InputMediaStory;
+export type TypeInputChatPhoto = InputChatPhotoEmpty | InputChatUploadedPhoto | InputChatPhoto;
+export type TypeInputGeoPoint = InputGeoPointEmpty | InputGeoPoint;
+export type TypeInputPhoto = InputPhotoEmpty | InputPhoto;
+export type TypeInputFileLocation = InputFileLocation | InputEncryptedFileLocation | InputDocumentFileLocation | InputSecureFileLocation | InputTakeoutFileLocation | InputPhotoFileLocation | InputPhotoLegacyFileLocation | InputPeerPhotoFileLocation | InputStickerSetThumb | InputGroupCallStream;
+export type TypePeer = PeerUser | PeerChat | PeerChannel;
+export type TypeStorageFileType = StorageFileUnknown | StorageFilePartial | StorageFileJpeg | StorageFileGif | StorageFilePng | StorageFilePdf | StorageFileMp3 | StorageFileMov | StorageFileMp4 | StorageFileWebp;
+export type TypeUser = UserEmpty | User;
+export type TypeUserProfilePhoto = UserProfilePhotoEmpty | UserProfilePhoto;
+export type TypeUserStatus = UserStatusEmpty | UserStatusOnline | UserStatusOffline | UserStatusRecently | UserStatusLastWeek | UserStatusLastMonth;
+export type TypeChat = ChatEmpty | Chat | ChatForbidden | Channel | ChannelForbidden;
+export type TypeChatFull = ChatFull | ChannelFull;
+export type TypeChatParticipant = ChatParticipant | ChatParticipantCreator | ChatParticipantAdmin;
+export type TypeChatParticipants = ChatParticipantsForbidden | ChatParticipants;
+export type TypeChatPhoto = ChatPhotoEmpty | ChatPhoto;
+export type TypeMessage = MessageEmpty | Message | MessageService;
+export type TypeMessageMedia = MessageMediaEmpty | MessageMediaPhoto | MessageMediaGeo | MessageMediaContact | MessageMediaUnsupported | MessageMediaDocument | MessageMediaWebPage | MessageMediaVenue | MessageMediaGame | MessageMediaInvoice | MessageMediaGeoLive | MessageMediaPoll | MessageMediaDice | MessageMediaStory;
+export type TypeMessageAction = MessageActionEmpty | MessageActionChatCreate | MessageActionChatEditTitle | MessageActionChatEditPhoto | MessageActionChatDeletePhoto | MessageActionChatAddUser | MessageActionChatDeleteUser | MessageActionChatJoinedByLink | MessageActionChannelCreate | MessageActionChatMigrateTo | MessageActionChannelMigrateFrom | MessageActionPinMessage | MessageActionHistoryClear | MessageActionGameScore | MessageActionPaymentSentMe | MessageActionPaymentSent | MessageActionPhoneCall | MessageActionScreenshotTaken | MessageActionCustomAction | MessageActionBotAllowed | MessageActionSecureValuesSentMe | MessageActionSecureValuesSent | MessageActionContactSignUp | MessageActionGeoProximityReached | MessageActionGroupCall | MessageActionInviteToGroupCall | MessageActionSetMessagesTTL | MessageActionGroupCallScheduled | MessageActionSetChatTheme | MessageActionChatJoinedByRequest | MessageActionWebViewDataSentMe | MessageActionWebViewDataSent | MessageActionGiftPremium | MessageActionTopicCreate | MessageActionTopicEdit | MessageActionSuggestProfilePhoto | MessageActionRequestedPeer | MessageActionSetChatWallPaper | MessageActionSetSameChatWallPaper;
+export type TypeDialog = Dialog | DialogFolder;
+export type TypePhoto = PhotoEmpty | Photo;
+export type TypePhotoSize = PhotoSizeEmpty | PhotoSize | PhotoCachedSize | PhotoStrippedSize | PhotoSizeProgressive | PhotoPathSize;
+export type TypeGeoPoint = GeoPointEmpty | GeoPoint;
+export type TypeAuthSentCode = AuthSentCode | AuthSentCodeSuccess;
+export type TypeAuthAuthorization = AuthAuthorization | AuthAuthorizationSignUpRequired;
+export type TypeAuthExportedAuthorization = AuthExportedAuthorization;
+export type TypeInputNotifyPeer = InputNotifyPeer | InputNotifyUsers | InputNotifyChats | InputNotifyBroadcasts | InputNotifyForumTopic;
+export type TypeInputPeerNotifySettings = InputPeerNotifySettings;
+export type TypePeerNotifySettings = PeerNotifySettings;
+export type TypePeerSettings = PeerSettings;
+export type TypeWallPaper = WallPaper | WallPaperNoFile;
+export type TypeReportReason = InputReportReasonSpam | InputReportReasonViolence | InputReportReasonPornography | InputReportReasonChildAbuse | InputReportReasonOther | InputReportReasonCopyright | InputReportReasonGeoIrrelevant | InputReportReasonFake | InputReportReasonIllegalDrugs | InputReportReasonPersonalDetails;
+export type TypeUserFull = UserFull;
+export type TypeContact = Contact;
+export type TypeImportedContact = ImportedContact;
+export type TypeContactStatus = ContactStatus;
+export type TypeContactsContacts = ContactsContactsNotModified | ContactsContacts;
+export type TypeContactsImportedContacts = ContactsImportedContacts;
+export type TypeContactsBlocked = ContactsBlocked | ContactsBlockedSlice;
+export type TypeMessagesDialogs = MessagesDialogs | MessagesDialogsSlice | MessagesDialogsNotModified;
+export type TypeMessagesMessages = MessagesMessages | MessagesMessagesSlice | MessagesChannelMessages | MessagesMessagesNotModified;
+export type TypeMessagesChats = MessagesChats | MessagesChatsSlice;
+export type TypeMessagesChatFull = MessagesChatFull;
+export type TypeMessagesAffectedHistory = MessagesAffectedHistory;
+export type TypeMessagesFilter = InputMessagesFilterEmpty | InputMessagesFilterPhotos | InputMessagesFilterVideo | InputMessagesFilterPhotoVideo | InputMessagesFilterDocument | InputMessagesFilterURL | InputMessagesFilterGif | InputMessagesFilterVoice | InputMessagesFilterMusic | InputMessagesFilterChatPhotos | InputMessagesFilterPhoneCalls | InputMessagesFilterRoundVoice | InputMessagesFilterRoundVideo | InputMessagesFilterMyMentions | InputMessagesFilterGeo | InputMessagesFilterContacts | InputMessagesFilterPinned;
+export type TypeUpdate = UpdateNewMessage | UpdateMessageID | UpdateDeleteMessages | UpdateUserTyping | UpdateChatUserTyping | UpdateChatParticipants | UpdateUserStatus | UpdateUserName | UpdateNewEncryptedMessage | UpdateEncryptedChatTyping | UpdateEncryption | UpdateEncryptedMessagesRead | UpdateChatParticipantAdd | UpdateChatParticipantDelete | UpdateDcOptions | UpdateNotifySettings | UpdateServiceNotification | UpdatePrivacy | UpdateUserPhone | UpdateReadHistoryInbox | UpdateReadHistoryOutbox | UpdateWebPage | UpdateReadMessagesContents | UpdateChannelTooLong | UpdateChannel | UpdateNewChannelMessage | UpdateReadChannelInbox | UpdateDeleteChannelMessages | UpdateChannelMessageViews | UpdateChatParticipantAdmin | UpdateNewStickerSet | UpdateStickerSetsOrder | UpdateStickerSets | UpdateSavedGifs | UpdateBotInlineQuery | UpdateBotInlineSend | UpdateEditChannelMessage | UpdateBotCallbackQuery | UpdateEditMessage | UpdateInlineBotCallbackQuery | UpdateReadChannelOutbox | UpdateDraftMessage | UpdateReadFeaturedStickers | UpdateRecentStickers | UpdateConfig | UpdatePtsChanged | UpdateChannelWebPage | UpdateDialogPinned | UpdatePinnedDialogs | UpdateBotWebhookJSON | UpdateBotWebhookJSONQuery | UpdateBotShippingQuery | UpdateBotPrecheckoutQuery | UpdatePhoneCall | UpdateLangPackTooLong | UpdateLangPack | UpdateFavedStickers | UpdateChannelReadMessagesContents | UpdateContactsReset | UpdateChannelAvailableMessages | UpdateDialogUnreadMark | UpdateMessagePoll | UpdateChatDefaultBannedRights | UpdateFolderPeers | UpdatePeerSettings | UpdatePeerLocated | UpdateNewScheduledMessage | UpdateDeleteScheduledMessages | UpdateTheme | UpdateGeoLiveViewed | UpdateLoginToken | UpdateMessagePollVote | UpdateDialogFilter | UpdateDialogFilterOrder | UpdateDialogFilters | UpdatePhoneCallSignalingData | UpdateChannelMessageForwards | UpdateReadChannelDiscussionInbox | UpdateReadChannelDiscussionOutbox | UpdatePeerBlocked | UpdateChannelUserTyping | UpdatePinnedMessages | UpdatePinnedChannelMessages | UpdateChat | UpdateGroupCallParticipants | UpdateGroupCall | UpdatePeerHistoryTTL | UpdateChatParticipant | UpdateChannelParticipant | UpdateBotStopped | UpdateGroupCallConnection | UpdateBotCommands | UpdatePendingJoinRequests | UpdateBotChatInviteRequester | UpdateMessageReactions | UpdateAttachMenuBots | UpdateWebViewResultSent | UpdateBotMenuButton | UpdateSavedRingtones | UpdateTranscribedAudio | UpdateReadFeaturedEmojiStickers | UpdateUserEmojiStatus | UpdateRecentEmojiStatuses | UpdateRecentReactions | UpdateMoveStickerSetToTop | UpdateMessageExtendedMedia | UpdateChannelPinnedTopic | UpdateChannelPinnedTopics | UpdateUser | UpdateAutoSaveSettings | UpdateGroupInvitePrivacyForbidden | UpdateStory | UpdateReadStories | UpdateStoryID | UpdateStoriesStealthMode | UpdateSentStoryReaction;
+export type TypeUpdatesState = UpdatesState;
+export type TypeUpdatesDifference = UpdatesDifferenceEmpty | UpdatesDifference | UpdatesDifferenceSlice | UpdatesDifferenceTooLong;
+export type TypeUpdates = UpdatesTooLong | UpdateShortMessage | UpdateShortChatMessage | UpdateShort | UpdatesCombined | Updates | UpdateShortSentMessage;
+export type TypePhotosPhotos = PhotosPhotos | PhotosPhotosSlice;
+export type TypePhotosPhoto = PhotosPhoto;
+export type TypeUploadFile = UploadFile | UploadFileCdnRedirect;
+export type TypeDcOption = DcOption;
+export type TypeConfig = Config;
+export type TypeNearestDc = NearestDc;
+export type TypeHelpAppUpdate = HelpAppUpdate | HelpNoAppUpdate;
+export type TypeHelpInviteText = HelpInviteText;
+export type TypeEncryptedChat = EncryptedChatEmpty | EncryptedChatWaiting | EncryptedChatRequested | EncryptedChat | EncryptedChatDiscarded;
+export type TypeInputEncryptedChat = InputEncryptedChat;
+export type TypeEncryptedFile = EncryptedFileEmpty | EncryptedFile;
+export type TypeInputEncryptedFile = InputEncryptedFileEmpty | InputEncryptedFileUploaded | InputEncryptedFile | InputEncryptedFileBigUploaded;
+export type TypeEncryptedMessage = EncryptedMessage | EncryptedMessageService;
+export type TypeMessagesDhConfig = MessagesDhConfigNotModified | MessagesDhConfig;
+export type TypeMessagesSentEncryptedMessage = MessagesSentEncryptedMessage | MessagesSentEncryptedFile;
+export type TypeInputDocument = InputDocumentEmpty | InputDocument;
+export type TypeDocument = DocumentEmpty | Document;
+export type TypeHelpSupport = HelpSupport;
+export type TypeNotifyPeer = NotifyPeer | NotifyUsers | NotifyChats | NotifyBroadcasts | NotifyForumTopic;
+export type TypeSendMessageAction = SendMessageTypingAction | SendMessageCancelAction | SendMessageRecordVideoAction | SendMessageUploadVideoAction | SendMessageRecordAudioAction | SendMessageUploadAudioAction | SendMessageUploadPhotoAction | SendMessageUploadDocumentAction | SendMessageGeoLocationAction | SendMessageChooseContactAction | SendMessageGamePlayAction | SendMessageRecordRoundAction | SendMessageUploadRoundAction | SpeakingInGroupCallAction | SendMessageHistoryImportAction | SendMessageChooseStickerAction | SendMessageEmojiInteraction | SendMessageEmojiInteractionSeen;
+export type TypeContactsFound = ContactsFound;
+export type TypeInputPrivacyKey = InputPrivacyKeyStatusTimestamp | InputPrivacyKeyChatInvite | InputPrivacyKeyPhoneCall | InputPrivacyKeyPhoneP2P | InputPrivacyKeyForwards | InputPrivacyKeyProfilePhoto | InputPrivacyKeyPhoneNumber | InputPrivacyKeyAddedByPhone | InputPrivacyKeyVoiceMessages | InputPrivacyKeyAbout;
+export type TypePrivacyKey = PrivacyKeyStatusTimestamp | PrivacyKeyChatInvite | PrivacyKeyPhoneCall | PrivacyKeyPhoneP2P | PrivacyKeyForwards | PrivacyKeyProfilePhoto | PrivacyKeyPhoneNumber | PrivacyKeyAddedByPhone | PrivacyKeyVoiceMessages | PrivacyKeyAbout;
+export type TypeInputPrivacyRule = InputPrivacyValueAllowContacts | InputPrivacyValueAllowAll | InputPrivacyValueAllowUsers | InputPrivacyValueDisallowContacts | InputPrivacyValueDisallowAll | InputPrivacyValueDisallowUsers | InputPrivacyValueAllowChatParticipants | InputPrivacyValueDisallowChatParticipants | InputPrivacyValueAllowCloseFriends;
+export type TypePrivacyRule = PrivacyValueAllowContacts | PrivacyValueAllowAll | PrivacyValueAllowUsers | PrivacyValueDisallowContacts | PrivacyValueDisallowAll | PrivacyValueDisallowUsers | PrivacyValueAllowChatParticipants | PrivacyValueDisallowChatParticipants | PrivacyValueAllowCloseFriends;
+export type TypeAccountPrivacyRules = AccountPrivacyRules;
+export type TypeAccountDaysTTL = AccountDaysTTL;
+export type TypeDocumentAttribute = DocumentAttributeImageSize | DocumentAttributeAnimated | DocumentAttributeSticker | DocumentAttributeVideo | DocumentAttributeAudio | DocumentAttributeFilename | DocumentAttributeHasStickers | DocumentAttributeCustomEmoji;
+export type TypeMessagesStickers = MessagesStickersNotModified | MessagesStickers;
+export type TypeStickerPack = StickerPack;
+export type TypeMessagesAllStickers = MessagesAllStickersNotModified | MessagesAllStickers;
+export type TypeMessagesAffectedMessages = MessagesAffectedMessages;
+export type TypeWebPage = WebPageEmpty | WebPagePending | WebPage | WebPageNotModified;
+export type TypeAuthorization = Authorization;
+export type TypeAccountAuthorizations = AccountAuthorizations;
+export type TypeAccountPassword = AccountPassword;
+export type TypeAccountPasswordSettings = AccountPasswordSettings;
+export type TypeAccountPasswordInputSettings = AccountPasswordInputSettings;
+export type TypeAuthPasswordRecovery = AuthPasswordRecovery;
+export type TypeReceivedNotifyMessage = ReceivedNotifyMessage;
+export type TypeExportedChatInvite = ChatInviteExported | ChatInvitePublicJoinRequests;
+export type TypeChatInvite = ChatInviteAlready | ChatInvite | ChatInvitePeek;
+export type TypeInputStickerSet = InputStickerSetEmpty | InputStickerSetID | InputStickerSetShortName | InputStickerSetAnimatedEmoji | InputStickerSetDice | InputStickerSetAnimatedEmojiAnimations | InputStickerSetPremiumGifts | InputStickerSetEmojiGenericAnimations | InputStickerSetEmojiDefaultStatuses | InputStickerSetEmojiDefaultTopicIcons;
+export type TypeStickerSet = StickerSet;
+export type TypeMessagesStickerSet = MessagesStickerSet | MessagesStickerSetNotModified;
+export type TypeBotCommand = BotCommand;
+export type TypeBotInfo = BotInfo;
+export type TypeKeyboardButton = KeyboardButton | KeyboardButtonURL | KeyboardButtonCallback | KeyboardButtonRequestPhone | KeyboardButtonRequestGeoLocation | KeyboardButtonSwitchInline | KeyboardButtonGame | KeyboardButtonBuy | KeyboardButtonURLAuth | InputKeyboardButtonURLAuth | KeyboardButtonRequestPoll | InputKeyboardButtonUserProfile | KeyboardButtonUserProfile | KeyboardButtonWebView | KeyboardButtonSimpleWebView | KeyboardButtonRequestPeer;
+export type TypeKeyboardButtonRow = KeyboardButtonRow;
+export type TypeReplyMarkup = ReplyKeyboardHide | ReplyKeyboardForceReply | ReplyKeyboardMarkup | ReplyInlineMarkup;
+export type TypeMessageEntity = MessageEntityUnknown | MessageEntityMention | MessageEntityHashtag | MessageEntityBotCommand | MessageEntityURL | MessageEntityEmail | MessageEntityBold | MessageEntityItalic | MessageEntityCode | MessageEntityPre | MessageEntityTextURL | MessageEntityMentionName | InputMessageEntityMentionName | MessageEntityPhone | MessageEntityCashtag | MessageEntityUnderline | MessageEntityStrike | MessageEntityBlockquote | MessageEntityBankCard | MessageEntitySpoiler | MessageEntityCustomEmoji;
+export type TypeInputChannel = InputChannelEmpty | InputChannel | InputChannelFromMessage;
+export type TypeContactsResolvedPeer = ContactsResolvedPeer;
+export type TypeMessageRange = MessageRange;
+export type TypeUpdatesChannelDifference = UpdatesChannelDifferenceEmpty | UpdatesChannelDifferenceTooLong | UpdatesChannelDifference;
+export type TypeChannelMessagesFilter = ChannelMessagesFilterEmpty | ChannelMessagesFilter;
+export type TypeChannelParticipant = ChannelParticipant | ChannelParticipantSelf | ChannelParticipantCreator | ChannelParticipantAdmin | ChannelParticipantBanned | ChannelParticipantLeft;
+export type TypeChannelParticipantsFilter = ChannelParticipantsRecent | ChannelParticipantsAdmins | ChannelParticipantsKicked | ChannelParticipantsBots | ChannelParticipantsBanned | ChannelParticipantsSearch | ChannelParticipantsContacts | ChannelParticipantsMentions;
+export type TypeChannelsChannelParticipants = ChannelsChannelParticipants | ChannelsChannelParticipantsNotModified;
+export type TypeChannelsChannelParticipant = ChannelsChannelParticipant;
+export type TypeHelpTermsOfService = HelpTermsOfService;
+export type TypeMessagesSavedGifs = MessagesSavedGifsNotModified | MessagesSavedGifs;
+export type TypeInputBotInlineMessage = InputBotInlineMessageMediaAuto | InputBotInlineMessageText | InputBotInlineMessageMediaGeo | InputBotInlineMessageMediaVenue | InputBotInlineMessageMediaContact | InputBotInlineMessageGame | InputBotInlineMessageMediaInvoice;
+export type TypeInputBotInlineResult = InputBotInlineResult | InputBotInlineResultPhoto | InputBotInlineResultDocument | InputBotInlineResultGame;
+export type TypeBotInlineMessage = BotInlineMessageMediaAuto | BotInlineMessageText | BotInlineMessageMediaGeo | BotInlineMessageMediaVenue | BotInlineMessageMediaContact | BotInlineMessageMediaInvoice;
+export type TypeBotInlineResult = BotInlineResult | BotInlineMediaResult;
+export type TypeMessagesBotResults = MessagesBotResults;
+export type TypeExportedMessageLink = ExportedMessageLink;
+export type TypeMessageFwdHeader = MessageFwdHeader;
+export type TypeAuthCodeType = AuthCodeTypeSms | AuthCodeTypeCall | AuthCodeTypeFlashCall | AuthCodeTypeMissedCall | AuthCodeTypeFragmentSms;
+export type TypeAuthSentCodeType = AuthSentCodeTypeApp | AuthSentCodeTypeSms | AuthSentCodeTypeCall | AuthSentCodeTypeFlashCall | AuthSentCodeTypeMissedCall | AuthSentCodeTypeEmailCode | AuthSentCodeTypeSetUpEmailRequired | AuthSentCodeTypeFragmentSms | AuthSentCodeTypeFirebaseSms;
+export type TypeMessagesBotCallbackAnswer = MessagesBotCallbackAnswer;
+export type TypeMessagesMessageEditData = MessagesMessageEditData;
+export type TypeInputBotInlineMessageID = InputBotInlineMessageID | InputBotInlineMessageID64;
+export type TypeInlineBotSwitchPM = InlineBotSwitchPM;
+export type TypeMessagesPeerDialogs = MessagesPeerDialogs;
+export type TypeTopPeer = TopPeer;
+export type TypeTopPeerCategory = TopPeerCategoryBotsPM | TopPeerCategoryBotsInline | TopPeerCategoryCorrespondents | TopPeerCategoryGroups | TopPeerCategoryChannels | TopPeerCategoryPhoneCalls | TopPeerCategoryForwardUsers | TopPeerCategoryForwardChats;
+export type TypeTopPeerCategoryPeers = TopPeerCategoryPeers;
+export type TypeContactsTopPeers = ContactsTopPeersNotModified | ContactsTopPeers | ContactsTopPeersDisabled;
+export type TypeDraftMessage = DraftMessageEmpty | DraftMessage;
+export type TypeMessagesFeaturedStickers = MessagesFeaturedStickersNotModified | MessagesFeaturedStickers;
+export type TypeMessagesRecentStickers = MessagesRecentStickersNotModified | MessagesRecentStickers;
+export type TypeMessagesArchivedStickers = MessagesArchivedStickers;
+export type TypeMessagesStickerSetInstallResult = MessagesStickerSetInstallResultSuccess | MessagesStickerSetInstallResultArchive;
+export type TypeStickerSetCovered = StickerSetCovered | StickerSetMultiCovered | StickerSetFullCovered | StickerSetNoCovered;
+export type TypeMaskCoords = MaskCoords;
+export type TypeInputStickeredMedia = InputStickeredMediaPhoto | InputStickeredMediaDocument;
+export type TypeGame = Game;
+export type TypeInputGame = InputGameID | InputGameShortName;
+export type TypeHighScore = HighScore;
+export type TypeMessagesHighScores = MessagesHighScores;
+export type TypeRichText = TextEmpty | TextPlain | TextBold | TextItalic | TextUnderline | TextStrike | TextFixed | TextURL | TextEmail | TextConcat | TextSubscript | TextSuperscript | TextMarked | TextPhone | TextImage | TextAnchor;
+export type TypePageBlock = PageBlockUnsupported | PageBlockTitle | PageBlockSubtitle | PageBlockAuthorDate | PageBlockHeader | PageBlockSubheader | PageBlockParagraph | PageBlockPreformatted | PageBlockFooter | PageBlockDivider | PageBlockAnchor | PageBlockList | PageBlockBlockquote | PageBlockPullquote | PageBlockPhoto | PageBlockVideo | PageBlockCover | PageBlockEmbed | PageBlockEmbedPost | PageBlockCollage | PageBlockSlideshow | PageBlockChannel | PageBlockAudio | PageBlockKicker | PageBlockTable | PageBlockOrderedList | PageBlockDetails | PageBlockRelatedArticles | PageBlockMap;
+export type TypePhoneCallDiscardReason = PhoneCallDiscardReasonMissed | PhoneCallDiscardReasonDisconnect | PhoneCallDiscardReasonHangup | PhoneCallDiscardReasonBusy;
+export type TypeDataJSON = DataJSON;
+export type TypeLabeledPrice = LabeledPrice;
+export type TypeInvoice = Invoice;
+export type TypePaymentCharge = PaymentCharge;
+export type TypePostAddress = PostAddress;
+export type TypePaymentRequestedInfo = PaymentRequestedInfo;
+export type TypePaymentSavedCredentials = PaymentSavedCredentialsCard;
+export type TypeWebDocument = WebDocument | WebDocumentNoProxy;
+export type TypeInputWebDocument = InputWebDocument;
+export type TypeInputWebFileLocation = InputWebFileLocation | InputWebFileGeoPointLocation | InputWebFileAudioAlbumThumbLocation;
+export type TypeUploadWebFile = UploadWebFile;
+export type TypePaymentsPaymentForm = PaymentsPaymentForm;
+export type TypePaymentsValidatedRequestedInfo = PaymentsValidatedRequestedInfo;
+export type TypePaymentsPaymentResult = PaymentsPaymentResult | PaymentsPaymentVerificationNeeded;
+export type TypePaymentsPaymentReceipt = PaymentsPaymentReceipt;
+export type TypePaymentsSavedInfo = PaymentsSavedInfo;
+export type TypeInputPaymentCredentials = InputPaymentCredentialsSaved | InputPaymentCredentials | InputPaymentCredentialsApplePay | InputPaymentCredentialsGooglePay;
+export type TypeAccountTmpPassword = AccountTmpPassword;
+export type TypeShippingOption = ShippingOption;
+export type TypeInputStickerSetItem = InputStickerSetItem;
+export type TypeInputPhoneCall = InputPhoneCall;
+export type TypePhoneCall = PhoneCallEmpty | PhoneCallWaiting | PhoneCallRequested | PhoneCallAccepted | PhoneCall | PhoneCallDiscarded;
+export type TypePhoneConnection = PhoneConnection | PhoneConnectionWebrtc;
+export type TypePhoneCallProtocol = PhoneCallProtocol;
+export type TypePhonePhoneCall = PhonePhoneCall;
+export type TypeUploadCdnFile = UploadCdnFileReuploadNeeded | UploadCdnFile;
+export type TypeCdnPublicKey = CdnPublicKey;
+export type TypeCdnConfig = CdnConfig;
+export type TypeLangPackString = LangPackString | LangPackStringPluralized | LangPackStringDeleted;
+export type TypeLangPackDifference = LangPackDifference;
+export type TypeLangPackLanguage = LangPackLanguage;
+export type TypeChannelAdminLogEventAction = ChannelAdminLogEventActionChangeTitle | ChannelAdminLogEventActionChangeAbout | ChannelAdminLogEventActionChangeUsername | ChannelAdminLogEventActionChangePhoto | ChannelAdminLogEventActionToggleInvites | ChannelAdminLogEventActionToggleSignatures | ChannelAdminLogEventActionUpdatePinned | ChannelAdminLogEventActionEditMessage | ChannelAdminLogEventActionDeleteMessage | ChannelAdminLogEventActionParticipantJoin | ChannelAdminLogEventActionParticipantLeave | ChannelAdminLogEventActionParticipantInvite | ChannelAdminLogEventActionParticipantToggleBan | ChannelAdminLogEventActionParticipantToggleAdmin | ChannelAdminLogEventActionChangeStickerSet | ChannelAdminLogEventActionTogglePreHistoryHidden | ChannelAdminLogEventActionDefaultBannedRights | ChannelAdminLogEventActionStopPoll | ChannelAdminLogEventActionChangeLinkedChat | ChannelAdminLogEventActionChangeLocation | ChannelAdminLogEventActionToggleSlowMode | ChannelAdminLogEventActionStartGroupCall | ChannelAdminLogEventActionDiscardGroupCall | ChannelAdminLogEventActionParticipantMute | ChannelAdminLogEventActionParticipantUnmute | ChannelAdminLogEventActionToggleGroupCallSetting | ChannelAdminLogEventActionParticipantJoinByInvite | ChannelAdminLogEventActionExportedInviteDelete | ChannelAdminLogEventActionExportedInviteRevoke | ChannelAdminLogEventActionExportedInviteEdit | ChannelAdminLogEventActionParticipantVolume | ChannelAdminLogEventActionChangeHistoryTTL | ChannelAdminLogEventActionParticipantJoinByRequest | ChannelAdminLogEventActionToggleNoForwards | ChannelAdminLogEventActionSendMessage | ChannelAdminLogEventActionChangeAvailableReactions | ChannelAdminLogEventActionChangeUsernames | ChannelAdminLogEventActionToggleForum | ChannelAdminLogEventActionCreateTopic | ChannelAdminLogEventActionEditTopic | ChannelAdminLogEventActionDeleteTopic | ChannelAdminLogEventActionPinTopic | ChannelAdminLogEventActionToggleAntiSpam;
+export type TypeChannelAdminLogEvent = ChannelAdminLogEvent;
+export type TypeChannelsAdminLogResults = ChannelsAdminLogResults;
+export type TypeChannelAdminLogEventsFilter = ChannelAdminLogEventsFilter;
+export type TypePopularContact = PopularContact;
+export type TypeMessagesFavedStickers = MessagesFavedStickersNotModified | MessagesFavedStickers;
+export type TypeRecentMeURL = RecentMeURLUnknown | RecentMeURLUser | RecentMeURLChat | RecentMeURLChatInvite | RecentMeURLStickerSet;
+export type TypeHelpRecentMeURLs = HelpRecentMeURLs;
+export type TypeInputSingleMedia = InputSingleMedia;
+export type TypeWebAuthorization = WebAuthorization;
+export type TypeAccountWebAuthorizations = AccountWebAuthorizations;
+export type TypeInputMessage = InputMessageID | InputMessageReplyTo | InputMessagePinned | InputMessageCallbackQuery;
+export type TypeInputDialogPeer = InputDialogPeer | InputDialogPeerFolder;
+export type TypeDialogPeer = DialogPeer | DialogPeerFolder;
+export type TypeMessagesFoundStickerSets = MessagesFoundStickerSetsNotModified | MessagesFoundStickerSets;
+export type TypeFileHash = FileHash;
+export type TypeInputClientProxy = InputClientProxy;
+export type TypeHelpTermsOfServiceUpdate = HelpTermsOfServiceUpdateEmpty | HelpTermsOfServiceUpdate;
+export type TypeInputSecureFile = InputSecureFileUploaded | InputSecureFile;
+export type TypeSecureFile = SecureFileEmpty | SecureFile;
+export type TypeSecureData = SecureData;
+export type TypeSecurePlainData = SecurePlainPhone | SecurePlainEmail;
+export type TypeSecureValueType = SecureValueTypePersonalDetails | SecureValueTypePassport | SecureValueTypeDriverLicense | SecureValueTypeIdentityCard | SecureValueTypeInternalPassport | SecureValueTypeAddress | SecureValueTypeUtilityBill | SecureValueTypeBankStatement | SecureValueTypeRentalAgreement | SecureValueTypePassportRegistration | SecureValueTypeTemporaryRegistration | SecureValueTypePhone | SecureValueTypeEmail;
+export type TypeSecureValue = SecureValue;
+export type TypeInputSecureValue = InputSecureValue;
+export type TypeSecureValueHash = SecureValueHash;
+export type TypeSecureValueError = SecureValueErrorData | SecureValueErrorFrontSide | SecureValueErrorReverseSide | SecureValueErrorSelfie | SecureValueErrorFile | SecureValueErrorFiles | SecureValueError | SecureValueErrorTranslationFile | SecureValueErrorTranslationFiles;
+export type TypeSecureCredentialsEncrypted = SecureCredentialsEncrypted;
+export type TypeAccountAuthorizationForm = AccountAuthorizationForm;
+export type TypeAccountSentEmailCode = AccountSentEmailCode;
+export type TypeHelpDeepLinkInfo = HelpDeepLinkInfoEmpty | HelpDeepLinkInfo;
+export type TypeSavedContact = SavedPhoneContact;
+export type TypeAccountTakeout = AccountTakeout;
+export type TypePasswordKdfAlgo = PasswordKdfAlgoUnknown | PasswordKdfAlgoSHA256SHA256PBKDF2HMACSHA512iter100000SHA256ModPow;
+export type TypeSecurePasswordKdfAlgo = SecurePasswordKdfAlgoUnknown | SecurePasswordKdfAlgoPBKDF2HMACSHA512iter100000 | SecurePasswordKdfAlgoSHA512;
+export type TypeSecureSecretSettings = SecureSecretSettings;
+export type TypeInputCheckPasswordSRP = InputCheckPasswordEmpty | InputCheckPasswordSRP;
+export type TypeSecureRequiredType = SecureRequiredType | SecureRequiredTypeOneOf;
+export type TypeHelpPassportConfig = HelpPassportConfigNotModified | HelpPassportConfig;
+export type TypeInputAppEvent = InputAppEvent;
+export type TypeJSONObjectValue = JsonObjectValue;
+export type TypeJSONValue = JsonNull | JsonBool | JsonNumber | JsonString | JsonArray | JsonObject;
+export type TypePageTableCell = PageTableCell;
+export type TypePageTableRow = PageTableRow;
+export type TypePageCaption = PageCaption;
+export type TypePageListItem = PageListItemText | PageListItemBlocks;
+export type TypePageListOrderedItem = PageListOrderedItemText | PageListOrderedItemBlocks;
+export type TypePageRelatedArticle = PageRelatedArticle;
+export type TypePage = Page;
+export type TypeHelpSupportName = HelpSupportName;
+export type TypeHelpUserInfo = HelpUserInfoEmpty | HelpUserInfo;
+export type TypePollAnswer = PollAnswer;
+export type TypePoll = Poll;
+export type TypePollAnswerVoters = PollAnswerVoters;
+export type TypePollResults = PollResults;
+export type TypeChatOnlines = ChatOnlines;
+export type TypeStatsURL = StatsURL;
+export type TypeChatAdminRights = ChatAdminRights;
+export type TypeChatBannedRights = ChatBannedRights;
+export type TypeInputWallPaper = InputWallPaper | InputWallPaperSlug | InputWallPaperNoFile;
+export type TypeAccountWallPapers = AccountWallPapersNotModified | AccountWallPapers;
+export type TypeCodeSettings = CodeSettings;
+export type TypeWallPaperSettings = WallPaperSettings;
+export type TypeAutoDownloadSettings = AutoDownloadSettings;
+export type TypeAccountAutoDownloadSettings = AccountAutoDownloadSettings;
+export type TypeEmojiKeyword = EmojiKeyword | EmojiKeywordDeleted;
+export type TypeEmojiKeywordsDifference = EmojiKeywordsDifference;
+export type TypeEmojiURL = EmojiURL;
+export type TypeEmojiLanguage = EmojiLanguage;
+export type TypeFolder = Folder;
+export type TypeInputFolderPeer = InputFolderPeer;
+export type TypeFolderPeer = FolderPeer;
+export type TypeMessagesSearchCounter = MessagesSearchCounter;
+export type TypeURLAuthResult = URLAuthResultRequest | URLAuthResultAccepted | URLAuthResultDefault;
+export type TypeChannelLocation = ChannelLocationEmpty | ChannelLocation;
+export type TypePeerLocated = PeerLocated | PeerSelfLocated;
+export type TypeRestrictionReason = RestrictionReason;
+export type TypeInputTheme = InputTheme | InputThemeSlug;
+export type TypeTheme = Theme;
+export type TypeAccountThemes = AccountThemesNotModified | AccountThemes;
+export type TypeAuthLoginToken = AuthLoginToken | AuthLoginTokenMigrateTo | AuthLoginTokenSuccess;
+export type TypeAccountContentSettings = AccountContentSettings;
+export type TypeMessagesInactiveChats = MessagesInactiveChats;
+export type TypeBaseTheme = BaseThemeClassic | BaseThemeDay | BaseThemeNight | BaseThemeTinted | BaseThemeArctic;
+export type TypeInputThemeSettings = InputThemeSettings;
+export type TypeThemeSettings = ThemeSettings;
+export type TypeWebPageAttribute = WebPageAttributeTheme | WebPageAttributeStory;
+export type TypeMessagesVotesList = MessagesVotesList;
+export type TypeBankCardOpenURL = BankCardOpenURL;
+export type TypePaymentsBankCardData = PaymentsBankCardData;
+export type TypeDialogFilter = DialogFilter | DialogFilterDefault | DialogFilterChatlist;
+export type TypeDialogFilterSuggested = DialogFilterSuggested;
+export type TypeStatsDateRangeDays = StatsDateRangeDays;
+export type TypeStatsAbsValueAndPrev = StatsAbsValueAndPrev;
+export type TypeStatsPercentValue = StatsPercentValue;
+export type TypeStatsGraph = StatsGraphAsync | StatsGraphError | StatsGraph;
+export type TypeMessageInteractionCounters = MessageInteractionCounters;
+export type TypeStatsBroadcastStats = StatsBroadcastStats;
+export type TypeHelpPromoData = HelpPromoDataEmpty | HelpPromoData;
+export type TypeVideoSize = VideoSize | VideoSizeEmojiMarkup | VideoSizeStickerMarkup;
+export type TypeStatsGroupTopPoster = StatsGroupTopPoster;
+export type TypeStatsGroupTopAdmin = StatsGroupTopAdmin;
+export type TypeStatsGroupTopInviter = StatsGroupTopInviter;
+export type TypeStatsMegagroupStats = StatsMegagroupStats;
+export type TypeGlobalPrivacySettings = GlobalPrivacySettings;
+export type TypeHelpCountryCode = HelpCountryCode;
+export type TypeHelpCountry = HelpCountry;
+export type TypeHelpCountriesList = HelpCountriesListNotModified | HelpCountriesList;
+export type TypeMessageViews = MessageViews;
+export type TypeMessagesMessageViews = MessagesMessageViews;
+export type TypeMessagesDiscussionMessage = MessagesDiscussionMessage;
+export type TypeMessageReplyHeader = MessageReplyHeader | MessageReplyStoryHeader;
+export type TypeMessageReplies = MessageReplies;
+export type TypePeerBlocked = PeerBlocked;
+export type TypeStatsMessageStats = StatsMessageStats;
+export type TypeGroupCall = GroupCallDiscarded | GroupCall;
+export type TypeInputGroupCall = InputGroupCall;
+export type TypeGroupCallParticipant = GroupCallParticipant;
+export type TypePhoneGroupCall = PhoneGroupCall;
+export type TypePhoneGroupParticipants = PhoneGroupParticipants;
+export type TypeInlineQueryPeerType = InlineQueryPeerTypeSameBotPM | InlineQueryPeerTypePM | InlineQueryPeerTypeChat | InlineQueryPeerTypeMegagroup | InlineQueryPeerTypeBroadcast | InlineQueryPeerTypeBotPM;
+export type TypeMessagesHistoryImport = MessagesHistoryImport;
+export type TypeMessagesHistoryImportParsed = MessagesHistoryImportParsed;
+export type TypeMessagesAffectedFoundMessages = MessagesAffectedFoundMessages;
+export type TypeChatInviteImporter = ChatInviteImporter;
+export type TypeMessagesExportedChatInvites = MessagesExportedChatInvites;
+export type TypeMessagesExportedChatInvite = MessagesExportedChatInvite | MessagesExportedChatInviteReplaced;
+export type TypeMessagesChatInviteImporters = MessagesChatInviteImporters;
+export type TypeChatAdminWithInvites = ChatAdminWithInvites;
+export type TypeMessagesChatAdminsWithInvites = MessagesChatAdminsWithInvites;
+export type TypeMessagesCheckedHistoryImportPeer = MessagesCheckedHistoryImportPeer;
+export type TypePhoneJoinAsPeers = PhoneJoinAsPeers;
+export type TypePhoneExportedGroupCallInvite = PhoneExportedGroupCallInvite;
+export type TypeGroupCallParticipantVideoSourceGroup = GroupCallParticipantVideoSourceGroup;
+export type TypeGroupCallParticipantVideo = GroupCallParticipantVideo;
+export type TypeStickersSuggestedShortName = StickersSuggestedShortName;
+export type TypeBotCommandScope = BotCommandScopeDefault | BotCommandScopeUsers | BotCommandScopeChats | BotCommandScopeChatAdmins | BotCommandScopePeer | BotCommandScopePeerAdmins | BotCommandScopePeerUser;
+export type TypeAccountResetPasswordResult = AccountResetPasswordFailedWait | AccountResetPasswordRequestedWait | AccountResetPasswordOk;
+export type TypeSponsoredMessage = SponsoredMessage;
+export type TypeMessagesSponsoredMessages = MessagesSponsoredMessages | MessagesSponsoredMessagesEmpty;
+export type TypeSearchResultsCalendarPeriod = SearchResultsCalendarPeriod;
+export type TypeMessagesSearchResultsCalendar = MessagesSearchResultsCalendar;
+export type TypeSearchResultsPosition = SearchResultPosition;
+export type TypeMessagesSearchResultsPositions = MessagesSearchResultsPositions;
+export type TypeChannelsSendAsPeers = ChannelsSendAsPeers;
+export type TypeUsersUserFull = UsersUserFull;
+export type TypeMessagesPeerSettings = MessagesPeerSettings;
+export type TypeAuthLoggedOut = AuthLoggedOut;
+export type TypeReactionCount = ReactionCount;
+export type TypeMessageReactions = MessageReactions;
+export type TypeMessagesMessageReactionsList = MessagesMessageReactionsList;
+export type TypeAvailableReaction = AvailableReaction;
+export type TypeMessagesAvailableReactions = MessagesAvailableReactionsNotModified | MessagesAvailableReactions;
+export type TypeMessagePeerReaction = MessagePeerReaction;
+export type TypeGroupCallStreamChannel = GroupCallStreamChannel;
+export type TypePhoneGroupCallStreamChannels = PhoneGroupCallStreamChannels;
+export type TypePhoneGroupCallStreamRtmpURL = PhoneGroupCallStreamRtmpURL;
+export type TypeAttachMenuBotIconColor = AttachMenuBotIconColor;
+export type TypeAttachMenuBotIcon = AttachMenuBotIcon;
+export type TypeAttachMenuBot = AttachMenuBot;
+export type TypeAttachMenuBots = AttachMenuBotsNotModified | AttachMenuBots;
+export type TypeAttachMenuBotsBot = AttachMenuBotsBot;
+export type TypeWebViewResult = WebViewResultURL;
+export type TypeSimpleWebViewResult = SimpleWebViewResultURL;
+export type TypeWebViewMessageSent = WebViewMessageSent;
+export type TypeBotMenuButton = BotMenuButtonDefault | BotMenuButtonCommands | BotMenuButton;
+export type TypeAccountSavedRingtones = AccountSavedRingtonesNotModified | AccountSavedRingtones;
+export type TypeNotificationSound = NotificationSoundDefault | NotificationSoundNone | NotificationSoundLocal | NotificationSoundRingtone;
+export type TypeAccountSavedRingtone = AccountSavedRingtone | AccountSavedRingtoneConverted;
+export type TypeAttachMenuPeerType = AttachMenuPeerTypeSameBotPM | AttachMenuPeerTypeBotPM | AttachMenuPeerTypePM | AttachMenuPeerTypeChat | AttachMenuPeerTypeBroadcast;
+export type TypeInputInvoice = InputInvoiceMessage | InputInvoiceSlug;
+export type TypePaymentsExportedInvoice = PaymentsExportedInvoice;
+export type TypeMessagesTranscribedAudio = MessagesTranscribedAudio;
+export type TypeHelpPremiumPromo = HelpPremiumPromo;
+export type TypeInputStorePaymentPurpose = InputStorePaymentPremiumSubscription | InputStorePaymentGiftPremium;
+export type TypePremiumGiftOption = PremiumGiftOption;
+export type TypePaymentFormMethod = PaymentFormMethod;
+export type TypeEmojiStatus = EmojiStatusEmpty | EmojiStatus | EmojiStatusUntil;
+export type TypeAccountEmojiStatuses = AccountEmojiStatusesNotModified | AccountEmojiStatuses;
+export type TypeReaction = ReactionEmpty | ReactionEmoji | ReactionCustomEmoji;
+export type TypeChatReactions = ChatReactionsNone | ChatReactionsAll | ChatReactionsSome;
+export type TypeMessagesReactions = MessagesReactionsNotModified | MessagesReactions;
+export type TypeEmailVerifyPurpose = EmailVerifyPurposeLoginSetup | EmailVerifyPurposeLoginChange | EmailVerifyPurposePassport;
+export type TypeEmailVerification = EmailVerificationCode | EmailVerificationGoogle | EmailVerificationApple;
+export type TypeAccountEmailVerified = AccountEmailVerified | AccountEmailVerifiedLogin;
+export type TypePremiumSubscriptionOption = PremiumSubscriptionOption;
+export type TypeSendAsPeer = SendAsPeer;
+export type TypeMessageExtendedMedia = MessageExtendedMediaPreview | MessageExtendedMedia;
+export type TypeStickerKeyword = StickerKeyword;
+export type TypeUsername = Username;
+export type TypeForumTopic = ForumTopicDeleted | ForumTopic;
+export type TypeMessagesForumTopics = MessagesForumTopics;
+export type TypeDefaultHistoryTTL = DefaultHistoryTTL;
+export type TypeExportedContactToken = ExportedContactToken;
+export type TypeRequestPeerType = RequestPeerTypeUser | RequestPeerTypeChat | RequestPeerTypeBroadcast;
+export type TypeEmojiList = EmojiListNotModified | EmojiList;
+export type TypeEmojiGroup = EmojiGroup;
+export type TypeMessagesEmojiGroups = MessagesEmojiGroupsNotModified | MessagesEmojiGroups;
+export type TypeTextWithEntities = TextWithEntities;
+export type TypeMessagesTranslatedText = MessagesTranslateResult;
+export type TypeAutoSaveSettings = AutoSaveSettings;
+export type TypeAutoSaveException = AutoSaveException;
+export type TypeAccountAutoSaveSettings = AccountAutoSaveSettings;
+export type TypeHelpAppConfig = HelpAppConfigNotModified | HelpAppConfig;
+export type TypeInputBotApp = InputBotAppID | InputBotAppShortName;
+export type TypeBotApp = BotAppNotModified | BotApp;
+export type TypeMessagesBotApp = MessagesBotApp;
+export type TypeAppWebViewResult = AppWebViewResultURL;
+export type TypeInlineBotWebView = InlineBotWebView;
+export type TypeReadParticipantDate = ReadParticipantDate;
+export type TypeInputChatlist = InputChatlistDialogFilter;
+export type TypeExportedChatlistInvite = ExportedChatlistInvite;
+export type TypeChatlistsExportedChatlistInvite = ChatlistsExportedChatlistInvite;
+export type TypeChatlistsExportedInvites = ChatlistsExportedInvites;
+export type TypeChatlistsChatlistInvite = ChatlistsChatlistInviteAlready | ChatlistsChatlistInvite;
+export type TypeChatlistsChatlistUpdates = ChatlistsChatlistUpdates;
+export type TypeBotsBotInfo = BotsBotInfo;
+export type TypeMessagePeerVote = MessagePeerVote | MessagePeerVoteInputOption | MessagePeerVoteMultiple;
+export type TypeSponsoredWebPage = SponsoredWebPage;
+export type TypeStoryViews = StoryViews;
+export type TypeStoryItem = StoryItemDeleted | StoryItemSkipped | StoryItem;
+export type TypeUserStories = UserStories;
+export type TypeStoriesAllStories = StoriesAllStoriesNotModified | StoriesAllStories;
+export type TypeStoriesStories = StoriesStories;
+export type TypeStoriesUserStories = StoriesUserStories;
+export type TypeStoryView = StoryView;
+export type TypeStoriesStoryViewsList = StoriesStoryViewsList;
+export type TypeStoriesStoryViews = StoriesStoryViews;
+export type TypeInputReplyTo = InputReplyToMessage | InputReplyToStory;
+export type TypeExportedStoryLink = ExportedStoryLink;
+export type TypeStoriesStealthMode = StoriesStealthMode;
+export type TypeMediaAreaCoordinates = MediaAreaCoordinates;
+export type TypeMediaArea = MediaAreaVenue | InputMediaAreaVenue | MediaAreaGeoPoint;
 
 export const map = new Map<number, TLObjectConstructor>([
 [0x05162463, ResPQ],
