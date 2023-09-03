@@ -228,8 +228,19 @@ export class Client extends ClientAbstract {
     return this.handler({ connectionState }, resolve);
   }
 
+  private lastPropagatedConnectionState: ConnectionState | null = null;
   protected stateChangeHandler = ((connected: boolean) => {
-    this.propagateConnectionState(connected ? "ready" : "not-connected");
+    this.connectMutex.acquire().then(async (release) => {
+      try {
+        const connectionState = connected ? "ready" : "not-connected";
+        if (this.connected == connected && this.lastPropagatedConnectionState != connectionState) {
+          await this.propagateConnectionState(connectionState);
+          this.lastPropagatedConnectionState = connectionState;
+        }
+      } finally {
+        release();
+      }
+    });
   }).bind(this);
 
   private storageInited = false;
