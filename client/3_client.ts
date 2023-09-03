@@ -594,7 +594,7 @@ export class Client extends ClientAbstract {
             body = new TLReader(gunzip(body.packedData)).readObject();
           }
           dRecv("received %s", body.constructor.name);
-          if (body instanceof types.TypeUpdates || body instanceof types.TypeUpdate) {
+          if (body instanceof types._TypeUpdates || body instanceof types._TypeUpdate) {
             this.processUpdatesQueue.add(() => this.processUpdates(body as types.Updates | types.TypeUpdate));
           } else if (message.body instanceof RPCResult) {
             let result = message.body.result;
@@ -618,7 +618,7 @@ export class Client extends ClientAbstract {
                 this.promises.delete(messageId);
               }
             };
-            if (result instanceof types.TypeUpdates || result instanceof types.TypeUpdate) {
+            if (result instanceof types._TypeUpdates || result instanceof types._TypeUpdate) {
               this.processUpdatesQueue.add(async () => {
                 await this.processUpdates(result as types.TypeUpdates | types.TypeUpdate);
                 resolvePromise();
@@ -812,7 +812,7 @@ export class Client extends ClientAbstract {
     } else if (updates_ instanceof types.UpdatesTooLong) {
       await this.recoverUpdateGap("updatesTooLong");
       return;
-    } else if (updates_ instanceof types.TypeUpdate) {
+    } else if (updates_ instanceof types._TypeUpdate) {
       updates = [updates_];
     } else {
       UNREACHABLE();
@@ -899,7 +899,7 @@ export class Client extends ClientAbstract {
         }
       }
       /// If there were any Update, they will be passed to the update handling queue.
-      if (update instanceof types.TypeUpdate) {
+      if (update instanceof types._TypeUpdate) {
         updatesToHandle.push(update);
       }
     }

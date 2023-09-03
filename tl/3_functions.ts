@@ -6,7 +6,7 @@ export abstract class Function<T> extends TLObject {
   __R: T = Symbol() as unknown as T; // virtual member
 }
 
-export class ReqPQMulti extends Function<types.ResPQ> {
+export class ReqPQMulti extends Function<types.TypeResPQ> {
   nonce: bigint;
 
   protected get [id]() {
@@ -31,7 +31,7 @@ export class ReqPQMulti extends Function<types.ResPQ> {
   }
 }
 
-export class ReqDHParams extends Function<types.ServerDHParamsOK> {
+export class ReqDHParams extends Function<types.TypeServerDHParams> {
   nonce: bigint;
   serverNonce: bigint;
   p: Uint8Array;
@@ -134,7 +134,7 @@ export class RPCDropAnswer extends Function<types.TypeRpcDropAnswer> {
   }
 }
 
-export class GetFutureSalts extends Function<types.FutureSalts> {
+export class GetFutureSalts extends Function<types.TypeFutureSalts> {
   num: number;
 
   protected get [id]() {
@@ -159,7 +159,7 @@ export class GetFutureSalts extends Function<types.FutureSalts> {
   }
 }
 
-export class Ping extends Function<types.Pong> {
+export class Ping extends Function<types.TypePong> {
   pingId: bigint;
 
   protected get [id]() {
@@ -184,7 +184,7 @@ export class Ping extends Function<types.Pong> {
   }
 }
 
-export class PingDelayDisconnect extends Function<types.Pong> {
+export class PingDelayDisconnect extends Function<types.TypePong> {
   pingId: bigint;
   disconnectDelay: number;
 
@@ -340,8 +340,8 @@ export class InitConnection<T extends Function<unknown>> extends Function<T["__R
       ["systemLangCode", "string", "string"],
       ["langPack", "string", "string"],
       ["langCode", "string", "string"],
-      ["proxy", types.TypeInputClientProxy, "flags.0?InputClientProxy"],
-      ["params", types.TypeJSONValue, "flags.1?JSONValue"],
+      ["proxy", types._TypeInputClientProxy, "flags.0?InputClientProxy"],
+      ["params", types._TypeJSONValue, "flags.1?JSONValue"],
       ["query", types.TypeX, "!X"],
     ];
   }
@@ -356,8 +356,8 @@ export class InitConnection<T extends Function<unknown>> extends Function<T["__R
       [this.systemLangCode, "string", "string"],
       [this.langPack, "string", "string"],
       [this.langCode, "string", "string"],
-      [this.proxy ?? null, types.TypeInputClientProxy, "flags.0?InputClientProxy"],
-      [this.params ?? null, types.TypeJSONValue, "flags.1?JSONValue"],
+      [this.proxy ?? null, types._TypeInputClientProxy, "flags.0?InputClientProxy"],
+      [this.params ?? null, types._TypeJSONValue, "flags.1?JSONValue"],
       [this.query, types.TypeX, "!X"],
     ];
   }
@@ -441,14 +441,14 @@ export class InvokeWithMessagesRange<T extends Function<unknown>> extends Functi
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["range", types.TypeMessageRange, "MessageRange"],
+      ["range", types._TypeMessageRange, "MessageRange"],
       ["query", types.TypeX, "!X"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.range, types.TypeMessageRange, "MessageRange"],
+      [this.range, types._TypeMessageRange, "MessageRange"],
       [this.query, types.TypeX, "!X"],
     ];
   }
@@ -504,7 +504,7 @@ export class AuthSendCode extends Function<types.TypeAuthSentCode> {
       ["phoneNumber", "string", "string"],
       ["apiId", "number", "int"],
       ["apiHash", "string", "string"],
-      ["settings", types.TypeCodeSettings, "CodeSettings"],
+      ["settings", types._TypeCodeSettings, "CodeSettings"],
     ];
   }
 
@@ -513,7 +513,7 @@ export class AuthSendCode extends Function<types.TypeAuthSentCode> {
       [this.phoneNumber, "string", "string"],
       [this.apiId, "number", "int"],
       [this.apiHash, "string", "string"],
-      [this.settings, types.TypeCodeSettings, "CodeSettings"],
+      [this.settings, types._TypeCodeSettings, "CodeSettings"],
     ];
   }
 
@@ -579,7 +579,7 @@ export class AuthSignIn extends Function<types.TypeAuthAuthorization> {
       ["phoneNumber", "string", "string"],
       ["phoneCodeHash", "string", "string"],
       ["phoneCode", "string", "flags.0?string"],
-      ["emailVerification", types.TypeEmailVerification, "flags.1?EmailVerification"],
+      ["emailVerification", types._TypeEmailVerification, "flags.1?EmailVerification"],
     ];
   }
 
@@ -589,7 +589,7 @@ export class AuthSignIn extends Function<types.TypeAuthAuthorization> {
       [this.phoneNumber, "string", "string"],
       [this.phoneCodeHash, "string", "string"],
       [this.phoneCode ?? null, "string", "flags.0?string"],
-      [this.emailVerification ?? null, types.TypeEmailVerification, "flags.1?EmailVerification"],
+      [this.emailVerification ?? null, types._TypeEmailVerification, "flags.1?EmailVerification"],
     ];
   }
 
@@ -602,7 +602,7 @@ export class AuthSignIn extends Function<types.TypeAuthAuthorization> {
   }
 }
 
-export class AuthLogOut extends Function<types.AuthLoggedOut> {
+export class AuthLogOut extends Function<types.TypeAuthLoggedOut> {
   protected get [id]() {
     return 0x3E72BA19;
   }
@@ -638,7 +638,7 @@ export class AuthResetAuthorizations extends Function<boolean> {
   }
 }
 
-export class AuthExportAuthorization extends Function<types.AuthExportedAuthorization> {
+export class AuthExportAuthorization extends Function<types.TypeAuthExportedAuthorization> {
   dcId: number;
 
   protected get [id]() {
@@ -775,13 +775,13 @@ export class AuthCheckPassword extends Function<types.TypeAuthAuthorization> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["password", types.TypeInputCheckPasswordSRP, "InputCheckPasswordSRP"],
+      ["password", types._TypeInputCheckPasswordSRP, "InputCheckPasswordSRP"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.password, types.TypeInputCheckPasswordSRP, "InputCheckPasswordSRP"],
+      [this.password, types._TypeInputCheckPasswordSRP, "InputCheckPasswordSRP"],
     ];
   }
 
@@ -791,7 +791,7 @@ export class AuthCheckPassword extends Function<types.TypeAuthAuthorization> {
   }
 }
 
-export class AuthRequestPasswordRecovery extends Function<types.AuthPasswordRecovery> {
+export class AuthRequestPasswordRecovery extends Function<types.TypeAuthPasswordRecovery> {
   protected get [id]() {
     return 0xD897BC66;
   }
@@ -821,7 +821,7 @@ export class AuthRecoverPassword extends Function<types.TypeAuthAuthorization> {
     return [
       ["flags", flags, "#"],
       ["code", "string", "string"],
-      ["newSettings", types.TypeAccountPasswordInputSettings, "flags.0?account.PasswordInputSettings"],
+      ["newSettings", types._TypeAccountPasswordInputSettings, "flags.0?account.PasswordInputSettings"],
     ];
   }
 
@@ -829,7 +829,7 @@ export class AuthRecoverPassword extends Function<types.TypeAuthAuthorization> {
     return [
       ["flags", flags, "#"],
       [this.code, "string", "string"],
-      [this.newSettings ?? null, types.TypeAccountPasswordInputSettings, "flags.0?account.PasswordInputSettings"],
+      [this.newSettings ?? null, types._TypeAccountPasswordInputSettings, "flags.0?account.PasswordInputSettings"],
     ];
   }
 
@@ -981,7 +981,7 @@ export class AuthImportLoginToken extends Function<types.TypeAuthLoginToken> {
   }
 }
 
-export class AuthAcceptLoginToken extends Function<types.Authorization> {
+export class AuthAcceptLoginToken extends Function<types.TypeAuthorization> {
   token: Uint8Array;
 
   protected get [id]() {
@@ -1222,15 +1222,15 @@ export class AccountUpdateNotifySettings extends Function<boolean> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["peer", types.TypeInputNotifyPeer, "InputNotifyPeer"],
-      ["settings", types.TypeInputPeerNotifySettings, "InputPeerNotifySettings"],
+      ["peer", types._TypeInputNotifyPeer, "InputNotifyPeer"],
+      ["settings", types._TypeInputPeerNotifySettings, "InputPeerNotifySettings"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.peer, types.TypeInputNotifyPeer, "InputNotifyPeer"],
-      [this.settings, types.TypeInputPeerNotifySettings, "InputPeerNotifySettings"],
+      [this.peer, types._TypeInputNotifyPeer, "InputNotifyPeer"],
+      [this.settings, types._TypeInputPeerNotifySettings, "InputPeerNotifySettings"],
     ];
   }
 
@@ -1241,7 +1241,7 @@ export class AccountUpdateNotifySettings extends Function<boolean> {
   }
 }
 
-export class AccountGetNotifySettings extends Function<types.PeerNotifySettings> {
+export class AccountGetNotifySettings extends Function<types.TypePeerNotifySettings> {
   peer: types.TypeInputNotifyPeer;
 
   protected get [id]() {
@@ -1250,13 +1250,13 @@ export class AccountGetNotifySettings extends Function<types.PeerNotifySettings>
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["peer", types.TypeInputNotifyPeer, "InputNotifyPeer"],
+      ["peer", types._TypeInputNotifyPeer, "InputNotifyPeer"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.peer, types.TypeInputNotifyPeer, "InputNotifyPeer"],
+      [this.peer, types._TypeInputNotifyPeer, "InputNotifyPeer"],
     ];
   }
 
@@ -1380,16 +1380,16 @@ export class AccountReportPeer extends Function<boolean> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["peer", types.TypeInputPeer, "InputPeer"],
-      ["reason", types.TypeReportReason, "ReportReason"],
+      ["peer", types._TypeInputPeer, "InputPeer"],
+      ["reason", types._TypeReportReason, "ReportReason"],
       ["message", "string", "string"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.peer, types.TypeInputPeer, "InputPeer"],
-      [this.reason, types.TypeReportReason, "ReportReason"],
+      [this.peer, types._TypeInputPeer, "InputPeer"],
+      [this.reason, types._TypeReportReason, "ReportReason"],
       [this.message, "string", "string"],
     ];
   }
@@ -1452,7 +1452,7 @@ export class AccountUpdateUsername extends Function<types.TypeUser> {
   }
 }
 
-export class AccountGetPrivacy extends Function<types.AccountPrivacyRules> {
+export class AccountGetPrivacy extends Function<types.TypeAccountPrivacyRules> {
   key: types.TypeInputPrivacyKey;
 
   protected get [id]() {
@@ -1461,13 +1461,13 @@ export class AccountGetPrivacy extends Function<types.AccountPrivacyRules> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["key", types.TypeInputPrivacyKey, "InputPrivacyKey"],
+      ["key", types._TypeInputPrivacyKey, "InputPrivacyKey"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.key, types.TypeInputPrivacyKey, "InputPrivacyKey"],
+      [this.key, types._TypeInputPrivacyKey, "InputPrivacyKey"],
     ];
   }
 
@@ -1477,7 +1477,7 @@ export class AccountGetPrivacy extends Function<types.AccountPrivacyRules> {
   }
 }
 
-export class AccountSetPrivacy extends Function<types.AccountPrivacyRules> {
+export class AccountSetPrivacy extends Function<types.TypeAccountPrivacyRules> {
   key: types.TypeInputPrivacyKey;
   rules: Array<types.TypeInputPrivacyRule>;
 
@@ -1487,15 +1487,15 @@ export class AccountSetPrivacy extends Function<types.AccountPrivacyRules> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["key", types.TypeInputPrivacyKey, "InputPrivacyKey"],
-      ["rules", [types.TypeInputPrivacyRule], "Vector<InputPrivacyRule>"],
+      ["key", types._TypeInputPrivacyKey, "InputPrivacyKey"],
+      ["rules", [types._TypeInputPrivacyRule], "Vector<InputPrivacyRule>"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.key, types.TypeInputPrivacyKey, "InputPrivacyKey"],
-      [this.rules, [types.TypeInputPrivacyRule], "Vector<InputPrivacyRule>"],
+      [this.key, types._TypeInputPrivacyKey, "InputPrivacyKey"],
+      [this.rules, [types._TypeInputPrivacyRule], "Vector<InputPrivacyRule>"],
     ];
   }
 
@@ -1518,7 +1518,7 @@ export class AccountDeleteAccount extends Function<boolean> {
     return [
       ["flags", flags, "#"],
       ["reason", "string", "string"],
-      ["password", types.TypeInputCheckPasswordSRP, "flags.0?InputCheckPasswordSRP"],
+      ["password", types._TypeInputCheckPasswordSRP, "flags.0?InputCheckPasswordSRP"],
     ];
   }
 
@@ -1526,7 +1526,7 @@ export class AccountDeleteAccount extends Function<boolean> {
     return [
       ["flags", flags, "#"],
       [this.reason, "string", "string"],
-      [this.password ?? null, types.TypeInputCheckPasswordSRP, "flags.0?InputCheckPasswordSRP"],
+      [this.password ?? null, types._TypeInputCheckPasswordSRP, "flags.0?InputCheckPasswordSRP"],
     ];
   }
 
@@ -1537,7 +1537,7 @@ export class AccountDeleteAccount extends Function<boolean> {
   }
 }
 
-export class AccountGetAccountTTL extends Function<types.AccountDaysTTL> {
+export class AccountGetAccountTTL extends Function<types.TypeAccountDaysTTL> {
   protected get [id]() {
     return 0x08FC711D;
   }
@@ -1564,13 +1564,13 @@ export class AccountSetAccountTTL extends Function<boolean> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["ttl", types.TypeAccountDaysTTL, "AccountDaysTTL"],
+      ["ttl", types._TypeAccountDaysTTL, "AccountDaysTTL"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.ttl, types.TypeAccountDaysTTL, "AccountDaysTTL"],
+      [this.ttl, types._TypeAccountDaysTTL, "AccountDaysTTL"],
     ];
   }
 
@@ -1591,14 +1591,14 @@ export class AccountSendChangePhoneCode extends Function<types.TypeAuthSentCode>
   static get [paramDesc](): ParamDesc {
     return [
       ["phoneNumber", "string", "string"],
-      ["settings", types.TypeCodeSettings, "CodeSettings"],
+      ["settings", types._TypeCodeSettings, "CodeSettings"],
     ];
   }
 
   protected get [params](): Params {
     return [
       [this.phoneNumber, "string", "string"],
-      [this.settings, types.TypeCodeSettings, "CodeSettings"],
+      [this.settings, types._TypeCodeSettings, "CodeSettings"],
     ];
   }
 
@@ -1667,7 +1667,7 @@ export class AccountUpdateDeviceLocked extends Function<boolean> {
   }
 }
 
-export class AccountGetAuthorizations extends Function<types.AccountAuthorizations> {
+export class AccountGetAuthorizations extends Function<types.TypeAccountAuthorizations> {
   protected get [id]() {
     return 0xE320C158;
   }
@@ -1710,7 +1710,7 @@ export class AccountResetAuthorization extends Function<boolean> {
   }
 }
 
-export class AccountGetPassword extends Function<types.AccountPassword> {
+export class AccountGetPassword extends Function<types.TypeAccountPassword> {
   protected get [id]() {
     return 0x548A30F5;
   }
@@ -1728,7 +1728,7 @@ export class AccountGetPassword extends Function<types.AccountPassword> {
   }
 }
 
-export class AccountGetPasswordSettings extends Function<types.AccountPasswordSettings> {
+export class AccountGetPasswordSettings extends Function<types.TypeAccountPasswordSettings> {
   password: types.TypeInputCheckPasswordSRP;
 
   protected get [id]() {
@@ -1737,13 +1737,13 @@ export class AccountGetPasswordSettings extends Function<types.AccountPasswordSe
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["password", types.TypeInputCheckPasswordSRP, "InputCheckPasswordSRP"],
+      ["password", types._TypeInputCheckPasswordSRP, "InputCheckPasswordSRP"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.password, types.TypeInputCheckPasswordSRP, "InputCheckPasswordSRP"],
+      [this.password, types._TypeInputCheckPasswordSRP, "InputCheckPasswordSRP"],
     ];
   }
 
@@ -1763,15 +1763,15 @@ export class AccountUpdatePasswordSettings extends Function<boolean> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["password", types.TypeInputCheckPasswordSRP, "InputCheckPasswordSRP"],
-      ["newSettings", types.TypeAccountPasswordInputSettings, "account.PasswordInputSettings"],
+      ["password", types._TypeInputCheckPasswordSRP, "InputCheckPasswordSRP"],
+      ["newSettings", types._TypeAccountPasswordInputSettings, "account.PasswordInputSettings"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.password, types.TypeInputCheckPasswordSRP, "InputCheckPasswordSRP"],
-      [this.newSettings, types.TypeAccountPasswordInputSettings, "account.PasswordInputSettings"],
+      [this.password, types._TypeInputCheckPasswordSRP, "InputCheckPasswordSRP"],
+      [this.newSettings, types._TypeAccountPasswordInputSettings, "account.PasswordInputSettings"],
     ];
   }
 
@@ -1793,14 +1793,14 @@ export class AccountSendConfirmPhoneCode extends Function<types.TypeAuthSentCode
   static get [paramDesc](): ParamDesc {
     return [
       ["hash", "string", "string"],
-      ["settings", types.TypeCodeSettings, "CodeSettings"],
+      ["settings", types._TypeCodeSettings, "CodeSettings"],
     ];
   }
 
   protected get [params](): Params {
     return [
       [this.hash, "string", "string"],
-      [this.settings, types.TypeCodeSettings, "CodeSettings"],
+      [this.settings, types._TypeCodeSettings, "CodeSettings"],
     ];
   }
 
@@ -1840,7 +1840,7 @@ export class AccountConfirmPhone extends Function<boolean> {
   }
 }
 
-export class AccountGetTmpPassword extends Function<types.AccountTmpPassword> {
+export class AccountGetTmpPassword extends Function<types.TypeAccountTmpPassword> {
   password: types.TypeInputCheckPasswordSRP;
   period: number;
 
@@ -1850,14 +1850,14 @@ export class AccountGetTmpPassword extends Function<types.AccountTmpPassword> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["password", types.TypeInputCheckPasswordSRP, "InputCheckPasswordSRP"],
+      ["password", types._TypeInputCheckPasswordSRP, "InputCheckPasswordSRP"],
       ["period", "number", "int"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.password, types.TypeInputCheckPasswordSRP, "InputCheckPasswordSRP"],
+      [this.password, types._TypeInputCheckPasswordSRP, "InputCheckPasswordSRP"],
       [this.period, "number", "int"],
     ];
   }
@@ -1869,7 +1869,7 @@ export class AccountGetTmpPassword extends Function<types.AccountTmpPassword> {
   }
 }
 
-export class AccountGetWebAuthorizations extends Function<types.AccountWebAuthorizations> {
+export class AccountGetWebAuthorizations extends Function<types.TypeAccountWebAuthorizations> {
   protected get [id]() {
     return 0x182E6D6F;
   }
@@ -1930,7 +1930,7 @@ export class AccountResetWebAuthorizations extends Function<boolean> {
   }
 }
 
-export class AccountGetAllSecureValues extends Function<types.SecureValue[]> {
+export class AccountGetAllSecureValues extends Function<types.TypeSecureValue[]> {
   protected get [id]() {
     return 0xB288BC7D;
   }
@@ -1948,7 +1948,7 @@ export class AccountGetAllSecureValues extends Function<types.SecureValue[]> {
   }
 }
 
-export class AccountGetSecureValue extends Function<types.SecureValue[]> {
+export class AccountGetSecureValue extends Function<types.TypeSecureValue[]> {
   types: Array<types.TypeSecureValueType>;
 
   protected get [id]() {
@@ -1957,13 +1957,13 @@ export class AccountGetSecureValue extends Function<types.SecureValue[]> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["types", [types.TypeSecureValueType], "Vector<SecureValueType>"],
+      ["types", [types._TypeSecureValueType], "Vector<SecureValueType>"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.types, [types.TypeSecureValueType], "Vector<SecureValueType>"],
+      [this.types, [types._TypeSecureValueType], "Vector<SecureValueType>"],
     ];
   }
 
@@ -1973,7 +1973,7 @@ export class AccountGetSecureValue extends Function<types.SecureValue[]> {
   }
 }
 
-export class AccountSaveSecureValue extends Function<types.SecureValue> {
+export class AccountSaveSecureValue extends Function<types.TypeSecureValue> {
   value: types.TypeInputSecureValue;
   secureSecretId: bigint;
 
@@ -1983,14 +1983,14 @@ export class AccountSaveSecureValue extends Function<types.SecureValue> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["value", types.TypeInputSecureValue, "InputSecureValue"],
+      ["value", types._TypeInputSecureValue, "InputSecureValue"],
       ["secureSecretId", "bigint", "long"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.value, types.TypeInputSecureValue, "InputSecureValue"],
+      [this.value, types._TypeInputSecureValue, "InputSecureValue"],
       [this.secureSecretId, "bigint", "long"],
     ];
   }
@@ -2011,13 +2011,13 @@ export class AccountDeleteSecureValue extends Function<boolean> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["types", [types.TypeSecureValueType], "Vector<SecureValueType>"],
+      ["types", [types._TypeSecureValueType], "Vector<SecureValueType>"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.types, [types.TypeSecureValueType], "Vector<SecureValueType>"],
+      [this.types, [types._TypeSecureValueType], "Vector<SecureValueType>"],
     ];
   }
 
@@ -2027,7 +2027,7 @@ export class AccountDeleteSecureValue extends Function<boolean> {
   }
 }
 
-export class AccountGetAuthorizationForm extends Function<types.AccountAuthorizationForm> {
+export class AccountGetAuthorizationForm extends Function<types.TypeAccountAuthorizationForm> {
   botId: bigint;
   scope: string;
   publicKey: string;
@@ -2076,8 +2076,8 @@ export class AccountAcceptAuthorization extends Function<boolean> {
       ["botId", "bigint", "long"],
       ["scope", "string", "string"],
       ["publicKey", "string", "string"],
-      ["valueHashes", [types.TypeSecureValueHash], "Vector<SecureValueHash>"],
-      ["credentials", types.TypeSecureCredentialsEncrypted, "SecureCredentialsEncrypted"],
+      ["valueHashes", [types._TypeSecureValueHash], "Vector<SecureValueHash>"],
+      ["credentials", types._TypeSecureCredentialsEncrypted, "SecureCredentialsEncrypted"],
     ];
   }
 
@@ -2086,8 +2086,8 @@ export class AccountAcceptAuthorization extends Function<boolean> {
       [this.botId, "bigint", "long"],
       [this.scope, "string", "string"],
       [this.publicKey, "string", "string"],
-      [this.valueHashes, [types.TypeSecureValueHash], "Vector<SecureValueHash>"],
-      [this.credentials, types.TypeSecureCredentialsEncrypted, "SecureCredentialsEncrypted"],
+      [this.valueHashes, [types._TypeSecureValueHash], "Vector<SecureValueHash>"],
+      [this.credentials, types._TypeSecureCredentialsEncrypted, "SecureCredentialsEncrypted"],
     ];
   }
 
@@ -2112,14 +2112,14 @@ export class AccountSendVerifyPhoneCode extends Function<types.TypeAuthSentCode>
   static get [paramDesc](): ParamDesc {
     return [
       ["phoneNumber", "string", "string"],
-      ["settings", types.TypeCodeSettings, "CodeSettings"],
+      ["settings", types._TypeCodeSettings, "CodeSettings"],
     ];
   }
 
   protected get [params](): Params {
     return [
       [this.phoneNumber, "string", "string"],
-      [this.settings, types.TypeCodeSettings, "CodeSettings"],
+      [this.settings, types._TypeCodeSettings, "CodeSettings"],
     ];
   }
 
@@ -2163,7 +2163,7 @@ export class AccountVerifyPhone extends Function<boolean> {
   }
 }
 
-export class AccountSendVerifyEmailCode extends Function<types.AccountSentEmailCode> {
+export class AccountSendVerifyEmailCode extends Function<types.TypeAccountSentEmailCode> {
   purpose: types.TypeEmailVerifyPurpose;
   email: string;
 
@@ -2173,14 +2173,14 @@ export class AccountSendVerifyEmailCode extends Function<types.AccountSentEmailC
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["purpose", types.TypeEmailVerifyPurpose, "EmailVerifyPurpose"],
+      ["purpose", types._TypeEmailVerifyPurpose, "EmailVerifyPurpose"],
       ["email", "string", "string"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.purpose, types.TypeEmailVerifyPurpose, "EmailVerifyPurpose"],
+      [this.purpose, types._TypeEmailVerifyPurpose, "EmailVerifyPurpose"],
       [this.email, "string", "string"],
     ];
   }
@@ -2202,15 +2202,15 @@ export class AccountVerifyEmail extends Function<types.TypeAccountEmailVerified>
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["purpose", types.TypeEmailVerifyPurpose, "EmailVerifyPurpose"],
-      ["verification", types.TypeEmailVerification, "EmailVerification"],
+      ["purpose", types._TypeEmailVerifyPurpose, "EmailVerifyPurpose"],
+      ["verification", types._TypeEmailVerification, "EmailVerification"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.purpose, types.TypeEmailVerifyPurpose, "EmailVerifyPurpose"],
-      [this.verification, types.TypeEmailVerification, "EmailVerification"],
+      [this.purpose, types._TypeEmailVerifyPurpose, "EmailVerifyPurpose"],
+      [this.verification, types._TypeEmailVerification, "EmailVerification"],
     ];
   }
 
@@ -2221,7 +2221,7 @@ export class AccountVerifyEmail extends Function<types.TypeAccountEmailVerified>
   }
 }
 
-export class AccountInitTakeoutSession extends Function<types.AccountTakeout> {
+export class AccountInitTakeoutSession extends Function<types.TypeAccountTakeout> {
   contacts?: true;
   messageUsers?: true;
   messageChats?: true;
@@ -2417,7 +2417,7 @@ export class AccountGetNotifyExceptions extends Function<types.TypeUpdates> {
       ["flags", flags, "#"],
       ["compareSound", "true", "flags.1?true"],
       ["compareStories", "true", "flags.2?true"],
-      ["peer", types.TypeInputNotifyPeer, "flags.0?InputNotifyPeer"],
+      ["peer", types._TypeInputNotifyPeer, "flags.0?InputNotifyPeer"],
     ];
   }
 
@@ -2426,7 +2426,7 @@ export class AccountGetNotifyExceptions extends Function<types.TypeUpdates> {
       ["flags", flags, "#"],
       [this.compareSound ?? null, "true", "flags.1?true"],
       [this.compareStories ?? null, "true", "flags.2?true"],
-      [this.peer ?? null, types.TypeInputNotifyPeer, "flags.0?InputNotifyPeer"],
+      [this.peer ?? null, types._TypeInputNotifyPeer, "flags.0?InputNotifyPeer"],
     ];
   }
 
@@ -2447,13 +2447,13 @@ export class AccountGetWallPaper extends Function<types.TypeWallPaper> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["wallpaper", types.TypeInputWallPaper, "InputWallPaper"],
+      ["wallpaper", types._TypeInputWallPaper, "InputWallPaper"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.wallpaper, types.TypeInputWallPaper, "InputWallPaper"],
+      [this.wallpaper, types._TypeInputWallPaper, "InputWallPaper"],
     ];
   }
 
@@ -2477,9 +2477,9 @@ export class AccountUploadWallPaper extends Function<types.TypeWallPaper> {
     return [
       ["flags", flags, "#"],
       ["forChat", "true", "flags.0?true"],
-      ["file", types.TypeInputFile, "InputFile"],
+      ["file", types._TypeInputFile, "InputFile"],
       ["mimeType", "string", "string"],
-      ["settings", types.TypeWallPaperSettings, "WallPaperSettings"],
+      ["settings", types._TypeWallPaperSettings, "WallPaperSettings"],
     ];
   }
 
@@ -2487,9 +2487,9 @@ export class AccountUploadWallPaper extends Function<types.TypeWallPaper> {
     return [
       ["flags", flags, "#"],
       [this.forChat ?? null, "true", "flags.0?true"],
-      [this.file, types.TypeInputFile, "InputFile"],
+      [this.file, types._TypeInputFile, "InputFile"],
       [this.mimeType, "string", "string"],
-      [this.settings, types.TypeWallPaperSettings, "WallPaperSettings"],
+      [this.settings, types._TypeWallPaperSettings, "WallPaperSettings"],
     ];
   }
 
@@ -2513,17 +2513,17 @@ export class AccountSaveWallPaper extends Function<boolean> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["wallpaper", types.TypeInputWallPaper, "InputWallPaper"],
+      ["wallpaper", types._TypeInputWallPaper, "InputWallPaper"],
       ["unsave", "boolean", "Bool"],
-      ["settings", types.TypeWallPaperSettings, "WallPaperSettings"],
+      ["settings", types._TypeWallPaperSettings, "WallPaperSettings"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.wallpaper, types.TypeInputWallPaper, "InputWallPaper"],
+      [this.wallpaper, types._TypeInputWallPaper, "InputWallPaper"],
       [this.unsave, "boolean", "Bool"],
-      [this.settings, types.TypeWallPaperSettings, "WallPaperSettings"],
+      [this.settings, types._TypeWallPaperSettings, "WallPaperSettings"],
     ];
   }
 
@@ -2545,15 +2545,15 @@ export class AccountInstallWallPaper extends Function<boolean> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["wallpaper", types.TypeInputWallPaper, "InputWallPaper"],
-      ["settings", types.TypeWallPaperSettings, "WallPaperSettings"],
+      ["wallpaper", types._TypeInputWallPaper, "InputWallPaper"],
+      ["settings", types._TypeWallPaperSettings, "WallPaperSettings"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.wallpaper, types.TypeInputWallPaper, "InputWallPaper"],
-      [this.settings, types.TypeWallPaperSettings, "WallPaperSettings"],
+      [this.wallpaper, types._TypeInputWallPaper, "InputWallPaper"],
+      [this.settings, types._TypeWallPaperSettings, "WallPaperSettings"],
     ];
   }
 
@@ -2582,7 +2582,7 @@ export class AccountResetWallPapers extends Function<boolean> {
   }
 }
 
-export class AccountGetAutoDownloadSettings extends Function<types.AccountAutoDownloadSettings> {
+export class AccountGetAutoDownloadSettings extends Function<types.TypeAccountAutoDownloadSettings> {
   protected get [id]() {
     return 0x56DA0B3F;
   }
@@ -2614,7 +2614,7 @@ export class AccountSaveAutoDownloadSettings extends Function<boolean> {
       ["flags", flags, "#"],
       ["low", "true", "flags.0?true"],
       ["high", "true", "flags.1?true"],
-      ["settings", types.TypeAutoDownloadSettings, "AutoDownloadSettings"],
+      ["settings", types._TypeAutoDownloadSettings, "AutoDownloadSettings"],
     ];
   }
 
@@ -2623,7 +2623,7 @@ export class AccountSaveAutoDownloadSettings extends Function<boolean> {
       ["flags", flags, "#"],
       [this.low ?? null, "true", "flags.0?true"],
       [this.high ?? null, "true", "flags.1?true"],
-      [this.settings, types.TypeAutoDownloadSettings, "AutoDownloadSettings"],
+      [this.settings, types._TypeAutoDownloadSettings, "AutoDownloadSettings"],
     ];
   }
 
@@ -2648,8 +2648,8 @@ export class AccountUploadTheme extends Function<types.TypeDocument> {
   static get [paramDesc](): ParamDesc {
     return [
       ["flags", flags, "#"],
-      ["file", types.TypeInputFile, "InputFile"],
-      ["thumb", types.TypeInputFile, "flags.0?InputFile"],
+      ["file", types._TypeInputFile, "InputFile"],
+      ["thumb", types._TypeInputFile, "flags.0?InputFile"],
       ["fileName", "string", "string"],
       ["mimeType", "string", "string"],
     ];
@@ -2658,8 +2658,8 @@ export class AccountUploadTheme extends Function<types.TypeDocument> {
   protected get [params](): Params {
     return [
       ["flags", flags, "#"],
-      [this.file, types.TypeInputFile, "InputFile"],
-      [this.thumb ?? null, types.TypeInputFile, "flags.0?InputFile"],
+      [this.file, types._TypeInputFile, "InputFile"],
+      [this.thumb ?? null, types._TypeInputFile, "flags.0?InputFile"],
       [this.fileName, "string", "string"],
       [this.mimeType, "string", "string"],
     ];
@@ -2674,7 +2674,7 @@ export class AccountUploadTheme extends Function<types.TypeDocument> {
   }
 }
 
-export class AccountCreateTheme extends Function<types.Theme> {
+export class AccountCreateTheme extends Function<types.TypeTheme> {
   slug: string;
   title: string;
   document?: types.TypeInputDocument;
@@ -2689,8 +2689,8 @@ export class AccountCreateTheme extends Function<types.Theme> {
       ["flags", flags, "#"],
       ["slug", "string", "string"],
       ["title", "string", "string"],
-      ["document", types.TypeInputDocument, "flags.2?InputDocument"],
-      ["settings", [types.TypeInputThemeSettings], "flags.3?Vector<InputThemeSettings>"],
+      ["document", types._TypeInputDocument, "flags.2?InputDocument"],
+      ["settings", [types._TypeInputThemeSettings], "flags.3?Vector<InputThemeSettings>"],
     ];
   }
 
@@ -2699,8 +2699,8 @@ export class AccountCreateTheme extends Function<types.Theme> {
       ["flags", flags, "#"],
       [this.slug, "string", "string"],
       [this.title, "string", "string"],
-      [this.document ?? null, types.TypeInputDocument, "flags.2?InputDocument"],
-      [this.settings ?? null, [types.TypeInputThemeSettings], "flags.3?Vector<InputThemeSettings>"],
+      [this.document ?? null, types._TypeInputDocument, "flags.2?InputDocument"],
+      [this.settings ?? null, [types._TypeInputThemeSettings], "flags.3?Vector<InputThemeSettings>"],
     ];
   }
 
@@ -2713,7 +2713,7 @@ export class AccountCreateTheme extends Function<types.Theme> {
   }
 }
 
-export class AccountUpdateTheme extends Function<types.Theme> {
+export class AccountUpdateTheme extends Function<types.TypeTheme> {
   format: string;
   theme: types.TypeInputTheme;
   slug?: string;
@@ -2729,11 +2729,11 @@ export class AccountUpdateTheme extends Function<types.Theme> {
     return [
       ["flags", flags, "#"],
       ["format", "string", "string"],
-      ["theme", types.TypeInputTheme, "InputTheme"],
+      ["theme", types._TypeInputTheme, "InputTheme"],
       ["slug", "string", "flags.0?string"],
       ["title", "string", "flags.1?string"],
-      ["document", types.TypeInputDocument, "flags.2?InputDocument"],
-      ["settings", [types.TypeInputThemeSettings], "flags.3?Vector<InputThemeSettings>"],
+      ["document", types._TypeInputDocument, "flags.2?InputDocument"],
+      ["settings", [types._TypeInputThemeSettings], "flags.3?Vector<InputThemeSettings>"],
     ];
   }
 
@@ -2741,11 +2741,11 @@ export class AccountUpdateTheme extends Function<types.Theme> {
     return [
       ["flags", flags, "#"],
       [this.format, "string", "string"],
-      [this.theme, types.TypeInputTheme, "InputTheme"],
+      [this.theme, types._TypeInputTheme, "InputTheme"],
       [this.slug ?? null, "string", "flags.0?string"],
       [this.title ?? null, "string", "flags.1?string"],
-      [this.document ?? null, types.TypeInputDocument, "flags.2?InputDocument"],
-      [this.settings ?? null, [types.TypeInputThemeSettings], "flags.3?Vector<InputThemeSettings>"],
+      [this.document ?? null, types._TypeInputDocument, "flags.2?InputDocument"],
+      [this.settings ?? null, [types._TypeInputThemeSettings], "flags.3?Vector<InputThemeSettings>"],
     ];
   }
 
@@ -2770,14 +2770,14 @@ export class AccountSaveTheme extends Function<boolean> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["theme", types.TypeInputTheme, "InputTheme"],
+      ["theme", types._TypeInputTheme, "InputTheme"],
       ["unsave", "boolean", "Bool"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.theme, types.TypeInputTheme, "InputTheme"],
+      [this.theme, types._TypeInputTheme, "InputTheme"],
       [this.unsave, "boolean", "Bool"],
     ];
   }
@@ -2803,9 +2803,9 @@ export class AccountInstallTheme extends Function<boolean> {
     return [
       ["flags", flags, "#"],
       ["dark", "true", "flags.0?true"],
-      ["theme", types.TypeInputTheme, "flags.1?InputTheme"],
+      ["theme", types._TypeInputTheme, "flags.1?InputTheme"],
       ["format", "string", "flags.2?string"],
-      ["baseTheme", types.TypeBaseTheme, "flags.3?BaseTheme"],
+      ["baseTheme", types._TypeBaseTheme, "flags.3?BaseTheme"],
     ];
   }
 
@@ -2813,9 +2813,9 @@ export class AccountInstallTheme extends Function<boolean> {
     return [
       ["flags", flags, "#"],
       [this.dark ?? null, "true", "flags.0?true"],
-      [this.theme ?? null, types.TypeInputTheme, "flags.1?InputTheme"],
+      [this.theme ?? null, types._TypeInputTheme, "flags.1?InputTheme"],
       [this.format ?? null, "string", "flags.2?string"],
-      [this.baseTheme ?? null, types.TypeBaseTheme, "flags.3?BaseTheme"],
+      [this.baseTheme ?? null, types._TypeBaseTheme, "flags.3?BaseTheme"],
     ];
   }
 
@@ -2828,7 +2828,7 @@ export class AccountInstallTheme extends Function<boolean> {
   }
 }
 
-export class AccountGetTheme extends Function<types.Theme> {
+export class AccountGetTheme extends Function<types.TypeTheme> {
   format: string;
   theme: types.TypeInputTheme;
 
@@ -2839,14 +2839,14 @@ export class AccountGetTheme extends Function<types.Theme> {
   static get [paramDesc](): ParamDesc {
     return [
       ["format", "string", "string"],
-      ["theme", types.TypeInputTheme, "InputTheme"],
+      ["theme", types._TypeInputTheme, "InputTheme"],
     ];
   }
 
   protected get [params](): Params {
     return [
       [this.format, "string", "string"],
-      [this.theme, types.TypeInputTheme, "InputTheme"],
+      [this.theme, types._TypeInputTheme, "InputTheme"],
     ];
   }
 
@@ -2913,7 +2913,7 @@ export class AccountSetContentSettings extends Function<boolean> {
   }
 }
 
-export class AccountGetContentSettings extends Function<types.AccountContentSettings> {
+export class AccountGetContentSettings extends Function<types.TypeAccountContentSettings> {
   protected get [id]() {
     return 0x8B9B4DAE;
   }
@@ -2940,13 +2940,13 @@ export class AccountGetMultiWallPapers extends Function<types.TypeWallPaper[]> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["wallpapers", [types.TypeInputWallPaper], "Vector<InputWallPaper>"],
+      ["wallpapers", [types._TypeInputWallPaper], "Vector<InputWallPaper>"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.wallpapers, [types.TypeInputWallPaper], "Vector<InputWallPaper>"],
+      [this.wallpapers, [types._TypeInputWallPaper], "Vector<InputWallPaper>"],
     ];
   }
 
@@ -2956,7 +2956,7 @@ export class AccountGetMultiWallPapers extends Function<types.TypeWallPaper[]> {
   }
 }
 
-export class AccountGetGlobalPrivacySettings extends Function<types.GlobalPrivacySettings> {
+export class AccountGetGlobalPrivacySettings extends Function<types.TypeGlobalPrivacySettings> {
   protected get [id]() {
     return 0xEB2B4CF6;
   }
@@ -2974,7 +2974,7 @@ export class AccountGetGlobalPrivacySettings extends Function<types.GlobalPrivac
   }
 }
 
-export class AccountSetGlobalPrivacySettings extends Function<types.GlobalPrivacySettings> {
+export class AccountSetGlobalPrivacySettings extends Function<types.TypeGlobalPrivacySettings> {
   settings: types.TypeGlobalPrivacySettings;
 
   protected get [id]() {
@@ -2983,13 +2983,13 @@ export class AccountSetGlobalPrivacySettings extends Function<types.GlobalPrivac
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["settings", types.TypeGlobalPrivacySettings, "GlobalPrivacySettings"],
+      ["settings", types._TypeGlobalPrivacySettings, "GlobalPrivacySettings"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.settings, types.TypeGlobalPrivacySettings, "GlobalPrivacySettings"],
+      [this.settings, types._TypeGlobalPrivacySettings, "GlobalPrivacySettings"],
     ];
   }
 
@@ -3011,18 +3011,18 @@ export class AccountReportProfilePhoto extends Function<boolean> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["peer", types.TypeInputPeer, "InputPeer"],
-      ["photoId", types.TypeInputPhoto, "InputPhoto"],
-      ["reason", types.TypeReportReason, "ReportReason"],
+      ["peer", types._TypeInputPeer, "InputPeer"],
+      ["photoId", types._TypeInputPhoto, "InputPhoto"],
+      ["reason", types._TypeReportReason, "ReportReason"],
       ["message", "string", "string"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.peer, types.TypeInputPeer, "InputPeer"],
-      [this.photoId, types.TypeInputPhoto, "InputPhoto"],
-      [this.reason, types.TypeReportReason, "ReportReason"],
+      [this.peer, types._TypeInputPeer, "InputPeer"],
+      [this.photoId, types._TypeInputPhoto, "InputPhoto"],
+      [this.reason, types._TypeReportReason, "ReportReason"],
       [this.message, "string", "string"],
     ];
   }
@@ -3192,14 +3192,14 @@ export class AccountSaveRingtone extends Function<types.TypeAccountSavedRingtone
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["id", types.TypeInputDocument, "InputDocument"],
+      ["id", types._TypeInputDocument, "InputDocument"],
       ["unsave", "boolean", "Bool"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.id, types.TypeInputDocument, "InputDocument"],
+      [this.id, types._TypeInputDocument, "InputDocument"],
       [this.unsave, "boolean", "Bool"],
     ];
   }
@@ -3222,7 +3222,7 @@ export class AccountUploadRingtone extends Function<types.TypeDocument> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["file", types.TypeInputFile, "InputFile"],
+      ["file", types._TypeInputFile, "InputFile"],
       ["fileName", "string", "string"],
       ["mimeType", "string", "string"],
     ];
@@ -3230,7 +3230,7 @@ export class AccountUploadRingtone extends Function<types.TypeDocument> {
 
   protected get [params](): Params {
     return [
-      [this.file, types.TypeInputFile, "InputFile"],
+      [this.file, types._TypeInputFile, "InputFile"],
       [this.fileName, "string", "string"],
       [this.mimeType, "string", "string"],
     ];
@@ -3253,13 +3253,13 @@ export class AccountUpdateEmojiStatus extends Function<boolean> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["emojiStatus", types.TypeEmojiStatus, "EmojiStatus"],
+      ["emojiStatus", types._TypeEmojiStatus, "EmojiStatus"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.emojiStatus, types.TypeEmojiStatus, "EmojiStatus"],
+      [this.emojiStatus, types._TypeEmojiStatus, "EmojiStatus"],
     ];
   }
 
@@ -3441,7 +3441,7 @@ export class AccountGetDefaultGroupPhotoEmojis extends Function<types.TypeEmojiL
   }
 }
 
-export class AccountGetAutoSaveSettings extends Function<types.AccountAutoSaveSettings> {
+export class AccountGetAutoSaveSettings extends Function<types.TypeAccountAutoSaveSettings> {
   protected get [id]() {
     return 0xADCBBCDA;
   }
@@ -3476,8 +3476,8 @@ export class AccountSaveAutoSaveSettings extends Function<boolean> {
       ["users", "true", "flags.0?true"],
       ["chats", "true", "flags.1?true"],
       ["broadcasts", "true", "flags.2?true"],
-      ["peer", types.TypeInputPeer, "flags.3?InputPeer"],
-      ["settings", types.TypeAutoSaveSettings, "AutoSaveSettings"],
+      ["peer", types._TypeInputPeer, "flags.3?InputPeer"],
+      ["settings", types._TypeAutoSaveSettings, "AutoSaveSettings"],
     ];
   }
 
@@ -3487,8 +3487,8 @@ export class AccountSaveAutoSaveSettings extends Function<boolean> {
       [this.users ?? null, "true", "flags.0?true"],
       [this.chats ?? null, "true", "flags.1?true"],
       [this.broadcasts ?? null, "true", "flags.2?true"],
-      [this.peer ?? null, types.TypeInputPeer, "flags.3?InputPeer"],
-      [this.settings, types.TypeAutoSaveSettings, "AutoSaveSettings"],
+      [this.peer ?? null, types._TypeInputPeer, "flags.3?InputPeer"],
+      [this.settings, types._TypeAutoSaveSettings, "AutoSaveSettings"],
     ];
   }
 
@@ -3554,13 +3554,13 @@ export class UsersGetUsers extends Function<types.TypeUser[]> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["id", [types.TypeInputUser], "Vector<InputUser>"],
+      ["id", [types._TypeInputUser], "Vector<InputUser>"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.id, [types.TypeInputUser], "Vector<InputUser>"],
+      [this.id, [types._TypeInputUser], "Vector<InputUser>"],
     ];
   }
 
@@ -3570,7 +3570,7 @@ export class UsersGetUsers extends Function<types.TypeUser[]> {
   }
 }
 
-export class UsersGetFullUser extends Function<types.UsersUserFull> {
+export class UsersGetFullUser extends Function<types.TypeUsersUserFull> {
   id: types.TypeInputUser;
 
   protected get [id]() {
@@ -3579,13 +3579,13 @@ export class UsersGetFullUser extends Function<types.UsersUserFull> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["id", types.TypeInputUser, "InputUser"],
+      ["id", types._TypeInputUser, "InputUser"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.id, types.TypeInputUser, "InputUser"],
+      [this.id, types._TypeInputUser, "InputUser"],
     ];
   }
 
@@ -3605,15 +3605,15 @@ export class UsersSetSecureValueErrors extends Function<boolean> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["id", types.TypeInputUser, "InputUser"],
-      ["errors", [types.TypeSecureValueError], "Vector<SecureValueError>"],
+      ["id", types._TypeInputUser, "InputUser"],
+      ["errors", [types._TypeSecureValueError], "Vector<SecureValueError>"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.id, types.TypeInputUser, "InputUser"],
-      [this.errors, [types.TypeSecureValueError], "Vector<SecureValueError>"],
+      [this.id, types._TypeInputUser, "InputUser"],
+      [this.errors, [types._TypeSecureValueError], "Vector<SecureValueError>"],
     ];
   }
 
@@ -3633,13 +3633,13 @@ export class UsersGetStoriesMaxIDs extends Function<number[]> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["id", [types.TypeInputUser], "Vector<InputUser>"],
+      ["id", [types._TypeInputUser], "Vector<InputUser>"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.id, [types.TypeInputUser], "Vector<InputUser>"],
+      [this.id, [types._TypeInputUser], "Vector<InputUser>"],
     ];
   }
 
@@ -3674,7 +3674,7 @@ export class ContactsGetContactIDs extends Function<number[]> {
   }
 }
 
-export class ContactsGetStatuses extends Function<types.ContactStatus[]> {
+export class ContactsGetStatuses extends Function<types.TypeContactStatus[]> {
   protected get [id]() {
     return 0xC4A353EE;
   }
@@ -3717,7 +3717,7 @@ export class ContactsGetContacts extends Function<types.TypeContactsContacts> {
   }
 }
 
-export class ContactsImportContacts extends Function<types.ContactsImportedContacts> {
+export class ContactsImportContacts extends Function<types.TypeContactsImportedContacts> {
   contacts: Array<types.TypeInputContact>;
 
   protected get [id]() {
@@ -3726,13 +3726,13 @@ export class ContactsImportContacts extends Function<types.ContactsImportedConta
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["contacts", [types.TypeInputContact], "Vector<InputContact>"],
+      ["contacts", [types._TypeInputContact], "Vector<InputContact>"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.contacts, [types.TypeInputContact], "Vector<InputContact>"],
+      [this.contacts, [types._TypeInputContact], "Vector<InputContact>"],
     ];
   }
 
@@ -3751,13 +3751,13 @@ export class ContactsDeleteContacts extends Function<types.TypeUpdates> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["id", [types.TypeInputUser], "Vector<InputUser>"],
+      ["id", [types._TypeInputUser], "Vector<InputUser>"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.id, [types.TypeInputUser], "Vector<InputUser>"],
+      [this.id, [types._TypeInputUser], "Vector<InputUser>"],
     ];
   }
 
@@ -3804,7 +3804,7 @@ export class ContactsBlock extends Function<boolean> {
     return [
       ["flags", flags, "#"],
       ["myStoriesFrom", "true", "flags.0?true"],
-      ["id", types.TypeInputPeer, "InputPeer"],
+      ["id", types._TypeInputPeer, "InputPeer"],
     ];
   }
 
@@ -3812,7 +3812,7 @@ export class ContactsBlock extends Function<boolean> {
     return [
       ["flags", flags, "#"],
       [this.myStoriesFrom ?? null, "true", "flags.0?true"],
-      [this.id, types.TypeInputPeer, "InputPeer"],
+      [this.id, types._TypeInputPeer, "InputPeer"],
     ];
   }
 
@@ -3835,7 +3835,7 @@ export class ContactsUnblock extends Function<boolean> {
     return [
       ["flags", flags, "#"],
       ["myStoriesFrom", "true", "flags.0?true"],
-      ["id", types.TypeInputPeer, "InputPeer"],
+      ["id", types._TypeInputPeer, "InputPeer"],
     ];
   }
 
@@ -3843,7 +3843,7 @@ export class ContactsUnblock extends Function<boolean> {
     return [
       ["flags", flags, "#"],
       [this.myStoriesFrom ?? null, "true", "flags.0?true"],
-      [this.id, types.TypeInputPeer, "InputPeer"],
+      [this.id, types._TypeInputPeer, "InputPeer"],
     ];
   }
 
@@ -3889,7 +3889,7 @@ export class ContactsGetBlocked extends Function<types.TypeContactsBlocked> {
   }
 }
 
-export class ContactsSearch extends Function<types.ContactsFound> {
+export class ContactsSearch extends Function<types.TypeContactsFound> {
   q: string;
   limit: number;
 
@@ -3918,7 +3918,7 @@ export class ContactsSearch extends Function<types.ContactsFound> {
   }
 }
 
-export class ContactsResolveUsername extends Function<types.ContactsResolvedPeer> {
+export class ContactsResolveUsername extends Function<types.TypeContactsResolvedPeer> {
   username: string;
 
   protected get [id]() {
@@ -4020,15 +4020,15 @@ export class ContactsResetTopPeerRating extends Function<boolean> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["category", types.TypeTopPeerCategory, "TopPeerCategory"],
-      ["peer", types.TypeInputPeer, "InputPeer"],
+      ["category", types._TypeTopPeerCategory, "TopPeerCategory"],
+      ["peer", types._TypeInputPeer, "InputPeer"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.category, types.TypeTopPeerCategory, "TopPeerCategory"],
-      [this.peer, types.TypeInputPeer, "InputPeer"],
+      [this.category, types._TypeTopPeerCategory, "TopPeerCategory"],
+      [this.peer, types._TypeInputPeer, "InputPeer"],
     ];
   }
 
@@ -4057,7 +4057,7 @@ export class ContactsResetSaved extends Function<boolean> {
   }
 }
 
-export class ContactsGetSaved extends Function<types.SavedPhoneContact[]> {
+export class ContactsGetSaved extends Function<types.TypeSavedContact[]> {
   protected get [id]() {
     return 0x82F1E39F;
   }
@@ -4115,7 +4115,7 @@ export class ContactsAddContact extends Function<types.TypeUpdates> {
     return [
       ["flags", flags, "#"],
       ["addPhonePrivacyException", "true", "flags.0?true"],
-      ["id", types.TypeInputUser, "InputUser"],
+      ["id", types._TypeInputUser, "InputUser"],
       ["firstName", "string", "string"],
       ["lastName", "string", "string"],
       ["phone", "string", "string"],
@@ -4126,7 +4126,7 @@ export class ContactsAddContact extends Function<types.TypeUpdates> {
     return [
       ["flags", flags, "#"],
       [this.addPhonePrivacyException ?? null, "true", "flags.0?true"],
-      [this.id, types.TypeInputUser, "InputUser"],
+      [this.id, types._TypeInputUser, "InputUser"],
       [this.firstName, "string", "string"],
       [this.lastName, "string", "string"],
       [this.phone, "string", "string"],
@@ -4152,13 +4152,13 @@ export class ContactsAcceptContact extends Function<types.TypeUpdates> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["id", types.TypeInputUser, "InputUser"],
+      ["id", types._TypeInputUser, "InputUser"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.id, types.TypeInputUser, "InputUser"],
+      [this.id, types._TypeInputUser, "InputUser"],
     ];
   }
 
@@ -4181,7 +4181,7 @@ export class ContactsGetLocated extends Function<types.TypeUpdates> {
     return [
       ["flags", flags, "#"],
       ["background", "true", "flags.1?true"],
-      ["geoPoint", types.TypeInputGeoPoint, "InputGeoPoint"],
+      ["geoPoint", types._TypeInputGeoPoint, "InputGeoPoint"],
       ["selfExpires", "number", "flags.0?int"],
     ];
   }
@@ -4190,7 +4190,7 @@ export class ContactsGetLocated extends Function<types.TypeUpdates> {
     return [
       ["flags", flags, "#"],
       [this.background ?? null, "true", "flags.1?true"],
-      [this.geoPoint, types.TypeInputGeoPoint, "InputGeoPoint"],
+      [this.geoPoint, types._TypeInputGeoPoint, "InputGeoPoint"],
       [this.selfExpires ?? null, "number", "flags.0?int"],
     ];
   }
@@ -4242,7 +4242,7 @@ export class ContactsBlockFromReplies extends Function<types.TypeUpdates> {
   }
 }
 
-export class ContactsResolvePhone extends Function<types.ContactsResolvedPeer> {
+export class ContactsResolvePhone extends Function<types.TypeContactsResolvedPeer> {
   phone: string;
 
   protected get [id]() {
@@ -4267,7 +4267,7 @@ export class ContactsResolvePhone extends Function<types.ContactsResolvedPeer> {
   }
 }
 
-export class ContactsExportContactToken extends Function<types.ExportedContactToken> {
+export class ContactsExportContactToken extends Function<types.TypeExportedContactToken> {
   protected get [id]() {
     return 0xF8654027;
   }
@@ -4345,14 +4345,14 @@ export class ContactsToggleStoriesHidden extends Function<boolean> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["id", types.TypeInputUser, "InputUser"],
+      ["id", types._TypeInputUser, "InputUser"],
       ["hidden", "boolean", "Bool"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.id, types.TypeInputUser, "InputUser"],
+      [this.id, types._TypeInputUser, "InputUser"],
       [this.hidden, "boolean", "Bool"],
     ];
   }
@@ -4377,7 +4377,7 @@ export class ContactsSetBlocked extends Function<boolean> {
     return [
       ["flags", flags, "#"],
       ["myStoriesFrom", "true", "flags.0?true"],
-      ["id", [types.TypeInputPeer], "Vector<InputPeer>"],
+      ["id", [types._TypeInputPeer], "Vector<InputPeer>"],
       ["limit", "number", "int"],
     ];
   }
@@ -4386,7 +4386,7 @@ export class ContactsSetBlocked extends Function<boolean> {
     return [
       ["flags", flags, "#"],
       [this.myStoriesFrom ?? null, "true", "flags.0?true"],
-      [this.id, [types.TypeInputPeer], "Vector<InputPeer>"],
+      [this.id, [types._TypeInputPeer], "Vector<InputPeer>"],
       [this.limit, "number", "int"],
     ];
   }
@@ -4408,13 +4408,13 @@ export class MessagesGetMessages extends Function<types.TypeMessagesMessages> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["id", [types.TypeInputMessage], "Vector<InputMessage>"],
+      ["id", [types._TypeInputMessage], "Vector<InputMessage>"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.id, [types.TypeInputMessage], "Vector<InputMessage>"],
+      [this.id, [types._TypeInputMessage], "Vector<InputMessage>"],
     ];
   }
 
@@ -4444,7 +4444,7 @@ export class MessagesGetDialogs extends Function<types.TypeMessagesDialogs> {
       ["folderId", "number", "flags.1?int"],
       ["offsetDate", "number", "int"],
       ["offsetId", "number", "int"],
-      ["offsetPeer", types.TypeInputPeer, "InputPeer"],
+      ["offsetPeer", types._TypeInputPeer, "InputPeer"],
       ["limit", "number", "int"],
       ["hash", "bigint", "long"],
     ];
@@ -4457,7 +4457,7 @@ export class MessagesGetDialogs extends Function<types.TypeMessagesDialogs> {
       [this.folderId ?? null, "number", "flags.1?int"],
       [this.offsetDate, "number", "int"],
       [this.offsetId, "number", "int"],
-      [this.offsetPeer, types.TypeInputPeer, "InputPeer"],
+      [this.offsetPeer, types._TypeInputPeer, "InputPeer"],
       [this.limit, "number", "int"],
       [this.hash, "bigint", "long"],
     ];
@@ -4491,7 +4491,7 @@ export class MessagesGetHistory extends Function<types.TypeMessagesMessages> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["peer", types.TypeInputPeer, "InputPeer"],
+      ["peer", types._TypeInputPeer, "InputPeer"],
       ["offsetId", "number", "int"],
       ["offsetDate", "number", "int"],
       ["addOffset", "number", "int"],
@@ -4504,7 +4504,7 @@ export class MessagesGetHistory extends Function<types.TypeMessagesMessages> {
 
   protected get [params](): Params {
     return [
-      [this.peer, types.TypeInputPeer, "InputPeer"],
+      [this.peer, types._TypeInputPeer, "InputPeer"],
       [this.offsetId, "number", "int"],
       [this.offsetDate, "number", "int"],
       [this.addOffset, "number", "int"],
@@ -4550,11 +4550,11 @@ export class MessagesSearch extends Function<types.TypeMessagesMessages> {
   static get [paramDesc](): ParamDesc {
     return [
       ["flags", flags, "#"],
-      ["peer", types.TypeInputPeer, "InputPeer"],
+      ["peer", types._TypeInputPeer, "InputPeer"],
       ["q", "string", "string"],
-      ["fromId", types.TypeInputPeer, "flags.0?InputPeer"],
+      ["fromId", types._TypeInputPeer, "flags.0?InputPeer"],
       ["topMsgId", "number", "flags.1?int"],
-      ["filter", types.TypeMessagesFilter, "MessagesFilter"],
+      ["filter", types._TypeMessagesFilter, "MessagesFilter"],
       ["minDate", "number", "int"],
       ["maxDate", "number", "int"],
       ["offsetId", "number", "int"],
@@ -4569,11 +4569,11 @@ export class MessagesSearch extends Function<types.TypeMessagesMessages> {
   protected get [params](): Params {
     return [
       ["flags", flags, "#"],
-      [this.peer, types.TypeInputPeer, "InputPeer"],
+      [this.peer, types._TypeInputPeer, "InputPeer"],
       [this.q, "string", "string"],
-      [this.fromId ?? null, types.TypeInputPeer, "flags.0?InputPeer"],
+      [this.fromId ?? null, types._TypeInputPeer, "flags.0?InputPeer"],
       [this.topMsgId ?? null, "number", "flags.1?int"],
-      [this.filter, types.TypeMessagesFilter, "MessagesFilter"],
+      [this.filter, types._TypeMessagesFilter, "MessagesFilter"],
       [this.minDate, "number", "int"],
       [this.maxDate, "number", "int"],
       [this.offsetId, "number", "int"],
@@ -4603,7 +4603,7 @@ export class MessagesSearch extends Function<types.TypeMessagesMessages> {
   }
 }
 
-export class MessagesReadHistory extends Function<types.MessagesAffectedMessages> {
+export class MessagesReadHistory extends Function<types.TypeMessagesAffectedMessages> {
   peer: types.TypeInputPeer;
   maxId: number;
 
@@ -4613,14 +4613,14 @@ export class MessagesReadHistory extends Function<types.MessagesAffectedMessages
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["peer", types.TypeInputPeer, "InputPeer"],
+      ["peer", types._TypeInputPeer, "InputPeer"],
       ["maxId", "number", "int"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.peer, types.TypeInputPeer, "InputPeer"],
+      [this.peer, types._TypeInputPeer, "InputPeer"],
       [this.maxId, "number", "int"],
     ];
   }
@@ -4632,7 +4632,7 @@ export class MessagesReadHistory extends Function<types.MessagesAffectedMessages
   }
 }
 
-export class MessagesDeleteHistory extends Function<types.MessagesAffectedHistory> {
+export class MessagesDeleteHistory extends Function<types.TypeMessagesAffectedHistory> {
   justClear?: true;
   revoke?: true;
   peer: types.TypeInputPeer;
@@ -4649,7 +4649,7 @@ export class MessagesDeleteHistory extends Function<types.MessagesAffectedHistor
       ["flags", flags, "#"],
       ["justClear", "true", "flags.0?true"],
       ["revoke", "true", "flags.1?true"],
-      ["peer", types.TypeInputPeer, "InputPeer"],
+      ["peer", types._TypeInputPeer, "InputPeer"],
       ["maxId", "number", "int"],
       ["minDate", "number", "flags.2?int"],
       ["maxDate", "number", "flags.3?int"],
@@ -4661,7 +4661,7 @@ export class MessagesDeleteHistory extends Function<types.MessagesAffectedHistor
       ["flags", flags, "#"],
       [this.justClear ?? null, "true", "flags.0?true"],
       [this.revoke ?? null, "true", "flags.1?true"],
-      [this.peer, types.TypeInputPeer, "InputPeer"],
+      [this.peer, types._TypeInputPeer, "InputPeer"],
       [this.maxId, "number", "int"],
       [this.minDate ?? null, "number", "flags.2?int"],
       [this.maxDate ?? null, "number", "flags.3?int"],
@@ -4679,7 +4679,7 @@ export class MessagesDeleteHistory extends Function<types.MessagesAffectedHistor
   }
 }
 
-export class MessagesDeleteMessages extends Function<types.MessagesAffectedMessages> {
+export class MessagesDeleteMessages extends Function<types.TypeMessagesAffectedMessages> {
   revoke?: true;
   id: Array<number>;
 
@@ -4710,7 +4710,7 @@ export class MessagesDeleteMessages extends Function<types.MessagesAffectedMessa
   }
 }
 
-export class MessagesReceivedMessages extends Function<types.ReceivedNotifyMessage[]> {
+export class MessagesReceivedMessages extends Function<types.TypeReceivedNotifyMessage[]> {
   maxId: number;
 
   protected get [id]() {
@@ -4747,18 +4747,18 @@ export class MessagesSetTyping extends Function<boolean> {
   static get [paramDesc](): ParamDesc {
     return [
       ["flags", flags, "#"],
-      ["peer", types.TypeInputPeer, "InputPeer"],
+      ["peer", types._TypeInputPeer, "InputPeer"],
       ["topMsgId", "number", "flags.0?int"],
-      ["action", types.TypeSendMessageAction, "SendMessageAction"],
+      ["action", types._TypeSendMessageAction, "SendMessageAction"],
     ];
   }
 
   protected get [params](): Params {
     return [
       ["flags", flags, "#"],
-      [this.peer, types.TypeInputPeer, "InputPeer"],
+      [this.peer, types._TypeInputPeer, "InputPeer"],
       [this.topMsgId ?? null, "number", "flags.0?int"],
-      [this.action, types.TypeSendMessageAction, "SendMessageAction"],
+      [this.action, types._TypeSendMessageAction, "SendMessageAction"],
     ];
   }
 
@@ -4799,14 +4799,14 @@ export class MessagesSendMessage extends Function<types.TypeUpdates> {
       ["clearDraft", "true", "flags.7?true"],
       ["noforwards", "true", "flags.14?true"],
       ["updateStickersetsOrder", "true", "flags.15?true"],
-      ["peer", types.TypeInputPeer, "InputPeer"],
-      ["replyTo", types.TypeInputReplyTo, "flags.0?InputReplyTo"],
+      ["peer", types._TypeInputPeer, "InputPeer"],
+      ["replyTo", types._TypeInputReplyTo, "flags.0?InputReplyTo"],
       ["message", "string", "string"],
       ["randomId", "bigint", "long"],
-      ["replyMarkup", types.TypeReplyMarkup, "flags.2?ReplyMarkup"],
-      ["entities", [types.TypeMessageEntity], "flags.3?Vector<MessageEntity>"],
+      ["replyMarkup", types._TypeReplyMarkup, "flags.2?ReplyMarkup"],
+      ["entities", [types._TypeMessageEntity], "flags.3?Vector<MessageEntity>"],
       ["scheduleDate", "number", "flags.10?int"],
-      ["sendAs", types.TypeInputPeer, "flags.13?InputPeer"],
+      ["sendAs", types._TypeInputPeer, "flags.13?InputPeer"],
     ];
   }
 
@@ -4819,14 +4819,14 @@ export class MessagesSendMessage extends Function<types.TypeUpdates> {
       [this.clearDraft ?? null, "true", "flags.7?true"],
       [this.noforwards ?? null, "true", "flags.14?true"],
       [this.updateStickersetsOrder ?? null, "true", "flags.15?true"],
-      [this.peer, types.TypeInputPeer, "InputPeer"],
-      [this.replyTo ?? null, types.TypeInputReplyTo, "flags.0?InputReplyTo"],
+      [this.peer, types._TypeInputPeer, "InputPeer"],
+      [this.replyTo ?? null, types._TypeInputReplyTo, "flags.0?InputReplyTo"],
       [this.message, "string", "string"],
       [this.randomId, "bigint", "long"],
-      [this.replyMarkup ?? null, types.TypeReplyMarkup, "flags.2?ReplyMarkup"],
-      [this.entities ?? null, [types.TypeMessageEntity], "flags.3?Vector<MessageEntity>"],
+      [this.replyMarkup ?? null, types._TypeReplyMarkup, "flags.2?ReplyMarkup"],
+      [this.entities ?? null, [types._TypeMessageEntity], "flags.3?Vector<MessageEntity>"],
       [this.scheduleDate ?? null, "number", "flags.10?int"],
-      [this.sendAs ?? null, types.TypeInputPeer, "flags.13?InputPeer"],
+      [this.sendAs ?? null, types._TypeInputPeer, "flags.13?InputPeer"],
     ];
   }
 
@@ -4877,15 +4877,15 @@ export class MessagesSendMedia extends Function<types.TypeUpdates> {
       ["clearDraft", "true", "flags.7?true"],
       ["noforwards", "true", "flags.14?true"],
       ["updateStickersetsOrder", "true", "flags.15?true"],
-      ["peer", types.TypeInputPeer, "InputPeer"],
-      ["replyTo", types.TypeInputReplyTo, "flags.0?InputReplyTo"],
-      ["media", types.TypeInputMedia, "InputMedia"],
+      ["peer", types._TypeInputPeer, "InputPeer"],
+      ["replyTo", types._TypeInputReplyTo, "flags.0?InputReplyTo"],
+      ["media", types._TypeInputMedia, "InputMedia"],
       ["message", "string", "string"],
       ["randomId", "bigint", "long"],
-      ["replyMarkup", types.TypeReplyMarkup, "flags.2?ReplyMarkup"],
-      ["entities", [types.TypeMessageEntity], "flags.3?Vector<MessageEntity>"],
+      ["replyMarkup", types._TypeReplyMarkup, "flags.2?ReplyMarkup"],
+      ["entities", [types._TypeMessageEntity], "flags.3?Vector<MessageEntity>"],
       ["scheduleDate", "number", "flags.10?int"],
-      ["sendAs", types.TypeInputPeer, "flags.13?InputPeer"],
+      ["sendAs", types._TypeInputPeer, "flags.13?InputPeer"],
     ];
   }
 
@@ -4897,15 +4897,15 @@ export class MessagesSendMedia extends Function<types.TypeUpdates> {
       [this.clearDraft ?? null, "true", "flags.7?true"],
       [this.noforwards ?? null, "true", "flags.14?true"],
       [this.updateStickersetsOrder ?? null, "true", "flags.15?true"],
-      [this.peer, types.TypeInputPeer, "InputPeer"],
-      [this.replyTo ?? null, types.TypeInputReplyTo, "flags.0?InputReplyTo"],
-      [this.media, types.TypeInputMedia, "InputMedia"],
+      [this.peer, types._TypeInputPeer, "InputPeer"],
+      [this.replyTo ?? null, types._TypeInputReplyTo, "flags.0?InputReplyTo"],
+      [this.media, types._TypeInputMedia, "InputMedia"],
       [this.message, "string", "string"],
       [this.randomId, "bigint", "long"],
-      [this.replyMarkup ?? null, types.TypeReplyMarkup, "flags.2?ReplyMarkup"],
-      [this.entities ?? null, [types.TypeMessageEntity], "flags.3?Vector<MessageEntity>"],
+      [this.replyMarkup ?? null, types._TypeReplyMarkup, "flags.2?ReplyMarkup"],
+      [this.entities ?? null, [types._TypeMessageEntity], "flags.3?Vector<MessageEntity>"],
       [this.scheduleDate ?? null, "number", "flags.10?int"],
-      [this.sendAs ?? null, types.TypeInputPeer, "flags.13?InputPeer"],
+      [this.sendAs ?? null, types._TypeInputPeer, "flags.13?InputPeer"],
     ];
   }
 
@@ -4956,13 +4956,13 @@ export class MessagesForwardMessages extends Function<types.TypeUpdates> {
       ["dropAuthor", "true", "flags.11?true"],
       ["dropMediaCaptions", "true", "flags.12?true"],
       ["noforwards", "true", "flags.14?true"],
-      ["fromPeer", types.TypeInputPeer, "InputPeer"],
+      ["fromPeer", types._TypeInputPeer, "InputPeer"],
       ["id", ["number"], "Vector<int>"],
       ["randomId", ["bigint"], "Vector<long>"],
-      ["toPeer", types.TypeInputPeer, "InputPeer"],
+      ["toPeer", types._TypeInputPeer, "InputPeer"],
       ["topMsgId", "number", "flags.9?int"],
       ["scheduleDate", "number", "flags.10?int"],
-      ["sendAs", types.TypeInputPeer, "flags.13?InputPeer"],
+      ["sendAs", types._TypeInputPeer, "flags.13?InputPeer"],
     ];
   }
 
@@ -4975,13 +4975,13 @@ export class MessagesForwardMessages extends Function<types.TypeUpdates> {
       [this.dropAuthor ?? null, "true", "flags.11?true"],
       [this.dropMediaCaptions ?? null, "true", "flags.12?true"],
       [this.noforwards ?? null, "true", "flags.14?true"],
-      [this.fromPeer, types.TypeInputPeer, "InputPeer"],
+      [this.fromPeer, types._TypeInputPeer, "InputPeer"],
       [this.id, ["number"], "Vector<int>"],
       [this.randomId, ["bigint"], "Vector<long>"],
-      [this.toPeer, types.TypeInputPeer, "InputPeer"],
+      [this.toPeer, types._TypeInputPeer, "InputPeer"],
       [this.topMsgId ?? null, "number", "flags.9?int"],
       [this.scheduleDate ?? null, "number", "flags.10?int"],
-      [this.sendAs ?? null, types.TypeInputPeer, "flags.13?InputPeer"],
+      [this.sendAs ?? null, types._TypeInputPeer, "flags.13?InputPeer"],
     ];
   }
 
@@ -5012,13 +5012,13 @@ export class MessagesReportSpam extends Function<boolean> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["peer", types.TypeInputPeer, "InputPeer"],
+      ["peer", types._TypeInputPeer, "InputPeer"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.peer, types.TypeInputPeer, "InputPeer"],
+      [this.peer, types._TypeInputPeer, "InputPeer"],
     ];
   }
 
@@ -5028,7 +5028,7 @@ export class MessagesReportSpam extends Function<boolean> {
   }
 }
 
-export class MessagesGetPeerSettings extends Function<types.MessagesPeerSettings> {
+export class MessagesGetPeerSettings extends Function<types.TypeMessagesPeerSettings> {
   peer: types.TypeInputPeer;
 
   protected get [id]() {
@@ -5037,13 +5037,13 @@ export class MessagesGetPeerSettings extends Function<types.MessagesPeerSettings
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["peer", types.TypeInputPeer, "InputPeer"],
+      ["peer", types._TypeInputPeer, "InputPeer"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.peer, types.TypeInputPeer, "InputPeer"],
+      [this.peer, types._TypeInputPeer, "InputPeer"],
     ];
   }
 
@@ -5065,18 +5065,18 @@ export class MessagesReport extends Function<boolean> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["peer", types.TypeInputPeer, "InputPeer"],
+      ["peer", types._TypeInputPeer, "InputPeer"],
       ["id", ["number"], "Vector<int>"],
-      ["reason", types.TypeReportReason, "ReportReason"],
+      ["reason", types._TypeReportReason, "ReportReason"],
       ["message", "string", "string"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.peer, types.TypeInputPeer, "InputPeer"],
+      [this.peer, types._TypeInputPeer, "InputPeer"],
       [this.id, ["number"], "Vector<int>"],
-      [this.reason, types.TypeReportReason, "ReportReason"],
+      [this.reason, types._TypeReportReason, "ReportReason"],
       [this.message, "string", "string"],
     ];
   }
@@ -5115,7 +5115,7 @@ export class MessagesGetChats extends Function<types.TypeMessagesChats> {
   }
 }
 
-export class MessagesGetFullChat extends Function<types.MessagesChatFull> {
+export class MessagesGetFullChat extends Function<types.TypeMessagesChatFull> {
   chatId: bigint;
 
   protected get [id]() {
@@ -5180,14 +5180,14 @@ export class MessagesEditChatPhoto extends Function<types.TypeUpdates> {
   static get [paramDesc](): ParamDesc {
     return [
       ["chatId", "bigint", "long"],
-      ["photo", types.TypeInputChatPhoto, "InputChatPhoto"],
+      ["photo", types._TypeInputChatPhoto, "InputChatPhoto"],
     ];
   }
 
   protected get [params](): Params {
     return [
       [this.chatId, "bigint", "long"],
-      [this.photo, types.TypeInputChatPhoto, "InputChatPhoto"],
+      [this.photo, types._TypeInputChatPhoto, "InputChatPhoto"],
     ];
   }
 
@@ -5210,7 +5210,7 @@ export class MessagesAddChatUser extends Function<types.TypeUpdates> {
   static get [paramDesc](): ParamDesc {
     return [
       ["chatId", "bigint", "long"],
-      ["userId", types.TypeInputUser, "InputUser"],
+      ["userId", types._TypeInputUser, "InputUser"],
       ["fwdLimit", "number", "int"],
     ];
   }
@@ -5218,7 +5218,7 @@ export class MessagesAddChatUser extends Function<types.TypeUpdates> {
   protected get [params](): Params {
     return [
       [this.chatId, "bigint", "long"],
-      [this.userId, types.TypeInputUser, "InputUser"],
+      [this.userId, types._TypeInputUser, "InputUser"],
       [this.fwdLimit, "number", "int"],
     ];
   }
@@ -5245,7 +5245,7 @@ export class MessagesDeleteChatUser extends Function<types.TypeUpdates> {
       ["flags", flags, "#"],
       ["revokeHistory", "true", "flags.0?true"],
       ["chatId", "bigint", "long"],
-      ["userId", types.TypeInputUser, "InputUser"],
+      ["userId", types._TypeInputUser, "InputUser"],
     ];
   }
 
@@ -5254,7 +5254,7 @@ export class MessagesDeleteChatUser extends Function<types.TypeUpdates> {
       ["flags", flags, "#"],
       [this.revokeHistory ?? null, "true", "flags.0?true"],
       [this.chatId, "bigint", "long"],
-      [this.userId, types.TypeInputUser, "InputUser"],
+      [this.userId, types._TypeInputUser, "InputUser"],
     ];
   }
 
@@ -5278,7 +5278,7 @@ export class MessagesCreateChat extends Function<types.TypeUpdates> {
   static get [paramDesc](): ParamDesc {
     return [
       ["flags", flags, "#"],
-      ["users", [types.TypeInputUser], "Vector<InputUser>"],
+      ["users", [types._TypeInputUser], "Vector<InputUser>"],
       ["title", "string", "string"],
       ["ttlPeriod", "number", "flags.0?int"],
     ];
@@ -5287,7 +5287,7 @@ export class MessagesCreateChat extends Function<types.TypeUpdates> {
   protected get [params](): Params {
     return [
       ["flags", flags, "#"],
-      [this.users, [types.TypeInputUser], "Vector<InputUser>"],
+      [this.users, [types._TypeInputUser], "Vector<InputUser>"],
       [this.title, "string", "string"],
       [this.ttlPeriod ?? null, "number", "flags.0?int"],
     ];
@@ -5341,7 +5341,7 @@ export class MessagesRequestEncryption extends Function<types.TypeEncryptedChat>
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["userId", types.TypeInputUser, "InputUser"],
+      ["userId", types._TypeInputUser, "InputUser"],
       ["randomId", "number", "int"],
       ["gA", Uint8Array, "bytes"],
     ];
@@ -5349,7 +5349,7 @@ export class MessagesRequestEncryption extends Function<types.TypeEncryptedChat>
 
   protected get [params](): Params {
     return [
-      [this.userId, types.TypeInputUser, "InputUser"],
+      [this.userId, types._TypeInputUser, "InputUser"],
       [this.randomId, "number", "int"],
       [this.gA, Uint8Array, "bytes"],
     ];
@@ -5374,7 +5374,7 @@ export class MessagesAcceptEncryption extends Function<types.TypeEncryptedChat> 
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["peer", types.TypeInputEncryptedChat, "InputEncryptedChat"],
+      ["peer", types._TypeInputEncryptedChat, "InputEncryptedChat"],
       ["gB", Uint8Array, "bytes"],
       ["keyFingerprint", "bigint", "long"],
     ];
@@ -5382,7 +5382,7 @@ export class MessagesAcceptEncryption extends Function<types.TypeEncryptedChat> 
 
   protected get [params](): Params {
     return [
-      [this.peer, types.TypeInputEncryptedChat, "InputEncryptedChat"],
+      [this.peer, types._TypeInputEncryptedChat, "InputEncryptedChat"],
       [this.gB, Uint8Array, "bytes"],
       [this.keyFingerprint, "bigint", "long"],
     ];
@@ -5437,14 +5437,14 @@ export class MessagesSetEncryptedTyping extends Function<boolean> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["peer", types.TypeInputEncryptedChat, "InputEncryptedChat"],
+      ["peer", types._TypeInputEncryptedChat, "InputEncryptedChat"],
       ["typing", "boolean", "Bool"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.peer, types.TypeInputEncryptedChat, "InputEncryptedChat"],
+      [this.peer, types._TypeInputEncryptedChat, "InputEncryptedChat"],
       [this.typing, "boolean", "Bool"],
     ];
   }
@@ -5466,14 +5466,14 @@ export class MessagesReadEncryptedHistory extends Function<boolean> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["peer", types.TypeInputEncryptedChat, "InputEncryptedChat"],
+      ["peer", types._TypeInputEncryptedChat, "InputEncryptedChat"],
       ["maxDate", "number", "int"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.peer, types.TypeInputEncryptedChat, "InputEncryptedChat"],
+      [this.peer, types._TypeInputEncryptedChat, "InputEncryptedChat"],
       [this.maxDate, "number", "int"],
     ];
   }
@@ -5499,7 +5499,7 @@ export class MessagesSendEncrypted extends Function<types.TypeMessagesSentEncryp
     return [
       ["flags", flags, "#"],
       ["silent", "true", "flags.0?true"],
-      ["peer", types.TypeInputEncryptedChat, "InputEncryptedChat"],
+      ["peer", types._TypeInputEncryptedChat, "InputEncryptedChat"],
       ["randomId", "bigint", "long"],
       ["data", Uint8Array, "bytes"],
     ];
@@ -5509,7 +5509,7 @@ export class MessagesSendEncrypted extends Function<types.TypeMessagesSentEncryp
     return [
       ["flags", flags, "#"],
       [this.silent ?? null, "true", "flags.0?true"],
-      [this.peer, types.TypeInputEncryptedChat, "InputEncryptedChat"],
+      [this.peer, types._TypeInputEncryptedChat, "InputEncryptedChat"],
       [this.randomId, "bigint", "long"],
       [this.data, Uint8Array, "bytes"],
     ];
@@ -5539,10 +5539,10 @@ export class MessagesSendEncryptedFile extends Function<types.TypeMessagesSentEn
     return [
       ["flags", flags, "#"],
       ["silent", "true", "flags.0?true"],
-      ["peer", types.TypeInputEncryptedChat, "InputEncryptedChat"],
+      ["peer", types._TypeInputEncryptedChat, "InputEncryptedChat"],
       ["randomId", "bigint", "long"],
       ["data", Uint8Array, "bytes"],
-      ["file", types.TypeInputEncryptedFile, "InputEncryptedFile"],
+      ["file", types._TypeInputEncryptedFile, "InputEncryptedFile"],
     ];
   }
 
@@ -5550,10 +5550,10 @@ export class MessagesSendEncryptedFile extends Function<types.TypeMessagesSentEn
     return [
       ["flags", flags, "#"],
       [this.silent ?? null, "true", "flags.0?true"],
-      [this.peer, types.TypeInputEncryptedChat, "InputEncryptedChat"],
+      [this.peer, types._TypeInputEncryptedChat, "InputEncryptedChat"],
       [this.randomId, "bigint", "long"],
       [this.data, Uint8Array, "bytes"],
-      [this.file, types.TypeInputEncryptedFile, "InputEncryptedFile"],
+      [this.file, types._TypeInputEncryptedFile, "InputEncryptedFile"],
     ];
   }
 
@@ -5578,7 +5578,7 @@ export class MessagesSendEncryptedService extends Function<types.TypeMessagesSen
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["peer", types.TypeInputEncryptedChat, "InputEncryptedChat"],
+      ["peer", types._TypeInputEncryptedChat, "InputEncryptedChat"],
       ["randomId", "bigint", "long"],
       ["data", Uint8Array, "bytes"],
     ];
@@ -5586,7 +5586,7 @@ export class MessagesSendEncryptedService extends Function<types.TypeMessagesSen
 
   protected get [params](): Params {
     return [
-      [this.peer, types.TypeInputEncryptedChat, "InputEncryptedChat"],
+      [this.peer, types._TypeInputEncryptedChat, "InputEncryptedChat"],
       [this.randomId, "bigint", "long"],
       [this.data, Uint8Array, "bytes"],
     ];
@@ -5634,13 +5634,13 @@ export class MessagesReportEncryptedSpam extends Function<boolean> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["peer", types.TypeInputEncryptedChat, "InputEncryptedChat"],
+      ["peer", types._TypeInputEncryptedChat, "InputEncryptedChat"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.peer, types.TypeInputEncryptedChat, "InputEncryptedChat"],
+      [this.peer, types._TypeInputEncryptedChat, "InputEncryptedChat"],
     ];
   }
 
@@ -5650,7 +5650,7 @@ export class MessagesReportEncryptedSpam extends Function<boolean> {
   }
 }
 
-export class MessagesReadMessageContents extends Function<types.MessagesAffectedMessages> {
+export class MessagesReadMessageContents extends Function<types.TypeMessagesAffectedMessages> {
   id: Array<number>;
 
   protected get [id]() {
@@ -5741,7 +5741,7 @@ export class MessagesGetWebPagePreview extends Function<types.TypeMessageMedia> 
     return [
       ["flags", flags, "#"],
       ["message", "string", "string"],
-      ["entities", [types.TypeMessageEntity], "flags.3?Vector<MessageEntity>"],
+      ["entities", [types._TypeMessageEntity], "flags.3?Vector<MessageEntity>"],
     ];
   }
 
@@ -5749,7 +5749,7 @@ export class MessagesGetWebPagePreview extends Function<types.TypeMessageMedia> 
     return [
       ["flags", flags, "#"],
       [this.message, "string", "string"],
-      [this.entities ?? null, [types.TypeMessageEntity], "flags.3?Vector<MessageEntity>"],
+      [this.entities ?? null, [types._TypeMessageEntity], "flags.3?Vector<MessageEntity>"],
     ];
   }
 
@@ -5777,7 +5777,7 @@ export class MessagesExportChatInvite extends Function<types.TypeExportedChatInv
       ["flags", flags, "#"],
       ["legacyRevokePermanent", "true", "flags.2?true"],
       ["requestNeeded", "true", "flags.3?true"],
-      ["peer", types.TypeInputPeer, "InputPeer"],
+      ["peer", types._TypeInputPeer, "InputPeer"],
       ["expireDate", "number", "flags.0?int"],
       ["usageLimit", "number", "flags.1?int"],
       ["title", "string", "flags.4?string"],
@@ -5789,7 +5789,7 @@ export class MessagesExportChatInvite extends Function<types.TypeExportedChatInv
       ["flags", flags, "#"],
       [this.legacyRevokePermanent ?? null, "true", "flags.2?true"],
       [this.requestNeeded ?? null, "true", "flags.3?true"],
-      [this.peer, types.TypeInputPeer, "InputPeer"],
+      [this.peer, types._TypeInputPeer, "InputPeer"],
       [this.expireDate ?? null, "number", "flags.0?int"],
       [this.usageLimit ?? null, "number", "flags.1?int"],
       [this.title ?? null, "string", "flags.4?string"],
@@ -5867,14 +5867,14 @@ export class MessagesGetStickerSet extends Function<types.TypeMessagesStickerSet
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["stickerset", types.TypeInputStickerSet, "InputStickerSet"],
+      ["stickerset", types._TypeInputStickerSet, "InputStickerSet"],
       ["hash", "number", "int"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.stickerset, types.TypeInputStickerSet, "InputStickerSet"],
+      [this.stickerset, types._TypeInputStickerSet, "InputStickerSet"],
       [this.hash, "number", "int"],
     ];
   }
@@ -5896,14 +5896,14 @@ export class MessagesInstallStickerSet extends Function<types.TypeMessagesSticke
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["stickerset", types.TypeInputStickerSet, "InputStickerSet"],
+      ["stickerset", types._TypeInputStickerSet, "InputStickerSet"],
       ["archived", "boolean", "Bool"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.stickerset, types.TypeInputStickerSet, "InputStickerSet"],
+      [this.stickerset, types._TypeInputStickerSet, "InputStickerSet"],
       [this.archived, "boolean", "Bool"],
     ];
   }
@@ -5924,13 +5924,13 @@ export class MessagesUninstallStickerSet extends Function<boolean> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["stickerset", types.TypeInputStickerSet, "InputStickerSet"],
+      ["stickerset", types._TypeInputStickerSet, "InputStickerSet"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.stickerset, types.TypeInputStickerSet, "InputStickerSet"],
+      [this.stickerset, types._TypeInputStickerSet, "InputStickerSet"],
     ];
   }
 
@@ -5952,8 +5952,8 @@ export class MessagesStartBot extends Function<types.TypeUpdates> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["bot", types.TypeInputUser, "InputUser"],
-      ["peer", types.TypeInputPeer, "InputPeer"],
+      ["bot", types._TypeInputUser, "InputUser"],
+      ["peer", types._TypeInputPeer, "InputPeer"],
       ["randomId", "bigint", "long"],
       ["startParam", "string", "string"],
     ];
@@ -5961,8 +5961,8 @@ export class MessagesStartBot extends Function<types.TypeUpdates> {
 
   protected get [params](): Params {
     return [
-      [this.bot, types.TypeInputUser, "InputUser"],
-      [this.peer, types.TypeInputPeer, "InputPeer"],
+      [this.bot, types._TypeInputUser, "InputUser"],
+      [this.peer, types._TypeInputPeer, "InputPeer"],
       [this.randomId, "bigint", "long"],
       [this.startParam, "string", "string"],
     ];
@@ -5977,7 +5977,7 @@ export class MessagesStartBot extends Function<types.TypeUpdates> {
   }
 }
 
-export class MessagesGetMessagesViews extends Function<types.MessagesMessageViews> {
+export class MessagesGetMessagesViews extends Function<types.TypeMessagesMessageViews> {
   peer: types.TypeInputPeer;
   id: Array<number>;
   increment: boolean;
@@ -5988,7 +5988,7 @@ export class MessagesGetMessagesViews extends Function<types.MessagesMessageView
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["peer", types.TypeInputPeer, "InputPeer"],
+      ["peer", types._TypeInputPeer, "InputPeer"],
       ["id", ["number"], "Vector<int>"],
       ["increment", "boolean", "Bool"],
     ];
@@ -5996,7 +5996,7 @@ export class MessagesGetMessagesViews extends Function<types.MessagesMessageView
 
   protected get [params](): Params {
     return [
-      [this.peer, types.TypeInputPeer, "InputPeer"],
+      [this.peer, types._TypeInputPeer, "InputPeer"],
       [this.id, ["number"], "Vector<int>"],
       [this.increment, "boolean", "Bool"],
     ];
@@ -6022,7 +6022,7 @@ export class MessagesEditChatAdmin extends Function<boolean> {
   static get [paramDesc](): ParamDesc {
     return [
       ["chatId", "bigint", "long"],
-      ["userId", types.TypeInputUser, "InputUser"],
+      ["userId", types._TypeInputUser, "InputUser"],
       ["isAdmin", "boolean", "Bool"],
     ];
   }
@@ -6030,7 +6030,7 @@ export class MessagesEditChatAdmin extends Function<boolean> {
   protected get [params](): Params {
     return [
       [this.chatId, "bigint", "long"],
-      [this.userId, types.TypeInputUser, "InputUser"],
+      [this.userId, types._TypeInputUser, "InputUser"],
       [this.isAdmin, "boolean", "Bool"],
     ];
   }
@@ -6088,11 +6088,11 @@ export class MessagesSearchGlobal extends Function<types.TypeMessagesMessages> {
       ["flags", flags, "#"],
       ["folderId", "number", "flags.0?int"],
       ["q", "string", "string"],
-      ["filter", types.TypeMessagesFilter, "MessagesFilter"],
+      ["filter", types._TypeMessagesFilter, "MessagesFilter"],
       ["minDate", "number", "int"],
       ["maxDate", "number", "int"],
       ["offsetRate", "number", "int"],
-      ["offsetPeer", types.TypeInputPeer, "InputPeer"],
+      ["offsetPeer", types._TypeInputPeer, "InputPeer"],
       ["offsetId", "number", "int"],
       ["limit", "number", "int"],
     ];
@@ -6103,11 +6103,11 @@ export class MessagesSearchGlobal extends Function<types.TypeMessagesMessages> {
       ["flags", flags, "#"],
       [this.folderId ?? null, "number", "flags.0?int"],
       [this.q, "string", "string"],
-      [this.filter, types.TypeMessagesFilter, "MessagesFilter"],
+      [this.filter, types._TypeMessagesFilter, "MessagesFilter"],
       [this.minDate, "number", "int"],
       [this.maxDate, "number", "int"],
       [this.offsetRate, "number", "int"],
-      [this.offsetPeer, types.TypeInputPeer, "InputPeer"],
+      [this.offsetPeer, types._TypeInputPeer, "InputPeer"],
       [this.offsetId, "number", "int"],
       [this.limit, "number", "int"],
     ];
@@ -6230,14 +6230,14 @@ export class MessagesSaveGif extends Function<boolean> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["id", types.TypeInputDocument, "InputDocument"],
+      ["id", types._TypeInputDocument, "InputDocument"],
       ["unsave", "boolean", "Bool"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.id, types.TypeInputDocument, "InputDocument"],
+      [this.id, types._TypeInputDocument, "InputDocument"],
       [this.unsave, "boolean", "Bool"],
     ];
   }
@@ -6249,7 +6249,7 @@ export class MessagesSaveGif extends Function<boolean> {
   }
 }
 
-export class MessagesGetInlineBotResults extends Function<types.MessagesBotResults> {
+export class MessagesGetInlineBotResults extends Function<types.TypeMessagesBotResults> {
   bot: types.TypeInputUser;
   peer: types.TypeInputPeer;
   geoPoint?: types.TypeInputGeoPoint;
@@ -6263,9 +6263,9 @@ export class MessagesGetInlineBotResults extends Function<types.MessagesBotResul
   static get [paramDesc](): ParamDesc {
     return [
       ["flags", flags, "#"],
-      ["bot", types.TypeInputUser, "InputUser"],
-      ["peer", types.TypeInputPeer, "InputPeer"],
-      ["geoPoint", types.TypeInputGeoPoint, "flags.0?InputGeoPoint"],
+      ["bot", types._TypeInputUser, "InputUser"],
+      ["peer", types._TypeInputPeer, "InputPeer"],
+      ["geoPoint", types._TypeInputGeoPoint, "flags.0?InputGeoPoint"],
       ["query", "string", "string"],
       ["offset", "string", "string"],
     ];
@@ -6274,9 +6274,9 @@ export class MessagesGetInlineBotResults extends Function<types.MessagesBotResul
   protected get [params](): Params {
     return [
       ["flags", flags, "#"],
-      [this.bot, types.TypeInputUser, "InputUser"],
-      [this.peer, types.TypeInputPeer, "InputPeer"],
-      [this.geoPoint ?? null, types.TypeInputGeoPoint, "flags.0?InputGeoPoint"],
+      [this.bot, types._TypeInputUser, "InputUser"],
+      [this.peer, types._TypeInputPeer, "InputPeer"],
+      [this.geoPoint ?? null, types._TypeInputGeoPoint, "flags.0?InputGeoPoint"],
       [this.query, "string", "string"],
       [this.offset, "string", "string"],
     ];
@@ -6312,11 +6312,11 @@ export class MessagesSetInlineBotResults extends Function<boolean> {
       ["gallery", "true", "flags.0?true"],
       ["private", "true", "flags.1?true"],
       ["queryId", "bigint", "long"],
-      ["results", [types.TypeInputBotInlineResult], "Vector<InputBotInlineResult>"],
+      ["results", [types._TypeInputBotInlineResult], "Vector<InputBotInlineResult>"],
       ["cacheTime", "number", "int"],
       ["nextOffset", "string", "flags.2?string"],
-      ["switchPm", types.TypeInlineBotSwitchPM, "flags.3?InlineBotSwitchPM"],
-      ["switchWebview", types.TypeInlineBotWebView, "flags.4?InlineBotWebView"],
+      ["switchPm", types._TypeInlineBotSwitchPM, "flags.3?InlineBotSwitchPM"],
+      ["switchWebview", types._TypeInlineBotWebView, "flags.4?InlineBotWebView"],
     ];
   }
 
@@ -6326,11 +6326,11 @@ export class MessagesSetInlineBotResults extends Function<boolean> {
       [this.gallery ?? null, "true", "flags.0?true"],
       [this.private ?? null, "true", "flags.1?true"],
       [this.queryId, "bigint", "long"],
-      [this.results, [types.TypeInputBotInlineResult], "Vector<InputBotInlineResult>"],
+      [this.results, [types._TypeInputBotInlineResult], "Vector<InputBotInlineResult>"],
       [this.cacheTime, "number", "int"],
       [this.nextOffset ?? null, "string", "flags.2?string"],
-      [this.switchPm ?? null, types.TypeInlineBotSwitchPM, "flags.3?InlineBotSwitchPM"],
-      [this.switchWebview ?? null, types.TypeInlineBotWebView, "flags.4?InlineBotWebView"],
+      [this.switchPm ?? null, types._TypeInlineBotSwitchPM, "flags.3?InlineBotSwitchPM"],
+      [this.switchWebview ?? null, types._TypeInlineBotWebView, "flags.4?InlineBotWebView"],
     ];
   }
 
@@ -6371,13 +6371,13 @@ export class MessagesSendInlineBotResult extends Function<types.TypeUpdates> {
       ["background", "true", "flags.6?true"],
       ["clearDraft", "true", "flags.7?true"],
       ["hideVia", "true", "flags.11?true"],
-      ["peer", types.TypeInputPeer, "InputPeer"],
-      ["replyTo", types.TypeInputReplyTo, "flags.0?InputReplyTo"],
+      ["peer", types._TypeInputPeer, "InputPeer"],
+      ["replyTo", types._TypeInputReplyTo, "flags.0?InputReplyTo"],
       ["randomId", "bigint", "long"],
       ["queryId", "bigint", "long"],
       ["id", "string", "string"],
       ["scheduleDate", "number", "flags.10?int"],
-      ["sendAs", types.TypeInputPeer, "flags.13?InputPeer"],
+      ["sendAs", types._TypeInputPeer, "flags.13?InputPeer"],
     ];
   }
 
@@ -6388,13 +6388,13 @@ export class MessagesSendInlineBotResult extends Function<types.TypeUpdates> {
       [this.background ?? null, "true", "flags.6?true"],
       [this.clearDraft ?? null, "true", "flags.7?true"],
       [this.hideVia ?? null, "true", "flags.11?true"],
-      [this.peer, types.TypeInputPeer, "InputPeer"],
-      [this.replyTo ?? null, types.TypeInputReplyTo, "flags.0?InputReplyTo"],
+      [this.peer, types._TypeInputPeer, "InputPeer"],
+      [this.replyTo ?? null, types._TypeInputReplyTo, "flags.0?InputReplyTo"],
       [this.randomId, "bigint", "long"],
       [this.queryId, "bigint", "long"],
       [this.id, "string", "string"],
       [this.scheduleDate ?? null, "number", "flags.10?int"],
-      [this.sendAs ?? null, types.TypeInputPeer, "flags.13?InputPeer"],
+      [this.sendAs ?? null, types._TypeInputPeer, "flags.13?InputPeer"],
     ];
   }
 
@@ -6414,7 +6414,7 @@ export class MessagesSendInlineBotResult extends Function<types.TypeUpdates> {
   }
 }
 
-export class MessagesGetMessageEditData extends Function<types.MessagesMessageEditData> {
+export class MessagesGetMessageEditData extends Function<types.TypeMessagesMessageEditData> {
   peer: types.TypeInputPeer;
   id: number;
 
@@ -6424,14 +6424,14 @@ export class MessagesGetMessageEditData extends Function<types.MessagesMessageEd
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["peer", types.TypeInputPeer, "InputPeer"],
+      ["peer", types._TypeInputPeer, "InputPeer"],
       ["id", "number", "int"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.peer, types.TypeInputPeer, "InputPeer"],
+      [this.peer, types._TypeInputPeer, "InputPeer"],
       [this.id, "number", "int"],
     ];
   }
@@ -6461,12 +6461,12 @@ export class MessagesEditMessage extends Function<types.TypeUpdates> {
     return [
       ["flags", flags, "#"],
       ["noWebpage", "true", "flags.1?true"],
-      ["peer", types.TypeInputPeer, "InputPeer"],
+      ["peer", types._TypeInputPeer, "InputPeer"],
       ["id", "number", "int"],
       ["message", "string", "flags.11?string"],
-      ["media", types.TypeInputMedia, "flags.14?InputMedia"],
-      ["replyMarkup", types.TypeReplyMarkup, "flags.2?ReplyMarkup"],
-      ["entities", [types.TypeMessageEntity], "flags.3?Vector<MessageEntity>"],
+      ["media", types._TypeInputMedia, "flags.14?InputMedia"],
+      ["replyMarkup", types._TypeReplyMarkup, "flags.2?ReplyMarkup"],
+      ["entities", [types._TypeMessageEntity], "flags.3?Vector<MessageEntity>"],
       ["scheduleDate", "number", "flags.15?int"],
     ];
   }
@@ -6475,12 +6475,12 @@ export class MessagesEditMessage extends Function<types.TypeUpdates> {
     return [
       ["flags", flags, "#"],
       [this.noWebpage ?? null, "true", "flags.1?true"],
-      [this.peer, types.TypeInputPeer, "InputPeer"],
+      [this.peer, types._TypeInputPeer, "InputPeer"],
       [this.id, "number", "int"],
       [this.message ?? null, "string", "flags.11?string"],
-      [this.media ?? null, types.TypeInputMedia, "flags.14?InputMedia"],
-      [this.replyMarkup ?? null, types.TypeReplyMarkup, "flags.2?ReplyMarkup"],
-      [this.entities ?? null, [types.TypeMessageEntity], "flags.3?Vector<MessageEntity>"],
+      [this.media ?? null, types._TypeInputMedia, "flags.14?InputMedia"],
+      [this.replyMarkup ?? null, types._TypeReplyMarkup, "flags.2?ReplyMarkup"],
+      [this.entities ?? null, [types._TypeMessageEntity], "flags.3?Vector<MessageEntity>"],
       [this.scheduleDate ?? null, "number", "flags.15?int"],
     ];
   }
@@ -6514,11 +6514,11 @@ export class MessagesEditInlineBotMessage extends Function<boolean> {
     return [
       ["flags", flags, "#"],
       ["noWebpage", "true", "flags.1?true"],
-      ["id", types.TypeInputBotInlineMessageID, "InputBotInlineMessageID"],
+      ["id", types._TypeInputBotInlineMessageID, "InputBotInlineMessageID"],
       ["message", "string", "flags.11?string"],
-      ["media", types.TypeInputMedia, "flags.14?InputMedia"],
-      ["replyMarkup", types.TypeReplyMarkup, "flags.2?ReplyMarkup"],
-      ["entities", [types.TypeMessageEntity], "flags.3?Vector<MessageEntity>"],
+      ["media", types._TypeInputMedia, "flags.14?InputMedia"],
+      ["replyMarkup", types._TypeReplyMarkup, "flags.2?ReplyMarkup"],
+      ["entities", [types._TypeMessageEntity], "flags.3?Vector<MessageEntity>"],
     ];
   }
 
@@ -6526,11 +6526,11 @@ export class MessagesEditInlineBotMessage extends Function<boolean> {
     return [
       ["flags", flags, "#"],
       [this.noWebpage ?? null, "true", "flags.1?true"],
-      [this.id, types.TypeInputBotInlineMessageID, "InputBotInlineMessageID"],
+      [this.id, types._TypeInputBotInlineMessageID, "InputBotInlineMessageID"],
       [this.message ?? null, "string", "flags.11?string"],
-      [this.media ?? null, types.TypeInputMedia, "flags.14?InputMedia"],
-      [this.replyMarkup ?? null, types.TypeReplyMarkup, "flags.2?ReplyMarkup"],
-      [this.entities ?? null, [types.TypeMessageEntity], "flags.3?Vector<MessageEntity>"],
+      [this.media ?? null, types._TypeInputMedia, "flags.14?InputMedia"],
+      [this.replyMarkup ?? null, types._TypeReplyMarkup, "flags.2?ReplyMarkup"],
+      [this.entities ?? null, [types._TypeMessageEntity], "flags.3?Vector<MessageEntity>"],
     ];
   }
 
@@ -6545,7 +6545,7 @@ export class MessagesEditInlineBotMessage extends Function<boolean> {
   }
 }
 
-export class MessagesGetBotCallbackAnswer extends Function<types.MessagesBotCallbackAnswer> {
+export class MessagesGetBotCallbackAnswer extends Function<types.TypeMessagesBotCallbackAnswer> {
   game?: true;
   peer: types.TypeInputPeer;
   msgId: number;
@@ -6560,10 +6560,10 @@ export class MessagesGetBotCallbackAnswer extends Function<types.MessagesBotCall
     return [
       ["flags", flags, "#"],
       ["game", "true", "flags.1?true"],
-      ["peer", types.TypeInputPeer, "InputPeer"],
+      ["peer", types._TypeInputPeer, "InputPeer"],
       ["msgId", "number", "int"],
       ["data", Uint8Array, "flags.0?bytes"],
-      ["password", types.TypeInputCheckPasswordSRP, "flags.2?InputCheckPasswordSRP"],
+      ["password", types._TypeInputCheckPasswordSRP, "flags.2?InputCheckPasswordSRP"],
     ];
   }
 
@@ -6571,10 +6571,10 @@ export class MessagesGetBotCallbackAnswer extends Function<types.MessagesBotCall
     return [
       ["flags", flags, "#"],
       [this.game ?? null, "true", "flags.1?true"],
-      [this.peer, types.TypeInputPeer, "InputPeer"],
+      [this.peer, types._TypeInputPeer, "InputPeer"],
       [this.msgId, "number", "int"],
       [this.data ?? null, Uint8Array, "flags.0?bytes"],
-      [this.password ?? null, types.TypeInputCheckPasswordSRP, "flags.2?InputCheckPasswordSRP"],
+      [this.password ?? null, types._TypeInputCheckPasswordSRP, "flags.2?InputCheckPasswordSRP"],
     ];
   }
 
@@ -6631,7 +6631,7 @@ export class MessagesSetBotCallbackAnswer extends Function<boolean> {
   }
 }
 
-export class MessagesGetPeerDialogs extends Function<types.MessagesPeerDialogs> {
+export class MessagesGetPeerDialogs extends Function<types.TypeMessagesPeerDialogs> {
   peers: Array<types.TypeInputDialogPeer>;
 
   protected get [id]() {
@@ -6640,13 +6640,13 @@ export class MessagesGetPeerDialogs extends Function<types.MessagesPeerDialogs> 
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["peers", [types.TypeInputDialogPeer], "Vector<InputDialogPeer>"],
+      ["peers", [types._TypeInputDialogPeer], "Vector<InputDialogPeer>"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.peers, [types.TypeInputDialogPeer], "Vector<InputDialogPeer>"],
+      [this.peers, [types._TypeInputDialogPeer], "Vector<InputDialogPeer>"],
     ];
   }
 
@@ -6674,9 +6674,9 @@ export class MessagesSaveDraft extends Function<boolean> {
       ["noWebpage", "true", "flags.1?true"],
       ["replyToMsgId", "number", "flags.0?int"],
       ["topMsgId", "number", "flags.2?int"],
-      ["peer", types.TypeInputPeer, "InputPeer"],
+      ["peer", types._TypeInputPeer, "InputPeer"],
       ["message", "string", "string"],
-      ["entities", [types.TypeMessageEntity], "flags.3?Vector<MessageEntity>"],
+      ["entities", [types._TypeMessageEntity], "flags.3?Vector<MessageEntity>"],
     ];
   }
 
@@ -6686,9 +6686,9 @@ export class MessagesSaveDraft extends Function<boolean> {
       [this.noWebpage ?? null, "true", "flags.1?true"],
       [this.replyToMsgId ?? null, "number", "flags.0?int"],
       [this.topMsgId ?? null, "number", "flags.2?int"],
-      [this.peer, types.TypeInputPeer, "InputPeer"],
+      [this.peer, types._TypeInputPeer, "InputPeer"],
       [this.message, "string", "string"],
-      [this.entities ?? null, [types.TypeMessageEntity], "flags.3?Vector<MessageEntity>"],
+      [this.entities ?? null, [types._TypeMessageEntity], "flags.3?Vector<MessageEntity>"],
     ];
   }
 
@@ -6815,7 +6815,7 @@ export class MessagesSaveRecentSticker extends Function<boolean> {
     return [
       ["flags", flags, "#"],
       ["attached", "true", "flags.0?true"],
-      ["id", types.TypeInputDocument, "InputDocument"],
+      ["id", types._TypeInputDocument, "InputDocument"],
       ["unsave", "boolean", "Bool"],
     ];
   }
@@ -6824,7 +6824,7 @@ export class MessagesSaveRecentSticker extends Function<boolean> {
     return [
       ["flags", flags, "#"],
       [this.attached ?? null, "true", "flags.0?true"],
-      [this.id, types.TypeInputDocument, "InputDocument"],
+      [this.id, types._TypeInputDocument, "InputDocument"],
       [this.unsave, "boolean", "Bool"],
     ];
   }
@@ -6864,7 +6864,7 @@ export class MessagesClearRecentStickers extends Function<boolean> {
   }
 }
 
-export class MessagesGetArchivedStickers extends Function<types.MessagesArchivedStickers> {
+export class MessagesGetArchivedStickers extends Function<types.TypeMessagesArchivedStickers> {
   masks?: true;
   emojis?: true;
   offsetId: bigint;
@@ -6937,13 +6937,13 @@ export class MessagesGetAttachedStickers extends Function<types.TypeStickerSetCo
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["media", types.TypeInputStickeredMedia, "InputStickeredMedia"],
+      ["media", types._TypeInputStickeredMedia, "InputStickeredMedia"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.media, types.TypeInputStickeredMedia, "InputStickeredMedia"],
+      [this.media, types._TypeInputStickeredMedia, "InputStickeredMedia"],
     ];
   }
 
@@ -6970,9 +6970,9 @@ export class MessagesSetGameScore extends Function<types.TypeUpdates> {
       ["flags", flags, "#"],
       ["editMessage", "true", "flags.0?true"],
       ["force", "true", "flags.1?true"],
-      ["peer", types.TypeInputPeer, "InputPeer"],
+      ["peer", types._TypeInputPeer, "InputPeer"],
       ["id", "number", "int"],
-      ["userId", types.TypeInputUser, "InputUser"],
+      ["userId", types._TypeInputUser, "InputUser"],
       ["score", "number", "int"],
     ];
   }
@@ -6982,9 +6982,9 @@ export class MessagesSetGameScore extends Function<types.TypeUpdates> {
       ["flags", flags, "#"],
       [this.editMessage ?? null, "true", "flags.0?true"],
       [this.force ?? null, "true", "flags.1?true"],
-      [this.peer, types.TypeInputPeer, "InputPeer"],
+      [this.peer, types._TypeInputPeer, "InputPeer"],
       [this.id, "number", "int"],
-      [this.userId, types.TypeInputUser, "InputUser"],
+      [this.userId, types._TypeInputUser, "InputUser"],
       [this.score, "number", "int"],
     ];
   }
@@ -7016,8 +7016,8 @@ export class MessagesSetInlineGameScore extends Function<boolean> {
       ["flags", flags, "#"],
       ["editMessage", "true", "flags.0?true"],
       ["force", "true", "flags.1?true"],
-      ["id", types.TypeInputBotInlineMessageID, "InputBotInlineMessageID"],
-      ["userId", types.TypeInputUser, "InputUser"],
+      ["id", types._TypeInputBotInlineMessageID, "InputBotInlineMessageID"],
+      ["userId", types._TypeInputUser, "InputUser"],
       ["score", "number", "int"],
     ];
   }
@@ -7027,8 +7027,8 @@ export class MessagesSetInlineGameScore extends Function<boolean> {
       ["flags", flags, "#"],
       [this.editMessage ?? null, "true", "flags.0?true"],
       [this.force ?? null, "true", "flags.1?true"],
-      [this.id, types.TypeInputBotInlineMessageID, "InputBotInlineMessageID"],
-      [this.userId, types.TypeInputUser, "InputUser"],
+      [this.id, types._TypeInputBotInlineMessageID, "InputBotInlineMessageID"],
+      [this.userId, types._TypeInputUser, "InputUser"],
       [this.score, "number", "int"],
     ];
   }
@@ -7043,7 +7043,7 @@ export class MessagesSetInlineGameScore extends Function<boolean> {
   }
 }
 
-export class MessagesGetGameHighScores extends Function<types.MessagesHighScores> {
+export class MessagesGetGameHighScores extends Function<types.TypeMessagesHighScores> {
   peer: types.TypeInputPeer;
   id: number;
   userId: types.TypeInputUser;
@@ -7054,17 +7054,17 @@ export class MessagesGetGameHighScores extends Function<types.MessagesHighScores
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["peer", types.TypeInputPeer, "InputPeer"],
+      ["peer", types._TypeInputPeer, "InputPeer"],
       ["id", "number", "int"],
-      ["userId", types.TypeInputUser, "InputUser"],
+      ["userId", types._TypeInputUser, "InputUser"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.peer, types.TypeInputPeer, "InputPeer"],
+      [this.peer, types._TypeInputPeer, "InputPeer"],
       [this.id, "number", "int"],
-      [this.userId, types.TypeInputUser, "InputUser"],
+      [this.userId, types._TypeInputUser, "InputUser"],
     ];
   }
 
@@ -7076,7 +7076,7 @@ export class MessagesGetGameHighScores extends Function<types.MessagesHighScores
   }
 }
 
-export class MessagesGetInlineGameHighScores extends Function<types.MessagesHighScores> {
+export class MessagesGetInlineGameHighScores extends Function<types.TypeMessagesHighScores> {
   id: types.TypeInputBotInlineMessageID;
   userId: types.TypeInputUser;
 
@@ -7086,15 +7086,15 @@ export class MessagesGetInlineGameHighScores extends Function<types.MessagesHigh
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["id", types.TypeInputBotInlineMessageID, "InputBotInlineMessageID"],
-      ["userId", types.TypeInputUser, "InputUser"],
+      ["id", types._TypeInputBotInlineMessageID, "InputBotInlineMessageID"],
+      ["userId", types._TypeInputUser, "InputUser"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.id, types.TypeInputBotInlineMessageID, "InputBotInlineMessageID"],
-      [this.userId, types.TypeInputUser, "InputUser"],
+      [this.id, types._TypeInputBotInlineMessageID, "InputBotInlineMessageID"],
+      [this.userId, types._TypeInputUser, "InputUser"],
     ];
   }
 
@@ -7116,7 +7116,7 @@ export class MessagesGetCommonChats extends Function<types.TypeMessagesChats> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["userId", types.TypeInputUser, "InputUser"],
+      ["userId", types._TypeInputUser, "InputUser"],
       ["maxId", "bigint", "long"],
       ["limit", "number", "int"],
     ];
@@ -7124,7 +7124,7 @@ export class MessagesGetCommonChats extends Function<types.TypeMessagesChats> {
 
   protected get [params](): Params {
     return [
-      [this.userId, types.TypeInputUser, "InputUser"],
+      [this.userId, types._TypeInputUser, "InputUser"],
       [this.maxId, "bigint", "long"],
       [this.limit, "number", "int"],
     ];
@@ -7179,7 +7179,7 @@ export class MessagesToggleDialogPin extends Function<boolean> {
     return [
       ["flags", flags, "#"],
       ["pinned", "true", "flags.0?true"],
-      ["peer", types.TypeInputDialogPeer, "InputDialogPeer"],
+      ["peer", types._TypeInputDialogPeer, "InputDialogPeer"],
     ];
   }
 
@@ -7187,7 +7187,7 @@ export class MessagesToggleDialogPin extends Function<boolean> {
     return [
       ["flags", flags, "#"],
       [this.pinned ?? null, "true", "flags.0?true"],
-      [this.peer, types.TypeInputDialogPeer, "InputDialogPeer"],
+      [this.peer, types._TypeInputDialogPeer, "InputDialogPeer"],
     ];
   }
 
@@ -7212,7 +7212,7 @@ export class MessagesReorderPinnedDialogs extends Function<boolean> {
       ["flags", flags, "#"],
       ["force", "true", "flags.0?true"],
       ["folderId", "number", "int"],
-      ["order", [types.TypeInputDialogPeer], "Vector<InputDialogPeer>"],
+      ["order", [types._TypeInputDialogPeer], "Vector<InputDialogPeer>"],
     ];
   }
 
@@ -7221,7 +7221,7 @@ export class MessagesReorderPinnedDialogs extends Function<boolean> {
       ["flags", flags, "#"],
       [this.force ?? null, "true", "flags.0?true"],
       [this.folderId, "number", "int"],
-      [this.order, [types.TypeInputDialogPeer], "Vector<InputDialogPeer>"],
+      [this.order, [types._TypeInputDialogPeer], "Vector<InputDialogPeer>"],
     ];
   }
 
@@ -7233,7 +7233,7 @@ export class MessagesReorderPinnedDialogs extends Function<boolean> {
   }
 }
 
-export class MessagesGetPinnedDialogs extends Function<types.MessagesPeerDialogs> {
+export class MessagesGetPinnedDialogs extends Function<types.TypeMessagesPeerDialogs> {
   folderId: number;
 
   protected get [id]() {
@@ -7272,7 +7272,7 @@ export class MessagesSetBotShippingResults extends Function<boolean> {
       ["flags", flags, "#"],
       ["queryId", "bigint", "long"],
       ["error", "string", "flags.0?string"],
-      ["shippingOptions", [types.TypeShippingOption], "flags.1?Vector<ShippingOption>"],
+      ["shippingOptions", [types._TypeShippingOption], "flags.1?Vector<ShippingOption>"],
     ];
   }
 
@@ -7281,7 +7281,7 @@ export class MessagesSetBotShippingResults extends Function<boolean> {
       ["flags", flags, "#"],
       [this.queryId, "bigint", "long"],
       [this.error ?? null, "string", "flags.0?string"],
-      [this.shippingOptions ?? null, [types.TypeShippingOption], "flags.1?Vector<ShippingOption>"],
+      [this.shippingOptions ?? null, [types._TypeShippingOption], "flags.1?Vector<ShippingOption>"],
     ];
   }
 
@@ -7338,15 +7338,15 @@ export class MessagesUploadMedia extends Function<types.TypeMessageMedia> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["peer", types.TypeInputPeer, "InputPeer"],
-      ["media", types.TypeInputMedia, "InputMedia"],
+      ["peer", types._TypeInputPeer, "InputPeer"],
+      ["media", types._TypeInputMedia, "InputMedia"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.peer, types.TypeInputPeer, "InputPeer"],
-      [this.media, types.TypeInputMedia, "InputMedia"],
+      [this.peer, types._TypeInputPeer, "InputPeer"],
+      [this.media, types._TypeInputMedia, "InputMedia"],
     ];
   }
 
@@ -7368,16 +7368,16 @@ export class MessagesSendScreenshotNotification extends Function<types.TypeUpdat
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["peer", types.TypeInputPeer, "InputPeer"],
-      ["replyTo", types.TypeInputReplyTo, "InputReplyTo"],
+      ["peer", types._TypeInputPeer, "InputPeer"],
+      ["replyTo", types._TypeInputReplyTo, "InputReplyTo"],
       ["randomId", "bigint", "long"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.peer, types.TypeInputPeer, "InputPeer"],
-      [this.replyTo, types.TypeInputReplyTo, "InputReplyTo"],
+      [this.peer, types._TypeInputPeer, "InputPeer"],
+      [this.replyTo, types._TypeInputReplyTo, "InputReplyTo"],
       [this.randomId, "bigint", "long"],
     ];
   }
@@ -7425,14 +7425,14 @@ export class MessagesFaveSticker extends Function<boolean> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["id", types.TypeInputDocument, "InputDocument"],
+      ["id", types._TypeInputDocument, "InputDocument"],
       ["unfave", "boolean", "Bool"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.id, types.TypeInputDocument, "InputDocument"],
+      [this.id, types._TypeInputDocument, "InputDocument"],
       [this.unfave, "boolean", "Bool"],
     ];
   }
@@ -7460,7 +7460,7 @@ export class MessagesGetUnreadMentions extends Function<types.TypeMessagesMessag
   static get [paramDesc](): ParamDesc {
     return [
       ["flags", flags, "#"],
-      ["peer", types.TypeInputPeer, "InputPeer"],
+      ["peer", types._TypeInputPeer, "InputPeer"],
       ["topMsgId", "number", "flags.0?int"],
       ["offsetId", "number", "int"],
       ["addOffset", "number", "int"],
@@ -7473,7 +7473,7 @@ export class MessagesGetUnreadMentions extends Function<types.TypeMessagesMessag
   protected get [params](): Params {
     return [
       ["flags", flags, "#"],
-      [this.peer, types.TypeInputPeer, "InputPeer"],
+      [this.peer, types._TypeInputPeer, "InputPeer"],
       [this.topMsgId ?? null, "number", "flags.0?int"],
       [this.offsetId, "number", "int"],
       [this.addOffset, "number", "int"],
@@ -7495,7 +7495,7 @@ export class MessagesGetUnreadMentions extends Function<types.TypeMessagesMessag
   }
 }
 
-export class MessagesReadMentions extends Function<types.MessagesAffectedHistory> {
+export class MessagesReadMentions extends Function<types.TypeMessagesAffectedHistory> {
   peer: types.TypeInputPeer;
   topMsgId?: number;
 
@@ -7506,7 +7506,7 @@ export class MessagesReadMentions extends Function<types.MessagesAffectedHistory
   static get [paramDesc](): ParamDesc {
     return [
       ["flags", flags, "#"],
-      ["peer", types.TypeInputPeer, "InputPeer"],
+      ["peer", types._TypeInputPeer, "InputPeer"],
       ["topMsgId", "number", "flags.0?int"],
     ];
   }
@@ -7514,7 +7514,7 @@ export class MessagesReadMentions extends Function<types.MessagesAffectedHistory
   protected get [params](): Params {
     return [
       ["flags", flags, "#"],
-      [this.peer, types.TypeInputPeer, "InputPeer"],
+      [this.peer, types._TypeInputPeer, "InputPeer"],
       [this.topMsgId ?? null, "number", "flags.0?int"],
     ];
   }
@@ -7537,7 +7537,7 @@ export class MessagesGetRecentLocations extends Function<types.TypeMessagesMessa
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["peer", types.TypeInputPeer, "InputPeer"],
+      ["peer", types._TypeInputPeer, "InputPeer"],
       ["limit", "number", "int"],
       ["hash", "bigint", "long"],
     ];
@@ -7545,7 +7545,7 @@ export class MessagesGetRecentLocations extends Function<types.TypeMessagesMessa
 
   protected get [params](): Params {
     return [
-      [this.peer, types.TypeInputPeer, "InputPeer"],
+      [this.peer, types._TypeInputPeer, "InputPeer"],
       [this.limit, "number", "int"],
       [this.hash, "bigint", "long"],
     ];
@@ -7583,11 +7583,11 @@ export class MessagesSendMultiMedia extends Function<types.TypeUpdates> {
       ["clearDraft", "true", "flags.7?true"],
       ["noforwards", "true", "flags.14?true"],
       ["updateStickersetsOrder", "true", "flags.15?true"],
-      ["peer", types.TypeInputPeer, "InputPeer"],
-      ["replyTo", types.TypeInputReplyTo, "flags.0?InputReplyTo"],
-      ["multiMedia", [types.TypeInputSingleMedia], "Vector<InputSingleMedia>"],
+      ["peer", types._TypeInputPeer, "InputPeer"],
+      ["replyTo", types._TypeInputReplyTo, "flags.0?InputReplyTo"],
+      ["multiMedia", [types._TypeInputSingleMedia], "Vector<InputSingleMedia>"],
       ["scheduleDate", "number", "flags.10?int"],
-      ["sendAs", types.TypeInputPeer, "flags.13?InputPeer"],
+      ["sendAs", types._TypeInputPeer, "flags.13?InputPeer"],
     ];
   }
 
@@ -7599,11 +7599,11 @@ export class MessagesSendMultiMedia extends Function<types.TypeUpdates> {
       [this.clearDraft ?? null, "true", "flags.7?true"],
       [this.noforwards ?? null, "true", "flags.14?true"],
       [this.updateStickersetsOrder ?? null, "true", "flags.15?true"],
-      [this.peer, types.TypeInputPeer, "InputPeer"],
-      [this.replyTo ?? null, types.TypeInputReplyTo, "flags.0?InputReplyTo"],
-      [this.multiMedia, [types.TypeInputSingleMedia], "Vector<InputSingleMedia>"],
+      [this.peer, types._TypeInputPeer, "InputPeer"],
+      [this.replyTo ?? null, types._TypeInputReplyTo, "flags.0?InputReplyTo"],
+      [this.multiMedia, [types._TypeInputSingleMedia], "Vector<InputSingleMedia>"],
       [this.scheduleDate ?? null, "number", "flags.10?int"],
-      [this.sendAs ?? null, types.TypeInputPeer, "flags.13?InputPeer"],
+      [this.sendAs ?? null, types._TypeInputPeer, "flags.13?InputPeer"],
     ];
   }
 
@@ -7632,15 +7632,15 @@ export class MessagesUploadEncryptedFile extends Function<types.TypeEncryptedFil
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["peer", types.TypeInputEncryptedChat, "InputEncryptedChat"],
-      ["file", types.TypeInputEncryptedFile, "InputEncryptedFile"],
+      ["peer", types._TypeInputEncryptedChat, "InputEncryptedChat"],
+      ["file", types._TypeInputEncryptedFile, "InputEncryptedFile"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.peer, types.TypeInputEncryptedChat, "InputEncryptedChat"],
-      [this.file, types.TypeInputEncryptedFile, "InputEncryptedFile"],
+      [this.peer, types._TypeInputEncryptedChat, "InputEncryptedChat"],
+      [this.file, types._TypeInputEncryptedFile, "InputEncryptedFile"],
     ];
   }
 
@@ -7686,7 +7686,7 @@ export class MessagesSearchStickerSets extends Function<types.TypeMessagesFoundS
   }
 }
 
-export class MessagesGetSplitRanges extends Function<types.MessageRange[]> {
+export class MessagesGetSplitRanges extends Function<types.TypeMessageRange[]> {
   protected get [id]() {
     return 0x1CFF7E08;
   }
@@ -7716,7 +7716,7 @@ export class MessagesMarkDialogUnread extends Function<boolean> {
     return [
       ["flags", flags, "#"],
       ["unread", "true", "flags.0?true"],
-      ["peer", types.TypeInputDialogPeer, "InputDialogPeer"],
+      ["peer", types._TypeInputDialogPeer, "InputDialogPeer"],
     ];
   }
 
@@ -7724,7 +7724,7 @@ export class MessagesMarkDialogUnread extends Function<boolean> {
     return [
       ["flags", flags, "#"],
       [this.unread ?? null, "true", "flags.0?true"],
-      [this.peer, types.TypeInputDialogPeer, "InputDialogPeer"],
+      [this.peer, types._TypeInputDialogPeer, "InputDialogPeer"],
     ];
   }
 
@@ -7788,7 +7788,7 @@ export class MessagesUpdatePinnedMessage extends Function<types.TypeUpdates> {
       ["silent", "true", "flags.0?true"],
       ["unpin", "true", "flags.1?true"],
       ["pmOneside", "true", "flags.2?true"],
-      ["peer", types.TypeInputPeer, "InputPeer"],
+      ["peer", types._TypeInputPeer, "InputPeer"],
       ["id", "number", "int"],
     ];
   }
@@ -7799,7 +7799,7 @@ export class MessagesUpdatePinnedMessage extends Function<types.TypeUpdates> {
       [this.silent ?? null, "true", "flags.0?true"],
       [this.unpin ?? null, "true", "flags.1?true"],
       [this.pmOneside ?? null, "true", "flags.2?true"],
-      [this.peer, types.TypeInputPeer, "InputPeer"],
+      [this.peer, types._TypeInputPeer, "InputPeer"],
       [this.id, "number", "int"],
     ];
   }
@@ -7825,7 +7825,7 @@ export class MessagesSendVote extends Function<types.TypeUpdates> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["peer", types.TypeInputPeer, "InputPeer"],
+      ["peer", types._TypeInputPeer, "InputPeer"],
       ["msgId", "number", "int"],
       ["options", [Uint8Array], "Vector<bytes>"],
     ];
@@ -7833,7 +7833,7 @@ export class MessagesSendVote extends Function<types.TypeUpdates> {
 
   protected get [params](): Params {
     return [
-      [this.peer, types.TypeInputPeer, "InputPeer"],
+      [this.peer, types._TypeInputPeer, "InputPeer"],
       [this.msgId, "number", "int"],
       [this.options, [Uint8Array], "Vector<bytes>"],
     ];
@@ -7857,14 +7857,14 @@ export class MessagesGetPollResults extends Function<types.TypeUpdates> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["peer", types.TypeInputPeer, "InputPeer"],
+      ["peer", types._TypeInputPeer, "InputPeer"],
       ["msgId", "number", "int"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.peer, types.TypeInputPeer, "InputPeer"],
+      [this.peer, types._TypeInputPeer, "InputPeer"],
       [this.msgId, "number", "int"],
     ];
   }
@@ -7876,7 +7876,7 @@ export class MessagesGetPollResults extends Function<types.TypeUpdates> {
   }
 }
 
-export class MessagesGetOnlines extends Function<types.ChatOnlines> {
+export class MessagesGetOnlines extends Function<types.TypeChatOnlines> {
   peer: types.TypeInputPeer;
 
   protected get [id]() {
@@ -7885,13 +7885,13 @@ export class MessagesGetOnlines extends Function<types.ChatOnlines> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["peer", types.TypeInputPeer, "InputPeer"],
+      ["peer", types._TypeInputPeer, "InputPeer"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.peer, types.TypeInputPeer, "InputPeer"],
+      [this.peer, types._TypeInputPeer, "InputPeer"],
     ];
   }
 
@@ -7911,14 +7911,14 @@ export class MessagesEditChatAbout extends Function<boolean> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["peer", types.TypeInputPeer, "InputPeer"],
+      ["peer", types._TypeInputPeer, "InputPeer"],
       ["about", "string", "string"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.peer, types.TypeInputPeer, "InputPeer"],
+      [this.peer, types._TypeInputPeer, "InputPeer"],
       [this.about, "string", "string"],
     ];
   }
@@ -7940,15 +7940,15 @@ export class MessagesEditChatDefaultBannedRights extends Function<types.TypeUpda
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["peer", types.TypeInputPeer, "InputPeer"],
-      ["bannedRights", types.TypeChatBannedRights, "ChatBannedRights"],
+      ["peer", types._TypeInputPeer, "InputPeer"],
+      ["bannedRights", types._TypeChatBannedRights, "ChatBannedRights"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.peer, types.TypeInputPeer, "InputPeer"],
-      [this.bannedRights, types.TypeChatBannedRights, "ChatBannedRights"],
+      [this.peer, types._TypeInputPeer, "InputPeer"],
+      [this.bannedRights, types._TypeChatBannedRights, "ChatBannedRights"],
     ];
   }
 
@@ -7959,7 +7959,7 @@ export class MessagesEditChatDefaultBannedRights extends Function<types.TypeUpda
   }
 }
 
-export class MessagesGetEmojiKeywords extends Function<types.EmojiKeywordsDifference> {
+export class MessagesGetEmojiKeywords extends Function<types.TypeEmojiKeywordsDifference> {
   langCode: string;
 
   protected get [id]() {
@@ -7984,7 +7984,7 @@ export class MessagesGetEmojiKeywords extends Function<types.EmojiKeywordsDiffer
   }
 }
 
-export class MessagesGetEmojiKeywordsDifference extends Function<types.EmojiKeywordsDifference> {
+export class MessagesGetEmojiKeywordsDifference extends Function<types.TypeEmojiKeywordsDifference> {
   langCode: string;
   fromVersion: number;
 
@@ -8013,7 +8013,7 @@ export class MessagesGetEmojiKeywordsDifference extends Function<types.EmojiKeyw
   }
 }
 
-export class MessagesGetEmojiKeywordsLanguages extends Function<types.EmojiLanguage[]> {
+export class MessagesGetEmojiKeywordsLanguages extends Function<types.TypeEmojiLanguage[]> {
   langCodes: Array<string>;
 
   protected get [id]() {
@@ -8038,7 +8038,7 @@ export class MessagesGetEmojiKeywordsLanguages extends Function<types.EmojiLangu
   }
 }
 
-export class MessagesGetEmojiURL extends Function<types.EmojiURL> {
+export class MessagesGetEmojiURL extends Function<types.TypeEmojiURL> {
   langCode: string;
 
   protected get [id]() {
@@ -8063,7 +8063,7 @@ export class MessagesGetEmojiURL extends Function<types.EmojiURL> {
   }
 }
 
-export class MessagesGetSearchCounters extends Function<types.MessagesSearchCounter[]> {
+export class MessagesGetSearchCounters extends Function<types.TypeMessagesSearchCounter[]> {
   peer: types.TypeInputPeer;
   topMsgId?: number;
   filters: Array<types.TypeMessagesFilter>;
@@ -8075,18 +8075,18 @@ export class MessagesGetSearchCounters extends Function<types.MessagesSearchCoun
   static get [paramDesc](): ParamDesc {
     return [
       ["flags", flags, "#"],
-      ["peer", types.TypeInputPeer, "InputPeer"],
+      ["peer", types._TypeInputPeer, "InputPeer"],
       ["topMsgId", "number", "flags.0?int"],
-      ["filters", [types.TypeMessagesFilter], "Vector<MessagesFilter>"],
+      ["filters", [types._TypeMessagesFilter], "Vector<MessagesFilter>"],
     ];
   }
 
   protected get [params](): Params {
     return [
       ["flags", flags, "#"],
-      [this.peer, types.TypeInputPeer, "InputPeer"],
+      [this.peer, types._TypeInputPeer, "InputPeer"],
       [this.topMsgId ?? null, "number", "flags.0?int"],
-      [this.filters, [types.TypeMessagesFilter], "Vector<MessagesFilter>"],
+      [this.filters, [types._TypeMessagesFilter], "Vector<MessagesFilter>"],
     ];
   }
 
@@ -8111,7 +8111,7 @@ export class MessagesRequestURLAuth extends Function<types.TypeURLAuthResult> {
   static get [paramDesc](): ParamDesc {
     return [
       ["flags", flags, "#"],
-      ["peer", types.TypeInputPeer, "flags.1?InputPeer"],
+      ["peer", types._TypeInputPeer, "flags.1?InputPeer"],
       ["msgId", "number", "flags.1?int"],
       ["buttonId", "number", "flags.1?int"],
       ["url", "string", "flags.2?string"],
@@ -8121,7 +8121,7 @@ export class MessagesRequestURLAuth extends Function<types.TypeURLAuthResult> {
   protected get [params](): Params {
     return [
       ["flags", flags, "#"],
-      [this.peer ?? null, types.TypeInputPeer, "flags.1?InputPeer"],
+      [this.peer ?? null, types._TypeInputPeer, "flags.1?InputPeer"],
       [this.msgId ?? null, "number", "flags.1?int"],
       [this.buttonId ?? null, "number", "flags.1?int"],
       [this.url ?? null, "string", "flags.2?string"],
@@ -8152,7 +8152,7 @@ export class MessagesAcceptURLAuth extends Function<types.TypeURLAuthResult> {
     return [
       ["flags", flags, "#"],
       ["writeAllowed", "true", "flags.0?true"],
-      ["peer", types.TypeInputPeer, "flags.1?InputPeer"],
+      ["peer", types._TypeInputPeer, "flags.1?InputPeer"],
       ["msgId", "number", "flags.1?int"],
       ["buttonId", "number", "flags.1?int"],
       ["url", "string", "flags.2?string"],
@@ -8163,7 +8163,7 @@ export class MessagesAcceptURLAuth extends Function<types.TypeURLAuthResult> {
     return [
       ["flags", flags, "#"],
       [this.writeAllowed ?? null, "true", "flags.0?true"],
-      [this.peer ?? null, types.TypeInputPeer, "flags.1?InputPeer"],
+      [this.peer ?? null, types._TypeInputPeer, "flags.1?InputPeer"],
       [this.msgId ?? null, "number", "flags.1?int"],
       [this.buttonId ?? null, "number", "flags.1?int"],
       [this.url ?? null, "string", "flags.2?string"],
@@ -8189,13 +8189,13 @@ export class MessagesHidePeerSettingsBar extends Function<boolean> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["peer", types.TypeInputPeer, "InputPeer"],
+      ["peer", types._TypeInputPeer, "InputPeer"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.peer, types.TypeInputPeer, "InputPeer"],
+      [this.peer, types._TypeInputPeer, "InputPeer"],
     ];
   }
 
@@ -8215,14 +8215,14 @@ export class MessagesGetScheduledHistory extends Function<types.TypeMessagesMess
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["peer", types.TypeInputPeer, "InputPeer"],
+      ["peer", types._TypeInputPeer, "InputPeer"],
       ["hash", "bigint", "long"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.peer, types.TypeInputPeer, "InputPeer"],
+      [this.peer, types._TypeInputPeer, "InputPeer"],
       [this.hash, "bigint", "long"],
     ];
   }
@@ -8244,14 +8244,14 @@ export class MessagesGetScheduledMessages extends Function<types.TypeMessagesMes
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["peer", types.TypeInputPeer, "InputPeer"],
+      ["peer", types._TypeInputPeer, "InputPeer"],
       ["id", ["number"], "Vector<int>"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.peer, types.TypeInputPeer, "InputPeer"],
+      [this.peer, types._TypeInputPeer, "InputPeer"],
       [this.id, ["number"], "Vector<int>"],
     ];
   }
@@ -8273,14 +8273,14 @@ export class MessagesSendScheduledMessages extends Function<types.TypeUpdates> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["peer", types.TypeInputPeer, "InputPeer"],
+      ["peer", types._TypeInputPeer, "InputPeer"],
       ["id", ["number"], "Vector<int>"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.peer, types.TypeInputPeer, "InputPeer"],
+      [this.peer, types._TypeInputPeer, "InputPeer"],
       [this.id, ["number"], "Vector<int>"],
     ];
   }
@@ -8302,14 +8302,14 @@ export class MessagesDeleteScheduledMessages extends Function<types.TypeUpdates>
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["peer", types.TypeInputPeer, "InputPeer"],
+      ["peer", types._TypeInputPeer, "InputPeer"],
       ["id", ["number"], "Vector<int>"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.peer, types.TypeInputPeer, "InputPeer"],
+      [this.peer, types._TypeInputPeer, "InputPeer"],
       [this.id, ["number"], "Vector<int>"],
     ];
   }
@@ -8321,7 +8321,7 @@ export class MessagesDeleteScheduledMessages extends Function<types.TypeUpdates>
   }
 }
 
-export class MessagesGetPollVotes extends Function<types.MessagesVotesList> {
+export class MessagesGetPollVotes extends Function<types.TypeMessagesVotesList> {
   peer: types.TypeInputPeer;
   id: number;
   option?: Uint8Array;
@@ -8335,7 +8335,7 @@ export class MessagesGetPollVotes extends Function<types.MessagesVotesList> {
   static get [paramDesc](): ParamDesc {
     return [
       ["flags", flags, "#"],
-      ["peer", types.TypeInputPeer, "InputPeer"],
+      ["peer", types._TypeInputPeer, "InputPeer"],
       ["id", "number", "int"],
       ["option", Uint8Array, "flags.0?bytes"],
       ["offset", "string", "flags.1?string"],
@@ -8346,7 +8346,7 @@ export class MessagesGetPollVotes extends Function<types.MessagesVotesList> {
   protected get [params](): Params {
     return [
       ["flags", flags, "#"],
-      [this.peer, types.TypeInputPeer, "InputPeer"],
+      [this.peer, types._TypeInputPeer, "InputPeer"],
       [this.id, "number", "int"],
       [this.option ?? null, Uint8Array, "flags.0?bytes"],
       [this.offset ?? null, "string", "flags.1?string"],
@@ -8380,7 +8380,7 @@ export class MessagesToggleStickerSets extends Function<boolean> {
       ["uninstall", "true", "flags.0?true"],
       ["archive", "true", "flags.1?true"],
       ["unarchive", "true", "flags.2?true"],
-      ["stickersets", [types.TypeInputStickerSet], "Vector<InputStickerSet>"],
+      ["stickersets", [types._TypeInputStickerSet], "Vector<InputStickerSet>"],
     ];
   }
 
@@ -8390,7 +8390,7 @@ export class MessagesToggleStickerSets extends Function<boolean> {
       [this.uninstall ?? null, "true", "flags.0?true"],
       [this.archive ?? null, "true", "flags.1?true"],
       [this.unarchive ?? null, "true", "flags.2?true"],
-      [this.stickersets, [types.TypeInputStickerSet], "Vector<InputStickerSet>"],
+      [this.stickersets, [types._TypeInputStickerSet], "Vector<InputStickerSet>"],
     ];
   }
 
@@ -8421,7 +8421,7 @@ export class MessagesGetDialogFilters extends Function<types.TypeDialogFilter[]>
   }
 }
 
-export class MessagesGetSuggestedDialogFilters extends Function<types.DialogFilterSuggested[]> {
+export class MessagesGetSuggestedDialogFilters extends Function<types.TypeDialogFilterSuggested[]> {
   protected get [id]() {
     return 0xA29CD42C;
   }
@@ -8451,7 +8451,7 @@ export class MessagesUpdateDialogFilter extends Function<boolean> {
     return [
       ["flags", flags, "#"],
       ["id", "number", "int"],
-      ["filter", types.TypeDialogFilter, "flags.0?DialogFilter"],
+      ["filter", types._TypeDialogFilter, "flags.0?DialogFilter"],
     ];
   }
 
@@ -8459,7 +8459,7 @@ export class MessagesUpdateDialogFilter extends Function<boolean> {
     return [
       ["flags", flags, "#"],
       [this.id, "number", "int"],
-      [this.filter ?? null, types.TypeDialogFilter, "flags.0?DialogFilter"],
+      [this.filter ?? null, types._TypeDialogFilter, "flags.0?DialogFilter"],
     ];
   }
 
@@ -8545,7 +8545,7 @@ export class MessagesGetReplies extends Function<types.TypeMessagesMessages> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["peer", types.TypeInputPeer, "InputPeer"],
+      ["peer", types._TypeInputPeer, "InputPeer"],
       ["msgId", "number", "int"],
       ["offsetId", "number", "int"],
       ["offsetDate", "number", "int"],
@@ -8559,7 +8559,7 @@ export class MessagesGetReplies extends Function<types.TypeMessagesMessages> {
 
   protected get [params](): Params {
     return [
-      [this.peer, types.TypeInputPeer, "InputPeer"],
+      [this.peer, types._TypeInputPeer, "InputPeer"],
       [this.msgId, "number", "int"],
       [this.offsetId, "number", "int"],
       [this.offsetDate, "number", "int"],
@@ -8585,7 +8585,7 @@ export class MessagesGetReplies extends Function<types.TypeMessagesMessages> {
   }
 }
 
-export class MessagesGetDiscussionMessage extends Function<types.MessagesDiscussionMessage> {
+export class MessagesGetDiscussionMessage extends Function<types.TypeMessagesDiscussionMessage> {
   peer: types.TypeInputPeer;
   msgId: number;
 
@@ -8595,14 +8595,14 @@ export class MessagesGetDiscussionMessage extends Function<types.MessagesDiscuss
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["peer", types.TypeInputPeer, "InputPeer"],
+      ["peer", types._TypeInputPeer, "InputPeer"],
       ["msgId", "number", "int"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.peer, types.TypeInputPeer, "InputPeer"],
+      [this.peer, types._TypeInputPeer, "InputPeer"],
       [this.msgId, "number", "int"],
     ];
   }
@@ -8625,7 +8625,7 @@ export class MessagesReadDiscussion extends Function<boolean> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["peer", types.TypeInputPeer, "InputPeer"],
+      ["peer", types._TypeInputPeer, "InputPeer"],
       ["msgId", "number", "int"],
       ["readMaxId", "number", "int"],
     ];
@@ -8633,7 +8633,7 @@ export class MessagesReadDiscussion extends Function<boolean> {
 
   protected get [params](): Params {
     return [
-      [this.peer, types.TypeInputPeer, "InputPeer"],
+      [this.peer, types._TypeInputPeer, "InputPeer"],
       [this.msgId, "number", "int"],
       [this.readMaxId, "number", "int"],
     ];
@@ -8647,7 +8647,7 @@ export class MessagesReadDiscussion extends Function<boolean> {
   }
 }
 
-export class MessagesUnpinAllMessages extends Function<types.MessagesAffectedHistory> {
+export class MessagesUnpinAllMessages extends Function<types.TypeMessagesAffectedHistory> {
   peer: types.TypeInputPeer;
   topMsgId?: number;
 
@@ -8658,7 +8658,7 @@ export class MessagesUnpinAllMessages extends Function<types.MessagesAffectedHis
   static get [paramDesc](): ParamDesc {
     return [
       ["flags", flags, "#"],
-      ["peer", types.TypeInputPeer, "InputPeer"],
+      ["peer", types._TypeInputPeer, "InputPeer"],
       ["topMsgId", "number", "flags.0?int"],
     ];
   }
@@ -8666,7 +8666,7 @@ export class MessagesUnpinAllMessages extends Function<types.MessagesAffectedHis
   protected get [params](): Params {
     return [
       ["flags", flags, "#"],
-      [this.peer, types.TypeInputPeer, "InputPeer"],
+      [this.peer, types._TypeInputPeer, "InputPeer"],
       [this.topMsgId ?? null, "number", "flags.0?int"],
     ];
   }
@@ -8703,7 +8703,7 @@ export class MessagesDeleteChat extends Function<boolean> {
   }
 }
 
-export class MessagesDeletePhoneCallHistory extends Function<types.MessagesAffectedFoundMessages> {
+export class MessagesDeletePhoneCallHistory extends Function<types.TypeMessagesAffectedFoundMessages> {
   revoke?: true;
 
   protected get [id]() {
@@ -8730,7 +8730,7 @@ export class MessagesDeletePhoneCallHistory extends Function<types.MessagesAffec
   }
 }
 
-export class MessagesCheckHistoryImport extends Function<types.MessagesHistoryImportParsed> {
+export class MessagesCheckHistoryImport extends Function<types.TypeMessagesHistoryImportParsed> {
   importHead: string;
 
   protected get [id]() {
@@ -8755,7 +8755,7 @@ export class MessagesCheckHistoryImport extends Function<types.MessagesHistoryIm
   }
 }
 
-export class MessagesInitHistoryImport extends Function<types.MessagesHistoryImport> {
+export class MessagesInitHistoryImport extends Function<types.TypeMessagesHistoryImport> {
   peer: types.TypeInputPeer;
   file: types.TypeInputFile;
   mediaCount: number;
@@ -8766,16 +8766,16 @@ export class MessagesInitHistoryImport extends Function<types.MessagesHistoryImp
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["peer", types.TypeInputPeer, "InputPeer"],
-      ["file", types.TypeInputFile, "InputFile"],
+      ["peer", types._TypeInputPeer, "InputPeer"],
+      ["file", types._TypeInputFile, "InputFile"],
       ["mediaCount", "number", "int"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.peer, types.TypeInputPeer, "InputPeer"],
-      [this.file, types.TypeInputFile, "InputFile"],
+      [this.peer, types._TypeInputPeer, "InputPeer"],
+      [this.file, types._TypeInputFile, "InputFile"],
       [this.mediaCount, "number", "int"],
     ];
   }
@@ -8800,19 +8800,19 @@ export class MessagesUploadImportedMedia extends Function<types.TypeMessageMedia
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["peer", types.TypeInputPeer, "InputPeer"],
+      ["peer", types._TypeInputPeer, "InputPeer"],
       ["importId", "bigint", "long"],
       ["fileName", "string", "string"],
-      ["media", types.TypeInputMedia, "InputMedia"],
+      ["media", types._TypeInputMedia, "InputMedia"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.peer, types.TypeInputPeer, "InputPeer"],
+      [this.peer, types._TypeInputPeer, "InputPeer"],
       [this.importId, "bigint", "long"],
       [this.fileName, "string", "string"],
-      [this.media, types.TypeInputMedia, "InputMedia"],
+      [this.media, types._TypeInputMedia, "InputMedia"],
     ];
   }
 
@@ -8835,14 +8835,14 @@ export class MessagesStartHistoryImport extends Function<boolean> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["peer", types.TypeInputPeer, "InputPeer"],
+      ["peer", types._TypeInputPeer, "InputPeer"],
       ["importId", "bigint", "long"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.peer, types.TypeInputPeer, "InputPeer"],
+      [this.peer, types._TypeInputPeer, "InputPeer"],
       [this.importId, "bigint", "long"],
     ];
   }
@@ -8854,7 +8854,7 @@ export class MessagesStartHistoryImport extends Function<boolean> {
   }
 }
 
-export class MessagesGetExportedChatInvites extends Function<types.MessagesExportedChatInvites> {
+export class MessagesGetExportedChatInvites extends Function<types.TypeMessagesExportedChatInvites> {
   revoked?: true;
   peer: types.TypeInputPeer;
   adminId: types.TypeInputUser;
@@ -8870,8 +8870,8 @@ export class MessagesGetExportedChatInvites extends Function<types.MessagesExpor
     return [
       ["flags", flags, "#"],
       ["revoked", "true", "flags.3?true"],
-      ["peer", types.TypeInputPeer, "InputPeer"],
-      ["adminId", types.TypeInputUser, "InputUser"],
+      ["peer", types._TypeInputPeer, "InputPeer"],
+      ["adminId", types._TypeInputUser, "InputUser"],
       ["offsetDate", "number", "flags.2?int"],
       ["offsetLink", "string", "flags.2?string"],
       ["limit", "number", "int"],
@@ -8882,8 +8882,8 @@ export class MessagesGetExportedChatInvites extends Function<types.MessagesExpor
     return [
       ["flags", flags, "#"],
       [this.revoked ?? null, "true", "flags.3?true"],
-      [this.peer, types.TypeInputPeer, "InputPeer"],
-      [this.adminId, types.TypeInputUser, "InputUser"],
+      [this.peer, types._TypeInputPeer, "InputPeer"],
+      [this.adminId, types._TypeInputUser, "InputUser"],
       [this.offsetDate ?? null, "number", "flags.2?int"],
       [this.offsetLink ?? null, "string", "flags.2?string"],
       [this.limit, "number", "int"],
@@ -8911,14 +8911,14 @@ export class MessagesGetExportedChatInvite extends Function<types.TypeMessagesEx
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["peer", types.TypeInputPeer, "InputPeer"],
+      ["peer", types._TypeInputPeer, "InputPeer"],
       ["link", "string", "string"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.peer, types.TypeInputPeer, "InputPeer"],
+      [this.peer, types._TypeInputPeer, "InputPeer"],
       [this.link, "string", "string"],
     ];
   }
@@ -8947,7 +8947,7 @@ export class MessagesEditExportedChatInvite extends Function<types.TypeMessagesE
     return [
       ["flags", flags, "#"],
       ["revoked", "true", "flags.2?true"],
-      ["peer", types.TypeInputPeer, "InputPeer"],
+      ["peer", types._TypeInputPeer, "InputPeer"],
       ["link", "string", "string"],
       ["expireDate", "number", "flags.0?int"],
       ["usageLimit", "number", "flags.1?int"],
@@ -8960,7 +8960,7 @@ export class MessagesEditExportedChatInvite extends Function<types.TypeMessagesE
     return [
       ["flags", flags, "#"],
       [this.revoked ?? null, "true", "flags.2?true"],
-      [this.peer, types.TypeInputPeer, "InputPeer"],
+      [this.peer, types._TypeInputPeer, "InputPeer"],
       [this.link, "string", "string"],
       [this.expireDate ?? null, "number", "flags.0?int"],
       [this.usageLimit ?? null, "number", "flags.1?int"],
@@ -8991,15 +8991,15 @@ export class MessagesDeleteRevokedExportedChatInvites extends Function<boolean> 
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["peer", types.TypeInputPeer, "InputPeer"],
-      ["adminId", types.TypeInputUser, "InputUser"],
+      ["peer", types._TypeInputPeer, "InputPeer"],
+      ["adminId", types._TypeInputUser, "InputUser"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.peer, types.TypeInputPeer, "InputPeer"],
-      [this.adminId, types.TypeInputUser, "InputUser"],
+      [this.peer, types._TypeInputPeer, "InputPeer"],
+      [this.adminId, types._TypeInputUser, "InputUser"],
     ];
   }
 
@@ -9020,14 +9020,14 @@ export class MessagesDeleteExportedChatInvite extends Function<boolean> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["peer", types.TypeInputPeer, "InputPeer"],
+      ["peer", types._TypeInputPeer, "InputPeer"],
       ["link", "string", "string"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.peer, types.TypeInputPeer, "InputPeer"],
+      [this.peer, types._TypeInputPeer, "InputPeer"],
       [this.link, "string", "string"],
     ];
   }
@@ -9039,7 +9039,7 @@ export class MessagesDeleteExportedChatInvite extends Function<boolean> {
   }
 }
 
-export class MessagesGetAdminsWithInvites extends Function<types.MessagesChatAdminsWithInvites> {
+export class MessagesGetAdminsWithInvites extends Function<types.TypeMessagesChatAdminsWithInvites> {
   peer: types.TypeInputPeer;
 
   protected get [id]() {
@@ -9048,13 +9048,13 @@ export class MessagesGetAdminsWithInvites extends Function<types.MessagesChatAdm
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["peer", types.TypeInputPeer, "InputPeer"],
+      ["peer", types._TypeInputPeer, "InputPeer"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.peer, types.TypeInputPeer, "InputPeer"],
+      [this.peer, types._TypeInputPeer, "InputPeer"],
     ];
   }
 
@@ -9064,7 +9064,7 @@ export class MessagesGetAdminsWithInvites extends Function<types.MessagesChatAdm
   }
 }
 
-export class MessagesGetChatInviteImporters extends Function<types.MessagesChatInviteImporters> {
+export class MessagesGetChatInviteImporters extends Function<types.TypeMessagesChatInviteImporters> {
   requested?: true;
   peer: types.TypeInputPeer;
   link?: string;
@@ -9081,11 +9081,11 @@ export class MessagesGetChatInviteImporters extends Function<types.MessagesChatI
     return [
       ["flags", flags, "#"],
       ["requested", "true", "flags.0?true"],
-      ["peer", types.TypeInputPeer, "InputPeer"],
+      ["peer", types._TypeInputPeer, "InputPeer"],
       ["link", "string", "flags.1?string"],
       ["q", "string", "flags.2?string"],
       ["offsetDate", "number", "int"],
-      ["offsetUser", types.TypeInputUser, "InputUser"],
+      ["offsetUser", types._TypeInputUser, "InputUser"],
       ["limit", "number", "int"],
     ];
   }
@@ -9094,11 +9094,11 @@ export class MessagesGetChatInviteImporters extends Function<types.MessagesChatI
     return [
       ["flags", flags, "#"],
       [this.requested ?? null, "true", "flags.0?true"],
-      [this.peer, types.TypeInputPeer, "InputPeer"],
+      [this.peer, types._TypeInputPeer, "InputPeer"],
       [this.link ?? null, "string", "flags.1?string"],
       [this.q ?? null, "string", "flags.2?string"],
       [this.offsetDate, "number", "int"],
-      [this.offsetUser, types.TypeInputUser, "InputUser"],
+      [this.offsetUser, types._TypeInputUser, "InputUser"],
       [this.limit, "number", "int"],
     ];
   }
@@ -9125,14 +9125,14 @@ export class MessagesSetHistoryTTL extends Function<types.TypeUpdates> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["peer", types.TypeInputPeer, "InputPeer"],
+      ["peer", types._TypeInputPeer, "InputPeer"],
       ["period", "number", "int"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.peer, types.TypeInputPeer, "InputPeer"],
+      [this.peer, types._TypeInputPeer, "InputPeer"],
       [this.period, "number", "int"],
     ];
   }
@@ -9144,7 +9144,7 @@ export class MessagesSetHistoryTTL extends Function<types.TypeUpdates> {
   }
 }
 
-export class MessagesCheckHistoryImportPeer extends Function<types.MessagesCheckedHistoryImportPeer> {
+export class MessagesCheckHistoryImportPeer extends Function<types.TypeMessagesCheckedHistoryImportPeer> {
   peer: types.TypeInputPeer;
 
   protected get [id]() {
@@ -9153,13 +9153,13 @@ export class MessagesCheckHistoryImportPeer extends Function<types.MessagesCheck
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["peer", types.TypeInputPeer, "InputPeer"],
+      ["peer", types._TypeInputPeer, "InputPeer"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.peer, types.TypeInputPeer, "InputPeer"],
+      [this.peer, types._TypeInputPeer, "InputPeer"],
     ];
   }
 
@@ -9179,14 +9179,14 @@ export class MessagesSetChatTheme extends Function<types.TypeUpdates> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["peer", types.TypeInputPeer, "InputPeer"],
+      ["peer", types._TypeInputPeer, "InputPeer"],
       ["emoticon", "string", "string"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.peer, types.TypeInputPeer, "InputPeer"],
+      [this.peer, types._TypeInputPeer, "InputPeer"],
       [this.emoticon, "string", "string"],
     ];
   }
@@ -9198,7 +9198,7 @@ export class MessagesSetChatTheme extends Function<types.TypeUpdates> {
   }
 }
 
-export class MessagesGetMessageReadParticipants extends Function<types.ReadParticipantDate[]> {
+export class MessagesGetMessageReadParticipants extends Function<types.TypeReadParticipantDate[]> {
   peer: types.TypeInputPeer;
   msgId: number;
 
@@ -9208,14 +9208,14 @@ export class MessagesGetMessageReadParticipants extends Function<types.ReadParti
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["peer", types.TypeInputPeer, "InputPeer"],
+      ["peer", types._TypeInputPeer, "InputPeer"],
       ["msgId", "number", "int"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.peer, types.TypeInputPeer, "InputPeer"],
+      [this.peer, types._TypeInputPeer, "InputPeer"],
       [this.msgId, "number", "int"],
     ];
   }
@@ -9227,7 +9227,7 @@ export class MessagesGetMessageReadParticipants extends Function<types.ReadParti
   }
 }
 
-export class MessagesGetSearchResultsCalendar extends Function<types.MessagesSearchResultsCalendar> {
+export class MessagesGetSearchResultsCalendar extends Function<types.TypeMessagesSearchResultsCalendar> {
   peer: types.TypeInputPeer;
   filter: types.TypeMessagesFilter;
   offsetId: number;
@@ -9239,8 +9239,8 @@ export class MessagesGetSearchResultsCalendar extends Function<types.MessagesSea
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["peer", types.TypeInputPeer, "InputPeer"],
-      ["filter", types.TypeMessagesFilter, "MessagesFilter"],
+      ["peer", types._TypeInputPeer, "InputPeer"],
+      ["filter", types._TypeMessagesFilter, "MessagesFilter"],
       ["offsetId", "number", "int"],
       ["offsetDate", "number", "int"],
     ];
@@ -9248,8 +9248,8 @@ export class MessagesGetSearchResultsCalendar extends Function<types.MessagesSea
 
   protected get [params](): Params {
     return [
-      [this.peer, types.TypeInputPeer, "InputPeer"],
-      [this.filter, types.TypeMessagesFilter, "MessagesFilter"],
+      [this.peer, types._TypeInputPeer, "InputPeer"],
+      [this.filter, types._TypeMessagesFilter, "MessagesFilter"],
       [this.offsetId, "number", "int"],
       [this.offsetDate, "number", "int"],
     ];
@@ -9264,7 +9264,7 @@ export class MessagesGetSearchResultsCalendar extends Function<types.MessagesSea
   }
 }
 
-export class MessagesGetSearchResultsPositions extends Function<types.MessagesSearchResultsPositions> {
+export class MessagesGetSearchResultsPositions extends Function<types.TypeMessagesSearchResultsPositions> {
   peer: types.TypeInputPeer;
   filter: types.TypeMessagesFilter;
   offsetId: number;
@@ -9276,8 +9276,8 @@ export class MessagesGetSearchResultsPositions extends Function<types.MessagesSe
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["peer", types.TypeInputPeer, "InputPeer"],
-      ["filter", types.TypeMessagesFilter, "MessagesFilter"],
+      ["peer", types._TypeInputPeer, "InputPeer"],
+      ["filter", types._TypeMessagesFilter, "MessagesFilter"],
       ["offsetId", "number", "int"],
       ["limit", "number", "int"],
     ];
@@ -9285,8 +9285,8 @@ export class MessagesGetSearchResultsPositions extends Function<types.MessagesSe
 
   protected get [params](): Params {
     return [
-      [this.peer, types.TypeInputPeer, "InputPeer"],
-      [this.filter, types.TypeMessagesFilter, "MessagesFilter"],
+      [this.peer, types._TypeInputPeer, "InputPeer"],
+      [this.filter, types._TypeMessagesFilter, "MessagesFilter"],
       [this.offsetId, "number", "int"],
       [this.limit, "number", "int"],
     ];
@@ -9314,8 +9314,8 @@ export class MessagesHideChatJoinRequest extends Function<types.TypeUpdates> {
     return [
       ["flags", flags, "#"],
       ["approved", "true", "flags.0?true"],
-      ["peer", types.TypeInputPeer, "InputPeer"],
-      ["userId", types.TypeInputUser, "InputUser"],
+      ["peer", types._TypeInputPeer, "InputPeer"],
+      ["userId", types._TypeInputUser, "InputUser"],
     ];
   }
 
@@ -9323,8 +9323,8 @@ export class MessagesHideChatJoinRequest extends Function<types.TypeUpdates> {
     return [
       ["flags", flags, "#"],
       [this.approved ?? null, "true", "flags.0?true"],
-      [this.peer, types.TypeInputPeer, "InputPeer"],
-      [this.userId, types.TypeInputUser, "InputUser"],
+      [this.peer, types._TypeInputPeer, "InputPeer"],
+      [this.userId, types._TypeInputUser, "InputUser"],
     ];
   }
 
@@ -9349,7 +9349,7 @@ export class MessagesHideAllChatJoinRequests extends Function<types.TypeUpdates>
     return [
       ["flags", flags, "#"],
       ["approved", "true", "flags.0?true"],
-      ["peer", types.TypeInputPeer, "InputPeer"],
+      ["peer", types._TypeInputPeer, "InputPeer"],
       ["link", "string", "flags.1?string"],
     ];
   }
@@ -9358,7 +9358,7 @@ export class MessagesHideAllChatJoinRequests extends Function<types.TypeUpdates>
     return [
       ["flags", flags, "#"],
       [this.approved ?? null, "true", "flags.0?true"],
-      [this.peer, types.TypeInputPeer, "InputPeer"],
+      [this.peer, types._TypeInputPeer, "InputPeer"],
       [this.link ?? null, "string", "flags.1?string"],
     ];
   }
@@ -9381,14 +9381,14 @@ export class MessagesToggleNoForwards extends Function<types.TypeUpdates> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["peer", types.TypeInputPeer, "InputPeer"],
+      ["peer", types._TypeInputPeer, "InputPeer"],
       ["enabled", "boolean", "Bool"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.peer, types.TypeInputPeer, "InputPeer"],
+      [this.peer, types._TypeInputPeer, "InputPeer"],
       [this.enabled, "boolean", "Bool"],
     ];
   }
@@ -9410,15 +9410,15 @@ export class MessagesSaveDefaultSendAs extends Function<boolean> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["peer", types.TypeInputPeer, "InputPeer"],
-      ["sendAs", types.TypeInputPeer, "InputPeer"],
+      ["peer", types._TypeInputPeer, "InputPeer"],
+      ["sendAs", types._TypeInputPeer, "InputPeer"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.peer, types.TypeInputPeer, "InputPeer"],
-      [this.sendAs, types.TypeInputPeer, "InputPeer"],
+      [this.peer, types._TypeInputPeer, "InputPeer"],
+      [this.sendAs, types._TypeInputPeer, "InputPeer"],
     ];
   }
 
@@ -9445,9 +9445,9 @@ export class MessagesSendReaction extends Function<types.TypeUpdates> {
       ["flags", flags, "#"],
       ["big", "true", "flags.1?true"],
       ["addToRecent", "true", "flags.2?true"],
-      ["peer", types.TypeInputPeer, "InputPeer"],
+      ["peer", types._TypeInputPeer, "InputPeer"],
       ["msgId", "number", "int"],
-      ["reaction", [types.TypeReaction], "flags.0?Vector<Reaction>"],
+      ["reaction", [types._TypeReaction], "flags.0?Vector<Reaction>"],
     ];
   }
 
@@ -9456,9 +9456,9 @@ export class MessagesSendReaction extends Function<types.TypeUpdates> {
       ["flags", flags, "#"],
       [this.big ?? null, "true", "flags.1?true"],
       [this.addToRecent ?? null, "true", "flags.2?true"],
-      [this.peer, types.TypeInputPeer, "InputPeer"],
+      [this.peer, types._TypeInputPeer, "InputPeer"],
       [this.msgId, "number", "int"],
-      [this.reaction ?? null, [types.TypeReaction], "flags.0?Vector<Reaction>"],
+      [this.reaction ?? null, [types._TypeReaction], "flags.0?Vector<Reaction>"],
     ];
   }
 
@@ -9482,14 +9482,14 @@ export class MessagesGetMessagesReactions extends Function<types.TypeUpdates> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["peer", types.TypeInputPeer, "InputPeer"],
+      ["peer", types._TypeInputPeer, "InputPeer"],
       ["id", ["number"], "Vector<int>"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.peer, types.TypeInputPeer, "InputPeer"],
+      [this.peer, types._TypeInputPeer, "InputPeer"],
       [this.id, ["number"], "Vector<int>"],
     ];
   }
@@ -9501,7 +9501,7 @@ export class MessagesGetMessagesReactions extends Function<types.TypeUpdates> {
   }
 }
 
-export class MessagesGetMessageReactionsList extends Function<types.MessagesMessageReactionsList> {
+export class MessagesGetMessageReactionsList extends Function<types.TypeMessagesMessageReactionsList> {
   peer: types.TypeInputPeer;
   id: number;
   reaction?: types.TypeReaction;
@@ -9515,9 +9515,9 @@ export class MessagesGetMessageReactionsList extends Function<types.MessagesMess
   static get [paramDesc](): ParamDesc {
     return [
       ["flags", flags, "#"],
-      ["peer", types.TypeInputPeer, "InputPeer"],
+      ["peer", types._TypeInputPeer, "InputPeer"],
       ["id", "number", "int"],
-      ["reaction", types.TypeReaction, "flags.0?Reaction"],
+      ["reaction", types._TypeReaction, "flags.0?Reaction"],
       ["offset", "string", "flags.1?string"],
       ["limit", "number", "int"],
     ];
@@ -9526,9 +9526,9 @@ export class MessagesGetMessageReactionsList extends Function<types.MessagesMess
   protected get [params](): Params {
     return [
       ["flags", flags, "#"],
-      [this.peer, types.TypeInputPeer, "InputPeer"],
+      [this.peer, types._TypeInputPeer, "InputPeer"],
       [this.id, "number", "int"],
-      [this.reaction ?? null, types.TypeReaction, "flags.0?Reaction"],
+      [this.reaction ?? null, types._TypeReaction, "flags.0?Reaction"],
       [this.offset ?? null, "string", "flags.1?string"],
       [this.limit, "number", "int"],
     ];
@@ -9554,15 +9554,15 @@ export class MessagesSetChatAvailableReactions extends Function<types.TypeUpdate
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["peer", types.TypeInputPeer, "InputPeer"],
-      ["availableReactions", types.TypeChatReactions, "ChatReactions"],
+      ["peer", types._TypeInputPeer, "InputPeer"],
+      ["availableReactions", types._TypeChatReactions, "ChatReactions"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.peer, types.TypeInputPeer, "InputPeer"],
-      [this.availableReactions, types.TypeChatReactions, "ChatReactions"],
+      [this.peer, types._TypeInputPeer, "InputPeer"],
+      [this.availableReactions, types._TypeChatReactions, "ChatReactions"],
     ];
   }
 
@@ -9607,13 +9607,13 @@ export class MessagesSetDefaultReaction extends Function<boolean> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["reaction", types.TypeReaction, "Reaction"],
+      ["reaction", types._TypeReaction, "Reaction"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.reaction, types.TypeReaction, "Reaction"],
+      [this.reaction, types._TypeReaction, "Reaction"],
     ];
   }
 
@@ -9623,7 +9623,7 @@ export class MessagesSetDefaultReaction extends Function<boolean> {
   }
 }
 
-export class MessagesTranslateText extends Function<types.MessagesTranslateResult> {
+export class MessagesTranslateText extends Function<types.TypeMessagesTranslatedText> {
   peer?: types.TypeInputPeer;
   id?: Array<number>;
   text?: Array<types.TypeTextWithEntities>;
@@ -9636,9 +9636,9 @@ export class MessagesTranslateText extends Function<types.MessagesTranslateResul
   static get [paramDesc](): ParamDesc {
     return [
       ["flags", flags, "#"],
-      ["peer", types.TypeInputPeer, "flags.0?InputPeer"],
+      ["peer", types._TypeInputPeer, "flags.0?InputPeer"],
       ["id", ["number"], "flags.0?Vector<int>"],
-      ["text", [types.TypeTextWithEntities], "flags.1?Vector<TextWithEntities>"],
+      ["text", [types._TypeTextWithEntities], "flags.1?Vector<TextWithEntities>"],
       ["toLang", "string", "string"],
     ];
   }
@@ -9646,9 +9646,9 @@ export class MessagesTranslateText extends Function<types.MessagesTranslateResul
   protected get [params](): Params {
     return [
       ["flags", flags, "#"],
-      [this.peer ?? null, types.TypeInputPeer, "flags.0?InputPeer"],
+      [this.peer ?? null, types._TypeInputPeer, "flags.0?InputPeer"],
       [this.id ?? null, ["number"], "flags.0?Vector<int>"],
-      [this.text ?? null, [types.TypeTextWithEntities], "flags.1?Vector<TextWithEntities>"],
+      [this.text ?? null, [types._TypeTextWithEntities], "flags.1?Vector<TextWithEntities>"],
       [this.toLang, "string", "string"],
     ];
   }
@@ -9678,7 +9678,7 @@ export class MessagesGetUnreadReactions extends Function<types.TypeMessagesMessa
   static get [paramDesc](): ParamDesc {
     return [
       ["flags", flags, "#"],
-      ["peer", types.TypeInputPeer, "InputPeer"],
+      ["peer", types._TypeInputPeer, "InputPeer"],
       ["topMsgId", "number", "flags.0?int"],
       ["offsetId", "number", "int"],
       ["addOffset", "number", "int"],
@@ -9691,7 +9691,7 @@ export class MessagesGetUnreadReactions extends Function<types.TypeMessagesMessa
   protected get [params](): Params {
     return [
       ["flags", flags, "#"],
-      [this.peer, types.TypeInputPeer, "InputPeer"],
+      [this.peer, types._TypeInputPeer, "InputPeer"],
       [this.topMsgId ?? null, "number", "flags.0?int"],
       [this.offsetId, "number", "int"],
       [this.addOffset, "number", "int"],
@@ -9713,7 +9713,7 @@ export class MessagesGetUnreadReactions extends Function<types.TypeMessagesMessa
   }
 }
 
-export class MessagesReadReactions extends Function<types.MessagesAffectedHistory> {
+export class MessagesReadReactions extends Function<types.TypeMessagesAffectedHistory> {
   peer: types.TypeInputPeer;
   topMsgId?: number;
 
@@ -9724,7 +9724,7 @@ export class MessagesReadReactions extends Function<types.MessagesAffectedHistor
   static get [paramDesc](): ParamDesc {
     return [
       ["flags", flags, "#"],
-      ["peer", types.TypeInputPeer, "InputPeer"],
+      ["peer", types._TypeInputPeer, "InputPeer"],
       ["topMsgId", "number", "flags.0?int"],
     ];
   }
@@ -9732,7 +9732,7 @@ export class MessagesReadReactions extends Function<types.MessagesAffectedHistor
   protected get [params](): Params {
     return [
       ["flags", flags, "#"],
-      [this.peer, types.TypeInputPeer, "InputPeer"],
+      [this.peer, types._TypeInputPeer, "InputPeer"],
       [this.topMsgId ?? null, "number", "flags.0?int"],
     ];
   }
@@ -9756,7 +9756,7 @@ export class MessagesSearchSentMedia extends Function<types.TypeMessagesMessages
   static get [paramDesc](): ParamDesc {
     return [
       ["q", "string", "string"],
-      ["filter", types.TypeMessagesFilter, "MessagesFilter"],
+      ["filter", types._TypeMessagesFilter, "MessagesFilter"],
       ["limit", "number", "int"],
     ];
   }
@@ -9764,7 +9764,7 @@ export class MessagesSearchSentMedia extends Function<types.TypeMessagesMessages
   protected get [params](): Params {
     return [
       [this.q, "string", "string"],
-      [this.filter, types.TypeMessagesFilter, "MessagesFilter"],
+      [this.filter, types._TypeMessagesFilter, "MessagesFilter"],
       [this.limit, "number", "int"],
     ];
   }
@@ -9802,7 +9802,7 @@ export class MessagesGetAttachMenuBots extends Function<types.TypeAttachMenuBots
   }
 }
 
-export class MessagesGetAttachMenuBot extends Function<types.AttachMenuBotsBot> {
+export class MessagesGetAttachMenuBot extends Function<types.TypeAttachMenuBotsBot> {
   bot: types.TypeInputUser;
 
   protected get [id]() {
@@ -9811,13 +9811,13 @@ export class MessagesGetAttachMenuBot extends Function<types.AttachMenuBotsBot> 
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["bot", types.TypeInputUser, "InputUser"],
+      ["bot", types._TypeInputUser, "InputUser"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.bot, types.TypeInputUser, "InputUser"],
+      [this.bot, types._TypeInputUser, "InputUser"],
     ];
   }
 
@@ -9840,7 +9840,7 @@ export class MessagesToggleBotInAttachMenu extends Function<boolean> {
     return [
       ["flags", flags, "#"],
       ["writeAllowed", "true", "flags.0?true"],
-      ["bot", types.TypeInputUser, "InputUser"],
+      ["bot", types._TypeInputUser, "InputUser"],
       ["enabled", "boolean", "Bool"],
     ];
   }
@@ -9849,7 +9849,7 @@ export class MessagesToggleBotInAttachMenu extends Function<boolean> {
     return [
       ["flags", flags, "#"],
       [this.writeAllowed ?? null, "true", "flags.0?true"],
-      [this.bot, types.TypeInputUser, "InputUser"],
+      [this.bot, types._TypeInputUser, "InputUser"],
       [this.enabled, "boolean", "Bool"],
     ];
   }
@@ -9862,7 +9862,7 @@ export class MessagesToggleBotInAttachMenu extends Function<boolean> {
   }
 }
 
-export class MessagesRequestWebView extends Function<types.WebViewResultURL> {
+export class MessagesRequestWebView extends Function<types.TypeWebViewResult> {
   fromBotMenu?: true;
   silent?: true;
   peer: types.TypeInputPeer;
@@ -9883,14 +9883,14 @@ export class MessagesRequestWebView extends Function<types.WebViewResultURL> {
       ["flags", flags, "#"],
       ["fromBotMenu", "true", "flags.4?true"],
       ["silent", "true", "flags.5?true"],
-      ["peer", types.TypeInputPeer, "InputPeer"],
-      ["bot", types.TypeInputUser, "InputUser"],
+      ["peer", types._TypeInputPeer, "InputPeer"],
+      ["bot", types._TypeInputUser, "InputUser"],
       ["url", "string", "flags.1?string"],
       ["startParam", "string", "flags.3?string"],
-      ["themeParams", types.TypeDataJSON, "flags.2?DataJSON"],
+      ["themeParams", types._TypeDataJSON, "flags.2?DataJSON"],
       ["platform", "string", "string"],
-      ["replyTo", types.TypeInputReplyTo, "flags.0?InputReplyTo"],
-      ["sendAs", types.TypeInputPeer, "flags.13?InputPeer"],
+      ["replyTo", types._TypeInputReplyTo, "flags.0?InputReplyTo"],
+      ["sendAs", types._TypeInputPeer, "flags.13?InputPeer"],
     ];
   }
 
@@ -9899,14 +9899,14 @@ export class MessagesRequestWebView extends Function<types.WebViewResultURL> {
       ["flags", flags, "#"],
       [this.fromBotMenu ?? null, "true", "flags.4?true"],
       [this.silent ?? null, "true", "flags.5?true"],
-      [this.peer, types.TypeInputPeer, "InputPeer"],
-      [this.bot, types.TypeInputUser, "InputUser"],
+      [this.peer, types._TypeInputPeer, "InputPeer"],
+      [this.bot, types._TypeInputUser, "InputUser"],
       [this.url ?? null, "string", "flags.1?string"],
       [this.startParam ?? null, "string", "flags.3?string"],
-      [this.themeParams ?? null, types.TypeDataJSON, "flags.2?DataJSON"],
+      [this.themeParams ?? null, types._TypeDataJSON, "flags.2?DataJSON"],
       [this.platform, "string", "string"],
-      [this.replyTo ?? null, types.TypeInputReplyTo, "flags.0?InputReplyTo"],
-      [this.sendAs ?? null, types.TypeInputPeer, "flags.13?InputPeer"],
+      [this.replyTo ?? null, types._TypeInputReplyTo, "flags.0?InputReplyTo"],
+      [this.sendAs ?? null, types._TypeInputPeer, "flags.13?InputPeer"],
     ];
   }
 
@@ -9941,11 +9941,11 @@ export class MessagesProlongWebView extends Function<boolean> {
     return [
       ["flags", flags, "#"],
       ["silent", "true", "flags.5?true"],
-      ["peer", types.TypeInputPeer, "InputPeer"],
-      ["bot", types.TypeInputUser, "InputUser"],
+      ["peer", types._TypeInputPeer, "InputPeer"],
+      ["bot", types._TypeInputUser, "InputUser"],
       ["queryId", "bigint", "long"],
-      ["replyTo", types.TypeInputReplyTo, "flags.0?InputReplyTo"],
-      ["sendAs", types.TypeInputPeer, "flags.13?InputPeer"],
+      ["replyTo", types._TypeInputReplyTo, "flags.0?InputReplyTo"],
+      ["sendAs", types._TypeInputPeer, "flags.13?InputPeer"],
     ];
   }
 
@@ -9953,11 +9953,11 @@ export class MessagesProlongWebView extends Function<boolean> {
     return [
       ["flags", flags, "#"],
       [this.silent ?? null, "true", "flags.5?true"],
-      [this.peer, types.TypeInputPeer, "InputPeer"],
-      [this.bot, types.TypeInputUser, "InputUser"],
+      [this.peer, types._TypeInputPeer, "InputPeer"],
+      [this.bot, types._TypeInputUser, "InputUser"],
       [this.queryId, "bigint", "long"],
-      [this.replyTo ?? null, types.TypeInputReplyTo, "flags.0?InputReplyTo"],
-      [this.sendAs ?? null, types.TypeInputPeer, "flags.13?InputPeer"],
+      [this.replyTo ?? null, types._TypeInputReplyTo, "flags.0?InputReplyTo"],
+      [this.sendAs ?? null, types._TypeInputPeer, "flags.13?InputPeer"],
     ];
   }
 
@@ -9972,7 +9972,7 @@ export class MessagesProlongWebView extends Function<boolean> {
   }
 }
 
-export class MessagesRequestSimpleWebView extends Function<types.SimpleWebViewResultURL> {
+export class MessagesRequestSimpleWebView extends Function<types.TypeSimpleWebViewResult> {
   fromSwitchWebview?: true;
   bot: types.TypeInputUser;
   url: string;
@@ -9987,9 +9987,9 @@ export class MessagesRequestSimpleWebView extends Function<types.SimpleWebViewRe
     return [
       ["flags", flags, "#"],
       ["fromSwitchWebview", "true", "flags.1?true"],
-      ["bot", types.TypeInputUser, "InputUser"],
+      ["bot", types._TypeInputUser, "InputUser"],
       ["url", "string", "string"],
-      ["themeParams", types.TypeDataJSON, "flags.0?DataJSON"],
+      ["themeParams", types._TypeDataJSON, "flags.0?DataJSON"],
       ["platform", "string", "string"],
     ];
   }
@@ -9998,9 +9998,9 @@ export class MessagesRequestSimpleWebView extends Function<types.SimpleWebViewRe
     return [
       ["flags", flags, "#"],
       [this.fromSwitchWebview ?? null, "true", "flags.1?true"],
-      [this.bot, types.TypeInputUser, "InputUser"],
+      [this.bot, types._TypeInputUser, "InputUser"],
       [this.url, "string", "string"],
-      [this.themeParams ?? null, types.TypeDataJSON, "flags.0?DataJSON"],
+      [this.themeParams ?? null, types._TypeDataJSON, "flags.0?DataJSON"],
       [this.platform, "string", "string"],
     ];
   }
@@ -10015,7 +10015,7 @@ export class MessagesRequestSimpleWebView extends Function<types.SimpleWebViewRe
   }
 }
 
-export class MessagesSendWebViewResultMessage extends Function<types.WebViewMessageSent> {
+export class MessagesSendWebViewResultMessage extends Function<types.TypeWebViewMessageSent> {
   botQueryId: string;
   result: types.TypeInputBotInlineResult;
 
@@ -10026,14 +10026,14 @@ export class MessagesSendWebViewResultMessage extends Function<types.WebViewMess
   static get [paramDesc](): ParamDesc {
     return [
       ["botQueryId", "string", "string"],
-      ["result", types.TypeInputBotInlineResult, "InputBotInlineResult"],
+      ["result", types._TypeInputBotInlineResult, "InputBotInlineResult"],
     ];
   }
 
   protected get [params](): Params {
     return [
       [this.botQueryId, "string", "string"],
-      [this.result, types.TypeInputBotInlineResult, "InputBotInlineResult"],
+      [this.result, types._TypeInputBotInlineResult, "InputBotInlineResult"],
     ];
   }
 
@@ -10056,7 +10056,7 @@ export class MessagesSendWebViewData extends Function<types.TypeUpdates> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["bot", types.TypeInputUser, "InputUser"],
+      ["bot", types._TypeInputUser, "InputUser"],
       ["randomId", "bigint", "long"],
       ["buttonText", "string", "string"],
       ["data", "string", "string"],
@@ -10065,7 +10065,7 @@ export class MessagesSendWebViewData extends Function<types.TypeUpdates> {
 
   protected get [params](): Params {
     return [
-      [this.bot, types.TypeInputUser, "InputUser"],
+      [this.bot, types._TypeInputUser, "InputUser"],
       [this.randomId, "bigint", "long"],
       [this.buttonText, "string", "string"],
       [this.data, "string", "string"],
@@ -10081,7 +10081,7 @@ export class MessagesSendWebViewData extends Function<types.TypeUpdates> {
   }
 }
 
-export class MessagesTranscribeAudio extends Function<types.MessagesTranscribedAudio> {
+export class MessagesTranscribeAudio extends Function<types.TypeMessagesTranscribedAudio> {
   peer: types.TypeInputPeer;
   msgId: number;
 
@@ -10091,14 +10091,14 @@ export class MessagesTranscribeAudio extends Function<types.MessagesTranscribedA
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["peer", types.TypeInputPeer, "InputPeer"],
+      ["peer", types._TypeInputPeer, "InputPeer"],
       ["msgId", "number", "int"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.peer, types.TypeInputPeer, "InputPeer"],
+      [this.peer, types._TypeInputPeer, "InputPeer"],
       [this.msgId, "number", "int"],
     ];
   }
@@ -10122,7 +10122,7 @@ export class MessagesRateTranscribedAudio extends Function<boolean> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["peer", types.TypeInputPeer, "InputPeer"],
+      ["peer", types._TypeInputPeer, "InputPeer"],
       ["msgId", "number", "int"],
       ["transcriptionId", "bigint", "long"],
       ["good", "boolean", "Bool"],
@@ -10131,7 +10131,7 @@ export class MessagesRateTranscribedAudio extends Function<boolean> {
 
   protected get [params](): Params {
     return [
-      [this.peer, types.TypeInputPeer, "InputPeer"],
+      [this.peer, types._TypeInputPeer, "InputPeer"],
       [this.msgId, "number", "int"],
       [this.transcriptionId, "bigint", "long"],
       [this.good, "boolean", "Bool"],
@@ -10233,17 +10233,17 @@ export class MessagesReportReaction extends Function<boolean> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["peer", types.TypeInputPeer, "InputPeer"],
+      ["peer", types._TypeInputPeer, "InputPeer"],
       ["id", "number", "int"],
-      ["reactionPeer", types.TypeInputPeer, "InputPeer"],
+      ["reactionPeer", types._TypeInputPeer, "InputPeer"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.peer, types.TypeInputPeer, "InputPeer"],
+      [this.peer, types._TypeInputPeer, "InputPeer"],
       [this.id, "number", "int"],
-      [this.reactionPeer, types.TypeInputPeer, "InputPeer"],
+      [this.reactionPeer, types._TypeInputPeer, "InputPeer"],
     ];
   }
 
@@ -10341,14 +10341,14 @@ export class MessagesGetExtendedMedia extends Function<types.TypeUpdates> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["peer", types.TypeInputPeer, "InputPeer"],
+      ["peer", types._TypeInputPeer, "InputPeer"],
       ["id", ["number"], "Vector<int>"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.peer, types.TypeInputPeer, "InputPeer"],
+      [this.peer, types._TypeInputPeer, "InputPeer"],
       [this.id, ["number"], "Vector<int>"],
     ];
   }
@@ -10385,7 +10385,7 @@ export class MessagesSetDefaultHistoryTTL extends Function<boolean> {
   }
 }
 
-export class MessagesGetDefaultHistoryTTL extends Function<types.DefaultHistoryTTL> {
+export class MessagesGetDefaultHistoryTTL extends Function<types.TypeDefaultHistoryTTL> {
   protected get [id]() {
     return 0x658B7188;
   }
@@ -10415,19 +10415,19 @@ export class MessagesSendBotRequestedPeer extends Function<types.TypeUpdates> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["peer", types.TypeInputPeer, "InputPeer"],
+      ["peer", types._TypeInputPeer, "InputPeer"],
       ["msgId", "number", "int"],
       ["buttonId", "number", "int"],
-      ["requestedPeer", types.TypeInputPeer, "InputPeer"],
+      ["requestedPeer", types._TypeInputPeer, "InputPeer"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.peer, types.TypeInputPeer, "InputPeer"],
+      [this.peer, types._TypeInputPeer, "InputPeer"],
       [this.msgId, "number", "int"],
       [this.buttonId, "number", "int"],
-      [this.requestedPeer, types.TypeInputPeer, "InputPeer"],
+      [this.requestedPeer, types._TypeInputPeer, "InputPeer"],
     ];
   }
 
@@ -10556,7 +10556,7 @@ export class MessagesTogglePeerTranslations extends Function<boolean> {
     return [
       ["flags", flags, "#"],
       ["disabled", "true", "flags.0?true"],
-      ["peer", types.TypeInputPeer, "InputPeer"],
+      ["peer", types._TypeInputPeer, "InputPeer"],
     ];
   }
 
@@ -10564,7 +10564,7 @@ export class MessagesTogglePeerTranslations extends Function<boolean> {
     return [
       ["flags", flags, "#"],
       [this.disabled ?? null, "true", "flags.0?true"],
-      [this.peer, types.TypeInputPeer, "InputPeer"],
+      [this.peer, types._TypeInputPeer, "InputPeer"],
     ];
   }
 
@@ -10575,7 +10575,7 @@ export class MessagesTogglePeerTranslations extends Function<boolean> {
   }
 }
 
-export class MessagesGetBotApp extends Function<types.MessagesBotApp> {
+export class MessagesGetBotApp extends Function<types.TypeMessagesBotApp> {
   app: types.TypeInputBotApp;
   hash: bigint;
 
@@ -10585,14 +10585,14 @@ export class MessagesGetBotApp extends Function<types.MessagesBotApp> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["app", types.TypeInputBotApp, "InputBotApp"],
+      ["app", types._TypeInputBotApp, "InputBotApp"],
       ["hash", "bigint", "long"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.app, types.TypeInputBotApp, "InputBotApp"],
+      [this.app, types._TypeInputBotApp, "InputBotApp"],
       [this.hash, "bigint", "long"],
     ];
   }
@@ -10604,7 +10604,7 @@ export class MessagesGetBotApp extends Function<types.MessagesBotApp> {
   }
 }
 
-export class MessagesRequestAppWebView extends Function<types.AppWebViewResultURL> {
+export class MessagesRequestAppWebView extends Function<types.TypeAppWebViewResult> {
   writeAllowed?: true;
   peer: types.TypeInputPeer;
   app: types.TypeInputBotApp;
@@ -10620,10 +10620,10 @@ export class MessagesRequestAppWebView extends Function<types.AppWebViewResultUR
     return [
       ["flags", flags, "#"],
       ["writeAllowed", "true", "flags.0?true"],
-      ["peer", types.TypeInputPeer, "InputPeer"],
-      ["app", types.TypeInputBotApp, "InputBotApp"],
+      ["peer", types._TypeInputPeer, "InputPeer"],
+      ["app", types._TypeInputBotApp, "InputBotApp"],
       ["startParam", "string", "flags.1?string"],
-      ["themeParams", types.TypeDataJSON, "flags.2?DataJSON"],
+      ["themeParams", types._TypeDataJSON, "flags.2?DataJSON"],
       ["platform", "string", "string"],
     ];
   }
@@ -10632,10 +10632,10 @@ export class MessagesRequestAppWebView extends Function<types.AppWebViewResultUR
     return [
       ["flags", flags, "#"],
       [this.writeAllowed ?? null, "true", "flags.0?true"],
-      [this.peer, types.TypeInputPeer, "InputPeer"],
-      [this.app, types.TypeInputBotApp, "InputBotApp"],
+      [this.peer, types._TypeInputPeer, "InputPeer"],
+      [this.app, types._TypeInputBotApp, "InputBotApp"],
       [this.startParam ?? null, "string", "flags.1?string"],
-      [this.themeParams ?? null, types.TypeDataJSON, "flags.2?DataJSON"],
+      [this.themeParams ?? null, types._TypeDataJSON, "flags.2?DataJSON"],
       [this.platform, "string", "string"],
     ];
   }
@@ -10664,9 +10664,9 @@ export class MessagesSetChatWallPaper extends Function<types.TypeUpdates> {
   static get [paramDesc](): ParamDesc {
     return [
       ["flags", flags, "#"],
-      ["peer", types.TypeInputPeer, "InputPeer"],
-      ["wallpaper", types.TypeInputWallPaper, "flags.0?InputWallPaper"],
-      ["settings", types.TypeWallPaperSettings, "flags.2?WallPaperSettings"],
+      ["peer", types._TypeInputPeer, "InputPeer"],
+      ["wallpaper", types._TypeInputWallPaper, "flags.0?InputWallPaper"],
+      ["settings", types._TypeWallPaperSettings, "flags.2?WallPaperSettings"],
       ["id", "number", "flags.1?int"],
     ];
   }
@@ -10674,9 +10674,9 @@ export class MessagesSetChatWallPaper extends Function<types.TypeUpdates> {
   protected get [params](): Params {
     return [
       ["flags", flags, "#"],
-      [this.peer, types.TypeInputPeer, "InputPeer"],
-      [this.wallpaper ?? null, types.TypeInputWallPaper, "flags.0?InputWallPaper"],
-      [this.settings ?? null, types.TypeWallPaperSettings, "flags.2?WallPaperSettings"],
+      [this.peer, types._TypeInputPeer, "InputPeer"],
+      [this.wallpaper ?? null, types._TypeInputWallPaper, "flags.0?InputWallPaper"],
+      [this.settings ?? null, types._TypeWallPaperSettings, "flags.2?WallPaperSettings"],
       [this.id ?? null, "number", "flags.1?int"],
     ];
   }
@@ -10690,7 +10690,7 @@ export class MessagesSetChatWallPaper extends Function<types.TypeUpdates> {
   }
 }
 
-export class UpdatesGetState extends Function<types.UpdatesState> {
+export class UpdatesGetState extends Function<types.TypeUpdatesState> {
   protected get [id]() {
     return 0xEDD4882A;
   }
@@ -10770,8 +10770,8 @@ export class UpdatesGetChannelDifference extends Function<types.TypeUpdatesChann
     return [
       ["flags", flags, "#"],
       ["force", "true", "flags.0?true"],
-      ["channel", types.TypeInputChannel, "InputChannel"],
-      ["filter", types.TypeChannelMessagesFilter, "ChannelMessagesFilter"],
+      ["channel", types._TypeInputChannel, "InputChannel"],
+      ["filter", types._TypeChannelMessagesFilter, "ChannelMessagesFilter"],
       ["pts", "number", "int"],
       ["limit", "number", "int"],
     ];
@@ -10781,8 +10781,8 @@ export class UpdatesGetChannelDifference extends Function<types.TypeUpdatesChann
     return [
       ["flags", flags, "#"],
       [this.force ?? null, "true", "flags.0?true"],
-      [this.channel, types.TypeInputChannel, "InputChannel"],
-      [this.filter, types.TypeChannelMessagesFilter, "ChannelMessagesFilter"],
+      [this.channel, types._TypeInputChannel, "InputChannel"],
+      [this.filter, types._TypeChannelMessagesFilter, "ChannelMessagesFilter"],
       [this.pts, "number", "int"],
       [this.limit, "number", "int"],
     ];
@@ -10798,7 +10798,7 @@ export class UpdatesGetChannelDifference extends Function<types.TypeUpdatesChann
   }
 }
 
-export class PhotosUpdateProfilePhoto extends Function<types.PhotosPhoto> {
+export class PhotosUpdateProfilePhoto extends Function<types.TypePhotosPhoto> {
   fallback?: true;
   bot?: types.TypeInputUser;
   id: types.TypeInputPhoto;
@@ -10811,8 +10811,8 @@ export class PhotosUpdateProfilePhoto extends Function<types.PhotosPhoto> {
     return [
       ["flags", flags, "#"],
       ["fallback", "true", "flags.0?true"],
-      ["bot", types.TypeInputUser, "flags.1?InputUser"],
-      ["id", types.TypeInputPhoto, "InputPhoto"],
+      ["bot", types._TypeInputUser, "flags.1?InputUser"],
+      ["id", types._TypeInputPhoto, "InputPhoto"],
     ];
   }
 
@@ -10820,8 +10820,8 @@ export class PhotosUpdateProfilePhoto extends Function<types.PhotosPhoto> {
     return [
       ["flags", flags, "#"],
       [this.fallback ?? null, "true", "flags.0?true"],
-      [this.bot ?? null, types.TypeInputUser, "flags.1?InputUser"],
-      [this.id, types.TypeInputPhoto, "InputPhoto"],
+      [this.bot ?? null, types._TypeInputUser, "flags.1?InputUser"],
+      [this.id, types._TypeInputPhoto, "InputPhoto"],
     ];
   }
 
@@ -10833,7 +10833,7 @@ export class PhotosUpdateProfilePhoto extends Function<types.PhotosPhoto> {
   }
 }
 
-export class PhotosUploadProfilePhoto extends Function<types.PhotosPhoto> {
+export class PhotosUploadProfilePhoto extends Function<types.TypePhotosPhoto> {
   fallback?: true;
   bot?: types.TypeInputUser;
   file?: types.TypeInputFile;
@@ -10849,11 +10849,11 @@ export class PhotosUploadProfilePhoto extends Function<types.PhotosPhoto> {
     return [
       ["flags", flags, "#"],
       ["fallback", "true", "flags.3?true"],
-      ["bot", types.TypeInputUser, "flags.5?InputUser"],
-      ["file", types.TypeInputFile, "flags.0?InputFile"],
-      ["video", types.TypeInputFile, "flags.1?InputFile"],
+      ["bot", types._TypeInputUser, "flags.5?InputUser"],
+      ["file", types._TypeInputFile, "flags.0?InputFile"],
+      ["video", types._TypeInputFile, "flags.1?InputFile"],
       ["videoStartTs", "number", "flags.2?double"],
-      ["videoEmojiMarkup", types.TypeVideoSize, "flags.4?VideoSize"],
+      ["videoEmojiMarkup", types._TypeVideoSize, "flags.4?VideoSize"],
     ];
   }
 
@@ -10861,11 +10861,11 @@ export class PhotosUploadProfilePhoto extends Function<types.PhotosPhoto> {
     return [
       ["flags", flags, "#"],
       [this.fallback ?? null, "true", "flags.3?true"],
-      [this.bot ?? null, types.TypeInputUser, "flags.5?InputUser"],
-      [this.file ?? null, types.TypeInputFile, "flags.0?InputFile"],
-      [this.video ?? null, types.TypeInputFile, "flags.1?InputFile"],
+      [this.bot ?? null, types._TypeInputUser, "flags.5?InputUser"],
+      [this.file ?? null, types._TypeInputFile, "flags.0?InputFile"],
+      [this.video ?? null, types._TypeInputFile, "flags.1?InputFile"],
       [this.videoStartTs ?? null, "number", "flags.2?double"],
-      [this.videoEmojiMarkup ?? null, types.TypeVideoSize, "flags.4?VideoSize"],
+      [this.videoEmojiMarkup ?? null, types._TypeVideoSize, "flags.4?VideoSize"],
     ];
   }
 
@@ -10889,13 +10889,13 @@ export class PhotosDeletePhotos extends Function<bigint[]> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["id", [types.TypeInputPhoto], "Vector<InputPhoto>"],
+      ["id", [types._TypeInputPhoto], "Vector<InputPhoto>"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.id, [types.TypeInputPhoto], "Vector<InputPhoto>"],
+      [this.id, [types._TypeInputPhoto], "Vector<InputPhoto>"],
     ];
   }
 
@@ -10917,7 +10917,7 @@ export class PhotosGetUserPhotos extends Function<types.TypePhotosPhotos> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["userId", types.TypeInputUser, "InputUser"],
+      ["userId", types._TypeInputUser, "InputUser"],
       ["offset", "number", "int"],
       ["maxId", "bigint", "long"],
       ["limit", "number", "int"],
@@ -10926,7 +10926,7 @@ export class PhotosGetUserPhotos extends Function<types.TypePhotosPhotos> {
 
   protected get [params](): Params {
     return [
-      [this.userId, types.TypeInputUser, "InputUser"],
+      [this.userId, types._TypeInputUser, "InputUser"],
       [this.offset, "number", "int"],
       [this.maxId, "bigint", "long"],
       [this.limit, "number", "int"],
@@ -10942,7 +10942,7 @@ export class PhotosGetUserPhotos extends Function<types.TypePhotosPhotos> {
   }
 }
 
-export class PhotosUploadContactProfilePhoto extends Function<types.PhotosPhoto> {
+export class PhotosUploadContactProfilePhoto extends Function<types.TypePhotosPhoto> {
   suggest?: true;
   save?: true;
   userId: types.TypeInputUser;
@@ -10960,11 +10960,11 @@ export class PhotosUploadContactProfilePhoto extends Function<types.PhotosPhoto>
       ["flags", flags, "#"],
       ["suggest", "true", "flags.3?true"],
       ["save", "true", "flags.4?true"],
-      ["userId", types.TypeInputUser, "InputUser"],
-      ["file", types.TypeInputFile, "flags.0?InputFile"],
-      ["video", types.TypeInputFile, "flags.1?InputFile"],
+      ["userId", types._TypeInputUser, "InputUser"],
+      ["file", types._TypeInputFile, "flags.0?InputFile"],
+      ["video", types._TypeInputFile, "flags.1?InputFile"],
       ["videoStartTs", "number", "flags.2?double"],
-      ["videoEmojiMarkup", types.TypeVideoSize, "flags.5?VideoSize"],
+      ["videoEmojiMarkup", types._TypeVideoSize, "flags.5?VideoSize"],
     ];
   }
 
@@ -10973,11 +10973,11 @@ export class PhotosUploadContactProfilePhoto extends Function<types.PhotosPhoto>
       ["flags", flags, "#"],
       [this.suggest ?? null, "true", "flags.3?true"],
       [this.save ?? null, "true", "flags.4?true"],
-      [this.userId, types.TypeInputUser, "InputUser"],
-      [this.file ?? null, types.TypeInputFile, "flags.0?InputFile"],
-      [this.video ?? null, types.TypeInputFile, "flags.1?InputFile"],
+      [this.userId, types._TypeInputUser, "InputUser"],
+      [this.file ?? null, types._TypeInputFile, "flags.0?InputFile"],
+      [this.video ?? null, types._TypeInputFile, "flags.1?InputFile"],
       [this.videoStartTs ?? null, "number", "flags.2?double"],
-      [this.videoEmojiMarkup ?? null, types.TypeVideoSize, "flags.5?VideoSize"],
+      [this.videoEmojiMarkup ?? null, types._TypeVideoSize, "flags.5?VideoSize"],
     ];
   }
 
@@ -11042,7 +11042,7 @@ export class UploadGetFile extends Function<types.TypeUploadFile> {
       ["flags", flags, "#"],
       ["precise", "true", "flags.0?true"],
       ["cdnSupported", "true", "flags.1?true"],
-      ["location", types.TypeInputFileLocation, "InputFileLocation"],
+      ["location", types._TypeInputFileLocation, "InputFileLocation"],
       ["offset", "bigint", "long"],
       ["limit", "number", "int"],
     ];
@@ -11053,7 +11053,7 @@ export class UploadGetFile extends Function<types.TypeUploadFile> {
       ["flags", flags, "#"],
       [this.precise ?? null, "true", "flags.0?true"],
       [this.cdnSupported ?? null, "true", "flags.1?true"],
-      [this.location, types.TypeInputFileLocation, "InputFileLocation"],
+      [this.location, types._TypeInputFileLocation, "InputFileLocation"],
       [this.offset, "bigint", "long"],
       [this.limit, "number", "int"],
     ];
@@ -11106,7 +11106,7 @@ export class UploadSaveBigFilePart extends Function<boolean> {
   }
 }
 
-export class UploadGetWebFile extends Function<types.UploadWebFile> {
+export class UploadGetWebFile extends Function<types.TypeUploadWebFile> {
   location: types.TypeInputWebFileLocation;
   offset: number;
   limit: number;
@@ -11117,7 +11117,7 @@ export class UploadGetWebFile extends Function<types.UploadWebFile> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["location", types.TypeInputWebFileLocation, "InputWebFileLocation"],
+      ["location", types._TypeInputWebFileLocation, "InputWebFileLocation"],
       ["offset", "number", "int"],
       ["limit", "number", "int"],
     ];
@@ -11125,7 +11125,7 @@ export class UploadGetWebFile extends Function<types.UploadWebFile> {
 
   protected get [params](): Params {
     return [
-      [this.location, types.TypeInputWebFileLocation, "InputWebFileLocation"],
+      [this.location, types._TypeInputWebFileLocation, "InputWebFileLocation"],
       [this.offset, "number", "int"],
       [this.limit, "number", "int"],
     ];
@@ -11172,7 +11172,7 @@ export class UploadGetCdnFile extends Function<types.TypeUploadCdnFile> {
   }
 }
 
-export class UploadReuploadCdnFile extends Function<types.FileHash[]> {
+export class UploadReuploadCdnFile extends Function<types.TypeFileHash[]> {
   fileToken: Uint8Array;
   requestToken: Uint8Array;
 
@@ -11201,7 +11201,7 @@ export class UploadReuploadCdnFile extends Function<types.FileHash[]> {
   }
 }
 
-export class UploadGetCdnFileHashes extends Function<types.FileHash[]> {
+export class UploadGetCdnFileHashes extends Function<types.TypeFileHash[]> {
   fileToken: Uint8Array;
   offset: bigint;
 
@@ -11230,7 +11230,7 @@ export class UploadGetCdnFileHashes extends Function<types.FileHash[]> {
   }
 }
 
-export class UploadGetFileHashes extends Function<types.FileHash[]> {
+export class UploadGetFileHashes extends Function<types.TypeFileHash[]> {
   location: types.TypeInputFileLocation;
   offset: bigint;
 
@@ -11240,14 +11240,14 @@ export class UploadGetFileHashes extends Function<types.FileHash[]> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["location", types.TypeInputFileLocation, "InputFileLocation"],
+      ["location", types._TypeInputFileLocation, "InputFileLocation"],
       ["offset", "bigint", "long"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.location, types.TypeInputFileLocation, "InputFileLocation"],
+      [this.location, types._TypeInputFileLocation, "InputFileLocation"],
       [this.offset, "bigint", "long"],
     ];
   }
@@ -11259,7 +11259,7 @@ export class UploadGetFileHashes extends Function<types.FileHash[]> {
   }
 }
 
-export class HelpGetConfig extends Function<types.Config> {
+export class HelpGetConfig extends Function<types.TypeConfig> {
   protected get [id]() {
     return 0xC4F9186B;
   }
@@ -11277,7 +11277,7 @@ export class HelpGetConfig extends Function<types.Config> {
   }
 }
 
-export class HelpGetNearestDc extends Function<types.NearestDc> {
+export class HelpGetNearestDc extends Function<types.TypeNearestDc> {
   protected get [id]() {
     return 0x1FB33026;
   }
@@ -11320,7 +11320,7 @@ export class HelpGetAppUpdate extends Function<types.TypeHelpAppUpdate> {
   }
 }
 
-export class HelpGetInviteText extends Function<types.HelpInviteText> {
+export class HelpGetInviteText extends Function<types.TypeHelpInviteText> {
   protected get [id]() {
     return 0x4D392343;
   }
@@ -11338,7 +11338,7 @@ export class HelpGetInviteText extends Function<types.HelpInviteText> {
   }
 }
 
-export class HelpGetSupport extends Function<types.HelpSupport> {
+export class HelpGetSupport extends Function<types.TypeHelpSupport> {
   protected get [id]() {
     return 0x9CDF08CD;
   }
@@ -11410,7 +11410,7 @@ export class HelpSetBotUpdatesStatus extends Function<boolean> {
   }
 }
 
-export class HelpGetCdnConfig extends Function<types.CdnConfig> {
+export class HelpGetCdnConfig extends Function<types.TypeCdnConfig> {
   protected get [id]() {
     return 0x52029342;
   }
@@ -11428,7 +11428,7 @@ export class HelpGetCdnConfig extends Function<types.CdnConfig> {
   }
 }
 
-export class HelpGetRecentMeURLs extends Function<types.HelpRecentMeURLs> {
+export class HelpGetRecentMeURLs extends Function<types.TypeHelpRecentMeURLs> {
   referer: string;
 
   protected get [id]() {
@@ -11480,13 +11480,13 @@ export class HelpAcceptTermsOfService extends Function<boolean> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["id", types.TypeDataJSON, "DataJSON"],
+      ["id", types._TypeDataJSON, "DataJSON"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.id, types.TypeDataJSON, "DataJSON"],
+      [this.id, types._TypeDataJSON, "DataJSON"],
     ];
   }
 
@@ -11555,13 +11555,13 @@ export class HelpSaveAppLog extends Function<boolean> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["events", [types.TypeInputAppEvent], "Vector<InputAppEvent>"],
+      ["events", [types._TypeInputAppEvent], "Vector<InputAppEvent>"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.events, [types.TypeInputAppEvent], "Vector<InputAppEvent>"],
+      [this.events, [types._TypeInputAppEvent], "Vector<InputAppEvent>"],
     ];
   }
 
@@ -11596,7 +11596,7 @@ export class HelpGetPassportConfig extends Function<types.TypeHelpPassportConfig
   }
 }
 
-export class HelpGetSupportName extends Function<types.HelpSupportName> {
+export class HelpGetSupportName extends Function<types.TypeHelpSupportName> {
   protected get [id]() {
     return 0xD360E72C;
   }
@@ -11623,13 +11623,13 @@ export class HelpGetUserInfo extends Function<types.TypeHelpUserInfo> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["userId", types.TypeInputUser, "InputUser"],
+      ["userId", types._TypeInputUser, "InputUser"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.userId, types.TypeInputUser, "InputUser"],
+      [this.userId, types._TypeInputUser, "InputUser"],
     ];
   }
 
@@ -11650,17 +11650,17 @@ export class HelpEditUserInfo extends Function<types.TypeHelpUserInfo> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["userId", types.TypeInputUser, "InputUser"],
+      ["userId", types._TypeInputUser, "InputUser"],
       ["message", "string", "string"],
-      ["entities", [types.TypeMessageEntity], "Vector<MessageEntity>"],
+      ["entities", [types._TypeMessageEntity], "Vector<MessageEntity>"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.userId, types.TypeInputUser, "InputUser"],
+      [this.userId, types._TypeInputUser, "InputUser"],
       [this.message, "string", "string"],
-      [this.entities, [types.TypeMessageEntity], "Vector<MessageEntity>"],
+      [this.entities, [types._TypeMessageEntity], "Vector<MessageEntity>"],
     ];
   }
 
@@ -11699,13 +11699,13 @@ export class HelpHidePromoData extends Function<boolean> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["peer", types.TypeInputPeer, "InputPeer"],
+      ["peer", types._TypeInputPeer, "InputPeer"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.peer, types.TypeInputPeer, "InputPeer"],
+      [this.peer, types._TypeInputPeer, "InputPeer"],
     ];
   }
 
@@ -11725,14 +11725,14 @@ export class HelpDismissSuggestion extends Function<boolean> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["peer", types.TypeInputPeer, "InputPeer"],
+      ["peer", types._TypeInputPeer, "InputPeer"],
       ["suggestion", "string", "string"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.peer, types.TypeInputPeer, "InputPeer"],
+      [this.peer, types._TypeInputPeer, "InputPeer"],
       [this.suggestion, "string", "string"],
     ];
   }
@@ -11773,7 +11773,7 @@ export class HelpGetCountriesList extends Function<types.TypeHelpCountriesList> 
   }
 }
 
-export class HelpGetPremiumPromo extends Function<types.HelpPremiumPromo> {
+export class HelpGetPremiumPromo extends Function<types.TypeHelpPremiumPromo> {
   protected get [id]() {
     return 0xB81B93D4;
   }
@@ -11801,14 +11801,14 @@ export class ChannelsReadHistory extends Function<boolean> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["channel", types.TypeInputChannel, "InputChannel"],
+      ["channel", types._TypeInputChannel, "InputChannel"],
       ["maxId", "number", "int"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.channel, types.TypeInputChannel, "InputChannel"],
+      [this.channel, types._TypeInputChannel, "InputChannel"],
       [this.maxId, "number", "int"],
     ];
   }
@@ -11820,7 +11820,7 @@ export class ChannelsReadHistory extends Function<boolean> {
   }
 }
 
-export class ChannelsDeleteMessages extends Function<types.MessagesAffectedMessages> {
+export class ChannelsDeleteMessages extends Function<types.TypeMessagesAffectedMessages> {
   channel: types.TypeInputChannel;
   id: Array<number>;
 
@@ -11830,14 +11830,14 @@ export class ChannelsDeleteMessages extends Function<types.MessagesAffectedMessa
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["channel", types.TypeInputChannel, "InputChannel"],
+      ["channel", types._TypeInputChannel, "InputChannel"],
       ["id", ["number"], "Vector<int>"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.channel, types.TypeInputChannel, "InputChannel"],
+      [this.channel, types._TypeInputChannel, "InputChannel"],
       [this.id, ["number"], "Vector<int>"],
     ];
   }
@@ -11860,16 +11860,16 @@ export class ChannelsReportSpam extends Function<boolean> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["channel", types.TypeInputChannel, "InputChannel"],
-      ["participant", types.TypeInputPeer, "InputPeer"],
+      ["channel", types._TypeInputChannel, "InputChannel"],
+      ["participant", types._TypeInputPeer, "InputPeer"],
       ["id", ["number"], "Vector<int>"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.channel, types.TypeInputChannel, "InputChannel"],
-      [this.participant, types.TypeInputPeer, "InputPeer"],
+      [this.channel, types._TypeInputChannel, "InputChannel"],
+      [this.participant, types._TypeInputPeer, "InputPeer"],
       [this.id, ["number"], "Vector<int>"],
     ];
   }
@@ -11892,15 +11892,15 @@ export class ChannelsGetMessages extends Function<types.TypeMessagesMessages> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["channel", types.TypeInputChannel, "InputChannel"],
-      ["id", [types.TypeInputMessage], "Vector<InputMessage>"],
+      ["channel", types._TypeInputChannel, "InputChannel"],
+      ["id", [types._TypeInputMessage], "Vector<InputMessage>"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.channel, types.TypeInputChannel, "InputChannel"],
-      [this.id, [types.TypeInputMessage], "Vector<InputMessage>"],
+      [this.channel, types._TypeInputChannel, "InputChannel"],
+      [this.id, [types._TypeInputMessage], "Vector<InputMessage>"],
     ];
   }
 
@@ -11924,8 +11924,8 @@ export class ChannelsGetParticipants extends Function<types.TypeChannelsChannelP
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["channel", types.TypeInputChannel, "InputChannel"],
-      ["filter", types.TypeChannelParticipantsFilter, "ChannelParticipantsFilter"],
+      ["channel", types._TypeInputChannel, "InputChannel"],
+      ["filter", types._TypeChannelParticipantsFilter, "ChannelParticipantsFilter"],
       ["offset", "number", "int"],
       ["limit", "number", "int"],
       ["hash", "bigint", "long"],
@@ -11934,8 +11934,8 @@ export class ChannelsGetParticipants extends Function<types.TypeChannelsChannelP
 
   protected get [params](): Params {
     return [
-      [this.channel, types.TypeInputChannel, "InputChannel"],
-      [this.filter, types.TypeChannelParticipantsFilter, "ChannelParticipantsFilter"],
+      [this.channel, types._TypeInputChannel, "InputChannel"],
+      [this.filter, types._TypeChannelParticipantsFilter, "ChannelParticipantsFilter"],
       [this.offset, "number", "int"],
       [this.limit, "number", "int"],
       [this.hash, "bigint", "long"],
@@ -11952,7 +11952,7 @@ export class ChannelsGetParticipants extends Function<types.TypeChannelsChannelP
   }
 }
 
-export class ChannelsGetParticipant extends Function<types.ChannelsChannelParticipant> {
+export class ChannelsGetParticipant extends Function<types.TypeChannelsChannelParticipant> {
   channel: types.TypeInputChannel;
   participant: types.TypeInputPeer;
 
@@ -11962,15 +11962,15 @@ export class ChannelsGetParticipant extends Function<types.ChannelsChannelPartic
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["channel", types.TypeInputChannel, "InputChannel"],
-      ["participant", types.TypeInputPeer, "InputPeer"],
+      ["channel", types._TypeInputChannel, "InputChannel"],
+      ["participant", types._TypeInputPeer, "InputPeer"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.channel, types.TypeInputChannel, "InputChannel"],
-      [this.participant, types.TypeInputPeer, "InputPeer"],
+      [this.channel, types._TypeInputChannel, "InputChannel"],
+      [this.participant, types._TypeInputPeer, "InputPeer"],
     ];
   }
 
@@ -11990,13 +11990,13 @@ export class ChannelsGetChannels extends Function<types.TypeMessagesChats> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["id", [types.TypeInputChannel], "Vector<InputChannel>"],
+      ["id", [types._TypeInputChannel], "Vector<InputChannel>"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.id, [types.TypeInputChannel], "Vector<InputChannel>"],
+      [this.id, [types._TypeInputChannel], "Vector<InputChannel>"],
     ];
   }
 
@@ -12006,7 +12006,7 @@ export class ChannelsGetChannels extends Function<types.TypeMessagesChats> {
   }
 }
 
-export class ChannelsGetFullChannel extends Function<types.MessagesChatFull> {
+export class ChannelsGetFullChannel extends Function<types.TypeMessagesChatFull> {
   channel: types.TypeInputChannel;
 
   protected get [id]() {
@@ -12015,13 +12015,13 @@ export class ChannelsGetFullChannel extends Function<types.MessagesChatFull> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["channel", types.TypeInputChannel, "InputChannel"],
+      ["channel", types._TypeInputChannel, "InputChannel"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.channel, types.TypeInputChannel, "InputChannel"],
+      [this.channel, types._TypeInputChannel, "InputChannel"],
     ];
   }
 
@@ -12055,7 +12055,7 @@ export class ChannelsCreateChannel extends Function<types.TypeUpdates> {
       ["forum", "true", "flags.5?true"],
       ["title", "string", "string"],
       ["about", "string", "string"],
-      ["geoPoint", types.TypeInputGeoPoint, "flags.2?InputGeoPoint"],
+      ["geoPoint", types._TypeInputGeoPoint, "flags.2?InputGeoPoint"],
       ["address", "string", "flags.2?string"],
       ["ttlPeriod", "number", "flags.4?int"],
     ];
@@ -12070,7 +12070,7 @@ export class ChannelsCreateChannel extends Function<types.TypeUpdates> {
       [this.forum ?? null, "true", "flags.5?true"],
       [this.title, "string", "string"],
       [this.about, "string", "string"],
-      [this.geoPoint ?? null, types.TypeInputGeoPoint, "flags.2?InputGeoPoint"],
+      [this.geoPoint ?? null, types._TypeInputGeoPoint, "flags.2?InputGeoPoint"],
       [this.address ?? null, "string", "flags.2?string"],
       [this.ttlPeriod ?? null, "number", "flags.4?int"],
     ];
@@ -12102,18 +12102,18 @@ export class ChannelsEditAdmin extends Function<types.TypeUpdates> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["channel", types.TypeInputChannel, "InputChannel"],
-      ["userId", types.TypeInputUser, "InputUser"],
-      ["adminRights", types.TypeChatAdminRights, "ChatAdminRights"],
+      ["channel", types._TypeInputChannel, "InputChannel"],
+      ["userId", types._TypeInputUser, "InputUser"],
+      ["adminRights", types._TypeChatAdminRights, "ChatAdminRights"],
       ["rank", "string", "string"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.channel, types.TypeInputChannel, "InputChannel"],
-      [this.userId, types.TypeInputUser, "InputUser"],
-      [this.adminRights, types.TypeChatAdminRights, "ChatAdminRights"],
+      [this.channel, types._TypeInputChannel, "InputChannel"],
+      [this.userId, types._TypeInputUser, "InputUser"],
+      [this.adminRights, types._TypeChatAdminRights, "ChatAdminRights"],
       [this.rank, "string", "string"],
     ];
   }
@@ -12137,14 +12137,14 @@ export class ChannelsEditTitle extends Function<types.TypeUpdates> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["channel", types.TypeInputChannel, "InputChannel"],
+      ["channel", types._TypeInputChannel, "InputChannel"],
       ["title", "string", "string"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.channel, types.TypeInputChannel, "InputChannel"],
+      [this.channel, types._TypeInputChannel, "InputChannel"],
       [this.title, "string", "string"],
     ];
   }
@@ -12166,15 +12166,15 @@ export class ChannelsEditPhoto extends Function<types.TypeUpdates> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["channel", types.TypeInputChannel, "InputChannel"],
-      ["photo", types.TypeInputChatPhoto, "InputChatPhoto"],
+      ["channel", types._TypeInputChannel, "InputChannel"],
+      ["photo", types._TypeInputChatPhoto, "InputChatPhoto"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.channel, types.TypeInputChannel, "InputChannel"],
-      [this.photo, types.TypeInputChatPhoto, "InputChatPhoto"],
+      [this.channel, types._TypeInputChannel, "InputChannel"],
+      [this.photo, types._TypeInputChatPhoto, "InputChatPhoto"],
     ];
   }
 
@@ -12195,14 +12195,14 @@ export class ChannelsCheckUsername extends Function<boolean> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["channel", types.TypeInputChannel, "InputChannel"],
+      ["channel", types._TypeInputChannel, "InputChannel"],
       ["username", "string", "string"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.channel, types.TypeInputChannel, "InputChannel"],
+      [this.channel, types._TypeInputChannel, "InputChannel"],
       [this.username, "string", "string"],
     ];
   }
@@ -12224,14 +12224,14 @@ export class ChannelsUpdateUsername extends Function<boolean> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["channel", types.TypeInputChannel, "InputChannel"],
+      ["channel", types._TypeInputChannel, "InputChannel"],
       ["username", "string", "string"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.channel, types.TypeInputChannel, "InputChannel"],
+      [this.channel, types._TypeInputChannel, "InputChannel"],
       [this.username, "string", "string"],
     ];
   }
@@ -12252,13 +12252,13 @@ export class ChannelsJoinChannel extends Function<types.TypeUpdates> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["channel", types.TypeInputChannel, "InputChannel"],
+      ["channel", types._TypeInputChannel, "InputChannel"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.channel, types.TypeInputChannel, "InputChannel"],
+      [this.channel, types._TypeInputChannel, "InputChannel"],
     ];
   }
 
@@ -12277,13 +12277,13 @@ export class ChannelsLeaveChannel extends Function<types.TypeUpdates> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["channel", types.TypeInputChannel, "InputChannel"],
+      ["channel", types._TypeInputChannel, "InputChannel"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.channel, types.TypeInputChannel, "InputChannel"],
+      [this.channel, types._TypeInputChannel, "InputChannel"],
     ];
   }
 
@@ -12303,15 +12303,15 @@ export class ChannelsInviteToChannel extends Function<types.TypeUpdates> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["channel", types.TypeInputChannel, "InputChannel"],
-      ["users", [types.TypeInputUser], "Vector<InputUser>"],
+      ["channel", types._TypeInputChannel, "InputChannel"],
+      ["users", [types._TypeInputUser], "Vector<InputUser>"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.channel, types.TypeInputChannel, "InputChannel"],
-      [this.users, [types.TypeInputUser], "Vector<InputUser>"],
+      [this.channel, types._TypeInputChannel, "InputChannel"],
+      [this.users, [types._TypeInputUser], "Vector<InputUser>"],
     ];
   }
 
@@ -12331,13 +12331,13 @@ export class ChannelsDeleteChannel extends Function<types.TypeUpdates> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["channel", types.TypeInputChannel, "InputChannel"],
+      ["channel", types._TypeInputChannel, "InputChannel"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.channel, types.TypeInputChannel, "InputChannel"],
+      [this.channel, types._TypeInputChannel, "InputChannel"],
     ];
   }
 
@@ -12347,7 +12347,7 @@ export class ChannelsDeleteChannel extends Function<types.TypeUpdates> {
   }
 }
 
-export class ChannelsExportMessageLink extends Function<types.ExportedMessageLink> {
+export class ChannelsExportMessageLink extends Function<types.TypeExportedMessageLink> {
   grouped?: true;
   thread?: true;
   channel: types.TypeInputChannel;
@@ -12362,7 +12362,7 @@ export class ChannelsExportMessageLink extends Function<types.ExportedMessageLin
       ["flags", flags, "#"],
       ["grouped", "true", "flags.0?true"],
       ["thread", "true", "flags.1?true"],
-      ["channel", types.TypeInputChannel, "InputChannel"],
+      ["channel", types._TypeInputChannel, "InputChannel"],
       ["id", "number", "int"],
     ];
   }
@@ -12372,7 +12372,7 @@ export class ChannelsExportMessageLink extends Function<types.ExportedMessageLin
       ["flags", flags, "#"],
       [this.grouped ?? null, "true", "flags.0?true"],
       [this.thread ?? null, "true", "flags.1?true"],
-      [this.channel, types.TypeInputChannel, "InputChannel"],
+      [this.channel, types._TypeInputChannel, "InputChannel"],
       [this.id, "number", "int"],
     ];
   }
@@ -12396,14 +12396,14 @@ export class ChannelsToggleSignatures extends Function<types.TypeUpdates> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["channel", types.TypeInputChannel, "InputChannel"],
+      ["channel", types._TypeInputChannel, "InputChannel"],
       ["enabled", "boolean", "Bool"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.channel, types.TypeInputChannel, "InputChannel"],
+      [this.channel, types._TypeInputChannel, "InputChannel"],
       [this.enabled, "boolean", "Bool"],
     ];
   }
@@ -12457,17 +12457,17 @@ export class ChannelsEditBanned extends Function<types.TypeUpdates> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["channel", types.TypeInputChannel, "InputChannel"],
-      ["participant", types.TypeInputPeer, "InputPeer"],
-      ["bannedRights", types.TypeChatBannedRights, "ChatBannedRights"],
+      ["channel", types._TypeInputChannel, "InputChannel"],
+      ["participant", types._TypeInputPeer, "InputPeer"],
+      ["bannedRights", types._TypeChatBannedRights, "ChatBannedRights"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.channel, types.TypeInputChannel, "InputChannel"],
-      [this.participant, types.TypeInputPeer, "InputPeer"],
-      [this.bannedRights, types.TypeChatBannedRights, "ChatBannedRights"],
+      [this.channel, types._TypeInputChannel, "InputChannel"],
+      [this.participant, types._TypeInputPeer, "InputPeer"],
+      [this.bannedRights, types._TypeChatBannedRights, "ChatBannedRights"],
     ];
   }
 
@@ -12479,7 +12479,7 @@ export class ChannelsEditBanned extends Function<types.TypeUpdates> {
   }
 }
 
-export class ChannelsGetAdminLog extends Function<types.ChannelsAdminLogResults> {
+export class ChannelsGetAdminLog extends Function<types.TypeChannelsAdminLogResults> {
   channel: types.TypeInputChannel;
   q: string;
   eventsFilter?: types.TypeChannelAdminLogEventsFilter;
@@ -12495,10 +12495,10 @@ export class ChannelsGetAdminLog extends Function<types.ChannelsAdminLogResults>
   static get [paramDesc](): ParamDesc {
     return [
       ["flags", flags, "#"],
-      ["channel", types.TypeInputChannel, "InputChannel"],
+      ["channel", types._TypeInputChannel, "InputChannel"],
       ["q", "string", "string"],
-      ["eventsFilter", types.TypeChannelAdminLogEventsFilter, "flags.0?ChannelAdminLogEventsFilter"],
-      ["admins", [types.TypeInputUser], "flags.1?Vector<InputUser>"],
+      ["eventsFilter", types._TypeChannelAdminLogEventsFilter, "flags.0?ChannelAdminLogEventsFilter"],
+      ["admins", [types._TypeInputUser], "flags.1?Vector<InputUser>"],
       ["maxId", "bigint", "long"],
       ["minId", "bigint", "long"],
       ["limit", "number", "int"],
@@ -12508,10 +12508,10 @@ export class ChannelsGetAdminLog extends Function<types.ChannelsAdminLogResults>
   protected get [params](): Params {
     return [
       ["flags", flags, "#"],
-      [this.channel, types.TypeInputChannel, "InputChannel"],
+      [this.channel, types._TypeInputChannel, "InputChannel"],
       [this.q, "string", "string"],
-      [this.eventsFilter ?? null, types.TypeChannelAdminLogEventsFilter, "flags.0?ChannelAdminLogEventsFilter"],
-      [this.admins ?? null, [types.TypeInputUser], "flags.1?Vector<InputUser>"],
+      [this.eventsFilter ?? null, types._TypeChannelAdminLogEventsFilter, "flags.0?ChannelAdminLogEventsFilter"],
+      [this.admins ?? null, [types._TypeInputUser], "flags.1?Vector<InputUser>"],
       [this.maxId, "bigint", "long"],
       [this.minId, "bigint", "long"],
       [this.limit, "number", "int"],
@@ -12540,15 +12540,15 @@ export class ChannelsSetStickers extends Function<boolean> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["channel", types.TypeInputChannel, "InputChannel"],
-      ["stickerset", types.TypeInputStickerSet, "InputStickerSet"],
+      ["channel", types._TypeInputChannel, "InputChannel"],
+      ["stickerset", types._TypeInputStickerSet, "InputStickerSet"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.channel, types.TypeInputChannel, "InputChannel"],
-      [this.stickerset, types.TypeInputStickerSet, "InputStickerSet"],
+      [this.channel, types._TypeInputChannel, "InputChannel"],
+      [this.stickerset, types._TypeInputStickerSet, "InputStickerSet"],
     ];
   }
 
@@ -12569,14 +12569,14 @@ export class ChannelsReadMessageContents extends Function<boolean> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["channel", types.TypeInputChannel, "InputChannel"],
+      ["channel", types._TypeInputChannel, "InputChannel"],
       ["id", ["number"], "Vector<int>"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.channel, types.TypeInputChannel, "InputChannel"],
+      [this.channel, types._TypeInputChannel, "InputChannel"],
       [this.id, ["number"], "Vector<int>"],
     ];
   }
@@ -12601,7 +12601,7 @@ export class ChannelsDeleteHistory extends Function<types.TypeUpdates> {
     return [
       ["flags", flags, "#"],
       ["forEveryone", "true", "flags.0?true"],
-      ["channel", types.TypeInputChannel, "InputChannel"],
+      ["channel", types._TypeInputChannel, "InputChannel"],
       ["maxId", "number", "int"],
     ];
   }
@@ -12610,7 +12610,7 @@ export class ChannelsDeleteHistory extends Function<types.TypeUpdates> {
     return [
       ["flags", flags, "#"],
       [this.forEveryone ?? null, "true", "flags.0?true"],
-      [this.channel, types.TypeInputChannel, "InputChannel"],
+      [this.channel, types._TypeInputChannel, "InputChannel"],
       [this.maxId, "number", "int"],
     ];
   }
@@ -12633,14 +12633,14 @@ export class ChannelsTogglePreHistoryHidden extends Function<types.TypeUpdates> 
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["channel", types.TypeInputChannel, "InputChannel"],
+      ["channel", types._TypeInputChannel, "InputChannel"],
       ["enabled", "boolean", "Bool"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.channel, types.TypeInputChannel, "InputChannel"],
+      [this.channel, types._TypeInputChannel, "InputChannel"],
       [this.enabled, "boolean", "Bool"],
     ];
   }
@@ -12705,15 +12705,15 @@ export class ChannelsSetDiscussionGroup extends Function<boolean> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["broadcast", types.TypeInputChannel, "InputChannel"],
-      ["group", types.TypeInputChannel, "InputChannel"],
+      ["broadcast", types._TypeInputChannel, "InputChannel"],
+      ["group", types._TypeInputChannel, "InputChannel"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.broadcast, types.TypeInputChannel, "InputChannel"],
-      [this.group, types.TypeInputChannel, "InputChannel"],
+      [this.broadcast, types._TypeInputChannel, "InputChannel"],
+      [this.group, types._TypeInputChannel, "InputChannel"],
     ];
   }
 
@@ -12735,17 +12735,17 @@ export class ChannelsEditCreator extends Function<types.TypeUpdates> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["channel", types.TypeInputChannel, "InputChannel"],
-      ["userId", types.TypeInputUser, "InputUser"],
-      ["password", types.TypeInputCheckPasswordSRP, "InputCheckPasswordSRP"],
+      ["channel", types._TypeInputChannel, "InputChannel"],
+      ["userId", types._TypeInputUser, "InputUser"],
+      ["password", types._TypeInputCheckPasswordSRP, "InputCheckPasswordSRP"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.channel, types.TypeInputChannel, "InputChannel"],
-      [this.userId, types.TypeInputUser, "InputUser"],
-      [this.password, types.TypeInputCheckPasswordSRP, "InputCheckPasswordSRP"],
+      [this.channel, types._TypeInputChannel, "InputChannel"],
+      [this.userId, types._TypeInputUser, "InputUser"],
+      [this.password, types._TypeInputCheckPasswordSRP, "InputCheckPasswordSRP"],
     ];
   }
 
@@ -12768,16 +12768,16 @@ export class ChannelsEditLocation extends Function<boolean> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["channel", types.TypeInputChannel, "InputChannel"],
-      ["geoPoint", types.TypeInputGeoPoint, "InputGeoPoint"],
+      ["channel", types._TypeInputChannel, "InputChannel"],
+      ["geoPoint", types._TypeInputGeoPoint, "InputGeoPoint"],
       ["address", "string", "string"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.channel, types.TypeInputChannel, "InputChannel"],
-      [this.geoPoint, types.TypeInputGeoPoint, "InputGeoPoint"],
+      [this.channel, types._TypeInputChannel, "InputChannel"],
+      [this.geoPoint, types._TypeInputGeoPoint, "InputGeoPoint"],
       [this.address, "string", "string"],
     ];
   }
@@ -12800,14 +12800,14 @@ export class ChannelsToggleSlowMode extends Function<types.TypeUpdates> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["channel", types.TypeInputChannel, "InputChannel"],
+      ["channel", types._TypeInputChannel, "InputChannel"],
       ["seconds", "number", "int"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.channel, types.TypeInputChannel, "InputChannel"],
+      [this.channel, types._TypeInputChannel, "InputChannel"],
       [this.seconds, "number", "int"],
     ];
   }
@@ -12819,7 +12819,7 @@ export class ChannelsToggleSlowMode extends Function<types.TypeUpdates> {
   }
 }
 
-export class ChannelsGetInactiveChannels extends Function<types.MessagesInactiveChats> {
+export class ChannelsGetInactiveChannels extends Function<types.TypeMessagesInactiveChats> {
   protected get [id]() {
     return 0x11E831EE;
   }
@@ -12846,13 +12846,13 @@ export class ChannelsConvertToGigagroup extends Function<types.TypeUpdates> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["channel", types.TypeInputChannel, "InputChannel"],
+      ["channel", types._TypeInputChannel, "InputChannel"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.channel, types.TypeInputChannel, "InputChannel"],
+      [this.channel, types._TypeInputChannel, "InputChannel"],
     ];
   }
 
@@ -12872,14 +12872,14 @@ export class ChannelsViewSponsoredMessage extends Function<boolean> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["channel", types.TypeInputChannel, "InputChannel"],
+      ["channel", types._TypeInputChannel, "InputChannel"],
       ["randomId", Uint8Array, "bytes"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.channel, types.TypeInputChannel, "InputChannel"],
+      [this.channel, types._TypeInputChannel, "InputChannel"],
       [this.randomId, Uint8Array, "bytes"],
     ];
   }
@@ -12900,13 +12900,13 @@ export class ChannelsGetSponsoredMessages extends Function<types.TypeMessagesSpo
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["channel", types.TypeInputChannel, "InputChannel"],
+      ["channel", types._TypeInputChannel, "InputChannel"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.channel, types.TypeInputChannel, "InputChannel"],
+      [this.channel, types._TypeInputChannel, "InputChannel"],
     ];
   }
 
@@ -12916,7 +12916,7 @@ export class ChannelsGetSponsoredMessages extends Function<types.TypeMessagesSpo
   }
 }
 
-export class ChannelsGetSendAs extends Function<types.ChannelsSendAsPeers> {
+export class ChannelsGetSendAs extends Function<types.TypeChannelsSendAsPeers> {
   peer: types.TypeInputPeer;
 
   protected get [id]() {
@@ -12925,13 +12925,13 @@ export class ChannelsGetSendAs extends Function<types.ChannelsSendAsPeers> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["peer", types.TypeInputPeer, "InputPeer"],
+      ["peer", types._TypeInputPeer, "InputPeer"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.peer, types.TypeInputPeer, "InputPeer"],
+      [this.peer, types._TypeInputPeer, "InputPeer"],
     ];
   }
 
@@ -12941,7 +12941,7 @@ export class ChannelsGetSendAs extends Function<types.ChannelsSendAsPeers> {
   }
 }
 
-export class ChannelsDeleteParticipantHistory extends Function<types.MessagesAffectedHistory> {
+export class ChannelsDeleteParticipantHistory extends Function<types.TypeMessagesAffectedHistory> {
   channel: types.TypeInputChannel;
   participant: types.TypeInputPeer;
 
@@ -12951,15 +12951,15 @@ export class ChannelsDeleteParticipantHistory extends Function<types.MessagesAff
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["channel", types.TypeInputChannel, "InputChannel"],
-      ["participant", types.TypeInputPeer, "InputPeer"],
+      ["channel", types._TypeInputChannel, "InputChannel"],
+      ["participant", types._TypeInputPeer, "InputPeer"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.channel, types.TypeInputChannel, "InputChannel"],
-      [this.participant, types.TypeInputPeer, "InputPeer"],
+      [this.channel, types._TypeInputChannel, "InputChannel"],
+      [this.participant, types._TypeInputPeer, "InputPeer"],
     ];
   }
 
@@ -12980,14 +12980,14 @@ export class ChannelsToggleJoinToSend extends Function<types.TypeUpdates> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["channel", types.TypeInputChannel, "InputChannel"],
+      ["channel", types._TypeInputChannel, "InputChannel"],
       ["enabled", "boolean", "Bool"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.channel, types.TypeInputChannel, "InputChannel"],
+      [this.channel, types._TypeInputChannel, "InputChannel"],
       [this.enabled, "boolean", "Bool"],
     ];
   }
@@ -13009,14 +13009,14 @@ export class ChannelsToggleJoinRequest extends Function<types.TypeUpdates> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["channel", types.TypeInputChannel, "InputChannel"],
+      ["channel", types._TypeInputChannel, "InputChannel"],
       ["enabled", "boolean", "Bool"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.channel, types.TypeInputChannel, "InputChannel"],
+      [this.channel, types._TypeInputChannel, "InputChannel"],
       [this.enabled, "boolean", "Bool"],
     ];
   }
@@ -13038,14 +13038,14 @@ export class ChannelsReorderUsernames extends Function<boolean> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["channel", types.TypeInputChannel, "InputChannel"],
+      ["channel", types._TypeInputChannel, "InputChannel"],
       ["order", ["string"], "Vector<string>"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.channel, types.TypeInputChannel, "InputChannel"],
+      [this.channel, types._TypeInputChannel, "InputChannel"],
       [this.order, ["string"], "Vector<string>"],
     ];
   }
@@ -13068,7 +13068,7 @@ export class ChannelsToggleUsername extends Function<boolean> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["channel", types.TypeInputChannel, "InputChannel"],
+      ["channel", types._TypeInputChannel, "InputChannel"],
       ["username", "string", "string"],
       ["active", "boolean", "Bool"],
     ];
@@ -13076,7 +13076,7 @@ export class ChannelsToggleUsername extends Function<boolean> {
 
   protected get [params](): Params {
     return [
-      [this.channel, types.TypeInputChannel, "InputChannel"],
+      [this.channel, types._TypeInputChannel, "InputChannel"],
       [this.username, "string", "string"],
       [this.active, "boolean", "Bool"],
     ];
@@ -13099,13 +13099,13 @@ export class ChannelsDeactivateAllUsernames extends Function<boolean> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["channel", types.TypeInputChannel, "InputChannel"],
+      ["channel", types._TypeInputChannel, "InputChannel"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.channel, types.TypeInputChannel, "InputChannel"],
+      [this.channel, types._TypeInputChannel, "InputChannel"],
     ];
   }
 
@@ -13125,14 +13125,14 @@ export class ChannelsToggleForum extends Function<types.TypeUpdates> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["channel", types.TypeInputChannel, "InputChannel"],
+      ["channel", types._TypeInputChannel, "InputChannel"],
       ["enabled", "boolean", "Bool"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.channel, types.TypeInputChannel, "InputChannel"],
+      [this.channel, types._TypeInputChannel, "InputChannel"],
       [this.enabled, "boolean", "Bool"],
     ];
   }
@@ -13159,24 +13159,24 @@ export class ChannelsCreateForumTopic extends Function<types.TypeUpdates> {
   static get [paramDesc](): ParamDesc {
     return [
       ["flags", flags, "#"],
-      ["channel", types.TypeInputChannel, "InputChannel"],
+      ["channel", types._TypeInputChannel, "InputChannel"],
       ["title", "string", "string"],
       ["iconColor", "number", "flags.0?int"],
       ["iconEmojiId", "bigint", "flags.3?long"],
       ["randomId", "bigint", "long"],
-      ["sendAs", types.TypeInputPeer, "flags.2?InputPeer"],
+      ["sendAs", types._TypeInputPeer, "flags.2?InputPeer"],
     ];
   }
 
   protected get [params](): Params {
     return [
       ["flags", flags, "#"],
-      [this.channel, types.TypeInputChannel, "InputChannel"],
+      [this.channel, types._TypeInputChannel, "InputChannel"],
       [this.title, "string", "string"],
       [this.iconColor ?? null, "number", "flags.0?int"],
       [this.iconEmojiId ?? null, "bigint", "flags.3?long"],
       [this.randomId, "bigint", "long"],
-      [this.sendAs ?? null, types.TypeInputPeer, "flags.2?InputPeer"],
+      [this.sendAs ?? null, types._TypeInputPeer, "flags.2?InputPeer"],
     ];
   }
 
@@ -13191,7 +13191,7 @@ export class ChannelsCreateForumTopic extends Function<types.TypeUpdates> {
   }
 }
 
-export class ChannelsGetForumTopics extends Function<types.MessagesForumTopics> {
+export class ChannelsGetForumTopics extends Function<types.TypeMessagesForumTopics> {
   channel: types.TypeInputChannel;
   q?: string;
   offsetDate: number;
@@ -13206,7 +13206,7 @@ export class ChannelsGetForumTopics extends Function<types.MessagesForumTopics> 
   static get [paramDesc](): ParamDesc {
     return [
       ["flags", flags, "#"],
-      ["channel", types.TypeInputChannel, "InputChannel"],
+      ["channel", types._TypeInputChannel, "InputChannel"],
       ["q", "string", "flags.0?string"],
       ["offsetDate", "number", "int"],
       ["offsetId", "number", "int"],
@@ -13218,7 +13218,7 @@ export class ChannelsGetForumTopics extends Function<types.MessagesForumTopics> 
   protected get [params](): Params {
     return [
       ["flags", flags, "#"],
-      [this.channel, types.TypeInputChannel, "InputChannel"],
+      [this.channel, types._TypeInputChannel, "InputChannel"],
       [this.q ?? null, "string", "flags.0?string"],
       [this.offsetDate, "number", "int"],
       [this.offsetId, "number", "int"],
@@ -13238,7 +13238,7 @@ export class ChannelsGetForumTopics extends Function<types.MessagesForumTopics> 
   }
 }
 
-export class ChannelsGetForumTopicsByID extends Function<types.MessagesForumTopics> {
+export class ChannelsGetForumTopicsByID extends Function<types.TypeMessagesForumTopics> {
   channel: types.TypeInputChannel;
   topics: Array<number>;
 
@@ -13248,14 +13248,14 @@ export class ChannelsGetForumTopicsByID extends Function<types.MessagesForumTopi
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["channel", types.TypeInputChannel, "InputChannel"],
+      ["channel", types._TypeInputChannel, "InputChannel"],
       ["topics", ["number"], "Vector<int>"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.channel, types.TypeInputChannel, "InputChannel"],
+      [this.channel, types._TypeInputChannel, "InputChannel"],
       [this.topics, ["number"], "Vector<int>"],
     ];
   }
@@ -13282,7 +13282,7 @@ export class ChannelsEditForumTopic extends Function<types.TypeUpdates> {
   static get [paramDesc](): ParamDesc {
     return [
       ["flags", flags, "#"],
-      ["channel", types.TypeInputChannel, "InputChannel"],
+      ["channel", types._TypeInputChannel, "InputChannel"],
       ["topicId", "number", "int"],
       ["title", "string", "flags.0?string"],
       ["iconEmojiId", "bigint", "flags.1?long"],
@@ -13294,7 +13294,7 @@ export class ChannelsEditForumTopic extends Function<types.TypeUpdates> {
   protected get [params](): Params {
     return [
       ["flags", flags, "#"],
-      [this.channel, types.TypeInputChannel, "InputChannel"],
+      [this.channel, types._TypeInputChannel, "InputChannel"],
       [this.topicId, "number", "int"],
       [this.title ?? null, "string", "flags.0?string"],
       [this.iconEmojiId ?? null, "bigint", "flags.1?long"],
@@ -13325,7 +13325,7 @@ export class ChannelsUpdatePinnedForumTopic extends Function<types.TypeUpdates> 
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["channel", types.TypeInputChannel, "InputChannel"],
+      ["channel", types._TypeInputChannel, "InputChannel"],
       ["topicId", "number", "int"],
       ["pinned", "boolean", "Bool"],
     ];
@@ -13333,7 +13333,7 @@ export class ChannelsUpdatePinnedForumTopic extends Function<types.TypeUpdates> 
 
   protected get [params](): Params {
     return [
-      [this.channel, types.TypeInputChannel, "InputChannel"],
+      [this.channel, types._TypeInputChannel, "InputChannel"],
       [this.topicId, "number", "int"],
       [this.pinned, "boolean", "Bool"],
     ];
@@ -13347,7 +13347,7 @@ export class ChannelsUpdatePinnedForumTopic extends Function<types.TypeUpdates> 
   }
 }
 
-export class ChannelsDeleteTopicHistory extends Function<types.MessagesAffectedHistory> {
+export class ChannelsDeleteTopicHistory extends Function<types.TypeMessagesAffectedHistory> {
   channel: types.TypeInputChannel;
   topMsgId: number;
 
@@ -13357,14 +13357,14 @@ export class ChannelsDeleteTopicHistory extends Function<types.MessagesAffectedH
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["channel", types.TypeInputChannel, "InputChannel"],
+      ["channel", types._TypeInputChannel, "InputChannel"],
       ["topMsgId", "number", "int"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.channel, types.TypeInputChannel, "InputChannel"],
+      [this.channel, types._TypeInputChannel, "InputChannel"],
       [this.topMsgId, "number", "int"],
     ];
   }
@@ -13389,7 +13389,7 @@ export class ChannelsReorderPinnedForumTopics extends Function<types.TypeUpdates
     return [
       ["flags", flags, "#"],
       ["force", "true", "flags.0?true"],
-      ["channel", types.TypeInputChannel, "InputChannel"],
+      ["channel", types._TypeInputChannel, "InputChannel"],
       ["order", ["number"], "Vector<int>"],
     ];
   }
@@ -13398,7 +13398,7 @@ export class ChannelsReorderPinnedForumTopics extends Function<types.TypeUpdates
     return [
       ["flags", flags, "#"],
       [this.force ?? null, "true", "flags.0?true"],
-      [this.channel, types.TypeInputChannel, "InputChannel"],
+      [this.channel, types._TypeInputChannel, "InputChannel"],
       [this.order, ["number"], "Vector<int>"],
     ];
   }
@@ -13421,14 +13421,14 @@ export class ChannelsToggleAntiSpam extends Function<types.TypeUpdates> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["channel", types.TypeInputChannel, "InputChannel"],
+      ["channel", types._TypeInputChannel, "InputChannel"],
       ["enabled", "boolean", "Bool"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.channel, types.TypeInputChannel, "InputChannel"],
+      [this.channel, types._TypeInputChannel, "InputChannel"],
       [this.enabled, "boolean", "Bool"],
     ];
   }
@@ -13450,14 +13450,14 @@ export class ChannelsReportAntiSpamFalsePositive extends Function<boolean> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["channel", types.TypeInputChannel, "InputChannel"],
+      ["channel", types._TypeInputChannel, "InputChannel"],
       ["msgId", "number", "int"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.channel, types.TypeInputChannel, "InputChannel"],
+      [this.channel, types._TypeInputChannel, "InputChannel"],
       [this.msgId, "number", "int"],
     ];
   }
@@ -13479,14 +13479,14 @@ export class ChannelsToggleParticipantsHidden extends Function<types.TypeUpdates
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["channel", types.TypeInputChannel, "InputChannel"],
+      ["channel", types._TypeInputChannel, "InputChannel"],
       ["enabled", "boolean", "Bool"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.channel, types.TypeInputChannel, "InputChannel"],
+      [this.channel, types._TypeInputChannel, "InputChannel"],
       [this.enabled, "boolean", "Bool"],
     ];
   }
@@ -13508,14 +13508,14 @@ export class ChannelsClickSponsoredMessage extends Function<boolean> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["channel", types.TypeInputChannel, "InputChannel"],
+      ["channel", types._TypeInputChannel, "InputChannel"],
       ["randomId", Uint8Array, "bytes"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.channel, types.TypeInputChannel, "InputChannel"],
+      [this.channel, types._TypeInputChannel, "InputChannel"],
       [this.randomId, Uint8Array, "bytes"],
     ];
   }
@@ -13527,7 +13527,7 @@ export class ChannelsClickSponsoredMessage extends Function<boolean> {
   }
 }
 
-export class BotsSendCustomRequest extends Function<types.DataJSON> {
+export class BotsSendCustomRequest extends Function<types.TypeDataJSON> {
   customMethod: string;
   params: types.TypeDataJSON;
 
@@ -13538,14 +13538,14 @@ export class BotsSendCustomRequest extends Function<types.DataJSON> {
   static get [paramDesc](): ParamDesc {
     return [
       ["customMethod", "string", "string"],
-      ["params", types.TypeDataJSON, "DataJSON"],
+      ["params", types._TypeDataJSON, "DataJSON"],
     ];
   }
 
   protected get [params](): Params {
     return [
       [this.customMethod, "string", "string"],
-      [this.params, types.TypeDataJSON, "DataJSON"],
+      [this.params, types._TypeDataJSON, "DataJSON"],
     ];
   }
 
@@ -13567,14 +13567,14 @@ export class BotsAnswerWebhookJSONQuery extends Function<boolean> {
   static get [paramDesc](): ParamDesc {
     return [
       ["queryId", "bigint", "long"],
-      ["data", types.TypeDataJSON, "DataJSON"],
+      ["data", types._TypeDataJSON, "DataJSON"],
     ];
   }
 
   protected get [params](): Params {
     return [
       [this.queryId, "bigint", "long"],
-      [this.data, types.TypeDataJSON, "DataJSON"],
+      [this.data, types._TypeDataJSON, "DataJSON"],
     ];
   }
 
@@ -13596,17 +13596,17 @@ export class BotsSetBotCommands extends Function<boolean> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["scope", types.TypeBotCommandScope, "BotCommandScope"],
+      ["scope", types._TypeBotCommandScope, "BotCommandScope"],
       ["langCode", "string", "string"],
-      ["commands", [types.TypeBotCommand], "Vector<BotCommand>"],
+      ["commands", [types._TypeBotCommand], "Vector<BotCommand>"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.scope, types.TypeBotCommandScope, "BotCommandScope"],
+      [this.scope, types._TypeBotCommandScope, "BotCommandScope"],
       [this.langCode, "string", "string"],
-      [this.commands, [types.TypeBotCommand], "Vector<BotCommand>"],
+      [this.commands, [types._TypeBotCommand], "Vector<BotCommand>"],
     ];
   }
 
@@ -13628,14 +13628,14 @@ export class BotsResetBotCommands extends Function<boolean> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["scope", types.TypeBotCommandScope, "BotCommandScope"],
+      ["scope", types._TypeBotCommandScope, "BotCommandScope"],
       ["langCode", "string", "string"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.scope, types.TypeBotCommandScope, "BotCommandScope"],
+      [this.scope, types._TypeBotCommandScope, "BotCommandScope"],
       [this.langCode, "string", "string"],
     ];
   }
@@ -13647,7 +13647,7 @@ export class BotsResetBotCommands extends Function<boolean> {
   }
 }
 
-export class BotsGetBotCommands extends Function<types.BotCommand[]> {
+export class BotsGetBotCommands extends Function<types.TypeBotCommand[]> {
   scope: types.TypeBotCommandScope;
   langCode: string;
 
@@ -13657,14 +13657,14 @@ export class BotsGetBotCommands extends Function<types.BotCommand[]> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["scope", types.TypeBotCommandScope, "BotCommandScope"],
+      ["scope", types._TypeBotCommandScope, "BotCommandScope"],
       ["langCode", "string", "string"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.scope, types.TypeBotCommandScope, "BotCommandScope"],
+      [this.scope, types._TypeBotCommandScope, "BotCommandScope"],
       [this.langCode, "string", "string"],
     ];
   }
@@ -13686,15 +13686,15 @@ export class BotsSetBotMenuButton extends Function<boolean> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["userId", types.TypeInputUser, "InputUser"],
-      ["button", types.TypeBotMenuButton, "BotMenuButton"],
+      ["userId", types._TypeInputUser, "InputUser"],
+      ["button", types._TypeBotMenuButton, "BotMenuButton"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.userId, types.TypeInputUser, "InputUser"],
-      [this.button, types.TypeBotMenuButton, "BotMenuButton"],
+      [this.userId, types._TypeInputUser, "InputUser"],
+      [this.button, types._TypeBotMenuButton, "BotMenuButton"],
     ];
   }
 
@@ -13714,13 +13714,13 @@ export class BotsGetBotMenuButton extends Function<types.TypeBotMenuButton> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["userId", types.TypeInputUser, "InputUser"],
+      ["userId", types._TypeInputUser, "InputUser"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.userId, types.TypeInputUser, "InputUser"],
+      [this.userId, types._TypeInputUser, "InputUser"],
     ];
   }
 
@@ -13739,13 +13739,13 @@ export class BotsSetBotBroadcastDefaultAdminRights extends Function<boolean> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["adminRights", types.TypeChatAdminRights, "ChatAdminRights"],
+      ["adminRights", types._TypeChatAdminRights, "ChatAdminRights"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.adminRights, types.TypeChatAdminRights, "ChatAdminRights"],
+      [this.adminRights, types._TypeChatAdminRights, "ChatAdminRights"],
     ];
   }
 
@@ -13764,13 +13764,13 @@ export class BotsSetBotGroupDefaultAdminRights extends Function<boolean> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["adminRights", types.TypeChatAdminRights, "ChatAdminRights"],
+      ["adminRights", types._TypeChatAdminRights, "ChatAdminRights"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.adminRights, types.TypeChatAdminRights, "ChatAdminRights"],
+      [this.adminRights, types._TypeChatAdminRights, "ChatAdminRights"],
     ];
   }
 
@@ -13794,7 +13794,7 @@ export class BotsSetBotInfo extends Function<boolean> {
   static get [paramDesc](): ParamDesc {
     return [
       ["flags", flags, "#"],
-      ["bot", types.TypeInputUser, "flags.2?InputUser"],
+      ["bot", types._TypeInputUser, "flags.2?InputUser"],
       ["langCode", "string", "string"],
       ["name", "string", "flags.3?string"],
       ["about", "string", "flags.0?string"],
@@ -13805,7 +13805,7 @@ export class BotsSetBotInfo extends Function<boolean> {
   protected get [params](): Params {
     return [
       ["flags", flags, "#"],
-      [this.bot ?? null, types.TypeInputUser, "flags.2?InputUser"],
+      [this.bot ?? null, types._TypeInputUser, "flags.2?InputUser"],
       [this.langCode, "string", "string"],
       [this.name ?? null, "string", "flags.3?string"],
       [this.about ?? null, "string", "flags.0?string"],
@@ -13823,7 +13823,7 @@ export class BotsSetBotInfo extends Function<boolean> {
   }
 }
 
-export class BotsGetBotInfo extends Function<types.BotsBotInfo> {
+export class BotsGetBotInfo extends Function<types.TypeBotsBotInfo> {
   bot?: types.TypeInputUser;
   langCode: string;
 
@@ -13834,7 +13834,7 @@ export class BotsGetBotInfo extends Function<types.BotsBotInfo> {
   static get [paramDesc](): ParamDesc {
     return [
       ["flags", flags, "#"],
-      ["bot", types.TypeInputUser, "flags.0?InputUser"],
+      ["bot", types._TypeInputUser, "flags.0?InputUser"],
       ["langCode", "string", "string"],
     ];
   }
@@ -13842,7 +13842,7 @@ export class BotsGetBotInfo extends Function<types.BotsBotInfo> {
   protected get [params](): Params {
     return [
       ["flags", flags, "#"],
-      [this.bot ?? null, types.TypeInputUser, "flags.0?InputUser"],
+      [this.bot ?? null, types._TypeInputUser, "flags.0?InputUser"],
       [this.langCode, "string", "string"],
     ];
   }
@@ -13864,14 +13864,14 @@ export class BotsReorderUsernames extends Function<boolean> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["bot", types.TypeInputUser, "InputUser"],
+      ["bot", types._TypeInputUser, "InputUser"],
       ["order", ["string"], "Vector<string>"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.bot, types.TypeInputUser, "InputUser"],
+      [this.bot, types._TypeInputUser, "InputUser"],
       [this.order, ["string"], "Vector<string>"],
     ];
   }
@@ -13894,7 +13894,7 @@ export class BotsToggleUsername extends Function<boolean> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["bot", types.TypeInputUser, "InputUser"],
+      ["bot", types._TypeInputUser, "InputUser"],
       ["username", "string", "string"],
       ["active", "boolean", "Bool"],
     ];
@@ -13902,7 +13902,7 @@ export class BotsToggleUsername extends Function<boolean> {
 
   protected get [params](): Params {
     return [
-      [this.bot, types.TypeInputUser, "InputUser"],
+      [this.bot, types._TypeInputUser, "InputUser"],
       [this.username, "string", "string"],
       [this.active, "boolean", "Bool"],
     ];
@@ -13916,7 +13916,7 @@ export class BotsToggleUsername extends Function<boolean> {
   }
 }
 
-export class PaymentsGetPaymentForm extends Function<types.PaymentsPaymentForm> {
+export class PaymentsGetPaymentForm extends Function<types.TypePaymentsPaymentForm> {
   invoice: types.TypeInputInvoice;
   themeParams?: types.TypeDataJSON;
 
@@ -13927,16 +13927,16 @@ export class PaymentsGetPaymentForm extends Function<types.PaymentsPaymentForm> 
   static get [paramDesc](): ParamDesc {
     return [
       ["flags", flags, "#"],
-      ["invoice", types.TypeInputInvoice, "InputInvoice"],
-      ["themeParams", types.TypeDataJSON, "flags.0?DataJSON"],
+      ["invoice", types._TypeInputInvoice, "InputInvoice"],
+      ["themeParams", types._TypeDataJSON, "flags.0?DataJSON"],
     ];
   }
 
   protected get [params](): Params {
     return [
       ["flags", flags, "#"],
-      [this.invoice, types.TypeInputInvoice, "InputInvoice"],
-      [this.themeParams ?? null, types.TypeDataJSON, "flags.0?DataJSON"],
+      [this.invoice, types._TypeInputInvoice, "InputInvoice"],
+      [this.themeParams ?? null, types._TypeDataJSON, "flags.0?DataJSON"],
     ];
   }
 
@@ -13947,7 +13947,7 @@ export class PaymentsGetPaymentForm extends Function<types.PaymentsPaymentForm> 
   }
 }
 
-export class PaymentsGetPaymentReceipt extends Function<types.PaymentsPaymentReceipt> {
+export class PaymentsGetPaymentReceipt extends Function<types.TypePaymentsPaymentReceipt> {
   peer: types.TypeInputPeer;
   msgId: number;
 
@@ -13957,14 +13957,14 @@ export class PaymentsGetPaymentReceipt extends Function<types.PaymentsPaymentRec
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["peer", types.TypeInputPeer, "InputPeer"],
+      ["peer", types._TypeInputPeer, "InputPeer"],
       ["msgId", "number", "int"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.peer, types.TypeInputPeer, "InputPeer"],
+      [this.peer, types._TypeInputPeer, "InputPeer"],
       [this.msgId, "number", "int"],
     ];
   }
@@ -13976,7 +13976,7 @@ export class PaymentsGetPaymentReceipt extends Function<types.PaymentsPaymentRec
   }
 }
 
-export class PaymentsValidateRequestedInfo extends Function<types.PaymentsValidatedRequestedInfo> {
+export class PaymentsValidateRequestedInfo extends Function<types.TypePaymentsValidatedRequestedInfo> {
   save?: true;
   invoice: types.TypeInputInvoice;
   info: types.TypePaymentRequestedInfo;
@@ -13989,8 +13989,8 @@ export class PaymentsValidateRequestedInfo extends Function<types.PaymentsValida
     return [
       ["flags", flags, "#"],
       ["save", "true", "flags.0?true"],
-      ["invoice", types.TypeInputInvoice, "InputInvoice"],
-      ["info", types.TypePaymentRequestedInfo, "PaymentRequestedInfo"],
+      ["invoice", types._TypeInputInvoice, "InputInvoice"],
+      ["info", types._TypePaymentRequestedInfo, "PaymentRequestedInfo"],
     ];
   }
 
@@ -13998,8 +13998,8 @@ export class PaymentsValidateRequestedInfo extends Function<types.PaymentsValida
     return [
       ["flags", flags, "#"],
       [this.save ?? null, "true", "flags.0?true"],
-      [this.invoice, types.TypeInputInvoice, "InputInvoice"],
-      [this.info, types.TypePaymentRequestedInfo, "PaymentRequestedInfo"],
+      [this.invoice, types._TypeInputInvoice, "InputInvoice"],
+      [this.info, types._TypePaymentRequestedInfo, "PaymentRequestedInfo"],
     ];
   }
 
@@ -14027,10 +14027,10 @@ export class PaymentsSendPaymentForm extends Function<types.TypePaymentsPaymentR
     return [
       ["flags", flags, "#"],
       ["formId", "bigint", "long"],
-      ["invoice", types.TypeInputInvoice, "InputInvoice"],
+      ["invoice", types._TypeInputInvoice, "InputInvoice"],
       ["requestedInfoId", "string", "flags.0?string"],
       ["shippingOptionId", "string", "flags.1?string"],
-      ["credentials", types.TypeInputPaymentCredentials, "InputPaymentCredentials"],
+      ["credentials", types._TypeInputPaymentCredentials, "InputPaymentCredentials"],
       ["tipAmount", "bigint", "flags.2?long"],
     ];
   }
@@ -14039,10 +14039,10 @@ export class PaymentsSendPaymentForm extends Function<types.TypePaymentsPaymentR
     return [
       ["flags", flags, "#"],
       [this.formId, "bigint", "long"],
-      [this.invoice, types.TypeInputInvoice, "InputInvoice"],
+      [this.invoice, types._TypeInputInvoice, "InputInvoice"],
       [this.requestedInfoId ?? null, "string", "flags.0?string"],
       [this.shippingOptionId ?? null, "string", "flags.1?string"],
-      [this.credentials, types.TypeInputPaymentCredentials, "InputPaymentCredentials"],
+      [this.credentials, types._TypeInputPaymentCredentials, "InputPaymentCredentials"],
       [this.tipAmount ?? null, "bigint", "flags.2?long"],
     ];
   }
@@ -14058,7 +14058,7 @@ export class PaymentsSendPaymentForm extends Function<types.TypePaymentsPaymentR
   }
 }
 
-export class PaymentsGetSavedInfo extends Function<types.PaymentsSavedInfo> {
+export class PaymentsGetSavedInfo extends Function<types.TypePaymentsSavedInfo> {
   protected get [id]() {
     return 0x227D824B;
   }
@@ -14107,7 +14107,7 @@ export class PaymentsClearSavedInfo extends Function<boolean> {
   }
 }
 
-export class PaymentsGetBankCardData extends Function<types.PaymentsBankCardData> {
+export class PaymentsGetBankCardData extends Function<types.TypePaymentsBankCardData> {
   number: string;
 
   protected get [id]() {
@@ -14132,7 +14132,7 @@ export class PaymentsGetBankCardData extends Function<types.PaymentsBankCardData
   }
 }
 
-export class PaymentsExportInvoice extends Function<types.PaymentsExportedInvoice> {
+export class PaymentsExportInvoice extends Function<types.TypePaymentsExportedInvoice> {
   invoiceMedia: types.TypeInputMedia;
 
   protected get [id]() {
@@ -14141,13 +14141,13 @@ export class PaymentsExportInvoice extends Function<types.PaymentsExportedInvoic
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["invoiceMedia", types.TypeInputMedia, "InputMedia"],
+      ["invoiceMedia", types._TypeInputMedia, "InputMedia"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.invoiceMedia, types.TypeInputMedia, "InputMedia"],
+      [this.invoiceMedia, types._TypeInputMedia, "InputMedia"],
     ];
   }
 
@@ -14168,14 +14168,14 @@ export class PaymentsAssignAppStoreTransaction extends Function<types.TypeUpdate
   static get [paramDesc](): ParamDesc {
     return [
       ["receipt", Uint8Array, "bytes"],
-      ["purpose", types.TypeInputStorePaymentPurpose, "InputStorePaymentPurpose"],
+      ["purpose", types._TypeInputStorePaymentPurpose, "InputStorePaymentPurpose"],
     ];
   }
 
   protected get [params](): Params {
     return [
       [this.receipt, Uint8Array, "bytes"],
-      [this.purpose, types.TypeInputStorePaymentPurpose, "InputStorePaymentPurpose"],
+      [this.purpose, types._TypeInputStorePaymentPurpose, "InputStorePaymentPurpose"],
     ];
   }
 
@@ -14196,15 +14196,15 @@ export class PaymentsAssignPlayMarketTransaction extends Function<types.TypeUpda
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["receipt", types.TypeDataJSON, "DataJSON"],
-      ["purpose", types.TypeInputStorePaymentPurpose, "InputStorePaymentPurpose"],
+      ["receipt", types._TypeDataJSON, "DataJSON"],
+      ["purpose", types._TypeInputStorePaymentPurpose, "InputStorePaymentPurpose"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.receipt, types.TypeDataJSON, "DataJSON"],
-      [this.purpose, types.TypeInputStorePaymentPurpose, "InputStorePaymentPurpose"],
+      [this.receipt, types._TypeDataJSON, "DataJSON"],
+      [this.purpose, types._TypeInputStorePaymentPurpose, "InputStorePaymentPurpose"],
     ];
   }
 
@@ -14224,13 +14224,13 @@ export class PaymentsCanPurchasePremium extends Function<boolean> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["purpose", types.TypeInputStorePaymentPurpose, "InputStorePaymentPurpose"],
+      ["purpose", types._TypeInputStorePaymentPurpose, "InputStorePaymentPurpose"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.purpose, types.TypeInputStorePaymentPurpose, "InputStorePaymentPurpose"],
+      [this.purpose, types._TypeInputStorePaymentPurpose, "InputStorePaymentPurpose"],
     ];
   }
 
@@ -14265,11 +14265,11 @@ export class StickersCreateStickerSet extends Function<types.TypeMessagesSticker
       ["videos", "true", "flags.4?true"],
       ["emojis", "true", "flags.5?true"],
       ["textColor", "true", "flags.6?true"],
-      ["userId", types.TypeInputUser, "InputUser"],
+      ["userId", types._TypeInputUser, "InputUser"],
       ["title", "string", "string"],
       ["shortName", "string", "string"],
-      ["thumb", types.TypeInputDocument, "flags.2?InputDocument"],
-      ["stickers", [types.TypeInputStickerSetItem], "Vector<InputStickerSetItem>"],
+      ["thumb", types._TypeInputDocument, "flags.2?InputDocument"],
+      ["stickers", [types._TypeInputStickerSetItem], "Vector<InputStickerSetItem>"],
       ["software", "string", "flags.3?string"],
     ];
   }
@@ -14282,11 +14282,11 @@ export class StickersCreateStickerSet extends Function<types.TypeMessagesSticker
       [this.videos ?? null, "true", "flags.4?true"],
       [this.emojis ?? null, "true", "flags.5?true"],
       [this.textColor ?? null, "true", "flags.6?true"],
-      [this.userId, types.TypeInputUser, "InputUser"],
+      [this.userId, types._TypeInputUser, "InputUser"],
       [this.title, "string", "string"],
       [this.shortName, "string", "string"],
-      [this.thumb ?? null, types.TypeInputDocument, "flags.2?InputDocument"],
-      [this.stickers, [types.TypeInputStickerSetItem], "Vector<InputStickerSetItem>"],
+      [this.thumb ?? null, types._TypeInputDocument, "flags.2?InputDocument"],
+      [this.stickers, [types._TypeInputStickerSetItem], "Vector<InputStickerSetItem>"],
       [this.software ?? null, "string", "flags.3?string"],
     ];
   }
@@ -14316,13 +14316,13 @@ export class StickersRemoveStickerFromSet extends Function<types.TypeMessagesSti
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["sticker", types.TypeInputDocument, "InputDocument"],
+      ["sticker", types._TypeInputDocument, "InputDocument"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.sticker, types.TypeInputDocument, "InputDocument"],
+      [this.sticker, types._TypeInputDocument, "InputDocument"],
     ];
   }
 
@@ -14342,14 +14342,14 @@ export class StickersChangeStickerPosition extends Function<types.TypeMessagesSt
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["sticker", types.TypeInputDocument, "InputDocument"],
+      ["sticker", types._TypeInputDocument, "InputDocument"],
       ["position", "number", "int"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.sticker, types.TypeInputDocument, "InputDocument"],
+      [this.sticker, types._TypeInputDocument, "InputDocument"],
       [this.position, "number", "int"],
     ];
   }
@@ -14371,15 +14371,15 @@ export class StickersAddStickerToSet extends Function<types.TypeMessagesStickerS
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["stickerset", types.TypeInputStickerSet, "InputStickerSet"],
-      ["sticker", types.TypeInputStickerSetItem, "InputStickerSetItem"],
+      ["stickerset", types._TypeInputStickerSet, "InputStickerSet"],
+      ["sticker", types._TypeInputStickerSetItem, "InputStickerSetItem"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.stickerset, types.TypeInputStickerSet, "InputStickerSet"],
-      [this.sticker, types.TypeInputStickerSetItem, "InputStickerSetItem"],
+      [this.stickerset, types._TypeInputStickerSet, "InputStickerSet"],
+      [this.sticker, types._TypeInputStickerSetItem, "InputStickerSetItem"],
     ];
   }
 
@@ -14402,8 +14402,8 @@ export class StickersSetStickerSetThumb extends Function<types.TypeMessagesStick
   static get [paramDesc](): ParamDesc {
     return [
       ["flags", flags, "#"],
-      ["stickerset", types.TypeInputStickerSet, "InputStickerSet"],
-      ["thumb", types.TypeInputDocument, "flags.0?InputDocument"],
+      ["stickerset", types._TypeInputStickerSet, "InputStickerSet"],
+      ["thumb", types._TypeInputDocument, "flags.0?InputDocument"],
       ["thumbDocumentId", "bigint", "flags.1?long"],
     ];
   }
@@ -14411,8 +14411,8 @@ export class StickersSetStickerSetThumb extends Function<types.TypeMessagesStick
   protected get [params](): Params {
     return [
       ["flags", flags, "#"],
-      [this.stickerset, types.TypeInputStickerSet, "InputStickerSet"],
-      [this.thumb ?? null, types.TypeInputDocument, "flags.0?InputDocument"],
+      [this.stickerset, types._TypeInputStickerSet, "InputStickerSet"],
+      [this.thumb ?? null, types._TypeInputDocument, "flags.0?InputDocument"],
       [this.thumbDocumentId ?? null, "bigint", "flags.1?long"],
     ];
   }
@@ -14450,7 +14450,7 @@ export class StickersCheckShortName extends Function<boolean> {
   }
 }
 
-export class StickersSuggestShortName extends Function<types.StickersSuggestedShortName> {
+export class StickersSuggestShortName extends Function<types.TypeStickersSuggestedShortName> {
   title: string;
 
   protected get [id]() {
@@ -14488,9 +14488,9 @@ export class StickersChangeSticker extends Function<types.TypeMessagesStickerSet
   static get [paramDesc](): ParamDesc {
     return [
       ["flags", flags, "#"],
-      ["sticker", types.TypeInputDocument, "InputDocument"],
+      ["sticker", types._TypeInputDocument, "InputDocument"],
       ["emoji", "string", "flags.0?string"],
-      ["maskCoords", types.TypeMaskCoords, "flags.1?MaskCoords"],
+      ["maskCoords", types._TypeMaskCoords, "flags.1?MaskCoords"],
       ["keywords", "string", "flags.2?string"],
     ];
   }
@@ -14498,9 +14498,9 @@ export class StickersChangeSticker extends Function<types.TypeMessagesStickerSet
   protected get [params](): Params {
     return [
       ["flags", flags, "#"],
-      [this.sticker, types.TypeInputDocument, "InputDocument"],
+      [this.sticker, types._TypeInputDocument, "InputDocument"],
       [this.emoji ?? null, "string", "flags.0?string"],
-      [this.maskCoords ?? null, types.TypeMaskCoords, "flags.1?MaskCoords"],
+      [this.maskCoords ?? null, types._TypeMaskCoords, "flags.1?MaskCoords"],
       [this.keywords ?? null, "string", "flags.2?string"],
     ];
   }
@@ -14524,14 +14524,14 @@ export class StickersRenameStickerSet extends Function<types.TypeMessagesSticker
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["stickerset", types.TypeInputStickerSet, "InputStickerSet"],
+      ["stickerset", types._TypeInputStickerSet, "InputStickerSet"],
       ["title", "string", "string"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.stickerset, types.TypeInputStickerSet, "InputStickerSet"],
+      [this.stickerset, types._TypeInputStickerSet, "InputStickerSet"],
       [this.title, "string", "string"],
     ];
   }
@@ -14552,13 +14552,13 @@ export class StickersDeleteStickerSet extends Function<boolean> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["stickerset", types.TypeInputStickerSet, "InputStickerSet"],
+      ["stickerset", types._TypeInputStickerSet, "InputStickerSet"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.stickerset, types.TypeInputStickerSet, "InputStickerSet"],
+      [this.stickerset, types._TypeInputStickerSet, "InputStickerSet"],
     ];
   }
 
@@ -14568,7 +14568,7 @@ export class StickersDeleteStickerSet extends Function<boolean> {
   }
 }
 
-export class PhoneGetCallConfig extends Function<types.DataJSON> {
+export class PhoneGetCallConfig extends Function<types.TypeDataJSON> {
   protected get [id]() {
     return 0x55451FA9;
   }
@@ -14586,7 +14586,7 @@ export class PhoneGetCallConfig extends Function<types.DataJSON> {
   }
 }
 
-export class PhoneRequestCall extends Function<types.PhonePhoneCall> {
+export class PhoneRequestCall extends Function<types.TypePhonePhoneCall> {
   video?: true;
   userId: types.TypeInputUser;
   randomId: number;
@@ -14601,10 +14601,10 @@ export class PhoneRequestCall extends Function<types.PhonePhoneCall> {
     return [
       ["flags", flags, "#"],
       ["video", "true", "flags.0?true"],
-      ["userId", types.TypeInputUser, "InputUser"],
+      ["userId", types._TypeInputUser, "InputUser"],
       ["randomId", "number", "int"],
       ["gAHash", Uint8Array, "bytes"],
-      ["protocol", types.TypePhoneCallProtocol, "PhoneCallProtocol"],
+      ["protocol", types._TypePhoneCallProtocol, "PhoneCallProtocol"],
     ];
   }
 
@@ -14612,10 +14612,10 @@ export class PhoneRequestCall extends Function<types.PhonePhoneCall> {
     return [
       ["flags", flags, "#"],
       [this.video ?? null, "true", "flags.0?true"],
-      [this.userId, types.TypeInputUser, "InputUser"],
+      [this.userId, types._TypeInputUser, "InputUser"],
       [this.randomId, "number", "int"],
       [this.gAHash, Uint8Array, "bytes"],
-      [this.protocol, types.TypePhoneCallProtocol, "PhoneCallProtocol"],
+      [this.protocol, types._TypePhoneCallProtocol, "PhoneCallProtocol"],
     ];
   }
 
@@ -14629,7 +14629,7 @@ export class PhoneRequestCall extends Function<types.PhonePhoneCall> {
   }
 }
 
-export class PhoneAcceptCall extends Function<types.PhonePhoneCall> {
+export class PhoneAcceptCall extends Function<types.TypePhonePhoneCall> {
   peer: types.TypeInputPhoneCall;
   gB: Uint8Array;
   protocol: types.TypePhoneCallProtocol;
@@ -14640,17 +14640,17 @@ export class PhoneAcceptCall extends Function<types.PhonePhoneCall> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["peer", types.TypeInputPhoneCall, "InputPhoneCall"],
+      ["peer", types._TypeInputPhoneCall, "InputPhoneCall"],
       ["gB", Uint8Array, "bytes"],
-      ["protocol", types.TypePhoneCallProtocol, "PhoneCallProtocol"],
+      ["protocol", types._TypePhoneCallProtocol, "PhoneCallProtocol"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.peer, types.TypeInputPhoneCall, "InputPhoneCall"],
+      [this.peer, types._TypeInputPhoneCall, "InputPhoneCall"],
       [this.gB, Uint8Array, "bytes"],
-      [this.protocol, types.TypePhoneCallProtocol, "PhoneCallProtocol"],
+      [this.protocol, types._TypePhoneCallProtocol, "PhoneCallProtocol"],
     ];
   }
 
@@ -14662,7 +14662,7 @@ export class PhoneAcceptCall extends Function<types.PhonePhoneCall> {
   }
 }
 
-export class PhoneConfirmCall extends Function<types.PhonePhoneCall> {
+export class PhoneConfirmCall extends Function<types.TypePhonePhoneCall> {
   peer: types.TypeInputPhoneCall;
   gA: Uint8Array;
   keyFingerprint: bigint;
@@ -14674,19 +14674,19 @@ export class PhoneConfirmCall extends Function<types.PhonePhoneCall> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["peer", types.TypeInputPhoneCall, "InputPhoneCall"],
+      ["peer", types._TypeInputPhoneCall, "InputPhoneCall"],
       ["gA", Uint8Array, "bytes"],
       ["keyFingerprint", "bigint", "long"],
-      ["protocol", types.TypePhoneCallProtocol, "PhoneCallProtocol"],
+      ["protocol", types._TypePhoneCallProtocol, "PhoneCallProtocol"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.peer, types.TypeInputPhoneCall, "InputPhoneCall"],
+      [this.peer, types._TypeInputPhoneCall, "InputPhoneCall"],
       [this.gA, Uint8Array, "bytes"],
       [this.keyFingerprint, "bigint", "long"],
-      [this.protocol, types.TypePhoneCallProtocol, "PhoneCallProtocol"],
+      [this.protocol, types._TypePhoneCallProtocol, "PhoneCallProtocol"],
     ];
   }
 
@@ -14708,13 +14708,13 @@ export class PhoneReceivedCall extends Function<boolean> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["peer", types.TypeInputPhoneCall, "InputPhoneCall"],
+      ["peer", types._TypeInputPhoneCall, "InputPhoneCall"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.peer, types.TypeInputPhoneCall, "InputPhoneCall"],
+      [this.peer, types._TypeInputPhoneCall, "InputPhoneCall"],
     ];
   }
 
@@ -14739,9 +14739,9 @@ export class PhoneDiscardCall extends Function<types.TypeUpdates> {
     return [
       ["flags", flags, "#"],
       ["video", "true", "flags.0?true"],
-      ["peer", types.TypeInputPhoneCall, "InputPhoneCall"],
+      ["peer", types._TypeInputPhoneCall, "InputPhoneCall"],
       ["duration", "number", "int"],
-      ["reason", types.TypePhoneCallDiscardReason, "PhoneCallDiscardReason"],
+      ["reason", types._TypePhoneCallDiscardReason, "PhoneCallDiscardReason"],
       ["connectionId", "bigint", "long"],
     ];
   }
@@ -14750,9 +14750,9 @@ export class PhoneDiscardCall extends Function<types.TypeUpdates> {
     return [
       ["flags", flags, "#"],
       [this.video ?? null, "true", "flags.0?true"],
-      [this.peer, types.TypeInputPhoneCall, "InputPhoneCall"],
+      [this.peer, types._TypeInputPhoneCall, "InputPhoneCall"],
       [this.duration, "number", "int"],
-      [this.reason, types.TypePhoneCallDiscardReason, "PhoneCallDiscardReason"],
+      [this.reason, types._TypePhoneCallDiscardReason, "PhoneCallDiscardReason"],
       [this.connectionId, "bigint", "long"],
     ];
   }
@@ -14781,7 +14781,7 @@ export class PhoneSetCallRating extends Function<types.TypeUpdates> {
     return [
       ["flags", flags, "#"],
       ["userInitiative", "true", "flags.0?true"],
-      ["peer", types.TypeInputPhoneCall, "InputPhoneCall"],
+      ["peer", types._TypeInputPhoneCall, "InputPhoneCall"],
       ["rating", "number", "int"],
       ["comment", "string", "string"],
     ];
@@ -14791,7 +14791,7 @@ export class PhoneSetCallRating extends Function<types.TypeUpdates> {
     return [
       ["flags", flags, "#"],
       [this.userInitiative ?? null, "true", "flags.0?true"],
-      [this.peer, types.TypeInputPhoneCall, "InputPhoneCall"],
+      [this.peer, types._TypeInputPhoneCall, "InputPhoneCall"],
       [this.rating, "number", "int"],
       [this.comment, "string", "string"],
     ];
@@ -14816,15 +14816,15 @@ export class PhoneSaveCallDebug extends Function<boolean> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["peer", types.TypeInputPhoneCall, "InputPhoneCall"],
-      ["debug", types.TypeDataJSON, "DataJSON"],
+      ["peer", types._TypeInputPhoneCall, "InputPhoneCall"],
+      ["debug", types._TypeDataJSON, "DataJSON"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.peer, types.TypeInputPhoneCall, "InputPhoneCall"],
-      [this.debug, types.TypeDataJSON, "DataJSON"],
+      [this.peer, types._TypeInputPhoneCall, "InputPhoneCall"],
+      [this.debug, types._TypeDataJSON, "DataJSON"],
     ];
   }
 
@@ -14845,14 +14845,14 @@ export class PhoneSendSignalingData extends Function<boolean> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["peer", types.TypeInputPhoneCall, "InputPhoneCall"],
+      ["peer", types._TypeInputPhoneCall, "InputPhoneCall"],
       ["data", Uint8Array, "bytes"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.peer, types.TypeInputPhoneCall, "InputPhoneCall"],
+      [this.peer, types._TypeInputPhoneCall, "InputPhoneCall"],
       [this.data, Uint8Array, "bytes"],
     ];
   }
@@ -14879,7 +14879,7 @@ export class PhoneCreateGroupCall extends Function<types.TypeUpdates> {
     return [
       ["flags", flags, "#"],
       ["rtmpStream", "true", "flags.2?true"],
-      ["peer", types.TypeInputPeer, "InputPeer"],
+      ["peer", types._TypeInputPeer, "InputPeer"],
       ["randomId", "number", "int"],
       ["title", "string", "flags.0?string"],
       ["scheduleDate", "number", "flags.1?int"],
@@ -14890,7 +14890,7 @@ export class PhoneCreateGroupCall extends Function<types.TypeUpdates> {
     return [
       ["flags", flags, "#"],
       [this.rtmpStream ?? null, "true", "flags.2?true"],
-      [this.peer, types.TypeInputPeer, "InputPeer"],
+      [this.peer, types._TypeInputPeer, "InputPeer"],
       [this.randomId, "number", "int"],
       [this.title ?? null, "string", "flags.0?string"],
       [this.scheduleDate ?? null, "number", "flags.1?int"],
@@ -14924,10 +14924,10 @@ export class PhoneJoinGroupCall extends Function<types.TypeUpdates> {
       ["flags", flags, "#"],
       ["muted", "true", "flags.0?true"],
       ["videoStopped", "true", "flags.2?true"],
-      ["call", types.TypeInputGroupCall, "InputGroupCall"],
-      ["joinAs", types.TypeInputPeer, "InputPeer"],
+      ["call", types._TypeInputGroupCall, "InputGroupCall"],
+      ["joinAs", types._TypeInputPeer, "InputPeer"],
       ["inviteHash", "string", "flags.1?string"],
-      ["params", types.TypeDataJSON, "DataJSON"],
+      ["params", types._TypeDataJSON, "DataJSON"],
     ];
   }
 
@@ -14936,10 +14936,10 @@ export class PhoneJoinGroupCall extends Function<types.TypeUpdates> {
       ["flags", flags, "#"],
       [this.muted ?? null, "true", "flags.0?true"],
       [this.videoStopped ?? null, "true", "flags.2?true"],
-      [this.call, types.TypeInputGroupCall, "InputGroupCall"],
-      [this.joinAs, types.TypeInputPeer, "InputPeer"],
+      [this.call, types._TypeInputGroupCall, "InputGroupCall"],
+      [this.joinAs, types._TypeInputPeer, "InputPeer"],
       [this.inviteHash ?? null, "string", "flags.1?string"],
-      [this.params, types.TypeDataJSON, "DataJSON"],
+      [this.params, types._TypeDataJSON, "DataJSON"],
     ];
   }
 
@@ -14964,14 +14964,14 @@ export class PhoneLeaveGroupCall extends Function<types.TypeUpdates> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["call", types.TypeInputGroupCall, "InputGroupCall"],
+      ["call", types._TypeInputGroupCall, "InputGroupCall"],
       ["source", "number", "int"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.call, types.TypeInputGroupCall, "InputGroupCall"],
+      [this.call, types._TypeInputGroupCall, "InputGroupCall"],
       [this.source, "number", "int"],
     ];
   }
@@ -14993,15 +14993,15 @@ export class PhoneInviteToGroupCall extends Function<types.TypeUpdates> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["call", types.TypeInputGroupCall, "InputGroupCall"],
-      ["users", [types.TypeInputUser], "Vector<InputUser>"],
+      ["call", types._TypeInputGroupCall, "InputGroupCall"],
+      ["users", [types._TypeInputUser], "Vector<InputUser>"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.call, types.TypeInputGroupCall, "InputGroupCall"],
-      [this.users, [types.TypeInputUser], "Vector<InputUser>"],
+      [this.call, types._TypeInputGroupCall, "InputGroupCall"],
+      [this.users, [types._TypeInputUser], "Vector<InputUser>"],
     ];
   }
 
@@ -15021,13 +15021,13 @@ export class PhoneDiscardGroupCall extends Function<types.TypeUpdates> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["call", types.TypeInputGroupCall, "InputGroupCall"],
+      ["call", types._TypeInputGroupCall, "InputGroupCall"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.call, types.TypeInputGroupCall, "InputGroupCall"],
+      [this.call, types._TypeInputGroupCall, "InputGroupCall"],
     ];
   }
 
@@ -15050,7 +15050,7 @@ export class PhoneToggleGroupCallSettings extends Function<types.TypeUpdates> {
     return [
       ["flags", flags, "#"],
       ["resetInviteHash", "true", "flags.1?true"],
-      ["call", types.TypeInputGroupCall, "InputGroupCall"],
+      ["call", types._TypeInputGroupCall, "InputGroupCall"],
       ["joinMuted", "boolean", "flags.0?Bool"],
     ];
   }
@@ -15059,7 +15059,7 @@ export class PhoneToggleGroupCallSettings extends Function<types.TypeUpdates> {
     return [
       ["flags", flags, "#"],
       [this.resetInviteHash ?? null, "true", "flags.1?true"],
-      [this.call, types.TypeInputGroupCall, "InputGroupCall"],
+      [this.call, types._TypeInputGroupCall, "InputGroupCall"],
       [this.joinMuted ?? null, "boolean", "flags.0?Bool"],
     ];
   }
@@ -15072,7 +15072,7 @@ export class PhoneToggleGroupCallSettings extends Function<types.TypeUpdates> {
   }
 }
 
-export class PhoneGetGroupCall extends Function<types.PhoneGroupCall> {
+export class PhoneGetGroupCall extends Function<types.TypePhoneGroupCall> {
   call: types.TypeInputGroupCall;
   limit: number;
 
@@ -15082,14 +15082,14 @@ export class PhoneGetGroupCall extends Function<types.PhoneGroupCall> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["call", types.TypeInputGroupCall, "InputGroupCall"],
+      ["call", types._TypeInputGroupCall, "InputGroupCall"],
       ["limit", "number", "int"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.call, types.TypeInputGroupCall, "InputGroupCall"],
+      [this.call, types._TypeInputGroupCall, "InputGroupCall"],
       [this.limit, "number", "int"],
     ];
   }
@@ -15101,7 +15101,7 @@ export class PhoneGetGroupCall extends Function<types.PhoneGroupCall> {
   }
 }
 
-export class PhoneGetGroupParticipants extends Function<types.PhoneGroupParticipants> {
+export class PhoneGetGroupParticipants extends Function<types.TypePhoneGroupParticipants> {
   call: types.TypeInputGroupCall;
   ids: Array<types.TypeInputPeer>;
   sources: Array<number>;
@@ -15114,8 +15114,8 @@ export class PhoneGetGroupParticipants extends Function<types.PhoneGroupParticip
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["call", types.TypeInputGroupCall, "InputGroupCall"],
-      ["ids", [types.TypeInputPeer], "Vector<InputPeer>"],
+      ["call", types._TypeInputGroupCall, "InputGroupCall"],
+      ["ids", [types._TypeInputPeer], "Vector<InputPeer>"],
       ["sources", ["number"], "Vector<int>"],
       ["offset", "string", "string"],
       ["limit", "number", "int"],
@@ -15124,8 +15124,8 @@ export class PhoneGetGroupParticipants extends Function<types.PhoneGroupParticip
 
   protected get [params](): Params {
     return [
-      [this.call, types.TypeInputGroupCall, "InputGroupCall"],
-      [this.ids, [types.TypeInputPeer], "Vector<InputPeer>"],
+      [this.call, types._TypeInputGroupCall, "InputGroupCall"],
+      [this.ids, [types._TypeInputPeer], "Vector<InputPeer>"],
       [this.sources, ["number"], "Vector<int>"],
       [this.offset, "string", "string"],
       [this.limit, "number", "int"],
@@ -15152,14 +15152,14 @@ export class PhoneCheckGroupCall extends Function<number[]> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["call", types.TypeInputGroupCall, "InputGroupCall"],
+      ["call", types._TypeInputGroupCall, "InputGroupCall"],
       ["sources", ["number"], "Vector<int>"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.call, types.TypeInputGroupCall, "InputGroupCall"],
+      [this.call, types._TypeInputGroupCall, "InputGroupCall"],
       [this.sources, ["number"], "Vector<int>"],
     ];
   }
@@ -15187,7 +15187,7 @@ export class PhoneToggleGroupCallRecord extends Function<types.TypeUpdates> {
       ["flags", flags, "#"],
       ["start", "true", "flags.0?true"],
       ["video", "true", "flags.2?true"],
-      ["call", types.TypeInputGroupCall, "InputGroupCall"],
+      ["call", types._TypeInputGroupCall, "InputGroupCall"],
       ["title", "string", "flags.1?string"],
       ["videoPortrait", "boolean", "flags.2?Bool"],
     ];
@@ -15198,7 +15198,7 @@ export class PhoneToggleGroupCallRecord extends Function<types.TypeUpdates> {
       ["flags", flags, "#"],
       [this.start ?? null, "true", "flags.0?true"],
       [this.video ?? null, "true", "flags.2?true"],
-      [this.call, types.TypeInputGroupCall, "InputGroupCall"],
+      [this.call, types._TypeInputGroupCall, "InputGroupCall"],
       [this.title ?? null, "string", "flags.1?string"],
       [this.videoPortrait ?? null, "boolean", "flags.2?Bool"],
     ];
@@ -15231,8 +15231,8 @@ export class PhoneEditGroupCallParticipant extends Function<types.TypeUpdates> {
   static get [paramDesc](): ParamDesc {
     return [
       ["flags", flags, "#"],
-      ["call", types.TypeInputGroupCall, "InputGroupCall"],
-      ["participant", types.TypeInputPeer, "InputPeer"],
+      ["call", types._TypeInputGroupCall, "InputGroupCall"],
+      ["participant", types._TypeInputPeer, "InputPeer"],
       ["muted", "boolean", "flags.0?Bool"],
       ["volume", "number", "flags.1?int"],
       ["raiseHand", "boolean", "flags.2?Bool"],
@@ -15245,8 +15245,8 @@ export class PhoneEditGroupCallParticipant extends Function<types.TypeUpdates> {
   protected get [params](): Params {
     return [
       ["flags", flags, "#"],
-      [this.call, types.TypeInputGroupCall, "InputGroupCall"],
-      [this.participant, types.TypeInputPeer, "InputPeer"],
+      [this.call, types._TypeInputGroupCall, "InputGroupCall"],
+      [this.participant, types._TypeInputPeer, "InputPeer"],
       [this.muted ?? null, "boolean", "flags.0?Bool"],
       [this.volume ?? null, "number", "flags.1?int"],
       [this.raiseHand ?? null, "boolean", "flags.2?Bool"],
@@ -15279,14 +15279,14 @@ export class PhoneEditGroupCallTitle extends Function<types.TypeUpdates> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["call", types.TypeInputGroupCall, "InputGroupCall"],
+      ["call", types._TypeInputGroupCall, "InputGroupCall"],
       ["title", "string", "string"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.call, types.TypeInputGroupCall, "InputGroupCall"],
+      [this.call, types._TypeInputGroupCall, "InputGroupCall"],
       [this.title, "string", "string"],
     ];
   }
@@ -15298,7 +15298,7 @@ export class PhoneEditGroupCallTitle extends Function<types.TypeUpdates> {
   }
 }
 
-export class PhoneGetGroupCallJoinAs extends Function<types.PhoneJoinAsPeers> {
+export class PhoneGetGroupCallJoinAs extends Function<types.TypePhoneJoinAsPeers> {
   peer: types.TypeInputPeer;
 
   protected get [id]() {
@@ -15307,13 +15307,13 @@ export class PhoneGetGroupCallJoinAs extends Function<types.PhoneJoinAsPeers> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["peer", types.TypeInputPeer, "InputPeer"],
+      ["peer", types._TypeInputPeer, "InputPeer"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.peer, types.TypeInputPeer, "InputPeer"],
+      [this.peer, types._TypeInputPeer, "InputPeer"],
     ];
   }
 
@@ -15323,7 +15323,7 @@ export class PhoneGetGroupCallJoinAs extends Function<types.PhoneJoinAsPeers> {
   }
 }
 
-export class PhoneExportGroupCallInvite extends Function<types.PhoneExportedGroupCallInvite> {
+export class PhoneExportGroupCallInvite extends Function<types.TypePhoneExportedGroupCallInvite> {
   canSelfUnmute?: true;
   call: types.TypeInputGroupCall;
 
@@ -15335,7 +15335,7 @@ export class PhoneExportGroupCallInvite extends Function<types.PhoneExportedGrou
     return [
       ["flags", flags, "#"],
       ["canSelfUnmute", "true", "flags.0?true"],
-      ["call", types.TypeInputGroupCall, "InputGroupCall"],
+      ["call", types._TypeInputGroupCall, "InputGroupCall"],
     ];
   }
 
@@ -15343,7 +15343,7 @@ export class PhoneExportGroupCallInvite extends Function<types.PhoneExportedGrou
     return [
       ["flags", flags, "#"],
       [this.canSelfUnmute ?? null, "true", "flags.0?true"],
-      [this.call, types.TypeInputGroupCall, "InputGroupCall"],
+      [this.call, types._TypeInputGroupCall, "InputGroupCall"],
     ];
   }
 
@@ -15364,14 +15364,14 @@ export class PhoneToggleGroupCallStartSubscription extends Function<types.TypeUp
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["call", types.TypeInputGroupCall, "InputGroupCall"],
+      ["call", types._TypeInputGroupCall, "InputGroupCall"],
       ["subscribed", "boolean", "Bool"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.call, types.TypeInputGroupCall, "InputGroupCall"],
+      [this.call, types._TypeInputGroupCall, "InputGroupCall"],
       [this.subscribed, "boolean", "Bool"],
     ];
   }
@@ -15392,13 +15392,13 @@ export class PhoneStartScheduledGroupCall extends Function<types.TypeUpdates> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["call", types.TypeInputGroupCall, "InputGroupCall"],
+      ["call", types._TypeInputGroupCall, "InputGroupCall"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.call, types.TypeInputGroupCall, "InputGroupCall"],
+      [this.call, types._TypeInputGroupCall, "InputGroupCall"],
     ];
   }
 
@@ -15418,15 +15418,15 @@ export class PhoneSaveDefaultGroupCallJoinAs extends Function<boolean> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["peer", types.TypeInputPeer, "InputPeer"],
-      ["joinAs", types.TypeInputPeer, "InputPeer"],
+      ["peer", types._TypeInputPeer, "InputPeer"],
+      ["joinAs", types._TypeInputPeer, "InputPeer"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.peer, types.TypeInputPeer, "InputPeer"],
-      [this.joinAs, types.TypeInputPeer, "InputPeer"],
+      [this.peer, types._TypeInputPeer, "InputPeer"],
+      [this.joinAs, types._TypeInputPeer, "InputPeer"],
     ];
   }
 
@@ -15447,15 +15447,15 @@ export class PhoneJoinGroupCallPresentation extends Function<types.TypeUpdates> 
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["call", types.TypeInputGroupCall, "InputGroupCall"],
-      ["params", types.TypeDataJSON, "DataJSON"],
+      ["call", types._TypeInputGroupCall, "InputGroupCall"],
+      ["params", types._TypeDataJSON, "DataJSON"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.call, types.TypeInputGroupCall, "InputGroupCall"],
-      [this.params, types.TypeDataJSON, "DataJSON"],
+      [this.call, types._TypeInputGroupCall, "InputGroupCall"],
+      [this.params, types._TypeDataJSON, "DataJSON"],
     ];
   }
 
@@ -15475,13 +15475,13 @@ export class PhoneLeaveGroupCallPresentation extends Function<types.TypeUpdates>
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["call", types.TypeInputGroupCall, "InputGroupCall"],
+      ["call", types._TypeInputGroupCall, "InputGroupCall"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.call, types.TypeInputGroupCall, "InputGroupCall"],
+      [this.call, types._TypeInputGroupCall, "InputGroupCall"],
     ];
   }
 
@@ -15491,7 +15491,7 @@ export class PhoneLeaveGroupCallPresentation extends Function<types.TypeUpdates>
   }
 }
 
-export class PhoneGetGroupCallStreamChannels extends Function<types.PhoneGroupCallStreamChannels> {
+export class PhoneGetGroupCallStreamChannels extends Function<types.TypePhoneGroupCallStreamChannels> {
   call: types.TypeInputGroupCall;
 
   protected get [id]() {
@@ -15500,13 +15500,13 @@ export class PhoneGetGroupCallStreamChannels extends Function<types.PhoneGroupCa
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["call", types.TypeInputGroupCall, "InputGroupCall"],
+      ["call", types._TypeInputGroupCall, "InputGroupCall"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.call, types.TypeInputGroupCall, "InputGroupCall"],
+      [this.call, types._TypeInputGroupCall, "InputGroupCall"],
     ];
   }
 
@@ -15516,7 +15516,7 @@ export class PhoneGetGroupCallStreamChannels extends Function<types.PhoneGroupCa
   }
 }
 
-export class PhoneGetGroupCallStreamRtmpURL extends Function<types.PhoneGroupCallStreamRtmpURL> {
+export class PhoneGetGroupCallStreamRtmpURL extends Function<types.TypePhoneGroupCallStreamRtmpURL> {
   peer: types.TypeInputPeer;
   revoke: boolean;
 
@@ -15526,14 +15526,14 @@ export class PhoneGetGroupCallStreamRtmpURL extends Function<types.PhoneGroupCal
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["peer", types.TypeInputPeer, "InputPeer"],
+      ["peer", types._TypeInputPeer, "InputPeer"],
       ["revoke", "boolean", "Bool"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.peer, types.TypeInputPeer, "InputPeer"],
+      [this.peer, types._TypeInputPeer, "InputPeer"],
       [this.revoke, "boolean", "Bool"],
     ];
   }
@@ -15555,15 +15555,15 @@ export class PhoneSaveCallLog extends Function<boolean> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["peer", types.TypeInputPhoneCall, "InputPhoneCall"],
-      ["file", types.TypeInputFile, "InputFile"],
+      ["peer", types._TypeInputPhoneCall, "InputPhoneCall"],
+      ["file", types._TypeInputFile, "InputFile"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.peer, types.TypeInputPhoneCall, "InputPhoneCall"],
-      [this.file, types.TypeInputFile, "InputFile"],
+      [this.peer, types._TypeInputPhoneCall, "InputPhoneCall"],
+      [this.file, types._TypeInputFile, "InputFile"],
     ];
   }
 
@@ -15574,7 +15574,7 @@ export class PhoneSaveCallLog extends Function<boolean> {
   }
 }
 
-export class LangpackGetLangPack extends Function<types.LangPackDifference> {
+export class LangpackGetLangPack extends Function<types.TypeLangPackDifference> {
   langPack: string;
   langCode: string;
 
@@ -15636,7 +15636,7 @@ export class LangpackGetStrings extends Function<types.TypeLangPackString[]> {
   }
 }
 
-export class LangpackGetDifference extends Function<types.LangPackDifference> {
+export class LangpackGetDifference extends Function<types.TypeLangPackDifference> {
   langPack: string;
   langCode: string;
   fromVersion: number;
@@ -15669,7 +15669,7 @@ export class LangpackGetDifference extends Function<types.LangPackDifference> {
   }
 }
 
-export class LangpackGetLanguages extends Function<types.LangPackLanguage[]> {
+export class LangpackGetLanguages extends Function<types.TypeLangPackLanguage[]> {
   langPack: string;
 
   protected get [id]() {
@@ -15694,7 +15694,7 @@ export class LangpackGetLanguages extends Function<types.LangPackLanguage[]> {
   }
 }
 
-export class LangpackGetLanguage extends Function<types.LangPackLanguage> {
+export class LangpackGetLanguage extends Function<types.TypeLangPackLanguage> {
   langPack: string;
   langCode: string;
 
@@ -15732,13 +15732,13 @@ export class FoldersEditPeerFolders extends Function<types.TypeUpdates> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["folderPeers", [types.TypeInputFolderPeer], "Vector<InputFolderPeer>"],
+      ["folderPeers", [types._TypeInputFolderPeer], "Vector<InputFolderPeer>"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.folderPeers, [types.TypeInputFolderPeer], "Vector<InputFolderPeer>"],
+      [this.folderPeers, [types._TypeInputFolderPeer], "Vector<InputFolderPeer>"],
     ];
   }
 
@@ -15748,7 +15748,7 @@ export class FoldersEditPeerFolders extends Function<types.TypeUpdates> {
   }
 }
 
-export class StatsGetBroadcastStats extends Function<types.StatsBroadcastStats> {
+export class StatsGetBroadcastStats extends Function<types.TypeStatsBroadcastStats> {
   dark?: true;
   channel: types.TypeInputChannel;
 
@@ -15760,7 +15760,7 @@ export class StatsGetBroadcastStats extends Function<types.StatsBroadcastStats> 
     return [
       ["flags", flags, "#"],
       ["dark", "true", "flags.0?true"],
-      ["channel", types.TypeInputChannel, "InputChannel"],
+      ["channel", types._TypeInputChannel, "InputChannel"],
     ];
   }
 
@@ -15768,7 +15768,7 @@ export class StatsGetBroadcastStats extends Function<types.StatsBroadcastStats> 
     return [
       ["flags", flags, "#"],
       [this.dark ?? null, "true", "flags.0?true"],
-      [this.channel, types.TypeInputChannel, "InputChannel"],
+      [this.channel, types._TypeInputChannel, "InputChannel"],
     ];
   }
 
@@ -15810,7 +15810,7 @@ export class StatsLoadAsyncGraph extends Function<types.TypeStatsGraph> {
   }
 }
 
-export class StatsGetMegagroupStats extends Function<types.StatsMegagroupStats> {
+export class StatsGetMegagroupStats extends Function<types.TypeStatsMegagroupStats> {
   dark?: true;
   channel: types.TypeInputChannel;
 
@@ -15822,7 +15822,7 @@ export class StatsGetMegagroupStats extends Function<types.StatsMegagroupStats> 
     return [
       ["flags", flags, "#"],
       ["dark", "true", "flags.0?true"],
-      ["channel", types.TypeInputChannel, "InputChannel"],
+      ["channel", types._TypeInputChannel, "InputChannel"],
     ];
   }
 
@@ -15830,7 +15830,7 @@ export class StatsGetMegagroupStats extends Function<types.StatsMegagroupStats> 
     return [
       ["flags", flags, "#"],
       [this.dark ?? null, "true", "flags.0?true"],
-      [this.channel, types.TypeInputChannel, "InputChannel"],
+      [this.channel, types._TypeInputChannel, "InputChannel"],
     ];
   }
 
@@ -15855,10 +15855,10 @@ export class StatsGetMessagePublicForwards extends Function<types.TypeMessagesMe
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["channel", types.TypeInputChannel, "InputChannel"],
+      ["channel", types._TypeInputChannel, "InputChannel"],
       ["msgId", "number", "int"],
       ["offsetRate", "number", "int"],
-      ["offsetPeer", types.TypeInputPeer, "InputPeer"],
+      ["offsetPeer", types._TypeInputPeer, "InputPeer"],
       ["offsetId", "number", "int"],
       ["limit", "number", "int"],
     ];
@@ -15866,10 +15866,10 @@ export class StatsGetMessagePublicForwards extends Function<types.TypeMessagesMe
 
   protected get [params](): Params {
     return [
-      [this.channel, types.TypeInputChannel, "InputChannel"],
+      [this.channel, types._TypeInputChannel, "InputChannel"],
       [this.msgId, "number", "int"],
       [this.offsetRate, "number", "int"],
-      [this.offsetPeer, types.TypeInputPeer, "InputPeer"],
+      [this.offsetPeer, types._TypeInputPeer, "InputPeer"],
       [this.offsetId, "number", "int"],
       [this.limit, "number", "int"],
     ];
@@ -15886,7 +15886,7 @@ export class StatsGetMessagePublicForwards extends Function<types.TypeMessagesMe
   }
 }
 
-export class StatsGetMessageStats extends Function<types.StatsMessageStats> {
+export class StatsGetMessageStats extends Function<types.TypeStatsMessageStats> {
   dark?: true;
   channel: types.TypeInputChannel;
   msgId: number;
@@ -15899,7 +15899,7 @@ export class StatsGetMessageStats extends Function<types.StatsMessageStats> {
     return [
       ["flags", flags, "#"],
       ["dark", "true", "flags.0?true"],
-      ["channel", types.TypeInputChannel, "InputChannel"],
+      ["channel", types._TypeInputChannel, "InputChannel"],
       ["msgId", "number", "int"],
     ];
   }
@@ -15908,7 +15908,7 @@ export class StatsGetMessageStats extends Function<types.StatsMessageStats> {
     return [
       ["flags", flags, "#"],
       [this.dark ?? null, "true", "flags.0?true"],
-      [this.channel, types.TypeInputChannel, "InputChannel"],
+      [this.channel, types._TypeInputChannel, "InputChannel"],
       [this.msgId, "number", "int"],
     ];
   }
@@ -15921,7 +15921,7 @@ export class StatsGetMessageStats extends Function<types.StatsMessageStats> {
   }
 }
 
-export class ChatlistsExportChatlistInvite extends Function<types.ChatlistsExportedChatlistInvite> {
+export class ChatlistsExportChatlistInvite extends Function<types.TypeChatlistsExportedChatlistInvite> {
   chatlist: types.TypeInputChatlist;
   title: string;
   peers: Array<types.TypeInputPeer>;
@@ -15932,17 +15932,17 @@ export class ChatlistsExportChatlistInvite extends Function<types.ChatlistsExpor
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["chatlist", types.TypeInputChatlist, "InputChatlist"],
+      ["chatlist", types._TypeInputChatlist, "InputChatlist"],
       ["title", "string", "string"],
-      ["peers", [types.TypeInputPeer], "Vector<InputPeer>"],
+      ["peers", [types._TypeInputPeer], "Vector<InputPeer>"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.chatlist, types.TypeInputChatlist, "InputChatlist"],
+      [this.chatlist, types._TypeInputChatlist, "InputChatlist"],
       [this.title, "string", "string"],
-      [this.peers, [types.TypeInputPeer], "Vector<InputPeer>"],
+      [this.peers, [types._TypeInputPeer], "Vector<InputPeer>"],
     ];
   }
 
@@ -15964,14 +15964,14 @@ export class ChatlistsDeleteExportedInvite extends Function<boolean> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["chatlist", types.TypeInputChatlist, "InputChatlist"],
+      ["chatlist", types._TypeInputChatlist, "InputChatlist"],
       ["slug", "string", "string"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.chatlist, types.TypeInputChatlist, "InputChatlist"],
+      [this.chatlist, types._TypeInputChatlist, "InputChatlist"],
       [this.slug, "string", "string"],
     ];
   }
@@ -15983,7 +15983,7 @@ export class ChatlistsDeleteExportedInvite extends Function<boolean> {
   }
 }
 
-export class ChatlistsEditExportedInvite extends Function<types.ExportedChatlistInvite> {
+export class ChatlistsEditExportedInvite extends Function<types.TypeExportedChatlistInvite> {
   chatlist: types.TypeInputChatlist;
   slug: string;
   title?: string;
@@ -15996,20 +15996,20 @@ export class ChatlistsEditExportedInvite extends Function<types.ExportedChatlist
   static get [paramDesc](): ParamDesc {
     return [
       ["flags", flags, "#"],
-      ["chatlist", types.TypeInputChatlist, "InputChatlist"],
+      ["chatlist", types._TypeInputChatlist, "InputChatlist"],
       ["slug", "string", "string"],
       ["title", "string", "flags.1?string"],
-      ["peers", [types.TypeInputPeer], "flags.2?Vector<InputPeer>"],
+      ["peers", [types._TypeInputPeer], "flags.2?Vector<InputPeer>"],
     ];
   }
 
   protected get [params](): Params {
     return [
       ["flags", flags, "#"],
-      [this.chatlist, types.TypeInputChatlist, "InputChatlist"],
+      [this.chatlist, types._TypeInputChatlist, "InputChatlist"],
       [this.slug, "string", "string"],
       [this.title ?? null, "string", "flags.1?string"],
-      [this.peers ?? null, [types.TypeInputPeer], "flags.2?Vector<InputPeer>"],
+      [this.peers ?? null, [types._TypeInputPeer], "flags.2?Vector<InputPeer>"],
     ];
   }
 
@@ -16022,7 +16022,7 @@ export class ChatlistsEditExportedInvite extends Function<types.ExportedChatlist
   }
 }
 
-export class ChatlistsGetExportedInvites extends Function<types.ChatlistsExportedInvites> {
+export class ChatlistsGetExportedInvites extends Function<types.TypeChatlistsExportedInvites> {
   chatlist: types.TypeInputChatlist;
 
   protected get [id]() {
@@ -16031,13 +16031,13 @@ export class ChatlistsGetExportedInvites extends Function<types.ChatlistsExporte
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["chatlist", types.TypeInputChatlist, "InputChatlist"],
+      ["chatlist", types._TypeInputChatlist, "InputChatlist"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.chatlist, types.TypeInputChatlist, "InputChatlist"],
+      [this.chatlist, types._TypeInputChatlist, "InputChatlist"],
     ];
   }
 
@@ -16083,14 +16083,14 @@ export class ChatlistsJoinChatlistInvite extends Function<types.TypeUpdates> {
   static get [paramDesc](): ParamDesc {
     return [
       ["slug", "string", "string"],
-      ["peers", [types.TypeInputPeer], "Vector<InputPeer>"],
+      ["peers", [types._TypeInputPeer], "Vector<InputPeer>"],
     ];
   }
 
   protected get [params](): Params {
     return [
       [this.slug, "string", "string"],
-      [this.peers, [types.TypeInputPeer], "Vector<InputPeer>"],
+      [this.peers, [types._TypeInputPeer], "Vector<InputPeer>"],
     ];
   }
 
@@ -16101,7 +16101,7 @@ export class ChatlistsJoinChatlistInvite extends Function<types.TypeUpdates> {
   }
 }
 
-export class ChatlistsGetChatlistUpdates extends Function<types.ChatlistsChatlistUpdates> {
+export class ChatlistsGetChatlistUpdates extends Function<types.TypeChatlistsChatlistUpdates> {
   chatlist: types.TypeInputChatlist;
 
   protected get [id]() {
@@ -16110,13 +16110,13 @@ export class ChatlistsGetChatlistUpdates extends Function<types.ChatlistsChatlis
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["chatlist", types.TypeInputChatlist, "InputChatlist"],
+      ["chatlist", types._TypeInputChatlist, "InputChatlist"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.chatlist, types.TypeInputChatlist, "InputChatlist"],
+      [this.chatlist, types._TypeInputChatlist, "InputChatlist"],
     ];
   }
 
@@ -16136,15 +16136,15 @@ export class ChatlistsJoinChatlistUpdates extends Function<types.TypeUpdates> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["chatlist", types.TypeInputChatlist, "InputChatlist"],
-      ["peers", [types.TypeInputPeer], "Vector<InputPeer>"],
+      ["chatlist", types._TypeInputChatlist, "InputChatlist"],
+      ["peers", [types._TypeInputPeer], "Vector<InputPeer>"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.chatlist, types.TypeInputChatlist, "InputChatlist"],
-      [this.peers, [types.TypeInputPeer], "Vector<InputPeer>"],
+      [this.chatlist, types._TypeInputChatlist, "InputChatlist"],
+      [this.peers, [types._TypeInputPeer], "Vector<InputPeer>"],
     ];
   }
 
@@ -16164,13 +16164,13 @@ export class ChatlistsHideChatlistUpdates extends Function<boolean> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["chatlist", types.TypeInputChatlist, "InputChatlist"],
+      ["chatlist", types._TypeInputChatlist, "InputChatlist"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.chatlist, types.TypeInputChatlist, "InputChatlist"],
+      [this.chatlist, types._TypeInputChatlist, "InputChatlist"],
     ];
   }
 
@@ -16189,13 +16189,13 @@ export class ChatlistsGetLeaveChatlistSuggestions extends Function<types.TypePee
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["chatlist", types.TypeInputChatlist, "InputChatlist"],
+      ["chatlist", types._TypeInputChatlist, "InputChatlist"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.chatlist, types.TypeInputChatlist, "InputChatlist"],
+      [this.chatlist, types._TypeInputChatlist, "InputChatlist"],
     ];
   }
 
@@ -16215,15 +16215,15 @@ export class ChatlistsLeaveChatlist extends Function<types.TypeUpdates> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["chatlist", types.TypeInputChatlist, "InputChatlist"],
-      ["peers", [types.TypeInputPeer], "Vector<InputPeer>"],
+      ["chatlist", types._TypeInputChatlist, "InputChatlist"],
+      ["peers", [types._TypeInputPeer], "Vector<InputPeer>"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.chatlist, types.TypeInputChatlist, "InputChatlist"],
-      [this.peers, [types.TypeInputPeer], "Vector<InputPeer>"],
+      [this.chatlist, types._TypeInputChatlist, "InputChatlist"],
+      [this.peers, [types._TypeInputPeer], "Vector<InputPeer>"],
     ];
   }
 
@@ -16254,11 +16254,11 @@ export class StoriesSendStory extends Function<types.TypeUpdates> {
       ["flags", flags, "#"],
       ["pinned", "true", "flags.2?true"],
       ["noforwards", "true", "flags.4?true"],
-      ["media", types.TypeInputMedia, "InputMedia"],
-      ["mediaAreas", [types.TypeMediaArea], "flags.5?Vector<MediaArea>"],
+      ["media", types._TypeInputMedia, "InputMedia"],
+      ["mediaAreas", [types._TypeMediaArea], "flags.5?Vector<MediaArea>"],
       ["caption", "string", "flags.0?string"],
-      ["entities", [types.TypeMessageEntity], "flags.1?Vector<MessageEntity>"],
-      ["privacyRules", [types.TypeInputPrivacyRule], "Vector<InputPrivacyRule>"],
+      ["entities", [types._TypeMessageEntity], "flags.1?Vector<MessageEntity>"],
+      ["privacyRules", [types._TypeInputPrivacyRule], "Vector<InputPrivacyRule>"],
       ["randomId", "bigint", "long"],
       ["period", "number", "flags.3?int"],
     ];
@@ -16269,11 +16269,11 @@ export class StoriesSendStory extends Function<types.TypeUpdates> {
       ["flags", flags, "#"],
       [this.pinned ?? null, "true", "flags.2?true"],
       [this.noforwards ?? null, "true", "flags.4?true"],
-      [this.media, types.TypeInputMedia, "InputMedia"],
-      [this.mediaAreas ?? null, [types.TypeMediaArea], "flags.5?Vector<MediaArea>"],
+      [this.media, types._TypeInputMedia, "InputMedia"],
+      [this.mediaAreas ?? null, [types._TypeMediaArea], "flags.5?Vector<MediaArea>"],
       [this.caption ?? null, "string", "flags.0?string"],
-      [this.entities ?? null, [types.TypeMessageEntity], "flags.1?Vector<MessageEntity>"],
-      [this.privacyRules, [types.TypeInputPrivacyRule], "Vector<InputPrivacyRule>"],
+      [this.entities ?? null, [types._TypeMessageEntity], "flags.1?Vector<MessageEntity>"],
+      [this.privacyRules, [types._TypeInputPrivacyRule], "Vector<InputPrivacyRule>"],
       [this.randomId, "bigint", "long"],
       [this.period ?? null, "number", "flags.3?int"],
     ];
@@ -16309,11 +16309,11 @@ export class StoriesEditStory extends Function<types.TypeUpdates> {
     return [
       ["flags", flags, "#"],
       ["id", "number", "int"],
-      ["media", types.TypeInputMedia, "flags.0?InputMedia"],
-      ["mediaAreas", [types.TypeMediaArea], "flags.3?Vector<MediaArea>"],
+      ["media", types._TypeInputMedia, "flags.0?InputMedia"],
+      ["mediaAreas", [types._TypeMediaArea], "flags.3?Vector<MediaArea>"],
       ["caption", "string", "flags.1?string"],
-      ["entities", [types.TypeMessageEntity], "flags.1?Vector<MessageEntity>"],
-      ["privacyRules", [types.TypeInputPrivacyRule], "flags.2?Vector<InputPrivacyRule>"],
+      ["entities", [types._TypeMessageEntity], "flags.1?Vector<MessageEntity>"],
+      ["privacyRules", [types._TypeInputPrivacyRule], "flags.2?Vector<InputPrivacyRule>"],
     ];
   }
 
@@ -16321,11 +16321,11 @@ export class StoriesEditStory extends Function<types.TypeUpdates> {
     return [
       ["flags", flags, "#"],
       [this.id, "number", "int"],
-      [this.media ?? null, types.TypeInputMedia, "flags.0?InputMedia"],
-      [this.mediaAreas ?? null, [types.TypeMediaArea], "flags.3?Vector<MediaArea>"],
+      [this.media ?? null, types._TypeInputMedia, "flags.0?InputMedia"],
+      [this.mediaAreas ?? null, [types._TypeMediaArea], "flags.3?Vector<MediaArea>"],
       [this.caption ?? null, "string", "flags.1?string"],
-      [this.entities ?? null, [types.TypeMessageEntity], "flags.1?Vector<MessageEntity>"],
-      [this.privacyRules ?? null, [types.TypeInputPrivacyRule], "flags.2?Vector<InputPrivacyRule>"],
+      [this.entities ?? null, [types._TypeMessageEntity], "flags.1?Vector<MessageEntity>"],
+      [this.privacyRules ?? null, [types._TypeInputPrivacyRule], "flags.2?Vector<InputPrivacyRule>"],
     ];
   }
 
@@ -16429,7 +16429,7 @@ export class StoriesGetAllStories extends Function<types.TypeStoriesAllStories> 
   }
 }
 
-export class StoriesGetUserStories extends Function<types.StoriesUserStories> {
+export class StoriesGetUserStories extends Function<types.TypeStoriesUserStories> {
   userId: types.TypeInputUser;
 
   protected get [id]() {
@@ -16438,13 +16438,13 @@ export class StoriesGetUserStories extends Function<types.StoriesUserStories> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["userId", types.TypeInputUser, "InputUser"],
+      ["userId", types._TypeInputUser, "InputUser"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.userId, types.TypeInputUser, "InputUser"],
+      [this.userId, types._TypeInputUser, "InputUser"],
     ];
   }
 
@@ -16454,7 +16454,7 @@ export class StoriesGetUserStories extends Function<types.StoriesUserStories> {
   }
 }
 
-export class StoriesGetPinnedStories extends Function<types.StoriesStories> {
+export class StoriesGetPinnedStories extends Function<types.TypeStoriesStories> {
   userId: types.TypeInputUser;
   offsetId: number;
   limit: number;
@@ -16465,7 +16465,7 @@ export class StoriesGetPinnedStories extends Function<types.StoriesStories> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["userId", types.TypeInputUser, "InputUser"],
+      ["userId", types._TypeInputUser, "InputUser"],
       ["offsetId", "number", "int"],
       ["limit", "number", "int"],
     ];
@@ -16473,7 +16473,7 @@ export class StoriesGetPinnedStories extends Function<types.StoriesStories> {
 
   protected get [params](): Params {
     return [
-      [this.userId, types.TypeInputUser, "InputUser"],
+      [this.userId, types._TypeInputUser, "InputUser"],
       [this.offsetId, "number", "int"],
       [this.limit, "number", "int"],
     ];
@@ -16487,7 +16487,7 @@ export class StoriesGetPinnedStories extends Function<types.StoriesStories> {
   }
 }
 
-export class StoriesGetStoriesArchive extends Function<types.StoriesStories> {
+export class StoriesGetStoriesArchive extends Function<types.TypeStoriesStories> {
   offsetId: number;
   limit: number;
 
@@ -16516,7 +16516,7 @@ export class StoriesGetStoriesArchive extends Function<types.StoriesStories> {
   }
 }
 
-export class StoriesGetStoriesByID extends Function<types.StoriesStories> {
+export class StoriesGetStoriesByID extends Function<types.TypeStoriesStories> {
   userId: types.TypeInputUser;
   id: Array<number>;
 
@@ -16526,14 +16526,14 @@ export class StoriesGetStoriesByID extends Function<types.StoriesStories> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["userId", types.TypeInputUser, "InputUser"],
+      ["userId", types._TypeInputUser, "InputUser"],
       ["id", ["number"], "Vector<int>"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.userId, types.TypeInputUser, "InputUser"],
+      [this.userId, types._TypeInputUser, "InputUser"],
       [this.id, ["number"], "Vector<int>"],
     ];
   }
@@ -16598,14 +16598,14 @@ export class StoriesReadStories extends Function<number[]> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["userId", types.TypeInputUser, "InputUser"],
+      ["userId", types._TypeInputUser, "InputUser"],
       ["maxId", "number", "int"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.userId, types.TypeInputUser, "InputUser"],
+      [this.userId, types._TypeInputUser, "InputUser"],
       [this.maxId, "number", "int"],
     ];
   }
@@ -16627,14 +16627,14 @@ export class StoriesIncrementStoryViews extends Function<boolean> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["userId", types.TypeInputUser, "InputUser"],
+      ["userId", types._TypeInputUser, "InputUser"],
       ["id", ["number"], "Vector<int>"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.userId, types.TypeInputUser, "InputUser"],
+      [this.userId, types._TypeInputUser, "InputUser"],
       [this.id, ["number"], "Vector<int>"],
     ];
   }
@@ -16646,7 +16646,7 @@ export class StoriesIncrementStoryViews extends Function<boolean> {
   }
 }
 
-export class StoriesGetStoryViewsList extends Function<types.StoriesStoryViewsList> {
+export class StoriesGetStoryViewsList extends Function<types.TypeStoriesStoryViewsList> {
   justContacts?: true;
   reactionsFirst?: true;
   q?: string;
@@ -16693,7 +16693,7 @@ export class StoriesGetStoryViewsList extends Function<types.StoriesStoryViewsLi
   }
 }
 
-export class StoriesGetStoriesViews extends Function<types.StoriesStoryViews> {
+export class StoriesGetStoriesViews extends Function<types.TypeStoriesStoryViews> {
   id: Array<number>;
 
   protected get [id]() {
@@ -16718,7 +16718,7 @@ export class StoriesGetStoriesViews extends Function<types.StoriesStoryViews> {
   }
 }
 
-export class StoriesExportStoryLink extends Function<types.ExportedStoryLink> {
+export class StoriesExportStoryLink extends Function<types.TypeExportedStoryLink> {
   userId: types.TypeInputUser;
   id: number;
 
@@ -16728,14 +16728,14 @@ export class StoriesExportStoryLink extends Function<types.ExportedStoryLink> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["userId", types.TypeInputUser, "InputUser"],
+      ["userId", types._TypeInputUser, "InputUser"],
       ["id", "number", "int"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.userId, types.TypeInputUser, "InputUser"],
+      [this.userId, types._TypeInputUser, "InputUser"],
       [this.id, "number", "int"],
     ];
   }
@@ -16759,18 +16759,18 @@ export class StoriesReport extends Function<boolean> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["userId", types.TypeInputUser, "InputUser"],
+      ["userId", types._TypeInputUser, "InputUser"],
       ["id", ["number"], "Vector<int>"],
-      ["reason", types.TypeReportReason, "ReportReason"],
+      ["reason", types._TypeReportReason, "ReportReason"],
       ["message", "string", "string"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.userId, types.TypeInputUser, "InputUser"],
+      [this.userId, types._TypeInputUser, "InputUser"],
       [this.id, ["number"], "Vector<int>"],
-      [this.reason, types.TypeReportReason, "ReportReason"],
+      [this.reason, types._TypeReportReason, "ReportReason"],
       [this.message, "string", "string"],
     ];
   }
@@ -16829,9 +16829,9 @@ export class StoriesSendReaction extends Function<types.TypeUpdates> {
     return [
       ["flags", flags, "#"],
       ["addToRecent", "true", "flags.0?true"],
-      ["userId", types.TypeInputUser, "InputUser"],
+      ["userId", types._TypeInputUser, "InputUser"],
       ["storyId", "number", "int"],
-      ["reaction", types.TypeReaction, "Reaction"],
+      ["reaction", types._TypeReaction, "Reaction"],
     ];
   }
 
@@ -16839,9 +16839,9 @@ export class StoriesSendReaction extends Function<types.TypeUpdates> {
     return [
       ["flags", flags, "#"],
       [this.addToRecent ?? null, "true", "flags.0?true"],
-      [this.userId, types.TypeInputUser, "InputUser"],
+      [this.userId, types._TypeInputUser, "InputUser"],
       [this.storyId, "number", "int"],
-      [this.reaction, types.TypeReaction, "Reaction"],
+      [this.reaction, types._TypeReaction, "Reaction"],
     ];
   }
 
