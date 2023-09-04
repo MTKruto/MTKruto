@@ -23,6 +23,7 @@ import { constructDice, Dice } from "./0_dice.ts";
 import { FileID, FileType, FileUniqueID, FileUniqueType } from "./!0_file_id.ts";
 import { constructContact, Contact } from "./0_contact.ts";
 import { constructGame, Game } from "./2_game.ts";
+import { constructPoll, Poll } from "./1_poll.ts";
 import { constructVenue, Venue } from "./0_venue.ts";
 import { constructLocation, Location } from "./0_location.ts";
 import { ZERO_CHANNEL_ID } from "../constants.ts";
@@ -109,6 +110,7 @@ export interface Message {
   contact?: Contact;
   /** Message is a game, information about the game. */
   game?: Game;
+  poll?: Poll;
   /** Message is a venue, information about the venue. For backward compatibility, when this field is set, the location field will also be set */
   venue?: Venue;
   /** Message is a shared location, information about the location */
@@ -485,6 +487,8 @@ export async function constructMessage(
       message.contact = constructContact(message_.media);
     } else if (message_.media instanceof types.MessageMediaGame) {
       message.game = constructGame(message_.media);
+    } else if (message_.media instanceof types.MessageMediaPoll) {
+      message.poll = constructPoll(message_.media);
     } else if (message_.media instanceof types.MessageMediaVenue) {
       message.venue = constructVenue(message_.media);
     } else if (message_.media instanceof types.MessageMediaGeo || message_.media instanceof types.MessageMediaGeoLive) {
