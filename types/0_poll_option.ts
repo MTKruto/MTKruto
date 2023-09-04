@@ -5,6 +5,9 @@ export interface PollOption {
   voterCount: number;
 }
 
-export function constructPollOption(option_: types.PollAnswer) {
-    return option_.
+export function constructPollOption(option: types.PollAnswer, results: Array<types.TypePollAnswerVoters>): PollOption {
+  return {
+    text: option.text,
+    voterCount: results.find((v) => v.option.every((v, i) => option.option[i] == v))?.voters ?? 0,
+  };
 }
