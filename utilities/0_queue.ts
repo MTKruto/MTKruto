@@ -1,5 +1,12 @@
+import { debug } from "../deps.ts";
+
 export class Queue {
+  private d: ReturnType<typeof debug>;
   private functions = new Array<() => Promise<void>>();
+
+  constructor(name: string) {
+    this.d = debug(`q/${name}`);
+  }
 
   add(fn: () => Promise<void>) {
     this.functions.push(fn);
@@ -15,10 +22,14 @@ export class Queue {
     }
     const fn = this.functions.shift();
     if (fn !== undefined) {
-      fn().finally(() => {
-        this.busy = false;
-        this.check();
-      });
+      fn()
+        .catch((err) => {
+          this.d("%o", err);
+        })
+        .finally(() => {
+          this.busy = false;
+          this.check();
+        });
     } else {
       this.busy = false;
     }

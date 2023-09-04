@@ -23,17 +23,17 @@ export interface Game {
 }
 
 export function constructGame(media_: types.MessageMediaGame): Game {
-  const game_ = media_.game[as](types.Game);
+  const game_ = media_.game;
   const document_ = game_.document ? game_.document[as](types.Document) : undefined;
   return cleanObject({
     title: game_.title,
-    description: game_.description,
+    description: media_.game.description,
     photo: constructPhoto(game_.photo[as](types.Photo)),
     animation: document_
       ? constructAnimation(
         document_,
-        document_.attributes.find((v) => v instanceof types.DocumentAttributeVideo) as types.DocumentAttributeVideo,
-        document_.attributes.find((v) => v instanceof types.DocumentAttributeFilename) as types.DocumentAttributeFilename,
+        document_.attributes.find((v): v is types.DocumentAttributeVideo => v instanceof types.DocumentAttributeVideo)!,
+        document_.attributes.find((v): v is types.DocumentAttributeFilename => v instanceof types.DocumentAttributeFilename)!,
         new FileID(null, null, FileType.Animation, document_.dcId, {
           mediaId: document_.id,
           accessHash: document_.accessHash,

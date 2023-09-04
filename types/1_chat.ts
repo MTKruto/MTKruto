@@ -1,7 +1,6 @@
 import { ZERO_CHANNEL_ID } from "../constants.ts";
 import { UNREACHABLE } from "../utilities/0_control.ts";
 import { cleanObject } from "../utilities/0_object.ts";
-import { as } from "../tl/1_tl_object.ts";
 import * as types from "../tl/2_types.ts";
 import { getIdColor } from "./!0_id_color.ts";
 import { ChatPhoto, constructChatPhoto } from "./0_chat_photo.ts";
@@ -124,7 +123,7 @@ export function constructChat(chat: types.User | types.Chat | types.Channel): Ch
 
     if (chat_.isBot) {
       chat_.isRestricted = chat.restricted || false;
-      chat_.restrictionReason = chat.restrictionReason?.map((v) => v[as](types.RestrictionReason));
+      chat_.restrictionReason = chat.restrictionReason;
     }
 
     if (chat.photo instanceof types.UserProfilePhoto) {
@@ -184,9 +183,9 @@ export function constructChat(chat: types.User | types.Chat | types.Channel): Ch
     }
 
     chat_.username = chat.username;
-    chat_.also = chat.usernames?.map((v) => v[as](types.Username)).map((v) => v.username);
+    chat_.also = chat.usernames?.map((v) => v.username);
     if (chat_.isRestricted) {
-      chat_.restrictionReason = chat.restrictionReason?.map((v) => v[as](types.RestrictionReason));
+      chat_.restrictionReason = chat.restrictionReason;
     }
 
     if (chat.photo instanceof types.ChatPhoto) {

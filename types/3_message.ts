@@ -455,11 +455,11 @@ export async function constructMessage(
           }).encode();
         const fileUniqueId = new FileUniqueID(FileUniqueType.Document, { mediaId: document.id }).encode();
 
-        const animated = document.attributes.find((v) => v instanceof types.DocumentAttributeAnimated) as types.DocumentAttributeAnimated | undefined;
-        const audio = document.attributes.find((v) => v instanceof types.DocumentAttributeAudio) as types.DocumentAttributeAudio | undefined;
-        const fileName = document.attributes.find((v) => v instanceof types.DocumentAttributeFilename) as types.DocumentAttributeFilename | undefined;
-        const sticker = document.attributes.find((v) => v instanceof types.DocumentAttributeSticker) as types.DocumentAttributeSticker | undefined;
-        const video = document.attributes.find((v) => v instanceof types.DocumentAttributeVideo) as types.DocumentAttributeVideo | undefined;
+        const animated = document.attributes.find((v): v is types.DocumentAttributeAnimated => v instanceof types.DocumentAttributeAnimated);
+        const audio = document.attributes.find((v): v is types.DocumentAttributeAudio => v instanceof types.DocumentAttributeAudio);
+        const fileName = document.attributes.find((v): v is types.DocumentAttributeFilename => v instanceof types.DocumentAttributeFilename);
+        const sticker = document.attributes.find((v): v is types.DocumentAttributeSticker => v instanceof types.DocumentAttributeSticker);
+        const video = document.attributes.find((v): v is types.DocumentAttributeVideo => v instanceof types.DocumentAttributeVideo);
 
         if (animated) {
           message.animation = constructAnimation(document, video, fileName, getFileId(FileType.Animation), fileUniqueId);

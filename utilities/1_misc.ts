@@ -1,7 +1,7 @@
 import { UNREACHABLE } from "./0_control.ts";
 
 export function drop<T>(promise: Promise<T>) {
-  promise.then().catch();
+  promise.catch(() => {});
 }
 
 export function mustPrompt(message: string) {

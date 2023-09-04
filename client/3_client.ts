@@ -594,7 +594,7 @@ export class Client extends ClientAbstract {
             body = new TLReader(gunzip(body.packedData)).readObject();
           }
           dRecv("received %s", body.constructor.name);
-          if (body instanceof types.TypeUpdates || body instanceof types.TypeUpdate) {
+          if (body instanceof types._TypeUpdates || body instanceof types._TypeUpdate) {
             this.processUpdatesQueue.add(() => this.processUpdates(body as types.Updates | types.TypeUpdate));
           } else if (message.body instanceof RPCResult) {
             let result = message.body.result;
@@ -618,7 +618,7 @@ export class Client extends ClientAbstract {
                 this.promises.delete(messageId);
               }
             };
-            if (result instanceof types.TypeUpdates || result instanceof types.TypeUpdate) {
+            if (result instanceof types._TypeUpdates || result instanceof types._TypeUpdate) {
               this.processUpdatesQueue.add(async () => {
                 await this.processUpdates(result as types.TypeUpdates | types.TypeUpdate);
                 resolvePromise();
@@ -741,7 +741,7 @@ export class Client extends ClientAbstract {
           await this.storage.updateUsernames("channel", chat.id, [chat.username]);
         }
         if (chat.usernames) {
-          await this.storage.updateUsernames("channel", chat.id, chat.usernames.map((v) => v[as](types.Username)).map((v) => v.username));
+          await this.storage.updateUsernames("channel", chat.id, chat.usernames.map((v) => v.username));
         }
       } else if (chat instanceof types.Chat) {
         await this.storage.setEntity(chat);
@@ -758,14 +758,14 @@ export class Client extends ClientAbstract {
           await this.storage.updateUsernames("user", user.id, [user.username]);
         }
         if (user.usernames) {
-          await this.storage.updateUsernames("user", user.id, user.usernames.map((v) => v[as](types.Username)).map((v) => v.username));
+          await this.storage.updateUsernames("user", user.id, user.usernames.map((v) => v.username));
         }
       }
     }
   }
 
-  private handleUpdateQueue = new Queue();
-  private processUpdatesQueue = new Queue();
+  private handleUpdateQueue = new Queue("handleUpdate");
+  private processUpdatesQueue = new Queue("processUpdates");
 
   private async checkGap(pts: number, ptsCount: number, assertNoGap: boolean) {
     const localState = await this.getLocalState();
@@ -798,7 +798,7 @@ export class Client extends ClientAbstract {
     /// [1]: https://core.telegram.org/type/Update
     /// [2]: https://core.telegram.org/type/Updates
     /// [3]: https://core.telegram.org/constructor/updatesTooLong
-    let updates: (types.TypeUpdate | types.UpdateShort | types.UpdateShortMessage | types.UpdateShortChatMessage | types.UpdateShortSentMessage)[];
+    let updates: (types.TypeUpdate | types.UpdateShortMessage | types.UpdateShortChatMessage | types.UpdateShortSentMessage)[];
     if (updates_ instanceof types.UpdatesCombined || updates_ instanceof types.Updates) {
       updates = updates_.updates;
     } else if (updates_ instanceof types.UpdateShort) {
@@ -812,7 +812,7 @@ export class Client extends ClientAbstract {
     } else if (updates_ instanceof types.UpdatesTooLong) {
       await this.recoverUpdateGap("updatesTooLong");
       return;
-    } else if (updates_ instanceof types.TypeUpdate) {
+    } else if (updates_ instanceof types._TypeUpdate) {
       updates = [updates_];
     } else {
       UNREACHABLE();
@@ -889,7 +889,7 @@ export class Client extends ClientAbstract {
         }
         await this.recoverChannelUpdateGap(update.channelId, "updateChannelTooLong");
       } else if (update instanceof types.UpdateUserName) {
-        await this.storage.updateUsernames("user", update.userId, update.usernames.map((v) => v[as](types.Username)).map((v) => v.username));
+        await this.storage.updateUsernames("user", update.userId, update.usernames.map((v) => v.username));
       } else if (update instanceof types.UpdatePtsChanged) {
         await this.fetchState("updatePtsChanged");
         if (this.updateState) {
@@ -899,7 +899,7 @@ export class Client extends ClientAbstract {
         }
       }
       /// If there were any Update, they will be passed to the update handling queue.
-      if (update instanceof types.TypeUpdate) {
+      if (update instanceof types._TypeUpdate) {
         updatesToHandle.push(update);
       }
     }
@@ -954,11 +954,11 @@ export class Client extends ClientAbstract {
             await this.processUpdates(update, true);
           }
           if (difference instanceof types.UpdatesDifference) {
-            await this.storage.setState(difference.state[as](types.UpdatesState));
+            await this.storage.setState(difference.state);
             dGap("recovered from update gap");
             break;
           } else if (difference instanceof types.UpdatesDifferenceSlice) {
-            state = difference.intermediateState[as](types.UpdatesState);
+            state = difference.intermediateState;
           } else {
             UNREACHABLE();
           }
@@ -1424,7 +1424,7 @@ export class Client extends ClientAbstract {
       return maybeStickerSetName[0];
     } else {
       const stickerSet = await this.invoke(new functions.MessagesGetStickerSet({ stickerset: inputStickerSet, hash }));
-      const name = stickerSet[as](types.MessagesStickerSet).set[as](types.StickerSet).shortName;
+      const name = stickerSet[as](types.MessagesStickerSet).set.shortName;
       await this.storage.updateStickerSetName(inputStickerSet.id, inputStickerSet.accessHash, name);
       return name;
     }

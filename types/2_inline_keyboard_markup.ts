@@ -1,4 +1,3 @@
-import { as } from "../tl/1_tl_object.ts";
 import * as types from "../tl/2_types.ts";
 import { constructInlineKeyboardButton, InlineKeyboardButton, inlineKeyboardButtonToTlObject } from "./1_inline_keyboard_button.ts";
 
@@ -10,7 +9,7 @@ export interface InlineKeyboardMarkup {
 
 export function constructInlineKeyboardMarkup(keyboard_: types.ReplyInlineMarkup): InlineKeyboardMarkup {
   const rows = new Array<InlineKeyboardButton[]>();
-  for (const row_ of keyboard_.rows.map((v) => v[as](types.KeyboardButtonRow))) {
+  for (const row_ of keyboard_.rows) {
     const row = new Array<InlineKeyboardButton>();
     for (const button_ of row_.buttons) {
       row.push(constructInlineKeyboardButton(button_));

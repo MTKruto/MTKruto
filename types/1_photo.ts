@@ -1,4 +1,3 @@
-import { as } from "../tl/1_tl_object.ts";
 import * as types from "../tl/2_types.ts";
 import { FileID, FileType, FileUniqueID, FileUniqueType, ThumbnailSource } from "./!0_file_id.ts";
 import { constructThumbnail, Thumbnail } from "./0_thumbnail.ts";
@@ -27,8 +26,7 @@ export function constructPhoto(photo: types.Photo): Photo {
         return v;
       }
     })
-    .filter((v) => v instanceof types.PhotoSize)
-    .map((v) => v[as](types.PhotoSize))
+    .filter((v): v is types.PhotoSize => v instanceof types.PhotoSize)
     .sort((a, b) => a.size - b.size);
 
   const largest = sizes.slice(-1)[0];

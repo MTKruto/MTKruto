@@ -1,5 +1,4 @@
 import { UNREACHABLE } from "../utilities/0_control.ts";
-import { as } from "../tl/1_tl_object.ts";
 import * as types from "../tl/2_types.ts";
 import { ChatAdministratorRights, chatAdministratorRightsToTlObject, constructChatAdministratorRights } from "./0_chat_administrator_rights.ts";
 import { KeyboardButtonPollType } from "./0_keyboard_button_poll_type.ts";
@@ -104,10 +103,10 @@ export function constructKeyboardButton(button_: types.TypeKeyboardButton): Keyb
         },
       };
       if (button_.peerType.botAdminRights) {
-        button.requestChat.botAdministratorRights = constructChatAdministratorRights(button_.peerType.botAdminRights[as](types.ChatAdminRights));
+        button.requestChat.botAdministratorRights = constructChatAdministratorRights(button_.peerType.botAdminRights);
       }
       if (button_.peerType.userAdminRights) {
-        button.requestChat.userAdministratorRights = constructChatAdministratorRights(button_.peerType.userAdminRights[as](types.ChatAdminRights));
+        button.requestChat.userAdministratorRights = constructChatAdministratorRights(button_.peerType.userAdminRights);
       }
       return button;
     } else if (button_.peerType instanceof types.RequestPeerTypeBroadcast) {
@@ -121,10 +120,10 @@ export function constructKeyboardButton(button_: types.TypeKeyboardButton): Keyb
         },
       };
       if (button_.peerType.botAdminRights) {
-        button.requestChat.botAdministratorRights = constructChatAdministratorRights(button_.peerType.botAdminRights[as](types.ChatAdminRights));
+        button.requestChat.botAdministratorRights = constructChatAdministratorRights(button_.peerType.botAdminRights);
       }
       if (button_.peerType.userAdminRights) {
-        button.requestChat.userAdministratorRights = constructChatAdministratorRights(button_.peerType.userAdminRights[as](types.ChatAdminRights));
+        button.requestChat.userAdministratorRights = constructChatAdministratorRights(button_.peerType.userAdminRights);
       }
       return button;
     } else {
