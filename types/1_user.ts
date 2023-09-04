@@ -1,5 +1,4 @@
 import { cleanObject } from "../utilities/0_object.ts";
-import { as } from "../tl/1_tl_object.ts";
 import * as types from "../tl/2_types.ts";
 import { getIdColor } from "./!0_id_color.ts";
 import { ChatPhoto, constructChatPhoto } from "./0_chat_photo.ts";
