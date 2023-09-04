@@ -46,6 +46,8 @@ export interface Message {
   date?: Date;
   /** Conversation the message belongs to */
   chat: Chat;
+  /** A link to the message */
+  link?: string;
   /** For forwarded messages, sender of the original message */
   forwardFrom?: User;
   /** For messages forwarded from channels or from anonymous administrators, information about the original sender chat */
@@ -310,6 +312,7 @@ export async function constructMessage(
     UNREACHABLE();
   }
 
+  let link: string | undefined;
   let chat_: Chat | null = null;
   if (message_.peerId instanceof types.PeerUser) {
     const entity = await getEntity(message_.peerId);
@@ -326,6 +329,7 @@ export async function constructMessage(
       UNREACHABLE();
     }
   } else if (message_.peerId instanceof types.PeerChannel) {
+    link = `https://t.me/c/${message_.peerId.channelId}/${message_.id}`;
     const entity = await getEntity(message_.peerId);
     if (entity) {
       chat_ = constructChat(entity);
@@ -344,6 +348,7 @@ export async function constructMessage(
     out: message_.out ?? false,
     id: message_.id,
     chat: chat_,
+    link,
     date: new Date(message_.date * 1_000),
     views: message_.views,
     isTopicMessage: false,
