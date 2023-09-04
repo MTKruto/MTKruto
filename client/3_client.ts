@@ -1028,7 +1028,30 @@ export class Client extends ClientAbstract {
     }
   }
 
+  private async getUserAccessHash(userId: bigint) {
+    const users = await this.invoke(new functions.UsersGetUsers({ id: [new types.InputUser({ userId, accessHash: 0n })] }));
+    return users[0][as](types.User).accessHash ?? 0n;
+  }
+
+  private async getChannelAccessHash(channelId: bigint) {
+    const channels = await this.invoke(new functions.ChannelsGetChannels({ id: [new types.InputChannel({ channelId, accessHash: 0n })] }));
+    return channels.chats[0][as](types.Channel).accessHash ?? 0n;
+  }
+
   async getInputPeer(id: ChatID) {
+    const inputPeer = await this.getInputPeerInner(id);
+    if (inputPeer instanceof types.InputPeerUser || inputPeer instanceof types.InputPeerChannel && inputPeer.accessHash == 0n && await this.storage.getAccountType() == "bot") {
+      if ("channelId" in inputPeer) {
+        inputPeer.accessHash = await this.getChannelAccessHash(inputPeer.channelId);
+      } else {
+        inputPeer.accessHash = await this.getUserAccessHash(inputPeer.userId);
+        await this.storage.setUserAccessHash(inputPeer.userId, inputPeer.accessHash);
+      }
+    }
+    return inputPeer;
+  }
+
+  private async getInputPeerInner(id: ChatID) {
     if (typeof id === "string") {
       if (!id.startsWith("@")) {
         throw new Error("Expected username to start with @");
@@ -1128,10 +1151,14 @@ export class Client extends ClientAbstract {
       result instanceof types.ChatlistsExportedInvites ||
       result instanceof types.ChatlistsChatlistInviteAlready ||
       result instanceof types.ChatlistsChatlistInvite ||
-      result instanceof types.ChatlistsChatlistUpdates
+      result instanceof types.ChatlistsChatlistUpdates ||
+      result instanceof types.MessagesChats ||
+      result instanceof types.MessagesChatsSlice
     ) {
       await this.processChats(result.chats);
-      await this.processUsers(result.users);
+      if ("users" in result) {
+        await this.processUsers(result.users);
+      }
     }
 
     if (result instanceof types.MessagesMessages) {
