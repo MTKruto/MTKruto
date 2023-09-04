@@ -1,4 +1,3 @@
-import { as } from "../tl/1_tl_object.ts";
 import * as types from "../tl/2_types.ts";
 import { FileID, FileType, FileUniqueID, FileUniqueType, ThumbnailSource } from "./!0_file_id.ts";
 import { constructThumbnail, Thumbnail } from "./0_thumbnail.ts";

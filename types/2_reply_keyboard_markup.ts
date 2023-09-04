@@ -1,4 +1,3 @@
-import { as } from "../tl/1_tl_object.ts";
 import * as types from "../tl/2_types.ts";
 import { constructKeyboardButton, KeyboardButton, keyboardButtonToTlObject } from "./1_keyboard_button.ts";
 
