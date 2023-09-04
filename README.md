@@ -4,7 +4,7 @@
 
 Cross-runtime JavaScript library for building Telegram clients
 
-###### [Discussion Chat](https://t.me/MTKrutoChat) &middot; [API Reference](https://deno.land/x/mtkruto/mod.ts) &middot; [Acknowledgements](./ACKNOWLEDGEMENTS.md)
+###### [Documentation](https://mtkruto.github.io) **&middot;** [API Reference](https://deno.land/x/mtkruto/mod.ts) **&middot;** [Discussion Chat](https://t.me/MTKrutoChat) **&middot;** [License](#license) **&middot;** [Acknowledgements](./ACKNOWLEDGEMENTS.md)
 
 </div>
 
