@@ -1676,7 +1676,7 @@ export class Client extends ClientAbstract {
     await this.invoke(
       new functions.MessagesSetBotCallbackAnswer({
         queryId: BigInt(id),
-        cacheTime: params?.cacheTime ?? 0, // Default value?
+        cacheTime: params?.cacheTime ?? 0,
         message: params?.text,
         alert: params?.alert ? true : undefined,
       }),
