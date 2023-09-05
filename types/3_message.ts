@@ -134,9 +134,9 @@ export interface Message {
   /** Service message: the channel has been created. This field can't be received in a message coming through updates, because bot can't be a member of a channel when it is created. It can only be found in reply_to_message if someone replies to a very first message in a channel. */
   channelCreated?: true;
   // TODO: messageAutoDeleteTimerChanged?: { messageAutoDeleteTime: number };
-  /** The group has been migrated to a supergroup with the specified identifier. This number may have more than 32 significant bits and some programming languages may have difficulty/silent defects in interpreting it. But it has at most 52 significant bits, so a signed 64-bit integer or double-precision float type are safe for storing this identifier. */
+  /** The group has been migrated to a supergroup with the specified identifier */
   chatMigratedTo?: number;
-  /** The supergroup has been migrated from a group with the specified identifier. This number may have more than 32 significant bits and some programming languages may have difficulty/silent defects in interpreting it. But it has at most 52 significant bits, so a signed 64-bit integer or double-precision float type are safe for storing this identifier. */
+  /** The supergroup has been migrated from a group with the specified identifier */
   chatMigratedFrom?: number;
   /** Specified message was pinned. Note that the Message object in this field will not contain further reply_to_message fields even if it is itself a reply. */
   pinnedMessage?: Message;
