@@ -5,11 +5,11 @@ export declare namespace ChatPhoto {
   export interface Base {
     /** File identifier of small (160x160) chat photo. This file_id can be used only for photo download and only for as long as the photo is not changed. */
     smallFileId: string;
-    /** Unique file identifier of small (160x160) chat photo, which is supposed to be the same over time and for different bots. Can't be used to download or reuse the file. */
+    /** Unique file identifier of small (160x160) chat photo, which is supposed to be the same over time and for different users and bots. Can't be used to download or reuse the file. */
     smallFileUniqueId: string;
     /** File identifier of big (640x640) chat photo. This file_id can be used only for photo download and only for as long as the photo is not changed. */
     bigFileId: string;
-    /** Unique file identifier of big (640x640) chat photo, which is supposed to be the same over time and for different bots. Can't be used to download or reuse the file. */
+    /** Unique file identifier of big (640x640) chat photo, which is supposed to be the same over time and for different users and bots. Can't be used to download or reuse the file. */
     bigFileUniqueId: string;
     /** True, if an [animated profile picture](https://core.telegram.org/api/files#animated-profile-pictures) is available for the user */
     hasVideo: boolean;

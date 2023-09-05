@@ -21,7 +21,7 @@ export declare namespace InlineKeyboardButton {
   }
 
   export interface WebApp extends Base {
-    /** Description of the [Web App](https://core.telegram.org/bots/webapps) that will be launched when the user presses the button. The Web App will be able to send an arbitrary message on behalf of the user using the method answerWebAppQuery. Available only in private chats between a user and the bot. */
+    /** Description of the Web App that will be launched when the user presses the button. The Web App will be able to send an arbitrary message on behalf of the user using the method answerWebAppQuery. Available only in private chats between a user and the bot. */
     webApp: WebAppInfo;
   }
 
@@ -45,7 +45,7 @@ export declare namespace InlineKeyboardButton {
   }
 
   export interface Pay extends Base {
-    /** Specify True, to send a [Pay button](https://core.telegram.org/bots/api#payments). */
+    /** Specify True to send a Pay button */
     pay: boolean;
   }
 }

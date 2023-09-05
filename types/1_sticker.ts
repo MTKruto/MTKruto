@@ -8,7 +8,7 @@ import { constructMaskPosition, MaskPosition } from "./0_mask_position.ts";
 export interface Sticker {
   /** Identifier for this file, which can be used to download or reuse the file */
   fileId: string;
-  /** Unique identifier for this file, which is supposed to be the same over time and for different bots. Can't be used to download or reuse the file. */
+  /** Unique identifier for this file, which is supposed to be the same over time and for different users and bots. Can't be used to download or reuse the file. */
   fileUniqueId: string;
   /** Type of the sticker, currently one of "regular", "mask", "custom_emoji". The type of the sticker is independent from its format, which is determined by the fields is_animated and is_video. */
   type: "regular" | "mask" | "custom_emoji";
