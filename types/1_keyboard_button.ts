@@ -12,7 +12,7 @@ export declare namespace KeyboardButton {
 
   /** This object defines the criteria used to request a suitable user. The identifier of the selected user will be shared with the bot when the corresponding button is pressed. [More about requesting users](https://core.telegram.org/bots/features#chat-and-user-selection) */
   export interface RequestUser extends Text {
-    /** If specified, pressing the button will open a list of suitable users. Tapping on any user will send their identifier to the bot in a “user_shared” service message. Available in private chats only. */
+    /** If specified, pressing the button will open a list of suitable users. Tapping on any user will send their identifier to the bot in a "user_shared" service message. Available in private chats only. */
     requestUser: {
       /** Signed 32-bit identifier of the request, which will be received back in the [UserShared](https://core.telegram.org/bots/api#usershared) object. Must be unique within the message */
       requestId: number;
@@ -25,7 +25,7 @@ export declare namespace KeyboardButton {
 
   /** This object defines the criteria used to request a suitable chat. The identifier of the selected chat will be shared with the bot when the corresponding button is pressed. [More about requesting chats](https://core.telegram.org/bots/features#chat-and-user-selection) */
   export interface RequestChat extends Text {
-    /** If specified, pressing the button will open a list of suitable chats. Tapping on a chat will send its identifier to the bot in a “chat_shared” service message. Available in private chats only. */
+    /** If specified, pressing the button will open a list of suitable chats. Tapping on a chat will send its identifier to the bot in a "chat_shared" service message. Available in private chats only. */
     requestChat: {
       /** Signed 32-bit identifier of the request, which will be received back in the [ChatShared](https://core.telegram.org/bots/api#chatshared) object. Must be unique within the message */
       requestId: number;
@@ -62,7 +62,7 @@ export declare namespace KeyboardButton {
   }
 
   export interface WebApp extends Text {
-    /** If specified, the described [Web App](https://core.telegram.org/bots/webapps) will be launched when the button is pressed. The Web App will be able to send a “web_app_data” service message. Available in private chats only. */
+    /** If specified, the described [Web App](https://core.telegram.org/bots/webapps) will be launched when the button is pressed. The Web App will be able to send a "web_app_data" service message. Available in private chats only. */
     webApp: WebAppInfo;
   }
 }

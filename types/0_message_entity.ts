@@ -60,7 +60,7 @@ export declare namespace MessageEntity {
 
   export interface Pre extends Base {
     type: "pre";
-    /** For “pre” only, the programming language of the entity text */
+    /** For "pre" only, the programming language of the entity text */
     language: string;
   }
 
@@ -70,13 +70,13 @@ export declare namespace MessageEntity {
 
   export interface TextLink extends Base {
     type: "text_link";
-    /** For “text_link” only, URL that will be opened after user taps on the text */
+    /** For "text_link" only, URL that will be opened after user taps on the text */
     url: string;
   }
 
   export interface TextMention extends Base {
     type: "text_mention";
-    /** For “text_mention” only, the ID of the mentioned user */
+    /** For "text_mention" only, the ID of the mentioned user */
     userId: number;
   }
 
@@ -110,7 +110,7 @@ export declare namespace MessageEntity {
 
   export interface CustomEmoji extends Base {
     type: "custom_emoji";
-    /** For “custom_emoji” only, unique identifier of the custom emoji */
+    /** For "custom_emoji" only, unique identifier of the custom emoji */
     customEmojiId: string;
   }
 }
