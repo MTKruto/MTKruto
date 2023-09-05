@@ -112,6 +112,7 @@ export interface Message {
   contact?: Contact;
   /** Message is a game, information about the game. */
   game?: Game;
+  /** New poll state. Bots receive only updates about stopped polls and polls, which were sent by the bot. */
   poll?: Poll;
   /** Message is a venue, information about the venue. For backward compatibility, when this field is set, the location field will also be set */
   venue?: Venue;
