@@ -2,7 +2,8 @@ import { debug, gunzip, Mutex } from "../deps.ts";
 import { ACK_THRESHOLD, APP_VERSION, CHANNEL_DIFFERENCE_LIMIT_BOT, CHANNEL_DIFFERENCE_LIMIT_USER, DEVICE_MODEL, LANG_CODE, LANG_PACK, LAYER, MAX_CHANNEL_ID, MAX_CHAT_ID, PublicKeys, STICKER_SET_NAME_TTL, SYSTEM_LANG_CODE, SYSTEM_VERSION, USERNAME_TTL, ZERO_CHANNEL_ID } from "../constants.ts";
 import { drop, mustPrompt, mustPromptOneOf } from "../utilities/1_misc.ts";
 import { bigIntFromBuffer, getRandomBigInt, getRandomId } from "../utilities/0_bigint.ts";
-import { getChannelChatId, hasChannelPts, hasPts, peerToChatId } from "./0_utilities.ts";
+import { hasChannelPts, hasPts } from "./0_utilities.ts";
+import { getChannelChatId, peerToChatId } from "../tl/3_utilities.ts";
 import { UNREACHABLE } from "../utilities/0_control.ts";
 import { MaybePromise } from "../utilities/0_types.ts";
 import { Queue } from "../utilities/0_queue.ts";
@@ -31,6 +32,7 @@ import { checkPassword } from "./0_password.ts";
 import { parseHtml } from "./0_html.ts";
 import { ClientPlain, ClientPlainParams } from "./2_client_plain.ts";
 import { ClientAbstract } from "./1_client_abstract.ts";
+import { CallbackQuery, constructCallbackQuery } from "../types/4_callback_query.ts";
 
 const d = debug("Client");
 const dGap = debug("Client/recoverUpdateGap");
@@ -41,6 +43,7 @@ const dRecv = debug("Client/receiveLoop");
 export const getEntity = Symbol();
 export const getStickerSetName = Symbol();
 export const handleMigrationError = Symbol();
+export const getMessageWithReply = Symbol();
 
 export const restartAuth = Symbol();
 
@@ -90,6 +93,17 @@ export interface ClientParams extends ClientPlainParams {
   autoStart?: boolean;
 }
 
+export interface AnswerCallbackQueryParams {
+  /** Text of the answer */
+  text?: string;
+  /** Pass true to show an alert to the user instead of a toast notification */
+  alert?: boolean;
+  /** URL to be opened */
+  url?: string;
+  /** Time during which the result of the query can be cached, in seconds */
+  cacheTime?: number;
+}
+
 /**
  * A chat identifier as provided by MTKruto or a string starting with a @ that is followed by a username.
  */
@@ -125,11 +139,11 @@ export interface SendMessagesParams {
    */
   messageThreadId?: number;
   /**
-   * The identifier of the chat to send the message on behalf of.
+   * The identifier of the chat to send the message on behalf of. User-only.
    */
   sendAs?: ChatID;
   /**
-   * The reply markup of the message.
+   * The reply markup of the message. Bot-only.
    */
   replyMarkup?: InlineKeyboardMarkup | ReplyKeyboardMarkup | ReplyKeyboardRemove | ForceReply;
 }
@@ -148,7 +162,7 @@ export interface EditMessageParams {
    */
   disableWebPagePreview?: boolean;
   /**
-   * The reply markup of the message.
+   * The reply markup of the message. Bot-only.
    */
   replyMarkup?: InlineKeyboardMarkup | ReplyKeyboardMarkup | ReplyKeyboardRemove | ForceReply;
 }
@@ -164,7 +178,7 @@ export interface ForwardMessagesParams {
    */
   protectContent?: boolean;
   /**
-   * The identifier of the chat to forward the message on behalf of.
+   * The identifier of the chat to forward the message on behalf of. User-only.
    */
   sendAs?: ChatID;
   /**
@@ -1339,13 +1353,7 @@ export class Client extends ClientAbstract {
     await this.invoke(new functions.MessagesEditMessage({ id, peer, entities, message, noWebpage, replyMarkup }));
   }
 
-  /**
-   * Retrieve multiple messages.
-   *
-   * @param chatId The identifier of the chat to retrieve the messages from.
-   * @param messageIds The identifiers of the messages to retrieve.
-   */
-  async getMessages(chatId_: ChatID, messageIds: number[]) {
+  private async getMessagesInner(chatId_: ChatID, messageIds: number[]) {
     const peer = await this.getInputPeer(chatId_);
     let messages_ = new Array<types.TypeMessage>();
     const chatId = peerToChatId(peer);
@@ -1376,11 +1384,28 @@ export class Client extends ClientAbstract {
         ).then((v) => v[as](types.MessagesMessages).messages);
       }
     }
-    const messages = new Array<Omit<Message, "replyToMessage">>();
+    const messages = new Array<{ message: Omit<Message, "replyToMessage">; isReplyToMessage: boolean }>();
     for (const message_ of messages_) {
-      messages.push(await constructMessage(message_, this[getEntity].bind(this), null, this[getStickerSetName].bind(this)));
+      const message = await constructMessage(message_, this[getEntity].bind(this), null, this[getStickerSetName].bind(this));
+      const isReplyToMessage = message_ instanceof types.Message && message_.replyTo instanceof types.MessageReplyHeader;
+      messages.push({ message, isReplyToMessage });
     }
     return messages;
+  }
+
+  /**
+   * Retrieve multiple messages.
+   *
+   * @param chatId The identifier of the chat to retrieve the messages from.
+   * @param messageIds The identifiers of the messages to retrieve.
+   */
+  async getMessages(chatId_: ChatID, messageIds: number[]) {
+    return await this.getMessagesInner(chatId_, messageIds).then((v) => v.map((v) => v.message));
+  }
+
+  async [getMessageWithReply](chatId: ChatID, messageId: number): Promise<Message | null> {
+    const messages = await this.getMessagesInner(chatId, [messageId]);
+    return messages[0]?.message ?? null;
   }
 
   /**
@@ -1594,6 +1619,10 @@ export class Client extends ClientAbstract {
         await this.handler({ deletedMessages: deletedMessages as [Message, ...Message[]] }, resolve);
       }
     }
+
+    if (update instanceof types.UpdateBotCallbackQuery || update instanceof types.UpdateInlineBotCallbackQuery) {
+      await this.handler({ callbackQuery: await constructCallbackQuery(update, this[getEntity].bind(this), this[getMessageWithReply].bind(this)) }, resolve);
+    }
   }
 
   handler: Handler = (_upd, next) => {
@@ -1637,6 +1666,22 @@ export class Client extends ClientAbstract {
       }
     });
   }
+
+  /**
+   * Answer a callback query. Bot-only.
+   *
+   * @param id ID of the callback query to answer.
+   */
+  async answerCallbackQuery(id: string, params?: AnswerCallbackQueryParams) {
+    await this.invoke(
+      new functions.MessagesSetBotCallbackAnswer({
+        queryId: BigInt(id),
+        cacheTime: params?.cacheTime ?? 0,
+        message: params?.text,
+        alert: params?.alert ? true : undefined,
+      }),
+    );
+  }
 }
 
 const resolve = () => Promise.resolve();
@@ -1647,7 +1692,7 @@ export type ConnectionState = "not-connected" | "updating" | "ready";
 
 export type AuthorizationState = { authorized: boolean };
 
-type FilterableUpdates = "message" | "editedMessage";
+type FilterableUpdates = "message" | "editedMessage" | "callbackQuery";
 
 export interface Update {
   message: Message;
@@ -1655,6 +1700,7 @@ export interface Update {
   connectionState: ConnectionState;
   authorizationState: AuthorizationState;
   deletedMessages: [Message, ...Message[]];
+  callbackQuery: CallbackQuery;
 }
 
 export interface Handler<U extends Partial<Update> = Partial<Update>> {
