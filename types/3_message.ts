@@ -27,6 +27,7 @@ import { constructPoll, Poll } from "./1_poll.ts";
 import { constructVenue, Venue } from "./0_venue.ts";
 import { constructLocation, Location } from "./0_location.ts";
 import { ZERO_CHANNEL_ID } from "../constants.ts";
+import { EntityGetter } from "./!0_misc.ts";
 
 const d = debug("types/Message");
 
@@ -160,13 +161,11 @@ export interface Message {
   videoChatEnded?: { duration: number };
 }
 
-interface EntityGetter {
-  (peer: types.PeerUser): MaybePromise<types.User | null>;
-  (peer: types.PeerChat): MaybePromise<types.Chat | null>;
-  (peer: types.PeerChannel): MaybePromise<types.Channel | null>;
+export interface MessageGetter<O extends keyof Message | null = null> {
+  (chatId: number, messageId: number): MaybePromise<(O extends null ? Message : Omit<Message, "replyToMessage">) | null>;
 }
 
-type MessageGetter = { (chatId: number, messageId: number): MaybePromise<Omit<Message, "replyToMessage"> | null> } | null;
+type Message_MessageGetter = MessageGetter<"replyToMessage"> | null;
 
 async function getSender(message_: types.Message | types.MessageService, getEntity: EntityGetter) {
   if (message_.fromId instanceof types.PeerUser) {
@@ -186,7 +185,7 @@ async function getSender(message_: types.Message | types.MessageService, getEnti
   }
 }
 
-async function getReply(message_: types.Message | types.MessageService, chat: Chat, getMessage: MessageGetter) {
+async function getReply(message_: types.Message | types.MessageService, chat: Chat, getMessage: Message_MessageGetter) {
   if (getMessage && message_.replyTo instanceof types.MessageReplyHeader) {
     let isTopicMessage = false;
     if (message_.replyTo.forumTopic) {
@@ -203,7 +202,7 @@ async function getReply(message_: types.Message | types.MessageService, chat: Ch
   return { replyToMessage: undefined, threadId: undefined, isTopicMessage: undefined };
 }
 
-async function constructServiceMessage(message_: types.MessageService, chat: Chat, getEntity: EntityGetter, getMessage: MessageGetter) {
+async function constructServiceMessage(message_: types.MessageService, chat: Chat, getEntity: EntityGetter, getMessage: Message_MessageGetter) {
   const message: Message = {
     out: message_.out ?? false,
     id: message_.id,
@@ -305,7 +304,7 @@ async function constructServiceMessage(message_: types.MessageService, chat: Cha
 export async function constructMessage(
   message_: types.TypeMessage,
   getEntity: EntityGetter,
-  getMessage: MessageGetter,
+  getMessage: Message_MessageGetter,
   getStickerSetName: StickerSetNameGetter,
 ) {
   if (!(message_ instanceof types.Message) && !(message_ instanceof types.MessageService)) {
