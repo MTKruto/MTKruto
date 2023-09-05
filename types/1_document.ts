@@ -1,7 +1,7 @@
 import * as types from "../tl/2_types.ts";
 import { constructThumbnail, Thumbnail } from "./0_thumbnail.ts";
 
-/** This object represents a general file (as opposed to [photos](https://corefork.telegram.org/bots/api#photosize), [voice messages](https://corefork.telegram.org/bots/api#voice) and [audio files](https://corefork.telegram.org/bots/api#audio)). */
+/** This object represents a general file (as opposed to photos, voice messages and audio files). */
 export interface Document {
   /** Identifier for this file, which can be used to download or reuse the file */
   fileId: string;
