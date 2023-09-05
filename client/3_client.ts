@@ -93,6 +93,17 @@ export interface ClientParams extends ClientPlainParams {
   autoStart?: boolean;
 }
 
+export interface AnswerCallbackQueryParams {
+  /** Text of the answer */
+  text?: string;
+  /** Pass true to show an alert to the user instead of a toast notification */
+  alert?: boolean;
+  /** URL to be opened */
+  url?: string;
+  /** Time during which the result of the query can be cached, in seconds */
+  cacheTime?: number;
+}
+
 /**
  * A chat identifier as provided by MTKruto or a string starting with a @ that is followed by a username.
  */
@@ -128,11 +139,11 @@ export interface SendMessagesParams {
    */
   messageThreadId?: number;
   /**
-   * The identifier of the chat to send the message on behalf of.
+   * The identifier of the chat to send the message on behalf of. User-only.
    */
   sendAs?: ChatID;
   /**
-   * The reply markup of the message.
+   * The reply markup of the message. Bot-only.
    */
   replyMarkup?: InlineKeyboardMarkup | ReplyKeyboardMarkup | ReplyKeyboardRemove | ForceReply;
 }
@@ -151,7 +162,7 @@ export interface EditMessageParams {
    */
   disableWebPagePreview?: boolean;
   /**
-   * The reply markup of the message.
+   * The reply markup of the message. Bot-only.
    */
   replyMarkup?: InlineKeyboardMarkup | ReplyKeyboardMarkup | ReplyKeyboardRemove | ForceReply;
 }
@@ -167,7 +178,7 @@ export interface ForwardMessagesParams {
    */
   protectContent?: boolean;
   /**
-   * The identifier of the chat to forward the message on behalf of.
+   * The identifier of the chat to forward the message on behalf of. User-only.
    */
   sendAs?: ChatID;
   /**
@@ -1654,6 +1665,22 @@ export class Client extends ClientAbstract {
         return next();
       }
     });
+  }
+
+  /**
+   * Answer a callback query. Bot-only.
+   *
+   * @param id ID of the callback query to answer.
+   */
+  async answerCallbackQuery(id: string, params?: AnswerCallbackQueryParams) {
+    await this.invoke(
+      new functions.MessagesSetBotCallbackAnswer({
+        queryId: BigInt(id),
+        cacheTime: params?.cacheTime ?? 0, // Default value?
+        message: params?.text,
+        alert: params?.alert ? true : undefined,
+      }),
+    );
   }
 }
 
