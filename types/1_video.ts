@@ -5,7 +5,7 @@ import { constructThumbnail, Thumbnail } from "./0_thumbnail.ts";
 export interface Video {
   /** Identifier for this file, which can be used to download or reuse the file */
   fileId: string;
-  /** Unique identifier for this file, which is supposed to be the same over time and for different bots. Can't be used to download or reuse the file. */
+  /** Unique identifier for this file, which is supposed to be the same over time and for different users and bots. Can't be used to download or reuse the file. */
   fileUniqueId: string;
   /** Video width as defined by sender */
   width: number;

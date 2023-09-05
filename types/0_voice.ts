@@ -4,7 +4,7 @@ import * as types from "../tl/2_types.ts";
 export interface Voice {
   /** Identifier for this file, which can be used to download or reuse the file */
   fileId: string;
-  /** Unique identifier for this file, which is supposed to be the same over time and for different bots. Can't be used to download or reuse the file. */
+  /** Unique identifier for this file, which is supposed to be the same over time and for different users and bots. Can't be used to download or reuse the file. */
   fileUniqueId: string;
   /** Duration of the audio in seconds as defined by sender */
   duration: number;
