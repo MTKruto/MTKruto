@@ -277,11 +277,11 @@ export class Client extends ClientAbstract {
    * Before establishing the connection, the session is saved.
    */
   async connect() {
+    if (this.connected) {
+      return;
+    }
     const release = await this.connectMutex.acquire();
     try {
-      if (this.connected) {
-        return;
-      }
       if (!this.storageInited) {
         await this.storage.init();
         this.storageInited = true;
@@ -365,6 +365,14 @@ export class Client extends ClientAbstract {
     }
   }
 
+  private lastPropagatedAuthorizationState: boolean | null = null;
+  private async propagateAuthorizationState(authorized: boolean) {
+    if (this.lastPropagatedAuthorizationState != authorized) {
+      await this.handler({ authorizationState: { authorized } }, resolve);
+      this.lastPropagatedAuthorizationState = authorized;
+    }
+  }
+
   /**
    * Calls [initConnection](1) and authorizes the client with one of the following:
    *
@@ -405,6 +413,7 @@ export class Client extends ClientAbstract {
 
     try {
       await this.fetchState("authorize");
+      await this.propagateAuthorizationState(true);
       d("already authorized");
       return;
     } catch (err) {
@@ -435,6 +444,7 @@ export class Client extends ClientAbstract {
         }
       }
       dAuth("authorized as bot");
+      await this.propagateAuthorizationState(true);
       await this.fetchState("authorize");
       return;
     }
@@ -499,6 +509,7 @@ export class Client extends ClientAbstract {
         );
         await this.storage.setAccountType("user");
         dAuth("authorized as user");
+        await this.propagateAuthorizationState(true);
         await this.fetchState("authorize");
         return;
       } catch (err_) {
@@ -527,6 +538,7 @@ export class Client extends ClientAbstract {
         await this.invoke(new functions.AuthCheckPassword({ password: input }));
         await this.storage.setAccountType("user");
         dAuth("authorized as user");
+        await this.propagateAuthorizationState(true);
         await this.fetchState("authorize");
         break;
       } catch (err) {
@@ -549,6 +561,7 @@ export class Client extends ClientAbstract {
     try {
       await this.fetchState("authorize");
       d("already authorized");
+      await this.propagateAuthorizationState(true);
       return;
     } catch (err) {
       if (!(err instanceof types.RPCError) || err.errorMessage != "AUTH_KEY_UNREGISTERED") {
@@ -714,9 +727,18 @@ export class Client extends ClientAbstract {
       return;
     }
 
-    const result = await new Promise<ReadObject>((resolve, reject) => {
-      this.promises.set(message.id, { resolve, reject });
-    });
+    let result;
+
+    try {
+      result = await new Promise<ReadObject>((resolve, reject) => {
+        this.promises.set(message.id, { resolve, reject });
+      });
+    } catch (err) {
+      if (err instanceof types.RPCError && err.errorMessage == "AUTH_KEY_UNREGISTERED") {
+        await this.propagateAuthorizationState(false);
+      }
+      throw err;
+    }
 
     if (result instanceof types.BadServerSalt) {
       return await this.invoke(function_) as T;
@@ -1591,8 +1613,7 @@ export class Client extends ClientAbstract {
   }
 
   on<U extends keyof Update, K extends keyof Update[U]>(
-    // deno-lint-ignore no-explicit-any
-    filter: Update[U] extends string ? U : Update[U] extends Array<any> ? U : U | [U, ...K[]],
+    filter: U extends FilterableUpdates ? U | [U, K, ...K[]] : U,
     handler: Handler<Pick<{ [P in U]: With<Update[U], K> }, U>>,
   ) {
     const type = typeof filter === "string" ? filter : filter[0];
@@ -1624,10 +1645,15 @@ type With<T, K extends keyof T> = T & Required<Pick<T, K>>;
 
 export type ConnectionState = "not-connected" | "updating" | "ready";
 
+export type AuthorizationState = { authorized: boolean };
+
+type FilterableUpdates = "message" | "editedMessage";
+
 export interface Update {
   message: Message;
   editedMessage: Message;
   connectionState: ConnectionState;
+  authorizationState: AuthorizationState;
   deletedMessages: [Message, ...Message[]];
 }
 
