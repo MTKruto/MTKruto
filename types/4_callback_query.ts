@@ -1,7 +1,5 @@
-import { UNREACHABLE } from "../utilities/0_control.ts";
-import { cleanObject } from "../utilities/0_object.ts";
-import * as types from "../tl/2_types.ts";
-import { peerToChatId } from "../tl/3_utilities.ts";
+import { cleanObject, UNREACHABLE } from "../1_utilities.ts";
+import { peerToChatId, types } from "../2_tl.ts";
 import { EntityGetter } from "./!0_misc.ts";
 import { constructUser, User } from "./1_user.ts";
 import { Message, MessageGetter } from "./3_message.ts";

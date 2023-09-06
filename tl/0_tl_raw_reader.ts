@@ -1,4 +1,4 @@
-import { bigIntFromBuffer } from "../utilities/0_bigint.ts";
+import { bigIntFromBuffer } from "../1_utilities.ts";
 
 export class TLError extends Error {
   //

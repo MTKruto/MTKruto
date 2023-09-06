@@ -1,4 +1,4 @@
-import * as types from "../tl/2_types.ts";
+import { types } from "../2_tl.ts";
 import { constructKeyboardButton, KeyboardButton, keyboardButtonToTlObject } from "./1_keyboard_button.ts";
 
 /** This object represents a custom keyboard with reply options. */

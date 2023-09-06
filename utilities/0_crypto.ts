@@ -1,4 +1,4 @@
-import { ctr256Decrypt, ctr256Encrypt } from "../deps.ts";
+import { ctr256Decrypt, ctr256Encrypt } from "../0_deps.ts";
 
 export class CTR {
   state = new Uint8Array(1);

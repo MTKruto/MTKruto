@@ -1,4 +1,4 @@
-import * as types from "../tl/2_types.ts";
+import { types } from "../2_tl.ts";
 import { FileID, FileType, FileUniqueID, FileUniqueType, ThumbnailSource } from "./!0_file_id.ts";
 
 /** This object represents thumbnail of a file or a sticker. */

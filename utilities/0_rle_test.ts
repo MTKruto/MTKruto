@@ -1,4 +1,4 @@
-import { assertEquals } from "../deps.ts";
+import { assertEquals } from "../0_deps.ts";
 import { rleDecode, rleEncode } from "./0_rle.ts";
 
 Deno.test("rleEncode", () => {

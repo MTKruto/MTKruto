@@ -1,5 +1,4 @@
-import { Connection } from "../connection/0_connection.ts";
-import { ConnectionWebSocket } from "../connection/1_connection_web_socket.ts";
+import { Connection, ConnectionWebSocket } from "../2_connection.ts";
 import { Transport } from "./0_transport.ts";
 import { TransportIntermediate } from "./1_transport_intermediate.ts";
 

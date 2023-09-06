@@ -1,4 +1,4 @@
-import { MaybePromise } from "../utilities/0_types.ts";
+import { MaybePromise } from "../1_utilities.ts";
 import { Storage, StorageKeyPart } from "./0_storage.ts";
 import { fromString, toString } from "./0_utilities.ts";
 
