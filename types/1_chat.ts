@@ -1,7 +1,7 @@
 import { cleanObject, UNREACHABLE } from "../1_utilities.ts";
 import { types } from "../2_tl.ts";
 import { ZERO_CHANNEL_ID } from "../4_constants.ts";
-import { getIdColor } from "./!0_id_color.ts";
+import { Color, getColor } from "./0_color.ts";
 import { ChatPhoto, constructChatPhoto } from "./0_chat_photo.ts";
 
 export enum ChatType {
@@ -17,7 +17,7 @@ export declare namespace Chat {
     type: ChatType;
     /** Unique identifier for this chat */
     id: number;
-    idColor: string;
+    color: Color;
     /** Chat photo. */
     photo?: ChatPhoto;
   }
@@ -111,7 +111,7 @@ export function constructChat(chat: types.User | types.Chat | types.Channel): Ch
       type: ChatType.Private,
       isBot: chat.bot || false,
       id,
-      idColor: getIdColor(id),
+      color: getColor(id),
       firstName: chat.firstName || "",
       lastName: chat.lastName,
       isScam: chat.scam || false,
@@ -135,7 +135,7 @@ export function constructChat(chat: types.User | types.Chat | types.Channel): Ch
     const chat_: Chat.Group = {
       type: ChatType.Group,
       id,
-      idColor: getIdColor(id),
+      color: getColor(id),
       title: chat.title,
       isCreator: chat.creator || false,
     };
@@ -158,7 +158,7 @@ export function constructChat(chat: types.User | types.Chat | types.Channel): Ch
     if (chat.megagroup) {
       chat_ = {
         id,
-        idColor: getIdColor(id),
+        color: getColor(id),
         type: ChatType.Supergroup,
         title,
         isScam,
@@ -171,7 +171,7 @@ export function constructChat(chat: types.User | types.Chat | types.Channel): Ch
       const id = ZERO_CHANNEL_ID + -Number(chat.id);
       chat_ = {
         id,
-        idColor: getIdColor(id),
+        color: getColor(id),
         type: ChatType.Channel,
         title,
         isScam,
