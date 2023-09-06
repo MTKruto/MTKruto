@@ -1,9 +1,8 @@
 import { debug, gunzip, Mutex } from "../deps.ts";
 import { ACK_THRESHOLD, APP_VERSION, CHANNEL_DIFFERENCE_LIMIT_BOT, CHANNEL_DIFFERENCE_LIMIT_USER, DEVICE_MODEL, LANG_CODE, LANG_PACK, LAYER, MAX_CHANNEL_ID, MAX_CHAT_ID, PublicKeys, STICKER_SET_NAME_TTL, SYSTEM_LANG_CODE, SYSTEM_VERSION, USERNAME_TTL, ZERO_CHANNEL_ID } from "../constants.ts";
-import { drop, mustPrompt, mustPromptOneOf } from "../utilities/1_misc.ts";
-import {} from "../utilities/0_bigint.ts";
+import {} from "../utilities/1_misc.ts";
 import { getChannelChatId, peerToChatId, TLError } from "../tl.ts";
-import { bigIntFromBuffer, getRandomBigInt, getRandomId, MaybePromise, Queue, sha1, UNREACHABLE } from "../utilities.ts";
+import { bigIntFromBuffer, drop, getRandomBigInt, getRandomId, MaybePromise, mustPrompt, mustPromptOneOf, Queue, sha1, UNREACHABLE } from "../utilities.ts";
 import { DC } from "../transport.ts";
 import { as } from "../tl/1_tl_object.ts";
 import * as types from "../tl/2_types.ts";

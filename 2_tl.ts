@@ -1,4 +1,5 @@
 export { TLError } from "./tl/0_tl_raw_reader.ts";
+export * from "./tl/1_tl_object.ts";
 export * as types from "./tl/2_types.ts";
 export * as functions from "./tl/3_functions.ts";
 export * from "./tl/3_tl_reader.ts";
