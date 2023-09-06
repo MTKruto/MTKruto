@@ -1,15 +1,10 @@
 import { debug, gunzip, Mutex } from "../deps.ts";
 import { ACK_THRESHOLD, APP_VERSION, CHANNEL_DIFFERENCE_LIMIT_BOT, CHANNEL_DIFFERENCE_LIMIT_USER, DEVICE_MODEL, LANG_CODE, LANG_PACK, LAYER, MAX_CHANNEL_ID, MAX_CHAT_ID, PublicKeys, STICKER_SET_NAME_TTL, SYSTEM_LANG_CODE, SYSTEM_VERSION, USERNAME_TTL, ZERO_CHANNEL_ID } from "../constants.ts";
 import { drop, mustPrompt, mustPromptOneOf } from "../utilities/1_misc.ts";
-import { bigIntFromBuffer, getRandomBigInt, getRandomId } from "../utilities/0_bigint.ts";
-import { hasChannelPts, hasPts } from "./0_utilities.ts";
-import { getChannelChatId, peerToChatId } from "../tl/3_utilities.ts";
-import { UNREACHABLE } from "../utilities/0_control.ts";
-import { MaybePromise } from "../utilities/0_types.ts";
-import { Queue } from "../utilities/0_queue.ts";
-import { sha1 } from "../utilities/0_hash.ts";
-import { DC } from "../transport/2_transport_provider.ts";
-import { TLError } from "../tl/0_tl_raw_reader.ts";
+import {} from "../utilities/0_bigint.ts";
+import { getChannelChatId, peerToChatId, TLError } from "../tl.ts";
+import { bigIntFromBuffer, getRandomBigInt, getRandomId, MaybePromise, Queue, sha1, UNREACHABLE } from "../utilities.ts";
+import { DC } from "../transport.ts";
 import { as } from "../tl/1_tl_object.ts";
 import * as types from "../tl/2_types.ts";
 import { ReadObject, TLReader } from "../tl/3_tl_reader.ts";
@@ -17,23 +12,36 @@ import * as functions from "../tl/3_functions.ts";
 import { RPCResult } from "../tl/5_rpc_result.ts";
 import { Message as Message_ } from "../tl/6_message.ts"; // MTProto API message
 import { MessageContainer } from "../tl/7_message_container.ts";
-import { FileID, FileType, ThumbnailSource } from "../types/!0_file_id.ts";
-import { ReplyKeyboardRemove, replyKeyboardRemoveToTlObject } from "../types/0_reply_keyboard_remove.ts";
-import { MessageEntity, messageEntityToTlObject } from "../types/0_message_entity.ts";
-import { ForceReply, forceReplyToTlObject } from "../types/0_force_reply.ts";
-import { constructUser } from "../types/1_user.ts";
-import { InlineKeyboardMarkup, inlineKeyboardMarkupToTlObject } from "../types/2_inline_keyboard_markup.ts";
-import { ReplyKeyboardMarkup, replyKeyboardMarkupToTlObject } from "../types/2_reply_keyboard_markup.ts";
-import { constructMessage, Message } from "../types/3_message.ts"; // high-level wrapper for Telegram API's message
 import { Storage } from "../storage/0_storage.ts";
 import { StorageMemory } from "../storage/1_storage_memory.ts";
+import {
+  CallbackQuery,
+  constructCallbackQuery,
+  constructInlineQuery,
+  constructMessage,
+  constructUser,
+  FileID,
+  FileType,
+  ForceReply,
+  forceReplyToTlObject,
+  InlineKeyboardMarkup,
+  inlineKeyboardMarkupToTlObject,
+  InlineQuery,
+  Message, // high-level Telegram API message
+  MessageEntity,
+  messageEntityToTlObject,
+  ReplyKeyboardMarkup,
+  replyKeyboardMarkupToTlObject,
+  ReplyKeyboardRemove,
+  replyKeyboardRemoveToTlObject,
+  ThumbnailSource,
+} from "../types.ts";
+import { hasChannelPts, hasPts } from "./0_utilities.ts";
 import { decryptMessage, encryptMessage, getMessageId } from "./0_message.ts";
 import { checkPassword } from "./0_password.ts";
 import { parseHtml } from "./0_html.ts";
 import { ClientPlain, ClientPlainParams } from "./2_client_plain.ts";
 import { ClientAbstract } from "./1_client_abstract.ts";
-import { CallbackQuery, constructCallbackQuery } from "../types/4_callback_query.ts";
-import { constructInlineQuery, InlineQuery } from "../types/2_inline_query.ts";
 
 const d = debug("Client");
 const dGap = debug("Client/recoverUpdateGap");
