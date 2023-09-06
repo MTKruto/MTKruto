@@ -1,7 +1,7 @@
-import { initTgCrypto } from "../deps.ts";
-import { INITIAL_DC } from "../constants.ts";
-import { MaybePromise } from "../utilities/0_types.ts";
-import { DC, TransportProvider, webSocketTransportProvider } from "../transport/2_transport_provider.ts";
+import { initTgCrypto } from "../0_deps.ts";
+import { MaybePromise } from "../1_utilities.ts";
+import { DC, TransportProvider, webSocketTransportProvider } from "../3_transport.ts";
+import { INITIAL_DC } from "../4_constants.ts";
 
 export interface ClientAbstractParams {
   /**

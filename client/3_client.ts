@@ -1,18 +1,20 @@
-import { debug, gunzip, Mutex } from "../deps.ts";
-import { ACK_THRESHOLD, APP_VERSION, CHANNEL_DIFFERENCE_LIMIT_BOT, CHANNEL_DIFFERENCE_LIMIT_USER, DEVICE_MODEL, LANG_CODE, LANG_PACK, LAYER, MAX_CHANNEL_ID, MAX_CHAT_ID, PublicKeys, STICKER_SET_NAME_TTL, SYSTEM_LANG_CODE, SYSTEM_VERSION, USERNAME_TTL, ZERO_CHANNEL_ID } from "../constants.ts";
-import {} from "../utilities/1_misc.ts";
-import { getChannelChatId, peerToChatId, TLError } from "../tl.ts";
-import { bigIntFromBuffer, drop, getRandomBigInt, getRandomId, MaybePromise, mustPrompt, mustPromptOneOf, Queue, sha1, UNREACHABLE } from "../utilities.ts";
-import { DC } from "../transport.ts";
-import { as } from "../tl/1_tl_object.ts";
-import * as types from "../tl/2_types.ts";
-import { ReadObject, TLReader } from "../tl/3_tl_reader.ts";
-import * as functions from "../tl/3_functions.ts";
-import { RPCResult } from "../tl/5_rpc_result.ts";
-import { Message as Message_ } from "../tl/6_message.ts"; // MTProto API message
-import { MessageContainer } from "../tl/7_message_container.ts";
-import { Storage } from "../storage/0_storage.ts";
-import { StorageMemory } from "../storage/1_storage_memory.ts";
+import { debug, gunzip, Mutex } from "../0_deps.ts";
+import { bigIntFromBuffer, drop, getRandomBigInt, getRandomId, MaybePromise, mustPrompt, mustPromptOneOf, Queue, sha1, UNREACHABLE } from "../1_utilities.ts";
+import {
+  as,
+  functions,
+  getChannelChatId,
+  Message as Message_, // MTProto API message
+  MessageContainer,
+  peerToChatId,
+  ReadObject,
+  RPCResult,
+  TLError,
+  TLReader,
+  types,
+} from "../2_tl.ts";
+import { Storage, StorageMemory } from "../3_storage.ts";
+import { DC } from "../3_transport.ts";
 import {
   CallbackQuery,
   constructCallbackQuery,
@@ -34,7 +36,8 @@ import {
   ReplyKeyboardRemove,
   replyKeyboardRemoveToTlObject,
   ThumbnailSource,
-} from "../types.ts";
+} from "../3_types.ts";
+import { ACK_THRESHOLD, APP_VERSION, CHANNEL_DIFFERENCE_LIMIT_BOT, CHANNEL_DIFFERENCE_LIMIT_USER, DEVICE_MODEL, LANG_CODE, LANG_PACK, LAYER, MAX_CHANNEL_ID, MAX_CHAT_ID, PublicKeys, STICKER_SET_NAME_TTL, SYSTEM_LANG_CODE, SYSTEM_VERSION, USERNAME_TTL, ZERO_CHANNEL_ID } from "../4_constants.ts";
 import { hasChannelPts, hasPts } from "./0_utilities.ts";
 import { decryptMessage, encryptMessage, getMessageId } from "./0_message.ts";
 import { checkPassword } from "./0_password.ts";

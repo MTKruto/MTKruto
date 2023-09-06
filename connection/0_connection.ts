@@ -1,4 +1,4 @@
-import { MaybePromise } from "../utilities/0_types.ts";
+import { MaybePromise } from "../1_utilities.ts";
 
 abstract class Foundation {
   abstract get connected(): boolean;

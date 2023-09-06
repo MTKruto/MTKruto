@@ -1,4 +1,4 @@
-import { debug, Mutex } from "../deps.ts";
+import { debug, Mutex } from "../0_deps.ts";
 import { ConnectionUnframed } from "./0_connection.ts";
 
 const d = debug("ConnectionWebSocket");
