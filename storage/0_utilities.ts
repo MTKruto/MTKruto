@@ -1,5 +1,5 @@
-import { base64Decode, base64Encode } from "../deps.ts";
-import { UNREACHABLE } from "../utilities/0_control.ts";
+import { base64Decode, base64Encode } from "../0_deps.ts";
+import { UNREACHABLE } from "../1_utilities.ts";
 import { StorageKeyPart } from "./0_storage.ts";
 
 export enum ValueType {

@@ -1,4 +1,4 @@
-import { assert, assertEquals, ige256Encrypt } from "../deps.ts";
+import { assert, assertEquals, ige256Encrypt } from "../0_deps.ts";
 import { bigIntFromBuffer, modExp } from "./0_bigint.ts";
 import { bufferFromBigInt, concat } from "./0_buffer.ts";
 import { sha256 } from "./0_hash.ts";

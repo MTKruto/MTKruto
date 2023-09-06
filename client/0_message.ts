@@ -1,13 +1,6 @@
-import { assertEquals, ige256Decrypt, ige256Encrypt } from "../deps.ts";
-import { TLRawReader } from "../tl/0_tl_raw_reader.ts";
-import { TLRawWriter } from "../tl/0_tl_raw_writer.ts";
-import { id, serialize, TLObject } from "../tl/1_tl_object.ts";
-import { TLReader } from "../tl/3_tl_reader.ts";
-import { RPCResult } from "../tl/5_rpc_result.ts";
-import { Message } from "../tl/6_message.ts";
-import { MessageContainer } from "../tl/7_message_container.ts";
-import { bufferFromBigInt, concat } from "../utilities/0_buffer.ts";
-import { sha256 } from "../utilities/0_hash.ts";
+import { assertEquals, ige256Decrypt, ige256Encrypt } from "../0_deps.ts";
+import { bufferFromBigInt, concat, sha256 } from "../1_utilities.ts";
+import { id, Message, MessageContainer, RPCResult, serialize, TLObject, TLReader, TLWriter } from "../2_tl.ts";
 
 export function getMessageId(lastMsgId: bigint) {
   const now = new Date().getTime() / 1000 + 0;
@@ -22,7 +15,7 @@ export function getMessageId(lastMsgId: bigint) {
 }
 
 export function packUnencryptedMessage(data: Uint8Array, messageId: bigint) {
-  const writer = new TLRawWriter();
+  const writer = new TLWriter();
   writer.writeInt64(0n); // auth key
   writer.writeInt64(messageId);
   writer.writeInt32(data.length);
@@ -30,7 +23,7 @@ export function packUnencryptedMessage(data: Uint8Array, messageId: bigint) {
   return writer.buffer;
 }
 export function unpackUnencryptedMessage(buffer: Uint8Array) {
-  const reader = new TLRawReader(buffer);
+  const reader = new TLReader(buffer);
   const _authKeyId = reader.readInt64();
   const messageId = reader.readInt64();
   const messageLength = reader.readInt32();
@@ -42,7 +35,7 @@ export function unpackUnencryptedMessage(buffer: Uint8Array) {
 export async function encryptMessage(message: Message, authKey: Uint8Array, authKeyId: bigint, salt: bigint, sessionId: bigint) {
   const encoded = (message.body as TLObject)[serialize]();
 
-  const payloadWriter = new TLRawWriter();
+  const payloadWriter = new TLWriter();
 
   payloadWriter.writeInt64(salt);
   payloadWriter.writeInt64(sessionId);
@@ -68,7 +61,7 @@ export async function encryptMessage(message: Message, authKey: Uint8Array, auth
   const aesKey = concat(a.slice(0, 8), b.slice(8, 24), a.slice(24, 32));
   const aesIV = concat(b.slice(0, 8), a.slice(8, 24), b.slice(24, 32));
 
-  const messageWriter = new TLRawWriter();
+  const messageWriter = new TLWriter();
 
   messageWriter.writeInt64(authKeyId);
   messageWriter.write(messageKey);

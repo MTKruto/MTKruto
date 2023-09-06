@@ -1,5 +1,4 @@
-import { MaybePromise } from "../utilities/0_types.ts";
-import { CTR } from "../utilities/0_crypto.ts";
+import { CTR, MaybePromise } from "../1_utilities.ts";
 
 export abstract class Transport {
   protected initialized = false;

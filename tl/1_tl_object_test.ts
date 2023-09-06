@@ -1,4 +1,4 @@
-import { assert, assertEquals, assertFalse, assertThrows } from "../deps.ts";
+import { assert, assertEquals, assertFalse, assertThrows } from "../0_deps.ts";
 import { analyzeOptionalParam, flags, id, isOptionalParam, ParamDesc, paramDesc, Params, params, serialize, TLObject } from "./1_tl_object.ts";
 
 Deno.test("isOptionalParam", () => {

@@ -1,4 +1,4 @@
-import { debug } from "../deps.ts";
+import { debug } from "../0_deps.ts";
 
 export class Queue {
   private d: ReturnType<typeof debug>;

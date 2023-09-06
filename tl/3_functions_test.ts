@@ -1,6 +1,6 @@
+import { assert } from "../0_deps.ts";
 import { TLObject } from "./1_tl_object.ts";
 import { Function, Ping } from "./3_functions.ts";
-import { assert } from "../deps.ts";
 
 Deno.test("instanceof", () => {
   const ping = new Ping({ pingId: 0xFFn });

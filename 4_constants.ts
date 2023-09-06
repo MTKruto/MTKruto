@@ -1,4 +1,4 @@
-import { DC } from "./transport/2_transport_provider.ts";
+import { DC } from "./3_transport.ts";
 
 export const ACK_THRESHOLD = 10;
 

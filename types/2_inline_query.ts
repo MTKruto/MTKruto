@@ -1,8 +1,8 @@
-import * as types from "../tl/2_types.ts";
-import { constructUser, User } from "./1_user.ts";
-import { constructLocation, Location } from "./0_location.ts";
+import { UNREACHABLE } from "../1_utilities.ts";
+import { types } from "../2_tl.ts";
 import { EntityGetter } from "./!0_misc.ts";
-import { UNREACHABLE } from "../utilities/0_control.ts";
+import { constructLocation, Location } from "./0_location.ts";
+import { constructUser, User } from "./1_user.ts";
 
 export interface InlineQuery {
   /** Unique identifier for this query */

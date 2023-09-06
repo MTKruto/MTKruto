@@ -1,5 +1,5 @@
-import { MaybePromise } from "../utilities/0_types.ts";
-import * as types from "../tl/2_types.ts";
+import { MaybePromise } from "../1_utilities.ts";
+import { types } from "../2_tl.ts";
 
 export interface EntityGetter {
   (peer: types.PeerUser): MaybePromise<types.User | null>;

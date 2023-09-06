@@ -1,4 +1,4 @@
-import { assert, assertEquals } from "../deps.ts";
+import { assert, assertEquals } from "../0_deps.ts";
 import { bigIntFromBuffer, getRandomBigInt, getRandomId, mod, modExp } from "./0_bigint.ts";
 
 Deno.test("modExp", () => {

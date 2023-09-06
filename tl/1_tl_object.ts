@@ -1,4 +1,4 @@
-import { assertEquals, assertFalse } from "../deps.ts";
+import { assertEquals, assertFalse } from "../0_deps.ts";
 import { TLRawWriter } from "./0_tl_raw_writer.ts";
 
 type MaybeArrayOf<T> = T | T[];

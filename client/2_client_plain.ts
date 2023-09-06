@@ -1,14 +1,7 @@
-import { assertEquals, assertInstanceOf, debug, factorize, ige256Decrypt, ige256Encrypt } from "../deps.ts";
-import { PUBLIC_KEYS, PublicKeys } from "../constants.ts";
-import { bigIntFromBuffer, getRandomBigInt, modExp } from "../utilities/0_bigint.ts";
-import { bufferFromBigInt, concat } from "../utilities/0_buffer.ts";
-import { UNREACHABLE } from "../utilities/0_control.ts";
-import { sha1 } from "../utilities/0_hash.ts";
-import { rsaPad } from "../utilities/1_auth.ts";
-import { serialize } from "../tl/1_tl_object.ts";
-import { ClientDHInnerData, DHGenOK, PQInnerDataDC, ResPQ, ServerDHInnerData, ServerDHParamsOK } from "../tl/2_types.ts";
-import { Function, ReqDHParams, ReqPQMulti, SetClientDHParams } from "../tl/3_functions.ts";
-import { TLReader } from "../tl/3_tl_reader.ts";
+import { assertEquals, assertInstanceOf, debug, factorize, ige256Decrypt, ige256Encrypt } from "../0_deps.ts";
+import { bigIntFromBuffer, bufferFromBigInt, concat, getRandomBigInt, modExp, rsaPad, sha1, UNREACHABLE } from "../1_utilities.ts";
+import { functions, serialize, TLReader, types } from "../2_tl.ts";
+import { PUBLIC_KEYS, PublicKeys } from "../4_constants.ts";
 import { ClientAbstract, ClientAbstractParams } from "./1_client_abstract.ts";
 import { getMessageId, packUnencryptedMessage, unpackUnencryptedMessage } from "./0_message.ts";
 
@@ -30,7 +23,7 @@ export class ClientPlain extends ClientAbstract {
     this.publicKeys = params?.publicKeys ?? PUBLIC_KEYS;
   }
 
-  async invoke<T extends Function<unknown>>(function_: T): Promise<T["__R"]> {
+  async invoke<T extends functions.Function<unknown>>(function_: T): Promise<T["__R"]> {
     if (!this.transport) {
       throw new Error("Not connected");
     }
@@ -52,13 +45,13 @@ export class ClientPlain extends ClientAbstract {
     const nonce = getRandomBigInt(16, false, true);
     d("auth key creation started");
 
-    let resPq: ResPQ | null = null;
+    let resPq: types.ResPQ | null = null;
     for (let i = 0; i < 10; i++) {
       try {
         d("req_pq_multi [%d]", i + 1);
-        resPq = await this.invoke(new ReqPQMulti({ nonce }));
+        resPq = await this.invoke(new functions.ReqPQMulti({ nonce }));
 
-        assertInstanceOf(resPq, ResPQ);
+        assertInstanceOf(resPq, types.ResPQ);
         assertEquals(resPq.nonce, nonce);
         d("got res_pq");
         break;
@@ -97,7 +90,7 @@ export class ClientPlain extends ClientAbstract {
     const serverNonce = resPq.serverNonce;
     const newNonce = getRandomBigInt(32, false, true);
     let encryptedData = await rsaPad(
-      new PQInnerDataDC({
+      new types.PQInnerDataDC({
         pq,
         p,
         q,
@@ -110,7 +103,7 @@ export class ClientPlain extends ClientAbstract {
     );
 
     const dhParams = await this.invoke(
-      new ReqDHParams({
+      new functions.ReqDHParams({
         nonce,
         serverNonce,
         p,
@@ -120,7 +113,7 @@ export class ClientPlain extends ClientAbstract {
       }),
     );
 
-    assertInstanceOf(dhParams, ServerDHParamsOK);
+    assertInstanceOf(dhParams, types.ServerDHParamsOK);
     d("got server_DH_params_ok");
 
     const newNonce_ = bufferFromBigInt(newNonce, 32, true, true);
@@ -130,7 +123,7 @@ export class ClientPlain extends ClientAbstract {
     const answerWithHash = ige256Decrypt(dhParams.encryptedAnswer, tmpAesKey, tmpAesIv);
 
     const dhInnerData = new TLReader(answerWithHash.slice(20)).readObject();
-    assertInstanceOf(dhInnerData, ServerDHInnerData);
+    assertInstanceOf(dhInnerData, types.ServerDHInnerData);
     const { g, gA: gA_, dhPrime: dhPrime_ } = dhInnerData;
     const gA = bigIntFromBuffer(gA_, false, false);
     const dhPrime = bigIntFromBuffer(dhPrime_, false, false);
@@ -138,7 +131,7 @@ export class ClientPlain extends ClientAbstract {
     const b = getRandomBigInt(256, false, false);
     const gB = modExp(BigInt(g), b, dhPrime);
 
-    const data = new ClientDHInnerData({
+    const data = new types.ClientDHInnerData({
       nonce,
       serverNonce,
       retryId: 0n,
@@ -153,8 +146,8 @@ export class ClientPlain extends ClientAbstract {
 
     encryptedData = ige256Encrypt(dataWithHash, tmpAesKey, tmpAesIv);
 
-    const dhGenOk = await this.invoke(new SetClientDHParams({ nonce, serverNonce, encryptedData }));
-    assertInstanceOf(dhGenOk, DHGenOK);
+    const dhGenOk = await this.invoke(new functions.SetClientDHParams({ nonce, serverNonce, encryptedData }));
+    assertInstanceOf(dhGenOk, types.DHGenOK);
     d("got dh_gen_ok");
 
     const serverNonceSlice = serverNonce_.slice(0, 8);

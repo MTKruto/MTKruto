@@ -1,4 +1,4 @@
-import { bufferFromBigInt, concat } from "../utilities/0_buffer.ts";
+import { bufferFromBigInt, concat } from "../1_utilities.ts";
 
 export class TLRawWriter {
   protected _buffer = new Uint8Array();

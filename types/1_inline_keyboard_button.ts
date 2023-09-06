@@ -1,6 +1,5 @@
-import { UNREACHABLE } from "../utilities/0_control.ts";
-import { MaybePromise } from "../utilities/0_types.ts";
-import * as types from "../tl/2_types.ts";
+import { MaybePromise, UNREACHABLE } from "../1_utilities.ts";
+import { types } from "../2_tl.ts";
 import { constructWebAppInfo, WebAppInfo } from "./0_web_app_info.ts";
 import { LoginUrl } from "./0_login_url.ts";
 
