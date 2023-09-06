@@ -33,6 +33,7 @@ import { parseHtml } from "./0_html.ts";
 import { ClientPlain, ClientPlainParams } from "./2_client_plain.ts";
 import { ClientAbstract } from "./1_client_abstract.ts";
 import { CallbackQuery, constructCallbackQuery } from "../types/4_callback_query.ts";
+import { constructInlineQuery, InlineQuery } from "../types/2_inline_query.ts";
 
 const d = debug("Client");
 const dGap = debug("Client/recoverUpdateGap");
@@ -1622,6 +1623,8 @@ export class Client extends ClientAbstract {
 
     if (update instanceof types.UpdateBotCallbackQuery || update instanceof types.UpdateInlineBotCallbackQuery) {
       await this.handler({ callbackQuery: await constructCallbackQuery(update, this[getEntity].bind(this), this[getMessageWithReply].bind(this)) }, resolve);
+    } else if (update instanceof types.UpdateBotInlineQuery) {
+      await this.handler({ inlineQuery: await constructInlineQuery(update, this[getEntity].bind(this)) }, resolve);
     }
   }
 
@@ -1701,6 +1704,7 @@ export interface Update {
   authorizationState: AuthorizationState;
   deletedMessages: [Message, ...Message[]];
   callbackQuery: CallbackQuery;
+  inlineQuery: InlineQuery;
 }
 
 export interface Handler<U extends Partial<Update> = Partial<Update>> {
