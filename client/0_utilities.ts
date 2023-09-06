@@ -1,6 +1,6 @@
 import { types } from "../2_tl.ts";
 
-export function hasPts(v: types.TypeUpdate | types.TypeUpdates): v is
+export function isPtsUpdate(v: types.TypeUpdate | types.TypeUpdates): v is
   | types.UpdateShortMessage
   | types.UpdateShortChatMessage
   | types.UpdateShortSentMessage
@@ -31,7 +31,7 @@ export function hasPts(v: types.TypeUpdate | types.TypeUpdates): v is
     v instanceof types.UpdateWebPage;
 }
 
-export function hasChannelPts(v: types.TypeUpdate | types.TypeUpdates): v is
+export function isChannelPtsUpdate(v: types.TypeUpdate | types.TypeUpdates): v is
   | types.UpdateNewChannelMessage
   | types.UpdateEditChannelMessage
   | types.UpdateDeleteChannelMessages

@@ -38,7 +38,7 @@ import {
   ThumbnailSource,
 } from "../3_types.ts";
 import { ACK_THRESHOLD, APP_VERSION, CHANNEL_DIFFERENCE_LIMIT_BOT, CHANNEL_DIFFERENCE_LIMIT_USER, DEVICE_MODEL, LANG_CODE, LANG_PACK, LAYER, MAX_CHANNEL_ID, MAX_CHAT_ID, PublicKeys, STICKER_SET_NAME_TTL, SYSTEM_LANG_CODE, SYSTEM_VERSION, USERNAME_TTL, ZERO_CHANNEL_ID } from "../4_constants.ts";
-import { hasChannelPts, hasPts } from "./0_utilities.ts";
+import { isChannelPtsUpdate, isPtsUpdate } from "./0_utilities.ts";
 import { decryptMessage, encryptMessage, getMessageId } from "./0_message.ts";
 import { checkPassword } from "./0_password.ts";
 import { parseHtml } from "./0_html.ts";
@@ -873,7 +873,7 @@ export class Client extends ClientAbstract {
     let originalPts: number | null = null;
     const channelPtsMap = new Map<bigint, number>();
     for (const update of updates) {
-      if (hasPts(update)) {
+      if (isPtsUpdate(update)) {
         if (update.pts == 0) {
           continue;
         }
@@ -885,7 +885,7 @@ export class Client extends ClientAbstract {
         } else {
           localState.pts = update.pts;
         }
-      } else if (hasChannelPts(update)) {
+      } else if (isChannelPtsUpdate(update)) {
         if (update.pts == 0) {
           continue;
         }
