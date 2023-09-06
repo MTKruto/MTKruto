@@ -1,5 +1,5 @@
-import * as types from "../tl/2_types.ts";
-import { cleanObject } from "../utilities/0_object.ts";
+import { cleanObject } from "../1_utilities.ts";
+import { types } from "../2_tl.ts";
 import { constructMessageEntity, MessageEntity } from "./0_message_entity.ts";
 import { constructPollOption, PollOption } from "./0_poll_option.ts";
 

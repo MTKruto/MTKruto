@@ -1,4 +1,4 @@
-import * as types from "../tl/2_types.ts";
+import { types } from "../2_tl.ts";
 
 export interface PollOption {
   /** Option text, 1-100 characters */

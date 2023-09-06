@@ -1,4 +1,4 @@
-import { assertEquals } from "../deps.ts";
+import { assertEquals } from "../0_deps.ts";
 import { concat } from "./0_buffer.ts";
 
 Deno.test("concat", () => {

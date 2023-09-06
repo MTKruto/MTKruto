@@ -1,4 +1,4 @@
-import * as types from "../tl/2_types.ts";
+import { types } from "../2_tl.ts";
 
 /** This object describes the position on faces where a mask should be placed by default. */
 export interface MaskPosition {

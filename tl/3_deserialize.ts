@@ -1,4 +1,4 @@
-import { assertEquals } from "../deps.ts";
+import { assertEquals } from "../0_deps.ts";
 import { TLRawReader } from "./0_tl_raw_reader.ts";
 import { analyzeOptionalParam, flags, isOptionalParam, isTLObjectConstructor, Param, ParamDesc, paramDesc, TLObject, TLObjectConstructor } from "./1_tl_object.ts";
 import { map } from "./2_types.ts";

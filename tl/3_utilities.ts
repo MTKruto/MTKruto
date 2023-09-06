@@ -1,5 +1,5 @@
-import { ZERO_CHANNEL_ID } from "../constants.ts";
-import { UNREACHABLE } from "../utilities/0_control.ts";
+import { UNREACHABLE } from "../1_utilities.ts";
+import { ZERO_CHANNEL_ID } from "../4_constants.ts";
 import * as types from "./2_types.ts";
 
 export function getChannelChatId(channelId: bigint) {

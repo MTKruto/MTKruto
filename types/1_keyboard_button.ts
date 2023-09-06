@@ -1,5 +1,5 @@
-import { UNREACHABLE } from "../utilities/0_control.ts";
-import * as types from "../tl/2_types.ts";
+import { UNREACHABLE } from "../1_utilities.ts";
+import { types } from "../2_tl.ts";
 import { ChatAdministratorRights, chatAdministratorRightsToTlObject, constructChatAdministratorRights } from "./0_chat_administrator_rights.ts";
 import { KeyboardButtonPollType } from "./0_keyboard_button_poll_type.ts";
 import { WebAppInfo } from "./0_web_app_info.ts";

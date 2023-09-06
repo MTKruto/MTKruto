@@ -1,4 +1,4 @@
-import { assertEquals } from "../deps.ts";
+import { assertEquals } from "../0_deps.ts";
 import { base64DecodeUrlSafe, base64EncodeUrlSafe } from "./0_base64.ts";
 
 Deno.test("base64DecodeUrlSafe", () => {

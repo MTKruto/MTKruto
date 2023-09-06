@@ -1,4 +1,4 @@
-import * as types from "../tl/2_types.ts";
+import { types } from "../2_tl.ts";
 
 /** This object represents an animated emoji that displays a random value. */
 export interface Dice {

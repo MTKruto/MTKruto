@@ -1,7 +1,6 @@
-import { ZERO_CHANNEL_ID } from "../constants.ts";
-import { UNREACHABLE } from "../utilities/0_control.ts";
-import { cleanObject } from "../utilities/0_object.ts";
-import * as types from "../tl/2_types.ts";
+import { cleanObject, UNREACHABLE } from "../1_utilities.ts";
+import { types } from "../2_tl.ts";
+import { ZERO_CHANNEL_ID } from "../4_constants.ts";
 import { getIdColor } from "./!0_id_color.ts";
 import { ChatPhoto, constructChatPhoto } from "./0_chat_photo.ts";
 
