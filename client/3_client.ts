@@ -1735,15 +1735,14 @@ export class Client extends ClientAbstract {
     const solution = explanation === undefined ? undefined : explanation;
     const solutionEntities = explanationEntities_?.length > 0 ? explanationEntities_.map((v) => messageEntityToTlObject(v)) : undefined;
 
-    const answers =  options.map((v, i)=>new types.PollAnswer({option: new Uint8Array([i]), text: v}));
-const id = await getRandomId();
+    const answers = options.map((v, i) => new types.PollAnswer({ option: new Uint8Array([i]), text: v }));
+    const id = await getRandomId();
 
-const poll = new types.Poll({
-  id,
-  answers,
-  question,
-  
-})
+    const poll = new types.Poll({
+      id,
+      answers,
+      question,
+    });
 
     // await this.invoke(
     //   new functions.MessagesSendMedia({
@@ -1762,6 +1761,14 @@ const poll = new types.Poll({
 }
 
 export interface SendPollParams {
+  /** True, if the poll needs to be anonymous, defaults to True */
+  isAnonymous?: boolean;
+  /** The type of the poll. Defaults to regular. */
+  type?: "quiz" | "regular";
+  /** True, if the poll allows multiple answers, ignored for polls in quiz mode, defaults to False */
+  allowMultipleAnswers?: boolean;
+  /** Index of the correct option. Required for quizzes. */
+  correctOptionIndex?: boolean
   /** Text that is shown when a user chooses an incorrect answer or taps on the lamp icon in a quiz-style poll, 0-200 characters with at most 2 line feeds after entities parsing */
   explanation?: string;
   /**
