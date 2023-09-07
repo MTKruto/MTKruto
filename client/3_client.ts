@@ -1699,7 +1699,6 @@ export class Client extends ClientAbstract {
   async sendPoll(chatId: ChatID, question: string, options: [string, string, ...string[]], params?: SendPollParams) {
     const peer = await this.getInputPeer(chatId);
     const randomId = getRandomId();
-    const message = question;
     const silent = params?.disableNotification ? true : undefined;
     const noforwards = params?.protectContent ? true : undefined;
     const replyToMsgId = params?.replyToMessageId;
@@ -1745,40 +1744,57 @@ export class Client extends ClientAbstract {
     const solutionEntities = explanationEntities_?.length > 0 ? explanationEntities_.map((v) => messageEntityToTlObject(v)) : undefined;
 
     const answers = options.map((v, i) => new types.PollAnswer({ option: new Uint8Array([i]), text: v }));
-    const id = await getRandomId();
 
     const poll = new types.Poll({
-      id,
+      id: getRandomId(),
       answers,
       question,
+      closed: params?.isClosed ? true : undefined,
+      closeDate: params?.closeDate ? Math.floor(params.closeDate.getTime() / 1000) : undefined,
+      closePeriod: params?.openPeriod ? params.openPeriod : undefined,
+      multipleChoice: params?.allowMultipleAnswers ? true : undefined,
+      publicVoters: params?.isAnonymous === false ? true : undefined,
+      quiz: params?.type == "quiz" ? true : undefined,
     });
 
-    // await this.invoke(
-    //   new functions.MessagesSendMedia({
-    //     peer,
-    //     message,
-    //     randomId,
-    //     silent,
-    //     noforwards,
-    //     replyMarkup,
-    //     replyTo: replyToMsgId !== undefined ? new types.InputReplyToMessage({ replyToMsgId, topMsgId }) : undefined,
-    //     sendAs,
-    //     // media: new types.InputMediaPoll({poll:new types.Poll({})})
-    //   }),
-    // );
+    const media = new types.InputMediaPoll({
+      poll,
+      correctAnswers: params?.correctOptionIndex ? [new Uint8Array([params.correctOptionIndex])] : undefined,
+      solution,
+      solutionEntities,
+    });
+
+    await this.invoke(
+      new functions.MessagesSendMedia({
+        peer,
+        randomId,
+        silent,
+        noforwards,
+        replyMarkup,
+        replyTo: replyToMsgId !== undefined ? new types.InputReplyToMessage({ replyToMsgId, topMsgId }) : undefined,
+        sendAs,
+        media,
+        message: "",
+      }),
+    );
   }
 }
 
 export interface SendPollParams {
-  /** True, if the poll needs to be anonymous, defaults to True */
+  /**
+   * True, if the poll needs to be anonymous, defaults to True */
   isAnonymous?: boolean;
-  /** The type of the poll. Defaults to regular. */
+  /**
+   * The type of the poll. Defaults to regular. */
   type?: "quiz" | "regular";
-  /** True, if the poll allows multiple answers, ignored for polls in quiz mode, defaults to False */
+  /**
+   * True, if the poll allows multiple answers, ignored for polls in quiz mode, defaults to False */
   allowMultipleAnswers?: boolean;
-  /** Index of the correct option. Required for quizzes. */
-  correctOptionIndex?: boolean
-  /** Text that is shown when a user chooses an incorrect answer or taps on the lamp icon in a quiz-style poll, 0-200 characters with at most 2 line feeds after entities parsing */
+  /**
+   * Index of the correct option. Required for quizzes. */
+  correctOptionIndex?: number;
+  /**
+   *  Text that is shown when a user chooses an incorrect answer or taps on the lamp icon in a quiz-style poll, 0-200 characters with at most 2 line feeds after entities parsing */
   explanation?: string;
   /**
    * The parse mode to use for the explanation. If not provided, the default parse mode will be used.
@@ -1788,6 +1804,18 @@ export interface SendPollParams {
    * The explanation's entities.
    */
   explanationEntities?: MessageEntity[];
+  /**
+   * Amount of time in seconds the poll will be active after creation, 5-600. Can't be used together with close_date.
+   */
+  openPeriod?: number;
+  /**
+   * Point in time when the poll will be automatically closed. Must be at least 5 and no more than 600 seconds in the future. Can't be used together with open_period.
+   */
+  closeDate?: Date;
+  /**
+   * Pass True if the poll needs to be immediately closed. This can be useful for poll preview.
+   */
+  isClosed?: boolean;
   /**
    * Whether to send the message in a silent way without making a sound on the recipients' clients.
    */
