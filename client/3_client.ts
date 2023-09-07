@@ -4,7 +4,7 @@ import {
   as,
   functions,
   getChannelChatId,
-  Message as Message_, // MTProto API message
+  Message_, // MTProto API message
   MessageContainer,
   peerToChatId,
   ReadObject,

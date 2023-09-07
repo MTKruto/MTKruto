@@ -3,7 +3,7 @@ import { checkPassword } from "./client/0_password.ts";
 
 export const utils = { checkPassword, getRandomId };
 
-export * as tl from "./2_tl.ts";
+export * from "./2_tl.ts";
 export * from "./2_connection.ts";
 export * from "./3_storage.ts";
 export * from "./3_transport.ts";

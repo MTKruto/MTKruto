@@ -18,7 +18,7 @@ function calculateLength(object: ReadObject) {
   return length;
 }
 
-export class Message {
+export class Message_ {
   constructor(
     public readonly id: bigint,
     public readonly seqNo: number,
@@ -52,6 +52,6 @@ export class Message {
         body = reader.readObject(cid);
       }
     }
-    return new Message(id_, seqNo, body);
+    return new Message_(id_, seqNo, body);
   }
 }
