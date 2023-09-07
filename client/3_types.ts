@@ -212,15 +212,26 @@ export type AuthorizationState = { authorized: boolean };
 export type FilterableUpdates = "message" | "editedMessage" | "callbackQuery";
 
 export interface Update {
-  message: Message;
-  editedMessage: Message;
-  connectionState: ConnectionState;
-  authorizationState: AuthorizationState;
-  deletedMessages: [Message, ...Message[]];
-  callbackQuery: CallbackQuery;
-  inlineQuery: InlineQuery;
+  message?: Message;
+  editedMessage?: Message;
+  connectionState?: ConnectionState;
+  authorizationState?: AuthorizationState;
+  deletedMessages?: [Message, ...Message[]];
+  callbackQuery?: CallbackQuery;
+  inlineQuery?: InlineQuery;
 }
 
-export interface Handler<U extends Partial<Update> = Partial<Update>> {
-  (update: U, next: () => Promise<void>): MaybePromise<void>;
+export type NextFn = () => Promise<void>;
+
+export interface HandlerObj<U extends Partial<Update> = Partial<Update>> {
+  handle(update: U, next: NextFn): MaybePromise<void>;
 }
+
+export type HandlerFn<U extends Partial<Update> = Partial<Update>> = HandlerObj<U>["handle"];
+
+export type Handler<U extends Partial<Update> = Partial<Update>> = HandlerObj<U> | HandlerFn<U>;
+
+
+export type FilterUpdate<U extends Update, K extends keyof U> = U & {[P in K]-?: U[K][]}
+
+type a = FilterUpdate<Update, 'message'>
