@@ -1,5 +1,5 @@
-import { cleanObject } from "../utilities/0_object.ts";
-import * as types from "../tl/2_types.ts";
+import { cleanObject } from "../1_utilities.ts";
+import { types } from "../2_tl.ts";
 
 /** Upon receiving a message with this object, Telegram clients will remove the current custom keyboard and display the default letter-keyboard. By default, custom keyboards are displayed until a new keyboard is sent by a bot. An exception is made for one-time keyboards that are hidden immediately after the user presses a button. */
 export interface ReplyKeyboardRemove {

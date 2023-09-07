@@ -1,4 +1,4 @@
-import { assertEquals, assertInstanceOf } from "../deps.ts";
+import { assertEquals, assertInstanceOf } from "../0_deps.ts";
 import { TLRawReader } from "./0_tl_raw_reader.ts";
 import { paramDesc, serialize } from "./1_tl_object.ts";
 import { Config, map } from "./2_types.ts";

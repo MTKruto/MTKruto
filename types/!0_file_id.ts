@@ -1,9 +1,6 @@
 // Direct port from Pyrogram
-import { base64DecodeUrlSafe, base64EncodeUrlSafe } from "../utilities/0_base64.ts";
-import { UNREACHABLE } from "../utilities/0_control.ts";
-import { rleDecode, rleEncode } from "../utilities/0_rle.ts";
-import { TLRawWriter } from "../tl/0_tl_raw_writer.ts";
-import { TLRawReader } from "../tl/0_tl_raw_reader.ts";
+import { base64DecodeUrlSafe, base64EncodeUrlSafe, rleDecode, rleEncode, UNREACHABLE } from "../1_utilities.ts";
+import { TLReader, TLWriter } from "../2_tl.ts";
 
 export enum FileType {
   Thumbnail = 0,
@@ -91,7 +88,7 @@ export class FileID {
       minor = decoded[decoded.length - 2];
       buffer = decoded.slice(0, -2);
     }
-    const reader = new TLRawReader(buffer);
+    const reader = new TLReader(buffer);
 
     let fileType = reader.readInt32();
     const dcId = reader.readInt32();
@@ -166,7 +163,7 @@ export class FileID {
     major ??= this.major;
     minor ??= this.minor;
 
-    const writer = new TLRawWriter();
+    const writer = new TLWriter();
     let fileType = this.fileType;
 
     if (this.params.url) {
@@ -279,7 +276,7 @@ export class FileUniqueID {
   constructor(private readonly fileUniqueType: FileUniqueType, private readonly params: FileUniqueParams) {}
 
   static decode(fileId: string) {
-    const reader = new TLRawReader(rleDecode(base64DecodeUrlSafe(fileId)));
+    const reader = new TLReader(rleDecode(base64DecodeUrlSafe(fileId)));
     const fileUniqueType = reader.readInt32() as FileUniqueType;
 
     switch (fileUniqueType) {
@@ -305,7 +302,7 @@ export class FileUniqueID {
   }
 
   encode() {
-    const writer = new TLRawWriter();
+    const writer = new TLWriter();
     writer.writeInt32(this.fileUniqueType);
 
     switch (this.fileUniqueType) {

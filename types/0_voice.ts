@@ -1,4 +1,4 @@
-import * as types from "../tl/2_types.ts";
+import { types } from "../2_tl.ts";
 
 /** This object represents a voice note. */
 export interface Voice {

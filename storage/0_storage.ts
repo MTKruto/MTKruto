@@ -1,13 +1,7 @@
-import { MaybePromise } from "../utilities/0_types.ts";
-import { UNREACHABLE } from "../utilities/0_control.ts";
-import { sha1 } from "../utilities/0_hash.ts";
-import { bigIntFromBuffer } from "../utilities/0_bigint.ts";
-import { DC } from "../transport/2_transport_provider.ts";
-import { serialize, TLObject } from "../tl/1_tl_object.ts";
-import * as types from "../tl/2_types.ts";
-import { TLReader } from "../tl/3_tl_reader.ts";
-import { rleDecode, rleEncode } from "../utilities/0_rle.ts";
-import { ZERO_CHANNEL_ID } from "../constants.ts";
+import { bigIntFromBuffer, MaybePromise, rleDecode, rleEncode, sha1, UNREACHABLE } from "../1_utilities.ts";
+import { serialize, TLObject, TLReader, types } from "../2_tl.ts";
+import { DC } from "../3_transport.ts";
+import { ZERO_CHANNEL_ID } from "../4_constants.ts";
 
 const KPARTS__DC = ["dc"];
 const KPARTS__AUTH_KEY = ["authKey"];
