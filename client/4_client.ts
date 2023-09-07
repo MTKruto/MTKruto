@@ -3,7 +3,7 @@ import { bigIntFromBuffer, drop, getRandomBigInt, getRandomId, mustPrompt, mustP
 import { as, functions, getChannelChatId, Message_, MessageContainer, peerToChatId, ReadObject, RPCResult, TLError, TLReader, types } from "../2_tl.ts";
 import { Storage, StorageMemory } from "../3_storage.ts";
 import { DC } from "../3_transport.ts";
-import { constructCallbackQuery, constructInlineQuery, constructMessage, constructUser, FileID, FileType, forceReplyToTlObject, inlineKeyboardMarkupToTlObject, InlineQuery, Message, messageEntityToTlObject, replyKeyboardMarkupToTlObject, replyKeyboardRemoveToTlObject, ThumbnailSource } from "../3_types.ts";
+import { constructCallbackQuery, constructInlineQuery, constructMessage, constructUser, FileID, FileType, forceReplyToTlObject, inlineKeyboardMarkupToTlObject, Message, MessageEntity, messageEntityToTlObject, replyKeyboardMarkupToTlObject, replyKeyboardRemoveToTlObject, ThumbnailSource } from "../3_types.ts";
 import { ACK_THRESHOLD, APP_VERSION, CHANNEL_DIFFERENCE_LIMIT_BOT, CHANNEL_DIFFERENCE_LIMIT_USER, DEVICE_MODEL, LANG_CODE, LANG_PACK, LAYER, MAX_CHANNEL_ID, MAX_CHAT_ID, PublicKeys, STICKER_SET_NAME_TTL, SYSTEM_LANG_CODE, SYSTEM_VERSION, USERNAME_TTL, ZERO_CHANNEL_ID } from "../4_constants.ts";
 import { isChannelPtsUpdate, isPtsUpdate, resolve, With } from "./0_utilities.ts";
 import { decryptMessage, encryptMessage, getMessageId } from "./0_message.ts";
@@ -164,6 +164,18 @@ export class Client extends ClientAbstract {
       drop(this.pingLoop());
     } finally {
       release();
+    }
+  }
+
+  private async assertUser(source: string) {
+    if (await this.storage.getAccountType() != "user") {
+      throw new Error(`${source}: not user a client`);
+    }
+  }
+
+  private async assertBot(source: string) {
+    if (await this.storage.getAccountType() != "bot") {
+      throw new Error(`${source}: not a bot client`);
     }
   }
 
@@ -1062,6 +1074,11 @@ export class Client extends ClientAbstract {
     return messages;
   }
 
+  private async resolveSendAs(params?: Pick<SendMessagesParams, "sendAs">) {
+    await this.assertUser("sendAs");
+    return params?.sendAs ? await this.getInputPeer(params.sendAs) : undefined;
+  }
+
   /**
    * Send a text message.
    *
@@ -1073,51 +1090,18 @@ export class Client extends ClientAbstract {
     text: string,
     params?: SendMessagesParams,
   ) {
-    const entities_ = params?.entities ?? [];
-    const parseMode = params?.parseMode ?? this.parseMode;
-    switch (parseMode) {
-      case "none":
-        break;
-      case "html": {
-        const [newText, entitiesToPush] = parseHtml(text);
-        text = newText;
-        for (const entity of entitiesToPush) {
-          entities_.push(entity);
-        }
-        break;
-      }
-      default:
-        UNREACHABLE();
-    }
+    const [message, entities] = this.parseText(text, params);
 
-    let replyMarkup: types.TypeReplyMarkup | undefined = undefined;
-    if (params?.replyMarkup) {
-      if ("inlineKeyboard" in params.replyMarkup) {
-        replyMarkup = await inlineKeyboardMarkupToTlObject(params.replyMarkup, async (v) => {
-          const inputPeer = await this.getInputPeer(v).then((v) => v[as](types.InputPeerUser));
-          return new types.InputUser({ userId: inputPeer.userId, accessHash: inputPeer.accessHash });
-        });
-      } else if ("keyboard" in params.replyMarkup) {
-        replyMarkup = replyKeyboardMarkupToTlObject(params.replyMarkup);
-      } else if ("removeKeyboard" in params.replyMarkup) {
-        replyMarkup = replyKeyboardRemoveToTlObject(params.replyMarkup);
-      } else if ("forceReply" in params.replyMarkup) {
-        replyMarkup = forceReplyToTlObject(params.replyMarkup);
-      } else {
-        throw new Error("The replyMarkup parameter has an unexpected type");
-      }
-    }
+    const replyMarkup = await this.constructReplyMarkup(params);
 
     const peer = await this.getInputPeer(chatId);
     const randomId = getRandomId();
-    const message = text;
     const noWebpage = params?.disableWebPagePreview ? true : undefined;
     const silent = params?.disableNotification ? true : undefined;
     const noforwards = params?.protectContent ? true : undefined;
     const replyToMsgId = params?.replyToMessageId;
     const topMsgId = params?.messageThreadId;
-    const sendAs = params?.sendAs ? await this.getInputPeer(params.sendAs) : undefined;
-    const entities = entities_?.length > 0 ? entities_.map((v) => messageEntityToTlObject(v)) : undefined;
+    const sendAs = await this.resolveSendAs(params);
 
     const result = await this.invoke(
       new functions.MessagesSendMessage({
@@ -1137,19 +1121,7 @@ export class Client extends ClientAbstract {
     return await this.updatesToMessages(chatId, result).then((v) => v[0]);
   }
 
-  /**
-   * Edit a message's text.
-   *
-   * @param chatId The chat where the message is.
-   * @param messageId The ID of the message.
-   * @param text The new text of the message.
-   */
-  async editMessageText(
-    chatId: ChatID,
-    messageId: number,
-    text: string,
-    params?: EditMessageParams,
-  ) {
+  private parseText(text: string, params?: { parseMode?: ParseMode; entities?: MessageEntity[] }) {
     const entities_ = params?.entities ?? [];
     const parseMode = params?.parseMode ?? this.parseMode;
     switch (parseMode) {
@@ -1166,32 +1138,35 @@ export class Client extends ClientAbstract {
       default:
         UNREACHABLE();
     }
-
-    let replyMarkup: types.TypeReplyMarkup | undefined = undefined;
-    if (params?.replyMarkup) {
-      if ("inlineKeyboard" in params.replyMarkup) {
-        replyMarkup = await inlineKeyboardMarkupToTlObject(params.replyMarkup, async (v) => {
-          const inputPeer = await this.getInputPeer(v).then((v) => v[as](types.InputPeerUser));
-          return new types.InputUser({ userId: inputPeer.userId, accessHash: inputPeer.accessHash });
-        });
-      } else if ("keyboard" in params.replyMarkup) {
-        replyMarkup = replyKeyboardMarkupToTlObject(params.replyMarkup);
-      } else if ("removeKeyboard" in params.replyMarkup) {
-        replyMarkup = replyKeyboardRemoveToTlObject(params.replyMarkup);
-      } else if ("forceReply" in params.replyMarkup) {
-        replyMarkup = forceReplyToTlObject(params.replyMarkup);
-      } else {
-        throw new Error("The replyMarkup parameter has an unexpected type");
-      }
-    }
-
-    const id = messageId;
-    const peer = await this.getInputPeer(chatId);
     const entities = entities_?.length > 0 ? entities_.map((v) => messageEntityToTlObject(v)) : undefined;
-    const message = text;
-    const noWebpage = params?.disableWebPagePreview ? true : undefined;
+    return [text, entities] as const;
+  }
 
-    await this.invoke(new functions.MessagesEditMessage({ id, peer, entities, message, noWebpage, replyMarkup }));
+  /**
+   * Edit a message's text.
+   *
+   * @param chatId The chat where the message is.
+   * @param messageId The ID of the message.
+   * @param text The new text of the message.
+   */
+  async editMessageText(
+    chatId: ChatID,
+    messageId: number,
+    text: string,
+    params?: EditMessageParams,
+  ) { // TODO: return edited message?
+    const [message, entities] = this.parseText(text, params);
+
+    await this.invoke(
+      new functions.MessagesEditMessage({
+        id: messageId,
+        peer: await this.getInputPeer(chatId),
+        entities,
+        message,
+        noWebpage: params?.disableWebPagePreview ? true : undefined,
+        replyMarkup: await this.constructReplyMarkup(params),
+      }),
+    );
   }
 
   private async getMessagesInner(chatId_: ChatID, messageIds: number[]) {
@@ -1516,6 +1491,7 @@ export class Client extends ClientAbstract {
    * @param id ID of the callback query to answer.
    */
   async answerCallbackQuery(id: string, params?: AnswerCallbackQueryParams) {
+    await this.assertBot("answerCallbackQuery");
     await this.invoke(
       new functions.MessagesSetBotCallbackAnswer({
         queryId: BigInt(id),
@@ -1526,17 +1502,10 @@ export class Client extends ClientAbstract {
     );
   }
 
-  async sendPoll(chatId: ChatID, question: string, options: [string, string, ...string[]], params?: SendPollParams) {
-    const peer = await this.getInputPeer(chatId);
-    const randomId = getRandomId();
-    const silent = params?.disableNotification ? true : undefined;
-    const noforwards = params?.protectContent ? true : undefined;
-    const replyToMsgId = params?.replyToMessageId;
-    const topMsgId = params?.messageThreadId;
-    const sendAs = params?.sendAs ? await this.getInputPeer(params.sendAs) : undefined;
-
+  private async constructReplyMarkup(params?: Pick<SendMessagesParams, "replyMarkup">) {
     let replyMarkup: types.TypeReplyMarkup | undefined = undefined;
     if (params?.replyMarkup) {
+      await this.assertBot("replyMarkup");
       if ("inlineKeyboard" in params.replyMarkup) {
         replyMarkup = await inlineKeyboardMarkupToTlObject(params.replyMarkup, async (v) => {
           const inputPeer = await this.getInputPeer(v).then((v) => v[as](types.InputPeerUser));
@@ -1552,26 +1521,24 @@ export class Client extends ClientAbstract {
         throw new Error("The replyMarkup parameter has an unexpected type");
       }
     }
+    return replyMarkup;
+  }
 
-    let explanation = params?.explanation;
+  async sendPoll(chatId: ChatID, question: string, options: [string, string, ...string[]], params?: SendPollParams) {
+    const peer = await this.getInputPeer(chatId);
+    const randomId = getRandomId();
+    const silent = params?.disableNotification ? true : undefined;
+    const noforwards = params?.protectContent ? true : undefined;
+    const replyToMsgId = params?.replyToMessageId;
+    const topMsgId = params?.messageThreadId;
+    const sendAs = params?.sendAs ? await this.getInputPeer(params.sendAs) : undefined; // TODO: check default sendAs
+    const replyMarkup = await this.constructReplyMarkup(params);
 
-    const explanationEntities_ = params?.explanationEntities ?? [];
-    if (explanation !== undefined) {
-      const parseMode = params?.explanationParseMode ?? this.parseMode;
-      switch (parseMode) {
-        case "none":
-          break;
-        case "html": {
-          const [newText, entitiesToPush] = parseHtml(explanation);
-          explanation = newText;
-          for (const entity of entitiesToPush) {
-            explanationEntities_.push(entity);
-          }
-        }
-      }
-    }
-    const solution = explanation === undefined ? undefined : explanation;
-    const solutionEntities = explanationEntities_?.length > 0 ? explanationEntities_.map((v) => messageEntityToTlObject(v)) : undefined;
+    const explanation = params?.explanation;
+    const parseResult = explanation !== undefined ? this.parseText(explanation, { parseMode: params?.explanationParseMode, entities: params?.explanationEntities }) : undefined;
+
+    const solution = parseResult === undefined ? undefined : parseResult[0];
+    const solutionEntities = parseResult === undefined ? undefined : parseResult[1];
 
     const answers = options.map((v, i) => new types.PollAnswer({ option: new Uint8Array([i]), text: v }));
 
