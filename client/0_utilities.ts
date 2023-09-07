@@ -1,5 +1,9 @@
 import { types } from "../2_tl.ts";
 
+export const resolve = () => Promise.resolve();
+
+export type With<T, K extends keyof T> = T & Required<Pick<T, K>>;
+
 export function isPtsUpdate(v: types.TypeUpdate | types.TypeUpdates): v is
   | types.UpdateShortMessage
   | types.UpdateShortChatMessage
