@@ -1524,6 +1524,13 @@ export class Client extends ClientAbstract {
     return replyMarkup;
   }
 
+  /**
+   * Send a poll.
+   *
+   * @param chatId The chat to send the poll to.
+   * @param question The poll's question.
+   * @param options The poll's options.
+   */
   async sendPoll(chatId: ChatID, question: string, options: [string, string, ...string[]], params?: SendPollParams) {
     const peer = await this.getInputPeer(chatId);
     const randomId = getRandomId();
