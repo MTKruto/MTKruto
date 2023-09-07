@@ -1695,6 +1695,151 @@ export class Client extends ClientAbstract {
       }),
     );
   }
+
+  async sendPoll(chatId: ChatID, question: string, options: [string, string, ...string[]], params?: SendPollParams) {
+    const peer = await this.getInputPeer(chatId);
+    const randomId = getRandomId();
+    const silent = params?.disableNotification ? true : undefined;
+    const noforwards = params?.protectContent ? true : undefined;
+    const replyToMsgId = params?.replyToMessageId;
+    const topMsgId = params?.messageThreadId;
+    const sendAs = params?.sendAs ? await this.getInputPeer(params.sendAs) : undefined;
+
+    let replyMarkup: types.TypeReplyMarkup | undefined = undefined;
+    if (params?.replyMarkup) {
+      if ("inlineKeyboard" in params.replyMarkup) {
+        replyMarkup = await inlineKeyboardMarkupToTlObject(params.replyMarkup, async (v) => {
+          const inputPeer = await this.getInputPeer(v).then((v) => v[as](types.InputPeerUser));
+          return new types.InputUser({ userId: inputPeer.userId, accessHash: inputPeer.accessHash });
+        });
+      } else if ("keyboard" in params.replyMarkup) {
+        replyMarkup = replyKeyboardMarkupToTlObject(params.replyMarkup);
+      } else if ("removeKeyboard" in params.replyMarkup) {
+        replyMarkup = replyKeyboardRemoveToTlObject(params.replyMarkup);
+      } else if ("forceReply" in params.replyMarkup) {
+        replyMarkup = forceReplyToTlObject(params.replyMarkup);
+      } else {
+        throw new Error("The replyMarkup parameter has an unexpected type");
+      }
+    }
+
+    let explanation = params?.explanation;
+
+    const explanationEntities_ = params?.explanationEntities ?? [];
+    if (explanation !== undefined) {
+      const parseMode = params?.explanationParseMode ?? this.parseMode;
+      switch (parseMode) {
+        case ParseMode.None:
+          break;
+        case ParseMode.HTML: {
+          const [newText, entitiesToPush] = parseHtml(explanation);
+          explanation = newText;
+          for (const entity of entitiesToPush) {
+            explanationEntities_.push(entity);
+          }
+        }
+      }
+    }
+    const solution = explanation === undefined ? undefined : explanation;
+    const solutionEntities = explanationEntities_?.length > 0 ? explanationEntities_.map((v) => messageEntityToTlObject(v)) : undefined;
+
+    const answers = options.map((v, i) => new types.PollAnswer({ option: new Uint8Array([i]), text: v }));
+
+    const poll = new types.Poll({
+      id: getRandomId(),
+      answers,
+      question,
+      closed: params?.isClosed ? true : undefined,
+      closeDate: params?.closeDate ? Math.floor(params.closeDate.getTime() / 1000) : undefined,
+      closePeriod: params?.openPeriod ? params.openPeriod : undefined,
+      multipleChoice: params?.allowMultipleAnswers ? true : undefined,
+      publicVoters: params?.isAnonymous === false ? true : undefined,
+      quiz: params?.type == "quiz" ? true : undefined,
+    });
+
+    const media = new types.InputMediaPoll({
+      poll,
+      correctAnswers: params?.correctOptionIndex ? [new Uint8Array([params.correctOptionIndex])] : undefined,
+      solution,
+      solutionEntities,
+    });
+
+    await this.invoke(
+      new functions.MessagesSendMedia({
+        peer,
+        randomId,
+        silent,
+        noforwards,
+        replyMarkup,
+        replyTo: replyToMsgId !== undefined ? new types.InputReplyToMessage({ replyToMsgId, topMsgId }) : undefined,
+        sendAs,
+        media,
+        message: "",
+      }),
+    );
+  }
+}
+
+export interface SendPollParams {
+  /**
+   * True, if the poll needs to be anonymous, defaults to True */
+  isAnonymous?: boolean;
+  /**
+   * The type of the poll. Defaults to regular. */
+  type?: "quiz" | "regular";
+  /**
+   * True, if the poll allows multiple answers, ignored for polls in quiz mode, defaults to False */
+  allowMultipleAnswers?: boolean;
+  /**
+   * Index of the correct option. Required for quizzes. */
+  correctOptionIndex?: number;
+  /**
+   *  Text that is shown when a user chooses an incorrect answer or taps on the lamp icon in a quiz-style poll, 0-200 characters with at most 2 line feeds after entities parsing */
+  explanation?: string;
+  /**
+   * The parse mode to use for the explanation. If not provided, the default parse mode will be used.
+   */
+  explanationParseMode?: ParseMode;
+  /**
+   * The explanation's entities.
+   */
+  explanationEntities?: MessageEntity[];
+  /**
+   * Amount of time in seconds the poll will be active after creation, 5-600. Can't be used together with close_date.
+   */
+  openPeriod?: number;
+  /**
+   * Point in time when the poll will be automatically closed. Must be at least 5 and no more than 600 seconds in the future. Can't be used together with open_period.
+   */
+  closeDate?: Date;
+  /**
+   * Pass True if the poll needs to be immediately closed. This can be useful for poll preview.
+   */
+  isClosed?: boolean;
+  /**
+   * Whether to send the message in a silent way without making a sound on the recipients' clients.
+   */
+  disableNotification?: boolean;
+  /**
+   * The identifier of a message to reply to.
+   */
+  replyToMessageId?: number;
+  /**
+   * The identifier of a thread to send the message to.
+   */
+  messageThreadId?: number;
+  /**
+   * The identifier of the chat to send the message on behalf of. User-only.
+   */
+  sendAs?: ChatID;
+  /**
+   * The reply markup of the message. Bot-only.
+   */
+  replyMarkup?: InlineKeyboardMarkup | ReplyKeyboardMarkup | ReplyKeyboardRemove | ForceReply;
+  /**
+   * Whether to protect the contents of the message from copying and forwarding.
+   */
+  protectContent?: boolean;
 }
 
 const resolve = () => Promise.resolve();
