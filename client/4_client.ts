@@ -1594,7 +1594,7 @@ export class Client extends ClientAbstract {
       solutionEntities,
     });
 
-    await this.invoke(
+    const result = await this.invoke(
       new functions.MessagesSendMedia({
         peer,
         randomId,
@@ -1607,5 +1607,7 @@ export class Client extends ClientAbstract {
         message: "",
       }),
     );
+
+    return await this.updatesToMessages(chatId, result).then((v) => v[0]);
   }
 }
