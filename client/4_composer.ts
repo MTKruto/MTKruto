@@ -1,6 +1,6 @@
 import { MaybePromise } from "../1_utilities.ts";
-import { resolve, With } from "./0_utilities.ts";
-import { FilterableUpdates, Handler, HandlerFn, HandlerObj, NextFn, Update } from "./3_types.ts";
+import { resolve } from "./0_utilities.ts";
+import { FilterableUpdates, FilterUpdate, Handler, HandlerFn, HandlerObj, Update } from "./3_types.ts";
 
 export function call(handler: Handler): HandlerFn {
   if ("handle" in handler) {
@@ -69,13 +69,15 @@ export class Composer<U extends Update = Update> implements HandlerObj<U> {
     return composer;
   }
 
-  on<RD extends U, U_ extends keyof RD, K extends keyof RD[U_]>(
-    filter: U_ extends FilterableUpdates ? U_ | [U_, K, ...K[]] : U_,
-    ...handlers: Handler<Pick<{ [P in U_]: With<NonNullable<RD[U_]>, K> }, U_>>[]
+  on<T extends keyof U, F extends keyof NonNullable<U[T]>>(
+    filter: T extends FilterableUpdates ? T | [T, F, ...F[]] : T,
+    ...handlers: Handler<FilterUpdate<U, T, F>>[]
   ) {
+    // deno-lint-ignore ban-ts-comment
+    // @ts-ignore
     const type = typeof filter === "string" ? filter : filter[0];
     const keys = Array.isArray(filter) ? filter.slice(1) : [];
-    return this.filter((update): update is U & Pick<{ [P in U_]: With<NonNullable<RD[U_]>, K> }, U_> => {
+    return this.filter((update): update is FilterUpdate<U, T, F> => {
       if (type in update) {
         if (keys.length > 0) {
           for (const key of keys) {

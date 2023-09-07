@@ -11,7 +11,7 @@ import { checkPassword } from "./0_password.ts";
 import { parseHtml } from "./0_html.ts";
 import { ClientPlain } from "./2_client_plain.ts";
 import { ClientAbstract } from "./1_client_abstract.ts";
-import { AnswerCallbackQueryParams, AuthorizeUserParams, ChatID, ClientParams, ConnectionState, EditMessageParams, FilterableUpdates, ForwardMessagesParams, Handler, HandlerFn, ParseMode, SendMessagesParams, SendPollParams, Update } from "./3_types.ts";
+import { AnswerCallbackQueryParams, AuthorizeUserParams, ChatID, ClientParams, ConnectionState, EditMessageParams, ForwardMessagesParams, Handler, HandlerFn, ParseMode, SendMessagesParams, SendPollParams } from "./3_types.ts";
 import { call } from "./4_composer.ts";
 
 const d = debug("Client");

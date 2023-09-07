@@ -1,5 +1,6 @@
 import { MaybePromise } from "../1_utilities.ts";
 import { CallbackQuery, ForceReply, InlineKeyboardMarkup, InlineQuery, Message, MessageEntity, ReplyKeyboardMarkup, ReplyKeyboardRemove } from "../3_types.ts";
+import { With } from "./0_utilities.ts";
 import { ClientPlainParams } from "./2_client_plain.ts";
 
 export type ParseMode = "html" | "none";
@@ -231,6 +232,4 @@ export type HandlerFn<U extends Partial<Update> = Partial<Update>> = HandlerObj<
 
 export type Handler<U extends Partial<Update> = Partial<Update>> = HandlerObj<U> | HandlerFn<U>;
 
-export type FilterUpdate<U extends Update, K extends keyof U> = U & { [P in K]-?: U[K][] };
-
-type a = FilterUpdate<Update, "message">;
+export type FilterUpdate<U extends Update, T extends keyof U, F extends keyof NonNullable<U[T]>> = With<U, T> & Pick<{ [P in T]-?: With<NonNullable<U[T]>, F> }, T>;
