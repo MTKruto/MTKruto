@@ -1,6 +1,6 @@
 import { assertEquals, ige256Decrypt, ige256Encrypt } from "../0_deps.ts";
 import { bufferFromBigInt, concat, sha256 } from "../1_utilities.ts";
-import { id, Message, MessageContainer, RPCResult, serialize, TLObject, TLReader, TLWriter } from "../2_tl.ts";
+import { id, Message_, MessageContainer, RPCResult, serialize, TLObject, TLReader, TLWriter } from "../2_tl.ts";
 
 export function getMessageId(lastMsgId: bigint) {
   const now = new Date().getTime() / 1000 + 0;
@@ -32,7 +32,7 @@ export function unpackUnencryptedMessage(buffer: Uint8Array) {
   return { messageId, message };
 }
 
-export async function encryptMessage(message: Message, authKey: Uint8Array, authKeyId: bigint, salt: bigint, sessionId: bigint) {
+export async function encryptMessage(message: Message_, authKey: Uint8Array, authKeyId: bigint, salt: bigint, sessionId: bigint) {
   const encoded = (message.body as TLObject)[serialize]();
 
   const payloadWriter = new TLWriter();
@@ -101,9 +101,9 @@ export async function decryptMessage(buffer: Uint8Array, authKey: Uint8Array, au
     return MessageContainer.deserialize(plainReader.buffer);
   } else if (cid == RPCResult[id]) {
     const body = RPCResult.deserialize(plainReader.buffer);
-    return new Message(mid, seqno, body);
+    return new Message_(mid, seqno, body);
   } else {
     const body = plainReader.readObject(cid);
-    return new Message(mid, seqno, body);
+    return new Message_(mid, seqno, body);
   }
 }
