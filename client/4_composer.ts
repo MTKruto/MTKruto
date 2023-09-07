@@ -2,7 +2,7 @@ import { MaybePromise } from "../1_utilities.ts";
 import { resolve, With } from "./0_utilities.ts";
 import { FilterableUpdates, Handler, HandlerFn, HandlerObj, NextFn, Update } from "./3_types.ts";
 
-function call(handler: Handler): HandlerFn {
+export function call(handler: Handler): HandlerFn {
   if ("handle" in handler) {
     return handler.handle;
   } else {
@@ -69,7 +69,7 @@ export class Composer<U extends Update = Update> implements HandlerObj<U> {
     return composer;
   }
 
-  on<RD extends U, U_ extends keyof RD, K extends keyof RD[U_]> (
+  on<RD extends U, U_ extends keyof RD, K extends keyof RD[U_]>(
     filter: U_ extends FilterableUpdates ? U_ | [U_, K, ...K[]] : U_,
     ...handlers: Handler<Pick<{ [P in U_]: With<NonNullable<RD[U_]>, K> }, U_>>[]
   ) {
@@ -90,6 +90,6 @@ export class Composer<U extends Update = Update> implements HandlerObj<U> {
       } else {
         return false;
       }
-    }, ...handlers );
+    }, ...handlers);
   }
 }

@@ -5,13 +5,14 @@ import { Storage, StorageMemory } from "../3_storage.ts";
 import { DC } from "../3_transport.ts";
 import { constructCallbackQuery, constructInlineQuery, constructMessage, constructUser, FileID, FileType, forceReplyToTlObject, inlineKeyboardMarkupToTlObject, Message, MessageEntity, messageEntityToTlObject, replyKeyboardMarkupToTlObject, replyKeyboardRemoveToTlObject, ThumbnailSource } from "../3_types.ts";
 import { ACK_THRESHOLD, APP_VERSION, CHANNEL_DIFFERENCE_LIMIT_BOT, CHANNEL_DIFFERENCE_LIMIT_USER, DEVICE_MODEL, LANG_CODE, LANG_PACK, LAYER, MAX_CHANNEL_ID, MAX_CHAT_ID, PublicKeys, STICKER_SET_NAME_TTL, SYSTEM_LANG_CODE, SYSTEM_VERSION, USERNAME_TTL, ZERO_CHANNEL_ID } from "../4_constants.ts";
-import { isChannelPtsUpdate, isPtsUpdate, resolve, With } from "./0_utilities.ts";
+import { isChannelPtsUpdate, isPtsUpdate, resolve } from "./0_utilities.ts";
 import { decryptMessage, encryptMessage, getMessageId } from "./0_message.ts";
 import { checkPassword } from "./0_password.ts";
 import { parseHtml } from "./0_html.ts";
 import { ClientPlain } from "./2_client_plain.ts";
 import { ClientAbstract } from "./1_client_abstract.ts";
-import { AnswerCallbackQueryParams, AuthorizeUserParams, ChatID, ClientParams, ConnectionState, EditMessageParams, FilterableUpdates, ForwardMessagesParams, Handler, ParseMode, SendMessagesParams, SendPollParams, Update } from "./3_types.ts";
+import { AnswerCallbackQueryParams, AuthorizeUserParams, ChatID, ClientParams, ConnectionState, EditMessageParams, FilterableUpdates, ForwardMessagesParams, Handler, HandlerFn, ParseMode, SendMessagesParams, SendPollParams, Update } from "./3_types.ts";
+import { call } from "./4_composer.ts";
 
 const d = debug("Client");
 const dGap = debug("Client/recoverUpdateGap");
@@ -74,7 +75,7 @@ export class Client extends ClientAbstract {
   }
 
   private propagateConnectionState(connectionState: ConnectionState) {
-    return this.handler({ connectionState }, resolve);
+    return this._handler({ connectionState }, resolve);
   }
 
   private lastPropagatedConnectionState: ConnectionState | null = null;
@@ -229,7 +230,7 @@ export class Client extends ClientAbstract {
   private lastPropagatedAuthorizationState: boolean | null = null;
   private async propagateAuthorizationState(authorized: boolean) {
     if (this.lastPropagatedAuthorizationState != authorized) {
-      await this.handler({ authorizationState: { authorized } }, resolve);
+      await this._handler({ authorizationState: { authorized } }, resolve);
       this.lastPropagatedAuthorizationState = authorized;
     }
   }
@@ -1389,7 +1390,7 @@ export class Client extends ClientAbstract {
         this.getMessage.bind(this),
         this[getStickerSetName].bind(this),
       );
-      await this.handler({ [key]: message }, resolve);
+      await this._handler({ [key]: message }, resolve);
     }
 
     if (update instanceof types.UpdateDeleteMessages) {
@@ -1412,7 +1413,7 @@ export class Client extends ClientAbstract {
         }
       }
       if (deletedMessages.length > 0) {
-        await this.handler({ deletedMessages: deletedMessages as [Message, ...Message[]] }, resolve);
+        await this._handler({ deletedMessages: deletedMessages as [Message, ...Message[]] }, resolve);
       }
     } else if (update instanceof types.UpdateDeleteChannelMessages) {
       const chatId = getChannelChatId(update.channelId);
@@ -1432,57 +1433,23 @@ export class Client extends ClientAbstract {
         await this.storage.setMessage(chatId, messageId, null);
       }
       if (deletedMessages.length > 0) {
-        await this.handler({ deletedMessages: deletedMessages as [Message, ...Message[]] }, resolve);
+        await this._handler({ deletedMessages: deletedMessages as [Message, ...Message[]] }, resolve);
       }
     }
 
     if (update instanceof types.UpdateBotCallbackQuery || update instanceof types.UpdateInlineBotCallbackQuery) {
-      await this.handler({ callbackQuery: await constructCallbackQuery(update, this[getEntity].bind(this), this[getMessageWithReply].bind(this)) }, resolve);
+      await this._handler({ callbackQuery: await constructCallbackQuery(update, this[getEntity].bind(this), this[getMessageWithReply].bind(this)) }, resolve);
     } else if (update instanceof types.UpdateBotInlineQuery) {
-      await this.handler({ inlineQuery: await constructInlineQuery(update, this[getEntity].bind(this)) }, resolve);
+      await this._handler({ inlineQuery: await constructInlineQuery(update, this[getEntity].bind(this)) }, resolve);
     }
   }
 
-  handler: Handler = (_upd, next) => {
+  private _handler: HandlerFn = (_upd, next) => {
     next();
   };
 
-  use(middleware: Handler) {
-    const handler = this.handler;
-    this.handler = async (upd, next) => {
-      let called = false;
-      await handler(upd, async () => {
-        if (called) return;
-        called = true;
-        await middleware(upd, next);
-      });
-    };
-  }
-
-  on<U extends keyof Update, K extends keyof Update[U]>(
-    filter: U extends FilterableUpdates ? U | [U, K, ...K[]] : U,
-    handler: Handler<Pick<{ [P in U]: With<Update[U], K> }, U>>,
-  ) {
-    const type = typeof filter === "string" ? filter : filter[0];
-    const keys = Array.isArray(filter) ? filter.slice(1) : [];
-    this.use((update, next) => {
-      if (type in update) {
-        if (keys.length > 0) {
-          for (const key of keys) {
-            // deno-lint-ignore ban-ts-comment
-            // @ts-ignore
-            if (!(key in update[type])) {
-              return next();
-            }
-          }
-        }
-        // deno-lint-ignore ban-ts-comment
-        // @ts-ignore
-        return handler(update, next);
-      } else {
-        return next();
-      }
-    });
+  set handler(handler: Handler) {
+    this._handler = call(handler);
   }
 
   /**

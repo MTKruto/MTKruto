@@ -231,7 +231,6 @@ export type HandlerFn<U extends Partial<Update> = Partial<Update>> = HandlerObj<
 
 export type Handler<U extends Partial<Update> = Partial<Update>> = HandlerObj<U> | HandlerFn<U>;
 
+export type FilterUpdate<U extends Update, K extends keyof U> = U & { [P in K]-?: U[K][] };
 
-export type FilterUpdate<U extends Update, K extends keyof U> = U & {[P in K]-?: U[K][]}
-
-type a = FilterUpdate<Update, 'message'>
+type a = FilterUpdate<Update, "message">;
