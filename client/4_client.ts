@@ -1552,7 +1552,7 @@ export class Client extends ClientAbstract {
     return Client.assertMsgHas(message, "poll");
   }
 
-  private handle: Handler = resolve;
+  private handle: Handler = (_, n) => n();
 
   use(handler: Handler) {
     const handle = this.handle;
