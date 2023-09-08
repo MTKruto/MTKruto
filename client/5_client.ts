@@ -5,7 +5,7 @@ import { Storage, StorageMemory } from "../3_storage.ts";
 import { DC } from "../3_transport.ts";
 import { constructCallbackQuery, constructInlineQuery, constructMessage, constructUser, FileID, FileType, forceReplyToTlObject, inlineKeyboardMarkupToTlObject, Message, MessageEntity, messageEntityToTlObject, replyKeyboardMarkupToTlObject, replyKeyboardRemoveToTlObject, ThumbnailSource } from "../3_types.ts";
 import { ACK_THRESHOLD, APP_VERSION, CHANNEL_DIFFERENCE_LIMIT_BOT, CHANNEL_DIFFERENCE_LIMIT_USER, DEVICE_MODEL, LANG_CODE, LANG_PACK, LAYER, MAX_CHANNEL_ID, MAX_CHAT_ID, PublicKeys, STICKER_SET_NAME_TTL, SYSTEM_LANG_CODE, SYSTEM_VERSION, USERNAME_TTL, ZERO_CHANNEL_ID } from "../4_constants.ts";
-import { isChannelPtsUpdate, isPtsUpdate, resolve } from "./0_utilities.ts";
+import { isChannelPtsUpdate, isPtsUpdate, resolve, With } from "./0_utilities.ts";
 import { decryptMessage, encryptMessage, getMessageId } from "./0_message.ts";
 import { checkPassword } from "./0_password.ts";
 import { parseHtml } from "./0_html.ts";
