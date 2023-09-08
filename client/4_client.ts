@@ -11,7 +11,7 @@ import { checkPassword } from "./0_password.ts";
 import { parseHtml } from "./0_html.ts";
 import { ClientPlain } from "./2_client_plain.ts";
 import { ClientAbstract } from "./1_client_abstract.ts";
-import { AnswerCallbackQueryParams, AuthorizeUserParams, ChatID, ClientParams, ConnectionState, EditMessageParams, FilterableUpdates, FilterUpdate, ForwardMessagesParams, Handler, ParseMode, SendMessagesParams, SendPollParams, Update } from "./3_types.ts";
+import { AnswerCallbackQueryParams, AuthorizeUserParams, ChatID, ClientParams, ConnectionState, EditMessageParams, FilterableUpdates, FilterUpdate, ForwardMessagesParams, Handler, ParseMode, SendMessagesParams, SendPollParams, skip, Update } from "./3_types.ts";
 
 const d = debug("Client");
 const dGap = debug("Client/recoverUpdateGap");
@@ -51,7 +51,6 @@ export class Client extends ClientAbstract {
    * @param storage The storage provider to use. Defaults to memory storage.
    * @param apiId App's API ID from [my.telegram.org](https://my.telegram.org/apps). Defaults to 0 (unset).
    * @param apiHash App's API hash from [my.telegram.org/apps](https://my.telegram.org/apps). Defaults to empty string (unset).
-   * @param params Other parameters.
    */
   constructor(
     public readonly storage: Storage = new StorageMemory(),
@@ -1604,9 +1603,7 @@ export class Client extends ClientAbstract {
     await this.invoke(new functions.MessagesSetTyping({ peer: await this.getInputPeer(chatId), action, topMsgId: messageThreadId }));
   }
 
-  private handle: Handler = (_, n) => {
-    return n();
-  };
+  private handle = skip;
 
   use(handler: Handler) {
     const handle = this.handle;
@@ -1642,7 +1639,7 @@ export class Client extends ClientAbstract {
     predicate: (update: Update) => MaybePromise<boolean>,
     handler: Handler,
   ) {
-    this.branch(predicate, handler, (_, n) => n());
+    this.branch(predicate, handler, skip);
   }
 
   on<T extends keyof Update, F extends keyof NonNullable<Update[T]>>(

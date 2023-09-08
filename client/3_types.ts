@@ -229,3 +229,5 @@ export interface Handler<U extends Partial<Update> = Partial<Update>> {
 }
 
 export type FilterUpdate<U extends Update, T extends keyof U, F extends keyof NonNullable<U[T]>> = With<U, T> & Pick<{ [P in T]-?: With<NonNullable<U[T]>, F> }, T>;
+
+export const skip: Handler = (__, _) => _()
