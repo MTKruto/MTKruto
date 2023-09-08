@@ -1,5 +1,5 @@
 import { debug, gunzip, Mutex } from "../0_deps.ts";
-import { bigIntFromBuffer, drop, getRandomBigInt, getRandomId, mustPrompt, mustPromptOneOf, Queue, sha1, UNREACHABLE } from "../1_utilities.ts";
+import { bigIntFromBuffer, drop, getRandomBigInt, getRandomId, MaybePromise, mustPrompt, mustPromptOneOf, Queue, sha1, UNREACHABLE } from "../1_utilities.ts";
 import { as, functions, getChannelChatId, Message_, MessageContainer, peerToChatId, ReadObject, RPCResult, TLError, TLReader, types } from "../2_tl.ts";
 import { Storage, StorageMemory } from "../3_storage.ts";
 import { DC } from "../3_transport.ts";
@@ -11,8 +11,7 @@ import { checkPassword } from "./0_password.ts";
 import { parseHtml } from "./0_html.ts";
 import { ClientPlain } from "./2_client_plain.ts";
 import { ClientAbstract } from "./1_client_abstract.ts";
-import { AnswerCallbackQueryParams, AuthorizeUserParams, ChatID, ClientParams, ConnectionState, EditMessageParams, ForwardMessagesParams, Handler, HandlerFn, ParseMode, SendMessagesParams, SendPollParams } from "./3_types.ts";
-import { call } from "./4_composer.ts";
+import { AnswerCallbackQueryParams, AuthorizeUserParams, ChatID, ClientParams, ConnectionState, EditMessageParams, FilterableUpdates, FilterUpdate, ForwardMessagesParams, Handler, ParseMode, SendMessagesParams, SendPollParams, Update } from "./3_types.ts";
 
 const d = debug("Client");
 const dGap = debug("Client/recoverUpdateGap");
@@ -75,7 +74,7 @@ export class Client extends ClientAbstract {
   }
 
   private propagateConnectionState(connectionState: ConnectionState) {
-    return this._handler({ connectionState }, resolve);
+    return this.handle({ connectionState }, resolve);
   }
 
   private lastPropagatedConnectionState: ConnectionState | null = null;
@@ -230,7 +229,7 @@ export class Client extends ClientAbstract {
   private lastPropagatedAuthorizationState: boolean | null = null;
   private async propagateAuthorizationState(authorized: boolean) {
     if (this.lastPropagatedAuthorizationState != authorized) {
-      await this._handler({ authorizationState: { authorized } }, resolve);
+      await this.handle({ authorizationState: { authorized } }, resolve);
       this.lastPropagatedAuthorizationState = authorized;
     }
   }
@@ -1391,7 +1390,7 @@ export class Client extends ClientAbstract {
         this.getMessage.bind(this),
         this[getStickerSetName].bind(this),
       );
-      await this._handler({ [key]: message }, resolve);
+      await this.handle({ [key]: message }, resolve);
     }
 
     if (update instanceof types.UpdateDeleteMessages) {
@@ -1414,7 +1413,7 @@ export class Client extends ClientAbstract {
         }
       }
       if (deletedMessages.length > 0) {
-        await this._handler({ deletedMessages: deletedMessages as [Message, ...Message[]] }, resolve);
+        await this.handle({ deletedMessages: deletedMessages as [Message, ...Message[]] }, resolve);
       }
     } else if (update instanceof types.UpdateDeleteChannelMessages) {
       const chatId = getChannelChatId(update.channelId);
@@ -1434,23 +1433,15 @@ export class Client extends ClientAbstract {
         await this.storage.setMessage(chatId, messageId, null);
       }
       if (deletedMessages.length > 0) {
-        await this._handler({ deletedMessages: deletedMessages as [Message, ...Message[]] }, resolve);
+        await this.handle({ deletedMessages: deletedMessages as [Message, ...Message[]] }, resolve);
       }
     }
 
     if (update instanceof types.UpdateBotCallbackQuery || update instanceof types.UpdateInlineBotCallbackQuery) {
-      await this._handler({ callbackQuery: await constructCallbackQuery(update, this[getEntity].bind(this), this[getMessageWithReply].bind(this)) }, resolve);
+      await this.handle({ callbackQuery: await constructCallbackQuery(update, this[getEntity].bind(this), this[getMessageWithReply].bind(this)) }, resolve);
     } else if (update instanceof types.UpdateBotInlineQuery) {
-      await this._handler({ inlineQuery: await constructInlineQuery(update, this[getEntity].bind(this)) }, resolve);
+      await this.handle({ inlineQuery: await constructInlineQuery(update, this[getEntity].bind(this)) }, resolve);
     }
-  }
-
-  private _handler: HandlerFn = (_upd, next) => {
-    next();
-  };
-
-  set handler(handler: Handler) {
-    this._handler = call(handler);
   }
 
   /**
@@ -1559,5 +1550,68 @@ export class Client extends ClientAbstract {
 
     const message = await this.updatesToMessages(chatId, result).then((v) => v[0]);
     return Client.assertMsgHas(message, "poll");
+  }
+
+  private handle: Handler = resolve;
+
+  use(handler: Handler) {
+    const handle = this.handle;
+    this.handle = async (upd, next) => {
+      let called = false;
+      await handle(upd, async () => {
+        if (called) return;
+        called = true;
+        await handler(upd, next);
+      });
+    };
+  }
+
+  branch(predicate: (upd: Update) => MaybePromise<boolean>, trueHandler: Handler, falseHandler: Handler) {
+    return this.use(async (upd, next) => {
+      if (await predicate(upd)) {
+        await trueHandler(upd, next);
+      } else {
+        await falseHandler(upd, next);
+      }
+    });
+  }
+
+  filter<D extends Update>(
+    predicate: (ctx: Update) => ctx is D,
+    handler: Handler<D>,
+  ): void;
+  filter(
+    predicate: (ctx: Update) => MaybePromise<boolean>,
+    handler: Handler,
+  ): void;
+  filter(
+    predicate: (ctx: Update) => MaybePromise<boolean>,
+    handler: Handler,
+  ) {
+    this.branch(predicate, handler, resolve);
+  }
+
+  on<T extends keyof Update, F extends keyof NonNullable<Update[T]>>(
+    filter: T extends FilterableUpdates ? T | [T, F, ...F[]] : T,
+    handler: Handler<FilterUpdate<Update, T, F>>,
+  ) {
+    const type = typeof filter === "string" ? filter : filter[0];
+    const keys = Array.isArray(filter) ? filter.slice(1) : [];
+    return this.filter((update): update is FilterUpdate<Update, T, F> => {
+      if (type in update) {
+        if (keys.length > 0) {
+          for (const key of keys) {
+            // deno-lint-ignore ban-ts-comment
+            // @ts-ignore
+            if (!(key in update[type])) {
+              return false;
+            }
+          }
+        }
+        return true;
+      } else {
+        return false;
+      }
+    }, handler);
   }
 }

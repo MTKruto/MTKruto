@@ -224,12 +224,8 @@ export interface Update {
 
 export type NextFn = () => Promise<void>;
 
-export interface HandlerObj<U extends Partial<Update> = Partial<Update>> {
-  handle(update: U, next: NextFn): MaybePromise<void>;
+export interface Handler<U extends Partial<Update> = Partial<Update>> {
+  (update: U, next: NextFn): MaybePromise<void>;
 }
-
-export type HandlerFn<U extends Partial<Update> = Partial<Update>> = HandlerObj<U>["handle"];
-
-export type Handler<U extends Partial<Update> = Partial<Update>> = HandlerObj<U> | HandlerFn<U>;
 
 export type FilterUpdate<U extends Update, T extends keyof U, F extends keyof NonNullable<U[T]>> = With<U, T> & Pick<{ [P in T]-?: With<NonNullable<U[T]>, F> }, T>;
