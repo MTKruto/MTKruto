@@ -3,23 +3,23 @@ import { types } from "../2_tl.ts";
 export type MessageEntityType =
   | "mention"
   | "hashtag"
-  | "bot_command"
+  | "botCommand"
   | "url"
   | "email"
   | "bold"
   | "italic"
   | "code"
   | "pre"
-  | "text_link"
-  | "text_mention"
+  | "textLink"
+  | "textMention"
   | "cashtag"
-  | "phone_number"
+  | "phoneNumber"
   | "underline"
   | "strikethrough"
   | "blockquote"
-  | "bank_card"
+  | "bankCard"
   | "spoiler"
-  | "custom_emoji";
+  | "customEmoji";
 
 export declare namespace MessageEntity {
   export interface Base {
@@ -39,7 +39,7 @@ export declare namespace MessageEntity {
   }
 
   export interface BotCommand extends Base {
-    type: "bot_command";
+    type: "botCommand";
   }
 
   export interface URL extends Base {
@@ -69,14 +69,14 @@ export declare namespace MessageEntity {
   }
 
   export interface TextLink extends Base {
-    type: "text_link";
-    /** For "text_link" only, URL that will be opened after user taps on the text */
+    type: "textLink";
+    /** For "textLink" only, URL that will be opened after user taps on the text */
     url: string;
   }
 
   export interface TextMention extends Base {
-    type: "text_mention";
-    /** For "text_mention" only, the ID of the mentioned user */
+    type: "textMention";
+    /** For "textMention" only, the ID of the mentioned user */
     userId: number;
   }
 
@@ -85,7 +85,7 @@ export declare namespace MessageEntity {
   }
 
   export interface PhoneNumber extends Base {
-    type: "phone_number";
+    type: "phoneNumber";
   }
 
   export interface Underline extends Base {
@@ -101,7 +101,7 @@ export declare namespace MessageEntity {
   }
 
   export interface BankCard extends Base {
-    type: "bank_card";
+    type: "bankCard";
   }
 
   export interface Spoiler extends Base {
@@ -109,8 +109,8 @@ export declare namespace MessageEntity {
   }
 
   export interface CustomEmoji extends Base {
-    type: "custom_emoji";
-    /** For "custom_emoji" only, unique identifier of the custom emoji */
+    type: "customEmoji";
+    /** For "customEmoji" only, unique identifier of the custom emoji */
     customEmojiId: string;
   }
 }
@@ -143,7 +143,7 @@ export function constructMessageEntity(obj: types.TypeMessageEntity): MessageEnt
   } else if (obj instanceof types.MessageEntityHashtag) {
     return { type: "hashtag", offset: obj.offset, length: obj.length };
   } else if (obj instanceof types.MessageEntityBotCommand) {
-    return { type: "bot_command", offset: obj.offset ?? 0, length: obj.length };
+    return { type: "botCommand", offset: obj.offset ?? 0, length: obj.length };
   } else if (obj instanceof types.MessageEntityURL) {
     return { type: "url", offset: obj.offset, length: obj.length };
   } else if (obj instanceof types.MessageEntityEmail) {
@@ -157,13 +157,13 @@ export function constructMessageEntity(obj: types.TypeMessageEntity): MessageEnt
   } else if (obj instanceof types.MessageEntityPre) {
     return { type: "pre", offset: obj.offset, length: obj.length, language: obj.language };
   } else if (obj instanceof types.MessageEntityTextURL) {
-    return { type: "text_link", offset: obj.offset, length: obj.length, url: obj.url };
+    return { type: "textLink", offset: obj.offset, length: obj.length, url: obj.url };
   } else if (obj instanceof types.MessageEntityMentionName) {
-    return { type: "text_mention", offset: obj.offset, length: obj.length, userId: Number(obj.userId) };
+    return { type: "textMention", offset: obj.offset, length: obj.length, userId: Number(obj.userId) };
   } else if (obj instanceof types.MessageEntityCashtag) {
     return { type: "cashtag", offset: obj.offset, length: obj.length };
   } else if (obj instanceof types.MessageEntityPhone) {
-    return { type: "phone_number", offset: obj.offset, length: obj.length };
+    return { type: "phoneNumber", offset: obj.offset, length: obj.length };
   } else if (obj instanceof types.MessageEntityUnderline) {
     return { type: "underline", offset: obj.offset, length: obj.length };
   } else if (obj instanceof types.MessageEntityStrike) {
@@ -171,11 +171,11 @@ export function constructMessageEntity(obj: types.TypeMessageEntity): MessageEnt
   } else if (obj instanceof types.MessageEntityBlockquote) {
     return { type: "blockquote", offset: obj.offset, length: obj.length };
   } else if (obj instanceof types.MessageEntityBankCard) {
-    return { type: "bank_card", offset: obj.offset, length: obj.length };
+    return { type: "bankCard", offset: obj.offset, length: obj.length };
   } else if (obj instanceof types.MessageEntitySpoiler) {
     return { type: "spoiler", offset: obj.offset, length: obj.length };
   } else if (obj instanceof types.MessageEntityCustomEmoji) {
-    return { type: "custom_emoji", offset: obj.offset, length: obj.length, customEmojiId: String(obj.documentId) };
+    return { type: "customEmoji", offset: obj.offset, length: obj.length, customEmojiId: String(obj.documentId) };
   } else {
     return null;
   }
@@ -188,7 +188,7 @@ export function messageEntityToTlObject(entity: MessageEntity) {
       return new types.MessageEntityMention({ offset, length });
     case "hashtag":
       return new types.MessageEntityHashtag({ offset, length });
-    case "bot_command":
+    case "botCommand":
       return new types.MessageEntityBotCommand({ offset, length });
     case "url":
       return new types.MessageEntityURL({ offset, length });
@@ -202,13 +202,13 @@ export function messageEntityToTlObject(entity: MessageEntity) {
       return new types.MessageEntityCode({ offset, length });
     case "pre":
       return new types.MessageEntityPre({ offset, length, language: entity.language });
-    case "text_link":
+    case "textLink":
       return new types.MessageEntityTextURL({ offset, length, url: entity.url });
-    case "text_mention":
+    case "textMention":
       return new types.MessageEntityMentionName({ offset, length, userId: BigInt(entity.userId) });
     case "cashtag":
       return new types.MessageEntityCashtag({ offset, length });
-    case "phone_number":
+    case "phoneNumber":
       return new types.MessageEntityPhone({ offset, length });
     case "underline":
       return new types.MessageEntityUnderline({ offset, length });
@@ -216,11 +216,11 @@ export function messageEntityToTlObject(entity: MessageEntity) {
       return new types.MessageEntityStrike({ offset, length });
     case "blockquote":
       return new types.MessageEntityBlockquote({ offset, length });
-    case "bank_card":
+    case "bankCard":
       return new types.MessageEntityBankCard({ offset, length });
     case "spoiler":
       return new types.MessageEntitySpoiler({ offset, length });
-    case "custom_emoji":
+    case "customEmoji":
       return new types.MessageEntityCustomEmoji({ offset, length, documentId: BigInt(entity.customEmojiId) });
   }
 }
