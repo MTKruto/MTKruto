@@ -22,6 +22,9 @@ function concat(what: Handler, with_: Handler): HandlerFn {
 }
 
 function reduce(...handlers: Handler[]) {
+  if (handlers.length == 0) {
+    return resolve;
+  }
   return handlers.reduce((a, b) => concat(a, b));
 }
 
