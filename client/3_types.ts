@@ -3,7 +3,7 @@ import { CallbackQuery, ForceReply, InlineKeyboardMarkup, InlineQuery, Message, 
 import { With } from "./0_utilities.ts";
 import { ClientPlainParams } from "./2_client_plain.ts";
 
-export type ParseMode = "html" | "none";
+export type ParseMode = "HTML" | null;
 
 export interface ClientParams extends ClientPlainParams {
   /**
