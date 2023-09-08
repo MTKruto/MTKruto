@@ -1,5 +1,6 @@
 import { MaybePromise } from "../1_utilities.ts";
 import { CallbackQuery, ForceReply, InlineKeyboardMarkup, InlineQuery, Message, MessageEntity, ReplyKeyboardMarkup, ReplyKeyboardRemove } from "../3_types.ts";
+import { With } from "./0_utilities.ts";
 import { ClientPlainParams } from "./2_client_plain.ts";
 
 export type ParseMode = "html" | "none";
@@ -212,15 +213,23 @@ export type AuthorizationState = { authorized: boolean };
 export type FilterableUpdates = "message" | "editedMessage" | "callbackQuery";
 
 export interface Update {
-  message: Message;
-  editedMessage: Message;
-  connectionState: ConnectionState;
-  authorizationState: AuthorizationState;
-  deletedMessages: [Message, ...Message[]];
-  callbackQuery: CallbackQuery;
-  inlineQuery: InlineQuery;
+  message?: Message;
+  editedMessage?: Message;
+  connectionState?: ConnectionState;
+  authorizationState?: AuthorizationState;
+  deletedMessages?: [Message, ...Message[]];
+  callbackQuery?: CallbackQuery;
+  inlineQuery?: InlineQuery;
 }
 
-export interface Handler<U extends Partial<Update> = Partial<Update>> {
-  (update: U, next: () => Promise<void>): MaybePromise<void>;
+export type NextFn = () => Promise<void>;
+
+export interface HandlerObj<U extends Partial<Update> = Partial<Update>> {
+  handle(update: U, next: NextFn): MaybePromise<void>;
 }
+
+export type HandlerFn<U extends Partial<Update> = Partial<Update>> = HandlerObj<U>["handle"];
+
+export type Handler<U extends Partial<Update> = Partial<Update>> = HandlerObj<U> | HandlerFn<U>;
+
+export type FilterUpdate<U extends Update, T extends keyof U, F extends keyof NonNullable<U[T]>> = With<U, T> & Pick<{ [P in T]-?: With<NonNullable<U[T]>, F> }, T>;
