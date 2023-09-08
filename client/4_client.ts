@@ -1586,7 +1586,6 @@ export class Client extends ClientAbstract {
       case "uploadDocument":
         action = new types.SendMessageUploadDocumentAction({ progress: 0 });
         break;
-
       case "chooseSticker":
         action = new types.SendMessageChooseStickerAction();
         break;
@@ -1599,6 +1598,8 @@ export class Client extends ClientAbstract {
       case "uploadVideoNote":
         action = new types.SendMessageUploadRoundAction({ progress: 0 });
         break;
+      default:
+        throw new Error("Invalid chat action: " + action_);
     }
     await this.invoke(new functions.MessagesSetTyping({ peer: await this.getInputPeer(chatId), action, topMsgId: messageThreadId }));
   }
