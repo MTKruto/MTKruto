@@ -30,7 +30,7 @@ export function parseHtml(html: string) {
           if (!url) {
             throw new Error("Missing attribute href");
           }
-          queue.push({ type: "text_link", offset: text.length, length: 0, url });
+          queue.push({ type: "textLink", offset: text.length, length: 0, url });
           break;
         }
         case "ins":

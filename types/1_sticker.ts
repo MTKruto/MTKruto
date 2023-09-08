@@ -9,8 +9,8 @@ export interface Sticker {
   fileId: string;
   /** Unique identifier for this file, which is supposed to be the same over time and for different users and bots. Can't be used to download or reuse the file. */
   fileUniqueId: string;
-  /** Type of the sticker, currently one of "regular", "mask", "custom_emoji". The type of the sticker is independent from its format, which is determined by the fields is_animated and is_video. */
-  type: "regular" | "mask" | "custom_emoji";
+  /** Type of the sticker, currently one of "regular", "mask", "customEmoji". The type of the sticker is independent from its format, which is determined by the fields is_animated and is_video. */
+  type: "regular" | "mask" | "customEmoji";
   /** Sticker width */
   width: number;
   /** Sticker height */
@@ -48,7 +48,7 @@ export async function constructSticker(document: types.Document, fileId: string,
   return {
     fileId,
     fileUniqueId,
-    // TODO: custom_emoji type?
+    // TODO: custom emoji type?
     type: stickerAttribute.mask ? "mask" : "regular",
     width: imageSizeAttribute ? imageSizeAttribute.w : videoAttribute ? videoAttribute.w : 512,
     height: imageSizeAttribute ? imageSizeAttribute.h : videoAttribute ? videoAttribute.h : 512,
