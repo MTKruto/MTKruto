@@ -1567,7 +1567,7 @@ export class Client extends ClientAbstract {
   }
 
   branch(predicate: (upd: Update) => MaybePromise<boolean>, trueHandler: Handler, falseHandler: Handler) {
-    return this.use(async (upd, next) => {
+    this.use(async (upd, next) => {
       if (await predicate(upd)) {
         await trueHandler(upd, next);
       } else {
@@ -1597,7 +1597,7 @@ export class Client extends ClientAbstract {
   ) {
     const type = typeof filter === "string" ? filter : filter[0];
     const keys = Array.isArray(filter) ? filter.slice(1) : [];
-    return this.filter((update): update is FilterUpdate<Update, T, F> => {
+    this.filter((update): update is FilterUpdate<Update, T, F> => {
       if (type in update) {
         if (keys.length > 0) {
           for (const key of keys) {
