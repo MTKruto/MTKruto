@@ -1631,15 +1631,15 @@ export class Client extends ClientAbstract {
   }
 
   filter<D extends Update>(
-    predicate: (ctx: Update) => ctx is D,
+    predicate: (update: Update) => update is D,
     handler: Handler<D>,
   ): void;
   filter(
-    predicate: (ctx: Update) => MaybePromise<boolean>,
+    predicate: (update: Update) => MaybePromise<boolean>,
     handler: Handler,
   ): void;
   filter(
-    predicate: (ctx: Update) => MaybePromise<boolean>,
+    predicate: (update: Update) => MaybePromise<boolean>,
     handler: Handler,
   ) {
     this.branch(predicate, handler, (_, n) => n());
