@@ -1119,7 +1119,8 @@ export class Client extends ClientAbstract {
       }),
     );
 
-    return await this.updatesToMessages(chatId, result).then((v) => v[0]);
+    const message_ = await this.updatesToMessages(chatId, result).then((v) => v[0]);
+    return Client.assertMsgHas(message_, "text");
   }
 
   private parseText(text: string, params?: { parseMode?: ParseMode; entities?: MessageEntity[] }) {
@@ -1491,6 +1492,20 @@ export class Client extends ClientAbstract {
     return replyMarkup;
   }
 
+  private static assertMsgHas<K extends keyof Message>(message: Message, key: K): With<Message, K> {
+    if (!(key in message) || message[key] === undefined) {
+      UNREACHABLE();
+    }
+    return message as With<Message, K>;
+  }
+
+  /**
+   * Send a poll.
+   *
+   * @param chatId The chat to send the poll to.
+   * @param question The poll's question.
+   * @param options The poll's options.
+   */
   async sendPoll(chatId: ChatID, question: string, options: [string, string, ...string[]], params?: SendPollParams) {
     const peer = await this.getInputPeer(chatId);
     const randomId = getRandomId();
@@ -1542,6 +1557,7 @@ export class Client extends ClientAbstract {
       }),
     );
 
-    return await this.updatesToMessages(chatId, result).then((v) => v[0]);
+    const message = await this.updatesToMessages(chatId, result).then((v) => v[0]);
+    return Client.assertMsgHas(message, "poll");
   }
 }
