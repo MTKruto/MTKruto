@@ -3,7 +3,7 @@ import { bigIntFromBuffer, drop, getRandomBigInt, getRandomId, MaybePromise, mus
 import { as, functions, getChannelChatId, Message_, MessageContainer, peerToChatId, ReadObject, RPCResult, TLError, TLReader, types } from "../2_tl.ts";
 import { Storage, StorageMemory } from "../3_storage.ts";
 import { DC } from "../3_transport.ts";
-import { constructCallbackQuery, constructInlineQuery, constructMessage, constructUser, FileID, FileType, forceReplyToTlObject, inlineKeyboardMarkupToTlObject, Message, MessageEntity, messageEntityToTlObject, replyKeyboardMarkupToTlObject, replyKeyboardRemoveToTlObject, ThumbnailSource } from "../3_types.ts";
+import { ChatAction, constructCallbackQuery, constructInlineQuery, constructMessage, constructUser, FileID, FileType, forceReplyToTlObject, inlineKeyboardMarkupToTlObject, Message, MessageEntity, messageEntityToTlObject, replyKeyboardMarkupToTlObject, replyKeyboardRemoveToTlObject, ThumbnailSource } from "../3_types.ts";
 import { ACK_THRESHOLD, APP_VERSION, CHANNEL_DIFFERENCE_LIMIT_BOT, CHANNEL_DIFFERENCE_LIMIT_USER, DEVICE_MODEL, LANG_CODE, LANG_PACK, LAYER, MAX_CHANNEL_ID, MAX_CHAT_ID, PublicKeys, STICKER_SET_NAME_TTL, SYSTEM_LANG_CODE, SYSTEM_VERSION, USERNAME_TTL, ZERO_CHANNEL_ID } from "../4_constants.ts";
 import { isChannelPtsUpdate, isPtsUpdate, resolve, With } from "./0_utilities.ts";
 import { decryptMessage, encryptMessage, getMessageId } from "./0_message.ts";
@@ -1550,6 +1550,54 @@ export class Client extends ClientAbstract {
 
     const message = await this.updatesToMessages(chatId, result).then((v) => v[0]);
     return Client.assertMsgHas(message, "poll");
+  }
+
+  /**
+   * Send a chat action.
+   *
+   * @param chatId The chat to send the chat action to.
+   * @param action The chat action.
+   * @param messageThreadId The thread to send the chat action to.
+   */
+  async sendChatAction(chatId: ChatID, action_: ChatAction, messageThreadId?: number) {
+    let action: types.TypeSendMessageAction;
+    switch (action_) {
+      case "typing":
+        action = new types.SendMessageTypingAction();
+        break;
+      case "upload_photo":
+        action = new types.SendMessageUploadPhotoAction({ progress: 0 });
+        break;
+      case "record_video":
+        action = new types.SendMessageRecordVideoAction();
+        break;
+      case "upload_video":
+        action = new types.SendMessageRecordVideoAction();
+        break;
+      case "record_voice":
+        action = new types.SendMessageRecordAudioAction();
+        break;
+      case "upload_audio":
+        action = new types.SendMessageUploadAudioAction({ progress: 0 });
+        break;
+      case "upload_document":
+        action = new types.SendMessageUploadDocumentAction({ progress: 0 });
+        break;
+
+      case "choose_sticker":
+        action = new types.SendMessageChooseStickerAction();
+        break;
+      case "find_location":
+        action = new types.SendMessageGeoLocationAction();
+        break;
+      case "record_video_note":
+        action = new types.SendMessageRecordRoundAction();
+        break;
+      case "upload_video_note":
+        action = new types.SendMessageUploadRoundAction({ progress: 0 });
+        break;
+    }
+    await this.invoke(new functions.MessagesSetTyping({ peer: await this.getInputPeer(chatId), action, topMsgId: messageThreadId }));
   }
 
   private handle: Handler = (_, n) => n();
