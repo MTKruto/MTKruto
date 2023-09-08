@@ -1075,8 +1075,11 @@ export class Client extends ClientAbstract {
   }
 
   private async resolveSendAs(params?: Pick<SendMessagesParams, "sendAs">) {
-    await this.assertUser("sendAs");
-    return params?.sendAs ? await this.getInputPeer(params.sendAs) : undefined;
+    const sendAs = params?.sendAs;
+    if (sendAs !== undefined) {
+      await this.assertUser("sendAs");
+      return sendAs ? await this.getInputPeer(sendAs) : undefined;
+    }
   }
 
   /**
@@ -1600,7 +1603,9 @@ export class Client extends ClientAbstract {
     await this.invoke(new functions.MessagesSetTyping({ peer: await this.getInputPeer(chatId), action, topMsgId: messageThreadId }));
   }
 
-  private handle: Handler = (_, n) => n();
+  private handle: Handler = (_, n) => {
+    return n();
+  };
 
   use(handler: Handler) {
     const handle = this.handle;
@@ -1636,7 +1641,7 @@ export class Client extends ClientAbstract {
     predicate: (ctx: Update) => MaybePromise<boolean>,
     handler: Handler,
   ) {
-    this.branch(predicate, handler, resolve);
+    this.branch(predicate, handler, (_, n) => n());
   }
 
   on<T extends keyof Update, F extends keyof NonNullable<Update[T]>>(
