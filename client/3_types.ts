@@ -206,7 +206,7 @@ export interface SendPollParams {
   protectContent?: boolean;
 }
 
-export type ConnectionState = "not-connected" | "updating" | "ready";
+export type ConnectionState = "notConnected" | "updating" | "ready";
 
 export type AuthorizationState = { authorized: boolean };
 

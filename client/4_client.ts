@@ -81,7 +81,7 @@ export class Client extends ClientAbstract {
   protected stateChangeHandler = ((connected: boolean) => {
     this.connectMutex.acquire().then(async (release) => {
       try {
-        const connectionState = connected ? "ready" : "not-connected";
+        const connectionState = connected ? "ready" : "notConnected";
         if (this.connected == connected && this.lastPropagatedConnectionState != connectionState) {
           await this.propagateConnectionState(connectionState);
           this.lastPropagatedConnectionState = connectionState;
