@@ -1565,38 +1565,38 @@ export class Client extends ClientAbstract {
   async sendChatAction(chatId: ChatID, action_: ChatAction, messageThreadId?: number) {
     let action: types.TypeSendMessageAction;
     switch (action_) {
-      case "typing":
+      case "type":
         action = new types.SendMessageTypingAction();
         break;
-      case "upload_photo":
+      case "uploadPhoto":
         action = new types.SendMessageUploadPhotoAction({ progress: 0 });
         break;
-      case "record_video":
+      case "recordVideo":
         action = new types.SendMessageRecordVideoAction();
         break;
-      case "upload_video":
+      case "uploadVideo":
         action = new types.SendMessageRecordVideoAction();
         break;
-      case "record_voice":
+      case "recordVoice":
         action = new types.SendMessageRecordAudioAction();
         break;
-      case "upload_audio":
+      case "uploadAudio":
         action = new types.SendMessageUploadAudioAction({ progress: 0 });
         break;
-      case "upload_document":
+      case "uploadDocument":
         action = new types.SendMessageUploadDocumentAction({ progress: 0 });
         break;
 
-      case "choose_sticker":
+      case "chooseSticker":
         action = new types.SendMessageChooseStickerAction();
         break;
-      case "find_location":
+      case "findLocation":
         action = new types.SendMessageGeoLocationAction();
         break;
-      case "record_video_note":
+      case "recordVideoNote":
         action = new types.SendMessageRecordRoundAction();
         break;
-      case "upload_video_note":
+      case "uploadVideoNote":
         action = new types.SendMessageUploadRoundAction({ progress: 0 });
         break;
     }
