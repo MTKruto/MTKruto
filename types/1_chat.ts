@@ -4,12 +4,11 @@ import { ZERO_CHANNEL_ID } from "../4_constants.ts";
 import { Color, getColor } from "./0_color.ts";
 import { ChatPhoto, constructChatPhoto } from "./0_chat_photo.ts";
 
-export enum ChatType {
-  Private = "private",
-  Group = "group",
-  Supergroup = "supergroup",
-  Channel = "channel",
-}
+export type ChatType =
+  | "private"
+  | "group"
+  | "supergroup"
+  | "channel";
 
 export declare namespace Chat {
   export interface Base {
@@ -23,7 +22,7 @@ export declare namespace Chat {
   }
 
   export interface Private extends Base {
-    type: ChatType.Private;
+    type: "private";
     /** True, if this user is a bot */
     isBot?: boolean;
     /** First name of the other party in a private chat */
@@ -51,7 +50,7 @@ export declare namespace Chat {
   }
 
   export interface Group extends Base {
-    type: ChatType.Group;
+    type: "group";
     /** Title, for supergroups, channels and group chats */
     title: string;
     /** Chat photo. */
@@ -82,7 +81,7 @@ export declare namespace Chat {
   }
 
   export interface Channel extends ChannelBase {
-    type: ChatType.Channel;
+    type: "channel";
     /** Title, for supergroups, channels and group chats */
     title: string;
     /** Username, for private chats, supergroups and channels if available */
@@ -92,7 +91,7 @@ export declare namespace Chat {
   }
 
   export interface Supergroup extends ChannelBase {
-    type: ChatType.Supergroup;
+    type: "supergroup";
     /** True, if the supergroup chat is a forum (has [topics](https://telegram.org/blog/topics-in-groups-collectible-usernames#topics-in-groups) enabled) */
     isForum: boolean;
   }
@@ -108,7 +107,7 @@ export function constructChat(chat: types.User | types.Chat | types.Channel): Ch
   if (chat instanceof types.User) {
     const id = Number(chat.id);
     const chat_: Chat.Private = {
-      type: ChatType.Private,
+      type: "private",
       isBot: chat.bot || false,
       id,
       color: getColor(id),
@@ -133,7 +132,7 @@ export function constructChat(chat: types.User | types.Chat | types.Channel): Ch
   } else if (chat instanceof types.Chat) {
     const id = Number(-chat.id);
     const chat_: Chat.Group = {
-      type: ChatType.Group,
+      type: "group",
       id,
       color: getColor(id),
       title: chat.title,
@@ -159,7 +158,7 @@ export function constructChat(chat: types.User | types.Chat | types.Channel): Ch
       chat_ = {
         id,
         color: getColor(id),
-        type: ChatType.Supergroup,
+        type: "supergroup",
         title,
         isScam,
         isFake,
@@ -172,7 +171,7 @@ export function constructChat(chat: types.User | types.Chat | types.Channel): Ch
       chat_ = {
         id,
         color: getColor(id),
-        type: ChatType.Channel,
+        type: "channel",
         title,
         isScam,
         isFake,

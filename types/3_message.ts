@@ -249,9 +249,9 @@ async function constructServiceMessage(message_: types.MessageService, chat: Cha
       }
     }
   } else if (message_.action instanceof types.MessageActionChannelCreate) {
-    if (message.chat.type == ChatType.Channel) {
+    if (message.chat.type == "channel") {
       message.channelCreated = true;
-    } else if (message.chat.type == ChatType.Supergroup) {
+    } else if (message.chat.type == "supergroup") {
       message.supergroupCreated = true;
     } else {
       UNREACHABLE();
