@@ -61,7 +61,7 @@ export class Client extends ClientAbstract {
   ) {
     super(params);
 
-    this.parseMode = params?.parseMode ?? "none";
+    this.parseMode = params?.parseMode ?? null;
 
     this.appVersion = params?.appVersion ?? APP_VERSION;
     this.deviceModel = params?.deviceModel ?? DEVICE_MODEL;
@@ -1129,9 +1129,9 @@ export class Client extends ClientAbstract {
     const entities_ = params?.entities ?? [];
     const parseMode = params?.parseMode ?? this.parseMode;
     switch (parseMode) {
-      case "none":
+      case null:
         break;
-      case "html": {
+      case "HTML": {
         const [newText, entitiesToPush] = parseHtml(text);
         text = newText;
         for (const entity of entitiesToPush) {
