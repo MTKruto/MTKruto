@@ -29,7 +29,7 @@ export class ConnectionWebSocket extends ConnectionUnframed implements Connectio
         return;
       }
       const release = await mutex.acquire();
-      const data = new Uint8Array(await new Blob([e.data].map((v) => v instanceof Blob ? v : v instanceof ArrayBuffer ? v : Array.isArray(v) ? v.map((v) => v.buffer) : v.buffer).flat()).arrayBuffer());
+      const data = new Uint8Array(await new Blob([e.data].map((v) => v instanceof Blob || v instanceof Uint8Array ? v : v instanceof ArrayBuffer ? v : Array.isArray(v) ? v.map((v) => v.buffer) : v.buffer).flat()).arrayBuffer());
 
       for (const byte of data) {
         this.buffer.push(byte);

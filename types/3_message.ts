@@ -13,7 +13,7 @@ import { constructVenue, Venue } from "./0_venue.ts";
 import { constructLocation, Location } from "./0_location.ts";
 import { constructDice, Dice } from "./0_dice.ts";
 import { constructReplyKeyboardRemove, ReplyKeyboardRemove } from "./0_reply_keyboard_remove.ts";
-import { Chat, ChatType, constructChat } from "./1_chat.ts";
+import { Chat, constructChat } from "./1_chat.ts";
 import { constructPhoto, Photo } from "./1_photo.ts";
 import { constructDocument, Document } from "./1_document.ts";
 import { constructVideo, Video } from "./1_video.ts";
