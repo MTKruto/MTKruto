@@ -12,6 +12,8 @@ function calculateLength(object: ReadObject) {
     for (const item of object) {
       length += calculateLength(item);
     }
+  } else if (typeof object === "boolean") {
+    length += 32 / 8; // constructor
   } else {
     length += object[serialize]().length;
   }
