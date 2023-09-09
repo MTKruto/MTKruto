@@ -1,4 +1,5 @@
 import { debug, Mutex } from "../0_deps.ts";
+import { UNREACHABLE } from "../1_utilities.ts";
 import { ConnectionUnframed } from "./0_connection.ts";
 
 const d = debug("ConnectionWebSocket");
@@ -29,7 +30,7 @@ export class ConnectionWebSocket extends ConnectionUnframed implements Connectio
         return;
       }
       const release = await mutex.acquire();
-      const data = new Uint8Array(await new Blob([e.data].map((v) => v instanceof Blob || v instanceof Uint8Array ? v : v instanceof ArrayBuffer ? v : Array.isArray(v) ? v.map((v) => v.buffer) : v.buffer).flat()).arrayBuffer());
+      const data = new Uint8Array(await new Blob([e.data].map((v) => v instanceof Blob || v instanceof Uint8Array ? v : v instanceof ArrayBuffer ? v : UNREACHABLE())).arrayBuffer());
 
       for (const byte of data) {
         this.buffer.push(byte);
