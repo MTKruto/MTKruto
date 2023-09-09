@@ -1,4 +1,4 @@
-import { debug, gunzip, Mutex } from "../0_deps.ts";
+import { crypto, debug, gunzip, Mutex } from "../0_deps.ts";
 import { bigIntFromBuffer, drop, getRandomBigInt, getRandomId, MaybePromise, mustPrompt, mustPromptOneOf, Queue, sha1, UNREACHABLE } from "../1_utilities.ts";
 import { as, functions, getChannelChatId, Message_, MessageContainer, peerToChatId, ReadObject, RPCResult, TLError, TLReader, types } from "../2_tl.ts";
 import { Storage, StorageMemory } from "../3_storage.ts";
@@ -1601,6 +1601,39 @@ export class Client extends ClientAbstract {
         throw new Error("Invalid chat action: " + action_);
     }
     await this.invoke(new functions.MessagesSetTyping({ peer: await this.getInputPeer(chatId), action, topMsgId: messageThreadId }));
+  }
+
+  async uploadFile(contents: Uint8Array) {
+    const client = new Client(this.storage, this.apiId, this.apiHash, {
+      transportProvider: this.transportProvider,
+      appVersion: this.appVersion,
+      deviceModel: this.deviceModel,
+      langCode: this.langCode,
+      langPack: this.langPack,
+      systemLangCode: this.systemLangCode,
+      systemVersion: this.systemVersion,
+      cdn: true,
+    });
+    await client.connect();
+    const chunkSize = 512 * 1024; // 512 KB
+    const isBig = contents.length > 1048576; // 10 MB
+    const fileId = getRandomId();
+    let part = 0;
+    const md5sum = await crypto.subtle.digest("MD5", contents).then((v) =>
+      [...new Uint8Array(v)]
+        .map((b) => b.toString(16).padStart(2, "0"))
+        .join("")
+    );
+    if (!isBig) {
+      for (; part < contents.length / chunkSize; part++) {
+        const bytes = contents.slice(0, chunkSize);
+        contents = contents.slice(chunkSize);
+        await this.invoke(new functions.UploadSaveFilePart({ fileId, bytes, filePart: part }));
+      }
+    } else {
+      UNREACHABLE();
+    }
+    return new types.InputFile({ id: fileId, name: "test", parts: part, md5Checksum: md5sum });
   }
 
   private handle = skip;
