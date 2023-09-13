@@ -1,5 +1,5 @@
 import { types } from "../2_tl.ts";
-import { FileID, FileType, FileUniqueID, FileUniqueType, ThumbnailSource } from "./!0_file_id.ts";
+import { FileID, FileType, FileUniqueID, FileUniqueType, ThumbnailSource } from "./0__file_id.ts";
 import { constructThumbnail, Thumbnail } from "./0_thumbnail.ts";
 
 /** This object represents a photo. */

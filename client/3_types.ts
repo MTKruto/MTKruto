@@ -1,5 +1,5 @@
 import { MaybePromise } from "../1_utilities.ts";
-import { CallbackQuery, ForceReply, InlineKeyboardMarkup, InlineQuery, Message, MessageEntity, ReplyKeyboardMarkup, ReplyKeyboardRemove } from "../3_types.ts";
+import { CallbackQuery, ChatID, ForceReply, InlineKeyboardMarkup, InlineQuery, Message, MessageEntity, ReplyKeyboardMarkup, ReplyKeyboardRemove } from "../3_types.ts";
 import { With } from "./0_utilities.ts";
 import { ClientPlainParams } from "./2_client_plain.ts";
 
@@ -56,11 +56,6 @@ export interface AuthorizeUserParams<S = string> {
   code: S | (() => MaybePromise<S>);
   password: S | ((hint: string | null) => MaybePromise<S>);
 }
-
-/**
- * A chat identifier as provided by MTKruto or a string starting with a @ that is followed by a username.
- */
-export type ChatID = number | string;
 
 export interface SendMessagesParams {
   /**
