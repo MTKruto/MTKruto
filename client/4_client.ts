@@ -3,7 +3,7 @@ import { bigIntFromBuffer, drop, getRandomBigInt, getRandomId, MaybePromise, mus
 import { as, functions, getChannelChatId, Message_, MessageContainer, peerToChatId, ReadObject, RPCResult, TLError, TLReader, types } from "../2_tl.ts";
 import { Storage, StorageMemory } from "../3_storage.ts";
 import { DC } from "../3_transport.ts";
-import { ChatAction, constructCallbackQuery, constructInlineQuery, constructMessage, constructUser, FileID, FileType, forceReplyToTlObject, inlineKeyboardMarkupToTlObject, Message, MessageEntity, messageEntityToTlObject, replyKeyboardMarkupToTlObject, replyKeyboardRemoveToTlObject, ThumbnailSource } from "../3_types.ts";
+import { BotCommand, BotCommandScope, botCommandScopeToTlObject, ChatAction, ChatID, constructCallbackQuery, constructInlineQuery, constructMessage, constructUser, FileID, FileType, forceReplyToTlObject, inlineKeyboardMarkupToTlObject, Message, MessageEntity, messageEntityToTlObject, replyKeyboardMarkupToTlObject, replyKeyboardRemoveToTlObject, ThumbnailSource } from "../3_types.ts";
 import { ACK_THRESHOLD, APP_VERSION, CHANNEL_DIFFERENCE_LIMIT_BOT, CHANNEL_DIFFERENCE_LIMIT_USER, DEVICE_MODEL, LANG_CODE, LANG_PACK, LAYER, MAX_CHANNEL_ID, MAX_CHAT_ID, PublicKeys, STICKER_SET_NAME_TTL, SYSTEM_LANG_CODE, SYSTEM_VERSION, USERNAME_TTL, ZERO_CHANNEL_ID } from "../4_constants.ts";
 import { isChannelPtsUpdate, isPtsUpdate, resolve, With } from "./0_utilities.ts";
 import { decryptMessage, encryptMessage, getMessageId } from "./0_message.ts";
@@ -11,7 +11,7 @@ import { checkPassword } from "./0_password.ts";
 import { parseHtml } from "./0_html.ts";
 import { ClientPlain } from "./2_client_plain.ts";
 import { ClientAbstract } from "./1_client_abstract.ts";
-import { AnswerCallbackQueryParams, AuthorizeUserParams, ChatID, ClientParams, ConnectionState, EditMessageParams, FilterableUpdates, FilterUpdate, ForwardMessagesParams, Handler, ParseMode, SendMessagesParams, SendPollParams, skip, Update } from "./3_types.ts";
+import { AnswerCallbackQueryParams, AuthorizeUserParams, ClientParams, ConnectionState, EditMessageParams, FilterableUpdates, FilterUpdate, ForwardMessagesParams, Handler, ParseMode, SendMessagesParams, SendPollParams, skip, Update } from "./3_types.ts";
 
 const d = debug("Client");
 const dGap = debug("Client/recoverUpdateGap");
@@ -1601,6 +1601,26 @@ export class Client extends ClientAbstract {
         throw new Error("Invalid chat action: " + action_);
     }
     await this.invoke(new functions.MessagesSetTyping({ peer: await this.getInputPeer(chatId), action, topMsgId: messageThreadId }));
+  }
+
+  async setMyCommands(commands: BotCommand[], params?: { languageCode?: string; scope?: BotCommandScope }) {
+    await this.invoke(
+      new functions.BotsSetBotCommands({
+        commands: commands.map((v) => new types.BotCommand(v)),
+        langCode: params?.languageCode ?? "",
+        scope: await botCommandScopeToTlObject(params?.scope ?? { type: "default" }, this.getInputPeer.bind(this)), // TODO: use params.scope
+      }),
+    );
+  }
+
+  async getMyCommands(params?: { languageCode?: string; scope?: BotCommandScope }): Promise<BotCommand[]> {
+    const commands_ = await this.invoke(
+      new functions.BotsGetBotCommands({
+        langCode: params?.languageCode ?? "",
+        scope: await botCommandScopeToTlObject(params?.scope ?? { type: "default" }, this.getInputPeer.bind(this)), // TODO: use params.scope
+      }),
+    );
+    return commands_.map((v) => ({ command: v.command, description: v.description }));
   }
 
   private handle = skip;

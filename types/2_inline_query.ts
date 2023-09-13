@@ -1,7 +1,7 @@
 import { UNREACHABLE } from "../1_utilities.ts";
 import { types } from "../2_tl.ts";
-import { EntityGetter } from "./!0_misc.ts";
 import { constructLocation, Location } from "./0_location.ts";
+import { EntityGetter } from "./1__getters.ts";
 import { constructUser, User } from "./1_user.ts";
 
 export interface InlineQuery {
