@@ -1631,7 +1631,11 @@ export class Client extends ClientAbstract {
         await this.invoke(new functions.UploadSaveFilePart({ fileId, bytes, filePart: part }));
       }
     } else {
-      UNREACHABLE();
+      for (; part < contents.length / chunkSize; part++) {
+        const bytes = contents.slice(0, chunkSize);
+        contents = contents.slice(chunkSize);
+        await this.invoke(new functions.UploadSaveBigFilePart({ fileId, filePart: part, fileTotalParts: contents.length / chunkSize, bytes }));
+      }
     }
     return new types.InputFile({ id: fileId, name: "test", parts: part, md5Checksum: md5sum });
   }
