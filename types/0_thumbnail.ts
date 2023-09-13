@@ -1,5 +1,5 @@
 import { types } from "../2_tl.ts";
-import { FileID, FileType, FileUniqueID, FileUniqueType, ThumbnailSource } from "./!0_file_id.ts";
+import { FileID, FileType, FileUniqueID, FileUniqueType, ThumbnailSource } from "./0__file_id.ts";
 
 /** This object represents thumbnail of a file or a sticker. */
 export interface Thumbnail {
