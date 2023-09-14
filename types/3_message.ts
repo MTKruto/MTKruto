@@ -22,7 +22,7 @@ import { Animation, constructAnimation } from "./1_animation.ts";
 import { constructUser, User } from "./1_user.ts";
 import { constructPoll, Poll } from "./1_poll.ts";
 import { constructSticker, Sticker, StickerSetNameGetter } from "./1_sticker.ts";
-import { constructInlineKeyboardMarkup, InlineKeyboardMarkup } from "./2_inline_keyboard_markup.ts";
+import { constructInlineKeyboardMarkup, InlineKeyboardMarkup } from "./3_inline_keyboard_markup.ts";
 import { constructReplyKeyboardMarkup, ReplyKeyboardMarkup } from "./2_reply_keyboard_markup.ts";
 import { constructGame, Game } from "./2_game.ts";
 

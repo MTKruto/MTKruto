@@ -11,3 +11,7 @@ export interface EntityGetter {
 export interface InputPeerGetter {
   (id: ChatID): Promise<types.InputPeerUser | types.InputPeerChannel | types.InputPeerChat>;
 }
+
+export interface UsernameResolver {
+  (username: string): MaybePromise<types.InputUser>;
+}

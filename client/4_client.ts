@@ -3,7 +3,7 @@ import { bigIntFromBuffer, drop, getRandomBigInt, getRandomId, MaybePromise, mus
 import { as, functions, getChannelChatId, Message_, MessageContainer, peerToChatId, ReadObject, RPCResult, TLError, TLReader, types } from "../2_tl.ts";
 import { Storage, StorageMemory } from "../3_storage.ts";
 import { DC } from "../3_transport.ts";
-import { BotCommand, BotCommandScope, botCommandScopeToTlObject, ChatAction, ChatID, constructCallbackQuery, constructInlineQuery, constructMessage, constructUser, FileID, FileType, forceReplyToTlObject, inlineKeyboardMarkupToTlObject, Message, MessageEntity, messageEntityToTlObject, replyKeyboardMarkupToTlObject, replyKeyboardRemoveToTlObject, ThumbnailSource } from "../3_types.ts";
+import { BotCommand, BotCommandScope, botCommandScopeToTlObject, ChatAction, ChatID, constructCallbackQuery, constructInlineQuery, constructMessage, constructUser, FileID, FileType, InlineQueryResult, InlineQueryResultButton, inlineQueryResultToTlObject, Message, MessageEntity, messageEntityToTlObject, replyMarkupToTlObject, ThumbnailSource, UsernameResolver } from "../3_types.ts";
 import { ACK_THRESHOLD, APP_VERSION, CHANNEL_DIFFERENCE_LIMIT_BOT, CHANNEL_DIFFERENCE_LIMIT_USER, DEVICE_MODEL, LANG_CODE, LANG_PACK, LAYER, MAX_CHANNEL_ID, MAX_CHAT_ID, PublicKeys, STICKER_SET_NAME_TTL, SYSTEM_LANG_CODE, SYSTEM_VERSION, USERNAME_TTL, ZERO_CHANNEL_ID } from "../4_constants.ts";
 import { isChannelPtsUpdate, isPtsUpdate, resolve, With } from "./0_utilities.ts";
 import { decryptMessage, encryptMessage, getMessageId } from "./0_message.ts";
@@ -1463,26 +1463,16 @@ export class Client extends ClientAbstract {
     );
   }
 
+  private usernameResolver: UsernameResolver = async (v) => {
+    const inputPeer = await this.getInputPeer(v).then((v) => v[as](types.InputPeerUser));
+    return new types.InputUser({ userId: inputPeer.userId, accessHash: inputPeer.accessHash });
+  };
+
   private async constructReplyMarkup(params?: Pick<SendMessagesParams, "replyMarkup">) {
-    let replyMarkup: types.TypeReplyMarkup | undefined = undefined;
     if (params?.replyMarkup) {
       await this.assertBot("replyMarkup");
-      if ("inlineKeyboard" in params.replyMarkup) {
-        replyMarkup = await inlineKeyboardMarkupToTlObject(params.replyMarkup, async (v) => {
-          const inputPeer = await this.getInputPeer(v).then((v) => v[as](types.InputPeerUser));
-          return new types.InputUser({ userId: inputPeer.userId, accessHash: inputPeer.accessHash });
-        });
-      } else if ("keyboard" in params.replyMarkup) {
-        replyMarkup = replyKeyboardMarkupToTlObject(params.replyMarkup);
-      } else if ("removeKeyboard" in params.replyMarkup) {
-        replyMarkup = replyKeyboardRemoveToTlObject(params.replyMarkup);
-      } else if ("forceReply" in params.replyMarkup) {
-        replyMarkup = forceReplyToTlObject(params.replyMarkup);
-      } else {
-        throw new Error("The replyMarkup parameter has an unexpected type");
-      }
+      return replyMarkupToTlObject(params.replyMarkup, this.usernameResolver.bind(this));
     }
-    return replyMarkup;
   }
 
   private static assertMsgHas<K extends keyof Message>(message: Message, key: K): With<Message, K> {
@@ -1621,6 +1611,21 @@ export class Client extends ClientAbstract {
       }),
     );
     return commands_.map((v) => ({ command: v.command, description: v.description }));
+  }
+
+  async answerInlineQuery(id: string, results: InlineQueryResult[], params?: { cacheTime?: number; isPersonal?: boolean; nextOffset?: string; isGallery?: boolean; button: InlineQueryResultButton }) {
+    await this.invoke(
+      new functions.MessagesSetInlineBotResults({
+        queryId: BigInt(id),
+        results: await Promise.all(results.map((v) => inlineQueryResultToTlObject(v, this.parseText.bind(this), this.usernameResolver.bind(this)))),
+        cacheTime: params?.cacheTime ?? 300,
+        private: params?.isPersonal ? true : undefined,
+        switchWebview: params?.button && params.button.webApp ? new types.InlineBotWebView({ text: params.button.text, url: params.button.webApp.url }) : undefined,
+        switchPm: params?.button && params.button.startParameter ? new types.InlineBotSwitchPM({ text: params.button.text, startParam: params.button.startParameter }) : undefined,
+        gallery: params?.isGallery ? true : undefined,
+        nextOffset: params?.nextOffset,
+      }),
+    );
   }
 
   private handle = skip;
