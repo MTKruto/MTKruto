@@ -11,7 +11,7 @@ export interface InlineQueryResultVoice {
   caption?: string;
   parseMode?: ParseMode;
   captionEntities?: MessageEntity[];
-  voiceDuration?: string;
+  voiceDuration?: number;
   replyMarkup?: InlineKeyboardMarkup;
   inputMessageContent?: InputMessageContent;
 }

@@ -6,6 +6,7 @@ import { InputMessageContent } from "./2_input_message_content.ts";
 export interface InlineQueryResultDocument {
   type: "document";
   id: string;
+  documentUrl: string;
   title: string;
   caption?: string;
   parseMode?: ParseMode;

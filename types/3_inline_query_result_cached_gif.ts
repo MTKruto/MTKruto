@@ -6,7 +6,7 @@ import { InputMessageContent } from "./2_input_message_content.ts";
 export interface InlineQueryResultCachedGif {
   type: "gif";
   id: string;
-  gif4FileId: string;
+  gifFileId: string;
   title?: string;
   caption?: string;
   parseMode?: ParseMode;

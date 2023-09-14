@@ -3,7 +3,7 @@ import { bigIntFromBuffer, drop, getRandomBigInt, getRandomId, MaybePromise, mus
 import { as, functions, getChannelChatId, Message_, MessageContainer, peerToChatId, ReadObject, RPCResult, TLError, TLReader, types } from "../2_tl.ts";
 import { Storage, StorageMemory } from "../3_storage.ts";
 import { DC } from "../3_transport.ts";
-import { BotCommand, BotCommandScope, botCommandScopeToTlObject, ChatAction, ChatID, constructCallbackQuery, constructInlineQuery, constructMessage, constructUser, FileID, FileType, forceReplyToTlObject, inlineKeyboardMarkupToTlObject, Message, MessageEntity, messageEntityToTlObject, replyKeyboardMarkupToTlObject, replyKeyboardRemoveToTlObject, ThumbnailSource } from "../3_types.ts";
+import { BotCommand, BotCommandScope, botCommandScopeToTlObject, ChatAction, ChatID, constructCallbackQuery, constructInlineQuery, constructMessage, constructUser, FileID, FileType, forceReplyToTlObject, inlineKeyboardMarkupToTlObject, InlineQueryResult, Message, MessageEntity, messageEntityToTlObject, replyKeyboardMarkupToTlObject, replyKeyboardRemoveToTlObject, ThumbnailSource } from "../3_types.ts";
 import { ACK_THRESHOLD, APP_VERSION, CHANNEL_DIFFERENCE_LIMIT_BOT, CHANNEL_DIFFERENCE_LIMIT_USER, DEVICE_MODEL, LANG_CODE, LANG_PACK, LAYER, MAX_CHANNEL_ID, MAX_CHAT_ID, PublicKeys, STICKER_SET_NAME_TTL, SYSTEM_LANG_CODE, SYSTEM_VERSION, USERNAME_TTL, ZERO_CHANNEL_ID } from "../4_constants.ts";
 import { isChannelPtsUpdate, isPtsUpdate, resolve, With } from "./0_utilities.ts";
 import { decryptMessage, encryptMessage, getMessageId } from "./0_message.ts";
@@ -12,6 +12,7 @@ import { parseHtml } from "./0_html.ts";
 import { ClientPlain } from "./2_client_plain.ts";
 import { ClientAbstract } from "./1_client_abstract.ts";
 import { AnswerCallbackQueryParams, AuthorizeUserParams, ClientParams, ConnectionState, EditMessageParams, FilterableUpdates, FilterUpdate, ForwardMessagesParams, Handler, ParseMode, SendMessagesParams, SendPollParams, skip, Update } from "./3_types.ts";
+import { InlineQueryResultButton } from "../types/1_inline_query_result_button.ts";
 
 const d = debug("Client");
 const dGap = debug("Client/recoverUpdateGap");
@@ -1621,6 +1622,10 @@ export class Client extends ClientAbstract {
       }),
     );
     return commands_.map((v) => ({ command: v.command, description: v.description }));
+  }
+
+  async answerInlineQuery(id: string, results: InlineQueryResult[], params?: { cacheTime?: number; isPersonal?: boolean; nextOffset?: string; button: InlineQueryResultButton }) {
+    // await this.invoke(new functions.MessagesSetInlineBotResults({}))
   }
 
   private handle = skip;
