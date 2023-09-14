@@ -1,4 +1,4 @@
-import { InlineKeyboardMarkup } from "./2_inline_keyboard_markup.ts";
+import { InlineKeyboardMarkup } from "./3_inline_keyboard_markup.ts";
 
 export interface InlineQueryResultGame {
   type: "game";
