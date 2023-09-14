@@ -2,7 +2,6 @@ import { types } from "../2_tl.ts";
 import { FileID } from "./0__file_id.ts";
 import { MessageEntity } from "./0_message_entity.ts";
 import { ParseMode } from "./0_parse_mode.ts";
-import { InputBotInlineMessageMediaAuto } from "../tl/2_types.ts";
 import { UNREACHABLE } from "../1_utilities.ts";
 import { InlineQueryResultArticle } from "./4_inline_query_result_article.ts";
 import { InlineQueryResultAudio } from "./4_inline_query_result_audio.ts";
@@ -195,7 +194,7 @@ export async function inlineQueryResultToTlObject(result_: InlineQueryResult, pa
 
   const { type, id } = result_;
   const [message, entities] = ret;
-  const sendMessage = new InputBotInlineMessageMediaAuto({
+  const sendMessage = new types.InputBotInlineMessageMediaAuto({
     message,
     entities,
     replyMarkup,
@@ -256,11 +255,20 @@ export async function inlineQueryResultToTlObject(result_: InlineQueryResult, pa
       }),
     });
   } else if (result_.type == "article") {
+    if (!("messageText" in result_.inputMessageContent)) {
+      UNREACHABLE();
+    }
+    const [message, entities] = parseText(result_.inputMessageContent.messageText, { entities: result_.inputMessageContent.entities, parseMode: result_.inputMessageContent.parseMode });
     return new types.InputBotInlineResult({
       id,
       type,
       title,
-      sendMessage,
+      sendMessage: new types.InputBotInlineMessageText({
+        message,
+        entities,
+        noWebpage: result_.inputMessageContent.disableWebPagePreview ? true : undefined,
+        replyMarkup,
+      }),
     });
   } else if (result_.type == "venue") {
     if (!result_.fourSquareId || !result_.foursquareType) {
