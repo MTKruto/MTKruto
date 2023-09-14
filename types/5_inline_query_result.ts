@@ -207,6 +207,7 @@ export async function inlineQueryResultToTlObject(result_: InlineQueryResult, pa
       type: result_.type,
       title: "title" in result_ ? result_.title : undefined,
       thumb: thumb == null ? undefined : thumb,
+      content: document,
       sendMessage: new types.InputBotInlineMessageMediaAuto({
         message,
         entities,

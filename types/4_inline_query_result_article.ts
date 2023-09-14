@@ -5,7 +5,7 @@ export interface InlineQueryResultArticle {
   type: "article";
   id: string;
   title: string;
-  inputMessageContent?: InputMessageContent;
+  inputMessageContent: InputMessageContent;
   replyMarkup?: InlineKeyboardMarkup;
   url?: string;
   hideUrl?: boolean;
