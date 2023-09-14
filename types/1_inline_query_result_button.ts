@@ -1,4 +1,3 @@
-import { types } from "../2_tl.ts";
 import { WebAppInfo } from "./0_web_app_info.ts";
 
 export interface InlineQueryResultButton {
