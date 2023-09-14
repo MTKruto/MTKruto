@@ -44,7 +44,6 @@ export * from "./types/2_game.ts";
 export * from "./types/2_inline_keyboard_button.ts";
 export * from "./types/2_inline_query.ts";
 export * from "./types/2_input_message_content.ts";
-export * from "./types/2_poll_answer.ts";
 export * from "./types/2_reply_keyboard_markup.ts";
 export * from "./types/3_inline_keyboard_markup.ts";
 export * from "./types/3_message.ts";
