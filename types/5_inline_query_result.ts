@@ -202,6 +202,7 @@ export async function inlineQueryResultToTlObject(result_: InlineQueryResult, pa
   });
 
   if (document != null) {
+    console.log({document})
     return new types.InputBotInlineResult({
       id: result_.id,
       type: result_.type,

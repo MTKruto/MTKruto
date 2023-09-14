@@ -9,7 +9,7 @@ export interface InlineQueryResultCachedAudio {
   audioFileId: string;
   caption?: string;
   parseMode?: ParseMode;
-  captionEntities: MessageEntity[];
+  captionEntities?: MessageEntity[];
   replyMarkup?: InlineKeyboardMarkup;
   inputMessageContent?: InputMessageContent;
 }

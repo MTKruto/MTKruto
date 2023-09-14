@@ -10,7 +10,7 @@ export interface InlineQueryResultCachedDocument {
   description?: string;
   caption?: string;
   parseMode?: ParseMode;
-  captionEntities: MessageEntity[];
+  captionEntities?: MessageEntity[];
   replyMarkup?: InlineKeyboardMarkup;
   inputMessageContent?: InputMessageContent;
 }

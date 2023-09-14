@@ -10,7 +10,7 @@ export interface InlineQueryResultAudio {
   title: string;
   caption?: string;
   parseMode?: ParseMode;
-  captionEntities: MessageEntity[];
+  captionEntities?: MessageEntity[];
   performer?: string;
   audioDuration?: number;
   replyMarkup?: InlineKeyboardMarkup;

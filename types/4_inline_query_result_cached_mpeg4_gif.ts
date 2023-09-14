@@ -10,7 +10,7 @@ export interface InlineQueryResultCachedMpeg4Gif {
   title?: string;
   caption?: string;
   parseMode?: ParseMode;
-  captionEntities: MessageEntity[];
+  captionEntities?: MessageEntity[];
   replyMarkup?: InlineKeyboardMarkup;
   inputMessageContent?: InputMessageContent;
 }

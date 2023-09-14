@@ -11,7 +11,7 @@ export interface InlineQueryResultCachedVideo {
   description?: string;
   caption?: string;
   parseMode?: ParseMode;
-  captionEntities: MessageEntity[];
+  captionEntities?: MessageEntity[];
   replyMarkup?: InlineKeyboardMarkup;
   inputMessageContent?: InputMessageContent;
 }
