@@ -201,11 +201,13 @@ export async function inlineQueryResultToTlObject(result_: InlineQueryResult, pa
     replyMarkup,
   });
 
+  const title = "title" in result_ ? result_.title : undefined;
+
   if (document != null) {
     return new types.InputBotInlineResult({
-      id: result_.id,
-      type: result_.type,
-      title: "title" in result_ ? result_.title : undefined,
+      id,
+      type,
+      title,
       thumb: thumb == null ? undefined : thumb,
       content: document,
       sendMessage: new types.InputBotInlineMessageMediaAuto({
@@ -217,9 +219,9 @@ export async function inlineQueryResultToTlObject(result_: InlineQueryResult, pa
   } else if (fileId_ != null) {
     const fileId = FileID.decode(fileId_);
     return new types.InputBotInlineResultDocument({
-      id: result_.id,
-      type: result_.type,
-      title: "title" in result_ ? result_.title : undefined,
+      id,
+      type,
+      title,
       document: new types.InputDocument({
         id: fileId.params.mediaId!,
         accessHash: fileId.params.accessHash!,
@@ -229,8 +231,9 @@ export async function inlineQueryResultToTlObject(result_: InlineQueryResult, pa
     });
   } else if (result_.type == "location") {
     return new types.InputBotInlineResult({
-      id: result_.id,
-      type: result_.type,
+      id,
+      type,
+      title,
       sendMessage: new types.InputBotInlineMessageMediaGeo({
         geoPoint: new types.InputGeoPoint({
           lat: result_.latitude,
@@ -247,6 +250,7 @@ export async function inlineQueryResultToTlObject(result_: InlineQueryResult, pa
     return new types.InputBotInlineResult({
       id,
       type,
+      title,
       sendMessage: new types.InputBotInlineMessageGame({
         replyMarkup,
       }),
@@ -255,6 +259,7 @@ export async function inlineQueryResultToTlObject(result_: InlineQueryResult, pa
     return new types.InputBotInlineResult({
       id,
       type,
+      title,
       sendMessage,
     });
   } else if (result_.type == "venue") {
@@ -264,6 +269,7 @@ export async function inlineQueryResultToTlObject(result_: InlineQueryResult, pa
     return new types.InputBotInlineResult({
       id,
       type,
+      title,
       sendMessage: new types.InputBotInlineMessageMediaVenue({
         geoPoint: new types.InputGeoPoint({ long: result_.longitude, lat: result_.latitude }),
         address: result_.address,
