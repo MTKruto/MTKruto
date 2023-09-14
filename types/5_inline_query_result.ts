@@ -1,4 +1,3 @@
-import { message } from "https://raw.githubusercontent.com/MTKruto/compress/main/zlib/zlib/messages.ts";
 import { types } from "../2_tl.ts";
 import { FileID } from "./0__file_id.ts";
 import { MessageEntity } from "./0_message_entity.ts";
@@ -25,6 +24,8 @@ import { InlineQueryResultVideo } from "./3_inline_query_result_video.ts";
 import { InlineQueryResultVoice } from "./3_inline_query_result_voice.ts";
 import { InputBotInlineMessageMediaAuto } from "../tl/2_types.ts";
 import { UNREACHABLE } from "../1_utilities.ts";
+import { replyMarkupToTlObject } from "./4_reply_markup.ts";
+import { UsernameResolver } from "./1__getters.ts";
 
 export type InlineQueryResult =
   | InlineQueryResultCachedAudio
@@ -48,7 +49,8 @@ export type InlineQueryResult =
   | InlineQueryResultVideo
   | InlineQueryResultVoice;
 
-export function inlineQueryResultToTlObject(result_: InlineQueryResult, parseText: (text: string, params?: { parseMode?: ParseMode; entities?: MessageEntity[] }) => readonly [string, any[] | undefined]) {
+// deno-lint-ignore no-explicit-any
+export async function inlineQueryResultToTlObject(result_: InlineQueryResult, parseText: (text: string, params?: { parseMode?: ParseMode; entities?: MessageEntity[] }) => readonly [string, any[] | undefined], usernameResolver: UsernameResolver) {
   let document: types.TypeInputWebDocument | null = null;
   let thumb: types.InputWebDocument | null = null;
   let fileId_: string | null = null;
@@ -173,6 +175,8 @@ export function inlineQueryResultToTlObject(result_: InlineQueryResult, parseTex
       break;
   }
 
+  const replyMarkup = "replyMarkup" in result_ && result_.replyMarkup ? await replyMarkupToTlObject(result_.replyMarkup, usernameResolver) : undefined;
+
   if ("thumbnailUrl" in result_ && result_.thumbnailUrl) {
     thumb = new types.InputWebDocument({
       url: result_.thumbnailUrl,
@@ -194,7 +198,7 @@ export function inlineQueryResultToTlObject(result_: InlineQueryResult, parseTex
   const sendMessage = new InputBotInlineMessageMediaAuto({
     message,
     entities,
-    // TODO: replyMarkup
+    replyMarkup,
   });
 
   if (document != null) {
@@ -205,7 +209,7 @@ export function inlineQueryResultToTlObject(result_: InlineQueryResult, parseTex
       sendMessage: new types.InputBotInlineMessageMediaAuto({
         message,
         entities,
-        // TODO: replyMarkup
+        replyMarkup,
       }),
     });
   } else if (fileId_ != null) {
@@ -233,7 +237,7 @@ export function inlineQueryResultToTlObject(result_: InlineQueryResult, parseTex
         heading: result_.heading,
         period: result_.livePeriod,
         proximityNotificationRadius: result_.proximityAlertRadius,
-        // TODO: replyMarkup
+        replyMarkup,
       }),
     });
   } else if (result_.type == "game") {
@@ -241,7 +245,7 @@ export function inlineQueryResultToTlObject(result_: InlineQueryResult, parseTex
       id,
       type,
       sendMessage: new types.InputBotInlineMessageGame({
-        // TODO: replyMarkup
+        replyMarkup,
       }),
     });
   } else if (result_.type == "article") {
@@ -251,6 +255,9 @@ export function inlineQueryResultToTlObject(result_: InlineQueryResult, parseTex
       sendMessage,
     });
   } else if (result_.type == "venue") {
+    if (!result_.fourSquareId || !result_.foursquareType) {
+      UNREACHABLE();
+    }
     return new types.InputBotInlineResult({
       id,
       type,
@@ -259,9 +266,9 @@ export function inlineQueryResultToTlObject(result_: InlineQueryResult, parseTex
         address: result_.address,
         provider: "foursquare",
         title: result_.title,
-        venueId: result_.fourSquareId!,
-        venueType: result_.foursquareType!,
-        // TODO: replyMarkup
+        venueId: result_.fourSquareId,
+        venueType: result_.foursquareType,
+        replyMarkup,
       }),
     });
   } else {
