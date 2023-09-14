@@ -180,6 +180,8 @@ export function inlineQueryResultToTlObject(result_: InlineQueryResult, parseTex
       mimeType: "image/jpeg",
       attributes: [],
     });
+  } else if (result_.type == "photo") {
+    thumb = document;
   }
 
   let ret: ReturnType<typeof parseText> = ["", []];
@@ -199,6 +201,7 @@ export function inlineQueryResultToTlObject(result_: InlineQueryResult, parseTex
     return new types.InputBotInlineResult({
       id: result_.id,
       type: result_.type,
+      thumb: thumb == null ? undefined : thumb,
       sendMessage: new types.InputBotInlineMessageMediaAuto({
         message,
         entities,
