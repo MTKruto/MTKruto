@@ -7,9 +7,9 @@ export interface InlineQueryResultVideo {
   type: "video";
   id: string;
   videoUrl: string;
-  mimeType?: string;
-  thumbnailUrl?: string;
-  title?: string;
+  mimeType: string;
+  thumbnailUrl: string;
+  title: string;
   caption?: string;
   parseMode?: ParseMode;
   captionEntities?: MessageEntity[];

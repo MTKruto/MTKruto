@@ -202,10 +202,10 @@ export async function inlineQueryResultToTlObject(result_: InlineQueryResult, pa
   });
 
   if (document != null) {
-    console.log({document})
     return new types.InputBotInlineResult({
       id: result_.id,
       type: result_.type,
+      title: "title" in result_ ? result_.title : undefined,
       thumb: thumb == null ? undefined : thumb,
       sendMessage: new types.InputBotInlineMessageMediaAuto({
         message,
@@ -218,6 +218,7 @@ export async function inlineQueryResultToTlObject(result_: InlineQueryResult, pa
     return new types.InputBotInlineResultDocument({
       id: result_.id,
       type: result_.type,
+      title: "title" in result_ ? result_.title : undefined,
       document: new types.InputDocument({
         id: fileId.params.mediaId!,
         accessHash: fileId.params.accessHash!,
