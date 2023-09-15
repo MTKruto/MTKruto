@@ -2547,4 +2547,4 @@ export const map = {
   WEBPUSH_TOKEN_INVALID: WebpushTokenInvalid,
   WORKER_BUSY_TOO_LONG_RETRY: WorkerBusyTooLongRetry,
   YOU_BLOCKED_USER: YouBlockedUser,
-}
+};
