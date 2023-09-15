@@ -1,7 +1,7 @@
-import { ChatID } from "./0_chat_id.ts";
-import { types } from "../2_tl.ts";
-import { InputPeerGetter } from "./1__getters.ts";
 import { UNREACHABLE } from "../1_utilities.ts";
+import { types } from "../2_tl.ts";
+import { ChatID } from "./0_chat_id.ts";
+import { InputPeerGetter } from "./1__getters.ts";
 
 export declare namespace BotCommandScope {
   export interface Default {

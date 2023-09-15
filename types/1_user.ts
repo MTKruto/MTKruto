@@ -1,7 +1,7 @@
 import { cleanObject } from "../1_utilities.ts";
 import { types } from "../2_tl.ts";
-import { Color, getColor } from "./0_color.ts";
 import { ChatPhoto, constructChatPhoto } from "./0_chat_photo.ts";
+import { Color, getColor } from "./0_color.ts";
 
 /** This object represents a Telegram user or bot. */
 export interface User {
