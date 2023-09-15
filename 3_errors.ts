@@ -1808,10 +1808,6 @@ export class Timedout extends types.RPCError {
   //
 }
 
-export class Timeout extends types.RPCError {
-  //
-}
-
 export class UnknownError extends types.RPCError {
   //
 }
@@ -2551,4 +2547,4 @@ export const map = {
   WEBPUSH_TOKEN_INVALID: WebpushTokenInvalid,
   WORKER_BUSY_TOO_LONG_RETRY: WorkerBusyTooLongRetry,
   YOU_BLOCKED_USER: YouBlockedUser,
-};
+}
