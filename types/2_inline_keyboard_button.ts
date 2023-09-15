@@ -1,7 +1,8 @@
-import { MaybePromise, UNREACHABLE } from "../1_utilities.ts";
+import { UNREACHABLE } from "../1_utilities.ts";
 import { types } from "../2_tl.ts";
-import { constructWebAppInfo, WebAppInfo } from "./0_web_app_info.ts";
 import { LoginUrl } from "./0_login_url.ts";
+import { constructWebAppInfo, WebAppInfo } from "./0_web_app_info.ts";
+import { UsernameResolver } from "./1__getters.ts";
 
 export declare namespace InlineKeyboardButton {
   export interface Base {
@@ -84,7 +85,7 @@ export function constructInlineKeyboardButton(button_: types.TypeKeyboardButton)
   }
 }
 
-export async function inlineKeyboardButtonToTlObject(button: InlineKeyboardButton, usernameResolver: (username: string) => MaybePromise<types.InputUser>) {
+export async function inlineKeyboardButtonToTlObject(button: InlineKeyboardButton, usernameResolver: UsernameResolver) {
   if ("url" in button) {
     return new types.KeyboardButtonURL({ text: button.text, url: button.url });
   } else if ("callbackData" in button) {

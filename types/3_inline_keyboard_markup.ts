@@ -1,5 +1,6 @@
 import { types } from "../2_tl.ts";
-import { constructInlineKeyboardButton, InlineKeyboardButton, inlineKeyboardButtonToTlObject } from "./1_inline_keyboard_button.ts";
+import { UsernameResolver } from "./1__getters.ts";
+import { constructInlineKeyboardButton, InlineKeyboardButton, inlineKeyboardButtonToTlObject } from "./2_inline_keyboard_button.ts";
 
 /** This object represents an inline keyboard that appears right next to the message it belongs to. */
 export interface InlineKeyboardMarkup {
@@ -19,7 +20,7 @@ export function constructInlineKeyboardMarkup(keyboard_: types.ReplyInlineMarkup
   return { inlineKeyboard: rows };
 }
 
-export async function inlineKeyboardMarkupToTlObject(keyboard: InlineKeyboardMarkup, usernameResolver: Parameters<typeof inlineKeyboardButtonToTlObject>[1]) {
+export async function inlineKeyboardMarkupToTlObject(keyboard: InlineKeyboardMarkup, usernameResolver: UsernameResolver) {
   const rows_ = new Array<types.KeyboardButtonRow>();
   for (const row of keyboard.inlineKeyboard) {
     const row_ = new Array<types.TypeKeyboardButton>();

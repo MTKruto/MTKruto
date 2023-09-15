@@ -1,4 +1,3 @@
-// Direct port from Pyrogram
 import { base64DecodeUrlSafe, base64EncodeUrlSafe, rleDecode, rleEncode, UNREACHABLE } from "../1_utilities.ts";
 import { TLReader, TLWriter } from "../2_tl.ts";
 
