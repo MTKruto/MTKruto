@@ -1600,20 +1600,24 @@ export class Client extends ClientAbstract {
         .map((b) => b.toString(16).padStart(2, "0"))
         .join("")
     );
-    if (!isBig) {
-      for (; part < contents.length / chunkSize; part++) {
-        const bytes = contents.slice(0, chunkSize);
-        contents = contents.slice(chunkSize);
+    const partCount = contents.length / chunkSize;
+
+    for (; part < contents.length / chunkSize; part++) {
+      const start = partCount * chunkSize;
+      const end = start + chunkSize;
+      const bytes = contents.slice(start, end);
+      if (isBig) {
+        await this.invoke(new functions.UploadSaveBigFilePart({ fileId, filePart: part + 1, bytes, fileTotalParts: partCount }));
+      } else {
         await this.invoke(new functions.UploadSaveFilePart({ fileId, bytes, filePart: part }));
       }
-    } else {
-      for (; part < contents.length / chunkSize; part++) {
-        const bytes = contents.slice(0, chunkSize);
-        contents = contents.slice(chunkSize);
-        await this.invoke(new functions.UploadSaveBigFilePart({ fileId, filePart: part, fileTotalParts: contents.length / chunkSize, bytes }));
-      }
     }
-    return new types.InputFile({ id: fileId, name: "test", parts: part, md5Checksum: md5sum });
+
+    if (isBig) {
+      return new types.InputFileBig({ id: fileId, parts: contents.length / chunkSize, name: "test" });
+    } else {
+      return new types.InputFile({ id: fileId, name: "test", parts: part, md5Checksum: md5sum });
+    }
   }
 
   async setMyCommands(commands: BotCommand[], params?: { languageCode?: string; scope?: BotCommandScope }) {
