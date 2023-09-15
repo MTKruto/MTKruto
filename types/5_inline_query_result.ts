@@ -1,8 +1,9 @@
+import { UNREACHABLE } from "../1_utilities.ts";
 import { types } from "../2_tl.ts";
 import { FileID } from "./0__file_id.ts";
 import { MessageEntity } from "./0_message_entity.ts";
 import { ParseMode } from "./0_parse_mode.ts";
-import { UNREACHABLE } from "../1_utilities.ts";
+import { UsernameResolver } from "./1__getters.ts";
 import { InlineQueryResultArticle } from "./4_inline_query_result_article.ts";
 import { InlineQueryResultAudio } from "./4_inline_query_result_audio.ts";
 import { InlineQueryResultCachedAudio } from "./4_inline_query_result_cached_audio.ts";
@@ -24,7 +25,6 @@ import { InlineQueryResultVenue } from "./4_inline_query_result_venue.ts";
 import { InlineQueryResultVideo } from "./4_inline_query_result_video.ts";
 import { InlineQueryResultVoice } from "./4_inline_query_result_voice.ts";
 import { replyMarkupToTlObject } from "./4_reply_markup.ts";
-import { UsernameResolver } from "./1__getters.ts";
 
 export type InlineQueryResult =
   | InlineQueryResultCachedAudio

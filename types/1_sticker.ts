@@ -1,7 +1,7 @@
 import { MaybePromise } from "../1_utilities.ts";
 import { as, types } from "../2_tl.ts";
-import { constructThumbnail, Thumbnail } from "./0_thumbnail.ts";
 import { constructMaskPosition, MaskPosition } from "./0_mask_position.ts";
+import { constructThumbnail, Thumbnail } from "./0_thumbnail.ts";
 
 /** This object represents a sticker. */
 export interface Sticker {

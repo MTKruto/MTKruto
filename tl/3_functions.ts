@@ -1,5 +1,5 @@
-// deno-fmt-ignore-file
 import { id, params, TLObject, Params, paramDesc, ParamDesc, flags } from "./1_tl_object.ts";
+import * as types from "./2_types.ts";
 import * as types from "./2_types.ts";
 
 export abstract class Function<T> extends TLObject {
@@ -16853,4 +16853,3 @@ export class StoriesSendReaction extends Function<types.TypeUpdates> {
     this.reaction = params.reaction;
   }
 }
-
