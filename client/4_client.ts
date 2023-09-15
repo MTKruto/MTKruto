@@ -5,7 +5,7 @@ import { Storage, StorageMemory } from "../3_storage.ts";
 import { DC } from "../3_transport.ts";
 import { BotCommand, BotCommandScope, botCommandScopeToTlObject, ChatAction, ChatID, constructCallbackQuery, constructInlineQuery, constructMessage, constructUser, FileID, FileType, InlineQueryResult, InlineQueryResultButton, inlineQueryResultToTlObject, Message, MessageEntity, messageEntityToTlObject, replyMarkupToTlObject, ThumbnailSource, UsernameResolver } from "../3_types.ts";
 import { ACK_THRESHOLD, APP_VERSION, CHANNEL_DIFFERENCE_LIMIT_BOT, CHANNEL_DIFFERENCE_LIMIT_USER, DEVICE_MODEL, LANG_CODE, LANG_PACK, LAYER, MAX_CHANNEL_ID, MAX_CHAT_ID, PublicKeys, STICKER_SET_NAME_TTL, SYSTEM_LANG_CODE, SYSTEM_VERSION, USERNAME_TTL, ZERO_CHANNEL_ID } from "../4_constants.ts";
-import { upgradeInstance } from "../4_errors.ts";
+import { AuthKeyUnregistered, PasswordHashInvalid, PhoneNumberInvalid, SessionPasswordNeeded,upgradeInstance,Migrate } from "../4_errors.ts";
 import { parseHtml } from "./0_html.ts";
 import { decryptMessage, encryptMessage, getMessageId } from "./0_message.ts";
 import { checkPassword } from "./0_password.ts";
@@ -185,18 +185,13 @@ export class Client extends ClientAbstract {
     d("state fetched [%s]", source);
   }
 
-  async [handleMigrationError](err: types.RPCError) {
-    const match = err.errorMessage.match(/MIGRATE_(\d)$/);
-    if (match) {
-      let newDc = match[1];
-      if (Math.abs(this.dcId) >= 10_000) {
-        newDc += "-test";
-      }
-      await this.reconnect(newDc as DC);
-      d("migrated to DC%s", newDc);
-    } else {
-      UNREACHABLE();
+  async [handleMigrationError](err: Migrate) {
+    let newDc = String(err.dc);
+    if (Math.abs(this.dcId) >= 10_000) {
+      newDc += "-test";
     }
+    await this.reconnect(newDc as DC);
+    d("migrated to DC%s", newDc);
   }
 
   private connectionInited = false;
@@ -278,7 +273,7 @@ export class Client extends ClientAbstract {
       d("already authorized");
       return;
     } catch (err) {
-      if (!(err instanceof types.RPCError) || err.errorMessage != "AUTH_KEY_UNREGISTERED") {
+      if (!(err instanceof AuthKeyUnregistered)) {
         throw err;
       }
     }
@@ -290,15 +285,10 @@ export class Client extends ClientAbstract {
           await this.storage.setAccountType("bot");
           break;
         } catch (err) {
-          if (err instanceof types.RPCError) {
-            const match = err.errorMessage.match(/MIGRATE_(\d)$/);
-            if (match) {
-              await this[handleMigrationError](err);
-              await this.initConnection();
-              continue;
-            } else {
-              throw err;
-            }
+          if (err instanceof Migrate) {
+            await this[handleMigrationError](err);
+            await this.initConnection();
+            continue;
           } else {
             throw err;
           }
@@ -333,22 +323,17 @@ export class Client extends ClientAbstract {
         try {
           sentCode = await sendCode();
         } catch (err) {
-          if (err instanceof types.RPCError) {
-            const match = err.errorMessage.match(/MIGRATE_(\d)$/);
-            if (match) {
-              await this[handleMigrationError](err);
-              await this.initConnection();
-              sentCode = await sendCode();
-            } else {
-              throw err;
-            }
+          if (err instanceof Migrate) {
+            await this[handleMigrationError](err);
+            await this.initConnection();
+            sentCode = await sendCode();
           } else {
             throw err;
           }
         }
         break;
       } catch (err) {
-        if (err instanceof types.RPCError && err.errorMessage == "PHONE_NUMBER_INVALID") {
+        if (err instanceof PhoneNumberInvalid) {
           continue;
         } else {
           throw err;
@@ -383,7 +368,7 @@ export class Client extends ClientAbstract {
       }
     }
 
-    if (!(err instanceof types.RPCError && err.errorMessage == "SESSION_PASSWORD_NEEDED")) {
+    if (!(err instanceof SessionPasswordNeeded)) {
       throw err;
     }
 
@@ -403,7 +388,7 @@ export class Client extends ClientAbstract {
         await this.fetchState("authorize");
         break;
       } catch (err) {
-        if (err instanceof types.RPCError && err.errorMessage == "PASSWORD_HASH_INVALID") {
+        if (err instanceof PasswordHashInvalid) {
           continue;
         } else {
           throw err;
@@ -425,7 +410,7 @@ export class Client extends ClientAbstract {
       await this.propagateAuthorizationState(true);
       return;
     } catch (err) {
-      if (!(err instanceof types.RPCError) || err.errorMessage != "AUTH_KEY_UNREGISTERED") {
+      if (!(err instanceof AuthKeyUnregistered)) {
         throw err;
       }
     }
@@ -595,7 +580,7 @@ export class Client extends ClientAbstract {
         this.promises.set(message.id, { resolve, reject });
       });
     } catch (err) {
-      if (err instanceof types.RPCError && err.errorMessage == "AUTH_KEY_UNREGISTERED") {
+      if (err instanceof AuthKeyUnregistered) {
         await this.propagateAuthorizationState(false);
       }
       throw err;
