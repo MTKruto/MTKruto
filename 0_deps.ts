@@ -1,6 +1,6 @@
 export * from "https://deno.land/std@0.201.0/assert/mod.ts";
 
-export { ctr256Decrypt, ctr256Encrypt, factorize, ige256Decrypt, ige256Encrypt, init as initTgCrypto } from "https://deno.land/x/tgcrypto@0.2.0/mod.ts";
+export { ctr256Decrypt, ctr256Encrypt, factorize, ige256Decrypt, ige256Encrypt, init as initTgCrypto } from "https://deno.land/x/tgcrypto@0.2.1/mod.ts";
 
 export { gunzip, gzip } from "https://raw.githubusercontent.com/MTKruto/compress/main/gzip/gzip.ts";
 

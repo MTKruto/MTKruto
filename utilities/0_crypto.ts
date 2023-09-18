@@ -7,26 +7,28 @@ export class CTR {
   }
 
   encrypt(data: Uint8Array) {
-    const [encrypted, iv, state] = ctr256Encrypt(
-      data,
+    const v = new Uint8Array(data); // TODO: don't copy
+    const [iv, state] = ctr256Encrypt(
+      v,
       this.key,
       this.iv,
       this.state,
     );
     this.iv = iv;
     this.state = state;
-    return new Uint8Array(encrypted);
+    return v;
   }
 
   decrypt(data: Uint8Array) {
-    const [decrypted, iv, state] = ctr256Decrypt(
-      data,
+    const v = new Uint8Array(data); // TODO: don't copy
+    const [iv, state] = ctr256Decrypt(
+      v,
       this.key,
       this.iv,
       this.state,
     );
     this.iv = iv;
     this.state = state;
-    return new Uint8Array(decrypted);
+    return v;
   }
 }
