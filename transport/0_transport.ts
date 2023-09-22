@@ -6,7 +6,7 @@ export abstract class Transport {
 
   protected encrypt(buffer: Uint8Array) {
     if (this.obfuscationParameters) {
-      return this.obfuscationParameters.encryptionCTR.encrypt(buffer);
+      return this.obfuscationParameters.encryptionCTR.call(buffer);
     } else {
       return buffer;
     }
@@ -14,7 +14,7 @@ export abstract class Transport {
 
   protected decrypt(buffer: Uint8Array) {
     if (this.obfuscationParameters) {
-      return this.obfuscationParameters.decryptionCTR.decrypt(buffer);
+      return this.obfuscationParameters.decryptionCTR.call(buffer);
     } else {
       return buffer;
     }
