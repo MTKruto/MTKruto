@@ -482,7 +482,7 @@ export async function constructMessage(
         } else if (fileName) {
           message.document = constructDocument(document, fileName, getFileId(FileType.Document), fileUniqueId);
         } else {
-          UNREACHABLE();
+          message.document = constructDocument(document, new types.DocumentAttributeFilename({fileName:'Unknown'}), getFileId(FileType.Document), fileUniqueId)
         }
       }
     } else if (message_.media instanceof types.MessageMediaContact) {
