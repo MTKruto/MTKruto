@@ -19,9 +19,9 @@ export function modExp(
   return result;
 }
 
-export function mod(n: bigint, m: bigint): bigint;
-export function mod(n: number, m: number): number;
-export function mod(n: bigint | number, m: bigint | number) {
+export function mod(n: bigint, m: bigint):  bigint
+export function mod(n: number, m: number): number 
+export function mod(n: bigint|number, m: bigint|number) {
   // @ts-ignore: TODO: do sth
   return ((n % m) + m) % m;
 }

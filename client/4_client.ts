@@ -31,7 +31,7 @@ export class Client extends ClientAbstract {
   private auth: { key: Uint8Array; id: bigint } | null = null;
   private sessionId = getRandomBigInt(8, true, false);
   private state = { salt: 0n, seqNo: 0 };
-  private promises = new Map<bigint, { resolve: (obj: ReadObject) => void; reject: (err: ReadObject) => void }>();
+  private promises = new Map<bigint, { resolve: (obj: ReadObject) => void; reject: (err: ReadObject | Error) => void }>();
   private toAcknowledge = new Set<bigint>();
   private updateState?: types.UpdatesState;
   private readonly errorHandler?: ClientParams["errorHandler"];
@@ -513,9 +513,17 @@ export class Client extends ClientAbstract {
           dRecv("failed to deserialize: %o", err);
           drop(this.recoverUpdateGap("deserialize"));
         } else {
-          throw err;
+          dRecv("uncaught error: %o", err);
         }
       }
+    }
+
+    if (!this.connected) {
+      for (const { reject } of this.promises.values()) {
+        reject(new Error("Connection was closed"));
+      }
+    } else {
+      UNREACHABLE();
     }
   }
 
@@ -1616,14 +1624,23 @@ export class Client extends ClientAbstract {
         .map((b) => b.toString(16).padStart(2, "0"))
         .join("")
     );
-    const partCount = contents.length / chunkSize;
+    const partCount = Math.ceil(contents.length / chunkSize);
+    console.log({ contents });
 
+    await new Promise((r) => setTimeout(r, 3000));
     for (; part < contents.length / chunkSize; part++) {
-      const start = partCount * chunkSize;
+      const start = part * chunkSize;
       const end = start + chunkSize;
       const bytes = contents.slice(start, end);
+      if (bytes.length == 0) {
+        console.log("skip", part);
+        continue;
+      }
+      console.log(start, end, bytes);
       if (isBig) {
-        await this.invoke(new functions.UploadSaveBigFilePart({ fileId, filePart: part + 1, bytes, fileTotalParts: partCount }));
+        console.log(bytes.length, part, "/", partCount);
+        await this.invoke(new functions.UploadSaveBigFilePart({ fileId, filePart: part, bytes, fileTotalParts: partCount }));
+        console.log("done");
       } else {
         await this.invoke(new functions.UploadSaveFilePart({ fileId, bytes, filePart: part }));
       }
