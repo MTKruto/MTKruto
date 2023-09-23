@@ -43,7 +43,7 @@ export async function encryptMessage(message: Message_, authKey: Uint8Array, aut
   payloadWriter.writeInt32(message.seqNo);
   payloadWriter.writeInt32(encoded.length);
   payloadWriter.write(encoded);
-  payloadWriter.write(new Uint8Array(mod(-(payloadWriter.buffer.length + 12), 16) + 12))
+  payloadWriter.write(new Uint8Array(mod(-(payloadWriter.buffer.length + 12), 16) + 12));
 
   const payload = payloadWriter.buffer;
 
