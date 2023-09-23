@@ -1,5 +1,5 @@
 import { assertEquals, ige256Decrypt, ige256Encrypt } from "../0_deps.ts";
-import { bufferFromBigInt, concat, sha256 } from "../1_utilities.ts";
+import { bufferFromBigInt, concat, mod, sha256 } from "../1_utilities.ts";
 import { id, Message_, MessageContainer, RPCResult, serialize, TLObject, TLReader, TLWriter } from "../2_tl.ts";
 
 export function getMessageId(lastMsgId: bigint) {
@@ -43,15 +43,9 @@ export async function encryptMessage(message: Message_, authKey: Uint8Array, aut
   payloadWriter.writeInt32(message.seqNo);
   payloadWriter.writeInt32(encoded.length);
   payloadWriter.write(encoded);
-  payloadWriter.write(new Uint8Array(payloadWriter.buffer.length + 12 % 16 + 12));
+  payloadWriter.write(new Uint8Array(mod(-(payloadWriter.buffer.length + 12), 16) + 12))
 
-  let payload = payloadWriter.buffer;
-  while (true) {
-    if (payload.length % 16 == 0 && (payload.length) % 4 == 0) {
-      break;
-    }
-    payload = concat(payload, new Uint8Array(1));
-  }
+  const payload = payloadWriter.buffer;
 
   const messageKey = (await sha256(concat(authKey.slice(88, 120), payload))).slice(8, 24);
 
