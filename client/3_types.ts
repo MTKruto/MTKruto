@@ -1,4 +1,5 @@
 import { MaybePromise } from "../1_utilities.ts";
+import { functions, types } from "../2_tl.ts";
 import { CallbackQuery, ChatID, ForceReply, InlineKeyboardMarkup, InlineQuery, Message, MessageEntity, ReplyKeyboardMarkup, ReplyKeyboardRemove } from "../3_types.ts";
 import { With } from "./0_utilities.ts";
 import { ClientPlainParams } from "./2_client_plain.ts";
@@ -38,6 +39,7 @@ export interface ClientParams extends ClientPlainParams {
    * Whether to automatically call `start` with no parameters in the first `invoke` call. Defaults to `true`.
    */
   autoStart?: boolean;
+  errorHandler?: (err: unknown, function_: types.Type | functions.Function<unknown>, n: number) => MaybePromise<boolean>;
 }
 
 export interface AnswerCallbackQueryParams {

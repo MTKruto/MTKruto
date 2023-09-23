@@ -24,7 +24,7 @@ export class Queue {
     if (fn !== undefined) {
       fn()
         .catch((err) => {
-          this.d("%o", err);
+          this.d("%o", "stack" in err ? err.stack : err);
         })
         .finally(() => {
           this.busy = false;

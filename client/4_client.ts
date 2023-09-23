@@ -34,6 +34,7 @@ export class Client extends ClientAbstract {
   private promises = new Map<bigint, { resolve: (obj: ReadObject) => void; reject: (err: ReadObject) => void }>();
   private toAcknowledge = new Set<bigint>();
   private updateState?: types.UpdatesState;
+  private readonly errorHandler?: ClientParams["errorHandler"];
 
   public readonly parseMode: ParseMode;
 
@@ -71,6 +72,7 @@ export class Client extends ClientAbstract {
     this.systemVersion = params?.systemVersion ?? SYSTEM_VERSION;
     this.publicKeys = params?.publicKeys;
     this.autoStart = params?.autoStart ?? true;
+    this.errorHandler = params?.errorHandler;
   }
 
   private propagateConnectionState(connectionState: ConnectionState) {
@@ -550,46 +552,60 @@ export class Client extends ClientAbstract {
       UNREACHABLE();
     }
 
-    let seqNo = this.state.seqNo * 2;
-    if (!(function_ instanceof functions.Ping) && !(function_ instanceof types.MsgsAck)) {
-      seqNo++;
-      this.state.seqNo++;
-    }
+    let n = 1;
+    while (true) {
+      try {
+        let seqNo = this.state.seqNo * 2;
+        if (!(function_ instanceof functions.Ping) && !(function_ instanceof types.MsgsAck)) {
+          seqNo++;
+          this.state.seqNo++;
+        }
 
-    const messageId = this.lastMsgId = getMessageId(this.lastMsgId);
-    const message = new Message_(messageId, seqNo, function_);
-    await this.transport.transport.send(
-      await encryptMessage(
-        message,
-        this.auth.key,
-        this.auth.id,
-        this.state.salt,
-        this.sessionId,
-      ),
-    );
-    d("invoked %s", function_.constructor.name);
+        const messageId = this.lastMsgId = getMessageId(this.lastMsgId);
+        const message = new Message_(messageId, seqNo, function_);
+        await this.transport.transport.send(
+          await encryptMessage(
+            message,
+            this.auth.key,
+            this.auth.id,
+            this.state.salt,
+            this.sessionId,
+          ),
+        );
+        d("invoked %s", function_.constructor.name);
 
-    if (noWait) {
-      return;
-    }
+        if (noWait) {
+          return;
+        }
 
-    let result;
+        let result;
 
-    try {
-      result = await new Promise<ReadObject>((resolve, reject) => {
-        this.promises.set(message.id, { resolve, reject });
-      });
-    } catch (err) {
-      if (err instanceof AuthKeyUnregistered) {
-        await this.propagateAuthorizationState(false);
+        try {
+          result = await new Promise<ReadObject>((resolve, reject) => {
+            this.promises.set(message.id, { resolve, reject });
+          });
+        } catch (err) {
+          if (err instanceof AuthKeyUnregistered) {
+            await this.propagateAuthorizationState(false);
+          }
+          throw err;
+        }
+
+        if (result instanceof types.BadServerSalt) {
+          return await this.invoke(function_) as T;
+        } else {
+          return result as T;
+        }
+      } catch (err) {
+        if (this.errorHandler === undefined) {
+          throw err;
+        }
+        if (this.errorHandler !== undefined && await this.errorHandler(err, function_, n++)) {
+          continue;
+        } else {
+          throw err;
+        }
       }
-      throw err;
-    }
-
-    if (result instanceof types.BadServerSalt) {
-      return await this.invoke(function_) as T;
-    } else {
-      return result as T;
     }
   }
 
