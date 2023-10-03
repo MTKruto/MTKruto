@@ -1646,7 +1646,7 @@ export class Client extends ClientAbstract {
     );
     const partCount = Math.ceil(contents.length / chunkSize);
 
-    const promises = new Array<Promise<boolean>>()
+    const promises = new Array<Promise<boolean>>();
     for (; part < contents.length / chunkSize; part++) {
       const start = part * chunkSize;
       const end = start + chunkSize;
