@@ -1,4 +1,4 @@
-import { debug, gunzip, Mutex } from "../0_deps.ts";
+import { crypto, debug, gunzip, Mutex } from "../0_deps.ts";
 import { bigIntFromBuffer, drop, getRandomBigInt, getRandomId, MaybePromise, mod, mustPrompt, mustPromptOneOf, Queue, sha1, UNREACHABLE } from "../1_utilities.ts";
 import { as, functions, getChannelChatId, Message_, MessageContainer, peerToChatId, ReadObject, RPCResult, TLError, TLReader, types } from "../2_tl.ts";
 import { Storage, StorageMemory } from "../3_storage.ts";
