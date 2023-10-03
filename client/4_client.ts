@@ -1,5 +1,5 @@
-import { crypto, debug, gunzip, Mutex } from "../0_deps.ts";
-import { bigIntFromBuffer, drop, getRandomBigInt, getRandomId, MaybePromise, mustPrompt, mustPromptOneOf, Queue, sha1, UNREACHABLE } from "../1_utilities.ts";
+import { debug, gunzip, Mutex } from "../0_deps.ts";
+import { bigIntFromBuffer, drop, getRandomBigInt, getRandomId, MaybePromise, mod, mustPrompt, mustPromptOneOf, Queue, sha1, UNREACHABLE } from "../1_utilities.ts";
 import { as, functions, getChannelChatId, Message_, MessageContainer, peerToChatId, ReadObject, RPCResult, TLError, TLReader, types } from "../2_tl.ts";
 import { Storage, StorageMemory } from "../3_storage.ts";
 import { DC } from "../3_transport.ts";
@@ -1248,30 +1248,32 @@ export class Client extends ClientAbstract {
     return messages[0] ?? null;
   }
 
-  private async *downloadInner(location: types.TypeInputFileLocation, dcId?: number) {
-    let client: Client | null = null;
-    if (dcId != undefined && dcId != this.dcId) {
-      const exportedAuth = await this.invoke(new functions.AuthExportAuthorization({ dcId }));
-      client = new Client(new StorageMemory(), this.apiId, this.apiHash, {
-        transportProvider: this.transportProvider,
-        appVersion: this.appVersion,
-        deviceModel: this.deviceModel,
-        langCode: this.langCode,
-        langPack: this.langPack,
-        systemLangCode: this.systemLangCode,
-        systemVersion: this.systemVersion,
-        cdn: true,
-      });
-      let dc = String(dcId);
-      if (this.dcId < 0) {
-        dc += "-test";
-      }
-      await client.setDc(dc as DC);
-      await client.connect();
-      await client.authorize(exportedAuth);
+  private async *downloadInner(location: types.TypeInputFileLocation, dcId: number, params?: { chunkSize?: number }) {
+    const chunkSize = params?.chunkSize ?? 1024 * 1024;
+    if (mod(chunkSize, 1024) != 0) {
+      throw new Error("chunkSize must be divisible by 1024");
     }
 
-    const limit = 1024 * 1024;
+    const exportedAuth = await this.invoke(new functions.AuthExportAuthorization({ dcId }));
+    const client = new Client(new StorageMemory(), this.apiId, this.apiHash, {
+      transportProvider: this.transportProvider,
+      appVersion: this.appVersion,
+      deviceModel: this.deviceModel,
+      langCode: this.langCode,
+      langPack: this.langPack,
+      systemLangCode: this.systemLangCode,
+      systemVersion: this.systemVersion,
+      cdn: true,
+    });
+    let dc = String(dcId);
+    if (this.dcId < 0) {
+      dc += "-test";
+    }
+    await client.setDc(dc as DC);
+    await client.connect();
+    await client.authorize(exportedAuth);
+
+    const limit = chunkSize;
     let offset = 0n;
 
     while (true) {
@@ -1295,14 +1297,14 @@ export class Client extends ClientAbstract {
    *
    * @param fileId The identifier of the file to download.
    */
-  async download(fileId: string) {
+  async download(fileId: string, params?: { chunkSize?: number }) {
     const fileId_ = FileID.decode(fileId);
     switch (fileId_.fileType) {
       case FileType.ChatPhoto: {
         const big = fileId_.params.thumbnailSource == ThumbnailSource.ChatPhotoBig;
         const peer = await this.getInputPeer(fileId_.params.chatId!);
         const location = new types.InputPeerPhotoFileLocation({ big: big ? true : undefined, peer, photoId: fileId_.params.mediaId! });
-        return this.downloadInner(location);
+        return this.downloadInner(location, fileId_.dcId, params);
       }
       case FileType.Photo: {
         if (fileId_.params.mediaId == undefined || fileId_.params.accessHash == undefined || fileId_.params.fileReference == undefined || fileId_.params.thumbnailSize == undefined) {
@@ -1314,7 +1316,7 @@ export class Client extends ClientAbstract {
           fileReference: fileId_.params.fileReference,
           thumbSize: fileId_.params.thumbnailSize,
         });
-        return this.downloadInner(location);
+        return this.downloadInner(location, fileId_.dcId, params);
       }
       default:
         UNREACHABLE();
@@ -1603,7 +1605,28 @@ export class Client extends ClientAbstract {
     await this.invoke(new functions.MessagesSetTyping({ peer: await this.getInputPeer(chatId), action, topMsgId: messageThreadId }));
   }
 
-  async uploadFile(contents: Uint8Array) {
+  /**
+   * Upload a file.
+   *
+   * @param contents The contents of the file.
+   */
+  async upload(contents: Uint8Array, params?: { fileName?: string; chunkSize?: number; concurrency?: number }) {
+    const isBig = contents.length > 1048576; // 10 MB
+
+    const chunkSize = params?.chunkSize ?? 512 * 1024;
+    if (mod(chunkSize, 1024) != 0) {
+      throw new Error("chunkSize must be divisible by 1024");
+    }
+    let concurrency = params?.concurrency ?? (isBig ? 4 : 2);
+    if (concurrency < 1) {
+      concurrency = 1;
+    } else if (concurrency > 10) {
+      concurrency = 10;
+    }
+
+    const fileId = getRandomId();
+    const name = params?.fileName ?? fileId.toString();
+
     const client = new Client(this.storage, this.apiId, this.apiHash, {
       transportProvider: this.transportProvider,
       appVersion: this.appVersion,
@@ -1615,9 +1638,6 @@ export class Client extends ClientAbstract {
       cdn: true,
     });
     await client.connect();
-    const chunkSize = 512 * 1024; // 512 KB
-    const isBig = contents.length > 1048576; // 10 MB
-    const fileId = getRandomId();
     let part = 0;
     const md5sum = await crypto.subtle.digest("MD5", contents).then((v) =>
       [...new Uint8Array(v)]
@@ -1625,7 +1645,6 @@ export class Client extends ClientAbstract {
         .join("")
     );
     const partCount = Math.ceil(contents.length / chunkSize);
-    console.log({ contents });
 
     await new Promise((r) => setTimeout(r, 3000));
     for (; part < contents.length / chunkSize; part++) {
@@ -1633,23 +1652,19 @@ export class Client extends ClientAbstract {
       const end = start + chunkSize;
       const bytes = contents.slice(start, end);
       if (bytes.length == 0) {
-        console.log("skip", part);
         continue;
       }
-      console.log(start, end, bytes);
       if (isBig) {
-        console.log(bytes.length, part, "/", partCount);
         await this.invoke(new functions.UploadSaveBigFilePart({ fileId, filePart: part, bytes, fileTotalParts: partCount }));
-        console.log("done");
       } else {
         await this.invoke(new functions.UploadSaveFilePart({ fileId, bytes, filePart: part }));
       }
     }
 
     if (isBig) {
-      return new types.InputFileBig({ id: fileId, parts: contents.length / chunkSize, name: "test" });
+      return new types.InputFileBig({ id: fileId, parts: contents.length / chunkSize, name });
     } else {
-      return new types.InputFile({ id: fileId, name: "test", parts: part, md5Checksum: md5sum });
+      return new types.InputFile({ id: fileId, name, parts: part, md5Checksum: md5sum });
     }
   }
 
