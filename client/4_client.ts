@@ -1646,7 +1646,7 @@ export class Client extends ClientAbstract {
     );
     const partCount = Math.ceil(contents.length / chunkSize);
 
-    await new Promise((r) => setTimeout(r, 3000));
+    const promises = new Array<Promise<boolean>>()
     for (; part < contents.length / chunkSize; part++) {
       const start = part * chunkSize;
       const end = start + chunkSize;
@@ -1655,10 +1655,17 @@ export class Client extends ClientAbstract {
         continue;
       }
       if (isBig) {
-        await this.invoke(new functions.UploadSaveBigFilePart({ fileId, filePart: part, bytes, fileTotalParts: partCount }));
+        promises.push(this.invoke(new functions.UploadSaveBigFilePart({ fileId, filePart: part, bytes, fileTotalParts: partCount })));
       } else {
-        await this.invoke(new functions.UploadSaveFilePart({ fileId, bytes, filePart: part }));
+        promises.push(this.invoke(new functions.UploadSaveFilePart({ fileId, bytes, filePart: part })));
       }
+      if (promises.length >= concurrency) {
+        await Promise.all(promises);
+      }
+    }
+
+    if (promises.length > 0) {
+      await Promise.all(promises);
     }
 
     if (isBig) {
