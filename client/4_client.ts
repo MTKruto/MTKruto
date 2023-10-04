@@ -580,7 +580,6 @@ export class Client extends ClientAbstract {
 
         const messageId = this.lastMsgId = getMessageId(this.lastMsgId);
         const message = new Message_(messageId, seqNo, function_);
-        console.log(this.state.salt, function_.constructor.name);
         await this.transport.transport.send(
           await encryptMessage(
             message,
