@@ -28,6 +28,10 @@ export const getMessageWithReply = Symbol();
 
 export const restartAuth = Symbol();
 
+export class ConnectionError extends Error {
+  //
+}
+
 export class Client extends ClientAbstract {
   private auth: { key: Uint8Array; id: bigint } | null = null;
   private sessionId = getRandomBigInt(8, true, false);
@@ -423,7 +427,7 @@ export class Client extends ClientAbstract {
 
   private async receiveLoop() {
     if (!this.auth || !this.transport) {
-      throw new Error("Not connected");
+      throw new ConnectionError("Not connected");
     }
 
     while (this.connected) {
@@ -521,7 +525,7 @@ export class Client extends ClientAbstract {
 
     if (!this.connected) {
       for (const { reject } of this.promises.values()) {
-        reject(new Error("Connection was closed"));
+        reject(new ConnectionError("Connection was closed"));
       }
     } else {
       UNREACHABLE();
@@ -554,7 +558,7 @@ export class Client extends ClientAbstract {
       if (this.autoStart && !this.autoStarted) {
         await this.start();
       } else {
-        throw new Error("Not connected");
+        throw new ConnectionError("Not connected");
       }
     }
     if (!this.auth || !this.transport) {
@@ -572,6 +576,7 @@ export class Client extends ClientAbstract {
 
         const messageId = this.lastMsgId = getMessageId(this.lastMsgId);
         const message = new Message_(messageId, seqNo, function_);
+        console.log(this.state.salt, function_.constructor.name);
         await this.transport.transport.send(
           await encryptMessage(
             message,
@@ -1624,7 +1629,7 @@ export class Client extends ClientAbstract {
     const fileId = getRandomId();
     const name = params?.fileName ?? fileId.toString();
 
-    const client = new Client(null, this.apiId, this.apiHash, {
+    const client = new Client(this.storage, this.apiId, this.apiHash, {
       transportProvider: this.transportProvider,
       appVersion: this.appVersion,
       deviceModel: this.deviceModel,
@@ -1633,6 +1638,8 @@ export class Client extends ClientAbstract {
       systemLangCode: this.systemLangCode,
       systemVersion: this.systemVersion,
       cdn: true,
+      initialDc: this.initialDc,
+      autoStart: false,
     });
     await client.connect();
     let part = 0;
@@ -1657,6 +1664,8 @@ export class Client extends ClientAbstract {
       }
       dUpload((part + 1) + " out of " + partCount + " chunks have been uploaded so far");
     }
+
+    await client.disconnect();
 
     dUpload("uploaded all " + partCount + " chunk(s)");
 
