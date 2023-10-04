@@ -5,7 +5,7 @@ import { Storage, StorageMemory } from "../3_storage.ts";
 import { DC } from "../3_transport.ts";
 import { BotCommand, BotCommandScope, botCommandScopeToTlObject, ChatAction, ChatID, constructCallbackQuery, constructInlineQuery, constructMessage, constructUser, FileID, FileType, InlineQueryResult, InlineQueryResultButton, inlineQueryResultToTlObject, Message, MessageEntity, messageEntityToTlObject, replyMarkupToTlObject, ThumbnailSource, UsernameResolver } from "../3_types.ts";
 import { ACK_THRESHOLD, APP_VERSION, CHANNEL_DIFFERENCE_LIMIT_BOT, CHANNEL_DIFFERENCE_LIMIT_USER, DEVICE_MODEL, LANG_CODE, LANG_PACK, LAYER, MAX_CHANNEL_ID, MAX_CHAT_ID, PublicKeys, STICKER_SET_NAME_TTL, SYSTEM_LANG_CODE, SYSTEM_VERSION, USERNAME_TTL, ZERO_CHANNEL_ID } from "../4_constants.ts";
-import { AuthKeyUnregistered, Migrate, PasswordHashInvalid, PhoneNumberInvalid, SessionPasswordNeeded, upgradeInstance } from "../4_errors.ts";
+import { AuthKeyUnregistered, FloodWait, Migrate, PasswordHashInvalid, PhoneNumberInvalid, SessionPasswordNeeded, upgradeInstance } from "../4_errors.ts";
 import { parseHtml } from "./0_html.ts";
 import { decryptMessage, encryptMessage, getMessageId } from "./0_message.ts";
 import { checkPassword } from "./0_password.ts";
@@ -41,6 +41,7 @@ export class Client extends ClientAbstract {
   private updateState?: types.UpdatesState;
   private readonly errorHandler?: ClientParams["errorHandler"];
 
+  public readonly storage: Storage;
   public readonly parseMode: ParseMode;
 
   public readonly appVersion: string;
@@ -60,13 +61,14 @@ export class Client extends ClientAbstract {
    * @param apiHash App's API hash from [my.telegram.org/apps](https://my.telegram.org/apps). Defaults to empty string (unset).
    */
   constructor(
-    public readonly storage: Storage = new StorageMemory(),
+    storage: Storage | null,
     public readonly apiId: number | null = 0,
     public readonly apiHash: string | null = "",
     params?: ClientParams,
   ) {
     super(params);
 
+    this.storage = storage ?? new StorageMemory();
     this.parseMode = params?.parseMode ?? null;
 
     this.appVersion = params?.appVersion ?? APP_VERSION;
@@ -168,7 +170,6 @@ export class Client extends ClientAbstract {
       }
       d("encrypted client connected");
       drop(this.receiveLoop());
-      drop(this.pingLoop());
     } finally {
       release();
     }
@@ -462,6 +463,8 @@ export class Client extends ClientAbstract {
           dRecv("received %s", body.constructor.name);
           if (body instanceof types._TypeUpdates || body instanceof types._TypeUpdate) {
             this.processUpdatesQueue.add(() => this.processUpdates(body as types.Updates | types.TypeUpdate));
+          } else if (body instanceof types.NewSessionCreated) {
+            this.state.salt = body.serverSalt;
           } else if (message.body instanceof RPCResult) {
             let result = message.body.result;
             if (result instanceof types.GZIPPacked) {
@@ -543,6 +546,7 @@ export class Client extends ClientAbstract {
     }
   }
 
+  private pingLoopStarted = false;
   private autoStarted = false;
   private lastMsgId = 0n;
   /**
@@ -608,6 +612,10 @@ export class Client extends ClientAbstract {
         if (result instanceof types.BadServerSalt) {
           return await this.invoke(function_) as T;
         } else {
+          if (!this.pingLoopStarted) {
+            drop(this.pingLoop());
+            this.pingLoopStarted = true;
+          }
           return result as T;
         }
       } catch (err) {
@@ -1616,13 +1624,15 @@ export class Client extends ClientAbstract {
    *
    * @param contents The contents of the file.
    */
-  async upload(contents: Uint8Array, params?: { fileName?: string; chunkSize?: number }) {
+  async upload(contents: Uint8Array, params?: { fileName?: string; chunkSize?: number; signal?: AbortSignal | null }) {
     const isBig = contents.length > 1048576; // 10 MB
 
     const chunkSize = params?.chunkSize ?? 512 * 1024;
     if (mod(chunkSize, 1024) != 0) {
       throw new Error("chunkSize must be divisible by 1024");
     }
+
+    const signal = params?.signal;
 
     dUpload("uploading " + (isBig ? "big " : "") + "file of size " + contents.length + " with chunk size of " + chunkSize);
 
@@ -1641,6 +1651,8 @@ export class Client extends ClientAbstract {
       initialDc: this.initialDc,
       autoStart: false,
     });
+    signal?.addEventListener("abort", () => drop(client.disconnect()));
+    client.state.salt = this.state.salt;
     await client.connect();
     let part = 0;
     const md5sum = await crypto.subtle.digest("MD5", contents).then((v) =>
@@ -1650,22 +1662,50 @@ export class Client extends ClientAbstract {
     );
     const partCount = Math.ceil(contents.length / chunkSize);
 
-    for (; part < partCount; part++) {
-      const start = part * chunkSize;
-      const end = start + chunkSize;
-      const bytes = contents.slice(start, end);
-      if (bytes.length == 0) {
-        continue;
+    try {
+      main: for (; part < partCount; part++) {
+        chunk: while (true) {
+          try {
+            const start = part * chunkSize;
+            const end = start + chunkSize;
+            const bytes = contents.slice(start, end);
+            if (bytes.length == 0) {
+              continue main;
+            }
+            if (isBig) {
+              await client.invoke(new functions.UploadSaveBigFilePart({ fileId, filePart: part, bytes, fileTotalParts: partCount }));
+            } else {
+              await client.invoke(new functions.UploadSaveFilePart({ fileId, bytes, filePart: part }));
+            }
+            dUpload((part + 1) + " out of " + partCount + " chunks have been uploaded so far");
+            break chunk;
+          } catch (err) {
+            if (signal?.aborted) {
+              break main;
+            }
+            if (err instanceof FloodWait) {
+              dUpload("got a flood wait of " + err.seconds + " seconds");
+              await new Promise((r) => setTimeout(r, err.seconds * 1000));
+            } else if (err instanceof ConnectionError) {
+              while (true) {
+                try {
+                  await new Promise((r) => setTimeout(r, 3000));
+                  await client.connect();
+                } catch {
+                  if (signal?.aborted) {
+                    break main;
+                  }
+                }
+              }
+            } else {
+              throw err;
+            }
+          }
+        }
       }
-      if (isBig) {
-        await client.invoke(new functions.UploadSaveBigFilePart({ fileId, filePart: part, bytes, fileTotalParts: partCount }));
-      } else {
-        await client.invoke(new functions.UploadSaveFilePart({ fileId, bytes, filePart: part }));
-      }
-      dUpload((part + 1) + " out of " + partCount + " chunks have been uploaded so far");
+    } finally {
+      drop(client.disconnect());
     }
-
-    await client.disconnect();
 
     dUpload("uploaded all " + partCount + " chunk(s)");
 
