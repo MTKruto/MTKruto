@@ -9,7 +9,7 @@ export class ConnectionWebSocket extends ConnectionUnframed implements Connectio
   private rMutex = new Mutex();
   private wMutex = new Mutex();
   private buffer = new Array<number>();
-  private nextResolve: [number, () => void] | null = null;
+  private nextResolve: [number, { resolve: () => void; reject: (err: unknown) => void }] | null = null;
 
   constructor(private readonly url: string | URL) {
     super();
@@ -39,7 +39,7 @@ export class ConnectionWebSocket extends ConnectionUnframed implements Connectio
       if (
         this.nextResolve != null && this.buffer.length >= this.nextResolve[0]
       ) {
-        this.nextResolve[1]();
+        this.nextResolve[1].resolve();
         this.nextResolve = null;
       }
 
@@ -100,7 +100,7 @@ export class ConnectionWebSocket extends ConnectionUnframed implements Connectio
     const release = await this.rMutex.acquire();
     try {
       if (this.buffer.length < p.length) {
-        await new Promise<void>((r) => this.nextResolve = [p.length, r]);
+        await new Promise<void>((resolve, reject) => this.nextResolve = [p.length, { resolve, reject }]);
       }
       p.set(this.buffer.splice(0, p.length));
     } finally {
@@ -125,5 +125,8 @@ export class ConnectionWebSocket extends ConnectionUnframed implements Connectio
       throw new Error("Connection not open");
     }
     this.webSocket.close(1000, "method");
+    if (this.nextResolve != null) {
+      this.nextResolve[1].reject(new Error("Connection not open"));
+    }
   }
 }

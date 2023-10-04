@@ -1,11 +1,11 @@
-import { debug, gunzip, Mutex } from "../0_deps.ts";
-import { bigIntFromBuffer, drop, getRandomBigInt, getRandomId, MaybePromise, mustPrompt, mustPromptOneOf, Queue, sha1, UNREACHABLE } from "../1_utilities.ts";
+import { crypto, debug, gunzip, Mutex } from "../0_deps.ts";
+import { bigIntFromBuffer, drop, getRandomBigInt, getRandomId, MaybePromise, mod, mustPrompt, mustPromptOneOf, Queue, sha1, UNREACHABLE } from "../1_utilities.ts";
 import { as, functions, getChannelChatId, Message_, MessageContainer, peerToChatId, ReadObject, RPCResult, TLError, TLReader, types } from "../2_tl.ts";
 import { Storage, StorageMemory } from "../3_storage.ts";
 import { DC } from "../3_transport.ts";
 import { BotCommand, BotCommandScope, botCommandScopeToTlObject, ChatAction, ChatID, constructCallbackQuery, constructInlineQuery, constructMessage, constructUser, FileID, FileType, InlineQueryResult, InlineQueryResultButton, inlineQueryResultToTlObject, Message, MessageEntity, messageEntityToTlObject, replyMarkupToTlObject, ThumbnailSource, UsernameResolver } from "../3_types.ts";
 import { ACK_THRESHOLD, APP_VERSION, CHANNEL_DIFFERENCE_LIMIT_BOT, CHANNEL_DIFFERENCE_LIMIT_USER, DEVICE_MODEL, LANG_CODE, LANG_PACK, LAYER, MAX_CHANNEL_ID, MAX_CHAT_ID, PublicKeys, STICKER_SET_NAME_TTL, SYSTEM_LANG_CODE, SYSTEM_VERSION, USERNAME_TTL, ZERO_CHANNEL_ID } from "../4_constants.ts";
-import { AuthKeyUnregistered, Migrate, PasswordHashInvalid, PhoneNumberInvalid, SessionPasswordNeeded, upgradeInstance } from "../4_errors.ts";
+import { AuthKeyUnregistered, FloodWait, Migrate, PasswordHashInvalid, PhoneNumberInvalid, SessionPasswordNeeded, upgradeInstance } from "../4_errors.ts";
 import { parseHtml } from "./0_html.ts";
 import { decryptMessage, encryptMessage, getMessageId } from "./0_message.ts";
 import { checkPassword } from "./0_password.ts";
@@ -19,6 +19,7 @@ const dGap = debug("Client/recoverUpdateGap");
 const dGapC = debug("Client/recoverChannelUpdateGap");
 const dAuth = debug("Client/authorize");
 const dRecv = debug("Client/receiveLoop");
+const dUpload = debug("Client/upload");
 
 export const getEntity = Symbol();
 export const getStickerSetName = Symbol();
@@ -27,15 +28,20 @@ export const getMessageWithReply = Symbol();
 
 export const restartAuth = Symbol();
 
+export class ConnectionError extends Error {
+  //
+}
+
 export class Client extends ClientAbstract {
   private auth: { key: Uint8Array; id: bigint } | null = null;
   private sessionId = getRandomBigInt(8, true, false);
   private state = { salt: 0n, seqNo: 0 };
-  private promises = new Map<bigint, { resolve: (obj: ReadObject) => void; reject: (err: ReadObject) => void }>();
+  private promises = new Map<bigint, { resolve: (obj: ReadObject) => void; reject: (err: ReadObject | Error) => void }>();
   private toAcknowledge = new Set<bigint>();
   private updateState?: types.UpdatesState;
   private readonly errorHandler?: ClientParams["errorHandler"];
 
+  public readonly storage: Storage;
   public readonly parseMode: ParseMode;
 
   public readonly appVersion: string;
@@ -55,13 +61,14 @@ export class Client extends ClientAbstract {
    * @param apiHash App's API hash from [my.telegram.org/apps](https://my.telegram.org/apps). Defaults to empty string (unset).
    */
   constructor(
-    public readonly storage: Storage = new StorageMemory(),
+    storage: Storage | null,
     public readonly apiId: number | null = 0,
     public readonly apiHash: string | null = "",
     params?: ClientParams,
   ) {
     super(params);
 
+    this.storage = storage ?? new StorageMemory();
     this.parseMode = params?.parseMode ?? null;
 
     this.appVersion = params?.appVersion ?? APP_VERSION;
@@ -163,7 +170,6 @@ export class Client extends ClientAbstract {
       }
       d("encrypted client connected");
       drop(this.receiveLoop());
-      drop(this.pingLoop());
     } finally {
       release();
     }
@@ -422,7 +428,7 @@ export class Client extends ClientAbstract {
 
   private async receiveLoop() {
     if (!this.auth || !this.transport) {
-      throw new Error("Not connected");
+      throw new ConnectionError("Not connected");
     }
 
     while (this.connected) {
@@ -457,6 +463,8 @@ export class Client extends ClientAbstract {
           dRecv("received %s", body.constructor.name);
           if (body instanceof types._TypeUpdates || body instanceof types._TypeUpdate) {
             this.processUpdatesQueue.add(() => this.processUpdates(body as types.Updates | types.TypeUpdate));
+          } else if (body instanceof types.NewSessionCreated) {
+            this.state.salt = body.serverSalt;
           } else if (message.body instanceof RPCResult) {
             let result = message.body.result;
             if (result instanceof types.GZIPPacked) {
@@ -513,9 +521,17 @@ export class Client extends ClientAbstract {
           dRecv("failed to deserialize: %o", err);
           drop(this.recoverUpdateGap("deserialize"));
         } else {
-          throw err;
+          dRecv("uncaught error: %o", err);
         }
       }
+    }
+
+    if (!this.connected) {
+      for (const { reject } of this.promises.values()) {
+        reject(new ConnectionError("Connection was closed"));
+      }
+    } else {
+      UNREACHABLE();
     }
   }
 
@@ -530,6 +546,7 @@ export class Client extends ClientAbstract {
     }
   }
 
+  private pingLoopStarted = false;
   private autoStarted = false;
   private lastMsgId = 0n;
   /**
@@ -545,7 +562,7 @@ export class Client extends ClientAbstract {
       if (this.autoStart && !this.autoStarted) {
         await this.start();
       } else {
-        throw new Error("Not connected");
+        throw new ConnectionError("Not connected");
       }
     }
     if (!this.auth || !this.transport) {
@@ -594,6 +611,10 @@ export class Client extends ClientAbstract {
         if (result instanceof types.BadServerSalt) {
           return await this.invoke(function_) as T;
         } else {
+          if (!this.pingLoopStarted) {
+            drop(this.pingLoop());
+            this.pingLoopStarted = true;
+          }
           return result as T;
         }
       } catch (err) {
@@ -1240,30 +1261,32 @@ export class Client extends ClientAbstract {
     return messages[0] ?? null;
   }
 
-  private async *downloadInner(location: types.TypeInputFileLocation, dcId?: number) {
-    let client: Client | null = null;
-    if (dcId != undefined && dcId != this.dcId) {
-      const exportedAuth = await this.invoke(new functions.AuthExportAuthorization({ dcId }));
-      client = new Client(new StorageMemory(), this.apiId, this.apiHash, {
-        transportProvider: this.transportProvider,
-        appVersion: this.appVersion,
-        deviceModel: this.deviceModel,
-        langCode: this.langCode,
-        langPack: this.langPack,
-        systemLangCode: this.systemLangCode,
-        systemVersion: this.systemVersion,
-        cdn: true,
-      });
-      let dc = String(dcId);
-      if (this.dcId < 0) {
-        dc += "-test";
-      }
-      await client.setDc(dc as DC);
-      await client.connect();
-      await client.authorize(exportedAuth);
+  private async *downloadInner(location: types.TypeInputFileLocation, dcId: number, params?: { chunkSize?: number }) {
+    const chunkSize = params?.chunkSize ?? 1024 * 1024;
+    if (mod(chunkSize, 1024) != 0) {
+      throw new Error("chunkSize must be divisible by 1024");
     }
 
-    const limit = 1024 * 1024;
+    const exportedAuth = await this.invoke(new functions.AuthExportAuthorization({ dcId }));
+    const client = new Client(new StorageMemory(), this.apiId, this.apiHash, {
+      transportProvider: this.transportProvider,
+      appVersion: this.appVersion,
+      deviceModel: this.deviceModel,
+      langCode: this.langCode,
+      langPack: this.langPack,
+      systemLangCode: this.systemLangCode,
+      systemVersion: this.systemVersion,
+      cdn: true,
+    });
+    let dc = String(dcId);
+    if (this.dcId < 0) {
+      dc += "-test";
+    }
+    await client.setDc(dc as DC);
+    await client.connect();
+    await client.authorize(exportedAuth);
+
+    const limit = chunkSize;
     let offset = 0n;
 
     while (true) {
@@ -1287,14 +1310,14 @@ export class Client extends ClientAbstract {
    *
    * @param fileId The identifier of the file to download.
    */
-  async download(fileId: string) {
+  async download(fileId: string, params?: { chunkSize?: number }) {
     const fileId_ = FileID.decode(fileId);
     switch (fileId_.fileType) {
       case FileType.ChatPhoto: {
         const big = fileId_.params.thumbnailSource == ThumbnailSource.ChatPhotoBig;
         const peer = await this.getInputPeer(fileId_.params.chatId!);
         const location = new types.InputPeerPhotoFileLocation({ big: big ? true : undefined, peer, photoId: fileId_.params.mediaId! });
-        return this.downloadInner(location);
+        return this.downloadInner(location, fileId_.dcId, params);
       }
       case FileType.Photo: {
         if (fileId_.params.mediaId == undefined || fileId_.params.accessHash == undefined || fileId_.params.fileReference == undefined || fileId_.params.thumbnailSize == undefined) {
@@ -1306,7 +1329,7 @@ export class Client extends ClientAbstract {
           fileReference: fileId_.params.fileReference,
           thumbSize: fileId_.params.thumbnailSize,
         });
-        return this.downloadInner(location);
+        return this.downloadInner(location, fileId_.dcId, params);
       }
       default:
         UNREACHABLE();
@@ -1593,6 +1616,103 @@ export class Client extends ClientAbstract {
         throw new Error("Invalid chat action: " + action_);
     }
     await this.invoke(new functions.MessagesSetTyping({ peer: await this.getInputPeer(chatId), action, topMsgId: messageThreadId }));
+  }
+
+  /**
+   * Upload a file.
+   *
+   * @param contents The contents of the file.
+   */
+  async upload(contents: Uint8Array, params?: { fileName?: string; chunkSize?: number; signal?: AbortSignal | null }) {
+    const isBig = contents.length > 1048576; // 10 MB
+
+    const chunkSize = params?.chunkSize ?? 512 * 1024;
+    if (mod(chunkSize, 1024) != 0) {
+      throw new Error("chunkSize must be divisible by 1024");
+    }
+
+    const signal = params?.signal;
+
+    dUpload("uploading " + (isBig ? "big " : "") + "file of size " + contents.length + " with chunk size of " + chunkSize);
+
+    const fileId = getRandomId();
+    const name = params?.fileName ?? fileId.toString();
+
+    const client = new Client(this.storage, this.apiId, this.apiHash, {
+      transportProvider: this.transportProvider,
+      appVersion: this.appVersion,
+      deviceModel: this.deviceModel,
+      langCode: this.langCode,
+      langPack: this.langPack,
+      systemLangCode: this.systemLangCode,
+      systemVersion: this.systemVersion,
+      cdn: true,
+      initialDc: this.initialDc,
+      autoStart: false,
+    });
+    signal?.addEventListener("abort", () => drop(client.disconnect()));
+    client.state.salt = this.state.salt;
+    await client.connect();
+    let part = 0;
+    const md5sum = await crypto.subtle.digest("MD5", contents).then((v) =>
+      [...new Uint8Array(v)]
+        .map((b) => b.toString(16).padStart(2, "0"))
+        .join("")
+    );
+    const partCount = Math.ceil(contents.length / chunkSize);
+
+    try {
+      main: for (; part < partCount; part++) {
+        chunk: while (true) {
+          try {
+            const start = part * chunkSize;
+            const end = start + chunkSize;
+            const bytes = contents.slice(start, end);
+            if (bytes.length == 0) {
+              continue main;
+            }
+            if (isBig) {
+              await client.invoke(new functions.UploadSaveBigFilePart({ fileId, filePart: part, bytes, fileTotalParts: partCount }));
+            } else {
+              await client.invoke(new functions.UploadSaveFilePart({ fileId, bytes, filePart: part }));
+            }
+            dUpload((part + 1) + " out of " + partCount + " chunks have been uploaded so far");
+            break chunk;
+          } catch (err) {
+            if (signal?.aborted) {
+              break main;
+            }
+            if (err instanceof FloodWait) {
+              dUpload("got a flood wait of " + err.seconds + " seconds");
+              await new Promise((r) => setTimeout(r, err.seconds * 1000));
+            } else if (err instanceof ConnectionError) {
+              while (true) {
+                try {
+                  await new Promise((r) => setTimeout(r, 3000));
+                  await client.connect();
+                } catch {
+                  if (signal?.aborted) {
+                    break main;
+                  }
+                }
+              }
+            } else {
+              throw err;
+            }
+          }
+        }
+      }
+    } finally {
+      drop(client.disconnect());
+    }
+
+    dUpload("uploaded all " + partCount + " chunk(s)");
+
+    if (isBig) {
+      return new types.InputFileBig({ id: fileId, parts: contents.length / chunkSize, name });
+    } else {
+      return new types.InputFile({ id: fileId, name, parts: part, md5Checksum: md5sum });
+    }
   }
 
   async setMyCommands(commands: BotCommand[], params?: { languageCode?: string; scope?: BotCommandScope }) {
