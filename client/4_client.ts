@@ -19,6 +19,7 @@ const dGap = debug("Client/recoverUpdateGap");
 const dGapC = debug("Client/recoverChannelUpdateGap");
 const dAuth = debug("Client/authorize");
 const dRecv = debug("Client/receiveLoop");
+const dUpload = debug("Client/upload");
 
 export const getEntity = Symbol();
 export const getStickerSetName = Symbol();
@@ -1610,24 +1611,20 @@ export class Client extends ClientAbstract {
    *
    * @param contents The contents of the file.
    */
-  async upload(contents: Uint8Array, params?: { fileName?: string; chunkSize?: number; concurrency?: number }) {
+  async upload(contents: Uint8Array, params?: { fileName?: string; chunkSize?: number }) {
     const isBig = contents.length > 1048576; // 10 MB
 
     const chunkSize = params?.chunkSize ?? 512 * 1024;
     if (mod(chunkSize, 1024) != 0) {
       throw new Error("chunkSize must be divisible by 1024");
     }
-    let concurrency = params?.concurrency ?? (isBig ? 4 : 2);
-    if (concurrency < 1) {
-      concurrency = 1;
-    } else if (concurrency > 10) {
-      concurrency = 10;
-    }
+
+    dUpload("uploading " + (isBig ? "big " : "") + "file of size " + contents.length + " with chunk size of " + chunkSize);
 
     const fileId = getRandomId();
     const name = params?.fileName ?? fileId.toString();
 
-    const client = new Client(this.storage, this.apiId, this.apiHash, {
+    const client = new Client(null, this.apiId, this.apiHash, {
       transportProvider: this.transportProvider,
       appVersion: this.appVersion,
       deviceModel: this.deviceModel,
@@ -1646,8 +1643,7 @@ export class Client extends ClientAbstract {
     );
     const partCount = Math.ceil(contents.length / chunkSize);
 
-    const promises = new Array<Promise<boolean>>();
-    for (; part < contents.length / chunkSize; part++) {
+    for (; part < partCount; part++) {
       const start = part * chunkSize;
       const end = start + chunkSize;
       const bytes = contents.slice(start, end);
@@ -1655,18 +1651,14 @@ export class Client extends ClientAbstract {
         continue;
       }
       if (isBig) {
-        promises.push(this.invoke(new functions.UploadSaveBigFilePart({ fileId, filePart: part, bytes, fileTotalParts: partCount })));
+        await client.invoke(new functions.UploadSaveBigFilePart({ fileId, filePart: part, bytes, fileTotalParts: partCount }));
       } else {
-        promises.push(this.invoke(new functions.UploadSaveFilePart({ fileId, bytes, filePart: part })));
+        await client.invoke(new functions.UploadSaveFilePart({ fileId, bytes, filePart: part }));
       }
-      if (promises.length >= concurrency) {
-        await Promise.all(promises);
-      }
+      dUpload((part + 1) + " out of " + partCount + " chunks have been uploaded so far");
     }
 
-    if (promises.length > 0) {
-      await Promise.all(promises);
-    }
+    dUpload("uploaded all " + partCount + " chunk(s)");
 
     if (isBig) {
       return new types.InputFileBig({ id: fileId, parts: contents.length / chunkSize, name });
