@@ -1080,9 +1080,9 @@ export class Client extends ClientAbstract {
 
     if (updates instanceof types.Updates) {
       for (const update of updates.updates) {
-        if (update instanceof types.UpdateNewMessage) {
+        if (update instanceof types.UpdateNewMessage || update instanceof types.UpdateEditMessage) {
           messages.push(await constructMessage(update.message, this[getEntity].bind(this), this.getMessage.bind(this), this[getStickerSetName].bind(this)));
-        } else if (update instanceof types.UpdateNewChannelMessage) {
+        } else if (update instanceof types.UpdateNewChannelMessage || update instanceof types.UpdateEditChannelMessage) {
           messages.push(await constructMessage(update.message, this[getEntity].bind(this), this.getMessage.bind(this), this[getStickerSetName].bind(this)));
         }
       }
@@ -1180,10 +1180,10 @@ export class Client extends ClientAbstract {
     messageId: number,
     text: string,
     params?: EditMessageParams,
-  ) { // TODO: return edited message?
+  ) {
     const [message, entities] = this.parseText(text, params);
 
-    await this.invoke(
+    const result = await this.invoke(
       new functions.MessagesEditMessage({
         id: messageId,
         peer: await this.getInputPeer(chatId),
@@ -1193,6 +1193,9 @@ export class Client extends ClientAbstract {
         replyMarkup: await this.constructReplyMarkup(params),
       }),
     );
+
+    const message_ = await this.updatesToMessages(chatId, result).then((v) => v[0]);
+    return Client.assertMsgHas(message_, "text");
   }
 
   private async getMessagesInner(chatId_: ChatID, messageIds: number[]) {
