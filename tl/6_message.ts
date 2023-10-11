@@ -3,8 +3,7 @@ import { ReadObject, TLReader } from "./3_tl_reader.ts";
 import { TLWriter } from "./4_tl_writer.ts";
 import { RPCResult } from "./5_rpc_result.ts";
 
-// TODO: test
-function calculateLength(object: ReadObject) {
+export function calculateLength(object: ReadObject) {
   let length = 0;
   if (Array.isArray(object)) {
     length += 32 / 8; // vector constructor
