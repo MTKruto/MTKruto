@@ -20,7 +20,7 @@ Deno.test("calculateLength", () => {
 
   const resPqExpectedLength = 1096;
   const userExpectedLength = 20;
-  const vectorExpectedLength = 1124; // total
+  const vectorExpectedLength = 1124;
 
   assertEquals(calculateLength(resPq), resPqExpectedLength);
   assertEquals(calculateLength(user), userExpectedLength);

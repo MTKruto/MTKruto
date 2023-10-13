@@ -22,7 +22,8 @@ export function modExp(
 export function mod(n: bigint, m: bigint): bigint;
 export function mod(n: number, m: number): number;
 export function mod(n: bigint | number, m: bigint | number) {
-  // @ts-ignore: TODO: do sth
+  // deno-lint-ignore ban-ts-comment
+  // @ts-ignore
   return ((n % m) + m) % m;
 }
 
