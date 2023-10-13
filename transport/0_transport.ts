@@ -6,17 +6,13 @@ export abstract class Transport {
 
   protected encrypt(buffer: Uint8Array) {
     if (this.obfuscationParameters) {
-      return this.obfuscationParameters.encryptionCTR.call(buffer);
-    } else {
-      return buffer;
+      this.obfuscationParameters.encryptionCTR.call(buffer);
     }
   }
 
   protected decrypt(buffer: Uint8Array) {
     if (this.obfuscationParameters) {
-      return this.obfuscationParameters.decryptionCTR.call(buffer);
-    } else {
-      return buffer;
+      this.obfuscationParameters.decryptionCTR.call(buffer);
     }
   }
 
