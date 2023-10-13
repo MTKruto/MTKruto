@@ -31,7 +31,8 @@ export async function getObfuscationParameters(protocol: number, connection: Con
   const encryptIv = init.slice(40, 40 + 16);
   const encryptionCTR = new CTR(encryptKey, encryptIv);
 
-  const encryptedInit = encryptionCTR.call(init);
+  const encryptedInit = new Uint8Array(init);
+  encryptionCTR.call(encryptedInit);
 
   const initRev = new Uint8Array(init).reverse();
   const decryptKey = initRev.slice(8, 8 + 32);

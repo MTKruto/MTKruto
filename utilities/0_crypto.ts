@@ -7,8 +7,6 @@ export class CTR {
   }
 
   call(data: Uint8Array) {
-    const v = new Uint8Array(data); // TODO: don't copy
-    ctr256(v, this.key, this.iv, this.state);
-    return v;
+    ctr256(data, this.key, this.iv, this.state);
   }
 }
