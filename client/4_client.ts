@@ -1723,7 +1723,7 @@ export class Client extends ClientAbstract {
       new functions.BotsSetBotCommands({
         commands: commands.map((v) => new types.BotCommand(v)),
         langCode: params?.languageCode ?? "",
-        scope: await botCommandScopeToTlObject(params?.scope ?? { type: "default" }, this.getInputPeer.bind(this)), // TODO: use params.scope
+        scope: await botCommandScopeToTlObject(params?.scope ?? { type: "default" }, this.getInputPeer.bind(this)),
       }),
     );
   }
@@ -1732,7 +1732,7 @@ export class Client extends ClientAbstract {
     const commands_ = await this.invoke(
       new functions.BotsGetBotCommands({
         langCode: params?.languageCode ?? "",
-        scope: await botCommandScopeToTlObject(params?.scope ?? { type: "default" }, this.getInputPeer.bind(this)), // TODO: use params.scope
+        scope: await botCommandScopeToTlObject(params?.scope ?? { type: "default" }, this.getInputPeer.bind(this)),
       }),
     );
     return commands_.map((v) => ({ command: v.command, description: v.description }));
