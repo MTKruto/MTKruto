@@ -132,7 +132,8 @@ export interface Message {
   supergroupCreated?: true;
   /** Service message: the channel has been created. This field can't be received in a message coming through updates, because bot can't be a member of a channel when it is created. It can only be found in reply_to_message if someone replies to a very first message in a channel. */
   channelCreated?: true;
-  // TODO: messageAutoDeleteTimerChanged?: { messageAutoDeleteTime: number };
+  /** Service message: auto-delete timer settings changed in the chat */
+  messageAutoDeleteTimerChanged?: { messageAutoDeleteTime: number };
   /** The group has been migrated to a supergroup with the specified identifier */
   chatMigratedTo?: number;
   /** The supergroup has been migrated from a group with the specified identifier */
@@ -294,6 +295,8 @@ async function constructServiceMessage(message_: types.MessageService, chat: Cha
     } else {
       message.videoChatStarted = {};
     }
+  } else if (message_.action instanceof types.MessageActionSetMessagesTTL) {
+    message.messageAutoDeleteTimerChanged = { messageAutoDeleteTime: message_.action.period || 0 };
   }
 
   return cleanObject(message);
