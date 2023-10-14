@@ -2,12 +2,10 @@ import { bufferFromBigInt, concat, CTR } from "../1_utilities.ts";
 import { Connection } from "../2_connection.ts";
 
 export async function getObfuscationParameters(protocol: number, connection: Connection) {
-  const dc = 0xFCFF;
-
   let init: Uint8Array;
 
   while (true) {
-    init = concat(crypto.getRandomValues(new Uint8Array(56)), bufferFromBigInt(protocol, 4, false), bufferFromBigInt(dc, 2, false), crypto.getRandomValues(new Uint8Array(2)));
+    init = concat(crypto.getRandomValues(new Uint8Array(56)), bufferFromBigInt(protocol, 4, false), crypto.getRandomValues(new Uint8Array(4)));
 
     if (init[0] == 0xEF) {
       continue;
