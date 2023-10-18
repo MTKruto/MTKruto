@@ -1713,6 +1713,11 @@ export class Client extends ClientAbstract {
     }
   }
 
+  /**
+   * Set the bot's commands in the given scope and/or language. Bot-only.
+   *
+   * @param commands The commands to set.
+   */
   async setMyCommands(commands: BotCommand[], params?: { languageCode?: string; scope?: BotCommandScope }) {
     await this.invoke(
       new functions.BotsSetBotCommands({
@@ -1723,6 +1728,9 @@ export class Client extends ClientAbstract {
     );
   }
 
+  /**
+   * Get the bot's commands in the given scope and/or language. Bot-only.
+   */
   async getMyCommands(params?: { languageCode?: string; scope?: BotCommandScope }): Promise<BotCommand[]> {
     const commands_ = await this.invoke(
       new functions.BotsGetBotCommands({
@@ -1733,6 +1741,12 @@ export class Client extends ClientAbstract {
     return commands_.map((v) => ({ command: v.command, description: v.description }));
   }
 
+  /**
+   * Answer an inline query. Bot-only.
+   *
+   * @param id The ID of the inline query to answer.
+   * @param results The results to answer with.
+   */
   async answerInlineQuery(id: string, results: InlineQueryResult[], params?: { cacheTime?: number; isPersonal?: boolean; nextOffset?: string; isGallery?: boolean; button: InlineQueryResultButton }) {
     await this.invoke(
       new functions.MessagesSetInlineBotResults({
@@ -1811,12 +1825,12 @@ export class Client extends ClientAbstract {
     }, handler);
   }
 
-  async setMyInfo(info: Omit<ConstructorParameters<typeof functions["BotsSetBotInfo"]>[0], "bot">) {
+  private async setMyInfo(info: Omit<ConstructorParameters<typeof functions["BotsSetBotInfo"]>[0], "bot">) {
     await this.invoke(new functions.BotsSetBotInfo({ bot: new types.InputUserSelf(), ...info }));
   }
 
   /**
-   * Use this method to change the bot's description, which is shown in the chat with the bot if the chat is empty.
+   * Set the bot's description in the given language. Bot-only.
    */
   async setMyDescription({ description, languageCode }: { description?: string; languageCode?: string }) {
     await this.assertBot("setMyDescription");
@@ -1824,7 +1838,7 @@ export class Client extends ClientAbstract {
   }
 
   /**
-   * Use this method to change the bot's name.
+   * Set the bot's name in the given language. Bot-only.
    */
   async setMyName({ name, languageCode }: { name?: string; languageCode?: string }) {
     await this.assertBot("setMyName");
@@ -1832,7 +1846,7 @@ export class Client extends ClientAbstract {
   }
 
   /**
-   * Use this method to change the bot's short description, which is shown on the bot's profile page and is sent together with the link when users share the bot.
+   * Set the bot's short description in the given language. Bot-only.
    */
   async setMyShortDescription({ shortDescription: about, languageCode }: { shortDescription?: string; languageCode?: string }) {
     await this.assertBot("setMyShortDescription");
@@ -1844,7 +1858,7 @@ export class Client extends ClientAbstract {
   }
 
   /**
-   * Use this method to get the current bot description for the given user language.
+   * Get the bot's description in the given language. Bot-only.
    */
   async getMyDescription(languageCode?: string) {
     await this.assertBot("getMyDescription");
@@ -1852,7 +1866,7 @@ export class Client extends ClientAbstract {
   }
 
   /**
-   * Use this method to get the current bot name for the given user language.
+   * Set the bot's name in the given language. Bot-only.
    */
   async getMyName(languageCode?: string) {
     await this.assertBot("getMyName");
@@ -1860,7 +1874,7 @@ export class Client extends ClientAbstract {
   }
 
   /**
-   * Use this method to get the current bot short description for the given user language.
+   * Get the bot's short description in the given language. Bot-only.
    */
   async getMyShortDescription(languageCode?: string) {
     await this.assertBot("getMyShortDescription");
