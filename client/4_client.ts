@@ -1815,4 +1815,60 @@ export class Client extends ClientAbstract {
       }
     }, handler);
   }
+
+  async setMyInfo(info: Omit<ConstructorParameters<typeof functions["BotsSetBotInfo"]>[0], "bot">) {
+    await this.invoke(new functions.BotsSetBotInfo({ bot: new types.InputUserSelf(), ...info }));
+  }
+
+  /**
+   * Use this method to change the bot's description, which is shown in the chat with the bot if the chat is empty.
+   */
+  async setMyDescription({ description, languageCode }: { description?: string; languageCode?: string }) {
+    await this.assertBot("setMyDescription");
+    await this.setMyInfo({ description, langCode: languageCode ?? "" });
+  }
+
+  /**
+   * Use this method to change the bot's name.
+   */
+  async setMyName({ name, languageCode }: { name?: string; languageCode?: string }) {
+    await this.assertBot("setMyName");
+    await this.setMyInfo({ name, langCode: languageCode ?? "" });
+  }
+
+  /**
+   * Use this method to change the bot's short description, which is shown on the bot's profile page and is sent together with the link when users share the bot.
+   */
+  async setMyShortDescription({ shortDescription: about, languageCode }: { shortDescription?: string; languageCode?: string }) {
+    await this.assertBot("setMyShortDescription");
+    await this.setMyInfo({ about, langCode: languageCode ?? "" });
+  }
+
+  private getMyInfo(languageCode?: string | undefined) {
+    return this.invoke(new functions.BotsGetBotInfo({ bot: new types.InputUserSelf(), langCode: languageCode ?? "" }));
+  }
+
+  /**
+   * Use this method to get the current bot description for the given user language.
+   */
+  async getMyDescription(languageCode?: string) {
+    await this.assertBot("getMyDescription");
+    return await this.getMyInfo(languageCode).then((v) => v.description);
+  }
+
+  /**
+   * Use this method to get the current bot name for the given user language.
+   */
+  async getMyName(languageCode?: string) {
+    await this.assertBot("getMyName");
+    return await this.getMyInfo(languageCode).then((v) => v.description);
+  }
+
+  /**
+   * Use this method to get the current bot short description for the given user language.
+   */
+  async getMyShortDescription(languageCode?: string) {
+    await this.assertBot("getMyShortDescription");
+    return await this.getMyInfo(languageCode).then((v) => v.about);
+  }
 }
