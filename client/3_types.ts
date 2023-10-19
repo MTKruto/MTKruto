@@ -1,6 +1,6 @@
 import { MaybePromise } from "../1_utilities.ts";
 import { functions, types } from "../2_tl.ts";
-import { CallbackQuery, ChatID, ForceReply, InlineKeyboardMarkup, InlineQuery, Message, MessageEntity, ReplyKeyboardMarkup, ReplyKeyboardRemove } from "../3_types.ts";
+import { BotCommandScope, CallbackQuery, ChatID, ForceReply, InlineKeyboardMarkup, InlineQuery, InlineQueryResultButton, Message, MessageEntity, ReplyKeyboardMarkup, ReplyKeyboardRemove } from "../3_types.ts";
 import { With } from "./0_utilities.ts";
 import { ClientPlainParams } from "./2_client_plain.ts";
 
@@ -202,6 +202,35 @@ export interface SendPollParams {
    */
   protectContent?: boolean;
 }
+
+export interface DownloadParams {
+  /** Size of each download chunk in bytes. */
+  chunkSize?: number;
+}
+
+export interface UploadParams {
+  /** The file name to assign. */
+  fileName?: string;
+  /** Size of each upload chunk in bytes. */
+  chunkSize?: number;
+  /** Upload abort signal. */
+  signal?: AbortSignal | null;
+}
+
+export interface AnswerInlineQueryParams {
+  cacheTime?: number;
+  isPersonal?: boolean;
+  nextOffset?: string;
+  isGallery?: boolean;
+  button?: InlineQueryResultButton;
+}
+
+export interface SetMyCommandsParams {
+  languageCode?: string;
+  scope?: BotCommandScope;
+}
+
+export type GetMyCommandsParams = SetMyCommandsParams;
 
 export type ConnectionState = "notConnected" | "updating" | "ready";
 
