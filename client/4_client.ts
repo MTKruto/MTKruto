@@ -237,6 +237,14 @@ export class Client extends ClientAbstract {
     }
   }
 
+  private selfId: number | null = null;
+  private async getSelfId() {
+    if (this.selfId == null) {
+      this.selfId = await this.getMe().then((v) => v.id);
+    }
+    return this.selfId!;
+  }
+
   /**
    * Calls [initConnection](1) and authorizes the client with one of the following:
    *
@@ -289,7 +297,8 @@ export class Client extends ClientAbstract {
     if (typeof params === "string") {
       while (true) {
         try {
-          await this.invoke(new functions.AuthImportBotAuthorization({ apiId: this.apiId, apiHash: this.apiHash, botAuthToken: params, flags: 0 }));
+          const auth = await this.invoke(new functions.AuthImportBotAuthorization({ apiId: this.apiId, apiHash: this.apiHash, botAuthToken: params, flags: 0 }));
+          this.selfId = Number(auth[as](types.AuthAuthorization).user.id);
           await this.storage.setAccountType("bot");
           break;
         } catch (err) {
@@ -354,13 +363,14 @@ export class Client extends ClientAbstract {
     while (true) {
       const code = typeof params.code === "string" ? params.code : await params.code();
       try {
-        await this.invoke(
+        const auth = await this.invoke(
           new functions.AuthSignIn({
             phoneNumber: phone,
             phoneCode: code,
             phoneCodeHash: sentCode.phoneCodeHash,
           }),
         );
+        this.selfId = Number(auth[as](types.AuthAuthorization).user.id);
         await this.storage.setAccountType("user");
         dAuth("authorized as user");
         await this.propagateAuthorizationState(true);
@@ -389,7 +399,8 @@ export class Client extends ClientAbstract {
         const password = typeof params.password === "string" ? params.password : await params.password(ap.hint ?? null);
         const input = await checkPassword(password, ap);
 
-        await this.invoke(new functions.AuthCheckPassword({ password: input }));
+        const auth = await this.invoke(new functions.AuthCheckPassword({ password: input }));
+        this.selfId = Number(auth[as](types.AuthAuthorization).user.id);
         await this.storage.setAccountType("user");
         dAuth("authorized as user");
         await this.propagateAuthorizationState(true);
@@ -1400,6 +1411,50 @@ export class Client extends ClientAbstract {
 
   // TODO: log errors
   private async handleUpdate(update: types.TypeUpdate) {
+    if (update instanceof types.UpdateShortMessage) {
+      update = new types.UpdateNewMessage({
+        message: new types.Message({
+          out: update.out,
+          mentioned: update.mentioned,
+          mediaUnread: update.mediaUnread,
+          silent: update.silent,
+          id: update.id,
+          fromId: update.out ? new types.PeerUser({ userId: await this.getSelfId().then(BigInt) }) : new types.PeerUser({ userId: update.userId }),
+          peerId: new types.PeerChat({ chatId: update.userId }),
+          message: update.message,
+          date: update.date,
+          fwdFrom: update.fwdFrom,
+          viaBotId: update.viaBotId,
+          replyTo: update.replyTo,
+          entities: update.entities,
+          ttlPeriod: update.ttlPeriod,
+        }),
+        pts: update.pts,
+        ptsCount: update.ptsCount,
+      });
+    } else if (update instanceof types.UpdateShortChatMessage) {
+      update = new types.UpdateNewMessage({
+        message: new types.Message({
+          out: update.out,
+          mentioned: update.mentioned,
+          mediaUnread: update.mediaUnread,
+          silent: update.silent,
+          id: update.id,
+          fromId: new types.PeerUser({ userId: update.fromId }),
+          peerId: new types.PeerChat({ chatId: update.chatId }),
+          fwdFrom: update.fwdFrom,
+          viaBotId: update.viaBotId,
+          replyTo: update.replyTo,
+          date: update.date,
+          message: update.message,
+          entities: update.entities,
+          ttlPeriod: update.ttlPeriod,
+        }),
+        pts: update.pts,
+        ptsCount: update.ptsCount,
+      });
+    }
+
     if (update instanceof types.UpdateNewMessage || update instanceof types.UpdateNewMessage || update instanceof types.UpdateNewChannelMessage || update instanceof types.UpdateNewChannelMessage) {
       if (update.message instanceof types.Message || update.message instanceof types.MessageService) {
         await this.storage.setMessage(peerToChatId(update.message.peerId), update.message.id, update.message);
