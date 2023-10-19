@@ -1,5 +1,5 @@
 import { Storage, StorageKeyPart } from "./0_storage.ts";
-import { fixKey } from "./0_utilities.ts";
+import { fixKey, getPrefixKeyRange } from "./0_utilities.ts";
 
 const VERSION = 1;
 const KV_OBJECT_STORE = "kv";
@@ -54,7 +54,7 @@ export class StorageIndexedDB extends Storage {
     });
   }
 
-  get<T>(k: StorageKeyPart[]) {
+  get<T>(k: readonly StorageKeyPart[]) {
     if (!this.database) {
       throw new Error("Not initialized");
     }
@@ -69,5 +69,23 @@ export class StorageIndexedDB extends Storage {
         res(tx.result == undefined ? null : tx.result);
       };
     });
+  }
+
+  async *getMany<T>(prefix: readonly StorageKeyPart[]) {
+    if (!this.database) {
+      throw new Error("Not initialized");
+    }
+    const keys = await new Promise<(readonly StorageKeyPart[])[]>((res, rej) => {
+      const tx = this.database!.transaction(KV_OBJECT_STORE, "readonly")
+        .objectStore(KV_OBJECT_STORE)
+        .getAllKeys(getPrefixKeyRange(prefix));
+      tx.onerror = rej;
+      tx.onsuccess = () => {
+        res(tx.result as (readonly StorageKeyPart[])[]);
+      };
+    });
+    for (const key of keys) {
+      yield [key, await this.get(key)] as [readonly StorageKeyPart[], T];
+    }
   }
 }
