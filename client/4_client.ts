@@ -3,7 +3,7 @@ import { bigIntFromBuffer, drop, getRandomBigInt, getRandomId, MaybePromise, mod
 import { as, functions, getChannelChatId, Message_, MessageContainer, peerToChatId, ReadObject, RPCResult, TLError, TLReader, types } from "../2_tl.ts";
 import { Storage, StorageMemory } from "../3_storage.ts";
 import { DC } from "../3_transport.ts";
-import { BotCommand, BotCommandScope, botCommandScopeToTlObject, ChatAction, ChatID, constructCallbackQuery, constructInlineQuery, constructMessage, constructUser, FileID, FileType, InlineQueryResult, InlineQueryResultButton, inlineQueryResultToTlObject, Message, MessageEntity, messageEntityToTlObject, replyMarkupToTlObject, ThumbnailSource, UsernameResolver } from "../3_types.ts";
+import { BotCommand, botCommandScopeToTlObject, ChatAction, ChatID, constructCallbackQuery, constructInlineQuery, constructMessage, constructUser, FileID, FileType, InlineQueryResult, inlineQueryResultToTlObject, Message, MessageEntity, messageEntityToTlObject, replyMarkupToTlObject, ThumbnailSource, UsernameResolver } from "../3_types.ts";
 import { ACK_THRESHOLD, APP_VERSION, CHANNEL_DIFFERENCE_LIMIT_BOT, CHANNEL_DIFFERENCE_LIMIT_USER, DEVICE_MODEL, LANG_CODE, LANG_PACK, LAYER, MAX_CHANNEL_ID, MAX_CHAT_ID, PublicKeys, STICKER_SET_NAME_TTL, SYSTEM_LANG_CODE, SYSTEM_VERSION, USERNAME_TTL, ZERO_CHANNEL_ID } from "../4_constants.ts";
 import { AuthKeyUnregistered, FloodWait, Migrate, PasswordHashInvalid, PhoneNumberInvalid, SessionPasswordNeeded, upgradeInstance } from "../4_errors.ts";
 import { parseHtml } from "./0_html.ts";
@@ -12,7 +12,7 @@ import { checkPassword } from "./0_password.ts";
 import { isChannelPtsUpdate, isPtsUpdate, resolve, With } from "./0_utilities.ts";
 import { ClientAbstract } from "./1_client_abstract.ts";
 import { ClientPlain } from "./2_client_plain.ts";
-import { AnswerCallbackQueryParams, AuthorizeUserParams, ClientParams, ConnectionState, EditMessageParams, FilterableUpdates, FilterUpdate, ForwardMessagesParams, Handler, ParseMode, SendMessagesParams, SendPollParams, skip, Update } from "./3_types.ts";
+import { AnswerCallbackQueryParams, AnswerInlineQueryParams, AuthorizeUserParams, ClientParams, ConnectionState, DownloadParams, EditMessageParams, FilterableUpdates, FilterUpdate, ForwardMessagesParams, GetMyCommandsParams, Handler, ParseMode, SendMessagesParams, SendPollParams, SetMyCommandsParams, skip, Update, UploadParams } from "./3_types.ts";
 
 const d = debug("Client");
 const dGap = debug("Client/recoverUpdateGap");
@@ -1313,7 +1313,7 @@ export class Client extends ClientAbstract {
    *
    * @param fileId The identifier of the file to download.
    */
-  async download(fileId: string, params?: { chunkSize?: number }) {
+  async download(fileId: string, params?: DownloadParams) {
     const fileId_ = FileID.decode(fileId);
     switch (fileId_.fileType) {
       case FileType.ChatPhoto: {
@@ -1626,7 +1626,7 @@ export class Client extends ClientAbstract {
    *
    * @param contents The contents of the file.
    */
-  async upload(contents: Uint8Array, params?: { fileName?: string; chunkSize?: number; signal?: AbortSignal | null }) {
+  async upload(contents: Uint8Array, params?: UploadParams) {
     const isBig = contents.length > 1048576; // 10 MB
 
     const chunkSize = params?.chunkSize ?? 512 * 1024;
@@ -1718,7 +1718,7 @@ export class Client extends ClientAbstract {
    *
    * @param commands The commands to set.
    */
-  async setMyCommands(commands: BotCommand[], params?: { languageCode?: string; scope?: BotCommandScope }) {
+  async setMyCommands(commands: BotCommand[], params?: SetMyCommandsParams) {
     await this.invoke(
       new functions.BotsSetBotCommands({
         commands: commands.map((v) => new types.BotCommand(v)),
@@ -1731,7 +1731,7 @@ export class Client extends ClientAbstract {
   /**
    * Get the bot's commands in the given scope and/or language. Bot-only.
    */
-  async getMyCommands(params?: { languageCode?: string; scope?: BotCommandScope }): Promise<BotCommand[]> {
+  async getMyCommands(params?: GetMyCommandsParams): Promise<BotCommand[]> {
     const commands_ = await this.invoke(
       new functions.BotsGetBotCommands({
         langCode: params?.languageCode ?? "",
@@ -1747,7 +1747,7 @@ export class Client extends ClientAbstract {
    * @param id The ID of the inline query to answer.
    * @param results The results to answer with.
    */
-  async answerInlineQuery(id: string, results: InlineQueryResult[], params?: { cacheTime?: number; isPersonal?: boolean; nextOffset?: string; isGallery?: boolean; button: InlineQueryResultButton }) {
+  async answerInlineQuery(id: string, results: InlineQueryResult[], params?: AnswerInlineQueryParams) {
     await this.invoke(
       new functions.MessagesSetInlineBotResults({
         queryId: BigInt(id),
