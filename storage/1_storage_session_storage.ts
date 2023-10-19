@@ -28,6 +28,23 @@ export class StorageSessionStorage extends Storage implements Storage {
     }
   }
 
+  *getMany<T>(prefix: readonly StorageKeyPart[]) {
+    for (let [key, value] of Object.entries(localStorage)) {
+      if (key.startsWith(this.prefix)) {
+        key = key.slice(this.prefix.length);
+      }
+      const parts = fromString(key);
+      if (Array.isArray(parts)) {
+        for (const [i, p] of prefix.entries()) {
+          if (toString(p) != toString(parts[i])) {
+            continue;
+          }
+          yield [parts, fromString(value)] as [readonly StorageKeyPart[], T];
+        }
+      }
+    }
+  }
+
   set(key_: readonly StorageKeyPart[], value: unknown): MaybePromise<void> {
     const key = this.prefix + toString(key_);
     if (value != null) {

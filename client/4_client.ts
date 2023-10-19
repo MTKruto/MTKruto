@@ -868,8 +868,7 @@ export class Client extends ClientAbstract {
             UNREACHABLE();
           }
         } else if (difference instanceof types.UpdatesDifferenceTooLong) {
-          // TODO: we actually do now
-          // stored messages should be invalidated in case we store messages in the future
+          await this.storage.deleteMessages();
           state.pts = difference.pts;
           dGap("received differenceTooLong");
         } else if (difference instanceof types.UpdatesDifferenceEmpty) {

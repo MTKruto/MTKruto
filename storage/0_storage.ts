@@ -16,7 +16,7 @@ const KPARTS__STICKER_SET_NAME = (id: bigint, accessHash: bigint) => ["stickerSe
 const KPARTS_MESSAGE = (chatId: number, messageId: number) => ["messages", chatId, messageId];
 const KPARTS_MESSAGE_REF = (messageId: number) => ["messageRefs", messageId];
 
-export type StorageKeyPart = string | number | bigint | Uint8Array;
+export type StorageKeyPart = string | number | bigint;
 
 export abstract class Storage {
   private _authKeyId: bigint | null = null;
@@ -25,6 +25,7 @@ export abstract class Storage {
   // TODO: digest keys in prod
   abstract set(key: readonly StorageKeyPart[], value: unknown): MaybePromise<void>;
   abstract get<T>(key: readonly StorageKeyPart[]): MaybePromise<T | null>;
+  abstract getMany<T>(prefix: readonly StorageKeyPart[]): MaybePromise<Generator<[readonly StorageKeyPart[], T]> | AsyncGenerator<[readonly StorageKeyPart[], T]>>;
 
   setDc(dc: DC | null) {
     return this.set(KPARTS__DC, dc);
@@ -120,6 +121,14 @@ export abstract class Storage {
       await this.set(KPARTS_MESSAGE_REF(messageId), message == null ? null : chatId);
     }
     await this.setTlObject(KPARTS_MESSAGE(chatId, messageId), message);
+  }
+
+  async deleteMessages() {
+    const maybePromises = new Array<MaybePromise<void>>();
+    for await (const [k, o] of await this.getMany(["messageRefs"])) {
+      maybePromises.push(Promise.all<void>([this.set(k, null), o == null ? Promise.resolve() : this.set(KPARTS_MESSAGE(o as number, k[1] as number), null)]).then(() => {}));
+    }
+    await Promise.all(maybePromises.filter((v) => v instanceof Promise));
   }
 
   getMessageChat(messageId: number) {
