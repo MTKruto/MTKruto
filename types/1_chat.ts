@@ -3,6 +3,7 @@ import { types } from "../2_tl.ts";
 import { ZERO_CHANNEL_ID } from "../4_constants.ts";
 import { ChatPhoto, constructChatPhoto } from "./0_chat_photo.ts";
 import { Color, getColor } from "./0_color.ts";
+import { constructRestrictionReason, RestrictionReason } from "./0_restriction_reason.ts";
 
 export type ChatType =
   | "private"
@@ -46,7 +47,7 @@ export declare namespace Chat {
     /** True, if the access to the user must be restricted for the reason specified in `restriction_reason` */
     isRestricted?: boolean;
     /** Contains the reason why access to the user must be restricted. */
-    restrictionReason?: types.RestrictionReason[];
+    restrictionReason?: RestrictionReason[];
   }
 
   export interface Group extends Base {
@@ -77,7 +78,7 @@ export declare namespace Chat {
     /** True, if the access to the user must be restricted for the reason specified in `restriction_reason` */
     isRestricted: boolean;
     /** Contains the reason why access to the user must be restricted. */
-    restrictionReason?: types.RestrictionReason[];
+    restrictionReason?: RestrictionReason[];
   }
 
   export interface Channel extends ChannelBase {
@@ -183,7 +184,7 @@ export function constructChat(chat: types.User | types.Chat | types.Channel): Ch
     chat_.username = chat.username;
     chat_.also = chat.usernames?.map((v) => v.username);
     if (chat_.isRestricted) {
-      chat_.restrictionReason = chat.restrictionReason;
+      chat_.restrictionReason = (chat.restrictionReason ?? []).map(constructRestrictionReason);
     }
 
     if (chat.photo instanceof types.ChatPhoto) {
