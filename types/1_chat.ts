@@ -83,12 +83,6 @@ export declare namespace Chat {
 
   export interface Channel extends ChannelBase {
     type: "channel";
-    /** Title, for supergroups, channels and group chats */
-    title: string;
-    /** Username, for private chats, supergroups and channels if available */
-    username?: string;
-    /** Additional usernames */
-    also?: string[];
   }
 
   export interface Supergroup extends ChannelBase {
