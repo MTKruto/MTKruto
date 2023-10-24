@@ -21,10 +21,10 @@ const dAuth = debug("Client/authorize");
 const dRecv = debug("Client/receiveLoop");
 const dUpload = debug("Client/upload");
 
-export const getEntity = Symbol();
-export const getStickerSetName = Symbol();
+const getEntity = Symbol();
+const getStickerSetName = Symbol();
 export const handleMigrationError = Symbol();
-export const getMessageWithReply = Symbol();
+const getMessageWithReply = Symbol();
 
 export const restartAuth = Symbol();
 
@@ -1022,10 +1022,10 @@ export class Client extends ClientAbstract {
     }
   }
 
-  [getEntity](peer: types.PeerUser): Promise<types.User | null>;
-  [getEntity](peer: types.PeerChat): Promise<types.Chat | null>;
-  [getEntity](peer: types.PeerChannel): Promise<types.Channel | null>;
-  [getEntity](peer: types.PeerUser | types.PeerChat | types.PeerChannel) {
+  private [getEntity](peer: types.PeerUser): Promise<types.User | null>;
+  private [getEntity](peer: types.PeerChat): Promise<types.Chat | null>;
+  private [getEntity](peer: types.PeerChannel): Promise<types.Channel | null>;
+  private [getEntity](peer: types.PeerUser | types.PeerChat | types.PeerChannel) {
     const type = peer instanceof types.PeerUser ? "user" : peer instanceof types.PeerChat ? "chat" : peer instanceof types.PeerChannel ? "channel" : UNREACHABLE();
     const id = peer instanceof types.PeerUser ? peer.userId : peer instanceof types.PeerChat ? peer.chatId : peer instanceof types.PeerChannel ? peer.channelId : UNREACHABLE();
     return this.storage.getEntity(type, id);
@@ -1258,7 +1258,7 @@ export class Client extends ClientAbstract {
     return await this.getMessagesInner(chatId_, messageIds).then((v) => v.map((v) => v.message));
   }
 
-  async [getMessageWithReply](chatId: ChatID, messageId: number): Promise<Message | null> {
+  private async [getMessageWithReply](chatId: ChatID, messageId: number): Promise<Message | null> {
     const messages = await this.getMessagesInner(chatId, [messageId]);
     return messages[0]?.message ?? null;
   }
@@ -1349,7 +1349,7 @@ export class Client extends ClientAbstract {
     }
   }
 
-  async [getStickerSetName](inputStickerSet: types.InputStickerSetID, hash = 0) {
+  private async [getStickerSetName](inputStickerSet: types.InputStickerSetID, hash = 0) {
     const maybeStickerSetName = await this.storage.getStickerSetName(inputStickerSet.id, inputStickerSet.accessHash);
     if (maybeStickerSetName != null && Date.now() - maybeStickerSetName[1].getTime() < STICKER_SET_NAME_TTL) {
       return maybeStickerSetName[0];
