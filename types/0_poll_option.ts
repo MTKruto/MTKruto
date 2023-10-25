@@ -1,9 +1,9 @@
 import { types } from "../2_tl.ts";
 
 export interface PollOption {
-  /** Option text, 1-100 characters */
+  /** The option's text (1-100 characters). */
   text: string;
-  /** Number of users that voted for this option */
+  /** Number of users that voted this option. */
   voterCount: number;
 }
 
