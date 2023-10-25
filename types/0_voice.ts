@@ -2,15 +2,15 @@ import { types } from "../2_tl.ts";
 
 /** This object represents a voice note. */
 export interface Voice {
-  /** Identifier for this file, which can be used to download or reuse the file */
+  /** A file identifier that can be used to download or reuse this file. */
   fileId: string;
-  /** Unique identifier for this file, which is supposed to be the same over time and for different users and bots. Can't be used to download or reuse the file. */
+  /** A file identifier that can be used to identify this file. */
   fileUniqueId: string;
-  /** Duration of the audio in seconds as defined by sender */
+  /** Duration of the audio in this file. */
   duration: number;
-  /** MIME type of the file as defined by sender */
+  /** MIME type of the file. */
   mimeType: string;
-  /** File size in bytes */
+  /** Size of the file in bytes. */
   fileSize: number;
 }
 
