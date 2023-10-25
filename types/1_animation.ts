@@ -7,15 +7,15 @@ export interface Animation {
   fileId: string;
   /** A file identifier that can be used to identify this file. */
   fileUniqueId: string;
-  /** Video width as defined by sender */
+  /** The width of the animation. */
   width: number;
-  /** Video height as defined by sender */
+  /** The height of the animation. */
   height: number;
-  /** Duration of the video in seconds as defined by sender */
+  /** Duration of the animation in seconds. */
   duration: number;
-  /** Animation thumbnail as defined by sender */
+  /** Thumbnails of the animation. */
   thumbnails: Thumbnail[];
-  /** Original animation filename as defined by sender */
+  /** The original file name. */
   fileName?: string;
   /** MIME type of the file. */
   mimeType: string;

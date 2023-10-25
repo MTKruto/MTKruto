@@ -1,12 +1,12 @@
 import { types } from "../2_tl.ts";
 
-/** This object represents a voice note. */
+/** A voice note. */
 export interface Voice {
   /** A file identifier that can be used to download or reuse this file. */
   fileId: string;
   /** A file identifier that can be used to identify this file. */
   fileUniqueId: string;
-  /** Duration of the audio in this file. */
+  /** Duration of the audio in seconds. */
   duration: number;
   /** MIME type of the file. */
   mimeType: string;

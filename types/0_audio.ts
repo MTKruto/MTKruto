@@ -7,7 +7,7 @@ export interface Audio {
   fileId: string;
   /** A file identifier that can be used to identify this file. */
   fileUniqueId: string;
-  /** Duration of the audio. */
+  /** Duration of the audio in seconds. */
   duration: number;
   /** Authors of the audio. */
   performer?: string;

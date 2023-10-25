@@ -1,11 +1,11 @@
 import { cleanObject } from "../1_utilities.ts";
 import { types } from "../2_tl.ts";
 
-/** Upon receiving a message with this object, Telegram clients will remove the current custom keyboard and display the default letter-keyboard. By default, custom keyboards are displayed until a new keyboard is sent by a bot. An exception is made for one-time keyboards that are hidden immediately after the user presses a button. */
+/** Makes the user's client hide the current custom keyboard. */
 export interface ReplyKeyboardRemove {
-  /** Requests clients to remove the custom keyboard (user will not be able to summon this keyboard; if you want to hide the keyboard from sight but keep it accessible, use _one_time_keyboard_ in `ReplyKeyboardMarkup`) */
+  /** Differentiate from other reply markup types. */
   removeKeyboard: true;
-  /** Use this parameter if you want to remove the keyboard for specific users only. Targets: 1) users that are @mentioned in the text of the `Message` object; 2) if the bot's message is a reply (has _reply_to_message_id_), sender of the original message. */
+  /** Whether to only affect specific users. If true, only users that were mentioned will be affected along with the author of the replied message if any. */
   selective?: boolean;
 }
 

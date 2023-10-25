@@ -1,15 +1,14 @@
 import { types } from "../2_tl.ts";
 import { constructThumbnail, Thumbnail } from "./0_thumbnail.ts";
 
-/** This object represents a general file (as opposed to photos, voice messages and audio files). */
 export interface Document {
   /** A file identifier that can be used to download or reuse this file. */
   fileId: string;
   /** A file identifier that can be used to identify this file. */
   fileUniqueId: string;
-  /** Document thumbnail as defined by sender */
+  /** Thumbnails of the document. */
   thumbnails: Thumbnail[];
-  /** Original filename as defined by sender */
+  /** The original file name. */
   fileName: string;
   /** MIME type of the file. */
   mimeType: string;
