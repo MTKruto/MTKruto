@@ -43,13 +43,13 @@ export interface ClientParams extends ClientPlainParams {
 }
 
 export interface AnswerCallbackQueryParams {
-  /** Text of the answer */
+  /** A text to be shown to the user. */
   text?: string;
-  /** Pass true to show an alert to the user instead of a toast notification */
+  /** Whether to show the text as an alert (popup). */
   alert?: boolean;
-  /** URL to be opened */
+  /** A URL to be opened. */
   url?: string;
-  /** Time during which the result of the query can be cached, in seconds */
+  /** TTL of answer caches in seconds. */
   cacheTime?: number;
 }
 
@@ -143,19 +143,24 @@ export interface ForwardMessagesParams {
 
 export interface SendPollParams {
   /**
-   * True, if the poll needs to be anonymous, defaults to True */
+   * Whether the poll should be anonymous.
+   */
   isAnonymous?: boolean;
   /**
-   * The type of the poll. Defaults to regular. */
+   * The type of the poll.
+   */
   type?: "quiz" | "regular";
   /**
-   * True, if the poll allows multiple answers, ignored for polls in quiz mode, defaults to False */
+   * Whether multiple selections should be allowed. Only valid for regular polls.
+   */
   allowMultipleAnswers?: boolean;
   /**
-   * Index of the correct option. Required for quizzes. */
+   * Index of the correct option. Required for quiz polls.
+   */
   correctOptionIndex?: number;
   /**
-   *  Text that is shown when a user chooses an incorrect answer or taps on the lamp icon in a quiz-style poll, 0-200 characters with at most 2 line feeds after entities parsing */
+   * A text that will be shown to the user when the poll is answered. Only valid for quiz polls.
+   */
   explanation?: string;
   /**
    * The parse mode to use for the explanation. If not provided, the default parse mode will be used.
@@ -166,15 +171,15 @@ export interface SendPollParams {
    */
   explanationEntities?: MessageEntity[];
   /**
-   * Amount of time in seconds the poll will be active after creation, 5-600. Can't be used together with close_date.
+   * Duration of the poll in seconds. Must be in the range of 5-600. Cannot be used simultaneously with `closeDate`.
    */
   openPeriod?: number;
   /**
-   * Point in time when the poll will be automatically closed. Must be at least 5 and no more than 600 seconds in the future. Can't be used together with open_period.
+   * The time in which the poll will be closed. Must be at least 5 seconds in the future, and no more than 600. Cannot be used simultaneously with `openPeriod`.
    */
   closeDate?: Date;
   /**
-   * Pass True if the poll needs to be immediately closed. This can be useful for poll preview.
+   * Whether the poll should be closed as soon as it is sent, allowing no answers.
    */
   isClosed?: boolean;
   /**
