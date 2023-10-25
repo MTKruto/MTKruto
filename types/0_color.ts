@@ -1,3 +1,4 @@
+/** A color that can be displayed instead of the chat photo. */
 export type Color = "red" | "orange" | "violet" | "green" | "cyan" | "blue" | "pink";
 
 const colors: Color[] = [
