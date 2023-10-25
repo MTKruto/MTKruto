@@ -1119,6 +1119,7 @@ export class Client extends ClientAbstract {
    *
    * @param chatId The chat to send the message to.
    * @param text The message's text.
+   * @method
    */
   async sendMessage(
     chatId: ChatID,
@@ -1184,6 +1185,7 @@ export class Client extends ClientAbstract {
    * @param chatId The chat where the message is.
    * @param messageId The ID of the message.
    * @param text The new text of the message.
+   * @method
    */
   async editMessageText(
     chatId: ChatID,
@@ -1253,6 +1255,7 @@ export class Client extends ClientAbstract {
    *
    * @param chatId The identifier of the chat to retrieve the messages from.
    * @param messageIds The identifiers of the messages to retrieve.
+   * @method
    */
   async getMessages(chatId_: ChatID, messageIds: number[]) {
     return await this.getMessagesInner(chatId_, messageIds).then((v) => v.map((v) => v.message));
@@ -1268,6 +1271,7 @@ export class Client extends ClientAbstract {
    *
    * @param chatId The identifier of the chat to retrieve the message from.
    * @param messageId The identifier of the message to retrieve.
+   * @method
    */
   async getMessage(chatId: ChatID, messageId: number): Promise<Omit<Message, "replyToMessage"> | null> {
     const messages = await this.getMessages(chatId, [messageId]);
@@ -1322,6 +1326,7 @@ export class Client extends ClientAbstract {
    * Download a file.
    *
    * @param fileId The identifier of the file to download.
+   * @method
    */
   async download(fileId: string, params?: DownloadParams) {
     const fileId_ = FileID.decode(fileId);
@@ -1367,6 +1372,7 @@ export class Client extends ClientAbstract {
    * @param from The identifier of the chat to forward the messages from.
    * @param to The identifier of the chat to forward the messages to.
    * @param messageIds The identifiers of the messages to forward.
+   * @method
    */
   async forwardMessages(from: ChatID, to: ChatID, messageIds: number[], params?: ForwardMessagesParams) {
     const result = await this.invoke(
@@ -1393,6 +1399,7 @@ export class Client extends ClientAbstract {
    * @param from The identifier of the chat to forward the message from.
    * @param to The identifier of the chat to forward the message to.
    * @param messageId The identifier of the message to forward.
+   * @method
    */
   async forwardMessage(from: ChatID, to: ChatID, messageId: number, params?: ForwardMessagesParams) {
     return await this.forwardMessages(from, to, [messageId], params).then((v) => v[0]);
@@ -1400,6 +1407,8 @@ export class Client extends ClientAbstract {
 
   /**
    * Get information on the currently authorized user.
+   * 
+   * @method
    */
   async getMe() {
     const users = await this.invoke(new functions.UsersGetUsers({ id: [new types.InputUserSelf()] }));
@@ -1532,6 +1541,7 @@ export class Client extends ClientAbstract {
    * Answer a callback query. Bot-only.
    *
    * @param id ID of the callback query to answer.
+   * @method
    */
   async answerCallbackQuery(id: string, params?: AnswerCallbackQueryParams) {
     await this.assertBot("answerCallbackQuery");
@@ -1570,6 +1580,7 @@ export class Client extends ClientAbstract {
    * @param chatId The chat to send the poll to.
    * @param question The poll's question.
    * @param options The poll's options.
+   * @method
    */
   async sendPoll(chatId: ChatID, question: string, options: [string, string, ...string[]], params?: SendPollParams) {
     const peer = await this.getInputPeer(chatId);
@@ -1632,6 +1643,7 @@ export class Client extends ClientAbstract {
    * @param chatId The chat to send the chat action to.
    * @param action The chat action.
    * @param messageThreadId The thread to send the chat action to.
+   * @method
    */
   async sendChatAction(chatId: ChatID, action_: ChatAction, messageThreadId?: number) {
     let action: types.TypeSendMessageAction;
@@ -1679,6 +1691,7 @@ export class Client extends ClientAbstract {
    * Upload a file.
    *
    * @param contents The contents of the file.
+   * @method
    */
   async upload(contents: Uint8Array, params?: UploadParams) {
     const isBig = contents.length > 1048576; // 10 MB
@@ -1771,6 +1784,7 @@ export class Client extends ClientAbstract {
    * Set the bot's commands in the given scope and/or language. Bot-only.
    *
    * @param commands The commands to set.
+   * @method
    */
   async setMyCommands(commands: BotCommand[], params?: SetMyCommandsParams) {
     await this.invoke(
@@ -1800,6 +1814,7 @@ export class Client extends ClientAbstract {
    *
    * @param id The ID of the inline query to answer.
    * @param results The results to answer with.
+   * @method
    */
   async answerInlineQuery(id: string, results: InlineQueryResult[], params?: AnswerInlineQueryParams) {
     await this.invoke(
@@ -1885,6 +1900,8 @@ export class Client extends ClientAbstract {
 
   /**
    * Set the bot's description in the given language. Bot-only.
+   * 
+   * @method
    */
   async setMyDescription({ description, languageCode }: { description?: string; languageCode?: string }) {
     await this.assertBot("setMyDescription");
@@ -1893,6 +1910,8 @@ export class Client extends ClientAbstract {
 
   /**
    * Set the bot's name in the given language. Bot-only.
+   * 
+   * @method
    */
   async setMyName({ name, languageCode }: { name?: string; languageCode?: string }) {
     await this.assertBot("setMyName");
@@ -1901,6 +1920,8 @@ export class Client extends ClientAbstract {
 
   /**
    * Set the bot's short description in the given language. Bot-only.
+   * 
+   * @method
    */
   async setMyShortDescription({ shortDescription: about, languageCode }: { shortDescription?: string; languageCode?: string }) {
     await this.assertBot("setMyShortDescription");
@@ -1913,6 +1934,8 @@ export class Client extends ClientAbstract {
 
   /**
    * Get the bot's description in the given language. Bot-only.
+   * 
+   * @method
    */
   async getMyDescription(languageCode?: string) {
     await this.assertBot("getMyDescription");
@@ -1921,6 +1944,8 @@ export class Client extends ClientAbstract {
 
   /**
    * Set the bot's name in the given language. Bot-only.
+   * 
+   * @method
    */
   async getMyName(languageCode?: string) {
     await this.assertBot("getMyName");
@@ -1929,6 +1954,8 @@ export class Client extends ClientAbstract {
 
   /**
    * Get the bot's short description in the given language. Bot-only.
+   * 
+   * @method
    */
   async getMyShortDescription(languageCode?: string) {
     await this.assertBot("getMyShortDescription");
