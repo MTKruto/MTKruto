@@ -1,7 +1,7 @@
 import { types } from "../2_tl.ts";
 import { constructThumbnail, Thumbnail } from "./0_thumbnail.ts";
 
-/** This object represents an audio file to be treated as music by the Telegram clients. */
+/** An audio file. */
 export interface Audio {
   /** A file identifier that can be used to download or reuse this file. */
   fileId: string;

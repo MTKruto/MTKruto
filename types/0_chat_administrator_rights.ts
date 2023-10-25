@@ -1,30 +1,30 @@
 import { types } from "../2_tl.ts";
 
-/** Represents the rights of an administrator in a chat. */
+/** The rights of a chat administrator. */
 export interface ChatAdministratorRights {
-  /** True, if the user's presence in the chat is hidden */
+  /** Whether the admininistrator's presence in the chat is hidden. */
   isAnonymous: boolean;
-  /** True, if the administrator can access the chat event log, chat statistics, message statistics in channels, see channel members, see anonymous administrators in supergroups and ignore slow mode. Implied by any other administrator privilege */
+  /** Whether the administrator can access the chat event log, chat statistics, message statistics in channels, see channel members, see anonymous administrators in supergroups and surpass slow mode. */
   canManageChat: boolean;
-  /** True, if the administrator can delete messages of other users */
+  /** Whether the administrator can delete messages of other users. */
   canDeleteMessages: boolean;
-  /** True, if the administrator can manage video chats */
+  /** Whether the administrator can manage video chats. */
   canManageVideoChats: boolean;
-  /** True, if the administrator can restrict, ban or unban chat members */
+  /** Whether the administrator can restrict, ban or unban chat members. */
   canRestrictMembers: boolean;
-  /** True, if the administrator can add new administrators with a subset of their own privileges or demote administrators that they have promoted, directly or indirectly (promoted by administrators that were appointed by the user) */
+  /** Whether the administrator can promote regular members to admininistrators. */
   canPromoteMembers: boolean;
-  /** True, if the user is allowed to change the chat title, photo and other settings */
+  /** Whether the administrator can change the name of the chat, its photo, description and some other settings. */
   canChangeInfo: boolean;
-  /** True, if the user is allowed to invite new users to the chat */
+  /** Whether the administrator can invite users to the chat. */
   canInviteUsers: boolean;
-  /** True, if the administrator can post in the channel; channels only */
+  /** Whether the administrator can make posts in the channel. Only available for channels. */
   canPostMessages?: boolean;
-  /** True, if the administrator can edit messages of other users and can pin messages; channels only */
+  /** Whether the administrator can pin posts and edit posts they didn't send. Only available for channels. */
   canEditMessages?: boolean;
-  /** True, if the user is allowed to pin messages; groups and supergroups only */
+  /** Whether the administrator can pin messages. Only available for groups and supergroups. */
   canPinMessages?: boolean;
-  /** True, if the user is allowed to create, rename, close, and reopen forum topics; supergroups only */
+  /** Whether the administrator can manage topics. Only available for supergroups. */
   canManageTopics?: boolean;
 }
 
