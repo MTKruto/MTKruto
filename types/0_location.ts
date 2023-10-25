@@ -1,18 +1,18 @@
 import { as, types } from "../2_tl.ts";
 
-/** This object represents a point on the map. */
+/** A shared location. */
 export interface Location {
-  /** Latitude as defined by sender */
+  /** The latitude of the location. */
   latitude: number;
-  /** Longitude as defined by sender */
+  /** The longitude of the location. */
   longitude: number;
-  /** The radius of uncertainty for the location, measured in meters; 0-1500 */
+  /** The accuracy radius of the location in meters. Must be in the range of 0-1500. */
   horizontalAccuracy?: number;
-  /** Time relative to the message sending date, during which the location can be updated; in seconds. For active live locations only. */
+  /** The duration in which the location can be updated in seconds. Must be in the range of 80-864,000. */
   livePeriod?: number;
-  /** The direction in which user is moving, in degrees; 1-360. For active live locations only. */
+  /** The direction which the user is moving towards. Must be in the range of 1-350. */
   heading?: number;
-  /** The maximum distance for proximity alerts about approaching another chat member, in meters. For sent live locations only. */
+  /** The maximum distance for proximity alerts on approaching another chat member in meters. Must be in the range 1-100,000. */
   proximityAlertRadius?: number;
 }
 

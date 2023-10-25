@@ -1,17 +1,17 @@
 import { as, types } from "../2_tl.ts";
 import { Location } from "./0_location.ts";
 
-/**  */
+/** A shared venue. */
 export interface Venue {
-  /** Venue location. Can't be a live location */
+  /** The location of the venue. Cannot be a live location. */
   location: Location;
-  /** Name of the venue */
+  /** The name of the venue. */
   title: string;
-  /** Address of the venue */
+  /** The address of the venue. */
   address: string;
-  /** Foursquare identifier of the venue */
+  /** The Foursquare identifier of the venue. */
   foursquareId?: string;
-  /** Foursquare type of the venue. (For example, "arts_entertainment/default", "arts_entertainment/aquarium" or "food/icecream".) */
+  /** The Foursquare type of the venue. */
   foursquareType?: string;
 }
 

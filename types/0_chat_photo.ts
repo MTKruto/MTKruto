@@ -3,20 +3,21 @@ import { FileID, FileType, FileUniqueID, FileUniqueType, ThumbnailSource } from 
 
 export declare namespace ChatPhoto {
   export interface Base {
-    /** File identifier of small (160x160) chat photo. This file_id can be used only for photo download and only for as long as the photo is not changed. */
+    /** A file identifier that can be used to download or reuse the small version of the chat photo (160x160). */
     smallFileId: string;
-    /** Unique file identifier of small (160x160) chat photo, which is supposed to be the same over time and for different users and bots. Can't be used to download or reuse the file. */
+    /** A file identifier that can be used to identify the small version of the chat photo (160x160). */
     smallFileUniqueId: string;
-    /** File identifier of big (640x640) chat photo. This file_id can be used only for photo download and only for as long as the photo is not changed. */
+    /** A file identifier that can be used to download or reuse the big version of the chat photo (640x640). */
     bigFileId: string;
-    /** Unique file identifier of big (640x640) chat photo, which is supposed to be the same over time and for different users and bots. Can't be used to download or reuse the file. */
+    /** A file identifier that can be used to identify the big version of the chat photo (640x640). */
     bigFileUniqueId: string;
-    /** True, if an [animated profile picture](https://core.telegram.org/api/files#animated-profile-pictures) is available for the user */
+    /** Whether the chat photo is animated. */
     hasVideo: boolean;
   }
 
   export interface User extends Base {
-    personal: boolean;
+    /** Differentiates between user profile photos. */
+    personal: true;
   }
 
   export type Chat = Base;
@@ -58,7 +59,7 @@ export function constructChatPhoto(photo: types.UserProfilePhoto | types.ChatPho
     };
   } else {
     return {
-      personal: photo.personal || false,
+      personal: photo.personal ? true : undefined,
       smallFileId,
       smallFileUniqueId,
       bigFileId,

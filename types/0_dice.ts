@@ -1,10 +1,10 @@
 import { types } from "../2_tl.ts";
 
-/** This object represents an animated emoji that displays a random value. */
+/** A rolled dice. */
 export interface Dice {
-  /** Emoji on which the dice throw animation is based */
+  /** The emoji on which the dice is based on. */
   emoji: string;
-  /** Value of the dice, 1-6 for "🎲", "🎯" and "🎳" base emoji, 1-5 for "🏀" and "⚽" base emoji, 1-64 for "🎰" base emoji */
+  /** The result of the roll, which is in the range of 1-6 for the emojis "🎲", "🎯" and "🎳",  1-5 for the emojis "🏀" and "⚽", and 1-64 for emoji "🎰". */
   value: number;
 }
 
