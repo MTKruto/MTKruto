@@ -1407,7 +1407,7 @@ export class Client extends ClientAbstract {
 
   /**
    * Get information on the currently authorized user.
-   * 
+   *
    * @method
    */
   async getMe() {
@@ -1900,7 +1900,7 @@ export class Client extends ClientAbstract {
 
   /**
    * Set the bot's description in the given language. Bot-only.
-   * 
+   *
    * @method
    */
   async setMyDescription({ description, languageCode }: { description?: string; languageCode?: string }) {
@@ -1910,7 +1910,7 @@ export class Client extends ClientAbstract {
 
   /**
    * Set the bot's name in the given language. Bot-only.
-   * 
+   *
    * @method
    */
   async setMyName({ name, languageCode }: { name?: string; languageCode?: string }) {
@@ -1920,7 +1920,7 @@ export class Client extends ClientAbstract {
 
   /**
    * Set the bot's short description in the given language. Bot-only.
-   * 
+   *
    * @method
    */
   async setMyShortDescription({ shortDescription: about, languageCode }: { shortDescription?: string; languageCode?: string }) {
@@ -1934,7 +1934,7 @@ export class Client extends ClientAbstract {
 
   /**
    * Get the bot's description in the given language. Bot-only.
-   * 
+   *
    * @method
    */
   async getMyDescription(languageCode?: string) {
@@ -1944,7 +1944,7 @@ export class Client extends ClientAbstract {
 
   /**
    * Set the bot's name in the given language. Bot-only.
-   * 
+   *
    * @method
    */
   async getMyName(languageCode?: string) {
@@ -1954,7 +1954,7 @@ export class Client extends ClientAbstract {
 
   /**
    * Get the bot's short description in the given language. Bot-only.
-   * 
+   *
    * @method
    */
   async getMyShortDescription(languageCode?: string) {
