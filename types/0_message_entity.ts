@@ -60,7 +60,7 @@ export declare namespace MessageEntity {
 
   export interface Pre extends Base {
     type: "pre";
-    /** For "pre" only, the programming language of the entity text */
+    /** The language identifier of the code. */
     language: string;
   }
 
@@ -70,13 +70,13 @@ export declare namespace MessageEntity {
 
   export interface TextLink extends Base {
     type: "textLink";
-    /** For "textLink" only, URL that will be opened after user taps on the text */
+    /** A URL that will be opened after the text is tapped. */
     url: string;
   }
 
   export interface TextMention extends Base {
     type: "textMention";
-    /** For "textMention" only, the ID of the mentioned user */
+    /** The identifier of the user to mention. */
     userId: number;
   }
 
@@ -110,12 +110,12 @@ export declare namespace MessageEntity {
 
   export interface CustomEmoji extends Base {
     type: "customEmoji";
-    /** For "customEmoji" only, unique identifier of the custom emoji */
+    /** The identifier of the custom emoji. */
     customEmojiId: string;
   }
 }
 
-/** This object represents one special entity in a text message. For example, hashtags, usernames, URLs, etc. */
+/** A single entity of a message's text or caption. */
 export type MessageEntity =
   | MessageEntity.Mention
   | MessageEntity.Hashtag

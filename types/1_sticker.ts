@@ -5,9 +5,9 @@ import { constructThumbnail, Thumbnail } from "./0_thumbnail.ts";
 
 /** This object represents a sticker. */
 export interface Sticker {
-  /** Identifier for this file, which can be used to download or reuse the file */
+  /** A file identifier that can be used to download or reuse this file. */
   fileId: string;
-  /** Unique identifier for this file, which is supposed to be the same over time and for different users and bots. Can't be used to download or reuse the file. */
+  /** A file identifier that can be used to identify this file. */
   fileUniqueId: string;
   /** Type of the sticker, currently one of "regular", "mask", "customEmoji". The type of the sticker is independent from its format, which is determined by the fields is_animated and is_video. */
   type: "regular" | "mask" | "customEmoji";

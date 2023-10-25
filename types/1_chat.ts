@@ -13,71 +13,72 @@ export type ChatType =
 
 export declare namespace Chat {
   export interface Base {
-    /** Type of chat, can be either "private", "group", "supergroup" or "channel" */
+    /** The type of the chat. */
     type: ChatType;
-    /** Unique identifier for this chat */
+    /** The identifier of the chat. */
     id: number;
+    /** A color that can be displayed instead of the chat's photo. */
     color: Color;
-    /** Chat photo. */
+    /** The chat's photo. */
     photo?: ChatPhoto;
   }
 
   export interface Private extends Base {
     type: "private";
-    /** True, if this user is a bot */
+    /** Whether this is a bot's chat. */
     isBot?: boolean;
-    /** First name of the other party in a private chat */
+    /** The first name of the user. */
     firstName: string;
-    /** Last name of the other party in a private chat */
+    /** The last name of the user. */
     lastName?: string;
-    /** Username, for private chats, supergroups and channels if available */
+    /** The user's main username. */
     username?: string;
-    /** Additional usernames */
+    /** The user's other usernames. */
     also?: string[];
-    /** Chat photo. */
+    /** The user's profile photo. */
     photo?: ChatPhoto.User;
-    /** True, if the user is a scam user */
+    /** Whether the user has been identified as scam. */
     isScam: boolean;
-    /** True, if this user was reported by many users as a fake or scam user: be careful when interacting with them. */
+    /** Whether the user has been identified as an impersonator. */
     isFake: boolean;
-    /** True, if the user is an official support user */
+    /** Whether the user is official support. */
     isSupport: boolean;
-    /** True, if the user is verified */
+    /** Whether the user has been verified. */
     isVerified: boolean;
-    /** True, if the access to the user must be restricted for the reason specified in `restriction_reason` */
+    /** Whether the user has been restricted. */
     isRestricted?: boolean;
-    /** Contains the reason why access to the user must be restricted. */
+    /** The reason why the user has been restricted. */
     restrictionReason?: RestrictionReason[];
   }
 
   export interface Group extends Base {
     type: "group";
-    /** Title, for supergroups, channels and group chats */
+    /** The title of the chat. */
     title: string;
-    /** Chat photo. */
+    /** The chat's photo. */
     photo?: ChatPhoto.Chat;
-    /** True, if the user is creator of the chat */
+    /** Whether the current user is the owner of the chat. */
     isCreator: boolean;
   }
 
   export interface ChannelBase extends Base {
-    /** Title, for supergroups, channels and group chats */
+    /** The title of the chat or channel. */
     title: string;
-    /** Username, for private chats, supergroups and channels if available */
+    /** The main username of the chat or channel. */
     username?: string;
-    /** Additional usernames */
+    /** The other usernames of the chat or channel. */
     also?: string[];
-    /** Chat photo. */
+    /** The chat or channel's photo. */
     photo?: ChatPhoto.Chat;
-    /** True, if the user is a scam user */
+    /** Whether the chat or channel has been identified as scam. */
     isScam: boolean;
-    /** True, if this user was reported by many users as a fake or scam user: be careful when interacting with them. */
+    /** Whether the chat or channel has been identified as an impersonator. */
     isFake: boolean;
-    /** True, if the user is verified */
+    /** Whether the chat or channel has been verified. */
     isVerified: boolean;
-    /** True, if the access to the user must be restricted for the reason specified in `restriction_reason` */
+    /** Whether the chat or channel has been restricted. */
     isRestricted: boolean;
-    /** Contains the reason why access to the user must be restricted. */
+    /** The reason why the chat or channel has been restricted. */
     restrictionReason?: RestrictionReason[];
   }
 
@@ -87,7 +88,7 @@ export declare namespace Chat {
 
   export interface Supergroup extends ChannelBase {
     type: "supergroup";
-    /** True, if the supergroup chat is a forum (has [topics](https://telegram.org/blog/topics-in-groups-collectible-usernames#topics-in-groups) enabled) */
+    /** Whether the chat is a forum. */
     isForum: boolean;
   }
 }

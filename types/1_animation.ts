@@ -3,23 +3,23 @@ import { constructThumbnail, Thumbnail } from "./0_thumbnail.ts";
 
 /** This object represents an animation file (GIF or H.264/MPEG-4 AVC video without sound). */
 export interface Animation {
-  /** Identifier for this file, which can be used to download or reuse the file */
+  /** A file identifier that can be used to download or reuse this file. */
   fileId: string;
-  /** Unique identifier for this file, which is supposed to be the same over time and for different users and bots. Can't be used to download or reuse the file. */
+  /** A file identifier that can be used to identify this file. */
   fileUniqueId: string;
-  /** Video width as defined by sender */
+  /** The width of the animation. */
   width: number;
-  /** Video height as defined by sender */
+  /** The height of the animation. */
   height: number;
-  /** Duration of the video in seconds as defined by sender */
+  /** Duration of the animation in seconds. */
   duration: number;
-  /** Animation thumbnail as defined by sender */
+  /** Thumbnails of the animation. */
   thumbnails: Thumbnail[];
-  /** Original animation filename as defined by sender */
+  /** The original file name. */
   fileName?: string;
-  /** MIME type of the file as defined by sender */
+  /** MIME type of the file. */
   mimeType: string;
-  /** File size in bytes */
+  /** Size of the file in bytes. */
   fileSize: number;
 }
 

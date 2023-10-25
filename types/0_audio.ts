@@ -1,23 +1,23 @@
 import { types } from "../2_tl.ts";
 import { constructThumbnail, Thumbnail } from "./0_thumbnail.ts";
 
-/** This object represents an audio file to be treated as music by the Telegram clients. */
+/** An audio file. */
 export interface Audio {
-  /** Identifier for this file, which can be used to download or reuse the file */
+  /** A file identifier that can be used to download or reuse this file. */
   fileId: string;
-  /** Unique identifier for this file, which is supposed to be the same over time and for different users and bots. Can't be used to download or reuse the file. */
+  /** A file identifier that can be used to identify this file. */
   fileUniqueId: string;
-  /** Duration of the audio in seconds as defined by sender */
+  /** Duration of the audio in seconds. */
   duration: number;
-  /** Performer of the audio as defined by sender or by audio tags */
+  /** Authors of the audio. */
   performer?: string;
-  /** Title of the audio as defined by sender or by audio tags */
+  /** Title of the audio. */
   title?: string;
-  /** MIME type of the file as defined by sender */
+  /** MIME type of the file. */
   mimeType: string;
-  /** File size in bytes */
+  /** Size of the file in bytes. */
   fileSize: number;
-  /** Thumbnail of the album cover to which the music file belongs */
+  /** Thumbnails of the album cover to which the music file belongs. */
   thumbnails: Thumbnail[];
 }
 

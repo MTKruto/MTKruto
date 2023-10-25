@@ -4,15 +4,15 @@ import { constructThumbnail, Thumbnail } from "./0_thumbnail.ts";
 
 /** This object represents a photo. */
 export interface Photo {
-  /** Identifier for this file, which can be used to download or reuse the file */
+  /** A file identifier that can be used to download or reuse this file. */
   fileId: string;
-  /** Unique identifier for this file, which is supposed to be the same over time and for different users and bots. Can't be used to download or reuse the file. */
+  /** A file identifier that can be used to identify this file. */
   fileUniqueId: string;
   /** Photo width */
   width: number;
   /** Photo height */
   height: number;
-  /** File size in bytes */
+  /** Size of the file in bytes. */
   fileSize: number;
   thumbnails: Thumbnail[];
 }

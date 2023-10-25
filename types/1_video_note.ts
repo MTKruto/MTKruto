@@ -3,9 +3,9 @@ import { constructThumbnail, Thumbnail } from "./0_thumbnail.ts";
 
 /** This object represents a video message (available in Telegram apps as of v.4.0). */
 export interface VideoNote {
-  /** Identifier for this file, which can be used to download or reuse the file */
+  /** A file identifier that can be used to download or reuse this file. */
   fileId: string;
-  /** Unique identifier for this file, which is supposed to be the same over time and for different users and bots. Can't be used to download or reuse the file. */
+  /** A file identifier that can be used to identify this file. */
   fileUniqueId: string;
   /** Video width and height (diameter of the video message) as defined by sender */
   length: number;
@@ -15,7 +15,7 @@ export interface VideoNote {
   thumbnails: Thumbnail[];
   /** Original filename as defined by sender */
   fileName?: string;
-  /** File size in bytes */
+  /** Size of the file in bytes. */
   fileSize: number;
 }
 

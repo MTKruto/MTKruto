@@ -1,17 +1,17 @@
 import { types } from "../2_tl.ts";
 import { FileID, FileType, FileUniqueID, FileUniqueType, ThumbnailSource } from "./0__file_id.ts";
 
-/** This object represents thumbnail of a file or a sticker. */
+/** A file or sticker thumbnail. */
 export interface Thumbnail {
-  /** Identifier for this file, which can be used to download or reuse the file */
+  /** A file identifier that can be used to download or reuse the thumbnail. */
   fileId: string;
-  /** Unique identifier for this file, which is supposed to be the same over time and for different users and bots. Can't be used to download or reuse the file. */
+  /** A file identifier that can be used to identify the thumbnail. */
   fileUniqueId: string;
-  /** Photo width */
+  /** The width of the thumbnail. */
   width: number;
-  /** Photo height */
+  /** The height of the thumbnail. */
   height: number;
-  /** File size in bytes */
+  /** Size of the file in bytes. */
   fileSize: number;
 }
 

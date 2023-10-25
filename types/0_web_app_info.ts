@@ -1,6 +1,5 @@
-/** Describes a Web App */
 export interface WebAppInfo {
-  /** An HTTPS URL of a Web App to be opened with additional data */
+  /** An HTTPS URL of the Web App to be opened with additional data. */
   url: string;
 }
 

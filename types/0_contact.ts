@@ -1,16 +1,16 @@
 import { types } from "../2_tl.ts";
 
-/** This object represents a phone contact. */
+/** A shared contact. */
 export interface Contact {
-  /** Contact's phone number */
+  /** The contact's phone number. */
   phoneNumber: string;
-  /** Contact's first name */
+  /** The contact's first name. */
   firstName: string;
-  /** Contact's last name */
+  /** The contact's last name. */
   lastName?: string;
-  /** Contact's user identifier in Telegram */
+  /** The contact's Telegram identifier. */
   userId?: number;
-  /** Additional data about the contact in the form of a [vCard](https://en.wikipedia.org/wiki/VCard) */
+  /** Additional information in the vCard format. */
   vcard?: string;
 }
 

@@ -7,6 +7,7 @@ import { Color, getColor } from "./0_color.ts";
 export interface User {
   /** Unique identifier for this user or bot */
   id: number;
+  /** A color that can be displayed instead of the user's photo. */
   color: Color;
   /** True, if this user is a bot */
   isBot: boolean;
@@ -18,7 +19,7 @@ export interface User {
   username?: string;
   /** Additional usernames */
   also?: string[];
-  /** Chat photo */
+  /** The user's photo. */
   photo?: ChatPhoto.User;
   /** [IETF language tag](https://en.wikipedia.org/wiki/IETF_language_tag) of the user's language */
   languageCode?: string;
