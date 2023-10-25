@@ -1,6 +1,5 @@
 import { types } from "../2_tl.ts";
 
-/** This object describes the position on faces where a mask should be placed by default. */
 export interface MaskPosition {
   /** The part of the face relative to which the mask should be placed. One of "forehead", "eyes", "mouth", or "chin". */
   point: "forehead" | "eyes" | "mouth" | "chin";
