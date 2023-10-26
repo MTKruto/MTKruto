@@ -3,7 +3,7 @@ import { bigIntFromBuffer, drop, getRandomBigInt, getRandomId, MaybePromise, mod
 import { as, functions, getChannelChatId, Message_, MessageContainer, peerToChatId, ReadObject, RPCResult, TLError, TLReader, types } from "../2_tl.ts";
 import { Storage, StorageMemory } from "../3_storage.ts";
 import { DC } from "../3_transport.ts";
-import { BotCommand, botCommandScopeToTlObject, ChatAction, ChatID, constructCallbackQuery, constructInlineQuery, constructMessage, constructUser, FileID, FileType, InlineQueryResult, inlineQueryResultToTlObject, Message, MessageEntity, messageEntityToTlObject, replyMarkupToTlObject, ThumbnailSource, UsernameResolver } from "../3_types.ts";
+import { BotCommand, botCommandScopeToTlObject, ChatAction, ChatID, constructCallbackQuery, constructInlineQuery, constructMessage, constructUser, FileID, FileType, InlineQueryResult, inlineQueryResultToTlObject, Message, MessageEntity, messageEntityToTlObject, replyMarkupToTlObject, ThumbnailSource, User, UsernameResolver } from "../3_types.ts";
 import { ACK_THRESHOLD, APP_VERSION, CHANNEL_DIFFERENCE_LIMIT_BOT, CHANNEL_DIFFERENCE_LIMIT_USER, DEVICE_MODEL, LANG_CODE, LANG_PACK, LAYER, MAX_CHANNEL_ID, MAX_CHAT_ID, PublicKeys, STICKER_SET_NAME_TTL, SYSTEM_LANG_CODE, SYSTEM_VERSION, USERNAME_TTL, ZERO_CHANNEL_ID } from "../4_constants.ts";
 import { AuthKeyUnregistered, FloodWait, Migrate, PasswordHashInvalid, PhoneNumberInvalid, SessionPasswordNeeded, upgradeInstance } from "../4_errors.ts";
 import { parseHtml } from "./0_html.ts";
@@ -1117,15 +1117,16 @@ export class Client extends ClientAbstract {
   /**
    * Send a text message.
    *
+   * @method
    * @param chatId The chat to send the message to.
    * @param text The message's text.
-   * @method
+   * @returns The sent text message.
    */
   async sendMessage(
     chatId: ChatID,
     text: string,
     params?: SendMessagesParams,
-  ) {
+  ): Promise<With<Message, "text">> {
     const [message, entities] = this.parseText(text, params);
 
     const replyMarkup = await this.constructReplyMarkup(params);
@@ -1182,17 +1183,18 @@ export class Client extends ClientAbstract {
   /**
    * Edit a message's text.
    *
+   * @method
    * @param chatId The chat where the message is.
    * @param messageId The ID of the message.
    * @param text The new text of the message.
-   * @method
+   * @returns The edited text message.
    */
   async editMessageText(
     chatId: ChatID,
     messageId: number,
     text: string,
     params?: EditMessageParams,
-  ) {
+  ): Promise<With<Message, "text">> {
     const [message, entities] = this.parseText(text, params);
 
     const result = await this.invoke(
@@ -1253,12 +1255,16 @@ export class Client extends ClientAbstract {
   /**
    * Retrieve multiple messages.
    *
+   * @method
    * @param chatId The identifier of the chat to retrieve the messages from.
    * @param messageIds The identifiers of the messages to retrieve.
-   * @method
+   * @example ```ts
+   * const message = await client.getMessages("@MTKruto", [210, 212]);
+   * ```
+   * @returns The retrieved messages.
    */
-  async getMessages(chatId_: ChatID, messageIds: number[]) {
-    return await this.getMessagesInner(chatId_, messageIds).then((v) => v.map((v) => v.message));
+  async getMessages(chatId: ChatID, messageIds: number[]): Promise<Omit<Message, "replyToMessage">[]> {
+    return await this.getMessagesInner(chatId, messageIds).then((v) => v.map((v) => v.message));
   }
 
   private async [getMessageWithReply](chatId: ChatID, messageId: number): Promise<Message | null> {
@@ -1269,9 +1275,13 @@ export class Client extends ClientAbstract {
   /**
    * Retrieve a single message.
    *
+   * @method
    * @param chatId The identifier of the chat to retrieve the message from.
    * @param messageId The identifier of the message to retrieve.
-   * @method
+   * @example ```ts
+   * const message = await client.getMessage("@MTKruto", 212);
+   * ```
+   * @returns The retrieved message.
    */
   async getMessage(chatId: ChatID, messageId: number): Promise<Omit<Message, "replyToMessage"> | null> {
     const messages = await this.getMessages(chatId, [messageId]);
@@ -1325,10 +1335,16 @@ export class Client extends ClientAbstract {
   /**
    * Download a file.
    *
-   * @param fileId The identifier of the file to download.
    * @method
+   * @param fileId The identifier of the file to download.
+   * @example ```ts
+   * for await (const chunk of client.download(fileId, { chunkSize: 256 * 1024 })) {
+   *   await outFile.write(chunk);
+   * }
+   * ```
+   * @returns A generator yielding the contents of the file.
    */
-  async download(fileId: string, params?: DownloadParams) {
+  async download(fileId: string, params?: DownloadParams): Promise<AsyncGenerator<Uint8Array, void, unknown>> {
     const fileId_ = FileID.decode(fileId);
     switch (fileId_.fileType) {
       case FileType.ChatPhoto: {
@@ -1369,12 +1385,13 @@ export class Client extends ClientAbstract {
   /**
    * Forward multiple messages.
    *
+   * @method
    * @param from The identifier of the chat to forward the messages from.
    * @param to The identifier of the chat to forward the messages to.
    * @param messageIds The identifiers of the messages to forward.
-   * @method
+   * @returns The forwarded messages.
    */
-  async forwardMessages(from: ChatID, to: ChatID, messageIds: number[], params?: ForwardMessagesParams) {
+  async forwardMessages(from: ChatID, to: ChatID, messageIds: number[], params?: ForwardMessagesParams): Promise<Message[]> {
     const result = await this.invoke(
       new functions.MessagesForwardMessages({
         fromPeer: await this.getInputPeer(from),
@@ -1396,12 +1413,13 @@ export class Client extends ClientAbstract {
   /**
    * Forward a single message.
    *
+   * @method
    * @param from The identifier of the chat to forward the message from.
    * @param to The identifier of the chat to forward the message to.
    * @param messageId The identifier of the message to forward.
-   * @method
+   * @returns The forwarded message.
    */
-  async forwardMessage(from: ChatID, to: ChatID, messageId: number, params?: ForwardMessagesParams) {
+  async forwardMessage(from: ChatID, to: ChatID, messageId: number, params?: ForwardMessagesParams): Promise<Message> {
     return await this.forwardMessages(from, to, [messageId], params).then((v) => v[0]);
   }
 
@@ -1410,7 +1428,7 @@ export class Client extends ClientAbstract {
    *
    * @method
    */
-  async getMe() {
+  async getMe(): Promise<User> {
     const users = await this.invoke(new functions.UsersGetUsers({ id: [new types.InputUserSelf()] }));
     if (users.length < 1) {
       UNREACHABLE();
@@ -1540,8 +1558,8 @@ export class Client extends ClientAbstract {
   /**
    * Answer a callback query. Bot-only.
    *
-   * @param id ID of the callback query to answer.
    * @method
+   * @param id ID of the callback query to answer.
    */
   async answerCallbackQuery(id: string, params?: AnswerCallbackQueryParams) {
     await this.assertBot("answerCallbackQuery");
@@ -1577,12 +1595,13 @@ export class Client extends ClientAbstract {
   /**
    * Send a poll.
    *
+   * @method
    * @param chatId The chat to send the poll to.
    * @param question The poll's question.
    * @param options The poll's options.
-   * @method
+   * @returns The sent poll.
    */
-  async sendPoll(chatId: ChatID, question: string, options: [string, string, ...string[]], params?: SendPollParams) {
+  async sendPoll(chatId: ChatID, question: string, options: [string, string, ...string[]], params?: SendPollParams): Promise<With<Message, "poll">> {
     const peer = await this.getInputPeer(chatId);
     const randomId = getRandomId();
     const silent = params?.disableNotification ? true : undefined;
@@ -1640,58 +1659,58 @@ export class Client extends ClientAbstract {
   /**
    * Send a chat action.
    *
+   * @method
    * @param chatId The chat to send the chat action to.
    * @param action The chat action.
    * @param messageThreadId The thread to send the chat action to.
-   * @method
    */
-  async sendChatAction(chatId: ChatID, action_: ChatAction, messageThreadId?: number) {
-    let action: types.TypeSendMessageAction;
-    switch (action_) {
+  async sendChatAction(chatId: ChatID, action: ChatAction, params?: {messageThreadId?: number}) {
+    let action_: types.TypeSendMessageAction;
+    switch (action) {
       case "type":
-        action = new types.SendMessageTypingAction();
+        action_ = new types.SendMessageTypingAction();
         break;
       case "uploadPhoto":
-        action = new types.SendMessageUploadPhotoAction({ progress: 0 });
+        action_ = new types.SendMessageUploadPhotoAction({ progress: 0 });
         break;
       case "recordVideo":
-        action = new types.SendMessageRecordVideoAction();
+        action_ = new types.SendMessageRecordVideoAction();
         break;
       case "uploadVideo":
-        action = new types.SendMessageRecordVideoAction();
+        action_ = new types.SendMessageRecordVideoAction();
         break;
       case "recordVoice":
-        action = new types.SendMessageRecordAudioAction();
+        action_ = new types.SendMessageRecordAudioAction();
         break;
       case "uploadAudio":
-        action = new types.SendMessageUploadAudioAction({ progress: 0 });
+        action_ = new types.SendMessageUploadAudioAction({ progress: 0 });
         break;
       case "uploadDocument":
-        action = new types.SendMessageUploadDocumentAction({ progress: 0 });
+        action_ = new types.SendMessageUploadDocumentAction({ progress: 0 });
         break;
       case "chooseSticker":
-        action = new types.SendMessageChooseStickerAction();
+        action_ = new types.SendMessageChooseStickerAction();
         break;
       case "findLocation":
-        action = new types.SendMessageGeoLocationAction();
+        action_ = new types.SendMessageGeoLocationAction();
         break;
       case "recordVideoNote":
-        action = new types.SendMessageRecordRoundAction();
+        action_ = new types.SendMessageRecordRoundAction();
         break;
       case "uploadVideoNote":
-        action = new types.SendMessageUploadRoundAction({ progress: 0 });
+        action_ = new types.SendMessageUploadRoundAction({ progress: 0 });
         break;
       default:
-        throw new Error("Invalid chat action: " + action_);
+        throw new Error("Invalid chat action: " + action);
     }
-    await this.invoke(new functions.MessagesSetTyping({ peer: await this.getInputPeer(chatId), action, topMsgId: messageThreadId }));
+    await this.invoke(new functions.MessagesSetTyping({ peer: await this.getInputPeer(chatId), action: action_, topMsgId: params?.messageThreadId }));
   }
 
   /**
    * Upload a file.
    *
-   * @param contents The contents of the file.
    * @method
+   * @param contents The contents of the file.
    */
   async upload(contents: Uint8Array, params?: UploadParams) {
     const isBig = contents.length > 1048576; // 10 MB
@@ -1783,8 +1802,8 @@ export class Client extends ClientAbstract {
   /**
    * Set the bot's commands in the given scope and/or language. Bot-only.
    *
-   * @param commands The commands to set.
    * @method
+   * @param commands The commands to set.
    */
   async setMyCommands(commands: BotCommand[], params?: SetMyCommandsParams) {
     await this.invoke(
@@ -1812,9 +1831,9 @@ export class Client extends ClientAbstract {
   /**
    * Answer an inline query. Bot-only.
    *
+   * @method
    * @param id The ID of the inline query to answer.
    * @param results The results to answer with.
-   * @method
    */
   async answerInlineQuery(id: string, results: InlineQueryResult[], params?: AnswerInlineQueryParams) {
     await this.invoke(
@@ -1937,9 +1956,9 @@ export class Client extends ClientAbstract {
    *
    * @method
    */
-  async getMyDescription(languageCode?: string) {
+  async getMyDescription(params?: { languageCode?: string }): Promise<string> {
     await this.assertBot("getMyDescription");
-    return await this.getMyInfo(languageCode).then((v) => v.description);
+    return await this.getMyInfo(params?.languageCode).then((v) => v.description);
   }
 
   /**
@@ -1947,9 +1966,9 @@ export class Client extends ClientAbstract {
    *
    * @method
    */
-  async getMyName(languageCode?: string) {
+  async getMyName(params?: { languageCode?: string }): Promise<string> {
     await this.assertBot("getMyName");
-    return await this.getMyInfo(languageCode).then((v) => v.description);
+    return await this.getMyInfo(params?.languageCode).then((v) => v.description);
   }
 
   /**
@@ -1957,8 +1976,8 @@ export class Client extends ClientAbstract {
    *
    * @method
    */
-  async getMyShortDescription(languageCode?: string) {
+  async getMyShortDescription(params?: { languageCode?: string }): Promise<string> {
     await this.assertBot("getMyShortDescription");
-    return await this.getMyInfo(languageCode).then((v) => v.about);
+    return await this.getMyInfo(params?.languageCode).then((v) => v.about);
   }
 }
