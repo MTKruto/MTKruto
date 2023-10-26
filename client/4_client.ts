@@ -1664,7 +1664,7 @@ export class Client extends ClientAbstract {
    * @param action The chat action.
    * @param messageThreadId The thread to send the chat action to.
    */
-  async sendChatAction(chatId: ChatID, action: ChatAction, params?: {messageThreadId?: number}) {
+  async sendChatAction(chatId: ChatID, action: ChatAction, params?: { messageThreadId?: number }) {
     let action_: types.TypeSendMessageAction;
     switch (action) {
       case "type":
