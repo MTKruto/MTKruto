@@ -1322,19 +1322,34 @@ export abstract class _TypePeerStories extends Type {
 export abstract class _TypeStoriesPeerStories extends Type {
 }
 
-export abstract class _TypeStoriesBoostsStatus extends Type {
-}
-
-export abstract class _TypeStoriesCanApplyBoostResult extends Type {
-}
-
-export abstract class _TypeBooster extends Type {
-}
-
-export abstract class _TypeStoriesBoostersList extends Type {
-}
-
 export abstract class _TypeMessagesWebPage extends Type {
+}
+
+export abstract class _TypePremiumGiftCodeOption extends Type {
+}
+
+export abstract class _TypePaymentsCheckedGiftCode extends Type {
+}
+
+export abstract class _TypePaymentsGiveawayInfo extends Type {
+}
+
+export abstract class _TypePrepaidGiveaway extends Type {
+}
+
+export abstract class _TypeBoost extends Type {
+}
+
+export abstract class _TypePremiumBoostsList extends Type {
+}
+
+export abstract class _TypeMyBoost extends Type {
+}
+
+export abstract class _TypePremiumMyBoosts extends Type {
+}
+
+export abstract class _TypePremiumBoostsStatus extends Type {
 }
 
 export class ResPQ extends _TypeResPQ {
@@ -3434,6 +3449,45 @@ export class InputMediaStory extends _TypeInputMedia {
   }
 }
 
+export class InputMediaWebPage extends _TypeInputMedia {
+  forceLargeMedia?: true;
+  forceSmallMedia?: true;
+  optional?: true;
+  url: string;
+
+  protected get [id]() {
+    return 0xC21B8849;
+  }
+
+  static get [paramDesc](): ParamDesc {
+    return [
+      ["flags", flags, "#"],
+      ["forceLargeMedia", "true", "flags.0?true"],
+      ["forceSmallMedia", "true", "flags.1?true"],
+      ["optional", "true", "flags.2?true"],
+      ["url", "string", "string"],
+    ];
+  }
+
+  protected get [params](): Params {
+    return [
+      ["flags", flags, "#"],
+      [this.forceLargeMedia ?? null, "true", "flags.0?true"],
+      [this.forceSmallMedia ?? null, "true", "flags.1?true"],
+      [this.optional ?? null, "true", "flags.2?true"],
+      [this.url, "string", "string"],
+    ];
+  }
+
+  constructor(params: { forceLargeMedia?: true; forceSmallMedia?: true; optional?: true; url: string }) {
+    super();
+    this.forceLargeMedia = params.forceLargeMedia;
+    this.forceSmallMedia = params.forceSmallMedia;
+    this.optional = params.optional;
+    this.url = params.url;
+  }
+}
+
 export class InputChatPhotoEmpty extends _TypeInputChatPhoto {
   protected get [id]() {
     return 0x1CA48F57;
@@ -4277,9 +4331,11 @@ export class User extends _TypeUser {
   emojiStatus?: TypeEmojiStatus;
   usernames?: Array<TypeUsername>;
   storiesMaxId?: number;
+  color?: number;
+  backgroundEmojiId?: bigint;
 
   protected get [id]() {
-    return 0xABB5F120;
+    return 0xEB602F25;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -4323,6 +4379,8 @@ export class User extends _TypeUser {
       ["emojiStatus", _TypeEmojiStatus, "flags.30?EmojiStatus"],
       ["usernames", [_TypeUsername], "flags2.0?Vector<Username>"],
       ["storiesMaxId", "number", "flags2.5?int"],
+      ["color", "number", "flags2.7?int"],
+      ["backgroundEmojiId", "bigint", "flags2.6?long"],
     ];
   }
 
@@ -4367,10 +4425,12 @@ export class User extends _TypeUser {
       [this.emojiStatus ?? null, _TypeEmojiStatus, "flags.30?EmojiStatus"],
       [this.usernames ?? null, [_TypeUsername], "flags2.0?Vector<Username>"],
       [this.storiesMaxId ?? null, "number", "flags2.5?int"],
+      [this.color ?? null, "number", "flags2.7?int"],
+      [this.backgroundEmojiId ?? null, "bigint", "flags2.6?long"],
     ];
   }
 
-  constructor(params: { self?: true; contact?: true; mutualContact?: true; deleted?: true; bot?: true; botChatHistory?: true; botNochats?: true; verified?: true; restricted?: true; min?: true; botInlineGeo?: true; support?: true; scam?: true; applyMinPhoto?: true; fake?: true; botAttachMenu?: true; premium?: true; attachMenuEnabled?: true; botCanEdit?: true; closeFriend?: true; storiesHidden?: true; storiesUnavailable?: true; id: bigint; accessHash?: bigint; firstName?: string; lastName?: string; username?: string; phone?: string; photo?: TypeUserProfilePhoto; status?: TypeUserStatus; botInfoVersion?: number; restrictionReason?: Array<TypeRestrictionReason>; botInlinePlaceholder?: string; langCode?: string; emojiStatus?: TypeEmojiStatus; usernames?: Array<TypeUsername>; storiesMaxId?: number }) {
+  constructor(params: { self?: true; contact?: true; mutualContact?: true; deleted?: true; bot?: true; botChatHistory?: true; botNochats?: true; verified?: true; restricted?: true; min?: true; botInlineGeo?: true; support?: true; scam?: true; applyMinPhoto?: true; fake?: true; botAttachMenu?: true; premium?: true; attachMenuEnabled?: true; botCanEdit?: true; closeFriend?: true; storiesHidden?: true; storiesUnavailable?: true; id: bigint; accessHash?: bigint; firstName?: string; lastName?: string; username?: string; phone?: string; photo?: TypeUserProfilePhoto; status?: TypeUserStatus; botInfoVersion?: number; restrictionReason?: Array<TypeRestrictionReason>; botInlinePlaceholder?: string; langCode?: string; emojiStatus?: TypeEmojiStatus; usernames?: Array<TypeUsername>; storiesMaxId?: number; color?: number; backgroundEmojiId?: bigint }) {
     super();
     this.self = params.self;
     this.contact = params.contact;
@@ -4409,6 +4469,8 @@ export class User extends _TypeUser {
     this.emojiStatus = params.emojiStatus;
     this.usernames = params.usernames;
     this.storiesMaxId = params.storiesMaxId;
+    this.color = params.color;
+    this.backgroundEmojiId = params.backgroundEmojiId;
   }
 }
 
@@ -4769,9 +4831,11 @@ export class Channel extends _TypeChat {
   participantsCount?: number;
   usernames?: Array<TypeUsername>;
   storiesMaxId?: number;
+  color?: number;
+  backgroundEmojiId?: bigint;
 
   protected get [id]() {
-    return 0x94F592DB;
+    return 0x1981EA7E;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -4814,6 +4878,8 @@ export class Channel extends _TypeChat {
       ["participantsCount", "number", "flags.17?int"],
       ["usernames", [_TypeUsername], "flags2.0?Vector<Username>"],
       ["storiesMaxId", "number", "flags2.4?int"],
+      ["color", "number", "flags2.6?int"],
+      ["backgroundEmojiId", "bigint", "flags2.5?long"],
     ];
   }
 
@@ -4857,10 +4923,12 @@ export class Channel extends _TypeChat {
       [this.participantsCount ?? null, "number", "flags.17?int"],
       [this.usernames ?? null, [_TypeUsername], "flags2.0?Vector<Username>"],
       [this.storiesMaxId ?? null, "number", "flags2.4?int"],
+      [this.color ?? null, "number", "flags2.6?int"],
+      [this.backgroundEmojiId ?? null, "bigint", "flags2.5?long"],
     ];
   }
 
-  constructor(params: { creator?: true; left?: true; broadcast?: true; verified?: true; megagroup?: true; restricted?: true; signatures?: true; min?: true; scam?: true; hasLink?: true; hasGeo?: true; slowmodeEnabled?: true; callActive?: true; callNotEmpty?: true; fake?: true; gigagroup?: true; noforwards?: true; joinToSend?: true; joinRequest?: true; forum?: true; storiesHidden?: true; storiesHiddenMin?: true; storiesUnavailable?: true; id: bigint; accessHash?: bigint; title: string; username?: string; photo: TypeChatPhoto; date: number; restrictionReason?: Array<TypeRestrictionReason>; adminRights?: TypeChatAdminRights; bannedRights?: TypeChatBannedRights; defaultBannedRights?: TypeChatBannedRights; participantsCount?: number; usernames?: Array<TypeUsername>; storiesMaxId?: number }) {
+  constructor(params: { creator?: true; left?: true; broadcast?: true; verified?: true; megagroup?: true; restricted?: true; signatures?: true; min?: true; scam?: true; hasLink?: true; hasGeo?: true; slowmodeEnabled?: true; callActive?: true; callNotEmpty?: true; fake?: true; gigagroup?: true; noforwards?: true; joinToSend?: true; joinRequest?: true; forum?: true; storiesHidden?: true; storiesHiddenMin?: true; storiesUnavailable?: true; id: bigint; accessHash?: bigint; title: string; username?: string; photo: TypeChatPhoto; date: number; restrictionReason?: Array<TypeRestrictionReason>; adminRights?: TypeChatAdminRights; bannedRights?: TypeChatBannedRights; defaultBannedRights?: TypeChatBannedRights; participantsCount?: number; usernames?: Array<TypeUsername>; storiesMaxId?: number; color?: number; backgroundEmojiId?: bigint }) {
     super();
     this.creator = params.creator;
     this.left = params.left;
@@ -4898,6 +4966,8 @@ export class Channel extends _TypeChat {
     this.participantsCount = params.participantsCount;
     this.usernames = params.usernames;
     this.storiesMaxId = params.storiesMaxId;
+    this.color = params.color;
+    this.backgroundEmojiId = params.backgroundEmojiId;
   }
 }
 
@@ -5522,6 +5592,7 @@ export class Message extends _TypeMessage {
   editHide?: true;
   pinned?: true;
   noforwards?: true;
+  invertMedia?: true;
   id: number;
   fromId?: TypePeer;
   peerId: TypePeer;
@@ -5560,6 +5631,7 @@ export class Message extends _TypeMessage {
       ["editHide", "true", "flags.21?true"],
       ["pinned", "true", "flags.24?true"],
       ["noforwards", "true", "flags.26?true"],
+      ["invertMedia", "true", "flags.27?true"],
       ["id", "number", "int"],
       ["fromId", _TypePeer, "flags.8?Peer"],
       ["peerId", _TypePeer, "Peer"],
@@ -5596,6 +5668,7 @@ export class Message extends _TypeMessage {
       [this.editHide ?? null, "true", "flags.21?true"],
       [this.pinned ?? null, "true", "flags.24?true"],
       [this.noforwards ?? null, "true", "flags.26?true"],
+      [this.invertMedia ?? null, "true", "flags.27?true"],
       [this.id, "number", "int"],
       [this.fromId ?? null, _TypePeer, "flags.8?Peer"],
       [this.peerId, _TypePeer, "Peer"],
@@ -5619,7 +5692,7 @@ export class Message extends _TypeMessage {
     ];
   }
 
-  constructor(params: { out?: true; mentioned?: true; mediaUnread?: true; silent?: true; post?: true; fromScheduled?: true; legacy?: true; editHide?: true; pinned?: true; noforwards?: true; id: number; fromId?: TypePeer; peerId: TypePeer; fwdFrom?: TypeMessageFwdHeader; viaBotId?: bigint; replyTo?: TypeMessageReplyHeader; date: number; message: string; media?: TypeMessageMedia; replyMarkup?: TypeReplyMarkup; entities?: Array<TypeMessageEntity>; views?: number; forwards?: number; replies?: TypeMessageReplies; editDate?: number; postAuthor?: string; groupedId?: bigint; reactions?: TypeMessageReactions; restrictionReason?: Array<TypeRestrictionReason>; ttlPeriod?: number }) {
+  constructor(params: { out?: true; mentioned?: true; mediaUnread?: true; silent?: true; post?: true; fromScheduled?: true; legacy?: true; editHide?: true; pinned?: true; noforwards?: true; invertMedia?: true; id: number; fromId?: TypePeer; peerId: TypePeer; fwdFrom?: TypeMessageFwdHeader; viaBotId?: bigint; replyTo?: TypeMessageReplyHeader; date: number; message: string; media?: TypeMessageMedia; replyMarkup?: TypeReplyMarkup; entities?: Array<TypeMessageEntity>; views?: number; forwards?: number; replies?: TypeMessageReplies; editDate?: number; postAuthor?: string; groupedId?: bigint; reactions?: TypeMessageReactions; restrictionReason?: Array<TypeRestrictionReason>; ttlPeriod?: number }) {
     super();
     this.out = params.out;
     this.mentioned = params.mentioned;
@@ -5631,6 +5704,7 @@ export class Message extends _TypeMessage {
     this.editHide = params.editHide;
     this.pinned = params.pinned;
     this.noforwards = params.noforwards;
+    this.invertMedia = params.invertMedia;
     this.id = params.id;
     this.fromId = params.fromId;
     this.peerId = params.peerId;
@@ -5910,26 +5984,44 @@ export class MessageMediaDocument extends _TypeMessageMedia {
 }
 
 export class MessageMediaWebPage extends _TypeMessageMedia {
+  forceLargeMedia?: true;
+  forceSmallMedia?: true;
+  manual?: true;
+  safe?: true;
   webpage: TypeWebPage;
 
   protected get [id]() {
-    return 0xA32DD600;
+    return 0xDDF10C3B;
   }
 
   static get [paramDesc](): ParamDesc {
     return [
+      ["flags", flags, "#"],
+      ["forceLargeMedia", "true", "flags.0?true"],
+      ["forceSmallMedia", "true", "flags.1?true"],
+      ["manual", "true", "flags.3?true"],
+      ["safe", "true", "flags.4?true"],
       ["webpage", _TypeWebPage, "WebPage"],
     ];
   }
 
   protected get [params](): Params {
     return [
+      ["flags", flags, "#"],
+      [this.forceLargeMedia ?? null, "true", "flags.0?true"],
+      [this.forceSmallMedia ?? null, "true", "flags.1?true"],
+      [this.manual ?? null, "true", "flags.3?true"],
+      [this.safe ?? null, "true", "flags.4?true"],
       [this.webpage, _TypeWebPage, "WebPage"],
     ];
   }
 
-  constructor(params: { webpage: TypeWebPage }) {
+  constructor(params: { forceLargeMedia?: true; forceSmallMedia?: true; manual?: true; safe?: true; webpage: TypeWebPage }) {
     super();
+    this.forceLargeMedia = params.forceLargeMedia;
+    this.forceSmallMedia = params.forceSmallMedia;
+    this.manual = params.manual;
+    this.safe = params.safe;
     this.webpage = params.webpage;
   }
 }
@@ -6200,6 +6292,53 @@ export class MessageMediaStory extends _TypeMessageMedia {
     this.peer = params.peer;
     this.id = params.id;
     this.story = params.story;
+  }
+}
+
+export class MessageMediaGiveaway extends _TypeMessageMedia {
+  onlyNewSubscribers?: true;
+  channels: Array<bigint>;
+  countriesIso2?: Array<string>;
+  quantity: number;
+  months: number;
+  untilDate: number;
+
+  protected get [id]() {
+    return 0x58260664;
+  }
+
+  static get [paramDesc](): ParamDesc {
+    return [
+      ["flags", flags, "#"],
+      ["onlyNewSubscribers", "true", "flags.0?true"],
+      ["channels", ["bigint"], "Vector<long>"],
+      ["countriesIso2", ["string"], "flags.1?Vector<string>"],
+      ["quantity", "number", "int"],
+      ["months", "number", "int"],
+      ["untilDate", "number", "int"],
+    ];
+  }
+
+  protected get [params](): Params {
+    return [
+      ["flags", flags, "#"],
+      [this.onlyNewSubscribers ?? null, "true", "flags.0?true"],
+      [this.channels, ["bigint"], "Vector<long>"],
+      [this.countriesIso2 ?? null, ["string"], "flags.1?Vector<string>"],
+      [this.quantity, "number", "int"],
+      [this.months, "number", "int"],
+      [this.untilDate, "number", "int"],
+    ];
+  }
+
+  constructor(params: { onlyNewSubscribers?: true; channels: Array<bigint>; countriesIso2?: Array<string>; quantity: number; months: number; untilDate: number }) {
+    super();
+    this.onlyNewSubscribers = params.onlyNewSubscribers;
+    this.channels = params.channels;
+    this.countriesIso2 = params.countriesIso2;
+    this.quantity = params.quantity;
+    this.months = params.months;
+    this.untilDate = params.untilDate;
   }
 }
 
@@ -7296,6 +7435,67 @@ export class MessageActionSetSameChatWallPaper extends _TypeMessageAction {
   constructor(params: { wallpaper: TypeWallPaper }) {
     super();
     this.wallpaper = params.wallpaper;
+  }
+}
+
+export class MessageActionGiftCode extends _TypeMessageAction {
+  viaGiveaway?: true;
+  unclaimed?: true;
+  boostPeer?: TypePeer;
+  months: number;
+  slug: string;
+
+  protected get [id]() {
+    return 0xD2CFDB0E;
+  }
+
+  static get [paramDesc](): ParamDesc {
+    return [
+      ["flags", flags, "#"],
+      ["viaGiveaway", "true", "flags.0?true"],
+      ["unclaimed", "true", "flags.2?true"],
+      ["boostPeer", _TypePeer, "flags.1?Peer"],
+      ["months", "number", "int"],
+      ["slug", "string", "string"],
+    ];
+  }
+
+  protected get [params](): Params {
+    return [
+      ["flags", flags, "#"],
+      [this.viaGiveaway ?? null, "true", "flags.0?true"],
+      [this.unclaimed ?? null, "true", "flags.2?true"],
+      [this.boostPeer ?? null, _TypePeer, "flags.1?Peer"],
+      [this.months, "number", "int"],
+      [this.slug, "string", "string"],
+    ];
+  }
+
+  constructor(params: { viaGiveaway?: true; unclaimed?: true; boostPeer?: TypePeer; months: number; slug: string }) {
+    super();
+    this.viaGiveaway = params.viaGiveaway;
+    this.unclaimed = params.unclaimed;
+    this.boostPeer = params.boostPeer;
+    this.months = params.months;
+    this.slug = params.slug;
+  }
+}
+
+export class MessageActionGiveawayLaunch extends _TypeMessageAction {
+  protected get [id]() {
+    return 0x332BA9ED;
+  }
+
+  static get [paramDesc](): ParamDesc {
+    return [];
+  }
+
+  protected get [params](): Params {
+    return [];
+  }
+
+  constructor() {
+    super();
   }
 }
 
@@ -10125,6 +10325,7 @@ export class UpdateNotifySettings extends _TypeUpdate {
 
 export class UpdateServiceNotification extends _TypeUpdate {
   popup?: true;
+  invertMedia?: true;
   inboxDate?: number;
   type: string;
   message: string;
@@ -10139,6 +10340,7 @@ export class UpdateServiceNotification extends _TypeUpdate {
     return [
       ["flags", flags, "#"],
       ["popup", "true", "flags.0?true"],
+      ["invertMedia", "true", "flags.2?true"],
       ["inboxDate", "number", "flags.1?int"],
       ["type", "string", "string"],
       ["message", "string", "string"],
@@ -10151,6 +10353,7 @@ export class UpdateServiceNotification extends _TypeUpdate {
     return [
       ["flags", flags, "#"],
       [this.popup ?? null, "true", "flags.0?true"],
+      [this.invertMedia ?? null, "true", "flags.2?true"],
       [this.inboxDate ?? null, "number", "flags.1?int"],
       [this.type, "string", "string"],
       [this.message, "string", "string"],
@@ -10159,9 +10362,10 @@ export class UpdateServiceNotification extends _TypeUpdate {
     ];
   }
 
-  constructor(params: { popup?: true; inboxDate?: number; type: string; message: string; media: TypeMessageMedia; entities: Array<TypeMessageEntity> }) {
+  constructor(params: { popup?: true; invertMedia?: true; inboxDate?: number; type: string; message: string; media: TypeMessageMedia; entities: Array<TypeMessageEntity> }) {
     super();
     this.popup = params.popup;
+    this.invertMedia = params.invertMedia;
     this.inboxDate = params.inboxDate;
     this.type = params.type;
     this.message = params.message;
@@ -16904,59 +17108,72 @@ export class MessagesAffectedMessages extends _TypeMessagesAffectedMessages {
 
 export class WebPageEmpty extends _TypeWebPage {
   id: bigint;
+  url?: string;
 
   protected get [id]() {
-    return 0xEB1477E8;
+    return 0x211A1788;
   }
 
   static get [paramDesc](): ParamDesc {
     return [
+      ["flags", flags, "#"],
       ["id", "bigint", "long"],
+      ["url", "string", "flags.0?string"],
     ];
   }
 
   protected get [params](): Params {
     return [
+      ["flags", flags, "#"],
       [this.id, "bigint", "long"],
+      [this.url ?? null, "string", "flags.0?string"],
     ];
   }
 
-  constructor(params: { id: bigint }) {
+  constructor(params: { id: bigint; url?: string }) {
     super();
     this.id = params.id;
+    this.url = params.url;
   }
 }
 
 export class WebPagePending extends _TypeWebPage {
   id: bigint;
+  url?: string;
   date: number;
 
   protected get [id]() {
-    return 0xC586DA1C;
+    return 0xB0D13E47;
   }
 
   static get [paramDesc](): ParamDesc {
     return [
+      ["flags", flags, "#"],
       ["id", "bigint", "long"],
+      ["url", "string", "flags.0?string"],
       ["date", "number", "int"],
     ];
   }
 
   protected get [params](): Params {
     return [
+      ["flags", flags, "#"],
       [this.id, "bigint", "long"],
+      [this.url ?? null, "string", "flags.0?string"],
       [this.date, "number", "int"],
     ];
   }
 
-  constructor(params: { id: bigint; date: number }) {
+  constructor(params: { id: bigint; url?: string; date: number }) {
     super();
     this.id = params.id;
+    this.url = params.url;
     this.date = params.date;
   }
 }
 
 export class WebPage extends _TypeWebPage {
+  hasLargeMedia?: true;
   id: bigint;
   url: string;
   displayUrl: string;
@@ -16983,6 +17200,7 @@ export class WebPage extends _TypeWebPage {
   static get [paramDesc](): ParamDesc {
     return [
       ["flags", flags, "#"],
+      ["hasLargeMedia", "true", "flags.13?true"],
       ["id", "bigint", "long"],
       ["url", "string", "string"],
       ["displayUrl", "string", "string"],
@@ -17007,6 +17225,7 @@ export class WebPage extends _TypeWebPage {
   protected get [params](): Params {
     return [
       ["flags", flags, "#"],
+      [this.hasLargeMedia ?? null, "true", "flags.13?true"],
       [this.id, "bigint", "long"],
       [this.url, "string", "string"],
       [this.displayUrl, "string", "string"],
@@ -17028,8 +17247,9 @@ export class WebPage extends _TypeWebPage {
     ];
   }
 
-  constructor(params: { id: bigint; url: string; displayUrl: string; hash: number; type?: string; siteName?: string; title?: string; description?: string; photo?: TypePhoto; embedUrl?: string; embedType?: string; embedWidth?: number; embedHeight?: number; duration?: number; author?: string; document?: TypeDocument; cachedPage?: TypePage; attributes?: Array<TypeWebPageAttribute> }) {
+  constructor(params: { hasLargeMedia?: true; id: bigint; url: string; displayUrl: string; hash: number; type?: string; siteName?: string; title?: string; description?: string; photo?: TypePhoto; embedUrl?: string; embedType?: string; embedWidth?: number; embedHeight?: number; duration?: number; author?: string; document?: TypeDocument; cachedPage?: TypePage; attributes?: Array<TypeWebPageAttribute> }) {
     super();
+    this.hasLargeMedia = params.hasLargeMedia;
     this.id = params.id;
     this.url = params.url;
     this.displayUrl = params.displayUrl;
@@ -17533,9 +17753,10 @@ export class ChatInvite extends _TypeChatInvite {
   photo: TypePhoto;
   participantsCount: number;
   participants?: Array<TypeUser>;
+  color: number;
 
   protected get [id]() {
-    return 0x300C44C1;
+    return 0xCDE0EC40;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -17554,6 +17775,7 @@ export class ChatInvite extends _TypeChatInvite {
       ["photo", _TypePhoto, "Photo"],
       ["participantsCount", "number", "int"],
       ["participants", [_TypeUser], "flags.4?Vector<User>"],
+      ["color", "number", "int"],
     ];
   }
 
@@ -17573,10 +17795,11 @@ export class ChatInvite extends _TypeChatInvite {
       [this.photo, _TypePhoto, "Photo"],
       [this.participantsCount, "number", "int"],
       [this.participants ?? null, [_TypeUser], "flags.4?Vector<User>"],
+      [this.color, "number", "int"],
     ];
   }
 
-  constructor(params: { channel?: true; broadcast?: true; public?: true; megagroup?: true; requestNeeded?: true; verified?: true; scam?: true; fake?: true; title: string; about?: string; photo: TypePhoto; participantsCount: number; participants?: Array<TypeUser> }) {
+  constructor(params: { channel?: true; broadcast?: true; public?: true; megagroup?: true; requestNeeded?: true; verified?: true; scam?: true; fake?: true; title: string; about?: string; photo: TypePhoto; participantsCount: number; participants?: Array<TypeUser>; color: number }) {
     super();
     this.channel = params.channel;
     this.broadcast = params.broadcast;
@@ -17591,6 +17814,7 @@ export class ChatInvite extends _TypeChatInvite {
     this.photo = params.photo;
     this.participantsCount = params.participantsCount;
     this.participants = params.participants;
+    this.color = params.color;
   }
 }
 
@@ -17835,6 +18059,7 @@ export class StickerSet extends _TypeStickerSet {
   animated?: true;
   videos?: true;
   emojis?: true;
+  textColor?: true;
   installedDate?: number;
   id: bigint;
   accessHash: bigint;
@@ -17860,6 +18085,7 @@ export class StickerSet extends _TypeStickerSet {
       ["animated", "true", "flags.5?true"],
       ["videos", "true", "flags.6?true"],
       ["emojis", "true", "flags.7?true"],
+      ["textColor", "true", "flags.9?true"],
       ["installedDate", "number", "flags.0?int"],
       ["id", "bigint", "long"],
       ["accessHash", "bigint", "long"],
@@ -17883,6 +18109,7 @@ export class StickerSet extends _TypeStickerSet {
       [this.animated ?? null, "true", "flags.5?true"],
       [this.videos ?? null, "true", "flags.6?true"],
       [this.emojis ?? null, "true", "flags.7?true"],
+      [this.textColor ?? null, "true", "flags.9?true"],
       [this.installedDate ?? null, "number", "flags.0?int"],
       [this.id, "bigint", "long"],
       [this.accessHash, "bigint", "long"],
@@ -17897,7 +18124,7 @@ export class StickerSet extends _TypeStickerSet {
     ];
   }
 
-  constructor(params: { archived?: true; official?: true; masks?: true; animated?: true; videos?: true; emojis?: true; installedDate?: number; id: bigint; accessHash: bigint; title: string; shortName: string; thumbs?: Array<TypePhotoSize>; thumbDcId?: number; thumbVersion?: number; thumbDocumentId?: bigint; count: number; hash: number }) {
+  constructor(params: { archived?: true; official?: true; masks?: true; animated?: true; videos?: true; emojis?: true; textColor?: true; installedDate?: number; id: bigint; accessHash: bigint; title: string; shortName: string; thumbs?: Array<TypePhotoSize>; thumbDcId?: number; thumbVersion?: number; thumbDocumentId?: bigint; count: number; hash: number }) {
     super();
     this.archived = params.archived;
     this.official = params.official;
@@ -17905,6 +18132,7 @@ export class StickerSet extends _TypeStickerSet {
     this.animated = params.animated;
     this.videos = params.videos;
     this.emojis = params.emojis;
+    this.textColor = params.textColor;
     this.installedDate = params.installedDate;
     this.id = params.id;
     this.accessHash = params.accessHash;
@@ -19208,35 +19436,6 @@ export class MessageEntityStrike extends _TypeMessageEntity {
   }
 }
 
-export class MessageEntityBlockquote extends _TypeMessageEntity {
-  offset: number;
-  length: number;
-
-  protected get [id]() {
-    return 0x020DF5D0;
-  }
-
-  static get [paramDesc](): ParamDesc {
-    return [
-      ["offset", "number", "int"],
-      ["length", "number", "int"],
-    ];
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.offset, "number", "int"],
-      [this.length, "number", "int"],
-    ];
-  }
-
-  constructor(params: { offset: number; length: number }) {
-    super();
-    this.offset = params.offset;
-    this.length = params.length;
-  }
-}
-
 export class MessageEntityBankCard extends _TypeMessageEntity {
   offset: number;
   length: number;
@@ -19325,6 +19524,35 @@ export class MessageEntityCustomEmoji extends _TypeMessageEntity {
     this.offset = params.offset;
     this.length = params.length;
     this.documentId = params.documentId;
+  }
+}
+
+export class MessageEntityBlockquote extends _TypeMessageEntity {
+  offset: number;
+  length: number;
+
+  protected get [id]() {
+    return 0x020DF5D0;
+  }
+
+  static get [paramDesc](): ParamDesc {
+    return [
+      ["offset", "number", "int"],
+      ["length", "number", "int"],
+    ];
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.offset, "number", "int"],
+      [this.length, "number", "int"],
+    ];
+  }
+
+  constructor(params: { offset: number; length: number }) {
+    super();
+    this.offset = params.offset;
+    this.length = params.length;
   }
 }
 
@@ -20242,6 +20470,7 @@ export class MessagesSavedGifs extends _TypeMessagesSavedGifs {
 }
 
 export class InputBotInlineMessageMediaAuto extends _TypeInputBotInlineMessage {
+  invertMedia?: true;
   message: string;
   entities?: Array<TypeMessageEntity>;
   replyMarkup?: TypeReplyMarkup;
@@ -20253,6 +20482,7 @@ export class InputBotInlineMessageMediaAuto extends _TypeInputBotInlineMessage {
   static get [paramDesc](): ParamDesc {
     return [
       ["flags", flags, "#"],
+      ["invertMedia", "true", "flags.3?true"],
       ["message", "string", "string"],
       ["entities", [_TypeMessageEntity], "flags.1?Vector<MessageEntity>"],
       ["replyMarkup", _TypeReplyMarkup, "flags.2?ReplyMarkup"],
@@ -20262,14 +20492,16 @@ export class InputBotInlineMessageMediaAuto extends _TypeInputBotInlineMessage {
   protected get [params](): Params {
     return [
       ["flags", flags, "#"],
+      [this.invertMedia ?? null, "true", "flags.3?true"],
       [this.message, "string", "string"],
       [this.entities ?? null, [_TypeMessageEntity], "flags.1?Vector<MessageEntity>"],
       [this.replyMarkup ?? null, _TypeReplyMarkup, "flags.2?ReplyMarkup"],
     ];
   }
 
-  constructor(params: { message: string; entities?: Array<TypeMessageEntity>; replyMarkup?: TypeReplyMarkup }) {
+  constructor(params: { invertMedia?: true; message: string; entities?: Array<TypeMessageEntity>; replyMarkup?: TypeReplyMarkup }) {
     super();
+    this.invertMedia = params.invertMedia;
     this.message = params.message;
     this.entities = params.entities;
     this.replyMarkup = params.replyMarkup;
@@ -20278,6 +20510,7 @@ export class InputBotInlineMessageMediaAuto extends _TypeInputBotInlineMessage {
 
 export class InputBotInlineMessageText extends _TypeInputBotInlineMessage {
   noWebpage?: true;
+  invertMedia?: true;
   message: string;
   entities?: Array<TypeMessageEntity>;
   replyMarkup?: TypeReplyMarkup;
@@ -20290,6 +20523,7 @@ export class InputBotInlineMessageText extends _TypeInputBotInlineMessage {
     return [
       ["flags", flags, "#"],
       ["noWebpage", "true", "flags.0?true"],
+      ["invertMedia", "true", "flags.3?true"],
       ["message", "string", "string"],
       ["entities", [_TypeMessageEntity], "flags.1?Vector<MessageEntity>"],
       ["replyMarkup", _TypeReplyMarkup, "flags.2?ReplyMarkup"],
@@ -20300,15 +20534,17 @@ export class InputBotInlineMessageText extends _TypeInputBotInlineMessage {
     return [
       ["flags", flags, "#"],
       [this.noWebpage ?? null, "true", "flags.0?true"],
+      [this.invertMedia ?? null, "true", "flags.3?true"],
       [this.message, "string", "string"],
       [this.entities ?? null, [_TypeMessageEntity], "flags.1?Vector<MessageEntity>"],
       [this.replyMarkup ?? null, _TypeReplyMarkup, "flags.2?ReplyMarkup"],
     ];
   }
 
-  constructor(params: { noWebpage?: true; message: string; entities?: Array<TypeMessageEntity>; replyMarkup?: TypeReplyMarkup }) {
+  constructor(params: { noWebpage?: true; invertMedia?: true; message: string; entities?: Array<TypeMessageEntity>; replyMarkup?: TypeReplyMarkup }) {
     super();
     this.noWebpage = params.noWebpage;
+    this.invertMedia = params.invertMedia;
     this.message = params.message;
     this.entities = params.entities;
     this.replyMarkup = params.replyMarkup;
@@ -20534,6 +20770,61 @@ export class InputBotInlineMessageMediaInvoice extends _TypeInputBotInlineMessag
   }
 }
 
+export class InputBotInlineMessageMediaWebPage extends _TypeInputBotInlineMessage {
+  invertMedia?: true;
+  forceLargeMedia?: true;
+  forceSmallMedia?: true;
+  optional?: true;
+  message: string;
+  entities?: Array<TypeMessageEntity>;
+  url: string;
+  replyMarkup?: TypeReplyMarkup;
+
+  protected get [id]() {
+    return 0xBDDCC510;
+  }
+
+  static get [paramDesc](): ParamDesc {
+    return [
+      ["flags", flags, "#"],
+      ["invertMedia", "true", "flags.3?true"],
+      ["forceLargeMedia", "true", "flags.4?true"],
+      ["forceSmallMedia", "true", "flags.5?true"],
+      ["optional", "true", "flags.6?true"],
+      ["message", "string", "string"],
+      ["entities", [_TypeMessageEntity], "flags.1?Vector<MessageEntity>"],
+      ["url", "string", "string"],
+      ["replyMarkup", _TypeReplyMarkup, "flags.2?ReplyMarkup"],
+    ];
+  }
+
+  protected get [params](): Params {
+    return [
+      ["flags", flags, "#"],
+      [this.invertMedia ?? null, "true", "flags.3?true"],
+      [this.forceLargeMedia ?? null, "true", "flags.4?true"],
+      [this.forceSmallMedia ?? null, "true", "flags.5?true"],
+      [this.optional ?? null, "true", "flags.6?true"],
+      [this.message, "string", "string"],
+      [this.entities ?? null, [_TypeMessageEntity], "flags.1?Vector<MessageEntity>"],
+      [this.url, "string", "string"],
+      [this.replyMarkup ?? null, _TypeReplyMarkup, "flags.2?ReplyMarkup"],
+    ];
+  }
+
+  constructor(params: { invertMedia?: true; forceLargeMedia?: true; forceSmallMedia?: true; optional?: true; message: string; entities?: Array<TypeMessageEntity>; url: string; replyMarkup?: TypeReplyMarkup }) {
+    super();
+    this.invertMedia = params.invertMedia;
+    this.forceLargeMedia = params.forceLargeMedia;
+    this.forceSmallMedia = params.forceSmallMedia;
+    this.optional = params.optional;
+    this.message = params.message;
+    this.entities = params.entities;
+    this.url = params.url;
+    this.replyMarkup = params.replyMarkup;
+  }
+}
+
 export class InputBotInlineResult extends _TypeInputBotInlineResult {
   id: string;
   type: string;
@@ -20707,6 +20998,7 @@ export class InputBotInlineResultGame extends _TypeInputBotInlineResult {
 }
 
 export class BotInlineMessageMediaAuto extends _TypeBotInlineMessage {
+  invertMedia?: true;
   message: string;
   entities?: Array<TypeMessageEntity>;
   replyMarkup?: TypeReplyMarkup;
@@ -20718,6 +21010,7 @@ export class BotInlineMessageMediaAuto extends _TypeBotInlineMessage {
   static get [paramDesc](): ParamDesc {
     return [
       ["flags", flags, "#"],
+      ["invertMedia", "true", "flags.3?true"],
       ["message", "string", "string"],
       ["entities", [_TypeMessageEntity], "flags.1?Vector<MessageEntity>"],
       ["replyMarkup", _TypeReplyMarkup, "flags.2?ReplyMarkup"],
@@ -20727,14 +21020,16 @@ export class BotInlineMessageMediaAuto extends _TypeBotInlineMessage {
   protected get [params](): Params {
     return [
       ["flags", flags, "#"],
+      [this.invertMedia ?? null, "true", "flags.3?true"],
       [this.message, "string", "string"],
       [this.entities ?? null, [_TypeMessageEntity], "flags.1?Vector<MessageEntity>"],
       [this.replyMarkup ?? null, _TypeReplyMarkup, "flags.2?ReplyMarkup"],
     ];
   }
 
-  constructor(params: { message: string; entities?: Array<TypeMessageEntity>; replyMarkup?: TypeReplyMarkup }) {
+  constructor(params: { invertMedia?: true; message: string; entities?: Array<TypeMessageEntity>; replyMarkup?: TypeReplyMarkup }) {
     super();
+    this.invertMedia = params.invertMedia;
     this.message = params.message;
     this.entities = params.entities;
     this.replyMarkup = params.replyMarkup;
@@ -20743,6 +21038,7 @@ export class BotInlineMessageMediaAuto extends _TypeBotInlineMessage {
 
 export class BotInlineMessageText extends _TypeBotInlineMessage {
   noWebpage?: true;
+  invertMedia?: true;
   message: string;
   entities?: Array<TypeMessageEntity>;
   replyMarkup?: TypeReplyMarkup;
@@ -20755,6 +21051,7 @@ export class BotInlineMessageText extends _TypeBotInlineMessage {
     return [
       ["flags", flags, "#"],
       ["noWebpage", "true", "flags.0?true"],
+      ["invertMedia", "true", "flags.3?true"],
       ["message", "string", "string"],
       ["entities", [_TypeMessageEntity], "flags.1?Vector<MessageEntity>"],
       ["replyMarkup", _TypeReplyMarkup, "flags.2?ReplyMarkup"],
@@ -20765,15 +21062,17 @@ export class BotInlineMessageText extends _TypeBotInlineMessage {
     return [
       ["flags", flags, "#"],
       [this.noWebpage ?? null, "true", "flags.0?true"],
+      [this.invertMedia ?? null, "true", "flags.3?true"],
       [this.message, "string", "string"],
       [this.entities ?? null, [_TypeMessageEntity], "flags.1?Vector<MessageEntity>"],
       [this.replyMarkup ?? null, _TypeReplyMarkup, "flags.2?ReplyMarkup"],
     ];
   }
 
-  constructor(params: { noWebpage?: true; message: string; entities?: Array<TypeMessageEntity>; replyMarkup?: TypeReplyMarkup }) {
+  constructor(params: { noWebpage?: true; invertMedia?: true; message: string; entities?: Array<TypeMessageEntity>; replyMarkup?: TypeReplyMarkup }) {
     super();
     this.noWebpage = params.noWebpage;
+    this.invertMedia = params.invertMedia;
     this.message = params.message;
     this.entities = params.entities;
     this.replyMarkup = params.replyMarkup;
@@ -20968,6 +21267,65 @@ export class BotInlineMessageMediaInvoice extends _TypeBotInlineMessage {
     this.photo = params.photo;
     this.currency = params.currency;
     this.totalAmount = params.totalAmount;
+    this.replyMarkup = params.replyMarkup;
+  }
+}
+
+export class BotInlineMessageMediaWebPage extends _TypeBotInlineMessage {
+  invertMedia?: true;
+  forceLargeMedia?: true;
+  forceSmallMedia?: true;
+  manual?: true;
+  safe?: true;
+  message: string;
+  entities?: Array<TypeMessageEntity>;
+  url: string;
+  replyMarkup?: TypeReplyMarkup;
+
+  protected get [id]() {
+    return 0x809AD9A6;
+  }
+
+  static get [paramDesc](): ParamDesc {
+    return [
+      ["flags", flags, "#"],
+      ["invertMedia", "true", "flags.3?true"],
+      ["forceLargeMedia", "true", "flags.4?true"],
+      ["forceSmallMedia", "true", "flags.5?true"],
+      ["manual", "true", "flags.7?true"],
+      ["safe", "true", "flags.8?true"],
+      ["message", "string", "string"],
+      ["entities", [_TypeMessageEntity], "flags.1?Vector<MessageEntity>"],
+      ["url", "string", "string"],
+      ["replyMarkup", _TypeReplyMarkup, "flags.2?ReplyMarkup"],
+    ];
+  }
+
+  protected get [params](): Params {
+    return [
+      ["flags", flags, "#"],
+      [this.invertMedia ?? null, "true", "flags.3?true"],
+      [this.forceLargeMedia ?? null, "true", "flags.4?true"],
+      [this.forceSmallMedia ?? null, "true", "flags.5?true"],
+      [this.manual ?? null, "true", "flags.7?true"],
+      [this.safe ?? null, "true", "flags.8?true"],
+      [this.message, "string", "string"],
+      [this.entities ?? null, [_TypeMessageEntity], "flags.1?Vector<MessageEntity>"],
+      [this.url, "string", "string"],
+      [this.replyMarkup ?? null, _TypeReplyMarkup, "flags.2?ReplyMarkup"],
+    ];
+  }
+
+  constructor(params: { invertMedia?: true; forceLargeMedia?: true; forceSmallMedia?: true; manual?: true; safe?: true; message: string; entities?: Array<TypeMessageEntity>; url: string; replyMarkup?: TypeReplyMarkup }) {
+    super();
+    this.invertMedia = params.invertMedia;
+    this.forceLargeMedia = params.forceLargeMedia;
+    this.forceSmallMedia = params.forceSmallMedia;
+    this.manual = params.manual;
+    this.safe = params.safe;
+    this.message = params.message;
+    this.entities = params.entities;
+    this.url = params.url;
     this.replyMarkup = params.replyMarkup;
   }
 }
@@ -22104,22 +22462,26 @@ export class DraftMessageEmpty extends _TypeDraftMessage {
 
 export class DraftMessage extends _TypeDraftMessage {
   noWebpage?: true;
-  replyToMsgId?: number;
+  invertMedia?: true;
+  replyTo?: TypeInputReplyTo;
   message: string;
   entities?: Array<TypeMessageEntity>;
+  media?: TypeInputMedia;
   date: number;
 
   protected get [id]() {
-    return 0xFD8E711F;
+    return 0x3FCCF7EF;
   }
 
   static get [paramDesc](): ParamDesc {
     return [
       ["flags", flags, "#"],
       ["noWebpage", "true", "flags.1?true"],
-      ["replyToMsgId", "number", "flags.0?int"],
+      ["invertMedia", "true", "flags.6?true"],
+      ["replyTo", _TypeInputReplyTo, "flags.4?InputReplyTo"],
       ["message", "string", "string"],
       ["entities", [_TypeMessageEntity], "flags.3?Vector<MessageEntity>"],
+      ["media", _TypeInputMedia, "flags.5?InputMedia"],
       ["date", "number", "int"],
     ];
   }
@@ -22128,19 +22490,23 @@ export class DraftMessage extends _TypeDraftMessage {
     return [
       ["flags", flags, "#"],
       [this.noWebpage ?? null, "true", "flags.1?true"],
-      [this.replyToMsgId ?? null, "number", "flags.0?int"],
+      [this.invertMedia ?? null, "true", "flags.6?true"],
+      [this.replyTo ?? null, _TypeInputReplyTo, "flags.4?InputReplyTo"],
       [this.message, "string", "string"],
       [this.entities ?? null, [_TypeMessageEntity], "flags.3?Vector<MessageEntity>"],
+      [this.media ?? null, _TypeInputMedia, "flags.5?InputMedia"],
       [this.date, "number", "int"],
     ];
   }
 
-  constructor(params: { noWebpage?: true; replyToMsgId?: number; message: string; entities?: Array<TypeMessageEntity>; date: number }) {
+  constructor(params: { noWebpage?: true; invertMedia?: true; replyTo?: TypeInputReplyTo; message: string; entities?: Array<TypeMessageEntity>; media?: TypeInputMedia; date: number }) {
     super();
     this.noWebpage = params.noWebpage;
-    this.replyToMsgId = params.replyToMsgId;
+    this.invertMedia = params.invertMedia;
+    this.replyTo = params.replyTo;
     this.message = params.message;
     this.entities = params.entities;
+    this.media = params.media;
     this.date = params.date;
   }
 }
@@ -27074,6 +27440,64 @@ export class ChannelAdminLogEventActionToggleAntiSpam extends _TypeChannelAdminL
 
   constructor(params: { newValue: boolean }) {
     super();
+    this.newValue = params.newValue;
+  }
+}
+
+export class ChannelAdminLogEventActionChangeColor extends _TypeChannelAdminLogEventAction {
+  prevValue: number;
+  newValue: number;
+
+  protected get [id]() {
+    return 0x3C2B247B;
+  }
+
+  static get [paramDesc](): ParamDesc {
+    return [
+      ["prevValue", "number", "int"],
+      ["newValue", "number", "int"],
+    ];
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.prevValue, "number", "int"],
+      [this.newValue, "number", "int"],
+    ];
+  }
+
+  constructor(params: { prevValue: number; newValue: number }) {
+    super();
+    this.prevValue = params.prevValue;
+    this.newValue = params.newValue;
+  }
+}
+
+export class ChannelAdminLogEventActionChangeBackgroundEmoji extends _TypeChannelAdminLogEventAction {
+  prevValue: bigint;
+  newValue: bigint;
+
+  protected get [id]() {
+    return 0x445FC434;
+  }
+
+  static get [paramDesc](): ParamDesc {
+    return [
+      ["prevValue", "bigint", "long"],
+      ["newValue", "bigint", "long"],
+    ];
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.prevValue, "bigint", "long"],
+      [this.newValue, "bigint", "long"],
+    ];
+  }
+
+  constructor(params: { prevValue: bigint; newValue: bigint }) {
+    super();
+    this.prevValue = params.prevValue;
     this.newValue = params.newValue;
   }
 }
@@ -33057,12 +33481,17 @@ export class MessagesDiscussionMessage extends _TypeMessagesDiscussionMessage {
 export class MessageReplyHeader extends _TypeMessageReplyHeader {
   replyToScheduled?: true;
   forumTopic?: true;
-  replyToMsgId: number;
+  quote?: true;
+  replyToMsgId?: number;
   replyToPeerId?: TypePeer;
+  replyFrom?: TypeMessageFwdHeader;
+  replyMedia?: TypeMessageMedia;
   replyToTopId?: number;
+  quoteText?: string;
+  quoteEntities?: Array<TypeMessageEntity>;
 
   protected get [id]() {
-    return 0xA6D57763;
+    return 0x6EEBCABD;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -33070,9 +33499,14 @@ export class MessageReplyHeader extends _TypeMessageReplyHeader {
       ["flags", flags, "#"],
       ["replyToScheduled", "true", "flags.2?true"],
       ["forumTopic", "true", "flags.3?true"],
-      ["replyToMsgId", "number", "int"],
+      ["quote", "true", "flags.9?true"],
+      ["replyToMsgId", "number", "flags.4?int"],
       ["replyToPeerId", _TypePeer, "flags.0?Peer"],
+      ["replyFrom", _TypeMessageFwdHeader, "flags.5?MessageFwdHeader"],
+      ["replyMedia", _TypeMessageMedia, "flags.8?MessageMedia"],
       ["replyToTopId", "number", "flags.1?int"],
+      ["quoteText", "string", "flags.6?string"],
+      ["quoteEntities", [_TypeMessageEntity], "flags.7?Vector<MessageEntity>"],
     ];
   }
 
@@ -33081,19 +33515,29 @@ export class MessageReplyHeader extends _TypeMessageReplyHeader {
       ["flags", flags, "#"],
       [this.replyToScheduled ?? null, "true", "flags.2?true"],
       [this.forumTopic ?? null, "true", "flags.3?true"],
-      [this.replyToMsgId, "number", "int"],
+      [this.quote ?? null, "true", "flags.9?true"],
+      [this.replyToMsgId ?? null, "number", "flags.4?int"],
       [this.replyToPeerId ?? null, _TypePeer, "flags.0?Peer"],
+      [this.replyFrom ?? null, _TypeMessageFwdHeader, "flags.5?MessageFwdHeader"],
+      [this.replyMedia ?? null, _TypeMessageMedia, "flags.8?MessageMedia"],
       [this.replyToTopId ?? null, "number", "flags.1?int"],
+      [this.quoteText ?? null, "string", "flags.6?string"],
+      [this.quoteEntities ?? null, [_TypeMessageEntity], "flags.7?Vector<MessageEntity>"],
     ];
   }
 
-  constructor(params: { replyToScheduled?: true; forumTopic?: true; replyToMsgId: number; replyToPeerId?: TypePeer; replyToTopId?: number }) {
+  constructor(params?: { replyToScheduled?: true; forumTopic?: true; quote?: true; replyToMsgId?: number; replyToPeerId?: TypePeer; replyFrom?: TypeMessageFwdHeader; replyMedia?: TypeMessageMedia; replyToTopId?: number; quoteText?: string; quoteEntities?: Array<TypeMessageEntity> }) {
     super();
-    this.replyToScheduled = params.replyToScheduled;
-    this.forumTopic = params.forumTopic;
-    this.replyToMsgId = params.replyToMsgId;
-    this.replyToPeerId = params.replyToPeerId;
-    this.replyToTopId = params.replyToTopId;
+    this.replyToScheduled = params?.replyToScheduled;
+    this.forumTopic = params?.forumTopic;
+    this.quote = params?.quote;
+    this.replyToMsgId = params?.replyToMsgId;
+    this.replyToPeerId = params?.replyToPeerId;
+    this.replyFrom = params?.replyFrom;
+    this.replyMedia = params?.replyMedia;
+    this.replyToTopId = params?.replyToTopId;
+    this.quoteText = params?.quoteText;
+    this.quoteEntities = params?.quoteEntities;
   }
 }
 
@@ -35868,6 +36312,35 @@ export class InputInvoiceSlug extends _TypeInputInvoice {
   }
 }
 
+export class InputInvoicePremiumGiftCode extends _TypeInputInvoice {
+  purpose: TypeInputStorePaymentPurpose;
+  option: TypePremiumGiftCodeOption;
+
+  protected get [id]() {
+    return 0x98986C0D;
+  }
+
+  static get [paramDesc](): ParamDesc {
+    return [
+      ["purpose", _TypeInputStorePaymentPurpose, "InputStorePaymentPurpose"],
+      ["option", _TypePremiumGiftCodeOption, "PremiumGiftCodeOption"],
+    ];
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.purpose, _TypeInputStorePaymentPurpose, "InputStorePaymentPurpose"],
+      [this.option, _TypePremiumGiftCodeOption, "PremiumGiftCodeOption"],
+    ];
+  }
+
+  constructor(params: { purpose: TypeInputStorePaymentPurpose; option: TypePremiumGiftCodeOption }) {
+    super();
+    this.purpose = params.purpose;
+    this.option = params.option;
+  }
+}
+
 export class PaymentsExportedInvoice extends _TypePaymentsExportedInvoice {
   url: string;
 
@@ -36032,6 +36505,100 @@ export class InputStorePaymentGiftPremium extends _TypeInputStorePaymentPurpose 
   constructor(params: { userId: TypeInputUser; currency: string; amount: bigint }) {
     super();
     this.userId = params.userId;
+    this.currency = params.currency;
+    this.amount = params.amount;
+  }
+}
+
+export class InputStorePaymentPremiumGiftCode extends _TypeInputStorePaymentPurpose {
+  users: Array<TypeInputUser>;
+  boostPeer?: TypeInputPeer;
+  currency: string;
+  amount: bigint;
+
+  protected get [id]() {
+    return 0xA3805F3F;
+  }
+
+  static get [paramDesc](): ParamDesc {
+    return [
+      ["flags", flags, "#"],
+      ["users", [_TypeInputUser], "Vector<InputUser>"],
+      ["boostPeer", _TypeInputPeer, "flags.0?InputPeer"],
+      ["currency", "string", "string"],
+      ["amount", "bigint", "long"],
+    ];
+  }
+
+  protected get [params](): Params {
+    return [
+      ["flags", flags, "#"],
+      [this.users, [_TypeInputUser], "Vector<InputUser>"],
+      [this.boostPeer ?? null, _TypeInputPeer, "flags.0?InputPeer"],
+      [this.currency, "string", "string"],
+      [this.amount, "bigint", "long"],
+    ];
+  }
+
+  constructor(params: { users: Array<TypeInputUser>; boostPeer?: TypeInputPeer; currency: string; amount: bigint }) {
+    super();
+    this.users = params.users;
+    this.boostPeer = params.boostPeer;
+    this.currency = params.currency;
+    this.amount = params.amount;
+  }
+}
+
+export class InputStorePaymentPremiumGiveaway extends _TypeInputStorePaymentPurpose {
+  onlyNewSubscribers?: true;
+  boostPeer: TypeInputPeer;
+  additionalPeers?: Array<TypeInputPeer>;
+  countriesIso2?: Array<string>;
+  randomId: bigint;
+  untilDate: number;
+  currency: string;
+  amount: bigint;
+
+  protected get [id]() {
+    return 0x7C9375E6;
+  }
+
+  static get [paramDesc](): ParamDesc {
+    return [
+      ["flags", flags, "#"],
+      ["onlyNewSubscribers", "true", "flags.0?true"],
+      ["boostPeer", _TypeInputPeer, "InputPeer"],
+      ["additionalPeers", [_TypeInputPeer], "flags.1?Vector<InputPeer>"],
+      ["countriesIso2", ["string"], "flags.2?Vector<string>"],
+      ["randomId", "bigint", "long"],
+      ["untilDate", "number", "int"],
+      ["currency", "string", "string"],
+      ["amount", "bigint", "long"],
+    ];
+  }
+
+  protected get [params](): Params {
+    return [
+      ["flags", flags, "#"],
+      [this.onlyNewSubscribers ?? null, "true", "flags.0?true"],
+      [this.boostPeer, _TypeInputPeer, "InputPeer"],
+      [this.additionalPeers ?? null, [_TypeInputPeer], "flags.1?Vector<InputPeer>"],
+      [this.countriesIso2 ?? null, ["string"], "flags.2?Vector<string>"],
+      [this.randomId, "bigint", "long"],
+      [this.untilDate, "number", "int"],
+      [this.currency, "string", "string"],
+      [this.amount, "bigint", "long"],
+    ];
+  }
+
+  constructor(params: { onlyNewSubscribers?: true; boostPeer: TypeInputPeer; additionalPeers?: Array<TypeInputPeer>; countriesIso2?: Array<string>; randomId: bigint; untilDate: number; currency: string; amount: bigint }) {
+    super();
+    this.onlyNewSubscribers = params.onlyNewSubscribers;
+    this.boostPeer = params.boostPeer;
+    this.additionalPeers = params.additionalPeers;
+    this.countriesIso2 = params.countriesIso2;
+    this.randomId = params.randomId;
+    this.untilDate = params.untilDate;
     this.currency = params.currency;
     this.amount = params.amount;
   }
@@ -38606,9 +39173,12 @@ export class StoriesStoryViews extends _TypeStoriesStoryViews {
 export class InputReplyToMessage extends _TypeInputReplyTo {
   replyToMsgId: number;
   topMsgId?: number;
+  replyToPeerId?: TypeInputPeer;
+  quoteText?: string;
+  quoteEntities?: Array<TypeMessageEntity>;
 
   protected get [id]() {
-    return 0x9C5386E4;
+    return 0x073EC805;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -38616,6 +39186,9 @@ export class InputReplyToMessage extends _TypeInputReplyTo {
       ["flags", flags, "#"],
       ["replyToMsgId", "number", "int"],
       ["topMsgId", "number", "flags.0?int"],
+      ["replyToPeerId", _TypeInputPeer, "flags.1?InputPeer"],
+      ["quoteText", "string", "flags.2?string"],
+      ["quoteEntities", [_TypeMessageEntity], "flags.3?Vector<MessageEntity>"],
     ];
   }
 
@@ -38624,13 +39197,19 @@ export class InputReplyToMessage extends _TypeInputReplyTo {
       ["flags", flags, "#"],
       [this.replyToMsgId, "number", "int"],
       [this.topMsgId ?? null, "number", "flags.0?int"],
+      [this.replyToPeerId ?? null, _TypeInputPeer, "flags.1?InputPeer"],
+      [this.quoteText ?? null, "string", "flags.2?string"],
+      [this.quoteEntities ?? null, [_TypeMessageEntity], "flags.3?Vector<MessageEntity>"],
     ];
   }
 
-  constructor(params: { replyToMsgId: number; topMsgId?: number }) {
+  constructor(params: { replyToMsgId: number; topMsgId?: number; replyToPeerId?: TypeInputPeer; quoteText?: string; quoteEntities?: Array<TypeMessageEntity> }) {
     super();
     this.replyToMsgId = params.replyToMsgId;
     this.topMsgId = params.topMsgId;
+    this.replyToPeerId = params.replyToPeerId;
+    this.quoteText = params.quoteText;
+    this.quoteEntities = params.quoteEntities;
   }
 }
 
@@ -38978,172 +39557,6 @@ export class StoriesPeerStories extends _TypeStoriesPeerStories {
   }
 }
 
-export class StoriesBoostsStatus extends _TypeStoriesBoostsStatus {
-  myBoost?: true;
-  level: number;
-  currentLevelBoosts: number;
-  boosts: number;
-  nextLevelBoosts?: number;
-  premiumAudience?: TypeStatsPercentValue;
-  boostUrl: string;
-
-  protected get [id]() {
-    return 0xE5C1AA5C;
-  }
-
-  static get [paramDesc](): ParamDesc {
-    return [
-      ["flags", flags, "#"],
-      ["myBoost", "true", "flags.2?true"],
-      ["level", "number", "int"],
-      ["currentLevelBoosts", "number", "int"],
-      ["boosts", "number", "int"],
-      ["nextLevelBoosts", "number", "flags.0?int"],
-      ["premiumAudience", _TypeStatsPercentValue, "flags.1?StatsPercentValue"],
-      ["boostUrl", "string", "string"],
-    ];
-  }
-
-  protected get [params](): Params {
-    return [
-      ["flags", flags, "#"],
-      [this.myBoost ?? null, "true", "flags.2?true"],
-      [this.level, "number", "int"],
-      [this.currentLevelBoosts, "number", "int"],
-      [this.boosts, "number", "int"],
-      [this.nextLevelBoosts ?? null, "number", "flags.0?int"],
-      [this.premiumAudience ?? null, _TypeStatsPercentValue, "flags.1?StatsPercentValue"],
-      [this.boostUrl, "string", "string"],
-    ];
-  }
-
-  constructor(params: { myBoost?: true; level: number; currentLevelBoosts: number; boosts: number; nextLevelBoosts?: number; premiumAudience?: TypeStatsPercentValue; boostUrl: string }) {
-    super();
-    this.myBoost = params.myBoost;
-    this.level = params.level;
-    this.currentLevelBoosts = params.currentLevelBoosts;
-    this.boosts = params.boosts;
-    this.nextLevelBoosts = params.nextLevelBoosts;
-    this.premiumAudience = params.premiumAudience;
-    this.boostUrl = params.boostUrl;
-  }
-}
-
-export class StoriesCanApplyBoostOk extends _TypeStoriesCanApplyBoostResult {
-  protected get [id]() {
-    return 0xC3173587;
-  }
-
-  static get [paramDesc](): ParamDesc {
-    return [];
-  }
-
-  protected get [params](): Params {
-    return [];
-  }
-
-  constructor() {
-    super();
-  }
-}
-
-export class StoriesCanApplyBoostReplace extends _TypeStoriesCanApplyBoostResult {
-  currentBoost: TypePeer;
-  chats: Array<TypeChat>;
-
-  protected get [id]() {
-    return 0x712C4655;
-  }
-
-  static get [paramDesc](): ParamDesc {
-    return [
-      ["currentBoost", _TypePeer, "Peer"],
-      ["chats", [_TypeChat], "Vector<Chat>"],
-    ];
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.currentBoost, _TypePeer, "Peer"],
-      [this.chats, [_TypeChat], "Vector<Chat>"],
-    ];
-  }
-
-  constructor(params: { currentBoost: TypePeer; chats: Array<TypeChat> }) {
-    super();
-    this.currentBoost = params.currentBoost;
-    this.chats = params.chats;
-  }
-}
-
-export class Booster extends _TypeBooster {
-  userId: bigint;
-  expires: number;
-
-  protected get [id]() {
-    return 0x0E9E6380;
-  }
-
-  static get [paramDesc](): ParamDesc {
-    return [
-      ["userId", "bigint", "long"],
-      ["expires", "number", "int"],
-    ];
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.userId, "bigint", "long"],
-      [this.expires, "number", "int"],
-    ];
-  }
-
-  constructor(params: { userId: bigint; expires: number }) {
-    super();
-    this.userId = params.userId;
-    this.expires = params.expires;
-  }
-}
-
-export class StoriesBoostersList extends _TypeStoriesBoostersList {
-  count: number;
-  boosters: Array<TypeBooster>;
-  nextOffset?: string;
-  users: Array<TypeUser>;
-
-  protected get [id]() {
-    return 0xF3DD3D1D;
-  }
-
-  static get [paramDesc](): ParamDesc {
-    return [
-      ["flags", flags, "#"],
-      ["count", "number", "int"],
-      ["boosters", [_TypeBooster], "Vector<Booster>"],
-      ["nextOffset", "string", "flags.0?string"],
-      ["users", [_TypeUser], "Vector<User>"],
-    ];
-  }
-
-  protected get [params](): Params {
-    return [
-      ["flags", flags, "#"],
-      [this.count, "number", "int"],
-      [this.boosters, [_TypeBooster], "Vector<Booster>"],
-      [this.nextOffset ?? null, "string", "flags.0?string"],
-      [this.users, [_TypeUser], "Vector<User>"],
-    ];
-  }
-
-  constructor(params: { count: number; boosters: Array<TypeBooster>; nextOffset?: string; users: Array<TypeUser> }) {
-    super();
-    this.count = params.count;
-    this.boosters = params.boosters;
-    this.nextOffset = params.nextOffset;
-    this.users = params.users;
-  }
-}
-
 export class MessagesWebPage extends _TypeMessagesWebPage {
   webpage: TypeWebPage;
   chats: Array<TypeChat>;
@@ -39174,6 +39587,488 @@ export class MessagesWebPage extends _TypeMessagesWebPage {
     this.webpage = params.webpage;
     this.chats = params.chats;
     this.users = params.users;
+  }
+}
+
+export class PremiumGiftCodeOption extends _TypePremiumGiftCodeOption {
+  users: number;
+  months: number;
+  storeProduct?: string;
+  storeQuantity?: number;
+  currency: string;
+  amount: bigint;
+
+  protected get [id]() {
+    return 0x257E962B;
+  }
+
+  static get [paramDesc](): ParamDesc {
+    return [
+      ["flags", flags, "#"],
+      ["users", "number", "int"],
+      ["months", "number", "int"],
+      ["storeProduct", "string", "flags.0?string"],
+      ["storeQuantity", "number", "flags.1?int"],
+      ["currency", "string", "string"],
+      ["amount", "bigint", "long"],
+    ];
+  }
+
+  protected get [params](): Params {
+    return [
+      ["flags", flags, "#"],
+      [this.users, "number", "int"],
+      [this.months, "number", "int"],
+      [this.storeProduct ?? null, "string", "flags.0?string"],
+      [this.storeQuantity ?? null, "number", "flags.1?int"],
+      [this.currency, "string", "string"],
+      [this.amount, "bigint", "long"],
+    ];
+  }
+
+  constructor(params: { users: number; months: number; storeProduct?: string; storeQuantity?: number; currency: string; amount: bigint }) {
+    super();
+    this.users = params.users;
+    this.months = params.months;
+    this.storeProduct = params.storeProduct;
+    this.storeQuantity = params.storeQuantity;
+    this.currency = params.currency;
+    this.amount = params.amount;
+  }
+}
+
+export class PaymentsCheckedGiftCode extends _TypePaymentsCheckedGiftCode {
+  viaGiveaway?: true;
+  fromId: TypePeer;
+  giveawayMsgId?: number;
+  toId?: bigint;
+  date: number;
+  months: number;
+  usedDate?: number;
+  chats: Array<TypeChat>;
+  users: Array<TypeUser>;
+
+  protected get [id]() {
+    return 0xB722F158;
+  }
+
+  static get [paramDesc](): ParamDesc {
+    return [
+      ["flags", flags, "#"],
+      ["viaGiveaway", "true", "flags.2?true"],
+      ["fromId", _TypePeer, "Peer"],
+      ["giveawayMsgId", "number", "flags.3?int"],
+      ["toId", "bigint", "flags.0?long"],
+      ["date", "number", "int"],
+      ["months", "number", "int"],
+      ["usedDate", "number", "flags.1?int"],
+      ["chats", [_TypeChat], "Vector<Chat>"],
+      ["users", [_TypeUser], "Vector<User>"],
+    ];
+  }
+
+  protected get [params](): Params {
+    return [
+      ["flags", flags, "#"],
+      [this.viaGiveaway ?? null, "true", "flags.2?true"],
+      [this.fromId, _TypePeer, "Peer"],
+      [this.giveawayMsgId ?? null, "number", "flags.3?int"],
+      [this.toId ?? null, "bigint", "flags.0?long"],
+      [this.date, "number", "int"],
+      [this.months, "number", "int"],
+      [this.usedDate ?? null, "number", "flags.1?int"],
+      [this.chats, [_TypeChat], "Vector<Chat>"],
+      [this.users, [_TypeUser], "Vector<User>"],
+    ];
+  }
+
+  constructor(params: { viaGiveaway?: true; fromId: TypePeer; giveawayMsgId?: number; toId?: bigint; date: number; months: number; usedDate?: number; chats: Array<TypeChat>; users: Array<TypeUser> }) {
+    super();
+    this.viaGiveaway = params.viaGiveaway;
+    this.fromId = params.fromId;
+    this.giveawayMsgId = params.giveawayMsgId;
+    this.toId = params.toId;
+    this.date = params.date;
+    this.months = params.months;
+    this.usedDate = params.usedDate;
+    this.chats = params.chats;
+    this.users = params.users;
+  }
+}
+
+export class PaymentsGiveawayInfo extends _TypePaymentsGiveawayInfo {
+  participating?: true;
+  preparingResults?: true;
+  startDate: number;
+  joinedTooEarlyDate?: number;
+  adminDisallowedChatId?: bigint;
+  disallowedCountry?: string;
+
+  protected get [id]() {
+    return 0x4367DAA0;
+  }
+
+  static get [paramDesc](): ParamDesc {
+    return [
+      ["flags", flags, "#"],
+      ["participating", "true", "flags.0?true"],
+      ["preparingResults", "true", "flags.3?true"],
+      ["startDate", "number", "int"],
+      ["joinedTooEarlyDate", "number", "flags.1?int"],
+      ["adminDisallowedChatId", "bigint", "flags.2?long"],
+      ["disallowedCountry", "string", "flags.4?string"],
+    ];
+  }
+
+  protected get [params](): Params {
+    return [
+      ["flags", flags, "#"],
+      [this.participating ?? null, "true", "flags.0?true"],
+      [this.preparingResults ?? null, "true", "flags.3?true"],
+      [this.startDate, "number", "int"],
+      [this.joinedTooEarlyDate ?? null, "number", "flags.1?int"],
+      [this.adminDisallowedChatId ?? null, "bigint", "flags.2?long"],
+      [this.disallowedCountry ?? null, "string", "flags.4?string"],
+    ];
+  }
+
+  constructor(params: { participating?: true; preparingResults?: true; startDate: number; joinedTooEarlyDate?: number; adminDisallowedChatId?: bigint; disallowedCountry?: string }) {
+    super();
+    this.participating = params.participating;
+    this.preparingResults = params.preparingResults;
+    this.startDate = params.startDate;
+    this.joinedTooEarlyDate = params.joinedTooEarlyDate;
+    this.adminDisallowedChatId = params.adminDisallowedChatId;
+    this.disallowedCountry = params.disallowedCountry;
+  }
+}
+
+export class PaymentsGiveawayInfoResults extends _TypePaymentsGiveawayInfo {
+  winner?: true;
+  refunded?: true;
+  startDate: number;
+  giftCodeSlug?: string;
+  finishDate: number;
+  winnersCount: number;
+  activatedCount: number;
+
+  protected get [id]() {
+    return 0x00CD5570;
+  }
+
+  static get [paramDesc](): ParamDesc {
+    return [
+      ["flags", flags, "#"],
+      ["winner", "true", "flags.0?true"],
+      ["refunded", "true", "flags.1?true"],
+      ["startDate", "number", "int"],
+      ["giftCodeSlug", "string", "flags.0?string"],
+      ["finishDate", "number", "int"],
+      ["winnersCount", "number", "int"],
+      ["activatedCount", "number", "int"],
+    ];
+  }
+
+  protected get [params](): Params {
+    return [
+      ["flags", flags, "#"],
+      [this.winner ?? null, "true", "flags.0?true"],
+      [this.refunded ?? null, "true", "flags.1?true"],
+      [this.startDate, "number", "int"],
+      [this.giftCodeSlug ?? null, "string", "flags.0?string"],
+      [this.finishDate, "number", "int"],
+      [this.winnersCount, "number", "int"],
+      [this.activatedCount, "number", "int"],
+    ];
+  }
+
+  constructor(params: { winner?: true; refunded?: true; startDate: number; giftCodeSlug?: string; finishDate: number; winnersCount: number; activatedCount: number }) {
+    super();
+    this.winner = params.winner;
+    this.refunded = params.refunded;
+    this.startDate = params.startDate;
+    this.giftCodeSlug = params.giftCodeSlug;
+    this.finishDate = params.finishDate;
+    this.winnersCount = params.winnersCount;
+    this.activatedCount = params.activatedCount;
+  }
+}
+
+export class PrepaidGiveaway extends _TypePrepaidGiveaway {
+  id: bigint;
+  months: number;
+  quantity: number;
+  date: number;
+
+  protected get [id]() {
+    return 0xB2539D54;
+  }
+
+  static get [paramDesc](): ParamDesc {
+    return [
+      ["id", "bigint", "long"],
+      ["months", "number", "int"],
+      ["quantity", "number", "int"],
+      ["date", "number", "int"],
+    ];
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.id, "bigint", "long"],
+      [this.months, "number", "int"],
+      [this.quantity, "number", "int"],
+      [this.date, "number", "int"],
+    ];
+  }
+
+  constructor(params: { id: bigint; months: number; quantity: number; date: number }) {
+    super();
+    this.id = params.id;
+    this.months = params.months;
+    this.quantity = params.quantity;
+    this.date = params.date;
+  }
+}
+
+export class Boost extends _TypeBoost {
+  gift?: true;
+  giveaway?: true;
+  unclaimed?: true;
+  id: string;
+  userId?: bigint;
+  giveawayMsgId?: number;
+  date: number;
+  expires: number;
+  usedGiftSlug?: string;
+  multiplier?: number;
+
+  protected get [id]() {
+    return 0x2A1C8C71;
+  }
+
+  static get [paramDesc](): ParamDesc {
+    return [
+      ["flags", flags, "#"],
+      ["gift", "true", "flags.1?true"],
+      ["giveaway", "true", "flags.2?true"],
+      ["unclaimed", "true", "flags.3?true"],
+      ["id", "string", "string"],
+      ["userId", "bigint", "flags.0?long"],
+      ["giveawayMsgId", "number", "flags.2?int"],
+      ["date", "number", "int"],
+      ["expires", "number", "int"],
+      ["usedGiftSlug", "string", "flags.4?string"],
+      ["multiplier", "number", "flags.5?int"],
+    ];
+  }
+
+  protected get [params](): Params {
+    return [
+      ["flags", flags, "#"],
+      [this.gift ?? null, "true", "flags.1?true"],
+      [this.giveaway ?? null, "true", "flags.2?true"],
+      [this.unclaimed ?? null, "true", "flags.3?true"],
+      [this.id, "string", "string"],
+      [this.userId ?? null, "bigint", "flags.0?long"],
+      [this.giveawayMsgId ?? null, "number", "flags.2?int"],
+      [this.date, "number", "int"],
+      [this.expires, "number", "int"],
+      [this.usedGiftSlug ?? null, "string", "flags.4?string"],
+      [this.multiplier ?? null, "number", "flags.5?int"],
+    ];
+  }
+
+  constructor(params: { gift?: true; giveaway?: true; unclaimed?: true; id: string; userId?: bigint; giveawayMsgId?: number; date: number; expires: number; usedGiftSlug?: string; multiplier?: number }) {
+    super();
+    this.gift = params.gift;
+    this.giveaway = params.giveaway;
+    this.unclaimed = params.unclaimed;
+    this.id = params.id;
+    this.userId = params.userId;
+    this.giveawayMsgId = params.giveawayMsgId;
+    this.date = params.date;
+    this.expires = params.expires;
+    this.usedGiftSlug = params.usedGiftSlug;
+    this.multiplier = params.multiplier;
+  }
+}
+
+export class PremiumBoostsList extends _TypePremiumBoostsList {
+  count: number;
+  boosts: Array<TypeBoost>;
+  nextOffset?: string;
+  users: Array<TypeUser>;
+
+  protected get [id]() {
+    return 0x86F8613C;
+  }
+
+  static get [paramDesc](): ParamDesc {
+    return [
+      ["flags", flags, "#"],
+      ["count", "number", "int"],
+      ["boosts", [_TypeBoost], "Vector<Boost>"],
+      ["nextOffset", "string", "flags.0?string"],
+      ["users", [_TypeUser], "Vector<User>"],
+    ];
+  }
+
+  protected get [params](): Params {
+    return [
+      ["flags", flags, "#"],
+      [this.count, "number", "int"],
+      [this.boosts, [_TypeBoost], "Vector<Boost>"],
+      [this.nextOffset ?? null, "string", "flags.0?string"],
+      [this.users, [_TypeUser], "Vector<User>"],
+    ];
+  }
+
+  constructor(params: { count: number; boosts: Array<TypeBoost>; nextOffset?: string; users: Array<TypeUser> }) {
+    super();
+    this.count = params.count;
+    this.boosts = params.boosts;
+    this.nextOffset = params.nextOffset;
+    this.users = params.users;
+  }
+}
+
+export class MyBoost extends _TypeMyBoost {
+  slot: number;
+  peer?: TypePeer;
+  date: number;
+  expires: number;
+  cooldownUntilDate?: number;
+
+  protected get [id]() {
+    return 0xC448415C;
+  }
+
+  static get [paramDesc](): ParamDesc {
+    return [
+      ["flags", flags, "#"],
+      ["slot", "number", "int"],
+      ["peer", _TypePeer, "flags.0?Peer"],
+      ["date", "number", "int"],
+      ["expires", "number", "int"],
+      ["cooldownUntilDate", "number", "flags.1?int"],
+    ];
+  }
+
+  protected get [params](): Params {
+    return [
+      ["flags", flags, "#"],
+      [this.slot, "number", "int"],
+      [this.peer ?? null, _TypePeer, "flags.0?Peer"],
+      [this.date, "number", "int"],
+      [this.expires, "number", "int"],
+      [this.cooldownUntilDate ?? null, "number", "flags.1?int"],
+    ];
+  }
+
+  constructor(params: { slot: number; peer?: TypePeer; date: number; expires: number; cooldownUntilDate?: number }) {
+    super();
+    this.slot = params.slot;
+    this.peer = params.peer;
+    this.date = params.date;
+    this.expires = params.expires;
+    this.cooldownUntilDate = params.cooldownUntilDate;
+  }
+}
+
+export class PremiumMyBoosts extends _TypePremiumMyBoosts {
+  myBoosts: Array<TypeMyBoost>;
+  chats: Array<TypeChat>;
+  users: Array<TypeUser>;
+
+  protected get [id]() {
+    return 0x9AE228E2;
+  }
+
+  static get [paramDesc](): ParamDesc {
+    return [
+      ["myBoosts", [_TypeMyBoost], "Vector<MyBoost>"],
+      ["chats", [_TypeChat], "Vector<Chat>"],
+      ["users", [_TypeUser], "Vector<User>"],
+    ];
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.myBoosts, [_TypeMyBoost], "Vector<MyBoost>"],
+      [this.chats, [_TypeChat], "Vector<Chat>"],
+      [this.users, [_TypeUser], "Vector<User>"],
+    ];
+  }
+
+  constructor(params: { myBoosts: Array<TypeMyBoost>; chats: Array<TypeChat>; users: Array<TypeUser> }) {
+    super();
+    this.myBoosts = params.myBoosts;
+    this.chats = params.chats;
+    this.users = params.users;
+  }
+}
+
+export class PremiumBoostsStatus extends _TypePremiumBoostsStatus {
+  myBoost?: true;
+  level: number;
+  currentLevelBoosts: number;
+  boosts: number;
+  giftBoosts?: number;
+  nextLevelBoosts?: number;
+  premiumAudience?: TypeStatsPercentValue;
+  boostUrl: string;
+  prepaidGiveaways?: Array<TypePrepaidGiveaway>;
+  myBoostSlots?: Array<number>;
+
+  protected get [id]() {
+    return 0x4959427A;
+  }
+
+  static get [paramDesc](): ParamDesc {
+    return [
+      ["flags", flags, "#"],
+      ["myBoost", "true", "flags.2?true"],
+      ["level", "number", "int"],
+      ["currentLevelBoosts", "number", "int"],
+      ["boosts", "number", "int"],
+      ["giftBoosts", "number", "flags.4?int"],
+      ["nextLevelBoosts", "number", "flags.0?int"],
+      ["premiumAudience", _TypeStatsPercentValue, "flags.1?StatsPercentValue"],
+      ["boostUrl", "string", "string"],
+      ["prepaidGiveaways", [_TypePrepaidGiveaway], "flags.3?Vector<PrepaidGiveaway>"],
+      ["myBoostSlots", ["number"], "flags.2?Vector<int>"],
+    ];
+  }
+
+  protected get [params](): Params {
+    return [
+      ["flags", flags, "#"],
+      [this.myBoost ?? null, "true", "flags.2?true"],
+      [this.level, "number", "int"],
+      [this.currentLevelBoosts, "number", "int"],
+      [this.boosts, "number", "int"],
+      [this.giftBoosts ?? null, "number", "flags.4?int"],
+      [this.nextLevelBoosts ?? null, "number", "flags.0?int"],
+      [this.premiumAudience ?? null, _TypeStatsPercentValue, "flags.1?StatsPercentValue"],
+      [this.boostUrl, "string", "string"],
+      [this.prepaidGiveaways ?? null, [_TypePrepaidGiveaway], "flags.3?Vector<PrepaidGiveaway>"],
+      [this.myBoostSlots ?? null, ["number"], "flags.2?Vector<int>"],
+    ];
+  }
+
+  constructor(params: { myBoost?: true; level: number; currentLevelBoosts: number; boosts: number; giftBoosts?: number; nextLevelBoosts?: number; premiumAudience?: TypeStatsPercentValue; boostUrl: string; prepaidGiveaways?: Array<TypePrepaidGiveaway>; myBoostSlots?: Array<number> }) {
+    super();
+    this.myBoost = params.myBoost;
+    this.level = params.level;
+    this.currentLevelBoosts = params.currentLevelBoosts;
+    this.boosts = params.boosts;
+    this.giftBoosts = params.giftBoosts;
+    this.nextLevelBoosts = params.nextLevelBoosts;
+    this.premiumAudience = params.premiumAudience;
+    this.boostUrl = params.boostUrl;
+    this.prepaidGiveaways = params.prepaidGiveaways;
+    this.myBoostSlots = params.myBoostSlots;
   }
 }
 
@@ -39208,7 +40103,7 @@ export type TypeInputPeer = InputPeerEmpty | InputPeerSelf | InputPeerChat | Inp
 export type TypeInputUser = InputUserEmpty | InputUserSelf | InputUser | InputUserFromMessage;
 export type TypeInputContact = InputPhoneContact;
 export type TypeInputFile = InputFile | InputFileBig;
-export type TypeInputMedia = InputMediaEmpty | InputMediaUploadedPhoto | InputMediaPhoto | InputMediaGeoPoint | InputMediaContact | InputMediaUploadedDocument | InputMediaDocument | InputMediaVenue | InputMediaPhotoExternal | InputMediaDocumentExternal | InputMediaGame | InputMediaInvoice | InputMediaGeoLive | InputMediaPoll | InputMediaDice | InputMediaStory;
+export type TypeInputMedia = InputMediaEmpty | InputMediaUploadedPhoto | InputMediaPhoto | InputMediaGeoPoint | InputMediaContact | InputMediaUploadedDocument | InputMediaDocument | InputMediaVenue | InputMediaPhotoExternal | InputMediaDocumentExternal | InputMediaGame | InputMediaInvoice | InputMediaGeoLive | InputMediaPoll | InputMediaDice | InputMediaStory | InputMediaWebPage;
 export type TypeInputChatPhoto = InputChatPhotoEmpty | InputChatUploadedPhoto | InputChatPhoto;
 export type TypeInputGeoPoint = InputGeoPointEmpty | InputGeoPoint;
 export type TypeInputPhoto = InputPhotoEmpty | InputPhoto;
@@ -39224,8 +40119,8 @@ export type TypeChatParticipant = ChatParticipant | ChatParticipantCreator | Cha
 export type TypeChatParticipants = ChatParticipantsForbidden | ChatParticipants;
 export type TypeChatPhoto = ChatPhotoEmpty | ChatPhoto;
 export type TypeMessage = MessageEmpty | Message | MessageService;
-export type TypeMessageMedia = MessageMediaEmpty | MessageMediaPhoto | MessageMediaGeo | MessageMediaContact | MessageMediaUnsupported | MessageMediaDocument | MessageMediaWebPage | MessageMediaVenue | MessageMediaGame | MessageMediaInvoice | MessageMediaGeoLive | MessageMediaPoll | MessageMediaDice | MessageMediaStory;
-export type TypeMessageAction = MessageActionEmpty | MessageActionChatCreate | MessageActionChatEditTitle | MessageActionChatEditPhoto | MessageActionChatDeletePhoto | MessageActionChatAddUser | MessageActionChatDeleteUser | MessageActionChatJoinedByLink | MessageActionChannelCreate | MessageActionChatMigrateTo | MessageActionChannelMigrateFrom | MessageActionPinMessage | MessageActionHistoryClear | MessageActionGameScore | MessageActionPaymentSentMe | MessageActionPaymentSent | MessageActionPhoneCall | MessageActionScreenshotTaken | MessageActionCustomAction | MessageActionBotAllowed | MessageActionSecureValuesSentMe | MessageActionSecureValuesSent | MessageActionContactSignUp | MessageActionGeoProximityReached | MessageActionGroupCall | MessageActionInviteToGroupCall | MessageActionSetMessagesTTL | MessageActionGroupCallScheduled | MessageActionSetChatTheme | MessageActionChatJoinedByRequest | MessageActionWebViewDataSentMe | MessageActionWebViewDataSent | MessageActionGiftPremium | MessageActionTopicCreate | MessageActionTopicEdit | MessageActionSuggestProfilePhoto | MessageActionRequestedPeer | MessageActionSetChatWallPaper | MessageActionSetSameChatWallPaper;
+export type TypeMessageMedia = MessageMediaEmpty | MessageMediaPhoto | MessageMediaGeo | MessageMediaContact | MessageMediaUnsupported | MessageMediaDocument | MessageMediaWebPage | MessageMediaVenue | MessageMediaGame | MessageMediaInvoice | MessageMediaGeoLive | MessageMediaPoll | MessageMediaDice | MessageMediaStory | MessageMediaGiveaway;
+export type TypeMessageAction = MessageActionEmpty | MessageActionChatCreate | MessageActionChatEditTitle | MessageActionChatEditPhoto | MessageActionChatDeletePhoto | MessageActionChatAddUser | MessageActionChatDeleteUser | MessageActionChatJoinedByLink | MessageActionChannelCreate | MessageActionChatMigrateTo | MessageActionChannelMigrateFrom | MessageActionPinMessage | MessageActionHistoryClear | MessageActionGameScore | MessageActionPaymentSentMe | MessageActionPaymentSent | MessageActionPhoneCall | MessageActionScreenshotTaken | MessageActionCustomAction | MessageActionBotAllowed | MessageActionSecureValuesSentMe | MessageActionSecureValuesSent | MessageActionContactSignUp | MessageActionGeoProximityReached | MessageActionGroupCall | MessageActionInviteToGroupCall | MessageActionSetMessagesTTL | MessageActionGroupCallScheduled | MessageActionSetChatTheme | MessageActionChatJoinedByRequest | MessageActionWebViewDataSentMe | MessageActionWebViewDataSent | MessageActionGiftPremium | MessageActionTopicCreate | MessageActionTopicEdit | MessageActionSuggestProfilePhoto | MessageActionRequestedPeer | MessageActionSetChatWallPaper | MessageActionSetSameChatWallPaper | MessageActionGiftCode | MessageActionGiveawayLaunch;
 export type TypeDialog = Dialog | DialogFolder;
 export type TypePhoto = PhotoEmpty | Photo;
 export type TypePhotoSize = PhotoSizeEmpty | PhotoSize | PhotoCachedSize | PhotoStrippedSize | PhotoSizeProgressive | PhotoPathSize;
@@ -39306,7 +40201,7 @@ export type TypeBotInfo = BotInfo;
 export type TypeKeyboardButton = KeyboardButton | KeyboardButtonURL | KeyboardButtonCallback | KeyboardButtonRequestPhone | KeyboardButtonRequestGeoLocation | KeyboardButtonSwitchInline | KeyboardButtonGame | KeyboardButtonBuy | KeyboardButtonURLAuth | InputKeyboardButtonURLAuth | KeyboardButtonRequestPoll | InputKeyboardButtonUserProfile | KeyboardButtonUserProfile | KeyboardButtonWebView | KeyboardButtonSimpleWebView | KeyboardButtonRequestPeer;
 export type TypeKeyboardButtonRow = KeyboardButtonRow;
 export type TypeReplyMarkup = ReplyKeyboardHide | ReplyKeyboardForceReply | ReplyKeyboardMarkup | ReplyInlineMarkup;
-export type TypeMessageEntity = MessageEntityUnknown | MessageEntityMention | MessageEntityHashtag | MessageEntityBotCommand | MessageEntityURL | MessageEntityEmail | MessageEntityBold | MessageEntityItalic | MessageEntityCode | MessageEntityPre | MessageEntityTextURL | MessageEntityMentionName | InputMessageEntityMentionName | MessageEntityPhone | MessageEntityCashtag | MessageEntityUnderline | MessageEntityStrike | MessageEntityBlockquote | MessageEntityBankCard | MessageEntitySpoiler | MessageEntityCustomEmoji;
+export type TypeMessageEntity = MessageEntityUnknown | MessageEntityMention | MessageEntityHashtag | MessageEntityBotCommand | MessageEntityURL | MessageEntityEmail | MessageEntityBold | MessageEntityItalic | MessageEntityCode | MessageEntityPre | MessageEntityTextURL | MessageEntityMentionName | InputMessageEntityMentionName | MessageEntityPhone | MessageEntityCashtag | MessageEntityUnderline | MessageEntityStrike | MessageEntityBankCard | MessageEntitySpoiler | MessageEntityCustomEmoji | MessageEntityBlockquote;
 export type TypeInputChannel = InputChannelEmpty | InputChannel | InputChannelFromMessage;
 export type TypeContactsResolvedPeer = ContactsResolvedPeer;
 export type TypeMessageRange = MessageRange;
@@ -39318,9 +40213,9 @@ export type TypeChannelsChannelParticipants = ChannelsChannelParticipants | Chan
 export type TypeChannelsChannelParticipant = ChannelsChannelParticipant;
 export type TypeHelpTermsOfService = HelpTermsOfService;
 export type TypeMessagesSavedGifs = MessagesSavedGifsNotModified | MessagesSavedGifs;
-export type TypeInputBotInlineMessage = InputBotInlineMessageMediaAuto | InputBotInlineMessageText | InputBotInlineMessageMediaGeo | InputBotInlineMessageMediaVenue | InputBotInlineMessageMediaContact | InputBotInlineMessageGame | InputBotInlineMessageMediaInvoice;
+export type TypeInputBotInlineMessage = InputBotInlineMessageMediaAuto | InputBotInlineMessageText | InputBotInlineMessageMediaGeo | InputBotInlineMessageMediaVenue | InputBotInlineMessageMediaContact | InputBotInlineMessageGame | InputBotInlineMessageMediaInvoice | InputBotInlineMessageMediaWebPage;
 export type TypeInputBotInlineResult = InputBotInlineResult | InputBotInlineResultPhoto | InputBotInlineResultDocument | InputBotInlineResultGame;
-export type TypeBotInlineMessage = BotInlineMessageMediaAuto | BotInlineMessageText | BotInlineMessageMediaGeo | BotInlineMessageMediaVenue | BotInlineMessageMediaContact | BotInlineMessageMediaInvoice;
+export type TypeBotInlineMessage = BotInlineMessageMediaAuto | BotInlineMessageText | BotInlineMessageMediaGeo | BotInlineMessageMediaVenue | BotInlineMessageMediaContact | BotInlineMessageMediaInvoice | BotInlineMessageMediaWebPage;
 export type TypeBotInlineResult = BotInlineResult | BotInlineMediaResult;
 export type TypeMessagesBotResults = MessagesBotResults;
 export type TypeExportedMessageLink = ExportedMessageLink;
@@ -39382,7 +40277,7 @@ export type TypeCdnConfig = CdnConfig;
 export type TypeLangPackString = LangPackString | LangPackStringPluralized | LangPackStringDeleted;
 export type TypeLangPackDifference = LangPackDifference;
 export type TypeLangPackLanguage = LangPackLanguage;
-export type TypeChannelAdminLogEventAction = ChannelAdminLogEventActionChangeTitle | ChannelAdminLogEventActionChangeAbout | ChannelAdminLogEventActionChangeUsername | ChannelAdminLogEventActionChangePhoto | ChannelAdminLogEventActionToggleInvites | ChannelAdminLogEventActionToggleSignatures | ChannelAdminLogEventActionUpdatePinned | ChannelAdminLogEventActionEditMessage | ChannelAdminLogEventActionDeleteMessage | ChannelAdminLogEventActionParticipantJoin | ChannelAdminLogEventActionParticipantLeave | ChannelAdminLogEventActionParticipantInvite | ChannelAdminLogEventActionParticipantToggleBan | ChannelAdminLogEventActionParticipantToggleAdmin | ChannelAdminLogEventActionChangeStickerSet | ChannelAdminLogEventActionTogglePreHistoryHidden | ChannelAdminLogEventActionDefaultBannedRights | ChannelAdminLogEventActionStopPoll | ChannelAdminLogEventActionChangeLinkedChat | ChannelAdminLogEventActionChangeLocation | ChannelAdminLogEventActionToggleSlowMode | ChannelAdminLogEventActionStartGroupCall | ChannelAdminLogEventActionDiscardGroupCall | ChannelAdminLogEventActionParticipantMute | ChannelAdminLogEventActionParticipantUnmute | ChannelAdminLogEventActionToggleGroupCallSetting | ChannelAdminLogEventActionParticipantJoinByInvite | ChannelAdminLogEventActionExportedInviteDelete | ChannelAdminLogEventActionExportedInviteRevoke | ChannelAdminLogEventActionExportedInviteEdit | ChannelAdminLogEventActionParticipantVolume | ChannelAdminLogEventActionChangeHistoryTTL | ChannelAdminLogEventActionParticipantJoinByRequest | ChannelAdminLogEventActionToggleNoForwards | ChannelAdminLogEventActionSendMessage | ChannelAdminLogEventActionChangeAvailableReactions | ChannelAdminLogEventActionChangeUsernames | ChannelAdminLogEventActionToggleForum | ChannelAdminLogEventActionCreateTopic | ChannelAdminLogEventActionEditTopic | ChannelAdminLogEventActionDeleteTopic | ChannelAdminLogEventActionPinTopic | ChannelAdminLogEventActionToggleAntiSpam;
+export type TypeChannelAdminLogEventAction = ChannelAdminLogEventActionChangeTitle | ChannelAdminLogEventActionChangeAbout | ChannelAdminLogEventActionChangeUsername | ChannelAdminLogEventActionChangePhoto | ChannelAdminLogEventActionToggleInvites | ChannelAdminLogEventActionToggleSignatures | ChannelAdminLogEventActionUpdatePinned | ChannelAdminLogEventActionEditMessage | ChannelAdminLogEventActionDeleteMessage | ChannelAdminLogEventActionParticipantJoin | ChannelAdminLogEventActionParticipantLeave | ChannelAdminLogEventActionParticipantInvite | ChannelAdminLogEventActionParticipantToggleBan | ChannelAdminLogEventActionParticipantToggleAdmin | ChannelAdminLogEventActionChangeStickerSet | ChannelAdminLogEventActionTogglePreHistoryHidden | ChannelAdminLogEventActionDefaultBannedRights | ChannelAdminLogEventActionStopPoll | ChannelAdminLogEventActionChangeLinkedChat | ChannelAdminLogEventActionChangeLocation | ChannelAdminLogEventActionToggleSlowMode | ChannelAdminLogEventActionStartGroupCall | ChannelAdminLogEventActionDiscardGroupCall | ChannelAdminLogEventActionParticipantMute | ChannelAdminLogEventActionParticipantUnmute | ChannelAdminLogEventActionToggleGroupCallSetting | ChannelAdminLogEventActionParticipantJoinByInvite | ChannelAdminLogEventActionExportedInviteDelete | ChannelAdminLogEventActionExportedInviteRevoke | ChannelAdminLogEventActionExportedInviteEdit | ChannelAdminLogEventActionParticipantVolume | ChannelAdminLogEventActionChangeHistoryTTL | ChannelAdminLogEventActionParticipantJoinByRequest | ChannelAdminLogEventActionToggleNoForwards | ChannelAdminLogEventActionSendMessage | ChannelAdminLogEventActionChangeAvailableReactions | ChannelAdminLogEventActionChangeUsernames | ChannelAdminLogEventActionToggleForum | ChannelAdminLogEventActionCreateTopic | ChannelAdminLogEventActionEditTopic | ChannelAdminLogEventActionDeleteTopic | ChannelAdminLogEventActionPinTopic | ChannelAdminLogEventActionToggleAntiSpam | ChannelAdminLogEventActionChangeColor | ChannelAdminLogEventActionChangeBackgroundEmoji;
 export type TypeChannelAdminLogEvent = ChannelAdminLogEvent;
 export type TypeChannelsAdminLogResults = ChannelsAdminLogResults;
 export type TypeChannelAdminLogEventsFilter = ChannelAdminLogEventsFilter;
@@ -39552,11 +40447,11 @@ export type TypeAccountSavedRingtones = AccountSavedRingtonesNotModified | Accou
 export type TypeNotificationSound = NotificationSoundDefault | NotificationSoundNone | NotificationSoundLocal | NotificationSoundRingtone;
 export type TypeAccountSavedRingtone = AccountSavedRingtone | AccountSavedRingtoneConverted;
 export type TypeAttachMenuPeerType = AttachMenuPeerTypeSameBotPM | AttachMenuPeerTypeBotPM | AttachMenuPeerTypePM | AttachMenuPeerTypeChat | AttachMenuPeerTypeBroadcast;
-export type TypeInputInvoice = InputInvoiceMessage | InputInvoiceSlug;
+export type TypeInputInvoice = InputInvoiceMessage | InputInvoiceSlug | InputInvoicePremiumGiftCode;
 export type TypePaymentsExportedInvoice = PaymentsExportedInvoice;
 export type TypeMessagesTranscribedAudio = MessagesTranscribedAudio;
 export type TypeHelpPremiumPromo = HelpPremiumPromo;
-export type TypeInputStorePaymentPurpose = InputStorePaymentPremiumSubscription | InputStorePaymentGiftPremium;
+export type TypeInputStorePaymentPurpose = InputStorePaymentPremiumSubscription | InputStorePaymentGiftPremium | InputStorePaymentPremiumGiftCode | InputStorePaymentPremiumGiveaway;
 export type TypePremiumGiftOption = PremiumGiftOption;
 export type TypePaymentFormMethod = PaymentFormMethod;
 export type TypeEmojiStatus = EmojiStatusEmpty | EmojiStatus | EmojiStatusUntil;
@@ -39615,11 +40510,16 @@ export type TypeMediaAreaCoordinates = MediaAreaCoordinates;
 export type TypeMediaArea = MediaAreaVenue | InputMediaAreaVenue | MediaAreaGeoPoint | MediaAreaSuggestedReaction;
 export type TypePeerStories = PeerStories;
 export type TypeStoriesPeerStories = StoriesPeerStories;
-export type TypeStoriesBoostsStatus = StoriesBoostsStatus;
-export type TypeStoriesCanApplyBoostResult = StoriesCanApplyBoostOk | StoriesCanApplyBoostReplace;
-export type TypeBooster = Booster;
-export type TypeStoriesBoostersList = StoriesBoostersList;
 export type TypeMessagesWebPage = MessagesWebPage;
+export type TypePremiumGiftCodeOption = PremiumGiftCodeOption;
+export type TypePaymentsCheckedGiftCode = PaymentsCheckedGiftCode;
+export type TypePaymentsGiveawayInfo = PaymentsGiveawayInfo | PaymentsGiveawayInfoResults;
+export type TypePrepaidGiveaway = PrepaidGiveaway;
+export type TypeBoost = Boost;
+export type TypePremiumBoostsList = PremiumBoostsList;
+export type TypeMyBoost = MyBoost;
+export type TypePremiumMyBoosts = PremiumMyBoosts;
+export type TypePremiumBoostsStatus = PremiumBoostsStatus;
 
 export const map = new Map<number, TLObjectConstructor>([
   [0x05162463, ResPQ],
@@ -39689,6 +40589,7 @@ export const map = new Map<number, TLObjectConstructor>([
   [0x0F94E5F1, InputMediaPoll],
   [0xE66FBF7B, InputMediaDice],
   [0x89FDD778, InputMediaStory],
+  [0xC21B8849, InputMediaWebPage],
   [0x1CA48F57, InputChatPhotoEmpty],
   [0xBDCDAEC0, InputChatUploadedPhoto],
   [0x8953AD37, InputChatPhoto],
@@ -39720,7 +40621,7 @@ export const map = new Map<number, TLObjectConstructor>([
   [0xB3CEA0E4, StorageFileMp4],
   [0x1081464C, StorageFileWebp],
   [0xD3BC4B7A, UserEmpty],
-  [0xABB5F120, User],
+  [0xEB602F25, User],
   [0x4F11BAE1, UserProfilePhotoEmpty],
   [0x82D1F706, UserProfilePhoto],
   [0x09D05049, UserStatusEmpty],
@@ -39732,7 +40633,7 @@ export const map = new Map<number, TLObjectConstructor>([
   [0x29562865, ChatEmpty],
   [0x41CBF256, Chat],
   [0x6592A1A7, ChatForbidden],
-  [0x94F592DB, Channel],
+  [0x1981EA7E, Channel],
   [0x17D493D5, ChannelForbidden],
   [0xC9D31138, ChatFull],
   [0x723027BD, ChannelFull],
@@ -39752,7 +40653,7 @@ export const map = new Map<number, TLObjectConstructor>([
   [0x70322949, MessageMediaContact],
   [0x9F84F49E, MessageMediaUnsupported],
   [0x4CF4D72D, MessageMediaDocument],
-  [0xA32DD600, MessageMediaWebPage],
+  [0xDDF10C3B, MessageMediaWebPage],
   [0x2EC0533F, MessageMediaVenue],
   [0xFDB19008, MessageMediaGame],
   [0xF6A548D3, MessageMediaInvoice],
@@ -39760,6 +40661,7 @@ export const map = new Map<number, TLObjectConstructor>([
   [0x4BD6E798, MessageMediaPoll],
   [0x3F7EE58B, MessageMediaDice],
   [0x68CB6283, MessageMediaStory],
+  [0x58260664, MessageMediaGiveaway],
   [0xB6AEF7B0, MessageActionEmpty],
   [0xBD47CBAD, MessageActionChatCreate],
   [0xB5A1CE5A, MessageActionChatEditTitle],
@@ -39799,6 +40701,8 @@ export const map = new Map<number, TLObjectConstructor>([
   [0xFE77345D, MessageActionRequestedPeer],
   [0xBC44A927, MessageActionSetChatWallPaper],
   [0xC0787D6D, MessageActionSetSameChatWallPaper],
+  [0xD2CFDB0E, MessageActionGiftCode],
+  [0x332BA9ED, MessageActionGiveawayLaunch],
   [0xD58A08C6, Dialog],
   [0x71BD134C, DialogFolder],
   [0x2331B22D, PhotoEmpty],
@@ -40114,8 +41018,8 @@ export const map = new Map<number, TLObjectConstructor>([
   [0xE86602C3, MessagesAllStickersNotModified],
   [0xCDBBCEBB, MessagesAllStickers],
   [0x84D19185, MessagesAffectedMessages],
-  [0xEB1477E8, WebPageEmpty],
-  [0xC586DA1C, WebPagePending],
+  [0x211A1788, WebPageEmpty],
+  [0xB0D13E47, WebPagePending],
   [0xE89C45B2, WebPage],
   [0x7311CA11, WebPageNotModified],
   [0xAD01D61D, Authorization],
@@ -40128,7 +41032,7 @@ export const map = new Map<number, TLObjectConstructor>([
   [0x0AB4A819, ChatInviteExported],
   [0xED107AB7, ChatInvitePublicJoinRequests],
   [0x5A686D7C, ChatInviteAlready],
-  [0x300C44C1, ChatInvite],
+  [0xCDE0EC40, ChatInvite],
   [0x61695CB0, ChatInvitePeek],
   [0xFFB62B95, InputStickerSetEmpty],
   [0x9DE7A269, InputStickerSetID],
@@ -40183,10 +41087,10 @@ export const map = new Map<number, TLObjectConstructor>([
   [0x4C4E743F, MessageEntityCashtag],
   [0x9C4E7E8B, MessageEntityUnderline],
   [0xBF0693D4, MessageEntityStrike],
-  [0x020DF5D0, MessageEntityBlockquote],
   [0x761E6AF4, MessageEntityBankCard],
   [0x32CA960F, MessageEntitySpoiler],
   [0xC8CF05F8, MessageEntityCustomEmoji],
+  [0x020DF5D0, MessageEntityBlockquote],
   [0xEE8C1E86, InputChannelEmpty],
   [0xF35AEC28, InputChannel],
   [0x5B934F9D, InputChannelFromMessage],
@@ -40224,6 +41128,7 @@ export const map = new Map<number, TLObjectConstructor>([
   [0xA6EDBFFD, InputBotInlineMessageMediaContact],
   [0x4B425864, InputBotInlineMessageGame],
   [0xD7E78225, InputBotInlineMessageMediaInvoice],
+  [0xBDDCC510, InputBotInlineMessageMediaWebPage],
   [0x88BF9319, InputBotInlineResult],
   [0xA8D864A7, InputBotInlineResultPhoto],
   [0xFFF8FDC4, InputBotInlineResultDocument],
@@ -40234,6 +41139,7 @@ export const map = new Map<number, TLObjectConstructor>([
   [0x8A86659C, BotInlineMessageMediaVenue],
   [0x18D1CDC2, BotInlineMessageMediaContact],
   [0x354A9B09, BotInlineMessageMediaInvoice],
+  [0x809AD9A6, BotInlineMessageMediaWebPage],
   [0x11965F3A, BotInlineResult],
   [0x17DB940B, BotInlineMediaResult],
   [0xE021F2F6, MessagesBotResults],
@@ -40273,7 +41179,7 @@ export const map = new Map<number, TLObjectConstructor>([
   [0x70B772A8, ContactsTopPeers],
   [0xB52C939D, ContactsTopPeersDisabled],
   [0x1B0C841A, DraftMessageEmpty],
-  [0xFD8E711F, DraftMessage],
+  [0x3FCCF7EF, DraftMessage],
   [0xC6DC0C66, MessagesFeaturedStickersNotModified],
   [0xBE382906, MessagesFeaturedStickers],
   [0x0B17F890, MessagesRecentStickersNotModified],
@@ -40432,6 +41338,8 @@ export const map = new Map<number, TLObjectConstructor>([
   [0xAE168909, ChannelAdminLogEventActionDeleteTopic],
   [0x5D8D353B, ChannelAdminLogEventActionPinTopic],
   [0x64F36DFC, ChannelAdminLogEventActionToggleAntiSpam],
+  [0x3C2B247B, ChannelAdminLogEventActionChangeColor],
+  [0x445FC434, ChannelAdminLogEventActionChangeBackgroundEmoji],
   [0x1FAD68CD, ChannelAdminLogEvent],
   [0xED8AF74D, ChannelsAdminLogResults],
   [0xEA107AE4, ChannelAdminLogEventsFilter],
@@ -40617,7 +41525,7 @@ export const map = new Map<number, TLObjectConstructor>([
   [0x455B853D, MessageViews],
   [0xB6C4F543, MessagesMessageViews],
   [0xA6341782, MessagesDiscussionMessage],
-  [0xA6D57763, MessageReplyHeader],
+  [0x6EEBCABD, MessageReplyHeader],
   [0x9C98BFC1, MessageReplyStoryHeader],
   [0x83D60FC2, MessageReplies],
   [0xE8FD8014, PeerBlocked],
@@ -40708,11 +41616,14 @@ export const map = new Map<number, TLObjectConstructor>([
   [0x7BFBDEFC, AttachMenuPeerTypeBroadcast],
   [0xC5B56859, InputInvoiceMessage],
   [0xC326CAEF, InputInvoiceSlug],
+  [0x98986C0D, InputInvoicePremiumGiftCode],
   [0xAED0CBD9, PaymentsExportedInvoice],
   [0x93752C52, MessagesTranscribedAudio],
   [0x5334759C, HelpPremiumPromo],
   [0xA6751E66, InputStorePaymentPremiumSubscription],
   [0x616F7FE8, InputStorePaymentGiftPremium],
+  [0xA3805F3F, InputStorePaymentPremiumGiftCode],
+  [0x7C9375E6, InputStorePaymentPremiumGiveaway],
   [0x74C34319, PremiumGiftOption],
   [0x88F8F21B, PaymentFormMethod],
   [0x2DE11AAE, EmojiStatusEmpty],
@@ -40792,7 +41703,7 @@ export const map = new Map<number, TLObjectConstructor>([
   [0xB0BDEAC5, StoryView],
   [0x46E9B9EC, StoriesStoryViewsList],
   [0xDE9EED1D, StoriesStoryViews],
-  [0x9C5386E4, InputReplyToMessage],
+  [0x073EC805, InputReplyToMessage],
   [0x15B0F283, InputReplyToStory],
   [0x3FC9053B, ExportedStoryLink],
   [0x712E27FD, StoriesStealthMode],
@@ -40803,11 +41714,16 @@ export const map = new Map<number, TLObjectConstructor>([
   [0x14455871, MediaAreaSuggestedReaction],
   [0x9A35E999, PeerStories],
   [0xCAE68768, StoriesPeerStories],
-  [0xE5C1AA5C, StoriesBoostsStatus],
-  [0xC3173587, StoriesCanApplyBoostOk],
-  [0x712C4655, StoriesCanApplyBoostReplace],
-  [0x0E9E6380, Booster],
-  [0xF3DD3D1D, StoriesBoostersList],
   [0xFD5E12BD, MessagesWebPage],
+  [0x257E962B, PremiumGiftCodeOption],
+  [0xB722F158, PaymentsCheckedGiftCode],
+  [0x4367DAA0, PaymentsGiveawayInfo],
+  [0x00CD5570, PaymentsGiveawayInfoResults],
+  [0xB2539D54, PrepaidGiveaway],
+  [0x2A1C8C71, Boost],
+  [0x86F8613C, PremiumBoostsList],
+  [0xC448415C, MyBoost],
+  [0x9AE228E2, PremiumMyBoosts],
+  [0x4959427A, PremiumBoostsStatus],
 // deno-lint-ignore no-explicit-any
 ] as const as any);

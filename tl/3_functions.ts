@@ -3549,6 +3549,62 @@ export class AccountInvalidateSignInCodes extends Function<boolean> {
   }
 }
 
+export class AccountUpdateColor extends Function<boolean> {
+  color: number;
+  backgroundEmojiId?: bigint;
+
+  protected get [id]() {
+    return 0xA001CC43;
+  }
+
+  static get [paramDesc](): ParamDesc {
+    return [
+      ["flags", flags, "#"],
+      ["color", "number", "int"],
+      ["backgroundEmojiId", "bigint", "flags.0?long"],
+    ];
+  }
+
+  protected get [params](): Params {
+    return [
+      ["flags", flags, "#"],
+      [this.color, "number", "int"],
+      [this.backgroundEmojiId ?? null, "bigint", "flags.0?long"],
+    ];
+  }
+
+  constructor(params: { color: number; backgroundEmojiId?: bigint }) {
+    super();
+    this.color = params.color;
+    this.backgroundEmojiId = params.backgroundEmojiId;
+  }
+}
+
+export class AccountGetDefaultBackgroundEmojis extends Function<types.TypeEmojiList> {
+  hash: bigint;
+
+  protected get [id]() {
+    return 0xA60AB9CE;
+  }
+
+  static get [paramDesc](): ParamDesc {
+    return [
+      ["hash", "bigint", "long"],
+    ];
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.hash, "bigint", "long"],
+    ];
+  }
+
+  constructor(params: { hash: bigint }) {
+    super();
+    this.hash = params.hash;
+  }
+}
+
 export class UsersGetUsers extends Function<types.TypeUser[]> {
   id: Array<types.TypeInputUser>;
 
@@ -4727,6 +4783,7 @@ export class MessagesSendMessage extends Function<types.TypeUpdates> {
   clearDraft?: true;
   noforwards?: true;
   updateStickersetsOrder?: true;
+  invertMedia?: true;
   peer: types.TypeInputPeer;
   replyTo?: types.TypeInputReplyTo;
   message: string;
@@ -4749,6 +4806,7 @@ export class MessagesSendMessage extends Function<types.TypeUpdates> {
       ["clearDraft", "true", "flags.7?true"],
       ["noforwards", "true", "flags.14?true"],
       ["updateStickersetsOrder", "true", "flags.15?true"],
+      ["invertMedia", "true", "flags.16?true"],
       ["peer", types._TypeInputPeer, "InputPeer"],
       ["replyTo", types._TypeInputReplyTo, "flags.0?InputReplyTo"],
       ["message", "string", "string"],
@@ -4769,6 +4827,7 @@ export class MessagesSendMessage extends Function<types.TypeUpdates> {
       [this.clearDraft ?? null, "true", "flags.7?true"],
       [this.noforwards ?? null, "true", "flags.14?true"],
       [this.updateStickersetsOrder ?? null, "true", "flags.15?true"],
+      [this.invertMedia ?? null, "true", "flags.16?true"],
       [this.peer, types._TypeInputPeer, "InputPeer"],
       [this.replyTo ?? null, types._TypeInputReplyTo, "flags.0?InputReplyTo"],
       [this.message, "string", "string"],
@@ -4780,7 +4839,7 @@ export class MessagesSendMessage extends Function<types.TypeUpdates> {
     ];
   }
 
-  constructor(params: { noWebpage?: true; silent?: true; background?: true; clearDraft?: true; noforwards?: true; updateStickersetsOrder?: true; peer: types.TypeInputPeer; replyTo?: types.TypeInputReplyTo; message: string; randomId: bigint; replyMarkup?: types.TypeReplyMarkup; entities?: Array<types.TypeMessageEntity>; scheduleDate?: number; sendAs?: types.TypeInputPeer }) {
+  constructor(params: { noWebpage?: true; silent?: true; background?: true; clearDraft?: true; noforwards?: true; updateStickersetsOrder?: true; invertMedia?: true; peer: types.TypeInputPeer; replyTo?: types.TypeInputReplyTo; message: string; randomId: bigint; replyMarkup?: types.TypeReplyMarkup; entities?: Array<types.TypeMessageEntity>; scheduleDate?: number; sendAs?: types.TypeInputPeer }) {
     super();
     this.noWebpage = params.noWebpage;
     this.silent = params.silent;
@@ -4788,6 +4847,7 @@ export class MessagesSendMessage extends Function<types.TypeUpdates> {
     this.clearDraft = params.clearDraft;
     this.noforwards = params.noforwards;
     this.updateStickersetsOrder = params.updateStickersetsOrder;
+    this.invertMedia = params.invertMedia;
     this.peer = params.peer;
     this.replyTo = params.replyTo;
     this.message = params.message;
@@ -4805,6 +4865,7 @@ export class MessagesSendMedia extends Function<types.TypeUpdates> {
   clearDraft?: true;
   noforwards?: true;
   updateStickersetsOrder?: true;
+  invertMedia?: true;
   peer: types.TypeInputPeer;
   replyTo?: types.TypeInputReplyTo;
   media: types.TypeInputMedia;
@@ -4827,6 +4888,7 @@ export class MessagesSendMedia extends Function<types.TypeUpdates> {
       ["clearDraft", "true", "flags.7?true"],
       ["noforwards", "true", "flags.14?true"],
       ["updateStickersetsOrder", "true", "flags.15?true"],
+      ["invertMedia", "true", "flags.16?true"],
       ["peer", types._TypeInputPeer, "InputPeer"],
       ["replyTo", types._TypeInputReplyTo, "flags.0?InputReplyTo"],
       ["media", types._TypeInputMedia, "InputMedia"],
@@ -4847,6 +4909,7 @@ export class MessagesSendMedia extends Function<types.TypeUpdates> {
       [this.clearDraft ?? null, "true", "flags.7?true"],
       [this.noforwards ?? null, "true", "flags.14?true"],
       [this.updateStickersetsOrder ?? null, "true", "flags.15?true"],
+      [this.invertMedia ?? null, "true", "flags.16?true"],
       [this.peer, types._TypeInputPeer, "InputPeer"],
       [this.replyTo ?? null, types._TypeInputReplyTo, "flags.0?InputReplyTo"],
       [this.media, types._TypeInputMedia, "InputMedia"],
@@ -4859,13 +4922,14 @@ export class MessagesSendMedia extends Function<types.TypeUpdates> {
     ];
   }
 
-  constructor(params: { silent?: true; background?: true; clearDraft?: true; noforwards?: true; updateStickersetsOrder?: true; peer: types.TypeInputPeer; replyTo?: types.TypeInputReplyTo; media: types.TypeInputMedia; message: string; randomId: bigint; replyMarkup?: types.TypeReplyMarkup; entities?: Array<types.TypeMessageEntity>; scheduleDate?: number; sendAs?: types.TypeInputPeer }) {
+  constructor(params: { silent?: true; background?: true; clearDraft?: true; noforwards?: true; updateStickersetsOrder?: true; invertMedia?: true; peer: types.TypeInputPeer; replyTo?: types.TypeInputReplyTo; media: types.TypeInputMedia; message: string; randomId: bigint; replyMarkup?: types.TypeReplyMarkup; entities?: Array<types.TypeMessageEntity>; scheduleDate?: number; sendAs?: types.TypeInputPeer }) {
     super();
     this.silent = params.silent;
     this.background = params.background;
     this.clearDraft = params.clearDraft;
     this.noforwards = params.noforwards;
     this.updateStickersetsOrder = params.updateStickersetsOrder;
+    this.invertMedia = params.invertMedia;
     this.peer = params.peer;
     this.replyTo = params.replyTo;
     this.media = params.media;
@@ -6395,6 +6459,7 @@ export class MessagesGetMessageEditData extends Function<types.TypeMessagesMessa
 
 export class MessagesEditMessage extends Function<types.TypeUpdates> {
   noWebpage?: true;
+  invertMedia?: true;
   peer: types.TypeInputPeer;
   id: number;
   message?: string;
@@ -6411,6 +6476,7 @@ export class MessagesEditMessage extends Function<types.TypeUpdates> {
     return [
       ["flags", flags, "#"],
       ["noWebpage", "true", "flags.1?true"],
+      ["invertMedia", "true", "flags.16?true"],
       ["peer", types._TypeInputPeer, "InputPeer"],
       ["id", "number", "int"],
       ["message", "string", "flags.11?string"],
@@ -6425,6 +6491,7 @@ export class MessagesEditMessage extends Function<types.TypeUpdates> {
     return [
       ["flags", flags, "#"],
       [this.noWebpage ?? null, "true", "flags.1?true"],
+      [this.invertMedia ?? null, "true", "flags.16?true"],
       [this.peer, types._TypeInputPeer, "InputPeer"],
       [this.id, "number", "int"],
       [this.message ?? null, "string", "flags.11?string"],
@@ -6435,9 +6502,10 @@ export class MessagesEditMessage extends Function<types.TypeUpdates> {
     ];
   }
 
-  constructor(params: { noWebpage?: true; peer: types.TypeInputPeer; id: number; message?: string; media?: types.TypeInputMedia; replyMarkup?: types.TypeReplyMarkup; entities?: Array<types.TypeMessageEntity>; scheduleDate?: number }) {
+  constructor(params: { noWebpage?: true; invertMedia?: true; peer: types.TypeInputPeer; id: number; message?: string; media?: types.TypeInputMedia; replyMarkup?: types.TypeReplyMarkup; entities?: Array<types.TypeMessageEntity>; scheduleDate?: number }) {
     super();
     this.noWebpage = params.noWebpage;
+    this.invertMedia = params.invertMedia;
     this.peer = params.peer;
     this.id = params.id;
     this.message = params.message;
@@ -6450,6 +6518,7 @@ export class MessagesEditMessage extends Function<types.TypeUpdates> {
 
 export class MessagesEditInlineBotMessage extends Function<boolean> {
   noWebpage?: true;
+  invertMedia?: true;
   id: types.TypeInputBotInlineMessageID;
   message?: string;
   media?: types.TypeInputMedia;
@@ -6464,6 +6533,7 @@ export class MessagesEditInlineBotMessage extends Function<boolean> {
     return [
       ["flags", flags, "#"],
       ["noWebpage", "true", "flags.1?true"],
+      ["invertMedia", "true", "flags.16?true"],
       ["id", types._TypeInputBotInlineMessageID, "InputBotInlineMessageID"],
       ["message", "string", "flags.11?string"],
       ["media", types._TypeInputMedia, "flags.14?InputMedia"],
@@ -6476,6 +6546,7 @@ export class MessagesEditInlineBotMessage extends Function<boolean> {
     return [
       ["flags", flags, "#"],
       [this.noWebpage ?? null, "true", "flags.1?true"],
+      [this.invertMedia ?? null, "true", "flags.16?true"],
       [this.id, types._TypeInputBotInlineMessageID, "InputBotInlineMessageID"],
       [this.message ?? null, "string", "flags.11?string"],
       [this.media ?? null, types._TypeInputMedia, "flags.14?InputMedia"],
@@ -6484,9 +6555,10 @@ export class MessagesEditInlineBotMessage extends Function<boolean> {
     ];
   }
 
-  constructor(params: { noWebpage?: true; id: types.TypeInputBotInlineMessageID; message?: string; media?: types.TypeInputMedia; replyMarkup?: types.TypeReplyMarkup; entities?: Array<types.TypeMessageEntity> }) {
+  constructor(params: { noWebpage?: true; invertMedia?: true; id: types.TypeInputBotInlineMessageID; message?: string; media?: types.TypeInputMedia; replyMarkup?: types.TypeReplyMarkup; entities?: Array<types.TypeMessageEntity> }) {
     super();
     this.noWebpage = params.noWebpage;
+    this.invertMedia = params.invertMedia;
     this.id = params.id;
     this.message = params.message;
     this.media = params.media;
@@ -6608,25 +6680,27 @@ export class MessagesGetPeerDialogs extends Function<types.TypeMessagesPeerDialo
 
 export class MessagesSaveDraft extends Function<boolean> {
   noWebpage?: true;
-  replyToMsgId?: number;
-  topMsgId?: number;
+  invertMedia?: true;
+  replyTo?: types.TypeInputReplyTo;
   peer: types.TypeInputPeer;
   message: string;
   entities?: Array<types.TypeMessageEntity>;
+  media?: types.TypeInputMedia;
 
   protected get [id]() {
-    return 0xB4331E3F;
+    return 0x7FF3B806;
   }
 
   static get [paramDesc](): ParamDesc {
     return [
       ["flags", flags, "#"],
       ["noWebpage", "true", "flags.1?true"],
-      ["replyToMsgId", "number", "flags.0?int"],
-      ["topMsgId", "number", "flags.2?int"],
+      ["invertMedia", "true", "flags.6?true"],
+      ["replyTo", types._TypeInputReplyTo, "flags.4?InputReplyTo"],
       ["peer", types._TypeInputPeer, "InputPeer"],
       ["message", "string", "string"],
       ["entities", [types._TypeMessageEntity], "flags.3?Vector<MessageEntity>"],
+      ["media", types._TypeInputMedia, "flags.5?InputMedia"],
     ];
   }
 
@@ -6634,22 +6708,24 @@ export class MessagesSaveDraft extends Function<boolean> {
     return [
       ["flags", flags, "#"],
       [this.noWebpage ?? null, "true", "flags.1?true"],
-      [this.replyToMsgId ?? null, "number", "flags.0?int"],
-      [this.topMsgId ?? null, "number", "flags.2?int"],
+      [this.invertMedia ?? null, "true", "flags.6?true"],
+      [this.replyTo ?? null, types._TypeInputReplyTo, "flags.4?InputReplyTo"],
       [this.peer, types._TypeInputPeer, "InputPeer"],
       [this.message, "string", "string"],
       [this.entities ?? null, [types._TypeMessageEntity], "flags.3?Vector<MessageEntity>"],
+      [this.media ?? null, types._TypeInputMedia, "flags.5?InputMedia"],
     ];
   }
 
-  constructor(params: { noWebpage?: true; replyToMsgId?: number; topMsgId?: number; peer: types.TypeInputPeer; message: string; entities?: Array<types.TypeMessageEntity> }) {
+  constructor(params: { noWebpage?: true; invertMedia?: true; replyTo?: types.TypeInputReplyTo; peer: types.TypeInputPeer; message: string; entities?: Array<types.TypeMessageEntity>; media?: types.TypeInputMedia }) {
     super();
     this.noWebpage = params.noWebpage;
-    this.replyToMsgId = params.replyToMsgId;
-    this.topMsgId = params.topMsgId;
+    this.invertMedia = params.invertMedia;
+    this.replyTo = params.replyTo;
     this.peer = params.peer;
     this.message = params.message;
     this.entities = params.entities;
+    this.media = params.media;
   }
 }
 
@@ -7515,6 +7591,7 @@ export class MessagesSendMultiMedia extends Function<types.TypeUpdates> {
   clearDraft?: true;
   noforwards?: true;
   updateStickersetsOrder?: true;
+  invertMedia?: true;
   peer: types.TypeInputPeer;
   replyTo?: types.TypeInputReplyTo;
   multiMedia: Array<types.TypeInputSingleMedia>;
@@ -7533,6 +7610,7 @@ export class MessagesSendMultiMedia extends Function<types.TypeUpdates> {
       ["clearDraft", "true", "flags.7?true"],
       ["noforwards", "true", "flags.14?true"],
       ["updateStickersetsOrder", "true", "flags.15?true"],
+      ["invertMedia", "true", "flags.16?true"],
       ["peer", types._TypeInputPeer, "InputPeer"],
       ["replyTo", types._TypeInputReplyTo, "flags.0?InputReplyTo"],
       ["multiMedia", [types._TypeInputSingleMedia], "Vector<InputSingleMedia>"],
@@ -7549,6 +7627,7 @@ export class MessagesSendMultiMedia extends Function<types.TypeUpdates> {
       [this.clearDraft ?? null, "true", "flags.7?true"],
       [this.noforwards ?? null, "true", "flags.14?true"],
       [this.updateStickersetsOrder ?? null, "true", "flags.15?true"],
+      [this.invertMedia ?? null, "true", "flags.16?true"],
       [this.peer, types._TypeInputPeer, "InputPeer"],
       [this.replyTo ?? null, types._TypeInputReplyTo, "flags.0?InputReplyTo"],
       [this.multiMedia, [types._TypeInputSingleMedia], "Vector<InputSingleMedia>"],
@@ -7557,13 +7636,14 @@ export class MessagesSendMultiMedia extends Function<types.TypeUpdates> {
     ];
   }
 
-  constructor(params: { silent?: true; background?: true; clearDraft?: true; noforwards?: true; updateStickersetsOrder?: true; peer: types.TypeInputPeer; replyTo?: types.TypeInputReplyTo; multiMedia: Array<types.TypeInputSingleMedia>; scheduleDate?: number; sendAs?: types.TypeInputPeer }) {
+  constructor(params: { silent?: true; background?: true; clearDraft?: true; noforwards?: true; updateStickersetsOrder?: true; invertMedia?: true; peer: types.TypeInputPeer; replyTo?: types.TypeInputReplyTo; multiMedia: Array<types.TypeInputSingleMedia>; scheduleDate?: number; sendAs?: types.TypeInputPeer }) {
     super();
     this.silent = params.silent;
     this.background = params.background;
     this.clearDraft = params.clearDraft;
     this.noforwards = params.noforwards;
     this.updateStickersetsOrder = params.updateStickersetsOrder;
+    this.invertMedia = params.invertMedia;
     this.peer = params.peer;
     this.replyTo = params.replyTo;
     this.multiMedia = params.multiMedia;
@@ -13485,6 +13565,41 @@ export class ChannelsClickSponsoredMessage extends Function<boolean> {
   }
 }
 
+export class ChannelsUpdateColor extends Function<types.TypeUpdates> {
+  channel: types.TypeInputChannel;
+  color: number;
+  backgroundEmojiId?: bigint;
+
+  protected get [id]() {
+    return 0x621A201F;
+  }
+
+  static get [paramDesc](): ParamDesc {
+    return [
+      ["flags", flags, "#"],
+      ["channel", types._TypeInputChannel, "InputChannel"],
+      ["color", "number", "int"],
+      ["backgroundEmojiId", "bigint", "flags.0?long"],
+    ];
+  }
+
+  protected get [params](): Params {
+    return [
+      ["flags", flags, "#"],
+      [this.channel, types._TypeInputChannel, "InputChannel"],
+      [this.color, "number", "int"],
+      [this.backgroundEmojiId ?? null, "bigint", "flags.0?long"],
+    ];
+  }
+
+  constructor(params: { channel: types.TypeInputChannel; color: number; backgroundEmojiId?: bigint }) {
+    super();
+    this.channel = params.channel;
+    this.color = params.color;
+    this.backgroundEmojiId = params.backgroundEmojiId;
+  }
+}
+
 export class BotsSendCustomRequest extends Function<types.TypeDataJSON> {
   customMethod: string;
   params: types.TypeDataJSON;
@@ -14277,6 +14392,145 @@ export class PaymentsCanPurchasePremium extends Function<boolean> {
 
   constructor(params: { purpose: types.TypeInputStorePaymentPurpose }) {
     super();
+    this.purpose = params.purpose;
+  }
+}
+
+export class PaymentsGetPremiumGiftCodeOptions extends Function<types.TypePremiumGiftCodeOption[]> {
+  boostPeer?: types.TypeInputPeer;
+
+  protected get [id]() {
+    return 0x2757BA54;
+  }
+
+  static get [paramDesc](): ParamDesc {
+    return [
+      ["flags", flags, "#"],
+      ["boostPeer", types._TypeInputPeer, "flags.0?InputPeer"],
+    ];
+  }
+
+  protected get [params](): Params {
+    return [
+      ["flags", flags, "#"],
+      [this.boostPeer ?? null, types._TypeInputPeer, "flags.0?InputPeer"],
+    ];
+  }
+
+  constructor(params?: { boostPeer?: types.TypeInputPeer }) {
+    super();
+    this.boostPeer = params?.boostPeer;
+  }
+}
+
+export class PaymentsCheckGiftCode extends Function<types.TypePaymentsCheckedGiftCode> {
+  slug: string;
+
+  protected get [id]() {
+    return 0x8E51B4C1;
+  }
+
+  static get [paramDesc](): ParamDesc {
+    return [
+      ["slug", "string", "string"],
+    ];
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.slug, "string", "string"],
+    ];
+  }
+
+  constructor(params: { slug: string }) {
+    super();
+    this.slug = params.slug;
+  }
+}
+
+export class PaymentsApplyGiftCode extends Function<types.TypeUpdates> {
+  slug: string;
+
+  protected get [id]() {
+    return 0xF6E26854;
+  }
+
+  static get [paramDesc](): ParamDesc {
+    return [
+      ["slug", "string", "string"],
+    ];
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.slug, "string", "string"],
+    ];
+  }
+
+  constructor(params: { slug: string }) {
+    super();
+    this.slug = params.slug;
+  }
+}
+
+export class PaymentsGetGiveawayInfo extends Function<types.TypePaymentsGiveawayInfo> {
+  peer: types.TypeInputPeer;
+  msgId: number;
+
+  protected get [id]() {
+    return 0xF4239425;
+  }
+
+  static get [paramDesc](): ParamDesc {
+    return [
+      ["peer", types._TypeInputPeer, "InputPeer"],
+      ["msgId", "number", "int"],
+    ];
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.peer, types._TypeInputPeer, "InputPeer"],
+      [this.msgId, "number", "int"],
+    ];
+  }
+
+  constructor(params: { peer: types.TypeInputPeer; msgId: number }) {
+    super();
+    this.peer = params.peer;
+    this.msgId = params.msgId;
+  }
+}
+
+export class PaymentsLaunchPrepaidGiveaway extends Function<types.TypeUpdates> {
+  peer: types.TypeInputPeer;
+  giveawayId: bigint;
+  purpose: types.TypeInputStorePaymentPurpose;
+
+  protected get [id]() {
+    return 0x5FF58F20;
+  }
+
+  static get [paramDesc](): ParamDesc {
+    return [
+      ["peer", types._TypeInputPeer, "InputPeer"],
+      ["giveawayId", "bigint", "long"],
+      ["purpose", types._TypeInputStorePaymentPurpose, "InputStorePaymentPurpose"],
+    ];
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.peer, types._TypeInputPeer, "InputPeer"],
+      [this.giveawayId, "bigint", "long"],
+      [this.purpose, types._TypeInputStorePaymentPurpose, "InputStorePaymentPurpose"],
+    ];
+  }
+
+  constructor(params: { peer: types.TypeInputPeer; giveawayId: bigint; purpose: types.TypeInputStorePaymentPurpose }) {
+    super();
+    this.peer = params.peer;
+    this.giveawayId = params.giveawayId;
     this.purpose = params.purpose;
   }
 }
@@ -17020,42 +17274,20 @@ export class StoriesTogglePeerStoriesHidden extends Function<boolean> {
   }
 }
 
-export class StoriesGetBoostsStatus extends Function<types.TypeStoriesBoostsStatus> {
-  peer: types.TypeInputPeer;
-
-  protected get [id]() {
-    return 0x4C449472;
-  }
-
-  static get [paramDesc](): ParamDesc {
-    return [
-      ["peer", types._TypeInputPeer, "InputPeer"],
-    ];
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.peer, types._TypeInputPeer, "InputPeer"],
-    ];
-  }
-
-  constructor(params: { peer: types.TypeInputPeer }) {
-    super();
-    this.peer = params.peer;
-  }
-}
-
-export class StoriesGetBoostersList extends Function<types.TypeStoriesBoostersList> {
+export class PremiumGetBoostsList extends Function<types.TypePremiumBoostsList> {
+  gifts?: true;
   peer: types.TypeInputPeer;
   offset: string;
   limit: number;
 
   protected get [id]() {
-    return 0x337EF980;
+    return 0x60F67660;
   }
 
   static get [paramDesc](): ParamDesc {
     return [
+      ["flags", flags, "#"],
+      ["gifts", "true", "flags.0?true"],
       ["peer", types._TypeInputPeer, "InputPeer"],
       ["offset", "string", "string"],
       ["limit", "number", "int"],
@@ -17064,50 +17296,77 @@ export class StoriesGetBoostersList extends Function<types.TypeStoriesBoostersLi
 
   protected get [params](): Params {
     return [
+      ["flags", flags, "#"],
+      [this.gifts ?? null, "true", "flags.0?true"],
       [this.peer, types._TypeInputPeer, "InputPeer"],
       [this.offset, "string", "string"],
       [this.limit, "number", "int"],
     ];
   }
 
-  constructor(params: { peer: types.TypeInputPeer; offset: string; limit: number }) {
+  constructor(params: { gifts?: true; peer: types.TypeInputPeer; offset: string; limit: number }) {
     super();
+    this.gifts = params.gifts;
     this.peer = params.peer;
     this.offset = params.offset;
     this.limit = params.limit;
   }
 }
 
-export class StoriesCanApplyBoost extends Function<types.TypeStoriesCanApplyBoostResult> {
+export class PremiumGetMyBoosts extends Function<types.TypePremiumMyBoosts> {
+  protected get [id]() {
+    return 0x0BE77B4A;
+  }
+
+  static get [paramDesc](): ParamDesc {
+    return [];
+  }
+
+  protected get [params](): Params {
+    return [];
+  }
+
+  constructor() {
+    super();
+  }
+}
+
+export class PremiumApplyBoost extends Function<types.TypePremiumMyBoosts> {
+  slots?: Array<number>;
   peer: types.TypeInputPeer;
 
   protected get [id]() {
-    return 0xDB05C1BD;
+    return 0x6B7DA746;
   }
 
   static get [paramDesc](): ParamDesc {
     return [
+      ["flags", flags, "#"],
+      ["slots", ["number"], "flags.0?Vector<int>"],
       ["peer", types._TypeInputPeer, "InputPeer"],
     ];
   }
 
   protected get [params](): Params {
     return [
+      ["flags", flags, "#"],
+      [this.slots ?? null, ["number"], "flags.0?Vector<int>"],
       [this.peer, types._TypeInputPeer, "InputPeer"],
     ];
   }
 
-  constructor(params: { peer: types.TypeInputPeer }) {
+  constructor(params: { slots?: Array<number>; peer: types.TypeInputPeer }) {
     super();
+    this.slots = params.slots;
     this.peer = params.peer;
   }
 }
 
-export class StoriesApplyBoost extends Function<boolean> {
+export class PremiumGetBoostsStatus extends Function<types.TypePremiumBoostsStatus> {
   peer: types.TypeInputPeer;
 
   protected get [id]() {
-    return 0xF29D7C2B;
+    return 0x042F1F61;
   }
 
   static get [paramDesc](): ParamDesc {

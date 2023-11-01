@@ -185,7 +185,7 @@ async function getSender(message_: types.Message | types.MessageService, getEnti
 }
 
 async function getReply(message_: types.Message | types.MessageService, chat: Chat, getMessage: Message_MessageGetter) {
-  if (getMessage && message_.replyTo instanceof types.MessageReplyHeader) {
+  if (getMessage && message_.replyTo instanceof types.MessageReplyHeader && message_.replyTo.replyToMsgId) {
     let isTopicMessage = false;
     if (message_.replyTo.forumTopic) {
       isTopicMessage = true;
