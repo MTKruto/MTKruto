@@ -58,7 +58,7 @@ export const PUBLIC_KEYS: PublicKeys = Object.freeze([
 
 export const VECTOR_CONSTRUCTOR = 0x1CB5C415;
 
-export const INITIAL_DC: DC = "2-test";
+export const INITIAL_DC: DC = "2";
 
 export const LAYER = 166;
 
