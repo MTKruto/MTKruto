@@ -2,7 +2,7 @@ import { cleanObject, UNREACHABLE } from "../1_utilities.ts";
 import { types } from "../2_tl.ts";
 import { ZERO_CHANNEL_ID } from "../4_constants.ts";
 import { ChatPhoto, constructChatPhoto } from "./0_chat_photo.ts";
-import { Color, getColor } from "./0_color.ts";
+import { Color, getColorFromColorId, getColorFromPeerId } from "./0_color.ts";
 import { constructRestrictionReason, RestrictionReason } from "./0_restriction_reason.ts";
 
 export type ChatType =
@@ -106,7 +106,7 @@ export function constructChat(chat: types.User | types.Chat | types.Channel): Ch
       type: "private",
       isBot: chat.bot || false,
       id,
-      color: getColor(id),
+      color: chat.color !== undefined ? getColorFromColorId(chat.color) : getColorFromPeerId(id),
       firstName: chat.firstName || "",
       lastName: chat.lastName,
       isScam: chat.scam || false,
@@ -130,7 +130,7 @@ export function constructChat(chat: types.User | types.Chat | types.Channel): Ch
     const chat_: Chat.Group = {
       type: "group",
       id,
-      color: getColor(id),
+      color: getColorFromPeerId(id),
       title: chat.title,
       isCreator: chat.creator || false,
     };
@@ -153,7 +153,7 @@ export function constructChat(chat: types.User | types.Chat | types.Channel): Ch
     if (chat.megagroup) {
       chat_ = {
         id,
-        color: getColor(id),
+        color: chat.color !== undefined ? getColorFromColorId(chat.color) : getColorFromPeerId(id),
         type: "supergroup",
         title,
         isScam,
@@ -166,7 +166,7 @@ export function constructChat(chat: types.User | types.Chat | types.Channel): Ch
       const id = ZERO_CHANNEL_ID + -Number(chat.id);
       chat_ = {
         id,
-        color: getColor(id),
+        color: chat.color !== undefined ? getColorFromColorId(chat.color) : getColorFromPeerId(id),
         type: "channel",
         title,
         isScam,

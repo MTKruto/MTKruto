@@ -1,7 +1,7 @@
 import { cleanObject } from "../1_utilities.ts";
 import { types } from "../2_tl.ts";
 import { ChatPhoto, constructChatPhoto } from "./0_chat_photo.ts";
-import { Color, getColor } from "./0_color.ts";
+import { Color, getColorFromColorId, getColorFromPeerId } from "./0_color.ts";
 
 /** This object represents a Telegram user or bot. */
 export interface User {
@@ -41,7 +41,7 @@ export function constructUser(user_: types.User) {
   const id = Number(user_.id);
   const user: User = {
     id,
-    color: getColor(id),
+    color: user_.color !== undefined ? getColorFromColorId(user_.color) : getColorFromPeerId(id),
     isBot: user_.bot || false,
     firstName: user_.firstName || "",
     lastName: user_.lastName,
