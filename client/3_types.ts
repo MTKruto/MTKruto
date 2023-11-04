@@ -3,8 +3,7 @@ import { functions, types } from "../2_tl.ts";
 import { BotCommandScope, CallbackQuery, ChatID, ForceReply, InlineKeyboardMarkup, InlineQuery, InlineQueryResultButton, Message, MessageEntity, ReplyKeyboardMarkup, ReplyKeyboardRemove } from "../3_types.ts";
 import { With } from "./0_utilities.ts";
 import { ClientPlainParams } from "./2_client_plain.ts";
-
-export type ParseMode = "HTML" | null;
+import { ParseMode } from "../3_types.ts";
 
 export interface ClientParams extends ClientPlainParams {
   /**
