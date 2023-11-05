@@ -24,7 +24,7 @@ export abstract class ClientAbstract {
   protected readonly cdn: boolean;
 
   protected transport?: ReturnType<TransportProvider>;
-  private dc?: DC;
+  #dc?: DC;
 
   constructor(params?: ClientAbstractParams) {
     this.initialDc = params?.initialDc ?? INITIAL_DC;
@@ -43,7 +43,7 @@ export abstract class ClientAbstract {
 
   // MaybePromise since `Client` has to deal with `Storage.set()`
   setDc(dc: DC): MaybePromise<void> {
-    this.dc = dc;
+    this.#dc = dc;
   }
 
   get connected() {
@@ -51,7 +51,7 @@ export abstract class ClientAbstract {
   }
 
   async connect() {
-    this.transport = this.transportProvider({ dc: this.dc ?? this.initialDc, cdn: this.cdn });
+    this.transport = this.transportProvider({ dc: this.#dc ?? this.initialDc, cdn: this.cdn });
     this.transport.connection.stateChangeHandler = this.stateChangeHandler;
     await initTgCrypto();
     await this.transport.connection.open();

@@ -4,16 +4,21 @@ import { getObfuscationParameters } from "./0_obfuscation.ts";
 import { Transport } from "./0_transport.ts";
 
 export class TransportAbridged extends Transport implements Transport {
-  constructor(private readonly connection: Connection, private readonly obfuscated = false) {
+  #connection: Connection;
+  #obfuscated: boolean;
+
+  constructor(connection: Connection, obfuscated = false) {
     super();
+    this.#connection = connection;
+    this.#obfuscated = obfuscated;
   }
 
   async initialize() {
     if (!this.initialized) {
-      if (this.obfuscated) {
-        this.obfuscationParameters = await getObfuscationParameters(0xEFEFEFEF, this.connection);
+      if (this.#obfuscated) {
+        this.obfuscationParameters = await getObfuscationParameters(0xEFEFEFEF, this.#connection);
       } else {
-        await this.connection.write(new Uint8Array([0xEF]));
+        await this.#connection.write(new Uint8Array([0xEF]));
       }
       this.initialized = true;
     } else {
@@ -26,14 +31,14 @@ export class TransportAbridged extends Transport implements Transport {
 
     {
       const buffer = new Uint8Array(1);
-      await this.connection.read(buffer);
+      await this.#connection.read(buffer);
       this.decrypt(buffer);
 
       if (buffer[0] < 0x7F) {
         length = buffer[0];
       } else {
         const buffer = new Uint8Array(3);
-        await this.connection.read(buffer);
+        await this.#connection.read(buffer);
         this.decrypt(buffer);
         const dataView = new DataView(buffer.buffer);
         length = dataView.getUint16(0, true);
@@ -43,7 +48,7 @@ export class TransportAbridged extends Transport implements Transport {
     length *= 4;
 
     const buffer = new Uint8Array(length);
-    await this.connection.read(buffer);
+    await this.#connection.read(buffer);
     this.decrypt(buffer);
 
     return buffer;
@@ -61,7 +66,7 @@ export class TransportAbridged extends Transport implements Transport {
     const data = concat(header, length, buffer);
     this.encrypt(data);
 
-    await this.connection.write(data);
+    await this.#connection.write(data);
   }
 
   deinitialize() {
