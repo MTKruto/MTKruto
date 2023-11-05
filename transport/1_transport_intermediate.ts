@@ -4,16 +4,21 @@ import { getObfuscationParameters } from "./0_obfuscation.ts";
 import { Transport } from "./0_transport.ts";
 
 export class TransportIntermediate extends Transport implements Transport {
-  constructor(private readonly connection: Connection, private readonly obfuscated = false) {
+  #connection: Connection;
+  #obfuscated: boolean;
+
+  constructor(connection: Connection, obfuscated = false) {
     super();
+    this.#connection = connection;
+    this.#obfuscated = obfuscated;
   }
 
   async initialize() {
     if (!this.initialized) {
-      if (this.obfuscated) {
-        this.obfuscationParameters = await getObfuscationParameters(0xEEEEEEEE, this.connection);
+      if (this.#obfuscated) {
+        this.obfuscationParameters = await getObfuscationParameters(0xEEEEEEEE, this.#connection);
       } else {
-        await this.connection.write(new Uint8Array([0xEE, 0xEE, 0xEE, 0xEE]));
+        await this.#connection.write(new Uint8Array([0xEE, 0xEE, 0xEE, 0xEE]));
       }
       this.initialized = true;
     } else {
@@ -26,14 +31,14 @@ export class TransportIntermediate extends Transport implements Transport {
 
     {
       const buffer = new Uint8Array(4);
-      await this.connection.read(buffer);
+      await this.#connection.read(buffer);
       this.decrypt(buffer);
       const dataView = new DataView(buffer.buffer);
       length = dataView.getUint32(0, true);
     }
 
     const buffer = new Uint8Array(length);
-    await this.connection.read(buffer);
+    await this.#connection.read(buffer);
     this.decrypt(buffer);
     return buffer;
   }
@@ -47,7 +52,7 @@ export class TransportIntermediate extends Transport implements Transport {
     const data = concat(length, buffer);
     this.encrypt(data);
 
-    await this.connection.write(data);
+    await this.#connection.write(data);
   }
 
   deinitialize() {

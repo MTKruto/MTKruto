@@ -15,19 +15,19 @@ export interface ClientPlainParams extends ClientAbstractParams {
 }
 
 export class ClientPlain extends ClientAbstract {
-  private readonly publicKeys: PublicKeys;
-  private lastMsgId = 0n;
+  readonly #publicKeys: PublicKeys;
+  #lastMsgId = 0n;
 
   constructor(params?: ClientPlainParams) {
     super(params);
-    this.publicKeys = params?.publicKeys ?? PUBLIC_KEYS;
+    this.#publicKeys = params?.publicKeys ?? PUBLIC_KEYS;
   }
 
   async invoke<T extends functions.Function<unknown>>(function_: T): Promise<T["__R"]> {
     if (!this.transport) {
       throw new Error("Not connected");
     }
-    const msgId = this.lastMsgId = getMessageId(this.lastMsgId);
+    const msgId = this.#lastMsgId = getMessageId(this.#lastMsgId);
     await this.transport.transport.send(packUnencryptedMessage(function_[serialize](), msgId));
     const buffer = await this.transport.transport.receive();
     if (buffer.length == 4) {
@@ -73,7 +73,7 @@ export class ClientPlain extends ClientAbstract {
     let publicKey: [bigint, bigint] | undefined;
 
     for (const fingerprint of resPq.serverPublicKeyFingerprints) {
-      const maybePublicKey = this.publicKeys.find(([k]) => (k == fingerprint));
+      const maybePublicKey = this.#publicKeys.find(([k]) => (k == fingerprint));
       if (maybePublicKey) {
         publicKeyFingerprint = fingerprint;
         publicKey = maybePublicKey[1];

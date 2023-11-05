@@ -1,37 +1,37 @@
 import { debug } from "../0_deps.ts";
 
 export class Queue {
-  private d: ReturnType<typeof debug>;
-  private functions = new Array<() => Promise<void>>();
+  #d: ReturnType<typeof debug>;
+  functions = new Array<() => Promise<void>>();
 
   constructor(name: string) {
-    this.d = debug(`q/${name}`);
+    this.#d = debug(`q/${name}`);
   }
 
   add(fn: () => Promise<void>) {
     this.functions.push(fn);
-    this.check();
+    this.#check();
   }
 
-  private busy = false;
-  private check() {
-    if (this.busy) {
+  #busy = false;
+  #check() {
+    if (this.#busy) {
       return;
     } else {
-      this.busy = true;
+      this.#busy = true;
     }
     const fn = this.functions.shift();
     if (fn !== undefined) {
       fn()
         .catch((err) => {
-          this.d("%o", "stack" in err ? err.stack : err);
+          this.#d("%o", "stack" in err ? err.stack : err);
         })
         .finally(() => {
-          this.busy = false;
-          this.check();
+          this.#busy = false;
+          this.#check();
         });
     } else {
-      this.busy = false;
+      this.#busy = false;
     }
   }
 }

@@ -33,13 +33,13 @@ export class ConnectionError extends Error {
 }
 
 export class Client extends ClientAbstract {
-  private auth: { key: Uint8Array; id: bigint } | null = null;
-  private sessionId = getRandomBigInt(8, true, false);
-  private state = { salt: 0n, seqNo: 0 };
-  private promises = new Map<bigint, { resolve: (obj: ReadObject) => void; reject: (err: ReadObject | Error) => void }>();
-  private toAcknowledge = new Set<bigint>();
-  private updateState?: types.UpdatesState;
-  private readonly errorHandler?: ClientParams["errorHandler"];
+  #auth: { key: Uint8Array; id: bigint } | null = null;
+  #sessionId = getRandomBigInt(8, true, false);
+  #state = { salt: 0n, seqNo: 0 };
+  #promises = new Map<bigint, { resolve: (obj: ReadObject) => void; reject: (err: ReadObject | Error) => void }>();
+  #toAcknowledge = new Set<bigint>();
+  #updateState?: types.UpdatesState;
+  readonly #errorHandler?: ClientParams["errorHandler"];
 
   public readonly storage: Storage;
   public readonly parseMode: ParseMode;
@@ -50,8 +50,8 @@ export class Client extends ClientAbstract {
   public readonly langPack: string;
   public readonly systemLangCode: string;
   public readonly systemVersion: string;
-  private readonly publicKeys?: PublicKeys;
-  private readonly autoStart: boolean;
+  readonly #publicKeys?: PublicKeys;
+  readonly #autoStart: boolean;
 
   /**
    * Constructs the client.
@@ -77,23 +77,23 @@ export class Client extends ClientAbstract {
     this.langPack = params?.langPack ?? LANG_PACK;
     this.systemLangCode = params?.systemLangCode ?? SYSTEM_LANG_CODE;
     this.systemVersion = params?.systemVersion ?? SYSTEM_VERSION;
-    this.publicKeys = params?.publicKeys;
-    this.autoStart = params?.autoStart ?? true;
-    this.errorHandler = params?.errorHandler;
+    this.#publicKeys = params?.publicKeys;
+    this.#autoStart = params?.autoStart ?? true;
+    this.#errorHandler = params?.errorHandler;
   }
 
-  private propagateConnectionState(connectionState: ConnectionState) {
-    return this.handle({ connectionState }, resolve);
+  #propagateConnectionState(connectionState: ConnectionState) {
+    return this.#handle({ connectionState }, resolve);
   }
 
-  private lastPropagatedConnectionState: ConnectionState | null = null;
+  #lastPropagatedConnectionState: ConnectionState | null = null;
   protected stateChangeHandler = ((connected: boolean) => {
-    this.connectMutex.acquire().then(async (release) => {
+    this.#connectMutex.acquire().then(async (release) => {
       try {
         const connectionState = connected ? "ready" : "notConnected";
-        if (this.connected == connected && this.lastPropagatedConnectionState != connectionState) {
-          await this.propagateConnectionState(connectionState);
-          this.lastPropagatedConnectionState = connectionState;
+        if (this.connected == connected && this.#lastPropagatedConnectionState != connectionState) {
+          await this.#propagateConnectionState(connectionState);
+          this.#lastPropagatedConnectionState = connectionState;
         }
       } finally {
         release();
@@ -101,7 +101,7 @@ export class Client extends ClientAbstract {
     });
   }).bind(this);
 
-  private storageInited = false;
+  #storageInited = false;
 
   /**
    * Sets the DC and resets the auth key stored in the session provider
@@ -110,9 +110,9 @@ export class Client extends ClientAbstract {
    * @param dc The DC to change to.
    */
   async setDc(dc: DC) {
-    if (!this.storageInited) {
+    if (!this.#storageInited) {
       await this.storage.init();
-      this.storageInited = true;
+      this.#storageInited = true;
     }
     if (await this.storage.getDc() != dc) {
       await this.storage.setDc(dc);
@@ -122,13 +122,13 @@ export class Client extends ClientAbstract {
     super.setDc(dc);
   }
 
-  private async setAuth(key: Uint8Array) {
+  async #setAuth(key: Uint8Array) {
     const hash = await sha1(key);
     const id = bigIntFromBuffer(hash.slice(-8), true, false);
-    this.auth = { key, id };
+    this.#auth = { key, id };
   }
 
-  private connectMutex = new Mutex();
+  #connectMutex = new Mutex();
   /**
    * Loads the session if `setDc` was not called, initializes and connnects
    * a `ClientPlain` to generate auth key if there was none, and connects the client.
@@ -138,15 +138,15 @@ export class Client extends ClientAbstract {
     if (this.connected) {
       return;
     }
-    const release = await this.connectMutex.acquire();
+    const release = await this.#connectMutex.acquire();
     try {
-      if (!this.storageInited) {
+      if (!this.#storageInited) {
         await this.storage.init();
-        this.storageInited = true;
+        this.#storageInited = true;
       }
       const authKey = await this.storage.getAuthKey();
       if (authKey == null) {
-        const plain = new ClientPlain({ initialDc: this.initialDc, transportProvider: this.transportProvider, cdn: this.cdn, publicKeys: this.publicKeys });
+        const plain = new ClientPlain({ initialDc: this.initialDc, transportProvider: this.transportProvider, cdn: this.cdn, publicKeys: this.#publicKeys });
         const dc = await this.storage.getDc();
         if (dc != null) {
           plain.setDc(dc);
@@ -155,10 +155,10 @@ export class Client extends ClientAbstract {
         const { authKey, salt } = await plain.createAuthKey();
         await plain.disconnect();
         await this.storage.setAuthKey(authKey);
-        await this.setAuth(authKey);
-        this.state.salt = salt;
+        await this.#setAuth(authKey);
+        this.#state.salt = salt;
       } else {
-        await this.setAuth(authKey);
+        await this.#setAuth(authKey);
       }
       const dc = await this.storage.getDc();
       if (dc != null) {
@@ -169,27 +169,27 @@ export class Client extends ClientAbstract {
         await this.storage.setDc(this.initialDc);
       }
       d("encrypted client connected");
-      drop(this.receiveLoop());
+      drop(this.#receiveLoop());
     } finally {
       release();
     }
   }
 
-  private async assertUser(source: string) {
+  async #assertUser(source: string) {
     if (await this.storage.getAccountType() != "user") {
       throw new Error(`${source}: not user a client`);
     }
   }
 
-  private async assertBot(source: string) {
+  async #assertBot(source: string) {
     if (await this.storage.getAccountType() != "bot") {
       throw new Error(`${source}: not a bot client`);
     }
   }
 
-  private async fetchState(source: string) {
+  async #fetchState(source: string) {
     const state = await this.invoke(new functions.UpdatesGetState());
-    this.updateState = state;
+    this.#updateState = state;
     d("state fetched [%s]", source);
   }
 
@@ -202,13 +202,13 @@ export class Client extends ClientAbstract {
     d("migrated to DC%s", newDc);
   }
 
-  private connectionInited = false;
+  #connectionInited = false;
   disconnect() {
-    this.connectionInited = false;
+    this.#connectionInited = false;
     return super.disconnect();
   }
-  private async initConnection() {
-    if (!this.connectionInited) {
+  async #initConnection() {
+    if (!this.#connectionInited) {
       await this.invoke(
         new functions.InitConnection({
           apiId: this.apiId!,
@@ -224,25 +224,25 @@ export class Client extends ClientAbstract {
           systemVersion: this.systemVersion,
         }),
       );
-      this.connectionInited = true;
+      this.#connectionInited = true;
       d("connection inited");
     }
   }
 
-  private lastPropagatedAuthorizationState: boolean | null = null;
-  private async propagateAuthorizationState(authorized: boolean) {
-    if (this.lastPropagatedAuthorizationState != authorized) {
-      await this.handle({ authorizationState: { authorized } }, resolve);
-      this.lastPropagatedAuthorizationState = authorized;
+  #lastPropagatedAuthorizationState: boolean | null = null;
+  async #propagateAuthorizationState(authorized: boolean) {
+    if (this.#lastPropagatedAuthorizationState != authorized) {
+      await this.#handle({ authorizationState: { authorized } }, resolve);
+      this.#lastPropagatedAuthorizationState = authorized;
     }
   }
 
-  private selfId: number | null = null;
-  private async getSelfId() {
-    if (this.selfId == null) {
-      this.selfId = await this.getMe().then((v) => v.id);
+  #selfId: number | null = null;
+  async #getSelfId() {
+    if (this.#selfId == null) {
+      this.#selfId = await this.getMe().then((v) => v.id);
     }
-    return this.selfId!;
+    return this.#selfId!;
   }
 
   /**
@@ -281,11 +281,11 @@ export class Client extends ClientAbstract {
 
     dAuth("authorizing with %s", typeof params === "string" ? "bot token" : params instanceof types.AuthExportedAuthorization ? "exported authorization" : "AuthorizeUserParams");
 
-    await this.initConnection();
+    await this.#initConnection();
 
     try {
-      await this.fetchState("authorize");
-      await this.propagateAuthorizationState(true);
+      await this.#fetchState("authorize");
+      await this.#propagateAuthorizationState(true);
       d("already authorized");
       return;
     } catch (err) {
@@ -298,13 +298,13 @@ export class Client extends ClientAbstract {
       while (true) {
         try {
           const auth = await this.invoke(new functions.AuthImportBotAuthorization({ apiId: this.apiId, apiHash: this.apiHash, botAuthToken: params, flags: 0 }));
-          this.selfId = Number(auth[as](types.AuthAuthorization).user.id);
+          this.#selfId = Number(auth[as](types.AuthAuthorization).user.id);
           await this.storage.setAccountType("bot");
           break;
         } catch (err) {
           if (err instanceof Migrate) {
             await this[handleMigrationError](err);
-            await this.initConnection();
+            await this.#initConnection();
             continue;
           } else {
             throw err;
@@ -312,8 +312,8 @@ export class Client extends ClientAbstract {
         }
       }
       dAuth("authorized as bot");
-      await this.propagateAuthorizationState(true);
-      await this.fetchState("authorize");
+      await this.#propagateAuthorizationState(true);
+      await this.#fetchState("authorize");
       return;
     }
 
@@ -342,7 +342,7 @@ export class Client extends ClientAbstract {
         } catch (err) {
           if (err instanceof Migrate) {
             await this[handleMigrationError](err);
-            await this.initConnection();
+            await this.#initConnection();
             sentCode = await sendCode();
           } else {
             throw err;
@@ -370,11 +370,11 @@ export class Client extends ClientAbstract {
             phoneCodeHash: sentCode.phoneCodeHash,
           }),
         );
-        this.selfId = Number(auth[as](types.AuthAuthorization).user.id);
+        this.#selfId = Number(auth[as](types.AuthAuthorization).user.id);
         await this.storage.setAccountType("user");
         dAuth("authorized as user");
-        await this.propagateAuthorizationState(true);
-        await this.fetchState("authorize");
+        await this.#propagateAuthorizationState(true);
+        await this.#fetchState("authorize");
         return;
       } catch (err_) {
         if (err_ instanceof types.RPCError && err_.errorMessage == "PHONE_CODE_INVALID") {
@@ -400,11 +400,11 @@ export class Client extends ClientAbstract {
         const input = await checkPassword(password, ap);
 
         const auth = await this.invoke(new functions.AuthCheckPassword({ password: input }));
-        this.selfId = Number(auth[as](types.AuthAuthorization).user.id);
+        this.#selfId = Number(auth[as](types.AuthAuthorization).user.id);
         await this.storage.setAccountType("user");
         dAuth("authorized as user");
-        await this.propagateAuthorizationState(true);
-        await this.fetchState("authorize");
+        await this.#propagateAuthorizationState(true);
+        await this.#fetchState("authorize");
         break;
       } catch (err) {
         if (err instanceof PasswordHashInvalid) {
@@ -421,12 +421,12 @@ export class Client extends ClientAbstract {
    */
   async start(params?: string | types.AuthExportedAuthorization | AuthorizeUserParams) {
     await this.connect();
-    await this.initConnection();
+    await this.#initConnection();
 
     try {
-      await this.fetchState("authorize");
+      await this.#fetchState("authorize");
       d("already authorized");
-      await this.propagateAuthorizationState(true);
+      await this.#propagateAuthorizationState(true);
       return;
     } catch (err) {
       if (!(err instanceof AuthKeyUnregistered)) {
@@ -437,16 +437,16 @@ export class Client extends ClientAbstract {
     await this.authorize(params);
   }
 
-  private async receiveLoop() {
-    if (!this.auth || !this.transport) {
+  async #receiveLoop() {
+    if (!this.#auth || !this.transport) {
       throw new ConnectionError("Not connected");
     }
 
     while (this.connected) {
       try {
-        if (this.toAcknowledge.size >= ACK_THRESHOLD) {
-          await this.send(new types.MsgsAck({ msgIds: [...this.toAcknowledge] }));
-          this.toAcknowledge.clear();
+        if (this.#toAcknowledge.size >= ACK_THRESHOLD) {
+          await this.send(new types.MsgsAck({ msgIds: [...this.#toAcknowledge] }));
+          this.#toAcknowledge.clear();
         }
 
         const buffer = await this.transport.transport.receive();
@@ -455,13 +455,13 @@ export class Client extends ClientAbstract {
         try {
           decrypted = await (decryptMessage(
             buffer,
-            this.auth.key,
-            this.auth.id,
-            this.sessionId,
+            this.#auth.key,
+            this.#auth.id,
+            this.#sessionId,
           ));
         } catch (err) {
           dRecv("failed to decrypt message: %o", err);
-          drop(this.recoverUpdateGap("decryption"));
+          drop(this.#recoverUpdateGap("decryption"));
           continue;
         }
         const messages = decrypted instanceof MessageContainer ? decrypted.messages : [decrypted];
@@ -473,9 +473,9 @@ export class Client extends ClientAbstract {
           }
           dRecv("received %s", body.constructor.name);
           if (body instanceof types._TypeUpdates || body instanceof types._TypeUpdate) {
-            this.processUpdatesQueue.add(() => this.processUpdates(body as types.Updates | types.TypeUpdate));
+            this.#processUpdatesQueue.add(() => this.#processUpdates(body as types.Updates | types.TypeUpdate));
           } else if (body instanceof types.NewSessionCreated) {
-            this.state.salt = body.serverSalt;
+            this.#state.salt = body.serverSalt;
           } else if (message.body instanceof RPCResult) {
             let result = message.body.result;
             if (result instanceof types.GZIPPacked) {
@@ -488,19 +488,19 @@ export class Client extends ClientAbstract {
             }
             const messageId = message.body.messageId;
             const resolvePromise = () => {
-              const promise = this.promises.get(messageId);
+              const promise = this.#promises.get(messageId);
               if (promise) {
                 if (result instanceof types.RPCError) {
                   promise.reject(upgradeInstance(result));
                 } else {
                   promise.resolve(result);
                 }
-                this.promises.delete(messageId);
+                this.#promises.delete(messageId);
               }
             };
             if (result instanceof types._TypeUpdates || result instanceof types._TypeUpdate) {
-              this.processUpdatesQueue.add(async () => {
-                await this.processUpdates(result as types.TypeUpdates | types.TypeUpdate);
+              this.#processUpdatesQueue.add(async () => {
+                await this.#processUpdates(result as types.TypeUpdates | types.TypeUpdate);
                 resolvePromise();
               });
             } else {
@@ -508,29 +508,29 @@ export class Client extends ClientAbstract {
               resolvePromise();
             }
           } else if (message.body instanceof types.Pong) {
-            const promise = this.promises.get(message.body.msgId);
+            const promise = this.#promises.get(message.body.msgId);
             if (promise) {
               promise.resolve(message.body);
-              this.promises.delete(message.body.msgId);
+              this.#promises.delete(message.body.msgId);
             }
           } else if (message.body instanceof types.BadServerSalt) {
             d("server salt reassigned");
-            this.state.salt = message.body.newServerSalt;
-            const promise = this.promises.get(message.body.badMsgId);
+            this.#state.salt = message.body.newServerSalt;
+            const promise = this.#promises.get(message.body.badMsgId);
             if (promise) {
               promise.resolve(message.body);
-              this.promises.delete(message.body.badMsgId);
+              this.#promises.delete(message.body.badMsgId);
             }
           }
 
-          this.toAcknowledge.add(message.id);
+          this.#toAcknowledge.add(message.id);
         }
       } catch (err) {
         if (!this.connected) {
           break;
         } else if (err instanceof TLError) {
           dRecv("failed to deserialize: %o", err);
-          drop(this.recoverUpdateGap("deserialize"));
+          drop(this.#recoverUpdateGap("deserialize"));
         } else {
           dRecv("uncaught error: %o", err);
         }
@@ -538,7 +538,7 @@ export class Client extends ClientAbstract {
     }
 
     if (!this.connected) {
-      for (const { reject } of this.promises.values()) {
+      for (const { reject } of this.#promises.values()) {
         reject(new ConnectionError("Connection was closed"));
       }
     } else {
@@ -546,7 +546,7 @@ export class Client extends ClientAbstract {
     }
   }
 
-  private async pingLoop() {
+  async #pingLoop() {
     while (this.connected) {
       try {
         await this.invoke(new functions.Ping({ pingId: getRandomBigInt(8, true, false) }));
@@ -557,9 +557,9 @@ export class Client extends ClientAbstract {
     }
   }
 
-  private pingLoopStarted = false;
-  private autoStarted = false;
-  private lastMsgId = 0n;
+  pingLoopStarted = false;
+  #autoStarted = false;
+  #lastMsgId = 0n;
   /**
    * Invokes a function waiting and returning its reply if the second parameter is not `true`. Requires the client
    * to be connected.
@@ -569,35 +569,35 @@ export class Client extends ClientAbstract {
   async invoke<T extends (functions.Function<unknown> | types.Type) = functions.Function<unknown>>(function_: T): Promise<T extends functions.Function<unknown> ? T["__R"] : void>;
   async invoke<T extends (functions.Function<unknown> | types.Type) = functions.Function<unknown>>(function_: T, noWait: true): Promise<void>;
   async invoke<T extends (functions.Function<unknown> | types.Type) = functions.Function<unknown>>(function_: T, noWait?: boolean): Promise<T | void> {
-    if (!this.auth || !this.transport) {
-      if (this.autoStart && !this.autoStarted) {
+    if (!this.#auth || !this.transport) {
+      if (this.#autoStart && !this.#autoStarted) {
         await this.start();
       } else {
         throw new ConnectionError("Not connected");
       }
     }
-    if (!this.auth || !this.transport) {
+    if (!this.#auth || !this.transport) {
       UNREACHABLE();
     }
 
     let n = 1;
     while (true) {
       try {
-        let seqNo = this.state.seqNo * 2;
+        let seqNo = this.#state.seqNo * 2;
         if (!(function_ instanceof functions.Ping) && !(function_ instanceof types.MsgsAck)) {
           seqNo++;
-          this.state.seqNo++;
+          this.#state.seqNo++;
         }
 
-        const messageId = this.lastMsgId = getMessageId(this.lastMsgId);
+        const messageId = this.#lastMsgId = getMessageId(this.#lastMsgId);
         const message = new Message_(messageId, seqNo, function_);
         await this.transport.transport.send(
           await encryptMessage(
             message,
-            this.auth.key,
-            this.auth.id,
-            this.state.salt,
-            this.sessionId,
+            this.#auth.key,
+            this.#auth.id,
+            this.#state.salt,
+            this.#sessionId,
           ),
         );
         d("invoked %s", function_.constructor.name);
@@ -610,11 +610,11 @@ export class Client extends ClientAbstract {
 
         try {
           result = await new Promise<ReadObject>((resolve, reject) => {
-            this.promises.set(message.id, { resolve, reject });
+            this.#promises.set(message.id, { resolve, reject });
           });
         } catch (err) {
           if (err instanceof AuthKeyUnregistered) {
-            await this.propagateAuthorizationState(false);
+            await this.#propagateAuthorizationState(false);
           }
           throw err;
         }
@@ -623,16 +623,16 @@ export class Client extends ClientAbstract {
           return await this.invoke(function_) as T;
         } else {
           if (!this.pingLoopStarted) {
-            drop(this.pingLoop());
+            drop(this.#pingLoop());
             this.pingLoopStarted = true;
           }
           return result as T;
         }
       } catch (err) {
-        if (this.errorHandler === undefined) {
+        if (this.#errorHandler === undefined) {
           throw err;
         }
-        if (this.errorHandler !== undefined && await this.errorHandler(err, function_, n++)) {
+        if (this.#errorHandler !== undefined && await this.#errorHandler(err, function_, n++)) {
           continue;
         } else {
           throw err;
@@ -648,7 +648,7 @@ export class Client extends ClientAbstract {
     return this.invoke(function_, true);
   }
 
-  private async processChats(chats: types.TypeChat[]) {
+  async #processChats(chats: types.TypeChat[]) {
     for (const chat of chats) {
       if (chat instanceof types.Channel && chat.accessHash) {
         await this.storage.setEntity(chat);
@@ -665,7 +665,7 @@ export class Client extends ClientAbstract {
     }
   }
 
-  private async processUsers(users: types.TypeUser[]) {
+  async #processUsers(users: types.TypeUser[]) {
     for (const user of users) {
       if (user instanceof types.User && user.accessHash) {
         await this.storage.setEntity(user);
@@ -680,20 +680,20 @@ export class Client extends ClientAbstract {
     }
   }
 
-  private handleUpdateQueue = new Queue("handleUpdate");
-  private processUpdatesQueue = new Queue("processUpdates");
+  #handleUpdateQueue = new Queue("handleUpdate");
+  #processUpdatesQueue = new Queue("processUpdates");
 
-  private async checkGap(pts: number, ptsCount: number, assertNoGap: boolean) {
-    const localState = await this.getLocalState();
+  async checkGap(pts: number, ptsCount: number, assertNoGap: boolean) {
+    const localState = await this.#getLocalState();
     if (localState.pts + ptsCount < pts) {
       if (assertNoGap) {
         UNREACHABLE();
       } else {
-        await this.recoverUpdateGap("processUpdates");
+        await this.#recoverUpdateGap("processUpdates");
       }
     }
   }
-  private async checkChannelGap(channelId: bigint, pts: number, ptsCount: number, assertNoGap: boolean) {
+  async #checkChannelGap(channelId: bigint, pts: number, ptsCount: number, assertNoGap: boolean) {
     let localPts = await this.storage.getChannelPts(channelId);
     if (!localPts) {
       localPts = pts - ptsCount;
@@ -702,11 +702,12 @@ export class Client extends ClientAbstract {
       if (assertNoGap) {
         UNREACHABLE();
       } else {
-        await this.recoverChannelUpdateGap(channelId, "processUpdates");
+        await this.#recoverChannelUpdateGap(channelId, "processUpdates");
       }
     }
   }
-  private async processUpdates(updates_: types.TypeUpdate | types.TypeUpdates, assertNoGap = false) {
+
+  async #processUpdates(updates_: types.TypeUpdate | types.TypeUpdates, assertNoGap = false) {
     /// First, individual updates (Update[1]) and updateShort* are extracted from Updates.[2]
     ///
     /// If an updatesTooLong[3] was received, an update gap recovery is initiated and no further action will be taken.
@@ -726,7 +727,7 @@ export class Client extends ClientAbstract {
     ) {
       updates = [updates_];
     } else if (updates_ instanceof types.UpdatesTooLong) {
-      await this.recoverUpdateGap("updatesTooLong");
+      await this.#recoverUpdateGap("updatesTooLong");
       return;
     } else if (updates_ instanceof types._TypeUpdate) {
       updates = [updates_];
@@ -747,7 +748,7 @@ export class Client extends ClientAbstract {
           continue;
         }
         await this.checkGap(update.pts, update.ptsCount, assertNoGap);
-        localState ??= await this.getLocalState();
+        localState ??= await this.#getLocalState();
         originalPts ??= localState.pts;
         if (localState.pts + update.ptsCount > update.pts) {
           updates = updates.filter((v) => v != update);
@@ -760,7 +761,7 @@ export class Client extends ClientAbstract {
         }
         const ptsCount = "ptsCount" in update ? update.ptsCount : 1;
         const channelId = update instanceof types.UpdateNewChannelMessage || update instanceof types.UpdateEditChannelMessage ? (update.message as types.Message | types.MessageService).peerId[as](types.PeerChannel).channelId : update.channelId;
-        await this.checkChannelGap(channelId, update.pts, ptsCount, assertNoGap);
+        await this.#checkChannelGap(channelId, update.pts, ptsCount, assertNoGap);
         let currentPts: number | null | undefined = channelPtsMap.get(channelId);
         if (currentPts === undefined) {
           currentPts = await this.storage.getChannelPts(channelId);
@@ -784,11 +785,11 @@ export class Client extends ClientAbstract {
 
     /// We process the updates when we are sure there is no gap.
     if (updates_ instanceof types.Updates || updates_ instanceof types.UpdatesCombined) {
-      await this.processChats(updates_.chats);
-      await this.processUsers(updates_.users);
-      await this.setUpdateStateDate(updates_.date);
+      await this.#processChats(updates_.chats);
+      await this.#processUsers(updates_.users);
+      await this.#setUpdateStateDate(updates_.date);
     } else if (updates_ instanceof types.UpdateShort) {
-      await this.setUpdateStateDate(updates_.date);
+      await this.#setUpdateStateDate(updates_.date);
     }
 
     const updatesToHandle = new Array<types.TypeUpdate>();
@@ -798,18 +799,18 @@ export class Client extends ClientAbstract {
         update instanceof types.UpdateShortChatMessage ||
         update instanceof types.UpdateShortSentMessage
       ) {
-        await this.setUpdateStateDate(update.date);
+        await this.#setUpdateStateDate(update.date);
       } else if (update instanceof types.UpdateChannelTooLong) {
         if (update.pts != undefined) {
           await this.storage.setChannelPts(update.channelId, update.pts);
         }
-        await this.recoverChannelUpdateGap(update.channelId, "updateChannelTooLong");
+        await this.#recoverChannelUpdateGap(update.channelId, "updateChannelTooLong");
       } else if (update instanceof types.UpdateUserName) {
         await this.storage.updateUsernames("user", update.userId, update.usernames.map((v) => v.username));
       } else if (update instanceof types.UpdatePtsChanged) {
-        await this.fetchState("updatePtsChanged");
-        if (this.updateState) {
-          await this.storage.setState(this.updateState);
+        await this.#fetchState("updatePtsChanged");
+        if (this.#updateState) {
+          await this.storage.setState(this.#updateState);
         } else {
           UNREACHABLE();
         }
@@ -820,29 +821,29 @@ export class Client extends ClientAbstract {
       }
     }
 
-    this.handleUpdateQueue.add(async () => {
+    this.#handleUpdateQueue.add(async () => {
       for (const update of updatesToHandle) {
-        await this.handleUpdate(update);
+        await this.#handleUpdate(update);
       }
     });
   }
 
-  private async setUpdateStateDate(date: number) {
-    const localState = await this.getLocalState();
+  async #setUpdateStateDate(date: number) {
+    const localState = await this.#getLocalState();
     localState.date = date;
     await this.storage.setState(localState);
   }
 
-  private async getLocalState() {
+  async #getLocalState() {
     let localState = await this.storage.getState();
     if (!localState) {
-      if (this.updateState) {
-        localState = this.updateState;
+      if (this.#updateState) {
+        localState = this.#updateState;
         await this.storage.setState(localState);
       } else {
-        await this.fetchState("getLocalState");
-        if (this.updateState) {
-          localState = this.updateState;
+        await this.#fetchState("getLocalState");
+        if (this.#updateState) {
+          localState = this.#updateState;
           await this.storage.setState(localState);
         } else {
           UNREACHABLE();
@@ -851,23 +852,23 @@ export class Client extends ClientAbstract {
     }
     return localState;
   }
-  private async recoverUpdateGap(source: string) {
+  async #recoverUpdateGap(source: string) {
     dGap("recovering from update gap [%s]", source);
 
-    await this.propagateConnectionState("updating");
+    await this.#propagateConnectionState("updating");
 
     try {
-      let state = await this.getLocalState();
+      let state = await this.#getLocalState();
       while (true) {
         const difference = await this.invoke(new functions.UpdatesGetDifference({ pts: state.pts, date: state.date, qts: state.qts ?? 0 }));
         if (difference instanceof types.UpdatesDifference || difference instanceof types.UpdatesDifferenceSlice) {
-          await this.processChats(difference.chats);
-          await this.processUsers(difference.users);
+          await this.#processChats(difference.chats);
+          await this.#processUsers(difference.users);
           for (const message of difference.newMessages) {
-            await this.processUpdates(new types.UpdateNewMessage({ message, pts: 0, ptsCount: 0 }), true);
+            await this.#processUpdates(new types.UpdateNewMessage({ message, pts: 0, ptsCount: 0 }), true);
           }
           for (const update of difference.otherUpdates) {
-            await this.processUpdates(update, true);
+            await this.#processUpdates(update, true);
           }
           if (difference instanceof types.UpdatesDifference) {
             await this.storage.setState(difference.state);
@@ -883,7 +884,7 @@ export class Client extends ClientAbstract {
           state.pts = difference.pts;
           dGap("received differenceTooLong");
         } else if (difference instanceof types.UpdatesDifferenceEmpty) {
-          await this.setUpdateStateDate(difference.date);
+          await this.#setUpdateStateDate(difference.date);
           dGap("there was no update gap");
           break;
         } else {
@@ -895,7 +896,7 @@ export class Client extends ClientAbstract {
     }
   }
 
-  private async recoverChannelUpdateGap(channelId: bigint, source: string) {
+  async #recoverChannelUpdateGap(channelId: bigint, source: string) {
     dGapC("recovering channel update gap [%o, %s]", channelId, source);
     const pts_ = await this.storage.getChannelPts(channelId);
     let pts = pts_ == null ? 1 : pts_;
@@ -910,13 +911,13 @@ export class Client extends ClientAbstract {
         }),
       );
       if (difference instanceof types.UpdatesChannelDifference) {
-        await this.processChats(difference.chats);
-        await this.processUsers(difference.users);
+        await this.#processChats(difference.chats);
+        await this.#processUsers(difference.users);
         for (const message of difference.newMessages) {
-          await this.processUpdates(new types.UpdateNewChannelMessage({ message, pts: 0, ptsCount: 0 }), true);
+          await this.#processUpdates(new types.UpdateNewChannelMessage({ message, pts: 0, ptsCount: 0 }), true);
         }
         for (const update of difference.otherUpdates) {
-          await this.processUpdates(update, true);
+          await this.#processUpdates(update, true);
         }
         await this.storage.setChannelPts(channelId, difference.pts);
         dGapC("recovered from update gap [%o, %s]", channelId, source);
@@ -924,10 +925,10 @@ export class Client extends ClientAbstract {
       } else if (difference instanceof types.UpdatesChannelDifferenceTooLong) {
         // invalidate messages
         dGapC("received channelDifferenceTooLong");
-        await this.processChats(difference.chats);
-        await this.processUsers(difference.users);
+        await this.#processChats(difference.chats);
+        await this.#processUsers(difference.users);
         for (const message of difference.messages) {
-          await this.processUpdates(new types.UpdateNewChannelMessage({ message, pts: 0, ptsCount: 0 }), true);
+          await this.#processUpdates(new types.UpdateNewChannelMessage({ message, pts: 0, ptsCount: 0 }), true);
         }
         const pts_ = difference.dialog[as](types.Dialog).pts;
         if (pts_ != undefined) {
@@ -943,21 +944,21 @@ export class Client extends ClientAbstract {
     }
   }
 
-  private async getUserAccessHash(userId: bigint) {
+  async getUserAccessHash(userId: bigint) {
     const users = await this.invoke(new functions.UsersGetUsers({ id: [new types.InputUser({ userId, accessHash: 0n })] }));
     return users[0][as](types.User).accessHash ?? 0n;
   }
 
-  private async getChannelAccessHash(channelId: bigint) {
+  async #getChannelAccessHash(channelId: bigint) {
     const channels = await this.invoke(new functions.ChannelsGetChannels({ id: [new types.InputChannel({ channelId, accessHash: 0n })] }));
     return channels.chats[0][as](types.Channel).accessHash ?? 0n;
   }
 
   async getInputPeer(id: ChatID) {
-    const inputPeer = await this.getInputPeerInner(id);
+    const inputPeer = await this.#getInputPeerInner(id);
     if (inputPeer instanceof types.InputPeerUser || inputPeer instanceof types.InputPeerChannel && inputPeer.accessHash == 0n && await this.storage.getAccountType() == "bot") {
       if ("channelId" in inputPeer) {
-        inputPeer.accessHash = await this.getChannelAccessHash(inputPeer.channelId);
+        inputPeer.accessHash = await this.#getChannelAccessHash(inputPeer.channelId);
       } else {
         inputPeer.accessHash = await this.getUserAccessHash(inputPeer.userId);
         await this.storage.setUserAccessHash(inputPeer.userId, inputPeer.accessHash);
@@ -966,7 +967,7 @@ export class Client extends ClientAbstract {
     return inputPeer;
   }
 
-  private async getInputPeerInner(id: ChatID) {
+  async #getInputPeerInner(id: ChatID) {
     if (typeof id === "string") {
       if (!id.startsWith("@")) {
         throw new Error("Expected username to start with @");
@@ -987,8 +988,8 @@ export class Client extends ClientAbstract {
           }
         } else {
           const resolved = await this.invoke(new functions.ContactsResolveUsername({ username: id }));
-          await this.processChats(resolved.chats);
-          await this.processUsers(resolved.users);
+          await this.#processChats(resolved.chats);
+          await this.#processUsers(resolved.users);
           if (resolved.peer instanceof types.PeerUser) {
             userId = resolved.peer.userId;
           } else if (resolved.peer instanceof types.PeerChannel) {
@@ -1070,9 +1071,9 @@ export class Client extends ClientAbstract {
       result instanceof types.MessagesChats ||
       result instanceof types.MessagesChatsSlice
     ) {
-      await this.processChats(result.chats);
+      await this.#processChats(result.chats);
       if ("users" in result) {
-        await this.processUsers(result.users);
+        await this.#processUsers(result.users);
       }
     }
 
@@ -1085,7 +1086,7 @@ export class Client extends ClientAbstract {
     }
   }
 
-  private async updatesToMessages(chatId: ChatID, updates: types.TypeUpdates) {
+  async #updatesToMessages(chatId: ChatID, updates: types.TypeUpdates) {
     const messages = new Array<Message>();
 
     if (updates instanceof types.Updates) {
@@ -1106,10 +1107,10 @@ export class Client extends ClientAbstract {
     return messages;
   }
 
-  private async resolveSendAs(params?: Pick<SendMessagesParams, "sendAs">) {
+  async #resolveSendAs(params?: Pick<SendMessagesParams, "sendAs">) {
     const sendAs = params?.sendAs;
     if (sendAs !== undefined) {
-      await this.assertUser("sendAs");
+      await this.#assertUser("sendAs");
       return sendAs ? await this.getInputPeer(sendAs) : undefined;
     }
   }
@@ -1127,9 +1128,9 @@ export class Client extends ClientAbstract {
     text: string,
     params?: SendMessagesParams,
   ): Promise<With<Message, "text">> {
-    const [message, entities] = this.parseText(text, params);
+    const [message, entities] = this.#parseText(text, params);
 
-    const replyMarkup = await this.constructReplyMarkup(params);
+    const replyMarkup = await this.#constructReplyMarkup(params);
 
     const peer = await this.getInputPeer(chatId);
     const randomId = getRandomId();
@@ -1138,7 +1139,7 @@ export class Client extends ClientAbstract {
     const noforwards = params?.protectContent ? true : undefined;
     const replyToMsgId = params?.replyToMessageId;
     const topMsgId = params?.messageThreadId;
-    const sendAs = await this.resolveSendAs(params);
+    const sendAs = await this.#resolveSendAs(params);
 
     const result = await this.invoke(
       new functions.MessagesSendMessage({
@@ -1155,11 +1156,11 @@ export class Client extends ClientAbstract {
       }),
     );
 
-    const message_ = await this.updatesToMessages(chatId, result).then((v) => v[0]);
-    return Client.assertMsgHas(message_, "text");
+    const message_ = await this.#updatesToMessages(chatId, result).then((v) => v[0]);
+    return Client.#assertMsgHas(message_, "text");
   }
 
-  private parseText(text: string, params?: { parseMode?: ParseMode; entities?: MessageEntity[] }) {
+  #parseText(text: string, params?: { parseMode?: ParseMode; entities?: MessageEntity[] }) {
     const entities_ = params?.entities ?? [];
     const parseMode = params?.parseMode ?? this.parseMode;
     switch (parseMode) {
@@ -1195,7 +1196,7 @@ export class Client extends ClientAbstract {
     text: string,
     params?: EditMessageParams,
   ): Promise<With<Message, "text">> {
-    const [message, entities] = this.parseText(text, params);
+    const [message, entities] = this.#parseText(text, params);
 
     const result = await this.invoke(
       new functions.MessagesEditMessage({
@@ -1204,15 +1205,15 @@ export class Client extends ClientAbstract {
         entities,
         message,
         noWebpage: params?.disableWebPagePreview ? true : undefined,
-        replyMarkup: await this.constructReplyMarkup(params),
+        replyMarkup: await this.#constructReplyMarkup(params),
       }),
     );
 
-    const message_ = await this.updatesToMessages(chatId, result).then((v) => v[0]);
-    return Client.assertMsgHas(message_, "text");
+    const message_ = await this.#updatesToMessages(chatId, result).then((v) => v[0]);
+    return Client.#assertMsgHas(message_, "text");
   }
 
-  private async getMessagesInner(chatId_: ChatID, messageIds: number[]) {
+  async #getMessagesInner(chatId_: ChatID, messageIds: number[]) {
     const peer = await this.getInputPeer(chatId_);
     let messages_ = new Array<types.TypeMessage>();
     const chatId = peerToChatId(peer);
@@ -1264,11 +1265,11 @@ export class Client extends ClientAbstract {
    * @returns The retrieved messages.
    */
   async getMessages(chatId: ChatID, messageIds: number[]): Promise<Omit<Message, "replyToMessage">[]> {
-    return await this.getMessagesInner(chatId, messageIds).then((v) => v.map((v) => v.message));
+    return await this.#getMessagesInner(chatId, messageIds).then((v) => v.map((v) => v.message));
   }
 
   private async [getMessageWithReply](chatId: ChatID, messageId: number): Promise<Message | null> {
-    const messages = await this.getMessagesInner(chatId, [messageId]);
+    const messages = await this.#getMessagesInner(chatId, [messageId]);
     return messages[0]?.message ?? null;
   }
 
@@ -1288,7 +1289,7 @@ export class Client extends ClientAbstract {
     return messages[0] ?? null;
   }
 
-  private async *downloadInner(location: types.TypeInputFileLocation, dcId: number, params?: { chunkSize?: number }) {
+  async *#downloadInner(location: types.TypeInputFileLocation, dcId: number, params?: { chunkSize?: number }) {
     const chunkSize = params?.chunkSize ?? 1024 * 1024;
     if (mod(chunkSize, 1024) != 0) {
       throw new Error("chunkSize must be divisible by 1024");
@@ -1351,7 +1352,7 @@ export class Client extends ClientAbstract {
         const big = fileId_.params.thumbnailSource == ThumbnailSource.ChatPhotoBig;
         const peer = await this.getInputPeer(fileId_.params.chatId!);
         const location = new types.InputPeerPhotoFileLocation({ big: big ? true : undefined, peer, photoId: fileId_.params.mediaId! });
-        return this.downloadInner(location, fileId_.dcId, params);
+        return this.#downloadInner(location, fileId_.dcId, params);
       }
       case FileType.Photo: {
         if (fileId_.params.mediaId == undefined || fileId_.params.accessHash == undefined || fileId_.params.fileReference == undefined || fileId_.params.thumbnailSize == undefined) {
@@ -1363,7 +1364,7 @@ export class Client extends ClientAbstract {
           fileReference: fileId_.params.fileReference,
           thumbSize: fileId_.params.thumbnailSize,
         });
-        return this.downloadInner(location, fileId_.dcId, params);
+        return this.#downloadInner(location, fileId_.dcId, params);
       }
       default:
         UNREACHABLE();
@@ -1407,7 +1408,7 @@ export class Client extends ClientAbstract {
       }),
     );
 
-    return await this.updatesToMessages(to, result);
+    return await this.#updatesToMessages(to, result);
   }
 
   /**
@@ -1437,7 +1438,7 @@ export class Client extends ClientAbstract {
   }
 
   // TODO: log errors
-  private async handleUpdate(update: types.TypeUpdate) {
+  async #handleUpdate(update: types.TypeUpdate) {
     if (update instanceof types.UpdateShortMessage) {
       update = new types.UpdateNewMessage({
         message: new types.Message({
@@ -1446,7 +1447,7 @@ export class Client extends ClientAbstract {
           mediaUnread: update.mediaUnread,
           silent: update.silent,
           id: update.id,
-          fromId: update.out ? new types.PeerUser({ userId: await this.getSelfId().then(BigInt) }) : new types.PeerUser({ userId: update.userId }),
+          fromId: update.out ? new types.PeerUser({ userId: await this.#getSelfId().then(BigInt) }) : new types.PeerUser({ userId: update.userId }),
           peerId: new types.PeerChat({ chatId: update.userId }),
           message: update.message,
           date: update.date,
@@ -1501,7 +1502,7 @@ export class Client extends ClientAbstract {
         this.getMessage.bind(this),
         this[getStickerSetName].bind(this),
       );
-      await this.handle({ [key]: message }, resolve);
+      await this.#handle({ [key]: message }, resolve);
     }
 
     if (update instanceof types.UpdateDeleteMessages) {
@@ -1524,7 +1525,7 @@ export class Client extends ClientAbstract {
         }
       }
       if (deletedMessages.length > 0) {
-        await this.handle({ deletedMessages: deletedMessages as [Message, ...Message[]] }, resolve);
+        await this.#handle({ deletedMessages: deletedMessages as [Message, ...Message[]] }, resolve);
       }
     } else if (update instanceof types.UpdateDeleteChannelMessages) {
       const chatId = getChannelChatId(update.channelId);
@@ -1544,14 +1545,14 @@ export class Client extends ClientAbstract {
         await this.storage.setMessage(chatId, messageId, null);
       }
       if (deletedMessages.length > 0) {
-        await this.handle({ deletedMessages: deletedMessages as [Message, ...Message[]] }, resolve);
+        await this.#handle({ deletedMessages: deletedMessages as [Message, ...Message[]] }, resolve);
       }
     }
 
     if (update instanceof types.UpdateBotCallbackQuery || update instanceof types.UpdateInlineBotCallbackQuery) {
-      await this.handle({ callbackQuery: await constructCallbackQuery(update, this[getEntity].bind(this), this[getMessageWithReply].bind(this)) }, resolve);
+      await this.#handle({ callbackQuery: await constructCallbackQuery(update, this[getEntity].bind(this), this[getMessageWithReply].bind(this)) }, resolve);
     } else if (update instanceof types.UpdateBotInlineQuery) {
-      await this.handle({ inlineQuery: await constructInlineQuery(update, this[getEntity].bind(this)) }, resolve);
+      await this.#handle({ inlineQuery: await constructInlineQuery(update, this[getEntity].bind(this)) }, resolve);
     }
   }
 
@@ -1562,7 +1563,7 @@ export class Client extends ClientAbstract {
    * @param id ID of the callback query to answer.
    */
   async answerCallbackQuery(id: string, params?: AnswerCallbackQueryParams) {
-    await this.assertBot("answerCallbackQuery");
+    await this.#assertBot("answerCallbackQuery");
     await this.invoke(
       new functions.MessagesSetBotCallbackAnswer({
         queryId: BigInt(id),
@@ -1573,19 +1574,19 @@ export class Client extends ClientAbstract {
     );
   }
 
-  private usernameResolver: UsernameResolver = async (v) => {
+  #usernameResolver: UsernameResolver = async (v) => {
     const inputPeer = await this.getInputPeer(v).then((v) => v[as](types.InputPeerUser));
     return new types.InputUser({ userId: inputPeer.userId, accessHash: inputPeer.accessHash });
   };
 
-  private async constructReplyMarkup(params?: Pick<SendMessagesParams, "replyMarkup">) {
+  async #constructReplyMarkup(params?: Pick<SendMessagesParams, "replyMarkup">) {
     if (params?.replyMarkup) {
-      await this.assertBot("replyMarkup");
-      return replyMarkupToTlObject(params.replyMarkup, this.usernameResolver.bind(this));
+      await this.#assertBot("replyMarkup");
+      return replyMarkupToTlObject(params.replyMarkup, this.#usernameResolver.bind(this));
     }
   }
 
-  private static assertMsgHas<K extends keyof Message>(message: Message, key: K): With<Message, K> {
+  static #assertMsgHas<K extends keyof Message>(message: Message, key: K): With<Message, K> {
     if (!(key in message) || message[key] === undefined) {
       UNREACHABLE();
     }
@@ -1609,10 +1610,10 @@ export class Client extends ClientAbstract {
     const replyToMsgId = params?.replyToMessageId;
     const topMsgId = params?.messageThreadId;
     const sendAs = params?.sendAs ? await this.getInputPeer(params.sendAs) : undefined; // TODO: check default sendAs
-    const replyMarkup = await this.constructReplyMarkup(params);
+    const replyMarkup = await this.#constructReplyMarkup(params);
 
     const explanation = params?.explanation;
-    const parseResult = explanation !== undefined ? this.parseText(explanation, { parseMode: params?.explanationParseMode, entities: params?.explanationEntities }) : undefined;
+    const parseResult = explanation !== undefined ? this.#parseText(explanation, { parseMode: params?.explanationParseMode, entities: params?.explanationEntities }) : undefined;
 
     const solution = parseResult === undefined ? undefined : parseResult[0];
     const solutionEntities = parseResult === undefined ? undefined : parseResult[1];
@@ -1652,8 +1653,8 @@ export class Client extends ClientAbstract {
       }),
     );
 
-    const message = await this.updatesToMessages(chatId, result).then((v) => v[0]);
-    return Client.assertMsgHas(message, "poll");
+    const message = await this.#updatesToMessages(chatId, result).then((v) => v[0]);
+    return Client.#assertMsgHas(message, "poll");
   }
 
   /**
@@ -1740,7 +1741,7 @@ export class Client extends ClientAbstract {
       autoStart: false,
     });
     signal?.addEventListener("abort", () => drop(client.disconnect()));
-    client.state.salt = this.state.salt;
+    client.#state.salt = this.#state.salt;
     await client.connect();
     let part = 0;
     const partCount = Math.ceil(contents.length / chunkSize);
@@ -1839,7 +1840,7 @@ export class Client extends ClientAbstract {
     await this.invoke(
       new functions.MessagesSetInlineBotResults({
         queryId: BigInt(id),
-        results: await Promise.all(results.map((v) => inlineQueryResultToTlObject(v, this.parseText.bind(this), this.usernameResolver.bind(this)))),
+        results: await Promise.all(results.map((v) => inlineQueryResultToTlObject(v, this.#parseText.bind(this), this.#usernameResolver.bind(this)))),
         cacheTime: params?.cacheTime ?? 300,
         private: params?.isPersonal ? true : undefined,
         switchWebview: params?.button && params.button.webApp ? new types.InlineBotWebView({ text: params.button.text, url: params.button.webApp.url }) : undefined,
@@ -1850,11 +1851,11 @@ export class Client extends ClientAbstract {
     );
   }
 
-  private handle = skip;
+  #handle = skip;
 
   use(handler: Handler) {
-    const handle = this.handle;
-    this.handle = async (upd, next) => {
+    const handle = this.#handle;
+    this.#handle = async (upd, next) => {
       let called = false;
       await handle(upd, async () => {
         if (called) return;
@@ -1913,7 +1914,7 @@ export class Client extends ClientAbstract {
     }, handler);
   }
 
-  private async setMyInfo(info: Omit<ConstructorParameters<typeof functions["BotsSetBotInfo"]>[0], "bot">) {
+  async #setMyInfo(info: Omit<ConstructorParameters<typeof functions["BotsSetBotInfo"]>[0], "bot">) {
     await this.invoke(new functions.BotsSetBotInfo({ bot: new types.InputUserSelf(), ...info }));
   }
 
@@ -1923,8 +1924,8 @@ export class Client extends ClientAbstract {
    * @method
    */
   async setMyDescription({ description, languageCode }: { description?: string; languageCode?: string }) {
-    await this.assertBot("setMyDescription");
-    await this.setMyInfo({ description, langCode: languageCode ?? "" });
+    await this.#assertBot("setMyDescription");
+    await this.#setMyInfo({ description, langCode: languageCode ?? "" });
   }
 
   /**
@@ -1933,8 +1934,8 @@ export class Client extends ClientAbstract {
    * @method
    */
   async setMyName({ name, languageCode }: { name?: string; languageCode?: string }) {
-    await this.assertBot("setMyName");
-    await this.setMyInfo({ name, langCode: languageCode ?? "" });
+    await this.#assertBot("setMyName");
+    await this.#setMyInfo({ name, langCode: languageCode ?? "" });
   }
 
   /**
@@ -1943,11 +1944,11 @@ export class Client extends ClientAbstract {
    * @method
    */
   async setMyShortDescription({ shortDescription: about, languageCode }: { shortDescription?: string; languageCode?: string }) {
-    await this.assertBot("setMyShortDescription");
-    await this.setMyInfo({ about, langCode: languageCode ?? "" });
+    await this.#assertBot("setMyShortDescription");
+    await this.#setMyInfo({ about, langCode: languageCode ?? "" });
   }
 
-  private getMyInfo(languageCode?: string | undefined) {
+  #getMyInfo(languageCode?: string | undefined) {
     return this.invoke(new functions.BotsGetBotInfo({ bot: new types.InputUserSelf(), langCode: languageCode ?? "" }));
   }
 
@@ -1957,8 +1958,8 @@ export class Client extends ClientAbstract {
    * @method
    */
   async getMyDescription(params?: { languageCode?: string }): Promise<string> {
-    await this.assertBot("getMyDescription");
-    return await this.getMyInfo(params?.languageCode).then((v) => v.description);
+    await this.#assertBot("getMyDescription");
+    return await this.#getMyInfo(params?.languageCode).then((v) => v.description);
   }
 
   /**
@@ -1967,8 +1968,8 @@ export class Client extends ClientAbstract {
    * @method
    */
   async getMyName(params?: { languageCode?: string }): Promise<string> {
-    await this.assertBot("getMyName");
-    return await this.getMyInfo(params?.languageCode).then((v) => v.description);
+    await this.#assertBot("getMyName");
+    return await this.#getMyInfo(params?.languageCode).then((v) => v.description);
   }
 
   /**
@@ -1977,7 +1978,7 @@ export class Client extends ClientAbstract {
    * @method
    */
   async getMyShortDescription(params?: { languageCode?: string }): Promise<string> {
-    await this.assertBot("getMyShortDescription");
-    return await this.getMyInfo(params?.languageCode).then((v) => v.about);
+    await this.#assertBot("getMyShortDescription");
+    return await this.#getMyInfo(params?.languageCode).then((v) => v.about);
   }
 }

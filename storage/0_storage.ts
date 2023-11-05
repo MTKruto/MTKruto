@@ -19,7 +19,7 @@ const KPARTS_MESSAGE_REF = (messageId: number) => ["messageRefs", messageId];
 export type StorageKeyPart = string | number | bigint;
 
 export abstract class Storage {
-  private _authKeyId: bigint | null = null;
+  #_authKeyId: bigint | null = null;
 
   abstract init(): MaybePromise<void>;
   // TODO: digest keys in prod
@@ -35,27 +35,27 @@ export abstract class Storage {
     return this.get<DC>(KPARTS__DC);
   }
 
-  private async resetAuthKeyId(authKey: Uint8Array | null) {
+  async #resetAuthKeyId(authKey: Uint8Array | null) {
     if (authKey != null) {
-      this._authKeyId = await sha1(authKey).then((hash) => bigIntFromBuffer(hash.slice(-8), true, false));
+      this.#_authKeyId = await sha1(authKey).then((hash) => bigIntFromBuffer(hash.slice(-8), true, false));
     } else {
-      this._authKeyId = null;
+      this.#_authKeyId = null;
     }
   }
 
   async getAuthKey() {
     const authKey = await this.get<Uint8Array>(KPARTS__AUTH_KEY);
-    await this.resetAuthKeyId(authKey);
+    await this.#resetAuthKeyId(authKey);
     return authKey;
   }
 
   async setAuthKey(authKey: Uint8Array | null) {
     await this.set(KPARTS__AUTH_KEY, authKey);
-    await this.resetAuthKeyId(authKey);
+    await this.#resetAuthKeyId(authKey);
   }
 
   get authKeyId() {
-    return this._authKeyId;
+    return this.#_authKeyId;
   }
 
   setChannelAccessHash(id: bigint, accessHash: bigint) {
