@@ -759,7 +759,7 @@ export class Client extends ClientAbstract {
         if (update.pts == 0) {
           continue;
         }
-        const ptsCount = "ptsCount" in update ? update.ptsCount : 1;
+        const ptsCount = update.ptsCount;
         const channelId = update instanceof types.UpdateNewChannelMessage || update instanceof types.UpdateEditChannelMessage ? (update.message as types.Message | types.MessageService).peerId[as](types.PeerChannel).channelId : update.channelId;
         await this.#checkChannelGap(channelId, update.pts, ptsCount, assertNoGap);
         let currentPts: number | null | undefined = channelPtsMap.get(channelId);

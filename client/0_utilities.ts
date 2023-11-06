@@ -38,10 +38,8 @@ export function isPtsUpdate(v: types.TypeUpdate | types.TypeUpdates): v is
 export function isChannelPtsUpdate(v: types.TypeUpdate | types.TypeUpdates): v is
   | types.UpdateNewChannelMessage
   | types.UpdateEditChannelMessage
-  | types.UpdateDeleteChannelMessages
-  | types.UpdateReadChannelInbox {
+  | types.UpdateDeleteChannelMessages {
   return v instanceof types.UpdateNewChannelMessage ||
     v instanceof types.UpdateEditChannelMessage ||
-    v instanceof types.UpdateDeleteChannelMessages ||
-    v instanceof types.UpdateReadChannelInbox;
+    v instanceof types.UpdateDeleteChannelMessages;
 }
