@@ -54,6 +54,9 @@ export function parseHtml(html: string) {
             throw new Error("Missing attribute emoji-id");
           }
           queue.push({ type: "spoiler", offset: text.length, length: 0 });
+          break;
+        case "blockquote":
+          queue.push({ type: "blockquote", offset: text.length, length: 0 });
       }
     },
     ontext(data) {
