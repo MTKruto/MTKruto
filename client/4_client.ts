@@ -570,16 +570,20 @@ export class Client extends ClientAbstract {
 
   async #pingLoop() {
     while (this.connected) {
+      await new Promise((r) => setTimeout(r, 60 * 1_000));
+      if (!this.#lastOutgoing || (Date.now() - this.#lastOutgoing.getTime() < 60 * 1_000)) {
+        continue;
+      }
       try {
         await this.invoke(new functions.Ping({ pingId: getRandomBigInt(8, true, false) }));
       } catch (err) {
         d("ping loop error: %o", err);
       }
-      await new Promise((r) => setTimeout(r, 60 * 1_000));
     }
   }
 
-  pingLoopStarted = false;
+  #lastOutgoing: Date | null = null;
+  #pingLoopStarted = false;
   #autoStarted = false;
   #lastMsgId = 0n;
   /**
@@ -622,6 +626,7 @@ export class Client extends ClientAbstract {
             this.#sessionId,
           ),
         );
+        this.#lastOutgoing = new Date();
         d("invoked %s", function_.constructor.name);
 
         if (noWait) {
@@ -644,9 +649,9 @@ export class Client extends ClientAbstract {
         if (result instanceof types.BadServerSalt) {
           return await this.invoke(function_) as T;
         } else {
-          if (!this.pingLoopStarted) {
+          if (!this.#pingLoopStarted) {
             drop(this.#pingLoop());
-            this.pingLoopStarted = true;
+            this.#pingLoopStarted = true;
           }
           return result as T;
         }
