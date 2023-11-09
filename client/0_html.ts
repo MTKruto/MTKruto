@@ -83,7 +83,7 @@ export function parseHtml(html: string) {
 
   for (const entity of entities) {
     while (text[entity.offset + (entity.length - 1)] === undefined) {
-      --entity.length
+      --entity.length;
     }
   }
 
