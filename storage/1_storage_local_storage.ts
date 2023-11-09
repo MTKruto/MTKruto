@@ -18,11 +18,11 @@ export class StorageLocalStorage extends Storage implements Storage {
   init() {
   }
 
-  get(key_: readonly StorageKeyPart[]) {
+  get<T>(key_: readonly StorageKeyPart[]) {
     const key = this.prefix + toString(key_);
     const value = localStorage.getItem(key);
     if (value != null) {
-      return fromString(value);
+      return fromString<T>(value);
     } else {
       return null;
     }
