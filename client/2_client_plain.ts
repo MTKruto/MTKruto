@@ -64,8 +64,10 @@ export class ClientPlain extends ClientAbstract {
     }
 
     const pq_ = bigIntFromBuffer(resPq.pq, false, false);
+    d("pq=%d", pq_);
     const [p_, q_] = factorize(pq_);
     d("factorized pq");
+    d("p=%d, q=%d", p_, q_);
     const p = bufferFromBigInt(p_, 4, false, false);
     const q = bufferFromBigInt(q_, 4, false, false);
 
