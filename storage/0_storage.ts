@@ -77,18 +77,13 @@ export abstract class Storage {
   async updateUsernames(type: "user" | "channel", id: bigint, usernames: string[]) {
     for (let username of usernames) {
       username = username.toLowerCase();
-      await this.set(KPARTS__USERNAME(username), [type, String(id), new Date()]);
+      await this.set(KPARTS__USERNAME(username), [type, id, new Date()]);
     }
   }
 
   async getUsername(username: string) {
     username = username.toLowerCase();
-    const v = await this.get<["user" | "channel", bigint, Date]>(KPARTS__USERNAME(username));
-    if (v != null) {
-      v[1] = BigInt(v[1]);
-      v[2] = new Date(v[2]);
-    }
-    return v;
+    return await this.get<["user" | "channel", bigint, Date]>(KPARTS__USERNAME(username));
   }
 
   async setTlObject(key: readonly StorageKeyPart[], value: TLObject | null) {
@@ -152,7 +147,7 @@ export abstract class Storage {
   async setEntity(peer: types.User): Promise<void>;
   async setEntity(peer: types.User | types.Channel | types.Chat) {
     const type = peer instanceof types.Channel ? "channel" : peer instanceof types.Chat ? "chat" : peer instanceof types.User ? "user" : UNREACHABLE();
-    await this.set(KPARTS__PEER(type, peer.id), peer[serialize]());
+    await this.set(KPARTS__PEER(type, peer.id), rleEncode(peer[serialize]()));
   }
 
   async getEntity(type: "channel", id: bigint): Promise<types.Channel | null>;
@@ -162,7 +157,7 @@ export abstract class Storage {
   async getEntity(type: "channel" | "chat" | "user", id: bigint) {
     const peer_ = await this.get<Uint8Array>(KPARTS__PEER(type, id));
     if (peer_ != null) {
-      return new TLReader(peer_).readObject();
+      return new TLReader(rleDecode(peer_)).readObject();
     } else {
       return null;
     }
