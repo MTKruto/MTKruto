@@ -85,7 +85,7 @@ export function fromString<T>(string: string): T {
 }
 
 export function fixKey(key: readonly StorageKeyPart[]) {
-  return key.map((v) => typeof v === "bigint" ? String(v) : v);
+  return key.map((v) => typeof v === "bigint" ? String(ValueType.BigInt) + String(v) : typeof v === "string" ? String(ValueType.String) + v : v);
 }
 
 // Source: https://gist.github.com/inexorabletash/5462871
