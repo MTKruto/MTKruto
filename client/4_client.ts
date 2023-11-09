@@ -157,7 +157,11 @@ export class Client extends ClientAbstract {
         await this.storage.setAuthKey(authKey);
         await this.#setAuth(authKey);
         this.#state.salt = salt;
+        await this.storage.setServerSalt(salt);
       } else {
+        if (this.#state.salt == 0n) {
+          this.#state.salt = await this.storage.getServerSalt() ?? 0n;
+        }
         await this.#setAuth(authKey);
       }
       const dc = await this.storage.getDc();
@@ -486,6 +490,7 @@ export class Client extends ClientAbstract {
             this.#processUpdatesQueue.add(() => this.#processUpdates(body as types.Updates | types.TypeUpdate));
           } else if (body instanceof types.NewSessionCreated) {
             this.#state.salt = body.serverSalt;
+            await this.storage.setServerSalt(this.#state.salt);
           } else if (message.body instanceof RPCResult) {
             let result = message.body.result;
             if (result instanceof types.GZIPPacked) {
@@ -526,6 +531,7 @@ export class Client extends ClientAbstract {
           } else if (message.body instanceof types.BadServerSalt) {
             d("server salt reassigned");
             this.#state.salt = message.body.newServerSalt;
+            await this.storage.setServerSalt(this.#state.salt);
             const promise = this.#promises.get(message.body.badMsgId);
             if (promise) {
               promise.resolve(message.body);

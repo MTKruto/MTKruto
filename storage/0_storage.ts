@@ -192,4 +192,12 @@ export abstract class Storage {
   getStickerSetName(id: bigint, accessHash: bigint) {
     return this.get<[string, Date]>(KPARTS__STICKER_SET_NAME(id, accessHash));
   }
+
+  async setServerSalt(serverSalt: bigint) {
+    await this.set(["serverSalt"], serverSalt);
+  }
+
+  getServerSalt() {
+    return this.get<bigint>(["serverSalt"]);
+  }
 }
