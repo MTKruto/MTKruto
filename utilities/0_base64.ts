@@ -1,7 +1,7 @@
-import { base64Decode, base64Encode } from "../0_deps.ts";
+import { decodeBase64, encodeBase64 } from "../0_deps.ts";
 
 export function base64EncodeUrlSafe(data: ArrayBuffer | string) {
-  return base64Encode(data).replace(/=*$/, "").replaceAll("+", "-").replaceAll("/", "_");
+  return encodeBase64(data).replace(/=*$/, "").replaceAll("+", "-").replaceAll("/", "_");
 }
 
 export function base64DecodeUrlSafe(data: string) {
@@ -9,5 +9,5 @@ export function base64DecodeUrlSafe(data: string) {
   if (data.length != 4) {
     data += "=".repeat(4 - data.length % 4);
   }
-  return base64Decode(data);
+  return decodeBase64(data);
 }
