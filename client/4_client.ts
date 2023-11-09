@@ -128,6 +128,7 @@ export class Client extends ClientAbstract {
     this.#auth = { key, id };
   }
 
+  #authKeyWasCreated = true;
   #connectMutex = new Mutex();
   /**
    * Loads the session if `setDc` was not called, initializes and connnects
@@ -163,6 +164,7 @@ export class Client extends ClientAbstract {
           this.#state.salt = await this.storage.getServerSalt() ?? 0n;
         }
         await this.#setAuth(authKey);
+        this.#authKeyWasCreated = false;
       }
       const dc = await this.storage.getDc();
       if (dc != null) {
@@ -431,11 +433,15 @@ export class Client extends ClientAbstract {
   }
 
   /**
-   * Same as calling `.connect()` followed by `.authorize(params)`.
+   * Same as calling `.connect()` followed by `.authorize(params)` if the session didn't have an auth key.
    */
   async start(params?: string | types.AuthExportedAuthorization | AuthorizeUserParams) {
     await this.connect();
     await this.#initConnection();
+
+    if (!this.#authKeyWasCreated) {
+      return;
+    }
 
     try {
       await this.#fetchState("authorize");
