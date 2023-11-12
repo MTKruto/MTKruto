@@ -3,6 +3,7 @@ import { UNREACHABLE } from "../1_utilities.ts";
 import { ConnectionUnframed } from "./0_connection.ts";
 
 const d = debug("ConnectionWebSocket");
+const errConnectionNotOpen = new Error("Connection not open");
 
 export class ConnectionWebSocket extends ConnectionUnframed implements ConnectionUnframed {
   #webSocket: WebSocket;
@@ -20,6 +21,7 @@ export class ConnectionWebSocket extends ConnectionUnframed implements Connectio
     const webSocket = new WebSocket(this.url, "binary");
     const mutex = new Mutex();
     webSocket.addEventListener("close", () => {
+      this.#rejectRead();
       this.stateChangeHandler?.(false);
     });
     webSocket.addEventListener("open", () => {
@@ -93,12 +95,17 @@ export class ConnectionWebSocket extends ConnectionUnframed implements Connectio
     }
   }
 
-  async read(p: Uint8Array) {
-    if (this.#webSocket.readyState != WebSocket.OPEN) {
-      throw new Error("Connection not open");
+  #assertConnected() {
+    if (!this.connected) {
+      throw errConnectionNotOpen;
     }
+  }
+
+  async read(p: Uint8Array) {
+    this.#assertConnected();
     const release = await this.#rMutex.acquire();
     try {
+      this.#assertConnected();
       if (this.#buffer.length < p.length) {
         await new Promise<void>((resolve, reject) => this.#nextResolve = [p.length, { resolve, reject }]);
       }
@@ -109,24 +116,26 @@ export class ConnectionWebSocket extends ConnectionUnframed implements Connectio
   }
 
   async write(p: Uint8Array) {
-    if (this.#webSocket.readyState == WebSocket.CLOSED) {
-      throw new Error("Connection not open");
-    }
+    this.#assertConnected();
     const release = await this.#wMutex.acquire();
     try {
+      this.#assertConnected();
       this.#webSocket.send(p);
     } finally {
       release();
     }
   }
 
-  close() {
-    if (this.#webSocket.readyState == WebSocket.CLOSED) {
-      throw new Error("Connection not open");
-    }
-    this.#webSocket.close(1000, "method");
+  #rejectRead() {
     if (this.#nextResolve != null) {
-      this.#nextResolve[1].reject(new Error("Connection not open"));
+      this.#nextResolve[1].reject(errConnectionNotOpen);
+      this.#nextResolve = null;
     }
+  }
+
+  close() {
+    this.#assertConnected();
+    this.#webSocket.close(1000, "method");
+    this.#rejectRead();
   }
 }
