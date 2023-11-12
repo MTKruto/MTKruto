@@ -1,7 +1,5 @@
-import { getRandomId } from "./1_utilities.ts";
-import { checkPassword } from "./client/0_password.ts";
-
-export const utils = { checkPassword, getRandomId };
+export { getRandomId } from "./1_utilities.ts";
+export { checkPassword } from "./client/0_password.ts"; 
 
 export * from "./2_connection.ts";
 export * from "./3_storage.ts";
