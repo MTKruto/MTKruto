@@ -1,6 +1,6 @@
 import { initTgCrypto } from "../0_deps.ts";
 import { MaybePromise } from "../1_utilities.ts";
-import { DC, TransportProvider, webSocketTransportProvider } from "../3_transport.ts";
+import { DC, TransportProvider, transportProviderWebSocket } from "../3_transport.ts";
 import { INITIAL_DC } from "../4_constants.ts";
 
 export interface ClientAbstractParams {
@@ -28,7 +28,7 @@ export abstract class ClientAbstract {
 
   constructor(params?: ClientAbstractParams) {
     this.initialDc = params?.initialDc ?? INITIAL_DC;
-    this.transportProvider = params?.transportProvider ?? webSocketTransportProvider();
+    this.transportProvider = params?.transportProvider ?? transportProviderWebSocket();
     this.cdn = params?.cdn ?? false;
   }
 

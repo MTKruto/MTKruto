@@ -1,5 +1,5 @@
 export { getRandomId } from "./1_utilities.ts";
-export { checkPassword } from "./client/0_password.ts"; 
+export { checkPassword } from "./client/0_password.ts";
 
 export * from "./2_connection.ts";
 export * from "./3_storage.ts";
