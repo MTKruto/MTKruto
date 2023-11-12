@@ -1120,6 +1120,9 @@ export class Client extends ClientAbstract {
 
     if (updates instanceof types.Updates) {
       for (const update of updates.updates) {
+        if ("message" in update && update.message instanceof types.MessageEmpty) {
+          continue;
+        }
         if (update instanceof types.UpdateNewMessage || update instanceof types.UpdateEditMessage) {
           messages.push(await constructMessage(update.message, this[getEntity].bind(this), this.getMessage.bind(this), this[getStickerSetName].bind(this)));
         } else if (update instanceof types.UpdateNewChannelMessage || update instanceof types.UpdateEditChannelMessage) {
@@ -1275,6 +1278,9 @@ export class Client extends ClientAbstract {
     }
     const messages = new Array<{ message: Omit<Message, "replyToMessage">; isReplyToMessage: boolean }>();
     for (const message_ of messages_) {
+      if (message_ instanceof types.MessageEmpty) {
+        continue;
+      }
       const message = await constructMessage(message_, this[getEntity].bind(this), null, this[getStickerSetName].bind(this));
       const isReplyToMessage = message_ instanceof types.Message && message_.replyTo instanceof types.MessageReplyHeader;
       messages.push({ message, isReplyToMessage });
@@ -1525,13 +1531,15 @@ export class Client extends ClientAbstract {
       update instanceof types.UpdateEditChannelMessage
     ) {
       const key = update instanceof types.UpdateNewMessage || update instanceof types.UpdateNewChannelMessage ? "message" : "editedMessage";
-      const message = await constructMessage(
-        update.message,
-        this[getEntity].bind(this),
-        this.getMessage.bind(this),
-        this[getStickerSetName].bind(this),
-      );
-      await this.#handle({ [key]: message }, resolve);
+      if (!(update.message instanceof types.MessageEmpty)) {
+        const message = await constructMessage(
+          update.message,
+          this[getEntity].bind(this),
+          this.getMessage.bind(this),
+          this[getStickerSetName].bind(this),
+        );
+        await this.#handle({ [key]: message }, resolve);
+      }
     }
 
     if (update instanceof types.UpdateDeleteMessages) {
@@ -1540,7 +1548,7 @@ export class Client extends ClientAbstract {
         const chatId = await this.storage.getMessageChat(messageId);
         if (chatId) {
           const message = await this.storage.getMessage(chatId, messageId);
-          if (message != null) {
+          if (message != null && !(message instanceof types.MessageEmpty)) {
             deletedMessages.push(
               await constructMessage(
                 message,
@@ -1561,7 +1569,7 @@ export class Client extends ClientAbstract {
       const deletedMessages = new Array<Message>();
       for (const messageId of update.messages) {
         const message = await this.storage.getMessage(chatId, messageId);
-        if (message) {
+        if (message != null && !(message instanceof types.MessageEmpty)) {
           deletedMessages.push(
             await constructMessage(
               message,
