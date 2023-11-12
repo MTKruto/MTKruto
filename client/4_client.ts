@@ -83,7 +83,9 @@ export class Client extends ClientAbstract {
   }
 
   #propagateConnectionState(connectionState: ConnectionState) {
-    return this.#handle({ connectionState }, resolve);
+    this.#handleUpdateQueue.add(async () => {
+      await this.#handle({ connectionState }, resolve);
+    });
   }
 
   #lastPropagatedConnectionState: ConnectionState | null = null;
