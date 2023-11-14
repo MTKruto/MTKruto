@@ -90,11 +90,11 @@ export class Client extends ClientAbstract {
 
   #lastPropagatedConnectionState: ConnectionState | null = null;
   protected stateChangeHandler = ((connected: boolean) => {
-    this.#connectMutex.acquire().then(async (release) => {
+    this.#connectMutex.acquire().then((release) => {
       try {
         const connectionState = connected ? "ready" : "notConnected";
         if (this.connected == connected && this.#lastPropagatedConnectionState != connectionState) {
-          await this.#propagateConnectionState(connectionState);
+          this.#propagateConnectionState(connectionState);
           this.#lastPropagatedConnectionState = connectionState;
         }
       } finally {
@@ -632,6 +632,14 @@ export class Client extends ClientAbstract {
         d("invoked %s", function_.constructor.name);
 
         if (noWait) {
+          this.#promises.set(message.id, {
+            resolve: (result) => {
+              if (result instanceof types.BadServerSalt) {
+                drop(this.invoke(function_, true));
+              }
+            },
+            reject: () => {},
+          });
           return;
         }
 
