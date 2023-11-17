@@ -38,7 +38,6 @@ export interface ClientParams extends ClientPlainParams {
    * Whether to automatically call `start` with no parameters in the first `invoke` call. Defaults to `true`.
    */
   autoStart?: boolean;
-  errorHandler?: (err: unknown, function_: types.Type | functions.Function<unknown>, n: number) => MaybePromise<boolean>;
 }
 
 export interface AnswerCallbackQueryParams {
@@ -252,12 +251,18 @@ export interface Update {
   inlineQuery?: InlineQuery;
 }
 
-export type NextFn = () => Promise<void>;
+export type NextFn<T = void> = () => Promise<T>;
 
 export interface Handler<U extends Partial<Update> = Partial<Update>> {
   (update: U, next: NextFn): MaybePromise<void>;
 }
 
+export interface InvokeErrorHandler {
+  (err: unknown, function_: types.Type | functions.Function<unknown>, n: number, next: NextFn<boolean>): MaybePromise<boolean>;
+}
+
 export type FilterUpdate<U extends Update, T extends keyof U, F extends keyof NonNullable<U[T]>> = With<U, T> & Pick<{ [P in T]-?: With<NonNullable<U[T]>, F> }, T>;
 
 export const skip: Handler = (__, _) => _();
+
+export const skipInvoke: InvokeErrorHandler = (____, ___, __, _) => _();
