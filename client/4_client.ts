@@ -12,7 +12,7 @@ import { checkPassword } from "./0_password.ts";
 import { isChannelPtsUpdate, isPtsUpdate, resolve, With } from "./0_utilities.ts";
 import { ClientAbstract } from "./1_client_abstract.ts";
 import { ClientPlain } from "./2_client_plain.ts";
-import { AnswerCallbackQueryParams, AnswerInlineQueryParams, AuthorizeUserParams, ClientParams, ConnectionState, DownloadParams, EditMessageParams, FilterableUpdates, FilterUpdate, ForwardMessagesParams, GetMyCommandsParams, Handler, SendMessagesParams, SendPollParams, SetMyCommandsParams, skip, Update, UploadParams } from "./3_types.ts";
+import { AnswerCallbackQueryParams, AnswerInlineQueryParams, AuthorizeUserParams, ClientParams, ConnectionState, DownloadParams, EditMessageParams, FilterableUpdates, FilterUpdate, ForwardMessagesParams, GetMyCommandsParams, Handler, InvokeErrorHandler, SendMessagesParams, SendPollParams, SetMyCommandsParams, skip, skipInvoke, Update, UploadParams } from "./3_types.ts";
 
 const d = debug("Client");
 const dGap = debug("Client/recoverUpdateGap");
@@ -39,7 +39,6 @@ export class Client extends ClientAbstract {
   #promises = new Map<bigint, { resolve: (obj: ReadObject) => void; reject: (err: ReadObject | Error) => void }>();
   #toAcknowledge = new Set<bigint>();
   #updateState?: types.UpdatesState;
-  readonly #errorHandler?: ClientParams["errorHandler"];
 
   public readonly storage: Storage;
   public readonly parseMode: ParseMode;
@@ -79,7 +78,6 @@ export class Client extends ClientAbstract {
     this.systemVersion = params?.systemVersion ?? SYSTEM_VERSION;
     this.#publicKeys = params?.publicKeys;
     this.#autoStart = params?.autoStart ?? true;
-    this.#errorHandler = params?.errorHandler;
   }
 
   #propagateConnectionState(connectionState: ConnectionState) {
@@ -585,15 +583,9 @@ export class Client extends ClientAbstract {
   #pingLoopStarted = false;
   #autoStarted = false;
   #lastMsgId = 0n;
-  /**
-   * Invokes a function waiting and returning its reply if the second parameter is not `true`. Requires the client
-   * to be connected.
-   *
-   * @param function_ The function to invoke.
-   */
-  async invoke<T extends (functions.Function<unknown> | types.Type) = functions.Function<unknown>>(function_: T): Promise<T extends functions.Function<unknown> ? T["__R"] : void>;
-  async invoke<T extends (functions.Function<unknown> | types.Type) = functions.Function<unknown>>(function_: T, noWait: true): Promise<void>;
-  async invoke<T extends (functions.Function<unknown> | types.Type) = functions.Function<unknown>>(function_: T, noWait?: boolean): Promise<T | void> {
+  async #invoke<T extends (functions.Function<unknown> | types.Type) = functions.Function<unknown>>(function_: T): Promise<T extends functions.Function<unknown> ? T["__R"] : void>;
+  async #invoke<T extends (functions.Function<unknown> | types.Type) = functions.Function<unknown>>(function_: T, noWait: true): Promise<void>;
+  async #invoke<T extends (functions.Function<unknown> | types.Type) = functions.Function<unknown>>(function_: T, noWait?: boolean): Promise<T | void> {
     if (!this.#auth || !this.transport) {
       if (this.#autoStart && !this.#autoStarted) {
         await this.start();
@@ -662,10 +654,7 @@ export class Client extends ClientAbstract {
           return result as T;
         }
       } catch (err) {
-        if (this.#errorHandler === undefined) {
-          throw err;
-        }
-        if (this.#errorHandler !== undefined && await this.#errorHandler(err, function_, n++)) {
+        if (await this.#handleInvokeError(err, function_, n++, () => Promise.resolve(false))) {
           continue;
         } else {
           throw err;
@@ -673,6 +662,31 @@ export class Client extends ClientAbstract {
       }
     }
   }
+
+  #handleInvokeError = skipInvoke;
+
+  /**
+   * Invokes a function waiting and returning its reply if the second parameter is not `true`. Requires the client
+   * to be connected.
+   *
+   * @param function_ The function to invoke.
+   */
+  invoke = Object.assign(
+    this.#invoke,
+    {
+      use: (handler: InvokeErrorHandler) => {
+        const handle = this.#handleInvokeError;
+        this.#handleInvokeError = async (err, func, n, next) => {
+          let result: boolean | null = null;
+          return await handle(err, func, n, async () => {
+            if (result != null) return result;
+            result = await handler(err, func, n, next);
+            return result;
+          });
+        };
+      },
+    },
+  );
 
   /**
    * Alias for `invoke` with its second parameter being `true`.
