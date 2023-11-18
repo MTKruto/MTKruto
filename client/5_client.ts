@@ -134,7 +134,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
               }
             }
           }
-        })()); 
+        })());
         return next();
       });
 
@@ -215,8 +215,8 @@ export class Client<C extends Context = Context> extends ClientAbstract {
   };
 
   #propagateConnectionState(connectionState: ConnectionState) {
-    this.#handleUpdateQueue.add(async () => { 
-      await this.#handle(this.#constructContext({ connectionState }), resolve); 
+    this.#handleUpdateQueue.add(async () => {
+      await this.#handle(this.#constructContext({ connectionState }), resolve);
     });
   }
 
@@ -2048,7 +2048,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
 
   use(...middleware: Middleware<C>[]) {
     const composer = new Composer(...middleware);
-    this.#handle = concat(this.#handle, flatten(composer)); 
+    this.#handle = concat(this.#handle, flatten(composer));
     return composer;
   }
 
@@ -2101,9 +2101,8 @@ export class Client<C extends Context = Context> extends ClientAbstract {
         return false;
       }
     }, ...middleawre);
-  } 
+  }
   //#endregion
-
 
   async #setMyInfo(info: Omit<ConstructorParameters<typeof functions["BotsSetBotInfo"]>[0], "bot">) {
     await this.invoke(new functions.BotsSetBotInfo({ bot: new types.InputUserSelf(), ...info }));

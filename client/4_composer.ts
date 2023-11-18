@@ -25,19 +25,19 @@ export function concat<C extends Update = Update>(
   right: MiddlewareFn<C>,
 ): MiddlewareFn<C> {
   return async (ctx, next) => {
-    let called = false; 
+    let called = false;
     await left(ctx, async () => {
       if (called) {
         return;
-      } else { 
+      } else {
         called = true;
         await right(ctx, next);
       }
-    }); 
+    });
   };
 }
 
-export const skip: MiddlewareFn =  (_ctx, next) => next()
+export const skip: MiddlewareFn = (_ctx, next) => next();
 
 export class Composer<C extends Update> implements MiddlewareObj<C> {
   #handle: MiddlewareFn<C>;
