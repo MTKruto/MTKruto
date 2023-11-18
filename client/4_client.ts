@@ -306,6 +306,9 @@ export class Client extends ClientAbstract {
       }
       d("encrypted client connected");
       drop(this.#receiveLoop());
+      if (this.#pingLoopStarted) {
+        drop(this.#pingLoop());
+      }
     } finally {
       release();
     }
