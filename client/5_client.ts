@@ -12,7 +12,8 @@ import { checkPassword } from "./0_password.ts";
 import { isChannelPtsUpdate, isPtsUpdate, resolve, With } from "./0_utilities.ts";
 import { ClientAbstract } from "./1_client_abstract.ts";
 import { ClientPlain } from "./2_client_plain.ts";
-import { AnswerCallbackQueryParams, AnswerInlineQueryParams, AuthorizeUserParams, ClientParams, ConnectionState, DownloadParams, EditMessageParams, FilterableUpdates, FilterUpdate, ForwardMessagesParams, GetMyCommandsParams, Handler, InvokeErrorHandler, ReplyParams, SendMessagesParams, SendPollParams, SetMyCommandsParams, Update, UploadParams } from "./3_types.ts";
+import { AnswerCallbackQueryParams, AnswerInlineQueryParams, AuthorizeUserParams, ClientParams, ConnectionState, DownloadParams, EditMessageParams, FilterableUpdates, FilterUpdate, ForwardMessagesParams, GetMyCommandsParams, InvokeErrorHandler, ReplyParams, SendMessagesParams, SendPollParams, SetMyCommandsParams, Update, UploadParams } from "./3_types.ts";
+import { Composer, concat, flatten, Middleware, MiddlewareFn, skip } from "./4_composer.ts";
 
 const d = debug("Client");
 const dGap = debug("Client/recoverUpdateGap");
@@ -56,9 +57,9 @@ export interface Context extends Update {
   toJSON: () => Update;
 }
 
-const skip: Handler<Context> = (__, _) => _();
-
-const skipInvoke: InvokeErrorHandler<Client> = (__, _) => _();
+export function skipInvoke<C extends Context>(): InvokeErrorHandler<Client<C>> {
+  return (_ctx, next) => next();
+}
 
 export const restartAuth = Symbol();
 
@@ -66,7 +67,7 @@ export class ConnectionError extends Error {
   //
 }
 
-export class Client extends ClientAbstract {
+export class Client<C extends Context = Context> extends ClientAbstract {
   #auth: { key: Uint8Array; id: bigint } | null = null;
   #sessionId = getRandomBigInt(8, true, false);
   #state = { salt: 0n, seqNo: 0 };
@@ -133,7 +134,7 @@ export class Client extends ClientAbstract {
               }
             }
           }
-        })());
+        })()); 
         return next();
       });
 
@@ -163,7 +164,7 @@ export class Client extends ClientAbstract {
     const effectiveSenderChat = effectiveMessage?.senderChat;
     return {
       ...update,
-      client: this,
+      client: this as unknown as Client,
       effectiveMessage,
       effectiveChat,
       effectiveUser,
@@ -210,12 +211,12 @@ export class Client extends ClientAbstract {
       get toJSON() {
         return () => update;
       },
-    } as Context;
+    } as C;
   };
 
   #propagateConnectionState(connectionState: ConnectionState) {
-    this.#handleUpdateQueue.add(async () => {
-      await this.#handle(this.#constructContext({ connectionState }), resolve);
+    this.#handleUpdateQueue.add(async () => { 
+      await this.#handle(this.#constructContext({ connectionState }), resolve); 
     });
   }
 
@@ -799,7 +800,7 @@ export class Client extends ClientAbstract {
     }
   }
 
-  #handleInvokeError = skipInvoke;
+  #handleInvokeError = skipInvoke<C>();
 
   /**
    * Invokes a function waiting and returning its reply if the second parameter is not `true`. Requires the client
@@ -810,7 +811,7 @@ export class Client extends ClientAbstract {
   invoke = Object.assign(
     this.#invoke,
     {
-      use: (handler: InvokeErrorHandler<Client>) => {
+      use: (handler: InvokeErrorHandler<Client<C>>) => {
         const handle = this.#handleInvokeError;
         this.#handleInvokeError = async (ctx, next) => {
           let result: boolean | null = null;
@@ -2042,22 +2043,19 @@ export class Client extends ClientAbstract {
     );
   }
 
-  #handle = skip;
+  //#region Composer
+  #handle: MiddlewareFn<C> = skip;
 
-  use(handler: Handler<Context>) {
-    const handle = this.#handle;
-    this.#handle = async (upd, next) => {
-      let called = false;
-      await handle(upd, async () => {
-        if (called) return;
-        called = true;
-        await handler(upd, next);
-      });
-    };
+  use(...middleware: Middleware<C>[]) {
+    const composer = new Composer(...middleware);
+    this.#handle = concat(this.#handle, flatten(composer)); 
+    return composer;
   }
 
-  branch(predicate: (ctx: Context) => MaybePromise<boolean>, trueHandler: Handler<Context>, falseHandler: Handler<Context>) {
-    this.use(async (upd, next) => {
+  branch(predicate: (ctx: C) => MaybePromise<boolean>, trueHandler_: Middleware<C>, falseHandler_: Middleware<C>) {
+    const trueHandler = flatten(trueHandler_);
+    const falseHandler = flatten(falseHandler_);
+    return this.use(async (upd, next) => {
       if (await predicate(upd)) {
         await trueHandler(upd, next);
       } else {
@@ -2066,28 +2064,28 @@ export class Client extends ClientAbstract {
     });
   }
 
-  filter<D extends Context>(
-    predicate: (ctx: Context) => ctx is D,
-    handler: Handler<D>,
+  filter<D extends C>(
+    predicate: (ctx: C) => ctx is D,
+    ...middleware: Middleware<D>[]
   ): void;
   filter(
-    predicate: (ctx: Context) => MaybePromise<boolean>,
-    handler: Handler<Context>,
+    predicate: (ctx: C) => MaybePromise<boolean>,
+    ...middleware: Middleware<C>[]
   ): void;
   filter(
-    predicate: (ctx: Context) => MaybePromise<boolean>,
-    handler: Handler<Context>,
+    predicate: (ctx: C) => MaybePromise<boolean>,
+    ...middleware: Middleware<C>[]
   ) {
-    this.branch(predicate, handler, skip);
+    return this.branch(predicate, middleware.length == 0 ? skip : middleware.map(flatten).reduce(concat), skip);
   }
 
   on<T extends keyof Update, F extends keyof NonNullable<Update[T]>>(
     filter: T extends FilterableUpdates ? T | [T, F, ...F[]] : T,
-    handler: Handler<FilterUpdate<Context, T, F>>,
+    ...middleawre: Middleware<FilterUpdate<C, T, F>>[]
   ) {
     const type = typeof filter === "string" ? filter : filter[0];
     const keys = Array.isArray(filter) ? filter.slice(1) : [];
-    this.filter((ctx): ctx is FilterUpdate<Context, T, F> => {
+    return this.filter((ctx): ctx is FilterUpdate<C, T, F> => {
       if (type in ctx) {
         if (keys.length > 0) {
           for (const key of keys) {
@@ -2102,8 +2100,10 @@ export class Client extends ClientAbstract {
       } else {
         return false;
       }
-    }, handler);
-  }
+    }, ...middleawre);
+  } 
+  //#endregion
+
 
   async #setMyInfo(info: Omit<ConstructorParameters<typeof functions["BotsSetBotInfo"]>[0], "bot">) {
     await this.invoke(new functions.BotsSetBotInfo({ bot: new types.InputUserSelf(), ...info }));
