@@ -114,24 +114,27 @@ export class Client extends ClientAbstract {
     this.#autoStart = params?.autoStart ?? true;
 
     if (params?.defaultHandlers ?? true) {
-      this.on("connectionState", async ({ connectionState }) => {
-        if (connectionState == "notConnected") {
-          let delay = 5;
-          while (!this.connected) {
-            d("reconnecting");
-            try {
-              await this.connect();
-              d("reconnected");
-              break;
-            } catch (err) {
-              d("failed to reconnect, retrying in %d: %o", delay, err);
-            }
-            await new Promise((r) => setTimeout(r, delay * 1_000));
-            if (delay < 15) {
-              delay += 5;
+      this.on("connectionState", ({ connectionState }, next) => {
+        drop((async (): Promise<void> => {
+          if (connectionState == "notConnected") {
+            let delay = 5;
+            while (!this.connected) {
+              d("reconnecting");
+              try {
+                await this.connect();
+                d("reconnected");
+                break;
+              } catch (err) {
+                d("failed to reconnect, retrying in %d: %o", delay, err);
+              }
+              await new Promise((r) => setTimeout(r, delay * 1_000));
+              if (delay < 15) {
+                delay += 5;
+              }
             }
           }
-        }
+        })());
+        return next();
       });
 
       this.invoke.use(async ({ error }, next) => {
