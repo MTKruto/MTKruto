@@ -3,7 +3,7 @@ import { bigIntFromBuffer, drop, getRandomBigInt, getRandomId, MaybePromise, mod
 import { as, functions, getChannelChatId, Message_, MessageContainer, peerToChatId, ReadObject, RPCResult, TLError, TLReader, types } from "../2_tl.ts";
 import { Storage, StorageMemory } from "../3_storage.ts";
 import { DC } from "../3_transport.ts";
-import { BotCommand, botCommandScopeToTlObject, ChatAction, ChatID, constructCallbackQuery, constructInlineQuery, constructMessage, constructUser, FileID, FileType, InlineQueryResult, inlineQueryResultToTlObject, Message, MessageEntity, messageEntityToTlObject, ParseMode, replyMarkupToTlObject, ThumbnailSource, User, UsernameResolver } from "../3_types.ts";
+import { BotCommand, botCommandScopeToTlObject, CallbackQuery, Chat, ChatAction, ChatID, constructCallbackQuery, constructInlineQuery, constructMessage, constructUser, FileID, FileType, InlineQuery, InlineQueryResult, inlineQueryResultToTlObject, Message, MessageEntity, messageEntityToTlObject, ParseMode, replyMarkupToTlObject, ThumbnailSource, User, UsernameResolver } from "../3_types.ts";
 import { ACK_THRESHOLD, APP_VERSION, CHANNEL_DIFFERENCE_LIMIT_BOT, CHANNEL_DIFFERENCE_LIMIT_USER, DEVICE_MODEL, LANG_CODE, LANG_PACK, LAYER, MAX_CHANNEL_ID, MAX_CHAT_ID, PublicKeys, STICKER_SET_NAME_TTL, SYSTEM_LANG_CODE, SYSTEM_VERSION, USERNAME_TTL, ZERO_CHANNEL_ID } from "../4_constants.ts";
 import { AuthKeyUnregistered, FloodWait, Migrate, PasswordHashInvalid, PhoneNumberInvalid, SessionPasswordNeeded, upgradeInstance } from "../4_errors.ts";
 import { parseHtml } from "./0_html.ts";
@@ -12,7 +12,7 @@ import { checkPassword } from "./0_password.ts";
 import { isChannelPtsUpdate, isPtsUpdate, resolve, With } from "./0_utilities.ts";
 import { ClientAbstract } from "./1_client_abstract.ts";
 import { ClientPlain } from "./2_client_plain.ts";
-import { AnswerCallbackQueryParams, AnswerInlineQueryParams, AuthorizeUserParams, ClientParams, ConnectionState, DownloadParams, EditMessageParams, FilterableUpdates, FilterUpdate, ForwardMessagesParams, GetMyCommandsParams, Handler, InvokeErrorHandler, SendMessagesParams, SendPollParams, SetMyCommandsParams, skip, skipInvoke, Update, UploadParams } from "./3_types.ts";
+import { AnswerCallbackQueryParams, AnswerInlineQueryParams, AuthorizeUserParams, ClientParams, ConnectionState, DownloadParams, EditMessageParams, FilterableUpdates, FilterUpdate, ForwardMessagesParams, GetMyCommandsParams, Handler, InvokeErrorHandler, ReplyParams, SendMessagesParams, SendPollParams, SetMyCommandsParams, Update, UploadParams } from "./3_types.ts";
 
 const d = debug("Client");
 const dGap = debug("Client/recoverUpdateGap");
@@ -25,6 +25,40 @@ const getEntity = Symbol();
 const getStickerSetName = Symbol();
 export const handleMigrationError = Symbol();
 const getMessageWithReply = Symbol();
+
+export interface Context extends Update {
+  /** The client that received the update. */
+  client: Client;
+  /** Resolves to `ctx.message ?? ctx.editedMessage ?? ctx.callbackQuery?.message`. */
+  effectiveMessage: this["message"] extends Message ? Message : this["editedMessage"] extends Message ? Message : With<CallbackQuery, "message"> extends this["callbackQuery"] ? Message : undefined;
+  /** Resolves to `effectiveMessage?.chat`. */
+  effectiveChat: this["effectiveMessage"] extends Message ? Chat : undefined;
+  /** Resolves to `(ctx.message ?? ctx.editedMessage)?.from ?? ctx.callbackQuery?.from ?? ctx.inlineQuery?.from`. */
+  effectiveUser: With<Message, "from"> extends this["message"] ? User : With<Message, "from"> extends this["editedMessage"] ? User : this["callbackQuery"] extends CallbackQuery ? User : this["inlineQuery"] extends InlineQuery ? User : undefined;
+  /** Resolves to `effectiveMessage?.senderChat`. */
+  effectiveSenderChat: With<Message, "senderChat"> extends this["effectiveMessage"] ? Chat : undefined;
+  /** Reply the received message with a text message. */
+  reply: (text: string, params?: ReplyParams) => Promise<With<Message, "text">>;
+  /** Reply the received message with a poll. */
+  replyPoll: (question: string, options: [string, string, ...string[]], params?: SendPollParams) => Promise<With<Message, "poll">>;
+  /** Send a chat action to the chat which the message was received from. */
+  sendChatAction: (action: ChatAction, params?: { messageThreadId?: number }) => Promise<void>;
+  /** Edit a message in the chat which the message was received from. */
+  editMessageText: (messageId: number, text: string, params?: EditMessageParams) => Promise<With<Message, "text">>;
+  /** Answer the received callback query. */
+  answerCallbackQuery: (params?: AnswerCallbackQueryParams) => Promise<void>;
+  /** Answer the received inline query. */
+  answerInlineQuery: (results: InlineQueryResult[], params?: AnswerInlineQueryParams) => Promise<void>;
+  /** Retrieve a single message of the chat which the message was received from. */
+  getMessage: (messageId: number) => Promise<Omit<Message, "replyToMessage"> | null>;
+  /** Retrieve multiple messages of the chat which the message was received from. */
+  getMessages: (messageIds: number[]) => Promise<Omit<Message, "replyToMessage">[]>;
+  toJSON: () => Update;
+}
+
+const skip: Handler<Context> = (__, _) => _();
+
+const skipInvoke: InvokeErrorHandler<Client> = (__, _) => _();
 
 export const restartAuth = Symbol();
 
@@ -80,9 +114,73 @@ export class Client extends ClientAbstract {
     this.#autoStart = params?.autoStart ?? true;
   }
 
+  #constructContext = (update: Update) => {
+    const effectiveMessage = update.message ?? update.editedMessage ?? update.callbackQuery?.message;
+    const mustGetEffectiveMessage = () => {
+      if (effectiveMessage !== undefined) {
+        return effectiveMessage;
+      } else {
+        UNREACHABLE();
+      }
+    };
+    const effectiveChat = effectiveMessage?.chat;
+    const effectiveUser = update.callbackQuery?.from ?? update.inlineQuery?.from ?? update.message?.from ?? update.editedMessage?.from;
+    const effectiveSenderChat = effectiveMessage?.senderChat;
+    return {
+      ...update,
+      client: this,
+      effectiveMessage,
+      effectiveChat,
+      effectiveUser,
+      effectiveSenderChat,
+      reply: (text, params) => {
+        const effectiveMessage = mustGetEffectiveMessage();
+        const shouldQuote = params?.quote === undefined ? effectiveMessage.chat.type != "private" : params.quote;
+        return this.sendMessage(effectiveMessage.chat.id, text, { ...params, replyToMessageId: shouldQuote ? effectiveMessage.id : undefined });
+      },
+      replyPoll: (question, options, params) => {
+        const effectiveMessage = mustGetEffectiveMessage();
+        return this.sendPoll(effectiveMessage.chat.id, question, options, params);
+      },
+      answerCallbackQuery: (params) => {
+        const { callbackQuery } = update;
+        if (callbackQuery === undefined) {
+          UNREACHABLE();
+        }
+        return this.answerCallbackQuery(callbackQuery.id, params);
+      },
+      answerInlineQuery: (results, params) => {
+        const { inlineQuery } = update;
+        if (inlineQuery == undefined) {
+          UNREACHABLE();
+        }
+        return this.answerInlineQuery(inlineQuery.id, results, params);
+      },
+      sendChatAction: (chatAction, params) => {
+        const effectiveMessage = mustGetEffectiveMessage();
+        return this.sendChatAction(effectiveMessage.chat.id, chatAction, params);
+      },
+      editMessageText: (messageId, text, params) => {
+        const effectiveMessage = mustGetEffectiveMessage();
+        return this.editMessageText(effectiveMessage.chat.id, messageId, text, params);
+      },
+      getMessage: (messageId) => {
+        const effectiveMessage = mustGetEffectiveMessage();
+        return this.getMessage(effectiveMessage.chat.id, messageId);
+      },
+      getMessages: (messageIds) => {
+        const effectiveMessage = mustGetEffectiveMessage();
+        return this.getMessages(effectiveMessage.chat.id, messageIds);
+      },
+      get toJSON() {
+        return () => update;
+      },
+    } as Context;
+  };
+
   #propagateConnectionState(connectionState: ConnectionState) {
     this.#handleUpdateQueue.add(async () => {
-      await this.#handle({ connectionState }, resolve);
+      await this.#handle(this.#constructContext({ connectionState }), resolve);
     });
   }
 
@@ -238,7 +336,7 @@ export class Client extends ClientAbstract {
   #lastPropagatedAuthorizationState: boolean | null = null;
   async #propagateAuthorizationState(authorized: boolean) {
     if (this.#lastPropagatedAuthorizationState != authorized) {
-      await this.#handle({ authorizationState: { authorized } }, resolve);
+      await this.#handle(this.#constructContext({ authorizationState: { authorized } }), resolve);
       this.#lastPropagatedAuthorizationState = authorized;
     }
   }
@@ -654,7 +752,7 @@ export class Client extends ClientAbstract {
           return result as T;
         }
       } catch (err) {
-        if (await this.#handleInvokeError(err, function_, n++, () => Promise.resolve(false))) {
+        if (await this.#handleInvokeError(Object.freeze({ client: this, error: err, function: function_, n: n++ }), () => Promise.resolve(false))) {
           continue;
         } else {
           throw err;
@@ -674,13 +772,13 @@ export class Client extends ClientAbstract {
   invoke = Object.assign(
     this.#invoke,
     {
-      use: (handler: InvokeErrorHandler) => {
+      use: (handler: InvokeErrorHandler<Client>) => {
         const handle = this.#handleInvokeError;
-        this.#handleInvokeError = async (err, func, n, next) => {
+        this.#handleInvokeError = async (ctx, next) => {
           let result: boolean | null = null;
-          return await handle(err, func, n, async () => {
+          return await handle(ctx, async () => {
             if (result != null) return result;
-            result = await handler(err, func, n, next);
+            result = await handler(ctx, next);
             return result;
           });
         };
@@ -902,7 +1000,7 @@ export class Client extends ClientAbstract {
   async #recoverUpdateGap(source: string) {
     dGap("recovering from update gap [%s]", source);
 
-    await this.#propagateConnectionState("updating");
+    this.#propagateConnectionState("updating");
 
     try {
       let state = await this.#getLocalState();
@@ -1556,7 +1654,7 @@ export class Client extends ClientAbstract {
           this.getMessage.bind(this),
           this[getStickerSetName].bind(this),
         );
-        await this.#handle({ [key]: message }, resolve);
+        await this.#handle(this.#constructContext({ [key]: message }), resolve);
       }
     }
 
@@ -1580,7 +1678,7 @@ export class Client extends ClientAbstract {
         }
       }
       if (deletedMessages.length > 0) {
-        await this.#handle({ deletedMessages: deletedMessages as [Message, ...Message[]] }, resolve);
+        await this.#handle(this.#constructContext({ deletedMessages: deletedMessages as [Message, ...Message[]] }), resolve);
       }
     } else if (update instanceof types.UpdateDeleteChannelMessages) {
       const chatId = getChannelChatId(update.channelId);
@@ -1600,14 +1698,14 @@ export class Client extends ClientAbstract {
         await this.storage.setMessage(chatId, messageId, null);
       }
       if (deletedMessages.length > 0) {
-        await this.#handle({ deletedMessages: deletedMessages as [Message, ...Message[]] }, resolve);
+        await this.#handle(this.#constructContext({ deletedMessages: deletedMessages as [Message, ...Message[]] }), resolve);
       }
     }
 
     if (update instanceof types.UpdateBotCallbackQuery || update instanceof types.UpdateInlineBotCallbackQuery) {
-      await this.#handle({ callbackQuery: await constructCallbackQuery(update, this[getEntity].bind(this), this[getMessageWithReply].bind(this)) }, resolve);
+      await this.#handle(this.#constructContext({ callbackQuery: await constructCallbackQuery(update, this[getEntity].bind(this), this[getMessageWithReply].bind(this)) }), resolve);
     } else if (update instanceof types.UpdateBotInlineQuery) {
-      await this.#handle({ inlineQuery: await constructInlineQuery(update, this[getEntity].bind(this)) }, resolve);
+      await this.#handle(this.#constructContext({ inlineQuery: await constructInlineQuery(update, this[getEntity].bind(this)) }), resolve);
     }
   }
 
@@ -1908,7 +2006,7 @@ export class Client extends ClientAbstract {
 
   #handle = skip;
 
-  use(handler: Handler) {
+  use(handler: Handler<Context>) {
     const handle = this.#handle;
     this.#handle = async (upd, next) => {
       let called = false;
@@ -1920,7 +2018,7 @@ export class Client extends ClientAbstract {
     };
   }
 
-  branch(predicate: (upd: Update) => MaybePromise<boolean>, trueHandler: Handler, falseHandler: Handler) {
+  branch(predicate: (ctx: Context) => MaybePromise<boolean>, trueHandler: Handler<Context>, falseHandler: Handler<Context>) {
     this.use(async (upd, next) => {
       if (await predicate(upd)) {
         await trueHandler(upd, next);
@@ -1930,34 +2028,34 @@ export class Client extends ClientAbstract {
     });
   }
 
-  filter<D extends Update>(
-    predicate: (update: Update) => update is D,
+  filter<D extends Context>(
+    predicate: (ctx: Context) => ctx is D,
     handler: Handler<D>,
   ): void;
   filter(
-    predicate: (update: Update) => MaybePromise<boolean>,
-    handler: Handler,
+    predicate: (ctx: Context) => MaybePromise<boolean>,
+    handler: Handler<Context>,
   ): void;
   filter(
-    predicate: (update: Update) => MaybePromise<boolean>,
-    handler: Handler,
+    predicate: (ctx: Context) => MaybePromise<boolean>,
+    handler: Handler<Context>,
   ) {
     this.branch(predicate, handler, skip);
   }
 
   on<T extends keyof Update, F extends keyof NonNullable<Update[T]>>(
     filter: T extends FilterableUpdates ? T | [T, F, ...F[]] : T,
-    handler: Handler<FilterUpdate<Update, T, F>>,
+    handler: Handler<FilterUpdate<Context, T, F>>,
   ) {
     const type = typeof filter === "string" ? filter : filter[0];
     const keys = Array.isArray(filter) ? filter.slice(1) : [];
-    this.filter((update): update is FilterUpdate<Update, T, F> => {
-      if (type in update) {
+    this.filter((ctx): ctx is FilterUpdate<Context, T, F> => {
+      if (type in ctx) {
         if (keys.length > 0) {
           for (const key of keys) {
             // deno-lint-ignore ban-ts-comment
             // @ts-ignore
-            if (!(key in update[type])) {
+            if (!(key in ctx[type])) {
               return false;
             }
           }

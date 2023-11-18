@@ -239,6 +239,11 @@ export type ConnectionState = "notConnected" | "updating" | "ready";
 
 export type AuthorizationState = { authorized: boolean };
 
+export interface ReplyParams extends Omit<SendMessagesParams, "replyToMessageId"> {
+  /** Whether to quote the message that is to be replied. Enabled by default for non-private chats. */
+  quote?: boolean;
+}
+
 export type FilterableUpdates = "message" | "editedMessage" | "callbackQuery";
 
 export interface Update {
@@ -253,16 +258,12 @@ export interface Update {
 
 export type NextFn<T = void> = () => Promise<T>;
 
-export interface Handler<U extends Partial<Update> = Partial<Update>> {
-  (update: U, next: NextFn): MaybePromise<void>;
+export interface Handler<C> {
+  (ctx: C, next: NextFn): MaybePromise<void>;
 }
 
-export interface InvokeErrorHandler {
-  (err: unknown, function_: types.Type | functions.Function<unknown>, n: number, next: NextFn<boolean>): MaybePromise<boolean>;
+export interface InvokeErrorHandler<C> {
+  (ctx: { client: C; error: unknown; function: types.Type | functions.Function<unknown>; n: number }, next: NextFn<boolean>): MaybePromise<boolean>;
 }
 
-export type FilterUpdate<U extends Update, T extends keyof U, F extends keyof NonNullable<U[T]>> = With<U, T> & Pick<{ [P in T]-?: With<NonNullable<U[T]>, F> }, T>;
-
-export const skip: Handler = (__, _) => _();
-
-export const skipInvoke: InvokeErrorHandler = (____, ___, __, _) => _();
+export type FilterUpdate<U extends Update, T extends keyof U, F extends (keyof NonNullable<U[T]>) | null> = With<U, T> & Pick<{ [P in T]-?: F extends keyof NonNullable<U[T]> ? With<NonNullable<U[T]>, F> : NonNullable<U[T]> }, T>;
