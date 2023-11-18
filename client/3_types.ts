@@ -38,6 +38,10 @@ export interface ClientParams extends ClientPlainParams {
    * Whether to automatically call `start` with no parameters in the first `invoke` call. Defaults to `true`.
    */
   autoStart?: boolean;
+  /**
+   * Whether to use default handlers. Defaults to `true`.
+   */
+  defaultHandlers?: boolean;
 }
 
 export interface AnswerCallbackQueryParams {

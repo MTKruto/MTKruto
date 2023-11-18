@@ -112,6 +112,38 @@ export class Client extends ClientAbstract {
     this.systemVersion = params?.systemVersion ?? SYSTEM_VERSION;
     this.#publicKeys = params?.publicKeys;
     this.#autoStart = params?.autoStart ?? true;
+
+    if (params?.defaultHandlers ?? true) {
+      this.on("connectionState", async ({ connectionState }) => {
+        if (connectionState == "notConnected") {
+          let delay = 5;
+          while (!this.connected) {
+            d("reconnecting");
+            try {
+              await this.connect();
+              d("reconnected");
+              break;
+            } catch (err) {
+              d("failed to reconnect, retrying in %d: %o", delay, err);
+            }
+            await new Promise((r) => setTimeout(r, delay * 1_000));
+            if (delay < 15) {
+              delay += 5;
+            }
+          }
+        }
+      });
+
+      this.invoke.use(async ({ error }, next) => {
+        if (error instanceof FloodWait && error.seconds <= 10) {
+          d("sleeping for %d because of: %o", error.seconds, error);
+          await new Promise((r) => setTimeout(r, 1000 * error.seconds));
+          return true;
+        } else {
+          return next();
+        }
+      });
+    }
   }
 
   #constructContext = (update: Update) => {
