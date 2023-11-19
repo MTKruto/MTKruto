@@ -31,13 +31,13 @@ export interface Context extends Update {
   /** The client that received the update. */
   client: Client;
   /** Resolves to `ctx.message ?? ctx.editedMessage ?? ctx.callbackQuery?.message`. */
-  effectiveMessage: this["message"] extends Message ? Message : this["editedMessage"] extends Message ? Message : With<CallbackQuery, "message"> extends this["callbackQuery"] ? Message : undefined;
+  effectiveMessage: undefined extends this["message"] ? undefined extends this["editedMessage"] ? undefined extends this["callbackQuery"] ? never : this["callbackQuery"] extends With<CallbackQuery, "message"> ? this["callbackQuery"]["message"] : this["callbackQuery"] extends With<CallbackQuery, "inlineMessageId"> ? never : (Message | undefined) : this["editedMessage"] : this["message"];
   /** Resolves to `effectiveMessage?.chat`. */
-  effectiveChat: this["effectiveMessage"] extends Message ? Chat : undefined;
+  effectiveChat: this["effectiveMessage"] extends never ? never : this["effectiveMessage"]["chat"];
   /** Resolves to `(ctx.message ?? ctx.editedMessage)?.from ?? ctx.callbackQuery?.from ?? ctx.inlineQuery?.from`. */
-  effectiveUser: With<Message, "from"> extends this["message"] ? User : With<Message, "from"> extends this["editedMessage"] ? User : this["callbackQuery"] extends CallbackQuery ? User : this["inlineQuery"] extends InlineQuery ? User : undefined;
+  effectiveUser: this["message"] extends Message ? this["message"]["from"] : this["editedMessage"] extends Message ? this["editedMessage"]["from"] : this["callbackQuery"] extends CallbackQuery ? this["callbackQuery"]["from"] : this["inlineQuery"] extends InlineQuery ? this["inlineQuery"]["from"] : never;
   /** Resolves to `effectiveMessage?.senderChat`. */
-  effectiveSenderChat: With<Message, "senderChat"> extends this["effectiveMessage"] ? Chat : undefined;
+  effectiveSenderChat: this["effectiveMessage"] extends never ? never : this["effectiveMessage"]["senderChat"];
   /** Reply the received message with a text message. */
   reply: (text: string, params?: ReplyParams) => Promise<With<Message, "text">>;
   /** Reply the received message with a poll. */
