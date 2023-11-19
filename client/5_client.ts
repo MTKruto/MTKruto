@@ -31,13 +31,13 @@ export interface Context extends Update {
   /** The client that received the update. */
   client: Client;
   /** Resolves to `ctx.message ?? ctx.editedMessage ?? ctx.callbackQuery?.message`. */
-  effectiveMessage: undefined extends this["message"] ? undefined extends this["editedMessage"] ? undefined extends this["callbackQuery"] ? never : this["callbackQuery"] extends With<CallbackQuery, "message"> ? this["callbackQuery"]["message"] : this["callbackQuery"] extends With<CallbackQuery, "inlineMessageId"> ? never : (Message | undefined) : this["editedMessage"] : this["message"];
+  msg: undefined extends this["message"] ? undefined extends this["editedMessage"] ? undefined extends this["callbackQuery"] ? never : this["callbackQuery"] extends With<CallbackQuery, "message"> ? this["callbackQuery"]["message"] : this["callbackQuery"] extends With<CallbackQuery, "inlineMessageId"> ? never : (Message | undefined) : this["editedMessage"] : this["message"];
   /** Resolves to `effectiveMessage?.chat`. */
-  effectiveChat: this["effectiveMessage"] extends never ? never : this["effectiveMessage"]["chat"];
+  chat: this["msg"] extends never ? never : this["msg"]["chat"];
   /** Resolves to `(ctx.message ?? ctx.editedMessage)?.from ?? ctx.callbackQuery?.from ?? ctx.inlineQuery?.from`. */
-  effectiveUser: this["message"] extends Message ? this["message"]["from"] : this["editedMessage"] extends Message ? this["editedMessage"]["from"] : this["callbackQuery"] extends CallbackQuery ? this["callbackQuery"]["from"] : this["inlineQuery"] extends InlineQuery ? this["inlineQuery"]["from"] : never;
+  from: this["message"] extends Message ? this["message"]["from"] : this["editedMessage"] extends Message ? this["editedMessage"]["from"] : this["callbackQuery"] extends CallbackQuery ? this["callbackQuery"]["from"] : this["inlineQuery"] extends InlineQuery ? this["inlineQuery"]["from"] : never;
   /** Resolves to `effectiveMessage?.senderChat`. */
-  effectiveSenderChat: this["effectiveMessage"] extends never ? never : this["effectiveMessage"]["senderChat"];
+  senderChat: this["msg"] extends never ? never : this["msg"]["senderChat"];
   /** Reply the received message with a text message. */
   reply: (text: string, params?: ReplyParams) => Promise<With<Message, "text">>;
   /** Reply the received message with a poll. */
@@ -165,10 +165,10 @@ export class Client<C extends Context = Context> extends ClientAbstract {
     return {
       ...update,
       client: this as unknown as Client,
-      effectiveMessage,
-      effectiveChat,
-      effectiveUser,
-      effectiveSenderChat,
+      msg,
+      chat,
+      from,
+      senderChat,
       reply: (text, params) => {
         const effectiveMessage = mustGetEffectiveMessage();
         const shouldQuote = params?.quote === undefined ? effectiveMessage.chat.type != "private" : params.quote;
