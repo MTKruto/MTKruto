@@ -151,17 +151,17 @@ export class Client<C extends Context = Context> extends ClientAbstract {
   }
 
   #constructContext = (update: Update) => {
-    const effectiveMessage = update.message ?? update.editedMessage ?? update.callbackQuery?.message;
-    const mustGetEffectiveMessage = () => {
-      if (effectiveMessage !== undefined) {
-        return effectiveMessage;
+    const msg = update.message ?? update.editedMessage ?? update.callbackQuery?.message;
+    const mustGetMsg = () => {
+      if (msg !== undefined) {
+        return msg;
       } else {
         UNREACHABLE();
       }
     };
-    const effectiveChat = effectiveMessage?.chat;
-    const effectiveUser = update.callbackQuery?.from ?? update.inlineQuery?.from ?? update.message?.from ?? update.editedMessage?.from;
-    const effectiveSenderChat = effectiveMessage?.senderChat;
+    const chat = msg?.chat;
+    const from = update.callbackQuery?.from ?? update.inlineQuery?.from ?? update.message?.from ?? update.editedMessage?.from;
+    const senderChat = msg?.senderChat;
     return {
       ...update,
       client: this as unknown as Client,
@@ -170,12 +170,12 @@ export class Client<C extends Context = Context> extends ClientAbstract {
       from,
       senderChat,
       reply: (text, params) => {
-        const effectiveMessage = mustGetEffectiveMessage();
+        const effectiveMessage = mustGetMsg();
         const shouldQuote = params?.quote === undefined ? effectiveMessage.chat.type != "private" : params.quote;
         return this.sendMessage(effectiveMessage.chat.id, text, { ...params, replyToMessageId: shouldQuote ? effectiveMessage.id : undefined });
       },
       replyPoll: (question, options, params) => {
-        const effectiveMessage = mustGetEffectiveMessage();
+        const effectiveMessage = mustGetMsg();
         return this.sendPoll(effectiveMessage.chat.id, question, options, params);
       },
       answerCallbackQuery: (params) => {
@@ -193,19 +193,19 @@ export class Client<C extends Context = Context> extends ClientAbstract {
         return this.answerInlineQuery(inlineQuery.id, results, params);
       },
       sendChatAction: (chatAction, params) => {
-        const effectiveMessage = mustGetEffectiveMessage();
+        const effectiveMessage = mustGetMsg();
         return this.sendChatAction(effectiveMessage.chat.id, chatAction, params);
       },
       editMessageText: (messageId, text, params) => {
-        const effectiveMessage = mustGetEffectiveMessage();
+        const effectiveMessage = mustGetMsg();
         return this.editMessageText(effectiveMessage.chat.id, messageId, text, params);
       },
       getMessage: (messageId) => {
-        const effectiveMessage = mustGetEffectiveMessage();
+        const effectiveMessage = mustGetMsg();
         return this.getMessage(effectiveMessage.chat.id, messageId);
       },
       getMessages: (messageIds) => {
-        const effectiveMessage = mustGetEffectiveMessage();
+        const effectiveMessage = mustGetMsg();
         return this.getMessages(effectiveMessage.chat.id, messageIds);
       },
       get toJSON() {
