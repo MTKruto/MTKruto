@@ -201,12 +201,14 @@ export async function inlineQueryResultToTlObject(result_: InlineQueryResult, pa
   });
 
   const title = "title" in result_ ? result_.title : undefined;
+  const description = "description" in result_ ? result_.description : undefined;
 
   if (document != null) {
     return new types.InputBotInlineResult({
       id,
       type,
       title,
+      description,
       thumb: thumb == null ? undefined : thumb,
       content: document,
       sendMessage: new types.InputBotInlineMessageMediaAuto({
@@ -221,6 +223,7 @@ export async function inlineQueryResultToTlObject(result_: InlineQueryResult, pa
       id,
       type,
       title,
+      description,
       document: new types.InputDocument({
         id: fileId.params.mediaId!,
         accessHash: fileId.params.accessHash!,
@@ -233,6 +236,7 @@ export async function inlineQueryResultToTlObject(result_: InlineQueryResult, pa
       id,
       type,
       title,
+      description,
       sendMessage: new types.InputBotInlineMessageMediaGeo({
         geoPoint: new types.InputGeoPoint({
           lat: result_.latitude,
@@ -250,6 +254,7 @@ export async function inlineQueryResultToTlObject(result_: InlineQueryResult, pa
       id,
       type,
       title,
+      description,
       sendMessage: new types.InputBotInlineMessageGame({
         replyMarkup,
       }),
@@ -263,6 +268,7 @@ export async function inlineQueryResultToTlObject(result_: InlineQueryResult, pa
       id,
       type,
       title,
+      description,
       sendMessage: new types.InputBotInlineMessageText({
         message,
         entities,
@@ -278,6 +284,7 @@ export async function inlineQueryResultToTlObject(result_: InlineQueryResult, pa
       id,
       type,
       title,
+      description,
       sendMessage: new types.InputBotInlineMessageMediaVenue({
         geoPoint: new types.InputGeoPoint({ long: result_.longitude, lat: result_.latitude }),
         address: result_.address,
