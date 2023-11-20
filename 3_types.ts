@@ -4,7 +4,6 @@ export * from "./types/0_chat_action.ts";
 export * from "./types/0_chat_administrator_rights.ts";
 export * from "./types/0_chat_id.ts";
 export * from "./types/0_chat_photo.ts";
-export * from "./types/0_color.ts";
 export * from "./types/0_contact.ts";
 export * from "./types/0_dice.ts";
 export * from "./types/0__file_id.ts";
