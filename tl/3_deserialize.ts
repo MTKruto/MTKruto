@@ -43,7 +43,11 @@ function deserializeSingleParam(
       case "boolean":
         return reader.readInt32(false) == 0x997275B5;
       case "number":
-        return reader.readInt32();
+        if (ntype == "double") {
+          return reader.readDouble();
+        } else {
+          return reader.readInt32();
+        }
       case "string":
         return reader.readString();
       case "true":
@@ -88,7 +92,7 @@ export function deserialize<T extends TLObjectConstructor<InstanceType<T>>>(
     }
 
     const value = deserializeSingleParam(reader, type, ntype);
-    if (value) {
+    if (typeof value !== "boolean" || value) {
       params[name] = value;
     }
   }
