@@ -36,6 +36,10 @@ export class TLRawReader {
     return bigIntFromBuffer(buffer, true, signed);
   }
 
+  readDouble() {
+    return new DataView(this.read(8).buffer).getFloat64(0, true); // TODO: cover in tests
+  }
+
   readInt128(signed = true) {
     const buffer = this.read(128 / 8);
     return bigIntFromBuffer(buffer, true, signed);
