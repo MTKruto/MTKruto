@@ -2171,4 +2171,31 @@ export class Client<C extends Context = Context> extends ClientAbstract {
     await this.#assertBot("getMyShortDescription");
     return await this.#getMyInfo(params?.languageCode).then((v) => v.about);
   }
+
+  /**
+   * Delete multiple messages.
+   *
+   * @method
+   * @param chatId The chat that contains the messages.
+   * @param messageIds The identifier of the messages to delete.
+   */
+  async deleteMessages(chatId: ChatID, messageIds: number[], params?: { onlyForMe?: true }): Promise<void> {
+    const peer = await this.getInputPeer(chatId);
+    if (peer instanceof types.InputPeerChannel) {
+      await this.invoke(new functions.ChannelsDeleteMessages({ channel: new types.InputChannel(peer), id: messageIds }));
+    } else {
+      await this.invoke(new functions.MessagesDeleteMessages({ id: messageIds, revoke: params?.onlyForMe ? undefined : true }));
+    }
+  }
+
+  /**
+   * Delete a single message.
+   *
+   * @method
+   * @param chatId The chat that contains the message.
+   * @param messageId The identifier of the message to delete.
+   */
+  async deleteMessage(chatId: ChatID, messageId: number, params?: { onlyForMe?: true }): Promise<void> {
+    await this.deleteMessages(chatId, [messageId], params);
+  }
 }
