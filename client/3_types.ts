@@ -239,6 +239,16 @@ export interface SetMyCommandsParams {
 
 export type GetMyCommandsParams = SetMyCommandsParams;
 
+export interface DeleteMessagesParams {
+  /** Whether to delete the messages only for this side. */
+  onlyForMe?: boolean;
+}
+
+export interface DeleteMessageParams {
+  /** Whether to delete the message only for this side. */
+  onlyForMe?: boolean;
+}
+
 export type ConnectionState = "notConnected" | "updating" | "ready";
 
 export type AuthorizationState = { authorized: boolean };
