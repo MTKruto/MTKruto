@@ -12,7 +12,7 @@ import { checkPassword } from "./0_password.ts";
 import { isChannelPtsUpdate, isPtsUpdate, resolve, With } from "./0_utilities.ts";
 import { ClientAbstract } from "./1_client_abstract.ts";
 import { ClientPlain } from "./2_client_plain.ts";
-import { AnswerCallbackQueryParams, AnswerInlineQueryParams, AuthorizeUserParams, ClientParams, ConnectionState, DownloadParams, EditMessageParams, FilterableUpdates, FilterUpdate, ForwardMessagesParams, GetMyCommandsParams, InvokeErrorHandler, ReplyParams, SendMessagesParams, SendPollParams, SetMyCommandsParams, Update, UploadParams } from "./3_types.ts";
+import { AnswerCallbackQueryParams, AnswerInlineQueryParams, AuthorizeUserParams, ClientParams, ConnectionState, DeleteMessageParams, DeleteMessagesParams, DownloadParams, EditMessageParams, FilterableUpdates, FilterUpdate, ForwardMessagesParams, GetMyCommandsParams, InvokeErrorHandler, ReplyParams, SendMessagesParams, SendPollParams, SetMyCommandsParams, Update, UploadParams } from "./3_types.ts";
 import { Composer, concat, flatten, Middleware, MiddlewareFn, skip } from "./4_composer.ts";
 
 const d = debug("Client");
@@ -42,6 +42,8 @@ export interface Context extends Update {
   reply: (text: string, params?: ReplyParams) => Promise<With<Message, "text">>;
   /** Reply the received message with a poll. */
   replyPoll: (question: string, options: [string, string, ...string[]], params?: SendPollParams) => Promise<With<Message, "poll">>;
+  /** Delete the received message. */
+  delete: () => Promise<void>;
   /** Forward the received message. */
   forward: (to: ChatID, params?: ForwardMessagesParams) => Promise<this["msg"]>;
   /** Send a chat action to the chat which the message was received from. */
@@ -60,6 +62,10 @@ export interface Context extends Update {
   forwardMessage: (to: ChatID, messageId: number, params?: ForwardMessagesParams) => Promise<Message>;
   /** Forward multiple messages of the chat which the message was received from. */
   forwardMessages: (to: ChatID, messageIds: number[], params?: ForwardMessagesParams) => Promise<Message[]>;
+  /** Delete a message in the chat which the message was received from. */
+  deleteMessage: (messageId: number, params?: DeleteMessagesParams) => Promise<void>;
+  /** Delete multiple messages in the chat which the message was received from. */
+  deleteMessages: (messageIds: number[], params?: DeleteMessagesParams) => Promise<void>;
   toJSON: () => Update;
 }
 
@@ -184,6 +190,10 @@ export class Client<C extends Context = Context> extends ClientAbstract {
         const effectiveMessage = mustGetMsg();
         return this.sendPoll(effectiveMessage.chat.id, question, options, params);
       },
+      delete: () => {
+        const effectiveMessage = mustGetMsg();
+        return this.deleteMessage(effectiveMessage.chat.id, effectiveMessage.id);
+      },
       forward: (to, params) => {
         const effectiveMessage = mustGetMsg();
         return this.forwardMessage(effectiveMessage.chat.id, to, effectiveMessage.id, params);
@@ -225,6 +235,14 @@ export class Client<C extends Context = Context> extends ClientAbstract {
       forwardMessages: (to, messageIds, params) => {
         const effectiveMessage = mustGetMsg();
         return this.forwardMessages(effectiveMessage.chat.id, to, messageIds, params);
+      },
+      deleteMessage: (messageId, params) => {
+        const effectiveMessage = mustGetMsg();
+        return this.deleteMessage(effectiveMessage.chat.id, messageId, params);
+      },
+      deleteMessages: (messageIds, params) => {
+        const effectiveMessage = mustGetMsg();
+        return this.deleteMessages(effectiveMessage.chat.id, messageIds, params);
       },
       get toJSON() {
         return () => update;
@@ -2188,5 +2206,32 @@ export class Client<C extends Context = Context> extends ClientAbstract {
   async getMyShortDescription(params?: { languageCode?: string }): Promise<string> {
     await this.#assertBot("getMyShortDescription");
     return await this.#getMyInfo(params?.languageCode).then((v) => v.about);
+  }
+
+  /**
+   * Delete multiple messages.
+   *
+   * @method
+   * @param chatId The chat that contains the messages.
+   * @param messageIds The identifier of the messages to delete.
+   */
+  async deleteMessages(chatId: ChatID, messageIds: number[], params?: DeleteMessagesParams): Promise<void> {
+    const peer = await this.getInputPeer(chatId);
+    if (peer instanceof types.InputPeerChannel) {
+      await this.invoke(new functions.ChannelsDeleteMessages({ channel: new types.InputChannel(peer), id: messageIds }));
+    } else {
+      await this.invoke(new functions.MessagesDeleteMessages({ id: messageIds, revoke: params?.onlyForMe ? undefined : true }));
+    }
+  }
+
+  /**
+   * Delete a single message.
+   *
+   * @method
+   * @param chatId The chat that contains the message.
+   * @param messageId The identifier of the message to delete.
+   */
+  async deleteMessage(chatId: ChatID, messageId: number, params?: DeleteMessageParams): Promise<void> {
+    await this.deleteMessages(chatId, [messageId], params);
   }
 }
