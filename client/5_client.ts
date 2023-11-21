@@ -42,6 +42,8 @@ export interface Context extends Update {
   reply: (text: string, params?: ReplyParams) => Promise<With<Message, "text">>;
   /** Reply the received message with a poll. */
   replyPoll: (question: string, options: [string, string, ...string[]], params?: SendPollParams) => Promise<With<Message, "poll">>;
+  /** Delete the received message. */
+  delete: () => Promise<void>
   /** Send a chat action to the chat which the message was received from. */
   sendChatAction: (action: ChatAction, params?: { messageThreadId?: number }) => Promise<void>;
   /** Edit a message in the chat which the message was received from. */
@@ -177,6 +179,10 @@ export class Client<C extends Context = Context> extends ClientAbstract {
       replyPoll: (question, options, params) => {
         const effectiveMessage = mustGetMsg();
         return this.sendPoll(effectiveMessage.chat.id, question, options, params);
+      },
+      delete: () => {
+        const effectiveMessage = mustGetMsg();
+        return this.deleteMessage(effectiveMessage.chat.id, effectiveMessage.id)
       },
       answerCallbackQuery: (params) => {
         const { callbackQuery } = update;
