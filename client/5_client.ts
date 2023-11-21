@@ -62,6 +62,10 @@ export interface Context extends Update {
   forwardMessage: (to: ChatID, messageId: number, params?: ForwardMessagesParams) => Promise<Message>;
   /** Forward multiple messages of the chat which the message was received from. */
   forwardMessages: (to: ChatID, messageIds: number[], params?: ForwardMessagesParams) => Promise<Message[]>;
+  /** Delete a message in the chat which the message was received from. */
+  deleteMessage: (messageId: number, params?: DeleteMessagesParams) => Promise<void>;
+  /** Delete multiple messages in the chat which the message was received from. */
+  deleteMessages: (messageIds: number[], params?: DeleteMessagesParams) => Promise<void>;
   toJSON: () => Update;
 }
 
@@ -231,6 +235,14 @@ export class Client<C extends Context = Context> extends ClientAbstract {
       forwardMessages: (to, messageIds, params) => {
         const effectiveMessage = mustGetMsg();
         return this.forwardMessages(effectiveMessage.chat.id, to, messageIds, params);
+      },
+      deleteMessage: (messageId, params) => {
+        const effectiveMessage = mustGetMsg();
+        return this.deleteMessage(effectiveMessage.chat.id, messageId, params);
+      },
+      deleteMessages: (messageIds, params) => {
+        const effectiveMessage = mustGetMsg();
+        return this.deleteMessages(effectiveMessage.chat.id, messageIds, params);
       },
       get toJSON() {
         return () => update;
