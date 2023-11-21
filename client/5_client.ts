@@ -44,6 +44,8 @@ export interface Context extends Update {
   replyPoll: (question: string, options: [string, string, ...string[]], params?: SendPollParams) => Promise<With<Message, "poll">>;
   /** Delete the received message. */
   delete: () => Promise<void>
+  /** Forward the received message. */
+  forward: (to: ChatID, params?: ForwardMessagesParams) => Promise<this["msg"]>;
   /** Send a chat action to the chat which the message was received from. */
   sendChatAction: (action: ChatAction, params?: { messageThreadId?: number }) => Promise<void>;
   /** Edit a message in the chat which the message was received from. */
@@ -56,6 +58,10 @@ export interface Context extends Update {
   getMessage: (messageId: number) => Promise<Omit<Message, "replyToMessage"> | null>;
   /** Retrieve multiple messages of the chat which the message was received from. */
   getMessages: (messageIds: number[]) => Promise<Omit<Message, "replyToMessage">[]>;
+  /** Forward a message of the chat which the message was received from. */
+  forwardMessage: (to: ChatID, messageId: number, params?: ForwardMessagesParams) => Promise<Message>;
+  /** Forward multiple messages of the chat which the message was received from. */
+  forwardMessages: (to: ChatID, messageIds: number[], params?: ForwardMessagesParams) => Promise<Message[]>;
   toJSON: () => Update;
 }
 
@@ -184,6 +190,10 @@ export class Client<C extends Context = Context> extends ClientAbstract {
         const effectiveMessage = mustGetMsg();
         return this.deleteMessage(effectiveMessage.chat.id, effectiveMessage.id)
       },
+      forward: (to, params) => {
+        const effectiveMessage = mustGetMsg();
+        return this.forwardMessage(effectiveMessage.chat.id, to, effectiveMessage.id, params);
+      },
       answerCallbackQuery: (params) => {
         const { callbackQuery } = update;
         if (callbackQuery === undefined) {
@@ -213,6 +223,14 @@ export class Client<C extends Context = Context> extends ClientAbstract {
       getMessages: (messageIds) => {
         const effectiveMessage = mustGetMsg();
         return this.getMessages(effectiveMessage.chat.id, messageIds);
+      },
+      forwardMessage: (to, messageId, params) => {
+        const effectiveMessage = mustGetMsg();
+        return this.forwardMessage(effectiveMessage.chat.id, to, messageId, params);
+      },
+      forwardMessages: (to, messageIds, params) => {
+        const effectiveMessage = mustGetMsg();
+        return this.forwardMessages(effectiveMessage.chat.id, to, messageIds, params);
       },
       get toJSON() {
         return () => update;
