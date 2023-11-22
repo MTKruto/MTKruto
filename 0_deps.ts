@@ -1,4 +1,8 @@
-export * from "https://deno.land/std@0.204.0/assert/mod.ts";
+export * from "https://deno.land/std@0.207.0/assert/mod.ts";
+
+export * as path from "https://deno.land/std@0.207.0/path/mod.ts";
+
+export { decodeBase64, encodeBase64 } from "https://deno.land/std@0.207.0/encoding/base64.ts";
 
 export { ctr256, factorize, ige256Decrypt, ige256Encrypt, init as initTgCrypto } from "https://deno.land/x/tgcrypto@0.3.3/mod.ts";
 
@@ -11,5 +15,3 @@ export { Parser } from "https://deno.land/x/html_parser@v0.1.3/src/mod.ts";
 import { debug as debug_ } from "https://raw.githubusercontent.com/MTKruto/debug/main/mod.ts";
 
 export const debug: typeof debug_ = (v) => debug_(v);
-
-export { decodeBase64, encodeBase64 } from "https://deno.land/std@0.204.0/encoding/base64.ts";
