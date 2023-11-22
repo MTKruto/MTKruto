@@ -9,7 +9,7 @@ import { AuthKeyUnregistered, FloodWait, Migrate, PasswordHashInvalid, PhoneNumb
 import { parseHtml } from "./0_html.ts";
 import { decryptMessage, encryptMessage, getMessageId } from "./0_message.ts";
 import { checkPassword } from "./0_password.ts";
-import { FileSource, getFileContents, isChannelPtsUpdate, isPtsUpdate, resolve, With } from "./0_utilities.ts";
+import { FileSource, getFileContents, isChannelPtsUpdate, isHttpUrl, isPtsUpdate, resolve, With } from "./0_utilities.ts";
 import { ClientAbstract } from "./1_client_abstract.ts";
 import { ClientPlain } from "./2_client_plain.ts";
 import { AnswerCallbackQueryParams, AnswerInlineQueryParams, AuthorizeUserParams, ClientParams, ConnectionState, DeleteMessageParams, DeleteMessagesParams, DownloadParams, EditMessageParams, FilterableUpdates, FilterUpdate, ForwardMessagesParams, GetMyCommandsParams, InvokeErrorHandler, ReplyParams, SendMessageParams, SendPhotoParams, SendPollParams, SetMyCommandsParams, Update, UploadParams } from "./3_types.ts";
@@ -2256,8 +2256,43 @@ export class Client<C extends Context = Context> extends ClientAbstract {
    * @param photo The photo to send.
    */
   async sendPhoto(chatId: ChatID, photo: FileSource, params?: SendPhotoParams): Promise<With<Message, "photo">> {
-    const [contents, fileName] = await getFileContents(photo);
-    const file = await this.upload(contents, { fileName, chunkSize: params?.chunkSize, signal: params?.signal });
+    let media: types.TypeInputMedia | null = null;
+    const spoiler = params?.hasSpoiler ? true : undefined;
+
+    if (typeof photo === "string") {
+      let fileId: FileID | null = null;
+      try {
+        fileId = FileID.decode(photo);
+      } catch (err) {
+        d("fileId: %o", err);
+      }
+      if (fileId != null) {
+        if (fileId.fileType != FileType.Photo) {
+          UNREACHABLE();
+        }
+        if (fileId.params.mediaId == undefined || fileId.params.accessHash == undefined || fileId.params.fileReference == undefined) {
+          UNREACHABLE();
+        }
+        media = new types.InputMediaPhoto({
+          id: new types.InputPhoto({
+            id: fileId.params.mediaId,
+            accessHash: fileId.params.accessHash,
+            fileReference: fileId.params.fileReference,
+          }),
+          spoiler,
+        });
+      }
+    }
+
+    if (media == null) {
+      if (typeof photo === "string" && isHttpUrl(photo)) {
+        media = new types.InputMediaPhotoExternal({ url: photo, spoiler });
+      } else {
+        const [contents, fileName] = await getFileContents(photo);
+        const file = await this.upload(contents, { fileName, chunkSize: params?.chunkSize, signal: params?.signal });
+        media = new types.InputMediaUploadedPhoto({ file, spoiler });
+      }
+    }
 
     const peer = await this.getInputPeer(chatId);
     const randomId = getRandomId();
@@ -2267,15 +2302,12 @@ export class Client<C extends Context = Context> extends ClientAbstract {
     const topMsgId = params?.messageThreadId;
     const sendAs = params?.sendAs ? await this.getInputPeer(params.sendAs) : undefined; // TODO: check default sendAs
     const replyMarkup = await this.#constructReplyMarkup(params);
-    const spoiler = params?.hasSpoiler ? true : undefined;
 
     const caption_ = params?.caption;
     const parseResult = caption_ !== undefined ? this.#parseText(caption_, { parseMode: params?.parseMode, entities: params?.captionEntities }) : undefined;
 
     const caption = parseResult === undefined ? undefined : parseResult[0];
     const captionEntities = parseResult === undefined ? undefined : parseResult[1];
-
-    const media = new types.InputMediaUploadedPhoto({ file, spoiler });
 
     const result = await this.invoke(
       new functions.MessagesSendMedia({
