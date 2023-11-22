@@ -64,7 +64,7 @@ export async function getFileContents(source: FileSource, fileName = "") {
           path_ = source;
         } else {
           // @ts-ignore: lib
-          path_ = path.join(Deno.cwd(), photo);
+          path_ = path.join(Deno.cwd(), source);
         }
         url = path.toFileUrl(path_).toString();
         fileName = path.basename(path_);
