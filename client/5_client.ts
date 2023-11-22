@@ -39,11 +39,11 @@ export interface Context extends Update {
   /** Resolves to `effectiveMessage?.senderChat`. */
   senderChat: this["msg"] extends never ? never : this["msg"]["senderChat"];
   /** Reply the received message with a text message. */
-  reply: (text: string, params?: ReplyParams) => Promise<With<Message, "text">>;
+  reply: (text: string, params?: Omit<SendMessageParams, "replyToMessageId"> & ReplyParams) => Promise<With<Message, "text">>;
   /** Reply the received message with a poll. */
-  replyPoll: (question: string, options: [string, string, ...string[]], params?: SendPollParams) => Promise<With<Message, "poll">>;
+  replyPoll: (question: string, options: [string, string, ...string[]], params?: Omit<SendPollParams, "replyToMessageId"> & ReplyParams) => Promise<With<Message, "poll">>;
   /** Reply the received message with a photo. */
-  replyPhoto: (photo: FileSource, params?: SendPhotoParams) => Promise<With<Message, "photo">>;
+  replyPhoto: (photo: FileSource, params?: Omit<SendPhotoParams, "replyToMessageId"> & ReplyParams) => Promise<With<Message, "photo">>;
   /** Delete the received message. */
   delete: () => Promise<void>;
   /** Forward the received message. */
@@ -176,6 +176,11 @@ export class Client<C extends Context = Context> extends ClientAbstract {
     const chat = msg?.chat;
     const from = update.callbackQuery?.from ?? update.inlineQuery?.from ?? update.message?.from ?? update.editedMessage?.from;
     const senderChat = msg?.senderChat;
+    const getReplyToMessageId = (quote: boolean | undefined, effectiveMessage: Message) => {
+      const shouldQuote = quote === undefined ? effectiveMessage.chat.type != "private" : quote;
+      const replyToMessageId = shouldQuote ? effectiveMessage.id : undefined;
+      return replyToMessageId;
+    };
     return {
       ...update,
       client: this as unknown as Client,
@@ -185,16 +190,18 @@ export class Client<C extends Context = Context> extends ClientAbstract {
       senderChat,
       reply: (text, params) => {
         const effectiveMessage = mustGetMsg();
-        const shouldQuote = params?.quote === undefined ? effectiveMessage.chat.type != "private" : params.quote;
-        return this.sendMessage(effectiveMessage.chat.id, text, { ...params, replyToMessageId: shouldQuote ? effectiveMessage.id : undefined });
+        const replyToMessageId = getReplyToMessageId(params?.quote, effectiveMessage);
+        return this.sendMessage(effectiveMessage.chat.id, text, { ...params, replyToMessageId });
       },
       replyPoll: (question, options, params) => {
         const effectiveMessage = mustGetMsg();
-        return this.sendPoll(effectiveMessage.chat.id, question, options, params);
+        const replyToMessageId = getReplyToMessageId(params?.quote, effectiveMessage);
+        return this.sendPoll(effectiveMessage.chat.id, question, options, { ...params, replyToMessageId });
       },
       replyPhoto: (photo, params) => {
         const effectiveMessage = mustGetMsg();
-        return this.sendPhoto(effectiveMessage.chat.id, photo, params);
+        const replyToMessageId = getReplyToMessageId(params?.quote, effectiveMessage);
+        return this.sendPhoto(effectiveMessage.chat.id, photo, { ...params, replyToMessageId });
       },
       delete: () => {
         const effectiveMessage = mustGetMsg();

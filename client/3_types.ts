@@ -300,7 +300,7 @@ export type ConnectionState = "notConnected" | "updating" | "ready";
 
 export type AuthorizationState = { authorized: boolean };
 
-export interface ReplyParams extends Omit<SendMessageParams, "replyToMessageId"> {
+export interface ReplyParams {
   /** Whether to quote the message that is to be replied. Enabled by default for non-private chats. */
   quote?: boolean;
 }
