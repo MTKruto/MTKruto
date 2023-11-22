@@ -9,10 +9,10 @@ import { AuthKeyUnregistered, FloodWait, Migrate, PasswordHashInvalid, PhoneNumb
 import { parseHtml } from "./0_html.ts";
 import { decryptMessage, encryptMessage, getMessageId } from "./0_message.ts";
 import { checkPassword } from "./0_password.ts";
-import { isChannelPtsUpdate, isPtsUpdate, resolve, With } from "./0_utilities.ts";
+import { FileSource, getFileContents, isChannelPtsUpdate, isPtsUpdate, resolve, With } from "./0_utilities.ts";
 import { ClientAbstract } from "./1_client_abstract.ts";
 import { ClientPlain } from "./2_client_plain.ts";
-import { AnswerCallbackQueryParams, AnswerInlineQueryParams, AuthorizeUserParams, ClientParams, ConnectionState, DeleteMessageParams, DeleteMessagesParams, DownloadParams, EditMessageParams, FilterableUpdates, FilterUpdate, ForwardMessagesParams, GetMyCommandsParams, InvokeErrorHandler, ReplyParams, SendMessagesParams, SendPollParams, SetMyCommandsParams, Update, UploadParams } from "./3_types.ts";
+import { AnswerCallbackQueryParams, AnswerInlineQueryParams, AuthorizeUserParams, ClientParams, ConnectionState, DeleteMessageParams, DeleteMessagesParams, DownloadParams, EditMessageParams, FilterableUpdates, FilterUpdate, ForwardMessagesParams, GetMyCommandsParams, InvokeErrorHandler, ReplyParams, SendMessageParams, SendPhotoParams, SendPollParams, SetMyCommandsParams, Update, UploadParams } from "./3_types.ts";
 import { Composer, concat, flatten, Middleware, MiddlewareFn, skip } from "./4_composer.ts";
 
 const d = debug("Client");
@@ -42,6 +42,8 @@ export interface Context extends Update {
   reply: (text: string, params?: ReplyParams) => Promise<With<Message, "text">>;
   /** Reply the received message with a poll. */
   replyPoll: (question: string, options: [string, string, ...string[]], params?: SendPollParams) => Promise<With<Message, "poll">>;
+  /** Reply the received message with a photo. */
+  replyPhoto: (photo: FileSource, params?: SendPhotoParams) => Promise<With<Message, "photo">>;
   /** Delete the received message. */
   delete: () => Promise<void>;
   /** Forward the received message. */
@@ -189,6 +191,10 @@ export class Client<C extends Context = Context> extends ClientAbstract {
       replyPoll: (question, options, params) => {
         const effectiveMessage = mustGetMsg();
         return this.sendPoll(effectiveMessage.chat.id, question, options, params);
+      },
+      replyPhoto: (photo, params) => {
+        const effectiveMessage = mustGetMsg();
+        return this.sendPhoto(effectiveMessage.chat.id, photo, params);
       },
       delete: () => {
         const effectiveMessage = mustGetMsg();
@@ -1330,7 +1336,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
     return messages;
   }
 
-  async #resolveSendAs(params?: Pick<SendMessagesParams, "sendAs">) {
+  async #resolveSendAs(params?: Pick<SendMessageParams, "sendAs">) {
     const sendAs = params?.sendAs;
     if (sendAs !== undefined) {
       await this.#assertUser("sendAs");
@@ -1349,7 +1355,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
   async sendMessage(
     chatId: ChatID,
     text: string,
-    params?: SendMessagesParams,
+    params?: SendMessageParams,
   ): Promise<With<Message, "text">> {
     const [message, entities] = this.#parseText(text, params);
 
@@ -1807,7 +1813,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
     return new types.InputUser({ userId: inputPeer.userId, accessHash: inputPeer.accessHash });
   };
 
-  async #constructReplyMarkup(params?: Pick<SendMessagesParams, "replyMarkup">) {
+  async #constructReplyMarkup(params?: Pick<SendMessageParams, "replyMarkup">) {
     if (params?.replyMarkup) {
       await this.#assertBot("replyMarkup");
       return replyMarkupToTlObject(params.replyMarkup, this.#usernameResolver.bind(this));
@@ -2233,5 +2239,53 @@ export class Client<C extends Context = Context> extends ClientAbstract {
    */
   async deleteMessage(chatId: ChatID, messageId: number, params?: DeleteMessageParams): Promise<void> {
     await this.deleteMessages(chatId, [messageId], params);
+  }
+
+  /**
+   * Send a photo.
+   *
+   * @method
+   * @param chatId The chat to send the photo to.
+   * @param photo The photo to send.
+   */
+  async sendPhoto(chatId: ChatID, photo: FileSource, params?: SendPhotoParams): Promise<With<Message, "photo">> {
+    const [contents, fileName] = await getFileContents(photo);
+    const file = await this.upload(contents, { fileName, chunkSize: params?.chunkSize, signal: params?.signal });
+
+    const peer = await this.getInputPeer(chatId);
+    const randomId = getRandomId();
+    const silent = params?.disableNotification ? true : undefined;
+    const noforwards = params?.protectContent ? true : undefined;
+    const replyToMsgId = params?.replyToMessageId;
+    const topMsgId = params?.messageThreadId;
+    const sendAs = params?.sendAs ? await this.getInputPeer(params.sendAs) : undefined; // TODO: check default sendAs
+    const replyMarkup = await this.#constructReplyMarkup(params);
+    const spoiler = params?.hasSpoiler ? true : undefined;
+
+    const caption_ = params?.caption;
+    const parseResult = caption_ !== undefined ? this.#parseText(caption_, { parseMode: params?.parseMode, entities: params?.captionEntities }) : undefined;
+
+    const caption = parseResult === undefined ? undefined : parseResult[0];
+    const captionEntities = parseResult === undefined ? undefined : parseResult[1];
+
+    const media = new types.InputMediaUploadedPhoto({ file, spoiler });
+
+    const result = await this.invoke(
+      new functions.MessagesSendMedia({
+        peer,
+        randomId,
+        silent,
+        noforwards,
+        replyMarkup,
+        replyTo: replyToMsgId !== undefined ? new types.InputReplyToMessage({ replyToMsgId, topMsgId }) : undefined,
+        sendAs,
+        media,
+        message: caption ?? "",
+        entities: captionEntities,
+      }),
+    );
+
+    const message = await this.#updatesToMessages(chatId, result).then((v) => v[0]);
+    return Client.#assertMsgHas(message, "photo");
   }
 }
