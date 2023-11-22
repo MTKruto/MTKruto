@@ -1179,7 +1179,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
 
   async getUserAccessHash(userId: bigint) {
     const users = await this.invoke(new functions.UsersGetUsers({ id: [new types.InputUser({ userId, accessHash: 0n })] }));
-    return users[0][as](types.User).accessHash ?? 0n;
+    return users[0]?.[as](types.User).accessHash ?? 0n;
   }
 
   async #getChannelAccessHash(channelId: bigint) {
@@ -1189,7 +1189,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
 
   async getInputPeer(id: ChatID) {
     const inputPeer = await this.#getInputPeerInner(id);
-    if (inputPeer instanceof types.InputPeerUser || inputPeer instanceof types.InputPeerChannel && inputPeer.accessHash == 0n && await this.storage.getAccountType() == "bot") {
+    if ((inputPeer instanceof types.InputPeerUser || inputPeer instanceof types.InputPeerChannel && inputPeer.accessHash == 0n) && await this.storage.getAccountType() == "bot") {
       if ("channelId" in inputPeer) {
         inputPeer.accessHash = await this.#getChannelAccessHash(inputPeer.channelId);
       } else {
