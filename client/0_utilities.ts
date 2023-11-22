@@ -46,6 +46,9 @@ export function isChannelPtsUpdate(v: types.TypeUpdate | types.TypeUpdates): v i
     v instanceof types.UpdateDeleteChannelMessages;
 }
 
+/**
+ * Source to a file. Can be a file ID, file path, URL, or `Uint8Array`.
+ */
 export type FileSource = string | URL | Uint8Array;
 
 export async function getFileContents(source: FileSource, fileName = "") {
@@ -84,4 +87,12 @@ export async function getFileContents(source: FileSource, fileName = "") {
     contents = await res.arrayBuffer().then((v) => new Uint8Array(v));
   }
   return [contents, fileName] as const;
+}
+
+export function isHttpUrl(string: string) {
+  try {
+    return new URL(string).protocol.startsWith("http");
+  } catch {
+    return false;
+  }
 }
