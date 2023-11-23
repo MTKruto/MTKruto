@@ -100,6 +100,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
   public readonly systemVersion: string;
   readonly #publicKeys?: PublicKeys;
   readonly #autoStart: boolean;
+  readonly #ignoreOutgoing: boolean | null;
 
   /**
    * Constructs the client.
@@ -127,6 +128,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
     this.systemVersion = params?.systemVersion ?? SYSTEM_VERSION;
     this.#publicKeys = params?.publicKeys;
     this.#autoStart = params?.autoStart ?? true;
+    this.#ignoreOutgoing = params?.ignoreOutgoing ?? null;
 
     if (params?.defaultHandlers ?? true) {
       this.on("connectionState", ({ connectionState }, next) => {
@@ -1724,13 +1726,20 @@ export class Client<C extends Context = Context> extends ClientAbstract {
     ) {
       const key = update instanceof types.UpdateNewMessage || update instanceof types.UpdateNewChannelMessage ? "message" : "editedMessage";
       if (!(update.message instanceof types.MessageEmpty)) {
-        const message = await constructMessage(
-          update.message,
-          this[getEntity].bind(this),
-          this.getMessage.bind(this),
-          this[getStickerSetName].bind(this),
-        );
-        await this.#handle(this.#constructContext({ [key]: message }), resolve);
+        const isOutgoing = update.message.out;
+        let shouldIgnore = isOutgoing ? (await this.storage.getAccountType()) == "user" ? false : true : false;
+        if (this.#ignoreOutgoing != null && isOutgoing) {
+          shouldIgnore = this.#ignoreOutgoing;
+        }
+        if (!shouldIgnore) {
+          const message = await constructMessage(
+            update.message,
+            this[getEntity].bind(this),
+            this.getMessage.bind(this),
+            this[getStickerSetName].bind(this),
+          );
+          await this.#handle(this.#constructContext({ [key]: message }), resolve);
+        }
       }
     }
 
