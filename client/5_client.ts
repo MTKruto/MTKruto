@@ -1088,10 +1088,10 @@ export class Client<C extends Context = Context> extends ClientAbstract {
           await this.#processChats(difference.chats);
           await this.#processUsers(difference.users);
           for (const message of difference.newMessages) {
-            await this.#processUpdates(new types.UpdateNewMessage({ message, pts: 0, ptsCount: 0 }), true);
+            await this.#processUpdates(new types.UpdateNewMessage({ message, pts: 0, ptsCount: 0 }), false);
           }
           for (const update of difference.otherUpdates) {
-            await this.#processUpdates(update, true);
+            await this.#processUpdates(update, false);
           }
           if (difference instanceof types.UpdatesDifference) {
             await this.storage.setState(difference.state);
@@ -1137,10 +1137,10 @@ export class Client<C extends Context = Context> extends ClientAbstract {
         await this.#processChats(difference.chats);
         await this.#processUsers(difference.users);
         for (const message of difference.newMessages) {
-          await this.#processUpdates(new types.UpdateNewChannelMessage({ message, pts: 0, ptsCount: 0 }), true);
+          await this.#processUpdates(new types.UpdateNewChannelMessage({ message, pts: 0, ptsCount: 0 }), false);
         }
         for (const update of difference.otherUpdates) {
-          await this.#processUpdates(update, true);
+          await this.#processUpdates(update, false);
         }
         await this.storage.setChannelPts(channelId, difference.pts);
         dGapC("recovered from update gap [%o, %s]", channelId, source);
@@ -1151,7 +1151,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
         await this.#processChats(difference.chats);
         await this.#processUsers(difference.users);
         for (const message of difference.messages) {
-          await this.#processUpdates(new types.UpdateNewChannelMessage({ message, pts: 0, ptsCount: 0 }), true);
+          await this.#processUpdates(new types.UpdateNewChannelMessage({ message, pts: 0, ptsCount: 0 }), false);
         }
         const pts_ = difference.dialog[as](types.Dialog).pts;
         if (pts_ != undefined) {
