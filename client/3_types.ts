@@ -42,6 +42,10 @@ export interface ClientParams extends ClientPlainParams {
    * Whether to use default handlers. Defaults to `true`.
    */
   defaultHandlers?: boolean;
+  /**
+   * Whether to ignore outgoing messages. Defaults to `true` for bots, and `false` for users.
+   */
+  ignoreOutgoing?: boolean;
 }
 
 export interface AnswerCallbackQueryParams {
