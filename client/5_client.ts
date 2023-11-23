@@ -679,7 +679,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
           }
           dRecv("received %s", body.constructor.name);
           if (body instanceof types._TypeUpdates || body instanceof types._TypeUpdate) {
-            this.#processUpdatesQueue.add(() => this.#processUpdates(body as types.Updates | types.TypeUpdate));
+            this.#processUpdatesQueue.add(() => this.#processUpdates(body as types.Updates | types.TypeUpdate, true));
           } else if (body instanceof types.NewSessionCreated) {
             this.#state.salt = body.serverSalt;
             await this.storage.setServerSalt(this.#state.salt);
@@ -707,7 +707,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
             };
             if (result instanceof types._TypeUpdates || result instanceof types._TypeUpdate) {
               this.#processUpdatesQueue.add(async () => {
-                await this.#processUpdates(result as types.TypeUpdates | types.TypeUpdate);
+                await this.#processUpdates(result as types.TypeUpdates | types.TypeUpdate, true);
                 resolvePromise();
               });
             } else {
@@ -916,31 +916,23 @@ export class Client<C extends Context = Context> extends ClientAbstract {
   #handleUpdateQueue = new Queue("handleUpdate");
   #processUpdatesQueue = new Queue("processUpdates");
 
-  async checkGap(pts: number, ptsCount: number, assertNoGap: boolean) {
+  async checkGap(pts: number, ptsCount: number) {
     const localState = await this.#getLocalState();
     if (localState.pts + ptsCount < pts) {
-      if (assertNoGap) {
-        UNREACHABLE();
-      } else {
-        await this.#recoverUpdateGap("processUpdates");
-      }
+      await this.#recoverUpdateGap("processUpdates");
     }
   }
-  async #checkChannelGap(channelId: bigint, pts: number, ptsCount: number, assertNoGap: boolean) {
+  async #checkChannelGap(channelId: bigint, pts: number, ptsCount: number) {
     let localPts = await this.storage.getChannelPts(channelId);
     if (!localPts) {
       localPts = pts - ptsCount;
     }
     if (localPts + ptsCount < pts) {
-      if (assertNoGap) {
-        UNREACHABLE();
-      } else {
-        await this.#recoverChannelUpdateGap(channelId, "processUpdates");
-      }
+      await this.#recoverChannelUpdateGap(channelId, "processUpdates");
     }
   }
 
-  async #processUpdates(updates_: types.TypeUpdate | types.TypeUpdates, assertNoGap = false) {
+  async #processUpdates(updates_: types.TypeUpdate | types.TypeUpdates, checkGap: boolean) {
     /// First, individual updates (Update[1]) and updateShort* are extracted from Updates.[2]
     ///
     /// If an updatesTooLong[3] was received, an update gap recovery is initiated and no further action will be taken.
@@ -980,7 +972,9 @@ export class Client<C extends Context = Context> extends ClientAbstract {
         if (update.pts == 0) {
           continue;
         }
-        await this.checkGap(update.pts, update.ptsCount, assertNoGap);
+        if (checkGap) {
+          await this.checkGap(update.pts, update.ptsCount);
+        }
         localState ??= await this.#getLocalState();
         originalPts ??= localState.pts;
         if (localState.pts + update.ptsCount > update.pts) {
@@ -994,7 +988,9 @@ export class Client<C extends Context = Context> extends ClientAbstract {
         }
         const ptsCount = update.ptsCount;
         const channelId = update instanceof types.UpdateNewChannelMessage || update instanceof types.UpdateEditChannelMessage ? (update.message as types.Message | types.MessageService).peerId[as](types.PeerChannel).channelId : update.channelId;
-        await this.#checkChannelGap(channelId, update.pts, ptsCount, assertNoGap);
+        if (checkGap) {
+          await this.#checkChannelGap(channelId, update.pts, ptsCount);
+        }
         let currentPts: number | null | undefined = channelPtsMap.get(channelId);
         if (currentPts === undefined) {
           currentPts = await this.storage.getChannelPts(channelId);
@@ -1005,14 +1001,6 @@ export class Client<C extends Context = Context> extends ClientAbstract {
         } else {
           channelPtsMap.set(channelId, update.pts);
         }
-      }
-    }
-    if (!assertNoGap) {
-      if (localState != null && originalPts != null && localState.pts != originalPts) {
-        await this.storage.setState(localState);
-      }
-      for (const [channelId, pts] of channelPtsMap.entries()) {
-        await this.storage.setChannelPts(channelId, pts);
       }
     }
 
