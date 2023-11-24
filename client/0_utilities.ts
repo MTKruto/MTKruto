@@ -1,6 +1,7 @@
 import { path } from "../0_deps.ts";
 import { UNREACHABLE } from "../1_utilities.ts";
 import { types } from "../2_tl.ts";
+import { Username } from "../tl/2_types.ts";
 
 export const resolve = () => Promise.resolve();
 
@@ -95,4 +96,67 @@ export function isHttpUrl(string: string) {
   } catch {
     return false;
   }
+}
+
+function isAlpha(string: string) {
+  const c = string.charCodeAt(0) | 0x20;
+  return "a".charCodeAt(0) <= c && c <= "z".charCodeAt(0);
+}
+function isDigit(string: string) {
+  const c = string.charCodeAt(0);
+  return "0".charCodeAt(0) <= c && c <= "9".charCodeAt(0);
+}
+const errInvalidUsername = (u: string) => new Error("Invalid username: " + u);
+function validateUsername(string: string, ignoreAt = false) {
+  string = string.trim();
+  if (ignoreAt && string.startsWith("@")) {
+    string = string.slice(1);
+  }
+  if (string.length == 0 || string.length > 32) {
+    throw errInvalidUsername(string);
+  }
+  if (!isAlpha(string[0])) {
+    throw errInvalidUsername(string);
+  }
+  for (const c of string) {
+    if (!isAlpha(c) && !isDigit(c) && c != "_") {
+      throw errInvalidUsername(string);
+    }
+  }
+  if (string[Username.length - 1] == "_") {
+    throw errInvalidUsername(string);
+  }
+  for (let i = 1; i < string.length; ++i) {
+    if (string[i - 1] == "_" && string[i] == "_") {
+      throw errInvalidUsername(string);
+    }
+  }
+
+  return string;
+}
+export function getUsername(string: string) {
+  let url: URL | null = null;
+  try {
+    url = new URL(string);
+  } catch {
+    try {
+      url = new URL("https://" + string);
+    } catch {
+      //
+    }
+  }
+  if (url === null || (url.protocol != "http:" && url.protocol != "https:")) {
+    return validateUsername(string, true);
+  }
+  if (url.hostname != "telegram.dog" && url.hostname != "telegram.me" && url.hostname != "t.me" && !url.hostname.endsWith(".t.me")) {
+    return validateUsername(string, true);
+  }
+  if (url.hostname == "telegram.dog" || url.hostname == "telegram.me" || url.hostname == "t.me") {
+    return validateUsername(url.pathname.split("/")[1]);
+  }
+  const parts = url.hostname.split(".");
+  if (parts.length != 3) {
+    return validateUsername(string);
+  }
+  return validateUsername(parts[0]);
 }
