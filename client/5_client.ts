@@ -9,7 +9,7 @@ import { AuthKeyUnregistered, FloodWait, Migrate, PasswordHashInvalid, PhoneNumb
 import { parseHtml } from "./0_html.ts";
 import { decryptMessage, encryptMessage, getMessageId } from "./0_message.ts";
 import { checkPassword } from "./0_password.ts";
-import { FileSource, getFileContents, isChannelPtsUpdate, isHttpUrl, isPtsUpdate, resolve, With } from "./0_utilities.ts";
+import { FileSource, getFileContents, getUsername, isChannelPtsUpdate, isHttpUrl, isPtsUpdate, resolve, With } from "./0_utilities.ts";
 import { ClientAbstract } from "./1_client_abstract.ts";
 import { ClientPlain } from "./2_client_plain.ts";
 import { AnswerCallbackQueryParams, AnswerInlineQueryParams, AuthorizeUserParams, ClientParams, ConnectionState, DeleteMessageParams, DeleteMessagesParams, DownloadParams, EditMessageParams, FilterableUpdates, FilterUpdate, ForwardMessagesParams, GetMyCommandsParams, InvokeErrorHandler, ReplyParams, SendMessageParams, SendPhotoParams, SendPollParams, SetMyCommandsParams, Update, UploadParams } from "./3_types.ts";
@@ -1192,44 +1192,37 @@ export class Client<C extends Context = Context> extends ClientAbstract {
 
   async #getInputPeerInner(id: ChatID) {
     if (typeof id === "string") {
-      if (!id.startsWith("@")) {
-        throw new Error("Expected username to start with @");
-      } else {
-        id = id.slice(1);
-        if (!id) {
-          throw new Error("Empty username");
-        }
-        let userId = 0n;
-        let channelId = 0n;
-        const maybeUsername = await this.storage.getUsername(id);
-        if (maybeUsername != null && Date.now() - maybeUsername[2].getTime() < USERNAME_TTL) {
-          const [type, id] = maybeUsername;
-          if (type == "user") {
-            userId = id;
-          } else {
-            channelId = id;
-          }
+      id = getUsername(id);
+      let userId = 0n;
+      let channelId = 0n;
+      const maybeUsername = await this.storage.getUsername(id);
+      if (maybeUsername != null && Date.now() - maybeUsername[2].getTime() < USERNAME_TTL) {
+        const [type, id] = maybeUsername;
+        if (type == "user") {
+          userId = id;
         } else {
-          const resolved = await this.invoke(new functions.ContactsResolveUsername({ username: id }));
-          await this.#processChats(resolved.chats);
-          await this.#processUsers(resolved.users);
-          if (resolved.peer instanceof types.PeerUser) {
-            userId = resolved.peer.userId;
-          } else if (resolved.peer instanceof types.PeerChannel) {
-            channelId = resolved.peer.channelId;
-          } else {
-            UNREACHABLE();
-          }
+          channelId = id;
         }
-        if (userId) {
-          const accessHash = await this.storage.getUserAccessHash(userId);
-          return new types.InputPeerUser({ userId, accessHash: accessHash ?? 0n });
-        } else if (channelId) {
-          const accessHash = await this.storage.getChannelAccessHash(channelId);
-          return new types.InputPeerChannel({ channelId, accessHash: accessHash ?? 0n });
+      } else {
+        const resolved = await this.invoke(new functions.ContactsResolveUsername({ username: id }));
+        await this.#processChats(resolved.chats);
+        await this.#processUsers(resolved.users);
+        if (resolved.peer instanceof types.PeerUser) {
+          userId = resolved.peer.userId;
+        } else if (resolved.peer instanceof types.PeerChannel) {
+          channelId = resolved.peer.channelId;
         } else {
           UNREACHABLE();
         }
+      }
+      if (userId) {
+        const accessHash = await this.storage.getUserAccessHash(userId);
+        return new types.InputPeerUser({ userId, accessHash: accessHash ?? 0n });
+      } else if (channelId) {
+        const accessHash = await this.storage.getChannelAccessHash(channelId);
+        return new types.InputPeerChannel({ channelId, accessHash: accessHash ?? 0n });
+      } else {
+        UNREACHABLE();
       }
     } else if (id > 0) {
       const id_ = BigInt(id);
