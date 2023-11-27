@@ -30,6 +30,7 @@ const getMessageWithReply = Symbol();
 export interface Context extends Update {
   /** The client that received the update. */
   client: Client;
+  me: undefined extends this["connectionState"] ? undefined extends this["authorizationState"] ? User : (User | undefined) : (User | undefined);
   /** Resolves to `ctx.message ?? ctx.editedMessage ?? ctx.callbackQuery?.message`. */
   msg: undefined extends this["message"] ? undefined extends this["editedMessage"] ? undefined extends this["callbackQuery"] ? never : this["callbackQuery"] extends With<CallbackQuery, "message"> ? this["callbackQuery"]["message"] : this["callbackQuery"] extends With<CallbackQuery, "inlineMessageId"> ? never : (Message | undefined) : this["editedMessage"] : this["message"];
   /** Resolves to `effectiveMessage?.chat`. */
@@ -166,7 +167,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
     }
   }
 
-  #constructContext = (update: Update) => {
+  #constructContext = async (update: Update) => {
     const msg = update.message ?? update.editedMessage ?? update.callbackQuery?.message;
     const mustGetMsg = () => {
       if (msg !== undefined) {
@@ -183,9 +184,11 @@ export class Client<C extends Context = Context> extends ClientAbstract {
       const replyToMessageId = shouldQuote ? effectiveMessage.id : undefined;
       return replyToMessageId;
     };
+    const me = update.connectionState !== undefined ? undefined : (update.authorizationState !== undefined && !update.authorizationState.authorized) ? undefined : await this.#getMe();
     return {
       ...update,
       client: this as unknown as Client,
+      me,
       msg,
       chat,
       from,
@@ -267,7 +270,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
 
   #propagateConnectionState(connectionState: ConnectionState) {
     this.#handleUpdateQueue.add(async () => {
-      await this.#handle(this.#constructContext({ connectionState }), resolve);
+      await this.#handle(await this.#constructContext({ connectionState }), resolve);
     });
   }
 
@@ -426,7 +429,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
   #lastPropagatedAuthorizationState: boolean | null = null;
   async #propagateAuthorizationState(authorized: boolean) {
     if (this.#lastPropagatedAuthorizationState != authorized) {
-      await this.#handle(this.#constructContext({ authorizationState: { authorized } }), resolve);
+      await this.#handle(await this.#constructContext({ authorizationState: { authorized } }), resolve);
       this.#lastPropagatedAuthorizationState = authorized;
     }
   }
@@ -1646,6 +1649,17 @@ export class Client<C extends Context = Context> extends ClientAbstract {
     return await this.forwardMessages(from, to, [messageId], params).then((v) => v[0]);
   }
 
+  #lastGetMe: User | null = null;
+  async #getMe() {
+    if (this.#lastGetMe != null) {
+      return this.#lastGetMe;
+    } else {
+      const user = await this.getMe();
+      this.#lastGetMe = user;
+      return user;
+    }
+  }
+
   /**
    * Get information on the currently authorized user.
    *
@@ -1656,7 +1670,9 @@ export class Client<C extends Context = Context> extends ClientAbstract {
     if (users.length < 1) {
       UNREACHABLE();
     }
-    return constructUser(users[0][as](types.User));
+    const user = constructUser(users[0][as](types.User));
+    this.#lastGetMe = user;
+    return user;
   }
 
   // TODO: log errors
@@ -1731,7 +1747,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
             this.getMessage.bind(this),
             this[getStickerSetName].bind(this),
           );
-          await this.#handle(this.#constructContext({ [key]: message }), resolve);
+          await this.#handle(await this.#constructContext({ [key]: message }), resolve);
         }
       }
     }
@@ -1756,7 +1772,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
         }
       }
       if (deletedMessages.length > 0) {
-        await this.#handle(this.#constructContext({ deletedMessages: deletedMessages as [Message, ...Message[]] }), resolve);
+        await this.#handle(await this.#constructContext({ deletedMessages: deletedMessages as [Message, ...Message[]] }), resolve);
       }
     } else if (update instanceof types.UpdateDeleteChannelMessages) {
       const chatId = getChannelChatId(update.channelId);
@@ -1776,14 +1792,14 @@ export class Client<C extends Context = Context> extends ClientAbstract {
         await this.storage.setMessage(chatId, messageId, null);
       }
       if (deletedMessages.length > 0) {
-        await this.#handle(this.#constructContext({ deletedMessages: deletedMessages as [Message, ...Message[]] }), resolve);
+        await this.#handle(await this.#constructContext({ deletedMessages: deletedMessages as [Message, ...Message[]] }), resolve);
       }
     }
 
     if (update instanceof types.UpdateBotCallbackQuery || update instanceof types.UpdateInlineBotCallbackQuery) {
-      await this.#handle(this.#constructContext({ callbackQuery: await constructCallbackQuery(update, this[getEntity].bind(this), this[getMessageWithReply].bind(this)) }), resolve);
+      await this.#handle(await this.#constructContext({ callbackQuery: await constructCallbackQuery(update, this[getEntity].bind(this), this[getMessageWithReply].bind(this)) }), resolve);
     } else if (update instanceof types.UpdateBotInlineQuery) {
-      await this.#handle(this.#constructContext({ inlineQuery: await constructInlineQuery(update, this[getEntity].bind(this)) }), resolve);
+      await this.#handle(await this.#constructContext({ inlineQuery: await constructInlineQuery(update, this[getEntity].bind(this)) }), resolve);
     }
   }
 
@@ -2106,16 +2122,18 @@ export class Client<C extends Context = Context> extends ClientAbstract {
   filter<D extends C>(
     predicate: (ctx: C) => ctx is D,
     ...middleware: Middleware<D>[]
-  ): void;
+  ): Composer<D>;
   filter(
     predicate: (ctx: C) => MaybePromise<boolean>,
     ...middleware: Middleware<C>[]
-  ): void;
+  ): Composer<C>;
   filter(
     predicate: (ctx: C) => MaybePromise<boolean>,
     ...middleware: Middleware<C>[]
   ) {
-    return this.branch(predicate, middleware.length == 0 ? skip : middleware.map(flatten).reduce(concat), skip);
+    const composer = new Composer(...middleware);
+    this.branch(predicate, composer, skip);
+    return composer;
   }
 
   on<T extends keyof Update, F extends keyof NonNullable<Update[T]>>(
@@ -2139,6 +2157,32 @@ export class Client<C extends Context = Context> extends ClientAbstract {
       } else {
         return false;
       }
+    }, ...middleawre);
+  }
+
+  command(commands: string | RegExp | (string | RegExp)[], ...middleawre: Middleware<FilterUpdate<C, "message", "text">>[]) {
+    const commands_ = Array.isArray(commands) ? commands : [commands];
+    return this.on(["message", "text"]).filter((ctx) => {
+      const botCommand = ctx.message.entities?.find((v) => v.type == "botCommand");
+      if (!botCommand) {
+        return false;
+      }
+      const cmd = ctx.message.text!.slice(botCommand.offset, botCommand.offset + botCommand.length);
+      if (cmd.includes("@")) {
+        const username = cmd.split("@")[1];
+        if (username.toLowerCase() !== ctx.me!.username?.toLowerCase()) {
+          return false;
+        }
+      }
+      const command_ = cmd.split("@")[0].split("/")[1].toLowerCase();
+      for (const command of commands_) {
+        if (typeof command === "string" && (command.toLowerCase() == command_)) {
+          return true;
+        } else if (command instanceof RegExp && command.test(command_)) {
+          return true;
+        }
+      }
+      return false;
     }, ...middleawre);
   }
   //#endregion
