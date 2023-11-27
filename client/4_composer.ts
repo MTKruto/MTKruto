@@ -1,4 +1,9 @@
-import { FilterableUpdates, FilterUpdate, Update } from "./3_types.ts";
+import { User } from "../3_types.ts";
+import { FilterableUpdates, FilterUpdate, Update as Update_ } from "./3_types.ts";
+
+interface Update extends Update_ {
+  me: undefined extends this["connectionState"] ? undefined extends this["authorizationState"] ? User : (User | undefined) : (User | undefined);
+}
 
 type MaybePromise<T> = T | Promise<T>;
 
@@ -80,7 +85,9 @@ export class Composer<C extends Update> implements MiddlewareObj<C> {
     predicate: (ctx: C) => MaybePromise<boolean>,
     ...middleware: Middleware<C>[]
   ) {
-    return this.branch(predicate, middleware.length == 0 ? skip : middleware.map(flatten).reduce(concat), skip);
+    const composer = new Composer(...middleware);
+    this.branch(predicate, composer, skip);
+    return composer;
   }
 
   on<T extends keyof Update, F extends keyof NonNullable<Update[T]>>(
@@ -104,6 +111,32 @@ export class Composer<C extends Update> implements MiddlewareObj<C> {
       } else {
         return false;
       }
+    }, ...middleawre);
+  }
+
+  command(commands: string | RegExp | (string | RegExp)[], ...middleawre: Middleware<FilterUpdate<C, "message", "text">>[]) {
+    const commands_ = Array.isArray(commands) ? commands : [commands];
+    return this.on(["message", "text"]).filter((ctx) => {
+      const botCommand = ctx.message.entities?.find((v) => v.type == "botCommand");
+      if (!botCommand) {
+        return false;
+      }
+      const cmd = ctx.message.text!.slice(botCommand.offset, botCommand.offset + botCommand.length);
+      if (cmd.includes("@")) {
+        const username = cmd.split("@")[1];
+        if (username.toLowerCase() !== ctx.me!.username?.toLowerCase()) {
+          return false;
+        }
+      }
+      const command_ = cmd.split("@")[0].split("/")[1].toLowerCase();
+      for (const command of commands_) {
+        if (typeof command === "string" && (command.toLowerCase() == command_)) {
+          return true;
+        } else if (command instanceof RegExp && command.test(command_)) {
+          return true;
+        }
+      }
+      return false;
     }, ...middleawre);
   }
 }
