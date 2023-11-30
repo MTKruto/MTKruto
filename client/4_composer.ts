@@ -46,6 +46,14 @@ export const skip: MiddlewareFn = (_ctx, next) => next();
 
 export class Composer<C extends Update> implements MiddlewareObj<C> {
   #handle: MiddlewareFn<C>;
+  #prefixes?: string | string[];
+
+  set prefixes(value: string | string[]) {
+    if (this.#prefixes !== undefined) {
+      throw new Error("Prefixes already set");
+    }
+    this.#prefixes = value;
+  }
 
   constructor(...middleware: Middleware<C>[]) {
     this.#handle = middleware.length == 0 ? skip : middleware.map(flatten).reduce(concat);
@@ -114,21 +122,44 @@ export class Composer<C extends Update> implements MiddlewareObj<C> {
     }, ...middleawre);
   }
 
-  command(commands: string | RegExp | (string | RegExp)[], ...middleawre: Middleware<FilterUpdate<C, "message", "text">>[]) {
-    const commands_ = Array.isArray(commands) ? commands : [commands];
+  command(
+    commands: string | RegExp | (string | RegExp)[] | {
+      names: string | RegExp | (string | RegExp)[];
+      prefixes: string | string[];
+    },
+    ...middleawre: Middleware<FilterUpdate<C, "message", "text">>[]
+  ) {
+    const commands__ = typeof commands === "object" && "names" in commands ? commands.names : commands;
+    const commands_ = Array.isArray(commands__) ? commands__ : [commands__];
+    const prefixes_ = typeof commands === "object" && "prefixes" in commands ? commands.prefixes : (this.#prefixes ?? []);
+    const prefixes = Array.isArray(prefixes_) ? prefixes_ : [prefixes_];
+    for (const left of prefixes) {
+      for (const right of prefixes) {
+        if (left == right) {
+          continue;
+        }
+        if (left.startsWith(right) || right.startsWith(left)) {
+          throw new Error("Intersecting prefixes");
+        }
+      }
+    }
     return this.on(["message", "text"]).filter((ctx) => {
-      const botCommand = ctx.message.entities?.find((v) => v.type == "botCommand");
-      if (!botCommand) {
+      const prefixes_ = prefixes.length == 0 ? [!ctx.me?.isBot ? "\\" : "/"] : prefixes;
+      if (prefixes_.length == 0) {
         return false;
       }
-      const cmd = ctx.message.text!.slice(botCommand.offset, botCommand.offset + botCommand.length);
+      const cmd = ctx.message.text.split(/\s/, 1)[0];
+      const prefix = prefixes_.find((v) => cmd.startsWith(v));
+      if (prefix === undefined) {
+        return false;
+      }
       if (cmd.includes("@")) {
-        const username = cmd.split("@")[1];
+        const username = cmd.split("@", 2)[1];
         if (username.toLowerCase() !== ctx.me!.username?.toLowerCase()) {
           return false;
         }
       }
-      const command_ = cmd.split("@")[0].split("/")[1].toLowerCase();
+      const command_ = cmd.split("@", 1)[0].split(prefix, 2)[1].toLowerCase();
       for (const command of commands_) {
         if (typeof command === "string" && (command.toLowerCase() == command_)) {
           return true;

@@ -45,6 +45,10 @@ export interface ClientParams extends ClientPlainParams {
    * Whether to ignore outgoing messages. Defaults to `true` for bots, and `false` for users.
    */
   ignoreOutgoing?: boolean;
+  /**
+   * Default command prefixes. Defaults to `"/"` for bots and `"\"` for users. This option must be set separately for nested composers.
+   */
+  prefixes?: string | string[];
 }
 
 export interface AnswerCallbackQueryParams {
