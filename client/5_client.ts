@@ -265,7 +265,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
       get toJSON() {
         return () => update;
       },
-    } as C);
+    } as C, false);
   };
 
   #propagateConnectionState(connectionState: ConnectionState) {
