@@ -1,7 +1,6 @@
 import { MaybePromise } from "../1_utilities.ts";
 import { functions, types } from "../2_tl.ts";
 import { BotCommandScope, CallbackQuery, ChatID, ForceReply, InlineKeyboardMarkup, InlineQuery, InlineQueryResultButton, Message, MessageEntity, ReplyKeyboardMarkup, ReplyKeyboardRemove } from "../3_types.ts";
-import { With } from "./0_utilities.ts";
 import { ClientPlainParams } from "./2_client_plain.ts";
 import { ParseMode } from "../3_types.ts";
 
@@ -331,4 +330,5 @@ export interface InvokeErrorHandler<C> {
   (ctx: { client: C; error: unknown; function: types.Type | functions.Function<unknown>; n: number }, next: NextFn<boolean>): MaybePromise<boolean>;
 }
 
-export type FilterUpdate<U extends Update, T extends keyof U, F extends (keyof NonNullable<U[T]>) | null> = With<U, T> & Pick<{ [P in T]-?: F extends keyof NonNullable<U[T]> ? With<NonNullable<U[T]>, F> : NonNullable<U[T]> }, T>;
+type Update_ = Update;
+export type FilterUpdate<Update extends Update_, Type extends keyof Update_, Field extends string, TypeType extends NonNullable<Update_[Type]> = NonNullable<Update_[Type]>> = Update & { [Type_ in Type]-?: TypeType & { [Field_ in Field]-?: Field extends keyof TypeType ? NonNullable<TypeType[Field]> : never } };

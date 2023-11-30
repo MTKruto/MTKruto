@@ -2136,7 +2136,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
     return composer;
   }
 
-  on<T extends keyof Update, F extends keyof NonNullable<Update[T]>>(
+  on<T extends keyof Update, F extends string>(
     filter: T extends FilterableUpdates ? T | [T, F, ...F[]] : T,
     ...middleawre: Middleware<FilterUpdate<C, T, F>>[]
   ) {
