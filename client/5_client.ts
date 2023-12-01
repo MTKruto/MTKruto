@@ -950,6 +950,32 @@ export class Client<C extends Context = Context> extends ClientAbstract {
     let updates: (types.TypeUpdate | types.UpdateShortMessage | types.UpdateShortChatMessage | types.UpdateShortSentMessage)[];
     if (updates_ instanceof types.UpdatesCombined || updates_ instanceof types.Updates) {
       updates = updates_.updates;
+      const seq = updates_.seq;
+      const seqStart = "seqStart" in updates_ ? updates_.seqStart : updates_.seq;
+      if (checkGap) {
+        if (seqStart == 0) {
+          checkGap = false;
+          d("seqStart=0");
+        } else {
+          const localState = await this.#getLocalState();
+          const localSeq = localState.seq;
+
+          if (localSeq + 1 == seqStart) {
+            // The updates can be applied.
+            localState.seq = seq;
+            localState.date = updates_.date;
+            await this.#setUpdateStateDate(updates_.date);
+            await this.storage.setState(localState);
+          } else if (localSeq + 1 > seqStart) {
+            // The updates were already applied, and must be ignored.
+            d("localSeq + 1 > seqStart");
+            return;
+          } else if (localSeq + 1 < seqStart) {
+            // There's an updates gap that must be filled.
+            await this.#recoverUpdateGap("localSeq + 1 < seqStart");
+          }
+        }
+      }
     } else if (updates_ instanceof types.UpdateShort) {
       updates = [updates_.update];
     } else if (
@@ -1043,6 +1069,19 @@ export class Client<C extends Context = Context> extends ClientAbstract {
           UNREACHABLE();
         }
       }
+      if (isPtsUpdate(update)) {
+        await this.#setUpdatePts(update.pts);
+      } else if (isChannelPtsUpdate(update)) {
+        let channelId: bigint | null = null;
+        if ("channelId" in update) {
+          channelId = update.channelId;
+        } else if ("peerId" in update.message && update.message.peerId !== undefined && "channelId" in update.message.peerId) {
+          channelId = update.message.peerId.channelId;
+        }
+        if (channelId != null) {
+          await this.storage.setChannelPts(channelId, update.pts);
+        }
+      }
       /// If there were any Update, they will be passed to the update handling queue.
       if (update instanceof types._TypeUpdate) {
         updatesToHandle.push(update);
@@ -1059,6 +1098,12 @@ export class Client<C extends Context = Context> extends ClientAbstract {
   async #setUpdateStateDate(date: number) {
     const localState = await this.#getLocalState();
     localState.date = date;
+    await this.storage.setState(localState);
+  }
+
+  async #setUpdatePts(pts: number) {
+    const localState = await this.#getLocalState();
+    localState.pts = pts;
     await this.storage.setState(localState);
   }
 
