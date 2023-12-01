@@ -387,7 +387,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
   }
 
   async #fetchState(source: string) {
-    const state = await this.invoke(new functions.updates_getState());
+    const state = await this.invoke(new functions.updates.getState());
     this.#updateState = state;
     d("state fetched [%s]", source);
   }
@@ -417,7 +417,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
           lang_pack: this.langPack,
           query: new functions.invokeWithLayer({
             layer: LAYER,
-            query: new functions.help_getConfig(),
+            query: new functions.help.getConfig(),
           }),
           system_lang_code: this.systemLangCode,
           system_version: this.systemVersion,
@@ -496,7 +496,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
     if (typeof params === "string") {
       while (true) {
         try {
-          const auth = await this.invoke(new functions.auth_importBotAuthorization({ api_id: this.apiId, api_hash: this.apiHash, bot_auth_token: params, flags: 0 }));
+          const auth = await this.invoke(new functions.auth.importBotAuthorization({ api_id: this.apiId, api_hash: this.apiHash, bot_auth_token: params, flags: 0 }));
           this.#selfId = Number(auth[as](types.auth_authorization).user.id);
           await this.storage.setAccountType("bot");
           break;
@@ -517,7 +517,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
     }
 
     if (params instanceof types.auth_exportedAuthorization) {
-      await this.invoke(new functions.auth_importAuthorization({ id: params.id, bytes: params.bytes }));
+      await this.invoke(new functions.auth.importAuthorization({ id: params.id, bytes: params.bytes }));
       dAuth("authorization imported");
       return;
     }
@@ -531,7 +531,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
             phone = typeof params.phone === "string" ? params.phone : await params.phone();
             const sendCode = () =>
               this.invoke(
-                new functions.auth_sendCode({
+                new functions.auth.sendCode({
                   phone_number: phone,
                   api_id: this.apiId!,
                   api_hash: this.apiHash!,
@@ -565,7 +565,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
           const code = typeof params.code === "string" ? params.code : await params.code();
           try {
             const auth = await this.invoke(
-              new functions.auth_signIn({
+              new functions.auth.signIn({
                 phone_number: phone,
                 phone_code: code,
                 phone_code_hash: sentCode.phone_code_hash,
@@ -592,7 +592,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
         }
 
         password: while (true) {
-          const ap = await this.invoke(new functions.account_getPassword());
+          const ap = await this.invoke(new functions.account.getPassword());
           if (!(ap.current_algo instanceof types.passwordKdfAlgoSHA256SHA256PBKDF2HMACSHA512iter100000SHA256ModPow)) {
             throw new Error(`Handling ${ap.current_algo?.constructor.name} not implemented`);
           }
@@ -600,7 +600,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
             const password = typeof params.password === "string" ? params.password : await params.password(ap.hint ?? null);
             const input = await checkPassword(password, ap);
 
-            const auth = await this.invoke(new functions.auth_checkPassword({ password: input }));
+            const auth = await this.invoke(new functions.auth.checkPassword({ password: input }));
             this.#selfId = Number(auth[as](types.auth_authorization).user.id);
             await this.storage.setAccountType("user");
             dAuth("authorized as user");
@@ -1133,7 +1133,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
     try {
       let state = await this.#getLocalState();
       while (true) {
-        const difference = await this.invoke(new functions.updates_getDifference({ pts: state.pts, date: state.date, qts: state.qts ?? 0 }));
+        const difference = await this.invoke(new functions.updates.getDifference({ pts: state.pts, date: state.date, qts: state.qts ?? 0 }));
         if (difference instanceof types.updates_difference || difference instanceof types.updates_differenceSlice) {
           await this.#processChats(difference.chats);
           await this.#processUsers(difference.users);
@@ -1176,7 +1176,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
     while (true) {
       const { access_hash } = await this.getInputPeer(ZERO_CHANNEL_ID + -Number(channelId)).then((v) => v[as](types.inputPeerChannel));
       const difference = await this.invoke(
-        new functions.updates_getChannelDifference({
+        new functions.updates.getChannelDifference({
           pts,
           channel: new types.inputChannel({ channel_id: channelId, access_hash }),
           filter: new types.channelMessagesFilterEmpty(),
@@ -1218,12 +1218,12 @@ export class Client<C extends Context = Context> extends ClientAbstract {
   }
 
   async getUserAccessHash(userId: bigint) {
-    const users = await this.invoke(new functions.users_getUsers({ id: [new types.inputUser({ user_id: userId, access_hash: 0n })] }));
+    const users = await this.invoke(new functions.users.getUsers({ id: [new types.inputUser({ user_id: userId, access_hash: 0n })] }));
     return users[0]?.[as](types.user).access_hash ?? 0n;
   }
 
   async #getChannelAccessHash(channelId: bigint) {
-    const channels = await this.invoke(new functions.channels_getChannels({ id: [new types.inputChannel({ channel_id: channelId, access_hash: 0n })] }));
+    const channels = await this.invoke(new functions.channels.getChannels({ id: [new types.inputChannel({ channel_id: channelId, access_hash: 0n })] }));
     return channels.chats[0][as](types.channel).access_hash ?? 0n;
   }
 
@@ -1254,7 +1254,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
           channelId = id;
         }
       } else {
-        const resolved = await this.invoke(new functions.contacts_resolveUsername({ username: id }));
+        const resolved = await this.invoke(new functions.contacts.resolveUsername({ username: id }));
         await this.#processChats(resolved.chats);
         await this.#processUsers(resolved.users);
         if (resolved.peer instanceof types.peerUser) {
@@ -1411,7 +1411,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
     const sendAs = await this.#resolveSendAs(params);
 
     const result = await this.invoke(
-      new functions.messages_sendMessage({
+      new functions.messages.sendMessage({
         peer,
         random_id: randomId,
         message,
@@ -1468,7 +1468,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
     const [message, entities] = this.#parseText(text, params);
 
     const result = await this.invoke(
-      new functions.messages_editMessage({
+      new functions.messages.editMessage({
         id: messageId,
         peer: await this.getInputPeer(chatId),
         entities,
@@ -1500,14 +1500,14 @@ export class Client<C extends Context = Context> extends ClientAbstract {
     if (shouldFetch) {
       if (peer instanceof types.inputPeerChannel) {
         messages_ = await this.invoke(
-          new functions.channels_getMessages({
+          new functions.channels.getMessages({
             channel: new types.inputChannel({ channel_id: peer.channel_id, access_hash: peer.access_hash }),
             id: messageIds.map((v) => new types.inputMessageID({ id: v })),
           }),
         ).then((v) => v[as](types.messages_channelMessages).messages);
       } else {
         messages_ = await this.invoke(
-          new functions.messages_getMessages({
+          new functions.messages.getMessages({
             id: messageIds.map((v) => new types.inputMessageID({ id: v })),
           }),
         ).then((v) => v[as](types.messages_messages).messages);
@@ -1567,7 +1567,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
       throw new Error("chunkSize must be divisible by 1024");
     }
 
-    const exportedAuth = await this.invoke(new functions.auth_exportAuthorization({ dc_id: dcId }));
+    const exportedAuth = await this.invoke(new functions.auth.exportAuthorization({ dc_id: dcId }));
     const client = new Client(new StorageMemory(), this.apiId, this.apiHash, {
       transportProvider: this.transportProvider,
       appVersion: this.appVersion,
@@ -1590,7 +1590,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
     let offset = 0n;
 
     while (true) {
-      const file = await (client ?? this).invoke(new functions.upload_getFile({ location, offset, limit }));
+      const file = await (client ?? this).invoke(new functions.upload.getFile({ location, offset, limit }));
 
       if (file instanceof types.upload_file) {
         yield file.bytes;
@@ -1648,7 +1648,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
     if (maybeStickerSetName != null && Date.now() - maybeStickerSetName[1].getTime() < STICKER_SET_NAME_TTL) {
       return maybeStickerSetName[0];
     } else {
-      const stickerSet = await this.invoke(new functions.messages_getStickerSet({ stickerset: inputStickerSet, hash }));
+      const stickerSet = await this.invoke(new functions.messages.getStickerSet({ stickerset: inputStickerSet, hash }));
       const name = stickerSet[as](types.messages_stickerSet).set.short_name;
       await this.storage.updateStickerSetName(inputStickerSet.id, inputStickerSet.access_hash, name);
       return name;
@@ -1666,7 +1666,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
    */
   async forwardMessages(from: ChatID, to: ChatID, messageIds: number[], params?: ForwardMessagesParams): Promise<Message[]> {
     const result = await this.invoke(
-      new functions.messages_forwardMessages({
+      new functions.messages.forwardMessages({
         from_peer: await this.getInputPeer(from),
         to_peer: await this.getInputPeer(to),
         id: messageIds,
@@ -1713,7 +1713,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
    * @method
    */
   async getMe(): Promise<User> {
-    const users = await this.invoke(new functions.users_getUsers({ id: [new types.inputUserSelf()] }));
+    const users = await this.invoke(new functions.users.getUsers({ id: [new types.inputUserSelf()] }));
     if (users.length < 1) {
       UNREACHABLE();
     }
@@ -1859,7 +1859,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
   async answerCallbackQuery(id: string, params?: AnswerCallbackQueryParams) {
     await this.#assertBot("answerCallbackQuery");
     await this.invoke(
-      new functions.messages_setBotCallbackAnswer({
+      new functions.messages.setBotCallbackAnswer({
         query_id: BigInt(id),
         cache_time: params?.cacheTime ?? 0,
         message: params?.text,
@@ -1934,7 +1934,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
     });
 
     const result = await this.invoke(
-      new functions.messages_sendMedia({
+      new functions.messages.sendMedia({
         peer,
         random_id: randomId,
         silent,
@@ -1998,7 +1998,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
       default:
         throw new Error("Invalid chat action: " + action);
     }
-    await this.invoke(new functions.messages_setTyping({ peer: await this.getInputPeer(chatId), action: action_, top_msg_id: params?.messageThreadId }));
+    await this.invoke(new functions.messages.setTyping({ peer: await this.getInputPeer(chatId), action: action_, top_msg_id: params?.messageThreadId }));
   }
 
   /**
@@ -2051,9 +2051,9 @@ export class Client<C extends Context = Context> extends ClientAbstract {
               continue main;
             }
             if (isBig) {
-              await client.invoke(new functions.upload_saveBigFilePart({ file_id: fileId, file_part: part, bytes, file_total_parts: partCount }));
+              await client.invoke(new functions.upload.saveBigFilePart({ file_id: fileId, file_part: part, bytes, file_total_parts: partCount }));
             } else {
-              await client.invoke(new functions.upload_saveFilePart({ file_id: fileId, bytes, file_part: part }));
+              await client.invoke(new functions.upload.saveFilePart({ file_id: fileId, bytes, file_part: part }));
             }
             dUpload((part + 1) + " out of " + partCount + " chunks have been uploaded so far");
             break chunk;
@@ -2102,7 +2102,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
    */
   async setMyCommands(commands: BotCommand[], params?: SetMyCommandsParams) {
     await this.invoke(
-      new functions.bots_setBotCommands({
+      new functions.bots.setBotCommands({
         commands: commands.map((v) => new types.botCommand(v)),
         lang_code: params?.languageCode ?? "",
         scope: await botCommandScopeToTlObject(params?.scope ?? { type: "default" }, this.getInputPeer.bind(this)),
@@ -2115,7 +2115,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
    */
   async getMyCommands(params?: GetMyCommandsParams): Promise<BotCommand[]> {
     const commands_ = await this.invoke(
-      new functions.bots_getBotCommands({
+      new functions.bots.getBotCommands({
         lang_code: params?.languageCode ?? "",
         scope: await botCommandScopeToTlObject(params?.scope ?? { type: "default" }, this.getInputPeer.bind(this)),
       }),
@@ -2132,7 +2132,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
    */
   async answerInlineQuery(id: string, results: InlineQueryResult[], params?: AnswerInlineQueryParams) {
     await this.invoke(
-      new functions.messages_setInlineBotResults({
+      new functions.messages.setInlineBotResults({
         query_id: BigInt(id),
         results: await Promise.all(results.map((v) => inlineQueryResultToTlObject(v, this.#parseText.bind(this), this.#usernameResolver.bind(this)))),
         cache_time: params?.cacheTime ?? 300,
@@ -2257,8 +2257,8 @@ export class Client<C extends Context = Context> extends ClientAbstract {
   }
   //#endregion
 
-  async #setMyInfo(info: Omit<ConstructorParameters<typeof functions["bots_setBotInfo"]>[0], "bot">) {
-    await this.invoke(new functions.bots_setBotInfo({ bot: new types.inputUserSelf(), ...info }));
+  async #setMyInfo(info: Omit<ConstructorParameters<typeof functions["bots"]["setBotInfo"]>[0], "bot">) {
+    await this.invoke(new functions.bots.setBotInfo({ bot: new types.inputUserSelf(), ...info }));
   }
 
   /**
@@ -2292,7 +2292,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
   }
 
   #getMyInfo(languageCode?: string | undefined) {
-    return this.invoke(new functions.bots_getBotInfo({ bot: new types.inputUserSelf(), lang_code: languageCode ?? "" }));
+    return this.invoke(new functions.bots.getBotInfo({ bot: new types.inputUserSelf(), lang_code: languageCode ?? "" }));
   }
 
   /**
@@ -2335,9 +2335,9 @@ export class Client<C extends Context = Context> extends ClientAbstract {
   async deleteMessages(chatId: ChatID, messageIds: number[], params?: DeleteMessagesParams): Promise<void> {
     const peer = await this.getInputPeer(chatId);
     if (peer instanceof types.inputPeerChannel) {
-      await this.invoke(new functions.channels_deleteMessages({ channel: new types.inputChannel(peer), id: messageIds }));
+      await this.invoke(new functions.channels.deleteMessages({ channel: new types.inputChannel(peer), id: messageIds }));
     } else {
-      await this.invoke(new functions.messages_deleteMessages({ id: messageIds, revoke: params?.onlyForMe ? undefined : true }));
+      await this.invoke(new functions.messages.deleteMessages({ id: messageIds, revoke: params?.onlyForMe ? undefined : true }));
     }
   }
 
@@ -2414,7 +2414,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
     const captionEntities = parseResult === undefined ? undefined : parseResult[1];
 
     const result = await this.invoke(
-      new functions.messages_sendMedia({
+      new functions.messages.sendMedia({
         peer,
         random_id: randomId,
         silent,
