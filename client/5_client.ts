@@ -88,7 +88,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
   #state = { salt: 0n, seqNo: 0 };
   #promises = new Map<bigint, { resolve: (obj: ReadObject) => void; reject: (err: ReadObject | Error) => void }>();
   #toAcknowledge = new Set<bigint>();
-  #updateState?: types.UpdatesState;
+  #updateState?: types.updates_state;
 
   public readonly storage: Storage;
   public readonly parseMode: ParseMode;
@@ -387,7 +387,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
   }
 
   async #fetchState(source: string) {
-    const state = await this.invoke(new functions.UpdatesGetState());
+    const state = await this.invoke(new functions.updates_getState());
     this.#updateState = state;
     d("state fetched [%s]", source);
   }
@@ -409,18 +409,18 @@ export class Client<C extends Context = Context> extends ClientAbstract {
   async #initConnection() {
     if (!this.#connectionInited) {
       await this.invoke(
-        new functions.InitConnection({
-          apiId: this.apiId!,
-          appVersion: this.appVersion,
-          deviceModel: this.deviceModel,
-          langCode: this.langCode,
-          langPack: this.langPack,
-          query: new functions.InvokeWithLayer({
+        new functions.initConnection({
+          api_id: this.apiId!,
+          app_version: this.appVersion,
+          device_model: this.deviceModel,
+          lang_code: this.langCode,
+          lang_pack: this.langPack,
+          query: new functions.invokeWithLayer({
             layer: LAYER,
-            query: new functions.HelpGetConfig(),
+            query: new functions.help_getConfig(),
           }),
-          systemLangCode: this.systemLangCode,
-          systemVersion: this.systemVersion,
+          system_lang_code: this.systemLangCode,
+          system_version: this.systemVersion,
         }),
       );
       this.#connectionInited = true;
@@ -461,7 +461,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
    * [1]: https://core.telegram.org/method/initConnection
    * [2]: https://core.telegram.org/method/updates.getState
    */
-  async authorize(params?: string | types.AuthExportedAuthorization | AuthorizeUserParams) {
+  async authorize(params?: string | types.auth_exportedAuthorization | AuthorizeUserParams) {
     if (!this.apiId) {
       throw new Error("apiId not set");
     }
@@ -478,7 +478,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
       }
     }
 
-    dAuth("authorizing with %s", typeof params === "string" ? "bot token" : params instanceof types.AuthExportedAuthorization ? "exported authorization" : "AuthorizeUserParams");
+    dAuth("authorizing with %s", typeof params === "string" ? "bot token" : params instanceof types.auth_exportedAuthorization ? "exported authorization" : "AuthorizeUserParams");
 
     await this.#initConnection();
 
@@ -496,8 +496,8 @@ export class Client<C extends Context = Context> extends ClientAbstract {
     if (typeof params === "string") {
       while (true) {
         try {
-          const auth = await this.invoke(new functions.AuthImportBotAuthorization({ apiId: this.apiId, apiHash: this.apiHash, botAuthToken: params, flags: 0 }));
-          this.#selfId = Number(auth[as](types.AuthAuthorization).user.id);
+          const auth = await this.invoke(new functions.auth_importBotAuthorization({ api_id: this.apiId, api_hash: this.apiHash, bot_auth_token: params, flags: 0 }));
+          this.#selfId = Number(auth[as](types.auth_authorization).user.id);
           await this.storage.setAccountType("bot");
           break;
         } catch (err) {
@@ -516,8 +516,8 @@ export class Client<C extends Context = Context> extends ClientAbstract {
       return;
     }
 
-    if (params instanceof types.AuthExportedAuthorization) {
-      await this.invoke(new functions.AuthImportAuthorization({ id: params.id, bytes: params.bytes }));
+    if (params instanceof types.auth_exportedAuthorization) {
+      await this.invoke(new functions.auth_importAuthorization({ id: params.id, bytes: params.bytes }));
       dAuth("authorization imported");
       return;
     }
@@ -525,19 +525,19 @@ export class Client<C extends Context = Context> extends ClientAbstract {
     auth: while (true) {
       try {
         let phone: string;
-        let sentCode: types.AuthSentCode;
+        let sentCode: types.auth_sentCode;
         while (true) {
           try {
             phone = typeof params.phone === "string" ? params.phone : await params.phone();
             const sendCode = () =>
               this.invoke(
-                new functions.AuthSendCode({
-                  phoneNumber: phone,
-                  apiId: this.apiId!,
-                  apiHash: this.apiHash!,
-                  settings: new types.CodeSettings(),
+                new functions.auth_sendCode({
+                  phone_number: phone,
+                  api_id: this.apiId!,
+                  api_hash: this.apiHash!,
+                  settings: new types.codeSettings(),
                 }),
-              ).then((v) => v[as](types.AuthSentCode));
+              ).then((v) => v[as](types.auth_sentCode));
             try {
               sentCode = await sendCode();
             } catch (err) {
@@ -565,20 +565,20 @@ export class Client<C extends Context = Context> extends ClientAbstract {
           const code = typeof params.code === "string" ? params.code : await params.code();
           try {
             const auth = await this.invoke(
-              new functions.AuthSignIn({
-                phoneNumber: phone,
-                phoneCode: code,
-                phoneCodeHash: sentCode.phoneCodeHash,
+              new functions.auth_signIn({
+                phone_number: phone,
+                phone_code: code,
+                phone_code_hash: sentCode.phone_code_hash,
               }),
             );
-            this.#selfId = Number(auth[as](types.AuthAuthorization).user.id);
+            this.#selfId = Number(auth[as](types.auth_authorization).user.id);
             await this.storage.setAccountType("user");
             dAuth("authorized as user");
             await this.#propagateAuthorizationState(true);
             await this.#fetchState("authorize");
             return;
           } catch (err_) {
-            if (err_ instanceof types.RPCError && err_.errorMessage == "PHONE_CODE_INVALID") {
+            if (err_ instanceof types.rpc_error && err_.error_message == "PHONE_CODE_INVALID") {
               continue code;
             } else {
               err = err_;
@@ -592,16 +592,16 @@ export class Client<C extends Context = Context> extends ClientAbstract {
         }
 
         password: while (true) {
-          const ap = await this.invoke(new functions.AccountGetPassword());
-          if (!(ap.currentAlgo instanceof types.PasswordKdfAlgoSHA256SHA256PBKDF2HMACSHA512iter100000SHA256ModPow)) {
-            throw new Error(`Handling ${ap.currentAlgo?.constructor.name} not implemented`);
+          const ap = await this.invoke(new functions.account_getPassword());
+          if (!(ap.current_algo instanceof types.passwordKdfAlgoSHA256SHA256PBKDF2HMACSHA512iter100000SHA256ModPow)) {
+            throw new Error(`Handling ${ap.current_algo?.constructor.name} not implemented`);
           }
           try {
             const password = typeof params.password === "string" ? params.password : await params.password(ap.hint ?? null);
             const input = await checkPassword(password, ap);
 
-            const auth = await this.invoke(new functions.AuthCheckPassword({ password: input }));
-            this.#selfId = Number(auth[as](types.AuthAuthorization).user.id);
+            const auth = await this.invoke(new functions.auth_checkPassword({ password: input }));
+            this.#selfId = Number(auth[as](types.auth_authorization).user.id);
             await this.storage.setAccountType("user");
             dAuth("authorized as user");
             await this.#propagateAuthorizationState(true);
@@ -628,7 +628,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
   /**
    * Same as calling `.connect()` followed by `.authorize(params)` if the session didn't have an auth key.
    */
-  async start(params?: string | types.AuthExportedAuthorization | AuthorizeUserParams) {
+  async start(params?: string | types.auth_exportedAuthorization | AuthorizeUserParams) {
     await this.connect();
     await this.#initConnection();
 
@@ -658,7 +658,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
     while (this.connected) {
       try {
         if (this.#toAcknowledge.size >= ACK_THRESHOLD) {
-          await this.send(new types.MsgsAck({ msgIds: [...this.#toAcknowledge] }));
+          await this.send(new types.msgs_ack({ msg_ids: [...this.#toAcknowledge] }));
           this.#toAcknowledge.clear();
         }
 
@@ -681,22 +681,22 @@ export class Client<C extends Context = Context> extends ClientAbstract {
 
         for (const message of messages) {
           let body = message.body;
-          if (body instanceof types.GZIPPacked) {
-            body = new TLReader(gunzip(body.packedData)).readObject();
+          if (body instanceof types.gzip_packed) {
+            body = new TLReader(gunzip(body.packed_data)).readObject();
           }
           dRecv("received %s", body.constructor.name);
-          if (body instanceof types._TypeUpdates || body instanceof types._TypeUpdate) {
-            this.#processUpdatesQueue.add(() => this.#processUpdates(body as types.Updates | types.TypeUpdate, true));
-          } else if (body instanceof types.NewSessionCreated) {
-            this.#state.salt = body.serverSalt;
+          if (body instanceof types._Updates || body instanceof types._Update) {
+            this.#processUpdatesQueue.add(() => this.#processUpdates(body as types.updates | types.Update, true));
+          } else if (body instanceof types.new_session_created) {
+            this.#state.salt = body.server_salt;
             await this.storage.setServerSalt(this.#state.salt);
           } else if (message.body instanceof RPCResult) {
             let result = message.body.result;
-            if (result instanceof types.GZIPPacked) {
-              result = new TLReader(gunzip(result.packedData)).readObject();
+            if (result instanceof types.gzip_packed) {
+              result = new TLReader(gunzip(result.packed_data)).readObject();
             }
-            if (result instanceof types.RPCError) {
-              dRecv("RPCResult: %d %s", result.errorCode, result.errorMessage);
+            if (result instanceof types.rpc_error) {
+              dRecv("RPCResult: %d %s", result.error_code, result.error_message);
             } else {
               dRecv("RPCResult: %s", result.constructor.name);
             }
@@ -704,7 +704,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
             const resolvePromise = () => {
               const promise = this.#promises.get(messageId);
               if (promise) {
-                if (result instanceof types.RPCError) {
+                if (result instanceof types.rpc_error) {
                   promise.reject(upgradeInstance(result));
                 } else {
                   promise.resolve(result);
@@ -712,29 +712,29 @@ export class Client<C extends Context = Context> extends ClientAbstract {
                 this.#promises.delete(messageId);
               }
             };
-            if (result instanceof types._TypeUpdates || result instanceof types._TypeUpdate) {
+            if (result instanceof types._Updates || result instanceof types._Update) {
               this.#processUpdatesQueue.add(async () => {
-                await this.#processUpdates(result as types.TypeUpdates | types.TypeUpdate, true);
+                await this.#processUpdates(result as types.Updates | types.Update, true);
                 resolvePromise();
               });
             } else {
               await this.processResult(result);
               resolvePromise();
             }
-          } else if (message.body instanceof types.Pong) {
-            const promise = this.#promises.get(message.body.msgId);
+          } else if (message.body instanceof types.pong) {
+            const promise = this.#promises.get(message.body.msg_id);
             if (promise) {
               promise.resolve(message.body);
-              this.#promises.delete(message.body.msgId);
+              this.#promises.delete(message.body.msg_id);
             }
-          } else if (message.body instanceof types.BadServerSalt) {
+          } else if (message.body instanceof types.bad_server_salt) {
             d("server salt reassigned");
-            this.#state.salt = message.body.newServerSalt;
+            this.#state.salt = message.body.new_server_salt;
             await this.storage.setServerSalt(this.#state.salt);
-            const promise = this.#promises.get(message.body.badMsgId);
+            const promise = this.#promises.get(message.body.bad_msg_id);
             if (promise) {
               promise.resolve(message.body);
-              this.#promises.delete(message.body.badMsgId);
+              this.#promises.delete(message.body.bad_msg_id);
             }
           }
 
@@ -766,7 +766,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
     while (this.connected) {
       await new Promise((r) => setTimeout(r, this.#pingInterval));
       try {
-        await this.invoke(new functions.PingDelayDisconnect({ pingId: getRandomBigInt(8, true, false), disconnectDelay: this.#pingInterval + 15 }));
+        await this.invoke(new functions.ping_delay_disconnect({ ping_id: getRandomBigInt(8, true, false), disconnect_delay: this.#pingInterval + 15 }));
       } catch (err) {
         d("ping loop error: %o", err);
       }
@@ -794,7 +794,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
     while (true) {
       try {
         let seqNo = this.#state.seqNo * 2;
-        if (!(function_ instanceof functions.Ping) && !(function_ instanceof types.MsgsAck)) {
+        if (!(function_ instanceof functions.ping) && !(function_ instanceof types.msgs_ack)) {
           seqNo++;
           this.#state.seqNo++;
         }
@@ -815,7 +815,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
         if (noWait) {
           this.#promises.set(message.id, {
             resolve: (result) => {
-              if (result instanceof types.BadServerSalt) {
+              if (result instanceof types.bad_server_salt) {
                 drop(this.invoke(function_, true));
               }
             },
@@ -837,7 +837,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
           throw err;
         }
 
-        if (result instanceof types.BadServerSalt) {
+        if (result instanceof types.bad_server_salt) {
           return await this.invoke(function_) as T;
         } else {
           if (!this.#pingLoopStarted) {
@@ -888,28 +888,28 @@ export class Client<C extends Context = Context> extends ClientAbstract {
     return this.invoke(function_, true);
   }
 
-  async #processChats(chats: types.TypeChat[]) {
+  async #processChats(chats: types.Chat[]) {
     for (const chat of chats) {
-      if (chat instanceof types.Channel && chat.accessHash) {
+      if (chat instanceof types.channel && chat.access_hash) {
         await this.storage.setEntity(chat);
-        await this.storage.setChannelAccessHash(chat.id, chat.accessHash);
+        await this.storage.setChannelAccessHash(chat.id, chat.access_hash);
         if (chat.username) {
           await this.storage.updateUsernames("channel", chat.id, [chat.username]);
         }
         if (chat.usernames) {
           await this.storage.updateUsernames("channel", chat.id, chat.usernames.map((v) => v.username));
         }
-      } else if (chat instanceof types.Chat) {
+      } else if (chat instanceof types.chat) {
         await this.storage.setEntity(chat);
       }
     }
   }
 
-  async #processUsers(users: types.TypeUser[]) {
+  async #processUsers(users: types.User[]) {
     for (const user of users) {
-      if (user instanceof types.User && user.accessHash) {
+      if (user instanceof types.user && user.access_hash) {
         await this.storage.setEntity(user);
-        await this.storage.setUserAccessHash(user.id, user.accessHash);
+        await this.storage.setUserAccessHash(user.id, user.access_hash);
         if (user.username) {
           await this.storage.updateUsernames("user", user.id, [user.username]);
         }
@@ -939,7 +939,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
     }
   }
 
-  async #processUpdates(updates_: types.TypeUpdate | types.TypeUpdates, checkGap: boolean) {
+  async #processUpdates(updates_: types.Update | types.Updates, checkGap: boolean) {
     /// First, individual updates (Update[1]) and updateShort* are extracted from Updates.[2]
     ///
     /// If an updatesTooLong[3] was received, an update gap recovery is initiated and no further action will be taken.
@@ -947,11 +947,11 @@ export class Client<C extends Context = Context> extends ClientAbstract {
     /// [1]: https://core.telegram.org/type/Update
     /// [2]: https://core.telegram.org/type/Updates
     /// [3]: https://core.telegram.org/constructor/updatesTooLong
-    let updates: (types.TypeUpdate | types.UpdateShortMessage | types.UpdateShortChatMessage | types.UpdateShortSentMessage)[];
-    if (updates_ instanceof types.UpdatesCombined || updates_ instanceof types.Updates) {
+    let updates: (types.Update | types.updateShortMessage | types.updateShortChatMessage | types.updateShortSentMessage)[];
+    if (updates_ instanceof types.updatesCombined || updates_ instanceof types.updates) {
       updates = updates_.updates;
       const seq = updates_.seq;
-      const seqStart = "seqStart" in updates_ ? updates_.seqStart : updates_.seq;
+      const seqStart = "seq_start" in updates_ ? updates_.seq_start : updates_.seq;
       if (checkGap) {
         if (seqStart == 0) {
           checkGap = false;
@@ -976,18 +976,18 @@ export class Client<C extends Context = Context> extends ClientAbstract {
           }
         }
       }
-    } else if (updates_ instanceof types.UpdateShort) {
+    } else if (updates_ instanceof types.updateShort) {
       updates = [updates_.update];
     } else if (
-      updates_ instanceof types.UpdateShortMessage ||
-      updates_ instanceof types.UpdateShortChatMessage ||
-      updates_ instanceof types.UpdateShortSentMessage
+      updates_ instanceof types.updateShortMessage ||
+      updates_ instanceof types.updateShortChatMessage ||
+      updates_ instanceof types.updateShortSentMessage
     ) {
       updates = [updates_];
-    } else if (updates_ instanceof types.UpdatesTooLong) {
+    } else if (updates_ instanceof types.updatesTooLong) {
       await this.#recoverUpdateGap("updatesTooLong");
       return;
-    } else if (updates_ instanceof types._TypeUpdate) {
+    } else if (updates_ instanceof types._Update) {
       updates = [updates_];
     } else {
       UNREACHABLE();
@@ -997,7 +997,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
     /// If they were, we check the local state to see if it is OK to process them right away.
     ///
     /// If we there was a gap, a recovery process will be initiated and the processing will be postponed.
-    let localState: types.UpdatesState | null = null;
+    let localState: types.updates_state | null = null;
     let originalPts: number | null = null;
     const channelPtsMap = new Map<bigint, number>();
     for (const update of updates) {
@@ -1006,11 +1006,11 @@ export class Client<C extends Context = Context> extends ClientAbstract {
           continue;
         }
         if (checkGap) {
-          await this.checkGap(update.pts, update.ptsCount);
+          await this.checkGap(update.pts, update.pts_count);
         }
         localState ??= await this.#getLocalState();
         originalPts ??= localState.pts;
-        if (localState.pts + update.ptsCount > update.pts) {
+        if (localState.pts + update.pts_count > update.pts) {
           updates = updates.filter((v) => v != update);
         } else {
           localState.pts = update.pts;
@@ -1019,8 +1019,8 @@ export class Client<C extends Context = Context> extends ClientAbstract {
         if (update.pts == 0) {
           continue;
         }
-        const ptsCount = update.ptsCount;
-        const channelId = update instanceof types.UpdateNewChannelMessage || update instanceof types.UpdateEditChannelMessage ? (update.message as types.Message | types.MessageService).peerId[as](types.PeerChannel).channelId : update.channelId;
+        const ptsCount = update.pts_count;
+        const channelId = update instanceof types.updateNewChannelMessage || update instanceof types.updateEditChannelMessage ? (update.message as types.message | types.messageService).peer_id[as](types.peerChannel).channel_id : update.channel_id;
         if (checkGap) {
           await this.#checkChannelGap(channelId, update.pts, ptsCount);
         }
@@ -1038,30 +1038,30 @@ export class Client<C extends Context = Context> extends ClientAbstract {
     }
 
     /// We process the updates when we are sure there is no gap.
-    if (updates_ instanceof types.Updates || updates_ instanceof types.UpdatesCombined) {
+    if (updates_ instanceof types.updates || updates_ instanceof types.updatesCombined) {
       await this.#processChats(updates_.chats);
       await this.#processUsers(updates_.users);
       await this.#setUpdateStateDate(updates_.date);
-    } else if (updates_ instanceof types.UpdateShort) {
+    } else if (updates_ instanceof types.updateShort) {
       await this.#setUpdateStateDate(updates_.date);
     }
 
-    const updatesToHandle = new Array<types.TypeUpdate>();
+    const updatesToHandle = new Array<types.Update>();
     for (const update of updates) {
       if (
-        update instanceof types.UpdateShortMessage ||
-        update instanceof types.UpdateShortChatMessage ||
-        update instanceof types.UpdateShortSentMessage
+        update instanceof types.updateShortMessage ||
+        update instanceof types.updateShortChatMessage ||
+        update instanceof types.updateShortSentMessage
       ) {
         await this.#setUpdateStateDate(update.date);
-      } else if (update instanceof types.UpdateChannelTooLong) {
+      } else if (update instanceof types.updateChannelTooLong) {
         if (update.pts != undefined) {
-          await this.storage.setChannelPts(update.channelId, update.pts);
+          await this.storage.setChannelPts(update.channel_id, update.pts);
         }
-        await this.#recoverChannelUpdateGap(update.channelId, "updateChannelTooLong");
-      } else if (update instanceof types.UpdateUserName) {
-        await this.storage.updateUsernames("user", update.userId, update.usernames.map((v) => v.username));
-      } else if (update instanceof types.UpdatePtsChanged) {
+        await this.#recoverChannelUpdateGap(update.channel_id, "updateChannelTooLong");
+      } else if (update instanceof types.updateUserName) {
+        await this.storage.updateUsernames("user", update.user_id, update.usernames.map((v) => v.username));
+      } else if (update instanceof types.updatePtsChanged) {
         await this.#fetchState("updatePtsChanged");
         if (this.#updateState) {
           await this.storage.setState(this.#updateState);
@@ -1073,17 +1073,17 @@ export class Client<C extends Context = Context> extends ClientAbstract {
         await this.#setUpdatePts(update.pts);
       } else if (isChannelPtsUpdate(update)) {
         let channelId: bigint | null = null;
-        if ("channelId" in update) {
-          channelId = update.channelId;
-        } else if ("peerId" in update.message && update.message.peerId !== undefined && "channelId" in update.message.peerId) {
-          channelId = update.message.peerId.channelId;
+        if ("channel_id" in update) {
+          channelId = update.channel_id;
+        } else if ("peer_id" in update.message && update.message.peer_id !== undefined && "channel_id" in update.message.peer_id) {
+          channelId = update.message.peer_id.channel_id;
         }
         if (channelId != null) {
           await this.storage.setChannelPts(channelId, update.pts);
         }
       }
       /// If there were any Update, they will be passed to the update handling queue.
-      if (update instanceof types._TypeUpdate) {
+      if (update instanceof types._Update) {
         updatesToHandle.push(update);
       }
     }
@@ -1133,30 +1133,30 @@ export class Client<C extends Context = Context> extends ClientAbstract {
     try {
       let state = await this.#getLocalState();
       while (true) {
-        const difference = await this.invoke(new functions.UpdatesGetDifference({ pts: state.pts, date: state.date, qts: state.qts ?? 0 }));
-        if (difference instanceof types.UpdatesDifference || difference instanceof types.UpdatesDifferenceSlice) {
+        const difference = await this.invoke(new functions.updates_getDifference({ pts: state.pts, date: state.date, qts: state.qts ?? 0 }));
+        if (difference instanceof types.updates_difference || difference instanceof types.updates_differenceSlice) {
           await this.#processChats(difference.chats);
           await this.#processUsers(difference.users);
-          for (const message of difference.newMessages) {
-            await this.#processUpdates(new types.UpdateNewMessage({ message, pts: 0, ptsCount: 0 }), false);
+          for (const message of difference.new_messages) {
+            await this.#processUpdates(new types.updateNewMessage({ message, pts: 0, pts_count: 0 }), false);
           }
-          for (const update of difference.otherUpdates) {
+          for (const update of difference.other_updates) {
             await this.#processUpdates(update, false);
           }
-          if (difference instanceof types.UpdatesDifference) {
+          if (difference instanceof types.updates_difference) {
             await this.storage.setState(difference.state);
             dGap("recovered from update gap");
             break;
-          } else if (difference instanceof types.UpdatesDifferenceSlice) {
-            state = difference.intermediateState;
+          } else if (difference instanceof types.updates_differenceSlice) {
+            state = difference.intermediate_state;
           } else {
             UNREACHABLE();
           }
-        } else if (difference instanceof types.UpdatesDifferenceTooLong) {
+        } else if (difference instanceof types.updates_differenceTooLong) {
           await this.storage.deleteMessages();
           state.pts = difference.pts;
           dGap("received differenceTooLong");
-        } else if (difference instanceof types.UpdatesDifferenceEmpty) {
+        } else if (difference instanceof types.updates_differenceEmpty) {
           await this.#setUpdateStateDate(difference.date);
           dGap("there was no update gap");
           break;
@@ -1174,43 +1174,43 @@ export class Client<C extends Context = Context> extends ClientAbstract {
     const pts_ = await this.storage.getChannelPts(channelId);
     let pts = pts_ == null ? 1 : pts_;
     while (true) {
-      const { accessHash } = await this.getInputPeer(ZERO_CHANNEL_ID + -Number(channelId)).then((v) => v[as](types.InputPeerChannel));
+      const { access_hash } = await this.getInputPeer(ZERO_CHANNEL_ID + -Number(channelId)).then((v) => v[as](types.inputPeerChannel));
       const difference = await this.invoke(
-        new functions.UpdatesGetChannelDifference({
+        new functions.updates_getChannelDifference({
           pts,
-          channel: new types.InputChannel({ channelId, accessHash: accessHash }),
-          filter: new types.ChannelMessagesFilterEmpty(),
+          channel: new types.inputChannel({ channel_id: channelId, access_hash }),
+          filter: new types.channelMessagesFilterEmpty(),
           limit: await this.storage.getAccountType() == "user" ? CHANNEL_DIFFERENCE_LIMIT_USER : CHANNEL_DIFFERENCE_LIMIT_BOT,
         }),
       );
-      if (difference instanceof types.UpdatesChannelDifference) {
+      if (difference instanceof types.updates_channelDifference) {
         await this.#processChats(difference.chats);
         await this.#processUsers(difference.users);
-        for (const message of difference.newMessages) {
-          await this.#processUpdates(new types.UpdateNewChannelMessage({ message, pts: 0, ptsCount: 0 }), false);
+        for (const message of difference.new_messages) {
+          await this.#processUpdates(new types.updateNewChannelMessage({ message, pts: 0, pts_count: 0 }), false);
         }
-        for (const update of difference.otherUpdates) {
+        for (const update of difference.other_updates) {
           await this.#processUpdates(update, false);
         }
         await this.storage.setChannelPts(channelId, difference.pts);
         dGapC("recovered from update gap [%o, %s]", channelId, source);
         break;
-      } else if (difference instanceof types.UpdatesChannelDifferenceTooLong) {
+      } else if (difference instanceof types.updates_channelDifferenceTooLong) {
         // invalidate messages
         dGapC("received channelDifferenceTooLong");
         await this.#processChats(difference.chats);
         await this.#processUsers(difference.users);
         for (const message of difference.messages) {
-          await this.#processUpdates(new types.UpdateNewChannelMessage({ message, pts: 0, ptsCount: 0 }), false);
+          await this.#processUpdates(new types.updateNewChannelMessage({ message, pts: 0, pts_count: 0 }), false);
         }
-        const pts_ = difference.dialog[as](types.Dialog).pts;
+        const pts_ = difference.dialog[as](types.dialog).pts;
         if (pts_ != undefined) {
           pts = pts_;
         } else {
           UNREACHABLE();
         }
         dGapC("processed channelDifferenceTooLong");
-      } else if (difference instanceof types.UpdatesChannelDifferenceEmpty) {
+      } else if (difference instanceof types.updates_channelDifferenceEmpty) {
         dGapC("there was no update gap");
         break;
       }
@@ -1218,23 +1218,23 @@ export class Client<C extends Context = Context> extends ClientAbstract {
   }
 
   async getUserAccessHash(userId: bigint) {
-    const users = await this.invoke(new functions.UsersGetUsers({ id: [new types.InputUser({ userId, accessHash: 0n })] }));
-    return users[0]?.[as](types.User).accessHash ?? 0n;
+    const users = await this.invoke(new functions.users_getUsers({ id: [new types.inputUser({ user_id: userId, access_hash: 0n })] }));
+    return users[0]?.[as](types.user).access_hash ?? 0n;
   }
 
   async #getChannelAccessHash(channelId: bigint) {
-    const channels = await this.invoke(new functions.ChannelsGetChannels({ id: [new types.InputChannel({ channelId, accessHash: 0n })] }));
-    return channels.chats[0][as](types.Channel).accessHash ?? 0n;
+    const channels = await this.invoke(new functions.channels_getChannels({ id: [new types.inputChannel({ channel_id: channelId, access_hash: 0n })] }));
+    return channels.chats[0][as](types.channel).access_hash ?? 0n;
   }
 
   async getInputPeer(id: ChatID) {
     const inputPeer = await this.#getInputPeerInner(id);
-    if ((inputPeer instanceof types.InputPeerUser || inputPeer instanceof types.InputPeerChannel && inputPeer.accessHash == 0n) && await this.storage.getAccountType() == "bot") {
-      if ("channelId" in inputPeer) {
-        inputPeer.accessHash = await this.#getChannelAccessHash(inputPeer.channelId);
+    if ((inputPeer instanceof types.inputPeerUser || inputPeer instanceof types.inputPeerChannel && inputPeer.access_hash == 0n) && await this.storage.getAccountType() == "bot") {
+      if ("channel_id" in inputPeer) {
+        inputPeer.access_hash = await this.#getChannelAccessHash(inputPeer.channel_id);
       } else {
-        inputPeer.accessHash = await this.getUserAccessHash(inputPeer.userId);
-        await this.storage.setUserAccessHash(inputPeer.userId, inputPeer.accessHash);
+        inputPeer.access_hash = await this.getUserAccessHash(inputPeer.user_id);
+        await this.storage.setUserAccessHash(inputPeer.user_id, inputPeer.access_hash);
       }
     }
     return inputPeer;
@@ -1254,88 +1254,88 @@ export class Client<C extends Context = Context> extends ClientAbstract {
           channelId = id;
         }
       } else {
-        const resolved = await this.invoke(new functions.ContactsResolveUsername({ username: id }));
+        const resolved = await this.invoke(new functions.contacts_resolveUsername({ username: id }));
         await this.#processChats(resolved.chats);
         await this.#processUsers(resolved.users);
-        if (resolved.peer instanceof types.PeerUser) {
-          userId = resolved.peer.userId;
-        } else if (resolved.peer instanceof types.PeerChannel) {
-          channelId = resolved.peer.channelId;
+        if (resolved.peer instanceof types.peerUser) {
+          userId = resolved.peer.user_id;
+        } else if (resolved.peer instanceof types.peerChannel) {
+          channelId = resolved.peer.channel_id;
         } else {
           UNREACHABLE();
         }
       }
       if (userId) {
         const accessHash = await this.storage.getUserAccessHash(userId);
-        return new types.InputPeerUser({ userId, accessHash: accessHash ?? 0n });
+        return new types.inputPeerUser({ user_id: userId, access_hash: accessHash ?? 0n });
       } else if (channelId) {
         const accessHash = await this.storage.getChannelAccessHash(channelId);
-        return new types.InputPeerChannel({ channelId, accessHash: accessHash ?? 0n });
+        return new types.inputPeerChannel({ channel_id: channelId, access_hash: accessHash ?? 0n });
       } else {
         UNREACHABLE();
       }
     } else if (id > 0) {
       const id_ = BigInt(id);
       const accessHash = await this.storage.getUserAccessHash(id_);
-      return new types.InputPeerUser({ userId: id_, accessHash: accessHash ?? 0n });
+      return new types.inputPeerUser({ user_id: id_, access_hash: accessHash ?? 0n });
     } else if (-MAX_CHAT_ID <= id) {
-      return new types.InputPeerChat({ chatId: BigInt(Math.abs(id)) });
+      return new types.inputPeerChat({ chat_id: BigInt(Math.abs(id)) });
     } else if (ZERO_CHANNEL_ID - MAX_CHANNEL_ID <= id && id != ZERO_CHANNEL_ID) {
       const id_ = BigInt(Math.abs(id - ZERO_CHANNEL_ID));
       const accessHash = await this.storage.getChannelAccessHash(id_);
-      return new types.InputPeerChannel({ channelId: id_, accessHash: accessHash ?? 0n });
+      return new types.inputPeerChannel({ channel_id: id_, access_hash: accessHash ?? 0n });
     } else {
       throw new Error("ID format unknown or not implemented");
     }
   }
 
-  private [getEntity](peer: types.PeerUser): Promise<types.User | null>;
-  private [getEntity](peer: types.PeerChat): Promise<types.Chat | null>;
-  private [getEntity](peer: types.PeerChannel): Promise<types.Channel | null>;
-  private [getEntity](peer: types.PeerUser | types.PeerChat | types.PeerChannel) {
-    const type = peer instanceof types.PeerUser ? "user" : peer instanceof types.PeerChat ? "chat" : peer instanceof types.PeerChannel ? "channel" : UNREACHABLE();
-    const id = peer instanceof types.PeerUser ? peer.userId : peer instanceof types.PeerChat ? peer.chatId : peer instanceof types.PeerChannel ? peer.channelId : UNREACHABLE();
+  private [getEntity](peer: types.peerUser): Promise<types.user | null>;
+  private [getEntity](peer: types.peerChat): Promise<types.chat | null>;
+  private [getEntity](peer: types.peerChannel): Promise<types.channel | null>;
+  private [getEntity](peer: types.peerUser | types.peerChat | types.peerChannel) {
+    const type = peer instanceof types.peerUser ? "user" : peer instanceof types.peerChat ? "chat" : peer instanceof types.peerChannel ? "channel" : UNREACHABLE();
+    const id = peer instanceof types.peerUser ? peer.user_id : peer instanceof types.peerChat ? peer.chat_id : peer instanceof types.peerChannel ? peer.channel_id : UNREACHABLE();
     return this.storage.getEntity(type, id);
   }
 
   async processResult(result: ReadObject) {
     if (
-      result instanceof types.MessagesDialogs ||
-      result instanceof types.MessagesDialogsSlice ||
-      result instanceof types.MessagesMessages ||
-      result instanceof types.MessagesMessagesSlice ||
-      result instanceof types.MessagesChannelMessages ||
-      result instanceof types.MessagesChatFull ||
-      result instanceof types.ContactsFound ||
-      result instanceof types.AccountPrivacyRules ||
-      result instanceof types.ContactsResolvedPeer ||
-      result instanceof types.ChannelsChannelParticipants ||
-      result instanceof types.ChannelsChannelParticipant ||
-      result instanceof types.MessagesPeerDialogs ||
-      result instanceof types.ContactsTopPeers ||
-      result instanceof types.ChannelsAdminLogResults ||
-      result instanceof types.HelpRecentMeURLs ||
-      result instanceof types.MessagesInactiveChats ||
-      result instanceof types.HelpPromoData ||
-      result instanceof types.MessagesMessageViews ||
-      result instanceof types.MessagesDiscussionMessage ||
-      result instanceof types.PhoneGroupCall ||
-      result instanceof types.PhoneGroupParticipants ||
-      result instanceof types.PhoneJoinAsPeers ||
-      result instanceof types.MessagesSponsoredMessages ||
-      result instanceof types.MessagesSearchResultsCalendar ||
-      result instanceof types.ChannelsSendAsPeers ||
-      result instanceof types.UsersUserFull ||
-      result instanceof types.MessagesPeerSettings ||
-      result instanceof types.MessagesMessageReactionsList ||
-      result instanceof types.MessagesForumTopics ||
-      result instanceof types.AccountAutoSaveSettings ||
-      result instanceof types.ChatlistsExportedInvites ||
-      result instanceof types.ChatlistsChatlistInviteAlready ||
-      result instanceof types.ChatlistsChatlistInvite ||
-      result instanceof types.ChatlistsChatlistUpdates ||
-      result instanceof types.MessagesChats ||
-      result instanceof types.MessagesChatsSlice
+      result instanceof types.messages_dialogs ||
+      result instanceof types.messages_dialogsSlice ||
+      result instanceof types.messages_messages ||
+      result instanceof types.messages_messagesSlice ||
+      result instanceof types.messages_channelMessages ||
+      result instanceof types.messages_chatFull ||
+      result instanceof types.contacts_found ||
+      result instanceof types.account_privacyRules ||
+      result instanceof types.contacts_resolvedPeer ||
+      result instanceof types.channels_channelParticipants ||
+      result instanceof types.channels_channelParticipant ||
+      result instanceof types.messages_peerDialogs ||
+      result instanceof types.contacts_topPeers ||
+      result instanceof types.channels_adminLogResults ||
+      result instanceof types.help_recentMeUrls ||
+      result instanceof types.messages_inactiveChats ||
+      result instanceof types.help_promoData ||
+      result instanceof types.messages_messageViews ||
+      result instanceof types.messages_discussionMessage ||
+      result instanceof types.phone_groupCall ||
+      result instanceof types.phone_groupParticipants ||
+      result instanceof types.phone_joinAsPeers ||
+      result instanceof types.messages_sponsoredMessages ||
+      result instanceof types.messages_searchResultsCalendar ||
+      result instanceof types.channels_sendAsPeers ||
+      result instanceof types.users_userFull ||
+      result instanceof types.messages_peerSettings ||
+      result instanceof types.messages_messageReactionsList ||
+      result instanceof types.messages_forumTopics ||
+      result instanceof types.account_autoSaveSettings ||
+      result instanceof types.chatlists_exportedInvites ||
+      result instanceof types.chatlists_chatlistInviteAlready ||
+      result instanceof types.chatlists_chatlistInvite ||
+      result instanceof types.chatlists_chatlistUpdates ||
+      result instanceof types.messages_chats ||
+      result instanceof types.messages_chatsSlice
     ) {
       await this.#processChats(result.chats);
       if ("users" in result) {
@@ -1343,30 +1343,30 @@ export class Client<C extends Context = Context> extends ClientAbstract {
       }
     }
 
-    if (result instanceof types.MessagesMessages) {
+    if (result instanceof types.messages_messages) {
       for (const message of result.messages) {
-        if (message instanceof types.Message || message instanceof types.MessageService) {
-          await this.storage.setMessage(peerToChatId(message.peerId), message.id, message);
+        if (message instanceof types.message || message instanceof types.messageService) {
+          await this.storage.setMessage(peerToChatId(message.peer_id), message.id, message);
         }
       }
     }
   }
 
-  async #updatesToMessages(chatId: ChatID, updates: types.TypeUpdates) {
+  async #updatesToMessages(chatId: ChatID, updates: types.Updates) {
     const messages = new Array<Message>();
 
-    if (updates instanceof types.Updates) {
+    if (updates instanceof types.updates) {
       for (const update of updates.updates) {
-        if ("message" in update && update.message instanceof types.MessageEmpty) {
+        if ("message" in update && update.message instanceof types.messageEmpty) {
           continue;
         }
-        if (update instanceof types.UpdateNewMessage || update instanceof types.UpdateEditMessage) {
+        if (update instanceof types.updateNewMessage || update instanceof types.updateEditMessage) {
           messages.push(await constructMessage(update.message, this[getEntity].bind(this), this.getMessage.bind(this), this[getStickerSetName].bind(this)));
-        } else if (update instanceof types.UpdateNewChannelMessage || update instanceof types.UpdateEditChannelMessage) {
+        } else if (update instanceof types.updateNewChannelMessage || update instanceof types.updateEditChannelMessage) {
           messages.push(await constructMessage(update.message, this[getEntity].bind(this), this.getMessage.bind(this), this[getStickerSetName].bind(this)));
         }
       }
-    } else if (updates instanceof types.UpdateShortSentMessage || updates instanceof types.UpdateShortSentMessage) {
+    } else if (updates instanceof types.updateShortSentMessage || updates instanceof types.updateShortSentMessage) {
       const message = await this.getMessage(chatId, updates.id);
       if (message != null) {
         messages.push(message);
@@ -1411,17 +1411,17 @@ export class Client<C extends Context = Context> extends ClientAbstract {
     const sendAs = await this.#resolveSendAs(params);
 
     const result = await this.invoke(
-      new functions.MessagesSendMessage({
+      new functions.messages_sendMessage({
         peer,
-        randomId,
+        random_id: randomId,
         message,
-        noWebpage,
+        no_webpage: noWebpage,
         silent,
         noforwards,
-        replyTo: replyToMsgId !== undefined ? new types.InputReplyToMessage({ replyToMsgId, topMsgId }) : undefined,
-        sendAs,
+        reply_to: replyToMsgId !== undefined ? new types.inputReplyToMessage({ reply_to_msg_id: replyToMsgId, top_msg_id: topMsgId }) : undefined,
+        send_as: sendAs,
         entities,
-        replyMarkup,
+        reply_markup: replyMarkup,
       }),
     );
 
@@ -1468,13 +1468,13 @@ export class Client<C extends Context = Context> extends ClientAbstract {
     const [message, entities] = this.#parseText(text, params);
 
     const result = await this.invoke(
-      new functions.MessagesEditMessage({
+      new functions.messages_editMessage({
         id: messageId,
         peer: await this.getInputPeer(chatId),
         entities,
         message,
-        noWebpage: params?.disableWebPagePreview ? true : undefined,
-        replyMarkup: await this.#constructReplyMarkup(params),
+        no_webpage: params?.disableWebPagePreview ? true : undefined,
+        reply_markup: await this.#constructReplyMarkup(params),
       }),
     );
 
@@ -1484,7 +1484,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
 
   async #getMessagesInner(chatId_: ChatID, messageIds: number[]) {
     const peer = await this.getInputPeer(chatId_);
-    let messages_ = new Array<types.TypeMessage>();
+    let messages_ = new Array<types.Message>();
     const chatId = peerToChatId(peer);
     let shouldFetch = false;
     for (const messageId of messageIds) {
@@ -1498,28 +1498,28 @@ export class Client<C extends Context = Context> extends ClientAbstract {
       }
     }
     if (shouldFetch) {
-      if (peer instanceof types.InputPeerChannel) {
+      if (peer instanceof types.inputPeerChannel) {
         messages_ = await this.invoke(
-          new functions.ChannelsGetMessages({
-            channel: new types.InputChannel({ channelId: peer.channelId, accessHash: peer.accessHash }),
-            id: messageIds.map((v) => new types.InputMessageID({ id: v })),
+          new functions.channels_getMessages({
+            channel: new types.inputChannel({ channel_id: peer.channel_id, access_hash: peer.access_hash }),
+            id: messageIds.map((v) => new types.inputMessageID({ id: v })),
           }),
-        ).then((v) => v[as](types.MessagesChannelMessages).messages);
+        ).then((v) => v[as](types.messages_channelMessages).messages);
       } else {
         messages_ = await this.invoke(
-          new functions.MessagesGetMessages({
-            id: messageIds.map((v) => new types.InputMessageID({ id: v })),
+          new functions.messages_getMessages({
+            id: messageIds.map((v) => new types.inputMessageID({ id: v })),
           }),
-        ).then((v) => v[as](types.MessagesMessages).messages);
+        ).then((v) => v[as](types.messages_messages).messages);
       }
     }
     const messages = new Array<{ message: Omit<Message, "replyToMessage">; isReplyToMessage: boolean }>();
     for (const message_ of messages_) {
-      if (message_ instanceof types.MessageEmpty) {
+      if (message_ instanceof types.messageEmpty) {
         continue;
       }
       const message = await constructMessage(message_, this[getEntity].bind(this), null, this[getStickerSetName].bind(this));
-      const isReplyToMessage = message_ instanceof types.Message && message_.replyTo instanceof types.MessageReplyHeader;
+      const isReplyToMessage = message_ instanceof types.message && message_.reply_to instanceof types.messageReplyHeader;
       messages.push({ message, isReplyToMessage });
     }
     return messages;
@@ -1561,13 +1561,13 @@ export class Client<C extends Context = Context> extends ClientAbstract {
     return messages[0] ?? null;
   }
 
-  async *#downloadInner(location: types.TypeInputFileLocation, dcId: number, params?: { chunkSize?: number }) {
+  async *#downloadInner(location: types.InputFileLocation, dcId: number, params?: { chunkSize?: number }) {
     const chunkSize = params?.chunkSize ?? 1024 * 1024;
     if (mod(chunkSize, 1024) != 0) {
       throw new Error("chunkSize must be divisible by 1024");
     }
 
-    const exportedAuth = await this.invoke(new functions.AuthExportAuthorization({ dcId }));
+    const exportedAuth = await this.invoke(new functions.auth_exportAuthorization({ dc_id: dcId }));
     const client = new Client(new StorageMemory(), this.apiId, this.apiHash, {
       transportProvider: this.transportProvider,
       appVersion: this.appVersion,
@@ -1590,9 +1590,9 @@ export class Client<C extends Context = Context> extends ClientAbstract {
     let offset = 0n;
 
     while (true) {
-      const file = await (client ?? this).invoke(new functions.UploadGetFile({ location, offset, limit }));
+      const file = await (client ?? this).invoke(new functions.upload_getFile({ location, offset, limit }));
 
-      if (file instanceof types.UploadFile) {
+      if (file instanceof types.upload_file) {
         yield file.bytes;
         if (file.bytes.length < limit) {
           break;
@@ -1623,18 +1623,18 @@ export class Client<C extends Context = Context> extends ClientAbstract {
       case FileType.ChatPhoto: {
         const big = fileId_.params.thumbnailSource == ThumbnailSource.ChatPhotoBig;
         const peer = await this.getInputPeer(fileId_.params.chatId!);
-        const location = new types.InputPeerPhotoFileLocation({ big: big ? true : undefined, peer, photoId: fileId_.params.mediaId! });
+        const location = new types.inputPeerPhotoFileLocation({ big: big ? true : undefined, peer, photo_id: fileId_.params.mediaId! });
         return this.#downloadInner(location, fileId_.dcId, params);
       }
       case FileType.Photo: {
         if (fileId_.params.mediaId == undefined || fileId_.params.accessHash == undefined || fileId_.params.fileReference == undefined || fileId_.params.thumbnailSize == undefined) {
           UNREACHABLE();
         }
-        const location = new types.InputPhotoFileLocation({
+        const location = new types.inputPhotoFileLocation({
           id: fileId_.params.mediaId,
-          accessHash: fileId_.params.accessHash,
-          fileReference: fileId_.params.fileReference,
-          thumbSize: fileId_.params.thumbnailSize,
+          access_hash: fileId_.params.accessHash,
+          file_reference: fileId_.params.fileReference,
+          thumb_size: fileId_.params.thumbnailSize,
         });
         return this.#downloadInner(location, fileId_.dcId, params);
       }
@@ -1643,14 +1643,14 @@ export class Client<C extends Context = Context> extends ClientAbstract {
     }
   }
 
-  private async [getStickerSetName](inputStickerSet: types.InputStickerSetID, hash = 0) {
-    const maybeStickerSetName = await this.storage.getStickerSetName(inputStickerSet.id, inputStickerSet.accessHash);
+  private async [getStickerSetName](inputStickerSet: types.inputStickerSetID, hash = 0) {
+    const maybeStickerSetName = await this.storage.getStickerSetName(inputStickerSet.id, inputStickerSet.access_hash);
     if (maybeStickerSetName != null && Date.now() - maybeStickerSetName[1].getTime() < STICKER_SET_NAME_TTL) {
       return maybeStickerSetName[0];
     } else {
-      const stickerSet = await this.invoke(new functions.MessagesGetStickerSet({ stickerset: inputStickerSet, hash }));
-      const name = stickerSet[as](types.MessagesStickerSet).set.shortName;
-      await this.storage.updateStickerSetName(inputStickerSet.id, inputStickerSet.accessHash, name);
+      const stickerSet = await this.invoke(new functions.messages_getStickerSet({ stickerset: inputStickerSet, hash }));
+      const name = stickerSet[as](types.messages_stickerSet).set.short_name;
+      await this.storage.updateStickerSetName(inputStickerSet.id, inputStickerSet.access_hash, name);
       return name;
     }
   }
@@ -1666,17 +1666,17 @@ export class Client<C extends Context = Context> extends ClientAbstract {
    */
   async forwardMessages(from: ChatID, to: ChatID, messageIds: number[], params?: ForwardMessagesParams): Promise<Message[]> {
     const result = await this.invoke(
-      new functions.MessagesForwardMessages({
-        fromPeer: await this.getInputPeer(from),
-        toPeer: await this.getInputPeer(to),
+      new functions.messages_forwardMessages({
+        from_peer: await this.getInputPeer(from),
+        to_peer: await this.getInputPeer(to),
         id: messageIds,
-        randomId: messageIds.map(() => getRandomId()),
+        random_id: messageIds.map(() => getRandomId()),
         silent: params?.disableNotification || undefined,
-        topMsgId: params?.messageThreadId,
+        top_msg_id: params?.messageThreadId,
         noforwards: params?.disableNotification || undefined,
-        sendAs: params?.sendAs ? await this.getInputPeer(params.sendAs) : undefined,
-        dropAuthor: params?.dropSenderName || undefined,
-        dropMediaCaptions: params?.dropCaption || undefined,
+        send_as: params?.sendAs ? await this.getInputPeer(params.sendAs) : undefined,
+        drop_author: params?.dropSenderName || undefined,
+        drop_media_captions: params?.dropCaption || undefined,
       }),
     );
 
@@ -1713,75 +1713,75 @@ export class Client<C extends Context = Context> extends ClientAbstract {
    * @method
    */
   async getMe(): Promise<User> {
-    const users = await this.invoke(new functions.UsersGetUsers({ id: [new types.InputUserSelf()] }));
+    const users = await this.invoke(new functions.users_getUsers({ id: [new types.inputUserSelf()] }));
     if (users.length < 1) {
       UNREACHABLE();
     }
-    const user = constructUser(users[0][as](types.User));
+    const user = constructUser(users[0][as](types.user));
     this.#lastGetMe = user;
     return user;
   }
 
   // TODO: log errors
-  async #handleUpdate(update: types.TypeUpdate) {
-    if (update instanceof types.UpdateShortMessage) {
-      update = new types.UpdateNewMessage({
-        message: new types.Message({
+  async #handleUpdate(update: types.Update) {
+    if (update instanceof types.updateShortMessage) {
+      update = new types.updateNewMessage({
+        message: new types.message({
           out: update.out,
           mentioned: update.mentioned,
-          mediaUnread: update.mediaUnread,
+          media_unread: update.media_unread,
           silent: update.silent,
           id: update.id,
-          fromId: update.out ? new types.PeerUser({ userId: await this.#getSelfId().then(BigInt) }) : new types.PeerUser({ userId: update.userId }),
-          peerId: new types.PeerChat({ chatId: update.userId }),
+          from_id: update.out ? new types.peerUser({ user_id: await this.#getSelfId().then(BigInt) }) : new types.peerUser({ user_id: update.user_id }),
+          peer_id: new types.peerChat({ chat_id: update.user_id }),
           message: update.message,
           date: update.date,
-          fwdFrom: update.fwdFrom,
-          viaBotId: update.viaBotId,
-          replyTo: update.replyTo,
+          fwd_from: update.fwd_from,
+          via_bot_id: update.via_bot_id,
+          reply_to: update.reply_to,
           entities: update.entities,
-          ttlPeriod: update.ttlPeriod,
+          ttl_period: update.ttl_period,
         }),
         pts: update.pts,
-        ptsCount: update.ptsCount,
+        pts_count: update.pts_count,
       });
-    } else if (update instanceof types.UpdateShortChatMessage) {
-      update = new types.UpdateNewMessage({
-        message: new types.Message({
+    } else if (update instanceof types.updateShortChatMessage) {
+      update = new types.updateNewMessage({
+        message: new types.message({
           out: update.out,
           mentioned: update.mentioned,
-          mediaUnread: update.mediaUnread,
+          media_unread: update.media_unread,
           silent: update.silent,
           id: update.id,
-          fromId: new types.PeerUser({ userId: update.fromId }),
-          peerId: new types.PeerChat({ chatId: update.chatId }),
-          fwdFrom: update.fwdFrom,
-          viaBotId: update.viaBotId,
-          replyTo: update.replyTo,
+          from_id: new types.peerUser({ user_id: update.from_id }),
+          peer_id: new types.peerChat({ chat_id: update.chat_id }),
+          fwd_from: update.fwd_from,
+          via_bot_id: update.via_bot_id,
+          reply_to: update.reply_to,
           date: update.date,
           message: update.message,
           entities: update.entities,
-          ttlPeriod: update.ttlPeriod,
+          ttl_period: update.ttl_period,
         }),
         pts: update.pts,
-        ptsCount: update.ptsCount,
+        pts_count: update.pts_count,
       });
     }
 
-    if (update instanceof types.UpdateNewMessage || update instanceof types.UpdateNewMessage || update instanceof types.UpdateNewChannelMessage || update instanceof types.UpdateNewChannelMessage) {
-      if (update.message instanceof types.Message || update.message instanceof types.MessageService) {
-        await this.storage.setMessage(peerToChatId(update.message.peerId), update.message.id, update.message);
+    if (update instanceof types.updateNewMessage || update instanceof types.updateNewMessage || update instanceof types.updateNewChannelMessage || update instanceof types.updateNewChannelMessage) {
+      if (update.message instanceof types.message || update.message instanceof types.messageService) {
+        await this.storage.setMessage(peerToChatId(update.message.peer_id), update.message.id, update.message);
       }
     }
 
     if (
-      update instanceof types.UpdateNewMessage ||
-      update instanceof types.UpdateNewChannelMessage ||
-      update instanceof types.UpdateEditMessage ||
-      update instanceof types.UpdateEditChannelMessage
+      update instanceof types.updateNewMessage ||
+      update instanceof types.updateNewChannelMessage ||
+      update instanceof types.updateEditMessage ||
+      update instanceof types.updateEditChannelMessage
     ) {
-      const key = update instanceof types.UpdateNewMessage || update instanceof types.UpdateNewChannelMessage ? "message" : "editedMessage";
-      if (!(update.message instanceof types.MessageEmpty)) {
+      const key = update instanceof types.updateNewMessage || update instanceof types.updateNewChannelMessage ? "message" : "editedMessage";
+      if (!(update.message instanceof types.messageEmpty)) {
         const isOutgoing = update.message.out;
         let shouldIgnore = isOutgoing ? (await this.storage.getAccountType()) == "user" ? false : true : false;
         if (this.#ignoreOutgoing != null && isOutgoing) {
@@ -1799,13 +1799,13 @@ export class Client<C extends Context = Context> extends ClientAbstract {
       }
     }
 
-    if (update instanceof types.UpdateDeleteMessages) {
+    if (update instanceof types.updateDeleteMessages) {
       const deletedMessages = new Array<Message>();
       for (const messageId of update.messages) {
         const chatId = await this.storage.getMessageChat(messageId);
         if (chatId) {
           const message = await this.storage.getMessage(chatId, messageId);
-          if (message != null && !(message instanceof types.MessageEmpty)) {
+          if (message != null && !(message instanceof types.messageEmpty)) {
             deletedMessages.push(
               await constructMessage(
                 message,
@@ -1821,12 +1821,12 @@ export class Client<C extends Context = Context> extends ClientAbstract {
       if (deletedMessages.length > 0) {
         await this.#handle(await this.#constructContext({ deletedMessages: deletedMessages as [Message, ...Message[]] }), resolve);
       }
-    } else if (update instanceof types.UpdateDeleteChannelMessages) {
-      const chatId = getChannelChatId(update.channelId);
+    } else if (update instanceof types.updateDeleteChannelMessages) {
+      const chatId = getChannelChatId(update.channel_id);
       const deletedMessages = new Array<Message>();
       for (const messageId of update.messages) {
         const message = await this.storage.getMessage(chatId, messageId);
-        if (message != null && !(message instanceof types.MessageEmpty)) {
+        if (message != null && !(message instanceof types.messageEmpty)) {
           deletedMessages.push(
             await constructMessage(
               message,
@@ -1843,9 +1843,9 @@ export class Client<C extends Context = Context> extends ClientAbstract {
       }
     }
 
-    if (update instanceof types.UpdateBotCallbackQuery || update instanceof types.UpdateInlineBotCallbackQuery) {
+    if (update instanceof types.updateBotCallbackQuery || update instanceof types.updateInlineBotCallbackQuery) {
       await this.#handle(await this.#constructContext({ callbackQuery: await constructCallbackQuery(update, this[getEntity].bind(this), this[getMessageWithReply].bind(this)) }), resolve);
-    } else if (update instanceof types.UpdateBotInlineQuery) {
+    } else if (update instanceof types.updateBotInlineQuery) {
       await this.#handle(await this.#constructContext({ inlineQuery: await constructInlineQuery(update, this[getEntity].bind(this)) }), resolve);
     }
   }
@@ -1859,9 +1859,9 @@ export class Client<C extends Context = Context> extends ClientAbstract {
   async answerCallbackQuery(id: string, params?: AnswerCallbackQueryParams) {
     await this.#assertBot("answerCallbackQuery");
     await this.invoke(
-      new functions.MessagesSetBotCallbackAnswer({
-        queryId: BigInt(id),
-        cacheTime: params?.cacheTime ?? 0,
+      new functions.messages_setBotCallbackAnswer({
+        query_id: BigInt(id),
+        cache_time: params?.cacheTime ?? 0,
         message: params?.text,
         alert: params?.alert ? true : undefined,
       }),
@@ -1869,8 +1869,8 @@ export class Client<C extends Context = Context> extends ClientAbstract {
   }
 
   #usernameResolver: UsernameResolver = async (v) => {
-    const inputPeer = await this.getInputPeer(v).then((v) => v[as](types.InputPeerUser));
-    return new types.InputUser({ userId: inputPeer.userId, accessHash: inputPeer.accessHash });
+    const inputPeer = await this.getInputPeer(v).then((v) => v[as](types.inputPeerUser));
+    return new types.inputUser(inputPeer);
   };
 
   async #constructReplyMarkup(params?: Pick<SendMessageParams, "replyMarkup">) {
@@ -1912,36 +1912,36 @@ export class Client<C extends Context = Context> extends ClientAbstract {
     const solution = parseResult === undefined ? undefined : parseResult[0];
     const solutionEntities = parseResult === undefined ? undefined : parseResult[1];
 
-    const answers = options.map((v, i) => new types.PollAnswer({ option: new Uint8Array([i]), text: v }));
+    const answers = options.map((v, i) => new types.pollAnswer({ option: new Uint8Array([i]), text: v }));
 
-    const poll = new types.Poll({
+    const poll = new types.poll({
       id: getRandomId(),
       answers,
       question,
       closed: params?.isClosed ? true : undefined,
-      closeDate: params?.closeDate ? Math.floor(params.closeDate.getTime() / 1000) : undefined,
-      closePeriod: params?.openPeriod ? params.openPeriod : undefined,
-      multipleChoice: params?.allowMultipleAnswers ? true : undefined,
-      publicVoters: params?.isAnonymous === false ? true : undefined,
+      close_date: params?.closeDate ? Math.floor(params.closeDate.getTime() / 1000) : undefined,
+      close_period: params?.openPeriod ? params.openPeriod : undefined,
+      multiple_choice: params?.allowMultipleAnswers ? true : undefined,
+      public_voters: params?.isAnonymous === false ? true : undefined,
       quiz: params?.type == "quiz" ? true : undefined,
     });
 
-    const media = new types.InputMediaPoll({
+    const media = new types.inputMediaPoll({
       poll,
-      correctAnswers: params?.correctOptionIndex ? [new Uint8Array([params.correctOptionIndex])] : undefined,
+      correct_answers: params?.correctOptionIndex ? [new Uint8Array([params.correctOptionIndex])] : undefined,
       solution,
-      solutionEntities,
+      solution_entities: solutionEntities,
     });
 
     const result = await this.invoke(
-      new functions.MessagesSendMedia({
+      new functions.messages_sendMedia({
         peer,
-        randomId,
+        random_id: randomId,
         silent,
         noforwards,
-        replyMarkup,
-        replyTo: replyToMsgId !== undefined ? new types.InputReplyToMessage({ replyToMsgId, topMsgId }) : undefined,
-        sendAs,
+        reply_markup: replyMarkup,
+        reply_to: replyToMsgId !== undefined ? new types.inputReplyToMessage({ reply_to_msg_id: replyToMsgId, top_msg_id: topMsgId }) : undefined,
+        send_as: sendAs,
         media,
         message: "",
       }),
@@ -1960,45 +1960,45 @@ export class Client<C extends Context = Context> extends ClientAbstract {
    * @param messageThreadId The thread to send the chat action to.
    */
   async sendChatAction(chatId: ChatID, action: ChatAction, params?: { messageThreadId?: number }) {
-    let action_: types.TypeSendMessageAction;
+    let action_: types.SendMessageAction;
     switch (action) {
       case "type":
-        action_ = new types.SendMessageTypingAction();
+        action_ = new types.sendMessageTypingAction();
         break;
       case "uploadPhoto":
-        action_ = new types.SendMessageUploadPhotoAction({ progress: 0 });
+        action_ = new types.sendMessageUploadPhotoAction({ progress: 0 });
         break;
       case "recordVideo":
-        action_ = new types.SendMessageRecordVideoAction();
+        action_ = new types.sendMessageRecordVideoAction();
         break;
       case "uploadVideo":
-        action_ = new types.SendMessageRecordVideoAction();
+        action_ = new types.sendMessageRecordVideoAction();
         break;
       case "recordVoice":
-        action_ = new types.SendMessageRecordAudioAction();
+        action_ = new types.sendMessageRecordAudioAction();
         break;
       case "uploadAudio":
-        action_ = new types.SendMessageUploadAudioAction({ progress: 0 });
+        action_ = new types.sendMessageUploadAudioAction({ progress: 0 });
         break;
       case "uploadDocument":
-        action_ = new types.SendMessageUploadDocumentAction({ progress: 0 });
+        action_ = new types.sendMessageUploadDocumentAction({ progress: 0 });
         break;
       case "chooseSticker":
-        action_ = new types.SendMessageChooseStickerAction();
+        action_ = new types.sendMessageChooseStickerAction();
         break;
       case "findLocation":
-        action_ = new types.SendMessageGeoLocationAction();
+        action_ = new types.sendMessageGeoLocationAction();
         break;
       case "recordVideoNote":
-        action_ = new types.SendMessageRecordRoundAction();
+        action_ = new types.sendMessageRecordRoundAction();
         break;
       case "uploadVideoNote":
-        action_ = new types.SendMessageUploadRoundAction({ progress: 0 });
+        action_ = new types.sendMessageUploadRoundAction({ progress: 0 });
         break;
       default:
         throw new Error("Invalid chat action: " + action);
     }
-    await this.invoke(new functions.MessagesSetTyping({ peer: await this.getInputPeer(chatId), action: action_, topMsgId: params?.messageThreadId }));
+    await this.invoke(new functions.messages_setTyping({ peer: await this.getInputPeer(chatId), action: action_, top_msg_id: params?.messageThreadId }));
   }
 
   /**
@@ -2051,9 +2051,9 @@ export class Client<C extends Context = Context> extends ClientAbstract {
               continue main;
             }
             if (isBig) {
-              await client.invoke(new functions.UploadSaveBigFilePart({ fileId, filePart: part, bytes, fileTotalParts: partCount }));
+              await client.invoke(new functions.upload_saveBigFilePart({ file_id: fileId, file_part: part, bytes, file_total_parts: partCount }));
             } else {
-              await client.invoke(new functions.UploadSaveFilePart({ fileId, bytes, filePart: part }));
+              await client.invoke(new functions.upload_saveFilePart({ file_id: fileId, bytes, file_part: part }));
             }
             dUpload((part + 1) + " out of " + partCount + " chunks have been uploaded so far");
             break chunk;
@@ -2088,9 +2088,9 @@ export class Client<C extends Context = Context> extends ClientAbstract {
     dUpload("uploaded all " + partCount + " chunk(s)");
 
     if (isBig) {
-      return new types.InputFileBig({ id: fileId, parts: contents.length / chunkSize, name });
+      return new types.inputFileBig({ id: fileId, parts: contents.length / chunkSize, name });
     } else {
-      return new types.InputFile({ id: fileId, name, parts: part, md5Checksum: "" });
+      return new types.inputFile({ id: fileId, name, parts: part, md5_checksum: "" });
     }
   }
 
@@ -2102,9 +2102,9 @@ export class Client<C extends Context = Context> extends ClientAbstract {
    */
   async setMyCommands(commands: BotCommand[], params?: SetMyCommandsParams) {
     await this.invoke(
-      new functions.BotsSetBotCommands({
-        commands: commands.map((v) => new types.BotCommand(v)),
-        langCode: params?.languageCode ?? "",
+      new functions.bots_setBotCommands({
+        commands: commands.map((v) => new types.botCommand(v)),
+        lang_code: params?.languageCode ?? "",
         scope: await botCommandScopeToTlObject(params?.scope ?? { type: "default" }, this.getInputPeer.bind(this)),
       }),
     );
@@ -2115,8 +2115,8 @@ export class Client<C extends Context = Context> extends ClientAbstract {
    */
   async getMyCommands(params?: GetMyCommandsParams): Promise<BotCommand[]> {
     const commands_ = await this.invoke(
-      new functions.BotsGetBotCommands({
-        langCode: params?.languageCode ?? "",
+      new functions.bots_getBotCommands({
+        lang_code: params?.languageCode ?? "",
         scope: await botCommandScopeToTlObject(params?.scope ?? { type: "default" }, this.getInputPeer.bind(this)),
       }),
     );
@@ -2132,15 +2132,15 @@ export class Client<C extends Context = Context> extends ClientAbstract {
    */
   async answerInlineQuery(id: string, results: InlineQueryResult[], params?: AnswerInlineQueryParams) {
     await this.invoke(
-      new functions.MessagesSetInlineBotResults({
-        queryId: BigInt(id),
+      new functions.messages_setInlineBotResults({
+        query_id: BigInt(id),
         results: await Promise.all(results.map((v) => inlineQueryResultToTlObject(v, this.#parseText.bind(this), this.#usernameResolver.bind(this)))),
-        cacheTime: params?.cacheTime ?? 300,
+        cache_time: params?.cacheTime ?? 300,
         private: params?.isPersonal ? true : undefined,
-        switchWebview: params?.button && params.button.webApp ? new types.InlineBotWebView({ text: params.button.text, url: params.button.webApp.url }) : undefined,
-        switchPm: params?.button && params.button.startParameter ? new types.InlineBotSwitchPM({ text: params.button.text, startParam: params.button.startParameter }) : undefined,
+        switch_webview: params?.button && params.button.webApp ? new types.inlineBotWebView({ text: params.button.text, url: params.button.webApp.url }) : undefined,
+        switch_pm: params?.button && params.button.startParameter ? new types.inlineBotSwitchPM({ text: params.button.text, start_param: params.button.startParameter }) : undefined,
         gallery: params?.isGallery ? true : undefined,
-        nextOffset: params?.nextOffset,
+        next_offset: params?.nextOffset,
       }),
     );
   }
@@ -2257,8 +2257,8 @@ export class Client<C extends Context = Context> extends ClientAbstract {
   }
   //#endregion
 
-  async #setMyInfo(info: Omit<ConstructorParameters<typeof functions["BotsSetBotInfo"]>[0], "bot">) {
-    await this.invoke(new functions.BotsSetBotInfo({ bot: new types.InputUserSelf(), ...info }));
+  async #setMyInfo(info: Omit<ConstructorParameters<typeof functions["bots_setBotInfo"]>[0], "bot">) {
+    await this.invoke(new functions.bots_setBotInfo({ bot: new types.inputUserSelf(), ...info }));
   }
 
   /**
@@ -2268,7 +2268,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
    */
   async setMyDescription({ description, languageCode }: { description?: string; languageCode?: string }) {
     await this.#assertBot("setMyDescription");
-    await this.#setMyInfo({ description, langCode: languageCode ?? "" });
+    await this.#setMyInfo({ description, lang_code: languageCode ?? "" });
   }
 
   /**
@@ -2278,7 +2278,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
    */
   async setMyName({ name, languageCode }: { name?: string; languageCode?: string }) {
     await this.#assertBot("setMyName");
-    await this.#setMyInfo({ name, langCode: languageCode ?? "" });
+    await this.#setMyInfo({ name, lang_code: languageCode ?? "" });
   }
 
   /**
@@ -2288,11 +2288,11 @@ export class Client<C extends Context = Context> extends ClientAbstract {
    */
   async setMyShortDescription({ shortDescription: about, languageCode }: { shortDescription?: string; languageCode?: string }) {
     await this.#assertBot("setMyShortDescription");
-    await this.#setMyInfo({ about, langCode: languageCode ?? "" });
+    await this.#setMyInfo({ about, lang_code: languageCode ?? "" });
   }
 
   #getMyInfo(languageCode?: string | undefined) {
-    return this.invoke(new functions.BotsGetBotInfo({ bot: new types.InputUserSelf(), langCode: languageCode ?? "" }));
+    return this.invoke(new functions.bots_getBotInfo({ bot: new types.inputUserSelf(), lang_code: languageCode ?? "" }));
   }
 
   /**
@@ -2334,10 +2334,10 @@ export class Client<C extends Context = Context> extends ClientAbstract {
    */
   async deleteMessages(chatId: ChatID, messageIds: number[], params?: DeleteMessagesParams): Promise<void> {
     const peer = await this.getInputPeer(chatId);
-    if (peer instanceof types.InputPeerChannel) {
-      await this.invoke(new functions.ChannelsDeleteMessages({ channel: new types.InputChannel(peer), id: messageIds }));
+    if (peer instanceof types.inputPeerChannel) {
+      await this.invoke(new functions.channels_deleteMessages({ channel: new types.inputChannel(peer), id: messageIds }));
     } else {
-      await this.invoke(new functions.MessagesDeleteMessages({ id: messageIds, revoke: params?.onlyForMe ? undefined : true }));
+      await this.invoke(new functions.messages_deleteMessages({ id: messageIds, revoke: params?.onlyForMe ? undefined : true }));
     }
   }
 
@@ -2360,7 +2360,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
    * @param photo The photo to send.
    */
   async sendPhoto(chatId: ChatID, photo: FileSource, params?: SendPhotoParams): Promise<With<Message, "photo">> {
-    let media: types.TypeInputMedia | null = null;
+    let media: types.InputMedia | null = null;
     const spoiler = params?.hasSpoiler ? true : undefined;
 
     if (typeof photo === "string") {
@@ -2377,11 +2377,11 @@ export class Client<C extends Context = Context> extends ClientAbstract {
         if (fileId.params.mediaId == undefined || fileId.params.accessHash == undefined || fileId.params.fileReference == undefined) {
           UNREACHABLE();
         }
-        media = new types.InputMediaPhoto({
-          id: new types.InputPhoto({
+        media = new types.inputMediaPhoto({
+          id: new types.inputPhoto({
             id: fileId.params.mediaId,
-            accessHash: fileId.params.accessHash,
-            fileReference: fileId.params.fileReference,
+            access_hash: fileId.params.accessHash,
+            file_reference: fileId.params.fileReference,
           }),
           spoiler,
         });
@@ -2390,11 +2390,11 @@ export class Client<C extends Context = Context> extends ClientAbstract {
 
     if (media == null) {
       if (typeof photo === "string" && isHttpUrl(photo)) {
-        media = new types.InputMediaPhotoExternal({ url: photo, spoiler });
+        media = new types.inputMediaPhotoExternal({ url: photo, spoiler });
       } else {
         const [contents, fileName] = await getFileContents(photo);
         const file = await this.upload(contents, { fileName, chunkSize: params?.chunkSize, signal: params?.signal });
-        media = new types.InputMediaUploadedPhoto({ file, spoiler });
+        media = new types.inputMediaUploadedPhoto({ file, spoiler });
       }
     }
 
@@ -2414,14 +2414,14 @@ export class Client<C extends Context = Context> extends ClientAbstract {
     const captionEntities = parseResult === undefined ? undefined : parseResult[1];
 
     const result = await this.invoke(
-      new functions.MessagesSendMedia({
+      new functions.messages_sendMedia({
         peer,
-        randomId,
+        random_id: randomId,
         silent,
         noforwards,
-        replyMarkup,
-        replyTo: replyToMsgId !== undefined ? new types.InputReplyToMessage({ replyToMsgId, topMsgId }) : undefined,
-        sendAs,
+        reply_markup: replyMarkup,
+        reply_to: replyToMsgId !== undefined ? new types.inputReplyToMessage({ reply_to_msg_id: replyToMsgId, top_msg_id: topMsgId }) : undefined,
+        send_as: sendAs,
         media,
         message: caption ?? "",
         entities: captionEntities,

@@ -6,6 +6,6 @@ export interface RestrictionReason {
   text: string;
 }
 
-export function constructRestrictionReason(rr: types.TypeRestrictionReason): RestrictionReason {
+export function constructRestrictionReason(rr: types.RestrictionReason): RestrictionReason {
   return { platform: rr.platform, reason: rr.reason, text: rr.text };
 }

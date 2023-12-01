@@ -26,11 +26,11 @@ export declare namespace ChatPhoto {
 /** This object represents a chat photo. */
 export type ChatPhoto = ChatPhoto.User | ChatPhoto.Chat;
 
-export function constructChatPhoto(photo: types.ChatPhoto, chatId: number, chatAccessHash: bigint): ChatPhoto.Chat;
-export function constructChatPhoto(photo: types.UserProfilePhoto, chatId: number, chatAccessHash: bigint): ChatPhoto.User;
-export function constructChatPhoto(photo: types.UserProfilePhoto | types.ChatPhoto, chatId: number, chatAccessHash: bigint): ChatPhoto {
-  const smallFileId = new FileID(null, null, FileType.ChatPhoto, photo.dcId, {
-    mediaId: photo.photoId,
+export function constructChatPhoto(photo: types.chatPhoto, chatId: number, chatAccessHash: bigint): ChatPhoto.Chat;
+export function constructChatPhoto(photo: types.userProfilePhoto, chatId: number, chatAccessHash: bigint): ChatPhoto.User;
+export function constructChatPhoto(photo: types.userProfilePhoto | types.chatPhoto, chatId: number, chatAccessHash: bigint): ChatPhoto {
+  const smallFileId = new FileID(null, null, FileType.ChatPhoto, photo.dc_id, {
+    mediaId: photo.photo_id,
     thumbnailSource: ThumbnailSource.ChatPhotoSmall,
     chatId,
     chatAccessHash,
@@ -38,9 +38,9 @@ export function constructChatPhoto(photo: types.UserProfilePhoto | types.ChatPho
     volumeId: 0n,
     localId: 0,
   }).encode();
-  const smallFileUniqueId = new FileUniqueID(FileUniqueType.Document, { mediaId: photo.photoId }).encode();
-  const bigFileId = new FileID(null, null, FileType.ChatPhoto, photo.dcId, {
-    mediaId: photo.photoId,
+  const smallFileUniqueId = new FileUniqueID(FileUniqueType.Document, { mediaId: photo.photo_id }).encode();
+  const bigFileId = new FileID(null, null, FileType.ChatPhoto, photo.dc_id, {
+    mediaId: photo.photo_id,
     thumbnailSource: ThumbnailSource.ChatPhotoBig,
     chatId,
     chatAccessHash,
@@ -48,14 +48,14 @@ export function constructChatPhoto(photo: types.UserProfilePhoto | types.ChatPho
     volumeId: 0n,
     localId: 0,
   }).encode();
-  const bigFileUniqueId = new FileUniqueID(FileUniqueType.Document, { mediaId: photo.photoId }).encode();
-  if (photo instanceof types.ChatPhoto) {
+  const bigFileUniqueId = new FileUniqueID(FileUniqueType.Document, { mediaId: photo.photo_id }).encode();
+  if (photo instanceof types.chatPhoto) {
     return {
       smallFileId,
       smallFileUniqueId,
       bigFileId,
       bigFileUniqueId,
-      hasVideo: photo.hasVideo || false,
+      hasVideo: photo.has_video || false,
     };
   } else {
     return {
@@ -64,7 +64,7 @@ export function constructChatPhoto(photo: types.UserProfilePhoto | types.ChatPho
       smallFileUniqueId,
       bigFileId,
       bigFileUniqueId,
-      hasVideo: photo.hasVideo || false,
+      hasVideo: photo.has_video || false,
     };
   }
 }

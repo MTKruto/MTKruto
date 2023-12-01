@@ -8,7 +8,7 @@ export interface InlineKeyboardMarkup {
   inlineKeyboard: InlineKeyboardButton[][];
 }
 
-export function constructInlineKeyboardMarkup(keyboard_: types.ReplyInlineMarkup): InlineKeyboardMarkup {
+export function constructInlineKeyboardMarkup(keyboard_: types.replyInlineMarkup): InlineKeyboardMarkup {
   const rows = new Array<InlineKeyboardButton[]>();
   for (const row_ of keyboard_.rows) {
     const row = new Array<InlineKeyboardButton>();
@@ -21,13 +21,13 @@ export function constructInlineKeyboardMarkup(keyboard_: types.ReplyInlineMarkup
 }
 
 export async function inlineKeyboardMarkupToTlObject(keyboard: InlineKeyboardMarkup, usernameResolver: UsernameResolver) {
-  const rows_ = new Array<types.KeyboardButtonRow>();
+  const rows_ = new Array<types.keyboardButtonRow>();
   for (const row of keyboard.inlineKeyboard) {
-    const row_ = new Array<types.TypeKeyboardButton>();
+    const row_ = new Array<types.KeyboardButton>();
     for (const button of row) {
       row_.push(await inlineKeyboardButtonToTlObject(button, usernameResolver));
     }
-    rows_.push(new types.KeyboardButtonRow({ buttons: row_ }));
+    rows_.push(new types.keyboardButtonRow({ buttons: row_ }));
   }
-  return new types.ReplyInlineMarkup({ rows: rows_ });
+  return new types.replyInlineMarkup({ rows: rows_ });
 }

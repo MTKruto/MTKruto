@@ -32,7 +32,7 @@ export interface Poll {
   closeDate?: Date;
 }
 
-export function constructPoll(media_: types.MessageMediaPoll): Poll {
+export function constructPoll(media_: types.messageMediaPoll): Poll {
   const poll = media_.poll;
   const correctOption = media_.results.results?.find((v) => v.correct)?.option;
   const correctOptionId = correctOption !== undefined ? poll.answers.findIndex((v) => v.option.every((v, i) => correctOption[i] == v)) : undefined;
@@ -41,15 +41,15 @@ export function constructPoll(media_: types.MessageMediaPoll): Poll {
     id: String(poll.id),
     question: poll.question,
     options: poll.answers.map((v) => constructPollOption(v, media_.results.results ?? [])),
-    totalVoterCount: media_.results.totalVoters ?? 0,
+    totalVoterCount: media_.results.total_voters ?? 0,
     isClosed: poll.closed || false,
-    isAnonymous: !poll.publicVoters,
+    isAnonymous: !poll.public_voters,
     type: poll.quiz ? "quiz" : "regular",
-    allowMultipleAnswers: poll.quiz ? undefined : poll.multipleChoice || false,
+    allowMultipleAnswers: poll.quiz ? undefined : poll.multiple_choice || false,
     correctOptionId,
     explanation: media_.results.solution,
-    explanationEntities: media_.results.solutionEntities?.map(constructMessageEntity).filter((v): v is MessageEntity => v != null),
-    openPeriod: poll.closePeriod,
-    closeDate: poll.closeDate ? new Date(poll.closeDate * 1000) : undefined,
+    explanationEntities: media_.results.solution_entities?.map(constructMessageEntity).filter((v): v is MessageEntity => v != null),
+    openPeriod: poll.close_period,
+    closeDate: poll.close_date ? new Date(poll.close_date * 1000) : undefined,
   });
 }

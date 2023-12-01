@@ -6,7 +6,7 @@ export abstract class Function<T> extends TLObject {
   __R: T = Symbol() as unknown as T; // virtual member
 }
 
-export class ReqPQMulti extends Function<types.TypeResPQ> {
+export class req_pq_multi extends Function<types.ResPQ> {
   nonce: bigint;
 
   protected get [id]() {
@@ -31,13 +31,13 @@ export class ReqPQMulti extends Function<types.TypeResPQ> {
   }
 }
 
-export class ReqDHParams extends Function<types.TypeServerDHParams> {
+export class req_DH_params extends Function<types.Server_DH_Params> {
   nonce: bigint;
-  serverNonce: bigint;
+  server_nonce: bigint;
   p: Uint8Array;
   q: Uint8Array;
-  publicKeyFingerprint: bigint;
-  encryptedData: Uint8Array;
+  public_key_fingerprint: bigint;
+  encrypted_data: Uint8Array;
 
   protected get [id]() {
     return 0xD712E4BE;
@@ -46,40 +46,40 @@ export class ReqDHParams extends Function<types.TypeServerDHParams> {
   static get [paramDesc](): ParamDesc {
     return [
       ["nonce", "bigint", "int128"],
-      ["serverNonce", "bigint", "int128"],
+      ["server_nonce", "bigint", "int128"],
       ["p", Uint8Array, "bytes"],
       ["q", Uint8Array, "bytes"],
-      ["publicKeyFingerprint", "bigint", "long"],
-      ["encryptedData", Uint8Array, "bytes"],
+      ["public_key_fingerprint", "bigint", "long"],
+      ["encrypted_data", Uint8Array, "bytes"],
     ];
   }
 
   protected get [params](): Params {
     return [
       [this.nonce, "bigint", "int128"],
-      [this.serverNonce, "bigint", "int128"],
+      [this.server_nonce, "bigint", "int128"],
       [this.p, Uint8Array, "bytes"],
       [this.q, Uint8Array, "bytes"],
-      [this.publicKeyFingerprint, "bigint", "long"],
-      [this.encryptedData, Uint8Array, "bytes"],
+      [this.public_key_fingerprint, "bigint", "long"],
+      [this.encrypted_data, Uint8Array, "bytes"],
     ];
   }
 
-  constructor(params: { nonce: bigint; serverNonce: bigint; p: Uint8Array; q: Uint8Array; publicKeyFingerprint: bigint; encryptedData: Uint8Array }) {
+  constructor(params: { nonce: bigint; server_nonce: bigint; p: Uint8Array; q: Uint8Array; public_key_fingerprint: bigint; encrypted_data: Uint8Array }) {
     super();
     this.nonce = params.nonce;
-    this.serverNonce = params.serverNonce;
+    this.server_nonce = params.server_nonce;
     this.p = params.p;
     this.q = params.q;
-    this.publicKeyFingerprint = params.publicKeyFingerprint;
-    this.encryptedData = params.encryptedData;
+    this.public_key_fingerprint = params.public_key_fingerprint;
+    this.encrypted_data = params.encrypted_data;
   }
 }
 
-export class SetClientDHParams extends Function<types.TypeSetClientDHParamsAnswer> {
+export class set_client_DH_params extends Function<types.Set_client_DH_params_answer> {
   nonce: bigint;
-  serverNonce: bigint;
-  encryptedData: Uint8Array;
+  server_nonce: bigint;
+  encrypted_data: Uint8Array;
 
   protected get [id]() {
     return 0xF5045F1F;
@@ -88,29 +88,29 @@ export class SetClientDHParams extends Function<types.TypeSetClientDHParamsAnswe
   static get [paramDesc](): ParamDesc {
     return [
       ["nonce", "bigint", "int128"],
-      ["serverNonce", "bigint", "int128"],
-      ["encryptedData", Uint8Array, "bytes"],
+      ["server_nonce", "bigint", "int128"],
+      ["encrypted_data", Uint8Array, "bytes"],
     ];
   }
 
   protected get [params](): Params {
     return [
       [this.nonce, "bigint", "int128"],
-      [this.serverNonce, "bigint", "int128"],
-      [this.encryptedData, Uint8Array, "bytes"],
+      [this.server_nonce, "bigint", "int128"],
+      [this.encrypted_data, Uint8Array, "bytes"],
     ];
   }
 
-  constructor(params: { nonce: bigint; serverNonce: bigint; encryptedData: Uint8Array }) {
+  constructor(params: { nonce: bigint; server_nonce: bigint; encrypted_data: Uint8Array }) {
     super();
     this.nonce = params.nonce;
-    this.serverNonce = params.serverNonce;
-    this.encryptedData = params.encryptedData;
+    this.server_nonce = params.server_nonce;
+    this.encrypted_data = params.encrypted_data;
   }
 }
 
-export class RPCDropAnswer extends Function<types.TypeRpcDropAnswer> {
-  reqMsgId: bigint;
+export class rpc_drop_answer extends Function<types.RpcDropAnswer> {
+  req_msg_id: bigint;
 
   protected get [id]() {
     return 0x58E4A740;
@@ -118,23 +118,23 @@ export class RPCDropAnswer extends Function<types.TypeRpcDropAnswer> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["reqMsgId", "bigint", "long"],
+      ["req_msg_id", "bigint", "long"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.reqMsgId, "bigint", "long"],
+      [this.req_msg_id, "bigint", "long"],
     ];
   }
 
-  constructor(params: { reqMsgId: bigint }) {
+  constructor(params: { req_msg_id: bigint }) {
     super();
-    this.reqMsgId = params.reqMsgId;
+    this.req_msg_id = params.req_msg_id;
   }
 }
 
-export class GetFutureSalts extends Function<types.TypeFutureSalts> {
+export class get_future_salts extends Function<types.FutureSalts> {
   num: number;
 
   protected get [id]() {
@@ -159,8 +159,8 @@ export class GetFutureSalts extends Function<types.TypeFutureSalts> {
   }
 }
 
-export class Ping extends Function<types.TypePong> {
-  pingId: bigint;
+export class ping extends Function<types.Pong> {
+  ping_id: bigint;
 
   protected get [id]() {
     return 0x7ABE77EC;
@@ -168,25 +168,25 @@ export class Ping extends Function<types.TypePong> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["pingId", "bigint", "long"],
+      ["ping_id", "bigint", "long"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.pingId, "bigint", "long"],
+      [this.ping_id, "bigint", "long"],
     ];
   }
 
-  constructor(params: { pingId: bigint }) {
+  constructor(params: { ping_id: bigint }) {
     super();
-    this.pingId = params.pingId;
+    this.ping_id = params.ping_id;
   }
 }
 
-export class PingDelayDisconnect extends Function<types.TypePong> {
-  pingId: bigint;
-  disconnectDelay: number;
+export class ping_delay_disconnect extends Function<types.Pong> {
+  ping_id: bigint;
+  disconnect_delay: number;
 
   protected get [id]() {
     return 0xF3427B8C;
@@ -194,27 +194,27 @@ export class PingDelayDisconnect extends Function<types.TypePong> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["pingId", "bigint", "long"],
-      ["disconnectDelay", "number", "int"],
+      ["ping_id", "bigint", "long"],
+      ["disconnect_delay", "number", "int"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.pingId, "bigint", "long"],
-      [this.disconnectDelay, "number", "int"],
+      [this.ping_id, "bigint", "long"],
+      [this.disconnect_delay, "number", "int"],
     ];
   }
 
-  constructor(params: { pingId: bigint; disconnectDelay: number }) {
+  constructor(params: { ping_id: bigint; disconnect_delay: number }) {
     super();
-    this.pingId = params.pingId;
-    this.disconnectDelay = params.disconnectDelay;
+    this.ping_id = params.ping_id;
+    this.disconnect_delay = params.disconnect_delay;
   }
 }
 
-export class DestroySession extends Function<types.TypeDestroySessionRes> {
-  sessionId: bigint;
+export class destroy_session extends Function<types.DestroySessionRes> {
+  session_id: bigint;
 
   protected get [id]() {
     return 0xE7512126;
@@ -222,23 +222,23 @@ export class DestroySession extends Function<types.TypeDestroySessionRes> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["sessionId", "bigint", "long"],
+      ["session_id", "bigint", "long"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.sessionId, "bigint", "long"],
+      [this.session_id, "bigint", "long"],
     ];
   }
 
-  constructor(params: { sessionId: bigint }) {
+  constructor(params: { session_id: bigint }) {
     super();
-    this.sessionId = params.sessionId;
+    this.session_id = params.session_id;
   }
 }
 
-export class DestroyAuthKey extends Function<types.TypeDestroyAuthKeyRes> {
+export class destroy_auth_key extends Function<types.DestroyAuthKeyRes> {
   protected get [id]() {
     return 0xD1435160;
   }
@@ -256,8 +256,8 @@ export class DestroyAuthKey extends Function<types.TypeDestroyAuthKeyRes> {
   }
 }
 
-export class InvokeAfterMsg<T extends Function<unknown>> extends Function<T["__R"]> {
-  msgId: bigint;
+export class invokeAfterMsg<T extends Function<unknown>> extends Function<T["__R"]> {
+  msg_id: bigint;
   query: T;
 
   protected get [id]() {
@@ -266,27 +266,27 @@ export class InvokeAfterMsg<T extends Function<unknown>> extends Function<T["__R
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["msgId", "bigint", "long"],
+      ["msg_id", "bigint", "long"],
       ["query", types.TypeX, "!X"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.msgId, "bigint", "long"],
+      [this.msg_id, "bigint", "long"],
       [this.query, types.TypeX, "!X"],
     ];
   }
 
-  constructor(params: { msgId: bigint; query: T }) {
+  constructor(params: { msg_id: bigint; query: T }) {
     super();
-    this.msgId = params.msgId;
+    this.msg_id = params.msg_id;
     this.query = params.query;
   }
 }
 
-export class InvokeAfterMsgs<T extends Function<unknown>> extends Function<T["__R"]> {
-  msgIds: Array<bigint>;
+export class invokeAfterMsgs<T extends Function<unknown>> extends Function<T["__R"]> {
+  msg_ids: Array<bigint>;
   query: T;
 
   protected get [id]() {
@@ -295,35 +295,35 @@ export class InvokeAfterMsgs<T extends Function<unknown>> extends Function<T["__
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["msgIds", ["bigint"], "Vector<long>"],
+      ["msg_ids", ["bigint"], "Vector<long>"],
       ["query", types.TypeX, "!X"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.msgIds, ["bigint"], "Vector<long>"],
+      [this.msg_ids, ["bigint"], "Vector<long>"],
       [this.query, types.TypeX, "!X"],
     ];
   }
 
-  constructor(params: { msgIds: Array<bigint>; query: T }) {
+  constructor(params: { msg_ids: Array<bigint>; query: T }) {
     super();
-    this.msgIds = params.msgIds;
+    this.msg_ids = params.msg_ids;
     this.query = params.query;
   }
 }
 
-export class InitConnection<T extends Function<unknown>> extends Function<T["__R"]> {
-  apiId: number;
-  deviceModel: string;
-  systemVersion: string;
-  appVersion: string;
-  systemLangCode: string;
-  langPack: string;
-  langCode: string;
-  proxy?: types.TypeInputClientProxy;
-  params?: types.TypeJSONValue;
+export class initConnection<T extends Function<unknown>> extends Function<T["__R"]> {
+  api_id: number;
+  device_model: string;
+  system_version: string;
+  app_version: string;
+  system_lang_code: string;
+  lang_pack: string;
+  lang_code: string;
+  proxy?: types.InputClientProxy;
+  params?: types.JSONValue;
   query: T;
 
   protected get [id]() {
@@ -333,15 +333,15 @@ export class InitConnection<T extends Function<unknown>> extends Function<T["__R
   static get [paramDesc](): ParamDesc {
     return [
       ["flags", flags, "#"],
-      ["apiId", "number", "int"],
-      ["deviceModel", "string", "string"],
-      ["systemVersion", "string", "string"],
-      ["appVersion", "string", "string"],
-      ["systemLangCode", "string", "string"],
-      ["langPack", "string", "string"],
-      ["langCode", "string", "string"],
-      ["proxy", types._TypeInputClientProxy, "flags.0?InputClientProxy"],
-      ["params", types._TypeJSONValue, "flags.1?JSONValue"],
+      ["api_id", "number", "int"],
+      ["device_model", "string", "string"],
+      ["system_version", "string", "string"],
+      ["app_version", "string", "string"],
+      ["system_lang_code", "string", "string"],
+      ["lang_pack", "string", "string"],
+      ["lang_code", "string", "string"],
+      ["proxy", types._InputClientProxy, "flags.0?InputClientProxy"],
+      ["params", types._JSONValue, "flags.1?JSONValue"],
       ["query", types.TypeX, "!X"],
     ];
   }
@@ -349,35 +349,35 @@ export class InitConnection<T extends Function<unknown>> extends Function<T["__R
   protected get [params](): Params {
     return [
       ["flags", flags, "#"],
-      [this.apiId, "number", "int"],
-      [this.deviceModel, "string", "string"],
-      [this.systemVersion, "string", "string"],
-      [this.appVersion, "string", "string"],
-      [this.systemLangCode, "string", "string"],
-      [this.langPack, "string", "string"],
-      [this.langCode, "string", "string"],
-      [this.proxy ?? null, types._TypeInputClientProxy, "flags.0?InputClientProxy"],
-      [this.params ?? null, types._TypeJSONValue, "flags.1?JSONValue"],
+      [this.api_id, "number", "int"],
+      [this.device_model, "string", "string"],
+      [this.system_version, "string", "string"],
+      [this.app_version, "string", "string"],
+      [this.system_lang_code, "string", "string"],
+      [this.lang_pack, "string", "string"],
+      [this.lang_code, "string", "string"],
+      [this.proxy ?? null, types._InputClientProxy, "flags.0?InputClientProxy"],
+      [this.params ?? null, types._JSONValue, "flags.1?JSONValue"],
       [this.query, types.TypeX, "!X"],
     ];
   }
 
-  constructor(params: { apiId: number; deviceModel: string; systemVersion: string; appVersion: string; systemLangCode: string; langPack: string; langCode: string; proxy?: types.TypeInputClientProxy; params?: types.TypeJSONValue; query: T }) {
+  constructor(params: { api_id: number; device_model: string; system_version: string; app_version: string; system_lang_code: string; lang_pack: string; lang_code: string; proxy?: types.InputClientProxy; params?: types.JSONValue; query: T }) {
     super();
-    this.apiId = params.apiId;
-    this.deviceModel = params.deviceModel;
-    this.systemVersion = params.systemVersion;
-    this.appVersion = params.appVersion;
-    this.systemLangCode = params.systemLangCode;
-    this.langPack = params.langPack;
-    this.langCode = params.langCode;
+    this.api_id = params.api_id;
+    this.device_model = params.device_model;
+    this.system_version = params.system_version;
+    this.app_version = params.app_version;
+    this.system_lang_code = params.system_lang_code;
+    this.lang_pack = params.lang_pack;
+    this.lang_code = params.lang_code;
     this.proxy = params.proxy;
     this.params = params.params;
     this.query = params.query;
   }
 }
 
-export class InvokeWithLayer<T extends Function<unknown>> extends Function<T["__R"]> {
+export class invokeWithLayer<T extends Function<unknown>> extends Function<T["__R"]> {
   layer: number;
   query: T;
 
@@ -406,7 +406,7 @@ export class InvokeWithLayer<T extends Function<unknown>> extends Function<T["__
   }
 }
 
-export class InvokeWithoutUpdates<T extends Function<unknown>> extends Function<T["__R"]> {
+export class invokeWithoutUpdates<T extends Function<unknown>> extends Function<T["__R"]> {
   query: T;
 
   protected get [id]() {
@@ -431,8 +431,8 @@ export class InvokeWithoutUpdates<T extends Function<unknown>> extends Function<
   }
 }
 
-export class InvokeWithMessagesRange<T extends Function<unknown>> extends Function<T["__R"]> {
-  range: types.TypeMessageRange;
+export class invokeWithMessagesRange<T extends Function<unknown>> extends Function<T["__R"]> {
+  range: types.MessageRange;
   query: T;
 
   protected get [id]() {
@@ -441,27 +441,27 @@ export class InvokeWithMessagesRange<T extends Function<unknown>> extends Functi
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["range", types._TypeMessageRange, "MessageRange"],
+      ["range", types._MessageRange, "MessageRange"],
       ["query", types.TypeX, "!X"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.range, types._TypeMessageRange, "MessageRange"],
+      [this.range, types._MessageRange, "MessageRange"],
       [this.query, types.TypeX, "!X"],
     ];
   }
 
-  constructor(params: { range: types.TypeMessageRange; query: T }) {
+  constructor(params: { range: types.MessageRange; query: T }) {
     super();
     this.range = params.range;
     this.query = params.query;
   }
 }
 
-export class InvokeWithTakeout<T extends Function<unknown>> extends Function<T["__R"]> {
-  takeoutId: bigint;
+export class invokeWithTakeout<T extends Function<unknown>> extends Function<T["__R"]> {
+  takeout_id: bigint;
   query: T;
 
   protected get [id]() {
@@ -470,30 +470,30 @@ export class InvokeWithTakeout<T extends Function<unknown>> extends Function<T["
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["takeoutId", "bigint", "long"],
+      ["takeout_id", "bigint", "long"],
       ["query", types.TypeX, "!X"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.takeoutId, "bigint", "long"],
+      [this.takeout_id, "bigint", "long"],
       [this.query, types.TypeX, "!X"],
     ];
   }
 
-  constructor(params: { takeoutId: bigint; query: T }) {
+  constructor(params: { takeout_id: bigint; query: T }) {
     super();
-    this.takeoutId = params.takeoutId;
+    this.takeout_id = params.takeout_id;
     this.query = params.query;
   }
 }
 
-export class AuthSendCode extends Function<types.TypeAuthSentCode> {
-  phoneNumber: string;
-  apiId: number;
-  apiHash: string;
-  settings: types.TypeCodeSettings;
+export class auth_sendCode extends Function<types.auth_SentCode> {
+  phone_number: string;
+  api_id: number;
+  api_hash: string;
+  settings: types.CodeSettings;
 
   protected get [id]() {
     return 0xA677244F;
@@ -501,36 +501,36 @@ export class AuthSendCode extends Function<types.TypeAuthSentCode> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["phoneNumber", "string", "string"],
-      ["apiId", "number", "int"],
-      ["apiHash", "string", "string"],
-      ["settings", types._TypeCodeSettings, "CodeSettings"],
+      ["phone_number", "string", "string"],
+      ["api_id", "number", "int"],
+      ["api_hash", "string", "string"],
+      ["settings", types._CodeSettings, "CodeSettings"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.phoneNumber, "string", "string"],
-      [this.apiId, "number", "int"],
-      [this.apiHash, "string", "string"],
-      [this.settings, types._TypeCodeSettings, "CodeSettings"],
+      [this.phone_number, "string", "string"],
+      [this.api_id, "number", "int"],
+      [this.api_hash, "string", "string"],
+      [this.settings, types._CodeSettings, "CodeSettings"],
     ];
   }
 
-  constructor(params: { phoneNumber: string; apiId: number; apiHash: string; settings: types.TypeCodeSettings }) {
+  constructor(params: { phone_number: string; api_id: number; api_hash: string; settings: types.CodeSettings }) {
     super();
-    this.phoneNumber = params.phoneNumber;
-    this.apiId = params.apiId;
-    this.apiHash = params.apiHash;
+    this.phone_number = params.phone_number;
+    this.api_id = params.api_id;
+    this.api_hash = params.api_hash;
     this.settings = params.settings;
   }
 }
 
-export class AuthSignUp extends Function<types.TypeAuthAuthorization> {
-  phoneNumber: string;
-  phoneCodeHash: string;
-  firstName: string;
-  lastName: string;
+export class auth_signUp extends Function<types.auth_Authorization> {
+  phone_number: string;
+  phone_code_hash: string;
+  first_name: string;
+  last_name: string;
 
   protected get [id]() {
     return 0x80EEE427;
@@ -538,36 +538,36 @@ export class AuthSignUp extends Function<types.TypeAuthAuthorization> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["phoneNumber", "string", "string"],
-      ["phoneCodeHash", "string", "string"],
-      ["firstName", "string", "string"],
-      ["lastName", "string", "string"],
+      ["phone_number", "string", "string"],
+      ["phone_code_hash", "string", "string"],
+      ["first_name", "string", "string"],
+      ["last_name", "string", "string"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.phoneNumber, "string", "string"],
-      [this.phoneCodeHash, "string", "string"],
-      [this.firstName, "string", "string"],
-      [this.lastName, "string", "string"],
+      [this.phone_number, "string", "string"],
+      [this.phone_code_hash, "string", "string"],
+      [this.first_name, "string", "string"],
+      [this.last_name, "string", "string"],
     ];
   }
 
-  constructor(params: { phoneNumber: string; phoneCodeHash: string; firstName: string; lastName: string }) {
+  constructor(params: { phone_number: string; phone_code_hash: string; first_name: string; last_name: string }) {
     super();
-    this.phoneNumber = params.phoneNumber;
-    this.phoneCodeHash = params.phoneCodeHash;
-    this.firstName = params.firstName;
-    this.lastName = params.lastName;
+    this.phone_number = params.phone_number;
+    this.phone_code_hash = params.phone_code_hash;
+    this.first_name = params.first_name;
+    this.last_name = params.last_name;
   }
 }
 
-export class AuthSignIn extends Function<types.TypeAuthAuthorization> {
-  phoneNumber: string;
-  phoneCodeHash: string;
-  phoneCode?: string;
-  emailVerification?: types.TypeEmailVerification;
+export class auth_signIn extends Function<types.auth_Authorization> {
+  phone_number: string;
+  phone_code_hash: string;
+  phone_code?: string;
+  email_verification?: types.EmailVerification;
 
   protected get [id]() {
     return 0x8D52A951;
@@ -576,33 +576,33 @@ export class AuthSignIn extends Function<types.TypeAuthAuthorization> {
   static get [paramDesc](): ParamDesc {
     return [
       ["flags", flags, "#"],
-      ["phoneNumber", "string", "string"],
-      ["phoneCodeHash", "string", "string"],
-      ["phoneCode", "string", "flags.0?string"],
-      ["emailVerification", types._TypeEmailVerification, "flags.1?EmailVerification"],
+      ["phone_number", "string", "string"],
+      ["phone_code_hash", "string", "string"],
+      ["phone_code", "string", "flags.0?string"],
+      ["email_verification", types._EmailVerification, "flags.1?EmailVerification"],
     ];
   }
 
   protected get [params](): Params {
     return [
       ["flags", flags, "#"],
-      [this.phoneNumber, "string", "string"],
-      [this.phoneCodeHash, "string", "string"],
-      [this.phoneCode ?? null, "string", "flags.0?string"],
-      [this.emailVerification ?? null, types._TypeEmailVerification, "flags.1?EmailVerification"],
+      [this.phone_number, "string", "string"],
+      [this.phone_code_hash, "string", "string"],
+      [this.phone_code ?? null, "string", "flags.0?string"],
+      [this.email_verification ?? null, types._EmailVerification, "flags.1?EmailVerification"],
     ];
   }
 
-  constructor(params: { phoneNumber: string; phoneCodeHash: string; phoneCode?: string; emailVerification?: types.TypeEmailVerification }) {
+  constructor(params: { phone_number: string; phone_code_hash: string; phone_code?: string; email_verification?: types.EmailVerification }) {
     super();
-    this.phoneNumber = params.phoneNumber;
-    this.phoneCodeHash = params.phoneCodeHash;
-    this.phoneCode = params.phoneCode;
-    this.emailVerification = params.emailVerification;
+    this.phone_number = params.phone_number;
+    this.phone_code_hash = params.phone_code_hash;
+    this.phone_code = params.phone_code;
+    this.email_verification = params.email_verification;
   }
 }
 
-export class AuthLogOut extends Function<types.TypeAuthLoggedOut> {
+export class auth_logOut extends Function<types.auth_LoggedOut> {
   protected get [id]() {
     return 0x3E72BA19;
   }
@@ -620,7 +620,7 @@ export class AuthLogOut extends Function<types.TypeAuthLoggedOut> {
   }
 }
 
-export class AuthResetAuthorizations extends Function<boolean> {
+export class auth_resetAuthorizations extends Function<boolean> {
   protected get [id]() {
     return 0x9FAB0D1A;
   }
@@ -638,8 +638,8 @@ export class AuthResetAuthorizations extends Function<boolean> {
   }
 }
 
-export class AuthExportAuthorization extends Function<types.TypeAuthExportedAuthorization> {
-  dcId: number;
+export class auth_exportAuthorization extends Function<types.auth_ExportedAuthorization> {
+  dc_id: number;
 
   protected get [id]() {
     return 0xE5BFFFCD;
@@ -647,23 +647,23 @@ export class AuthExportAuthorization extends Function<types.TypeAuthExportedAuth
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["dcId", "number", "int"],
+      ["dc_id", "number", "int"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.dcId, "number", "int"],
+      [this.dc_id, "number", "int"],
     ];
   }
 
-  constructor(params: { dcId: number }) {
+  constructor(params: { dc_id: number }) {
     super();
-    this.dcId = params.dcId;
+    this.dc_id = params.dc_id;
   }
 }
 
-export class AuthImportAuthorization extends Function<types.TypeAuthAuthorization> {
+export class auth_importAuthorization extends Function<types.auth_Authorization> {
   id: bigint;
   bytes: Uint8Array;
 
@@ -692,11 +692,11 @@ export class AuthImportAuthorization extends Function<types.TypeAuthAuthorizatio
   }
 }
 
-export class AuthBindTempAuthKey extends Function<boolean> {
-  permAuthKeyId: bigint;
+export class auth_bindTempAuthKey extends Function<boolean> {
+  perm_auth_key_id: bigint;
   nonce: bigint;
-  expiresAt: number;
-  encryptedMessage: Uint8Array;
+  expires_at: number;
+  encrypted_message: Uint8Array;
 
   protected get [id]() {
     return 0xCDD42A05;
@@ -704,36 +704,36 @@ export class AuthBindTempAuthKey extends Function<boolean> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["permAuthKeyId", "bigint", "long"],
+      ["perm_auth_key_id", "bigint", "long"],
       ["nonce", "bigint", "long"],
-      ["expiresAt", "number", "int"],
-      ["encryptedMessage", Uint8Array, "bytes"],
+      ["expires_at", "number", "int"],
+      ["encrypted_message", Uint8Array, "bytes"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.permAuthKeyId, "bigint", "long"],
+      [this.perm_auth_key_id, "bigint", "long"],
       [this.nonce, "bigint", "long"],
-      [this.expiresAt, "number", "int"],
-      [this.encryptedMessage, Uint8Array, "bytes"],
+      [this.expires_at, "number", "int"],
+      [this.encrypted_message, Uint8Array, "bytes"],
     ];
   }
 
-  constructor(params: { permAuthKeyId: bigint; nonce: bigint; expiresAt: number; encryptedMessage: Uint8Array }) {
+  constructor(params: { perm_auth_key_id: bigint; nonce: bigint; expires_at: number; encrypted_message: Uint8Array }) {
     super();
-    this.permAuthKeyId = params.permAuthKeyId;
+    this.perm_auth_key_id = params.perm_auth_key_id;
     this.nonce = params.nonce;
-    this.expiresAt = params.expiresAt;
-    this.encryptedMessage = params.encryptedMessage;
+    this.expires_at = params.expires_at;
+    this.encrypted_message = params.encrypted_message;
   }
 }
 
-export class AuthImportBotAuthorization extends Function<types.TypeAuthAuthorization> {
+export class auth_importBotAuthorization extends Function<types.auth_Authorization> {
   flags: number;
-  apiId: number;
-  apiHash: string;
-  botAuthToken: string;
+  api_id: number;
+  api_hash: string;
+  bot_auth_token: string;
 
   protected get [id]() {
     return 0x67A3FF2C;
@@ -742,32 +742,32 @@ export class AuthImportBotAuthorization extends Function<types.TypeAuthAuthoriza
   static get [paramDesc](): ParamDesc {
     return [
       ["flags", "number", "int"],
-      ["apiId", "number", "int"],
-      ["apiHash", "string", "string"],
-      ["botAuthToken", "string", "string"],
+      ["api_id", "number", "int"],
+      ["api_hash", "string", "string"],
+      ["bot_auth_token", "string", "string"],
     ];
   }
 
   protected get [params](): Params {
     return [
       [this.flags, "number", "int"],
-      [this.apiId, "number", "int"],
-      [this.apiHash, "string", "string"],
-      [this.botAuthToken, "string", "string"],
+      [this.api_id, "number", "int"],
+      [this.api_hash, "string", "string"],
+      [this.bot_auth_token, "string", "string"],
     ];
   }
 
-  constructor(params: { flags: number; apiId: number; apiHash: string; botAuthToken: string }) {
+  constructor(params: { flags: number; api_id: number; api_hash: string; bot_auth_token: string }) {
     super();
     this.flags = params.flags;
-    this.apiId = params.apiId;
-    this.apiHash = params.apiHash;
-    this.botAuthToken = params.botAuthToken;
+    this.api_id = params.api_id;
+    this.api_hash = params.api_hash;
+    this.bot_auth_token = params.bot_auth_token;
   }
 }
 
-export class AuthCheckPassword extends Function<types.TypeAuthAuthorization> {
-  password: types.TypeInputCheckPasswordSRP;
+export class auth_checkPassword extends Function<types.auth_Authorization> {
+  password: types.InputCheckPasswordSRP;
 
   protected get [id]() {
     return 0xD18B4D16;
@@ -775,23 +775,23 @@ export class AuthCheckPassword extends Function<types.TypeAuthAuthorization> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["password", types._TypeInputCheckPasswordSRP, "InputCheckPasswordSRP"],
+      ["password", types._InputCheckPasswordSRP, "InputCheckPasswordSRP"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.password, types._TypeInputCheckPasswordSRP, "InputCheckPasswordSRP"],
+      [this.password, types._InputCheckPasswordSRP, "InputCheckPasswordSRP"],
     ];
   }
 
-  constructor(params: { password: types.TypeInputCheckPasswordSRP }) {
+  constructor(params: { password: types.InputCheckPasswordSRP }) {
     super();
     this.password = params.password;
   }
 }
 
-export class AuthRequestPasswordRecovery extends Function<types.TypeAuthPasswordRecovery> {
+export class auth_requestPasswordRecovery extends Function<types.auth_PasswordRecovery> {
   protected get [id]() {
     return 0xD897BC66;
   }
@@ -809,9 +809,9 @@ export class AuthRequestPasswordRecovery extends Function<types.TypeAuthPassword
   }
 }
 
-export class AuthRecoverPassword extends Function<types.TypeAuthAuthorization> {
+export class auth_recoverPassword extends Function<types.auth_Authorization> {
   code: string;
-  newSettings?: types.TypeAccountPasswordInputSettings;
+  new_settings?: types.account_PasswordInputSettings;
 
   protected get [id]() {
     return 0x37096C70;
@@ -821,7 +821,7 @@ export class AuthRecoverPassword extends Function<types.TypeAuthAuthorization> {
     return [
       ["flags", flags, "#"],
       ["code", "string", "string"],
-      ["newSettings", types._TypeAccountPasswordInputSettings, "flags.0?account.PasswordInputSettings"],
+      ["new_settings", types._account_PasswordInputSettings, "flags.0?account.PasswordInputSettings"],
     ];
   }
 
@@ -829,20 +829,20 @@ export class AuthRecoverPassword extends Function<types.TypeAuthAuthorization> {
     return [
       ["flags", flags, "#"],
       [this.code, "string", "string"],
-      [this.newSettings ?? null, types._TypeAccountPasswordInputSettings, "flags.0?account.PasswordInputSettings"],
+      [this.new_settings ?? null, types._account_PasswordInputSettings, "flags.0?account.PasswordInputSettings"],
     ];
   }
 
-  constructor(params: { code: string; newSettings?: types.TypeAccountPasswordInputSettings }) {
+  constructor(params: { code: string; new_settings?: types.account_PasswordInputSettings }) {
     super();
     this.code = params.code;
-    this.newSettings = params.newSettings;
+    this.new_settings = params.new_settings;
   }
 }
 
-export class AuthResendCode extends Function<types.TypeAuthSentCode> {
-  phoneNumber: string;
-  phoneCodeHash: string;
+export class auth_resendCode extends Function<types.auth_SentCode> {
+  phone_number: string;
+  phone_code_hash: string;
 
   protected get [id]() {
     return 0x3EF1A9BF;
@@ -850,28 +850,28 @@ export class AuthResendCode extends Function<types.TypeAuthSentCode> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["phoneNumber", "string", "string"],
-      ["phoneCodeHash", "string", "string"],
+      ["phone_number", "string", "string"],
+      ["phone_code_hash", "string", "string"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.phoneNumber, "string", "string"],
-      [this.phoneCodeHash, "string", "string"],
+      [this.phone_number, "string", "string"],
+      [this.phone_code_hash, "string", "string"],
     ];
   }
 
-  constructor(params: { phoneNumber: string; phoneCodeHash: string }) {
+  constructor(params: { phone_number: string; phone_code_hash: string }) {
     super();
-    this.phoneNumber = params.phoneNumber;
-    this.phoneCodeHash = params.phoneCodeHash;
+    this.phone_number = params.phone_number;
+    this.phone_code_hash = params.phone_code_hash;
   }
 }
 
-export class AuthCancelCode extends Function<boolean> {
-  phoneNumber: string;
-  phoneCodeHash: string;
+export class auth_cancelCode extends Function<boolean> {
+  phone_number: string;
+  phone_code_hash: string;
 
   protected get [id]() {
     return 0x1F040578;
@@ -879,27 +879,27 @@ export class AuthCancelCode extends Function<boolean> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["phoneNumber", "string", "string"],
-      ["phoneCodeHash", "string", "string"],
+      ["phone_number", "string", "string"],
+      ["phone_code_hash", "string", "string"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.phoneNumber, "string", "string"],
-      [this.phoneCodeHash, "string", "string"],
+      [this.phone_number, "string", "string"],
+      [this.phone_code_hash, "string", "string"],
     ];
   }
 
-  constructor(params: { phoneNumber: string; phoneCodeHash: string }) {
+  constructor(params: { phone_number: string; phone_code_hash: string }) {
     super();
-    this.phoneNumber = params.phoneNumber;
-    this.phoneCodeHash = params.phoneCodeHash;
+    this.phone_number = params.phone_number;
+    this.phone_code_hash = params.phone_code_hash;
   }
 }
 
-export class AuthDropTempAuthKeys extends Function<boolean> {
-  exceptAuthKeys: Array<bigint>;
+export class auth_dropTempAuthKeys extends Function<boolean> {
+  except_auth_keys: Array<bigint>;
 
   protected get [id]() {
     return 0x8E48A188;
@@ -907,26 +907,26 @@ export class AuthDropTempAuthKeys extends Function<boolean> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["exceptAuthKeys", ["bigint"], "Vector<long>"],
+      ["except_auth_keys", ["bigint"], "Vector<long>"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.exceptAuthKeys, ["bigint"], "Vector<long>"],
+      [this.except_auth_keys, ["bigint"], "Vector<long>"],
     ];
   }
 
-  constructor(params: { exceptAuthKeys: Array<bigint> }) {
+  constructor(params: { except_auth_keys: Array<bigint> }) {
     super();
-    this.exceptAuthKeys = params.exceptAuthKeys;
+    this.except_auth_keys = params.except_auth_keys;
   }
 }
 
-export class AuthExportLoginToken extends Function<types.TypeAuthLoginToken> {
-  apiId: number;
-  apiHash: string;
-  exceptIds: Array<bigint>;
+export class auth_exportLoginToken extends Function<types.auth_LoginToken> {
+  api_id: number;
+  api_hash: string;
+  except_ids: Array<bigint>;
 
   protected get [id]() {
     return 0xB7E085FE;
@@ -934,29 +934,29 @@ export class AuthExportLoginToken extends Function<types.TypeAuthLoginToken> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["apiId", "number", "int"],
-      ["apiHash", "string", "string"],
-      ["exceptIds", ["bigint"], "Vector<long>"],
+      ["api_id", "number", "int"],
+      ["api_hash", "string", "string"],
+      ["except_ids", ["bigint"], "Vector<long>"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.apiId, "number", "int"],
-      [this.apiHash, "string", "string"],
-      [this.exceptIds, ["bigint"], "Vector<long>"],
+      [this.api_id, "number", "int"],
+      [this.api_hash, "string", "string"],
+      [this.except_ids, ["bigint"], "Vector<long>"],
     ];
   }
 
-  constructor(params: { apiId: number; apiHash: string; exceptIds: Array<bigint> }) {
+  constructor(params: { api_id: number; api_hash: string; except_ids: Array<bigint> }) {
     super();
-    this.apiId = params.apiId;
-    this.apiHash = params.apiHash;
-    this.exceptIds = params.exceptIds;
+    this.api_id = params.api_id;
+    this.api_hash = params.api_hash;
+    this.except_ids = params.except_ids;
   }
 }
 
-export class AuthImportLoginToken extends Function<types.TypeAuthLoginToken> {
+export class auth_importLoginToken extends Function<types.auth_LoginToken> {
   token: Uint8Array;
 
   protected get [id]() {
@@ -981,7 +981,7 @@ export class AuthImportLoginToken extends Function<types.TypeAuthLoginToken> {
   }
 }
 
-export class AuthAcceptLoginToken extends Function<types.TypeAuthorization> {
+export class auth_acceptLoginToken extends Function<types.Authorization> {
   token: Uint8Array;
 
   protected get [id]() {
@@ -1006,7 +1006,7 @@ export class AuthAcceptLoginToken extends Function<types.TypeAuthorization> {
   }
 }
 
-export class AuthCheckRecoveryPassword extends Function<boolean> {
+export class auth_checkRecoveryPassword extends Function<boolean> {
   code: string;
 
   protected get [id]() {
@@ -1031,10 +1031,10 @@ export class AuthCheckRecoveryPassword extends Function<boolean> {
   }
 }
 
-export class AuthImportWebTokenAuthorization extends Function<types.TypeAuthAuthorization> {
-  apiId: number;
-  apiHash: string;
-  webAuthToken: string;
+export class auth_importWebTokenAuthorization extends Function<types.auth_Authorization> {
+  api_id: number;
+  api_hash: string;
+  web_auth_token: string;
 
   protected get [id]() {
     return 0x2DB873A9;
@@ -1042,33 +1042,33 @@ export class AuthImportWebTokenAuthorization extends Function<types.TypeAuthAuth
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["apiId", "number", "int"],
-      ["apiHash", "string", "string"],
-      ["webAuthToken", "string", "string"],
+      ["api_id", "number", "int"],
+      ["api_hash", "string", "string"],
+      ["web_auth_token", "string", "string"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.apiId, "number", "int"],
-      [this.apiHash, "string", "string"],
-      [this.webAuthToken, "string", "string"],
+      [this.api_id, "number", "int"],
+      [this.api_hash, "string", "string"],
+      [this.web_auth_token, "string", "string"],
     ];
   }
 
-  constructor(params: { apiId: number; apiHash: string; webAuthToken: string }) {
+  constructor(params: { api_id: number; api_hash: string; web_auth_token: string }) {
     super();
-    this.apiId = params.apiId;
-    this.apiHash = params.apiHash;
-    this.webAuthToken = params.webAuthToken;
+    this.api_id = params.api_id;
+    this.api_hash = params.api_hash;
+    this.web_auth_token = params.web_auth_token;
   }
 }
 
-export class AuthRequestFirebaseSms extends Function<boolean> {
-  phoneNumber: string;
-  phoneCodeHash: string;
-  safetyNetToken?: string;
-  iosPushSecret?: string;
+export class auth_requestFirebaseSms extends Function<boolean> {
+  phone_number: string;
+  phone_code_hash: string;
+  safety_net_token?: string;
+  ios_push_secret?: string;
 
   protected get [id]() {
     return 0x89464B50;
@@ -1077,35 +1077,35 @@ export class AuthRequestFirebaseSms extends Function<boolean> {
   static get [paramDesc](): ParamDesc {
     return [
       ["flags", flags, "#"],
-      ["phoneNumber", "string", "string"],
-      ["phoneCodeHash", "string", "string"],
-      ["safetyNetToken", "string", "flags.0?string"],
-      ["iosPushSecret", "string", "flags.1?string"],
+      ["phone_number", "string", "string"],
+      ["phone_code_hash", "string", "string"],
+      ["safety_net_token", "string", "flags.0?string"],
+      ["ios_push_secret", "string", "flags.1?string"],
     ];
   }
 
   protected get [params](): Params {
     return [
       ["flags", flags, "#"],
-      [this.phoneNumber, "string", "string"],
-      [this.phoneCodeHash, "string", "string"],
-      [this.safetyNetToken ?? null, "string", "flags.0?string"],
-      [this.iosPushSecret ?? null, "string", "flags.1?string"],
+      [this.phone_number, "string", "string"],
+      [this.phone_code_hash, "string", "string"],
+      [this.safety_net_token ?? null, "string", "flags.0?string"],
+      [this.ios_push_secret ?? null, "string", "flags.1?string"],
     ];
   }
 
-  constructor(params: { phoneNumber: string; phoneCodeHash: string; safetyNetToken?: string; iosPushSecret?: string }) {
+  constructor(params: { phone_number: string; phone_code_hash: string; safety_net_token?: string; ios_push_secret?: string }) {
     super();
-    this.phoneNumber = params.phoneNumber;
-    this.phoneCodeHash = params.phoneCodeHash;
-    this.safetyNetToken = params.safetyNetToken;
-    this.iosPushSecret = params.iosPushSecret;
+    this.phone_number = params.phone_number;
+    this.phone_code_hash = params.phone_code_hash;
+    this.safety_net_token = params.safety_net_token;
+    this.ios_push_secret = params.ios_push_secret;
   }
 }
 
-export class AuthResetLoginEmail extends Function<types.TypeAuthSentCode> {
-  phoneNumber: string;
-  phoneCodeHash: string;
+export class auth_resetLoginEmail extends Function<types.auth_SentCode> {
+  phone_number: string;
+  phone_code_hash: string;
 
   protected get [id]() {
     return 0x7E960193;
@@ -1113,32 +1113,32 @@ export class AuthResetLoginEmail extends Function<types.TypeAuthSentCode> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["phoneNumber", "string", "string"],
-      ["phoneCodeHash", "string", "string"],
+      ["phone_number", "string", "string"],
+      ["phone_code_hash", "string", "string"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.phoneNumber, "string", "string"],
-      [this.phoneCodeHash, "string", "string"],
+      [this.phone_number, "string", "string"],
+      [this.phone_code_hash, "string", "string"],
     ];
   }
 
-  constructor(params: { phoneNumber: string; phoneCodeHash: string }) {
+  constructor(params: { phone_number: string; phone_code_hash: string }) {
     super();
-    this.phoneNumber = params.phoneNumber;
-    this.phoneCodeHash = params.phoneCodeHash;
+    this.phone_number = params.phone_number;
+    this.phone_code_hash = params.phone_code_hash;
   }
 }
 
-export class AccountRegisterDevice extends Function<boolean> {
-  noMuted?: true;
-  tokenType: number;
+export class account_registerDevice extends Function<boolean> {
+  no_muted?: true;
+  token_type: number;
   token: string;
-  appSandbox: boolean;
+  app_sandbox: boolean;
   secret: Uint8Array;
-  otherUids: Array<bigint>;
+  other_uids: Array<bigint>;
 
   protected get [id]() {
     return 0xEC86017A;
@@ -1147,42 +1147,42 @@ export class AccountRegisterDevice extends Function<boolean> {
   static get [paramDesc](): ParamDesc {
     return [
       ["flags", flags, "#"],
-      ["noMuted", "true", "flags.0?true"],
-      ["tokenType", "number", "int"],
+      ["no_muted", "true", "flags.0?true"],
+      ["token_type", "number", "int"],
       ["token", "string", "string"],
-      ["appSandbox", "boolean", "Bool"],
+      ["app_sandbox", "boolean", "Bool"],
       ["secret", Uint8Array, "bytes"],
-      ["otherUids", ["bigint"], "Vector<long>"],
+      ["other_uids", ["bigint"], "Vector<long>"],
     ];
   }
 
   protected get [params](): Params {
     return [
       ["flags", flags, "#"],
-      [this.noMuted ?? null, "true", "flags.0?true"],
-      [this.tokenType, "number", "int"],
+      [this.no_muted ?? null, "true", "flags.0?true"],
+      [this.token_type, "number", "int"],
       [this.token, "string", "string"],
-      [this.appSandbox, "boolean", "Bool"],
+      [this.app_sandbox, "boolean", "Bool"],
       [this.secret, Uint8Array, "bytes"],
-      [this.otherUids, ["bigint"], "Vector<long>"],
+      [this.other_uids, ["bigint"], "Vector<long>"],
     ];
   }
 
-  constructor(params: { noMuted?: true; tokenType: number; token: string; appSandbox: boolean; secret: Uint8Array; otherUids: Array<bigint> }) {
+  constructor(params: { no_muted?: true; token_type: number; token: string; app_sandbox: boolean; secret: Uint8Array; other_uids: Array<bigint> }) {
     super();
-    this.noMuted = params.noMuted;
-    this.tokenType = params.tokenType;
+    this.no_muted = params.no_muted;
+    this.token_type = params.token_type;
     this.token = params.token;
-    this.appSandbox = params.appSandbox;
+    this.app_sandbox = params.app_sandbox;
     this.secret = params.secret;
-    this.otherUids = params.otherUids;
+    this.other_uids = params.other_uids;
   }
 }
 
-export class AccountUnregisterDevice extends Function<boolean> {
-  tokenType: number;
+export class account_unregisterDevice extends Function<boolean> {
+  token_type: number;
   token: string;
-  otherUids: Array<bigint>;
+  other_uids: Array<bigint>;
 
   protected get [id]() {
     return 0x6A0D3206;
@@ -1190,31 +1190,31 @@ export class AccountUnregisterDevice extends Function<boolean> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["tokenType", "number", "int"],
+      ["token_type", "number", "int"],
       ["token", "string", "string"],
-      ["otherUids", ["bigint"], "Vector<long>"],
+      ["other_uids", ["bigint"], "Vector<long>"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.tokenType, "number", "int"],
+      [this.token_type, "number", "int"],
       [this.token, "string", "string"],
-      [this.otherUids, ["bigint"], "Vector<long>"],
+      [this.other_uids, ["bigint"], "Vector<long>"],
     ];
   }
 
-  constructor(params: { tokenType: number; token: string; otherUids: Array<bigint> }) {
+  constructor(params: { token_type: number; token: string; other_uids: Array<bigint> }) {
     super();
-    this.tokenType = params.tokenType;
+    this.token_type = params.token_type;
     this.token = params.token;
-    this.otherUids = params.otherUids;
+    this.other_uids = params.other_uids;
   }
 }
 
-export class AccountUpdateNotifySettings extends Function<boolean> {
-  peer: types.TypeInputNotifyPeer;
-  settings: types.TypeInputPeerNotifySettings;
+export class account_updateNotifySettings extends Function<boolean> {
+  peer: types.InputNotifyPeer;
+  settings: types.InputPeerNotifySettings;
 
   protected get [id]() {
     return 0x84BE5B93;
@@ -1222,27 +1222,27 @@ export class AccountUpdateNotifySettings extends Function<boolean> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["peer", types._TypeInputNotifyPeer, "InputNotifyPeer"],
-      ["settings", types._TypeInputPeerNotifySettings, "InputPeerNotifySettings"],
+      ["peer", types._InputNotifyPeer, "InputNotifyPeer"],
+      ["settings", types._InputPeerNotifySettings, "InputPeerNotifySettings"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.peer, types._TypeInputNotifyPeer, "InputNotifyPeer"],
-      [this.settings, types._TypeInputPeerNotifySettings, "InputPeerNotifySettings"],
+      [this.peer, types._InputNotifyPeer, "InputNotifyPeer"],
+      [this.settings, types._InputPeerNotifySettings, "InputPeerNotifySettings"],
     ];
   }
 
-  constructor(params: { peer: types.TypeInputNotifyPeer; settings: types.TypeInputPeerNotifySettings }) {
+  constructor(params: { peer: types.InputNotifyPeer; settings: types.InputPeerNotifySettings }) {
     super();
     this.peer = params.peer;
     this.settings = params.settings;
   }
 }
 
-export class AccountGetNotifySettings extends Function<types.TypePeerNotifySettings> {
-  peer: types.TypeInputNotifyPeer;
+export class account_getNotifySettings extends Function<types.PeerNotifySettings> {
+  peer: types.InputNotifyPeer;
 
   protected get [id]() {
     return 0x12B3AD31;
@@ -1250,23 +1250,23 @@ export class AccountGetNotifySettings extends Function<types.TypePeerNotifySetti
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["peer", types._TypeInputNotifyPeer, "InputNotifyPeer"],
+      ["peer", types._InputNotifyPeer, "InputNotifyPeer"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.peer, types._TypeInputNotifyPeer, "InputNotifyPeer"],
+      [this.peer, types._InputNotifyPeer, "InputNotifyPeer"],
     ];
   }
 
-  constructor(params: { peer: types.TypeInputNotifyPeer }) {
+  constructor(params: { peer: types.InputNotifyPeer }) {
     super();
     this.peer = params.peer;
   }
 }
 
-export class AccountResetNotifySettings extends Function<boolean> {
+export class account_resetNotifySettings extends Function<boolean> {
   protected get [id]() {
     return 0xDB7E1747;
   }
@@ -1284,9 +1284,9 @@ export class AccountResetNotifySettings extends Function<boolean> {
   }
 }
 
-export class AccountUpdateProfile extends Function<types.TypeUser> {
-  firstName?: string;
-  lastName?: string;
+export class account_updateProfile extends Function<types.User> {
+  first_name?: string;
+  last_name?: string;
   about?: string;
 
   protected get [id]() {
@@ -1296,8 +1296,8 @@ export class AccountUpdateProfile extends Function<types.TypeUser> {
   static get [paramDesc](): ParamDesc {
     return [
       ["flags", flags, "#"],
-      ["firstName", "string", "flags.0?string"],
-      ["lastName", "string", "flags.1?string"],
+      ["first_name", "string", "flags.0?string"],
+      ["last_name", "string", "flags.1?string"],
       ["about", "string", "flags.2?string"],
     ];
   }
@@ -1305,21 +1305,21 @@ export class AccountUpdateProfile extends Function<types.TypeUser> {
   protected get [params](): Params {
     return [
       ["flags", flags, "#"],
-      [this.firstName ?? null, "string", "flags.0?string"],
-      [this.lastName ?? null, "string", "flags.1?string"],
+      [this.first_name ?? null, "string", "flags.0?string"],
+      [this.last_name ?? null, "string", "flags.1?string"],
       [this.about ?? null, "string", "flags.2?string"],
     ];
   }
 
-  constructor(params?: { firstName?: string; lastName?: string; about?: string }) {
+  constructor(params?: { first_name?: string; last_name?: string; about?: string }) {
     super();
-    this.firstName = params?.firstName;
-    this.lastName = params?.lastName;
+    this.first_name = params?.first_name;
+    this.last_name = params?.last_name;
     this.about = params?.about;
   }
 }
 
-export class AccountUpdateStatus extends Function<boolean> {
+export class account_updateStatus extends Function<boolean> {
   offline: boolean;
 
   protected get [id]() {
@@ -1344,7 +1344,7 @@ export class AccountUpdateStatus extends Function<boolean> {
   }
 }
 
-export class AccountGetWallPapers extends Function<types.TypeAccountWallPapers> {
+export class account_getWallPapers extends Function<types.account_WallPapers> {
   hash: bigint;
 
   protected get [id]() {
@@ -1369,9 +1369,9 @@ export class AccountGetWallPapers extends Function<types.TypeAccountWallPapers> 
   }
 }
 
-export class AccountReportPeer extends Function<boolean> {
-  peer: types.TypeInputPeer;
-  reason: types.TypeReportReason;
+export class account_reportPeer extends Function<boolean> {
+  peer: types.InputPeer;
+  reason: types.ReportReason;
   message: string;
 
   protected get [id]() {
@@ -1380,21 +1380,21 @@ export class AccountReportPeer extends Function<boolean> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["peer", types._TypeInputPeer, "InputPeer"],
-      ["reason", types._TypeReportReason, "ReportReason"],
+      ["peer", types._InputPeer, "InputPeer"],
+      ["reason", types._ReportReason, "ReportReason"],
       ["message", "string", "string"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.peer, types._TypeInputPeer, "InputPeer"],
-      [this.reason, types._TypeReportReason, "ReportReason"],
+      [this.peer, types._InputPeer, "InputPeer"],
+      [this.reason, types._ReportReason, "ReportReason"],
       [this.message, "string", "string"],
     ];
   }
 
-  constructor(params: { peer: types.TypeInputPeer; reason: types.TypeReportReason; message: string }) {
+  constructor(params: { peer: types.InputPeer; reason: types.ReportReason; message: string }) {
     super();
     this.peer = params.peer;
     this.reason = params.reason;
@@ -1402,7 +1402,7 @@ export class AccountReportPeer extends Function<boolean> {
   }
 }
 
-export class AccountCheckUsername extends Function<boolean> {
+export class account_checkUsername extends Function<boolean> {
   username: string;
 
   protected get [id]() {
@@ -1427,7 +1427,7 @@ export class AccountCheckUsername extends Function<boolean> {
   }
 }
 
-export class AccountUpdateUsername extends Function<types.TypeUser> {
+export class account_updateUsername extends Function<types.User> {
   username: string;
 
   protected get [id]() {
@@ -1452,8 +1452,8 @@ export class AccountUpdateUsername extends Function<types.TypeUser> {
   }
 }
 
-export class AccountGetPrivacy extends Function<types.TypeAccountPrivacyRules> {
-  key: types.TypeInputPrivacyKey;
+export class account_getPrivacy extends Function<types.account_PrivacyRules> {
+  key: types.InputPrivacyKey;
 
   protected get [id]() {
     return 0xDADBC950;
@@ -1461,25 +1461,25 @@ export class AccountGetPrivacy extends Function<types.TypeAccountPrivacyRules> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["key", types._TypeInputPrivacyKey, "InputPrivacyKey"],
+      ["key", types._InputPrivacyKey, "InputPrivacyKey"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.key, types._TypeInputPrivacyKey, "InputPrivacyKey"],
+      [this.key, types._InputPrivacyKey, "InputPrivacyKey"],
     ];
   }
 
-  constructor(params: { key: types.TypeInputPrivacyKey }) {
+  constructor(params: { key: types.InputPrivacyKey }) {
     super();
     this.key = params.key;
   }
 }
 
-export class AccountSetPrivacy extends Function<types.TypeAccountPrivacyRules> {
-  key: types.TypeInputPrivacyKey;
-  rules: Array<types.TypeInputPrivacyRule>;
+export class account_setPrivacy extends Function<types.account_PrivacyRules> {
+  key: types.InputPrivacyKey;
+  rules: Array<types.InputPrivacyRule>;
 
   protected get [id]() {
     return 0xC9F81CE8;
@@ -1487,28 +1487,28 @@ export class AccountSetPrivacy extends Function<types.TypeAccountPrivacyRules> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["key", types._TypeInputPrivacyKey, "InputPrivacyKey"],
-      ["rules", [types._TypeInputPrivacyRule], "Vector<InputPrivacyRule>"],
+      ["key", types._InputPrivacyKey, "InputPrivacyKey"],
+      ["rules", [types._InputPrivacyRule], "Vector<InputPrivacyRule>"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.key, types._TypeInputPrivacyKey, "InputPrivacyKey"],
-      [this.rules, [types._TypeInputPrivacyRule], "Vector<InputPrivacyRule>"],
+      [this.key, types._InputPrivacyKey, "InputPrivacyKey"],
+      [this.rules, [types._InputPrivacyRule], "Vector<InputPrivacyRule>"],
     ];
   }
 
-  constructor(params: { key: types.TypeInputPrivacyKey; rules: Array<types.TypeInputPrivacyRule> }) {
+  constructor(params: { key: types.InputPrivacyKey; rules: Array<types.InputPrivacyRule> }) {
     super();
     this.key = params.key;
     this.rules = params.rules;
   }
 }
 
-export class AccountDeleteAccount extends Function<boolean> {
+export class account_deleteAccount extends Function<boolean> {
   reason: string;
-  password?: types.TypeInputCheckPasswordSRP;
+  password?: types.InputCheckPasswordSRP;
 
   protected get [id]() {
     return 0xA2C0CF74;
@@ -1518,7 +1518,7 @@ export class AccountDeleteAccount extends Function<boolean> {
     return [
       ["flags", flags, "#"],
       ["reason", "string", "string"],
-      ["password", types._TypeInputCheckPasswordSRP, "flags.0?InputCheckPasswordSRP"],
+      ["password", types._InputCheckPasswordSRP, "flags.0?InputCheckPasswordSRP"],
     ];
   }
 
@@ -1526,18 +1526,18 @@ export class AccountDeleteAccount extends Function<boolean> {
     return [
       ["flags", flags, "#"],
       [this.reason, "string", "string"],
-      [this.password ?? null, types._TypeInputCheckPasswordSRP, "flags.0?InputCheckPasswordSRP"],
+      [this.password ?? null, types._InputCheckPasswordSRP, "flags.0?InputCheckPasswordSRP"],
     ];
   }
 
-  constructor(params: { reason: string; password?: types.TypeInputCheckPasswordSRP }) {
+  constructor(params: { reason: string; password?: types.InputCheckPasswordSRP }) {
     super();
     this.reason = params.reason;
     this.password = params.password;
   }
 }
 
-export class AccountGetAccountTTL extends Function<types.TypeAccountDaysTTL> {
+export class account_getAccountTTL extends Function<types.AccountDaysTTL> {
   protected get [id]() {
     return 0x08FC711D;
   }
@@ -1555,8 +1555,8 @@ export class AccountGetAccountTTL extends Function<types.TypeAccountDaysTTL> {
   }
 }
 
-export class AccountSetAccountTTL extends Function<boolean> {
-  ttl: types.TypeAccountDaysTTL;
+export class account_setAccountTTL extends Function<boolean> {
+  ttl: types.AccountDaysTTL;
 
   protected get [id]() {
     return 0x2442485E;
@@ -1564,25 +1564,25 @@ export class AccountSetAccountTTL extends Function<boolean> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["ttl", types._TypeAccountDaysTTL, "AccountDaysTTL"],
+      ["ttl", types._AccountDaysTTL, "AccountDaysTTL"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.ttl, types._TypeAccountDaysTTL, "AccountDaysTTL"],
+      [this.ttl, types._AccountDaysTTL, "AccountDaysTTL"],
     ];
   }
 
-  constructor(params: { ttl: types.TypeAccountDaysTTL }) {
+  constructor(params: { ttl: types.AccountDaysTTL }) {
     super();
     this.ttl = params.ttl;
   }
 }
 
-export class AccountSendChangePhoneCode extends Function<types.TypeAuthSentCode> {
-  phoneNumber: string;
-  settings: types.TypeCodeSettings;
+export class account_sendChangePhoneCode extends Function<types.auth_SentCode> {
+  phone_number: string;
+  settings: types.CodeSettings;
 
   protected get [id]() {
     return 0x82574AE5;
@@ -1590,29 +1590,29 @@ export class AccountSendChangePhoneCode extends Function<types.TypeAuthSentCode>
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["phoneNumber", "string", "string"],
-      ["settings", types._TypeCodeSettings, "CodeSettings"],
+      ["phone_number", "string", "string"],
+      ["settings", types._CodeSettings, "CodeSettings"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.phoneNumber, "string", "string"],
-      [this.settings, types._TypeCodeSettings, "CodeSettings"],
+      [this.phone_number, "string", "string"],
+      [this.settings, types._CodeSettings, "CodeSettings"],
     ];
   }
 
-  constructor(params: { phoneNumber: string; settings: types.TypeCodeSettings }) {
+  constructor(params: { phone_number: string; settings: types.CodeSettings }) {
     super();
-    this.phoneNumber = params.phoneNumber;
+    this.phone_number = params.phone_number;
     this.settings = params.settings;
   }
 }
 
-export class AccountChangePhone extends Function<types.TypeUser> {
-  phoneNumber: string;
-  phoneCodeHash: string;
-  phoneCode: string;
+export class account_changePhone extends Function<types.User> {
+  phone_number: string;
+  phone_code_hash: string;
+  phone_code: string;
 
   protected get [id]() {
     return 0x70C32EDB;
@@ -1620,29 +1620,29 @@ export class AccountChangePhone extends Function<types.TypeUser> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["phoneNumber", "string", "string"],
-      ["phoneCodeHash", "string", "string"],
-      ["phoneCode", "string", "string"],
+      ["phone_number", "string", "string"],
+      ["phone_code_hash", "string", "string"],
+      ["phone_code", "string", "string"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.phoneNumber, "string", "string"],
-      [this.phoneCodeHash, "string", "string"],
-      [this.phoneCode, "string", "string"],
+      [this.phone_number, "string", "string"],
+      [this.phone_code_hash, "string", "string"],
+      [this.phone_code, "string", "string"],
     ];
   }
 
-  constructor(params: { phoneNumber: string; phoneCodeHash: string; phoneCode: string }) {
+  constructor(params: { phone_number: string; phone_code_hash: string; phone_code: string }) {
     super();
-    this.phoneNumber = params.phoneNumber;
-    this.phoneCodeHash = params.phoneCodeHash;
-    this.phoneCode = params.phoneCode;
+    this.phone_number = params.phone_number;
+    this.phone_code_hash = params.phone_code_hash;
+    this.phone_code = params.phone_code;
   }
 }
 
-export class AccountUpdateDeviceLocked extends Function<boolean> {
+export class account_updateDeviceLocked extends Function<boolean> {
   period: number;
 
   protected get [id]() {
@@ -1667,7 +1667,7 @@ export class AccountUpdateDeviceLocked extends Function<boolean> {
   }
 }
 
-export class AccountGetAuthorizations extends Function<types.TypeAccountAuthorizations> {
+export class account_getAuthorizations extends Function<types.account_Authorizations> {
   protected get [id]() {
     return 0xE320C158;
   }
@@ -1685,7 +1685,7 @@ export class AccountGetAuthorizations extends Function<types.TypeAccountAuthoriz
   }
 }
 
-export class AccountResetAuthorization extends Function<boolean> {
+export class account_resetAuthorization extends Function<boolean> {
   hash: bigint;
 
   protected get [id]() {
@@ -1710,7 +1710,7 @@ export class AccountResetAuthorization extends Function<boolean> {
   }
 }
 
-export class AccountGetPassword extends Function<types.TypeAccountPassword> {
+export class account_getPassword extends Function<types.account_Password> {
   protected get [id]() {
     return 0x548A30F5;
   }
@@ -1728,8 +1728,8 @@ export class AccountGetPassword extends Function<types.TypeAccountPassword> {
   }
 }
 
-export class AccountGetPasswordSettings extends Function<types.TypeAccountPasswordSettings> {
-  password: types.TypeInputCheckPasswordSRP;
+export class account_getPasswordSettings extends Function<types.account_PasswordSettings> {
+  password: types.InputCheckPasswordSRP;
 
   protected get [id]() {
     return 0x9CD4EAF9;
@@ -1737,25 +1737,25 @@ export class AccountGetPasswordSettings extends Function<types.TypeAccountPasswo
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["password", types._TypeInputCheckPasswordSRP, "InputCheckPasswordSRP"],
+      ["password", types._InputCheckPasswordSRP, "InputCheckPasswordSRP"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.password, types._TypeInputCheckPasswordSRP, "InputCheckPasswordSRP"],
+      [this.password, types._InputCheckPasswordSRP, "InputCheckPasswordSRP"],
     ];
   }
 
-  constructor(params: { password: types.TypeInputCheckPasswordSRP }) {
+  constructor(params: { password: types.InputCheckPasswordSRP }) {
     super();
     this.password = params.password;
   }
 }
 
-export class AccountUpdatePasswordSettings extends Function<boolean> {
-  password: types.TypeInputCheckPasswordSRP;
-  newSettings: types.TypeAccountPasswordInputSettings;
+export class account_updatePasswordSettings extends Function<boolean> {
+  password: types.InputCheckPasswordSRP;
+  new_settings: types.account_PasswordInputSettings;
 
   protected get [id]() {
     return 0xA59B102F;
@@ -1763,28 +1763,28 @@ export class AccountUpdatePasswordSettings extends Function<boolean> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["password", types._TypeInputCheckPasswordSRP, "InputCheckPasswordSRP"],
-      ["newSettings", types._TypeAccountPasswordInputSettings, "account.PasswordInputSettings"],
+      ["password", types._InputCheckPasswordSRP, "InputCheckPasswordSRP"],
+      ["new_settings", types._account_PasswordInputSettings, "account.PasswordInputSettings"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.password, types._TypeInputCheckPasswordSRP, "InputCheckPasswordSRP"],
-      [this.newSettings, types._TypeAccountPasswordInputSettings, "account.PasswordInputSettings"],
+      [this.password, types._InputCheckPasswordSRP, "InputCheckPasswordSRP"],
+      [this.new_settings, types._account_PasswordInputSettings, "account.PasswordInputSettings"],
     ];
   }
 
-  constructor(params: { password: types.TypeInputCheckPasswordSRP; newSettings: types.TypeAccountPasswordInputSettings }) {
+  constructor(params: { password: types.InputCheckPasswordSRP; new_settings: types.account_PasswordInputSettings }) {
     super();
     this.password = params.password;
-    this.newSettings = params.newSettings;
+    this.new_settings = params.new_settings;
   }
 }
 
-export class AccountSendConfirmPhoneCode extends Function<types.TypeAuthSentCode> {
+export class account_sendConfirmPhoneCode extends Function<types.auth_SentCode> {
   hash: string;
-  settings: types.TypeCodeSettings;
+  settings: types.CodeSettings;
 
   protected get [id]() {
     return 0x1B3FAA88;
@@ -1793,27 +1793,27 @@ export class AccountSendConfirmPhoneCode extends Function<types.TypeAuthSentCode
   static get [paramDesc](): ParamDesc {
     return [
       ["hash", "string", "string"],
-      ["settings", types._TypeCodeSettings, "CodeSettings"],
+      ["settings", types._CodeSettings, "CodeSettings"],
     ];
   }
 
   protected get [params](): Params {
     return [
       [this.hash, "string", "string"],
-      [this.settings, types._TypeCodeSettings, "CodeSettings"],
+      [this.settings, types._CodeSettings, "CodeSettings"],
     ];
   }
 
-  constructor(params: { hash: string; settings: types.TypeCodeSettings }) {
+  constructor(params: { hash: string; settings: types.CodeSettings }) {
     super();
     this.hash = params.hash;
     this.settings = params.settings;
   }
 }
 
-export class AccountConfirmPhone extends Function<boolean> {
-  phoneCodeHash: string;
-  phoneCode: string;
+export class account_confirmPhone extends Function<boolean> {
+  phone_code_hash: string;
+  phone_code: string;
 
   protected get [id]() {
     return 0x5F2178C3;
@@ -1821,27 +1821,27 @@ export class AccountConfirmPhone extends Function<boolean> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["phoneCodeHash", "string", "string"],
-      ["phoneCode", "string", "string"],
+      ["phone_code_hash", "string", "string"],
+      ["phone_code", "string", "string"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.phoneCodeHash, "string", "string"],
-      [this.phoneCode, "string", "string"],
+      [this.phone_code_hash, "string", "string"],
+      [this.phone_code, "string", "string"],
     ];
   }
 
-  constructor(params: { phoneCodeHash: string; phoneCode: string }) {
+  constructor(params: { phone_code_hash: string; phone_code: string }) {
     super();
-    this.phoneCodeHash = params.phoneCodeHash;
-    this.phoneCode = params.phoneCode;
+    this.phone_code_hash = params.phone_code_hash;
+    this.phone_code = params.phone_code;
   }
 }
 
-export class AccountGetTmpPassword extends Function<types.TypeAccountTmpPassword> {
-  password: types.TypeInputCheckPasswordSRP;
+export class account_getTmpPassword extends Function<types.account_TmpPassword> {
+  password: types.InputCheckPasswordSRP;
   period: number;
 
   protected get [id]() {
@@ -1850,26 +1850,26 @@ export class AccountGetTmpPassword extends Function<types.TypeAccountTmpPassword
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["password", types._TypeInputCheckPasswordSRP, "InputCheckPasswordSRP"],
+      ["password", types._InputCheckPasswordSRP, "InputCheckPasswordSRP"],
       ["period", "number", "int"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.password, types._TypeInputCheckPasswordSRP, "InputCheckPasswordSRP"],
+      [this.password, types._InputCheckPasswordSRP, "InputCheckPasswordSRP"],
       [this.period, "number", "int"],
     ];
   }
 
-  constructor(params: { password: types.TypeInputCheckPasswordSRP; period: number }) {
+  constructor(params: { password: types.InputCheckPasswordSRP; period: number }) {
     super();
     this.password = params.password;
     this.period = params.period;
   }
 }
 
-export class AccountGetWebAuthorizations extends Function<types.TypeAccountWebAuthorizations> {
+export class account_getWebAuthorizations extends Function<types.account_WebAuthorizations> {
   protected get [id]() {
     return 0x182E6D6F;
   }
@@ -1887,7 +1887,7 @@ export class AccountGetWebAuthorizations extends Function<types.TypeAccountWebAu
   }
 }
 
-export class AccountResetWebAuthorization extends Function<boolean> {
+export class account_resetWebAuthorization extends Function<boolean> {
   hash: bigint;
 
   protected get [id]() {
@@ -1912,7 +1912,7 @@ export class AccountResetWebAuthorization extends Function<boolean> {
   }
 }
 
-export class AccountResetWebAuthorizations extends Function<boolean> {
+export class account_resetWebAuthorizations extends Function<boolean> {
   protected get [id]() {
     return 0x682D2594;
   }
@@ -1930,7 +1930,7 @@ export class AccountResetWebAuthorizations extends Function<boolean> {
   }
 }
 
-export class AccountGetAllSecureValues extends Function<types.TypeSecureValue[]> {
+export class account_getAllSecureValues extends Function<types.SecureValue[]> {
   protected get [id]() {
     return 0xB288BC7D;
   }
@@ -1948,8 +1948,8 @@ export class AccountGetAllSecureValues extends Function<types.TypeSecureValue[]>
   }
 }
 
-export class AccountGetSecureValue extends Function<types.TypeSecureValue[]> {
-  types: Array<types.TypeSecureValueType>;
+export class account_getSecureValue extends Function<types.SecureValue[]> {
+  types: Array<types.SecureValueType>;
 
   protected get [id]() {
     return 0x73665BC2;
@@ -1957,25 +1957,25 @@ export class AccountGetSecureValue extends Function<types.TypeSecureValue[]> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["types", [types._TypeSecureValueType], "Vector<SecureValueType>"],
+      ["types", [types._SecureValueType], "Vector<SecureValueType>"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.types, [types._TypeSecureValueType], "Vector<SecureValueType>"],
+      [this.types, [types._SecureValueType], "Vector<SecureValueType>"],
     ];
   }
 
-  constructor(params: { types: Array<types.TypeSecureValueType> }) {
+  constructor(params: { types: Array<types.SecureValueType> }) {
     super();
     this.types = params.types;
   }
 }
 
-export class AccountSaveSecureValue extends Function<types.TypeSecureValue> {
-  value: types.TypeInputSecureValue;
-  secureSecretId: bigint;
+export class account_saveSecureValue extends Function<types.SecureValue> {
+  value: types.InputSecureValue;
+  secure_secret_id: bigint;
 
   protected get [id]() {
     return 0x899FE31D;
@@ -1983,27 +1983,27 @@ export class AccountSaveSecureValue extends Function<types.TypeSecureValue> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["value", types._TypeInputSecureValue, "InputSecureValue"],
-      ["secureSecretId", "bigint", "long"],
+      ["value", types._InputSecureValue, "InputSecureValue"],
+      ["secure_secret_id", "bigint", "long"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.value, types._TypeInputSecureValue, "InputSecureValue"],
-      [this.secureSecretId, "bigint", "long"],
+      [this.value, types._InputSecureValue, "InputSecureValue"],
+      [this.secure_secret_id, "bigint", "long"],
     ];
   }
 
-  constructor(params: { value: types.TypeInputSecureValue; secureSecretId: bigint }) {
+  constructor(params: { value: types.InputSecureValue; secure_secret_id: bigint }) {
     super();
     this.value = params.value;
-    this.secureSecretId = params.secureSecretId;
+    this.secure_secret_id = params.secure_secret_id;
   }
 }
 
-export class AccountDeleteSecureValue extends Function<boolean> {
-  types: Array<types.TypeSecureValueType>;
+export class account_deleteSecureValue extends Function<boolean> {
+  types: Array<types.SecureValueType>;
 
   protected get [id]() {
     return 0xB880BC4B;
@@ -2011,26 +2011,26 @@ export class AccountDeleteSecureValue extends Function<boolean> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["types", [types._TypeSecureValueType], "Vector<SecureValueType>"],
+      ["types", [types._SecureValueType], "Vector<SecureValueType>"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.types, [types._TypeSecureValueType], "Vector<SecureValueType>"],
+      [this.types, [types._SecureValueType], "Vector<SecureValueType>"],
     ];
   }
 
-  constructor(params: { types: Array<types.TypeSecureValueType> }) {
+  constructor(params: { types: Array<types.SecureValueType> }) {
     super();
     this.types = params.types;
   }
 }
 
-export class AccountGetAuthorizationForm extends Function<types.TypeAccountAuthorizationForm> {
-  botId: bigint;
+export class account_getAuthorizationForm extends Function<types.account_AuthorizationForm> {
+  bot_id: bigint;
   scope: string;
-  publicKey: string;
+  public_key: string;
 
   protected get [id]() {
     return 0xA929597A;
@@ -2038,34 +2038,34 @@ export class AccountGetAuthorizationForm extends Function<types.TypeAccountAutho
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["botId", "bigint", "long"],
+      ["bot_id", "bigint", "long"],
       ["scope", "string", "string"],
-      ["publicKey", "string", "string"],
+      ["public_key", "string", "string"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.botId, "bigint", "long"],
+      [this.bot_id, "bigint", "long"],
       [this.scope, "string", "string"],
-      [this.publicKey, "string", "string"],
+      [this.public_key, "string", "string"],
     ];
   }
 
-  constructor(params: { botId: bigint; scope: string; publicKey: string }) {
+  constructor(params: { bot_id: bigint; scope: string; public_key: string }) {
     super();
-    this.botId = params.botId;
+    this.bot_id = params.bot_id;
     this.scope = params.scope;
-    this.publicKey = params.publicKey;
+    this.public_key = params.public_key;
   }
 }
 
-export class AccountAcceptAuthorization extends Function<boolean> {
-  botId: bigint;
+export class account_acceptAuthorization extends Function<boolean> {
+  bot_id: bigint;
   scope: string;
-  publicKey: string;
-  valueHashes: Array<types.TypeSecureValueHash>;
-  credentials: types.TypeSecureCredentialsEncrypted;
+  public_key: string;
+  value_hashes: Array<types.SecureValueHash>;
+  credentials: types.SecureCredentialsEncrypted;
 
   protected get [id]() {
     return 0xF3ED4C73;
@@ -2073,37 +2073,37 @@ export class AccountAcceptAuthorization extends Function<boolean> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["botId", "bigint", "long"],
+      ["bot_id", "bigint", "long"],
       ["scope", "string", "string"],
-      ["publicKey", "string", "string"],
-      ["valueHashes", [types._TypeSecureValueHash], "Vector<SecureValueHash>"],
-      ["credentials", types._TypeSecureCredentialsEncrypted, "SecureCredentialsEncrypted"],
+      ["public_key", "string", "string"],
+      ["value_hashes", [types._SecureValueHash], "Vector<SecureValueHash>"],
+      ["credentials", types._SecureCredentialsEncrypted, "SecureCredentialsEncrypted"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.botId, "bigint", "long"],
+      [this.bot_id, "bigint", "long"],
       [this.scope, "string", "string"],
-      [this.publicKey, "string", "string"],
-      [this.valueHashes, [types._TypeSecureValueHash], "Vector<SecureValueHash>"],
-      [this.credentials, types._TypeSecureCredentialsEncrypted, "SecureCredentialsEncrypted"],
+      [this.public_key, "string", "string"],
+      [this.value_hashes, [types._SecureValueHash], "Vector<SecureValueHash>"],
+      [this.credentials, types._SecureCredentialsEncrypted, "SecureCredentialsEncrypted"],
     ];
   }
 
-  constructor(params: { botId: bigint; scope: string; publicKey: string; valueHashes: Array<types.TypeSecureValueHash>; credentials: types.TypeSecureCredentialsEncrypted }) {
+  constructor(params: { bot_id: bigint; scope: string; public_key: string; value_hashes: Array<types.SecureValueHash>; credentials: types.SecureCredentialsEncrypted }) {
     super();
-    this.botId = params.botId;
+    this.bot_id = params.bot_id;
     this.scope = params.scope;
-    this.publicKey = params.publicKey;
-    this.valueHashes = params.valueHashes;
+    this.public_key = params.public_key;
+    this.value_hashes = params.value_hashes;
     this.credentials = params.credentials;
   }
 }
 
-export class AccountSendVerifyPhoneCode extends Function<types.TypeAuthSentCode> {
-  phoneNumber: string;
-  settings: types.TypeCodeSettings;
+export class account_sendVerifyPhoneCode extends Function<types.auth_SentCode> {
+  phone_number: string;
+  settings: types.CodeSettings;
 
   protected get [id]() {
     return 0xA5A356F9;
@@ -2111,29 +2111,29 @@ export class AccountSendVerifyPhoneCode extends Function<types.TypeAuthSentCode>
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["phoneNumber", "string", "string"],
-      ["settings", types._TypeCodeSettings, "CodeSettings"],
+      ["phone_number", "string", "string"],
+      ["settings", types._CodeSettings, "CodeSettings"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.phoneNumber, "string", "string"],
-      [this.settings, types._TypeCodeSettings, "CodeSettings"],
+      [this.phone_number, "string", "string"],
+      [this.settings, types._CodeSettings, "CodeSettings"],
     ];
   }
 
-  constructor(params: { phoneNumber: string; settings: types.TypeCodeSettings }) {
+  constructor(params: { phone_number: string; settings: types.CodeSettings }) {
     super();
-    this.phoneNumber = params.phoneNumber;
+    this.phone_number = params.phone_number;
     this.settings = params.settings;
   }
 }
 
-export class AccountVerifyPhone extends Function<boolean> {
-  phoneNumber: string;
-  phoneCodeHash: string;
-  phoneCode: string;
+export class account_verifyPhone extends Function<boolean> {
+  phone_number: string;
+  phone_code_hash: string;
+  phone_code: string;
 
   protected get [id]() {
     return 0x4DD3A7F6;
@@ -2141,30 +2141,30 @@ export class AccountVerifyPhone extends Function<boolean> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["phoneNumber", "string", "string"],
-      ["phoneCodeHash", "string", "string"],
-      ["phoneCode", "string", "string"],
+      ["phone_number", "string", "string"],
+      ["phone_code_hash", "string", "string"],
+      ["phone_code", "string", "string"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.phoneNumber, "string", "string"],
-      [this.phoneCodeHash, "string", "string"],
-      [this.phoneCode, "string", "string"],
+      [this.phone_number, "string", "string"],
+      [this.phone_code_hash, "string", "string"],
+      [this.phone_code, "string", "string"],
     ];
   }
 
-  constructor(params: { phoneNumber: string; phoneCodeHash: string; phoneCode: string }) {
+  constructor(params: { phone_number: string; phone_code_hash: string; phone_code: string }) {
     super();
-    this.phoneNumber = params.phoneNumber;
-    this.phoneCodeHash = params.phoneCodeHash;
-    this.phoneCode = params.phoneCode;
+    this.phone_number = params.phone_number;
+    this.phone_code_hash = params.phone_code_hash;
+    this.phone_code = params.phone_code;
   }
 }
 
-export class AccountSendVerifyEmailCode extends Function<types.TypeAccountSentEmailCode> {
-  purpose: types.TypeEmailVerifyPurpose;
+export class account_sendVerifyEmailCode extends Function<types.account_SentEmailCode> {
+  purpose: types.EmailVerifyPurpose;
   email: string;
 
   protected get [id]() {
@@ -2173,28 +2173,28 @@ export class AccountSendVerifyEmailCode extends Function<types.TypeAccountSentEm
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["purpose", types._TypeEmailVerifyPurpose, "EmailVerifyPurpose"],
+      ["purpose", types._EmailVerifyPurpose, "EmailVerifyPurpose"],
       ["email", "string", "string"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.purpose, types._TypeEmailVerifyPurpose, "EmailVerifyPurpose"],
+      [this.purpose, types._EmailVerifyPurpose, "EmailVerifyPurpose"],
       [this.email, "string", "string"],
     ];
   }
 
-  constructor(params: { purpose: types.TypeEmailVerifyPurpose; email: string }) {
+  constructor(params: { purpose: types.EmailVerifyPurpose; email: string }) {
     super();
     this.purpose = params.purpose;
     this.email = params.email;
   }
 }
 
-export class AccountVerifyEmail extends Function<types.TypeAccountEmailVerified> {
-  purpose: types.TypeEmailVerifyPurpose;
-  verification: types.TypeEmailVerification;
+export class account_verifyEmail extends Function<types.account_EmailVerified> {
+  purpose: types.EmailVerifyPurpose;
+  verification: types.EmailVerification;
 
   protected get [id]() {
     return 0x032DA4CF;
@@ -2202,33 +2202,33 @@ export class AccountVerifyEmail extends Function<types.TypeAccountEmailVerified>
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["purpose", types._TypeEmailVerifyPurpose, "EmailVerifyPurpose"],
-      ["verification", types._TypeEmailVerification, "EmailVerification"],
+      ["purpose", types._EmailVerifyPurpose, "EmailVerifyPurpose"],
+      ["verification", types._EmailVerification, "EmailVerification"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.purpose, types._TypeEmailVerifyPurpose, "EmailVerifyPurpose"],
-      [this.verification, types._TypeEmailVerification, "EmailVerification"],
+      [this.purpose, types._EmailVerifyPurpose, "EmailVerifyPurpose"],
+      [this.verification, types._EmailVerification, "EmailVerification"],
     ];
   }
 
-  constructor(params: { purpose: types.TypeEmailVerifyPurpose; verification: types.TypeEmailVerification }) {
+  constructor(params: { purpose: types.EmailVerifyPurpose; verification: types.EmailVerification }) {
     super();
     this.purpose = params.purpose;
     this.verification = params.verification;
   }
 }
 
-export class AccountInitTakeoutSession extends Function<types.TypeAccountTakeout> {
+export class account_initTakeoutSession extends Function<types.account_Takeout> {
   contacts?: true;
-  messageUsers?: true;
-  messageChats?: true;
-  messageMegagroups?: true;
-  messageChannels?: true;
+  message_users?: true;
+  message_chats?: true;
+  message_megagroups?: true;
+  message_channels?: true;
   files?: true;
-  fileMaxSize?: bigint;
+  file_max_size?: bigint;
 
   protected get [id]() {
     return 0x8EF3EAB0;
@@ -2238,12 +2238,12 @@ export class AccountInitTakeoutSession extends Function<types.TypeAccountTakeout
     return [
       ["flags", flags, "#"],
       ["contacts", "true", "flags.0?true"],
-      ["messageUsers", "true", "flags.1?true"],
-      ["messageChats", "true", "flags.2?true"],
-      ["messageMegagroups", "true", "flags.3?true"],
-      ["messageChannels", "true", "flags.4?true"],
+      ["message_users", "true", "flags.1?true"],
+      ["message_chats", "true", "flags.2?true"],
+      ["message_megagroups", "true", "flags.3?true"],
+      ["message_channels", "true", "flags.4?true"],
       ["files", "true", "flags.5?true"],
-      ["fileMaxSize", "bigint", "flags.5?long"],
+      ["file_max_size", "bigint", "flags.5?long"],
     ];
   }
 
@@ -2251,28 +2251,28 @@ export class AccountInitTakeoutSession extends Function<types.TypeAccountTakeout
     return [
       ["flags", flags, "#"],
       [this.contacts ?? null, "true", "flags.0?true"],
-      [this.messageUsers ?? null, "true", "flags.1?true"],
-      [this.messageChats ?? null, "true", "flags.2?true"],
-      [this.messageMegagroups ?? null, "true", "flags.3?true"],
-      [this.messageChannels ?? null, "true", "flags.4?true"],
+      [this.message_users ?? null, "true", "flags.1?true"],
+      [this.message_chats ?? null, "true", "flags.2?true"],
+      [this.message_megagroups ?? null, "true", "flags.3?true"],
+      [this.message_channels ?? null, "true", "flags.4?true"],
       [this.files ?? null, "true", "flags.5?true"],
-      [this.fileMaxSize ?? null, "bigint", "flags.5?long"],
+      [this.file_max_size ?? null, "bigint", "flags.5?long"],
     ];
   }
 
-  constructor(params?: { contacts?: true; messageUsers?: true; messageChats?: true; messageMegagroups?: true; messageChannels?: true; files?: true; fileMaxSize?: bigint }) {
+  constructor(params?: { contacts?: true; message_users?: true; message_chats?: true; message_megagroups?: true; message_channels?: true; files?: true; file_max_size?: bigint }) {
     super();
     this.contacts = params?.contacts;
-    this.messageUsers = params?.messageUsers;
-    this.messageChats = params?.messageChats;
-    this.messageMegagroups = params?.messageMegagroups;
-    this.messageChannels = params?.messageChannels;
+    this.message_users = params?.message_users;
+    this.message_chats = params?.message_chats;
+    this.message_megagroups = params?.message_megagroups;
+    this.message_channels = params?.message_channels;
     this.files = params?.files;
-    this.fileMaxSize = params?.fileMaxSize;
+    this.file_max_size = params?.file_max_size;
   }
 }
 
-export class AccountFinishTakeoutSession extends Function<boolean> {
+export class account_finishTakeoutSession extends Function<boolean> {
   success?: true;
 
   protected get [id]() {
@@ -2299,7 +2299,7 @@ export class AccountFinishTakeoutSession extends Function<boolean> {
   }
 }
 
-export class AccountConfirmPasswordEmail extends Function<boolean> {
+export class account_confirmPasswordEmail extends Function<boolean> {
   code: string;
 
   protected get [id]() {
@@ -2324,7 +2324,7 @@ export class AccountConfirmPasswordEmail extends Function<boolean> {
   }
 }
 
-export class AccountResendPasswordEmail extends Function<boolean> {
+export class account_resendPasswordEmail extends Function<boolean> {
   protected get [id]() {
     return 0x7A7F2A15;
   }
@@ -2342,7 +2342,7 @@ export class AccountResendPasswordEmail extends Function<boolean> {
   }
 }
 
-export class AccountCancelPasswordEmail extends Function<boolean> {
+export class account_cancelPasswordEmail extends Function<boolean> {
   protected get [id]() {
     return 0xC1CBD5B6;
   }
@@ -2360,7 +2360,7 @@ export class AccountCancelPasswordEmail extends Function<boolean> {
   }
 }
 
-export class AccountGetContactSignUpNotification extends Function<boolean> {
+export class account_getContactSignUpNotification extends Function<boolean> {
   protected get [id]() {
     return 0x9F07C728;
   }
@@ -2378,7 +2378,7 @@ export class AccountGetContactSignUpNotification extends Function<boolean> {
   }
 }
 
-export class AccountSetContactSignUpNotification extends Function<boolean> {
+export class account_setContactSignUpNotification extends Function<boolean> {
   silent: boolean;
 
   protected get [id]() {
@@ -2403,10 +2403,10 @@ export class AccountSetContactSignUpNotification extends Function<boolean> {
   }
 }
 
-export class AccountGetNotifyExceptions extends Function<types.TypeUpdates> {
-  compareSound?: true;
-  compareStories?: true;
-  peer?: types.TypeInputNotifyPeer;
+export class account_getNotifyExceptions extends Function<types.Updates> {
+  compare_sound?: true;
+  compare_stories?: true;
+  peer?: types.InputNotifyPeer;
 
   protected get [id]() {
     return 0x53577479;
@@ -2415,31 +2415,31 @@ export class AccountGetNotifyExceptions extends Function<types.TypeUpdates> {
   static get [paramDesc](): ParamDesc {
     return [
       ["flags", flags, "#"],
-      ["compareSound", "true", "flags.1?true"],
-      ["compareStories", "true", "flags.2?true"],
-      ["peer", types._TypeInputNotifyPeer, "flags.0?InputNotifyPeer"],
+      ["compare_sound", "true", "flags.1?true"],
+      ["compare_stories", "true", "flags.2?true"],
+      ["peer", types._InputNotifyPeer, "flags.0?InputNotifyPeer"],
     ];
   }
 
   protected get [params](): Params {
     return [
       ["flags", flags, "#"],
-      [this.compareSound ?? null, "true", "flags.1?true"],
-      [this.compareStories ?? null, "true", "flags.2?true"],
-      [this.peer ?? null, types._TypeInputNotifyPeer, "flags.0?InputNotifyPeer"],
+      [this.compare_sound ?? null, "true", "flags.1?true"],
+      [this.compare_stories ?? null, "true", "flags.2?true"],
+      [this.peer ?? null, types._InputNotifyPeer, "flags.0?InputNotifyPeer"],
     ];
   }
 
-  constructor(params?: { compareSound?: true; compareStories?: true; peer?: types.TypeInputNotifyPeer }) {
+  constructor(params?: { compare_sound?: true; compare_stories?: true; peer?: types.InputNotifyPeer }) {
     super();
-    this.compareSound = params?.compareSound;
-    this.compareStories = params?.compareStories;
+    this.compare_sound = params?.compare_sound;
+    this.compare_stories = params?.compare_stories;
     this.peer = params?.peer;
   }
 }
 
-export class AccountGetWallPaper extends Function<types.TypeWallPaper> {
-  wallpaper: types.TypeInputWallPaper;
+export class account_getWallPaper extends Function<types.WallPaper> {
+  wallpaper: types.InputWallPaper;
 
   protected get [id]() {
     return 0xFC8DDBEA;
@@ -2447,27 +2447,27 @@ export class AccountGetWallPaper extends Function<types.TypeWallPaper> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["wallpaper", types._TypeInputWallPaper, "InputWallPaper"],
+      ["wallpaper", types._InputWallPaper, "InputWallPaper"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.wallpaper, types._TypeInputWallPaper, "InputWallPaper"],
+      [this.wallpaper, types._InputWallPaper, "InputWallPaper"],
     ];
   }
 
-  constructor(params: { wallpaper: types.TypeInputWallPaper }) {
+  constructor(params: { wallpaper: types.InputWallPaper }) {
     super();
     this.wallpaper = params.wallpaper;
   }
 }
 
-export class AccountUploadWallPaper extends Function<types.TypeWallPaper> {
-  forChat?: true;
-  file: types.TypeInputFile;
-  mimeType: string;
-  settings: types.TypeWallPaperSettings;
+export class account_uploadWallPaper extends Function<types.WallPaper> {
+  for_chat?: true;
+  file: types.InputFile;
+  mime_type: string;
+  settings: types.WallPaperSettings;
 
   protected get [id]() {
     return 0xE39A8F03;
@@ -2476,36 +2476,36 @@ export class AccountUploadWallPaper extends Function<types.TypeWallPaper> {
   static get [paramDesc](): ParamDesc {
     return [
       ["flags", flags, "#"],
-      ["forChat", "true", "flags.0?true"],
-      ["file", types._TypeInputFile, "InputFile"],
-      ["mimeType", "string", "string"],
-      ["settings", types._TypeWallPaperSettings, "WallPaperSettings"],
+      ["for_chat", "true", "flags.0?true"],
+      ["file", types._InputFile, "InputFile"],
+      ["mime_type", "string", "string"],
+      ["settings", types._WallPaperSettings, "WallPaperSettings"],
     ];
   }
 
   protected get [params](): Params {
     return [
       ["flags", flags, "#"],
-      [this.forChat ?? null, "true", "flags.0?true"],
-      [this.file, types._TypeInputFile, "InputFile"],
-      [this.mimeType, "string", "string"],
-      [this.settings, types._TypeWallPaperSettings, "WallPaperSettings"],
+      [this.for_chat ?? null, "true", "flags.0?true"],
+      [this.file, types._InputFile, "InputFile"],
+      [this.mime_type, "string", "string"],
+      [this.settings, types._WallPaperSettings, "WallPaperSettings"],
     ];
   }
 
-  constructor(params: { forChat?: true; file: types.TypeInputFile; mimeType: string; settings: types.TypeWallPaperSettings }) {
+  constructor(params: { for_chat?: true; file: types.InputFile; mime_type: string; settings: types.WallPaperSettings }) {
     super();
-    this.forChat = params.forChat;
+    this.for_chat = params.for_chat;
     this.file = params.file;
-    this.mimeType = params.mimeType;
+    this.mime_type = params.mime_type;
     this.settings = params.settings;
   }
 }
 
-export class AccountSaveWallPaper extends Function<boolean> {
-  wallpaper: types.TypeInputWallPaper;
+export class account_saveWallPaper extends Function<boolean> {
+  wallpaper: types.InputWallPaper;
   unsave: boolean;
-  settings: types.TypeWallPaperSettings;
+  settings: types.WallPaperSettings;
 
   protected get [id]() {
     return 0x6C5A5B37;
@@ -2513,21 +2513,21 @@ export class AccountSaveWallPaper extends Function<boolean> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["wallpaper", types._TypeInputWallPaper, "InputWallPaper"],
+      ["wallpaper", types._InputWallPaper, "InputWallPaper"],
       ["unsave", "boolean", "Bool"],
-      ["settings", types._TypeWallPaperSettings, "WallPaperSettings"],
+      ["settings", types._WallPaperSettings, "WallPaperSettings"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.wallpaper, types._TypeInputWallPaper, "InputWallPaper"],
+      [this.wallpaper, types._InputWallPaper, "InputWallPaper"],
       [this.unsave, "boolean", "Bool"],
-      [this.settings, types._TypeWallPaperSettings, "WallPaperSettings"],
+      [this.settings, types._WallPaperSettings, "WallPaperSettings"],
     ];
   }
 
-  constructor(params: { wallpaper: types.TypeInputWallPaper; unsave: boolean; settings: types.TypeWallPaperSettings }) {
+  constructor(params: { wallpaper: types.InputWallPaper; unsave: boolean; settings: types.WallPaperSettings }) {
     super();
     this.wallpaper = params.wallpaper;
     this.unsave = params.unsave;
@@ -2535,9 +2535,9 @@ export class AccountSaveWallPaper extends Function<boolean> {
   }
 }
 
-export class AccountInstallWallPaper extends Function<boolean> {
-  wallpaper: types.TypeInputWallPaper;
-  settings: types.TypeWallPaperSettings;
+export class account_installWallPaper extends Function<boolean> {
+  wallpaper: types.InputWallPaper;
+  settings: types.WallPaperSettings;
 
   protected get [id]() {
     return 0xFEED5769;
@@ -2545,26 +2545,26 @@ export class AccountInstallWallPaper extends Function<boolean> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["wallpaper", types._TypeInputWallPaper, "InputWallPaper"],
-      ["settings", types._TypeWallPaperSettings, "WallPaperSettings"],
+      ["wallpaper", types._InputWallPaper, "InputWallPaper"],
+      ["settings", types._WallPaperSettings, "WallPaperSettings"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.wallpaper, types._TypeInputWallPaper, "InputWallPaper"],
-      [this.settings, types._TypeWallPaperSettings, "WallPaperSettings"],
+      [this.wallpaper, types._InputWallPaper, "InputWallPaper"],
+      [this.settings, types._WallPaperSettings, "WallPaperSettings"],
     ];
   }
 
-  constructor(params: { wallpaper: types.TypeInputWallPaper; settings: types.TypeWallPaperSettings }) {
+  constructor(params: { wallpaper: types.InputWallPaper; settings: types.WallPaperSettings }) {
     super();
     this.wallpaper = params.wallpaper;
     this.settings = params.settings;
   }
 }
 
-export class AccountResetWallPapers extends Function<boolean> {
+export class account_resetWallPapers extends Function<boolean> {
   protected get [id]() {
     return 0xBB3B9804;
   }
@@ -2582,7 +2582,7 @@ export class AccountResetWallPapers extends Function<boolean> {
   }
 }
 
-export class AccountGetAutoDownloadSettings extends Function<types.TypeAccountAutoDownloadSettings> {
+export class account_getAutoDownloadSettings extends Function<types.account_AutoDownloadSettings> {
   protected get [id]() {
     return 0x56DA0B3F;
   }
@@ -2600,10 +2600,10 @@ export class AccountGetAutoDownloadSettings extends Function<types.TypeAccountAu
   }
 }
 
-export class AccountSaveAutoDownloadSettings extends Function<boolean> {
+export class account_saveAutoDownloadSettings extends Function<boolean> {
   low?: true;
   high?: true;
-  settings: types.TypeAutoDownloadSettings;
+  settings: types.AutoDownloadSettings;
 
   protected get [id]() {
     return 0x76F36233;
@@ -2614,7 +2614,7 @@ export class AccountSaveAutoDownloadSettings extends Function<boolean> {
       ["flags", flags, "#"],
       ["low", "true", "flags.0?true"],
       ["high", "true", "flags.1?true"],
-      ["settings", types._TypeAutoDownloadSettings, "AutoDownloadSettings"],
+      ["settings", types._AutoDownloadSettings, "AutoDownloadSettings"],
     ];
   }
 
@@ -2623,11 +2623,11 @@ export class AccountSaveAutoDownloadSettings extends Function<boolean> {
       ["flags", flags, "#"],
       [this.low ?? null, "true", "flags.0?true"],
       [this.high ?? null, "true", "flags.1?true"],
-      [this.settings, types._TypeAutoDownloadSettings, "AutoDownloadSettings"],
+      [this.settings, types._AutoDownloadSettings, "AutoDownloadSettings"],
     ];
   }
 
-  constructor(params: { low?: true; high?: true; settings: types.TypeAutoDownloadSettings }) {
+  constructor(params: { low?: true; high?: true; settings: types.AutoDownloadSettings }) {
     super();
     this.low = params.low;
     this.high = params.high;
@@ -2635,11 +2635,11 @@ export class AccountSaveAutoDownloadSettings extends Function<boolean> {
   }
 }
 
-export class AccountUploadTheme extends Function<types.TypeDocument> {
-  file: types.TypeInputFile;
-  thumb?: types.TypeInputFile;
-  fileName: string;
-  mimeType: string;
+export class account_uploadTheme extends Function<types.Document> {
+  file: types.InputFile;
+  thumb?: types.InputFile;
+  file_name: string;
+  mime_type: string;
 
   protected get [id]() {
     return 0x1C3DB333;
@@ -2648,37 +2648,37 @@ export class AccountUploadTheme extends Function<types.TypeDocument> {
   static get [paramDesc](): ParamDesc {
     return [
       ["flags", flags, "#"],
-      ["file", types._TypeInputFile, "InputFile"],
-      ["thumb", types._TypeInputFile, "flags.0?InputFile"],
-      ["fileName", "string", "string"],
-      ["mimeType", "string", "string"],
+      ["file", types._InputFile, "InputFile"],
+      ["thumb", types._InputFile, "flags.0?InputFile"],
+      ["file_name", "string", "string"],
+      ["mime_type", "string", "string"],
     ];
   }
 
   protected get [params](): Params {
     return [
       ["flags", flags, "#"],
-      [this.file, types._TypeInputFile, "InputFile"],
-      [this.thumb ?? null, types._TypeInputFile, "flags.0?InputFile"],
-      [this.fileName, "string", "string"],
-      [this.mimeType, "string", "string"],
+      [this.file, types._InputFile, "InputFile"],
+      [this.thumb ?? null, types._InputFile, "flags.0?InputFile"],
+      [this.file_name, "string", "string"],
+      [this.mime_type, "string", "string"],
     ];
   }
 
-  constructor(params: { file: types.TypeInputFile; thumb?: types.TypeInputFile; fileName: string; mimeType: string }) {
+  constructor(params: { file: types.InputFile; thumb?: types.InputFile; file_name: string; mime_type: string }) {
     super();
     this.file = params.file;
     this.thumb = params.thumb;
-    this.fileName = params.fileName;
-    this.mimeType = params.mimeType;
+    this.file_name = params.file_name;
+    this.mime_type = params.mime_type;
   }
 }
 
-export class AccountCreateTheme extends Function<types.TypeTheme> {
+export class account_createTheme extends Function<types.Theme> {
   slug: string;
   title: string;
-  document?: types.TypeInputDocument;
-  settings?: Array<types.TypeInputThemeSettings>;
+  document?: types.InputDocument;
+  settings?: Array<types.InputThemeSettings>;
 
   protected get [id]() {
     return 0x652E4400;
@@ -2689,8 +2689,8 @@ export class AccountCreateTheme extends Function<types.TypeTheme> {
       ["flags", flags, "#"],
       ["slug", "string", "string"],
       ["title", "string", "string"],
-      ["document", types._TypeInputDocument, "flags.2?InputDocument"],
-      ["settings", [types._TypeInputThemeSettings], "flags.3?Vector<InputThemeSettings>"],
+      ["document", types._InputDocument, "flags.2?InputDocument"],
+      ["settings", [types._InputThemeSettings], "flags.3?Vector<InputThemeSettings>"],
     ];
   }
 
@@ -2699,12 +2699,12 @@ export class AccountCreateTheme extends Function<types.TypeTheme> {
       ["flags", flags, "#"],
       [this.slug, "string", "string"],
       [this.title, "string", "string"],
-      [this.document ?? null, types._TypeInputDocument, "flags.2?InputDocument"],
-      [this.settings ?? null, [types._TypeInputThemeSettings], "flags.3?Vector<InputThemeSettings>"],
+      [this.document ?? null, types._InputDocument, "flags.2?InputDocument"],
+      [this.settings ?? null, [types._InputThemeSettings], "flags.3?Vector<InputThemeSettings>"],
     ];
   }
 
-  constructor(params: { slug: string; title: string; document?: types.TypeInputDocument; settings?: Array<types.TypeInputThemeSettings> }) {
+  constructor(params: { slug: string; title: string; document?: types.InputDocument; settings?: Array<types.InputThemeSettings> }) {
     super();
     this.slug = params.slug;
     this.title = params.title;
@@ -2713,13 +2713,13 @@ export class AccountCreateTheme extends Function<types.TypeTheme> {
   }
 }
 
-export class AccountUpdateTheme extends Function<types.TypeTheme> {
+export class account_updateTheme extends Function<types.Theme> {
   format: string;
-  theme: types.TypeInputTheme;
+  theme: types.InputTheme;
   slug?: string;
   title?: string;
-  document?: types.TypeInputDocument;
-  settings?: Array<types.TypeInputThemeSettings>;
+  document?: types.InputDocument;
+  settings?: Array<types.InputThemeSettings>;
 
   protected get [id]() {
     return 0x2BF40CCC;
@@ -2729,11 +2729,11 @@ export class AccountUpdateTheme extends Function<types.TypeTheme> {
     return [
       ["flags", flags, "#"],
       ["format", "string", "string"],
-      ["theme", types._TypeInputTheme, "InputTheme"],
+      ["theme", types._InputTheme, "InputTheme"],
       ["slug", "string", "flags.0?string"],
       ["title", "string", "flags.1?string"],
-      ["document", types._TypeInputDocument, "flags.2?InputDocument"],
-      ["settings", [types._TypeInputThemeSettings], "flags.3?Vector<InputThemeSettings>"],
+      ["document", types._InputDocument, "flags.2?InputDocument"],
+      ["settings", [types._InputThemeSettings], "flags.3?Vector<InputThemeSettings>"],
     ];
   }
 
@@ -2741,15 +2741,15 @@ export class AccountUpdateTheme extends Function<types.TypeTheme> {
     return [
       ["flags", flags, "#"],
       [this.format, "string", "string"],
-      [this.theme, types._TypeInputTheme, "InputTheme"],
+      [this.theme, types._InputTheme, "InputTheme"],
       [this.slug ?? null, "string", "flags.0?string"],
       [this.title ?? null, "string", "flags.1?string"],
-      [this.document ?? null, types._TypeInputDocument, "flags.2?InputDocument"],
-      [this.settings ?? null, [types._TypeInputThemeSettings], "flags.3?Vector<InputThemeSettings>"],
+      [this.document ?? null, types._InputDocument, "flags.2?InputDocument"],
+      [this.settings ?? null, [types._InputThemeSettings], "flags.3?Vector<InputThemeSettings>"],
     ];
   }
 
-  constructor(params: { format: string; theme: types.TypeInputTheme; slug?: string; title?: string; document?: types.TypeInputDocument; settings?: Array<types.TypeInputThemeSettings> }) {
+  constructor(params: { format: string; theme: types.InputTheme; slug?: string; title?: string; document?: types.InputDocument; settings?: Array<types.InputThemeSettings> }) {
     super();
     this.format = params.format;
     this.theme = params.theme;
@@ -2760,8 +2760,8 @@ export class AccountUpdateTheme extends Function<types.TypeTheme> {
   }
 }
 
-export class AccountSaveTheme extends Function<boolean> {
-  theme: types.TypeInputTheme;
+export class account_saveTheme extends Function<boolean> {
+  theme: types.InputTheme;
   unsave: boolean;
 
   protected get [id]() {
@@ -2770,30 +2770,30 @@ export class AccountSaveTheme extends Function<boolean> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["theme", types._TypeInputTheme, "InputTheme"],
+      ["theme", types._InputTheme, "InputTheme"],
       ["unsave", "boolean", "Bool"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.theme, types._TypeInputTheme, "InputTheme"],
+      [this.theme, types._InputTheme, "InputTheme"],
       [this.unsave, "boolean", "Bool"],
     ];
   }
 
-  constructor(params: { theme: types.TypeInputTheme; unsave: boolean }) {
+  constructor(params: { theme: types.InputTheme; unsave: boolean }) {
     super();
     this.theme = params.theme;
     this.unsave = params.unsave;
   }
 }
 
-export class AccountInstallTheme extends Function<boolean> {
+export class account_installTheme extends Function<boolean> {
   dark?: true;
-  theme?: types.TypeInputTheme;
+  theme?: types.InputTheme;
   format?: string;
-  baseTheme?: types.TypeBaseTheme;
+  base_theme?: types.BaseTheme;
 
   protected get [id]() {
     return 0xC727BB3B;
@@ -2803,9 +2803,9 @@ export class AccountInstallTheme extends Function<boolean> {
     return [
       ["flags", flags, "#"],
       ["dark", "true", "flags.0?true"],
-      ["theme", types._TypeInputTheme, "flags.1?InputTheme"],
+      ["theme", types._InputTheme, "flags.1?InputTheme"],
       ["format", "string", "flags.2?string"],
-      ["baseTheme", types._TypeBaseTheme, "flags.3?BaseTheme"],
+      ["base_theme", types._BaseTheme, "flags.3?BaseTheme"],
     ];
   }
 
@@ -2813,24 +2813,24 @@ export class AccountInstallTheme extends Function<boolean> {
     return [
       ["flags", flags, "#"],
       [this.dark ?? null, "true", "flags.0?true"],
-      [this.theme ?? null, types._TypeInputTheme, "flags.1?InputTheme"],
+      [this.theme ?? null, types._InputTheme, "flags.1?InputTheme"],
       [this.format ?? null, "string", "flags.2?string"],
-      [this.baseTheme ?? null, types._TypeBaseTheme, "flags.3?BaseTheme"],
+      [this.base_theme ?? null, types._BaseTheme, "flags.3?BaseTheme"],
     ];
   }
 
-  constructor(params?: { dark?: true; theme?: types.TypeInputTheme; format?: string; baseTheme?: types.TypeBaseTheme }) {
+  constructor(params?: { dark?: true; theme?: types.InputTheme; format?: string; base_theme?: types.BaseTheme }) {
     super();
     this.dark = params?.dark;
     this.theme = params?.theme;
     this.format = params?.format;
-    this.baseTheme = params?.baseTheme;
+    this.base_theme = params?.base_theme;
   }
 }
 
-export class AccountGetTheme extends Function<types.TypeTheme> {
+export class account_getTheme extends Function<types.Theme> {
   format: string;
-  theme: types.TypeInputTheme;
+  theme: types.InputTheme;
 
   protected get [id]() {
     return 0x3A5869EC;
@@ -2839,25 +2839,25 @@ export class AccountGetTheme extends Function<types.TypeTheme> {
   static get [paramDesc](): ParamDesc {
     return [
       ["format", "string", "string"],
-      ["theme", types._TypeInputTheme, "InputTheme"],
+      ["theme", types._InputTheme, "InputTheme"],
     ];
   }
 
   protected get [params](): Params {
     return [
       [this.format, "string", "string"],
-      [this.theme, types._TypeInputTheme, "InputTheme"],
+      [this.theme, types._InputTheme, "InputTheme"],
     ];
   }
 
-  constructor(params: { format: string; theme: types.TypeInputTheme }) {
+  constructor(params: { format: string; theme: types.InputTheme }) {
     super();
     this.format = params.format;
     this.theme = params.theme;
   }
 }
 
-export class AccountGetThemes extends Function<types.TypeAccountThemes> {
+export class account_getThemes extends Function<types.account_Themes> {
   format: string;
   hash: bigint;
 
@@ -2886,8 +2886,8 @@ export class AccountGetThemes extends Function<types.TypeAccountThemes> {
   }
 }
 
-export class AccountSetContentSettings extends Function<boolean> {
-  sensitiveEnabled?: true;
+export class account_setContentSettings extends Function<boolean> {
+  sensitive_enabled?: true;
 
   protected get [id]() {
     return 0xB574B16B;
@@ -2896,24 +2896,24 @@ export class AccountSetContentSettings extends Function<boolean> {
   static get [paramDesc](): ParamDesc {
     return [
       ["flags", flags, "#"],
-      ["sensitiveEnabled", "true", "flags.0?true"],
+      ["sensitive_enabled", "true", "flags.0?true"],
     ];
   }
 
   protected get [params](): Params {
     return [
       ["flags", flags, "#"],
-      [this.sensitiveEnabled ?? null, "true", "flags.0?true"],
+      [this.sensitive_enabled ?? null, "true", "flags.0?true"],
     ];
   }
 
-  constructor(params?: { sensitiveEnabled?: true }) {
+  constructor(params?: { sensitive_enabled?: true }) {
     super();
-    this.sensitiveEnabled = params?.sensitiveEnabled;
+    this.sensitive_enabled = params?.sensitive_enabled;
   }
 }
 
-export class AccountGetContentSettings extends Function<types.TypeAccountContentSettings> {
+export class account_getContentSettings extends Function<types.account_ContentSettings> {
   protected get [id]() {
     return 0x8B9B4DAE;
   }
@@ -2931,8 +2931,8 @@ export class AccountGetContentSettings extends Function<types.TypeAccountContent
   }
 }
 
-export class AccountGetMultiWallPapers extends Function<types.TypeWallPaper[]> {
-  wallpapers: Array<types.TypeInputWallPaper>;
+export class account_getMultiWallPapers extends Function<types.WallPaper[]> {
+  wallpapers: Array<types.InputWallPaper>;
 
   protected get [id]() {
     return 0x65AD71DC;
@@ -2940,23 +2940,23 @@ export class AccountGetMultiWallPapers extends Function<types.TypeWallPaper[]> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["wallpapers", [types._TypeInputWallPaper], "Vector<InputWallPaper>"],
+      ["wallpapers", [types._InputWallPaper], "Vector<InputWallPaper>"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.wallpapers, [types._TypeInputWallPaper], "Vector<InputWallPaper>"],
+      [this.wallpapers, [types._InputWallPaper], "Vector<InputWallPaper>"],
     ];
   }
 
-  constructor(params: { wallpapers: Array<types.TypeInputWallPaper> }) {
+  constructor(params: { wallpapers: Array<types.InputWallPaper> }) {
     super();
     this.wallpapers = params.wallpapers;
   }
 }
 
-export class AccountGetGlobalPrivacySettings extends Function<types.TypeGlobalPrivacySettings> {
+export class account_getGlobalPrivacySettings extends Function<types.GlobalPrivacySettings> {
   protected get [id]() {
     return 0xEB2B4CF6;
   }
@@ -2974,8 +2974,8 @@ export class AccountGetGlobalPrivacySettings extends Function<types.TypeGlobalPr
   }
 }
 
-export class AccountSetGlobalPrivacySettings extends Function<types.TypeGlobalPrivacySettings> {
-  settings: types.TypeGlobalPrivacySettings;
+export class account_setGlobalPrivacySettings extends Function<types.GlobalPrivacySettings> {
+  settings: types.GlobalPrivacySettings;
 
   protected get [id]() {
     return 0x1EDAAAC2;
@@ -2983,26 +2983,26 @@ export class AccountSetGlobalPrivacySettings extends Function<types.TypeGlobalPr
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["settings", types._TypeGlobalPrivacySettings, "GlobalPrivacySettings"],
+      ["settings", types._GlobalPrivacySettings, "GlobalPrivacySettings"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.settings, types._TypeGlobalPrivacySettings, "GlobalPrivacySettings"],
+      [this.settings, types._GlobalPrivacySettings, "GlobalPrivacySettings"],
     ];
   }
 
-  constructor(params: { settings: types.TypeGlobalPrivacySettings }) {
+  constructor(params: { settings: types.GlobalPrivacySettings }) {
     super();
     this.settings = params.settings;
   }
 }
 
-export class AccountReportProfilePhoto extends Function<boolean> {
-  peer: types.TypeInputPeer;
-  photoId: types.TypeInputPhoto;
-  reason: types.TypeReportReason;
+export class account_reportProfilePhoto extends Function<boolean> {
+  peer: types.InputPeer;
+  photo_id: types.InputPhoto;
+  reason: types.ReportReason;
   message: string;
 
   protected get [id]() {
@@ -3011,32 +3011,32 @@ export class AccountReportProfilePhoto extends Function<boolean> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["peer", types._TypeInputPeer, "InputPeer"],
-      ["photoId", types._TypeInputPhoto, "InputPhoto"],
-      ["reason", types._TypeReportReason, "ReportReason"],
+      ["peer", types._InputPeer, "InputPeer"],
+      ["photo_id", types._InputPhoto, "InputPhoto"],
+      ["reason", types._ReportReason, "ReportReason"],
       ["message", "string", "string"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.peer, types._TypeInputPeer, "InputPeer"],
-      [this.photoId, types._TypeInputPhoto, "InputPhoto"],
-      [this.reason, types._TypeReportReason, "ReportReason"],
+      [this.peer, types._InputPeer, "InputPeer"],
+      [this.photo_id, types._InputPhoto, "InputPhoto"],
+      [this.reason, types._ReportReason, "ReportReason"],
       [this.message, "string", "string"],
     ];
   }
 
-  constructor(params: { peer: types.TypeInputPeer; photoId: types.TypeInputPhoto; reason: types.TypeReportReason; message: string }) {
+  constructor(params: { peer: types.InputPeer; photo_id: types.InputPhoto; reason: types.ReportReason; message: string }) {
     super();
     this.peer = params.peer;
-    this.photoId = params.photoId;
+    this.photo_id = params.photo_id;
     this.reason = params.reason;
     this.message = params.message;
   }
 }
 
-export class AccountResetPassword extends Function<types.TypeAccountResetPasswordResult> {
+export class account_resetPassword extends Function<types.account_ResetPasswordResult> {
   protected get [id]() {
     return 0x9308CE1B;
   }
@@ -3054,7 +3054,7 @@ export class AccountResetPassword extends Function<types.TypeAccountResetPasswor
   }
 }
 
-export class AccountDeclinePasswordReset extends Function<boolean> {
+export class account_declinePasswordReset extends Function<boolean> {
   protected get [id]() {
     return 0x4C9409F6;
   }
@@ -3072,7 +3072,7 @@ export class AccountDeclinePasswordReset extends Function<boolean> {
   }
 }
 
-export class AccountGetChatThemes extends Function<types.TypeAccountThemes> {
+export class account_getChatThemes extends Function<types.account_Themes> {
   hash: bigint;
 
   protected get [id]() {
@@ -3097,8 +3097,8 @@ export class AccountGetChatThemes extends Function<types.TypeAccountThemes> {
   }
 }
 
-export class AccountSetAuthorizationTTL extends Function<boolean> {
-  authorizationTtlDays: number;
+export class account_setAuthorizationTTL extends Function<boolean> {
+  authorization_ttl_days: number;
 
   protected get [id]() {
     return 0xBF899AA0;
@@ -3106,27 +3106,27 @@ export class AccountSetAuthorizationTTL extends Function<boolean> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["authorizationTtlDays", "number", "int"],
+      ["authorization_ttl_days", "number", "int"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.authorizationTtlDays, "number", "int"],
+      [this.authorization_ttl_days, "number", "int"],
     ];
   }
 
-  constructor(params: { authorizationTtlDays: number }) {
+  constructor(params: { authorization_ttl_days: number }) {
     super();
-    this.authorizationTtlDays = params.authorizationTtlDays;
+    this.authorization_ttl_days = params.authorization_ttl_days;
   }
 }
 
-export class AccountChangeAuthorizationSettings extends Function<boolean> {
+export class account_changeAuthorizationSettings extends Function<boolean> {
   confirmed?: true;
   hash: bigint;
-  encryptedRequestsDisabled?: boolean;
-  callRequestsDisabled?: boolean;
+  encrypted_requests_disabled?: boolean;
+  call_requests_disabled?: boolean;
 
   protected get [id]() {
     return 0x40F48462;
@@ -3137,8 +3137,8 @@ export class AccountChangeAuthorizationSettings extends Function<boolean> {
       ["flags", flags, "#"],
       ["confirmed", "true", "flags.3?true"],
       ["hash", "bigint", "long"],
-      ["encryptedRequestsDisabled", "boolean", "flags.0?Bool"],
-      ["callRequestsDisabled", "boolean", "flags.1?Bool"],
+      ["encrypted_requests_disabled", "boolean", "flags.0?Bool"],
+      ["call_requests_disabled", "boolean", "flags.1?Bool"],
     ];
   }
 
@@ -3147,21 +3147,21 @@ export class AccountChangeAuthorizationSettings extends Function<boolean> {
       ["flags", flags, "#"],
       [this.confirmed ?? null, "true", "flags.3?true"],
       [this.hash, "bigint", "long"],
-      [this.encryptedRequestsDisabled ?? null, "boolean", "flags.0?Bool"],
-      [this.callRequestsDisabled ?? null, "boolean", "flags.1?Bool"],
+      [this.encrypted_requests_disabled ?? null, "boolean", "flags.0?Bool"],
+      [this.call_requests_disabled ?? null, "boolean", "flags.1?Bool"],
     ];
   }
 
-  constructor(params: { confirmed?: true; hash: bigint; encryptedRequestsDisabled?: boolean; callRequestsDisabled?: boolean }) {
+  constructor(params: { confirmed?: true; hash: bigint; encrypted_requests_disabled?: boolean; call_requests_disabled?: boolean }) {
     super();
     this.confirmed = params.confirmed;
     this.hash = params.hash;
-    this.encryptedRequestsDisabled = params.encryptedRequestsDisabled;
-    this.callRequestsDisabled = params.callRequestsDisabled;
+    this.encrypted_requests_disabled = params.encrypted_requests_disabled;
+    this.call_requests_disabled = params.call_requests_disabled;
   }
 }
 
-export class AccountGetSavedRingtones extends Function<types.TypeAccountSavedRingtones> {
+export class account_getSavedRingtones extends Function<types.account_SavedRingtones> {
   hash: bigint;
 
   protected get [id]() {
@@ -3186,8 +3186,8 @@ export class AccountGetSavedRingtones extends Function<types.TypeAccountSavedRin
   }
 }
 
-export class AccountSaveRingtone extends Function<types.TypeAccountSavedRingtone> {
-  id: types.TypeInputDocument;
+export class account_saveRingtone extends Function<types.account_SavedRingtone> {
+  id: types.InputDocument;
   unsave: boolean;
 
   protected get [id]() {
@@ -3196,29 +3196,29 @@ export class AccountSaveRingtone extends Function<types.TypeAccountSavedRingtone
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["id", types._TypeInputDocument, "InputDocument"],
+      ["id", types._InputDocument, "InputDocument"],
       ["unsave", "boolean", "Bool"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.id, types._TypeInputDocument, "InputDocument"],
+      [this.id, types._InputDocument, "InputDocument"],
       [this.unsave, "boolean", "Bool"],
     ];
   }
 
-  constructor(params: { id: types.TypeInputDocument; unsave: boolean }) {
+  constructor(params: { id: types.InputDocument; unsave: boolean }) {
     super();
     this.id = params.id;
     this.unsave = params.unsave;
   }
 }
 
-export class AccountUploadRingtone extends Function<types.TypeDocument> {
-  file: types.TypeInputFile;
-  fileName: string;
-  mimeType: string;
+export class account_uploadRingtone extends Function<types.Document> {
+  file: types.InputFile;
+  file_name: string;
+  mime_type: string;
 
   protected get [id]() {
     return 0x831A83A2;
@@ -3226,30 +3226,30 @@ export class AccountUploadRingtone extends Function<types.TypeDocument> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["file", types._TypeInputFile, "InputFile"],
-      ["fileName", "string", "string"],
-      ["mimeType", "string", "string"],
+      ["file", types._InputFile, "InputFile"],
+      ["file_name", "string", "string"],
+      ["mime_type", "string", "string"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.file, types._TypeInputFile, "InputFile"],
-      [this.fileName, "string", "string"],
-      [this.mimeType, "string", "string"],
+      [this.file, types._InputFile, "InputFile"],
+      [this.file_name, "string", "string"],
+      [this.mime_type, "string", "string"],
     ];
   }
 
-  constructor(params: { file: types.TypeInputFile; fileName: string; mimeType: string }) {
+  constructor(params: { file: types.InputFile; file_name: string; mime_type: string }) {
     super();
     this.file = params.file;
-    this.fileName = params.fileName;
-    this.mimeType = params.mimeType;
+    this.file_name = params.file_name;
+    this.mime_type = params.mime_type;
   }
 }
 
-export class AccountUpdateEmojiStatus extends Function<boolean> {
-  emojiStatus: types.TypeEmojiStatus;
+export class account_updateEmojiStatus extends Function<boolean> {
+  emoji_status: types.EmojiStatus;
 
   protected get [id]() {
     return 0xFBD3DE6B;
@@ -3257,23 +3257,23 @@ export class AccountUpdateEmojiStatus extends Function<boolean> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["emojiStatus", types._TypeEmojiStatus, "EmojiStatus"],
+      ["emoji_status", types._EmojiStatus, "EmojiStatus"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.emojiStatus, types._TypeEmojiStatus, "EmojiStatus"],
+      [this.emoji_status, types._EmojiStatus, "EmojiStatus"],
     ];
   }
 
-  constructor(params: { emojiStatus: types.TypeEmojiStatus }) {
+  constructor(params: { emoji_status: types.EmojiStatus }) {
     super();
-    this.emojiStatus = params.emojiStatus;
+    this.emoji_status = params.emoji_status;
   }
 }
 
-export class AccountGetDefaultEmojiStatuses extends Function<types.TypeAccountEmojiStatuses> {
+export class account_getDefaultEmojiStatuses extends Function<types.account_EmojiStatuses> {
   hash: bigint;
 
   protected get [id]() {
@@ -3298,7 +3298,7 @@ export class AccountGetDefaultEmojiStatuses extends Function<types.TypeAccountEm
   }
 }
 
-export class AccountGetRecentEmojiStatuses extends Function<types.TypeAccountEmojiStatuses> {
+export class account_getRecentEmojiStatuses extends Function<types.account_EmojiStatuses> {
   hash: bigint;
 
   protected get [id]() {
@@ -3323,7 +3323,7 @@ export class AccountGetRecentEmojiStatuses extends Function<types.TypeAccountEmo
   }
 }
 
-export class AccountClearRecentEmojiStatuses extends Function<boolean> {
+export class account_clearRecentEmojiStatuses extends Function<boolean> {
   protected get [id]() {
     return 0x18201AAE;
   }
@@ -3341,7 +3341,7 @@ export class AccountClearRecentEmojiStatuses extends Function<boolean> {
   }
 }
 
-export class AccountReorderUsernames extends Function<boolean> {
+export class account_reorderUsernames extends Function<boolean> {
   order: Array<string>;
 
   protected get [id]() {
@@ -3366,7 +3366,7 @@ export class AccountReorderUsernames extends Function<boolean> {
   }
 }
 
-export class AccountToggleUsername extends Function<boolean> {
+export class account_toggleUsername extends Function<boolean> {
   username: string;
   active: boolean;
 
@@ -3395,7 +3395,7 @@ export class AccountToggleUsername extends Function<boolean> {
   }
 }
 
-export class AccountGetDefaultProfilePhotoEmojis extends Function<types.TypeEmojiList> {
+export class account_getDefaultProfilePhotoEmojis extends Function<types.EmojiList> {
   hash: bigint;
 
   protected get [id]() {
@@ -3420,7 +3420,7 @@ export class AccountGetDefaultProfilePhotoEmojis extends Function<types.TypeEmoj
   }
 }
 
-export class AccountGetDefaultGroupPhotoEmojis extends Function<types.TypeEmojiList> {
+export class account_getDefaultGroupPhotoEmojis extends Function<types.EmojiList> {
   hash: bigint;
 
   protected get [id]() {
@@ -3445,7 +3445,7 @@ export class AccountGetDefaultGroupPhotoEmojis extends Function<types.TypeEmojiL
   }
 }
 
-export class AccountGetAutoSaveSettings extends Function<types.TypeAccountAutoSaveSettings> {
+export class account_getAutoSaveSettings extends Function<types.account_AutoSaveSettings> {
   protected get [id]() {
     return 0xADCBBCDA;
   }
@@ -3463,12 +3463,12 @@ export class AccountGetAutoSaveSettings extends Function<types.TypeAccountAutoSa
   }
 }
 
-export class AccountSaveAutoSaveSettings extends Function<boolean> {
+export class account_saveAutoSaveSettings extends Function<boolean> {
   users?: true;
   chats?: true;
   broadcasts?: true;
-  peer?: types.TypeInputPeer;
-  settings: types.TypeAutoSaveSettings;
+  peer?: types.InputPeer;
+  settings: types.AutoSaveSettings;
 
   protected get [id]() {
     return 0xD69B8361;
@@ -3480,8 +3480,8 @@ export class AccountSaveAutoSaveSettings extends Function<boolean> {
       ["users", "true", "flags.0?true"],
       ["chats", "true", "flags.1?true"],
       ["broadcasts", "true", "flags.2?true"],
-      ["peer", types._TypeInputPeer, "flags.3?InputPeer"],
-      ["settings", types._TypeAutoSaveSettings, "AutoSaveSettings"],
+      ["peer", types._InputPeer, "flags.3?InputPeer"],
+      ["settings", types._AutoSaveSettings, "AutoSaveSettings"],
     ];
   }
 
@@ -3491,12 +3491,12 @@ export class AccountSaveAutoSaveSettings extends Function<boolean> {
       [this.users ?? null, "true", "flags.0?true"],
       [this.chats ?? null, "true", "flags.1?true"],
       [this.broadcasts ?? null, "true", "flags.2?true"],
-      [this.peer ?? null, types._TypeInputPeer, "flags.3?InputPeer"],
-      [this.settings, types._TypeAutoSaveSettings, "AutoSaveSettings"],
+      [this.peer ?? null, types._InputPeer, "flags.3?InputPeer"],
+      [this.settings, types._AutoSaveSettings, "AutoSaveSettings"],
     ];
   }
 
-  constructor(params: { users?: true; chats?: true; broadcasts?: true; peer?: types.TypeInputPeer; settings: types.TypeAutoSaveSettings }) {
+  constructor(params: { users?: true; chats?: true; broadcasts?: true; peer?: types.InputPeer; settings: types.AutoSaveSettings }) {
     super();
     this.users = params.users;
     this.chats = params.chats;
@@ -3506,7 +3506,7 @@ export class AccountSaveAutoSaveSettings extends Function<boolean> {
   }
 }
 
-export class AccountDeleteAutoSaveExceptions extends Function<boolean> {
+export class account_deleteAutoSaveExceptions extends Function<boolean> {
   protected get [id]() {
     return 0x53BC0020;
   }
@@ -3524,7 +3524,7 @@ export class AccountDeleteAutoSaveExceptions extends Function<boolean> {
   }
 }
 
-export class AccountInvalidateSignInCodes extends Function<boolean> {
+export class account_invalidateSignInCodes extends Function<boolean> {
   codes: Array<string>;
 
   protected get [id]() {
@@ -3549,38 +3549,42 @@ export class AccountInvalidateSignInCodes extends Function<boolean> {
   }
 }
 
-export class AccountUpdateColor extends Function<boolean> {
-  color: number;
-  backgroundEmojiId?: bigint;
+export class account_updateColor extends Function<boolean> {
+  for_profile?: true;
+  color?: number;
+  background_emoji_id?: bigint;
 
   protected get [id]() {
-    return 0xA001CC43;
+    return 0x7CEFA15D;
   }
 
   static get [paramDesc](): ParamDesc {
     return [
       ["flags", flags, "#"],
-      ["color", "number", "int"],
-      ["backgroundEmojiId", "bigint", "flags.0?long"],
+      ["for_profile", "true", "flags.1?true"],
+      ["color", "number", "flags.2?int"],
+      ["background_emoji_id", "bigint", "flags.0?long"],
     ];
   }
 
   protected get [params](): Params {
     return [
       ["flags", flags, "#"],
-      [this.color, "number", "int"],
-      [this.backgroundEmojiId ?? null, "bigint", "flags.0?long"],
+      [this.for_profile ?? null, "true", "flags.1?true"],
+      [this.color ?? null, "number", "flags.2?int"],
+      [this.background_emoji_id ?? null, "bigint", "flags.0?long"],
     ];
   }
 
-  constructor(params: { color: number; backgroundEmojiId?: bigint }) {
+  constructor(params?: { for_profile?: true; color?: number; background_emoji_id?: bigint }) {
     super();
-    this.color = params.color;
-    this.backgroundEmojiId = params.backgroundEmojiId;
+    this.for_profile = params?.for_profile;
+    this.color = params?.color;
+    this.background_emoji_id = params?.background_emoji_id;
   }
 }
 
-export class AccountGetDefaultBackgroundEmojis extends Function<types.TypeEmojiList> {
+export class account_getDefaultBackgroundEmojis extends Function<types.EmojiList> {
   hash: bigint;
 
   protected get [id]() {
@@ -3605,8 +3609,8 @@ export class AccountGetDefaultBackgroundEmojis extends Function<types.TypeEmojiL
   }
 }
 
-export class UsersGetUsers extends Function<types.TypeUser[]> {
-  id: Array<types.TypeInputUser>;
+export class users_getUsers extends Function<types.User[]> {
+  id: Array<types.InputUser>;
 
   protected get [id]() {
     return 0x0D91A548;
@@ -3614,24 +3618,24 @@ export class UsersGetUsers extends Function<types.TypeUser[]> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["id", [types._TypeInputUser], "Vector<InputUser>"],
+      ["id", [types._InputUser], "Vector<InputUser>"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.id, [types._TypeInputUser], "Vector<InputUser>"],
+      [this.id, [types._InputUser], "Vector<InputUser>"],
     ];
   }
 
-  constructor(params: { id: Array<types.TypeInputUser> }) {
+  constructor(params: { id: Array<types.InputUser> }) {
     super();
     this.id = params.id;
   }
 }
 
-export class UsersGetFullUser extends Function<types.TypeUsersUserFull> {
-  id: types.TypeInputUser;
+export class users_getFullUser extends Function<types.users_UserFull> {
+  id: types.InputUser;
 
   protected get [id]() {
     return 0xB60F5918;
@@ -3639,25 +3643,25 @@ export class UsersGetFullUser extends Function<types.TypeUsersUserFull> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["id", types._TypeInputUser, "InputUser"],
+      ["id", types._InputUser, "InputUser"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.id, types._TypeInputUser, "InputUser"],
+      [this.id, types._InputUser, "InputUser"],
     ];
   }
 
-  constructor(params: { id: types.TypeInputUser }) {
+  constructor(params: { id: types.InputUser }) {
     super();
     this.id = params.id;
   }
 }
 
-export class UsersSetSecureValueErrors extends Function<boolean> {
-  id: types.TypeInputUser;
-  errors: Array<types.TypeSecureValueError>;
+export class users_setSecureValueErrors extends Function<boolean> {
+  id: types.InputUser;
+  errors: Array<types.SecureValueError>;
 
   protected get [id]() {
     return 0x90C894B5;
@@ -3665,26 +3669,26 @@ export class UsersSetSecureValueErrors extends Function<boolean> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["id", types._TypeInputUser, "InputUser"],
-      ["errors", [types._TypeSecureValueError], "Vector<SecureValueError>"],
+      ["id", types._InputUser, "InputUser"],
+      ["errors", [types._SecureValueError], "Vector<SecureValueError>"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.id, types._TypeInputUser, "InputUser"],
-      [this.errors, [types._TypeSecureValueError], "Vector<SecureValueError>"],
+      [this.id, types._InputUser, "InputUser"],
+      [this.errors, [types._SecureValueError], "Vector<SecureValueError>"],
     ];
   }
 
-  constructor(params: { id: types.TypeInputUser; errors: Array<types.TypeSecureValueError> }) {
+  constructor(params: { id: types.InputUser; errors: Array<types.SecureValueError> }) {
     super();
     this.id = params.id;
     this.errors = params.errors;
   }
 }
 
-export class ContactsGetContactIDs extends Function<number[]> {
+export class contacts_getContactIDs extends Function<number[]> {
   hash: bigint;
 
   protected get [id]() {
@@ -3709,7 +3713,7 @@ export class ContactsGetContactIDs extends Function<number[]> {
   }
 }
 
-export class ContactsGetStatuses extends Function<types.TypeContactStatus[]> {
+export class contacts_getStatuses extends Function<types.ContactStatus[]> {
   protected get [id]() {
     return 0xC4A353EE;
   }
@@ -3727,7 +3731,7 @@ export class ContactsGetStatuses extends Function<types.TypeContactStatus[]> {
   }
 }
 
-export class ContactsGetContacts extends Function<types.TypeContactsContacts> {
+export class contacts_getContacts extends Function<types.contacts_Contacts> {
   hash: bigint;
 
   protected get [id]() {
@@ -3752,8 +3756,8 @@ export class ContactsGetContacts extends Function<types.TypeContactsContacts> {
   }
 }
 
-export class ContactsImportContacts extends Function<types.TypeContactsImportedContacts> {
-  contacts: Array<types.TypeInputContact>;
+export class contacts_importContacts extends Function<types.contacts_ImportedContacts> {
+  contacts: Array<types.InputContact>;
 
   protected get [id]() {
     return 0x2C800BE5;
@@ -3761,24 +3765,24 @@ export class ContactsImportContacts extends Function<types.TypeContactsImportedC
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["contacts", [types._TypeInputContact], "Vector<InputContact>"],
+      ["contacts", [types._InputContact], "Vector<InputContact>"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.contacts, [types._TypeInputContact], "Vector<InputContact>"],
+      [this.contacts, [types._InputContact], "Vector<InputContact>"],
     ];
   }
 
-  constructor(params: { contacts: Array<types.TypeInputContact> }) {
+  constructor(params: { contacts: Array<types.InputContact> }) {
     super();
     this.contacts = params.contacts;
   }
 }
 
-export class ContactsDeleteContacts extends Function<types.TypeUpdates> {
-  id: Array<types.TypeInputUser>;
+export class contacts_deleteContacts extends Function<types.Updates> {
+  id: Array<types.InputUser>;
 
   protected get [id]() {
     return 0x096A0E00;
@@ -3786,23 +3790,23 @@ export class ContactsDeleteContacts extends Function<types.TypeUpdates> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["id", [types._TypeInputUser], "Vector<InputUser>"],
+      ["id", [types._InputUser], "Vector<InputUser>"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.id, [types._TypeInputUser], "Vector<InputUser>"],
+      [this.id, [types._InputUser], "Vector<InputUser>"],
     ];
   }
 
-  constructor(params: { id: Array<types.TypeInputUser> }) {
+  constructor(params: { id: Array<types.InputUser> }) {
     super();
     this.id = params.id;
   }
 }
 
-export class ContactsDeleteByPhones extends Function<boolean> {
+export class contacts_deleteByPhones extends Function<boolean> {
   phones: Array<string>;
 
   protected get [id]() {
@@ -3827,9 +3831,9 @@ export class ContactsDeleteByPhones extends Function<boolean> {
   }
 }
 
-export class ContactsBlock extends Function<boolean> {
-  myStoriesFrom?: true;
-  id: types.TypeInputPeer;
+export class contacts_block extends Function<boolean> {
+  my_stories_from?: true;
+  id: types.InputPeer;
 
   protected get [id]() {
     return 0x2E2E8734;
@@ -3838,29 +3842,29 @@ export class ContactsBlock extends Function<boolean> {
   static get [paramDesc](): ParamDesc {
     return [
       ["flags", flags, "#"],
-      ["myStoriesFrom", "true", "flags.0?true"],
-      ["id", types._TypeInputPeer, "InputPeer"],
+      ["my_stories_from", "true", "flags.0?true"],
+      ["id", types._InputPeer, "InputPeer"],
     ];
   }
 
   protected get [params](): Params {
     return [
       ["flags", flags, "#"],
-      [this.myStoriesFrom ?? null, "true", "flags.0?true"],
-      [this.id, types._TypeInputPeer, "InputPeer"],
+      [this.my_stories_from ?? null, "true", "flags.0?true"],
+      [this.id, types._InputPeer, "InputPeer"],
     ];
   }
 
-  constructor(params: { myStoriesFrom?: true; id: types.TypeInputPeer }) {
+  constructor(params: { my_stories_from?: true; id: types.InputPeer }) {
     super();
-    this.myStoriesFrom = params.myStoriesFrom;
+    this.my_stories_from = params.my_stories_from;
     this.id = params.id;
   }
 }
 
-export class ContactsUnblock extends Function<boolean> {
-  myStoriesFrom?: true;
-  id: types.TypeInputPeer;
+export class contacts_unblock extends Function<boolean> {
+  my_stories_from?: true;
+  id: types.InputPeer;
 
   protected get [id]() {
     return 0xB550D328;
@@ -3869,28 +3873,28 @@ export class ContactsUnblock extends Function<boolean> {
   static get [paramDesc](): ParamDesc {
     return [
       ["flags", flags, "#"],
-      ["myStoriesFrom", "true", "flags.0?true"],
-      ["id", types._TypeInputPeer, "InputPeer"],
+      ["my_stories_from", "true", "flags.0?true"],
+      ["id", types._InputPeer, "InputPeer"],
     ];
   }
 
   protected get [params](): Params {
     return [
       ["flags", flags, "#"],
-      [this.myStoriesFrom ?? null, "true", "flags.0?true"],
-      [this.id, types._TypeInputPeer, "InputPeer"],
+      [this.my_stories_from ?? null, "true", "flags.0?true"],
+      [this.id, types._InputPeer, "InputPeer"],
     ];
   }
 
-  constructor(params: { myStoriesFrom?: true; id: types.TypeInputPeer }) {
+  constructor(params: { my_stories_from?: true; id: types.InputPeer }) {
     super();
-    this.myStoriesFrom = params.myStoriesFrom;
+    this.my_stories_from = params.my_stories_from;
     this.id = params.id;
   }
 }
 
-export class ContactsGetBlocked extends Function<types.TypeContactsBlocked> {
-  myStoriesFrom?: true;
+export class contacts_getBlocked extends Function<types.contacts_Blocked> {
+  my_stories_from?: true;
   offset: number;
   limit: number;
 
@@ -3901,7 +3905,7 @@ export class ContactsGetBlocked extends Function<types.TypeContactsBlocked> {
   static get [paramDesc](): ParamDesc {
     return [
       ["flags", flags, "#"],
-      ["myStoriesFrom", "true", "flags.0?true"],
+      ["my_stories_from", "true", "flags.0?true"],
       ["offset", "number", "int"],
       ["limit", "number", "int"],
     ];
@@ -3910,21 +3914,21 @@ export class ContactsGetBlocked extends Function<types.TypeContactsBlocked> {
   protected get [params](): Params {
     return [
       ["flags", flags, "#"],
-      [this.myStoriesFrom ?? null, "true", "flags.0?true"],
+      [this.my_stories_from ?? null, "true", "flags.0?true"],
       [this.offset, "number", "int"],
       [this.limit, "number", "int"],
     ];
   }
 
-  constructor(params: { myStoriesFrom?: true; offset: number; limit: number }) {
+  constructor(params: { my_stories_from?: true; offset: number; limit: number }) {
     super();
-    this.myStoriesFrom = params.myStoriesFrom;
+    this.my_stories_from = params.my_stories_from;
     this.offset = params.offset;
     this.limit = params.limit;
   }
 }
 
-export class ContactsSearch extends Function<types.TypeContactsFound> {
+export class contacts_search extends Function<types.contacts_Found> {
   q: string;
   limit: number;
 
@@ -3953,7 +3957,7 @@ export class ContactsSearch extends Function<types.TypeContactsFound> {
   }
 }
 
-export class ContactsResolveUsername extends Function<types.TypeContactsResolvedPeer> {
+export class contacts_resolveUsername extends Function<types.contacts_ResolvedPeer> {
   username: string;
 
   protected get [id]() {
@@ -3978,13 +3982,13 @@ export class ContactsResolveUsername extends Function<types.TypeContactsResolved
   }
 }
 
-export class ContactsGetTopPeers extends Function<types.TypeContactsTopPeers> {
+export class contacts_getTopPeers extends Function<types.contacts_TopPeers> {
   correspondents?: true;
-  botsPm?: true;
-  botsInline?: true;
-  phoneCalls?: true;
-  forwardUsers?: true;
-  forwardChats?: true;
+  bots_pm?: true;
+  bots_inline?: true;
+  phone_calls?: true;
+  forward_users?: true;
+  forward_chats?: true;
   groups?: true;
   channels?: true;
   offset: number;
@@ -3999,11 +4003,11 @@ export class ContactsGetTopPeers extends Function<types.TypeContactsTopPeers> {
     return [
       ["flags", flags, "#"],
       ["correspondents", "true", "flags.0?true"],
-      ["botsPm", "true", "flags.1?true"],
-      ["botsInline", "true", "flags.2?true"],
-      ["phoneCalls", "true", "flags.3?true"],
-      ["forwardUsers", "true", "flags.4?true"],
-      ["forwardChats", "true", "flags.5?true"],
+      ["bots_pm", "true", "flags.1?true"],
+      ["bots_inline", "true", "flags.2?true"],
+      ["phone_calls", "true", "flags.3?true"],
+      ["forward_users", "true", "flags.4?true"],
+      ["forward_chats", "true", "flags.5?true"],
       ["groups", "true", "flags.10?true"],
       ["channels", "true", "flags.15?true"],
       ["offset", "number", "int"],
@@ -4016,11 +4020,11 @@ export class ContactsGetTopPeers extends Function<types.TypeContactsTopPeers> {
     return [
       ["flags", flags, "#"],
       [this.correspondents ?? null, "true", "flags.0?true"],
-      [this.botsPm ?? null, "true", "flags.1?true"],
-      [this.botsInline ?? null, "true", "flags.2?true"],
-      [this.phoneCalls ?? null, "true", "flags.3?true"],
-      [this.forwardUsers ?? null, "true", "flags.4?true"],
-      [this.forwardChats ?? null, "true", "flags.5?true"],
+      [this.bots_pm ?? null, "true", "flags.1?true"],
+      [this.bots_inline ?? null, "true", "flags.2?true"],
+      [this.phone_calls ?? null, "true", "flags.3?true"],
+      [this.forward_users ?? null, "true", "flags.4?true"],
+      [this.forward_chats ?? null, "true", "flags.5?true"],
       [this.groups ?? null, "true", "flags.10?true"],
       [this.channels ?? null, "true", "flags.15?true"],
       [this.offset, "number", "int"],
@@ -4029,14 +4033,14 @@ export class ContactsGetTopPeers extends Function<types.TypeContactsTopPeers> {
     ];
   }
 
-  constructor(params: { correspondents?: true; botsPm?: true; botsInline?: true; phoneCalls?: true; forwardUsers?: true; forwardChats?: true; groups?: true; channels?: true; offset: number; limit: number; hash: bigint }) {
+  constructor(params: { correspondents?: true; bots_pm?: true; bots_inline?: true; phone_calls?: true; forward_users?: true; forward_chats?: true; groups?: true; channels?: true; offset: number; limit: number; hash: bigint }) {
     super();
     this.correspondents = params.correspondents;
-    this.botsPm = params.botsPm;
-    this.botsInline = params.botsInline;
-    this.phoneCalls = params.phoneCalls;
-    this.forwardUsers = params.forwardUsers;
-    this.forwardChats = params.forwardChats;
+    this.bots_pm = params.bots_pm;
+    this.bots_inline = params.bots_inline;
+    this.phone_calls = params.phone_calls;
+    this.forward_users = params.forward_users;
+    this.forward_chats = params.forward_chats;
     this.groups = params.groups;
     this.channels = params.channels;
     this.offset = params.offset;
@@ -4045,9 +4049,9 @@ export class ContactsGetTopPeers extends Function<types.TypeContactsTopPeers> {
   }
 }
 
-export class ContactsResetTopPeerRating extends Function<boolean> {
-  category: types.TypeTopPeerCategory;
-  peer: types.TypeInputPeer;
+export class contacts_resetTopPeerRating extends Function<boolean> {
+  category: types.TopPeerCategory;
+  peer: types.InputPeer;
 
   protected get [id]() {
     return 0x1AE373AC;
@@ -4055,26 +4059,26 @@ export class ContactsResetTopPeerRating extends Function<boolean> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["category", types._TypeTopPeerCategory, "TopPeerCategory"],
-      ["peer", types._TypeInputPeer, "InputPeer"],
+      ["category", types._TopPeerCategory, "TopPeerCategory"],
+      ["peer", types._InputPeer, "InputPeer"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.category, types._TypeTopPeerCategory, "TopPeerCategory"],
-      [this.peer, types._TypeInputPeer, "InputPeer"],
+      [this.category, types._TopPeerCategory, "TopPeerCategory"],
+      [this.peer, types._InputPeer, "InputPeer"],
     ];
   }
 
-  constructor(params: { category: types.TypeTopPeerCategory; peer: types.TypeInputPeer }) {
+  constructor(params: { category: types.TopPeerCategory; peer: types.InputPeer }) {
     super();
     this.category = params.category;
     this.peer = params.peer;
   }
 }
 
-export class ContactsResetSaved extends Function<boolean> {
+export class contacts_resetSaved extends Function<boolean> {
   protected get [id]() {
     return 0x879537F1;
   }
@@ -4092,7 +4096,7 @@ export class ContactsResetSaved extends Function<boolean> {
   }
 }
 
-export class ContactsGetSaved extends Function<types.TypeSavedContact[]> {
+export class contacts_getSaved extends Function<types.SavedContact[]> {
   protected get [id]() {
     return 0x82F1E39F;
   }
@@ -4110,7 +4114,7 @@ export class ContactsGetSaved extends Function<types.TypeSavedContact[]> {
   }
 }
 
-export class ContactsToggleTopPeers extends Function<boolean> {
+export class contacts_toggleTopPeers extends Function<boolean> {
   enabled: boolean;
 
   protected get [id]() {
@@ -4135,11 +4139,11 @@ export class ContactsToggleTopPeers extends Function<boolean> {
   }
 }
 
-export class ContactsAddContact extends Function<types.TypeUpdates> {
-  addPhonePrivacyException?: true;
-  id: types.TypeInputUser;
-  firstName: string;
-  lastName: string;
+export class contacts_addContact extends Function<types.Updates> {
+  add_phone_privacy_exception?: true;
+  id: types.InputUser;
+  first_name: string;
+  last_name: string;
   phone: string;
 
   protected get [id]() {
@@ -4149,10 +4153,10 @@ export class ContactsAddContact extends Function<types.TypeUpdates> {
   static get [paramDesc](): ParamDesc {
     return [
       ["flags", flags, "#"],
-      ["addPhonePrivacyException", "true", "flags.0?true"],
-      ["id", types._TypeInputUser, "InputUser"],
-      ["firstName", "string", "string"],
-      ["lastName", "string", "string"],
+      ["add_phone_privacy_exception", "true", "flags.0?true"],
+      ["id", types._InputUser, "InputUser"],
+      ["first_name", "string", "string"],
+      ["last_name", "string", "string"],
       ["phone", "string", "string"],
     ];
   }
@@ -4160,26 +4164,26 @@ export class ContactsAddContact extends Function<types.TypeUpdates> {
   protected get [params](): Params {
     return [
       ["flags", flags, "#"],
-      [this.addPhonePrivacyException ?? null, "true", "flags.0?true"],
-      [this.id, types._TypeInputUser, "InputUser"],
-      [this.firstName, "string", "string"],
-      [this.lastName, "string", "string"],
+      [this.add_phone_privacy_exception ?? null, "true", "flags.0?true"],
+      [this.id, types._InputUser, "InputUser"],
+      [this.first_name, "string", "string"],
+      [this.last_name, "string", "string"],
       [this.phone, "string", "string"],
     ];
   }
 
-  constructor(params: { addPhonePrivacyException?: true; id: types.TypeInputUser; firstName: string; lastName: string; phone: string }) {
+  constructor(params: { add_phone_privacy_exception?: true; id: types.InputUser; first_name: string; last_name: string; phone: string }) {
     super();
-    this.addPhonePrivacyException = params.addPhonePrivacyException;
+    this.add_phone_privacy_exception = params.add_phone_privacy_exception;
     this.id = params.id;
-    this.firstName = params.firstName;
-    this.lastName = params.lastName;
+    this.first_name = params.first_name;
+    this.last_name = params.last_name;
     this.phone = params.phone;
   }
 }
 
-export class ContactsAcceptContact extends Function<types.TypeUpdates> {
-  id: types.TypeInputUser;
+export class contacts_acceptContact extends Function<types.Updates> {
+  id: types.InputUser;
 
   protected get [id]() {
     return 0xF831A20F;
@@ -4187,26 +4191,26 @@ export class ContactsAcceptContact extends Function<types.TypeUpdates> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["id", types._TypeInputUser, "InputUser"],
+      ["id", types._InputUser, "InputUser"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.id, types._TypeInputUser, "InputUser"],
+      [this.id, types._InputUser, "InputUser"],
     ];
   }
 
-  constructor(params: { id: types.TypeInputUser }) {
+  constructor(params: { id: types.InputUser }) {
     super();
     this.id = params.id;
   }
 }
 
-export class ContactsGetLocated extends Function<types.TypeUpdates> {
+export class contacts_getLocated extends Function<types.Updates> {
   background?: true;
-  geoPoint: types.TypeInputGeoPoint;
-  selfExpires?: number;
+  geo_point: types.InputGeoPoint;
+  self_expires?: number;
 
   protected get [id]() {
     return 0xD348BC44;
@@ -4216,8 +4220,8 @@ export class ContactsGetLocated extends Function<types.TypeUpdates> {
     return [
       ["flags", flags, "#"],
       ["background", "true", "flags.1?true"],
-      ["geoPoint", types._TypeInputGeoPoint, "InputGeoPoint"],
-      ["selfExpires", "number", "flags.0?int"],
+      ["geo_point", types._InputGeoPoint, "InputGeoPoint"],
+      ["self_expires", "number", "flags.0?int"],
     ];
   }
 
@@ -4225,24 +4229,24 @@ export class ContactsGetLocated extends Function<types.TypeUpdates> {
     return [
       ["flags", flags, "#"],
       [this.background ?? null, "true", "flags.1?true"],
-      [this.geoPoint, types._TypeInputGeoPoint, "InputGeoPoint"],
-      [this.selfExpires ?? null, "number", "flags.0?int"],
+      [this.geo_point, types._InputGeoPoint, "InputGeoPoint"],
+      [this.self_expires ?? null, "number", "flags.0?int"],
     ];
   }
 
-  constructor(params: { background?: true; geoPoint: types.TypeInputGeoPoint; selfExpires?: number }) {
+  constructor(params: { background?: true; geo_point: types.InputGeoPoint; self_expires?: number }) {
     super();
     this.background = params.background;
-    this.geoPoint = params.geoPoint;
-    this.selfExpires = params.selfExpires;
+    this.geo_point = params.geo_point;
+    this.self_expires = params.self_expires;
   }
 }
 
-export class ContactsBlockFromReplies extends Function<types.TypeUpdates> {
-  deleteMessage?: true;
-  deleteHistory?: true;
-  reportSpam?: true;
-  msgId: number;
+export class contacts_blockFromReplies extends Function<types.Updates> {
+  delete_message?: true;
+  delete_history?: true;
+  report_spam?: true;
+  msg_id: number;
 
   protected get [id]() {
     return 0x29A8962C;
@@ -4251,33 +4255,33 @@ export class ContactsBlockFromReplies extends Function<types.TypeUpdates> {
   static get [paramDesc](): ParamDesc {
     return [
       ["flags", flags, "#"],
-      ["deleteMessage", "true", "flags.0?true"],
-      ["deleteHistory", "true", "flags.1?true"],
-      ["reportSpam", "true", "flags.2?true"],
-      ["msgId", "number", "int"],
+      ["delete_message", "true", "flags.0?true"],
+      ["delete_history", "true", "flags.1?true"],
+      ["report_spam", "true", "flags.2?true"],
+      ["msg_id", "number", "int"],
     ];
   }
 
   protected get [params](): Params {
     return [
       ["flags", flags, "#"],
-      [this.deleteMessage ?? null, "true", "flags.0?true"],
-      [this.deleteHistory ?? null, "true", "flags.1?true"],
-      [this.reportSpam ?? null, "true", "flags.2?true"],
-      [this.msgId, "number", "int"],
+      [this.delete_message ?? null, "true", "flags.0?true"],
+      [this.delete_history ?? null, "true", "flags.1?true"],
+      [this.report_spam ?? null, "true", "flags.2?true"],
+      [this.msg_id, "number", "int"],
     ];
   }
 
-  constructor(params: { deleteMessage?: true; deleteHistory?: true; reportSpam?: true; msgId: number }) {
+  constructor(params: { delete_message?: true; delete_history?: true; report_spam?: true; msg_id: number }) {
     super();
-    this.deleteMessage = params.deleteMessage;
-    this.deleteHistory = params.deleteHistory;
-    this.reportSpam = params.reportSpam;
-    this.msgId = params.msgId;
+    this.delete_message = params.delete_message;
+    this.delete_history = params.delete_history;
+    this.report_spam = params.report_spam;
+    this.msg_id = params.msg_id;
   }
 }
 
-export class ContactsResolvePhone extends Function<types.TypeContactsResolvedPeer> {
+export class contacts_resolvePhone extends Function<types.contacts_ResolvedPeer> {
   phone: string;
 
   protected get [id]() {
@@ -4302,7 +4306,7 @@ export class ContactsResolvePhone extends Function<types.TypeContactsResolvedPee
   }
 }
 
-export class ContactsExportContactToken extends Function<types.TypeExportedContactToken> {
+export class contacts_exportContactToken extends Function<types.ExportedContactToken> {
   protected get [id]() {
     return 0xF8654027;
   }
@@ -4320,7 +4324,7 @@ export class ContactsExportContactToken extends Function<types.TypeExportedConta
   }
 }
 
-export class ContactsImportContactToken extends Function<types.TypeUser> {
+export class contacts_importContactToken extends Function<types.User> {
   token: string;
 
   protected get [id]() {
@@ -4345,7 +4349,7 @@ export class ContactsImportContactToken extends Function<types.TypeUser> {
   }
 }
 
-export class ContactsEditCloseFriends extends Function<boolean> {
+export class contacts_editCloseFriends extends Function<boolean> {
   id: Array<bigint>;
 
   protected get [id]() {
@@ -4370,9 +4374,9 @@ export class ContactsEditCloseFriends extends Function<boolean> {
   }
 }
 
-export class ContactsSetBlocked extends Function<boolean> {
-  myStoriesFrom?: true;
-  id: Array<types.TypeInputPeer>;
+export class contacts_setBlocked extends Function<boolean> {
+  my_stories_from?: true;
+  id: Array<types.InputPeer>;
   limit: number;
 
   protected get [id]() {
@@ -4382,8 +4386,8 @@ export class ContactsSetBlocked extends Function<boolean> {
   static get [paramDesc](): ParamDesc {
     return [
       ["flags", flags, "#"],
-      ["myStoriesFrom", "true", "flags.0?true"],
-      ["id", [types._TypeInputPeer], "Vector<InputPeer>"],
+      ["my_stories_from", "true", "flags.0?true"],
+      ["id", [types._InputPeer], "Vector<InputPeer>"],
       ["limit", "number", "int"],
     ];
   }
@@ -4391,22 +4395,22 @@ export class ContactsSetBlocked extends Function<boolean> {
   protected get [params](): Params {
     return [
       ["flags", flags, "#"],
-      [this.myStoriesFrom ?? null, "true", "flags.0?true"],
-      [this.id, [types._TypeInputPeer], "Vector<InputPeer>"],
+      [this.my_stories_from ?? null, "true", "flags.0?true"],
+      [this.id, [types._InputPeer], "Vector<InputPeer>"],
       [this.limit, "number", "int"],
     ];
   }
 
-  constructor(params: { myStoriesFrom?: true; id: Array<types.TypeInputPeer>; limit: number }) {
+  constructor(params: { my_stories_from?: true; id: Array<types.InputPeer>; limit: number }) {
     super();
-    this.myStoriesFrom = params.myStoriesFrom;
+    this.my_stories_from = params.my_stories_from;
     this.id = params.id;
     this.limit = params.limit;
   }
 }
 
-export class MessagesGetMessages extends Function<types.TypeMessagesMessages> {
-  id: Array<types.TypeInputMessage>;
+export class messages_getMessages extends Function<types.messages_Messages> {
+  id: Array<types.InputMessage>;
 
   protected get [id]() {
     return 0x63C66506;
@@ -4414,28 +4418,28 @@ export class MessagesGetMessages extends Function<types.TypeMessagesMessages> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["id", [types._TypeInputMessage], "Vector<InputMessage>"],
+      ["id", [types._InputMessage], "Vector<InputMessage>"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.id, [types._TypeInputMessage], "Vector<InputMessage>"],
+      [this.id, [types._InputMessage], "Vector<InputMessage>"],
     ];
   }
 
-  constructor(params: { id: Array<types.TypeInputMessage> }) {
+  constructor(params: { id: Array<types.InputMessage> }) {
     super();
     this.id = params.id;
   }
 }
 
-export class MessagesGetDialogs extends Function<types.TypeMessagesDialogs> {
-  excludePinned?: true;
-  folderId?: number;
-  offsetDate: number;
-  offsetId: number;
-  offsetPeer: types.TypeInputPeer;
+export class messages_getDialogs extends Function<types.messages_Dialogs> {
+  exclude_pinned?: true;
+  folder_id?: number;
+  offset_date: number;
+  offset_id: number;
+  offset_peer: types.InputPeer;
   limit: number;
   hash: bigint;
 
@@ -4446,11 +4450,11 @@ export class MessagesGetDialogs extends Function<types.TypeMessagesDialogs> {
   static get [paramDesc](): ParamDesc {
     return [
       ["flags", flags, "#"],
-      ["excludePinned", "true", "flags.0?true"],
-      ["folderId", "number", "flags.1?int"],
-      ["offsetDate", "number", "int"],
-      ["offsetId", "number", "int"],
-      ["offsetPeer", types._TypeInputPeer, "InputPeer"],
+      ["exclude_pinned", "true", "flags.0?true"],
+      ["folder_id", "number", "flags.1?int"],
+      ["offset_date", "number", "int"],
+      ["offset_id", "number", "int"],
+      ["offset_peer", types._InputPeer, "InputPeer"],
       ["limit", "number", "int"],
       ["hash", "bigint", "long"],
     ];
@@ -4459,36 +4463,36 @@ export class MessagesGetDialogs extends Function<types.TypeMessagesDialogs> {
   protected get [params](): Params {
     return [
       ["flags", flags, "#"],
-      [this.excludePinned ?? null, "true", "flags.0?true"],
-      [this.folderId ?? null, "number", "flags.1?int"],
-      [this.offsetDate, "number", "int"],
-      [this.offsetId, "number", "int"],
-      [this.offsetPeer, types._TypeInputPeer, "InputPeer"],
+      [this.exclude_pinned ?? null, "true", "flags.0?true"],
+      [this.folder_id ?? null, "number", "flags.1?int"],
+      [this.offset_date, "number", "int"],
+      [this.offset_id, "number", "int"],
+      [this.offset_peer, types._InputPeer, "InputPeer"],
       [this.limit, "number", "int"],
       [this.hash, "bigint", "long"],
     ];
   }
 
-  constructor(params: { excludePinned?: true; folderId?: number; offsetDate: number; offsetId: number; offsetPeer: types.TypeInputPeer; limit: number; hash: bigint }) {
+  constructor(params: { exclude_pinned?: true; folder_id?: number; offset_date: number; offset_id: number; offset_peer: types.InputPeer; limit: number; hash: bigint }) {
     super();
-    this.excludePinned = params.excludePinned;
-    this.folderId = params.folderId;
-    this.offsetDate = params.offsetDate;
-    this.offsetId = params.offsetId;
-    this.offsetPeer = params.offsetPeer;
+    this.exclude_pinned = params.exclude_pinned;
+    this.folder_id = params.folder_id;
+    this.offset_date = params.offset_date;
+    this.offset_id = params.offset_id;
+    this.offset_peer = params.offset_peer;
     this.limit = params.limit;
     this.hash = params.hash;
   }
 }
 
-export class MessagesGetHistory extends Function<types.TypeMessagesMessages> {
-  peer: types.TypeInputPeer;
-  offsetId: number;
-  offsetDate: number;
-  addOffset: number;
+export class messages_getHistory extends Function<types.messages_Messages> {
+  peer: types.InputPeer;
+  offset_id: number;
+  offset_date: number;
+  add_offset: number;
   limit: number;
-  maxId: number;
-  minId: number;
+  max_id: number;
+  min_id: number;
   hash: bigint;
 
   protected get [id]() {
@@ -4497,56 +4501,56 @@ export class MessagesGetHistory extends Function<types.TypeMessagesMessages> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["peer", types._TypeInputPeer, "InputPeer"],
-      ["offsetId", "number", "int"],
-      ["offsetDate", "number", "int"],
-      ["addOffset", "number", "int"],
+      ["peer", types._InputPeer, "InputPeer"],
+      ["offset_id", "number", "int"],
+      ["offset_date", "number", "int"],
+      ["add_offset", "number", "int"],
       ["limit", "number", "int"],
-      ["maxId", "number", "int"],
-      ["minId", "number", "int"],
+      ["max_id", "number", "int"],
+      ["min_id", "number", "int"],
       ["hash", "bigint", "long"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.peer, types._TypeInputPeer, "InputPeer"],
-      [this.offsetId, "number", "int"],
-      [this.offsetDate, "number", "int"],
-      [this.addOffset, "number", "int"],
+      [this.peer, types._InputPeer, "InputPeer"],
+      [this.offset_id, "number", "int"],
+      [this.offset_date, "number", "int"],
+      [this.add_offset, "number", "int"],
       [this.limit, "number", "int"],
-      [this.maxId, "number", "int"],
-      [this.minId, "number", "int"],
+      [this.max_id, "number", "int"],
+      [this.min_id, "number", "int"],
       [this.hash, "bigint", "long"],
     ];
   }
 
-  constructor(params: { peer: types.TypeInputPeer; offsetId: number; offsetDate: number; addOffset: number; limit: number; maxId: number; minId: number; hash: bigint }) {
+  constructor(params: { peer: types.InputPeer; offset_id: number; offset_date: number; add_offset: number; limit: number; max_id: number; min_id: number; hash: bigint }) {
     super();
     this.peer = params.peer;
-    this.offsetId = params.offsetId;
-    this.offsetDate = params.offsetDate;
-    this.addOffset = params.addOffset;
+    this.offset_id = params.offset_id;
+    this.offset_date = params.offset_date;
+    this.add_offset = params.add_offset;
     this.limit = params.limit;
-    this.maxId = params.maxId;
-    this.minId = params.minId;
+    this.max_id = params.max_id;
+    this.min_id = params.min_id;
     this.hash = params.hash;
   }
 }
 
-export class MessagesSearch extends Function<types.TypeMessagesMessages> {
-  peer: types.TypeInputPeer;
+export class messages_search extends Function<types.messages_Messages> {
+  peer: types.InputPeer;
   q: string;
-  fromId?: types.TypeInputPeer;
-  topMsgId?: number;
-  filter: types.TypeMessagesFilter;
-  minDate: number;
-  maxDate: number;
-  offsetId: number;
-  addOffset: number;
+  from_id?: types.InputPeer;
+  top_msg_id?: number;
+  filter: types.MessagesFilter;
+  min_date: number;
+  max_date: number;
+  offset_id: number;
+  add_offset: number;
   limit: number;
-  maxId: number;
-  minId: number;
+  max_id: number;
+  min_id: number;
   hash: bigint;
 
   protected get [id]() {
@@ -4556,18 +4560,18 @@ export class MessagesSearch extends Function<types.TypeMessagesMessages> {
   static get [paramDesc](): ParamDesc {
     return [
       ["flags", flags, "#"],
-      ["peer", types._TypeInputPeer, "InputPeer"],
+      ["peer", types._InputPeer, "InputPeer"],
       ["q", "string", "string"],
-      ["fromId", types._TypeInputPeer, "flags.0?InputPeer"],
-      ["topMsgId", "number", "flags.1?int"],
-      ["filter", types._TypeMessagesFilter, "MessagesFilter"],
-      ["minDate", "number", "int"],
-      ["maxDate", "number", "int"],
-      ["offsetId", "number", "int"],
-      ["addOffset", "number", "int"],
+      ["from_id", types._InputPeer, "flags.0?InputPeer"],
+      ["top_msg_id", "number", "flags.1?int"],
+      ["filter", types._MessagesFilter, "MessagesFilter"],
+      ["min_date", "number", "int"],
+      ["max_date", "number", "int"],
+      ["offset_id", "number", "int"],
+      ["add_offset", "number", "int"],
       ["limit", "number", "int"],
-      ["maxId", "number", "int"],
-      ["minId", "number", "int"],
+      ["max_id", "number", "int"],
+      ["min_id", "number", "int"],
       ["hash", "bigint", "long"],
     ];
   }
@@ -4575,43 +4579,43 @@ export class MessagesSearch extends Function<types.TypeMessagesMessages> {
   protected get [params](): Params {
     return [
       ["flags", flags, "#"],
-      [this.peer, types._TypeInputPeer, "InputPeer"],
+      [this.peer, types._InputPeer, "InputPeer"],
       [this.q, "string", "string"],
-      [this.fromId ?? null, types._TypeInputPeer, "flags.0?InputPeer"],
-      [this.topMsgId ?? null, "number", "flags.1?int"],
-      [this.filter, types._TypeMessagesFilter, "MessagesFilter"],
-      [this.minDate, "number", "int"],
-      [this.maxDate, "number", "int"],
-      [this.offsetId, "number", "int"],
-      [this.addOffset, "number", "int"],
+      [this.from_id ?? null, types._InputPeer, "flags.0?InputPeer"],
+      [this.top_msg_id ?? null, "number", "flags.1?int"],
+      [this.filter, types._MessagesFilter, "MessagesFilter"],
+      [this.min_date, "number", "int"],
+      [this.max_date, "number", "int"],
+      [this.offset_id, "number", "int"],
+      [this.add_offset, "number", "int"],
       [this.limit, "number", "int"],
-      [this.maxId, "number", "int"],
-      [this.minId, "number", "int"],
+      [this.max_id, "number", "int"],
+      [this.min_id, "number", "int"],
       [this.hash, "bigint", "long"],
     ];
   }
 
-  constructor(params: { peer: types.TypeInputPeer; q: string; fromId?: types.TypeInputPeer; topMsgId?: number; filter: types.TypeMessagesFilter; minDate: number; maxDate: number; offsetId: number; addOffset: number; limit: number; maxId: number; minId: number; hash: bigint }) {
+  constructor(params: { peer: types.InputPeer; q: string; from_id?: types.InputPeer; top_msg_id?: number; filter: types.MessagesFilter; min_date: number; max_date: number; offset_id: number; add_offset: number; limit: number; max_id: number; min_id: number; hash: bigint }) {
     super();
     this.peer = params.peer;
     this.q = params.q;
-    this.fromId = params.fromId;
-    this.topMsgId = params.topMsgId;
+    this.from_id = params.from_id;
+    this.top_msg_id = params.top_msg_id;
     this.filter = params.filter;
-    this.minDate = params.minDate;
-    this.maxDate = params.maxDate;
-    this.offsetId = params.offsetId;
-    this.addOffset = params.addOffset;
+    this.min_date = params.min_date;
+    this.max_date = params.max_date;
+    this.offset_id = params.offset_id;
+    this.add_offset = params.add_offset;
     this.limit = params.limit;
-    this.maxId = params.maxId;
-    this.minId = params.minId;
+    this.max_id = params.max_id;
+    this.min_id = params.min_id;
     this.hash = params.hash;
   }
 }
 
-export class MessagesReadHistory extends Function<types.TypeMessagesAffectedMessages> {
-  peer: types.TypeInputPeer;
-  maxId: number;
+export class messages_readHistory extends Function<types.messages_AffectedMessages> {
+  peer: types.InputPeer;
+  max_id: number;
 
   protected get [id]() {
     return 0x0E306D3A;
@@ -4619,32 +4623,32 @@ export class MessagesReadHistory extends Function<types.TypeMessagesAffectedMess
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["peer", types._TypeInputPeer, "InputPeer"],
-      ["maxId", "number", "int"],
+      ["peer", types._InputPeer, "InputPeer"],
+      ["max_id", "number", "int"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.peer, types._TypeInputPeer, "InputPeer"],
-      [this.maxId, "number", "int"],
+      [this.peer, types._InputPeer, "InputPeer"],
+      [this.max_id, "number", "int"],
     ];
   }
 
-  constructor(params: { peer: types.TypeInputPeer; maxId: number }) {
+  constructor(params: { peer: types.InputPeer; max_id: number }) {
     super();
     this.peer = params.peer;
-    this.maxId = params.maxId;
+    this.max_id = params.max_id;
   }
 }
 
-export class MessagesDeleteHistory extends Function<types.TypeMessagesAffectedHistory> {
-  justClear?: true;
+export class messages_deleteHistory extends Function<types.messages_AffectedHistory> {
+  just_clear?: true;
   revoke?: true;
-  peer: types.TypeInputPeer;
-  maxId: number;
-  minDate?: number;
-  maxDate?: number;
+  peer: types.InputPeer;
+  max_id: number;
+  min_date?: number;
+  max_date?: number;
 
   protected get [id]() {
     return 0xB08F922A;
@@ -4653,39 +4657,39 @@ export class MessagesDeleteHistory extends Function<types.TypeMessagesAffectedHi
   static get [paramDesc](): ParamDesc {
     return [
       ["flags", flags, "#"],
-      ["justClear", "true", "flags.0?true"],
+      ["just_clear", "true", "flags.0?true"],
       ["revoke", "true", "flags.1?true"],
-      ["peer", types._TypeInputPeer, "InputPeer"],
-      ["maxId", "number", "int"],
-      ["minDate", "number", "flags.2?int"],
-      ["maxDate", "number", "flags.3?int"],
+      ["peer", types._InputPeer, "InputPeer"],
+      ["max_id", "number", "int"],
+      ["min_date", "number", "flags.2?int"],
+      ["max_date", "number", "flags.3?int"],
     ];
   }
 
   protected get [params](): Params {
     return [
       ["flags", flags, "#"],
-      [this.justClear ?? null, "true", "flags.0?true"],
+      [this.just_clear ?? null, "true", "flags.0?true"],
       [this.revoke ?? null, "true", "flags.1?true"],
-      [this.peer, types._TypeInputPeer, "InputPeer"],
-      [this.maxId, "number", "int"],
-      [this.minDate ?? null, "number", "flags.2?int"],
-      [this.maxDate ?? null, "number", "flags.3?int"],
+      [this.peer, types._InputPeer, "InputPeer"],
+      [this.max_id, "number", "int"],
+      [this.min_date ?? null, "number", "flags.2?int"],
+      [this.max_date ?? null, "number", "flags.3?int"],
     ];
   }
 
-  constructor(params: { justClear?: true; revoke?: true; peer: types.TypeInputPeer; maxId: number; minDate?: number; maxDate?: number }) {
+  constructor(params: { just_clear?: true; revoke?: true; peer: types.InputPeer; max_id: number; min_date?: number; max_date?: number }) {
     super();
-    this.justClear = params.justClear;
+    this.just_clear = params.just_clear;
     this.revoke = params.revoke;
     this.peer = params.peer;
-    this.maxId = params.maxId;
-    this.minDate = params.minDate;
-    this.maxDate = params.maxDate;
+    this.max_id = params.max_id;
+    this.min_date = params.min_date;
+    this.max_date = params.max_date;
   }
 }
 
-export class MessagesDeleteMessages extends Function<types.TypeMessagesAffectedMessages> {
+export class messages_deleteMessages extends Function<types.messages_AffectedMessages> {
   revoke?: true;
   id: Array<number>;
 
@@ -4716,8 +4720,8 @@ export class MessagesDeleteMessages extends Function<types.TypeMessagesAffectedM
   }
 }
 
-export class MessagesReceivedMessages extends Function<types.TypeReceivedNotifyMessage[]> {
-  maxId: number;
+export class messages_receivedMessages extends Function<types.ReceivedNotifyMessage[]> {
+  max_id: number;
 
   protected get [id]() {
     return 0x05A954C0;
@@ -4725,26 +4729,26 @@ export class MessagesReceivedMessages extends Function<types.TypeReceivedNotifyM
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["maxId", "number", "int"],
+      ["max_id", "number", "int"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.maxId, "number", "int"],
+      [this.max_id, "number", "int"],
     ];
   }
 
-  constructor(params: { maxId: number }) {
+  constructor(params: { max_id: number }) {
     super();
-    this.maxId = params.maxId;
+    this.max_id = params.max_id;
   }
 }
 
-export class MessagesSetTyping extends Function<boolean> {
-  peer: types.TypeInputPeer;
-  topMsgId?: number;
-  action: types.TypeSendMessageAction;
+export class messages_setTyping extends Function<boolean> {
+  peer: types.InputPeer;
+  top_msg_id?: number;
+  action: types.SendMessageAction;
 
   protected get [id]() {
     return 0x58943EE2;
@@ -4753,45 +4757,45 @@ export class MessagesSetTyping extends Function<boolean> {
   static get [paramDesc](): ParamDesc {
     return [
       ["flags", flags, "#"],
-      ["peer", types._TypeInputPeer, "InputPeer"],
-      ["topMsgId", "number", "flags.0?int"],
-      ["action", types._TypeSendMessageAction, "SendMessageAction"],
+      ["peer", types._InputPeer, "InputPeer"],
+      ["top_msg_id", "number", "flags.0?int"],
+      ["action", types._SendMessageAction, "SendMessageAction"],
     ];
   }
 
   protected get [params](): Params {
     return [
       ["flags", flags, "#"],
-      [this.peer, types._TypeInputPeer, "InputPeer"],
-      [this.topMsgId ?? null, "number", "flags.0?int"],
-      [this.action, types._TypeSendMessageAction, "SendMessageAction"],
+      [this.peer, types._InputPeer, "InputPeer"],
+      [this.top_msg_id ?? null, "number", "flags.0?int"],
+      [this.action, types._SendMessageAction, "SendMessageAction"],
     ];
   }
 
-  constructor(params: { peer: types.TypeInputPeer; topMsgId?: number; action: types.TypeSendMessageAction }) {
+  constructor(params: { peer: types.InputPeer; top_msg_id?: number; action: types.SendMessageAction }) {
     super();
     this.peer = params.peer;
-    this.topMsgId = params.topMsgId;
+    this.top_msg_id = params.top_msg_id;
     this.action = params.action;
   }
 }
 
-export class MessagesSendMessage extends Function<types.TypeUpdates> {
-  noWebpage?: true;
+export class messages_sendMessage extends Function<types.Updates> {
+  no_webpage?: true;
   silent?: true;
   background?: true;
-  clearDraft?: true;
+  clear_draft?: true;
   noforwards?: true;
-  updateStickersetsOrder?: true;
-  invertMedia?: true;
-  peer: types.TypeInputPeer;
-  replyTo?: types.TypeInputReplyTo;
+  update_stickersets_order?: true;
+  invert_media?: true;
+  peer: types.InputPeer;
+  reply_to?: types.InputReplyTo;
   message: string;
-  randomId: bigint;
-  replyMarkup?: types.TypeReplyMarkup;
-  entities?: Array<types.TypeMessageEntity>;
-  scheduleDate?: number;
-  sendAs?: types.TypeInputPeer;
+  random_id: bigint;
+  reply_markup?: types.ReplyMarkup;
+  entities?: Array<types.MessageEntity>;
+  schedule_date?: number;
+  send_as?: types.InputPeer;
 
   protected get [id]() {
     return 0x280D096F;
@@ -4800,81 +4804,81 @@ export class MessagesSendMessage extends Function<types.TypeUpdates> {
   static get [paramDesc](): ParamDesc {
     return [
       ["flags", flags, "#"],
-      ["noWebpage", "true", "flags.1?true"],
+      ["no_webpage", "true", "flags.1?true"],
       ["silent", "true", "flags.5?true"],
       ["background", "true", "flags.6?true"],
-      ["clearDraft", "true", "flags.7?true"],
+      ["clear_draft", "true", "flags.7?true"],
       ["noforwards", "true", "flags.14?true"],
-      ["updateStickersetsOrder", "true", "flags.15?true"],
-      ["invertMedia", "true", "flags.16?true"],
-      ["peer", types._TypeInputPeer, "InputPeer"],
-      ["replyTo", types._TypeInputReplyTo, "flags.0?InputReplyTo"],
+      ["update_stickersets_order", "true", "flags.15?true"],
+      ["invert_media", "true", "flags.16?true"],
+      ["peer", types._InputPeer, "InputPeer"],
+      ["reply_to", types._InputReplyTo, "flags.0?InputReplyTo"],
       ["message", "string", "string"],
-      ["randomId", "bigint", "long"],
-      ["replyMarkup", types._TypeReplyMarkup, "flags.2?ReplyMarkup"],
-      ["entities", [types._TypeMessageEntity], "flags.3?Vector<MessageEntity>"],
-      ["scheduleDate", "number", "flags.10?int"],
-      ["sendAs", types._TypeInputPeer, "flags.13?InputPeer"],
+      ["random_id", "bigint", "long"],
+      ["reply_markup", types._ReplyMarkup, "flags.2?ReplyMarkup"],
+      ["entities", [types._MessageEntity], "flags.3?Vector<MessageEntity>"],
+      ["schedule_date", "number", "flags.10?int"],
+      ["send_as", types._InputPeer, "flags.13?InputPeer"],
     ];
   }
 
   protected get [params](): Params {
     return [
       ["flags", flags, "#"],
-      [this.noWebpage ?? null, "true", "flags.1?true"],
+      [this.no_webpage ?? null, "true", "flags.1?true"],
       [this.silent ?? null, "true", "flags.5?true"],
       [this.background ?? null, "true", "flags.6?true"],
-      [this.clearDraft ?? null, "true", "flags.7?true"],
+      [this.clear_draft ?? null, "true", "flags.7?true"],
       [this.noforwards ?? null, "true", "flags.14?true"],
-      [this.updateStickersetsOrder ?? null, "true", "flags.15?true"],
-      [this.invertMedia ?? null, "true", "flags.16?true"],
-      [this.peer, types._TypeInputPeer, "InputPeer"],
-      [this.replyTo ?? null, types._TypeInputReplyTo, "flags.0?InputReplyTo"],
+      [this.update_stickersets_order ?? null, "true", "flags.15?true"],
+      [this.invert_media ?? null, "true", "flags.16?true"],
+      [this.peer, types._InputPeer, "InputPeer"],
+      [this.reply_to ?? null, types._InputReplyTo, "flags.0?InputReplyTo"],
       [this.message, "string", "string"],
-      [this.randomId, "bigint", "long"],
-      [this.replyMarkup ?? null, types._TypeReplyMarkup, "flags.2?ReplyMarkup"],
-      [this.entities ?? null, [types._TypeMessageEntity], "flags.3?Vector<MessageEntity>"],
-      [this.scheduleDate ?? null, "number", "flags.10?int"],
-      [this.sendAs ?? null, types._TypeInputPeer, "flags.13?InputPeer"],
+      [this.random_id, "bigint", "long"],
+      [this.reply_markup ?? null, types._ReplyMarkup, "flags.2?ReplyMarkup"],
+      [this.entities ?? null, [types._MessageEntity], "flags.3?Vector<MessageEntity>"],
+      [this.schedule_date ?? null, "number", "flags.10?int"],
+      [this.send_as ?? null, types._InputPeer, "flags.13?InputPeer"],
     ];
   }
 
-  constructor(params: { noWebpage?: true; silent?: true; background?: true; clearDraft?: true; noforwards?: true; updateStickersetsOrder?: true; invertMedia?: true; peer: types.TypeInputPeer; replyTo?: types.TypeInputReplyTo; message: string; randomId: bigint; replyMarkup?: types.TypeReplyMarkup; entities?: Array<types.TypeMessageEntity>; scheduleDate?: number; sendAs?: types.TypeInputPeer }) {
+  constructor(params: { no_webpage?: true; silent?: true; background?: true; clear_draft?: true; noforwards?: true; update_stickersets_order?: true; invert_media?: true; peer: types.InputPeer; reply_to?: types.InputReplyTo; message: string; random_id: bigint; reply_markup?: types.ReplyMarkup; entities?: Array<types.MessageEntity>; schedule_date?: number; send_as?: types.InputPeer }) {
     super();
-    this.noWebpage = params.noWebpage;
+    this.no_webpage = params.no_webpage;
     this.silent = params.silent;
     this.background = params.background;
-    this.clearDraft = params.clearDraft;
+    this.clear_draft = params.clear_draft;
     this.noforwards = params.noforwards;
-    this.updateStickersetsOrder = params.updateStickersetsOrder;
-    this.invertMedia = params.invertMedia;
+    this.update_stickersets_order = params.update_stickersets_order;
+    this.invert_media = params.invert_media;
     this.peer = params.peer;
-    this.replyTo = params.replyTo;
+    this.reply_to = params.reply_to;
     this.message = params.message;
-    this.randomId = params.randomId;
-    this.replyMarkup = params.replyMarkup;
+    this.random_id = params.random_id;
+    this.reply_markup = params.reply_markup;
     this.entities = params.entities;
-    this.scheduleDate = params.scheduleDate;
-    this.sendAs = params.sendAs;
+    this.schedule_date = params.schedule_date;
+    this.send_as = params.send_as;
   }
 }
 
-export class MessagesSendMedia extends Function<types.TypeUpdates> {
+export class messages_sendMedia extends Function<types.Updates> {
   silent?: true;
   background?: true;
-  clearDraft?: true;
+  clear_draft?: true;
   noforwards?: true;
-  updateStickersetsOrder?: true;
-  invertMedia?: true;
-  peer: types.TypeInputPeer;
-  replyTo?: types.TypeInputReplyTo;
-  media: types.TypeInputMedia;
+  update_stickersets_order?: true;
+  invert_media?: true;
+  peer: types.InputPeer;
+  reply_to?: types.InputReplyTo;
+  media: types.InputMedia;
   message: string;
-  randomId: bigint;
-  replyMarkup?: types.TypeReplyMarkup;
-  entities?: Array<types.TypeMessageEntity>;
-  scheduleDate?: number;
-  sendAs?: types.TypeInputPeer;
+  random_id: bigint;
+  reply_markup?: types.ReplyMarkup;
+  entities?: Array<types.MessageEntity>;
+  schedule_date?: number;
+  send_as?: types.InputPeer;
 
   protected get [id]() {
     return 0x72CCC23D;
@@ -4885,19 +4889,19 @@ export class MessagesSendMedia extends Function<types.TypeUpdates> {
       ["flags", flags, "#"],
       ["silent", "true", "flags.5?true"],
       ["background", "true", "flags.6?true"],
-      ["clearDraft", "true", "flags.7?true"],
+      ["clear_draft", "true", "flags.7?true"],
       ["noforwards", "true", "flags.14?true"],
-      ["updateStickersetsOrder", "true", "flags.15?true"],
-      ["invertMedia", "true", "flags.16?true"],
-      ["peer", types._TypeInputPeer, "InputPeer"],
-      ["replyTo", types._TypeInputReplyTo, "flags.0?InputReplyTo"],
-      ["media", types._TypeInputMedia, "InputMedia"],
+      ["update_stickersets_order", "true", "flags.15?true"],
+      ["invert_media", "true", "flags.16?true"],
+      ["peer", types._InputPeer, "InputPeer"],
+      ["reply_to", types._InputReplyTo, "flags.0?InputReplyTo"],
+      ["media", types._InputMedia, "InputMedia"],
       ["message", "string", "string"],
-      ["randomId", "bigint", "long"],
-      ["replyMarkup", types._TypeReplyMarkup, "flags.2?ReplyMarkup"],
-      ["entities", [types._TypeMessageEntity], "flags.3?Vector<MessageEntity>"],
-      ["scheduleDate", "number", "flags.10?int"],
-      ["sendAs", types._TypeInputPeer, "flags.13?InputPeer"],
+      ["random_id", "bigint", "long"],
+      ["reply_markup", types._ReplyMarkup, "flags.2?ReplyMarkup"],
+      ["entities", [types._MessageEntity], "flags.3?Vector<MessageEntity>"],
+      ["schedule_date", "number", "flags.10?int"],
+      ["send_as", types._InputPeer, "flags.13?InputPeer"],
     ];
   }
 
@@ -4906,56 +4910,56 @@ export class MessagesSendMedia extends Function<types.TypeUpdates> {
       ["flags", flags, "#"],
       [this.silent ?? null, "true", "flags.5?true"],
       [this.background ?? null, "true", "flags.6?true"],
-      [this.clearDraft ?? null, "true", "flags.7?true"],
+      [this.clear_draft ?? null, "true", "flags.7?true"],
       [this.noforwards ?? null, "true", "flags.14?true"],
-      [this.updateStickersetsOrder ?? null, "true", "flags.15?true"],
-      [this.invertMedia ?? null, "true", "flags.16?true"],
-      [this.peer, types._TypeInputPeer, "InputPeer"],
-      [this.replyTo ?? null, types._TypeInputReplyTo, "flags.0?InputReplyTo"],
-      [this.media, types._TypeInputMedia, "InputMedia"],
+      [this.update_stickersets_order ?? null, "true", "flags.15?true"],
+      [this.invert_media ?? null, "true", "flags.16?true"],
+      [this.peer, types._InputPeer, "InputPeer"],
+      [this.reply_to ?? null, types._InputReplyTo, "flags.0?InputReplyTo"],
+      [this.media, types._InputMedia, "InputMedia"],
       [this.message, "string", "string"],
-      [this.randomId, "bigint", "long"],
-      [this.replyMarkup ?? null, types._TypeReplyMarkup, "flags.2?ReplyMarkup"],
-      [this.entities ?? null, [types._TypeMessageEntity], "flags.3?Vector<MessageEntity>"],
-      [this.scheduleDate ?? null, "number", "flags.10?int"],
-      [this.sendAs ?? null, types._TypeInputPeer, "flags.13?InputPeer"],
+      [this.random_id, "bigint", "long"],
+      [this.reply_markup ?? null, types._ReplyMarkup, "flags.2?ReplyMarkup"],
+      [this.entities ?? null, [types._MessageEntity], "flags.3?Vector<MessageEntity>"],
+      [this.schedule_date ?? null, "number", "flags.10?int"],
+      [this.send_as ?? null, types._InputPeer, "flags.13?InputPeer"],
     ];
   }
 
-  constructor(params: { silent?: true; background?: true; clearDraft?: true; noforwards?: true; updateStickersetsOrder?: true; invertMedia?: true; peer: types.TypeInputPeer; replyTo?: types.TypeInputReplyTo; media: types.TypeInputMedia; message: string; randomId: bigint; replyMarkup?: types.TypeReplyMarkup; entities?: Array<types.TypeMessageEntity>; scheduleDate?: number; sendAs?: types.TypeInputPeer }) {
+  constructor(params: { silent?: true; background?: true; clear_draft?: true; noforwards?: true; update_stickersets_order?: true; invert_media?: true; peer: types.InputPeer; reply_to?: types.InputReplyTo; media: types.InputMedia; message: string; random_id: bigint; reply_markup?: types.ReplyMarkup; entities?: Array<types.MessageEntity>; schedule_date?: number; send_as?: types.InputPeer }) {
     super();
     this.silent = params.silent;
     this.background = params.background;
-    this.clearDraft = params.clearDraft;
+    this.clear_draft = params.clear_draft;
     this.noforwards = params.noforwards;
-    this.updateStickersetsOrder = params.updateStickersetsOrder;
-    this.invertMedia = params.invertMedia;
+    this.update_stickersets_order = params.update_stickersets_order;
+    this.invert_media = params.invert_media;
     this.peer = params.peer;
-    this.replyTo = params.replyTo;
+    this.reply_to = params.reply_to;
     this.media = params.media;
     this.message = params.message;
-    this.randomId = params.randomId;
-    this.replyMarkup = params.replyMarkup;
+    this.random_id = params.random_id;
+    this.reply_markup = params.reply_markup;
     this.entities = params.entities;
-    this.scheduleDate = params.scheduleDate;
-    this.sendAs = params.sendAs;
+    this.schedule_date = params.schedule_date;
+    this.send_as = params.send_as;
   }
 }
 
-export class MessagesForwardMessages extends Function<types.TypeUpdates> {
+export class messages_forwardMessages extends Function<types.Updates> {
   silent?: true;
   background?: true;
-  withMyScore?: true;
-  dropAuthor?: true;
-  dropMediaCaptions?: true;
+  with_my_score?: true;
+  drop_author?: true;
+  drop_media_captions?: true;
   noforwards?: true;
-  fromPeer: types.TypeInputPeer;
+  from_peer: types.InputPeer;
   id: Array<number>;
-  randomId: Array<bigint>;
-  toPeer: types.TypeInputPeer;
-  topMsgId?: number;
-  scheduleDate?: number;
-  sendAs?: types.TypeInputPeer;
+  random_id: Array<bigint>;
+  to_peer: types.InputPeer;
+  top_msg_id?: number;
+  schedule_date?: number;
+  send_as?: types.InputPeer;
 
   protected get [id]() {
     return 0xC661BBC4;
@@ -4966,17 +4970,17 @@ export class MessagesForwardMessages extends Function<types.TypeUpdates> {
       ["flags", flags, "#"],
       ["silent", "true", "flags.5?true"],
       ["background", "true", "flags.6?true"],
-      ["withMyScore", "true", "flags.8?true"],
-      ["dropAuthor", "true", "flags.11?true"],
-      ["dropMediaCaptions", "true", "flags.12?true"],
+      ["with_my_score", "true", "flags.8?true"],
+      ["drop_author", "true", "flags.11?true"],
+      ["drop_media_captions", "true", "flags.12?true"],
       ["noforwards", "true", "flags.14?true"],
-      ["fromPeer", types._TypeInputPeer, "InputPeer"],
+      ["from_peer", types._InputPeer, "InputPeer"],
       ["id", ["number"], "Vector<int>"],
-      ["randomId", ["bigint"], "Vector<long>"],
-      ["toPeer", types._TypeInputPeer, "InputPeer"],
-      ["topMsgId", "number", "flags.9?int"],
-      ["scheduleDate", "number", "flags.10?int"],
-      ["sendAs", types._TypeInputPeer, "flags.13?InputPeer"],
+      ["random_id", ["bigint"], "Vector<long>"],
+      ["to_peer", types._InputPeer, "InputPeer"],
+      ["top_msg_id", "number", "flags.9?int"],
+      ["schedule_date", "number", "flags.10?int"],
+      ["send_as", types._InputPeer, "flags.13?InputPeer"],
     ];
   }
 
@@ -4985,40 +4989,40 @@ export class MessagesForwardMessages extends Function<types.TypeUpdates> {
       ["flags", flags, "#"],
       [this.silent ?? null, "true", "flags.5?true"],
       [this.background ?? null, "true", "flags.6?true"],
-      [this.withMyScore ?? null, "true", "flags.8?true"],
-      [this.dropAuthor ?? null, "true", "flags.11?true"],
-      [this.dropMediaCaptions ?? null, "true", "flags.12?true"],
+      [this.with_my_score ?? null, "true", "flags.8?true"],
+      [this.drop_author ?? null, "true", "flags.11?true"],
+      [this.drop_media_captions ?? null, "true", "flags.12?true"],
       [this.noforwards ?? null, "true", "flags.14?true"],
-      [this.fromPeer, types._TypeInputPeer, "InputPeer"],
+      [this.from_peer, types._InputPeer, "InputPeer"],
       [this.id, ["number"], "Vector<int>"],
-      [this.randomId, ["bigint"], "Vector<long>"],
-      [this.toPeer, types._TypeInputPeer, "InputPeer"],
-      [this.topMsgId ?? null, "number", "flags.9?int"],
-      [this.scheduleDate ?? null, "number", "flags.10?int"],
-      [this.sendAs ?? null, types._TypeInputPeer, "flags.13?InputPeer"],
+      [this.random_id, ["bigint"], "Vector<long>"],
+      [this.to_peer, types._InputPeer, "InputPeer"],
+      [this.top_msg_id ?? null, "number", "flags.9?int"],
+      [this.schedule_date ?? null, "number", "flags.10?int"],
+      [this.send_as ?? null, types._InputPeer, "flags.13?InputPeer"],
     ];
   }
 
-  constructor(params: { silent?: true; background?: true; withMyScore?: true; dropAuthor?: true; dropMediaCaptions?: true; noforwards?: true; fromPeer: types.TypeInputPeer; id: Array<number>; randomId: Array<bigint>; toPeer: types.TypeInputPeer; topMsgId?: number; scheduleDate?: number; sendAs?: types.TypeInputPeer }) {
+  constructor(params: { silent?: true; background?: true; with_my_score?: true; drop_author?: true; drop_media_captions?: true; noforwards?: true; from_peer: types.InputPeer; id: Array<number>; random_id: Array<bigint>; to_peer: types.InputPeer; top_msg_id?: number; schedule_date?: number; send_as?: types.InputPeer }) {
     super();
     this.silent = params.silent;
     this.background = params.background;
-    this.withMyScore = params.withMyScore;
-    this.dropAuthor = params.dropAuthor;
-    this.dropMediaCaptions = params.dropMediaCaptions;
+    this.with_my_score = params.with_my_score;
+    this.drop_author = params.drop_author;
+    this.drop_media_captions = params.drop_media_captions;
     this.noforwards = params.noforwards;
-    this.fromPeer = params.fromPeer;
+    this.from_peer = params.from_peer;
     this.id = params.id;
-    this.randomId = params.randomId;
-    this.toPeer = params.toPeer;
-    this.topMsgId = params.topMsgId;
-    this.scheduleDate = params.scheduleDate;
-    this.sendAs = params.sendAs;
+    this.random_id = params.random_id;
+    this.to_peer = params.to_peer;
+    this.top_msg_id = params.top_msg_id;
+    this.schedule_date = params.schedule_date;
+    this.send_as = params.send_as;
   }
 }
 
-export class MessagesReportSpam extends Function<boolean> {
-  peer: types.TypeInputPeer;
+export class messages_reportSpam extends Function<boolean> {
+  peer: types.InputPeer;
 
   protected get [id]() {
     return 0xCF1592DB;
@@ -5026,24 +5030,24 @@ export class MessagesReportSpam extends Function<boolean> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["peer", types._TypeInputPeer, "InputPeer"],
+      ["peer", types._InputPeer, "InputPeer"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.peer, types._TypeInputPeer, "InputPeer"],
+      [this.peer, types._InputPeer, "InputPeer"],
     ];
   }
 
-  constructor(params: { peer: types.TypeInputPeer }) {
+  constructor(params: { peer: types.InputPeer }) {
     super();
     this.peer = params.peer;
   }
 }
 
-export class MessagesGetPeerSettings extends Function<types.TypeMessagesPeerSettings> {
-  peer: types.TypeInputPeer;
+export class messages_getPeerSettings extends Function<types.messages_PeerSettings> {
+  peer: types.InputPeer;
 
   protected get [id]() {
     return 0xEFD9A6A2;
@@ -5051,26 +5055,26 @@ export class MessagesGetPeerSettings extends Function<types.TypeMessagesPeerSett
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["peer", types._TypeInputPeer, "InputPeer"],
+      ["peer", types._InputPeer, "InputPeer"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.peer, types._TypeInputPeer, "InputPeer"],
+      [this.peer, types._InputPeer, "InputPeer"],
     ];
   }
 
-  constructor(params: { peer: types.TypeInputPeer }) {
+  constructor(params: { peer: types.InputPeer }) {
     super();
     this.peer = params.peer;
   }
 }
 
-export class MessagesReport extends Function<boolean> {
-  peer: types.TypeInputPeer;
+export class messages_report extends Function<boolean> {
+  peer: types.InputPeer;
   id: Array<number>;
-  reason: types.TypeReportReason;
+  reason: types.ReportReason;
   message: string;
 
   protected get [id]() {
@@ -5079,23 +5083,23 @@ export class MessagesReport extends Function<boolean> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["peer", types._TypeInputPeer, "InputPeer"],
+      ["peer", types._InputPeer, "InputPeer"],
       ["id", ["number"], "Vector<int>"],
-      ["reason", types._TypeReportReason, "ReportReason"],
+      ["reason", types._ReportReason, "ReportReason"],
       ["message", "string", "string"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.peer, types._TypeInputPeer, "InputPeer"],
+      [this.peer, types._InputPeer, "InputPeer"],
       [this.id, ["number"], "Vector<int>"],
-      [this.reason, types._TypeReportReason, "ReportReason"],
+      [this.reason, types._ReportReason, "ReportReason"],
       [this.message, "string", "string"],
     ];
   }
 
-  constructor(params: { peer: types.TypeInputPeer; id: Array<number>; reason: types.TypeReportReason; message: string }) {
+  constructor(params: { peer: types.InputPeer; id: Array<number>; reason: types.ReportReason; message: string }) {
     super();
     this.peer = params.peer;
     this.id = params.id;
@@ -5104,7 +5108,7 @@ export class MessagesReport extends Function<boolean> {
   }
 }
 
-export class MessagesGetChats extends Function<types.TypeMessagesChats> {
+export class messages_getChats extends Function<types.messages_Chats> {
   id: Array<bigint>;
 
   protected get [id]() {
@@ -5129,8 +5133,8 @@ export class MessagesGetChats extends Function<types.TypeMessagesChats> {
   }
 }
 
-export class MessagesGetFullChat extends Function<types.TypeMessagesChatFull> {
-  chatId: bigint;
+export class messages_getFullChat extends Function<types.messages_ChatFull> {
+  chat_id: bigint;
 
   protected get [id]() {
     return 0xAEB00B34;
@@ -5138,24 +5142,24 @@ export class MessagesGetFullChat extends Function<types.TypeMessagesChatFull> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["chatId", "bigint", "long"],
+      ["chat_id", "bigint", "long"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.chatId, "bigint", "long"],
+      [this.chat_id, "bigint", "long"],
     ];
   }
 
-  constructor(params: { chatId: bigint }) {
+  constructor(params: { chat_id: bigint }) {
     super();
-    this.chatId = params.chatId;
+    this.chat_id = params.chat_id;
   }
 }
 
-export class MessagesEditChatTitle extends Function<types.TypeUpdates> {
-  chatId: bigint;
+export class messages_editChatTitle extends Function<types.Updates> {
+  chat_id: bigint;
   title: string;
 
   protected get [id]() {
@@ -5164,28 +5168,28 @@ export class MessagesEditChatTitle extends Function<types.TypeUpdates> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["chatId", "bigint", "long"],
+      ["chat_id", "bigint", "long"],
       ["title", "string", "string"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.chatId, "bigint", "long"],
+      [this.chat_id, "bigint", "long"],
       [this.title, "string", "string"],
     ];
   }
 
-  constructor(params: { chatId: bigint; title: string }) {
+  constructor(params: { chat_id: bigint; title: string }) {
     super();
-    this.chatId = params.chatId;
+    this.chat_id = params.chat_id;
     this.title = params.title;
   }
 }
 
-export class MessagesEditChatPhoto extends Function<types.TypeUpdates> {
-  chatId: bigint;
-  photo: types.TypeInputChatPhoto;
+export class messages_editChatPhoto extends Function<types.Updates> {
+  chat_id: bigint;
+  photo: types.InputChatPhoto;
 
   protected get [id]() {
     return 0x35DDD674;
@@ -5193,29 +5197,29 @@ export class MessagesEditChatPhoto extends Function<types.TypeUpdates> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["chatId", "bigint", "long"],
-      ["photo", types._TypeInputChatPhoto, "InputChatPhoto"],
+      ["chat_id", "bigint", "long"],
+      ["photo", types._InputChatPhoto, "InputChatPhoto"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.chatId, "bigint", "long"],
-      [this.photo, types._TypeInputChatPhoto, "InputChatPhoto"],
+      [this.chat_id, "bigint", "long"],
+      [this.photo, types._InputChatPhoto, "InputChatPhoto"],
     ];
   }
 
-  constructor(params: { chatId: bigint; photo: types.TypeInputChatPhoto }) {
+  constructor(params: { chat_id: bigint; photo: types.InputChatPhoto }) {
     super();
-    this.chatId = params.chatId;
+    this.chat_id = params.chat_id;
     this.photo = params.photo;
   }
 }
 
-export class MessagesAddChatUser extends Function<types.TypeUpdates> {
-  chatId: bigint;
-  userId: types.TypeInputUser;
-  fwdLimit: number;
+export class messages_addChatUser extends Function<types.Updates> {
+  chat_id: bigint;
+  user_id: types.InputUser;
+  fwd_limit: number;
 
   protected get [id]() {
     return 0xF24753E3;
@@ -5223,32 +5227,32 @@ export class MessagesAddChatUser extends Function<types.TypeUpdates> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["chatId", "bigint", "long"],
-      ["userId", types._TypeInputUser, "InputUser"],
-      ["fwdLimit", "number", "int"],
+      ["chat_id", "bigint", "long"],
+      ["user_id", types._InputUser, "InputUser"],
+      ["fwd_limit", "number", "int"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.chatId, "bigint", "long"],
-      [this.userId, types._TypeInputUser, "InputUser"],
-      [this.fwdLimit, "number", "int"],
+      [this.chat_id, "bigint", "long"],
+      [this.user_id, types._InputUser, "InputUser"],
+      [this.fwd_limit, "number", "int"],
     ];
   }
 
-  constructor(params: { chatId: bigint; userId: types.TypeInputUser; fwdLimit: number }) {
+  constructor(params: { chat_id: bigint; user_id: types.InputUser; fwd_limit: number }) {
     super();
-    this.chatId = params.chatId;
-    this.userId = params.userId;
-    this.fwdLimit = params.fwdLimit;
+    this.chat_id = params.chat_id;
+    this.user_id = params.user_id;
+    this.fwd_limit = params.fwd_limit;
   }
 }
 
-export class MessagesDeleteChatUser extends Function<types.TypeUpdates> {
-  revokeHistory?: true;
-  chatId: bigint;
-  userId: types.TypeInputUser;
+export class messages_deleteChatUser extends Function<types.Updates> {
+  revoke_history?: true;
+  chat_id: bigint;
+  user_id: types.InputUser;
 
   protected get [id]() {
     return 0xA2185CAB;
@@ -5257,33 +5261,33 @@ export class MessagesDeleteChatUser extends Function<types.TypeUpdates> {
   static get [paramDesc](): ParamDesc {
     return [
       ["flags", flags, "#"],
-      ["revokeHistory", "true", "flags.0?true"],
-      ["chatId", "bigint", "long"],
-      ["userId", types._TypeInputUser, "InputUser"],
+      ["revoke_history", "true", "flags.0?true"],
+      ["chat_id", "bigint", "long"],
+      ["user_id", types._InputUser, "InputUser"],
     ];
   }
 
   protected get [params](): Params {
     return [
       ["flags", flags, "#"],
-      [this.revokeHistory ?? null, "true", "flags.0?true"],
-      [this.chatId, "bigint", "long"],
-      [this.userId, types._TypeInputUser, "InputUser"],
+      [this.revoke_history ?? null, "true", "flags.0?true"],
+      [this.chat_id, "bigint", "long"],
+      [this.user_id, types._InputUser, "InputUser"],
     ];
   }
 
-  constructor(params: { revokeHistory?: true; chatId: bigint; userId: types.TypeInputUser }) {
+  constructor(params: { revoke_history?: true; chat_id: bigint; user_id: types.InputUser }) {
     super();
-    this.revokeHistory = params.revokeHistory;
-    this.chatId = params.chatId;
-    this.userId = params.userId;
+    this.revoke_history = params.revoke_history;
+    this.chat_id = params.chat_id;
+    this.user_id = params.user_id;
   }
 }
 
-export class MessagesCreateChat extends Function<types.TypeUpdates> {
-  users: Array<types.TypeInputUser>;
+export class messages_createChat extends Function<types.Updates> {
+  users: Array<types.InputUser>;
   title: string;
-  ttlPeriod?: number;
+  ttl_period?: number;
 
   protected get [id]() {
     return 0x0034A818;
@@ -5292,32 +5296,32 @@ export class MessagesCreateChat extends Function<types.TypeUpdates> {
   static get [paramDesc](): ParamDesc {
     return [
       ["flags", flags, "#"],
-      ["users", [types._TypeInputUser], "Vector<InputUser>"],
+      ["users", [types._InputUser], "Vector<InputUser>"],
       ["title", "string", "string"],
-      ["ttlPeriod", "number", "flags.0?int"],
+      ["ttl_period", "number", "flags.0?int"],
     ];
   }
 
   protected get [params](): Params {
     return [
       ["flags", flags, "#"],
-      [this.users, [types._TypeInputUser], "Vector<InputUser>"],
+      [this.users, [types._InputUser], "Vector<InputUser>"],
       [this.title, "string", "string"],
-      [this.ttlPeriod ?? null, "number", "flags.0?int"],
+      [this.ttl_period ?? null, "number", "flags.0?int"],
     ];
   }
 
-  constructor(params: { users: Array<types.TypeInputUser>; title: string; ttlPeriod?: number }) {
+  constructor(params: { users: Array<types.InputUser>; title: string; ttl_period?: number }) {
     super();
     this.users = params.users;
     this.title = params.title;
-    this.ttlPeriod = params.ttlPeriod;
+    this.ttl_period = params.ttl_period;
   }
 }
 
-export class MessagesGetDhConfig extends Function<types.TypeMessagesDhConfig> {
+export class messages_getDhConfig extends Function<types.messages_DhConfig> {
   version: number;
-  randomLength: number;
+  random_length: number;
 
   protected get [id]() {
     return 0x26CF8950;
@@ -5326,28 +5330,28 @@ export class MessagesGetDhConfig extends Function<types.TypeMessagesDhConfig> {
   static get [paramDesc](): ParamDesc {
     return [
       ["version", "number", "int"],
-      ["randomLength", "number", "int"],
+      ["random_length", "number", "int"],
     ];
   }
 
   protected get [params](): Params {
     return [
       [this.version, "number", "int"],
-      [this.randomLength, "number", "int"],
+      [this.random_length, "number", "int"],
     ];
   }
 
-  constructor(params: { version: number; randomLength: number }) {
+  constructor(params: { version: number; random_length: number }) {
     super();
     this.version = params.version;
-    this.randomLength = params.randomLength;
+    this.random_length = params.random_length;
   }
 }
 
-export class MessagesRequestEncryption extends Function<types.TypeEncryptedChat> {
-  userId: types.TypeInputUser;
-  randomId: number;
-  gA: Uint8Array;
+export class messages_requestEncryption extends Function<types.EncryptedChat> {
+  user_id: types.InputUser;
+  random_id: number;
+  g_a: Uint8Array;
 
   protected get [id]() {
     return 0xF64DAF43;
@@ -5355,32 +5359,32 @@ export class MessagesRequestEncryption extends Function<types.TypeEncryptedChat>
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["userId", types._TypeInputUser, "InputUser"],
-      ["randomId", "number", "int"],
-      ["gA", Uint8Array, "bytes"],
+      ["user_id", types._InputUser, "InputUser"],
+      ["random_id", "number", "int"],
+      ["g_a", Uint8Array, "bytes"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.userId, types._TypeInputUser, "InputUser"],
-      [this.randomId, "number", "int"],
-      [this.gA, Uint8Array, "bytes"],
+      [this.user_id, types._InputUser, "InputUser"],
+      [this.random_id, "number", "int"],
+      [this.g_a, Uint8Array, "bytes"],
     ];
   }
 
-  constructor(params: { userId: types.TypeInputUser; randomId: number; gA: Uint8Array }) {
+  constructor(params: { user_id: types.InputUser; random_id: number; g_a: Uint8Array }) {
     super();
-    this.userId = params.userId;
-    this.randomId = params.randomId;
-    this.gA = params.gA;
+    this.user_id = params.user_id;
+    this.random_id = params.random_id;
+    this.g_a = params.g_a;
   }
 }
 
-export class MessagesAcceptEncryption extends Function<types.TypeEncryptedChat> {
-  peer: types.TypeInputEncryptedChat;
-  gB: Uint8Array;
-  keyFingerprint: bigint;
+export class messages_acceptEncryption extends Function<types.EncryptedChat> {
+  peer: types.InputEncryptedChat;
+  g_b: Uint8Array;
+  key_fingerprint: bigint;
 
   protected get [id]() {
     return 0x3DBC0415;
@@ -5388,31 +5392,31 @@ export class MessagesAcceptEncryption extends Function<types.TypeEncryptedChat> 
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["peer", types._TypeInputEncryptedChat, "InputEncryptedChat"],
-      ["gB", Uint8Array, "bytes"],
-      ["keyFingerprint", "bigint", "long"],
+      ["peer", types._InputEncryptedChat, "InputEncryptedChat"],
+      ["g_b", Uint8Array, "bytes"],
+      ["key_fingerprint", "bigint", "long"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.peer, types._TypeInputEncryptedChat, "InputEncryptedChat"],
-      [this.gB, Uint8Array, "bytes"],
-      [this.keyFingerprint, "bigint", "long"],
+      [this.peer, types._InputEncryptedChat, "InputEncryptedChat"],
+      [this.g_b, Uint8Array, "bytes"],
+      [this.key_fingerprint, "bigint", "long"],
     ];
   }
 
-  constructor(params: { peer: types.TypeInputEncryptedChat; gB: Uint8Array; keyFingerprint: bigint }) {
+  constructor(params: { peer: types.InputEncryptedChat; g_b: Uint8Array; key_fingerprint: bigint }) {
     super();
     this.peer = params.peer;
-    this.gB = params.gB;
-    this.keyFingerprint = params.keyFingerprint;
+    this.g_b = params.g_b;
+    this.key_fingerprint = params.key_fingerprint;
   }
 }
 
-export class MessagesDiscardEncryption extends Function<boolean> {
-  deleteHistory?: true;
-  chatId: number;
+export class messages_discardEncryption extends Function<boolean> {
+  delete_history?: true;
+  chat_id: number;
 
   protected get [id]() {
     return 0xF393AEA0;
@@ -5421,28 +5425,28 @@ export class MessagesDiscardEncryption extends Function<boolean> {
   static get [paramDesc](): ParamDesc {
     return [
       ["flags", flags, "#"],
-      ["deleteHistory", "true", "flags.0?true"],
-      ["chatId", "number", "int"],
+      ["delete_history", "true", "flags.0?true"],
+      ["chat_id", "number", "int"],
     ];
   }
 
   protected get [params](): Params {
     return [
       ["flags", flags, "#"],
-      [this.deleteHistory ?? null, "true", "flags.0?true"],
-      [this.chatId, "number", "int"],
+      [this.delete_history ?? null, "true", "flags.0?true"],
+      [this.chat_id, "number", "int"],
     ];
   }
 
-  constructor(params: { deleteHistory?: true; chatId: number }) {
+  constructor(params: { delete_history?: true; chat_id: number }) {
     super();
-    this.deleteHistory = params.deleteHistory;
-    this.chatId = params.chatId;
+    this.delete_history = params.delete_history;
+    this.chat_id = params.chat_id;
   }
 }
 
-export class MessagesSetEncryptedTyping extends Function<boolean> {
-  peer: types.TypeInputEncryptedChat;
+export class messages_setEncryptedTyping extends Function<boolean> {
+  peer: types.InputEncryptedChat;
   typing: boolean;
 
   protected get [id]() {
@@ -5451,28 +5455,28 @@ export class MessagesSetEncryptedTyping extends Function<boolean> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["peer", types._TypeInputEncryptedChat, "InputEncryptedChat"],
+      ["peer", types._InputEncryptedChat, "InputEncryptedChat"],
       ["typing", "boolean", "Bool"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.peer, types._TypeInputEncryptedChat, "InputEncryptedChat"],
+      [this.peer, types._InputEncryptedChat, "InputEncryptedChat"],
       [this.typing, "boolean", "Bool"],
     ];
   }
 
-  constructor(params: { peer: types.TypeInputEncryptedChat; typing: boolean }) {
+  constructor(params: { peer: types.InputEncryptedChat; typing: boolean }) {
     super();
     this.peer = params.peer;
     this.typing = params.typing;
   }
 }
 
-export class MessagesReadEncryptedHistory extends Function<boolean> {
-  peer: types.TypeInputEncryptedChat;
-  maxDate: number;
+export class messages_readEncryptedHistory extends Function<boolean> {
+  peer: types.InputEncryptedChat;
+  max_date: number;
 
   protected get [id]() {
     return 0x7F4B690A;
@@ -5480,29 +5484,29 @@ export class MessagesReadEncryptedHistory extends Function<boolean> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["peer", types._TypeInputEncryptedChat, "InputEncryptedChat"],
-      ["maxDate", "number", "int"],
+      ["peer", types._InputEncryptedChat, "InputEncryptedChat"],
+      ["max_date", "number", "int"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.peer, types._TypeInputEncryptedChat, "InputEncryptedChat"],
-      [this.maxDate, "number", "int"],
+      [this.peer, types._InputEncryptedChat, "InputEncryptedChat"],
+      [this.max_date, "number", "int"],
     ];
   }
 
-  constructor(params: { peer: types.TypeInputEncryptedChat; maxDate: number }) {
+  constructor(params: { peer: types.InputEncryptedChat; max_date: number }) {
     super();
     this.peer = params.peer;
-    this.maxDate = params.maxDate;
+    this.max_date = params.max_date;
   }
 }
 
-export class MessagesSendEncrypted extends Function<types.TypeMessagesSentEncryptedMessage> {
+export class messages_sendEncrypted extends Function<types.messages_SentEncryptedMessage> {
   silent?: true;
-  peer: types.TypeInputEncryptedChat;
-  randomId: bigint;
+  peer: types.InputEncryptedChat;
+  random_id: bigint;
   data: Uint8Array;
 
   protected get [id]() {
@@ -5513,8 +5517,8 @@ export class MessagesSendEncrypted extends Function<types.TypeMessagesSentEncryp
     return [
       ["flags", flags, "#"],
       ["silent", "true", "flags.0?true"],
-      ["peer", types._TypeInputEncryptedChat, "InputEncryptedChat"],
-      ["randomId", "bigint", "long"],
+      ["peer", types._InputEncryptedChat, "InputEncryptedChat"],
+      ["random_id", "bigint", "long"],
       ["data", Uint8Array, "bytes"],
     ];
   }
@@ -5523,27 +5527,27 @@ export class MessagesSendEncrypted extends Function<types.TypeMessagesSentEncryp
     return [
       ["flags", flags, "#"],
       [this.silent ?? null, "true", "flags.0?true"],
-      [this.peer, types._TypeInputEncryptedChat, "InputEncryptedChat"],
-      [this.randomId, "bigint", "long"],
+      [this.peer, types._InputEncryptedChat, "InputEncryptedChat"],
+      [this.random_id, "bigint", "long"],
       [this.data, Uint8Array, "bytes"],
     ];
   }
 
-  constructor(params: { silent?: true; peer: types.TypeInputEncryptedChat; randomId: bigint; data: Uint8Array }) {
+  constructor(params: { silent?: true; peer: types.InputEncryptedChat; random_id: bigint; data: Uint8Array }) {
     super();
     this.silent = params.silent;
     this.peer = params.peer;
-    this.randomId = params.randomId;
+    this.random_id = params.random_id;
     this.data = params.data;
   }
 }
 
-export class MessagesSendEncryptedFile extends Function<types.TypeMessagesSentEncryptedMessage> {
+export class messages_sendEncryptedFile extends Function<types.messages_SentEncryptedMessage> {
   silent?: true;
-  peer: types.TypeInputEncryptedChat;
-  randomId: bigint;
+  peer: types.InputEncryptedChat;
+  random_id: bigint;
   data: Uint8Array;
-  file: types.TypeInputEncryptedFile;
+  file: types.InputEncryptedFile;
 
   protected get [id]() {
     return 0x5559481D;
@@ -5553,10 +5557,10 @@ export class MessagesSendEncryptedFile extends Function<types.TypeMessagesSentEn
     return [
       ["flags", flags, "#"],
       ["silent", "true", "flags.0?true"],
-      ["peer", types._TypeInputEncryptedChat, "InputEncryptedChat"],
-      ["randomId", "bigint", "long"],
+      ["peer", types._InputEncryptedChat, "InputEncryptedChat"],
+      ["random_id", "bigint", "long"],
       ["data", Uint8Array, "bytes"],
-      ["file", types._TypeInputEncryptedFile, "InputEncryptedFile"],
+      ["file", types._InputEncryptedFile, "InputEncryptedFile"],
     ];
   }
 
@@ -5564,26 +5568,26 @@ export class MessagesSendEncryptedFile extends Function<types.TypeMessagesSentEn
     return [
       ["flags", flags, "#"],
       [this.silent ?? null, "true", "flags.0?true"],
-      [this.peer, types._TypeInputEncryptedChat, "InputEncryptedChat"],
-      [this.randomId, "bigint", "long"],
+      [this.peer, types._InputEncryptedChat, "InputEncryptedChat"],
+      [this.random_id, "bigint", "long"],
       [this.data, Uint8Array, "bytes"],
-      [this.file, types._TypeInputEncryptedFile, "InputEncryptedFile"],
+      [this.file, types._InputEncryptedFile, "InputEncryptedFile"],
     ];
   }
 
-  constructor(params: { silent?: true; peer: types.TypeInputEncryptedChat; randomId: bigint; data: Uint8Array; file: types.TypeInputEncryptedFile }) {
+  constructor(params: { silent?: true; peer: types.InputEncryptedChat; random_id: bigint; data: Uint8Array; file: types.InputEncryptedFile }) {
     super();
     this.silent = params.silent;
     this.peer = params.peer;
-    this.randomId = params.randomId;
+    this.random_id = params.random_id;
     this.data = params.data;
     this.file = params.file;
   }
 }
 
-export class MessagesSendEncryptedService extends Function<types.TypeMessagesSentEncryptedMessage> {
-  peer: types.TypeInputEncryptedChat;
-  randomId: bigint;
+export class messages_sendEncryptedService extends Function<types.messages_SentEncryptedMessage> {
+  peer: types.InputEncryptedChat;
+  random_id: bigint;
   data: Uint8Array;
 
   protected get [id]() {
@@ -5592,30 +5596,30 @@ export class MessagesSendEncryptedService extends Function<types.TypeMessagesSen
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["peer", types._TypeInputEncryptedChat, "InputEncryptedChat"],
-      ["randomId", "bigint", "long"],
+      ["peer", types._InputEncryptedChat, "InputEncryptedChat"],
+      ["random_id", "bigint", "long"],
       ["data", Uint8Array, "bytes"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.peer, types._TypeInputEncryptedChat, "InputEncryptedChat"],
-      [this.randomId, "bigint", "long"],
+      [this.peer, types._InputEncryptedChat, "InputEncryptedChat"],
+      [this.random_id, "bigint", "long"],
       [this.data, Uint8Array, "bytes"],
     ];
   }
 
-  constructor(params: { peer: types.TypeInputEncryptedChat; randomId: bigint; data: Uint8Array }) {
+  constructor(params: { peer: types.InputEncryptedChat; random_id: bigint; data: Uint8Array }) {
     super();
     this.peer = params.peer;
-    this.randomId = params.randomId;
+    this.random_id = params.random_id;
     this.data = params.data;
   }
 }
 
-export class MessagesReceivedQueue extends Function<bigint[]> {
-  maxQts: number;
+export class messages_receivedQueue extends Function<bigint[]> {
+  max_qts: number;
 
   protected get [id]() {
     return 0x55A5BB66;
@@ -5623,24 +5627,24 @@ export class MessagesReceivedQueue extends Function<bigint[]> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["maxQts", "number", "int"],
+      ["max_qts", "number", "int"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.maxQts, "number", "int"],
+      [this.max_qts, "number", "int"],
     ];
   }
 
-  constructor(params: { maxQts: number }) {
+  constructor(params: { max_qts: number }) {
     super();
-    this.maxQts = params.maxQts;
+    this.max_qts = params.max_qts;
   }
 }
 
-export class MessagesReportEncryptedSpam extends Function<boolean> {
-  peer: types.TypeInputEncryptedChat;
+export class messages_reportEncryptedSpam extends Function<boolean> {
+  peer: types.InputEncryptedChat;
 
   protected get [id]() {
     return 0x4B0C8C0F;
@@ -5648,23 +5652,23 @@ export class MessagesReportEncryptedSpam extends Function<boolean> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["peer", types._TypeInputEncryptedChat, "InputEncryptedChat"],
+      ["peer", types._InputEncryptedChat, "InputEncryptedChat"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.peer, types._TypeInputEncryptedChat, "InputEncryptedChat"],
+      [this.peer, types._InputEncryptedChat, "InputEncryptedChat"],
     ];
   }
 
-  constructor(params: { peer: types.TypeInputEncryptedChat }) {
+  constructor(params: { peer: types.InputEncryptedChat }) {
     super();
     this.peer = params.peer;
   }
 }
 
-export class MessagesReadMessageContents extends Function<types.TypeMessagesAffectedMessages> {
+export class messages_readMessageContents extends Function<types.messages_AffectedMessages> {
   id: Array<number>;
 
   protected get [id]() {
@@ -5689,7 +5693,7 @@ export class MessagesReadMessageContents extends Function<types.TypeMessagesAffe
   }
 }
 
-export class MessagesGetStickers extends Function<types.TypeMessagesStickers> {
+export class messages_getStickers extends Function<types.messages_Stickers> {
   emoticon: string;
   hash: bigint;
 
@@ -5718,7 +5722,7 @@ export class MessagesGetStickers extends Function<types.TypeMessagesStickers> {
   }
 }
 
-export class MessagesGetAllStickers extends Function<types.TypeMessagesAllStickers> {
+export class messages_getAllStickers extends Function<types.messages_AllStickers> {
   hash: bigint;
 
   protected get [id]() {
@@ -5743,9 +5747,9 @@ export class MessagesGetAllStickers extends Function<types.TypeMessagesAllSticke
   }
 }
 
-export class MessagesGetWebPagePreview extends Function<types.TypeMessageMedia> {
+export class messages_getWebPagePreview extends Function<types.MessageMedia> {
   message: string;
-  entities?: Array<types.TypeMessageEntity>;
+  entities?: Array<types.MessageEntity>;
 
   protected get [id]() {
     return 0x8B68B0CC;
@@ -5755,7 +5759,7 @@ export class MessagesGetWebPagePreview extends Function<types.TypeMessageMedia> 
     return [
       ["flags", flags, "#"],
       ["message", "string", "string"],
-      ["entities", [types._TypeMessageEntity], "flags.3?Vector<MessageEntity>"],
+      ["entities", [types._MessageEntity], "flags.3?Vector<MessageEntity>"],
     ];
   }
 
@@ -5763,23 +5767,23 @@ export class MessagesGetWebPagePreview extends Function<types.TypeMessageMedia> 
     return [
       ["flags", flags, "#"],
       [this.message, "string", "string"],
-      [this.entities ?? null, [types._TypeMessageEntity], "flags.3?Vector<MessageEntity>"],
+      [this.entities ?? null, [types._MessageEntity], "flags.3?Vector<MessageEntity>"],
     ];
   }
 
-  constructor(params: { message: string; entities?: Array<types.TypeMessageEntity> }) {
+  constructor(params: { message: string; entities?: Array<types.MessageEntity> }) {
     super();
     this.message = params.message;
     this.entities = params.entities;
   }
 }
 
-export class MessagesExportChatInvite extends Function<types.TypeExportedChatInvite> {
-  legacyRevokePermanent?: true;
-  requestNeeded?: true;
-  peer: types.TypeInputPeer;
-  expireDate?: number;
-  usageLimit?: number;
+export class messages_exportChatInvite extends Function<types.ExportedChatInvite> {
+  legacy_revoke_permanent?: true;
+  request_needed?: true;
+  peer: types.InputPeer;
+  expire_date?: number;
+  usage_limit?: number;
   title?: string;
 
   protected get [id]() {
@@ -5789,11 +5793,11 @@ export class MessagesExportChatInvite extends Function<types.TypeExportedChatInv
   static get [paramDesc](): ParamDesc {
     return [
       ["flags", flags, "#"],
-      ["legacyRevokePermanent", "true", "flags.2?true"],
-      ["requestNeeded", "true", "flags.3?true"],
-      ["peer", types._TypeInputPeer, "InputPeer"],
-      ["expireDate", "number", "flags.0?int"],
-      ["usageLimit", "number", "flags.1?int"],
+      ["legacy_revoke_permanent", "true", "flags.2?true"],
+      ["request_needed", "true", "flags.3?true"],
+      ["peer", types._InputPeer, "InputPeer"],
+      ["expire_date", "number", "flags.0?int"],
+      ["usage_limit", "number", "flags.1?int"],
       ["title", "string", "flags.4?string"],
     ];
   }
@@ -5801,27 +5805,27 @@ export class MessagesExportChatInvite extends Function<types.TypeExportedChatInv
   protected get [params](): Params {
     return [
       ["flags", flags, "#"],
-      [this.legacyRevokePermanent ?? null, "true", "flags.2?true"],
-      [this.requestNeeded ?? null, "true", "flags.3?true"],
-      [this.peer, types._TypeInputPeer, "InputPeer"],
-      [this.expireDate ?? null, "number", "flags.0?int"],
-      [this.usageLimit ?? null, "number", "flags.1?int"],
+      [this.legacy_revoke_permanent ?? null, "true", "flags.2?true"],
+      [this.request_needed ?? null, "true", "flags.3?true"],
+      [this.peer, types._InputPeer, "InputPeer"],
+      [this.expire_date ?? null, "number", "flags.0?int"],
+      [this.usage_limit ?? null, "number", "flags.1?int"],
       [this.title ?? null, "string", "flags.4?string"],
     ];
   }
 
-  constructor(params: { legacyRevokePermanent?: true; requestNeeded?: true; peer: types.TypeInputPeer; expireDate?: number; usageLimit?: number; title?: string }) {
+  constructor(params: { legacy_revoke_permanent?: true; request_needed?: true; peer: types.InputPeer; expire_date?: number; usage_limit?: number; title?: string }) {
     super();
-    this.legacyRevokePermanent = params.legacyRevokePermanent;
-    this.requestNeeded = params.requestNeeded;
+    this.legacy_revoke_permanent = params.legacy_revoke_permanent;
+    this.request_needed = params.request_needed;
     this.peer = params.peer;
-    this.expireDate = params.expireDate;
-    this.usageLimit = params.usageLimit;
+    this.expire_date = params.expire_date;
+    this.usage_limit = params.usage_limit;
     this.title = params.title;
   }
 }
 
-export class MessagesCheckChatInvite extends Function<types.TypeChatInvite> {
+export class messages_checkChatInvite extends Function<types.ChatInvite> {
   hash: string;
 
   protected get [id]() {
@@ -5846,7 +5850,7 @@ export class MessagesCheckChatInvite extends Function<types.TypeChatInvite> {
   }
 }
 
-export class MessagesImportChatInvite extends Function<types.TypeUpdates> {
+export class messages_importChatInvite extends Function<types.Updates> {
   hash: string;
 
   protected get [id]() {
@@ -5871,8 +5875,8 @@ export class MessagesImportChatInvite extends Function<types.TypeUpdates> {
   }
 }
 
-export class MessagesGetStickerSet extends Function<types.TypeMessagesStickerSet> {
-  stickerset: types.TypeInputStickerSet;
+export class messages_getStickerSet extends Function<types.messages_StickerSet> {
+  stickerset: types.InputStickerSet;
   hash: number;
 
   protected get [id]() {
@@ -5881,27 +5885,27 @@ export class MessagesGetStickerSet extends Function<types.TypeMessagesStickerSet
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["stickerset", types._TypeInputStickerSet, "InputStickerSet"],
+      ["stickerset", types._InputStickerSet, "InputStickerSet"],
       ["hash", "number", "int"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.stickerset, types._TypeInputStickerSet, "InputStickerSet"],
+      [this.stickerset, types._InputStickerSet, "InputStickerSet"],
       [this.hash, "number", "int"],
     ];
   }
 
-  constructor(params: { stickerset: types.TypeInputStickerSet; hash: number }) {
+  constructor(params: { stickerset: types.InputStickerSet; hash: number }) {
     super();
     this.stickerset = params.stickerset;
     this.hash = params.hash;
   }
 }
 
-export class MessagesInstallStickerSet extends Function<types.TypeMessagesStickerSetInstallResult> {
-  stickerset: types.TypeInputStickerSet;
+export class messages_installStickerSet extends Function<types.messages_StickerSetInstallResult> {
+  stickerset: types.InputStickerSet;
   archived: boolean;
 
   protected get [id]() {
@@ -5910,27 +5914,27 @@ export class MessagesInstallStickerSet extends Function<types.TypeMessagesSticke
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["stickerset", types._TypeInputStickerSet, "InputStickerSet"],
+      ["stickerset", types._InputStickerSet, "InputStickerSet"],
       ["archived", "boolean", "Bool"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.stickerset, types._TypeInputStickerSet, "InputStickerSet"],
+      [this.stickerset, types._InputStickerSet, "InputStickerSet"],
       [this.archived, "boolean", "Bool"],
     ];
   }
 
-  constructor(params: { stickerset: types.TypeInputStickerSet; archived: boolean }) {
+  constructor(params: { stickerset: types.InputStickerSet; archived: boolean }) {
     super();
     this.stickerset = params.stickerset;
     this.archived = params.archived;
   }
 }
 
-export class MessagesUninstallStickerSet extends Function<boolean> {
-  stickerset: types.TypeInputStickerSet;
+export class messages_uninstallStickerSet extends Function<boolean> {
+  stickerset: types.InputStickerSet;
 
   protected get [id]() {
     return 0xF96E55DE;
@@ -5938,27 +5942,27 @@ export class MessagesUninstallStickerSet extends Function<boolean> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["stickerset", types._TypeInputStickerSet, "InputStickerSet"],
+      ["stickerset", types._InputStickerSet, "InputStickerSet"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.stickerset, types._TypeInputStickerSet, "InputStickerSet"],
+      [this.stickerset, types._InputStickerSet, "InputStickerSet"],
     ];
   }
 
-  constructor(params: { stickerset: types.TypeInputStickerSet }) {
+  constructor(params: { stickerset: types.InputStickerSet }) {
     super();
     this.stickerset = params.stickerset;
   }
 }
 
-export class MessagesStartBot extends Function<types.TypeUpdates> {
-  bot: types.TypeInputUser;
-  peer: types.TypeInputPeer;
-  randomId: bigint;
-  startParam: string;
+export class messages_startBot extends Function<types.Updates> {
+  bot: types.InputUser;
+  peer: types.InputPeer;
+  random_id: bigint;
+  start_param: string;
 
   protected get [id]() {
     return 0xE6DF7378;
@@ -5966,33 +5970,33 @@ export class MessagesStartBot extends Function<types.TypeUpdates> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["bot", types._TypeInputUser, "InputUser"],
-      ["peer", types._TypeInputPeer, "InputPeer"],
-      ["randomId", "bigint", "long"],
-      ["startParam", "string", "string"],
+      ["bot", types._InputUser, "InputUser"],
+      ["peer", types._InputPeer, "InputPeer"],
+      ["random_id", "bigint", "long"],
+      ["start_param", "string", "string"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.bot, types._TypeInputUser, "InputUser"],
-      [this.peer, types._TypeInputPeer, "InputPeer"],
-      [this.randomId, "bigint", "long"],
-      [this.startParam, "string", "string"],
+      [this.bot, types._InputUser, "InputUser"],
+      [this.peer, types._InputPeer, "InputPeer"],
+      [this.random_id, "bigint", "long"],
+      [this.start_param, "string", "string"],
     ];
   }
 
-  constructor(params: { bot: types.TypeInputUser; peer: types.TypeInputPeer; randomId: bigint; startParam: string }) {
+  constructor(params: { bot: types.InputUser; peer: types.InputPeer; random_id: bigint; start_param: string }) {
     super();
     this.bot = params.bot;
     this.peer = params.peer;
-    this.randomId = params.randomId;
-    this.startParam = params.startParam;
+    this.random_id = params.random_id;
+    this.start_param = params.start_param;
   }
 }
 
-export class MessagesGetMessagesViews extends Function<types.TypeMessagesMessageViews> {
-  peer: types.TypeInputPeer;
+export class messages_getMessagesViews extends Function<types.messages_MessageViews> {
+  peer: types.InputPeer;
   id: Array<number>;
   increment: boolean;
 
@@ -6002,7 +6006,7 @@ export class MessagesGetMessagesViews extends Function<types.TypeMessagesMessage
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["peer", types._TypeInputPeer, "InputPeer"],
+      ["peer", types._InputPeer, "InputPeer"],
       ["id", ["number"], "Vector<int>"],
       ["increment", "boolean", "Bool"],
     ];
@@ -6010,13 +6014,13 @@ export class MessagesGetMessagesViews extends Function<types.TypeMessagesMessage
 
   protected get [params](): Params {
     return [
-      [this.peer, types._TypeInputPeer, "InputPeer"],
+      [this.peer, types._InputPeer, "InputPeer"],
       [this.id, ["number"], "Vector<int>"],
       [this.increment, "boolean", "Bool"],
     ];
   }
 
-  constructor(params: { peer: types.TypeInputPeer; id: Array<number>; increment: boolean }) {
+  constructor(params: { peer: types.InputPeer; id: Array<number>; increment: boolean }) {
     super();
     this.peer = params.peer;
     this.id = params.id;
@@ -6024,10 +6028,10 @@ export class MessagesGetMessagesViews extends Function<types.TypeMessagesMessage
   }
 }
 
-export class MessagesEditChatAdmin extends Function<boolean> {
-  chatId: bigint;
-  userId: types.TypeInputUser;
-  isAdmin: boolean;
+export class messages_editChatAdmin extends Function<boolean> {
+  chat_id: bigint;
+  user_id: types.InputUser;
+  is_admin: boolean;
 
   protected get [id]() {
     return 0xA85BD1C2;
@@ -6035,30 +6039,30 @@ export class MessagesEditChatAdmin extends Function<boolean> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["chatId", "bigint", "long"],
-      ["userId", types._TypeInputUser, "InputUser"],
-      ["isAdmin", "boolean", "Bool"],
+      ["chat_id", "bigint", "long"],
+      ["user_id", types._InputUser, "InputUser"],
+      ["is_admin", "boolean", "Bool"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.chatId, "bigint", "long"],
-      [this.userId, types._TypeInputUser, "InputUser"],
-      [this.isAdmin, "boolean", "Bool"],
+      [this.chat_id, "bigint", "long"],
+      [this.user_id, types._InputUser, "InputUser"],
+      [this.is_admin, "boolean", "Bool"],
     ];
   }
 
-  constructor(params: { chatId: bigint; userId: types.TypeInputUser; isAdmin: boolean }) {
+  constructor(params: { chat_id: bigint; user_id: types.InputUser; is_admin: boolean }) {
     super();
-    this.chatId = params.chatId;
-    this.userId = params.userId;
-    this.isAdmin = params.isAdmin;
+    this.chat_id = params.chat_id;
+    this.user_id = params.user_id;
+    this.is_admin = params.is_admin;
   }
 }
 
-export class MessagesMigrateChat extends Function<types.TypeUpdates> {
-  chatId: bigint;
+export class messages_migrateChat extends Function<types.Updates> {
+  chat_id: bigint;
 
   protected get [id]() {
     return 0xA2875319;
@@ -6066,31 +6070,31 @@ export class MessagesMigrateChat extends Function<types.TypeUpdates> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["chatId", "bigint", "long"],
+      ["chat_id", "bigint", "long"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.chatId, "bigint", "long"],
+      [this.chat_id, "bigint", "long"],
     ];
   }
 
-  constructor(params: { chatId: bigint }) {
+  constructor(params: { chat_id: bigint }) {
     super();
-    this.chatId = params.chatId;
+    this.chat_id = params.chat_id;
   }
 }
 
-export class MessagesSearchGlobal extends Function<types.TypeMessagesMessages> {
-  folderId?: number;
+export class messages_searchGlobal extends Function<types.messages_Messages> {
+  folder_id?: number;
   q: string;
-  filter: types.TypeMessagesFilter;
-  minDate: number;
-  maxDate: number;
-  offsetRate: number;
-  offsetPeer: types.TypeInputPeer;
-  offsetId: number;
+  filter: types.MessagesFilter;
+  min_date: number;
+  max_date: number;
+  offset_rate: number;
+  offset_peer: types.InputPeer;
+  offset_id: number;
   limit: number;
 
   protected get [id]() {
@@ -6100,14 +6104,14 @@ export class MessagesSearchGlobal extends Function<types.TypeMessagesMessages> {
   static get [paramDesc](): ParamDesc {
     return [
       ["flags", flags, "#"],
-      ["folderId", "number", "flags.0?int"],
+      ["folder_id", "number", "flags.0?int"],
       ["q", "string", "string"],
-      ["filter", types._TypeMessagesFilter, "MessagesFilter"],
-      ["minDate", "number", "int"],
-      ["maxDate", "number", "int"],
-      ["offsetRate", "number", "int"],
-      ["offsetPeer", types._TypeInputPeer, "InputPeer"],
-      ["offsetId", "number", "int"],
+      ["filter", types._MessagesFilter, "MessagesFilter"],
+      ["min_date", "number", "int"],
+      ["max_date", "number", "int"],
+      ["offset_rate", "number", "int"],
+      ["offset_peer", types._InputPeer, "InputPeer"],
+      ["offset_id", "number", "int"],
       ["limit", "number", "int"],
     ];
   }
@@ -6115,33 +6119,33 @@ export class MessagesSearchGlobal extends Function<types.TypeMessagesMessages> {
   protected get [params](): Params {
     return [
       ["flags", flags, "#"],
-      [this.folderId ?? null, "number", "flags.0?int"],
+      [this.folder_id ?? null, "number", "flags.0?int"],
       [this.q, "string", "string"],
-      [this.filter, types._TypeMessagesFilter, "MessagesFilter"],
-      [this.minDate, "number", "int"],
-      [this.maxDate, "number", "int"],
-      [this.offsetRate, "number", "int"],
-      [this.offsetPeer, types._TypeInputPeer, "InputPeer"],
-      [this.offsetId, "number", "int"],
+      [this.filter, types._MessagesFilter, "MessagesFilter"],
+      [this.min_date, "number", "int"],
+      [this.max_date, "number", "int"],
+      [this.offset_rate, "number", "int"],
+      [this.offset_peer, types._InputPeer, "InputPeer"],
+      [this.offset_id, "number", "int"],
       [this.limit, "number", "int"],
     ];
   }
 
-  constructor(params: { folderId?: number; q: string; filter: types.TypeMessagesFilter; minDate: number; maxDate: number; offsetRate: number; offsetPeer: types.TypeInputPeer; offsetId: number; limit: number }) {
+  constructor(params: { folder_id?: number; q: string; filter: types.MessagesFilter; min_date: number; max_date: number; offset_rate: number; offset_peer: types.InputPeer; offset_id: number; limit: number }) {
     super();
-    this.folderId = params.folderId;
+    this.folder_id = params.folder_id;
     this.q = params.q;
     this.filter = params.filter;
-    this.minDate = params.minDate;
-    this.maxDate = params.maxDate;
-    this.offsetRate = params.offsetRate;
-    this.offsetPeer = params.offsetPeer;
-    this.offsetId = params.offsetId;
+    this.min_date = params.min_date;
+    this.max_date = params.max_date;
+    this.offset_rate = params.offset_rate;
+    this.offset_peer = params.offset_peer;
+    this.offset_id = params.offset_id;
     this.limit = params.limit;
   }
 }
 
-export class MessagesReorderStickerSets extends Function<boolean> {
+export class messages_reorderStickerSets extends Function<boolean> {
   masks?: true;
   emojis?: true;
   order: Array<bigint>;
@@ -6176,10 +6180,10 @@ export class MessagesReorderStickerSets extends Function<boolean> {
   }
 }
 
-export class MessagesGetDocumentByHash extends Function<types.TypeDocument> {
+export class messages_getDocumentByHash extends Function<types.Document> {
   sha256: Uint8Array;
   size: bigint;
-  mimeType: string;
+  mime_type: string;
 
   protected get [id]() {
     return 0xB1F2061F;
@@ -6189,7 +6193,7 @@ export class MessagesGetDocumentByHash extends Function<types.TypeDocument> {
     return [
       ["sha256", Uint8Array, "bytes"],
       ["size", "bigint", "long"],
-      ["mimeType", "string", "string"],
+      ["mime_type", "string", "string"],
     ];
   }
 
@@ -6197,19 +6201,19 @@ export class MessagesGetDocumentByHash extends Function<types.TypeDocument> {
     return [
       [this.sha256, Uint8Array, "bytes"],
       [this.size, "bigint", "long"],
-      [this.mimeType, "string", "string"],
+      [this.mime_type, "string", "string"],
     ];
   }
 
-  constructor(params: { sha256: Uint8Array; size: bigint; mimeType: string }) {
+  constructor(params: { sha256: Uint8Array; size: bigint; mime_type: string }) {
     super();
     this.sha256 = params.sha256;
     this.size = params.size;
-    this.mimeType = params.mimeType;
+    this.mime_type = params.mime_type;
   }
 }
 
-export class MessagesGetSavedGifs extends Function<types.TypeMessagesSavedGifs> {
+export class messages_getSavedGifs extends Function<types.messages_SavedGifs> {
   hash: bigint;
 
   protected get [id]() {
@@ -6234,8 +6238,8 @@ export class MessagesGetSavedGifs extends Function<types.TypeMessagesSavedGifs> 
   }
 }
 
-export class MessagesSaveGif extends Function<boolean> {
-  id: types.TypeInputDocument;
+export class messages_saveGif extends Function<boolean> {
+  id: types.InputDocument;
   unsave: boolean;
 
   protected get [id]() {
@@ -6244,29 +6248,29 @@ export class MessagesSaveGif extends Function<boolean> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["id", types._TypeInputDocument, "InputDocument"],
+      ["id", types._InputDocument, "InputDocument"],
       ["unsave", "boolean", "Bool"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.id, types._TypeInputDocument, "InputDocument"],
+      [this.id, types._InputDocument, "InputDocument"],
       [this.unsave, "boolean", "Bool"],
     ];
   }
 
-  constructor(params: { id: types.TypeInputDocument; unsave: boolean }) {
+  constructor(params: { id: types.InputDocument; unsave: boolean }) {
     super();
     this.id = params.id;
     this.unsave = params.unsave;
   }
 }
 
-export class MessagesGetInlineBotResults extends Function<types.TypeMessagesBotResults> {
-  bot: types.TypeInputUser;
-  peer: types.TypeInputPeer;
-  geoPoint?: types.TypeInputGeoPoint;
+export class messages_getInlineBotResults extends Function<types.messages_BotResults> {
+  bot: types.InputUser;
+  peer: types.InputPeer;
+  geo_point?: types.InputGeoPoint;
   query: string;
   offset: string;
 
@@ -6277,9 +6281,9 @@ export class MessagesGetInlineBotResults extends Function<types.TypeMessagesBotR
   static get [paramDesc](): ParamDesc {
     return [
       ["flags", flags, "#"],
-      ["bot", types._TypeInputUser, "InputUser"],
-      ["peer", types._TypeInputPeer, "InputPeer"],
-      ["geoPoint", types._TypeInputGeoPoint, "flags.0?InputGeoPoint"],
+      ["bot", types._InputUser, "InputUser"],
+      ["peer", types._InputPeer, "InputPeer"],
+      ["geo_point", types._InputGeoPoint, "flags.0?InputGeoPoint"],
       ["query", "string", "string"],
       ["offset", "string", "string"],
     ];
@@ -6288,33 +6292,33 @@ export class MessagesGetInlineBotResults extends Function<types.TypeMessagesBotR
   protected get [params](): Params {
     return [
       ["flags", flags, "#"],
-      [this.bot, types._TypeInputUser, "InputUser"],
-      [this.peer, types._TypeInputPeer, "InputPeer"],
-      [this.geoPoint ?? null, types._TypeInputGeoPoint, "flags.0?InputGeoPoint"],
+      [this.bot, types._InputUser, "InputUser"],
+      [this.peer, types._InputPeer, "InputPeer"],
+      [this.geo_point ?? null, types._InputGeoPoint, "flags.0?InputGeoPoint"],
       [this.query, "string", "string"],
       [this.offset, "string", "string"],
     ];
   }
 
-  constructor(params: { bot: types.TypeInputUser; peer: types.TypeInputPeer; geoPoint?: types.TypeInputGeoPoint; query: string; offset: string }) {
+  constructor(params: { bot: types.InputUser; peer: types.InputPeer; geo_point?: types.InputGeoPoint; query: string; offset: string }) {
     super();
     this.bot = params.bot;
     this.peer = params.peer;
-    this.geoPoint = params.geoPoint;
+    this.geo_point = params.geo_point;
     this.query = params.query;
     this.offset = params.offset;
   }
 }
 
-export class MessagesSetInlineBotResults extends Function<boolean> {
+export class messages_setInlineBotResults extends Function<boolean> {
   gallery?: true;
   private?: true;
-  queryId: bigint;
-  results: Array<types.TypeInputBotInlineResult>;
-  cacheTime: number;
-  nextOffset?: string;
-  switchPm?: types.TypeInlineBotSwitchPM;
-  switchWebview?: types.TypeInlineBotWebView;
+  query_id: bigint;
+  results: Array<types.InputBotInlineResult>;
+  cache_time: number;
+  next_offset?: string;
+  switch_pm?: types.InlineBotSwitchPM;
+  switch_webview?: types.InlineBotWebView;
 
   protected get [id]() {
     return 0xBB12A419;
@@ -6325,12 +6329,12 @@ export class MessagesSetInlineBotResults extends Function<boolean> {
       ["flags", flags, "#"],
       ["gallery", "true", "flags.0?true"],
       ["private", "true", "flags.1?true"],
-      ["queryId", "bigint", "long"],
-      ["results", [types._TypeInputBotInlineResult], "Vector<InputBotInlineResult>"],
-      ["cacheTime", "number", "int"],
-      ["nextOffset", "string", "flags.2?string"],
-      ["switchPm", types._TypeInlineBotSwitchPM, "flags.3?InlineBotSwitchPM"],
-      ["switchWebview", types._TypeInlineBotWebView, "flags.4?InlineBotWebView"],
+      ["query_id", "bigint", "long"],
+      ["results", [types._InputBotInlineResult], "Vector<InputBotInlineResult>"],
+      ["cache_time", "number", "int"],
+      ["next_offset", "string", "flags.2?string"],
+      ["switch_pm", types._InlineBotSwitchPM, "flags.3?InlineBotSwitchPM"],
+      ["switch_webview", types._InlineBotWebView, "flags.4?InlineBotWebView"],
     ];
   }
 
@@ -6339,40 +6343,40 @@ export class MessagesSetInlineBotResults extends Function<boolean> {
       ["flags", flags, "#"],
       [this.gallery ?? null, "true", "flags.0?true"],
       [this.private ?? null, "true", "flags.1?true"],
-      [this.queryId, "bigint", "long"],
-      [this.results, [types._TypeInputBotInlineResult], "Vector<InputBotInlineResult>"],
-      [this.cacheTime, "number", "int"],
-      [this.nextOffset ?? null, "string", "flags.2?string"],
-      [this.switchPm ?? null, types._TypeInlineBotSwitchPM, "flags.3?InlineBotSwitchPM"],
-      [this.switchWebview ?? null, types._TypeInlineBotWebView, "flags.4?InlineBotWebView"],
+      [this.query_id, "bigint", "long"],
+      [this.results, [types._InputBotInlineResult], "Vector<InputBotInlineResult>"],
+      [this.cache_time, "number", "int"],
+      [this.next_offset ?? null, "string", "flags.2?string"],
+      [this.switch_pm ?? null, types._InlineBotSwitchPM, "flags.3?InlineBotSwitchPM"],
+      [this.switch_webview ?? null, types._InlineBotWebView, "flags.4?InlineBotWebView"],
     ];
   }
 
-  constructor(params: { gallery?: true; private?: true; queryId: bigint; results: Array<types.TypeInputBotInlineResult>; cacheTime: number; nextOffset?: string; switchPm?: types.TypeInlineBotSwitchPM; switchWebview?: types.TypeInlineBotWebView }) {
+  constructor(params: { gallery?: true; private?: true; query_id: bigint; results: Array<types.InputBotInlineResult>; cache_time: number; next_offset?: string; switch_pm?: types.InlineBotSwitchPM; switch_webview?: types.InlineBotWebView }) {
     super();
     this.gallery = params.gallery;
     this.private = params.private;
-    this.queryId = params.queryId;
+    this.query_id = params.query_id;
     this.results = params.results;
-    this.cacheTime = params.cacheTime;
-    this.nextOffset = params.nextOffset;
-    this.switchPm = params.switchPm;
-    this.switchWebview = params.switchWebview;
+    this.cache_time = params.cache_time;
+    this.next_offset = params.next_offset;
+    this.switch_pm = params.switch_pm;
+    this.switch_webview = params.switch_webview;
   }
 }
 
-export class MessagesSendInlineBotResult extends Function<types.TypeUpdates> {
+export class messages_sendInlineBotResult extends Function<types.Updates> {
   silent?: true;
   background?: true;
-  clearDraft?: true;
-  hideVia?: true;
-  peer: types.TypeInputPeer;
-  replyTo?: types.TypeInputReplyTo;
-  randomId: bigint;
-  queryId: bigint;
+  clear_draft?: true;
+  hide_via?: true;
+  peer: types.InputPeer;
+  reply_to?: types.InputReplyTo;
+  random_id: bigint;
+  query_id: bigint;
   id: string;
-  scheduleDate?: number;
-  sendAs?: types.TypeInputPeer;
+  schedule_date?: number;
+  send_as?: types.InputPeer;
 
   protected get [id]() {
     return 0xF7BC68BA;
@@ -6383,15 +6387,15 @@ export class MessagesSendInlineBotResult extends Function<types.TypeUpdates> {
       ["flags", flags, "#"],
       ["silent", "true", "flags.5?true"],
       ["background", "true", "flags.6?true"],
-      ["clearDraft", "true", "flags.7?true"],
-      ["hideVia", "true", "flags.11?true"],
-      ["peer", types._TypeInputPeer, "InputPeer"],
-      ["replyTo", types._TypeInputReplyTo, "flags.0?InputReplyTo"],
-      ["randomId", "bigint", "long"],
-      ["queryId", "bigint", "long"],
+      ["clear_draft", "true", "flags.7?true"],
+      ["hide_via", "true", "flags.11?true"],
+      ["peer", types._InputPeer, "InputPeer"],
+      ["reply_to", types._InputReplyTo, "flags.0?InputReplyTo"],
+      ["random_id", "bigint", "long"],
+      ["query_id", "bigint", "long"],
       ["id", "string", "string"],
-      ["scheduleDate", "number", "flags.10?int"],
-      ["sendAs", types._TypeInputPeer, "flags.13?InputPeer"],
+      ["schedule_date", "number", "flags.10?int"],
+      ["send_as", types._InputPeer, "flags.13?InputPeer"],
     ];
   }
 
@@ -6400,36 +6404,36 @@ export class MessagesSendInlineBotResult extends Function<types.TypeUpdates> {
       ["flags", flags, "#"],
       [this.silent ?? null, "true", "flags.5?true"],
       [this.background ?? null, "true", "flags.6?true"],
-      [this.clearDraft ?? null, "true", "flags.7?true"],
-      [this.hideVia ?? null, "true", "flags.11?true"],
-      [this.peer, types._TypeInputPeer, "InputPeer"],
-      [this.replyTo ?? null, types._TypeInputReplyTo, "flags.0?InputReplyTo"],
-      [this.randomId, "bigint", "long"],
-      [this.queryId, "bigint", "long"],
+      [this.clear_draft ?? null, "true", "flags.7?true"],
+      [this.hide_via ?? null, "true", "flags.11?true"],
+      [this.peer, types._InputPeer, "InputPeer"],
+      [this.reply_to ?? null, types._InputReplyTo, "flags.0?InputReplyTo"],
+      [this.random_id, "bigint", "long"],
+      [this.query_id, "bigint", "long"],
       [this.id, "string", "string"],
-      [this.scheduleDate ?? null, "number", "flags.10?int"],
-      [this.sendAs ?? null, types._TypeInputPeer, "flags.13?InputPeer"],
+      [this.schedule_date ?? null, "number", "flags.10?int"],
+      [this.send_as ?? null, types._InputPeer, "flags.13?InputPeer"],
     ];
   }
 
-  constructor(params: { silent?: true; background?: true; clearDraft?: true; hideVia?: true; peer: types.TypeInputPeer; replyTo?: types.TypeInputReplyTo; randomId: bigint; queryId: bigint; id: string; scheduleDate?: number; sendAs?: types.TypeInputPeer }) {
+  constructor(params: { silent?: true; background?: true; clear_draft?: true; hide_via?: true; peer: types.InputPeer; reply_to?: types.InputReplyTo; random_id: bigint; query_id: bigint; id: string; schedule_date?: number; send_as?: types.InputPeer }) {
     super();
     this.silent = params.silent;
     this.background = params.background;
-    this.clearDraft = params.clearDraft;
-    this.hideVia = params.hideVia;
+    this.clear_draft = params.clear_draft;
+    this.hide_via = params.hide_via;
     this.peer = params.peer;
-    this.replyTo = params.replyTo;
-    this.randomId = params.randomId;
-    this.queryId = params.queryId;
+    this.reply_to = params.reply_to;
+    this.random_id = params.random_id;
+    this.query_id = params.query_id;
     this.id = params.id;
-    this.scheduleDate = params.scheduleDate;
-    this.sendAs = params.sendAs;
+    this.schedule_date = params.schedule_date;
+    this.send_as = params.send_as;
   }
 }
 
-export class MessagesGetMessageEditData extends Function<types.TypeMessagesMessageEditData> {
-  peer: types.TypeInputPeer;
+export class messages_getMessageEditData extends Function<types.messages_MessageEditData> {
+  peer: types.InputPeer;
   id: number;
 
   protected get [id]() {
@@ -6438,35 +6442,35 @@ export class MessagesGetMessageEditData extends Function<types.TypeMessagesMessa
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["peer", types._TypeInputPeer, "InputPeer"],
+      ["peer", types._InputPeer, "InputPeer"],
       ["id", "number", "int"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.peer, types._TypeInputPeer, "InputPeer"],
+      [this.peer, types._InputPeer, "InputPeer"],
       [this.id, "number", "int"],
     ];
   }
 
-  constructor(params: { peer: types.TypeInputPeer; id: number }) {
+  constructor(params: { peer: types.InputPeer; id: number }) {
     super();
     this.peer = params.peer;
     this.id = params.id;
   }
 }
 
-export class MessagesEditMessage extends Function<types.TypeUpdates> {
-  noWebpage?: true;
-  invertMedia?: true;
-  peer: types.TypeInputPeer;
+export class messages_editMessage extends Function<types.Updates> {
+  no_webpage?: true;
+  invert_media?: true;
+  peer: types.InputPeer;
   id: number;
   message?: string;
-  media?: types.TypeInputMedia;
-  replyMarkup?: types.TypeReplyMarkup;
-  entities?: Array<types.TypeMessageEntity>;
-  scheduleDate?: number;
+  media?: types.InputMedia;
+  reply_markup?: types.ReplyMarkup;
+  entities?: Array<types.MessageEntity>;
+  schedule_date?: number;
 
   protected get [id]() {
     return 0x48F71778;
@@ -6475,55 +6479,55 @@ export class MessagesEditMessage extends Function<types.TypeUpdates> {
   static get [paramDesc](): ParamDesc {
     return [
       ["flags", flags, "#"],
-      ["noWebpage", "true", "flags.1?true"],
-      ["invertMedia", "true", "flags.16?true"],
-      ["peer", types._TypeInputPeer, "InputPeer"],
+      ["no_webpage", "true", "flags.1?true"],
+      ["invert_media", "true", "flags.16?true"],
+      ["peer", types._InputPeer, "InputPeer"],
       ["id", "number", "int"],
       ["message", "string", "flags.11?string"],
-      ["media", types._TypeInputMedia, "flags.14?InputMedia"],
-      ["replyMarkup", types._TypeReplyMarkup, "flags.2?ReplyMarkup"],
-      ["entities", [types._TypeMessageEntity], "flags.3?Vector<MessageEntity>"],
-      ["scheduleDate", "number", "flags.15?int"],
+      ["media", types._InputMedia, "flags.14?InputMedia"],
+      ["reply_markup", types._ReplyMarkup, "flags.2?ReplyMarkup"],
+      ["entities", [types._MessageEntity], "flags.3?Vector<MessageEntity>"],
+      ["schedule_date", "number", "flags.15?int"],
     ];
   }
 
   protected get [params](): Params {
     return [
       ["flags", flags, "#"],
-      [this.noWebpage ?? null, "true", "flags.1?true"],
-      [this.invertMedia ?? null, "true", "flags.16?true"],
-      [this.peer, types._TypeInputPeer, "InputPeer"],
+      [this.no_webpage ?? null, "true", "flags.1?true"],
+      [this.invert_media ?? null, "true", "flags.16?true"],
+      [this.peer, types._InputPeer, "InputPeer"],
       [this.id, "number", "int"],
       [this.message ?? null, "string", "flags.11?string"],
-      [this.media ?? null, types._TypeInputMedia, "flags.14?InputMedia"],
-      [this.replyMarkup ?? null, types._TypeReplyMarkup, "flags.2?ReplyMarkup"],
-      [this.entities ?? null, [types._TypeMessageEntity], "flags.3?Vector<MessageEntity>"],
-      [this.scheduleDate ?? null, "number", "flags.15?int"],
+      [this.media ?? null, types._InputMedia, "flags.14?InputMedia"],
+      [this.reply_markup ?? null, types._ReplyMarkup, "flags.2?ReplyMarkup"],
+      [this.entities ?? null, [types._MessageEntity], "flags.3?Vector<MessageEntity>"],
+      [this.schedule_date ?? null, "number", "flags.15?int"],
     ];
   }
 
-  constructor(params: { noWebpage?: true; invertMedia?: true; peer: types.TypeInputPeer; id: number; message?: string; media?: types.TypeInputMedia; replyMarkup?: types.TypeReplyMarkup; entities?: Array<types.TypeMessageEntity>; scheduleDate?: number }) {
+  constructor(params: { no_webpage?: true; invert_media?: true; peer: types.InputPeer; id: number; message?: string; media?: types.InputMedia; reply_markup?: types.ReplyMarkup; entities?: Array<types.MessageEntity>; schedule_date?: number }) {
     super();
-    this.noWebpage = params.noWebpage;
-    this.invertMedia = params.invertMedia;
+    this.no_webpage = params.no_webpage;
+    this.invert_media = params.invert_media;
     this.peer = params.peer;
     this.id = params.id;
     this.message = params.message;
     this.media = params.media;
-    this.replyMarkup = params.replyMarkup;
+    this.reply_markup = params.reply_markup;
     this.entities = params.entities;
-    this.scheduleDate = params.scheduleDate;
+    this.schedule_date = params.schedule_date;
   }
 }
 
-export class MessagesEditInlineBotMessage extends Function<boolean> {
-  noWebpage?: true;
-  invertMedia?: true;
-  id: types.TypeInputBotInlineMessageID;
+export class messages_editInlineBotMessage extends Function<boolean> {
+  no_webpage?: true;
+  invert_media?: true;
+  id: types.InputBotInlineMessageID;
   message?: string;
-  media?: types.TypeInputMedia;
-  replyMarkup?: types.TypeReplyMarkup;
-  entities?: Array<types.TypeMessageEntity>;
+  media?: types.InputMedia;
+  reply_markup?: types.ReplyMarkup;
+  entities?: Array<types.MessageEntity>;
 
   protected get [id]() {
     return 0x83557DBA;
@@ -6532,47 +6536,47 @@ export class MessagesEditInlineBotMessage extends Function<boolean> {
   static get [paramDesc](): ParamDesc {
     return [
       ["flags", flags, "#"],
-      ["noWebpage", "true", "flags.1?true"],
-      ["invertMedia", "true", "flags.16?true"],
-      ["id", types._TypeInputBotInlineMessageID, "InputBotInlineMessageID"],
+      ["no_webpage", "true", "flags.1?true"],
+      ["invert_media", "true", "flags.16?true"],
+      ["id", types._InputBotInlineMessageID, "InputBotInlineMessageID"],
       ["message", "string", "flags.11?string"],
-      ["media", types._TypeInputMedia, "flags.14?InputMedia"],
-      ["replyMarkup", types._TypeReplyMarkup, "flags.2?ReplyMarkup"],
-      ["entities", [types._TypeMessageEntity], "flags.3?Vector<MessageEntity>"],
+      ["media", types._InputMedia, "flags.14?InputMedia"],
+      ["reply_markup", types._ReplyMarkup, "flags.2?ReplyMarkup"],
+      ["entities", [types._MessageEntity], "flags.3?Vector<MessageEntity>"],
     ];
   }
 
   protected get [params](): Params {
     return [
       ["flags", flags, "#"],
-      [this.noWebpage ?? null, "true", "flags.1?true"],
-      [this.invertMedia ?? null, "true", "flags.16?true"],
-      [this.id, types._TypeInputBotInlineMessageID, "InputBotInlineMessageID"],
+      [this.no_webpage ?? null, "true", "flags.1?true"],
+      [this.invert_media ?? null, "true", "flags.16?true"],
+      [this.id, types._InputBotInlineMessageID, "InputBotInlineMessageID"],
       [this.message ?? null, "string", "flags.11?string"],
-      [this.media ?? null, types._TypeInputMedia, "flags.14?InputMedia"],
-      [this.replyMarkup ?? null, types._TypeReplyMarkup, "flags.2?ReplyMarkup"],
-      [this.entities ?? null, [types._TypeMessageEntity], "flags.3?Vector<MessageEntity>"],
+      [this.media ?? null, types._InputMedia, "flags.14?InputMedia"],
+      [this.reply_markup ?? null, types._ReplyMarkup, "flags.2?ReplyMarkup"],
+      [this.entities ?? null, [types._MessageEntity], "flags.3?Vector<MessageEntity>"],
     ];
   }
 
-  constructor(params: { noWebpage?: true; invertMedia?: true; id: types.TypeInputBotInlineMessageID; message?: string; media?: types.TypeInputMedia; replyMarkup?: types.TypeReplyMarkup; entities?: Array<types.TypeMessageEntity> }) {
+  constructor(params: { no_webpage?: true; invert_media?: true; id: types.InputBotInlineMessageID; message?: string; media?: types.InputMedia; reply_markup?: types.ReplyMarkup; entities?: Array<types.MessageEntity> }) {
     super();
-    this.noWebpage = params.noWebpage;
-    this.invertMedia = params.invertMedia;
+    this.no_webpage = params.no_webpage;
+    this.invert_media = params.invert_media;
     this.id = params.id;
     this.message = params.message;
     this.media = params.media;
-    this.replyMarkup = params.replyMarkup;
+    this.reply_markup = params.reply_markup;
     this.entities = params.entities;
   }
 }
 
-export class MessagesGetBotCallbackAnswer extends Function<types.TypeMessagesBotCallbackAnswer> {
+export class messages_getBotCallbackAnswer extends Function<types.messages_BotCallbackAnswer> {
   game?: true;
-  peer: types.TypeInputPeer;
-  msgId: number;
+  peer: types.InputPeer;
+  msg_id: number;
   data?: Uint8Array;
-  password?: types.TypeInputCheckPasswordSRP;
+  password?: types.InputCheckPasswordSRP;
 
   protected get [id]() {
     return 0x9342CA07;
@@ -6582,10 +6586,10 @@ export class MessagesGetBotCallbackAnswer extends Function<types.TypeMessagesBot
     return [
       ["flags", flags, "#"],
       ["game", "true", "flags.1?true"],
-      ["peer", types._TypeInputPeer, "InputPeer"],
-      ["msgId", "number", "int"],
+      ["peer", types._InputPeer, "InputPeer"],
+      ["msg_id", "number", "int"],
       ["data", Uint8Array, "flags.0?bytes"],
-      ["password", types._TypeInputCheckPasswordSRP, "flags.2?InputCheckPasswordSRP"],
+      ["password", types._InputCheckPasswordSRP, "flags.2?InputCheckPasswordSRP"],
     ];
   }
 
@@ -6593,29 +6597,29 @@ export class MessagesGetBotCallbackAnswer extends Function<types.TypeMessagesBot
     return [
       ["flags", flags, "#"],
       [this.game ?? null, "true", "flags.1?true"],
-      [this.peer, types._TypeInputPeer, "InputPeer"],
-      [this.msgId, "number", "int"],
+      [this.peer, types._InputPeer, "InputPeer"],
+      [this.msg_id, "number", "int"],
       [this.data ?? null, Uint8Array, "flags.0?bytes"],
-      [this.password ?? null, types._TypeInputCheckPasswordSRP, "flags.2?InputCheckPasswordSRP"],
+      [this.password ?? null, types._InputCheckPasswordSRP, "flags.2?InputCheckPasswordSRP"],
     ];
   }
 
-  constructor(params: { game?: true; peer: types.TypeInputPeer; msgId: number; data?: Uint8Array; password?: types.TypeInputCheckPasswordSRP }) {
+  constructor(params: { game?: true; peer: types.InputPeer; msg_id: number; data?: Uint8Array; password?: types.InputCheckPasswordSRP }) {
     super();
     this.game = params.game;
     this.peer = params.peer;
-    this.msgId = params.msgId;
+    this.msg_id = params.msg_id;
     this.data = params.data;
     this.password = params.password;
   }
 }
 
-export class MessagesSetBotCallbackAnswer extends Function<boolean> {
+export class messages_setBotCallbackAnswer extends Function<boolean> {
   alert?: true;
-  queryId: bigint;
+  query_id: bigint;
   message?: string;
   url?: string;
-  cacheTime: number;
+  cache_time: number;
 
   protected get [id]() {
     return 0xD58F130A;
@@ -6625,10 +6629,10 @@ export class MessagesSetBotCallbackAnswer extends Function<boolean> {
     return [
       ["flags", flags, "#"],
       ["alert", "true", "flags.1?true"],
-      ["queryId", "bigint", "long"],
+      ["query_id", "bigint", "long"],
       ["message", "string", "flags.0?string"],
       ["url", "string", "flags.2?string"],
-      ["cacheTime", "number", "int"],
+      ["cache_time", "number", "int"],
     ];
   }
 
@@ -6636,25 +6640,25 @@ export class MessagesSetBotCallbackAnswer extends Function<boolean> {
     return [
       ["flags", flags, "#"],
       [this.alert ?? null, "true", "flags.1?true"],
-      [this.queryId, "bigint", "long"],
+      [this.query_id, "bigint", "long"],
       [this.message ?? null, "string", "flags.0?string"],
       [this.url ?? null, "string", "flags.2?string"],
-      [this.cacheTime, "number", "int"],
+      [this.cache_time, "number", "int"],
     ];
   }
 
-  constructor(params: { alert?: true; queryId: bigint; message?: string; url?: string; cacheTime: number }) {
+  constructor(params: { alert?: true; query_id: bigint; message?: string; url?: string; cache_time: number }) {
     super();
     this.alert = params.alert;
-    this.queryId = params.queryId;
+    this.query_id = params.query_id;
     this.message = params.message;
     this.url = params.url;
-    this.cacheTime = params.cacheTime;
+    this.cache_time = params.cache_time;
   }
 }
 
-export class MessagesGetPeerDialogs extends Function<types.TypeMessagesPeerDialogs> {
-  peers: Array<types.TypeInputDialogPeer>;
+export class messages_getPeerDialogs extends Function<types.messages_PeerDialogs> {
+  peers: Array<types.InputDialogPeer>;
 
   protected get [id]() {
     return 0xE470BCFD;
@@ -6662,30 +6666,30 @@ export class MessagesGetPeerDialogs extends Function<types.TypeMessagesPeerDialo
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["peers", [types._TypeInputDialogPeer], "Vector<InputDialogPeer>"],
+      ["peers", [types._InputDialogPeer], "Vector<InputDialogPeer>"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.peers, [types._TypeInputDialogPeer], "Vector<InputDialogPeer>"],
+      [this.peers, [types._InputDialogPeer], "Vector<InputDialogPeer>"],
     ];
   }
 
-  constructor(params: { peers: Array<types.TypeInputDialogPeer> }) {
+  constructor(params: { peers: Array<types.InputDialogPeer> }) {
     super();
     this.peers = params.peers;
   }
 }
 
-export class MessagesSaveDraft extends Function<boolean> {
-  noWebpage?: true;
-  invertMedia?: true;
-  replyTo?: types.TypeInputReplyTo;
-  peer: types.TypeInputPeer;
+export class messages_saveDraft extends Function<boolean> {
+  no_webpage?: true;
+  invert_media?: true;
+  reply_to?: types.InputReplyTo;
+  peer: types.InputPeer;
   message: string;
-  entities?: Array<types.TypeMessageEntity>;
-  media?: types.TypeInputMedia;
+  entities?: Array<types.MessageEntity>;
+  media?: types.InputMedia;
 
   protected get [id]() {
     return 0x7FF3B806;
@@ -6694,34 +6698,34 @@ export class MessagesSaveDraft extends Function<boolean> {
   static get [paramDesc](): ParamDesc {
     return [
       ["flags", flags, "#"],
-      ["noWebpage", "true", "flags.1?true"],
-      ["invertMedia", "true", "flags.6?true"],
-      ["replyTo", types._TypeInputReplyTo, "flags.4?InputReplyTo"],
-      ["peer", types._TypeInputPeer, "InputPeer"],
+      ["no_webpage", "true", "flags.1?true"],
+      ["invert_media", "true", "flags.6?true"],
+      ["reply_to", types._InputReplyTo, "flags.4?InputReplyTo"],
+      ["peer", types._InputPeer, "InputPeer"],
       ["message", "string", "string"],
-      ["entities", [types._TypeMessageEntity], "flags.3?Vector<MessageEntity>"],
-      ["media", types._TypeInputMedia, "flags.5?InputMedia"],
+      ["entities", [types._MessageEntity], "flags.3?Vector<MessageEntity>"],
+      ["media", types._InputMedia, "flags.5?InputMedia"],
     ];
   }
 
   protected get [params](): Params {
     return [
       ["flags", flags, "#"],
-      [this.noWebpage ?? null, "true", "flags.1?true"],
-      [this.invertMedia ?? null, "true", "flags.6?true"],
-      [this.replyTo ?? null, types._TypeInputReplyTo, "flags.4?InputReplyTo"],
-      [this.peer, types._TypeInputPeer, "InputPeer"],
+      [this.no_webpage ?? null, "true", "flags.1?true"],
+      [this.invert_media ?? null, "true", "flags.6?true"],
+      [this.reply_to ?? null, types._InputReplyTo, "flags.4?InputReplyTo"],
+      [this.peer, types._InputPeer, "InputPeer"],
       [this.message, "string", "string"],
-      [this.entities ?? null, [types._TypeMessageEntity], "flags.3?Vector<MessageEntity>"],
-      [this.media ?? null, types._TypeInputMedia, "flags.5?InputMedia"],
+      [this.entities ?? null, [types._MessageEntity], "flags.3?Vector<MessageEntity>"],
+      [this.media ?? null, types._InputMedia, "flags.5?InputMedia"],
     ];
   }
 
-  constructor(params: { noWebpage?: true; invertMedia?: true; replyTo?: types.TypeInputReplyTo; peer: types.TypeInputPeer; message: string; entities?: Array<types.TypeMessageEntity>; media?: types.TypeInputMedia }) {
+  constructor(params: { no_webpage?: true; invert_media?: true; reply_to?: types.InputReplyTo; peer: types.InputPeer; message: string; entities?: Array<types.MessageEntity>; media?: types.InputMedia }) {
     super();
-    this.noWebpage = params.noWebpage;
-    this.invertMedia = params.invertMedia;
-    this.replyTo = params.replyTo;
+    this.no_webpage = params.no_webpage;
+    this.invert_media = params.invert_media;
+    this.reply_to = params.reply_to;
     this.peer = params.peer;
     this.message = params.message;
     this.entities = params.entities;
@@ -6729,7 +6733,7 @@ export class MessagesSaveDraft extends Function<boolean> {
   }
 }
 
-export class MessagesGetAllDrafts extends Function<types.TypeUpdates> {
+export class messages_getAllDrafts extends Function<types.Updates> {
   protected get [id]() {
     return 0x6A3F8D65;
   }
@@ -6747,7 +6751,7 @@ export class MessagesGetAllDrafts extends Function<types.TypeUpdates> {
   }
 }
 
-export class MessagesGetFeaturedStickers extends Function<types.TypeMessagesFeaturedStickers> {
+export class messages_getFeaturedStickers extends Function<types.messages_FeaturedStickers> {
   hash: bigint;
 
   protected get [id]() {
@@ -6772,7 +6776,7 @@ export class MessagesGetFeaturedStickers extends Function<types.TypeMessagesFeat
   }
 }
 
-export class MessagesReadFeaturedStickers extends Function<boolean> {
+export class messages_readFeaturedStickers extends Function<boolean> {
   id: Array<bigint>;
 
   protected get [id]() {
@@ -6797,7 +6801,7 @@ export class MessagesReadFeaturedStickers extends Function<boolean> {
   }
 }
 
-export class MessagesGetRecentStickers extends Function<types.TypeMessagesRecentStickers> {
+export class messages_getRecentStickers extends Function<types.messages_RecentStickers> {
   attached?: true;
   hash: bigint;
 
@@ -6828,9 +6832,9 @@ export class MessagesGetRecentStickers extends Function<types.TypeMessagesRecent
   }
 }
 
-export class MessagesSaveRecentSticker extends Function<boolean> {
+export class messages_saveRecentSticker extends Function<boolean> {
   attached?: true;
-  id: types.TypeInputDocument;
+  id: types.InputDocument;
   unsave: boolean;
 
   protected get [id]() {
@@ -6841,7 +6845,7 @@ export class MessagesSaveRecentSticker extends Function<boolean> {
     return [
       ["flags", flags, "#"],
       ["attached", "true", "flags.0?true"],
-      ["id", types._TypeInputDocument, "InputDocument"],
+      ["id", types._InputDocument, "InputDocument"],
       ["unsave", "boolean", "Bool"],
     ];
   }
@@ -6850,12 +6854,12 @@ export class MessagesSaveRecentSticker extends Function<boolean> {
     return [
       ["flags", flags, "#"],
       [this.attached ?? null, "true", "flags.0?true"],
-      [this.id, types._TypeInputDocument, "InputDocument"],
+      [this.id, types._InputDocument, "InputDocument"],
       [this.unsave, "boolean", "Bool"],
     ];
   }
 
-  constructor(params: { attached?: true; id: types.TypeInputDocument; unsave: boolean }) {
+  constructor(params: { attached?: true; id: types.InputDocument; unsave: boolean }) {
     super();
     this.attached = params.attached;
     this.id = params.id;
@@ -6863,7 +6867,7 @@ export class MessagesSaveRecentSticker extends Function<boolean> {
   }
 }
 
-export class MessagesClearRecentStickers extends Function<boolean> {
+export class messages_clearRecentStickers extends Function<boolean> {
   attached?: true;
 
   protected get [id]() {
@@ -6890,10 +6894,10 @@ export class MessagesClearRecentStickers extends Function<boolean> {
   }
 }
 
-export class MessagesGetArchivedStickers extends Function<types.TypeMessagesArchivedStickers> {
+export class messages_getArchivedStickers extends Function<types.messages_ArchivedStickers> {
   masks?: true;
   emojis?: true;
-  offsetId: bigint;
+  offset_id: bigint;
   limit: number;
 
   protected get [id]() {
@@ -6905,7 +6909,7 @@ export class MessagesGetArchivedStickers extends Function<types.TypeMessagesArch
       ["flags", flags, "#"],
       ["masks", "true", "flags.0?true"],
       ["emojis", "true", "flags.1?true"],
-      ["offsetId", "bigint", "long"],
+      ["offset_id", "bigint", "long"],
       ["limit", "number", "int"],
     ];
   }
@@ -6915,21 +6919,21 @@ export class MessagesGetArchivedStickers extends Function<types.TypeMessagesArch
       ["flags", flags, "#"],
       [this.masks ?? null, "true", "flags.0?true"],
       [this.emojis ?? null, "true", "flags.1?true"],
-      [this.offsetId, "bigint", "long"],
+      [this.offset_id, "bigint", "long"],
       [this.limit, "number", "int"],
     ];
   }
 
-  constructor(params: { masks?: true; emojis?: true; offsetId: bigint; limit: number }) {
+  constructor(params: { masks?: true; emojis?: true; offset_id: bigint; limit: number }) {
     super();
     this.masks = params.masks;
     this.emojis = params.emojis;
-    this.offsetId = params.offsetId;
+    this.offset_id = params.offset_id;
     this.limit = params.limit;
   }
 }
 
-export class MessagesGetMaskStickers extends Function<types.TypeMessagesAllStickers> {
+export class messages_getMaskStickers extends Function<types.messages_AllStickers> {
   hash: bigint;
 
   protected get [id]() {
@@ -6954,8 +6958,8 @@ export class MessagesGetMaskStickers extends Function<types.TypeMessagesAllStick
   }
 }
 
-export class MessagesGetAttachedStickers extends Function<types.TypeStickerSetCovered[]> {
-  media: types.TypeInputStickeredMedia;
+export class messages_getAttachedStickers extends Function<types.StickerSetCovered[]> {
+  media: types.InputStickeredMedia;
 
   protected get [id]() {
     return 0xCC5B67CC;
@@ -6963,28 +6967,28 @@ export class MessagesGetAttachedStickers extends Function<types.TypeStickerSetCo
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["media", types._TypeInputStickeredMedia, "InputStickeredMedia"],
+      ["media", types._InputStickeredMedia, "InputStickeredMedia"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.media, types._TypeInputStickeredMedia, "InputStickeredMedia"],
+      [this.media, types._InputStickeredMedia, "InputStickeredMedia"],
     ];
   }
 
-  constructor(params: { media: types.TypeInputStickeredMedia }) {
+  constructor(params: { media: types.InputStickeredMedia }) {
     super();
     this.media = params.media;
   }
 }
 
-export class MessagesSetGameScore extends Function<types.TypeUpdates> {
-  editMessage?: true;
+export class messages_setGameScore extends Function<types.Updates> {
+  edit_message?: true;
   force?: true;
-  peer: types.TypeInputPeer;
+  peer: types.InputPeer;
   id: number;
-  userId: types.TypeInputUser;
+  user_id: types.InputUser;
   score: number;
 
   protected get [id]() {
@@ -6994,11 +6998,11 @@ export class MessagesSetGameScore extends Function<types.TypeUpdates> {
   static get [paramDesc](): ParamDesc {
     return [
       ["flags", flags, "#"],
-      ["editMessage", "true", "flags.0?true"],
+      ["edit_message", "true", "flags.0?true"],
       ["force", "true", "flags.1?true"],
-      ["peer", types._TypeInputPeer, "InputPeer"],
+      ["peer", types._InputPeer, "InputPeer"],
       ["id", "number", "int"],
-      ["userId", types._TypeInputUser, "InputUser"],
+      ["user_id", types._InputUser, "InputUser"],
       ["score", "number", "int"],
     ];
   }
@@ -7006,31 +7010,31 @@ export class MessagesSetGameScore extends Function<types.TypeUpdates> {
   protected get [params](): Params {
     return [
       ["flags", flags, "#"],
-      [this.editMessage ?? null, "true", "flags.0?true"],
+      [this.edit_message ?? null, "true", "flags.0?true"],
       [this.force ?? null, "true", "flags.1?true"],
-      [this.peer, types._TypeInputPeer, "InputPeer"],
+      [this.peer, types._InputPeer, "InputPeer"],
       [this.id, "number", "int"],
-      [this.userId, types._TypeInputUser, "InputUser"],
+      [this.user_id, types._InputUser, "InputUser"],
       [this.score, "number", "int"],
     ];
   }
 
-  constructor(params: { editMessage?: true; force?: true; peer: types.TypeInputPeer; id: number; userId: types.TypeInputUser; score: number }) {
+  constructor(params: { edit_message?: true; force?: true; peer: types.InputPeer; id: number; user_id: types.InputUser; score: number }) {
     super();
-    this.editMessage = params.editMessage;
+    this.edit_message = params.edit_message;
     this.force = params.force;
     this.peer = params.peer;
     this.id = params.id;
-    this.userId = params.userId;
+    this.user_id = params.user_id;
     this.score = params.score;
   }
 }
 
-export class MessagesSetInlineGameScore extends Function<boolean> {
-  editMessage?: true;
+export class messages_setInlineGameScore extends Function<boolean> {
+  edit_message?: true;
   force?: true;
-  id: types.TypeInputBotInlineMessageID;
-  userId: types.TypeInputUser;
+  id: types.InputBotInlineMessageID;
+  user_id: types.InputUser;
   score: number;
 
   protected get [id]() {
@@ -7040,10 +7044,10 @@ export class MessagesSetInlineGameScore extends Function<boolean> {
   static get [paramDesc](): ParamDesc {
     return [
       ["flags", flags, "#"],
-      ["editMessage", "true", "flags.0?true"],
+      ["edit_message", "true", "flags.0?true"],
       ["force", "true", "flags.1?true"],
-      ["id", types._TypeInputBotInlineMessageID, "InputBotInlineMessageID"],
-      ["userId", types._TypeInputUser, "InputUser"],
+      ["id", types._InputBotInlineMessageID, "InputBotInlineMessageID"],
+      ["user_id", types._InputUser, "InputUser"],
       ["score", "number", "int"],
     ];
   }
@@ -7051,28 +7055,28 @@ export class MessagesSetInlineGameScore extends Function<boolean> {
   protected get [params](): Params {
     return [
       ["flags", flags, "#"],
-      [this.editMessage ?? null, "true", "flags.0?true"],
+      [this.edit_message ?? null, "true", "flags.0?true"],
       [this.force ?? null, "true", "flags.1?true"],
-      [this.id, types._TypeInputBotInlineMessageID, "InputBotInlineMessageID"],
-      [this.userId, types._TypeInputUser, "InputUser"],
+      [this.id, types._InputBotInlineMessageID, "InputBotInlineMessageID"],
+      [this.user_id, types._InputUser, "InputUser"],
       [this.score, "number", "int"],
     ];
   }
 
-  constructor(params: { editMessage?: true; force?: true; id: types.TypeInputBotInlineMessageID; userId: types.TypeInputUser; score: number }) {
+  constructor(params: { edit_message?: true; force?: true; id: types.InputBotInlineMessageID; user_id: types.InputUser; score: number }) {
     super();
-    this.editMessage = params.editMessage;
+    this.edit_message = params.edit_message;
     this.force = params.force;
     this.id = params.id;
-    this.userId = params.userId;
+    this.user_id = params.user_id;
     this.score = params.score;
   }
 }
 
-export class MessagesGetGameHighScores extends Function<types.TypeMessagesHighScores> {
-  peer: types.TypeInputPeer;
+export class messages_getGameHighScores extends Function<types.messages_HighScores> {
+  peer: types.InputPeer;
   id: number;
-  userId: types.TypeInputUser;
+  user_id: types.InputUser;
 
   protected get [id]() {
     return 0xE822649D;
@@ -7080,31 +7084,31 @@ export class MessagesGetGameHighScores extends Function<types.TypeMessagesHighSc
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["peer", types._TypeInputPeer, "InputPeer"],
+      ["peer", types._InputPeer, "InputPeer"],
       ["id", "number", "int"],
-      ["userId", types._TypeInputUser, "InputUser"],
+      ["user_id", types._InputUser, "InputUser"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.peer, types._TypeInputPeer, "InputPeer"],
+      [this.peer, types._InputPeer, "InputPeer"],
       [this.id, "number", "int"],
-      [this.userId, types._TypeInputUser, "InputUser"],
+      [this.user_id, types._InputUser, "InputUser"],
     ];
   }
 
-  constructor(params: { peer: types.TypeInputPeer; id: number; userId: types.TypeInputUser }) {
+  constructor(params: { peer: types.InputPeer; id: number; user_id: types.InputUser }) {
     super();
     this.peer = params.peer;
     this.id = params.id;
-    this.userId = params.userId;
+    this.user_id = params.user_id;
   }
 }
 
-export class MessagesGetInlineGameHighScores extends Function<types.TypeMessagesHighScores> {
-  id: types.TypeInputBotInlineMessageID;
-  userId: types.TypeInputUser;
+export class messages_getInlineGameHighScores extends Function<types.messages_HighScores> {
+  id: types.InputBotInlineMessageID;
+  user_id: types.InputUser;
 
   protected get [id]() {
     return 0x0F635E1B;
@@ -7112,28 +7116,28 @@ export class MessagesGetInlineGameHighScores extends Function<types.TypeMessages
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["id", types._TypeInputBotInlineMessageID, "InputBotInlineMessageID"],
-      ["userId", types._TypeInputUser, "InputUser"],
+      ["id", types._InputBotInlineMessageID, "InputBotInlineMessageID"],
+      ["user_id", types._InputUser, "InputUser"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.id, types._TypeInputBotInlineMessageID, "InputBotInlineMessageID"],
-      [this.userId, types._TypeInputUser, "InputUser"],
+      [this.id, types._InputBotInlineMessageID, "InputBotInlineMessageID"],
+      [this.user_id, types._InputUser, "InputUser"],
     ];
   }
 
-  constructor(params: { id: types.TypeInputBotInlineMessageID; userId: types.TypeInputUser }) {
+  constructor(params: { id: types.InputBotInlineMessageID; user_id: types.InputUser }) {
     super();
     this.id = params.id;
-    this.userId = params.userId;
+    this.user_id = params.user_id;
   }
 }
 
-export class MessagesGetCommonChats extends Function<types.TypeMessagesChats> {
-  userId: types.TypeInputUser;
-  maxId: bigint;
+export class messages_getCommonChats extends Function<types.messages_Chats> {
+  user_id: types.InputUser;
+  max_id: bigint;
   limit: number;
 
   protected get [id]() {
@@ -7142,29 +7146,29 @@ export class MessagesGetCommonChats extends Function<types.TypeMessagesChats> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["userId", types._TypeInputUser, "InputUser"],
-      ["maxId", "bigint", "long"],
+      ["user_id", types._InputUser, "InputUser"],
+      ["max_id", "bigint", "long"],
       ["limit", "number", "int"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.userId, types._TypeInputUser, "InputUser"],
-      [this.maxId, "bigint", "long"],
+      [this.user_id, types._InputUser, "InputUser"],
+      [this.max_id, "bigint", "long"],
       [this.limit, "number", "int"],
     ];
   }
 
-  constructor(params: { userId: types.TypeInputUser; maxId: bigint; limit: number }) {
+  constructor(params: { user_id: types.InputUser; max_id: bigint; limit: number }) {
     super();
-    this.userId = params.userId;
-    this.maxId = params.maxId;
+    this.user_id = params.user_id;
+    this.max_id = params.max_id;
     this.limit = params.limit;
   }
 }
 
-export class MessagesGetWebPage extends Function<types.TypeMessagesWebPage> {
+export class messages_getWebPage extends Function<types.messages_WebPage> {
   url: string;
   hash: number;
 
@@ -7193,9 +7197,9 @@ export class MessagesGetWebPage extends Function<types.TypeMessagesWebPage> {
   }
 }
 
-export class MessagesToggleDialogPin extends Function<boolean> {
+export class messages_toggleDialogPin extends Function<boolean> {
   pinned?: true;
-  peer: types.TypeInputDialogPeer;
+  peer: types.InputDialogPeer;
 
   protected get [id]() {
     return 0xA731E257;
@@ -7205,7 +7209,7 @@ export class MessagesToggleDialogPin extends Function<boolean> {
     return [
       ["flags", flags, "#"],
       ["pinned", "true", "flags.0?true"],
-      ["peer", types._TypeInputDialogPeer, "InputDialogPeer"],
+      ["peer", types._InputDialogPeer, "InputDialogPeer"],
     ];
   }
 
@@ -7213,21 +7217,21 @@ export class MessagesToggleDialogPin extends Function<boolean> {
     return [
       ["flags", flags, "#"],
       [this.pinned ?? null, "true", "flags.0?true"],
-      [this.peer, types._TypeInputDialogPeer, "InputDialogPeer"],
+      [this.peer, types._InputDialogPeer, "InputDialogPeer"],
     ];
   }
 
-  constructor(params: { pinned?: true; peer: types.TypeInputDialogPeer }) {
+  constructor(params: { pinned?: true; peer: types.InputDialogPeer }) {
     super();
     this.pinned = params.pinned;
     this.peer = params.peer;
   }
 }
 
-export class MessagesReorderPinnedDialogs extends Function<boolean> {
+export class messages_reorderPinnedDialogs extends Function<boolean> {
   force?: true;
-  folderId: number;
-  order: Array<types.TypeInputDialogPeer>;
+  folder_id: number;
+  order: Array<types.InputDialogPeer>;
 
   protected get [id]() {
     return 0x3B1ADF37;
@@ -7237,8 +7241,8 @@ export class MessagesReorderPinnedDialogs extends Function<boolean> {
     return [
       ["flags", flags, "#"],
       ["force", "true", "flags.0?true"],
-      ["folderId", "number", "int"],
-      ["order", [types._TypeInputDialogPeer], "Vector<InputDialogPeer>"],
+      ["folder_id", "number", "int"],
+      ["order", [types._InputDialogPeer], "Vector<InputDialogPeer>"],
     ];
   }
 
@@ -7246,21 +7250,21 @@ export class MessagesReorderPinnedDialogs extends Function<boolean> {
     return [
       ["flags", flags, "#"],
       [this.force ?? null, "true", "flags.0?true"],
-      [this.folderId, "number", "int"],
-      [this.order, [types._TypeInputDialogPeer], "Vector<InputDialogPeer>"],
+      [this.folder_id, "number", "int"],
+      [this.order, [types._InputDialogPeer], "Vector<InputDialogPeer>"],
     ];
   }
 
-  constructor(params: { force?: true; folderId: number; order: Array<types.TypeInputDialogPeer> }) {
+  constructor(params: { force?: true; folder_id: number; order: Array<types.InputDialogPeer> }) {
     super();
     this.force = params.force;
-    this.folderId = params.folderId;
+    this.folder_id = params.folder_id;
     this.order = params.order;
   }
 }
 
-export class MessagesGetPinnedDialogs extends Function<types.TypeMessagesPeerDialogs> {
-  folderId: number;
+export class messages_getPinnedDialogs extends Function<types.messages_PeerDialogs> {
+  folder_id: number;
 
   protected get [id]() {
     return 0xD6B94DF2;
@@ -7268,26 +7272,26 @@ export class MessagesGetPinnedDialogs extends Function<types.TypeMessagesPeerDia
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["folderId", "number", "int"],
+      ["folder_id", "number", "int"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.folderId, "number", "int"],
+      [this.folder_id, "number", "int"],
     ];
   }
 
-  constructor(params: { folderId: number }) {
+  constructor(params: { folder_id: number }) {
     super();
-    this.folderId = params.folderId;
+    this.folder_id = params.folder_id;
   }
 }
 
-export class MessagesSetBotShippingResults extends Function<boolean> {
-  queryId: bigint;
+export class messages_setBotShippingResults extends Function<boolean> {
+  query_id: bigint;
   error?: string;
-  shippingOptions?: Array<types.TypeShippingOption>;
+  shipping_options?: Array<types.ShippingOption>;
 
   protected get [id]() {
     return 0xE5F672FA;
@@ -7296,32 +7300,32 @@ export class MessagesSetBotShippingResults extends Function<boolean> {
   static get [paramDesc](): ParamDesc {
     return [
       ["flags", flags, "#"],
-      ["queryId", "bigint", "long"],
+      ["query_id", "bigint", "long"],
       ["error", "string", "flags.0?string"],
-      ["shippingOptions", [types._TypeShippingOption], "flags.1?Vector<ShippingOption>"],
+      ["shipping_options", [types._ShippingOption], "flags.1?Vector<ShippingOption>"],
     ];
   }
 
   protected get [params](): Params {
     return [
       ["flags", flags, "#"],
-      [this.queryId, "bigint", "long"],
+      [this.query_id, "bigint", "long"],
       [this.error ?? null, "string", "flags.0?string"],
-      [this.shippingOptions ?? null, [types._TypeShippingOption], "flags.1?Vector<ShippingOption>"],
+      [this.shipping_options ?? null, [types._ShippingOption], "flags.1?Vector<ShippingOption>"],
     ];
   }
 
-  constructor(params: { queryId: bigint; error?: string; shippingOptions?: Array<types.TypeShippingOption> }) {
+  constructor(params: { query_id: bigint; error?: string; shipping_options?: Array<types.ShippingOption> }) {
     super();
-    this.queryId = params.queryId;
+    this.query_id = params.query_id;
     this.error = params.error;
-    this.shippingOptions = params.shippingOptions;
+    this.shipping_options = params.shipping_options;
   }
 }
 
-export class MessagesSetBotPrecheckoutResults extends Function<boolean> {
+export class messages_setBotPrecheckoutResults extends Function<boolean> {
   success?: true;
-  queryId: bigint;
+  query_id: bigint;
   error?: string;
 
   protected get [id]() {
@@ -7332,7 +7336,7 @@ export class MessagesSetBotPrecheckoutResults extends Function<boolean> {
     return [
       ["flags", flags, "#"],
       ["success", "true", "flags.1?true"],
-      ["queryId", "bigint", "long"],
+      ["query_id", "bigint", "long"],
       ["error", "string", "flags.0?string"],
     ];
   }
@@ -7341,22 +7345,22 @@ export class MessagesSetBotPrecheckoutResults extends Function<boolean> {
     return [
       ["flags", flags, "#"],
       [this.success ?? null, "true", "flags.1?true"],
-      [this.queryId, "bigint", "long"],
+      [this.query_id, "bigint", "long"],
       [this.error ?? null, "string", "flags.0?string"],
     ];
   }
 
-  constructor(params: { success?: true; queryId: bigint; error?: string }) {
+  constructor(params: { success?: true; query_id: bigint; error?: string }) {
     super();
     this.success = params.success;
-    this.queryId = params.queryId;
+    this.query_id = params.query_id;
     this.error = params.error;
   }
 }
 
-export class MessagesUploadMedia extends Function<types.TypeMessageMedia> {
-  peer: types.TypeInputPeer;
-  media: types.TypeInputMedia;
+export class messages_uploadMedia extends Function<types.MessageMedia> {
+  peer: types.InputPeer;
+  media: types.InputMedia;
 
   protected get [id]() {
     return 0x519BC2B1;
@@ -7364,29 +7368,29 @@ export class MessagesUploadMedia extends Function<types.TypeMessageMedia> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["peer", types._TypeInputPeer, "InputPeer"],
-      ["media", types._TypeInputMedia, "InputMedia"],
+      ["peer", types._InputPeer, "InputPeer"],
+      ["media", types._InputMedia, "InputMedia"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.peer, types._TypeInputPeer, "InputPeer"],
-      [this.media, types._TypeInputMedia, "InputMedia"],
+      [this.peer, types._InputPeer, "InputPeer"],
+      [this.media, types._InputMedia, "InputMedia"],
     ];
   }
 
-  constructor(params: { peer: types.TypeInputPeer; media: types.TypeInputMedia }) {
+  constructor(params: { peer: types.InputPeer; media: types.InputMedia }) {
     super();
     this.peer = params.peer;
     this.media = params.media;
   }
 }
 
-export class MessagesSendScreenshotNotification extends Function<types.TypeUpdates> {
-  peer: types.TypeInputPeer;
-  replyTo: types.TypeInputReplyTo;
-  randomId: bigint;
+export class messages_sendScreenshotNotification extends Function<types.Updates> {
+  peer: types.InputPeer;
+  reply_to: types.InputReplyTo;
+  random_id: bigint;
 
   protected get [id]() {
     return 0xA1405817;
@@ -7394,29 +7398,29 @@ export class MessagesSendScreenshotNotification extends Function<types.TypeUpdat
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["peer", types._TypeInputPeer, "InputPeer"],
-      ["replyTo", types._TypeInputReplyTo, "InputReplyTo"],
-      ["randomId", "bigint", "long"],
+      ["peer", types._InputPeer, "InputPeer"],
+      ["reply_to", types._InputReplyTo, "InputReplyTo"],
+      ["random_id", "bigint", "long"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.peer, types._TypeInputPeer, "InputPeer"],
-      [this.replyTo, types._TypeInputReplyTo, "InputReplyTo"],
-      [this.randomId, "bigint", "long"],
+      [this.peer, types._InputPeer, "InputPeer"],
+      [this.reply_to, types._InputReplyTo, "InputReplyTo"],
+      [this.random_id, "bigint", "long"],
     ];
   }
 
-  constructor(params: { peer: types.TypeInputPeer; replyTo: types.TypeInputReplyTo; randomId: bigint }) {
+  constructor(params: { peer: types.InputPeer; reply_to: types.InputReplyTo; random_id: bigint }) {
     super();
     this.peer = params.peer;
-    this.replyTo = params.replyTo;
-    this.randomId = params.randomId;
+    this.reply_to = params.reply_to;
+    this.random_id = params.random_id;
   }
 }
 
-export class MessagesGetFavedStickers extends Function<types.TypeMessagesFavedStickers> {
+export class messages_getFavedStickers extends Function<types.messages_FavedStickers> {
   hash: bigint;
 
   protected get [id]() {
@@ -7441,8 +7445,8 @@ export class MessagesGetFavedStickers extends Function<types.TypeMessagesFavedSt
   }
 }
 
-export class MessagesFaveSticker extends Function<boolean> {
-  id: types.TypeInputDocument;
+export class messages_faveSticker extends Function<boolean> {
+  id: types.InputDocument;
   unfave: boolean;
 
   protected get [id]() {
@@ -7451,33 +7455,33 @@ export class MessagesFaveSticker extends Function<boolean> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["id", types._TypeInputDocument, "InputDocument"],
+      ["id", types._InputDocument, "InputDocument"],
       ["unfave", "boolean", "Bool"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.id, types._TypeInputDocument, "InputDocument"],
+      [this.id, types._InputDocument, "InputDocument"],
       [this.unfave, "boolean", "Bool"],
     ];
   }
 
-  constructor(params: { id: types.TypeInputDocument; unfave: boolean }) {
+  constructor(params: { id: types.InputDocument; unfave: boolean }) {
     super();
     this.id = params.id;
     this.unfave = params.unfave;
   }
 }
 
-export class MessagesGetUnreadMentions extends Function<types.TypeMessagesMessages> {
-  peer: types.TypeInputPeer;
-  topMsgId?: number;
-  offsetId: number;
-  addOffset: number;
+export class messages_getUnreadMentions extends Function<types.messages_Messages> {
+  peer: types.InputPeer;
+  top_msg_id?: number;
+  offset_id: number;
+  add_offset: number;
   limit: number;
-  maxId: number;
-  minId: number;
+  max_id: number;
+  min_id: number;
 
   protected get [id]() {
     return 0xF107E790;
@@ -7486,44 +7490,44 @@ export class MessagesGetUnreadMentions extends Function<types.TypeMessagesMessag
   static get [paramDesc](): ParamDesc {
     return [
       ["flags", flags, "#"],
-      ["peer", types._TypeInputPeer, "InputPeer"],
-      ["topMsgId", "number", "flags.0?int"],
-      ["offsetId", "number", "int"],
-      ["addOffset", "number", "int"],
+      ["peer", types._InputPeer, "InputPeer"],
+      ["top_msg_id", "number", "flags.0?int"],
+      ["offset_id", "number", "int"],
+      ["add_offset", "number", "int"],
       ["limit", "number", "int"],
-      ["maxId", "number", "int"],
-      ["minId", "number", "int"],
+      ["max_id", "number", "int"],
+      ["min_id", "number", "int"],
     ];
   }
 
   protected get [params](): Params {
     return [
       ["flags", flags, "#"],
-      [this.peer, types._TypeInputPeer, "InputPeer"],
-      [this.topMsgId ?? null, "number", "flags.0?int"],
-      [this.offsetId, "number", "int"],
-      [this.addOffset, "number", "int"],
+      [this.peer, types._InputPeer, "InputPeer"],
+      [this.top_msg_id ?? null, "number", "flags.0?int"],
+      [this.offset_id, "number", "int"],
+      [this.add_offset, "number", "int"],
       [this.limit, "number", "int"],
-      [this.maxId, "number", "int"],
-      [this.minId, "number", "int"],
+      [this.max_id, "number", "int"],
+      [this.min_id, "number", "int"],
     ];
   }
 
-  constructor(params: { peer: types.TypeInputPeer; topMsgId?: number; offsetId: number; addOffset: number; limit: number; maxId: number; minId: number }) {
+  constructor(params: { peer: types.InputPeer; top_msg_id?: number; offset_id: number; add_offset: number; limit: number; max_id: number; min_id: number }) {
     super();
     this.peer = params.peer;
-    this.topMsgId = params.topMsgId;
-    this.offsetId = params.offsetId;
-    this.addOffset = params.addOffset;
+    this.top_msg_id = params.top_msg_id;
+    this.offset_id = params.offset_id;
+    this.add_offset = params.add_offset;
     this.limit = params.limit;
-    this.maxId = params.maxId;
-    this.minId = params.minId;
+    this.max_id = params.max_id;
+    this.min_id = params.min_id;
   }
 }
 
-export class MessagesReadMentions extends Function<types.TypeMessagesAffectedHistory> {
-  peer: types.TypeInputPeer;
-  topMsgId?: number;
+export class messages_readMentions extends Function<types.messages_AffectedHistory> {
+  peer: types.InputPeer;
+  top_msg_id?: number;
 
   protected get [id]() {
     return 0x36E5BF4D;
@@ -7532,28 +7536,28 @@ export class MessagesReadMentions extends Function<types.TypeMessagesAffectedHis
   static get [paramDesc](): ParamDesc {
     return [
       ["flags", flags, "#"],
-      ["peer", types._TypeInputPeer, "InputPeer"],
-      ["topMsgId", "number", "flags.0?int"],
+      ["peer", types._InputPeer, "InputPeer"],
+      ["top_msg_id", "number", "flags.0?int"],
     ];
   }
 
   protected get [params](): Params {
     return [
       ["flags", flags, "#"],
-      [this.peer, types._TypeInputPeer, "InputPeer"],
-      [this.topMsgId ?? null, "number", "flags.0?int"],
+      [this.peer, types._InputPeer, "InputPeer"],
+      [this.top_msg_id ?? null, "number", "flags.0?int"],
     ];
   }
 
-  constructor(params: { peer: types.TypeInputPeer; topMsgId?: number }) {
+  constructor(params: { peer: types.InputPeer; top_msg_id?: number }) {
     super();
     this.peer = params.peer;
-    this.topMsgId = params.topMsgId;
+    this.top_msg_id = params.top_msg_id;
   }
 }
 
-export class MessagesGetRecentLocations extends Function<types.TypeMessagesMessages> {
-  peer: types.TypeInputPeer;
+export class messages_getRecentLocations extends Function<types.messages_Messages> {
+  peer: types.InputPeer;
   limit: number;
   hash: bigint;
 
@@ -7563,7 +7567,7 @@ export class MessagesGetRecentLocations extends Function<types.TypeMessagesMessa
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["peer", types._TypeInputPeer, "InputPeer"],
+      ["peer", types._InputPeer, "InputPeer"],
       ["limit", "number", "int"],
       ["hash", "bigint", "long"],
     ];
@@ -7571,13 +7575,13 @@ export class MessagesGetRecentLocations extends Function<types.TypeMessagesMessa
 
   protected get [params](): Params {
     return [
-      [this.peer, types._TypeInputPeer, "InputPeer"],
+      [this.peer, types._InputPeer, "InputPeer"],
       [this.limit, "number", "int"],
       [this.hash, "bigint", "long"],
     ];
   }
 
-  constructor(params: { peer: types.TypeInputPeer; limit: number; hash: bigint }) {
+  constructor(params: { peer: types.InputPeer; limit: number; hash: bigint }) {
     super();
     this.peer = params.peer;
     this.limit = params.limit;
@@ -7585,18 +7589,18 @@ export class MessagesGetRecentLocations extends Function<types.TypeMessagesMessa
   }
 }
 
-export class MessagesSendMultiMedia extends Function<types.TypeUpdates> {
+export class messages_sendMultiMedia extends Function<types.Updates> {
   silent?: true;
   background?: true;
-  clearDraft?: true;
+  clear_draft?: true;
   noforwards?: true;
-  updateStickersetsOrder?: true;
-  invertMedia?: true;
-  peer: types.TypeInputPeer;
-  replyTo?: types.TypeInputReplyTo;
-  multiMedia: Array<types.TypeInputSingleMedia>;
-  scheduleDate?: number;
-  sendAs?: types.TypeInputPeer;
+  update_stickersets_order?: true;
+  invert_media?: true;
+  peer: types.InputPeer;
+  reply_to?: types.InputReplyTo;
+  multi_media: Array<types.InputSingleMedia>;
+  schedule_date?: number;
+  send_as?: types.InputPeer;
 
   protected get [id]() {
     return 0x456E8987;
@@ -7607,15 +7611,15 @@ export class MessagesSendMultiMedia extends Function<types.TypeUpdates> {
       ["flags", flags, "#"],
       ["silent", "true", "flags.5?true"],
       ["background", "true", "flags.6?true"],
-      ["clearDraft", "true", "flags.7?true"],
+      ["clear_draft", "true", "flags.7?true"],
       ["noforwards", "true", "flags.14?true"],
-      ["updateStickersetsOrder", "true", "flags.15?true"],
-      ["invertMedia", "true", "flags.16?true"],
-      ["peer", types._TypeInputPeer, "InputPeer"],
-      ["replyTo", types._TypeInputReplyTo, "flags.0?InputReplyTo"],
-      ["multiMedia", [types._TypeInputSingleMedia], "Vector<InputSingleMedia>"],
-      ["scheduleDate", "number", "flags.10?int"],
-      ["sendAs", types._TypeInputPeer, "flags.13?InputPeer"],
+      ["update_stickersets_order", "true", "flags.15?true"],
+      ["invert_media", "true", "flags.16?true"],
+      ["peer", types._InputPeer, "InputPeer"],
+      ["reply_to", types._InputReplyTo, "flags.0?InputReplyTo"],
+      ["multi_media", [types._InputSingleMedia], "Vector<InputSingleMedia>"],
+      ["schedule_date", "number", "flags.10?int"],
+      ["send_as", types._InputPeer, "flags.13?InputPeer"],
     ];
   }
 
@@ -7624,37 +7628,37 @@ export class MessagesSendMultiMedia extends Function<types.TypeUpdates> {
       ["flags", flags, "#"],
       [this.silent ?? null, "true", "flags.5?true"],
       [this.background ?? null, "true", "flags.6?true"],
-      [this.clearDraft ?? null, "true", "flags.7?true"],
+      [this.clear_draft ?? null, "true", "flags.7?true"],
       [this.noforwards ?? null, "true", "flags.14?true"],
-      [this.updateStickersetsOrder ?? null, "true", "flags.15?true"],
-      [this.invertMedia ?? null, "true", "flags.16?true"],
-      [this.peer, types._TypeInputPeer, "InputPeer"],
-      [this.replyTo ?? null, types._TypeInputReplyTo, "flags.0?InputReplyTo"],
-      [this.multiMedia, [types._TypeInputSingleMedia], "Vector<InputSingleMedia>"],
-      [this.scheduleDate ?? null, "number", "flags.10?int"],
-      [this.sendAs ?? null, types._TypeInputPeer, "flags.13?InputPeer"],
+      [this.update_stickersets_order ?? null, "true", "flags.15?true"],
+      [this.invert_media ?? null, "true", "flags.16?true"],
+      [this.peer, types._InputPeer, "InputPeer"],
+      [this.reply_to ?? null, types._InputReplyTo, "flags.0?InputReplyTo"],
+      [this.multi_media, [types._InputSingleMedia], "Vector<InputSingleMedia>"],
+      [this.schedule_date ?? null, "number", "flags.10?int"],
+      [this.send_as ?? null, types._InputPeer, "flags.13?InputPeer"],
     ];
   }
 
-  constructor(params: { silent?: true; background?: true; clearDraft?: true; noforwards?: true; updateStickersetsOrder?: true; invertMedia?: true; peer: types.TypeInputPeer; replyTo?: types.TypeInputReplyTo; multiMedia: Array<types.TypeInputSingleMedia>; scheduleDate?: number; sendAs?: types.TypeInputPeer }) {
+  constructor(params: { silent?: true; background?: true; clear_draft?: true; noforwards?: true; update_stickersets_order?: true; invert_media?: true; peer: types.InputPeer; reply_to?: types.InputReplyTo; multi_media: Array<types.InputSingleMedia>; schedule_date?: number; send_as?: types.InputPeer }) {
     super();
     this.silent = params.silent;
     this.background = params.background;
-    this.clearDraft = params.clearDraft;
+    this.clear_draft = params.clear_draft;
     this.noforwards = params.noforwards;
-    this.updateStickersetsOrder = params.updateStickersetsOrder;
-    this.invertMedia = params.invertMedia;
+    this.update_stickersets_order = params.update_stickersets_order;
+    this.invert_media = params.invert_media;
     this.peer = params.peer;
-    this.replyTo = params.replyTo;
-    this.multiMedia = params.multiMedia;
-    this.scheduleDate = params.scheduleDate;
-    this.sendAs = params.sendAs;
+    this.reply_to = params.reply_to;
+    this.multi_media = params.multi_media;
+    this.schedule_date = params.schedule_date;
+    this.send_as = params.send_as;
   }
 }
 
-export class MessagesUploadEncryptedFile extends Function<types.TypeEncryptedFile> {
-  peer: types.TypeInputEncryptedChat;
-  file: types.TypeInputEncryptedFile;
+export class messages_uploadEncryptedFile extends Function<types.EncryptedFile> {
+  peer: types.InputEncryptedChat;
+  file: types.InputEncryptedFile;
 
   protected get [id]() {
     return 0x5057C497;
@@ -7662,27 +7666,27 @@ export class MessagesUploadEncryptedFile extends Function<types.TypeEncryptedFil
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["peer", types._TypeInputEncryptedChat, "InputEncryptedChat"],
-      ["file", types._TypeInputEncryptedFile, "InputEncryptedFile"],
+      ["peer", types._InputEncryptedChat, "InputEncryptedChat"],
+      ["file", types._InputEncryptedFile, "InputEncryptedFile"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.peer, types._TypeInputEncryptedChat, "InputEncryptedChat"],
-      [this.file, types._TypeInputEncryptedFile, "InputEncryptedFile"],
+      [this.peer, types._InputEncryptedChat, "InputEncryptedChat"],
+      [this.file, types._InputEncryptedFile, "InputEncryptedFile"],
     ];
   }
 
-  constructor(params: { peer: types.TypeInputEncryptedChat; file: types.TypeInputEncryptedFile }) {
+  constructor(params: { peer: types.InputEncryptedChat; file: types.InputEncryptedFile }) {
     super();
     this.peer = params.peer;
     this.file = params.file;
   }
 }
 
-export class MessagesSearchStickerSets extends Function<types.TypeMessagesFoundStickerSets> {
-  excludeFeatured?: true;
+export class messages_searchStickerSets extends Function<types.messages_FoundStickerSets> {
+  exclude_featured?: true;
   q: string;
   hash: bigint;
 
@@ -7693,7 +7697,7 @@ export class MessagesSearchStickerSets extends Function<types.TypeMessagesFoundS
   static get [paramDesc](): ParamDesc {
     return [
       ["flags", flags, "#"],
-      ["excludeFeatured", "true", "flags.0?true"],
+      ["exclude_featured", "true", "flags.0?true"],
       ["q", "string", "string"],
       ["hash", "bigint", "long"],
     ];
@@ -7702,21 +7706,21 @@ export class MessagesSearchStickerSets extends Function<types.TypeMessagesFoundS
   protected get [params](): Params {
     return [
       ["flags", flags, "#"],
-      [this.excludeFeatured ?? null, "true", "flags.0?true"],
+      [this.exclude_featured ?? null, "true", "flags.0?true"],
       [this.q, "string", "string"],
       [this.hash, "bigint", "long"],
     ];
   }
 
-  constructor(params: { excludeFeatured?: true; q: string; hash: bigint }) {
+  constructor(params: { exclude_featured?: true; q: string; hash: bigint }) {
     super();
-    this.excludeFeatured = params.excludeFeatured;
+    this.exclude_featured = params.exclude_featured;
     this.q = params.q;
     this.hash = params.hash;
   }
 }
 
-export class MessagesGetSplitRanges extends Function<types.TypeMessageRange[]> {
+export class messages_getSplitRanges extends Function<types.MessageRange[]> {
   protected get [id]() {
     return 0x1CFF7E08;
   }
@@ -7734,9 +7738,9 @@ export class MessagesGetSplitRanges extends Function<types.TypeMessageRange[]> {
   }
 }
 
-export class MessagesMarkDialogUnread extends Function<boolean> {
+export class messages_markDialogUnread extends Function<boolean> {
   unread?: true;
-  peer: types.TypeInputDialogPeer;
+  peer: types.InputDialogPeer;
 
   protected get [id]() {
     return 0xC286D98F;
@@ -7746,7 +7750,7 @@ export class MessagesMarkDialogUnread extends Function<boolean> {
     return [
       ["flags", flags, "#"],
       ["unread", "true", "flags.0?true"],
-      ["peer", types._TypeInputDialogPeer, "InputDialogPeer"],
+      ["peer", types._InputDialogPeer, "InputDialogPeer"],
     ];
   }
 
@@ -7754,18 +7758,18 @@ export class MessagesMarkDialogUnread extends Function<boolean> {
     return [
       ["flags", flags, "#"],
       [this.unread ?? null, "true", "flags.0?true"],
-      [this.peer, types._TypeInputDialogPeer, "InputDialogPeer"],
+      [this.peer, types._InputDialogPeer, "InputDialogPeer"],
     ];
   }
 
-  constructor(params: { unread?: true; peer: types.TypeInputDialogPeer }) {
+  constructor(params: { unread?: true; peer: types.InputDialogPeer }) {
     super();
     this.unread = params.unread;
     this.peer = params.peer;
   }
 }
 
-export class MessagesGetDialogUnreadMarks extends Function<types.TypeDialogPeer[]> {
+export class messages_getDialogUnreadMarks extends Function<types.DialogPeer[]> {
   protected get [id]() {
     return 0x22E24E22;
   }
@@ -7783,7 +7787,7 @@ export class MessagesGetDialogUnreadMarks extends Function<types.TypeDialogPeer[
   }
 }
 
-export class MessagesClearAllDrafts extends Function<boolean> {
+export class messages_clearAllDrafts extends Function<boolean> {
   protected get [id]() {
     return 0x7E58EE9C;
   }
@@ -7801,11 +7805,11 @@ export class MessagesClearAllDrafts extends Function<boolean> {
   }
 }
 
-export class MessagesUpdatePinnedMessage extends Function<types.TypeUpdates> {
+export class messages_updatePinnedMessage extends Function<types.Updates> {
   silent?: true;
   unpin?: true;
-  pmOneside?: true;
-  peer: types.TypeInputPeer;
+  pm_oneside?: true;
+  peer: types.InputPeer;
   id: number;
 
   protected get [id]() {
@@ -7817,8 +7821,8 @@ export class MessagesUpdatePinnedMessage extends Function<types.TypeUpdates> {
       ["flags", flags, "#"],
       ["silent", "true", "flags.0?true"],
       ["unpin", "true", "flags.1?true"],
-      ["pmOneside", "true", "flags.2?true"],
-      ["peer", types._TypeInputPeer, "InputPeer"],
+      ["pm_oneside", "true", "flags.2?true"],
+      ["peer", types._InputPeer, "InputPeer"],
       ["id", "number", "int"],
     ];
   }
@@ -7828,25 +7832,25 @@ export class MessagesUpdatePinnedMessage extends Function<types.TypeUpdates> {
       ["flags", flags, "#"],
       [this.silent ?? null, "true", "flags.0?true"],
       [this.unpin ?? null, "true", "flags.1?true"],
-      [this.pmOneside ?? null, "true", "flags.2?true"],
-      [this.peer, types._TypeInputPeer, "InputPeer"],
+      [this.pm_oneside ?? null, "true", "flags.2?true"],
+      [this.peer, types._InputPeer, "InputPeer"],
       [this.id, "number", "int"],
     ];
   }
 
-  constructor(params: { silent?: true; unpin?: true; pmOneside?: true; peer: types.TypeInputPeer; id: number }) {
+  constructor(params: { silent?: true; unpin?: true; pm_oneside?: true; peer: types.InputPeer; id: number }) {
     super();
     this.silent = params.silent;
     this.unpin = params.unpin;
-    this.pmOneside = params.pmOneside;
+    this.pm_oneside = params.pm_oneside;
     this.peer = params.peer;
     this.id = params.id;
   }
 }
 
-export class MessagesSendVote extends Function<types.TypeUpdates> {
-  peer: types.TypeInputPeer;
-  msgId: number;
+export class messages_sendVote extends Function<types.Updates> {
+  peer: types.InputPeer;
+  msg_id: number;
   options: Array<Uint8Array>;
 
   protected get [id]() {
@@ -7855,31 +7859,31 @@ export class MessagesSendVote extends Function<types.TypeUpdates> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["peer", types._TypeInputPeer, "InputPeer"],
-      ["msgId", "number", "int"],
+      ["peer", types._InputPeer, "InputPeer"],
+      ["msg_id", "number", "int"],
       ["options", [Uint8Array], "Vector<bytes>"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.peer, types._TypeInputPeer, "InputPeer"],
-      [this.msgId, "number", "int"],
+      [this.peer, types._InputPeer, "InputPeer"],
+      [this.msg_id, "number", "int"],
       [this.options, [Uint8Array], "Vector<bytes>"],
     ];
   }
 
-  constructor(params: { peer: types.TypeInputPeer; msgId: number; options: Array<Uint8Array> }) {
+  constructor(params: { peer: types.InputPeer; msg_id: number; options: Array<Uint8Array> }) {
     super();
     this.peer = params.peer;
-    this.msgId = params.msgId;
+    this.msg_id = params.msg_id;
     this.options = params.options;
   }
 }
 
-export class MessagesGetPollResults extends Function<types.TypeUpdates> {
-  peer: types.TypeInputPeer;
-  msgId: number;
+export class messages_getPollResults extends Function<types.Updates> {
+  peer: types.InputPeer;
+  msg_id: number;
 
   protected get [id]() {
     return 0x73BB643B;
@@ -7887,27 +7891,27 @@ export class MessagesGetPollResults extends Function<types.TypeUpdates> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["peer", types._TypeInputPeer, "InputPeer"],
-      ["msgId", "number", "int"],
+      ["peer", types._InputPeer, "InputPeer"],
+      ["msg_id", "number", "int"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.peer, types._TypeInputPeer, "InputPeer"],
-      [this.msgId, "number", "int"],
+      [this.peer, types._InputPeer, "InputPeer"],
+      [this.msg_id, "number", "int"],
     ];
   }
 
-  constructor(params: { peer: types.TypeInputPeer; msgId: number }) {
+  constructor(params: { peer: types.InputPeer; msg_id: number }) {
     super();
     this.peer = params.peer;
-    this.msgId = params.msgId;
+    this.msg_id = params.msg_id;
   }
 }
 
-export class MessagesGetOnlines extends Function<types.TypeChatOnlines> {
-  peer: types.TypeInputPeer;
+export class messages_getOnlines extends Function<types.ChatOnlines> {
+  peer: types.InputPeer;
 
   protected get [id]() {
     return 0x6E2BE050;
@@ -7915,24 +7919,24 @@ export class MessagesGetOnlines extends Function<types.TypeChatOnlines> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["peer", types._TypeInputPeer, "InputPeer"],
+      ["peer", types._InputPeer, "InputPeer"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.peer, types._TypeInputPeer, "InputPeer"],
+      [this.peer, types._InputPeer, "InputPeer"],
     ];
   }
 
-  constructor(params: { peer: types.TypeInputPeer }) {
+  constructor(params: { peer: types.InputPeer }) {
     super();
     this.peer = params.peer;
   }
 }
 
-export class MessagesEditChatAbout extends Function<boolean> {
-  peer: types.TypeInputPeer;
+export class messages_editChatAbout extends Function<boolean> {
+  peer: types.InputPeer;
   about: string;
 
   protected get [id]() {
@@ -7941,28 +7945,28 @@ export class MessagesEditChatAbout extends Function<boolean> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["peer", types._TypeInputPeer, "InputPeer"],
+      ["peer", types._InputPeer, "InputPeer"],
       ["about", "string", "string"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.peer, types._TypeInputPeer, "InputPeer"],
+      [this.peer, types._InputPeer, "InputPeer"],
       [this.about, "string", "string"],
     ];
   }
 
-  constructor(params: { peer: types.TypeInputPeer; about: string }) {
+  constructor(params: { peer: types.InputPeer; about: string }) {
     super();
     this.peer = params.peer;
     this.about = params.about;
   }
 }
 
-export class MessagesEditChatDefaultBannedRights extends Function<types.TypeUpdates> {
-  peer: types.TypeInputPeer;
-  bannedRights: types.TypeChatBannedRights;
+export class messages_editChatDefaultBannedRights extends Function<types.Updates> {
+  peer: types.InputPeer;
+  banned_rights: types.ChatBannedRights;
 
   protected get [id]() {
     return 0xA5866B41;
@@ -7970,27 +7974,27 @@ export class MessagesEditChatDefaultBannedRights extends Function<types.TypeUpda
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["peer", types._TypeInputPeer, "InputPeer"],
-      ["bannedRights", types._TypeChatBannedRights, "ChatBannedRights"],
+      ["peer", types._InputPeer, "InputPeer"],
+      ["banned_rights", types._ChatBannedRights, "ChatBannedRights"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.peer, types._TypeInputPeer, "InputPeer"],
-      [this.bannedRights, types._TypeChatBannedRights, "ChatBannedRights"],
+      [this.peer, types._InputPeer, "InputPeer"],
+      [this.banned_rights, types._ChatBannedRights, "ChatBannedRights"],
     ];
   }
 
-  constructor(params: { peer: types.TypeInputPeer; bannedRights: types.TypeChatBannedRights }) {
+  constructor(params: { peer: types.InputPeer; banned_rights: types.ChatBannedRights }) {
     super();
     this.peer = params.peer;
-    this.bannedRights = params.bannedRights;
+    this.banned_rights = params.banned_rights;
   }
 }
 
-export class MessagesGetEmojiKeywords extends Function<types.TypeEmojiKeywordsDifference> {
-  langCode: string;
+export class messages_getEmojiKeywords extends Function<types.EmojiKeywordsDifference> {
+  lang_code: string;
 
   protected get [id]() {
     return 0x35A0E062;
@@ -7998,25 +8002,25 @@ export class MessagesGetEmojiKeywords extends Function<types.TypeEmojiKeywordsDi
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["langCode", "string", "string"],
+      ["lang_code", "string", "string"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.langCode, "string", "string"],
+      [this.lang_code, "string", "string"],
     ];
   }
 
-  constructor(params: { langCode: string }) {
+  constructor(params: { lang_code: string }) {
     super();
-    this.langCode = params.langCode;
+    this.lang_code = params.lang_code;
   }
 }
 
-export class MessagesGetEmojiKeywordsDifference extends Function<types.TypeEmojiKeywordsDifference> {
-  langCode: string;
-  fromVersion: number;
+export class messages_getEmojiKeywordsDifference extends Function<types.EmojiKeywordsDifference> {
+  lang_code: string;
+  from_version: number;
 
   protected get [id]() {
     return 0x1508B6AF;
@@ -8024,27 +8028,27 @@ export class MessagesGetEmojiKeywordsDifference extends Function<types.TypeEmoji
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["langCode", "string", "string"],
-      ["fromVersion", "number", "int"],
+      ["lang_code", "string", "string"],
+      ["from_version", "number", "int"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.langCode, "string", "string"],
-      [this.fromVersion, "number", "int"],
+      [this.lang_code, "string", "string"],
+      [this.from_version, "number", "int"],
     ];
   }
 
-  constructor(params: { langCode: string; fromVersion: number }) {
+  constructor(params: { lang_code: string; from_version: number }) {
     super();
-    this.langCode = params.langCode;
-    this.fromVersion = params.fromVersion;
+    this.lang_code = params.lang_code;
+    this.from_version = params.from_version;
   }
 }
 
-export class MessagesGetEmojiKeywordsLanguages extends Function<types.TypeEmojiLanguage[]> {
-  langCodes: Array<string>;
+export class messages_getEmojiKeywordsLanguages extends Function<types.EmojiLanguage[]> {
+  lang_codes: Array<string>;
 
   protected get [id]() {
     return 0x4E9963B2;
@@ -8052,24 +8056,24 @@ export class MessagesGetEmojiKeywordsLanguages extends Function<types.TypeEmojiL
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["langCodes", ["string"], "Vector<string>"],
+      ["lang_codes", ["string"], "Vector<string>"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.langCodes, ["string"], "Vector<string>"],
+      [this.lang_codes, ["string"], "Vector<string>"],
     ];
   }
 
-  constructor(params: { langCodes: Array<string> }) {
+  constructor(params: { lang_codes: Array<string> }) {
     super();
-    this.langCodes = params.langCodes;
+    this.lang_codes = params.lang_codes;
   }
 }
 
-export class MessagesGetEmojiURL extends Function<types.TypeEmojiURL> {
-  langCode: string;
+export class messages_getEmojiURL extends Function<types.EmojiURL> {
+  lang_code: string;
 
   protected get [id]() {
     return 0xD5B10C26;
@@ -8077,26 +8081,26 @@ export class MessagesGetEmojiURL extends Function<types.TypeEmojiURL> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["langCode", "string", "string"],
+      ["lang_code", "string", "string"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.langCode, "string", "string"],
+      [this.lang_code, "string", "string"],
     ];
   }
 
-  constructor(params: { langCode: string }) {
+  constructor(params: { lang_code: string }) {
     super();
-    this.langCode = params.langCode;
+    this.lang_code = params.lang_code;
   }
 }
 
-export class MessagesGetSearchCounters extends Function<types.TypeMessagesSearchCounter[]> {
-  peer: types.TypeInputPeer;
-  topMsgId?: number;
-  filters: Array<types.TypeMessagesFilter>;
+export class messages_getSearchCounters extends Function<types.messages_SearchCounter[]> {
+  peer: types.InputPeer;
+  top_msg_id?: number;
+  filters: Array<types.MessagesFilter>;
 
   protected get [id]() {
     return 0x00AE7CC1;
@@ -8105,33 +8109,33 @@ export class MessagesGetSearchCounters extends Function<types.TypeMessagesSearch
   static get [paramDesc](): ParamDesc {
     return [
       ["flags", flags, "#"],
-      ["peer", types._TypeInputPeer, "InputPeer"],
-      ["topMsgId", "number", "flags.0?int"],
-      ["filters", [types._TypeMessagesFilter], "Vector<MessagesFilter>"],
+      ["peer", types._InputPeer, "InputPeer"],
+      ["top_msg_id", "number", "flags.0?int"],
+      ["filters", [types._MessagesFilter], "Vector<MessagesFilter>"],
     ];
   }
 
   protected get [params](): Params {
     return [
       ["flags", flags, "#"],
-      [this.peer, types._TypeInputPeer, "InputPeer"],
-      [this.topMsgId ?? null, "number", "flags.0?int"],
-      [this.filters, [types._TypeMessagesFilter], "Vector<MessagesFilter>"],
+      [this.peer, types._InputPeer, "InputPeer"],
+      [this.top_msg_id ?? null, "number", "flags.0?int"],
+      [this.filters, [types._MessagesFilter], "Vector<MessagesFilter>"],
     ];
   }
 
-  constructor(params: { peer: types.TypeInputPeer; topMsgId?: number; filters: Array<types.TypeMessagesFilter> }) {
+  constructor(params: { peer: types.InputPeer; top_msg_id?: number; filters: Array<types.MessagesFilter> }) {
     super();
     this.peer = params.peer;
-    this.topMsgId = params.topMsgId;
+    this.top_msg_id = params.top_msg_id;
     this.filters = params.filters;
   }
 }
 
-export class MessagesRequestURLAuth extends Function<types.TypeURLAuthResult> {
-  peer?: types.TypeInputPeer;
-  msgId?: number;
-  buttonId?: number;
+export class messages_requestUrlAuth extends Function<types.UrlAuthResult> {
+  peer?: types.InputPeer;
+  msg_id?: number;
+  button_id?: number;
   url?: string;
 
   protected get [id]() {
@@ -8141,9 +8145,9 @@ export class MessagesRequestURLAuth extends Function<types.TypeURLAuthResult> {
   static get [paramDesc](): ParamDesc {
     return [
       ["flags", flags, "#"],
-      ["peer", types._TypeInputPeer, "flags.1?InputPeer"],
-      ["msgId", "number", "flags.1?int"],
-      ["buttonId", "number", "flags.1?int"],
+      ["peer", types._InputPeer, "flags.1?InputPeer"],
+      ["msg_id", "number", "flags.1?int"],
+      ["button_id", "number", "flags.1?int"],
       ["url", "string", "flags.2?string"],
     ];
   }
@@ -8151,27 +8155,27 @@ export class MessagesRequestURLAuth extends Function<types.TypeURLAuthResult> {
   protected get [params](): Params {
     return [
       ["flags", flags, "#"],
-      [this.peer ?? null, types._TypeInputPeer, "flags.1?InputPeer"],
-      [this.msgId ?? null, "number", "flags.1?int"],
-      [this.buttonId ?? null, "number", "flags.1?int"],
+      [this.peer ?? null, types._InputPeer, "flags.1?InputPeer"],
+      [this.msg_id ?? null, "number", "flags.1?int"],
+      [this.button_id ?? null, "number", "flags.1?int"],
       [this.url ?? null, "string", "flags.2?string"],
     ];
   }
 
-  constructor(params?: { peer?: types.TypeInputPeer; msgId?: number; buttonId?: number; url?: string }) {
+  constructor(params?: { peer?: types.InputPeer; msg_id?: number; button_id?: number; url?: string }) {
     super();
     this.peer = params?.peer;
-    this.msgId = params?.msgId;
-    this.buttonId = params?.buttonId;
+    this.msg_id = params?.msg_id;
+    this.button_id = params?.button_id;
     this.url = params?.url;
   }
 }
 
-export class MessagesAcceptURLAuth extends Function<types.TypeURLAuthResult> {
-  writeAllowed?: true;
-  peer?: types.TypeInputPeer;
-  msgId?: number;
-  buttonId?: number;
+export class messages_acceptUrlAuth extends Function<types.UrlAuthResult> {
+  write_allowed?: true;
+  peer?: types.InputPeer;
+  msg_id?: number;
+  button_id?: number;
   url?: string;
 
   protected get [id]() {
@@ -8181,10 +8185,10 @@ export class MessagesAcceptURLAuth extends Function<types.TypeURLAuthResult> {
   static get [paramDesc](): ParamDesc {
     return [
       ["flags", flags, "#"],
-      ["writeAllowed", "true", "flags.0?true"],
-      ["peer", types._TypeInputPeer, "flags.1?InputPeer"],
-      ["msgId", "number", "flags.1?int"],
-      ["buttonId", "number", "flags.1?int"],
+      ["write_allowed", "true", "flags.0?true"],
+      ["peer", types._InputPeer, "flags.1?InputPeer"],
+      ["msg_id", "number", "flags.1?int"],
+      ["button_id", "number", "flags.1?int"],
       ["url", "string", "flags.2?string"],
     ];
   }
@@ -8192,26 +8196,26 @@ export class MessagesAcceptURLAuth extends Function<types.TypeURLAuthResult> {
   protected get [params](): Params {
     return [
       ["flags", flags, "#"],
-      [this.writeAllowed ?? null, "true", "flags.0?true"],
-      [this.peer ?? null, types._TypeInputPeer, "flags.1?InputPeer"],
-      [this.msgId ?? null, "number", "flags.1?int"],
-      [this.buttonId ?? null, "number", "flags.1?int"],
+      [this.write_allowed ?? null, "true", "flags.0?true"],
+      [this.peer ?? null, types._InputPeer, "flags.1?InputPeer"],
+      [this.msg_id ?? null, "number", "flags.1?int"],
+      [this.button_id ?? null, "number", "flags.1?int"],
       [this.url ?? null, "string", "flags.2?string"],
     ];
   }
 
-  constructor(params?: { writeAllowed?: true; peer?: types.TypeInputPeer; msgId?: number; buttonId?: number; url?: string }) {
+  constructor(params?: { write_allowed?: true; peer?: types.InputPeer; msg_id?: number; button_id?: number; url?: string }) {
     super();
-    this.writeAllowed = params?.writeAllowed;
+    this.write_allowed = params?.write_allowed;
     this.peer = params?.peer;
-    this.msgId = params?.msgId;
-    this.buttonId = params?.buttonId;
+    this.msg_id = params?.msg_id;
+    this.button_id = params?.button_id;
     this.url = params?.url;
   }
 }
 
-export class MessagesHidePeerSettingsBar extends Function<boolean> {
-  peer: types.TypeInputPeer;
+export class messages_hidePeerSettingsBar extends Function<boolean> {
+  peer: types.InputPeer;
 
   protected get [id]() {
     return 0x4FACB138;
@@ -8219,24 +8223,24 @@ export class MessagesHidePeerSettingsBar extends Function<boolean> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["peer", types._TypeInputPeer, "InputPeer"],
+      ["peer", types._InputPeer, "InputPeer"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.peer, types._TypeInputPeer, "InputPeer"],
+      [this.peer, types._InputPeer, "InputPeer"],
     ];
   }
 
-  constructor(params: { peer: types.TypeInputPeer }) {
+  constructor(params: { peer: types.InputPeer }) {
     super();
     this.peer = params.peer;
   }
 }
 
-export class MessagesGetScheduledHistory extends Function<types.TypeMessagesMessages> {
-  peer: types.TypeInputPeer;
+export class messages_getScheduledHistory extends Function<types.messages_Messages> {
+  peer: types.InputPeer;
   hash: bigint;
 
   protected get [id]() {
@@ -8245,27 +8249,27 @@ export class MessagesGetScheduledHistory extends Function<types.TypeMessagesMess
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["peer", types._TypeInputPeer, "InputPeer"],
+      ["peer", types._InputPeer, "InputPeer"],
       ["hash", "bigint", "long"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.peer, types._TypeInputPeer, "InputPeer"],
+      [this.peer, types._InputPeer, "InputPeer"],
       [this.hash, "bigint", "long"],
     ];
   }
 
-  constructor(params: { peer: types.TypeInputPeer; hash: bigint }) {
+  constructor(params: { peer: types.InputPeer; hash: bigint }) {
     super();
     this.peer = params.peer;
     this.hash = params.hash;
   }
 }
 
-export class MessagesGetScheduledMessages extends Function<types.TypeMessagesMessages> {
-  peer: types.TypeInputPeer;
+export class messages_getScheduledMessages extends Function<types.messages_Messages> {
+  peer: types.InputPeer;
   id: Array<number>;
 
   protected get [id]() {
@@ -8274,27 +8278,27 @@ export class MessagesGetScheduledMessages extends Function<types.TypeMessagesMes
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["peer", types._TypeInputPeer, "InputPeer"],
+      ["peer", types._InputPeer, "InputPeer"],
       ["id", ["number"], "Vector<int>"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.peer, types._TypeInputPeer, "InputPeer"],
+      [this.peer, types._InputPeer, "InputPeer"],
       [this.id, ["number"], "Vector<int>"],
     ];
   }
 
-  constructor(params: { peer: types.TypeInputPeer; id: Array<number> }) {
+  constructor(params: { peer: types.InputPeer; id: Array<number> }) {
     super();
     this.peer = params.peer;
     this.id = params.id;
   }
 }
 
-export class MessagesSendScheduledMessages extends Function<types.TypeUpdates> {
-  peer: types.TypeInputPeer;
+export class messages_sendScheduledMessages extends Function<types.Updates> {
+  peer: types.InputPeer;
   id: Array<number>;
 
   protected get [id]() {
@@ -8303,27 +8307,27 @@ export class MessagesSendScheduledMessages extends Function<types.TypeUpdates> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["peer", types._TypeInputPeer, "InputPeer"],
+      ["peer", types._InputPeer, "InputPeer"],
       ["id", ["number"], "Vector<int>"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.peer, types._TypeInputPeer, "InputPeer"],
+      [this.peer, types._InputPeer, "InputPeer"],
       [this.id, ["number"], "Vector<int>"],
     ];
   }
 
-  constructor(params: { peer: types.TypeInputPeer; id: Array<number> }) {
+  constructor(params: { peer: types.InputPeer; id: Array<number> }) {
     super();
     this.peer = params.peer;
     this.id = params.id;
   }
 }
 
-export class MessagesDeleteScheduledMessages extends Function<types.TypeUpdates> {
-  peer: types.TypeInputPeer;
+export class messages_deleteScheduledMessages extends Function<types.Updates> {
+  peer: types.InputPeer;
   id: Array<number>;
 
   protected get [id]() {
@@ -8332,27 +8336,27 @@ export class MessagesDeleteScheduledMessages extends Function<types.TypeUpdates>
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["peer", types._TypeInputPeer, "InputPeer"],
+      ["peer", types._InputPeer, "InputPeer"],
       ["id", ["number"], "Vector<int>"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.peer, types._TypeInputPeer, "InputPeer"],
+      [this.peer, types._InputPeer, "InputPeer"],
       [this.id, ["number"], "Vector<int>"],
     ];
   }
 
-  constructor(params: { peer: types.TypeInputPeer; id: Array<number> }) {
+  constructor(params: { peer: types.InputPeer; id: Array<number> }) {
     super();
     this.peer = params.peer;
     this.id = params.id;
   }
 }
 
-export class MessagesGetPollVotes extends Function<types.TypeMessagesVotesList> {
-  peer: types.TypeInputPeer;
+export class messages_getPollVotes extends Function<types.messages_VotesList> {
+  peer: types.InputPeer;
   id: number;
   option?: Uint8Array;
   offset?: string;
@@ -8365,7 +8369,7 @@ export class MessagesGetPollVotes extends Function<types.TypeMessagesVotesList> 
   static get [paramDesc](): ParamDesc {
     return [
       ["flags", flags, "#"],
-      ["peer", types._TypeInputPeer, "InputPeer"],
+      ["peer", types._InputPeer, "InputPeer"],
       ["id", "number", "int"],
       ["option", Uint8Array, "flags.0?bytes"],
       ["offset", "string", "flags.1?string"],
@@ -8376,7 +8380,7 @@ export class MessagesGetPollVotes extends Function<types.TypeMessagesVotesList> 
   protected get [params](): Params {
     return [
       ["flags", flags, "#"],
-      [this.peer, types._TypeInputPeer, "InputPeer"],
+      [this.peer, types._InputPeer, "InputPeer"],
       [this.id, "number", "int"],
       [this.option ?? null, Uint8Array, "flags.0?bytes"],
       [this.offset ?? null, "string", "flags.1?string"],
@@ -8384,7 +8388,7 @@ export class MessagesGetPollVotes extends Function<types.TypeMessagesVotesList> 
     ];
   }
 
-  constructor(params: { peer: types.TypeInputPeer; id: number; option?: Uint8Array; offset?: string; limit: number }) {
+  constructor(params: { peer: types.InputPeer; id: number; option?: Uint8Array; offset?: string; limit: number }) {
     super();
     this.peer = params.peer;
     this.id = params.id;
@@ -8394,11 +8398,11 @@ export class MessagesGetPollVotes extends Function<types.TypeMessagesVotesList> 
   }
 }
 
-export class MessagesToggleStickerSets extends Function<boolean> {
+export class messages_toggleStickerSets extends Function<boolean> {
   uninstall?: true;
   archive?: true;
   unarchive?: true;
-  stickersets: Array<types.TypeInputStickerSet>;
+  stickersets: Array<types.InputStickerSet>;
 
   protected get [id]() {
     return 0xB5052FEA;
@@ -8410,7 +8414,7 @@ export class MessagesToggleStickerSets extends Function<boolean> {
       ["uninstall", "true", "flags.0?true"],
       ["archive", "true", "flags.1?true"],
       ["unarchive", "true", "flags.2?true"],
-      ["stickersets", [types._TypeInputStickerSet], "Vector<InputStickerSet>"],
+      ["stickersets", [types._InputStickerSet], "Vector<InputStickerSet>"],
     ];
   }
 
@@ -8420,11 +8424,11 @@ export class MessagesToggleStickerSets extends Function<boolean> {
       [this.uninstall ?? null, "true", "flags.0?true"],
       [this.archive ?? null, "true", "flags.1?true"],
       [this.unarchive ?? null, "true", "flags.2?true"],
-      [this.stickersets, [types._TypeInputStickerSet], "Vector<InputStickerSet>"],
+      [this.stickersets, [types._InputStickerSet], "Vector<InputStickerSet>"],
     ];
   }
 
-  constructor(params: { uninstall?: true; archive?: true; unarchive?: true; stickersets: Array<types.TypeInputStickerSet> }) {
+  constructor(params: { uninstall?: true; archive?: true; unarchive?: true; stickersets: Array<types.InputStickerSet> }) {
     super();
     this.uninstall = params.uninstall;
     this.archive = params.archive;
@@ -8433,7 +8437,7 @@ export class MessagesToggleStickerSets extends Function<boolean> {
   }
 }
 
-export class MessagesGetDialogFilters extends Function<types.TypeDialogFilter[]> {
+export class messages_getDialogFilters extends Function<types.DialogFilter[]> {
   protected get [id]() {
     return 0xF19ED96D;
   }
@@ -8451,7 +8455,7 @@ export class MessagesGetDialogFilters extends Function<types.TypeDialogFilter[]>
   }
 }
 
-export class MessagesGetSuggestedDialogFilters extends Function<types.TypeDialogFilterSuggested[]> {
+export class messages_getSuggestedDialogFilters extends Function<types.DialogFilterSuggested[]> {
   protected get [id]() {
     return 0xA29CD42C;
   }
@@ -8469,9 +8473,9 @@ export class MessagesGetSuggestedDialogFilters extends Function<types.TypeDialog
   }
 }
 
-export class MessagesUpdateDialogFilter extends Function<boolean> {
+export class messages_updateDialogFilter extends Function<boolean> {
   id: number;
-  filter?: types.TypeDialogFilter;
+  filter?: types.DialogFilter;
 
   protected get [id]() {
     return 0x1AD4A04A;
@@ -8481,7 +8485,7 @@ export class MessagesUpdateDialogFilter extends Function<boolean> {
     return [
       ["flags", flags, "#"],
       ["id", "number", "int"],
-      ["filter", types._TypeDialogFilter, "flags.0?DialogFilter"],
+      ["filter", types._DialogFilter, "flags.0?DialogFilter"],
     ];
   }
 
@@ -8489,18 +8493,18 @@ export class MessagesUpdateDialogFilter extends Function<boolean> {
     return [
       ["flags", flags, "#"],
       [this.id, "number", "int"],
-      [this.filter ?? null, types._TypeDialogFilter, "flags.0?DialogFilter"],
+      [this.filter ?? null, types._DialogFilter, "flags.0?DialogFilter"],
     ];
   }
 
-  constructor(params: { id: number; filter?: types.TypeDialogFilter }) {
+  constructor(params: { id: number; filter?: types.DialogFilter }) {
     super();
     this.id = params.id;
     this.filter = params.filter;
   }
 }
 
-export class MessagesUpdateDialogFiltersOrder extends Function<boolean> {
+export class messages_updateDialogFiltersOrder extends Function<boolean> {
   order: Array<number>;
 
   protected get [id]() {
@@ -8525,7 +8529,7 @@ export class MessagesUpdateDialogFiltersOrder extends Function<boolean> {
   }
 }
 
-export class MessagesGetOldFeaturedStickers extends Function<types.TypeMessagesFeaturedStickers> {
+export class messages_getOldFeaturedStickers extends Function<types.messages_FeaturedStickers> {
   offset: number;
   limit: number;
   hash: bigint;
@@ -8558,15 +8562,15 @@ export class MessagesGetOldFeaturedStickers extends Function<types.TypeMessagesF
   }
 }
 
-export class MessagesGetReplies extends Function<types.TypeMessagesMessages> {
-  peer: types.TypeInputPeer;
-  msgId: number;
-  offsetId: number;
-  offsetDate: number;
-  addOffset: number;
+export class messages_getReplies extends Function<types.messages_Messages> {
+  peer: types.InputPeer;
+  msg_id: number;
+  offset_id: number;
+  offset_date: number;
+  add_offset: number;
   limit: number;
-  maxId: number;
-  minId: number;
+  max_id: number;
+  min_id: number;
   hash: bigint;
 
   protected get [id]() {
@@ -8575,49 +8579,49 @@ export class MessagesGetReplies extends Function<types.TypeMessagesMessages> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["peer", types._TypeInputPeer, "InputPeer"],
-      ["msgId", "number", "int"],
-      ["offsetId", "number", "int"],
-      ["offsetDate", "number", "int"],
-      ["addOffset", "number", "int"],
+      ["peer", types._InputPeer, "InputPeer"],
+      ["msg_id", "number", "int"],
+      ["offset_id", "number", "int"],
+      ["offset_date", "number", "int"],
+      ["add_offset", "number", "int"],
       ["limit", "number", "int"],
-      ["maxId", "number", "int"],
-      ["minId", "number", "int"],
+      ["max_id", "number", "int"],
+      ["min_id", "number", "int"],
       ["hash", "bigint", "long"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.peer, types._TypeInputPeer, "InputPeer"],
-      [this.msgId, "number", "int"],
-      [this.offsetId, "number", "int"],
-      [this.offsetDate, "number", "int"],
-      [this.addOffset, "number", "int"],
+      [this.peer, types._InputPeer, "InputPeer"],
+      [this.msg_id, "number", "int"],
+      [this.offset_id, "number", "int"],
+      [this.offset_date, "number", "int"],
+      [this.add_offset, "number", "int"],
       [this.limit, "number", "int"],
-      [this.maxId, "number", "int"],
-      [this.minId, "number", "int"],
+      [this.max_id, "number", "int"],
+      [this.min_id, "number", "int"],
       [this.hash, "bigint", "long"],
     ];
   }
 
-  constructor(params: { peer: types.TypeInputPeer; msgId: number; offsetId: number; offsetDate: number; addOffset: number; limit: number; maxId: number; minId: number; hash: bigint }) {
+  constructor(params: { peer: types.InputPeer; msg_id: number; offset_id: number; offset_date: number; add_offset: number; limit: number; max_id: number; min_id: number; hash: bigint }) {
     super();
     this.peer = params.peer;
-    this.msgId = params.msgId;
-    this.offsetId = params.offsetId;
-    this.offsetDate = params.offsetDate;
-    this.addOffset = params.addOffset;
+    this.msg_id = params.msg_id;
+    this.offset_id = params.offset_id;
+    this.offset_date = params.offset_date;
+    this.add_offset = params.add_offset;
     this.limit = params.limit;
-    this.maxId = params.maxId;
-    this.minId = params.minId;
+    this.max_id = params.max_id;
+    this.min_id = params.min_id;
     this.hash = params.hash;
   }
 }
 
-export class MessagesGetDiscussionMessage extends Function<types.TypeMessagesDiscussionMessage> {
-  peer: types.TypeInputPeer;
-  msgId: number;
+export class messages_getDiscussionMessage extends Function<types.messages_DiscussionMessage> {
+  peer: types.InputPeer;
+  msg_id: number;
 
   protected get [id]() {
     return 0x446972FD;
@@ -8625,29 +8629,29 @@ export class MessagesGetDiscussionMessage extends Function<types.TypeMessagesDis
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["peer", types._TypeInputPeer, "InputPeer"],
-      ["msgId", "number", "int"],
+      ["peer", types._InputPeer, "InputPeer"],
+      ["msg_id", "number", "int"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.peer, types._TypeInputPeer, "InputPeer"],
-      [this.msgId, "number", "int"],
+      [this.peer, types._InputPeer, "InputPeer"],
+      [this.msg_id, "number", "int"],
     ];
   }
 
-  constructor(params: { peer: types.TypeInputPeer; msgId: number }) {
+  constructor(params: { peer: types.InputPeer; msg_id: number }) {
     super();
     this.peer = params.peer;
-    this.msgId = params.msgId;
+    this.msg_id = params.msg_id;
   }
 }
 
-export class MessagesReadDiscussion extends Function<boolean> {
-  peer: types.TypeInputPeer;
-  msgId: number;
-  readMaxId: number;
+export class messages_readDiscussion extends Function<boolean> {
+  peer: types.InputPeer;
+  msg_id: number;
+  read_max_id: number;
 
   protected get [id]() {
     return 0xF731A9F4;
@@ -8655,31 +8659,31 @@ export class MessagesReadDiscussion extends Function<boolean> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["peer", types._TypeInputPeer, "InputPeer"],
-      ["msgId", "number", "int"],
-      ["readMaxId", "number", "int"],
+      ["peer", types._InputPeer, "InputPeer"],
+      ["msg_id", "number", "int"],
+      ["read_max_id", "number", "int"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.peer, types._TypeInputPeer, "InputPeer"],
-      [this.msgId, "number", "int"],
-      [this.readMaxId, "number", "int"],
+      [this.peer, types._InputPeer, "InputPeer"],
+      [this.msg_id, "number", "int"],
+      [this.read_max_id, "number", "int"],
     ];
   }
 
-  constructor(params: { peer: types.TypeInputPeer; msgId: number; readMaxId: number }) {
+  constructor(params: { peer: types.InputPeer; msg_id: number; read_max_id: number }) {
     super();
     this.peer = params.peer;
-    this.msgId = params.msgId;
-    this.readMaxId = params.readMaxId;
+    this.msg_id = params.msg_id;
+    this.read_max_id = params.read_max_id;
   }
 }
 
-export class MessagesUnpinAllMessages extends Function<types.TypeMessagesAffectedHistory> {
-  peer: types.TypeInputPeer;
-  topMsgId?: number;
+export class messages_unpinAllMessages extends Function<types.messages_AffectedHistory> {
+  peer: types.InputPeer;
+  top_msg_id?: number;
 
   protected get [id]() {
     return 0xEE22B9A8;
@@ -8688,28 +8692,28 @@ export class MessagesUnpinAllMessages extends Function<types.TypeMessagesAffecte
   static get [paramDesc](): ParamDesc {
     return [
       ["flags", flags, "#"],
-      ["peer", types._TypeInputPeer, "InputPeer"],
-      ["topMsgId", "number", "flags.0?int"],
+      ["peer", types._InputPeer, "InputPeer"],
+      ["top_msg_id", "number", "flags.0?int"],
     ];
   }
 
   protected get [params](): Params {
     return [
       ["flags", flags, "#"],
-      [this.peer, types._TypeInputPeer, "InputPeer"],
-      [this.topMsgId ?? null, "number", "flags.0?int"],
+      [this.peer, types._InputPeer, "InputPeer"],
+      [this.top_msg_id ?? null, "number", "flags.0?int"],
     ];
   }
 
-  constructor(params: { peer: types.TypeInputPeer; topMsgId?: number }) {
+  constructor(params: { peer: types.InputPeer; top_msg_id?: number }) {
     super();
     this.peer = params.peer;
-    this.topMsgId = params.topMsgId;
+    this.top_msg_id = params.top_msg_id;
   }
 }
 
-export class MessagesDeleteChat extends Function<boolean> {
-  chatId: bigint;
+export class messages_deleteChat extends Function<boolean> {
+  chat_id: bigint;
 
   protected get [id]() {
     return 0x5BD0EE50;
@@ -8717,23 +8721,23 @@ export class MessagesDeleteChat extends Function<boolean> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["chatId", "bigint", "long"],
+      ["chat_id", "bigint", "long"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.chatId, "bigint", "long"],
+      [this.chat_id, "bigint", "long"],
     ];
   }
 
-  constructor(params: { chatId: bigint }) {
+  constructor(params: { chat_id: bigint }) {
     super();
-    this.chatId = params.chatId;
+    this.chat_id = params.chat_id;
   }
 }
 
-export class MessagesDeletePhoneCallHistory extends Function<types.TypeMessagesAffectedFoundMessages> {
+export class messages_deletePhoneCallHistory extends Function<types.messages_AffectedFoundMessages> {
   revoke?: true;
 
   protected get [id]() {
@@ -8760,8 +8764,8 @@ export class MessagesDeletePhoneCallHistory extends Function<types.TypeMessagesA
   }
 }
 
-export class MessagesCheckHistoryImport extends Function<types.TypeMessagesHistoryImportParsed> {
-  importHead: string;
+export class messages_checkHistoryImport extends Function<types.messages_HistoryImportParsed> {
+  import_head: string;
 
   protected get [id]() {
     return 0x43FE19F3;
@@ -8769,26 +8773,26 @@ export class MessagesCheckHistoryImport extends Function<types.TypeMessagesHisto
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["importHead", "string", "string"],
+      ["import_head", "string", "string"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.importHead, "string", "string"],
+      [this.import_head, "string", "string"],
     ];
   }
 
-  constructor(params: { importHead: string }) {
+  constructor(params: { import_head: string }) {
     super();
-    this.importHead = params.importHead;
+    this.import_head = params.import_head;
   }
 }
 
-export class MessagesInitHistoryImport extends Function<types.TypeMessagesHistoryImport> {
-  peer: types.TypeInputPeer;
-  file: types.TypeInputFile;
-  mediaCount: number;
+export class messages_initHistoryImport extends Function<types.messages_HistoryImport> {
+  peer: types.InputPeer;
+  file: types.InputFile;
+  media_count: number;
 
   protected get [id]() {
     return 0x34090C3B;
@@ -8796,33 +8800,33 @@ export class MessagesInitHistoryImport extends Function<types.TypeMessagesHistor
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["peer", types._TypeInputPeer, "InputPeer"],
-      ["file", types._TypeInputFile, "InputFile"],
-      ["mediaCount", "number", "int"],
+      ["peer", types._InputPeer, "InputPeer"],
+      ["file", types._InputFile, "InputFile"],
+      ["media_count", "number", "int"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.peer, types._TypeInputPeer, "InputPeer"],
-      [this.file, types._TypeInputFile, "InputFile"],
-      [this.mediaCount, "number", "int"],
+      [this.peer, types._InputPeer, "InputPeer"],
+      [this.file, types._InputFile, "InputFile"],
+      [this.media_count, "number", "int"],
     ];
   }
 
-  constructor(params: { peer: types.TypeInputPeer; file: types.TypeInputFile; mediaCount: number }) {
+  constructor(params: { peer: types.InputPeer; file: types.InputFile; media_count: number }) {
     super();
     this.peer = params.peer;
     this.file = params.file;
-    this.mediaCount = params.mediaCount;
+    this.media_count = params.media_count;
   }
 }
 
-export class MessagesUploadImportedMedia extends Function<types.TypeMessageMedia> {
-  peer: types.TypeInputPeer;
-  importId: bigint;
-  fileName: string;
-  media: types.TypeInputMedia;
+export class messages_uploadImportedMedia extends Function<types.MessageMedia> {
+  peer: types.InputPeer;
+  import_id: bigint;
+  file_name: string;
+  media: types.InputMedia;
 
   protected get [id]() {
     return 0x2A862092;
@@ -8830,34 +8834,34 @@ export class MessagesUploadImportedMedia extends Function<types.TypeMessageMedia
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["peer", types._TypeInputPeer, "InputPeer"],
-      ["importId", "bigint", "long"],
-      ["fileName", "string", "string"],
-      ["media", types._TypeInputMedia, "InputMedia"],
+      ["peer", types._InputPeer, "InputPeer"],
+      ["import_id", "bigint", "long"],
+      ["file_name", "string", "string"],
+      ["media", types._InputMedia, "InputMedia"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.peer, types._TypeInputPeer, "InputPeer"],
-      [this.importId, "bigint", "long"],
-      [this.fileName, "string", "string"],
-      [this.media, types._TypeInputMedia, "InputMedia"],
+      [this.peer, types._InputPeer, "InputPeer"],
+      [this.import_id, "bigint", "long"],
+      [this.file_name, "string", "string"],
+      [this.media, types._InputMedia, "InputMedia"],
     ];
   }
 
-  constructor(params: { peer: types.TypeInputPeer; importId: bigint; fileName: string; media: types.TypeInputMedia }) {
+  constructor(params: { peer: types.InputPeer; import_id: bigint; file_name: string; media: types.InputMedia }) {
     super();
     this.peer = params.peer;
-    this.importId = params.importId;
-    this.fileName = params.fileName;
+    this.import_id = params.import_id;
+    this.file_name = params.file_name;
     this.media = params.media;
   }
 }
 
-export class MessagesStartHistoryImport extends Function<boolean> {
-  peer: types.TypeInputPeer;
-  importId: bigint;
+export class messages_startHistoryImport extends Function<boolean> {
+  peer: types.InputPeer;
+  import_id: bigint;
 
   protected get [id]() {
     return 0xB43DF344;
@@ -8865,31 +8869,31 @@ export class MessagesStartHistoryImport extends Function<boolean> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["peer", types._TypeInputPeer, "InputPeer"],
-      ["importId", "bigint", "long"],
+      ["peer", types._InputPeer, "InputPeer"],
+      ["import_id", "bigint", "long"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.peer, types._TypeInputPeer, "InputPeer"],
-      [this.importId, "bigint", "long"],
+      [this.peer, types._InputPeer, "InputPeer"],
+      [this.import_id, "bigint", "long"],
     ];
   }
 
-  constructor(params: { peer: types.TypeInputPeer; importId: bigint }) {
+  constructor(params: { peer: types.InputPeer; import_id: bigint }) {
     super();
     this.peer = params.peer;
-    this.importId = params.importId;
+    this.import_id = params.import_id;
   }
 }
 
-export class MessagesGetExportedChatInvites extends Function<types.TypeMessagesExportedChatInvites> {
+export class messages_getExportedChatInvites extends Function<types.messages_ExportedChatInvites> {
   revoked?: true;
-  peer: types.TypeInputPeer;
-  adminId: types.TypeInputUser;
-  offsetDate?: number;
-  offsetLink?: string;
+  peer: types.InputPeer;
+  admin_id: types.InputUser;
+  offset_date?: number;
+  offset_link?: string;
   limit: number;
 
   protected get [id]() {
@@ -8900,10 +8904,10 @@ export class MessagesGetExportedChatInvites extends Function<types.TypeMessagesE
     return [
       ["flags", flags, "#"],
       ["revoked", "true", "flags.3?true"],
-      ["peer", types._TypeInputPeer, "InputPeer"],
-      ["adminId", types._TypeInputUser, "InputUser"],
-      ["offsetDate", "number", "flags.2?int"],
-      ["offsetLink", "string", "flags.2?string"],
+      ["peer", types._InputPeer, "InputPeer"],
+      ["admin_id", types._InputUser, "InputUser"],
+      ["offset_date", "number", "flags.2?int"],
+      ["offset_link", "string", "flags.2?string"],
       ["limit", "number", "int"],
     ];
   }
@@ -8912,27 +8916,27 @@ export class MessagesGetExportedChatInvites extends Function<types.TypeMessagesE
     return [
       ["flags", flags, "#"],
       [this.revoked ?? null, "true", "flags.3?true"],
-      [this.peer, types._TypeInputPeer, "InputPeer"],
-      [this.adminId, types._TypeInputUser, "InputUser"],
-      [this.offsetDate ?? null, "number", "flags.2?int"],
-      [this.offsetLink ?? null, "string", "flags.2?string"],
+      [this.peer, types._InputPeer, "InputPeer"],
+      [this.admin_id, types._InputUser, "InputUser"],
+      [this.offset_date ?? null, "number", "flags.2?int"],
+      [this.offset_link ?? null, "string", "flags.2?string"],
       [this.limit, "number", "int"],
     ];
   }
 
-  constructor(params: { revoked?: true; peer: types.TypeInputPeer; adminId: types.TypeInputUser; offsetDate?: number; offsetLink?: string; limit: number }) {
+  constructor(params: { revoked?: true; peer: types.InputPeer; admin_id: types.InputUser; offset_date?: number; offset_link?: string; limit: number }) {
     super();
     this.revoked = params.revoked;
     this.peer = params.peer;
-    this.adminId = params.adminId;
-    this.offsetDate = params.offsetDate;
-    this.offsetLink = params.offsetLink;
+    this.admin_id = params.admin_id;
+    this.offset_date = params.offset_date;
+    this.offset_link = params.offset_link;
     this.limit = params.limit;
   }
 }
 
-export class MessagesGetExportedChatInvite extends Function<types.TypeMessagesExportedChatInvite> {
-  peer: types.TypeInputPeer;
+export class messages_getExportedChatInvite extends Function<types.messages_ExportedChatInvite> {
+  peer: types.InputPeer;
   link: string;
 
   protected get [id]() {
@@ -8941,32 +8945,32 @@ export class MessagesGetExportedChatInvite extends Function<types.TypeMessagesEx
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["peer", types._TypeInputPeer, "InputPeer"],
+      ["peer", types._InputPeer, "InputPeer"],
       ["link", "string", "string"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.peer, types._TypeInputPeer, "InputPeer"],
+      [this.peer, types._InputPeer, "InputPeer"],
       [this.link, "string", "string"],
     ];
   }
 
-  constructor(params: { peer: types.TypeInputPeer; link: string }) {
+  constructor(params: { peer: types.InputPeer; link: string }) {
     super();
     this.peer = params.peer;
     this.link = params.link;
   }
 }
 
-export class MessagesEditExportedChatInvite extends Function<types.TypeMessagesExportedChatInvite> {
+export class messages_editExportedChatInvite extends Function<types.messages_ExportedChatInvite> {
   revoked?: true;
-  peer: types.TypeInputPeer;
+  peer: types.InputPeer;
   link: string;
-  expireDate?: number;
-  usageLimit?: number;
-  requestNeeded?: boolean;
+  expire_date?: number;
+  usage_limit?: number;
+  request_needed?: boolean;
   title?: string;
 
   protected get [id]() {
@@ -8977,11 +8981,11 @@ export class MessagesEditExportedChatInvite extends Function<types.TypeMessagesE
     return [
       ["flags", flags, "#"],
       ["revoked", "true", "flags.2?true"],
-      ["peer", types._TypeInputPeer, "InputPeer"],
+      ["peer", types._InputPeer, "InputPeer"],
       ["link", "string", "string"],
-      ["expireDate", "number", "flags.0?int"],
-      ["usageLimit", "number", "flags.1?int"],
-      ["requestNeeded", "boolean", "flags.3?Bool"],
+      ["expire_date", "number", "flags.0?int"],
+      ["usage_limit", "number", "flags.1?int"],
+      ["request_needed", "boolean", "flags.3?Bool"],
       ["title", "string", "flags.4?string"],
     ];
   }
@@ -8990,30 +8994,30 @@ export class MessagesEditExportedChatInvite extends Function<types.TypeMessagesE
     return [
       ["flags", flags, "#"],
       [this.revoked ?? null, "true", "flags.2?true"],
-      [this.peer, types._TypeInputPeer, "InputPeer"],
+      [this.peer, types._InputPeer, "InputPeer"],
       [this.link, "string", "string"],
-      [this.expireDate ?? null, "number", "flags.0?int"],
-      [this.usageLimit ?? null, "number", "flags.1?int"],
-      [this.requestNeeded ?? null, "boolean", "flags.3?Bool"],
+      [this.expire_date ?? null, "number", "flags.0?int"],
+      [this.usage_limit ?? null, "number", "flags.1?int"],
+      [this.request_needed ?? null, "boolean", "flags.3?Bool"],
       [this.title ?? null, "string", "flags.4?string"],
     ];
   }
 
-  constructor(params: { revoked?: true; peer: types.TypeInputPeer; link: string; expireDate?: number; usageLimit?: number; requestNeeded?: boolean; title?: string }) {
+  constructor(params: { revoked?: true; peer: types.InputPeer; link: string; expire_date?: number; usage_limit?: number; request_needed?: boolean; title?: string }) {
     super();
     this.revoked = params.revoked;
     this.peer = params.peer;
     this.link = params.link;
-    this.expireDate = params.expireDate;
-    this.usageLimit = params.usageLimit;
-    this.requestNeeded = params.requestNeeded;
+    this.expire_date = params.expire_date;
+    this.usage_limit = params.usage_limit;
+    this.request_needed = params.request_needed;
     this.title = params.title;
   }
 }
 
-export class MessagesDeleteRevokedExportedChatInvites extends Function<boolean> {
-  peer: types.TypeInputPeer;
-  adminId: types.TypeInputUser;
+export class messages_deleteRevokedExportedChatInvites extends Function<boolean> {
+  peer: types.InputPeer;
+  admin_id: types.InputUser;
 
   protected get [id]() {
     return 0x56987BD5;
@@ -9021,27 +9025,27 @@ export class MessagesDeleteRevokedExportedChatInvites extends Function<boolean> 
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["peer", types._TypeInputPeer, "InputPeer"],
-      ["adminId", types._TypeInputUser, "InputUser"],
+      ["peer", types._InputPeer, "InputPeer"],
+      ["admin_id", types._InputUser, "InputUser"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.peer, types._TypeInputPeer, "InputPeer"],
-      [this.adminId, types._TypeInputUser, "InputUser"],
+      [this.peer, types._InputPeer, "InputPeer"],
+      [this.admin_id, types._InputUser, "InputUser"],
     ];
   }
 
-  constructor(params: { peer: types.TypeInputPeer; adminId: types.TypeInputUser }) {
+  constructor(params: { peer: types.InputPeer; admin_id: types.InputUser }) {
     super();
     this.peer = params.peer;
-    this.adminId = params.adminId;
+    this.admin_id = params.admin_id;
   }
 }
 
-export class MessagesDeleteExportedChatInvite extends Function<boolean> {
-  peer: types.TypeInputPeer;
+export class messages_deleteExportedChatInvite extends Function<boolean> {
+  peer: types.InputPeer;
   link: string;
 
   protected get [id]() {
@@ -9050,27 +9054,27 @@ export class MessagesDeleteExportedChatInvite extends Function<boolean> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["peer", types._TypeInputPeer, "InputPeer"],
+      ["peer", types._InputPeer, "InputPeer"],
       ["link", "string", "string"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.peer, types._TypeInputPeer, "InputPeer"],
+      [this.peer, types._InputPeer, "InputPeer"],
       [this.link, "string", "string"],
     ];
   }
 
-  constructor(params: { peer: types.TypeInputPeer; link: string }) {
+  constructor(params: { peer: types.InputPeer; link: string }) {
     super();
     this.peer = params.peer;
     this.link = params.link;
   }
 }
 
-export class MessagesGetAdminsWithInvites extends Function<types.TypeMessagesChatAdminsWithInvites> {
-  peer: types.TypeInputPeer;
+export class messages_getAdminsWithInvites extends Function<types.messages_ChatAdminsWithInvites> {
+  peer: types.InputPeer;
 
   protected get [id]() {
     return 0x3920E6EF;
@@ -9078,29 +9082,29 @@ export class MessagesGetAdminsWithInvites extends Function<types.TypeMessagesCha
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["peer", types._TypeInputPeer, "InputPeer"],
+      ["peer", types._InputPeer, "InputPeer"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.peer, types._TypeInputPeer, "InputPeer"],
+      [this.peer, types._InputPeer, "InputPeer"],
     ];
   }
 
-  constructor(params: { peer: types.TypeInputPeer }) {
+  constructor(params: { peer: types.InputPeer }) {
     super();
     this.peer = params.peer;
   }
 }
 
-export class MessagesGetChatInviteImporters extends Function<types.TypeMessagesChatInviteImporters> {
+export class messages_getChatInviteImporters extends Function<types.messages_ChatInviteImporters> {
   requested?: true;
-  peer: types.TypeInputPeer;
+  peer: types.InputPeer;
   link?: string;
   q?: string;
-  offsetDate: number;
-  offsetUser: types.TypeInputUser;
+  offset_date: number;
+  offset_user: types.InputUser;
   limit: number;
 
   protected get [id]() {
@@ -9111,11 +9115,11 @@ export class MessagesGetChatInviteImporters extends Function<types.TypeMessagesC
     return [
       ["flags", flags, "#"],
       ["requested", "true", "flags.0?true"],
-      ["peer", types._TypeInputPeer, "InputPeer"],
+      ["peer", types._InputPeer, "InputPeer"],
       ["link", "string", "flags.1?string"],
       ["q", "string", "flags.2?string"],
-      ["offsetDate", "number", "int"],
-      ["offsetUser", types._TypeInputUser, "InputUser"],
+      ["offset_date", "number", "int"],
+      ["offset_user", types._InputUser, "InputUser"],
       ["limit", "number", "int"],
     ];
   }
@@ -9124,29 +9128,29 @@ export class MessagesGetChatInviteImporters extends Function<types.TypeMessagesC
     return [
       ["flags", flags, "#"],
       [this.requested ?? null, "true", "flags.0?true"],
-      [this.peer, types._TypeInputPeer, "InputPeer"],
+      [this.peer, types._InputPeer, "InputPeer"],
       [this.link ?? null, "string", "flags.1?string"],
       [this.q ?? null, "string", "flags.2?string"],
-      [this.offsetDate, "number", "int"],
-      [this.offsetUser, types._TypeInputUser, "InputUser"],
+      [this.offset_date, "number", "int"],
+      [this.offset_user, types._InputUser, "InputUser"],
       [this.limit, "number", "int"],
     ];
   }
 
-  constructor(params: { requested?: true; peer: types.TypeInputPeer; link?: string; q?: string; offsetDate: number; offsetUser: types.TypeInputUser; limit: number }) {
+  constructor(params: { requested?: true; peer: types.InputPeer; link?: string; q?: string; offset_date: number; offset_user: types.InputUser; limit: number }) {
     super();
     this.requested = params.requested;
     this.peer = params.peer;
     this.link = params.link;
     this.q = params.q;
-    this.offsetDate = params.offsetDate;
-    this.offsetUser = params.offsetUser;
+    this.offset_date = params.offset_date;
+    this.offset_user = params.offset_user;
     this.limit = params.limit;
   }
 }
 
-export class MessagesSetHistoryTTL extends Function<types.TypeUpdates> {
-  peer: types.TypeInputPeer;
+export class messages_setHistoryTTL extends Function<types.Updates> {
+  peer: types.InputPeer;
   period: number;
 
   protected get [id]() {
@@ -9155,27 +9159,27 @@ export class MessagesSetHistoryTTL extends Function<types.TypeUpdates> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["peer", types._TypeInputPeer, "InputPeer"],
+      ["peer", types._InputPeer, "InputPeer"],
       ["period", "number", "int"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.peer, types._TypeInputPeer, "InputPeer"],
+      [this.peer, types._InputPeer, "InputPeer"],
       [this.period, "number", "int"],
     ];
   }
 
-  constructor(params: { peer: types.TypeInputPeer; period: number }) {
+  constructor(params: { peer: types.InputPeer; period: number }) {
     super();
     this.peer = params.peer;
     this.period = params.period;
   }
 }
 
-export class MessagesCheckHistoryImportPeer extends Function<types.TypeMessagesCheckedHistoryImportPeer> {
-  peer: types.TypeInputPeer;
+export class messages_checkHistoryImportPeer extends Function<types.messages_CheckedHistoryImportPeer> {
+  peer: types.InputPeer;
 
   protected get [id]() {
     return 0x5DC60F03;
@@ -9183,24 +9187,24 @@ export class MessagesCheckHistoryImportPeer extends Function<types.TypeMessagesC
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["peer", types._TypeInputPeer, "InputPeer"],
+      ["peer", types._InputPeer, "InputPeer"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.peer, types._TypeInputPeer, "InputPeer"],
+      [this.peer, types._InputPeer, "InputPeer"],
     ];
   }
 
-  constructor(params: { peer: types.TypeInputPeer }) {
+  constructor(params: { peer: types.InputPeer }) {
     super();
     this.peer = params.peer;
   }
 }
 
-export class MessagesSetChatTheme extends Function<types.TypeUpdates> {
-  peer: types.TypeInputPeer;
+export class messages_setChatTheme extends Function<types.Updates> {
+  peer: types.InputPeer;
   emoticon: string;
 
   protected get [id]() {
@@ -9209,28 +9213,28 @@ export class MessagesSetChatTheme extends Function<types.TypeUpdates> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["peer", types._TypeInputPeer, "InputPeer"],
+      ["peer", types._InputPeer, "InputPeer"],
       ["emoticon", "string", "string"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.peer, types._TypeInputPeer, "InputPeer"],
+      [this.peer, types._InputPeer, "InputPeer"],
       [this.emoticon, "string", "string"],
     ];
   }
 
-  constructor(params: { peer: types.TypeInputPeer; emoticon: string }) {
+  constructor(params: { peer: types.InputPeer; emoticon: string }) {
     super();
     this.peer = params.peer;
     this.emoticon = params.emoticon;
   }
 }
 
-export class MessagesGetMessageReadParticipants extends Function<types.TypeReadParticipantDate[]> {
-  peer: types.TypeInputPeer;
-  msgId: number;
+export class messages_getMessageReadParticipants extends Function<types.ReadParticipantDate[]> {
+  peer: types.InputPeer;
+  msg_id: number;
 
   protected get [id]() {
     return 0x31C1C44F;
@@ -9238,30 +9242,30 @@ export class MessagesGetMessageReadParticipants extends Function<types.TypeReadP
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["peer", types._TypeInputPeer, "InputPeer"],
-      ["msgId", "number", "int"],
+      ["peer", types._InputPeer, "InputPeer"],
+      ["msg_id", "number", "int"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.peer, types._TypeInputPeer, "InputPeer"],
-      [this.msgId, "number", "int"],
+      [this.peer, types._InputPeer, "InputPeer"],
+      [this.msg_id, "number", "int"],
     ];
   }
 
-  constructor(params: { peer: types.TypeInputPeer; msgId: number }) {
+  constructor(params: { peer: types.InputPeer; msg_id: number }) {
     super();
     this.peer = params.peer;
-    this.msgId = params.msgId;
+    this.msg_id = params.msg_id;
   }
 }
 
-export class MessagesGetSearchResultsCalendar extends Function<types.TypeMessagesSearchResultsCalendar> {
-  peer: types.TypeInputPeer;
-  filter: types.TypeMessagesFilter;
-  offsetId: number;
-  offsetDate: number;
+export class messages_getSearchResultsCalendar extends Function<types.messages_SearchResultsCalendar> {
+  peer: types.InputPeer;
+  filter: types.MessagesFilter;
+  offset_id: number;
+  offset_date: number;
 
   protected get [id]() {
     return 0x49F0BDE9;
@@ -9269,35 +9273,35 @@ export class MessagesGetSearchResultsCalendar extends Function<types.TypeMessage
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["peer", types._TypeInputPeer, "InputPeer"],
-      ["filter", types._TypeMessagesFilter, "MessagesFilter"],
-      ["offsetId", "number", "int"],
-      ["offsetDate", "number", "int"],
+      ["peer", types._InputPeer, "InputPeer"],
+      ["filter", types._MessagesFilter, "MessagesFilter"],
+      ["offset_id", "number", "int"],
+      ["offset_date", "number", "int"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.peer, types._TypeInputPeer, "InputPeer"],
-      [this.filter, types._TypeMessagesFilter, "MessagesFilter"],
-      [this.offsetId, "number", "int"],
-      [this.offsetDate, "number", "int"],
+      [this.peer, types._InputPeer, "InputPeer"],
+      [this.filter, types._MessagesFilter, "MessagesFilter"],
+      [this.offset_id, "number", "int"],
+      [this.offset_date, "number", "int"],
     ];
   }
 
-  constructor(params: { peer: types.TypeInputPeer; filter: types.TypeMessagesFilter; offsetId: number; offsetDate: number }) {
+  constructor(params: { peer: types.InputPeer; filter: types.MessagesFilter; offset_id: number; offset_date: number }) {
     super();
     this.peer = params.peer;
     this.filter = params.filter;
-    this.offsetId = params.offsetId;
-    this.offsetDate = params.offsetDate;
+    this.offset_id = params.offset_id;
+    this.offset_date = params.offset_date;
   }
 }
 
-export class MessagesGetSearchResultsPositions extends Function<types.TypeMessagesSearchResultsPositions> {
-  peer: types.TypeInputPeer;
-  filter: types.TypeMessagesFilter;
-  offsetId: number;
+export class messages_getSearchResultsPositions extends Function<types.messages_SearchResultsPositions> {
+  peer: types.InputPeer;
+  filter: types.MessagesFilter;
+  offset_id: number;
   limit: number;
 
   protected get [id]() {
@@ -9306,35 +9310,35 @@ export class MessagesGetSearchResultsPositions extends Function<types.TypeMessag
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["peer", types._TypeInputPeer, "InputPeer"],
-      ["filter", types._TypeMessagesFilter, "MessagesFilter"],
-      ["offsetId", "number", "int"],
+      ["peer", types._InputPeer, "InputPeer"],
+      ["filter", types._MessagesFilter, "MessagesFilter"],
+      ["offset_id", "number", "int"],
       ["limit", "number", "int"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.peer, types._TypeInputPeer, "InputPeer"],
-      [this.filter, types._TypeMessagesFilter, "MessagesFilter"],
-      [this.offsetId, "number", "int"],
+      [this.peer, types._InputPeer, "InputPeer"],
+      [this.filter, types._MessagesFilter, "MessagesFilter"],
+      [this.offset_id, "number", "int"],
       [this.limit, "number", "int"],
     ];
   }
 
-  constructor(params: { peer: types.TypeInputPeer; filter: types.TypeMessagesFilter; offsetId: number; limit: number }) {
+  constructor(params: { peer: types.InputPeer; filter: types.MessagesFilter; offset_id: number; limit: number }) {
     super();
     this.peer = params.peer;
     this.filter = params.filter;
-    this.offsetId = params.offsetId;
+    this.offset_id = params.offset_id;
     this.limit = params.limit;
   }
 }
 
-export class MessagesHideChatJoinRequest extends Function<types.TypeUpdates> {
+export class messages_hideChatJoinRequest extends Function<types.Updates> {
   approved?: true;
-  peer: types.TypeInputPeer;
-  userId: types.TypeInputUser;
+  peer: types.InputPeer;
+  user_id: types.InputUser;
 
   protected get [id]() {
     return 0x7FE7E815;
@@ -9344,8 +9348,8 @@ export class MessagesHideChatJoinRequest extends Function<types.TypeUpdates> {
     return [
       ["flags", flags, "#"],
       ["approved", "true", "flags.0?true"],
-      ["peer", types._TypeInputPeer, "InputPeer"],
-      ["userId", types._TypeInputUser, "InputUser"],
+      ["peer", types._InputPeer, "InputPeer"],
+      ["user_id", types._InputUser, "InputUser"],
     ];
   }
 
@@ -9353,22 +9357,22 @@ export class MessagesHideChatJoinRequest extends Function<types.TypeUpdates> {
     return [
       ["flags", flags, "#"],
       [this.approved ?? null, "true", "flags.0?true"],
-      [this.peer, types._TypeInputPeer, "InputPeer"],
-      [this.userId, types._TypeInputUser, "InputUser"],
+      [this.peer, types._InputPeer, "InputPeer"],
+      [this.user_id, types._InputUser, "InputUser"],
     ];
   }
 
-  constructor(params: { approved?: true; peer: types.TypeInputPeer; userId: types.TypeInputUser }) {
+  constructor(params: { approved?: true; peer: types.InputPeer; user_id: types.InputUser }) {
     super();
     this.approved = params.approved;
     this.peer = params.peer;
-    this.userId = params.userId;
+    this.user_id = params.user_id;
   }
 }
 
-export class MessagesHideAllChatJoinRequests extends Function<types.TypeUpdates> {
+export class messages_hideAllChatJoinRequests extends Function<types.Updates> {
   approved?: true;
-  peer: types.TypeInputPeer;
+  peer: types.InputPeer;
   link?: string;
 
   protected get [id]() {
@@ -9379,7 +9383,7 @@ export class MessagesHideAllChatJoinRequests extends Function<types.TypeUpdates>
     return [
       ["flags", flags, "#"],
       ["approved", "true", "flags.0?true"],
-      ["peer", types._TypeInputPeer, "InputPeer"],
+      ["peer", types._InputPeer, "InputPeer"],
       ["link", "string", "flags.1?string"],
     ];
   }
@@ -9388,12 +9392,12 @@ export class MessagesHideAllChatJoinRequests extends Function<types.TypeUpdates>
     return [
       ["flags", flags, "#"],
       [this.approved ?? null, "true", "flags.0?true"],
-      [this.peer, types._TypeInputPeer, "InputPeer"],
+      [this.peer, types._InputPeer, "InputPeer"],
       [this.link ?? null, "string", "flags.1?string"],
     ];
   }
 
-  constructor(params: { approved?: true; peer: types.TypeInputPeer; link?: string }) {
+  constructor(params: { approved?: true; peer: types.InputPeer; link?: string }) {
     super();
     this.approved = params.approved;
     this.peer = params.peer;
@@ -9401,8 +9405,8 @@ export class MessagesHideAllChatJoinRequests extends Function<types.TypeUpdates>
   }
 }
 
-export class MessagesToggleNoForwards extends Function<types.TypeUpdates> {
-  peer: types.TypeInputPeer;
+export class messages_toggleNoForwards extends Function<types.Updates> {
+  peer: types.InputPeer;
   enabled: boolean;
 
   protected get [id]() {
@@ -9411,28 +9415,28 @@ export class MessagesToggleNoForwards extends Function<types.TypeUpdates> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["peer", types._TypeInputPeer, "InputPeer"],
+      ["peer", types._InputPeer, "InputPeer"],
       ["enabled", "boolean", "Bool"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.peer, types._TypeInputPeer, "InputPeer"],
+      [this.peer, types._InputPeer, "InputPeer"],
       [this.enabled, "boolean", "Bool"],
     ];
   }
 
-  constructor(params: { peer: types.TypeInputPeer; enabled: boolean }) {
+  constructor(params: { peer: types.InputPeer; enabled: boolean }) {
     super();
     this.peer = params.peer;
     this.enabled = params.enabled;
   }
 }
 
-export class MessagesSaveDefaultSendAs extends Function<boolean> {
-  peer: types.TypeInputPeer;
-  sendAs: types.TypeInputPeer;
+export class messages_saveDefaultSendAs extends Function<boolean> {
+  peer: types.InputPeer;
+  send_as: types.InputPeer;
 
   protected get [id]() {
     return 0xCCFDDF96;
@@ -9440,31 +9444,31 @@ export class MessagesSaveDefaultSendAs extends Function<boolean> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["peer", types._TypeInputPeer, "InputPeer"],
-      ["sendAs", types._TypeInputPeer, "InputPeer"],
+      ["peer", types._InputPeer, "InputPeer"],
+      ["send_as", types._InputPeer, "InputPeer"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.peer, types._TypeInputPeer, "InputPeer"],
-      [this.sendAs, types._TypeInputPeer, "InputPeer"],
+      [this.peer, types._InputPeer, "InputPeer"],
+      [this.send_as, types._InputPeer, "InputPeer"],
     ];
   }
 
-  constructor(params: { peer: types.TypeInputPeer; sendAs: types.TypeInputPeer }) {
+  constructor(params: { peer: types.InputPeer; send_as: types.InputPeer }) {
     super();
     this.peer = params.peer;
-    this.sendAs = params.sendAs;
+    this.send_as = params.send_as;
   }
 }
 
-export class MessagesSendReaction extends Function<types.TypeUpdates> {
+export class messages_sendReaction extends Function<types.Updates> {
   big?: true;
-  addToRecent?: true;
-  peer: types.TypeInputPeer;
-  msgId: number;
-  reaction?: Array<types.TypeReaction>;
+  add_to_recent?: true;
+  peer: types.InputPeer;
+  msg_id: number;
+  reaction?: Array<types.Reaction>;
 
   protected get [id]() {
     return 0xD30D78D4;
@@ -9474,10 +9478,10 @@ export class MessagesSendReaction extends Function<types.TypeUpdates> {
     return [
       ["flags", flags, "#"],
       ["big", "true", "flags.1?true"],
-      ["addToRecent", "true", "flags.2?true"],
-      ["peer", types._TypeInputPeer, "InputPeer"],
-      ["msgId", "number", "int"],
-      ["reaction", [types._TypeReaction], "flags.0?Vector<Reaction>"],
+      ["add_to_recent", "true", "flags.2?true"],
+      ["peer", types._InputPeer, "InputPeer"],
+      ["msg_id", "number", "int"],
+      ["reaction", [types._Reaction], "flags.0?Vector<Reaction>"],
     ];
   }
 
@@ -9485,25 +9489,25 @@ export class MessagesSendReaction extends Function<types.TypeUpdates> {
     return [
       ["flags", flags, "#"],
       [this.big ?? null, "true", "flags.1?true"],
-      [this.addToRecent ?? null, "true", "flags.2?true"],
-      [this.peer, types._TypeInputPeer, "InputPeer"],
-      [this.msgId, "number", "int"],
-      [this.reaction ?? null, [types._TypeReaction], "flags.0?Vector<Reaction>"],
+      [this.add_to_recent ?? null, "true", "flags.2?true"],
+      [this.peer, types._InputPeer, "InputPeer"],
+      [this.msg_id, "number", "int"],
+      [this.reaction ?? null, [types._Reaction], "flags.0?Vector<Reaction>"],
     ];
   }
 
-  constructor(params: { big?: true; addToRecent?: true; peer: types.TypeInputPeer; msgId: number; reaction?: Array<types.TypeReaction> }) {
+  constructor(params: { big?: true; add_to_recent?: true; peer: types.InputPeer; msg_id: number; reaction?: Array<types.Reaction> }) {
     super();
     this.big = params.big;
-    this.addToRecent = params.addToRecent;
+    this.add_to_recent = params.add_to_recent;
     this.peer = params.peer;
-    this.msgId = params.msgId;
+    this.msg_id = params.msg_id;
     this.reaction = params.reaction;
   }
 }
 
-export class MessagesGetMessagesReactions extends Function<types.TypeUpdates> {
-  peer: types.TypeInputPeer;
+export class messages_getMessagesReactions extends Function<types.Updates> {
+  peer: types.InputPeer;
   id: Array<number>;
 
   protected get [id]() {
@@ -9512,29 +9516,29 @@ export class MessagesGetMessagesReactions extends Function<types.TypeUpdates> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["peer", types._TypeInputPeer, "InputPeer"],
+      ["peer", types._InputPeer, "InputPeer"],
       ["id", ["number"], "Vector<int>"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.peer, types._TypeInputPeer, "InputPeer"],
+      [this.peer, types._InputPeer, "InputPeer"],
       [this.id, ["number"], "Vector<int>"],
     ];
   }
 
-  constructor(params: { peer: types.TypeInputPeer; id: Array<number> }) {
+  constructor(params: { peer: types.InputPeer; id: Array<number> }) {
     super();
     this.peer = params.peer;
     this.id = params.id;
   }
 }
 
-export class MessagesGetMessageReactionsList extends Function<types.TypeMessagesMessageReactionsList> {
-  peer: types.TypeInputPeer;
+export class messages_getMessageReactionsList extends Function<types.messages_MessageReactionsList> {
+  peer: types.InputPeer;
   id: number;
-  reaction?: types.TypeReaction;
+  reaction?: types.Reaction;
   offset?: string;
   limit: number;
 
@@ -9545,9 +9549,9 @@ export class MessagesGetMessageReactionsList extends Function<types.TypeMessages
   static get [paramDesc](): ParamDesc {
     return [
       ["flags", flags, "#"],
-      ["peer", types._TypeInputPeer, "InputPeer"],
+      ["peer", types._InputPeer, "InputPeer"],
       ["id", "number", "int"],
-      ["reaction", types._TypeReaction, "flags.0?Reaction"],
+      ["reaction", types._Reaction, "flags.0?Reaction"],
       ["offset", "string", "flags.1?string"],
       ["limit", "number", "int"],
     ];
@@ -9556,15 +9560,15 @@ export class MessagesGetMessageReactionsList extends Function<types.TypeMessages
   protected get [params](): Params {
     return [
       ["flags", flags, "#"],
-      [this.peer, types._TypeInputPeer, "InputPeer"],
+      [this.peer, types._InputPeer, "InputPeer"],
       [this.id, "number", "int"],
-      [this.reaction ?? null, types._TypeReaction, "flags.0?Reaction"],
+      [this.reaction ?? null, types._Reaction, "flags.0?Reaction"],
       [this.offset ?? null, "string", "flags.1?string"],
       [this.limit, "number", "int"],
     ];
   }
 
-  constructor(params: { peer: types.TypeInputPeer; id: number; reaction?: types.TypeReaction; offset?: string; limit: number }) {
+  constructor(params: { peer: types.InputPeer; id: number; reaction?: types.Reaction; offset?: string; limit: number }) {
     super();
     this.peer = params.peer;
     this.id = params.id;
@@ -9574,9 +9578,9 @@ export class MessagesGetMessageReactionsList extends Function<types.TypeMessages
   }
 }
 
-export class MessagesSetChatAvailableReactions extends Function<types.TypeUpdates> {
-  peer: types.TypeInputPeer;
-  availableReactions: types.TypeChatReactions;
+export class messages_setChatAvailableReactions extends Function<types.Updates> {
+  peer: types.InputPeer;
+  available_reactions: types.ChatReactions;
 
   protected get [id]() {
     return 0xFEB16771;
@@ -9584,26 +9588,26 @@ export class MessagesSetChatAvailableReactions extends Function<types.TypeUpdate
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["peer", types._TypeInputPeer, "InputPeer"],
-      ["availableReactions", types._TypeChatReactions, "ChatReactions"],
+      ["peer", types._InputPeer, "InputPeer"],
+      ["available_reactions", types._ChatReactions, "ChatReactions"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.peer, types._TypeInputPeer, "InputPeer"],
-      [this.availableReactions, types._TypeChatReactions, "ChatReactions"],
+      [this.peer, types._InputPeer, "InputPeer"],
+      [this.available_reactions, types._ChatReactions, "ChatReactions"],
     ];
   }
 
-  constructor(params: { peer: types.TypeInputPeer; availableReactions: types.TypeChatReactions }) {
+  constructor(params: { peer: types.InputPeer; available_reactions: types.ChatReactions }) {
     super();
     this.peer = params.peer;
-    this.availableReactions = params.availableReactions;
+    this.available_reactions = params.available_reactions;
   }
 }
 
-export class MessagesGetAvailableReactions extends Function<types.TypeMessagesAvailableReactions> {
+export class messages_getAvailableReactions extends Function<types.messages_AvailableReactions> {
   hash: number;
 
   protected get [id]() {
@@ -9628,8 +9632,8 @@ export class MessagesGetAvailableReactions extends Function<types.TypeMessagesAv
   }
 }
 
-export class MessagesSetDefaultReaction extends Function<boolean> {
-  reaction: types.TypeReaction;
+export class messages_setDefaultReaction extends Function<boolean> {
+  reaction: types.Reaction;
 
   protected get [id]() {
     return 0x4F47A016;
@@ -9637,27 +9641,27 @@ export class MessagesSetDefaultReaction extends Function<boolean> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["reaction", types._TypeReaction, "Reaction"],
+      ["reaction", types._Reaction, "Reaction"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.reaction, types._TypeReaction, "Reaction"],
+      [this.reaction, types._Reaction, "Reaction"],
     ];
   }
 
-  constructor(params: { reaction: types.TypeReaction }) {
+  constructor(params: { reaction: types.Reaction }) {
     super();
     this.reaction = params.reaction;
   }
 }
 
-export class MessagesTranslateText extends Function<types.TypeMessagesTranslatedText> {
-  peer?: types.TypeInputPeer;
+export class messages_translateText extends Function<types.messages_TranslatedText> {
+  peer?: types.InputPeer;
   id?: Array<number>;
-  text?: Array<types.TypeTextWithEntities>;
-  toLang: string;
+  text?: Array<types.TextWithEntities>;
+  to_lang: string;
 
   protected get [id]() {
     return 0x63183030;
@@ -9666,40 +9670,40 @@ export class MessagesTranslateText extends Function<types.TypeMessagesTranslated
   static get [paramDesc](): ParamDesc {
     return [
       ["flags", flags, "#"],
-      ["peer", types._TypeInputPeer, "flags.0?InputPeer"],
+      ["peer", types._InputPeer, "flags.0?InputPeer"],
       ["id", ["number"], "flags.0?Vector<int>"],
-      ["text", [types._TypeTextWithEntities], "flags.1?Vector<TextWithEntities>"],
-      ["toLang", "string", "string"],
+      ["text", [types._TextWithEntities], "flags.1?Vector<TextWithEntities>"],
+      ["to_lang", "string", "string"],
     ];
   }
 
   protected get [params](): Params {
     return [
       ["flags", flags, "#"],
-      [this.peer ?? null, types._TypeInputPeer, "flags.0?InputPeer"],
+      [this.peer ?? null, types._InputPeer, "flags.0?InputPeer"],
       [this.id ?? null, ["number"], "flags.0?Vector<int>"],
-      [this.text ?? null, [types._TypeTextWithEntities], "flags.1?Vector<TextWithEntities>"],
-      [this.toLang, "string", "string"],
+      [this.text ?? null, [types._TextWithEntities], "flags.1?Vector<TextWithEntities>"],
+      [this.to_lang, "string", "string"],
     ];
   }
 
-  constructor(params: { peer?: types.TypeInputPeer; id?: Array<number>; text?: Array<types.TypeTextWithEntities>; toLang: string }) {
+  constructor(params: { peer?: types.InputPeer; id?: Array<number>; text?: Array<types.TextWithEntities>; to_lang: string }) {
     super();
     this.peer = params.peer;
     this.id = params.id;
     this.text = params.text;
-    this.toLang = params.toLang;
+    this.to_lang = params.to_lang;
   }
 }
 
-export class MessagesGetUnreadReactions extends Function<types.TypeMessagesMessages> {
-  peer: types.TypeInputPeer;
-  topMsgId?: number;
-  offsetId: number;
-  addOffset: number;
+export class messages_getUnreadReactions extends Function<types.messages_Messages> {
+  peer: types.InputPeer;
+  top_msg_id?: number;
+  offset_id: number;
+  add_offset: number;
   limit: number;
-  maxId: number;
-  minId: number;
+  max_id: number;
+  min_id: number;
 
   protected get [id]() {
     return 0x3223495B;
@@ -9708,44 +9712,44 @@ export class MessagesGetUnreadReactions extends Function<types.TypeMessagesMessa
   static get [paramDesc](): ParamDesc {
     return [
       ["flags", flags, "#"],
-      ["peer", types._TypeInputPeer, "InputPeer"],
-      ["topMsgId", "number", "flags.0?int"],
-      ["offsetId", "number", "int"],
-      ["addOffset", "number", "int"],
+      ["peer", types._InputPeer, "InputPeer"],
+      ["top_msg_id", "number", "flags.0?int"],
+      ["offset_id", "number", "int"],
+      ["add_offset", "number", "int"],
       ["limit", "number", "int"],
-      ["maxId", "number", "int"],
-      ["minId", "number", "int"],
+      ["max_id", "number", "int"],
+      ["min_id", "number", "int"],
     ];
   }
 
   protected get [params](): Params {
     return [
       ["flags", flags, "#"],
-      [this.peer, types._TypeInputPeer, "InputPeer"],
-      [this.topMsgId ?? null, "number", "flags.0?int"],
-      [this.offsetId, "number", "int"],
-      [this.addOffset, "number", "int"],
+      [this.peer, types._InputPeer, "InputPeer"],
+      [this.top_msg_id ?? null, "number", "flags.0?int"],
+      [this.offset_id, "number", "int"],
+      [this.add_offset, "number", "int"],
       [this.limit, "number", "int"],
-      [this.maxId, "number", "int"],
-      [this.minId, "number", "int"],
+      [this.max_id, "number", "int"],
+      [this.min_id, "number", "int"],
     ];
   }
 
-  constructor(params: { peer: types.TypeInputPeer; topMsgId?: number; offsetId: number; addOffset: number; limit: number; maxId: number; minId: number }) {
+  constructor(params: { peer: types.InputPeer; top_msg_id?: number; offset_id: number; add_offset: number; limit: number; max_id: number; min_id: number }) {
     super();
     this.peer = params.peer;
-    this.topMsgId = params.topMsgId;
-    this.offsetId = params.offsetId;
-    this.addOffset = params.addOffset;
+    this.top_msg_id = params.top_msg_id;
+    this.offset_id = params.offset_id;
+    this.add_offset = params.add_offset;
     this.limit = params.limit;
-    this.maxId = params.maxId;
-    this.minId = params.minId;
+    this.max_id = params.max_id;
+    this.min_id = params.min_id;
   }
 }
 
-export class MessagesReadReactions extends Function<types.TypeMessagesAffectedHistory> {
-  peer: types.TypeInputPeer;
-  topMsgId?: number;
+export class messages_readReactions extends Function<types.messages_AffectedHistory> {
+  peer: types.InputPeer;
+  top_msg_id?: number;
 
   protected get [id]() {
     return 0x54AA7F8E;
@@ -9754,29 +9758,29 @@ export class MessagesReadReactions extends Function<types.TypeMessagesAffectedHi
   static get [paramDesc](): ParamDesc {
     return [
       ["flags", flags, "#"],
-      ["peer", types._TypeInputPeer, "InputPeer"],
-      ["topMsgId", "number", "flags.0?int"],
+      ["peer", types._InputPeer, "InputPeer"],
+      ["top_msg_id", "number", "flags.0?int"],
     ];
   }
 
   protected get [params](): Params {
     return [
       ["flags", flags, "#"],
-      [this.peer, types._TypeInputPeer, "InputPeer"],
-      [this.topMsgId ?? null, "number", "flags.0?int"],
+      [this.peer, types._InputPeer, "InputPeer"],
+      [this.top_msg_id ?? null, "number", "flags.0?int"],
     ];
   }
 
-  constructor(params: { peer: types.TypeInputPeer; topMsgId?: number }) {
+  constructor(params: { peer: types.InputPeer; top_msg_id?: number }) {
     super();
     this.peer = params.peer;
-    this.topMsgId = params.topMsgId;
+    this.top_msg_id = params.top_msg_id;
   }
 }
 
-export class MessagesSearchSentMedia extends Function<types.TypeMessagesMessages> {
+export class messages_searchSentMedia extends Function<types.messages_Messages> {
   q: string;
-  filter: types.TypeMessagesFilter;
+  filter: types.MessagesFilter;
   limit: number;
 
   protected get [id]() {
@@ -9786,7 +9790,7 @@ export class MessagesSearchSentMedia extends Function<types.TypeMessagesMessages
   static get [paramDesc](): ParamDesc {
     return [
       ["q", "string", "string"],
-      ["filter", types._TypeMessagesFilter, "MessagesFilter"],
+      ["filter", types._MessagesFilter, "MessagesFilter"],
       ["limit", "number", "int"],
     ];
   }
@@ -9794,12 +9798,12 @@ export class MessagesSearchSentMedia extends Function<types.TypeMessagesMessages
   protected get [params](): Params {
     return [
       [this.q, "string", "string"],
-      [this.filter, types._TypeMessagesFilter, "MessagesFilter"],
+      [this.filter, types._MessagesFilter, "MessagesFilter"],
       [this.limit, "number", "int"],
     ];
   }
 
-  constructor(params: { q: string; filter: types.TypeMessagesFilter; limit: number }) {
+  constructor(params: { q: string; filter: types.MessagesFilter; limit: number }) {
     super();
     this.q = params.q;
     this.filter = params.filter;
@@ -9807,7 +9811,7 @@ export class MessagesSearchSentMedia extends Function<types.TypeMessagesMessages
   }
 }
 
-export class MessagesGetAttachMenuBots extends Function<types.TypeAttachMenuBots> {
+export class messages_getAttachMenuBots extends Function<types.AttachMenuBots> {
   hash: bigint;
 
   protected get [id]() {
@@ -9832,8 +9836,8 @@ export class MessagesGetAttachMenuBots extends Function<types.TypeAttachMenuBots
   }
 }
 
-export class MessagesGetAttachMenuBot extends Function<types.TypeAttachMenuBotsBot> {
-  bot: types.TypeInputUser;
+export class messages_getAttachMenuBot extends Function<types.AttachMenuBotsBot> {
+  bot: types.InputUser;
 
   protected get [id]() {
     return 0x77216192;
@@ -9841,25 +9845,25 @@ export class MessagesGetAttachMenuBot extends Function<types.TypeAttachMenuBotsB
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["bot", types._TypeInputUser, "InputUser"],
+      ["bot", types._InputUser, "InputUser"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.bot, types._TypeInputUser, "InputUser"],
+      [this.bot, types._InputUser, "InputUser"],
     ];
   }
 
-  constructor(params: { bot: types.TypeInputUser }) {
+  constructor(params: { bot: types.InputUser }) {
     super();
     this.bot = params.bot;
   }
 }
 
-export class MessagesToggleBotInAttachMenu extends Function<boolean> {
-  writeAllowed?: true;
-  bot: types.TypeInputUser;
+export class messages_toggleBotInAttachMenu extends Function<boolean> {
+  write_allowed?: true;
+  bot: types.InputUser;
   enabled: boolean;
 
   protected get [id]() {
@@ -9869,8 +9873,8 @@ export class MessagesToggleBotInAttachMenu extends Function<boolean> {
   static get [paramDesc](): ParamDesc {
     return [
       ["flags", flags, "#"],
-      ["writeAllowed", "true", "flags.0?true"],
-      ["bot", types._TypeInputUser, "InputUser"],
+      ["write_allowed", "true", "flags.0?true"],
+      ["bot", types._InputUser, "InputUser"],
       ["enabled", "boolean", "Bool"],
     ];
   }
@@ -9878,31 +9882,31 @@ export class MessagesToggleBotInAttachMenu extends Function<boolean> {
   protected get [params](): Params {
     return [
       ["flags", flags, "#"],
-      [this.writeAllowed ?? null, "true", "flags.0?true"],
-      [this.bot, types._TypeInputUser, "InputUser"],
+      [this.write_allowed ?? null, "true", "flags.0?true"],
+      [this.bot, types._InputUser, "InputUser"],
       [this.enabled, "boolean", "Bool"],
     ];
   }
 
-  constructor(params: { writeAllowed?: true; bot: types.TypeInputUser; enabled: boolean }) {
+  constructor(params: { write_allowed?: true; bot: types.InputUser; enabled: boolean }) {
     super();
-    this.writeAllowed = params.writeAllowed;
+    this.write_allowed = params.write_allowed;
     this.bot = params.bot;
     this.enabled = params.enabled;
   }
 }
 
-export class MessagesRequestWebView extends Function<types.TypeWebViewResult> {
-  fromBotMenu?: true;
+export class messages_requestWebView extends Function<types.WebViewResult> {
+  from_bot_menu?: true;
   silent?: true;
-  peer: types.TypeInputPeer;
-  bot: types.TypeInputUser;
+  peer: types.InputPeer;
+  bot: types.InputUser;
   url?: string;
-  startParam?: string;
-  themeParams?: types.TypeDataJSON;
+  start_param?: string;
+  theme_params?: types.DataJSON;
   platform: string;
-  replyTo?: types.TypeInputReplyTo;
-  sendAs?: types.TypeInputPeer;
+  reply_to?: types.InputReplyTo;
+  send_as?: types.InputPeer;
 
   protected get [id]() {
     return 0x269DC2C1;
@@ -9911,57 +9915,57 @@ export class MessagesRequestWebView extends Function<types.TypeWebViewResult> {
   static get [paramDesc](): ParamDesc {
     return [
       ["flags", flags, "#"],
-      ["fromBotMenu", "true", "flags.4?true"],
+      ["from_bot_menu", "true", "flags.4?true"],
       ["silent", "true", "flags.5?true"],
-      ["peer", types._TypeInputPeer, "InputPeer"],
-      ["bot", types._TypeInputUser, "InputUser"],
+      ["peer", types._InputPeer, "InputPeer"],
+      ["bot", types._InputUser, "InputUser"],
       ["url", "string", "flags.1?string"],
-      ["startParam", "string", "flags.3?string"],
-      ["themeParams", types._TypeDataJSON, "flags.2?DataJSON"],
+      ["start_param", "string", "flags.3?string"],
+      ["theme_params", types._DataJSON, "flags.2?DataJSON"],
       ["platform", "string", "string"],
-      ["replyTo", types._TypeInputReplyTo, "flags.0?InputReplyTo"],
-      ["sendAs", types._TypeInputPeer, "flags.13?InputPeer"],
+      ["reply_to", types._InputReplyTo, "flags.0?InputReplyTo"],
+      ["send_as", types._InputPeer, "flags.13?InputPeer"],
     ];
   }
 
   protected get [params](): Params {
     return [
       ["flags", flags, "#"],
-      [this.fromBotMenu ?? null, "true", "flags.4?true"],
+      [this.from_bot_menu ?? null, "true", "flags.4?true"],
       [this.silent ?? null, "true", "flags.5?true"],
-      [this.peer, types._TypeInputPeer, "InputPeer"],
-      [this.bot, types._TypeInputUser, "InputUser"],
+      [this.peer, types._InputPeer, "InputPeer"],
+      [this.bot, types._InputUser, "InputUser"],
       [this.url ?? null, "string", "flags.1?string"],
-      [this.startParam ?? null, "string", "flags.3?string"],
-      [this.themeParams ?? null, types._TypeDataJSON, "flags.2?DataJSON"],
+      [this.start_param ?? null, "string", "flags.3?string"],
+      [this.theme_params ?? null, types._DataJSON, "flags.2?DataJSON"],
       [this.platform, "string", "string"],
-      [this.replyTo ?? null, types._TypeInputReplyTo, "flags.0?InputReplyTo"],
-      [this.sendAs ?? null, types._TypeInputPeer, "flags.13?InputPeer"],
+      [this.reply_to ?? null, types._InputReplyTo, "flags.0?InputReplyTo"],
+      [this.send_as ?? null, types._InputPeer, "flags.13?InputPeer"],
     ];
   }
 
-  constructor(params: { fromBotMenu?: true; silent?: true; peer: types.TypeInputPeer; bot: types.TypeInputUser; url?: string; startParam?: string; themeParams?: types.TypeDataJSON; platform: string; replyTo?: types.TypeInputReplyTo; sendAs?: types.TypeInputPeer }) {
+  constructor(params: { from_bot_menu?: true; silent?: true; peer: types.InputPeer; bot: types.InputUser; url?: string; start_param?: string; theme_params?: types.DataJSON; platform: string; reply_to?: types.InputReplyTo; send_as?: types.InputPeer }) {
     super();
-    this.fromBotMenu = params.fromBotMenu;
+    this.from_bot_menu = params.from_bot_menu;
     this.silent = params.silent;
     this.peer = params.peer;
     this.bot = params.bot;
     this.url = params.url;
-    this.startParam = params.startParam;
-    this.themeParams = params.themeParams;
+    this.start_param = params.start_param;
+    this.theme_params = params.theme_params;
     this.platform = params.platform;
-    this.replyTo = params.replyTo;
-    this.sendAs = params.sendAs;
+    this.reply_to = params.reply_to;
+    this.send_as = params.send_as;
   }
 }
 
-export class MessagesProlongWebView extends Function<boolean> {
+export class messages_prolongWebView extends Function<boolean> {
   silent?: true;
-  peer: types.TypeInputPeer;
-  bot: types.TypeInputUser;
-  queryId: bigint;
-  replyTo?: types.TypeInputReplyTo;
-  sendAs?: types.TypeInputPeer;
+  peer: types.InputPeer;
+  bot: types.InputUser;
+  query_id: bigint;
+  reply_to?: types.InputReplyTo;
+  send_as?: types.InputPeer;
 
   protected get [id]() {
     return 0xB0D81A83;
@@ -9971,11 +9975,11 @@ export class MessagesProlongWebView extends Function<boolean> {
     return [
       ["flags", flags, "#"],
       ["silent", "true", "flags.5?true"],
-      ["peer", types._TypeInputPeer, "InputPeer"],
-      ["bot", types._TypeInputUser, "InputUser"],
-      ["queryId", "bigint", "long"],
-      ["replyTo", types._TypeInputReplyTo, "flags.0?InputReplyTo"],
-      ["sendAs", types._TypeInputPeer, "flags.13?InputPeer"],
+      ["peer", types._InputPeer, "InputPeer"],
+      ["bot", types._InputUser, "InputUser"],
+      ["query_id", "bigint", "long"],
+      ["reply_to", types._InputReplyTo, "flags.0?InputReplyTo"],
+      ["send_as", types._InputPeer, "flags.13?InputPeer"],
     ];
   }
 
@@ -9983,32 +9987,32 @@ export class MessagesProlongWebView extends Function<boolean> {
     return [
       ["flags", flags, "#"],
       [this.silent ?? null, "true", "flags.5?true"],
-      [this.peer, types._TypeInputPeer, "InputPeer"],
-      [this.bot, types._TypeInputUser, "InputUser"],
-      [this.queryId, "bigint", "long"],
-      [this.replyTo ?? null, types._TypeInputReplyTo, "flags.0?InputReplyTo"],
-      [this.sendAs ?? null, types._TypeInputPeer, "flags.13?InputPeer"],
+      [this.peer, types._InputPeer, "InputPeer"],
+      [this.bot, types._InputUser, "InputUser"],
+      [this.query_id, "bigint", "long"],
+      [this.reply_to ?? null, types._InputReplyTo, "flags.0?InputReplyTo"],
+      [this.send_as ?? null, types._InputPeer, "flags.13?InputPeer"],
     ];
   }
 
-  constructor(params: { silent?: true; peer: types.TypeInputPeer; bot: types.TypeInputUser; queryId: bigint; replyTo?: types.TypeInputReplyTo; sendAs?: types.TypeInputPeer }) {
+  constructor(params: { silent?: true; peer: types.InputPeer; bot: types.InputUser; query_id: bigint; reply_to?: types.InputReplyTo; send_as?: types.InputPeer }) {
     super();
     this.silent = params.silent;
     this.peer = params.peer;
     this.bot = params.bot;
-    this.queryId = params.queryId;
-    this.replyTo = params.replyTo;
-    this.sendAs = params.sendAs;
+    this.query_id = params.query_id;
+    this.reply_to = params.reply_to;
+    this.send_as = params.send_as;
   }
 }
 
-export class MessagesRequestSimpleWebView extends Function<types.TypeSimpleWebViewResult> {
-  fromSwitchWebview?: true;
-  fromSideMenu?: true;
-  bot: types.TypeInputUser;
+export class messages_requestSimpleWebView extends Function<types.SimpleWebViewResult> {
+  from_switch_webview?: true;
+  from_side_menu?: true;
+  bot: types.InputUser;
   url?: string;
-  startParam?: string;
-  themeParams?: types.TypeDataJSON;
+  start_param?: string;
+  theme_params?: types.DataJSON;
   platform: string;
 
   protected get [id]() {
@@ -10018,12 +10022,12 @@ export class MessagesRequestSimpleWebView extends Function<types.TypeSimpleWebVi
   static get [paramDesc](): ParamDesc {
     return [
       ["flags", flags, "#"],
-      ["fromSwitchWebview", "true", "flags.1?true"],
-      ["fromSideMenu", "true", "flags.2?true"],
-      ["bot", types._TypeInputUser, "InputUser"],
+      ["from_switch_webview", "true", "flags.1?true"],
+      ["from_side_menu", "true", "flags.2?true"],
+      ["bot", types._InputUser, "InputUser"],
       ["url", "string", "flags.3?string"],
-      ["startParam", "string", "flags.4?string"],
-      ["themeParams", types._TypeDataJSON, "flags.0?DataJSON"],
+      ["start_param", "string", "flags.4?string"],
+      ["theme_params", types._DataJSON, "flags.0?DataJSON"],
       ["platform", "string", "string"],
     ];
   }
@@ -10031,31 +10035,31 @@ export class MessagesRequestSimpleWebView extends Function<types.TypeSimpleWebVi
   protected get [params](): Params {
     return [
       ["flags", flags, "#"],
-      [this.fromSwitchWebview ?? null, "true", "flags.1?true"],
-      [this.fromSideMenu ?? null, "true", "flags.2?true"],
-      [this.bot, types._TypeInputUser, "InputUser"],
+      [this.from_switch_webview ?? null, "true", "flags.1?true"],
+      [this.from_side_menu ?? null, "true", "flags.2?true"],
+      [this.bot, types._InputUser, "InputUser"],
       [this.url ?? null, "string", "flags.3?string"],
-      [this.startParam ?? null, "string", "flags.4?string"],
-      [this.themeParams ?? null, types._TypeDataJSON, "flags.0?DataJSON"],
+      [this.start_param ?? null, "string", "flags.4?string"],
+      [this.theme_params ?? null, types._DataJSON, "flags.0?DataJSON"],
       [this.platform, "string", "string"],
     ];
   }
 
-  constructor(params: { fromSwitchWebview?: true; fromSideMenu?: true; bot: types.TypeInputUser; url?: string; startParam?: string; themeParams?: types.TypeDataJSON; platform: string }) {
+  constructor(params: { from_switch_webview?: true; from_side_menu?: true; bot: types.InputUser; url?: string; start_param?: string; theme_params?: types.DataJSON; platform: string }) {
     super();
-    this.fromSwitchWebview = params.fromSwitchWebview;
-    this.fromSideMenu = params.fromSideMenu;
+    this.from_switch_webview = params.from_switch_webview;
+    this.from_side_menu = params.from_side_menu;
     this.bot = params.bot;
     this.url = params.url;
-    this.startParam = params.startParam;
-    this.themeParams = params.themeParams;
+    this.start_param = params.start_param;
+    this.theme_params = params.theme_params;
     this.platform = params.platform;
   }
 }
 
-export class MessagesSendWebViewResultMessage extends Function<types.TypeWebViewMessageSent> {
-  botQueryId: string;
-  result: types.TypeInputBotInlineResult;
+export class messages_sendWebViewResultMessage extends Function<types.WebViewMessageSent> {
+  bot_query_id: string;
+  result: types.InputBotInlineResult;
 
   protected get [id]() {
     return 0x0A4314F5;
@@ -10063,29 +10067,29 @@ export class MessagesSendWebViewResultMessage extends Function<types.TypeWebView
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["botQueryId", "string", "string"],
-      ["result", types._TypeInputBotInlineResult, "InputBotInlineResult"],
+      ["bot_query_id", "string", "string"],
+      ["result", types._InputBotInlineResult, "InputBotInlineResult"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.botQueryId, "string", "string"],
-      [this.result, types._TypeInputBotInlineResult, "InputBotInlineResult"],
+      [this.bot_query_id, "string", "string"],
+      [this.result, types._InputBotInlineResult, "InputBotInlineResult"],
     ];
   }
 
-  constructor(params: { botQueryId: string; result: types.TypeInputBotInlineResult }) {
+  constructor(params: { bot_query_id: string; result: types.InputBotInlineResult }) {
     super();
-    this.botQueryId = params.botQueryId;
+    this.bot_query_id = params.bot_query_id;
     this.result = params.result;
   }
 }
 
-export class MessagesSendWebViewData extends Function<types.TypeUpdates> {
-  bot: types.TypeInputUser;
-  randomId: bigint;
-  buttonText: string;
+export class messages_sendWebViewData extends Function<types.Updates> {
+  bot: types.InputUser;
+  random_id: bigint;
+  button_text: string;
   data: string;
 
   protected get [id]() {
@@ -10094,34 +10098,34 @@ export class MessagesSendWebViewData extends Function<types.TypeUpdates> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["bot", types._TypeInputUser, "InputUser"],
-      ["randomId", "bigint", "long"],
-      ["buttonText", "string", "string"],
+      ["bot", types._InputUser, "InputUser"],
+      ["random_id", "bigint", "long"],
+      ["button_text", "string", "string"],
       ["data", "string", "string"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.bot, types._TypeInputUser, "InputUser"],
-      [this.randomId, "bigint", "long"],
-      [this.buttonText, "string", "string"],
+      [this.bot, types._InputUser, "InputUser"],
+      [this.random_id, "bigint", "long"],
+      [this.button_text, "string", "string"],
       [this.data, "string", "string"],
     ];
   }
 
-  constructor(params: { bot: types.TypeInputUser; randomId: bigint; buttonText: string; data: string }) {
+  constructor(params: { bot: types.InputUser; random_id: bigint; button_text: string; data: string }) {
     super();
     this.bot = params.bot;
-    this.randomId = params.randomId;
-    this.buttonText = params.buttonText;
+    this.random_id = params.random_id;
+    this.button_text = params.button_text;
     this.data = params.data;
   }
 }
 
-export class MessagesTranscribeAudio extends Function<types.TypeMessagesTranscribedAudio> {
-  peer: types.TypeInputPeer;
-  msgId: number;
+export class messages_transcribeAudio extends Function<types.messages_TranscribedAudio> {
+  peer: types.InputPeer;
+  msg_id: number;
 
   protected get [id]() {
     return 0x269E9A49;
@@ -10129,29 +10133,29 @@ export class MessagesTranscribeAudio extends Function<types.TypeMessagesTranscri
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["peer", types._TypeInputPeer, "InputPeer"],
-      ["msgId", "number", "int"],
+      ["peer", types._InputPeer, "InputPeer"],
+      ["msg_id", "number", "int"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.peer, types._TypeInputPeer, "InputPeer"],
-      [this.msgId, "number", "int"],
+      [this.peer, types._InputPeer, "InputPeer"],
+      [this.msg_id, "number", "int"],
     ];
   }
 
-  constructor(params: { peer: types.TypeInputPeer; msgId: number }) {
+  constructor(params: { peer: types.InputPeer; msg_id: number }) {
     super();
     this.peer = params.peer;
-    this.msgId = params.msgId;
+    this.msg_id = params.msg_id;
   }
 }
 
-export class MessagesRateTranscribedAudio extends Function<boolean> {
-  peer: types.TypeInputPeer;
-  msgId: number;
-  transcriptionId: bigint;
+export class messages_rateTranscribedAudio extends Function<boolean> {
+  peer: types.InputPeer;
+  msg_id: number;
+  transcription_id: bigint;
   good: boolean;
 
   protected get [id]() {
@@ -10160,33 +10164,33 @@ export class MessagesRateTranscribedAudio extends Function<boolean> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["peer", types._TypeInputPeer, "InputPeer"],
-      ["msgId", "number", "int"],
-      ["transcriptionId", "bigint", "long"],
+      ["peer", types._InputPeer, "InputPeer"],
+      ["msg_id", "number", "int"],
+      ["transcription_id", "bigint", "long"],
       ["good", "boolean", "Bool"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.peer, types._TypeInputPeer, "InputPeer"],
-      [this.msgId, "number", "int"],
-      [this.transcriptionId, "bigint", "long"],
+      [this.peer, types._InputPeer, "InputPeer"],
+      [this.msg_id, "number", "int"],
+      [this.transcription_id, "bigint", "long"],
       [this.good, "boolean", "Bool"],
     ];
   }
 
-  constructor(params: { peer: types.TypeInputPeer; msgId: number; transcriptionId: bigint; good: boolean }) {
+  constructor(params: { peer: types.InputPeer; msg_id: number; transcription_id: bigint; good: boolean }) {
     super();
     this.peer = params.peer;
-    this.msgId = params.msgId;
-    this.transcriptionId = params.transcriptionId;
+    this.msg_id = params.msg_id;
+    this.transcription_id = params.transcription_id;
     this.good = params.good;
   }
 }
 
-export class MessagesGetCustomEmojiDocuments extends Function<types.TypeDocument[]> {
-  documentId: Array<bigint>;
+export class messages_getCustomEmojiDocuments extends Function<types.Document[]> {
+  document_id: Array<bigint>;
 
   protected get [id]() {
     return 0xD9AB0F54;
@@ -10194,23 +10198,23 @@ export class MessagesGetCustomEmojiDocuments extends Function<types.TypeDocument
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["documentId", ["bigint"], "Vector<long>"],
+      ["document_id", ["bigint"], "Vector<long>"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.documentId, ["bigint"], "Vector<long>"],
+      [this.document_id, ["bigint"], "Vector<long>"],
     ];
   }
 
-  constructor(params: { documentId: Array<bigint> }) {
+  constructor(params: { document_id: Array<bigint> }) {
     super();
-    this.documentId = params.documentId;
+    this.document_id = params.document_id;
   }
 }
 
-export class MessagesGetEmojiStickers extends Function<types.TypeMessagesAllStickers> {
+export class messages_getEmojiStickers extends Function<types.messages_AllStickers> {
   hash: bigint;
 
   protected get [id]() {
@@ -10235,7 +10239,7 @@ export class MessagesGetEmojiStickers extends Function<types.TypeMessagesAllStic
   }
 }
 
-export class MessagesGetFeaturedEmojiStickers extends Function<types.TypeMessagesFeaturedStickers> {
+export class messages_getFeaturedEmojiStickers extends Function<types.messages_FeaturedStickers> {
   hash: bigint;
 
   protected get [id]() {
@@ -10260,10 +10264,10 @@ export class MessagesGetFeaturedEmojiStickers extends Function<types.TypeMessage
   }
 }
 
-export class MessagesReportReaction extends Function<boolean> {
-  peer: types.TypeInputPeer;
+export class messages_reportReaction extends Function<boolean> {
+  peer: types.InputPeer;
   id: number;
-  reactionPeer: types.TypeInputPeer;
+  reaction_peer: types.InputPeer;
 
   protected get [id]() {
     return 0x3F64C076;
@@ -10271,29 +10275,29 @@ export class MessagesReportReaction extends Function<boolean> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["peer", types._TypeInputPeer, "InputPeer"],
+      ["peer", types._InputPeer, "InputPeer"],
       ["id", "number", "int"],
-      ["reactionPeer", types._TypeInputPeer, "InputPeer"],
+      ["reaction_peer", types._InputPeer, "InputPeer"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.peer, types._TypeInputPeer, "InputPeer"],
+      [this.peer, types._InputPeer, "InputPeer"],
       [this.id, "number", "int"],
-      [this.reactionPeer, types._TypeInputPeer, "InputPeer"],
+      [this.reaction_peer, types._InputPeer, "InputPeer"],
     ];
   }
 
-  constructor(params: { peer: types.TypeInputPeer; id: number; reactionPeer: types.TypeInputPeer }) {
+  constructor(params: { peer: types.InputPeer; id: number; reaction_peer: types.InputPeer }) {
     super();
     this.peer = params.peer;
     this.id = params.id;
-    this.reactionPeer = params.reactionPeer;
+    this.reaction_peer = params.reaction_peer;
   }
 }
 
-export class MessagesGetTopReactions extends Function<types.TypeMessagesReactions> {
+export class messages_getTopReactions extends Function<types.messages_Reactions> {
   limit: number;
   hash: bigint;
 
@@ -10322,7 +10326,7 @@ export class MessagesGetTopReactions extends Function<types.TypeMessagesReaction
   }
 }
 
-export class MessagesGetRecentReactions extends Function<types.TypeMessagesReactions> {
+export class messages_getRecentReactions extends Function<types.messages_Reactions> {
   limit: number;
   hash: bigint;
 
@@ -10351,7 +10355,7 @@ export class MessagesGetRecentReactions extends Function<types.TypeMessagesReact
   }
 }
 
-export class MessagesClearRecentReactions extends Function<boolean> {
+export class messages_clearRecentReactions extends Function<boolean> {
   protected get [id]() {
     return 0x9DFEEFB4;
   }
@@ -10369,8 +10373,8 @@ export class MessagesClearRecentReactions extends Function<boolean> {
   }
 }
 
-export class MessagesGetExtendedMedia extends Function<types.TypeUpdates> {
-  peer: types.TypeInputPeer;
+export class messages_getExtendedMedia extends Function<types.Updates> {
+  peer: types.InputPeer;
   id: Array<number>;
 
   protected get [id]() {
@@ -10379,26 +10383,26 @@ export class MessagesGetExtendedMedia extends Function<types.TypeUpdates> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["peer", types._TypeInputPeer, "InputPeer"],
+      ["peer", types._InputPeer, "InputPeer"],
       ["id", ["number"], "Vector<int>"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.peer, types._TypeInputPeer, "InputPeer"],
+      [this.peer, types._InputPeer, "InputPeer"],
       [this.id, ["number"], "Vector<int>"],
     ];
   }
 
-  constructor(params: { peer: types.TypeInputPeer; id: Array<number> }) {
+  constructor(params: { peer: types.InputPeer; id: Array<number> }) {
     super();
     this.peer = params.peer;
     this.id = params.id;
   }
 }
 
-export class MessagesSetDefaultHistoryTTL extends Function<boolean> {
+export class messages_setDefaultHistoryTTL extends Function<boolean> {
   period: number;
 
   protected get [id]() {
@@ -10423,7 +10427,7 @@ export class MessagesSetDefaultHistoryTTL extends Function<boolean> {
   }
 }
 
-export class MessagesGetDefaultHistoryTTL extends Function<types.TypeDefaultHistoryTTL> {
+export class messages_getDefaultHistoryTTL extends Function<types.DefaultHistoryTTL> {
   protected get [id]() {
     return 0x658B7188;
   }
@@ -10441,11 +10445,11 @@ export class MessagesGetDefaultHistoryTTL extends Function<types.TypeDefaultHist
   }
 }
 
-export class MessagesSendBotRequestedPeer extends Function<types.TypeUpdates> {
-  peer: types.TypeInputPeer;
-  msgId: number;
-  buttonId: number;
-  requestedPeer: types.TypeInputPeer;
+export class messages_sendBotRequestedPeer extends Function<types.Updates> {
+  peer: types.InputPeer;
+  msg_id: number;
+  button_id: number;
+  requested_peer: types.InputPeer;
 
   protected get [id]() {
     return 0xFE38D01B;
@@ -10453,32 +10457,32 @@ export class MessagesSendBotRequestedPeer extends Function<types.TypeUpdates> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["peer", types._TypeInputPeer, "InputPeer"],
-      ["msgId", "number", "int"],
-      ["buttonId", "number", "int"],
-      ["requestedPeer", types._TypeInputPeer, "InputPeer"],
+      ["peer", types._InputPeer, "InputPeer"],
+      ["msg_id", "number", "int"],
+      ["button_id", "number", "int"],
+      ["requested_peer", types._InputPeer, "InputPeer"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.peer, types._TypeInputPeer, "InputPeer"],
-      [this.msgId, "number", "int"],
-      [this.buttonId, "number", "int"],
-      [this.requestedPeer, types._TypeInputPeer, "InputPeer"],
+      [this.peer, types._InputPeer, "InputPeer"],
+      [this.msg_id, "number", "int"],
+      [this.button_id, "number", "int"],
+      [this.requested_peer, types._InputPeer, "InputPeer"],
     ];
   }
 
-  constructor(params: { peer: types.TypeInputPeer; msgId: number; buttonId: number; requestedPeer: types.TypeInputPeer }) {
+  constructor(params: { peer: types.InputPeer; msg_id: number; button_id: number; requested_peer: types.InputPeer }) {
     super();
     this.peer = params.peer;
-    this.msgId = params.msgId;
-    this.buttonId = params.buttonId;
-    this.requestedPeer = params.requestedPeer;
+    this.msg_id = params.msg_id;
+    this.button_id = params.button_id;
+    this.requested_peer = params.requested_peer;
   }
 }
 
-export class MessagesGetEmojiGroups extends Function<types.TypeMessagesEmojiGroups> {
+export class messages_getEmojiGroups extends Function<types.messages_EmojiGroups> {
   hash: number;
 
   protected get [id]() {
@@ -10503,7 +10507,7 @@ export class MessagesGetEmojiGroups extends Function<types.TypeMessagesEmojiGrou
   }
 }
 
-export class MessagesGetEmojiStatusGroups extends Function<types.TypeMessagesEmojiGroups> {
+export class messages_getEmojiStatusGroups extends Function<types.messages_EmojiGroups> {
   hash: number;
 
   protected get [id]() {
@@ -10528,7 +10532,7 @@ export class MessagesGetEmojiStatusGroups extends Function<types.TypeMessagesEmo
   }
 }
 
-export class MessagesGetEmojiProfilePhotoGroups extends Function<types.TypeMessagesEmojiGroups> {
+export class messages_getEmojiProfilePhotoGroups extends Function<types.messages_EmojiGroups> {
   hash: number;
 
   protected get [id]() {
@@ -10553,7 +10557,7 @@ export class MessagesGetEmojiProfilePhotoGroups extends Function<types.TypeMessa
   }
 }
 
-export class MessagesSearchCustomEmoji extends Function<types.TypeEmojiList> {
+export class messages_searchCustomEmoji extends Function<types.EmojiList> {
   emoticon: string;
   hash: bigint;
 
@@ -10582,9 +10586,9 @@ export class MessagesSearchCustomEmoji extends Function<types.TypeEmojiList> {
   }
 }
 
-export class MessagesTogglePeerTranslations extends Function<boolean> {
+export class messages_togglePeerTranslations extends Function<boolean> {
   disabled?: true;
-  peer: types.TypeInputPeer;
+  peer: types.InputPeer;
 
   protected get [id]() {
     return 0xE47CB579;
@@ -10594,7 +10598,7 @@ export class MessagesTogglePeerTranslations extends Function<boolean> {
     return [
       ["flags", flags, "#"],
       ["disabled", "true", "flags.0?true"],
-      ["peer", types._TypeInputPeer, "InputPeer"],
+      ["peer", types._InputPeer, "InputPeer"],
     ];
   }
 
@@ -10602,19 +10606,19 @@ export class MessagesTogglePeerTranslations extends Function<boolean> {
     return [
       ["flags", flags, "#"],
       [this.disabled ?? null, "true", "flags.0?true"],
-      [this.peer, types._TypeInputPeer, "InputPeer"],
+      [this.peer, types._InputPeer, "InputPeer"],
     ];
   }
 
-  constructor(params: { disabled?: true; peer: types.TypeInputPeer }) {
+  constructor(params: { disabled?: true; peer: types.InputPeer }) {
     super();
     this.disabled = params.disabled;
     this.peer = params.peer;
   }
 }
 
-export class MessagesGetBotApp extends Function<types.TypeMessagesBotApp> {
-  app: types.TypeInputBotApp;
+export class messages_getBotApp extends Function<types.messages_BotApp> {
+  app: types.InputBotApp;
   hash: bigint;
 
   protected get [id]() {
@@ -10623,31 +10627,31 @@ export class MessagesGetBotApp extends Function<types.TypeMessagesBotApp> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["app", types._TypeInputBotApp, "InputBotApp"],
+      ["app", types._InputBotApp, "InputBotApp"],
       ["hash", "bigint", "long"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.app, types._TypeInputBotApp, "InputBotApp"],
+      [this.app, types._InputBotApp, "InputBotApp"],
       [this.hash, "bigint", "long"],
     ];
   }
 
-  constructor(params: { app: types.TypeInputBotApp; hash: bigint }) {
+  constructor(params: { app: types.InputBotApp; hash: bigint }) {
     super();
     this.app = params.app;
     this.hash = params.hash;
   }
 }
 
-export class MessagesRequestAppWebView extends Function<types.TypeAppWebViewResult> {
-  writeAllowed?: true;
-  peer: types.TypeInputPeer;
-  app: types.TypeInputBotApp;
-  startParam?: string;
-  themeParams?: types.TypeDataJSON;
+export class messages_requestAppWebView extends Function<types.AppWebViewResult> {
+  write_allowed?: true;
+  peer: types.InputPeer;
+  app: types.InputBotApp;
+  start_param?: string;
+  theme_params?: types.DataJSON;
   platform: string;
 
   protected get [id]() {
@@ -10657,11 +10661,11 @@ export class MessagesRequestAppWebView extends Function<types.TypeAppWebViewResu
   static get [paramDesc](): ParamDesc {
     return [
       ["flags", flags, "#"],
-      ["writeAllowed", "true", "flags.0?true"],
-      ["peer", types._TypeInputPeer, "InputPeer"],
-      ["app", types._TypeInputBotApp, "InputBotApp"],
-      ["startParam", "string", "flags.1?string"],
-      ["themeParams", types._TypeDataJSON, "flags.2?DataJSON"],
+      ["write_allowed", "true", "flags.0?true"],
+      ["peer", types._InputPeer, "InputPeer"],
+      ["app", types._InputBotApp, "InputBotApp"],
+      ["start_param", "string", "flags.1?string"],
+      ["theme_params", types._DataJSON, "flags.2?DataJSON"],
       ["platform", "string", "string"],
     ];
   }
@@ -10669,30 +10673,32 @@ export class MessagesRequestAppWebView extends Function<types.TypeAppWebViewResu
   protected get [params](): Params {
     return [
       ["flags", flags, "#"],
-      [this.writeAllowed ?? null, "true", "flags.0?true"],
-      [this.peer, types._TypeInputPeer, "InputPeer"],
-      [this.app, types._TypeInputBotApp, "InputBotApp"],
-      [this.startParam ?? null, "string", "flags.1?string"],
-      [this.themeParams ?? null, types._TypeDataJSON, "flags.2?DataJSON"],
+      [this.write_allowed ?? null, "true", "flags.0?true"],
+      [this.peer, types._InputPeer, "InputPeer"],
+      [this.app, types._InputBotApp, "InputBotApp"],
+      [this.start_param ?? null, "string", "flags.1?string"],
+      [this.theme_params ?? null, types._DataJSON, "flags.2?DataJSON"],
       [this.platform, "string", "string"],
     ];
   }
 
-  constructor(params: { writeAllowed?: true; peer: types.TypeInputPeer; app: types.TypeInputBotApp; startParam?: string; themeParams?: types.TypeDataJSON; platform: string }) {
+  constructor(params: { write_allowed?: true; peer: types.InputPeer; app: types.InputBotApp; start_param?: string; theme_params?: types.DataJSON; platform: string }) {
     super();
-    this.writeAllowed = params.writeAllowed;
+    this.write_allowed = params.write_allowed;
     this.peer = params.peer;
     this.app = params.app;
-    this.startParam = params.startParam;
-    this.themeParams = params.themeParams;
+    this.start_param = params.start_param;
+    this.theme_params = params.theme_params;
     this.platform = params.platform;
   }
 }
 
-export class MessagesSetChatWallPaper extends Function<types.TypeUpdates> {
-  peer: types.TypeInputPeer;
-  wallpaper?: types.TypeInputWallPaper;
-  settings?: types.TypeWallPaperSettings;
+export class messages_setChatWallPaper extends Function<types.Updates> {
+  for_both?: true;
+  revert?: true;
+  peer: types.InputPeer;
+  wallpaper?: types.InputWallPaper;
+  settings?: types.WallPaperSettings;
   id?: number;
 
   protected get [id]() {
@@ -10702,9 +10708,11 @@ export class MessagesSetChatWallPaper extends Function<types.TypeUpdates> {
   static get [paramDesc](): ParamDesc {
     return [
       ["flags", flags, "#"],
-      ["peer", types._TypeInputPeer, "InputPeer"],
-      ["wallpaper", types._TypeInputWallPaper, "flags.0?InputWallPaper"],
-      ["settings", types._TypeWallPaperSettings, "flags.2?WallPaperSettings"],
+      ["for_both", "true", "flags.3?true"],
+      ["revert", "true", "flags.4?true"],
+      ["peer", types._InputPeer, "InputPeer"],
+      ["wallpaper", types._InputWallPaper, "flags.0?InputWallPaper"],
+      ["settings", types._WallPaperSettings, "flags.2?WallPaperSettings"],
       ["id", "number", "flags.1?int"],
     ];
   }
@@ -10712,15 +10720,19 @@ export class MessagesSetChatWallPaper extends Function<types.TypeUpdates> {
   protected get [params](): Params {
     return [
       ["flags", flags, "#"],
-      [this.peer, types._TypeInputPeer, "InputPeer"],
-      [this.wallpaper ?? null, types._TypeInputWallPaper, "flags.0?InputWallPaper"],
-      [this.settings ?? null, types._TypeWallPaperSettings, "flags.2?WallPaperSettings"],
+      [this.for_both ?? null, "true", "flags.3?true"],
+      [this.revert ?? null, "true", "flags.4?true"],
+      [this.peer, types._InputPeer, "InputPeer"],
+      [this.wallpaper ?? null, types._InputWallPaper, "flags.0?InputWallPaper"],
+      [this.settings ?? null, types._WallPaperSettings, "flags.2?WallPaperSettings"],
       [this.id ?? null, "number", "flags.1?int"],
     ];
   }
 
-  constructor(params: { peer: types.TypeInputPeer; wallpaper?: types.TypeInputWallPaper; settings?: types.TypeWallPaperSettings; id?: number }) {
+  constructor(params: { for_both?: true; revert?: true; peer: types.InputPeer; wallpaper?: types.InputWallPaper; settings?: types.WallPaperSettings; id?: number }) {
     super();
+    this.for_both = params.for_both;
+    this.revert = params.revert;
     this.peer = params.peer;
     this.wallpaper = params.wallpaper;
     this.settings = params.settings;
@@ -10728,7 +10740,42 @@ export class MessagesSetChatWallPaper extends Function<types.TypeUpdates> {
   }
 }
 
-export class UpdatesGetState extends Function<types.TypeUpdatesState> {
+export class messages_searchEmojiStickerSets extends Function<types.messages_FoundStickerSets> {
+  exclude_featured?: true;
+  q: string;
+  hash: bigint;
+
+  protected get [id]() {
+    return 0x92B4494C;
+  }
+
+  static get [paramDesc](): ParamDesc {
+    return [
+      ["flags", flags, "#"],
+      ["exclude_featured", "true", "flags.0?true"],
+      ["q", "string", "string"],
+      ["hash", "bigint", "long"],
+    ];
+  }
+
+  protected get [params](): Params {
+    return [
+      ["flags", flags, "#"],
+      [this.exclude_featured ?? null, "true", "flags.0?true"],
+      [this.q, "string", "string"],
+      [this.hash, "bigint", "long"],
+    ];
+  }
+
+  constructor(params: { exclude_featured?: true; q: string; hash: bigint }) {
+    super();
+    this.exclude_featured = params.exclude_featured;
+    this.q = params.q;
+    this.hash = params.hash;
+  }
+}
+
+export class updates_getState extends Function<types.updates_State> {
   protected get [id]() {
     return 0xEDD4882A;
   }
@@ -10746,13 +10793,13 @@ export class UpdatesGetState extends Function<types.TypeUpdatesState> {
   }
 }
 
-export class UpdatesGetDifference extends Function<types.TypeUpdatesDifference> {
+export class updates_getDifference extends Function<types.updates_Difference> {
   pts: number;
-  ptsLimit?: number;
-  ptsTotalLimit?: number;
+  pts_limit?: number;
+  pts_total_limit?: number;
   date: number;
   qts: number;
-  qtsLimit?: number;
+  qts_limit?: number;
 
   protected get [id]() {
     return 0x19C2F763;
@@ -10762,11 +10809,11 @@ export class UpdatesGetDifference extends Function<types.TypeUpdatesDifference> 
     return [
       ["flags", flags, "#"],
       ["pts", "number", "int"],
-      ["ptsLimit", "number", "flags.1?int"],
-      ["ptsTotalLimit", "number", "flags.0?int"],
+      ["pts_limit", "number", "flags.1?int"],
+      ["pts_total_limit", "number", "flags.0?int"],
       ["date", "number", "int"],
       ["qts", "number", "int"],
-      ["qtsLimit", "number", "flags.2?int"],
+      ["qts_limit", "number", "flags.2?int"],
     ];
   }
 
@@ -10774,29 +10821,29 @@ export class UpdatesGetDifference extends Function<types.TypeUpdatesDifference> 
     return [
       ["flags", flags, "#"],
       [this.pts, "number", "int"],
-      [this.ptsLimit ?? null, "number", "flags.1?int"],
-      [this.ptsTotalLimit ?? null, "number", "flags.0?int"],
+      [this.pts_limit ?? null, "number", "flags.1?int"],
+      [this.pts_total_limit ?? null, "number", "flags.0?int"],
       [this.date, "number", "int"],
       [this.qts, "number", "int"],
-      [this.qtsLimit ?? null, "number", "flags.2?int"],
+      [this.qts_limit ?? null, "number", "flags.2?int"],
     ];
   }
 
-  constructor(params: { pts: number; ptsLimit?: number; ptsTotalLimit?: number; date: number; qts: number; qtsLimit?: number }) {
+  constructor(params: { pts: number; pts_limit?: number; pts_total_limit?: number; date: number; qts: number; qts_limit?: number }) {
     super();
     this.pts = params.pts;
-    this.ptsLimit = params.ptsLimit;
-    this.ptsTotalLimit = params.ptsTotalLimit;
+    this.pts_limit = params.pts_limit;
+    this.pts_total_limit = params.pts_total_limit;
     this.date = params.date;
     this.qts = params.qts;
-    this.qtsLimit = params.qtsLimit;
+    this.qts_limit = params.qts_limit;
   }
 }
 
-export class UpdatesGetChannelDifference extends Function<types.TypeUpdatesChannelDifference> {
+export class updates_getChannelDifference extends Function<types.updates_ChannelDifference> {
   force?: true;
-  channel: types.TypeInputChannel;
-  filter: types.TypeChannelMessagesFilter;
+  channel: types.InputChannel;
+  filter: types.ChannelMessagesFilter;
   pts: number;
   limit: number;
 
@@ -10808,8 +10855,8 @@ export class UpdatesGetChannelDifference extends Function<types.TypeUpdatesChann
     return [
       ["flags", flags, "#"],
       ["force", "true", "flags.0?true"],
-      ["channel", types._TypeInputChannel, "InputChannel"],
-      ["filter", types._TypeChannelMessagesFilter, "ChannelMessagesFilter"],
+      ["channel", types._InputChannel, "InputChannel"],
+      ["filter", types._ChannelMessagesFilter, "ChannelMessagesFilter"],
       ["pts", "number", "int"],
       ["limit", "number", "int"],
     ];
@@ -10819,14 +10866,14 @@ export class UpdatesGetChannelDifference extends Function<types.TypeUpdatesChann
     return [
       ["flags", flags, "#"],
       [this.force ?? null, "true", "flags.0?true"],
-      [this.channel, types._TypeInputChannel, "InputChannel"],
-      [this.filter, types._TypeChannelMessagesFilter, "ChannelMessagesFilter"],
+      [this.channel, types._InputChannel, "InputChannel"],
+      [this.filter, types._ChannelMessagesFilter, "ChannelMessagesFilter"],
       [this.pts, "number", "int"],
       [this.limit, "number", "int"],
     ];
   }
 
-  constructor(params: { force?: true; channel: types.TypeInputChannel; filter: types.TypeChannelMessagesFilter; pts: number; limit: number }) {
+  constructor(params: { force?: true; channel: types.InputChannel; filter: types.ChannelMessagesFilter; pts: number; limit: number }) {
     super();
     this.force = params.force;
     this.channel = params.channel;
@@ -10836,10 +10883,10 @@ export class UpdatesGetChannelDifference extends Function<types.TypeUpdatesChann
   }
 }
 
-export class PhotosUpdateProfilePhoto extends Function<types.TypePhotosPhoto> {
+export class photos_updateProfilePhoto extends Function<types.photos_Photo> {
   fallback?: true;
-  bot?: types.TypeInputUser;
-  id: types.TypeInputPhoto;
+  bot?: types.InputUser;
+  id: types.InputPhoto;
 
   protected get [id]() {
     return 0x09E82039;
@@ -10849,8 +10896,8 @@ export class PhotosUpdateProfilePhoto extends Function<types.TypePhotosPhoto> {
     return [
       ["flags", flags, "#"],
       ["fallback", "true", "flags.0?true"],
-      ["bot", types._TypeInputUser, "flags.1?InputUser"],
-      ["id", types._TypeInputPhoto, "InputPhoto"],
+      ["bot", types._InputUser, "flags.1?InputUser"],
+      ["id", types._InputPhoto, "InputPhoto"],
     ];
   }
 
@@ -10858,12 +10905,12 @@ export class PhotosUpdateProfilePhoto extends Function<types.TypePhotosPhoto> {
     return [
       ["flags", flags, "#"],
       [this.fallback ?? null, "true", "flags.0?true"],
-      [this.bot ?? null, types._TypeInputUser, "flags.1?InputUser"],
-      [this.id, types._TypeInputPhoto, "InputPhoto"],
+      [this.bot ?? null, types._InputUser, "flags.1?InputUser"],
+      [this.id, types._InputPhoto, "InputPhoto"],
     ];
   }
 
-  constructor(params: { fallback?: true; bot?: types.TypeInputUser; id: types.TypeInputPhoto }) {
+  constructor(params: { fallback?: true; bot?: types.InputUser; id: types.InputPhoto }) {
     super();
     this.fallback = params.fallback;
     this.bot = params.bot;
@@ -10871,13 +10918,13 @@ export class PhotosUpdateProfilePhoto extends Function<types.TypePhotosPhoto> {
   }
 }
 
-export class PhotosUploadProfilePhoto extends Function<types.TypePhotosPhoto> {
+export class photos_uploadProfilePhoto extends Function<types.photos_Photo> {
   fallback?: true;
-  bot?: types.TypeInputUser;
-  file?: types.TypeInputFile;
-  video?: types.TypeInputFile;
-  videoStartTs?: number;
-  videoEmojiMarkup?: types.TypeVideoSize;
+  bot?: types.InputUser;
+  file?: types.InputFile;
+  video?: types.InputFile;
+  video_start_ts?: number;
+  video_emoji_markup?: types.VideoSize;
 
   protected get [id]() {
     return 0x0388A3B5;
@@ -10887,11 +10934,11 @@ export class PhotosUploadProfilePhoto extends Function<types.TypePhotosPhoto> {
     return [
       ["flags", flags, "#"],
       ["fallback", "true", "flags.3?true"],
-      ["bot", types._TypeInputUser, "flags.5?InputUser"],
-      ["file", types._TypeInputFile, "flags.0?InputFile"],
-      ["video", types._TypeInputFile, "flags.1?InputFile"],
-      ["videoStartTs", "number", "flags.2?double"],
-      ["videoEmojiMarkup", types._TypeVideoSize, "flags.4?VideoSize"],
+      ["bot", types._InputUser, "flags.5?InputUser"],
+      ["file", types._InputFile, "flags.0?InputFile"],
+      ["video", types._InputFile, "flags.1?InputFile"],
+      ["video_start_ts", "number", "flags.2?double"],
+      ["video_emoji_markup", types._VideoSize, "flags.4?VideoSize"],
     ];
   }
 
@@ -10899,27 +10946,27 @@ export class PhotosUploadProfilePhoto extends Function<types.TypePhotosPhoto> {
     return [
       ["flags", flags, "#"],
       [this.fallback ?? null, "true", "flags.3?true"],
-      [this.bot ?? null, types._TypeInputUser, "flags.5?InputUser"],
-      [this.file ?? null, types._TypeInputFile, "flags.0?InputFile"],
-      [this.video ?? null, types._TypeInputFile, "flags.1?InputFile"],
-      [this.videoStartTs ?? null, "number", "flags.2?double"],
-      [this.videoEmojiMarkup ?? null, types._TypeVideoSize, "flags.4?VideoSize"],
+      [this.bot ?? null, types._InputUser, "flags.5?InputUser"],
+      [this.file ?? null, types._InputFile, "flags.0?InputFile"],
+      [this.video ?? null, types._InputFile, "flags.1?InputFile"],
+      [this.video_start_ts ?? null, "number", "flags.2?double"],
+      [this.video_emoji_markup ?? null, types._VideoSize, "flags.4?VideoSize"],
     ];
   }
 
-  constructor(params?: { fallback?: true; bot?: types.TypeInputUser; file?: types.TypeInputFile; video?: types.TypeInputFile; videoStartTs?: number; videoEmojiMarkup?: types.TypeVideoSize }) {
+  constructor(params?: { fallback?: true; bot?: types.InputUser; file?: types.InputFile; video?: types.InputFile; video_start_ts?: number; video_emoji_markup?: types.VideoSize }) {
     super();
     this.fallback = params?.fallback;
     this.bot = params?.bot;
     this.file = params?.file;
     this.video = params?.video;
-    this.videoStartTs = params?.videoStartTs;
-    this.videoEmojiMarkup = params?.videoEmojiMarkup;
+    this.video_start_ts = params?.video_start_ts;
+    this.video_emoji_markup = params?.video_emoji_markup;
   }
 }
 
-export class PhotosDeletePhotos extends Function<bigint[]> {
-  id: Array<types.TypeInputPhoto>;
+export class photos_deletePhotos extends Function<bigint[]> {
+  id: Array<types.InputPhoto>;
 
   protected get [id]() {
     return 0x87CF7F2F;
@@ -10927,26 +10974,26 @@ export class PhotosDeletePhotos extends Function<bigint[]> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["id", [types._TypeInputPhoto], "Vector<InputPhoto>"],
+      ["id", [types._InputPhoto], "Vector<InputPhoto>"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.id, [types._TypeInputPhoto], "Vector<InputPhoto>"],
+      [this.id, [types._InputPhoto], "Vector<InputPhoto>"],
     ];
   }
 
-  constructor(params: { id: Array<types.TypeInputPhoto> }) {
+  constructor(params: { id: Array<types.InputPhoto> }) {
     super();
     this.id = params.id;
   }
 }
 
-export class PhotosGetUserPhotos extends Function<types.TypePhotosPhotos> {
-  userId: types.TypeInputUser;
+export class photos_getUserPhotos extends Function<types.photos_Photos> {
+  user_id: types.InputUser;
   offset: number;
-  maxId: bigint;
+  max_id: bigint;
   limit: number;
 
   protected get [id]() {
@@ -10955,39 +11002,39 @@ export class PhotosGetUserPhotos extends Function<types.TypePhotosPhotos> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["userId", types._TypeInputUser, "InputUser"],
+      ["user_id", types._InputUser, "InputUser"],
       ["offset", "number", "int"],
-      ["maxId", "bigint", "long"],
+      ["max_id", "bigint", "long"],
       ["limit", "number", "int"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.userId, types._TypeInputUser, "InputUser"],
+      [this.user_id, types._InputUser, "InputUser"],
       [this.offset, "number", "int"],
-      [this.maxId, "bigint", "long"],
+      [this.max_id, "bigint", "long"],
       [this.limit, "number", "int"],
     ];
   }
 
-  constructor(params: { userId: types.TypeInputUser; offset: number; maxId: bigint; limit: number }) {
+  constructor(params: { user_id: types.InputUser; offset: number; max_id: bigint; limit: number }) {
     super();
-    this.userId = params.userId;
+    this.user_id = params.user_id;
     this.offset = params.offset;
-    this.maxId = params.maxId;
+    this.max_id = params.max_id;
     this.limit = params.limit;
   }
 }
 
-export class PhotosUploadContactProfilePhoto extends Function<types.TypePhotosPhoto> {
+export class photos_uploadContactProfilePhoto extends Function<types.photos_Photo> {
   suggest?: true;
   save?: true;
-  userId: types.TypeInputUser;
-  file?: types.TypeInputFile;
-  video?: types.TypeInputFile;
-  videoStartTs?: number;
-  videoEmojiMarkup?: types.TypeVideoSize;
+  user_id: types.InputUser;
+  file?: types.InputFile;
+  video?: types.InputFile;
+  video_start_ts?: number;
+  video_emoji_markup?: types.VideoSize;
 
   protected get [id]() {
     return 0xE14C4A71;
@@ -10998,11 +11045,11 @@ export class PhotosUploadContactProfilePhoto extends Function<types.TypePhotosPh
       ["flags", flags, "#"],
       ["suggest", "true", "flags.3?true"],
       ["save", "true", "flags.4?true"],
-      ["userId", types._TypeInputUser, "InputUser"],
-      ["file", types._TypeInputFile, "flags.0?InputFile"],
-      ["video", types._TypeInputFile, "flags.1?InputFile"],
-      ["videoStartTs", "number", "flags.2?double"],
-      ["videoEmojiMarkup", types._TypeVideoSize, "flags.5?VideoSize"],
+      ["user_id", types._InputUser, "InputUser"],
+      ["file", types._InputFile, "flags.0?InputFile"],
+      ["video", types._InputFile, "flags.1?InputFile"],
+      ["video_start_ts", "number", "flags.2?double"],
+      ["video_emoji_markup", types._VideoSize, "flags.5?VideoSize"],
     ];
   }
 
@@ -11011,29 +11058,29 @@ export class PhotosUploadContactProfilePhoto extends Function<types.TypePhotosPh
       ["flags", flags, "#"],
       [this.suggest ?? null, "true", "flags.3?true"],
       [this.save ?? null, "true", "flags.4?true"],
-      [this.userId, types._TypeInputUser, "InputUser"],
-      [this.file ?? null, types._TypeInputFile, "flags.0?InputFile"],
-      [this.video ?? null, types._TypeInputFile, "flags.1?InputFile"],
-      [this.videoStartTs ?? null, "number", "flags.2?double"],
-      [this.videoEmojiMarkup ?? null, types._TypeVideoSize, "flags.5?VideoSize"],
+      [this.user_id, types._InputUser, "InputUser"],
+      [this.file ?? null, types._InputFile, "flags.0?InputFile"],
+      [this.video ?? null, types._InputFile, "flags.1?InputFile"],
+      [this.video_start_ts ?? null, "number", "flags.2?double"],
+      [this.video_emoji_markup ?? null, types._VideoSize, "flags.5?VideoSize"],
     ];
   }
 
-  constructor(params: { suggest?: true; save?: true; userId: types.TypeInputUser; file?: types.TypeInputFile; video?: types.TypeInputFile; videoStartTs?: number; videoEmojiMarkup?: types.TypeVideoSize }) {
+  constructor(params: { suggest?: true; save?: true; user_id: types.InputUser; file?: types.InputFile; video?: types.InputFile; video_start_ts?: number; video_emoji_markup?: types.VideoSize }) {
     super();
     this.suggest = params.suggest;
     this.save = params.save;
-    this.userId = params.userId;
+    this.user_id = params.user_id;
     this.file = params.file;
     this.video = params.video;
-    this.videoStartTs = params.videoStartTs;
-    this.videoEmojiMarkup = params.videoEmojiMarkup;
+    this.video_start_ts = params.video_start_ts;
+    this.video_emoji_markup = params.video_emoji_markup;
   }
 }
 
-export class UploadSaveFilePart extends Function<boolean> {
-  fileId: bigint;
-  filePart: number;
+export class upload_saveFilePart extends Function<boolean> {
+  file_id: bigint;
+  file_part: number;
   bytes: Uint8Array;
 
   protected get [id]() {
@@ -11042,32 +11089,32 @@ export class UploadSaveFilePart extends Function<boolean> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["fileId", "bigint", "long"],
-      ["filePart", "number", "int"],
+      ["file_id", "bigint", "long"],
+      ["file_part", "number", "int"],
       ["bytes", Uint8Array, "bytes"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.fileId, "bigint", "long"],
-      [this.filePart, "number", "int"],
+      [this.file_id, "bigint", "long"],
+      [this.file_part, "number", "int"],
       [this.bytes, Uint8Array, "bytes"],
     ];
   }
 
-  constructor(params: { fileId: bigint; filePart: number; bytes: Uint8Array }) {
+  constructor(params: { file_id: bigint; file_part: number; bytes: Uint8Array }) {
     super();
-    this.fileId = params.fileId;
-    this.filePart = params.filePart;
+    this.file_id = params.file_id;
+    this.file_part = params.file_part;
     this.bytes = params.bytes;
   }
 }
 
-export class UploadGetFile extends Function<types.TypeUploadFile> {
+export class upload_getFile extends Function<types.upload_File> {
   precise?: true;
-  cdnSupported?: true;
-  location: types.TypeInputFileLocation;
+  cdn_supported?: true;
+  location: types.InputFileLocation;
   offset: bigint;
   limit: number;
 
@@ -11079,8 +11126,8 @@ export class UploadGetFile extends Function<types.TypeUploadFile> {
     return [
       ["flags", flags, "#"],
       ["precise", "true", "flags.0?true"],
-      ["cdnSupported", "true", "flags.1?true"],
-      ["location", types._TypeInputFileLocation, "InputFileLocation"],
+      ["cdn_supported", "true", "flags.1?true"],
+      ["location", types._InputFileLocation, "InputFileLocation"],
       ["offset", "bigint", "long"],
       ["limit", "number", "int"],
     ];
@@ -11090,27 +11137,27 @@ export class UploadGetFile extends Function<types.TypeUploadFile> {
     return [
       ["flags", flags, "#"],
       [this.precise ?? null, "true", "flags.0?true"],
-      [this.cdnSupported ?? null, "true", "flags.1?true"],
-      [this.location, types._TypeInputFileLocation, "InputFileLocation"],
+      [this.cdn_supported ?? null, "true", "flags.1?true"],
+      [this.location, types._InputFileLocation, "InputFileLocation"],
       [this.offset, "bigint", "long"],
       [this.limit, "number", "int"],
     ];
   }
 
-  constructor(params: { precise?: true; cdnSupported?: true; location: types.TypeInputFileLocation; offset: bigint; limit: number }) {
+  constructor(params: { precise?: true; cdn_supported?: true; location: types.InputFileLocation; offset: bigint; limit: number }) {
     super();
     this.precise = params.precise;
-    this.cdnSupported = params.cdnSupported;
+    this.cdn_supported = params.cdn_supported;
     this.location = params.location;
     this.offset = params.offset;
     this.limit = params.limit;
   }
 }
 
-export class UploadSaveBigFilePart extends Function<boolean> {
-  fileId: bigint;
-  filePart: number;
-  fileTotalParts: number;
+export class upload_saveBigFilePart extends Function<boolean> {
+  file_id: bigint;
+  file_part: number;
+  file_total_parts: number;
   bytes: Uint8Array;
 
   protected get [id]() {
@@ -11119,33 +11166,33 @@ export class UploadSaveBigFilePart extends Function<boolean> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["fileId", "bigint", "long"],
-      ["filePart", "number", "int"],
-      ["fileTotalParts", "number", "int"],
+      ["file_id", "bigint", "long"],
+      ["file_part", "number", "int"],
+      ["file_total_parts", "number", "int"],
       ["bytes", Uint8Array, "bytes"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.fileId, "bigint", "long"],
-      [this.filePart, "number", "int"],
-      [this.fileTotalParts, "number", "int"],
+      [this.file_id, "bigint", "long"],
+      [this.file_part, "number", "int"],
+      [this.file_total_parts, "number", "int"],
       [this.bytes, Uint8Array, "bytes"],
     ];
   }
 
-  constructor(params: { fileId: bigint; filePart: number; fileTotalParts: number; bytes: Uint8Array }) {
+  constructor(params: { file_id: bigint; file_part: number; file_total_parts: number; bytes: Uint8Array }) {
     super();
-    this.fileId = params.fileId;
-    this.filePart = params.filePart;
-    this.fileTotalParts = params.fileTotalParts;
+    this.file_id = params.file_id;
+    this.file_part = params.file_part;
+    this.file_total_parts = params.file_total_parts;
     this.bytes = params.bytes;
   }
 }
 
-export class UploadGetWebFile extends Function<types.TypeUploadWebFile> {
-  location: types.TypeInputWebFileLocation;
+export class upload_getWebFile extends Function<types.upload_WebFile> {
+  location: types.InputWebFileLocation;
   offset: number;
   limit: number;
 
@@ -11155,7 +11202,7 @@ export class UploadGetWebFile extends Function<types.TypeUploadWebFile> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["location", types._TypeInputWebFileLocation, "InputWebFileLocation"],
+      ["location", types._InputWebFileLocation, "InputWebFileLocation"],
       ["offset", "number", "int"],
       ["limit", "number", "int"],
     ];
@@ -11163,13 +11210,13 @@ export class UploadGetWebFile extends Function<types.TypeUploadWebFile> {
 
   protected get [params](): Params {
     return [
-      [this.location, types._TypeInputWebFileLocation, "InputWebFileLocation"],
+      [this.location, types._InputWebFileLocation, "InputWebFileLocation"],
       [this.offset, "number", "int"],
       [this.limit, "number", "int"],
     ];
   }
 
-  constructor(params: { location: types.TypeInputWebFileLocation; offset: number; limit: number }) {
+  constructor(params: { location: types.InputWebFileLocation; offset: number; limit: number }) {
     super();
     this.location = params.location;
     this.offset = params.offset;
@@ -11177,8 +11224,8 @@ export class UploadGetWebFile extends Function<types.TypeUploadWebFile> {
   }
 }
 
-export class UploadGetCdnFile extends Function<types.TypeUploadCdnFile> {
-  fileToken: Uint8Array;
+export class upload_getCdnFile extends Function<types.upload_CdnFile> {
+  file_token: Uint8Array;
   offset: bigint;
   limit: number;
 
@@ -11188,7 +11235,7 @@ export class UploadGetCdnFile extends Function<types.TypeUploadCdnFile> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["fileToken", Uint8Array, "bytes"],
+      ["file_token", Uint8Array, "bytes"],
       ["offset", "bigint", "long"],
       ["limit", "number", "int"],
     ];
@@ -11196,23 +11243,23 @@ export class UploadGetCdnFile extends Function<types.TypeUploadCdnFile> {
 
   protected get [params](): Params {
     return [
-      [this.fileToken, Uint8Array, "bytes"],
+      [this.file_token, Uint8Array, "bytes"],
       [this.offset, "bigint", "long"],
       [this.limit, "number", "int"],
     ];
   }
 
-  constructor(params: { fileToken: Uint8Array; offset: bigint; limit: number }) {
+  constructor(params: { file_token: Uint8Array; offset: bigint; limit: number }) {
     super();
-    this.fileToken = params.fileToken;
+    this.file_token = params.file_token;
     this.offset = params.offset;
     this.limit = params.limit;
   }
 }
 
-export class UploadReuploadCdnFile extends Function<types.TypeFileHash[]> {
-  fileToken: Uint8Array;
-  requestToken: Uint8Array;
+export class upload_reuploadCdnFile extends Function<types.FileHash[]> {
+  file_token: Uint8Array;
+  request_token: Uint8Array;
 
   protected get [id]() {
     return 0x9B2754A8;
@@ -11220,27 +11267,27 @@ export class UploadReuploadCdnFile extends Function<types.TypeFileHash[]> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["fileToken", Uint8Array, "bytes"],
-      ["requestToken", Uint8Array, "bytes"],
+      ["file_token", Uint8Array, "bytes"],
+      ["request_token", Uint8Array, "bytes"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.fileToken, Uint8Array, "bytes"],
-      [this.requestToken, Uint8Array, "bytes"],
+      [this.file_token, Uint8Array, "bytes"],
+      [this.request_token, Uint8Array, "bytes"],
     ];
   }
 
-  constructor(params: { fileToken: Uint8Array; requestToken: Uint8Array }) {
+  constructor(params: { file_token: Uint8Array; request_token: Uint8Array }) {
     super();
-    this.fileToken = params.fileToken;
-    this.requestToken = params.requestToken;
+    this.file_token = params.file_token;
+    this.request_token = params.request_token;
   }
 }
 
-export class UploadGetCdnFileHashes extends Function<types.TypeFileHash[]> {
-  fileToken: Uint8Array;
+export class upload_getCdnFileHashes extends Function<types.FileHash[]> {
+  file_token: Uint8Array;
   offset: bigint;
 
   protected get [id]() {
@@ -11249,27 +11296,27 @@ export class UploadGetCdnFileHashes extends Function<types.TypeFileHash[]> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["fileToken", Uint8Array, "bytes"],
+      ["file_token", Uint8Array, "bytes"],
       ["offset", "bigint", "long"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.fileToken, Uint8Array, "bytes"],
+      [this.file_token, Uint8Array, "bytes"],
       [this.offset, "bigint", "long"],
     ];
   }
 
-  constructor(params: { fileToken: Uint8Array; offset: bigint }) {
+  constructor(params: { file_token: Uint8Array; offset: bigint }) {
     super();
-    this.fileToken = params.fileToken;
+    this.file_token = params.file_token;
     this.offset = params.offset;
   }
 }
 
-export class UploadGetFileHashes extends Function<types.TypeFileHash[]> {
-  location: types.TypeInputFileLocation;
+export class upload_getFileHashes extends Function<types.FileHash[]> {
+  location: types.InputFileLocation;
   offset: bigint;
 
   protected get [id]() {
@@ -11278,26 +11325,26 @@ export class UploadGetFileHashes extends Function<types.TypeFileHash[]> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["location", types._TypeInputFileLocation, "InputFileLocation"],
+      ["location", types._InputFileLocation, "InputFileLocation"],
       ["offset", "bigint", "long"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.location, types._TypeInputFileLocation, "InputFileLocation"],
+      [this.location, types._InputFileLocation, "InputFileLocation"],
       [this.offset, "bigint", "long"],
     ];
   }
 
-  constructor(params: { location: types.TypeInputFileLocation; offset: bigint }) {
+  constructor(params: { location: types.InputFileLocation; offset: bigint }) {
     super();
     this.location = params.location;
     this.offset = params.offset;
   }
 }
 
-export class HelpGetConfig extends Function<types.TypeConfig> {
+export class help_getConfig extends Function<types.Config> {
   protected get [id]() {
     return 0xC4F9186B;
   }
@@ -11315,7 +11362,7 @@ export class HelpGetConfig extends Function<types.TypeConfig> {
   }
 }
 
-export class HelpGetNearestDc extends Function<types.TypeNearestDc> {
+export class help_getNearestDc extends Function<types.NearestDc> {
   protected get [id]() {
     return 0x1FB33026;
   }
@@ -11333,7 +11380,7 @@ export class HelpGetNearestDc extends Function<types.TypeNearestDc> {
   }
 }
 
-export class HelpGetAppUpdate extends Function<types.TypeHelpAppUpdate> {
+export class help_getAppUpdate extends Function<types.help_AppUpdate> {
   source: string;
 
   protected get [id]() {
@@ -11358,7 +11405,7 @@ export class HelpGetAppUpdate extends Function<types.TypeHelpAppUpdate> {
   }
 }
 
-export class HelpGetInviteText extends Function<types.TypeHelpInviteText> {
+export class help_getInviteText extends Function<types.help_InviteText> {
   protected get [id]() {
     return 0x4D392343;
   }
@@ -11376,7 +11423,7 @@ export class HelpGetInviteText extends Function<types.TypeHelpInviteText> {
   }
 }
 
-export class HelpGetSupport extends Function<types.TypeHelpSupport> {
+export class help_getSupport extends Function<types.help_Support> {
   protected get [id]() {
     return 0x9CDF08CD;
   }
@@ -11394,8 +11441,8 @@ export class HelpGetSupport extends Function<types.TypeHelpSupport> {
   }
 }
 
-export class HelpGetAppChangelog extends Function<types.TypeUpdates> {
-  prevAppVersion: string;
+export class help_getAppChangelog extends Function<types.Updates> {
+  prev_app_version: string;
 
   protected get [id]() {
     return 0x9010EF6F;
@@ -11403,24 +11450,24 @@ export class HelpGetAppChangelog extends Function<types.TypeUpdates> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["prevAppVersion", "string", "string"],
+      ["prev_app_version", "string", "string"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.prevAppVersion, "string", "string"],
+      [this.prev_app_version, "string", "string"],
     ];
   }
 
-  constructor(params: { prevAppVersion: string }) {
+  constructor(params: { prev_app_version: string }) {
     super();
-    this.prevAppVersion = params.prevAppVersion;
+    this.prev_app_version = params.prev_app_version;
   }
 }
 
-export class HelpSetBotUpdatesStatus extends Function<boolean> {
-  pendingUpdatesCount: number;
+export class help_setBotUpdatesStatus extends Function<boolean> {
+  pending_updates_count: number;
   message: string;
 
   protected get [id]() {
@@ -11429,26 +11476,26 @@ export class HelpSetBotUpdatesStatus extends Function<boolean> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["pendingUpdatesCount", "number", "int"],
+      ["pending_updates_count", "number", "int"],
       ["message", "string", "string"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.pendingUpdatesCount, "number", "int"],
+      [this.pending_updates_count, "number", "int"],
       [this.message, "string", "string"],
     ];
   }
 
-  constructor(params: { pendingUpdatesCount: number; message: string }) {
+  constructor(params: { pending_updates_count: number; message: string }) {
     super();
-    this.pendingUpdatesCount = params.pendingUpdatesCount;
+    this.pending_updates_count = params.pending_updates_count;
     this.message = params.message;
   }
 }
 
-export class HelpGetCdnConfig extends Function<types.TypeCdnConfig> {
+export class help_getCdnConfig extends Function<types.CdnConfig> {
   protected get [id]() {
     return 0x52029342;
   }
@@ -11466,7 +11513,7 @@ export class HelpGetCdnConfig extends Function<types.TypeCdnConfig> {
   }
 }
 
-export class HelpGetRecentMeURLs extends Function<types.TypeHelpRecentMeURLs> {
+export class help_getRecentMeUrls extends Function<types.help_RecentMeUrls> {
   referer: string;
 
   protected get [id]() {
@@ -11491,7 +11538,7 @@ export class HelpGetRecentMeURLs extends Function<types.TypeHelpRecentMeURLs> {
   }
 }
 
-export class HelpGetTermsOfServiceUpdate extends Function<types.TypeHelpTermsOfServiceUpdate> {
+export class help_getTermsOfServiceUpdate extends Function<types.help_TermsOfServiceUpdate> {
   protected get [id]() {
     return 0x2CA51FD1;
   }
@@ -11509,8 +11556,8 @@ export class HelpGetTermsOfServiceUpdate extends Function<types.TypeHelpTermsOfS
   }
 }
 
-export class HelpAcceptTermsOfService extends Function<boolean> {
-  id: types.TypeDataJSON;
+export class help_acceptTermsOfService extends Function<boolean> {
+  id: types.DataJSON;
 
   protected get [id]() {
     return 0xEE72F79A;
@@ -11518,23 +11565,23 @@ export class HelpAcceptTermsOfService extends Function<boolean> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["id", types._TypeDataJSON, "DataJSON"],
+      ["id", types._DataJSON, "DataJSON"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.id, types._TypeDataJSON, "DataJSON"],
+      [this.id, types._DataJSON, "DataJSON"],
     ];
   }
 
-  constructor(params: { id: types.TypeDataJSON }) {
+  constructor(params: { id: types.DataJSON }) {
     super();
     this.id = params.id;
   }
 }
 
-export class HelpGetDeepLinkInfo extends Function<types.TypeHelpDeepLinkInfo> {
+export class help_getDeepLinkInfo extends Function<types.help_DeepLinkInfo> {
   path: string;
 
   protected get [id]() {
@@ -11559,7 +11606,7 @@ export class HelpGetDeepLinkInfo extends Function<types.TypeHelpDeepLinkInfo> {
   }
 }
 
-export class HelpGetAppConfig extends Function<types.TypeHelpAppConfig> {
+export class help_getAppConfig extends Function<types.help_AppConfig> {
   hash: number;
 
   protected get [id]() {
@@ -11584,8 +11631,8 @@ export class HelpGetAppConfig extends Function<types.TypeHelpAppConfig> {
   }
 }
 
-export class HelpSaveAppLog extends Function<boolean> {
-  events: Array<types.TypeInputAppEvent>;
+export class help_saveAppLog extends Function<boolean> {
+  events: Array<types.InputAppEvent>;
 
   protected get [id]() {
     return 0x6F02F748;
@@ -11593,23 +11640,23 @@ export class HelpSaveAppLog extends Function<boolean> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["events", [types._TypeInputAppEvent], "Vector<InputAppEvent>"],
+      ["events", [types._InputAppEvent], "Vector<InputAppEvent>"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.events, [types._TypeInputAppEvent], "Vector<InputAppEvent>"],
+      [this.events, [types._InputAppEvent], "Vector<InputAppEvent>"],
     ];
   }
 
-  constructor(params: { events: Array<types.TypeInputAppEvent> }) {
+  constructor(params: { events: Array<types.InputAppEvent> }) {
     super();
     this.events = params.events;
   }
 }
 
-export class HelpGetPassportConfig extends Function<types.TypeHelpPassportConfig> {
+export class help_getPassportConfig extends Function<types.help_PassportConfig> {
   hash: number;
 
   protected get [id]() {
@@ -11634,7 +11681,7 @@ export class HelpGetPassportConfig extends Function<types.TypeHelpPassportConfig
   }
 }
 
-export class HelpGetSupportName extends Function<types.TypeHelpSupportName> {
+export class help_getSupportName extends Function<types.help_SupportName> {
   protected get [id]() {
     return 0xD360E72C;
   }
@@ -11652,8 +11699,8 @@ export class HelpGetSupportName extends Function<types.TypeHelpSupportName> {
   }
 }
 
-export class HelpGetUserInfo extends Function<types.TypeHelpUserInfo> {
-  userId: types.TypeInputUser;
+export class help_getUserInfo extends Function<types.help_UserInfo> {
+  user_id: types.InputUser;
 
   protected get [id]() {
     return 0x038A08D3;
@@ -11661,26 +11708,26 @@ export class HelpGetUserInfo extends Function<types.TypeHelpUserInfo> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["userId", types._TypeInputUser, "InputUser"],
+      ["user_id", types._InputUser, "InputUser"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.userId, types._TypeInputUser, "InputUser"],
+      [this.user_id, types._InputUser, "InputUser"],
     ];
   }
 
-  constructor(params: { userId: types.TypeInputUser }) {
+  constructor(params: { user_id: types.InputUser }) {
     super();
-    this.userId = params.userId;
+    this.user_id = params.user_id;
   }
 }
 
-export class HelpEditUserInfo extends Function<types.TypeHelpUserInfo> {
-  userId: types.TypeInputUser;
+export class help_editUserInfo extends Function<types.help_UserInfo> {
+  user_id: types.InputUser;
   message: string;
-  entities: Array<types.TypeMessageEntity>;
+  entities: Array<types.MessageEntity>;
 
   protected get [id]() {
     return 0x66B91B70;
@@ -11688,29 +11735,29 @@ export class HelpEditUserInfo extends Function<types.TypeHelpUserInfo> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["userId", types._TypeInputUser, "InputUser"],
+      ["user_id", types._InputUser, "InputUser"],
       ["message", "string", "string"],
-      ["entities", [types._TypeMessageEntity], "Vector<MessageEntity>"],
+      ["entities", [types._MessageEntity], "Vector<MessageEntity>"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.userId, types._TypeInputUser, "InputUser"],
+      [this.user_id, types._InputUser, "InputUser"],
       [this.message, "string", "string"],
-      [this.entities, [types._TypeMessageEntity], "Vector<MessageEntity>"],
+      [this.entities, [types._MessageEntity], "Vector<MessageEntity>"],
     ];
   }
 
-  constructor(params: { userId: types.TypeInputUser; message: string; entities: Array<types.TypeMessageEntity> }) {
+  constructor(params: { user_id: types.InputUser; message: string; entities: Array<types.MessageEntity> }) {
     super();
-    this.userId = params.userId;
+    this.user_id = params.user_id;
     this.message = params.message;
     this.entities = params.entities;
   }
 }
 
-export class HelpGetPromoData extends Function<types.TypeHelpPromoData> {
+export class help_getPromoData extends Function<types.help_PromoData> {
   protected get [id]() {
     return 0xC0977421;
   }
@@ -11728,8 +11775,8 @@ export class HelpGetPromoData extends Function<types.TypeHelpPromoData> {
   }
 }
 
-export class HelpHidePromoData extends Function<boolean> {
-  peer: types.TypeInputPeer;
+export class help_hidePromoData extends Function<boolean> {
+  peer: types.InputPeer;
 
   protected get [id]() {
     return 0x1E251C95;
@@ -11737,24 +11784,24 @@ export class HelpHidePromoData extends Function<boolean> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["peer", types._TypeInputPeer, "InputPeer"],
+      ["peer", types._InputPeer, "InputPeer"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.peer, types._TypeInputPeer, "InputPeer"],
+      [this.peer, types._InputPeer, "InputPeer"],
     ];
   }
 
-  constructor(params: { peer: types.TypeInputPeer }) {
+  constructor(params: { peer: types.InputPeer }) {
     super();
     this.peer = params.peer;
   }
 }
 
-export class HelpDismissSuggestion extends Function<boolean> {
-  peer: types.TypeInputPeer;
+export class help_dismissSuggestion extends Function<boolean> {
+  peer: types.InputPeer;
   suggestion: string;
 
   protected get [id]() {
@@ -11763,27 +11810,27 @@ export class HelpDismissSuggestion extends Function<boolean> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["peer", types._TypeInputPeer, "InputPeer"],
+      ["peer", types._InputPeer, "InputPeer"],
       ["suggestion", "string", "string"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.peer, types._TypeInputPeer, "InputPeer"],
+      [this.peer, types._InputPeer, "InputPeer"],
       [this.suggestion, "string", "string"],
     ];
   }
 
-  constructor(params: { peer: types.TypeInputPeer; suggestion: string }) {
+  constructor(params: { peer: types.InputPeer; suggestion: string }) {
     super();
     this.peer = params.peer;
     this.suggestion = params.suggestion;
   }
 }
 
-export class HelpGetCountriesList extends Function<types.TypeHelpCountriesList> {
-  langCode: string;
+export class help_getCountriesList extends Function<types.help_CountriesList> {
+  lang_code: string;
   hash: number;
 
   protected get [id]() {
@@ -11792,26 +11839,26 @@ export class HelpGetCountriesList extends Function<types.TypeHelpCountriesList> 
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["langCode", "string", "string"],
+      ["lang_code", "string", "string"],
       ["hash", "number", "int"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.langCode, "string", "string"],
+      [this.lang_code, "string", "string"],
       [this.hash, "number", "int"],
     ];
   }
 
-  constructor(params: { langCode: string; hash: number }) {
+  constructor(params: { lang_code: string; hash: number }) {
     super();
-    this.langCode = params.langCode;
+    this.lang_code = params.lang_code;
     this.hash = params.hash;
   }
 }
 
-export class HelpGetPremiumPromo extends Function<types.TypeHelpPremiumPromo> {
+export class help_getPremiumPromo extends Function<types.help_PremiumPromo> {
   protected get [id]() {
     return 0xB81B93D4;
   }
@@ -11829,9 +11876,59 @@ export class HelpGetPremiumPromo extends Function<types.TypeHelpPremiumPromo> {
   }
 }
 
-export class ChannelsReadHistory extends Function<boolean> {
-  channel: types.TypeInputChannel;
-  maxId: number;
+export class help_getPeerColors extends Function<types.help_PeerColors> {
+  hash: number;
+
+  protected get [id]() {
+    return 0xDA80F42F;
+  }
+
+  static get [paramDesc](): ParamDesc {
+    return [
+      ["hash", "number", "int"],
+    ];
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.hash, "number", "int"],
+    ];
+  }
+
+  constructor(params: { hash: number }) {
+    super();
+    this.hash = params.hash;
+  }
+}
+
+export class help_getPeerProfileColors extends Function<types.help_PeerColors> {
+  hash: number;
+
+  protected get [id]() {
+    return 0xABCFA9FD;
+  }
+
+  static get [paramDesc](): ParamDesc {
+    return [
+      ["hash", "number", "int"],
+    ];
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.hash, "number", "int"],
+    ];
+  }
+
+  constructor(params: { hash: number }) {
+    super();
+    this.hash = params.hash;
+  }
+}
+
+export class channels_readHistory extends Function<boolean> {
+  channel: types.InputChannel;
+  max_id: number;
 
   protected get [id]() {
     return 0xCC104937;
@@ -11839,27 +11936,27 @@ export class ChannelsReadHistory extends Function<boolean> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["channel", types._TypeInputChannel, "InputChannel"],
-      ["maxId", "number", "int"],
+      ["channel", types._InputChannel, "InputChannel"],
+      ["max_id", "number", "int"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.channel, types._TypeInputChannel, "InputChannel"],
-      [this.maxId, "number", "int"],
+      [this.channel, types._InputChannel, "InputChannel"],
+      [this.max_id, "number", "int"],
     ];
   }
 
-  constructor(params: { channel: types.TypeInputChannel; maxId: number }) {
+  constructor(params: { channel: types.InputChannel; max_id: number }) {
     super();
     this.channel = params.channel;
-    this.maxId = params.maxId;
+    this.max_id = params.max_id;
   }
 }
 
-export class ChannelsDeleteMessages extends Function<types.TypeMessagesAffectedMessages> {
-  channel: types.TypeInputChannel;
+export class channels_deleteMessages extends Function<types.messages_AffectedMessages> {
+  channel: types.InputChannel;
   id: Array<number>;
 
   protected get [id]() {
@@ -11868,28 +11965,28 @@ export class ChannelsDeleteMessages extends Function<types.TypeMessagesAffectedM
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["channel", types._TypeInputChannel, "InputChannel"],
+      ["channel", types._InputChannel, "InputChannel"],
       ["id", ["number"], "Vector<int>"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.channel, types._TypeInputChannel, "InputChannel"],
+      [this.channel, types._InputChannel, "InputChannel"],
       [this.id, ["number"], "Vector<int>"],
     ];
   }
 
-  constructor(params: { channel: types.TypeInputChannel; id: Array<number> }) {
+  constructor(params: { channel: types.InputChannel; id: Array<number> }) {
     super();
     this.channel = params.channel;
     this.id = params.id;
   }
 }
 
-export class ChannelsReportSpam extends Function<boolean> {
-  channel: types.TypeInputChannel;
-  participant: types.TypeInputPeer;
+export class channels_reportSpam extends Function<boolean> {
+  channel: types.InputChannel;
+  participant: types.InputPeer;
   id: Array<number>;
 
   protected get [id]() {
@@ -11898,21 +11995,21 @@ export class ChannelsReportSpam extends Function<boolean> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["channel", types._TypeInputChannel, "InputChannel"],
-      ["participant", types._TypeInputPeer, "InputPeer"],
+      ["channel", types._InputChannel, "InputChannel"],
+      ["participant", types._InputPeer, "InputPeer"],
       ["id", ["number"], "Vector<int>"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.channel, types._TypeInputChannel, "InputChannel"],
-      [this.participant, types._TypeInputPeer, "InputPeer"],
+      [this.channel, types._InputChannel, "InputChannel"],
+      [this.participant, types._InputPeer, "InputPeer"],
       [this.id, ["number"], "Vector<int>"],
     ];
   }
 
-  constructor(params: { channel: types.TypeInputChannel; participant: types.TypeInputPeer; id: Array<number> }) {
+  constructor(params: { channel: types.InputChannel; participant: types.InputPeer; id: Array<number> }) {
     super();
     this.channel = params.channel;
     this.participant = params.participant;
@@ -11920,9 +12017,9 @@ export class ChannelsReportSpam extends Function<boolean> {
   }
 }
 
-export class ChannelsGetMessages extends Function<types.TypeMessagesMessages> {
-  channel: types.TypeInputChannel;
-  id: Array<types.TypeInputMessage>;
+export class channels_getMessages extends Function<types.messages_Messages> {
+  channel: types.InputChannel;
+  id: Array<types.InputMessage>;
 
   protected get [id]() {
     return 0xAD8C9A23;
@@ -11930,28 +12027,28 @@ export class ChannelsGetMessages extends Function<types.TypeMessagesMessages> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["channel", types._TypeInputChannel, "InputChannel"],
-      ["id", [types._TypeInputMessage], "Vector<InputMessage>"],
+      ["channel", types._InputChannel, "InputChannel"],
+      ["id", [types._InputMessage], "Vector<InputMessage>"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.channel, types._TypeInputChannel, "InputChannel"],
-      [this.id, [types._TypeInputMessage], "Vector<InputMessage>"],
+      [this.channel, types._InputChannel, "InputChannel"],
+      [this.id, [types._InputMessage], "Vector<InputMessage>"],
     ];
   }
 
-  constructor(params: { channel: types.TypeInputChannel; id: Array<types.TypeInputMessage> }) {
+  constructor(params: { channel: types.InputChannel; id: Array<types.InputMessage> }) {
     super();
     this.channel = params.channel;
     this.id = params.id;
   }
 }
 
-export class ChannelsGetParticipants extends Function<types.TypeChannelsChannelParticipants> {
-  channel: types.TypeInputChannel;
-  filter: types.TypeChannelParticipantsFilter;
+export class channels_getParticipants extends Function<types.channels_ChannelParticipants> {
+  channel: types.InputChannel;
+  filter: types.ChannelParticipantsFilter;
   offset: number;
   limit: number;
   hash: bigint;
@@ -11962,8 +12059,8 @@ export class ChannelsGetParticipants extends Function<types.TypeChannelsChannelP
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["channel", types._TypeInputChannel, "InputChannel"],
-      ["filter", types._TypeChannelParticipantsFilter, "ChannelParticipantsFilter"],
+      ["channel", types._InputChannel, "InputChannel"],
+      ["filter", types._ChannelParticipantsFilter, "ChannelParticipantsFilter"],
       ["offset", "number", "int"],
       ["limit", "number", "int"],
       ["hash", "bigint", "long"],
@@ -11972,15 +12069,15 @@ export class ChannelsGetParticipants extends Function<types.TypeChannelsChannelP
 
   protected get [params](): Params {
     return [
-      [this.channel, types._TypeInputChannel, "InputChannel"],
-      [this.filter, types._TypeChannelParticipantsFilter, "ChannelParticipantsFilter"],
+      [this.channel, types._InputChannel, "InputChannel"],
+      [this.filter, types._ChannelParticipantsFilter, "ChannelParticipantsFilter"],
       [this.offset, "number", "int"],
       [this.limit, "number", "int"],
       [this.hash, "bigint", "long"],
     ];
   }
 
-  constructor(params: { channel: types.TypeInputChannel; filter: types.TypeChannelParticipantsFilter; offset: number; limit: number; hash: bigint }) {
+  constructor(params: { channel: types.InputChannel; filter: types.ChannelParticipantsFilter; offset: number; limit: number; hash: bigint }) {
     super();
     this.channel = params.channel;
     this.filter = params.filter;
@@ -11990,9 +12087,9 @@ export class ChannelsGetParticipants extends Function<types.TypeChannelsChannelP
   }
 }
 
-export class ChannelsGetParticipant extends Function<types.TypeChannelsChannelParticipant> {
-  channel: types.TypeInputChannel;
-  participant: types.TypeInputPeer;
+export class channels_getParticipant extends Function<types.channels_ChannelParticipant> {
+  channel: types.InputChannel;
+  participant: types.InputPeer;
 
   protected get [id]() {
     return 0xA0AB6CC6;
@@ -12000,27 +12097,27 @@ export class ChannelsGetParticipant extends Function<types.TypeChannelsChannelPa
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["channel", types._TypeInputChannel, "InputChannel"],
-      ["participant", types._TypeInputPeer, "InputPeer"],
+      ["channel", types._InputChannel, "InputChannel"],
+      ["participant", types._InputPeer, "InputPeer"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.channel, types._TypeInputChannel, "InputChannel"],
-      [this.participant, types._TypeInputPeer, "InputPeer"],
+      [this.channel, types._InputChannel, "InputChannel"],
+      [this.participant, types._InputPeer, "InputPeer"],
     ];
   }
 
-  constructor(params: { channel: types.TypeInputChannel; participant: types.TypeInputPeer }) {
+  constructor(params: { channel: types.InputChannel; participant: types.InputPeer }) {
     super();
     this.channel = params.channel;
     this.participant = params.participant;
   }
 }
 
-export class ChannelsGetChannels extends Function<types.TypeMessagesChats> {
-  id: Array<types.TypeInputChannel>;
+export class channels_getChannels extends Function<types.messages_Chats> {
+  id: Array<types.InputChannel>;
 
   protected get [id]() {
     return 0x0A7F6BBB;
@@ -12028,24 +12125,24 @@ export class ChannelsGetChannels extends Function<types.TypeMessagesChats> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["id", [types._TypeInputChannel], "Vector<InputChannel>"],
+      ["id", [types._InputChannel], "Vector<InputChannel>"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.id, [types._TypeInputChannel], "Vector<InputChannel>"],
+      [this.id, [types._InputChannel], "Vector<InputChannel>"],
     ];
   }
 
-  constructor(params: { id: Array<types.TypeInputChannel> }) {
+  constructor(params: { id: Array<types.InputChannel> }) {
     super();
     this.id = params.id;
   }
 }
 
-export class ChannelsGetFullChannel extends Function<types.TypeMessagesChatFull> {
-  channel: types.TypeInputChannel;
+export class channels_getFullChannel extends Function<types.messages_ChatFull> {
+  channel: types.InputChannel;
 
   protected get [id]() {
     return 0x08736A09;
@@ -12053,32 +12150,32 @@ export class ChannelsGetFullChannel extends Function<types.TypeMessagesChatFull>
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["channel", types._TypeInputChannel, "InputChannel"],
+      ["channel", types._InputChannel, "InputChannel"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.channel, types._TypeInputChannel, "InputChannel"],
+      [this.channel, types._InputChannel, "InputChannel"],
     ];
   }
 
-  constructor(params: { channel: types.TypeInputChannel }) {
+  constructor(params: { channel: types.InputChannel }) {
     super();
     this.channel = params.channel;
   }
 }
 
-export class ChannelsCreateChannel extends Function<types.TypeUpdates> {
+export class channels_createChannel extends Function<types.Updates> {
   broadcast?: true;
   megagroup?: true;
-  forImport?: true;
+  for_import?: true;
   forum?: true;
   title: string;
   about: string;
-  geoPoint?: types.TypeInputGeoPoint;
+  geo_point?: types.InputGeoPoint;
   address?: string;
-  ttlPeriod?: number;
+  ttl_period?: number;
 
   protected get [id]() {
     return 0x91006707;
@@ -12089,13 +12186,13 @@ export class ChannelsCreateChannel extends Function<types.TypeUpdates> {
       ["flags", flags, "#"],
       ["broadcast", "true", "flags.0?true"],
       ["megagroup", "true", "flags.1?true"],
-      ["forImport", "true", "flags.3?true"],
+      ["for_import", "true", "flags.3?true"],
       ["forum", "true", "flags.5?true"],
       ["title", "string", "string"],
       ["about", "string", "string"],
-      ["geoPoint", types._TypeInputGeoPoint, "flags.2?InputGeoPoint"],
+      ["geo_point", types._InputGeoPoint, "flags.2?InputGeoPoint"],
       ["address", "string", "flags.2?string"],
-      ["ttlPeriod", "number", "flags.4?int"],
+      ["ttl_period", "number", "flags.4?int"],
     ];
   }
 
@@ -12104,34 +12201,34 @@ export class ChannelsCreateChannel extends Function<types.TypeUpdates> {
       ["flags", flags, "#"],
       [this.broadcast ?? null, "true", "flags.0?true"],
       [this.megagroup ?? null, "true", "flags.1?true"],
-      [this.forImport ?? null, "true", "flags.3?true"],
+      [this.for_import ?? null, "true", "flags.3?true"],
       [this.forum ?? null, "true", "flags.5?true"],
       [this.title, "string", "string"],
       [this.about, "string", "string"],
-      [this.geoPoint ?? null, types._TypeInputGeoPoint, "flags.2?InputGeoPoint"],
+      [this.geo_point ?? null, types._InputGeoPoint, "flags.2?InputGeoPoint"],
       [this.address ?? null, "string", "flags.2?string"],
-      [this.ttlPeriod ?? null, "number", "flags.4?int"],
+      [this.ttl_period ?? null, "number", "flags.4?int"],
     ];
   }
 
-  constructor(params: { broadcast?: true; megagroup?: true; forImport?: true; forum?: true; title: string; about: string; geoPoint?: types.TypeInputGeoPoint; address?: string; ttlPeriod?: number }) {
+  constructor(params: { broadcast?: true; megagroup?: true; for_import?: true; forum?: true; title: string; about: string; geo_point?: types.InputGeoPoint; address?: string; ttl_period?: number }) {
     super();
     this.broadcast = params.broadcast;
     this.megagroup = params.megagroup;
-    this.forImport = params.forImport;
+    this.for_import = params.for_import;
     this.forum = params.forum;
     this.title = params.title;
     this.about = params.about;
-    this.geoPoint = params.geoPoint;
+    this.geo_point = params.geo_point;
     this.address = params.address;
-    this.ttlPeriod = params.ttlPeriod;
+    this.ttl_period = params.ttl_period;
   }
 }
 
-export class ChannelsEditAdmin extends Function<types.TypeUpdates> {
-  channel: types.TypeInputChannel;
-  userId: types.TypeInputUser;
-  adminRights: types.TypeChatAdminRights;
+export class channels_editAdmin extends Function<types.Updates> {
+  channel: types.InputChannel;
+  user_id: types.InputUser;
+  admin_rights: types.ChatAdminRights;
   rank: string;
 
   protected get [id]() {
@@ -12140,33 +12237,33 @@ export class ChannelsEditAdmin extends Function<types.TypeUpdates> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["channel", types._TypeInputChannel, "InputChannel"],
-      ["userId", types._TypeInputUser, "InputUser"],
-      ["adminRights", types._TypeChatAdminRights, "ChatAdminRights"],
+      ["channel", types._InputChannel, "InputChannel"],
+      ["user_id", types._InputUser, "InputUser"],
+      ["admin_rights", types._ChatAdminRights, "ChatAdminRights"],
       ["rank", "string", "string"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.channel, types._TypeInputChannel, "InputChannel"],
-      [this.userId, types._TypeInputUser, "InputUser"],
-      [this.adminRights, types._TypeChatAdminRights, "ChatAdminRights"],
+      [this.channel, types._InputChannel, "InputChannel"],
+      [this.user_id, types._InputUser, "InputUser"],
+      [this.admin_rights, types._ChatAdminRights, "ChatAdminRights"],
       [this.rank, "string", "string"],
     ];
   }
 
-  constructor(params: { channel: types.TypeInputChannel; userId: types.TypeInputUser; adminRights: types.TypeChatAdminRights; rank: string }) {
+  constructor(params: { channel: types.InputChannel; user_id: types.InputUser; admin_rights: types.ChatAdminRights; rank: string }) {
     super();
     this.channel = params.channel;
-    this.userId = params.userId;
-    this.adminRights = params.adminRights;
+    this.user_id = params.user_id;
+    this.admin_rights = params.admin_rights;
     this.rank = params.rank;
   }
 }
 
-export class ChannelsEditTitle extends Function<types.TypeUpdates> {
-  channel: types.TypeInputChannel;
+export class channels_editTitle extends Function<types.Updates> {
+  channel: types.InputChannel;
   title: string;
 
   protected get [id]() {
@@ -12175,28 +12272,28 @@ export class ChannelsEditTitle extends Function<types.TypeUpdates> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["channel", types._TypeInputChannel, "InputChannel"],
+      ["channel", types._InputChannel, "InputChannel"],
       ["title", "string", "string"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.channel, types._TypeInputChannel, "InputChannel"],
+      [this.channel, types._InputChannel, "InputChannel"],
       [this.title, "string", "string"],
     ];
   }
 
-  constructor(params: { channel: types.TypeInputChannel; title: string }) {
+  constructor(params: { channel: types.InputChannel; title: string }) {
     super();
     this.channel = params.channel;
     this.title = params.title;
   }
 }
 
-export class ChannelsEditPhoto extends Function<types.TypeUpdates> {
-  channel: types.TypeInputChannel;
-  photo: types.TypeInputChatPhoto;
+export class channels_editPhoto extends Function<types.Updates> {
+  channel: types.InputChannel;
+  photo: types.InputChatPhoto;
 
   protected get [id]() {
     return 0xF12E57C9;
@@ -12204,27 +12301,27 @@ export class ChannelsEditPhoto extends Function<types.TypeUpdates> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["channel", types._TypeInputChannel, "InputChannel"],
-      ["photo", types._TypeInputChatPhoto, "InputChatPhoto"],
+      ["channel", types._InputChannel, "InputChannel"],
+      ["photo", types._InputChatPhoto, "InputChatPhoto"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.channel, types._TypeInputChannel, "InputChannel"],
-      [this.photo, types._TypeInputChatPhoto, "InputChatPhoto"],
+      [this.channel, types._InputChannel, "InputChannel"],
+      [this.photo, types._InputChatPhoto, "InputChatPhoto"],
     ];
   }
 
-  constructor(params: { channel: types.TypeInputChannel; photo: types.TypeInputChatPhoto }) {
+  constructor(params: { channel: types.InputChannel; photo: types.InputChatPhoto }) {
     super();
     this.channel = params.channel;
     this.photo = params.photo;
   }
 }
 
-export class ChannelsCheckUsername extends Function<boolean> {
-  channel: types.TypeInputChannel;
+export class channels_checkUsername extends Function<boolean> {
+  channel: types.InputChannel;
   username: string;
 
   protected get [id]() {
@@ -12233,27 +12330,27 @@ export class ChannelsCheckUsername extends Function<boolean> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["channel", types._TypeInputChannel, "InputChannel"],
+      ["channel", types._InputChannel, "InputChannel"],
       ["username", "string", "string"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.channel, types._TypeInputChannel, "InputChannel"],
+      [this.channel, types._InputChannel, "InputChannel"],
       [this.username, "string", "string"],
     ];
   }
 
-  constructor(params: { channel: types.TypeInputChannel; username: string }) {
+  constructor(params: { channel: types.InputChannel; username: string }) {
     super();
     this.channel = params.channel;
     this.username = params.username;
   }
 }
 
-export class ChannelsUpdateUsername extends Function<boolean> {
-  channel: types.TypeInputChannel;
+export class channels_updateUsername extends Function<boolean> {
+  channel: types.InputChannel;
   username: string;
 
   protected get [id]() {
@@ -12262,27 +12359,27 @@ export class ChannelsUpdateUsername extends Function<boolean> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["channel", types._TypeInputChannel, "InputChannel"],
+      ["channel", types._InputChannel, "InputChannel"],
       ["username", "string", "string"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.channel, types._TypeInputChannel, "InputChannel"],
+      [this.channel, types._InputChannel, "InputChannel"],
       [this.username, "string", "string"],
     ];
   }
 
-  constructor(params: { channel: types.TypeInputChannel; username: string }) {
+  constructor(params: { channel: types.InputChannel; username: string }) {
     super();
     this.channel = params.channel;
     this.username = params.username;
   }
 }
 
-export class ChannelsJoinChannel extends Function<types.TypeUpdates> {
-  channel: types.TypeInputChannel;
+export class channels_joinChannel extends Function<types.Updates> {
+  channel: types.InputChannel;
 
   protected get [id]() {
     return 0x24B524C5;
@@ -12290,24 +12387,24 @@ export class ChannelsJoinChannel extends Function<types.TypeUpdates> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["channel", types._TypeInputChannel, "InputChannel"],
+      ["channel", types._InputChannel, "InputChannel"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.channel, types._TypeInputChannel, "InputChannel"],
+      [this.channel, types._InputChannel, "InputChannel"],
     ];
   }
 
-  constructor(params: { channel: types.TypeInputChannel }) {
+  constructor(params: { channel: types.InputChannel }) {
     super();
     this.channel = params.channel;
   }
 }
 
-export class ChannelsLeaveChannel extends Function<types.TypeUpdates> {
-  channel: types.TypeInputChannel;
+export class channels_leaveChannel extends Function<types.Updates> {
+  channel: types.InputChannel;
 
   protected get [id]() {
     return 0xF836AA95;
@@ -12315,25 +12412,25 @@ export class ChannelsLeaveChannel extends Function<types.TypeUpdates> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["channel", types._TypeInputChannel, "InputChannel"],
+      ["channel", types._InputChannel, "InputChannel"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.channel, types._TypeInputChannel, "InputChannel"],
+      [this.channel, types._InputChannel, "InputChannel"],
     ];
   }
 
-  constructor(params: { channel: types.TypeInputChannel }) {
+  constructor(params: { channel: types.InputChannel }) {
     super();
     this.channel = params.channel;
   }
 }
 
-export class ChannelsInviteToChannel extends Function<types.TypeUpdates> {
-  channel: types.TypeInputChannel;
-  users: Array<types.TypeInputUser>;
+export class channels_inviteToChannel extends Function<types.Updates> {
+  channel: types.InputChannel;
+  users: Array<types.InputUser>;
 
   protected get [id]() {
     return 0x199F3A6C;
@@ -12341,27 +12438,27 @@ export class ChannelsInviteToChannel extends Function<types.TypeUpdates> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["channel", types._TypeInputChannel, "InputChannel"],
-      ["users", [types._TypeInputUser], "Vector<InputUser>"],
+      ["channel", types._InputChannel, "InputChannel"],
+      ["users", [types._InputUser], "Vector<InputUser>"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.channel, types._TypeInputChannel, "InputChannel"],
-      [this.users, [types._TypeInputUser], "Vector<InputUser>"],
+      [this.channel, types._InputChannel, "InputChannel"],
+      [this.users, [types._InputUser], "Vector<InputUser>"],
     ];
   }
 
-  constructor(params: { channel: types.TypeInputChannel; users: Array<types.TypeInputUser> }) {
+  constructor(params: { channel: types.InputChannel; users: Array<types.InputUser> }) {
     super();
     this.channel = params.channel;
     this.users = params.users;
   }
 }
 
-export class ChannelsDeleteChannel extends Function<types.TypeUpdates> {
-  channel: types.TypeInputChannel;
+export class channels_deleteChannel extends Function<types.Updates> {
+  channel: types.InputChannel;
 
   protected get [id]() {
     return 0xC0111FE3;
@@ -12369,26 +12466,26 @@ export class ChannelsDeleteChannel extends Function<types.TypeUpdates> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["channel", types._TypeInputChannel, "InputChannel"],
+      ["channel", types._InputChannel, "InputChannel"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.channel, types._TypeInputChannel, "InputChannel"],
+      [this.channel, types._InputChannel, "InputChannel"],
     ];
   }
 
-  constructor(params: { channel: types.TypeInputChannel }) {
+  constructor(params: { channel: types.InputChannel }) {
     super();
     this.channel = params.channel;
   }
 }
 
-export class ChannelsExportMessageLink extends Function<types.TypeExportedMessageLink> {
+export class channels_exportMessageLink extends Function<types.ExportedMessageLink> {
   grouped?: true;
   thread?: true;
-  channel: types.TypeInputChannel;
+  channel: types.InputChannel;
   id: number;
 
   protected get [id]() {
@@ -12400,7 +12497,7 @@ export class ChannelsExportMessageLink extends Function<types.TypeExportedMessag
       ["flags", flags, "#"],
       ["grouped", "true", "flags.0?true"],
       ["thread", "true", "flags.1?true"],
-      ["channel", types._TypeInputChannel, "InputChannel"],
+      ["channel", types._InputChannel, "InputChannel"],
       ["id", "number", "int"],
     ];
   }
@@ -12410,12 +12507,12 @@ export class ChannelsExportMessageLink extends Function<types.TypeExportedMessag
       ["flags", flags, "#"],
       [this.grouped ?? null, "true", "flags.0?true"],
       [this.thread ?? null, "true", "flags.1?true"],
-      [this.channel, types._TypeInputChannel, "InputChannel"],
+      [this.channel, types._InputChannel, "InputChannel"],
       [this.id, "number", "int"],
     ];
   }
 
-  constructor(params: { grouped?: true; thread?: true; channel: types.TypeInputChannel; id: number }) {
+  constructor(params: { grouped?: true; thread?: true; channel: types.InputChannel; id: number }) {
     super();
     this.grouped = params.grouped;
     this.thread = params.thread;
@@ -12424,8 +12521,8 @@ export class ChannelsExportMessageLink extends Function<types.TypeExportedMessag
   }
 }
 
-export class ChannelsToggleSignatures extends Function<types.TypeUpdates> {
-  channel: types.TypeInputChannel;
+export class channels_toggleSignatures extends Function<types.Updates> {
+  channel: types.InputChannel;
   enabled: boolean;
 
   protected get [id]() {
@@ -12434,28 +12531,28 @@ export class ChannelsToggleSignatures extends Function<types.TypeUpdates> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["channel", types._TypeInputChannel, "InputChannel"],
+      ["channel", types._InputChannel, "InputChannel"],
       ["enabled", "boolean", "Bool"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.channel, types._TypeInputChannel, "InputChannel"],
+      [this.channel, types._InputChannel, "InputChannel"],
       [this.enabled, "boolean", "Bool"],
     ];
   }
 
-  constructor(params: { channel: types.TypeInputChannel; enabled: boolean }) {
+  constructor(params: { channel: types.InputChannel; enabled: boolean }) {
     super();
     this.channel = params.channel;
     this.enabled = params.enabled;
   }
 }
 
-export class ChannelsGetAdminedPublicChannels extends Function<types.TypeMessagesChats> {
-  byLocation?: true;
-  checkLimit?: true;
+export class channels_getAdminedPublicChannels extends Function<types.messages_Chats> {
+  by_location?: true;
+  check_limit?: true;
 
   protected get [id]() {
     return 0xF8B036AF;
@@ -12464,30 +12561,30 @@ export class ChannelsGetAdminedPublicChannels extends Function<types.TypeMessage
   static get [paramDesc](): ParamDesc {
     return [
       ["flags", flags, "#"],
-      ["byLocation", "true", "flags.0?true"],
-      ["checkLimit", "true", "flags.1?true"],
+      ["by_location", "true", "flags.0?true"],
+      ["check_limit", "true", "flags.1?true"],
     ];
   }
 
   protected get [params](): Params {
     return [
       ["flags", flags, "#"],
-      [this.byLocation ?? null, "true", "flags.0?true"],
-      [this.checkLimit ?? null, "true", "flags.1?true"],
+      [this.by_location ?? null, "true", "flags.0?true"],
+      [this.check_limit ?? null, "true", "flags.1?true"],
     ];
   }
 
-  constructor(params?: { byLocation?: true; checkLimit?: true }) {
+  constructor(params?: { by_location?: true; check_limit?: true }) {
     super();
-    this.byLocation = params?.byLocation;
-    this.checkLimit = params?.checkLimit;
+    this.by_location = params?.by_location;
+    this.check_limit = params?.check_limit;
   }
 }
 
-export class ChannelsEditBanned extends Function<types.TypeUpdates> {
-  channel: types.TypeInputChannel;
-  participant: types.TypeInputPeer;
-  bannedRights: types.TypeChatBannedRights;
+export class channels_editBanned extends Function<types.Updates> {
+  channel: types.InputChannel;
+  participant: types.InputPeer;
+  banned_rights: types.ChatBannedRights;
 
   protected get [id]() {
     return 0x96E6CD81;
@@ -12495,35 +12592,35 @@ export class ChannelsEditBanned extends Function<types.TypeUpdates> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["channel", types._TypeInputChannel, "InputChannel"],
-      ["participant", types._TypeInputPeer, "InputPeer"],
-      ["bannedRights", types._TypeChatBannedRights, "ChatBannedRights"],
+      ["channel", types._InputChannel, "InputChannel"],
+      ["participant", types._InputPeer, "InputPeer"],
+      ["banned_rights", types._ChatBannedRights, "ChatBannedRights"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.channel, types._TypeInputChannel, "InputChannel"],
-      [this.participant, types._TypeInputPeer, "InputPeer"],
-      [this.bannedRights, types._TypeChatBannedRights, "ChatBannedRights"],
+      [this.channel, types._InputChannel, "InputChannel"],
+      [this.participant, types._InputPeer, "InputPeer"],
+      [this.banned_rights, types._ChatBannedRights, "ChatBannedRights"],
     ];
   }
 
-  constructor(params: { channel: types.TypeInputChannel; participant: types.TypeInputPeer; bannedRights: types.TypeChatBannedRights }) {
+  constructor(params: { channel: types.InputChannel; participant: types.InputPeer; banned_rights: types.ChatBannedRights }) {
     super();
     this.channel = params.channel;
     this.participant = params.participant;
-    this.bannedRights = params.bannedRights;
+    this.banned_rights = params.banned_rights;
   }
 }
 
-export class ChannelsGetAdminLog extends Function<types.TypeChannelsAdminLogResults> {
-  channel: types.TypeInputChannel;
+export class channels_getAdminLog extends Function<types.channels_AdminLogResults> {
+  channel: types.InputChannel;
   q: string;
-  eventsFilter?: types.TypeChannelAdminLogEventsFilter;
-  admins?: Array<types.TypeInputUser>;
-  maxId: bigint;
-  minId: bigint;
+  events_filter?: types.ChannelAdminLogEventsFilter;
+  admins?: Array<types.InputUser>;
+  max_id: bigint;
+  min_id: bigint;
   limit: number;
 
   protected get [id]() {
@@ -12533,12 +12630,12 @@ export class ChannelsGetAdminLog extends Function<types.TypeChannelsAdminLogResu
   static get [paramDesc](): ParamDesc {
     return [
       ["flags", flags, "#"],
-      ["channel", types._TypeInputChannel, "InputChannel"],
+      ["channel", types._InputChannel, "InputChannel"],
       ["q", "string", "string"],
-      ["eventsFilter", types._TypeChannelAdminLogEventsFilter, "flags.0?ChannelAdminLogEventsFilter"],
-      ["admins", [types._TypeInputUser], "flags.1?Vector<InputUser>"],
-      ["maxId", "bigint", "long"],
-      ["minId", "bigint", "long"],
+      ["events_filter", types._ChannelAdminLogEventsFilter, "flags.0?ChannelAdminLogEventsFilter"],
+      ["admins", [types._InputUser], "flags.1?Vector<InputUser>"],
+      ["max_id", "bigint", "long"],
+      ["min_id", "bigint", "long"],
       ["limit", "number", "int"],
     ];
   }
@@ -12546,31 +12643,31 @@ export class ChannelsGetAdminLog extends Function<types.TypeChannelsAdminLogResu
   protected get [params](): Params {
     return [
       ["flags", flags, "#"],
-      [this.channel, types._TypeInputChannel, "InputChannel"],
+      [this.channel, types._InputChannel, "InputChannel"],
       [this.q, "string", "string"],
-      [this.eventsFilter ?? null, types._TypeChannelAdminLogEventsFilter, "flags.0?ChannelAdminLogEventsFilter"],
-      [this.admins ?? null, [types._TypeInputUser], "flags.1?Vector<InputUser>"],
-      [this.maxId, "bigint", "long"],
-      [this.minId, "bigint", "long"],
+      [this.events_filter ?? null, types._ChannelAdminLogEventsFilter, "flags.0?ChannelAdminLogEventsFilter"],
+      [this.admins ?? null, [types._InputUser], "flags.1?Vector<InputUser>"],
+      [this.max_id, "bigint", "long"],
+      [this.min_id, "bigint", "long"],
       [this.limit, "number", "int"],
     ];
   }
 
-  constructor(params: { channel: types.TypeInputChannel; q: string; eventsFilter?: types.TypeChannelAdminLogEventsFilter; admins?: Array<types.TypeInputUser>; maxId: bigint; minId: bigint; limit: number }) {
+  constructor(params: { channel: types.InputChannel; q: string; events_filter?: types.ChannelAdminLogEventsFilter; admins?: Array<types.InputUser>; max_id: bigint; min_id: bigint; limit: number }) {
     super();
     this.channel = params.channel;
     this.q = params.q;
-    this.eventsFilter = params.eventsFilter;
+    this.events_filter = params.events_filter;
     this.admins = params.admins;
-    this.maxId = params.maxId;
-    this.minId = params.minId;
+    this.max_id = params.max_id;
+    this.min_id = params.min_id;
     this.limit = params.limit;
   }
 }
 
-export class ChannelsSetStickers extends Function<boolean> {
-  channel: types.TypeInputChannel;
-  stickerset: types.TypeInputStickerSet;
+export class channels_setStickers extends Function<boolean> {
+  channel: types.InputChannel;
+  stickerset: types.InputStickerSet;
 
   protected get [id]() {
     return 0xEA8CA4F9;
@@ -12578,27 +12675,27 @@ export class ChannelsSetStickers extends Function<boolean> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["channel", types._TypeInputChannel, "InputChannel"],
-      ["stickerset", types._TypeInputStickerSet, "InputStickerSet"],
+      ["channel", types._InputChannel, "InputChannel"],
+      ["stickerset", types._InputStickerSet, "InputStickerSet"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.channel, types._TypeInputChannel, "InputChannel"],
-      [this.stickerset, types._TypeInputStickerSet, "InputStickerSet"],
+      [this.channel, types._InputChannel, "InputChannel"],
+      [this.stickerset, types._InputStickerSet, "InputStickerSet"],
     ];
   }
 
-  constructor(params: { channel: types.TypeInputChannel; stickerset: types.TypeInputStickerSet }) {
+  constructor(params: { channel: types.InputChannel; stickerset: types.InputStickerSet }) {
     super();
     this.channel = params.channel;
     this.stickerset = params.stickerset;
   }
 }
 
-export class ChannelsReadMessageContents extends Function<boolean> {
-  channel: types.TypeInputChannel;
+export class channels_readMessageContents extends Function<boolean> {
+  channel: types.InputChannel;
   id: Array<number>;
 
   protected get [id]() {
@@ -12607,29 +12704,29 @@ export class ChannelsReadMessageContents extends Function<boolean> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["channel", types._TypeInputChannel, "InputChannel"],
+      ["channel", types._InputChannel, "InputChannel"],
       ["id", ["number"], "Vector<int>"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.channel, types._TypeInputChannel, "InputChannel"],
+      [this.channel, types._InputChannel, "InputChannel"],
       [this.id, ["number"], "Vector<int>"],
     ];
   }
 
-  constructor(params: { channel: types.TypeInputChannel; id: Array<number> }) {
+  constructor(params: { channel: types.InputChannel; id: Array<number> }) {
     super();
     this.channel = params.channel;
     this.id = params.id;
   }
 }
 
-export class ChannelsDeleteHistory extends Function<types.TypeUpdates> {
-  forEveryone?: true;
-  channel: types.TypeInputChannel;
-  maxId: number;
+export class channels_deleteHistory extends Function<types.Updates> {
+  for_everyone?: true;
+  channel: types.InputChannel;
+  max_id: number;
 
   protected get [id]() {
     return 0x9BAA9647;
@@ -12638,31 +12735,31 @@ export class ChannelsDeleteHistory extends Function<types.TypeUpdates> {
   static get [paramDesc](): ParamDesc {
     return [
       ["flags", flags, "#"],
-      ["forEveryone", "true", "flags.0?true"],
-      ["channel", types._TypeInputChannel, "InputChannel"],
-      ["maxId", "number", "int"],
+      ["for_everyone", "true", "flags.0?true"],
+      ["channel", types._InputChannel, "InputChannel"],
+      ["max_id", "number", "int"],
     ];
   }
 
   protected get [params](): Params {
     return [
       ["flags", flags, "#"],
-      [this.forEveryone ?? null, "true", "flags.0?true"],
-      [this.channel, types._TypeInputChannel, "InputChannel"],
-      [this.maxId, "number", "int"],
+      [this.for_everyone ?? null, "true", "flags.0?true"],
+      [this.channel, types._InputChannel, "InputChannel"],
+      [this.max_id, "number", "int"],
     ];
   }
 
-  constructor(params: { forEveryone?: true; channel: types.TypeInputChannel; maxId: number }) {
+  constructor(params: { for_everyone?: true; channel: types.InputChannel; max_id: number }) {
     super();
-    this.forEveryone = params.forEveryone;
+    this.for_everyone = params.for_everyone;
     this.channel = params.channel;
-    this.maxId = params.maxId;
+    this.max_id = params.max_id;
   }
 }
 
-export class ChannelsTogglePreHistoryHidden extends Function<types.TypeUpdates> {
-  channel: types.TypeInputChannel;
+export class channels_togglePreHistoryHidden extends Function<types.Updates> {
+  channel: types.InputChannel;
   enabled: boolean;
 
   protected get [id]() {
@@ -12671,26 +12768,26 @@ export class ChannelsTogglePreHistoryHidden extends Function<types.TypeUpdates> 
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["channel", types._TypeInputChannel, "InputChannel"],
+      ["channel", types._InputChannel, "InputChannel"],
       ["enabled", "boolean", "Bool"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.channel, types._TypeInputChannel, "InputChannel"],
+      [this.channel, types._InputChannel, "InputChannel"],
       [this.enabled, "boolean", "Bool"],
     ];
   }
 
-  constructor(params: { channel: types.TypeInputChannel; enabled: boolean }) {
+  constructor(params: { channel: types.InputChannel; enabled: boolean }) {
     super();
     this.channel = params.channel;
     this.enabled = params.enabled;
   }
 }
 
-export class ChannelsGetLeftChannels extends Function<types.TypeMessagesChats> {
+export class channels_getLeftChannels extends Function<types.messages_Chats> {
   offset: number;
 
   protected get [id]() {
@@ -12715,7 +12812,7 @@ export class ChannelsGetLeftChannels extends Function<types.TypeMessagesChats> {
   }
 }
 
-export class ChannelsGetGroupsForDiscussion extends Function<types.TypeMessagesChats> {
+export class channels_getGroupsForDiscussion extends Function<types.messages_Chats> {
   protected get [id]() {
     return 0xF5DAD378;
   }
@@ -12733,9 +12830,9 @@ export class ChannelsGetGroupsForDiscussion extends Function<types.TypeMessagesC
   }
 }
 
-export class ChannelsSetDiscussionGroup extends Function<boolean> {
-  broadcast: types.TypeInputChannel;
-  group: types.TypeInputChannel;
+export class channels_setDiscussionGroup extends Function<boolean> {
+  broadcast: types.InputChannel;
+  group: types.InputChannel;
 
   protected get [id]() {
     return 0x40582BB2;
@@ -12743,29 +12840,29 @@ export class ChannelsSetDiscussionGroup extends Function<boolean> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["broadcast", types._TypeInputChannel, "InputChannel"],
-      ["group", types._TypeInputChannel, "InputChannel"],
+      ["broadcast", types._InputChannel, "InputChannel"],
+      ["group", types._InputChannel, "InputChannel"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.broadcast, types._TypeInputChannel, "InputChannel"],
-      [this.group, types._TypeInputChannel, "InputChannel"],
+      [this.broadcast, types._InputChannel, "InputChannel"],
+      [this.group, types._InputChannel, "InputChannel"],
     ];
   }
 
-  constructor(params: { broadcast: types.TypeInputChannel; group: types.TypeInputChannel }) {
+  constructor(params: { broadcast: types.InputChannel; group: types.InputChannel }) {
     super();
     this.broadcast = params.broadcast;
     this.group = params.group;
   }
 }
 
-export class ChannelsEditCreator extends Function<types.TypeUpdates> {
-  channel: types.TypeInputChannel;
-  userId: types.TypeInputUser;
-  password: types.TypeInputCheckPasswordSRP;
+export class channels_editCreator extends Function<types.Updates> {
+  channel: types.InputChannel;
+  user_id: types.InputUser;
+  password: types.InputCheckPasswordSRP;
 
   protected get [id]() {
     return 0x8F38CD1F;
@@ -12773,31 +12870,31 @@ export class ChannelsEditCreator extends Function<types.TypeUpdates> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["channel", types._TypeInputChannel, "InputChannel"],
-      ["userId", types._TypeInputUser, "InputUser"],
-      ["password", types._TypeInputCheckPasswordSRP, "InputCheckPasswordSRP"],
+      ["channel", types._InputChannel, "InputChannel"],
+      ["user_id", types._InputUser, "InputUser"],
+      ["password", types._InputCheckPasswordSRP, "InputCheckPasswordSRP"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.channel, types._TypeInputChannel, "InputChannel"],
-      [this.userId, types._TypeInputUser, "InputUser"],
-      [this.password, types._TypeInputCheckPasswordSRP, "InputCheckPasswordSRP"],
+      [this.channel, types._InputChannel, "InputChannel"],
+      [this.user_id, types._InputUser, "InputUser"],
+      [this.password, types._InputCheckPasswordSRP, "InputCheckPasswordSRP"],
     ];
   }
 
-  constructor(params: { channel: types.TypeInputChannel; userId: types.TypeInputUser; password: types.TypeInputCheckPasswordSRP }) {
+  constructor(params: { channel: types.InputChannel; user_id: types.InputUser; password: types.InputCheckPasswordSRP }) {
     super();
     this.channel = params.channel;
-    this.userId = params.userId;
+    this.user_id = params.user_id;
     this.password = params.password;
   }
 }
 
-export class ChannelsEditLocation extends Function<boolean> {
-  channel: types.TypeInputChannel;
-  geoPoint: types.TypeInputGeoPoint;
+export class channels_editLocation extends Function<boolean> {
+  channel: types.InputChannel;
+  geo_point: types.InputGeoPoint;
   address: string;
 
   protected get [id]() {
@@ -12806,30 +12903,30 @@ export class ChannelsEditLocation extends Function<boolean> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["channel", types._TypeInputChannel, "InputChannel"],
-      ["geoPoint", types._TypeInputGeoPoint, "InputGeoPoint"],
+      ["channel", types._InputChannel, "InputChannel"],
+      ["geo_point", types._InputGeoPoint, "InputGeoPoint"],
       ["address", "string", "string"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.channel, types._TypeInputChannel, "InputChannel"],
-      [this.geoPoint, types._TypeInputGeoPoint, "InputGeoPoint"],
+      [this.channel, types._InputChannel, "InputChannel"],
+      [this.geo_point, types._InputGeoPoint, "InputGeoPoint"],
       [this.address, "string", "string"],
     ];
   }
 
-  constructor(params: { channel: types.TypeInputChannel; geoPoint: types.TypeInputGeoPoint; address: string }) {
+  constructor(params: { channel: types.InputChannel; geo_point: types.InputGeoPoint; address: string }) {
     super();
     this.channel = params.channel;
-    this.geoPoint = params.geoPoint;
+    this.geo_point = params.geo_point;
     this.address = params.address;
   }
 }
 
-export class ChannelsToggleSlowMode extends Function<types.TypeUpdates> {
-  channel: types.TypeInputChannel;
+export class channels_toggleSlowMode extends Function<types.Updates> {
+  channel: types.InputChannel;
   seconds: number;
 
   protected get [id]() {
@@ -12838,26 +12935,26 @@ export class ChannelsToggleSlowMode extends Function<types.TypeUpdates> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["channel", types._TypeInputChannel, "InputChannel"],
+      ["channel", types._InputChannel, "InputChannel"],
       ["seconds", "number", "int"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.channel, types._TypeInputChannel, "InputChannel"],
+      [this.channel, types._InputChannel, "InputChannel"],
       [this.seconds, "number", "int"],
     ];
   }
 
-  constructor(params: { channel: types.TypeInputChannel; seconds: number }) {
+  constructor(params: { channel: types.InputChannel; seconds: number }) {
     super();
     this.channel = params.channel;
     this.seconds = params.seconds;
   }
 }
 
-export class ChannelsGetInactiveChannels extends Function<types.TypeMessagesInactiveChats> {
+export class channels_getInactiveChannels extends Function<types.messages_InactiveChats> {
   protected get [id]() {
     return 0x11E831EE;
   }
@@ -12875,8 +12972,8 @@ export class ChannelsGetInactiveChannels extends Function<types.TypeMessagesInac
   }
 }
 
-export class ChannelsConvertToGigagroup extends Function<types.TypeUpdates> {
-  channel: types.TypeInputChannel;
+export class channels_convertToGigagroup extends Function<types.Updates> {
+  channel: types.InputChannel;
 
   protected get [id]() {
     return 0x0B290C69;
@@ -12884,25 +12981,25 @@ export class ChannelsConvertToGigagroup extends Function<types.TypeUpdates> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["channel", types._TypeInputChannel, "InputChannel"],
+      ["channel", types._InputChannel, "InputChannel"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.channel, types._TypeInputChannel, "InputChannel"],
+      [this.channel, types._InputChannel, "InputChannel"],
     ];
   }
 
-  constructor(params: { channel: types.TypeInputChannel }) {
+  constructor(params: { channel: types.InputChannel }) {
     super();
     this.channel = params.channel;
   }
 }
 
-export class ChannelsViewSponsoredMessage extends Function<boolean> {
-  channel: types.TypeInputChannel;
-  randomId: Uint8Array;
+export class channels_viewSponsoredMessage extends Function<boolean> {
+  channel: types.InputChannel;
+  random_id: Uint8Array;
 
   protected get [id]() {
     return 0xBEAEDB94;
@@ -12910,27 +13007,27 @@ export class ChannelsViewSponsoredMessage extends Function<boolean> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["channel", types._TypeInputChannel, "InputChannel"],
-      ["randomId", Uint8Array, "bytes"],
+      ["channel", types._InputChannel, "InputChannel"],
+      ["random_id", Uint8Array, "bytes"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.channel, types._TypeInputChannel, "InputChannel"],
-      [this.randomId, Uint8Array, "bytes"],
+      [this.channel, types._InputChannel, "InputChannel"],
+      [this.random_id, Uint8Array, "bytes"],
     ];
   }
 
-  constructor(params: { channel: types.TypeInputChannel; randomId: Uint8Array }) {
+  constructor(params: { channel: types.InputChannel; random_id: Uint8Array }) {
     super();
     this.channel = params.channel;
-    this.randomId = params.randomId;
+    this.random_id = params.random_id;
   }
 }
 
-export class ChannelsGetSponsoredMessages extends Function<types.TypeMessagesSponsoredMessages> {
-  channel: types.TypeInputChannel;
+export class channels_getSponsoredMessages extends Function<types.messages_SponsoredMessages> {
+  channel: types.InputChannel;
 
   protected get [id]() {
     return 0xEC210FBF;
@@ -12938,24 +13035,24 @@ export class ChannelsGetSponsoredMessages extends Function<types.TypeMessagesSpo
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["channel", types._TypeInputChannel, "InputChannel"],
+      ["channel", types._InputChannel, "InputChannel"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.channel, types._TypeInputChannel, "InputChannel"],
+      [this.channel, types._InputChannel, "InputChannel"],
     ];
   }
 
-  constructor(params: { channel: types.TypeInputChannel }) {
+  constructor(params: { channel: types.InputChannel }) {
     super();
     this.channel = params.channel;
   }
 }
 
-export class ChannelsGetSendAs extends Function<types.TypeChannelsSendAsPeers> {
-  peer: types.TypeInputPeer;
+export class channels_getSendAs extends Function<types.channels_SendAsPeers> {
+  peer: types.InputPeer;
 
   protected get [id]() {
     return 0x0DC770EE;
@@ -12963,25 +13060,25 @@ export class ChannelsGetSendAs extends Function<types.TypeChannelsSendAsPeers> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["peer", types._TypeInputPeer, "InputPeer"],
+      ["peer", types._InputPeer, "InputPeer"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.peer, types._TypeInputPeer, "InputPeer"],
+      [this.peer, types._InputPeer, "InputPeer"],
     ];
   }
 
-  constructor(params: { peer: types.TypeInputPeer }) {
+  constructor(params: { peer: types.InputPeer }) {
     super();
     this.peer = params.peer;
   }
 }
 
-export class ChannelsDeleteParticipantHistory extends Function<types.TypeMessagesAffectedHistory> {
-  channel: types.TypeInputChannel;
-  participant: types.TypeInputPeer;
+export class channels_deleteParticipantHistory extends Function<types.messages_AffectedHistory> {
+  channel: types.InputChannel;
+  participant: types.InputPeer;
 
   protected get [id]() {
     return 0x367544DB;
@@ -12989,27 +13086,27 @@ export class ChannelsDeleteParticipantHistory extends Function<types.TypeMessage
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["channel", types._TypeInputChannel, "InputChannel"],
-      ["participant", types._TypeInputPeer, "InputPeer"],
+      ["channel", types._InputChannel, "InputChannel"],
+      ["participant", types._InputPeer, "InputPeer"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.channel, types._TypeInputChannel, "InputChannel"],
-      [this.participant, types._TypeInputPeer, "InputPeer"],
+      [this.channel, types._InputChannel, "InputChannel"],
+      [this.participant, types._InputPeer, "InputPeer"],
     ];
   }
 
-  constructor(params: { channel: types.TypeInputChannel; participant: types.TypeInputPeer }) {
+  constructor(params: { channel: types.InputChannel; participant: types.InputPeer }) {
     super();
     this.channel = params.channel;
     this.participant = params.participant;
   }
 }
 
-export class ChannelsToggleJoinToSend extends Function<types.TypeUpdates> {
-  channel: types.TypeInputChannel;
+export class channels_toggleJoinToSend extends Function<types.Updates> {
+  channel: types.InputChannel;
   enabled: boolean;
 
   protected get [id]() {
@@ -13018,27 +13115,27 @@ export class ChannelsToggleJoinToSend extends Function<types.TypeUpdates> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["channel", types._TypeInputChannel, "InputChannel"],
+      ["channel", types._InputChannel, "InputChannel"],
       ["enabled", "boolean", "Bool"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.channel, types._TypeInputChannel, "InputChannel"],
+      [this.channel, types._InputChannel, "InputChannel"],
       [this.enabled, "boolean", "Bool"],
     ];
   }
 
-  constructor(params: { channel: types.TypeInputChannel; enabled: boolean }) {
+  constructor(params: { channel: types.InputChannel; enabled: boolean }) {
     super();
     this.channel = params.channel;
     this.enabled = params.enabled;
   }
 }
 
-export class ChannelsToggleJoinRequest extends Function<types.TypeUpdates> {
-  channel: types.TypeInputChannel;
+export class channels_toggleJoinRequest extends Function<types.Updates> {
+  channel: types.InputChannel;
   enabled: boolean;
 
   protected get [id]() {
@@ -13047,27 +13144,27 @@ export class ChannelsToggleJoinRequest extends Function<types.TypeUpdates> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["channel", types._TypeInputChannel, "InputChannel"],
+      ["channel", types._InputChannel, "InputChannel"],
       ["enabled", "boolean", "Bool"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.channel, types._TypeInputChannel, "InputChannel"],
+      [this.channel, types._InputChannel, "InputChannel"],
       [this.enabled, "boolean", "Bool"],
     ];
   }
 
-  constructor(params: { channel: types.TypeInputChannel; enabled: boolean }) {
+  constructor(params: { channel: types.InputChannel; enabled: boolean }) {
     super();
     this.channel = params.channel;
     this.enabled = params.enabled;
   }
 }
 
-export class ChannelsReorderUsernames extends Function<boolean> {
-  channel: types.TypeInputChannel;
+export class channels_reorderUsernames extends Function<boolean> {
+  channel: types.InputChannel;
   order: Array<string>;
 
   protected get [id]() {
@@ -13076,27 +13173,27 @@ export class ChannelsReorderUsernames extends Function<boolean> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["channel", types._TypeInputChannel, "InputChannel"],
+      ["channel", types._InputChannel, "InputChannel"],
       ["order", ["string"], "Vector<string>"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.channel, types._TypeInputChannel, "InputChannel"],
+      [this.channel, types._InputChannel, "InputChannel"],
       [this.order, ["string"], "Vector<string>"],
     ];
   }
 
-  constructor(params: { channel: types.TypeInputChannel; order: Array<string> }) {
+  constructor(params: { channel: types.InputChannel; order: Array<string> }) {
     super();
     this.channel = params.channel;
     this.order = params.order;
   }
 }
 
-export class ChannelsToggleUsername extends Function<boolean> {
-  channel: types.TypeInputChannel;
+export class channels_toggleUsername extends Function<boolean> {
+  channel: types.InputChannel;
   username: string;
   active: boolean;
 
@@ -13106,7 +13203,7 @@ export class ChannelsToggleUsername extends Function<boolean> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["channel", types._TypeInputChannel, "InputChannel"],
+      ["channel", types._InputChannel, "InputChannel"],
       ["username", "string", "string"],
       ["active", "boolean", "Bool"],
     ];
@@ -13114,13 +13211,13 @@ export class ChannelsToggleUsername extends Function<boolean> {
 
   protected get [params](): Params {
     return [
-      [this.channel, types._TypeInputChannel, "InputChannel"],
+      [this.channel, types._InputChannel, "InputChannel"],
       [this.username, "string", "string"],
       [this.active, "boolean", "Bool"],
     ];
   }
 
-  constructor(params: { channel: types.TypeInputChannel; username: string; active: boolean }) {
+  constructor(params: { channel: types.InputChannel; username: string; active: boolean }) {
     super();
     this.channel = params.channel;
     this.username = params.username;
@@ -13128,8 +13225,8 @@ export class ChannelsToggleUsername extends Function<boolean> {
   }
 }
 
-export class ChannelsDeactivateAllUsernames extends Function<boolean> {
-  channel: types.TypeInputChannel;
+export class channels_deactivateAllUsernames extends Function<boolean> {
+  channel: types.InputChannel;
 
   protected get [id]() {
     return 0x0A245DD3;
@@ -13137,24 +13234,24 @@ export class ChannelsDeactivateAllUsernames extends Function<boolean> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["channel", types._TypeInputChannel, "InputChannel"],
+      ["channel", types._InputChannel, "InputChannel"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.channel, types._TypeInputChannel, "InputChannel"],
+      [this.channel, types._InputChannel, "InputChannel"],
     ];
   }
 
-  constructor(params: { channel: types.TypeInputChannel }) {
+  constructor(params: { channel: types.InputChannel }) {
     super();
     this.channel = params.channel;
   }
 }
 
-export class ChannelsToggleForum extends Function<types.TypeUpdates> {
-  channel: types.TypeInputChannel;
+export class channels_toggleForum extends Function<types.Updates> {
+  channel: types.InputChannel;
   enabled: boolean;
 
   protected get [id]() {
@@ -13163,32 +13260,32 @@ export class ChannelsToggleForum extends Function<types.TypeUpdates> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["channel", types._TypeInputChannel, "InputChannel"],
+      ["channel", types._InputChannel, "InputChannel"],
       ["enabled", "boolean", "Bool"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.channel, types._TypeInputChannel, "InputChannel"],
+      [this.channel, types._InputChannel, "InputChannel"],
       [this.enabled, "boolean", "Bool"],
     ];
   }
 
-  constructor(params: { channel: types.TypeInputChannel; enabled: boolean }) {
+  constructor(params: { channel: types.InputChannel; enabled: boolean }) {
     super();
     this.channel = params.channel;
     this.enabled = params.enabled;
   }
 }
 
-export class ChannelsCreateForumTopic extends Function<types.TypeUpdates> {
-  channel: types.TypeInputChannel;
+export class channels_createForumTopic extends Function<types.Updates> {
+  channel: types.InputChannel;
   title: string;
-  iconColor?: number;
-  iconEmojiId?: bigint;
-  randomId: bigint;
-  sendAs?: types.TypeInputPeer;
+  icon_color?: number;
+  icon_emoji_id?: bigint;
+  random_id: bigint;
+  send_as?: types.InputPeer;
 
   protected get [id]() {
     return 0xF40C0224;
@@ -13197,44 +13294,44 @@ export class ChannelsCreateForumTopic extends Function<types.TypeUpdates> {
   static get [paramDesc](): ParamDesc {
     return [
       ["flags", flags, "#"],
-      ["channel", types._TypeInputChannel, "InputChannel"],
+      ["channel", types._InputChannel, "InputChannel"],
       ["title", "string", "string"],
-      ["iconColor", "number", "flags.0?int"],
-      ["iconEmojiId", "bigint", "flags.3?long"],
-      ["randomId", "bigint", "long"],
-      ["sendAs", types._TypeInputPeer, "flags.2?InputPeer"],
+      ["icon_color", "number", "flags.0?int"],
+      ["icon_emoji_id", "bigint", "flags.3?long"],
+      ["random_id", "bigint", "long"],
+      ["send_as", types._InputPeer, "flags.2?InputPeer"],
     ];
   }
 
   protected get [params](): Params {
     return [
       ["flags", flags, "#"],
-      [this.channel, types._TypeInputChannel, "InputChannel"],
+      [this.channel, types._InputChannel, "InputChannel"],
       [this.title, "string", "string"],
-      [this.iconColor ?? null, "number", "flags.0?int"],
-      [this.iconEmojiId ?? null, "bigint", "flags.3?long"],
-      [this.randomId, "bigint", "long"],
-      [this.sendAs ?? null, types._TypeInputPeer, "flags.2?InputPeer"],
+      [this.icon_color ?? null, "number", "flags.0?int"],
+      [this.icon_emoji_id ?? null, "bigint", "flags.3?long"],
+      [this.random_id, "bigint", "long"],
+      [this.send_as ?? null, types._InputPeer, "flags.2?InputPeer"],
     ];
   }
 
-  constructor(params: { channel: types.TypeInputChannel; title: string; iconColor?: number; iconEmojiId?: bigint; randomId: bigint; sendAs?: types.TypeInputPeer }) {
+  constructor(params: { channel: types.InputChannel; title: string; icon_color?: number; icon_emoji_id?: bigint; random_id: bigint; send_as?: types.InputPeer }) {
     super();
     this.channel = params.channel;
     this.title = params.title;
-    this.iconColor = params.iconColor;
-    this.iconEmojiId = params.iconEmojiId;
-    this.randomId = params.randomId;
-    this.sendAs = params.sendAs;
+    this.icon_color = params.icon_color;
+    this.icon_emoji_id = params.icon_emoji_id;
+    this.random_id = params.random_id;
+    this.send_as = params.send_as;
   }
 }
 
-export class ChannelsGetForumTopics extends Function<types.TypeMessagesForumTopics> {
-  channel: types.TypeInputChannel;
+export class channels_getForumTopics extends Function<types.messages_ForumTopics> {
+  channel: types.InputChannel;
   q?: string;
-  offsetDate: number;
-  offsetId: number;
-  offsetTopic: number;
+  offset_date: number;
+  offset_id: number;
+  offset_topic: number;
   limit: number;
 
   protected get [id]() {
@@ -13244,11 +13341,11 @@ export class ChannelsGetForumTopics extends Function<types.TypeMessagesForumTopi
   static get [paramDesc](): ParamDesc {
     return [
       ["flags", flags, "#"],
-      ["channel", types._TypeInputChannel, "InputChannel"],
+      ["channel", types._InputChannel, "InputChannel"],
       ["q", "string", "flags.0?string"],
-      ["offsetDate", "number", "int"],
-      ["offsetId", "number", "int"],
-      ["offsetTopic", "number", "int"],
+      ["offset_date", "number", "int"],
+      ["offset_id", "number", "int"],
+      ["offset_topic", "number", "int"],
       ["limit", "number", "int"],
     ];
   }
@@ -13256,28 +13353,28 @@ export class ChannelsGetForumTopics extends Function<types.TypeMessagesForumTopi
   protected get [params](): Params {
     return [
       ["flags", flags, "#"],
-      [this.channel, types._TypeInputChannel, "InputChannel"],
+      [this.channel, types._InputChannel, "InputChannel"],
       [this.q ?? null, "string", "flags.0?string"],
-      [this.offsetDate, "number", "int"],
-      [this.offsetId, "number", "int"],
-      [this.offsetTopic, "number", "int"],
+      [this.offset_date, "number", "int"],
+      [this.offset_id, "number", "int"],
+      [this.offset_topic, "number", "int"],
       [this.limit, "number", "int"],
     ];
   }
 
-  constructor(params: { channel: types.TypeInputChannel; q?: string; offsetDate: number; offsetId: number; offsetTopic: number; limit: number }) {
+  constructor(params: { channel: types.InputChannel; q?: string; offset_date: number; offset_id: number; offset_topic: number; limit: number }) {
     super();
     this.channel = params.channel;
     this.q = params.q;
-    this.offsetDate = params.offsetDate;
-    this.offsetId = params.offsetId;
-    this.offsetTopic = params.offsetTopic;
+    this.offset_date = params.offset_date;
+    this.offset_id = params.offset_id;
+    this.offset_topic = params.offset_topic;
     this.limit = params.limit;
   }
 }
 
-export class ChannelsGetForumTopicsByID extends Function<types.TypeMessagesForumTopics> {
-  channel: types.TypeInputChannel;
+export class channels_getForumTopicsByID extends Function<types.messages_ForumTopics> {
+  channel: types.InputChannel;
   topics: Array<number>;
 
   protected get [id]() {
@@ -13286,30 +13383,30 @@ export class ChannelsGetForumTopicsByID extends Function<types.TypeMessagesForum
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["channel", types._TypeInputChannel, "InputChannel"],
+      ["channel", types._InputChannel, "InputChannel"],
       ["topics", ["number"], "Vector<int>"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.channel, types._TypeInputChannel, "InputChannel"],
+      [this.channel, types._InputChannel, "InputChannel"],
       [this.topics, ["number"], "Vector<int>"],
     ];
   }
 
-  constructor(params: { channel: types.TypeInputChannel; topics: Array<number> }) {
+  constructor(params: { channel: types.InputChannel; topics: Array<number> }) {
     super();
     this.channel = params.channel;
     this.topics = params.topics;
   }
 }
 
-export class ChannelsEditForumTopic extends Function<types.TypeUpdates> {
-  channel: types.TypeInputChannel;
-  topicId: number;
+export class channels_editForumTopic extends Function<types.Updates> {
+  channel: types.InputChannel;
+  topic_id: number;
   title?: string;
-  iconEmojiId?: bigint;
+  icon_emoji_id?: bigint;
   closed?: boolean;
   hidden?: boolean;
 
@@ -13320,10 +13417,10 @@ export class ChannelsEditForumTopic extends Function<types.TypeUpdates> {
   static get [paramDesc](): ParamDesc {
     return [
       ["flags", flags, "#"],
-      ["channel", types._TypeInputChannel, "InputChannel"],
-      ["topicId", "number", "int"],
+      ["channel", types._InputChannel, "InputChannel"],
+      ["topic_id", "number", "int"],
       ["title", "string", "flags.0?string"],
-      ["iconEmojiId", "bigint", "flags.1?long"],
+      ["icon_emoji_id", "bigint", "flags.1?long"],
       ["closed", "boolean", "flags.2?Bool"],
       ["hidden", "boolean", "flags.3?Bool"],
     ];
@@ -13332,29 +13429,29 @@ export class ChannelsEditForumTopic extends Function<types.TypeUpdates> {
   protected get [params](): Params {
     return [
       ["flags", flags, "#"],
-      [this.channel, types._TypeInputChannel, "InputChannel"],
-      [this.topicId, "number", "int"],
+      [this.channel, types._InputChannel, "InputChannel"],
+      [this.topic_id, "number", "int"],
       [this.title ?? null, "string", "flags.0?string"],
-      [this.iconEmojiId ?? null, "bigint", "flags.1?long"],
+      [this.icon_emoji_id ?? null, "bigint", "flags.1?long"],
       [this.closed ?? null, "boolean", "flags.2?Bool"],
       [this.hidden ?? null, "boolean", "flags.3?Bool"],
     ];
   }
 
-  constructor(params: { channel: types.TypeInputChannel; topicId: number; title?: string; iconEmojiId?: bigint; closed?: boolean; hidden?: boolean }) {
+  constructor(params: { channel: types.InputChannel; topic_id: number; title?: string; icon_emoji_id?: bigint; closed?: boolean; hidden?: boolean }) {
     super();
     this.channel = params.channel;
-    this.topicId = params.topicId;
+    this.topic_id = params.topic_id;
     this.title = params.title;
-    this.iconEmojiId = params.iconEmojiId;
+    this.icon_emoji_id = params.icon_emoji_id;
     this.closed = params.closed;
     this.hidden = params.hidden;
   }
 }
 
-export class ChannelsUpdatePinnedForumTopic extends Function<types.TypeUpdates> {
-  channel: types.TypeInputChannel;
-  topicId: number;
+export class channels_updatePinnedForumTopic extends Function<types.Updates> {
+  channel: types.InputChannel;
+  topic_id: number;
   pinned: boolean;
 
   protected get [id]() {
@@ -13363,31 +13460,31 @@ export class ChannelsUpdatePinnedForumTopic extends Function<types.TypeUpdates> 
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["channel", types._TypeInputChannel, "InputChannel"],
-      ["topicId", "number", "int"],
+      ["channel", types._InputChannel, "InputChannel"],
+      ["topic_id", "number", "int"],
       ["pinned", "boolean", "Bool"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.channel, types._TypeInputChannel, "InputChannel"],
-      [this.topicId, "number", "int"],
+      [this.channel, types._InputChannel, "InputChannel"],
+      [this.topic_id, "number", "int"],
       [this.pinned, "boolean", "Bool"],
     ];
   }
 
-  constructor(params: { channel: types.TypeInputChannel; topicId: number; pinned: boolean }) {
+  constructor(params: { channel: types.InputChannel; topic_id: number; pinned: boolean }) {
     super();
     this.channel = params.channel;
-    this.topicId = params.topicId;
+    this.topic_id = params.topic_id;
     this.pinned = params.pinned;
   }
 }
 
-export class ChannelsDeleteTopicHistory extends Function<types.TypeMessagesAffectedHistory> {
-  channel: types.TypeInputChannel;
-  topMsgId: number;
+export class channels_deleteTopicHistory extends Function<types.messages_AffectedHistory> {
+  channel: types.InputChannel;
+  top_msg_id: number;
 
   protected get [id]() {
     return 0x34435F2D;
@@ -13395,28 +13492,28 @@ export class ChannelsDeleteTopicHistory extends Function<types.TypeMessagesAffec
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["channel", types._TypeInputChannel, "InputChannel"],
-      ["topMsgId", "number", "int"],
+      ["channel", types._InputChannel, "InputChannel"],
+      ["top_msg_id", "number", "int"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.channel, types._TypeInputChannel, "InputChannel"],
-      [this.topMsgId, "number", "int"],
+      [this.channel, types._InputChannel, "InputChannel"],
+      [this.top_msg_id, "number", "int"],
     ];
   }
 
-  constructor(params: { channel: types.TypeInputChannel; topMsgId: number }) {
+  constructor(params: { channel: types.InputChannel; top_msg_id: number }) {
     super();
     this.channel = params.channel;
-    this.topMsgId = params.topMsgId;
+    this.top_msg_id = params.top_msg_id;
   }
 }
 
-export class ChannelsReorderPinnedForumTopics extends Function<types.TypeUpdates> {
+export class channels_reorderPinnedForumTopics extends Function<types.Updates> {
   force?: true;
-  channel: types.TypeInputChannel;
+  channel: types.InputChannel;
   order: Array<number>;
 
   protected get [id]() {
@@ -13427,7 +13524,7 @@ export class ChannelsReorderPinnedForumTopics extends Function<types.TypeUpdates
     return [
       ["flags", flags, "#"],
       ["force", "true", "flags.0?true"],
-      ["channel", types._TypeInputChannel, "InputChannel"],
+      ["channel", types._InputChannel, "InputChannel"],
       ["order", ["number"], "Vector<int>"],
     ];
   }
@@ -13436,12 +13533,12 @@ export class ChannelsReorderPinnedForumTopics extends Function<types.TypeUpdates
     return [
       ["flags", flags, "#"],
       [this.force ?? null, "true", "flags.0?true"],
-      [this.channel, types._TypeInputChannel, "InputChannel"],
+      [this.channel, types._InputChannel, "InputChannel"],
       [this.order, ["number"], "Vector<int>"],
     ];
   }
 
-  constructor(params: { force?: true; channel: types.TypeInputChannel; order: Array<number> }) {
+  constructor(params: { force?: true; channel: types.InputChannel; order: Array<number> }) {
     super();
     this.force = params.force;
     this.channel = params.channel;
@@ -13449,8 +13546,8 @@ export class ChannelsReorderPinnedForumTopics extends Function<types.TypeUpdates
   }
 }
 
-export class ChannelsToggleAntiSpam extends Function<types.TypeUpdates> {
-  channel: types.TypeInputChannel;
+export class channels_toggleAntiSpam extends Function<types.Updates> {
+  channel: types.InputChannel;
   enabled: boolean;
 
   protected get [id]() {
@@ -13459,28 +13556,28 @@ export class ChannelsToggleAntiSpam extends Function<types.TypeUpdates> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["channel", types._TypeInputChannel, "InputChannel"],
+      ["channel", types._InputChannel, "InputChannel"],
       ["enabled", "boolean", "Bool"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.channel, types._TypeInputChannel, "InputChannel"],
+      [this.channel, types._InputChannel, "InputChannel"],
       [this.enabled, "boolean", "Bool"],
     ];
   }
 
-  constructor(params: { channel: types.TypeInputChannel; enabled: boolean }) {
+  constructor(params: { channel: types.InputChannel; enabled: boolean }) {
     super();
     this.channel = params.channel;
     this.enabled = params.enabled;
   }
 }
 
-export class ChannelsReportAntiSpamFalsePositive extends Function<boolean> {
-  channel: types.TypeInputChannel;
-  msgId: number;
+export class channels_reportAntiSpamFalsePositive extends Function<boolean> {
+  channel: types.InputChannel;
+  msg_id: number;
 
   protected get [id]() {
     return 0xA850A693;
@@ -13488,27 +13585,27 @@ export class ChannelsReportAntiSpamFalsePositive extends Function<boolean> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["channel", types._TypeInputChannel, "InputChannel"],
-      ["msgId", "number", "int"],
+      ["channel", types._InputChannel, "InputChannel"],
+      ["msg_id", "number", "int"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.channel, types._TypeInputChannel, "InputChannel"],
-      [this.msgId, "number", "int"],
+      [this.channel, types._InputChannel, "InputChannel"],
+      [this.msg_id, "number", "int"],
     ];
   }
 
-  constructor(params: { channel: types.TypeInputChannel; msgId: number }) {
+  constructor(params: { channel: types.InputChannel; msg_id: number }) {
     super();
     this.channel = params.channel;
-    this.msgId = params.msgId;
+    this.msg_id = params.msg_id;
   }
 }
 
-export class ChannelsToggleParticipantsHidden extends Function<types.TypeUpdates> {
-  channel: types.TypeInputChannel;
+export class channels_toggleParticipantsHidden extends Function<types.Updates> {
+  channel: types.InputChannel;
   enabled: boolean;
 
   protected get [id]() {
@@ -13517,28 +13614,28 @@ export class ChannelsToggleParticipantsHidden extends Function<types.TypeUpdates
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["channel", types._TypeInputChannel, "InputChannel"],
+      ["channel", types._InputChannel, "InputChannel"],
       ["enabled", "boolean", "Bool"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.channel, types._TypeInputChannel, "InputChannel"],
+      [this.channel, types._InputChannel, "InputChannel"],
       [this.enabled, "boolean", "Bool"],
     ];
   }
 
-  constructor(params: { channel: types.TypeInputChannel; enabled: boolean }) {
+  constructor(params: { channel: types.InputChannel; enabled: boolean }) {
     super();
     this.channel = params.channel;
     this.enabled = params.enabled;
   }
 }
 
-export class ChannelsClickSponsoredMessage extends Function<boolean> {
-  channel: types.TypeInputChannel;
-  randomId: Uint8Array;
+export class channels_clickSponsoredMessage extends Function<boolean> {
+  channel: types.InputChannel;
+  random_id: Uint8Array;
 
   protected get [id]() {
     return 0x18AFBC93;
@@ -13546,29 +13643,29 @@ export class ChannelsClickSponsoredMessage extends Function<boolean> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["channel", types._TypeInputChannel, "InputChannel"],
-      ["randomId", Uint8Array, "bytes"],
+      ["channel", types._InputChannel, "InputChannel"],
+      ["random_id", Uint8Array, "bytes"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.channel, types._TypeInputChannel, "InputChannel"],
-      [this.randomId, Uint8Array, "bytes"],
+      [this.channel, types._InputChannel, "InputChannel"],
+      [this.random_id, Uint8Array, "bytes"],
     ];
   }
 
-  constructor(params: { channel: types.TypeInputChannel; randomId: Uint8Array }) {
+  constructor(params: { channel: types.InputChannel; random_id: Uint8Array }) {
     super();
     this.channel = params.channel;
-    this.randomId = params.randomId;
+    this.random_id = params.random_id;
   }
 }
 
-export class ChannelsUpdateColor extends Function<types.TypeUpdates> {
-  channel: types.TypeInputChannel;
+export class channels_updateColor extends Function<types.Updates> {
+  channel: types.InputChannel;
   color: number;
-  backgroundEmojiId?: bigint;
+  background_emoji_id?: bigint;
 
   protected get [id]() {
     return 0x621A201F;
@@ -13577,32 +13674,86 @@ export class ChannelsUpdateColor extends Function<types.TypeUpdates> {
   static get [paramDesc](): ParamDesc {
     return [
       ["flags", flags, "#"],
-      ["channel", types._TypeInputChannel, "InputChannel"],
+      ["channel", types._InputChannel, "InputChannel"],
       ["color", "number", "int"],
-      ["backgroundEmojiId", "bigint", "flags.0?long"],
+      ["background_emoji_id", "bigint", "flags.0?long"],
     ];
   }
 
   protected get [params](): Params {
     return [
       ["flags", flags, "#"],
-      [this.channel, types._TypeInputChannel, "InputChannel"],
+      [this.channel, types._InputChannel, "InputChannel"],
       [this.color, "number", "int"],
-      [this.backgroundEmojiId ?? null, "bigint", "flags.0?long"],
+      [this.background_emoji_id ?? null, "bigint", "flags.0?long"],
     ];
   }
 
-  constructor(params: { channel: types.TypeInputChannel; color: number; backgroundEmojiId?: bigint }) {
+  constructor(params: { channel: types.InputChannel; color: number; background_emoji_id?: bigint }) {
     super();
     this.channel = params.channel;
     this.color = params.color;
-    this.backgroundEmojiId = params.backgroundEmojiId;
+    this.background_emoji_id = params.background_emoji_id;
   }
 }
 
-export class BotsSendCustomRequest extends Function<types.TypeDataJSON> {
-  customMethod: string;
-  params: types.TypeDataJSON;
+export class channels_toggleViewForumAsMessages extends Function<types.Updates> {
+  channel: types.InputChannel;
+  enabled: boolean;
+
+  protected get [id]() {
+    return 0x9738BB15;
+  }
+
+  static get [paramDesc](): ParamDesc {
+    return [
+      ["channel", types._InputChannel, "InputChannel"],
+      ["enabled", "boolean", "Bool"],
+    ];
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.channel, types._InputChannel, "InputChannel"],
+      [this.enabled, "boolean", "Bool"],
+    ];
+  }
+
+  constructor(params: { channel: types.InputChannel; enabled: boolean }) {
+    super();
+    this.channel = params.channel;
+    this.enabled = params.enabled;
+  }
+}
+
+export class channels_getChannelRecommendations extends Function<types.messages_Chats> {
+  channel: types.InputChannel;
+
+  protected get [id]() {
+    return 0x83B70D97;
+  }
+
+  static get [paramDesc](): ParamDesc {
+    return [
+      ["channel", types._InputChannel, "InputChannel"],
+    ];
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.channel, types._InputChannel, "InputChannel"],
+    ];
+  }
+
+  constructor(params: { channel: types.InputChannel }) {
+    super();
+    this.channel = params.channel;
+  }
+}
+
+export class bots_sendCustomRequest extends Function<types.DataJSON> {
+  custom_method: string;
+  params: types.DataJSON;
 
   protected get [id]() {
     return 0xAA2769ED;
@@ -13610,28 +13761,28 @@ export class BotsSendCustomRequest extends Function<types.TypeDataJSON> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["customMethod", "string", "string"],
-      ["params", types._TypeDataJSON, "DataJSON"],
+      ["custom_method", "string", "string"],
+      ["params", types._DataJSON, "DataJSON"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.customMethod, "string", "string"],
-      [this.params, types._TypeDataJSON, "DataJSON"],
+      [this.custom_method, "string", "string"],
+      [this.params, types._DataJSON, "DataJSON"],
     ];
   }
 
-  constructor(params: { customMethod: string; params: types.TypeDataJSON }) {
+  constructor(params: { custom_method: string; params: types.DataJSON }) {
     super();
-    this.customMethod = params.customMethod;
+    this.custom_method = params.custom_method;
     this.params = params.params;
   }
 }
 
-export class BotsAnswerWebhookJSONQuery extends Function<boolean> {
-  queryId: bigint;
-  data: types.TypeDataJSON;
+export class bots_answerWebhookJSONQuery extends Function<boolean> {
+  query_id: bigint;
+  data: types.DataJSON;
 
   protected get [id]() {
     return 0xE6213F4D;
@@ -13639,29 +13790,29 @@ export class BotsAnswerWebhookJSONQuery extends Function<boolean> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["queryId", "bigint", "long"],
-      ["data", types._TypeDataJSON, "DataJSON"],
+      ["query_id", "bigint", "long"],
+      ["data", types._DataJSON, "DataJSON"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.queryId, "bigint", "long"],
-      [this.data, types._TypeDataJSON, "DataJSON"],
+      [this.query_id, "bigint", "long"],
+      [this.data, types._DataJSON, "DataJSON"],
     ];
   }
 
-  constructor(params: { queryId: bigint; data: types.TypeDataJSON }) {
+  constructor(params: { query_id: bigint; data: types.DataJSON }) {
     super();
-    this.queryId = params.queryId;
+    this.query_id = params.query_id;
     this.data = params.data;
   }
 }
 
-export class BotsSetBotCommands extends Function<boolean> {
-  scope: types.TypeBotCommandScope;
-  langCode: string;
-  commands: Array<types.TypeBotCommand>;
+export class bots_setBotCommands extends Function<boolean> {
+  scope: types.BotCommandScope;
+  lang_code: string;
+  commands: Array<types.BotCommand>;
 
   protected get [id]() {
     return 0x0517165A;
@@ -13669,31 +13820,31 @@ export class BotsSetBotCommands extends Function<boolean> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["scope", types._TypeBotCommandScope, "BotCommandScope"],
-      ["langCode", "string", "string"],
-      ["commands", [types._TypeBotCommand], "Vector<BotCommand>"],
+      ["scope", types._BotCommandScope, "BotCommandScope"],
+      ["lang_code", "string", "string"],
+      ["commands", [types._BotCommand], "Vector<BotCommand>"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.scope, types._TypeBotCommandScope, "BotCommandScope"],
-      [this.langCode, "string", "string"],
-      [this.commands, [types._TypeBotCommand], "Vector<BotCommand>"],
+      [this.scope, types._BotCommandScope, "BotCommandScope"],
+      [this.lang_code, "string", "string"],
+      [this.commands, [types._BotCommand], "Vector<BotCommand>"],
     ];
   }
 
-  constructor(params: { scope: types.TypeBotCommandScope; langCode: string; commands: Array<types.TypeBotCommand> }) {
+  constructor(params: { scope: types.BotCommandScope; lang_code: string; commands: Array<types.BotCommand> }) {
     super();
     this.scope = params.scope;
-    this.langCode = params.langCode;
+    this.lang_code = params.lang_code;
     this.commands = params.commands;
   }
 }
 
-export class BotsResetBotCommands extends Function<boolean> {
-  scope: types.TypeBotCommandScope;
-  langCode: string;
+export class bots_resetBotCommands extends Function<boolean> {
+  scope: types.BotCommandScope;
+  lang_code: string;
 
   protected get [id]() {
     return 0x3D8DE0F9;
@@ -13701,28 +13852,28 @@ export class BotsResetBotCommands extends Function<boolean> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["scope", types._TypeBotCommandScope, "BotCommandScope"],
-      ["langCode", "string", "string"],
+      ["scope", types._BotCommandScope, "BotCommandScope"],
+      ["lang_code", "string", "string"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.scope, types._TypeBotCommandScope, "BotCommandScope"],
-      [this.langCode, "string", "string"],
+      [this.scope, types._BotCommandScope, "BotCommandScope"],
+      [this.lang_code, "string", "string"],
     ];
   }
 
-  constructor(params: { scope: types.TypeBotCommandScope; langCode: string }) {
+  constructor(params: { scope: types.BotCommandScope; lang_code: string }) {
     super();
     this.scope = params.scope;
-    this.langCode = params.langCode;
+    this.lang_code = params.lang_code;
   }
 }
 
-export class BotsGetBotCommands extends Function<types.TypeBotCommand[]> {
-  scope: types.TypeBotCommandScope;
-  langCode: string;
+export class bots_getBotCommands extends Function<types.BotCommand[]> {
+  scope: types.BotCommandScope;
+  lang_code: string;
 
   protected get [id]() {
     return 0xE34C0DD6;
@@ -13730,28 +13881,28 @@ export class BotsGetBotCommands extends Function<types.TypeBotCommand[]> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["scope", types._TypeBotCommandScope, "BotCommandScope"],
-      ["langCode", "string", "string"],
+      ["scope", types._BotCommandScope, "BotCommandScope"],
+      ["lang_code", "string", "string"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.scope, types._TypeBotCommandScope, "BotCommandScope"],
-      [this.langCode, "string", "string"],
+      [this.scope, types._BotCommandScope, "BotCommandScope"],
+      [this.lang_code, "string", "string"],
     ];
   }
 
-  constructor(params: { scope: types.TypeBotCommandScope; langCode: string }) {
+  constructor(params: { scope: types.BotCommandScope; lang_code: string }) {
     super();
     this.scope = params.scope;
-    this.langCode = params.langCode;
+    this.lang_code = params.lang_code;
   }
 }
 
-export class BotsSetBotMenuButton extends Function<boolean> {
-  userId: types.TypeInputUser;
-  button: types.TypeBotMenuButton;
+export class bots_setBotMenuButton extends Function<boolean> {
+  user_id: types.InputUser;
+  button: types.BotMenuButton;
 
   protected get [id]() {
     return 0x4504D54F;
@@ -13759,27 +13910,27 @@ export class BotsSetBotMenuButton extends Function<boolean> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["userId", types._TypeInputUser, "InputUser"],
-      ["button", types._TypeBotMenuButton, "BotMenuButton"],
+      ["user_id", types._InputUser, "InputUser"],
+      ["button", types._BotMenuButton, "BotMenuButton"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.userId, types._TypeInputUser, "InputUser"],
-      [this.button, types._TypeBotMenuButton, "BotMenuButton"],
+      [this.user_id, types._InputUser, "InputUser"],
+      [this.button, types._BotMenuButton, "BotMenuButton"],
     ];
   }
 
-  constructor(params: { userId: types.TypeInputUser; button: types.TypeBotMenuButton }) {
+  constructor(params: { user_id: types.InputUser; button: types.BotMenuButton }) {
     super();
-    this.userId = params.userId;
+    this.user_id = params.user_id;
     this.button = params.button;
   }
 }
 
-export class BotsGetBotMenuButton extends Function<types.TypeBotMenuButton> {
-  userId: types.TypeInputUser;
+export class bots_getBotMenuButton extends Function<types.BotMenuButton> {
+  user_id: types.InputUser;
 
   protected get [id]() {
     return 0x9C60EB28;
@@ -13787,24 +13938,24 @@ export class BotsGetBotMenuButton extends Function<types.TypeBotMenuButton> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["userId", types._TypeInputUser, "InputUser"],
+      ["user_id", types._InputUser, "InputUser"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.userId, types._TypeInputUser, "InputUser"],
+      [this.user_id, types._InputUser, "InputUser"],
     ];
   }
 
-  constructor(params: { userId: types.TypeInputUser }) {
+  constructor(params: { user_id: types.InputUser }) {
     super();
-    this.userId = params.userId;
+    this.user_id = params.user_id;
   }
 }
 
-export class BotsSetBotBroadcastDefaultAdminRights extends Function<boolean> {
-  adminRights: types.TypeChatAdminRights;
+export class bots_setBotBroadcastDefaultAdminRights extends Function<boolean> {
+  admin_rights: types.ChatAdminRights;
 
   protected get [id]() {
     return 0x788464E1;
@@ -13812,24 +13963,24 @@ export class BotsSetBotBroadcastDefaultAdminRights extends Function<boolean> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["adminRights", types._TypeChatAdminRights, "ChatAdminRights"],
+      ["admin_rights", types._ChatAdminRights, "ChatAdminRights"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.adminRights, types._TypeChatAdminRights, "ChatAdminRights"],
+      [this.admin_rights, types._ChatAdminRights, "ChatAdminRights"],
     ];
   }
 
-  constructor(params: { adminRights: types.TypeChatAdminRights }) {
+  constructor(params: { admin_rights: types.ChatAdminRights }) {
     super();
-    this.adminRights = params.adminRights;
+    this.admin_rights = params.admin_rights;
   }
 }
 
-export class BotsSetBotGroupDefaultAdminRights extends Function<boolean> {
-  adminRights: types.TypeChatAdminRights;
+export class bots_setBotGroupDefaultAdminRights extends Function<boolean> {
+  admin_rights: types.ChatAdminRights;
 
   protected get [id]() {
     return 0x925EC9EA;
@@ -13837,25 +13988,25 @@ export class BotsSetBotGroupDefaultAdminRights extends Function<boolean> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["adminRights", types._TypeChatAdminRights, "ChatAdminRights"],
+      ["admin_rights", types._ChatAdminRights, "ChatAdminRights"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.adminRights, types._TypeChatAdminRights, "ChatAdminRights"],
+      [this.admin_rights, types._ChatAdminRights, "ChatAdminRights"],
     ];
   }
 
-  constructor(params: { adminRights: types.TypeChatAdminRights }) {
+  constructor(params: { admin_rights: types.ChatAdminRights }) {
     super();
-    this.adminRights = params.adminRights;
+    this.admin_rights = params.admin_rights;
   }
 }
 
-export class BotsSetBotInfo extends Function<boolean> {
-  bot?: types.TypeInputUser;
-  langCode: string;
+export class bots_setBotInfo extends Function<boolean> {
+  bot?: types.InputUser;
+  lang_code: string;
   name?: string;
   about?: string;
   description?: string;
@@ -13867,8 +14018,8 @@ export class BotsSetBotInfo extends Function<boolean> {
   static get [paramDesc](): ParamDesc {
     return [
       ["flags", flags, "#"],
-      ["bot", types._TypeInputUser, "flags.2?InputUser"],
-      ["langCode", "string", "string"],
+      ["bot", types._InputUser, "flags.2?InputUser"],
+      ["lang_code", "string", "string"],
       ["name", "string", "flags.3?string"],
       ["about", "string", "flags.0?string"],
       ["description", "string", "flags.1?string"],
@@ -13878,27 +14029,27 @@ export class BotsSetBotInfo extends Function<boolean> {
   protected get [params](): Params {
     return [
       ["flags", flags, "#"],
-      [this.bot ?? null, types._TypeInputUser, "flags.2?InputUser"],
-      [this.langCode, "string", "string"],
+      [this.bot ?? null, types._InputUser, "flags.2?InputUser"],
+      [this.lang_code, "string", "string"],
       [this.name ?? null, "string", "flags.3?string"],
       [this.about ?? null, "string", "flags.0?string"],
       [this.description ?? null, "string", "flags.1?string"],
     ];
   }
 
-  constructor(params: { bot?: types.TypeInputUser; langCode: string; name?: string; about?: string; description?: string }) {
+  constructor(params: { bot?: types.InputUser; lang_code: string; name?: string; about?: string; description?: string }) {
     super();
     this.bot = params.bot;
-    this.langCode = params.langCode;
+    this.lang_code = params.lang_code;
     this.name = params.name;
     this.about = params.about;
     this.description = params.description;
   }
 }
 
-export class BotsGetBotInfo extends Function<types.TypeBotsBotInfo> {
-  bot?: types.TypeInputUser;
-  langCode: string;
+export class bots_getBotInfo extends Function<types.bots_BotInfo> {
+  bot?: types.InputUser;
+  lang_code: string;
 
   protected get [id]() {
     return 0xDCD914FD;
@@ -13907,28 +14058,28 @@ export class BotsGetBotInfo extends Function<types.TypeBotsBotInfo> {
   static get [paramDesc](): ParamDesc {
     return [
       ["flags", flags, "#"],
-      ["bot", types._TypeInputUser, "flags.0?InputUser"],
-      ["langCode", "string", "string"],
+      ["bot", types._InputUser, "flags.0?InputUser"],
+      ["lang_code", "string", "string"],
     ];
   }
 
   protected get [params](): Params {
     return [
       ["flags", flags, "#"],
-      [this.bot ?? null, types._TypeInputUser, "flags.0?InputUser"],
-      [this.langCode, "string", "string"],
+      [this.bot ?? null, types._InputUser, "flags.0?InputUser"],
+      [this.lang_code, "string", "string"],
     ];
   }
 
-  constructor(params: { bot?: types.TypeInputUser; langCode: string }) {
+  constructor(params: { bot?: types.InputUser; lang_code: string }) {
     super();
     this.bot = params.bot;
-    this.langCode = params.langCode;
+    this.lang_code = params.lang_code;
   }
 }
 
-export class BotsReorderUsernames extends Function<boolean> {
-  bot: types.TypeInputUser;
+export class bots_reorderUsernames extends Function<boolean> {
+  bot: types.InputUser;
   order: Array<string>;
 
   protected get [id]() {
@@ -13937,27 +14088,27 @@ export class BotsReorderUsernames extends Function<boolean> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["bot", types._TypeInputUser, "InputUser"],
+      ["bot", types._InputUser, "InputUser"],
       ["order", ["string"], "Vector<string>"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.bot, types._TypeInputUser, "InputUser"],
+      [this.bot, types._InputUser, "InputUser"],
       [this.order, ["string"], "Vector<string>"],
     ];
   }
 
-  constructor(params: { bot: types.TypeInputUser; order: Array<string> }) {
+  constructor(params: { bot: types.InputUser; order: Array<string> }) {
     super();
     this.bot = params.bot;
     this.order = params.order;
   }
 }
 
-export class BotsToggleUsername extends Function<boolean> {
-  bot: types.TypeInputUser;
+export class bots_toggleUsername extends Function<boolean> {
+  bot: types.InputUser;
   username: string;
   active: boolean;
 
@@ -13967,7 +14118,7 @@ export class BotsToggleUsername extends Function<boolean> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["bot", types._TypeInputUser, "InputUser"],
+      ["bot", types._InputUser, "InputUser"],
       ["username", "string", "string"],
       ["active", "boolean", "Bool"],
     ];
@@ -13975,13 +14126,13 @@ export class BotsToggleUsername extends Function<boolean> {
 
   protected get [params](): Params {
     return [
-      [this.bot, types._TypeInputUser, "InputUser"],
+      [this.bot, types._InputUser, "InputUser"],
       [this.username, "string", "string"],
       [this.active, "boolean", "Bool"],
     ];
   }
 
-  constructor(params: { bot: types.TypeInputUser; username: string; active: boolean }) {
+  constructor(params: { bot: types.InputUser; username: string; active: boolean }) {
     super();
     this.bot = params.bot;
     this.username = params.username;
@@ -13989,8 +14140,8 @@ export class BotsToggleUsername extends Function<boolean> {
   }
 }
 
-export class BotsCanSendMessage extends Function<boolean> {
-  bot: types.TypeInputUser;
+export class bots_canSendMessage extends Function<boolean> {
+  bot: types.InputUser;
 
   protected get [id]() {
     return 0x1359F4E6;
@@ -13998,24 +14149,24 @@ export class BotsCanSendMessage extends Function<boolean> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["bot", types._TypeInputUser, "InputUser"],
+      ["bot", types._InputUser, "InputUser"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.bot, types._TypeInputUser, "InputUser"],
+      [this.bot, types._InputUser, "InputUser"],
     ];
   }
 
-  constructor(params: { bot: types.TypeInputUser }) {
+  constructor(params: { bot: types.InputUser }) {
     super();
     this.bot = params.bot;
   }
 }
 
-export class BotsAllowSendMessage extends Function<types.TypeUpdates> {
-  bot: types.TypeInputUser;
+export class bots_allowSendMessage extends Function<types.Updates> {
+  bot: types.InputUser;
 
   protected get [id]() {
     return 0xF132E3EF;
@@ -14023,26 +14174,26 @@ export class BotsAllowSendMessage extends Function<types.TypeUpdates> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["bot", types._TypeInputUser, "InputUser"],
+      ["bot", types._InputUser, "InputUser"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.bot, types._TypeInputUser, "InputUser"],
+      [this.bot, types._InputUser, "InputUser"],
     ];
   }
 
-  constructor(params: { bot: types.TypeInputUser }) {
+  constructor(params: { bot: types.InputUser }) {
     super();
     this.bot = params.bot;
   }
 }
 
-export class BotsInvokeWebViewCustomMethod extends Function<types.TypeDataJSON> {
-  bot: types.TypeInputUser;
-  customMethod: string;
-  params: types.TypeDataJSON;
+export class bots_invokeWebViewCustomMethod extends Function<types.DataJSON> {
+  bot: types.InputUser;
+  custom_method: string;
+  params: types.DataJSON;
 
   protected get [id]() {
     return 0x087FC5E7;
@@ -14050,31 +14201,31 @@ export class BotsInvokeWebViewCustomMethod extends Function<types.TypeDataJSON> 
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["bot", types._TypeInputUser, "InputUser"],
-      ["customMethod", "string", "string"],
-      ["params", types._TypeDataJSON, "DataJSON"],
+      ["bot", types._InputUser, "InputUser"],
+      ["custom_method", "string", "string"],
+      ["params", types._DataJSON, "DataJSON"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.bot, types._TypeInputUser, "InputUser"],
-      [this.customMethod, "string", "string"],
-      [this.params, types._TypeDataJSON, "DataJSON"],
+      [this.bot, types._InputUser, "InputUser"],
+      [this.custom_method, "string", "string"],
+      [this.params, types._DataJSON, "DataJSON"],
     ];
   }
 
-  constructor(params: { bot: types.TypeInputUser; customMethod: string; params: types.TypeDataJSON }) {
+  constructor(params: { bot: types.InputUser; custom_method: string; params: types.DataJSON }) {
     super();
     this.bot = params.bot;
-    this.customMethod = params.customMethod;
+    this.custom_method = params.custom_method;
     this.params = params.params;
   }
 }
 
-export class PaymentsGetPaymentForm extends Function<types.TypePaymentsPaymentForm> {
-  invoice: types.TypeInputInvoice;
-  themeParams?: types.TypeDataJSON;
+export class payments_getPaymentForm extends Function<types.payments_PaymentForm> {
+  invoice: types.InputInvoice;
+  theme_params?: types.DataJSON;
 
   protected get [id]() {
     return 0x37148DBB;
@@ -14083,29 +14234,29 @@ export class PaymentsGetPaymentForm extends Function<types.TypePaymentsPaymentFo
   static get [paramDesc](): ParamDesc {
     return [
       ["flags", flags, "#"],
-      ["invoice", types._TypeInputInvoice, "InputInvoice"],
-      ["themeParams", types._TypeDataJSON, "flags.0?DataJSON"],
+      ["invoice", types._InputInvoice, "InputInvoice"],
+      ["theme_params", types._DataJSON, "flags.0?DataJSON"],
     ];
   }
 
   protected get [params](): Params {
     return [
       ["flags", flags, "#"],
-      [this.invoice, types._TypeInputInvoice, "InputInvoice"],
-      [this.themeParams ?? null, types._TypeDataJSON, "flags.0?DataJSON"],
+      [this.invoice, types._InputInvoice, "InputInvoice"],
+      [this.theme_params ?? null, types._DataJSON, "flags.0?DataJSON"],
     ];
   }
 
-  constructor(params: { invoice: types.TypeInputInvoice; themeParams?: types.TypeDataJSON }) {
+  constructor(params: { invoice: types.InputInvoice; theme_params?: types.DataJSON }) {
     super();
     this.invoice = params.invoice;
-    this.themeParams = params.themeParams;
+    this.theme_params = params.theme_params;
   }
 }
 
-export class PaymentsGetPaymentReceipt extends Function<types.TypePaymentsPaymentReceipt> {
-  peer: types.TypeInputPeer;
-  msgId: number;
+export class payments_getPaymentReceipt extends Function<types.payments_PaymentReceipt> {
+  peer: types.InputPeer;
+  msg_id: number;
 
   protected get [id]() {
     return 0x2478D1CC;
@@ -14113,29 +14264,29 @@ export class PaymentsGetPaymentReceipt extends Function<types.TypePaymentsPaymen
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["peer", types._TypeInputPeer, "InputPeer"],
-      ["msgId", "number", "int"],
+      ["peer", types._InputPeer, "InputPeer"],
+      ["msg_id", "number", "int"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.peer, types._TypeInputPeer, "InputPeer"],
-      [this.msgId, "number", "int"],
+      [this.peer, types._InputPeer, "InputPeer"],
+      [this.msg_id, "number", "int"],
     ];
   }
 
-  constructor(params: { peer: types.TypeInputPeer; msgId: number }) {
+  constructor(params: { peer: types.InputPeer; msg_id: number }) {
     super();
     this.peer = params.peer;
-    this.msgId = params.msgId;
+    this.msg_id = params.msg_id;
   }
 }
 
-export class PaymentsValidateRequestedInfo extends Function<types.TypePaymentsValidatedRequestedInfo> {
+export class payments_validateRequestedInfo extends Function<types.payments_ValidatedRequestedInfo> {
   save?: true;
-  invoice: types.TypeInputInvoice;
-  info: types.TypePaymentRequestedInfo;
+  invoice: types.InputInvoice;
+  info: types.PaymentRequestedInfo;
 
   protected get [id]() {
     return 0xB6C8F12B;
@@ -14145,8 +14296,8 @@ export class PaymentsValidateRequestedInfo extends Function<types.TypePaymentsVa
     return [
       ["flags", flags, "#"],
       ["save", "true", "flags.0?true"],
-      ["invoice", types._TypeInputInvoice, "InputInvoice"],
-      ["info", types._TypePaymentRequestedInfo, "PaymentRequestedInfo"],
+      ["invoice", types._InputInvoice, "InputInvoice"],
+      ["info", types._PaymentRequestedInfo, "PaymentRequestedInfo"],
     ];
   }
 
@@ -14154,12 +14305,12 @@ export class PaymentsValidateRequestedInfo extends Function<types.TypePaymentsVa
     return [
       ["flags", flags, "#"],
       [this.save ?? null, "true", "flags.0?true"],
-      [this.invoice, types._TypeInputInvoice, "InputInvoice"],
-      [this.info, types._TypePaymentRequestedInfo, "PaymentRequestedInfo"],
+      [this.invoice, types._InputInvoice, "InputInvoice"],
+      [this.info, types._PaymentRequestedInfo, "PaymentRequestedInfo"],
     ];
   }
 
-  constructor(params: { save?: true; invoice: types.TypeInputInvoice; info: types.TypePaymentRequestedInfo }) {
+  constructor(params: { save?: true; invoice: types.InputInvoice; info: types.PaymentRequestedInfo }) {
     super();
     this.save = params.save;
     this.invoice = params.invoice;
@@ -14167,13 +14318,13 @@ export class PaymentsValidateRequestedInfo extends Function<types.TypePaymentsVa
   }
 }
 
-export class PaymentsSendPaymentForm extends Function<types.TypePaymentsPaymentResult> {
-  formId: bigint;
-  invoice: types.TypeInputInvoice;
-  requestedInfoId?: string;
-  shippingOptionId?: string;
-  credentials: types.TypeInputPaymentCredentials;
-  tipAmount?: bigint;
+export class payments_sendPaymentForm extends Function<types.payments_PaymentResult> {
+  form_id: bigint;
+  invoice: types.InputInvoice;
+  requested_info_id?: string;
+  shipping_option_id?: string;
+  credentials: types.InputPaymentCredentials;
+  tip_amount?: bigint;
 
   protected get [id]() {
     return 0x2D03522F;
@@ -14182,39 +14333,39 @@ export class PaymentsSendPaymentForm extends Function<types.TypePaymentsPaymentR
   static get [paramDesc](): ParamDesc {
     return [
       ["flags", flags, "#"],
-      ["formId", "bigint", "long"],
-      ["invoice", types._TypeInputInvoice, "InputInvoice"],
-      ["requestedInfoId", "string", "flags.0?string"],
-      ["shippingOptionId", "string", "flags.1?string"],
-      ["credentials", types._TypeInputPaymentCredentials, "InputPaymentCredentials"],
-      ["tipAmount", "bigint", "flags.2?long"],
+      ["form_id", "bigint", "long"],
+      ["invoice", types._InputInvoice, "InputInvoice"],
+      ["requested_info_id", "string", "flags.0?string"],
+      ["shipping_option_id", "string", "flags.1?string"],
+      ["credentials", types._InputPaymentCredentials, "InputPaymentCredentials"],
+      ["tip_amount", "bigint", "flags.2?long"],
     ];
   }
 
   protected get [params](): Params {
     return [
       ["flags", flags, "#"],
-      [this.formId, "bigint", "long"],
-      [this.invoice, types._TypeInputInvoice, "InputInvoice"],
-      [this.requestedInfoId ?? null, "string", "flags.0?string"],
-      [this.shippingOptionId ?? null, "string", "flags.1?string"],
-      [this.credentials, types._TypeInputPaymentCredentials, "InputPaymentCredentials"],
-      [this.tipAmount ?? null, "bigint", "flags.2?long"],
+      [this.form_id, "bigint", "long"],
+      [this.invoice, types._InputInvoice, "InputInvoice"],
+      [this.requested_info_id ?? null, "string", "flags.0?string"],
+      [this.shipping_option_id ?? null, "string", "flags.1?string"],
+      [this.credentials, types._InputPaymentCredentials, "InputPaymentCredentials"],
+      [this.tip_amount ?? null, "bigint", "flags.2?long"],
     ];
   }
 
-  constructor(params: { formId: bigint; invoice: types.TypeInputInvoice; requestedInfoId?: string; shippingOptionId?: string; credentials: types.TypeInputPaymentCredentials; tipAmount?: bigint }) {
+  constructor(params: { form_id: bigint; invoice: types.InputInvoice; requested_info_id?: string; shipping_option_id?: string; credentials: types.InputPaymentCredentials; tip_amount?: bigint }) {
     super();
-    this.formId = params.formId;
+    this.form_id = params.form_id;
     this.invoice = params.invoice;
-    this.requestedInfoId = params.requestedInfoId;
-    this.shippingOptionId = params.shippingOptionId;
+    this.requested_info_id = params.requested_info_id;
+    this.shipping_option_id = params.shipping_option_id;
     this.credentials = params.credentials;
-    this.tipAmount = params.tipAmount;
+    this.tip_amount = params.tip_amount;
   }
 }
 
-export class PaymentsGetSavedInfo extends Function<types.TypePaymentsSavedInfo> {
+export class payments_getSavedInfo extends Function<types.payments_SavedInfo> {
   protected get [id]() {
     return 0x227D824B;
   }
@@ -14232,7 +14383,7 @@ export class PaymentsGetSavedInfo extends Function<types.TypePaymentsSavedInfo> 
   }
 }
 
-export class PaymentsClearSavedInfo extends Function<boolean> {
+export class payments_clearSavedInfo extends Function<boolean> {
   credentials?: true;
   info?: true;
 
@@ -14263,7 +14414,7 @@ export class PaymentsClearSavedInfo extends Function<boolean> {
   }
 }
 
-export class PaymentsGetBankCardData extends Function<types.TypePaymentsBankCardData> {
+export class payments_getBankCardData extends Function<types.payments_BankCardData> {
   number: string;
 
   protected get [id]() {
@@ -14288,8 +14439,8 @@ export class PaymentsGetBankCardData extends Function<types.TypePaymentsBankCard
   }
 }
 
-export class PaymentsExportInvoice extends Function<types.TypePaymentsExportedInvoice> {
-  invoiceMedia: types.TypeInputMedia;
+export class payments_exportInvoice extends Function<types.payments_ExportedInvoice> {
+  invoice_media: types.InputMedia;
 
   protected get [id]() {
     return 0x0F91B065;
@@ -14297,25 +14448,25 @@ export class PaymentsExportInvoice extends Function<types.TypePaymentsExportedIn
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["invoiceMedia", types._TypeInputMedia, "InputMedia"],
+      ["invoice_media", types._InputMedia, "InputMedia"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.invoiceMedia, types._TypeInputMedia, "InputMedia"],
+      [this.invoice_media, types._InputMedia, "InputMedia"],
     ];
   }
 
-  constructor(params: { invoiceMedia: types.TypeInputMedia }) {
+  constructor(params: { invoice_media: types.InputMedia }) {
     super();
-    this.invoiceMedia = params.invoiceMedia;
+    this.invoice_media = params.invoice_media;
   }
 }
 
-export class PaymentsAssignAppStoreTransaction extends Function<types.TypeUpdates> {
+export class payments_assignAppStoreTransaction extends Function<types.Updates> {
   receipt: Uint8Array;
-  purpose: types.TypeInputStorePaymentPurpose;
+  purpose: types.InputStorePaymentPurpose;
 
   protected get [id]() {
     return 0x80ED747D;
@@ -14324,27 +14475,27 @@ export class PaymentsAssignAppStoreTransaction extends Function<types.TypeUpdate
   static get [paramDesc](): ParamDesc {
     return [
       ["receipt", Uint8Array, "bytes"],
-      ["purpose", types._TypeInputStorePaymentPurpose, "InputStorePaymentPurpose"],
+      ["purpose", types._InputStorePaymentPurpose, "InputStorePaymentPurpose"],
     ];
   }
 
   protected get [params](): Params {
     return [
       [this.receipt, Uint8Array, "bytes"],
-      [this.purpose, types._TypeInputStorePaymentPurpose, "InputStorePaymentPurpose"],
+      [this.purpose, types._InputStorePaymentPurpose, "InputStorePaymentPurpose"],
     ];
   }
 
-  constructor(params: { receipt: Uint8Array; purpose: types.TypeInputStorePaymentPurpose }) {
+  constructor(params: { receipt: Uint8Array; purpose: types.InputStorePaymentPurpose }) {
     super();
     this.receipt = params.receipt;
     this.purpose = params.purpose;
   }
 }
 
-export class PaymentsAssignPlayMarketTransaction extends Function<types.TypeUpdates> {
-  receipt: types.TypeDataJSON;
-  purpose: types.TypeInputStorePaymentPurpose;
+export class payments_assignPlayMarketTransaction extends Function<types.Updates> {
+  receipt: types.DataJSON;
+  purpose: types.InputStorePaymentPurpose;
 
   protected get [id]() {
     return 0xDFFD50D3;
@@ -14352,27 +14503,27 @@ export class PaymentsAssignPlayMarketTransaction extends Function<types.TypeUpda
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["receipt", types._TypeDataJSON, "DataJSON"],
-      ["purpose", types._TypeInputStorePaymentPurpose, "InputStorePaymentPurpose"],
+      ["receipt", types._DataJSON, "DataJSON"],
+      ["purpose", types._InputStorePaymentPurpose, "InputStorePaymentPurpose"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.receipt, types._TypeDataJSON, "DataJSON"],
-      [this.purpose, types._TypeInputStorePaymentPurpose, "InputStorePaymentPurpose"],
+      [this.receipt, types._DataJSON, "DataJSON"],
+      [this.purpose, types._InputStorePaymentPurpose, "InputStorePaymentPurpose"],
     ];
   }
 
-  constructor(params: { receipt: types.TypeDataJSON; purpose: types.TypeInputStorePaymentPurpose }) {
+  constructor(params: { receipt: types.DataJSON; purpose: types.InputStorePaymentPurpose }) {
     super();
     this.receipt = params.receipt;
     this.purpose = params.purpose;
   }
 }
 
-export class PaymentsCanPurchasePremium extends Function<boolean> {
-  purpose: types.TypeInputStorePaymentPurpose;
+export class payments_canPurchasePremium extends Function<boolean> {
+  purpose: types.InputStorePaymentPurpose;
 
   protected get [id]() {
     return 0x9FC19EB6;
@@ -14380,24 +14531,24 @@ export class PaymentsCanPurchasePremium extends Function<boolean> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["purpose", types._TypeInputStorePaymentPurpose, "InputStorePaymentPurpose"],
+      ["purpose", types._InputStorePaymentPurpose, "InputStorePaymentPurpose"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.purpose, types._TypeInputStorePaymentPurpose, "InputStorePaymentPurpose"],
+      [this.purpose, types._InputStorePaymentPurpose, "InputStorePaymentPurpose"],
     ];
   }
 
-  constructor(params: { purpose: types.TypeInputStorePaymentPurpose }) {
+  constructor(params: { purpose: types.InputStorePaymentPurpose }) {
     super();
     this.purpose = params.purpose;
   }
 }
 
-export class PaymentsGetPremiumGiftCodeOptions extends Function<types.TypePremiumGiftCodeOption[]> {
-  boostPeer?: types.TypeInputPeer;
+export class payments_getPremiumGiftCodeOptions extends Function<types.PremiumGiftCodeOption[]> {
+  boost_peer?: types.InputPeer;
 
   protected get [id]() {
     return 0x2757BA54;
@@ -14406,24 +14557,24 @@ export class PaymentsGetPremiumGiftCodeOptions extends Function<types.TypePremiu
   static get [paramDesc](): ParamDesc {
     return [
       ["flags", flags, "#"],
-      ["boostPeer", types._TypeInputPeer, "flags.0?InputPeer"],
+      ["boost_peer", types._InputPeer, "flags.0?InputPeer"],
     ];
   }
 
   protected get [params](): Params {
     return [
       ["flags", flags, "#"],
-      [this.boostPeer ?? null, types._TypeInputPeer, "flags.0?InputPeer"],
+      [this.boost_peer ?? null, types._InputPeer, "flags.0?InputPeer"],
     ];
   }
 
-  constructor(params?: { boostPeer?: types.TypeInputPeer }) {
+  constructor(params?: { boost_peer?: types.InputPeer }) {
     super();
-    this.boostPeer = params?.boostPeer;
+    this.boost_peer = params?.boost_peer;
   }
 }
 
-export class PaymentsCheckGiftCode extends Function<types.TypePaymentsCheckedGiftCode> {
+export class payments_checkGiftCode extends Function<types.payments_CheckedGiftCode> {
   slug: string;
 
   protected get [id]() {
@@ -14448,7 +14599,7 @@ export class PaymentsCheckGiftCode extends Function<types.TypePaymentsCheckedGif
   }
 }
 
-export class PaymentsApplyGiftCode extends Function<types.TypeUpdates> {
+export class payments_applyGiftCode extends Function<types.Updates> {
   slug: string;
 
   protected get [id]() {
@@ -14473,9 +14624,9 @@ export class PaymentsApplyGiftCode extends Function<types.TypeUpdates> {
   }
 }
 
-export class PaymentsGetGiveawayInfo extends Function<types.TypePaymentsGiveawayInfo> {
-  peer: types.TypeInputPeer;
-  msgId: number;
+export class payments_getGiveawayInfo extends Function<types.payments_GiveawayInfo> {
+  peer: types.InputPeer;
+  msg_id: number;
 
   protected get [id]() {
     return 0xF4239425;
@@ -14483,29 +14634,29 @@ export class PaymentsGetGiveawayInfo extends Function<types.TypePaymentsGiveaway
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["peer", types._TypeInputPeer, "InputPeer"],
-      ["msgId", "number", "int"],
+      ["peer", types._InputPeer, "InputPeer"],
+      ["msg_id", "number", "int"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.peer, types._TypeInputPeer, "InputPeer"],
-      [this.msgId, "number", "int"],
+      [this.peer, types._InputPeer, "InputPeer"],
+      [this.msg_id, "number", "int"],
     ];
   }
 
-  constructor(params: { peer: types.TypeInputPeer; msgId: number }) {
+  constructor(params: { peer: types.InputPeer; msg_id: number }) {
     super();
     this.peer = params.peer;
-    this.msgId = params.msgId;
+    this.msg_id = params.msg_id;
   }
 }
 
-export class PaymentsLaunchPrepaidGiveaway extends Function<types.TypeUpdates> {
-  peer: types.TypeInputPeer;
-  giveawayId: bigint;
-  purpose: types.TypeInputStorePaymentPurpose;
+export class payments_launchPrepaidGiveaway extends Function<types.Updates> {
+  peer: types.InputPeer;
+  giveaway_id: bigint;
+  purpose: types.InputStorePaymentPurpose;
 
   protected get [id]() {
     return 0x5FF58F20;
@@ -14513,39 +14664,39 @@ export class PaymentsLaunchPrepaidGiveaway extends Function<types.TypeUpdates> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["peer", types._TypeInputPeer, "InputPeer"],
-      ["giveawayId", "bigint", "long"],
-      ["purpose", types._TypeInputStorePaymentPurpose, "InputStorePaymentPurpose"],
+      ["peer", types._InputPeer, "InputPeer"],
+      ["giveaway_id", "bigint", "long"],
+      ["purpose", types._InputStorePaymentPurpose, "InputStorePaymentPurpose"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.peer, types._TypeInputPeer, "InputPeer"],
-      [this.giveawayId, "bigint", "long"],
-      [this.purpose, types._TypeInputStorePaymentPurpose, "InputStorePaymentPurpose"],
+      [this.peer, types._InputPeer, "InputPeer"],
+      [this.giveaway_id, "bigint", "long"],
+      [this.purpose, types._InputStorePaymentPurpose, "InputStorePaymentPurpose"],
     ];
   }
 
-  constructor(params: { peer: types.TypeInputPeer; giveawayId: bigint; purpose: types.TypeInputStorePaymentPurpose }) {
+  constructor(params: { peer: types.InputPeer; giveaway_id: bigint; purpose: types.InputStorePaymentPurpose }) {
     super();
     this.peer = params.peer;
-    this.giveawayId = params.giveawayId;
+    this.giveaway_id = params.giveaway_id;
     this.purpose = params.purpose;
   }
 }
 
-export class StickersCreateStickerSet extends Function<types.TypeMessagesStickerSet> {
+export class stickers_createStickerSet extends Function<types.messages_StickerSet> {
   masks?: true;
   animated?: true;
   videos?: true;
   emojis?: true;
-  textColor?: true;
-  userId: types.TypeInputUser;
+  text_color?: true;
+  user_id: types.InputUser;
   title: string;
-  shortName: string;
-  thumb?: types.TypeInputDocument;
-  stickers: Array<types.TypeInputStickerSetItem>;
+  short_name: string;
+  thumb?: types.InputDocument;
+  stickers: Array<types.InputStickerSetItem>;
   software?: string;
 
   protected get [id]() {
@@ -14559,12 +14710,12 @@ export class StickersCreateStickerSet extends Function<types.TypeMessagesSticker
       ["animated", "true", "flags.1?true"],
       ["videos", "true", "flags.4?true"],
       ["emojis", "true", "flags.5?true"],
-      ["textColor", "true", "flags.6?true"],
-      ["userId", types._TypeInputUser, "InputUser"],
+      ["text_color", "true", "flags.6?true"],
+      ["user_id", types._InputUser, "InputUser"],
       ["title", "string", "string"],
-      ["shortName", "string", "string"],
-      ["thumb", types._TypeInputDocument, "flags.2?InputDocument"],
-      ["stickers", [types._TypeInputStickerSetItem], "Vector<InputStickerSetItem>"],
+      ["short_name", "string", "string"],
+      ["thumb", types._InputDocument, "flags.2?InputDocument"],
+      ["stickers", [types._InputStickerSetItem], "Vector<InputStickerSetItem>"],
       ["software", "string", "flags.3?string"],
     ];
   }
@@ -14576,34 +14727,34 @@ export class StickersCreateStickerSet extends Function<types.TypeMessagesSticker
       [this.animated ?? null, "true", "flags.1?true"],
       [this.videos ?? null, "true", "flags.4?true"],
       [this.emojis ?? null, "true", "flags.5?true"],
-      [this.textColor ?? null, "true", "flags.6?true"],
-      [this.userId, types._TypeInputUser, "InputUser"],
+      [this.text_color ?? null, "true", "flags.6?true"],
+      [this.user_id, types._InputUser, "InputUser"],
       [this.title, "string", "string"],
-      [this.shortName, "string", "string"],
-      [this.thumb ?? null, types._TypeInputDocument, "flags.2?InputDocument"],
-      [this.stickers, [types._TypeInputStickerSetItem], "Vector<InputStickerSetItem>"],
+      [this.short_name, "string", "string"],
+      [this.thumb ?? null, types._InputDocument, "flags.2?InputDocument"],
+      [this.stickers, [types._InputStickerSetItem], "Vector<InputStickerSetItem>"],
       [this.software ?? null, "string", "flags.3?string"],
     ];
   }
 
-  constructor(params: { masks?: true; animated?: true; videos?: true; emojis?: true; textColor?: true; userId: types.TypeInputUser; title: string; shortName: string; thumb?: types.TypeInputDocument; stickers: Array<types.TypeInputStickerSetItem>; software?: string }) {
+  constructor(params: { masks?: true; animated?: true; videos?: true; emojis?: true; text_color?: true; user_id: types.InputUser; title: string; short_name: string; thumb?: types.InputDocument; stickers: Array<types.InputStickerSetItem>; software?: string }) {
     super();
     this.masks = params.masks;
     this.animated = params.animated;
     this.videos = params.videos;
     this.emojis = params.emojis;
-    this.textColor = params.textColor;
-    this.userId = params.userId;
+    this.text_color = params.text_color;
+    this.user_id = params.user_id;
     this.title = params.title;
-    this.shortName = params.shortName;
+    this.short_name = params.short_name;
     this.thumb = params.thumb;
     this.stickers = params.stickers;
     this.software = params.software;
   }
 }
 
-export class StickersRemoveStickerFromSet extends Function<types.TypeMessagesStickerSet> {
-  sticker: types.TypeInputDocument;
+export class stickers_removeStickerFromSet extends Function<types.messages_StickerSet> {
+  sticker: types.InputDocument;
 
   protected get [id]() {
     return 0xF7760F51;
@@ -14611,24 +14762,24 @@ export class StickersRemoveStickerFromSet extends Function<types.TypeMessagesSti
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["sticker", types._TypeInputDocument, "InputDocument"],
+      ["sticker", types._InputDocument, "InputDocument"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.sticker, types._TypeInputDocument, "InputDocument"],
+      [this.sticker, types._InputDocument, "InputDocument"],
     ];
   }
 
-  constructor(params: { sticker: types.TypeInputDocument }) {
+  constructor(params: { sticker: types.InputDocument }) {
     super();
     this.sticker = params.sticker;
   }
 }
 
-export class StickersChangeStickerPosition extends Function<types.TypeMessagesStickerSet> {
-  sticker: types.TypeInputDocument;
+export class stickers_changeStickerPosition extends Function<types.messages_StickerSet> {
+  sticker: types.InputDocument;
   position: number;
 
   protected get [id]() {
@@ -14637,28 +14788,28 @@ export class StickersChangeStickerPosition extends Function<types.TypeMessagesSt
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["sticker", types._TypeInputDocument, "InputDocument"],
+      ["sticker", types._InputDocument, "InputDocument"],
       ["position", "number", "int"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.sticker, types._TypeInputDocument, "InputDocument"],
+      [this.sticker, types._InputDocument, "InputDocument"],
       [this.position, "number", "int"],
     ];
   }
 
-  constructor(params: { sticker: types.TypeInputDocument; position: number }) {
+  constructor(params: { sticker: types.InputDocument; position: number }) {
     super();
     this.sticker = params.sticker;
     this.position = params.position;
   }
 }
 
-export class StickersAddStickerToSet extends Function<types.TypeMessagesStickerSet> {
-  stickerset: types.TypeInputStickerSet;
-  sticker: types.TypeInputStickerSetItem;
+export class stickers_addStickerToSet extends Function<types.messages_StickerSet> {
+  stickerset: types.InputStickerSet;
+  sticker: types.InputStickerSetItem;
 
   protected get [id]() {
     return 0x8653FEBE;
@@ -14666,29 +14817,29 @@ export class StickersAddStickerToSet extends Function<types.TypeMessagesStickerS
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["stickerset", types._TypeInputStickerSet, "InputStickerSet"],
-      ["sticker", types._TypeInputStickerSetItem, "InputStickerSetItem"],
+      ["stickerset", types._InputStickerSet, "InputStickerSet"],
+      ["sticker", types._InputStickerSetItem, "InputStickerSetItem"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.stickerset, types._TypeInputStickerSet, "InputStickerSet"],
-      [this.sticker, types._TypeInputStickerSetItem, "InputStickerSetItem"],
+      [this.stickerset, types._InputStickerSet, "InputStickerSet"],
+      [this.sticker, types._InputStickerSetItem, "InputStickerSetItem"],
     ];
   }
 
-  constructor(params: { stickerset: types.TypeInputStickerSet; sticker: types.TypeInputStickerSetItem }) {
+  constructor(params: { stickerset: types.InputStickerSet; sticker: types.InputStickerSetItem }) {
     super();
     this.stickerset = params.stickerset;
     this.sticker = params.sticker;
   }
 }
 
-export class StickersSetStickerSetThumb extends Function<types.TypeMessagesStickerSet> {
-  stickerset: types.TypeInputStickerSet;
-  thumb?: types.TypeInputDocument;
-  thumbDocumentId?: bigint;
+export class stickers_setStickerSetThumb extends Function<types.messages_StickerSet> {
+  stickerset: types.InputStickerSet;
+  thumb?: types.InputDocument;
+  thumb_document_id?: bigint;
 
   protected get [id]() {
     return 0xA76A5392;
@@ -14697,31 +14848,31 @@ export class StickersSetStickerSetThumb extends Function<types.TypeMessagesStick
   static get [paramDesc](): ParamDesc {
     return [
       ["flags", flags, "#"],
-      ["stickerset", types._TypeInputStickerSet, "InputStickerSet"],
-      ["thumb", types._TypeInputDocument, "flags.0?InputDocument"],
-      ["thumbDocumentId", "bigint", "flags.1?long"],
+      ["stickerset", types._InputStickerSet, "InputStickerSet"],
+      ["thumb", types._InputDocument, "flags.0?InputDocument"],
+      ["thumb_document_id", "bigint", "flags.1?long"],
     ];
   }
 
   protected get [params](): Params {
     return [
       ["flags", flags, "#"],
-      [this.stickerset, types._TypeInputStickerSet, "InputStickerSet"],
-      [this.thumb ?? null, types._TypeInputDocument, "flags.0?InputDocument"],
-      [this.thumbDocumentId ?? null, "bigint", "flags.1?long"],
+      [this.stickerset, types._InputStickerSet, "InputStickerSet"],
+      [this.thumb ?? null, types._InputDocument, "flags.0?InputDocument"],
+      [this.thumb_document_id ?? null, "bigint", "flags.1?long"],
     ];
   }
 
-  constructor(params: { stickerset: types.TypeInputStickerSet; thumb?: types.TypeInputDocument; thumbDocumentId?: bigint }) {
+  constructor(params: { stickerset: types.InputStickerSet; thumb?: types.InputDocument; thumb_document_id?: bigint }) {
     super();
     this.stickerset = params.stickerset;
     this.thumb = params.thumb;
-    this.thumbDocumentId = params.thumbDocumentId;
+    this.thumb_document_id = params.thumb_document_id;
   }
 }
 
-export class StickersCheckShortName extends Function<boolean> {
-  shortName: string;
+export class stickers_checkShortName extends Function<boolean> {
+  short_name: string;
 
   protected get [id]() {
     return 0x284B3639;
@@ -14729,23 +14880,23 @@ export class StickersCheckShortName extends Function<boolean> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["shortName", "string", "string"],
+      ["short_name", "string", "string"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.shortName, "string", "string"],
+      [this.short_name, "string", "string"],
     ];
   }
 
-  constructor(params: { shortName: string }) {
+  constructor(params: { short_name: string }) {
     super();
-    this.shortName = params.shortName;
+    this.short_name = params.short_name;
   }
 }
 
-export class StickersSuggestShortName extends Function<types.TypeStickersSuggestedShortName> {
+export class stickers_suggestShortName extends Function<types.stickers_SuggestedShortName> {
   title: string;
 
   protected get [id]() {
@@ -14770,10 +14921,10 @@ export class StickersSuggestShortName extends Function<types.TypeStickersSuggest
   }
 }
 
-export class StickersChangeSticker extends Function<types.TypeMessagesStickerSet> {
-  sticker: types.TypeInputDocument;
+export class stickers_changeSticker extends Function<types.messages_StickerSet> {
+  sticker: types.InputDocument;
   emoji?: string;
-  maskCoords?: types.TypeMaskCoords;
+  mask_coords?: types.MaskCoords;
   keywords?: string;
 
   protected get [id]() {
@@ -14783,9 +14934,9 @@ export class StickersChangeSticker extends Function<types.TypeMessagesStickerSet
   static get [paramDesc](): ParamDesc {
     return [
       ["flags", flags, "#"],
-      ["sticker", types._TypeInputDocument, "InputDocument"],
+      ["sticker", types._InputDocument, "InputDocument"],
       ["emoji", "string", "flags.0?string"],
-      ["maskCoords", types._TypeMaskCoords, "flags.1?MaskCoords"],
+      ["mask_coords", types._MaskCoords, "flags.1?MaskCoords"],
       ["keywords", "string", "flags.2?string"],
     ];
   }
@@ -14793,24 +14944,24 @@ export class StickersChangeSticker extends Function<types.TypeMessagesStickerSet
   protected get [params](): Params {
     return [
       ["flags", flags, "#"],
-      [this.sticker, types._TypeInputDocument, "InputDocument"],
+      [this.sticker, types._InputDocument, "InputDocument"],
       [this.emoji ?? null, "string", "flags.0?string"],
-      [this.maskCoords ?? null, types._TypeMaskCoords, "flags.1?MaskCoords"],
+      [this.mask_coords ?? null, types._MaskCoords, "flags.1?MaskCoords"],
       [this.keywords ?? null, "string", "flags.2?string"],
     ];
   }
 
-  constructor(params: { sticker: types.TypeInputDocument; emoji?: string; maskCoords?: types.TypeMaskCoords; keywords?: string }) {
+  constructor(params: { sticker: types.InputDocument; emoji?: string; mask_coords?: types.MaskCoords; keywords?: string }) {
     super();
     this.sticker = params.sticker;
     this.emoji = params.emoji;
-    this.maskCoords = params.maskCoords;
+    this.mask_coords = params.mask_coords;
     this.keywords = params.keywords;
   }
 }
 
-export class StickersRenameStickerSet extends Function<types.TypeMessagesStickerSet> {
-  stickerset: types.TypeInputStickerSet;
+export class stickers_renameStickerSet extends Function<types.messages_StickerSet> {
+  stickerset: types.InputStickerSet;
   title: string;
 
   protected get [id]() {
@@ -14819,27 +14970,27 @@ export class StickersRenameStickerSet extends Function<types.TypeMessagesSticker
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["stickerset", types._TypeInputStickerSet, "InputStickerSet"],
+      ["stickerset", types._InputStickerSet, "InputStickerSet"],
       ["title", "string", "string"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.stickerset, types._TypeInputStickerSet, "InputStickerSet"],
+      [this.stickerset, types._InputStickerSet, "InputStickerSet"],
       [this.title, "string", "string"],
     ];
   }
 
-  constructor(params: { stickerset: types.TypeInputStickerSet; title: string }) {
+  constructor(params: { stickerset: types.InputStickerSet; title: string }) {
     super();
     this.stickerset = params.stickerset;
     this.title = params.title;
   }
 }
 
-export class StickersDeleteStickerSet extends Function<boolean> {
-  stickerset: types.TypeInputStickerSet;
+export class stickers_deleteStickerSet extends Function<boolean> {
+  stickerset: types.InputStickerSet;
 
   protected get [id]() {
     return 0x87704394;
@@ -14847,23 +14998,23 @@ export class StickersDeleteStickerSet extends Function<boolean> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["stickerset", types._TypeInputStickerSet, "InputStickerSet"],
+      ["stickerset", types._InputStickerSet, "InputStickerSet"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.stickerset, types._TypeInputStickerSet, "InputStickerSet"],
+      [this.stickerset, types._InputStickerSet, "InputStickerSet"],
     ];
   }
 
-  constructor(params: { stickerset: types.TypeInputStickerSet }) {
+  constructor(params: { stickerset: types.InputStickerSet }) {
     super();
     this.stickerset = params.stickerset;
   }
 }
 
-export class PhoneGetCallConfig extends Function<types.TypeDataJSON> {
+export class phone_getCallConfig extends Function<types.DataJSON> {
   protected get [id]() {
     return 0x55451FA9;
   }
@@ -14881,12 +15032,12 @@ export class PhoneGetCallConfig extends Function<types.TypeDataJSON> {
   }
 }
 
-export class PhoneRequestCall extends Function<types.TypePhonePhoneCall> {
+export class phone_requestCall extends Function<types.phone_PhoneCall> {
   video?: true;
-  userId: types.TypeInputUser;
-  randomId: number;
-  gAHash: Uint8Array;
-  protocol: types.TypePhoneCallProtocol;
+  user_id: types.InputUser;
+  random_id: number;
+  g_a_hash: Uint8Array;
+  protocol: types.PhoneCallProtocol;
 
   protected get [id]() {
     return 0x42FF96ED;
@@ -14896,10 +15047,10 @@ export class PhoneRequestCall extends Function<types.TypePhonePhoneCall> {
     return [
       ["flags", flags, "#"],
       ["video", "true", "flags.0?true"],
-      ["userId", types._TypeInputUser, "InputUser"],
-      ["randomId", "number", "int"],
-      ["gAHash", Uint8Array, "bytes"],
-      ["protocol", types._TypePhoneCallProtocol, "PhoneCallProtocol"],
+      ["user_id", types._InputUser, "InputUser"],
+      ["random_id", "number", "int"],
+      ["g_a_hash", Uint8Array, "bytes"],
+      ["protocol", types._PhoneCallProtocol, "PhoneCallProtocol"],
     ];
   }
 
@@ -14907,27 +15058,27 @@ export class PhoneRequestCall extends Function<types.TypePhonePhoneCall> {
     return [
       ["flags", flags, "#"],
       [this.video ?? null, "true", "flags.0?true"],
-      [this.userId, types._TypeInputUser, "InputUser"],
-      [this.randomId, "number", "int"],
-      [this.gAHash, Uint8Array, "bytes"],
-      [this.protocol, types._TypePhoneCallProtocol, "PhoneCallProtocol"],
+      [this.user_id, types._InputUser, "InputUser"],
+      [this.random_id, "number", "int"],
+      [this.g_a_hash, Uint8Array, "bytes"],
+      [this.protocol, types._PhoneCallProtocol, "PhoneCallProtocol"],
     ];
   }
 
-  constructor(params: { video?: true; userId: types.TypeInputUser; randomId: number; gAHash: Uint8Array; protocol: types.TypePhoneCallProtocol }) {
+  constructor(params: { video?: true; user_id: types.InputUser; random_id: number; g_a_hash: Uint8Array; protocol: types.PhoneCallProtocol }) {
     super();
     this.video = params.video;
-    this.userId = params.userId;
-    this.randomId = params.randomId;
-    this.gAHash = params.gAHash;
+    this.user_id = params.user_id;
+    this.random_id = params.random_id;
+    this.g_a_hash = params.g_a_hash;
     this.protocol = params.protocol;
   }
 }
 
-export class PhoneAcceptCall extends Function<types.TypePhonePhoneCall> {
-  peer: types.TypeInputPhoneCall;
-  gB: Uint8Array;
-  protocol: types.TypePhoneCallProtocol;
+export class phone_acceptCall extends Function<types.phone_PhoneCall> {
+  peer: types.InputPhoneCall;
+  g_b: Uint8Array;
+  protocol: types.PhoneCallProtocol;
 
   protected get [id]() {
     return 0x3BD2B4A0;
@@ -14935,33 +15086,33 @@ export class PhoneAcceptCall extends Function<types.TypePhonePhoneCall> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["peer", types._TypeInputPhoneCall, "InputPhoneCall"],
-      ["gB", Uint8Array, "bytes"],
-      ["protocol", types._TypePhoneCallProtocol, "PhoneCallProtocol"],
+      ["peer", types._InputPhoneCall, "InputPhoneCall"],
+      ["g_b", Uint8Array, "bytes"],
+      ["protocol", types._PhoneCallProtocol, "PhoneCallProtocol"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.peer, types._TypeInputPhoneCall, "InputPhoneCall"],
-      [this.gB, Uint8Array, "bytes"],
-      [this.protocol, types._TypePhoneCallProtocol, "PhoneCallProtocol"],
+      [this.peer, types._InputPhoneCall, "InputPhoneCall"],
+      [this.g_b, Uint8Array, "bytes"],
+      [this.protocol, types._PhoneCallProtocol, "PhoneCallProtocol"],
     ];
   }
 
-  constructor(params: { peer: types.TypeInputPhoneCall; gB: Uint8Array; protocol: types.TypePhoneCallProtocol }) {
+  constructor(params: { peer: types.InputPhoneCall; g_b: Uint8Array; protocol: types.PhoneCallProtocol }) {
     super();
     this.peer = params.peer;
-    this.gB = params.gB;
+    this.g_b = params.g_b;
     this.protocol = params.protocol;
   }
 }
 
-export class PhoneConfirmCall extends Function<types.TypePhonePhoneCall> {
-  peer: types.TypeInputPhoneCall;
-  gA: Uint8Array;
-  keyFingerprint: bigint;
-  protocol: types.TypePhoneCallProtocol;
+export class phone_confirmCall extends Function<types.phone_PhoneCall> {
+  peer: types.InputPhoneCall;
+  g_a: Uint8Array;
+  key_fingerprint: bigint;
+  protocol: types.PhoneCallProtocol;
 
   protected get [id]() {
     return 0x2EFE1722;
@@ -14969,33 +15120,33 @@ export class PhoneConfirmCall extends Function<types.TypePhonePhoneCall> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["peer", types._TypeInputPhoneCall, "InputPhoneCall"],
-      ["gA", Uint8Array, "bytes"],
-      ["keyFingerprint", "bigint", "long"],
-      ["protocol", types._TypePhoneCallProtocol, "PhoneCallProtocol"],
+      ["peer", types._InputPhoneCall, "InputPhoneCall"],
+      ["g_a", Uint8Array, "bytes"],
+      ["key_fingerprint", "bigint", "long"],
+      ["protocol", types._PhoneCallProtocol, "PhoneCallProtocol"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.peer, types._TypeInputPhoneCall, "InputPhoneCall"],
-      [this.gA, Uint8Array, "bytes"],
-      [this.keyFingerprint, "bigint", "long"],
-      [this.protocol, types._TypePhoneCallProtocol, "PhoneCallProtocol"],
+      [this.peer, types._InputPhoneCall, "InputPhoneCall"],
+      [this.g_a, Uint8Array, "bytes"],
+      [this.key_fingerprint, "bigint", "long"],
+      [this.protocol, types._PhoneCallProtocol, "PhoneCallProtocol"],
     ];
   }
 
-  constructor(params: { peer: types.TypeInputPhoneCall; gA: Uint8Array; keyFingerprint: bigint; protocol: types.TypePhoneCallProtocol }) {
+  constructor(params: { peer: types.InputPhoneCall; g_a: Uint8Array; key_fingerprint: bigint; protocol: types.PhoneCallProtocol }) {
     super();
     this.peer = params.peer;
-    this.gA = params.gA;
-    this.keyFingerprint = params.keyFingerprint;
+    this.g_a = params.g_a;
+    this.key_fingerprint = params.key_fingerprint;
     this.protocol = params.protocol;
   }
 }
 
-export class PhoneReceivedCall extends Function<boolean> {
-  peer: types.TypeInputPhoneCall;
+export class phone_receivedCall extends Function<boolean> {
+  peer: types.InputPhoneCall;
 
   protected get [id]() {
     return 0x17D54F61;
@@ -15003,28 +15154,28 @@ export class PhoneReceivedCall extends Function<boolean> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["peer", types._TypeInputPhoneCall, "InputPhoneCall"],
+      ["peer", types._InputPhoneCall, "InputPhoneCall"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.peer, types._TypeInputPhoneCall, "InputPhoneCall"],
+      [this.peer, types._InputPhoneCall, "InputPhoneCall"],
     ];
   }
 
-  constructor(params: { peer: types.TypeInputPhoneCall }) {
+  constructor(params: { peer: types.InputPhoneCall }) {
     super();
     this.peer = params.peer;
   }
 }
 
-export class PhoneDiscardCall extends Function<types.TypeUpdates> {
+export class phone_discardCall extends Function<types.Updates> {
   video?: true;
-  peer: types.TypeInputPhoneCall;
+  peer: types.InputPhoneCall;
   duration: number;
-  reason: types.TypePhoneCallDiscardReason;
-  connectionId: bigint;
+  reason: types.PhoneCallDiscardReason;
+  connection_id: bigint;
 
   protected get [id]() {
     return 0xB2CBC1C0;
@@ -15034,10 +15185,10 @@ export class PhoneDiscardCall extends Function<types.TypeUpdates> {
     return [
       ["flags", flags, "#"],
       ["video", "true", "flags.0?true"],
-      ["peer", types._TypeInputPhoneCall, "InputPhoneCall"],
+      ["peer", types._InputPhoneCall, "InputPhoneCall"],
       ["duration", "number", "int"],
-      ["reason", types._TypePhoneCallDiscardReason, "PhoneCallDiscardReason"],
-      ["connectionId", "bigint", "long"],
+      ["reason", types._PhoneCallDiscardReason, "PhoneCallDiscardReason"],
+      ["connection_id", "bigint", "long"],
     ];
   }
 
@@ -15045,26 +15196,26 @@ export class PhoneDiscardCall extends Function<types.TypeUpdates> {
     return [
       ["flags", flags, "#"],
       [this.video ?? null, "true", "flags.0?true"],
-      [this.peer, types._TypeInputPhoneCall, "InputPhoneCall"],
+      [this.peer, types._InputPhoneCall, "InputPhoneCall"],
       [this.duration, "number", "int"],
-      [this.reason, types._TypePhoneCallDiscardReason, "PhoneCallDiscardReason"],
-      [this.connectionId, "bigint", "long"],
+      [this.reason, types._PhoneCallDiscardReason, "PhoneCallDiscardReason"],
+      [this.connection_id, "bigint", "long"],
     ];
   }
 
-  constructor(params: { video?: true; peer: types.TypeInputPhoneCall; duration: number; reason: types.TypePhoneCallDiscardReason; connectionId: bigint }) {
+  constructor(params: { video?: true; peer: types.InputPhoneCall; duration: number; reason: types.PhoneCallDiscardReason; connection_id: bigint }) {
     super();
     this.video = params.video;
     this.peer = params.peer;
     this.duration = params.duration;
     this.reason = params.reason;
-    this.connectionId = params.connectionId;
+    this.connection_id = params.connection_id;
   }
 }
 
-export class PhoneSetCallRating extends Function<types.TypeUpdates> {
-  userInitiative?: true;
-  peer: types.TypeInputPhoneCall;
+export class phone_setCallRating extends Function<types.Updates> {
+  user_initiative?: true;
+  peer: types.InputPhoneCall;
   rating: number;
   comment: string;
 
@@ -15075,8 +15226,8 @@ export class PhoneSetCallRating extends Function<types.TypeUpdates> {
   static get [paramDesc](): ParamDesc {
     return [
       ["flags", flags, "#"],
-      ["userInitiative", "true", "flags.0?true"],
-      ["peer", types._TypeInputPhoneCall, "InputPhoneCall"],
+      ["user_initiative", "true", "flags.0?true"],
+      ["peer", types._InputPhoneCall, "InputPhoneCall"],
       ["rating", "number", "int"],
       ["comment", "string", "string"],
     ];
@@ -15085,25 +15236,25 @@ export class PhoneSetCallRating extends Function<types.TypeUpdates> {
   protected get [params](): Params {
     return [
       ["flags", flags, "#"],
-      [this.userInitiative ?? null, "true", "flags.0?true"],
-      [this.peer, types._TypeInputPhoneCall, "InputPhoneCall"],
+      [this.user_initiative ?? null, "true", "flags.0?true"],
+      [this.peer, types._InputPhoneCall, "InputPhoneCall"],
       [this.rating, "number", "int"],
       [this.comment, "string", "string"],
     ];
   }
 
-  constructor(params: { userInitiative?: true; peer: types.TypeInputPhoneCall; rating: number; comment: string }) {
+  constructor(params: { user_initiative?: true; peer: types.InputPhoneCall; rating: number; comment: string }) {
     super();
-    this.userInitiative = params.userInitiative;
+    this.user_initiative = params.user_initiative;
     this.peer = params.peer;
     this.rating = params.rating;
     this.comment = params.comment;
   }
 }
 
-export class PhoneSaveCallDebug extends Function<boolean> {
-  peer: types.TypeInputPhoneCall;
-  debug: types.TypeDataJSON;
+export class phone_saveCallDebug extends Function<boolean> {
+  peer: types.InputPhoneCall;
+  debug: types.DataJSON;
 
   protected get [id]() {
     return 0x277ADD7E;
@@ -15111,27 +15262,27 @@ export class PhoneSaveCallDebug extends Function<boolean> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["peer", types._TypeInputPhoneCall, "InputPhoneCall"],
-      ["debug", types._TypeDataJSON, "DataJSON"],
+      ["peer", types._InputPhoneCall, "InputPhoneCall"],
+      ["debug", types._DataJSON, "DataJSON"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.peer, types._TypeInputPhoneCall, "InputPhoneCall"],
-      [this.debug, types._TypeDataJSON, "DataJSON"],
+      [this.peer, types._InputPhoneCall, "InputPhoneCall"],
+      [this.debug, types._DataJSON, "DataJSON"],
     ];
   }
 
-  constructor(params: { peer: types.TypeInputPhoneCall; debug: types.TypeDataJSON }) {
+  constructor(params: { peer: types.InputPhoneCall; debug: types.DataJSON }) {
     super();
     this.peer = params.peer;
     this.debug = params.debug;
   }
 }
 
-export class PhoneSendSignalingData extends Function<boolean> {
-  peer: types.TypeInputPhoneCall;
+export class phone_sendSignalingData extends Function<boolean> {
+  peer: types.InputPhoneCall;
   data: Uint8Array;
 
   protected get [id]() {
@@ -15140,31 +15291,31 @@ export class PhoneSendSignalingData extends Function<boolean> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["peer", types._TypeInputPhoneCall, "InputPhoneCall"],
+      ["peer", types._InputPhoneCall, "InputPhoneCall"],
       ["data", Uint8Array, "bytes"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.peer, types._TypeInputPhoneCall, "InputPhoneCall"],
+      [this.peer, types._InputPhoneCall, "InputPhoneCall"],
       [this.data, Uint8Array, "bytes"],
     ];
   }
 
-  constructor(params: { peer: types.TypeInputPhoneCall; data: Uint8Array }) {
+  constructor(params: { peer: types.InputPhoneCall; data: Uint8Array }) {
     super();
     this.peer = params.peer;
     this.data = params.data;
   }
 }
 
-export class PhoneCreateGroupCall extends Function<types.TypeUpdates> {
-  rtmpStream?: true;
-  peer: types.TypeInputPeer;
-  randomId: number;
+export class phone_createGroupCall extends Function<types.Updates> {
+  rtmp_stream?: true;
+  peer: types.InputPeer;
+  random_id: number;
   title?: string;
-  scheduleDate?: number;
+  schedule_date?: number;
 
   protected get [id]() {
     return 0x48CDC6D8;
@@ -15173,42 +15324,42 @@ export class PhoneCreateGroupCall extends Function<types.TypeUpdates> {
   static get [paramDesc](): ParamDesc {
     return [
       ["flags", flags, "#"],
-      ["rtmpStream", "true", "flags.2?true"],
-      ["peer", types._TypeInputPeer, "InputPeer"],
-      ["randomId", "number", "int"],
+      ["rtmp_stream", "true", "flags.2?true"],
+      ["peer", types._InputPeer, "InputPeer"],
+      ["random_id", "number", "int"],
       ["title", "string", "flags.0?string"],
-      ["scheduleDate", "number", "flags.1?int"],
+      ["schedule_date", "number", "flags.1?int"],
     ];
   }
 
   protected get [params](): Params {
     return [
       ["flags", flags, "#"],
-      [this.rtmpStream ?? null, "true", "flags.2?true"],
-      [this.peer, types._TypeInputPeer, "InputPeer"],
-      [this.randomId, "number", "int"],
+      [this.rtmp_stream ?? null, "true", "flags.2?true"],
+      [this.peer, types._InputPeer, "InputPeer"],
+      [this.random_id, "number", "int"],
       [this.title ?? null, "string", "flags.0?string"],
-      [this.scheduleDate ?? null, "number", "flags.1?int"],
+      [this.schedule_date ?? null, "number", "flags.1?int"],
     ];
   }
 
-  constructor(params: { rtmpStream?: true; peer: types.TypeInputPeer; randomId: number; title?: string; scheduleDate?: number }) {
+  constructor(params: { rtmp_stream?: true; peer: types.InputPeer; random_id: number; title?: string; schedule_date?: number }) {
     super();
-    this.rtmpStream = params.rtmpStream;
+    this.rtmp_stream = params.rtmp_stream;
     this.peer = params.peer;
-    this.randomId = params.randomId;
+    this.random_id = params.random_id;
     this.title = params.title;
-    this.scheduleDate = params.scheduleDate;
+    this.schedule_date = params.schedule_date;
   }
 }
 
-export class PhoneJoinGroupCall extends Function<types.TypeUpdates> {
+export class phone_joinGroupCall extends Function<types.Updates> {
   muted?: true;
-  videoStopped?: true;
-  call: types.TypeInputGroupCall;
-  joinAs: types.TypeInputPeer;
-  inviteHash?: string;
-  params: types.TypeDataJSON;
+  video_stopped?: true;
+  call: types.InputGroupCall;
+  join_as: types.InputPeer;
+  invite_hash?: string;
+  params: types.DataJSON;
 
   protected get [id]() {
     return 0xB132FF7B;
@@ -15218,11 +15369,11 @@ export class PhoneJoinGroupCall extends Function<types.TypeUpdates> {
     return [
       ["flags", flags, "#"],
       ["muted", "true", "flags.0?true"],
-      ["videoStopped", "true", "flags.2?true"],
-      ["call", types._TypeInputGroupCall, "InputGroupCall"],
-      ["joinAs", types._TypeInputPeer, "InputPeer"],
-      ["inviteHash", "string", "flags.1?string"],
-      ["params", types._TypeDataJSON, "DataJSON"],
+      ["video_stopped", "true", "flags.2?true"],
+      ["call", types._InputGroupCall, "InputGroupCall"],
+      ["join_as", types._InputPeer, "InputPeer"],
+      ["invite_hash", "string", "flags.1?string"],
+      ["params", types._DataJSON, "DataJSON"],
     ];
   }
 
@@ -15230,27 +15381,27 @@ export class PhoneJoinGroupCall extends Function<types.TypeUpdates> {
     return [
       ["flags", flags, "#"],
       [this.muted ?? null, "true", "flags.0?true"],
-      [this.videoStopped ?? null, "true", "flags.2?true"],
-      [this.call, types._TypeInputGroupCall, "InputGroupCall"],
-      [this.joinAs, types._TypeInputPeer, "InputPeer"],
-      [this.inviteHash ?? null, "string", "flags.1?string"],
-      [this.params, types._TypeDataJSON, "DataJSON"],
+      [this.video_stopped ?? null, "true", "flags.2?true"],
+      [this.call, types._InputGroupCall, "InputGroupCall"],
+      [this.join_as, types._InputPeer, "InputPeer"],
+      [this.invite_hash ?? null, "string", "flags.1?string"],
+      [this.params, types._DataJSON, "DataJSON"],
     ];
   }
 
-  constructor(params: { muted?: true; videoStopped?: true; call: types.TypeInputGroupCall; joinAs: types.TypeInputPeer; inviteHash?: string; params: types.TypeDataJSON }) {
+  constructor(params: { muted?: true; video_stopped?: true; call: types.InputGroupCall; join_as: types.InputPeer; invite_hash?: string; params: types.DataJSON }) {
     super();
     this.muted = params.muted;
-    this.videoStopped = params.videoStopped;
+    this.video_stopped = params.video_stopped;
     this.call = params.call;
-    this.joinAs = params.joinAs;
-    this.inviteHash = params.inviteHash;
+    this.join_as = params.join_as;
+    this.invite_hash = params.invite_hash;
     this.params = params.params;
   }
 }
 
-export class PhoneLeaveGroupCall extends Function<types.TypeUpdates> {
-  call: types.TypeInputGroupCall;
+export class phone_leaveGroupCall extends Function<types.Updates> {
+  call: types.InputGroupCall;
   source: number;
 
   protected get [id]() {
@@ -15259,28 +15410,28 @@ export class PhoneLeaveGroupCall extends Function<types.TypeUpdates> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["call", types._TypeInputGroupCall, "InputGroupCall"],
+      ["call", types._InputGroupCall, "InputGroupCall"],
       ["source", "number", "int"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.call, types._TypeInputGroupCall, "InputGroupCall"],
+      [this.call, types._InputGroupCall, "InputGroupCall"],
       [this.source, "number", "int"],
     ];
   }
 
-  constructor(params: { call: types.TypeInputGroupCall; source: number }) {
+  constructor(params: { call: types.InputGroupCall; source: number }) {
     super();
     this.call = params.call;
     this.source = params.source;
   }
 }
 
-export class PhoneInviteToGroupCall extends Function<types.TypeUpdates> {
-  call: types.TypeInputGroupCall;
-  users: Array<types.TypeInputUser>;
+export class phone_inviteToGroupCall extends Function<types.Updates> {
+  call: types.InputGroupCall;
+  users: Array<types.InputUser>;
 
   protected get [id]() {
     return 0x7B393160;
@@ -15288,27 +15439,27 @@ export class PhoneInviteToGroupCall extends Function<types.TypeUpdates> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["call", types._TypeInputGroupCall, "InputGroupCall"],
-      ["users", [types._TypeInputUser], "Vector<InputUser>"],
+      ["call", types._InputGroupCall, "InputGroupCall"],
+      ["users", [types._InputUser], "Vector<InputUser>"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.call, types._TypeInputGroupCall, "InputGroupCall"],
-      [this.users, [types._TypeInputUser], "Vector<InputUser>"],
+      [this.call, types._InputGroupCall, "InputGroupCall"],
+      [this.users, [types._InputUser], "Vector<InputUser>"],
     ];
   }
 
-  constructor(params: { call: types.TypeInputGroupCall; users: Array<types.TypeInputUser> }) {
+  constructor(params: { call: types.InputGroupCall; users: Array<types.InputUser> }) {
     super();
     this.call = params.call;
     this.users = params.users;
   }
 }
 
-export class PhoneDiscardGroupCall extends Function<types.TypeUpdates> {
-  call: types.TypeInputGroupCall;
+export class phone_discardGroupCall extends Function<types.Updates> {
+  call: types.InputGroupCall;
 
   protected get [id]() {
     return 0x7A777135;
@@ -15316,26 +15467,26 @@ export class PhoneDiscardGroupCall extends Function<types.TypeUpdates> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["call", types._TypeInputGroupCall, "InputGroupCall"],
+      ["call", types._InputGroupCall, "InputGroupCall"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.call, types._TypeInputGroupCall, "InputGroupCall"],
+      [this.call, types._InputGroupCall, "InputGroupCall"],
     ];
   }
 
-  constructor(params: { call: types.TypeInputGroupCall }) {
+  constructor(params: { call: types.InputGroupCall }) {
     super();
     this.call = params.call;
   }
 }
 
-export class PhoneToggleGroupCallSettings extends Function<types.TypeUpdates> {
-  resetInviteHash?: true;
-  call: types.TypeInputGroupCall;
-  joinMuted?: boolean;
+export class phone_toggleGroupCallSettings extends Function<types.Updates> {
+  reset_invite_hash?: true;
+  call: types.InputGroupCall;
+  join_muted?: boolean;
 
   protected get [id]() {
     return 0x74BBB43D;
@@ -15344,31 +15495,31 @@ export class PhoneToggleGroupCallSettings extends Function<types.TypeUpdates> {
   static get [paramDesc](): ParamDesc {
     return [
       ["flags", flags, "#"],
-      ["resetInviteHash", "true", "flags.1?true"],
-      ["call", types._TypeInputGroupCall, "InputGroupCall"],
-      ["joinMuted", "boolean", "flags.0?Bool"],
+      ["reset_invite_hash", "true", "flags.1?true"],
+      ["call", types._InputGroupCall, "InputGroupCall"],
+      ["join_muted", "boolean", "flags.0?Bool"],
     ];
   }
 
   protected get [params](): Params {
     return [
       ["flags", flags, "#"],
-      [this.resetInviteHash ?? null, "true", "flags.1?true"],
-      [this.call, types._TypeInputGroupCall, "InputGroupCall"],
-      [this.joinMuted ?? null, "boolean", "flags.0?Bool"],
+      [this.reset_invite_hash ?? null, "true", "flags.1?true"],
+      [this.call, types._InputGroupCall, "InputGroupCall"],
+      [this.join_muted ?? null, "boolean", "flags.0?Bool"],
     ];
   }
 
-  constructor(params: { resetInviteHash?: true; call: types.TypeInputGroupCall; joinMuted?: boolean }) {
+  constructor(params: { reset_invite_hash?: true; call: types.InputGroupCall; join_muted?: boolean }) {
     super();
-    this.resetInviteHash = params.resetInviteHash;
+    this.reset_invite_hash = params.reset_invite_hash;
     this.call = params.call;
-    this.joinMuted = params.joinMuted;
+    this.join_muted = params.join_muted;
   }
 }
 
-export class PhoneGetGroupCall extends Function<types.TypePhoneGroupCall> {
-  call: types.TypeInputGroupCall;
+export class phone_getGroupCall extends Function<types.phone_GroupCall> {
+  call: types.InputGroupCall;
   limit: number;
 
   protected get [id]() {
@@ -15377,28 +15528,28 @@ export class PhoneGetGroupCall extends Function<types.TypePhoneGroupCall> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["call", types._TypeInputGroupCall, "InputGroupCall"],
+      ["call", types._InputGroupCall, "InputGroupCall"],
       ["limit", "number", "int"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.call, types._TypeInputGroupCall, "InputGroupCall"],
+      [this.call, types._InputGroupCall, "InputGroupCall"],
       [this.limit, "number", "int"],
     ];
   }
 
-  constructor(params: { call: types.TypeInputGroupCall; limit: number }) {
+  constructor(params: { call: types.InputGroupCall; limit: number }) {
     super();
     this.call = params.call;
     this.limit = params.limit;
   }
 }
 
-export class PhoneGetGroupParticipants extends Function<types.TypePhoneGroupParticipants> {
-  call: types.TypeInputGroupCall;
-  ids: Array<types.TypeInputPeer>;
+export class phone_getGroupParticipants extends Function<types.phone_GroupParticipants> {
+  call: types.InputGroupCall;
+  ids: Array<types.InputPeer>;
   sources: Array<number>;
   offset: string;
   limit: number;
@@ -15409,8 +15560,8 @@ export class PhoneGetGroupParticipants extends Function<types.TypePhoneGroupPart
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["call", types._TypeInputGroupCall, "InputGroupCall"],
-      ["ids", [types._TypeInputPeer], "Vector<InputPeer>"],
+      ["call", types._InputGroupCall, "InputGroupCall"],
+      ["ids", [types._InputPeer], "Vector<InputPeer>"],
       ["sources", ["number"], "Vector<int>"],
       ["offset", "string", "string"],
       ["limit", "number", "int"],
@@ -15419,15 +15570,15 @@ export class PhoneGetGroupParticipants extends Function<types.TypePhoneGroupPart
 
   protected get [params](): Params {
     return [
-      [this.call, types._TypeInputGroupCall, "InputGroupCall"],
-      [this.ids, [types._TypeInputPeer], "Vector<InputPeer>"],
+      [this.call, types._InputGroupCall, "InputGroupCall"],
+      [this.ids, [types._InputPeer], "Vector<InputPeer>"],
       [this.sources, ["number"], "Vector<int>"],
       [this.offset, "string", "string"],
       [this.limit, "number", "int"],
     ];
   }
 
-  constructor(params: { call: types.TypeInputGroupCall; ids: Array<types.TypeInputPeer>; sources: Array<number>; offset: string; limit: number }) {
+  constructor(params: { call: types.InputGroupCall; ids: Array<types.InputPeer>; sources: Array<number>; offset: string; limit: number }) {
     super();
     this.call = params.call;
     this.ids = params.ids;
@@ -15437,8 +15588,8 @@ export class PhoneGetGroupParticipants extends Function<types.TypePhoneGroupPart
   }
 }
 
-export class PhoneCheckGroupCall extends Function<number[]> {
-  call: types.TypeInputGroupCall;
+export class phone_checkGroupCall extends Function<number[]> {
+  call: types.InputGroupCall;
   sources: Array<number>;
 
   protected get [id]() {
@@ -15447,31 +15598,31 @@ export class PhoneCheckGroupCall extends Function<number[]> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["call", types._TypeInputGroupCall, "InputGroupCall"],
+      ["call", types._InputGroupCall, "InputGroupCall"],
       ["sources", ["number"], "Vector<int>"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.call, types._TypeInputGroupCall, "InputGroupCall"],
+      [this.call, types._InputGroupCall, "InputGroupCall"],
       [this.sources, ["number"], "Vector<int>"],
     ];
   }
 
-  constructor(params: { call: types.TypeInputGroupCall; sources: Array<number> }) {
+  constructor(params: { call: types.InputGroupCall; sources: Array<number> }) {
     super();
     this.call = params.call;
     this.sources = params.sources;
   }
 }
 
-export class PhoneToggleGroupCallRecord extends Function<types.TypeUpdates> {
+export class phone_toggleGroupCallRecord extends Function<types.Updates> {
   start?: true;
   video?: true;
-  call: types.TypeInputGroupCall;
+  call: types.InputGroupCall;
   title?: string;
-  videoPortrait?: boolean;
+  video_portrait?: boolean;
 
   protected get [id]() {
     return 0xF128C708;
@@ -15482,9 +15633,9 @@ export class PhoneToggleGroupCallRecord extends Function<types.TypeUpdates> {
       ["flags", flags, "#"],
       ["start", "true", "flags.0?true"],
       ["video", "true", "flags.2?true"],
-      ["call", types._TypeInputGroupCall, "InputGroupCall"],
+      ["call", types._InputGroupCall, "InputGroupCall"],
       ["title", "string", "flags.1?string"],
-      ["videoPortrait", "boolean", "flags.2?Bool"],
+      ["video_portrait", "boolean", "flags.2?Bool"],
     ];
   }
 
@@ -15493,31 +15644,31 @@ export class PhoneToggleGroupCallRecord extends Function<types.TypeUpdates> {
       ["flags", flags, "#"],
       [this.start ?? null, "true", "flags.0?true"],
       [this.video ?? null, "true", "flags.2?true"],
-      [this.call, types._TypeInputGroupCall, "InputGroupCall"],
+      [this.call, types._InputGroupCall, "InputGroupCall"],
       [this.title ?? null, "string", "flags.1?string"],
-      [this.videoPortrait ?? null, "boolean", "flags.2?Bool"],
+      [this.video_portrait ?? null, "boolean", "flags.2?Bool"],
     ];
   }
 
-  constructor(params: { start?: true; video?: true; call: types.TypeInputGroupCall; title?: string; videoPortrait?: boolean }) {
+  constructor(params: { start?: true; video?: true; call: types.InputGroupCall; title?: string; video_portrait?: boolean }) {
     super();
     this.start = params.start;
     this.video = params.video;
     this.call = params.call;
     this.title = params.title;
-    this.videoPortrait = params.videoPortrait;
+    this.video_portrait = params.video_portrait;
   }
 }
 
-export class PhoneEditGroupCallParticipant extends Function<types.TypeUpdates> {
-  call: types.TypeInputGroupCall;
-  participant: types.TypeInputPeer;
+export class phone_editGroupCallParticipant extends Function<types.Updates> {
+  call: types.InputGroupCall;
+  participant: types.InputPeer;
   muted?: boolean;
   volume?: number;
-  raiseHand?: boolean;
-  videoStopped?: boolean;
-  videoPaused?: boolean;
-  presentationPaused?: boolean;
+  raise_hand?: boolean;
+  video_stopped?: boolean;
+  video_paused?: boolean;
+  presentation_paused?: boolean;
 
   protected get [id]() {
     return 0xA5273ABF;
@@ -15526,46 +15677,46 @@ export class PhoneEditGroupCallParticipant extends Function<types.TypeUpdates> {
   static get [paramDesc](): ParamDesc {
     return [
       ["flags", flags, "#"],
-      ["call", types._TypeInputGroupCall, "InputGroupCall"],
-      ["participant", types._TypeInputPeer, "InputPeer"],
+      ["call", types._InputGroupCall, "InputGroupCall"],
+      ["participant", types._InputPeer, "InputPeer"],
       ["muted", "boolean", "flags.0?Bool"],
       ["volume", "number", "flags.1?int"],
-      ["raiseHand", "boolean", "flags.2?Bool"],
-      ["videoStopped", "boolean", "flags.3?Bool"],
-      ["videoPaused", "boolean", "flags.4?Bool"],
-      ["presentationPaused", "boolean", "flags.5?Bool"],
+      ["raise_hand", "boolean", "flags.2?Bool"],
+      ["video_stopped", "boolean", "flags.3?Bool"],
+      ["video_paused", "boolean", "flags.4?Bool"],
+      ["presentation_paused", "boolean", "flags.5?Bool"],
     ];
   }
 
   protected get [params](): Params {
     return [
       ["flags", flags, "#"],
-      [this.call, types._TypeInputGroupCall, "InputGroupCall"],
-      [this.participant, types._TypeInputPeer, "InputPeer"],
+      [this.call, types._InputGroupCall, "InputGroupCall"],
+      [this.participant, types._InputPeer, "InputPeer"],
       [this.muted ?? null, "boolean", "flags.0?Bool"],
       [this.volume ?? null, "number", "flags.1?int"],
-      [this.raiseHand ?? null, "boolean", "flags.2?Bool"],
-      [this.videoStopped ?? null, "boolean", "flags.3?Bool"],
-      [this.videoPaused ?? null, "boolean", "flags.4?Bool"],
-      [this.presentationPaused ?? null, "boolean", "flags.5?Bool"],
+      [this.raise_hand ?? null, "boolean", "flags.2?Bool"],
+      [this.video_stopped ?? null, "boolean", "flags.3?Bool"],
+      [this.video_paused ?? null, "boolean", "flags.4?Bool"],
+      [this.presentation_paused ?? null, "boolean", "flags.5?Bool"],
     ];
   }
 
-  constructor(params: { call: types.TypeInputGroupCall; participant: types.TypeInputPeer; muted?: boolean; volume?: number; raiseHand?: boolean; videoStopped?: boolean; videoPaused?: boolean; presentationPaused?: boolean }) {
+  constructor(params: { call: types.InputGroupCall; participant: types.InputPeer; muted?: boolean; volume?: number; raise_hand?: boolean; video_stopped?: boolean; video_paused?: boolean; presentation_paused?: boolean }) {
     super();
     this.call = params.call;
     this.participant = params.participant;
     this.muted = params.muted;
     this.volume = params.volume;
-    this.raiseHand = params.raiseHand;
-    this.videoStopped = params.videoStopped;
-    this.videoPaused = params.videoPaused;
-    this.presentationPaused = params.presentationPaused;
+    this.raise_hand = params.raise_hand;
+    this.video_stopped = params.video_stopped;
+    this.video_paused = params.video_paused;
+    this.presentation_paused = params.presentation_paused;
   }
 }
 
-export class PhoneEditGroupCallTitle extends Function<types.TypeUpdates> {
-  call: types.TypeInputGroupCall;
+export class phone_editGroupCallTitle extends Function<types.Updates> {
+  call: types.InputGroupCall;
   title: string;
 
   protected get [id]() {
@@ -15574,27 +15725,27 @@ export class PhoneEditGroupCallTitle extends Function<types.TypeUpdates> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["call", types._TypeInputGroupCall, "InputGroupCall"],
+      ["call", types._InputGroupCall, "InputGroupCall"],
       ["title", "string", "string"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.call, types._TypeInputGroupCall, "InputGroupCall"],
+      [this.call, types._InputGroupCall, "InputGroupCall"],
       [this.title, "string", "string"],
     ];
   }
 
-  constructor(params: { call: types.TypeInputGroupCall; title: string }) {
+  constructor(params: { call: types.InputGroupCall; title: string }) {
     super();
     this.call = params.call;
     this.title = params.title;
   }
 }
 
-export class PhoneGetGroupCallJoinAs extends Function<types.TypePhoneJoinAsPeers> {
-  peer: types.TypeInputPeer;
+export class phone_getGroupCallJoinAs extends Function<types.phone_JoinAsPeers> {
+  peer: types.InputPeer;
 
   protected get [id]() {
     return 0xEF7C213A;
@@ -15602,25 +15753,25 @@ export class PhoneGetGroupCallJoinAs extends Function<types.TypePhoneJoinAsPeers
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["peer", types._TypeInputPeer, "InputPeer"],
+      ["peer", types._InputPeer, "InputPeer"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.peer, types._TypeInputPeer, "InputPeer"],
+      [this.peer, types._InputPeer, "InputPeer"],
     ];
   }
 
-  constructor(params: { peer: types.TypeInputPeer }) {
+  constructor(params: { peer: types.InputPeer }) {
     super();
     this.peer = params.peer;
   }
 }
 
-export class PhoneExportGroupCallInvite extends Function<types.TypePhoneExportedGroupCallInvite> {
-  canSelfUnmute?: true;
-  call: types.TypeInputGroupCall;
+export class phone_exportGroupCallInvite extends Function<types.phone_ExportedGroupCallInvite> {
+  can_self_unmute?: true;
+  call: types.InputGroupCall;
 
   protected get [id]() {
     return 0xE6AA647F;
@@ -15629,28 +15780,28 @@ export class PhoneExportGroupCallInvite extends Function<types.TypePhoneExported
   static get [paramDesc](): ParamDesc {
     return [
       ["flags", flags, "#"],
-      ["canSelfUnmute", "true", "flags.0?true"],
-      ["call", types._TypeInputGroupCall, "InputGroupCall"],
+      ["can_self_unmute", "true", "flags.0?true"],
+      ["call", types._InputGroupCall, "InputGroupCall"],
     ];
   }
 
   protected get [params](): Params {
     return [
       ["flags", flags, "#"],
-      [this.canSelfUnmute ?? null, "true", "flags.0?true"],
-      [this.call, types._TypeInputGroupCall, "InputGroupCall"],
+      [this.can_self_unmute ?? null, "true", "flags.0?true"],
+      [this.call, types._InputGroupCall, "InputGroupCall"],
     ];
   }
 
-  constructor(params: { canSelfUnmute?: true; call: types.TypeInputGroupCall }) {
+  constructor(params: { can_self_unmute?: true; call: types.InputGroupCall }) {
     super();
-    this.canSelfUnmute = params.canSelfUnmute;
+    this.can_self_unmute = params.can_self_unmute;
     this.call = params.call;
   }
 }
 
-export class PhoneToggleGroupCallStartSubscription extends Function<types.TypeUpdates> {
-  call: types.TypeInputGroupCall;
+export class phone_toggleGroupCallStartSubscription extends Function<types.Updates> {
+  call: types.InputGroupCall;
   subscribed: boolean;
 
   protected get [id]() {
@@ -15659,27 +15810,27 @@ export class PhoneToggleGroupCallStartSubscription extends Function<types.TypeUp
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["call", types._TypeInputGroupCall, "InputGroupCall"],
+      ["call", types._InputGroupCall, "InputGroupCall"],
       ["subscribed", "boolean", "Bool"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.call, types._TypeInputGroupCall, "InputGroupCall"],
+      [this.call, types._InputGroupCall, "InputGroupCall"],
       [this.subscribed, "boolean", "Bool"],
     ];
   }
 
-  constructor(params: { call: types.TypeInputGroupCall; subscribed: boolean }) {
+  constructor(params: { call: types.InputGroupCall; subscribed: boolean }) {
     super();
     this.call = params.call;
     this.subscribed = params.subscribed;
   }
 }
 
-export class PhoneStartScheduledGroupCall extends Function<types.TypeUpdates> {
-  call: types.TypeInputGroupCall;
+export class phone_startScheduledGroupCall extends Function<types.Updates> {
+  call: types.InputGroupCall;
 
   protected get [id]() {
     return 0x5680E342;
@@ -15687,25 +15838,25 @@ export class PhoneStartScheduledGroupCall extends Function<types.TypeUpdates> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["call", types._TypeInputGroupCall, "InputGroupCall"],
+      ["call", types._InputGroupCall, "InputGroupCall"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.call, types._TypeInputGroupCall, "InputGroupCall"],
+      [this.call, types._InputGroupCall, "InputGroupCall"],
     ];
   }
 
-  constructor(params: { call: types.TypeInputGroupCall }) {
+  constructor(params: { call: types.InputGroupCall }) {
     super();
     this.call = params.call;
   }
 }
 
-export class PhoneSaveDefaultGroupCallJoinAs extends Function<boolean> {
-  peer: types.TypeInputPeer;
-  joinAs: types.TypeInputPeer;
+export class phone_saveDefaultGroupCallJoinAs extends Function<boolean> {
+  peer: types.InputPeer;
+  join_as: types.InputPeer;
 
   protected get [id]() {
     return 0x575E1F8C;
@@ -15713,28 +15864,28 @@ export class PhoneSaveDefaultGroupCallJoinAs extends Function<boolean> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["peer", types._TypeInputPeer, "InputPeer"],
-      ["joinAs", types._TypeInputPeer, "InputPeer"],
+      ["peer", types._InputPeer, "InputPeer"],
+      ["join_as", types._InputPeer, "InputPeer"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.peer, types._TypeInputPeer, "InputPeer"],
-      [this.joinAs, types._TypeInputPeer, "InputPeer"],
+      [this.peer, types._InputPeer, "InputPeer"],
+      [this.join_as, types._InputPeer, "InputPeer"],
     ];
   }
 
-  constructor(params: { peer: types.TypeInputPeer; joinAs: types.TypeInputPeer }) {
+  constructor(params: { peer: types.InputPeer; join_as: types.InputPeer }) {
     super();
     this.peer = params.peer;
-    this.joinAs = params.joinAs;
+    this.join_as = params.join_as;
   }
 }
 
-export class PhoneJoinGroupCallPresentation extends Function<types.TypeUpdates> {
-  call: types.TypeInputGroupCall;
-  params: types.TypeDataJSON;
+export class phone_joinGroupCallPresentation extends Function<types.Updates> {
+  call: types.InputGroupCall;
+  params: types.DataJSON;
 
   protected get [id]() {
     return 0xCBEA6BC4;
@@ -15742,27 +15893,27 @@ export class PhoneJoinGroupCallPresentation extends Function<types.TypeUpdates> 
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["call", types._TypeInputGroupCall, "InputGroupCall"],
-      ["params", types._TypeDataJSON, "DataJSON"],
+      ["call", types._InputGroupCall, "InputGroupCall"],
+      ["params", types._DataJSON, "DataJSON"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.call, types._TypeInputGroupCall, "InputGroupCall"],
-      [this.params, types._TypeDataJSON, "DataJSON"],
+      [this.call, types._InputGroupCall, "InputGroupCall"],
+      [this.params, types._DataJSON, "DataJSON"],
     ];
   }
 
-  constructor(params: { call: types.TypeInputGroupCall; params: types.TypeDataJSON }) {
+  constructor(params: { call: types.InputGroupCall; params: types.DataJSON }) {
     super();
     this.call = params.call;
     this.params = params.params;
   }
 }
 
-export class PhoneLeaveGroupCallPresentation extends Function<types.TypeUpdates> {
-  call: types.TypeInputGroupCall;
+export class phone_leaveGroupCallPresentation extends Function<types.Updates> {
+  call: types.InputGroupCall;
 
   protected get [id]() {
     return 0x1C50D144;
@@ -15770,24 +15921,24 @@ export class PhoneLeaveGroupCallPresentation extends Function<types.TypeUpdates>
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["call", types._TypeInputGroupCall, "InputGroupCall"],
+      ["call", types._InputGroupCall, "InputGroupCall"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.call, types._TypeInputGroupCall, "InputGroupCall"],
+      [this.call, types._InputGroupCall, "InputGroupCall"],
     ];
   }
 
-  constructor(params: { call: types.TypeInputGroupCall }) {
+  constructor(params: { call: types.InputGroupCall }) {
     super();
     this.call = params.call;
   }
 }
 
-export class PhoneGetGroupCallStreamChannels extends Function<types.TypePhoneGroupCallStreamChannels> {
-  call: types.TypeInputGroupCall;
+export class phone_getGroupCallStreamChannels extends Function<types.phone_GroupCallStreamChannels> {
+  call: types.InputGroupCall;
 
   protected get [id]() {
     return 0x1AB21940;
@@ -15795,24 +15946,24 @@ export class PhoneGetGroupCallStreamChannels extends Function<types.TypePhoneGro
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["call", types._TypeInputGroupCall, "InputGroupCall"],
+      ["call", types._InputGroupCall, "InputGroupCall"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.call, types._TypeInputGroupCall, "InputGroupCall"],
+      [this.call, types._InputGroupCall, "InputGroupCall"],
     ];
   }
 
-  constructor(params: { call: types.TypeInputGroupCall }) {
+  constructor(params: { call: types.InputGroupCall }) {
     super();
     this.call = params.call;
   }
 }
 
-export class PhoneGetGroupCallStreamRtmpURL extends Function<types.TypePhoneGroupCallStreamRtmpURL> {
-  peer: types.TypeInputPeer;
+export class phone_getGroupCallStreamRtmpUrl extends Function<types.phone_GroupCallStreamRtmpUrl> {
+  peer: types.InputPeer;
   revoke: boolean;
 
   protected get [id]() {
@@ -15821,28 +15972,28 @@ export class PhoneGetGroupCallStreamRtmpURL extends Function<types.TypePhoneGrou
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["peer", types._TypeInputPeer, "InputPeer"],
+      ["peer", types._InputPeer, "InputPeer"],
       ["revoke", "boolean", "Bool"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.peer, types._TypeInputPeer, "InputPeer"],
+      [this.peer, types._InputPeer, "InputPeer"],
       [this.revoke, "boolean", "Bool"],
     ];
   }
 
-  constructor(params: { peer: types.TypeInputPeer; revoke: boolean }) {
+  constructor(params: { peer: types.InputPeer; revoke: boolean }) {
     super();
     this.peer = params.peer;
     this.revoke = params.revoke;
   }
 }
 
-export class PhoneSaveCallLog extends Function<boolean> {
-  peer: types.TypeInputPhoneCall;
-  file: types.TypeInputFile;
+export class phone_saveCallLog extends Function<boolean> {
+  peer: types.InputPhoneCall;
+  file: types.InputFile;
 
   protected get [id]() {
     return 0x41248786;
@@ -15850,28 +16001,28 @@ export class PhoneSaveCallLog extends Function<boolean> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["peer", types._TypeInputPhoneCall, "InputPhoneCall"],
-      ["file", types._TypeInputFile, "InputFile"],
+      ["peer", types._InputPhoneCall, "InputPhoneCall"],
+      ["file", types._InputFile, "InputFile"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.peer, types._TypeInputPhoneCall, "InputPhoneCall"],
-      [this.file, types._TypeInputFile, "InputFile"],
+      [this.peer, types._InputPhoneCall, "InputPhoneCall"],
+      [this.file, types._InputFile, "InputFile"],
     ];
   }
 
-  constructor(params: { peer: types.TypeInputPhoneCall; file: types.TypeInputFile }) {
+  constructor(params: { peer: types.InputPhoneCall; file: types.InputFile }) {
     super();
     this.peer = params.peer;
     this.file = params.file;
   }
 }
 
-export class LangpackGetLangPack extends Function<types.TypeLangPackDifference> {
-  langPack: string;
-  langCode: string;
+export class langpack_getLangPack extends Function<types.LangPackDifference> {
+  lang_pack: string;
+  lang_code: string;
 
   protected get [id]() {
     return 0xF2F2330A;
@@ -15879,28 +16030,28 @@ export class LangpackGetLangPack extends Function<types.TypeLangPackDifference> 
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["langPack", "string", "string"],
-      ["langCode", "string", "string"],
+      ["lang_pack", "string", "string"],
+      ["lang_code", "string", "string"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.langPack, "string", "string"],
-      [this.langCode, "string", "string"],
+      [this.lang_pack, "string", "string"],
+      [this.lang_code, "string", "string"],
     ];
   }
 
-  constructor(params: { langPack: string; langCode: string }) {
+  constructor(params: { lang_pack: string; lang_code: string }) {
     super();
-    this.langPack = params.langPack;
-    this.langCode = params.langCode;
+    this.lang_pack = params.lang_pack;
+    this.lang_code = params.lang_code;
   }
 }
 
-export class LangpackGetStrings extends Function<types.TypeLangPackString[]> {
-  langPack: string;
-  langCode: string;
+export class langpack_getStrings extends Function<types.LangPackString[]> {
+  lang_pack: string;
+  lang_code: string;
   keys: Array<string>;
 
   protected get [id]() {
@@ -15909,32 +16060,32 @@ export class LangpackGetStrings extends Function<types.TypeLangPackString[]> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["langPack", "string", "string"],
-      ["langCode", "string", "string"],
+      ["lang_pack", "string", "string"],
+      ["lang_code", "string", "string"],
       ["keys", ["string"], "Vector<string>"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.langPack, "string", "string"],
-      [this.langCode, "string", "string"],
+      [this.lang_pack, "string", "string"],
+      [this.lang_code, "string", "string"],
       [this.keys, ["string"], "Vector<string>"],
     ];
   }
 
-  constructor(params: { langPack: string; langCode: string; keys: Array<string> }) {
+  constructor(params: { lang_pack: string; lang_code: string; keys: Array<string> }) {
     super();
-    this.langPack = params.langPack;
-    this.langCode = params.langCode;
+    this.lang_pack = params.lang_pack;
+    this.lang_code = params.lang_code;
     this.keys = params.keys;
   }
 }
 
-export class LangpackGetDifference extends Function<types.TypeLangPackDifference> {
-  langPack: string;
-  langCode: string;
-  fromVersion: number;
+export class langpack_getDifference extends Function<types.LangPackDifference> {
+  lang_pack: string;
+  lang_code: string;
+  from_version: number;
 
   protected get [id]() {
     return 0xCD984AA5;
@@ -15942,30 +16093,30 @@ export class LangpackGetDifference extends Function<types.TypeLangPackDifference
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["langPack", "string", "string"],
-      ["langCode", "string", "string"],
-      ["fromVersion", "number", "int"],
+      ["lang_pack", "string", "string"],
+      ["lang_code", "string", "string"],
+      ["from_version", "number", "int"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.langPack, "string", "string"],
-      [this.langCode, "string", "string"],
-      [this.fromVersion, "number", "int"],
+      [this.lang_pack, "string", "string"],
+      [this.lang_code, "string", "string"],
+      [this.from_version, "number", "int"],
     ];
   }
 
-  constructor(params: { langPack: string; langCode: string; fromVersion: number }) {
+  constructor(params: { lang_pack: string; lang_code: string; from_version: number }) {
     super();
-    this.langPack = params.langPack;
-    this.langCode = params.langCode;
-    this.fromVersion = params.fromVersion;
+    this.lang_pack = params.lang_pack;
+    this.lang_code = params.lang_code;
+    this.from_version = params.from_version;
   }
 }
 
-export class LangpackGetLanguages extends Function<types.TypeLangPackLanguage[]> {
-  langPack: string;
+export class langpack_getLanguages extends Function<types.LangPackLanguage[]> {
+  lang_pack: string;
 
   protected get [id]() {
     return 0x42C6978F;
@@ -15973,25 +16124,25 @@ export class LangpackGetLanguages extends Function<types.TypeLangPackLanguage[]>
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["langPack", "string", "string"],
+      ["lang_pack", "string", "string"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.langPack, "string", "string"],
+      [this.lang_pack, "string", "string"],
     ];
   }
 
-  constructor(params: { langPack: string }) {
+  constructor(params: { lang_pack: string }) {
     super();
-    this.langPack = params.langPack;
+    this.lang_pack = params.lang_pack;
   }
 }
 
-export class LangpackGetLanguage extends Function<types.TypeLangPackLanguage> {
-  langPack: string;
-  langCode: string;
+export class langpack_getLanguage extends Function<types.LangPackLanguage> {
+  lang_pack: string;
+  lang_code: string;
 
   protected get [id]() {
     return 0x6A596502;
@@ -15999,27 +16150,27 @@ export class LangpackGetLanguage extends Function<types.TypeLangPackLanguage> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["langPack", "string", "string"],
-      ["langCode", "string", "string"],
+      ["lang_pack", "string", "string"],
+      ["lang_code", "string", "string"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.langPack, "string", "string"],
-      [this.langCode, "string", "string"],
+      [this.lang_pack, "string", "string"],
+      [this.lang_code, "string", "string"],
     ];
   }
 
-  constructor(params: { langPack: string; langCode: string }) {
+  constructor(params: { lang_pack: string; lang_code: string }) {
     super();
-    this.langPack = params.langPack;
-    this.langCode = params.langCode;
+    this.lang_pack = params.lang_pack;
+    this.lang_code = params.lang_code;
   }
 }
 
-export class FoldersEditPeerFolders extends Function<types.TypeUpdates> {
-  folderPeers: Array<types.TypeInputFolderPeer>;
+export class folders_editPeerFolders extends Function<types.Updates> {
+  folder_peers: Array<types.InputFolderPeer>;
 
   protected get [id]() {
     return 0x6847D0AB;
@@ -16027,25 +16178,25 @@ export class FoldersEditPeerFolders extends Function<types.TypeUpdates> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["folderPeers", [types._TypeInputFolderPeer], "Vector<InputFolderPeer>"],
+      ["folder_peers", [types._InputFolderPeer], "Vector<InputFolderPeer>"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.folderPeers, [types._TypeInputFolderPeer], "Vector<InputFolderPeer>"],
+      [this.folder_peers, [types._InputFolderPeer], "Vector<InputFolderPeer>"],
     ];
   }
 
-  constructor(params: { folderPeers: Array<types.TypeInputFolderPeer> }) {
+  constructor(params: { folder_peers: Array<types.InputFolderPeer> }) {
     super();
-    this.folderPeers = params.folderPeers;
+    this.folder_peers = params.folder_peers;
   }
 }
 
-export class StatsGetBroadcastStats extends Function<types.TypeStatsBroadcastStats> {
+export class stats_getBroadcastStats extends Function<types.stats_BroadcastStats> {
   dark?: true;
-  channel: types.TypeInputChannel;
+  channel: types.InputChannel;
 
   protected get [id]() {
     return 0xAB42441A;
@@ -16055,7 +16206,7 @@ export class StatsGetBroadcastStats extends Function<types.TypeStatsBroadcastSta
     return [
       ["flags", flags, "#"],
       ["dark", "true", "flags.0?true"],
-      ["channel", types._TypeInputChannel, "InputChannel"],
+      ["channel", types._InputChannel, "InputChannel"],
     ];
   }
 
@@ -16063,18 +16214,18 @@ export class StatsGetBroadcastStats extends Function<types.TypeStatsBroadcastSta
     return [
       ["flags", flags, "#"],
       [this.dark ?? null, "true", "flags.0?true"],
-      [this.channel, types._TypeInputChannel, "InputChannel"],
+      [this.channel, types._InputChannel, "InputChannel"],
     ];
   }
 
-  constructor(params: { dark?: true; channel: types.TypeInputChannel }) {
+  constructor(params: { dark?: true; channel: types.InputChannel }) {
     super();
     this.dark = params.dark;
     this.channel = params.channel;
   }
 }
 
-export class StatsLoadAsyncGraph extends Function<types.TypeStatsGraph> {
+export class stats_loadAsyncGraph extends Function<types.StatsGraph> {
   token: string;
   x?: bigint;
 
@@ -16105,9 +16256,9 @@ export class StatsLoadAsyncGraph extends Function<types.TypeStatsGraph> {
   }
 }
 
-export class StatsGetMegagroupStats extends Function<types.TypeStatsMegagroupStats> {
+export class stats_getMegagroupStats extends Function<types.stats_MegagroupStats> {
   dark?: true;
-  channel: types.TypeInputChannel;
+  channel: types.InputChannel;
 
   protected get [id]() {
     return 0xDCDF8607;
@@ -16117,7 +16268,7 @@ export class StatsGetMegagroupStats extends Function<types.TypeStatsMegagroupSta
     return [
       ["flags", flags, "#"],
       ["dark", "true", "flags.0?true"],
-      ["channel", types._TypeInputChannel, "InputChannel"],
+      ["channel", types._InputChannel, "InputChannel"],
     ];
   }
 
@@ -16125,23 +16276,23 @@ export class StatsGetMegagroupStats extends Function<types.TypeStatsMegagroupSta
     return [
       ["flags", flags, "#"],
       [this.dark ?? null, "true", "flags.0?true"],
-      [this.channel, types._TypeInputChannel, "InputChannel"],
+      [this.channel, types._InputChannel, "InputChannel"],
     ];
   }
 
-  constructor(params: { dark?: true; channel: types.TypeInputChannel }) {
+  constructor(params: { dark?: true; channel: types.InputChannel }) {
     super();
     this.dark = params.dark;
     this.channel = params.channel;
   }
 }
 
-export class StatsGetMessagePublicForwards extends Function<types.TypeMessagesMessages> {
-  channel: types.TypeInputChannel;
-  msgId: number;
-  offsetRate: number;
-  offsetPeer: types.TypeInputPeer;
-  offsetId: number;
+export class stats_getMessagePublicForwards extends Function<types.messages_Messages> {
+  channel: types.InputChannel;
+  msg_id: number;
+  offset_rate: number;
+  offset_peer: types.InputPeer;
+  offset_id: number;
   limit: number;
 
   protected get [id]() {
@@ -16150,41 +16301,41 @@ export class StatsGetMessagePublicForwards extends Function<types.TypeMessagesMe
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["channel", types._TypeInputChannel, "InputChannel"],
-      ["msgId", "number", "int"],
-      ["offsetRate", "number", "int"],
-      ["offsetPeer", types._TypeInputPeer, "InputPeer"],
-      ["offsetId", "number", "int"],
+      ["channel", types._InputChannel, "InputChannel"],
+      ["msg_id", "number", "int"],
+      ["offset_rate", "number", "int"],
+      ["offset_peer", types._InputPeer, "InputPeer"],
+      ["offset_id", "number", "int"],
       ["limit", "number", "int"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.channel, types._TypeInputChannel, "InputChannel"],
-      [this.msgId, "number", "int"],
-      [this.offsetRate, "number", "int"],
-      [this.offsetPeer, types._TypeInputPeer, "InputPeer"],
-      [this.offsetId, "number", "int"],
+      [this.channel, types._InputChannel, "InputChannel"],
+      [this.msg_id, "number", "int"],
+      [this.offset_rate, "number", "int"],
+      [this.offset_peer, types._InputPeer, "InputPeer"],
+      [this.offset_id, "number", "int"],
       [this.limit, "number", "int"],
     ];
   }
 
-  constructor(params: { channel: types.TypeInputChannel; msgId: number; offsetRate: number; offsetPeer: types.TypeInputPeer; offsetId: number; limit: number }) {
+  constructor(params: { channel: types.InputChannel; msg_id: number; offset_rate: number; offset_peer: types.InputPeer; offset_id: number; limit: number }) {
     super();
     this.channel = params.channel;
-    this.msgId = params.msgId;
-    this.offsetRate = params.offsetRate;
-    this.offsetPeer = params.offsetPeer;
-    this.offsetId = params.offsetId;
+    this.msg_id = params.msg_id;
+    this.offset_rate = params.offset_rate;
+    this.offset_peer = params.offset_peer;
+    this.offset_id = params.offset_id;
     this.limit = params.limit;
   }
 }
 
-export class StatsGetMessageStats extends Function<types.TypeStatsMessageStats> {
+export class stats_getMessageStats extends Function<types.stats_MessageStats> {
   dark?: true;
-  channel: types.TypeInputChannel;
-  msgId: number;
+  channel: types.InputChannel;
+  msg_id: number;
 
   protected get [id]() {
     return 0xB6E0A3F5;
@@ -16194,8 +16345,8 @@ export class StatsGetMessageStats extends Function<types.TypeStatsMessageStats> 
     return [
       ["flags", flags, "#"],
       ["dark", "true", "flags.0?true"],
-      ["channel", types._TypeInputChannel, "InputChannel"],
-      ["msgId", "number", "int"],
+      ["channel", types._InputChannel, "InputChannel"],
+      ["msg_id", "number", "int"],
     ];
   }
 
@@ -16203,23 +16354,95 @@ export class StatsGetMessageStats extends Function<types.TypeStatsMessageStats> 
     return [
       ["flags", flags, "#"],
       [this.dark ?? null, "true", "flags.0?true"],
-      [this.channel, types._TypeInputChannel, "InputChannel"],
-      [this.msgId, "number", "int"],
+      [this.channel, types._InputChannel, "InputChannel"],
+      [this.msg_id, "number", "int"],
     ];
   }
 
-  constructor(params: { dark?: true; channel: types.TypeInputChannel; msgId: number }) {
+  constructor(params: { dark?: true; channel: types.InputChannel; msg_id: number }) {
     super();
     this.dark = params.dark;
     this.channel = params.channel;
-    this.msgId = params.msgId;
+    this.msg_id = params.msg_id;
   }
 }
 
-export class ChatlistsExportChatlistInvite extends Function<types.TypeChatlistsExportedChatlistInvite> {
-  chatlist: types.TypeInputChatlist;
+export class stats_getStoryStats extends Function<types.stats_StoryStats> {
+  dark?: true;
+  peer: types.InputPeer;
+  id: number;
+
+  protected get [id]() {
+    return 0x374FEF40;
+  }
+
+  static get [paramDesc](): ParamDesc {
+    return [
+      ["flags", flags, "#"],
+      ["dark", "true", "flags.0?true"],
+      ["peer", types._InputPeer, "InputPeer"],
+      ["id", "number", "int"],
+    ];
+  }
+
+  protected get [params](): Params {
+    return [
+      ["flags", flags, "#"],
+      [this.dark ?? null, "true", "flags.0?true"],
+      [this.peer, types._InputPeer, "InputPeer"],
+      [this.id, "number", "int"],
+    ];
+  }
+
+  constructor(params: { dark?: true; peer: types.InputPeer; id: number }) {
+    super();
+    this.dark = params.dark;
+    this.peer = params.peer;
+    this.id = params.id;
+  }
+}
+
+export class stats_getStoryPublicForwards extends Function<types.stats_PublicForwards> {
+  peer: types.InputPeer;
+  id: number;
+  offset: string;
+  limit: number;
+
+  protected get [id]() {
+    return 0xA6437EF6;
+  }
+
+  static get [paramDesc](): ParamDesc {
+    return [
+      ["peer", types._InputPeer, "InputPeer"],
+      ["id", "number", "int"],
+      ["offset", "string", "string"],
+      ["limit", "number", "int"],
+    ];
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.peer, types._InputPeer, "InputPeer"],
+      [this.id, "number", "int"],
+      [this.offset, "string", "string"],
+      [this.limit, "number", "int"],
+    ];
+  }
+
+  constructor(params: { peer: types.InputPeer; id: number; offset: string; limit: number }) {
+    super();
+    this.peer = params.peer;
+    this.id = params.id;
+    this.offset = params.offset;
+    this.limit = params.limit;
+  }
+}
+
+export class chatlists_exportChatlistInvite extends Function<types.chatlists_ExportedChatlistInvite> {
+  chatlist: types.InputChatlist;
   title: string;
-  peers: Array<types.TypeInputPeer>;
+  peers: Array<types.InputPeer>;
 
   protected get [id]() {
     return 0x8472478E;
@@ -16227,21 +16450,21 @@ export class ChatlistsExportChatlistInvite extends Function<types.TypeChatlistsE
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["chatlist", types._TypeInputChatlist, "InputChatlist"],
+      ["chatlist", types._InputChatlist, "InputChatlist"],
       ["title", "string", "string"],
-      ["peers", [types._TypeInputPeer], "Vector<InputPeer>"],
+      ["peers", [types._InputPeer], "Vector<InputPeer>"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.chatlist, types._TypeInputChatlist, "InputChatlist"],
+      [this.chatlist, types._InputChatlist, "InputChatlist"],
       [this.title, "string", "string"],
-      [this.peers, [types._TypeInputPeer], "Vector<InputPeer>"],
+      [this.peers, [types._InputPeer], "Vector<InputPeer>"],
     ];
   }
 
-  constructor(params: { chatlist: types.TypeInputChatlist; title: string; peers: Array<types.TypeInputPeer> }) {
+  constructor(params: { chatlist: types.InputChatlist; title: string; peers: Array<types.InputPeer> }) {
     super();
     this.chatlist = params.chatlist;
     this.title = params.title;
@@ -16249,8 +16472,8 @@ export class ChatlistsExportChatlistInvite extends Function<types.TypeChatlistsE
   }
 }
 
-export class ChatlistsDeleteExportedInvite extends Function<boolean> {
-  chatlist: types.TypeInputChatlist;
+export class chatlists_deleteExportedInvite extends Function<boolean> {
+  chatlist: types.InputChatlist;
   slug: string;
 
   protected get [id]() {
@@ -16259,30 +16482,30 @@ export class ChatlistsDeleteExportedInvite extends Function<boolean> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["chatlist", types._TypeInputChatlist, "InputChatlist"],
+      ["chatlist", types._InputChatlist, "InputChatlist"],
       ["slug", "string", "string"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.chatlist, types._TypeInputChatlist, "InputChatlist"],
+      [this.chatlist, types._InputChatlist, "InputChatlist"],
       [this.slug, "string", "string"],
     ];
   }
 
-  constructor(params: { chatlist: types.TypeInputChatlist; slug: string }) {
+  constructor(params: { chatlist: types.InputChatlist; slug: string }) {
     super();
     this.chatlist = params.chatlist;
     this.slug = params.slug;
   }
 }
 
-export class ChatlistsEditExportedInvite extends Function<types.TypeExportedChatlistInvite> {
-  chatlist: types.TypeInputChatlist;
+export class chatlists_editExportedInvite extends Function<types.ExportedChatlistInvite> {
+  chatlist: types.InputChatlist;
   slug: string;
   title?: string;
-  peers?: Array<types.TypeInputPeer>;
+  peers?: Array<types.InputPeer>;
 
   protected get [id]() {
     return 0x653DB63D;
@@ -16291,24 +16514,24 @@ export class ChatlistsEditExportedInvite extends Function<types.TypeExportedChat
   static get [paramDesc](): ParamDesc {
     return [
       ["flags", flags, "#"],
-      ["chatlist", types._TypeInputChatlist, "InputChatlist"],
+      ["chatlist", types._InputChatlist, "InputChatlist"],
       ["slug", "string", "string"],
       ["title", "string", "flags.1?string"],
-      ["peers", [types._TypeInputPeer], "flags.2?Vector<InputPeer>"],
+      ["peers", [types._InputPeer], "flags.2?Vector<InputPeer>"],
     ];
   }
 
   protected get [params](): Params {
     return [
       ["flags", flags, "#"],
-      [this.chatlist, types._TypeInputChatlist, "InputChatlist"],
+      [this.chatlist, types._InputChatlist, "InputChatlist"],
       [this.slug, "string", "string"],
       [this.title ?? null, "string", "flags.1?string"],
-      [this.peers ?? null, [types._TypeInputPeer], "flags.2?Vector<InputPeer>"],
+      [this.peers ?? null, [types._InputPeer], "flags.2?Vector<InputPeer>"],
     ];
   }
 
-  constructor(params: { chatlist: types.TypeInputChatlist; slug: string; title?: string; peers?: Array<types.TypeInputPeer> }) {
+  constructor(params: { chatlist: types.InputChatlist; slug: string; title?: string; peers?: Array<types.InputPeer> }) {
     super();
     this.chatlist = params.chatlist;
     this.slug = params.slug;
@@ -16317,8 +16540,8 @@ export class ChatlistsEditExportedInvite extends Function<types.TypeExportedChat
   }
 }
 
-export class ChatlistsGetExportedInvites extends Function<types.TypeChatlistsExportedInvites> {
-  chatlist: types.TypeInputChatlist;
+export class chatlists_getExportedInvites extends Function<types.chatlists_ExportedInvites> {
+  chatlist: types.InputChatlist;
 
   protected get [id]() {
     return 0xCE03DA83;
@@ -16326,23 +16549,23 @@ export class ChatlistsGetExportedInvites extends Function<types.TypeChatlistsExp
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["chatlist", types._TypeInputChatlist, "InputChatlist"],
+      ["chatlist", types._InputChatlist, "InputChatlist"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.chatlist, types._TypeInputChatlist, "InputChatlist"],
+      [this.chatlist, types._InputChatlist, "InputChatlist"],
     ];
   }
 
-  constructor(params: { chatlist: types.TypeInputChatlist }) {
+  constructor(params: { chatlist: types.InputChatlist }) {
     super();
     this.chatlist = params.chatlist;
   }
 }
 
-export class ChatlistsCheckChatlistInvite extends Function<types.TypeChatlistsChatlistInvite> {
+export class chatlists_checkChatlistInvite extends Function<types.chatlists_ChatlistInvite> {
   slug: string;
 
   protected get [id]() {
@@ -16367,9 +16590,9 @@ export class ChatlistsCheckChatlistInvite extends Function<types.TypeChatlistsCh
   }
 }
 
-export class ChatlistsJoinChatlistInvite extends Function<types.TypeUpdates> {
+export class chatlists_joinChatlistInvite extends Function<types.Updates> {
   slug: string;
-  peers: Array<types.TypeInputPeer>;
+  peers: Array<types.InputPeer>;
 
   protected get [id]() {
     return 0xA6B1E39A;
@@ -16378,26 +16601,26 @@ export class ChatlistsJoinChatlistInvite extends Function<types.TypeUpdates> {
   static get [paramDesc](): ParamDesc {
     return [
       ["slug", "string", "string"],
-      ["peers", [types._TypeInputPeer], "Vector<InputPeer>"],
+      ["peers", [types._InputPeer], "Vector<InputPeer>"],
     ];
   }
 
   protected get [params](): Params {
     return [
       [this.slug, "string", "string"],
-      [this.peers, [types._TypeInputPeer], "Vector<InputPeer>"],
+      [this.peers, [types._InputPeer], "Vector<InputPeer>"],
     ];
   }
 
-  constructor(params: { slug: string; peers: Array<types.TypeInputPeer> }) {
+  constructor(params: { slug: string; peers: Array<types.InputPeer> }) {
     super();
     this.slug = params.slug;
     this.peers = params.peers;
   }
 }
 
-export class ChatlistsGetChatlistUpdates extends Function<types.TypeChatlistsChatlistUpdates> {
-  chatlist: types.TypeInputChatlist;
+export class chatlists_getChatlistUpdates extends Function<types.chatlists_ChatlistUpdates> {
+  chatlist: types.InputChatlist;
 
   protected get [id]() {
     return 0x89419521;
@@ -16405,25 +16628,25 @@ export class ChatlistsGetChatlistUpdates extends Function<types.TypeChatlistsCha
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["chatlist", types._TypeInputChatlist, "InputChatlist"],
+      ["chatlist", types._InputChatlist, "InputChatlist"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.chatlist, types._TypeInputChatlist, "InputChatlist"],
+      [this.chatlist, types._InputChatlist, "InputChatlist"],
     ];
   }
 
-  constructor(params: { chatlist: types.TypeInputChatlist }) {
+  constructor(params: { chatlist: types.InputChatlist }) {
     super();
     this.chatlist = params.chatlist;
   }
 }
 
-export class ChatlistsJoinChatlistUpdates extends Function<types.TypeUpdates> {
-  chatlist: types.TypeInputChatlist;
-  peers: Array<types.TypeInputPeer>;
+export class chatlists_joinChatlistUpdates extends Function<types.Updates> {
+  chatlist: types.InputChatlist;
+  peers: Array<types.InputPeer>;
 
   protected get [id]() {
     return 0xE089F8F5;
@@ -16431,27 +16654,27 @@ export class ChatlistsJoinChatlistUpdates extends Function<types.TypeUpdates> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["chatlist", types._TypeInputChatlist, "InputChatlist"],
-      ["peers", [types._TypeInputPeer], "Vector<InputPeer>"],
+      ["chatlist", types._InputChatlist, "InputChatlist"],
+      ["peers", [types._InputPeer], "Vector<InputPeer>"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.chatlist, types._TypeInputChatlist, "InputChatlist"],
-      [this.peers, [types._TypeInputPeer], "Vector<InputPeer>"],
+      [this.chatlist, types._InputChatlist, "InputChatlist"],
+      [this.peers, [types._InputPeer], "Vector<InputPeer>"],
     ];
   }
 
-  constructor(params: { chatlist: types.TypeInputChatlist; peers: Array<types.TypeInputPeer> }) {
+  constructor(params: { chatlist: types.InputChatlist; peers: Array<types.InputPeer> }) {
     super();
     this.chatlist = params.chatlist;
     this.peers = params.peers;
   }
 }
 
-export class ChatlistsHideChatlistUpdates extends Function<boolean> {
-  chatlist: types.TypeInputChatlist;
+export class chatlists_hideChatlistUpdates extends Function<boolean> {
+  chatlist: types.InputChatlist;
 
   protected get [id]() {
     return 0x66E486FB;
@@ -16459,24 +16682,24 @@ export class ChatlistsHideChatlistUpdates extends Function<boolean> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["chatlist", types._TypeInputChatlist, "InputChatlist"],
+      ["chatlist", types._InputChatlist, "InputChatlist"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.chatlist, types._TypeInputChatlist, "InputChatlist"],
+      [this.chatlist, types._InputChatlist, "InputChatlist"],
     ];
   }
 
-  constructor(params: { chatlist: types.TypeInputChatlist }) {
+  constructor(params: { chatlist: types.InputChatlist }) {
     super();
     this.chatlist = params.chatlist;
   }
 }
 
-export class ChatlistsGetLeaveChatlistSuggestions extends Function<types.TypePeer[]> {
-  chatlist: types.TypeInputChatlist;
+export class chatlists_getLeaveChatlistSuggestions extends Function<types.Peer[]> {
+  chatlist: types.InputChatlist;
 
   protected get [id]() {
     return 0xFDBCD714;
@@ -16484,25 +16707,25 @@ export class ChatlistsGetLeaveChatlistSuggestions extends Function<types.TypePee
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["chatlist", types._TypeInputChatlist, "InputChatlist"],
+      ["chatlist", types._InputChatlist, "InputChatlist"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.chatlist, types._TypeInputChatlist, "InputChatlist"],
+      [this.chatlist, types._InputChatlist, "InputChatlist"],
     ];
   }
 
-  constructor(params: { chatlist: types.TypeInputChatlist }) {
+  constructor(params: { chatlist: types.InputChatlist }) {
     super();
     this.chatlist = params.chatlist;
   }
 }
 
-export class ChatlistsLeaveChatlist extends Function<types.TypeUpdates> {
-  chatlist: types.TypeInputChatlist;
-  peers: Array<types.TypeInputPeer>;
+export class chatlists_leaveChatlist extends Function<types.Updates> {
+  chatlist: types.InputChatlist;
+  peers: Array<types.InputPeer>;
 
   protected get [id]() {
     return 0x74FAE13A;
@@ -16510,27 +16733,27 @@ export class ChatlistsLeaveChatlist extends Function<types.TypeUpdates> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["chatlist", types._TypeInputChatlist, "InputChatlist"],
-      ["peers", [types._TypeInputPeer], "Vector<InputPeer>"],
+      ["chatlist", types._InputChatlist, "InputChatlist"],
+      ["peers", [types._InputPeer], "Vector<InputPeer>"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.chatlist, types._TypeInputChatlist, "InputChatlist"],
-      [this.peers, [types._TypeInputPeer], "Vector<InputPeer>"],
+      [this.chatlist, types._InputChatlist, "InputChatlist"],
+      [this.peers, [types._InputPeer], "Vector<InputPeer>"],
     ];
   }
 
-  constructor(params: { chatlist: types.TypeInputChatlist; peers: Array<types.TypeInputPeer> }) {
+  constructor(params: { chatlist: types.InputChatlist; peers: Array<types.InputPeer> }) {
     super();
     this.chatlist = params.chatlist;
     this.peers = params.peers;
   }
 }
 
-export class StoriesCanSendStory extends Function<boolean> {
-  peer: types.TypeInputPeer;
+export class stories_canSendStory extends Function<boolean> {
+  peer: types.InputPeer;
 
   protected get [id]() {
     return 0xC7DFDFDD;
@@ -16538,36 +16761,39 @@ export class StoriesCanSendStory extends Function<boolean> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["peer", types._TypeInputPeer, "InputPeer"],
+      ["peer", types._InputPeer, "InputPeer"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.peer, types._TypeInputPeer, "InputPeer"],
+      [this.peer, types._InputPeer, "InputPeer"],
     ];
   }
 
-  constructor(params: { peer: types.TypeInputPeer }) {
+  constructor(params: { peer: types.InputPeer }) {
     super();
     this.peer = params.peer;
   }
 }
 
-export class StoriesSendStory extends Function<types.TypeUpdates> {
+export class stories_sendStory extends Function<types.Updates> {
   pinned?: true;
   noforwards?: true;
-  peer: types.TypeInputPeer;
-  media: types.TypeInputMedia;
-  mediaAreas?: Array<types.TypeMediaArea>;
+  fwd_modified?: true;
+  peer: types.InputPeer;
+  media: types.InputMedia;
+  media_areas?: Array<types.MediaArea>;
   caption?: string;
-  entities?: Array<types.TypeMessageEntity>;
-  privacyRules: Array<types.TypeInputPrivacyRule>;
-  randomId: bigint;
+  entities?: Array<types.MessageEntity>;
+  privacy_rules: Array<types.InputPrivacyRule>;
+  random_id: bigint;
   period?: number;
+  fwd_from_id?: types.InputPeer;
+  fwd_from_story?: number;
 
   protected get [id]() {
-    return 0xBCB73644;
+    return 0xE4E6694B;
   }
 
   static get [paramDesc](): ParamDesc {
@@ -16575,14 +16801,17 @@ export class StoriesSendStory extends Function<types.TypeUpdates> {
       ["flags", flags, "#"],
       ["pinned", "true", "flags.2?true"],
       ["noforwards", "true", "flags.4?true"],
-      ["peer", types._TypeInputPeer, "InputPeer"],
-      ["media", types._TypeInputMedia, "InputMedia"],
-      ["mediaAreas", [types._TypeMediaArea], "flags.5?Vector<MediaArea>"],
+      ["fwd_modified", "true", "flags.7?true"],
+      ["peer", types._InputPeer, "InputPeer"],
+      ["media", types._InputMedia, "InputMedia"],
+      ["media_areas", [types._MediaArea], "flags.5?Vector<MediaArea>"],
       ["caption", "string", "flags.0?string"],
-      ["entities", [types._TypeMessageEntity], "flags.1?Vector<MessageEntity>"],
-      ["privacyRules", [types._TypeInputPrivacyRule], "Vector<InputPrivacyRule>"],
-      ["randomId", "bigint", "long"],
+      ["entities", [types._MessageEntity], "flags.1?Vector<MessageEntity>"],
+      ["privacy_rules", [types._InputPrivacyRule], "Vector<InputPrivacyRule>"],
+      ["random_id", "bigint", "long"],
       ["period", "number", "flags.3?int"],
+      ["fwd_from_id", types._InputPeer, "flags.6?InputPeer"],
+      ["fwd_from_story", "number", "flags.6?int"],
     ];
   }
 
@@ -16591,40 +16820,46 @@ export class StoriesSendStory extends Function<types.TypeUpdates> {
       ["flags", flags, "#"],
       [this.pinned ?? null, "true", "flags.2?true"],
       [this.noforwards ?? null, "true", "flags.4?true"],
-      [this.peer, types._TypeInputPeer, "InputPeer"],
-      [this.media, types._TypeInputMedia, "InputMedia"],
-      [this.mediaAreas ?? null, [types._TypeMediaArea], "flags.5?Vector<MediaArea>"],
+      [this.fwd_modified ?? null, "true", "flags.7?true"],
+      [this.peer, types._InputPeer, "InputPeer"],
+      [this.media, types._InputMedia, "InputMedia"],
+      [this.media_areas ?? null, [types._MediaArea], "flags.5?Vector<MediaArea>"],
       [this.caption ?? null, "string", "flags.0?string"],
-      [this.entities ?? null, [types._TypeMessageEntity], "flags.1?Vector<MessageEntity>"],
-      [this.privacyRules, [types._TypeInputPrivacyRule], "Vector<InputPrivacyRule>"],
-      [this.randomId, "bigint", "long"],
+      [this.entities ?? null, [types._MessageEntity], "flags.1?Vector<MessageEntity>"],
+      [this.privacy_rules, [types._InputPrivacyRule], "Vector<InputPrivacyRule>"],
+      [this.random_id, "bigint", "long"],
       [this.period ?? null, "number", "flags.3?int"],
+      [this.fwd_from_id ?? null, types._InputPeer, "flags.6?InputPeer"],
+      [this.fwd_from_story ?? null, "number", "flags.6?int"],
     ];
   }
 
-  constructor(params: { pinned?: true; noforwards?: true; peer: types.TypeInputPeer; media: types.TypeInputMedia; mediaAreas?: Array<types.TypeMediaArea>; caption?: string; entities?: Array<types.TypeMessageEntity>; privacyRules: Array<types.TypeInputPrivacyRule>; randomId: bigint; period?: number }) {
+  constructor(params: { pinned?: true; noforwards?: true; fwd_modified?: true; peer: types.InputPeer; media: types.InputMedia; media_areas?: Array<types.MediaArea>; caption?: string; entities?: Array<types.MessageEntity>; privacy_rules: Array<types.InputPrivacyRule>; random_id: bigint; period?: number; fwd_from_id?: types.InputPeer; fwd_from_story?: number }) {
     super();
     this.pinned = params.pinned;
     this.noforwards = params.noforwards;
+    this.fwd_modified = params.fwd_modified;
     this.peer = params.peer;
     this.media = params.media;
-    this.mediaAreas = params.mediaAreas;
+    this.media_areas = params.media_areas;
     this.caption = params.caption;
     this.entities = params.entities;
-    this.privacyRules = params.privacyRules;
-    this.randomId = params.randomId;
+    this.privacy_rules = params.privacy_rules;
+    this.random_id = params.random_id;
     this.period = params.period;
+    this.fwd_from_id = params.fwd_from_id;
+    this.fwd_from_story = params.fwd_from_story;
   }
 }
 
-export class StoriesEditStory extends Function<types.TypeUpdates> {
-  peer: types.TypeInputPeer;
+export class stories_editStory extends Function<types.Updates> {
+  peer: types.InputPeer;
   id: number;
-  media?: types.TypeInputMedia;
-  mediaAreas?: Array<types.TypeMediaArea>;
+  media?: types.InputMedia;
+  media_areas?: Array<types.MediaArea>;
   caption?: string;
-  entities?: Array<types.TypeMessageEntity>;
-  privacyRules?: Array<types.TypeInputPrivacyRule>;
+  entities?: Array<types.MessageEntity>;
+  privacy_rules?: Array<types.InputPrivacyRule>;
 
   protected get [id]() {
     return 0xB583BA46;
@@ -16633,43 +16868,43 @@ export class StoriesEditStory extends Function<types.TypeUpdates> {
   static get [paramDesc](): ParamDesc {
     return [
       ["flags", flags, "#"],
-      ["peer", types._TypeInputPeer, "InputPeer"],
+      ["peer", types._InputPeer, "InputPeer"],
       ["id", "number", "int"],
-      ["media", types._TypeInputMedia, "flags.0?InputMedia"],
-      ["mediaAreas", [types._TypeMediaArea], "flags.3?Vector<MediaArea>"],
+      ["media", types._InputMedia, "flags.0?InputMedia"],
+      ["media_areas", [types._MediaArea], "flags.3?Vector<MediaArea>"],
       ["caption", "string", "flags.1?string"],
-      ["entities", [types._TypeMessageEntity], "flags.1?Vector<MessageEntity>"],
-      ["privacyRules", [types._TypeInputPrivacyRule], "flags.2?Vector<InputPrivacyRule>"],
+      ["entities", [types._MessageEntity], "flags.1?Vector<MessageEntity>"],
+      ["privacy_rules", [types._InputPrivacyRule], "flags.2?Vector<InputPrivacyRule>"],
     ];
   }
 
   protected get [params](): Params {
     return [
       ["flags", flags, "#"],
-      [this.peer, types._TypeInputPeer, "InputPeer"],
+      [this.peer, types._InputPeer, "InputPeer"],
       [this.id, "number", "int"],
-      [this.media ?? null, types._TypeInputMedia, "flags.0?InputMedia"],
-      [this.mediaAreas ?? null, [types._TypeMediaArea], "flags.3?Vector<MediaArea>"],
+      [this.media ?? null, types._InputMedia, "flags.0?InputMedia"],
+      [this.media_areas ?? null, [types._MediaArea], "flags.3?Vector<MediaArea>"],
       [this.caption ?? null, "string", "flags.1?string"],
-      [this.entities ?? null, [types._TypeMessageEntity], "flags.1?Vector<MessageEntity>"],
-      [this.privacyRules ?? null, [types._TypeInputPrivacyRule], "flags.2?Vector<InputPrivacyRule>"],
+      [this.entities ?? null, [types._MessageEntity], "flags.1?Vector<MessageEntity>"],
+      [this.privacy_rules ?? null, [types._InputPrivacyRule], "flags.2?Vector<InputPrivacyRule>"],
     ];
   }
 
-  constructor(params: { peer: types.TypeInputPeer; id: number; media?: types.TypeInputMedia; mediaAreas?: Array<types.TypeMediaArea>; caption?: string; entities?: Array<types.TypeMessageEntity>; privacyRules?: Array<types.TypeInputPrivacyRule> }) {
+  constructor(params: { peer: types.InputPeer; id: number; media?: types.InputMedia; media_areas?: Array<types.MediaArea>; caption?: string; entities?: Array<types.MessageEntity>; privacy_rules?: Array<types.InputPrivacyRule> }) {
     super();
     this.peer = params.peer;
     this.id = params.id;
     this.media = params.media;
-    this.mediaAreas = params.mediaAreas;
+    this.media_areas = params.media_areas;
     this.caption = params.caption;
     this.entities = params.entities;
-    this.privacyRules = params.privacyRules;
+    this.privacy_rules = params.privacy_rules;
   }
 }
 
-export class StoriesDeleteStories extends Function<number[]> {
-  peer: types.TypeInputPeer;
+export class stories_deleteStories extends Function<number[]> {
+  peer: types.InputPeer;
   id: Array<number>;
 
   protected get [id]() {
@@ -16678,27 +16913,27 @@ export class StoriesDeleteStories extends Function<number[]> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["peer", types._TypeInputPeer, "InputPeer"],
+      ["peer", types._InputPeer, "InputPeer"],
       ["id", ["number"], "Vector<int>"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.peer, types._TypeInputPeer, "InputPeer"],
+      [this.peer, types._InputPeer, "InputPeer"],
       [this.id, ["number"], "Vector<int>"],
     ];
   }
 
-  constructor(params: { peer: types.TypeInputPeer; id: Array<number> }) {
+  constructor(params: { peer: types.InputPeer; id: Array<number> }) {
     super();
     this.peer = params.peer;
     this.id = params.id;
   }
 }
 
-export class StoriesTogglePinned extends Function<number[]> {
-  peer: types.TypeInputPeer;
+export class stories_togglePinned extends Function<number[]> {
+  peer: types.InputPeer;
   id: Array<number>;
   pinned: boolean;
 
@@ -16708,7 +16943,7 @@ export class StoriesTogglePinned extends Function<number[]> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["peer", types._TypeInputPeer, "InputPeer"],
+      ["peer", types._InputPeer, "InputPeer"],
       ["id", ["number"], "Vector<int>"],
       ["pinned", "boolean", "Bool"],
     ];
@@ -16716,13 +16951,13 @@ export class StoriesTogglePinned extends Function<number[]> {
 
   protected get [params](): Params {
     return [
-      [this.peer, types._TypeInputPeer, "InputPeer"],
+      [this.peer, types._InputPeer, "InputPeer"],
       [this.id, ["number"], "Vector<int>"],
       [this.pinned, "boolean", "Bool"],
     ];
   }
 
-  constructor(params: { peer: types.TypeInputPeer; id: Array<number>; pinned: boolean }) {
+  constructor(params: { peer: types.InputPeer; id: Array<number>; pinned: boolean }) {
     super();
     this.peer = params.peer;
     this.id = params.id;
@@ -16730,7 +16965,7 @@ export class StoriesTogglePinned extends Function<number[]> {
   }
 }
 
-export class StoriesGetAllStories extends Function<types.TypeStoriesAllStories> {
+export class stories_getAllStories extends Function<types.stories_AllStories> {
   next?: true;
   hidden?: true;
   state?: string;
@@ -16765,9 +17000,9 @@ export class StoriesGetAllStories extends Function<types.TypeStoriesAllStories> 
   }
 }
 
-export class StoriesGetPinnedStories extends Function<types.TypeStoriesStories> {
-  peer: types.TypeInputPeer;
-  offsetId: number;
+export class stories_getPinnedStories extends Function<types.stories_Stories> {
+  peer: types.InputPeer;
+  offset_id: number;
   limit: number;
 
   protected get [id]() {
@@ -16776,31 +17011,31 @@ export class StoriesGetPinnedStories extends Function<types.TypeStoriesStories> 
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["peer", types._TypeInputPeer, "InputPeer"],
-      ["offsetId", "number", "int"],
+      ["peer", types._InputPeer, "InputPeer"],
+      ["offset_id", "number", "int"],
       ["limit", "number", "int"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.peer, types._TypeInputPeer, "InputPeer"],
-      [this.offsetId, "number", "int"],
+      [this.peer, types._InputPeer, "InputPeer"],
+      [this.offset_id, "number", "int"],
       [this.limit, "number", "int"],
     ];
   }
 
-  constructor(params: { peer: types.TypeInputPeer; offsetId: number; limit: number }) {
+  constructor(params: { peer: types.InputPeer; offset_id: number; limit: number }) {
     super();
     this.peer = params.peer;
-    this.offsetId = params.offsetId;
+    this.offset_id = params.offset_id;
     this.limit = params.limit;
   }
 }
 
-export class StoriesGetStoriesArchive extends Function<types.TypeStoriesStories> {
-  peer: types.TypeInputPeer;
-  offsetId: number;
+export class stories_getStoriesArchive extends Function<types.stories_Stories> {
+  peer: types.InputPeer;
+  offset_id: number;
   limit: number;
 
   protected get [id]() {
@@ -16809,30 +17044,30 @@ export class StoriesGetStoriesArchive extends Function<types.TypeStoriesStories>
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["peer", types._TypeInputPeer, "InputPeer"],
-      ["offsetId", "number", "int"],
+      ["peer", types._InputPeer, "InputPeer"],
+      ["offset_id", "number", "int"],
       ["limit", "number", "int"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.peer, types._TypeInputPeer, "InputPeer"],
-      [this.offsetId, "number", "int"],
+      [this.peer, types._InputPeer, "InputPeer"],
+      [this.offset_id, "number", "int"],
       [this.limit, "number", "int"],
     ];
   }
 
-  constructor(params: { peer: types.TypeInputPeer; offsetId: number; limit: number }) {
+  constructor(params: { peer: types.InputPeer; offset_id: number; limit: number }) {
     super();
     this.peer = params.peer;
-    this.offsetId = params.offsetId;
+    this.offset_id = params.offset_id;
     this.limit = params.limit;
   }
 }
 
-export class StoriesGetStoriesByID extends Function<types.TypeStoriesStories> {
-  peer: types.TypeInputPeer;
+export class stories_getStoriesByID extends Function<types.stories_Stories> {
+  peer: types.InputPeer;
   id: Array<number>;
 
   protected get [id]() {
@@ -16841,26 +17076,26 @@ export class StoriesGetStoriesByID extends Function<types.TypeStoriesStories> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["peer", types._TypeInputPeer, "InputPeer"],
+      ["peer", types._InputPeer, "InputPeer"],
       ["id", ["number"], "Vector<int>"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.peer, types._TypeInputPeer, "InputPeer"],
+      [this.peer, types._InputPeer, "InputPeer"],
       [this.id, ["number"], "Vector<int>"],
     ];
   }
 
-  constructor(params: { peer: types.TypeInputPeer; id: Array<number> }) {
+  constructor(params: { peer: types.InputPeer; id: Array<number> }) {
     super();
     this.peer = params.peer;
     this.id = params.id;
   }
 }
 
-export class StoriesToggleAllStoriesHidden extends Function<boolean> {
+export class stories_toggleAllStoriesHidden extends Function<boolean> {
   hidden: boolean;
 
   protected get [id]() {
@@ -16885,9 +17120,9 @@ export class StoriesToggleAllStoriesHidden extends Function<boolean> {
   }
 }
 
-export class StoriesReadStories extends Function<number[]> {
-  peer: types.TypeInputPeer;
-  maxId: number;
+export class stories_readStories extends Function<number[]> {
+  peer: types.InputPeer;
+  max_id: number;
 
   protected get [id]() {
     return 0xA556DAC8;
@@ -16895,27 +17130,27 @@ export class StoriesReadStories extends Function<number[]> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["peer", types._TypeInputPeer, "InputPeer"],
-      ["maxId", "number", "int"],
+      ["peer", types._InputPeer, "InputPeer"],
+      ["max_id", "number", "int"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.peer, types._TypeInputPeer, "InputPeer"],
-      [this.maxId, "number", "int"],
+      [this.peer, types._InputPeer, "InputPeer"],
+      [this.max_id, "number", "int"],
     ];
   }
 
-  constructor(params: { peer: types.TypeInputPeer; maxId: number }) {
+  constructor(params: { peer: types.InputPeer; max_id: number }) {
     super();
     this.peer = params.peer;
-    this.maxId = params.maxId;
+    this.max_id = params.max_id;
   }
 }
 
-export class StoriesIncrementStoryViews extends Function<boolean> {
-  peer: types.TypeInputPeer;
+export class stories_incrementStoryViews extends Function<boolean> {
+  peer: types.InputPeer;
   id: Array<number>;
 
   protected get [id]() {
@@ -16924,29 +17159,29 @@ export class StoriesIncrementStoryViews extends Function<boolean> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["peer", types._TypeInputPeer, "InputPeer"],
+      ["peer", types._InputPeer, "InputPeer"],
       ["id", ["number"], "Vector<int>"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.peer, types._TypeInputPeer, "InputPeer"],
+      [this.peer, types._InputPeer, "InputPeer"],
       [this.id, ["number"], "Vector<int>"],
     ];
   }
 
-  constructor(params: { peer: types.TypeInputPeer; id: Array<number> }) {
+  constructor(params: { peer: types.InputPeer; id: Array<number> }) {
     super();
     this.peer = params.peer;
     this.id = params.id;
   }
 }
 
-export class StoriesGetStoryViewsList extends Function<types.TypeStoriesStoryViewsList> {
-  justContacts?: true;
-  reactionsFirst?: true;
-  peer: types.TypeInputPeer;
+export class stories_getStoryViewsList extends Function<types.stories_StoryViewsList> {
+  just_contacts?: true;
+  reactions_first?: true;
+  peer: types.InputPeer;
   q?: string;
   id: number;
   offset: string;
@@ -16959,9 +17194,9 @@ export class StoriesGetStoryViewsList extends Function<types.TypeStoriesStoryVie
   static get [paramDesc](): ParamDesc {
     return [
       ["flags", flags, "#"],
-      ["justContacts", "true", "flags.0?true"],
-      ["reactionsFirst", "true", "flags.2?true"],
-      ["peer", types._TypeInputPeer, "InputPeer"],
+      ["just_contacts", "true", "flags.0?true"],
+      ["reactions_first", "true", "flags.2?true"],
+      ["peer", types._InputPeer, "InputPeer"],
       ["q", "string", "flags.1?string"],
       ["id", "number", "int"],
       ["offset", "string", "string"],
@@ -16972,9 +17207,9 @@ export class StoriesGetStoryViewsList extends Function<types.TypeStoriesStoryVie
   protected get [params](): Params {
     return [
       ["flags", flags, "#"],
-      [this.justContacts ?? null, "true", "flags.0?true"],
-      [this.reactionsFirst ?? null, "true", "flags.2?true"],
-      [this.peer, types._TypeInputPeer, "InputPeer"],
+      [this.just_contacts ?? null, "true", "flags.0?true"],
+      [this.reactions_first ?? null, "true", "flags.2?true"],
+      [this.peer, types._InputPeer, "InputPeer"],
       [this.q ?? null, "string", "flags.1?string"],
       [this.id, "number", "int"],
       [this.offset, "string", "string"],
@@ -16982,10 +17217,10 @@ export class StoriesGetStoryViewsList extends Function<types.TypeStoriesStoryVie
     ];
   }
 
-  constructor(params: { justContacts?: true; reactionsFirst?: true; peer: types.TypeInputPeer; q?: string; id: number; offset: string; limit: number }) {
+  constructor(params: { just_contacts?: true; reactions_first?: true; peer: types.InputPeer; q?: string; id: number; offset: string; limit: number }) {
     super();
-    this.justContacts = params.justContacts;
-    this.reactionsFirst = params.reactionsFirst;
+    this.just_contacts = params.just_contacts;
+    this.reactions_first = params.reactions_first;
     this.peer = params.peer;
     this.q = params.q;
     this.id = params.id;
@@ -16994,8 +17229,8 @@ export class StoriesGetStoryViewsList extends Function<types.TypeStoriesStoryVie
   }
 }
 
-export class StoriesGetStoriesViews extends Function<types.TypeStoriesStoryViews> {
-  peer: types.TypeInputPeer;
+export class stories_getStoriesViews extends Function<types.stories_StoryViews> {
+  peer: types.InputPeer;
   id: Array<number>;
 
   protected get [id]() {
@@ -17004,27 +17239,27 @@ export class StoriesGetStoriesViews extends Function<types.TypeStoriesStoryViews
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["peer", types._TypeInputPeer, "InputPeer"],
+      ["peer", types._InputPeer, "InputPeer"],
       ["id", ["number"], "Vector<int>"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.peer, types._TypeInputPeer, "InputPeer"],
+      [this.peer, types._InputPeer, "InputPeer"],
       [this.id, ["number"], "Vector<int>"],
     ];
   }
 
-  constructor(params: { peer: types.TypeInputPeer; id: Array<number> }) {
+  constructor(params: { peer: types.InputPeer; id: Array<number> }) {
     super();
     this.peer = params.peer;
     this.id = params.id;
   }
 }
 
-export class StoriesExportStoryLink extends Function<types.TypeExportedStoryLink> {
-  peer: types.TypeInputPeer;
+export class stories_exportStoryLink extends Function<types.ExportedStoryLink> {
+  peer: types.InputPeer;
   id: number;
 
   protected get [id]() {
@@ -17033,29 +17268,29 @@ export class StoriesExportStoryLink extends Function<types.TypeExportedStoryLink
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["peer", types._TypeInputPeer, "InputPeer"],
+      ["peer", types._InputPeer, "InputPeer"],
       ["id", "number", "int"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.peer, types._TypeInputPeer, "InputPeer"],
+      [this.peer, types._InputPeer, "InputPeer"],
       [this.id, "number", "int"],
     ];
   }
 
-  constructor(params: { peer: types.TypeInputPeer; id: number }) {
+  constructor(params: { peer: types.InputPeer; id: number }) {
     super();
     this.peer = params.peer;
     this.id = params.id;
   }
 }
 
-export class StoriesReport extends Function<boolean> {
-  peer: types.TypeInputPeer;
+export class stories_report extends Function<boolean> {
+  peer: types.InputPeer;
   id: Array<number>;
-  reason: types.TypeReportReason;
+  reason: types.ReportReason;
   message: string;
 
   protected get [id]() {
@@ -17064,23 +17299,23 @@ export class StoriesReport extends Function<boolean> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["peer", types._TypeInputPeer, "InputPeer"],
+      ["peer", types._InputPeer, "InputPeer"],
       ["id", ["number"], "Vector<int>"],
-      ["reason", types._TypeReportReason, "ReportReason"],
+      ["reason", types._ReportReason, "ReportReason"],
       ["message", "string", "string"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.peer, types._TypeInputPeer, "InputPeer"],
+      [this.peer, types._InputPeer, "InputPeer"],
       [this.id, ["number"], "Vector<int>"],
-      [this.reason, types._TypeReportReason, "ReportReason"],
+      [this.reason, types._ReportReason, "ReportReason"],
       [this.message, "string", "string"],
     ];
   }
 
-  constructor(params: { peer: types.TypeInputPeer; id: Array<number>; reason: types.TypeReportReason; message: string }) {
+  constructor(params: { peer: types.InputPeer; id: Array<number>; reason: types.ReportReason; message: string }) {
     super();
     this.peer = params.peer;
     this.id = params.id;
@@ -17089,7 +17324,7 @@ export class StoriesReport extends Function<boolean> {
   }
 }
 
-export class StoriesActivateStealthMode extends Function<types.TypeUpdates> {
+export class stories_activateStealthMode extends Function<types.Updates> {
   past?: true;
   future?: true;
 
@@ -17120,11 +17355,11 @@ export class StoriesActivateStealthMode extends Function<types.TypeUpdates> {
   }
 }
 
-export class StoriesSendReaction extends Function<types.TypeUpdates> {
-  addToRecent?: true;
-  peer: types.TypeInputPeer;
-  storyId: number;
-  reaction: types.TypeReaction;
+export class stories_sendReaction extends Function<types.Updates> {
+  add_to_recent?: true;
+  peer: types.InputPeer;
+  story_id: number;
+  reaction: types.Reaction;
 
   protected get [id]() {
     return 0x7FD736B2;
@@ -17133,34 +17368,34 @@ export class StoriesSendReaction extends Function<types.TypeUpdates> {
   static get [paramDesc](): ParamDesc {
     return [
       ["flags", flags, "#"],
-      ["addToRecent", "true", "flags.0?true"],
-      ["peer", types._TypeInputPeer, "InputPeer"],
-      ["storyId", "number", "int"],
-      ["reaction", types._TypeReaction, "Reaction"],
+      ["add_to_recent", "true", "flags.0?true"],
+      ["peer", types._InputPeer, "InputPeer"],
+      ["story_id", "number", "int"],
+      ["reaction", types._Reaction, "Reaction"],
     ];
   }
 
   protected get [params](): Params {
     return [
       ["flags", flags, "#"],
-      [this.addToRecent ?? null, "true", "flags.0?true"],
-      [this.peer, types._TypeInputPeer, "InputPeer"],
-      [this.storyId, "number", "int"],
-      [this.reaction, types._TypeReaction, "Reaction"],
+      [this.add_to_recent ?? null, "true", "flags.0?true"],
+      [this.peer, types._InputPeer, "InputPeer"],
+      [this.story_id, "number", "int"],
+      [this.reaction, types._Reaction, "Reaction"],
     ];
   }
 
-  constructor(params: { addToRecent?: true; peer: types.TypeInputPeer; storyId: number; reaction: types.TypeReaction }) {
+  constructor(params: { add_to_recent?: true; peer: types.InputPeer; story_id: number; reaction: types.Reaction }) {
     super();
-    this.addToRecent = params.addToRecent;
+    this.add_to_recent = params.add_to_recent;
     this.peer = params.peer;
-    this.storyId = params.storyId;
+    this.story_id = params.story_id;
     this.reaction = params.reaction;
   }
 }
 
-export class StoriesGetPeerStories extends Function<types.TypeStoriesPeerStories> {
-  peer: types.TypeInputPeer;
+export class stories_getPeerStories extends Function<types.stories_PeerStories> {
+  peer: types.InputPeer;
 
   protected get [id]() {
     return 0x2C4ADA50;
@@ -17168,23 +17403,23 @@ export class StoriesGetPeerStories extends Function<types.TypeStoriesPeerStories
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["peer", types._TypeInputPeer, "InputPeer"],
+      ["peer", types._InputPeer, "InputPeer"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.peer, types._TypeInputPeer, "InputPeer"],
+      [this.peer, types._InputPeer, "InputPeer"],
     ];
   }
 
-  constructor(params: { peer: types.TypeInputPeer }) {
+  constructor(params: { peer: types.InputPeer }) {
     super();
     this.peer = params.peer;
   }
 }
 
-export class StoriesGetAllReadPeerStories extends Function<types.TypeUpdates> {
+export class stories_getAllReadPeerStories extends Function<types.Updates> {
   protected get [id]() {
     return 0x9B5AE7F9;
   }
@@ -17202,8 +17437,8 @@ export class StoriesGetAllReadPeerStories extends Function<types.TypeUpdates> {
   }
 }
 
-export class StoriesGetPeerMaxIDs extends Function<number[]> {
-  id: Array<types.TypeInputPeer>;
+export class stories_getPeerMaxIDs extends Function<number[]> {
+  id: Array<types.InputPeer>;
 
   protected get [id]() {
     return 0x535983C3;
@@ -17211,23 +17446,23 @@ export class StoriesGetPeerMaxIDs extends Function<number[]> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["id", [types._TypeInputPeer], "Vector<InputPeer>"],
+      ["id", [types._InputPeer], "Vector<InputPeer>"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.id, [types._TypeInputPeer], "Vector<InputPeer>"],
+      [this.id, [types._InputPeer], "Vector<InputPeer>"],
     ];
   }
 
-  constructor(params: { id: Array<types.TypeInputPeer> }) {
+  constructor(params: { id: Array<types.InputPeer> }) {
     super();
     this.id = params.id;
   }
 }
 
-export class StoriesGetChatsToSend extends Function<types.TypeMessagesChats> {
+export class stories_getChatsToSend extends Function<types.messages_Chats> {
   protected get [id]() {
     return 0xA56A8B60;
   }
@@ -17245,8 +17480,8 @@ export class StoriesGetChatsToSend extends Function<types.TypeMessagesChats> {
   }
 }
 
-export class StoriesTogglePeerStoriesHidden extends Function<boolean> {
-  peer: types.TypeInputPeer;
+export class stories_togglePeerStoriesHidden extends Function<boolean> {
+  peer: types.InputPeer;
   hidden: boolean;
 
   protected get [id]() {
@@ -17255,28 +17490,28 @@ export class StoriesTogglePeerStoriesHidden extends Function<boolean> {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["peer", types._TypeInputPeer, "InputPeer"],
+      ["peer", types._InputPeer, "InputPeer"],
       ["hidden", "boolean", "Bool"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.peer, types._TypeInputPeer, "InputPeer"],
+      [this.peer, types._InputPeer, "InputPeer"],
       [this.hidden, "boolean", "Bool"],
     ];
   }
 
-  constructor(params: { peer: types.TypeInputPeer; hidden: boolean }) {
+  constructor(params: { peer: types.InputPeer; hidden: boolean }) {
     super();
     this.peer = params.peer;
     this.hidden = params.hidden;
   }
 }
 
-export class PremiumGetBoostsList extends Function<types.TypePremiumBoostsList> {
+export class premium_getBoostsList extends Function<types.premium_BoostsList> {
   gifts?: true;
-  peer: types.TypeInputPeer;
+  peer: types.InputPeer;
   offset: string;
   limit: number;
 
@@ -17288,7 +17523,7 @@ export class PremiumGetBoostsList extends Function<types.TypePremiumBoostsList> 
     return [
       ["flags", flags, "#"],
       ["gifts", "true", "flags.0?true"],
-      ["peer", types._TypeInputPeer, "InputPeer"],
+      ["peer", types._InputPeer, "InputPeer"],
       ["offset", "string", "string"],
       ["limit", "number", "int"],
     ];
@@ -17298,13 +17533,13 @@ export class PremiumGetBoostsList extends Function<types.TypePremiumBoostsList> 
     return [
       ["flags", flags, "#"],
       [this.gifts ?? null, "true", "flags.0?true"],
-      [this.peer, types._TypeInputPeer, "InputPeer"],
+      [this.peer, types._InputPeer, "InputPeer"],
       [this.offset, "string", "string"],
       [this.limit, "number", "int"],
     ];
   }
 
-  constructor(params: { gifts?: true; peer: types.TypeInputPeer; offset: string; limit: number }) {
+  constructor(params: { gifts?: true; peer: types.InputPeer; offset: string; limit: number }) {
     super();
     this.gifts = params.gifts;
     this.peer = params.peer;
@@ -17313,7 +17548,7 @@ export class PremiumGetBoostsList extends Function<types.TypePremiumBoostsList> 
   }
 }
 
-export class PremiumGetMyBoosts extends Function<types.TypePremiumMyBoosts> {
+export class premium_getMyBoosts extends Function<types.premium_MyBoosts> {
   protected get [id]() {
     return 0x0BE77B4A;
   }
@@ -17331,9 +17566,9 @@ export class PremiumGetMyBoosts extends Function<types.TypePremiumMyBoosts> {
   }
 }
 
-export class PremiumApplyBoost extends Function<types.TypePremiumMyBoosts> {
+export class premium_applyBoost extends Function<types.premium_MyBoosts> {
   slots?: Array<number>;
-  peer: types.TypeInputPeer;
+  peer: types.InputPeer;
 
   protected get [id]() {
     return 0x6B7DA746;
@@ -17343,7 +17578,7 @@ export class PremiumApplyBoost extends Function<types.TypePremiumMyBoosts> {
     return [
       ["flags", flags, "#"],
       ["slots", ["number"], "flags.0?Vector<int>"],
-      ["peer", types._TypeInputPeer, "InputPeer"],
+      ["peer", types._InputPeer, "InputPeer"],
     ];
   }
 
@@ -17351,19 +17586,19 @@ export class PremiumApplyBoost extends Function<types.TypePremiumMyBoosts> {
     return [
       ["flags", flags, "#"],
       [this.slots ?? null, ["number"], "flags.0?Vector<int>"],
-      [this.peer, types._TypeInputPeer, "InputPeer"],
+      [this.peer, types._InputPeer, "InputPeer"],
     ];
   }
 
-  constructor(params: { slots?: Array<number>; peer: types.TypeInputPeer }) {
+  constructor(params: { slots?: Array<number>; peer: types.InputPeer }) {
     super();
     this.slots = params.slots;
     this.peer = params.peer;
   }
 }
 
-export class PremiumGetBoostsStatus extends Function<types.TypePremiumBoostsStatus> {
-  peer: types.TypeInputPeer;
+export class premium_getBoostsStatus extends Function<types.premium_BoostsStatus> {
+  peer: types.InputPeer;
 
   protected get [id]() {
     return 0x042F1F61;
@@ -17371,19 +17606,48 @@ export class PremiumGetBoostsStatus extends Function<types.TypePremiumBoostsStat
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["peer", types._TypeInputPeer, "InputPeer"],
+      ["peer", types._InputPeer, "InputPeer"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.peer, types._TypeInputPeer, "InputPeer"],
+      [this.peer, types._InputPeer, "InputPeer"],
     ];
   }
 
-  constructor(params: { peer: types.TypeInputPeer }) {
+  constructor(params: { peer: types.InputPeer }) {
     super();
     this.peer = params.peer;
+  }
+}
+
+export class premium_getUserBoosts extends Function<types.premium_BoostsList> {
+  peer: types.InputPeer;
+  user_id: types.InputUser;
+
+  protected get [id]() {
+    return 0x39854D1F;
+  }
+
+  static get [paramDesc](): ParamDesc {
+    return [
+      ["peer", types._InputPeer, "InputPeer"],
+      ["user_id", types._InputUser, "InputUser"],
+    ];
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.peer, types._InputPeer, "InputPeer"],
+      [this.user_id, types._InputUser, "InputUser"],
+    ];
+  }
+
+  constructor(params: { peer: types.InputPeer; user_id: types.InputUser }) {
+    super();
+    this.peer = params.peer;
+    this.user_id = params.user_id;
   }
 }
 

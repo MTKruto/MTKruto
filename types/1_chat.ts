@@ -95,19 +95,19 @@ export declare namespace Chat {
 /** This object represents a chat. */
 export type Chat = Chat.Private | Chat.Group | Chat.Supergroup | Chat.Channel;
 
-export function constructChat(chat: types.User): Chat.Private;
-export function constructChat(chat: types.Chat): Chat.Group;
-export function constructChat(chat: types.Channel): Chat.Supergroup | Chat.Channel;
-export function constructChat(chat: types.User | types.Chat | types.Channel): Chat {
-  if (chat instanceof types.User) {
+export function constructChat(chat: types.user): Chat.Private;
+export function constructChat(chat: types.chat): Chat.Group;
+export function constructChat(chat: types.channel): Chat.Supergroup | Chat.Channel;
+export function constructChat(chat: types.user | types.chat | types.channel): Chat {
+  if (chat instanceof types.user) {
     const id = Number(chat.id);
     const chat_: Chat.Private = {
       type: "private",
       isBot: chat.bot || false,
       id,
-      color: chat.color !== undefined ? chat.color : getColorFromPeerId(id),
-      firstName: chat.firstName || "",
-      lastName: chat.lastName,
+      color: chat.color?.color !== undefined ? chat.color.color : getColorFromPeerId(id),
+      firstName: chat.first_name || "",
+      lastName: chat.last_name,
       isScam: chat.scam || false,
       isFake: chat.fake || false,
       isSupport: chat.support || false,
@@ -116,15 +116,15 @@ export function constructChat(chat: types.User | types.Chat | types.Channel): Ch
 
     if (chat_.isBot) {
       chat_.isRestricted = chat.restricted || false;
-      chat_.restrictionReason = chat.restrictionReason;
+      chat_.restrictionReason = chat.restriction_reason;
     }
 
-    if (chat.photo instanceof types.UserProfilePhoto) {
-      chat_.photo = constructChatPhoto(chat.photo, chat_.id, chat.accessHash ?? 0n);
+    if (chat.photo instanceof types.userProfilePhoto) {
+      chat_.photo = constructChatPhoto(chat.photo, chat_.id, chat.access_hash ?? 0n);
     }
 
     return cleanObject(chat_);
-  } else if (chat instanceof types.Chat) {
+  } else if (chat instanceof types.chat) {
     const id = Number(-chat.id);
     const chat_: Chat.Group = {
       type: "group",
@@ -134,12 +134,12 @@ export function constructChat(chat: types.User | types.Chat | types.Channel): Ch
       isCreator: chat.creator || false,
     };
 
-    if (chat.photo instanceof types.ChatPhoto) {
+    if (chat.photo instanceof types.chatPhoto) {
       chat_.photo = constructChatPhoto(chat.photo, chat_.id, 0n);
     }
 
     return cleanObject(chat_);
-  } else if (chat instanceof types.Channel) {
+  } else if (chat instanceof types.channel) {
     let chat_: Chat.Supergroup | Chat.Channel;
     const {
       title,
@@ -152,7 +152,7 @@ export function constructChat(chat: types.User | types.Chat | types.Channel): Ch
     if (chat.megagroup) {
       chat_ = {
         id,
-        color: chat.color !== undefined ? chat.color : getColorFromPeerId(id),
+        color: chat.color?.color !== undefined ? chat.color.color : getColorFromPeerId(id),
         type: "supergroup",
         title,
         isScam,
@@ -165,7 +165,7 @@ export function constructChat(chat: types.User | types.Chat | types.Channel): Ch
       const id = ZERO_CHANNEL_ID + -Number(chat.id);
       chat_ = {
         id,
-        color: chat.color !== undefined ? chat.color : getColorFromPeerId(id),
+        color: chat.color?.color !== undefined ? chat.color.color : getColorFromPeerId(id),
         type: "channel",
         title,
         isScam,
@@ -178,11 +178,11 @@ export function constructChat(chat: types.User | types.Chat | types.Channel): Ch
     chat_.username = chat.username;
     chat_.also = chat.usernames?.map((v) => v.username);
     if (chat_.isRestricted) {
-      chat_.restrictionReason = (chat.restrictionReason ?? []).map(constructRestrictionReason);
+      chat_.restrictionReason = (chat.restriction_reason ?? []).map(constructRestrictionReason);
     }
 
-    if (chat.photo instanceof types.ChatPhoto) {
-      chat_.photo = constructChatPhoto(chat.photo, chat_.id, chat.accessHash ?? 0n);
+    if (chat.photo instanceof types.chatPhoto) {
+      chat_.photo = constructChatPhoto(chat.photo, chat_.id, chat.access_hash ?? 0n);
     }
 
     return cleanObject(chat_);

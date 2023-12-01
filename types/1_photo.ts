@@ -17,20 +17,20 @@ export interface Photo {
   thumbnails: Thumbnail[];
 }
 
-export function constructPhoto(photo: types.Photo): Photo {
+export function constructPhoto(photo: types.photo): Photo {
   const sizes = photo.sizes
     .map((v) => {
-      if (v instanceof types.PhotoSizeProgressive) {
-        return new types.PhotoSize({ type: v.type, w: v.w, h: v.h, size: Math.max(...v.sizes) });
+      if (v instanceof types.photoSizeProgressive) {
+        return new types.photoSize({ type: v.type, w: v.w, h: v.h, size: Math.max(...v.sizes) });
       } else {
         return v;
       }
     })
-    .filter((v): v is types.PhotoSize => v instanceof types.PhotoSize)
+    .filter((v): v is types.photoSize => v instanceof types.photoSize)
     .sort((a, b) => a.size - b.size);
 
   const largest = sizes.slice(-1)[0];
-  const { dcId, id: mediaId, accessHash, fileReference } = photo;
+  const { dc_id: dcId, id: mediaId, access_hash: accessHash, file_reference: fileReference } = photo;
   const fileUniqueId = new FileUniqueID(FileUniqueType.Document, { mediaId: photo.id }).encode();
 
   return {

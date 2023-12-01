@@ -14,12 +14,12 @@ export interface Voice {
   fileSize: number;
 }
 
-export function constructVoice(document: types.Document, audioAttributes: types.DocumentAttributeAudio, fileId: string, fileUniqueId: string): Voice {
+export function constructVoice(document: types.document, audioAttributes: types.documentAttributeAudio, fileId: string, fileUniqueId: string): Voice {
   return {
     fileId,
     fileUniqueId,
     duration: audioAttributes.duration,
-    mimeType: document.mimeType,
+    mimeType: document.mime_type,
     fileSize: Number(document.size),
   };
 }

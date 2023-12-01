@@ -50,18 +50,18 @@ export type InlineQueryResult =
 
 // deno-lint-ignore no-explicit-any
 export async function inlineQueryResultToTlObject(result_: InlineQueryResult, parseText: (text: string, params?: { parseMode?: ParseMode; entities?: MessageEntity[] }) => readonly [string, any[] | undefined], usernameResolver: UsernameResolver) {
-  let document: types.TypeInputWebDocument | null = null;
-  let thumb: types.InputWebDocument | null = null;
+  let document: types.InputWebDocument | null = null;
+  let thumb: types.inputWebDocument | null = null;
   let fileId_: string | null = null;
   switch (result_.type) {
     case "audio":
       if ("audioUrl" in result_) {
-        document = new types.InputWebDocument({
+        document = new types.inputWebDocument({
           url: result_.audioUrl,
           size: 0,
-          mimeType: "audio/mpeg",
+          mime_type: "audio/mpeg",
           attributes: [
-            new types.DocumentAttributeAudio({
+            new types.documentAttributeAudio({
               duration: result_.audioDuration ?? 0,
               title: result_.title,
               performer: result_.performer,
@@ -74,12 +74,12 @@ export async function inlineQueryResultToTlObject(result_: InlineQueryResult, pa
       break;
     case "video":
       if ("videoUrl" in result_) {
-        document = new types.InputWebDocument({
+        document = new types.inputWebDocument({
           url: result_.videoUrl,
           size: 0,
-          mimeType: result_.mimeType ?? "video/mp4",
+          mime_type: result_.mimeType ?? "video/mp4",
           attributes: [
-            new types.DocumentAttributeVideo({
+            new types.documentAttributeVideo({
               duration: result_.videoDuration ?? 0,
               h: result_.videoHeight ?? 0,
               w: result_.videoWidth ?? 0,
@@ -92,9 +92,9 @@ export async function inlineQueryResultToTlObject(result_: InlineQueryResult, pa
       break;
     case "document":
       if ("documentUrl" in result_) {
-        document = new types.InputWebDocument({
+        document = new types.inputWebDocument({
           url: result_.documentUrl,
-          mimeType: "application/octet-stream",
+          mime_type: "application/octet-stream",
           attributes: [],
           size: 0,
         });
@@ -104,12 +104,12 @@ export async function inlineQueryResultToTlObject(result_: InlineQueryResult, pa
       break;
     case "gif":
       if ("gifUrl" in result_) {
-        document = new types.InputWebDocument({
+        document = new types.inputWebDocument({
           url: result_.gifUrl,
           size: 0,
-          mimeType: "image/gif",
+          mime_type: "image/gif",
           attributes: [
-            new types.DocumentAttributeVideo({
+            new types.documentAttributeVideo({
               duration: result_.gifDuration ?? 0,
               h: result_.gifHeight ?? 0,
               w: result_.gifWidth ?? 0,
@@ -122,17 +122,17 @@ export async function inlineQueryResultToTlObject(result_: InlineQueryResult, pa
       break;
     case "mpeg4_gif":
       if ("mpeg4Url" in result_) {
-        document = new types.InputWebDocument({
+        document = new types.inputWebDocument({
           url: result_.mpeg4Url,
           size: 0,
-          mimeType: "video/mp4",
+          mime_type: "video/mp4",
           attributes: [
-            new types.DocumentAttributeVideo({
+            new types.documentAttributeVideo({
               nosound: true,
               duration: result_.mpeg4Duration ?? 0,
               w: result_.mpeg4Width ?? 0,
               h: result_.mpeg4Height ?? 0,
-              supportsStreaming: true,
+              supports_streaming: true,
             }),
           ],
         });
@@ -142,11 +142,11 @@ export async function inlineQueryResultToTlObject(result_: InlineQueryResult, pa
       break;
     case "photo":
       if ("photoUrl" in result_) {
-        document = new types.InputWebDocument({
+        document = new types.inputWebDocument({
           url: result_.photoUrl,
           size: 0,
-          mimeType: "image/jpeg",
-          attributes: [new types.DocumentAttributeImageSize({ w: result_.photoWidth ?? 0, h: result_.photoHeight ?? 0 })],
+          mime_type: "image/jpeg",
+          attributes: [new types.documentAttributeImageSize({ w: result_.photoWidth ?? 0, h: result_.photoHeight ?? 0 })],
         });
       } else {
         fileId_ = result_.photoFileId;
@@ -157,12 +157,12 @@ export async function inlineQueryResultToTlObject(result_: InlineQueryResult, pa
       break;
     case "voice":
       if ("voiceUrl" in result_) {
-        document = new types.InputWebDocument({
+        document = new types.inputWebDocument({
           url: result_.voiceUrl,
           size: 0,
-          mimeType: "audio/mpeg",
+          mime_type: "audio/mpeg",
           attributes: [
-            new types.DocumentAttributeAudio({
+            new types.documentAttributeAudio({
               duration: result_.voiceDuration ?? 0,
               voice: true,
             }),
@@ -177,10 +177,10 @@ export async function inlineQueryResultToTlObject(result_: InlineQueryResult, pa
   const replyMarkup = "replyMarkup" in result_ && result_.replyMarkup ? await replyMarkupToTlObject(result_.replyMarkup, usernameResolver) : undefined;
 
   if ("thumbnailUrl" in result_ && result_.thumbnailUrl) {
-    thumb = new types.InputWebDocument({
+    thumb = new types.inputWebDocument({
       url: result_.thumbnailUrl,
       size: 0,
-      mimeType: "image/jpeg",
+      mime_type: "image/jpeg",
       attributes: [],
     });
   } else if (result_.type == "photo") {
@@ -194,69 +194,69 @@ export async function inlineQueryResultToTlObject(result_: InlineQueryResult, pa
 
   const { type, id } = result_;
   const [message, entities] = ret;
-  const sendMessage = new types.InputBotInlineMessageMediaAuto({
+  const sendMessage = new types.inputBotInlineMessageMediaAuto({
     message,
     entities,
-    replyMarkup,
+    reply_markup: replyMarkup,
   });
 
   const title = "title" in result_ ? result_.title : undefined;
   const description = "description" in result_ ? result_.description : undefined;
 
   if (document != null) {
-    return new types.InputBotInlineResult({
+    return new types.inputBotInlineResult({
       id,
       type,
       title,
       description,
       thumb: thumb == null ? undefined : thumb,
       content: document,
-      sendMessage: new types.InputBotInlineMessageMediaAuto({
+      send_message: new types.inputBotInlineMessageMediaAuto({
         message,
         entities,
-        replyMarkup,
+        reply_markup: replyMarkup,
       }),
     });
   } else if (fileId_ != null) {
     const fileId = FileID.decode(fileId_);
-    return new types.InputBotInlineResultDocument({
+    return new types.inputBotInlineResultDocument({
       id,
       type,
       title,
       description,
-      document: new types.InputDocument({
+      document: new types.inputDocument({
         id: fileId.params.mediaId!,
-        accessHash: fileId.params.accessHash!,
-        fileReference: fileId.params.fileReference!,
+        access_hash: fileId.params.accessHash!,
+        file_reference: fileId.params.fileReference!,
       }),
-      sendMessage,
+      send_message: sendMessage,
     });
   } else if (result_.type == "location") {
-    return new types.InputBotInlineResult({
+    return new types.inputBotInlineResult({
       id,
       type,
       title,
       description,
-      sendMessage: new types.InputBotInlineMessageMediaGeo({
-        geoPoint: new types.InputGeoPoint({
+      send_message: new types.inputBotInlineMessageMediaGeo({
+        geo_point: new types.inputGeoPoint({
           lat: result_.latitude,
           long: result_.longitude,
-          accuracyRadius: result_.horizontalAccuracy,
+          accuracy_radius: result_.horizontalAccuracy,
         }),
         heading: result_.heading,
         period: result_.livePeriod,
-        proximityNotificationRadius: result_.proximityAlertRadius,
-        replyMarkup,
+        proximity_notification_radius: result_.proximityAlertRadius,
+        reply_markup: replyMarkup,
       }),
     });
   } else if (result_.type == "game") {
-    return new types.InputBotInlineResult({
+    return new types.inputBotInlineResult({
       id,
       type,
       title,
       description,
-      sendMessage: new types.InputBotInlineMessageGame({
-        replyMarkup,
+      send_message: new types.inputBotInlineMessageGame({
+        reply_markup: replyMarkup,
       }),
     });
   } else if (result_.type == "article") {
@@ -264,35 +264,35 @@ export async function inlineQueryResultToTlObject(result_: InlineQueryResult, pa
       UNREACHABLE();
     }
     const [message, entities] = parseText(result_.inputMessageContent.messageText, { entities: result_.inputMessageContent.entities, parseMode: result_.inputMessageContent.parseMode });
-    return new types.InputBotInlineResult({
+    return new types.inputBotInlineResult({
       id,
       type,
       title,
       description,
-      sendMessage: new types.InputBotInlineMessageText({
+      send_message: new types.inputBotInlineMessageText({
         message,
         entities,
-        noWebpage: result_.inputMessageContent.disableWebPagePreview ? true : undefined,
-        replyMarkup,
+        no_webpage: result_.inputMessageContent.disableWebPagePreview ? true : undefined,
+        reply_markup: replyMarkup,
       }),
     });
   } else if (result_.type == "venue") {
     if (!result_.fourSquareId || !result_.foursquareType) {
       UNREACHABLE();
     }
-    return new types.InputBotInlineResult({
+    return new types.inputBotInlineResult({
       id,
       type,
       title,
       description,
-      sendMessage: new types.InputBotInlineMessageMediaVenue({
-        geoPoint: new types.InputGeoPoint({ long: result_.longitude, lat: result_.latitude }),
+      send_message: new types.inputBotInlineMessageMediaVenue({
+        geo_point: new types.inputGeoPoint({ long: result_.longitude, lat: result_.latitude }),
         address: result_.address,
         provider: "foursquare",
         title: result_.title,
-        venueId: result_.fourSquareId,
-        venueType: result_.foursquareType,
-        replyMarkup,
+        venue_id: result_.fourSquareId,
+        venue_type: result_.foursquareType,
+        reply_markup: replyMarkup,
       }),
     });
   } else {

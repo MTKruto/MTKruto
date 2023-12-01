@@ -4,12 +4,12 @@ import { types } from "./2_tl.ts";
 
 export * from "./3_errors.ts";
 
-export class FloodWait extends types.RPCError {
+export class FloodWait extends types.rpc_error {
   seconds: number;
 
-  constructor(params: { errorCode: number; errorMessage: string }) {
+  constructor(params: { error_code: number; error_message: string }) {
     super(params);
-    const p = params.errorMessage.split("_");
+    const p = params.error_message.split("_");
     this.seconds = Number(p[p.length - 1]);
     if (isNaN(this.seconds)) {
       UNREACHABLE();
@@ -17,12 +17,12 @@ export class FloodWait extends types.RPCError {
   }
 }
 
-export class Migrate extends types.RPCError {
+export class Migrate extends types.rpc_error {
   dc: number;
 
-  constructor(params: { errorCode: number; errorMessage: string }) {
+  constructor(params: { error_code: number; error_message: string }) {
     super(params);
-    const p = params.errorMessage.split("_");
+    const p = params.error_message.split("_");
     this.dc = Number(p[p.length - 1]);
     if (isNaN(this.dc)) {
       UNREACHABLE();
@@ -54,14 +54,14 @@ const prefixMap = {
   "FLOOD_WAIT_": FloodWait,
 };
 
-export function upgradeInstance(error: types.RPCError) {
+export function upgradeInstance(error: types.rpc_error) {
   for (const [k, v] of Object.entries(prefixMap)) {
-    if (error.errorMessage.startsWith(k)) {
+    if (error.error_message.startsWith(k)) {
       return new v(error);
     }
   }
   for (const [k, v] of Object.entries(map)) {
-    if (error.errorMessage == k) {
+    if (error.error_message == k) {
       return new v(error);
     }
   }

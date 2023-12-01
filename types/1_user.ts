@@ -36,26 +36,26 @@ export interface User {
   addedToAttachmentMenu: boolean;
 }
 
-export function constructUser(user_: types.User) {
+export function constructUser(user_: types.user) {
   const id = Number(user_.id);
   const user: User = {
     id,
-    color: user_.color !== undefined ? user_.color : getColorFromPeerId(id),
+    color: user_.color?.color !== undefined ? user_.color.color : getColorFromPeerId(id),
     isBot: user_.bot || false,
-    firstName: user_.firstName || "",
-    lastName: user_.lastName,
+    firstName: user_.first_name || "",
+    lastName: user_.last_name,
     username: user_.username,
     also: user_.usernames?.map((v) => v.username),
-    languageCode: user_.langCode,
+    languageCode: user_.lang_code,
     isScam: user_.scam || false,
     isFake: user_.fake || false,
     isPremium: user_.premium || false,
     isVerified: user_.verified || false,
     isSupport: user_.support || false,
-    addedToAttachmentMenu: user_.attachMenuEnabled || false,
+    addedToAttachmentMenu: user_.attach_menu_enabled || false,
   };
-  if (user_.photo instanceof types.UserProfilePhoto) {
-    user.photo = constructChatPhoto(user_.photo, user.id, user_.accessHash ?? 0n);
+  if (user_.photo instanceof types.userProfilePhoto) {
+    user.photo = constructChatPhoto(user_.photo, user.id, user_.access_hash ?? 0n);
   }
 
   return cleanObject(user);

@@ -42,23 +42,23 @@ export type BotCommandScope = BotCommandScope.Default | BotCommandScope.AllPriva
 export async function botCommandScopeToTlObject(scope: BotCommandScope, getInputPeer: InputPeerGetter) {
   switch (scope.type) {
     case "default":
-      return new types.BotCommandScopeDefault();
+      return new types.botCommandScopeDefault();
     case "allPrivateChats":
-      return new types.BotCommandScopeUsers();
+      return new types.botCommandScopeUsers();
     case "allGroupChats":
-      return new types.BotCommandScopeChats();
+      return new types.botCommandScopeChats();
     case "allChatAdministrators":
-      return new types.BotCommandScopeChatAdmins();
+      return new types.botCommandScopeChatAdmins();
     case "chat":
-      return new types.BotCommandScopePeer({ peer: await getInputPeer(scope.chatId) });
+      return new types.botCommandScopePeer({ peer: await getInputPeer(scope.chatId) });
     case "chatAdministrators":
-      return new types.BotCommandScopePeerAdmins({ peer: await getInputPeer(scope.chatId) });
+      return new types.botCommandScopePeerAdmins({ peer: await getInputPeer(scope.chatId) });
     case "chatMember": {
       const user = await getInputPeer(scope.userId);
-      if (!(user instanceof types.InputPeerUser)) {
+      if (!(user instanceof types.inputPeerUser)) {
         UNREACHABLE();
       }
-      return new types.BotCommandScopePeerUser({ peer: await getInputPeer(scope.chatId), userId: new types.InputUser({ userId: user.userId, accessHash: user.accessHash }) });
+      return new types.botCommandScopePeerUser({ peer: await getInputPeer(scope.chatId), user_id: new types.inputUser({ user_id: user.user_id, access_hash: user.access_hash }) });
     }
     default:
       UNREACHABLE();

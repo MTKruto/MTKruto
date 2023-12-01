@@ -21,22 +21,22 @@ export interface Game {
   animation?: Animation;
 }
 
-export function constructGame(media_: types.MessageMediaGame): Game {
+export function constructGame(media_: types.messageMediaGame): Game {
   const game_ = media_.game;
-  const document_ = game_.document ? game_.document[as](types.Document) : undefined;
+  const document_ = game_.document ? game_.document[as](types.document) : undefined;
   return cleanObject({
     title: game_.title,
     description: media_.game.description,
-    photo: constructPhoto(game_.photo[as](types.Photo)),
+    photo: constructPhoto(game_.photo[as](types.photo)),
     animation: document_
       ? constructAnimation(
         document_,
-        document_.attributes.find((v): v is types.DocumentAttributeVideo => v instanceof types.DocumentAttributeVideo)!,
-        document_.attributes.find((v): v is types.DocumentAttributeFilename => v instanceof types.DocumentAttributeFilename)!,
-        new FileID(null, null, FileType.Animation, document_.dcId, {
+        document_.attributes.find((v): v is types.documentAttributeVideo => v instanceof types.documentAttributeVideo)!,
+        document_.attributes.find((v): v is types.documentAttributeFilename => v instanceof types.documentAttributeFilename)!,
+        new FileID(null, null, FileType.Animation, document_.dc_id, {
           mediaId: document_.id,
-          accessHash: document_.accessHash,
-          fileReference: document_.fileReference,
+          accessHash: document_.access_hash,
+          fileReference: document_.file_reference,
         }).encode(),
         new FileUniqueID(FileUniqueType.Document, { mediaId: document_.id }).encode(),
       )

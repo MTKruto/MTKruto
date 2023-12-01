@@ -17,7 +17,7 @@ export interface ReplyKeyboardMarkup {
   selective?: boolean;
 }
 
-export function constructReplyKeyboardMarkup(keyboard_: types.ReplyKeyboardMarkup): ReplyKeyboardMarkup {
+export function constructReplyKeyboardMarkup(keyboard_: types.replyKeyboardMarkup): ReplyKeyboardMarkup {
   const rows = new Array<KeyboardButton[]>();
   for (const row_ of keyboard_.rows) {
     const row = new Array<KeyboardButton>();
@@ -28,7 +28,7 @@ export function constructReplyKeyboardMarkup(keyboard_: types.ReplyKeyboardMarku
   }
   return {
     resizeKeyboard: keyboard_.resize || false,
-    oneTimeKeyboard: keyboard_.singleUse || false,
+    oneTimeKeyboard: keyboard_.single_use || false,
     selective: keyboard_.selective || false,
     isPersistent: keyboard_.persistent || false,
     keyboard: rows,
@@ -36,17 +36,17 @@ export function constructReplyKeyboardMarkup(keyboard_: types.ReplyKeyboardMarku
 }
 
 export function replyKeyboardMarkupToTlObject(replyMarkup: ReplyKeyboardMarkup) {
-  const rows_ = new Array<types.KeyboardButtonRow>();
+  const rows_ = new Array<types.keyboardButtonRow>();
   for (const row of replyMarkup.keyboard) {
-    const row_ = new Array<types.TypeKeyboardButton>();
+    const row_ = new Array<types.KeyboardButton>();
     for (const button of row) {
       row_.push(keyboardButtonToTlObject(button));
     }
-    rows_.push(new types.KeyboardButtonRow({ buttons: row_ }));
+    rows_.push(new types.keyboardButtonRow({ buttons: row_ }));
   }
-  return new types.ReplyKeyboardMarkup({
+  return new types.replyKeyboardMarkup({
     resize: replyMarkup.resizeKeyboard || undefined,
-    singleUse: replyMarkup.oneTimeKeyboard || undefined,
+    single_use: replyMarkup.oneTimeKeyboard || undefined,
     selective: replyMarkup.selective || undefined,
     persistent: replyMarkup.isPersistent || undefined,
     rows: rows_,

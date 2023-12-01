@@ -79,12 +79,12 @@ export function pad(bigint: number | bigint | Uint8Array) {
   }
 }
 
-export async function checkPassword(password_: string, ap: types.AccountPassword) {
+export async function checkPassword(password_: string, ap: types.account_Password) {
   const password = new TextEncoder().encode(password_);
-  const algo = ap.currentAlgo;
+  const algo = ap.current_algo;
   if (
     !(algo instanceof
-      types.PasswordKdfAlgoSHA256SHA256PBKDF2HMACSHA512iter100000SHA256ModPow)
+      types.passwordKdfAlgoSHA256SHA256PBKDF2HMACSHA512iter100000SHA256ModPow)
   ) {
     throw new Error("Unexpected algorithm");
   }
@@ -97,8 +97,8 @@ export async function checkPassword(password_: string, ap: types.AccountPassword
     throw new Error("Got unsafe prime");
   }
 
-  const srpB = ap.srpB;
-  const srpId = ap.srpId;
+  const srpB = ap.srp_B;
+  const srpId = ap.srp_id;
   {
     if (!srpB) {
       throw new Error("srbB is not set");
@@ -168,8 +168,8 @@ export async function checkPassword(password_: string, ap: types.AccountPassword
     kA,
   ));
 
-  return new types.InputCheckPasswordSRP({
-    srpId: srpId,
+  return new types.inputCheckPasswordSRP({
+    srp_id: srpId,
     A: pad(gA),
     M1: m1,
   });

@@ -23,16 +23,16 @@ export interface Video {
   fileSize: number;
 }
 
-export function constructVideo(document: types.Document, videoAttribute: types.DocumentAttributeVideo, fileName: string | undefined, fileId: string, fileUniqueId: string): Video {
+export function constructVideo(document: types.document, videoAttribute: types.documentAttributeVideo, fileName: string | undefined, fileId: string, fileUniqueId: string): Video {
   return {
     fileId,
     fileUniqueId,
     width: videoAttribute.w,
     height: videoAttribute.h,
     duration: videoAttribute.duration,
-    thumbnails: document.thumbs ? document.thumbs.map((v) => v instanceof types.PhotoSize ? constructThumbnail(v, document) : null).filter((v) => v) as Thumbnail[] : [],
+    thumbnails: document.thumbs ? document.thumbs.map((v) => v instanceof types.photoSize ? constructThumbnail(v, document) : null).filter((v) => v) as Thumbnail[] : [],
     fileName,
-    mimeType: document.mimeType,
+    mimeType: document.mime_type,
     fileSize: Number(document.size),
   };
 }

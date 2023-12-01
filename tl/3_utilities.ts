@@ -6,13 +6,13 @@ export function getChannelChatId(channelId: bigint) {
   return ZERO_CHANNEL_ID + -Number(channelId);
 }
 
-export function peerToChatId(peer: types.TypePeer | types.TypeInputPeer) {
-  if (peer instanceof types.PeerUser || peer instanceof types.InputPeerUser) {
-    return Number(peer.userId);
-  } else if (peer instanceof types.PeerChat || peer instanceof types.InputPeerChat) {
-    return -Number(peer.chatId);
-  } else if (peer instanceof types.PeerChannel || peer instanceof types.InputPeerChannel) {
-    return getChannelChatId(peer.channelId);
+export function peerToChatId(peer: types.Peer | types.InputPeer) {
+  if (peer instanceof types.peerUser || peer instanceof types.inputPeerUser) {
+    return Number(peer.user_id);
+  } else if (peer instanceof types.peerChat || peer instanceof types.inputPeerChat) {
+    return -Number(peer.chat_id);
+  } else if (peer instanceof types.peerChannel || peer instanceof types.inputPeerChannel) {
+    return getChannelChatId(peer.channel_id);
   } else {
     UNREACHABLE();
   }
