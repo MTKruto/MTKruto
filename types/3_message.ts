@@ -1,6 +1,6 @@
 import { debug } from "../0_deps.ts";
 import { cleanObject, MaybePromise, UNREACHABLE } from "../1_utilities.ts";
-import { as, types } from "../2_tl.ts";
+import { as, enums, types } from "../2_tl.ts";
 import { ZERO_CHANNEL_ID } from "../4_constants.ts";
 import { FileID, FileType, FileUniqueID, FileUniqueType } from "./0__file_id.ts";
 import { Audio, constructAudio } from "./0_audio.ts";
@@ -303,7 +303,7 @@ async function constructServiceMessage(message_: types.messageService, chat: Cha
 }
 
 export async function constructMessage(
-  message_: types.Message,
+  message_: enums.Message,
   getEntity: EntityGetter,
   getMessage: Message_MessageGetter,
   getStickerSetName: StickerSetNameGetter,

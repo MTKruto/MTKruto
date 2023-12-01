@@ -1,4 +1,4 @@
-import { types } from "../2_tl.ts";
+import { enums, types } from "../2_tl.ts";
 
 export type MessageEntityType =
   | "mention"
@@ -137,7 +137,7 @@ export type MessageEntity =
   | MessageEntity.Spoiler
   | MessageEntity.CustomEmoji;
 
-export function constructMessageEntity(obj: types.MessageEntity): MessageEntity | null {
+export function constructMessageEntity(obj: enums.MessageEntity): MessageEntity | null {
   if (obj instanceof types.messageEntityMention) {
     return { type: "mention", offset: obj.offset, length: obj.length };
   } else if (obj instanceof types.messageEntityHashtag) {

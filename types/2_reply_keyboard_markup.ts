@@ -1,4 +1,4 @@
-import { types } from "../2_tl.ts";
+import { enums, types } from "../2_tl.ts";
 import { constructKeyboardButton, KeyboardButton, keyboardButtonToTlObject } from "./1_keyboard_button.ts";
 
 /** This object represents a custom keyboard with reply options. */
@@ -38,7 +38,7 @@ export function constructReplyKeyboardMarkup(keyboard_: types.replyKeyboardMarku
 export function replyKeyboardMarkupToTlObject(replyMarkup: ReplyKeyboardMarkup) {
   const rows_ = new Array<types.keyboardButtonRow>();
   for (const row of replyMarkup.keyboard) {
-    const row_ = new Array<types.KeyboardButton>();
+    const row_ = new Array<enums.KeyboardButton>();
     for (const button of row) {
       row_.push(keyboardButtonToTlObject(button));
     }

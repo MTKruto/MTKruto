@@ -1,4 +1,4 @@
-import { types } from "../2_tl.ts";
+import { enums, types } from "../2_tl.ts";
 
 /** The rights of a chat administrator. */
 export interface ChatAdministratorRights {
@@ -28,7 +28,7 @@ export interface ChatAdministratorRights {
   canManageTopics?: boolean;
 }
 
-export function constructChatAdministratorRights(rights_: types.ChatAdminRights) {
+export function constructChatAdministratorRights(rights_: enums.ChatAdminRights) {
   const rights: ChatAdministratorRights = {
     isAnonymous: rights_.anonymous || false,
     canManageChat: rights_.other || false,

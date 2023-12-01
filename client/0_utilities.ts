@@ -1,12 +1,12 @@
 import { path } from "../0_deps.ts";
 import { UNREACHABLE } from "../1_utilities.ts";
-import { types } from "../2_tl.ts";
+import { enums, types } from "../2_tl.ts";
 
 export const resolve = () => Promise.resolve();
 
 export type With<T, K extends keyof T> = T & Required<Pick<T, K>>;
 
-export function isPtsUpdate(v: types.Update | types.Updates): v is
+export function isPtsUpdate(v: enums.Update | enums.Updates): v is
   | types.updateShortMessage
   | types.updateShortChatMessage
   | types.updateShortSentMessage
@@ -37,7 +37,7 @@ export function isPtsUpdate(v: types.Update | types.Updates): v is
     v instanceof types.updateWebPage;
 }
 
-export function isChannelPtsUpdate(v: types.Update | types.Updates): v is
+export function isChannelPtsUpdate(v: enums.Update | enums.Updates): v is
   | types.updateNewChannelMessage
   | types.updateEditChannelMessage
   | types.updateDeleteChannelMessages {

@@ -1,5 +1,5 @@
 import { UNREACHABLE } from "../1_utilities.ts";
-import { types } from "../2_tl.ts";
+import { enums, types } from "../2_tl.ts";
 import { LoginUrl } from "./0_login_url.ts";
 import { constructWebAppInfo, WebAppInfo } from "./0_web_app_info.ts";
 import { UsernameResolver } from "./1__getters.ts";
@@ -61,7 +61,7 @@ export type InlineKeyboardButton =
   | InlineKeyboardButton.Game
   | InlineKeyboardButton.Pay;
 
-export function constructInlineKeyboardButton(button_: types.KeyboardButton): InlineKeyboardButton {
+export function constructInlineKeyboardButton(button_: enums.KeyboardButton): InlineKeyboardButton {
   if (button_ instanceof types.keyboardButtonUrl) {
     return { text: button_.text, url: button_.url };
   } else if (button_ instanceof types.keyboardButtonCallback) {

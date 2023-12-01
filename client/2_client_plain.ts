@@ -45,7 +45,7 @@ export class ClientPlain extends ClientAbstract {
     const nonce = getRandomBigInt(16, false, true);
     d("auth key creation started");
 
-    let resPq: types.ResPQ | null = null;
+    let resPq: types.resPQ | null = null;
     for (let i = 0; i < 10; i++) {
       try {
         d("req_pq_multi [%d]", i + 1);

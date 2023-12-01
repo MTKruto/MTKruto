@@ -1,6 +1,6 @@
 import { debug, gunzip, Mutex } from "../0_deps.ts";
 import { bigIntFromBuffer, cleanObject, drop, getRandomBigInt, getRandomId, MaybePromise, mod, mustPrompt, mustPromptOneOf, Queue, sha1, UNREACHABLE } from "../1_utilities.ts";
-import { as, functions, getChannelChatId, Message_, MessageContainer, peerToChatId, ReadObject, RPCResult, TLError, TLReader, types } from "../2_tl.ts";
+import { as, enums, functions, getChannelChatId, Message_, MessageContainer, peerToChatId, ReadObject, RPCResult, TLError, TLReader, types } from "../2_tl.ts";
 import { Storage, StorageMemory } from "../3_storage.ts";
 import { DC } from "../3_transport.ts";
 import { BotCommand, botCommandScopeToTlObject, CallbackQuery, ChatAction, ChatID, constructCallbackQuery, constructInlineQuery, constructMessage, constructUser, FileID, FileType, InlineQuery, InlineQueryResult, inlineQueryResultToTlObject, Message, MessageEntity, messageEntityToTlObject, ParseMode, replyMarkupToTlObject, ThumbnailSource, User, UsernameResolver } from "../3_types.ts";
@@ -686,7 +686,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
           }
           dRecv("received %s", body.constructor.name);
           if (body instanceof types._Updates || body instanceof types._Update) {
-            this.#processUpdatesQueue.add(() => this.#processUpdates(body as types.updates | types.Update, true));
+            this.#processUpdatesQueue.add(() => this.#processUpdates(body as types.updates | enums.Update, true));
           } else if (body instanceof types.new_session_created) {
             this.#state.salt = body.server_salt;
             await this.storage.setServerSalt(this.#state.salt);
@@ -714,7 +714,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
             };
             if (result instanceof types._Updates || result instanceof types._Update) {
               this.#processUpdatesQueue.add(async () => {
-                await this.#processUpdates(result as types.Updates | types.Update, true);
+                await this.#processUpdates(result as enums.Updates | enums.Update, true);
                 resolvePromise();
               });
             } else {
@@ -888,7 +888,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
     return this.invoke(function_, true);
   }
 
-  async #processChats(chats: types.Chat[]) {
+  async #processChats(chats: enums.Chat[]) {
     for (const chat of chats) {
       if (chat instanceof types.channel && chat.access_hash) {
         await this.storage.setEntity(chat);
@@ -905,7 +905,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
     }
   }
 
-  async #processUsers(users: types.User[]) {
+  async #processUsers(users: enums.User[]) {
     for (const user of users) {
       if (user instanceof types.user && user.access_hash) {
         await this.storage.setEntity(user);
@@ -939,7 +939,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
     }
   }
 
-  async #processUpdates(updates_: types.Update | types.Updates, checkGap: boolean) {
+  async #processUpdates(updates_: enums.Update | enums.Updates, checkGap: boolean) {
     /// First, individual updates (Update[1]) and updateShort* are extracted from Updates.[2]
     ///
     /// If an updatesTooLong[3] was received, an update gap recovery is initiated and no further action will be taken.
@@ -947,7 +947,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
     /// [1]: https://core.telegram.org/type/Update
     /// [2]: https://core.telegram.org/type/Updates
     /// [3]: https://core.telegram.org/constructor/updatesTooLong
-    let updates: (types.Update | types.updateShortMessage | types.updateShortChatMessage | types.updateShortSentMessage)[];
+    let updates: (enums.Update | types.updateShortMessage | types.updateShortChatMessage | types.updateShortSentMessage)[];
     if (updates_ instanceof types.updatesCombined || updates_ instanceof types.updates) {
       updates = updates_.updates;
       const seq = updates_.seq;
@@ -1046,7 +1046,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
       await this.#setUpdateStateDate(updates_.date);
     }
 
-    const updatesToHandle = new Array<types.Update>();
+    const updatesToHandle = new Array<enums.Update>();
     for (const update of updates) {
       if (
         update instanceof types.updateShortMessage ||
@@ -1352,7 +1352,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
     }
   }
 
-  async #updatesToMessages(chatId: ChatID, updates: types.Updates) {
+  async #updatesToMessages(chatId: ChatID, updates: enums.Updates) {
     const messages = new Array<Message>();
 
     if (updates instanceof types.updates) {
@@ -1484,7 +1484,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
 
   async #getMessagesInner(chatId_: ChatID, messageIds: number[]) {
     const peer = await this.getInputPeer(chatId_);
-    let messages_ = new Array<types.Message>();
+    let messages_ = new Array<enums.Message>();
     const chatId = peerToChatId(peer);
     let shouldFetch = false;
     for (const messageId of messageIds) {
@@ -1561,7 +1561,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
     return messages[0] ?? null;
   }
 
-  async *#downloadInner(location: types.InputFileLocation, dcId: number, params?: { chunkSize?: number }) {
+  async *#downloadInner(location: enums.InputFileLocation, dcId: number, params?: { chunkSize?: number }) {
     const chunkSize = params?.chunkSize ?? 1024 * 1024;
     if (mod(chunkSize, 1024) != 0) {
       throw new Error("chunkSize must be divisible by 1024");
@@ -1723,7 +1723,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
   }
 
   // TODO: log errors
-  async #handleUpdate(update: types.Update) {
+  async #handleUpdate(update: enums.Update) {
     if (update instanceof types.updateShortMessage) {
       update = new types.updateNewMessage({
         message: new types.message({
@@ -1960,7 +1960,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
    * @param messageThreadId The thread to send the chat action to.
    */
   async sendChatAction(chatId: ChatID, action: ChatAction, params?: { messageThreadId?: number }) {
-    let action_: types.SendMessageAction;
+    let action_: enums.SendMessageAction;
     switch (action) {
       case "type":
         action_ = new types.sendMessageTypingAction();
@@ -2360,7 +2360,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
    * @param photo The photo to send.
    */
   async sendPhoto(chatId: ChatID, photo: FileSource, params?: SendPhotoParams): Promise<With<Message, "photo">> {
-    let media: types.InputMedia | null = null;
+    let media: enums.InputMedia | null = null;
     const spoiler = params?.hasSpoiler ? true : undefined;
 
     if (typeof photo === "string") {

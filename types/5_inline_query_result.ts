@@ -1,5 +1,5 @@
 import { UNREACHABLE } from "../1_utilities.ts";
-import { types } from "../2_tl.ts";
+import { enums, types } from "../2_tl.ts";
 import { FileID } from "./0__file_id.ts";
 import { MessageEntity } from "./0_message_entity.ts";
 import { ParseMode } from "./0_parse_mode.ts";
@@ -50,7 +50,7 @@ export type InlineQueryResult =
 
 // deno-lint-ignore no-explicit-any
 export async function inlineQueryResultToTlObject(result_: InlineQueryResult, parseText: (text: string, params?: { parseMode?: ParseMode; entities?: MessageEntity[] }) => readonly [string, any[] | undefined], usernameResolver: UsernameResolver) {
-  let document: types.InputWebDocument | null = null;
+  let document: enums.InputWebDocument | null = null;
   let thumb: types.inputWebDocument | null = null;
   let fileId_: string | null = null;
   switch (result_.type) {

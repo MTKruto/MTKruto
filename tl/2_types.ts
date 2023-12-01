@@ -1904,7 +1904,7 @@ export class future_salt extends _FutureSalt {
 export class future_salts extends _FutureSalts {
   req_msg_id: bigint;
   now: number;
-  salts: Array<FutureSalt>;
+  salts: Array<enums.FutureSalt>;
 
   protected get [id]() {
     return 0xAE500895;
@@ -1926,7 +1926,7 @@ export class future_salts extends _FutureSalts {
     ];
   }
 
-  constructor(params: { req_msg_id: bigint; now: number; salts: Array<FutureSalt> }) {
+  constructor(params: { req_msg_id: bigint; now: number; salts: Array<enums.FutureSalt> }) {
     super();
     this.req_msg_id = params.req_msg_id;
     this.now = params.now;
@@ -2616,7 +2616,7 @@ export class inputPeerChannel extends _InputPeer {
 }
 
 export class inputPeerUserFromMessage extends _InputPeer {
-  peer: InputPeer;
+  peer: enums.InputPeer;
   msg_id: number;
   user_id: bigint;
 
@@ -2640,7 +2640,7 @@ export class inputPeerUserFromMessage extends _InputPeer {
     ];
   }
 
-  constructor(params: { peer: InputPeer; msg_id: number; user_id: bigint }) {
+  constructor(params: { peer: enums.InputPeer; msg_id: number; user_id: bigint }) {
     super();
     this.peer = params.peer;
     this.msg_id = params.msg_id;
@@ -2649,7 +2649,7 @@ export class inputPeerUserFromMessage extends _InputPeer {
 }
 
 export class inputPeerChannelFromMessage extends _InputPeer {
-  peer: InputPeer;
+  peer: enums.InputPeer;
   msg_id: number;
   channel_id: bigint;
 
@@ -2673,7 +2673,7 @@ export class inputPeerChannelFromMessage extends _InputPeer {
     ];
   }
 
-  constructor(params: { peer: InputPeer; msg_id: number; channel_id: bigint }) {
+  constructor(params: { peer: enums.InputPeer; msg_id: number; channel_id: bigint }) {
     super();
     this.peer = params.peer;
     this.msg_id = params.msg_id;
@@ -2747,7 +2747,7 @@ export class inputUser extends _InputUser {
 }
 
 export class inputUserFromMessage extends _InputUser {
-  peer: InputPeer;
+  peer: enums.InputPeer;
   msg_id: number;
   user_id: bigint;
 
@@ -2771,7 +2771,7 @@ export class inputUserFromMessage extends _InputUser {
     ];
   }
 
-  constructor(params: { peer: InputPeer; msg_id: number; user_id: bigint }) {
+  constructor(params: { peer: enums.InputPeer; msg_id: number; user_id: bigint }) {
     super();
     this.peer = params.peer;
     this.msg_id = params.msg_id;
@@ -2906,8 +2906,8 @@ export class inputMediaEmpty extends _InputMedia {
 
 export class inputMediaUploadedPhoto extends _InputMedia {
   spoiler?: true;
-  file: InputFile;
-  stickers?: Array<InputDocument>;
+  file: enums.InputFile;
+  stickers?: Array<enums.InputDocument>;
   ttl_seconds?: number;
 
   protected get [id]() {
@@ -2934,7 +2934,7 @@ export class inputMediaUploadedPhoto extends _InputMedia {
     ];
   }
 
-  constructor(params: { spoiler?: true; file: InputFile; stickers?: Array<InputDocument>; ttl_seconds?: number }) {
+  constructor(params: { spoiler?: true; file: enums.InputFile; stickers?: Array<enums.InputDocument>; ttl_seconds?: number }) {
     super();
     this.spoiler = params.spoiler;
     this.file = params.file;
@@ -2945,7 +2945,7 @@ export class inputMediaUploadedPhoto extends _InputMedia {
 
 export class inputMediaPhoto extends _InputMedia {
   spoiler?: true;
-  id: InputPhoto;
+  id: enums.InputPhoto;
   ttl_seconds?: number;
 
   protected get [id]() {
@@ -2970,7 +2970,7 @@ export class inputMediaPhoto extends _InputMedia {
     ];
   }
 
-  constructor(params: { spoiler?: true; id: InputPhoto; ttl_seconds?: number }) {
+  constructor(params: { spoiler?: true; id: enums.InputPhoto; ttl_seconds?: number }) {
     super();
     this.spoiler = params.spoiler;
     this.id = params.id;
@@ -2979,7 +2979,7 @@ export class inputMediaPhoto extends _InputMedia {
 }
 
 export class inputMediaGeoPoint extends _InputMedia {
-  geo_point: InputGeoPoint;
+  geo_point: enums.InputGeoPoint;
 
   protected get [id]() {
     return 0xF9C44144;
@@ -2997,7 +2997,7 @@ export class inputMediaGeoPoint extends _InputMedia {
     ];
   }
 
-  constructor(params: { geo_point: InputGeoPoint }) {
+  constructor(params: { geo_point: enums.InputGeoPoint }) {
     super();
     this.geo_point = params.geo_point;
   }
@@ -3044,11 +3044,11 @@ export class inputMediaUploadedDocument extends _InputMedia {
   nosound_video?: true;
   force_file?: true;
   spoiler?: true;
-  file: InputFile;
-  thumb?: InputFile;
+  file: enums.InputFile;
+  thumb?: enums.InputFile;
   mime_type: string;
-  attributes: Array<DocumentAttribute>;
-  stickers?: Array<InputDocument>;
+  attributes: Array<enums.DocumentAttribute>;
+  stickers?: Array<enums.InputDocument>;
   ttl_seconds?: number;
 
   protected get [id]() {
@@ -3085,7 +3085,7 @@ export class inputMediaUploadedDocument extends _InputMedia {
     ];
   }
 
-  constructor(params: { nosound_video?: true; force_file?: true; spoiler?: true; file: InputFile; thumb?: InputFile; mime_type: string; attributes: Array<DocumentAttribute>; stickers?: Array<InputDocument>; ttl_seconds?: number }) {
+  constructor(params: { nosound_video?: true; force_file?: true; spoiler?: true; file: enums.InputFile; thumb?: enums.InputFile; mime_type: string; attributes: Array<enums.DocumentAttribute>; stickers?: Array<enums.InputDocument>; ttl_seconds?: number }) {
     super();
     this.nosound_video = params.nosound_video;
     this.force_file = params.force_file;
@@ -3101,7 +3101,7 @@ export class inputMediaUploadedDocument extends _InputMedia {
 
 export class inputMediaDocument extends _InputMedia {
   spoiler?: true;
-  id: InputDocument;
+  id: enums.InputDocument;
   ttl_seconds?: number;
   query?: string;
 
@@ -3129,7 +3129,7 @@ export class inputMediaDocument extends _InputMedia {
     ];
   }
 
-  constructor(params: { spoiler?: true; id: InputDocument; ttl_seconds?: number; query?: string }) {
+  constructor(params: { spoiler?: true; id: enums.InputDocument; ttl_seconds?: number; query?: string }) {
     super();
     this.spoiler = params.spoiler;
     this.id = params.id;
@@ -3139,7 +3139,7 @@ export class inputMediaDocument extends _InputMedia {
 }
 
 export class inputMediaVenue extends _InputMedia {
-  geo_point: InputGeoPoint;
+  geo_point: enums.InputGeoPoint;
   title: string;
   address: string;
   provider: string;
@@ -3172,7 +3172,7 @@ export class inputMediaVenue extends _InputMedia {
     ];
   }
 
-  constructor(params: { geo_point: InputGeoPoint; title: string; address: string; provider: string; venue_id: string; venue_type: string }) {
+  constructor(params: { geo_point: enums.InputGeoPoint; title: string; address: string; provider: string; venue_id: string; venue_type: string }) {
     super();
     this.geo_point = params.geo_point;
     this.title = params.title;
@@ -3254,7 +3254,7 @@ export class inputMediaDocumentExternal extends _InputMedia {
 }
 
 export class inputMediaGame extends _InputMedia {
-  id: InputGame;
+  id: enums.InputGame;
 
   protected get [id]() {
     return 0xD33F43F3;
@@ -3272,7 +3272,7 @@ export class inputMediaGame extends _InputMedia {
     ];
   }
 
-  constructor(params: { id: InputGame }) {
+  constructor(params: { id: enums.InputGame }) {
     super();
     this.id = params.id;
   }
@@ -3281,13 +3281,13 @@ export class inputMediaGame extends _InputMedia {
 export class inputMediaInvoice extends _InputMedia {
   title: string;
   description: string;
-  photo?: InputWebDocument;
-  invoice: Invoice;
+  photo?: enums.InputWebDocument;
+  invoice: enums.Invoice;
   payload: Uint8Array;
   provider: string;
-  provider_data: DataJSON;
+  provider_data: enums.DataJSON;
   start_param?: string;
-  extended_media?: InputMedia;
+  extended_media?: enums.InputMedia;
 
   protected get [id]() {
     return 0x8EB5A6D5;
@@ -3323,7 +3323,7 @@ export class inputMediaInvoice extends _InputMedia {
     ];
   }
 
-  constructor(params: { title: string; description: string; photo?: InputWebDocument; invoice: Invoice; payload: Uint8Array; provider: string; provider_data: DataJSON; start_param?: string; extended_media?: InputMedia }) {
+  constructor(params: { title: string; description: string; photo?: enums.InputWebDocument; invoice: enums.Invoice; payload: Uint8Array; provider: string; provider_data: enums.DataJSON; start_param?: string; extended_media?: enums.InputMedia }) {
     super();
     this.title = params.title;
     this.description = params.description;
@@ -3339,7 +3339,7 @@ export class inputMediaInvoice extends _InputMedia {
 
 export class inputMediaGeoLive extends _InputMedia {
   stopped?: true;
-  geo_point: InputGeoPoint;
+  geo_point: enums.InputGeoPoint;
   heading?: number;
   period?: number;
   proximity_notification_radius?: number;
@@ -3370,7 +3370,7 @@ export class inputMediaGeoLive extends _InputMedia {
     ];
   }
 
-  constructor(params: { stopped?: true; geo_point: InputGeoPoint; heading?: number; period?: number; proximity_notification_radius?: number }) {
+  constructor(params: { stopped?: true; geo_point: enums.InputGeoPoint; heading?: number; period?: number; proximity_notification_radius?: number }) {
     super();
     this.stopped = params.stopped;
     this.geo_point = params.geo_point;
@@ -3381,10 +3381,10 @@ export class inputMediaGeoLive extends _InputMedia {
 }
 
 export class inputMediaPoll extends _InputMedia {
-  poll: Poll;
+  poll: enums.Poll;
   correct_answers?: Array<Uint8Array>;
   solution?: string;
-  solution_entities?: Array<MessageEntity>;
+  solution_entities?: Array<enums.MessageEntity>;
 
   protected get [id]() {
     return 0x0F94E5F1;
@@ -3410,7 +3410,7 @@ export class inputMediaPoll extends _InputMedia {
     ];
   }
 
-  constructor(params: { poll: Poll; correct_answers?: Array<Uint8Array>; solution?: string; solution_entities?: Array<MessageEntity> }) {
+  constructor(params: { poll: enums.Poll; correct_answers?: Array<Uint8Array>; solution?: string; solution_entities?: Array<enums.MessageEntity> }) {
     super();
     this.poll = params.poll;
     this.correct_answers = params.correct_answers;
@@ -3445,7 +3445,7 @@ export class inputMediaDice extends _InputMedia {
 }
 
 export class inputMediaStory extends _InputMedia {
-  peer: InputPeer;
+  peer: enums.InputPeer;
   id: number;
 
   protected get [id]() {
@@ -3466,7 +3466,7 @@ export class inputMediaStory extends _InputMedia {
     ];
   }
 
-  constructor(params: { peer: InputPeer; id: number }) {
+  constructor(params: { peer: enums.InputPeer; id: number }) {
     super();
     this.peer = params.peer;
     this.id = params.id;
@@ -3531,10 +3531,10 @@ export class inputChatPhotoEmpty extends _InputChatPhoto {
 }
 
 export class inputChatUploadedPhoto extends _InputChatPhoto {
-  file?: InputFile;
-  video?: InputFile;
+  file?: enums.InputFile;
+  video?: enums.InputFile;
   video_start_ts?: number;
-  video_emoji_markup?: VideoSize;
+  video_emoji_markup?: enums.VideoSize;
 
   protected get [id]() {
     return 0xBDCDAEC0;
@@ -3560,7 +3560,7 @@ export class inputChatUploadedPhoto extends _InputChatPhoto {
     ];
   }
 
-  constructor(params?: { file?: InputFile; video?: InputFile; video_start_ts?: number; video_emoji_markup?: VideoSize }) {
+  constructor(params?: { file?: enums.InputFile; video?: enums.InputFile; video_start_ts?: number; video_emoji_markup?: enums.VideoSize }) {
     super();
     this.file = params?.file;
     this.video = params?.video;
@@ -3570,7 +3570,7 @@ export class inputChatUploadedPhoto extends _InputChatPhoto {
 }
 
 export class inputChatPhoto extends _InputChatPhoto {
-  id: InputPhoto;
+  id: enums.InputPhoto;
 
   protected get [id]() {
     return 0x8953AD37;
@@ -3588,7 +3588,7 @@ export class inputChatPhoto extends _InputChatPhoto {
     ];
   }
 
-  constructor(params: { id: InputPhoto }) {
+  constructor(params: { id: enums.InputPhoto }) {
     super();
     this.id = params.id;
   }
@@ -3932,7 +3932,7 @@ export class inputPhotoLegacyFileLocation extends _InputFileLocation {
 
 export class inputPeerPhotoFileLocation extends _InputFileLocation {
   big?: true;
-  peer: InputPeer;
+  peer: enums.InputPeer;
   photo_id: bigint;
 
   protected get [id]() {
@@ -3957,7 +3957,7 @@ export class inputPeerPhotoFileLocation extends _InputFileLocation {
     ];
   }
 
-  constructor(params: { big?: true; peer: InputPeer; photo_id: bigint }) {
+  constructor(params: { big?: true; peer: enums.InputPeer; photo_id: bigint }) {
     super();
     this.big = params.big;
     this.peer = params.peer;
@@ -3966,7 +3966,7 @@ export class inputPeerPhotoFileLocation extends _InputFileLocation {
 }
 
 export class inputStickerSetThumb extends _InputFileLocation {
-  stickerset: InputStickerSet;
+  stickerset: enums.InputStickerSet;
   thumb_version: number;
 
   protected get [id]() {
@@ -3987,7 +3987,7 @@ export class inputStickerSetThumb extends _InputFileLocation {
     ];
   }
 
-  constructor(params: { stickerset: InputStickerSet; thumb_version: number }) {
+  constructor(params: { stickerset: enums.InputStickerSet; thumb_version: number }) {
     super();
     this.stickerset = params.stickerset;
     this.thumb_version = params.thumb_version;
@@ -3995,7 +3995,7 @@ export class inputStickerSetThumb extends _InputFileLocation {
 }
 
 export class inputGroupCallStream extends _InputFileLocation {
-  call: InputGroupCall;
+  call: enums.InputGroupCall;
   time_ms: bigint;
   scale: number;
   video_channel?: number;
@@ -4027,7 +4027,7 @@ export class inputGroupCallStream extends _InputFileLocation {
     ];
   }
 
-  constructor(params: { call: InputGroupCall; time_ms: bigint; scale: number; video_channel?: number; video_quality?: number }) {
+  constructor(params: { call: enums.InputGroupCall; time_ms: bigint; scale: number; video_channel?: number; video_quality?: number }) {
     super();
     this.call = params.call;
     this.time_ms = params.time_ms;
@@ -4346,17 +4346,17 @@ export class user extends _User {
   last_name?: string;
   username?: string;
   phone?: string;
-  photo?: UserProfilePhoto;
-  status?: UserStatus;
+  photo?: enums.UserProfilePhoto;
+  status?: enums.UserStatus;
   bot_info_version?: number;
-  restriction_reason?: Array<RestrictionReason>;
+  restriction_reason?: Array<enums.RestrictionReason>;
   bot_inline_placeholder?: string;
   lang_code?: string;
-  emoji_status?: EmojiStatus;
-  usernames?: Array<Username>;
+  emoji_status?: enums.EmojiStatus;
+  usernames?: Array<enums.Username>;
   stories_max_id?: number;
-  color?: PeerColor;
-  profile_color?: PeerColor;
+  color?: enums.PeerColor;
+  profile_color?: enums.PeerColor;
 
   protected get [id]() {
     return 0x215C4438;
@@ -4454,7 +4454,7 @@ export class user extends _User {
     ];
   }
 
-  constructor(params: { self?: true; contact?: true; mutual_contact?: true; deleted?: true; bot?: true; bot_chat_history?: true; bot_nochats?: true; verified?: true; restricted?: true; min?: true; bot_inline_geo?: true; support?: true; scam?: true; apply_min_photo?: true; fake?: true; bot_attach_menu?: true; premium?: true; attach_menu_enabled?: true; bot_can_edit?: true; close_friend?: true; stories_hidden?: true; stories_unavailable?: true; id: bigint; access_hash?: bigint; first_name?: string; last_name?: string; username?: string; phone?: string; photo?: UserProfilePhoto; status?: UserStatus; bot_info_version?: number; restriction_reason?: Array<RestrictionReason>; bot_inline_placeholder?: string; lang_code?: string; emoji_status?: EmojiStatus; usernames?: Array<Username>; stories_max_id?: number; color?: PeerColor; profile_color?: PeerColor }) {
+  constructor(params: { self?: true; contact?: true; mutual_contact?: true; deleted?: true; bot?: true; bot_chat_history?: true; bot_nochats?: true; verified?: true; restricted?: true; min?: true; bot_inline_geo?: true; support?: true; scam?: true; apply_min_photo?: true; fake?: true; bot_attach_menu?: true; premium?: true; attach_menu_enabled?: true; bot_can_edit?: true; close_friend?: true; stories_hidden?: true; stories_unavailable?: true; id: bigint; access_hash?: bigint; first_name?: string; last_name?: string; username?: string; phone?: string; photo?: enums.UserProfilePhoto; status?: enums.UserStatus; bot_info_version?: number; restriction_reason?: Array<enums.RestrictionReason>; bot_inline_placeholder?: string; lang_code?: string; emoji_status?: enums.EmojiStatus; usernames?: Array<enums.Username>; stories_max_id?: number; color?: enums.PeerColor; profile_color?: enums.PeerColor }) {
     super();
     this.self = params.self;
     this.contact = params.contact;
@@ -4715,13 +4715,13 @@ export class chat extends _Chat {
   noforwards?: true;
   id: bigint;
   title: string;
-  photo: ChatPhoto;
+  photo: enums.ChatPhoto;
   participants_count: number;
   date: number;
   version: number;
-  migrated_to?: InputChannel;
-  admin_rights?: ChatAdminRights;
-  default_banned_rights?: ChatBannedRights;
+  migrated_to?: enums.InputChannel;
+  admin_rights?: enums.ChatAdminRights;
+  default_banned_rights?: enums.ChatBannedRights;
 
   protected get [id]() {
     return 0x41CBF256;
@@ -4769,7 +4769,7 @@ export class chat extends _Chat {
     ];
   }
 
-  constructor(params: { creator?: true; left?: true; deactivated?: true; call_active?: true; call_not_empty?: true; noforwards?: true; id: bigint; title: string; photo: ChatPhoto; participants_count: number; date: number; version: number; migrated_to?: InputChannel; admin_rights?: ChatAdminRights; default_banned_rights?: ChatBannedRights }) {
+  constructor(params: { creator?: true; left?: true; deactivated?: true; call_active?: true; call_not_empty?: true; noforwards?: true; id: bigint; title: string; photo: enums.ChatPhoto; participants_count: number; date: number; version: number; migrated_to?: enums.InputChannel; admin_rights?: enums.ChatAdminRights; default_banned_rights?: enums.ChatBannedRights }) {
     super();
     this.creator = params.creator;
     this.left = params.left;
@@ -4846,16 +4846,16 @@ export class channel extends _Chat {
   access_hash?: bigint;
   title: string;
   username?: string;
-  photo: ChatPhoto;
+  photo: enums.ChatPhoto;
   date: number;
-  restriction_reason?: Array<RestrictionReason>;
-  admin_rights?: ChatAdminRights;
-  banned_rights?: ChatBannedRights;
-  default_banned_rights?: ChatBannedRights;
+  restriction_reason?: Array<enums.RestrictionReason>;
+  admin_rights?: enums.ChatAdminRights;
+  banned_rights?: enums.ChatBannedRights;
+  default_banned_rights?: enums.ChatBannedRights;
   participants_count?: number;
-  usernames?: Array<Username>;
+  usernames?: Array<enums.Username>;
   stories_max_id?: number;
-  color?: PeerColor;
+  color?: enums.PeerColor;
 
   protected get [id]() {
     return 0x8E87CCD8;
@@ -4949,7 +4949,7 @@ export class channel extends _Chat {
     ];
   }
 
-  constructor(params: { creator?: true; left?: true; broadcast?: true; verified?: true; megagroup?: true; restricted?: true; signatures?: true; min?: true; scam?: true; has_link?: true; has_geo?: true; slowmode_enabled?: true; call_active?: true; call_not_empty?: true; fake?: true; gigagroup?: true; noforwards?: true; join_to_send?: true; join_request?: true; forum?: true; stories_hidden?: true; stories_hidden_min?: true; stories_unavailable?: true; id: bigint; access_hash?: bigint; title: string; username?: string; photo: ChatPhoto; date: number; restriction_reason?: Array<RestrictionReason>; admin_rights?: ChatAdminRights; banned_rights?: ChatBannedRights; default_banned_rights?: ChatBannedRights; participants_count?: number; usernames?: Array<Username>; stories_max_id?: number; color?: PeerColor }) {
+  constructor(params: { creator?: true; left?: true; broadcast?: true; verified?: true; megagroup?: true; restricted?: true; signatures?: true; min?: true; scam?: true; has_link?: true; has_geo?: true; slowmode_enabled?: true; call_active?: true; call_not_empty?: true; fake?: true; gigagroup?: true; noforwards?: true; join_to_send?: true; join_request?: true; forum?: true; stories_hidden?: true; stories_hidden_min?: true; stories_unavailable?: true; id: bigint; access_hash?: bigint; title: string; username?: string; photo: enums.ChatPhoto; date: number; restriction_reason?: Array<enums.RestrictionReason>; admin_rights?: enums.ChatAdminRights; banned_rights?: enums.ChatBannedRights; default_banned_rights?: enums.ChatBannedRights; participants_count?: number; usernames?: Array<enums.Username>; stories_max_id?: number; color?: enums.PeerColor }) {
     super();
     this.creator = params.creator;
     this.left = params.left;
@@ -5044,20 +5044,20 @@ export class chatFull extends _ChatFull {
   translations_disabled?: true;
   id: bigint;
   about: string;
-  participants: ChatParticipants;
-  chat_photo?: Photo;
-  notify_settings: PeerNotifySettings;
-  exported_invite?: ExportedChatInvite;
-  bot_info?: Array<BotInfo>;
+  participants: enums.ChatParticipants;
+  chat_photo?: enums.Photo;
+  notify_settings: enums.PeerNotifySettings;
+  exported_invite?: enums.ExportedChatInvite;
+  bot_info?: Array<enums.BotInfo>;
   pinned_msg_id?: number;
   folder_id?: number;
-  call?: InputGroupCall;
+  call?: enums.InputGroupCall;
   ttl_period?: number;
-  groupcall_default_join_as?: Peer;
+  groupcall_default_join_as?: enums.Peer;
   theme_emoticon?: string;
   requests_pending?: number;
   recent_requesters?: Array<bigint>;
-  available_reactions?: ChatReactions;
+  available_reactions?: enums.ChatReactions;
 
   protected get [id]() {
     return 0xC9D31138;
@@ -5113,7 +5113,7 @@ export class chatFull extends _ChatFull {
     ];
   }
 
-  constructor(params: { can_set_username?: true; has_scheduled?: true; translations_disabled?: true; id: bigint; about: string; participants: ChatParticipants; chat_photo?: Photo; notify_settings: PeerNotifySettings; exported_invite?: ExportedChatInvite; bot_info?: Array<BotInfo>; pinned_msg_id?: number; folder_id?: number; call?: InputGroupCall; ttl_period?: number; groupcall_default_join_as?: Peer; theme_emoticon?: string; requests_pending?: number; recent_requesters?: Array<bigint>; available_reactions?: ChatReactions }) {
+  constructor(params: { can_set_username?: true; has_scheduled?: true; translations_disabled?: true; id: bigint; about: string; participants: enums.ChatParticipants; chat_photo?: enums.Photo; notify_settings: enums.PeerNotifySettings; exported_invite?: enums.ExportedChatInvite; bot_info?: Array<enums.BotInfo>; pinned_msg_id?: number; folder_id?: number; call?: enums.InputGroupCall; ttl_period?: number; groupcall_default_join_as?: enums.Peer; theme_emoticon?: string; requests_pending?: number; recent_requesters?: Array<bigint>; available_reactions?: enums.ChatReactions }) {
     super();
     this.can_set_username = params.can_set_username;
     this.has_scheduled = params.has_scheduled;
@@ -5162,32 +5162,32 @@ export class channelFull extends _ChatFull {
   read_inbox_max_id: number;
   read_outbox_max_id: number;
   unread_count: number;
-  chat_photo: Photo;
-  notify_settings: PeerNotifySettings;
-  exported_invite?: ExportedChatInvite;
-  bot_info: Array<BotInfo>;
+  chat_photo: enums.Photo;
+  notify_settings: enums.PeerNotifySettings;
+  exported_invite?: enums.ExportedChatInvite;
+  bot_info: Array<enums.BotInfo>;
   migrated_from_chat_id?: bigint;
   migrated_from_max_id?: number;
   pinned_msg_id?: number;
-  stickerset?: StickerSet;
+  stickerset?: enums.StickerSet;
   available_min_id?: number;
   folder_id?: number;
   linked_chat_id?: bigint;
-  location?: ChannelLocation;
+  location?: enums.ChannelLocation;
   slowmode_seconds?: number;
   slowmode_next_send_date?: number;
   stats_dc?: number;
   pts: number;
-  call?: InputGroupCall;
+  call?: enums.InputGroupCall;
   ttl_period?: number;
   pending_suggestions?: Array<string>;
-  groupcall_default_join_as?: Peer;
+  groupcall_default_join_as?: enums.Peer;
   theme_emoticon?: string;
   requests_pending?: number;
   recent_requesters?: Array<bigint>;
-  default_send_as?: Peer;
-  available_reactions?: ChatReactions;
-  stories?: PeerStories;
+  default_send_as?: enums.Peer;
+  available_reactions?: enums.ChatReactions;
+  stories?: enums.PeerStories;
 
   protected get [id]() {
     return 0x723027BD;
@@ -5307,7 +5307,7 @@ export class channelFull extends _ChatFull {
     ];
   }
 
-  constructor(params: { can_view_participants?: true; can_set_username?: true; can_set_stickers?: true; hidden_prehistory?: true; can_set_location?: true; has_scheduled?: true; can_view_stats?: true; blocked?: true; can_delete_channel?: true; antispam?: true; participants_hidden?: true; translations_disabled?: true; stories_pinned_available?: true; view_forum_as_messages?: true; id: bigint; about: string; participants_count?: number; admins_count?: number; kicked_count?: number; banned_count?: number; online_count?: number; read_inbox_max_id: number; read_outbox_max_id: number; unread_count: number; chat_photo: Photo; notify_settings: PeerNotifySettings; exported_invite?: ExportedChatInvite; bot_info: Array<BotInfo>; migrated_from_chat_id?: bigint; migrated_from_max_id?: number; pinned_msg_id?: number; stickerset?: StickerSet; available_min_id?: number; folder_id?: number; linked_chat_id?: bigint; location?: ChannelLocation; slowmode_seconds?: number; slowmode_next_send_date?: number; stats_dc?: number; pts: number; call?: InputGroupCall; ttl_period?: number; pending_suggestions?: Array<string>; groupcall_default_join_as?: Peer; theme_emoticon?: string; requests_pending?: number; recent_requesters?: Array<bigint>; default_send_as?: Peer; available_reactions?: ChatReactions; stories?: PeerStories }) {
+  constructor(params: { can_view_participants?: true; can_set_username?: true; can_set_stickers?: true; hidden_prehistory?: true; can_set_location?: true; has_scheduled?: true; can_view_stats?: true; blocked?: true; can_delete_channel?: true; antispam?: true; participants_hidden?: true; translations_disabled?: true; stories_pinned_available?: true; view_forum_as_messages?: true; id: bigint; about: string; participants_count?: number; admins_count?: number; kicked_count?: number; banned_count?: number; online_count?: number; read_inbox_max_id: number; read_outbox_max_id: number; unread_count: number; chat_photo: enums.Photo; notify_settings: enums.PeerNotifySettings; exported_invite?: enums.ExportedChatInvite; bot_info: Array<enums.BotInfo>; migrated_from_chat_id?: bigint; migrated_from_max_id?: number; pinned_msg_id?: number; stickerset?: enums.StickerSet; available_min_id?: number; folder_id?: number; linked_chat_id?: bigint; location?: enums.ChannelLocation; slowmode_seconds?: number; slowmode_next_send_date?: number; stats_dc?: number; pts: number; call?: enums.InputGroupCall; ttl_period?: number; pending_suggestions?: Array<string>; groupcall_default_join_as?: enums.Peer; theme_emoticon?: string; requests_pending?: number; recent_requesters?: Array<bigint>; default_send_as?: enums.Peer; available_reactions?: enums.ChatReactions; stories?: enums.PeerStories }) {
     super();
     this.can_view_participants = params.can_view_participants;
     this.can_set_username = params.can_set_username;
@@ -5455,7 +5455,7 @@ export class chatParticipantAdmin extends _ChatParticipant {
 
 export class chatParticipantsForbidden extends _ChatParticipants {
   chat_id: bigint;
-  self_participant?: ChatParticipant;
+  self_participant?: enums.ChatParticipant;
 
   protected get [id]() {
     return 0x8763D3E1;
@@ -5477,7 +5477,7 @@ export class chatParticipantsForbidden extends _ChatParticipants {
     ];
   }
 
-  constructor(params: { chat_id: bigint; self_participant?: ChatParticipant }) {
+  constructor(params: { chat_id: bigint; self_participant?: enums.ChatParticipant }) {
     super();
     this.chat_id = params.chat_id;
     this.self_participant = params.self_participant;
@@ -5486,7 +5486,7 @@ export class chatParticipantsForbidden extends _ChatParticipants {
 
 export class chatParticipants extends _ChatParticipants {
   chat_id: bigint;
-  participants: Array<ChatParticipant>;
+  participants: Array<enums.ChatParticipant>;
   version: number;
 
   protected get [id]() {
@@ -5509,7 +5509,7 @@ export class chatParticipants extends _ChatParticipants {
     ];
   }
 
-  constructor(params: { chat_id: bigint; participants: Array<ChatParticipant>; version: number }) {
+  constructor(params: { chat_id: bigint; participants: Array<enums.ChatParticipant>; version: number }) {
     super();
     this.chat_id = params.chat_id;
     this.participants = params.participants;
@@ -5576,7 +5576,7 @@ export class chatPhoto extends _ChatPhoto {
 
 export class messageEmpty extends _Message {
   id: number;
-  peer_id?: Peer;
+  peer_id?: enums.Peer;
 
   protected get [id]() {
     return 0x90A6CA84;
@@ -5598,7 +5598,7 @@ export class messageEmpty extends _Message {
     ];
   }
 
-  constructor(params: { id: number; peer_id?: Peer }) {
+  constructor(params: { id: number; peer_id?: enums.Peer }) {
     super();
     this.id = params.id;
     this.peer_id = params.peer_id;
@@ -5618,24 +5618,24 @@ export class message extends _Message {
   noforwards?: true;
   invert_media?: true;
   id: number;
-  from_id?: Peer;
-  peer_id: Peer;
-  fwd_from?: MessageFwdHeader;
+  from_id?: enums.Peer;
+  peer_id: enums.Peer;
+  fwd_from?: enums.MessageFwdHeader;
   via_bot_id?: bigint;
-  reply_to?: MessageReplyHeader;
+  reply_to?: enums.MessageReplyHeader;
   date: number;
   message: string;
-  media?: MessageMedia;
-  reply_markup?: ReplyMarkup;
-  entities?: Array<MessageEntity>;
+  media?: enums.MessageMedia;
+  reply_markup?: enums.ReplyMarkup;
+  entities?: Array<enums.MessageEntity>;
   views?: number;
   forwards?: number;
-  replies?: MessageReplies;
+  replies?: enums.MessageReplies;
   edit_date?: number;
   post_author?: string;
   grouped_id?: bigint;
-  reactions?: MessageReactions;
-  restriction_reason?: Array<RestrictionReason>;
+  reactions?: enums.MessageReactions;
+  restriction_reason?: Array<enums.RestrictionReason>;
   ttl_period?: number;
 
   protected get [id]() {
@@ -5716,7 +5716,7 @@ export class message extends _Message {
     ];
   }
 
-  constructor(params: { out?: true; mentioned?: true; media_unread?: true; silent?: true; post?: true; from_scheduled?: true; legacy?: true; edit_hide?: true; pinned?: true; noforwards?: true; invert_media?: true; id: number; from_id?: Peer; peer_id: Peer; fwd_from?: MessageFwdHeader; via_bot_id?: bigint; reply_to?: MessageReplyHeader; date: number; message: string; media?: MessageMedia; reply_markup?: ReplyMarkup; entities?: Array<MessageEntity>; views?: number; forwards?: number; replies?: MessageReplies; edit_date?: number; post_author?: string; grouped_id?: bigint; reactions?: MessageReactions; restriction_reason?: Array<RestrictionReason>; ttl_period?: number }) {
+  constructor(params: { out?: true; mentioned?: true; media_unread?: true; silent?: true; post?: true; from_scheduled?: true; legacy?: true; edit_hide?: true; pinned?: true; noforwards?: true; invert_media?: true; id: number; from_id?: enums.Peer; peer_id: enums.Peer; fwd_from?: enums.MessageFwdHeader; via_bot_id?: bigint; reply_to?: enums.MessageReplyHeader; date: number; message: string; media?: enums.MessageMedia; reply_markup?: enums.ReplyMarkup; entities?: Array<enums.MessageEntity>; views?: number; forwards?: number; replies?: enums.MessageReplies; edit_date?: number; post_author?: string; grouped_id?: bigint; reactions?: enums.MessageReactions; restriction_reason?: Array<enums.RestrictionReason>; ttl_period?: number }) {
     super();
     this.out = params.out;
     this.mentioned = params.mentioned;
@@ -5760,11 +5760,11 @@ export class messageService extends _Message {
   post?: true;
   legacy?: true;
   id: number;
-  from_id?: Peer;
-  peer_id: Peer;
-  reply_to?: MessageReplyHeader;
+  from_id?: enums.Peer;
+  peer_id: enums.Peer;
+  reply_to?: enums.MessageReplyHeader;
   date: number;
-  action: MessageAction;
+  action: enums.MessageAction;
   ttl_period?: number;
 
   protected get [id]() {
@@ -5809,7 +5809,7 @@ export class messageService extends _Message {
     ];
   }
 
-  constructor(params: { out?: true; mentioned?: true; media_unread?: true; silent?: true; post?: true; legacy?: true; id: number; from_id?: Peer; peer_id: Peer; reply_to?: MessageReplyHeader; date: number; action: MessageAction; ttl_period?: number }) {
+  constructor(params: { out?: true; mentioned?: true; media_unread?: true; silent?: true; post?: true; legacy?: true; id: number; from_id?: enums.Peer; peer_id: enums.Peer; reply_to?: enums.MessageReplyHeader; date: number; action: enums.MessageAction; ttl_period?: number }) {
     super();
     this.out = params.out;
     this.mentioned = params.mentioned;
@@ -5847,7 +5847,7 @@ export class messageMediaEmpty extends _MessageMedia {
 
 export class messageMediaPhoto extends _MessageMedia {
   spoiler?: true;
-  photo?: Photo;
+  photo?: enums.Photo;
   ttl_seconds?: number;
 
   protected get [id]() {
@@ -5872,7 +5872,7 @@ export class messageMediaPhoto extends _MessageMedia {
     ];
   }
 
-  constructor(params?: { spoiler?: true; photo?: Photo; ttl_seconds?: number }) {
+  constructor(params?: { spoiler?: true; photo?: enums.Photo; ttl_seconds?: number }) {
     super();
     this.spoiler = params?.spoiler;
     this.photo = params?.photo;
@@ -5881,7 +5881,7 @@ export class messageMediaPhoto extends _MessageMedia {
 }
 
 export class messageMediaGeo extends _MessageMedia {
-  geo: GeoPoint;
+  geo: enums.GeoPoint;
 
   protected get [id]() {
     return 0x56E0D474;
@@ -5899,7 +5899,7 @@ export class messageMediaGeo extends _MessageMedia {
     ];
   }
 
-  constructor(params: { geo: GeoPoint }) {
+  constructor(params: { geo: enums.GeoPoint }) {
     super();
     this.geo = params.geo;
   }
@@ -5967,8 +5967,8 @@ export class messageMediaUnsupported extends _MessageMedia {
 export class messageMediaDocument extends _MessageMedia {
   nopremium?: true;
   spoiler?: true;
-  document?: Document;
-  alt_document?: Document;
+  document?: enums.Document;
+  alt_document?: enums.Document;
   ttl_seconds?: number;
 
   protected get [id]() {
@@ -5997,7 +5997,7 @@ export class messageMediaDocument extends _MessageMedia {
     ];
   }
 
-  constructor(params?: { nopremium?: true; spoiler?: true; document?: Document; alt_document?: Document; ttl_seconds?: number }) {
+  constructor(params?: { nopremium?: true; spoiler?: true; document?: enums.Document; alt_document?: enums.Document; ttl_seconds?: number }) {
     super();
     this.nopremium = params?.nopremium;
     this.spoiler = params?.spoiler;
@@ -6012,7 +6012,7 @@ export class messageMediaWebPage extends _MessageMedia {
   force_small_media?: true;
   manual?: true;
   safe?: true;
-  webpage: WebPage;
+  webpage: enums.WebPage;
 
   protected get [id]() {
     return 0xDDF10C3B;
@@ -6040,7 +6040,7 @@ export class messageMediaWebPage extends _MessageMedia {
     ];
   }
 
-  constructor(params: { force_large_media?: true; force_small_media?: true; manual?: true; safe?: true; webpage: WebPage }) {
+  constructor(params: { force_large_media?: true; force_small_media?: true; manual?: true; safe?: true; webpage: enums.WebPage }) {
     super();
     this.force_large_media = params.force_large_media;
     this.force_small_media = params.force_small_media;
@@ -6051,7 +6051,7 @@ export class messageMediaWebPage extends _MessageMedia {
 }
 
 export class messageMediaVenue extends _MessageMedia {
-  geo: GeoPoint;
+  geo: enums.GeoPoint;
   title: string;
   address: string;
   provider: string;
@@ -6084,7 +6084,7 @@ export class messageMediaVenue extends _MessageMedia {
     ];
   }
 
-  constructor(params: { geo: GeoPoint; title: string; address: string; provider: string; venue_id: string; venue_type: string }) {
+  constructor(params: { geo: enums.GeoPoint; title: string; address: string; provider: string; venue_id: string; venue_type: string }) {
     super();
     this.geo = params.geo;
     this.title = params.title;
@@ -6096,7 +6096,7 @@ export class messageMediaVenue extends _MessageMedia {
 }
 
 export class messageMediaGame extends _MessageMedia {
-  game: Game;
+  game: enums.Game;
 
   protected get [id]() {
     return 0xFDB19008;
@@ -6114,7 +6114,7 @@ export class messageMediaGame extends _MessageMedia {
     ];
   }
 
-  constructor(params: { game: Game }) {
+  constructor(params: { game: enums.Game }) {
     super();
     this.game = params.game;
   }
@@ -6125,12 +6125,12 @@ export class messageMediaInvoice extends _MessageMedia {
   test?: true;
   title: string;
   description: string;
-  photo?: WebDocument;
+  photo?: enums.WebDocument;
   receipt_msg_id?: number;
   currency: string;
   total_amount: bigint;
   start_param: string;
-  extended_media?: MessageExtendedMedia;
+  extended_media?: enums.MessageExtendedMedia;
 
   protected get [id]() {
     return 0xF6A548D3;
@@ -6168,7 +6168,7 @@ export class messageMediaInvoice extends _MessageMedia {
     ];
   }
 
-  constructor(params: { shipping_address_requested?: true; test?: true; title: string; description: string; photo?: WebDocument; receipt_msg_id?: number; currency: string; total_amount: bigint; start_param: string; extended_media?: MessageExtendedMedia }) {
+  constructor(params: { shipping_address_requested?: true; test?: true; title: string; description: string; photo?: enums.WebDocument; receipt_msg_id?: number; currency: string; total_amount: bigint; start_param: string; extended_media?: enums.MessageExtendedMedia }) {
     super();
     this.shipping_address_requested = params.shipping_address_requested;
     this.test = params.test;
@@ -6184,7 +6184,7 @@ export class messageMediaInvoice extends _MessageMedia {
 }
 
 export class messageMediaGeoLive extends _MessageMedia {
-  geo: GeoPoint;
+  geo: enums.GeoPoint;
   heading?: number;
   period: number;
   proximity_notification_radius?: number;
@@ -6213,7 +6213,7 @@ export class messageMediaGeoLive extends _MessageMedia {
     ];
   }
 
-  constructor(params: { geo: GeoPoint; heading?: number; period: number; proximity_notification_radius?: number }) {
+  constructor(params: { geo: enums.GeoPoint; heading?: number; period: number; proximity_notification_radius?: number }) {
     super();
     this.geo = params.geo;
     this.heading = params.heading;
@@ -6223,8 +6223,8 @@ export class messageMediaGeoLive extends _MessageMedia {
 }
 
 export class messageMediaPoll extends _MessageMedia {
-  poll: Poll;
-  results: PollResults;
+  poll: enums.Poll;
+  results: enums.PollResults;
 
   protected get [id]() {
     return 0x4BD6E798;
@@ -6244,7 +6244,7 @@ export class messageMediaPoll extends _MessageMedia {
     ];
   }
 
-  constructor(params: { poll: Poll; results: PollResults }) {
+  constructor(params: { poll: enums.Poll; results: enums.PollResults }) {
     super();
     this.poll = params.poll;
     this.results = params.results;
@@ -6282,9 +6282,9 @@ export class messageMediaDice extends _MessageMedia {
 
 export class messageMediaStory extends _MessageMedia {
   via_mention?: true;
-  peer: Peer;
+  peer: enums.Peer;
   id: number;
-  story?: StoryItem;
+  story?: enums.StoryItem;
 
   protected get [id]() {
     return 0x68CB6283;
@@ -6310,7 +6310,7 @@ export class messageMediaStory extends _MessageMedia {
     ];
   }
 
-  constructor(params: { via_mention?: true; peer: Peer; id: number; story?: StoryItem }) {
+  constructor(params: { via_mention?: true; peer: enums.Peer; id: number; story?: enums.StoryItem }) {
     super();
     this.via_mention = params.via_mention;
     this.peer = params.peer;
@@ -6439,7 +6439,7 @@ export class messageActionChatEditTitle extends _MessageAction {
 }
 
 export class messageActionChatEditPhoto extends _MessageAction {
-  photo: Photo;
+  photo: enums.Photo;
 
   protected get [id]() {
     return 0x7FCB13A8;
@@ -6457,7 +6457,7 @@ export class messageActionChatEditPhoto extends _MessageAction {
     ];
   }
 
-  constructor(params: { photo: Photo }) {
+  constructor(params: { photo: enums.Photo }) {
     super();
     this.photo = params.photo;
   }
@@ -6706,9 +6706,9 @@ export class messageActionPaymentSentMe extends _MessageAction {
   currency: string;
   total_amount: bigint;
   payload: Uint8Array;
-  info?: PaymentRequestedInfo;
+  info?: enums.PaymentRequestedInfo;
   shipping_option_id?: string;
-  charge: PaymentCharge;
+  charge: enums.PaymentCharge;
 
   protected get [id]() {
     return 0x8F31B327;
@@ -6742,7 +6742,7 @@ export class messageActionPaymentSentMe extends _MessageAction {
     ];
   }
 
-  constructor(params: { recurring_init?: true; recurring_used?: true; currency: string; total_amount: bigint; payload: Uint8Array; info?: PaymentRequestedInfo; shipping_option_id?: string; charge: PaymentCharge }) {
+  constructor(params: { recurring_init?: true; recurring_used?: true; currency: string; total_amount: bigint; payload: Uint8Array; info?: enums.PaymentRequestedInfo; shipping_option_id?: string; charge: enums.PaymentCharge }) {
     super();
     this.recurring_init = params.recurring_init;
     this.recurring_used = params.recurring_used;
@@ -6801,7 +6801,7 @@ export class messageActionPaymentSent extends _MessageAction {
 export class messageActionPhoneCall extends _MessageAction {
   video?: true;
   call_id: bigint;
-  reason?: PhoneCallDiscardReason;
+  reason?: enums.PhoneCallDiscardReason;
   duration?: number;
 
   protected get [id]() {
@@ -6828,7 +6828,7 @@ export class messageActionPhoneCall extends _MessageAction {
     ];
   }
 
-  constructor(params: { video?: true; call_id: bigint; reason?: PhoneCallDiscardReason; duration?: number }) {
+  constructor(params: { video?: true; call_id: bigint; reason?: enums.PhoneCallDiscardReason; duration?: number }) {
     super();
     this.video = params.video;
     this.call_id = params.call_id;
@@ -6884,7 +6884,7 @@ export class messageActionBotAllowed extends _MessageAction {
   attach_menu?: true;
   from_request?: true;
   domain?: string;
-  app?: BotApp;
+  app?: enums.BotApp;
 
   protected get [id]() {
     return 0xC516D679;
@@ -6910,7 +6910,7 @@ export class messageActionBotAllowed extends _MessageAction {
     ];
   }
 
-  constructor(params?: { attach_menu?: true; from_request?: true; domain?: string; app?: BotApp }) {
+  constructor(params?: { attach_menu?: true; from_request?: true; domain?: string; app?: enums.BotApp }) {
     super();
     this.attach_menu = params?.attach_menu;
     this.from_request = params?.from_request;
@@ -6920,8 +6920,8 @@ export class messageActionBotAllowed extends _MessageAction {
 }
 
 export class messageActionSecureValuesSentMe extends _MessageAction {
-  values: Array<SecureValue>;
-  credentials: SecureCredentialsEncrypted;
+  values: Array<enums.SecureValue>;
+  credentials: enums.SecureCredentialsEncrypted;
 
   protected get [id]() {
     return 0x1B287353;
@@ -6941,7 +6941,7 @@ export class messageActionSecureValuesSentMe extends _MessageAction {
     ];
   }
 
-  constructor(params: { values: Array<SecureValue>; credentials: SecureCredentialsEncrypted }) {
+  constructor(params: { values: Array<enums.SecureValue>; credentials: enums.SecureCredentialsEncrypted }) {
     super();
     this.values = params.values;
     this.credentials = params.credentials;
@@ -6949,7 +6949,7 @@ export class messageActionSecureValuesSentMe extends _MessageAction {
 }
 
 export class messageActionSecureValuesSent extends _MessageAction {
-  types: Array<SecureValueType>;
+  types: Array<enums.SecureValueType>;
 
   protected get [id]() {
     return 0xD95C6154;
@@ -6967,7 +6967,7 @@ export class messageActionSecureValuesSent extends _MessageAction {
     ];
   }
 
-  constructor(params: { types: Array<SecureValueType> }) {
+  constructor(params: { types: Array<enums.SecureValueType> }) {
     super();
     this.types = params.types;
   }
@@ -6992,8 +6992,8 @@ export class messageActionContactSignUp extends _MessageAction {
 }
 
 export class messageActionGeoProximityReached extends _MessageAction {
-  from_id: Peer;
-  to_id: Peer;
+  from_id: enums.Peer;
+  to_id: enums.Peer;
   distance: number;
 
   protected get [id]() {
@@ -7016,7 +7016,7 @@ export class messageActionGeoProximityReached extends _MessageAction {
     ];
   }
 
-  constructor(params: { from_id: Peer; to_id: Peer; distance: number }) {
+  constructor(params: { from_id: enums.Peer; to_id: enums.Peer; distance: number }) {
     super();
     this.from_id = params.from_id;
     this.to_id = params.to_id;
@@ -7025,7 +7025,7 @@ export class messageActionGeoProximityReached extends _MessageAction {
 }
 
 export class messageActionGroupCall extends _MessageAction {
-  call: InputGroupCall;
+  call: enums.InputGroupCall;
   duration?: number;
 
   protected get [id]() {
@@ -7048,7 +7048,7 @@ export class messageActionGroupCall extends _MessageAction {
     ];
   }
 
-  constructor(params: { call: InputGroupCall; duration?: number }) {
+  constructor(params: { call: enums.InputGroupCall; duration?: number }) {
     super();
     this.call = params.call;
     this.duration = params.duration;
@@ -7056,7 +7056,7 @@ export class messageActionGroupCall extends _MessageAction {
 }
 
 export class messageActionInviteToGroupCall extends _MessageAction {
-  call: InputGroupCall;
+  call: enums.InputGroupCall;
   users: Array<bigint>;
 
   protected get [id]() {
@@ -7077,7 +7077,7 @@ export class messageActionInviteToGroupCall extends _MessageAction {
     ];
   }
 
-  constructor(params: { call: InputGroupCall; users: Array<bigint> }) {
+  constructor(params: { call: enums.InputGroupCall; users: Array<bigint> }) {
     super();
     this.call = params.call;
     this.users = params.users;
@@ -7116,7 +7116,7 @@ export class messageActionSetMessagesTTL extends _MessageAction {
 }
 
 export class messageActionGroupCallScheduled extends _MessageAction {
-  call: InputGroupCall;
+  call: enums.InputGroupCall;
   schedule_date: number;
 
   protected get [id]() {
@@ -7137,7 +7137,7 @@ export class messageActionGroupCallScheduled extends _MessageAction {
     ];
   }
 
-  constructor(params: { call: InputGroupCall; schedule_date: number }) {
+  constructor(params: { call: enums.InputGroupCall; schedule_date: number }) {
     super();
     this.call = params.call;
     this.schedule_date = params.schedule_date;
@@ -7359,7 +7359,7 @@ export class messageActionTopicEdit extends _MessageAction {
 }
 
 export class messageActionSuggestProfilePhoto extends _MessageAction {
-  photo: Photo;
+  photo: enums.Photo;
 
   protected get [id]() {
     return 0x57DE635E;
@@ -7377,7 +7377,7 @@ export class messageActionSuggestProfilePhoto extends _MessageAction {
     ];
   }
 
-  constructor(params: { photo: Photo }) {
+  constructor(params: { photo: enums.Photo }) {
     super();
     this.photo = params.photo;
   }
@@ -7385,7 +7385,7 @@ export class messageActionSuggestProfilePhoto extends _MessageAction {
 
 export class messageActionRequestedPeer extends _MessageAction {
   button_id: number;
-  peer: Peer;
+  peer: enums.Peer;
 
   protected get [id]() {
     return 0xFE77345D;
@@ -7405,7 +7405,7 @@ export class messageActionRequestedPeer extends _MessageAction {
     ];
   }
 
-  constructor(params: { button_id: number; peer: Peer }) {
+  constructor(params: { button_id: number; peer: enums.Peer }) {
     super();
     this.button_id = params.button_id;
     this.peer = params.peer;
@@ -7415,7 +7415,7 @@ export class messageActionRequestedPeer extends _MessageAction {
 export class messageActionSetChatWallPaper extends _MessageAction {
   same?: true;
   for_both?: true;
-  wallpaper: WallPaper;
+  wallpaper: enums.WallPaper;
 
   protected get [id]() {
     return 0x5060A3F4;
@@ -7439,7 +7439,7 @@ export class messageActionSetChatWallPaper extends _MessageAction {
     ];
   }
 
-  constructor(params: { same?: true; for_both?: true; wallpaper: WallPaper }) {
+  constructor(params: { same?: true; for_both?: true; wallpaper: enums.WallPaper }) {
     super();
     this.same = params.same;
     this.for_both = params.for_both;
@@ -7450,7 +7450,7 @@ export class messageActionSetChatWallPaper extends _MessageAction {
 export class messageActionGiftCode extends _MessageAction {
   via_giveaway?: true;
   unclaimed?: true;
-  boost_peer?: Peer;
+  boost_peer?: enums.Peer;
   months: number;
   slug: string;
 
@@ -7480,7 +7480,7 @@ export class messageActionGiftCode extends _MessageAction {
     ];
   }
 
-  constructor(params: { via_giveaway?: true; unclaimed?: true; boost_peer?: Peer; months: number; slug: string }) {
+  constructor(params: { via_giveaway?: true; unclaimed?: true; boost_peer?: enums.Peer; months: number; slug: string }) {
     super();
     this.via_giveaway = params.via_giveaway;
     this.unclaimed = params.unclaimed;
@@ -7541,16 +7541,16 @@ export class dialog extends _Dialog {
   pinned?: true;
   unread_mark?: true;
   view_forum_as_messages?: true;
-  peer: Peer;
+  peer: enums.Peer;
   top_message: number;
   read_inbox_max_id: number;
   read_outbox_max_id: number;
   unread_count: number;
   unread_mentions_count: number;
   unread_reactions_count: number;
-  notify_settings: PeerNotifySettings;
+  notify_settings: enums.PeerNotifySettings;
   pts?: number;
-  draft?: DraftMessage;
+  draft?: enums.DraftMessage;
   folder_id?: number;
   ttl_period?: number;
 
@@ -7600,7 +7600,7 @@ export class dialog extends _Dialog {
     ];
   }
 
-  constructor(params: { pinned?: true; unread_mark?: true; view_forum_as_messages?: true; peer: Peer; top_message: number; read_inbox_max_id: number; read_outbox_max_id: number; unread_count: number; unread_mentions_count: number; unread_reactions_count: number; notify_settings: PeerNotifySettings; pts?: number; draft?: DraftMessage; folder_id?: number; ttl_period?: number }) {
+  constructor(params: { pinned?: true; unread_mark?: true; view_forum_as_messages?: true; peer: enums.Peer; top_message: number; read_inbox_max_id: number; read_outbox_max_id: number; unread_count: number; unread_mentions_count: number; unread_reactions_count: number; notify_settings: enums.PeerNotifySettings; pts?: number; draft?: enums.DraftMessage; folder_id?: number; ttl_period?: number }) {
     super();
     this.pinned = params.pinned;
     this.unread_mark = params.unread_mark;
@@ -7622,8 +7622,8 @@ export class dialog extends _Dialog {
 
 export class dialogFolder extends _Dialog {
   pinned?: true;
-  folder: Folder;
-  peer: Peer;
+  folder: enums.Folder;
+  peer: enums.Peer;
   top_message: number;
   unread_muted_peers_count: number;
   unread_unmuted_peers_count: number;
@@ -7662,7 +7662,7 @@ export class dialogFolder extends _Dialog {
     ];
   }
 
-  constructor(params: { pinned?: true; folder: Folder; peer: Peer; top_message: number; unread_muted_peers_count: number; unread_unmuted_peers_count: number; unread_muted_messages_count: number; unread_unmuted_messages_count: number }) {
+  constructor(params: { pinned?: true; folder: enums.Folder; peer: enums.Peer; top_message: number; unread_muted_peers_count: number; unread_unmuted_peers_count: number; unread_muted_messages_count: number; unread_unmuted_messages_count: number }) {
     super();
     this.pinned = params.pinned;
     this.folder = params.folder;
@@ -7706,8 +7706,8 @@ export class photo extends _Photo {
   access_hash: bigint;
   file_reference: Uint8Array;
   date: number;
-  sizes: Array<PhotoSize>;
-  video_sizes?: Array<VideoSize>;
+  sizes: Array<enums.PhotoSize>;
+  video_sizes?: Array<enums.VideoSize>;
   dc_id: number;
 
   protected get [id]() {
@@ -7742,7 +7742,7 @@ export class photo extends _Photo {
     ];
   }
 
-  constructor(params: { has_stickers?: true; id: bigint; access_hash: bigint; file_reference: Uint8Array; date: number; sizes: Array<PhotoSize>; video_sizes?: Array<VideoSize>; dc_id: number }) {
+  constructor(params: { has_stickers?: true; id: bigint; access_hash: bigint; file_reference: Uint8Array; date: number; sizes: Array<enums.PhotoSize>; video_sizes?: Array<enums.VideoSize>; dc_id: number }) {
     super();
     this.has_stickers = params.has_stickers;
     this.id = params.id;
@@ -8007,9 +8007,9 @@ export class geoPoint extends _GeoPoint {
 }
 
 export class auth_sentCode extends _auth_SentCode {
-  type: auth_SentCodeType;
+  type: enums.auth_SentCodeType;
   phone_code_hash: string;
-  next_type?: auth_CodeType;
+  next_type?: enums.auth_CodeType;
   timeout?: number;
 
   protected get [id]() {
@@ -8036,7 +8036,7 @@ export class auth_sentCode extends _auth_SentCode {
     ];
   }
 
-  constructor(params: { type: auth_SentCodeType; phone_code_hash: string; next_type?: auth_CodeType; timeout?: number }) {
+  constructor(params: { type: enums.auth_SentCodeType; phone_code_hash: string; next_type?: enums.auth_CodeType; timeout?: number }) {
     super();
     this.type = params.type;
     this.phone_code_hash = params.phone_code_hash;
@@ -8046,7 +8046,7 @@ export class auth_sentCode extends _auth_SentCode {
 }
 
 export class auth_sentCodeSuccess extends _auth_SentCode {
-  authorization: auth_Authorization;
+  authorization: enums.auth_Authorization;
 
   protected get [id]() {
     return 0x2390FE44;
@@ -8064,7 +8064,7 @@ export class auth_sentCodeSuccess extends _auth_SentCode {
     ];
   }
 
-  constructor(params: { authorization: auth_Authorization }) {
+  constructor(params: { authorization: enums.auth_Authorization }) {
     super();
     this.authorization = params.authorization;
   }
@@ -8075,7 +8075,7 @@ export class auth_authorization extends _auth_Authorization {
   otherwise_relogin_days?: number;
   tmp_sessions?: number;
   future_auth_token?: Uint8Array;
-  user: User;
+  user: enums.User;
 
   protected get [id]() {
     return 0x2EA2C0D4;
@@ -8103,7 +8103,7 @@ export class auth_authorization extends _auth_Authorization {
     ];
   }
 
-  constructor(params: { setup_password_required?: true; otherwise_relogin_days?: number; tmp_sessions?: number; future_auth_token?: Uint8Array; user: User }) {
+  constructor(params: { setup_password_required?: true; otherwise_relogin_days?: number; tmp_sessions?: number; future_auth_token?: Uint8Array; user: enums.User }) {
     super();
     this.setup_password_required = params.setup_password_required;
     this.otherwise_relogin_days = params.otherwise_relogin_days;
@@ -8114,7 +8114,7 @@ export class auth_authorization extends _auth_Authorization {
 }
 
 export class auth_authorizationSignUpRequired extends _auth_Authorization {
-  terms_of_service?: help_TermsOfService;
+  terms_of_service?: enums.help_TermsOfService;
 
   protected get [id]() {
     return 0x44747E9A;
@@ -8134,7 +8134,7 @@ export class auth_authorizationSignUpRequired extends _auth_Authorization {
     ];
   }
 
-  constructor(params?: { terms_of_service?: help_TermsOfService }) {
+  constructor(params?: { terms_of_service?: enums.help_TermsOfService }) {
     super();
     this.terms_of_service = params?.terms_of_service;
   }
@@ -8170,7 +8170,7 @@ export class auth_exportedAuthorization extends _auth_ExportedAuthorization {
 }
 
 export class inputNotifyPeer extends _InputNotifyPeer {
-  peer: InputPeer;
+  peer: enums.InputPeer;
 
   protected get [id]() {
     return 0xB8BC5B0C;
@@ -8188,7 +8188,7 @@ export class inputNotifyPeer extends _InputNotifyPeer {
     ];
   }
 
-  constructor(params: { peer: InputPeer }) {
+  constructor(params: { peer: enums.InputPeer }) {
     super();
     this.peer = params.peer;
   }
@@ -8249,7 +8249,7 @@ export class inputNotifyBroadcasts extends _InputNotifyPeer {
 }
 
 export class inputNotifyForumTopic extends _InputNotifyPeer {
-  peer: InputPeer;
+  peer: enums.InputPeer;
   top_msg_id: number;
 
   protected get [id]() {
@@ -8270,7 +8270,7 @@ export class inputNotifyForumTopic extends _InputNotifyPeer {
     ];
   }
 
-  constructor(params: { peer: InputPeer; top_msg_id: number }) {
+  constructor(params: { peer: enums.InputPeer; top_msg_id: number }) {
     super();
     this.peer = params.peer;
     this.top_msg_id = params.top_msg_id;
@@ -8281,10 +8281,10 @@ export class inputPeerNotifySettings extends _InputPeerNotifySettings {
   show_previews?: boolean;
   silent?: boolean;
   mute_until?: number;
-  sound?: NotificationSound;
+  sound?: enums.NotificationSound;
   stories_muted?: boolean;
   stories_hide_sender?: boolean;
-  stories_sound?: NotificationSound;
+  stories_sound?: enums.NotificationSound;
 
   protected get [id]() {
     return 0xCACB6AE2;
@@ -8316,7 +8316,7 @@ export class inputPeerNotifySettings extends _InputPeerNotifySettings {
     ];
   }
 
-  constructor(params?: { show_previews?: boolean; silent?: boolean; mute_until?: number; sound?: NotificationSound; stories_muted?: boolean; stories_hide_sender?: boolean; stories_sound?: NotificationSound }) {
+  constructor(params?: { show_previews?: boolean; silent?: boolean; mute_until?: number; sound?: enums.NotificationSound; stories_muted?: boolean; stories_hide_sender?: boolean; stories_sound?: enums.NotificationSound }) {
     super();
     this.show_previews = params?.show_previews;
     this.silent = params?.silent;
@@ -8332,14 +8332,14 @@ export class peerNotifySettings extends _PeerNotifySettings {
   show_previews?: boolean;
   silent?: boolean;
   mute_until?: number;
-  ios_sound?: NotificationSound;
-  android_sound?: NotificationSound;
-  other_sound?: NotificationSound;
+  ios_sound?: enums.NotificationSound;
+  android_sound?: enums.NotificationSound;
+  other_sound?: enums.NotificationSound;
   stories_muted?: boolean;
   stories_hide_sender?: boolean;
-  stories_ios_sound?: NotificationSound;
-  stories_android_sound?: NotificationSound;
-  stories_other_sound?: NotificationSound;
+  stories_ios_sound?: enums.NotificationSound;
+  stories_android_sound?: enums.NotificationSound;
+  stories_other_sound?: enums.NotificationSound;
 
   protected get [id]() {
     return 0x99622C0C;
@@ -8379,7 +8379,7 @@ export class peerNotifySettings extends _PeerNotifySettings {
     ];
   }
 
-  constructor(params?: { show_previews?: boolean; silent?: boolean; mute_until?: number; ios_sound?: NotificationSound; android_sound?: NotificationSound; other_sound?: NotificationSound; stories_muted?: boolean; stories_hide_sender?: boolean; stories_ios_sound?: NotificationSound; stories_android_sound?: NotificationSound; stories_other_sound?: NotificationSound }) {
+  constructor(params?: { show_previews?: boolean; silent?: boolean; mute_until?: number; ios_sound?: enums.NotificationSound; android_sound?: enums.NotificationSound; other_sound?: enums.NotificationSound; stories_muted?: boolean; stories_hide_sender?: boolean; stories_ios_sound?: enums.NotificationSound; stories_android_sound?: enums.NotificationSound; stories_other_sound?: enums.NotificationSound }) {
     super();
     this.show_previews = params?.show_previews;
     this.silent = params?.silent;
@@ -8474,8 +8474,8 @@ export class wallPaper extends _WallPaper {
   dark?: true;
   access_hash: bigint;
   slug: string;
-  document: Document;
-  settings?: WallPaperSettings;
+  document: enums.Document;
+  settings?: enums.WallPaperSettings;
 
   protected get [id]() {
     return 0xA437C3ED;
@@ -8511,7 +8511,7 @@ export class wallPaper extends _WallPaper {
     ];
   }
 
-  constructor(params: { id: bigint; creator?: true; default?: true; pattern?: true; dark?: true; access_hash: bigint; slug: string; document: Document; settings?: WallPaperSettings }) {
+  constructor(params: { id: bigint; creator?: true; default?: true; pattern?: true; dark?: true; access_hash: bigint; slug: string; document: enums.Document; settings?: enums.WallPaperSettings }) {
     super();
     this.id = params.id;
     this.creator = params.creator;
@@ -8529,7 +8529,7 @@ export class wallPaperNoFile extends _WallPaper {
   id: bigint;
   default?: true;
   dark?: true;
-  settings?: WallPaperSettings;
+  settings?: enums.WallPaperSettings;
 
   protected get [id]() {
     return 0xE0804116;
@@ -8555,7 +8555,7 @@ export class wallPaperNoFile extends _WallPaper {
     ];
   }
 
-  constructor(params: { id: bigint; default?: true; dark?: true; settings?: WallPaperSettings }) {
+  constructor(params: { id: bigint; default?: true; dark?: true; settings?: enums.WallPaperSettings }) {
     super();
     this.id = params.id;
     this.default = params.default;
@@ -8758,23 +8758,23 @@ export class userFull extends _UserFull {
   wallpaper_overridden?: true;
   id: bigint;
   about?: string;
-  settings: PeerSettings;
-  personal_photo?: Photo;
-  profile_photo?: Photo;
-  fallback_photo?: Photo;
-  notify_settings: PeerNotifySettings;
-  bot_info?: BotInfo;
+  settings: enums.PeerSettings;
+  personal_photo?: enums.Photo;
+  profile_photo?: enums.Photo;
+  fallback_photo?: enums.Photo;
+  notify_settings: enums.PeerNotifySettings;
+  bot_info?: enums.BotInfo;
   pinned_msg_id?: number;
   common_chats_count: number;
   folder_id?: number;
   ttl_period?: number;
   theme_emoticon?: string;
   private_forward_name?: string;
-  bot_group_admin_rights?: ChatAdminRights;
-  bot_broadcast_admin_rights?: ChatAdminRights;
-  premium_gifts?: Array<PremiumGiftOption>;
-  wallpaper?: WallPaper;
-  stories?: PeerStories;
+  bot_group_admin_rights?: enums.ChatAdminRights;
+  bot_broadcast_admin_rights?: enums.ChatAdminRights;
+  premium_gifts?: Array<enums.PremiumGiftOption>;
+  wallpaper?: enums.WallPaper;
+  stories?: enums.PeerStories;
 
   protected get [id]() {
     return 0xB9B12C6C;
@@ -8852,7 +8852,7 @@ export class userFull extends _UserFull {
     ];
   }
 
-  constructor(params: { blocked?: true; phone_calls_available?: true; phone_calls_private?: true; can_pin_message?: true; has_scheduled?: true; video_calls_available?: true; voice_messages_forbidden?: true; translations_disabled?: true; stories_pinned_available?: true; blocked_my_stories_from?: true; wallpaper_overridden?: true; id: bigint; about?: string; settings: PeerSettings; personal_photo?: Photo; profile_photo?: Photo; fallback_photo?: Photo; notify_settings: PeerNotifySettings; bot_info?: BotInfo; pinned_msg_id?: number; common_chats_count: number; folder_id?: number; ttl_period?: number; theme_emoticon?: string; private_forward_name?: string; bot_group_admin_rights?: ChatAdminRights; bot_broadcast_admin_rights?: ChatAdminRights; premium_gifts?: Array<PremiumGiftOption>; wallpaper?: WallPaper; stories?: PeerStories }) {
+  constructor(params: { blocked?: true; phone_calls_available?: true; phone_calls_private?: true; can_pin_message?: true; has_scheduled?: true; video_calls_available?: true; voice_messages_forbidden?: true; translations_disabled?: true; stories_pinned_available?: true; blocked_my_stories_from?: true; wallpaper_overridden?: true; id: bigint; about?: string; settings: enums.PeerSettings; personal_photo?: enums.Photo; profile_photo?: enums.Photo; fallback_photo?: enums.Photo; notify_settings: enums.PeerNotifySettings; bot_info?: enums.BotInfo; pinned_msg_id?: number; common_chats_count: number; folder_id?: number; ttl_period?: number; theme_emoticon?: string; private_forward_name?: string; bot_group_admin_rights?: enums.ChatAdminRights; bot_broadcast_admin_rights?: enums.ChatAdminRights; premium_gifts?: Array<enums.PremiumGiftOption>; wallpaper?: enums.WallPaper; stories?: enums.PeerStories }) {
     super();
     this.blocked = params.blocked;
     this.phone_calls_available = params.phone_calls_available;
@@ -8947,7 +8947,7 @@ export class importedContact extends _ImportedContact {
 
 export class contactStatus extends _ContactStatus {
   user_id: bigint;
-  status: UserStatus;
+  status: enums.UserStatus;
 
   protected get [id]() {
     return 0x16D9703B;
@@ -8967,7 +8967,7 @@ export class contactStatus extends _ContactStatus {
     ];
   }
 
-  constructor(params: { user_id: bigint; status: UserStatus }) {
+  constructor(params: { user_id: bigint; status: enums.UserStatus }) {
     super();
     this.user_id = params.user_id;
     this.status = params.status;
@@ -8993,9 +8993,9 @@ export class contacts_contactsNotModified extends _contacts_Contacts {
 }
 
 export class contacts_contacts extends _contacts_Contacts {
-  contacts: Array<Contact>;
+  contacts: Array<enums.Contact>;
   saved_count: number;
-  users: Array<User>;
+  users: Array<enums.User>;
 
   protected get [id]() {
     return 0xEAE87E42;
@@ -9017,7 +9017,7 @@ export class contacts_contacts extends _contacts_Contacts {
     ];
   }
 
-  constructor(params: { contacts: Array<Contact>; saved_count: number; users: Array<User> }) {
+  constructor(params: { contacts: Array<enums.Contact>; saved_count: number; users: Array<enums.User> }) {
     super();
     this.contacts = params.contacts;
     this.saved_count = params.saved_count;
@@ -9026,10 +9026,10 @@ export class contacts_contacts extends _contacts_Contacts {
 }
 
 export class contacts_importedContacts extends _contacts_ImportedContacts {
-  imported: Array<ImportedContact>;
-  popular_invites: Array<PopularContact>;
+  imported: Array<enums.ImportedContact>;
+  popular_invites: Array<enums.PopularContact>;
   retry_contacts: Array<bigint>;
-  users: Array<User>;
+  users: Array<enums.User>;
 
   protected get [id]() {
     return 0x77D01C3B;
@@ -9053,7 +9053,7 @@ export class contacts_importedContacts extends _contacts_ImportedContacts {
     ];
   }
 
-  constructor(params: { imported: Array<ImportedContact>; popular_invites: Array<PopularContact>; retry_contacts: Array<bigint>; users: Array<User> }) {
+  constructor(params: { imported: Array<enums.ImportedContact>; popular_invites: Array<enums.PopularContact>; retry_contacts: Array<bigint>; users: Array<enums.User> }) {
     super();
     this.imported = params.imported;
     this.popular_invites = params.popular_invites;
@@ -9063,9 +9063,9 @@ export class contacts_importedContacts extends _contacts_ImportedContacts {
 }
 
 export class contacts_blocked extends _contacts_Blocked {
-  blocked: Array<PeerBlocked>;
-  chats: Array<Chat>;
-  users: Array<User>;
+  blocked: Array<enums.PeerBlocked>;
+  chats: Array<enums.Chat>;
+  users: Array<enums.User>;
 
   protected get [id]() {
     return 0x0ADE1591;
@@ -9087,7 +9087,7 @@ export class contacts_blocked extends _contacts_Blocked {
     ];
   }
 
-  constructor(params: { blocked: Array<PeerBlocked>; chats: Array<Chat>; users: Array<User> }) {
+  constructor(params: { blocked: Array<enums.PeerBlocked>; chats: Array<enums.Chat>; users: Array<enums.User> }) {
     super();
     this.blocked = params.blocked;
     this.chats = params.chats;
@@ -9097,9 +9097,9 @@ export class contacts_blocked extends _contacts_Blocked {
 
 export class contacts_blockedSlice extends _contacts_Blocked {
   count: number;
-  blocked: Array<PeerBlocked>;
-  chats: Array<Chat>;
-  users: Array<User>;
+  blocked: Array<enums.PeerBlocked>;
+  chats: Array<enums.Chat>;
+  users: Array<enums.User>;
 
   protected get [id]() {
     return 0xE1664194;
@@ -9123,7 +9123,7 @@ export class contacts_blockedSlice extends _contacts_Blocked {
     ];
   }
 
-  constructor(params: { count: number; blocked: Array<PeerBlocked>; chats: Array<Chat>; users: Array<User> }) {
+  constructor(params: { count: number; blocked: Array<enums.PeerBlocked>; chats: Array<enums.Chat>; users: Array<enums.User> }) {
     super();
     this.count = params.count;
     this.blocked = params.blocked;
@@ -9133,10 +9133,10 @@ export class contacts_blockedSlice extends _contacts_Blocked {
 }
 
 export class messages_dialogs extends _messages_Dialogs {
-  dialogs: Array<Dialog>;
-  messages: Array<Message>;
-  chats: Array<Chat>;
-  users: Array<User>;
+  dialogs: Array<enums.Dialog>;
+  messages: Array<enums.Message>;
+  chats: Array<enums.Chat>;
+  users: Array<enums.User>;
 
   protected get [id]() {
     return 0x15BA6C40;
@@ -9160,7 +9160,7 @@ export class messages_dialogs extends _messages_Dialogs {
     ];
   }
 
-  constructor(params: { dialogs: Array<Dialog>; messages: Array<Message>; chats: Array<Chat>; users: Array<User> }) {
+  constructor(params: { dialogs: Array<enums.Dialog>; messages: Array<enums.Message>; chats: Array<enums.Chat>; users: Array<enums.User> }) {
     super();
     this.dialogs = params.dialogs;
     this.messages = params.messages;
@@ -9171,10 +9171,10 @@ export class messages_dialogs extends _messages_Dialogs {
 
 export class messages_dialogsSlice extends _messages_Dialogs {
   count: number;
-  dialogs: Array<Dialog>;
-  messages: Array<Message>;
-  chats: Array<Chat>;
-  users: Array<User>;
+  dialogs: Array<enums.Dialog>;
+  messages: Array<enums.Message>;
+  chats: Array<enums.Chat>;
+  users: Array<enums.User>;
 
   protected get [id]() {
     return 0x71E094F3;
@@ -9200,7 +9200,7 @@ export class messages_dialogsSlice extends _messages_Dialogs {
     ];
   }
 
-  constructor(params: { count: number; dialogs: Array<Dialog>; messages: Array<Message>; chats: Array<Chat>; users: Array<User> }) {
+  constructor(params: { count: number; dialogs: Array<enums.Dialog>; messages: Array<enums.Message>; chats: Array<enums.Chat>; users: Array<enums.User> }) {
     super();
     this.count = params.count;
     this.dialogs = params.dialogs;
@@ -9236,9 +9236,9 @@ export class messages_dialogsNotModified extends _messages_Dialogs {
 }
 
 export class messages_messages extends _messages_Messages {
-  messages: Array<Message>;
-  chats: Array<Chat>;
-  users: Array<User>;
+  messages: Array<enums.Message>;
+  chats: Array<enums.Chat>;
+  users: Array<enums.User>;
 
   protected get [id]() {
     return 0x8C718E87;
@@ -9260,7 +9260,7 @@ export class messages_messages extends _messages_Messages {
     ];
   }
 
-  constructor(params: { messages: Array<Message>; chats: Array<Chat>; users: Array<User> }) {
+  constructor(params: { messages: Array<enums.Message>; chats: Array<enums.Chat>; users: Array<enums.User> }) {
     super();
     this.messages = params.messages;
     this.chats = params.chats;
@@ -9273,9 +9273,9 @@ export class messages_messagesSlice extends _messages_Messages {
   count: number;
   next_rate?: number;
   offset_id_offset?: number;
-  messages: Array<Message>;
-  chats: Array<Chat>;
-  users: Array<User>;
+  messages: Array<enums.Message>;
+  chats: Array<enums.Chat>;
+  users: Array<enums.User>;
 
   protected get [id]() {
     return 0x3A54685E;
@@ -9307,7 +9307,7 @@ export class messages_messagesSlice extends _messages_Messages {
     ];
   }
 
-  constructor(params: { inexact?: true; count: number; next_rate?: number; offset_id_offset?: number; messages: Array<Message>; chats: Array<Chat>; users: Array<User> }) {
+  constructor(params: { inexact?: true; count: number; next_rate?: number; offset_id_offset?: number; messages: Array<enums.Message>; chats: Array<enums.Chat>; users: Array<enums.User> }) {
     super();
     this.inexact = params.inexact;
     this.count = params.count;
@@ -9324,10 +9324,10 @@ export class messages_channelMessages extends _messages_Messages {
   pts: number;
   count: number;
   offset_id_offset?: number;
-  messages: Array<Message>;
-  topics: Array<ForumTopic>;
-  chats: Array<Chat>;
-  users: Array<User>;
+  messages: Array<enums.Message>;
+  topics: Array<enums.ForumTopic>;
+  chats: Array<enums.Chat>;
+  users: Array<enums.User>;
 
   protected get [id]() {
     return 0xC776BA4E;
@@ -9361,7 +9361,7 @@ export class messages_channelMessages extends _messages_Messages {
     ];
   }
 
-  constructor(params: { inexact?: true; pts: number; count: number; offset_id_offset?: number; messages: Array<Message>; topics: Array<ForumTopic>; chats: Array<Chat>; users: Array<User> }) {
+  constructor(params: { inexact?: true; pts: number; count: number; offset_id_offset?: number; messages: Array<enums.Message>; topics: Array<enums.ForumTopic>; chats: Array<enums.Chat>; users: Array<enums.User> }) {
     super();
     this.inexact = params.inexact;
     this.pts = params.pts;
@@ -9400,7 +9400,7 @@ export class messages_messagesNotModified extends _messages_Messages {
 }
 
 export class messages_chats extends _messages_Chats {
-  chats: Array<Chat>;
+  chats: Array<enums.Chat>;
 
   protected get [id]() {
     return 0x64FF9FD5;
@@ -9418,7 +9418,7 @@ export class messages_chats extends _messages_Chats {
     ];
   }
 
-  constructor(params: { chats: Array<Chat> }) {
+  constructor(params: { chats: Array<enums.Chat> }) {
     super();
     this.chats = params.chats;
   }
@@ -9426,7 +9426,7 @@ export class messages_chats extends _messages_Chats {
 
 export class messages_chatsSlice extends _messages_Chats {
   count: number;
-  chats: Array<Chat>;
+  chats: Array<enums.Chat>;
 
   protected get [id]() {
     return 0x9CD81144;
@@ -9446,7 +9446,7 @@ export class messages_chatsSlice extends _messages_Chats {
     ];
   }
 
-  constructor(params: { count: number; chats: Array<Chat> }) {
+  constructor(params: { count: number; chats: Array<enums.Chat> }) {
     super();
     this.count = params.count;
     this.chats = params.chats;
@@ -9454,9 +9454,9 @@ export class messages_chatsSlice extends _messages_Chats {
 }
 
 export class messages_chatFull extends _messages_ChatFull {
-  full_chat: ChatFull;
-  chats: Array<Chat>;
-  users: Array<User>;
+  full_chat: enums.ChatFull;
+  chats: Array<enums.Chat>;
+  users: Array<enums.User>;
 
   protected get [id]() {
     return 0xE5D7D19C;
@@ -9478,7 +9478,7 @@ export class messages_chatFull extends _messages_ChatFull {
     ];
   }
 
-  constructor(params: { full_chat: ChatFull; chats: Array<Chat>; users: Array<User> }) {
+  constructor(params: { full_chat: enums.ChatFull; chats: Array<enums.Chat>; users: Array<enums.User> }) {
     super();
     this.full_chat = params.full_chat;
     this.chats = params.chats;
@@ -9835,7 +9835,7 @@ export class inputMessagesFilterPinned extends _MessagesFilter {
 }
 
 export class updateNewMessage extends _Update {
-  message: Message;
+  message: enums.Message;
   pts: number;
   pts_count: number;
 
@@ -9859,7 +9859,7 @@ export class updateNewMessage extends _Update {
     ];
   }
 
-  constructor(params: { message: Message; pts: number; pts_count: number }) {
+  constructor(params: { message: enums.Message; pts: number; pts_count: number }) {
     super();
     this.message = params.message;
     this.pts = params.pts;
@@ -9931,7 +9931,7 @@ export class updateDeleteMessages extends _Update {
 
 export class updateUserTyping extends _Update {
   user_id: bigint;
-  action: SendMessageAction;
+  action: enums.SendMessageAction;
 
   protected get [id]() {
     return 0xC01E857F;
@@ -9951,7 +9951,7 @@ export class updateUserTyping extends _Update {
     ];
   }
 
-  constructor(params: { user_id: bigint; action: SendMessageAction }) {
+  constructor(params: { user_id: bigint; action: enums.SendMessageAction }) {
     super();
     this.user_id = params.user_id;
     this.action = params.action;
@@ -9960,8 +9960,8 @@ export class updateUserTyping extends _Update {
 
 export class updateChatUserTyping extends _Update {
   chat_id: bigint;
-  from_id: Peer;
-  action: SendMessageAction;
+  from_id: enums.Peer;
+  action: enums.SendMessageAction;
 
   protected get [id]() {
     return 0x83487AF0;
@@ -9983,7 +9983,7 @@ export class updateChatUserTyping extends _Update {
     ];
   }
 
-  constructor(params: { chat_id: bigint; from_id: Peer; action: SendMessageAction }) {
+  constructor(params: { chat_id: bigint; from_id: enums.Peer; action: enums.SendMessageAction }) {
     super();
     this.chat_id = params.chat_id;
     this.from_id = params.from_id;
@@ -9992,7 +9992,7 @@ export class updateChatUserTyping extends _Update {
 }
 
 export class updateChatParticipants extends _Update {
-  participants: ChatParticipants;
+  participants: enums.ChatParticipants;
 
   protected get [id]() {
     return 0x07761198;
@@ -10010,7 +10010,7 @@ export class updateChatParticipants extends _Update {
     ];
   }
 
-  constructor(params: { participants: ChatParticipants }) {
+  constructor(params: { participants: enums.ChatParticipants }) {
     super();
     this.participants = params.participants;
   }
@@ -10018,7 +10018,7 @@ export class updateChatParticipants extends _Update {
 
 export class updateUserStatus extends _Update {
   user_id: bigint;
-  status: UserStatus;
+  status: enums.UserStatus;
 
   protected get [id]() {
     return 0xE5BDF8DE;
@@ -10038,7 +10038,7 @@ export class updateUserStatus extends _Update {
     ];
   }
 
-  constructor(params: { user_id: bigint; status: UserStatus }) {
+  constructor(params: { user_id: bigint; status: enums.UserStatus }) {
     super();
     this.user_id = params.user_id;
     this.status = params.status;
@@ -10049,7 +10049,7 @@ export class updateUserName extends _Update {
   user_id: bigint;
   first_name: string;
   last_name: string;
-  usernames: Array<Username>;
+  usernames: Array<enums.Username>;
 
   protected get [id]() {
     return 0xA7848924;
@@ -10073,7 +10073,7 @@ export class updateUserName extends _Update {
     ];
   }
 
-  constructor(params: { user_id: bigint; first_name: string; last_name: string; usernames: Array<Username> }) {
+  constructor(params: { user_id: bigint; first_name: string; last_name: string; usernames: Array<enums.Username> }) {
     super();
     this.user_id = params.user_id;
     this.first_name = params.first_name;
@@ -10126,7 +10126,7 @@ export class updateNewAuthorization extends _Update {
 }
 
 export class updateNewEncryptedMessage extends _Update {
-  message: EncryptedMessage;
+  message: enums.EncryptedMessage;
   qts: number;
 
   protected get [id]() {
@@ -10147,7 +10147,7 @@ export class updateNewEncryptedMessage extends _Update {
     ];
   }
 
-  constructor(params: { message: EncryptedMessage; qts: number }) {
+  constructor(params: { message: enums.EncryptedMessage; qts: number }) {
     super();
     this.message = params.message;
     this.qts = params.qts;
@@ -10180,7 +10180,7 @@ export class updateEncryptedChatTyping extends _Update {
 }
 
 export class updateEncryption extends _Update {
-  chat: EncryptedChat;
+  chat: enums.EncryptedChat;
   date: number;
 
   protected get [id]() {
@@ -10201,7 +10201,7 @@ export class updateEncryption extends _Update {
     ];
   }
 
-  constructor(params: { chat: EncryptedChat; date: number }) {
+  constructor(params: { chat: enums.EncryptedChat; date: number }) {
     super();
     this.chat = params.chat;
     this.date = params.date;
@@ -10316,7 +10316,7 @@ export class updateChatParticipantDelete extends _Update {
 }
 
 export class updateDcOptions extends _Update {
-  dc_options: Array<DcOption>;
+  dc_options: Array<enums.DcOption>;
 
   protected get [id]() {
     return 0x8E5E9873;
@@ -10334,15 +10334,15 @@ export class updateDcOptions extends _Update {
     ];
   }
 
-  constructor(params: { dc_options: Array<DcOption> }) {
+  constructor(params: { dc_options: Array<enums.DcOption> }) {
     super();
     this.dc_options = params.dc_options;
   }
 }
 
 export class updateNotifySettings extends _Update {
-  peer: NotifyPeer;
-  notify_settings: PeerNotifySettings;
+  peer: enums.NotifyPeer;
+  notify_settings: enums.PeerNotifySettings;
 
   protected get [id]() {
     return 0xBEC268EF;
@@ -10362,7 +10362,7 @@ export class updateNotifySettings extends _Update {
     ];
   }
 
-  constructor(params: { peer: NotifyPeer; notify_settings: PeerNotifySettings }) {
+  constructor(params: { peer: enums.NotifyPeer; notify_settings: enums.PeerNotifySettings }) {
     super();
     this.peer = params.peer;
     this.notify_settings = params.notify_settings;
@@ -10375,8 +10375,8 @@ export class updateServiceNotification extends _Update {
   inbox_date?: number;
   type: string;
   message: string;
-  media: MessageMedia;
-  entities: Array<MessageEntity>;
+  media: enums.MessageMedia;
+  entities: Array<enums.MessageEntity>;
 
   protected get [id]() {
     return 0xEBE46819;
@@ -10408,7 +10408,7 @@ export class updateServiceNotification extends _Update {
     ];
   }
 
-  constructor(params: { popup?: true; invert_media?: true; inbox_date?: number; type: string; message: string; media: MessageMedia; entities: Array<MessageEntity> }) {
+  constructor(params: { popup?: true; invert_media?: true; inbox_date?: number; type: string; message: string; media: enums.MessageMedia; entities: Array<enums.MessageEntity> }) {
     super();
     this.popup = params.popup;
     this.invert_media = params.invert_media;
@@ -10421,8 +10421,8 @@ export class updateServiceNotification extends _Update {
 }
 
 export class updatePrivacy extends _Update {
-  key: PrivacyKey;
-  rules: Array<PrivacyRule>;
+  key: enums.PrivacyKey;
+  rules: Array<enums.PrivacyRule>;
 
   protected get [id]() {
     return 0xEE3B272A;
@@ -10442,7 +10442,7 @@ export class updatePrivacy extends _Update {
     ];
   }
 
-  constructor(params: { key: PrivacyKey; rules: Array<PrivacyRule> }) {
+  constructor(params: { key: enums.PrivacyKey; rules: Array<enums.PrivacyRule> }) {
     super();
     this.key = params.key;
     this.rules = params.rules;
@@ -10480,7 +10480,7 @@ export class updateUserPhone extends _Update {
 
 export class updateReadHistoryInbox extends _Update {
   folder_id?: number;
-  peer: Peer;
+  peer: enums.Peer;
   max_id: number;
   still_unread_count: number;
   pts: number;
@@ -10514,7 +10514,7 @@ export class updateReadHistoryInbox extends _Update {
     ];
   }
 
-  constructor(params: { folder_id?: number; peer: Peer; max_id: number; still_unread_count: number; pts: number; pts_count: number }) {
+  constructor(params: { folder_id?: number; peer: enums.Peer; max_id: number; still_unread_count: number; pts: number; pts_count: number }) {
     super();
     this.folder_id = params.folder_id;
     this.peer = params.peer;
@@ -10526,7 +10526,7 @@ export class updateReadHistoryInbox extends _Update {
 }
 
 export class updateReadHistoryOutbox extends _Update {
-  peer: Peer;
+  peer: enums.Peer;
   max_id: number;
   pts: number;
   pts_count: number;
@@ -10553,7 +10553,7 @@ export class updateReadHistoryOutbox extends _Update {
     ];
   }
 
-  constructor(params: { peer: Peer; max_id: number; pts: number; pts_count: number }) {
+  constructor(params: { peer: enums.Peer; max_id: number; pts: number; pts_count: number }) {
     super();
     this.peer = params.peer;
     this.max_id = params.max_id;
@@ -10563,7 +10563,7 @@ export class updateReadHistoryOutbox extends _Update {
 }
 
 export class updateWebPage extends _Update {
-  webpage: WebPage;
+  webpage: enums.WebPage;
   pts: number;
   pts_count: number;
 
@@ -10587,7 +10587,7 @@ export class updateWebPage extends _Update {
     ];
   }
 
-  constructor(params: { webpage: WebPage; pts: number; pts_count: number }) {
+  constructor(params: { webpage: enums.WebPage; pts: number; pts_count: number }) {
     super();
     this.webpage = params.webpage;
     this.pts = params.pts;
@@ -10691,7 +10691,7 @@ export class updateChannel extends _Update {
 }
 
 export class updateNewChannelMessage extends _Update {
-  message: Message;
+  message: enums.Message;
   pts: number;
   pts_count: number;
 
@@ -10715,7 +10715,7 @@ export class updateNewChannelMessage extends _Update {
     ];
   }
 
-  constructor(params: { message: Message; pts: number; pts_count: number }) {
+  constructor(params: { message: enums.Message; pts: number; pts_count: number }) {
     super();
     this.message = params.message;
     this.pts = params.pts;
@@ -10874,7 +10874,7 @@ export class updateChatParticipantAdmin extends _Update {
 }
 
 export class updateNewStickerSet extends _Update {
-  stickerset: messages_StickerSet;
+  stickerset: enums.messages_StickerSet;
 
   protected get [id]() {
     return 0x688A30AA;
@@ -10892,7 +10892,7 @@ export class updateNewStickerSet extends _Update {
     ];
   }
 
-  constructor(params: { stickerset: messages_StickerSet }) {
+  constructor(params: { stickerset: enums.messages_StickerSet }) {
     super();
     this.stickerset = params.stickerset;
   }
@@ -10986,8 +10986,8 @@ export class updateBotInlineQuery extends _Update {
   query_id: bigint;
   user_id: bigint;
   query: string;
-  geo?: GeoPoint;
-  peer_type?: InlineQueryPeerType;
+  geo?: enums.GeoPoint;
+  peer_type?: enums.InlineQueryPeerType;
   offset: string;
 
   protected get [id]() {
@@ -11018,7 +11018,7 @@ export class updateBotInlineQuery extends _Update {
     ];
   }
 
-  constructor(params: { query_id: bigint; user_id: bigint; query: string; geo?: GeoPoint; peer_type?: InlineQueryPeerType; offset: string }) {
+  constructor(params: { query_id: bigint; user_id: bigint; query: string; geo?: enums.GeoPoint; peer_type?: enums.InlineQueryPeerType; offset: string }) {
     super();
     this.query_id = params.query_id;
     this.user_id = params.user_id;
@@ -11032,9 +11032,9 @@ export class updateBotInlineQuery extends _Update {
 export class updateBotInlineSend extends _Update {
   user_id: bigint;
   query: string;
-  geo?: GeoPoint;
+  geo?: enums.GeoPoint;
   id: string;
-  msg_id?: InputBotInlineMessageID;
+  msg_id?: enums.InputBotInlineMessageID;
 
   protected get [id]() {
     return 0x12F12A07;
@@ -11062,7 +11062,7 @@ export class updateBotInlineSend extends _Update {
     ];
   }
 
-  constructor(params: { user_id: bigint; query: string; geo?: GeoPoint; id: string; msg_id?: InputBotInlineMessageID }) {
+  constructor(params: { user_id: bigint; query: string; geo?: enums.GeoPoint; id: string; msg_id?: enums.InputBotInlineMessageID }) {
     super();
     this.user_id = params.user_id;
     this.query = params.query;
@@ -11073,7 +11073,7 @@ export class updateBotInlineSend extends _Update {
 }
 
 export class updateEditChannelMessage extends _Update {
-  message: Message;
+  message: enums.Message;
   pts: number;
   pts_count: number;
 
@@ -11097,7 +11097,7 @@ export class updateEditChannelMessage extends _Update {
     ];
   }
 
-  constructor(params: { message: Message; pts: number; pts_count: number }) {
+  constructor(params: { message: enums.Message; pts: number; pts_count: number }) {
     super();
     this.message = params.message;
     this.pts = params.pts;
@@ -11108,7 +11108,7 @@ export class updateEditChannelMessage extends _Update {
 export class updateBotCallbackQuery extends _Update {
   query_id: bigint;
   user_id: bigint;
-  peer: Peer;
+  peer: enums.Peer;
   msg_id: number;
   chat_instance: bigint;
   data?: Uint8Array;
@@ -11144,7 +11144,7 @@ export class updateBotCallbackQuery extends _Update {
     ];
   }
 
-  constructor(params: { query_id: bigint; user_id: bigint; peer: Peer; msg_id: number; chat_instance: bigint; data?: Uint8Array; game_short_name?: string }) {
+  constructor(params: { query_id: bigint; user_id: bigint; peer: enums.Peer; msg_id: number; chat_instance: bigint; data?: Uint8Array; game_short_name?: string }) {
     super();
     this.query_id = params.query_id;
     this.user_id = params.user_id;
@@ -11157,7 +11157,7 @@ export class updateBotCallbackQuery extends _Update {
 }
 
 export class updateEditMessage extends _Update {
-  message: Message;
+  message: enums.Message;
   pts: number;
   pts_count: number;
 
@@ -11181,7 +11181,7 @@ export class updateEditMessage extends _Update {
     ];
   }
 
-  constructor(params: { message: Message; pts: number; pts_count: number }) {
+  constructor(params: { message: enums.Message; pts: number; pts_count: number }) {
     super();
     this.message = params.message;
     this.pts = params.pts;
@@ -11192,7 +11192,7 @@ export class updateEditMessage extends _Update {
 export class updateInlineBotCallbackQuery extends _Update {
   query_id: bigint;
   user_id: bigint;
-  msg_id: InputBotInlineMessageID;
+  msg_id: enums.InputBotInlineMessageID;
   chat_instance: bigint;
   data?: Uint8Array;
   game_short_name?: string;
@@ -11225,7 +11225,7 @@ export class updateInlineBotCallbackQuery extends _Update {
     ];
   }
 
-  constructor(params: { query_id: bigint; user_id: bigint; msg_id: InputBotInlineMessageID; chat_instance: bigint; data?: Uint8Array; game_short_name?: string }) {
+  constructor(params: { query_id: bigint; user_id: bigint; msg_id: enums.InputBotInlineMessageID; chat_instance: bigint; data?: Uint8Array; game_short_name?: string }) {
     super();
     this.query_id = params.query_id;
     this.user_id = params.user_id;
@@ -11266,9 +11266,9 @@ export class updateReadChannelOutbox extends _Update {
 }
 
 export class updateDraftMessage extends _Update {
-  peer: Peer;
+  peer: enums.Peer;
   top_msg_id?: number;
-  draft: DraftMessage;
+  draft: enums.DraftMessage;
 
   protected get [id]() {
     return 0x1B49EC6D;
@@ -11292,7 +11292,7 @@ export class updateDraftMessage extends _Update {
     ];
   }
 
-  constructor(params: { peer: Peer; top_msg_id?: number; draft: DraftMessage }) {
+  constructor(params: { peer: enums.Peer; top_msg_id?: number; draft: enums.DraftMessage }) {
     super();
     this.peer = params.peer;
     this.top_msg_id = params.top_msg_id;
@@ -11374,7 +11374,7 @@ export class updatePtsChanged extends _Update {
 
 export class updateChannelWebPage extends _Update {
   channel_id: bigint;
-  webpage: WebPage;
+  webpage: enums.WebPage;
   pts: number;
   pts_count: number;
 
@@ -11400,7 +11400,7 @@ export class updateChannelWebPage extends _Update {
     ];
   }
 
-  constructor(params: { channel_id: bigint; webpage: WebPage; pts: number; pts_count: number }) {
+  constructor(params: { channel_id: bigint; webpage: enums.WebPage; pts: number; pts_count: number }) {
     super();
     this.channel_id = params.channel_id;
     this.webpage = params.webpage;
@@ -11412,7 +11412,7 @@ export class updateChannelWebPage extends _Update {
 export class updateDialogPinned extends _Update {
   pinned?: true;
   folder_id?: number;
-  peer: DialogPeer;
+  peer: enums.DialogPeer;
 
   protected get [id]() {
     return 0x6E6FE51C;
@@ -11436,7 +11436,7 @@ export class updateDialogPinned extends _Update {
     ];
   }
 
-  constructor(params: { pinned?: true; folder_id?: number; peer: DialogPeer }) {
+  constructor(params: { pinned?: true; folder_id?: number; peer: enums.DialogPeer }) {
     super();
     this.pinned = params.pinned;
     this.folder_id = params.folder_id;
@@ -11446,7 +11446,7 @@ export class updateDialogPinned extends _Update {
 
 export class updatePinnedDialogs extends _Update {
   folder_id?: number;
-  order?: Array<DialogPeer>;
+  order?: Array<enums.DialogPeer>;
 
   protected get [id]() {
     return 0xFA0F3CA2;
@@ -11468,7 +11468,7 @@ export class updatePinnedDialogs extends _Update {
     ];
   }
 
-  constructor(params?: { folder_id?: number; order?: Array<DialogPeer> }) {
+  constructor(params?: { folder_id?: number; order?: Array<enums.DialogPeer> }) {
     super();
     this.folder_id = params?.folder_id;
     this.order = params?.order;
@@ -11476,7 +11476,7 @@ export class updatePinnedDialogs extends _Update {
 }
 
 export class updateBotWebhookJSON extends _Update {
-  data: DataJSON;
+  data: enums.DataJSON;
 
   protected get [id]() {
     return 0x8317C0C3;
@@ -11494,7 +11494,7 @@ export class updateBotWebhookJSON extends _Update {
     ];
   }
 
-  constructor(params: { data: DataJSON }) {
+  constructor(params: { data: enums.DataJSON }) {
     super();
     this.data = params.data;
   }
@@ -11502,7 +11502,7 @@ export class updateBotWebhookJSON extends _Update {
 
 export class updateBotWebhookJSONQuery extends _Update {
   query_id: bigint;
-  data: DataJSON;
+  data: enums.DataJSON;
   timeout: number;
 
   protected get [id]() {
@@ -11525,7 +11525,7 @@ export class updateBotWebhookJSONQuery extends _Update {
     ];
   }
 
-  constructor(params: { query_id: bigint; data: DataJSON; timeout: number }) {
+  constructor(params: { query_id: bigint; data: enums.DataJSON; timeout: number }) {
     super();
     this.query_id = params.query_id;
     this.data = params.data;
@@ -11537,7 +11537,7 @@ export class updateBotShippingQuery extends _Update {
   query_id: bigint;
   user_id: bigint;
   payload: Uint8Array;
-  shipping_address: PostAddress;
+  shipping_address: enums.PostAddress;
 
   protected get [id]() {
     return 0xB5AEFD7D;
@@ -11561,7 +11561,7 @@ export class updateBotShippingQuery extends _Update {
     ];
   }
 
-  constructor(params: { query_id: bigint; user_id: bigint; payload: Uint8Array; shipping_address: PostAddress }) {
+  constructor(params: { query_id: bigint; user_id: bigint; payload: Uint8Array; shipping_address: enums.PostAddress }) {
     super();
     this.query_id = params.query_id;
     this.user_id = params.user_id;
@@ -11574,7 +11574,7 @@ export class updateBotPrecheckoutQuery extends _Update {
   query_id: bigint;
   user_id: bigint;
   payload: Uint8Array;
-  info?: PaymentRequestedInfo;
+  info?: enums.PaymentRequestedInfo;
   shipping_option_id?: string;
   currency: string;
   total_amount: bigint;
@@ -11609,7 +11609,7 @@ export class updateBotPrecheckoutQuery extends _Update {
     ];
   }
 
-  constructor(params: { query_id: bigint; user_id: bigint; payload: Uint8Array; info?: PaymentRequestedInfo; shipping_option_id?: string; currency: string; total_amount: bigint }) {
+  constructor(params: { query_id: bigint; user_id: bigint; payload: Uint8Array; info?: enums.PaymentRequestedInfo; shipping_option_id?: string; currency: string; total_amount: bigint }) {
     super();
     this.query_id = params.query_id;
     this.user_id = params.user_id;
@@ -11622,7 +11622,7 @@ export class updateBotPrecheckoutQuery extends _Update {
 }
 
 export class updatePhoneCall extends _Update {
-  phone_call: PhoneCall;
+  phone_call: enums.PhoneCall;
 
   protected get [id]() {
     return 0xAB0F6B1E;
@@ -11640,7 +11640,7 @@ export class updatePhoneCall extends _Update {
     ];
   }
 
-  constructor(params: { phone_call: PhoneCall }) {
+  constructor(params: { phone_call: enums.PhoneCall }) {
     super();
     this.phone_call = params.phone_call;
   }
@@ -11672,7 +11672,7 @@ export class updateLangPackTooLong extends _Update {
 }
 
 export class updateLangPack extends _Update {
-  difference: LangPackDifference;
+  difference: enums.LangPackDifference;
 
   protected get [id]() {
     return 0x56022F4D;
@@ -11690,7 +11690,7 @@ export class updateLangPack extends _Update {
     ];
   }
 
-  constructor(params: { difference: LangPackDifference }) {
+  constructor(params: { difference: enums.LangPackDifference }) {
     super();
     this.difference = params.difference;
   }
@@ -11798,7 +11798,7 @@ export class updateChannelAvailableMessages extends _Update {
 
 export class updateDialogUnreadMark extends _Update {
   unread?: true;
-  peer: DialogPeer;
+  peer: enums.DialogPeer;
 
   protected get [id]() {
     return 0xE16459C3;
@@ -11820,7 +11820,7 @@ export class updateDialogUnreadMark extends _Update {
     ];
   }
 
-  constructor(params: { unread?: true; peer: DialogPeer }) {
+  constructor(params: { unread?: true; peer: enums.DialogPeer }) {
     super();
     this.unread = params.unread;
     this.peer = params.peer;
@@ -11829,8 +11829,8 @@ export class updateDialogUnreadMark extends _Update {
 
 export class updateMessagePoll extends _Update {
   poll_id: bigint;
-  poll?: Poll;
-  results: PollResults;
+  poll?: enums.Poll;
+  results: enums.PollResults;
 
   protected get [id]() {
     return 0xACA1657B;
@@ -11854,7 +11854,7 @@ export class updateMessagePoll extends _Update {
     ];
   }
 
-  constructor(params: { poll_id: bigint; poll?: Poll; results: PollResults }) {
+  constructor(params: { poll_id: bigint; poll?: enums.Poll; results: enums.PollResults }) {
     super();
     this.poll_id = params.poll_id;
     this.poll = params.poll;
@@ -11863,8 +11863,8 @@ export class updateMessagePoll extends _Update {
 }
 
 export class updateChatDefaultBannedRights extends _Update {
-  peer: Peer;
-  default_banned_rights: ChatBannedRights;
+  peer: enums.Peer;
+  default_banned_rights: enums.ChatBannedRights;
   version: number;
 
   protected get [id]() {
@@ -11887,7 +11887,7 @@ export class updateChatDefaultBannedRights extends _Update {
     ];
   }
 
-  constructor(params: { peer: Peer; default_banned_rights: ChatBannedRights; version: number }) {
+  constructor(params: { peer: enums.Peer; default_banned_rights: enums.ChatBannedRights; version: number }) {
     super();
     this.peer = params.peer;
     this.default_banned_rights = params.default_banned_rights;
@@ -11896,7 +11896,7 @@ export class updateChatDefaultBannedRights extends _Update {
 }
 
 export class updateFolderPeers extends _Update {
-  folder_peers: Array<FolderPeer>;
+  folder_peers: Array<enums.FolderPeer>;
   pts: number;
   pts_count: number;
 
@@ -11920,7 +11920,7 @@ export class updateFolderPeers extends _Update {
     ];
   }
 
-  constructor(params: { folder_peers: Array<FolderPeer>; pts: number; pts_count: number }) {
+  constructor(params: { folder_peers: Array<enums.FolderPeer>; pts: number; pts_count: number }) {
     super();
     this.folder_peers = params.folder_peers;
     this.pts = params.pts;
@@ -11929,8 +11929,8 @@ export class updateFolderPeers extends _Update {
 }
 
 export class updatePeerSettings extends _Update {
-  peer: Peer;
-  settings: PeerSettings;
+  peer: enums.Peer;
+  settings: enums.PeerSettings;
 
   protected get [id]() {
     return 0x6A7E7366;
@@ -11950,7 +11950,7 @@ export class updatePeerSettings extends _Update {
     ];
   }
 
-  constructor(params: { peer: Peer; settings: PeerSettings }) {
+  constructor(params: { peer: enums.Peer; settings: enums.PeerSettings }) {
     super();
     this.peer = params.peer;
     this.settings = params.settings;
@@ -11958,7 +11958,7 @@ export class updatePeerSettings extends _Update {
 }
 
 export class updatePeerLocated extends _Update {
-  peers: Array<PeerLocated>;
+  peers: Array<enums.PeerLocated>;
 
   protected get [id]() {
     return 0xB4AFCFB0;
@@ -11976,14 +11976,14 @@ export class updatePeerLocated extends _Update {
     ];
   }
 
-  constructor(params: { peers: Array<PeerLocated> }) {
+  constructor(params: { peers: Array<enums.PeerLocated> }) {
     super();
     this.peers = params.peers;
   }
 }
 
 export class updateNewScheduledMessage extends _Update {
-  message: Message;
+  message: enums.Message;
 
   protected get [id]() {
     return 0x39A51DFB;
@@ -12001,14 +12001,14 @@ export class updateNewScheduledMessage extends _Update {
     ];
   }
 
-  constructor(params: { message: Message }) {
+  constructor(params: { message: enums.Message }) {
     super();
     this.message = params.message;
   }
 }
 
 export class updateDeleteScheduledMessages extends _Update {
-  peer: Peer;
+  peer: enums.Peer;
   messages: Array<number>;
 
   protected get [id]() {
@@ -12029,7 +12029,7 @@ export class updateDeleteScheduledMessages extends _Update {
     ];
   }
 
-  constructor(params: { peer: Peer; messages: Array<number> }) {
+  constructor(params: { peer: enums.Peer; messages: Array<number> }) {
     super();
     this.peer = params.peer;
     this.messages = params.messages;
@@ -12037,7 +12037,7 @@ export class updateDeleteScheduledMessages extends _Update {
 }
 
 export class updateTheme extends _Update {
-  theme: Theme;
+  theme: enums.Theme;
 
   protected get [id]() {
     return 0x8216FBA3;
@@ -12055,14 +12055,14 @@ export class updateTheme extends _Update {
     ];
   }
 
-  constructor(params: { theme: Theme }) {
+  constructor(params: { theme: enums.Theme }) {
     super();
     this.theme = params.theme;
   }
 }
 
 export class updateGeoLiveViewed extends _Update {
-  peer: Peer;
+  peer: enums.Peer;
   msg_id: number;
 
   protected get [id]() {
@@ -12083,7 +12083,7 @@ export class updateGeoLiveViewed extends _Update {
     ];
   }
 
-  constructor(params: { peer: Peer; msg_id: number }) {
+  constructor(params: { peer: enums.Peer; msg_id: number }) {
     super();
     this.peer = params.peer;
     this.msg_id = params.msg_id;
@@ -12110,7 +12110,7 @@ export class updateLoginToken extends _Update {
 
 export class updateMessagePollVote extends _Update {
   poll_id: bigint;
-  peer: Peer;
+  peer: enums.Peer;
   options: Array<Uint8Array>;
   qts: number;
 
@@ -12136,7 +12136,7 @@ export class updateMessagePollVote extends _Update {
     ];
   }
 
-  constructor(params: { poll_id: bigint; peer: Peer; options: Array<Uint8Array>; qts: number }) {
+  constructor(params: { poll_id: bigint; peer: enums.Peer; options: Array<Uint8Array>; qts: number }) {
     super();
     this.poll_id = params.poll_id;
     this.peer = params.peer;
@@ -12147,7 +12147,7 @@ export class updateMessagePollVote extends _Update {
 
 export class updateDialogFilter extends _Update {
   id: number;
-  filter?: DialogFilter;
+  filter?: enums.DialogFilter;
 
   protected get [id]() {
     return 0x26FFDE7D;
@@ -12169,7 +12169,7 @@ export class updateDialogFilter extends _Update {
     ];
   }
 
-  constructor(params: { id: number; filter?: DialogFilter }) {
+  constructor(params: { id: number; filter?: enums.DialogFilter }) {
     super();
     this.id = params.id;
     this.filter = params.filter;
@@ -12360,7 +12360,7 @@ export class updateReadChannelDiscussionOutbox extends _Update {
 export class updatePeerBlocked extends _Update {
   blocked?: true;
   blocked_my_stories_from?: true;
-  peer_id: Peer;
+  peer_id: enums.Peer;
 
   protected get [id]() {
     return 0xEBE07752;
@@ -12384,7 +12384,7 @@ export class updatePeerBlocked extends _Update {
     ];
   }
 
-  constructor(params: { blocked?: true; blocked_my_stories_from?: true; peer_id: Peer }) {
+  constructor(params: { blocked?: true; blocked_my_stories_from?: true; peer_id: enums.Peer }) {
     super();
     this.blocked = params.blocked;
     this.blocked_my_stories_from = params.blocked_my_stories_from;
@@ -12395,8 +12395,8 @@ export class updatePeerBlocked extends _Update {
 export class updateChannelUserTyping extends _Update {
   channel_id: bigint;
   top_msg_id?: number;
-  from_id: Peer;
-  action: SendMessageAction;
+  from_id: enums.Peer;
+  action: enums.SendMessageAction;
 
   protected get [id]() {
     return 0x8C88C923;
@@ -12422,7 +12422,7 @@ export class updateChannelUserTyping extends _Update {
     ];
   }
 
-  constructor(params: { channel_id: bigint; top_msg_id?: number; from_id: Peer; action: SendMessageAction }) {
+  constructor(params: { channel_id: bigint; top_msg_id?: number; from_id: enums.Peer; action: enums.SendMessageAction }) {
     super();
     this.channel_id = params.channel_id;
     this.top_msg_id = params.top_msg_id;
@@ -12433,7 +12433,7 @@ export class updateChannelUserTyping extends _Update {
 
 export class updatePinnedMessages extends _Update {
   pinned?: true;
-  peer: Peer;
+  peer: enums.Peer;
   messages: Array<number>;
   pts: number;
   pts_count: number;
@@ -12464,7 +12464,7 @@ export class updatePinnedMessages extends _Update {
     ];
   }
 
-  constructor(params: { pinned?: true; peer: Peer; messages: Array<number>; pts: number; pts_count: number }) {
+  constructor(params: { pinned?: true; peer: enums.Peer; messages: Array<number>; pts: number; pts_count: number }) {
     super();
     this.pinned = params.pinned;
     this.peer = params.peer;
@@ -12543,8 +12543,8 @@ export class updateChat extends _Update {
 }
 
 export class updateGroupCallParticipants extends _Update {
-  call: InputGroupCall;
-  participants: Array<GroupCallParticipant>;
+  call: enums.InputGroupCall;
+  participants: Array<enums.GroupCallParticipant>;
   version: number;
 
   protected get [id]() {
@@ -12567,7 +12567,7 @@ export class updateGroupCallParticipants extends _Update {
     ];
   }
 
-  constructor(params: { call: InputGroupCall; participants: Array<GroupCallParticipant>; version: number }) {
+  constructor(params: { call: enums.InputGroupCall; participants: Array<enums.GroupCallParticipant>; version: number }) {
     super();
     this.call = params.call;
     this.participants = params.participants;
@@ -12577,7 +12577,7 @@ export class updateGroupCallParticipants extends _Update {
 
 export class updateGroupCall extends _Update {
   chat_id: bigint;
-  call: GroupCall;
+  call: enums.GroupCall;
 
   protected get [id]() {
     return 0x14B24500;
@@ -12597,7 +12597,7 @@ export class updateGroupCall extends _Update {
     ];
   }
 
-  constructor(params: { chat_id: bigint; call: GroupCall }) {
+  constructor(params: { chat_id: bigint; call: enums.GroupCall }) {
     super();
     this.chat_id = params.chat_id;
     this.call = params.call;
@@ -12605,7 +12605,7 @@ export class updateGroupCall extends _Update {
 }
 
 export class updatePeerHistoryTTL extends _Update {
-  peer: Peer;
+  peer: enums.Peer;
   ttl_period?: number;
 
   protected get [id]() {
@@ -12628,7 +12628,7 @@ export class updatePeerHistoryTTL extends _Update {
     ];
   }
 
-  constructor(params: { peer: Peer; ttl_period?: number }) {
+  constructor(params: { peer: enums.Peer; ttl_period?: number }) {
     super();
     this.peer = params.peer;
     this.ttl_period = params.ttl_period;
@@ -12640,9 +12640,9 @@ export class updateChatParticipant extends _Update {
   date: number;
   actor_id: bigint;
   user_id: bigint;
-  prev_participant?: ChatParticipant;
-  new_participant?: ChatParticipant;
-  invite?: ExportedChatInvite;
+  prev_participant?: enums.ChatParticipant;
+  new_participant?: enums.ChatParticipant;
+  invite?: enums.ExportedChatInvite;
   qts: number;
 
   protected get [id]() {
@@ -12677,7 +12677,7 @@ export class updateChatParticipant extends _Update {
     ];
   }
 
-  constructor(params: { chat_id: bigint; date: number; actor_id: bigint; user_id: bigint; prev_participant?: ChatParticipant; new_participant?: ChatParticipant; invite?: ExportedChatInvite; qts: number }) {
+  constructor(params: { chat_id: bigint; date: number; actor_id: bigint; user_id: bigint; prev_participant?: enums.ChatParticipant; new_participant?: enums.ChatParticipant; invite?: enums.ExportedChatInvite; qts: number }) {
     super();
     this.chat_id = params.chat_id;
     this.date = params.date;
@@ -12696,9 +12696,9 @@ export class updateChannelParticipant extends _Update {
   date: number;
   actor_id: bigint;
   user_id: bigint;
-  prev_participant?: ChannelParticipant;
-  new_participant?: ChannelParticipant;
-  invite?: ExportedChatInvite;
+  prev_participant?: enums.ChannelParticipant;
+  new_participant?: enums.ChannelParticipant;
+  invite?: enums.ExportedChatInvite;
   qts: number;
 
   protected get [id]() {
@@ -12735,7 +12735,7 @@ export class updateChannelParticipant extends _Update {
     ];
   }
 
-  constructor(params: { via_chatlist?: true; channel_id: bigint; date: number; actor_id: bigint; user_id: bigint; prev_participant?: ChannelParticipant; new_participant?: ChannelParticipant; invite?: ExportedChatInvite; qts: number }) {
+  constructor(params: { via_chatlist?: true; channel_id: bigint; date: number; actor_id: bigint; user_id: bigint; prev_participant?: enums.ChannelParticipant; new_participant?: enums.ChannelParticipant; invite?: enums.ExportedChatInvite; qts: number }) {
     super();
     this.via_chatlist = params.via_chatlist;
     this.channel_id = params.channel_id;
@@ -12788,7 +12788,7 @@ export class updateBotStopped extends _Update {
 
 export class updateGroupCallConnection extends _Update {
   presentation?: true;
-  params: DataJSON;
+  params: enums.DataJSON;
 
   protected get [id]() {
     return 0x0B783982;
@@ -12810,7 +12810,7 @@ export class updateGroupCallConnection extends _Update {
     ];
   }
 
-  constructor(params: { presentation?: true; params: DataJSON }) {
+  constructor(params: { presentation?: true; params: enums.DataJSON }) {
     super();
     this.presentation = params.presentation;
     this.params = params.params;
@@ -12818,9 +12818,9 @@ export class updateGroupCallConnection extends _Update {
 }
 
 export class updateBotCommands extends _Update {
-  peer: Peer;
+  peer: enums.Peer;
   bot_id: bigint;
-  commands: Array<BotCommand>;
+  commands: Array<enums.BotCommand>;
 
   protected get [id]() {
     return 0x4D712F2E;
@@ -12842,7 +12842,7 @@ export class updateBotCommands extends _Update {
     ];
   }
 
-  constructor(params: { peer: Peer; bot_id: bigint; commands: Array<BotCommand> }) {
+  constructor(params: { peer: enums.Peer; bot_id: bigint; commands: Array<enums.BotCommand> }) {
     super();
     this.peer = params.peer;
     this.bot_id = params.bot_id;
@@ -12851,7 +12851,7 @@ export class updateBotCommands extends _Update {
 }
 
 export class updatePendingJoinRequests extends _Update {
-  peer: Peer;
+  peer: enums.Peer;
   requests_pending: number;
   recent_requesters: Array<bigint>;
 
@@ -12875,7 +12875,7 @@ export class updatePendingJoinRequests extends _Update {
     ];
   }
 
-  constructor(params: { peer: Peer; requests_pending: number; recent_requesters: Array<bigint> }) {
+  constructor(params: { peer: enums.Peer; requests_pending: number; recent_requesters: Array<bigint> }) {
     super();
     this.peer = params.peer;
     this.requests_pending = params.requests_pending;
@@ -12884,11 +12884,11 @@ export class updatePendingJoinRequests extends _Update {
 }
 
 export class updateBotChatInviteRequester extends _Update {
-  peer: Peer;
+  peer: enums.Peer;
   date: number;
   user_id: bigint;
   about: string;
-  invite: ExportedChatInvite;
+  invite: enums.ExportedChatInvite;
   qts: number;
 
   protected get [id]() {
@@ -12917,7 +12917,7 @@ export class updateBotChatInviteRequester extends _Update {
     ];
   }
 
-  constructor(params: { peer: Peer; date: number; user_id: bigint; about: string; invite: ExportedChatInvite; qts: number }) {
+  constructor(params: { peer: enums.Peer; date: number; user_id: bigint; about: string; invite: enums.ExportedChatInvite; qts: number }) {
     super();
     this.peer = params.peer;
     this.date = params.date;
@@ -12929,10 +12929,10 @@ export class updateBotChatInviteRequester extends _Update {
 }
 
 export class updateMessageReactions extends _Update {
-  peer: Peer;
+  peer: enums.Peer;
   msg_id: number;
   top_msg_id?: number;
-  reactions: MessageReactions;
+  reactions: enums.MessageReactions;
 
   protected get [id]() {
     return 0x5E1B3CB8;
@@ -12958,7 +12958,7 @@ export class updateMessageReactions extends _Update {
     ];
   }
 
-  constructor(params: { peer: Peer; msg_id: number; top_msg_id?: number; reactions: MessageReactions }) {
+  constructor(params: { peer: enums.Peer; msg_id: number; top_msg_id?: number; reactions: enums.MessageReactions }) {
     super();
     this.peer = params.peer;
     this.msg_id = params.msg_id;
@@ -13012,7 +13012,7 @@ export class updateWebViewResultSent extends _Update {
 
 export class updateBotMenuButton extends _Update {
   bot_id: bigint;
-  button: BotMenuButton;
+  button: enums.BotMenuButton;
 
   protected get [id]() {
     return 0x14B85813;
@@ -13032,7 +13032,7 @@ export class updateBotMenuButton extends _Update {
     ];
   }
 
-  constructor(params: { bot_id: bigint; button: BotMenuButton }) {
+  constructor(params: { bot_id: bigint; button: enums.BotMenuButton }) {
     super();
     this.bot_id = params.bot_id;
     this.button = params.button;
@@ -13059,7 +13059,7 @@ export class updateSavedRingtones extends _Update {
 
 export class updateTranscribedAudio extends _Update {
   pending?: true;
-  peer: Peer;
+  peer: enums.Peer;
   msg_id: number;
   transcription_id: bigint;
   text: string;
@@ -13090,7 +13090,7 @@ export class updateTranscribedAudio extends _Update {
     ];
   }
 
-  constructor(params: { pending?: true; peer: Peer; msg_id: number; transcription_id: bigint; text: string }) {
+  constructor(params: { pending?: true; peer: enums.Peer; msg_id: number; transcription_id: bigint; text: string }) {
     super();
     this.pending = params.pending;
     this.peer = params.peer;
@@ -13120,7 +13120,7 @@ export class updateReadFeaturedEmojiStickers extends _Update {
 
 export class updateUserEmojiStatus extends _Update {
   user_id: bigint;
-  emoji_status: EmojiStatus;
+  emoji_status: enums.EmojiStatus;
 
   protected get [id]() {
     return 0x28373599;
@@ -13140,7 +13140,7 @@ export class updateUserEmojiStatus extends _Update {
     ];
   }
 
-  constructor(params: { user_id: bigint; emoji_status: EmojiStatus }) {
+  constructor(params: { user_id: bigint; emoji_status: enums.EmojiStatus }) {
     super();
     this.user_id = params.user_id;
     this.emoji_status = params.emoji_status;
@@ -13219,9 +13219,9 @@ export class updateMoveStickerSetToTop extends _Update {
 }
 
 export class updateMessageExtendedMedia extends _Update {
-  peer: Peer;
+  peer: enums.Peer;
   msg_id: number;
-  extended_media: MessageExtendedMedia;
+  extended_media: enums.MessageExtendedMedia;
 
   protected get [id]() {
     return 0x5A73A98C;
@@ -13243,7 +13243,7 @@ export class updateMessageExtendedMedia extends _Update {
     ];
   }
 
-  constructor(params: { peer: Peer; msg_id: number; extended_media: MessageExtendedMedia }) {
+  constructor(params: { peer: enums.Peer; msg_id: number; extended_media: enums.MessageExtendedMedia }) {
     super();
     this.peer = params.peer;
     this.msg_id = params.msg_id;
@@ -13386,8 +13386,8 @@ export class updateGroupInvitePrivacyForbidden extends _Update {
 }
 
 export class updateStory extends _Update {
-  peer: Peer;
-  story: StoryItem;
+  peer: enums.Peer;
+  story: enums.StoryItem;
 
   protected get [id]() {
     return 0x75B3B798;
@@ -13407,7 +13407,7 @@ export class updateStory extends _Update {
     ];
   }
 
-  constructor(params: { peer: Peer; story: StoryItem }) {
+  constructor(params: { peer: enums.Peer; story: enums.StoryItem }) {
     super();
     this.peer = params.peer;
     this.story = params.story;
@@ -13415,7 +13415,7 @@ export class updateStory extends _Update {
 }
 
 export class updateReadStories extends _Update {
-  peer: Peer;
+  peer: enums.Peer;
   max_id: number;
 
   protected get [id]() {
@@ -13436,7 +13436,7 @@ export class updateReadStories extends _Update {
     ];
   }
 
-  constructor(params: { peer: Peer; max_id: number }) {
+  constructor(params: { peer: enums.Peer; max_id: number }) {
     super();
     this.peer = params.peer;
     this.max_id = params.max_id;
@@ -13473,7 +13473,7 @@ export class updateStoryID extends _Update {
 }
 
 export class updateStoriesStealthMode extends _Update {
-  stealth_mode: StoriesStealthMode;
+  stealth_mode: enums.StoriesStealthMode;
 
   protected get [id]() {
     return 0x2C084DC1;
@@ -13491,16 +13491,16 @@ export class updateStoriesStealthMode extends _Update {
     ];
   }
 
-  constructor(params: { stealth_mode: StoriesStealthMode }) {
+  constructor(params: { stealth_mode: enums.StoriesStealthMode }) {
     super();
     this.stealth_mode = params.stealth_mode;
   }
 }
 
 export class updateSentStoryReaction extends _Update {
-  peer: Peer;
+  peer: enums.Peer;
   story_id: number;
-  reaction: Reaction;
+  reaction: enums.Reaction;
 
   protected get [id]() {
     return 0x7D627683;
@@ -13522,7 +13522,7 @@ export class updateSentStoryReaction extends _Update {
     ];
   }
 
-  constructor(params: { peer: Peer; story_id: number; reaction: Reaction }) {
+  constructor(params: { peer: enums.Peer; story_id: number; reaction: enums.Reaction }) {
     super();
     this.peer = params.peer;
     this.story_id = params.story_id;
@@ -13531,8 +13531,8 @@ export class updateSentStoryReaction extends _Update {
 }
 
 export class updateBotChatBoost extends _Update {
-  peer: Peer;
-  boost: Boost;
+  peer: enums.Peer;
+  boost: enums.Boost;
   qts: number;
 
   protected get [id]() {
@@ -13555,7 +13555,7 @@ export class updateBotChatBoost extends _Update {
     ];
   }
 
-  constructor(params: { peer: Peer; boost: Boost; qts: number }) {
+  constructor(params: { peer: enums.Peer; boost: enums.Boost; qts: number }) {
     super();
     this.peer = params.peer;
     this.boost = params.boost;
@@ -13594,8 +13594,8 @@ export class updateChannelViewForumAsMessages extends _Update {
 
 export class updatePeerWallpaper extends _Update {
   wallpaper_overridden?: true;
-  peer: Peer;
-  wallpaper?: WallPaper;
+  peer: enums.Peer;
+  wallpaper?: enums.WallPaper;
 
   protected get [id]() {
     return 0xAE3F101D;
@@ -13619,7 +13619,7 @@ export class updatePeerWallpaper extends _Update {
     ];
   }
 
-  constructor(params: { wallpaper_overridden?: true; peer: Peer; wallpaper?: WallPaper }) {
+  constructor(params: { wallpaper_overridden?: true; peer: enums.Peer; wallpaper?: enums.WallPaper }) {
     super();
     this.wallpaper_overridden = params.wallpaper_overridden;
     this.peer = params.peer;
@@ -13698,12 +13698,12 @@ export class updates_differenceEmpty extends _updates_Difference {
 }
 
 export class updates_difference extends _updates_Difference {
-  new_messages: Array<Message>;
-  new_encrypted_messages: Array<EncryptedMessage>;
-  other_updates: Array<Update>;
-  chats: Array<Chat>;
-  users: Array<User>;
-  state: updates_State;
+  new_messages: Array<enums.Message>;
+  new_encrypted_messages: Array<enums.EncryptedMessage>;
+  other_updates: Array<enums.Update>;
+  chats: Array<enums.Chat>;
+  users: Array<enums.User>;
+  state: enums.updates_State;
 
   protected get [id]() {
     return 0x00F49CA0;
@@ -13731,7 +13731,7 @@ export class updates_difference extends _updates_Difference {
     ];
   }
 
-  constructor(params: { new_messages: Array<Message>; new_encrypted_messages: Array<EncryptedMessage>; other_updates: Array<Update>; chats: Array<Chat>; users: Array<User>; state: updates_State }) {
+  constructor(params: { new_messages: Array<enums.Message>; new_encrypted_messages: Array<enums.EncryptedMessage>; other_updates: Array<enums.Update>; chats: Array<enums.Chat>; users: Array<enums.User>; state: enums.updates_State }) {
     super();
     this.new_messages = params.new_messages;
     this.new_encrypted_messages = params.new_encrypted_messages;
@@ -13743,12 +13743,12 @@ export class updates_difference extends _updates_Difference {
 }
 
 export class updates_differenceSlice extends _updates_Difference {
-  new_messages: Array<Message>;
-  new_encrypted_messages: Array<EncryptedMessage>;
-  other_updates: Array<Update>;
-  chats: Array<Chat>;
-  users: Array<User>;
-  intermediate_state: updates_State;
+  new_messages: Array<enums.Message>;
+  new_encrypted_messages: Array<enums.EncryptedMessage>;
+  other_updates: Array<enums.Update>;
+  chats: Array<enums.Chat>;
+  users: Array<enums.User>;
+  intermediate_state: enums.updates_State;
 
   protected get [id]() {
     return 0xA8FB1981;
@@ -13776,7 +13776,7 @@ export class updates_differenceSlice extends _updates_Difference {
     ];
   }
 
-  constructor(params: { new_messages: Array<Message>; new_encrypted_messages: Array<EncryptedMessage>; other_updates: Array<Update>; chats: Array<Chat>; users: Array<User>; intermediate_state: updates_State }) {
+  constructor(params: { new_messages: Array<enums.Message>; new_encrypted_messages: Array<enums.EncryptedMessage>; other_updates: Array<enums.Update>; chats: Array<enums.Chat>; users: Array<enums.User>; intermediate_state: enums.updates_State }) {
     super();
     this.new_messages = params.new_messages;
     this.new_encrypted_messages = params.new_encrypted_messages;
@@ -13841,10 +13841,10 @@ export class updateShortMessage extends _Updates {
   pts: number;
   pts_count: number;
   date: number;
-  fwd_from?: MessageFwdHeader;
+  fwd_from?: enums.MessageFwdHeader;
   via_bot_id?: bigint;
-  reply_to?: MessageReplyHeader;
-  entities?: Array<MessageEntity>;
+  reply_to?: enums.MessageReplyHeader;
+  entities?: Array<enums.MessageEntity>;
   ttl_period?: number;
 
   protected get [id]() {
@@ -13893,7 +13893,7 @@ export class updateShortMessage extends _Updates {
     ];
   }
 
-  constructor(params: { out?: true; mentioned?: true; media_unread?: true; silent?: true; id: number; user_id: bigint; message: string; pts: number; pts_count: number; date: number; fwd_from?: MessageFwdHeader; via_bot_id?: bigint; reply_to?: MessageReplyHeader; entities?: Array<MessageEntity>; ttl_period?: number }) {
+  constructor(params: { out?: true; mentioned?: true; media_unread?: true; silent?: true; id: number; user_id: bigint; message: string; pts: number; pts_count: number; date: number; fwd_from?: enums.MessageFwdHeader; via_bot_id?: bigint; reply_to?: enums.MessageReplyHeader; entities?: Array<enums.MessageEntity>; ttl_period?: number }) {
     super();
     this.out = params.out;
     this.mentioned = params.mentioned;
@@ -13925,10 +13925,10 @@ export class updateShortChatMessage extends _Updates {
   pts: number;
   pts_count: number;
   date: number;
-  fwd_from?: MessageFwdHeader;
+  fwd_from?: enums.MessageFwdHeader;
   via_bot_id?: bigint;
-  reply_to?: MessageReplyHeader;
-  entities?: Array<MessageEntity>;
+  reply_to?: enums.MessageReplyHeader;
+  entities?: Array<enums.MessageEntity>;
   ttl_period?: number;
 
   protected get [id]() {
@@ -13979,7 +13979,7 @@ export class updateShortChatMessage extends _Updates {
     ];
   }
 
-  constructor(params: { out?: true; mentioned?: true; media_unread?: true; silent?: true; id: number; from_id: bigint; chat_id: bigint; message: string; pts: number; pts_count: number; date: number; fwd_from?: MessageFwdHeader; via_bot_id?: bigint; reply_to?: MessageReplyHeader; entities?: Array<MessageEntity>; ttl_period?: number }) {
+  constructor(params: { out?: true; mentioned?: true; media_unread?: true; silent?: true; id: number; from_id: bigint; chat_id: bigint; message: string; pts: number; pts_count: number; date: number; fwd_from?: enums.MessageFwdHeader; via_bot_id?: bigint; reply_to?: enums.MessageReplyHeader; entities?: Array<enums.MessageEntity>; ttl_period?: number }) {
     super();
     this.out = params.out;
     this.mentioned = params.mentioned;
@@ -14001,7 +14001,7 @@ export class updateShortChatMessage extends _Updates {
 }
 
 export class updateShort extends _Updates {
-  update: Update;
+  update: enums.Update;
   date: number;
 
   protected get [id]() {
@@ -14022,7 +14022,7 @@ export class updateShort extends _Updates {
     ];
   }
 
-  constructor(params: { update: Update; date: number }) {
+  constructor(params: { update: enums.Update; date: number }) {
     super();
     this.update = params.update;
     this.date = params.date;
@@ -14030,9 +14030,9 @@ export class updateShort extends _Updates {
 }
 
 export class updatesCombined extends _Updates {
-  updates: Array<Update>;
-  users: Array<User>;
-  chats: Array<Chat>;
+  updates: Array<enums.Update>;
+  users: Array<enums.User>;
+  chats: Array<enums.Chat>;
   date: number;
   seq_start: number;
   seq: number;
@@ -14063,7 +14063,7 @@ export class updatesCombined extends _Updates {
     ];
   }
 
-  constructor(params: { updates: Array<Update>; users: Array<User>; chats: Array<Chat>; date: number; seq_start: number; seq: number }) {
+  constructor(params: { updates: Array<enums.Update>; users: Array<enums.User>; chats: Array<enums.Chat>; date: number; seq_start: number; seq: number }) {
     super();
     this.updates = params.updates;
     this.users = params.users;
@@ -14075,9 +14075,9 @@ export class updatesCombined extends _Updates {
 }
 
 export class updates extends _Updates {
-  updates: Array<Update>;
-  users: Array<User>;
-  chats: Array<Chat>;
+  updates: Array<enums.Update>;
+  users: Array<enums.User>;
+  chats: Array<enums.Chat>;
   date: number;
   seq: number;
 
@@ -14105,7 +14105,7 @@ export class updates extends _Updates {
     ];
   }
 
-  constructor(params: { updates: Array<Update>; users: Array<User>; chats: Array<Chat>; date: number; seq: number }) {
+  constructor(params: { updates: Array<enums.Update>; users: Array<enums.User>; chats: Array<enums.Chat>; date: number; seq: number }) {
     super();
     this.updates = params.updates;
     this.users = params.users;
@@ -14121,8 +14121,8 @@ export class updateShortSentMessage extends _Updates {
   pts: number;
   pts_count: number;
   date: number;
-  media?: MessageMedia;
-  entities?: Array<MessageEntity>;
+  media?: enums.MessageMedia;
+  entities?: Array<enums.MessageEntity>;
   ttl_period?: number;
 
   protected get [id]() {
@@ -14157,7 +14157,7 @@ export class updateShortSentMessage extends _Updates {
     ];
   }
 
-  constructor(params: { out?: true; id: number; pts: number; pts_count: number; date: number; media?: MessageMedia; entities?: Array<MessageEntity>; ttl_period?: number }) {
+  constructor(params: { out?: true; id: number; pts: number; pts_count: number; date: number; media?: enums.MessageMedia; entities?: Array<enums.MessageEntity>; ttl_period?: number }) {
     super();
     this.out = params.out;
     this.id = params.id;
@@ -14171,8 +14171,8 @@ export class updateShortSentMessage extends _Updates {
 }
 
 export class photos_photos extends _photos_Photos {
-  photos: Array<Photo>;
-  users: Array<User>;
+  photos: Array<enums.Photo>;
+  users: Array<enums.User>;
 
   protected get [id]() {
     return 0x8DCA6AA5;
@@ -14192,7 +14192,7 @@ export class photos_photos extends _photos_Photos {
     ];
   }
 
-  constructor(params: { photos: Array<Photo>; users: Array<User> }) {
+  constructor(params: { photos: Array<enums.Photo>; users: Array<enums.User> }) {
     super();
     this.photos = params.photos;
     this.users = params.users;
@@ -14201,8 +14201,8 @@ export class photos_photos extends _photos_Photos {
 
 export class photos_photosSlice extends _photos_Photos {
   count: number;
-  photos: Array<Photo>;
-  users: Array<User>;
+  photos: Array<enums.Photo>;
+  users: Array<enums.User>;
 
   protected get [id]() {
     return 0x15051F54;
@@ -14224,7 +14224,7 @@ export class photos_photosSlice extends _photos_Photos {
     ];
   }
 
-  constructor(params: { count: number; photos: Array<Photo>; users: Array<User> }) {
+  constructor(params: { count: number; photos: Array<enums.Photo>; users: Array<enums.User> }) {
     super();
     this.count = params.count;
     this.photos = params.photos;
@@ -14233,8 +14233,8 @@ export class photos_photosSlice extends _photos_Photos {
 }
 
 export class photos_photo extends _photos_Photo {
-  photo: Photo;
-  users: Array<User>;
+  photo: enums.Photo;
+  users: Array<enums.User>;
 
   protected get [id]() {
     return 0x20212CA8;
@@ -14254,7 +14254,7 @@ export class photos_photo extends _photos_Photo {
     ];
   }
 
-  constructor(params: { photo: Photo; users: Array<User> }) {
+  constructor(params: { photo: enums.Photo; users: Array<enums.User> }) {
     super();
     this.photo = params.photo;
     this.users = params.users;
@@ -14262,7 +14262,7 @@ export class photos_photo extends _photos_Photo {
 }
 
 export class upload_file extends _upload_File {
-  type: storage_FileType;
+  type: enums.storage_FileType;
   mtime: number;
   bytes: Uint8Array;
 
@@ -14286,7 +14286,7 @@ export class upload_file extends _upload_File {
     ];
   }
 
-  constructor(params: { type: storage_FileType; mtime: number; bytes: Uint8Array }) {
+  constructor(params: { type: enums.storage_FileType; mtime: number; bytes: Uint8Array }) {
     super();
     this.type = params.type;
     this.mtime = params.mtime;
@@ -14299,7 +14299,7 @@ export class upload_fileCdnRedirect extends _upload_File {
   file_token: Uint8Array;
   encryption_key: Uint8Array;
   encryption_iv: Uint8Array;
-  file_hashes: Array<FileHash>;
+  file_hashes: Array<enums.FileHash>;
 
   protected get [id]() {
     return 0xF18CDA44;
@@ -14325,7 +14325,7 @@ export class upload_fileCdnRedirect extends _upload_File {
     ];
   }
 
-  constructor(params: { dc_id: number; file_token: Uint8Array; encryption_key: Uint8Array; encryption_iv: Uint8Array; file_hashes: Array<FileHash> }) {
+  constructor(params: { dc_id: number; file_token: Uint8Array; encryption_key: Uint8Array; encryption_iv: Uint8Array; file_hashes: Array<enums.FileHash> }) {
     super();
     this.dc_id = params.dc_id;
     this.file_token = params.file_token;
@@ -14408,7 +14408,7 @@ export class config extends _Config {
   expires: number;
   test_mode: boolean;
   this_dc: number;
-  dc_options: Array<DcOption>;
+  dc_options: Array<enums.DcOption>;
   dc_txt_domain_name: string;
   chat_size_max: number;
   megagroup_size_max: number;
@@ -14444,7 +14444,7 @@ export class config extends _Config {
   suggested_lang_code?: string;
   lang_pack_version?: number;
   base_lang_pack_version?: number;
-  reactions_default?: Reaction;
+  reactions_default?: enums.Reaction;
   autologin_token?: string;
 
   protected get [id]() {
@@ -14557,7 +14557,7 @@ export class config extends _Config {
     ];
   }
 
-  constructor(params: { default_p2p_contacts?: true; preload_featured_stickers?: true; revoke_pm_inbox?: true; blocked_mode?: true; force_try_ipv6?: true; date: number; expires: number; test_mode: boolean; this_dc: number; dc_options: Array<DcOption>; dc_txt_domain_name: string; chat_size_max: number; megagroup_size_max: number; forwarded_count_max: number; online_update_period_ms: number; offline_blur_timeout_ms: number; offline_idle_timeout_ms: number; online_cloud_timeout_ms: number; notify_cloud_delay_ms: number; notify_default_delay_ms: number; push_chat_period_ms: number; push_chat_limit: number; edit_time_limit: number; revoke_time_limit: number; revoke_pm_time_limit: number; rating_e_decay: number; stickers_recent_limit: number; channels_read_media_period: number; tmp_sessions?: number; call_receive_timeout_ms: number; call_ring_timeout_ms: number; call_connect_timeout_ms: number; call_packet_timeout_ms: number; me_url_prefix: string; autoupdate_url_prefix?: string; gif_search_username?: string; venue_search_username?: string; img_search_username?: string; static_maps_provider?: string; caption_length_max: number; message_length_max: number; webfile_dc_id: number; suggested_lang_code?: string; lang_pack_version?: number; base_lang_pack_version?: number; reactions_default?: Reaction; autologin_token?: string }) {
+  constructor(params: { default_p2p_contacts?: true; preload_featured_stickers?: true; revoke_pm_inbox?: true; blocked_mode?: true; force_try_ipv6?: true; date: number; expires: number; test_mode: boolean; this_dc: number; dc_options: Array<enums.DcOption>; dc_txt_domain_name: string; chat_size_max: number; megagroup_size_max: number; forwarded_count_max: number; online_update_period_ms: number; offline_blur_timeout_ms: number; offline_idle_timeout_ms: number; online_cloud_timeout_ms: number; notify_cloud_delay_ms: number; notify_default_delay_ms: number; push_chat_period_ms: number; push_chat_limit: number; edit_time_limit: number; revoke_time_limit: number; revoke_pm_time_limit: number; rating_e_decay: number; stickers_recent_limit: number; channels_read_media_period: number; tmp_sessions?: number; call_receive_timeout_ms: number; call_ring_timeout_ms: number; call_connect_timeout_ms: number; call_packet_timeout_ms: number; me_url_prefix: string; autoupdate_url_prefix?: string; gif_search_username?: string; venue_search_username?: string; img_search_username?: string; static_maps_provider?: string; caption_length_max: number; message_length_max: number; webfile_dc_id: number; suggested_lang_code?: string; lang_pack_version?: number; base_lang_pack_version?: number; reactions_default?: enums.Reaction; autologin_token?: string }) {
     super();
     this.default_p2p_contacts = params.default_p2p_contacts;
     this.preload_featured_stickers = params.preload_featured_stickers;
@@ -14647,10 +14647,10 @@ export class help_appUpdate extends _help_AppUpdate {
   id: number;
   version: string;
   text: string;
-  entities: Array<MessageEntity>;
-  document?: Document;
+  entities: Array<enums.MessageEntity>;
+  document?: enums.Document;
   url?: string;
-  sticker?: Document;
+  sticker?: enums.Document;
 
   protected get [id]() {
     return 0xCCBBCE30;
@@ -14684,7 +14684,7 @@ export class help_appUpdate extends _help_AppUpdate {
     ];
   }
 
-  constructor(params: { can_not_skip?: true; id: number; version: string; text: string; entities: Array<MessageEntity>; document?: Document; url?: string; sticker?: Document }) {
+  constructor(params: { can_not_skip?: true; id: number; version: string; text: string; entities: Array<enums.MessageEntity>; document?: enums.Document; url?: string; sticker?: enums.Document }) {
     super();
     this.can_not_skip = params.can_not_skip;
     this.id = params.id;
@@ -15147,7 +15147,7 @@ export class encryptedMessage extends _EncryptedMessage {
   chat_id: number;
   date: number;
   bytes: Uint8Array;
-  file: EncryptedFile;
+  file: enums.EncryptedFile;
 
   protected get [id]() {
     return 0xED18C118;
@@ -15173,7 +15173,7 @@ export class encryptedMessage extends _EncryptedMessage {
     ];
   }
 
-  constructor(params: { random_id: bigint; chat_id: number; date: number; bytes: Uint8Array; file: EncryptedFile }) {
+  constructor(params: { random_id: bigint; chat_id: number; date: number; bytes: Uint8Array; file: enums.EncryptedFile }) {
     super();
     this.random_id = params.random_id;
     this.chat_id = params.chat_id;
@@ -15309,7 +15309,7 @@ export class messages_sentEncryptedMessage extends _messages_SentEncryptedMessag
 
 export class messages_sentEncryptedFile extends _messages_SentEncryptedMessage {
   date: number;
-  file: EncryptedFile;
+  file: enums.EncryptedFile;
 
   protected get [id]() {
     return 0x9493FF32;
@@ -15329,7 +15329,7 @@ export class messages_sentEncryptedFile extends _messages_SentEncryptedMessage {
     ];
   }
 
-  constructor(params: { date: number; file: EncryptedFile }) {
+  constructor(params: { date: number; file: enums.EncryptedFile }) {
     super();
     this.date = params.date;
     this.file = params.file;
@@ -15419,10 +15419,10 @@ export class document extends _Document {
   date: number;
   mime_type: string;
   size: bigint;
-  thumbs?: Array<PhotoSize>;
-  video_thumbs?: Array<VideoSize>;
+  thumbs?: Array<enums.PhotoSize>;
+  video_thumbs?: Array<enums.VideoSize>;
   dc_id: number;
-  attributes: Array<DocumentAttribute>;
+  attributes: Array<enums.DocumentAttribute>;
 
   protected get [id]() {
     return 0x8FD4C4D8;
@@ -15460,7 +15460,7 @@ export class document extends _Document {
     ];
   }
 
-  constructor(params: { id: bigint; access_hash: bigint; file_reference: Uint8Array; date: number; mime_type: string; size: bigint; thumbs?: Array<PhotoSize>; video_thumbs?: Array<VideoSize>; dc_id: number; attributes: Array<DocumentAttribute> }) {
+  constructor(params: { id: bigint; access_hash: bigint; file_reference: Uint8Array; date: number; mime_type: string; size: bigint; thumbs?: Array<enums.PhotoSize>; video_thumbs?: Array<enums.VideoSize>; dc_id: number; attributes: Array<enums.DocumentAttribute> }) {
     super();
     this.id = params.id;
     this.access_hash = params.access_hash;
@@ -15477,7 +15477,7 @@ export class document extends _Document {
 
 export class help_support extends _help_Support {
   phone_number: string;
-  user: User;
+  user: enums.User;
 
   protected get [id]() {
     return 0x17C6B5F6;
@@ -15497,7 +15497,7 @@ export class help_support extends _help_Support {
     ];
   }
 
-  constructor(params: { phone_number: string; user: User }) {
+  constructor(params: { phone_number: string; user: enums.User }) {
     super();
     this.phone_number = params.phone_number;
     this.user = params.user;
@@ -15505,7 +15505,7 @@ export class help_support extends _help_Support {
 }
 
 export class notifyPeer extends _NotifyPeer {
-  peer: Peer;
+  peer: enums.Peer;
 
   protected get [id]() {
     return 0x9FD40BD8;
@@ -15523,7 +15523,7 @@ export class notifyPeer extends _NotifyPeer {
     ];
   }
 
-  constructor(params: { peer: Peer }) {
+  constructor(params: { peer: enums.Peer }) {
     super();
     this.peer = params.peer;
   }
@@ -15584,7 +15584,7 @@ export class notifyBroadcasts extends _NotifyPeer {
 }
 
 export class notifyForumTopic extends _NotifyPeer {
-  peer: Peer;
+  peer: enums.Peer;
   top_msg_id: number;
 
   protected get [id]() {
@@ -15605,7 +15605,7 @@ export class notifyForumTopic extends _NotifyPeer {
     ];
   }
 
-  constructor(params: { peer: Peer; top_msg_id: number }) {
+  constructor(params: { peer: enums.Peer; top_msg_id: number }) {
     super();
     this.peer = params.peer;
     this.top_msg_id = params.top_msg_id;
@@ -15945,7 +15945,7 @@ export class sendMessageChooseStickerAction extends _SendMessageAction {
 export class sendMessageEmojiInteraction extends _SendMessageAction {
   emoticon: string;
   msg_id: number;
-  interaction: DataJSON;
+  interaction: enums.DataJSON;
 
   protected get [id]() {
     return 0x25972BCB;
@@ -15967,7 +15967,7 @@ export class sendMessageEmojiInteraction extends _SendMessageAction {
     ];
   }
 
-  constructor(params: { emoticon: string; msg_id: number; interaction: DataJSON }) {
+  constructor(params: { emoticon: string; msg_id: number; interaction: enums.DataJSON }) {
     super();
     this.emoticon = params.emoticon;
     this.msg_id = params.msg_id;
@@ -16001,10 +16001,10 @@ export class sendMessageEmojiInteractionSeen extends _SendMessageAction {
 }
 
 export class contacts_found extends _contacts_Found {
-  my_results: Array<Peer>;
-  results: Array<Peer>;
-  chats: Array<Chat>;
-  users: Array<User>;
+  my_results: Array<enums.Peer>;
+  results: Array<enums.Peer>;
+  chats: Array<enums.Chat>;
+  users: Array<enums.User>;
 
   protected get [id]() {
     return 0xB3134D9D;
@@ -16028,7 +16028,7 @@ export class contacts_found extends _contacts_Found {
     ];
   }
 
-  constructor(params: { my_results: Array<Peer>; results: Array<Peer>; chats: Array<Chat>; users: Array<User> }) {
+  constructor(params: { my_results: Array<enums.Peer>; results: Array<enums.Peer>; chats: Array<enums.Chat>; users: Array<enums.User> }) {
     super();
     this.my_results = params.my_results;
     this.results = params.results;
@@ -16434,7 +16434,7 @@ export class inputPrivacyValueAllowAll extends _InputPrivacyRule {
 }
 
 export class inputPrivacyValueAllowUsers extends _InputPrivacyRule {
-  users: Array<InputUser>;
+  users: Array<enums.InputUser>;
 
   protected get [id]() {
     return 0x131CC67F;
@@ -16452,7 +16452,7 @@ export class inputPrivacyValueAllowUsers extends _InputPrivacyRule {
     ];
   }
 
-  constructor(params: { users: Array<InputUser> }) {
+  constructor(params: { users: Array<enums.InputUser> }) {
     super();
     this.users = params.users;
   }
@@ -16495,7 +16495,7 @@ export class inputPrivacyValueDisallowAll extends _InputPrivacyRule {
 }
 
 export class inputPrivacyValueDisallowUsers extends _InputPrivacyRule {
-  users: Array<InputUser>;
+  users: Array<enums.InputUser>;
 
   protected get [id]() {
     return 0x90110467;
@@ -16513,7 +16513,7 @@ export class inputPrivacyValueDisallowUsers extends _InputPrivacyRule {
     ];
   }
 
-  constructor(params: { users: Array<InputUser> }) {
+  constructor(params: { users: Array<enums.InputUser> }) {
     super();
     this.users = params.users;
   }
@@ -16778,9 +16778,9 @@ export class privacyValueAllowCloseFriends extends _PrivacyRule {
 }
 
 export class account_privacyRules extends _account_PrivacyRules {
-  rules: Array<PrivacyRule>;
-  chats: Array<Chat>;
-  users: Array<User>;
+  rules: Array<enums.PrivacyRule>;
+  chats: Array<enums.Chat>;
+  users: Array<enums.User>;
 
   protected get [id]() {
     return 0x50A04E45;
@@ -16802,7 +16802,7 @@ export class account_privacyRules extends _account_PrivacyRules {
     ];
   }
 
-  constructor(params: { rules: Array<PrivacyRule>; chats: Array<Chat>; users: Array<User> }) {
+  constructor(params: { rules: Array<enums.PrivacyRule>; chats: Array<enums.Chat>; users: Array<enums.User> }) {
     super();
     this.rules = params.rules;
     this.chats = params.chats;
@@ -16885,8 +16885,8 @@ export class documentAttributeAnimated extends _DocumentAttribute {
 export class documentAttributeSticker extends _DocumentAttribute {
   mask?: true;
   alt: string;
-  stickerset: InputStickerSet;
-  mask_coords?: MaskCoords;
+  stickerset: enums.InputStickerSet;
+  mask_coords?: enums.MaskCoords;
 
   protected get [id]() {
     return 0x6319D612;
@@ -16912,7 +16912,7 @@ export class documentAttributeSticker extends _DocumentAttribute {
     ];
   }
 
-  constructor(params: { mask?: true; alt: string; stickerset: InputStickerSet; mask_coords?: MaskCoords }) {
+  constructor(params: { mask?: true; alt: string; stickerset: enums.InputStickerSet; mask_coords?: enums.MaskCoords }) {
     super();
     this.mask = params.mask;
     this.alt = params.alt;
@@ -17062,7 +17062,7 @@ export class documentAttributeCustomEmoji extends _DocumentAttribute {
   free?: true;
   text_color?: true;
   alt: string;
-  stickerset: InputStickerSet;
+  stickerset: enums.InputStickerSet;
 
   protected get [id]() {
     return 0xFD149899;
@@ -17088,7 +17088,7 @@ export class documentAttributeCustomEmoji extends _DocumentAttribute {
     ];
   }
 
-  constructor(params: { free?: true; text_color?: true; alt: string; stickerset: InputStickerSet }) {
+  constructor(params: { free?: true; text_color?: true; alt: string; stickerset: enums.InputStickerSet }) {
     super();
     this.free = params.free;
     this.text_color = params.text_color;
@@ -17117,7 +17117,7 @@ export class messages_stickersNotModified extends _messages_Stickers {
 
 export class messages_stickers extends _messages_Stickers {
   hash: bigint;
-  stickers: Array<Document>;
+  stickers: Array<enums.Document>;
 
   protected get [id]() {
     return 0x30A6EC7E;
@@ -17137,7 +17137,7 @@ export class messages_stickers extends _messages_Stickers {
     ];
   }
 
-  constructor(params: { hash: bigint; stickers: Array<Document> }) {
+  constructor(params: { hash: bigint; stickers: Array<enums.Document> }) {
     super();
     this.hash = params.hash;
     this.stickers = params.stickers;
@@ -17193,7 +17193,7 @@ export class messages_allStickersNotModified extends _messages_AllStickers {
 
 export class messages_allStickers extends _messages_AllStickers {
   hash: bigint;
-  sets: Array<StickerSet>;
+  sets: Array<enums.StickerSet>;
 
   protected get [id]() {
     return 0xCDBBCEBB;
@@ -17213,7 +17213,7 @@ export class messages_allStickers extends _messages_AllStickers {
     ];
   }
 
-  constructor(params: { hash: bigint; sets: Array<StickerSet> }) {
+  constructor(params: { hash: bigint; sets: Array<enums.StickerSet> }) {
     super();
     this.hash = params.hash;
     this.sets = params.sets;
@@ -17325,16 +17325,16 @@ export class webPage extends _WebPage {
   site_name?: string;
   title?: string;
   description?: string;
-  photo?: Photo;
+  photo?: enums.Photo;
   embed_url?: string;
   embed_type?: string;
   embed_width?: number;
   embed_height?: number;
   duration?: number;
   author?: string;
-  document?: Document;
-  cached_page?: Page;
-  attributes?: Array<WebPageAttribute>;
+  document?: enums.Document;
+  cached_page?: enums.Page;
+  attributes?: Array<enums.WebPageAttribute>;
 
   protected get [id]() {
     return 0xE89C45B2;
@@ -17390,7 +17390,7 @@ export class webPage extends _WebPage {
     ];
   }
 
-  constructor(params: { has_large_media?: true; id: bigint; url: string; display_url: string; hash: number; type?: string; site_name?: string; title?: string; description?: string; photo?: Photo; embed_url?: string; embed_type?: string; embed_width?: number; embed_height?: number; duration?: number; author?: string; document?: Document; cached_page?: Page; attributes?: Array<WebPageAttribute> }) {
+  constructor(params: { has_large_media?: true; id: bigint; url: string; display_url: string; hash: number; type?: string; site_name?: string; title?: string; description?: string; photo?: enums.Photo; embed_url?: string; embed_type?: string; embed_width?: number; embed_height?: number; duration?: number; author?: string; document?: enums.Document; cached_page?: enums.Page; attributes?: Array<enums.WebPageAttribute> }) {
     super();
     this.has_large_media = params.has_large_media;
     this.id = params.id;
@@ -17538,7 +17538,7 @@ export class authorization extends _Authorization {
 
 export class account_authorizations extends _account_Authorizations {
   authorization_ttl_days: number;
-  authorizations: Array<Authorization>;
+  authorizations: Array<enums.Authorization>;
 
   protected get [id]() {
     return 0x4BFF8EA0;
@@ -17558,7 +17558,7 @@ export class account_authorizations extends _account_Authorizations {
     ];
   }
 
-  constructor(params: { authorization_ttl_days: number; authorizations: Array<Authorization> }) {
+  constructor(params: { authorization_ttl_days: number; authorizations: Array<enums.Authorization> }) {
     super();
     this.authorization_ttl_days = params.authorization_ttl_days;
     this.authorizations = params.authorizations;
@@ -17569,13 +17569,13 @@ export class account_password extends _account_Password {
   has_recovery?: true;
   has_secure_values?: true;
   has_password?: true;
-  current_algo?: PasswordKdfAlgo;
+  current_algo?: enums.PasswordKdfAlgo;
   srp_B?: Uint8Array;
   srp_id?: bigint;
   hint?: string;
   email_unconfirmed_pattern?: string;
-  new_algo: PasswordKdfAlgo;
-  new_secure_algo: SecurePasswordKdfAlgo;
+  new_algo: enums.PasswordKdfAlgo;
+  new_secure_algo: enums.SecurePasswordKdfAlgo;
   secure_random: Uint8Array;
   pending_reset_date?: number;
   login_email_pattern?: string;
@@ -17622,7 +17622,7 @@ export class account_password extends _account_Password {
     ];
   }
 
-  constructor(params: { has_recovery?: true; has_secure_values?: true; has_password?: true; current_algo?: PasswordKdfAlgo; srp_B?: Uint8Array; srp_id?: bigint; hint?: string; email_unconfirmed_pattern?: string; new_algo: PasswordKdfAlgo; new_secure_algo: SecurePasswordKdfAlgo; secure_random: Uint8Array; pending_reset_date?: number; login_email_pattern?: string }) {
+  constructor(params: { has_recovery?: true; has_secure_values?: true; has_password?: true; current_algo?: enums.PasswordKdfAlgo; srp_B?: Uint8Array; srp_id?: bigint; hint?: string; email_unconfirmed_pattern?: string; new_algo: enums.PasswordKdfAlgo; new_secure_algo: enums.SecurePasswordKdfAlgo; secure_random: Uint8Array; pending_reset_date?: number; login_email_pattern?: string }) {
     super();
     this.has_recovery = params.has_recovery;
     this.has_secure_values = params.has_secure_values;
@@ -17642,7 +17642,7 @@ export class account_password extends _account_Password {
 
 export class account_passwordSettings extends _account_PasswordSettings {
   email?: string;
-  secure_settings?: SecureSecretSettings;
+  secure_settings?: enums.SecureSecretSettings;
 
   protected get [id]() {
     return 0x9A5C33E5;
@@ -17664,7 +17664,7 @@ export class account_passwordSettings extends _account_PasswordSettings {
     ];
   }
 
-  constructor(params?: { email?: string; secure_settings?: SecureSecretSettings }) {
+  constructor(params?: { email?: string; secure_settings?: enums.SecureSecretSettings }) {
     super();
     this.email = params?.email;
     this.secure_settings = params?.secure_settings;
@@ -17672,11 +17672,11 @@ export class account_passwordSettings extends _account_PasswordSettings {
 }
 
 export class account_passwordInputSettings extends _account_PasswordInputSettings {
-  new_algo?: PasswordKdfAlgo;
+  new_algo?: enums.PasswordKdfAlgo;
   new_password_hash?: Uint8Array;
   hint?: string;
   email?: string;
-  new_secure_settings?: SecureSecretSettings;
+  new_secure_settings?: enums.SecureSecretSettings;
 
   protected get [id]() {
     return 0xC23727C9;
@@ -17704,7 +17704,7 @@ export class account_passwordInputSettings extends _account_PasswordInputSetting
     ];
   }
 
-  constructor(params?: { new_algo?: PasswordKdfAlgo; new_password_hash?: Uint8Array; hint?: string; email?: string; new_secure_settings?: SecureSecretSettings }) {
+  constructor(params?: { new_algo?: enums.PasswordKdfAlgo; new_password_hash?: Uint8Array; hint?: string; email?: string; new_secure_settings?: enums.SecureSecretSettings }) {
     super();
     this.new_algo = params?.new_algo;
     this.new_password_hash = params?.new_password_hash;
@@ -17858,7 +17858,7 @@ export class chatInvitePublicJoinRequests extends _ExportedChatInvite {
 }
 
 export class chatInviteAlready extends _ChatInvite {
-  chat: Chat;
+  chat: enums.Chat;
 
   protected get [id]() {
     return 0x5A686D7C;
@@ -17876,7 +17876,7 @@ export class chatInviteAlready extends _ChatInvite {
     ];
   }
 
-  constructor(params: { chat: Chat }) {
+  constructor(params: { chat: enums.Chat }) {
     super();
     this.chat = params.chat;
   }
@@ -17893,9 +17893,9 @@ export class chatInvite extends _ChatInvite {
   fake?: true;
   title: string;
   about?: string;
-  photo: Photo;
+  photo: enums.Photo;
   participants_count: number;
-  participants?: Array<User>;
+  participants?: Array<enums.User>;
   color: number;
 
   protected get [id]() {
@@ -17942,7 +17942,7 @@ export class chatInvite extends _ChatInvite {
     ];
   }
 
-  constructor(params: { channel?: true; broadcast?: true; public?: true; megagroup?: true; request_needed?: true; verified?: true; scam?: true; fake?: true; title: string; about?: string; photo: Photo; participants_count: number; participants?: Array<User>; color: number }) {
+  constructor(params: { channel?: true; broadcast?: true; public?: true; megagroup?: true; request_needed?: true; verified?: true; scam?: true; fake?: true; title: string; about?: string; photo: enums.Photo; participants_count: number; participants?: Array<enums.User>; color: number }) {
     super();
     this.channel = params.channel;
     this.broadcast = params.broadcast;
@@ -17962,7 +17962,7 @@ export class chatInvite extends _ChatInvite {
 }
 
 export class chatInvitePeek extends _ChatInvite {
-  chat: Chat;
+  chat: enums.Chat;
   expires: number;
 
   protected get [id]() {
@@ -17983,7 +17983,7 @@ export class chatInvitePeek extends _ChatInvite {
     ];
   }
 
-  constructor(params: { chat: Chat; expires: number }) {
+  constructor(params: { chat: enums.Chat; expires: number }) {
     super();
     this.chat = params.chat;
     this.expires = params.expires;
@@ -18208,7 +18208,7 @@ export class stickerSet extends _StickerSet {
   access_hash: bigint;
   title: string;
   short_name: string;
-  thumbs?: Array<PhotoSize>;
+  thumbs?: Array<enums.PhotoSize>;
   thumb_dc_id?: number;
   thumb_version?: number;
   thumb_document_id?: bigint;
@@ -18267,7 +18267,7 @@ export class stickerSet extends _StickerSet {
     ];
   }
 
-  constructor(params: { archived?: true; official?: true; masks?: true; animated?: true; videos?: true; emojis?: true; text_color?: true; installed_date?: number; id: bigint; access_hash: bigint; title: string; short_name: string; thumbs?: Array<PhotoSize>; thumb_dc_id?: number; thumb_version?: number; thumb_document_id?: bigint; count: number; hash: number }) {
+  constructor(params: { archived?: true; official?: true; masks?: true; animated?: true; videos?: true; emojis?: true; text_color?: true; installed_date?: number; id: bigint; access_hash: bigint; title: string; short_name: string; thumbs?: Array<enums.PhotoSize>; thumb_dc_id?: number; thumb_version?: number; thumb_document_id?: bigint; count: number; hash: number }) {
     super();
     this.archived = params.archived;
     this.official = params.official;
@@ -18291,10 +18291,10 @@ export class stickerSet extends _StickerSet {
 }
 
 export class messages_stickerSet extends _messages_StickerSet {
-  set: StickerSet;
-  packs: Array<StickerPack>;
-  keywords: Array<StickerKeyword>;
-  documents: Array<Document>;
+  set: enums.StickerSet;
+  packs: Array<enums.StickerPack>;
+  keywords: Array<enums.StickerKeyword>;
+  documents: Array<enums.Document>;
 
   protected get [id]() {
     return 0x6E153F16;
@@ -18318,7 +18318,7 @@ export class messages_stickerSet extends _messages_StickerSet {
     ];
   }
 
-  constructor(params: { set: StickerSet; packs: Array<StickerPack>; keywords: Array<StickerKeyword>; documents: Array<Document> }) {
+  constructor(params: { set: enums.StickerSet; packs: Array<enums.StickerPack>; keywords: Array<enums.StickerKeyword>; documents: Array<enums.Document> }) {
     super();
     this.set = params.set;
     this.packs = params.packs;
@@ -18377,10 +18377,10 @@ export class botCommand extends _BotCommand {
 export class botInfo extends _BotInfo {
   user_id?: bigint;
   description?: string;
-  description_photo?: Photo;
-  description_document?: Document;
-  commands?: Array<BotCommand>;
-  menu_button?: BotMenuButton;
+  description_photo?: enums.Photo;
+  description_document?: enums.Document;
+  commands?: Array<enums.BotCommand>;
+  menu_button?: enums.BotMenuButton;
 
   protected get [id]() {
     return 0x8F300B57;
@@ -18410,7 +18410,7 @@ export class botInfo extends _BotInfo {
     ];
   }
 
-  constructor(params?: { user_id?: bigint; description?: string; description_photo?: Photo; description_document?: Document; commands?: Array<BotCommand>; menu_button?: BotMenuButton }) {
+  constructor(params?: { user_id?: bigint; description?: string; description_photo?: enums.Photo; description_document?: enums.Document; commands?: Array<enums.BotCommand>; menu_button?: enums.BotMenuButton }) {
     super();
     this.user_id = params?.user_id;
     this.description = params?.description;
@@ -18564,7 +18564,7 @@ export class keyboardButtonSwitchInline extends _KeyboardButton {
   same_peer?: true;
   text: string;
   query: string;
-  peer_types?: Array<InlineQueryPeerType>;
+  peer_types?: Array<enums.InlineQueryPeerType>;
 
   protected get [id]() {
     return 0x93B9FBB5;
@@ -18590,7 +18590,7 @@ export class keyboardButtonSwitchInline extends _KeyboardButton {
     ];
   }
 
-  constructor(params: { same_peer?: true; text: string; query: string; peer_types?: Array<InlineQueryPeerType> }) {
+  constructor(params: { same_peer?: true; text: string; query: string; peer_types?: Array<enums.InlineQueryPeerType> }) {
     super();
     this.same_peer = params.same_peer;
     this.text = params.text;
@@ -18693,7 +18693,7 @@ export class inputKeyboardButtonUrlAuth extends _KeyboardButton {
   text: string;
   fwd_text?: string;
   url: string;
-  bot: InputUser;
+  bot: enums.InputUser;
 
   protected get [id]() {
     return 0xD02E7FD4;
@@ -18721,7 +18721,7 @@ export class inputKeyboardButtonUrlAuth extends _KeyboardButton {
     ];
   }
 
-  constructor(params: { request_write_access?: true; text: string; fwd_text?: string; url: string; bot: InputUser }) {
+  constructor(params: { request_write_access?: true; text: string; fwd_text?: string; url: string; bot: enums.InputUser }) {
     super();
     this.request_write_access = params.request_write_access;
     this.text = params.text;
@@ -18764,7 +18764,7 @@ export class keyboardButtonRequestPoll extends _KeyboardButton {
 
 export class inputKeyboardButtonUserProfile extends _KeyboardButton {
   text: string;
-  user_id: InputUser;
+  user_id: enums.InputUser;
 
   protected get [id]() {
     return 0xE988037B;
@@ -18784,7 +18784,7 @@ export class inputKeyboardButtonUserProfile extends _KeyboardButton {
     ];
   }
 
-  constructor(params: { text: string; user_id: InputUser }) {
+  constructor(params: { text: string; user_id: enums.InputUser }) {
     super();
     this.text = params.text;
     this.user_id = params.user_id;
@@ -18881,7 +18881,7 @@ export class keyboardButtonSimpleWebView extends _KeyboardButton {
 export class keyboardButtonRequestPeer extends _KeyboardButton {
   text: string;
   button_id: number;
-  peer_type: RequestPeerType;
+  peer_type: enums.RequestPeerType;
 
   protected get [id]() {
     return 0x0D0B468C;
@@ -18903,7 +18903,7 @@ export class keyboardButtonRequestPeer extends _KeyboardButton {
     ];
   }
 
-  constructor(params: { text: string; button_id: number; peer_type: RequestPeerType }) {
+  constructor(params: { text: string; button_id: number; peer_type: enums.RequestPeerType }) {
     super();
     this.text = params.text;
     this.button_id = params.button_id;
@@ -18912,7 +18912,7 @@ export class keyboardButtonRequestPeer extends _KeyboardButton {
 }
 
 export class keyboardButtonRow extends _KeyboardButtonRow {
-  buttons: Array<KeyboardButton>;
+  buttons: Array<enums.KeyboardButton>;
 
   protected get [id]() {
     return 0x77608B83;
@@ -18930,7 +18930,7 @@ export class keyboardButtonRow extends _KeyboardButtonRow {
     ];
   }
 
-  constructor(params: { buttons: Array<KeyboardButton> }) {
+  constructor(params: { buttons: Array<enums.KeyboardButton> }) {
     super();
     this.buttons = params.buttons;
   }
@@ -19003,7 +19003,7 @@ export class replyKeyboardMarkup extends _ReplyMarkup {
   single_use?: true;
   selective?: true;
   persistent?: true;
-  rows: Array<KeyboardButtonRow>;
+  rows: Array<enums.KeyboardButtonRow>;
   placeholder?: string;
 
   protected get [id]() {
@@ -19034,7 +19034,7 @@ export class replyKeyboardMarkup extends _ReplyMarkup {
     ];
   }
 
-  constructor(params: { resize?: true; single_use?: true; selective?: true; persistent?: true; rows: Array<KeyboardButtonRow>; placeholder?: string }) {
+  constructor(params: { resize?: true; single_use?: true; selective?: true; persistent?: true; rows: Array<enums.KeyboardButtonRow>; placeholder?: string }) {
     super();
     this.resize = params.resize;
     this.single_use = params.single_use;
@@ -19046,7 +19046,7 @@ export class replyKeyboardMarkup extends _ReplyMarkup {
 }
 
 export class replyInlineMarkup extends _ReplyMarkup {
-  rows: Array<KeyboardButtonRow>;
+  rows: Array<enums.KeyboardButtonRow>;
 
   protected get [id]() {
     return 0x48A30254;
@@ -19064,7 +19064,7 @@ export class replyInlineMarkup extends _ReplyMarkup {
     ];
   }
 
-  constructor(params: { rows: Array<KeyboardButtonRow> }) {
+  constructor(params: { rows: Array<enums.KeyboardButtonRow> }) {
     super();
     this.rows = params.rows;
   }
@@ -19433,7 +19433,7 @@ export class messageEntityMentionName extends _MessageEntity {
 export class inputMessageEntityMentionName extends _MessageEntity {
   offset: number;
   length: number;
-  user_id: InputUser;
+  user_id: enums.InputUser;
 
   protected get [id]() {
     return 0x208E68C9;
@@ -19455,7 +19455,7 @@ export class inputMessageEntityMentionName extends _MessageEntity {
     ];
   }
 
-  constructor(params: { offset: number; length: number; user_id: InputUser }) {
+  constructor(params: { offset: number; length: number; user_id: enums.InputUser }) {
     super();
     this.offset = params.offset;
     this.length = params.length;
@@ -19747,7 +19747,7 @@ export class inputChannel extends _InputChannel {
 }
 
 export class inputChannelFromMessage extends _InputChannel {
-  peer: InputPeer;
+  peer: enums.InputPeer;
   msg_id: number;
   channel_id: bigint;
 
@@ -19771,7 +19771,7 @@ export class inputChannelFromMessage extends _InputChannel {
     ];
   }
 
-  constructor(params: { peer: InputPeer; msg_id: number; channel_id: bigint }) {
+  constructor(params: { peer: enums.InputPeer; msg_id: number; channel_id: bigint }) {
     super();
     this.peer = params.peer;
     this.msg_id = params.msg_id;
@@ -19780,9 +19780,9 @@ export class inputChannelFromMessage extends _InputChannel {
 }
 
 export class contacts_resolvedPeer extends _contacts_ResolvedPeer {
-  peer: Peer;
-  chats: Array<Chat>;
-  users: Array<User>;
+  peer: enums.Peer;
+  chats: Array<enums.Chat>;
+  users: Array<enums.User>;
 
   protected get [id]() {
     return 0x7F077AD9;
@@ -19804,7 +19804,7 @@ export class contacts_resolvedPeer extends _contacts_ResolvedPeer {
     ];
   }
 
-  constructor(params: { peer: Peer; chats: Array<Chat>; users: Array<User> }) {
+  constructor(params: { peer: enums.Peer; chats: Array<enums.Chat>; users: Array<enums.User> }) {
     super();
     this.peer = params.peer;
     this.chats = params.chats;
@@ -19879,10 +19879,10 @@ export class updates_channelDifferenceEmpty extends _updates_ChannelDifference {
 export class updates_channelDifferenceTooLong extends _updates_ChannelDifference {
   final?: true;
   timeout?: number;
-  dialog: Dialog;
-  messages: Array<Message>;
-  chats: Array<Chat>;
-  users: Array<User>;
+  dialog: enums.Dialog;
+  messages: Array<enums.Message>;
+  chats: Array<enums.Chat>;
+  users: Array<enums.User>;
 
   protected get [id]() {
     return 0xA4BCC6FE;
@@ -19912,7 +19912,7 @@ export class updates_channelDifferenceTooLong extends _updates_ChannelDifference
     ];
   }
 
-  constructor(params: { final?: true; timeout?: number; dialog: Dialog; messages: Array<Message>; chats: Array<Chat>; users: Array<User> }) {
+  constructor(params: { final?: true; timeout?: number; dialog: enums.Dialog; messages: Array<enums.Message>; chats: Array<enums.Chat>; users: Array<enums.User> }) {
     super();
     this.final = params.final;
     this.timeout = params.timeout;
@@ -19927,10 +19927,10 @@ export class updates_channelDifference extends _updates_ChannelDifference {
   final?: true;
   pts: number;
   timeout?: number;
-  new_messages: Array<Message>;
-  other_updates: Array<Update>;
-  chats: Array<Chat>;
-  users: Array<User>;
+  new_messages: Array<enums.Message>;
+  other_updates: Array<enums.Update>;
+  chats: Array<enums.Chat>;
+  users: Array<enums.User>;
 
   protected get [id]() {
     return 0x2064674E;
@@ -19962,7 +19962,7 @@ export class updates_channelDifference extends _updates_ChannelDifference {
     ];
   }
 
-  constructor(params: { final?: true; pts: number; timeout?: number; new_messages: Array<Message>; other_updates: Array<Update>; chats: Array<Chat>; users: Array<User> }) {
+  constructor(params: { final?: true; pts: number; timeout?: number; new_messages: Array<enums.Message>; other_updates: Array<enums.Update>; chats: Array<enums.Chat>; users: Array<enums.User> }) {
     super();
     this.final = params.final;
     this.pts = params.pts;
@@ -19994,7 +19994,7 @@ export class channelMessagesFilterEmpty extends _ChannelMessagesFilter {
 
 export class channelMessagesFilter extends _ChannelMessagesFilter {
   exclude_new_messages?: true;
-  ranges: Array<MessageRange>;
+  ranges: Array<enums.MessageRange>;
 
   protected get [id]() {
     return 0xCD77D957;
@@ -20016,7 +20016,7 @@ export class channelMessagesFilter extends _ChannelMessagesFilter {
     ];
   }
 
-  constructor(params: { exclude_new_messages?: true; ranges: Array<MessageRange> }) {
+  constructor(params: { exclude_new_messages?: true; ranges: Array<enums.MessageRange> }) {
     super();
     this.exclude_new_messages = params.exclude_new_messages;
     this.ranges = params.ranges;
@@ -20093,7 +20093,7 @@ export class channelParticipantSelf extends _ChannelParticipant {
 
 export class channelParticipantCreator extends _ChannelParticipant {
   user_id: bigint;
-  admin_rights: ChatAdminRights;
+  admin_rights: enums.ChatAdminRights;
   rank?: string;
 
   protected get [id]() {
@@ -20118,7 +20118,7 @@ export class channelParticipantCreator extends _ChannelParticipant {
     ];
   }
 
-  constructor(params: { user_id: bigint; admin_rights: ChatAdminRights; rank?: string }) {
+  constructor(params: { user_id: bigint; admin_rights: enums.ChatAdminRights; rank?: string }) {
     super();
     this.user_id = params.user_id;
     this.admin_rights = params.admin_rights;
@@ -20133,7 +20133,7 @@ export class channelParticipantAdmin extends _ChannelParticipant {
   inviter_id?: bigint;
   promoted_by: bigint;
   date: number;
-  admin_rights: ChatAdminRights;
+  admin_rights: enums.ChatAdminRights;
   rank?: string;
 
   protected get [id]() {
@@ -20168,7 +20168,7 @@ export class channelParticipantAdmin extends _ChannelParticipant {
     ];
   }
 
-  constructor(params: { can_edit?: true; self?: true; user_id: bigint; inviter_id?: bigint; promoted_by: bigint; date: number; admin_rights: ChatAdminRights; rank?: string }) {
+  constructor(params: { can_edit?: true; self?: true; user_id: bigint; inviter_id?: bigint; promoted_by: bigint; date: number; admin_rights: enums.ChatAdminRights; rank?: string }) {
     super();
     this.can_edit = params.can_edit;
     this.self = params.self;
@@ -20183,10 +20183,10 @@ export class channelParticipantAdmin extends _ChannelParticipant {
 
 export class channelParticipantBanned extends _ChannelParticipant {
   left?: true;
-  peer: Peer;
+  peer: enums.Peer;
   kicked_by: bigint;
   date: number;
-  banned_rights: ChatBannedRights;
+  banned_rights: enums.ChatBannedRights;
 
   protected get [id]() {
     return 0x6DF8014E;
@@ -20214,7 +20214,7 @@ export class channelParticipantBanned extends _ChannelParticipant {
     ];
   }
 
-  constructor(params: { left?: true; peer: Peer; kicked_by: bigint; date: number; banned_rights: ChatBannedRights }) {
+  constructor(params: { left?: true; peer: enums.Peer; kicked_by: bigint; date: number; banned_rights: enums.ChatBannedRights }) {
     super();
     this.left = params.left;
     this.peer = params.peer;
@@ -20225,7 +20225,7 @@ export class channelParticipantBanned extends _ChannelParticipant {
 }
 
 export class channelParticipantLeft extends _ChannelParticipant {
-  peer: Peer;
+  peer: enums.Peer;
 
   protected get [id]() {
     return 0x1B03F006;
@@ -20243,7 +20243,7 @@ export class channelParticipantLeft extends _ChannelParticipant {
     ];
   }
 
-  constructor(params: { peer: Peer }) {
+  constructor(params: { peer: enums.Peer }) {
     super();
     this.peer = params.peer;
   }
@@ -20436,9 +20436,9 @@ export class channelParticipantsMentions extends _ChannelParticipantsFilter {
 
 export class channels_channelParticipants extends _channels_ChannelParticipants {
   count: number;
-  participants: Array<ChannelParticipant>;
-  chats: Array<Chat>;
-  users: Array<User>;
+  participants: Array<enums.ChannelParticipant>;
+  chats: Array<enums.Chat>;
+  users: Array<enums.User>;
 
   protected get [id]() {
     return 0x9AB0FEAF;
@@ -20462,7 +20462,7 @@ export class channels_channelParticipants extends _channels_ChannelParticipants 
     ];
   }
 
-  constructor(params: { count: number; participants: Array<ChannelParticipant>; chats: Array<Chat>; users: Array<User> }) {
+  constructor(params: { count: number; participants: Array<enums.ChannelParticipant>; chats: Array<enums.Chat>; users: Array<enums.User> }) {
     super();
     this.count = params.count;
     this.participants = params.participants;
@@ -20490,9 +20490,9 @@ export class channels_channelParticipantsNotModified extends _channels_ChannelPa
 }
 
 export class channels_channelParticipant extends _channels_ChannelParticipant {
-  participant: ChannelParticipant;
-  chats: Array<Chat>;
-  users: Array<User>;
+  participant: enums.ChannelParticipant;
+  chats: Array<enums.Chat>;
+  users: Array<enums.User>;
 
   protected get [id]() {
     return 0xDFB80317;
@@ -20514,7 +20514,7 @@ export class channels_channelParticipant extends _channels_ChannelParticipant {
     ];
   }
 
-  constructor(params: { participant: ChannelParticipant; chats: Array<Chat>; users: Array<User> }) {
+  constructor(params: { participant: enums.ChannelParticipant; chats: Array<enums.Chat>; users: Array<enums.User> }) {
     super();
     this.participant = params.participant;
     this.chats = params.chats;
@@ -20524,9 +20524,9 @@ export class channels_channelParticipant extends _channels_ChannelParticipant {
 
 export class help_termsOfService extends _help_TermsOfService {
   popup?: true;
-  id: DataJSON;
+  id: enums.DataJSON;
   text: string;
-  entities: Array<MessageEntity>;
+  entities: Array<enums.MessageEntity>;
   min_age_confirm?: number;
 
   protected get [id]() {
@@ -20555,7 +20555,7 @@ export class help_termsOfService extends _help_TermsOfService {
     ];
   }
 
-  constructor(params: { popup?: true; id: DataJSON; text: string; entities: Array<MessageEntity>; min_age_confirm?: number }) {
+  constructor(params: { popup?: true; id: enums.DataJSON; text: string; entities: Array<enums.MessageEntity>; min_age_confirm?: number }) {
     super();
     this.popup = params.popup;
     this.id = params.id;
@@ -20585,7 +20585,7 @@ export class messages_savedGifsNotModified extends _messages_SavedGifs {
 
 export class messages_savedGifs extends _messages_SavedGifs {
   hash: bigint;
-  gifs: Array<Document>;
+  gifs: Array<enums.Document>;
 
   protected get [id]() {
     return 0x84A02A0D;
@@ -20605,7 +20605,7 @@ export class messages_savedGifs extends _messages_SavedGifs {
     ];
   }
 
-  constructor(params: { hash: bigint; gifs: Array<Document> }) {
+  constructor(params: { hash: bigint; gifs: Array<enums.Document> }) {
     super();
     this.hash = params.hash;
     this.gifs = params.gifs;
@@ -20615,8 +20615,8 @@ export class messages_savedGifs extends _messages_SavedGifs {
 export class inputBotInlineMessageMediaAuto extends _InputBotInlineMessage {
   invert_media?: true;
   message: string;
-  entities?: Array<MessageEntity>;
-  reply_markup?: ReplyMarkup;
+  entities?: Array<enums.MessageEntity>;
+  reply_markup?: enums.ReplyMarkup;
 
   protected get [id]() {
     return 0x3380C786;
@@ -20642,7 +20642,7 @@ export class inputBotInlineMessageMediaAuto extends _InputBotInlineMessage {
     ];
   }
 
-  constructor(params: { invert_media?: true; message: string; entities?: Array<MessageEntity>; reply_markup?: ReplyMarkup }) {
+  constructor(params: { invert_media?: true; message: string; entities?: Array<enums.MessageEntity>; reply_markup?: enums.ReplyMarkup }) {
     super();
     this.invert_media = params.invert_media;
     this.message = params.message;
@@ -20655,8 +20655,8 @@ export class inputBotInlineMessageText extends _InputBotInlineMessage {
   no_webpage?: true;
   invert_media?: true;
   message: string;
-  entities?: Array<MessageEntity>;
-  reply_markup?: ReplyMarkup;
+  entities?: Array<enums.MessageEntity>;
+  reply_markup?: enums.ReplyMarkup;
 
   protected get [id]() {
     return 0x3DCD7A87;
@@ -20684,7 +20684,7 @@ export class inputBotInlineMessageText extends _InputBotInlineMessage {
     ];
   }
 
-  constructor(params: { no_webpage?: true; invert_media?: true; message: string; entities?: Array<MessageEntity>; reply_markup?: ReplyMarkup }) {
+  constructor(params: { no_webpage?: true; invert_media?: true; message: string; entities?: Array<enums.MessageEntity>; reply_markup?: enums.ReplyMarkup }) {
     super();
     this.no_webpage = params.no_webpage;
     this.invert_media = params.invert_media;
@@ -20695,11 +20695,11 @@ export class inputBotInlineMessageText extends _InputBotInlineMessage {
 }
 
 export class inputBotInlineMessageMediaGeo extends _InputBotInlineMessage {
-  geo_point: InputGeoPoint;
+  geo_point: enums.InputGeoPoint;
   heading?: number;
   period?: number;
   proximity_notification_radius?: number;
-  reply_markup?: ReplyMarkup;
+  reply_markup?: enums.ReplyMarkup;
 
   protected get [id]() {
     return 0x96929A85;
@@ -20727,7 +20727,7 @@ export class inputBotInlineMessageMediaGeo extends _InputBotInlineMessage {
     ];
   }
 
-  constructor(params: { geo_point: InputGeoPoint; heading?: number; period?: number; proximity_notification_radius?: number; reply_markup?: ReplyMarkup }) {
+  constructor(params: { geo_point: enums.InputGeoPoint; heading?: number; period?: number; proximity_notification_radius?: number; reply_markup?: enums.ReplyMarkup }) {
     super();
     this.geo_point = params.geo_point;
     this.heading = params.heading;
@@ -20738,13 +20738,13 @@ export class inputBotInlineMessageMediaGeo extends _InputBotInlineMessage {
 }
 
 export class inputBotInlineMessageMediaVenue extends _InputBotInlineMessage {
-  geo_point: InputGeoPoint;
+  geo_point: enums.InputGeoPoint;
   title: string;
   address: string;
   provider: string;
   venue_id: string;
   venue_type: string;
-  reply_markup?: ReplyMarkup;
+  reply_markup?: enums.ReplyMarkup;
 
   protected get [id]() {
     return 0x417BBF11;
@@ -20776,7 +20776,7 @@ export class inputBotInlineMessageMediaVenue extends _InputBotInlineMessage {
     ];
   }
 
-  constructor(params: { geo_point: InputGeoPoint; title: string; address: string; provider: string; venue_id: string; venue_type: string; reply_markup?: ReplyMarkup }) {
+  constructor(params: { geo_point: enums.InputGeoPoint; title: string; address: string; provider: string; venue_id: string; venue_type: string; reply_markup?: enums.ReplyMarkup }) {
     super();
     this.geo_point = params.geo_point;
     this.title = params.title;
@@ -20793,7 +20793,7 @@ export class inputBotInlineMessageMediaContact extends _InputBotInlineMessage {
   first_name: string;
   last_name: string;
   vcard: string;
-  reply_markup?: ReplyMarkup;
+  reply_markup?: enums.ReplyMarkup;
 
   protected get [id]() {
     return 0xA6EDBFFD;
@@ -20821,7 +20821,7 @@ export class inputBotInlineMessageMediaContact extends _InputBotInlineMessage {
     ];
   }
 
-  constructor(params: { phone_number: string; first_name: string; last_name: string; vcard: string; reply_markup?: ReplyMarkup }) {
+  constructor(params: { phone_number: string; first_name: string; last_name: string; vcard: string; reply_markup?: enums.ReplyMarkup }) {
     super();
     this.phone_number = params.phone_number;
     this.first_name = params.first_name;
@@ -20832,7 +20832,7 @@ export class inputBotInlineMessageMediaContact extends _InputBotInlineMessage {
 }
 
 export class inputBotInlineMessageGame extends _InputBotInlineMessage {
-  reply_markup?: ReplyMarkup;
+  reply_markup?: enums.ReplyMarkup;
 
   protected get [id]() {
     return 0x4B425864;
@@ -20852,7 +20852,7 @@ export class inputBotInlineMessageGame extends _InputBotInlineMessage {
     ];
   }
 
-  constructor(params?: { reply_markup?: ReplyMarkup }) {
+  constructor(params?: { reply_markup?: enums.ReplyMarkup }) {
     super();
     this.reply_markup = params?.reply_markup;
   }
@@ -20861,12 +20861,12 @@ export class inputBotInlineMessageGame extends _InputBotInlineMessage {
 export class inputBotInlineMessageMediaInvoice extends _InputBotInlineMessage {
   title: string;
   description: string;
-  photo?: InputWebDocument;
-  invoice: Invoice;
+  photo?: enums.InputWebDocument;
+  invoice: enums.Invoice;
   payload: Uint8Array;
   provider: string;
-  provider_data: DataJSON;
-  reply_markup?: ReplyMarkup;
+  provider_data: enums.DataJSON;
+  reply_markup?: enums.ReplyMarkup;
 
   protected get [id]() {
     return 0xD7E78225;
@@ -20900,7 +20900,7 @@ export class inputBotInlineMessageMediaInvoice extends _InputBotInlineMessage {
     ];
   }
 
-  constructor(params: { title: string; description: string; photo?: InputWebDocument; invoice: Invoice; payload: Uint8Array; provider: string; provider_data: DataJSON; reply_markup?: ReplyMarkup }) {
+  constructor(params: { title: string; description: string; photo?: enums.InputWebDocument; invoice: enums.Invoice; payload: Uint8Array; provider: string; provider_data: enums.DataJSON; reply_markup?: enums.ReplyMarkup }) {
     super();
     this.title = params.title;
     this.description = params.description;
@@ -20919,9 +20919,9 @@ export class inputBotInlineMessageMediaWebPage extends _InputBotInlineMessage {
   force_small_media?: true;
   optional?: true;
   message: string;
-  entities?: Array<MessageEntity>;
+  entities?: Array<enums.MessageEntity>;
   url: string;
-  reply_markup?: ReplyMarkup;
+  reply_markup?: enums.ReplyMarkup;
 
   protected get [id]() {
     return 0xBDDCC510;
@@ -20955,7 +20955,7 @@ export class inputBotInlineMessageMediaWebPage extends _InputBotInlineMessage {
     ];
   }
 
-  constructor(params: { invert_media?: true; force_large_media?: true; force_small_media?: true; optional?: true; message: string; entities?: Array<MessageEntity>; url: string; reply_markup?: ReplyMarkup }) {
+  constructor(params: { invert_media?: true; force_large_media?: true; force_small_media?: true; optional?: true; message: string; entities?: Array<enums.MessageEntity>; url: string; reply_markup?: enums.ReplyMarkup }) {
     super();
     this.invert_media = params.invert_media;
     this.force_large_media = params.force_large_media;
@@ -20974,9 +20974,9 @@ export class inputBotInlineResult extends _InputBotInlineResult {
   title?: string;
   description?: string;
   url?: string;
-  thumb?: InputWebDocument;
-  content?: InputWebDocument;
-  send_message: InputBotInlineMessage;
+  thumb?: enums.InputWebDocument;
+  content?: enums.InputWebDocument;
+  send_message: enums.InputBotInlineMessage;
 
   protected get [id]() {
     return 0x88BF9319;
@@ -21010,7 +21010,7 @@ export class inputBotInlineResult extends _InputBotInlineResult {
     ];
   }
 
-  constructor(params: { id: string; type: string; title?: string; description?: string; url?: string; thumb?: InputWebDocument; content?: InputWebDocument; send_message: InputBotInlineMessage }) {
+  constructor(params: { id: string; type: string; title?: string; description?: string; url?: string; thumb?: enums.InputWebDocument; content?: enums.InputWebDocument; send_message: enums.InputBotInlineMessage }) {
     super();
     this.id = params.id;
     this.type = params.type;
@@ -21026,8 +21026,8 @@ export class inputBotInlineResult extends _InputBotInlineResult {
 export class inputBotInlineResultPhoto extends _InputBotInlineResult {
   id: string;
   type: string;
-  photo: InputPhoto;
-  send_message: InputBotInlineMessage;
+  photo: enums.InputPhoto;
+  send_message: enums.InputBotInlineMessage;
 
   protected get [id]() {
     return 0xA8D864A7;
@@ -21051,7 +21051,7 @@ export class inputBotInlineResultPhoto extends _InputBotInlineResult {
     ];
   }
 
-  constructor(params: { id: string; type: string; photo: InputPhoto; send_message: InputBotInlineMessage }) {
+  constructor(params: { id: string; type: string; photo: enums.InputPhoto; send_message: enums.InputBotInlineMessage }) {
     super();
     this.id = params.id;
     this.type = params.type;
@@ -21065,8 +21065,8 @@ export class inputBotInlineResultDocument extends _InputBotInlineResult {
   type: string;
   title?: string;
   description?: string;
-  document: InputDocument;
-  send_message: InputBotInlineMessage;
+  document: enums.InputDocument;
+  send_message: enums.InputBotInlineMessage;
 
   protected get [id]() {
     return 0xFFF8FDC4;
@@ -21096,7 +21096,7 @@ export class inputBotInlineResultDocument extends _InputBotInlineResult {
     ];
   }
 
-  constructor(params: { id: string; type: string; title?: string; description?: string; document: InputDocument; send_message: InputBotInlineMessage }) {
+  constructor(params: { id: string; type: string; title?: string; description?: string; document: enums.InputDocument; send_message: enums.InputBotInlineMessage }) {
     super();
     this.id = params.id;
     this.type = params.type;
@@ -21110,7 +21110,7 @@ export class inputBotInlineResultDocument extends _InputBotInlineResult {
 export class inputBotInlineResultGame extends _InputBotInlineResult {
   id: string;
   short_name: string;
-  send_message: InputBotInlineMessage;
+  send_message: enums.InputBotInlineMessage;
 
   protected get [id]() {
     return 0x4FA417F2;
@@ -21132,7 +21132,7 @@ export class inputBotInlineResultGame extends _InputBotInlineResult {
     ];
   }
 
-  constructor(params: { id: string; short_name: string; send_message: InputBotInlineMessage }) {
+  constructor(params: { id: string; short_name: string; send_message: enums.InputBotInlineMessage }) {
     super();
     this.id = params.id;
     this.short_name = params.short_name;
@@ -21143,8 +21143,8 @@ export class inputBotInlineResultGame extends _InputBotInlineResult {
 export class botInlineMessageMediaAuto extends _BotInlineMessage {
   invert_media?: true;
   message: string;
-  entities?: Array<MessageEntity>;
-  reply_markup?: ReplyMarkup;
+  entities?: Array<enums.MessageEntity>;
+  reply_markup?: enums.ReplyMarkup;
 
   protected get [id]() {
     return 0x764CF810;
@@ -21170,7 +21170,7 @@ export class botInlineMessageMediaAuto extends _BotInlineMessage {
     ];
   }
 
-  constructor(params: { invert_media?: true; message: string; entities?: Array<MessageEntity>; reply_markup?: ReplyMarkup }) {
+  constructor(params: { invert_media?: true; message: string; entities?: Array<enums.MessageEntity>; reply_markup?: enums.ReplyMarkup }) {
     super();
     this.invert_media = params.invert_media;
     this.message = params.message;
@@ -21183,8 +21183,8 @@ export class botInlineMessageText extends _BotInlineMessage {
   no_webpage?: true;
   invert_media?: true;
   message: string;
-  entities?: Array<MessageEntity>;
-  reply_markup?: ReplyMarkup;
+  entities?: Array<enums.MessageEntity>;
+  reply_markup?: enums.ReplyMarkup;
 
   protected get [id]() {
     return 0x8C7F65E2;
@@ -21212,7 +21212,7 @@ export class botInlineMessageText extends _BotInlineMessage {
     ];
   }
 
-  constructor(params: { no_webpage?: true; invert_media?: true; message: string; entities?: Array<MessageEntity>; reply_markup?: ReplyMarkup }) {
+  constructor(params: { no_webpage?: true; invert_media?: true; message: string; entities?: Array<enums.MessageEntity>; reply_markup?: enums.ReplyMarkup }) {
     super();
     this.no_webpage = params.no_webpage;
     this.invert_media = params.invert_media;
@@ -21223,11 +21223,11 @@ export class botInlineMessageText extends _BotInlineMessage {
 }
 
 export class botInlineMessageMediaGeo extends _BotInlineMessage {
-  geo: GeoPoint;
+  geo: enums.GeoPoint;
   heading?: number;
   period?: number;
   proximity_notification_radius?: number;
-  reply_markup?: ReplyMarkup;
+  reply_markup?: enums.ReplyMarkup;
 
   protected get [id]() {
     return 0x051846FD;
@@ -21255,7 +21255,7 @@ export class botInlineMessageMediaGeo extends _BotInlineMessage {
     ];
   }
 
-  constructor(params: { geo: GeoPoint; heading?: number; period?: number; proximity_notification_radius?: number; reply_markup?: ReplyMarkup }) {
+  constructor(params: { geo: enums.GeoPoint; heading?: number; period?: number; proximity_notification_radius?: number; reply_markup?: enums.ReplyMarkup }) {
     super();
     this.geo = params.geo;
     this.heading = params.heading;
@@ -21266,13 +21266,13 @@ export class botInlineMessageMediaGeo extends _BotInlineMessage {
 }
 
 export class botInlineMessageMediaVenue extends _BotInlineMessage {
-  geo: GeoPoint;
+  geo: enums.GeoPoint;
   title: string;
   address: string;
   provider: string;
   venue_id: string;
   venue_type: string;
-  reply_markup?: ReplyMarkup;
+  reply_markup?: enums.ReplyMarkup;
 
   protected get [id]() {
     return 0x8A86659C;
@@ -21304,7 +21304,7 @@ export class botInlineMessageMediaVenue extends _BotInlineMessage {
     ];
   }
 
-  constructor(params: { geo: GeoPoint; title: string; address: string; provider: string; venue_id: string; venue_type: string; reply_markup?: ReplyMarkup }) {
+  constructor(params: { geo: enums.GeoPoint; title: string; address: string; provider: string; venue_id: string; venue_type: string; reply_markup?: enums.ReplyMarkup }) {
     super();
     this.geo = params.geo;
     this.title = params.title;
@@ -21321,7 +21321,7 @@ export class botInlineMessageMediaContact extends _BotInlineMessage {
   first_name: string;
   last_name: string;
   vcard: string;
-  reply_markup?: ReplyMarkup;
+  reply_markup?: enums.ReplyMarkup;
 
   protected get [id]() {
     return 0x18D1CDC2;
@@ -21349,7 +21349,7 @@ export class botInlineMessageMediaContact extends _BotInlineMessage {
     ];
   }
 
-  constructor(params: { phone_number: string; first_name: string; last_name: string; vcard: string; reply_markup?: ReplyMarkup }) {
+  constructor(params: { phone_number: string; first_name: string; last_name: string; vcard: string; reply_markup?: enums.ReplyMarkup }) {
     super();
     this.phone_number = params.phone_number;
     this.first_name = params.first_name;
@@ -21364,10 +21364,10 @@ export class botInlineMessageMediaInvoice extends _BotInlineMessage {
   test?: true;
   title: string;
   description: string;
-  photo?: WebDocument;
+  photo?: enums.WebDocument;
   currency: string;
   total_amount: bigint;
-  reply_markup?: ReplyMarkup;
+  reply_markup?: enums.ReplyMarkup;
 
   protected get [id]() {
     return 0x354A9B09;
@@ -21401,7 +21401,7 @@ export class botInlineMessageMediaInvoice extends _BotInlineMessage {
     ];
   }
 
-  constructor(params: { shipping_address_requested?: true; test?: true; title: string; description: string; photo?: WebDocument; currency: string; total_amount: bigint; reply_markup?: ReplyMarkup }) {
+  constructor(params: { shipping_address_requested?: true; test?: true; title: string; description: string; photo?: enums.WebDocument; currency: string; total_amount: bigint; reply_markup?: enums.ReplyMarkup }) {
     super();
     this.shipping_address_requested = params.shipping_address_requested;
     this.test = params.test;
@@ -21421,9 +21421,9 @@ export class botInlineMessageMediaWebPage extends _BotInlineMessage {
   manual?: true;
   safe?: true;
   message: string;
-  entities?: Array<MessageEntity>;
+  entities?: Array<enums.MessageEntity>;
   url: string;
-  reply_markup?: ReplyMarkup;
+  reply_markup?: enums.ReplyMarkup;
 
   protected get [id]() {
     return 0x809AD9A6;
@@ -21459,7 +21459,7 @@ export class botInlineMessageMediaWebPage extends _BotInlineMessage {
     ];
   }
 
-  constructor(params: { invert_media?: true; force_large_media?: true; force_small_media?: true; manual?: true; safe?: true; message: string; entities?: Array<MessageEntity>; url: string; reply_markup?: ReplyMarkup }) {
+  constructor(params: { invert_media?: true; force_large_media?: true; force_small_media?: true; manual?: true; safe?: true; message: string; entities?: Array<enums.MessageEntity>; url: string; reply_markup?: enums.ReplyMarkup }) {
     super();
     this.invert_media = params.invert_media;
     this.force_large_media = params.force_large_media;
@@ -21479,9 +21479,9 @@ export class botInlineResult extends _BotInlineResult {
   title?: string;
   description?: string;
   url?: string;
-  thumb?: WebDocument;
-  content?: WebDocument;
-  send_message: BotInlineMessage;
+  thumb?: enums.WebDocument;
+  content?: enums.WebDocument;
+  send_message: enums.BotInlineMessage;
 
   protected get [id]() {
     return 0x11965F3A;
@@ -21515,7 +21515,7 @@ export class botInlineResult extends _BotInlineResult {
     ];
   }
 
-  constructor(params: { id: string; type: string; title?: string; description?: string; url?: string; thumb?: WebDocument; content?: WebDocument; send_message: BotInlineMessage }) {
+  constructor(params: { id: string; type: string; title?: string; description?: string; url?: string; thumb?: enums.WebDocument; content?: enums.WebDocument; send_message: enums.BotInlineMessage }) {
     super();
     this.id = params.id;
     this.type = params.type;
@@ -21531,11 +21531,11 @@ export class botInlineResult extends _BotInlineResult {
 export class botInlineMediaResult extends _BotInlineResult {
   id: string;
   type: string;
-  photo?: Photo;
-  document?: Document;
+  photo?: enums.Photo;
+  document?: enums.Document;
   title?: string;
   description?: string;
-  send_message: BotInlineMessage;
+  send_message: enums.BotInlineMessage;
 
   protected get [id]() {
     return 0x17DB940B;
@@ -21567,7 +21567,7 @@ export class botInlineMediaResult extends _BotInlineResult {
     ];
   }
 
-  constructor(params: { id: string; type: string; photo?: Photo; document?: Document; title?: string; description?: string; send_message: BotInlineMessage }) {
+  constructor(params: { id: string; type: string; photo?: enums.Photo; document?: enums.Document; title?: string; description?: string; send_message: enums.BotInlineMessage }) {
     super();
     this.id = params.id;
     this.type = params.type;
@@ -21583,11 +21583,11 @@ export class messages_botResults extends _messages_BotResults {
   gallery?: true;
   query_id: bigint;
   next_offset?: string;
-  switch_pm?: InlineBotSwitchPM;
-  switch_webview?: InlineBotWebView;
-  results: Array<BotInlineResult>;
+  switch_pm?: enums.InlineBotSwitchPM;
+  switch_webview?: enums.InlineBotWebView;
+  results: Array<enums.BotInlineResult>;
   cache_time: number;
-  users: Array<User>;
+  users: Array<enums.User>;
 
   protected get [id]() {
     return 0xE021F2F6;
@@ -21621,7 +21621,7 @@ export class messages_botResults extends _messages_BotResults {
     ];
   }
 
-  constructor(params: { gallery?: true; query_id: bigint; next_offset?: string; switch_pm?: InlineBotSwitchPM; switch_webview?: InlineBotWebView; results: Array<BotInlineResult>; cache_time: number; users: Array<User> }) {
+  constructor(params: { gallery?: true; query_id: bigint; next_offset?: string; switch_pm?: enums.InlineBotSwitchPM; switch_webview?: enums.InlineBotWebView; results: Array<enums.BotInlineResult>; cache_time: number; users: Array<enums.User> }) {
     super();
     this.gallery = params.gallery;
     this.query_id = params.query_id;
@@ -21665,12 +21665,12 @@ export class exportedMessageLink extends _ExportedMessageLink {
 
 export class messageFwdHeader extends _MessageFwdHeader {
   imported?: true;
-  from_id?: Peer;
+  from_id?: enums.Peer;
   from_name?: string;
   date: number;
   channel_post?: number;
   post_author?: string;
-  saved_from_peer?: Peer;
+  saved_from_peer?: enums.Peer;
   saved_from_msg_id?: number;
   psa_type?: string;
 
@@ -21708,7 +21708,7 @@ export class messageFwdHeader extends _MessageFwdHeader {
     ];
   }
 
-  constructor(params: { imported?: true; from_id?: Peer; from_name?: string; date: number; channel_post?: number; post_author?: string; saved_from_peer?: Peer; saved_from_msg_id?: number; psa_type?: string }) {
+  constructor(params: { imported?: true; from_id?: enums.Peer; from_name?: string; date: number; channel_post?: number; post_author?: string; saved_from_peer?: enums.Peer; saved_from_msg_id?: number; psa_type?: string }) {
     super();
     this.imported = params.imported;
     this.from_id = params.from_id;
@@ -22261,11 +22261,11 @@ export class inlineBotSwitchPM extends _InlineBotSwitchPM {
 }
 
 export class messages_peerDialogs extends _messages_PeerDialogs {
-  dialogs: Array<Dialog>;
-  messages: Array<Message>;
-  chats: Array<Chat>;
-  users: Array<User>;
-  state: updates_State;
+  dialogs: Array<enums.Dialog>;
+  messages: Array<enums.Message>;
+  chats: Array<enums.Chat>;
+  users: Array<enums.User>;
+  state: enums.updates_State;
 
   protected get [id]() {
     return 0x3371C354;
@@ -22291,7 +22291,7 @@ export class messages_peerDialogs extends _messages_PeerDialogs {
     ];
   }
 
-  constructor(params: { dialogs: Array<Dialog>; messages: Array<Message>; chats: Array<Chat>; users: Array<User>; state: updates_State }) {
+  constructor(params: { dialogs: Array<enums.Dialog>; messages: Array<enums.Message>; chats: Array<enums.Chat>; users: Array<enums.User>; state: enums.updates_State }) {
     super();
     this.dialogs = params.dialogs;
     this.messages = params.messages;
@@ -22302,7 +22302,7 @@ export class messages_peerDialogs extends _messages_PeerDialogs {
 }
 
 export class topPeer extends _TopPeer {
-  peer: Peer;
+  peer: enums.Peer;
   rating: number;
 
   protected get [id]() {
@@ -22323,7 +22323,7 @@ export class topPeer extends _TopPeer {
     ];
   }
 
-  constructor(params: { peer: Peer; rating: number }) {
+  constructor(params: { peer: enums.Peer; rating: number }) {
     super();
     this.peer = params.peer;
     this.rating = params.rating;
@@ -22475,9 +22475,9 @@ export class topPeerCategoryForwardChats extends _TopPeerCategory {
 }
 
 export class topPeerCategoryPeers extends _TopPeerCategoryPeers {
-  category: TopPeerCategory;
+  category: enums.TopPeerCategory;
   count: number;
-  peers: Array<TopPeer>;
+  peers: Array<enums.TopPeer>;
 
   protected get [id]() {
     return 0xFB834291;
@@ -22499,7 +22499,7 @@ export class topPeerCategoryPeers extends _TopPeerCategoryPeers {
     ];
   }
 
-  constructor(params: { category: TopPeerCategory; count: number; peers: Array<TopPeer> }) {
+  constructor(params: { category: enums.TopPeerCategory; count: number; peers: Array<enums.TopPeer> }) {
     super();
     this.category = params.category;
     this.count = params.count;
@@ -22526,9 +22526,9 @@ export class contacts_topPeersNotModified extends _contacts_TopPeers {
 }
 
 export class contacts_topPeers extends _contacts_TopPeers {
-  categories: Array<TopPeerCategoryPeers>;
-  chats: Array<Chat>;
-  users: Array<User>;
+  categories: Array<enums.TopPeerCategoryPeers>;
+  chats: Array<enums.Chat>;
+  users: Array<enums.User>;
 
   protected get [id]() {
     return 0x70B772A8;
@@ -22550,7 +22550,7 @@ export class contacts_topPeers extends _contacts_TopPeers {
     ];
   }
 
-  constructor(params: { categories: Array<TopPeerCategoryPeers>; chats: Array<Chat>; users: Array<User> }) {
+  constructor(params: { categories: Array<enums.TopPeerCategoryPeers>; chats: Array<enums.Chat>; users: Array<enums.User> }) {
     super();
     this.categories = params.categories;
     this.chats = params.chats;
@@ -22606,10 +22606,10 @@ export class draftMessageEmpty extends _DraftMessage {
 export class draftMessage extends _DraftMessage {
   no_webpage?: true;
   invert_media?: true;
-  reply_to?: InputReplyTo;
+  reply_to?: enums.InputReplyTo;
   message: string;
-  entities?: Array<MessageEntity>;
-  media?: InputMedia;
+  entities?: Array<enums.MessageEntity>;
+  media?: enums.InputMedia;
   date: number;
 
   protected get [id]() {
@@ -22642,7 +22642,7 @@ export class draftMessage extends _DraftMessage {
     ];
   }
 
-  constructor(params: { no_webpage?: true; invert_media?: true; reply_to?: InputReplyTo; message: string; entities?: Array<MessageEntity>; media?: InputMedia; date: number }) {
+  constructor(params: { no_webpage?: true; invert_media?: true; reply_to?: enums.InputReplyTo; message: string; entities?: Array<enums.MessageEntity>; media?: enums.InputMedia; date: number }) {
     super();
     this.no_webpage = params.no_webpage;
     this.invert_media = params.invert_media;
@@ -22683,7 +22683,7 @@ export class messages_featuredStickers extends _messages_FeaturedStickers {
   premium?: true;
   hash: bigint;
   count: number;
-  sets: Array<StickerSetCovered>;
+  sets: Array<enums.StickerSetCovered>;
   unread: Array<bigint>;
 
   protected get [id]() {
@@ -22712,7 +22712,7 @@ export class messages_featuredStickers extends _messages_FeaturedStickers {
     ];
   }
 
-  constructor(params: { premium?: true; hash: bigint; count: number; sets: Array<StickerSetCovered>; unread: Array<bigint> }) {
+  constructor(params: { premium?: true; hash: bigint; count: number; sets: Array<enums.StickerSetCovered>; unread: Array<bigint> }) {
     super();
     this.premium = params.premium;
     this.hash = params.hash;
@@ -22742,8 +22742,8 @@ export class messages_recentStickersNotModified extends _messages_RecentStickers
 
 export class messages_recentStickers extends _messages_RecentStickers {
   hash: bigint;
-  packs: Array<StickerPack>;
-  stickers: Array<Document>;
+  packs: Array<enums.StickerPack>;
+  stickers: Array<enums.Document>;
   dates: Array<number>;
 
   protected get [id]() {
@@ -22768,7 +22768,7 @@ export class messages_recentStickers extends _messages_RecentStickers {
     ];
   }
 
-  constructor(params: { hash: bigint; packs: Array<StickerPack>; stickers: Array<Document>; dates: Array<number> }) {
+  constructor(params: { hash: bigint; packs: Array<enums.StickerPack>; stickers: Array<enums.Document>; dates: Array<number> }) {
     super();
     this.hash = params.hash;
     this.packs = params.packs;
@@ -22779,7 +22779,7 @@ export class messages_recentStickers extends _messages_RecentStickers {
 
 export class messages_archivedStickers extends _messages_ArchivedStickers {
   count: number;
-  sets: Array<StickerSetCovered>;
+  sets: Array<enums.StickerSetCovered>;
 
   protected get [id]() {
     return 0x4FCBA9C8;
@@ -22799,7 +22799,7 @@ export class messages_archivedStickers extends _messages_ArchivedStickers {
     ];
   }
 
-  constructor(params: { count: number; sets: Array<StickerSetCovered> }) {
+  constructor(params: { count: number; sets: Array<enums.StickerSetCovered> }) {
     super();
     this.count = params.count;
     this.sets = params.sets;
@@ -22825,7 +22825,7 @@ export class messages_stickerSetInstallResultSuccess extends _messages_StickerSe
 }
 
 export class messages_stickerSetInstallResultArchive extends _messages_StickerSetInstallResult {
-  sets: Array<StickerSetCovered>;
+  sets: Array<enums.StickerSetCovered>;
 
   protected get [id]() {
     return 0x35E410A8;
@@ -22843,15 +22843,15 @@ export class messages_stickerSetInstallResultArchive extends _messages_StickerSe
     ];
   }
 
-  constructor(params: { sets: Array<StickerSetCovered> }) {
+  constructor(params: { sets: Array<enums.StickerSetCovered> }) {
     super();
     this.sets = params.sets;
   }
 }
 
 export class stickerSetCovered extends _StickerSetCovered {
-  set: StickerSet;
-  cover: Document;
+  set: enums.StickerSet;
+  cover: enums.Document;
 
   protected get [id]() {
     return 0x6410A5D2;
@@ -22871,7 +22871,7 @@ export class stickerSetCovered extends _StickerSetCovered {
     ];
   }
 
-  constructor(params: { set: StickerSet; cover: Document }) {
+  constructor(params: { set: enums.StickerSet; cover: enums.Document }) {
     super();
     this.set = params.set;
     this.cover = params.cover;
@@ -22879,8 +22879,8 @@ export class stickerSetCovered extends _StickerSetCovered {
 }
 
 export class stickerSetMultiCovered extends _StickerSetCovered {
-  set: StickerSet;
-  covers: Array<Document>;
+  set: enums.StickerSet;
+  covers: Array<enums.Document>;
 
   protected get [id]() {
     return 0x3407E51B;
@@ -22900,7 +22900,7 @@ export class stickerSetMultiCovered extends _StickerSetCovered {
     ];
   }
 
-  constructor(params: { set: StickerSet; covers: Array<Document> }) {
+  constructor(params: { set: enums.StickerSet; covers: Array<enums.Document> }) {
     super();
     this.set = params.set;
     this.covers = params.covers;
@@ -22908,10 +22908,10 @@ export class stickerSetMultiCovered extends _StickerSetCovered {
 }
 
 export class stickerSetFullCovered extends _StickerSetCovered {
-  set: StickerSet;
-  packs: Array<StickerPack>;
-  keywords: Array<StickerKeyword>;
-  documents: Array<Document>;
+  set: enums.StickerSet;
+  packs: Array<enums.StickerPack>;
+  keywords: Array<enums.StickerKeyword>;
+  documents: Array<enums.Document>;
 
   protected get [id]() {
     return 0x40D13C0E;
@@ -22935,7 +22935,7 @@ export class stickerSetFullCovered extends _StickerSetCovered {
     ];
   }
 
-  constructor(params: { set: StickerSet; packs: Array<StickerPack>; keywords: Array<StickerKeyword>; documents: Array<Document> }) {
+  constructor(params: { set: enums.StickerSet; packs: Array<enums.StickerPack>; keywords: Array<enums.StickerKeyword>; documents: Array<enums.Document> }) {
     super();
     this.set = params.set;
     this.packs = params.packs;
@@ -22945,7 +22945,7 @@ export class stickerSetFullCovered extends _StickerSetCovered {
 }
 
 export class stickerSetNoCovered extends _StickerSetCovered {
-  set: StickerSet;
+  set: enums.StickerSet;
 
   protected get [id]() {
     return 0x77B15D1C;
@@ -22963,7 +22963,7 @@ export class stickerSetNoCovered extends _StickerSetCovered {
     ];
   }
 
-  constructor(params: { set: StickerSet }) {
+  constructor(params: { set: enums.StickerSet }) {
     super();
     this.set = params.set;
   }
@@ -23007,7 +23007,7 @@ export class maskCoords extends _MaskCoords {
 }
 
 export class inputStickeredMediaPhoto extends _InputStickeredMedia {
-  id: InputPhoto;
+  id: enums.InputPhoto;
 
   protected get [id]() {
     return 0x4A992157;
@@ -23025,14 +23025,14 @@ export class inputStickeredMediaPhoto extends _InputStickeredMedia {
     ];
   }
 
-  constructor(params: { id: InputPhoto }) {
+  constructor(params: { id: enums.InputPhoto }) {
     super();
     this.id = params.id;
   }
 }
 
 export class inputStickeredMediaDocument extends _InputStickeredMedia {
-  id: InputDocument;
+  id: enums.InputDocument;
 
   protected get [id]() {
     return 0x0438865B;
@@ -23050,7 +23050,7 @@ export class inputStickeredMediaDocument extends _InputStickeredMedia {
     ];
   }
 
-  constructor(params: { id: InputDocument }) {
+  constructor(params: { id: enums.InputDocument }) {
     super();
     this.id = params.id;
   }
@@ -23062,8 +23062,8 @@ export class game extends _Game {
   short_name: string;
   title: string;
   description: string;
-  photo: Photo;
-  document?: Document;
+  photo: enums.Photo;
+  document?: enums.Document;
 
   protected get [id]() {
     return 0xBDF9653B;
@@ -23095,7 +23095,7 @@ export class game extends _Game {
     ];
   }
 
-  constructor(params: { id: bigint; access_hash: bigint; short_name: string; title: string; description: string; photo: Photo; document?: Document }) {
+  constructor(params: { id: bigint; access_hash: bigint; short_name: string; title: string; description: string; photo: enums.Photo; document?: enums.Document }) {
     super();
     this.id = params.id;
     this.access_hash = params.access_hash;
@@ -23137,7 +23137,7 @@ export class inputGameID extends _InputGame {
 }
 
 export class inputGameShortName extends _InputGame {
-  bot_id: InputUser;
+  bot_id: enums.InputUser;
   short_name: string;
 
   protected get [id]() {
@@ -23158,7 +23158,7 @@ export class inputGameShortName extends _InputGame {
     ];
   }
 
-  constructor(params: { bot_id: InputUser; short_name: string }) {
+  constructor(params: { bot_id: enums.InputUser; short_name: string }) {
     super();
     this.bot_id = params.bot_id;
     this.short_name = params.short_name;
@@ -23199,8 +23199,8 @@ export class highScore extends _HighScore {
 }
 
 export class messages_highScores extends _messages_HighScores {
-  scores: Array<HighScore>;
-  users: Array<User>;
+  scores: Array<enums.HighScore>;
+  users: Array<enums.User>;
 
   protected get [id]() {
     return 0x9A3BFD99;
@@ -23220,7 +23220,7 @@ export class messages_highScores extends _messages_HighScores {
     ];
   }
 
-  constructor(params: { scores: Array<HighScore>; users: Array<User> }) {
+  constructor(params: { scores: Array<enums.HighScore>; users: Array<enums.User> }) {
     super();
     this.scores = params.scores;
     this.users = params.users;
@@ -23271,7 +23271,7 @@ export class textPlain extends _RichText {
 }
 
 export class textBold extends _RichText {
-  text: RichText;
+  text: enums.RichText;
 
   protected get [id]() {
     return 0x6724ABC4;
@@ -23289,14 +23289,14 @@ export class textBold extends _RichText {
     ];
   }
 
-  constructor(params: { text: RichText }) {
+  constructor(params: { text: enums.RichText }) {
     super();
     this.text = params.text;
   }
 }
 
 export class textItalic extends _RichText {
-  text: RichText;
+  text: enums.RichText;
 
   protected get [id]() {
     return 0xD912A59C;
@@ -23314,14 +23314,14 @@ export class textItalic extends _RichText {
     ];
   }
 
-  constructor(params: { text: RichText }) {
+  constructor(params: { text: enums.RichText }) {
     super();
     this.text = params.text;
   }
 }
 
 export class textUnderline extends _RichText {
-  text: RichText;
+  text: enums.RichText;
 
   protected get [id]() {
     return 0xC12622C4;
@@ -23339,14 +23339,14 @@ export class textUnderline extends _RichText {
     ];
   }
 
-  constructor(params: { text: RichText }) {
+  constructor(params: { text: enums.RichText }) {
     super();
     this.text = params.text;
   }
 }
 
 export class textStrike extends _RichText {
-  text: RichText;
+  text: enums.RichText;
 
   protected get [id]() {
     return 0x9BF8BB95;
@@ -23364,14 +23364,14 @@ export class textStrike extends _RichText {
     ];
   }
 
-  constructor(params: { text: RichText }) {
+  constructor(params: { text: enums.RichText }) {
     super();
     this.text = params.text;
   }
 }
 
 export class textFixed extends _RichText {
-  text: RichText;
+  text: enums.RichText;
 
   protected get [id]() {
     return 0x6C3F19B9;
@@ -23389,14 +23389,14 @@ export class textFixed extends _RichText {
     ];
   }
 
-  constructor(params: { text: RichText }) {
+  constructor(params: { text: enums.RichText }) {
     super();
     this.text = params.text;
   }
 }
 
 export class textUrl extends _RichText {
-  text: RichText;
+  text: enums.RichText;
   url: string;
   webpage_id: bigint;
 
@@ -23420,7 +23420,7 @@ export class textUrl extends _RichText {
     ];
   }
 
-  constructor(params: { text: RichText; url: string; webpage_id: bigint }) {
+  constructor(params: { text: enums.RichText; url: string; webpage_id: bigint }) {
     super();
     this.text = params.text;
     this.url = params.url;
@@ -23429,7 +23429,7 @@ export class textUrl extends _RichText {
 }
 
 export class textEmail extends _RichText {
-  text: RichText;
+  text: enums.RichText;
   email: string;
 
   protected get [id]() {
@@ -23450,7 +23450,7 @@ export class textEmail extends _RichText {
     ];
   }
 
-  constructor(params: { text: RichText; email: string }) {
+  constructor(params: { text: enums.RichText; email: string }) {
     super();
     this.text = params.text;
     this.email = params.email;
@@ -23458,7 +23458,7 @@ export class textEmail extends _RichText {
 }
 
 export class textConcat extends _RichText {
-  texts: Array<RichText>;
+  texts: Array<enums.RichText>;
 
   protected get [id]() {
     return 0x7E6260D7;
@@ -23476,14 +23476,14 @@ export class textConcat extends _RichText {
     ];
   }
 
-  constructor(params: { texts: Array<RichText> }) {
+  constructor(params: { texts: Array<enums.RichText> }) {
     super();
     this.texts = params.texts;
   }
 }
 
 export class textSubscript extends _RichText {
-  text: RichText;
+  text: enums.RichText;
 
   protected get [id]() {
     return 0xED6A8504;
@@ -23501,14 +23501,14 @@ export class textSubscript extends _RichText {
     ];
   }
 
-  constructor(params: { text: RichText }) {
+  constructor(params: { text: enums.RichText }) {
     super();
     this.text = params.text;
   }
 }
 
 export class textSuperscript extends _RichText {
-  text: RichText;
+  text: enums.RichText;
 
   protected get [id]() {
     return 0xC7FB5E01;
@@ -23526,14 +23526,14 @@ export class textSuperscript extends _RichText {
     ];
   }
 
-  constructor(params: { text: RichText }) {
+  constructor(params: { text: enums.RichText }) {
     super();
     this.text = params.text;
   }
 }
 
 export class textMarked extends _RichText {
-  text: RichText;
+  text: enums.RichText;
 
   protected get [id]() {
     return 0x034B8621;
@@ -23551,14 +23551,14 @@ export class textMarked extends _RichText {
     ];
   }
 
-  constructor(params: { text: RichText }) {
+  constructor(params: { text: enums.RichText }) {
     super();
     this.text = params.text;
   }
 }
 
 export class textPhone extends _RichText {
-  text: RichText;
+  text: enums.RichText;
   phone: string;
 
   protected get [id]() {
@@ -23579,7 +23579,7 @@ export class textPhone extends _RichText {
     ];
   }
 
-  constructor(params: { text: RichText; phone: string }) {
+  constructor(params: { text: enums.RichText; phone: string }) {
     super();
     this.text = params.text;
     this.phone = params.phone;
@@ -23620,7 +23620,7 @@ export class textImage extends _RichText {
 }
 
 export class textAnchor extends _RichText {
-  text: RichText;
+  text: enums.RichText;
   name: string;
 
   protected get [id]() {
@@ -23641,7 +23641,7 @@ export class textAnchor extends _RichText {
     ];
   }
 
-  constructor(params: { text: RichText; name: string }) {
+  constructor(params: { text: enums.RichText; name: string }) {
     super();
     this.text = params.text;
     this.name = params.name;
@@ -23667,7 +23667,7 @@ export class pageBlockUnsupported extends _PageBlock {
 }
 
 export class pageBlockTitle extends _PageBlock {
-  text: RichText;
+  text: enums.RichText;
 
   protected get [id]() {
     return 0x70ABC3FD;
@@ -23685,14 +23685,14 @@ export class pageBlockTitle extends _PageBlock {
     ];
   }
 
-  constructor(params: { text: RichText }) {
+  constructor(params: { text: enums.RichText }) {
     super();
     this.text = params.text;
   }
 }
 
 export class pageBlockSubtitle extends _PageBlock {
-  text: RichText;
+  text: enums.RichText;
 
   protected get [id]() {
     return 0x8FFA9A1F;
@@ -23710,14 +23710,14 @@ export class pageBlockSubtitle extends _PageBlock {
     ];
   }
 
-  constructor(params: { text: RichText }) {
+  constructor(params: { text: enums.RichText }) {
     super();
     this.text = params.text;
   }
 }
 
 export class pageBlockAuthorDate extends _PageBlock {
-  author: RichText;
+  author: enums.RichText;
   published_date: number;
 
   protected get [id]() {
@@ -23738,7 +23738,7 @@ export class pageBlockAuthorDate extends _PageBlock {
     ];
   }
 
-  constructor(params: { author: RichText; published_date: number }) {
+  constructor(params: { author: enums.RichText; published_date: number }) {
     super();
     this.author = params.author;
     this.published_date = params.published_date;
@@ -23746,7 +23746,7 @@ export class pageBlockAuthorDate extends _PageBlock {
 }
 
 export class pageBlockHeader extends _PageBlock {
-  text: RichText;
+  text: enums.RichText;
 
   protected get [id]() {
     return 0xBFD064EC;
@@ -23764,14 +23764,14 @@ export class pageBlockHeader extends _PageBlock {
     ];
   }
 
-  constructor(params: { text: RichText }) {
+  constructor(params: { text: enums.RichText }) {
     super();
     this.text = params.text;
   }
 }
 
 export class pageBlockSubheader extends _PageBlock {
-  text: RichText;
+  text: enums.RichText;
 
   protected get [id]() {
     return 0xF12BB6E1;
@@ -23789,14 +23789,14 @@ export class pageBlockSubheader extends _PageBlock {
     ];
   }
 
-  constructor(params: { text: RichText }) {
+  constructor(params: { text: enums.RichText }) {
     super();
     this.text = params.text;
   }
 }
 
 export class pageBlockParagraph extends _PageBlock {
-  text: RichText;
+  text: enums.RichText;
 
   protected get [id]() {
     return 0x467A0766;
@@ -23814,14 +23814,14 @@ export class pageBlockParagraph extends _PageBlock {
     ];
   }
 
-  constructor(params: { text: RichText }) {
+  constructor(params: { text: enums.RichText }) {
     super();
     this.text = params.text;
   }
 }
 
 export class pageBlockPreformatted extends _PageBlock {
-  text: RichText;
+  text: enums.RichText;
   language: string;
 
   protected get [id]() {
@@ -23842,7 +23842,7 @@ export class pageBlockPreformatted extends _PageBlock {
     ];
   }
 
-  constructor(params: { text: RichText; language: string }) {
+  constructor(params: { text: enums.RichText; language: string }) {
     super();
     this.text = params.text;
     this.language = params.language;
@@ -23850,7 +23850,7 @@ export class pageBlockPreformatted extends _PageBlock {
 }
 
 export class pageBlockFooter extends _PageBlock {
-  text: RichText;
+  text: enums.RichText;
 
   protected get [id]() {
     return 0x48870999;
@@ -23868,7 +23868,7 @@ export class pageBlockFooter extends _PageBlock {
     ];
   }
 
-  constructor(params: { text: RichText }) {
+  constructor(params: { text: enums.RichText }) {
     super();
     this.text = params.text;
   }
@@ -23918,7 +23918,7 @@ export class pageBlockAnchor extends _PageBlock {
 }
 
 export class pageBlockList extends _PageBlock {
-  items: Array<PageListItem>;
+  items: Array<enums.PageListItem>;
 
   protected get [id]() {
     return 0xE4E88011;
@@ -23936,15 +23936,15 @@ export class pageBlockList extends _PageBlock {
     ];
   }
 
-  constructor(params: { items: Array<PageListItem> }) {
+  constructor(params: { items: Array<enums.PageListItem> }) {
     super();
     this.items = params.items;
   }
 }
 
 export class pageBlockBlockquote extends _PageBlock {
-  text: RichText;
-  caption: RichText;
+  text: enums.RichText;
+  caption: enums.RichText;
 
   protected get [id]() {
     return 0x263D7C26;
@@ -23964,7 +23964,7 @@ export class pageBlockBlockquote extends _PageBlock {
     ];
   }
 
-  constructor(params: { text: RichText; caption: RichText }) {
+  constructor(params: { text: enums.RichText; caption: enums.RichText }) {
     super();
     this.text = params.text;
     this.caption = params.caption;
@@ -23972,8 +23972,8 @@ export class pageBlockBlockquote extends _PageBlock {
 }
 
 export class pageBlockPullquote extends _PageBlock {
-  text: RichText;
-  caption: RichText;
+  text: enums.RichText;
+  caption: enums.RichText;
 
   protected get [id]() {
     return 0x4F4456D3;
@@ -23993,7 +23993,7 @@ export class pageBlockPullquote extends _PageBlock {
     ];
   }
 
-  constructor(params: { text: RichText; caption: RichText }) {
+  constructor(params: { text: enums.RichText; caption: enums.RichText }) {
     super();
     this.text = params.text;
     this.caption = params.caption;
@@ -24002,7 +24002,7 @@ export class pageBlockPullquote extends _PageBlock {
 
 export class pageBlockPhoto extends _PageBlock {
   photo_id: bigint;
-  caption: PageCaption;
+  caption: enums.PageCaption;
   url?: string;
   webpage_id?: bigint;
 
@@ -24030,7 +24030,7 @@ export class pageBlockPhoto extends _PageBlock {
     ];
   }
 
-  constructor(params: { photo_id: bigint; caption: PageCaption; url?: string; webpage_id?: bigint }) {
+  constructor(params: { photo_id: bigint; caption: enums.PageCaption; url?: string; webpage_id?: bigint }) {
     super();
     this.photo_id = params.photo_id;
     this.caption = params.caption;
@@ -24043,7 +24043,7 @@ export class pageBlockVideo extends _PageBlock {
   autoplay?: true;
   loop?: true;
   video_id: bigint;
-  caption: PageCaption;
+  caption: enums.PageCaption;
 
   protected get [id]() {
     return 0x7C8FE7B6;
@@ -24069,7 +24069,7 @@ export class pageBlockVideo extends _PageBlock {
     ];
   }
 
-  constructor(params: { autoplay?: true; loop?: true; video_id: bigint; caption: PageCaption }) {
+  constructor(params: { autoplay?: true; loop?: true; video_id: bigint; caption: enums.PageCaption }) {
     super();
     this.autoplay = params.autoplay;
     this.loop = params.loop;
@@ -24079,7 +24079,7 @@ export class pageBlockVideo extends _PageBlock {
 }
 
 export class pageBlockCover extends _PageBlock {
-  cover: PageBlock;
+  cover: enums.PageBlock;
 
   protected get [id]() {
     return 0x39F23300;
@@ -24097,7 +24097,7 @@ export class pageBlockCover extends _PageBlock {
     ];
   }
 
-  constructor(params: { cover: PageBlock }) {
+  constructor(params: { cover: enums.PageBlock }) {
     super();
     this.cover = params.cover;
   }
@@ -24111,7 +24111,7 @@ export class pageBlockEmbed extends _PageBlock {
   poster_photo_id?: bigint;
   w?: number;
   h?: number;
-  caption: PageCaption;
+  caption: enums.PageCaption;
 
   protected get [id]() {
     return 0xA8718DC5;
@@ -24145,7 +24145,7 @@ export class pageBlockEmbed extends _PageBlock {
     ];
   }
 
-  constructor(params: { full_width?: true; allow_scrolling?: true; url?: string; html?: string; poster_photo_id?: bigint; w?: number; h?: number; caption: PageCaption }) {
+  constructor(params: { full_width?: true; allow_scrolling?: true; url?: string; html?: string; poster_photo_id?: bigint; w?: number; h?: number; caption: enums.PageCaption }) {
     super();
     this.full_width = params.full_width;
     this.allow_scrolling = params.allow_scrolling;
@@ -24164,8 +24164,8 @@ export class pageBlockEmbedPost extends _PageBlock {
   author_photo_id: bigint;
   author: string;
   date: number;
-  blocks: Array<PageBlock>;
-  caption: PageCaption;
+  blocks: Array<enums.PageBlock>;
+  caption: enums.PageCaption;
 
   protected get [id]() {
     return 0xF259A80B;
@@ -24195,7 +24195,7 @@ export class pageBlockEmbedPost extends _PageBlock {
     ];
   }
 
-  constructor(params: { url: string; webpage_id: bigint; author_photo_id: bigint; author: string; date: number; blocks: Array<PageBlock>; caption: PageCaption }) {
+  constructor(params: { url: string; webpage_id: bigint; author_photo_id: bigint; author: string; date: number; blocks: Array<enums.PageBlock>; caption: enums.PageCaption }) {
     super();
     this.url = params.url;
     this.webpage_id = params.webpage_id;
@@ -24208,8 +24208,8 @@ export class pageBlockEmbedPost extends _PageBlock {
 }
 
 export class pageBlockCollage extends _PageBlock {
-  items: Array<PageBlock>;
-  caption: PageCaption;
+  items: Array<enums.PageBlock>;
+  caption: enums.PageCaption;
 
   protected get [id]() {
     return 0x65A0FA4D;
@@ -24229,7 +24229,7 @@ export class pageBlockCollage extends _PageBlock {
     ];
   }
 
-  constructor(params: { items: Array<PageBlock>; caption: PageCaption }) {
+  constructor(params: { items: Array<enums.PageBlock>; caption: enums.PageCaption }) {
     super();
     this.items = params.items;
     this.caption = params.caption;
@@ -24237,8 +24237,8 @@ export class pageBlockCollage extends _PageBlock {
 }
 
 export class pageBlockSlideshow extends _PageBlock {
-  items: Array<PageBlock>;
-  caption: PageCaption;
+  items: Array<enums.PageBlock>;
+  caption: enums.PageCaption;
 
   protected get [id]() {
     return 0x031F9590;
@@ -24258,7 +24258,7 @@ export class pageBlockSlideshow extends _PageBlock {
     ];
   }
 
-  constructor(params: { items: Array<PageBlock>; caption: PageCaption }) {
+  constructor(params: { items: Array<enums.PageBlock>; caption: enums.PageCaption }) {
     super();
     this.items = params.items;
     this.caption = params.caption;
@@ -24266,7 +24266,7 @@ export class pageBlockSlideshow extends _PageBlock {
 }
 
 export class pageBlockChannel extends _PageBlock {
-  channel: Chat;
+  channel: enums.Chat;
 
   protected get [id]() {
     return 0xEF1751B5;
@@ -24284,7 +24284,7 @@ export class pageBlockChannel extends _PageBlock {
     ];
   }
 
-  constructor(params: { channel: Chat }) {
+  constructor(params: { channel: enums.Chat }) {
     super();
     this.channel = params.channel;
   }
@@ -24292,7 +24292,7 @@ export class pageBlockChannel extends _PageBlock {
 
 export class pageBlockAudio extends _PageBlock {
   audio_id: bigint;
-  caption: PageCaption;
+  caption: enums.PageCaption;
 
   protected get [id]() {
     return 0x804361EA;
@@ -24312,7 +24312,7 @@ export class pageBlockAudio extends _PageBlock {
     ];
   }
 
-  constructor(params: { audio_id: bigint; caption: PageCaption }) {
+  constructor(params: { audio_id: bigint; caption: enums.PageCaption }) {
     super();
     this.audio_id = params.audio_id;
     this.caption = params.caption;
@@ -24320,7 +24320,7 @@ export class pageBlockAudio extends _PageBlock {
 }
 
 export class pageBlockKicker extends _PageBlock {
-  text: RichText;
+  text: enums.RichText;
 
   protected get [id]() {
     return 0x1E148390;
@@ -24338,7 +24338,7 @@ export class pageBlockKicker extends _PageBlock {
     ];
   }
 
-  constructor(params: { text: RichText }) {
+  constructor(params: { text: enums.RichText }) {
     super();
     this.text = params.text;
   }
@@ -24347,8 +24347,8 @@ export class pageBlockKicker extends _PageBlock {
 export class pageBlockTable extends _PageBlock {
   bordered?: true;
   striped?: true;
-  title: RichText;
-  rows: Array<PageTableRow>;
+  title: enums.RichText;
+  rows: Array<enums.PageTableRow>;
 
   protected get [id]() {
     return 0xBF4DEA82;
@@ -24374,7 +24374,7 @@ export class pageBlockTable extends _PageBlock {
     ];
   }
 
-  constructor(params: { bordered?: true; striped?: true; title: RichText; rows: Array<PageTableRow> }) {
+  constructor(params: { bordered?: true; striped?: true; title: enums.RichText; rows: Array<enums.PageTableRow> }) {
     super();
     this.bordered = params.bordered;
     this.striped = params.striped;
@@ -24384,7 +24384,7 @@ export class pageBlockTable extends _PageBlock {
 }
 
 export class pageBlockOrderedList extends _PageBlock {
-  items: Array<PageListOrderedItem>;
+  items: Array<enums.PageListOrderedItem>;
 
   protected get [id]() {
     return 0x9A8AE1E1;
@@ -24402,7 +24402,7 @@ export class pageBlockOrderedList extends _PageBlock {
     ];
   }
 
-  constructor(params: { items: Array<PageListOrderedItem> }) {
+  constructor(params: { items: Array<enums.PageListOrderedItem> }) {
     super();
     this.items = params.items;
   }
@@ -24410,8 +24410,8 @@ export class pageBlockOrderedList extends _PageBlock {
 
 export class pageBlockDetails extends _PageBlock {
   open?: true;
-  blocks: Array<PageBlock>;
-  title: RichText;
+  blocks: Array<enums.PageBlock>;
+  title: enums.RichText;
 
   protected get [id]() {
     return 0x76768BED;
@@ -24435,7 +24435,7 @@ export class pageBlockDetails extends _PageBlock {
     ];
   }
 
-  constructor(params: { open?: true; blocks: Array<PageBlock>; title: RichText }) {
+  constructor(params: { open?: true; blocks: Array<enums.PageBlock>; title: enums.RichText }) {
     super();
     this.open = params.open;
     this.blocks = params.blocks;
@@ -24444,8 +24444,8 @@ export class pageBlockDetails extends _PageBlock {
 }
 
 export class pageBlockRelatedArticles extends _PageBlock {
-  title: RichText;
-  articles: Array<PageRelatedArticle>;
+  title: enums.RichText;
+  articles: Array<enums.PageRelatedArticle>;
 
   protected get [id]() {
     return 0x16115A96;
@@ -24465,7 +24465,7 @@ export class pageBlockRelatedArticles extends _PageBlock {
     ];
   }
 
-  constructor(params: { title: RichText; articles: Array<PageRelatedArticle> }) {
+  constructor(params: { title: enums.RichText; articles: Array<enums.PageRelatedArticle> }) {
     super();
     this.title = params.title;
     this.articles = params.articles;
@@ -24473,11 +24473,11 @@ export class pageBlockRelatedArticles extends _PageBlock {
 }
 
 export class pageBlockMap extends _PageBlock {
-  geo: GeoPoint;
+  geo: enums.GeoPoint;
   zoom: number;
   w: number;
   h: number;
-  caption: PageCaption;
+  caption: enums.PageCaption;
 
   protected get [id]() {
     return 0xA44F3EF6;
@@ -24503,7 +24503,7 @@ export class pageBlockMap extends _PageBlock {
     ];
   }
 
-  constructor(params: { geo: GeoPoint; zoom: number; w: number; h: number; caption: PageCaption }) {
+  constructor(params: { geo: enums.GeoPoint; zoom: number; w: number; h: number; caption: enums.PageCaption }) {
     super();
     this.geo = params.geo;
     this.zoom = params.zoom;
@@ -24650,7 +24650,7 @@ export class invoice extends _Invoice {
   email_to_provider?: true;
   recurring?: true;
   currency: string;
-  prices: Array<LabeledPrice>;
+  prices: Array<enums.LabeledPrice>;
   max_tip_amount?: bigint;
   suggested_tip_amounts?: Array<bigint>;
   terms_url?: string;
@@ -24699,7 +24699,7 @@ export class invoice extends _Invoice {
     ];
   }
 
-  constructor(params: { test?: true; name_requested?: true; phone_requested?: true; email_requested?: true; shipping_address_requested?: true; flexible?: true; phone_to_provider?: true; email_to_provider?: true; recurring?: true; currency: string; prices: Array<LabeledPrice>; max_tip_amount?: bigint; suggested_tip_amounts?: Array<bigint>; terms_url?: string }) {
+  constructor(params: { test?: true; name_requested?: true; phone_requested?: true; email_requested?: true; shipping_address_requested?: true; flexible?: true; phone_to_provider?: true; email_to_provider?: true; recurring?: true; currency: string; prices: Array<enums.LabeledPrice>; max_tip_amount?: bigint; suggested_tip_amounts?: Array<bigint>; terms_url?: string }) {
     super();
     this.test = params.test;
     this.name_requested = params.name_requested;
@@ -24796,7 +24796,7 @@ export class paymentRequestedInfo extends _PaymentRequestedInfo {
   name?: string;
   phone?: string;
   email?: string;
-  shipping_address?: PostAddress;
+  shipping_address?: enums.PostAddress;
 
   protected get [id]() {
     return 0x909C3F94;
@@ -24822,7 +24822,7 @@ export class paymentRequestedInfo extends _PaymentRequestedInfo {
     ];
   }
 
-  constructor(params?: { name?: string; phone?: string; email?: string; shipping_address?: PostAddress }) {
+  constructor(params?: { name?: string; phone?: string; email?: string; shipping_address?: enums.PostAddress }) {
     super();
     this.name = params?.name;
     this.phone = params?.phone;
@@ -24865,7 +24865,7 @@ export class webDocument extends _WebDocument {
   access_hash: bigint;
   size: number;
   mime_type: string;
-  attributes: Array<DocumentAttribute>;
+  attributes: Array<enums.DocumentAttribute>;
 
   protected get [id]() {
     return 0x1C570ED1;
@@ -24891,7 +24891,7 @@ export class webDocument extends _WebDocument {
     ];
   }
 
-  constructor(params: { url: string; access_hash: bigint; size: number; mime_type: string; attributes: Array<DocumentAttribute> }) {
+  constructor(params: { url: string; access_hash: bigint; size: number; mime_type: string; attributes: Array<enums.DocumentAttribute> }) {
     super();
     this.url = params.url;
     this.access_hash = params.access_hash;
@@ -24905,7 +24905,7 @@ export class webDocumentNoProxy extends _WebDocument {
   url: string;
   size: number;
   mime_type: string;
-  attributes: Array<DocumentAttribute>;
+  attributes: Array<enums.DocumentAttribute>;
 
   protected get [id]() {
     return 0xF9C8BCC6;
@@ -24929,7 +24929,7 @@ export class webDocumentNoProxy extends _WebDocument {
     ];
   }
 
-  constructor(params: { url: string; size: number; mime_type: string; attributes: Array<DocumentAttribute> }) {
+  constructor(params: { url: string; size: number; mime_type: string; attributes: Array<enums.DocumentAttribute> }) {
     super();
     this.url = params.url;
     this.size = params.size;
@@ -24942,7 +24942,7 @@ export class inputWebDocument extends _InputWebDocument {
   url: string;
   size: number;
   mime_type: string;
-  attributes: Array<DocumentAttribute>;
+  attributes: Array<enums.DocumentAttribute>;
 
   protected get [id]() {
     return 0x9BED434D;
@@ -24966,7 +24966,7 @@ export class inputWebDocument extends _InputWebDocument {
     ];
   }
 
-  constructor(params: { url: string; size: number; mime_type: string; attributes: Array<DocumentAttribute> }) {
+  constructor(params: { url: string; size: number; mime_type: string; attributes: Array<enums.DocumentAttribute> }) {
     super();
     this.url = params.url;
     this.size = params.size;
@@ -25005,7 +25005,7 @@ export class inputWebFileLocation extends _InputWebFileLocation {
 }
 
 export class inputWebFileGeoPointLocation extends _InputWebFileLocation {
-  geo_point: InputGeoPoint;
+  geo_point: enums.InputGeoPoint;
   access_hash: bigint;
   w: number;
   h: number;
@@ -25038,7 +25038,7 @@ export class inputWebFileGeoPointLocation extends _InputWebFileLocation {
     ];
   }
 
-  constructor(params: { geo_point: InputGeoPoint; access_hash: bigint; w: number; h: number; zoom: number; scale: number }) {
+  constructor(params: { geo_point: enums.InputGeoPoint; access_hash: bigint; w: number; h: number; zoom: number; scale: number }) {
     super();
     this.geo_point = params.geo_point;
     this.access_hash = params.access_hash;
@@ -25051,7 +25051,7 @@ export class inputWebFileGeoPointLocation extends _InputWebFileLocation {
 
 export class inputWebFileAudioAlbumThumbLocation extends _InputWebFileLocation {
   small?: true;
-  document?: InputDocument;
+  document?: enums.InputDocument;
   title?: string;
   performer?: string;
 
@@ -25079,7 +25079,7 @@ export class inputWebFileAudioAlbumThumbLocation extends _InputWebFileLocation {
     ];
   }
 
-  constructor(params?: { small?: true; document?: InputDocument; title?: string; performer?: string }) {
+  constructor(params?: { small?: true; document?: enums.InputDocument; title?: string; performer?: string }) {
     super();
     this.small = params?.small;
     this.document = params?.document;
@@ -25091,7 +25091,7 @@ export class inputWebFileAudioAlbumThumbLocation extends _InputWebFileLocation {
 export class upload_webFile extends _upload_WebFile {
   size: number;
   mime_type: string;
-  file_type: storage_FileType;
+  file_type: enums.storage_FileType;
   mtime: number;
   bytes: Uint8Array;
 
@@ -25119,7 +25119,7 @@ export class upload_webFile extends _upload_WebFile {
     ];
   }
 
-  constructor(params: { size: number; mime_type: string; file_type: storage_FileType; mtime: number; bytes: Uint8Array }) {
+  constructor(params: { size: number; mime_type: string; file_type: enums.storage_FileType; mtime: number; bytes: Uint8Array }) {
     super();
     this.size = params.size;
     this.mime_type = params.mime_type;
@@ -25136,16 +25136,16 @@ export class payments_paymentForm extends _payments_PaymentForm {
   bot_id: bigint;
   title: string;
   description: string;
-  photo?: WebDocument;
-  invoice: Invoice;
+  photo?: enums.WebDocument;
+  invoice: enums.Invoice;
   provider_id: bigint;
   url: string;
   native_provider?: string;
-  native_params?: DataJSON;
-  additional_methods?: Array<PaymentFormMethod>;
-  saved_info?: PaymentRequestedInfo;
-  saved_credentials?: Array<PaymentSavedCredentials>;
-  users: Array<User>;
+  native_params?: enums.DataJSON;
+  additional_methods?: Array<enums.PaymentFormMethod>;
+  saved_info?: enums.PaymentRequestedInfo;
+  saved_credentials?: Array<enums.PaymentSavedCredentials>;
+  users: Array<enums.User>;
 
   protected get [id]() {
     return 0xA0058751;
@@ -25195,7 +25195,7 @@ export class payments_paymentForm extends _payments_PaymentForm {
     ];
   }
 
-  constructor(params: { can_save_credentials?: true; password_missing?: true; form_id: bigint; bot_id: bigint; title: string; description: string; photo?: WebDocument; invoice: Invoice; provider_id: bigint; url: string; native_provider?: string; native_params?: DataJSON; additional_methods?: Array<PaymentFormMethod>; saved_info?: PaymentRequestedInfo; saved_credentials?: Array<PaymentSavedCredentials>; users: Array<User> }) {
+  constructor(params: { can_save_credentials?: true; password_missing?: true; form_id: bigint; bot_id: bigint; title: string; description: string; photo?: enums.WebDocument; invoice: enums.Invoice; provider_id: bigint; url: string; native_provider?: string; native_params?: enums.DataJSON; additional_methods?: Array<enums.PaymentFormMethod>; saved_info?: enums.PaymentRequestedInfo; saved_credentials?: Array<enums.PaymentSavedCredentials>; users: Array<enums.User> }) {
     super();
     this.can_save_credentials = params.can_save_credentials;
     this.password_missing = params.password_missing;
@@ -25218,7 +25218,7 @@ export class payments_paymentForm extends _payments_PaymentForm {
 
 export class payments_validatedRequestedInfo extends _payments_ValidatedRequestedInfo {
   id?: string;
-  shipping_options?: Array<ShippingOption>;
+  shipping_options?: Array<enums.ShippingOption>;
 
   protected get [id]() {
     return 0xD1451883;
@@ -25240,7 +25240,7 @@ export class payments_validatedRequestedInfo extends _payments_ValidatedRequeste
     ];
   }
 
-  constructor(params?: { id?: string; shipping_options?: Array<ShippingOption> }) {
+  constructor(params?: { id?: string; shipping_options?: Array<enums.ShippingOption> }) {
     super();
     this.id = params?.id;
     this.shipping_options = params?.shipping_options;
@@ -25248,7 +25248,7 @@ export class payments_validatedRequestedInfo extends _payments_ValidatedRequeste
 }
 
 export class payments_paymentResult extends _payments_PaymentResult {
-  updates: Updates;
+  updates: enums.Updates;
 
   protected get [id]() {
     return 0x4E5F810D;
@@ -25266,7 +25266,7 @@ export class payments_paymentResult extends _payments_PaymentResult {
     ];
   }
 
-  constructor(params: { updates: Updates }) {
+  constructor(params: { updates: enums.Updates }) {
     super();
     this.updates = params.updates;
   }
@@ -25303,15 +25303,15 @@ export class payments_paymentReceipt extends _payments_PaymentReceipt {
   provider_id: bigint;
   title: string;
   description: string;
-  photo?: WebDocument;
-  invoice: Invoice;
-  info?: PaymentRequestedInfo;
-  shipping?: ShippingOption;
+  photo?: enums.WebDocument;
+  invoice: enums.Invoice;
+  info?: enums.PaymentRequestedInfo;
+  shipping?: enums.ShippingOption;
   tip_amount?: bigint;
   currency: string;
   total_amount: bigint;
   credentials_title: string;
-  users: Array<User>;
+  users: Array<enums.User>;
 
   protected get [id]() {
     return 0x70C4FE03;
@@ -25357,7 +25357,7 @@ export class payments_paymentReceipt extends _payments_PaymentReceipt {
     ];
   }
 
-  constructor(params: { date: number; bot_id: bigint; provider_id: bigint; title: string; description: string; photo?: WebDocument; invoice: Invoice; info?: PaymentRequestedInfo; shipping?: ShippingOption; tip_amount?: bigint; currency: string; total_amount: bigint; credentials_title: string; users: Array<User> }) {
+  constructor(params: { date: number; bot_id: bigint; provider_id: bigint; title: string; description: string; photo?: enums.WebDocument; invoice: enums.Invoice; info?: enums.PaymentRequestedInfo; shipping?: enums.ShippingOption; tip_amount?: bigint; currency: string; total_amount: bigint; credentials_title: string; users: Array<enums.User> }) {
     super();
     this.date = params.date;
     this.bot_id = params.bot_id;
@@ -25378,7 +25378,7 @@ export class payments_paymentReceipt extends _payments_PaymentReceipt {
 
 export class payments_savedInfo extends _payments_SavedInfo {
   has_saved_credentials?: true;
-  saved_info?: PaymentRequestedInfo;
+  saved_info?: enums.PaymentRequestedInfo;
 
   protected get [id]() {
     return 0xFB8FE43C;
@@ -25400,7 +25400,7 @@ export class payments_savedInfo extends _payments_SavedInfo {
     ];
   }
 
-  constructor(params?: { has_saved_credentials?: true; saved_info?: PaymentRequestedInfo }) {
+  constructor(params?: { has_saved_credentials?: true; saved_info?: enums.PaymentRequestedInfo }) {
     super();
     this.has_saved_credentials = params?.has_saved_credentials;
     this.saved_info = params?.saved_info;
@@ -25438,7 +25438,7 @@ export class inputPaymentCredentialsSaved extends _InputPaymentCredentials {
 
 export class inputPaymentCredentials extends _InputPaymentCredentials {
   save?: true;
-  data: DataJSON;
+  data: enums.DataJSON;
 
   protected get [id]() {
     return 0x3417D728;
@@ -25460,7 +25460,7 @@ export class inputPaymentCredentials extends _InputPaymentCredentials {
     ];
   }
 
-  constructor(params: { save?: true; data: DataJSON }) {
+  constructor(params: { save?: true; data: enums.DataJSON }) {
     super();
     this.save = params.save;
     this.data = params.data;
@@ -25468,7 +25468,7 @@ export class inputPaymentCredentials extends _InputPaymentCredentials {
 }
 
 export class inputPaymentCredentialsApplePay extends _InputPaymentCredentials {
-  payment_data: DataJSON;
+  payment_data: enums.DataJSON;
 
   protected get [id]() {
     return 0x0AA1C39F;
@@ -25486,14 +25486,14 @@ export class inputPaymentCredentialsApplePay extends _InputPaymentCredentials {
     ];
   }
 
-  constructor(params: { payment_data: DataJSON }) {
+  constructor(params: { payment_data: enums.DataJSON }) {
     super();
     this.payment_data = params.payment_data;
   }
 }
 
 export class inputPaymentCredentialsGooglePay extends _InputPaymentCredentials {
-  payment_token: DataJSON;
+  payment_token: enums.DataJSON;
 
   protected get [id]() {
     return 0x8AC32801;
@@ -25511,7 +25511,7 @@ export class inputPaymentCredentialsGooglePay extends _InputPaymentCredentials {
     ];
   }
 
-  constructor(params: { payment_token: DataJSON }) {
+  constructor(params: { payment_token: enums.DataJSON }) {
     super();
     this.payment_token = params.payment_token;
   }
@@ -25549,7 +25549,7 @@ export class account_tmpPassword extends _account_TmpPassword {
 export class shippingOption extends _ShippingOption {
   id: string;
   title: string;
-  prices: Array<LabeledPrice>;
+  prices: Array<enums.LabeledPrice>;
 
   protected get [id]() {
     return 0xB6213CDF;
@@ -25571,7 +25571,7 @@ export class shippingOption extends _ShippingOption {
     ];
   }
 
-  constructor(params: { id: string; title: string; prices: Array<LabeledPrice> }) {
+  constructor(params: { id: string; title: string; prices: Array<enums.LabeledPrice> }) {
     super();
     this.id = params.id;
     this.title = params.title;
@@ -25580,9 +25580,9 @@ export class shippingOption extends _ShippingOption {
 }
 
 export class inputStickerSetItem extends _InputStickerSetItem {
-  document: InputDocument;
+  document: enums.InputDocument;
   emoji: string;
-  mask_coords?: MaskCoords;
+  mask_coords?: enums.MaskCoords;
   keywords?: string;
 
   protected get [id]() {
@@ -25609,7 +25609,7 @@ export class inputStickerSetItem extends _InputStickerSetItem {
     ];
   }
 
-  constructor(params: { document: InputDocument; emoji: string; mask_coords?: MaskCoords; keywords?: string }) {
+  constructor(params: { document: enums.InputDocument; emoji: string; mask_coords?: enums.MaskCoords; keywords?: string }) {
     super();
     this.document = params.document;
     this.emoji = params.emoji;
@@ -25679,7 +25679,7 @@ export class phoneCallWaiting extends _PhoneCall {
   date: number;
   admin_id: bigint;
   participant_id: bigint;
-  protocol: PhoneCallProtocol;
+  protocol: enums.PhoneCallProtocol;
   receive_date?: number;
 
   protected get [id]() {
@@ -25714,7 +25714,7 @@ export class phoneCallWaiting extends _PhoneCall {
     ];
   }
 
-  constructor(params: { video?: true; id: bigint; access_hash: bigint; date: number; admin_id: bigint; participant_id: bigint; protocol: PhoneCallProtocol; receive_date?: number }) {
+  constructor(params: { video?: true; id: bigint; access_hash: bigint; date: number; admin_id: bigint; participant_id: bigint; protocol: enums.PhoneCallProtocol; receive_date?: number }) {
     super();
     this.video = params.video;
     this.id = params.id;
@@ -25735,7 +25735,7 @@ export class phoneCallRequested extends _PhoneCall {
   admin_id: bigint;
   participant_id: bigint;
   g_a_hash: Uint8Array;
-  protocol: PhoneCallProtocol;
+  protocol: enums.PhoneCallProtocol;
 
   protected get [id]() {
     return 0x14B0ED0C;
@@ -25769,7 +25769,7 @@ export class phoneCallRequested extends _PhoneCall {
     ];
   }
 
-  constructor(params: { video?: true; id: bigint; access_hash: bigint; date: number; admin_id: bigint; participant_id: bigint; g_a_hash: Uint8Array; protocol: PhoneCallProtocol }) {
+  constructor(params: { video?: true; id: bigint; access_hash: bigint; date: number; admin_id: bigint; participant_id: bigint; g_a_hash: Uint8Array; protocol: enums.PhoneCallProtocol }) {
     super();
     this.video = params.video;
     this.id = params.id;
@@ -25790,7 +25790,7 @@ export class phoneCallAccepted extends _PhoneCall {
   admin_id: bigint;
   participant_id: bigint;
   g_b: Uint8Array;
-  protocol: PhoneCallProtocol;
+  protocol: enums.PhoneCallProtocol;
 
   protected get [id]() {
     return 0x3660C311;
@@ -25824,7 +25824,7 @@ export class phoneCallAccepted extends _PhoneCall {
     ];
   }
 
-  constructor(params: { video?: true; id: bigint; access_hash: bigint; date: number; admin_id: bigint; participant_id: bigint; g_b: Uint8Array; protocol: PhoneCallProtocol }) {
+  constructor(params: { video?: true; id: bigint; access_hash: bigint; date: number; admin_id: bigint; participant_id: bigint; g_b: Uint8Array; protocol: enums.PhoneCallProtocol }) {
     super();
     this.video = params.video;
     this.id = params.id;
@@ -25847,8 +25847,8 @@ export class phoneCall extends _PhoneCall {
   participant_id: bigint;
   g_a_or_b: Uint8Array;
   key_fingerprint: bigint;
-  protocol: PhoneCallProtocol;
-  connections: Array<PhoneConnection>;
+  protocol: enums.PhoneCallProtocol;
+  connections: Array<enums.PhoneConnection>;
   start_date: number;
 
   protected get [id]() {
@@ -25891,7 +25891,7 @@ export class phoneCall extends _PhoneCall {
     ];
   }
 
-  constructor(params: { p2p_allowed?: true; video?: true; id: bigint; access_hash: bigint; date: number; admin_id: bigint; participant_id: bigint; g_a_or_b: Uint8Array; key_fingerprint: bigint; protocol: PhoneCallProtocol; connections: Array<PhoneConnection>; start_date: number }) {
+  constructor(params: { p2p_allowed?: true; video?: true; id: bigint; access_hash: bigint; date: number; admin_id: bigint; participant_id: bigint; g_a_or_b: Uint8Array; key_fingerprint: bigint; protocol: enums.PhoneCallProtocol; connections: Array<enums.PhoneConnection>; start_date: number }) {
     super();
     this.p2p_allowed = params.p2p_allowed;
     this.video = params.video;
@@ -25913,7 +25913,7 @@ export class phoneCallDiscarded extends _PhoneCall {
   need_debug?: true;
   video?: true;
   id: bigint;
-  reason?: PhoneCallDiscardReason;
+  reason?: enums.PhoneCallDiscardReason;
   duration?: number;
 
   protected get [id]() {
@@ -25944,7 +25944,7 @@ export class phoneCallDiscarded extends _PhoneCall {
     ];
   }
 
-  constructor(params: { need_rating?: true; need_debug?: true; video?: true; id: bigint; reason?: PhoneCallDiscardReason; duration?: number }) {
+  constructor(params: { need_rating?: true; need_debug?: true; video?: true; id: bigint; reason?: enums.PhoneCallDiscardReason; duration?: number }) {
     super();
     this.need_rating = params.need_rating;
     this.need_debug = params.need_debug;
@@ -26101,8 +26101,8 @@ export class phoneCallProtocol extends _PhoneCallProtocol {
 }
 
 export class phone_phoneCall extends _phone_PhoneCall {
-  phone_call: PhoneCall;
-  users: Array<User>;
+  phone_call: enums.PhoneCall;
+  users: Array<enums.User>;
 
   protected get [id]() {
     return 0xEC82E140;
@@ -26122,7 +26122,7 @@ export class phone_phoneCall extends _phone_PhoneCall {
     ];
   }
 
-  constructor(params: { phone_call: PhoneCall; users: Array<User> }) {
+  constructor(params: { phone_call: enums.PhoneCall; users: Array<enums.User> }) {
     super();
     this.phone_call = params.phone_call;
     this.users = params.users;
@@ -26209,7 +26209,7 @@ export class cdnPublicKey extends _CdnPublicKey {
 }
 
 export class cdnConfig extends _CdnConfig {
-  public_keys: Array<CdnPublicKey>;
+  public_keys: Array<enums.CdnPublicKey>;
 
   protected get [id]() {
     return 0x5725E40A;
@@ -26227,7 +26227,7 @@ export class cdnConfig extends _CdnConfig {
     ];
   }
 
-  constructor(params: { public_keys: Array<CdnPublicKey> }) {
+  constructor(params: { public_keys: Array<enums.CdnPublicKey> }) {
     super();
     this.public_keys = params.public_keys;
   }
@@ -26342,7 +26342,7 @@ export class langPackDifference extends _LangPackDifference {
   lang_code: string;
   from_version: number;
   version: number;
-  strings: Array<LangPackString>;
+  strings: Array<enums.LangPackString>;
 
   protected get [id]() {
     return 0xF385C1F6;
@@ -26366,7 +26366,7 @@ export class langPackDifference extends _LangPackDifference {
     ];
   }
 
-  constructor(params: { lang_code: string; from_version: number; version: number; strings: Array<LangPackString> }) {
+  constructor(params: { lang_code: string; from_version: number; version: number; strings: Array<enums.LangPackString> }) {
     super();
     this.lang_code = params.lang_code;
     this.from_version = params.from_version;
@@ -26530,8 +26530,8 @@ export class channelAdminLogEventActionChangeUsername extends _ChannelAdminLogEv
 }
 
 export class channelAdminLogEventActionChangePhoto extends _ChannelAdminLogEventAction {
-  prev_photo: Photo;
-  new_photo: Photo;
+  prev_photo: enums.Photo;
+  new_photo: enums.Photo;
 
   protected get [id]() {
     return 0x434BD2AF;
@@ -26551,7 +26551,7 @@ export class channelAdminLogEventActionChangePhoto extends _ChannelAdminLogEvent
     ];
   }
 
-  constructor(params: { prev_photo: Photo; new_photo: Photo }) {
+  constructor(params: { prev_photo: enums.Photo; new_photo: enums.Photo }) {
     super();
     this.prev_photo = params.prev_photo;
     this.new_photo = params.new_photo;
@@ -26609,7 +26609,7 @@ export class channelAdminLogEventActionToggleSignatures extends _ChannelAdminLog
 }
 
 export class channelAdminLogEventActionUpdatePinned extends _ChannelAdminLogEventAction {
-  message: Message;
+  message: enums.Message;
 
   protected get [id]() {
     return 0xE9E82C18;
@@ -26627,15 +26627,15 @@ export class channelAdminLogEventActionUpdatePinned extends _ChannelAdminLogEven
     ];
   }
 
-  constructor(params: { message: Message }) {
+  constructor(params: { message: enums.Message }) {
     super();
     this.message = params.message;
   }
 }
 
 export class channelAdminLogEventActionEditMessage extends _ChannelAdminLogEventAction {
-  prev_message: Message;
-  new_message: Message;
+  prev_message: enums.Message;
+  new_message: enums.Message;
 
   protected get [id]() {
     return 0x709B2405;
@@ -26655,7 +26655,7 @@ export class channelAdminLogEventActionEditMessage extends _ChannelAdminLogEvent
     ];
   }
 
-  constructor(params: { prev_message: Message; new_message: Message }) {
+  constructor(params: { prev_message: enums.Message; new_message: enums.Message }) {
     super();
     this.prev_message = params.prev_message;
     this.new_message = params.new_message;
@@ -26663,7 +26663,7 @@ export class channelAdminLogEventActionEditMessage extends _ChannelAdminLogEvent
 }
 
 export class channelAdminLogEventActionDeleteMessage extends _ChannelAdminLogEventAction {
-  message: Message;
+  message: enums.Message;
 
   protected get [id]() {
     return 0x42E047BB;
@@ -26681,7 +26681,7 @@ export class channelAdminLogEventActionDeleteMessage extends _ChannelAdminLogEve
     ];
   }
 
-  constructor(params: { message: Message }) {
+  constructor(params: { message: enums.Message }) {
     super();
     this.message = params.message;
   }
@@ -26724,7 +26724,7 @@ export class channelAdminLogEventActionParticipantLeave extends _ChannelAdminLog
 }
 
 export class channelAdminLogEventActionParticipantInvite extends _ChannelAdminLogEventAction {
-  participant: ChannelParticipant;
+  participant: enums.ChannelParticipant;
 
   protected get [id]() {
     return 0xE31C34D8;
@@ -26742,15 +26742,15 @@ export class channelAdminLogEventActionParticipantInvite extends _ChannelAdminLo
     ];
   }
 
-  constructor(params: { participant: ChannelParticipant }) {
+  constructor(params: { participant: enums.ChannelParticipant }) {
     super();
     this.participant = params.participant;
   }
 }
 
 export class channelAdminLogEventActionParticipantToggleBan extends _ChannelAdminLogEventAction {
-  prev_participant: ChannelParticipant;
-  new_participant: ChannelParticipant;
+  prev_participant: enums.ChannelParticipant;
+  new_participant: enums.ChannelParticipant;
 
   protected get [id]() {
     return 0xE6D83D7E;
@@ -26770,7 +26770,7 @@ export class channelAdminLogEventActionParticipantToggleBan extends _ChannelAdmi
     ];
   }
 
-  constructor(params: { prev_participant: ChannelParticipant; new_participant: ChannelParticipant }) {
+  constructor(params: { prev_participant: enums.ChannelParticipant; new_participant: enums.ChannelParticipant }) {
     super();
     this.prev_participant = params.prev_participant;
     this.new_participant = params.new_participant;
@@ -26778,8 +26778,8 @@ export class channelAdminLogEventActionParticipantToggleBan extends _ChannelAdmi
 }
 
 export class channelAdminLogEventActionParticipantToggleAdmin extends _ChannelAdminLogEventAction {
-  prev_participant: ChannelParticipant;
-  new_participant: ChannelParticipant;
+  prev_participant: enums.ChannelParticipant;
+  new_participant: enums.ChannelParticipant;
 
   protected get [id]() {
     return 0xD5676710;
@@ -26799,7 +26799,7 @@ export class channelAdminLogEventActionParticipantToggleAdmin extends _ChannelAd
     ];
   }
 
-  constructor(params: { prev_participant: ChannelParticipant; new_participant: ChannelParticipant }) {
+  constructor(params: { prev_participant: enums.ChannelParticipant; new_participant: enums.ChannelParticipant }) {
     super();
     this.prev_participant = params.prev_participant;
     this.new_participant = params.new_participant;
@@ -26807,8 +26807,8 @@ export class channelAdminLogEventActionParticipantToggleAdmin extends _ChannelAd
 }
 
 export class channelAdminLogEventActionChangeStickerSet extends _ChannelAdminLogEventAction {
-  prev_stickerset: InputStickerSet;
-  new_stickerset: InputStickerSet;
+  prev_stickerset: enums.InputStickerSet;
+  new_stickerset: enums.InputStickerSet;
 
   protected get [id]() {
     return 0xB1C3CAA7;
@@ -26828,7 +26828,7 @@ export class channelAdminLogEventActionChangeStickerSet extends _ChannelAdminLog
     ];
   }
 
-  constructor(params: { prev_stickerset: InputStickerSet; new_stickerset: InputStickerSet }) {
+  constructor(params: { prev_stickerset: enums.InputStickerSet; new_stickerset: enums.InputStickerSet }) {
     super();
     this.prev_stickerset = params.prev_stickerset;
     this.new_stickerset = params.new_stickerset;
@@ -26861,8 +26861,8 @@ export class channelAdminLogEventActionTogglePreHistoryHidden extends _ChannelAd
 }
 
 export class channelAdminLogEventActionDefaultBannedRights extends _ChannelAdminLogEventAction {
-  prev_banned_rights: ChatBannedRights;
-  new_banned_rights: ChatBannedRights;
+  prev_banned_rights: enums.ChatBannedRights;
+  new_banned_rights: enums.ChatBannedRights;
 
   protected get [id]() {
     return 0x2DF5FC0A;
@@ -26882,7 +26882,7 @@ export class channelAdminLogEventActionDefaultBannedRights extends _ChannelAdmin
     ];
   }
 
-  constructor(params: { prev_banned_rights: ChatBannedRights; new_banned_rights: ChatBannedRights }) {
+  constructor(params: { prev_banned_rights: enums.ChatBannedRights; new_banned_rights: enums.ChatBannedRights }) {
     super();
     this.prev_banned_rights = params.prev_banned_rights;
     this.new_banned_rights = params.new_banned_rights;
@@ -26890,7 +26890,7 @@ export class channelAdminLogEventActionDefaultBannedRights extends _ChannelAdmin
 }
 
 export class channelAdminLogEventActionStopPoll extends _ChannelAdminLogEventAction {
-  message: Message;
+  message: enums.Message;
 
   protected get [id]() {
     return 0x8F079643;
@@ -26908,7 +26908,7 @@ export class channelAdminLogEventActionStopPoll extends _ChannelAdminLogEventAct
     ];
   }
 
-  constructor(params: { message: Message }) {
+  constructor(params: { message: enums.Message }) {
     super();
     this.message = params.message;
   }
@@ -26944,8 +26944,8 @@ export class channelAdminLogEventActionChangeLinkedChat extends _ChannelAdminLog
 }
 
 export class channelAdminLogEventActionChangeLocation extends _ChannelAdminLogEventAction {
-  prev_value: ChannelLocation;
-  new_value: ChannelLocation;
+  prev_value: enums.ChannelLocation;
+  new_value: enums.ChannelLocation;
 
   protected get [id]() {
     return 0x0E6B76AE;
@@ -26965,7 +26965,7 @@ export class channelAdminLogEventActionChangeLocation extends _ChannelAdminLogEv
     ];
   }
 
-  constructor(params: { prev_value: ChannelLocation; new_value: ChannelLocation }) {
+  constructor(params: { prev_value: enums.ChannelLocation; new_value: enums.ChannelLocation }) {
     super();
     this.prev_value = params.prev_value;
     this.new_value = params.new_value;
@@ -27002,7 +27002,7 @@ export class channelAdminLogEventActionToggleSlowMode extends _ChannelAdminLogEv
 }
 
 export class channelAdminLogEventActionStartGroupCall extends _ChannelAdminLogEventAction {
-  call: InputGroupCall;
+  call: enums.InputGroupCall;
 
   protected get [id]() {
     return 0x23209745;
@@ -27020,14 +27020,14 @@ export class channelAdminLogEventActionStartGroupCall extends _ChannelAdminLogEv
     ];
   }
 
-  constructor(params: { call: InputGroupCall }) {
+  constructor(params: { call: enums.InputGroupCall }) {
     super();
     this.call = params.call;
   }
 }
 
 export class channelAdminLogEventActionDiscardGroupCall extends _ChannelAdminLogEventAction {
-  call: InputGroupCall;
+  call: enums.InputGroupCall;
 
   protected get [id]() {
     return 0xDB9F9140;
@@ -27045,14 +27045,14 @@ export class channelAdminLogEventActionDiscardGroupCall extends _ChannelAdminLog
     ];
   }
 
-  constructor(params: { call: InputGroupCall }) {
+  constructor(params: { call: enums.InputGroupCall }) {
     super();
     this.call = params.call;
   }
 }
 
 export class channelAdminLogEventActionParticipantMute extends _ChannelAdminLogEventAction {
-  participant: GroupCallParticipant;
+  participant: enums.GroupCallParticipant;
 
   protected get [id]() {
     return 0xF92424D2;
@@ -27070,14 +27070,14 @@ export class channelAdminLogEventActionParticipantMute extends _ChannelAdminLogE
     ];
   }
 
-  constructor(params: { participant: GroupCallParticipant }) {
+  constructor(params: { participant: enums.GroupCallParticipant }) {
     super();
     this.participant = params.participant;
   }
 }
 
 export class channelAdminLogEventActionParticipantUnmute extends _ChannelAdminLogEventAction {
-  participant: GroupCallParticipant;
+  participant: enums.GroupCallParticipant;
 
   protected get [id]() {
     return 0xE64429C0;
@@ -27095,7 +27095,7 @@ export class channelAdminLogEventActionParticipantUnmute extends _ChannelAdminLo
     ];
   }
 
-  constructor(params: { participant: GroupCallParticipant }) {
+  constructor(params: { participant: enums.GroupCallParticipant }) {
     super();
     this.participant = params.participant;
   }
@@ -27128,7 +27128,7 @@ export class channelAdminLogEventActionToggleGroupCallSetting extends _ChannelAd
 
 export class channelAdminLogEventActionParticipantJoinByInvite extends _ChannelAdminLogEventAction {
   via_chatlist?: true;
-  invite: ExportedChatInvite;
+  invite: enums.ExportedChatInvite;
 
   protected get [id]() {
     return 0xFE9FC158;
@@ -27150,7 +27150,7 @@ export class channelAdminLogEventActionParticipantJoinByInvite extends _ChannelA
     ];
   }
 
-  constructor(params: { via_chatlist?: true; invite: ExportedChatInvite }) {
+  constructor(params: { via_chatlist?: true; invite: enums.ExportedChatInvite }) {
     super();
     this.via_chatlist = params.via_chatlist;
     this.invite = params.invite;
@@ -27158,7 +27158,7 @@ export class channelAdminLogEventActionParticipantJoinByInvite extends _ChannelA
 }
 
 export class channelAdminLogEventActionExportedInviteDelete extends _ChannelAdminLogEventAction {
-  invite: ExportedChatInvite;
+  invite: enums.ExportedChatInvite;
 
   protected get [id]() {
     return 0x5A50FCA4;
@@ -27176,14 +27176,14 @@ export class channelAdminLogEventActionExportedInviteDelete extends _ChannelAdmi
     ];
   }
 
-  constructor(params: { invite: ExportedChatInvite }) {
+  constructor(params: { invite: enums.ExportedChatInvite }) {
     super();
     this.invite = params.invite;
   }
 }
 
 export class channelAdminLogEventActionExportedInviteRevoke extends _ChannelAdminLogEventAction {
-  invite: ExportedChatInvite;
+  invite: enums.ExportedChatInvite;
 
   protected get [id]() {
     return 0x410A134E;
@@ -27201,15 +27201,15 @@ export class channelAdminLogEventActionExportedInviteRevoke extends _ChannelAdmi
     ];
   }
 
-  constructor(params: { invite: ExportedChatInvite }) {
+  constructor(params: { invite: enums.ExportedChatInvite }) {
     super();
     this.invite = params.invite;
   }
 }
 
 export class channelAdminLogEventActionExportedInviteEdit extends _ChannelAdminLogEventAction {
-  prev_invite: ExportedChatInvite;
-  new_invite: ExportedChatInvite;
+  prev_invite: enums.ExportedChatInvite;
+  new_invite: enums.ExportedChatInvite;
 
   protected get [id]() {
     return 0xE90EBB59;
@@ -27229,7 +27229,7 @@ export class channelAdminLogEventActionExportedInviteEdit extends _ChannelAdminL
     ];
   }
 
-  constructor(params: { prev_invite: ExportedChatInvite; new_invite: ExportedChatInvite }) {
+  constructor(params: { prev_invite: enums.ExportedChatInvite; new_invite: enums.ExportedChatInvite }) {
     super();
     this.prev_invite = params.prev_invite;
     this.new_invite = params.new_invite;
@@ -27237,7 +27237,7 @@ export class channelAdminLogEventActionExportedInviteEdit extends _ChannelAdminL
 }
 
 export class channelAdminLogEventActionParticipantVolume extends _ChannelAdminLogEventAction {
-  participant: GroupCallParticipant;
+  participant: enums.GroupCallParticipant;
 
   protected get [id]() {
     return 0x3E7F6847;
@@ -27255,7 +27255,7 @@ export class channelAdminLogEventActionParticipantVolume extends _ChannelAdminLo
     ];
   }
 
-  constructor(params: { participant: GroupCallParticipant }) {
+  constructor(params: { participant: enums.GroupCallParticipant }) {
     super();
     this.participant = params.participant;
   }
@@ -27291,7 +27291,7 @@ export class channelAdminLogEventActionChangeHistoryTTL extends _ChannelAdminLog
 }
 
 export class channelAdminLogEventActionParticipantJoinByRequest extends _ChannelAdminLogEventAction {
-  invite: ExportedChatInvite;
+  invite: enums.ExportedChatInvite;
   approved_by: bigint;
 
   protected get [id]() {
@@ -27312,7 +27312,7 @@ export class channelAdminLogEventActionParticipantJoinByRequest extends _Channel
     ];
   }
 
-  constructor(params: { invite: ExportedChatInvite; approved_by: bigint }) {
+  constructor(params: { invite: enums.ExportedChatInvite; approved_by: bigint }) {
     super();
     this.invite = params.invite;
     this.approved_by = params.approved_by;
@@ -27345,7 +27345,7 @@ export class channelAdminLogEventActionToggleNoForwards extends _ChannelAdminLog
 }
 
 export class channelAdminLogEventActionSendMessage extends _ChannelAdminLogEventAction {
-  message: Message;
+  message: enums.Message;
 
   protected get [id]() {
     return 0x278F2868;
@@ -27363,15 +27363,15 @@ export class channelAdminLogEventActionSendMessage extends _ChannelAdminLogEvent
     ];
   }
 
-  constructor(params: { message: Message }) {
+  constructor(params: { message: enums.Message }) {
     super();
     this.message = params.message;
   }
 }
 
 export class channelAdminLogEventActionChangeAvailableReactions extends _ChannelAdminLogEventAction {
-  prev_value: ChatReactions;
-  new_value: ChatReactions;
+  prev_value: enums.ChatReactions;
+  new_value: enums.ChatReactions;
 
   protected get [id]() {
     return 0xBE4E0EF8;
@@ -27391,7 +27391,7 @@ export class channelAdminLogEventActionChangeAvailableReactions extends _Channel
     ];
   }
 
-  constructor(params: { prev_value: ChatReactions; new_value: ChatReactions }) {
+  constructor(params: { prev_value: enums.ChatReactions; new_value: enums.ChatReactions }) {
     super();
     this.prev_value = params.prev_value;
     this.new_value = params.new_value;
@@ -27453,7 +27453,7 @@ export class channelAdminLogEventActionToggleForum extends _ChannelAdminLogEvent
 }
 
 export class channelAdminLogEventActionCreateTopic extends _ChannelAdminLogEventAction {
-  topic: ForumTopic;
+  topic: enums.ForumTopic;
 
   protected get [id]() {
     return 0x58707D28;
@@ -27471,15 +27471,15 @@ export class channelAdminLogEventActionCreateTopic extends _ChannelAdminLogEvent
     ];
   }
 
-  constructor(params: { topic: ForumTopic }) {
+  constructor(params: { topic: enums.ForumTopic }) {
     super();
     this.topic = params.topic;
   }
 }
 
 export class channelAdminLogEventActionEditTopic extends _ChannelAdminLogEventAction {
-  prev_topic: ForumTopic;
-  new_topic: ForumTopic;
+  prev_topic: enums.ForumTopic;
+  new_topic: enums.ForumTopic;
 
   protected get [id]() {
     return 0xF06FE208;
@@ -27499,7 +27499,7 @@ export class channelAdminLogEventActionEditTopic extends _ChannelAdminLogEventAc
     ];
   }
 
-  constructor(params: { prev_topic: ForumTopic; new_topic: ForumTopic }) {
+  constructor(params: { prev_topic: enums.ForumTopic; new_topic: enums.ForumTopic }) {
     super();
     this.prev_topic = params.prev_topic;
     this.new_topic = params.new_topic;
@@ -27507,7 +27507,7 @@ export class channelAdminLogEventActionEditTopic extends _ChannelAdminLogEventAc
 }
 
 export class channelAdminLogEventActionDeleteTopic extends _ChannelAdminLogEventAction {
-  topic: ForumTopic;
+  topic: enums.ForumTopic;
 
   protected get [id]() {
     return 0xAE168909;
@@ -27525,15 +27525,15 @@ export class channelAdminLogEventActionDeleteTopic extends _ChannelAdminLogEvent
     ];
   }
 
-  constructor(params: { topic: ForumTopic }) {
+  constructor(params: { topic: enums.ForumTopic }) {
     super();
     this.topic = params.topic;
   }
 }
 
 export class channelAdminLogEventActionPinTopic extends _ChannelAdminLogEventAction {
-  prev_topic?: ForumTopic;
-  new_topic?: ForumTopic;
+  prev_topic?: enums.ForumTopic;
+  new_topic?: enums.ForumTopic;
 
   protected get [id]() {
     return 0x5D8D353B;
@@ -27555,7 +27555,7 @@ export class channelAdminLogEventActionPinTopic extends _ChannelAdminLogEventAct
     ];
   }
 
-  constructor(params?: { prev_topic?: ForumTopic; new_topic?: ForumTopic }) {
+  constructor(params?: { prev_topic?: enums.ForumTopic; new_topic?: enums.ForumTopic }) {
     super();
     this.prev_topic = params?.prev_topic;
     this.new_topic = params?.new_topic;
@@ -27649,7 +27649,7 @@ export class channelAdminLogEvent extends _ChannelAdminLogEvent {
   id: bigint;
   date: number;
   user_id: bigint;
-  action: ChannelAdminLogEventAction;
+  action: enums.ChannelAdminLogEventAction;
 
   protected get [id]() {
     return 0x1FAD68CD;
@@ -27673,7 +27673,7 @@ export class channelAdminLogEvent extends _ChannelAdminLogEvent {
     ];
   }
 
-  constructor(params: { id: bigint; date: number; user_id: bigint; action: ChannelAdminLogEventAction }) {
+  constructor(params: { id: bigint; date: number; user_id: bigint; action: enums.ChannelAdminLogEventAction }) {
     super();
     this.id = params.id;
     this.date = params.date;
@@ -27683,9 +27683,9 @@ export class channelAdminLogEvent extends _ChannelAdminLogEvent {
 }
 
 export class channels_adminLogResults extends _channels_AdminLogResults {
-  events: Array<ChannelAdminLogEvent>;
-  chats: Array<Chat>;
-  users: Array<User>;
+  events: Array<enums.ChannelAdminLogEvent>;
+  chats: Array<enums.Chat>;
+  users: Array<enums.User>;
 
   protected get [id]() {
     return 0xED8AF74D;
@@ -27707,7 +27707,7 @@ export class channels_adminLogResults extends _channels_AdminLogResults {
     ];
   }
 
-  constructor(params: { events: Array<ChannelAdminLogEvent>; chats: Array<Chat>; users: Array<User> }) {
+  constructor(params: { events: Array<enums.ChannelAdminLogEvent>; chats: Array<enums.Chat>; users: Array<enums.User> }) {
     super();
     this.events = params.events;
     this.chats = params.chats;
@@ -27859,8 +27859,8 @@ export class messages_favedStickersNotModified extends _messages_FavedStickers {
 
 export class messages_favedStickers extends _messages_FavedStickers {
   hash: bigint;
-  packs: Array<StickerPack>;
-  stickers: Array<Document>;
+  packs: Array<enums.StickerPack>;
+  stickers: Array<enums.Document>;
 
   protected get [id]() {
     return 0x2CB51097;
@@ -27882,7 +27882,7 @@ export class messages_favedStickers extends _messages_FavedStickers {
     ];
   }
 
-  constructor(params: { hash: bigint; packs: Array<StickerPack>; stickers: Array<Document> }) {
+  constructor(params: { hash: bigint; packs: Array<enums.StickerPack>; stickers: Array<enums.Document> }) {
     super();
     this.hash = params.hash;
     this.packs = params.packs;
@@ -27975,7 +27975,7 @@ export class recentMeUrlChat extends _RecentMeUrl {
 
 export class recentMeUrlChatInvite extends _RecentMeUrl {
   url: string;
-  chat_invite: ChatInvite;
+  chat_invite: enums.ChatInvite;
 
   protected get [id]() {
     return 0xEB49081D;
@@ -27995,7 +27995,7 @@ export class recentMeUrlChatInvite extends _RecentMeUrl {
     ];
   }
 
-  constructor(params: { url: string; chat_invite: ChatInvite }) {
+  constructor(params: { url: string; chat_invite: enums.ChatInvite }) {
     super();
     this.url = params.url;
     this.chat_invite = params.chat_invite;
@@ -28004,7 +28004,7 @@ export class recentMeUrlChatInvite extends _RecentMeUrl {
 
 export class recentMeUrlStickerSet extends _RecentMeUrl {
   url: string;
-  set: StickerSetCovered;
+  set: enums.StickerSetCovered;
 
   protected get [id]() {
     return 0xBC0A57DC;
@@ -28024,7 +28024,7 @@ export class recentMeUrlStickerSet extends _RecentMeUrl {
     ];
   }
 
-  constructor(params: { url: string; set: StickerSetCovered }) {
+  constructor(params: { url: string; set: enums.StickerSetCovered }) {
     super();
     this.url = params.url;
     this.set = params.set;
@@ -28032,9 +28032,9 @@ export class recentMeUrlStickerSet extends _RecentMeUrl {
 }
 
 export class help_recentMeUrls extends _help_RecentMeUrls {
-  urls: Array<RecentMeUrl>;
-  chats: Array<Chat>;
-  users: Array<User>;
+  urls: Array<enums.RecentMeUrl>;
+  chats: Array<enums.Chat>;
+  users: Array<enums.User>;
 
   protected get [id]() {
     return 0x0E0310D7;
@@ -28056,7 +28056,7 @@ export class help_recentMeUrls extends _help_RecentMeUrls {
     ];
   }
 
-  constructor(params: { urls: Array<RecentMeUrl>; chats: Array<Chat>; users: Array<User> }) {
+  constructor(params: { urls: Array<enums.RecentMeUrl>; chats: Array<enums.Chat>; users: Array<enums.User> }) {
     super();
     this.urls = params.urls;
     this.chats = params.chats;
@@ -28065,10 +28065,10 @@ export class help_recentMeUrls extends _help_RecentMeUrls {
 }
 
 export class inputSingleMedia extends _InputSingleMedia {
-  media: InputMedia;
+  media: enums.InputMedia;
   random_id: bigint;
   message: string;
-  entities?: Array<MessageEntity>;
+  entities?: Array<enums.MessageEntity>;
 
   protected get [id]() {
     return 0x1CC6E91F;
@@ -28094,7 +28094,7 @@ export class inputSingleMedia extends _InputSingleMedia {
     ];
   }
 
-  constructor(params: { media: InputMedia; random_id: bigint; message: string; entities?: Array<MessageEntity> }) {
+  constructor(params: { media: enums.InputMedia; random_id: bigint; message: string; entities?: Array<enums.MessageEntity> }) {
     super();
     this.media = params.media;
     this.random_id = params.random_id;
@@ -28161,8 +28161,8 @@ export class webAuthorization extends _WebAuthorization {
 }
 
 export class account_webAuthorizations extends _account_WebAuthorizations {
-  authorizations: Array<WebAuthorization>;
-  users: Array<User>;
+  authorizations: Array<enums.WebAuthorization>;
+  users: Array<enums.User>;
 
   protected get [id]() {
     return 0xED56C9FC;
@@ -28182,7 +28182,7 @@ export class account_webAuthorizations extends _account_WebAuthorizations {
     ];
   }
 
-  constructor(params: { authorizations: Array<WebAuthorization>; users: Array<User> }) {
+  constructor(params: { authorizations: Array<enums.WebAuthorization>; users: Array<enums.User> }) {
     super();
     this.authorizations = params.authorizations;
     this.users = params.users;
@@ -28287,7 +28287,7 @@ export class inputMessageCallbackQuery extends _InputMessage {
 }
 
 export class inputDialogPeer extends _InputDialogPeer {
-  peer: InputPeer;
+  peer: enums.InputPeer;
 
   protected get [id]() {
     return 0xFCAAFEB7;
@@ -28305,7 +28305,7 @@ export class inputDialogPeer extends _InputDialogPeer {
     ];
   }
 
-  constructor(params: { peer: InputPeer }) {
+  constructor(params: { peer: enums.InputPeer }) {
     super();
     this.peer = params.peer;
   }
@@ -28337,7 +28337,7 @@ export class inputDialogPeerFolder extends _InputDialogPeer {
 }
 
 export class dialogPeer extends _DialogPeer {
-  peer: Peer;
+  peer: enums.Peer;
 
   protected get [id]() {
     return 0xE56DBF05;
@@ -28355,7 +28355,7 @@ export class dialogPeer extends _DialogPeer {
     ];
   }
 
-  constructor(params: { peer: Peer }) {
+  constructor(params: { peer: enums.Peer }) {
     super();
     this.peer = params.peer;
   }
@@ -28406,7 +28406,7 @@ export class messages_foundStickerSetsNotModified extends _messages_FoundSticker
 
 export class messages_foundStickerSets extends _messages_FoundStickerSets {
   hash: bigint;
-  sets: Array<StickerSetCovered>;
+  sets: Array<enums.StickerSetCovered>;
 
   protected get [id]() {
     return 0x8AF09DD2;
@@ -28426,7 +28426,7 @@ export class messages_foundStickerSets extends _messages_FoundStickerSets {
     ];
   }
 
-  constructor(params: { hash: bigint; sets: Array<StickerSetCovered> }) {
+  constructor(params: { hash: bigint; sets: Array<enums.StickerSetCovered> }) {
     super();
     this.hash = params.hash;
     this.sets = params.sets;
@@ -28522,7 +28522,7 @@ export class help_termsOfServiceUpdateEmpty extends _help_TermsOfServiceUpdate {
 
 export class help_termsOfServiceUpdate extends _help_TermsOfServiceUpdate {
   expires: number;
-  terms_of_service: help_TermsOfService;
+  terms_of_service: enums.help_TermsOfService;
 
   protected get [id]() {
     return 0x28ECF961;
@@ -28542,7 +28542,7 @@ export class help_termsOfServiceUpdate extends _help_TermsOfServiceUpdate {
     ];
   }
 
-  constructor(params: { expires: number; terms_of_service: help_TermsOfService }) {
+  constructor(params: { expires: number; terms_of_service: enums.help_TermsOfService }) {
     super();
     this.expires = params.expires;
     this.terms_of_service = params.terms_of_service;
@@ -29004,14 +29004,14 @@ export class secureValueTypeEmail extends _SecureValueType {
 }
 
 export class secureValue extends _SecureValue {
-  type: SecureValueType;
-  data?: SecureData;
-  front_side?: SecureFile;
-  reverse_side?: SecureFile;
-  selfie?: SecureFile;
-  translation?: Array<SecureFile>;
-  files?: Array<SecureFile>;
-  plain_data?: SecurePlainData;
+  type: enums.SecureValueType;
+  data?: enums.SecureData;
+  front_side?: enums.SecureFile;
+  reverse_side?: enums.SecureFile;
+  selfie?: enums.SecureFile;
+  translation?: Array<enums.SecureFile>;
+  files?: Array<enums.SecureFile>;
+  plain_data?: enums.SecurePlainData;
   hash: Uint8Array;
 
   protected get [id]() {
@@ -29048,7 +29048,7 @@ export class secureValue extends _SecureValue {
     ];
   }
 
-  constructor(params: { type: SecureValueType; data?: SecureData; front_side?: SecureFile; reverse_side?: SecureFile; selfie?: SecureFile; translation?: Array<SecureFile>; files?: Array<SecureFile>; plain_data?: SecurePlainData; hash: Uint8Array }) {
+  constructor(params: { type: enums.SecureValueType; data?: enums.SecureData; front_side?: enums.SecureFile; reverse_side?: enums.SecureFile; selfie?: enums.SecureFile; translation?: Array<enums.SecureFile>; files?: Array<enums.SecureFile>; plain_data?: enums.SecurePlainData; hash: Uint8Array }) {
     super();
     this.type = params.type;
     this.data = params.data;
@@ -29063,14 +29063,14 @@ export class secureValue extends _SecureValue {
 }
 
 export class inputSecureValue extends _InputSecureValue {
-  type: SecureValueType;
-  data?: SecureData;
-  front_side?: InputSecureFile;
-  reverse_side?: InputSecureFile;
-  selfie?: InputSecureFile;
-  translation?: Array<InputSecureFile>;
-  files?: Array<InputSecureFile>;
-  plain_data?: SecurePlainData;
+  type: enums.SecureValueType;
+  data?: enums.SecureData;
+  front_side?: enums.InputSecureFile;
+  reverse_side?: enums.InputSecureFile;
+  selfie?: enums.InputSecureFile;
+  translation?: Array<enums.InputSecureFile>;
+  files?: Array<enums.InputSecureFile>;
+  plain_data?: enums.SecurePlainData;
 
   protected get [id]() {
     return 0xDB21D0A7;
@@ -29104,7 +29104,7 @@ export class inputSecureValue extends _InputSecureValue {
     ];
   }
 
-  constructor(params: { type: SecureValueType; data?: SecureData; front_side?: InputSecureFile; reverse_side?: InputSecureFile; selfie?: InputSecureFile; translation?: Array<InputSecureFile>; files?: Array<InputSecureFile>; plain_data?: SecurePlainData }) {
+  constructor(params: { type: enums.SecureValueType; data?: enums.SecureData; front_side?: enums.InputSecureFile; reverse_side?: enums.InputSecureFile; selfie?: enums.InputSecureFile; translation?: Array<enums.InputSecureFile>; files?: Array<enums.InputSecureFile>; plain_data?: enums.SecurePlainData }) {
     super();
     this.type = params.type;
     this.data = params.data;
@@ -29118,7 +29118,7 @@ export class inputSecureValue extends _InputSecureValue {
 }
 
 export class secureValueHash extends _SecureValueHash {
-  type: SecureValueType;
+  type: enums.SecureValueType;
   hash: Uint8Array;
 
   protected get [id]() {
@@ -29139,7 +29139,7 @@ export class secureValueHash extends _SecureValueHash {
     ];
   }
 
-  constructor(params: { type: SecureValueType; hash: Uint8Array }) {
+  constructor(params: { type: enums.SecureValueType; hash: Uint8Array }) {
     super();
     this.type = params.type;
     this.hash = params.hash;
@@ -29147,7 +29147,7 @@ export class secureValueHash extends _SecureValueHash {
 }
 
 export class secureValueErrorData extends _SecureValueError {
-  type: SecureValueType;
+  type: enums.SecureValueType;
   data_hash: Uint8Array;
   field: string;
   text: string;
@@ -29174,7 +29174,7 @@ export class secureValueErrorData extends _SecureValueError {
     ];
   }
 
-  constructor(params: { type: SecureValueType; data_hash: Uint8Array; field: string; text: string }) {
+  constructor(params: { type: enums.SecureValueType; data_hash: Uint8Array; field: string; text: string }) {
     super();
     this.type = params.type;
     this.data_hash = params.data_hash;
@@ -29184,7 +29184,7 @@ export class secureValueErrorData extends _SecureValueError {
 }
 
 export class secureValueErrorFrontSide extends _SecureValueError {
-  type: SecureValueType;
+  type: enums.SecureValueType;
   file_hash: Uint8Array;
   text: string;
 
@@ -29208,7 +29208,7 @@ export class secureValueErrorFrontSide extends _SecureValueError {
     ];
   }
 
-  constructor(params: { type: SecureValueType; file_hash: Uint8Array; text: string }) {
+  constructor(params: { type: enums.SecureValueType; file_hash: Uint8Array; text: string }) {
     super();
     this.type = params.type;
     this.file_hash = params.file_hash;
@@ -29217,7 +29217,7 @@ export class secureValueErrorFrontSide extends _SecureValueError {
 }
 
 export class secureValueErrorReverseSide extends _SecureValueError {
-  type: SecureValueType;
+  type: enums.SecureValueType;
   file_hash: Uint8Array;
   text: string;
 
@@ -29241,7 +29241,7 @@ export class secureValueErrorReverseSide extends _SecureValueError {
     ];
   }
 
-  constructor(params: { type: SecureValueType; file_hash: Uint8Array; text: string }) {
+  constructor(params: { type: enums.SecureValueType; file_hash: Uint8Array; text: string }) {
     super();
     this.type = params.type;
     this.file_hash = params.file_hash;
@@ -29250,7 +29250,7 @@ export class secureValueErrorReverseSide extends _SecureValueError {
 }
 
 export class secureValueErrorSelfie extends _SecureValueError {
-  type: SecureValueType;
+  type: enums.SecureValueType;
   file_hash: Uint8Array;
   text: string;
 
@@ -29274,7 +29274,7 @@ export class secureValueErrorSelfie extends _SecureValueError {
     ];
   }
 
-  constructor(params: { type: SecureValueType; file_hash: Uint8Array; text: string }) {
+  constructor(params: { type: enums.SecureValueType; file_hash: Uint8Array; text: string }) {
     super();
     this.type = params.type;
     this.file_hash = params.file_hash;
@@ -29283,7 +29283,7 @@ export class secureValueErrorSelfie extends _SecureValueError {
 }
 
 export class secureValueErrorFile extends _SecureValueError {
-  type: SecureValueType;
+  type: enums.SecureValueType;
   file_hash: Uint8Array;
   text: string;
 
@@ -29307,7 +29307,7 @@ export class secureValueErrorFile extends _SecureValueError {
     ];
   }
 
-  constructor(params: { type: SecureValueType; file_hash: Uint8Array; text: string }) {
+  constructor(params: { type: enums.SecureValueType; file_hash: Uint8Array; text: string }) {
     super();
     this.type = params.type;
     this.file_hash = params.file_hash;
@@ -29316,7 +29316,7 @@ export class secureValueErrorFile extends _SecureValueError {
 }
 
 export class secureValueErrorFiles extends _SecureValueError {
-  type: SecureValueType;
+  type: enums.SecureValueType;
   file_hash: Array<Uint8Array>;
   text: string;
 
@@ -29340,7 +29340,7 @@ export class secureValueErrorFiles extends _SecureValueError {
     ];
   }
 
-  constructor(params: { type: SecureValueType; file_hash: Array<Uint8Array>; text: string }) {
+  constructor(params: { type: enums.SecureValueType; file_hash: Array<Uint8Array>; text: string }) {
     super();
     this.type = params.type;
     this.file_hash = params.file_hash;
@@ -29349,7 +29349,7 @@ export class secureValueErrorFiles extends _SecureValueError {
 }
 
 export class secureValueError extends _SecureValueError {
-  type: SecureValueType;
+  type: enums.SecureValueType;
   hash: Uint8Array;
   text: string;
 
@@ -29373,7 +29373,7 @@ export class secureValueError extends _SecureValueError {
     ];
   }
 
-  constructor(params: { type: SecureValueType; hash: Uint8Array; text: string }) {
+  constructor(params: { type: enums.SecureValueType; hash: Uint8Array; text: string }) {
     super();
     this.type = params.type;
     this.hash = params.hash;
@@ -29382,7 +29382,7 @@ export class secureValueError extends _SecureValueError {
 }
 
 export class secureValueErrorTranslationFile extends _SecureValueError {
-  type: SecureValueType;
+  type: enums.SecureValueType;
   file_hash: Uint8Array;
   text: string;
 
@@ -29406,7 +29406,7 @@ export class secureValueErrorTranslationFile extends _SecureValueError {
     ];
   }
 
-  constructor(params: { type: SecureValueType; file_hash: Uint8Array; text: string }) {
+  constructor(params: { type: enums.SecureValueType; file_hash: Uint8Array; text: string }) {
     super();
     this.type = params.type;
     this.file_hash = params.file_hash;
@@ -29415,7 +29415,7 @@ export class secureValueErrorTranslationFile extends _SecureValueError {
 }
 
 export class secureValueErrorTranslationFiles extends _SecureValueError {
-  type: SecureValueType;
+  type: enums.SecureValueType;
   file_hash: Array<Uint8Array>;
   text: string;
 
@@ -29439,7 +29439,7 @@ export class secureValueErrorTranslationFiles extends _SecureValueError {
     ];
   }
 
-  constructor(params: { type: SecureValueType; file_hash: Array<Uint8Array>; text: string }) {
+  constructor(params: { type: enums.SecureValueType; file_hash: Array<Uint8Array>; text: string }) {
     super();
     this.type = params.type;
     this.file_hash = params.file_hash;
@@ -29481,10 +29481,10 @@ export class secureCredentialsEncrypted extends _SecureCredentialsEncrypted {
 }
 
 export class account_authorizationForm extends _account_AuthorizationForm {
-  required_types: Array<SecureRequiredType>;
-  values: Array<SecureValue>;
-  errors: Array<SecureValueError>;
-  users: Array<User>;
+  required_types: Array<enums.SecureRequiredType>;
+  values: Array<enums.SecureValue>;
+  errors: Array<enums.SecureValueError>;
+  users: Array<enums.User>;
   privacy_policy_url?: string;
 
   protected get [id]() {
@@ -29513,7 +29513,7 @@ export class account_authorizationForm extends _account_AuthorizationForm {
     ];
   }
 
-  constructor(params: { required_types: Array<SecureRequiredType>; values: Array<SecureValue>; errors: Array<SecureValueError>; users: Array<User>; privacy_policy_url?: string }) {
+  constructor(params: { required_types: Array<enums.SecureRequiredType>; values: Array<enums.SecureValue>; errors: Array<enums.SecureValueError>; users: Array<enums.User>; privacy_policy_url?: string }) {
     super();
     this.required_types = params.required_types;
     this.values = params.values;
@@ -29573,7 +29573,7 @@ export class help_deepLinkInfoEmpty extends _help_DeepLinkInfo {
 export class help_deepLinkInfo extends _help_DeepLinkInfo {
   update_app?: true;
   message: string;
-  entities?: Array<MessageEntity>;
+  entities?: Array<enums.MessageEntity>;
 
   protected get [id]() {
     return 0x6A4EE832;
@@ -29597,7 +29597,7 @@ export class help_deepLinkInfo extends _help_DeepLinkInfo {
     ];
   }
 
-  constructor(params: { update_app?: true; message: string; entities?: Array<MessageEntity> }) {
+  constructor(params: { update_app?: true; message: string; entities?: Array<enums.MessageEntity> }) {
     super();
     this.update_app = params.update_app;
     this.message = params.message;
@@ -29791,7 +29791,7 @@ export class securePasswordKdfAlgoSHA512 extends _SecurePasswordKdfAlgo {
 }
 
 export class secureSecretSettings extends _SecureSecretSettings {
-  secure_algo: SecurePasswordKdfAlgo;
+  secure_algo: enums.SecurePasswordKdfAlgo;
   secure_secret: Uint8Array;
   secure_secret_id: bigint;
 
@@ -29815,7 +29815,7 @@ export class secureSecretSettings extends _SecureSecretSettings {
     ];
   }
 
-  constructor(params: { secure_algo: SecurePasswordKdfAlgo; secure_secret: Uint8Array; secure_secret_id: bigint }) {
+  constructor(params: { secure_algo: enums.SecurePasswordKdfAlgo; secure_secret: Uint8Array; secure_secret_id: bigint }) {
     super();
     this.secure_algo = params.secure_algo;
     this.secure_secret = params.secure_secret;
@@ -29878,7 +29878,7 @@ export class secureRequiredType extends _SecureRequiredType {
   native_names?: true;
   selfie_required?: true;
   translation_required?: true;
-  type: SecureValueType;
+  type: enums.SecureValueType;
 
   protected get [id]() {
     return 0x829D99DA;
@@ -29904,7 +29904,7 @@ export class secureRequiredType extends _SecureRequiredType {
     ];
   }
 
-  constructor(params: { native_names?: true; selfie_required?: true; translation_required?: true; type: SecureValueType }) {
+  constructor(params: { native_names?: true; selfie_required?: true; translation_required?: true; type: enums.SecureValueType }) {
     super();
     this.native_names = params.native_names;
     this.selfie_required = params.selfie_required;
@@ -29914,7 +29914,7 @@ export class secureRequiredType extends _SecureRequiredType {
 }
 
 export class secureRequiredTypeOneOf extends _SecureRequiredType {
-  types: Array<SecureRequiredType>;
+  types: Array<enums.SecureRequiredType>;
 
   protected get [id]() {
     return 0x027477B4;
@@ -29932,7 +29932,7 @@ export class secureRequiredTypeOneOf extends _SecureRequiredType {
     ];
   }
 
-  constructor(params: { types: Array<SecureRequiredType> }) {
+  constructor(params: { types: Array<enums.SecureRequiredType> }) {
     super();
     this.types = params.types;
   }
@@ -29958,7 +29958,7 @@ export class help_passportConfigNotModified extends _help_PassportConfig {
 
 export class help_passportConfig extends _help_PassportConfig {
   hash: number;
-  countries_langs: DataJSON;
+  countries_langs: enums.DataJSON;
 
   protected get [id]() {
     return 0xA098D6AF;
@@ -29978,7 +29978,7 @@ export class help_passportConfig extends _help_PassportConfig {
     ];
   }
 
-  constructor(params: { hash: number; countries_langs: DataJSON }) {
+  constructor(params: { hash: number; countries_langs: enums.DataJSON }) {
     super();
     this.hash = params.hash;
     this.countries_langs = params.countries_langs;
@@ -29989,7 +29989,7 @@ export class inputAppEvent extends _InputAppEvent {
   time: number;
   type: string;
   peer: bigint;
-  data: JSONValue;
+  data: enums.JSONValue;
 
   protected get [id]() {
     return 0x1D1B1245;
@@ -30013,7 +30013,7 @@ export class inputAppEvent extends _InputAppEvent {
     ];
   }
 
-  constructor(params: { time: number; type: string; peer: bigint; data: JSONValue }) {
+  constructor(params: { time: number; type: string; peer: bigint; data: enums.JSONValue }) {
     super();
     this.time = params.time;
     this.type = params.type;
@@ -30024,7 +30024,7 @@ export class inputAppEvent extends _InputAppEvent {
 
 export class jsonObjectValue extends _JSONObjectValue {
   key: string;
-  value: JSONValue;
+  value: enums.JSONValue;
 
   protected get [id]() {
     return 0xC0DE1BD9;
@@ -30044,7 +30044,7 @@ export class jsonObjectValue extends _JSONObjectValue {
     ];
   }
 
-  constructor(params: { key: string; value: JSONValue }) {
+  constructor(params: { key: string; value: enums.JSONValue }) {
     super();
     this.key = params.key;
     this.value = params.value;
@@ -30145,7 +30145,7 @@ export class jsonString extends _JSONValue {
 }
 
 export class jsonArray extends _JSONValue {
-  value: Array<JSONValue>;
+  value: Array<enums.JSONValue>;
 
   protected get [id]() {
     return 0xF7444763;
@@ -30163,14 +30163,14 @@ export class jsonArray extends _JSONValue {
     ];
   }
 
-  constructor(params: { value: Array<JSONValue> }) {
+  constructor(params: { value: Array<enums.JSONValue> }) {
     super();
     this.value = params.value;
   }
 }
 
 export class jsonObject extends _JSONValue {
-  value: Array<JSONObjectValue>;
+  value: Array<enums.JSONObjectValue>;
 
   protected get [id]() {
     return 0x99C1D49D;
@@ -30188,7 +30188,7 @@ export class jsonObject extends _JSONValue {
     ];
   }
 
-  constructor(params: { value: Array<JSONObjectValue> }) {
+  constructor(params: { value: Array<enums.JSONObjectValue> }) {
     super();
     this.value = params.value;
   }
@@ -30200,7 +30200,7 @@ export class pageTableCell extends _PageTableCell {
   align_right?: true;
   valign_middle?: true;
   valign_bottom?: true;
-  text?: RichText;
+  text?: enums.RichText;
   colspan?: number;
   rowspan?: number;
 
@@ -30236,7 +30236,7 @@ export class pageTableCell extends _PageTableCell {
     ];
   }
 
-  constructor(params?: { header?: true; align_center?: true; align_right?: true; valign_middle?: true; valign_bottom?: true; text?: RichText; colspan?: number; rowspan?: number }) {
+  constructor(params?: { header?: true; align_center?: true; align_right?: true; valign_middle?: true; valign_bottom?: true; text?: enums.RichText; colspan?: number; rowspan?: number }) {
     super();
     this.header = params?.header;
     this.align_center = params?.align_center;
@@ -30250,7 +30250,7 @@ export class pageTableCell extends _PageTableCell {
 }
 
 export class pageTableRow extends _PageTableRow {
-  cells: Array<PageTableCell>;
+  cells: Array<enums.PageTableCell>;
 
   protected get [id]() {
     return 0xE0C0C5E5;
@@ -30268,15 +30268,15 @@ export class pageTableRow extends _PageTableRow {
     ];
   }
 
-  constructor(params: { cells: Array<PageTableCell> }) {
+  constructor(params: { cells: Array<enums.PageTableCell> }) {
     super();
     this.cells = params.cells;
   }
 }
 
 export class pageCaption extends _PageCaption {
-  text: RichText;
-  credit: RichText;
+  text: enums.RichText;
+  credit: enums.RichText;
 
   protected get [id]() {
     return 0x6F747657;
@@ -30296,7 +30296,7 @@ export class pageCaption extends _PageCaption {
     ];
   }
 
-  constructor(params: { text: RichText; credit: RichText }) {
+  constructor(params: { text: enums.RichText; credit: enums.RichText }) {
     super();
     this.text = params.text;
     this.credit = params.credit;
@@ -30304,7 +30304,7 @@ export class pageCaption extends _PageCaption {
 }
 
 export class pageListItemText extends _PageListItem {
-  text: RichText;
+  text: enums.RichText;
 
   protected get [id]() {
     return 0xB92FB6CD;
@@ -30322,14 +30322,14 @@ export class pageListItemText extends _PageListItem {
     ];
   }
 
-  constructor(params: { text: RichText }) {
+  constructor(params: { text: enums.RichText }) {
     super();
     this.text = params.text;
   }
 }
 
 export class pageListItemBlocks extends _PageListItem {
-  blocks: Array<PageBlock>;
+  blocks: Array<enums.PageBlock>;
 
   protected get [id]() {
     return 0x25E073FC;
@@ -30347,7 +30347,7 @@ export class pageListItemBlocks extends _PageListItem {
     ];
   }
 
-  constructor(params: { blocks: Array<PageBlock> }) {
+  constructor(params: { blocks: Array<enums.PageBlock> }) {
     super();
     this.blocks = params.blocks;
   }
@@ -30355,7 +30355,7 @@ export class pageListItemBlocks extends _PageListItem {
 
 export class pageListOrderedItemText extends _PageListOrderedItem {
   num: string;
-  text: RichText;
+  text: enums.RichText;
 
   protected get [id]() {
     return 0x5E068047;
@@ -30375,7 +30375,7 @@ export class pageListOrderedItemText extends _PageListOrderedItem {
     ];
   }
 
-  constructor(params: { num: string; text: RichText }) {
+  constructor(params: { num: string; text: enums.RichText }) {
     super();
     this.num = params.num;
     this.text = params.text;
@@ -30384,7 +30384,7 @@ export class pageListOrderedItemText extends _PageListOrderedItem {
 
 export class pageListOrderedItemBlocks extends _PageListOrderedItem {
   num: string;
-  blocks: Array<PageBlock>;
+  blocks: Array<enums.PageBlock>;
 
   protected get [id]() {
     return 0x98DD8936;
@@ -30404,7 +30404,7 @@ export class pageListOrderedItemBlocks extends _PageListOrderedItem {
     ];
   }
 
-  constructor(params: { num: string; blocks: Array<PageBlock> }) {
+  constructor(params: { num: string; blocks: Array<enums.PageBlock> }) {
     super();
     this.num = params.num;
     this.blocks = params.blocks;
@@ -30467,9 +30467,9 @@ export class page extends _Page {
   rtl?: true;
   v2?: true;
   url: string;
-  blocks: Array<PageBlock>;
-  photos: Array<Photo>;
-  documents: Array<Document>;
+  blocks: Array<enums.PageBlock>;
+  photos: Array<enums.Photo>;
+  documents: Array<enums.Document>;
   views?: number;
 
   protected get [id]() {
@@ -30504,7 +30504,7 @@ export class page extends _Page {
     ];
   }
 
-  constructor(params: { part?: true; rtl?: true; v2?: true; url: string; blocks: Array<PageBlock>; photos: Array<Photo>; documents: Array<Document>; views?: number }) {
+  constructor(params: { part?: true; rtl?: true; v2?: true; url: string; blocks: Array<enums.PageBlock>; photos: Array<enums.Photo>; documents: Array<enums.Document>; views?: number }) {
     super();
     this.part = params.part;
     this.rtl = params.rtl;
@@ -30562,7 +30562,7 @@ export class help_userInfoEmpty extends _help_UserInfo {
 
 export class help_userInfo extends _help_UserInfo {
   message: string;
-  entities: Array<MessageEntity>;
+  entities: Array<enums.MessageEntity>;
   author: string;
   date: number;
 
@@ -30588,7 +30588,7 @@ export class help_userInfo extends _help_UserInfo {
     ];
   }
 
-  constructor(params: { message: string; entities: Array<MessageEntity>; author: string; date: number }) {
+  constructor(params: { message: string; entities: Array<enums.MessageEntity>; author: string; date: number }) {
     super();
     this.message = params.message;
     this.entities = params.entities;
@@ -30633,7 +30633,7 @@ export class poll extends _Poll {
   multiple_choice?: true;
   quiz?: true;
   question: string;
-  answers: Array<PollAnswer>;
+  answers: Array<enums.PollAnswer>;
   close_period?: number;
   close_date?: number;
 
@@ -30671,7 +30671,7 @@ export class poll extends _Poll {
     ];
   }
 
-  constructor(params: { id: bigint; closed?: true; public_voters?: true; multiple_choice?: true; quiz?: true; question: string; answers: Array<PollAnswer>; close_period?: number; close_date?: number }) {
+  constructor(params: { id: bigint; closed?: true; public_voters?: true; multiple_choice?: true; quiz?: true; question: string; answers: Array<enums.PollAnswer>; close_period?: number; close_date?: number }) {
     super();
     this.id = params.id;
     this.closed = params.closed;
@@ -30726,11 +30726,11 @@ export class pollAnswerVoters extends _PollAnswerVoters {
 
 export class pollResults extends _PollResults {
   min?: true;
-  results?: Array<PollAnswerVoters>;
+  results?: Array<enums.PollAnswerVoters>;
   total_voters?: number;
-  recent_voters?: Array<Peer>;
+  recent_voters?: Array<enums.Peer>;
   solution?: string;
-  solution_entities?: Array<MessageEntity>;
+  solution_entities?: Array<enums.MessageEntity>;
 
   protected get [id]() {
     return 0x7ADF2420;
@@ -30760,7 +30760,7 @@ export class pollResults extends _PollResults {
     ];
   }
 
-  constructor(params?: { min?: true; results?: Array<PollAnswerVoters>; total_voters?: number; recent_voters?: Array<Peer>; solution?: string; solution_entities?: Array<MessageEntity> }) {
+  constructor(params?: { min?: true; results?: Array<enums.PollAnswerVoters>; total_voters?: number; recent_voters?: Array<enums.Peer>; solution?: string; solution_entities?: Array<enums.MessageEntity> }) {
     super();
     this.min = params?.min;
     this.results = params?.results;
@@ -31110,7 +31110,7 @@ export class account_wallPapersNotModified extends _account_WallPapers {
 
 export class account_wallPapers extends _account_WallPapers {
   hash: bigint;
-  wallpapers: Array<WallPaper>;
+  wallpapers: Array<enums.WallPaper>;
 
   protected get [id]() {
     return 0xCDC3858C;
@@ -31130,7 +31130,7 @@ export class account_wallPapers extends _account_WallPapers {
     ];
   }
 
-  constructor(params: { hash: bigint; wallpapers: Array<WallPaper> }) {
+  constructor(params: { hash: bigint; wallpapers: Array<enums.WallPaper> }) {
     super();
     this.hash = params.hash;
     this.wallpapers = params.wallpapers;
@@ -31315,9 +31315,9 @@ export class autoDownloadSettings extends _AutoDownloadSettings {
 }
 
 export class account_autoDownloadSettings extends _account_AutoDownloadSettings {
-  low: AutoDownloadSettings;
-  medium: AutoDownloadSettings;
-  high: AutoDownloadSettings;
+  low: enums.AutoDownloadSettings;
+  medium: enums.AutoDownloadSettings;
+  high: enums.AutoDownloadSettings;
 
   protected get [id]() {
     return 0x63CACF26;
@@ -31339,7 +31339,7 @@ export class account_autoDownloadSettings extends _account_AutoDownloadSettings 
     ];
   }
 
-  constructor(params: { low: AutoDownloadSettings; medium: AutoDownloadSettings; high: AutoDownloadSettings }) {
+  constructor(params: { low: enums.AutoDownloadSettings; medium: enums.AutoDownloadSettings; high: enums.AutoDownloadSettings }) {
     super();
     this.low = params.low;
     this.medium = params.medium;
@@ -31409,7 +31409,7 @@ export class emojiKeywordsDifference extends _EmojiKeywordsDifference {
   lang_code: string;
   from_version: number;
   version: number;
-  keywords: Array<EmojiKeyword>;
+  keywords: Array<enums.EmojiKeyword>;
 
   protected get [id]() {
     return 0x5CC761BD;
@@ -31433,7 +31433,7 @@ export class emojiKeywordsDifference extends _EmojiKeywordsDifference {
     ];
   }
 
-  constructor(params: { lang_code: string; from_version: number; version: number; keywords: Array<EmojiKeyword> }) {
+  constructor(params: { lang_code: string; from_version: number; version: number; keywords: Array<enums.EmojiKeyword> }) {
     super();
     this.lang_code = params.lang_code;
     this.from_version = params.from_version;
@@ -31498,7 +31498,7 @@ export class folder extends _Folder {
   autofill_new_correspondents?: true;
   id: number;
   title: string;
-  photo?: ChatPhoto;
+  photo?: enums.ChatPhoto;
 
   protected get [id]() {
     return 0xFF544E65;
@@ -31528,7 +31528,7 @@ export class folder extends _Folder {
     ];
   }
 
-  constructor(params: { autofill_new_broadcasts?: true; autofill_public_groups?: true; autofill_new_correspondents?: true; id: number; title: string; photo?: ChatPhoto }) {
+  constructor(params: { autofill_new_broadcasts?: true; autofill_public_groups?: true; autofill_new_correspondents?: true; id: number; title: string; photo?: enums.ChatPhoto }) {
     super();
     this.autofill_new_broadcasts = params.autofill_new_broadcasts;
     this.autofill_public_groups = params.autofill_public_groups;
@@ -31540,7 +31540,7 @@ export class folder extends _Folder {
 }
 
 export class inputFolderPeer extends _InputFolderPeer {
-  peer: InputPeer;
+  peer: enums.InputPeer;
   folder_id: number;
 
   protected get [id]() {
@@ -31561,7 +31561,7 @@ export class inputFolderPeer extends _InputFolderPeer {
     ];
   }
 
-  constructor(params: { peer: InputPeer; folder_id: number }) {
+  constructor(params: { peer: enums.InputPeer; folder_id: number }) {
     super();
     this.peer = params.peer;
     this.folder_id = params.folder_id;
@@ -31569,7 +31569,7 @@ export class inputFolderPeer extends _InputFolderPeer {
 }
 
 export class folderPeer extends _FolderPeer {
-  peer: Peer;
+  peer: enums.Peer;
   folder_id: number;
 
   protected get [id]() {
@@ -31590,7 +31590,7 @@ export class folderPeer extends _FolderPeer {
     ];
   }
 
-  constructor(params: { peer: Peer; folder_id: number }) {
+  constructor(params: { peer: enums.Peer; folder_id: number }) {
     super();
     this.peer = params.peer;
     this.folder_id = params.folder_id;
@@ -31599,7 +31599,7 @@ export class folderPeer extends _FolderPeer {
 
 export class messages_searchCounter extends _messages_SearchCounter {
   inexact?: true;
-  filter: MessagesFilter;
+  filter: enums.MessagesFilter;
   count: number;
 
   protected get [id]() {
@@ -31624,7 +31624,7 @@ export class messages_searchCounter extends _messages_SearchCounter {
     ];
   }
 
-  constructor(params: { inexact?: true; filter: MessagesFilter; count: number }) {
+  constructor(params: { inexact?: true; filter: enums.MessagesFilter; count: number }) {
     super();
     this.inexact = params.inexact;
     this.filter = params.filter;
@@ -31634,7 +31634,7 @@ export class messages_searchCounter extends _messages_SearchCounter {
 
 export class urlAuthResultRequest extends _UrlAuthResult {
   request_write_access?: true;
-  bot: User;
+  bot: enums.User;
   domain: string;
 
   protected get [id]() {
@@ -31659,7 +31659,7 @@ export class urlAuthResultRequest extends _UrlAuthResult {
     ];
   }
 
-  constructor(params: { request_write_access?: true; bot: User; domain: string }) {
+  constructor(params: { request_write_access?: true; bot: enums.User; domain: string }) {
     super();
     this.request_write_access = params.request_write_access;
     this.bot = params.bot;
@@ -31729,7 +31729,7 @@ export class channelLocationEmpty extends _ChannelLocation {
 }
 
 export class channelLocation extends _ChannelLocation {
-  geo_point: GeoPoint;
+  geo_point: enums.GeoPoint;
   address: string;
 
   protected get [id]() {
@@ -31750,7 +31750,7 @@ export class channelLocation extends _ChannelLocation {
     ];
   }
 
-  constructor(params: { geo_point: GeoPoint; address: string }) {
+  constructor(params: { geo_point: enums.GeoPoint; address: string }) {
     super();
     this.geo_point = params.geo_point;
     this.address = params.address;
@@ -31758,7 +31758,7 @@ export class channelLocation extends _ChannelLocation {
 }
 
 export class peerLocated extends _PeerLocated {
-  peer: Peer;
+  peer: enums.Peer;
   expires: number;
   distance: number;
 
@@ -31782,7 +31782,7 @@ export class peerLocated extends _PeerLocated {
     ];
   }
 
-  constructor(params: { peer: Peer; expires: number; distance: number }) {
+  constructor(params: { peer: enums.Peer; expires: number; distance: number }) {
     super();
     this.peer = params.peer;
     this.expires = params.expires;
@@ -31910,8 +31910,8 @@ export class theme extends _Theme {
   access_hash: bigint;
   slug: string;
   title: string;
-  document?: Document;
-  settings?: Array<ThemeSettings>;
+  document?: enums.Document;
+  settings?: Array<enums.ThemeSettings>;
   emoticon?: string;
   installs_count?: number;
 
@@ -31953,7 +31953,7 @@ export class theme extends _Theme {
     ];
   }
 
-  constructor(params: { creator?: true; default?: true; for_chat?: true; id: bigint; access_hash: bigint; slug: string; title: string; document?: Document; settings?: Array<ThemeSettings>; emoticon?: string; installs_count?: number }) {
+  constructor(params: { creator?: true; default?: true; for_chat?: true; id: bigint; access_hash: bigint; slug: string; title: string; document?: enums.Document; settings?: Array<enums.ThemeSettings>; emoticon?: string; installs_count?: number }) {
     super();
     this.creator = params.creator;
     this.default = params.default;
@@ -31989,7 +31989,7 @@ export class account_themesNotModified extends _account_Themes {
 
 export class account_themes extends _account_Themes {
   hash: bigint;
-  themes: Array<Theme>;
+  themes: Array<enums.Theme>;
 
   protected get [id]() {
     return 0x9A3D8C6D;
@@ -32009,7 +32009,7 @@ export class account_themes extends _account_Themes {
     ];
   }
 
-  constructor(params: { hash: bigint; themes: Array<Theme> }) {
+  constructor(params: { hash: bigint; themes: Array<enums.Theme> }) {
     super();
     this.hash = params.hash;
     this.themes = params.themes;
@@ -32075,7 +32075,7 @@ export class auth_loginTokenMigrateTo extends _auth_LoginToken {
 }
 
 export class auth_loginTokenSuccess extends _auth_LoginToken {
-  authorization: auth_Authorization;
+  authorization: enums.auth_Authorization;
 
   protected get [id]() {
     return 0x390D5C5E;
@@ -32093,7 +32093,7 @@ export class auth_loginTokenSuccess extends _auth_LoginToken {
     ];
   }
 
-  constructor(params: { authorization: auth_Authorization }) {
+  constructor(params: { authorization: enums.auth_Authorization }) {
     super();
     this.authorization = params.authorization;
   }
@@ -32132,8 +32132,8 @@ export class account_contentSettings extends _account_ContentSettings {
 
 export class messages_inactiveChats extends _messages_InactiveChats {
   dates: Array<number>;
-  chats: Array<Chat>;
-  users: Array<User>;
+  chats: Array<enums.Chat>;
+  users: Array<enums.User>;
 
   protected get [id]() {
     return 0xA927FEC5;
@@ -32155,7 +32155,7 @@ export class messages_inactiveChats extends _messages_InactiveChats {
     ];
   }
 
-  constructor(params: { dates: Array<number>; chats: Array<Chat>; users: Array<User> }) {
+  constructor(params: { dates: Array<number>; chats: Array<enums.Chat>; users: Array<enums.User> }) {
     super();
     this.dates = params.dates;
     this.chats = params.chats;
@@ -32255,12 +32255,12 @@ export class baseThemeArctic extends _BaseTheme {
 
 export class inputThemeSettings extends _InputThemeSettings {
   message_colors_animated?: true;
-  base_theme: BaseTheme;
+  base_theme: enums.BaseTheme;
   accent_color: number;
   outbox_accent_color?: number;
   message_colors?: Array<number>;
-  wallpaper?: InputWallPaper;
-  wallpaper_settings?: WallPaperSettings;
+  wallpaper?: enums.InputWallPaper;
+  wallpaper_settings?: enums.WallPaperSettings;
 
   protected get [id]() {
     return 0x8FDE504F;
@@ -32292,7 +32292,7 @@ export class inputThemeSettings extends _InputThemeSettings {
     ];
   }
 
-  constructor(params: { message_colors_animated?: true; base_theme: BaseTheme; accent_color: number; outbox_accent_color?: number; message_colors?: Array<number>; wallpaper?: InputWallPaper; wallpaper_settings?: WallPaperSettings }) {
+  constructor(params: { message_colors_animated?: true; base_theme: enums.BaseTheme; accent_color: number; outbox_accent_color?: number; message_colors?: Array<number>; wallpaper?: enums.InputWallPaper; wallpaper_settings?: enums.WallPaperSettings }) {
     super();
     this.message_colors_animated = params.message_colors_animated;
     this.base_theme = params.base_theme;
@@ -32306,11 +32306,11 @@ export class inputThemeSettings extends _InputThemeSettings {
 
 export class themeSettings extends _ThemeSettings {
   message_colors_animated?: true;
-  base_theme: BaseTheme;
+  base_theme: enums.BaseTheme;
   accent_color: number;
   outbox_accent_color?: number;
   message_colors?: Array<number>;
-  wallpaper?: WallPaper;
+  wallpaper?: enums.WallPaper;
 
   protected get [id]() {
     return 0xFA58B6D4;
@@ -32340,7 +32340,7 @@ export class themeSettings extends _ThemeSettings {
     ];
   }
 
-  constructor(params: { message_colors_animated?: true; base_theme: BaseTheme; accent_color: number; outbox_accent_color?: number; message_colors?: Array<number>; wallpaper?: WallPaper }) {
+  constructor(params: { message_colors_animated?: true; base_theme: enums.BaseTheme; accent_color: number; outbox_accent_color?: number; message_colors?: Array<number>; wallpaper?: enums.WallPaper }) {
     super();
     this.message_colors_animated = params.message_colors_animated;
     this.base_theme = params.base_theme;
@@ -32352,8 +32352,8 @@ export class themeSettings extends _ThemeSettings {
 }
 
 export class webPageAttributeTheme extends _WebPageAttribute {
-  documents?: Array<Document>;
-  settings?: ThemeSettings;
+  documents?: Array<enums.Document>;
+  settings?: enums.ThemeSettings;
 
   protected get [id]() {
     return 0x54B56617;
@@ -32375,7 +32375,7 @@ export class webPageAttributeTheme extends _WebPageAttribute {
     ];
   }
 
-  constructor(params?: { documents?: Array<Document>; settings?: ThemeSettings }) {
+  constructor(params?: { documents?: Array<enums.Document>; settings?: enums.ThemeSettings }) {
     super();
     this.documents = params?.documents;
     this.settings = params?.settings;
@@ -32383,9 +32383,9 @@ export class webPageAttributeTheme extends _WebPageAttribute {
 }
 
 export class webPageAttributeStory extends _WebPageAttribute {
-  peer: Peer;
+  peer: enums.Peer;
   id: number;
-  story?: StoryItem;
+  story?: enums.StoryItem;
 
   protected get [id]() {
     return 0x2E94C3E7;
@@ -32409,7 +32409,7 @@ export class webPageAttributeStory extends _WebPageAttribute {
     ];
   }
 
-  constructor(params: { peer: Peer; id: number; story?: StoryItem }) {
+  constructor(params: { peer: enums.Peer; id: number; story?: enums.StoryItem }) {
     super();
     this.peer = params.peer;
     this.id = params.id;
@@ -32419,9 +32419,9 @@ export class webPageAttributeStory extends _WebPageAttribute {
 
 export class messages_votesList extends _messages_VotesList {
   count: number;
-  votes: Array<MessagePeerVote>;
-  chats: Array<Chat>;
-  users: Array<User>;
+  votes: Array<enums.MessagePeerVote>;
+  chats: Array<enums.Chat>;
+  users: Array<enums.User>;
   next_offset?: string;
 
   protected get [id]() {
@@ -32450,7 +32450,7 @@ export class messages_votesList extends _messages_VotesList {
     ];
   }
 
-  constructor(params: { count: number; votes: Array<MessagePeerVote>; chats: Array<Chat>; users: Array<User>; next_offset?: string }) {
+  constructor(params: { count: number; votes: Array<enums.MessagePeerVote>; chats: Array<enums.Chat>; users: Array<enums.User>; next_offset?: string }) {
     super();
     this.count = params.count;
     this.votes = params.votes;
@@ -32491,7 +32491,7 @@ export class bankCardOpenUrl extends _BankCardOpenUrl {
 
 export class payments_bankCardData extends _payments_BankCardData {
   title: string;
-  open_urls: Array<BankCardOpenUrl>;
+  open_urls: Array<enums.BankCardOpenUrl>;
 
   protected get [id]() {
     return 0x3E24E573;
@@ -32511,7 +32511,7 @@ export class payments_bankCardData extends _payments_BankCardData {
     ];
   }
 
-  constructor(params: { title: string; open_urls: Array<BankCardOpenUrl> }) {
+  constructor(params: { title: string; open_urls: Array<enums.BankCardOpenUrl> }) {
     super();
     this.title = params.title;
     this.open_urls = params.open_urls;
@@ -32530,9 +32530,9 @@ export class dialogFilter extends _DialogFilter {
   id: number;
   title: string;
   emoticon?: string;
-  pinned_peers: Array<InputPeer>;
-  include_peers: Array<InputPeer>;
-  exclude_peers: Array<InputPeer>;
+  pinned_peers: Array<enums.InputPeer>;
+  include_peers: Array<enums.InputPeer>;
+  exclude_peers: Array<enums.InputPeer>;
 
   protected get [id]() {
     return 0x7438F7E8;
@@ -32578,7 +32578,7 @@ export class dialogFilter extends _DialogFilter {
     ];
   }
 
-  constructor(params: { contacts?: true; non_contacts?: true; groups?: true; broadcasts?: true; bots?: true; exclude_muted?: true; exclude_read?: true; exclude_archived?: true; id: number; title: string; emoticon?: string; pinned_peers: Array<InputPeer>; include_peers: Array<InputPeer>; exclude_peers: Array<InputPeer> }) {
+  constructor(params: { contacts?: true; non_contacts?: true; groups?: true; broadcasts?: true; bots?: true; exclude_muted?: true; exclude_read?: true; exclude_archived?: true; id: number; title: string; emoticon?: string; pinned_peers: Array<enums.InputPeer>; include_peers: Array<enums.InputPeer>; exclude_peers: Array<enums.InputPeer> }) {
     super();
     this.contacts = params.contacts;
     this.non_contacts = params.non_contacts;
@@ -32620,8 +32620,8 @@ export class dialogFilterChatlist extends _DialogFilter {
   id: number;
   title: string;
   emoticon?: string;
-  pinned_peers: Array<InputPeer>;
-  include_peers: Array<InputPeer>;
+  pinned_peers: Array<enums.InputPeer>;
+  include_peers: Array<enums.InputPeer>;
 
   protected get [id]() {
     return 0xD64A04A8;
@@ -32651,7 +32651,7 @@ export class dialogFilterChatlist extends _DialogFilter {
     ];
   }
 
-  constructor(params: { has_my_invites?: true; id: number; title: string; emoticon?: string; pinned_peers: Array<InputPeer>; include_peers: Array<InputPeer> }) {
+  constructor(params: { has_my_invites?: true; id: number; title: string; emoticon?: string; pinned_peers: Array<enums.InputPeer>; include_peers: Array<enums.InputPeer> }) {
     super();
     this.has_my_invites = params.has_my_invites;
     this.id = params.id;
@@ -32663,7 +32663,7 @@ export class dialogFilterChatlist extends _DialogFilter {
 }
 
 export class dialogFilterSuggested extends _DialogFilterSuggested {
-  filter: DialogFilter;
+  filter: enums.DialogFilter;
   description: string;
 
   protected get [id]() {
@@ -32684,7 +32684,7 @@ export class dialogFilterSuggested extends _DialogFilterSuggested {
     ];
   }
 
-  constructor(params: { filter: DialogFilter; description: string }) {
+  constructor(params: { filter: enums.DialogFilter; description: string }) {
     super();
     this.filter = params.filter;
     this.description = params.description;
@@ -32829,7 +32829,7 @@ export class statsGraphError extends _StatsGraph {
 }
 
 export class statsGraph extends _StatsGraph {
-  json: DataJSON;
+  json: enums.DataJSON;
   zoom_token?: string;
 
   protected get [id]() {
@@ -32852,7 +32852,7 @@ export class statsGraph extends _StatsGraph {
     ];
   }
 
-  constructor(params: { json: DataJSON; zoom_token?: string }) {
+  constructor(params: { json: enums.DataJSON; zoom_token?: string }) {
     super();
     this.json = params.json;
     this.zoom_token = params.zoom_token;
@@ -32860,28 +32860,28 @@ export class statsGraph extends _StatsGraph {
 }
 
 export class stats_broadcastStats extends _stats_BroadcastStats {
-  period: StatsDateRangeDays;
-  followers: StatsAbsValueAndPrev;
-  views_per_post: StatsAbsValueAndPrev;
-  shares_per_post: StatsAbsValueAndPrev;
-  reactions_per_post: StatsAbsValueAndPrev;
-  views_per_story: StatsAbsValueAndPrev;
-  shares_per_story: StatsAbsValueAndPrev;
-  reactions_per_story: StatsAbsValueAndPrev;
-  enabled_notifications: StatsPercentValue;
-  growth_graph: StatsGraph;
-  followers_graph: StatsGraph;
-  mute_graph: StatsGraph;
-  top_hours_graph: StatsGraph;
-  interactions_graph: StatsGraph;
-  iv_interactions_graph: StatsGraph;
-  views_by_source_graph: StatsGraph;
-  new_followers_by_source_graph: StatsGraph;
-  languages_graph: StatsGraph;
-  reactions_by_emotion_graph: StatsGraph;
-  story_interactions_graph: StatsGraph;
-  story_reactions_by_emotion_graph: StatsGraph;
-  recent_posts_interactions: Array<PostInteractionCounters>;
+  period: enums.StatsDateRangeDays;
+  followers: enums.StatsAbsValueAndPrev;
+  views_per_post: enums.StatsAbsValueAndPrev;
+  shares_per_post: enums.StatsAbsValueAndPrev;
+  reactions_per_post: enums.StatsAbsValueAndPrev;
+  views_per_story: enums.StatsAbsValueAndPrev;
+  shares_per_story: enums.StatsAbsValueAndPrev;
+  reactions_per_story: enums.StatsAbsValueAndPrev;
+  enabled_notifications: enums.StatsPercentValue;
+  growth_graph: enums.StatsGraph;
+  followers_graph: enums.StatsGraph;
+  mute_graph: enums.StatsGraph;
+  top_hours_graph: enums.StatsGraph;
+  interactions_graph: enums.StatsGraph;
+  iv_interactions_graph: enums.StatsGraph;
+  views_by_source_graph: enums.StatsGraph;
+  new_followers_by_source_graph: enums.StatsGraph;
+  languages_graph: enums.StatsGraph;
+  reactions_by_emotion_graph: enums.StatsGraph;
+  story_interactions_graph: enums.StatsGraph;
+  story_reactions_by_emotion_graph: enums.StatsGraph;
+  recent_posts_interactions: Array<enums.PostInteractionCounters>;
 
   protected get [id]() {
     return 0x396CA5FC;
@@ -32941,7 +32941,7 @@ export class stats_broadcastStats extends _stats_BroadcastStats {
     ];
   }
 
-  constructor(params: { period: StatsDateRangeDays; followers: StatsAbsValueAndPrev; views_per_post: StatsAbsValueAndPrev; shares_per_post: StatsAbsValueAndPrev; reactions_per_post: StatsAbsValueAndPrev; views_per_story: StatsAbsValueAndPrev; shares_per_story: StatsAbsValueAndPrev; reactions_per_story: StatsAbsValueAndPrev; enabled_notifications: StatsPercentValue; growth_graph: StatsGraph; followers_graph: StatsGraph; mute_graph: StatsGraph; top_hours_graph: StatsGraph; interactions_graph: StatsGraph; iv_interactions_graph: StatsGraph; views_by_source_graph: StatsGraph; new_followers_by_source_graph: StatsGraph; languages_graph: StatsGraph; reactions_by_emotion_graph: StatsGraph; story_interactions_graph: StatsGraph; story_reactions_by_emotion_graph: StatsGraph; recent_posts_interactions: Array<PostInteractionCounters> }) {
+  constructor(params: { period: enums.StatsDateRangeDays; followers: enums.StatsAbsValueAndPrev; views_per_post: enums.StatsAbsValueAndPrev; shares_per_post: enums.StatsAbsValueAndPrev; reactions_per_post: enums.StatsAbsValueAndPrev; views_per_story: enums.StatsAbsValueAndPrev; shares_per_story: enums.StatsAbsValueAndPrev; reactions_per_story: enums.StatsAbsValueAndPrev; enabled_notifications: enums.StatsPercentValue; growth_graph: enums.StatsGraph; followers_graph: enums.StatsGraph; mute_graph: enums.StatsGraph; top_hours_graph: enums.StatsGraph; interactions_graph: enums.StatsGraph; iv_interactions_graph: enums.StatsGraph; views_by_source_graph: enums.StatsGraph; new_followers_by_source_graph: enums.StatsGraph; languages_graph: enums.StatsGraph; reactions_by_emotion_graph: enums.StatsGraph; story_interactions_graph: enums.StatsGraph; story_reactions_by_emotion_graph: enums.StatsGraph; recent_posts_interactions: Array<enums.PostInteractionCounters> }) {
     super();
     this.period = params.period;
     this.followers = params.followers;
@@ -32996,9 +32996,9 @@ export class help_promoDataEmpty extends _help_PromoData {
 export class help_promoData extends _help_PromoData {
   proxy?: true;
   expires: number;
-  peer: Peer;
-  chats: Array<Chat>;
-  users: Array<User>;
+  peer: enums.Peer;
+  chats: Array<enums.Chat>;
+  users: Array<enums.User>;
   psa_type?: string;
   psa_message?: string;
 
@@ -33032,7 +33032,7 @@ export class help_promoData extends _help_PromoData {
     ];
   }
 
-  constructor(params: { proxy?: true; expires: number; peer: Peer; chats: Array<Chat>; users: Array<User>; psa_type?: string; psa_message?: string }) {
+  constructor(params: { proxy?: true; expires: number; peer: enums.Peer; chats: Array<enums.Chat>; users: Array<enums.User>; psa_type?: string; psa_message?: string }) {
     super();
     this.proxy = params.proxy;
     this.expires = params.expires;
@@ -33117,7 +33117,7 @@ export class videoSizeEmojiMarkup extends _VideoSize {
 }
 
 export class videoSizeStickerMarkup extends _VideoSize {
-  stickerset: InputStickerSet;
+  stickerset: enums.InputStickerSet;
   sticker_id: bigint;
   background_colors: Array<number>;
 
@@ -33141,7 +33141,7 @@ export class videoSizeStickerMarkup extends _VideoSize {
     ];
   }
 
-  constructor(params: { stickerset: InputStickerSet; sticker_id: bigint; background_colors: Array<number> }) {
+  constructor(params: { stickerset: enums.InputStickerSet; sticker_id: bigint; background_colors: Array<number> }) {
     super();
     this.stickerset = params.stickerset;
     this.sticker_id = params.sticker_id;
@@ -33249,23 +33249,23 @@ export class statsGroupTopInviter extends _StatsGroupTopInviter {
 }
 
 export class stats_megagroupStats extends _stats_MegagroupStats {
-  period: StatsDateRangeDays;
-  members: StatsAbsValueAndPrev;
-  messages: StatsAbsValueAndPrev;
-  viewers: StatsAbsValueAndPrev;
-  posters: StatsAbsValueAndPrev;
-  growth_graph: StatsGraph;
-  members_graph: StatsGraph;
-  new_members_by_source_graph: StatsGraph;
-  languages_graph: StatsGraph;
-  messages_graph: StatsGraph;
-  actions_graph: StatsGraph;
-  top_hours_graph: StatsGraph;
-  weekdays_graph: StatsGraph;
-  top_posters: Array<StatsGroupTopPoster>;
-  top_admins: Array<StatsGroupTopAdmin>;
-  top_inviters: Array<StatsGroupTopInviter>;
-  users: Array<User>;
+  period: enums.StatsDateRangeDays;
+  members: enums.StatsAbsValueAndPrev;
+  messages: enums.StatsAbsValueAndPrev;
+  viewers: enums.StatsAbsValueAndPrev;
+  posters: enums.StatsAbsValueAndPrev;
+  growth_graph: enums.StatsGraph;
+  members_graph: enums.StatsGraph;
+  new_members_by_source_graph: enums.StatsGraph;
+  languages_graph: enums.StatsGraph;
+  messages_graph: enums.StatsGraph;
+  actions_graph: enums.StatsGraph;
+  top_hours_graph: enums.StatsGraph;
+  weekdays_graph: enums.StatsGraph;
+  top_posters: Array<enums.StatsGroupTopPoster>;
+  top_admins: Array<enums.StatsGroupTopAdmin>;
+  top_inviters: Array<enums.StatsGroupTopInviter>;
+  users: Array<enums.User>;
 
   protected get [id]() {
     return 0xEF7FF916;
@@ -33315,7 +33315,7 @@ export class stats_megagroupStats extends _stats_MegagroupStats {
     ];
   }
 
-  constructor(params: { period: StatsDateRangeDays; members: StatsAbsValueAndPrev; messages: StatsAbsValueAndPrev; viewers: StatsAbsValueAndPrev; posters: StatsAbsValueAndPrev; growth_graph: StatsGraph; members_graph: StatsGraph; new_members_by_source_graph: StatsGraph; languages_graph: StatsGraph; messages_graph: StatsGraph; actions_graph: StatsGraph; top_hours_graph: StatsGraph; weekdays_graph: StatsGraph; top_posters: Array<StatsGroupTopPoster>; top_admins: Array<StatsGroupTopAdmin>; top_inviters: Array<StatsGroupTopInviter>; users: Array<User> }) {
+  constructor(params: { period: enums.StatsDateRangeDays; members: enums.StatsAbsValueAndPrev; messages: enums.StatsAbsValueAndPrev; viewers: enums.StatsAbsValueAndPrev; posters: enums.StatsAbsValueAndPrev; growth_graph: enums.StatsGraph; members_graph: enums.StatsGraph; new_members_by_source_graph: enums.StatsGraph; languages_graph: enums.StatsGraph; messages_graph: enums.StatsGraph; actions_graph: enums.StatsGraph; top_hours_graph: enums.StatsGraph; weekdays_graph: enums.StatsGraph; top_posters: Array<enums.StatsGroupTopPoster>; top_admins: Array<enums.StatsGroupTopAdmin>; top_inviters: Array<enums.StatsGroupTopInviter>; users: Array<enums.User> }) {
     super();
     this.period = params.period;
     this.members = params.members;
@@ -33412,7 +33412,7 @@ export class help_country extends _help_Country {
   iso2: string;
   default_name: string;
   name?: string;
-  country_codes: Array<help_CountryCode>;
+  country_codes: Array<enums.help_CountryCode>;
 
   protected get [id]() {
     return 0xC3878E23;
@@ -33440,7 +33440,7 @@ export class help_country extends _help_Country {
     ];
   }
 
-  constructor(params: { hidden?: true; iso2: string; default_name: string; name?: string; country_codes: Array<help_CountryCode> }) {
+  constructor(params: { hidden?: true; iso2: string; default_name: string; name?: string; country_codes: Array<enums.help_CountryCode> }) {
     super();
     this.hidden = params.hidden;
     this.iso2 = params.iso2;
@@ -33469,7 +33469,7 @@ export class help_countriesListNotModified extends _help_CountriesList {
 }
 
 export class help_countriesList extends _help_CountriesList {
-  countries: Array<help_Country>;
+  countries: Array<enums.help_Country>;
   hash: number;
 
   protected get [id]() {
@@ -33490,7 +33490,7 @@ export class help_countriesList extends _help_CountriesList {
     ];
   }
 
-  constructor(params: { countries: Array<help_Country>; hash: number }) {
+  constructor(params: { countries: Array<enums.help_Country>; hash: number }) {
     super();
     this.countries = params.countries;
     this.hash = params.hash;
@@ -33500,7 +33500,7 @@ export class help_countriesList extends _help_CountriesList {
 export class messageViews extends _MessageViews {
   views?: number;
   forwards?: number;
-  replies?: MessageReplies;
+  replies?: enums.MessageReplies;
 
   protected get [id]() {
     return 0x455B853D;
@@ -33524,7 +33524,7 @@ export class messageViews extends _MessageViews {
     ];
   }
 
-  constructor(params?: { views?: number; forwards?: number; replies?: MessageReplies }) {
+  constructor(params?: { views?: number; forwards?: number; replies?: enums.MessageReplies }) {
     super();
     this.views = params?.views;
     this.forwards = params?.forwards;
@@ -33533,9 +33533,9 @@ export class messageViews extends _MessageViews {
 }
 
 export class messages_messageViews extends _messages_MessageViews {
-  views: Array<MessageViews>;
-  chats: Array<Chat>;
-  users: Array<User>;
+  views: Array<enums.MessageViews>;
+  chats: Array<enums.Chat>;
+  users: Array<enums.User>;
 
   protected get [id]() {
     return 0xB6C4F543;
@@ -33557,7 +33557,7 @@ export class messages_messageViews extends _messages_MessageViews {
     ];
   }
 
-  constructor(params: { views: Array<MessageViews>; chats: Array<Chat>; users: Array<User> }) {
+  constructor(params: { views: Array<enums.MessageViews>; chats: Array<enums.Chat>; users: Array<enums.User> }) {
     super();
     this.views = params.views;
     this.chats = params.chats;
@@ -33566,13 +33566,13 @@ export class messages_messageViews extends _messages_MessageViews {
 }
 
 export class messages_discussionMessage extends _messages_DiscussionMessage {
-  messages: Array<Message>;
+  messages: Array<enums.Message>;
   max_id?: number;
   read_inbox_max_id?: number;
   read_outbox_max_id?: number;
   unread_count: number;
-  chats: Array<Chat>;
-  users: Array<User>;
+  chats: Array<enums.Chat>;
+  users: Array<enums.User>;
 
   protected get [id]() {
     return 0xA6341782;
@@ -33604,7 +33604,7 @@ export class messages_discussionMessage extends _messages_DiscussionMessage {
     ];
   }
 
-  constructor(params: { messages: Array<Message>; max_id?: number; read_inbox_max_id?: number; read_outbox_max_id?: number; unread_count: number; chats: Array<Chat>; users: Array<User> }) {
+  constructor(params: { messages: Array<enums.Message>; max_id?: number; read_inbox_max_id?: number; read_outbox_max_id?: number; unread_count: number; chats: Array<enums.Chat>; users: Array<enums.User> }) {
     super();
     this.messages = params.messages;
     this.max_id = params.max_id;
@@ -33621,12 +33621,12 @@ export class messageReplyHeader extends _MessageReplyHeader {
   forum_topic?: true;
   quote?: true;
   reply_to_msg_id?: number;
-  reply_to_peer_id?: Peer;
-  reply_from?: MessageFwdHeader;
-  reply_media?: MessageMedia;
+  reply_to_peer_id?: enums.Peer;
+  reply_from?: enums.MessageFwdHeader;
+  reply_media?: enums.MessageMedia;
   reply_to_top_id?: number;
   quote_text?: string;
-  quote_entities?: Array<MessageEntity>;
+  quote_entities?: Array<enums.MessageEntity>;
   quote_offset?: number;
 
   protected get [id]() {
@@ -33667,7 +33667,7 @@ export class messageReplyHeader extends _MessageReplyHeader {
     ];
   }
 
-  constructor(params?: { reply_to_scheduled?: true; forum_topic?: true; quote?: true; reply_to_msg_id?: number; reply_to_peer_id?: Peer; reply_from?: MessageFwdHeader; reply_media?: MessageMedia; reply_to_top_id?: number; quote_text?: string; quote_entities?: Array<MessageEntity>; quote_offset?: number }) {
+  constructor(params?: { reply_to_scheduled?: true; forum_topic?: true; quote?: true; reply_to_msg_id?: number; reply_to_peer_id?: enums.Peer; reply_from?: enums.MessageFwdHeader; reply_media?: enums.MessageMedia; reply_to_top_id?: number; quote_text?: string; quote_entities?: Array<enums.MessageEntity>; quote_offset?: number }) {
     super();
     this.reply_to_scheduled = params?.reply_to_scheduled;
     this.forum_topic = params?.forum_topic;
@@ -33716,7 +33716,7 @@ export class messageReplies extends _MessageReplies {
   comments?: true;
   replies: number;
   replies_pts: number;
-  recent_repliers?: Array<Peer>;
+  recent_repliers?: Array<enums.Peer>;
   channel_id?: bigint;
   max_id?: number;
   read_max_id?: number;
@@ -33751,7 +33751,7 @@ export class messageReplies extends _MessageReplies {
     ];
   }
 
-  constructor(params: { comments?: true; replies: number; replies_pts: number; recent_repliers?: Array<Peer>; channel_id?: bigint; max_id?: number; read_max_id?: number }) {
+  constructor(params: { comments?: true; replies: number; replies_pts: number; recent_repliers?: Array<enums.Peer>; channel_id?: bigint; max_id?: number; read_max_id?: number }) {
     super();
     this.comments = params.comments;
     this.replies = params.replies;
@@ -33764,7 +33764,7 @@ export class messageReplies extends _MessageReplies {
 }
 
 export class peerBlocked extends _PeerBlocked {
-  peer_id: Peer;
+  peer_id: enums.Peer;
   date: number;
 
   protected get [id]() {
@@ -33785,7 +33785,7 @@ export class peerBlocked extends _PeerBlocked {
     ];
   }
 
-  constructor(params: { peer_id: Peer; date: number }) {
+  constructor(params: { peer_id: enums.Peer; date: number }) {
     super();
     this.peer_id = params.peer_id;
     this.date = params.date;
@@ -33793,8 +33793,8 @@ export class peerBlocked extends _PeerBlocked {
 }
 
 export class stats_messageStats extends _stats_MessageStats {
-  views_graph: StatsGraph;
-  reactions_by_emotion_graph: StatsGraph;
+  views_graph: enums.StatsGraph;
+  reactions_by_emotion_graph: enums.StatsGraph;
 
   protected get [id]() {
     return 0x7FE91C14;
@@ -33814,7 +33814,7 @@ export class stats_messageStats extends _stats_MessageStats {
     ];
   }
 
-  constructor(params: { views_graph: StatsGraph; reactions_by_emotion_graph: StatsGraph }) {
+  constructor(params: { views_graph: enums.StatsGraph; reactions_by_emotion_graph: enums.StatsGraph }) {
     super();
     this.views_graph = params.views_graph;
     this.reactions_by_emotion_graph = params.reactions_by_emotion_graph;
@@ -33989,15 +33989,15 @@ export class groupCallParticipant extends _GroupCallParticipant {
   volume_by_admin?: true;
   self?: true;
   video_joined?: true;
-  peer: Peer;
+  peer: enums.Peer;
   date: number;
   active_date?: number;
   source: number;
   volume?: number;
   about?: string;
   raise_hand_rating?: bigint;
-  video?: GroupCallParticipantVideo;
-  presentation?: GroupCallParticipantVideo;
+  video?: enums.GroupCallParticipantVideo;
+  presentation?: enums.GroupCallParticipantVideo;
 
   protected get [id]() {
     return 0xEBA636FE;
@@ -34053,7 +34053,7 @@ export class groupCallParticipant extends _GroupCallParticipant {
     ];
   }
 
-  constructor(params: { muted?: true; left?: true; can_self_unmute?: true; just_joined?: true; versioned?: true; min?: true; muted_by_you?: true; volume_by_admin?: true; self?: true; video_joined?: true; peer: Peer; date: number; active_date?: number; source: number; volume?: number; about?: string; raise_hand_rating?: bigint; video?: GroupCallParticipantVideo; presentation?: GroupCallParticipantVideo }) {
+  constructor(params: { muted?: true; left?: true; can_self_unmute?: true; just_joined?: true; versioned?: true; min?: true; muted_by_you?: true; volume_by_admin?: true; self?: true; video_joined?: true; peer: enums.Peer; date: number; active_date?: number; source: number; volume?: number; about?: string; raise_hand_rating?: bigint; video?: enums.GroupCallParticipantVideo; presentation?: enums.GroupCallParticipantVideo }) {
     super();
     this.muted = params.muted;
     this.left = params.left;
@@ -34078,11 +34078,11 @@ export class groupCallParticipant extends _GroupCallParticipant {
 }
 
 export class phone_groupCall extends _phone_GroupCall {
-  call: GroupCall;
-  participants: Array<GroupCallParticipant>;
+  call: enums.GroupCall;
+  participants: Array<enums.GroupCallParticipant>;
   participants_next_offset: string;
-  chats: Array<Chat>;
-  users: Array<User>;
+  chats: Array<enums.Chat>;
+  users: Array<enums.User>;
 
   protected get [id]() {
     return 0x9E727AAD;
@@ -34108,7 +34108,7 @@ export class phone_groupCall extends _phone_GroupCall {
     ];
   }
 
-  constructor(params: { call: GroupCall; participants: Array<GroupCallParticipant>; participants_next_offset: string; chats: Array<Chat>; users: Array<User> }) {
+  constructor(params: { call: enums.GroupCall; participants: Array<enums.GroupCallParticipant>; participants_next_offset: string; chats: Array<enums.Chat>; users: Array<enums.User> }) {
     super();
     this.call = params.call;
     this.participants = params.participants;
@@ -34120,10 +34120,10 @@ export class phone_groupCall extends _phone_GroupCall {
 
 export class phone_groupParticipants extends _phone_GroupParticipants {
   count: number;
-  participants: Array<GroupCallParticipant>;
+  participants: Array<enums.GroupCallParticipant>;
   next_offset: string;
-  chats: Array<Chat>;
-  users: Array<User>;
+  chats: Array<enums.Chat>;
+  users: Array<enums.User>;
   version: number;
 
   protected get [id]() {
@@ -34152,7 +34152,7 @@ export class phone_groupParticipants extends _phone_GroupParticipants {
     ];
   }
 
-  constructor(params: { count: number; participants: Array<GroupCallParticipant>; next_offset: string; chats: Array<Chat>; users: Array<User>; version: number }) {
+  constructor(params: { count: number; participants: Array<enums.GroupCallParticipant>; next_offset: string; chats: Array<enums.Chat>; users: Array<enums.User>; version: number }) {
     super();
     this.count = params.count;
     this.participants = params.participants;
@@ -34417,8 +34417,8 @@ export class chatInviteImporter extends _ChatInviteImporter {
 
 export class messages_exportedChatInvites extends _messages_ExportedChatInvites {
   count: number;
-  invites: Array<ExportedChatInvite>;
-  users: Array<User>;
+  invites: Array<enums.ExportedChatInvite>;
+  users: Array<enums.User>;
 
   protected get [id]() {
     return 0xBDC62DCC;
@@ -34440,7 +34440,7 @@ export class messages_exportedChatInvites extends _messages_ExportedChatInvites 
     ];
   }
 
-  constructor(params: { count: number; invites: Array<ExportedChatInvite>; users: Array<User> }) {
+  constructor(params: { count: number; invites: Array<enums.ExportedChatInvite>; users: Array<enums.User> }) {
     super();
     this.count = params.count;
     this.invites = params.invites;
@@ -34449,8 +34449,8 @@ export class messages_exportedChatInvites extends _messages_ExportedChatInvites 
 }
 
 export class messages_exportedChatInvite extends _messages_ExportedChatInvite {
-  invite: ExportedChatInvite;
-  users: Array<User>;
+  invite: enums.ExportedChatInvite;
+  users: Array<enums.User>;
 
   protected get [id]() {
     return 0x1871BE50;
@@ -34470,7 +34470,7 @@ export class messages_exportedChatInvite extends _messages_ExportedChatInvite {
     ];
   }
 
-  constructor(params: { invite: ExportedChatInvite; users: Array<User> }) {
+  constructor(params: { invite: enums.ExportedChatInvite; users: Array<enums.User> }) {
     super();
     this.invite = params.invite;
     this.users = params.users;
@@ -34478,9 +34478,9 @@ export class messages_exportedChatInvite extends _messages_ExportedChatInvite {
 }
 
 export class messages_exportedChatInviteReplaced extends _messages_ExportedChatInvite {
-  invite: ExportedChatInvite;
-  new_invite: ExportedChatInvite;
-  users: Array<User>;
+  invite: enums.ExportedChatInvite;
+  new_invite: enums.ExportedChatInvite;
+  users: Array<enums.User>;
 
   protected get [id]() {
     return 0x222600EF;
@@ -34502,7 +34502,7 @@ export class messages_exportedChatInviteReplaced extends _messages_ExportedChatI
     ];
   }
 
-  constructor(params: { invite: ExportedChatInvite; new_invite: ExportedChatInvite; users: Array<User> }) {
+  constructor(params: { invite: enums.ExportedChatInvite; new_invite: enums.ExportedChatInvite; users: Array<enums.User> }) {
     super();
     this.invite = params.invite;
     this.new_invite = params.new_invite;
@@ -34512,8 +34512,8 @@ export class messages_exportedChatInviteReplaced extends _messages_ExportedChatI
 
 export class messages_chatInviteImporters extends _messages_ChatInviteImporters {
   count: number;
-  importers: Array<ChatInviteImporter>;
-  users: Array<User>;
+  importers: Array<enums.ChatInviteImporter>;
+  users: Array<enums.User>;
 
   protected get [id]() {
     return 0x81B6B00A;
@@ -34535,7 +34535,7 @@ export class messages_chatInviteImporters extends _messages_ChatInviteImporters 
     ];
   }
 
-  constructor(params: { count: number; importers: Array<ChatInviteImporter>; users: Array<User> }) {
+  constructor(params: { count: number; importers: Array<enums.ChatInviteImporter>; users: Array<enums.User> }) {
     super();
     this.count = params.count;
     this.importers = params.importers;
@@ -34577,8 +34577,8 @@ export class chatAdminWithInvites extends _ChatAdminWithInvites {
 }
 
 export class messages_chatAdminsWithInvites extends _messages_ChatAdminsWithInvites {
-  admins: Array<ChatAdminWithInvites>;
-  users: Array<User>;
+  admins: Array<enums.ChatAdminWithInvites>;
+  users: Array<enums.User>;
 
   protected get [id]() {
     return 0xB69B72D7;
@@ -34598,7 +34598,7 @@ export class messages_chatAdminsWithInvites extends _messages_ChatAdminsWithInvi
     ];
   }
 
-  constructor(params: { admins: Array<ChatAdminWithInvites>; users: Array<User> }) {
+  constructor(params: { admins: Array<enums.ChatAdminWithInvites>; users: Array<enums.User> }) {
     super();
     this.admins = params.admins;
     this.users = params.users;
@@ -34631,9 +34631,9 @@ export class messages_checkedHistoryImportPeer extends _messages_CheckedHistoryI
 }
 
 export class phone_joinAsPeers extends _phone_JoinAsPeers {
-  peers: Array<Peer>;
-  chats: Array<Chat>;
-  users: Array<User>;
+  peers: Array<enums.Peer>;
+  chats: Array<enums.Chat>;
+  users: Array<enums.User>;
 
   protected get [id]() {
     return 0xAFE5623F;
@@ -34655,7 +34655,7 @@ export class phone_joinAsPeers extends _phone_JoinAsPeers {
     ];
   }
 
-  constructor(params: { peers: Array<Peer>; chats: Array<Chat>; users: Array<User> }) {
+  constructor(params: { peers: Array<enums.Peer>; chats: Array<enums.Chat>; users: Array<enums.User> }) {
     super();
     this.peers = params.peers;
     this.chats = params.chats;
@@ -34720,7 +34720,7 @@ export class groupCallParticipantVideoSourceGroup extends _GroupCallParticipantV
 export class groupCallParticipantVideo extends _GroupCallParticipantVideo {
   paused?: true;
   endpoint: string;
-  source_groups: Array<GroupCallParticipantVideoSourceGroup>;
+  source_groups: Array<enums.GroupCallParticipantVideoSourceGroup>;
   audio_source?: number;
 
   protected get [id]() {
@@ -34747,7 +34747,7 @@ export class groupCallParticipantVideo extends _GroupCallParticipantVideo {
     ];
   }
 
-  constructor(params: { paused?: true; endpoint: string; source_groups: Array<GroupCallParticipantVideoSourceGroup>; audio_source?: number }) {
+  constructor(params: { paused?: true; endpoint: string; source_groups: Array<enums.GroupCallParticipantVideoSourceGroup>; audio_source?: number }) {
     super();
     this.paused = params.paused;
     this.endpoint = params.endpoint;
@@ -34854,7 +34854,7 @@ export class botCommandScopeChatAdmins extends _BotCommandScope {
 }
 
 export class botCommandScopePeer extends _BotCommandScope {
-  peer: InputPeer;
+  peer: enums.InputPeer;
 
   protected get [id]() {
     return 0xDB9D897D;
@@ -34872,14 +34872,14 @@ export class botCommandScopePeer extends _BotCommandScope {
     ];
   }
 
-  constructor(params: { peer: InputPeer }) {
+  constructor(params: { peer: enums.InputPeer }) {
     super();
     this.peer = params.peer;
   }
 }
 
 export class botCommandScopePeerAdmins extends _BotCommandScope {
-  peer: InputPeer;
+  peer: enums.InputPeer;
 
   protected get [id]() {
     return 0x3FD863D1;
@@ -34897,15 +34897,15 @@ export class botCommandScopePeerAdmins extends _BotCommandScope {
     ];
   }
 
-  constructor(params: { peer: InputPeer }) {
+  constructor(params: { peer: enums.InputPeer }) {
     super();
     this.peer = params.peer;
   }
 }
 
 export class botCommandScopePeerUser extends _BotCommandScope {
-  peer: InputPeer;
-  user_id: InputUser;
+  peer: enums.InputPeer;
+  user_id: enums.InputUser;
 
   protected get [id]() {
     return 0x0A1321F3;
@@ -34925,7 +34925,7 @@ export class botCommandScopePeerUser extends _BotCommandScope {
     ];
   }
 
-  constructor(params: { peer: InputPeer; user_id: InputUser }) {
+  constructor(params: { peer: enums.InputPeer; user_id: enums.InputUser }) {
     super();
     this.peer = params.peer;
     this.user_id = params.user_id;
@@ -35004,15 +35004,15 @@ export class sponsoredMessage extends _SponsoredMessage {
   recommended?: true;
   show_peer_photo?: true;
   random_id: Uint8Array;
-  from_id?: Peer;
-  chat_invite?: ChatInvite;
+  from_id?: enums.Peer;
+  chat_invite?: enums.ChatInvite;
   chat_invite_hash?: string;
   channel_post?: number;
   start_param?: string;
-  webpage?: SponsoredWebPage;
-  app?: BotApp;
+  webpage?: enums.SponsoredWebPage;
+  app?: enums.BotApp;
   message: string;
-  entities?: Array<MessageEntity>;
+  entities?: Array<enums.MessageEntity>;
   button_text?: string;
   sponsor_info?: string;
   additional_info?: string;
@@ -35063,7 +35063,7 @@ export class sponsoredMessage extends _SponsoredMessage {
     ];
   }
 
-  constructor(params: { recommended?: true; show_peer_photo?: true; random_id: Uint8Array; from_id?: Peer; chat_invite?: ChatInvite; chat_invite_hash?: string; channel_post?: number; start_param?: string; webpage?: SponsoredWebPage; app?: BotApp; message: string; entities?: Array<MessageEntity>; button_text?: string; sponsor_info?: string; additional_info?: string }) {
+  constructor(params: { recommended?: true; show_peer_photo?: true; random_id: Uint8Array; from_id?: enums.Peer; chat_invite?: enums.ChatInvite; chat_invite_hash?: string; channel_post?: number; start_param?: string; webpage?: enums.SponsoredWebPage; app?: enums.BotApp; message: string; entities?: Array<enums.MessageEntity>; button_text?: string; sponsor_info?: string; additional_info?: string }) {
     super();
     this.recommended = params.recommended;
     this.show_peer_photo = params.show_peer_photo;
@@ -35085,9 +35085,9 @@ export class sponsoredMessage extends _SponsoredMessage {
 
 export class messages_sponsoredMessages extends _messages_SponsoredMessages {
   posts_between?: number;
-  messages: Array<SponsoredMessage>;
-  chats: Array<Chat>;
-  users: Array<User>;
+  messages: Array<enums.SponsoredMessage>;
+  chats: Array<enums.Chat>;
+  users: Array<enums.User>;
 
   protected get [id]() {
     return 0xC9EE1D87;
@@ -35113,7 +35113,7 @@ export class messages_sponsoredMessages extends _messages_SponsoredMessages {
     ];
   }
 
-  constructor(params: { posts_between?: number; messages: Array<SponsoredMessage>; chats: Array<Chat>; users: Array<User> }) {
+  constructor(params: { posts_between?: number; messages: Array<enums.SponsoredMessage>; chats: Array<enums.Chat>; users: Array<enums.User> }) {
     super();
     this.posts_between = params.posts_between;
     this.messages = params.messages;
@@ -35183,10 +35183,10 @@ export class messages_searchResultsCalendar extends _messages_SearchResultsCalen
   min_date: number;
   min_msg_id: number;
   offset_id_offset?: number;
-  periods: Array<SearchResultsCalendarPeriod>;
-  messages: Array<Message>;
-  chats: Array<Chat>;
-  users: Array<User>;
+  periods: Array<enums.SearchResultsCalendarPeriod>;
+  messages: Array<enums.Message>;
+  chats: Array<enums.Chat>;
+  users: Array<enums.User>;
 
   protected get [id]() {
     return 0x147EE23C;
@@ -35222,7 +35222,7 @@ export class messages_searchResultsCalendar extends _messages_SearchResultsCalen
     ];
   }
 
-  constructor(params: { inexact?: true; count: number; min_date: number; min_msg_id: number; offset_id_offset?: number; periods: Array<SearchResultsCalendarPeriod>; messages: Array<Message>; chats: Array<Chat>; users: Array<User> }) {
+  constructor(params: { inexact?: true; count: number; min_date: number; min_msg_id: number; offset_id_offset?: number; periods: Array<enums.SearchResultsCalendarPeriod>; messages: Array<enums.Message>; chats: Array<enums.Chat>; users: Array<enums.User> }) {
     super();
     this.inexact = params.inexact;
     this.count = params.count;
@@ -35271,7 +35271,7 @@ export class searchResultPosition extends _SearchResultsPosition {
 
 export class messages_searchResultsPositions extends _messages_SearchResultsPositions {
   count: number;
-  positions: Array<SearchResultsPosition>;
+  positions: Array<enums.SearchResultsPosition>;
 
   protected get [id]() {
     return 0x53B22BAF;
@@ -35291,7 +35291,7 @@ export class messages_searchResultsPositions extends _messages_SearchResultsPosi
     ];
   }
 
-  constructor(params: { count: number; positions: Array<SearchResultsPosition> }) {
+  constructor(params: { count: number; positions: Array<enums.SearchResultsPosition> }) {
     super();
     this.count = params.count;
     this.positions = params.positions;
@@ -35299,9 +35299,9 @@ export class messages_searchResultsPositions extends _messages_SearchResultsPosi
 }
 
 export class channels_sendAsPeers extends _channels_SendAsPeers {
-  peers: Array<SendAsPeer>;
-  chats: Array<Chat>;
-  users: Array<User>;
+  peers: Array<enums.SendAsPeer>;
+  chats: Array<enums.Chat>;
+  users: Array<enums.User>;
 
   protected get [id]() {
     return 0xF496B0C6;
@@ -35323,7 +35323,7 @@ export class channels_sendAsPeers extends _channels_SendAsPeers {
     ];
   }
 
-  constructor(params: { peers: Array<SendAsPeer>; chats: Array<Chat>; users: Array<User> }) {
+  constructor(params: { peers: Array<enums.SendAsPeer>; chats: Array<enums.Chat>; users: Array<enums.User> }) {
     super();
     this.peers = params.peers;
     this.chats = params.chats;
@@ -35332,9 +35332,9 @@ export class channels_sendAsPeers extends _channels_SendAsPeers {
 }
 
 export class users_userFull extends _users_UserFull {
-  full_user: UserFull;
-  chats: Array<Chat>;
-  users: Array<User>;
+  full_user: enums.UserFull;
+  chats: Array<enums.Chat>;
+  users: Array<enums.User>;
 
   protected get [id]() {
     return 0x3B6D152E;
@@ -35356,7 +35356,7 @@ export class users_userFull extends _users_UserFull {
     ];
   }
 
-  constructor(params: { full_user: UserFull; chats: Array<Chat>; users: Array<User> }) {
+  constructor(params: { full_user: enums.UserFull; chats: Array<enums.Chat>; users: Array<enums.User> }) {
     super();
     this.full_user = params.full_user;
     this.chats = params.chats;
@@ -35365,9 +35365,9 @@ export class users_userFull extends _users_UserFull {
 }
 
 export class messages_peerSettings extends _messages_PeerSettings {
-  settings: PeerSettings;
-  chats: Array<Chat>;
-  users: Array<User>;
+  settings: enums.PeerSettings;
+  chats: Array<enums.Chat>;
+  users: Array<enums.User>;
 
   protected get [id]() {
     return 0x6880B94D;
@@ -35389,7 +35389,7 @@ export class messages_peerSettings extends _messages_PeerSettings {
     ];
   }
 
-  constructor(params: { settings: PeerSettings; chats: Array<Chat>; users: Array<User> }) {
+  constructor(params: { settings: enums.PeerSettings; chats: Array<enums.Chat>; users: Array<enums.User> }) {
     super();
     this.settings = params.settings;
     this.chats = params.chats;
@@ -35426,7 +35426,7 @@ export class auth_loggedOut extends _auth_LoggedOut {
 
 export class reactionCount extends _ReactionCount {
   chosen_order?: number;
-  reaction: Reaction;
+  reaction: enums.Reaction;
   count: number;
 
   protected get [id]() {
@@ -35451,7 +35451,7 @@ export class reactionCount extends _ReactionCount {
     ];
   }
 
-  constructor(params: { chosen_order?: number; reaction: Reaction; count: number }) {
+  constructor(params: { chosen_order?: number; reaction: enums.Reaction; count: number }) {
     super();
     this.chosen_order = params.chosen_order;
     this.reaction = params.reaction;
@@ -35462,8 +35462,8 @@ export class reactionCount extends _ReactionCount {
 export class messageReactions extends _MessageReactions {
   min?: true;
   can_see_list?: true;
-  results: Array<ReactionCount>;
-  recent_reactions?: Array<MessagePeerReaction>;
+  results: Array<enums.ReactionCount>;
+  recent_reactions?: Array<enums.MessagePeerReaction>;
 
   protected get [id]() {
     return 0x4F2B9479;
@@ -35489,7 +35489,7 @@ export class messageReactions extends _MessageReactions {
     ];
   }
 
-  constructor(params: { min?: true; can_see_list?: true; results: Array<ReactionCount>; recent_reactions?: Array<MessagePeerReaction> }) {
+  constructor(params: { min?: true; can_see_list?: true; results: Array<enums.ReactionCount>; recent_reactions?: Array<enums.MessagePeerReaction> }) {
     super();
     this.min = params.min;
     this.can_see_list = params.can_see_list;
@@ -35500,9 +35500,9 @@ export class messageReactions extends _MessageReactions {
 
 export class messages_messageReactionsList extends _messages_MessageReactionsList {
   count: number;
-  reactions: Array<MessagePeerReaction>;
-  chats: Array<Chat>;
-  users: Array<User>;
+  reactions: Array<enums.MessagePeerReaction>;
+  chats: Array<enums.Chat>;
+  users: Array<enums.User>;
   next_offset?: string;
 
   protected get [id]() {
@@ -35531,7 +35531,7 @@ export class messages_messageReactionsList extends _messages_MessageReactionsLis
     ];
   }
 
-  constructor(params: { count: number; reactions: Array<MessagePeerReaction>; chats: Array<Chat>; users: Array<User>; next_offset?: string }) {
+  constructor(params: { count: number; reactions: Array<enums.MessagePeerReaction>; chats: Array<enums.Chat>; users: Array<enums.User>; next_offset?: string }) {
     super();
     this.count = params.count;
     this.reactions = params.reactions;
@@ -35546,13 +35546,13 @@ export class availableReaction extends _AvailableReaction {
   premium?: true;
   reaction: string;
   title: string;
-  static_icon: Document;
-  appear_animation: Document;
-  select_animation: Document;
-  activate_animation: Document;
-  effect_animation: Document;
-  around_animation?: Document;
-  center_icon?: Document;
+  static_icon: enums.Document;
+  appear_animation: enums.Document;
+  select_animation: enums.Document;
+  activate_animation: enums.Document;
+  effect_animation: enums.Document;
+  around_animation?: enums.Document;
+  center_icon?: enums.Document;
 
   protected get [id]() {
     return 0xC077EC01;
@@ -35592,7 +35592,7 @@ export class availableReaction extends _AvailableReaction {
     ];
   }
 
-  constructor(params: { inactive?: true; premium?: true; reaction: string; title: string; static_icon: Document; appear_animation: Document; select_animation: Document; activate_animation: Document; effect_animation: Document; around_animation?: Document; center_icon?: Document }) {
+  constructor(params: { inactive?: true; premium?: true; reaction: string; title: string; static_icon: enums.Document; appear_animation: enums.Document; select_animation: enums.Document; activate_animation: enums.Document; effect_animation: enums.Document; around_animation?: enums.Document; center_icon?: enums.Document }) {
     super();
     this.inactive = params.inactive;
     this.premium = params.premium;
@@ -35628,7 +35628,7 @@ export class messages_availableReactionsNotModified extends _messages_AvailableR
 
 export class messages_availableReactions extends _messages_AvailableReactions {
   hash: number;
-  reactions: Array<AvailableReaction>;
+  reactions: Array<enums.AvailableReaction>;
 
   protected get [id]() {
     return 0x768E3AAD;
@@ -35648,7 +35648,7 @@ export class messages_availableReactions extends _messages_AvailableReactions {
     ];
   }
 
-  constructor(params: { hash: number; reactions: Array<AvailableReaction> }) {
+  constructor(params: { hash: number; reactions: Array<enums.AvailableReaction> }) {
     super();
     this.hash = params.hash;
     this.reactions = params.reactions;
@@ -35659,9 +35659,9 @@ export class messagePeerReaction extends _MessagePeerReaction {
   big?: true;
   unread?: true;
   my?: true;
-  peer_id: Peer;
+  peer_id: enums.Peer;
   date: number;
-  reaction: Reaction;
+  reaction: enums.Reaction;
 
   protected get [id]() {
     return 0x8C79B63C;
@@ -35691,7 +35691,7 @@ export class messagePeerReaction extends _MessagePeerReaction {
     ];
   }
 
-  constructor(params: { big?: true; unread?: true; my?: true; peer_id: Peer; date: number; reaction: Reaction }) {
+  constructor(params: { big?: true; unread?: true; my?: true; peer_id: enums.Peer; date: number; reaction: enums.Reaction }) {
     super();
     this.big = params.big;
     this.unread = params.unread;
@@ -35736,7 +35736,7 @@ export class groupCallStreamChannel extends _GroupCallStreamChannel {
 }
 
 export class phone_groupCallStreamChannels extends _phone_GroupCallStreamChannels {
-  channels: Array<GroupCallStreamChannel>;
+  channels: Array<enums.GroupCallStreamChannel>;
 
   protected get [id]() {
     return 0xD0E482B2;
@@ -35754,7 +35754,7 @@ export class phone_groupCallStreamChannels extends _phone_GroupCallStreamChannel
     ];
   }
 
-  constructor(params: { channels: Array<GroupCallStreamChannel> }) {
+  constructor(params: { channels: Array<enums.GroupCallStreamChannel> }) {
     super();
     this.channels = params.channels;
   }
@@ -35820,8 +35820,8 @@ export class attachMenuBotIconColor extends _AttachMenuBotIconColor {
 
 export class attachMenuBotIcon extends _AttachMenuBotIcon {
   name: string;
-  icon: Document;
-  colors?: Array<AttachMenuBotIconColor>;
+  icon: enums.Document;
+  colors?: Array<enums.AttachMenuBotIconColor>;
 
   protected get [id]() {
     return 0xB2A7386B;
@@ -35845,7 +35845,7 @@ export class attachMenuBotIcon extends _AttachMenuBotIcon {
     ];
   }
 
-  constructor(params: { name: string; icon: Document; colors?: Array<AttachMenuBotIconColor> }) {
+  constructor(params: { name: string; icon: enums.Document; colors?: Array<enums.AttachMenuBotIconColor> }) {
     super();
     this.name = params.name;
     this.icon = params.icon;
@@ -35862,8 +35862,8 @@ export class attachMenuBot extends _AttachMenuBot {
   side_menu_disclaimer_needed?: true;
   bot_id: bigint;
   short_name: string;
-  peer_types?: Array<AttachMenuPeerType>;
-  icons: Array<AttachMenuBotIcon>;
+  peer_types?: Array<enums.AttachMenuPeerType>;
+  icons: Array<enums.AttachMenuBotIcon>;
 
   protected get [id]() {
     return 0xD90D8DFE;
@@ -35901,7 +35901,7 @@ export class attachMenuBot extends _AttachMenuBot {
     ];
   }
 
-  constructor(params: { inactive?: true; has_settings?: true; request_write_access?: true; show_in_attach_menu?: true; show_in_side_menu?: true; side_menu_disclaimer_needed?: true; bot_id: bigint; short_name: string; peer_types?: Array<AttachMenuPeerType>; icons: Array<AttachMenuBotIcon> }) {
+  constructor(params: { inactive?: true; has_settings?: true; request_write_access?: true; show_in_attach_menu?: true; show_in_side_menu?: true; side_menu_disclaimer_needed?: true; bot_id: bigint; short_name: string; peer_types?: Array<enums.AttachMenuPeerType>; icons: Array<enums.AttachMenuBotIcon> }) {
     super();
     this.inactive = params.inactive;
     this.has_settings = params.has_settings;
@@ -35936,8 +35936,8 @@ export class attachMenuBotsNotModified extends _AttachMenuBots {
 
 export class attachMenuBots extends _AttachMenuBots {
   hash: bigint;
-  bots: Array<AttachMenuBot>;
-  users: Array<User>;
+  bots: Array<enums.AttachMenuBot>;
+  users: Array<enums.User>;
 
   protected get [id]() {
     return 0x3C4301C0;
@@ -35959,7 +35959,7 @@ export class attachMenuBots extends _AttachMenuBots {
     ];
   }
 
-  constructor(params: { hash: bigint; bots: Array<AttachMenuBot>; users: Array<User> }) {
+  constructor(params: { hash: bigint; bots: Array<enums.AttachMenuBot>; users: Array<enums.User> }) {
     super();
     this.hash = params.hash;
     this.bots = params.bots;
@@ -35968,8 +35968,8 @@ export class attachMenuBots extends _AttachMenuBots {
 }
 
 export class attachMenuBotsBot extends _AttachMenuBotsBot {
-  bot: AttachMenuBot;
-  users: Array<User>;
+  bot: enums.AttachMenuBot;
+  users: Array<enums.User>;
 
   protected get [id]() {
     return 0x93BF667F;
@@ -35989,7 +35989,7 @@ export class attachMenuBotsBot extends _AttachMenuBotsBot {
     ];
   }
 
-  constructor(params: { bot: AttachMenuBot; users: Array<User> }) {
+  constructor(params: { bot: enums.AttachMenuBot; users: Array<enums.User> }) {
     super();
     this.bot = params.bot;
     this.users = params.users;
@@ -36051,7 +36051,7 @@ export class simpleWebViewResultUrl extends _SimpleWebViewResult {
 }
 
 export class webViewMessageSent extends _WebViewMessageSent {
-  msg_id?: InputBotInlineMessageID;
+  msg_id?: enums.InputBotInlineMessageID;
 
   protected get [id]() {
     return 0x0C94511C;
@@ -36071,7 +36071,7 @@ export class webViewMessageSent extends _WebViewMessageSent {
     ];
   }
 
-  constructor(params?: { msg_id?: InputBotInlineMessageID }) {
+  constructor(params?: { msg_id?: enums.InputBotInlineMessageID }) {
     super();
     this.msg_id = params?.msg_id;
   }
@@ -36162,7 +36162,7 @@ export class account_savedRingtonesNotModified extends _account_SavedRingtones {
 
 export class account_savedRingtones extends _account_SavedRingtones {
   hash: bigint;
-  ringtones: Array<Document>;
+  ringtones: Array<enums.Document>;
 
   protected get [id]() {
     return 0xC1E92CC5;
@@ -36182,7 +36182,7 @@ export class account_savedRingtones extends _account_SavedRingtones {
     ];
   }
 
-  constructor(params: { hash: bigint; ringtones: Array<Document> }) {
+  constructor(params: { hash: bigint; ringtones: Array<enums.Document> }) {
     super();
     this.hash = params.hash;
     this.ringtones = params.ringtones;
@@ -36298,7 +36298,7 @@ export class account_savedRingtone extends _account_SavedRingtone {
 }
 
 export class account_savedRingtoneConverted extends _account_SavedRingtone {
-  document: Document;
+  document: enums.Document;
 
   protected get [id]() {
     return 0x1F307EB7;
@@ -36316,7 +36316,7 @@ export class account_savedRingtoneConverted extends _account_SavedRingtone {
     ];
   }
 
-  constructor(params: { document: Document }) {
+  constructor(params: { document: enums.Document }) {
     super();
     this.document = params.document;
   }
@@ -36413,7 +36413,7 @@ export class attachMenuPeerTypeBroadcast extends _AttachMenuPeerType {
 }
 
 export class inputInvoiceMessage extends _InputInvoice {
-  peer: InputPeer;
+  peer: enums.InputPeer;
   msg_id: number;
 
   protected get [id]() {
@@ -36434,7 +36434,7 @@ export class inputInvoiceMessage extends _InputInvoice {
     ];
   }
 
-  constructor(params: { peer: InputPeer; msg_id: number }) {
+  constructor(params: { peer: enums.InputPeer; msg_id: number }) {
     super();
     this.peer = params.peer;
     this.msg_id = params.msg_id;
@@ -36467,8 +36467,8 @@ export class inputInvoiceSlug extends _InputInvoice {
 }
 
 export class inputInvoicePremiumGiftCode extends _InputInvoice {
-  purpose: InputStorePaymentPurpose;
-  option: PremiumGiftCodeOption;
+  purpose: enums.InputStorePaymentPurpose;
+  option: enums.PremiumGiftCodeOption;
 
   protected get [id]() {
     return 0x98986C0D;
@@ -36488,7 +36488,7 @@ export class inputInvoicePremiumGiftCode extends _InputInvoice {
     ];
   }
 
-  constructor(params: { purpose: InputStorePaymentPurpose; option: PremiumGiftCodeOption }) {
+  constructor(params: { purpose: enums.InputStorePaymentPurpose; option: enums.PremiumGiftCodeOption }) {
     super();
     this.purpose = params.purpose;
     this.option = params.option;
@@ -36565,11 +36565,11 @@ export class messages_transcribedAudio extends _messages_TranscribedAudio {
 
 export class help_premiumPromo extends _help_PremiumPromo {
   status_text: string;
-  status_entities: Array<MessageEntity>;
+  status_entities: Array<enums.MessageEntity>;
   video_sections: Array<string>;
-  videos: Array<Document>;
-  period_options: Array<PremiumSubscriptionOption>;
-  users: Array<User>;
+  videos: Array<enums.Document>;
+  period_options: Array<enums.PremiumSubscriptionOption>;
+  users: Array<enums.User>;
 
   protected get [id]() {
     return 0x5334759C;
@@ -36597,7 +36597,7 @@ export class help_premiumPromo extends _help_PremiumPromo {
     ];
   }
 
-  constructor(params: { status_text: string; status_entities: Array<MessageEntity>; video_sections: Array<string>; videos: Array<Document>; period_options: Array<PremiumSubscriptionOption>; users: Array<User> }) {
+  constructor(params: { status_text: string; status_entities: Array<enums.MessageEntity>; video_sections: Array<string>; videos: Array<enums.Document>; period_options: Array<enums.PremiumSubscriptionOption>; users: Array<enums.User> }) {
     super();
     this.status_text = params.status_text;
     this.status_entities = params.status_entities;
@@ -36640,7 +36640,7 @@ export class inputStorePaymentPremiumSubscription extends _InputStorePaymentPurp
 }
 
 export class inputStorePaymentGiftPremium extends _InputStorePaymentPurpose {
-  user_id: InputUser;
+  user_id: enums.InputUser;
   currency: string;
   amount: bigint;
 
@@ -36664,7 +36664,7 @@ export class inputStorePaymentGiftPremium extends _InputStorePaymentPurpose {
     ];
   }
 
-  constructor(params: { user_id: InputUser; currency: string; amount: bigint }) {
+  constructor(params: { user_id: enums.InputUser; currency: string; amount: bigint }) {
     super();
     this.user_id = params.user_id;
     this.currency = params.currency;
@@ -36673,8 +36673,8 @@ export class inputStorePaymentGiftPremium extends _InputStorePaymentPurpose {
 }
 
 export class inputStorePaymentPremiumGiftCode extends _InputStorePaymentPurpose {
-  users: Array<InputUser>;
-  boost_peer?: InputPeer;
+  users: Array<enums.InputUser>;
+  boost_peer?: enums.InputPeer;
   currency: string;
   amount: bigint;
 
@@ -36702,7 +36702,7 @@ export class inputStorePaymentPremiumGiftCode extends _InputStorePaymentPurpose 
     ];
   }
 
-  constructor(params: { users: Array<InputUser>; boost_peer?: InputPeer; currency: string; amount: bigint }) {
+  constructor(params: { users: Array<enums.InputUser>; boost_peer?: enums.InputPeer; currency: string; amount: bigint }) {
     super();
     this.users = params.users;
     this.boost_peer = params.boost_peer;
@@ -36713,8 +36713,8 @@ export class inputStorePaymentPremiumGiftCode extends _InputStorePaymentPurpose 
 
 export class inputStorePaymentPremiumGiveaway extends _InputStorePaymentPurpose {
   only_new_subscribers?: true;
-  boost_peer: InputPeer;
-  additional_peers?: Array<InputPeer>;
+  boost_peer: enums.InputPeer;
+  additional_peers?: Array<enums.InputPeer>;
   countries_iso2?: Array<string>;
   random_id: bigint;
   until_date: number;
@@ -36753,7 +36753,7 @@ export class inputStorePaymentPremiumGiveaway extends _InputStorePaymentPurpose 
     ];
   }
 
-  constructor(params: { only_new_subscribers?: true; boost_peer: InputPeer; additional_peers?: Array<InputPeer>; countries_iso2?: Array<string>; random_id: bigint; until_date: number; currency: string; amount: bigint }) {
+  constructor(params: { only_new_subscribers?: true; boost_peer: enums.InputPeer; additional_peers?: Array<enums.InputPeer>; countries_iso2?: Array<string>; random_id: bigint; until_date: number; currency: string; amount: bigint }) {
     super();
     this.only_new_subscribers = params.only_new_subscribers;
     this.boost_peer = params.boost_peer;
@@ -36930,7 +36930,7 @@ export class account_emojiStatusesNotModified extends _account_EmojiStatuses {
 
 export class account_emojiStatuses extends _account_EmojiStatuses {
   hash: bigint;
-  statuses: Array<EmojiStatus>;
+  statuses: Array<enums.EmojiStatus>;
 
   protected get [id]() {
     return 0x90C467D1;
@@ -36950,7 +36950,7 @@ export class account_emojiStatuses extends _account_EmojiStatuses {
     ];
   }
 
-  constructor(params: { hash: bigint; statuses: Array<EmojiStatus> }) {
+  constructor(params: { hash: bigint; statuses: Array<enums.EmojiStatus> }) {
     super();
     this.hash = params.hash;
     this.statuses = params.statuses;
@@ -37071,7 +37071,7 @@ export class chatReactionsAll extends _ChatReactions {
 }
 
 export class chatReactionsSome extends _ChatReactions {
-  reactions: Array<Reaction>;
+  reactions: Array<enums.Reaction>;
 
   protected get [id]() {
     return 0x661D4037;
@@ -37089,7 +37089,7 @@ export class chatReactionsSome extends _ChatReactions {
     ];
   }
 
-  constructor(params: { reactions: Array<Reaction> }) {
+  constructor(params: { reactions: Array<enums.Reaction> }) {
     super();
     this.reactions = params.reactions;
   }
@@ -37115,7 +37115,7 @@ export class messages_reactionsNotModified extends _messages_Reactions {
 
 export class messages_reactions extends _messages_Reactions {
   hash: bigint;
-  reactions: Array<Reaction>;
+  reactions: Array<enums.Reaction>;
 
   protected get [id]() {
     return 0xEAFDF716;
@@ -37135,7 +37135,7 @@ export class messages_reactions extends _messages_Reactions {
     ];
   }
 
-  constructor(params: { hash: bigint; reactions: Array<Reaction> }) {
+  constructor(params: { hash: bigint; reactions: Array<enums.Reaction> }) {
     super();
     this.hash = params.hash;
     this.reactions = params.reactions;
@@ -37309,7 +37309,7 @@ export class account_emailVerified extends _account_EmailVerified {
 
 export class account_emailVerifiedLogin extends _account_EmailVerified {
   email: string;
-  sent_code: auth_SentCode;
+  sent_code: enums.auth_SentCode;
 
   protected get [id]() {
     return 0xE1BB0D61;
@@ -37329,7 +37329,7 @@ export class account_emailVerifiedLogin extends _account_EmailVerified {
     ];
   }
 
-  constructor(params: { email: string; sent_code: auth_SentCode }) {
+  constructor(params: { email: string; sent_code: enums.auth_SentCode }) {
     super();
     this.email = params.email;
     this.sent_code = params.sent_code;
@@ -37393,7 +37393,7 @@ export class premiumSubscriptionOption extends _PremiumSubscriptionOption {
 
 export class sendAsPeer extends _SendAsPeer {
   premium_required?: true;
-  peer: Peer;
+  peer: enums.Peer;
 
   protected get [id]() {
     return 0xB81C7034;
@@ -37415,7 +37415,7 @@ export class sendAsPeer extends _SendAsPeer {
     ];
   }
 
-  constructor(params: { premium_required?: true; peer: Peer }) {
+  constructor(params: { premium_required?: true; peer: enums.Peer }) {
     super();
     this.premium_required = params.premium_required;
     this.peer = params.peer;
@@ -37425,7 +37425,7 @@ export class sendAsPeer extends _SendAsPeer {
 export class messageExtendedMediaPreview extends _MessageExtendedMedia {
   w?: number;
   h?: number;
-  thumb?: PhotoSize;
+  thumb?: enums.PhotoSize;
   video_duration?: number;
 
   protected get [id]() {
@@ -37452,7 +37452,7 @@ export class messageExtendedMediaPreview extends _MessageExtendedMedia {
     ];
   }
 
-  constructor(params?: { w?: number; h?: number; thumb?: PhotoSize; video_duration?: number }) {
+  constructor(params?: { w?: number; h?: number; thumb?: enums.PhotoSize; video_duration?: number }) {
     super();
     this.w = params?.w;
     this.h = params?.h;
@@ -37462,7 +37462,7 @@ export class messageExtendedMediaPreview extends _MessageExtendedMedia {
 }
 
 export class messageExtendedMedia extends _MessageExtendedMedia {
-  media: MessageMedia;
+  media: enums.MessageMedia;
 
   protected get [id]() {
     return 0xEE479C64;
@@ -37480,7 +37480,7 @@ export class messageExtendedMedia extends _MessageExtendedMedia {
     ];
   }
 
-  constructor(params: { media: MessageMedia }) {
+  constructor(params: { media: enums.MessageMedia }) {
     super();
     this.media = params.media;
   }
@@ -37592,9 +37592,9 @@ export class forumTopic extends _ForumTopic {
   unread_count: number;
   unread_mentions_count: number;
   unread_reactions_count: number;
-  from_id: Peer;
-  notify_settings: PeerNotifySettings;
-  draft?: DraftMessage;
+  from_id: enums.Peer;
+  notify_settings: enums.PeerNotifySettings;
+  draft?: enums.DraftMessage;
 
   protected get [id]() {
     return 0x71701DA9;
@@ -37650,7 +37650,7 @@ export class forumTopic extends _ForumTopic {
     ];
   }
 
-  constructor(params: { my?: true; closed?: true; pinned?: true; short?: true; hidden?: true; id: number; date: number; title: string; icon_color: number; icon_emoji_id?: bigint; top_message: number; read_inbox_max_id: number; read_outbox_max_id: number; unread_count: number; unread_mentions_count: number; unread_reactions_count: number; from_id: Peer; notify_settings: PeerNotifySettings; draft?: DraftMessage }) {
+  constructor(params: { my?: true; closed?: true; pinned?: true; short?: true; hidden?: true; id: number; date: number; title: string; icon_color: number; icon_emoji_id?: bigint; top_message: number; read_inbox_max_id: number; read_outbox_max_id: number; unread_count: number; unread_mentions_count: number; unread_reactions_count: number; from_id: enums.Peer; notify_settings: enums.PeerNotifySettings; draft?: enums.DraftMessage }) {
     super();
     this.my = params.my;
     this.closed = params.closed;
@@ -37677,10 +37677,10 @@ export class forumTopic extends _ForumTopic {
 export class messages_forumTopics extends _messages_ForumTopics {
   order_by_create_date?: true;
   count: number;
-  topics: Array<ForumTopic>;
-  messages: Array<Message>;
-  chats: Array<Chat>;
-  users: Array<User>;
+  topics: Array<enums.ForumTopic>;
+  messages: Array<enums.Message>;
+  chats: Array<enums.Chat>;
+  users: Array<enums.User>;
   pts: number;
 
   protected get [id]() {
@@ -37713,7 +37713,7 @@ export class messages_forumTopics extends _messages_ForumTopics {
     ];
   }
 
-  constructor(params: { order_by_create_date?: true; count: number; topics: Array<ForumTopic>; messages: Array<Message>; chats: Array<Chat>; users: Array<User>; pts: number }) {
+  constructor(params: { order_by_create_date?: true; count: number; topics: Array<enums.ForumTopic>; messages: Array<enums.Message>; chats: Array<enums.Chat>; users: Array<enums.User>; pts: number }) {
     super();
     this.order_by_create_date = params.order_by_create_date;
     this.count = params.count;
@@ -37815,8 +37815,8 @@ export class requestPeerTypeChat extends _RequestPeerType {
   bot_participant?: true;
   has_username?: boolean;
   forum?: boolean;
-  user_admin_rights?: ChatAdminRights;
-  bot_admin_rights?: ChatAdminRights;
+  user_admin_rights?: enums.ChatAdminRights;
+  bot_admin_rights?: enums.ChatAdminRights;
 
   protected get [id]() {
     return 0xC9F06E1B;
@@ -37846,7 +37846,7 @@ export class requestPeerTypeChat extends _RequestPeerType {
     ];
   }
 
-  constructor(params?: { creator?: true; bot_participant?: true; has_username?: boolean; forum?: boolean; user_admin_rights?: ChatAdminRights; bot_admin_rights?: ChatAdminRights }) {
+  constructor(params?: { creator?: true; bot_participant?: true; has_username?: boolean; forum?: boolean; user_admin_rights?: enums.ChatAdminRights; bot_admin_rights?: enums.ChatAdminRights }) {
     super();
     this.creator = params?.creator;
     this.bot_participant = params?.bot_participant;
@@ -37860,8 +37860,8 @@ export class requestPeerTypeChat extends _RequestPeerType {
 export class requestPeerTypeBroadcast extends _RequestPeerType {
   creator?: true;
   has_username?: boolean;
-  user_admin_rights?: ChatAdminRights;
-  bot_admin_rights?: ChatAdminRights;
+  user_admin_rights?: enums.ChatAdminRights;
+  bot_admin_rights?: enums.ChatAdminRights;
 
   protected get [id]() {
     return 0x339BEF6C;
@@ -37887,7 +37887,7 @@ export class requestPeerTypeBroadcast extends _RequestPeerType {
     ];
   }
 
-  constructor(params?: { creator?: true; has_username?: boolean; user_admin_rights?: ChatAdminRights; bot_admin_rights?: ChatAdminRights }) {
+  constructor(params?: { creator?: true; has_username?: boolean; user_admin_rights?: enums.ChatAdminRights; bot_admin_rights?: enums.ChatAdminRights }) {
     super();
     this.creator = params?.creator;
     this.has_username = params?.has_username;
@@ -37996,7 +37996,7 @@ export class messages_emojiGroupsNotModified extends _messages_EmojiGroups {
 
 export class messages_emojiGroups extends _messages_EmojiGroups {
   hash: number;
-  groups: Array<EmojiGroup>;
+  groups: Array<enums.EmojiGroup>;
 
   protected get [id]() {
     return 0x881FB94B;
@@ -38016,7 +38016,7 @@ export class messages_emojiGroups extends _messages_EmojiGroups {
     ];
   }
 
-  constructor(params: { hash: number; groups: Array<EmojiGroup> }) {
+  constructor(params: { hash: number; groups: Array<enums.EmojiGroup> }) {
     super();
     this.hash = params.hash;
     this.groups = params.groups;
@@ -38025,7 +38025,7 @@ export class messages_emojiGroups extends _messages_EmojiGroups {
 
 export class textWithEntities extends _TextWithEntities {
   text: string;
-  entities: Array<MessageEntity>;
+  entities: Array<enums.MessageEntity>;
 
   protected get [id]() {
     return 0x751F3146;
@@ -38045,7 +38045,7 @@ export class textWithEntities extends _TextWithEntities {
     ];
   }
 
-  constructor(params: { text: string; entities: Array<MessageEntity> }) {
+  constructor(params: { text: string; entities: Array<enums.MessageEntity> }) {
     super();
     this.text = params.text;
     this.entities = params.entities;
@@ -38053,7 +38053,7 @@ export class textWithEntities extends _TextWithEntities {
 }
 
 export class messages_translateResult extends _messages_TranslatedText {
-  result: Array<TextWithEntities>;
+  result: Array<enums.TextWithEntities>;
 
   protected get [id]() {
     return 0x33DB32F8;
@@ -38071,7 +38071,7 @@ export class messages_translateResult extends _messages_TranslatedText {
     ];
   }
 
-  constructor(params: { result: Array<TextWithEntities> }) {
+  constructor(params: { result: Array<enums.TextWithEntities> }) {
     super();
     this.result = params.result;
   }
@@ -38113,8 +38113,8 @@ export class autoSaveSettings extends _AutoSaveSettings {
 }
 
 export class autoSaveException extends _AutoSaveException {
-  peer: Peer;
-  settings: AutoSaveSettings;
+  peer: enums.Peer;
+  settings: enums.AutoSaveSettings;
 
   protected get [id]() {
     return 0x81602D47;
@@ -38134,7 +38134,7 @@ export class autoSaveException extends _AutoSaveException {
     ];
   }
 
-  constructor(params: { peer: Peer; settings: AutoSaveSettings }) {
+  constructor(params: { peer: enums.Peer; settings: enums.AutoSaveSettings }) {
     super();
     this.peer = params.peer;
     this.settings = params.settings;
@@ -38142,12 +38142,12 @@ export class autoSaveException extends _AutoSaveException {
 }
 
 export class account_autoSaveSettings extends _account_AutoSaveSettings {
-  users_settings: AutoSaveSettings;
-  chats_settings: AutoSaveSettings;
-  broadcasts_settings: AutoSaveSettings;
-  exceptions: Array<AutoSaveException>;
-  chats: Array<Chat>;
-  users: Array<User>;
+  users_settings: enums.AutoSaveSettings;
+  chats_settings: enums.AutoSaveSettings;
+  broadcasts_settings: enums.AutoSaveSettings;
+  exceptions: Array<enums.AutoSaveException>;
+  chats: Array<enums.Chat>;
+  users: Array<enums.User>;
 
   protected get [id]() {
     return 0x4C3E069D;
@@ -38175,7 +38175,7 @@ export class account_autoSaveSettings extends _account_AutoSaveSettings {
     ];
   }
 
-  constructor(params: { users_settings: AutoSaveSettings; chats_settings: AutoSaveSettings; broadcasts_settings: AutoSaveSettings; exceptions: Array<AutoSaveException>; chats: Array<Chat>; users: Array<User> }) {
+  constructor(params: { users_settings: enums.AutoSaveSettings; chats_settings: enums.AutoSaveSettings; broadcasts_settings: enums.AutoSaveSettings; exceptions: Array<enums.AutoSaveException>; chats: Array<enums.Chat>; users: Array<enums.User> }) {
     super();
     this.users_settings = params.users_settings;
     this.chats_settings = params.chats_settings;
@@ -38206,7 +38206,7 @@ export class help_appConfigNotModified extends _help_AppConfig {
 
 export class help_appConfig extends _help_AppConfig {
   hash: number;
-  config: JSONValue;
+  config: enums.JSONValue;
 
   protected get [id]() {
     return 0xDD18782E;
@@ -38226,7 +38226,7 @@ export class help_appConfig extends _help_AppConfig {
     ];
   }
 
-  constructor(params: { hash: number; config: JSONValue }) {
+  constructor(params: { hash: number; config: enums.JSONValue }) {
     super();
     this.hash = params.hash;
     this.config = params.config;
@@ -38263,7 +38263,7 @@ export class inputBotAppID extends _InputBotApp {
 }
 
 export class inputBotAppShortName extends _InputBotApp {
-  bot_id: InputUser;
+  bot_id: enums.InputUser;
   short_name: string;
 
   protected get [id]() {
@@ -38284,7 +38284,7 @@ export class inputBotAppShortName extends _InputBotApp {
     ];
   }
 
-  constructor(params: { bot_id: InputUser; short_name: string }) {
+  constructor(params: { bot_id: enums.InputUser; short_name: string }) {
     super();
     this.bot_id = params.bot_id;
     this.short_name = params.short_name;
@@ -38315,8 +38315,8 @@ export class botApp extends _BotApp {
   short_name: string;
   title: string;
   description: string;
-  photo: Photo;
-  document?: Document;
+  photo: enums.Photo;
+  document?: enums.Document;
   hash: bigint;
 
   protected get [id]() {
@@ -38351,7 +38351,7 @@ export class botApp extends _BotApp {
     ];
   }
 
-  constructor(params: { id: bigint; access_hash: bigint; short_name: string; title: string; description: string; photo: Photo; document?: Document; hash: bigint }) {
+  constructor(params: { id: bigint; access_hash: bigint; short_name: string; title: string; description: string; photo: enums.Photo; document?: enums.Document; hash: bigint }) {
     super();
     this.id = params.id;
     this.access_hash = params.access_hash;
@@ -38368,7 +38368,7 @@ export class messages_botApp extends _messages_BotApp {
   inactive?: true;
   request_write_access?: true;
   has_settings?: true;
-  app: BotApp;
+  app: enums.BotApp;
 
   protected get [id]() {
     return 0xEB50ADF5;
@@ -38394,7 +38394,7 @@ export class messages_botApp extends _messages_BotApp {
     ];
   }
 
-  constructor(params: { inactive?: true; request_write_access?: true; has_settings?: true; app: BotApp }) {
+  constructor(params: { inactive?: true; request_write_access?: true; has_settings?: true; app: enums.BotApp }) {
     super();
     this.inactive = params.inactive;
     this.request_write_access = params.request_write_access;
@@ -38514,7 +38514,7 @@ export class inputChatlistDialogFilter extends _InputChatlist {
 export class exportedChatlistInvite extends _ExportedChatlistInvite {
   title: string;
   url: string;
-  peers: Array<Peer>;
+  peers: Array<enums.Peer>;
 
   protected get [id]() {
     return 0x0C5181AC;
@@ -38538,7 +38538,7 @@ export class exportedChatlistInvite extends _ExportedChatlistInvite {
     ];
   }
 
-  constructor(params: { title: string; url: string; peers: Array<Peer> }) {
+  constructor(params: { title: string; url: string; peers: Array<enums.Peer> }) {
     super();
     this.title = params.title;
     this.url = params.url;
@@ -38547,8 +38547,8 @@ export class exportedChatlistInvite extends _ExportedChatlistInvite {
 }
 
 export class chatlists_exportedChatlistInvite extends _chatlists_ExportedChatlistInvite {
-  filter: DialogFilter;
-  invite: ExportedChatlistInvite;
+  filter: enums.DialogFilter;
+  invite: enums.ExportedChatlistInvite;
 
   protected get [id]() {
     return 0x10E6E3A6;
@@ -38568,7 +38568,7 @@ export class chatlists_exportedChatlistInvite extends _chatlists_ExportedChatlis
     ];
   }
 
-  constructor(params: { filter: DialogFilter; invite: ExportedChatlistInvite }) {
+  constructor(params: { filter: enums.DialogFilter; invite: enums.ExportedChatlistInvite }) {
     super();
     this.filter = params.filter;
     this.invite = params.invite;
@@ -38576,9 +38576,9 @@ export class chatlists_exportedChatlistInvite extends _chatlists_ExportedChatlis
 }
 
 export class chatlists_exportedInvites extends _chatlists_ExportedInvites {
-  invites: Array<ExportedChatlistInvite>;
-  chats: Array<Chat>;
-  users: Array<User>;
+  invites: Array<enums.ExportedChatlistInvite>;
+  chats: Array<enums.Chat>;
+  users: Array<enums.User>;
 
   protected get [id]() {
     return 0x10AB6DC7;
@@ -38600,7 +38600,7 @@ export class chatlists_exportedInvites extends _chatlists_ExportedInvites {
     ];
   }
 
-  constructor(params: { invites: Array<ExportedChatlistInvite>; chats: Array<Chat>; users: Array<User> }) {
+  constructor(params: { invites: Array<enums.ExportedChatlistInvite>; chats: Array<enums.Chat>; users: Array<enums.User> }) {
     super();
     this.invites = params.invites;
     this.chats = params.chats;
@@ -38610,10 +38610,10 @@ export class chatlists_exportedInvites extends _chatlists_ExportedInvites {
 
 export class chatlists_chatlistInviteAlready extends _chatlists_ChatlistInvite {
   filter_id: number;
-  missing_peers: Array<Peer>;
-  already_peers: Array<Peer>;
-  chats: Array<Chat>;
-  users: Array<User>;
+  missing_peers: Array<enums.Peer>;
+  already_peers: Array<enums.Peer>;
+  chats: Array<enums.Chat>;
+  users: Array<enums.User>;
 
   protected get [id]() {
     return 0xFA87F659;
@@ -38639,7 +38639,7 @@ export class chatlists_chatlistInviteAlready extends _chatlists_ChatlistInvite {
     ];
   }
 
-  constructor(params: { filter_id: number; missing_peers: Array<Peer>; already_peers: Array<Peer>; chats: Array<Chat>; users: Array<User> }) {
+  constructor(params: { filter_id: number; missing_peers: Array<enums.Peer>; already_peers: Array<enums.Peer>; chats: Array<enums.Chat>; users: Array<enums.User> }) {
     super();
     this.filter_id = params.filter_id;
     this.missing_peers = params.missing_peers;
@@ -38652,9 +38652,9 @@ export class chatlists_chatlistInviteAlready extends _chatlists_ChatlistInvite {
 export class chatlists_chatlistInvite extends _chatlists_ChatlistInvite {
   title: string;
   emoticon?: string;
-  peers: Array<Peer>;
-  chats: Array<Chat>;
-  users: Array<User>;
+  peers: Array<enums.Peer>;
+  chats: Array<enums.Chat>;
+  users: Array<enums.User>;
 
   protected get [id]() {
     return 0x1DCD839D;
@@ -38682,7 +38682,7 @@ export class chatlists_chatlistInvite extends _chatlists_ChatlistInvite {
     ];
   }
 
-  constructor(params: { title: string; emoticon?: string; peers: Array<Peer>; chats: Array<Chat>; users: Array<User> }) {
+  constructor(params: { title: string; emoticon?: string; peers: Array<enums.Peer>; chats: Array<enums.Chat>; users: Array<enums.User> }) {
     super();
     this.title = params.title;
     this.emoticon = params.emoticon;
@@ -38693,9 +38693,9 @@ export class chatlists_chatlistInvite extends _chatlists_ChatlistInvite {
 }
 
 export class chatlists_chatlistUpdates extends _chatlists_ChatlistUpdates {
-  missing_peers: Array<Peer>;
-  chats: Array<Chat>;
-  users: Array<User>;
+  missing_peers: Array<enums.Peer>;
+  chats: Array<enums.Chat>;
+  users: Array<enums.User>;
 
   protected get [id]() {
     return 0x93BD878D;
@@ -38717,7 +38717,7 @@ export class chatlists_chatlistUpdates extends _chatlists_ChatlistUpdates {
     ];
   }
 
-  constructor(params: { missing_peers: Array<Peer>; chats: Array<Chat>; users: Array<User> }) {
+  constructor(params: { missing_peers: Array<enums.Peer>; chats: Array<enums.Chat>; users: Array<enums.User> }) {
     super();
     this.missing_peers = params.missing_peers;
     this.chats = params.chats;
@@ -38759,7 +38759,7 @@ export class bots_botInfo extends _bots_BotInfo {
 }
 
 export class messagePeerVote extends _MessagePeerVote {
-  peer: Peer;
+  peer: enums.Peer;
   option: Uint8Array;
   date: number;
 
@@ -38783,7 +38783,7 @@ export class messagePeerVote extends _MessagePeerVote {
     ];
   }
 
-  constructor(params: { peer: Peer; option: Uint8Array; date: number }) {
+  constructor(params: { peer: enums.Peer; option: Uint8Array; date: number }) {
     super();
     this.peer = params.peer;
     this.option = params.option;
@@ -38792,7 +38792,7 @@ export class messagePeerVote extends _MessagePeerVote {
 }
 
 export class messagePeerVoteInputOption extends _MessagePeerVote {
-  peer: Peer;
+  peer: enums.Peer;
   date: number;
 
   protected get [id]() {
@@ -38813,7 +38813,7 @@ export class messagePeerVoteInputOption extends _MessagePeerVote {
     ];
   }
 
-  constructor(params: { peer: Peer; date: number }) {
+  constructor(params: { peer: enums.Peer; date: number }) {
     super();
     this.peer = params.peer;
     this.date = params.date;
@@ -38821,7 +38821,7 @@ export class messagePeerVoteInputOption extends _MessagePeerVote {
 }
 
 export class messagePeerVoteMultiple extends _MessagePeerVote {
-  peer: Peer;
+  peer: enums.Peer;
   options: Array<Uint8Array>;
   date: number;
 
@@ -38845,7 +38845,7 @@ export class messagePeerVoteMultiple extends _MessagePeerVote {
     ];
   }
 
-  constructor(params: { peer: Peer; options: Array<Uint8Array>; date: number }) {
+  constructor(params: { peer: enums.Peer; options: Array<Uint8Array>; date: number }) {
     super();
     this.peer = params.peer;
     this.options = params.options;
@@ -38856,7 +38856,7 @@ export class messagePeerVoteMultiple extends _MessagePeerVote {
 export class sponsoredWebPage extends _SponsoredWebPage {
   url: string;
   site_name: string;
-  photo?: Photo;
+  photo?: enums.Photo;
 
   protected get [id]() {
     return 0x3DB8EC63;
@@ -38880,7 +38880,7 @@ export class sponsoredWebPage extends _SponsoredWebPage {
     ];
   }
 
-  constructor(params: { url: string; site_name: string; photo?: Photo }) {
+  constructor(params: { url: string; site_name: string; photo?: enums.Photo }) {
     super();
     this.url = params.url;
     this.site_name = params.site_name;
@@ -38892,7 +38892,7 @@ export class storyViews extends _StoryViews {
   has_viewers?: true;
   views_count: number;
   forwards_count?: number;
-  reactions?: Array<ReactionCount>;
+  reactions?: Array<enums.ReactionCount>;
   reactions_count?: number;
   recent_viewers?: Array<bigint>;
 
@@ -38924,7 +38924,7 @@ export class storyViews extends _StoryViews {
     ];
   }
 
-  constructor(params: { has_viewers?: true; views_count: number; forwards_count?: number; reactions?: Array<ReactionCount>; reactions_count?: number; recent_viewers?: Array<bigint> }) {
+  constructor(params: { has_viewers?: true; views_count: number; forwards_count?: number; reactions?: Array<enums.ReactionCount>; reactions_count?: number; recent_viewers?: Array<bigint> }) {
     super();
     this.has_viewers = params.has_viewers;
     this.views_count = params.views_count;
@@ -39011,15 +39011,15 @@ export class storyItem extends _StoryItem {
   out?: true;
   id: number;
   date: number;
-  fwd_from?: StoryFwdHeader;
+  fwd_from?: enums.StoryFwdHeader;
   expire_date: number;
   caption?: string;
-  entities?: Array<MessageEntity>;
-  media: MessageMedia;
-  media_areas?: Array<MediaArea>;
-  privacy?: Array<PrivacyRule>;
-  views?: StoryViews;
-  sent_reaction?: Reaction;
+  entities?: Array<enums.MessageEntity>;
+  media: enums.MessageMedia;
+  media_areas?: Array<enums.MediaArea>;
+  privacy?: Array<enums.PrivacyRule>;
+  views?: enums.StoryViews;
+  sent_reaction?: enums.Reaction;
 
   protected get [id]() {
     return 0xAF6365A1;
@@ -39077,7 +39077,7 @@ export class storyItem extends _StoryItem {
     ];
   }
 
-  constructor(params: { pinned?: true; public?: true; close_friends?: true; min?: true; noforwards?: true; edited?: true; contacts?: true; selected_contacts?: true; out?: true; id: number; date: number; fwd_from?: StoryFwdHeader; expire_date: number; caption?: string; entities?: Array<MessageEntity>; media: MessageMedia; media_areas?: Array<MediaArea>; privacy?: Array<PrivacyRule>; views?: StoryViews; sent_reaction?: Reaction }) {
+  constructor(params: { pinned?: true; public?: true; close_friends?: true; min?: true; noforwards?: true; edited?: true; contacts?: true; selected_contacts?: true; out?: true; id: number; date: number; fwd_from?: enums.StoryFwdHeader; expire_date: number; caption?: string; entities?: Array<enums.MessageEntity>; media: enums.MessageMedia; media_areas?: Array<enums.MediaArea>; privacy?: Array<enums.PrivacyRule>; views?: enums.StoryViews; sent_reaction?: enums.Reaction }) {
     super();
     this.pinned = params.pinned;
     this.public = params.public;
@@ -39104,7 +39104,7 @@ export class storyItem extends _StoryItem {
 
 export class stories_allStoriesNotModified extends _stories_AllStories {
   state: string;
-  stealth_mode: StoriesStealthMode;
+  stealth_mode: enums.StoriesStealthMode;
 
   protected get [id]() {
     return 0x1158FE3E;
@@ -39126,7 +39126,7 @@ export class stories_allStoriesNotModified extends _stories_AllStories {
     ];
   }
 
-  constructor(params: { state: string; stealth_mode: StoriesStealthMode }) {
+  constructor(params: { state: string; stealth_mode: enums.StoriesStealthMode }) {
     super();
     this.state = params.state;
     this.stealth_mode = params.stealth_mode;
@@ -39137,10 +39137,10 @@ export class stories_allStories extends _stories_AllStories {
   has_more?: true;
   count: number;
   state: string;
-  peer_stories: Array<PeerStories>;
-  chats: Array<Chat>;
-  users: Array<User>;
-  stealth_mode: StoriesStealthMode;
+  peer_stories: Array<enums.PeerStories>;
+  chats: Array<enums.Chat>;
+  users: Array<enums.User>;
+  stealth_mode: enums.StoriesStealthMode;
 
   protected get [id]() {
     return 0x6EFC5E81;
@@ -39172,7 +39172,7 @@ export class stories_allStories extends _stories_AllStories {
     ];
   }
 
-  constructor(params: { has_more?: true; count: number; state: string; peer_stories: Array<PeerStories>; chats: Array<Chat>; users: Array<User>; stealth_mode: StoriesStealthMode }) {
+  constructor(params: { has_more?: true; count: number; state: string; peer_stories: Array<enums.PeerStories>; chats: Array<enums.Chat>; users: Array<enums.User>; stealth_mode: enums.StoriesStealthMode }) {
     super();
     this.has_more = params.has_more;
     this.count = params.count;
@@ -39186,9 +39186,9 @@ export class stories_allStories extends _stories_AllStories {
 
 export class stories_stories extends _stories_Stories {
   count: number;
-  stories: Array<StoryItem>;
-  chats: Array<Chat>;
-  users: Array<User>;
+  stories: Array<enums.StoryItem>;
+  chats: Array<enums.Chat>;
+  users: Array<enums.User>;
 
   protected get [id]() {
     return 0x5DD8C3C8;
@@ -39212,7 +39212,7 @@ export class stories_stories extends _stories_Stories {
     ];
   }
 
-  constructor(params: { count: number; stories: Array<StoryItem>; chats: Array<Chat>; users: Array<User> }) {
+  constructor(params: { count: number; stories: Array<enums.StoryItem>; chats: Array<enums.Chat>; users: Array<enums.User> }) {
     super();
     this.count = params.count;
     this.stories = params.stories;
@@ -39226,7 +39226,7 @@ export class storyView extends _StoryView {
   blocked_my_stories_from?: true;
   user_id: bigint;
   date: number;
-  reaction?: Reaction;
+  reaction?: enums.Reaction;
 
   protected get [id]() {
     return 0xB0BDEAC5;
@@ -39254,7 +39254,7 @@ export class storyView extends _StoryView {
     ];
   }
 
-  constructor(params: { blocked?: true; blocked_my_stories_from?: true; user_id: bigint; date: number; reaction?: Reaction }) {
+  constructor(params: { blocked?: true; blocked_my_stories_from?: true; user_id: bigint; date: number; reaction?: enums.Reaction }) {
     super();
     this.blocked = params.blocked;
     this.blocked_my_stories_from = params.blocked_my_stories_from;
@@ -39267,8 +39267,8 @@ export class storyView extends _StoryView {
 export class stories_storyViewsList extends _stories_StoryViewsList {
   count: number;
   reactions_count: number;
-  views: Array<StoryView>;
-  users: Array<User>;
+  views: Array<enums.StoryView>;
+  users: Array<enums.User>;
   next_offset?: string;
 
   protected get [id]() {
@@ -39297,7 +39297,7 @@ export class stories_storyViewsList extends _stories_StoryViewsList {
     ];
   }
 
-  constructor(params: { count: number; reactions_count: number; views: Array<StoryView>; users: Array<User>; next_offset?: string }) {
+  constructor(params: { count: number; reactions_count: number; views: Array<enums.StoryView>; users: Array<enums.User>; next_offset?: string }) {
     super();
     this.count = params.count;
     this.reactions_count = params.reactions_count;
@@ -39308,8 +39308,8 @@ export class stories_storyViewsList extends _stories_StoryViewsList {
 }
 
 export class stories_storyViews extends _stories_StoryViews {
-  views: Array<StoryViews>;
-  users: Array<User>;
+  views: Array<enums.StoryViews>;
+  users: Array<enums.User>;
 
   protected get [id]() {
     return 0xDE9EED1D;
@@ -39329,7 +39329,7 @@ export class stories_storyViews extends _stories_StoryViews {
     ];
   }
 
-  constructor(params: { views: Array<StoryViews>; users: Array<User> }) {
+  constructor(params: { views: Array<enums.StoryViews>; users: Array<enums.User> }) {
     super();
     this.views = params.views;
     this.users = params.users;
@@ -39339,9 +39339,9 @@ export class stories_storyViews extends _stories_StoryViews {
 export class inputReplyToMessage extends _InputReplyTo {
   reply_to_msg_id: number;
   top_msg_id?: number;
-  reply_to_peer_id?: InputPeer;
+  reply_to_peer_id?: enums.InputPeer;
   quote_text?: string;
-  quote_entities?: Array<MessageEntity>;
+  quote_entities?: Array<enums.MessageEntity>;
   quote_offset?: number;
 
   protected get [id]() {
@@ -39372,7 +39372,7 @@ export class inputReplyToMessage extends _InputReplyTo {
     ];
   }
 
-  constructor(params: { reply_to_msg_id: number; top_msg_id?: number; reply_to_peer_id?: InputPeer; quote_text?: string; quote_entities?: Array<MessageEntity>; quote_offset?: number }) {
+  constructor(params: { reply_to_msg_id: number; top_msg_id?: number; reply_to_peer_id?: enums.InputPeer; quote_text?: string; quote_entities?: Array<enums.MessageEntity>; quote_offset?: number }) {
     super();
     this.reply_to_msg_id = params.reply_to_msg_id;
     this.top_msg_id = params.top_msg_id;
@@ -39384,7 +39384,7 @@ export class inputReplyToMessage extends _InputReplyTo {
 }
 
 export class inputReplyToStory extends _InputReplyTo {
-  user_id: InputUser;
+  user_id: enums.InputUser;
   story_id: number;
 
   protected get [id]() {
@@ -39405,7 +39405,7 @@ export class inputReplyToStory extends _InputReplyTo {
     ];
   }
 
-  constructor(params: { user_id: InputUser; story_id: number }) {
+  constructor(params: { user_id: enums.InputUser; story_id: number }) {
     super();
     this.user_id = params.user_id;
     this.story_id = params.story_id;
@@ -39510,8 +39510,8 @@ export class mediaAreaCoordinates extends _MediaAreaCoordinates {
 }
 
 export class mediaAreaVenue extends _MediaArea {
-  coordinates: MediaAreaCoordinates;
-  geo: GeoPoint;
+  coordinates: enums.MediaAreaCoordinates;
+  geo: enums.GeoPoint;
   title: string;
   address: string;
   provider: string;
@@ -39546,7 +39546,7 @@ export class mediaAreaVenue extends _MediaArea {
     ];
   }
 
-  constructor(params: { coordinates: MediaAreaCoordinates; geo: GeoPoint; title: string; address: string; provider: string; venue_id: string; venue_type: string }) {
+  constructor(params: { coordinates: enums.MediaAreaCoordinates; geo: enums.GeoPoint; title: string; address: string; provider: string; venue_id: string; venue_type: string }) {
     super();
     this.coordinates = params.coordinates;
     this.geo = params.geo;
@@ -39559,7 +39559,7 @@ export class mediaAreaVenue extends _MediaArea {
 }
 
 export class inputMediaAreaVenue extends _MediaArea {
-  coordinates: MediaAreaCoordinates;
+  coordinates: enums.MediaAreaCoordinates;
   query_id: bigint;
   result_id: string;
 
@@ -39583,7 +39583,7 @@ export class inputMediaAreaVenue extends _MediaArea {
     ];
   }
 
-  constructor(params: { coordinates: MediaAreaCoordinates; query_id: bigint; result_id: string }) {
+  constructor(params: { coordinates: enums.MediaAreaCoordinates; query_id: bigint; result_id: string }) {
     super();
     this.coordinates = params.coordinates;
     this.query_id = params.query_id;
@@ -39592,8 +39592,8 @@ export class inputMediaAreaVenue extends _MediaArea {
 }
 
 export class mediaAreaGeoPoint extends _MediaArea {
-  coordinates: MediaAreaCoordinates;
-  geo: GeoPoint;
+  coordinates: enums.MediaAreaCoordinates;
+  geo: enums.GeoPoint;
 
   protected get [id]() {
     return 0xDF8B3B22;
@@ -39613,7 +39613,7 @@ export class mediaAreaGeoPoint extends _MediaArea {
     ];
   }
 
-  constructor(params: { coordinates: MediaAreaCoordinates; geo: GeoPoint }) {
+  constructor(params: { coordinates: enums.MediaAreaCoordinates; geo: enums.GeoPoint }) {
     super();
     this.coordinates = params.coordinates;
     this.geo = params.geo;
@@ -39623,8 +39623,8 @@ export class mediaAreaGeoPoint extends _MediaArea {
 export class mediaAreaSuggestedReaction extends _MediaArea {
   dark?: true;
   flipped?: true;
-  coordinates: MediaAreaCoordinates;
-  reaction: Reaction;
+  coordinates: enums.MediaAreaCoordinates;
+  reaction: enums.Reaction;
 
   protected get [id]() {
     return 0x14455871;
@@ -39650,7 +39650,7 @@ export class mediaAreaSuggestedReaction extends _MediaArea {
     ];
   }
 
-  constructor(params: { dark?: true; flipped?: true; coordinates: MediaAreaCoordinates; reaction: Reaction }) {
+  constructor(params: { dark?: true; flipped?: true; coordinates: enums.MediaAreaCoordinates; reaction: enums.Reaction }) {
     super();
     this.dark = params.dark;
     this.flipped = params.flipped;
@@ -39660,9 +39660,9 @@ export class mediaAreaSuggestedReaction extends _MediaArea {
 }
 
 export class peerStories extends _PeerStories {
-  peer: Peer;
+  peer: enums.Peer;
   max_read_id?: number;
-  stories: Array<StoryItem>;
+  stories: Array<enums.StoryItem>;
 
   protected get [id]() {
     return 0x9A35E999;
@@ -39686,7 +39686,7 @@ export class peerStories extends _PeerStories {
     ];
   }
 
-  constructor(params: { peer: Peer; max_read_id?: number; stories: Array<StoryItem> }) {
+  constructor(params: { peer: enums.Peer; max_read_id?: number; stories: Array<enums.StoryItem> }) {
     super();
     this.peer = params.peer;
     this.max_read_id = params.max_read_id;
@@ -39695,9 +39695,9 @@ export class peerStories extends _PeerStories {
 }
 
 export class stories_peerStories extends _stories_PeerStories {
-  stories: PeerStories;
-  chats: Array<Chat>;
-  users: Array<User>;
+  stories: enums.PeerStories;
+  chats: Array<enums.Chat>;
+  users: Array<enums.User>;
 
   protected get [id]() {
     return 0xCAE68768;
@@ -39719,7 +39719,7 @@ export class stories_peerStories extends _stories_PeerStories {
     ];
   }
 
-  constructor(params: { stories: PeerStories; chats: Array<Chat>; users: Array<User> }) {
+  constructor(params: { stories: enums.PeerStories; chats: Array<enums.Chat>; users: Array<enums.User> }) {
     super();
     this.stories = params.stories;
     this.chats = params.chats;
@@ -39728,9 +39728,9 @@ export class stories_peerStories extends _stories_PeerStories {
 }
 
 export class messages_webPage extends _messages_WebPage {
-  webpage: WebPage;
-  chats: Array<Chat>;
-  users: Array<User>;
+  webpage: enums.WebPage;
+  chats: Array<enums.Chat>;
+  users: Array<enums.User>;
 
   protected get [id]() {
     return 0xFD5E12BD;
@@ -39752,7 +39752,7 @@ export class messages_webPage extends _messages_WebPage {
     ];
   }
 
-  constructor(params: { webpage: WebPage; chats: Array<Chat>; users: Array<User> }) {
+  constructor(params: { webpage: enums.WebPage; chats: Array<enums.Chat>; users: Array<enums.User> }) {
     super();
     this.webpage = params.webpage;
     this.chats = params.chats;
@@ -39809,14 +39809,14 @@ export class premiumGiftCodeOption extends _PremiumGiftCodeOption {
 
 export class payments_checkedGiftCode extends _payments_CheckedGiftCode {
   via_giveaway?: true;
-  from_id: Peer;
+  from_id: enums.Peer;
   giveaway_msg_id?: number;
   to_id?: bigint;
   date: number;
   months: number;
   used_date?: number;
-  chats: Array<Chat>;
-  users: Array<User>;
+  chats: Array<enums.Chat>;
+  users: Array<enums.User>;
 
   protected get [id]() {
     return 0xB722F158;
@@ -39852,7 +39852,7 @@ export class payments_checkedGiftCode extends _payments_CheckedGiftCode {
     ];
   }
 
-  constructor(params: { via_giveaway?: true; from_id: Peer; giveaway_msg_id?: number; to_id?: bigint; date: number; months: number; used_date?: number; chats: Array<Chat>; users: Array<User> }) {
+  constructor(params: { via_giveaway?: true; from_id: enums.Peer; giveaway_msg_id?: number; to_id?: bigint; date: number; months: number; used_date?: number; chats: Array<enums.Chat>; users: Array<enums.User> }) {
     super();
     this.via_giveaway = params.via_giveaway;
     this.from_id = params.from_id;
@@ -40066,9 +40066,9 @@ export class boost extends _Boost {
 
 export class premium_boostsList extends _premium_BoostsList {
   count: number;
-  boosts: Array<Boost>;
+  boosts: Array<enums.Boost>;
   next_offset?: string;
-  users: Array<User>;
+  users: Array<enums.User>;
 
   protected get [id]() {
     return 0x86F8613C;
@@ -40094,7 +40094,7 @@ export class premium_boostsList extends _premium_BoostsList {
     ];
   }
 
-  constructor(params: { count: number; boosts: Array<Boost>; next_offset?: string; users: Array<User> }) {
+  constructor(params: { count: number; boosts: Array<enums.Boost>; next_offset?: string; users: Array<enums.User> }) {
     super();
     this.count = params.count;
     this.boosts = params.boosts;
@@ -40105,7 +40105,7 @@ export class premium_boostsList extends _premium_BoostsList {
 
 export class myBoost extends _MyBoost {
   slot: number;
-  peer?: Peer;
+  peer?: enums.Peer;
   date: number;
   expires: number;
   cooldown_until_date?: number;
@@ -40136,7 +40136,7 @@ export class myBoost extends _MyBoost {
     ];
   }
 
-  constructor(params: { slot: number; peer?: Peer; date: number; expires: number; cooldown_until_date?: number }) {
+  constructor(params: { slot: number; peer?: enums.Peer; date: number; expires: number; cooldown_until_date?: number }) {
     super();
     this.slot = params.slot;
     this.peer = params.peer;
@@ -40147,9 +40147,9 @@ export class myBoost extends _MyBoost {
 }
 
 export class premium_myBoosts extends _premium_MyBoosts {
-  my_boosts: Array<MyBoost>;
-  chats: Array<Chat>;
-  users: Array<User>;
+  my_boosts: Array<enums.MyBoost>;
+  chats: Array<enums.Chat>;
+  users: Array<enums.User>;
 
   protected get [id]() {
     return 0x9AE228E2;
@@ -40171,7 +40171,7 @@ export class premium_myBoosts extends _premium_MyBoosts {
     ];
   }
 
-  constructor(params: { my_boosts: Array<MyBoost>; chats: Array<Chat>; users: Array<User> }) {
+  constructor(params: { my_boosts: Array<enums.MyBoost>; chats: Array<enums.Chat>; users: Array<enums.User> }) {
     super();
     this.my_boosts = params.my_boosts;
     this.chats = params.chats;
@@ -40186,9 +40186,9 @@ export class premium_boostsStatus extends _premium_BoostsStatus {
   boosts: number;
   gift_boosts?: number;
   next_level_boosts?: number;
-  premium_audience?: StatsPercentValue;
+  premium_audience?: enums.StatsPercentValue;
   boost_url: string;
-  prepaid_giveaways?: Array<PrepaidGiveaway>;
+  prepaid_giveaways?: Array<enums.PrepaidGiveaway>;
   my_boost_slots?: Array<number>;
 
   protected get [id]() {
@@ -40227,7 +40227,7 @@ export class premium_boostsStatus extends _premium_BoostsStatus {
     ];
   }
 
-  constructor(params: { my_boost?: true; level: number; current_level_boosts: number; boosts: number; gift_boosts?: number; next_level_boosts?: number; premium_audience?: StatsPercentValue; boost_url: string; prepaid_giveaways?: Array<PrepaidGiveaway>; my_boost_slots?: Array<number> }) {
+  constructor(params: { my_boost?: true; level: number; current_level_boosts: number; boosts: number; gift_boosts?: number; next_level_boosts?: number; premium_audience?: enums.StatsPercentValue; boost_url: string; prepaid_giveaways?: Array<enums.PrepaidGiveaway>; my_boost_slots?: Array<number> }) {
     super();
     this.my_boost = params.my_boost;
     this.level = params.level;
@@ -40244,7 +40244,7 @@ export class premium_boostsStatus extends _premium_BoostsStatus {
 
 export class storyFwdHeader extends _StoryFwdHeader {
   modified?: true;
-  from?: Peer;
+  from?: enums.Peer;
   from_name?: string;
   story_id?: number;
 
@@ -40272,7 +40272,7 @@ export class storyFwdHeader extends _StoryFwdHeader {
     ];
   }
 
-  constructor(params?: { modified?: true; from?: Peer; from_name?: string; story_id?: number }) {
+  constructor(params?: { modified?: true; from?: enums.Peer; from_name?: string; story_id?: number }) {
     super();
     this.modified = params?.modified;
     this.from = params?.from;
@@ -40356,8 +40356,8 @@ export class postInteractionCountersStory extends _PostInteractionCounters {
 }
 
 export class stats_storyStats extends _stats_StoryStats {
-  views_graph: StatsGraph;
-  reactions_by_emotion_graph: StatsGraph;
+  views_graph: enums.StatsGraph;
+  reactions_by_emotion_graph: enums.StatsGraph;
 
   protected get [id]() {
     return 0x50CD067C;
@@ -40377,7 +40377,7 @@ export class stats_storyStats extends _stats_StoryStats {
     ];
   }
 
-  constructor(params: { views_graph: StatsGraph; reactions_by_emotion_graph: StatsGraph }) {
+  constructor(params: { views_graph: enums.StatsGraph; reactions_by_emotion_graph: enums.StatsGraph }) {
     super();
     this.views_graph = params.views_graph;
     this.reactions_by_emotion_graph = params.reactions_by_emotion_graph;
@@ -40385,7 +40385,7 @@ export class stats_storyStats extends _stats_StoryStats {
 }
 
 export class publicForwardMessage extends _PublicForward {
-  message: Message;
+  message: enums.Message;
 
   protected get [id]() {
     return 0x01F2BF4A;
@@ -40403,15 +40403,15 @@ export class publicForwardMessage extends _PublicForward {
     ];
   }
 
-  constructor(params: { message: Message }) {
+  constructor(params: { message: enums.Message }) {
     super();
     this.message = params.message;
   }
 }
 
 export class publicForwardStory extends _PublicForward {
-  peer: Peer;
-  story: StoryItem;
+  peer: enums.Peer;
+  story: enums.StoryItem;
 
   protected get [id]() {
     return 0xEDF3ADD0;
@@ -40431,7 +40431,7 @@ export class publicForwardStory extends _PublicForward {
     ];
   }
 
-  constructor(params: { peer: Peer; story: StoryItem }) {
+  constructor(params: { peer: enums.Peer; story: enums.StoryItem }) {
     super();
     this.peer = params.peer;
     this.story = params.story;
@@ -40440,10 +40440,10 @@ export class publicForwardStory extends _PublicForward {
 
 export class stats_publicForwards extends _stats_PublicForwards {
   count: number;
-  forwards: Array<PublicForward>;
+  forwards: Array<enums.PublicForward>;
   next_offset?: string;
-  chats: Array<Chat>;
-  users: Array<User>;
+  chats: Array<enums.Chat>;
+  users: Array<enums.User>;
 
   protected get [id]() {
     return 0x93037E20;
@@ -40471,7 +40471,7 @@ export class stats_publicForwards extends _stats_PublicForwards {
     ];
   }
 
-  constructor(params: { count: number; forwards: Array<PublicForward>; next_offset?: string; chats: Array<Chat>; users: Array<User> }) {
+  constructor(params: { count: number; forwards: Array<enums.PublicForward>; next_offset?: string; chats: Array<enums.Chat>; users: Array<enums.User> }) {
     super();
     this.count = params.count;
     this.forwards = params.forwards;
@@ -40573,8 +40573,8 @@ export class help_peerColorProfileSet extends _help_PeerColorSet {
 export class help_peerColorOption extends _help_PeerColorOption {
   hidden?: true;
   color_id: number;
-  colors?: help_PeerColorSet;
-  dark_colors?: help_PeerColorSet;
+  colors?: enums.help_PeerColorSet;
+  dark_colors?: enums.help_PeerColorSet;
 
   protected get [id]() {
     return 0x135BD42F;
@@ -40600,7 +40600,7 @@ export class help_peerColorOption extends _help_PeerColorOption {
     ];
   }
 
-  constructor(params: { hidden?: true; color_id: number; colors?: help_PeerColorSet; dark_colors?: help_PeerColorSet }) {
+  constructor(params: { hidden?: true; color_id: number; colors?: enums.help_PeerColorSet; dark_colors?: enums.help_PeerColorSet }) {
     super();
     this.hidden = params.hidden;
     this.color_id = params.color_id;
@@ -40629,7 +40629,7 @@ export class help_peerColorsNotModified extends _help_PeerColors {
 
 export class help_peerColors extends _help_PeerColors {
   hash: number;
-  colors: Array<help_PeerColorOption>;
+  colors: Array<enums.help_PeerColorOption>;
 
   protected get [id]() {
     return 0x00F8ED08;
@@ -40649,470 +40649,471 @@ export class help_peerColors extends _help_PeerColors {
     ];
   }
 
-  constructor(params: { hash: number; colors: Array<help_PeerColorOption> }) {
+  constructor(params: { hash: number; colors: Array<enums.help_PeerColorOption> }) {
     super();
     this.hash = params.hash;
     this.colors = params.colors;
   }
 }
 
-export type ResPQ = resPQ;
-export type P_Q_inner_data = p_q_inner_data_dc | p_q_inner_data_temp_dc;
-export type Server_DH_Params = server_DH_params_ok;
-export type Server_DH_inner_data = server_DH_inner_data;
-export type Client_DH_Inner_Data = client_DH_inner_data;
-export type Set_client_DH_params_answer = dh_gen_ok | dh_gen_retry | dh_gen_fail;
-export type BindAuthKeyInner = bind_auth_key_inner;
-export type RpcError = rpc_error;
-export type RpcDropAnswer = rpc_answer_unknown | rpc_answer_dropped_running | rpc_answer_dropped;
-export type FutureSalt = future_salt;
-export type FutureSalts = future_salts;
-export type Pong = pong;
-export type DestroySessionRes = destroy_session_ok | destroy_session_none;
-export type NewSession = new_session_created;
-export type Object = gzip_packed;
-export type MsgsAck = msgs_ack;
-export type BadMsgNotification = bad_msg_notification | bad_server_salt;
-export type MsgResendReq = msg_resend_req;
-export type MsgsStateReq = msgs_state_req;
-export type MsgsStateInfo = msgs_state_info;
-export type MsgsAllInfo = msgs_all_info;
-export type MsgDetailedInfo = msg_detailed_info | msg_new_detailed_info;
-export type DestroyAuthKeyRes = destroy_auth_key_ok | destroy_auth_key_none | destroy_auth_key_fail;
-export type HttpWait = http_wait;
-export type True = r$true;
-export type Error = error;
-export type Null = r$null;
-export type InputPeer = inputPeerEmpty | inputPeerSelf | inputPeerChat | inputPeerUser | inputPeerChannel | inputPeerUserFromMessage | inputPeerChannelFromMessage;
-export type InputUser = inputUserEmpty | inputUserSelf | inputUser | inputUserFromMessage;
-export type InputContact = inputPhoneContact;
-export type InputFile = inputFile | inputFileBig;
-export type InputMedia = inputMediaEmpty | inputMediaUploadedPhoto | inputMediaPhoto | inputMediaGeoPoint | inputMediaContact | inputMediaUploadedDocument | inputMediaDocument | inputMediaVenue | inputMediaPhotoExternal | inputMediaDocumentExternal | inputMediaGame | inputMediaInvoice | inputMediaGeoLive | inputMediaPoll | inputMediaDice | inputMediaStory | inputMediaWebPage;
-export type InputChatPhoto = inputChatPhotoEmpty | inputChatUploadedPhoto | inputChatPhoto;
-export type InputGeoPoint = inputGeoPointEmpty | inputGeoPoint;
-export type InputPhoto = inputPhotoEmpty | inputPhoto;
-export type InputFileLocation = inputFileLocation | inputEncryptedFileLocation | inputDocumentFileLocation | inputSecureFileLocation | inputTakeoutFileLocation | inputPhotoFileLocation | inputPhotoLegacyFileLocation | inputPeerPhotoFileLocation | inputStickerSetThumb | inputGroupCallStream;
-export type Peer = peerUser | peerChat | peerChannel;
-export type storage_FileType = storage_fileUnknown | storage_filePartial | storage_fileJpeg | storage_fileGif | storage_filePng | storage_filePdf | storage_fileMp3 | storage_fileMov | storage_fileMp4 | storage_fileWebp;
-export type User = userEmpty | user;
-export type UserProfilePhoto = userProfilePhotoEmpty | userProfilePhoto;
-export type UserStatus = userStatusEmpty | userStatusOnline | userStatusOffline | userStatusRecently | userStatusLastWeek | userStatusLastMonth;
-export type Chat = chatEmpty | chat | chatForbidden | channel | channelForbidden;
-export type ChatFull = chatFull | channelFull;
-export type ChatParticipant = chatParticipant | chatParticipantCreator | chatParticipantAdmin;
-export type ChatParticipants = chatParticipantsForbidden | chatParticipants;
-export type ChatPhoto = chatPhotoEmpty | chatPhoto;
-export type Message = messageEmpty | message | messageService;
-export type MessageMedia = messageMediaEmpty | messageMediaPhoto | messageMediaGeo | messageMediaContact | messageMediaUnsupported | messageMediaDocument | messageMediaWebPage | messageMediaVenue | messageMediaGame | messageMediaInvoice | messageMediaGeoLive | messageMediaPoll | messageMediaDice | messageMediaStory | messageMediaGiveaway;
-export type MessageAction = messageActionEmpty | messageActionChatCreate | messageActionChatEditTitle | messageActionChatEditPhoto | messageActionChatDeletePhoto | messageActionChatAddUser | messageActionChatDeleteUser | messageActionChatJoinedByLink | messageActionChannelCreate | messageActionChatMigrateTo | messageActionChannelMigrateFrom | messageActionPinMessage | messageActionHistoryClear | messageActionGameScore | messageActionPaymentSentMe | messageActionPaymentSent | messageActionPhoneCall | messageActionScreenshotTaken | messageActionCustomAction | messageActionBotAllowed | messageActionSecureValuesSentMe | messageActionSecureValuesSent | messageActionContactSignUp | messageActionGeoProximityReached | messageActionGroupCall | messageActionInviteToGroupCall | messageActionSetMessagesTTL | messageActionGroupCallScheduled | messageActionSetChatTheme | messageActionChatJoinedByRequest | messageActionWebViewDataSentMe | messageActionWebViewDataSent | messageActionGiftPremium | messageActionTopicCreate | messageActionTopicEdit | messageActionSuggestProfilePhoto | messageActionRequestedPeer | messageActionSetChatWallPaper | messageActionGiftCode | messageActionGiveawayLaunch | messageActionGiveawayResults;
-export type Dialog = dialog | dialogFolder;
-export type Photo = photoEmpty | photo;
-export type PhotoSize = photoSizeEmpty | photoSize | photoCachedSize | photoStrippedSize | photoSizeProgressive | photoPathSize;
-export type GeoPoint = geoPointEmpty | geoPoint;
-export type auth_SentCode = auth_sentCode | auth_sentCodeSuccess;
-export type auth_Authorization = auth_authorization | auth_authorizationSignUpRequired;
-export type auth_ExportedAuthorization = auth_exportedAuthorization;
-export type InputNotifyPeer = inputNotifyPeer | inputNotifyUsers | inputNotifyChats | inputNotifyBroadcasts | inputNotifyForumTopic;
-export type InputPeerNotifySettings = inputPeerNotifySettings;
-export type PeerNotifySettings = peerNotifySettings;
-export type PeerSettings = peerSettings;
-export type WallPaper = wallPaper | wallPaperNoFile;
-export type ReportReason = inputReportReasonSpam | inputReportReasonViolence | inputReportReasonPornography | inputReportReasonChildAbuse | inputReportReasonOther | inputReportReasonCopyright | inputReportReasonGeoIrrelevant | inputReportReasonFake | inputReportReasonIllegalDrugs | inputReportReasonPersonalDetails;
-export type UserFull = userFull;
-export type Contact = contact;
-export type ImportedContact = importedContact;
-export type ContactStatus = contactStatus;
-export type contacts_Contacts = contacts_contactsNotModified | contacts_contacts;
-export type contacts_ImportedContacts = contacts_importedContacts;
-export type contacts_Blocked = contacts_blocked | contacts_blockedSlice;
-export type messages_Dialogs = messages_dialogs | messages_dialogsSlice | messages_dialogsNotModified;
-export type messages_Messages = messages_messages | messages_messagesSlice | messages_channelMessages | messages_messagesNotModified;
-export type messages_Chats = messages_chats | messages_chatsSlice;
-export type messages_ChatFull = messages_chatFull;
-export type messages_AffectedHistory = messages_affectedHistory;
-export type MessagesFilter = inputMessagesFilterEmpty | inputMessagesFilterPhotos | inputMessagesFilterVideo | inputMessagesFilterPhotoVideo | inputMessagesFilterDocument | inputMessagesFilterUrl | inputMessagesFilterGif | inputMessagesFilterVoice | inputMessagesFilterMusic | inputMessagesFilterChatPhotos | inputMessagesFilterPhoneCalls | inputMessagesFilterRoundVoice | inputMessagesFilterRoundVideo | inputMessagesFilterMyMentions | inputMessagesFilterGeo | inputMessagesFilterContacts | inputMessagesFilterPinned;
-export type Update = updateNewMessage | updateMessageID | updateDeleteMessages | updateUserTyping | updateChatUserTyping | updateChatParticipants | updateUserStatus | updateUserName | updateNewAuthorization | updateNewEncryptedMessage | updateEncryptedChatTyping | updateEncryption | updateEncryptedMessagesRead | updateChatParticipantAdd | updateChatParticipantDelete | updateDcOptions | updateNotifySettings | updateServiceNotification | updatePrivacy | updateUserPhone | updateReadHistoryInbox | updateReadHistoryOutbox | updateWebPage | updateReadMessagesContents | updateChannelTooLong | updateChannel | updateNewChannelMessage | updateReadChannelInbox | updateDeleteChannelMessages | updateChannelMessageViews | updateChatParticipantAdmin | updateNewStickerSet | updateStickerSetsOrder | updateStickerSets | updateSavedGifs | updateBotInlineQuery | updateBotInlineSend | updateEditChannelMessage | updateBotCallbackQuery | updateEditMessage | updateInlineBotCallbackQuery | updateReadChannelOutbox | updateDraftMessage | updateReadFeaturedStickers | updateRecentStickers | updateConfig | updatePtsChanged | updateChannelWebPage | updateDialogPinned | updatePinnedDialogs | updateBotWebhookJSON | updateBotWebhookJSONQuery | updateBotShippingQuery | updateBotPrecheckoutQuery | updatePhoneCall | updateLangPackTooLong | updateLangPack | updateFavedStickers | updateChannelReadMessagesContents | updateContactsReset | updateChannelAvailableMessages | updateDialogUnreadMark | updateMessagePoll | updateChatDefaultBannedRights | updateFolderPeers | updatePeerSettings | updatePeerLocated | updateNewScheduledMessage | updateDeleteScheduledMessages | updateTheme | updateGeoLiveViewed | updateLoginToken | updateMessagePollVote | updateDialogFilter | updateDialogFilterOrder | updateDialogFilters | updatePhoneCallSignalingData | updateChannelMessageForwards | updateReadChannelDiscussionInbox | updateReadChannelDiscussionOutbox | updatePeerBlocked | updateChannelUserTyping | updatePinnedMessages | updatePinnedChannelMessages | updateChat | updateGroupCallParticipants | updateGroupCall | updatePeerHistoryTTL | updateChatParticipant | updateChannelParticipant | updateBotStopped | updateGroupCallConnection | updateBotCommands | updatePendingJoinRequests | updateBotChatInviteRequester | updateMessageReactions | updateAttachMenuBots | updateWebViewResultSent | updateBotMenuButton | updateSavedRingtones | updateTranscribedAudio | updateReadFeaturedEmojiStickers | updateUserEmojiStatus | updateRecentEmojiStatuses | updateRecentReactions | updateMoveStickerSetToTop | updateMessageExtendedMedia | updateChannelPinnedTopic | updateChannelPinnedTopics | updateUser | updateAutoSaveSettings | updateGroupInvitePrivacyForbidden | updateStory | updateReadStories | updateStoryID | updateStoriesStealthMode | updateSentStoryReaction | updateBotChatBoost | updateChannelViewForumAsMessages | updatePeerWallpaper;
-export type updates_State = updates_state;
-export type updates_Difference = updates_differenceEmpty | updates_difference | updates_differenceSlice | updates_differenceTooLong;
-export type Updates = updatesTooLong | updateShortMessage | updateShortChatMessage | updateShort | updatesCombined | updates | updateShortSentMessage;
-export type photos_Photos = photos_photos | photos_photosSlice;
-export type photos_Photo = photos_photo;
-export type upload_File = upload_file | upload_fileCdnRedirect;
-export type DcOption = dcOption;
-export type Config = config;
-export type NearestDc = nearestDc;
-export type help_AppUpdate = help_appUpdate | help_noAppUpdate;
-export type help_InviteText = help_inviteText;
-export type EncryptedChat = encryptedChatEmpty | encryptedChatWaiting | encryptedChatRequested | encryptedChat | encryptedChatDiscarded;
-export type InputEncryptedChat = inputEncryptedChat;
-export type EncryptedFile = encryptedFileEmpty | encryptedFile;
-export type InputEncryptedFile = inputEncryptedFileEmpty | inputEncryptedFileUploaded | inputEncryptedFile | inputEncryptedFileBigUploaded;
-export type EncryptedMessage = encryptedMessage | encryptedMessageService;
-export type messages_DhConfig = messages_dhConfigNotModified | messages_dhConfig;
-export type messages_SentEncryptedMessage = messages_sentEncryptedMessage | messages_sentEncryptedFile;
-export type InputDocument = inputDocumentEmpty | inputDocument;
-export type Document = documentEmpty | document;
-export type help_Support = help_support;
-export type NotifyPeer = notifyPeer | notifyUsers | notifyChats | notifyBroadcasts | notifyForumTopic;
-export type SendMessageAction = sendMessageTypingAction | sendMessageCancelAction | sendMessageRecordVideoAction | sendMessageUploadVideoAction | sendMessageRecordAudioAction | sendMessageUploadAudioAction | sendMessageUploadPhotoAction | sendMessageUploadDocumentAction | sendMessageGeoLocationAction | sendMessageChooseContactAction | sendMessageGamePlayAction | sendMessageRecordRoundAction | sendMessageUploadRoundAction | speakingInGroupCallAction | sendMessageHistoryImportAction | sendMessageChooseStickerAction | sendMessageEmojiInteraction | sendMessageEmojiInteractionSeen;
-export type contacts_Found = contacts_found;
-export type InputPrivacyKey = inputPrivacyKeyStatusTimestamp | inputPrivacyKeyChatInvite | inputPrivacyKeyPhoneCall | inputPrivacyKeyPhoneP2P | inputPrivacyKeyForwards | inputPrivacyKeyProfilePhoto | inputPrivacyKeyPhoneNumber | inputPrivacyKeyAddedByPhone | inputPrivacyKeyVoiceMessages | inputPrivacyKeyAbout;
-export type PrivacyKey = privacyKeyStatusTimestamp | privacyKeyChatInvite | privacyKeyPhoneCall | privacyKeyPhoneP2P | privacyKeyForwards | privacyKeyProfilePhoto | privacyKeyPhoneNumber | privacyKeyAddedByPhone | privacyKeyVoiceMessages | privacyKeyAbout;
-export type InputPrivacyRule = inputPrivacyValueAllowContacts | inputPrivacyValueAllowAll | inputPrivacyValueAllowUsers | inputPrivacyValueDisallowContacts | inputPrivacyValueDisallowAll | inputPrivacyValueDisallowUsers | inputPrivacyValueAllowChatParticipants | inputPrivacyValueDisallowChatParticipants | inputPrivacyValueAllowCloseFriends;
-export type PrivacyRule = privacyValueAllowContacts | privacyValueAllowAll | privacyValueAllowUsers | privacyValueDisallowContacts | privacyValueDisallowAll | privacyValueDisallowUsers | privacyValueAllowChatParticipants | privacyValueDisallowChatParticipants | privacyValueAllowCloseFriends;
-export type account_PrivacyRules = account_privacyRules;
-export type AccountDaysTTL = accountDaysTTL;
-export type DocumentAttribute = documentAttributeImageSize | documentAttributeAnimated | documentAttributeSticker | documentAttributeVideo | documentAttributeAudio | documentAttributeFilename | documentAttributeHasStickers | documentAttributeCustomEmoji;
-export type messages_Stickers = messages_stickersNotModified | messages_stickers;
-export type StickerPack = stickerPack;
-export type messages_AllStickers = messages_allStickersNotModified | messages_allStickers;
-export type messages_AffectedMessages = messages_affectedMessages;
-export type WebPage = webPageEmpty | webPagePending | webPage | webPageNotModified;
-export type Authorization = authorization;
-export type account_Authorizations = account_authorizations;
-export type account_Password = account_password;
-export type account_PasswordSettings = account_passwordSettings;
-export type account_PasswordInputSettings = account_passwordInputSettings;
-export type auth_PasswordRecovery = auth_passwordRecovery;
-export type ReceivedNotifyMessage = receivedNotifyMessage;
-export type ExportedChatInvite = chatInviteExported | chatInvitePublicJoinRequests;
-export type ChatInvite = chatInviteAlready | chatInvite | chatInvitePeek;
-export type InputStickerSet = inputStickerSetEmpty | inputStickerSetID | inputStickerSetShortName | inputStickerSetAnimatedEmoji | inputStickerSetDice | inputStickerSetAnimatedEmojiAnimations | inputStickerSetPremiumGifts | inputStickerSetEmojiGenericAnimations | inputStickerSetEmojiDefaultStatuses | inputStickerSetEmojiDefaultTopicIcons;
-export type StickerSet = stickerSet;
-export type messages_StickerSet = messages_stickerSet | messages_stickerSetNotModified;
-export type BotCommand = botCommand;
-export type BotInfo = botInfo;
-export type KeyboardButton = keyboardButton | keyboardButtonUrl | keyboardButtonCallback | keyboardButtonRequestPhone | keyboardButtonRequestGeoLocation | keyboardButtonSwitchInline | keyboardButtonGame | keyboardButtonBuy | keyboardButtonUrlAuth | inputKeyboardButtonUrlAuth | keyboardButtonRequestPoll | inputKeyboardButtonUserProfile | keyboardButtonUserProfile | keyboardButtonWebView | keyboardButtonSimpleWebView | keyboardButtonRequestPeer;
-export type KeyboardButtonRow = keyboardButtonRow;
-export type ReplyMarkup = replyKeyboardHide | replyKeyboardForceReply | replyKeyboardMarkup | replyInlineMarkup;
-export type MessageEntity = messageEntityUnknown | messageEntityMention | messageEntityHashtag | messageEntityBotCommand | messageEntityUrl | messageEntityEmail | messageEntityBold | messageEntityItalic | messageEntityCode | messageEntityPre | messageEntityTextUrl | messageEntityMentionName | inputMessageEntityMentionName | messageEntityPhone | messageEntityCashtag | messageEntityUnderline | messageEntityStrike | messageEntityBankCard | messageEntitySpoiler | messageEntityCustomEmoji | messageEntityBlockquote;
-export type InputChannel = inputChannelEmpty | inputChannel | inputChannelFromMessage;
-export type contacts_ResolvedPeer = contacts_resolvedPeer;
-export type MessageRange = messageRange;
-export type updates_ChannelDifference = updates_channelDifferenceEmpty | updates_channelDifferenceTooLong | updates_channelDifference;
-export type ChannelMessagesFilter = channelMessagesFilterEmpty | channelMessagesFilter;
-export type ChannelParticipant = channelParticipant | channelParticipantSelf | channelParticipantCreator | channelParticipantAdmin | channelParticipantBanned | channelParticipantLeft;
-export type ChannelParticipantsFilter = channelParticipantsRecent | channelParticipantsAdmins | channelParticipantsKicked | channelParticipantsBots | channelParticipantsBanned | channelParticipantsSearch | channelParticipantsContacts | channelParticipantsMentions;
-export type channels_ChannelParticipants = channels_channelParticipants | channels_channelParticipantsNotModified;
-export type channels_ChannelParticipant = channels_channelParticipant;
-export type help_TermsOfService = help_termsOfService;
-export type messages_SavedGifs = messages_savedGifsNotModified | messages_savedGifs;
-export type InputBotInlineMessage = inputBotInlineMessageMediaAuto | inputBotInlineMessageText | inputBotInlineMessageMediaGeo | inputBotInlineMessageMediaVenue | inputBotInlineMessageMediaContact | inputBotInlineMessageGame | inputBotInlineMessageMediaInvoice | inputBotInlineMessageMediaWebPage;
-export type InputBotInlineResult = inputBotInlineResult | inputBotInlineResultPhoto | inputBotInlineResultDocument | inputBotInlineResultGame;
-export type BotInlineMessage = botInlineMessageMediaAuto | botInlineMessageText | botInlineMessageMediaGeo | botInlineMessageMediaVenue | botInlineMessageMediaContact | botInlineMessageMediaInvoice | botInlineMessageMediaWebPage;
-export type BotInlineResult = botInlineResult | botInlineMediaResult;
-export type messages_BotResults = messages_botResults;
-export type ExportedMessageLink = exportedMessageLink;
-export type MessageFwdHeader = messageFwdHeader;
-export type auth_CodeType = auth_codeTypeSms | auth_codeTypeCall | auth_codeTypeFlashCall | auth_codeTypeMissedCall | auth_codeTypeFragmentSms;
-export type auth_SentCodeType = auth_sentCodeTypeApp | auth_sentCodeTypeSms | auth_sentCodeTypeCall | auth_sentCodeTypeFlashCall | auth_sentCodeTypeMissedCall | auth_sentCodeTypeEmailCode | auth_sentCodeTypeSetUpEmailRequired | auth_sentCodeTypeFragmentSms | auth_sentCodeTypeFirebaseSms;
-export type messages_BotCallbackAnswer = messages_botCallbackAnswer;
-export type messages_MessageEditData = messages_messageEditData;
-export type InputBotInlineMessageID = inputBotInlineMessageID | inputBotInlineMessageID64;
-export type InlineBotSwitchPM = inlineBotSwitchPM;
-export type messages_PeerDialogs = messages_peerDialogs;
-export type TopPeer = topPeer;
-export type TopPeerCategory = topPeerCategoryBotsPM | topPeerCategoryBotsInline | topPeerCategoryCorrespondents | topPeerCategoryGroups | topPeerCategoryChannels | topPeerCategoryPhoneCalls | topPeerCategoryForwardUsers | topPeerCategoryForwardChats;
-export type TopPeerCategoryPeers = topPeerCategoryPeers;
-export type contacts_TopPeers = contacts_topPeersNotModified | contacts_topPeers | contacts_topPeersDisabled;
-export type DraftMessage = draftMessageEmpty | draftMessage;
-export type messages_FeaturedStickers = messages_featuredStickersNotModified | messages_featuredStickers;
-export type messages_RecentStickers = messages_recentStickersNotModified | messages_recentStickers;
-export type messages_ArchivedStickers = messages_archivedStickers;
-export type messages_StickerSetInstallResult = messages_stickerSetInstallResultSuccess | messages_stickerSetInstallResultArchive;
-export type StickerSetCovered = stickerSetCovered | stickerSetMultiCovered | stickerSetFullCovered | stickerSetNoCovered;
-export type MaskCoords = maskCoords;
-export type InputStickeredMedia = inputStickeredMediaPhoto | inputStickeredMediaDocument;
-export type Game = game;
-export type InputGame = inputGameID | inputGameShortName;
-export type HighScore = highScore;
-export type messages_HighScores = messages_highScores;
-export type RichText = textEmpty | textPlain | textBold | textItalic | textUnderline | textStrike | textFixed | textUrl | textEmail | textConcat | textSubscript | textSuperscript | textMarked | textPhone | textImage | textAnchor;
-export type PageBlock = pageBlockUnsupported | pageBlockTitle | pageBlockSubtitle | pageBlockAuthorDate | pageBlockHeader | pageBlockSubheader | pageBlockParagraph | pageBlockPreformatted | pageBlockFooter | pageBlockDivider | pageBlockAnchor | pageBlockList | pageBlockBlockquote | pageBlockPullquote | pageBlockPhoto | pageBlockVideo | pageBlockCover | pageBlockEmbed | pageBlockEmbedPost | pageBlockCollage | pageBlockSlideshow | pageBlockChannel | pageBlockAudio | pageBlockKicker | pageBlockTable | pageBlockOrderedList | pageBlockDetails | pageBlockRelatedArticles | pageBlockMap;
-export type PhoneCallDiscardReason = phoneCallDiscardReasonMissed | phoneCallDiscardReasonDisconnect | phoneCallDiscardReasonHangup | phoneCallDiscardReasonBusy;
-export type DataJSON = dataJSON;
-export type LabeledPrice = labeledPrice;
-export type Invoice = invoice;
-export type PaymentCharge = paymentCharge;
-export type PostAddress = postAddress;
-export type PaymentRequestedInfo = paymentRequestedInfo;
-export type PaymentSavedCredentials = paymentSavedCredentialsCard;
-export type WebDocument = webDocument | webDocumentNoProxy;
-export type InputWebDocument = inputWebDocument;
-export type InputWebFileLocation = inputWebFileLocation | inputWebFileGeoPointLocation | inputWebFileAudioAlbumThumbLocation;
-export type upload_WebFile = upload_webFile;
-export type payments_PaymentForm = payments_paymentForm;
-export type payments_ValidatedRequestedInfo = payments_validatedRequestedInfo;
-export type payments_PaymentResult = payments_paymentResult | payments_paymentVerificationNeeded;
-export type payments_PaymentReceipt = payments_paymentReceipt;
-export type payments_SavedInfo = payments_savedInfo;
-export type InputPaymentCredentials = inputPaymentCredentialsSaved | inputPaymentCredentials | inputPaymentCredentialsApplePay | inputPaymentCredentialsGooglePay;
-export type account_TmpPassword = account_tmpPassword;
-export type ShippingOption = shippingOption;
-export type InputStickerSetItem = inputStickerSetItem;
-export type InputPhoneCall = inputPhoneCall;
-export type PhoneCall = phoneCallEmpty | phoneCallWaiting | phoneCallRequested | phoneCallAccepted | phoneCall | phoneCallDiscarded;
-export type PhoneConnection = phoneConnection | phoneConnectionWebrtc;
-export type PhoneCallProtocol = phoneCallProtocol;
-export type phone_PhoneCall = phone_phoneCall;
-export type upload_CdnFile = upload_cdnFileReuploadNeeded | upload_cdnFile;
-export type CdnPublicKey = cdnPublicKey;
-export type CdnConfig = cdnConfig;
-export type LangPackString = langPackString | langPackStringPluralized | langPackStringDeleted;
-export type LangPackDifference = langPackDifference;
-export type LangPackLanguage = langPackLanguage;
-export type ChannelAdminLogEventAction = channelAdminLogEventActionChangeTitle | channelAdminLogEventActionChangeAbout | channelAdminLogEventActionChangeUsername | channelAdminLogEventActionChangePhoto | channelAdminLogEventActionToggleInvites | channelAdminLogEventActionToggleSignatures | channelAdminLogEventActionUpdatePinned | channelAdminLogEventActionEditMessage | channelAdminLogEventActionDeleteMessage | channelAdminLogEventActionParticipantJoin | channelAdminLogEventActionParticipantLeave | channelAdminLogEventActionParticipantInvite | channelAdminLogEventActionParticipantToggleBan | channelAdminLogEventActionParticipantToggleAdmin | channelAdminLogEventActionChangeStickerSet | channelAdminLogEventActionTogglePreHistoryHidden | channelAdminLogEventActionDefaultBannedRights | channelAdminLogEventActionStopPoll | channelAdminLogEventActionChangeLinkedChat | channelAdminLogEventActionChangeLocation | channelAdminLogEventActionToggleSlowMode | channelAdminLogEventActionStartGroupCall | channelAdminLogEventActionDiscardGroupCall | channelAdminLogEventActionParticipantMute | channelAdminLogEventActionParticipantUnmute | channelAdminLogEventActionToggleGroupCallSetting | channelAdminLogEventActionParticipantJoinByInvite | channelAdminLogEventActionExportedInviteDelete | channelAdminLogEventActionExportedInviteRevoke | channelAdminLogEventActionExportedInviteEdit | channelAdminLogEventActionParticipantVolume | channelAdminLogEventActionChangeHistoryTTL | channelAdminLogEventActionParticipantJoinByRequest | channelAdminLogEventActionToggleNoForwards | channelAdminLogEventActionSendMessage | channelAdminLogEventActionChangeAvailableReactions | channelAdminLogEventActionChangeUsernames | channelAdminLogEventActionToggleForum | channelAdminLogEventActionCreateTopic | channelAdminLogEventActionEditTopic | channelAdminLogEventActionDeleteTopic | channelAdminLogEventActionPinTopic | channelAdminLogEventActionToggleAntiSpam | channelAdminLogEventActionChangeColor | channelAdminLogEventActionChangeBackgroundEmoji;
-export type ChannelAdminLogEvent = channelAdminLogEvent;
-export type channels_AdminLogResults = channels_adminLogResults;
-export type ChannelAdminLogEventsFilter = channelAdminLogEventsFilter;
-export type PopularContact = popularContact;
-export type messages_FavedStickers = messages_favedStickersNotModified | messages_favedStickers;
-export type RecentMeUrl = recentMeUrlUnknown | recentMeUrlUser | recentMeUrlChat | recentMeUrlChatInvite | recentMeUrlStickerSet;
-export type help_RecentMeUrls = help_recentMeUrls;
-export type InputSingleMedia = inputSingleMedia;
-export type WebAuthorization = webAuthorization;
-export type account_WebAuthorizations = account_webAuthorizations;
-export type InputMessage = inputMessageID | inputMessageReplyTo | inputMessagePinned | inputMessageCallbackQuery;
-export type InputDialogPeer = inputDialogPeer | inputDialogPeerFolder;
-export type DialogPeer = dialogPeer | dialogPeerFolder;
-export type messages_FoundStickerSets = messages_foundStickerSetsNotModified | messages_foundStickerSets;
-export type FileHash = fileHash;
-export type InputClientProxy = inputClientProxy;
-export type help_TermsOfServiceUpdate = help_termsOfServiceUpdateEmpty | help_termsOfServiceUpdate;
-export type InputSecureFile = inputSecureFileUploaded | inputSecureFile;
-export type SecureFile = secureFileEmpty | secureFile;
-export type SecureData = secureData;
-export type SecurePlainData = securePlainPhone | securePlainEmail;
-export type SecureValueType = secureValueTypePersonalDetails | secureValueTypePassport | secureValueTypeDriverLicense | secureValueTypeIdentityCard | secureValueTypeInternalPassport | secureValueTypeAddress | secureValueTypeUtilityBill | secureValueTypeBankStatement | secureValueTypeRentalAgreement | secureValueTypePassportRegistration | secureValueTypeTemporaryRegistration | secureValueTypePhone | secureValueTypeEmail;
-export type SecureValue = secureValue;
-export type InputSecureValue = inputSecureValue;
-export type SecureValueHash = secureValueHash;
-export type SecureValueError = secureValueErrorData | secureValueErrorFrontSide | secureValueErrorReverseSide | secureValueErrorSelfie | secureValueErrorFile | secureValueErrorFiles | secureValueError | secureValueErrorTranslationFile | secureValueErrorTranslationFiles;
-export type SecureCredentialsEncrypted = secureCredentialsEncrypted;
-export type account_AuthorizationForm = account_authorizationForm;
-export type account_SentEmailCode = account_sentEmailCode;
-export type help_DeepLinkInfo = help_deepLinkInfoEmpty | help_deepLinkInfo;
-export type SavedContact = savedPhoneContact;
-export type account_Takeout = account_takeout;
-export type PasswordKdfAlgo = passwordKdfAlgoUnknown | passwordKdfAlgoSHA256SHA256PBKDF2HMACSHA512iter100000SHA256ModPow;
-export type SecurePasswordKdfAlgo = securePasswordKdfAlgoUnknown | securePasswordKdfAlgoPBKDF2HMACSHA512iter100000 | securePasswordKdfAlgoSHA512;
-export type SecureSecretSettings = secureSecretSettings;
-export type InputCheckPasswordSRP = inputCheckPasswordEmpty | inputCheckPasswordSRP;
-export type SecureRequiredType = secureRequiredType | secureRequiredTypeOneOf;
-export type help_PassportConfig = help_passportConfigNotModified | help_passportConfig;
-export type InputAppEvent = inputAppEvent;
-export type JSONObjectValue = jsonObjectValue;
-export type JSONValue = jsonNull | jsonBool | jsonNumber | jsonString | jsonArray | jsonObject;
-export type PageTableCell = pageTableCell;
-export type PageTableRow = pageTableRow;
-export type PageCaption = pageCaption;
-export type PageListItem = pageListItemText | pageListItemBlocks;
-export type PageListOrderedItem = pageListOrderedItemText | pageListOrderedItemBlocks;
-export type PageRelatedArticle = pageRelatedArticle;
-export type Page = page;
-export type help_SupportName = help_supportName;
-export type help_UserInfo = help_userInfoEmpty | help_userInfo;
-export type PollAnswer = pollAnswer;
-export type Poll = poll;
-export type PollAnswerVoters = pollAnswerVoters;
-export type PollResults = pollResults;
-export type ChatOnlines = chatOnlines;
-export type StatsURL = statsURL;
-export type ChatAdminRights = chatAdminRights;
-export type ChatBannedRights = chatBannedRights;
-export type InputWallPaper = inputWallPaper | inputWallPaperSlug | inputWallPaperNoFile;
-export type account_WallPapers = account_wallPapersNotModified | account_wallPapers;
-export type CodeSettings = codeSettings;
-export type WallPaperSettings = wallPaperSettings;
-export type AutoDownloadSettings = autoDownloadSettings;
-export type account_AutoDownloadSettings = account_autoDownloadSettings;
-export type EmojiKeyword = emojiKeyword | emojiKeywordDeleted;
-export type EmojiKeywordsDifference = emojiKeywordsDifference;
-export type EmojiURL = emojiURL;
-export type EmojiLanguage = emojiLanguage;
-export type Folder = folder;
-export type InputFolderPeer = inputFolderPeer;
-export type FolderPeer = folderPeer;
-export type messages_SearchCounter = messages_searchCounter;
-export type UrlAuthResult = urlAuthResultRequest | urlAuthResultAccepted | urlAuthResultDefault;
-export type ChannelLocation = channelLocationEmpty | channelLocation;
-export type PeerLocated = peerLocated | peerSelfLocated;
-export type RestrictionReason = restrictionReason;
-export type InputTheme = inputTheme | inputThemeSlug;
-export type Theme = theme;
-export type account_Themes = account_themesNotModified | account_themes;
-export type auth_LoginToken = auth_loginToken | auth_loginTokenMigrateTo | auth_loginTokenSuccess;
-export type account_ContentSettings = account_contentSettings;
-export type messages_InactiveChats = messages_inactiveChats;
-export type BaseTheme = baseThemeClassic | baseThemeDay | baseThemeNight | baseThemeTinted | baseThemeArctic;
-export type InputThemeSettings = inputThemeSettings;
-export type ThemeSettings = themeSettings;
-export type WebPageAttribute = webPageAttributeTheme | webPageAttributeStory;
-export type messages_VotesList = messages_votesList;
-export type BankCardOpenUrl = bankCardOpenUrl;
-export type payments_BankCardData = payments_bankCardData;
-export type DialogFilter = dialogFilter | dialogFilterDefault | dialogFilterChatlist;
-export type DialogFilterSuggested = dialogFilterSuggested;
-export type StatsDateRangeDays = statsDateRangeDays;
-export type StatsAbsValueAndPrev = statsAbsValueAndPrev;
-export type StatsPercentValue = statsPercentValue;
-export type StatsGraph = statsGraphAsync | statsGraphError | statsGraph;
-export type stats_BroadcastStats = stats_broadcastStats;
-export type help_PromoData = help_promoDataEmpty | help_promoData;
-export type VideoSize = videoSize | videoSizeEmojiMarkup | videoSizeStickerMarkup;
-export type StatsGroupTopPoster = statsGroupTopPoster;
-export type StatsGroupTopAdmin = statsGroupTopAdmin;
-export type StatsGroupTopInviter = statsGroupTopInviter;
-export type stats_MegagroupStats = stats_megagroupStats;
-export type GlobalPrivacySettings = globalPrivacySettings;
-export type help_CountryCode = help_countryCode;
-export type help_Country = help_country;
-export type help_CountriesList = help_countriesListNotModified | help_countriesList;
-export type MessageViews = messageViews;
-export type messages_MessageViews = messages_messageViews;
-export type messages_DiscussionMessage = messages_discussionMessage;
-export type MessageReplyHeader = messageReplyHeader | messageReplyStoryHeader;
-export type MessageReplies = messageReplies;
-export type PeerBlocked = peerBlocked;
-export type stats_MessageStats = stats_messageStats;
-export type GroupCall = groupCallDiscarded | groupCall;
-export type InputGroupCall = inputGroupCall;
-export type GroupCallParticipant = groupCallParticipant;
-export type phone_GroupCall = phone_groupCall;
-export type phone_GroupParticipants = phone_groupParticipants;
-export type InlineQueryPeerType = inlineQueryPeerTypeSameBotPM | inlineQueryPeerTypePM | inlineQueryPeerTypeChat | inlineQueryPeerTypeMegagroup | inlineQueryPeerTypeBroadcast | inlineQueryPeerTypeBotPM;
-export type messages_HistoryImport = messages_historyImport;
-export type messages_HistoryImportParsed = messages_historyImportParsed;
-export type messages_AffectedFoundMessages = messages_affectedFoundMessages;
-export type ChatInviteImporter = chatInviteImporter;
-export type messages_ExportedChatInvites = messages_exportedChatInvites;
-export type messages_ExportedChatInvite = messages_exportedChatInvite | messages_exportedChatInviteReplaced;
-export type messages_ChatInviteImporters = messages_chatInviteImporters;
-export type ChatAdminWithInvites = chatAdminWithInvites;
-export type messages_ChatAdminsWithInvites = messages_chatAdminsWithInvites;
-export type messages_CheckedHistoryImportPeer = messages_checkedHistoryImportPeer;
-export type phone_JoinAsPeers = phone_joinAsPeers;
-export type phone_ExportedGroupCallInvite = phone_exportedGroupCallInvite;
-export type GroupCallParticipantVideoSourceGroup = groupCallParticipantVideoSourceGroup;
-export type GroupCallParticipantVideo = groupCallParticipantVideo;
-export type stickers_SuggestedShortName = stickers_suggestedShortName;
-export type BotCommandScope = botCommandScopeDefault | botCommandScopeUsers | botCommandScopeChats | botCommandScopeChatAdmins | botCommandScopePeer | botCommandScopePeerAdmins | botCommandScopePeerUser;
-export type account_ResetPasswordResult = account_resetPasswordFailedWait | account_resetPasswordRequestedWait | account_resetPasswordOk;
-export type SponsoredMessage = sponsoredMessage;
-export type messages_SponsoredMessages = messages_sponsoredMessages | messages_sponsoredMessagesEmpty;
-export type SearchResultsCalendarPeriod = searchResultsCalendarPeriod;
-export type messages_SearchResultsCalendar = messages_searchResultsCalendar;
-export type SearchResultsPosition = searchResultPosition;
-export type messages_SearchResultsPositions = messages_searchResultsPositions;
-export type channels_SendAsPeers = channels_sendAsPeers;
-export type users_UserFull = users_userFull;
-export type messages_PeerSettings = messages_peerSettings;
-export type auth_LoggedOut = auth_loggedOut;
-export type ReactionCount = reactionCount;
-export type MessageReactions = messageReactions;
-export type messages_MessageReactionsList = messages_messageReactionsList;
-export type AvailableReaction = availableReaction;
-export type messages_AvailableReactions = messages_availableReactionsNotModified | messages_availableReactions;
-export type MessagePeerReaction = messagePeerReaction;
-export type GroupCallStreamChannel = groupCallStreamChannel;
-export type phone_GroupCallStreamChannels = phone_groupCallStreamChannels;
-export type phone_GroupCallStreamRtmpUrl = phone_groupCallStreamRtmpUrl;
-export type AttachMenuBotIconColor = attachMenuBotIconColor;
-export type AttachMenuBotIcon = attachMenuBotIcon;
-export type AttachMenuBot = attachMenuBot;
-export type AttachMenuBots = attachMenuBotsNotModified | attachMenuBots;
-export type AttachMenuBotsBot = attachMenuBotsBot;
-export type WebViewResult = webViewResultUrl;
-export type SimpleWebViewResult = simpleWebViewResultUrl;
-export type WebViewMessageSent = webViewMessageSent;
-export type BotMenuButton = botMenuButtonDefault | botMenuButtonCommands | botMenuButton;
-export type account_SavedRingtones = account_savedRingtonesNotModified | account_savedRingtones;
-export type NotificationSound = notificationSoundDefault | notificationSoundNone | notificationSoundLocal | notificationSoundRingtone;
-export type account_SavedRingtone = account_savedRingtone | account_savedRingtoneConverted;
-export type AttachMenuPeerType = attachMenuPeerTypeSameBotPM | attachMenuPeerTypeBotPM | attachMenuPeerTypePM | attachMenuPeerTypeChat | attachMenuPeerTypeBroadcast;
-export type InputInvoice = inputInvoiceMessage | inputInvoiceSlug | inputInvoicePremiumGiftCode;
-export type payments_ExportedInvoice = payments_exportedInvoice;
-export type messages_TranscribedAudio = messages_transcribedAudio;
-export type help_PremiumPromo = help_premiumPromo;
-export type InputStorePaymentPurpose = inputStorePaymentPremiumSubscription | inputStorePaymentGiftPremium | inputStorePaymentPremiumGiftCode | inputStorePaymentPremiumGiveaway;
-export type PremiumGiftOption = premiumGiftOption;
-export type PaymentFormMethod = paymentFormMethod;
-export type EmojiStatus = emojiStatusEmpty | emojiStatus | emojiStatusUntil;
-export type account_EmojiStatuses = account_emojiStatusesNotModified | account_emojiStatuses;
-export type Reaction = reactionEmpty | reactionEmoji | reactionCustomEmoji;
-export type ChatReactions = chatReactionsNone | chatReactionsAll | chatReactionsSome;
-export type messages_Reactions = messages_reactionsNotModified | messages_reactions;
-export type EmailVerifyPurpose = emailVerifyPurposeLoginSetup | emailVerifyPurposeLoginChange | emailVerifyPurposePassport;
-export type EmailVerification = emailVerificationCode | emailVerificationGoogle | emailVerificationApple;
-export type account_EmailVerified = account_emailVerified | account_emailVerifiedLogin;
-export type PremiumSubscriptionOption = premiumSubscriptionOption;
-export type SendAsPeer = sendAsPeer;
-export type MessageExtendedMedia = messageExtendedMediaPreview | messageExtendedMedia;
-export type StickerKeyword = stickerKeyword;
-export type Username = username;
-export type ForumTopic = forumTopicDeleted | forumTopic;
-export type messages_ForumTopics = messages_forumTopics;
-export type DefaultHistoryTTL = defaultHistoryTTL;
-export type ExportedContactToken = exportedContactToken;
-export type RequestPeerType = requestPeerTypeUser | requestPeerTypeChat | requestPeerTypeBroadcast;
-export type EmojiList = emojiListNotModified | emojiList;
-export type EmojiGroup = emojiGroup;
-export type messages_EmojiGroups = messages_emojiGroupsNotModified | messages_emojiGroups;
-export type TextWithEntities = textWithEntities;
-export type messages_TranslatedText = messages_translateResult;
-export type AutoSaveSettings = autoSaveSettings;
-export type AutoSaveException = autoSaveException;
-export type account_AutoSaveSettings = account_autoSaveSettings;
-export type help_AppConfig = help_appConfigNotModified | help_appConfig;
-export type InputBotApp = inputBotAppID | inputBotAppShortName;
-export type BotApp = botAppNotModified | botApp;
-export type messages_BotApp = messages_botApp;
-export type AppWebViewResult = appWebViewResultUrl;
-export type InlineBotWebView = inlineBotWebView;
-export type ReadParticipantDate = readParticipantDate;
-export type InputChatlist = inputChatlistDialogFilter;
-export type ExportedChatlistInvite = exportedChatlistInvite;
-export type chatlists_ExportedChatlistInvite = chatlists_exportedChatlistInvite;
-export type chatlists_ExportedInvites = chatlists_exportedInvites;
-export type chatlists_ChatlistInvite = chatlists_chatlistInviteAlready | chatlists_chatlistInvite;
-export type chatlists_ChatlistUpdates = chatlists_chatlistUpdates;
-export type bots_BotInfo = bots_botInfo;
-export type MessagePeerVote = messagePeerVote | messagePeerVoteInputOption | messagePeerVoteMultiple;
-export type SponsoredWebPage = sponsoredWebPage;
-export type StoryViews = storyViews;
-export type StoryItem = storyItemDeleted | storyItemSkipped | storyItem;
-export type stories_AllStories = stories_allStoriesNotModified | stories_allStories;
-export type stories_Stories = stories_stories;
-export type StoryView = storyView;
-export type stories_StoryViewsList = stories_storyViewsList;
-export type stories_StoryViews = stories_storyViews;
-export type InputReplyTo = inputReplyToMessage | inputReplyToStory;
-export type ExportedStoryLink = exportedStoryLink;
-export type StoriesStealthMode = storiesStealthMode;
-export type MediaAreaCoordinates = mediaAreaCoordinates;
-export type MediaArea = mediaAreaVenue | inputMediaAreaVenue | mediaAreaGeoPoint | mediaAreaSuggestedReaction;
-export type PeerStories = peerStories;
-export type stories_PeerStories = stories_peerStories;
-export type messages_WebPage = messages_webPage;
-export type PremiumGiftCodeOption = premiumGiftCodeOption;
-export type payments_CheckedGiftCode = payments_checkedGiftCode;
-export type payments_GiveawayInfo = payments_giveawayInfo | payments_giveawayInfoResults;
-export type PrepaidGiveaway = prepaidGiveaway;
-export type Boost = boost;
-export type premium_BoostsList = premium_boostsList;
-export type MyBoost = myBoost;
-export type premium_MyBoosts = premium_myBoosts;
-export type premium_BoostsStatus = premium_boostsStatus;
-export type StoryFwdHeader = storyFwdHeader;
-export type PostInteractionCounters = postInteractionCountersMessage | postInteractionCountersStory;
-export type stats_StoryStats = stats_storyStats;
-export type PublicForward = publicForwardMessage | publicForwardStory;
-export type stats_PublicForwards = stats_publicForwards;
-export type PeerColor = peerColor;
-export type help_PeerColorSet = help_peerColorSet | help_peerColorProfileSet;
-export type help_PeerColorOption = help_peerColorOption;
-export type help_PeerColors = help_peerColorsNotModified | help_peerColors;
-
+export declare namespace enums {
+  export type ResPQ = resPQ;
+  export type P_Q_inner_data = p_q_inner_data_dc | p_q_inner_data_temp_dc;
+  export type Server_DH_Params = server_DH_params_ok;
+  export type Server_DH_inner_data = server_DH_inner_data;
+  export type Client_DH_Inner_Data = client_DH_inner_data;
+  export type Set_client_DH_params_answer = dh_gen_ok | dh_gen_retry | dh_gen_fail;
+  export type BindAuthKeyInner = bind_auth_key_inner;
+  export type RpcError = rpc_error;
+  export type RpcDropAnswer = rpc_answer_unknown | rpc_answer_dropped_running | rpc_answer_dropped;
+  export type FutureSalt = future_salt;
+  export type FutureSalts = future_salts;
+  export type Pong = pong;
+  export type DestroySessionRes = destroy_session_ok | destroy_session_none;
+  export type NewSession = new_session_created;
+  export type Object = gzip_packed;
+  export type MsgsAck = msgs_ack;
+  export type BadMsgNotification = bad_msg_notification | bad_server_salt;
+  export type MsgResendReq = msg_resend_req;
+  export type MsgsStateReq = msgs_state_req;
+  export type MsgsStateInfo = msgs_state_info;
+  export type MsgsAllInfo = msgs_all_info;
+  export type MsgDetailedInfo = msg_detailed_info | msg_new_detailed_info;
+  export type DestroyAuthKeyRes = destroy_auth_key_ok | destroy_auth_key_none | destroy_auth_key_fail;
+  export type HttpWait = http_wait;
+  export type True = r$true;
+  export type Error = error;
+  export type Null = r$null;
+  export type InputPeer = inputPeerEmpty | inputPeerSelf | inputPeerChat | inputPeerUser | inputPeerChannel | inputPeerUserFromMessage | inputPeerChannelFromMessage;
+  export type InputUser = inputUserEmpty | inputUserSelf | inputUser | inputUserFromMessage;
+  export type InputContact = inputPhoneContact;
+  export type InputFile = inputFile | inputFileBig;
+  export type InputMedia = inputMediaEmpty | inputMediaUploadedPhoto | inputMediaPhoto | inputMediaGeoPoint | inputMediaContact | inputMediaUploadedDocument | inputMediaDocument | inputMediaVenue | inputMediaPhotoExternal | inputMediaDocumentExternal | inputMediaGame | inputMediaInvoice | inputMediaGeoLive | inputMediaPoll | inputMediaDice | inputMediaStory | inputMediaWebPage;
+  export type InputChatPhoto = inputChatPhotoEmpty | inputChatUploadedPhoto | inputChatPhoto;
+  export type InputGeoPoint = inputGeoPointEmpty | inputGeoPoint;
+  export type InputPhoto = inputPhotoEmpty | inputPhoto;
+  export type InputFileLocation = inputFileLocation | inputEncryptedFileLocation | inputDocumentFileLocation | inputSecureFileLocation | inputTakeoutFileLocation | inputPhotoFileLocation | inputPhotoLegacyFileLocation | inputPeerPhotoFileLocation | inputStickerSetThumb | inputGroupCallStream;
+  export type Peer = peerUser | peerChat | peerChannel;
+  export type storage_FileType = storage_fileUnknown | storage_filePartial | storage_fileJpeg | storage_fileGif | storage_filePng | storage_filePdf | storage_fileMp3 | storage_fileMov | storage_fileMp4 | storage_fileWebp;
+  export type User = userEmpty | user;
+  export type UserProfilePhoto = userProfilePhotoEmpty | userProfilePhoto;
+  export type UserStatus = userStatusEmpty | userStatusOnline | userStatusOffline | userStatusRecently | userStatusLastWeek | userStatusLastMonth;
+  export type Chat = chatEmpty | chat | chatForbidden | channel | channelForbidden;
+  export type ChatFull = chatFull | channelFull;
+  export type ChatParticipant = chatParticipant | chatParticipantCreator | chatParticipantAdmin;
+  export type ChatParticipants = chatParticipantsForbidden | chatParticipants;
+  export type ChatPhoto = chatPhotoEmpty | chatPhoto;
+  export type Message = messageEmpty | message | messageService;
+  export type MessageMedia = messageMediaEmpty | messageMediaPhoto | messageMediaGeo | messageMediaContact | messageMediaUnsupported | messageMediaDocument | messageMediaWebPage | messageMediaVenue | messageMediaGame | messageMediaInvoice | messageMediaGeoLive | messageMediaPoll | messageMediaDice | messageMediaStory | messageMediaGiveaway;
+  export type MessageAction = messageActionEmpty | messageActionChatCreate | messageActionChatEditTitle | messageActionChatEditPhoto | messageActionChatDeletePhoto | messageActionChatAddUser | messageActionChatDeleteUser | messageActionChatJoinedByLink | messageActionChannelCreate | messageActionChatMigrateTo | messageActionChannelMigrateFrom | messageActionPinMessage | messageActionHistoryClear | messageActionGameScore | messageActionPaymentSentMe | messageActionPaymentSent | messageActionPhoneCall | messageActionScreenshotTaken | messageActionCustomAction | messageActionBotAllowed | messageActionSecureValuesSentMe | messageActionSecureValuesSent | messageActionContactSignUp | messageActionGeoProximityReached | messageActionGroupCall | messageActionInviteToGroupCall | messageActionSetMessagesTTL | messageActionGroupCallScheduled | messageActionSetChatTheme | messageActionChatJoinedByRequest | messageActionWebViewDataSentMe | messageActionWebViewDataSent | messageActionGiftPremium | messageActionTopicCreate | messageActionTopicEdit | messageActionSuggestProfilePhoto | messageActionRequestedPeer | messageActionSetChatWallPaper | messageActionGiftCode | messageActionGiveawayLaunch | messageActionGiveawayResults;
+  export type Dialog = dialog | dialogFolder;
+  export type Photo = photoEmpty | photo;
+  export type PhotoSize = photoSizeEmpty | photoSize | photoCachedSize | photoStrippedSize | photoSizeProgressive | photoPathSize;
+  export type GeoPoint = geoPointEmpty | geoPoint;
+  export type auth_SentCode = auth_sentCode | auth_sentCodeSuccess;
+  export type auth_Authorization = auth_authorization | auth_authorizationSignUpRequired;
+  export type auth_ExportedAuthorization = auth_exportedAuthorization;
+  export type InputNotifyPeer = inputNotifyPeer | inputNotifyUsers | inputNotifyChats | inputNotifyBroadcasts | inputNotifyForumTopic;
+  export type InputPeerNotifySettings = inputPeerNotifySettings;
+  export type PeerNotifySettings = peerNotifySettings;
+  export type PeerSettings = peerSettings;
+  export type WallPaper = wallPaper | wallPaperNoFile;
+  export type ReportReason = inputReportReasonSpam | inputReportReasonViolence | inputReportReasonPornography | inputReportReasonChildAbuse | inputReportReasonOther | inputReportReasonCopyright | inputReportReasonGeoIrrelevant | inputReportReasonFake | inputReportReasonIllegalDrugs | inputReportReasonPersonalDetails;
+  export type UserFull = userFull;
+  export type Contact = contact;
+  export type ImportedContact = importedContact;
+  export type ContactStatus = contactStatus;
+  export type contacts_Contacts = contacts_contactsNotModified | contacts_contacts;
+  export type contacts_ImportedContacts = contacts_importedContacts;
+  export type contacts_Blocked = contacts_blocked | contacts_blockedSlice;
+  export type messages_Dialogs = messages_dialogs | messages_dialogsSlice | messages_dialogsNotModified;
+  export type messages_Messages = messages_messages | messages_messagesSlice | messages_channelMessages | messages_messagesNotModified;
+  export type messages_Chats = messages_chats | messages_chatsSlice;
+  export type messages_ChatFull = messages_chatFull;
+  export type messages_AffectedHistory = messages_affectedHistory;
+  export type MessagesFilter = inputMessagesFilterEmpty | inputMessagesFilterPhotos | inputMessagesFilterVideo | inputMessagesFilterPhotoVideo | inputMessagesFilterDocument | inputMessagesFilterUrl | inputMessagesFilterGif | inputMessagesFilterVoice | inputMessagesFilterMusic | inputMessagesFilterChatPhotos | inputMessagesFilterPhoneCalls | inputMessagesFilterRoundVoice | inputMessagesFilterRoundVideo | inputMessagesFilterMyMentions | inputMessagesFilterGeo | inputMessagesFilterContacts | inputMessagesFilterPinned;
+  export type Update = updateNewMessage | updateMessageID | updateDeleteMessages | updateUserTyping | updateChatUserTyping | updateChatParticipants | updateUserStatus | updateUserName | updateNewAuthorization | updateNewEncryptedMessage | updateEncryptedChatTyping | updateEncryption | updateEncryptedMessagesRead | updateChatParticipantAdd | updateChatParticipantDelete | updateDcOptions | updateNotifySettings | updateServiceNotification | updatePrivacy | updateUserPhone | updateReadHistoryInbox | updateReadHistoryOutbox | updateWebPage | updateReadMessagesContents | updateChannelTooLong | updateChannel | updateNewChannelMessage | updateReadChannelInbox | updateDeleteChannelMessages | updateChannelMessageViews | updateChatParticipantAdmin | updateNewStickerSet | updateStickerSetsOrder | updateStickerSets | updateSavedGifs | updateBotInlineQuery | updateBotInlineSend | updateEditChannelMessage | updateBotCallbackQuery | updateEditMessage | updateInlineBotCallbackQuery | updateReadChannelOutbox | updateDraftMessage | updateReadFeaturedStickers | updateRecentStickers | updateConfig | updatePtsChanged | updateChannelWebPage | updateDialogPinned | updatePinnedDialogs | updateBotWebhookJSON | updateBotWebhookJSONQuery | updateBotShippingQuery | updateBotPrecheckoutQuery | updatePhoneCall | updateLangPackTooLong | updateLangPack | updateFavedStickers | updateChannelReadMessagesContents | updateContactsReset | updateChannelAvailableMessages | updateDialogUnreadMark | updateMessagePoll | updateChatDefaultBannedRights | updateFolderPeers | updatePeerSettings | updatePeerLocated | updateNewScheduledMessage | updateDeleteScheduledMessages | updateTheme | updateGeoLiveViewed | updateLoginToken | updateMessagePollVote | updateDialogFilter | updateDialogFilterOrder | updateDialogFilters | updatePhoneCallSignalingData | updateChannelMessageForwards | updateReadChannelDiscussionInbox | updateReadChannelDiscussionOutbox | updatePeerBlocked | updateChannelUserTyping | updatePinnedMessages | updatePinnedChannelMessages | updateChat | updateGroupCallParticipants | updateGroupCall | updatePeerHistoryTTL | updateChatParticipant | updateChannelParticipant | updateBotStopped | updateGroupCallConnection | updateBotCommands | updatePendingJoinRequests | updateBotChatInviteRequester | updateMessageReactions | updateAttachMenuBots | updateWebViewResultSent | updateBotMenuButton | updateSavedRingtones | updateTranscribedAudio | updateReadFeaturedEmojiStickers | updateUserEmojiStatus | updateRecentEmojiStatuses | updateRecentReactions | updateMoveStickerSetToTop | updateMessageExtendedMedia | updateChannelPinnedTopic | updateChannelPinnedTopics | updateUser | updateAutoSaveSettings | updateGroupInvitePrivacyForbidden | updateStory | updateReadStories | updateStoryID | updateStoriesStealthMode | updateSentStoryReaction | updateBotChatBoost | updateChannelViewForumAsMessages | updatePeerWallpaper;
+  export type updates_State = updates_state;
+  export type updates_Difference = updates_differenceEmpty | updates_difference | updates_differenceSlice | updates_differenceTooLong;
+  export type Updates = updatesTooLong | updateShortMessage | updateShortChatMessage | updateShort | updatesCombined | updates | updateShortSentMessage;
+  export type photos_Photos = photos_photos | photos_photosSlice;
+  export type photos_Photo = photos_photo;
+  export type upload_File = upload_file | upload_fileCdnRedirect;
+  export type DcOption = dcOption;
+  export type Config = config;
+  export type NearestDc = nearestDc;
+  export type help_AppUpdate = help_appUpdate | help_noAppUpdate;
+  export type help_InviteText = help_inviteText;
+  export type EncryptedChat = encryptedChatEmpty | encryptedChatWaiting | encryptedChatRequested | encryptedChat | encryptedChatDiscarded;
+  export type InputEncryptedChat = inputEncryptedChat;
+  export type EncryptedFile = encryptedFileEmpty | encryptedFile;
+  export type InputEncryptedFile = inputEncryptedFileEmpty | inputEncryptedFileUploaded | inputEncryptedFile | inputEncryptedFileBigUploaded;
+  export type EncryptedMessage = encryptedMessage | encryptedMessageService;
+  export type messages_DhConfig = messages_dhConfigNotModified | messages_dhConfig;
+  export type messages_SentEncryptedMessage = messages_sentEncryptedMessage | messages_sentEncryptedFile;
+  export type InputDocument = inputDocumentEmpty | inputDocument;
+  export type Document = documentEmpty | document;
+  export type help_Support = help_support;
+  export type NotifyPeer = notifyPeer | notifyUsers | notifyChats | notifyBroadcasts | notifyForumTopic;
+  export type SendMessageAction = sendMessageTypingAction | sendMessageCancelAction | sendMessageRecordVideoAction | sendMessageUploadVideoAction | sendMessageRecordAudioAction | sendMessageUploadAudioAction | sendMessageUploadPhotoAction | sendMessageUploadDocumentAction | sendMessageGeoLocationAction | sendMessageChooseContactAction | sendMessageGamePlayAction | sendMessageRecordRoundAction | sendMessageUploadRoundAction | speakingInGroupCallAction | sendMessageHistoryImportAction | sendMessageChooseStickerAction | sendMessageEmojiInteraction | sendMessageEmojiInteractionSeen;
+  export type contacts_Found = contacts_found;
+  export type InputPrivacyKey = inputPrivacyKeyStatusTimestamp | inputPrivacyKeyChatInvite | inputPrivacyKeyPhoneCall | inputPrivacyKeyPhoneP2P | inputPrivacyKeyForwards | inputPrivacyKeyProfilePhoto | inputPrivacyKeyPhoneNumber | inputPrivacyKeyAddedByPhone | inputPrivacyKeyVoiceMessages | inputPrivacyKeyAbout;
+  export type PrivacyKey = privacyKeyStatusTimestamp | privacyKeyChatInvite | privacyKeyPhoneCall | privacyKeyPhoneP2P | privacyKeyForwards | privacyKeyProfilePhoto | privacyKeyPhoneNumber | privacyKeyAddedByPhone | privacyKeyVoiceMessages | privacyKeyAbout;
+  export type InputPrivacyRule = inputPrivacyValueAllowContacts | inputPrivacyValueAllowAll | inputPrivacyValueAllowUsers | inputPrivacyValueDisallowContacts | inputPrivacyValueDisallowAll | inputPrivacyValueDisallowUsers | inputPrivacyValueAllowChatParticipants | inputPrivacyValueDisallowChatParticipants | inputPrivacyValueAllowCloseFriends;
+  export type PrivacyRule = privacyValueAllowContacts | privacyValueAllowAll | privacyValueAllowUsers | privacyValueDisallowContacts | privacyValueDisallowAll | privacyValueDisallowUsers | privacyValueAllowChatParticipants | privacyValueDisallowChatParticipants | privacyValueAllowCloseFriends;
+  export type account_PrivacyRules = account_privacyRules;
+  export type AccountDaysTTL = accountDaysTTL;
+  export type DocumentAttribute = documentAttributeImageSize | documentAttributeAnimated | documentAttributeSticker | documentAttributeVideo | documentAttributeAudio | documentAttributeFilename | documentAttributeHasStickers | documentAttributeCustomEmoji;
+  export type messages_Stickers = messages_stickersNotModified | messages_stickers;
+  export type StickerPack = stickerPack;
+  export type messages_AllStickers = messages_allStickersNotModified | messages_allStickers;
+  export type messages_AffectedMessages = messages_affectedMessages;
+  export type WebPage = webPageEmpty | webPagePending | webPage | webPageNotModified;
+  export type Authorization = authorization;
+  export type account_Authorizations = account_authorizations;
+  export type account_Password = account_password;
+  export type account_PasswordSettings = account_passwordSettings;
+  export type account_PasswordInputSettings = account_passwordInputSettings;
+  export type auth_PasswordRecovery = auth_passwordRecovery;
+  export type ReceivedNotifyMessage = receivedNotifyMessage;
+  export type ExportedChatInvite = chatInviteExported | chatInvitePublicJoinRequests;
+  export type ChatInvite = chatInviteAlready | chatInvite | chatInvitePeek;
+  export type InputStickerSet = inputStickerSetEmpty | inputStickerSetID | inputStickerSetShortName | inputStickerSetAnimatedEmoji | inputStickerSetDice | inputStickerSetAnimatedEmojiAnimations | inputStickerSetPremiumGifts | inputStickerSetEmojiGenericAnimations | inputStickerSetEmojiDefaultStatuses | inputStickerSetEmojiDefaultTopicIcons;
+  export type StickerSet = stickerSet;
+  export type messages_StickerSet = messages_stickerSet | messages_stickerSetNotModified;
+  export type BotCommand = botCommand;
+  export type BotInfo = botInfo;
+  export type KeyboardButton = keyboardButton | keyboardButtonUrl | keyboardButtonCallback | keyboardButtonRequestPhone | keyboardButtonRequestGeoLocation | keyboardButtonSwitchInline | keyboardButtonGame | keyboardButtonBuy | keyboardButtonUrlAuth | inputKeyboardButtonUrlAuth | keyboardButtonRequestPoll | inputKeyboardButtonUserProfile | keyboardButtonUserProfile | keyboardButtonWebView | keyboardButtonSimpleWebView | keyboardButtonRequestPeer;
+  export type KeyboardButtonRow = keyboardButtonRow;
+  export type ReplyMarkup = replyKeyboardHide | replyKeyboardForceReply | replyKeyboardMarkup | replyInlineMarkup;
+  export type MessageEntity = messageEntityUnknown | messageEntityMention | messageEntityHashtag | messageEntityBotCommand | messageEntityUrl | messageEntityEmail | messageEntityBold | messageEntityItalic | messageEntityCode | messageEntityPre | messageEntityTextUrl | messageEntityMentionName | inputMessageEntityMentionName | messageEntityPhone | messageEntityCashtag | messageEntityUnderline | messageEntityStrike | messageEntityBankCard | messageEntitySpoiler | messageEntityCustomEmoji | messageEntityBlockquote;
+  export type InputChannel = inputChannelEmpty | inputChannel | inputChannelFromMessage;
+  export type contacts_ResolvedPeer = contacts_resolvedPeer;
+  export type MessageRange = messageRange;
+  export type updates_ChannelDifference = updates_channelDifferenceEmpty | updates_channelDifferenceTooLong | updates_channelDifference;
+  export type ChannelMessagesFilter = channelMessagesFilterEmpty | channelMessagesFilter;
+  export type ChannelParticipant = channelParticipant | channelParticipantSelf | channelParticipantCreator | channelParticipantAdmin | channelParticipantBanned | channelParticipantLeft;
+  export type ChannelParticipantsFilter = channelParticipantsRecent | channelParticipantsAdmins | channelParticipantsKicked | channelParticipantsBots | channelParticipantsBanned | channelParticipantsSearch | channelParticipantsContacts | channelParticipantsMentions;
+  export type channels_ChannelParticipants = channels_channelParticipants | channels_channelParticipantsNotModified;
+  export type channels_ChannelParticipant = channels_channelParticipant;
+  export type help_TermsOfService = help_termsOfService;
+  export type messages_SavedGifs = messages_savedGifsNotModified | messages_savedGifs;
+  export type InputBotInlineMessage = inputBotInlineMessageMediaAuto | inputBotInlineMessageText | inputBotInlineMessageMediaGeo | inputBotInlineMessageMediaVenue | inputBotInlineMessageMediaContact | inputBotInlineMessageGame | inputBotInlineMessageMediaInvoice | inputBotInlineMessageMediaWebPage;
+  export type InputBotInlineResult = inputBotInlineResult | inputBotInlineResultPhoto | inputBotInlineResultDocument | inputBotInlineResultGame;
+  export type BotInlineMessage = botInlineMessageMediaAuto | botInlineMessageText | botInlineMessageMediaGeo | botInlineMessageMediaVenue | botInlineMessageMediaContact | botInlineMessageMediaInvoice | botInlineMessageMediaWebPage;
+  export type BotInlineResult = botInlineResult | botInlineMediaResult;
+  export type messages_BotResults = messages_botResults;
+  export type ExportedMessageLink = exportedMessageLink;
+  export type MessageFwdHeader = messageFwdHeader;
+  export type auth_CodeType = auth_codeTypeSms | auth_codeTypeCall | auth_codeTypeFlashCall | auth_codeTypeMissedCall | auth_codeTypeFragmentSms;
+  export type auth_SentCodeType = auth_sentCodeTypeApp | auth_sentCodeTypeSms | auth_sentCodeTypeCall | auth_sentCodeTypeFlashCall | auth_sentCodeTypeMissedCall | auth_sentCodeTypeEmailCode | auth_sentCodeTypeSetUpEmailRequired | auth_sentCodeTypeFragmentSms | auth_sentCodeTypeFirebaseSms;
+  export type messages_BotCallbackAnswer = messages_botCallbackAnswer;
+  export type messages_MessageEditData = messages_messageEditData;
+  export type InputBotInlineMessageID = inputBotInlineMessageID | inputBotInlineMessageID64;
+  export type InlineBotSwitchPM = inlineBotSwitchPM;
+  export type messages_PeerDialogs = messages_peerDialogs;
+  export type TopPeer = topPeer;
+  export type TopPeerCategory = topPeerCategoryBotsPM | topPeerCategoryBotsInline | topPeerCategoryCorrespondents | topPeerCategoryGroups | topPeerCategoryChannels | topPeerCategoryPhoneCalls | topPeerCategoryForwardUsers | topPeerCategoryForwardChats;
+  export type TopPeerCategoryPeers = topPeerCategoryPeers;
+  export type contacts_TopPeers = contacts_topPeersNotModified | contacts_topPeers | contacts_topPeersDisabled;
+  export type DraftMessage = draftMessageEmpty | draftMessage;
+  export type messages_FeaturedStickers = messages_featuredStickersNotModified | messages_featuredStickers;
+  export type messages_RecentStickers = messages_recentStickersNotModified | messages_recentStickers;
+  export type messages_ArchivedStickers = messages_archivedStickers;
+  export type messages_StickerSetInstallResult = messages_stickerSetInstallResultSuccess | messages_stickerSetInstallResultArchive;
+  export type StickerSetCovered = stickerSetCovered | stickerSetMultiCovered | stickerSetFullCovered | stickerSetNoCovered;
+  export type MaskCoords = maskCoords;
+  export type InputStickeredMedia = inputStickeredMediaPhoto | inputStickeredMediaDocument;
+  export type Game = game;
+  export type InputGame = inputGameID | inputGameShortName;
+  export type HighScore = highScore;
+  export type messages_HighScores = messages_highScores;
+  export type RichText = textEmpty | textPlain | textBold | textItalic | textUnderline | textStrike | textFixed | textUrl | textEmail | textConcat | textSubscript | textSuperscript | textMarked | textPhone | textImage | textAnchor;
+  export type PageBlock = pageBlockUnsupported | pageBlockTitle | pageBlockSubtitle | pageBlockAuthorDate | pageBlockHeader | pageBlockSubheader | pageBlockParagraph | pageBlockPreformatted | pageBlockFooter | pageBlockDivider | pageBlockAnchor | pageBlockList | pageBlockBlockquote | pageBlockPullquote | pageBlockPhoto | pageBlockVideo | pageBlockCover | pageBlockEmbed | pageBlockEmbedPost | pageBlockCollage | pageBlockSlideshow | pageBlockChannel | pageBlockAudio | pageBlockKicker | pageBlockTable | pageBlockOrderedList | pageBlockDetails | pageBlockRelatedArticles | pageBlockMap;
+  export type PhoneCallDiscardReason = phoneCallDiscardReasonMissed | phoneCallDiscardReasonDisconnect | phoneCallDiscardReasonHangup | phoneCallDiscardReasonBusy;
+  export type DataJSON = dataJSON;
+  export type LabeledPrice = labeledPrice;
+  export type Invoice = invoice;
+  export type PaymentCharge = paymentCharge;
+  export type PostAddress = postAddress;
+  export type PaymentRequestedInfo = paymentRequestedInfo;
+  export type PaymentSavedCredentials = paymentSavedCredentialsCard;
+  export type WebDocument = webDocument | webDocumentNoProxy;
+  export type InputWebDocument = inputWebDocument;
+  export type InputWebFileLocation = inputWebFileLocation | inputWebFileGeoPointLocation | inputWebFileAudioAlbumThumbLocation;
+  export type upload_WebFile = upload_webFile;
+  export type payments_PaymentForm = payments_paymentForm;
+  export type payments_ValidatedRequestedInfo = payments_validatedRequestedInfo;
+  export type payments_PaymentResult = payments_paymentResult | payments_paymentVerificationNeeded;
+  export type payments_PaymentReceipt = payments_paymentReceipt;
+  export type payments_SavedInfo = payments_savedInfo;
+  export type InputPaymentCredentials = inputPaymentCredentialsSaved | inputPaymentCredentials | inputPaymentCredentialsApplePay | inputPaymentCredentialsGooglePay;
+  export type account_TmpPassword = account_tmpPassword;
+  export type ShippingOption = shippingOption;
+  export type InputStickerSetItem = inputStickerSetItem;
+  export type InputPhoneCall = inputPhoneCall;
+  export type PhoneCall = phoneCallEmpty | phoneCallWaiting | phoneCallRequested | phoneCallAccepted | phoneCall | phoneCallDiscarded;
+  export type PhoneConnection = phoneConnection | phoneConnectionWebrtc;
+  export type PhoneCallProtocol = phoneCallProtocol;
+  export type phone_PhoneCall = phone_phoneCall;
+  export type upload_CdnFile = upload_cdnFileReuploadNeeded | upload_cdnFile;
+  export type CdnPublicKey = cdnPublicKey;
+  export type CdnConfig = cdnConfig;
+  export type LangPackString = langPackString | langPackStringPluralized | langPackStringDeleted;
+  export type LangPackDifference = langPackDifference;
+  export type LangPackLanguage = langPackLanguage;
+  export type ChannelAdminLogEventAction = channelAdminLogEventActionChangeTitle | channelAdminLogEventActionChangeAbout | channelAdminLogEventActionChangeUsername | channelAdminLogEventActionChangePhoto | channelAdminLogEventActionToggleInvites | channelAdminLogEventActionToggleSignatures | channelAdminLogEventActionUpdatePinned | channelAdminLogEventActionEditMessage | channelAdminLogEventActionDeleteMessage | channelAdminLogEventActionParticipantJoin | channelAdminLogEventActionParticipantLeave | channelAdminLogEventActionParticipantInvite | channelAdminLogEventActionParticipantToggleBan | channelAdminLogEventActionParticipantToggleAdmin | channelAdminLogEventActionChangeStickerSet | channelAdminLogEventActionTogglePreHistoryHidden | channelAdminLogEventActionDefaultBannedRights | channelAdminLogEventActionStopPoll | channelAdminLogEventActionChangeLinkedChat | channelAdminLogEventActionChangeLocation | channelAdminLogEventActionToggleSlowMode | channelAdminLogEventActionStartGroupCall | channelAdminLogEventActionDiscardGroupCall | channelAdminLogEventActionParticipantMute | channelAdminLogEventActionParticipantUnmute | channelAdminLogEventActionToggleGroupCallSetting | channelAdminLogEventActionParticipantJoinByInvite | channelAdminLogEventActionExportedInviteDelete | channelAdminLogEventActionExportedInviteRevoke | channelAdminLogEventActionExportedInviteEdit | channelAdminLogEventActionParticipantVolume | channelAdminLogEventActionChangeHistoryTTL | channelAdminLogEventActionParticipantJoinByRequest | channelAdminLogEventActionToggleNoForwards | channelAdminLogEventActionSendMessage | channelAdminLogEventActionChangeAvailableReactions | channelAdminLogEventActionChangeUsernames | channelAdminLogEventActionToggleForum | channelAdminLogEventActionCreateTopic | channelAdminLogEventActionEditTopic | channelAdminLogEventActionDeleteTopic | channelAdminLogEventActionPinTopic | channelAdminLogEventActionToggleAntiSpam | channelAdminLogEventActionChangeColor | channelAdminLogEventActionChangeBackgroundEmoji;
+  export type ChannelAdminLogEvent = channelAdminLogEvent;
+  export type channels_AdminLogResults = channels_adminLogResults;
+  export type ChannelAdminLogEventsFilter = channelAdminLogEventsFilter;
+  export type PopularContact = popularContact;
+  export type messages_FavedStickers = messages_favedStickersNotModified | messages_favedStickers;
+  export type RecentMeUrl = recentMeUrlUnknown | recentMeUrlUser | recentMeUrlChat | recentMeUrlChatInvite | recentMeUrlStickerSet;
+  export type help_RecentMeUrls = help_recentMeUrls;
+  export type InputSingleMedia = inputSingleMedia;
+  export type WebAuthorization = webAuthorization;
+  export type account_WebAuthorizations = account_webAuthorizations;
+  export type InputMessage = inputMessageID | inputMessageReplyTo | inputMessagePinned | inputMessageCallbackQuery;
+  export type InputDialogPeer = inputDialogPeer | inputDialogPeerFolder;
+  export type DialogPeer = dialogPeer | dialogPeerFolder;
+  export type messages_FoundStickerSets = messages_foundStickerSetsNotModified | messages_foundStickerSets;
+  export type FileHash = fileHash;
+  export type InputClientProxy = inputClientProxy;
+  export type help_TermsOfServiceUpdate = help_termsOfServiceUpdateEmpty | help_termsOfServiceUpdate;
+  export type InputSecureFile = inputSecureFileUploaded | inputSecureFile;
+  export type SecureFile = secureFileEmpty | secureFile;
+  export type SecureData = secureData;
+  export type SecurePlainData = securePlainPhone | securePlainEmail;
+  export type SecureValueType = secureValueTypePersonalDetails | secureValueTypePassport | secureValueTypeDriverLicense | secureValueTypeIdentityCard | secureValueTypeInternalPassport | secureValueTypeAddress | secureValueTypeUtilityBill | secureValueTypeBankStatement | secureValueTypeRentalAgreement | secureValueTypePassportRegistration | secureValueTypeTemporaryRegistration | secureValueTypePhone | secureValueTypeEmail;
+  export type SecureValue = secureValue;
+  export type InputSecureValue = inputSecureValue;
+  export type SecureValueHash = secureValueHash;
+  export type SecureValueError = secureValueErrorData | secureValueErrorFrontSide | secureValueErrorReverseSide | secureValueErrorSelfie | secureValueErrorFile | secureValueErrorFiles | secureValueError | secureValueErrorTranslationFile | secureValueErrorTranslationFiles;
+  export type SecureCredentialsEncrypted = secureCredentialsEncrypted;
+  export type account_AuthorizationForm = account_authorizationForm;
+  export type account_SentEmailCode = account_sentEmailCode;
+  export type help_DeepLinkInfo = help_deepLinkInfoEmpty | help_deepLinkInfo;
+  export type SavedContact = savedPhoneContact;
+  export type account_Takeout = account_takeout;
+  export type PasswordKdfAlgo = passwordKdfAlgoUnknown | passwordKdfAlgoSHA256SHA256PBKDF2HMACSHA512iter100000SHA256ModPow;
+  export type SecurePasswordKdfAlgo = securePasswordKdfAlgoUnknown | securePasswordKdfAlgoPBKDF2HMACSHA512iter100000 | securePasswordKdfAlgoSHA512;
+  export type SecureSecretSettings = secureSecretSettings;
+  export type InputCheckPasswordSRP = inputCheckPasswordEmpty | inputCheckPasswordSRP;
+  export type SecureRequiredType = secureRequiredType | secureRequiredTypeOneOf;
+  export type help_PassportConfig = help_passportConfigNotModified | help_passportConfig;
+  export type InputAppEvent = inputAppEvent;
+  export type JSONObjectValue = jsonObjectValue;
+  export type JSONValue = jsonNull | jsonBool | jsonNumber | jsonString | jsonArray | jsonObject;
+  export type PageTableCell = pageTableCell;
+  export type PageTableRow = pageTableRow;
+  export type PageCaption = pageCaption;
+  export type PageListItem = pageListItemText | pageListItemBlocks;
+  export type PageListOrderedItem = pageListOrderedItemText | pageListOrderedItemBlocks;
+  export type PageRelatedArticle = pageRelatedArticle;
+  export type Page = page;
+  export type help_SupportName = help_supportName;
+  export type help_UserInfo = help_userInfoEmpty | help_userInfo;
+  export type PollAnswer = pollAnswer;
+  export type Poll = poll;
+  export type PollAnswerVoters = pollAnswerVoters;
+  export type PollResults = pollResults;
+  export type ChatOnlines = chatOnlines;
+  export type StatsURL = statsURL;
+  export type ChatAdminRights = chatAdminRights;
+  export type ChatBannedRights = chatBannedRights;
+  export type InputWallPaper = inputWallPaper | inputWallPaperSlug | inputWallPaperNoFile;
+  export type account_WallPapers = account_wallPapersNotModified | account_wallPapers;
+  export type CodeSettings = codeSettings;
+  export type WallPaperSettings = wallPaperSettings;
+  export type AutoDownloadSettings = autoDownloadSettings;
+  export type account_AutoDownloadSettings = account_autoDownloadSettings;
+  export type EmojiKeyword = emojiKeyword | emojiKeywordDeleted;
+  export type EmojiKeywordsDifference = emojiKeywordsDifference;
+  export type EmojiURL = emojiURL;
+  export type EmojiLanguage = emojiLanguage;
+  export type Folder = folder;
+  export type InputFolderPeer = inputFolderPeer;
+  export type FolderPeer = folderPeer;
+  export type messages_SearchCounter = messages_searchCounter;
+  export type UrlAuthResult = urlAuthResultRequest | urlAuthResultAccepted | urlAuthResultDefault;
+  export type ChannelLocation = channelLocationEmpty | channelLocation;
+  export type PeerLocated = peerLocated | peerSelfLocated;
+  export type RestrictionReason = restrictionReason;
+  export type InputTheme = inputTheme | inputThemeSlug;
+  export type Theme = theme;
+  export type account_Themes = account_themesNotModified | account_themes;
+  export type auth_LoginToken = auth_loginToken | auth_loginTokenMigrateTo | auth_loginTokenSuccess;
+  export type account_ContentSettings = account_contentSettings;
+  export type messages_InactiveChats = messages_inactiveChats;
+  export type BaseTheme = baseThemeClassic | baseThemeDay | baseThemeNight | baseThemeTinted | baseThemeArctic;
+  export type InputThemeSettings = inputThemeSettings;
+  export type ThemeSettings = themeSettings;
+  export type WebPageAttribute = webPageAttributeTheme | webPageAttributeStory;
+  export type messages_VotesList = messages_votesList;
+  export type BankCardOpenUrl = bankCardOpenUrl;
+  export type payments_BankCardData = payments_bankCardData;
+  export type DialogFilter = dialogFilter | dialogFilterDefault | dialogFilterChatlist;
+  export type DialogFilterSuggested = dialogFilterSuggested;
+  export type StatsDateRangeDays = statsDateRangeDays;
+  export type StatsAbsValueAndPrev = statsAbsValueAndPrev;
+  export type StatsPercentValue = statsPercentValue;
+  export type StatsGraph = statsGraphAsync | statsGraphError | statsGraph;
+  export type stats_BroadcastStats = stats_broadcastStats;
+  export type help_PromoData = help_promoDataEmpty | help_promoData;
+  export type VideoSize = videoSize | videoSizeEmojiMarkup | videoSizeStickerMarkup;
+  export type StatsGroupTopPoster = statsGroupTopPoster;
+  export type StatsGroupTopAdmin = statsGroupTopAdmin;
+  export type StatsGroupTopInviter = statsGroupTopInviter;
+  export type stats_MegagroupStats = stats_megagroupStats;
+  export type GlobalPrivacySettings = globalPrivacySettings;
+  export type help_CountryCode = help_countryCode;
+  export type help_Country = help_country;
+  export type help_CountriesList = help_countriesListNotModified | help_countriesList;
+  export type MessageViews = messageViews;
+  export type messages_MessageViews = messages_messageViews;
+  export type messages_DiscussionMessage = messages_discussionMessage;
+  export type MessageReplyHeader = messageReplyHeader | messageReplyStoryHeader;
+  export type MessageReplies = messageReplies;
+  export type PeerBlocked = peerBlocked;
+  export type stats_MessageStats = stats_messageStats;
+  export type GroupCall = groupCallDiscarded | groupCall;
+  export type InputGroupCall = inputGroupCall;
+  export type GroupCallParticipant = groupCallParticipant;
+  export type phone_GroupCall = phone_groupCall;
+  export type phone_GroupParticipants = phone_groupParticipants;
+  export type InlineQueryPeerType = inlineQueryPeerTypeSameBotPM | inlineQueryPeerTypePM | inlineQueryPeerTypeChat | inlineQueryPeerTypeMegagroup | inlineQueryPeerTypeBroadcast | inlineQueryPeerTypeBotPM;
+  export type messages_HistoryImport = messages_historyImport;
+  export type messages_HistoryImportParsed = messages_historyImportParsed;
+  export type messages_AffectedFoundMessages = messages_affectedFoundMessages;
+  export type ChatInviteImporter = chatInviteImporter;
+  export type messages_ExportedChatInvites = messages_exportedChatInvites;
+  export type messages_ExportedChatInvite = messages_exportedChatInvite | messages_exportedChatInviteReplaced;
+  export type messages_ChatInviteImporters = messages_chatInviteImporters;
+  export type ChatAdminWithInvites = chatAdminWithInvites;
+  export type messages_ChatAdminsWithInvites = messages_chatAdminsWithInvites;
+  export type messages_CheckedHistoryImportPeer = messages_checkedHistoryImportPeer;
+  export type phone_JoinAsPeers = phone_joinAsPeers;
+  export type phone_ExportedGroupCallInvite = phone_exportedGroupCallInvite;
+  export type GroupCallParticipantVideoSourceGroup = groupCallParticipantVideoSourceGroup;
+  export type GroupCallParticipantVideo = groupCallParticipantVideo;
+  export type stickers_SuggestedShortName = stickers_suggestedShortName;
+  export type BotCommandScope = botCommandScopeDefault | botCommandScopeUsers | botCommandScopeChats | botCommandScopeChatAdmins | botCommandScopePeer | botCommandScopePeerAdmins | botCommandScopePeerUser;
+  export type account_ResetPasswordResult = account_resetPasswordFailedWait | account_resetPasswordRequestedWait | account_resetPasswordOk;
+  export type SponsoredMessage = sponsoredMessage;
+  export type messages_SponsoredMessages = messages_sponsoredMessages | messages_sponsoredMessagesEmpty;
+  export type SearchResultsCalendarPeriod = searchResultsCalendarPeriod;
+  export type messages_SearchResultsCalendar = messages_searchResultsCalendar;
+  export type SearchResultsPosition = searchResultPosition;
+  export type messages_SearchResultsPositions = messages_searchResultsPositions;
+  export type channels_SendAsPeers = channels_sendAsPeers;
+  export type users_UserFull = users_userFull;
+  export type messages_PeerSettings = messages_peerSettings;
+  export type auth_LoggedOut = auth_loggedOut;
+  export type ReactionCount = reactionCount;
+  export type MessageReactions = messageReactions;
+  export type messages_MessageReactionsList = messages_messageReactionsList;
+  export type AvailableReaction = availableReaction;
+  export type messages_AvailableReactions = messages_availableReactionsNotModified | messages_availableReactions;
+  export type MessagePeerReaction = messagePeerReaction;
+  export type GroupCallStreamChannel = groupCallStreamChannel;
+  export type phone_GroupCallStreamChannels = phone_groupCallStreamChannels;
+  export type phone_GroupCallStreamRtmpUrl = phone_groupCallStreamRtmpUrl;
+  export type AttachMenuBotIconColor = attachMenuBotIconColor;
+  export type AttachMenuBotIcon = attachMenuBotIcon;
+  export type AttachMenuBot = attachMenuBot;
+  export type AttachMenuBots = attachMenuBotsNotModified | attachMenuBots;
+  export type AttachMenuBotsBot = attachMenuBotsBot;
+  export type WebViewResult = webViewResultUrl;
+  export type SimpleWebViewResult = simpleWebViewResultUrl;
+  export type WebViewMessageSent = webViewMessageSent;
+  export type BotMenuButton = botMenuButtonDefault | botMenuButtonCommands | botMenuButton;
+  export type account_SavedRingtones = account_savedRingtonesNotModified | account_savedRingtones;
+  export type NotificationSound = notificationSoundDefault | notificationSoundNone | notificationSoundLocal | notificationSoundRingtone;
+  export type account_SavedRingtone = account_savedRingtone | account_savedRingtoneConverted;
+  export type AttachMenuPeerType = attachMenuPeerTypeSameBotPM | attachMenuPeerTypeBotPM | attachMenuPeerTypePM | attachMenuPeerTypeChat | attachMenuPeerTypeBroadcast;
+  export type InputInvoice = inputInvoiceMessage | inputInvoiceSlug | inputInvoicePremiumGiftCode;
+  export type payments_ExportedInvoice = payments_exportedInvoice;
+  export type messages_TranscribedAudio = messages_transcribedAudio;
+  export type help_PremiumPromo = help_premiumPromo;
+  export type InputStorePaymentPurpose = inputStorePaymentPremiumSubscription | inputStorePaymentGiftPremium | inputStorePaymentPremiumGiftCode | inputStorePaymentPremiumGiveaway;
+  export type PremiumGiftOption = premiumGiftOption;
+  export type PaymentFormMethod = paymentFormMethod;
+  export type EmojiStatus = emojiStatusEmpty | emojiStatus | emojiStatusUntil;
+  export type account_EmojiStatuses = account_emojiStatusesNotModified | account_emojiStatuses;
+  export type Reaction = reactionEmpty | reactionEmoji | reactionCustomEmoji;
+  export type ChatReactions = chatReactionsNone | chatReactionsAll | chatReactionsSome;
+  export type messages_Reactions = messages_reactionsNotModified | messages_reactions;
+  export type EmailVerifyPurpose = emailVerifyPurposeLoginSetup | emailVerifyPurposeLoginChange | emailVerifyPurposePassport;
+  export type EmailVerification = emailVerificationCode | emailVerificationGoogle | emailVerificationApple;
+  export type account_EmailVerified = account_emailVerified | account_emailVerifiedLogin;
+  export type PremiumSubscriptionOption = premiumSubscriptionOption;
+  export type SendAsPeer = sendAsPeer;
+  export type MessageExtendedMedia = messageExtendedMediaPreview | messageExtendedMedia;
+  export type StickerKeyword = stickerKeyword;
+  export type Username = username;
+  export type ForumTopic = forumTopicDeleted | forumTopic;
+  export type messages_ForumTopics = messages_forumTopics;
+  export type DefaultHistoryTTL = defaultHistoryTTL;
+  export type ExportedContactToken = exportedContactToken;
+  export type RequestPeerType = requestPeerTypeUser | requestPeerTypeChat | requestPeerTypeBroadcast;
+  export type EmojiList = emojiListNotModified | emojiList;
+  export type EmojiGroup = emojiGroup;
+  export type messages_EmojiGroups = messages_emojiGroupsNotModified | messages_emojiGroups;
+  export type TextWithEntities = textWithEntities;
+  export type messages_TranslatedText = messages_translateResult;
+  export type AutoSaveSettings = autoSaveSettings;
+  export type AutoSaveException = autoSaveException;
+  export type account_AutoSaveSettings = account_autoSaveSettings;
+  export type help_AppConfig = help_appConfigNotModified | help_appConfig;
+  export type InputBotApp = inputBotAppID | inputBotAppShortName;
+  export type BotApp = botAppNotModified | botApp;
+  export type messages_BotApp = messages_botApp;
+  export type AppWebViewResult = appWebViewResultUrl;
+  export type InlineBotWebView = inlineBotWebView;
+  export type ReadParticipantDate = readParticipantDate;
+  export type InputChatlist = inputChatlistDialogFilter;
+  export type ExportedChatlistInvite = exportedChatlistInvite;
+  export type chatlists_ExportedChatlistInvite = chatlists_exportedChatlistInvite;
+  export type chatlists_ExportedInvites = chatlists_exportedInvites;
+  export type chatlists_ChatlistInvite = chatlists_chatlistInviteAlready | chatlists_chatlistInvite;
+  export type chatlists_ChatlistUpdates = chatlists_chatlistUpdates;
+  export type bots_BotInfo = bots_botInfo;
+  export type MessagePeerVote = messagePeerVote | messagePeerVoteInputOption | messagePeerVoteMultiple;
+  export type SponsoredWebPage = sponsoredWebPage;
+  export type StoryViews = storyViews;
+  export type StoryItem = storyItemDeleted | storyItemSkipped | storyItem;
+  export type stories_AllStories = stories_allStoriesNotModified | stories_allStories;
+  export type stories_Stories = stories_stories;
+  export type StoryView = storyView;
+  export type stories_StoryViewsList = stories_storyViewsList;
+  export type stories_StoryViews = stories_storyViews;
+  export type InputReplyTo = inputReplyToMessage | inputReplyToStory;
+  export type ExportedStoryLink = exportedStoryLink;
+  export type StoriesStealthMode = storiesStealthMode;
+  export type MediaAreaCoordinates = mediaAreaCoordinates;
+  export type MediaArea = mediaAreaVenue | inputMediaAreaVenue | mediaAreaGeoPoint | mediaAreaSuggestedReaction;
+  export type PeerStories = peerStories;
+  export type stories_PeerStories = stories_peerStories;
+  export type messages_WebPage = messages_webPage;
+  export type PremiumGiftCodeOption = premiumGiftCodeOption;
+  export type payments_CheckedGiftCode = payments_checkedGiftCode;
+  export type payments_GiveawayInfo = payments_giveawayInfo | payments_giveawayInfoResults;
+  export type PrepaidGiveaway = prepaidGiveaway;
+  export type Boost = boost;
+  export type premium_BoostsList = premium_boostsList;
+  export type MyBoost = myBoost;
+  export type premium_MyBoosts = premium_myBoosts;
+  export type premium_BoostsStatus = premium_boostsStatus;
+  export type StoryFwdHeader = storyFwdHeader;
+  export type PostInteractionCounters = postInteractionCountersMessage | postInteractionCountersStory;
+  export type stats_StoryStats = stats_storyStats;
+  export type PublicForward = publicForwardMessage | publicForwardStory;
+  export type stats_PublicForwards = stats_publicForwards;
+  export type PeerColor = peerColor;
+  export type help_PeerColorSet = help_peerColorSet | help_peerColorProfileSet;
+  export type help_PeerColorOption = help_peerColorOption;
+  export type help_PeerColors = help_peerColorsNotModified | help_peerColors;
+}
 export const map = new Map<number, TLObjectConstructor>([
   [0x05162463, resPQ],
   [0xA9F55F95, p_q_inner_data_dc],

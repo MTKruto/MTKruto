@@ -1,12 +1,13 @@
 // deno-fmt-ignore-file
 import { id, params, TLObject, Params, paramDesc, ParamDesc, flags } from "./1_tl_object.ts";
 import * as types from "./2_types.ts";
+import { enums } from "./2_types.ts";
 
 export abstract class Function<T> extends TLObject {
   __R: T = Symbol() as unknown as T; // virtual member
 }
 
-export class req_pq_multi extends Function<types.ResPQ> {
+export class req_pq_multi extends Function<enums.ResPQ> {
   nonce: bigint;
 
   protected get [id]() {
@@ -31,7 +32,7 @@ export class req_pq_multi extends Function<types.ResPQ> {
   }
 }
 
-export class req_DH_params extends Function<types.Server_DH_Params> {
+export class req_DH_params extends Function<enums.Server_DH_Params> {
   nonce: bigint;
   server_nonce: bigint;
   p: Uint8Array;
@@ -76,7 +77,7 @@ export class req_DH_params extends Function<types.Server_DH_Params> {
   }
 }
 
-export class set_client_DH_params extends Function<types.Set_client_DH_params_answer> {
+export class set_client_DH_params extends Function<enums.Set_client_DH_params_answer> {
   nonce: bigint;
   server_nonce: bigint;
   encrypted_data: Uint8Array;
@@ -109,7 +110,7 @@ export class set_client_DH_params extends Function<types.Set_client_DH_params_an
   }
 }
 
-export class rpc_drop_answer extends Function<types.RpcDropAnswer> {
+export class rpc_drop_answer extends Function<enums.RpcDropAnswer> {
   req_msg_id: bigint;
 
   protected get [id]() {
@@ -134,7 +135,7 @@ export class rpc_drop_answer extends Function<types.RpcDropAnswer> {
   }
 }
 
-export class get_future_salts extends Function<types.FutureSalts> {
+export class get_future_salts extends Function<enums.FutureSalts> {
   num: number;
 
   protected get [id]() {
@@ -159,7 +160,7 @@ export class get_future_salts extends Function<types.FutureSalts> {
   }
 }
 
-export class ping extends Function<types.Pong> {
+export class ping extends Function<enums.Pong> {
   ping_id: bigint;
 
   protected get [id]() {
@@ -184,7 +185,7 @@ export class ping extends Function<types.Pong> {
   }
 }
 
-export class ping_delay_disconnect extends Function<types.Pong> {
+export class ping_delay_disconnect extends Function<enums.Pong> {
   ping_id: bigint;
   disconnect_delay: number;
 
@@ -213,7 +214,7 @@ export class ping_delay_disconnect extends Function<types.Pong> {
   }
 }
 
-export class destroy_session extends Function<types.DestroySessionRes> {
+export class destroy_session extends Function<enums.DestroySessionRes> {
   session_id: bigint;
 
   protected get [id]() {
@@ -238,7 +239,7 @@ export class destroy_session extends Function<types.DestroySessionRes> {
   }
 }
 
-export class destroy_auth_key extends Function<types.DestroyAuthKeyRes> {
+export class destroy_auth_key extends Function<enums.DestroyAuthKeyRes> {
   protected get [id]() {
     return 0xD1435160;
   }
@@ -322,8 +323,8 @@ export class initConnection<T extends Function<unknown>> extends Function<T["__R
   system_lang_code: string;
   lang_pack: string;
   lang_code: string;
-  proxy?: types.InputClientProxy;
-  params?: types.JSONValue;
+  proxy?: enums.InputClientProxy;
+  params?: enums.JSONValue;
   query: T;
 
   protected get [id]() {
@@ -362,7 +363,7 @@ export class initConnection<T extends Function<unknown>> extends Function<T["__R
     ];
   }
 
-  constructor(params: { api_id: number; device_model: string; system_version: string; app_version: string; system_lang_code: string; lang_pack: string; lang_code: string; proxy?: types.InputClientProxy; params?: types.JSONValue; query: T }) {
+  constructor(params: { api_id: number; device_model: string; system_version: string; app_version: string; system_lang_code: string; lang_pack: string; lang_code: string; proxy?: enums.InputClientProxy; params?: enums.JSONValue; query: T }) {
     super();
     this.api_id = params.api_id;
     this.device_model = params.device_model;
@@ -432,7 +433,7 @@ export class invokeWithoutUpdates<T extends Function<unknown>> extends Function<
 }
 
 export class invokeWithMessagesRange<T extends Function<unknown>> extends Function<T["__R"]> {
-  range: types.MessageRange;
+  range: enums.MessageRange;
   query: T;
 
   protected get [id]() {
@@ -453,7 +454,7 @@ export class invokeWithMessagesRange<T extends Function<unknown>> extends Functi
     ];
   }
 
-  constructor(params: { range: types.MessageRange; query: T }) {
+  constructor(params: { range: enums.MessageRange; query: T }) {
     super();
     this.range = params.range;
     this.query = params.query;
@@ -489,11 +490,11 @@ export class invokeWithTakeout<T extends Function<unknown>> extends Function<T["
   }
 }
 
-class auth_sendCode extends Function<types.auth_SentCode> {
+class auth_sendCode extends Function<enums.auth_SentCode> {
   phone_number: string;
   api_id: number;
   api_hash: string;
-  settings: types.CodeSettings;
+  settings: enums.CodeSettings;
 
   protected get [id]() {
     return 0xA677244F;
@@ -517,7 +518,7 @@ class auth_sendCode extends Function<types.auth_SentCode> {
     ];
   }
 
-  constructor(params: { phone_number: string; api_id: number; api_hash: string; settings: types.CodeSettings }) {
+  constructor(params: { phone_number: string; api_id: number; api_hash: string; settings: enums.CodeSettings }) {
     super();
     this.phone_number = params.phone_number;
     this.api_id = params.api_id;
@@ -526,7 +527,7 @@ class auth_sendCode extends Function<types.auth_SentCode> {
   }
 }
 
-class auth_signUp extends Function<types.auth_Authorization> {
+class auth_signUp extends Function<enums.auth_Authorization> {
   phone_number: string;
   phone_code_hash: string;
   first_name: string;
@@ -563,11 +564,11 @@ class auth_signUp extends Function<types.auth_Authorization> {
   }
 }
 
-class auth_signIn extends Function<types.auth_Authorization> {
+class auth_signIn extends Function<enums.auth_Authorization> {
   phone_number: string;
   phone_code_hash: string;
   phone_code?: string;
-  email_verification?: types.EmailVerification;
+  email_verification?: enums.EmailVerification;
 
   protected get [id]() {
     return 0x8D52A951;
@@ -593,7 +594,7 @@ class auth_signIn extends Function<types.auth_Authorization> {
     ];
   }
 
-  constructor(params: { phone_number: string; phone_code_hash: string; phone_code?: string; email_verification?: types.EmailVerification }) {
+  constructor(params: { phone_number: string; phone_code_hash: string; phone_code?: string; email_verification?: enums.EmailVerification }) {
     super();
     this.phone_number = params.phone_number;
     this.phone_code_hash = params.phone_code_hash;
@@ -602,7 +603,7 @@ class auth_signIn extends Function<types.auth_Authorization> {
   }
 }
 
-class auth_logOut extends Function<types.auth_LoggedOut> {
+class auth_logOut extends Function<enums.auth_LoggedOut> {
   protected get [id]() {
     return 0x3E72BA19;
   }
@@ -638,7 +639,7 @@ class auth_resetAuthorizations extends Function<boolean> {
   }
 }
 
-class auth_exportAuthorization extends Function<types.auth_ExportedAuthorization> {
+class auth_exportAuthorization extends Function<enums.auth_ExportedAuthorization> {
   dc_id: number;
 
   protected get [id]() {
@@ -663,7 +664,7 @@ class auth_exportAuthorization extends Function<types.auth_ExportedAuthorization
   }
 }
 
-class auth_importAuthorization extends Function<types.auth_Authorization> {
+class auth_importAuthorization extends Function<enums.auth_Authorization> {
   id: bigint;
   bytes: Uint8Array;
 
@@ -729,7 +730,7 @@ class auth_bindTempAuthKey extends Function<boolean> {
   }
 }
 
-class auth_importBotAuthorization extends Function<types.auth_Authorization> {
+class auth_importBotAuthorization extends Function<enums.auth_Authorization> {
   flags: number;
   api_id: number;
   api_hash: string;
@@ -766,8 +767,8 @@ class auth_importBotAuthorization extends Function<types.auth_Authorization> {
   }
 }
 
-class auth_checkPassword extends Function<types.auth_Authorization> {
-  password: types.InputCheckPasswordSRP;
+class auth_checkPassword extends Function<enums.auth_Authorization> {
+  password: enums.InputCheckPasswordSRP;
 
   protected get [id]() {
     return 0xD18B4D16;
@@ -785,13 +786,13 @@ class auth_checkPassword extends Function<types.auth_Authorization> {
     ];
   }
 
-  constructor(params: { password: types.InputCheckPasswordSRP }) {
+  constructor(params: { password: enums.InputCheckPasswordSRP }) {
     super();
     this.password = params.password;
   }
 }
 
-class auth_requestPasswordRecovery extends Function<types.auth_PasswordRecovery> {
+class auth_requestPasswordRecovery extends Function<enums.auth_PasswordRecovery> {
   protected get [id]() {
     return 0xD897BC66;
   }
@@ -809,9 +810,9 @@ class auth_requestPasswordRecovery extends Function<types.auth_PasswordRecovery>
   }
 }
 
-class auth_recoverPassword extends Function<types.auth_Authorization> {
+class auth_recoverPassword extends Function<enums.auth_Authorization> {
   code: string;
-  new_settings?: types.account_PasswordInputSettings;
+  new_settings?: enums.account_PasswordInputSettings;
 
   protected get [id]() {
     return 0x37096C70;
@@ -833,14 +834,14 @@ class auth_recoverPassword extends Function<types.auth_Authorization> {
     ];
   }
 
-  constructor(params: { code: string; new_settings?: types.account_PasswordInputSettings }) {
+  constructor(params: { code: string; new_settings?: enums.account_PasswordInputSettings }) {
     super();
     this.code = params.code;
     this.new_settings = params.new_settings;
   }
 }
 
-class auth_resendCode extends Function<types.auth_SentCode> {
+class auth_resendCode extends Function<enums.auth_SentCode> {
   phone_number: string;
   phone_code_hash: string;
 
@@ -923,7 +924,7 @@ class auth_dropTempAuthKeys extends Function<boolean> {
   }
 }
 
-class auth_exportLoginToken extends Function<types.auth_LoginToken> {
+class auth_exportLoginToken extends Function<enums.auth_LoginToken> {
   api_id: number;
   api_hash: string;
   except_ids: Array<bigint>;
@@ -956,7 +957,7 @@ class auth_exportLoginToken extends Function<types.auth_LoginToken> {
   }
 }
 
-class auth_importLoginToken extends Function<types.auth_LoginToken> {
+class auth_importLoginToken extends Function<enums.auth_LoginToken> {
   token: Uint8Array;
 
   protected get [id]() {
@@ -981,7 +982,7 @@ class auth_importLoginToken extends Function<types.auth_LoginToken> {
   }
 }
 
-class auth_acceptLoginToken extends Function<types.Authorization> {
+class auth_acceptLoginToken extends Function<enums.Authorization> {
   token: Uint8Array;
 
   protected get [id]() {
@@ -1031,7 +1032,7 @@ class auth_checkRecoveryPassword extends Function<boolean> {
   }
 }
 
-class auth_importWebTokenAuthorization extends Function<types.auth_Authorization> {
+class auth_importWebTokenAuthorization extends Function<enums.auth_Authorization> {
   api_id: number;
   api_hash: string;
   web_auth_token: string;
@@ -1103,7 +1104,7 @@ class auth_requestFirebaseSms extends Function<boolean> {
   }
 }
 
-class auth_resetLoginEmail extends Function<types.auth_SentCode> {
+class auth_resetLoginEmail extends Function<enums.auth_SentCode> {
   phone_number: string;
   phone_code_hash: string;
 
@@ -1213,8 +1214,8 @@ class account_unregisterDevice extends Function<boolean> {
 }
 
 class account_updateNotifySettings extends Function<boolean> {
-  peer: types.InputNotifyPeer;
-  settings: types.InputPeerNotifySettings;
+  peer: enums.InputNotifyPeer;
+  settings: enums.InputPeerNotifySettings;
 
   protected get [id]() {
     return 0x84BE5B93;
@@ -1234,15 +1235,15 @@ class account_updateNotifySettings extends Function<boolean> {
     ];
   }
 
-  constructor(params: { peer: types.InputNotifyPeer; settings: types.InputPeerNotifySettings }) {
+  constructor(params: { peer: enums.InputNotifyPeer; settings: enums.InputPeerNotifySettings }) {
     super();
     this.peer = params.peer;
     this.settings = params.settings;
   }
 }
 
-class account_getNotifySettings extends Function<types.PeerNotifySettings> {
-  peer: types.InputNotifyPeer;
+class account_getNotifySettings extends Function<enums.PeerNotifySettings> {
+  peer: enums.InputNotifyPeer;
 
   protected get [id]() {
     return 0x12B3AD31;
@@ -1260,7 +1261,7 @@ class account_getNotifySettings extends Function<types.PeerNotifySettings> {
     ];
   }
 
-  constructor(params: { peer: types.InputNotifyPeer }) {
+  constructor(params: { peer: enums.InputNotifyPeer }) {
     super();
     this.peer = params.peer;
   }
@@ -1284,7 +1285,7 @@ class account_resetNotifySettings extends Function<boolean> {
   }
 }
 
-class account_updateProfile extends Function<types.User> {
+class account_updateProfile extends Function<enums.User> {
   first_name?: string;
   last_name?: string;
   about?: string;
@@ -1344,7 +1345,7 @@ class account_updateStatus extends Function<boolean> {
   }
 }
 
-class account_getWallPapers extends Function<types.account_WallPapers> {
+class account_getWallPapers extends Function<enums.account_WallPapers> {
   hash: bigint;
 
   protected get [id]() {
@@ -1370,8 +1371,8 @@ class account_getWallPapers extends Function<types.account_WallPapers> {
 }
 
 class account_reportPeer extends Function<boolean> {
-  peer: types.InputPeer;
-  reason: types.ReportReason;
+  peer: enums.InputPeer;
+  reason: enums.ReportReason;
   message: string;
 
   protected get [id]() {
@@ -1394,7 +1395,7 @@ class account_reportPeer extends Function<boolean> {
     ];
   }
 
-  constructor(params: { peer: types.InputPeer; reason: types.ReportReason; message: string }) {
+  constructor(params: { peer: enums.InputPeer; reason: enums.ReportReason; message: string }) {
     super();
     this.peer = params.peer;
     this.reason = params.reason;
@@ -1427,7 +1428,7 @@ class account_checkUsername extends Function<boolean> {
   }
 }
 
-class account_updateUsername extends Function<types.User> {
+class account_updateUsername extends Function<enums.User> {
   username: string;
 
   protected get [id]() {
@@ -1452,8 +1453,8 @@ class account_updateUsername extends Function<types.User> {
   }
 }
 
-class account_getPrivacy extends Function<types.account_PrivacyRules> {
-  key: types.InputPrivacyKey;
+class account_getPrivacy extends Function<enums.account_PrivacyRules> {
+  key: enums.InputPrivacyKey;
 
   protected get [id]() {
     return 0xDADBC950;
@@ -1471,15 +1472,15 @@ class account_getPrivacy extends Function<types.account_PrivacyRules> {
     ];
   }
 
-  constructor(params: { key: types.InputPrivacyKey }) {
+  constructor(params: { key: enums.InputPrivacyKey }) {
     super();
     this.key = params.key;
   }
 }
 
-class account_setPrivacy extends Function<types.account_PrivacyRules> {
-  key: types.InputPrivacyKey;
-  rules: Array<types.InputPrivacyRule>;
+class account_setPrivacy extends Function<enums.account_PrivacyRules> {
+  key: enums.InputPrivacyKey;
+  rules: Array<enums.InputPrivacyRule>;
 
   protected get [id]() {
     return 0xC9F81CE8;
@@ -1499,7 +1500,7 @@ class account_setPrivacy extends Function<types.account_PrivacyRules> {
     ];
   }
 
-  constructor(params: { key: types.InputPrivacyKey; rules: Array<types.InputPrivacyRule> }) {
+  constructor(params: { key: enums.InputPrivacyKey; rules: Array<enums.InputPrivacyRule> }) {
     super();
     this.key = params.key;
     this.rules = params.rules;
@@ -1508,7 +1509,7 @@ class account_setPrivacy extends Function<types.account_PrivacyRules> {
 
 class account_deleteAccount extends Function<boolean> {
   reason: string;
-  password?: types.InputCheckPasswordSRP;
+  password?: enums.InputCheckPasswordSRP;
 
   protected get [id]() {
     return 0xA2C0CF74;
@@ -1530,14 +1531,14 @@ class account_deleteAccount extends Function<boolean> {
     ];
   }
 
-  constructor(params: { reason: string; password?: types.InputCheckPasswordSRP }) {
+  constructor(params: { reason: string; password?: enums.InputCheckPasswordSRP }) {
     super();
     this.reason = params.reason;
     this.password = params.password;
   }
 }
 
-class account_getAccountTTL extends Function<types.AccountDaysTTL> {
+class account_getAccountTTL extends Function<enums.AccountDaysTTL> {
   protected get [id]() {
     return 0x08FC711D;
   }
@@ -1556,7 +1557,7 @@ class account_getAccountTTL extends Function<types.AccountDaysTTL> {
 }
 
 class account_setAccountTTL extends Function<boolean> {
-  ttl: types.AccountDaysTTL;
+  ttl: enums.AccountDaysTTL;
 
   protected get [id]() {
     return 0x2442485E;
@@ -1574,15 +1575,15 @@ class account_setAccountTTL extends Function<boolean> {
     ];
   }
 
-  constructor(params: { ttl: types.AccountDaysTTL }) {
+  constructor(params: { ttl: enums.AccountDaysTTL }) {
     super();
     this.ttl = params.ttl;
   }
 }
 
-class account_sendChangePhoneCode extends Function<types.auth_SentCode> {
+class account_sendChangePhoneCode extends Function<enums.auth_SentCode> {
   phone_number: string;
-  settings: types.CodeSettings;
+  settings: enums.CodeSettings;
 
   protected get [id]() {
     return 0x82574AE5;
@@ -1602,14 +1603,14 @@ class account_sendChangePhoneCode extends Function<types.auth_SentCode> {
     ];
   }
 
-  constructor(params: { phone_number: string; settings: types.CodeSettings }) {
+  constructor(params: { phone_number: string; settings: enums.CodeSettings }) {
     super();
     this.phone_number = params.phone_number;
     this.settings = params.settings;
   }
 }
 
-class account_changePhone extends Function<types.User> {
+class account_changePhone extends Function<enums.User> {
   phone_number: string;
   phone_code_hash: string;
   phone_code: string;
@@ -1667,7 +1668,7 @@ class account_updateDeviceLocked extends Function<boolean> {
   }
 }
 
-class account_getAuthorizations extends Function<types.account_Authorizations> {
+class account_getAuthorizations extends Function<enums.account_Authorizations> {
   protected get [id]() {
     return 0xE320C158;
   }
@@ -1710,7 +1711,7 @@ class account_resetAuthorization extends Function<boolean> {
   }
 }
 
-class account_getPassword extends Function<types.account_Password> {
+class account_getPassword extends Function<enums.account_Password> {
   protected get [id]() {
     return 0x548A30F5;
   }
@@ -1728,8 +1729,8 @@ class account_getPassword extends Function<types.account_Password> {
   }
 }
 
-class account_getPasswordSettings extends Function<types.account_PasswordSettings> {
-  password: types.InputCheckPasswordSRP;
+class account_getPasswordSettings extends Function<enums.account_PasswordSettings> {
+  password: enums.InputCheckPasswordSRP;
 
   protected get [id]() {
     return 0x9CD4EAF9;
@@ -1747,15 +1748,15 @@ class account_getPasswordSettings extends Function<types.account_PasswordSetting
     ];
   }
 
-  constructor(params: { password: types.InputCheckPasswordSRP }) {
+  constructor(params: { password: enums.InputCheckPasswordSRP }) {
     super();
     this.password = params.password;
   }
 }
 
 class account_updatePasswordSettings extends Function<boolean> {
-  password: types.InputCheckPasswordSRP;
-  new_settings: types.account_PasswordInputSettings;
+  password: enums.InputCheckPasswordSRP;
+  new_settings: enums.account_PasswordInputSettings;
 
   protected get [id]() {
     return 0xA59B102F;
@@ -1775,16 +1776,16 @@ class account_updatePasswordSettings extends Function<boolean> {
     ];
   }
 
-  constructor(params: { password: types.InputCheckPasswordSRP; new_settings: types.account_PasswordInputSettings }) {
+  constructor(params: { password: enums.InputCheckPasswordSRP; new_settings: enums.account_PasswordInputSettings }) {
     super();
     this.password = params.password;
     this.new_settings = params.new_settings;
   }
 }
 
-class account_sendConfirmPhoneCode extends Function<types.auth_SentCode> {
+class account_sendConfirmPhoneCode extends Function<enums.auth_SentCode> {
   hash: string;
-  settings: types.CodeSettings;
+  settings: enums.CodeSettings;
 
   protected get [id]() {
     return 0x1B3FAA88;
@@ -1804,7 +1805,7 @@ class account_sendConfirmPhoneCode extends Function<types.auth_SentCode> {
     ];
   }
 
-  constructor(params: { hash: string; settings: types.CodeSettings }) {
+  constructor(params: { hash: string; settings: enums.CodeSettings }) {
     super();
     this.hash = params.hash;
     this.settings = params.settings;
@@ -1840,8 +1841,8 @@ class account_confirmPhone extends Function<boolean> {
   }
 }
 
-class account_getTmpPassword extends Function<types.account_TmpPassword> {
-  password: types.InputCheckPasswordSRP;
+class account_getTmpPassword extends Function<enums.account_TmpPassword> {
+  password: enums.InputCheckPasswordSRP;
   period: number;
 
   protected get [id]() {
@@ -1862,14 +1863,14 @@ class account_getTmpPassword extends Function<types.account_TmpPassword> {
     ];
   }
 
-  constructor(params: { password: types.InputCheckPasswordSRP; period: number }) {
+  constructor(params: { password: enums.InputCheckPasswordSRP; period: number }) {
     super();
     this.password = params.password;
     this.period = params.period;
   }
 }
 
-class account_getWebAuthorizations extends Function<types.account_WebAuthorizations> {
+class account_getWebAuthorizations extends Function<enums.account_WebAuthorizations> {
   protected get [id]() {
     return 0x182E6D6F;
   }
@@ -1930,7 +1931,7 @@ class account_resetWebAuthorizations extends Function<boolean> {
   }
 }
 
-class account_getAllSecureValues extends Function<types.SecureValue[]> {
+class account_getAllSecureValues extends Function<enums.SecureValue[]> {
   protected get [id]() {
     return 0xB288BC7D;
   }
@@ -1948,8 +1949,8 @@ class account_getAllSecureValues extends Function<types.SecureValue[]> {
   }
 }
 
-class account_getSecureValue extends Function<types.SecureValue[]> {
-  types: Array<types.SecureValueType>;
+class account_getSecureValue extends Function<enums.SecureValue[]> {
+  types: Array<enums.SecureValueType>;
 
   protected get [id]() {
     return 0x73665BC2;
@@ -1967,14 +1968,14 @@ class account_getSecureValue extends Function<types.SecureValue[]> {
     ];
   }
 
-  constructor(params: { types: Array<types.SecureValueType> }) {
+  constructor(params: { types: Array<enums.SecureValueType> }) {
     super();
     this.types = params.types;
   }
 }
 
-class account_saveSecureValue extends Function<types.SecureValue> {
-  value: types.InputSecureValue;
+class account_saveSecureValue extends Function<enums.SecureValue> {
+  value: enums.InputSecureValue;
   secure_secret_id: bigint;
 
   protected get [id]() {
@@ -1995,7 +1996,7 @@ class account_saveSecureValue extends Function<types.SecureValue> {
     ];
   }
 
-  constructor(params: { value: types.InputSecureValue; secure_secret_id: bigint }) {
+  constructor(params: { value: enums.InputSecureValue; secure_secret_id: bigint }) {
     super();
     this.value = params.value;
     this.secure_secret_id = params.secure_secret_id;
@@ -2003,7 +2004,7 @@ class account_saveSecureValue extends Function<types.SecureValue> {
 }
 
 class account_deleteSecureValue extends Function<boolean> {
-  types: Array<types.SecureValueType>;
+  types: Array<enums.SecureValueType>;
 
   protected get [id]() {
     return 0xB880BC4B;
@@ -2021,13 +2022,13 @@ class account_deleteSecureValue extends Function<boolean> {
     ];
   }
 
-  constructor(params: { types: Array<types.SecureValueType> }) {
+  constructor(params: { types: Array<enums.SecureValueType> }) {
     super();
     this.types = params.types;
   }
 }
 
-class account_getAuthorizationForm extends Function<types.account_AuthorizationForm> {
+class account_getAuthorizationForm extends Function<enums.account_AuthorizationForm> {
   bot_id: bigint;
   scope: string;
   public_key: string;
@@ -2064,8 +2065,8 @@ class account_acceptAuthorization extends Function<boolean> {
   bot_id: bigint;
   scope: string;
   public_key: string;
-  value_hashes: Array<types.SecureValueHash>;
-  credentials: types.SecureCredentialsEncrypted;
+  value_hashes: Array<enums.SecureValueHash>;
+  credentials: enums.SecureCredentialsEncrypted;
 
   protected get [id]() {
     return 0xF3ED4C73;
@@ -2091,7 +2092,7 @@ class account_acceptAuthorization extends Function<boolean> {
     ];
   }
 
-  constructor(params: { bot_id: bigint; scope: string; public_key: string; value_hashes: Array<types.SecureValueHash>; credentials: types.SecureCredentialsEncrypted }) {
+  constructor(params: { bot_id: bigint; scope: string; public_key: string; value_hashes: Array<enums.SecureValueHash>; credentials: enums.SecureCredentialsEncrypted }) {
     super();
     this.bot_id = params.bot_id;
     this.scope = params.scope;
@@ -2101,9 +2102,9 @@ class account_acceptAuthorization extends Function<boolean> {
   }
 }
 
-class account_sendVerifyPhoneCode extends Function<types.auth_SentCode> {
+class account_sendVerifyPhoneCode extends Function<enums.auth_SentCode> {
   phone_number: string;
-  settings: types.CodeSettings;
+  settings: enums.CodeSettings;
 
   protected get [id]() {
     return 0xA5A356F9;
@@ -2123,7 +2124,7 @@ class account_sendVerifyPhoneCode extends Function<types.auth_SentCode> {
     ];
   }
 
-  constructor(params: { phone_number: string; settings: types.CodeSettings }) {
+  constructor(params: { phone_number: string; settings: enums.CodeSettings }) {
     super();
     this.phone_number = params.phone_number;
     this.settings = params.settings;
@@ -2163,8 +2164,8 @@ class account_verifyPhone extends Function<boolean> {
   }
 }
 
-class account_sendVerifyEmailCode extends Function<types.account_SentEmailCode> {
-  purpose: types.EmailVerifyPurpose;
+class account_sendVerifyEmailCode extends Function<enums.account_SentEmailCode> {
+  purpose: enums.EmailVerifyPurpose;
   email: string;
 
   protected get [id]() {
@@ -2185,16 +2186,16 @@ class account_sendVerifyEmailCode extends Function<types.account_SentEmailCode> 
     ];
   }
 
-  constructor(params: { purpose: types.EmailVerifyPurpose; email: string }) {
+  constructor(params: { purpose: enums.EmailVerifyPurpose; email: string }) {
     super();
     this.purpose = params.purpose;
     this.email = params.email;
   }
 }
 
-class account_verifyEmail extends Function<types.account_EmailVerified> {
-  purpose: types.EmailVerifyPurpose;
-  verification: types.EmailVerification;
+class account_verifyEmail extends Function<enums.account_EmailVerified> {
+  purpose: enums.EmailVerifyPurpose;
+  verification: enums.EmailVerification;
 
   protected get [id]() {
     return 0x032DA4CF;
@@ -2214,14 +2215,14 @@ class account_verifyEmail extends Function<types.account_EmailVerified> {
     ];
   }
 
-  constructor(params: { purpose: types.EmailVerifyPurpose; verification: types.EmailVerification }) {
+  constructor(params: { purpose: enums.EmailVerifyPurpose; verification: enums.EmailVerification }) {
     super();
     this.purpose = params.purpose;
     this.verification = params.verification;
   }
 }
 
-class account_initTakeoutSession extends Function<types.account_Takeout> {
+class account_initTakeoutSession extends Function<enums.account_Takeout> {
   contacts?: true;
   message_users?: true;
   message_chats?: true;
@@ -2403,10 +2404,10 @@ class account_setContactSignUpNotification extends Function<boolean> {
   }
 }
 
-class account_getNotifyExceptions extends Function<types.Updates> {
+class account_getNotifyExceptions extends Function<enums.Updates> {
   compare_sound?: true;
   compare_stories?: true;
-  peer?: types.InputNotifyPeer;
+  peer?: enums.InputNotifyPeer;
 
   protected get [id]() {
     return 0x53577479;
@@ -2430,7 +2431,7 @@ class account_getNotifyExceptions extends Function<types.Updates> {
     ];
   }
 
-  constructor(params?: { compare_sound?: true; compare_stories?: true; peer?: types.InputNotifyPeer }) {
+  constructor(params?: { compare_sound?: true; compare_stories?: true; peer?: enums.InputNotifyPeer }) {
     super();
     this.compare_sound = params?.compare_sound;
     this.compare_stories = params?.compare_stories;
@@ -2438,8 +2439,8 @@ class account_getNotifyExceptions extends Function<types.Updates> {
   }
 }
 
-class account_getWallPaper extends Function<types.WallPaper> {
-  wallpaper: types.InputWallPaper;
+class account_getWallPaper extends Function<enums.WallPaper> {
+  wallpaper: enums.InputWallPaper;
 
   protected get [id]() {
     return 0xFC8DDBEA;
@@ -2457,17 +2458,17 @@ class account_getWallPaper extends Function<types.WallPaper> {
     ];
   }
 
-  constructor(params: { wallpaper: types.InputWallPaper }) {
+  constructor(params: { wallpaper: enums.InputWallPaper }) {
     super();
     this.wallpaper = params.wallpaper;
   }
 }
 
-class account_uploadWallPaper extends Function<types.WallPaper> {
+class account_uploadWallPaper extends Function<enums.WallPaper> {
   for_chat?: true;
-  file: types.InputFile;
+  file: enums.InputFile;
   mime_type: string;
-  settings: types.WallPaperSettings;
+  settings: enums.WallPaperSettings;
 
   protected get [id]() {
     return 0xE39A8F03;
@@ -2493,7 +2494,7 @@ class account_uploadWallPaper extends Function<types.WallPaper> {
     ];
   }
 
-  constructor(params: { for_chat?: true; file: types.InputFile; mime_type: string; settings: types.WallPaperSettings }) {
+  constructor(params: { for_chat?: true; file: enums.InputFile; mime_type: string; settings: enums.WallPaperSettings }) {
     super();
     this.for_chat = params.for_chat;
     this.file = params.file;
@@ -2503,9 +2504,9 @@ class account_uploadWallPaper extends Function<types.WallPaper> {
 }
 
 class account_saveWallPaper extends Function<boolean> {
-  wallpaper: types.InputWallPaper;
+  wallpaper: enums.InputWallPaper;
   unsave: boolean;
-  settings: types.WallPaperSettings;
+  settings: enums.WallPaperSettings;
 
   protected get [id]() {
     return 0x6C5A5B37;
@@ -2527,7 +2528,7 @@ class account_saveWallPaper extends Function<boolean> {
     ];
   }
 
-  constructor(params: { wallpaper: types.InputWallPaper; unsave: boolean; settings: types.WallPaperSettings }) {
+  constructor(params: { wallpaper: enums.InputWallPaper; unsave: boolean; settings: enums.WallPaperSettings }) {
     super();
     this.wallpaper = params.wallpaper;
     this.unsave = params.unsave;
@@ -2536,8 +2537,8 @@ class account_saveWallPaper extends Function<boolean> {
 }
 
 class account_installWallPaper extends Function<boolean> {
-  wallpaper: types.InputWallPaper;
-  settings: types.WallPaperSettings;
+  wallpaper: enums.InputWallPaper;
+  settings: enums.WallPaperSettings;
 
   protected get [id]() {
     return 0xFEED5769;
@@ -2557,7 +2558,7 @@ class account_installWallPaper extends Function<boolean> {
     ];
   }
 
-  constructor(params: { wallpaper: types.InputWallPaper; settings: types.WallPaperSettings }) {
+  constructor(params: { wallpaper: enums.InputWallPaper; settings: enums.WallPaperSettings }) {
     super();
     this.wallpaper = params.wallpaper;
     this.settings = params.settings;
@@ -2582,7 +2583,7 @@ class account_resetWallPapers extends Function<boolean> {
   }
 }
 
-class account_getAutoDownloadSettings extends Function<types.account_AutoDownloadSettings> {
+class account_getAutoDownloadSettings extends Function<enums.account_AutoDownloadSettings> {
   protected get [id]() {
     return 0x56DA0B3F;
   }
@@ -2603,7 +2604,7 @@ class account_getAutoDownloadSettings extends Function<types.account_AutoDownloa
 class account_saveAutoDownloadSettings extends Function<boolean> {
   low?: true;
   high?: true;
-  settings: types.AutoDownloadSettings;
+  settings: enums.AutoDownloadSettings;
 
   protected get [id]() {
     return 0x76F36233;
@@ -2627,7 +2628,7 @@ class account_saveAutoDownloadSettings extends Function<boolean> {
     ];
   }
 
-  constructor(params: { low?: true; high?: true; settings: types.AutoDownloadSettings }) {
+  constructor(params: { low?: true; high?: true; settings: enums.AutoDownloadSettings }) {
     super();
     this.low = params.low;
     this.high = params.high;
@@ -2635,9 +2636,9 @@ class account_saveAutoDownloadSettings extends Function<boolean> {
   }
 }
 
-class account_uploadTheme extends Function<types.Document> {
-  file: types.InputFile;
-  thumb?: types.InputFile;
+class account_uploadTheme extends Function<enums.Document> {
+  file: enums.InputFile;
+  thumb?: enums.InputFile;
   file_name: string;
   mime_type: string;
 
@@ -2665,7 +2666,7 @@ class account_uploadTheme extends Function<types.Document> {
     ];
   }
 
-  constructor(params: { file: types.InputFile; thumb?: types.InputFile; file_name: string; mime_type: string }) {
+  constructor(params: { file: enums.InputFile; thumb?: enums.InputFile; file_name: string; mime_type: string }) {
     super();
     this.file = params.file;
     this.thumb = params.thumb;
@@ -2674,11 +2675,11 @@ class account_uploadTheme extends Function<types.Document> {
   }
 }
 
-class account_createTheme extends Function<types.Theme> {
+class account_createTheme extends Function<enums.Theme> {
   slug: string;
   title: string;
-  document?: types.InputDocument;
-  settings?: Array<types.InputThemeSettings>;
+  document?: enums.InputDocument;
+  settings?: Array<enums.InputThemeSettings>;
 
   protected get [id]() {
     return 0x652E4400;
@@ -2704,7 +2705,7 @@ class account_createTheme extends Function<types.Theme> {
     ];
   }
 
-  constructor(params: { slug: string; title: string; document?: types.InputDocument; settings?: Array<types.InputThemeSettings> }) {
+  constructor(params: { slug: string; title: string; document?: enums.InputDocument; settings?: Array<enums.InputThemeSettings> }) {
     super();
     this.slug = params.slug;
     this.title = params.title;
@@ -2713,13 +2714,13 @@ class account_createTheme extends Function<types.Theme> {
   }
 }
 
-class account_updateTheme extends Function<types.Theme> {
+class account_updateTheme extends Function<enums.Theme> {
   format: string;
-  theme: types.InputTheme;
+  theme: enums.InputTheme;
   slug?: string;
   title?: string;
-  document?: types.InputDocument;
-  settings?: Array<types.InputThemeSettings>;
+  document?: enums.InputDocument;
+  settings?: Array<enums.InputThemeSettings>;
 
   protected get [id]() {
     return 0x2BF40CCC;
@@ -2749,7 +2750,7 @@ class account_updateTheme extends Function<types.Theme> {
     ];
   }
 
-  constructor(params: { format: string; theme: types.InputTheme; slug?: string; title?: string; document?: types.InputDocument; settings?: Array<types.InputThemeSettings> }) {
+  constructor(params: { format: string; theme: enums.InputTheme; slug?: string; title?: string; document?: enums.InputDocument; settings?: Array<enums.InputThemeSettings> }) {
     super();
     this.format = params.format;
     this.theme = params.theme;
@@ -2761,7 +2762,7 @@ class account_updateTheme extends Function<types.Theme> {
 }
 
 class account_saveTheme extends Function<boolean> {
-  theme: types.InputTheme;
+  theme: enums.InputTheme;
   unsave: boolean;
 
   protected get [id]() {
@@ -2782,7 +2783,7 @@ class account_saveTheme extends Function<boolean> {
     ];
   }
 
-  constructor(params: { theme: types.InputTheme; unsave: boolean }) {
+  constructor(params: { theme: enums.InputTheme; unsave: boolean }) {
     super();
     this.theme = params.theme;
     this.unsave = params.unsave;
@@ -2791,9 +2792,9 @@ class account_saveTheme extends Function<boolean> {
 
 class account_installTheme extends Function<boolean> {
   dark?: true;
-  theme?: types.InputTheme;
+  theme?: enums.InputTheme;
   format?: string;
-  base_theme?: types.BaseTheme;
+  base_theme?: enums.BaseTheme;
 
   protected get [id]() {
     return 0xC727BB3B;
@@ -2819,7 +2820,7 @@ class account_installTheme extends Function<boolean> {
     ];
   }
 
-  constructor(params?: { dark?: true; theme?: types.InputTheme; format?: string; base_theme?: types.BaseTheme }) {
+  constructor(params?: { dark?: true; theme?: enums.InputTheme; format?: string; base_theme?: enums.BaseTheme }) {
     super();
     this.dark = params?.dark;
     this.theme = params?.theme;
@@ -2828,9 +2829,9 @@ class account_installTheme extends Function<boolean> {
   }
 }
 
-class account_getTheme extends Function<types.Theme> {
+class account_getTheme extends Function<enums.Theme> {
   format: string;
-  theme: types.InputTheme;
+  theme: enums.InputTheme;
 
   protected get [id]() {
     return 0x3A5869EC;
@@ -2850,14 +2851,14 @@ class account_getTheme extends Function<types.Theme> {
     ];
   }
 
-  constructor(params: { format: string; theme: types.InputTheme }) {
+  constructor(params: { format: string; theme: enums.InputTheme }) {
     super();
     this.format = params.format;
     this.theme = params.theme;
   }
 }
 
-class account_getThemes extends Function<types.account_Themes> {
+class account_getThemes extends Function<enums.account_Themes> {
   format: string;
   hash: bigint;
 
@@ -2913,7 +2914,7 @@ class account_setContentSettings extends Function<boolean> {
   }
 }
 
-class account_getContentSettings extends Function<types.account_ContentSettings> {
+class account_getContentSettings extends Function<enums.account_ContentSettings> {
   protected get [id]() {
     return 0x8B9B4DAE;
   }
@@ -2931,8 +2932,8 @@ class account_getContentSettings extends Function<types.account_ContentSettings>
   }
 }
 
-class account_getMultiWallPapers extends Function<types.WallPaper[]> {
-  wallpapers: Array<types.InputWallPaper>;
+class account_getMultiWallPapers extends Function<enums.WallPaper[]> {
+  wallpapers: Array<enums.InputWallPaper>;
 
   protected get [id]() {
     return 0x65AD71DC;
@@ -2950,13 +2951,13 @@ class account_getMultiWallPapers extends Function<types.WallPaper[]> {
     ];
   }
 
-  constructor(params: { wallpapers: Array<types.InputWallPaper> }) {
+  constructor(params: { wallpapers: Array<enums.InputWallPaper> }) {
     super();
     this.wallpapers = params.wallpapers;
   }
 }
 
-class account_getGlobalPrivacySettings extends Function<types.GlobalPrivacySettings> {
+class account_getGlobalPrivacySettings extends Function<enums.GlobalPrivacySettings> {
   protected get [id]() {
     return 0xEB2B4CF6;
   }
@@ -2974,8 +2975,8 @@ class account_getGlobalPrivacySettings extends Function<types.GlobalPrivacySetti
   }
 }
 
-class account_setGlobalPrivacySettings extends Function<types.GlobalPrivacySettings> {
-  settings: types.GlobalPrivacySettings;
+class account_setGlobalPrivacySettings extends Function<enums.GlobalPrivacySettings> {
+  settings: enums.GlobalPrivacySettings;
 
   protected get [id]() {
     return 0x1EDAAAC2;
@@ -2993,16 +2994,16 @@ class account_setGlobalPrivacySettings extends Function<types.GlobalPrivacySetti
     ];
   }
 
-  constructor(params: { settings: types.GlobalPrivacySettings }) {
+  constructor(params: { settings: enums.GlobalPrivacySettings }) {
     super();
     this.settings = params.settings;
   }
 }
 
 class account_reportProfilePhoto extends Function<boolean> {
-  peer: types.InputPeer;
-  photo_id: types.InputPhoto;
-  reason: types.ReportReason;
+  peer: enums.InputPeer;
+  photo_id: enums.InputPhoto;
+  reason: enums.ReportReason;
   message: string;
 
   protected get [id]() {
@@ -3027,7 +3028,7 @@ class account_reportProfilePhoto extends Function<boolean> {
     ];
   }
 
-  constructor(params: { peer: types.InputPeer; photo_id: types.InputPhoto; reason: types.ReportReason; message: string }) {
+  constructor(params: { peer: enums.InputPeer; photo_id: enums.InputPhoto; reason: enums.ReportReason; message: string }) {
     super();
     this.peer = params.peer;
     this.photo_id = params.photo_id;
@@ -3036,7 +3037,7 @@ class account_reportProfilePhoto extends Function<boolean> {
   }
 }
 
-class account_resetPassword extends Function<types.account_ResetPasswordResult> {
+class account_resetPassword extends Function<enums.account_ResetPasswordResult> {
   protected get [id]() {
     return 0x9308CE1B;
   }
@@ -3072,7 +3073,7 @@ class account_declinePasswordReset extends Function<boolean> {
   }
 }
 
-class account_getChatThemes extends Function<types.account_Themes> {
+class account_getChatThemes extends Function<enums.account_Themes> {
   hash: bigint;
 
   protected get [id]() {
@@ -3161,7 +3162,7 @@ class account_changeAuthorizationSettings extends Function<boolean> {
   }
 }
 
-class account_getSavedRingtones extends Function<types.account_SavedRingtones> {
+class account_getSavedRingtones extends Function<enums.account_SavedRingtones> {
   hash: bigint;
 
   protected get [id]() {
@@ -3186,8 +3187,8 @@ class account_getSavedRingtones extends Function<types.account_SavedRingtones> {
   }
 }
 
-class account_saveRingtone extends Function<types.account_SavedRingtone> {
-  id: types.InputDocument;
+class account_saveRingtone extends Function<enums.account_SavedRingtone> {
+  id: enums.InputDocument;
   unsave: boolean;
 
   protected get [id]() {
@@ -3208,15 +3209,15 @@ class account_saveRingtone extends Function<types.account_SavedRingtone> {
     ];
   }
 
-  constructor(params: { id: types.InputDocument; unsave: boolean }) {
+  constructor(params: { id: enums.InputDocument; unsave: boolean }) {
     super();
     this.id = params.id;
     this.unsave = params.unsave;
   }
 }
 
-class account_uploadRingtone extends Function<types.Document> {
-  file: types.InputFile;
+class account_uploadRingtone extends Function<enums.Document> {
+  file: enums.InputFile;
   file_name: string;
   mime_type: string;
 
@@ -3240,7 +3241,7 @@ class account_uploadRingtone extends Function<types.Document> {
     ];
   }
 
-  constructor(params: { file: types.InputFile; file_name: string; mime_type: string }) {
+  constructor(params: { file: enums.InputFile; file_name: string; mime_type: string }) {
     super();
     this.file = params.file;
     this.file_name = params.file_name;
@@ -3249,7 +3250,7 @@ class account_uploadRingtone extends Function<types.Document> {
 }
 
 class account_updateEmojiStatus extends Function<boolean> {
-  emoji_status: types.EmojiStatus;
+  emoji_status: enums.EmojiStatus;
 
   protected get [id]() {
     return 0xFBD3DE6B;
@@ -3267,13 +3268,13 @@ class account_updateEmojiStatus extends Function<boolean> {
     ];
   }
 
-  constructor(params: { emoji_status: types.EmojiStatus }) {
+  constructor(params: { emoji_status: enums.EmojiStatus }) {
     super();
     this.emoji_status = params.emoji_status;
   }
 }
 
-class account_getDefaultEmojiStatuses extends Function<types.account_EmojiStatuses> {
+class account_getDefaultEmojiStatuses extends Function<enums.account_EmojiStatuses> {
   hash: bigint;
 
   protected get [id]() {
@@ -3298,7 +3299,7 @@ class account_getDefaultEmojiStatuses extends Function<types.account_EmojiStatus
   }
 }
 
-class account_getRecentEmojiStatuses extends Function<types.account_EmojiStatuses> {
+class account_getRecentEmojiStatuses extends Function<enums.account_EmojiStatuses> {
   hash: bigint;
 
   protected get [id]() {
@@ -3395,7 +3396,7 @@ class account_toggleUsername extends Function<boolean> {
   }
 }
 
-class account_getDefaultProfilePhotoEmojis extends Function<types.EmojiList> {
+class account_getDefaultProfilePhotoEmojis extends Function<enums.EmojiList> {
   hash: bigint;
 
   protected get [id]() {
@@ -3420,7 +3421,7 @@ class account_getDefaultProfilePhotoEmojis extends Function<types.EmojiList> {
   }
 }
 
-class account_getDefaultGroupPhotoEmojis extends Function<types.EmojiList> {
+class account_getDefaultGroupPhotoEmojis extends Function<enums.EmojiList> {
   hash: bigint;
 
   protected get [id]() {
@@ -3445,7 +3446,7 @@ class account_getDefaultGroupPhotoEmojis extends Function<types.EmojiList> {
   }
 }
 
-class account_getAutoSaveSettings extends Function<types.account_AutoSaveSettings> {
+class account_getAutoSaveSettings extends Function<enums.account_AutoSaveSettings> {
   protected get [id]() {
     return 0xADCBBCDA;
   }
@@ -3467,8 +3468,8 @@ class account_saveAutoSaveSettings extends Function<boolean> {
   users?: true;
   chats?: true;
   broadcasts?: true;
-  peer?: types.InputPeer;
-  settings: types.AutoSaveSettings;
+  peer?: enums.InputPeer;
+  settings: enums.AutoSaveSettings;
 
   protected get [id]() {
     return 0xD69B8361;
@@ -3496,7 +3497,7 @@ class account_saveAutoSaveSettings extends Function<boolean> {
     ];
   }
 
-  constructor(params: { users?: true; chats?: true; broadcasts?: true; peer?: types.InputPeer; settings: types.AutoSaveSettings }) {
+  constructor(params: { users?: true; chats?: true; broadcasts?: true; peer?: enums.InputPeer; settings: enums.AutoSaveSettings }) {
     super();
     this.users = params.users;
     this.chats = params.chats;
@@ -3584,7 +3585,7 @@ class account_updateColor extends Function<boolean> {
   }
 }
 
-class account_getDefaultBackgroundEmojis extends Function<types.EmojiList> {
+class account_getDefaultBackgroundEmojis extends Function<enums.EmojiList> {
   hash: bigint;
 
   protected get [id]() {
@@ -3609,8 +3610,8 @@ class account_getDefaultBackgroundEmojis extends Function<types.EmojiList> {
   }
 }
 
-class users_getUsers extends Function<types.User[]> {
-  id: Array<types.InputUser>;
+class users_getUsers extends Function<enums.User[]> {
+  id: Array<enums.InputUser>;
 
   protected get [id]() {
     return 0x0D91A548;
@@ -3628,14 +3629,14 @@ class users_getUsers extends Function<types.User[]> {
     ];
   }
 
-  constructor(params: { id: Array<types.InputUser> }) {
+  constructor(params: { id: Array<enums.InputUser> }) {
     super();
     this.id = params.id;
   }
 }
 
-class users_getFullUser extends Function<types.users_UserFull> {
-  id: types.InputUser;
+class users_getFullUser extends Function<enums.users_UserFull> {
+  id: enums.InputUser;
 
   protected get [id]() {
     return 0xB60F5918;
@@ -3653,15 +3654,15 @@ class users_getFullUser extends Function<types.users_UserFull> {
     ];
   }
 
-  constructor(params: { id: types.InputUser }) {
+  constructor(params: { id: enums.InputUser }) {
     super();
     this.id = params.id;
   }
 }
 
 class users_setSecureValueErrors extends Function<boolean> {
-  id: types.InputUser;
-  errors: Array<types.SecureValueError>;
+  id: enums.InputUser;
+  errors: Array<enums.SecureValueError>;
 
   protected get [id]() {
     return 0x90C894B5;
@@ -3681,7 +3682,7 @@ class users_setSecureValueErrors extends Function<boolean> {
     ];
   }
 
-  constructor(params: { id: types.InputUser; errors: Array<types.SecureValueError> }) {
+  constructor(params: { id: enums.InputUser; errors: Array<enums.SecureValueError> }) {
     super();
     this.id = params.id;
     this.errors = params.errors;
@@ -3713,7 +3714,7 @@ class contacts_getContactIDs extends Function<number[]> {
   }
 }
 
-class contacts_getStatuses extends Function<types.ContactStatus[]> {
+class contacts_getStatuses extends Function<enums.ContactStatus[]> {
   protected get [id]() {
     return 0xC4A353EE;
   }
@@ -3731,7 +3732,7 @@ class contacts_getStatuses extends Function<types.ContactStatus[]> {
   }
 }
 
-class contacts_getContacts extends Function<types.contacts_Contacts> {
+class contacts_getContacts extends Function<enums.contacts_Contacts> {
   hash: bigint;
 
   protected get [id]() {
@@ -3756,8 +3757,8 @@ class contacts_getContacts extends Function<types.contacts_Contacts> {
   }
 }
 
-class contacts_importContacts extends Function<types.contacts_ImportedContacts> {
-  contacts: Array<types.InputContact>;
+class contacts_importContacts extends Function<enums.contacts_ImportedContacts> {
+  contacts: Array<enums.InputContact>;
 
   protected get [id]() {
     return 0x2C800BE5;
@@ -3775,14 +3776,14 @@ class contacts_importContacts extends Function<types.contacts_ImportedContacts> 
     ];
   }
 
-  constructor(params: { contacts: Array<types.InputContact> }) {
+  constructor(params: { contacts: Array<enums.InputContact> }) {
     super();
     this.contacts = params.contacts;
   }
 }
 
-class contacts_deleteContacts extends Function<types.Updates> {
-  id: Array<types.InputUser>;
+class contacts_deleteContacts extends Function<enums.Updates> {
+  id: Array<enums.InputUser>;
 
   protected get [id]() {
     return 0x096A0E00;
@@ -3800,7 +3801,7 @@ class contacts_deleteContacts extends Function<types.Updates> {
     ];
   }
 
-  constructor(params: { id: Array<types.InputUser> }) {
+  constructor(params: { id: Array<enums.InputUser> }) {
     super();
     this.id = params.id;
   }
@@ -3833,7 +3834,7 @@ class contacts_deleteByPhones extends Function<boolean> {
 
 class contacts_block extends Function<boolean> {
   my_stories_from?: true;
-  id: types.InputPeer;
+  id: enums.InputPeer;
 
   protected get [id]() {
     return 0x2E2E8734;
@@ -3855,7 +3856,7 @@ class contacts_block extends Function<boolean> {
     ];
   }
 
-  constructor(params: { my_stories_from?: true; id: types.InputPeer }) {
+  constructor(params: { my_stories_from?: true; id: enums.InputPeer }) {
     super();
     this.my_stories_from = params.my_stories_from;
     this.id = params.id;
@@ -3864,7 +3865,7 @@ class contacts_block extends Function<boolean> {
 
 class contacts_unblock extends Function<boolean> {
   my_stories_from?: true;
-  id: types.InputPeer;
+  id: enums.InputPeer;
 
   protected get [id]() {
     return 0xB550D328;
@@ -3886,14 +3887,14 @@ class contacts_unblock extends Function<boolean> {
     ];
   }
 
-  constructor(params: { my_stories_from?: true; id: types.InputPeer }) {
+  constructor(params: { my_stories_from?: true; id: enums.InputPeer }) {
     super();
     this.my_stories_from = params.my_stories_from;
     this.id = params.id;
   }
 }
 
-class contacts_getBlocked extends Function<types.contacts_Blocked> {
+class contacts_getBlocked extends Function<enums.contacts_Blocked> {
   my_stories_from?: true;
   offset: number;
   limit: number;
@@ -3928,7 +3929,7 @@ class contacts_getBlocked extends Function<types.contacts_Blocked> {
   }
 }
 
-class contacts_search extends Function<types.contacts_Found> {
+class contacts_search extends Function<enums.contacts_Found> {
   q: string;
   limit: number;
 
@@ -3957,7 +3958,7 @@ class contacts_search extends Function<types.contacts_Found> {
   }
 }
 
-class contacts_resolveUsername extends Function<types.contacts_ResolvedPeer> {
+class contacts_resolveUsername extends Function<enums.contacts_ResolvedPeer> {
   username: string;
 
   protected get [id]() {
@@ -3982,7 +3983,7 @@ class contacts_resolveUsername extends Function<types.contacts_ResolvedPeer> {
   }
 }
 
-class contacts_getTopPeers extends Function<types.contacts_TopPeers> {
+class contacts_getTopPeers extends Function<enums.contacts_TopPeers> {
   correspondents?: true;
   bots_pm?: true;
   bots_inline?: true;
@@ -4050,8 +4051,8 @@ class contacts_getTopPeers extends Function<types.contacts_TopPeers> {
 }
 
 class contacts_resetTopPeerRating extends Function<boolean> {
-  category: types.TopPeerCategory;
-  peer: types.InputPeer;
+  category: enums.TopPeerCategory;
+  peer: enums.InputPeer;
 
   protected get [id]() {
     return 0x1AE373AC;
@@ -4071,7 +4072,7 @@ class contacts_resetTopPeerRating extends Function<boolean> {
     ];
   }
 
-  constructor(params: { category: types.TopPeerCategory; peer: types.InputPeer }) {
+  constructor(params: { category: enums.TopPeerCategory; peer: enums.InputPeer }) {
     super();
     this.category = params.category;
     this.peer = params.peer;
@@ -4096,7 +4097,7 @@ class contacts_resetSaved extends Function<boolean> {
   }
 }
 
-class contacts_getSaved extends Function<types.SavedContact[]> {
+class contacts_getSaved extends Function<enums.SavedContact[]> {
   protected get [id]() {
     return 0x82F1E39F;
   }
@@ -4139,9 +4140,9 @@ class contacts_toggleTopPeers extends Function<boolean> {
   }
 }
 
-class contacts_addContact extends Function<types.Updates> {
+class contacts_addContact extends Function<enums.Updates> {
   add_phone_privacy_exception?: true;
-  id: types.InputUser;
+  id: enums.InputUser;
   first_name: string;
   last_name: string;
   phone: string;
@@ -4172,7 +4173,7 @@ class contacts_addContact extends Function<types.Updates> {
     ];
   }
 
-  constructor(params: { add_phone_privacy_exception?: true; id: types.InputUser; first_name: string; last_name: string; phone: string }) {
+  constructor(params: { add_phone_privacy_exception?: true; id: enums.InputUser; first_name: string; last_name: string; phone: string }) {
     super();
     this.add_phone_privacy_exception = params.add_phone_privacy_exception;
     this.id = params.id;
@@ -4182,8 +4183,8 @@ class contacts_addContact extends Function<types.Updates> {
   }
 }
 
-class contacts_acceptContact extends Function<types.Updates> {
-  id: types.InputUser;
+class contacts_acceptContact extends Function<enums.Updates> {
+  id: enums.InputUser;
 
   protected get [id]() {
     return 0xF831A20F;
@@ -4201,15 +4202,15 @@ class contacts_acceptContact extends Function<types.Updates> {
     ];
   }
 
-  constructor(params: { id: types.InputUser }) {
+  constructor(params: { id: enums.InputUser }) {
     super();
     this.id = params.id;
   }
 }
 
-class contacts_getLocated extends Function<types.Updates> {
+class contacts_getLocated extends Function<enums.Updates> {
   background?: true;
-  geo_point: types.InputGeoPoint;
+  geo_point: enums.InputGeoPoint;
   self_expires?: number;
 
   protected get [id]() {
@@ -4234,7 +4235,7 @@ class contacts_getLocated extends Function<types.Updates> {
     ];
   }
 
-  constructor(params: { background?: true; geo_point: types.InputGeoPoint; self_expires?: number }) {
+  constructor(params: { background?: true; geo_point: enums.InputGeoPoint; self_expires?: number }) {
     super();
     this.background = params.background;
     this.geo_point = params.geo_point;
@@ -4242,7 +4243,7 @@ class contacts_getLocated extends Function<types.Updates> {
   }
 }
 
-class contacts_blockFromReplies extends Function<types.Updates> {
+class contacts_blockFromReplies extends Function<enums.Updates> {
   delete_message?: true;
   delete_history?: true;
   report_spam?: true;
@@ -4281,7 +4282,7 @@ class contacts_blockFromReplies extends Function<types.Updates> {
   }
 }
 
-class contacts_resolvePhone extends Function<types.contacts_ResolvedPeer> {
+class contacts_resolvePhone extends Function<enums.contacts_ResolvedPeer> {
   phone: string;
 
   protected get [id]() {
@@ -4306,7 +4307,7 @@ class contacts_resolvePhone extends Function<types.contacts_ResolvedPeer> {
   }
 }
 
-class contacts_exportContactToken extends Function<types.ExportedContactToken> {
+class contacts_exportContactToken extends Function<enums.ExportedContactToken> {
   protected get [id]() {
     return 0xF8654027;
   }
@@ -4324,7 +4325,7 @@ class contacts_exportContactToken extends Function<types.ExportedContactToken> {
   }
 }
 
-class contacts_importContactToken extends Function<types.User> {
+class contacts_importContactToken extends Function<enums.User> {
   token: string;
 
   protected get [id]() {
@@ -4376,7 +4377,7 @@ class contacts_editCloseFriends extends Function<boolean> {
 
 class contacts_setBlocked extends Function<boolean> {
   my_stories_from?: true;
-  id: Array<types.InputPeer>;
+  id: Array<enums.InputPeer>;
   limit: number;
 
   protected get [id]() {
@@ -4401,7 +4402,7 @@ class contacts_setBlocked extends Function<boolean> {
     ];
   }
 
-  constructor(params: { my_stories_from?: true; id: Array<types.InputPeer>; limit: number }) {
+  constructor(params: { my_stories_from?: true; id: Array<enums.InputPeer>; limit: number }) {
     super();
     this.my_stories_from = params.my_stories_from;
     this.id = params.id;
@@ -4409,8 +4410,8 @@ class contacts_setBlocked extends Function<boolean> {
   }
 }
 
-class messages_getMessages extends Function<types.messages_Messages> {
-  id: Array<types.InputMessage>;
+class messages_getMessages extends Function<enums.messages_Messages> {
+  id: Array<enums.InputMessage>;
 
   protected get [id]() {
     return 0x63C66506;
@@ -4428,18 +4429,18 @@ class messages_getMessages extends Function<types.messages_Messages> {
     ];
   }
 
-  constructor(params: { id: Array<types.InputMessage> }) {
+  constructor(params: { id: Array<enums.InputMessage> }) {
     super();
     this.id = params.id;
   }
 }
 
-class messages_getDialogs extends Function<types.messages_Dialogs> {
+class messages_getDialogs extends Function<enums.messages_Dialogs> {
   exclude_pinned?: true;
   folder_id?: number;
   offset_date: number;
   offset_id: number;
-  offset_peer: types.InputPeer;
+  offset_peer: enums.InputPeer;
   limit: number;
   hash: bigint;
 
@@ -4473,7 +4474,7 @@ class messages_getDialogs extends Function<types.messages_Dialogs> {
     ];
   }
 
-  constructor(params: { exclude_pinned?: true; folder_id?: number; offset_date: number; offset_id: number; offset_peer: types.InputPeer; limit: number; hash: bigint }) {
+  constructor(params: { exclude_pinned?: true; folder_id?: number; offset_date: number; offset_id: number; offset_peer: enums.InputPeer; limit: number; hash: bigint }) {
     super();
     this.exclude_pinned = params.exclude_pinned;
     this.folder_id = params.folder_id;
@@ -4485,8 +4486,8 @@ class messages_getDialogs extends Function<types.messages_Dialogs> {
   }
 }
 
-class messages_getHistory extends Function<types.messages_Messages> {
-  peer: types.InputPeer;
+class messages_getHistory extends Function<enums.messages_Messages> {
+  peer: enums.InputPeer;
   offset_id: number;
   offset_date: number;
   add_offset: number;
@@ -4525,7 +4526,7 @@ class messages_getHistory extends Function<types.messages_Messages> {
     ];
   }
 
-  constructor(params: { peer: types.InputPeer; offset_id: number; offset_date: number; add_offset: number; limit: number; max_id: number; min_id: number; hash: bigint }) {
+  constructor(params: { peer: enums.InputPeer; offset_id: number; offset_date: number; add_offset: number; limit: number; max_id: number; min_id: number; hash: bigint }) {
     super();
     this.peer = params.peer;
     this.offset_id = params.offset_id;
@@ -4538,12 +4539,12 @@ class messages_getHistory extends Function<types.messages_Messages> {
   }
 }
 
-class messages_search extends Function<types.messages_Messages> {
-  peer: types.InputPeer;
+class messages_search extends Function<enums.messages_Messages> {
+  peer: enums.InputPeer;
   q: string;
-  from_id?: types.InputPeer;
+  from_id?: enums.InputPeer;
   top_msg_id?: number;
-  filter: types.MessagesFilter;
+  filter: enums.MessagesFilter;
   min_date: number;
   max_date: number;
   offset_id: number;
@@ -4595,7 +4596,7 @@ class messages_search extends Function<types.messages_Messages> {
     ];
   }
 
-  constructor(params: { peer: types.InputPeer; q: string; from_id?: types.InputPeer; top_msg_id?: number; filter: types.MessagesFilter; min_date: number; max_date: number; offset_id: number; add_offset: number; limit: number; max_id: number; min_id: number; hash: bigint }) {
+  constructor(params: { peer: enums.InputPeer; q: string; from_id?: enums.InputPeer; top_msg_id?: number; filter: enums.MessagesFilter; min_date: number; max_date: number; offset_id: number; add_offset: number; limit: number; max_id: number; min_id: number; hash: bigint }) {
     super();
     this.peer = params.peer;
     this.q = params.q;
@@ -4613,8 +4614,8 @@ class messages_search extends Function<types.messages_Messages> {
   }
 }
 
-class messages_readHistory extends Function<types.messages_AffectedMessages> {
-  peer: types.InputPeer;
+class messages_readHistory extends Function<enums.messages_AffectedMessages> {
+  peer: enums.InputPeer;
   max_id: number;
 
   protected get [id]() {
@@ -4635,17 +4636,17 @@ class messages_readHistory extends Function<types.messages_AffectedMessages> {
     ];
   }
 
-  constructor(params: { peer: types.InputPeer; max_id: number }) {
+  constructor(params: { peer: enums.InputPeer; max_id: number }) {
     super();
     this.peer = params.peer;
     this.max_id = params.max_id;
   }
 }
 
-class messages_deleteHistory extends Function<types.messages_AffectedHistory> {
+class messages_deleteHistory extends Function<enums.messages_AffectedHistory> {
   just_clear?: true;
   revoke?: true;
-  peer: types.InputPeer;
+  peer: enums.InputPeer;
   max_id: number;
   min_date?: number;
   max_date?: number;
@@ -4678,7 +4679,7 @@ class messages_deleteHistory extends Function<types.messages_AffectedHistory> {
     ];
   }
 
-  constructor(params: { just_clear?: true; revoke?: true; peer: types.InputPeer; max_id: number; min_date?: number; max_date?: number }) {
+  constructor(params: { just_clear?: true; revoke?: true; peer: enums.InputPeer; max_id: number; min_date?: number; max_date?: number }) {
     super();
     this.just_clear = params.just_clear;
     this.revoke = params.revoke;
@@ -4689,7 +4690,7 @@ class messages_deleteHistory extends Function<types.messages_AffectedHistory> {
   }
 }
 
-class messages_deleteMessages extends Function<types.messages_AffectedMessages> {
+class messages_deleteMessages extends Function<enums.messages_AffectedMessages> {
   revoke?: true;
   id: Array<number>;
 
@@ -4720,7 +4721,7 @@ class messages_deleteMessages extends Function<types.messages_AffectedMessages> 
   }
 }
 
-class messages_receivedMessages extends Function<types.ReceivedNotifyMessage[]> {
+class messages_receivedMessages extends Function<enums.ReceivedNotifyMessage[]> {
   max_id: number;
 
   protected get [id]() {
@@ -4746,9 +4747,9 @@ class messages_receivedMessages extends Function<types.ReceivedNotifyMessage[]> 
 }
 
 class messages_setTyping extends Function<boolean> {
-  peer: types.InputPeer;
+  peer: enums.InputPeer;
   top_msg_id?: number;
-  action: types.SendMessageAction;
+  action: enums.SendMessageAction;
 
   protected get [id]() {
     return 0x58943EE2;
@@ -4772,7 +4773,7 @@ class messages_setTyping extends Function<boolean> {
     ];
   }
 
-  constructor(params: { peer: types.InputPeer; top_msg_id?: number; action: types.SendMessageAction }) {
+  constructor(params: { peer: enums.InputPeer; top_msg_id?: number; action: enums.SendMessageAction }) {
     super();
     this.peer = params.peer;
     this.top_msg_id = params.top_msg_id;
@@ -4780,7 +4781,7 @@ class messages_setTyping extends Function<boolean> {
   }
 }
 
-class messages_sendMessage extends Function<types.Updates> {
+class messages_sendMessage extends Function<enums.Updates> {
   no_webpage?: true;
   silent?: true;
   background?: true;
@@ -4788,14 +4789,14 @@ class messages_sendMessage extends Function<types.Updates> {
   noforwards?: true;
   update_stickersets_order?: true;
   invert_media?: true;
-  peer: types.InputPeer;
-  reply_to?: types.InputReplyTo;
+  peer: enums.InputPeer;
+  reply_to?: enums.InputReplyTo;
   message: string;
   random_id: bigint;
-  reply_markup?: types.ReplyMarkup;
-  entities?: Array<types.MessageEntity>;
+  reply_markup?: enums.ReplyMarkup;
+  entities?: Array<enums.MessageEntity>;
   schedule_date?: number;
-  send_as?: types.InputPeer;
+  send_as?: enums.InputPeer;
 
   protected get [id]() {
     return 0x280D096F;
@@ -4843,7 +4844,7 @@ class messages_sendMessage extends Function<types.Updates> {
     ];
   }
 
-  constructor(params: { no_webpage?: true; silent?: true; background?: true; clear_draft?: true; noforwards?: true; update_stickersets_order?: true; invert_media?: true; peer: types.InputPeer; reply_to?: types.InputReplyTo; message: string; random_id: bigint; reply_markup?: types.ReplyMarkup; entities?: Array<types.MessageEntity>; schedule_date?: number; send_as?: types.InputPeer }) {
+  constructor(params: { no_webpage?: true; silent?: true; background?: true; clear_draft?: true; noforwards?: true; update_stickersets_order?: true; invert_media?: true; peer: enums.InputPeer; reply_to?: enums.InputReplyTo; message: string; random_id: bigint; reply_markup?: enums.ReplyMarkup; entities?: Array<enums.MessageEntity>; schedule_date?: number; send_as?: enums.InputPeer }) {
     super();
     this.no_webpage = params.no_webpage;
     this.silent = params.silent;
@@ -4863,22 +4864,22 @@ class messages_sendMessage extends Function<types.Updates> {
   }
 }
 
-class messages_sendMedia extends Function<types.Updates> {
+class messages_sendMedia extends Function<enums.Updates> {
   silent?: true;
   background?: true;
   clear_draft?: true;
   noforwards?: true;
   update_stickersets_order?: true;
   invert_media?: true;
-  peer: types.InputPeer;
-  reply_to?: types.InputReplyTo;
-  media: types.InputMedia;
+  peer: enums.InputPeer;
+  reply_to?: enums.InputReplyTo;
+  media: enums.InputMedia;
   message: string;
   random_id: bigint;
-  reply_markup?: types.ReplyMarkup;
-  entities?: Array<types.MessageEntity>;
+  reply_markup?: enums.ReplyMarkup;
+  entities?: Array<enums.MessageEntity>;
   schedule_date?: number;
-  send_as?: types.InputPeer;
+  send_as?: enums.InputPeer;
 
   protected get [id]() {
     return 0x72CCC23D;
@@ -4926,7 +4927,7 @@ class messages_sendMedia extends Function<types.Updates> {
     ];
   }
 
-  constructor(params: { silent?: true; background?: true; clear_draft?: true; noforwards?: true; update_stickersets_order?: true; invert_media?: true; peer: types.InputPeer; reply_to?: types.InputReplyTo; media: types.InputMedia; message: string; random_id: bigint; reply_markup?: types.ReplyMarkup; entities?: Array<types.MessageEntity>; schedule_date?: number; send_as?: types.InputPeer }) {
+  constructor(params: { silent?: true; background?: true; clear_draft?: true; noforwards?: true; update_stickersets_order?: true; invert_media?: true; peer: enums.InputPeer; reply_to?: enums.InputReplyTo; media: enums.InputMedia; message: string; random_id: bigint; reply_markup?: enums.ReplyMarkup; entities?: Array<enums.MessageEntity>; schedule_date?: number; send_as?: enums.InputPeer }) {
     super();
     this.silent = params.silent;
     this.background = params.background;
@@ -4946,20 +4947,20 @@ class messages_sendMedia extends Function<types.Updates> {
   }
 }
 
-class messages_forwardMessages extends Function<types.Updates> {
+class messages_forwardMessages extends Function<enums.Updates> {
   silent?: true;
   background?: true;
   with_my_score?: true;
   drop_author?: true;
   drop_media_captions?: true;
   noforwards?: true;
-  from_peer: types.InputPeer;
+  from_peer: enums.InputPeer;
   id: Array<number>;
   random_id: Array<bigint>;
-  to_peer: types.InputPeer;
+  to_peer: enums.InputPeer;
   top_msg_id?: number;
   schedule_date?: number;
-  send_as?: types.InputPeer;
+  send_as?: enums.InputPeer;
 
   protected get [id]() {
     return 0xC661BBC4;
@@ -5003,7 +5004,7 @@ class messages_forwardMessages extends Function<types.Updates> {
     ];
   }
 
-  constructor(params: { silent?: true; background?: true; with_my_score?: true; drop_author?: true; drop_media_captions?: true; noforwards?: true; from_peer: types.InputPeer; id: Array<number>; random_id: Array<bigint>; to_peer: types.InputPeer; top_msg_id?: number; schedule_date?: number; send_as?: types.InputPeer }) {
+  constructor(params: { silent?: true; background?: true; with_my_score?: true; drop_author?: true; drop_media_captions?: true; noforwards?: true; from_peer: enums.InputPeer; id: Array<number>; random_id: Array<bigint>; to_peer: enums.InputPeer; top_msg_id?: number; schedule_date?: number; send_as?: enums.InputPeer }) {
     super();
     this.silent = params.silent;
     this.background = params.background;
@@ -5022,7 +5023,7 @@ class messages_forwardMessages extends Function<types.Updates> {
 }
 
 class messages_reportSpam extends Function<boolean> {
-  peer: types.InputPeer;
+  peer: enums.InputPeer;
 
   protected get [id]() {
     return 0xCF1592DB;
@@ -5040,14 +5041,14 @@ class messages_reportSpam extends Function<boolean> {
     ];
   }
 
-  constructor(params: { peer: types.InputPeer }) {
+  constructor(params: { peer: enums.InputPeer }) {
     super();
     this.peer = params.peer;
   }
 }
 
-class messages_getPeerSettings extends Function<types.messages_PeerSettings> {
-  peer: types.InputPeer;
+class messages_getPeerSettings extends Function<enums.messages_PeerSettings> {
+  peer: enums.InputPeer;
 
   protected get [id]() {
     return 0xEFD9A6A2;
@@ -5065,16 +5066,16 @@ class messages_getPeerSettings extends Function<types.messages_PeerSettings> {
     ];
   }
 
-  constructor(params: { peer: types.InputPeer }) {
+  constructor(params: { peer: enums.InputPeer }) {
     super();
     this.peer = params.peer;
   }
 }
 
 class messages_report extends Function<boolean> {
-  peer: types.InputPeer;
+  peer: enums.InputPeer;
   id: Array<number>;
-  reason: types.ReportReason;
+  reason: enums.ReportReason;
   message: string;
 
   protected get [id]() {
@@ -5099,7 +5100,7 @@ class messages_report extends Function<boolean> {
     ];
   }
 
-  constructor(params: { peer: types.InputPeer; id: Array<number>; reason: types.ReportReason; message: string }) {
+  constructor(params: { peer: enums.InputPeer; id: Array<number>; reason: enums.ReportReason; message: string }) {
     super();
     this.peer = params.peer;
     this.id = params.id;
@@ -5108,7 +5109,7 @@ class messages_report extends Function<boolean> {
   }
 }
 
-class messages_getChats extends Function<types.messages_Chats> {
+class messages_getChats extends Function<enums.messages_Chats> {
   id: Array<bigint>;
 
   protected get [id]() {
@@ -5133,7 +5134,7 @@ class messages_getChats extends Function<types.messages_Chats> {
   }
 }
 
-class messages_getFullChat extends Function<types.messages_ChatFull> {
+class messages_getFullChat extends Function<enums.messages_ChatFull> {
   chat_id: bigint;
 
   protected get [id]() {
@@ -5158,7 +5159,7 @@ class messages_getFullChat extends Function<types.messages_ChatFull> {
   }
 }
 
-class messages_editChatTitle extends Function<types.Updates> {
+class messages_editChatTitle extends Function<enums.Updates> {
   chat_id: bigint;
   title: string;
 
@@ -5187,9 +5188,9 @@ class messages_editChatTitle extends Function<types.Updates> {
   }
 }
 
-class messages_editChatPhoto extends Function<types.Updates> {
+class messages_editChatPhoto extends Function<enums.Updates> {
   chat_id: bigint;
-  photo: types.InputChatPhoto;
+  photo: enums.InputChatPhoto;
 
   protected get [id]() {
     return 0x35DDD674;
@@ -5209,16 +5210,16 @@ class messages_editChatPhoto extends Function<types.Updates> {
     ];
   }
 
-  constructor(params: { chat_id: bigint; photo: types.InputChatPhoto }) {
+  constructor(params: { chat_id: bigint; photo: enums.InputChatPhoto }) {
     super();
     this.chat_id = params.chat_id;
     this.photo = params.photo;
   }
 }
 
-class messages_addChatUser extends Function<types.Updates> {
+class messages_addChatUser extends Function<enums.Updates> {
   chat_id: bigint;
-  user_id: types.InputUser;
+  user_id: enums.InputUser;
   fwd_limit: number;
 
   protected get [id]() {
@@ -5241,7 +5242,7 @@ class messages_addChatUser extends Function<types.Updates> {
     ];
   }
 
-  constructor(params: { chat_id: bigint; user_id: types.InputUser; fwd_limit: number }) {
+  constructor(params: { chat_id: bigint; user_id: enums.InputUser; fwd_limit: number }) {
     super();
     this.chat_id = params.chat_id;
     this.user_id = params.user_id;
@@ -5249,10 +5250,10 @@ class messages_addChatUser extends Function<types.Updates> {
   }
 }
 
-class messages_deleteChatUser extends Function<types.Updates> {
+class messages_deleteChatUser extends Function<enums.Updates> {
   revoke_history?: true;
   chat_id: bigint;
-  user_id: types.InputUser;
+  user_id: enums.InputUser;
 
   protected get [id]() {
     return 0xA2185CAB;
@@ -5276,7 +5277,7 @@ class messages_deleteChatUser extends Function<types.Updates> {
     ];
   }
 
-  constructor(params: { revoke_history?: true; chat_id: bigint; user_id: types.InputUser }) {
+  constructor(params: { revoke_history?: true; chat_id: bigint; user_id: enums.InputUser }) {
     super();
     this.revoke_history = params.revoke_history;
     this.chat_id = params.chat_id;
@@ -5284,8 +5285,8 @@ class messages_deleteChatUser extends Function<types.Updates> {
   }
 }
 
-class messages_createChat extends Function<types.Updates> {
-  users: Array<types.InputUser>;
+class messages_createChat extends Function<enums.Updates> {
+  users: Array<enums.InputUser>;
   title: string;
   ttl_period?: number;
 
@@ -5311,7 +5312,7 @@ class messages_createChat extends Function<types.Updates> {
     ];
   }
 
-  constructor(params: { users: Array<types.InputUser>; title: string; ttl_period?: number }) {
+  constructor(params: { users: Array<enums.InputUser>; title: string; ttl_period?: number }) {
     super();
     this.users = params.users;
     this.title = params.title;
@@ -5319,7 +5320,7 @@ class messages_createChat extends Function<types.Updates> {
   }
 }
 
-class messages_getDhConfig extends Function<types.messages_DhConfig> {
+class messages_getDhConfig extends Function<enums.messages_DhConfig> {
   version: number;
   random_length: number;
 
@@ -5348,8 +5349,8 @@ class messages_getDhConfig extends Function<types.messages_DhConfig> {
   }
 }
 
-class messages_requestEncryption extends Function<types.EncryptedChat> {
-  user_id: types.InputUser;
+class messages_requestEncryption extends Function<enums.EncryptedChat> {
+  user_id: enums.InputUser;
   random_id: number;
   g_a: Uint8Array;
 
@@ -5373,7 +5374,7 @@ class messages_requestEncryption extends Function<types.EncryptedChat> {
     ];
   }
 
-  constructor(params: { user_id: types.InputUser; random_id: number; g_a: Uint8Array }) {
+  constructor(params: { user_id: enums.InputUser; random_id: number; g_a: Uint8Array }) {
     super();
     this.user_id = params.user_id;
     this.random_id = params.random_id;
@@ -5381,8 +5382,8 @@ class messages_requestEncryption extends Function<types.EncryptedChat> {
   }
 }
 
-class messages_acceptEncryption extends Function<types.EncryptedChat> {
-  peer: types.InputEncryptedChat;
+class messages_acceptEncryption extends Function<enums.EncryptedChat> {
+  peer: enums.InputEncryptedChat;
   g_b: Uint8Array;
   key_fingerprint: bigint;
 
@@ -5406,7 +5407,7 @@ class messages_acceptEncryption extends Function<types.EncryptedChat> {
     ];
   }
 
-  constructor(params: { peer: types.InputEncryptedChat; g_b: Uint8Array; key_fingerprint: bigint }) {
+  constructor(params: { peer: enums.InputEncryptedChat; g_b: Uint8Array; key_fingerprint: bigint }) {
     super();
     this.peer = params.peer;
     this.g_b = params.g_b;
@@ -5446,7 +5447,7 @@ class messages_discardEncryption extends Function<boolean> {
 }
 
 class messages_setEncryptedTyping extends Function<boolean> {
-  peer: types.InputEncryptedChat;
+  peer: enums.InputEncryptedChat;
   typing: boolean;
 
   protected get [id]() {
@@ -5467,7 +5468,7 @@ class messages_setEncryptedTyping extends Function<boolean> {
     ];
   }
 
-  constructor(params: { peer: types.InputEncryptedChat; typing: boolean }) {
+  constructor(params: { peer: enums.InputEncryptedChat; typing: boolean }) {
     super();
     this.peer = params.peer;
     this.typing = params.typing;
@@ -5475,7 +5476,7 @@ class messages_setEncryptedTyping extends Function<boolean> {
 }
 
 class messages_readEncryptedHistory extends Function<boolean> {
-  peer: types.InputEncryptedChat;
+  peer: enums.InputEncryptedChat;
   max_date: number;
 
   protected get [id]() {
@@ -5496,16 +5497,16 @@ class messages_readEncryptedHistory extends Function<boolean> {
     ];
   }
 
-  constructor(params: { peer: types.InputEncryptedChat; max_date: number }) {
+  constructor(params: { peer: enums.InputEncryptedChat; max_date: number }) {
     super();
     this.peer = params.peer;
     this.max_date = params.max_date;
   }
 }
 
-class messages_sendEncrypted extends Function<types.messages_SentEncryptedMessage> {
+class messages_sendEncrypted extends Function<enums.messages_SentEncryptedMessage> {
   silent?: true;
-  peer: types.InputEncryptedChat;
+  peer: enums.InputEncryptedChat;
   random_id: bigint;
   data: Uint8Array;
 
@@ -5533,7 +5534,7 @@ class messages_sendEncrypted extends Function<types.messages_SentEncryptedMessag
     ];
   }
 
-  constructor(params: { silent?: true; peer: types.InputEncryptedChat; random_id: bigint; data: Uint8Array }) {
+  constructor(params: { silent?: true; peer: enums.InputEncryptedChat; random_id: bigint; data: Uint8Array }) {
     super();
     this.silent = params.silent;
     this.peer = params.peer;
@@ -5542,12 +5543,12 @@ class messages_sendEncrypted extends Function<types.messages_SentEncryptedMessag
   }
 }
 
-class messages_sendEncryptedFile extends Function<types.messages_SentEncryptedMessage> {
+class messages_sendEncryptedFile extends Function<enums.messages_SentEncryptedMessage> {
   silent?: true;
-  peer: types.InputEncryptedChat;
+  peer: enums.InputEncryptedChat;
   random_id: bigint;
   data: Uint8Array;
-  file: types.InputEncryptedFile;
+  file: enums.InputEncryptedFile;
 
   protected get [id]() {
     return 0x5559481D;
@@ -5575,7 +5576,7 @@ class messages_sendEncryptedFile extends Function<types.messages_SentEncryptedMe
     ];
   }
 
-  constructor(params: { silent?: true; peer: types.InputEncryptedChat; random_id: bigint; data: Uint8Array; file: types.InputEncryptedFile }) {
+  constructor(params: { silent?: true; peer: enums.InputEncryptedChat; random_id: bigint; data: Uint8Array; file: enums.InputEncryptedFile }) {
     super();
     this.silent = params.silent;
     this.peer = params.peer;
@@ -5585,8 +5586,8 @@ class messages_sendEncryptedFile extends Function<types.messages_SentEncryptedMe
   }
 }
 
-class messages_sendEncryptedService extends Function<types.messages_SentEncryptedMessage> {
-  peer: types.InputEncryptedChat;
+class messages_sendEncryptedService extends Function<enums.messages_SentEncryptedMessage> {
+  peer: enums.InputEncryptedChat;
   random_id: bigint;
   data: Uint8Array;
 
@@ -5610,7 +5611,7 @@ class messages_sendEncryptedService extends Function<types.messages_SentEncrypte
     ];
   }
 
-  constructor(params: { peer: types.InputEncryptedChat; random_id: bigint; data: Uint8Array }) {
+  constructor(params: { peer: enums.InputEncryptedChat; random_id: bigint; data: Uint8Array }) {
     super();
     this.peer = params.peer;
     this.random_id = params.random_id;
@@ -5644,7 +5645,7 @@ class messages_receivedQueue extends Function<bigint[]> {
 }
 
 class messages_reportEncryptedSpam extends Function<boolean> {
-  peer: types.InputEncryptedChat;
+  peer: enums.InputEncryptedChat;
 
   protected get [id]() {
     return 0x4B0C8C0F;
@@ -5662,13 +5663,13 @@ class messages_reportEncryptedSpam extends Function<boolean> {
     ];
   }
 
-  constructor(params: { peer: types.InputEncryptedChat }) {
+  constructor(params: { peer: enums.InputEncryptedChat }) {
     super();
     this.peer = params.peer;
   }
 }
 
-class messages_readMessageContents extends Function<types.messages_AffectedMessages> {
+class messages_readMessageContents extends Function<enums.messages_AffectedMessages> {
   id: Array<number>;
 
   protected get [id]() {
@@ -5693,7 +5694,7 @@ class messages_readMessageContents extends Function<types.messages_AffectedMessa
   }
 }
 
-class messages_getStickers extends Function<types.messages_Stickers> {
+class messages_getStickers extends Function<enums.messages_Stickers> {
   emoticon: string;
   hash: bigint;
 
@@ -5722,7 +5723,7 @@ class messages_getStickers extends Function<types.messages_Stickers> {
   }
 }
 
-class messages_getAllStickers extends Function<types.messages_AllStickers> {
+class messages_getAllStickers extends Function<enums.messages_AllStickers> {
   hash: bigint;
 
   protected get [id]() {
@@ -5747,9 +5748,9 @@ class messages_getAllStickers extends Function<types.messages_AllStickers> {
   }
 }
 
-class messages_getWebPagePreview extends Function<types.MessageMedia> {
+class messages_getWebPagePreview extends Function<enums.MessageMedia> {
   message: string;
-  entities?: Array<types.MessageEntity>;
+  entities?: Array<enums.MessageEntity>;
 
   protected get [id]() {
     return 0x8B68B0CC;
@@ -5771,17 +5772,17 @@ class messages_getWebPagePreview extends Function<types.MessageMedia> {
     ];
   }
 
-  constructor(params: { message: string; entities?: Array<types.MessageEntity> }) {
+  constructor(params: { message: string; entities?: Array<enums.MessageEntity> }) {
     super();
     this.message = params.message;
     this.entities = params.entities;
   }
 }
 
-class messages_exportChatInvite extends Function<types.ExportedChatInvite> {
+class messages_exportChatInvite extends Function<enums.ExportedChatInvite> {
   legacy_revoke_permanent?: true;
   request_needed?: true;
-  peer: types.InputPeer;
+  peer: enums.InputPeer;
   expire_date?: number;
   usage_limit?: number;
   title?: string;
@@ -5814,7 +5815,7 @@ class messages_exportChatInvite extends Function<types.ExportedChatInvite> {
     ];
   }
 
-  constructor(params: { legacy_revoke_permanent?: true; request_needed?: true; peer: types.InputPeer; expire_date?: number; usage_limit?: number; title?: string }) {
+  constructor(params: { legacy_revoke_permanent?: true; request_needed?: true; peer: enums.InputPeer; expire_date?: number; usage_limit?: number; title?: string }) {
     super();
     this.legacy_revoke_permanent = params.legacy_revoke_permanent;
     this.request_needed = params.request_needed;
@@ -5825,7 +5826,7 @@ class messages_exportChatInvite extends Function<types.ExportedChatInvite> {
   }
 }
 
-class messages_checkChatInvite extends Function<types.ChatInvite> {
+class messages_checkChatInvite extends Function<enums.ChatInvite> {
   hash: string;
 
   protected get [id]() {
@@ -5850,7 +5851,7 @@ class messages_checkChatInvite extends Function<types.ChatInvite> {
   }
 }
 
-class messages_importChatInvite extends Function<types.Updates> {
+class messages_importChatInvite extends Function<enums.Updates> {
   hash: string;
 
   protected get [id]() {
@@ -5875,8 +5876,8 @@ class messages_importChatInvite extends Function<types.Updates> {
   }
 }
 
-class messages_getStickerSet extends Function<types.messages_StickerSet> {
-  stickerset: types.InputStickerSet;
+class messages_getStickerSet extends Function<enums.messages_StickerSet> {
+  stickerset: enums.InputStickerSet;
   hash: number;
 
   protected get [id]() {
@@ -5897,15 +5898,15 @@ class messages_getStickerSet extends Function<types.messages_StickerSet> {
     ];
   }
 
-  constructor(params: { stickerset: types.InputStickerSet; hash: number }) {
+  constructor(params: { stickerset: enums.InputStickerSet; hash: number }) {
     super();
     this.stickerset = params.stickerset;
     this.hash = params.hash;
   }
 }
 
-class messages_installStickerSet extends Function<types.messages_StickerSetInstallResult> {
-  stickerset: types.InputStickerSet;
+class messages_installStickerSet extends Function<enums.messages_StickerSetInstallResult> {
+  stickerset: enums.InputStickerSet;
   archived: boolean;
 
   protected get [id]() {
@@ -5926,7 +5927,7 @@ class messages_installStickerSet extends Function<types.messages_StickerSetInsta
     ];
   }
 
-  constructor(params: { stickerset: types.InputStickerSet; archived: boolean }) {
+  constructor(params: { stickerset: enums.InputStickerSet; archived: boolean }) {
     super();
     this.stickerset = params.stickerset;
     this.archived = params.archived;
@@ -5934,7 +5935,7 @@ class messages_installStickerSet extends Function<types.messages_StickerSetInsta
 }
 
 class messages_uninstallStickerSet extends Function<boolean> {
-  stickerset: types.InputStickerSet;
+  stickerset: enums.InputStickerSet;
 
   protected get [id]() {
     return 0xF96E55DE;
@@ -5952,15 +5953,15 @@ class messages_uninstallStickerSet extends Function<boolean> {
     ];
   }
 
-  constructor(params: { stickerset: types.InputStickerSet }) {
+  constructor(params: { stickerset: enums.InputStickerSet }) {
     super();
     this.stickerset = params.stickerset;
   }
 }
 
-class messages_startBot extends Function<types.Updates> {
-  bot: types.InputUser;
-  peer: types.InputPeer;
+class messages_startBot extends Function<enums.Updates> {
+  bot: enums.InputUser;
+  peer: enums.InputPeer;
   random_id: bigint;
   start_param: string;
 
@@ -5986,7 +5987,7 @@ class messages_startBot extends Function<types.Updates> {
     ];
   }
 
-  constructor(params: { bot: types.InputUser; peer: types.InputPeer; random_id: bigint; start_param: string }) {
+  constructor(params: { bot: enums.InputUser; peer: enums.InputPeer; random_id: bigint; start_param: string }) {
     super();
     this.bot = params.bot;
     this.peer = params.peer;
@@ -5995,8 +5996,8 @@ class messages_startBot extends Function<types.Updates> {
   }
 }
 
-class messages_getMessagesViews extends Function<types.messages_MessageViews> {
-  peer: types.InputPeer;
+class messages_getMessagesViews extends Function<enums.messages_MessageViews> {
+  peer: enums.InputPeer;
   id: Array<number>;
   increment: boolean;
 
@@ -6020,7 +6021,7 @@ class messages_getMessagesViews extends Function<types.messages_MessageViews> {
     ];
   }
 
-  constructor(params: { peer: types.InputPeer; id: Array<number>; increment: boolean }) {
+  constructor(params: { peer: enums.InputPeer; id: Array<number>; increment: boolean }) {
     super();
     this.peer = params.peer;
     this.id = params.id;
@@ -6030,7 +6031,7 @@ class messages_getMessagesViews extends Function<types.messages_MessageViews> {
 
 class messages_editChatAdmin extends Function<boolean> {
   chat_id: bigint;
-  user_id: types.InputUser;
+  user_id: enums.InputUser;
   is_admin: boolean;
 
   protected get [id]() {
@@ -6053,7 +6054,7 @@ class messages_editChatAdmin extends Function<boolean> {
     ];
   }
 
-  constructor(params: { chat_id: bigint; user_id: types.InputUser; is_admin: boolean }) {
+  constructor(params: { chat_id: bigint; user_id: enums.InputUser; is_admin: boolean }) {
     super();
     this.chat_id = params.chat_id;
     this.user_id = params.user_id;
@@ -6061,7 +6062,7 @@ class messages_editChatAdmin extends Function<boolean> {
   }
 }
 
-class messages_migrateChat extends Function<types.Updates> {
+class messages_migrateChat extends Function<enums.Updates> {
   chat_id: bigint;
 
   protected get [id]() {
@@ -6086,14 +6087,14 @@ class messages_migrateChat extends Function<types.Updates> {
   }
 }
 
-class messages_searchGlobal extends Function<types.messages_Messages> {
+class messages_searchGlobal extends Function<enums.messages_Messages> {
   folder_id?: number;
   q: string;
-  filter: types.MessagesFilter;
+  filter: enums.MessagesFilter;
   min_date: number;
   max_date: number;
   offset_rate: number;
-  offset_peer: types.InputPeer;
+  offset_peer: enums.InputPeer;
   offset_id: number;
   limit: number;
 
@@ -6131,7 +6132,7 @@ class messages_searchGlobal extends Function<types.messages_Messages> {
     ];
   }
 
-  constructor(params: { folder_id?: number; q: string; filter: types.MessagesFilter; min_date: number; max_date: number; offset_rate: number; offset_peer: types.InputPeer; offset_id: number; limit: number }) {
+  constructor(params: { folder_id?: number; q: string; filter: enums.MessagesFilter; min_date: number; max_date: number; offset_rate: number; offset_peer: enums.InputPeer; offset_id: number; limit: number }) {
     super();
     this.folder_id = params.folder_id;
     this.q = params.q;
@@ -6180,7 +6181,7 @@ class messages_reorderStickerSets extends Function<boolean> {
   }
 }
 
-class messages_getDocumentByHash extends Function<types.Document> {
+class messages_getDocumentByHash extends Function<enums.Document> {
   sha256: Uint8Array;
   size: bigint;
   mime_type: string;
@@ -6213,7 +6214,7 @@ class messages_getDocumentByHash extends Function<types.Document> {
   }
 }
 
-class messages_getSavedGifs extends Function<types.messages_SavedGifs> {
+class messages_getSavedGifs extends Function<enums.messages_SavedGifs> {
   hash: bigint;
 
   protected get [id]() {
@@ -6239,7 +6240,7 @@ class messages_getSavedGifs extends Function<types.messages_SavedGifs> {
 }
 
 class messages_saveGif extends Function<boolean> {
-  id: types.InputDocument;
+  id: enums.InputDocument;
   unsave: boolean;
 
   protected get [id]() {
@@ -6260,17 +6261,17 @@ class messages_saveGif extends Function<boolean> {
     ];
   }
 
-  constructor(params: { id: types.InputDocument; unsave: boolean }) {
+  constructor(params: { id: enums.InputDocument; unsave: boolean }) {
     super();
     this.id = params.id;
     this.unsave = params.unsave;
   }
 }
 
-class messages_getInlineBotResults extends Function<types.messages_BotResults> {
-  bot: types.InputUser;
-  peer: types.InputPeer;
-  geo_point?: types.InputGeoPoint;
+class messages_getInlineBotResults extends Function<enums.messages_BotResults> {
+  bot: enums.InputUser;
+  peer: enums.InputPeer;
+  geo_point?: enums.InputGeoPoint;
   query: string;
   offset: string;
 
@@ -6300,7 +6301,7 @@ class messages_getInlineBotResults extends Function<types.messages_BotResults> {
     ];
   }
 
-  constructor(params: { bot: types.InputUser; peer: types.InputPeer; geo_point?: types.InputGeoPoint; query: string; offset: string }) {
+  constructor(params: { bot: enums.InputUser; peer: enums.InputPeer; geo_point?: enums.InputGeoPoint; query: string; offset: string }) {
     super();
     this.bot = params.bot;
     this.peer = params.peer;
@@ -6314,11 +6315,11 @@ class messages_setInlineBotResults extends Function<boolean> {
   gallery?: true;
   private?: true;
   query_id: bigint;
-  results: Array<types.InputBotInlineResult>;
+  results: Array<enums.InputBotInlineResult>;
   cache_time: number;
   next_offset?: string;
-  switch_pm?: types.InlineBotSwitchPM;
-  switch_webview?: types.InlineBotWebView;
+  switch_pm?: enums.InlineBotSwitchPM;
+  switch_webview?: enums.InlineBotWebView;
 
   protected get [id]() {
     return 0xBB12A419;
@@ -6352,7 +6353,7 @@ class messages_setInlineBotResults extends Function<boolean> {
     ];
   }
 
-  constructor(params: { gallery?: true; private?: true; query_id: bigint; results: Array<types.InputBotInlineResult>; cache_time: number; next_offset?: string; switch_pm?: types.InlineBotSwitchPM; switch_webview?: types.InlineBotWebView }) {
+  constructor(params: { gallery?: true; private?: true; query_id: bigint; results: Array<enums.InputBotInlineResult>; cache_time: number; next_offset?: string; switch_pm?: enums.InlineBotSwitchPM; switch_webview?: enums.InlineBotWebView }) {
     super();
     this.gallery = params.gallery;
     this.private = params.private;
@@ -6365,18 +6366,18 @@ class messages_setInlineBotResults extends Function<boolean> {
   }
 }
 
-class messages_sendInlineBotResult extends Function<types.Updates> {
+class messages_sendInlineBotResult extends Function<enums.Updates> {
   silent?: true;
   background?: true;
   clear_draft?: true;
   hide_via?: true;
-  peer: types.InputPeer;
-  reply_to?: types.InputReplyTo;
+  peer: enums.InputPeer;
+  reply_to?: enums.InputReplyTo;
   random_id: bigint;
   query_id: bigint;
   id: string;
   schedule_date?: number;
-  send_as?: types.InputPeer;
+  send_as?: enums.InputPeer;
 
   protected get [id]() {
     return 0xF7BC68BA;
@@ -6416,7 +6417,7 @@ class messages_sendInlineBotResult extends Function<types.Updates> {
     ];
   }
 
-  constructor(params: { silent?: true; background?: true; clear_draft?: true; hide_via?: true; peer: types.InputPeer; reply_to?: types.InputReplyTo; random_id: bigint; query_id: bigint; id: string; schedule_date?: number; send_as?: types.InputPeer }) {
+  constructor(params: { silent?: true; background?: true; clear_draft?: true; hide_via?: true; peer: enums.InputPeer; reply_to?: enums.InputReplyTo; random_id: bigint; query_id: bigint; id: string; schedule_date?: number; send_as?: enums.InputPeer }) {
     super();
     this.silent = params.silent;
     this.background = params.background;
@@ -6432,8 +6433,8 @@ class messages_sendInlineBotResult extends Function<types.Updates> {
   }
 }
 
-class messages_getMessageEditData extends Function<types.messages_MessageEditData> {
-  peer: types.InputPeer;
+class messages_getMessageEditData extends Function<enums.messages_MessageEditData> {
+  peer: enums.InputPeer;
   id: number;
 
   protected get [id]() {
@@ -6454,22 +6455,22 @@ class messages_getMessageEditData extends Function<types.messages_MessageEditDat
     ];
   }
 
-  constructor(params: { peer: types.InputPeer; id: number }) {
+  constructor(params: { peer: enums.InputPeer; id: number }) {
     super();
     this.peer = params.peer;
     this.id = params.id;
   }
 }
 
-class messages_editMessage extends Function<types.Updates> {
+class messages_editMessage extends Function<enums.Updates> {
   no_webpage?: true;
   invert_media?: true;
-  peer: types.InputPeer;
+  peer: enums.InputPeer;
   id: number;
   message?: string;
-  media?: types.InputMedia;
-  reply_markup?: types.ReplyMarkup;
-  entities?: Array<types.MessageEntity>;
+  media?: enums.InputMedia;
+  reply_markup?: enums.ReplyMarkup;
+  entities?: Array<enums.MessageEntity>;
   schedule_date?: number;
 
   protected get [id]() {
@@ -6506,7 +6507,7 @@ class messages_editMessage extends Function<types.Updates> {
     ];
   }
 
-  constructor(params: { no_webpage?: true; invert_media?: true; peer: types.InputPeer; id: number; message?: string; media?: types.InputMedia; reply_markup?: types.ReplyMarkup; entities?: Array<types.MessageEntity>; schedule_date?: number }) {
+  constructor(params: { no_webpage?: true; invert_media?: true; peer: enums.InputPeer; id: number; message?: string; media?: enums.InputMedia; reply_markup?: enums.ReplyMarkup; entities?: Array<enums.MessageEntity>; schedule_date?: number }) {
     super();
     this.no_webpage = params.no_webpage;
     this.invert_media = params.invert_media;
@@ -6523,11 +6524,11 @@ class messages_editMessage extends Function<types.Updates> {
 class messages_editInlineBotMessage extends Function<boolean> {
   no_webpage?: true;
   invert_media?: true;
-  id: types.InputBotInlineMessageID;
+  id: enums.InputBotInlineMessageID;
   message?: string;
-  media?: types.InputMedia;
-  reply_markup?: types.ReplyMarkup;
-  entities?: Array<types.MessageEntity>;
+  media?: enums.InputMedia;
+  reply_markup?: enums.ReplyMarkup;
+  entities?: Array<enums.MessageEntity>;
 
   protected get [id]() {
     return 0x83557DBA;
@@ -6559,7 +6560,7 @@ class messages_editInlineBotMessage extends Function<boolean> {
     ];
   }
 
-  constructor(params: { no_webpage?: true; invert_media?: true; id: types.InputBotInlineMessageID; message?: string; media?: types.InputMedia; reply_markup?: types.ReplyMarkup; entities?: Array<types.MessageEntity> }) {
+  constructor(params: { no_webpage?: true; invert_media?: true; id: enums.InputBotInlineMessageID; message?: string; media?: enums.InputMedia; reply_markup?: enums.ReplyMarkup; entities?: Array<enums.MessageEntity> }) {
     super();
     this.no_webpage = params.no_webpage;
     this.invert_media = params.invert_media;
@@ -6571,12 +6572,12 @@ class messages_editInlineBotMessage extends Function<boolean> {
   }
 }
 
-class messages_getBotCallbackAnswer extends Function<types.messages_BotCallbackAnswer> {
+class messages_getBotCallbackAnswer extends Function<enums.messages_BotCallbackAnswer> {
   game?: true;
-  peer: types.InputPeer;
+  peer: enums.InputPeer;
   msg_id: number;
   data?: Uint8Array;
-  password?: types.InputCheckPasswordSRP;
+  password?: enums.InputCheckPasswordSRP;
 
   protected get [id]() {
     return 0x9342CA07;
@@ -6604,7 +6605,7 @@ class messages_getBotCallbackAnswer extends Function<types.messages_BotCallbackA
     ];
   }
 
-  constructor(params: { game?: true; peer: types.InputPeer; msg_id: number; data?: Uint8Array; password?: types.InputCheckPasswordSRP }) {
+  constructor(params: { game?: true; peer: enums.InputPeer; msg_id: number; data?: Uint8Array; password?: enums.InputCheckPasswordSRP }) {
     super();
     this.game = params.game;
     this.peer = params.peer;
@@ -6657,8 +6658,8 @@ class messages_setBotCallbackAnswer extends Function<boolean> {
   }
 }
 
-class messages_getPeerDialogs extends Function<types.messages_PeerDialogs> {
-  peers: Array<types.InputDialogPeer>;
+class messages_getPeerDialogs extends Function<enums.messages_PeerDialogs> {
+  peers: Array<enums.InputDialogPeer>;
 
   protected get [id]() {
     return 0xE470BCFD;
@@ -6676,7 +6677,7 @@ class messages_getPeerDialogs extends Function<types.messages_PeerDialogs> {
     ];
   }
 
-  constructor(params: { peers: Array<types.InputDialogPeer> }) {
+  constructor(params: { peers: Array<enums.InputDialogPeer> }) {
     super();
     this.peers = params.peers;
   }
@@ -6685,11 +6686,11 @@ class messages_getPeerDialogs extends Function<types.messages_PeerDialogs> {
 class messages_saveDraft extends Function<boolean> {
   no_webpage?: true;
   invert_media?: true;
-  reply_to?: types.InputReplyTo;
-  peer: types.InputPeer;
+  reply_to?: enums.InputReplyTo;
+  peer: enums.InputPeer;
   message: string;
-  entities?: Array<types.MessageEntity>;
-  media?: types.InputMedia;
+  entities?: Array<enums.MessageEntity>;
+  media?: enums.InputMedia;
 
   protected get [id]() {
     return 0x7FF3B806;
@@ -6721,7 +6722,7 @@ class messages_saveDraft extends Function<boolean> {
     ];
   }
 
-  constructor(params: { no_webpage?: true; invert_media?: true; reply_to?: types.InputReplyTo; peer: types.InputPeer; message: string; entities?: Array<types.MessageEntity>; media?: types.InputMedia }) {
+  constructor(params: { no_webpage?: true; invert_media?: true; reply_to?: enums.InputReplyTo; peer: enums.InputPeer; message: string; entities?: Array<enums.MessageEntity>; media?: enums.InputMedia }) {
     super();
     this.no_webpage = params.no_webpage;
     this.invert_media = params.invert_media;
@@ -6733,7 +6734,7 @@ class messages_saveDraft extends Function<boolean> {
   }
 }
 
-class messages_getAllDrafts extends Function<types.Updates> {
+class messages_getAllDrafts extends Function<enums.Updates> {
   protected get [id]() {
     return 0x6A3F8D65;
   }
@@ -6751,7 +6752,7 @@ class messages_getAllDrafts extends Function<types.Updates> {
   }
 }
 
-class messages_getFeaturedStickers extends Function<types.messages_FeaturedStickers> {
+class messages_getFeaturedStickers extends Function<enums.messages_FeaturedStickers> {
   hash: bigint;
 
   protected get [id]() {
@@ -6801,7 +6802,7 @@ class messages_readFeaturedStickers extends Function<boolean> {
   }
 }
 
-class messages_getRecentStickers extends Function<types.messages_RecentStickers> {
+class messages_getRecentStickers extends Function<enums.messages_RecentStickers> {
   attached?: true;
   hash: bigint;
 
@@ -6834,7 +6835,7 @@ class messages_getRecentStickers extends Function<types.messages_RecentStickers>
 
 class messages_saveRecentSticker extends Function<boolean> {
   attached?: true;
-  id: types.InputDocument;
+  id: enums.InputDocument;
   unsave: boolean;
 
   protected get [id]() {
@@ -6859,7 +6860,7 @@ class messages_saveRecentSticker extends Function<boolean> {
     ];
   }
 
-  constructor(params: { attached?: true; id: types.InputDocument; unsave: boolean }) {
+  constructor(params: { attached?: true; id: enums.InputDocument; unsave: boolean }) {
     super();
     this.attached = params.attached;
     this.id = params.id;
@@ -6894,7 +6895,7 @@ class messages_clearRecentStickers extends Function<boolean> {
   }
 }
 
-class messages_getArchivedStickers extends Function<types.messages_ArchivedStickers> {
+class messages_getArchivedStickers extends Function<enums.messages_ArchivedStickers> {
   masks?: true;
   emojis?: true;
   offset_id: bigint;
@@ -6933,7 +6934,7 @@ class messages_getArchivedStickers extends Function<types.messages_ArchivedStick
   }
 }
 
-class messages_getMaskStickers extends Function<types.messages_AllStickers> {
+class messages_getMaskStickers extends Function<enums.messages_AllStickers> {
   hash: bigint;
 
   protected get [id]() {
@@ -6958,8 +6959,8 @@ class messages_getMaskStickers extends Function<types.messages_AllStickers> {
   }
 }
 
-class messages_getAttachedStickers extends Function<types.StickerSetCovered[]> {
-  media: types.InputStickeredMedia;
+class messages_getAttachedStickers extends Function<enums.StickerSetCovered[]> {
+  media: enums.InputStickeredMedia;
 
   protected get [id]() {
     return 0xCC5B67CC;
@@ -6977,18 +6978,18 @@ class messages_getAttachedStickers extends Function<types.StickerSetCovered[]> {
     ];
   }
 
-  constructor(params: { media: types.InputStickeredMedia }) {
+  constructor(params: { media: enums.InputStickeredMedia }) {
     super();
     this.media = params.media;
   }
 }
 
-class messages_setGameScore extends Function<types.Updates> {
+class messages_setGameScore extends Function<enums.Updates> {
   edit_message?: true;
   force?: true;
-  peer: types.InputPeer;
+  peer: enums.InputPeer;
   id: number;
-  user_id: types.InputUser;
+  user_id: enums.InputUser;
   score: number;
 
   protected get [id]() {
@@ -7019,7 +7020,7 @@ class messages_setGameScore extends Function<types.Updates> {
     ];
   }
 
-  constructor(params: { edit_message?: true; force?: true; peer: types.InputPeer; id: number; user_id: types.InputUser; score: number }) {
+  constructor(params: { edit_message?: true; force?: true; peer: enums.InputPeer; id: number; user_id: enums.InputUser; score: number }) {
     super();
     this.edit_message = params.edit_message;
     this.force = params.force;
@@ -7033,8 +7034,8 @@ class messages_setGameScore extends Function<types.Updates> {
 class messages_setInlineGameScore extends Function<boolean> {
   edit_message?: true;
   force?: true;
-  id: types.InputBotInlineMessageID;
-  user_id: types.InputUser;
+  id: enums.InputBotInlineMessageID;
+  user_id: enums.InputUser;
   score: number;
 
   protected get [id]() {
@@ -7063,7 +7064,7 @@ class messages_setInlineGameScore extends Function<boolean> {
     ];
   }
 
-  constructor(params: { edit_message?: true; force?: true; id: types.InputBotInlineMessageID; user_id: types.InputUser; score: number }) {
+  constructor(params: { edit_message?: true; force?: true; id: enums.InputBotInlineMessageID; user_id: enums.InputUser; score: number }) {
     super();
     this.edit_message = params.edit_message;
     this.force = params.force;
@@ -7073,10 +7074,10 @@ class messages_setInlineGameScore extends Function<boolean> {
   }
 }
 
-class messages_getGameHighScores extends Function<types.messages_HighScores> {
-  peer: types.InputPeer;
+class messages_getGameHighScores extends Function<enums.messages_HighScores> {
+  peer: enums.InputPeer;
   id: number;
-  user_id: types.InputUser;
+  user_id: enums.InputUser;
 
   protected get [id]() {
     return 0xE822649D;
@@ -7098,7 +7099,7 @@ class messages_getGameHighScores extends Function<types.messages_HighScores> {
     ];
   }
 
-  constructor(params: { peer: types.InputPeer; id: number; user_id: types.InputUser }) {
+  constructor(params: { peer: enums.InputPeer; id: number; user_id: enums.InputUser }) {
     super();
     this.peer = params.peer;
     this.id = params.id;
@@ -7106,9 +7107,9 @@ class messages_getGameHighScores extends Function<types.messages_HighScores> {
   }
 }
 
-class messages_getInlineGameHighScores extends Function<types.messages_HighScores> {
-  id: types.InputBotInlineMessageID;
-  user_id: types.InputUser;
+class messages_getInlineGameHighScores extends Function<enums.messages_HighScores> {
+  id: enums.InputBotInlineMessageID;
+  user_id: enums.InputUser;
 
   protected get [id]() {
     return 0x0F635E1B;
@@ -7128,15 +7129,15 @@ class messages_getInlineGameHighScores extends Function<types.messages_HighScore
     ];
   }
 
-  constructor(params: { id: types.InputBotInlineMessageID; user_id: types.InputUser }) {
+  constructor(params: { id: enums.InputBotInlineMessageID; user_id: enums.InputUser }) {
     super();
     this.id = params.id;
     this.user_id = params.user_id;
   }
 }
 
-class messages_getCommonChats extends Function<types.messages_Chats> {
-  user_id: types.InputUser;
+class messages_getCommonChats extends Function<enums.messages_Chats> {
+  user_id: enums.InputUser;
   max_id: bigint;
   limit: number;
 
@@ -7160,7 +7161,7 @@ class messages_getCommonChats extends Function<types.messages_Chats> {
     ];
   }
 
-  constructor(params: { user_id: types.InputUser; max_id: bigint; limit: number }) {
+  constructor(params: { user_id: enums.InputUser; max_id: bigint; limit: number }) {
     super();
     this.user_id = params.user_id;
     this.max_id = params.max_id;
@@ -7168,7 +7169,7 @@ class messages_getCommonChats extends Function<types.messages_Chats> {
   }
 }
 
-class messages_getWebPage extends Function<types.messages_WebPage> {
+class messages_getWebPage extends Function<enums.messages_WebPage> {
   url: string;
   hash: number;
 
@@ -7199,7 +7200,7 @@ class messages_getWebPage extends Function<types.messages_WebPage> {
 
 class messages_toggleDialogPin extends Function<boolean> {
   pinned?: true;
-  peer: types.InputDialogPeer;
+  peer: enums.InputDialogPeer;
 
   protected get [id]() {
     return 0xA731E257;
@@ -7221,7 +7222,7 @@ class messages_toggleDialogPin extends Function<boolean> {
     ];
   }
 
-  constructor(params: { pinned?: true; peer: types.InputDialogPeer }) {
+  constructor(params: { pinned?: true; peer: enums.InputDialogPeer }) {
     super();
     this.pinned = params.pinned;
     this.peer = params.peer;
@@ -7231,7 +7232,7 @@ class messages_toggleDialogPin extends Function<boolean> {
 class messages_reorderPinnedDialogs extends Function<boolean> {
   force?: true;
   folder_id: number;
-  order: Array<types.InputDialogPeer>;
+  order: Array<enums.InputDialogPeer>;
 
   protected get [id]() {
     return 0x3B1ADF37;
@@ -7255,7 +7256,7 @@ class messages_reorderPinnedDialogs extends Function<boolean> {
     ];
   }
 
-  constructor(params: { force?: true; folder_id: number; order: Array<types.InputDialogPeer> }) {
+  constructor(params: { force?: true; folder_id: number; order: Array<enums.InputDialogPeer> }) {
     super();
     this.force = params.force;
     this.folder_id = params.folder_id;
@@ -7263,7 +7264,7 @@ class messages_reorderPinnedDialogs extends Function<boolean> {
   }
 }
 
-class messages_getPinnedDialogs extends Function<types.messages_PeerDialogs> {
+class messages_getPinnedDialogs extends Function<enums.messages_PeerDialogs> {
   folder_id: number;
 
   protected get [id]() {
@@ -7291,7 +7292,7 @@ class messages_getPinnedDialogs extends Function<types.messages_PeerDialogs> {
 class messages_setBotShippingResults extends Function<boolean> {
   query_id: bigint;
   error?: string;
-  shipping_options?: Array<types.ShippingOption>;
+  shipping_options?: Array<enums.ShippingOption>;
 
   protected get [id]() {
     return 0xE5F672FA;
@@ -7315,7 +7316,7 @@ class messages_setBotShippingResults extends Function<boolean> {
     ];
   }
 
-  constructor(params: { query_id: bigint; error?: string; shipping_options?: Array<types.ShippingOption> }) {
+  constructor(params: { query_id: bigint; error?: string; shipping_options?: Array<enums.ShippingOption> }) {
     super();
     this.query_id = params.query_id;
     this.error = params.error;
@@ -7358,9 +7359,9 @@ class messages_setBotPrecheckoutResults extends Function<boolean> {
   }
 }
 
-class messages_uploadMedia extends Function<types.MessageMedia> {
-  peer: types.InputPeer;
-  media: types.InputMedia;
+class messages_uploadMedia extends Function<enums.MessageMedia> {
+  peer: enums.InputPeer;
+  media: enums.InputMedia;
 
   protected get [id]() {
     return 0x519BC2B1;
@@ -7380,16 +7381,16 @@ class messages_uploadMedia extends Function<types.MessageMedia> {
     ];
   }
 
-  constructor(params: { peer: types.InputPeer; media: types.InputMedia }) {
+  constructor(params: { peer: enums.InputPeer; media: enums.InputMedia }) {
     super();
     this.peer = params.peer;
     this.media = params.media;
   }
 }
 
-class messages_sendScreenshotNotification extends Function<types.Updates> {
-  peer: types.InputPeer;
-  reply_to: types.InputReplyTo;
+class messages_sendScreenshotNotification extends Function<enums.Updates> {
+  peer: enums.InputPeer;
+  reply_to: enums.InputReplyTo;
   random_id: bigint;
 
   protected get [id]() {
@@ -7412,7 +7413,7 @@ class messages_sendScreenshotNotification extends Function<types.Updates> {
     ];
   }
 
-  constructor(params: { peer: types.InputPeer; reply_to: types.InputReplyTo; random_id: bigint }) {
+  constructor(params: { peer: enums.InputPeer; reply_to: enums.InputReplyTo; random_id: bigint }) {
     super();
     this.peer = params.peer;
     this.reply_to = params.reply_to;
@@ -7420,7 +7421,7 @@ class messages_sendScreenshotNotification extends Function<types.Updates> {
   }
 }
 
-class messages_getFavedStickers extends Function<types.messages_FavedStickers> {
+class messages_getFavedStickers extends Function<enums.messages_FavedStickers> {
   hash: bigint;
 
   protected get [id]() {
@@ -7446,7 +7447,7 @@ class messages_getFavedStickers extends Function<types.messages_FavedStickers> {
 }
 
 class messages_faveSticker extends Function<boolean> {
-  id: types.InputDocument;
+  id: enums.InputDocument;
   unfave: boolean;
 
   protected get [id]() {
@@ -7467,15 +7468,15 @@ class messages_faveSticker extends Function<boolean> {
     ];
   }
 
-  constructor(params: { id: types.InputDocument; unfave: boolean }) {
+  constructor(params: { id: enums.InputDocument; unfave: boolean }) {
     super();
     this.id = params.id;
     this.unfave = params.unfave;
   }
 }
 
-class messages_getUnreadMentions extends Function<types.messages_Messages> {
-  peer: types.InputPeer;
+class messages_getUnreadMentions extends Function<enums.messages_Messages> {
+  peer: enums.InputPeer;
   top_msg_id?: number;
   offset_id: number;
   add_offset: number;
@@ -7513,7 +7514,7 @@ class messages_getUnreadMentions extends Function<types.messages_Messages> {
     ];
   }
 
-  constructor(params: { peer: types.InputPeer; top_msg_id?: number; offset_id: number; add_offset: number; limit: number; max_id: number; min_id: number }) {
+  constructor(params: { peer: enums.InputPeer; top_msg_id?: number; offset_id: number; add_offset: number; limit: number; max_id: number; min_id: number }) {
     super();
     this.peer = params.peer;
     this.top_msg_id = params.top_msg_id;
@@ -7525,8 +7526,8 @@ class messages_getUnreadMentions extends Function<types.messages_Messages> {
   }
 }
 
-class messages_readMentions extends Function<types.messages_AffectedHistory> {
-  peer: types.InputPeer;
+class messages_readMentions extends Function<enums.messages_AffectedHistory> {
+  peer: enums.InputPeer;
   top_msg_id?: number;
 
   protected get [id]() {
@@ -7549,15 +7550,15 @@ class messages_readMentions extends Function<types.messages_AffectedHistory> {
     ];
   }
 
-  constructor(params: { peer: types.InputPeer; top_msg_id?: number }) {
+  constructor(params: { peer: enums.InputPeer; top_msg_id?: number }) {
     super();
     this.peer = params.peer;
     this.top_msg_id = params.top_msg_id;
   }
 }
 
-class messages_getRecentLocations extends Function<types.messages_Messages> {
-  peer: types.InputPeer;
+class messages_getRecentLocations extends Function<enums.messages_Messages> {
+  peer: enums.InputPeer;
   limit: number;
   hash: bigint;
 
@@ -7581,7 +7582,7 @@ class messages_getRecentLocations extends Function<types.messages_Messages> {
     ];
   }
 
-  constructor(params: { peer: types.InputPeer; limit: number; hash: bigint }) {
+  constructor(params: { peer: enums.InputPeer; limit: number; hash: bigint }) {
     super();
     this.peer = params.peer;
     this.limit = params.limit;
@@ -7589,18 +7590,18 @@ class messages_getRecentLocations extends Function<types.messages_Messages> {
   }
 }
 
-class messages_sendMultiMedia extends Function<types.Updates> {
+class messages_sendMultiMedia extends Function<enums.Updates> {
   silent?: true;
   background?: true;
   clear_draft?: true;
   noforwards?: true;
   update_stickersets_order?: true;
   invert_media?: true;
-  peer: types.InputPeer;
-  reply_to?: types.InputReplyTo;
-  multi_media: Array<types.InputSingleMedia>;
+  peer: enums.InputPeer;
+  reply_to?: enums.InputReplyTo;
+  multi_media: Array<enums.InputSingleMedia>;
   schedule_date?: number;
-  send_as?: types.InputPeer;
+  send_as?: enums.InputPeer;
 
   protected get [id]() {
     return 0x456E8987;
@@ -7640,7 +7641,7 @@ class messages_sendMultiMedia extends Function<types.Updates> {
     ];
   }
 
-  constructor(params: { silent?: true; background?: true; clear_draft?: true; noforwards?: true; update_stickersets_order?: true; invert_media?: true; peer: types.InputPeer; reply_to?: types.InputReplyTo; multi_media: Array<types.InputSingleMedia>; schedule_date?: number; send_as?: types.InputPeer }) {
+  constructor(params: { silent?: true; background?: true; clear_draft?: true; noforwards?: true; update_stickersets_order?: true; invert_media?: true; peer: enums.InputPeer; reply_to?: enums.InputReplyTo; multi_media: Array<enums.InputSingleMedia>; schedule_date?: number; send_as?: enums.InputPeer }) {
     super();
     this.silent = params.silent;
     this.background = params.background;
@@ -7656,9 +7657,9 @@ class messages_sendMultiMedia extends Function<types.Updates> {
   }
 }
 
-class messages_uploadEncryptedFile extends Function<types.EncryptedFile> {
-  peer: types.InputEncryptedChat;
-  file: types.InputEncryptedFile;
+class messages_uploadEncryptedFile extends Function<enums.EncryptedFile> {
+  peer: enums.InputEncryptedChat;
+  file: enums.InputEncryptedFile;
 
   protected get [id]() {
     return 0x5057C497;
@@ -7678,14 +7679,14 @@ class messages_uploadEncryptedFile extends Function<types.EncryptedFile> {
     ];
   }
 
-  constructor(params: { peer: types.InputEncryptedChat; file: types.InputEncryptedFile }) {
+  constructor(params: { peer: enums.InputEncryptedChat; file: enums.InputEncryptedFile }) {
     super();
     this.peer = params.peer;
     this.file = params.file;
   }
 }
 
-class messages_searchStickerSets extends Function<types.messages_FoundStickerSets> {
+class messages_searchStickerSets extends Function<enums.messages_FoundStickerSets> {
   exclude_featured?: true;
   q: string;
   hash: bigint;
@@ -7720,7 +7721,7 @@ class messages_searchStickerSets extends Function<types.messages_FoundStickerSet
   }
 }
 
-class messages_getSplitRanges extends Function<types.MessageRange[]> {
+class messages_getSplitRanges extends Function<enums.MessageRange[]> {
   protected get [id]() {
     return 0x1CFF7E08;
   }
@@ -7740,7 +7741,7 @@ class messages_getSplitRanges extends Function<types.MessageRange[]> {
 
 class messages_markDialogUnread extends Function<boolean> {
   unread?: true;
-  peer: types.InputDialogPeer;
+  peer: enums.InputDialogPeer;
 
   protected get [id]() {
     return 0xC286D98F;
@@ -7762,14 +7763,14 @@ class messages_markDialogUnread extends Function<boolean> {
     ];
   }
 
-  constructor(params: { unread?: true; peer: types.InputDialogPeer }) {
+  constructor(params: { unread?: true; peer: enums.InputDialogPeer }) {
     super();
     this.unread = params.unread;
     this.peer = params.peer;
   }
 }
 
-class messages_getDialogUnreadMarks extends Function<types.DialogPeer[]> {
+class messages_getDialogUnreadMarks extends Function<enums.DialogPeer[]> {
   protected get [id]() {
     return 0x22E24E22;
   }
@@ -7805,11 +7806,11 @@ class messages_clearAllDrafts extends Function<boolean> {
   }
 }
 
-class messages_updatePinnedMessage extends Function<types.Updates> {
+class messages_updatePinnedMessage extends Function<enums.Updates> {
   silent?: true;
   unpin?: true;
   pm_oneside?: true;
-  peer: types.InputPeer;
+  peer: enums.InputPeer;
   id: number;
 
   protected get [id]() {
@@ -7838,7 +7839,7 @@ class messages_updatePinnedMessage extends Function<types.Updates> {
     ];
   }
 
-  constructor(params: { silent?: true; unpin?: true; pm_oneside?: true; peer: types.InputPeer; id: number }) {
+  constructor(params: { silent?: true; unpin?: true; pm_oneside?: true; peer: enums.InputPeer; id: number }) {
     super();
     this.silent = params.silent;
     this.unpin = params.unpin;
@@ -7848,8 +7849,8 @@ class messages_updatePinnedMessage extends Function<types.Updates> {
   }
 }
 
-class messages_sendVote extends Function<types.Updates> {
-  peer: types.InputPeer;
+class messages_sendVote extends Function<enums.Updates> {
+  peer: enums.InputPeer;
   msg_id: number;
   options: Array<Uint8Array>;
 
@@ -7873,7 +7874,7 @@ class messages_sendVote extends Function<types.Updates> {
     ];
   }
 
-  constructor(params: { peer: types.InputPeer; msg_id: number; options: Array<Uint8Array> }) {
+  constructor(params: { peer: enums.InputPeer; msg_id: number; options: Array<Uint8Array> }) {
     super();
     this.peer = params.peer;
     this.msg_id = params.msg_id;
@@ -7881,8 +7882,8 @@ class messages_sendVote extends Function<types.Updates> {
   }
 }
 
-class messages_getPollResults extends Function<types.Updates> {
-  peer: types.InputPeer;
+class messages_getPollResults extends Function<enums.Updates> {
+  peer: enums.InputPeer;
   msg_id: number;
 
   protected get [id]() {
@@ -7903,15 +7904,15 @@ class messages_getPollResults extends Function<types.Updates> {
     ];
   }
 
-  constructor(params: { peer: types.InputPeer; msg_id: number }) {
+  constructor(params: { peer: enums.InputPeer; msg_id: number }) {
     super();
     this.peer = params.peer;
     this.msg_id = params.msg_id;
   }
 }
 
-class messages_getOnlines extends Function<types.ChatOnlines> {
-  peer: types.InputPeer;
+class messages_getOnlines extends Function<enums.ChatOnlines> {
+  peer: enums.InputPeer;
 
   protected get [id]() {
     return 0x6E2BE050;
@@ -7929,14 +7930,14 @@ class messages_getOnlines extends Function<types.ChatOnlines> {
     ];
   }
 
-  constructor(params: { peer: types.InputPeer }) {
+  constructor(params: { peer: enums.InputPeer }) {
     super();
     this.peer = params.peer;
   }
 }
 
 class messages_editChatAbout extends Function<boolean> {
-  peer: types.InputPeer;
+  peer: enums.InputPeer;
   about: string;
 
   protected get [id]() {
@@ -7957,16 +7958,16 @@ class messages_editChatAbout extends Function<boolean> {
     ];
   }
 
-  constructor(params: { peer: types.InputPeer; about: string }) {
+  constructor(params: { peer: enums.InputPeer; about: string }) {
     super();
     this.peer = params.peer;
     this.about = params.about;
   }
 }
 
-class messages_editChatDefaultBannedRights extends Function<types.Updates> {
-  peer: types.InputPeer;
-  banned_rights: types.ChatBannedRights;
+class messages_editChatDefaultBannedRights extends Function<enums.Updates> {
+  peer: enums.InputPeer;
+  banned_rights: enums.ChatBannedRights;
 
   protected get [id]() {
     return 0xA5866B41;
@@ -7986,14 +7987,14 @@ class messages_editChatDefaultBannedRights extends Function<types.Updates> {
     ];
   }
 
-  constructor(params: { peer: types.InputPeer; banned_rights: types.ChatBannedRights }) {
+  constructor(params: { peer: enums.InputPeer; banned_rights: enums.ChatBannedRights }) {
     super();
     this.peer = params.peer;
     this.banned_rights = params.banned_rights;
   }
 }
 
-class messages_getEmojiKeywords extends Function<types.EmojiKeywordsDifference> {
+class messages_getEmojiKeywords extends Function<enums.EmojiKeywordsDifference> {
   lang_code: string;
 
   protected get [id]() {
@@ -8018,7 +8019,7 @@ class messages_getEmojiKeywords extends Function<types.EmojiKeywordsDifference> 
   }
 }
 
-class messages_getEmojiKeywordsDifference extends Function<types.EmojiKeywordsDifference> {
+class messages_getEmojiKeywordsDifference extends Function<enums.EmojiKeywordsDifference> {
   lang_code: string;
   from_version: number;
 
@@ -8047,7 +8048,7 @@ class messages_getEmojiKeywordsDifference extends Function<types.EmojiKeywordsDi
   }
 }
 
-class messages_getEmojiKeywordsLanguages extends Function<types.EmojiLanguage[]> {
+class messages_getEmojiKeywordsLanguages extends Function<enums.EmojiLanguage[]> {
   lang_codes: Array<string>;
 
   protected get [id]() {
@@ -8072,7 +8073,7 @@ class messages_getEmojiKeywordsLanguages extends Function<types.EmojiLanguage[]>
   }
 }
 
-class messages_getEmojiURL extends Function<types.EmojiURL> {
+class messages_getEmojiURL extends Function<enums.EmojiURL> {
   lang_code: string;
 
   protected get [id]() {
@@ -8097,10 +8098,10 @@ class messages_getEmojiURL extends Function<types.EmojiURL> {
   }
 }
 
-class messages_getSearchCounters extends Function<types.messages_SearchCounter[]> {
-  peer: types.InputPeer;
+class messages_getSearchCounters extends Function<enums.messages_SearchCounter[]> {
+  peer: enums.InputPeer;
   top_msg_id?: number;
-  filters: Array<types.MessagesFilter>;
+  filters: Array<enums.MessagesFilter>;
 
   protected get [id]() {
     return 0x00AE7CC1;
@@ -8124,7 +8125,7 @@ class messages_getSearchCounters extends Function<types.messages_SearchCounter[]
     ];
   }
 
-  constructor(params: { peer: types.InputPeer; top_msg_id?: number; filters: Array<types.MessagesFilter> }) {
+  constructor(params: { peer: enums.InputPeer; top_msg_id?: number; filters: Array<enums.MessagesFilter> }) {
     super();
     this.peer = params.peer;
     this.top_msg_id = params.top_msg_id;
@@ -8132,8 +8133,8 @@ class messages_getSearchCounters extends Function<types.messages_SearchCounter[]
   }
 }
 
-class messages_requestUrlAuth extends Function<types.UrlAuthResult> {
-  peer?: types.InputPeer;
+class messages_requestUrlAuth extends Function<enums.UrlAuthResult> {
+  peer?: enums.InputPeer;
   msg_id?: number;
   button_id?: number;
   url?: string;
@@ -8162,7 +8163,7 @@ class messages_requestUrlAuth extends Function<types.UrlAuthResult> {
     ];
   }
 
-  constructor(params?: { peer?: types.InputPeer; msg_id?: number; button_id?: number; url?: string }) {
+  constructor(params?: { peer?: enums.InputPeer; msg_id?: number; button_id?: number; url?: string }) {
     super();
     this.peer = params?.peer;
     this.msg_id = params?.msg_id;
@@ -8171,9 +8172,9 @@ class messages_requestUrlAuth extends Function<types.UrlAuthResult> {
   }
 }
 
-class messages_acceptUrlAuth extends Function<types.UrlAuthResult> {
+class messages_acceptUrlAuth extends Function<enums.UrlAuthResult> {
   write_allowed?: true;
-  peer?: types.InputPeer;
+  peer?: enums.InputPeer;
   msg_id?: number;
   button_id?: number;
   url?: string;
@@ -8204,7 +8205,7 @@ class messages_acceptUrlAuth extends Function<types.UrlAuthResult> {
     ];
   }
 
-  constructor(params?: { write_allowed?: true; peer?: types.InputPeer; msg_id?: number; button_id?: number; url?: string }) {
+  constructor(params?: { write_allowed?: true; peer?: enums.InputPeer; msg_id?: number; button_id?: number; url?: string }) {
     super();
     this.write_allowed = params?.write_allowed;
     this.peer = params?.peer;
@@ -8215,7 +8216,7 @@ class messages_acceptUrlAuth extends Function<types.UrlAuthResult> {
 }
 
 class messages_hidePeerSettingsBar extends Function<boolean> {
-  peer: types.InputPeer;
+  peer: enums.InputPeer;
 
   protected get [id]() {
     return 0x4FACB138;
@@ -8233,14 +8234,14 @@ class messages_hidePeerSettingsBar extends Function<boolean> {
     ];
   }
 
-  constructor(params: { peer: types.InputPeer }) {
+  constructor(params: { peer: enums.InputPeer }) {
     super();
     this.peer = params.peer;
   }
 }
 
-class messages_getScheduledHistory extends Function<types.messages_Messages> {
-  peer: types.InputPeer;
+class messages_getScheduledHistory extends Function<enums.messages_Messages> {
+  peer: enums.InputPeer;
   hash: bigint;
 
   protected get [id]() {
@@ -8261,15 +8262,15 @@ class messages_getScheduledHistory extends Function<types.messages_Messages> {
     ];
   }
 
-  constructor(params: { peer: types.InputPeer; hash: bigint }) {
+  constructor(params: { peer: enums.InputPeer; hash: bigint }) {
     super();
     this.peer = params.peer;
     this.hash = params.hash;
   }
 }
 
-class messages_getScheduledMessages extends Function<types.messages_Messages> {
-  peer: types.InputPeer;
+class messages_getScheduledMessages extends Function<enums.messages_Messages> {
+  peer: enums.InputPeer;
   id: Array<number>;
 
   protected get [id]() {
@@ -8290,15 +8291,15 @@ class messages_getScheduledMessages extends Function<types.messages_Messages> {
     ];
   }
 
-  constructor(params: { peer: types.InputPeer; id: Array<number> }) {
+  constructor(params: { peer: enums.InputPeer; id: Array<number> }) {
     super();
     this.peer = params.peer;
     this.id = params.id;
   }
 }
 
-class messages_sendScheduledMessages extends Function<types.Updates> {
-  peer: types.InputPeer;
+class messages_sendScheduledMessages extends Function<enums.Updates> {
+  peer: enums.InputPeer;
   id: Array<number>;
 
   protected get [id]() {
@@ -8319,15 +8320,15 @@ class messages_sendScheduledMessages extends Function<types.Updates> {
     ];
   }
 
-  constructor(params: { peer: types.InputPeer; id: Array<number> }) {
+  constructor(params: { peer: enums.InputPeer; id: Array<number> }) {
     super();
     this.peer = params.peer;
     this.id = params.id;
   }
 }
 
-class messages_deleteScheduledMessages extends Function<types.Updates> {
-  peer: types.InputPeer;
+class messages_deleteScheduledMessages extends Function<enums.Updates> {
+  peer: enums.InputPeer;
   id: Array<number>;
 
   protected get [id]() {
@@ -8348,15 +8349,15 @@ class messages_deleteScheduledMessages extends Function<types.Updates> {
     ];
   }
 
-  constructor(params: { peer: types.InputPeer; id: Array<number> }) {
+  constructor(params: { peer: enums.InputPeer; id: Array<number> }) {
     super();
     this.peer = params.peer;
     this.id = params.id;
   }
 }
 
-class messages_getPollVotes extends Function<types.messages_VotesList> {
-  peer: types.InputPeer;
+class messages_getPollVotes extends Function<enums.messages_VotesList> {
+  peer: enums.InputPeer;
   id: number;
   option?: Uint8Array;
   offset?: string;
@@ -8388,7 +8389,7 @@ class messages_getPollVotes extends Function<types.messages_VotesList> {
     ];
   }
 
-  constructor(params: { peer: types.InputPeer; id: number; option?: Uint8Array; offset?: string; limit: number }) {
+  constructor(params: { peer: enums.InputPeer; id: number; option?: Uint8Array; offset?: string; limit: number }) {
     super();
     this.peer = params.peer;
     this.id = params.id;
@@ -8402,7 +8403,7 @@ class messages_toggleStickerSets extends Function<boolean> {
   uninstall?: true;
   archive?: true;
   unarchive?: true;
-  stickersets: Array<types.InputStickerSet>;
+  stickersets: Array<enums.InputStickerSet>;
 
   protected get [id]() {
     return 0xB5052FEA;
@@ -8428,7 +8429,7 @@ class messages_toggleStickerSets extends Function<boolean> {
     ];
   }
 
-  constructor(params: { uninstall?: true; archive?: true; unarchive?: true; stickersets: Array<types.InputStickerSet> }) {
+  constructor(params: { uninstall?: true; archive?: true; unarchive?: true; stickersets: Array<enums.InputStickerSet> }) {
     super();
     this.uninstall = params.uninstall;
     this.archive = params.archive;
@@ -8437,7 +8438,7 @@ class messages_toggleStickerSets extends Function<boolean> {
   }
 }
 
-class messages_getDialogFilters extends Function<types.DialogFilter[]> {
+class messages_getDialogFilters extends Function<enums.DialogFilter[]> {
   protected get [id]() {
     return 0xF19ED96D;
   }
@@ -8455,7 +8456,7 @@ class messages_getDialogFilters extends Function<types.DialogFilter[]> {
   }
 }
 
-class messages_getSuggestedDialogFilters extends Function<types.DialogFilterSuggested[]> {
+class messages_getSuggestedDialogFilters extends Function<enums.DialogFilterSuggested[]> {
   protected get [id]() {
     return 0xA29CD42C;
   }
@@ -8475,7 +8476,7 @@ class messages_getSuggestedDialogFilters extends Function<types.DialogFilterSugg
 
 class messages_updateDialogFilter extends Function<boolean> {
   id: number;
-  filter?: types.DialogFilter;
+  filter?: enums.DialogFilter;
 
   protected get [id]() {
     return 0x1AD4A04A;
@@ -8497,7 +8498,7 @@ class messages_updateDialogFilter extends Function<boolean> {
     ];
   }
 
-  constructor(params: { id: number; filter?: types.DialogFilter }) {
+  constructor(params: { id: number; filter?: enums.DialogFilter }) {
     super();
     this.id = params.id;
     this.filter = params.filter;
@@ -8529,7 +8530,7 @@ class messages_updateDialogFiltersOrder extends Function<boolean> {
   }
 }
 
-class messages_getOldFeaturedStickers extends Function<types.messages_FeaturedStickers> {
+class messages_getOldFeaturedStickers extends Function<enums.messages_FeaturedStickers> {
   offset: number;
   limit: number;
   hash: bigint;
@@ -8562,8 +8563,8 @@ class messages_getOldFeaturedStickers extends Function<types.messages_FeaturedSt
   }
 }
 
-class messages_getReplies extends Function<types.messages_Messages> {
-  peer: types.InputPeer;
+class messages_getReplies extends Function<enums.messages_Messages> {
+  peer: enums.InputPeer;
   msg_id: number;
   offset_id: number;
   offset_date: number;
@@ -8605,7 +8606,7 @@ class messages_getReplies extends Function<types.messages_Messages> {
     ];
   }
 
-  constructor(params: { peer: types.InputPeer; msg_id: number; offset_id: number; offset_date: number; add_offset: number; limit: number; max_id: number; min_id: number; hash: bigint }) {
+  constructor(params: { peer: enums.InputPeer; msg_id: number; offset_id: number; offset_date: number; add_offset: number; limit: number; max_id: number; min_id: number; hash: bigint }) {
     super();
     this.peer = params.peer;
     this.msg_id = params.msg_id;
@@ -8619,8 +8620,8 @@ class messages_getReplies extends Function<types.messages_Messages> {
   }
 }
 
-class messages_getDiscussionMessage extends Function<types.messages_DiscussionMessage> {
-  peer: types.InputPeer;
+class messages_getDiscussionMessage extends Function<enums.messages_DiscussionMessage> {
+  peer: enums.InputPeer;
   msg_id: number;
 
   protected get [id]() {
@@ -8641,7 +8642,7 @@ class messages_getDiscussionMessage extends Function<types.messages_DiscussionMe
     ];
   }
 
-  constructor(params: { peer: types.InputPeer; msg_id: number }) {
+  constructor(params: { peer: enums.InputPeer; msg_id: number }) {
     super();
     this.peer = params.peer;
     this.msg_id = params.msg_id;
@@ -8649,7 +8650,7 @@ class messages_getDiscussionMessage extends Function<types.messages_DiscussionMe
 }
 
 class messages_readDiscussion extends Function<boolean> {
-  peer: types.InputPeer;
+  peer: enums.InputPeer;
   msg_id: number;
   read_max_id: number;
 
@@ -8673,7 +8674,7 @@ class messages_readDiscussion extends Function<boolean> {
     ];
   }
 
-  constructor(params: { peer: types.InputPeer; msg_id: number; read_max_id: number }) {
+  constructor(params: { peer: enums.InputPeer; msg_id: number; read_max_id: number }) {
     super();
     this.peer = params.peer;
     this.msg_id = params.msg_id;
@@ -8681,8 +8682,8 @@ class messages_readDiscussion extends Function<boolean> {
   }
 }
 
-class messages_unpinAllMessages extends Function<types.messages_AffectedHistory> {
-  peer: types.InputPeer;
+class messages_unpinAllMessages extends Function<enums.messages_AffectedHistory> {
+  peer: enums.InputPeer;
   top_msg_id?: number;
 
   protected get [id]() {
@@ -8705,7 +8706,7 @@ class messages_unpinAllMessages extends Function<types.messages_AffectedHistory>
     ];
   }
 
-  constructor(params: { peer: types.InputPeer; top_msg_id?: number }) {
+  constructor(params: { peer: enums.InputPeer; top_msg_id?: number }) {
     super();
     this.peer = params.peer;
     this.top_msg_id = params.top_msg_id;
@@ -8737,7 +8738,7 @@ class messages_deleteChat extends Function<boolean> {
   }
 }
 
-class messages_deletePhoneCallHistory extends Function<types.messages_AffectedFoundMessages> {
+class messages_deletePhoneCallHistory extends Function<enums.messages_AffectedFoundMessages> {
   revoke?: true;
 
   protected get [id]() {
@@ -8764,7 +8765,7 @@ class messages_deletePhoneCallHistory extends Function<types.messages_AffectedFo
   }
 }
 
-class messages_checkHistoryImport extends Function<types.messages_HistoryImportParsed> {
+class messages_checkHistoryImport extends Function<enums.messages_HistoryImportParsed> {
   import_head: string;
 
   protected get [id]() {
@@ -8789,9 +8790,9 @@ class messages_checkHistoryImport extends Function<types.messages_HistoryImportP
   }
 }
 
-class messages_initHistoryImport extends Function<types.messages_HistoryImport> {
-  peer: types.InputPeer;
-  file: types.InputFile;
+class messages_initHistoryImport extends Function<enums.messages_HistoryImport> {
+  peer: enums.InputPeer;
+  file: enums.InputFile;
   media_count: number;
 
   protected get [id]() {
@@ -8814,7 +8815,7 @@ class messages_initHistoryImport extends Function<types.messages_HistoryImport> 
     ];
   }
 
-  constructor(params: { peer: types.InputPeer; file: types.InputFile; media_count: number }) {
+  constructor(params: { peer: enums.InputPeer; file: enums.InputFile; media_count: number }) {
     super();
     this.peer = params.peer;
     this.file = params.file;
@@ -8822,11 +8823,11 @@ class messages_initHistoryImport extends Function<types.messages_HistoryImport> 
   }
 }
 
-class messages_uploadImportedMedia extends Function<types.MessageMedia> {
-  peer: types.InputPeer;
+class messages_uploadImportedMedia extends Function<enums.MessageMedia> {
+  peer: enums.InputPeer;
   import_id: bigint;
   file_name: string;
-  media: types.InputMedia;
+  media: enums.InputMedia;
 
   protected get [id]() {
     return 0x2A862092;
@@ -8850,7 +8851,7 @@ class messages_uploadImportedMedia extends Function<types.MessageMedia> {
     ];
   }
 
-  constructor(params: { peer: types.InputPeer; import_id: bigint; file_name: string; media: types.InputMedia }) {
+  constructor(params: { peer: enums.InputPeer; import_id: bigint; file_name: string; media: enums.InputMedia }) {
     super();
     this.peer = params.peer;
     this.import_id = params.import_id;
@@ -8860,7 +8861,7 @@ class messages_uploadImportedMedia extends Function<types.MessageMedia> {
 }
 
 class messages_startHistoryImport extends Function<boolean> {
-  peer: types.InputPeer;
+  peer: enums.InputPeer;
   import_id: bigint;
 
   protected get [id]() {
@@ -8881,17 +8882,17 @@ class messages_startHistoryImport extends Function<boolean> {
     ];
   }
 
-  constructor(params: { peer: types.InputPeer; import_id: bigint }) {
+  constructor(params: { peer: enums.InputPeer; import_id: bigint }) {
     super();
     this.peer = params.peer;
     this.import_id = params.import_id;
   }
 }
 
-class messages_getExportedChatInvites extends Function<types.messages_ExportedChatInvites> {
+class messages_getExportedChatInvites extends Function<enums.messages_ExportedChatInvites> {
   revoked?: true;
-  peer: types.InputPeer;
-  admin_id: types.InputUser;
+  peer: enums.InputPeer;
+  admin_id: enums.InputUser;
   offset_date?: number;
   offset_link?: string;
   limit: number;
@@ -8924,7 +8925,7 @@ class messages_getExportedChatInvites extends Function<types.messages_ExportedCh
     ];
   }
 
-  constructor(params: { revoked?: true; peer: types.InputPeer; admin_id: types.InputUser; offset_date?: number; offset_link?: string; limit: number }) {
+  constructor(params: { revoked?: true; peer: enums.InputPeer; admin_id: enums.InputUser; offset_date?: number; offset_link?: string; limit: number }) {
     super();
     this.revoked = params.revoked;
     this.peer = params.peer;
@@ -8935,8 +8936,8 @@ class messages_getExportedChatInvites extends Function<types.messages_ExportedCh
   }
 }
 
-class messages_getExportedChatInvite extends Function<types.messages_ExportedChatInvite> {
-  peer: types.InputPeer;
+class messages_getExportedChatInvite extends Function<enums.messages_ExportedChatInvite> {
+  peer: enums.InputPeer;
   link: string;
 
   protected get [id]() {
@@ -8957,16 +8958,16 @@ class messages_getExportedChatInvite extends Function<types.messages_ExportedCha
     ];
   }
 
-  constructor(params: { peer: types.InputPeer; link: string }) {
+  constructor(params: { peer: enums.InputPeer; link: string }) {
     super();
     this.peer = params.peer;
     this.link = params.link;
   }
 }
 
-class messages_editExportedChatInvite extends Function<types.messages_ExportedChatInvite> {
+class messages_editExportedChatInvite extends Function<enums.messages_ExportedChatInvite> {
   revoked?: true;
-  peer: types.InputPeer;
+  peer: enums.InputPeer;
   link: string;
   expire_date?: number;
   usage_limit?: number;
@@ -9003,7 +9004,7 @@ class messages_editExportedChatInvite extends Function<types.messages_ExportedCh
     ];
   }
 
-  constructor(params: { revoked?: true; peer: types.InputPeer; link: string; expire_date?: number; usage_limit?: number; request_needed?: boolean; title?: string }) {
+  constructor(params: { revoked?: true; peer: enums.InputPeer; link: string; expire_date?: number; usage_limit?: number; request_needed?: boolean; title?: string }) {
     super();
     this.revoked = params.revoked;
     this.peer = params.peer;
@@ -9016,8 +9017,8 @@ class messages_editExportedChatInvite extends Function<types.messages_ExportedCh
 }
 
 class messages_deleteRevokedExportedChatInvites extends Function<boolean> {
-  peer: types.InputPeer;
-  admin_id: types.InputUser;
+  peer: enums.InputPeer;
+  admin_id: enums.InputUser;
 
   protected get [id]() {
     return 0x56987BD5;
@@ -9037,7 +9038,7 @@ class messages_deleteRevokedExportedChatInvites extends Function<boolean> {
     ];
   }
 
-  constructor(params: { peer: types.InputPeer; admin_id: types.InputUser }) {
+  constructor(params: { peer: enums.InputPeer; admin_id: enums.InputUser }) {
     super();
     this.peer = params.peer;
     this.admin_id = params.admin_id;
@@ -9045,7 +9046,7 @@ class messages_deleteRevokedExportedChatInvites extends Function<boolean> {
 }
 
 class messages_deleteExportedChatInvite extends Function<boolean> {
-  peer: types.InputPeer;
+  peer: enums.InputPeer;
   link: string;
 
   protected get [id]() {
@@ -9066,15 +9067,15 @@ class messages_deleteExportedChatInvite extends Function<boolean> {
     ];
   }
 
-  constructor(params: { peer: types.InputPeer; link: string }) {
+  constructor(params: { peer: enums.InputPeer; link: string }) {
     super();
     this.peer = params.peer;
     this.link = params.link;
   }
 }
 
-class messages_getAdminsWithInvites extends Function<types.messages_ChatAdminsWithInvites> {
-  peer: types.InputPeer;
+class messages_getAdminsWithInvites extends Function<enums.messages_ChatAdminsWithInvites> {
+  peer: enums.InputPeer;
 
   protected get [id]() {
     return 0x3920E6EF;
@@ -9092,19 +9093,19 @@ class messages_getAdminsWithInvites extends Function<types.messages_ChatAdminsWi
     ];
   }
 
-  constructor(params: { peer: types.InputPeer }) {
+  constructor(params: { peer: enums.InputPeer }) {
     super();
     this.peer = params.peer;
   }
 }
 
-class messages_getChatInviteImporters extends Function<types.messages_ChatInviteImporters> {
+class messages_getChatInviteImporters extends Function<enums.messages_ChatInviteImporters> {
   requested?: true;
-  peer: types.InputPeer;
+  peer: enums.InputPeer;
   link?: string;
   q?: string;
   offset_date: number;
-  offset_user: types.InputUser;
+  offset_user: enums.InputUser;
   limit: number;
 
   protected get [id]() {
@@ -9137,7 +9138,7 @@ class messages_getChatInviteImporters extends Function<types.messages_ChatInvite
     ];
   }
 
-  constructor(params: { requested?: true; peer: types.InputPeer; link?: string; q?: string; offset_date: number; offset_user: types.InputUser; limit: number }) {
+  constructor(params: { requested?: true; peer: enums.InputPeer; link?: string; q?: string; offset_date: number; offset_user: enums.InputUser; limit: number }) {
     super();
     this.requested = params.requested;
     this.peer = params.peer;
@@ -9149,8 +9150,8 @@ class messages_getChatInviteImporters extends Function<types.messages_ChatInvite
   }
 }
 
-class messages_setHistoryTTL extends Function<types.Updates> {
-  peer: types.InputPeer;
+class messages_setHistoryTTL extends Function<enums.Updates> {
+  peer: enums.InputPeer;
   period: number;
 
   protected get [id]() {
@@ -9171,15 +9172,15 @@ class messages_setHistoryTTL extends Function<types.Updates> {
     ];
   }
 
-  constructor(params: { peer: types.InputPeer; period: number }) {
+  constructor(params: { peer: enums.InputPeer; period: number }) {
     super();
     this.peer = params.peer;
     this.period = params.period;
   }
 }
 
-class messages_checkHistoryImportPeer extends Function<types.messages_CheckedHistoryImportPeer> {
-  peer: types.InputPeer;
+class messages_checkHistoryImportPeer extends Function<enums.messages_CheckedHistoryImportPeer> {
+  peer: enums.InputPeer;
 
   protected get [id]() {
     return 0x5DC60F03;
@@ -9197,14 +9198,14 @@ class messages_checkHistoryImportPeer extends Function<types.messages_CheckedHis
     ];
   }
 
-  constructor(params: { peer: types.InputPeer }) {
+  constructor(params: { peer: enums.InputPeer }) {
     super();
     this.peer = params.peer;
   }
 }
 
-class messages_setChatTheme extends Function<types.Updates> {
-  peer: types.InputPeer;
+class messages_setChatTheme extends Function<enums.Updates> {
+  peer: enums.InputPeer;
   emoticon: string;
 
   protected get [id]() {
@@ -9225,15 +9226,15 @@ class messages_setChatTheme extends Function<types.Updates> {
     ];
   }
 
-  constructor(params: { peer: types.InputPeer; emoticon: string }) {
+  constructor(params: { peer: enums.InputPeer; emoticon: string }) {
     super();
     this.peer = params.peer;
     this.emoticon = params.emoticon;
   }
 }
 
-class messages_getMessageReadParticipants extends Function<types.ReadParticipantDate[]> {
-  peer: types.InputPeer;
+class messages_getMessageReadParticipants extends Function<enums.ReadParticipantDate[]> {
+  peer: enums.InputPeer;
   msg_id: number;
 
   protected get [id]() {
@@ -9254,16 +9255,16 @@ class messages_getMessageReadParticipants extends Function<types.ReadParticipant
     ];
   }
 
-  constructor(params: { peer: types.InputPeer; msg_id: number }) {
+  constructor(params: { peer: enums.InputPeer; msg_id: number }) {
     super();
     this.peer = params.peer;
     this.msg_id = params.msg_id;
   }
 }
 
-class messages_getSearchResultsCalendar extends Function<types.messages_SearchResultsCalendar> {
-  peer: types.InputPeer;
-  filter: types.MessagesFilter;
+class messages_getSearchResultsCalendar extends Function<enums.messages_SearchResultsCalendar> {
+  peer: enums.InputPeer;
+  filter: enums.MessagesFilter;
   offset_id: number;
   offset_date: number;
 
@@ -9289,7 +9290,7 @@ class messages_getSearchResultsCalendar extends Function<types.messages_SearchRe
     ];
   }
 
-  constructor(params: { peer: types.InputPeer; filter: types.MessagesFilter; offset_id: number; offset_date: number }) {
+  constructor(params: { peer: enums.InputPeer; filter: enums.MessagesFilter; offset_id: number; offset_date: number }) {
     super();
     this.peer = params.peer;
     this.filter = params.filter;
@@ -9298,9 +9299,9 @@ class messages_getSearchResultsCalendar extends Function<types.messages_SearchRe
   }
 }
 
-class messages_getSearchResultsPositions extends Function<types.messages_SearchResultsPositions> {
-  peer: types.InputPeer;
-  filter: types.MessagesFilter;
+class messages_getSearchResultsPositions extends Function<enums.messages_SearchResultsPositions> {
+  peer: enums.InputPeer;
+  filter: enums.MessagesFilter;
   offset_id: number;
   limit: number;
 
@@ -9326,7 +9327,7 @@ class messages_getSearchResultsPositions extends Function<types.messages_SearchR
     ];
   }
 
-  constructor(params: { peer: types.InputPeer; filter: types.MessagesFilter; offset_id: number; limit: number }) {
+  constructor(params: { peer: enums.InputPeer; filter: enums.MessagesFilter; offset_id: number; limit: number }) {
     super();
     this.peer = params.peer;
     this.filter = params.filter;
@@ -9335,10 +9336,10 @@ class messages_getSearchResultsPositions extends Function<types.messages_SearchR
   }
 }
 
-class messages_hideChatJoinRequest extends Function<types.Updates> {
+class messages_hideChatJoinRequest extends Function<enums.Updates> {
   approved?: true;
-  peer: types.InputPeer;
-  user_id: types.InputUser;
+  peer: enums.InputPeer;
+  user_id: enums.InputUser;
 
   protected get [id]() {
     return 0x7FE7E815;
@@ -9362,7 +9363,7 @@ class messages_hideChatJoinRequest extends Function<types.Updates> {
     ];
   }
 
-  constructor(params: { approved?: true; peer: types.InputPeer; user_id: types.InputUser }) {
+  constructor(params: { approved?: true; peer: enums.InputPeer; user_id: enums.InputUser }) {
     super();
     this.approved = params.approved;
     this.peer = params.peer;
@@ -9370,9 +9371,9 @@ class messages_hideChatJoinRequest extends Function<types.Updates> {
   }
 }
 
-class messages_hideAllChatJoinRequests extends Function<types.Updates> {
+class messages_hideAllChatJoinRequests extends Function<enums.Updates> {
   approved?: true;
-  peer: types.InputPeer;
+  peer: enums.InputPeer;
   link?: string;
 
   protected get [id]() {
@@ -9397,7 +9398,7 @@ class messages_hideAllChatJoinRequests extends Function<types.Updates> {
     ];
   }
 
-  constructor(params: { approved?: true; peer: types.InputPeer; link?: string }) {
+  constructor(params: { approved?: true; peer: enums.InputPeer; link?: string }) {
     super();
     this.approved = params.approved;
     this.peer = params.peer;
@@ -9405,8 +9406,8 @@ class messages_hideAllChatJoinRequests extends Function<types.Updates> {
   }
 }
 
-class messages_toggleNoForwards extends Function<types.Updates> {
-  peer: types.InputPeer;
+class messages_toggleNoForwards extends Function<enums.Updates> {
+  peer: enums.InputPeer;
   enabled: boolean;
 
   protected get [id]() {
@@ -9427,7 +9428,7 @@ class messages_toggleNoForwards extends Function<types.Updates> {
     ];
   }
 
-  constructor(params: { peer: types.InputPeer; enabled: boolean }) {
+  constructor(params: { peer: enums.InputPeer; enabled: boolean }) {
     super();
     this.peer = params.peer;
     this.enabled = params.enabled;
@@ -9435,8 +9436,8 @@ class messages_toggleNoForwards extends Function<types.Updates> {
 }
 
 class messages_saveDefaultSendAs extends Function<boolean> {
-  peer: types.InputPeer;
-  send_as: types.InputPeer;
+  peer: enums.InputPeer;
+  send_as: enums.InputPeer;
 
   protected get [id]() {
     return 0xCCFDDF96;
@@ -9456,19 +9457,19 @@ class messages_saveDefaultSendAs extends Function<boolean> {
     ];
   }
 
-  constructor(params: { peer: types.InputPeer; send_as: types.InputPeer }) {
+  constructor(params: { peer: enums.InputPeer; send_as: enums.InputPeer }) {
     super();
     this.peer = params.peer;
     this.send_as = params.send_as;
   }
 }
 
-class messages_sendReaction extends Function<types.Updates> {
+class messages_sendReaction extends Function<enums.Updates> {
   big?: true;
   add_to_recent?: true;
-  peer: types.InputPeer;
+  peer: enums.InputPeer;
   msg_id: number;
-  reaction?: Array<types.Reaction>;
+  reaction?: Array<enums.Reaction>;
 
   protected get [id]() {
     return 0xD30D78D4;
@@ -9496,7 +9497,7 @@ class messages_sendReaction extends Function<types.Updates> {
     ];
   }
 
-  constructor(params: { big?: true; add_to_recent?: true; peer: types.InputPeer; msg_id: number; reaction?: Array<types.Reaction> }) {
+  constructor(params: { big?: true; add_to_recent?: true; peer: enums.InputPeer; msg_id: number; reaction?: Array<enums.Reaction> }) {
     super();
     this.big = params.big;
     this.add_to_recent = params.add_to_recent;
@@ -9506,8 +9507,8 @@ class messages_sendReaction extends Function<types.Updates> {
   }
 }
 
-class messages_getMessagesReactions extends Function<types.Updates> {
-  peer: types.InputPeer;
+class messages_getMessagesReactions extends Function<enums.Updates> {
+  peer: enums.InputPeer;
   id: Array<number>;
 
   protected get [id]() {
@@ -9528,17 +9529,17 @@ class messages_getMessagesReactions extends Function<types.Updates> {
     ];
   }
 
-  constructor(params: { peer: types.InputPeer; id: Array<number> }) {
+  constructor(params: { peer: enums.InputPeer; id: Array<number> }) {
     super();
     this.peer = params.peer;
     this.id = params.id;
   }
 }
 
-class messages_getMessageReactionsList extends Function<types.messages_MessageReactionsList> {
-  peer: types.InputPeer;
+class messages_getMessageReactionsList extends Function<enums.messages_MessageReactionsList> {
+  peer: enums.InputPeer;
   id: number;
-  reaction?: types.Reaction;
+  reaction?: enums.Reaction;
   offset?: string;
   limit: number;
 
@@ -9568,7 +9569,7 @@ class messages_getMessageReactionsList extends Function<types.messages_MessageRe
     ];
   }
 
-  constructor(params: { peer: types.InputPeer; id: number; reaction?: types.Reaction; offset?: string; limit: number }) {
+  constructor(params: { peer: enums.InputPeer; id: number; reaction?: enums.Reaction; offset?: string; limit: number }) {
     super();
     this.peer = params.peer;
     this.id = params.id;
@@ -9578,9 +9579,9 @@ class messages_getMessageReactionsList extends Function<types.messages_MessageRe
   }
 }
 
-class messages_setChatAvailableReactions extends Function<types.Updates> {
-  peer: types.InputPeer;
-  available_reactions: types.ChatReactions;
+class messages_setChatAvailableReactions extends Function<enums.Updates> {
+  peer: enums.InputPeer;
+  available_reactions: enums.ChatReactions;
 
   protected get [id]() {
     return 0xFEB16771;
@@ -9600,14 +9601,14 @@ class messages_setChatAvailableReactions extends Function<types.Updates> {
     ];
   }
 
-  constructor(params: { peer: types.InputPeer; available_reactions: types.ChatReactions }) {
+  constructor(params: { peer: enums.InputPeer; available_reactions: enums.ChatReactions }) {
     super();
     this.peer = params.peer;
     this.available_reactions = params.available_reactions;
   }
 }
 
-class messages_getAvailableReactions extends Function<types.messages_AvailableReactions> {
+class messages_getAvailableReactions extends Function<enums.messages_AvailableReactions> {
   hash: number;
 
   protected get [id]() {
@@ -9633,7 +9634,7 @@ class messages_getAvailableReactions extends Function<types.messages_AvailableRe
 }
 
 class messages_setDefaultReaction extends Function<boolean> {
-  reaction: types.Reaction;
+  reaction: enums.Reaction;
 
   protected get [id]() {
     return 0x4F47A016;
@@ -9651,16 +9652,16 @@ class messages_setDefaultReaction extends Function<boolean> {
     ];
   }
 
-  constructor(params: { reaction: types.Reaction }) {
+  constructor(params: { reaction: enums.Reaction }) {
     super();
     this.reaction = params.reaction;
   }
 }
 
-class messages_translateText extends Function<types.messages_TranslatedText> {
-  peer?: types.InputPeer;
+class messages_translateText extends Function<enums.messages_TranslatedText> {
+  peer?: enums.InputPeer;
   id?: Array<number>;
-  text?: Array<types.TextWithEntities>;
+  text?: Array<enums.TextWithEntities>;
   to_lang: string;
 
   protected get [id]() {
@@ -9687,7 +9688,7 @@ class messages_translateText extends Function<types.messages_TranslatedText> {
     ];
   }
 
-  constructor(params: { peer?: types.InputPeer; id?: Array<number>; text?: Array<types.TextWithEntities>; to_lang: string }) {
+  constructor(params: { peer?: enums.InputPeer; id?: Array<number>; text?: Array<enums.TextWithEntities>; to_lang: string }) {
     super();
     this.peer = params.peer;
     this.id = params.id;
@@ -9696,8 +9697,8 @@ class messages_translateText extends Function<types.messages_TranslatedText> {
   }
 }
 
-class messages_getUnreadReactions extends Function<types.messages_Messages> {
-  peer: types.InputPeer;
+class messages_getUnreadReactions extends Function<enums.messages_Messages> {
+  peer: enums.InputPeer;
   top_msg_id?: number;
   offset_id: number;
   add_offset: number;
@@ -9735,7 +9736,7 @@ class messages_getUnreadReactions extends Function<types.messages_Messages> {
     ];
   }
 
-  constructor(params: { peer: types.InputPeer; top_msg_id?: number; offset_id: number; add_offset: number; limit: number; max_id: number; min_id: number }) {
+  constructor(params: { peer: enums.InputPeer; top_msg_id?: number; offset_id: number; add_offset: number; limit: number; max_id: number; min_id: number }) {
     super();
     this.peer = params.peer;
     this.top_msg_id = params.top_msg_id;
@@ -9747,8 +9748,8 @@ class messages_getUnreadReactions extends Function<types.messages_Messages> {
   }
 }
 
-class messages_readReactions extends Function<types.messages_AffectedHistory> {
-  peer: types.InputPeer;
+class messages_readReactions extends Function<enums.messages_AffectedHistory> {
+  peer: enums.InputPeer;
   top_msg_id?: number;
 
   protected get [id]() {
@@ -9771,16 +9772,16 @@ class messages_readReactions extends Function<types.messages_AffectedHistory> {
     ];
   }
 
-  constructor(params: { peer: types.InputPeer; top_msg_id?: number }) {
+  constructor(params: { peer: enums.InputPeer; top_msg_id?: number }) {
     super();
     this.peer = params.peer;
     this.top_msg_id = params.top_msg_id;
   }
 }
 
-class messages_searchSentMedia extends Function<types.messages_Messages> {
+class messages_searchSentMedia extends Function<enums.messages_Messages> {
   q: string;
-  filter: types.MessagesFilter;
+  filter: enums.MessagesFilter;
   limit: number;
 
   protected get [id]() {
@@ -9803,7 +9804,7 @@ class messages_searchSentMedia extends Function<types.messages_Messages> {
     ];
   }
 
-  constructor(params: { q: string; filter: types.MessagesFilter; limit: number }) {
+  constructor(params: { q: string; filter: enums.MessagesFilter; limit: number }) {
     super();
     this.q = params.q;
     this.filter = params.filter;
@@ -9811,7 +9812,7 @@ class messages_searchSentMedia extends Function<types.messages_Messages> {
   }
 }
 
-class messages_getAttachMenuBots extends Function<types.AttachMenuBots> {
+class messages_getAttachMenuBots extends Function<enums.AttachMenuBots> {
   hash: bigint;
 
   protected get [id]() {
@@ -9836,8 +9837,8 @@ class messages_getAttachMenuBots extends Function<types.AttachMenuBots> {
   }
 }
 
-class messages_getAttachMenuBot extends Function<types.AttachMenuBotsBot> {
-  bot: types.InputUser;
+class messages_getAttachMenuBot extends Function<enums.AttachMenuBotsBot> {
+  bot: enums.InputUser;
 
   protected get [id]() {
     return 0x77216192;
@@ -9855,7 +9856,7 @@ class messages_getAttachMenuBot extends Function<types.AttachMenuBotsBot> {
     ];
   }
 
-  constructor(params: { bot: types.InputUser }) {
+  constructor(params: { bot: enums.InputUser }) {
     super();
     this.bot = params.bot;
   }
@@ -9863,7 +9864,7 @@ class messages_getAttachMenuBot extends Function<types.AttachMenuBotsBot> {
 
 class messages_toggleBotInAttachMenu extends Function<boolean> {
   write_allowed?: true;
-  bot: types.InputUser;
+  bot: enums.InputUser;
   enabled: boolean;
 
   protected get [id]() {
@@ -9888,7 +9889,7 @@ class messages_toggleBotInAttachMenu extends Function<boolean> {
     ];
   }
 
-  constructor(params: { write_allowed?: true; bot: types.InputUser; enabled: boolean }) {
+  constructor(params: { write_allowed?: true; bot: enums.InputUser; enabled: boolean }) {
     super();
     this.write_allowed = params.write_allowed;
     this.bot = params.bot;
@@ -9896,17 +9897,17 @@ class messages_toggleBotInAttachMenu extends Function<boolean> {
   }
 }
 
-class messages_requestWebView extends Function<types.WebViewResult> {
+class messages_requestWebView extends Function<enums.WebViewResult> {
   from_bot_menu?: true;
   silent?: true;
-  peer: types.InputPeer;
-  bot: types.InputUser;
+  peer: enums.InputPeer;
+  bot: enums.InputUser;
   url?: string;
   start_param?: string;
-  theme_params?: types.DataJSON;
+  theme_params?: enums.DataJSON;
   platform: string;
-  reply_to?: types.InputReplyTo;
-  send_as?: types.InputPeer;
+  reply_to?: enums.InputReplyTo;
+  send_as?: enums.InputPeer;
 
   protected get [id]() {
     return 0x269DC2C1;
@@ -9944,7 +9945,7 @@ class messages_requestWebView extends Function<types.WebViewResult> {
     ];
   }
 
-  constructor(params: { from_bot_menu?: true; silent?: true; peer: types.InputPeer; bot: types.InputUser; url?: string; start_param?: string; theme_params?: types.DataJSON; platform: string; reply_to?: types.InputReplyTo; send_as?: types.InputPeer }) {
+  constructor(params: { from_bot_menu?: true; silent?: true; peer: enums.InputPeer; bot: enums.InputUser; url?: string; start_param?: string; theme_params?: enums.DataJSON; platform: string; reply_to?: enums.InputReplyTo; send_as?: enums.InputPeer }) {
     super();
     this.from_bot_menu = params.from_bot_menu;
     this.silent = params.silent;
@@ -9961,11 +9962,11 @@ class messages_requestWebView extends Function<types.WebViewResult> {
 
 class messages_prolongWebView extends Function<boolean> {
   silent?: true;
-  peer: types.InputPeer;
-  bot: types.InputUser;
+  peer: enums.InputPeer;
+  bot: enums.InputUser;
   query_id: bigint;
-  reply_to?: types.InputReplyTo;
-  send_as?: types.InputPeer;
+  reply_to?: enums.InputReplyTo;
+  send_as?: enums.InputPeer;
 
   protected get [id]() {
     return 0xB0D81A83;
@@ -9995,7 +9996,7 @@ class messages_prolongWebView extends Function<boolean> {
     ];
   }
 
-  constructor(params: { silent?: true; peer: types.InputPeer; bot: types.InputUser; query_id: bigint; reply_to?: types.InputReplyTo; send_as?: types.InputPeer }) {
+  constructor(params: { silent?: true; peer: enums.InputPeer; bot: enums.InputUser; query_id: bigint; reply_to?: enums.InputReplyTo; send_as?: enums.InputPeer }) {
     super();
     this.silent = params.silent;
     this.peer = params.peer;
@@ -10006,13 +10007,13 @@ class messages_prolongWebView extends Function<boolean> {
   }
 }
 
-class messages_requestSimpleWebView extends Function<types.SimpleWebViewResult> {
+class messages_requestSimpleWebView extends Function<enums.SimpleWebViewResult> {
   from_switch_webview?: true;
   from_side_menu?: true;
-  bot: types.InputUser;
+  bot: enums.InputUser;
   url?: string;
   start_param?: string;
-  theme_params?: types.DataJSON;
+  theme_params?: enums.DataJSON;
   platform: string;
 
   protected get [id]() {
@@ -10045,7 +10046,7 @@ class messages_requestSimpleWebView extends Function<types.SimpleWebViewResult> 
     ];
   }
 
-  constructor(params: { from_switch_webview?: true; from_side_menu?: true; bot: types.InputUser; url?: string; start_param?: string; theme_params?: types.DataJSON; platform: string }) {
+  constructor(params: { from_switch_webview?: true; from_side_menu?: true; bot: enums.InputUser; url?: string; start_param?: string; theme_params?: enums.DataJSON; platform: string }) {
     super();
     this.from_switch_webview = params.from_switch_webview;
     this.from_side_menu = params.from_side_menu;
@@ -10057,9 +10058,9 @@ class messages_requestSimpleWebView extends Function<types.SimpleWebViewResult> 
   }
 }
 
-class messages_sendWebViewResultMessage extends Function<types.WebViewMessageSent> {
+class messages_sendWebViewResultMessage extends Function<enums.WebViewMessageSent> {
   bot_query_id: string;
-  result: types.InputBotInlineResult;
+  result: enums.InputBotInlineResult;
 
   protected get [id]() {
     return 0x0A4314F5;
@@ -10079,15 +10080,15 @@ class messages_sendWebViewResultMessage extends Function<types.WebViewMessageSen
     ];
   }
 
-  constructor(params: { bot_query_id: string; result: types.InputBotInlineResult }) {
+  constructor(params: { bot_query_id: string; result: enums.InputBotInlineResult }) {
     super();
     this.bot_query_id = params.bot_query_id;
     this.result = params.result;
   }
 }
 
-class messages_sendWebViewData extends Function<types.Updates> {
-  bot: types.InputUser;
+class messages_sendWebViewData extends Function<enums.Updates> {
+  bot: enums.InputUser;
   random_id: bigint;
   button_text: string;
   data: string;
@@ -10114,7 +10115,7 @@ class messages_sendWebViewData extends Function<types.Updates> {
     ];
   }
 
-  constructor(params: { bot: types.InputUser; random_id: bigint; button_text: string; data: string }) {
+  constructor(params: { bot: enums.InputUser; random_id: bigint; button_text: string; data: string }) {
     super();
     this.bot = params.bot;
     this.random_id = params.random_id;
@@ -10123,8 +10124,8 @@ class messages_sendWebViewData extends Function<types.Updates> {
   }
 }
 
-class messages_transcribeAudio extends Function<types.messages_TranscribedAudio> {
-  peer: types.InputPeer;
+class messages_transcribeAudio extends Function<enums.messages_TranscribedAudio> {
+  peer: enums.InputPeer;
   msg_id: number;
 
   protected get [id]() {
@@ -10145,7 +10146,7 @@ class messages_transcribeAudio extends Function<types.messages_TranscribedAudio>
     ];
   }
 
-  constructor(params: { peer: types.InputPeer; msg_id: number }) {
+  constructor(params: { peer: enums.InputPeer; msg_id: number }) {
     super();
     this.peer = params.peer;
     this.msg_id = params.msg_id;
@@ -10153,7 +10154,7 @@ class messages_transcribeAudio extends Function<types.messages_TranscribedAudio>
 }
 
 class messages_rateTranscribedAudio extends Function<boolean> {
-  peer: types.InputPeer;
+  peer: enums.InputPeer;
   msg_id: number;
   transcription_id: bigint;
   good: boolean;
@@ -10180,7 +10181,7 @@ class messages_rateTranscribedAudio extends Function<boolean> {
     ];
   }
 
-  constructor(params: { peer: types.InputPeer; msg_id: number; transcription_id: bigint; good: boolean }) {
+  constructor(params: { peer: enums.InputPeer; msg_id: number; transcription_id: bigint; good: boolean }) {
     super();
     this.peer = params.peer;
     this.msg_id = params.msg_id;
@@ -10189,7 +10190,7 @@ class messages_rateTranscribedAudio extends Function<boolean> {
   }
 }
 
-class messages_getCustomEmojiDocuments extends Function<types.Document[]> {
+class messages_getCustomEmojiDocuments extends Function<enums.Document[]> {
   document_id: Array<bigint>;
 
   protected get [id]() {
@@ -10214,7 +10215,7 @@ class messages_getCustomEmojiDocuments extends Function<types.Document[]> {
   }
 }
 
-class messages_getEmojiStickers extends Function<types.messages_AllStickers> {
+class messages_getEmojiStickers extends Function<enums.messages_AllStickers> {
   hash: bigint;
 
   protected get [id]() {
@@ -10239,7 +10240,7 @@ class messages_getEmojiStickers extends Function<types.messages_AllStickers> {
   }
 }
 
-class messages_getFeaturedEmojiStickers extends Function<types.messages_FeaturedStickers> {
+class messages_getFeaturedEmojiStickers extends Function<enums.messages_FeaturedStickers> {
   hash: bigint;
 
   protected get [id]() {
@@ -10265,9 +10266,9 @@ class messages_getFeaturedEmojiStickers extends Function<types.messages_Featured
 }
 
 class messages_reportReaction extends Function<boolean> {
-  peer: types.InputPeer;
+  peer: enums.InputPeer;
   id: number;
-  reaction_peer: types.InputPeer;
+  reaction_peer: enums.InputPeer;
 
   protected get [id]() {
     return 0x3F64C076;
@@ -10289,7 +10290,7 @@ class messages_reportReaction extends Function<boolean> {
     ];
   }
 
-  constructor(params: { peer: types.InputPeer; id: number; reaction_peer: types.InputPeer }) {
+  constructor(params: { peer: enums.InputPeer; id: number; reaction_peer: enums.InputPeer }) {
     super();
     this.peer = params.peer;
     this.id = params.id;
@@ -10297,7 +10298,7 @@ class messages_reportReaction extends Function<boolean> {
   }
 }
 
-class messages_getTopReactions extends Function<types.messages_Reactions> {
+class messages_getTopReactions extends Function<enums.messages_Reactions> {
   limit: number;
   hash: bigint;
 
@@ -10326,7 +10327,7 @@ class messages_getTopReactions extends Function<types.messages_Reactions> {
   }
 }
 
-class messages_getRecentReactions extends Function<types.messages_Reactions> {
+class messages_getRecentReactions extends Function<enums.messages_Reactions> {
   limit: number;
   hash: bigint;
 
@@ -10373,8 +10374,8 @@ class messages_clearRecentReactions extends Function<boolean> {
   }
 }
 
-class messages_getExtendedMedia extends Function<types.Updates> {
-  peer: types.InputPeer;
+class messages_getExtendedMedia extends Function<enums.Updates> {
+  peer: enums.InputPeer;
   id: Array<number>;
 
   protected get [id]() {
@@ -10395,7 +10396,7 @@ class messages_getExtendedMedia extends Function<types.Updates> {
     ];
   }
 
-  constructor(params: { peer: types.InputPeer; id: Array<number> }) {
+  constructor(params: { peer: enums.InputPeer; id: Array<number> }) {
     super();
     this.peer = params.peer;
     this.id = params.id;
@@ -10427,7 +10428,7 @@ class messages_setDefaultHistoryTTL extends Function<boolean> {
   }
 }
 
-class messages_getDefaultHistoryTTL extends Function<types.DefaultHistoryTTL> {
+class messages_getDefaultHistoryTTL extends Function<enums.DefaultHistoryTTL> {
   protected get [id]() {
     return 0x658B7188;
   }
@@ -10445,11 +10446,11 @@ class messages_getDefaultHistoryTTL extends Function<types.DefaultHistoryTTL> {
   }
 }
 
-class messages_sendBotRequestedPeer extends Function<types.Updates> {
-  peer: types.InputPeer;
+class messages_sendBotRequestedPeer extends Function<enums.Updates> {
+  peer: enums.InputPeer;
   msg_id: number;
   button_id: number;
-  requested_peer: types.InputPeer;
+  requested_peer: enums.InputPeer;
 
   protected get [id]() {
     return 0xFE38D01B;
@@ -10473,7 +10474,7 @@ class messages_sendBotRequestedPeer extends Function<types.Updates> {
     ];
   }
 
-  constructor(params: { peer: types.InputPeer; msg_id: number; button_id: number; requested_peer: types.InputPeer }) {
+  constructor(params: { peer: enums.InputPeer; msg_id: number; button_id: number; requested_peer: enums.InputPeer }) {
     super();
     this.peer = params.peer;
     this.msg_id = params.msg_id;
@@ -10482,7 +10483,7 @@ class messages_sendBotRequestedPeer extends Function<types.Updates> {
   }
 }
 
-class messages_getEmojiGroups extends Function<types.messages_EmojiGroups> {
+class messages_getEmojiGroups extends Function<enums.messages_EmojiGroups> {
   hash: number;
 
   protected get [id]() {
@@ -10507,7 +10508,7 @@ class messages_getEmojiGroups extends Function<types.messages_EmojiGroups> {
   }
 }
 
-class messages_getEmojiStatusGroups extends Function<types.messages_EmojiGroups> {
+class messages_getEmojiStatusGroups extends Function<enums.messages_EmojiGroups> {
   hash: number;
 
   protected get [id]() {
@@ -10532,7 +10533,7 @@ class messages_getEmojiStatusGroups extends Function<types.messages_EmojiGroups>
   }
 }
 
-class messages_getEmojiProfilePhotoGroups extends Function<types.messages_EmojiGroups> {
+class messages_getEmojiProfilePhotoGroups extends Function<enums.messages_EmojiGroups> {
   hash: number;
 
   protected get [id]() {
@@ -10557,7 +10558,7 @@ class messages_getEmojiProfilePhotoGroups extends Function<types.messages_EmojiG
   }
 }
 
-class messages_searchCustomEmoji extends Function<types.EmojiList> {
+class messages_searchCustomEmoji extends Function<enums.EmojiList> {
   emoticon: string;
   hash: bigint;
 
@@ -10588,7 +10589,7 @@ class messages_searchCustomEmoji extends Function<types.EmojiList> {
 
 class messages_togglePeerTranslations extends Function<boolean> {
   disabled?: true;
-  peer: types.InputPeer;
+  peer: enums.InputPeer;
 
   protected get [id]() {
     return 0xE47CB579;
@@ -10610,15 +10611,15 @@ class messages_togglePeerTranslations extends Function<boolean> {
     ];
   }
 
-  constructor(params: { disabled?: true; peer: types.InputPeer }) {
+  constructor(params: { disabled?: true; peer: enums.InputPeer }) {
     super();
     this.disabled = params.disabled;
     this.peer = params.peer;
   }
 }
 
-class messages_getBotApp extends Function<types.messages_BotApp> {
-  app: types.InputBotApp;
+class messages_getBotApp extends Function<enums.messages_BotApp> {
+  app: enums.InputBotApp;
   hash: bigint;
 
   protected get [id]() {
@@ -10639,19 +10640,19 @@ class messages_getBotApp extends Function<types.messages_BotApp> {
     ];
   }
 
-  constructor(params: { app: types.InputBotApp; hash: bigint }) {
+  constructor(params: { app: enums.InputBotApp; hash: bigint }) {
     super();
     this.app = params.app;
     this.hash = params.hash;
   }
 }
 
-class messages_requestAppWebView extends Function<types.AppWebViewResult> {
+class messages_requestAppWebView extends Function<enums.AppWebViewResult> {
   write_allowed?: true;
-  peer: types.InputPeer;
-  app: types.InputBotApp;
+  peer: enums.InputPeer;
+  app: enums.InputBotApp;
   start_param?: string;
-  theme_params?: types.DataJSON;
+  theme_params?: enums.DataJSON;
   platform: string;
 
   protected get [id]() {
@@ -10682,7 +10683,7 @@ class messages_requestAppWebView extends Function<types.AppWebViewResult> {
     ];
   }
 
-  constructor(params: { write_allowed?: true; peer: types.InputPeer; app: types.InputBotApp; start_param?: string; theme_params?: types.DataJSON; platform: string }) {
+  constructor(params: { write_allowed?: true; peer: enums.InputPeer; app: enums.InputBotApp; start_param?: string; theme_params?: enums.DataJSON; platform: string }) {
     super();
     this.write_allowed = params.write_allowed;
     this.peer = params.peer;
@@ -10693,12 +10694,12 @@ class messages_requestAppWebView extends Function<types.AppWebViewResult> {
   }
 }
 
-class messages_setChatWallPaper extends Function<types.Updates> {
+class messages_setChatWallPaper extends Function<enums.Updates> {
   for_both?: true;
   revert?: true;
-  peer: types.InputPeer;
-  wallpaper?: types.InputWallPaper;
-  settings?: types.WallPaperSettings;
+  peer: enums.InputPeer;
+  wallpaper?: enums.InputWallPaper;
+  settings?: enums.WallPaperSettings;
   id?: number;
 
   protected get [id]() {
@@ -10729,7 +10730,7 @@ class messages_setChatWallPaper extends Function<types.Updates> {
     ];
   }
 
-  constructor(params: { for_both?: true; revert?: true; peer: types.InputPeer; wallpaper?: types.InputWallPaper; settings?: types.WallPaperSettings; id?: number }) {
+  constructor(params: { for_both?: true; revert?: true; peer: enums.InputPeer; wallpaper?: enums.InputWallPaper; settings?: enums.WallPaperSettings; id?: number }) {
     super();
     this.for_both = params.for_both;
     this.revert = params.revert;
@@ -10740,7 +10741,7 @@ class messages_setChatWallPaper extends Function<types.Updates> {
   }
 }
 
-class messages_searchEmojiStickerSets extends Function<types.messages_FoundStickerSets> {
+class messages_searchEmojiStickerSets extends Function<enums.messages_FoundStickerSets> {
   exclude_featured?: true;
   q: string;
   hash: bigint;
@@ -10775,7 +10776,7 @@ class messages_searchEmojiStickerSets extends Function<types.messages_FoundStick
   }
 }
 
-class updates_getState extends Function<types.updates_State> {
+class updates_getState extends Function<enums.updates_State> {
   protected get [id]() {
     return 0xEDD4882A;
   }
@@ -10793,7 +10794,7 @@ class updates_getState extends Function<types.updates_State> {
   }
 }
 
-class updates_getDifference extends Function<types.updates_Difference> {
+class updates_getDifference extends Function<enums.updates_Difference> {
   pts: number;
   pts_limit?: number;
   pts_total_limit?: number;
@@ -10840,10 +10841,10 @@ class updates_getDifference extends Function<types.updates_Difference> {
   }
 }
 
-class updates_getChannelDifference extends Function<types.updates_ChannelDifference> {
+class updates_getChannelDifference extends Function<enums.updates_ChannelDifference> {
   force?: true;
-  channel: types.InputChannel;
-  filter: types.ChannelMessagesFilter;
+  channel: enums.InputChannel;
+  filter: enums.ChannelMessagesFilter;
   pts: number;
   limit: number;
 
@@ -10873,7 +10874,7 @@ class updates_getChannelDifference extends Function<types.updates_ChannelDiffere
     ];
   }
 
-  constructor(params: { force?: true; channel: types.InputChannel; filter: types.ChannelMessagesFilter; pts: number; limit: number }) {
+  constructor(params: { force?: true; channel: enums.InputChannel; filter: enums.ChannelMessagesFilter; pts: number; limit: number }) {
     super();
     this.force = params.force;
     this.channel = params.channel;
@@ -10883,10 +10884,10 @@ class updates_getChannelDifference extends Function<types.updates_ChannelDiffere
   }
 }
 
-class photos_updateProfilePhoto extends Function<types.photos_Photo> {
+class photos_updateProfilePhoto extends Function<enums.photos_Photo> {
   fallback?: true;
-  bot?: types.InputUser;
-  id: types.InputPhoto;
+  bot?: enums.InputUser;
+  id: enums.InputPhoto;
 
   protected get [id]() {
     return 0x09E82039;
@@ -10910,7 +10911,7 @@ class photos_updateProfilePhoto extends Function<types.photos_Photo> {
     ];
   }
 
-  constructor(params: { fallback?: true; bot?: types.InputUser; id: types.InputPhoto }) {
+  constructor(params: { fallback?: true; bot?: enums.InputUser; id: enums.InputPhoto }) {
     super();
     this.fallback = params.fallback;
     this.bot = params.bot;
@@ -10918,13 +10919,13 @@ class photos_updateProfilePhoto extends Function<types.photos_Photo> {
   }
 }
 
-class photos_uploadProfilePhoto extends Function<types.photos_Photo> {
+class photos_uploadProfilePhoto extends Function<enums.photos_Photo> {
   fallback?: true;
-  bot?: types.InputUser;
-  file?: types.InputFile;
-  video?: types.InputFile;
+  bot?: enums.InputUser;
+  file?: enums.InputFile;
+  video?: enums.InputFile;
   video_start_ts?: number;
-  video_emoji_markup?: types.VideoSize;
+  video_emoji_markup?: enums.VideoSize;
 
   protected get [id]() {
     return 0x0388A3B5;
@@ -10954,7 +10955,7 @@ class photos_uploadProfilePhoto extends Function<types.photos_Photo> {
     ];
   }
 
-  constructor(params?: { fallback?: true; bot?: types.InputUser; file?: types.InputFile; video?: types.InputFile; video_start_ts?: number; video_emoji_markup?: types.VideoSize }) {
+  constructor(params?: { fallback?: true; bot?: enums.InputUser; file?: enums.InputFile; video?: enums.InputFile; video_start_ts?: number; video_emoji_markup?: enums.VideoSize }) {
     super();
     this.fallback = params?.fallback;
     this.bot = params?.bot;
@@ -10966,7 +10967,7 @@ class photos_uploadProfilePhoto extends Function<types.photos_Photo> {
 }
 
 class photos_deletePhotos extends Function<bigint[]> {
-  id: Array<types.InputPhoto>;
+  id: Array<enums.InputPhoto>;
 
   protected get [id]() {
     return 0x87CF7F2F;
@@ -10984,14 +10985,14 @@ class photos_deletePhotos extends Function<bigint[]> {
     ];
   }
 
-  constructor(params: { id: Array<types.InputPhoto> }) {
+  constructor(params: { id: Array<enums.InputPhoto> }) {
     super();
     this.id = params.id;
   }
 }
 
-class photos_getUserPhotos extends Function<types.photos_Photos> {
-  user_id: types.InputUser;
+class photos_getUserPhotos extends Function<enums.photos_Photos> {
+  user_id: enums.InputUser;
   offset: number;
   max_id: bigint;
   limit: number;
@@ -11018,7 +11019,7 @@ class photos_getUserPhotos extends Function<types.photos_Photos> {
     ];
   }
 
-  constructor(params: { user_id: types.InputUser; offset: number; max_id: bigint; limit: number }) {
+  constructor(params: { user_id: enums.InputUser; offset: number; max_id: bigint; limit: number }) {
     super();
     this.user_id = params.user_id;
     this.offset = params.offset;
@@ -11027,14 +11028,14 @@ class photos_getUserPhotos extends Function<types.photos_Photos> {
   }
 }
 
-class photos_uploadContactProfilePhoto extends Function<types.photos_Photo> {
+class photos_uploadContactProfilePhoto extends Function<enums.photos_Photo> {
   suggest?: true;
   save?: true;
-  user_id: types.InputUser;
-  file?: types.InputFile;
-  video?: types.InputFile;
+  user_id: enums.InputUser;
+  file?: enums.InputFile;
+  video?: enums.InputFile;
   video_start_ts?: number;
-  video_emoji_markup?: types.VideoSize;
+  video_emoji_markup?: enums.VideoSize;
 
   protected get [id]() {
     return 0xE14C4A71;
@@ -11066,7 +11067,7 @@ class photos_uploadContactProfilePhoto extends Function<types.photos_Photo> {
     ];
   }
 
-  constructor(params: { suggest?: true; save?: true; user_id: types.InputUser; file?: types.InputFile; video?: types.InputFile; video_start_ts?: number; video_emoji_markup?: types.VideoSize }) {
+  constructor(params: { suggest?: true; save?: true; user_id: enums.InputUser; file?: enums.InputFile; video?: enums.InputFile; video_start_ts?: number; video_emoji_markup?: enums.VideoSize }) {
     super();
     this.suggest = params.suggest;
     this.save = params.save;
@@ -11111,10 +11112,10 @@ class upload_saveFilePart extends Function<boolean> {
   }
 }
 
-class upload_getFile extends Function<types.upload_File> {
+class upload_getFile extends Function<enums.upload_File> {
   precise?: true;
   cdn_supported?: true;
-  location: types.InputFileLocation;
+  location: enums.InputFileLocation;
   offset: bigint;
   limit: number;
 
@@ -11144,7 +11145,7 @@ class upload_getFile extends Function<types.upload_File> {
     ];
   }
 
-  constructor(params: { precise?: true; cdn_supported?: true; location: types.InputFileLocation; offset: bigint; limit: number }) {
+  constructor(params: { precise?: true; cdn_supported?: true; location: enums.InputFileLocation; offset: bigint; limit: number }) {
     super();
     this.precise = params.precise;
     this.cdn_supported = params.cdn_supported;
@@ -11191,8 +11192,8 @@ class upload_saveBigFilePart extends Function<boolean> {
   }
 }
 
-class upload_getWebFile extends Function<types.upload_WebFile> {
-  location: types.InputWebFileLocation;
+class upload_getWebFile extends Function<enums.upload_WebFile> {
+  location: enums.InputWebFileLocation;
   offset: number;
   limit: number;
 
@@ -11216,7 +11217,7 @@ class upload_getWebFile extends Function<types.upload_WebFile> {
     ];
   }
 
-  constructor(params: { location: types.InputWebFileLocation; offset: number; limit: number }) {
+  constructor(params: { location: enums.InputWebFileLocation; offset: number; limit: number }) {
     super();
     this.location = params.location;
     this.offset = params.offset;
@@ -11224,7 +11225,7 @@ class upload_getWebFile extends Function<types.upload_WebFile> {
   }
 }
 
-class upload_getCdnFile extends Function<types.upload_CdnFile> {
+class upload_getCdnFile extends Function<enums.upload_CdnFile> {
   file_token: Uint8Array;
   offset: bigint;
   limit: number;
@@ -11257,7 +11258,7 @@ class upload_getCdnFile extends Function<types.upload_CdnFile> {
   }
 }
 
-class upload_reuploadCdnFile extends Function<types.FileHash[]> {
+class upload_reuploadCdnFile extends Function<enums.FileHash[]> {
   file_token: Uint8Array;
   request_token: Uint8Array;
 
@@ -11286,7 +11287,7 @@ class upload_reuploadCdnFile extends Function<types.FileHash[]> {
   }
 }
 
-class upload_getCdnFileHashes extends Function<types.FileHash[]> {
+class upload_getCdnFileHashes extends Function<enums.FileHash[]> {
   file_token: Uint8Array;
   offset: bigint;
 
@@ -11315,8 +11316,8 @@ class upload_getCdnFileHashes extends Function<types.FileHash[]> {
   }
 }
 
-class upload_getFileHashes extends Function<types.FileHash[]> {
-  location: types.InputFileLocation;
+class upload_getFileHashes extends Function<enums.FileHash[]> {
+  location: enums.InputFileLocation;
   offset: bigint;
 
   protected get [id]() {
@@ -11337,14 +11338,14 @@ class upload_getFileHashes extends Function<types.FileHash[]> {
     ];
   }
 
-  constructor(params: { location: types.InputFileLocation; offset: bigint }) {
+  constructor(params: { location: enums.InputFileLocation; offset: bigint }) {
     super();
     this.location = params.location;
     this.offset = params.offset;
   }
 }
 
-class help_getConfig extends Function<types.Config> {
+class help_getConfig extends Function<enums.Config> {
   protected get [id]() {
     return 0xC4F9186B;
   }
@@ -11362,7 +11363,7 @@ class help_getConfig extends Function<types.Config> {
   }
 }
 
-class help_getNearestDc extends Function<types.NearestDc> {
+class help_getNearestDc extends Function<enums.NearestDc> {
   protected get [id]() {
     return 0x1FB33026;
   }
@@ -11380,7 +11381,7 @@ class help_getNearestDc extends Function<types.NearestDc> {
   }
 }
 
-class help_getAppUpdate extends Function<types.help_AppUpdate> {
+class help_getAppUpdate extends Function<enums.help_AppUpdate> {
   source: string;
 
   protected get [id]() {
@@ -11405,7 +11406,7 @@ class help_getAppUpdate extends Function<types.help_AppUpdate> {
   }
 }
 
-class help_getInviteText extends Function<types.help_InviteText> {
+class help_getInviteText extends Function<enums.help_InviteText> {
   protected get [id]() {
     return 0x4D392343;
   }
@@ -11423,7 +11424,7 @@ class help_getInviteText extends Function<types.help_InviteText> {
   }
 }
 
-class help_getSupport extends Function<types.help_Support> {
+class help_getSupport extends Function<enums.help_Support> {
   protected get [id]() {
     return 0x9CDF08CD;
   }
@@ -11441,7 +11442,7 @@ class help_getSupport extends Function<types.help_Support> {
   }
 }
 
-class help_getAppChangelog extends Function<types.Updates> {
+class help_getAppChangelog extends Function<enums.Updates> {
   prev_app_version: string;
 
   protected get [id]() {
@@ -11495,7 +11496,7 @@ class help_setBotUpdatesStatus extends Function<boolean> {
   }
 }
 
-class help_getCdnConfig extends Function<types.CdnConfig> {
+class help_getCdnConfig extends Function<enums.CdnConfig> {
   protected get [id]() {
     return 0x52029342;
   }
@@ -11513,7 +11514,7 @@ class help_getCdnConfig extends Function<types.CdnConfig> {
   }
 }
 
-class help_getRecentMeUrls extends Function<types.help_RecentMeUrls> {
+class help_getRecentMeUrls extends Function<enums.help_RecentMeUrls> {
   referer: string;
 
   protected get [id]() {
@@ -11538,7 +11539,7 @@ class help_getRecentMeUrls extends Function<types.help_RecentMeUrls> {
   }
 }
 
-class help_getTermsOfServiceUpdate extends Function<types.help_TermsOfServiceUpdate> {
+class help_getTermsOfServiceUpdate extends Function<enums.help_TermsOfServiceUpdate> {
   protected get [id]() {
     return 0x2CA51FD1;
   }
@@ -11557,7 +11558,7 @@ class help_getTermsOfServiceUpdate extends Function<types.help_TermsOfServiceUpd
 }
 
 class help_acceptTermsOfService extends Function<boolean> {
-  id: types.DataJSON;
+  id: enums.DataJSON;
 
   protected get [id]() {
     return 0xEE72F79A;
@@ -11575,13 +11576,13 @@ class help_acceptTermsOfService extends Function<boolean> {
     ];
   }
 
-  constructor(params: { id: types.DataJSON }) {
+  constructor(params: { id: enums.DataJSON }) {
     super();
     this.id = params.id;
   }
 }
 
-class help_getDeepLinkInfo extends Function<types.help_DeepLinkInfo> {
+class help_getDeepLinkInfo extends Function<enums.help_DeepLinkInfo> {
   path: string;
 
   protected get [id]() {
@@ -11606,7 +11607,7 @@ class help_getDeepLinkInfo extends Function<types.help_DeepLinkInfo> {
   }
 }
 
-class help_getAppConfig extends Function<types.help_AppConfig> {
+class help_getAppConfig extends Function<enums.help_AppConfig> {
   hash: number;
 
   protected get [id]() {
@@ -11632,7 +11633,7 @@ class help_getAppConfig extends Function<types.help_AppConfig> {
 }
 
 class help_saveAppLog extends Function<boolean> {
-  events: Array<types.InputAppEvent>;
+  events: Array<enums.InputAppEvent>;
 
   protected get [id]() {
     return 0x6F02F748;
@@ -11650,13 +11651,13 @@ class help_saveAppLog extends Function<boolean> {
     ];
   }
 
-  constructor(params: { events: Array<types.InputAppEvent> }) {
+  constructor(params: { events: Array<enums.InputAppEvent> }) {
     super();
     this.events = params.events;
   }
 }
 
-class help_getPassportConfig extends Function<types.help_PassportConfig> {
+class help_getPassportConfig extends Function<enums.help_PassportConfig> {
   hash: number;
 
   protected get [id]() {
@@ -11681,7 +11682,7 @@ class help_getPassportConfig extends Function<types.help_PassportConfig> {
   }
 }
 
-class help_getSupportName extends Function<types.help_SupportName> {
+class help_getSupportName extends Function<enums.help_SupportName> {
   protected get [id]() {
     return 0xD360E72C;
   }
@@ -11699,8 +11700,8 @@ class help_getSupportName extends Function<types.help_SupportName> {
   }
 }
 
-class help_getUserInfo extends Function<types.help_UserInfo> {
-  user_id: types.InputUser;
+class help_getUserInfo extends Function<enums.help_UserInfo> {
+  user_id: enums.InputUser;
 
   protected get [id]() {
     return 0x038A08D3;
@@ -11718,16 +11719,16 @@ class help_getUserInfo extends Function<types.help_UserInfo> {
     ];
   }
 
-  constructor(params: { user_id: types.InputUser }) {
+  constructor(params: { user_id: enums.InputUser }) {
     super();
     this.user_id = params.user_id;
   }
 }
 
-class help_editUserInfo extends Function<types.help_UserInfo> {
-  user_id: types.InputUser;
+class help_editUserInfo extends Function<enums.help_UserInfo> {
+  user_id: enums.InputUser;
   message: string;
-  entities: Array<types.MessageEntity>;
+  entities: Array<enums.MessageEntity>;
 
   protected get [id]() {
     return 0x66B91B70;
@@ -11749,7 +11750,7 @@ class help_editUserInfo extends Function<types.help_UserInfo> {
     ];
   }
 
-  constructor(params: { user_id: types.InputUser; message: string; entities: Array<types.MessageEntity> }) {
+  constructor(params: { user_id: enums.InputUser; message: string; entities: Array<enums.MessageEntity> }) {
     super();
     this.user_id = params.user_id;
     this.message = params.message;
@@ -11757,7 +11758,7 @@ class help_editUserInfo extends Function<types.help_UserInfo> {
   }
 }
 
-class help_getPromoData extends Function<types.help_PromoData> {
+class help_getPromoData extends Function<enums.help_PromoData> {
   protected get [id]() {
     return 0xC0977421;
   }
@@ -11776,7 +11777,7 @@ class help_getPromoData extends Function<types.help_PromoData> {
 }
 
 class help_hidePromoData extends Function<boolean> {
-  peer: types.InputPeer;
+  peer: enums.InputPeer;
 
   protected get [id]() {
     return 0x1E251C95;
@@ -11794,14 +11795,14 @@ class help_hidePromoData extends Function<boolean> {
     ];
   }
 
-  constructor(params: { peer: types.InputPeer }) {
+  constructor(params: { peer: enums.InputPeer }) {
     super();
     this.peer = params.peer;
   }
 }
 
 class help_dismissSuggestion extends Function<boolean> {
-  peer: types.InputPeer;
+  peer: enums.InputPeer;
   suggestion: string;
 
   protected get [id]() {
@@ -11822,14 +11823,14 @@ class help_dismissSuggestion extends Function<boolean> {
     ];
   }
 
-  constructor(params: { peer: types.InputPeer; suggestion: string }) {
+  constructor(params: { peer: enums.InputPeer; suggestion: string }) {
     super();
     this.peer = params.peer;
     this.suggestion = params.suggestion;
   }
 }
 
-class help_getCountriesList extends Function<types.help_CountriesList> {
+class help_getCountriesList extends Function<enums.help_CountriesList> {
   lang_code: string;
   hash: number;
 
@@ -11858,7 +11859,7 @@ class help_getCountriesList extends Function<types.help_CountriesList> {
   }
 }
 
-class help_getPremiumPromo extends Function<types.help_PremiumPromo> {
+class help_getPremiumPromo extends Function<enums.help_PremiumPromo> {
   protected get [id]() {
     return 0xB81B93D4;
   }
@@ -11876,7 +11877,7 @@ class help_getPremiumPromo extends Function<types.help_PremiumPromo> {
   }
 }
 
-class help_getPeerColors extends Function<types.help_PeerColors> {
+class help_getPeerColors extends Function<enums.help_PeerColors> {
   hash: number;
 
   protected get [id]() {
@@ -11901,7 +11902,7 @@ class help_getPeerColors extends Function<types.help_PeerColors> {
   }
 }
 
-class help_getPeerProfileColors extends Function<types.help_PeerColors> {
+class help_getPeerProfileColors extends Function<enums.help_PeerColors> {
   hash: number;
 
   protected get [id]() {
@@ -11927,7 +11928,7 @@ class help_getPeerProfileColors extends Function<types.help_PeerColors> {
 }
 
 class channels_readHistory extends Function<boolean> {
-  channel: types.InputChannel;
+  channel: enums.InputChannel;
   max_id: number;
 
   protected get [id]() {
@@ -11948,15 +11949,15 @@ class channels_readHistory extends Function<boolean> {
     ];
   }
 
-  constructor(params: { channel: types.InputChannel; max_id: number }) {
+  constructor(params: { channel: enums.InputChannel; max_id: number }) {
     super();
     this.channel = params.channel;
     this.max_id = params.max_id;
   }
 }
 
-class channels_deleteMessages extends Function<types.messages_AffectedMessages> {
-  channel: types.InputChannel;
+class channels_deleteMessages extends Function<enums.messages_AffectedMessages> {
+  channel: enums.InputChannel;
   id: Array<number>;
 
   protected get [id]() {
@@ -11977,7 +11978,7 @@ class channels_deleteMessages extends Function<types.messages_AffectedMessages> 
     ];
   }
 
-  constructor(params: { channel: types.InputChannel; id: Array<number> }) {
+  constructor(params: { channel: enums.InputChannel; id: Array<number> }) {
     super();
     this.channel = params.channel;
     this.id = params.id;
@@ -11985,8 +11986,8 @@ class channels_deleteMessages extends Function<types.messages_AffectedMessages> 
 }
 
 class channels_reportSpam extends Function<boolean> {
-  channel: types.InputChannel;
-  participant: types.InputPeer;
+  channel: enums.InputChannel;
+  participant: enums.InputPeer;
   id: Array<number>;
 
   protected get [id]() {
@@ -12009,7 +12010,7 @@ class channels_reportSpam extends Function<boolean> {
     ];
   }
 
-  constructor(params: { channel: types.InputChannel; participant: types.InputPeer; id: Array<number> }) {
+  constructor(params: { channel: enums.InputChannel; participant: enums.InputPeer; id: Array<number> }) {
     super();
     this.channel = params.channel;
     this.participant = params.participant;
@@ -12017,9 +12018,9 @@ class channels_reportSpam extends Function<boolean> {
   }
 }
 
-class channels_getMessages extends Function<types.messages_Messages> {
-  channel: types.InputChannel;
-  id: Array<types.InputMessage>;
+class channels_getMessages extends Function<enums.messages_Messages> {
+  channel: enums.InputChannel;
+  id: Array<enums.InputMessage>;
 
   protected get [id]() {
     return 0xAD8C9A23;
@@ -12039,16 +12040,16 @@ class channels_getMessages extends Function<types.messages_Messages> {
     ];
   }
 
-  constructor(params: { channel: types.InputChannel; id: Array<types.InputMessage> }) {
+  constructor(params: { channel: enums.InputChannel; id: Array<enums.InputMessage> }) {
     super();
     this.channel = params.channel;
     this.id = params.id;
   }
 }
 
-class channels_getParticipants extends Function<types.channels_ChannelParticipants> {
-  channel: types.InputChannel;
-  filter: types.ChannelParticipantsFilter;
+class channels_getParticipants extends Function<enums.channels_ChannelParticipants> {
+  channel: enums.InputChannel;
+  filter: enums.ChannelParticipantsFilter;
   offset: number;
   limit: number;
   hash: bigint;
@@ -12077,7 +12078,7 @@ class channels_getParticipants extends Function<types.channels_ChannelParticipan
     ];
   }
 
-  constructor(params: { channel: types.InputChannel; filter: types.ChannelParticipantsFilter; offset: number; limit: number; hash: bigint }) {
+  constructor(params: { channel: enums.InputChannel; filter: enums.ChannelParticipantsFilter; offset: number; limit: number; hash: bigint }) {
     super();
     this.channel = params.channel;
     this.filter = params.filter;
@@ -12087,9 +12088,9 @@ class channels_getParticipants extends Function<types.channels_ChannelParticipan
   }
 }
 
-class channels_getParticipant extends Function<types.channels_ChannelParticipant> {
-  channel: types.InputChannel;
-  participant: types.InputPeer;
+class channels_getParticipant extends Function<enums.channels_ChannelParticipant> {
+  channel: enums.InputChannel;
+  participant: enums.InputPeer;
 
   protected get [id]() {
     return 0xA0AB6CC6;
@@ -12109,15 +12110,15 @@ class channels_getParticipant extends Function<types.channels_ChannelParticipant
     ];
   }
 
-  constructor(params: { channel: types.InputChannel; participant: types.InputPeer }) {
+  constructor(params: { channel: enums.InputChannel; participant: enums.InputPeer }) {
     super();
     this.channel = params.channel;
     this.participant = params.participant;
   }
 }
 
-class channels_getChannels extends Function<types.messages_Chats> {
-  id: Array<types.InputChannel>;
+class channels_getChannels extends Function<enums.messages_Chats> {
+  id: Array<enums.InputChannel>;
 
   protected get [id]() {
     return 0x0A7F6BBB;
@@ -12135,14 +12136,14 @@ class channels_getChannels extends Function<types.messages_Chats> {
     ];
   }
 
-  constructor(params: { id: Array<types.InputChannel> }) {
+  constructor(params: { id: Array<enums.InputChannel> }) {
     super();
     this.id = params.id;
   }
 }
 
-class channels_getFullChannel extends Function<types.messages_ChatFull> {
-  channel: types.InputChannel;
+class channels_getFullChannel extends Function<enums.messages_ChatFull> {
+  channel: enums.InputChannel;
 
   protected get [id]() {
     return 0x08736A09;
@@ -12160,20 +12161,20 @@ class channels_getFullChannel extends Function<types.messages_ChatFull> {
     ];
   }
 
-  constructor(params: { channel: types.InputChannel }) {
+  constructor(params: { channel: enums.InputChannel }) {
     super();
     this.channel = params.channel;
   }
 }
 
-class channels_createChannel extends Function<types.Updates> {
+class channels_createChannel extends Function<enums.Updates> {
   broadcast?: true;
   megagroup?: true;
   for_import?: true;
   forum?: true;
   title: string;
   about: string;
-  geo_point?: types.InputGeoPoint;
+  geo_point?: enums.InputGeoPoint;
   address?: string;
   ttl_period?: number;
 
@@ -12211,7 +12212,7 @@ class channels_createChannel extends Function<types.Updates> {
     ];
   }
 
-  constructor(params: { broadcast?: true; megagroup?: true; for_import?: true; forum?: true; title: string; about: string; geo_point?: types.InputGeoPoint; address?: string; ttl_period?: number }) {
+  constructor(params: { broadcast?: true; megagroup?: true; for_import?: true; forum?: true; title: string; about: string; geo_point?: enums.InputGeoPoint; address?: string; ttl_period?: number }) {
     super();
     this.broadcast = params.broadcast;
     this.megagroup = params.megagroup;
@@ -12225,10 +12226,10 @@ class channels_createChannel extends Function<types.Updates> {
   }
 }
 
-class channels_editAdmin extends Function<types.Updates> {
-  channel: types.InputChannel;
-  user_id: types.InputUser;
-  admin_rights: types.ChatAdminRights;
+class channels_editAdmin extends Function<enums.Updates> {
+  channel: enums.InputChannel;
+  user_id: enums.InputUser;
+  admin_rights: enums.ChatAdminRights;
   rank: string;
 
   protected get [id]() {
@@ -12253,7 +12254,7 @@ class channels_editAdmin extends Function<types.Updates> {
     ];
   }
 
-  constructor(params: { channel: types.InputChannel; user_id: types.InputUser; admin_rights: types.ChatAdminRights; rank: string }) {
+  constructor(params: { channel: enums.InputChannel; user_id: enums.InputUser; admin_rights: enums.ChatAdminRights; rank: string }) {
     super();
     this.channel = params.channel;
     this.user_id = params.user_id;
@@ -12262,8 +12263,8 @@ class channels_editAdmin extends Function<types.Updates> {
   }
 }
 
-class channels_editTitle extends Function<types.Updates> {
-  channel: types.InputChannel;
+class channels_editTitle extends Function<enums.Updates> {
+  channel: enums.InputChannel;
   title: string;
 
   protected get [id]() {
@@ -12284,16 +12285,16 @@ class channels_editTitle extends Function<types.Updates> {
     ];
   }
 
-  constructor(params: { channel: types.InputChannel; title: string }) {
+  constructor(params: { channel: enums.InputChannel; title: string }) {
     super();
     this.channel = params.channel;
     this.title = params.title;
   }
 }
 
-class channels_editPhoto extends Function<types.Updates> {
-  channel: types.InputChannel;
-  photo: types.InputChatPhoto;
+class channels_editPhoto extends Function<enums.Updates> {
+  channel: enums.InputChannel;
+  photo: enums.InputChatPhoto;
 
   protected get [id]() {
     return 0xF12E57C9;
@@ -12313,7 +12314,7 @@ class channels_editPhoto extends Function<types.Updates> {
     ];
   }
 
-  constructor(params: { channel: types.InputChannel; photo: types.InputChatPhoto }) {
+  constructor(params: { channel: enums.InputChannel; photo: enums.InputChatPhoto }) {
     super();
     this.channel = params.channel;
     this.photo = params.photo;
@@ -12321,7 +12322,7 @@ class channels_editPhoto extends Function<types.Updates> {
 }
 
 class channels_checkUsername extends Function<boolean> {
-  channel: types.InputChannel;
+  channel: enums.InputChannel;
   username: string;
 
   protected get [id]() {
@@ -12342,7 +12343,7 @@ class channels_checkUsername extends Function<boolean> {
     ];
   }
 
-  constructor(params: { channel: types.InputChannel; username: string }) {
+  constructor(params: { channel: enums.InputChannel; username: string }) {
     super();
     this.channel = params.channel;
     this.username = params.username;
@@ -12350,7 +12351,7 @@ class channels_checkUsername extends Function<boolean> {
 }
 
 class channels_updateUsername extends Function<boolean> {
-  channel: types.InputChannel;
+  channel: enums.InputChannel;
   username: string;
 
   protected get [id]() {
@@ -12371,15 +12372,15 @@ class channels_updateUsername extends Function<boolean> {
     ];
   }
 
-  constructor(params: { channel: types.InputChannel; username: string }) {
+  constructor(params: { channel: enums.InputChannel; username: string }) {
     super();
     this.channel = params.channel;
     this.username = params.username;
   }
 }
 
-class channels_joinChannel extends Function<types.Updates> {
-  channel: types.InputChannel;
+class channels_joinChannel extends Function<enums.Updates> {
+  channel: enums.InputChannel;
 
   protected get [id]() {
     return 0x24B524C5;
@@ -12397,14 +12398,14 @@ class channels_joinChannel extends Function<types.Updates> {
     ];
   }
 
-  constructor(params: { channel: types.InputChannel }) {
+  constructor(params: { channel: enums.InputChannel }) {
     super();
     this.channel = params.channel;
   }
 }
 
-class channels_leaveChannel extends Function<types.Updates> {
-  channel: types.InputChannel;
+class channels_leaveChannel extends Function<enums.Updates> {
+  channel: enums.InputChannel;
 
   protected get [id]() {
     return 0xF836AA95;
@@ -12422,15 +12423,15 @@ class channels_leaveChannel extends Function<types.Updates> {
     ];
   }
 
-  constructor(params: { channel: types.InputChannel }) {
+  constructor(params: { channel: enums.InputChannel }) {
     super();
     this.channel = params.channel;
   }
 }
 
-class channels_inviteToChannel extends Function<types.Updates> {
-  channel: types.InputChannel;
-  users: Array<types.InputUser>;
+class channels_inviteToChannel extends Function<enums.Updates> {
+  channel: enums.InputChannel;
+  users: Array<enums.InputUser>;
 
   protected get [id]() {
     return 0x199F3A6C;
@@ -12450,15 +12451,15 @@ class channels_inviteToChannel extends Function<types.Updates> {
     ];
   }
 
-  constructor(params: { channel: types.InputChannel; users: Array<types.InputUser> }) {
+  constructor(params: { channel: enums.InputChannel; users: Array<enums.InputUser> }) {
     super();
     this.channel = params.channel;
     this.users = params.users;
   }
 }
 
-class channels_deleteChannel extends Function<types.Updates> {
-  channel: types.InputChannel;
+class channels_deleteChannel extends Function<enums.Updates> {
+  channel: enums.InputChannel;
 
   protected get [id]() {
     return 0xC0111FE3;
@@ -12476,16 +12477,16 @@ class channels_deleteChannel extends Function<types.Updates> {
     ];
   }
 
-  constructor(params: { channel: types.InputChannel }) {
+  constructor(params: { channel: enums.InputChannel }) {
     super();
     this.channel = params.channel;
   }
 }
 
-class channels_exportMessageLink extends Function<types.ExportedMessageLink> {
+class channels_exportMessageLink extends Function<enums.ExportedMessageLink> {
   grouped?: true;
   thread?: true;
-  channel: types.InputChannel;
+  channel: enums.InputChannel;
   id: number;
 
   protected get [id]() {
@@ -12512,7 +12513,7 @@ class channels_exportMessageLink extends Function<types.ExportedMessageLink> {
     ];
   }
 
-  constructor(params: { grouped?: true; thread?: true; channel: types.InputChannel; id: number }) {
+  constructor(params: { grouped?: true; thread?: true; channel: enums.InputChannel; id: number }) {
     super();
     this.grouped = params.grouped;
     this.thread = params.thread;
@@ -12521,8 +12522,8 @@ class channels_exportMessageLink extends Function<types.ExportedMessageLink> {
   }
 }
 
-class channels_toggleSignatures extends Function<types.Updates> {
-  channel: types.InputChannel;
+class channels_toggleSignatures extends Function<enums.Updates> {
+  channel: enums.InputChannel;
   enabled: boolean;
 
   protected get [id]() {
@@ -12543,14 +12544,14 @@ class channels_toggleSignatures extends Function<types.Updates> {
     ];
   }
 
-  constructor(params: { channel: types.InputChannel; enabled: boolean }) {
+  constructor(params: { channel: enums.InputChannel; enabled: boolean }) {
     super();
     this.channel = params.channel;
     this.enabled = params.enabled;
   }
 }
 
-class channels_getAdminedPublicChannels extends Function<types.messages_Chats> {
+class channels_getAdminedPublicChannels extends Function<enums.messages_Chats> {
   by_location?: true;
   check_limit?: true;
 
@@ -12581,10 +12582,10 @@ class channels_getAdminedPublicChannels extends Function<types.messages_Chats> {
   }
 }
 
-class channels_editBanned extends Function<types.Updates> {
-  channel: types.InputChannel;
-  participant: types.InputPeer;
-  banned_rights: types.ChatBannedRights;
+class channels_editBanned extends Function<enums.Updates> {
+  channel: enums.InputChannel;
+  participant: enums.InputPeer;
+  banned_rights: enums.ChatBannedRights;
 
   protected get [id]() {
     return 0x96E6CD81;
@@ -12606,7 +12607,7 @@ class channels_editBanned extends Function<types.Updates> {
     ];
   }
 
-  constructor(params: { channel: types.InputChannel; participant: types.InputPeer; banned_rights: types.ChatBannedRights }) {
+  constructor(params: { channel: enums.InputChannel; participant: enums.InputPeer; banned_rights: enums.ChatBannedRights }) {
     super();
     this.channel = params.channel;
     this.participant = params.participant;
@@ -12614,11 +12615,11 @@ class channels_editBanned extends Function<types.Updates> {
   }
 }
 
-class channels_getAdminLog extends Function<types.channels_AdminLogResults> {
-  channel: types.InputChannel;
+class channels_getAdminLog extends Function<enums.channels_AdminLogResults> {
+  channel: enums.InputChannel;
   q: string;
-  events_filter?: types.ChannelAdminLogEventsFilter;
-  admins?: Array<types.InputUser>;
+  events_filter?: enums.ChannelAdminLogEventsFilter;
+  admins?: Array<enums.InputUser>;
   max_id: bigint;
   min_id: bigint;
   limit: number;
@@ -12653,7 +12654,7 @@ class channels_getAdminLog extends Function<types.channels_AdminLogResults> {
     ];
   }
 
-  constructor(params: { channel: types.InputChannel; q: string; events_filter?: types.ChannelAdminLogEventsFilter; admins?: Array<types.InputUser>; max_id: bigint; min_id: bigint; limit: number }) {
+  constructor(params: { channel: enums.InputChannel; q: string; events_filter?: enums.ChannelAdminLogEventsFilter; admins?: Array<enums.InputUser>; max_id: bigint; min_id: bigint; limit: number }) {
     super();
     this.channel = params.channel;
     this.q = params.q;
@@ -12666,8 +12667,8 @@ class channels_getAdminLog extends Function<types.channels_AdminLogResults> {
 }
 
 class channels_setStickers extends Function<boolean> {
-  channel: types.InputChannel;
-  stickerset: types.InputStickerSet;
+  channel: enums.InputChannel;
+  stickerset: enums.InputStickerSet;
 
   protected get [id]() {
     return 0xEA8CA4F9;
@@ -12687,7 +12688,7 @@ class channels_setStickers extends Function<boolean> {
     ];
   }
 
-  constructor(params: { channel: types.InputChannel; stickerset: types.InputStickerSet }) {
+  constructor(params: { channel: enums.InputChannel; stickerset: enums.InputStickerSet }) {
     super();
     this.channel = params.channel;
     this.stickerset = params.stickerset;
@@ -12695,7 +12696,7 @@ class channels_setStickers extends Function<boolean> {
 }
 
 class channels_readMessageContents extends Function<boolean> {
-  channel: types.InputChannel;
+  channel: enums.InputChannel;
   id: Array<number>;
 
   protected get [id]() {
@@ -12716,16 +12717,16 @@ class channels_readMessageContents extends Function<boolean> {
     ];
   }
 
-  constructor(params: { channel: types.InputChannel; id: Array<number> }) {
+  constructor(params: { channel: enums.InputChannel; id: Array<number> }) {
     super();
     this.channel = params.channel;
     this.id = params.id;
   }
 }
 
-class channels_deleteHistory extends Function<types.Updates> {
+class channels_deleteHistory extends Function<enums.Updates> {
   for_everyone?: true;
-  channel: types.InputChannel;
+  channel: enums.InputChannel;
   max_id: number;
 
   protected get [id]() {
@@ -12750,7 +12751,7 @@ class channels_deleteHistory extends Function<types.Updates> {
     ];
   }
 
-  constructor(params: { for_everyone?: true; channel: types.InputChannel; max_id: number }) {
+  constructor(params: { for_everyone?: true; channel: enums.InputChannel; max_id: number }) {
     super();
     this.for_everyone = params.for_everyone;
     this.channel = params.channel;
@@ -12758,8 +12759,8 @@ class channels_deleteHistory extends Function<types.Updates> {
   }
 }
 
-class channels_togglePreHistoryHidden extends Function<types.Updates> {
-  channel: types.InputChannel;
+class channels_togglePreHistoryHidden extends Function<enums.Updates> {
+  channel: enums.InputChannel;
   enabled: boolean;
 
   protected get [id]() {
@@ -12780,14 +12781,14 @@ class channels_togglePreHistoryHidden extends Function<types.Updates> {
     ];
   }
 
-  constructor(params: { channel: types.InputChannel; enabled: boolean }) {
+  constructor(params: { channel: enums.InputChannel; enabled: boolean }) {
     super();
     this.channel = params.channel;
     this.enabled = params.enabled;
   }
 }
 
-class channels_getLeftChannels extends Function<types.messages_Chats> {
+class channels_getLeftChannels extends Function<enums.messages_Chats> {
   offset: number;
 
   protected get [id]() {
@@ -12812,7 +12813,7 @@ class channels_getLeftChannels extends Function<types.messages_Chats> {
   }
 }
 
-class channels_getGroupsForDiscussion extends Function<types.messages_Chats> {
+class channels_getGroupsForDiscussion extends Function<enums.messages_Chats> {
   protected get [id]() {
     return 0xF5DAD378;
   }
@@ -12831,8 +12832,8 @@ class channels_getGroupsForDiscussion extends Function<types.messages_Chats> {
 }
 
 class channels_setDiscussionGroup extends Function<boolean> {
-  broadcast: types.InputChannel;
-  group: types.InputChannel;
+  broadcast: enums.InputChannel;
+  group: enums.InputChannel;
 
   protected get [id]() {
     return 0x40582BB2;
@@ -12852,17 +12853,17 @@ class channels_setDiscussionGroup extends Function<boolean> {
     ];
   }
 
-  constructor(params: { broadcast: types.InputChannel; group: types.InputChannel }) {
+  constructor(params: { broadcast: enums.InputChannel; group: enums.InputChannel }) {
     super();
     this.broadcast = params.broadcast;
     this.group = params.group;
   }
 }
 
-class channels_editCreator extends Function<types.Updates> {
-  channel: types.InputChannel;
-  user_id: types.InputUser;
-  password: types.InputCheckPasswordSRP;
+class channels_editCreator extends Function<enums.Updates> {
+  channel: enums.InputChannel;
+  user_id: enums.InputUser;
+  password: enums.InputCheckPasswordSRP;
 
   protected get [id]() {
     return 0x8F38CD1F;
@@ -12884,7 +12885,7 @@ class channels_editCreator extends Function<types.Updates> {
     ];
   }
 
-  constructor(params: { channel: types.InputChannel; user_id: types.InputUser; password: types.InputCheckPasswordSRP }) {
+  constructor(params: { channel: enums.InputChannel; user_id: enums.InputUser; password: enums.InputCheckPasswordSRP }) {
     super();
     this.channel = params.channel;
     this.user_id = params.user_id;
@@ -12893,8 +12894,8 @@ class channels_editCreator extends Function<types.Updates> {
 }
 
 class channels_editLocation extends Function<boolean> {
-  channel: types.InputChannel;
-  geo_point: types.InputGeoPoint;
+  channel: enums.InputChannel;
+  geo_point: enums.InputGeoPoint;
   address: string;
 
   protected get [id]() {
@@ -12917,7 +12918,7 @@ class channels_editLocation extends Function<boolean> {
     ];
   }
 
-  constructor(params: { channel: types.InputChannel; geo_point: types.InputGeoPoint; address: string }) {
+  constructor(params: { channel: enums.InputChannel; geo_point: enums.InputGeoPoint; address: string }) {
     super();
     this.channel = params.channel;
     this.geo_point = params.geo_point;
@@ -12925,8 +12926,8 @@ class channels_editLocation extends Function<boolean> {
   }
 }
 
-class channels_toggleSlowMode extends Function<types.Updates> {
-  channel: types.InputChannel;
+class channels_toggleSlowMode extends Function<enums.Updates> {
+  channel: enums.InputChannel;
   seconds: number;
 
   protected get [id]() {
@@ -12947,14 +12948,14 @@ class channels_toggleSlowMode extends Function<types.Updates> {
     ];
   }
 
-  constructor(params: { channel: types.InputChannel; seconds: number }) {
+  constructor(params: { channel: enums.InputChannel; seconds: number }) {
     super();
     this.channel = params.channel;
     this.seconds = params.seconds;
   }
 }
 
-class channels_getInactiveChannels extends Function<types.messages_InactiveChats> {
+class channels_getInactiveChannels extends Function<enums.messages_InactiveChats> {
   protected get [id]() {
     return 0x11E831EE;
   }
@@ -12972,8 +12973,8 @@ class channels_getInactiveChannels extends Function<types.messages_InactiveChats
   }
 }
 
-class channels_convertToGigagroup extends Function<types.Updates> {
-  channel: types.InputChannel;
+class channels_convertToGigagroup extends Function<enums.Updates> {
+  channel: enums.InputChannel;
 
   protected get [id]() {
     return 0x0B290C69;
@@ -12991,14 +12992,14 @@ class channels_convertToGigagroup extends Function<types.Updates> {
     ];
   }
 
-  constructor(params: { channel: types.InputChannel }) {
+  constructor(params: { channel: enums.InputChannel }) {
     super();
     this.channel = params.channel;
   }
 }
 
 class channels_viewSponsoredMessage extends Function<boolean> {
-  channel: types.InputChannel;
+  channel: enums.InputChannel;
   random_id: Uint8Array;
 
   protected get [id]() {
@@ -13019,15 +13020,15 @@ class channels_viewSponsoredMessage extends Function<boolean> {
     ];
   }
 
-  constructor(params: { channel: types.InputChannel; random_id: Uint8Array }) {
+  constructor(params: { channel: enums.InputChannel; random_id: Uint8Array }) {
     super();
     this.channel = params.channel;
     this.random_id = params.random_id;
   }
 }
 
-class channels_getSponsoredMessages extends Function<types.messages_SponsoredMessages> {
-  channel: types.InputChannel;
+class channels_getSponsoredMessages extends Function<enums.messages_SponsoredMessages> {
+  channel: enums.InputChannel;
 
   protected get [id]() {
     return 0xEC210FBF;
@@ -13045,14 +13046,14 @@ class channels_getSponsoredMessages extends Function<types.messages_SponsoredMes
     ];
   }
 
-  constructor(params: { channel: types.InputChannel }) {
+  constructor(params: { channel: enums.InputChannel }) {
     super();
     this.channel = params.channel;
   }
 }
 
-class channels_getSendAs extends Function<types.channels_SendAsPeers> {
-  peer: types.InputPeer;
+class channels_getSendAs extends Function<enums.channels_SendAsPeers> {
+  peer: enums.InputPeer;
 
   protected get [id]() {
     return 0x0DC770EE;
@@ -13070,15 +13071,15 @@ class channels_getSendAs extends Function<types.channels_SendAsPeers> {
     ];
   }
 
-  constructor(params: { peer: types.InputPeer }) {
+  constructor(params: { peer: enums.InputPeer }) {
     super();
     this.peer = params.peer;
   }
 }
 
-class channels_deleteParticipantHistory extends Function<types.messages_AffectedHistory> {
-  channel: types.InputChannel;
-  participant: types.InputPeer;
+class channels_deleteParticipantHistory extends Function<enums.messages_AffectedHistory> {
+  channel: enums.InputChannel;
+  participant: enums.InputPeer;
 
   protected get [id]() {
     return 0x367544DB;
@@ -13098,15 +13099,15 @@ class channels_deleteParticipantHistory extends Function<types.messages_Affected
     ];
   }
 
-  constructor(params: { channel: types.InputChannel; participant: types.InputPeer }) {
+  constructor(params: { channel: enums.InputChannel; participant: enums.InputPeer }) {
     super();
     this.channel = params.channel;
     this.participant = params.participant;
   }
 }
 
-class channels_toggleJoinToSend extends Function<types.Updates> {
-  channel: types.InputChannel;
+class channels_toggleJoinToSend extends Function<enums.Updates> {
+  channel: enums.InputChannel;
   enabled: boolean;
 
   protected get [id]() {
@@ -13127,15 +13128,15 @@ class channels_toggleJoinToSend extends Function<types.Updates> {
     ];
   }
 
-  constructor(params: { channel: types.InputChannel; enabled: boolean }) {
+  constructor(params: { channel: enums.InputChannel; enabled: boolean }) {
     super();
     this.channel = params.channel;
     this.enabled = params.enabled;
   }
 }
 
-class channels_toggleJoinRequest extends Function<types.Updates> {
-  channel: types.InputChannel;
+class channels_toggleJoinRequest extends Function<enums.Updates> {
+  channel: enums.InputChannel;
   enabled: boolean;
 
   protected get [id]() {
@@ -13156,7 +13157,7 @@ class channels_toggleJoinRequest extends Function<types.Updates> {
     ];
   }
 
-  constructor(params: { channel: types.InputChannel; enabled: boolean }) {
+  constructor(params: { channel: enums.InputChannel; enabled: boolean }) {
     super();
     this.channel = params.channel;
     this.enabled = params.enabled;
@@ -13164,7 +13165,7 @@ class channels_toggleJoinRequest extends Function<types.Updates> {
 }
 
 class channels_reorderUsernames extends Function<boolean> {
-  channel: types.InputChannel;
+  channel: enums.InputChannel;
   order: Array<string>;
 
   protected get [id]() {
@@ -13185,7 +13186,7 @@ class channels_reorderUsernames extends Function<boolean> {
     ];
   }
 
-  constructor(params: { channel: types.InputChannel; order: Array<string> }) {
+  constructor(params: { channel: enums.InputChannel; order: Array<string> }) {
     super();
     this.channel = params.channel;
     this.order = params.order;
@@ -13193,7 +13194,7 @@ class channels_reorderUsernames extends Function<boolean> {
 }
 
 class channels_toggleUsername extends Function<boolean> {
-  channel: types.InputChannel;
+  channel: enums.InputChannel;
   username: string;
   active: boolean;
 
@@ -13217,7 +13218,7 @@ class channels_toggleUsername extends Function<boolean> {
     ];
   }
 
-  constructor(params: { channel: types.InputChannel; username: string; active: boolean }) {
+  constructor(params: { channel: enums.InputChannel; username: string; active: boolean }) {
     super();
     this.channel = params.channel;
     this.username = params.username;
@@ -13226,7 +13227,7 @@ class channels_toggleUsername extends Function<boolean> {
 }
 
 class channels_deactivateAllUsernames extends Function<boolean> {
-  channel: types.InputChannel;
+  channel: enums.InputChannel;
 
   protected get [id]() {
     return 0x0A245DD3;
@@ -13244,14 +13245,14 @@ class channels_deactivateAllUsernames extends Function<boolean> {
     ];
   }
 
-  constructor(params: { channel: types.InputChannel }) {
+  constructor(params: { channel: enums.InputChannel }) {
     super();
     this.channel = params.channel;
   }
 }
 
-class channels_toggleForum extends Function<types.Updates> {
-  channel: types.InputChannel;
+class channels_toggleForum extends Function<enums.Updates> {
+  channel: enums.InputChannel;
   enabled: boolean;
 
   protected get [id]() {
@@ -13272,20 +13273,20 @@ class channels_toggleForum extends Function<types.Updates> {
     ];
   }
 
-  constructor(params: { channel: types.InputChannel; enabled: boolean }) {
+  constructor(params: { channel: enums.InputChannel; enabled: boolean }) {
     super();
     this.channel = params.channel;
     this.enabled = params.enabled;
   }
 }
 
-class channels_createForumTopic extends Function<types.Updates> {
-  channel: types.InputChannel;
+class channels_createForumTopic extends Function<enums.Updates> {
+  channel: enums.InputChannel;
   title: string;
   icon_color?: number;
   icon_emoji_id?: bigint;
   random_id: bigint;
-  send_as?: types.InputPeer;
+  send_as?: enums.InputPeer;
 
   protected get [id]() {
     return 0xF40C0224;
@@ -13315,7 +13316,7 @@ class channels_createForumTopic extends Function<types.Updates> {
     ];
   }
 
-  constructor(params: { channel: types.InputChannel; title: string; icon_color?: number; icon_emoji_id?: bigint; random_id: bigint; send_as?: types.InputPeer }) {
+  constructor(params: { channel: enums.InputChannel; title: string; icon_color?: number; icon_emoji_id?: bigint; random_id: bigint; send_as?: enums.InputPeer }) {
     super();
     this.channel = params.channel;
     this.title = params.title;
@@ -13326,8 +13327,8 @@ class channels_createForumTopic extends Function<types.Updates> {
   }
 }
 
-class channels_getForumTopics extends Function<types.messages_ForumTopics> {
-  channel: types.InputChannel;
+class channels_getForumTopics extends Function<enums.messages_ForumTopics> {
+  channel: enums.InputChannel;
   q?: string;
   offset_date: number;
   offset_id: number;
@@ -13362,7 +13363,7 @@ class channels_getForumTopics extends Function<types.messages_ForumTopics> {
     ];
   }
 
-  constructor(params: { channel: types.InputChannel; q?: string; offset_date: number; offset_id: number; offset_topic: number; limit: number }) {
+  constructor(params: { channel: enums.InputChannel; q?: string; offset_date: number; offset_id: number; offset_topic: number; limit: number }) {
     super();
     this.channel = params.channel;
     this.q = params.q;
@@ -13373,8 +13374,8 @@ class channels_getForumTopics extends Function<types.messages_ForumTopics> {
   }
 }
 
-class channels_getForumTopicsByID extends Function<types.messages_ForumTopics> {
-  channel: types.InputChannel;
+class channels_getForumTopicsByID extends Function<enums.messages_ForumTopics> {
+  channel: enums.InputChannel;
   topics: Array<number>;
 
   protected get [id]() {
@@ -13395,15 +13396,15 @@ class channels_getForumTopicsByID extends Function<types.messages_ForumTopics> {
     ];
   }
 
-  constructor(params: { channel: types.InputChannel; topics: Array<number> }) {
+  constructor(params: { channel: enums.InputChannel; topics: Array<number> }) {
     super();
     this.channel = params.channel;
     this.topics = params.topics;
   }
 }
 
-class channels_editForumTopic extends Function<types.Updates> {
-  channel: types.InputChannel;
+class channels_editForumTopic extends Function<enums.Updates> {
+  channel: enums.InputChannel;
   topic_id: number;
   title?: string;
   icon_emoji_id?: bigint;
@@ -13438,7 +13439,7 @@ class channels_editForumTopic extends Function<types.Updates> {
     ];
   }
 
-  constructor(params: { channel: types.InputChannel; topic_id: number; title?: string; icon_emoji_id?: bigint; closed?: boolean; hidden?: boolean }) {
+  constructor(params: { channel: enums.InputChannel; topic_id: number; title?: string; icon_emoji_id?: bigint; closed?: boolean; hidden?: boolean }) {
     super();
     this.channel = params.channel;
     this.topic_id = params.topic_id;
@@ -13449,8 +13450,8 @@ class channels_editForumTopic extends Function<types.Updates> {
   }
 }
 
-class channels_updatePinnedForumTopic extends Function<types.Updates> {
-  channel: types.InputChannel;
+class channels_updatePinnedForumTopic extends Function<enums.Updates> {
+  channel: enums.InputChannel;
   topic_id: number;
   pinned: boolean;
 
@@ -13474,7 +13475,7 @@ class channels_updatePinnedForumTopic extends Function<types.Updates> {
     ];
   }
 
-  constructor(params: { channel: types.InputChannel; topic_id: number; pinned: boolean }) {
+  constructor(params: { channel: enums.InputChannel; topic_id: number; pinned: boolean }) {
     super();
     this.channel = params.channel;
     this.topic_id = params.topic_id;
@@ -13482,8 +13483,8 @@ class channels_updatePinnedForumTopic extends Function<types.Updates> {
   }
 }
 
-class channels_deleteTopicHistory extends Function<types.messages_AffectedHistory> {
-  channel: types.InputChannel;
+class channels_deleteTopicHistory extends Function<enums.messages_AffectedHistory> {
+  channel: enums.InputChannel;
   top_msg_id: number;
 
   protected get [id]() {
@@ -13504,16 +13505,16 @@ class channels_deleteTopicHistory extends Function<types.messages_AffectedHistor
     ];
   }
 
-  constructor(params: { channel: types.InputChannel; top_msg_id: number }) {
+  constructor(params: { channel: enums.InputChannel; top_msg_id: number }) {
     super();
     this.channel = params.channel;
     this.top_msg_id = params.top_msg_id;
   }
 }
 
-class channels_reorderPinnedForumTopics extends Function<types.Updates> {
+class channels_reorderPinnedForumTopics extends Function<enums.Updates> {
   force?: true;
-  channel: types.InputChannel;
+  channel: enums.InputChannel;
   order: Array<number>;
 
   protected get [id]() {
@@ -13538,7 +13539,7 @@ class channels_reorderPinnedForumTopics extends Function<types.Updates> {
     ];
   }
 
-  constructor(params: { force?: true; channel: types.InputChannel; order: Array<number> }) {
+  constructor(params: { force?: true; channel: enums.InputChannel; order: Array<number> }) {
     super();
     this.force = params.force;
     this.channel = params.channel;
@@ -13546,8 +13547,8 @@ class channels_reorderPinnedForumTopics extends Function<types.Updates> {
   }
 }
 
-class channels_toggleAntiSpam extends Function<types.Updates> {
-  channel: types.InputChannel;
+class channels_toggleAntiSpam extends Function<enums.Updates> {
+  channel: enums.InputChannel;
   enabled: boolean;
 
   protected get [id]() {
@@ -13568,7 +13569,7 @@ class channels_toggleAntiSpam extends Function<types.Updates> {
     ];
   }
 
-  constructor(params: { channel: types.InputChannel; enabled: boolean }) {
+  constructor(params: { channel: enums.InputChannel; enabled: boolean }) {
     super();
     this.channel = params.channel;
     this.enabled = params.enabled;
@@ -13576,7 +13577,7 @@ class channels_toggleAntiSpam extends Function<types.Updates> {
 }
 
 class channels_reportAntiSpamFalsePositive extends Function<boolean> {
-  channel: types.InputChannel;
+  channel: enums.InputChannel;
   msg_id: number;
 
   protected get [id]() {
@@ -13597,15 +13598,15 @@ class channels_reportAntiSpamFalsePositive extends Function<boolean> {
     ];
   }
 
-  constructor(params: { channel: types.InputChannel; msg_id: number }) {
+  constructor(params: { channel: enums.InputChannel; msg_id: number }) {
     super();
     this.channel = params.channel;
     this.msg_id = params.msg_id;
   }
 }
 
-class channels_toggleParticipantsHidden extends Function<types.Updates> {
-  channel: types.InputChannel;
+class channels_toggleParticipantsHidden extends Function<enums.Updates> {
+  channel: enums.InputChannel;
   enabled: boolean;
 
   protected get [id]() {
@@ -13626,7 +13627,7 @@ class channels_toggleParticipantsHidden extends Function<types.Updates> {
     ];
   }
 
-  constructor(params: { channel: types.InputChannel; enabled: boolean }) {
+  constructor(params: { channel: enums.InputChannel; enabled: boolean }) {
     super();
     this.channel = params.channel;
     this.enabled = params.enabled;
@@ -13634,7 +13635,7 @@ class channels_toggleParticipantsHidden extends Function<types.Updates> {
 }
 
 class channels_clickSponsoredMessage extends Function<boolean> {
-  channel: types.InputChannel;
+  channel: enums.InputChannel;
   random_id: Uint8Array;
 
   protected get [id]() {
@@ -13655,15 +13656,15 @@ class channels_clickSponsoredMessage extends Function<boolean> {
     ];
   }
 
-  constructor(params: { channel: types.InputChannel; random_id: Uint8Array }) {
+  constructor(params: { channel: enums.InputChannel; random_id: Uint8Array }) {
     super();
     this.channel = params.channel;
     this.random_id = params.random_id;
   }
 }
 
-class channels_updateColor extends Function<types.Updates> {
-  channel: types.InputChannel;
+class channels_updateColor extends Function<enums.Updates> {
+  channel: enums.InputChannel;
   color: number;
   background_emoji_id?: bigint;
 
@@ -13689,7 +13690,7 @@ class channels_updateColor extends Function<types.Updates> {
     ];
   }
 
-  constructor(params: { channel: types.InputChannel; color: number; background_emoji_id?: bigint }) {
+  constructor(params: { channel: enums.InputChannel; color: number; background_emoji_id?: bigint }) {
     super();
     this.channel = params.channel;
     this.color = params.color;
@@ -13697,8 +13698,8 @@ class channels_updateColor extends Function<types.Updates> {
   }
 }
 
-class channels_toggleViewForumAsMessages extends Function<types.Updates> {
-  channel: types.InputChannel;
+class channels_toggleViewForumAsMessages extends Function<enums.Updates> {
+  channel: enums.InputChannel;
   enabled: boolean;
 
   protected get [id]() {
@@ -13719,15 +13720,15 @@ class channels_toggleViewForumAsMessages extends Function<types.Updates> {
     ];
   }
 
-  constructor(params: { channel: types.InputChannel; enabled: boolean }) {
+  constructor(params: { channel: enums.InputChannel; enabled: boolean }) {
     super();
     this.channel = params.channel;
     this.enabled = params.enabled;
   }
 }
 
-class channels_getChannelRecommendations extends Function<types.messages_Chats> {
-  channel: types.InputChannel;
+class channels_getChannelRecommendations extends Function<enums.messages_Chats> {
+  channel: enums.InputChannel;
 
   protected get [id]() {
     return 0x83B70D97;
@@ -13745,15 +13746,15 @@ class channels_getChannelRecommendations extends Function<types.messages_Chats> 
     ];
   }
 
-  constructor(params: { channel: types.InputChannel }) {
+  constructor(params: { channel: enums.InputChannel }) {
     super();
     this.channel = params.channel;
   }
 }
 
-class bots_sendCustomRequest extends Function<types.DataJSON> {
+class bots_sendCustomRequest extends Function<enums.DataJSON> {
   custom_method: string;
-  params: types.DataJSON;
+  params: enums.DataJSON;
 
   protected get [id]() {
     return 0xAA2769ED;
@@ -13773,7 +13774,7 @@ class bots_sendCustomRequest extends Function<types.DataJSON> {
     ];
   }
 
-  constructor(params: { custom_method: string; params: types.DataJSON }) {
+  constructor(params: { custom_method: string; params: enums.DataJSON }) {
     super();
     this.custom_method = params.custom_method;
     this.params = params.params;
@@ -13782,7 +13783,7 @@ class bots_sendCustomRequest extends Function<types.DataJSON> {
 
 class bots_answerWebhookJSONQuery extends Function<boolean> {
   query_id: bigint;
-  data: types.DataJSON;
+  data: enums.DataJSON;
 
   protected get [id]() {
     return 0xE6213F4D;
@@ -13802,7 +13803,7 @@ class bots_answerWebhookJSONQuery extends Function<boolean> {
     ];
   }
 
-  constructor(params: { query_id: bigint; data: types.DataJSON }) {
+  constructor(params: { query_id: bigint; data: enums.DataJSON }) {
     super();
     this.query_id = params.query_id;
     this.data = params.data;
@@ -13810,9 +13811,9 @@ class bots_answerWebhookJSONQuery extends Function<boolean> {
 }
 
 class bots_setBotCommands extends Function<boolean> {
-  scope: types.BotCommandScope;
+  scope: enums.BotCommandScope;
   lang_code: string;
-  commands: Array<types.BotCommand>;
+  commands: Array<enums.BotCommand>;
 
   protected get [id]() {
     return 0x0517165A;
@@ -13834,7 +13835,7 @@ class bots_setBotCommands extends Function<boolean> {
     ];
   }
 
-  constructor(params: { scope: types.BotCommandScope; lang_code: string; commands: Array<types.BotCommand> }) {
+  constructor(params: { scope: enums.BotCommandScope; lang_code: string; commands: Array<enums.BotCommand> }) {
     super();
     this.scope = params.scope;
     this.lang_code = params.lang_code;
@@ -13843,7 +13844,7 @@ class bots_setBotCommands extends Function<boolean> {
 }
 
 class bots_resetBotCommands extends Function<boolean> {
-  scope: types.BotCommandScope;
+  scope: enums.BotCommandScope;
   lang_code: string;
 
   protected get [id]() {
@@ -13864,15 +13865,15 @@ class bots_resetBotCommands extends Function<boolean> {
     ];
   }
 
-  constructor(params: { scope: types.BotCommandScope; lang_code: string }) {
+  constructor(params: { scope: enums.BotCommandScope; lang_code: string }) {
     super();
     this.scope = params.scope;
     this.lang_code = params.lang_code;
   }
 }
 
-class bots_getBotCommands extends Function<types.BotCommand[]> {
-  scope: types.BotCommandScope;
+class bots_getBotCommands extends Function<enums.BotCommand[]> {
+  scope: enums.BotCommandScope;
   lang_code: string;
 
   protected get [id]() {
@@ -13893,7 +13894,7 @@ class bots_getBotCommands extends Function<types.BotCommand[]> {
     ];
   }
 
-  constructor(params: { scope: types.BotCommandScope; lang_code: string }) {
+  constructor(params: { scope: enums.BotCommandScope; lang_code: string }) {
     super();
     this.scope = params.scope;
     this.lang_code = params.lang_code;
@@ -13901,8 +13902,8 @@ class bots_getBotCommands extends Function<types.BotCommand[]> {
 }
 
 class bots_setBotMenuButton extends Function<boolean> {
-  user_id: types.InputUser;
-  button: types.BotMenuButton;
+  user_id: enums.InputUser;
+  button: enums.BotMenuButton;
 
   protected get [id]() {
     return 0x4504D54F;
@@ -13922,15 +13923,15 @@ class bots_setBotMenuButton extends Function<boolean> {
     ];
   }
 
-  constructor(params: { user_id: types.InputUser; button: types.BotMenuButton }) {
+  constructor(params: { user_id: enums.InputUser; button: enums.BotMenuButton }) {
     super();
     this.user_id = params.user_id;
     this.button = params.button;
   }
 }
 
-class bots_getBotMenuButton extends Function<types.BotMenuButton> {
-  user_id: types.InputUser;
+class bots_getBotMenuButton extends Function<enums.BotMenuButton> {
+  user_id: enums.InputUser;
 
   protected get [id]() {
     return 0x9C60EB28;
@@ -13948,14 +13949,14 @@ class bots_getBotMenuButton extends Function<types.BotMenuButton> {
     ];
   }
 
-  constructor(params: { user_id: types.InputUser }) {
+  constructor(params: { user_id: enums.InputUser }) {
     super();
     this.user_id = params.user_id;
   }
 }
 
 class bots_setBotBroadcastDefaultAdminRights extends Function<boolean> {
-  admin_rights: types.ChatAdminRights;
+  admin_rights: enums.ChatAdminRights;
 
   protected get [id]() {
     return 0x788464E1;
@@ -13973,14 +13974,14 @@ class bots_setBotBroadcastDefaultAdminRights extends Function<boolean> {
     ];
   }
 
-  constructor(params: { admin_rights: types.ChatAdminRights }) {
+  constructor(params: { admin_rights: enums.ChatAdminRights }) {
     super();
     this.admin_rights = params.admin_rights;
   }
 }
 
 class bots_setBotGroupDefaultAdminRights extends Function<boolean> {
-  admin_rights: types.ChatAdminRights;
+  admin_rights: enums.ChatAdminRights;
 
   protected get [id]() {
     return 0x925EC9EA;
@@ -13998,14 +13999,14 @@ class bots_setBotGroupDefaultAdminRights extends Function<boolean> {
     ];
   }
 
-  constructor(params: { admin_rights: types.ChatAdminRights }) {
+  constructor(params: { admin_rights: enums.ChatAdminRights }) {
     super();
     this.admin_rights = params.admin_rights;
   }
 }
 
 class bots_setBotInfo extends Function<boolean> {
-  bot?: types.InputUser;
+  bot?: enums.InputUser;
   lang_code: string;
   name?: string;
   about?: string;
@@ -14037,7 +14038,7 @@ class bots_setBotInfo extends Function<boolean> {
     ];
   }
 
-  constructor(params: { bot?: types.InputUser; lang_code: string; name?: string; about?: string; description?: string }) {
+  constructor(params: { bot?: enums.InputUser; lang_code: string; name?: string; about?: string; description?: string }) {
     super();
     this.bot = params.bot;
     this.lang_code = params.lang_code;
@@ -14047,8 +14048,8 @@ class bots_setBotInfo extends Function<boolean> {
   }
 }
 
-class bots_getBotInfo extends Function<types.bots_BotInfo> {
-  bot?: types.InputUser;
+class bots_getBotInfo extends Function<enums.bots_BotInfo> {
+  bot?: enums.InputUser;
   lang_code: string;
 
   protected get [id]() {
@@ -14071,7 +14072,7 @@ class bots_getBotInfo extends Function<types.bots_BotInfo> {
     ];
   }
 
-  constructor(params: { bot?: types.InputUser; lang_code: string }) {
+  constructor(params: { bot?: enums.InputUser; lang_code: string }) {
     super();
     this.bot = params.bot;
     this.lang_code = params.lang_code;
@@ -14079,7 +14080,7 @@ class bots_getBotInfo extends Function<types.bots_BotInfo> {
 }
 
 class bots_reorderUsernames extends Function<boolean> {
-  bot: types.InputUser;
+  bot: enums.InputUser;
   order: Array<string>;
 
   protected get [id]() {
@@ -14100,7 +14101,7 @@ class bots_reorderUsernames extends Function<boolean> {
     ];
   }
 
-  constructor(params: { bot: types.InputUser; order: Array<string> }) {
+  constructor(params: { bot: enums.InputUser; order: Array<string> }) {
     super();
     this.bot = params.bot;
     this.order = params.order;
@@ -14108,7 +14109,7 @@ class bots_reorderUsernames extends Function<boolean> {
 }
 
 class bots_toggleUsername extends Function<boolean> {
-  bot: types.InputUser;
+  bot: enums.InputUser;
   username: string;
   active: boolean;
 
@@ -14132,7 +14133,7 @@ class bots_toggleUsername extends Function<boolean> {
     ];
   }
 
-  constructor(params: { bot: types.InputUser; username: string; active: boolean }) {
+  constructor(params: { bot: enums.InputUser; username: string; active: boolean }) {
     super();
     this.bot = params.bot;
     this.username = params.username;
@@ -14141,7 +14142,7 @@ class bots_toggleUsername extends Function<boolean> {
 }
 
 class bots_canSendMessage extends Function<boolean> {
-  bot: types.InputUser;
+  bot: enums.InputUser;
 
   protected get [id]() {
     return 0x1359F4E6;
@@ -14159,14 +14160,14 @@ class bots_canSendMessage extends Function<boolean> {
     ];
   }
 
-  constructor(params: { bot: types.InputUser }) {
+  constructor(params: { bot: enums.InputUser }) {
     super();
     this.bot = params.bot;
   }
 }
 
-class bots_allowSendMessage extends Function<types.Updates> {
-  bot: types.InputUser;
+class bots_allowSendMessage extends Function<enums.Updates> {
+  bot: enums.InputUser;
 
   protected get [id]() {
     return 0xF132E3EF;
@@ -14184,16 +14185,16 @@ class bots_allowSendMessage extends Function<types.Updates> {
     ];
   }
 
-  constructor(params: { bot: types.InputUser }) {
+  constructor(params: { bot: enums.InputUser }) {
     super();
     this.bot = params.bot;
   }
 }
 
-class bots_invokeWebViewCustomMethod extends Function<types.DataJSON> {
-  bot: types.InputUser;
+class bots_invokeWebViewCustomMethod extends Function<enums.DataJSON> {
+  bot: enums.InputUser;
   custom_method: string;
-  params: types.DataJSON;
+  params: enums.DataJSON;
 
   protected get [id]() {
     return 0x087FC5E7;
@@ -14215,7 +14216,7 @@ class bots_invokeWebViewCustomMethod extends Function<types.DataJSON> {
     ];
   }
 
-  constructor(params: { bot: types.InputUser; custom_method: string; params: types.DataJSON }) {
+  constructor(params: { bot: enums.InputUser; custom_method: string; params: enums.DataJSON }) {
     super();
     this.bot = params.bot;
     this.custom_method = params.custom_method;
@@ -14223,9 +14224,9 @@ class bots_invokeWebViewCustomMethod extends Function<types.DataJSON> {
   }
 }
 
-class payments_getPaymentForm extends Function<types.payments_PaymentForm> {
-  invoice: types.InputInvoice;
-  theme_params?: types.DataJSON;
+class payments_getPaymentForm extends Function<enums.payments_PaymentForm> {
+  invoice: enums.InputInvoice;
+  theme_params?: enums.DataJSON;
 
   protected get [id]() {
     return 0x37148DBB;
@@ -14247,15 +14248,15 @@ class payments_getPaymentForm extends Function<types.payments_PaymentForm> {
     ];
   }
 
-  constructor(params: { invoice: types.InputInvoice; theme_params?: types.DataJSON }) {
+  constructor(params: { invoice: enums.InputInvoice; theme_params?: enums.DataJSON }) {
     super();
     this.invoice = params.invoice;
     this.theme_params = params.theme_params;
   }
 }
 
-class payments_getPaymentReceipt extends Function<types.payments_PaymentReceipt> {
-  peer: types.InputPeer;
+class payments_getPaymentReceipt extends Function<enums.payments_PaymentReceipt> {
+  peer: enums.InputPeer;
   msg_id: number;
 
   protected get [id]() {
@@ -14276,17 +14277,17 @@ class payments_getPaymentReceipt extends Function<types.payments_PaymentReceipt>
     ];
   }
 
-  constructor(params: { peer: types.InputPeer; msg_id: number }) {
+  constructor(params: { peer: enums.InputPeer; msg_id: number }) {
     super();
     this.peer = params.peer;
     this.msg_id = params.msg_id;
   }
 }
 
-class payments_validateRequestedInfo extends Function<types.payments_ValidatedRequestedInfo> {
+class payments_validateRequestedInfo extends Function<enums.payments_ValidatedRequestedInfo> {
   save?: true;
-  invoice: types.InputInvoice;
-  info: types.PaymentRequestedInfo;
+  invoice: enums.InputInvoice;
+  info: enums.PaymentRequestedInfo;
 
   protected get [id]() {
     return 0xB6C8F12B;
@@ -14310,7 +14311,7 @@ class payments_validateRequestedInfo extends Function<types.payments_ValidatedRe
     ];
   }
 
-  constructor(params: { save?: true; invoice: types.InputInvoice; info: types.PaymentRequestedInfo }) {
+  constructor(params: { save?: true; invoice: enums.InputInvoice; info: enums.PaymentRequestedInfo }) {
     super();
     this.save = params.save;
     this.invoice = params.invoice;
@@ -14318,12 +14319,12 @@ class payments_validateRequestedInfo extends Function<types.payments_ValidatedRe
   }
 }
 
-class payments_sendPaymentForm extends Function<types.payments_PaymentResult> {
+class payments_sendPaymentForm extends Function<enums.payments_PaymentResult> {
   form_id: bigint;
-  invoice: types.InputInvoice;
+  invoice: enums.InputInvoice;
   requested_info_id?: string;
   shipping_option_id?: string;
-  credentials: types.InputPaymentCredentials;
+  credentials: enums.InputPaymentCredentials;
   tip_amount?: bigint;
 
   protected get [id]() {
@@ -14354,7 +14355,7 @@ class payments_sendPaymentForm extends Function<types.payments_PaymentResult> {
     ];
   }
 
-  constructor(params: { form_id: bigint; invoice: types.InputInvoice; requested_info_id?: string; shipping_option_id?: string; credentials: types.InputPaymentCredentials; tip_amount?: bigint }) {
+  constructor(params: { form_id: bigint; invoice: enums.InputInvoice; requested_info_id?: string; shipping_option_id?: string; credentials: enums.InputPaymentCredentials; tip_amount?: bigint }) {
     super();
     this.form_id = params.form_id;
     this.invoice = params.invoice;
@@ -14365,7 +14366,7 @@ class payments_sendPaymentForm extends Function<types.payments_PaymentResult> {
   }
 }
 
-class payments_getSavedInfo extends Function<types.payments_SavedInfo> {
+class payments_getSavedInfo extends Function<enums.payments_SavedInfo> {
   protected get [id]() {
     return 0x227D824B;
   }
@@ -14414,7 +14415,7 @@ class payments_clearSavedInfo extends Function<boolean> {
   }
 }
 
-class payments_getBankCardData extends Function<types.payments_BankCardData> {
+class payments_getBankCardData extends Function<enums.payments_BankCardData> {
   number: string;
 
   protected get [id]() {
@@ -14439,8 +14440,8 @@ class payments_getBankCardData extends Function<types.payments_BankCardData> {
   }
 }
 
-class payments_exportInvoice extends Function<types.payments_ExportedInvoice> {
-  invoice_media: types.InputMedia;
+class payments_exportInvoice extends Function<enums.payments_ExportedInvoice> {
+  invoice_media: enums.InputMedia;
 
   protected get [id]() {
     return 0x0F91B065;
@@ -14458,15 +14459,15 @@ class payments_exportInvoice extends Function<types.payments_ExportedInvoice> {
     ];
   }
 
-  constructor(params: { invoice_media: types.InputMedia }) {
+  constructor(params: { invoice_media: enums.InputMedia }) {
     super();
     this.invoice_media = params.invoice_media;
   }
 }
 
-class payments_assignAppStoreTransaction extends Function<types.Updates> {
+class payments_assignAppStoreTransaction extends Function<enums.Updates> {
   receipt: Uint8Array;
-  purpose: types.InputStorePaymentPurpose;
+  purpose: enums.InputStorePaymentPurpose;
 
   protected get [id]() {
     return 0x80ED747D;
@@ -14486,16 +14487,16 @@ class payments_assignAppStoreTransaction extends Function<types.Updates> {
     ];
   }
 
-  constructor(params: { receipt: Uint8Array; purpose: types.InputStorePaymentPurpose }) {
+  constructor(params: { receipt: Uint8Array; purpose: enums.InputStorePaymentPurpose }) {
     super();
     this.receipt = params.receipt;
     this.purpose = params.purpose;
   }
 }
 
-class payments_assignPlayMarketTransaction extends Function<types.Updates> {
-  receipt: types.DataJSON;
-  purpose: types.InputStorePaymentPurpose;
+class payments_assignPlayMarketTransaction extends Function<enums.Updates> {
+  receipt: enums.DataJSON;
+  purpose: enums.InputStorePaymentPurpose;
 
   protected get [id]() {
     return 0xDFFD50D3;
@@ -14515,7 +14516,7 @@ class payments_assignPlayMarketTransaction extends Function<types.Updates> {
     ];
   }
 
-  constructor(params: { receipt: types.DataJSON; purpose: types.InputStorePaymentPurpose }) {
+  constructor(params: { receipt: enums.DataJSON; purpose: enums.InputStorePaymentPurpose }) {
     super();
     this.receipt = params.receipt;
     this.purpose = params.purpose;
@@ -14523,7 +14524,7 @@ class payments_assignPlayMarketTransaction extends Function<types.Updates> {
 }
 
 class payments_canPurchasePremium extends Function<boolean> {
-  purpose: types.InputStorePaymentPurpose;
+  purpose: enums.InputStorePaymentPurpose;
 
   protected get [id]() {
     return 0x9FC19EB6;
@@ -14541,14 +14542,14 @@ class payments_canPurchasePremium extends Function<boolean> {
     ];
   }
 
-  constructor(params: { purpose: types.InputStorePaymentPurpose }) {
+  constructor(params: { purpose: enums.InputStorePaymentPurpose }) {
     super();
     this.purpose = params.purpose;
   }
 }
 
-class payments_getPremiumGiftCodeOptions extends Function<types.PremiumGiftCodeOption[]> {
-  boost_peer?: types.InputPeer;
+class payments_getPremiumGiftCodeOptions extends Function<enums.PremiumGiftCodeOption[]> {
+  boost_peer?: enums.InputPeer;
 
   protected get [id]() {
     return 0x2757BA54;
@@ -14568,13 +14569,13 @@ class payments_getPremiumGiftCodeOptions extends Function<types.PremiumGiftCodeO
     ];
   }
 
-  constructor(params?: { boost_peer?: types.InputPeer }) {
+  constructor(params?: { boost_peer?: enums.InputPeer }) {
     super();
     this.boost_peer = params?.boost_peer;
   }
 }
 
-class payments_checkGiftCode extends Function<types.payments_CheckedGiftCode> {
+class payments_checkGiftCode extends Function<enums.payments_CheckedGiftCode> {
   slug: string;
 
   protected get [id]() {
@@ -14599,7 +14600,7 @@ class payments_checkGiftCode extends Function<types.payments_CheckedGiftCode> {
   }
 }
 
-class payments_applyGiftCode extends Function<types.Updates> {
+class payments_applyGiftCode extends Function<enums.Updates> {
   slug: string;
 
   protected get [id]() {
@@ -14624,8 +14625,8 @@ class payments_applyGiftCode extends Function<types.Updates> {
   }
 }
 
-class payments_getGiveawayInfo extends Function<types.payments_GiveawayInfo> {
-  peer: types.InputPeer;
+class payments_getGiveawayInfo extends Function<enums.payments_GiveawayInfo> {
+  peer: enums.InputPeer;
   msg_id: number;
 
   protected get [id]() {
@@ -14646,17 +14647,17 @@ class payments_getGiveawayInfo extends Function<types.payments_GiveawayInfo> {
     ];
   }
 
-  constructor(params: { peer: types.InputPeer; msg_id: number }) {
+  constructor(params: { peer: enums.InputPeer; msg_id: number }) {
     super();
     this.peer = params.peer;
     this.msg_id = params.msg_id;
   }
 }
 
-class payments_launchPrepaidGiveaway extends Function<types.Updates> {
-  peer: types.InputPeer;
+class payments_launchPrepaidGiveaway extends Function<enums.Updates> {
+  peer: enums.InputPeer;
   giveaway_id: bigint;
-  purpose: types.InputStorePaymentPurpose;
+  purpose: enums.InputStorePaymentPurpose;
 
   protected get [id]() {
     return 0x5FF58F20;
@@ -14678,7 +14679,7 @@ class payments_launchPrepaidGiveaway extends Function<types.Updates> {
     ];
   }
 
-  constructor(params: { peer: types.InputPeer; giveaway_id: bigint; purpose: types.InputStorePaymentPurpose }) {
+  constructor(params: { peer: enums.InputPeer; giveaway_id: bigint; purpose: enums.InputStorePaymentPurpose }) {
     super();
     this.peer = params.peer;
     this.giveaway_id = params.giveaway_id;
@@ -14686,17 +14687,17 @@ class payments_launchPrepaidGiveaway extends Function<types.Updates> {
   }
 }
 
-class stickers_createStickerSet extends Function<types.messages_StickerSet> {
+class stickers_createStickerSet extends Function<enums.messages_StickerSet> {
   masks?: true;
   animated?: true;
   videos?: true;
   emojis?: true;
   text_color?: true;
-  user_id: types.InputUser;
+  user_id: enums.InputUser;
   title: string;
   short_name: string;
-  thumb?: types.InputDocument;
-  stickers: Array<types.InputStickerSetItem>;
+  thumb?: enums.InputDocument;
+  stickers: Array<enums.InputStickerSetItem>;
   software?: string;
 
   protected get [id]() {
@@ -14737,7 +14738,7 @@ class stickers_createStickerSet extends Function<types.messages_StickerSet> {
     ];
   }
 
-  constructor(params: { masks?: true; animated?: true; videos?: true; emojis?: true; text_color?: true; user_id: types.InputUser; title: string; short_name: string; thumb?: types.InputDocument; stickers: Array<types.InputStickerSetItem>; software?: string }) {
+  constructor(params: { masks?: true; animated?: true; videos?: true; emojis?: true; text_color?: true; user_id: enums.InputUser; title: string; short_name: string; thumb?: enums.InputDocument; stickers: Array<enums.InputStickerSetItem>; software?: string }) {
     super();
     this.masks = params.masks;
     this.animated = params.animated;
@@ -14753,8 +14754,8 @@ class stickers_createStickerSet extends Function<types.messages_StickerSet> {
   }
 }
 
-class stickers_removeStickerFromSet extends Function<types.messages_StickerSet> {
-  sticker: types.InputDocument;
+class stickers_removeStickerFromSet extends Function<enums.messages_StickerSet> {
+  sticker: enums.InputDocument;
 
   protected get [id]() {
     return 0xF7760F51;
@@ -14772,14 +14773,14 @@ class stickers_removeStickerFromSet extends Function<types.messages_StickerSet> 
     ];
   }
 
-  constructor(params: { sticker: types.InputDocument }) {
+  constructor(params: { sticker: enums.InputDocument }) {
     super();
     this.sticker = params.sticker;
   }
 }
 
-class stickers_changeStickerPosition extends Function<types.messages_StickerSet> {
-  sticker: types.InputDocument;
+class stickers_changeStickerPosition extends Function<enums.messages_StickerSet> {
+  sticker: enums.InputDocument;
   position: number;
 
   protected get [id]() {
@@ -14800,16 +14801,16 @@ class stickers_changeStickerPosition extends Function<types.messages_StickerSet>
     ];
   }
 
-  constructor(params: { sticker: types.InputDocument; position: number }) {
+  constructor(params: { sticker: enums.InputDocument; position: number }) {
     super();
     this.sticker = params.sticker;
     this.position = params.position;
   }
 }
 
-class stickers_addStickerToSet extends Function<types.messages_StickerSet> {
-  stickerset: types.InputStickerSet;
-  sticker: types.InputStickerSetItem;
+class stickers_addStickerToSet extends Function<enums.messages_StickerSet> {
+  stickerset: enums.InputStickerSet;
+  sticker: enums.InputStickerSetItem;
 
   protected get [id]() {
     return 0x8653FEBE;
@@ -14829,16 +14830,16 @@ class stickers_addStickerToSet extends Function<types.messages_StickerSet> {
     ];
   }
 
-  constructor(params: { stickerset: types.InputStickerSet; sticker: types.InputStickerSetItem }) {
+  constructor(params: { stickerset: enums.InputStickerSet; sticker: enums.InputStickerSetItem }) {
     super();
     this.stickerset = params.stickerset;
     this.sticker = params.sticker;
   }
 }
 
-class stickers_setStickerSetThumb extends Function<types.messages_StickerSet> {
-  stickerset: types.InputStickerSet;
-  thumb?: types.InputDocument;
+class stickers_setStickerSetThumb extends Function<enums.messages_StickerSet> {
+  stickerset: enums.InputStickerSet;
+  thumb?: enums.InputDocument;
   thumb_document_id?: bigint;
 
   protected get [id]() {
@@ -14863,7 +14864,7 @@ class stickers_setStickerSetThumb extends Function<types.messages_StickerSet> {
     ];
   }
 
-  constructor(params: { stickerset: types.InputStickerSet; thumb?: types.InputDocument; thumb_document_id?: bigint }) {
+  constructor(params: { stickerset: enums.InputStickerSet; thumb?: enums.InputDocument; thumb_document_id?: bigint }) {
     super();
     this.stickerset = params.stickerset;
     this.thumb = params.thumb;
@@ -14896,7 +14897,7 @@ class stickers_checkShortName extends Function<boolean> {
   }
 }
 
-class stickers_suggestShortName extends Function<types.stickers_SuggestedShortName> {
+class stickers_suggestShortName extends Function<enums.stickers_SuggestedShortName> {
   title: string;
 
   protected get [id]() {
@@ -14921,10 +14922,10 @@ class stickers_suggestShortName extends Function<types.stickers_SuggestedShortNa
   }
 }
 
-class stickers_changeSticker extends Function<types.messages_StickerSet> {
-  sticker: types.InputDocument;
+class stickers_changeSticker extends Function<enums.messages_StickerSet> {
+  sticker: enums.InputDocument;
   emoji?: string;
-  mask_coords?: types.MaskCoords;
+  mask_coords?: enums.MaskCoords;
   keywords?: string;
 
   protected get [id]() {
@@ -14951,7 +14952,7 @@ class stickers_changeSticker extends Function<types.messages_StickerSet> {
     ];
   }
 
-  constructor(params: { sticker: types.InputDocument; emoji?: string; mask_coords?: types.MaskCoords; keywords?: string }) {
+  constructor(params: { sticker: enums.InputDocument; emoji?: string; mask_coords?: enums.MaskCoords; keywords?: string }) {
     super();
     this.sticker = params.sticker;
     this.emoji = params.emoji;
@@ -14960,8 +14961,8 @@ class stickers_changeSticker extends Function<types.messages_StickerSet> {
   }
 }
 
-class stickers_renameStickerSet extends Function<types.messages_StickerSet> {
-  stickerset: types.InputStickerSet;
+class stickers_renameStickerSet extends Function<enums.messages_StickerSet> {
+  stickerset: enums.InputStickerSet;
   title: string;
 
   protected get [id]() {
@@ -14982,7 +14983,7 @@ class stickers_renameStickerSet extends Function<types.messages_StickerSet> {
     ];
   }
 
-  constructor(params: { stickerset: types.InputStickerSet; title: string }) {
+  constructor(params: { stickerset: enums.InputStickerSet; title: string }) {
     super();
     this.stickerset = params.stickerset;
     this.title = params.title;
@@ -14990,7 +14991,7 @@ class stickers_renameStickerSet extends Function<types.messages_StickerSet> {
 }
 
 class stickers_deleteStickerSet extends Function<boolean> {
-  stickerset: types.InputStickerSet;
+  stickerset: enums.InputStickerSet;
 
   protected get [id]() {
     return 0x87704394;
@@ -15008,13 +15009,13 @@ class stickers_deleteStickerSet extends Function<boolean> {
     ];
   }
 
-  constructor(params: { stickerset: types.InputStickerSet }) {
+  constructor(params: { stickerset: enums.InputStickerSet }) {
     super();
     this.stickerset = params.stickerset;
   }
 }
 
-class phone_getCallConfig extends Function<types.DataJSON> {
+class phone_getCallConfig extends Function<enums.DataJSON> {
   protected get [id]() {
     return 0x55451FA9;
   }
@@ -15032,12 +15033,12 @@ class phone_getCallConfig extends Function<types.DataJSON> {
   }
 }
 
-class phone_requestCall extends Function<types.phone_PhoneCall> {
+class phone_requestCall extends Function<enums.phone_PhoneCall> {
   video?: true;
-  user_id: types.InputUser;
+  user_id: enums.InputUser;
   random_id: number;
   g_a_hash: Uint8Array;
-  protocol: types.PhoneCallProtocol;
+  protocol: enums.PhoneCallProtocol;
 
   protected get [id]() {
     return 0x42FF96ED;
@@ -15065,7 +15066,7 @@ class phone_requestCall extends Function<types.phone_PhoneCall> {
     ];
   }
 
-  constructor(params: { video?: true; user_id: types.InputUser; random_id: number; g_a_hash: Uint8Array; protocol: types.PhoneCallProtocol }) {
+  constructor(params: { video?: true; user_id: enums.InputUser; random_id: number; g_a_hash: Uint8Array; protocol: enums.PhoneCallProtocol }) {
     super();
     this.video = params.video;
     this.user_id = params.user_id;
@@ -15075,10 +15076,10 @@ class phone_requestCall extends Function<types.phone_PhoneCall> {
   }
 }
 
-class phone_acceptCall extends Function<types.phone_PhoneCall> {
-  peer: types.InputPhoneCall;
+class phone_acceptCall extends Function<enums.phone_PhoneCall> {
+  peer: enums.InputPhoneCall;
   g_b: Uint8Array;
-  protocol: types.PhoneCallProtocol;
+  protocol: enums.PhoneCallProtocol;
 
   protected get [id]() {
     return 0x3BD2B4A0;
@@ -15100,7 +15101,7 @@ class phone_acceptCall extends Function<types.phone_PhoneCall> {
     ];
   }
 
-  constructor(params: { peer: types.InputPhoneCall; g_b: Uint8Array; protocol: types.PhoneCallProtocol }) {
+  constructor(params: { peer: enums.InputPhoneCall; g_b: Uint8Array; protocol: enums.PhoneCallProtocol }) {
     super();
     this.peer = params.peer;
     this.g_b = params.g_b;
@@ -15108,11 +15109,11 @@ class phone_acceptCall extends Function<types.phone_PhoneCall> {
   }
 }
 
-class phone_confirmCall extends Function<types.phone_PhoneCall> {
-  peer: types.InputPhoneCall;
+class phone_confirmCall extends Function<enums.phone_PhoneCall> {
+  peer: enums.InputPhoneCall;
   g_a: Uint8Array;
   key_fingerprint: bigint;
-  protocol: types.PhoneCallProtocol;
+  protocol: enums.PhoneCallProtocol;
 
   protected get [id]() {
     return 0x2EFE1722;
@@ -15136,7 +15137,7 @@ class phone_confirmCall extends Function<types.phone_PhoneCall> {
     ];
   }
 
-  constructor(params: { peer: types.InputPhoneCall; g_a: Uint8Array; key_fingerprint: bigint; protocol: types.PhoneCallProtocol }) {
+  constructor(params: { peer: enums.InputPhoneCall; g_a: Uint8Array; key_fingerprint: bigint; protocol: enums.PhoneCallProtocol }) {
     super();
     this.peer = params.peer;
     this.g_a = params.g_a;
@@ -15146,7 +15147,7 @@ class phone_confirmCall extends Function<types.phone_PhoneCall> {
 }
 
 class phone_receivedCall extends Function<boolean> {
-  peer: types.InputPhoneCall;
+  peer: enums.InputPhoneCall;
 
   protected get [id]() {
     return 0x17D54F61;
@@ -15164,17 +15165,17 @@ class phone_receivedCall extends Function<boolean> {
     ];
   }
 
-  constructor(params: { peer: types.InputPhoneCall }) {
+  constructor(params: { peer: enums.InputPhoneCall }) {
     super();
     this.peer = params.peer;
   }
 }
 
-class phone_discardCall extends Function<types.Updates> {
+class phone_discardCall extends Function<enums.Updates> {
   video?: true;
-  peer: types.InputPhoneCall;
+  peer: enums.InputPhoneCall;
   duration: number;
-  reason: types.PhoneCallDiscardReason;
+  reason: enums.PhoneCallDiscardReason;
   connection_id: bigint;
 
   protected get [id]() {
@@ -15203,7 +15204,7 @@ class phone_discardCall extends Function<types.Updates> {
     ];
   }
 
-  constructor(params: { video?: true; peer: types.InputPhoneCall; duration: number; reason: types.PhoneCallDiscardReason; connection_id: bigint }) {
+  constructor(params: { video?: true; peer: enums.InputPhoneCall; duration: number; reason: enums.PhoneCallDiscardReason; connection_id: bigint }) {
     super();
     this.video = params.video;
     this.peer = params.peer;
@@ -15213,9 +15214,9 @@ class phone_discardCall extends Function<types.Updates> {
   }
 }
 
-class phone_setCallRating extends Function<types.Updates> {
+class phone_setCallRating extends Function<enums.Updates> {
   user_initiative?: true;
-  peer: types.InputPhoneCall;
+  peer: enums.InputPhoneCall;
   rating: number;
   comment: string;
 
@@ -15243,7 +15244,7 @@ class phone_setCallRating extends Function<types.Updates> {
     ];
   }
 
-  constructor(params: { user_initiative?: true; peer: types.InputPhoneCall; rating: number; comment: string }) {
+  constructor(params: { user_initiative?: true; peer: enums.InputPhoneCall; rating: number; comment: string }) {
     super();
     this.user_initiative = params.user_initiative;
     this.peer = params.peer;
@@ -15253,8 +15254,8 @@ class phone_setCallRating extends Function<types.Updates> {
 }
 
 class phone_saveCallDebug extends Function<boolean> {
-  peer: types.InputPhoneCall;
-  debug: types.DataJSON;
+  peer: enums.InputPhoneCall;
+  debug: enums.DataJSON;
 
   protected get [id]() {
     return 0x277ADD7E;
@@ -15274,7 +15275,7 @@ class phone_saveCallDebug extends Function<boolean> {
     ];
   }
 
-  constructor(params: { peer: types.InputPhoneCall; debug: types.DataJSON }) {
+  constructor(params: { peer: enums.InputPhoneCall; debug: enums.DataJSON }) {
     super();
     this.peer = params.peer;
     this.debug = params.debug;
@@ -15282,7 +15283,7 @@ class phone_saveCallDebug extends Function<boolean> {
 }
 
 class phone_sendSignalingData extends Function<boolean> {
-  peer: types.InputPhoneCall;
+  peer: enums.InputPhoneCall;
   data: Uint8Array;
 
   protected get [id]() {
@@ -15303,16 +15304,16 @@ class phone_sendSignalingData extends Function<boolean> {
     ];
   }
 
-  constructor(params: { peer: types.InputPhoneCall; data: Uint8Array }) {
+  constructor(params: { peer: enums.InputPhoneCall; data: Uint8Array }) {
     super();
     this.peer = params.peer;
     this.data = params.data;
   }
 }
 
-class phone_createGroupCall extends Function<types.Updates> {
+class phone_createGroupCall extends Function<enums.Updates> {
   rtmp_stream?: true;
-  peer: types.InputPeer;
+  peer: enums.InputPeer;
   random_id: number;
   title?: string;
   schedule_date?: number;
@@ -15343,7 +15344,7 @@ class phone_createGroupCall extends Function<types.Updates> {
     ];
   }
 
-  constructor(params: { rtmp_stream?: true; peer: types.InputPeer; random_id: number; title?: string; schedule_date?: number }) {
+  constructor(params: { rtmp_stream?: true; peer: enums.InputPeer; random_id: number; title?: string; schedule_date?: number }) {
     super();
     this.rtmp_stream = params.rtmp_stream;
     this.peer = params.peer;
@@ -15353,13 +15354,13 @@ class phone_createGroupCall extends Function<types.Updates> {
   }
 }
 
-class phone_joinGroupCall extends Function<types.Updates> {
+class phone_joinGroupCall extends Function<enums.Updates> {
   muted?: true;
   video_stopped?: true;
-  call: types.InputGroupCall;
-  join_as: types.InputPeer;
+  call: enums.InputGroupCall;
+  join_as: enums.InputPeer;
   invite_hash?: string;
-  params: types.DataJSON;
+  params: enums.DataJSON;
 
   protected get [id]() {
     return 0xB132FF7B;
@@ -15389,7 +15390,7 @@ class phone_joinGroupCall extends Function<types.Updates> {
     ];
   }
 
-  constructor(params: { muted?: true; video_stopped?: true; call: types.InputGroupCall; join_as: types.InputPeer; invite_hash?: string; params: types.DataJSON }) {
+  constructor(params: { muted?: true; video_stopped?: true; call: enums.InputGroupCall; join_as: enums.InputPeer; invite_hash?: string; params: enums.DataJSON }) {
     super();
     this.muted = params.muted;
     this.video_stopped = params.video_stopped;
@@ -15400,8 +15401,8 @@ class phone_joinGroupCall extends Function<types.Updates> {
   }
 }
 
-class phone_leaveGroupCall extends Function<types.Updates> {
-  call: types.InputGroupCall;
+class phone_leaveGroupCall extends Function<enums.Updates> {
+  call: enums.InputGroupCall;
   source: number;
 
   protected get [id]() {
@@ -15422,16 +15423,16 @@ class phone_leaveGroupCall extends Function<types.Updates> {
     ];
   }
 
-  constructor(params: { call: types.InputGroupCall; source: number }) {
+  constructor(params: { call: enums.InputGroupCall; source: number }) {
     super();
     this.call = params.call;
     this.source = params.source;
   }
 }
 
-class phone_inviteToGroupCall extends Function<types.Updates> {
-  call: types.InputGroupCall;
-  users: Array<types.InputUser>;
+class phone_inviteToGroupCall extends Function<enums.Updates> {
+  call: enums.InputGroupCall;
+  users: Array<enums.InputUser>;
 
   protected get [id]() {
     return 0x7B393160;
@@ -15451,15 +15452,15 @@ class phone_inviteToGroupCall extends Function<types.Updates> {
     ];
   }
 
-  constructor(params: { call: types.InputGroupCall; users: Array<types.InputUser> }) {
+  constructor(params: { call: enums.InputGroupCall; users: Array<enums.InputUser> }) {
     super();
     this.call = params.call;
     this.users = params.users;
   }
 }
 
-class phone_discardGroupCall extends Function<types.Updates> {
-  call: types.InputGroupCall;
+class phone_discardGroupCall extends Function<enums.Updates> {
+  call: enums.InputGroupCall;
 
   protected get [id]() {
     return 0x7A777135;
@@ -15477,15 +15478,15 @@ class phone_discardGroupCall extends Function<types.Updates> {
     ];
   }
 
-  constructor(params: { call: types.InputGroupCall }) {
+  constructor(params: { call: enums.InputGroupCall }) {
     super();
     this.call = params.call;
   }
 }
 
-class phone_toggleGroupCallSettings extends Function<types.Updates> {
+class phone_toggleGroupCallSettings extends Function<enums.Updates> {
   reset_invite_hash?: true;
-  call: types.InputGroupCall;
+  call: enums.InputGroupCall;
   join_muted?: boolean;
 
   protected get [id]() {
@@ -15510,7 +15511,7 @@ class phone_toggleGroupCallSettings extends Function<types.Updates> {
     ];
   }
 
-  constructor(params: { reset_invite_hash?: true; call: types.InputGroupCall; join_muted?: boolean }) {
+  constructor(params: { reset_invite_hash?: true; call: enums.InputGroupCall; join_muted?: boolean }) {
     super();
     this.reset_invite_hash = params.reset_invite_hash;
     this.call = params.call;
@@ -15518,8 +15519,8 @@ class phone_toggleGroupCallSettings extends Function<types.Updates> {
   }
 }
 
-class phone_getGroupCall extends Function<types.phone_GroupCall> {
-  call: types.InputGroupCall;
+class phone_getGroupCall extends Function<enums.phone_GroupCall> {
+  call: enums.InputGroupCall;
   limit: number;
 
   protected get [id]() {
@@ -15540,16 +15541,16 @@ class phone_getGroupCall extends Function<types.phone_GroupCall> {
     ];
   }
 
-  constructor(params: { call: types.InputGroupCall; limit: number }) {
+  constructor(params: { call: enums.InputGroupCall; limit: number }) {
     super();
     this.call = params.call;
     this.limit = params.limit;
   }
 }
 
-class phone_getGroupParticipants extends Function<types.phone_GroupParticipants> {
-  call: types.InputGroupCall;
-  ids: Array<types.InputPeer>;
+class phone_getGroupParticipants extends Function<enums.phone_GroupParticipants> {
+  call: enums.InputGroupCall;
+  ids: Array<enums.InputPeer>;
   sources: Array<number>;
   offset: string;
   limit: number;
@@ -15578,7 +15579,7 @@ class phone_getGroupParticipants extends Function<types.phone_GroupParticipants>
     ];
   }
 
-  constructor(params: { call: types.InputGroupCall; ids: Array<types.InputPeer>; sources: Array<number>; offset: string; limit: number }) {
+  constructor(params: { call: enums.InputGroupCall; ids: Array<enums.InputPeer>; sources: Array<number>; offset: string; limit: number }) {
     super();
     this.call = params.call;
     this.ids = params.ids;
@@ -15589,7 +15590,7 @@ class phone_getGroupParticipants extends Function<types.phone_GroupParticipants>
 }
 
 class phone_checkGroupCall extends Function<number[]> {
-  call: types.InputGroupCall;
+  call: enums.InputGroupCall;
   sources: Array<number>;
 
   protected get [id]() {
@@ -15610,17 +15611,17 @@ class phone_checkGroupCall extends Function<number[]> {
     ];
   }
 
-  constructor(params: { call: types.InputGroupCall; sources: Array<number> }) {
+  constructor(params: { call: enums.InputGroupCall; sources: Array<number> }) {
     super();
     this.call = params.call;
     this.sources = params.sources;
   }
 }
 
-class phone_toggleGroupCallRecord extends Function<types.Updates> {
+class phone_toggleGroupCallRecord extends Function<enums.Updates> {
   start?: true;
   video?: true;
-  call: types.InputGroupCall;
+  call: enums.InputGroupCall;
   title?: string;
   video_portrait?: boolean;
 
@@ -15650,7 +15651,7 @@ class phone_toggleGroupCallRecord extends Function<types.Updates> {
     ];
   }
 
-  constructor(params: { start?: true; video?: true; call: types.InputGroupCall; title?: string; video_portrait?: boolean }) {
+  constructor(params: { start?: true; video?: true; call: enums.InputGroupCall; title?: string; video_portrait?: boolean }) {
     super();
     this.start = params.start;
     this.video = params.video;
@@ -15660,9 +15661,9 @@ class phone_toggleGroupCallRecord extends Function<types.Updates> {
   }
 }
 
-class phone_editGroupCallParticipant extends Function<types.Updates> {
-  call: types.InputGroupCall;
-  participant: types.InputPeer;
+class phone_editGroupCallParticipant extends Function<enums.Updates> {
+  call: enums.InputGroupCall;
+  participant: enums.InputPeer;
   muted?: boolean;
   volume?: number;
   raise_hand?: boolean;
@@ -15702,7 +15703,7 @@ class phone_editGroupCallParticipant extends Function<types.Updates> {
     ];
   }
 
-  constructor(params: { call: types.InputGroupCall; participant: types.InputPeer; muted?: boolean; volume?: number; raise_hand?: boolean; video_stopped?: boolean; video_paused?: boolean; presentation_paused?: boolean }) {
+  constructor(params: { call: enums.InputGroupCall; participant: enums.InputPeer; muted?: boolean; volume?: number; raise_hand?: boolean; video_stopped?: boolean; video_paused?: boolean; presentation_paused?: boolean }) {
     super();
     this.call = params.call;
     this.participant = params.participant;
@@ -15715,8 +15716,8 @@ class phone_editGroupCallParticipant extends Function<types.Updates> {
   }
 }
 
-class phone_editGroupCallTitle extends Function<types.Updates> {
-  call: types.InputGroupCall;
+class phone_editGroupCallTitle extends Function<enums.Updates> {
+  call: enums.InputGroupCall;
   title: string;
 
   protected get [id]() {
@@ -15737,15 +15738,15 @@ class phone_editGroupCallTitle extends Function<types.Updates> {
     ];
   }
 
-  constructor(params: { call: types.InputGroupCall; title: string }) {
+  constructor(params: { call: enums.InputGroupCall; title: string }) {
     super();
     this.call = params.call;
     this.title = params.title;
   }
 }
 
-class phone_getGroupCallJoinAs extends Function<types.phone_JoinAsPeers> {
-  peer: types.InputPeer;
+class phone_getGroupCallJoinAs extends Function<enums.phone_JoinAsPeers> {
+  peer: enums.InputPeer;
 
   protected get [id]() {
     return 0xEF7C213A;
@@ -15763,15 +15764,15 @@ class phone_getGroupCallJoinAs extends Function<types.phone_JoinAsPeers> {
     ];
   }
 
-  constructor(params: { peer: types.InputPeer }) {
+  constructor(params: { peer: enums.InputPeer }) {
     super();
     this.peer = params.peer;
   }
 }
 
-class phone_exportGroupCallInvite extends Function<types.phone_ExportedGroupCallInvite> {
+class phone_exportGroupCallInvite extends Function<enums.phone_ExportedGroupCallInvite> {
   can_self_unmute?: true;
-  call: types.InputGroupCall;
+  call: enums.InputGroupCall;
 
   protected get [id]() {
     return 0xE6AA647F;
@@ -15793,15 +15794,15 @@ class phone_exportGroupCallInvite extends Function<types.phone_ExportedGroupCall
     ];
   }
 
-  constructor(params: { can_self_unmute?: true; call: types.InputGroupCall }) {
+  constructor(params: { can_self_unmute?: true; call: enums.InputGroupCall }) {
     super();
     this.can_self_unmute = params.can_self_unmute;
     this.call = params.call;
   }
 }
 
-class phone_toggleGroupCallStartSubscription extends Function<types.Updates> {
-  call: types.InputGroupCall;
+class phone_toggleGroupCallStartSubscription extends Function<enums.Updates> {
+  call: enums.InputGroupCall;
   subscribed: boolean;
 
   protected get [id]() {
@@ -15822,15 +15823,15 @@ class phone_toggleGroupCallStartSubscription extends Function<types.Updates> {
     ];
   }
 
-  constructor(params: { call: types.InputGroupCall; subscribed: boolean }) {
+  constructor(params: { call: enums.InputGroupCall; subscribed: boolean }) {
     super();
     this.call = params.call;
     this.subscribed = params.subscribed;
   }
 }
 
-class phone_startScheduledGroupCall extends Function<types.Updates> {
-  call: types.InputGroupCall;
+class phone_startScheduledGroupCall extends Function<enums.Updates> {
+  call: enums.InputGroupCall;
 
   protected get [id]() {
     return 0x5680E342;
@@ -15848,15 +15849,15 @@ class phone_startScheduledGroupCall extends Function<types.Updates> {
     ];
   }
 
-  constructor(params: { call: types.InputGroupCall }) {
+  constructor(params: { call: enums.InputGroupCall }) {
     super();
     this.call = params.call;
   }
 }
 
 class phone_saveDefaultGroupCallJoinAs extends Function<boolean> {
-  peer: types.InputPeer;
-  join_as: types.InputPeer;
+  peer: enums.InputPeer;
+  join_as: enums.InputPeer;
 
   protected get [id]() {
     return 0x575E1F8C;
@@ -15876,16 +15877,16 @@ class phone_saveDefaultGroupCallJoinAs extends Function<boolean> {
     ];
   }
 
-  constructor(params: { peer: types.InputPeer; join_as: types.InputPeer }) {
+  constructor(params: { peer: enums.InputPeer; join_as: enums.InputPeer }) {
     super();
     this.peer = params.peer;
     this.join_as = params.join_as;
   }
 }
 
-class phone_joinGroupCallPresentation extends Function<types.Updates> {
-  call: types.InputGroupCall;
-  params: types.DataJSON;
+class phone_joinGroupCallPresentation extends Function<enums.Updates> {
+  call: enums.InputGroupCall;
+  params: enums.DataJSON;
 
   protected get [id]() {
     return 0xCBEA6BC4;
@@ -15905,15 +15906,15 @@ class phone_joinGroupCallPresentation extends Function<types.Updates> {
     ];
   }
 
-  constructor(params: { call: types.InputGroupCall; params: types.DataJSON }) {
+  constructor(params: { call: enums.InputGroupCall; params: enums.DataJSON }) {
     super();
     this.call = params.call;
     this.params = params.params;
   }
 }
 
-class phone_leaveGroupCallPresentation extends Function<types.Updates> {
-  call: types.InputGroupCall;
+class phone_leaveGroupCallPresentation extends Function<enums.Updates> {
+  call: enums.InputGroupCall;
 
   protected get [id]() {
     return 0x1C50D144;
@@ -15931,14 +15932,14 @@ class phone_leaveGroupCallPresentation extends Function<types.Updates> {
     ];
   }
 
-  constructor(params: { call: types.InputGroupCall }) {
+  constructor(params: { call: enums.InputGroupCall }) {
     super();
     this.call = params.call;
   }
 }
 
-class phone_getGroupCallStreamChannels extends Function<types.phone_GroupCallStreamChannels> {
-  call: types.InputGroupCall;
+class phone_getGroupCallStreamChannels extends Function<enums.phone_GroupCallStreamChannels> {
+  call: enums.InputGroupCall;
 
   protected get [id]() {
     return 0x1AB21940;
@@ -15956,14 +15957,14 @@ class phone_getGroupCallStreamChannels extends Function<types.phone_GroupCallStr
     ];
   }
 
-  constructor(params: { call: types.InputGroupCall }) {
+  constructor(params: { call: enums.InputGroupCall }) {
     super();
     this.call = params.call;
   }
 }
 
-class phone_getGroupCallStreamRtmpUrl extends Function<types.phone_GroupCallStreamRtmpUrl> {
-  peer: types.InputPeer;
+class phone_getGroupCallStreamRtmpUrl extends Function<enums.phone_GroupCallStreamRtmpUrl> {
+  peer: enums.InputPeer;
   revoke: boolean;
 
   protected get [id]() {
@@ -15984,7 +15985,7 @@ class phone_getGroupCallStreamRtmpUrl extends Function<types.phone_GroupCallStre
     ];
   }
 
-  constructor(params: { peer: types.InputPeer; revoke: boolean }) {
+  constructor(params: { peer: enums.InputPeer; revoke: boolean }) {
     super();
     this.peer = params.peer;
     this.revoke = params.revoke;
@@ -15992,8 +15993,8 @@ class phone_getGroupCallStreamRtmpUrl extends Function<types.phone_GroupCallStre
 }
 
 class phone_saveCallLog extends Function<boolean> {
-  peer: types.InputPhoneCall;
-  file: types.InputFile;
+  peer: enums.InputPhoneCall;
+  file: enums.InputFile;
 
   protected get [id]() {
     return 0x41248786;
@@ -16013,14 +16014,14 @@ class phone_saveCallLog extends Function<boolean> {
     ];
   }
 
-  constructor(params: { peer: types.InputPhoneCall; file: types.InputFile }) {
+  constructor(params: { peer: enums.InputPhoneCall; file: enums.InputFile }) {
     super();
     this.peer = params.peer;
     this.file = params.file;
   }
 }
 
-class langpack_getLangPack extends Function<types.LangPackDifference> {
+class langpack_getLangPack extends Function<enums.LangPackDifference> {
   lang_pack: string;
   lang_code: string;
 
@@ -16049,7 +16050,7 @@ class langpack_getLangPack extends Function<types.LangPackDifference> {
   }
 }
 
-class langpack_getStrings extends Function<types.LangPackString[]> {
+class langpack_getStrings extends Function<enums.LangPackString[]> {
   lang_pack: string;
   lang_code: string;
   keys: Array<string>;
@@ -16082,7 +16083,7 @@ class langpack_getStrings extends Function<types.LangPackString[]> {
   }
 }
 
-class langpack_getDifference extends Function<types.LangPackDifference> {
+class langpack_getDifference extends Function<enums.LangPackDifference> {
   lang_pack: string;
   lang_code: string;
   from_version: number;
@@ -16115,7 +16116,7 @@ class langpack_getDifference extends Function<types.LangPackDifference> {
   }
 }
 
-class langpack_getLanguages extends Function<types.LangPackLanguage[]> {
+class langpack_getLanguages extends Function<enums.LangPackLanguage[]> {
   lang_pack: string;
 
   protected get [id]() {
@@ -16140,7 +16141,7 @@ class langpack_getLanguages extends Function<types.LangPackLanguage[]> {
   }
 }
 
-class langpack_getLanguage extends Function<types.LangPackLanguage> {
+class langpack_getLanguage extends Function<enums.LangPackLanguage> {
   lang_pack: string;
   lang_code: string;
 
@@ -16169,8 +16170,8 @@ class langpack_getLanguage extends Function<types.LangPackLanguage> {
   }
 }
 
-class folders_editPeerFolders extends Function<types.Updates> {
-  folder_peers: Array<types.InputFolderPeer>;
+class folders_editPeerFolders extends Function<enums.Updates> {
+  folder_peers: Array<enums.InputFolderPeer>;
 
   protected get [id]() {
     return 0x6847D0AB;
@@ -16188,15 +16189,15 @@ class folders_editPeerFolders extends Function<types.Updates> {
     ];
   }
 
-  constructor(params: { folder_peers: Array<types.InputFolderPeer> }) {
+  constructor(params: { folder_peers: Array<enums.InputFolderPeer> }) {
     super();
     this.folder_peers = params.folder_peers;
   }
 }
 
-class stats_getBroadcastStats extends Function<types.stats_BroadcastStats> {
+class stats_getBroadcastStats extends Function<enums.stats_BroadcastStats> {
   dark?: true;
-  channel: types.InputChannel;
+  channel: enums.InputChannel;
 
   protected get [id]() {
     return 0xAB42441A;
@@ -16218,14 +16219,14 @@ class stats_getBroadcastStats extends Function<types.stats_BroadcastStats> {
     ];
   }
 
-  constructor(params: { dark?: true; channel: types.InputChannel }) {
+  constructor(params: { dark?: true; channel: enums.InputChannel }) {
     super();
     this.dark = params.dark;
     this.channel = params.channel;
   }
 }
 
-class stats_loadAsyncGraph extends Function<types.StatsGraph> {
+class stats_loadAsyncGraph extends Function<enums.StatsGraph> {
   token: string;
   x?: bigint;
 
@@ -16256,9 +16257,9 @@ class stats_loadAsyncGraph extends Function<types.StatsGraph> {
   }
 }
 
-class stats_getMegagroupStats extends Function<types.stats_MegagroupStats> {
+class stats_getMegagroupStats extends Function<enums.stats_MegagroupStats> {
   dark?: true;
-  channel: types.InputChannel;
+  channel: enums.InputChannel;
 
   protected get [id]() {
     return 0xDCDF8607;
@@ -16280,18 +16281,18 @@ class stats_getMegagroupStats extends Function<types.stats_MegagroupStats> {
     ];
   }
 
-  constructor(params: { dark?: true; channel: types.InputChannel }) {
+  constructor(params: { dark?: true; channel: enums.InputChannel }) {
     super();
     this.dark = params.dark;
     this.channel = params.channel;
   }
 }
 
-class stats_getMessagePublicForwards extends Function<types.messages_Messages> {
-  channel: types.InputChannel;
+class stats_getMessagePublicForwards extends Function<enums.messages_Messages> {
+  channel: enums.InputChannel;
   msg_id: number;
   offset_rate: number;
-  offset_peer: types.InputPeer;
+  offset_peer: enums.InputPeer;
   offset_id: number;
   limit: number;
 
@@ -16321,7 +16322,7 @@ class stats_getMessagePublicForwards extends Function<types.messages_Messages> {
     ];
   }
 
-  constructor(params: { channel: types.InputChannel; msg_id: number; offset_rate: number; offset_peer: types.InputPeer; offset_id: number; limit: number }) {
+  constructor(params: { channel: enums.InputChannel; msg_id: number; offset_rate: number; offset_peer: enums.InputPeer; offset_id: number; limit: number }) {
     super();
     this.channel = params.channel;
     this.msg_id = params.msg_id;
@@ -16332,9 +16333,9 @@ class stats_getMessagePublicForwards extends Function<types.messages_Messages> {
   }
 }
 
-class stats_getMessageStats extends Function<types.stats_MessageStats> {
+class stats_getMessageStats extends Function<enums.stats_MessageStats> {
   dark?: true;
-  channel: types.InputChannel;
+  channel: enums.InputChannel;
   msg_id: number;
 
   protected get [id]() {
@@ -16359,7 +16360,7 @@ class stats_getMessageStats extends Function<types.stats_MessageStats> {
     ];
   }
 
-  constructor(params: { dark?: true; channel: types.InputChannel; msg_id: number }) {
+  constructor(params: { dark?: true; channel: enums.InputChannel; msg_id: number }) {
     super();
     this.dark = params.dark;
     this.channel = params.channel;
@@ -16367,9 +16368,9 @@ class stats_getMessageStats extends Function<types.stats_MessageStats> {
   }
 }
 
-class stats_getStoryStats extends Function<types.stats_StoryStats> {
+class stats_getStoryStats extends Function<enums.stats_StoryStats> {
   dark?: true;
-  peer: types.InputPeer;
+  peer: enums.InputPeer;
   id: number;
 
   protected get [id]() {
@@ -16394,7 +16395,7 @@ class stats_getStoryStats extends Function<types.stats_StoryStats> {
     ];
   }
 
-  constructor(params: { dark?: true; peer: types.InputPeer; id: number }) {
+  constructor(params: { dark?: true; peer: enums.InputPeer; id: number }) {
     super();
     this.dark = params.dark;
     this.peer = params.peer;
@@ -16402,8 +16403,8 @@ class stats_getStoryStats extends Function<types.stats_StoryStats> {
   }
 }
 
-class stats_getStoryPublicForwards extends Function<types.stats_PublicForwards> {
-  peer: types.InputPeer;
+class stats_getStoryPublicForwards extends Function<enums.stats_PublicForwards> {
+  peer: enums.InputPeer;
   id: number;
   offset: string;
   limit: number;
@@ -16430,7 +16431,7 @@ class stats_getStoryPublicForwards extends Function<types.stats_PublicForwards> 
     ];
   }
 
-  constructor(params: { peer: types.InputPeer; id: number; offset: string; limit: number }) {
+  constructor(params: { peer: enums.InputPeer; id: number; offset: string; limit: number }) {
     super();
     this.peer = params.peer;
     this.id = params.id;
@@ -16439,10 +16440,10 @@ class stats_getStoryPublicForwards extends Function<types.stats_PublicForwards> 
   }
 }
 
-class chatlists_exportChatlistInvite extends Function<types.chatlists_ExportedChatlistInvite> {
-  chatlist: types.InputChatlist;
+class chatlists_exportChatlistInvite extends Function<enums.chatlists_ExportedChatlistInvite> {
+  chatlist: enums.InputChatlist;
   title: string;
-  peers: Array<types.InputPeer>;
+  peers: Array<enums.InputPeer>;
 
   protected get [id]() {
     return 0x8472478E;
@@ -16464,7 +16465,7 @@ class chatlists_exportChatlistInvite extends Function<types.chatlists_ExportedCh
     ];
   }
 
-  constructor(params: { chatlist: types.InputChatlist; title: string; peers: Array<types.InputPeer> }) {
+  constructor(params: { chatlist: enums.InputChatlist; title: string; peers: Array<enums.InputPeer> }) {
     super();
     this.chatlist = params.chatlist;
     this.title = params.title;
@@ -16473,7 +16474,7 @@ class chatlists_exportChatlistInvite extends Function<types.chatlists_ExportedCh
 }
 
 class chatlists_deleteExportedInvite extends Function<boolean> {
-  chatlist: types.InputChatlist;
+  chatlist: enums.InputChatlist;
   slug: string;
 
   protected get [id]() {
@@ -16494,18 +16495,18 @@ class chatlists_deleteExportedInvite extends Function<boolean> {
     ];
   }
 
-  constructor(params: { chatlist: types.InputChatlist; slug: string }) {
+  constructor(params: { chatlist: enums.InputChatlist; slug: string }) {
     super();
     this.chatlist = params.chatlist;
     this.slug = params.slug;
   }
 }
 
-class chatlists_editExportedInvite extends Function<types.ExportedChatlistInvite> {
-  chatlist: types.InputChatlist;
+class chatlists_editExportedInvite extends Function<enums.ExportedChatlistInvite> {
+  chatlist: enums.InputChatlist;
   slug: string;
   title?: string;
-  peers?: Array<types.InputPeer>;
+  peers?: Array<enums.InputPeer>;
 
   protected get [id]() {
     return 0x653DB63D;
@@ -16531,7 +16532,7 @@ class chatlists_editExportedInvite extends Function<types.ExportedChatlistInvite
     ];
   }
 
-  constructor(params: { chatlist: types.InputChatlist; slug: string; title?: string; peers?: Array<types.InputPeer> }) {
+  constructor(params: { chatlist: enums.InputChatlist; slug: string; title?: string; peers?: Array<enums.InputPeer> }) {
     super();
     this.chatlist = params.chatlist;
     this.slug = params.slug;
@@ -16540,8 +16541,8 @@ class chatlists_editExportedInvite extends Function<types.ExportedChatlistInvite
   }
 }
 
-class chatlists_getExportedInvites extends Function<types.chatlists_ExportedInvites> {
-  chatlist: types.InputChatlist;
+class chatlists_getExportedInvites extends Function<enums.chatlists_ExportedInvites> {
+  chatlist: enums.InputChatlist;
 
   protected get [id]() {
     return 0xCE03DA83;
@@ -16559,13 +16560,13 @@ class chatlists_getExportedInvites extends Function<types.chatlists_ExportedInvi
     ];
   }
 
-  constructor(params: { chatlist: types.InputChatlist }) {
+  constructor(params: { chatlist: enums.InputChatlist }) {
     super();
     this.chatlist = params.chatlist;
   }
 }
 
-class chatlists_checkChatlistInvite extends Function<types.chatlists_ChatlistInvite> {
+class chatlists_checkChatlistInvite extends Function<enums.chatlists_ChatlistInvite> {
   slug: string;
 
   protected get [id]() {
@@ -16590,9 +16591,9 @@ class chatlists_checkChatlistInvite extends Function<types.chatlists_ChatlistInv
   }
 }
 
-class chatlists_joinChatlistInvite extends Function<types.Updates> {
+class chatlists_joinChatlistInvite extends Function<enums.Updates> {
   slug: string;
-  peers: Array<types.InputPeer>;
+  peers: Array<enums.InputPeer>;
 
   protected get [id]() {
     return 0xA6B1E39A;
@@ -16612,15 +16613,15 @@ class chatlists_joinChatlistInvite extends Function<types.Updates> {
     ];
   }
 
-  constructor(params: { slug: string; peers: Array<types.InputPeer> }) {
+  constructor(params: { slug: string; peers: Array<enums.InputPeer> }) {
     super();
     this.slug = params.slug;
     this.peers = params.peers;
   }
 }
 
-class chatlists_getChatlistUpdates extends Function<types.chatlists_ChatlistUpdates> {
-  chatlist: types.InputChatlist;
+class chatlists_getChatlistUpdates extends Function<enums.chatlists_ChatlistUpdates> {
+  chatlist: enums.InputChatlist;
 
   protected get [id]() {
     return 0x89419521;
@@ -16638,15 +16639,15 @@ class chatlists_getChatlistUpdates extends Function<types.chatlists_ChatlistUpda
     ];
   }
 
-  constructor(params: { chatlist: types.InputChatlist }) {
+  constructor(params: { chatlist: enums.InputChatlist }) {
     super();
     this.chatlist = params.chatlist;
   }
 }
 
-class chatlists_joinChatlistUpdates extends Function<types.Updates> {
-  chatlist: types.InputChatlist;
-  peers: Array<types.InputPeer>;
+class chatlists_joinChatlistUpdates extends Function<enums.Updates> {
+  chatlist: enums.InputChatlist;
+  peers: Array<enums.InputPeer>;
 
   protected get [id]() {
     return 0xE089F8F5;
@@ -16666,7 +16667,7 @@ class chatlists_joinChatlistUpdates extends Function<types.Updates> {
     ];
   }
 
-  constructor(params: { chatlist: types.InputChatlist; peers: Array<types.InputPeer> }) {
+  constructor(params: { chatlist: enums.InputChatlist; peers: Array<enums.InputPeer> }) {
     super();
     this.chatlist = params.chatlist;
     this.peers = params.peers;
@@ -16674,7 +16675,7 @@ class chatlists_joinChatlistUpdates extends Function<types.Updates> {
 }
 
 class chatlists_hideChatlistUpdates extends Function<boolean> {
-  chatlist: types.InputChatlist;
+  chatlist: enums.InputChatlist;
 
   protected get [id]() {
     return 0x66E486FB;
@@ -16692,14 +16693,14 @@ class chatlists_hideChatlistUpdates extends Function<boolean> {
     ];
   }
 
-  constructor(params: { chatlist: types.InputChatlist }) {
+  constructor(params: { chatlist: enums.InputChatlist }) {
     super();
     this.chatlist = params.chatlist;
   }
 }
 
-class chatlists_getLeaveChatlistSuggestions extends Function<types.Peer[]> {
-  chatlist: types.InputChatlist;
+class chatlists_getLeaveChatlistSuggestions extends Function<enums.Peer[]> {
+  chatlist: enums.InputChatlist;
 
   protected get [id]() {
     return 0xFDBCD714;
@@ -16717,15 +16718,15 @@ class chatlists_getLeaveChatlistSuggestions extends Function<types.Peer[]> {
     ];
   }
 
-  constructor(params: { chatlist: types.InputChatlist }) {
+  constructor(params: { chatlist: enums.InputChatlist }) {
     super();
     this.chatlist = params.chatlist;
   }
 }
 
-class chatlists_leaveChatlist extends Function<types.Updates> {
-  chatlist: types.InputChatlist;
-  peers: Array<types.InputPeer>;
+class chatlists_leaveChatlist extends Function<enums.Updates> {
+  chatlist: enums.InputChatlist;
+  peers: Array<enums.InputPeer>;
 
   protected get [id]() {
     return 0x74FAE13A;
@@ -16745,7 +16746,7 @@ class chatlists_leaveChatlist extends Function<types.Updates> {
     ];
   }
 
-  constructor(params: { chatlist: types.InputChatlist; peers: Array<types.InputPeer> }) {
+  constructor(params: { chatlist: enums.InputChatlist; peers: Array<enums.InputPeer> }) {
     super();
     this.chatlist = params.chatlist;
     this.peers = params.peers;
@@ -16753,7 +16754,7 @@ class chatlists_leaveChatlist extends Function<types.Updates> {
 }
 
 class stories_canSendStory extends Function<boolean> {
-  peer: types.InputPeer;
+  peer: enums.InputPeer;
 
   protected get [id]() {
     return 0xC7DFDFDD;
@@ -16771,25 +16772,25 @@ class stories_canSendStory extends Function<boolean> {
     ];
   }
 
-  constructor(params: { peer: types.InputPeer }) {
+  constructor(params: { peer: enums.InputPeer }) {
     super();
     this.peer = params.peer;
   }
 }
 
-class stories_sendStory extends Function<types.Updates> {
+class stories_sendStory extends Function<enums.Updates> {
   pinned?: true;
   noforwards?: true;
   fwd_modified?: true;
-  peer: types.InputPeer;
-  media: types.InputMedia;
-  media_areas?: Array<types.MediaArea>;
+  peer: enums.InputPeer;
+  media: enums.InputMedia;
+  media_areas?: Array<enums.MediaArea>;
   caption?: string;
-  entities?: Array<types.MessageEntity>;
-  privacy_rules: Array<types.InputPrivacyRule>;
+  entities?: Array<enums.MessageEntity>;
+  privacy_rules: Array<enums.InputPrivacyRule>;
   random_id: bigint;
   period?: number;
-  fwd_from_id?: types.InputPeer;
+  fwd_from_id?: enums.InputPeer;
   fwd_from_story?: number;
 
   protected get [id]() {
@@ -16834,7 +16835,7 @@ class stories_sendStory extends Function<types.Updates> {
     ];
   }
 
-  constructor(params: { pinned?: true; noforwards?: true; fwd_modified?: true; peer: types.InputPeer; media: types.InputMedia; media_areas?: Array<types.MediaArea>; caption?: string; entities?: Array<types.MessageEntity>; privacy_rules: Array<types.InputPrivacyRule>; random_id: bigint; period?: number; fwd_from_id?: types.InputPeer; fwd_from_story?: number }) {
+  constructor(params: { pinned?: true; noforwards?: true; fwd_modified?: true; peer: enums.InputPeer; media: enums.InputMedia; media_areas?: Array<enums.MediaArea>; caption?: string; entities?: Array<enums.MessageEntity>; privacy_rules: Array<enums.InputPrivacyRule>; random_id: bigint; period?: number; fwd_from_id?: enums.InputPeer; fwd_from_story?: number }) {
     super();
     this.pinned = params.pinned;
     this.noforwards = params.noforwards;
@@ -16852,14 +16853,14 @@ class stories_sendStory extends Function<types.Updates> {
   }
 }
 
-class stories_editStory extends Function<types.Updates> {
-  peer: types.InputPeer;
+class stories_editStory extends Function<enums.Updates> {
+  peer: enums.InputPeer;
   id: number;
-  media?: types.InputMedia;
-  media_areas?: Array<types.MediaArea>;
+  media?: enums.InputMedia;
+  media_areas?: Array<enums.MediaArea>;
   caption?: string;
-  entities?: Array<types.MessageEntity>;
-  privacy_rules?: Array<types.InputPrivacyRule>;
+  entities?: Array<enums.MessageEntity>;
+  privacy_rules?: Array<enums.InputPrivacyRule>;
 
   protected get [id]() {
     return 0xB583BA46;
@@ -16891,7 +16892,7 @@ class stories_editStory extends Function<types.Updates> {
     ];
   }
 
-  constructor(params: { peer: types.InputPeer; id: number; media?: types.InputMedia; media_areas?: Array<types.MediaArea>; caption?: string; entities?: Array<types.MessageEntity>; privacy_rules?: Array<types.InputPrivacyRule> }) {
+  constructor(params: { peer: enums.InputPeer; id: number; media?: enums.InputMedia; media_areas?: Array<enums.MediaArea>; caption?: string; entities?: Array<enums.MessageEntity>; privacy_rules?: Array<enums.InputPrivacyRule> }) {
     super();
     this.peer = params.peer;
     this.id = params.id;
@@ -16904,7 +16905,7 @@ class stories_editStory extends Function<types.Updates> {
 }
 
 class stories_deleteStories extends Function<number[]> {
-  peer: types.InputPeer;
+  peer: enums.InputPeer;
   id: Array<number>;
 
   protected get [id]() {
@@ -16925,7 +16926,7 @@ class stories_deleteStories extends Function<number[]> {
     ];
   }
 
-  constructor(params: { peer: types.InputPeer; id: Array<number> }) {
+  constructor(params: { peer: enums.InputPeer; id: Array<number> }) {
     super();
     this.peer = params.peer;
     this.id = params.id;
@@ -16933,7 +16934,7 @@ class stories_deleteStories extends Function<number[]> {
 }
 
 class stories_togglePinned extends Function<number[]> {
-  peer: types.InputPeer;
+  peer: enums.InputPeer;
   id: Array<number>;
   pinned: boolean;
 
@@ -16957,7 +16958,7 @@ class stories_togglePinned extends Function<number[]> {
     ];
   }
 
-  constructor(params: { peer: types.InputPeer; id: Array<number>; pinned: boolean }) {
+  constructor(params: { peer: enums.InputPeer; id: Array<number>; pinned: boolean }) {
     super();
     this.peer = params.peer;
     this.id = params.id;
@@ -16965,7 +16966,7 @@ class stories_togglePinned extends Function<number[]> {
   }
 }
 
-class stories_getAllStories extends Function<types.stories_AllStories> {
+class stories_getAllStories extends Function<enums.stories_AllStories> {
   next?: true;
   hidden?: true;
   state?: string;
@@ -17000,8 +17001,8 @@ class stories_getAllStories extends Function<types.stories_AllStories> {
   }
 }
 
-class stories_getPinnedStories extends Function<types.stories_Stories> {
-  peer: types.InputPeer;
+class stories_getPinnedStories extends Function<enums.stories_Stories> {
+  peer: enums.InputPeer;
   offset_id: number;
   limit: number;
 
@@ -17025,7 +17026,7 @@ class stories_getPinnedStories extends Function<types.stories_Stories> {
     ];
   }
 
-  constructor(params: { peer: types.InputPeer; offset_id: number; limit: number }) {
+  constructor(params: { peer: enums.InputPeer; offset_id: number; limit: number }) {
     super();
     this.peer = params.peer;
     this.offset_id = params.offset_id;
@@ -17033,8 +17034,8 @@ class stories_getPinnedStories extends Function<types.stories_Stories> {
   }
 }
 
-class stories_getStoriesArchive extends Function<types.stories_Stories> {
-  peer: types.InputPeer;
+class stories_getStoriesArchive extends Function<enums.stories_Stories> {
+  peer: enums.InputPeer;
   offset_id: number;
   limit: number;
 
@@ -17058,7 +17059,7 @@ class stories_getStoriesArchive extends Function<types.stories_Stories> {
     ];
   }
 
-  constructor(params: { peer: types.InputPeer; offset_id: number; limit: number }) {
+  constructor(params: { peer: enums.InputPeer; offset_id: number; limit: number }) {
     super();
     this.peer = params.peer;
     this.offset_id = params.offset_id;
@@ -17066,8 +17067,8 @@ class stories_getStoriesArchive extends Function<types.stories_Stories> {
   }
 }
 
-class stories_getStoriesByID extends Function<types.stories_Stories> {
-  peer: types.InputPeer;
+class stories_getStoriesByID extends Function<enums.stories_Stories> {
+  peer: enums.InputPeer;
   id: Array<number>;
 
   protected get [id]() {
@@ -17088,7 +17089,7 @@ class stories_getStoriesByID extends Function<types.stories_Stories> {
     ];
   }
 
-  constructor(params: { peer: types.InputPeer; id: Array<number> }) {
+  constructor(params: { peer: enums.InputPeer; id: Array<number> }) {
     super();
     this.peer = params.peer;
     this.id = params.id;
@@ -17121,7 +17122,7 @@ class stories_toggleAllStoriesHidden extends Function<boolean> {
 }
 
 class stories_readStories extends Function<number[]> {
-  peer: types.InputPeer;
+  peer: enums.InputPeer;
   max_id: number;
 
   protected get [id]() {
@@ -17142,7 +17143,7 @@ class stories_readStories extends Function<number[]> {
     ];
   }
 
-  constructor(params: { peer: types.InputPeer; max_id: number }) {
+  constructor(params: { peer: enums.InputPeer; max_id: number }) {
     super();
     this.peer = params.peer;
     this.max_id = params.max_id;
@@ -17150,7 +17151,7 @@ class stories_readStories extends Function<number[]> {
 }
 
 class stories_incrementStoryViews extends Function<boolean> {
-  peer: types.InputPeer;
+  peer: enums.InputPeer;
   id: Array<number>;
 
   protected get [id]() {
@@ -17171,17 +17172,17 @@ class stories_incrementStoryViews extends Function<boolean> {
     ];
   }
 
-  constructor(params: { peer: types.InputPeer; id: Array<number> }) {
+  constructor(params: { peer: enums.InputPeer; id: Array<number> }) {
     super();
     this.peer = params.peer;
     this.id = params.id;
   }
 }
 
-class stories_getStoryViewsList extends Function<types.stories_StoryViewsList> {
+class stories_getStoryViewsList extends Function<enums.stories_StoryViewsList> {
   just_contacts?: true;
   reactions_first?: true;
-  peer: types.InputPeer;
+  peer: enums.InputPeer;
   q?: string;
   id: number;
   offset: string;
@@ -17217,7 +17218,7 @@ class stories_getStoryViewsList extends Function<types.stories_StoryViewsList> {
     ];
   }
 
-  constructor(params: { just_contacts?: true; reactions_first?: true; peer: types.InputPeer; q?: string; id: number; offset: string; limit: number }) {
+  constructor(params: { just_contacts?: true; reactions_first?: true; peer: enums.InputPeer; q?: string; id: number; offset: string; limit: number }) {
     super();
     this.just_contacts = params.just_contacts;
     this.reactions_first = params.reactions_first;
@@ -17229,8 +17230,8 @@ class stories_getStoryViewsList extends Function<types.stories_StoryViewsList> {
   }
 }
 
-class stories_getStoriesViews extends Function<types.stories_StoryViews> {
-  peer: types.InputPeer;
+class stories_getStoriesViews extends Function<enums.stories_StoryViews> {
+  peer: enums.InputPeer;
   id: Array<number>;
 
   protected get [id]() {
@@ -17251,15 +17252,15 @@ class stories_getStoriesViews extends Function<types.stories_StoryViews> {
     ];
   }
 
-  constructor(params: { peer: types.InputPeer; id: Array<number> }) {
+  constructor(params: { peer: enums.InputPeer; id: Array<number> }) {
     super();
     this.peer = params.peer;
     this.id = params.id;
   }
 }
 
-class stories_exportStoryLink extends Function<types.ExportedStoryLink> {
-  peer: types.InputPeer;
+class stories_exportStoryLink extends Function<enums.ExportedStoryLink> {
+  peer: enums.InputPeer;
   id: number;
 
   protected get [id]() {
@@ -17280,7 +17281,7 @@ class stories_exportStoryLink extends Function<types.ExportedStoryLink> {
     ];
   }
 
-  constructor(params: { peer: types.InputPeer; id: number }) {
+  constructor(params: { peer: enums.InputPeer; id: number }) {
     super();
     this.peer = params.peer;
     this.id = params.id;
@@ -17288,9 +17289,9 @@ class stories_exportStoryLink extends Function<types.ExportedStoryLink> {
 }
 
 class stories_report extends Function<boolean> {
-  peer: types.InputPeer;
+  peer: enums.InputPeer;
   id: Array<number>;
-  reason: types.ReportReason;
+  reason: enums.ReportReason;
   message: string;
 
   protected get [id]() {
@@ -17315,7 +17316,7 @@ class stories_report extends Function<boolean> {
     ];
   }
 
-  constructor(params: { peer: types.InputPeer; id: Array<number>; reason: types.ReportReason; message: string }) {
+  constructor(params: { peer: enums.InputPeer; id: Array<number>; reason: enums.ReportReason; message: string }) {
     super();
     this.peer = params.peer;
     this.id = params.id;
@@ -17324,7 +17325,7 @@ class stories_report extends Function<boolean> {
   }
 }
 
-class stories_activateStealthMode extends Function<types.Updates> {
+class stories_activateStealthMode extends Function<enums.Updates> {
   past?: true;
   future?: true;
 
@@ -17355,11 +17356,11 @@ class stories_activateStealthMode extends Function<types.Updates> {
   }
 }
 
-class stories_sendReaction extends Function<types.Updates> {
+class stories_sendReaction extends Function<enums.Updates> {
   add_to_recent?: true;
-  peer: types.InputPeer;
+  peer: enums.InputPeer;
   story_id: number;
-  reaction: types.Reaction;
+  reaction: enums.Reaction;
 
   protected get [id]() {
     return 0x7FD736B2;
@@ -17385,7 +17386,7 @@ class stories_sendReaction extends Function<types.Updates> {
     ];
   }
 
-  constructor(params: { add_to_recent?: true; peer: types.InputPeer; story_id: number; reaction: types.Reaction }) {
+  constructor(params: { add_to_recent?: true; peer: enums.InputPeer; story_id: number; reaction: enums.Reaction }) {
     super();
     this.add_to_recent = params.add_to_recent;
     this.peer = params.peer;
@@ -17394,8 +17395,8 @@ class stories_sendReaction extends Function<types.Updates> {
   }
 }
 
-class stories_getPeerStories extends Function<types.stories_PeerStories> {
-  peer: types.InputPeer;
+class stories_getPeerStories extends Function<enums.stories_PeerStories> {
+  peer: enums.InputPeer;
 
   protected get [id]() {
     return 0x2C4ADA50;
@@ -17413,13 +17414,13 @@ class stories_getPeerStories extends Function<types.stories_PeerStories> {
     ];
   }
 
-  constructor(params: { peer: types.InputPeer }) {
+  constructor(params: { peer: enums.InputPeer }) {
     super();
     this.peer = params.peer;
   }
 }
 
-class stories_getAllReadPeerStories extends Function<types.Updates> {
+class stories_getAllReadPeerStories extends Function<enums.Updates> {
   protected get [id]() {
     return 0x9B5AE7F9;
   }
@@ -17438,7 +17439,7 @@ class stories_getAllReadPeerStories extends Function<types.Updates> {
 }
 
 class stories_getPeerMaxIDs extends Function<number[]> {
-  id: Array<types.InputPeer>;
+  id: Array<enums.InputPeer>;
 
   protected get [id]() {
     return 0x535983C3;
@@ -17456,13 +17457,13 @@ class stories_getPeerMaxIDs extends Function<number[]> {
     ];
   }
 
-  constructor(params: { id: Array<types.InputPeer> }) {
+  constructor(params: { id: Array<enums.InputPeer> }) {
     super();
     this.id = params.id;
   }
 }
 
-class stories_getChatsToSend extends Function<types.messages_Chats> {
+class stories_getChatsToSend extends Function<enums.messages_Chats> {
   protected get [id]() {
     return 0xA56A8B60;
   }
@@ -17481,7 +17482,7 @@ class stories_getChatsToSend extends Function<types.messages_Chats> {
 }
 
 class stories_togglePeerStoriesHidden extends Function<boolean> {
-  peer: types.InputPeer;
+  peer: enums.InputPeer;
   hidden: boolean;
 
   protected get [id]() {
@@ -17502,16 +17503,16 @@ class stories_togglePeerStoriesHidden extends Function<boolean> {
     ];
   }
 
-  constructor(params: { peer: types.InputPeer; hidden: boolean }) {
+  constructor(params: { peer: enums.InputPeer; hidden: boolean }) {
     super();
     this.peer = params.peer;
     this.hidden = params.hidden;
   }
 }
 
-class premium_getBoostsList extends Function<types.premium_BoostsList> {
+class premium_getBoostsList extends Function<enums.premium_BoostsList> {
   gifts?: true;
-  peer: types.InputPeer;
+  peer: enums.InputPeer;
   offset: string;
   limit: number;
 
@@ -17539,7 +17540,7 @@ class premium_getBoostsList extends Function<types.premium_BoostsList> {
     ];
   }
 
-  constructor(params: { gifts?: true; peer: types.InputPeer; offset: string; limit: number }) {
+  constructor(params: { gifts?: true; peer: enums.InputPeer; offset: string; limit: number }) {
     super();
     this.gifts = params.gifts;
     this.peer = params.peer;
@@ -17548,7 +17549,7 @@ class premium_getBoostsList extends Function<types.premium_BoostsList> {
   }
 }
 
-class premium_getMyBoosts extends Function<types.premium_MyBoosts> {
+class premium_getMyBoosts extends Function<enums.premium_MyBoosts> {
   protected get [id]() {
     return 0x0BE77B4A;
   }
@@ -17566,9 +17567,9 @@ class premium_getMyBoosts extends Function<types.premium_MyBoosts> {
   }
 }
 
-class premium_applyBoost extends Function<types.premium_MyBoosts> {
+class premium_applyBoost extends Function<enums.premium_MyBoosts> {
   slots?: Array<number>;
-  peer: types.InputPeer;
+  peer: enums.InputPeer;
 
   protected get [id]() {
     return 0x6B7DA746;
@@ -17590,15 +17591,15 @@ class premium_applyBoost extends Function<types.premium_MyBoosts> {
     ];
   }
 
-  constructor(params: { slots?: Array<number>; peer: types.InputPeer }) {
+  constructor(params: { slots?: Array<number>; peer: enums.InputPeer }) {
     super();
     this.slots = params.slots;
     this.peer = params.peer;
   }
 }
 
-class premium_getBoostsStatus extends Function<types.premium_BoostsStatus> {
-  peer: types.InputPeer;
+class premium_getBoostsStatus extends Function<enums.premium_BoostsStatus> {
+  peer: enums.InputPeer;
 
   protected get [id]() {
     return 0x042F1F61;
@@ -17616,15 +17617,15 @@ class premium_getBoostsStatus extends Function<types.premium_BoostsStatus> {
     ];
   }
 
-  constructor(params: { peer: types.InputPeer }) {
+  constructor(params: { peer: enums.InputPeer }) {
     super();
     this.peer = params.peer;
   }
 }
 
-class premium_getUserBoosts extends Function<types.premium_BoostsList> {
-  peer: types.InputPeer;
-  user_id: types.InputUser;
+class premium_getUserBoosts extends Function<enums.premium_BoostsList> {
+  peer: enums.InputPeer;
+  user_id: enums.InputUser;
 
   protected get [id]() {
     return 0x39854D1F;
@@ -17644,7 +17645,7 @@ class premium_getUserBoosts extends Function<types.premium_BoostsList> {
     ];
   }
 
-  constructor(params: { peer: types.InputPeer; user_id: types.InputUser }) {
+  constructor(params: { peer: enums.InputPeer; user_id: enums.InputUser }) {
     super();
     this.peer = params.peer;
     this.user_id = params.user_id;

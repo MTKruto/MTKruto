@@ -1,5 +1,5 @@
 import { bigIntFromBuffer, bufferFromBigInt, concat, getRandomBigInt, mod, modExp, sha256 } from "../1_utilities.ts";
-import { types } from "../2_tl.ts";
+import { enums, types } from "../2_tl.ts";
 
 export function isSafePrime(primeBytes: Uint8Array, g: number) {
   // deno-fmt-ignore
@@ -79,7 +79,7 @@ export function pad(bigint: number | bigint | Uint8Array) {
   }
 }
 
-export async function checkPassword(password_: string, ap: types.account_Password) {
+export async function checkPassword(password_: string, ap: enums.account_Password) {
   const password = new TextEncoder().encode(password_);
   const algo = ap.current_algo;
   if (
