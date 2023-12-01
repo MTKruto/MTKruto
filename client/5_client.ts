@@ -606,7 +606,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
             dAuth("authorized as user");
             await this.#propagateAuthorizationState(true);
             await this.#fetchState("authorize");
-            break password;
+            return;
           } catch (err) {
             if (err instanceof PasswordHashInvalid) {
               continue password;
