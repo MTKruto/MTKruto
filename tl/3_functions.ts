@@ -18238,8 +18238,6 @@ export const functions = {
   invokeWithoutUpdates: invokeWithoutUpdates_,
   invokeWithMessagesRange: invokeWithMessagesRange_,
   invokeWithTakeout: invokeWithTakeout_,
-  storage: {
-  },
   auth: {
     sendCode: auth_sendCode_,
     signUp: auth_signUp_,
@@ -18263,6 +18261,103 @@ export const functions = {
     importWebTokenAuthorization: auth_importWebTokenAuthorization_,
     requestFirebaseSms: auth_requestFirebaseSms_,
     resetLoginEmail: auth_resetLoginEmail_,
+  },
+  account: {
+    registerDevice: account_registerDevice_,
+    unregisterDevice: account_unregisterDevice_,
+    updateNotifySettings: account_updateNotifySettings_,
+    getNotifySettings: account_getNotifySettings_,
+    resetNotifySettings: account_resetNotifySettings_,
+    updateProfile: account_updateProfile_,
+    updateStatus: account_updateStatus_,
+    getWallPapers: account_getWallPapers_,
+    reportPeer: account_reportPeer_,
+    checkUsername: account_checkUsername_,
+    updateUsername: account_updateUsername_,
+    getPrivacy: account_getPrivacy_,
+    setPrivacy: account_setPrivacy_,
+    deleteAccount: account_deleteAccount_,
+    getAccountTTL: account_getAccountTTL_,
+    setAccountTTL: account_setAccountTTL_,
+    sendChangePhoneCode: account_sendChangePhoneCode_,
+    changePhone: account_changePhone_,
+    updateDeviceLocked: account_updateDeviceLocked_,
+    getAuthorizations: account_getAuthorizations_,
+    resetAuthorization: account_resetAuthorization_,
+    getPassword: account_getPassword_,
+    getPasswordSettings: account_getPasswordSettings_,
+    updatePasswordSettings: account_updatePasswordSettings_,
+    sendConfirmPhoneCode: account_sendConfirmPhoneCode_,
+    confirmPhone: account_confirmPhone_,
+    getTmpPassword: account_getTmpPassword_,
+    getWebAuthorizations: account_getWebAuthorizations_,
+    resetWebAuthorization: account_resetWebAuthorization_,
+    resetWebAuthorizations: account_resetWebAuthorizations_,
+    getAllSecureValues: account_getAllSecureValues_,
+    getSecureValue: account_getSecureValue_,
+    saveSecureValue: account_saveSecureValue_,
+    deleteSecureValue: account_deleteSecureValue_,
+    getAuthorizationForm: account_getAuthorizationForm_,
+    acceptAuthorization: account_acceptAuthorization_,
+    sendVerifyPhoneCode: account_sendVerifyPhoneCode_,
+    verifyPhone: account_verifyPhone_,
+    sendVerifyEmailCode: account_sendVerifyEmailCode_,
+    verifyEmail: account_verifyEmail_,
+    initTakeoutSession: account_initTakeoutSession_,
+    finishTakeoutSession: account_finishTakeoutSession_,
+    confirmPasswordEmail: account_confirmPasswordEmail_,
+    resendPasswordEmail: account_resendPasswordEmail_,
+    cancelPasswordEmail: account_cancelPasswordEmail_,
+    getContactSignUpNotification: account_getContactSignUpNotification_,
+    setContactSignUpNotification: account_setContactSignUpNotification_,
+    getNotifyExceptions: account_getNotifyExceptions_,
+    getWallPaper: account_getWallPaper_,
+    uploadWallPaper: account_uploadWallPaper_,
+    saveWallPaper: account_saveWallPaper_,
+    installWallPaper: account_installWallPaper_,
+    resetWallPapers: account_resetWallPapers_,
+    getAutoDownloadSettings: account_getAutoDownloadSettings_,
+    saveAutoDownloadSettings: account_saveAutoDownloadSettings_,
+    uploadTheme: account_uploadTheme_,
+    createTheme: account_createTheme_,
+    updateTheme: account_updateTheme_,
+    saveTheme: account_saveTheme_,
+    installTheme: account_installTheme_,
+    getTheme: account_getTheme_,
+    getThemes: account_getThemes_,
+    setContentSettings: account_setContentSettings_,
+    getContentSettings: account_getContentSettings_,
+    getMultiWallPapers: account_getMultiWallPapers_,
+    getGlobalPrivacySettings: account_getGlobalPrivacySettings_,
+    setGlobalPrivacySettings: account_setGlobalPrivacySettings_,
+    reportProfilePhoto: account_reportProfilePhoto_,
+    resetPassword: account_resetPassword_,
+    declinePasswordReset: account_declinePasswordReset_,
+    getChatThemes: account_getChatThemes_,
+    setAuthorizationTTL: account_setAuthorizationTTL_,
+    changeAuthorizationSettings: account_changeAuthorizationSettings_,
+    getSavedRingtones: account_getSavedRingtones_,
+    saveRingtone: account_saveRingtone_,
+    uploadRingtone: account_uploadRingtone_,
+    updateEmojiStatus: account_updateEmojiStatus_,
+    getDefaultEmojiStatuses: account_getDefaultEmojiStatuses_,
+    getRecentEmojiStatuses: account_getRecentEmojiStatuses_,
+    clearRecentEmojiStatuses: account_clearRecentEmojiStatuses_,
+    reorderUsernames: account_reorderUsernames_,
+    toggleUsername: account_toggleUsername_,
+    getDefaultProfilePhotoEmojis: account_getDefaultProfilePhotoEmojis_,
+    getDefaultGroupPhotoEmojis: account_getDefaultGroupPhotoEmojis_,
+    getAutoSaveSettings: account_getAutoSaveSettings_,
+    saveAutoSaveSettings: account_saveAutoSaveSettings_,
+    deleteAutoSaveExceptions: account_deleteAutoSaveExceptions_,
+    invalidateSignInCodes: account_invalidateSignInCodes_,
+    updateColor: account_updateColor_,
+    getDefaultBackgroundEmojis: account_getDefaultBackgroundEmojis_,
+  },
+  users: {
+    getUsers: users_getUsers_,
+    getFullUser: users_getFullUser_,
+    setSecureValueErrors: users_setSecureValueErrors_,
   },
   contacts: {
     getContactIDs: contacts_getContactIDs_,
@@ -18530,98 +18625,6 @@ export const functions = {
     getPeerColors: help_getPeerColors_,
     getPeerProfileColors: help_getPeerProfileColors_,
   },
-  account: {
-    registerDevice: account_registerDevice_,
-    unregisterDevice: account_unregisterDevice_,
-    updateNotifySettings: account_updateNotifySettings_,
-    getNotifySettings: account_getNotifySettings_,
-    resetNotifySettings: account_resetNotifySettings_,
-    updateProfile: account_updateProfile_,
-    updateStatus: account_updateStatus_,
-    getWallPapers: account_getWallPapers_,
-    reportPeer: account_reportPeer_,
-    checkUsername: account_checkUsername_,
-    updateUsername: account_updateUsername_,
-    getPrivacy: account_getPrivacy_,
-    setPrivacy: account_setPrivacy_,
-    deleteAccount: account_deleteAccount_,
-    getAccountTTL: account_getAccountTTL_,
-    setAccountTTL: account_setAccountTTL_,
-    sendChangePhoneCode: account_sendChangePhoneCode_,
-    changePhone: account_changePhone_,
-    updateDeviceLocked: account_updateDeviceLocked_,
-    getAuthorizations: account_getAuthorizations_,
-    resetAuthorization: account_resetAuthorization_,
-    getPassword: account_getPassword_,
-    getPasswordSettings: account_getPasswordSettings_,
-    updatePasswordSettings: account_updatePasswordSettings_,
-    sendConfirmPhoneCode: account_sendConfirmPhoneCode_,
-    confirmPhone: account_confirmPhone_,
-    getTmpPassword: account_getTmpPassword_,
-    getWebAuthorizations: account_getWebAuthorizations_,
-    resetWebAuthorization: account_resetWebAuthorization_,
-    resetWebAuthorizations: account_resetWebAuthorizations_,
-    getAllSecureValues: account_getAllSecureValues_,
-    getSecureValue: account_getSecureValue_,
-    saveSecureValue: account_saveSecureValue_,
-    deleteSecureValue: account_deleteSecureValue_,
-    getAuthorizationForm: account_getAuthorizationForm_,
-    acceptAuthorization: account_acceptAuthorization_,
-    sendVerifyPhoneCode: account_sendVerifyPhoneCode_,
-    verifyPhone: account_verifyPhone_,
-    sendVerifyEmailCode: account_sendVerifyEmailCode_,
-    verifyEmail: account_verifyEmail_,
-    initTakeoutSession: account_initTakeoutSession_,
-    finishTakeoutSession: account_finishTakeoutSession_,
-    confirmPasswordEmail: account_confirmPasswordEmail_,
-    resendPasswordEmail: account_resendPasswordEmail_,
-    cancelPasswordEmail: account_cancelPasswordEmail_,
-    getContactSignUpNotification: account_getContactSignUpNotification_,
-    setContactSignUpNotification: account_setContactSignUpNotification_,
-    getNotifyExceptions: account_getNotifyExceptions_,
-    getWallPaper: account_getWallPaper_,
-    uploadWallPaper: account_uploadWallPaper_,
-    saveWallPaper: account_saveWallPaper_,
-    installWallPaper: account_installWallPaper_,
-    resetWallPapers: account_resetWallPapers_,
-    getAutoDownloadSettings: account_getAutoDownloadSettings_,
-    saveAutoDownloadSettings: account_saveAutoDownloadSettings_,
-    uploadTheme: account_uploadTheme_,
-    createTheme: account_createTheme_,
-    updateTheme: account_updateTheme_,
-    saveTheme: account_saveTheme_,
-    installTheme: account_installTheme_,
-    getTheme: account_getTheme_,
-    getThemes: account_getThemes_,
-    setContentSettings: account_setContentSettings_,
-    getContentSettings: account_getContentSettings_,
-    getMultiWallPapers: account_getMultiWallPapers_,
-    getGlobalPrivacySettings: account_getGlobalPrivacySettings_,
-    setGlobalPrivacySettings: account_setGlobalPrivacySettings_,
-    reportProfilePhoto: account_reportProfilePhoto_,
-    resetPassword: account_resetPassword_,
-    declinePasswordReset: account_declinePasswordReset_,
-    getChatThemes: account_getChatThemes_,
-    setAuthorizationTTL: account_setAuthorizationTTL_,
-    changeAuthorizationSettings: account_changeAuthorizationSettings_,
-    getSavedRingtones: account_getSavedRingtones_,
-    saveRingtone: account_saveRingtone_,
-    uploadRingtone: account_uploadRingtone_,
-    updateEmojiStatus: account_updateEmojiStatus_,
-    getDefaultEmojiStatuses: account_getDefaultEmojiStatuses_,
-    getRecentEmojiStatuses: account_getRecentEmojiStatuses_,
-    clearRecentEmojiStatuses: account_clearRecentEmojiStatuses_,
-    reorderUsernames: account_reorderUsernames_,
-    toggleUsername: account_toggleUsername_,
-    getDefaultProfilePhotoEmojis: account_getDefaultProfilePhotoEmojis_,
-    getDefaultGroupPhotoEmojis: account_getDefaultGroupPhotoEmojis_,
-    getAutoSaveSettings: account_getAutoSaveSettings_,
-    saveAutoSaveSettings: account_saveAutoSaveSettings_,
-    deleteAutoSaveExceptions: account_deleteAutoSaveExceptions_,
-    invalidateSignInCodes: account_invalidateSignInCodes_,
-    updateColor: account_updateColor_,
-    getDefaultBackgroundEmojis: account_getDefaultBackgroundEmojis_,
-  },
   channels: {
     readHistory: channels_readHistory_,
     deleteMessages: channels_deleteMessages_,
@@ -18683,6 +18686,24 @@ export const functions = {
     toggleViewForumAsMessages: channels_toggleViewForumAsMessages_,
     getChannelRecommendations: channels_getChannelRecommendations_,
   },
+  bots: {
+    sendCustomRequest: bots_sendCustomRequest_,
+    answerWebhookJSONQuery: bots_answerWebhookJSONQuery_,
+    setBotCommands: bots_setBotCommands_,
+    resetBotCommands: bots_resetBotCommands_,
+    getBotCommands: bots_getBotCommands_,
+    setBotMenuButton: bots_setBotMenuButton_,
+    getBotMenuButton: bots_getBotMenuButton_,
+    setBotBroadcastDefaultAdminRights: bots_setBotBroadcastDefaultAdminRights_,
+    setBotGroupDefaultAdminRights: bots_setBotGroupDefaultAdminRights_,
+    setBotInfo: bots_setBotInfo_,
+    getBotInfo: bots_getBotInfo_,
+    reorderUsernames: bots_reorderUsernames_,
+    toggleUsername: bots_toggleUsername_,
+    canSendMessage: bots_canSendMessage_,
+    allowSendMessage: bots_allowSendMessage_,
+    invokeWebViewCustomMethod: bots_invokeWebViewCustomMethod_,
+  },
   payments: {
     getPaymentForm: payments_getPaymentForm_,
     getPaymentReceipt: payments_getPaymentReceipt_,
@@ -18700,6 +18721,18 @@ export const functions = {
     applyGiftCode: payments_applyGiftCode_,
     getGiveawayInfo: payments_getGiveawayInfo_,
     launchPrepaidGiveaway: payments_launchPrepaidGiveaway_,
+  },
+  stickers: {
+    createStickerSet: stickers_createStickerSet_,
+    removeStickerFromSet: stickers_removeStickerFromSet_,
+    changeStickerPosition: stickers_changeStickerPosition_,
+    addStickerToSet: stickers_addStickerToSet_,
+    setStickerSetThumb: stickers_setStickerSetThumb_,
+    checkShortName: stickers_checkShortName_,
+    suggestShortName: stickers_suggestShortName_,
+    changeSticker: stickers_changeSticker_,
+    renameStickerSet: stickers_renameStickerSet_,
+    deleteStickerSet: stickers_deleteStickerSet_,
   },
   phone: {
     getCallConfig: phone_getCallConfig_,
@@ -18734,6 +18767,16 @@ export const functions = {
     getGroupCallStreamRtmpUrl: phone_getGroupCallStreamRtmpUrl_,
     saveCallLog: phone_saveCallLog_,
   },
+  langpack: {
+    getLangPack: langpack_getLangPack_,
+    getStrings: langpack_getStrings_,
+    getDifference: langpack_getDifference_,
+    getLanguages: langpack_getLanguages_,
+    getLanguage: langpack_getLanguage_,
+  },
+  folders: {
+    editPeerFolders: folders_editPeerFolders_,
+  },
   stats: {
     getBroadcastStats: stats_getBroadcastStats_,
     loadAsyncGraph: stats_loadAsyncGraph_,
@@ -18742,23 +18785,6 @@ export const functions = {
     getMessageStats: stats_getMessageStats_,
     getStoryStats: stats_getStoryStats_,
     getStoryPublicForwards: stats_getStoryPublicForwards_,
-  },
-  stickers: {
-    createStickerSet: stickers_createStickerSet_,
-    removeStickerFromSet: stickers_removeStickerFromSet_,
-    changeStickerPosition: stickers_changeStickerPosition_,
-    addStickerToSet: stickers_addStickerToSet_,
-    setStickerSetThumb: stickers_setStickerSetThumb_,
-    checkShortName: stickers_checkShortName_,
-    suggestShortName: stickers_suggestShortName_,
-    changeSticker: stickers_changeSticker_,
-    renameStickerSet: stickers_renameStickerSet_,
-    deleteStickerSet: stickers_deleteStickerSet_,
-  },
-  users: {
-    getUsers: users_getUsers_,
-    getFullUser: users_getFullUser_,
-    setSecureValueErrors: users_setSecureValueErrors_,
   },
   chatlists: {
     exportChatlistInvite: chatlists_exportChatlistInvite_,
@@ -18772,24 +18798,6 @@ export const functions = {
     hideChatlistUpdates: chatlists_hideChatlistUpdates_,
     getLeaveChatlistSuggestions: chatlists_getLeaveChatlistSuggestions_,
     leaveChatlist: chatlists_leaveChatlist_,
-  },
-  bots: {
-    sendCustomRequest: bots_sendCustomRequest_,
-    answerWebhookJSONQuery: bots_answerWebhookJSONQuery_,
-    setBotCommands: bots_setBotCommands_,
-    resetBotCommands: bots_resetBotCommands_,
-    getBotCommands: bots_getBotCommands_,
-    setBotMenuButton: bots_setBotMenuButton_,
-    getBotMenuButton: bots_getBotMenuButton_,
-    setBotBroadcastDefaultAdminRights: bots_setBotBroadcastDefaultAdminRights_,
-    setBotGroupDefaultAdminRights: bots_setBotGroupDefaultAdminRights_,
-    setBotInfo: bots_setBotInfo_,
-    getBotInfo: bots_getBotInfo_,
-    reorderUsernames: bots_reorderUsernames_,
-    toggleUsername: bots_toggleUsername_,
-    canSendMessage: bots_canSendMessage_,
-    allowSendMessage: bots_allowSendMessage_,
-    invokeWebViewCustomMethod: bots_invokeWebViewCustomMethod_,
   },
   stories: {
     canSendStory: stories_canSendStory_,
@@ -18842,8 +18850,6 @@ export declare namespace functions {
   type invokeWithoutUpdates<T extends Function<unknown>> = invokeWithoutUpdates_<T>;
   type invokeWithMessagesRange<T extends Function<unknown>> = invokeWithMessagesRange_<T>;
   type invokeWithTakeout<T extends Function<unknown>> = invokeWithTakeout_<T>;
-  namespace storage {
-  }
   namespace auth {
     type sendCode = auth_sendCode_;
     type signUp = auth_signUp_;
@@ -18867,6 +18873,103 @@ export declare namespace functions {
     type importWebTokenAuthorization = auth_importWebTokenAuthorization_;
     type requestFirebaseSms = auth_requestFirebaseSms_;
     type resetLoginEmail = auth_resetLoginEmail_;
+  }
+  namespace account {
+    type registerDevice = account_registerDevice_;
+    type unregisterDevice = account_unregisterDevice_;
+    type updateNotifySettings = account_updateNotifySettings_;
+    type getNotifySettings = account_getNotifySettings_;
+    type resetNotifySettings = account_resetNotifySettings_;
+    type updateProfile = account_updateProfile_;
+    type updateStatus = account_updateStatus_;
+    type getWallPapers = account_getWallPapers_;
+    type reportPeer = account_reportPeer_;
+    type checkUsername = account_checkUsername_;
+    type updateUsername = account_updateUsername_;
+    type getPrivacy = account_getPrivacy_;
+    type setPrivacy = account_setPrivacy_;
+    type deleteAccount = account_deleteAccount_;
+    type getAccountTTL = account_getAccountTTL_;
+    type setAccountTTL = account_setAccountTTL_;
+    type sendChangePhoneCode = account_sendChangePhoneCode_;
+    type changePhone = account_changePhone_;
+    type updateDeviceLocked = account_updateDeviceLocked_;
+    type getAuthorizations = account_getAuthorizations_;
+    type resetAuthorization = account_resetAuthorization_;
+    type getPassword = account_getPassword_;
+    type getPasswordSettings = account_getPasswordSettings_;
+    type updatePasswordSettings = account_updatePasswordSettings_;
+    type sendConfirmPhoneCode = account_sendConfirmPhoneCode_;
+    type confirmPhone = account_confirmPhone_;
+    type getTmpPassword = account_getTmpPassword_;
+    type getWebAuthorizations = account_getWebAuthorizations_;
+    type resetWebAuthorization = account_resetWebAuthorization_;
+    type resetWebAuthorizations = account_resetWebAuthorizations_;
+    type getAllSecureValues = account_getAllSecureValues_;
+    type getSecureValue = account_getSecureValue_;
+    type saveSecureValue = account_saveSecureValue_;
+    type deleteSecureValue = account_deleteSecureValue_;
+    type getAuthorizationForm = account_getAuthorizationForm_;
+    type acceptAuthorization = account_acceptAuthorization_;
+    type sendVerifyPhoneCode = account_sendVerifyPhoneCode_;
+    type verifyPhone = account_verifyPhone_;
+    type sendVerifyEmailCode = account_sendVerifyEmailCode_;
+    type verifyEmail = account_verifyEmail_;
+    type initTakeoutSession = account_initTakeoutSession_;
+    type finishTakeoutSession = account_finishTakeoutSession_;
+    type confirmPasswordEmail = account_confirmPasswordEmail_;
+    type resendPasswordEmail = account_resendPasswordEmail_;
+    type cancelPasswordEmail = account_cancelPasswordEmail_;
+    type getContactSignUpNotification = account_getContactSignUpNotification_;
+    type setContactSignUpNotification = account_setContactSignUpNotification_;
+    type getNotifyExceptions = account_getNotifyExceptions_;
+    type getWallPaper = account_getWallPaper_;
+    type uploadWallPaper = account_uploadWallPaper_;
+    type saveWallPaper = account_saveWallPaper_;
+    type installWallPaper = account_installWallPaper_;
+    type resetWallPapers = account_resetWallPapers_;
+    type getAutoDownloadSettings = account_getAutoDownloadSettings_;
+    type saveAutoDownloadSettings = account_saveAutoDownloadSettings_;
+    type uploadTheme = account_uploadTheme_;
+    type createTheme = account_createTheme_;
+    type updateTheme = account_updateTheme_;
+    type saveTheme = account_saveTheme_;
+    type installTheme = account_installTheme_;
+    type getTheme = account_getTheme_;
+    type getThemes = account_getThemes_;
+    type setContentSettings = account_setContentSettings_;
+    type getContentSettings = account_getContentSettings_;
+    type getMultiWallPapers = account_getMultiWallPapers_;
+    type getGlobalPrivacySettings = account_getGlobalPrivacySettings_;
+    type setGlobalPrivacySettings = account_setGlobalPrivacySettings_;
+    type reportProfilePhoto = account_reportProfilePhoto_;
+    type resetPassword = account_resetPassword_;
+    type declinePasswordReset = account_declinePasswordReset_;
+    type getChatThemes = account_getChatThemes_;
+    type setAuthorizationTTL = account_setAuthorizationTTL_;
+    type changeAuthorizationSettings = account_changeAuthorizationSettings_;
+    type getSavedRingtones = account_getSavedRingtones_;
+    type saveRingtone = account_saveRingtone_;
+    type uploadRingtone = account_uploadRingtone_;
+    type updateEmojiStatus = account_updateEmojiStatus_;
+    type getDefaultEmojiStatuses = account_getDefaultEmojiStatuses_;
+    type getRecentEmojiStatuses = account_getRecentEmojiStatuses_;
+    type clearRecentEmojiStatuses = account_clearRecentEmojiStatuses_;
+    type reorderUsernames = account_reorderUsernames_;
+    type toggleUsername = account_toggleUsername_;
+    type getDefaultProfilePhotoEmojis = account_getDefaultProfilePhotoEmojis_;
+    type getDefaultGroupPhotoEmojis = account_getDefaultGroupPhotoEmojis_;
+    type getAutoSaveSettings = account_getAutoSaveSettings_;
+    type saveAutoSaveSettings = account_saveAutoSaveSettings_;
+    type deleteAutoSaveExceptions = account_deleteAutoSaveExceptions_;
+    type invalidateSignInCodes = account_invalidateSignInCodes_;
+    type updateColor = account_updateColor_;
+    type getDefaultBackgroundEmojis = account_getDefaultBackgroundEmojis_;
+  }
+  namespace users {
+    type getUsers = users_getUsers_;
+    type getFullUser = users_getFullUser_;
+    type setSecureValueErrors = users_setSecureValueErrors_;
   }
   namespace contacts {
     type getContactIDs = contacts_getContactIDs_;
@@ -19134,98 +19237,6 @@ export declare namespace functions {
     type getPeerColors = help_getPeerColors_;
     type getPeerProfileColors = help_getPeerProfileColors_;
   }
-  namespace account {
-    type registerDevice = account_registerDevice_;
-    type unregisterDevice = account_unregisterDevice_;
-    type updateNotifySettings = account_updateNotifySettings_;
-    type getNotifySettings = account_getNotifySettings_;
-    type resetNotifySettings = account_resetNotifySettings_;
-    type updateProfile = account_updateProfile_;
-    type updateStatus = account_updateStatus_;
-    type getWallPapers = account_getWallPapers_;
-    type reportPeer = account_reportPeer_;
-    type checkUsername = account_checkUsername_;
-    type updateUsername = account_updateUsername_;
-    type getPrivacy = account_getPrivacy_;
-    type setPrivacy = account_setPrivacy_;
-    type deleteAccount = account_deleteAccount_;
-    type getAccountTTL = account_getAccountTTL_;
-    type setAccountTTL = account_setAccountTTL_;
-    type sendChangePhoneCode = account_sendChangePhoneCode_;
-    type changePhone = account_changePhone_;
-    type updateDeviceLocked = account_updateDeviceLocked_;
-    type getAuthorizations = account_getAuthorizations_;
-    type resetAuthorization = account_resetAuthorization_;
-    type getPassword = account_getPassword_;
-    type getPasswordSettings = account_getPasswordSettings_;
-    type updatePasswordSettings = account_updatePasswordSettings_;
-    type sendConfirmPhoneCode = account_sendConfirmPhoneCode_;
-    type confirmPhone = account_confirmPhone_;
-    type getTmpPassword = account_getTmpPassword_;
-    type getWebAuthorizations = account_getWebAuthorizations_;
-    type resetWebAuthorization = account_resetWebAuthorization_;
-    type resetWebAuthorizations = account_resetWebAuthorizations_;
-    type getAllSecureValues = account_getAllSecureValues_;
-    type getSecureValue = account_getSecureValue_;
-    type saveSecureValue = account_saveSecureValue_;
-    type deleteSecureValue = account_deleteSecureValue_;
-    type getAuthorizationForm = account_getAuthorizationForm_;
-    type acceptAuthorization = account_acceptAuthorization_;
-    type sendVerifyPhoneCode = account_sendVerifyPhoneCode_;
-    type verifyPhone = account_verifyPhone_;
-    type sendVerifyEmailCode = account_sendVerifyEmailCode_;
-    type verifyEmail = account_verifyEmail_;
-    type initTakeoutSession = account_initTakeoutSession_;
-    type finishTakeoutSession = account_finishTakeoutSession_;
-    type confirmPasswordEmail = account_confirmPasswordEmail_;
-    type resendPasswordEmail = account_resendPasswordEmail_;
-    type cancelPasswordEmail = account_cancelPasswordEmail_;
-    type getContactSignUpNotification = account_getContactSignUpNotification_;
-    type setContactSignUpNotification = account_setContactSignUpNotification_;
-    type getNotifyExceptions = account_getNotifyExceptions_;
-    type getWallPaper = account_getWallPaper_;
-    type uploadWallPaper = account_uploadWallPaper_;
-    type saveWallPaper = account_saveWallPaper_;
-    type installWallPaper = account_installWallPaper_;
-    type resetWallPapers = account_resetWallPapers_;
-    type getAutoDownloadSettings = account_getAutoDownloadSettings_;
-    type saveAutoDownloadSettings = account_saveAutoDownloadSettings_;
-    type uploadTheme = account_uploadTheme_;
-    type createTheme = account_createTheme_;
-    type updateTheme = account_updateTheme_;
-    type saveTheme = account_saveTheme_;
-    type installTheme = account_installTheme_;
-    type getTheme = account_getTheme_;
-    type getThemes = account_getThemes_;
-    type setContentSettings = account_setContentSettings_;
-    type getContentSettings = account_getContentSettings_;
-    type getMultiWallPapers = account_getMultiWallPapers_;
-    type getGlobalPrivacySettings = account_getGlobalPrivacySettings_;
-    type setGlobalPrivacySettings = account_setGlobalPrivacySettings_;
-    type reportProfilePhoto = account_reportProfilePhoto_;
-    type resetPassword = account_resetPassword_;
-    type declinePasswordReset = account_declinePasswordReset_;
-    type getChatThemes = account_getChatThemes_;
-    type setAuthorizationTTL = account_setAuthorizationTTL_;
-    type changeAuthorizationSettings = account_changeAuthorizationSettings_;
-    type getSavedRingtones = account_getSavedRingtones_;
-    type saveRingtone = account_saveRingtone_;
-    type uploadRingtone = account_uploadRingtone_;
-    type updateEmojiStatus = account_updateEmojiStatus_;
-    type getDefaultEmojiStatuses = account_getDefaultEmojiStatuses_;
-    type getRecentEmojiStatuses = account_getRecentEmojiStatuses_;
-    type clearRecentEmojiStatuses = account_clearRecentEmojiStatuses_;
-    type reorderUsernames = account_reorderUsernames_;
-    type toggleUsername = account_toggleUsername_;
-    type getDefaultProfilePhotoEmojis = account_getDefaultProfilePhotoEmojis_;
-    type getDefaultGroupPhotoEmojis = account_getDefaultGroupPhotoEmojis_;
-    type getAutoSaveSettings = account_getAutoSaveSettings_;
-    type saveAutoSaveSettings = account_saveAutoSaveSettings_;
-    type deleteAutoSaveExceptions = account_deleteAutoSaveExceptions_;
-    type invalidateSignInCodes = account_invalidateSignInCodes_;
-    type updateColor = account_updateColor_;
-    type getDefaultBackgroundEmojis = account_getDefaultBackgroundEmojis_;
-  }
   namespace channels {
     type readHistory = channels_readHistory_;
     type deleteMessages = channels_deleteMessages_;
@@ -19287,6 +19298,24 @@ export declare namespace functions {
     type toggleViewForumAsMessages = channels_toggleViewForumAsMessages_;
     type getChannelRecommendations = channels_getChannelRecommendations_;
   }
+  namespace bots {
+    type sendCustomRequest = bots_sendCustomRequest_;
+    type answerWebhookJSONQuery = bots_answerWebhookJSONQuery_;
+    type setBotCommands = bots_setBotCommands_;
+    type resetBotCommands = bots_resetBotCommands_;
+    type getBotCommands = bots_getBotCommands_;
+    type setBotMenuButton = bots_setBotMenuButton_;
+    type getBotMenuButton = bots_getBotMenuButton_;
+    type setBotBroadcastDefaultAdminRights = bots_setBotBroadcastDefaultAdminRights_;
+    type setBotGroupDefaultAdminRights = bots_setBotGroupDefaultAdminRights_;
+    type setBotInfo = bots_setBotInfo_;
+    type getBotInfo = bots_getBotInfo_;
+    type reorderUsernames = bots_reorderUsernames_;
+    type toggleUsername = bots_toggleUsername_;
+    type canSendMessage = bots_canSendMessage_;
+    type allowSendMessage = bots_allowSendMessage_;
+    type invokeWebViewCustomMethod = bots_invokeWebViewCustomMethod_;
+  }
   namespace payments {
     type getPaymentForm = payments_getPaymentForm_;
     type getPaymentReceipt = payments_getPaymentReceipt_;
@@ -19304,6 +19333,18 @@ export declare namespace functions {
     type applyGiftCode = payments_applyGiftCode_;
     type getGiveawayInfo = payments_getGiveawayInfo_;
     type launchPrepaidGiveaway = payments_launchPrepaidGiveaway_;
+  }
+  namespace stickers {
+    type createStickerSet = stickers_createStickerSet_;
+    type removeStickerFromSet = stickers_removeStickerFromSet_;
+    type changeStickerPosition = stickers_changeStickerPosition_;
+    type addStickerToSet = stickers_addStickerToSet_;
+    type setStickerSetThumb = stickers_setStickerSetThumb_;
+    type checkShortName = stickers_checkShortName_;
+    type suggestShortName = stickers_suggestShortName_;
+    type changeSticker = stickers_changeSticker_;
+    type renameStickerSet = stickers_renameStickerSet_;
+    type deleteStickerSet = stickers_deleteStickerSet_;
   }
   namespace phone {
     type getCallConfig = phone_getCallConfig_;
@@ -19338,6 +19379,16 @@ export declare namespace functions {
     type getGroupCallStreamRtmpUrl = phone_getGroupCallStreamRtmpUrl_;
     type saveCallLog = phone_saveCallLog_;
   }
+  namespace langpack {
+    type getLangPack = langpack_getLangPack_;
+    type getStrings = langpack_getStrings_;
+    type getDifference = langpack_getDifference_;
+    type getLanguages = langpack_getLanguages_;
+    type getLanguage = langpack_getLanguage_;
+  }
+  namespace folders {
+    type editPeerFolders = folders_editPeerFolders_;
+  }
   namespace stats {
     type getBroadcastStats = stats_getBroadcastStats_;
     type loadAsyncGraph = stats_loadAsyncGraph_;
@@ -19346,23 +19397,6 @@ export declare namespace functions {
     type getMessageStats = stats_getMessageStats_;
     type getStoryStats = stats_getStoryStats_;
     type getStoryPublicForwards = stats_getStoryPublicForwards_;
-  }
-  namespace stickers {
-    type createStickerSet = stickers_createStickerSet_;
-    type removeStickerFromSet = stickers_removeStickerFromSet_;
-    type changeStickerPosition = stickers_changeStickerPosition_;
-    type addStickerToSet = stickers_addStickerToSet_;
-    type setStickerSetThumb = stickers_setStickerSetThumb_;
-    type checkShortName = stickers_checkShortName_;
-    type suggestShortName = stickers_suggestShortName_;
-    type changeSticker = stickers_changeSticker_;
-    type renameStickerSet = stickers_renameStickerSet_;
-    type deleteStickerSet = stickers_deleteStickerSet_;
-  }
-  namespace users {
-    type getUsers = users_getUsers_;
-    type getFullUser = users_getFullUser_;
-    type setSecureValueErrors = users_setSecureValueErrors_;
   }
   namespace chatlists {
     type exportChatlistInvite = chatlists_exportChatlistInvite_;
@@ -19376,24 +19410,6 @@ export declare namespace functions {
     type hideChatlistUpdates = chatlists_hideChatlistUpdates_;
     type getLeaveChatlistSuggestions = chatlists_getLeaveChatlistSuggestions_;
     type leaveChatlist = chatlists_leaveChatlist_;
-  }
-  namespace bots {
-    type sendCustomRequest = bots_sendCustomRequest_;
-    type answerWebhookJSONQuery = bots_answerWebhookJSONQuery_;
-    type setBotCommands = bots_setBotCommands_;
-    type resetBotCommands = bots_resetBotCommands_;
-    type getBotCommands = bots_getBotCommands_;
-    type setBotMenuButton = bots_setBotMenuButton_;
-    type getBotMenuButton = bots_getBotMenuButton_;
-    type setBotBroadcastDefaultAdminRights = bots_setBotBroadcastDefaultAdminRights_;
-    type setBotGroupDefaultAdminRights = bots_setBotGroupDefaultAdminRights_;
-    type setBotInfo = bots_setBotInfo_;
-    type getBotInfo = bots_getBotInfo_;
-    type reorderUsernames = bots_reorderUsernames_;
-    type toggleUsername = bots_toggleUsername_;
-    type canSendMessage = bots_canSendMessage_;
-    type allowSendMessage = bots_allowSendMessage_;
-    type invokeWebViewCustomMethod = bots_invokeWebViewCustomMethod_;
   }
   namespace stories {
     type canSendStory = stories_canSendStory_;
