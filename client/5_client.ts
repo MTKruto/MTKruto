@@ -27,6 +27,14 @@ const getStickerSetName = Symbol();
 export const handleMigrationError = Symbol();
 const getMessageWithReply = Symbol();
 
+type Functions = typeof functions;
+type Keys = keyof Functions;
+// deno-lint-ignore no-explicit-any
+type AnyFunc = (...args: any) => any;
+type Promisify<T extends AnyFunc> = (...args: Parameters<T>) => Promise<ReturnType<T>>;
+export type Api = { [K in Keys]: Functions[K] extends { __F: AnyFunc } ? Promisify<Functions[K]["__F"]> : { [K_ in keyof Functions[K]]: Functions[K][K_] extends { __F: AnyFunc } ? Promisify<Functions[K][K_]["__F"]> : Functions[K][K_] } };
+const functionNamespaces = Object.entries(functions).filter(([, v]) => !(v instanceof Function)).map(([k]) => k);
+
 export interface Context extends Update {
   /** The client that received the update. */
   client: Client;
@@ -168,6 +176,56 @@ export class Client<C extends Context = Context> extends ClientAbstract {
       });
     }
   }
+
+  #namespaceProxies = (() => {
+    // deno-lint-ignore no-explicit-any
+    const proxies = {} as any;
+    for (const name of functionNamespaces) {
+      const ns = functions[name as keyof typeof functions];
+      proxies[name] = new Proxy({}, {
+        get: (_, key) => {
+          if (key in ns) {
+            // deno-lint-ignore no-explicit-any
+            const func = ns[key as keyof typeof ns] as any;
+            if (func instanceof Function) {
+              // deno-lint-ignore no-explicit-any
+              return (params: any) => {
+                // deno-lint-ignore ban-ts-comment
+                // @ts-ignore
+                return this.invoke(new func(params));
+              };
+            } else {
+              UNREACHABLE();
+            }
+          }
+        },
+        set() {
+          return true;
+        },
+      });
+    }
+    return proxies;
+  })();
+  api = new Proxy({} as unknown as Api, {
+    get: (_, key) => {
+      if (key in functions) {
+        const func = functions[key as keyof typeof functions];
+        if (func instanceof Function) {
+          // deno-lint-ignore no-explicit-any
+          return (params: any) => {
+            // deno-lint-ignore ban-ts-comment
+            // @ts-ignore
+            return this.invoke(new func(params));
+          };
+        } else {
+          return this.#namespaceProxies[key];
+        }
+      }
+    },
+    set() {
+      return true;
+    },
+  });
 
   #constructContext = async (update: Update) => {
     const msg = update.message ?? update.editedMessage ?? update.callbackQuery?.message;
