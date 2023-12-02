@@ -1,1382 +1,1382 @@
 // deno-fmt-ignore-file
 import { id, params, TLObject, Params, TLObjectConstructor, ParamDesc, paramDesc, flags } from "./1_tl_object.ts";
 
-export abstract class Type extends TLObject {
+abstract class Type extends TLObject {
 }
 
 // Unknown type (generic)
-export abstract class TypeX extends Type {
+abstract class TypeX extends Type {
 }
 
-export abstract class _ResPQ extends Type {
+abstract class _ResPQ extends Type {
 }
 
-export abstract class _P_Q_inner_data extends Type {
+abstract class _P_Q_inner_data extends Type {
 }
 
-export abstract class _Server_DH_Params extends Type {
+abstract class _Server_DH_Params extends Type {
 }
 
-export abstract class _Server_DH_inner_data extends Type {
+abstract class _Server_DH_inner_data extends Type {
 }
 
-export abstract class _Client_DH_Inner_Data extends Type {
+abstract class _Client_DH_Inner_Data extends Type {
 }
 
-export abstract class _Set_client_DH_params_answer extends Type {
+abstract class _Set_client_DH_params_answer extends Type {
 }
 
-export abstract class _BindAuthKeyInner extends Type {
+abstract class _BindAuthKeyInner extends Type {
 }
 
-export abstract class _RpcError extends Type {
+abstract class _RpcError extends Type {
 }
 
-export abstract class _RpcDropAnswer extends Type {
+abstract class _RpcDropAnswer extends Type {
 }
 
-export abstract class _FutureSalt extends Type {
+abstract class _FutureSalt extends Type {
 }
 
-export abstract class _FutureSalts extends Type {
+abstract class _FutureSalts extends Type {
 }
 
-export abstract class _Pong extends Type {
+abstract class _Pong extends Type {
 }
 
-export abstract class _DestroySessionRes extends Type {
+abstract class _DestroySessionRes extends Type {
 }
 
-export abstract class _NewSession extends Type {
+abstract class _NewSession extends Type {
 }
 
-export abstract class _Object extends Type {
+abstract class _Object extends Type {
 }
 
-export abstract class _MsgsAck extends Type {
+abstract class _MsgsAck extends Type {
 }
 
-export abstract class _BadMsgNotification extends Type {
+abstract class _BadMsgNotification extends Type {
 }
 
-export abstract class _MsgResendReq extends Type {
+abstract class _MsgResendReq extends Type {
 }
 
-export abstract class _MsgsStateReq extends Type {
+abstract class _MsgsStateReq extends Type {
 }
 
-export abstract class _MsgsStateInfo extends Type {
+abstract class _MsgsStateInfo extends Type {
 }
 
-export abstract class _MsgsAllInfo extends Type {
+abstract class _MsgsAllInfo extends Type {
 }
 
-export abstract class _MsgDetailedInfo extends Type {
+abstract class _MsgDetailedInfo extends Type {
 }
 
-export abstract class _DestroyAuthKeyRes extends Type {
+abstract class _DestroyAuthKeyRes extends Type {
 }
 
-export abstract class _HttpWait extends Type {
+abstract class _HttpWait extends Type {
 }
 
-export abstract class _True extends Type {
+abstract class _True extends Type {
 }
 
-export abstract class _Error extends Type {
+abstract class _Error extends Type {
 }
 
-export abstract class _Null extends Type {
+abstract class _Null extends Type {
 }
 
-export abstract class _InputPeer extends Type {
+abstract class _InputPeer extends Type {
 }
 
-export abstract class _InputUser extends Type {
+abstract class _InputUser extends Type {
 }
 
-export abstract class _InputContact extends Type {
+abstract class _InputContact extends Type {
 }
 
-export abstract class _InputFile extends Type {
+abstract class _InputFile extends Type {
 }
 
-export abstract class _InputMedia extends Type {
+abstract class _InputMedia extends Type {
 }
 
-export abstract class _InputChatPhoto extends Type {
+abstract class _InputChatPhoto extends Type {
 }
 
-export abstract class _InputGeoPoint extends Type {
+abstract class _InputGeoPoint extends Type {
 }
 
-export abstract class _InputPhoto extends Type {
+abstract class _InputPhoto extends Type {
 }
 
-export abstract class _InputFileLocation extends Type {
+abstract class _InputFileLocation extends Type {
 }
 
-export abstract class _Peer extends Type {
+abstract class _Peer extends Type {
 }
 
-export abstract class _storage_FileType extends Type {
+abstract class _storage_FileType extends Type {
 }
 
-export abstract class _User extends Type {
+abstract class _User extends Type {
 }
 
-export abstract class _UserProfilePhoto extends Type {
+abstract class _UserProfilePhoto extends Type {
 }
 
-export abstract class _UserStatus extends Type {
+abstract class _UserStatus extends Type {
 }
 
-export abstract class _Chat extends Type {
+abstract class _Chat extends Type {
 }
 
-export abstract class _ChatFull extends Type {
+abstract class _ChatFull extends Type {
 }
 
-export abstract class _ChatParticipant extends Type {
+abstract class _ChatParticipant extends Type {
 }
 
-export abstract class _ChatParticipants extends Type {
+abstract class _ChatParticipants extends Type {
 }
 
-export abstract class _ChatPhoto extends Type {
+abstract class _ChatPhoto extends Type {
 }
 
-export abstract class _Message extends Type {
+abstract class _Message extends Type {
 }
 
-export abstract class _MessageMedia extends Type {
+abstract class _MessageMedia extends Type {
 }
 
-export abstract class _MessageAction extends Type {
+abstract class _MessageAction extends Type {
 }
 
-export abstract class _Dialog extends Type {
+abstract class _Dialog extends Type {
 }
 
-export abstract class _Photo extends Type {
+abstract class _Photo extends Type {
 }
 
-export abstract class _PhotoSize extends Type {
+abstract class _PhotoSize extends Type {
 }
 
-export abstract class _GeoPoint extends Type {
+abstract class _GeoPoint extends Type {
 }
 
-export abstract class _auth_SentCode extends Type {
+abstract class _auth_SentCode extends Type {
 }
 
-export abstract class _auth_Authorization extends Type {
+abstract class _auth_Authorization extends Type {
 }
 
-export abstract class _auth_ExportedAuthorization extends Type {
+abstract class _auth_ExportedAuthorization extends Type {
 }
 
-export abstract class _InputNotifyPeer extends Type {
+abstract class _InputNotifyPeer extends Type {
 }
 
-export abstract class _InputPeerNotifySettings extends Type {
+abstract class _InputPeerNotifySettings extends Type {
 }
 
-export abstract class _PeerNotifySettings extends Type {
+abstract class _PeerNotifySettings extends Type {
 }
 
-export abstract class _PeerSettings extends Type {
+abstract class _PeerSettings extends Type {
 }
 
-export abstract class _WallPaper extends Type {
+abstract class _WallPaper extends Type {
 }
 
-export abstract class _ReportReason extends Type {
+abstract class _ReportReason extends Type {
 }
 
-export abstract class _UserFull extends Type {
+abstract class _UserFull extends Type {
 }
 
-export abstract class _Contact extends Type {
+abstract class _Contact extends Type {
 }
 
-export abstract class _ImportedContact extends Type {
+abstract class _ImportedContact extends Type {
 }
 
-export abstract class _ContactStatus extends Type {
+abstract class _ContactStatus extends Type {
 }
 
-export abstract class _contacts_Contacts extends Type {
+abstract class _contacts_Contacts extends Type {
 }
 
-export abstract class _contacts_ImportedContacts extends Type {
+abstract class _contacts_ImportedContacts extends Type {
 }
 
-export abstract class _contacts_Blocked extends Type {
+abstract class _contacts_Blocked extends Type {
 }
 
-export abstract class _messages_Dialogs extends Type {
+abstract class _messages_Dialogs extends Type {
 }
 
-export abstract class _messages_Messages extends Type {
+abstract class _messages_Messages extends Type {
 }
 
-export abstract class _messages_Chats extends Type {
+abstract class _messages_Chats extends Type {
 }
 
-export abstract class _messages_ChatFull extends Type {
+abstract class _messages_ChatFull extends Type {
 }
 
-export abstract class _messages_AffectedHistory extends Type {
+abstract class _messages_AffectedHistory extends Type {
 }
 
-export abstract class _MessagesFilter extends Type {
+abstract class _MessagesFilter extends Type {
 }
 
-export abstract class _Update extends Type {
+abstract class _Update extends Type {
 }
 
-export abstract class _updates_State extends Type {
+abstract class _updates_State extends Type {
 }
 
-export abstract class _updates_Difference extends Type {
+abstract class _updates_Difference extends Type {
 }
 
-export abstract class _Updates extends Type {
+abstract class _Updates extends Type {
 }
 
-export abstract class _photos_Photos extends Type {
+abstract class _photos_Photos extends Type {
 }
 
-export abstract class _photos_Photo extends Type {
+abstract class _photos_Photo extends Type {
 }
 
-export abstract class _upload_File extends Type {
+abstract class _upload_File extends Type {
 }
 
-export abstract class _DcOption extends Type {
+abstract class _DcOption extends Type {
 }
 
-export abstract class _Config extends Type {
+abstract class _Config extends Type {
 }
 
-export abstract class _NearestDc extends Type {
+abstract class _NearestDc extends Type {
 }
 
-export abstract class _help_AppUpdate extends Type {
+abstract class _help_AppUpdate extends Type {
 }
 
-export abstract class _help_InviteText extends Type {
+abstract class _help_InviteText extends Type {
 }
 
-export abstract class _EncryptedChat extends Type {
+abstract class _EncryptedChat extends Type {
 }
 
-export abstract class _InputEncryptedChat extends Type {
+abstract class _InputEncryptedChat extends Type {
 }
 
-export abstract class _EncryptedFile extends Type {
+abstract class _EncryptedFile extends Type {
 }
 
-export abstract class _InputEncryptedFile extends Type {
+abstract class _InputEncryptedFile extends Type {
 }
 
-export abstract class _EncryptedMessage extends Type {
+abstract class _EncryptedMessage extends Type {
 }
 
-export abstract class _messages_DhConfig extends Type {
+abstract class _messages_DhConfig extends Type {
 }
 
-export abstract class _messages_SentEncryptedMessage extends Type {
+abstract class _messages_SentEncryptedMessage extends Type {
 }
 
-export abstract class _InputDocument extends Type {
+abstract class _InputDocument extends Type {
 }
 
-export abstract class _Document extends Type {
+abstract class _Document extends Type {
 }
 
-export abstract class _help_Support extends Type {
+abstract class _help_Support extends Type {
 }
 
-export abstract class _NotifyPeer extends Type {
+abstract class _NotifyPeer extends Type {
 }
 
-export abstract class _SendMessageAction extends Type {
+abstract class _SendMessageAction extends Type {
 }
 
-export abstract class _contacts_Found extends Type {
+abstract class _contacts_Found extends Type {
 }
 
-export abstract class _InputPrivacyKey extends Type {
+abstract class _InputPrivacyKey extends Type {
 }
 
-export abstract class _PrivacyKey extends Type {
+abstract class _PrivacyKey extends Type {
 }
 
-export abstract class _InputPrivacyRule extends Type {
+abstract class _InputPrivacyRule extends Type {
 }
 
-export abstract class _PrivacyRule extends Type {
+abstract class _PrivacyRule extends Type {
 }
 
-export abstract class _account_PrivacyRules extends Type {
+abstract class _account_PrivacyRules extends Type {
 }
 
-export abstract class _AccountDaysTTL extends Type {
+abstract class _AccountDaysTTL extends Type {
 }
 
-export abstract class _DocumentAttribute extends Type {
+abstract class _DocumentAttribute extends Type {
 }
 
-export abstract class _messages_Stickers extends Type {
+abstract class _messages_Stickers extends Type {
 }
 
-export abstract class _StickerPack extends Type {
+abstract class _StickerPack extends Type {
 }
 
-export abstract class _messages_AllStickers extends Type {
+abstract class _messages_AllStickers extends Type {
 }
 
-export abstract class _messages_AffectedMessages extends Type {
+abstract class _messages_AffectedMessages extends Type {
 }
 
-export abstract class _WebPage extends Type {
+abstract class _WebPage extends Type {
 }
 
-export abstract class _Authorization extends Type {
+abstract class _Authorization extends Type {
 }
 
-export abstract class _account_Authorizations extends Type {
+abstract class _account_Authorizations extends Type {
 }
 
-export abstract class _account_Password extends Type {
+abstract class _account_Password extends Type {
 }
 
-export abstract class _account_PasswordSettings extends Type {
+abstract class _account_PasswordSettings extends Type {
 }
 
-export abstract class _account_PasswordInputSettings extends Type {
+abstract class _account_PasswordInputSettings extends Type {
 }
 
-export abstract class _auth_PasswordRecovery extends Type {
+abstract class _auth_PasswordRecovery extends Type {
 }
 
-export abstract class _ReceivedNotifyMessage extends Type {
+abstract class _ReceivedNotifyMessage extends Type {
 }
 
-export abstract class _ExportedChatInvite extends Type {
+abstract class _ExportedChatInvite extends Type {
 }
 
-export abstract class _ChatInvite extends Type {
+abstract class _ChatInvite extends Type {
 }
 
-export abstract class _InputStickerSet extends Type {
+abstract class _InputStickerSet extends Type {
 }
 
-export abstract class _StickerSet extends Type {
+abstract class _StickerSet extends Type {
 }
 
-export abstract class _messages_StickerSet extends Type {
+abstract class _messages_StickerSet extends Type {
 }
 
-export abstract class _BotCommand extends Type {
+abstract class _BotCommand extends Type {
 }
 
-export abstract class _BotInfo extends Type {
+abstract class _BotInfo extends Type {
 }
 
-export abstract class _KeyboardButton extends Type {
+abstract class _KeyboardButton extends Type {
 }
 
-export abstract class _KeyboardButtonRow extends Type {
+abstract class _KeyboardButtonRow extends Type {
 }
 
-export abstract class _ReplyMarkup extends Type {
+abstract class _ReplyMarkup extends Type {
 }
 
-export abstract class _MessageEntity extends Type {
+abstract class _MessageEntity extends Type {
 }
 
-export abstract class _InputChannel extends Type {
+abstract class _InputChannel extends Type {
 }
 
-export abstract class _contacts_ResolvedPeer extends Type {
+abstract class _contacts_ResolvedPeer extends Type {
 }
 
-export abstract class _MessageRange extends Type {
+abstract class _MessageRange extends Type {
 }
 
-export abstract class _updates_ChannelDifference extends Type {
+abstract class _updates_ChannelDifference extends Type {
 }
 
-export abstract class _ChannelMessagesFilter extends Type {
+abstract class _ChannelMessagesFilter extends Type {
 }
 
-export abstract class _ChannelParticipant extends Type {
+abstract class _ChannelParticipant extends Type {
 }
 
-export abstract class _ChannelParticipantsFilter extends Type {
+abstract class _ChannelParticipantsFilter extends Type {
 }
 
-export abstract class _channels_ChannelParticipants extends Type {
+abstract class _channels_ChannelParticipants extends Type {
 }
 
-export abstract class _channels_ChannelParticipant extends Type {
+abstract class _channels_ChannelParticipant extends Type {
 }
 
-export abstract class _help_TermsOfService extends Type {
+abstract class _help_TermsOfService extends Type {
 }
 
-export abstract class _messages_SavedGifs extends Type {
+abstract class _messages_SavedGifs extends Type {
 }
 
-export abstract class _InputBotInlineMessage extends Type {
+abstract class _InputBotInlineMessage extends Type {
 }
 
-export abstract class _InputBotInlineResult extends Type {
+abstract class _InputBotInlineResult extends Type {
 }
 
-export abstract class _BotInlineMessage extends Type {
+abstract class _BotInlineMessage extends Type {
 }
 
-export abstract class _BotInlineResult extends Type {
+abstract class _BotInlineResult extends Type {
 }
 
-export abstract class _messages_BotResults extends Type {
+abstract class _messages_BotResults extends Type {
 }
 
-export abstract class _ExportedMessageLink extends Type {
+abstract class _ExportedMessageLink extends Type {
 }
 
-export abstract class _MessageFwdHeader extends Type {
+abstract class _MessageFwdHeader extends Type {
 }
 
-export abstract class _auth_CodeType extends Type {
+abstract class _auth_CodeType extends Type {
 }
 
-export abstract class _auth_SentCodeType extends Type {
+abstract class _auth_SentCodeType extends Type {
 }
 
-export abstract class _messages_BotCallbackAnswer extends Type {
+abstract class _messages_BotCallbackAnswer extends Type {
 }
 
-export abstract class _messages_MessageEditData extends Type {
+abstract class _messages_MessageEditData extends Type {
 }
 
-export abstract class _InputBotInlineMessageID extends Type {
+abstract class _InputBotInlineMessageID extends Type {
 }
 
-export abstract class _InlineBotSwitchPM extends Type {
+abstract class _InlineBotSwitchPM extends Type {
 }
 
-export abstract class _messages_PeerDialogs extends Type {
+abstract class _messages_PeerDialogs extends Type {
 }
 
-export abstract class _TopPeer extends Type {
+abstract class _TopPeer extends Type {
 }
 
-export abstract class _TopPeerCategory extends Type {
+abstract class _TopPeerCategory extends Type {
 }
 
-export abstract class _TopPeerCategoryPeers extends Type {
+abstract class _TopPeerCategoryPeers extends Type {
 }
 
-export abstract class _contacts_TopPeers extends Type {
+abstract class _contacts_TopPeers extends Type {
 }
 
-export abstract class _DraftMessage extends Type {
+abstract class _DraftMessage extends Type {
 }
 
-export abstract class _messages_FeaturedStickers extends Type {
+abstract class _messages_FeaturedStickers extends Type {
 }
 
-export abstract class _messages_RecentStickers extends Type {
+abstract class _messages_RecentStickers extends Type {
 }
 
-export abstract class _messages_ArchivedStickers extends Type {
+abstract class _messages_ArchivedStickers extends Type {
 }
 
-export abstract class _messages_StickerSetInstallResult extends Type {
+abstract class _messages_StickerSetInstallResult extends Type {
 }
 
-export abstract class _StickerSetCovered extends Type {
+abstract class _StickerSetCovered extends Type {
 }
 
-export abstract class _MaskCoords extends Type {
+abstract class _MaskCoords extends Type {
 }
 
-export abstract class _InputStickeredMedia extends Type {
+abstract class _InputStickeredMedia extends Type {
 }
 
-export abstract class _Game extends Type {
+abstract class _Game extends Type {
 }
 
-export abstract class _InputGame extends Type {
+abstract class _InputGame extends Type {
 }
 
-export abstract class _HighScore extends Type {
+abstract class _HighScore extends Type {
 }
 
-export abstract class _messages_HighScores extends Type {
+abstract class _messages_HighScores extends Type {
 }
 
-export abstract class _RichText extends Type {
+abstract class _RichText extends Type {
 }
 
-export abstract class _PageBlock extends Type {
+abstract class _PageBlock extends Type {
 }
 
-export abstract class _PhoneCallDiscardReason extends Type {
+abstract class _PhoneCallDiscardReason extends Type {
 }
 
-export abstract class _DataJSON extends Type {
+abstract class _DataJSON extends Type {
 }
 
-export abstract class _LabeledPrice extends Type {
+abstract class _LabeledPrice extends Type {
 }
 
-export abstract class _Invoice extends Type {
+abstract class _Invoice extends Type {
 }
 
-export abstract class _PaymentCharge extends Type {
+abstract class _PaymentCharge extends Type {
 }
 
-export abstract class _PostAddress extends Type {
+abstract class _PostAddress extends Type {
 }
 
-export abstract class _PaymentRequestedInfo extends Type {
+abstract class _PaymentRequestedInfo extends Type {
 }
 
-export abstract class _PaymentSavedCredentials extends Type {
+abstract class _PaymentSavedCredentials extends Type {
 }
 
-export abstract class _WebDocument extends Type {
+abstract class _WebDocument extends Type {
 }
 
-export abstract class _InputWebDocument extends Type {
+abstract class _InputWebDocument extends Type {
 }
 
-export abstract class _InputWebFileLocation extends Type {
+abstract class _InputWebFileLocation extends Type {
 }
 
-export abstract class _upload_WebFile extends Type {
+abstract class _upload_WebFile extends Type {
 }
 
-export abstract class _payments_PaymentForm extends Type {
+abstract class _payments_PaymentForm extends Type {
 }
 
-export abstract class _payments_ValidatedRequestedInfo extends Type {
+abstract class _payments_ValidatedRequestedInfo extends Type {
 }
 
-export abstract class _payments_PaymentResult extends Type {
+abstract class _payments_PaymentResult extends Type {
 }
 
-export abstract class _payments_PaymentReceipt extends Type {
+abstract class _payments_PaymentReceipt extends Type {
 }
 
-export abstract class _payments_SavedInfo extends Type {
+abstract class _payments_SavedInfo extends Type {
 }
 
-export abstract class _InputPaymentCredentials extends Type {
+abstract class _InputPaymentCredentials extends Type {
 }
 
-export abstract class _account_TmpPassword extends Type {
+abstract class _account_TmpPassword extends Type {
 }
 
-export abstract class _ShippingOption extends Type {
+abstract class _ShippingOption extends Type {
 }
 
-export abstract class _InputStickerSetItem extends Type {
+abstract class _InputStickerSetItem extends Type {
 }
 
-export abstract class _InputPhoneCall extends Type {
+abstract class _InputPhoneCall extends Type {
 }
 
-export abstract class _PhoneCall extends Type {
+abstract class _PhoneCall extends Type {
 }
 
-export abstract class _PhoneConnection extends Type {
+abstract class _PhoneConnection extends Type {
 }
 
-export abstract class _PhoneCallProtocol extends Type {
+abstract class _PhoneCallProtocol extends Type {
 }
 
-export abstract class _phone_PhoneCall extends Type {
+abstract class _phone_PhoneCall extends Type {
 }
 
-export abstract class _upload_CdnFile extends Type {
+abstract class _upload_CdnFile extends Type {
 }
 
-export abstract class _CdnPublicKey extends Type {
+abstract class _CdnPublicKey extends Type {
 }
 
-export abstract class _CdnConfig extends Type {
+abstract class _CdnConfig extends Type {
 }
 
-export abstract class _LangPackString extends Type {
+abstract class _LangPackString extends Type {
 }
 
-export abstract class _LangPackDifference extends Type {
+abstract class _LangPackDifference extends Type {
 }
 
-export abstract class _LangPackLanguage extends Type {
+abstract class _LangPackLanguage extends Type {
 }
 
-export abstract class _ChannelAdminLogEventAction extends Type {
+abstract class _ChannelAdminLogEventAction extends Type {
 }
 
-export abstract class _ChannelAdminLogEvent extends Type {
+abstract class _ChannelAdminLogEvent extends Type {
 }
 
-export abstract class _channels_AdminLogResults extends Type {
+abstract class _channels_AdminLogResults extends Type {
 }
 
-export abstract class _ChannelAdminLogEventsFilter extends Type {
+abstract class _ChannelAdminLogEventsFilter extends Type {
 }
 
-export abstract class _PopularContact extends Type {
+abstract class _PopularContact extends Type {
 }
 
-export abstract class _messages_FavedStickers extends Type {
+abstract class _messages_FavedStickers extends Type {
 }
 
-export abstract class _RecentMeUrl extends Type {
+abstract class _RecentMeUrl extends Type {
 }
 
-export abstract class _help_RecentMeUrls extends Type {
+abstract class _help_RecentMeUrls extends Type {
 }
 
-export abstract class _InputSingleMedia extends Type {
+abstract class _InputSingleMedia extends Type {
 }
 
-export abstract class _WebAuthorization extends Type {
+abstract class _WebAuthorization extends Type {
 }
 
-export abstract class _account_WebAuthorizations extends Type {
+abstract class _account_WebAuthorizations extends Type {
 }
 
-export abstract class _InputMessage extends Type {
+abstract class _InputMessage extends Type {
 }
 
-export abstract class _InputDialogPeer extends Type {
+abstract class _InputDialogPeer extends Type {
 }
 
-export abstract class _DialogPeer extends Type {
+abstract class _DialogPeer extends Type {
 }
 
-export abstract class _messages_FoundStickerSets extends Type {
+abstract class _messages_FoundStickerSets extends Type {
 }
 
-export abstract class _FileHash extends Type {
+abstract class _FileHash extends Type {
 }
 
-export abstract class _InputClientProxy extends Type {
+abstract class _InputClientProxy extends Type {
 }
 
-export abstract class _help_TermsOfServiceUpdate extends Type {
+abstract class _help_TermsOfServiceUpdate extends Type {
 }
 
-export abstract class _InputSecureFile extends Type {
+abstract class _InputSecureFile extends Type {
 }
 
-export abstract class _SecureFile extends Type {
+abstract class _SecureFile extends Type {
 }
 
-export abstract class _SecureData extends Type {
+abstract class _SecureData extends Type {
 }
 
-export abstract class _SecurePlainData extends Type {
+abstract class _SecurePlainData extends Type {
 }
 
-export abstract class _SecureValueType extends Type {
+abstract class _SecureValueType extends Type {
 }
 
-export abstract class _SecureValue extends Type {
+abstract class _SecureValue extends Type {
 }
 
-export abstract class _InputSecureValue extends Type {
+abstract class _InputSecureValue extends Type {
 }
 
-export abstract class _SecureValueHash extends Type {
+abstract class _SecureValueHash extends Type {
 }
 
-export abstract class _SecureValueError extends Type {
+abstract class _SecureValueError extends Type {
 }
 
-export abstract class _SecureCredentialsEncrypted extends Type {
+abstract class _SecureCredentialsEncrypted extends Type {
 }
 
-export abstract class _account_AuthorizationForm extends Type {
+abstract class _account_AuthorizationForm extends Type {
 }
 
-export abstract class _account_SentEmailCode extends Type {
+abstract class _account_SentEmailCode extends Type {
 }
 
-export abstract class _help_DeepLinkInfo extends Type {
+abstract class _help_DeepLinkInfo extends Type {
 }
 
-export abstract class _SavedContact extends Type {
+abstract class _SavedContact extends Type {
 }
 
-export abstract class _account_Takeout extends Type {
+abstract class _account_Takeout extends Type {
 }
 
-export abstract class _PasswordKdfAlgo extends Type {
+abstract class _PasswordKdfAlgo extends Type {
 }
 
-export abstract class _SecurePasswordKdfAlgo extends Type {
+abstract class _SecurePasswordKdfAlgo extends Type {
 }
 
-export abstract class _SecureSecretSettings extends Type {
+abstract class _SecureSecretSettings extends Type {
 }
 
-export abstract class _InputCheckPasswordSRP extends Type {
+abstract class _InputCheckPasswordSRP extends Type {
 }
 
-export abstract class _SecureRequiredType extends Type {
+abstract class _SecureRequiredType extends Type {
 }
 
-export abstract class _help_PassportConfig extends Type {
+abstract class _help_PassportConfig extends Type {
 }
 
-export abstract class _InputAppEvent extends Type {
+abstract class _InputAppEvent extends Type {
 }
 
-export abstract class _JSONObjectValue extends Type {
+abstract class _JSONObjectValue extends Type {
 }
 
-export abstract class _JSONValue extends Type {
+abstract class _JSONValue extends Type {
 }
 
-export abstract class _PageTableCell extends Type {
+abstract class _PageTableCell extends Type {
 }
 
-export abstract class _PageTableRow extends Type {
+abstract class _PageTableRow extends Type {
 }
 
-export abstract class _PageCaption extends Type {
+abstract class _PageCaption extends Type {
 }
 
-export abstract class _PageListItem extends Type {
+abstract class _PageListItem extends Type {
 }
 
-export abstract class _PageListOrderedItem extends Type {
+abstract class _PageListOrderedItem extends Type {
 }
 
-export abstract class _PageRelatedArticle extends Type {
+abstract class _PageRelatedArticle extends Type {
 }
 
-export abstract class _Page extends Type {
+abstract class _Page extends Type {
 }
 
-export abstract class _help_SupportName extends Type {
+abstract class _help_SupportName extends Type {
 }
 
-export abstract class _help_UserInfo extends Type {
+abstract class _help_UserInfo extends Type {
 }
 
-export abstract class _PollAnswer extends Type {
+abstract class _PollAnswer extends Type {
 }
 
-export abstract class _Poll extends Type {
+abstract class _Poll extends Type {
 }
 
-export abstract class _PollAnswerVoters extends Type {
+abstract class _PollAnswerVoters extends Type {
 }
 
-export abstract class _PollResults extends Type {
+abstract class _PollResults extends Type {
 }
 
-export abstract class _ChatOnlines extends Type {
+abstract class _ChatOnlines extends Type {
 }
 
-export abstract class _StatsURL extends Type {
+abstract class _StatsURL extends Type {
 }
 
-export abstract class _ChatAdminRights extends Type {
+abstract class _ChatAdminRights extends Type {
 }
 
-export abstract class _ChatBannedRights extends Type {
+abstract class _ChatBannedRights extends Type {
 }
 
-export abstract class _InputWallPaper extends Type {
+abstract class _InputWallPaper extends Type {
 }
 
-export abstract class _account_WallPapers extends Type {
+abstract class _account_WallPapers extends Type {
 }
 
-export abstract class _CodeSettings extends Type {
+abstract class _CodeSettings extends Type {
 }
 
-export abstract class _WallPaperSettings extends Type {
+abstract class _WallPaperSettings extends Type {
 }
 
-export abstract class _AutoDownloadSettings extends Type {
+abstract class _AutoDownloadSettings extends Type {
 }
 
-export abstract class _account_AutoDownloadSettings extends Type {
+abstract class _account_AutoDownloadSettings extends Type {
 }
 
-export abstract class _EmojiKeyword extends Type {
+abstract class _EmojiKeyword extends Type {
 }
 
-export abstract class _EmojiKeywordsDifference extends Type {
+abstract class _EmojiKeywordsDifference extends Type {
 }
 
-export abstract class _EmojiURL extends Type {
+abstract class _EmojiURL extends Type {
 }
 
-export abstract class _EmojiLanguage extends Type {
+abstract class _EmojiLanguage extends Type {
 }
 
-export abstract class _Folder extends Type {
+abstract class _Folder extends Type {
 }
 
-export abstract class _InputFolderPeer extends Type {
+abstract class _InputFolderPeer extends Type {
 }
 
-export abstract class _FolderPeer extends Type {
+abstract class _FolderPeer extends Type {
 }
 
-export abstract class _messages_SearchCounter extends Type {
+abstract class _messages_SearchCounter extends Type {
 }
 
-export abstract class _UrlAuthResult extends Type {
+abstract class _UrlAuthResult extends Type {
 }
 
-export abstract class _ChannelLocation extends Type {
+abstract class _ChannelLocation extends Type {
 }
 
-export abstract class _PeerLocated extends Type {
+abstract class _PeerLocated extends Type {
 }
 
-export abstract class _RestrictionReason extends Type {
+abstract class _RestrictionReason extends Type {
 }
 
-export abstract class _InputTheme extends Type {
+abstract class _InputTheme extends Type {
 }
 
-export abstract class _Theme extends Type {
+abstract class _Theme extends Type {
 }
 
-export abstract class _account_Themes extends Type {
+abstract class _account_Themes extends Type {
 }
 
-export abstract class _auth_LoginToken extends Type {
+abstract class _auth_LoginToken extends Type {
 }
 
-export abstract class _account_ContentSettings extends Type {
+abstract class _account_ContentSettings extends Type {
 }
 
-export abstract class _messages_InactiveChats extends Type {
+abstract class _messages_InactiveChats extends Type {
 }
 
-export abstract class _BaseTheme extends Type {
+abstract class _BaseTheme extends Type {
 }
 
-export abstract class _InputThemeSettings extends Type {
+abstract class _InputThemeSettings extends Type {
 }
 
-export abstract class _ThemeSettings extends Type {
+abstract class _ThemeSettings extends Type {
 }
 
-export abstract class _WebPageAttribute extends Type {
+abstract class _WebPageAttribute extends Type {
 }
 
-export abstract class _messages_VotesList extends Type {
+abstract class _messages_VotesList extends Type {
 }
 
-export abstract class _BankCardOpenUrl extends Type {
+abstract class _BankCardOpenUrl extends Type {
 }
 
-export abstract class _payments_BankCardData extends Type {
+abstract class _payments_BankCardData extends Type {
 }
 
-export abstract class _DialogFilter extends Type {
+abstract class _DialogFilter extends Type {
 }
 
-export abstract class _DialogFilterSuggested extends Type {
+abstract class _DialogFilterSuggested extends Type {
 }
 
-export abstract class _StatsDateRangeDays extends Type {
+abstract class _StatsDateRangeDays extends Type {
 }
 
-export abstract class _StatsAbsValueAndPrev extends Type {
+abstract class _StatsAbsValueAndPrev extends Type {
 }
 
-export abstract class _StatsPercentValue extends Type {
+abstract class _StatsPercentValue extends Type {
 }
 
-export abstract class _StatsGraph extends Type {
+abstract class _StatsGraph extends Type {
 }
 
-export abstract class _stats_BroadcastStats extends Type {
+abstract class _stats_BroadcastStats extends Type {
 }
 
-export abstract class _help_PromoData extends Type {
+abstract class _help_PromoData extends Type {
 }
 
-export abstract class _VideoSize extends Type {
+abstract class _VideoSize extends Type {
 }
 
-export abstract class _StatsGroupTopPoster extends Type {
+abstract class _StatsGroupTopPoster extends Type {
 }
 
-export abstract class _StatsGroupTopAdmin extends Type {
+abstract class _StatsGroupTopAdmin extends Type {
 }
 
-export abstract class _StatsGroupTopInviter extends Type {
+abstract class _StatsGroupTopInviter extends Type {
 }
 
-export abstract class _stats_MegagroupStats extends Type {
+abstract class _stats_MegagroupStats extends Type {
 }
 
-export abstract class _GlobalPrivacySettings extends Type {
+abstract class _GlobalPrivacySettings extends Type {
 }
 
-export abstract class _help_CountryCode extends Type {
+abstract class _help_CountryCode extends Type {
 }
 
-export abstract class _help_Country extends Type {
+abstract class _help_Country extends Type {
 }
 
-export abstract class _help_CountriesList extends Type {
+abstract class _help_CountriesList extends Type {
 }
 
-export abstract class _MessageViews extends Type {
+abstract class _MessageViews extends Type {
 }
 
-export abstract class _messages_MessageViews extends Type {
+abstract class _messages_MessageViews extends Type {
 }
 
-export abstract class _messages_DiscussionMessage extends Type {
+abstract class _messages_DiscussionMessage extends Type {
 }
 
-export abstract class _MessageReplyHeader extends Type {
+abstract class _MessageReplyHeader extends Type {
 }
 
-export abstract class _MessageReplies extends Type {
+abstract class _MessageReplies extends Type {
 }
 
-export abstract class _PeerBlocked extends Type {
+abstract class _PeerBlocked extends Type {
 }
 
-export abstract class _stats_MessageStats extends Type {
+abstract class _stats_MessageStats extends Type {
 }
 
-export abstract class _GroupCall extends Type {
+abstract class _GroupCall extends Type {
 }
 
-export abstract class _InputGroupCall extends Type {
+abstract class _InputGroupCall extends Type {
 }
 
-export abstract class _GroupCallParticipant extends Type {
+abstract class _GroupCallParticipant extends Type {
 }
 
-export abstract class _phone_GroupCall extends Type {
+abstract class _phone_GroupCall extends Type {
 }
 
-export abstract class _phone_GroupParticipants extends Type {
+abstract class _phone_GroupParticipants extends Type {
 }
 
-export abstract class _InlineQueryPeerType extends Type {
+abstract class _InlineQueryPeerType extends Type {
 }
 
-export abstract class _messages_HistoryImport extends Type {
+abstract class _messages_HistoryImport extends Type {
 }
 
-export abstract class _messages_HistoryImportParsed extends Type {
+abstract class _messages_HistoryImportParsed extends Type {
 }
 
-export abstract class _messages_AffectedFoundMessages extends Type {
+abstract class _messages_AffectedFoundMessages extends Type {
 }
 
-export abstract class _ChatInviteImporter extends Type {
+abstract class _ChatInviteImporter extends Type {
 }
 
-export abstract class _messages_ExportedChatInvites extends Type {
+abstract class _messages_ExportedChatInvites extends Type {
 }
 
-export abstract class _messages_ExportedChatInvite extends Type {
+abstract class _messages_ExportedChatInvite extends Type {
 }
 
-export abstract class _messages_ChatInviteImporters extends Type {
+abstract class _messages_ChatInviteImporters extends Type {
 }
 
-export abstract class _ChatAdminWithInvites extends Type {
+abstract class _ChatAdminWithInvites extends Type {
 }
 
-export abstract class _messages_ChatAdminsWithInvites extends Type {
+abstract class _messages_ChatAdminsWithInvites extends Type {
 }
 
-export abstract class _messages_CheckedHistoryImportPeer extends Type {
+abstract class _messages_CheckedHistoryImportPeer extends Type {
 }
 
-export abstract class _phone_JoinAsPeers extends Type {
+abstract class _phone_JoinAsPeers extends Type {
 }
 
-export abstract class _phone_ExportedGroupCallInvite extends Type {
+abstract class _phone_ExportedGroupCallInvite extends Type {
 }
 
-export abstract class _GroupCallParticipantVideoSourceGroup extends Type {
+abstract class _GroupCallParticipantVideoSourceGroup extends Type {
 }
 
-export abstract class _GroupCallParticipantVideo extends Type {
+abstract class _GroupCallParticipantVideo extends Type {
 }
 
-export abstract class _stickers_SuggestedShortName extends Type {
+abstract class _stickers_SuggestedShortName extends Type {
 }
 
-export abstract class _BotCommandScope extends Type {
+abstract class _BotCommandScope extends Type {
 }
 
-export abstract class _account_ResetPasswordResult extends Type {
+abstract class _account_ResetPasswordResult extends Type {
 }
 
-export abstract class _SponsoredMessage extends Type {
+abstract class _SponsoredMessage extends Type {
 }
 
-export abstract class _messages_SponsoredMessages extends Type {
+abstract class _messages_SponsoredMessages extends Type {
 }
 
-export abstract class _SearchResultsCalendarPeriod extends Type {
+abstract class _SearchResultsCalendarPeriod extends Type {
 }
 
-export abstract class _messages_SearchResultsCalendar extends Type {
+abstract class _messages_SearchResultsCalendar extends Type {
 }
 
-export abstract class _SearchResultsPosition extends Type {
+abstract class _SearchResultsPosition extends Type {
 }
 
-export abstract class _messages_SearchResultsPositions extends Type {
+abstract class _messages_SearchResultsPositions extends Type {
 }
 
-export abstract class _channels_SendAsPeers extends Type {
+abstract class _channels_SendAsPeers extends Type {
 }
 
-export abstract class _users_UserFull extends Type {
+abstract class _users_UserFull extends Type {
 }
 
-export abstract class _messages_PeerSettings extends Type {
+abstract class _messages_PeerSettings extends Type {
 }
 
-export abstract class _auth_LoggedOut extends Type {
+abstract class _auth_LoggedOut extends Type {
 }
 
-export abstract class _ReactionCount extends Type {
+abstract class _ReactionCount extends Type {
 }
 
-export abstract class _MessageReactions extends Type {
+abstract class _MessageReactions extends Type {
 }
 
-export abstract class _messages_MessageReactionsList extends Type {
+abstract class _messages_MessageReactionsList extends Type {
 }
 
-export abstract class _AvailableReaction extends Type {
+abstract class _AvailableReaction extends Type {
 }
 
-export abstract class _messages_AvailableReactions extends Type {
+abstract class _messages_AvailableReactions extends Type {
 }
 
-export abstract class _MessagePeerReaction extends Type {
+abstract class _MessagePeerReaction extends Type {
 }
 
-export abstract class _GroupCallStreamChannel extends Type {
+abstract class _GroupCallStreamChannel extends Type {
 }
 
-export abstract class _phone_GroupCallStreamChannels extends Type {
+abstract class _phone_GroupCallStreamChannels extends Type {
 }
 
-export abstract class _phone_GroupCallStreamRtmpUrl extends Type {
+abstract class _phone_GroupCallStreamRtmpUrl extends Type {
 }
 
-export abstract class _AttachMenuBotIconColor extends Type {
+abstract class _AttachMenuBotIconColor extends Type {
 }
 
-export abstract class _AttachMenuBotIcon extends Type {
+abstract class _AttachMenuBotIcon extends Type {
 }
 
-export abstract class _AttachMenuBot extends Type {
+abstract class _AttachMenuBot extends Type {
 }
 
-export abstract class _AttachMenuBots extends Type {
+abstract class _AttachMenuBots extends Type {
 }
 
-export abstract class _AttachMenuBotsBot extends Type {
+abstract class _AttachMenuBotsBot extends Type {
 }
 
-export abstract class _WebViewResult extends Type {
+abstract class _WebViewResult extends Type {
 }
 
-export abstract class _SimpleWebViewResult extends Type {
+abstract class _SimpleWebViewResult extends Type {
 }
 
-export abstract class _WebViewMessageSent extends Type {
+abstract class _WebViewMessageSent extends Type {
 }
 
-export abstract class _BotMenuButton extends Type {
+abstract class _BotMenuButton extends Type {
 }
 
-export abstract class _account_SavedRingtones extends Type {
+abstract class _account_SavedRingtones extends Type {
 }
 
-export abstract class _NotificationSound extends Type {
+abstract class _NotificationSound extends Type {
 }
 
-export abstract class _account_SavedRingtone extends Type {
+abstract class _account_SavedRingtone extends Type {
 }
 
-export abstract class _AttachMenuPeerType extends Type {
+abstract class _AttachMenuPeerType extends Type {
 }
 
-export abstract class _InputInvoice extends Type {
+abstract class _InputInvoice extends Type {
 }
 
-export abstract class _payments_ExportedInvoice extends Type {
+abstract class _payments_ExportedInvoice extends Type {
 }
 
-export abstract class _messages_TranscribedAudio extends Type {
+abstract class _messages_TranscribedAudio extends Type {
 }
 
-export abstract class _help_PremiumPromo extends Type {
+abstract class _help_PremiumPromo extends Type {
 }
 
-export abstract class _InputStorePaymentPurpose extends Type {
+abstract class _InputStorePaymentPurpose extends Type {
 }
 
-export abstract class _PremiumGiftOption extends Type {
+abstract class _PremiumGiftOption extends Type {
 }
 
-export abstract class _PaymentFormMethod extends Type {
+abstract class _PaymentFormMethod extends Type {
 }
 
-export abstract class _EmojiStatus extends Type {
+abstract class _EmojiStatus extends Type {
 }
 
-export abstract class _account_EmojiStatuses extends Type {
+abstract class _account_EmojiStatuses extends Type {
 }
 
-export abstract class _Reaction extends Type {
+abstract class _Reaction extends Type {
 }
 
-export abstract class _ChatReactions extends Type {
+abstract class _ChatReactions extends Type {
 }
 
-export abstract class _messages_Reactions extends Type {
+abstract class _messages_Reactions extends Type {
 }
 
-export abstract class _EmailVerifyPurpose extends Type {
+abstract class _EmailVerifyPurpose extends Type {
 }
 
-export abstract class _EmailVerification extends Type {
+abstract class _EmailVerification extends Type {
 }
 
-export abstract class _account_EmailVerified extends Type {
+abstract class _account_EmailVerified extends Type {
 }
 
-export abstract class _PremiumSubscriptionOption extends Type {
+abstract class _PremiumSubscriptionOption extends Type {
 }
 
-export abstract class _SendAsPeer extends Type {
+abstract class _SendAsPeer extends Type {
 }
 
-export abstract class _MessageExtendedMedia extends Type {
+abstract class _MessageExtendedMedia extends Type {
 }
 
-export abstract class _StickerKeyword extends Type {
+abstract class _StickerKeyword extends Type {
 }
 
-export abstract class _Username extends Type {
+abstract class _Username extends Type {
 }
 
-export abstract class _ForumTopic extends Type {
+abstract class _ForumTopic extends Type {
 }
 
-export abstract class _messages_ForumTopics extends Type {
+abstract class _messages_ForumTopics extends Type {
 }
 
-export abstract class _DefaultHistoryTTL extends Type {
+abstract class _DefaultHistoryTTL extends Type {
 }
 
-export abstract class _ExportedContactToken extends Type {
+abstract class _ExportedContactToken extends Type {
 }
 
-export abstract class _RequestPeerType extends Type {
+abstract class _RequestPeerType extends Type {
 }
 
-export abstract class _EmojiList extends Type {
+abstract class _EmojiList extends Type {
 }
 
-export abstract class _EmojiGroup extends Type {
+abstract class _EmojiGroup extends Type {
 }
 
-export abstract class _messages_EmojiGroups extends Type {
+abstract class _messages_EmojiGroups extends Type {
 }
 
-export abstract class _TextWithEntities extends Type {
+abstract class _TextWithEntities extends Type {
 }
 
-export abstract class _messages_TranslatedText extends Type {
+abstract class _messages_TranslatedText extends Type {
 }
 
-export abstract class _AutoSaveSettings extends Type {
+abstract class _AutoSaveSettings extends Type {
 }
 
-export abstract class _AutoSaveException extends Type {
+abstract class _AutoSaveException extends Type {
 }
 
-export abstract class _account_AutoSaveSettings extends Type {
+abstract class _account_AutoSaveSettings extends Type {
 }
 
-export abstract class _help_AppConfig extends Type {
+abstract class _help_AppConfig extends Type {
 }
 
-export abstract class _InputBotApp extends Type {
+abstract class _InputBotApp extends Type {
 }
 
-export abstract class _BotApp extends Type {
+abstract class _BotApp extends Type {
 }
 
-export abstract class _messages_BotApp extends Type {
+abstract class _messages_BotApp extends Type {
 }
 
-export abstract class _AppWebViewResult extends Type {
+abstract class _AppWebViewResult extends Type {
 }
 
-export abstract class _InlineBotWebView extends Type {
+abstract class _InlineBotWebView extends Type {
 }
 
-export abstract class _ReadParticipantDate extends Type {
+abstract class _ReadParticipantDate extends Type {
 }
 
-export abstract class _InputChatlist extends Type {
+abstract class _InputChatlist extends Type {
 }
 
-export abstract class _ExportedChatlistInvite extends Type {
+abstract class _ExportedChatlistInvite extends Type {
 }
 
-export abstract class _chatlists_ExportedChatlistInvite extends Type {
+abstract class _chatlists_ExportedChatlistInvite extends Type {
 }
 
-export abstract class _chatlists_ExportedInvites extends Type {
+abstract class _chatlists_ExportedInvites extends Type {
 }
 
-export abstract class _chatlists_ChatlistInvite extends Type {
+abstract class _chatlists_ChatlistInvite extends Type {
 }
 
-export abstract class _chatlists_ChatlistUpdates extends Type {
+abstract class _chatlists_ChatlistUpdates extends Type {
 }
 
-export abstract class _bots_BotInfo extends Type {
+abstract class _bots_BotInfo extends Type {
 }
 
-export abstract class _MessagePeerVote extends Type {
+abstract class _MessagePeerVote extends Type {
 }
 
-export abstract class _SponsoredWebPage extends Type {
+abstract class _SponsoredWebPage extends Type {
 }
 
-export abstract class _StoryViews extends Type {
+abstract class _StoryViews extends Type {
 }
 
-export abstract class _StoryItem extends Type {
+abstract class _StoryItem extends Type {
 }
 
-export abstract class _stories_AllStories extends Type {
+abstract class _stories_AllStories extends Type {
 }
 
-export abstract class _stories_Stories extends Type {
+abstract class _stories_Stories extends Type {
 }
 
-export abstract class _StoryView extends Type {
+abstract class _StoryView extends Type {
 }
 
-export abstract class _stories_StoryViewsList extends Type {
+abstract class _stories_StoryViewsList extends Type {
 }
 
-export abstract class _stories_StoryViews extends Type {
+abstract class _stories_StoryViews extends Type {
 }
 
-export abstract class _InputReplyTo extends Type {
+abstract class _InputReplyTo extends Type {
 }
 
-export abstract class _ExportedStoryLink extends Type {
+abstract class _ExportedStoryLink extends Type {
 }
 
-export abstract class _StoriesStealthMode extends Type {
+abstract class _StoriesStealthMode extends Type {
 }
 
-export abstract class _MediaAreaCoordinates extends Type {
+abstract class _MediaAreaCoordinates extends Type {
 }
 
-export abstract class _MediaArea extends Type {
+abstract class _MediaArea extends Type {
 }
 
-export abstract class _PeerStories extends Type {
+abstract class _PeerStories extends Type {
 }
 
-export abstract class _stories_PeerStories extends Type {
+abstract class _stories_PeerStories extends Type {
 }
 
-export abstract class _messages_WebPage extends Type {
+abstract class _messages_WebPage extends Type {
 }
 
-export abstract class _PremiumGiftCodeOption extends Type {
+abstract class _PremiumGiftCodeOption extends Type {
 }
 
-export abstract class _payments_CheckedGiftCode extends Type {
+abstract class _payments_CheckedGiftCode extends Type {
 }
 
-export abstract class _payments_GiveawayInfo extends Type {
+abstract class _payments_GiveawayInfo extends Type {
 }
 
-export abstract class _PrepaidGiveaway extends Type {
+abstract class _PrepaidGiveaway extends Type {
 }
 
-export abstract class _Boost extends Type {
+abstract class _Boost extends Type {
 }
 
-export abstract class _premium_BoostsList extends Type {
+abstract class _premium_BoostsList extends Type {
 }
 
-export abstract class _MyBoost extends Type {
+abstract class _MyBoost extends Type {
 }
 
-export abstract class _premium_MyBoosts extends Type {
+abstract class _premium_MyBoosts extends Type {
 }
 
-export abstract class _premium_BoostsStatus extends Type {
+abstract class _premium_BoostsStatus extends Type {
 }
 
-export abstract class _StoryFwdHeader extends Type {
+abstract class _StoryFwdHeader extends Type {
 }
 
-export abstract class _PostInteractionCounters extends Type {
+abstract class _PostInteractionCounters extends Type {
 }
 
-export abstract class _stats_StoryStats extends Type {
+abstract class _stats_StoryStats extends Type {
 }
 
-export abstract class _PublicForward extends Type {
+abstract class _PublicForward extends Type {
 }
 
-export abstract class _stats_PublicForwards extends Type {
+abstract class _stats_PublicForwards extends Type {
 }
 
-export abstract class _PeerColor extends Type {
+abstract class _PeerColor extends Type {
 }
 
-export abstract class _help_PeerColorSet extends Type {
+abstract class _help_PeerColorSet extends Type {
 }
 
-export abstract class _help_PeerColorOption extends Type {
+abstract class _help_PeerColorOption extends Type {
 }
 
-export abstract class _help_PeerColors extends Type {
+abstract class _help_PeerColors extends Type {
 }
 
-export class resPQ extends _ResPQ {
+class ResPQ extends _ResPQ {
   nonce: bigint;
   server_nonce: bigint;
   pq: Uint8Array;
@@ -1413,7 +1413,7 @@ export class resPQ extends _ResPQ {
   }
 }
 
-export class p_q_inner_data_dc extends _P_Q_inner_data {
+class P_q_inner_data_dc extends _P_Q_inner_data {
   pq: Uint8Array;
   p: Uint8Array;
   q: Uint8Array;
@@ -1462,7 +1462,7 @@ export class p_q_inner_data_dc extends _P_Q_inner_data {
   }
 }
 
-export class p_q_inner_data_temp_dc extends _P_Q_inner_data {
+class P_q_inner_data_temp_dc extends _P_Q_inner_data {
   pq: Uint8Array;
   p: Uint8Array;
   q: Uint8Array;
@@ -1515,7 +1515,7 @@ export class p_q_inner_data_temp_dc extends _P_Q_inner_data {
   }
 }
 
-export class server_DH_params_ok extends _Server_DH_Params {
+class Server_DH_params_ok extends _Server_DH_Params {
   nonce: bigint;
   server_nonce: bigint;
   encrypted_answer: Uint8Array;
@@ -1548,7 +1548,7 @@ export class server_DH_params_ok extends _Server_DH_Params {
   }
 }
 
-export class server_DH_inner_data extends _Server_DH_inner_data {
+class Server_DH_inner_data extends _Server_DH_inner_data {
   nonce: bigint;
   server_nonce: bigint;
   g: number;
@@ -1593,7 +1593,7 @@ export class server_DH_inner_data extends _Server_DH_inner_data {
   }
 }
 
-export class client_DH_inner_data extends _Client_DH_Inner_Data {
+class Client_DH_inner_data extends _Client_DH_Inner_Data {
   nonce: bigint;
   server_nonce: bigint;
   retry_id: bigint;
@@ -1630,7 +1630,7 @@ export class client_DH_inner_data extends _Client_DH_Inner_Data {
   }
 }
 
-export class dh_gen_ok extends _Set_client_DH_params_answer {
+class Dh_gen_ok extends _Set_client_DH_params_answer {
   nonce: bigint;
   server_nonce: bigint;
   new_nonce_hash1: bigint;
@@ -1663,7 +1663,7 @@ export class dh_gen_ok extends _Set_client_DH_params_answer {
   }
 }
 
-export class dh_gen_retry extends _Set_client_DH_params_answer {
+class Dh_gen_retry extends _Set_client_DH_params_answer {
   nonce: bigint;
   server_nonce: bigint;
   new_nonce_hash2: bigint;
@@ -1696,7 +1696,7 @@ export class dh_gen_retry extends _Set_client_DH_params_answer {
   }
 }
 
-export class dh_gen_fail extends _Set_client_DH_params_answer {
+class Dh_gen_fail extends _Set_client_DH_params_answer {
   nonce: bigint;
   server_nonce: bigint;
   new_nonce_hash3: bigint;
@@ -1729,7 +1729,7 @@ export class dh_gen_fail extends _Set_client_DH_params_answer {
   }
 }
 
-export class bind_auth_key_inner extends _BindAuthKeyInner {
+class Bind_auth_key_inner extends _BindAuthKeyInner {
   nonce: bigint;
   temp_auth_key_id: bigint;
   perm_auth_key_id: bigint;
@@ -1770,7 +1770,7 @@ export class bind_auth_key_inner extends _BindAuthKeyInner {
   }
 }
 
-export class rpc_error extends _RpcError {
+class Rpc_error extends _RpcError {
   error_code: number;
   error_message: string;
 
@@ -1799,7 +1799,7 @@ export class rpc_error extends _RpcError {
   }
 }
 
-export class rpc_answer_unknown extends _RpcDropAnswer {
+class Rpc_answer_unknown extends _RpcDropAnswer {
   protected get [id]() {
     return 0x5E2AD36E;
   }
@@ -1817,7 +1817,7 @@ export class rpc_answer_unknown extends _RpcDropAnswer {
   }
 }
 
-export class rpc_answer_dropped_running extends _RpcDropAnswer {
+class Rpc_answer_dropped_running extends _RpcDropAnswer {
   protected get [id]() {
     return 0xCD78E586;
   }
@@ -1835,7 +1835,7 @@ export class rpc_answer_dropped_running extends _RpcDropAnswer {
   }
 }
 
-export class rpc_answer_dropped extends _RpcDropAnswer {
+class Rpc_answer_dropped extends _RpcDropAnswer {
   msg_id: bigint;
   seq_no: number;
   bytes: number;
@@ -1868,7 +1868,7 @@ export class rpc_answer_dropped extends _RpcDropAnswer {
   }
 }
 
-export class future_salt extends _FutureSalt {
+class Future_salt extends _FutureSalt {
   valid_since: number;
   valid_until: number;
   salt: bigint;
@@ -1901,7 +1901,7 @@ export class future_salt extends _FutureSalt {
   }
 }
 
-export class future_salts extends _FutureSalts {
+class Future_salts extends _FutureSalts {
   req_msg_id: bigint;
   now: number;
   salts: Array<enums.FutureSalt>;
@@ -1934,7 +1934,7 @@ export class future_salts extends _FutureSalts {
   }
 }
 
-export class pong extends _Pong {
+class Pong extends _Pong {
   msg_id: bigint;
   ping_id: bigint;
 
@@ -1963,7 +1963,7 @@ export class pong extends _Pong {
   }
 }
 
-export class destroy_session_ok extends _DestroySessionRes {
+class Destroy_session_ok extends _DestroySessionRes {
   session_id: bigint;
 
   protected get [id]() {
@@ -1988,7 +1988,7 @@ export class destroy_session_ok extends _DestroySessionRes {
   }
 }
 
-export class destroy_session_none extends _DestroySessionRes {
+class Destroy_session_none extends _DestroySessionRes {
   session_id: bigint;
 
   protected get [id]() {
@@ -2013,7 +2013,7 @@ export class destroy_session_none extends _DestroySessionRes {
   }
 }
 
-export class new_session_created extends _NewSession {
+class New_session_created extends _NewSession {
   first_msg_id: bigint;
   unique_id: bigint;
   server_salt: bigint;
@@ -2046,7 +2046,7 @@ export class new_session_created extends _NewSession {
   }
 }
 
-export class gzip_packed extends _Object {
+class Gzip_packed extends _Object {
   packed_data: Uint8Array;
 
   protected get [id]() {
@@ -2071,7 +2071,7 @@ export class gzip_packed extends _Object {
   }
 }
 
-export class msgs_ack extends _MsgsAck {
+class Msgs_ack extends _MsgsAck {
   msg_ids: Array<bigint>;
 
   protected get [id]() {
@@ -2096,7 +2096,7 @@ export class msgs_ack extends _MsgsAck {
   }
 }
 
-export class bad_msg_notification extends _BadMsgNotification {
+class Bad_msg_notification extends _BadMsgNotification {
   bad_msg_id: bigint;
   bad_msg_seqno: number;
   error_code: number;
@@ -2129,7 +2129,7 @@ export class bad_msg_notification extends _BadMsgNotification {
   }
 }
 
-export class bad_server_salt extends _BadMsgNotification {
+class Bad_server_salt extends _BadMsgNotification {
   bad_msg_id: bigint;
   bad_msg_seqno: number;
   error_code: number;
@@ -2166,7 +2166,7 @@ export class bad_server_salt extends _BadMsgNotification {
   }
 }
 
-export class msg_resend_req extends _MsgResendReq {
+class Msg_resend_req extends _MsgResendReq {
   msg_ids: Array<bigint>;
 
   protected get [id]() {
@@ -2191,7 +2191,7 @@ export class msg_resend_req extends _MsgResendReq {
   }
 }
 
-export class msgs_state_req extends _MsgsStateReq {
+class Msgs_state_req extends _MsgsStateReq {
   msg_ids: Array<bigint>;
 
   protected get [id]() {
@@ -2216,7 +2216,7 @@ export class msgs_state_req extends _MsgsStateReq {
   }
 }
 
-export class msgs_state_info extends _MsgsStateInfo {
+class Msgs_state_info extends _MsgsStateInfo {
   req_msg_id: bigint;
   info: Uint8Array;
 
@@ -2245,7 +2245,7 @@ export class msgs_state_info extends _MsgsStateInfo {
   }
 }
 
-export class msgs_all_info extends _MsgsAllInfo {
+class Msgs_all_info extends _MsgsAllInfo {
   msg_ids: Array<bigint>;
   info: Uint8Array;
 
@@ -2274,7 +2274,7 @@ export class msgs_all_info extends _MsgsAllInfo {
   }
 }
 
-export class msg_detailed_info extends _MsgDetailedInfo {
+class Msg_detailed_info extends _MsgDetailedInfo {
   msg_id: bigint;
   answer_msg_id: bigint;
   bytes: number;
@@ -2311,7 +2311,7 @@ export class msg_detailed_info extends _MsgDetailedInfo {
   }
 }
 
-export class msg_new_detailed_info extends _MsgDetailedInfo {
+class Msg_new_detailed_info extends _MsgDetailedInfo {
   answer_msg_id: bigint;
   bytes: number;
   status: number;
@@ -2344,7 +2344,7 @@ export class msg_new_detailed_info extends _MsgDetailedInfo {
   }
 }
 
-export class destroy_auth_key_ok extends _DestroyAuthKeyRes {
+class Destroy_auth_key_ok extends _DestroyAuthKeyRes {
   protected get [id]() {
     return 0xF660E1D4;
   }
@@ -2362,7 +2362,7 @@ export class destroy_auth_key_ok extends _DestroyAuthKeyRes {
   }
 }
 
-export class destroy_auth_key_none extends _DestroyAuthKeyRes {
+class Destroy_auth_key_none extends _DestroyAuthKeyRes {
   protected get [id]() {
     return 0x0A9F2259;
   }
@@ -2380,7 +2380,7 @@ export class destroy_auth_key_none extends _DestroyAuthKeyRes {
   }
 }
 
-export class destroy_auth_key_fail extends _DestroyAuthKeyRes {
+class Destroy_auth_key_fail extends _DestroyAuthKeyRes {
   protected get [id]() {
     return 0xEA109B13;
   }
@@ -2398,7 +2398,7 @@ export class destroy_auth_key_fail extends _DestroyAuthKeyRes {
   }
 }
 
-export class http_wait extends _HttpWait {
+class Http_wait extends _HttpWait {
   max_delay: number;
   wait_after: number;
   max_wait: number;
@@ -2431,7 +2431,7 @@ export class http_wait extends _HttpWait {
   }
 }
 
-export class r$true extends _True {
+class True extends _True {
   protected get [id]() {
     return 0x3FEDD339;
   }
@@ -2449,7 +2449,7 @@ export class r$true extends _True {
   }
 }
 
-export class error extends _Error {
+class Error extends _Error {
   code: number;
   text: string;
 
@@ -2478,7 +2478,7 @@ export class error extends _Error {
   }
 }
 
-export class r$null extends _Null {
+class Null extends _Null {
   protected get [id]() {
     return 0x56730BCC;
   }
@@ -2496,7 +2496,7 @@ export class r$null extends _Null {
   }
 }
 
-export class inputPeerEmpty extends _InputPeer {
+class InputPeerEmpty extends _InputPeer {
   protected get [id]() {
     return 0x7F3B18EA;
   }
@@ -2514,7 +2514,7 @@ export class inputPeerEmpty extends _InputPeer {
   }
 }
 
-export class inputPeerSelf extends _InputPeer {
+class InputPeerSelf extends _InputPeer {
   protected get [id]() {
     return 0x7DA07EC9;
   }
@@ -2532,7 +2532,7 @@ export class inputPeerSelf extends _InputPeer {
   }
 }
 
-export class inputPeerChat extends _InputPeer {
+class InputPeerChat extends _InputPeer {
   chat_id: bigint;
 
   protected get [id]() {
@@ -2557,7 +2557,7 @@ export class inputPeerChat extends _InputPeer {
   }
 }
 
-export class inputPeerUser extends _InputPeer {
+class InputPeerUser extends _InputPeer {
   user_id: bigint;
   access_hash: bigint;
 
@@ -2586,7 +2586,7 @@ export class inputPeerUser extends _InputPeer {
   }
 }
 
-export class inputPeerChannel extends _InputPeer {
+class InputPeerChannel extends _InputPeer {
   channel_id: bigint;
   access_hash: bigint;
 
@@ -2615,7 +2615,7 @@ export class inputPeerChannel extends _InputPeer {
   }
 }
 
-export class inputPeerUserFromMessage extends _InputPeer {
+class InputPeerUserFromMessage extends _InputPeer {
   peer: enums.InputPeer;
   msg_id: number;
   user_id: bigint;
@@ -2648,7 +2648,7 @@ export class inputPeerUserFromMessage extends _InputPeer {
   }
 }
 
-export class inputPeerChannelFromMessage extends _InputPeer {
+class InputPeerChannelFromMessage extends _InputPeer {
   peer: enums.InputPeer;
   msg_id: number;
   channel_id: bigint;
@@ -2681,7 +2681,7 @@ export class inputPeerChannelFromMessage extends _InputPeer {
   }
 }
 
-export class inputUserEmpty extends _InputUser {
+class InputUserEmpty extends _InputUser {
   protected get [id]() {
     return 0xB98886CF;
   }
@@ -2699,7 +2699,7 @@ export class inputUserEmpty extends _InputUser {
   }
 }
 
-export class inputUserSelf extends _InputUser {
+class InputUserSelf extends _InputUser {
   protected get [id]() {
     return 0xF7C1B13F;
   }
@@ -2717,7 +2717,7 @@ export class inputUserSelf extends _InputUser {
   }
 }
 
-export class inputUser extends _InputUser {
+class InputUser extends _InputUser {
   user_id: bigint;
   access_hash: bigint;
 
@@ -2746,7 +2746,7 @@ export class inputUser extends _InputUser {
   }
 }
 
-export class inputUserFromMessage extends _InputUser {
+class InputUserFromMessage extends _InputUser {
   peer: enums.InputPeer;
   msg_id: number;
   user_id: bigint;
@@ -2779,7 +2779,7 @@ export class inputUserFromMessage extends _InputUser {
   }
 }
 
-export class inputPhoneContact extends _InputContact {
+class InputPhoneContact extends _InputContact {
   client_id: bigint;
   phone: string;
   first_name: string;
@@ -2816,7 +2816,7 @@ export class inputPhoneContact extends _InputContact {
   }
 }
 
-export class inputFile extends _InputFile {
+class InputFile extends _InputFile {
   id: bigint;
   parts: number;
   name: string;
@@ -2853,7 +2853,7 @@ export class inputFile extends _InputFile {
   }
 }
 
-export class inputFileBig extends _InputFile {
+class InputFileBig extends _InputFile {
   id: bigint;
   parts: number;
   name: string;
@@ -2886,7 +2886,7 @@ export class inputFileBig extends _InputFile {
   }
 }
 
-export class inputMediaEmpty extends _InputMedia {
+class InputMediaEmpty extends _InputMedia {
   protected get [id]() {
     return 0x9664F57F;
   }
@@ -2904,7 +2904,7 @@ export class inputMediaEmpty extends _InputMedia {
   }
 }
 
-export class inputMediaUploadedPhoto extends _InputMedia {
+class InputMediaUploadedPhoto extends _InputMedia {
   spoiler?: true;
   file: enums.InputFile;
   stickers?: Array<enums.InputDocument>;
@@ -2943,7 +2943,7 @@ export class inputMediaUploadedPhoto extends _InputMedia {
   }
 }
 
-export class inputMediaPhoto extends _InputMedia {
+class InputMediaPhoto extends _InputMedia {
   spoiler?: true;
   id: enums.InputPhoto;
   ttl_seconds?: number;
@@ -2978,7 +2978,7 @@ export class inputMediaPhoto extends _InputMedia {
   }
 }
 
-export class inputMediaGeoPoint extends _InputMedia {
+class InputMediaGeoPoint extends _InputMedia {
   geo_point: enums.InputGeoPoint;
 
   protected get [id]() {
@@ -3003,7 +3003,7 @@ export class inputMediaGeoPoint extends _InputMedia {
   }
 }
 
-export class inputMediaContact extends _InputMedia {
+class InputMediaContact extends _InputMedia {
   phone_number: string;
   first_name: string;
   last_name: string;
@@ -3040,7 +3040,7 @@ export class inputMediaContact extends _InputMedia {
   }
 }
 
-export class inputMediaUploadedDocument extends _InputMedia {
+class InputMediaUploadedDocument extends _InputMedia {
   nosound_video?: true;
   force_file?: true;
   spoiler?: true;
@@ -3099,7 +3099,7 @@ export class inputMediaUploadedDocument extends _InputMedia {
   }
 }
 
-export class inputMediaDocument extends _InputMedia {
+class InputMediaDocument extends _InputMedia {
   spoiler?: true;
   id: enums.InputDocument;
   ttl_seconds?: number;
@@ -3138,7 +3138,7 @@ export class inputMediaDocument extends _InputMedia {
   }
 }
 
-export class inputMediaVenue extends _InputMedia {
+class InputMediaVenue extends _InputMedia {
   geo_point: enums.InputGeoPoint;
   title: string;
   address: string;
@@ -3183,7 +3183,7 @@ export class inputMediaVenue extends _InputMedia {
   }
 }
 
-export class inputMediaPhotoExternal extends _InputMedia {
+class InputMediaPhotoExternal extends _InputMedia {
   spoiler?: true;
   url: string;
   ttl_seconds?: number;
@@ -3218,7 +3218,7 @@ export class inputMediaPhotoExternal extends _InputMedia {
   }
 }
 
-export class inputMediaDocumentExternal extends _InputMedia {
+class InputMediaDocumentExternal extends _InputMedia {
   spoiler?: true;
   url: string;
   ttl_seconds?: number;
@@ -3253,7 +3253,7 @@ export class inputMediaDocumentExternal extends _InputMedia {
   }
 }
 
-export class inputMediaGame extends _InputMedia {
+class InputMediaGame extends _InputMedia {
   id: enums.InputGame;
 
   protected get [id]() {
@@ -3278,7 +3278,7 @@ export class inputMediaGame extends _InputMedia {
   }
 }
 
-export class inputMediaInvoice extends _InputMedia {
+class InputMediaInvoice extends _InputMedia {
   title: string;
   description: string;
   photo?: enums.InputWebDocument;
@@ -3337,7 +3337,7 @@ export class inputMediaInvoice extends _InputMedia {
   }
 }
 
-export class inputMediaGeoLive extends _InputMedia {
+class InputMediaGeoLive extends _InputMedia {
   stopped?: true;
   geo_point: enums.InputGeoPoint;
   heading?: number;
@@ -3380,7 +3380,7 @@ export class inputMediaGeoLive extends _InputMedia {
   }
 }
 
-export class inputMediaPoll extends _InputMedia {
+class InputMediaPoll extends _InputMedia {
   poll: enums.Poll;
   correct_answers?: Array<Uint8Array>;
   solution?: string;
@@ -3419,7 +3419,7 @@ export class inputMediaPoll extends _InputMedia {
   }
 }
 
-export class inputMediaDice extends _InputMedia {
+class InputMediaDice extends _InputMedia {
   emoticon: string;
 
   protected get [id]() {
@@ -3444,7 +3444,7 @@ export class inputMediaDice extends _InputMedia {
   }
 }
 
-export class inputMediaStory extends _InputMedia {
+class InputMediaStory extends _InputMedia {
   peer: enums.InputPeer;
   id: number;
 
@@ -3473,7 +3473,7 @@ export class inputMediaStory extends _InputMedia {
   }
 }
 
-export class inputMediaWebPage extends _InputMedia {
+class InputMediaWebPage extends _InputMedia {
   force_large_media?: true;
   force_small_media?: true;
   optional?: true;
@@ -3512,7 +3512,7 @@ export class inputMediaWebPage extends _InputMedia {
   }
 }
 
-export class inputChatPhotoEmpty extends _InputChatPhoto {
+class InputChatPhotoEmpty extends _InputChatPhoto {
   protected get [id]() {
     return 0x1CA48F57;
   }
@@ -3530,7 +3530,7 @@ export class inputChatPhotoEmpty extends _InputChatPhoto {
   }
 }
 
-export class inputChatUploadedPhoto extends _InputChatPhoto {
+class InputChatUploadedPhoto extends _InputChatPhoto {
   file?: enums.InputFile;
   video?: enums.InputFile;
   video_start_ts?: number;
@@ -3569,7 +3569,7 @@ export class inputChatUploadedPhoto extends _InputChatPhoto {
   }
 }
 
-export class inputChatPhoto extends _InputChatPhoto {
+class InputChatPhoto extends _InputChatPhoto {
   id: enums.InputPhoto;
 
   protected get [id]() {
@@ -3594,7 +3594,7 @@ export class inputChatPhoto extends _InputChatPhoto {
   }
 }
 
-export class inputGeoPointEmpty extends _InputGeoPoint {
+class InputGeoPointEmpty extends _InputGeoPoint {
   protected get [id]() {
     return 0xE4C123D6;
   }
@@ -3612,7 +3612,7 @@ export class inputGeoPointEmpty extends _InputGeoPoint {
   }
 }
 
-export class inputGeoPoint extends _InputGeoPoint {
+class InputGeoPoint extends _InputGeoPoint {
   lat: number;
   long: number;
   accuracy_radius?: number;
@@ -3647,7 +3647,7 @@ export class inputGeoPoint extends _InputGeoPoint {
   }
 }
 
-export class inputPhotoEmpty extends _InputPhoto {
+class InputPhotoEmpty extends _InputPhoto {
   protected get [id]() {
     return 0x1CD7BF0D;
   }
@@ -3665,7 +3665,7 @@ export class inputPhotoEmpty extends _InputPhoto {
   }
 }
 
-export class inputPhoto extends _InputPhoto {
+class InputPhoto extends _InputPhoto {
   id: bigint;
   access_hash: bigint;
   file_reference: Uint8Array;
@@ -3698,7 +3698,7 @@ export class inputPhoto extends _InputPhoto {
   }
 }
 
-export class inputFileLocation extends _InputFileLocation {
+class InputFileLocation extends _InputFileLocation {
   volume_id: bigint;
   local_id: number;
   secret: bigint;
@@ -3735,7 +3735,7 @@ export class inputFileLocation extends _InputFileLocation {
   }
 }
 
-export class inputEncryptedFileLocation extends _InputFileLocation {
+class InputEncryptedFileLocation extends _InputFileLocation {
   id: bigint;
   access_hash: bigint;
 
@@ -3764,7 +3764,7 @@ export class inputEncryptedFileLocation extends _InputFileLocation {
   }
 }
 
-export class inputDocumentFileLocation extends _InputFileLocation {
+class InputDocumentFileLocation extends _InputFileLocation {
   id: bigint;
   access_hash: bigint;
   file_reference: Uint8Array;
@@ -3801,7 +3801,7 @@ export class inputDocumentFileLocation extends _InputFileLocation {
   }
 }
 
-export class inputSecureFileLocation extends _InputFileLocation {
+class InputSecureFileLocation extends _InputFileLocation {
   id: bigint;
   access_hash: bigint;
 
@@ -3830,7 +3830,7 @@ export class inputSecureFileLocation extends _InputFileLocation {
   }
 }
 
-export class inputTakeoutFileLocation extends _InputFileLocation {
+class InputTakeoutFileLocation extends _InputFileLocation {
   protected get [id]() {
     return 0x29BE5899;
   }
@@ -3848,7 +3848,7 @@ export class inputTakeoutFileLocation extends _InputFileLocation {
   }
 }
 
-export class inputPhotoFileLocation extends _InputFileLocation {
+class InputPhotoFileLocation extends _InputFileLocation {
   id: bigint;
   access_hash: bigint;
   file_reference: Uint8Array;
@@ -3885,7 +3885,7 @@ export class inputPhotoFileLocation extends _InputFileLocation {
   }
 }
 
-export class inputPhotoLegacyFileLocation extends _InputFileLocation {
+class InputPhotoLegacyFileLocation extends _InputFileLocation {
   id: bigint;
   access_hash: bigint;
   file_reference: Uint8Array;
@@ -3930,7 +3930,7 @@ export class inputPhotoLegacyFileLocation extends _InputFileLocation {
   }
 }
 
-export class inputPeerPhotoFileLocation extends _InputFileLocation {
+class InputPeerPhotoFileLocation extends _InputFileLocation {
   big?: true;
   peer: enums.InputPeer;
   photo_id: bigint;
@@ -3965,7 +3965,7 @@ export class inputPeerPhotoFileLocation extends _InputFileLocation {
   }
 }
 
-export class inputStickerSetThumb extends _InputFileLocation {
+class InputStickerSetThumb extends _InputFileLocation {
   stickerset: enums.InputStickerSet;
   thumb_version: number;
 
@@ -3994,7 +3994,7 @@ export class inputStickerSetThumb extends _InputFileLocation {
   }
 }
 
-export class inputGroupCallStream extends _InputFileLocation {
+class InputGroupCallStream extends _InputFileLocation {
   call: enums.InputGroupCall;
   time_ms: bigint;
   scale: number;
@@ -4037,7 +4037,7 @@ export class inputGroupCallStream extends _InputFileLocation {
   }
 }
 
-export class peerUser extends _Peer {
+class PeerUser extends _Peer {
   user_id: bigint;
 
   protected get [id]() {
@@ -4062,7 +4062,7 @@ export class peerUser extends _Peer {
   }
 }
 
-export class peerChat extends _Peer {
+class PeerChat extends _Peer {
   chat_id: bigint;
 
   protected get [id]() {
@@ -4087,7 +4087,7 @@ export class peerChat extends _Peer {
   }
 }
 
-export class peerChannel extends _Peer {
+class PeerChannel extends _Peer {
   channel_id: bigint;
 
   protected get [id]() {
@@ -4112,7 +4112,7 @@ export class peerChannel extends _Peer {
   }
 }
 
-export class storage_fileUnknown extends _storage_FileType {
+class storage_FileUnknown extends _storage_FileType {
   protected get [id]() {
     return 0xAA963B05;
   }
@@ -4130,7 +4130,7 @@ export class storage_fileUnknown extends _storage_FileType {
   }
 }
 
-export class storage_filePartial extends _storage_FileType {
+class storage_FilePartial extends _storage_FileType {
   protected get [id]() {
     return 0x40BC6F52;
   }
@@ -4148,7 +4148,7 @@ export class storage_filePartial extends _storage_FileType {
   }
 }
 
-export class storage_fileJpeg extends _storage_FileType {
+class storage_FileJpeg extends _storage_FileType {
   protected get [id]() {
     return 0x007EFE0E;
   }
@@ -4166,7 +4166,7 @@ export class storage_fileJpeg extends _storage_FileType {
   }
 }
 
-export class storage_fileGif extends _storage_FileType {
+class storage_FileGif extends _storage_FileType {
   protected get [id]() {
     return 0xCAE1AADF;
   }
@@ -4184,7 +4184,7 @@ export class storage_fileGif extends _storage_FileType {
   }
 }
 
-export class storage_filePng extends _storage_FileType {
+class storage_FilePng extends _storage_FileType {
   protected get [id]() {
     return 0x0A4F63C0;
   }
@@ -4202,7 +4202,7 @@ export class storage_filePng extends _storage_FileType {
   }
 }
 
-export class storage_filePdf extends _storage_FileType {
+class storage_FilePdf extends _storage_FileType {
   protected get [id]() {
     return 0xAE1E508D;
   }
@@ -4220,7 +4220,7 @@ export class storage_filePdf extends _storage_FileType {
   }
 }
 
-export class storage_fileMp3 extends _storage_FileType {
+class storage_FileMp3 extends _storage_FileType {
   protected get [id]() {
     return 0x528A0677;
   }
@@ -4238,7 +4238,7 @@ export class storage_fileMp3 extends _storage_FileType {
   }
 }
 
-export class storage_fileMov extends _storage_FileType {
+class storage_FileMov extends _storage_FileType {
   protected get [id]() {
     return 0x4B09EBBC;
   }
@@ -4256,7 +4256,7 @@ export class storage_fileMov extends _storage_FileType {
   }
 }
 
-export class storage_fileMp4 extends _storage_FileType {
+class storage_FileMp4 extends _storage_FileType {
   protected get [id]() {
     return 0xB3CEA0E4;
   }
@@ -4274,7 +4274,7 @@ export class storage_fileMp4 extends _storage_FileType {
   }
 }
 
-export class storage_fileWebp extends _storage_FileType {
+class storage_FileWebp extends _storage_FileType {
   protected get [id]() {
     return 0x1081464C;
   }
@@ -4292,7 +4292,7 @@ export class storage_fileWebp extends _storage_FileType {
   }
 }
 
-export class userEmpty extends _User {
+class UserEmpty extends _User {
   id: bigint;
 
   protected get [id]() {
@@ -4317,7 +4317,7 @@ export class userEmpty extends _User {
   }
 }
 
-export class user extends _User {
+class User extends _User {
   self?: true;
   contact?: true;
   mutual_contact?: true;
@@ -4498,7 +4498,7 @@ export class user extends _User {
   }
 }
 
-export class userProfilePhotoEmpty extends _UserProfilePhoto {
+class UserProfilePhotoEmpty extends _UserProfilePhoto {
   protected get [id]() {
     return 0x4F11BAE1;
   }
@@ -4516,7 +4516,7 @@ export class userProfilePhotoEmpty extends _UserProfilePhoto {
   }
 }
 
-export class userProfilePhoto extends _UserProfilePhoto {
+class UserProfilePhoto extends _UserProfilePhoto {
   has_video?: true;
   personal?: true;
   photo_id: bigint;
@@ -4559,7 +4559,7 @@ export class userProfilePhoto extends _UserProfilePhoto {
   }
 }
 
-export class userStatusEmpty extends _UserStatus {
+class UserStatusEmpty extends _UserStatus {
   protected get [id]() {
     return 0x09D05049;
   }
@@ -4577,7 +4577,7 @@ export class userStatusEmpty extends _UserStatus {
   }
 }
 
-export class userStatusOnline extends _UserStatus {
+class UserStatusOnline extends _UserStatus {
   expires: number;
 
   protected get [id]() {
@@ -4602,7 +4602,7 @@ export class userStatusOnline extends _UserStatus {
   }
 }
 
-export class userStatusOffline extends _UserStatus {
+class UserStatusOffline extends _UserStatus {
   was_online: number;
 
   protected get [id]() {
@@ -4627,7 +4627,7 @@ export class userStatusOffline extends _UserStatus {
   }
 }
 
-export class userStatusRecently extends _UserStatus {
+class UserStatusRecently extends _UserStatus {
   protected get [id]() {
     return 0xE26F42F1;
   }
@@ -4645,7 +4645,7 @@ export class userStatusRecently extends _UserStatus {
   }
 }
 
-export class userStatusLastWeek extends _UserStatus {
+class UserStatusLastWeek extends _UserStatus {
   protected get [id]() {
     return 0x07BF09FC;
   }
@@ -4663,7 +4663,7 @@ export class userStatusLastWeek extends _UserStatus {
   }
 }
 
-export class userStatusLastMonth extends _UserStatus {
+class UserStatusLastMonth extends _UserStatus {
   protected get [id]() {
     return 0x77EBC742;
   }
@@ -4681,7 +4681,7 @@ export class userStatusLastMonth extends _UserStatus {
   }
 }
 
-export class chatEmpty extends _Chat {
+class ChatEmpty extends _Chat {
   id: bigint;
 
   protected get [id]() {
@@ -4706,7 +4706,7 @@ export class chatEmpty extends _Chat {
   }
 }
 
-export class chat extends _Chat {
+class Chat extends _Chat {
   creator?: true;
   left?: true;
   deactivated?: true;
@@ -4789,7 +4789,7 @@ export class chat extends _Chat {
   }
 }
 
-export class chatForbidden extends _Chat {
+class ChatForbidden extends _Chat {
   id: bigint;
   title: string;
 
@@ -4818,7 +4818,7 @@ export class chatForbidden extends _Chat {
   }
 }
 
-export class channel extends _Chat {
+class Channel extends _Chat {
   creator?: true;
   left?: true;
   broadcast?: true;
@@ -4991,7 +4991,7 @@ export class channel extends _Chat {
   }
 }
 
-export class channelForbidden extends _Chat {
+class ChannelForbidden extends _Chat {
   broadcast?: true;
   megagroup?: true;
   id: bigint;
@@ -5038,7 +5038,7 @@ export class channelForbidden extends _Chat {
   }
 }
 
-export class chatFull extends _ChatFull {
+class ChatFull extends _ChatFull {
   can_set_username?: true;
   has_scheduled?: true;
   translations_disabled?: true;
@@ -5137,7 +5137,7 @@ export class chatFull extends _ChatFull {
   }
 }
 
-export class channelFull extends _ChatFull {
+class ChannelFull extends _ChatFull {
   can_view_participants?: true;
   can_set_username?: true;
   can_set_stickers?: true;
@@ -5362,7 +5362,7 @@ export class channelFull extends _ChatFull {
   }
 }
 
-export class chatParticipant extends _ChatParticipant {
+class ChatParticipant extends _ChatParticipant {
   user_id: bigint;
   inviter_id: bigint;
   date: number;
@@ -5395,7 +5395,7 @@ export class chatParticipant extends _ChatParticipant {
   }
 }
 
-export class chatParticipantCreator extends _ChatParticipant {
+class ChatParticipantCreator extends _ChatParticipant {
   user_id: bigint;
 
   protected get [id]() {
@@ -5420,7 +5420,7 @@ export class chatParticipantCreator extends _ChatParticipant {
   }
 }
 
-export class chatParticipantAdmin extends _ChatParticipant {
+class ChatParticipantAdmin extends _ChatParticipant {
   user_id: bigint;
   inviter_id: bigint;
   date: number;
@@ -5453,7 +5453,7 @@ export class chatParticipantAdmin extends _ChatParticipant {
   }
 }
 
-export class chatParticipantsForbidden extends _ChatParticipants {
+class ChatParticipantsForbidden extends _ChatParticipants {
   chat_id: bigint;
   self_participant?: enums.ChatParticipant;
 
@@ -5484,7 +5484,7 @@ export class chatParticipantsForbidden extends _ChatParticipants {
   }
 }
 
-export class chatParticipants extends _ChatParticipants {
+class ChatParticipants extends _ChatParticipants {
   chat_id: bigint;
   participants: Array<enums.ChatParticipant>;
   version: number;
@@ -5517,7 +5517,7 @@ export class chatParticipants extends _ChatParticipants {
   }
 }
 
-export class chatPhotoEmpty extends _ChatPhoto {
+class ChatPhotoEmpty extends _ChatPhoto {
   protected get [id]() {
     return 0x37C1011C;
   }
@@ -5535,7 +5535,7 @@ export class chatPhotoEmpty extends _ChatPhoto {
   }
 }
 
-export class chatPhoto extends _ChatPhoto {
+class ChatPhoto extends _ChatPhoto {
   has_video?: true;
   photo_id: bigint;
   stripped_thumb?: Uint8Array;
@@ -5574,7 +5574,7 @@ export class chatPhoto extends _ChatPhoto {
   }
 }
 
-export class messageEmpty extends _Message {
+class MessageEmpty extends _Message {
   id: number;
   peer_id?: enums.Peer;
 
@@ -5605,7 +5605,7 @@ export class messageEmpty extends _Message {
   }
 }
 
-export class message extends _Message {
+class Message extends _Message {
   out?: true;
   mentioned?: true;
   media_unread?: true;
@@ -5752,7 +5752,7 @@ export class message extends _Message {
   }
 }
 
-export class messageService extends _Message {
+class MessageService extends _Message {
   out?: true;
   mentioned?: true;
   media_unread?: true;
@@ -5827,7 +5827,7 @@ export class messageService extends _Message {
   }
 }
 
-export class messageMediaEmpty extends _MessageMedia {
+class MessageMediaEmpty extends _MessageMedia {
   protected get [id]() {
     return 0x3DED6320;
   }
@@ -5845,7 +5845,7 @@ export class messageMediaEmpty extends _MessageMedia {
   }
 }
 
-export class messageMediaPhoto extends _MessageMedia {
+class MessageMediaPhoto extends _MessageMedia {
   spoiler?: true;
   photo?: enums.Photo;
   ttl_seconds?: number;
@@ -5880,7 +5880,7 @@ export class messageMediaPhoto extends _MessageMedia {
   }
 }
 
-export class messageMediaGeo extends _MessageMedia {
+class MessageMediaGeo extends _MessageMedia {
   geo: enums.GeoPoint;
 
   protected get [id]() {
@@ -5905,7 +5905,7 @@ export class messageMediaGeo extends _MessageMedia {
   }
 }
 
-export class messageMediaContact extends _MessageMedia {
+class MessageMediaContact extends _MessageMedia {
   phone_number: string;
   first_name: string;
   last_name: string;
@@ -5946,7 +5946,7 @@ export class messageMediaContact extends _MessageMedia {
   }
 }
 
-export class messageMediaUnsupported extends _MessageMedia {
+class MessageMediaUnsupported extends _MessageMedia {
   protected get [id]() {
     return 0x9F84F49E;
   }
@@ -5964,7 +5964,7 @@ export class messageMediaUnsupported extends _MessageMedia {
   }
 }
 
-export class messageMediaDocument extends _MessageMedia {
+class MessageMediaDocument extends _MessageMedia {
   nopremium?: true;
   spoiler?: true;
   document?: enums.Document;
@@ -6007,7 +6007,7 @@ export class messageMediaDocument extends _MessageMedia {
   }
 }
 
-export class messageMediaWebPage extends _MessageMedia {
+class MessageMediaWebPage extends _MessageMedia {
   force_large_media?: true;
   force_small_media?: true;
   manual?: true;
@@ -6050,7 +6050,7 @@ export class messageMediaWebPage extends _MessageMedia {
   }
 }
 
-export class messageMediaVenue extends _MessageMedia {
+class MessageMediaVenue extends _MessageMedia {
   geo: enums.GeoPoint;
   title: string;
   address: string;
@@ -6095,7 +6095,7 @@ export class messageMediaVenue extends _MessageMedia {
   }
 }
 
-export class messageMediaGame extends _MessageMedia {
+class MessageMediaGame extends _MessageMedia {
   game: enums.Game;
 
   protected get [id]() {
@@ -6120,7 +6120,7 @@ export class messageMediaGame extends _MessageMedia {
   }
 }
 
-export class messageMediaInvoice extends _MessageMedia {
+class MessageMediaInvoice extends _MessageMedia {
   shipping_address_requested?: true;
   test?: true;
   title: string;
@@ -6183,7 +6183,7 @@ export class messageMediaInvoice extends _MessageMedia {
   }
 }
 
-export class messageMediaGeoLive extends _MessageMedia {
+class MessageMediaGeoLive extends _MessageMedia {
   geo: enums.GeoPoint;
   heading?: number;
   period: number;
@@ -6222,7 +6222,7 @@ export class messageMediaGeoLive extends _MessageMedia {
   }
 }
 
-export class messageMediaPoll extends _MessageMedia {
+class MessageMediaPoll extends _MessageMedia {
   poll: enums.Poll;
   results: enums.PollResults;
 
@@ -6251,7 +6251,7 @@ export class messageMediaPoll extends _MessageMedia {
   }
 }
 
-export class messageMediaDice extends _MessageMedia {
+class MessageMediaDice extends _MessageMedia {
   value: number;
   emoticon: string;
 
@@ -6280,7 +6280,7 @@ export class messageMediaDice extends _MessageMedia {
   }
 }
 
-export class messageMediaStory extends _MessageMedia {
+class MessageMediaStory extends _MessageMedia {
   via_mention?: true;
   peer: enums.Peer;
   id: number;
@@ -6319,7 +6319,7 @@ export class messageMediaStory extends _MessageMedia {
   }
 }
 
-export class messageMediaGiveaway extends _MessageMedia {
+class MessageMediaGiveaway extends _MessageMedia {
   only_new_subscribers?: true;
   channels: Array<bigint>;
   countries_iso2?: Array<string>;
@@ -6366,7 +6366,7 @@ export class messageMediaGiveaway extends _MessageMedia {
   }
 }
 
-export class messageActionEmpty extends _MessageAction {
+class MessageActionEmpty extends _MessageAction {
   protected get [id]() {
     return 0xB6AEF7B0;
   }
@@ -6384,7 +6384,7 @@ export class messageActionEmpty extends _MessageAction {
   }
 }
 
-export class messageActionChatCreate extends _MessageAction {
+class MessageActionChatCreate extends _MessageAction {
   title: string;
   users: Array<bigint>;
 
@@ -6413,7 +6413,7 @@ export class messageActionChatCreate extends _MessageAction {
   }
 }
 
-export class messageActionChatEditTitle extends _MessageAction {
+class MessageActionChatEditTitle extends _MessageAction {
   title: string;
 
   protected get [id]() {
@@ -6438,7 +6438,7 @@ export class messageActionChatEditTitle extends _MessageAction {
   }
 }
 
-export class messageActionChatEditPhoto extends _MessageAction {
+class MessageActionChatEditPhoto extends _MessageAction {
   photo: enums.Photo;
 
   protected get [id]() {
@@ -6463,7 +6463,7 @@ export class messageActionChatEditPhoto extends _MessageAction {
   }
 }
 
-export class messageActionChatDeletePhoto extends _MessageAction {
+class MessageActionChatDeletePhoto extends _MessageAction {
   protected get [id]() {
     return 0x95E3FBEF;
   }
@@ -6481,7 +6481,7 @@ export class messageActionChatDeletePhoto extends _MessageAction {
   }
 }
 
-export class messageActionChatAddUser extends _MessageAction {
+class MessageActionChatAddUser extends _MessageAction {
   users: Array<bigint>;
 
   protected get [id]() {
@@ -6506,7 +6506,7 @@ export class messageActionChatAddUser extends _MessageAction {
   }
 }
 
-export class messageActionChatDeleteUser extends _MessageAction {
+class MessageActionChatDeleteUser extends _MessageAction {
   user_id: bigint;
 
   protected get [id]() {
@@ -6531,7 +6531,7 @@ export class messageActionChatDeleteUser extends _MessageAction {
   }
 }
 
-export class messageActionChatJoinedByLink extends _MessageAction {
+class MessageActionChatJoinedByLink extends _MessageAction {
   inviter_id: bigint;
 
   protected get [id]() {
@@ -6556,7 +6556,7 @@ export class messageActionChatJoinedByLink extends _MessageAction {
   }
 }
 
-export class messageActionChannelCreate extends _MessageAction {
+class MessageActionChannelCreate extends _MessageAction {
   title: string;
 
   protected get [id]() {
@@ -6581,7 +6581,7 @@ export class messageActionChannelCreate extends _MessageAction {
   }
 }
 
-export class messageActionChatMigrateTo extends _MessageAction {
+class MessageActionChatMigrateTo extends _MessageAction {
   channel_id: bigint;
 
   protected get [id]() {
@@ -6606,7 +6606,7 @@ export class messageActionChatMigrateTo extends _MessageAction {
   }
 }
 
-export class messageActionChannelMigrateFrom extends _MessageAction {
+class MessageActionChannelMigrateFrom extends _MessageAction {
   title: string;
   chat_id: bigint;
 
@@ -6635,7 +6635,7 @@ export class messageActionChannelMigrateFrom extends _MessageAction {
   }
 }
 
-export class messageActionPinMessage extends _MessageAction {
+class MessageActionPinMessage extends _MessageAction {
   protected get [id]() {
     return 0x94BD38ED;
   }
@@ -6653,7 +6653,7 @@ export class messageActionPinMessage extends _MessageAction {
   }
 }
 
-export class messageActionHistoryClear extends _MessageAction {
+class MessageActionHistoryClear extends _MessageAction {
   protected get [id]() {
     return 0x9FBAB604;
   }
@@ -6671,7 +6671,7 @@ export class messageActionHistoryClear extends _MessageAction {
   }
 }
 
-export class messageActionGameScore extends _MessageAction {
+class MessageActionGameScore extends _MessageAction {
   game_id: bigint;
   score: number;
 
@@ -6700,7 +6700,7 @@ export class messageActionGameScore extends _MessageAction {
   }
 }
 
-export class messageActionPaymentSentMe extends _MessageAction {
+class MessageActionPaymentSentMe extends _MessageAction {
   recurring_init?: true;
   recurring_used?: true;
   currency: string;
@@ -6755,7 +6755,7 @@ export class messageActionPaymentSentMe extends _MessageAction {
   }
 }
 
-export class messageActionPaymentSent extends _MessageAction {
+class MessageActionPaymentSent extends _MessageAction {
   recurring_init?: true;
   recurring_used?: true;
   currency: string;
@@ -6798,7 +6798,7 @@ export class messageActionPaymentSent extends _MessageAction {
   }
 }
 
-export class messageActionPhoneCall extends _MessageAction {
+class MessageActionPhoneCall extends _MessageAction {
   video?: true;
   call_id: bigint;
   reason?: enums.PhoneCallDiscardReason;
@@ -6837,7 +6837,7 @@ export class messageActionPhoneCall extends _MessageAction {
   }
 }
 
-export class messageActionScreenshotTaken extends _MessageAction {
+class MessageActionScreenshotTaken extends _MessageAction {
   protected get [id]() {
     return 0x4792929B;
   }
@@ -6855,7 +6855,7 @@ export class messageActionScreenshotTaken extends _MessageAction {
   }
 }
 
-export class messageActionCustomAction extends _MessageAction {
+class MessageActionCustomAction extends _MessageAction {
   message: string;
 
   protected get [id]() {
@@ -6880,7 +6880,7 @@ export class messageActionCustomAction extends _MessageAction {
   }
 }
 
-export class messageActionBotAllowed extends _MessageAction {
+class MessageActionBotAllowed extends _MessageAction {
   attach_menu?: true;
   from_request?: true;
   domain?: string;
@@ -6919,7 +6919,7 @@ export class messageActionBotAllowed extends _MessageAction {
   }
 }
 
-export class messageActionSecureValuesSentMe extends _MessageAction {
+class MessageActionSecureValuesSentMe extends _MessageAction {
   values: Array<enums.SecureValue>;
   credentials: enums.SecureCredentialsEncrypted;
 
@@ -6948,7 +6948,7 @@ export class messageActionSecureValuesSentMe extends _MessageAction {
   }
 }
 
-export class messageActionSecureValuesSent extends _MessageAction {
+class MessageActionSecureValuesSent extends _MessageAction {
   types: Array<enums.SecureValueType>;
 
   protected get [id]() {
@@ -6973,7 +6973,7 @@ export class messageActionSecureValuesSent extends _MessageAction {
   }
 }
 
-export class messageActionContactSignUp extends _MessageAction {
+class MessageActionContactSignUp extends _MessageAction {
   protected get [id]() {
     return 0xF3F25F76;
   }
@@ -6991,7 +6991,7 @@ export class messageActionContactSignUp extends _MessageAction {
   }
 }
 
-export class messageActionGeoProximityReached extends _MessageAction {
+class MessageActionGeoProximityReached extends _MessageAction {
   from_id: enums.Peer;
   to_id: enums.Peer;
   distance: number;
@@ -7024,7 +7024,7 @@ export class messageActionGeoProximityReached extends _MessageAction {
   }
 }
 
-export class messageActionGroupCall extends _MessageAction {
+class MessageActionGroupCall extends _MessageAction {
   call: enums.InputGroupCall;
   duration?: number;
 
@@ -7055,7 +7055,7 @@ export class messageActionGroupCall extends _MessageAction {
   }
 }
 
-export class messageActionInviteToGroupCall extends _MessageAction {
+class MessageActionInviteToGroupCall extends _MessageAction {
   call: enums.InputGroupCall;
   users: Array<bigint>;
 
@@ -7084,7 +7084,7 @@ export class messageActionInviteToGroupCall extends _MessageAction {
   }
 }
 
-export class messageActionSetMessagesTTL extends _MessageAction {
+class MessageActionSetMessagesTTL extends _MessageAction {
   period: number;
   auto_setting_from?: bigint;
 
@@ -7115,7 +7115,7 @@ export class messageActionSetMessagesTTL extends _MessageAction {
   }
 }
 
-export class messageActionGroupCallScheduled extends _MessageAction {
+class MessageActionGroupCallScheduled extends _MessageAction {
   call: enums.InputGroupCall;
   schedule_date: number;
 
@@ -7144,7 +7144,7 @@ export class messageActionGroupCallScheduled extends _MessageAction {
   }
 }
 
-export class messageActionSetChatTheme extends _MessageAction {
+class MessageActionSetChatTheme extends _MessageAction {
   emoticon: string;
 
   protected get [id]() {
@@ -7169,7 +7169,7 @@ export class messageActionSetChatTheme extends _MessageAction {
   }
 }
 
-export class messageActionChatJoinedByRequest extends _MessageAction {
+class MessageActionChatJoinedByRequest extends _MessageAction {
   protected get [id]() {
     return 0xEBBCA3CB;
   }
@@ -7187,7 +7187,7 @@ export class messageActionChatJoinedByRequest extends _MessageAction {
   }
 }
 
-export class messageActionWebViewDataSentMe extends _MessageAction {
+class MessageActionWebViewDataSentMe extends _MessageAction {
   text: string;
   data: string;
 
@@ -7216,7 +7216,7 @@ export class messageActionWebViewDataSentMe extends _MessageAction {
   }
 }
 
-export class messageActionWebViewDataSent extends _MessageAction {
+class MessageActionWebViewDataSent extends _MessageAction {
   text: string;
 
   protected get [id]() {
@@ -7241,7 +7241,7 @@ export class messageActionWebViewDataSent extends _MessageAction {
   }
 }
 
-export class messageActionGiftPremium extends _MessageAction {
+class MessageActionGiftPremium extends _MessageAction {
   currency: string;
   amount: bigint;
   months: number;
@@ -7284,7 +7284,7 @@ export class messageActionGiftPremium extends _MessageAction {
   }
 }
 
-export class messageActionTopicCreate extends _MessageAction {
+class MessageActionTopicCreate extends _MessageAction {
   title: string;
   icon_color: number;
   icon_emoji_id?: bigint;
@@ -7319,7 +7319,7 @@ export class messageActionTopicCreate extends _MessageAction {
   }
 }
 
-export class messageActionTopicEdit extends _MessageAction {
+class MessageActionTopicEdit extends _MessageAction {
   title?: string;
   icon_emoji_id?: bigint;
   closed?: boolean;
@@ -7358,7 +7358,7 @@ export class messageActionTopicEdit extends _MessageAction {
   }
 }
 
-export class messageActionSuggestProfilePhoto extends _MessageAction {
+class MessageActionSuggestProfilePhoto extends _MessageAction {
   photo: enums.Photo;
 
   protected get [id]() {
@@ -7383,7 +7383,7 @@ export class messageActionSuggestProfilePhoto extends _MessageAction {
   }
 }
 
-export class messageActionRequestedPeer extends _MessageAction {
+class MessageActionRequestedPeer extends _MessageAction {
   button_id: number;
   peer: enums.Peer;
 
@@ -7412,7 +7412,7 @@ export class messageActionRequestedPeer extends _MessageAction {
   }
 }
 
-export class messageActionSetChatWallPaper extends _MessageAction {
+class MessageActionSetChatWallPaper extends _MessageAction {
   same?: true;
   for_both?: true;
   wallpaper: enums.WallPaper;
@@ -7447,7 +7447,7 @@ export class messageActionSetChatWallPaper extends _MessageAction {
   }
 }
 
-export class messageActionGiftCode extends _MessageAction {
+class MessageActionGiftCode extends _MessageAction {
   via_giveaway?: true;
   unclaimed?: true;
   boost_peer?: enums.Peer;
@@ -7490,7 +7490,7 @@ export class messageActionGiftCode extends _MessageAction {
   }
 }
 
-export class messageActionGiveawayLaunch extends _MessageAction {
+class MessageActionGiveawayLaunch extends _MessageAction {
   protected get [id]() {
     return 0x332BA9ED;
   }
@@ -7508,7 +7508,7 @@ export class messageActionGiveawayLaunch extends _MessageAction {
   }
 }
 
-export class messageActionGiveawayResults extends _MessageAction {
+class MessageActionGiveawayResults extends _MessageAction {
   winners_count: number;
   unclaimed_count: number;
 
@@ -7537,7 +7537,7 @@ export class messageActionGiveawayResults extends _MessageAction {
   }
 }
 
-export class dialog extends _Dialog {
+class Dialog extends _Dialog {
   pinned?: true;
   unread_mark?: true;
   view_forum_as_messages?: true;
@@ -7620,7 +7620,7 @@ export class dialog extends _Dialog {
   }
 }
 
-export class dialogFolder extends _Dialog {
+class DialogFolder extends _Dialog {
   pinned?: true;
   folder: enums.Folder;
   peer: enums.Peer;
@@ -7675,7 +7675,7 @@ export class dialogFolder extends _Dialog {
   }
 }
 
-export class photoEmpty extends _Photo {
+class PhotoEmpty extends _Photo {
   id: bigint;
 
   protected get [id]() {
@@ -7700,7 +7700,7 @@ export class photoEmpty extends _Photo {
   }
 }
 
-export class photo extends _Photo {
+class Photo extends _Photo {
   has_stickers?: true;
   id: bigint;
   access_hash: bigint;
@@ -7755,7 +7755,7 @@ export class photo extends _Photo {
   }
 }
 
-export class photoSizeEmpty extends _PhotoSize {
+class PhotoSizeEmpty extends _PhotoSize {
   type: string;
 
   protected get [id]() {
@@ -7780,7 +7780,7 @@ export class photoSizeEmpty extends _PhotoSize {
   }
 }
 
-export class photoSize extends _PhotoSize {
+class PhotoSize extends _PhotoSize {
   type: string;
   w: number;
   h: number;
@@ -7817,7 +7817,7 @@ export class photoSize extends _PhotoSize {
   }
 }
 
-export class photoCachedSize extends _PhotoSize {
+class PhotoCachedSize extends _PhotoSize {
   type: string;
   w: number;
   h: number;
@@ -7854,7 +7854,7 @@ export class photoCachedSize extends _PhotoSize {
   }
 }
 
-export class photoStrippedSize extends _PhotoSize {
+class PhotoStrippedSize extends _PhotoSize {
   type: string;
   bytes: Uint8Array;
 
@@ -7883,7 +7883,7 @@ export class photoStrippedSize extends _PhotoSize {
   }
 }
 
-export class photoSizeProgressive extends _PhotoSize {
+class PhotoSizeProgressive extends _PhotoSize {
   type: string;
   w: number;
   h: number;
@@ -7920,7 +7920,7 @@ export class photoSizeProgressive extends _PhotoSize {
   }
 }
 
-export class photoPathSize extends _PhotoSize {
+class PhotoPathSize extends _PhotoSize {
   type: string;
   bytes: Uint8Array;
 
@@ -7949,7 +7949,7 @@ export class photoPathSize extends _PhotoSize {
   }
 }
 
-export class geoPointEmpty extends _GeoPoint {
+class GeoPointEmpty extends _GeoPoint {
   protected get [id]() {
     return 0x1117DD5F;
   }
@@ -7967,7 +7967,7 @@ export class geoPointEmpty extends _GeoPoint {
   }
 }
 
-export class geoPoint extends _GeoPoint {
+class GeoPoint extends _GeoPoint {
   long: number;
   lat: number;
   access_hash: bigint;
@@ -8006,10 +8006,10 @@ export class geoPoint extends _GeoPoint {
   }
 }
 
-export class auth_sentCode extends _auth_SentCode {
-  type: enums.auth_SentCodeType;
+class auth_SentCode extends _auth_SentCode {
+  type: enums.auth.SentCodeType;
   phone_code_hash: string;
-  next_type?: enums.auth_CodeType;
+  next_type?: enums.auth.CodeType;
   timeout?: number;
 
   protected get [id]() {
@@ -8036,7 +8036,7 @@ export class auth_sentCode extends _auth_SentCode {
     ];
   }
 
-  constructor(params: { type: enums.auth_SentCodeType; phone_code_hash: string; next_type?: enums.auth_CodeType; timeout?: number }) {
+  constructor(params: { type: enums.auth.SentCodeType; phone_code_hash: string; next_type?: enums.auth.CodeType; timeout?: number }) {
     super();
     this.type = params.type;
     this.phone_code_hash = params.phone_code_hash;
@@ -8045,8 +8045,8 @@ export class auth_sentCode extends _auth_SentCode {
   }
 }
 
-export class auth_sentCodeSuccess extends _auth_SentCode {
-  authorization: enums.auth_Authorization;
+class auth_SentCodeSuccess extends _auth_SentCode {
+  authorization: enums.auth.Authorization;
 
   protected get [id]() {
     return 0x2390FE44;
@@ -8064,13 +8064,13 @@ export class auth_sentCodeSuccess extends _auth_SentCode {
     ];
   }
 
-  constructor(params: { authorization: enums.auth_Authorization }) {
+  constructor(params: { authorization: enums.auth.Authorization }) {
     super();
     this.authorization = params.authorization;
   }
 }
 
-export class auth_authorization extends _auth_Authorization {
+class auth_Authorization extends _auth_Authorization {
   setup_password_required?: true;
   otherwise_relogin_days?: number;
   tmp_sessions?: number;
@@ -8113,8 +8113,8 @@ export class auth_authorization extends _auth_Authorization {
   }
 }
 
-export class auth_authorizationSignUpRequired extends _auth_Authorization {
-  terms_of_service?: enums.help_TermsOfService;
+class auth_AuthorizationSignUpRequired extends _auth_Authorization {
+  terms_of_service?: enums.help.TermsOfService;
 
   protected get [id]() {
     return 0x44747E9A;
@@ -8134,13 +8134,13 @@ export class auth_authorizationSignUpRequired extends _auth_Authorization {
     ];
   }
 
-  constructor(params?: { terms_of_service?: enums.help_TermsOfService }) {
+  constructor(params?: { terms_of_service?: enums.help.TermsOfService }) {
     super();
     this.terms_of_service = params?.terms_of_service;
   }
 }
 
-export class auth_exportedAuthorization extends _auth_ExportedAuthorization {
+class auth_ExportedAuthorization extends _auth_ExportedAuthorization {
   id: bigint;
   bytes: Uint8Array;
 
@@ -8169,7 +8169,7 @@ export class auth_exportedAuthorization extends _auth_ExportedAuthorization {
   }
 }
 
-export class inputNotifyPeer extends _InputNotifyPeer {
+class InputNotifyPeer extends _InputNotifyPeer {
   peer: enums.InputPeer;
 
   protected get [id]() {
@@ -8194,7 +8194,7 @@ export class inputNotifyPeer extends _InputNotifyPeer {
   }
 }
 
-export class inputNotifyUsers extends _InputNotifyPeer {
+class InputNotifyUsers extends _InputNotifyPeer {
   protected get [id]() {
     return 0x193B4417;
   }
@@ -8212,7 +8212,7 @@ export class inputNotifyUsers extends _InputNotifyPeer {
   }
 }
 
-export class inputNotifyChats extends _InputNotifyPeer {
+class InputNotifyChats extends _InputNotifyPeer {
   protected get [id]() {
     return 0x4A95E84E;
   }
@@ -8230,7 +8230,7 @@ export class inputNotifyChats extends _InputNotifyPeer {
   }
 }
 
-export class inputNotifyBroadcasts extends _InputNotifyPeer {
+class InputNotifyBroadcasts extends _InputNotifyPeer {
   protected get [id]() {
     return 0xB1DB7C7E;
   }
@@ -8248,7 +8248,7 @@ export class inputNotifyBroadcasts extends _InputNotifyPeer {
   }
 }
 
-export class inputNotifyForumTopic extends _InputNotifyPeer {
+class InputNotifyForumTopic extends _InputNotifyPeer {
   peer: enums.InputPeer;
   top_msg_id: number;
 
@@ -8277,7 +8277,7 @@ export class inputNotifyForumTopic extends _InputNotifyPeer {
   }
 }
 
-export class inputPeerNotifySettings extends _InputPeerNotifySettings {
+class InputPeerNotifySettings extends _InputPeerNotifySettings {
   show_previews?: boolean;
   silent?: boolean;
   mute_until?: number;
@@ -8328,7 +8328,7 @@ export class inputPeerNotifySettings extends _InputPeerNotifySettings {
   }
 }
 
-export class peerNotifySettings extends _PeerNotifySettings {
+class PeerNotifySettings extends _PeerNotifySettings {
   show_previews?: boolean;
   silent?: boolean;
   mute_until?: number;
@@ -8395,7 +8395,7 @@ export class peerNotifySettings extends _PeerNotifySettings {
   }
 }
 
-export class peerSettings extends _PeerSettings {
+class PeerSettings extends _PeerSettings {
   report_spam?: true;
   add_contact?: true;
   block_contact?: true;
@@ -8466,7 +8466,7 @@ export class peerSettings extends _PeerSettings {
   }
 }
 
-export class wallPaper extends _WallPaper {
+class WallPaper extends _WallPaper {
   id: bigint;
   creator?: true;
   default?: true;
@@ -8525,7 +8525,7 @@ export class wallPaper extends _WallPaper {
   }
 }
 
-export class wallPaperNoFile extends _WallPaper {
+class WallPaperNoFile extends _WallPaper {
   id: bigint;
   default?: true;
   dark?: true;
@@ -8564,7 +8564,7 @@ export class wallPaperNoFile extends _WallPaper {
   }
 }
 
-export class inputReportReasonSpam extends _ReportReason {
+class InputReportReasonSpam extends _ReportReason {
   protected get [id]() {
     return 0x58DBCAB8;
   }
@@ -8582,7 +8582,7 @@ export class inputReportReasonSpam extends _ReportReason {
   }
 }
 
-export class inputReportReasonViolence extends _ReportReason {
+class InputReportReasonViolence extends _ReportReason {
   protected get [id]() {
     return 0x1E22C78D;
   }
@@ -8600,7 +8600,7 @@ export class inputReportReasonViolence extends _ReportReason {
   }
 }
 
-export class inputReportReasonPornography extends _ReportReason {
+class InputReportReasonPornography extends _ReportReason {
   protected get [id]() {
     return 0x2E59D922;
   }
@@ -8618,7 +8618,7 @@ export class inputReportReasonPornography extends _ReportReason {
   }
 }
 
-export class inputReportReasonChildAbuse extends _ReportReason {
+class InputReportReasonChildAbuse extends _ReportReason {
   protected get [id]() {
     return 0xADF44EE3;
   }
@@ -8636,7 +8636,7 @@ export class inputReportReasonChildAbuse extends _ReportReason {
   }
 }
 
-export class inputReportReasonOther extends _ReportReason {
+class InputReportReasonOther extends _ReportReason {
   protected get [id]() {
     return 0xC1E4A2B1;
   }
@@ -8654,7 +8654,7 @@ export class inputReportReasonOther extends _ReportReason {
   }
 }
 
-export class inputReportReasonCopyright extends _ReportReason {
+class InputReportReasonCopyright extends _ReportReason {
   protected get [id]() {
     return 0x9B89F93A;
   }
@@ -8672,7 +8672,7 @@ export class inputReportReasonCopyright extends _ReportReason {
   }
 }
 
-export class inputReportReasonGeoIrrelevant extends _ReportReason {
+class InputReportReasonGeoIrrelevant extends _ReportReason {
   protected get [id]() {
     return 0xDBD4FEED;
   }
@@ -8690,7 +8690,7 @@ export class inputReportReasonGeoIrrelevant extends _ReportReason {
   }
 }
 
-export class inputReportReasonFake extends _ReportReason {
+class InputReportReasonFake extends _ReportReason {
   protected get [id]() {
     return 0xF5DDD6E7;
   }
@@ -8708,7 +8708,7 @@ export class inputReportReasonFake extends _ReportReason {
   }
 }
 
-export class inputReportReasonIllegalDrugs extends _ReportReason {
+class InputReportReasonIllegalDrugs extends _ReportReason {
   protected get [id]() {
     return 0x0A8EB2BE;
   }
@@ -8726,7 +8726,7 @@ export class inputReportReasonIllegalDrugs extends _ReportReason {
   }
 }
 
-export class inputReportReasonPersonalDetails extends _ReportReason {
+class InputReportReasonPersonalDetails extends _ReportReason {
   protected get [id]() {
     return 0x9EC7863D;
   }
@@ -8744,7 +8744,7 @@ export class inputReportReasonPersonalDetails extends _ReportReason {
   }
 }
 
-export class userFull extends _UserFull {
+class UserFull extends _UserFull {
   blocked?: true;
   phone_calls_available?: true;
   phone_calls_private?: true;
@@ -8887,7 +8887,7 @@ export class userFull extends _UserFull {
   }
 }
 
-export class contact extends _Contact {
+class Contact extends _Contact {
   user_id: bigint;
   mutual: boolean;
 
@@ -8916,7 +8916,7 @@ export class contact extends _Contact {
   }
 }
 
-export class importedContact extends _ImportedContact {
+class ImportedContact extends _ImportedContact {
   user_id: bigint;
   client_id: bigint;
 
@@ -8945,7 +8945,7 @@ export class importedContact extends _ImportedContact {
   }
 }
 
-export class contactStatus extends _ContactStatus {
+class ContactStatus extends _ContactStatus {
   user_id: bigint;
   status: enums.UserStatus;
 
@@ -8974,7 +8974,7 @@ export class contactStatus extends _ContactStatus {
   }
 }
 
-export class contacts_contactsNotModified extends _contacts_Contacts {
+class contacts_ContactsNotModified extends _contacts_Contacts {
   protected get [id]() {
     return 0xB74BA9D2;
   }
@@ -8992,7 +8992,7 @@ export class contacts_contactsNotModified extends _contacts_Contacts {
   }
 }
 
-export class contacts_contacts extends _contacts_Contacts {
+class contacts_Contacts extends _contacts_Contacts {
   contacts: Array<enums.Contact>;
   saved_count: number;
   users: Array<enums.User>;
@@ -9025,7 +9025,7 @@ export class contacts_contacts extends _contacts_Contacts {
   }
 }
 
-export class contacts_importedContacts extends _contacts_ImportedContacts {
+class contacts_ImportedContacts extends _contacts_ImportedContacts {
   imported: Array<enums.ImportedContact>;
   popular_invites: Array<enums.PopularContact>;
   retry_contacts: Array<bigint>;
@@ -9062,7 +9062,7 @@ export class contacts_importedContacts extends _contacts_ImportedContacts {
   }
 }
 
-export class contacts_blocked extends _contacts_Blocked {
+class contacts_Blocked extends _contacts_Blocked {
   blocked: Array<enums.PeerBlocked>;
   chats: Array<enums.Chat>;
   users: Array<enums.User>;
@@ -9095,7 +9095,7 @@ export class contacts_blocked extends _contacts_Blocked {
   }
 }
 
-export class contacts_blockedSlice extends _contacts_Blocked {
+class contacts_BlockedSlice extends _contacts_Blocked {
   count: number;
   blocked: Array<enums.PeerBlocked>;
   chats: Array<enums.Chat>;
@@ -9132,7 +9132,7 @@ export class contacts_blockedSlice extends _contacts_Blocked {
   }
 }
 
-export class messages_dialogs extends _messages_Dialogs {
+class messages_Dialogs extends _messages_Dialogs {
   dialogs: Array<enums.Dialog>;
   messages: Array<enums.Message>;
   chats: Array<enums.Chat>;
@@ -9169,7 +9169,7 @@ export class messages_dialogs extends _messages_Dialogs {
   }
 }
 
-export class messages_dialogsSlice extends _messages_Dialogs {
+class messages_DialogsSlice extends _messages_Dialogs {
   count: number;
   dialogs: Array<enums.Dialog>;
   messages: Array<enums.Message>;
@@ -9210,7 +9210,7 @@ export class messages_dialogsSlice extends _messages_Dialogs {
   }
 }
 
-export class messages_dialogsNotModified extends _messages_Dialogs {
+class messages_DialogsNotModified extends _messages_Dialogs {
   count: number;
 
   protected get [id]() {
@@ -9235,7 +9235,7 @@ export class messages_dialogsNotModified extends _messages_Dialogs {
   }
 }
 
-export class messages_messages extends _messages_Messages {
+class messages_Messages extends _messages_Messages {
   messages: Array<enums.Message>;
   chats: Array<enums.Chat>;
   users: Array<enums.User>;
@@ -9268,7 +9268,7 @@ export class messages_messages extends _messages_Messages {
   }
 }
 
-export class messages_messagesSlice extends _messages_Messages {
+class messages_MessagesSlice extends _messages_Messages {
   inexact?: true;
   count: number;
   next_rate?: number;
@@ -9319,7 +9319,7 @@ export class messages_messagesSlice extends _messages_Messages {
   }
 }
 
-export class messages_channelMessages extends _messages_Messages {
+class messages_ChannelMessages extends _messages_Messages {
   inexact?: true;
   pts: number;
   count: number;
@@ -9374,7 +9374,7 @@ export class messages_channelMessages extends _messages_Messages {
   }
 }
 
-export class messages_messagesNotModified extends _messages_Messages {
+class messages_MessagesNotModified extends _messages_Messages {
   count: number;
 
   protected get [id]() {
@@ -9399,7 +9399,7 @@ export class messages_messagesNotModified extends _messages_Messages {
   }
 }
 
-export class messages_chats extends _messages_Chats {
+class messages_Chats extends _messages_Chats {
   chats: Array<enums.Chat>;
 
   protected get [id]() {
@@ -9424,7 +9424,7 @@ export class messages_chats extends _messages_Chats {
   }
 }
 
-export class messages_chatsSlice extends _messages_Chats {
+class messages_ChatsSlice extends _messages_Chats {
   count: number;
   chats: Array<enums.Chat>;
 
@@ -9453,7 +9453,7 @@ export class messages_chatsSlice extends _messages_Chats {
   }
 }
 
-export class messages_chatFull extends _messages_ChatFull {
+class messages_ChatFull extends _messages_ChatFull {
   full_chat: enums.ChatFull;
   chats: Array<enums.Chat>;
   users: Array<enums.User>;
@@ -9486,7 +9486,7 @@ export class messages_chatFull extends _messages_ChatFull {
   }
 }
 
-export class messages_affectedHistory extends _messages_AffectedHistory {
+class messages_AffectedHistory extends _messages_AffectedHistory {
   pts: number;
   pts_count: number;
   offset: number;
@@ -9519,7 +9519,7 @@ export class messages_affectedHistory extends _messages_AffectedHistory {
   }
 }
 
-export class inputMessagesFilterEmpty extends _MessagesFilter {
+class InputMessagesFilterEmpty extends _MessagesFilter {
   protected get [id]() {
     return 0x57E2F66C;
   }
@@ -9537,7 +9537,7 @@ export class inputMessagesFilterEmpty extends _MessagesFilter {
   }
 }
 
-export class inputMessagesFilterPhotos extends _MessagesFilter {
+class InputMessagesFilterPhotos extends _MessagesFilter {
   protected get [id]() {
     return 0x9609A51C;
   }
@@ -9555,7 +9555,7 @@ export class inputMessagesFilterPhotos extends _MessagesFilter {
   }
 }
 
-export class inputMessagesFilterVideo extends _MessagesFilter {
+class InputMessagesFilterVideo extends _MessagesFilter {
   protected get [id]() {
     return 0x9FC00E65;
   }
@@ -9573,7 +9573,7 @@ export class inputMessagesFilterVideo extends _MessagesFilter {
   }
 }
 
-export class inputMessagesFilterPhotoVideo extends _MessagesFilter {
+class InputMessagesFilterPhotoVideo extends _MessagesFilter {
   protected get [id]() {
     return 0x56E9F0E4;
   }
@@ -9591,7 +9591,7 @@ export class inputMessagesFilterPhotoVideo extends _MessagesFilter {
   }
 }
 
-export class inputMessagesFilterDocument extends _MessagesFilter {
+class InputMessagesFilterDocument extends _MessagesFilter {
   protected get [id]() {
     return 0x9EDDF188;
   }
@@ -9609,7 +9609,7 @@ export class inputMessagesFilterDocument extends _MessagesFilter {
   }
 }
 
-export class inputMessagesFilterUrl extends _MessagesFilter {
+class InputMessagesFilterUrl extends _MessagesFilter {
   protected get [id]() {
     return 0x7EF0DD87;
   }
@@ -9627,7 +9627,7 @@ export class inputMessagesFilterUrl extends _MessagesFilter {
   }
 }
 
-export class inputMessagesFilterGif extends _MessagesFilter {
+class InputMessagesFilterGif extends _MessagesFilter {
   protected get [id]() {
     return 0xFFC86587;
   }
@@ -9645,7 +9645,7 @@ export class inputMessagesFilterGif extends _MessagesFilter {
   }
 }
 
-export class inputMessagesFilterVoice extends _MessagesFilter {
+class InputMessagesFilterVoice extends _MessagesFilter {
   protected get [id]() {
     return 0x50F5C392;
   }
@@ -9663,7 +9663,7 @@ export class inputMessagesFilterVoice extends _MessagesFilter {
   }
 }
 
-export class inputMessagesFilterMusic extends _MessagesFilter {
+class InputMessagesFilterMusic extends _MessagesFilter {
   protected get [id]() {
     return 0x3751B49E;
   }
@@ -9681,7 +9681,7 @@ export class inputMessagesFilterMusic extends _MessagesFilter {
   }
 }
 
-export class inputMessagesFilterChatPhotos extends _MessagesFilter {
+class InputMessagesFilterChatPhotos extends _MessagesFilter {
   protected get [id]() {
     return 0x3A20ECB8;
   }
@@ -9699,7 +9699,7 @@ export class inputMessagesFilterChatPhotos extends _MessagesFilter {
   }
 }
 
-export class inputMessagesFilterPhoneCalls extends _MessagesFilter {
+class InputMessagesFilterPhoneCalls extends _MessagesFilter {
   missed?: true;
 
   protected get [id]() {
@@ -9726,7 +9726,7 @@ export class inputMessagesFilterPhoneCalls extends _MessagesFilter {
   }
 }
 
-export class inputMessagesFilterRoundVoice extends _MessagesFilter {
+class InputMessagesFilterRoundVoice extends _MessagesFilter {
   protected get [id]() {
     return 0x7A7C17A4;
   }
@@ -9744,7 +9744,7 @@ export class inputMessagesFilterRoundVoice extends _MessagesFilter {
   }
 }
 
-export class inputMessagesFilterRoundVideo extends _MessagesFilter {
+class InputMessagesFilterRoundVideo extends _MessagesFilter {
   protected get [id]() {
     return 0xB549DA53;
   }
@@ -9762,7 +9762,7 @@ export class inputMessagesFilterRoundVideo extends _MessagesFilter {
   }
 }
 
-export class inputMessagesFilterMyMentions extends _MessagesFilter {
+class InputMessagesFilterMyMentions extends _MessagesFilter {
   protected get [id]() {
     return 0xC1F8E69A;
   }
@@ -9780,7 +9780,7 @@ export class inputMessagesFilterMyMentions extends _MessagesFilter {
   }
 }
 
-export class inputMessagesFilterGeo extends _MessagesFilter {
+class InputMessagesFilterGeo extends _MessagesFilter {
   protected get [id]() {
     return 0xE7026D0D;
   }
@@ -9798,7 +9798,7 @@ export class inputMessagesFilterGeo extends _MessagesFilter {
   }
 }
 
-export class inputMessagesFilterContacts extends _MessagesFilter {
+class InputMessagesFilterContacts extends _MessagesFilter {
   protected get [id]() {
     return 0xE062DB83;
   }
@@ -9816,7 +9816,7 @@ export class inputMessagesFilterContacts extends _MessagesFilter {
   }
 }
 
-export class inputMessagesFilterPinned extends _MessagesFilter {
+class InputMessagesFilterPinned extends _MessagesFilter {
   protected get [id]() {
     return 0x1BB00451;
   }
@@ -9834,7 +9834,7 @@ export class inputMessagesFilterPinned extends _MessagesFilter {
   }
 }
 
-export class updateNewMessage extends _Update {
+class UpdateNewMessage extends _Update {
   message: enums.Message;
   pts: number;
   pts_count: number;
@@ -9867,7 +9867,7 @@ export class updateNewMessage extends _Update {
   }
 }
 
-export class updateMessageID extends _Update {
+class UpdateMessageID extends _Update {
   id: number;
   random_id: bigint;
 
@@ -9896,7 +9896,7 @@ export class updateMessageID extends _Update {
   }
 }
 
-export class updateDeleteMessages extends _Update {
+class UpdateDeleteMessages extends _Update {
   messages: Array<number>;
   pts: number;
   pts_count: number;
@@ -9929,7 +9929,7 @@ export class updateDeleteMessages extends _Update {
   }
 }
 
-export class updateUserTyping extends _Update {
+class UpdateUserTyping extends _Update {
   user_id: bigint;
   action: enums.SendMessageAction;
 
@@ -9958,7 +9958,7 @@ export class updateUserTyping extends _Update {
   }
 }
 
-export class updateChatUserTyping extends _Update {
+class UpdateChatUserTyping extends _Update {
   chat_id: bigint;
   from_id: enums.Peer;
   action: enums.SendMessageAction;
@@ -9991,7 +9991,7 @@ export class updateChatUserTyping extends _Update {
   }
 }
 
-export class updateChatParticipants extends _Update {
+class UpdateChatParticipants extends _Update {
   participants: enums.ChatParticipants;
 
   protected get [id]() {
@@ -10016,7 +10016,7 @@ export class updateChatParticipants extends _Update {
   }
 }
 
-export class updateUserStatus extends _Update {
+class UpdateUserStatus extends _Update {
   user_id: bigint;
   status: enums.UserStatus;
 
@@ -10045,7 +10045,7 @@ export class updateUserStatus extends _Update {
   }
 }
 
-export class updateUserName extends _Update {
+class UpdateUserName extends _Update {
   user_id: bigint;
   first_name: string;
   last_name: string;
@@ -10082,7 +10082,7 @@ export class updateUserName extends _Update {
   }
 }
 
-export class updateNewAuthorization extends _Update {
+class UpdateNewAuthorization extends _Update {
   unconfirmed?: true;
   hash: bigint;
   date?: number;
@@ -10125,7 +10125,7 @@ export class updateNewAuthorization extends _Update {
   }
 }
 
-export class updateNewEncryptedMessage extends _Update {
+class UpdateNewEncryptedMessage extends _Update {
   message: enums.EncryptedMessage;
   qts: number;
 
@@ -10154,7 +10154,7 @@ export class updateNewEncryptedMessage extends _Update {
   }
 }
 
-export class updateEncryptedChatTyping extends _Update {
+class UpdateEncryptedChatTyping extends _Update {
   chat_id: number;
 
   protected get [id]() {
@@ -10179,7 +10179,7 @@ export class updateEncryptedChatTyping extends _Update {
   }
 }
 
-export class updateEncryption extends _Update {
+class UpdateEncryption extends _Update {
   chat: enums.EncryptedChat;
   date: number;
 
@@ -10208,7 +10208,7 @@ export class updateEncryption extends _Update {
   }
 }
 
-export class updateEncryptedMessagesRead extends _Update {
+class UpdateEncryptedMessagesRead extends _Update {
   chat_id: number;
   max_date: number;
   date: number;
@@ -10241,7 +10241,7 @@ export class updateEncryptedMessagesRead extends _Update {
   }
 }
 
-export class updateChatParticipantAdd extends _Update {
+class UpdateChatParticipantAdd extends _Update {
   chat_id: bigint;
   user_id: bigint;
   inviter_id: bigint;
@@ -10282,7 +10282,7 @@ export class updateChatParticipantAdd extends _Update {
   }
 }
 
-export class updateChatParticipantDelete extends _Update {
+class UpdateChatParticipantDelete extends _Update {
   chat_id: bigint;
   user_id: bigint;
   version: number;
@@ -10315,7 +10315,7 @@ export class updateChatParticipantDelete extends _Update {
   }
 }
 
-export class updateDcOptions extends _Update {
+class UpdateDcOptions extends _Update {
   dc_options: Array<enums.DcOption>;
 
   protected get [id]() {
@@ -10340,7 +10340,7 @@ export class updateDcOptions extends _Update {
   }
 }
 
-export class updateNotifySettings extends _Update {
+class UpdateNotifySettings extends _Update {
   peer: enums.NotifyPeer;
   notify_settings: enums.PeerNotifySettings;
 
@@ -10369,7 +10369,7 @@ export class updateNotifySettings extends _Update {
   }
 }
 
-export class updateServiceNotification extends _Update {
+class UpdateServiceNotification extends _Update {
   popup?: true;
   invert_media?: true;
   inbox_date?: number;
@@ -10420,7 +10420,7 @@ export class updateServiceNotification extends _Update {
   }
 }
 
-export class updatePrivacy extends _Update {
+class UpdatePrivacy extends _Update {
   key: enums.PrivacyKey;
   rules: Array<enums.PrivacyRule>;
 
@@ -10449,7 +10449,7 @@ export class updatePrivacy extends _Update {
   }
 }
 
-export class updateUserPhone extends _Update {
+class UpdateUserPhone extends _Update {
   user_id: bigint;
   phone: string;
 
@@ -10478,7 +10478,7 @@ export class updateUserPhone extends _Update {
   }
 }
 
-export class updateReadHistoryInbox extends _Update {
+class UpdateReadHistoryInbox extends _Update {
   folder_id?: number;
   peer: enums.Peer;
   max_id: number;
@@ -10525,7 +10525,7 @@ export class updateReadHistoryInbox extends _Update {
   }
 }
 
-export class updateReadHistoryOutbox extends _Update {
+class UpdateReadHistoryOutbox extends _Update {
   peer: enums.Peer;
   max_id: number;
   pts: number;
@@ -10562,7 +10562,7 @@ export class updateReadHistoryOutbox extends _Update {
   }
 }
 
-export class updateWebPage extends _Update {
+class UpdateWebPage extends _Update {
   webpage: enums.WebPage;
   pts: number;
   pts_count: number;
@@ -10595,7 +10595,7 @@ export class updateWebPage extends _Update {
   }
 }
 
-export class updateReadMessagesContents extends _Update {
+class UpdateReadMessagesContents extends _Update {
   messages: Array<number>;
   pts: number;
   pts_count: number;
@@ -10634,7 +10634,7 @@ export class updateReadMessagesContents extends _Update {
   }
 }
 
-export class updateChannelTooLong extends _Update {
+class UpdateChannelTooLong extends _Update {
   channel_id: bigint;
   pts?: number;
 
@@ -10665,7 +10665,7 @@ export class updateChannelTooLong extends _Update {
   }
 }
 
-export class updateChannel extends _Update {
+class UpdateChannel extends _Update {
   channel_id: bigint;
 
   protected get [id]() {
@@ -10690,7 +10690,7 @@ export class updateChannel extends _Update {
   }
 }
 
-export class updateNewChannelMessage extends _Update {
+class UpdateNewChannelMessage extends _Update {
   message: enums.Message;
   pts: number;
   pts_count: number;
@@ -10723,7 +10723,7 @@ export class updateNewChannelMessage extends _Update {
   }
 }
 
-export class updateReadChannelInbox extends _Update {
+class UpdateReadChannelInbox extends _Update {
   folder_id?: number;
   channel_id: bigint;
   max_id: number;
@@ -10766,7 +10766,7 @@ export class updateReadChannelInbox extends _Update {
   }
 }
 
-export class updateDeleteChannelMessages extends _Update {
+class UpdateDeleteChannelMessages extends _Update {
   channel_id: bigint;
   messages: Array<number>;
   pts: number;
@@ -10803,7 +10803,7 @@ export class updateDeleteChannelMessages extends _Update {
   }
 }
 
-export class updateChannelMessageViews extends _Update {
+class UpdateChannelMessageViews extends _Update {
   channel_id: bigint;
   id: number;
   views: number;
@@ -10836,7 +10836,7 @@ export class updateChannelMessageViews extends _Update {
   }
 }
 
-export class updateChatParticipantAdmin extends _Update {
+class UpdateChatParticipantAdmin extends _Update {
   chat_id: bigint;
   user_id: bigint;
   is_admin: boolean;
@@ -10873,8 +10873,8 @@ export class updateChatParticipantAdmin extends _Update {
   }
 }
 
-export class updateNewStickerSet extends _Update {
-  stickerset: enums.messages_StickerSet;
+class UpdateNewStickerSet extends _Update {
+  stickerset: enums.messages.StickerSet;
 
   protected get [id]() {
     return 0x688A30AA;
@@ -10892,13 +10892,13 @@ export class updateNewStickerSet extends _Update {
     ];
   }
 
-  constructor(params: { stickerset: enums.messages_StickerSet }) {
+  constructor(params: { stickerset: enums.messages.StickerSet }) {
     super();
     this.stickerset = params.stickerset;
   }
 }
 
-export class updateStickerSetsOrder extends _Update {
+class UpdateStickerSetsOrder extends _Update {
   masks?: true;
   emojis?: true;
   order: Array<bigint>;
@@ -10933,7 +10933,7 @@ export class updateStickerSetsOrder extends _Update {
   }
 }
 
-export class updateStickerSets extends _Update {
+class UpdateStickerSets extends _Update {
   masks?: true;
   emojis?: true;
 
@@ -10964,7 +10964,7 @@ export class updateStickerSets extends _Update {
   }
 }
 
-export class updateSavedGifs extends _Update {
+class UpdateSavedGifs extends _Update {
   protected get [id]() {
     return 0x9375341E;
   }
@@ -10982,7 +10982,7 @@ export class updateSavedGifs extends _Update {
   }
 }
 
-export class updateBotInlineQuery extends _Update {
+class UpdateBotInlineQuery extends _Update {
   query_id: bigint;
   user_id: bigint;
   query: string;
@@ -11029,7 +11029,7 @@ export class updateBotInlineQuery extends _Update {
   }
 }
 
-export class updateBotInlineSend extends _Update {
+class UpdateBotInlineSend extends _Update {
   user_id: bigint;
   query: string;
   geo?: enums.GeoPoint;
@@ -11072,7 +11072,7 @@ export class updateBotInlineSend extends _Update {
   }
 }
 
-export class updateEditChannelMessage extends _Update {
+class UpdateEditChannelMessage extends _Update {
   message: enums.Message;
   pts: number;
   pts_count: number;
@@ -11105,7 +11105,7 @@ export class updateEditChannelMessage extends _Update {
   }
 }
 
-export class updateBotCallbackQuery extends _Update {
+class UpdateBotCallbackQuery extends _Update {
   query_id: bigint;
   user_id: bigint;
   peer: enums.Peer;
@@ -11156,7 +11156,7 @@ export class updateBotCallbackQuery extends _Update {
   }
 }
 
-export class updateEditMessage extends _Update {
+class UpdateEditMessage extends _Update {
   message: enums.Message;
   pts: number;
   pts_count: number;
@@ -11189,7 +11189,7 @@ export class updateEditMessage extends _Update {
   }
 }
 
-export class updateInlineBotCallbackQuery extends _Update {
+class UpdateInlineBotCallbackQuery extends _Update {
   query_id: bigint;
   user_id: bigint;
   msg_id: enums.InputBotInlineMessageID;
@@ -11236,7 +11236,7 @@ export class updateInlineBotCallbackQuery extends _Update {
   }
 }
 
-export class updateReadChannelOutbox extends _Update {
+class UpdateReadChannelOutbox extends _Update {
   channel_id: bigint;
   max_id: number;
 
@@ -11265,7 +11265,7 @@ export class updateReadChannelOutbox extends _Update {
   }
 }
 
-export class updateDraftMessage extends _Update {
+class UpdateDraftMessage extends _Update {
   peer: enums.Peer;
   top_msg_id?: number;
   draft: enums.DraftMessage;
@@ -11300,7 +11300,7 @@ export class updateDraftMessage extends _Update {
   }
 }
 
-export class updateReadFeaturedStickers extends _Update {
+class UpdateReadFeaturedStickers extends _Update {
   protected get [id]() {
     return 0x571D2742;
   }
@@ -11318,7 +11318,7 @@ export class updateReadFeaturedStickers extends _Update {
   }
 }
 
-export class updateRecentStickers extends _Update {
+class UpdateRecentStickers extends _Update {
   protected get [id]() {
     return 0x9A422C20;
   }
@@ -11336,7 +11336,7 @@ export class updateRecentStickers extends _Update {
   }
 }
 
-export class updateConfig extends _Update {
+class UpdateConfig extends _Update {
   protected get [id]() {
     return 0xA229DD06;
   }
@@ -11354,7 +11354,7 @@ export class updateConfig extends _Update {
   }
 }
 
-export class updatePtsChanged extends _Update {
+class UpdatePtsChanged extends _Update {
   protected get [id]() {
     return 0x3354678F;
   }
@@ -11372,7 +11372,7 @@ export class updatePtsChanged extends _Update {
   }
 }
 
-export class updateChannelWebPage extends _Update {
+class UpdateChannelWebPage extends _Update {
   channel_id: bigint;
   webpage: enums.WebPage;
   pts: number;
@@ -11409,7 +11409,7 @@ export class updateChannelWebPage extends _Update {
   }
 }
 
-export class updateDialogPinned extends _Update {
+class UpdateDialogPinned extends _Update {
   pinned?: true;
   folder_id?: number;
   peer: enums.DialogPeer;
@@ -11444,7 +11444,7 @@ export class updateDialogPinned extends _Update {
   }
 }
 
-export class updatePinnedDialogs extends _Update {
+class UpdatePinnedDialogs extends _Update {
   folder_id?: number;
   order?: Array<enums.DialogPeer>;
 
@@ -11475,7 +11475,7 @@ export class updatePinnedDialogs extends _Update {
   }
 }
 
-export class updateBotWebhookJSON extends _Update {
+class UpdateBotWebhookJSON extends _Update {
   data: enums.DataJSON;
 
   protected get [id]() {
@@ -11500,7 +11500,7 @@ export class updateBotWebhookJSON extends _Update {
   }
 }
 
-export class updateBotWebhookJSONQuery extends _Update {
+class UpdateBotWebhookJSONQuery extends _Update {
   query_id: bigint;
   data: enums.DataJSON;
   timeout: number;
@@ -11533,7 +11533,7 @@ export class updateBotWebhookJSONQuery extends _Update {
   }
 }
 
-export class updateBotShippingQuery extends _Update {
+class UpdateBotShippingQuery extends _Update {
   query_id: bigint;
   user_id: bigint;
   payload: Uint8Array;
@@ -11570,7 +11570,7 @@ export class updateBotShippingQuery extends _Update {
   }
 }
 
-export class updateBotPrecheckoutQuery extends _Update {
+class UpdateBotPrecheckoutQuery extends _Update {
   query_id: bigint;
   user_id: bigint;
   payload: Uint8Array;
@@ -11621,7 +11621,7 @@ export class updateBotPrecheckoutQuery extends _Update {
   }
 }
 
-export class updatePhoneCall extends _Update {
+class UpdatePhoneCall extends _Update {
   phone_call: enums.PhoneCall;
 
   protected get [id]() {
@@ -11646,7 +11646,7 @@ export class updatePhoneCall extends _Update {
   }
 }
 
-export class updateLangPackTooLong extends _Update {
+class UpdateLangPackTooLong extends _Update {
   lang_code: string;
 
   protected get [id]() {
@@ -11671,7 +11671,7 @@ export class updateLangPackTooLong extends _Update {
   }
 }
 
-export class updateLangPack extends _Update {
+class UpdateLangPack extends _Update {
   difference: enums.LangPackDifference;
 
   protected get [id]() {
@@ -11696,7 +11696,7 @@ export class updateLangPack extends _Update {
   }
 }
 
-export class updateFavedStickers extends _Update {
+class UpdateFavedStickers extends _Update {
   protected get [id]() {
     return 0xE511996D;
   }
@@ -11714,7 +11714,7 @@ export class updateFavedStickers extends _Update {
   }
 }
 
-export class updateChannelReadMessagesContents extends _Update {
+class UpdateChannelReadMessagesContents extends _Update {
   channel_id: bigint;
   top_msg_id?: number;
   messages: Array<number>;
@@ -11749,7 +11749,7 @@ export class updateChannelReadMessagesContents extends _Update {
   }
 }
 
-export class updateContactsReset extends _Update {
+class UpdateContactsReset extends _Update {
   protected get [id]() {
     return 0x7084A7BE;
   }
@@ -11767,7 +11767,7 @@ export class updateContactsReset extends _Update {
   }
 }
 
-export class updateChannelAvailableMessages extends _Update {
+class UpdateChannelAvailableMessages extends _Update {
   channel_id: bigint;
   available_min_id: number;
 
@@ -11796,7 +11796,7 @@ export class updateChannelAvailableMessages extends _Update {
   }
 }
 
-export class updateDialogUnreadMark extends _Update {
+class UpdateDialogUnreadMark extends _Update {
   unread?: true;
   peer: enums.DialogPeer;
 
@@ -11827,7 +11827,7 @@ export class updateDialogUnreadMark extends _Update {
   }
 }
 
-export class updateMessagePoll extends _Update {
+class UpdateMessagePoll extends _Update {
   poll_id: bigint;
   poll?: enums.Poll;
   results: enums.PollResults;
@@ -11862,7 +11862,7 @@ export class updateMessagePoll extends _Update {
   }
 }
 
-export class updateChatDefaultBannedRights extends _Update {
+class UpdateChatDefaultBannedRights extends _Update {
   peer: enums.Peer;
   default_banned_rights: enums.ChatBannedRights;
   version: number;
@@ -11895,7 +11895,7 @@ export class updateChatDefaultBannedRights extends _Update {
   }
 }
 
-export class updateFolderPeers extends _Update {
+class UpdateFolderPeers extends _Update {
   folder_peers: Array<enums.FolderPeer>;
   pts: number;
   pts_count: number;
@@ -11928,7 +11928,7 @@ export class updateFolderPeers extends _Update {
   }
 }
 
-export class updatePeerSettings extends _Update {
+class UpdatePeerSettings extends _Update {
   peer: enums.Peer;
   settings: enums.PeerSettings;
 
@@ -11957,7 +11957,7 @@ export class updatePeerSettings extends _Update {
   }
 }
 
-export class updatePeerLocated extends _Update {
+class UpdatePeerLocated extends _Update {
   peers: Array<enums.PeerLocated>;
 
   protected get [id]() {
@@ -11982,7 +11982,7 @@ export class updatePeerLocated extends _Update {
   }
 }
 
-export class updateNewScheduledMessage extends _Update {
+class UpdateNewScheduledMessage extends _Update {
   message: enums.Message;
 
   protected get [id]() {
@@ -12007,7 +12007,7 @@ export class updateNewScheduledMessage extends _Update {
   }
 }
 
-export class updateDeleteScheduledMessages extends _Update {
+class UpdateDeleteScheduledMessages extends _Update {
   peer: enums.Peer;
   messages: Array<number>;
 
@@ -12036,7 +12036,7 @@ export class updateDeleteScheduledMessages extends _Update {
   }
 }
 
-export class updateTheme extends _Update {
+class UpdateTheme extends _Update {
   theme: enums.Theme;
 
   protected get [id]() {
@@ -12061,7 +12061,7 @@ export class updateTheme extends _Update {
   }
 }
 
-export class updateGeoLiveViewed extends _Update {
+class UpdateGeoLiveViewed extends _Update {
   peer: enums.Peer;
   msg_id: number;
 
@@ -12090,7 +12090,7 @@ export class updateGeoLiveViewed extends _Update {
   }
 }
 
-export class updateLoginToken extends _Update {
+class UpdateLoginToken extends _Update {
   protected get [id]() {
     return 0x564FE691;
   }
@@ -12108,7 +12108,7 @@ export class updateLoginToken extends _Update {
   }
 }
 
-export class updateMessagePollVote extends _Update {
+class UpdateMessagePollVote extends _Update {
   poll_id: bigint;
   peer: enums.Peer;
   options: Array<Uint8Array>;
@@ -12145,7 +12145,7 @@ export class updateMessagePollVote extends _Update {
   }
 }
 
-export class updateDialogFilter extends _Update {
+class UpdateDialogFilter extends _Update {
   id: number;
   filter?: enums.DialogFilter;
 
@@ -12176,7 +12176,7 @@ export class updateDialogFilter extends _Update {
   }
 }
 
-export class updateDialogFilterOrder extends _Update {
+class UpdateDialogFilterOrder extends _Update {
   order: Array<number>;
 
   protected get [id]() {
@@ -12201,7 +12201,7 @@ export class updateDialogFilterOrder extends _Update {
   }
 }
 
-export class updateDialogFilters extends _Update {
+class UpdateDialogFilters extends _Update {
   protected get [id]() {
     return 0x3504914F;
   }
@@ -12219,7 +12219,7 @@ export class updateDialogFilters extends _Update {
   }
 }
 
-export class updatePhoneCallSignalingData extends _Update {
+class UpdatePhoneCallSignalingData extends _Update {
   phone_call_id: bigint;
   data: Uint8Array;
 
@@ -12248,7 +12248,7 @@ export class updatePhoneCallSignalingData extends _Update {
   }
 }
 
-export class updateChannelMessageForwards extends _Update {
+class UpdateChannelMessageForwards extends _Update {
   channel_id: bigint;
   id: number;
   forwards: number;
@@ -12281,7 +12281,7 @@ export class updateChannelMessageForwards extends _Update {
   }
 }
 
-export class updateReadChannelDiscussionInbox extends _Update {
+class UpdateReadChannelDiscussionInbox extends _Update {
   channel_id: bigint;
   top_msg_id: number;
   read_max_id: number;
@@ -12324,7 +12324,7 @@ export class updateReadChannelDiscussionInbox extends _Update {
   }
 }
 
-export class updateReadChannelDiscussionOutbox extends _Update {
+class UpdateReadChannelDiscussionOutbox extends _Update {
   channel_id: bigint;
   top_msg_id: number;
   read_max_id: number;
@@ -12357,7 +12357,7 @@ export class updateReadChannelDiscussionOutbox extends _Update {
   }
 }
 
-export class updatePeerBlocked extends _Update {
+class UpdatePeerBlocked extends _Update {
   blocked?: true;
   blocked_my_stories_from?: true;
   peer_id: enums.Peer;
@@ -12392,7 +12392,7 @@ export class updatePeerBlocked extends _Update {
   }
 }
 
-export class updateChannelUserTyping extends _Update {
+class UpdateChannelUserTyping extends _Update {
   channel_id: bigint;
   top_msg_id?: number;
   from_id: enums.Peer;
@@ -12431,7 +12431,7 @@ export class updateChannelUserTyping extends _Update {
   }
 }
 
-export class updatePinnedMessages extends _Update {
+class UpdatePinnedMessages extends _Update {
   pinned?: true;
   peer: enums.Peer;
   messages: Array<number>;
@@ -12474,7 +12474,7 @@ export class updatePinnedMessages extends _Update {
   }
 }
 
-export class updatePinnedChannelMessages extends _Update {
+class UpdatePinnedChannelMessages extends _Update {
   pinned?: true;
   channel_id: bigint;
   messages: Array<number>;
@@ -12517,7 +12517,7 @@ export class updatePinnedChannelMessages extends _Update {
   }
 }
 
-export class updateChat extends _Update {
+class UpdateChat extends _Update {
   chat_id: bigint;
 
   protected get [id]() {
@@ -12542,7 +12542,7 @@ export class updateChat extends _Update {
   }
 }
 
-export class updateGroupCallParticipants extends _Update {
+class UpdateGroupCallParticipants extends _Update {
   call: enums.InputGroupCall;
   participants: Array<enums.GroupCallParticipant>;
   version: number;
@@ -12575,7 +12575,7 @@ export class updateGroupCallParticipants extends _Update {
   }
 }
 
-export class updateGroupCall extends _Update {
+class UpdateGroupCall extends _Update {
   chat_id: bigint;
   call: enums.GroupCall;
 
@@ -12604,7 +12604,7 @@ export class updateGroupCall extends _Update {
   }
 }
 
-export class updatePeerHistoryTTL extends _Update {
+class UpdatePeerHistoryTTL extends _Update {
   peer: enums.Peer;
   ttl_period?: number;
 
@@ -12635,7 +12635,7 @@ export class updatePeerHistoryTTL extends _Update {
   }
 }
 
-export class updateChatParticipant extends _Update {
+class UpdateChatParticipant extends _Update {
   chat_id: bigint;
   date: number;
   actor_id: bigint;
@@ -12690,7 +12690,7 @@ export class updateChatParticipant extends _Update {
   }
 }
 
-export class updateChannelParticipant extends _Update {
+class UpdateChannelParticipant extends _Update {
   via_chatlist?: true;
   channel_id: bigint;
   date: number;
@@ -12749,7 +12749,7 @@ export class updateChannelParticipant extends _Update {
   }
 }
 
-export class updateBotStopped extends _Update {
+class UpdateBotStopped extends _Update {
   user_id: bigint;
   date: number;
   stopped: boolean;
@@ -12786,7 +12786,7 @@ export class updateBotStopped extends _Update {
   }
 }
 
-export class updateGroupCallConnection extends _Update {
+class UpdateGroupCallConnection extends _Update {
   presentation?: true;
   params: enums.DataJSON;
 
@@ -12817,7 +12817,7 @@ export class updateGroupCallConnection extends _Update {
   }
 }
 
-export class updateBotCommands extends _Update {
+class UpdateBotCommands extends _Update {
   peer: enums.Peer;
   bot_id: bigint;
   commands: Array<enums.BotCommand>;
@@ -12850,7 +12850,7 @@ export class updateBotCommands extends _Update {
   }
 }
 
-export class updatePendingJoinRequests extends _Update {
+class UpdatePendingJoinRequests extends _Update {
   peer: enums.Peer;
   requests_pending: number;
   recent_requesters: Array<bigint>;
@@ -12883,7 +12883,7 @@ export class updatePendingJoinRequests extends _Update {
   }
 }
 
-export class updateBotChatInviteRequester extends _Update {
+class UpdateBotChatInviteRequester extends _Update {
   peer: enums.Peer;
   date: number;
   user_id: bigint;
@@ -12928,7 +12928,7 @@ export class updateBotChatInviteRequester extends _Update {
   }
 }
 
-export class updateMessageReactions extends _Update {
+class UpdateMessageReactions extends _Update {
   peer: enums.Peer;
   msg_id: number;
   top_msg_id?: number;
@@ -12967,7 +12967,7 @@ export class updateMessageReactions extends _Update {
   }
 }
 
-export class updateAttachMenuBots extends _Update {
+class UpdateAttachMenuBots extends _Update {
   protected get [id]() {
     return 0x17B7A20B;
   }
@@ -12985,7 +12985,7 @@ export class updateAttachMenuBots extends _Update {
   }
 }
 
-export class updateWebViewResultSent extends _Update {
+class UpdateWebViewResultSent extends _Update {
   query_id: bigint;
 
   protected get [id]() {
@@ -13010,7 +13010,7 @@ export class updateWebViewResultSent extends _Update {
   }
 }
 
-export class updateBotMenuButton extends _Update {
+class UpdateBotMenuButton extends _Update {
   bot_id: bigint;
   button: enums.BotMenuButton;
 
@@ -13039,7 +13039,7 @@ export class updateBotMenuButton extends _Update {
   }
 }
 
-export class updateSavedRingtones extends _Update {
+class UpdateSavedRingtones extends _Update {
   protected get [id]() {
     return 0x74D8BE99;
   }
@@ -13057,7 +13057,7 @@ export class updateSavedRingtones extends _Update {
   }
 }
 
-export class updateTranscribedAudio extends _Update {
+class UpdateTranscribedAudio extends _Update {
   pending?: true;
   peer: enums.Peer;
   msg_id: number;
@@ -13100,7 +13100,7 @@ export class updateTranscribedAudio extends _Update {
   }
 }
 
-export class updateReadFeaturedEmojiStickers extends _Update {
+class UpdateReadFeaturedEmojiStickers extends _Update {
   protected get [id]() {
     return 0xFB4C496C;
   }
@@ -13118,7 +13118,7 @@ export class updateReadFeaturedEmojiStickers extends _Update {
   }
 }
 
-export class updateUserEmojiStatus extends _Update {
+class UpdateUserEmojiStatus extends _Update {
   user_id: bigint;
   emoji_status: enums.EmojiStatus;
 
@@ -13147,7 +13147,7 @@ export class updateUserEmojiStatus extends _Update {
   }
 }
 
-export class updateRecentEmojiStatuses extends _Update {
+class UpdateRecentEmojiStatuses extends _Update {
   protected get [id]() {
     return 0x30F443DB;
   }
@@ -13165,7 +13165,7 @@ export class updateRecentEmojiStatuses extends _Update {
   }
 }
 
-export class updateRecentReactions extends _Update {
+class UpdateRecentReactions extends _Update {
   protected get [id]() {
     return 0x6F7863F4;
   }
@@ -13183,7 +13183,7 @@ export class updateRecentReactions extends _Update {
   }
 }
 
-export class updateMoveStickerSetToTop extends _Update {
+class UpdateMoveStickerSetToTop extends _Update {
   masks?: true;
   emojis?: true;
   stickerset: bigint;
@@ -13218,7 +13218,7 @@ export class updateMoveStickerSetToTop extends _Update {
   }
 }
 
-export class updateMessageExtendedMedia extends _Update {
+class UpdateMessageExtendedMedia extends _Update {
   peer: enums.Peer;
   msg_id: number;
   extended_media: enums.MessageExtendedMedia;
@@ -13251,7 +13251,7 @@ export class updateMessageExtendedMedia extends _Update {
   }
 }
 
-export class updateChannelPinnedTopic extends _Update {
+class UpdateChannelPinnedTopic extends _Update {
   pinned?: true;
   channel_id: bigint;
   topic_id: number;
@@ -13286,7 +13286,7 @@ export class updateChannelPinnedTopic extends _Update {
   }
 }
 
-export class updateChannelPinnedTopics extends _Update {
+class UpdateChannelPinnedTopics extends _Update {
   channel_id: bigint;
   order?: Array<number>;
 
@@ -13317,7 +13317,7 @@ export class updateChannelPinnedTopics extends _Update {
   }
 }
 
-export class updateUser extends _Update {
+class UpdateUser extends _Update {
   user_id: bigint;
 
   protected get [id]() {
@@ -13342,7 +13342,7 @@ export class updateUser extends _Update {
   }
 }
 
-export class updateAutoSaveSettings extends _Update {
+class UpdateAutoSaveSettings extends _Update {
   protected get [id]() {
     return 0xEC05B097;
   }
@@ -13360,7 +13360,7 @@ export class updateAutoSaveSettings extends _Update {
   }
 }
 
-export class updateGroupInvitePrivacyForbidden extends _Update {
+class UpdateGroupInvitePrivacyForbidden extends _Update {
   user_id: bigint;
 
   protected get [id]() {
@@ -13385,7 +13385,7 @@ export class updateGroupInvitePrivacyForbidden extends _Update {
   }
 }
 
-export class updateStory extends _Update {
+class UpdateStory extends _Update {
   peer: enums.Peer;
   story: enums.StoryItem;
 
@@ -13414,7 +13414,7 @@ export class updateStory extends _Update {
   }
 }
 
-export class updateReadStories extends _Update {
+class UpdateReadStories extends _Update {
   peer: enums.Peer;
   max_id: number;
 
@@ -13443,7 +13443,7 @@ export class updateReadStories extends _Update {
   }
 }
 
-export class updateStoryID extends _Update {
+class UpdateStoryID extends _Update {
   id: number;
   random_id: bigint;
 
@@ -13472,7 +13472,7 @@ export class updateStoryID extends _Update {
   }
 }
 
-export class updateStoriesStealthMode extends _Update {
+class UpdateStoriesStealthMode extends _Update {
   stealth_mode: enums.StoriesStealthMode;
 
   protected get [id]() {
@@ -13497,7 +13497,7 @@ export class updateStoriesStealthMode extends _Update {
   }
 }
 
-export class updateSentStoryReaction extends _Update {
+class UpdateSentStoryReaction extends _Update {
   peer: enums.Peer;
   story_id: number;
   reaction: enums.Reaction;
@@ -13530,7 +13530,7 @@ export class updateSentStoryReaction extends _Update {
   }
 }
 
-export class updateBotChatBoost extends _Update {
+class UpdateBotChatBoost extends _Update {
   peer: enums.Peer;
   boost: enums.Boost;
   qts: number;
@@ -13563,7 +13563,7 @@ export class updateBotChatBoost extends _Update {
   }
 }
 
-export class updateChannelViewForumAsMessages extends _Update {
+class UpdateChannelViewForumAsMessages extends _Update {
   channel_id: bigint;
   enabled: boolean;
 
@@ -13592,7 +13592,7 @@ export class updateChannelViewForumAsMessages extends _Update {
   }
 }
 
-export class updatePeerWallpaper extends _Update {
+class UpdatePeerWallpaper extends _Update {
   wallpaper_overridden?: true;
   peer: enums.Peer;
   wallpaper?: enums.WallPaper;
@@ -13627,7 +13627,7 @@ export class updatePeerWallpaper extends _Update {
   }
 }
 
-export class updates_state extends _updates_State {
+class updates_State extends _updates_State {
   pts: number;
   qts: number;
   date: number;
@@ -13668,7 +13668,7 @@ export class updates_state extends _updates_State {
   }
 }
 
-export class updates_differenceEmpty extends _updates_Difference {
+class updates_DifferenceEmpty extends _updates_Difference {
   date: number;
   seq: number;
 
@@ -13697,13 +13697,13 @@ export class updates_differenceEmpty extends _updates_Difference {
   }
 }
 
-export class updates_difference extends _updates_Difference {
+class updates_Difference extends _updates_Difference {
   new_messages: Array<enums.Message>;
   new_encrypted_messages: Array<enums.EncryptedMessage>;
   other_updates: Array<enums.Update>;
   chats: Array<enums.Chat>;
   users: Array<enums.User>;
-  state: enums.updates_State;
+  state: enums.updates.State;
 
   protected get [id]() {
     return 0x00F49CA0;
@@ -13731,7 +13731,7 @@ export class updates_difference extends _updates_Difference {
     ];
   }
 
-  constructor(params: { new_messages: Array<enums.Message>; new_encrypted_messages: Array<enums.EncryptedMessage>; other_updates: Array<enums.Update>; chats: Array<enums.Chat>; users: Array<enums.User>; state: enums.updates_State }) {
+  constructor(params: { new_messages: Array<enums.Message>; new_encrypted_messages: Array<enums.EncryptedMessage>; other_updates: Array<enums.Update>; chats: Array<enums.Chat>; users: Array<enums.User>; state: enums.updates.State }) {
     super();
     this.new_messages = params.new_messages;
     this.new_encrypted_messages = params.new_encrypted_messages;
@@ -13742,13 +13742,13 @@ export class updates_difference extends _updates_Difference {
   }
 }
 
-export class updates_differenceSlice extends _updates_Difference {
+class updates_DifferenceSlice extends _updates_Difference {
   new_messages: Array<enums.Message>;
   new_encrypted_messages: Array<enums.EncryptedMessage>;
   other_updates: Array<enums.Update>;
   chats: Array<enums.Chat>;
   users: Array<enums.User>;
-  intermediate_state: enums.updates_State;
+  intermediate_state: enums.updates.State;
 
   protected get [id]() {
     return 0xA8FB1981;
@@ -13776,7 +13776,7 @@ export class updates_differenceSlice extends _updates_Difference {
     ];
   }
 
-  constructor(params: { new_messages: Array<enums.Message>; new_encrypted_messages: Array<enums.EncryptedMessage>; other_updates: Array<enums.Update>; chats: Array<enums.Chat>; users: Array<enums.User>; intermediate_state: enums.updates_State }) {
+  constructor(params: { new_messages: Array<enums.Message>; new_encrypted_messages: Array<enums.EncryptedMessage>; other_updates: Array<enums.Update>; chats: Array<enums.Chat>; users: Array<enums.User>; intermediate_state: enums.updates.State }) {
     super();
     this.new_messages = params.new_messages;
     this.new_encrypted_messages = params.new_encrypted_messages;
@@ -13787,7 +13787,7 @@ export class updates_differenceSlice extends _updates_Difference {
   }
 }
 
-export class updates_differenceTooLong extends _updates_Difference {
+class updates_DifferenceTooLong extends _updates_Difference {
   pts: number;
 
   protected get [id]() {
@@ -13812,7 +13812,7 @@ export class updates_differenceTooLong extends _updates_Difference {
   }
 }
 
-export class updatesTooLong extends _Updates {
+class UpdatesTooLong extends _Updates {
   protected get [id]() {
     return 0xE317AF7E;
   }
@@ -13830,7 +13830,7 @@ export class updatesTooLong extends _Updates {
   }
 }
 
-export class updateShortMessage extends _Updates {
+class UpdateShortMessage extends _Updates {
   out?: true;
   mentioned?: true;
   media_unread?: true;
@@ -13913,7 +13913,7 @@ export class updateShortMessage extends _Updates {
   }
 }
 
-export class updateShortChatMessage extends _Updates {
+class UpdateShortChatMessage extends _Updates {
   out?: true;
   mentioned?: true;
   media_unread?: true;
@@ -14000,7 +14000,7 @@ export class updateShortChatMessage extends _Updates {
   }
 }
 
-export class updateShort extends _Updates {
+class UpdateShort extends _Updates {
   update: enums.Update;
   date: number;
 
@@ -14029,7 +14029,7 @@ export class updateShort extends _Updates {
   }
 }
 
-export class updatesCombined extends _Updates {
+class UpdatesCombined extends _Updates {
   updates: Array<enums.Update>;
   users: Array<enums.User>;
   chats: Array<enums.Chat>;
@@ -14074,7 +14074,7 @@ export class updatesCombined extends _Updates {
   }
 }
 
-export class updates extends _Updates {
+class Updates extends _Updates {
   updates: Array<enums.Update>;
   users: Array<enums.User>;
   chats: Array<enums.Chat>;
@@ -14115,7 +14115,7 @@ export class updates extends _Updates {
   }
 }
 
-export class updateShortSentMessage extends _Updates {
+class UpdateShortSentMessage extends _Updates {
   out?: true;
   id: number;
   pts: number;
@@ -14170,7 +14170,7 @@ export class updateShortSentMessage extends _Updates {
   }
 }
 
-export class photos_photos extends _photos_Photos {
+class photos_Photos extends _photos_Photos {
   photos: Array<enums.Photo>;
   users: Array<enums.User>;
 
@@ -14199,7 +14199,7 @@ export class photos_photos extends _photos_Photos {
   }
 }
 
-export class photos_photosSlice extends _photos_Photos {
+class photos_PhotosSlice extends _photos_Photos {
   count: number;
   photos: Array<enums.Photo>;
   users: Array<enums.User>;
@@ -14232,7 +14232,7 @@ export class photos_photosSlice extends _photos_Photos {
   }
 }
 
-export class photos_photo extends _photos_Photo {
+class photos_Photo extends _photos_Photo {
   photo: enums.Photo;
   users: Array<enums.User>;
 
@@ -14261,8 +14261,8 @@ export class photos_photo extends _photos_Photo {
   }
 }
 
-export class upload_file extends _upload_File {
-  type: enums.storage_FileType;
+class upload_File extends _upload_File {
+  type: enums.storage.FileType;
   mtime: number;
   bytes: Uint8Array;
 
@@ -14286,7 +14286,7 @@ export class upload_file extends _upload_File {
     ];
   }
 
-  constructor(params: { type: enums.storage_FileType; mtime: number; bytes: Uint8Array }) {
+  constructor(params: { type: enums.storage.FileType; mtime: number; bytes: Uint8Array }) {
     super();
     this.type = params.type;
     this.mtime = params.mtime;
@@ -14294,7 +14294,7 @@ export class upload_file extends _upload_File {
   }
 }
 
-export class upload_fileCdnRedirect extends _upload_File {
+class upload_FileCdnRedirect extends _upload_File {
   dc_id: number;
   file_token: Uint8Array;
   encryption_key: Uint8Array;
@@ -14335,7 +14335,7 @@ export class upload_fileCdnRedirect extends _upload_File {
   }
 }
 
-export class dcOption extends _DcOption {
+class DcOption extends _DcOption {
   ipv6?: true;
   media_only?: true;
   tcpo_only?: true;
@@ -14398,7 +14398,7 @@ export class dcOption extends _DcOption {
   }
 }
 
-export class config extends _Config {
+class Config extends _Config {
   default_p2p_contacts?: true;
   preload_featured_stickers?: true;
   revoke_pm_inbox?: true;
@@ -14609,7 +14609,7 @@ export class config extends _Config {
   }
 }
 
-export class nearestDc extends _NearestDc {
+class NearestDc extends _NearestDc {
   country: string;
   this_dc: number;
   nearest_dc: number;
@@ -14642,7 +14642,7 @@ export class nearestDc extends _NearestDc {
   }
 }
 
-export class help_appUpdate extends _help_AppUpdate {
+class help_AppUpdate extends _help_AppUpdate {
   can_not_skip?: true;
   id: number;
   version: string;
@@ -14697,7 +14697,7 @@ export class help_appUpdate extends _help_AppUpdate {
   }
 }
 
-export class help_noAppUpdate extends _help_AppUpdate {
+class help_NoAppUpdate extends _help_AppUpdate {
   protected get [id]() {
     return 0xC45A6536;
   }
@@ -14715,7 +14715,7 @@ export class help_noAppUpdate extends _help_AppUpdate {
   }
 }
 
-export class help_inviteText extends _help_InviteText {
+class help_InviteText extends _help_InviteText {
   message: string;
 
   protected get [id]() {
@@ -14740,7 +14740,7 @@ export class help_inviteText extends _help_InviteText {
   }
 }
 
-export class encryptedChatEmpty extends _EncryptedChat {
+class EncryptedChatEmpty extends _EncryptedChat {
   id: number;
 
   protected get [id]() {
@@ -14765,7 +14765,7 @@ export class encryptedChatEmpty extends _EncryptedChat {
   }
 }
 
-export class encryptedChatWaiting extends _EncryptedChat {
+class EncryptedChatWaiting extends _EncryptedChat {
   id: number;
   access_hash: bigint;
   date: number;
@@ -14806,7 +14806,7 @@ export class encryptedChatWaiting extends _EncryptedChat {
   }
 }
 
-export class encryptedChatRequested extends _EncryptedChat {
+class EncryptedChatRequested extends _EncryptedChat {
   folder_id?: number;
   id: number;
   access_hash: bigint;
@@ -14857,7 +14857,7 @@ export class encryptedChatRequested extends _EncryptedChat {
   }
 }
 
-export class encryptedChat extends _EncryptedChat {
+class EncryptedChat extends _EncryptedChat {
   id: number;
   access_hash: bigint;
   date: number;
@@ -14906,7 +14906,7 @@ export class encryptedChat extends _EncryptedChat {
   }
 }
 
-export class encryptedChatDiscarded extends _EncryptedChat {
+class EncryptedChatDiscarded extends _EncryptedChat {
   history_deleted?: true;
   id: number;
 
@@ -14937,7 +14937,7 @@ export class encryptedChatDiscarded extends _EncryptedChat {
   }
 }
 
-export class inputEncryptedChat extends _InputEncryptedChat {
+class InputEncryptedChat extends _InputEncryptedChat {
   chat_id: number;
   access_hash: bigint;
 
@@ -14966,7 +14966,7 @@ export class inputEncryptedChat extends _InputEncryptedChat {
   }
 }
 
-export class encryptedFileEmpty extends _EncryptedFile {
+class EncryptedFileEmpty extends _EncryptedFile {
   protected get [id]() {
     return 0xC21F497E;
   }
@@ -14984,7 +14984,7 @@ export class encryptedFileEmpty extends _EncryptedFile {
   }
 }
 
-export class encryptedFile extends _EncryptedFile {
+class EncryptedFile extends _EncryptedFile {
   id: bigint;
   access_hash: bigint;
   size: bigint;
@@ -15025,7 +15025,7 @@ export class encryptedFile extends _EncryptedFile {
   }
 }
 
-export class inputEncryptedFileEmpty extends _InputEncryptedFile {
+class InputEncryptedFileEmpty extends _InputEncryptedFile {
   protected get [id]() {
     return 0x1837C364;
   }
@@ -15043,7 +15043,7 @@ export class inputEncryptedFileEmpty extends _InputEncryptedFile {
   }
 }
 
-export class inputEncryptedFileUploaded extends _InputEncryptedFile {
+class InputEncryptedFileUploaded extends _InputEncryptedFile {
   id: bigint;
   parts: number;
   md5_checksum: string;
@@ -15080,7 +15080,7 @@ export class inputEncryptedFileUploaded extends _InputEncryptedFile {
   }
 }
 
-export class inputEncryptedFile extends _InputEncryptedFile {
+class InputEncryptedFile extends _InputEncryptedFile {
   id: bigint;
   access_hash: bigint;
 
@@ -15109,7 +15109,7 @@ export class inputEncryptedFile extends _InputEncryptedFile {
   }
 }
 
-export class inputEncryptedFileBigUploaded extends _InputEncryptedFile {
+class InputEncryptedFileBigUploaded extends _InputEncryptedFile {
   id: bigint;
   parts: number;
   key_fingerprint: number;
@@ -15142,7 +15142,7 @@ export class inputEncryptedFileBigUploaded extends _InputEncryptedFile {
   }
 }
 
-export class encryptedMessage extends _EncryptedMessage {
+class EncryptedMessage extends _EncryptedMessage {
   random_id: bigint;
   chat_id: number;
   date: number;
@@ -15183,7 +15183,7 @@ export class encryptedMessage extends _EncryptedMessage {
   }
 }
 
-export class encryptedMessageService extends _EncryptedMessage {
+class EncryptedMessageService extends _EncryptedMessage {
   random_id: bigint;
   chat_id: number;
   date: number;
@@ -15220,7 +15220,7 @@ export class encryptedMessageService extends _EncryptedMessage {
   }
 }
 
-export class messages_dhConfigNotModified extends _messages_DhConfig {
+class messages_DhConfigNotModified extends _messages_DhConfig {
   random: Uint8Array;
 
   protected get [id]() {
@@ -15245,7 +15245,7 @@ export class messages_dhConfigNotModified extends _messages_DhConfig {
   }
 }
 
-export class messages_dhConfig extends _messages_DhConfig {
+class messages_DhConfig extends _messages_DhConfig {
   g: number;
   p: Uint8Array;
   version: number;
@@ -15282,7 +15282,7 @@ export class messages_dhConfig extends _messages_DhConfig {
   }
 }
 
-export class messages_sentEncryptedMessage extends _messages_SentEncryptedMessage {
+class messages_SentEncryptedMessage extends _messages_SentEncryptedMessage {
   date: number;
 
   protected get [id]() {
@@ -15307,7 +15307,7 @@ export class messages_sentEncryptedMessage extends _messages_SentEncryptedMessag
   }
 }
 
-export class messages_sentEncryptedFile extends _messages_SentEncryptedMessage {
+class messages_SentEncryptedFile extends _messages_SentEncryptedMessage {
   date: number;
   file: enums.EncryptedFile;
 
@@ -15336,7 +15336,7 @@ export class messages_sentEncryptedFile extends _messages_SentEncryptedMessage {
   }
 }
 
-export class inputDocumentEmpty extends _InputDocument {
+class InputDocumentEmpty extends _InputDocument {
   protected get [id]() {
     return 0x72F0EAAE;
   }
@@ -15354,7 +15354,7 @@ export class inputDocumentEmpty extends _InputDocument {
   }
 }
 
-export class inputDocument extends _InputDocument {
+class InputDocument extends _InputDocument {
   id: bigint;
   access_hash: bigint;
   file_reference: Uint8Array;
@@ -15387,7 +15387,7 @@ export class inputDocument extends _InputDocument {
   }
 }
 
-export class documentEmpty extends _Document {
+class DocumentEmpty extends _Document {
   id: bigint;
 
   protected get [id]() {
@@ -15412,7 +15412,7 @@ export class documentEmpty extends _Document {
   }
 }
 
-export class document extends _Document {
+class Document extends _Document {
   id: bigint;
   access_hash: bigint;
   file_reference: Uint8Array;
@@ -15475,7 +15475,7 @@ export class document extends _Document {
   }
 }
 
-export class help_support extends _help_Support {
+class help_Support extends _help_Support {
   phone_number: string;
   user: enums.User;
 
@@ -15504,7 +15504,7 @@ export class help_support extends _help_Support {
   }
 }
 
-export class notifyPeer extends _NotifyPeer {
+class NotifyPeer extends _NotifyPeer {
   peer: enums.Peer;
 
   protected get [id]() {
@@ -15529,7 +15529,7 @@ export class notifyPeer extends _NotifyPeer {
   }
 }
 
-export class notifyUsers extends _NotifyPeer {
+class NotifyUsers extends _NotifyPeer {
   protected get [id]() {
     return 0xB4C83B4C;
   }
@@ -15547,7 +15547,7 @@ export class notifyUsers extends _NotifyPeer {
   }
 }
 
-export class notifyChats extends _NotifyPeer {
+class NotifyChats extends _NotifyPeer {
   protected get [id]() {
     return 0xC007CEC3;
   }
@@ -15565,7 +15565,7 @@ export class notifyChats extends _NotifyPeer {
   }
 }
 
-export class notifyBroadcasts extends _NotifyPeer {
+class NotifyBroadcasts extends _NotifyPeer {
   protected get [id]() {
     return 0xD612E8EF;
   }
@@ -15583,7 +15583,7 @@ export class notifyBroadcasts extends _NotifyPeer {
   }
 }
 
-export class notifyForumTopic extends _NotifyPeer {
+class NotifyForumTopic extends _NotifyPeer {
   peer: enums.Peer;
   top_msg_id: number;
 
@@ -15612,7 +15612,7 @@ export class notifyForumTopic extends _NotifyPeer {
   }
 }
 
-export class sendMessageTypingAction extends _SendMessageAction {
+class SendMessageTypingAction extends _SendMessageAction {
   protected get [id]() {
     return 0x16BF744E;
   }
@@ -15630,7 +15630,7 @@ export class sendMessageTypingAction extends _SendMessageAction {
   }
 }
 
-export class sendMessageCancelAction extends _SendMessageAction {
+class SendMessageCancelAction extends _SendMessageAction {
   protected get [id]() {
     return 0xFD5EC8F5;
   }
@@ -15648,7 +15648,7 @@ export class sendMessageCancelAction extends _SendMessageAction {
   }
 }
 
-export class sendMessageRecordVideoAction extends _SendMessageAction {
+class SendMessageRecordVideoAction extends _SendMessageAction {
   protected get [id]() {
     return 0xA187D66F;
   }
@@ -15666,7 +15666,7 @@ export class sendMessageRecordVideoAction extends _SendMessageAction {
   }
 }
 
-export class sendMessageUploadVideoAction extends _SendMessageAction {
+class SendMessageUploadVideoAction extends _SendMessageAction {
   progress: number;
 
   protected get [id]() {
@@ -15691,7 +15691,7 @@ export class sendMessageUploadVideoAction extends _SendMessageAction {
   }
 }
 
-export class sendMessageRecordAudioAction extends _SendMessageAction {
+class SendMessageRecordAudioAction extends _SendMessageAction {
   protected get [id]() {
     return 0xD52F73F7;
   }
@@ -15709,7 +15709,7 @@ export class sendMessageRecordAudioAction extends _SendMessageAction {
   }
 }
 
-export class sendMessageUploadAudioAction extends _SendMessageAction {
+class SendMessageUploadAudioAction extends _SendMessageAction {
   progress: number;
 
   protected get [id]() {
@@ -15734,7 +15734,7 @@ export class sendMessageUploadAudioAction extends _SendMessageAction {
   }
 }
 
-export class sendMessageUploadPhotoAction extends _SendMessageAction {
+class SendMessageUploadPhotoAction extends _SendMessageAction {
   progress: number;
 
   protected get [id]() {
@@ -15759,7 +15759,7 @@ export class sendMessageUploadPhotoAction extends _SendMessageAction {
   }
 }
 
-export class sendMessageUploadDocumentAction extends _SendMessageAction {
+class SendMessageUploadDocumentAction extends _SendMessageAction {
   progress: number;
 
   protected get [id]() {
@@ -15784,7 +15784,7 @@ export class sendMessageUploadDocumentAction extends _SendMessageAction {
   }
 }
 
-export class sendMessageGeoLocationAction extends _SendMessageAction {
+class SendMessageGeoLocationAction extends _SendMessageAction {
   protected get [id]() {
     return 0x176F8BA1;
   }
@@ -15802,7 +15802,7 @@ export class sendMessageGeoLocationAction extends _SendMessageAction {
   }
 }
 
-export class sendMessageChooseContactAction extends _SendMessageAction {
+class SendMessageChooseContactAction extends _SendMessageAction {
   protected get [id]() {
     return 0x628CBC6F;
   }
@@ -15820,7 +15820,7 @@ export class sendMessageChooseContactAction extends _SendMessageAction {
   }
 }
 
-export class sendMessageGamePlayAction extends _SendMessageAction {
+class SendMessageGamePlayAction extends _SendMessageAction {
   protected get [id]() {
     return 0xDD6A8F48;
   }
@@ -15838,7 +15838,7 @@ export class sendMessageGamePlayAction extends _SendMessageAction {
   }
 }
 
-export class sendMessageRecordRoundAction extends _SendMessageAction {
+class SendMessageRecordRoundAction extends _SendMessageAction {
   protected get [id]() {
     return 0x88F27FBC;
   }
@@ -15856,7 +15856,7 @@ export class sendMessageRecordRoundAction extends _SendMessageAction {
   }
 }
 
-export class sendMessageUploadRoundAction extends _SendMessageAction {
+class SendMessageUploadRoundAction extends _SendMessageAction {
   progress: number;
 
   protected get [id]() {
@@ -15881,7 +15881,7 @@ export class sendMessageUploadRoundAction extends _SendMessageAction {
   }
 }
 
-export class speakingInGroupCallAction extends _SendMessageAction {
+class SpeakingInGroupCallAction extends _SendMessageAction {
   protected get [id]() {
     return 0xD92C2285;
   }
@@ -15899,7 +15899,7 @@ export class speakingInGroupCallAction extends _SendMessageAction {
   }
 }
 
-export class sendMessageHistoryImportAction extends _SendMessageAction {
+class SendMessageHistoryImportAction extends _SendMessageAction {
   progress: number;
 
   protected get [id]() {
@@ -15924,7 +15924,7 @@ export class sendMessageHistoryImportAction extends _SendMessageAction {
   }
 }
 
-export class sendMessageChooseStickerAction extends _SendMessageAction {
+class SendMessageChooseStickerAction extends _SendMessageAction {
   protected get [id]() {
     return 0xB05AC6B1;
   }
@@ -15942,7 +15942,7 @@ export class sendMessageChooseStickerAction extends _SendMessageAction {
   }
 }
 
-export class sendMessageEmojiInteraction extends _SendMessageAction {
+class SendMessageEmojiInteraction extends _SendMessageAction {
   emoticon: string;
   msg_id: number;
   interaction: enums.DataJSON;
@@ -15975,7 +15975,7 @@ export class sendMessageEmojiInteraction extends _SendMessageAction {
   }
 }
 
-export class sendMessageEmojiInteractionSeen extends _SendMessageAction {
+class SendMessageEmojiInteractionSeen extends _SendMessageAction {
   emoticon: string;
 
   protected get [id]() {
@@ -16000,7 +16000,7 @@ export class sendMessageEmojiInteractionSeen extends _SendMessageAction {
   }
 }
 
-export class contacts_found extends _contacts_Found {
+class contacts_Found extends _contacts_Found {
   my_results: Array<enums.Peer>;
   results: Array<enums.Peer>;
   chats: Array<enums.Chat>;
@@ -16037,7 +16037,7 @@ export class contacts_found extends _contacts_Found {
   }
 }
 
-export class inputPrivacyKeyStatusTimestamp extends _InputPrivacyKey {
+class InputPrivacyKeyStatusTimestamp extends _InputPrivacyKey {
   protected get [id]() {
     return 0x4F96CB18;
   }
@@ -16055,7 +16055,7 @@ export class inputPrivacyKeyStatusTimestamp extends _InputPrivacyKey {
   }
 }
 
-export class inputPrivacyKeyChatInvite extends _InputPrivacyKey {
+class InputPrivacyKeyChatInvite extends _InputPrivacyKey {
   protected get [id]() {
     return 0xBDFB0426;
   }
@@ -16073,7 +16073,7 @@ export class inputPrivacyKeyChatInvite extends _InputPrivacyKey {
   }
 }
 
-export class inputPrivacyKeyPhoneCall extends _InputPrivacyKey {
+class InputPrivacyKeyPhoneCall extends _InputPrivacyKey {
   protected get [id]() {
     return 0xFABADC5F;
   }
@@ -16091,7 +16091,7 @@ export class inputPrivacyKeyPhoneCall extends _InputPrivacyKey {
   }
 }
 
-export class inputPrivacyKeyPhoneP2P extends _InputPrivacyKey {
+class InputPrivacyKeyPhoneP2P extends _InputPrivacyKey {
   protected get [id]() {
     return 0xDB9E70D2;
   }
@@ -16109,7 +16109,7 @@ export class inputPrivacyKeyPhoneP2P extends _InputPrivacyKey {
   }
 }
 
-export class inputPrivacyKeyForwards extends _InputPrivacyKey {
+class InputPrivacyKeyForwards extends _InputPrivacyKey {
   protected get [id]() {
     return 0xA4DD4C08;
   }
@@ -16127,7 +16127,7 @@ export class inputPrivacyKeyForwards extends _InputPrivacyKey {
   }
 }
 
-export class inputPrivacyKeyProfilePhoto extends _InputPrivacyKey {
+class InputPrivacyKeyProfilePhoto extends _InputPrivacyKey {
   protected get [id]() {
     return 0x5719BACC;
   }
@@ -16145,7 +16145,7 @@ export class inputPrivacyKeyProfilePhoto extends _InputPrivacyKey {
   }
 }
 
-export class inputPrivacyKeyPhoneNumber extends _InputPrivacyKey {
+class InputPrivacyKeyPhoneNumber extends _InputPrivacyKey {
   protected get [id]() {
     return 0x0352DAFA;
   }
@@ -16163,7 +16163,7 @@ export class inputPrivacyKeyPhoneNumber extends _InputPrivacyKey {
   }
 }
 
-export class inputPrivacyKeyAddedByPhone extends _InputPrivacyKey {
+class InputPrivacyKeyAddedByPhone extends _InputPrivacyKey {
   protected get [id]() {
     return 0xD1219BDD;
   }
@@ -16181,7 +16181,7 @@ export class inputPrivacyKeyAddedByPhone extends _InputPrivacyKey {
   }
 }
 
-export class inputPrivacyKeyVoiceMessages extends _InputPrivacyKey {
+class InputPrivacyKeyVoiceMessages extends _InputPrivacyKey {
   protected get [id]() {
     return 0xAEE69D68;
   }
@@ -16199,7 +16199,7 @@ export class inputPrivacyKeyVoiceMessages extends _InputPrivacyKey {
   }
 }
 
-export class inputPrivacyKeyAbout extends _InputPrivacyKey {
+class InputPrivacyKeyAbout extends _InputPrivacyKey {
   protected get [id]() {
     return 0x3823CC40;
   }
@@ -16217,7 +16217,7 @@ export class inputPrivacyKeyAbout extends _InputPrivacyKey {
   }
 }
 
-export class privacyKeyStatusTimestamp extends _PrivacyKey {
+class PrivacyKeyStatusTimestamp extends _PrivacyKey {
   protected get [id]() {
     return 0xBC2EAB30;
   }
@@ -16235,7 +16235,7 @@ export class privacyKeyStatusTimestamp extends _PrivacyKey {
   }
 }
 
-export class privacyKeyChatInvite extends _PrivacyKey {
+class PrivacyKeyChatInvite extends _PrivacyKey {
   protected get [id]() {
     return 0x500E6DFA;
   }
@@ -16253,7 +16253,7 @@ export class privacyKeyChatInvite extends _PrivacyKey {
   }
 }
 
-export class privacyKeyPhoneCall extends _PrivacyKey {
+class PrivacyKeyPhoneCall extends _PrivacyKey {
   protected get [id]() {
     return 0x3D662B7B;
   }
@@ -16271,7 +16271,7 @@ export class privacyKeyPhoneCall extends _PrivacyKey {
   }
 }
 
-export class privacyKeyPhoneP2P extends _PrivacyKey {
+class PrivacyKeyPhoneP2P extends _PrivacyKey {
   protected get [id]() {
     return 0x39491CC8;
   }
@@ -16289,7 +16289,7 @@ export class privacyKeyPhoneP2P extends _PrivacyKey {
   }
 }
 
-export class privacyKeyForwards extends _PrivacyKey {
+class PrivacyKeyForwards extends _PrivacyKey {
   protected get [id]() {
     return 0x69EC56A3;
   }
@@ -16307,7 +16307,7 @@ export class privacyKeyForwards extends _PrivacyKey {
   }
 }
 
-export class privacyKeyProfilePhoto extends _PrivacyKey {
+class PrivacyKeyProfilePhoto extends _PrivacyKey {
   protected get [id]() {
     return 0x96151FED;
   }
@@ -16325,7 +16325,7 @@ export class privacyKeyProfilePhoto extends _PrivacyKey {
   }
 }
 
-export class privacyKeyPhoneNumber extends _PrivacyKey {
+class PrivacyKeyPhoneNumber extends _PrivacyKey {
   protected get [id]() {
     return 0xD19AE46D;
   }
@@ -16343,7 +16343,7 @@ export class privacyKeyPhoneNumber extends _PrivacyKey {
   }
 }
 
-export class privacyKeyAddedByPhone extends _PrivacyKey {
+class PrivacyKeyAddedByPhone extends _PrivacyKey {
   protected get [id]() {
     return 0x42FFD42B;
   }
@@ -16361,7 +16361,7 @@ export class privacyKeyAddedByPhone extends _PrivacyKey {
   }
 }
 
-export class privacyKeyVoiceMessages extends _PrivacyKey {
+class PrivacyKeyVoiceMessages extends _PrivacyKey {
   protected get [id]() {
     return 0x0697F414;
   }
@@ -16379,7 +16379,7 @@ export class privacyKeyVoiceMessages extends _PrivacyKey {
   }
 }
 
-export class privacyKeyAbout extends _PrivacyKey {
+class PrivacyKeyAbout extends _PrivacyKey {
   protected get [id]() {
     return 0xA486B761;
   }
@@ -16397,7 +16397,7 @@ export class privacyKeyAbout extends _PrivacyKey {
   }
 }
 
-export class inputPrivacyValueAllowContacts extends _InputPrivacyRule {
+class InputPrivacyValueAllowContacts extends _InputPrivacyRule {
   protected get [id]() {
     return 0x0D09E07B;
   }
@@ -16415,7 +16415,7 @@ export class inputPrivacyValueAllowContacts extends _InputPrivacyRule {
   }
 }
 
-export class inputPrivacyValueAllowAll extends _InputPrivacyRule {
+class InputPrivacyValueAllowAll extends _InputPrivacyRule {
   protected get [id]() {
     return 0x184B35CE;
   }
@@ -16433,7 +16433,7 @@ export class inputPrivacyValueAllowAll extends _InputPrivacyRule {
   }
 }
 
-export class inputPrivacyValueAllowUsers extends _InputPrivacyRule {
+class InputPrivacyValueAllowUsers extends _InputPrivacyRule {
   users: Array<enums.InputUser>;
 
   protected get [id]() {
@@ -16458,7 +16458,7 @@ export class inputPrivacyValueAllowUsers extends _InputPrivacyRule {
   }
 }
 
-export class inputPrivacyValueDisallowContacts extends _InputPrivacyRule {
+class InputPrivacyValueDisallowContacts extends _InputPrivacyRule {
   protected get [id]() {
     return 0x0BA52007;
   }
@@ -16476,7 +16476,7 @@ export class inputPrivacyValueDisallowContacts extends _InputPrivacyRule {
   }
 }
 
-export class inputPrivacyValueDisallowAll extends _InputPrivacyRule {
+class InputPrivacyValueDisallowAll extends _InputPrivacyRule {
   protected get [id]() {
     return 0xD66B66C9;
   }
@@ -16494,7 +16494,7 @@ export class inputPrivacyValueDisallowAll extends _InputPrivacyRule {
   }
 }
 
-export class inputPrivacyValueDisallowUsers extends _InputPrivacyRule {
+class InputPrivacyValueDisallowUsers extends _InputPrivacyRule {
   users: Array<enums.InputUser>;
 
   protected get [id]() {
@@ -16519,7 +16519,7 @@ export class inputPrivacyValueDisallowUsers extends _InputPrivacyRule {
   }
 }
 
-export class inputPrivacyValueAllowChatParticipants extends _InputPrivacyRule {
+class InputPrivacyValueAllowChatParticipants extends _InputPrivacyRule {
   chats: Array<bigint>;
 
   protected get [id]() {
@@ -16544,7 +16544,7 @@ export class inputPrivacyValueAllowChatParticipants extends _InputPrivacyRule {
   }
 }
 
-export class inputPrivacyValueDisallowChatParticipants extends _InputPrivacyRule {
+class InputPrivacyValueDisallowChatParticipants extends _InputPrivacyRule {
   chats: Array<bigint>;
 
   protected get [id]() {
@@ -16569,7 +16569,7 @@ export class inputPrivacyValueDisallowChatParticipants extends _InputPrivacyRule
   }
 }
 
-export class inputPrivacyValueAllowCloseFriends extends _InputPrivacyRule {
+class InputPrivacyValueAllowCloseFriends extends _InputPrivacyRule {
   protected get [id]() {
     return 0x2F453E49;
   }
@@ -16587,7 +16587,7 @@ export class inputPrivacyValueAllowCloseFriends extends _InputPrivacyRule {
   }
 }
 
-export class privacyValueAllowContacts extends _PrivacyRule {
+class PrivacyValueAllowContacts extends _PrivacyRule {
   protected get [id]() {
     return 0xFFFE1BAC;
   }
@@ -16605,7 +16605,7 @@ export class privacyValueAllowContacts extends _PrivacyRule {
   }
 }
 
-export class privacyValueAllowAll extends _PrivacyRule {
+class PrivacyValueAllowAll extends _PrivacyRule {
   protected get [id]() {
     return 0x65427B82;
   }
@@ -16623,7 +16623,7 @@ export class privacyValueAllowAll extends _PrivacyRule {
   }
 }
 
-export class privacyValueAllowUsers extends _PrivacyRule {
+class PrivacyValueAllowUsers extends _PrivacyRule {
   users: Array<bigint>;
 
   protected get [id]() {
@@ -16648,7 +16648,7 @@ export class privacyValueAllowUsers extends _PrivacyRule {
   }
 }
 
-export class privacyValueDisallowContacts extends _PrivacyRule {
+class PrivacyValueDisallowContacts extends _PrivacyRule {
   protected get [id]() {
     return 0xF888FA1A;
   }
@@ -16666,7 +16666,7 @@ export class privacyValueDisallowContacts extends _PrivacyRule {
   }
 }
 
-export class privacyValueDisallowAll extends _PrivacyRule {
+class PrivacyValueDisallowAll extends _PrivacyRule {
   protected get [id]() {
     return 0x8B73E763;
   }
@@ -16684,7 +16684,7 @@ export class privacyValueDisallowAll extends _PrivacyRule {
   }
 }
 
-export class privacyValueDisallowUsers extends _PrivacyRule {
+class PrivacyValueDisallowUsers extends _PrivacyRule {
   users: Array<bigint>;
 
   protected get [id]() {
@@ -16709,7 +16709,7 @@ export class privacyValueDisallowUsers extends _PrivacyRule {
   }
 }
 
-export class privacyValueAllowChatParticipants extends _PrivacyRule {
+class PrivacyValueAllowChatParticipants extends _PrivacyRule {
   chats: Array<bigint>;
 
   protected get [id]() {
@@ -16734,7 +16734,7 @@ export class privacyValueAllowChatParticipants extends _PrivacyRule {
   }
 }
 
-export class privacyValueDisallowChatParticipants extends _PrivacyRule {
+class PrivacyValueDisallowChatParticipants extends _PrivacyRule {
   chats: Array<bigint>;
 
   protected get [id]() {
@@ -16759,7 +16759,7 @@ export class privacyValueDisallowChatParticipants extends _PrivacyRule {
   }
 }
 
-export class privacyValueAllowCloseFriends extends _PrivacyRule {
+class PrivacyValueAllowCloseFriends extends _PrivacyRule {
   protected get [id]() {
     return 0xF7E8D89B;
   }
@@ -16777,7 +16777,7 @@ export class privacyValueAllowCloseFriends extends _PrivacyRule {
   }
 }
 
-export class account_privacyRules extends _account_PrivacyRules {
+class account_PrivacyRules extends _account_PrivacyRules {
   rules: Array<enums.PrivacyRule>;
   chats: Array<enums.Chat>;
   users: Array<enums.User>;
@@ -16810,7 +16810,7 @@ export class account_privacyRules extends _account_PrivacyRules {
   }
 }
 
-export class accountDaysTTL extends _AccountDaysTTL {
+class AccountDaysTTL extends _AccountDaysTTL {
   days: number;
 
   protected get [id]() {
@@ -16835,7 +16835,7 @@ export class accountDaysTTL extends _AccountDaysTTL {
   }
 }
 
-export class documentAttributeImageSize extends _DocumentAttribute {
+class DocumentAttributeImageSize extends _DocumentAttribute {
   w: number;
   h: number;
 
@@ -16864,7 +16864,7 @@ export class documentAttributeImageSize extends _DocumentAttribute {
   }
 }
 
-export class documentAttributeAnimated extends _DocumentAttribute {
+class DocumentAttributeAnimated extends _DocumentAttribute {
   protected get [id]() {
     return 0x11B58939;
   }
@@ -16882,7 +16882,7 @@ export class documentAttributeAnimated extends _DocumentAttribute {
   }
 }
 
-export class documentAttributeSticker extends _DocumentAttribute {
+class DocumentAttributeSticker extends _DocumentAttribute {
   mask?: true;
   alt: string;
   stickerset: enums.InputStickerSet;
@@ -16921,7 +16921,7 @@ export class documentAttributeSticker extends _DocumentAttribute {
   }
 }
 
-export class documentAttributeVideo extends _DocumentAttribute {
+class DocumentAttributeVideo extends _DocumentAttribute {
   round_message?: true;
   supports_streaming?: true;
   nosound?: true;
@@ -16972,7 +16972,7 @@ export class documentAttributeVideo extends _DocumentAttribute {
   }
 }
 
-export class documentAttributeAudio extends _DocumentAttribute {
+class DocumentAttributeAudio extends _DocumentAttribute {
   voice?: true;
   duration: number;
   title?: string;
@@ -17015,7 +17015,7 @@ export class documentAttributeAudio extends _DocumentAttribute {
   }
 }
 
-export class documentAttributeFilename extends _DocumentAttribute {
+class DocumentAttributeFilename extends _DocumentAttribute {
   file_name: string;
 
   protected get [id]() {
@@ -17040,7 +17040,7 @@ export class documentAttributeFilename extends _DocumentAttribute {
   }
 }
 
-export class documentAttributeHasStickers extends _DocumentAttribute {
+class DocumentAttributeHasStickers extends _DocumentAttribute {
   protected get [id]() {
     return 0x9801D2F7;
   }
@@ -17058,7 +17058,7 @@ export class documentAttributeHasStickers extends _DocumentAttribute {
   }
 }
 
-export class documentAttributeCustomEmoji extends _DocumentAttribute {
+class DocumentAttributeCustomEmoji extends _DocumentAttribute {
   free?: true;
   text_color?: true;
   alt: string;
@@ -17097,7 +17097,7 @@ export class documentAttributeCustomEmoji extends _DocumentAttribute {
   }
 }
 
-export class messages_stickersNotModified extends _messages_Stickers {
+class messages_StickersNotModified extends _messages_Stickers {
   protected get [id]() {
     return 0xF1749A22;
   }
@@ -17115,7 +17115,7 @@ export class messages_stickersNotModified extends _messages_Stickers {
   }
 }
 
-export class messages_stickers extends _messages_Stickers {
+class messages_Stickers extends _messages_Stickers {
   hash: bigint;
   stickers: Array<enums.Document>;
 
@@ -17144,7 +17144,7 @@ export class messages_stickers extends _messages_Stickers {
   }
 }
 
-export class stickerPack extends _StickerPack {
+class StickerPack extends _StickerPack {
   emoticon: string;
   documents: Array<bigint>;
 
@@ -17173,7 +17173,7 @@ export class stickerPack extends _StickerPack {
   }
 }
 
-export class messages_allStickersNotModified extends _messages_AllStickers {
+class messages_AllStickersNotModified extends _messages_AllStickers {
   protected get [id]() {
     return 0xE86602C3;
   }
@@ -17191,7 +17191,7 @@ export class messages_allStickersNotModified extends _messages_AllStickers {
   }
 }
 
-export class messages_allStickers extends _messages_AllStickers {
+class messages_AllStickers extends _messages_AllStickers {
   hash: bigint;
   sets: Array<enums.StickerSet>;
 
@@ -17220,7 +17220,7 @@ export class messages_allStickers extends _messages_AllStickers {
   }
 }
 
-export class messages_affectedMessages extends _messages_AffectedMessages {
+class messages_AffectedMessages extends _messages_AffectedMessages {
   pts: number;
   pts_count: number;
 
@@ -17249,7 +17249,7 @@ export class messages_affectedMessages extends _messages_AffectedMessages {
   }
 }
 
-export class webPageEmpty extends _WebPage {
+class WebPageEmpty extends _WebPage {
   id: bigint;
   url?: string;
 
@@ -17280,7 +17280,7 @@ export class webPageEmpty extends _WebPage {
   }
 }
 
-export class webPagePending extends _WebPage {
+class WebPagePending extends _WebPage {
   id: bigint;
   url?: string;
   date: number;
@@ -17315,7 +17315,7 @@ export class webPagePending extends _WebPage {
   }
 }
 
-export class webPage extends _WebPage {
+class WebPage extends _WebPage {
   has_large_media?: true;
   id: bigint;
   url: string;
@@ -17414,7 +17414,7 @@ export class webPage extends _WebPage {
   }
 }
 
-export class webPageNotModified extends _WebPage {
+class WebPageNotModified extends _WebPage {
   cached_page_views?: number;
 
   protected get [id]() {
@@ -17441,7 +17441,7 @@ export class webPageNotModified extends _WebPage {
   }
 }
 
-export class authorization extends _Authorization {
+class Authorization extends _Authorization {
   current?: true;
   official_app?: true;
   password_pending?: true;
@@ -17536,7 +17536,7 @@ export class authorization extends _Authorization {
   }
 }
 
-export class account_authorizations extends _account_Authorizations {
+class account_Authorizations extends _account_Authorizations {
   authorization_ttl_days: number;
   authorizations: Array<enums.Authorization>;
 
@@ -17565,7 +17565,7 @@ export class account_authorizations extends _account_Authorizations {
   }
 }
 
-export class account_password extends _account_Password {
+class account_Password extends _account_Password {
   has_recovery?: true;
   has_secure_values?: true;
   has_password?: true;
@@ -17640,7 +17640,7 @@ export class account_password extends _account_Password {
   }
 }
 
-export class account_passwordSettings extends _account_PasswordSettings {
+class account_PasswordSettings extends _account_PasswordSettings {
   email?: string;
   secure_settings?: enums.SecureSecretSettings;
 
@@ -17671,7 +17671,7 @@ export class account_passwordSettings extends _account_PasswordSettings {
   }
 }
 
-export class account_passwordInputSettings extends _account_PasswordInputSettings {
+class account_PasswordInputSettings extends _account_PasswordInputSettings {
   new_algo?: enums.PasswordKdfAlgo;
   new_password_hash?: Uint8Array;
   hint?: string;
@@ -17714,7 +17714,7 @@ export class account_passwordInputSettings extends _account_PasswordInputSetting
   }
 }
 
-export class auth_passwordRecovery extends _auth_PasswordRecovery {
+class auth_PasswordRecovery extends _auth_PasswordRecovery {
   email_pattern: string;
 
   protected get [id]() {
@@ -17739,7 +17739,7 @@ export class auth_passwordRecovery extends _auth_PasswordRecovery {
   }
 }
 
-export class receivedNotifyMessage extends _ReceivedNotifyMessage {
+class ReceivedNotifyMessage extends _ReceivedNotifyMessage {
   id: number;
   flags: number;
 
@@ -17768,7 +17768,7 @@ export class receivedNotifyMessage extends _ReceivedNotifyMessage {
   }
 }
 
-export class chatInviteExported extends _ExportedChatInvite {
+class ChatInviteExported extends _ExportedChatInvite {
   revoked?: true;
   permanent?: true;
   request_needed?: true;
@@ -17839,7 +17839,7 @@ export class chatInviteExported extends _ExportedChatInvite {
   }
 }
 
-export class chatInvitePublicJoinRequests extends _ExportedChatInvite {
+class ChatInvitePublicJoinRequests extends _ExportedChatInvite {
   protected get [id]() {
     return 0xED107AB7;
   }
@@ -17857,7 +17857,7 @@ export class chatInvitePublicJoinRequests extends _ExportedChatInvite {
   }
 }
 
-export class chatInviteAlready extends _ChatInvite {
+class ChatInviteAlready extends _ChatInvite {
   chat: enums.Chat;
 
   protected get [id]() {
@@ -17882,7 +17882,7 @@ export class chatInviteAlready extends _ChatInvite {
   }
 }
 
-export class chatInvite extends _ChatInvite {
+class ChatInvite extends _ChatInvite {
   channel?: true;
   broadcast?: true;
   public?: true;
@@ -17961,7 +17961,7 @@ export class chatInvite extends _ChatInvite {
   }
 }
 
-export class chatInvitePeek extends _ChatInvite {
+class ChatInvitePeek extends _ChatInvite {
   chat: enums.Chat;
   expires: number;
 
@@ -17990,7 +17990,7 @@ export class chatInvitePeek extends _ChatInvite {
   }
 }
 
-export class inputStickerSetEmpty extends _InputStickerSet {
+class InputStickerSetEmpty extends _InputStickerSet {
   protected get [id]() {
     return 0xFFB62B95;
   }
@@ -18008,7 +18008,7 @@ export class inputStickerSetEmpty extends _InputStickerSet {
   }
 }
 
-export class inputStickerSetID extends _InputStickerSet {
+class InputStickerSetID extends _InputStickerSet {
   id: bigint;
   access_hash: bigint;
 
@@ -18037,7 +18037,7 @@ export class inputStickerSetID extends _InputStickerSet {
   }
 }
 
-export class inputStickerSetShortName extends _InputStickerSet {
+class InputStickerSetShortName extends _InputStickerSet {
   short_name: string;
 
   protected get [id]() {
@@ -18062,7 +18062,7 @@ export class inputStickerSetShortName extends _InputStickerSet {
   }
 }
 
-export class inputStickerSetAnimatedEmoji extends _InputStickerSet {
+class InputStickerSetAnimatedEmoji extends _InputStickerSet {
   protected get [id]() {
     return 0x028703C8;
   }
@@ -18080,7 +18080,7 @@ export class inputStickerSetAnimatedEmoji extends _InputStickerSet {
   }
 }
 
-export class inputStickerSetDice extends _InputStickerSet {
+class InputStickerSetDice extends _InputStickerSet {
   emoticon: string;
 
   protected get [id]() {
@@ -18105,7 +18105,7 @@ export class inputStickerSetDice extends _InputStickerSet {
   }
 }
 
-export class inputStickerSetAnimatedEmojiAnimations extends _InputStickerSet {
+class InputStickerSetAnimatedEmojiAnimations extends _InputStickerSet {
   protected get [id]() {
     return 0x0CDE3739;
   }
@@ -18123,7 +18123,7 @@ export class inputStickerSetAnimatedEmojiAnimations extends _InputStickerSet {
   }
 }
 
-export class inputStickerSetPremiumGifts extends _InputStickerSet {
+class InputStickerSetPremiumGifts extends _InputStickerSet {
   protected get [id]() {
     return 0xC88B3B02;
   }
@@ -18141,7 +18141,7 @@ export class inputStickerSetPremiumGifts extends _InputStickerSet {
   }
 }
 
-export class inputStickerSetEmojiGenericAnimations extends _InputStickerSet {
+class InputStickerSetEmojiGenericAnimations extends _InputStickerSet {
   protected get [id]() {
     return 0x04C4D4CE;
   }
@@ -18159,7 +18159,7 @@ export class inputStickerSetEmojiGenericAnimations extends _InputStickerSet {
   }
 }
 
-export class inputStickerSetEmojiDefaultStatuses extends _InputStickerSet {
+class InputStickerSetEmojiDefaultStatuses extends _InputStickerSet {
   protected get [id]() {
     return 0x29D0F5EE;
   }
@@ -18177,7 +18177,7 @@ export class inputStickerSetEmojiDefaultStatuses extends _InputStickerSet {
   }
 }
 
-export class inputStickerSetEmojiDefaultTopicIcons extends _InputStickerSet {
+class InputStickerSetEmojiDefaultTopicIcons extends _InputStickerSet {
   protected get [id]() {
     return 0x44C1F8E9;
   }
@@ -18195,7 +18195,7 @@ export class inputStickerSetEmojiDefaultTopicIcons extends _InputStickerSet {
   }
 }
 
-export class stickerSet extends _StickerSet {
+class StickerSet extends _StickerSet {
   archived?: true;
   official?: true;
   masks?: true;
@@ -18290,7 +18290,7 @@ export class stickerSet extends _StickerSet {
   }
 }
 
-export class messages_stickerSet extends _messages_StickerSet {
+class messages_StickerSet extends _messages_StickerSet {
   set: enums.StickerSet;
   packs: Array<enums.StickerPack>;
   keywords: Array<enums.StickerKeyword>;
@@ -18327,7 +18327,7 @@ export class messages_stickerSet extends _messages_StickerSet {
   }
 }
 
-export class messages_stickerSetNotModified extends _messages_StickerSet {
+class messages_StickerSetNotModified extends _messages_StickerSet {
   protected get [id]() {
     return 0xD3F924EB;
   }
@@ -18345,7 +18345,7 @@ export class messages_stickerSetNotModified extends _messages_StickerSet {
   }
 }
 
-export class botCommand extends _BotCommand {
+class BotCommand extends _BotCommand {
   command: string;
   description: string;
 
@@ -18374,7 +18374,7 @@ export class botCommand extends _BotCommand {
   }
 }
 
-export class botInfo extends _BotInfo {
+class BotInfo extends _BotInfo {
   user_id?: bigint;
   description?: string;
   description_photo?: enums.Photo;
@@ -18421,7 +18421,7 @@ export class botInfo extends _BotInfo {
   }
 }
 
-export class keyboardButton extends _KeyboardButton {
+class KeyboardButton extends _KeyboardButton {
   text: string;
 
   protected get [id]() {
@@ -18446,7 +18446,7 @@ export class keyboardButton extends _KeyboardButton {
   }
 }
 
-export class keyboardButtonUrl extends _KeyboardButton {
+class KeyboardButtonUrl extends _KeyboardButton {
   text: string;
   url: string;
 
@@ -18475,7 +18475,7 @@ export class keyboardButtonUrl extends _KeyboardButton {
   }
 }
 
-export class keyboardButtonCallback extends _KeyboardButton {
+class KeyboardButtonCallback extends _KeyboardButton {
   requires_password?: true;
   text: string;
   data: Uint8Array;
@@ -18510,7 +18510,7 @@ export class keyboardButtonCallback extends _KeyboardButton {
   }
 }
 
-export class keyboardButtonRequestPhone extends _KeyboardButton {
+class KeyboardButtonRequestPhone extends _KeyboardButton {
   text: string;
 
   protected get [id]() {
@@ -18535,7 +18535,7 @@ export class keyboardButtonRequestPhone extends _KeyboardButton {
   }
 }
 
-export class keyboardButtonRequestGeoLocation extends _KeyboardButton {
+class KeyboardButtonRequestGeoLocation extends _KeyboardButton {
   text: string;
 
   protected get [id]() {
@@ -18560,7 +18560,7 @@ export class keyboardButtonRequestGeoLocation extends _KeyboardButton {
   }
 }
 
-export class keyboardButtonSwitchInline extends _KeyboardButton {
+class KeyboardButtonSwitchInline extends _KeyboardButton {
   same_peer?: true;
   text: string;
   query: string;
@@ -18599,7 +18599,7 @@ export class keyboardButtonSwitchInline extends _KeyboardButton {
   }
 }
 
-export class keyboardButtonGame extends _KeyboardButton {
+class KeyboardButtonGame extends _KeyboardButton {
   text: string;
 
   protected get [id]() {
@@ -18624,7 +18624,7 @@ export class keyboardButtonGame extends _KeyboardButton {
   }
 }
 
-export class keyboardButtonBuy extends _KeyboardButton {
+class KeyboardButtonBuy extends _KeyboardButton {
   text: string;
 
   protected get [id]() {
@@ -18649,7 +18649,7 @@ export class keyboardButtonBuy extends _KeyboardButton {
   }
 }
 
-export class keyboardButtonUrlAuth extends _KeyboardButton {
+class KeyboardButtonUrlAuth extends _KeyboardButton {
   text: string;
   fwd_text?: string;
   url: string;
@@ -18688,7 +18688,7 @@ export class keyboardButtonUrlAuth extends _KeyboardButton {
   }
 }
 
-export class inputKeyboardButtonUrlAuth extends _KeyboardButton {
+class InputKeyboardButtonUrlAuth extends _KeyboardButton {
   request_write_access?: true;
   text: string;
   fwd_text?: string;
@@ -18731,7 +18731,7 @@ export class inputKeyboardButtonUrlAuth extends _KeyboardButton {
   }
 }
 
-export class keyboardButtonRequestPoll extends _KeyboardButton {
+class KeyboardButtonRequestPoll extends _KeyboardButton {
   quiz?: boolean;
   text: string;
 
@@ -18762,7 +18762,7 @@ export class keyboardButtonRequestPoll extends _KeyboardButton {
   }
 }
 
-export class inputKeyboardButtonUserProfile extends _KeyboardButton {
+class InputKeyboardButtonUserProfile extends _KeyboardButton {
   text: string;
   user_id: enums.InputUser;
 
@@ -18791,7 +18791,7 @@ export class inputKeyboardButtonUserProfile extends _KeyboardButton {
   }
 }
 
-export class keyboardButtonUserProfile extends _KeyboardButton {
+class KeyboardButtonUserProfile extends _KeyboardButton {
   text: string;
   user_id: bigint;
 
@@ -18820,7 +18820,7 @@ export class keyboardButtonUserProfile extends _KeyboardButton {
   }
 }
 
-export class keyboardButtonWebView extends _KeyboardButton {
+class KeyboardButtonWebView extends _KeyboardButton {
   text: string;
   url: string;
 
@@ -18849,7 +18849,7 @@ export class keyboardButtonWebView extends _KeyboardButton {
   }
 }
 
-export class keyboardButtonSimpleWebView extends _KeyboardButton {
+class KeyboardButtonSimpleWebView extends _KeyboardButton {
   text: string;
   url: string;
 
@@ -18878,7 +18878,7 @@ export class keyboardButtonSimpleWebView extends _KeyboardButton {
   }
 }
 
-export class keyboardButtonRequestPeer extends _KeyboardButton {
+class KeyboardButtonRequestPeer extends _KeyboardButton {
   text: string;
   button_id: number;
   peer_type: enums.RequestPeerType;
@@ -18911,7 +18911,7 @@ export class keyboardButtonRequestPeer extends _KeyboardButton {
   }
 }
 
-export class keyboardButtonRow extends _KeyboardButtonRow {
+class KeyboardButtonRow extends _KeyboardButtonRow {
   buttons: Array<enums.KeyboardButton>;
 
   protected get [id]() {
@@ -18936,7 +18936,7 @@ export class keyboardButtonRow extends _KeyboardButtonRow {
   }
 }
 
-export class replyKeyboardHide extends _ReplyMarkup {
+class ReplyKeyboardHide extends _ReplyMarkup {
   selective?: true;
 
   protected get [id]() {
@@ -18963,7 +18963,7 @@ export class replyKeyboardHide extends _ReplyMarkup {
   }
 }
 
-export class replyKeyboardForceReply extends _ReplyMarkup {
+class ReplyKeyboardForceReply extends _ReplyMarkup {
   single_use?: true;
   selective?: true;
   placeholder?: string;
@@ -18998,7 +18998,7 @@ export class replyKeyboardForceReply extends _ReplyMarkup {
   }
 }
 
-export class replyKeyboardMarkup extends _ReplyMarkup {
+class ReplyKeyboardMarkup extends _ReplyMarkup {
   resize?: true;
   single_use?: true;
   selective?: true;
@@ -19045,7 +19045,7 @@ export class replyKeyboardMarkup extends _ReplyMarkup {
   }
 }
 
-export class replyInlineMarkup extends _ReplyMarkup {
+class ReplyInlineMarkup extends _ReplyMarkup {
   rows: Array<enums.KeyboardButtonRow>;
 
   protected get [id]() {
@@ -19070,7 +19070,7 @@ export class replyInlineMarkup extends _ReplyMarkup {
   }
 }
 
-export class messageEntityUnknown extends _MessageEntity {
+class MessageEntityUnknown extends _MessageEntity {
   offset: number;
   length: number;
 
@@ -19099,7 +19099,7 @@ export class messageEntityUnknown extends _MessageEntity {
   }
 }
 
-export class messageEntityMention extends _MessageEntity {
+class MessageEntityMention extends _MessageEntity {
   offset: number;
   length: number;
 
@@ -19128,7 +19128,7 @@ export class messageEntityMention extends _MessageEntity {
   }
 }
 
-export class messageEntityHashtag extends _MessageEntity {
+class MessageEntityHashtag extends _MessageEntity {
   offset: number;
   length: number;
 
@@ -19157,7 +19157,7 @@ export class messageEntityHashtag extends _MessageEntity {
   }
 }
 
-export class messageEntityBotCommand extends _MessageEntity {
+class MessageEntityBotCommand extends _MessageEntity {
   offset: number;
   length: number;
 
@@ -19186,7 +19186,7 @@ export class messageEntityBotCommand extends _MessageEntity {
   }
 }
 
-export class messageEntityUrl extends _MessageEntity {
+class MessageEntityUrl extends _MessageEntity {
   offset: number;
   length: number;
 
@@ -19215,7 +19215,7 @@ export class messageEntityUrl extends _MessageEntity {
   }
 }
 
-export class messageEntityEmail extends _MessageEntity {
+class MessageEntityEmail extends _MessageEntity {
   offset: number;
   length: number;
 
@@ -19244,7 +19244,7 @@ export class messageEntityEmail extends _MessageEntity {
   }
 }
 
-export class messageEntityBold extends _MessageEntity {
+class MessageEntityBold extends _MessageEntity {
   offset: number;
   length: number;
 
@@ -19273,7 +19273,7 @@ export class messageEntityBold extends _MessageEntity {
   }
 }
 
-export class messageEntityItalic extends _MessageEntity {
+class MessageEntityItalic extends _MessageEntity {
   offset: number;
   length: number;
 
@@ -19302,7 +19302,7 @@ export class messageEntityItalic extends _MessageEntity {
   }
 }
 
-export class messageEntityCode extends _MessageEntity {
+class MessageEntityCode extends _MessageEntity {
   offset: number;
   length: number;
 
@@ -19331,7 +19331,7 @@ export class messageEntityCode extends _MessageEntity {
   }
 }
 
-export class messageEntityPre extends _MessageEntity {
+class MessageEntityPre extends _MessageEntity {
   offset: number;
   length: number;
   language: string;
@@ -19364,7 +19364,7 @@ export class messageEntityPre extends _MessageEntity {
   }
 }
 
-export class messageEntityTextUrl extends _MessageEntity {
+class MessageEntityTextUrl extends _MessageEntity {
   offset: number;
   length: number;
   url: string;
@@ -19397,7 +19397,7 @@ export class messageEntityTextUrl extends _MessageEntity {
   }
 }
 
-export class messageEntityMentionName extends _MessageEntity {
+class MessageEntityMentionName extends _MessageEntity {
   offset: number;
   length: number;
   user_id: bigint;
@@ -19430,7 +19430,7 @@ export class messageEntityMentionName extends _MessageEntity {
   }
 }
 
-export class inputMessageEntityMentionName extends _MessageEntity {
+class InputMessageEntityMentionName extends _MessageEntity {
   offset: number;
   length: number;
   user_id: enums.InputUser;
@@ -19463,7 +19463,7 @@ export class inputMessageEntityMentionName extends _MessageEntity {
   }
 }
 
-export class messageEntityPhone extends _MessageEntity {
+class MessageEntityPhone extends _MessageEntity {
   offset: number;
   length: number;
 
@@ -19492,7 +19492,7 @@ export class messageEntityPhone extends _MessageEntity {
   }
 }
 
-export class messageEntityCashtag extends _MessageEntity {
+class MessageEntityCashtag extends _MessageEntity {
   offset: number;
   length: number;
 
@@ -19521,7 +19521,7 @@ export class messageEntityCashtag extends _MessageEntity {
   }
 }
 
-export class messageEntityUnderline extends _MessageEntity {
+class MessageEntityUnderline extends _MessageEntity {
   offset: number;
   length: number;
 
@@ -19550,7 +19550,7 @@ export class messageEntityUnderline extends _MessageEntity {
   }
 }
 
-export class messageEntityStrike extends _MessageEntity {
+class MessageEntityStrike extends _MessageEntity {
   offset: number;
   length: number;
 
@@ -19579,7 +19579,7 @@ export class messageEntityStrike extends _MessageEntity {
   }
 }
 
-export class messageEntityBankCard extends _MessageEntity {
+class MessageEntityBankCard extends _MessageEntity {
   offset: number;
   length: number;
 
@@ -19608,7 +19608,7 @@ export class messageEntityBankCard extends _MessageEntity {
   }
 }
 
-export class messageEntitySpoiler extends _MessageEntity {
+class MessageEntitySpoiler extends _MessageEntity {
   offset: number;
   length: number;
 
@@ -19637,7 +19637,7 @@ export class messageEntitySpoiler extends _MessageEntity {
   }
 }
 
-export class messageEntityCustomEmoji extends _MessageEntity {
+class MessageEntityCustomEmoji extends _MessageEntity {
   offset: number;
   length: number;
   document_id: bigint;
@@ -19670,7 +19670,7 @@ export class messageEntityCustomEmoji extends _MessageEntity {
   }
 }
 
-export class messageEntityBlockquote extends _MessageEntity {
+class MessageEntityBlockquote extends _MessageEntity {
   offset: number;
   length: number;
 
@@ -19699,7 +19699,7 @@ export class messageEntityBlockquote extends _MessageEntity {
   }
 }
 
-export class inputChannelEmpty extends _InputChannel {
+class InputChannelEmpty extends _InputChannel {
   protected get [id]() {
     return 0xEE8C1E86;
   }
@@ -19717,7 +19717,7 @@ export class inputChannelEmpty extends _InputChannel {
   }
 }
 
-export class inputChannel extends _InputChannel {
+class InputChannel extends _InputChannel {
   channel_id: bigint;
   access_hash: bigint;
 
@@ -19746,7 +19746,7 @@ export class inputChannel extends _InputChannel {
   }
 }
 
-export class inputChannelFromMessage extends _InputChannel {
+class InputChannelFromMessage extends _InputChannel {
   peer: enums.InputPeer;
   msg_id: number;
   channel_id: bigint;
@@ -19779,7 +19779,7 @@ export class inputChannelFromMessage extends _InputChannel {
   }
 }
 
-export class contacts_resolvedPeer extends _contacts_ResolvedPeer {
+class contacts_ResolvedPeer extends _contacts_ResolvedPeer {
   peer: enums.Peer;
   chats: Array<enums.Chat>;
   users: Array<enums.User>;
@@ -19812,7 +19812,7 @@ export class contacts_resolvedPeer extends _contacts_ResolvedPeer {
   }
 }
 
-export class messageRange extends _MessageRange {
+class MessageRange extends _MessageRange {
   min_id: number;
   max_id: number;
 
@@ -19841,7 +19841,7 @@ export class messageRange extends _MessageRange {
   }
 }
 
-export class updates_channelDifferenceEmpty extends _updates_ChannelDifference {
+class updates_ChannelDifferenceEmpty extends _updates_ChannelDifference {
   final?: true;
   pts: number;
   timeout?: number;
@@ -19876,7 +19876,7 @@ export class updates_channelDifferenceEmpty extends _updates_ChannelDifference {
   }
 }
 
-export class updates_channelDifferenceTooLong extends _updates_ChannelDifference {
+class updates_ChannelDifferenceTooLong extends _updates_ChannelDifference {
   final?: true;
   timeout?: number;
   dialog: enums.Dialog;
@@ -19923,7 +19923,7 @@ export class updates_channelDifferenceTooLong extends _updates_ChannelDifference
   }
 }
 
-export class updates_channelDifference extends _updates_ChannelDifference {
+class updates_ChannelDifference extends _updates_ChannelDifference {
   final?: true;
   pts: number;
   timeout?: number;
@@ -19974,7 +19974,7 @@ export class updates_channelDifference extends _updates_ChannelDifference {
   }
 }
 
-export class channelMessagesFilterEmpty extends _ChannelMessagesFilter {
+class ChannelMessagesFilterEmpty extends _ChannelMessagesFilter {
   protected get [id]() {
     return 0x94D42EE7;
   }
@@ -19992,7 +19992,7 @@ export class channelMessagesFilterEmpty extends _ChannelMessagesFilter {
   }
 }
 
-export class channelMessagesFilter extends _ChannelMessagesFilter {
+class ChannelMessagesFilter extends _ChannelMessagesFilter {
   exclude_new_messages?: true;
   ranges: Array<enums.MessageRange>;
 
@@ -20023,7 +20023,7 @@ export class channelMessagesFilter extends _ChannelMessagesFilter {
   }
 }
 
-export class channelParticipant extends _ChannelParticipant {
+class ChannelParticipant extends _ChannelParticipant {
   user_id: bigint;
   date: number;
 
@@ -20052,7 +20052,7 @@ export class channelParticipant extends _ChannelParticipant {
   }
 }
 
-export class channelParticipantSelf extends _ChannelParticipant {
+class ChannelParticipantSelf extends _ChannelParticipant {
   via_request?: true;
   user_id: bigint;
   inviter_id: bigint;
@@ -20091,7 +20091,7 @@ export class channelParticipantSelf extends _ChannelParticipant {
   }
 }
 
-export class channelParticipantCreator extends _ChannelParticipant {
+class ChannelParticipantCreator extends _ChannelParticipant {
   user_id: bigint;
   admin_rights: enums.ChatAdminRights;
   rank?: string;
@@ -20126,7 +20126,7 @@ export class channelParticipantCreator extends _ChannelParticipant {
   }
 }
 
-export class channelParticipantAdmin extends _ChannelParticipant {
+class ChannelParticipantAdmin extends _ChannelParticipant {
   can_edit?: true;
   self?: true;
   user_id: bigint;
@@ -20181,7 +20181,7 @@ export class channelParticipantAdmin extends _ChannelParticipant {
   }
 }
 
-export class channelParticipantBanned extends _ChannelParticipant {
+class ChannelParticipantBanned extends _ChannelParticipant {
   left?: true;
   peer: enums.Peer;
   kicked_by: bigint;
@@ -20224,7 +20224,7 @@ export class channelParticipantBanned extends _ChannelParticipant {
   }
 }
 
-export class channelParticipantLeft extends _ChannelParticipant {
+class ChannelParticipantLeft extends _ChannelParticipant {
   peer: enums.Peer;
 
   protected get [id]() {
@@ -20249,7 +20249,7 @@ export class channelParticipantLeft extends _ChannelParticipant {
   }
 }
 
-export class channelParticipantsRecent extends _ChannelParticipantsFilter {
+class ChannelParticipantsRecent extends _ChannelParticipantsFilter {
   protected get [id]() {
     return 0xDE3F3C79;
   }
@@ -20267,7 +20267,7 @@ export class channelParticipantsRecent extends _ChannelParticipantsFilter {
   }
 }
 
-export class channelParticipantsAdmins extends _ChannelParticipantsFilter {
+class ChannelParticipantsAdmins extends _ChannelParticipantsFilter {
   protected get [id]() {
     return 0xB4608969;
   }
@@ -20285,7 +20285,7 @@ export class channelParticipantsAdmins extends _ChannelParticipantsFilter {
   }
 }
 
-export class channelParticipantsKicked extends _ChannelParticipantsFilter {
+class ChannelParticipantsKicked extends _ChannelParticipantsFilter {
   q: string;
 
   protected get [id]() {
@@ -20310,7 +20310,7 @@ export class channelParticipantsKicked extends _ChannelParticipantsFilter {
   }
 }
 
-export class channelParticipantsBots extends _ChannelParticipantsFilter {
+class ChannelParticipantsBots extends _ChannelParticipantsFilter {
   protected get [id]() {
     return 0xB0D1865B;
   }
@@ -20328,7 +20328,7 @@ export class channelParticipantsBots extends _ChannelParticipantsFilter {
   }
 }
 
-export class channelParticipantsBanned extends _ChannelParticipantsFilter {
+class ChannelParticipantsBanned extends _ChannelParticipantsFilter {
   q: string;
 
   protected get [id]() {
@@ -20353,7 +20353,7 @@ export class channelParticipantsBanned extends _ChannelParticipantsFilter {
   }
 }
 
-export class channelParticipantsSearch extends _ChannelParticipantsFilter {
+class ChannelParticipantsSearch extends _ChannelParticipantsFilter {
   q: string;
 
   protected get [id]() {
@@ -20378,7 +20378,7 @@ export class channelParticipantsSearch extends _ChannelParticipantsFilter {
   }
 }
 
-export class channelParticipantsContacts extends _ChannelParticipantsFilter {
+class ChannelParticipantsContacts extends _ChannelParticipantsFilter {
   q: string;
 
   protected get [id]() {
@@ -20403,7 +20403,7 @@ export class channelParticipantsContacts extends _ChannelParticipantsFilter {
   }
 }
 
-export class channelParticipantsMentions extends _ChannelParticipantsFilter {
+class ChannelParticipantsMentions extends _ChannelParticipantsFilter {
   q?: string;
   top_msg_id?: number;
 
@@ -20434,7 +20434,7 @@ export class channelParticipantsMentions extends _ChannelParticipantsFilter {
   }
 }
 
-export class channels_channelParticipants extends _channels_ChannelParticipants {
+class channels_ChannelParticipants extends _channels_ChannelParticipants {
   count: number;
   participants: Array<enums.ChannelParticipant>;
   chats: Array<enums.Chat>;
@@ -20471,7 +20471,7 @@ export class channels_channelParticipants extends _channels_ChannelParticipants 
   }
 }
 
-export class channels_channelParticipantsNotModified extends _channels_ChannelParticipants {
+class channels_ChannelParticipantsNotModified extends _channels_ChannelParticipants {
   protected get [id]() {
     return 0xF0173FE9;
   }
@@ -20489,7 +20489,7 @@ export class channels_channelParticipantsNotModified extends _channels_ChannelPa
   }
 }
 
-export class channels_channelParticipant extends _channels_ChannelParticipant {
+class channels_ChannelParticipant extends _channels_ChannelParticipant {
   participant: enums.ChannelParticipant;
   chats: Array<enums.Chat>;
   users: Array<enums.User>;
@@ -20522,7 +20522,7 @@ export class channels_channelParticipant extends _channels_ChannelParticipant {
   }
 }
 
-export class help_termsOfService extends _help_TermsOfService {
+class help_TermsOfService extends _help_TermsOfService {
   popup?: true;
   id: enums.DataJSON;
   text: string;
@@ -20565,7 +20565,7 @@ export class help_termsOfService extends _help_TermsOfService {
   }
 }
 
-export class messages_savedGifsNotModified extends _messages_SavedGifs {
+class messages_SavedGifsNotModified extends _messages_SavedGifs {
   protected get [id]() {
     return 0xE8025CA2;
   }
@@ -20583,7 +20583,7 @@ export class messages_savedGifsNotModified extends _messages_SavedGifs {
   }
 }
 
-export class messages_savedGifs extends _messages_SavedGifs {
+class messages_SavedGifs extends _messages_SavedGifs {
   hash: bigint;
   gifs: Array<enums.Document>;
 
@@ -20612,7 +20612,7 @@ export class messages_savedGifs extends _messages_SavedGifs {
   }
 }
 
-export class inputBotInlineMessageMediaAuto extends _InputBotInlineMessage {
+class InputBotInlineMessageMediaAuto extends _InputBotInlineMessage {
   invert_media?: true;
   message: string;
   entities?: Array<enums.MessageEntity>;
@@ -20651,7 +20651,7 @@ export class inputBotInlineMessageMediaAuto extends _InputBotInlineMessage {
   }
 }
 
-export class inputBotInlineMessageText extends _InputBotInlineMessage {
+class InputBotInlineMessageText extends _InputBotInlineMessage {
   no_webpage?: true;
   invert_media?: true;
   message: string;
@@ -20694,7 +20694,7 @@ export class inputBotInlineMessageText extends _InputBotInlineMessage {
   }
 }
 
-export class inputBotInlineMessageMediaGeo extends _InputBotInlineMessage {
+class InputBotInlineMessageMediaGeo extends _InputBotInlineMessage {
   geo_point: enums.InputGeoPoint;
   heading?: number;
   period?: number;
@@ -20737,7 +20737,7 @@ export class inputBotInlineMessageMediaGeo extends _InputBotInlineMessage {
   }
 }
 
-export class inputBotInlineMessageMediaVenue extends _InputBotInlineMessage {
+class InputBotInlineMessageMediaVenue extends _InputBotInlineMessage {
   geo_point: enums.InputGeoPoint;
   title: string;
   address: string;
@@ -20788,7 +20788,7 @@ export class inputBotInlineMessageMediaVenue extends _InputBotInlineMessage {
   }
 }
 
-export class inputBotInlineMessageMediaContact extends _InputBotInlineMessage {
+class InputBotInlineMessageMediaContact extends _InputBotInlineMessage {
   phone_number: string;
   first_name: string;
   last_name: string;
@@ -20831,7 +20831,7 @@ export class inputBotInlineMessageMediaContact extends _InputBotInlineMessage {
   }
 }
 
-export class inputBotInlineMessageGame extends _InputBotInlineMessage {
+class InputBotInlineMessageGame extends _InputBotInlineMessage {
   reply_markup?: enums.ReplyMarkup;
 
   protected get [id]() {
@@ -20858,7 +20858,7 @@ export class inputBotInlineMessageGame extends _InputBotInlineMessage {
   }
 }
 
-export class inputBotInlineMessageMediaInvoice extends _InputBotInlineMessage {
+class InputBotInlineMessageMediaInvoice extends _InputBotInlineMessage {
   title: string;
   description: string;
   photo?: enums.InputWebDocument;
@@ -20913,7 +20913,7 @@ export class inputBotInlineMessageMediaInvoice extends _InputBotInlineMessage {
   }
 }
 
-export class inputBotInlineMessageMediaWebPage extends _InputBotInlineMessage {
+class InputBotInlineMessageMediaWebPage extends _InputBotInlineMessage {
   invert_media?: true;
   force_large_media?: true;
   force_small_media?: true;
@@ -20968,7 +20968,7 @@ export class inputBotInlineMessageMediaWebPage extends _InputBotInlineMessage {
   }
 }
 
-export class inputBotInlineResult extends _InputBotInlineResult {
+class InputBotInlineResult extends _InputBotInlineResult {
   id: string;
   type: string;
   title?: string;
@@ -21023,7 +21023,7 @@ export class inputBotInlineResult extends _InputBotInlineResult {
   }
 }
 
-export class inputBotInlineResultPhoto extends _InputBotInlineResult {
+class InputBotInlineResultPhoto extends _InputBotInlineResult {
   id: string;
   type: string;
   photo: enums.InputPhoto;
@@ -21060,7 +21060,7 @@ export class inputBotInlineResultPhoto extends _InputBotInlineResult {
   }
 }
 
-export class inputBotInlineResultDocument extends _InputBotInlineResult {
+class InputBotInlineResultDocument extends _InputBotInlineResult {
   id: string;
   type: string;
   title?: string;
@@ -21107,7 +21107,7 @@ export class inputBotInlineResultDocument extends _InputBotInlineResult {
   }
 }
 
-export class inputBotInlineResultGame extends _InputBotInlineResult {
+class InputBotInlineResultGame extends _InputBotInlineResult {
   id: string;
   short_name: string;
   send_message: enums.InputBotInlineMessage;
@@ -21140,7 +21140,7 @@ export class inputBotInlineResultGame extends _InputBotInlineResult {
   }
 }
 
-export class botInlineMessageMediaAuto extends _BotInlineMessage {
+class BotInlineMessageMediaAuto extends _BotInlineMessage {
   invert_media?: true;
   message: string;
   entities?: Array<enums.MessageEntity>;
@@ -21179,7 +21179,7 @@ export class botInlineMessageMediaAuto extends _BotInlineMessage {
   }
 }
 
-export class botInlineMessageText extends _BotInlineMessage {
+class BotInlineMessageText extends _BotInlineMessage {
   no_webpage?: true;
   invert_media?: true;
   message: string;
@@ -21222,7 +21222,7 @@ export class botInlineMessageText extends _BotInlineMessage {
   }
 }
 
-export class botInlineMessageMediaGeo extends _BotInlineMessage {
+class BotInlineMessageMediaGeo extends _BotInlineMessage {
   geo: enums.GeoPoint;
   heading?: number;
   period?: number;
@@ -21265,7 +21265,7 @@ export class botInlineMessageMediaGeo extends _BotInlineMessage {
   }
 }
 
-export class botInlineMessageMediaVenue extends _BotInlineMessage {
+class BotInlineMessageMediaVenue extends _BotInlineMessage {
   geo: enums.GeoPoint;
   title: string;
   address: string;
@@ -21316,7 +21316,7 @@ export class botInlineMessageMediaVenue extends _BotInlineMessage {
   }
 }
 
-export class botInlineMessageMediaContact extends _BotInlineMessage {
+class BotInlineMessageMediaContact extends _BotInlineMessage {
   phone_number: string;
   first_name: string;
   last_name: string;
@@ -21359,7 +21359,7 @@ export class botInlineMessageMediaContact extends _BotInlineMessage {
   }
 }
 
-export class botInlineMessageMediaInvoice extends _BotInlineMessage {
+class BotInlineMessageMediaInvoice extends _BotInlineMessage {
   shipping_address_requested?: true;
   test?: true;
   title: string;
@@ -21414,7 +21414,7 @@ export class botInlineMessageMediaInvoice extends _BotInlineMessage {
   }
 }
 
-export class botInlineMessageMediaWebPage extends _BotInlineMessage {
+class BotInlineMessageMediaWebPage extends _BotInlineMessage {
   invert_media?: true;
   force_large_media?: true;
   force_small_media?: true;
@@ -21473,7 +21473,7 @@ export class botInlineMessageMediaWebPage extends _BotInlineMessage {
   }
 }
 
-export class botInlineResult extends _BotInlineResult {
+class BotInlineResult extends _BotInlineResult {
   id: string;
   type: string;
   title?: string;
@@ -21528,7 +21528,7 @@ export class botInlineResult extends _BotInlineResult {
   }
 }
 
-export class botInlineMediaResult extends _BotInlineResult {
+class BotInlineMediaResult extends _BotInlineResult {
   id: string;
   type: string;
   photo?: enums.Photo;
@@ -21579,7 +21579,7 @@ export class botInlineMediaResult extends _BotInlineResult {
   }
 }
 
-export class messages_botResults extends _messages_BotResults {
+class messages_BotResults extends _messages_BotResults {
   gallery?: true;
   query_id: bigint;
   next_offset?: string;
@@ -21634,7 +21634,7 @@ export class messages_botResults extends _messages_BotResults {
   }
 }
 
-export class exportedMessageLink extends _ExportedMessageLink {
+class ExportedMessageLink extends _ExportedMessageLink {
   link: string;
   html: string;
 
@@ -21663,7 +21663,7 @@ export class exportedMessageLink extends _ExportedMessageLink {
   }
 }
 
-export class messageFwdHeader extends _MessageFwdHeader {
+class MessageFwdHeader extends _MessageFwdHeader {
   imported?: true;
   from_id?: enums.Peer;
   from_name?: string;
@@ -21722,7 +21722,7 @@ export class messageFwdHeader extends _MessageFwdHeader {
   }
 }
 
-export class auth_codeTypeSms extends _auth_CodeType {
+class auth_CodeTypeSms extends _auth_CodeType {
   protected get [id]() {
     return 0x72A3158C;
   }
@@ -21740,7 +21740,7 @@ export class auth_codeTypeSms extends _auth_CodeType {
   }
 }
 
-export class auth_codeTypeCall extends _auth_CodeType {
+class auth_CodeTypeCall extends _auth_CodeType {
   protected get [id]() {
     return 0x741CD3E3;
   }
@@ -21758,7 +21758,7 @@ export class auth_codeTypeCall extends _auth_CodeType {
   }
 }
 
-export class auth_codeTypeFlashCall extends _auth_CodeType {
+class auth_CodeTypeFlashCall extends _auth_CodeType {
   protected get [id]() {
     return 0x226CCEFB;
   }
@@ -21776,7 +21776,7 @@ export class auth_codeTypeFlashCall extends _auth_CodeType {
   }
 }
 
-export class auth_codeTypeMissedCall extends _auth_CodeType {
+class auth_CodeTypeMissedCall extends _auth_CodeType {
   protected get [id]() {
     return 0xD61AD6EE;
   }
@@ -21794,7 +21794,7 @@ export class auth_codeTypeMissedCall extends _auth_CodeType {
   }
 }
 
-export class auth_codeTypeFragmentSms extends _auth_CodeType {
+class auth_CodeTypeFragmentSms extends _auth_CodeType {
   protected get [id]() {
     return 0x06ED998C;
   }
@@ -21812,7 +21812,7 @@ export class auth_codeTypeFragmentSms extends _auth_CodeType {
   }
 }
 
-export class auth_sentCodeTypeApp extends _auth_SentCodeType {
+class auth_SentCodeTypeApp extends _auth_SentCodeType {
   length: number;
 
   protected get [id]() {
@@ -21837,7 +21837,7 @@ export class auth_sentCodeTypeApp extends _auth_SentCodeType {
   }
 }
 
-export class auth_sentCodeTypeSms extends _auth_SentCodeType {
+class auth_SentCodeTypeSms extends _auth_SentCodeType {
   length: number;
 
   protected get [id]() {
@@ -21862,7 +21862,7 @@ export class auth_sentCodeTypeSms extends _auth_SentCodeType {
   }
 }
 
-export class auth_sentCodeTypeCall extends _auth_SentCodeType {
+class auth_SentCodeTypeCall extends _auth_SentCodeType {
   length: number;
 
   protected get [id]() {
@@ -21887,7 +21887,7 @@ export class auth_sentCodeTypeCall extends _auth_SentCodeType {
   }
 }
 
-export class auth_sentCodeTypeFlashCall extends _auth_SentCodeType {
+class auth_SentCodeTypeFlashCall extends _auth_SentCodeType {
   pattern: string;
 
   protected get [id]() {
@@ -21912,7 +21912,7 @@ export class auth_sentCodeTypeFlashCall extends _auth_SentCodeType {
   }
 }
 
-export class auth_sentCodeTypeMissedCall extends _auth_SentCodeType {
+class auth_SentCodeTypeMissedCall extends _auth_SentCodeType {
   prefix: string;
   length: number;
 
@@ -21941,7 +21941,7 @@ export class auth_sentCodeTypeMissedCall extends _auth_SentCodeType {
   }
 }
 
-export class auth_sentCodeTypeEmailCode extends _auth_SentCodeType {
+class auth_SentCodeTypeEmailCode extends _auth_SentCodeType {
   apple_signin_allowed?: true;
   google_signin_allowed?: true;
   email_pattern: string;
@@ -21988,7 +21988,7 @@ export class auth_sentCodeTypeEmailCode extends _auth_SentCodeType {
   }
 }
 
-export class auth_sentCodeTypeSetUpEmailRequired extends _auth_SentCodeType {
+class auth_SentCodeTypeSetUpEmailRequired extends _auth_SentCodeType {
   apple_signin_allowed?: true;
   google_signin_allowed?: true;
 
@@ -22019,7 +22019,7 @@ export class auth_sentCodeTypeSetUpEmailRequired extends _auth_SentCodeType {
   }
 }
 
-export class auth_sentCodeTypeFragmentSms extends _auth_SentCodeType {
+class auth_SentCodeTypeFragmentSms extends _auth_SentCodeType {
   url: string;
   length: number;
 
@@ -22048,7 +22048,7 @@ export class auth_sentCodeTypeFragmentSms extends _auth_SentCodeType {
   }
 }
 
-export class auth_sentCodeTypeFirebaseSms extends _auth_SentCodeType {
+class auth_SentCodeTypeFirebaseSms extends _auth_SentCodeType {
   nonce?: Uint8Array;
   receipt?: string;
   push_timeout?: number;
@@ -22087,7 +22087,7 @@ export class auth_sentCodeTypeFirebaseSms extends _auth_SentCodeType {
   }
 }
 
-export class messages_botCallbackAnswer extends _messages_BotCallbackAnswer {
+class messages_BotCallbackAnswer extends _messages_BotCallbackAnswer {
   alert?: true;
   has_url?: true;
   native_ui?: true;
@@ -22134,7 +22134,7 @@ export class messages_botCallbackAnswer extends _messages_BotCallbackAnswer {
   }
 }
 
-export class messages_messageEditData extends _messages_MessageEditData {
+class messages_MessageEditData extends _messages_MessageEditData {
   caption?: true;
 
   protected get [id]() {
@@ -22161,7 +22161,7 @@ export class messages_messageEditData extends _messages_MessageEditData {
   }
 }
 
-export class inputBotInlineMessageID extends _InputBotInlineMessageID {
+class InputBotInlineMessageID extends _InputBotInlineMessageID {
   dc_id: number;
   id: bigint;
   access_hash: bigint;
@@ -22194,7 +22194,7 @@ export class inputBotInlineMessageID extends _InputBotInlineMessageID {
   }
 }
 
-export class inputBotInlineMessageID64 extends _InputBotInlineMessageID {
+class InputBotInlineMessageID64 extends _InputBotInlineMessageID {
   dc_id: number;
   owner_id: bigint;
   id: number;
@@ -22231,7 +22231,7 @@ export class inputBotInlineMessageID64 extends _InputBotInlineMessageID {
   }
 }
 
-export class inlineBotSwitchPM extends _InlineBotSwitchPM {
+class InlineBotSwitchPM extends _InlineBotSwitchPM {
   text: string;
   start_param: string;
 
@@ -22260,12 +22260,12 @@ export class inlineBotSwitchPM extends _InlineBotSwitchPM {
   }
 }
 
-export class messages_peerDialogs extends _messages_PeerDialogs {
+class messages_PeerDialogs extends _messages_PeerDialogs {
   dialogs: Array<enums.Dialog>;
   messages: Array<enums.Message>;
   chats: Array<enums.Chat>;
   users: Array<enums.User>;
-  state: enums.updates_State;
+  state: enums.updates.State;
 
   protected get [id]() {
     return 0x3371C354;
@@ -22291,7 +22291,7 @@ export class messages_peerDialogs extends _messages_PeerDialogs {
     ];
   }
 
-  constructor(params: { dialogs: Array<enums.Dialog>; messages: Array<enums.Message>; chats: Array<enums.Chat>; users: Array<enums.User>; state: enums.updates_State }) {
+  constructor(params: { dialogs: Array<enums.Dialog>; messages: Array<enums.Message>; chats: Array<enums.Chat>; users: Array<enums.User>; state: enums.updates.State }) {
     super();
     this.dialogs = params.dialogs;
     this.messages = params.messages;
@@ -22301,7 +22301,7 @@ export class messages_peerDialogs extends _messages_PeerDialogs {
   }
 }
 
-export class topPeer extends _TopPeer {
+class TopPeer extends _TopPeer {
   peer: enums.Peer;
   rating: number;
 
@@ -22330,7 +22330,7 @@ export class topPeer extends _TopPeer {
   }
 }
 
-export class topPeerCategoryBotsPM extends _TopPeerCategory {
+class TopPeerCategoryBotsPM extends _TopPeerCategory {
   protected get [id]() {
     return 0xAB661B5B;
   }
@@ -22348,7 +22348,7 @@ export class topPeerCategoryBotsPM extends _TopPeerCategory {
   }
 }
 
-export class topPeerCategoryBotsInline extends _TopPeerCategory {
+class TopPeerCategoryBotsInline extends _TopPeerCategory {
   protected get [id]() {
     return 0x148677E2;
   }
@@ -22366,7 +22366,7 @@ export class topPeerCategoryBotsInline extends _TopPeerCategory {
   }
 }
 
-export class topPeerCategoryCorrespondents extends _TopPeerCategory {
+class TopPeerCategoryCorrespondents extends _TopPeerCategory {
   protected get [id]() {
     return 0x0637B7ED;
   }
@@ -22384,7 +22384,7 @@ export class topPeerCategoryCorrespondents extends _TopPeerCategory {
   }
 }
 
-export class topPeerCategoryGroups extends _TopPeerCategory {
+class TopPeerCategoryGroups extends _TopPeerCategory {
   protected get [id]() {
     return 0xBD17A14A;
   }
@@ -22402,7 +22402,7 @@ export class topPeerCategoryGroups extends _TopPeerCategory {
   }
 }
 
-export class topPeerCategoryChannels extends _TopPeerCategory {
+class TopPeerCategoryChannels extends _TopPeerCategory {
   protected get [id]() {
     return 0x161D9628;
   }
@@ -22420,7 +22420,7 @@ export class topPeerCategoryChannels extends _TopPeerCategory {
   }
 }
 
-export class topPeerCategoryPhoneCalls extends _TopPeerCategory {
+class TopPeerCategoryPhoneCalls extends _TopPeerCategory {
   protected get [id]() {
     return 0x1E76A78C;
   }
@@ -22438,7 +22438,7 @@ export class topPeerCategoryPhoneCalls extends _TopPeerCategory {
   }
 }
 
-export class topPeerCategoryForwardUsers extends _TopPeerCategory {
+class TopPeerCategoryForwardUsers extends _TopPeerCategory {
   protected get [id]() {
     return 0xA8406CA9;
   }
@@ -22456,7 +22456,7 @@ export class topPeerCategoryForwardUsers extends _TopPeerCategory {
   }
 }
 
-export class topPeerCategoryForwardChats extends _TopPeerCategory {
+class TopPeerCategoryForwardChats extends _TopPeerCategory {
   protected get [id]() {
     return 0xFBEEC0F0;
   }
@@ -22474,7 +22474,7 @@ export class topPeerCategoryForwardChats extends _TopPeerCategory {
   }
 }
 
-export class topPeerCategoryPeers extends _TopPeerCategoryPeers {
+class TopPeerCategoryPeers extends _TopPeerCategoryPeers {
   category: enums.TopPeerCategory;
   count: number;
   peers: Array<enums.TopPeer>;
@@ -22507,7 +22507,7 @@ export class topPeerCategoryPeers extends _TopPeerCategoryPeers {
   }
 }
 
-export class contacts_topPeersNotModified extends _contacts_TopPeers {
+class contacts_TopPeersNotModified extends _contacts_TopPeers {
   protected get [id]() {
     return 0xDE266EF5;
   }
@@ -22525,7 +22525,7 @@ export class contacts_topPeersNotModified extends _contacts_TopPeers {
   }
 }
 
-export class contacts_topPeers extends _contacts_TopPeers {
+class contacts_TopPeers extends _contacts_TopPeers {
   categories: Array<enums.TopPeerCategoryPeers>;
   chats: Array<enums.Chat>;
   users: Array<enums.User>;
@@ -22558,7 +22558,7 @@ export class contacts_topPeers extends _contacts_TopPeers {
   }
 }
 
-export class contacts_topPeersDisabled extends _contacts_TopPeers {
+class contacts_TopPeersDisabled extends _contacts_TopPeers {
   protected get [id]() {
     return 0xB52C939D;
   }
@@ -22576,7 +22576,7 @@ export class contacts_topPeersDisabled extends _contacts_TopPeers {
   }
 }
 
-export class draftMessageEmpty extends _DraftMessage {
+class DraftMessageEmpty extends _DraftMessage {
   date?: number;
 
   protected get [id]() {
@@ -22603,7 +22603,7 @@ export class draftMessageEmpty extends _DraftMessage {
   }
 }
 
-export class draftMessage extends _DraftMessage {
+class DraftMessage extends _DraftMessage {
   no_webpage?: true;
   invert_media?: true;
   reply_to?: enums.InputReplyTo;
@@ -22654,7 +22654,7 @@ export class draftMessage extends _DraftMessage {
   }
 }
 
-export class messages_featuredStickersNotModified extends _messages_FeaturedStickers {
+class messages_FeaturedStickersNotModified extends _messages_FeaturedStickers {
   count: number;
 
   protected get [id]() {
@@ -22679,7 +22679,7 @@ export class messages_featuredStickersNotModified extends _messages_FeaturedStic
   }
 }
 
-export class messages_featuredStickers extends _messages_FeaturedStickers {
+class messages_FeaturedStickers extends _messages_FeaturedStickers {
   premium?: true;
   hash: bigint;
   count: number;
@@ -22722,7 +22722,7 @@ export class messages_featuredStickers extends _messages_FeaturedStickers {
   }
 }
 
-export class messages_recentStickersNotModified extends _messages_RecentStickers {
+class messages_RecentStickersNotModified extends _messages_RecentStickers {
   protected get [id]() {
     return 0x0B17F890;
   }
@@ -22740,7 +22740,7 @@ export class messages_recentStickersNotModified extends _messages_RecentStickers
   }
 }
 
-export class messages_recentStickers extends _messages_RecentStickers {
+class messages_RecentStickers extends _messages_RecentStickers {
   hash: bigint;
   packs: Array<enums.StickerPack>;
   stickers: Array<enums.Document>;
@@ -22777,7 +22777,7 @@ export class messages_recentStickers extends _messages_RecentStickers {
   }
 }
 
-export class messages_archivedStickers extends _messages_ArchivedStickers {
+class messages_ArchivedStickers extends _messages_ArchivedStickers {
   count: number;
   sets: Array<enums.StickerSetCovered>;
 
@@ -22806,7 +22806,7 @@ export class messages_archivedStickers extends _messages_ArchivedStickers {
   }
 }
 
-export class messages_stickerSetInstallResultSuccess extends _messages_StickerSetInstallResult {
+class messages_StickerSetInstallResultSuccess extends _messages_StickerSetInstallResult {
   protected get [id]() {
     return 0x38641628;
   }
@@ -22824,7 +22824,7 @@ export class messages_stickerSetInstallResultSuccess extends _messages_StickerSe
   }
 }
 
-export class messages_stickerSetInstallResultArchive extends _messages_StickerSetInstallResult {
+class messages_StickerSetInstallResultArchive extends _messages_StickerSetInstallResult {
   sets: Array<enums.StickerSetCovered>;
 
   protected get [id]() {
@@ -22849,7 +22849,7 @@ export class messages_stickerSetInstallResultArchive extends _messages_StickerSe
   }
 }
 
-export class stickerSetCovered extends _StickerSetCovered {
+class StickerSetCovered extends _StickerSetCovered {
   set: enums.StickerSet;
   cover: enums.Document;
 
@@ -22878,7 +22878,7 @@ export class stickerSetCovered extends _StickerSetCovered {
   }
 }
 
-export class stickerSetMultiCovered extends _StickerSetCovered {
+class StickerSetMultiCovered extends _StickerSetCovered {
   set: enums.StickerSet;
   covers: Array<enums.Document>;
 
@@ -22907,7 +22907,7 @@ export class stickerSetMultiCovered extends _StickerSetCovered {
   }
 }
 
-export class stickerSetFullCovered extends _StickerSetCovered {
+class StickerSetFullCovered extends _StickerSetCovered {
   set: enums.StickerSet;
   packs: Array<enums.StickerPack>;
   keywords: Array<enums.StickerKeyword>;
@@ -22944,7 +22944,7 @@ export class stickerSetFullCovered extends _StickerSetCovered {
   }
 }
 
-export class stickerSetNoCovered extends _StickerSetCovered {
+class StickerSetNoCovered extends _StickerSetCovered {
   set: enums.StickerSet;
 
   protected get [id]() {
@@ -22969,7 +22969,7 @@ export class stickerSetNoCovered extends _StickerSetCovered {
   }
 }
 
-export class maskCoords extends _MaskCoords {
+class MaskCoords extends _MaskCoords {
   n: number;
   x: number;
   y: number;
@@ -23006,7 +23006,7 @@ export class maskCoords extends _MaskCoords {
   }
 }
 
-export class inputStickeredMediaPhoto extends _InputStickeredMedia {
+class InputStickeredMediaPhoto extends _InputStickeredMedia {
   id: enums.InputPhoto;
 
   protected get [id]() {
@@ -23031,7 +23031,7 @@ export class inputStickeredMediaPhoto extends _InputStickeredMedia {
   }
 }
 
-export class inputStickeredMediaDocument extends _InputStickeredMedia {
+class InputStickeredMediaDocument extends _InputStickeredMedia {
   id: enums.InputDocument;
 
   protected get [id]() {
@@ -23056,7 +23056,7 @@ export class inputStickeredMediaDocument extends _InputStickeredMedia {
   }
 }
 
-export class game extends _Game {
+class Game extends _Game {
   id: bigint;
   access_hash: bigint;
   short_name: string;
@@ -23107,7 +23107,7 @@ export class game extends _Game {
   }
 }
 
-export class inputGameID extends _InputGame {
+class InputGameID extends _InputGame {
   id: bigint;
   access_hash: bigint;
 
@@ -23136,7 +23136,7 @@ export class inputGameID extends _InputGame {
   }
 }
 
-export class inputGameShortName extends _InputGame {
+class InputGameShortName extends _InputGame {
   bot_id: enums.InputUser;
   short_name: string;
 
@@ -23165,7 +23165,7 @@ export class inputGameShortName extends _InputGame {
   }
 }
 
-export class highScore extends _HighScore {
+class HighScore extends _HighScore {
   pos: number;
   user_id: bigint;
   score: number;
@@ -23198,7 +23198,7 @@ export class highScore extends _HighScore {
   }
 }
 
-export class messages_highScores extends _messages_HighScores {
+class messages_HighScores extends _messages_HighScores {
   scores: Array<enums.HighScore>;
   users: Array<enums.User>;
 
@@ -23227,7 +23227,7 @@ export class messages_highScores extends _messages_HighScores {
   }
 }
 
-export class textEmpty extends _RichText {
+class TextEmpty extends _RichText {
   protected get [id]() {
     return 0xDC3D824F;
   }
@@ -23245,7 +23245,7 @@ export class textEmpty extends _RichText {
   }
 }
 
-export class textPlain extends _RichText {
+class TextPlain extends _RichText {
   text: string;
 
   protected get [id]() {
@@ -23270,7 +23270,7 @@ export class textPlain extends _RichText {
   }
 }
 
-export class textBold extends _RichText {
+class TextBold extends _RichText {
   text: enums.RichText;
 
   protected get [id]() {
@@ -23295,7 +23295,7 @@ export class textBold extends _RichText {
   }
 }
 
-export class textItalic extends _RichText {
+class TextItalic extends _RichText {
   text: enums.RichText;
 
   protected get [id]() {
@@ -23320,7 +23320,7 @@ export class textItalic extends _RichText {
   }
 }
 
-export class textUnderline extends _RichText {
+class TextUnderline extends _RichText {
   text: enums.RichText;
 
   protected get [id]() {
@@ -23345,7 +23345,7 @@ export class textUnderline extends _RichText {
   }
 }
 
-export class textStrike extends _RichText {
+class TextStrike extends _RichText {
   text: enums.RichText;
 
   protected get [id]() {
@@ -23370,7 +23370,7 @@ export class textStrike extends _RichText {
   }
 }
 
-export class textFixed extends _RichText {
+class TextFixed extends _RichText {
   text: enums.RichText;
 
   protected get [id]() {
@@ -23395,7 +23395,7 @@ export class textFixed extends _RichText {
   }
 }
 
-export class textUrl extends _RichText {
+class TextUrl extends _RichText {
   text: enums.RichText;
   url: string;
   webpage_id: bigint;
@@ -23428,7 +23428,7 @@ export class textUrl extends _RichText {
   }
 }
 
-export class textEmail extends _RichText {
+class TextEmail extends _RichText {
   text: enums.RichText;
   email: string;
 
@@ -23457,7 +23457,7 @@ export class textEmail extends _RichText {
   }
 }
 
-export class textConcat extends _RichText {
+class TextConcat extends _RichText {
   texts: Array<enums.RichText>;
 
   protected get [id]() {
@@ -23482,7 +23482,7 @@ export class textConcat extends _RichText {
   }
 }
 
-export class textSubscript extends _RichText {
+class TextSubscript extends _RichText {
   text: enums.RichText;
 
   protected get [id]() {
@@ -23507,7 +23507,7 @@ export class textSubscript extends _RichText {
   }
 }
 
-export class textSuperscript extends _RichText {
+class TextSuperscript extends _RichText {
   text: enums.RichText;
 
   protected get [id]() {
@@ -23532,7 +23532,7 @@ export class textSuperscript extends _RichText {
   }
 }
 
-export class textMarked extends _RichText {
+class TextMarked extends _RichText {
   text: enums.RichText;
 
   protected get [id]() {
@@ -23557,7 +23557,7 @@ export class textMarked extends _RichText {
   }
 }
 
-export class textPhone extends _RichText {
+class TextPhone extends _RichText {
   text: enums.RichText;
   phone: string;
 
@@ -23586,7 +23586,7 @@ export class textPhone extends _RichText {
   }
 }
 
-export class textImage extends _RichText {
+class TextImage extends _RichText {
   document_id: bigint;
   w: number;
   h: number;
@@ -23619,7 +23619,7 @@ export class textImage extends _RichText {
   }
 }
 
-export class textAnchor extends _RichText {
+class TextAnchor extends _RichText {
   text: enums.RichText;
   name: string;
 
@@ -23648,7 +23648,7 @@ export class textAnchor extends _RichText {
   }
 }
 
-export class pageBlockUnsupported extends _PageBlock {
+class PageBlockUnsupported extends _PageBlock {
   protected get [id]() {
     return 0x13567E8A;
   }
@@ -23666,7 +23666,7 @@ export class pageBlockUnsupported extends _PageBlock {
   }
 }
 
-export class pageBlockTitle extends _PageBlock {
+class PageBlockTitle extends _PageBlock {
   text: enums.RichText;
 
   protected get [id]() {
@@ -23691,7 +23691,7 @@ export class pageBlockTitle extends _PageBlock {
   }
 }
 
-export class pageBlockSubtitle extends _PageBlock {
+class PageBlockSubtitle extends _PageBlock {
   text: enums.RichText;
 
   protected get [id]() {
@@ -23716,7 +23716,7 @@ export class pageBlockSubtitle extends _PageBlock {
   }
 }
 
-export class pageBlockAuthorDate extends _PageBlock {
+class PageBlockAuthorDate extends _PageBlock {
   author: enums.RichText;
   published_date: number;
 
@@ -23745,7 +23745,7 @@ export class pageBlockAuthorDate extends _PageBlock {
   }
 }
 
-export class pageBlockHeader extends _PageBlock {
+class PageBlockHeader extends _PageBlock {
   text: enums.RichText;
 
   protected get [id]() {
@@ -23770,7 +23770,7 @@ export class pageBlockHeader extends _PageBlock {
   }
 }
 
-export class pageBlockSubheader extends _PageBlock {
+class PageBlockSubheader extends _PageBlock {
   text: enums.RichText;
 
   protected get [id]() {
@@ -23795,7 +23795,7 @@ export class pageBlockSubheader extends _PageBlock {
   }
 }
 
-export class pageBlockParagraph extends _PageBlock {
+class PageBlockParagraph extends _PageBlock {
   text: enums.RichText;
 
   protected get [id]() {
@@ -23820,7 +23820,7 @@ export class pageBlockParagraph extends _PageBlock {
   }
 }
 
-export class pageBlockPreformatted extends _PageBlock {
+class PageBlockPreformatted extends _PageBlock {
   text: enums.RichText;
   language: string;
 
@@ -23849,7 +23849,7 @@ export class pageBlockPreformatted extends _PageBlock {
   }
 }
 
-export class pageBlockFooter extends _PageBlock {
+class PageBlockFooter extends _PageBlock {
   text: enums.RichText;
 
   protected get [id]() {
@@ -23874,7 +23874,7 @@ export class pageBlockFooter extends _PageBlock {
   }
 }
 
-export class pageBlockDivider extends _PageBlock {
+class PageBlockDivider extends _PageBlock {
   protected get [id]() {
     return 0xDB20B188;
   }
@@ -23892,7 +23892,7 @@ export class pageBlockDivider extends _PageBlock {
   }
 }
 
-export class pageBlockAnchor extends _PageBlock {
+class PageBlockAnchor extends _PageBlock {
   name: string;
 
   protected get [id]() {
@@ -23917,7 +23917,7 @@ export class pageBlockAnchor extends _PageBlock {
   }
 }
 
-export class pageBlockList extends _PageBlock {
+class PageBlockList extends _PageBlock {
   items: Array<enums.PageListItem>;
 
   protected get [id]() {
@@ -23942,7 +23942,7 @@ export class pageBlockList extends _PageBlock {
   }
 }
 
-export class pageBlockBlockquote extends _PageBlock {
+class PageBlockBlockquote extends _PageBlock {
   text: enums.RichText;
   caption: enums.RichText;
 
@@ -23971,7 +23971,7 @@ export class pageBlockBlockquote extends _PageBlock {
   }
 }
 
-export class pageBlockPullquote extends _PageBlock {
+class PageBlockPullquote extends _PageBlock {
   text: enums.RichText;
   caption: enums.RichText;
 
@@ -24000,7 +24000,7 @@ export class pageBlockPullquote extends _PageBlock {
   }
 }
 
-export class pageBlockPhoto extends _PageBlock {
+class PageBlockPhoto extends _PageBlock {
   photo_id: bigint;
   caption: enums.PageCaption;
   url?: string;
@@ -24039,7 +24039,7 @@ export class pageBlockPhoto extends _PageBlock {
   }
 }
 
-export class pageBlockVideo extends _PageBlock {
+class PageBlockVideo extends _PageBlock {
   autoplay?: true;
   loop?: true;
   video_id: bigint;
@@ -24078,7 +24078,7 @@ export class pageBlockVideo extends _PageBlock {
   }
 }
 
-export class pageBlockCover extends _PageBlock {
+class PageBlockCover extends _PageBlock {
   cover: enums.PageBlock;
 
   protected get [id]() {
@@ -24103,7 +24103,7 @@ export class pageBlockCover extends _PageBlock {
   }
 }
 
-export class pageBlockEmbed extends _PageBlock {
+class PageBlockEmbed extends _PageBlock {
   full_width?: true;
   allow_scrolling?: true;
   url?: string;
@@ -24158,7 +24158,7 @@ export class pageBlockEmbed extends _PageBlock {
   }
 }
 
-export class pageBlockEmbedPost extends _PageBlock {
+class PageBlockEmbedPost extends _PageBlock {
   url: string;
   webpage_id: bigint;
   author_photo_id: bigint;
@@ -24207,7 +24207,7 @@ export class pageBlockEmbedPost extends _PageBlock {
   }
 }
 
-export class pageBlockCollage extends _PageBlock {
+class PageBlockCollage extends _PageBlock {
   items: Array<enums.PageBlock>;
   caption: enums.PageCaption;
 
@@ -24236,7 +24236,7 @@ export class pageBlockCollage extends _PageBlock {
   }
 }
 
-export class pageBlockSlideshow extends _PageBlock {
+class PageBlockSlideshow extends _PageBlock {
   items: Array<enums.PageBlock>;
   caption: enums.PageCaption;
 
@@ -24265,7 +24265,7 @@ export class pageBlockSlideshow extends _PageBlock {
   }
 }
 
-export class pageBlockChannel extends _PageBlock {
+class PageBlockChannel extends _PageBlock {
   channel: enums.Chat;
 
   protected get [id]() {
@@ -24290,7 +24290,7 @@ export class pageBlockChannel extends _PageBlock {
   }
 }
 
-export class pageBlockAudio extends _PageBlock {
+class PageBlockAudio extends _PageBlock {
   audio_id: bigint;
   caption: enums.PageCaption;
 
@@ -24319,7 +24319,7 @@ export class pageBlockAudio extends _PageBlock {
   }
 }
 
-export class pageBlockKicker extends _PageBlock {
+class PageBlockKicker extends _PageBlock {
   text: enums.RichText;
 
   protected get [id]() {
@@ -24344,7 +24344,7 @@ export class pageBlockKicker extends _PageBlock {
   }
 }
 
-export class pageBlockTable extends _PageBlock {
+class PageBlockTable extends _PageBlock {
   bordered?: true;
   striped?: true;
   title: enums.RichText;
@@ -24383,7 +24383,7 @@ export class pageBlockTable extends _PageBlock {
   }
 }
 
-export class pageBlockOrderedList extends _PageBlock {
+class PageBlockOrderedList extends _PageBlock {
   items: Array<enums.PageListOrderedItem>;
 
   protected get [id]() {
@@ -24408,7 +24408,7 @@ export class pageBlockOrderedList extends _PageBlock {
   }
 }
 
-export class pageBlockDetails extends _PageBlock {
+class PageBlockDetails extends _PageBlock {
   open?: true;
   blocks: Array<enums.PageBlock>;
   title: enums.RichText;
@@ -24443,7 +24443,7 @@ export class pageBlockDetails extends _PageBlock {
   }
 }
 
-export class pageBlockRelatedArticles extends _PageBlock {
+class PageBlockRelatedArticles extends _PageBlock {
   title: enums.RichText;
   articles: Array<enums.PageRelatedArticle>;
 
@@ -24472,7 +24472,7 @@ export class pageBlockRelatedArticles extends _PageBlock {
   }
 }
 
-export class pageBlockMap extends _PageBlock {
+class PageBlockMap extends _PageBlock {
   geo: enums.GeoPoint;
   zoom: number;
   w: number;
@@ -24513,7 +24513,7 @@ export class pageBlockMap extends _PageBlock {
   }
 }
 
-export class phoneCallDiscardReasonMissed extends _PhoneCallDiscardReason {
+class PhoneCallDiscardReasonMissed extends _PhoneCallDiscardReason {
   protected get [id]() {
     return 0x85E42301;
   }
@@ -24531,7 +24531,7 @@ export class phoneCallDiscardReasonMissed extends _PhoneCallDiscardReason {
   }
 }
 
-export class phoneCallDiscardReasonDisconnect extends _PhoneCallDiscardReason {
+class PhoneCallDiscardReasonDisconnect extends _PhoneCallDiscardReason {
   protected get [id]() {
     return 0xE095C1A0;
   }
@@ -24549,7 +24549,7 @@ export class phoneCallDiscardReasonDisconnect extends _PhoneCallDiscardReason {
   }
 }
 
-export class phoneCallDiscardReasonHangup extends _PhoneCallDiscardReason {
+class PhoneCallDiscardReasonHangup extends _PhoneCallDiscardReason {
   protected get [id]() {
     return 0x57ADC690;
   }
@@ -24567,7 +24567,7 @@ export class phoneCallDiscardReasonHangup extends _PhoneCallDiscardReason {
   }
 }
 
-export class phoneCallDiscardReasonBusy extends _PhoneCallDiscardReason {
+class PhoneCallDiscardReasonBusy extends _PhoneCallDiscardReason {
   protected get [id]() {
     return 0xFAF7E8C9;
   }
@@ -24585,7 +24585,7 @@ export class phoneCallDiscardReasonBusy extends _PhoneCallDiscardReason {
   }
 }
 
-export class dataJSON extends _DataJSON {
+class DataJSON extends _DataJSON {
   data: string;
 
   protected get [id]() {
@@ -24610,7 +24610,7 @@ export class dataJSON extends _DataJSON {
   }
 }
 
-export class labeledPrice extends _LabeledPrice {
+class LabeledPrice extends _LabeledPrice {
   label: string;
   amount: bigint;
 
@@ -24639,7 +24639,7 @@ export class labeledPrice extends _LabeledPrice {
   }
 }
 
-export class invoice extends _Invoice {
+class Invoice extends _Invoice {
   test?: true;
   name_requested?: true;
   phone_requested?: true;
@@ -24718,7 +24718,7 @@ export class invoice extends _Invoice {
   }
 }
 
-export class paymentCharge extends _PaymentCharge {
+class PaymentCharge extends _PaymentCharge {
   id: string;
   provider_charge_id: string;
 
@@ -24747,7 +24747,7 @@ export class paymentCharge extends _PaymentCharge {
   }
 }
 
-export class postAddress extends _PostAddress {
+class PostAddress extends _PostAddress {
   street_line1: string;
   street_line2: string;
   city: string;
@@ -24792,7 +24792,7 @@ export class postAddress extends _PostAddress {
   }
 }
 
-export class paymentRequestedInfo extends _PaymentRequestedInfo {
+class PaymentRequestedInfo extends _PaymentRequestedInfo {
   name?: string;
   phone?: string;
   email?: string;
@@ -24831,7 +24831,7 @@ export class paymentRequestedInfo extends _PaymentRequestedInfo {
   }
 }
 
-export class paymentSavedCredentialsCard extends _PaymentSavedCredentials {
+class PaymentSavedCredentialsCard extends _PaymentSavedCredentials {
   id: string;
   title: string;
 
@@ -24860,7 +24860,7 @@ export class paymentSavedCredentialsCard extends _PaymentSavedCredentials {
   }
 }
 
-export class webDocument extends _WebDocument {
+class WebDocument extends _WebDocument {
   url: string;
   access_hash: bigint;
   size: number;
@@ -24901,7 +24901,7 @@ export class webDocument extends _WebDocument {
   }
 }
 
-export class webDocumentNoProxy extends _WebDocument {
+class WebDocumentNoProxy extends _WebDocument {
   url: string;
   size: number;
   mime_type: string;
@@ -24938,7 +24938,7 @@ export class webDocumentNoProxy extends _WebDocument {
   }
 }
 
-export class inputWebDocument extends _InputWebDocument {
+class InputWebDocument extends _InputWebDocument {
   url: string;
   size: number;
   mime_type: string;
@@ -24975,7 +24975,7 @@ export class inputWebDocument extends _InputWebDocument {
   }
 }
 
-export class inputWebFileLocation extends _InputWebFileLocation {
+class InputWebFileLocation extends _InputWebFileLocation {
   url: string;
   access_hash: bigint;
 
@@ -25004,7 +25004,7 @@ export class inputWebFileLocation extends _InputWebFileLocation {
   }
 }
 
-export class inputWebFileGeoPointLocation extends _InputWebFileLocation {
+class InputWebFileGeoPointLocation extends _InputWebFileLocation {
   geo_point: enums.InputGeoPoint;
   access_hash: bigint;
   w: number;
@@ -25049,7 +25049,7 @@ export class inputWebFileGeoPointLocation extends _InputWebFileLocation {
   }
 }
 
-export class inputWebFileAudioAlbumThumbLocation extends _InputWebFileLocation {
+class InputWebFileAudioAlbumThumbLocation extends _InputWebFileLocation {
   small?: true;
   document?: enums.InputDocument;
   title?: string;
@@ -25088,10 +25088,10 @@ export class inputWebFileAudioAlbumThumbLocation extends _InputWebFileLocation {
   }
 }
 
-export class upload_webFile extends _upload_WebFile {
+class upload_WebFile extends _upload_WebFile {
   size: number;
   mime_type: string;
-  file_type: enums.storage_FileType;
+  file_type: enums.storage.FileType;
   mtime: number;
   bytes: Uint8Array;
 
@@ -25119,7 +25119,7 @@ export class upload_webFile extends _upload_WebFile {
     ];
   }
 
-  constructor(params: { size: number; mime_type: string; file_type: enums.storage_FileType; mtime: number; bytes: Uint8Array }) {
+  constructor(params: { size: number; mime_type: string; file_type: enums.storage.FileType; mtime: number; bytes: Uint8Array }) {
     super();
     this.size = params.size;
     this.mime_type = params.mime_type;
@@ -25129,7 +25129,7 @@ export class upload_webFile extends _upload_WebFile {
   }
 }
 
-export class payments_paymentForm extends _payments_PaymentForm {
+class payments_PaymentForm extends _payments_PaymentForm {
   can_save_credentials?: true;
   password_missing?: true;
   form_id: bigint;
@@ -25216,7 +25216,7 @@ export class payments_paymentForm extends _payments_PaymentForm {
   }
 }
 
-export class payments_validatedRequestedInfo extends _payments_ValidatedRequestedInfo {
+class payments_ValidatedRequestedInfo extends _payments_ValidatedRequestedInfo {
   id?: string;
   shipping_options?: Array<enums.ShippingOption>;
 
@@ -25247,7 +25247,7 @@ export class payments_validatedRequestedInfo extends _payments_ValidatedRequeste
   }
 }
 
-export class payments_paymentResult extends _payments_PaymentResult {
+class payments_PaymentResult extends _payments_PaymentResult {
   updates: enums.Updates;
 
   protected get [id]() {
@@ -25272,7 +25272,7 @@ export class payments_paymentResult extends _payments_PaymentResult {
   }
 }
 
-export class payments_paymentVerificationNeeded extends _payments_PaymentResult {
+class payments_PaymentVerificationNeeded extends _payments_PaymentResult {
   url: string;
 
   protected get [id]() {
@@ -25297,7 +25297,7 @@ export class payments_paymentVerificationNeeded extends _payments_PaymentResult 
   }
 }
 
-export class payments_paymentReceipt extends _payments_PaymentReceipt {
+class payments_PaymentReceipt extends _payments_PaymentReceipt {
   date: number;
   bot_id: bigint;
   provider_id: bigint;
@@ -25376,7 +25376,7 @@ export class payments_paymentReceipt extends _payments_PaymentReceipt {
   }
 }
 
-export class payments_savedInfo extends _payments_SavedInfo {
+class payments_SavedInfo extends _payments_SavedInfo {
   has_saved_credentials?: true;
   saved_info?: enums.PaymentRequestedInfo;
 
@@ -25407,7 +25407,7 @@ export class payments_savedInfo extends _payments_SavedInfo {
   }
 }
 
-export class inputPaymentCredentialsSaved extends _InputPaymentCredentials {
+class InputPaymentCredentialsSaved extends _InputPaymentCredentials {
   id: string;
   tmp_password: Uint8Array;
 
@@ -25436,7 +25436,7 @@ export class inputPaymentCredentialsSaved extends _InputPaymentCredentials {
   }
 }
 
-export class inputPaymentCredentials extends _InputPaymentCredentials {
+class InputPaymentCredentials extends _InputPaymentCredentials {
   save?: true;
   data: enums.DataJSON;
 
@@ -25467,7 +25467,7 @@ export class inputPaymentCredentials extends _InputPaymentCredentials {
   }
 }
 
-export class inputPaymentCredentialsApplePay extends _InputPaymentCredentials {
+class InputPaymentCredentialsApplePay extends _InputPaymentCredentials {
   payment_data: enums.DataJSON;
 
   protected get [id]() {
@@ -25492,7 +25492,7 @@ export class inputPaymentCredentialsApplePay extends _InputPaymentCredentials {
   }
 }
 
-export class inputPaymentCredentialsGooglePay extends _InputPaymentCredentials {
+class InputPaymentCredentialsGooglePay extends _InputPaymentCredentials {
   payment_token: enums.DataJSON;
 
   protected get [id]() {
@@ -25517,7 +25517,7 @@ export class inputPaymentCredentialsGooglePay extends _InputPaymentCredentials {
   }
 }
 
-export class account_tmpPassword extends _account_TmpPassword {
+class account_TmpPassword extends _account_TmpPassword {
   tmp_password: Uint8Array;
   valid_until: number;
 
@@ -25546,7 +25546,7 @@ export class account_tmpPassword extends _account_TmpPassword {
   }
 }
 
-export class shippingOption extends _ShippingOption {
+class ShippingOption extends _ShippingOption {
   id: string;
   title: string;
   prices: Array<enums.LabeledPrice>;
@@ -25579,7 +25579,7 @@ export class shippingOption extends _ShippingOption {
   }
 }
 
-export class inputStickerSetItem extends _InputStickerSetItem {
+class InputStickerSetItem extends _InputStickerSetItem {
   document: enums.InputDocument;
   emoji: string;
   mask_coords?: enums.MaskCoords;
@@ -25618,7 +25618,7 @@ export class inputStickerSetItem extends _InputStickerSetItem {
   }
 }
 
-export class inputPhoneCall extends _InputPhoneCall {
+class InputPhoneCall extends _InputPhoneCall {
   id: bigint;
   access_hash: bigint;
 
@@ -25647,7 +25647,7 @@ export class inputPhoneCall extends _InputPhoneCall {
   }
 }
 
-export class phoneCallEmpty extends _PhoneCall {
+class PhoneCallEmpty extends _PhoneCall {
   id: bigint;
 
   protected get [id]() {
@@ -25672,7 +25672,7 @@ export class phoneCallEmpty extends _PhoneCall {
   }
 }
 
-export class phoneCallWaiting extends _PhoneCall {
+class PhoneCallWaiting extends _PhoneCall {
   video?: true;
   id: bigint;
   access_hash: bigint;
@@ -25727,7 +25727,7 @@ export class phoneCallWaiting extends _PhoneCall {
   }
 }
 
-export class phoneCallRequested extends _PhoneCall {
+class PhoneCallRequested extends _PhoneCall {
   video?: true;
   id: bigint;
   access_hash: bigint;
@@ -25782,7 +25782,7 @@ export class phoneCallRequested extends _PhoneCall {
   }
 }
 
-export class phoneCallAccepted extends _PhoneCall {
+class PhoneCallAccepted extends _PhoneCall {
   video?: true;
   id: bigint;
   access_hash: bigint;
@@ -25837,7 +25837,7 @@ export class phoneCallAccepted extends _PhoneCall {
   }
 }
 
-export class phoneCall extends _PhoneCall {
+class PhoneCall extends _PhoneCall {
   p2p_allowed?: true;
   video?: true;
   id: bigint;
@@ -25908,7 +25908,7 @@ export class phoneCall extends _PhoneCall {
   }
 }
 
-export class phoneCallDiscarded extends _PhoneCall {
+class PhoneCallDiscarded extends _PhoneCall {
   need_rating?: true;
   need_debug?: true;
   video?: true;
@@ -25955,7 +25955,7 @@ export class phoneCallDiscarded extends _PhoneCall {
   }
 }
 
-export class phoneConnection extends _PhoneConnection {
+class PhoneConnection extends _PhoneConnection {
   tcp?: true;
   id: bigint;
   ip: string;
@@ -26002,7 +26002,7 @@ export class phoneConnection extends _PhoneConnection {
   }
 }
 
-export class phoneConnectionWebrtc extends _PhoneConnection {
+class PhoneConnectionWebrtc extends _PhoneConnection {
   turn?: true;
   stun?: true;
   id: bigint;
@@ -26057,7 +26057,7 @@ export class phoneConnectionWebrtc extends _PhoneConnection {
   }
 }
 
-export class phoneCallProtocol extends _PhoneCallProtocol {
+class PhoneCallProtocol extends _PhoneCallProtocol {
   udp_p2p?: true;
   udp_reflector?: true;
   min_layer: number;
@@ -26100,7 +26100,7 @@ export class phoneCallProtocol extends _PhoneCallProtocol {
   }
 }
 
-export class phone_phoneCall extends _phone_PhoneCall {
+class phone_PhoneCall extends _phone_PhoneCall {
   phone_call: enums.PhoneCall;
   users: Array<enums.User>;
 
@@ -26129,7 +26129,7 @@ export class phone_phoneCall extends _phone_PhoneCall {
   }
 }
 
-export class upload_cdnFileReuploadNeeded extends _upload_CdnFile {
+class upload_CdnFileReuploadNeeded extends _upload_CdnFile {
   request_token: Uint8Array;
 
   protected get [id]() {
@@ -26154,7 +26154,7 @@ export class upload_cdnFileReuploadNeeded extends _upload_CdnFile {
   }
 }
 
-export class upload_cdnFile extends _upload_CdnFile {
+class upload_CdnFile extends _upload_CdnFile {
   bytes: Uint8Array;
 
   protected get [id]() {
@@ -26179,7 +26179,7 @@ export class upload_cdnFile extends _upload_CdnFile {
   }
 }
 
-export class cdnPublicKey extends _CdnPublicKey {
+class CdnPublicKey extends _CdnPublicKey {
   dc_id: number;
   public_key: string;
 
@@ -26208,7 +26208,7 @@ export class cdnPublicKey extends _CdnPublicKey {
   }
 }
 
-export class cdnConfig extends _CdnConfig {
+class CdnConfig extends _CdnConfig {
   public_keys: Array<enums.CdnPublicKey>;
 
   protected get [id]() {
@@ -26233,7 +26233,7 @@ export class cdnConfig extends _CdnConfig {
   }
 }
 
-export class langPackString extends _LangPackString {
+class LangPackString extends _LangPackString {
   key: string;
   value: string;
 
@@ -26262,7 +26262,7 @@ export class langPackString extends _LangPackString {
   }
 }
 
-export class langPackStringPluralized extends _LangPackString {
+class LangPackStringPluralized extends _LangPackString {
   key: string;
   zero_value?: string;
   one_value?: string;
@@ -26313,7 +26313,7 @@ export class langPackStringPluralized extends _LangPackString {
   }
 }
 
-export class langPackStringDeleted extends _LangPackString {
+class LangPackStringDeleted extends _LangPackString {
   key: string;
 
   protected get [id]() {
@@ -26338,7 +26338,7 @@ export class langPackStringDeleted extends _LangPackString {
   }
 }
 
-export class langPackDifference extends _LangPackDifference {
+class LangPackDifference extends _LangPackDifference {
   lang_code: string;
   from_version: number;
   version: number;
@@ -26375,7 +26375,7 @@ export class langPackDifference extends _LangPackDifference {
   }
 }
 
-export class langPackLanguage extends _LangPackLanguage {
+class LangPackLanguage extends _LangPackLanguage {
   official?: true;
   rtl?: true;
   beta?: true;
@@ -26442,7 +26442,7 @@ export class langPackLanguage extends _LangPackLanguage {
   }
 }
 
-export class channelAdminLogEventActionChangeTitle extends _ChannelAdminLogEventAction {
+class ChannelAdminLogEventActionChangeTitle extends _ChannelAdminLogEventAction {
   prev_value: string;
   new_value: string;
 
@@ -26471,7 +26471,7 @@ export class channelAdminLogEventActionChangeTitle extends _ChannelAdminLogEvent
   }
 }
 
-export class channelAdminLogEventActionChangeAbout extends _ChannelAdminLogEventAction {
+class ChannelAdminLogEventActionChangeAbout extends _ChannelAdminLogEventAction {
   prev_value: string;
   new_value: string;
 
@@ -26500,7 +26500,7 @@ export class channelAdminLogEventActionChangeAbout extends _ChannelAdminLogEvent
   }
 }
 
-export class channelAdminLogEventActionChangeUsername extends _ChannelAdminLogEventAction {
+class ChannelAdminLogEventActionChangeUsername extends _ChannelAdminLogEventAction {
   prev_value: string;
   new_value: string;
 
@@ -26529,7 +26529,7 @@ export class channelAdminLogEventActionChangeUsername extends _ChannelAdminLogEv
   }
 }
 
-export class channelAdminLogEventActionChangePhoto extends _ChannelAdminLogEventAction {
+class ChannelAdminLogEventActionChangePhoto extends _ChannelAdminLogEventAction {
   prev_photo: enums.Photo;
   new_photo: enums.Photo;
 
@@ -26558,7 +26558,7 @@ export class channelAdminLogEventActionChangePhoto extends _ChannelAdminLogEvent
   }
 }
 
-export class channelAdminLogEventActionToggleInvites extends _ChannelAdminLogEventAction {
+class ChannelAdminLogEventActionToggleInvites extends _ChannelAdminLogEventAction {
   new_value: boolean;
 
   protected get [id]() {
@@ -26583,7 +26583,7 @@ export class channelAdminLogEventActionToggleInvites extends _ChannelAdminLogEve
   }
 }
 
-export class channelAdminLogEventActionToggleSignatures extends _ChannelAdminLogEventAction {
+class ChannelAdminLogEventActionToggleSignatures extends _ChannelAdminLogEventAction {
   new_value: boolean;
 
   protected get [id]() {
@@ -26608,7 +26608,7 @@ export class channelAdminLogEventActionToggleSignatures extends _ChannelAdminLog
   }
 }
 
-export class channelAdminLogEventActionUpdatePinned extends _ChannelAdminLogEventAction {
+class ChannelAdminLogEventActionUpdatePinned extends _ChannelAdminLogEventAction {
   message: enums.Message;
 
   protected get [id]() {
@@ -26633,7 +26633,7 @@ export class channelAdminLogEventActionUpdatePinned extends _ChannelAdminLogEven
   }
 }
 
-export class channelAdminLogEventActionEditMessage extends _ChannelAdminLogEventAction {
+class ChannelAdminLogEventActionEditMessage extends _ChannelAdminLogEventAction {
   prev_message: enums.Message;
   new_message: enums.Message;
 
@@ -26662,7 +26662,7 @@ export class channelAdminLogEventActionEditMessage extends _ChannelAdminLogEvent
   }
 }
 
-export class channelAdminLogEventActionDeleteMessage extends _ChannelAdminLogEventAction {
+class ChannelAdminLogEventActionDeleteMessage extends _ChannelAdminLogEventAction {
   message: enums.Message;
 
   protected get [id]() {
@@ -26687,7 +26687,7 @@ export class channelAdminLogEventActionDeleteMessage extends _ChannelAdminLogEve
   }
 }
 
-export class channelAdminLogEventActionParticipantJoin extends _ChannelAdminLogEventAction {
+class ChannelAdminLogEventActionParticipantJoin extends _ChannelAdminLogEventAction {
   protected get [id]() {
     return 0x183040D3;
   }
@@ -26705,7 +26705,7 @@ export class channelAdminLogEventActionParticipantJoin extends _ChannelAdminLogE
   }
 }
 
-export class channelAdminLogEventActionParticipantLeave extends _ChannelAdminLogEventAction {
+class ChannelAdminLogEventActionParticipantLeave extends _ChannelAdminLogEventAction {
   protected get [id]() {
     return 0xF89777F2;
   }
@@ -26723,7 +26723,7 @@ export class channelAdminLogEventActionParticipantLeave extends _ChannelAdminLog
   }
 }
 
-export class channelAdminLogEventActionParticipantInvite extends _ChannelAdminLogEventAction {
+class ChannelAdminLogEventActionParticipantInvite extends _ChannelAdminLogEventAction {
   participant: enums.ChannelParticipant;
 
   protected get [id]() {
@@ -26748,7 +26748,7 @@ export class channelAdminLogEventActionParticipantInvite extends _ChannelAdminLo
   }
 }
 
-export class channelAdminLogEventActionParticipantToggleBan extends _ChannelAdminLogEventAction {
+class ChannelAdminLogEventActionParticipantToggleBan extends _ChannelAdminLogEventAction {
   prev_participant: enums.ChannelParticipant;
   new_participant: enums.ChannelParticipant;
 
@@ -26777,7 +26777,7 @@ export class channelAdminLogEventActionParticipantToggleBan extends _ChannelAdmi
   }
 }
 
-export class channelAdminLogEventActionParticipantToggleAdmin extends _ChannelAdminLogEventAction {
+class ChannelAdminLogEventActionParticipantToggleAdmin extends _ChannelAdminLogEventAction {
   prev_participant: enums.ChannelParticipant;
   new_participant: enums.ChannelParticipant;
 
@@ -26806,7 +26806,7 @@ export class channelAdminLogEventActionParticipantToggleAdmin extends _ChannelAd
   }
 }
 
-export class channelAdminLogEventActionChangeStickerSet extends _ChannelAdminLogEventAction {
+class ChannelAdminLogEventActionChangeStickerSet extends _ChannelAdminLogEventAction {
   prev_stickerset: enums.InputStickerSet;
   new_stickerset: enums.InputStickerSet;
 
@@ -26835,7 +26835,7 @@ export class channelAdminLogEventActionChangeStickerSet extends _ChannelAdminLog
   }
 }
 
-export class channelAdminLogEventActionTogglePreHistoryHidden extends _ChannelAdminLogEventAction {
+class ChannelAdminLogEventActionTogglePreHistoryHidden extends _ChannelAdminLogEventAction {
   new_value: boolean;
 
   protected get [id]() {
@@ -26860,7 +26860,7 @@ export class channelAdminLogEventActionTogglePreHistoryHidden extends _ChannelAd
   }
 }
 
-export class channelAdminLogEventActionDefaultBannedRights extends _ChannelAdminLogEventAction {
+class ChannelAdminLogEventActionDefaultBannedRights extends _ChannelAdminLogEventAction {
   prev_banned_rights: enums.ChatBannedRights;
   new_banned_rights: enums.ChatBannedRights;
 
@@ -26889,7 +26889,7 @@ export class channelAdminLogEventActionDefaultBannedRights extends _ChannelAdmin
   }
 }
 
-export class channelAdminLogEventActionStopPoll extends _ChannelAdminLogEventAction {
+class ChannelAdminLogEventActionStopPoll extends _ChannelAdminLogEventAction {
   message: enums.Message;
 
   protected get [id]() {
@@ -26914,7 +26914,7 @@ export class channelAdminLogEventActionStopPoll extends _ChannelAdminLogEventAct
   }
 }
 
-export class channelAdminLogEventActionChangeLinkedChat extends _ChannelAdminLogEventAction {
+class ChannelAdminLogEventActionChangeLinkedChat extends _ChannelAdminLogEventAction {
   prev_value: bigint;
   new_value: bigint;
 
@@ -26943,7 +26943,7 @@ export class channelAdminLogEventActionChangeLinkedChat extends _ChannelAdminLog
   }
 }
 
-export class channelAdminLogEventActionChangeLocation extends _ChannelAdminLogEventAction {
+class ChannelAdminLogEventActionChangeLocation extends _ChannelAdminLogEventAction {
   prev_value: enums.ChannelLocation;
   new_value: enums.ChannelLocation;
 
@@ -26972,7 +26972,7 @@ export class channelAdminLogEventActionChangeLocation extends _ChannelAdminLogEv
   }
 }
 
-export class channelAdminLogEventActionToggleSlowMode extends _ChannelAdminLogEventAction {
+class ChannelAdminLogEventActionToggleSlowMode extends _ChannelAdminLogEventAction {
   prev_value: number;
   new_value: number;
 
@@ -27001,7 +27001,7 @@ export class channelAdminLogEventActionToggleSlowMode extends _ChannelAdminLogEv
   }
 }
 
-export class channelAdminLogEventActionStartGroupCall extends _ChannelAdminLogEventAction {
+class ChannelAdminLogEventActionStartGroupCall extends _ChannelAdminLogEventAction {
   call: enums.InputGroupCall;
 
   protected get [id]() {
@@ -27026,7 +27026,7 @@ export class channelAdminLogEventActionStartGroupCall extends _ChannelAdminLogEv
   }
 }
 
-export class channelAdminLogEventActionDiscardGroupCall extends _ChannelAdminLogEventAction {
+class ChannelAdminLogEventActionDiscardGroupCall extends _ChannelAdminLogEventAction {
   call: enums.InputGroupCall;
 
   protected get [id]() {
@@ -27051,7 +27051,7 @@ export class channelAdminLogEventActionDiscardGroupCall extends _ChannelAdminLog
   }
 }
 
-export class channelAdminLogEventActionParticipantMute extends _ChannelAdminLogEventAction {
+class ChannelAdminLogEventActionParticipantMute extends _ChannelAdminLogEventAction {
   participant: enums.GroupCallParticipant;
 
   protected get [id]() {
@@ -27076,7 +27076,7 @@ export class channelAdminLogEventActionParticipantMute extends _ChannelAdminLogE
   }
 }
 
-export class channelAdminLogEventActionParticipantUnmute extends _ChannelAdminLogEventAction {
+class ChannelAdminLogEventActionParticipantUnmute extends _ChannelAdminLogEventAction {
   participant: enums.GroupCallParticipant;
 
   protected get [id]() {
@@ -27101,7 +27101,7 @@ export class channelAdminLogEventActionParticipantUnmute extends _ChannelAdminLo
   }
 }
 
-export class channelAdminLogEventActionToggleGroupCallSetting extends _ChannelAdminLogEventAction {
+class ChannelAdminLogEventActionToggleGroupCallSetting extends _ChannelAdminLogEventAction {
   join_muted: boolean;
 
   protected get [id]() {
@@ -27126,7 +27126,7 @@ export class channelAdminLogEventActionToggleGroupCallSetting extends _ChannelAd
   }
 }
 
-export class channelAdminLogEventActionParticipantJoinByInvite extends _ChannelAdminLogEventAction {
+class ChannelAdminLogEventActionParticipantJoinByInvite extends _ChannelAdminLogEventAction {
   via_chatlist?: true;
   invite: enums.ExportedChatInvite;
 
@@ -27157,7 +27157,7 @@ export class channelAdminLogEventActionParticipantJoinByInvite extends _ChannelA
   }
 }
 
-export class channelAdminLogEventActionExportedInviteDelete extends _ChannelAdminLogEventAction {
+class ChannelAdminLogEventActionExportedInviteDelete extends _ChannelAdminLogEventAction {
   invite: enums.ExportedChatInvite;
 
   protected get [id]() {
@@ -27182,7 +27182,7 @@ export class channelAdminLogEventActionExportedInviteDelete extends _ChannelAdmi
   }
 }
 
-export class channelAdminLogEventActionExportedInviteRevoke extends _ChannelAdminLogEventAction {
+class ChannelAdminLogEventActionExportedInviteRevoke extends _ChannelAdminLogEventAction {
   invite: enums.ExportedChatInvite;
 
   protected get [id]() {
@@ -27207,7 +27207,7 @@ export class channelAdminLogEventActionExportedInviteRevoke extends _ChannelAdmi
   }
 }
 
-export class channelAdminLogEventActionExportedInviteEdit extends _ChannelAdminLogEventAction {
+class ChannelAdminLogEventActionExportedInviteEdit extends _ChannelAdminLogEventAction {
   prev_invite: enums.ExportedChatInvite;
   new_invite: enums.ExportedChatInvite;
 
@@ -27236,7 +27236,7 @@ export class channelAdminLogEventActionExportedInviteEdit extends _ChannelAdminL
   }
 }
 
-export class channelAdminLogEventActionParticipantVolume extends _ChannelAdminLogEventAction {
+class ChannelAdminLogEventActionParticipantVolume extends _ChannelAdminLogEventAction {
   participant: enums.GroupCallParticipant;
 
   protected get [id]() {
@@ -27261,7 +27261,7 @@ export class channelAdminLogEventActionParticipantVolume extends _ChannelAdminLo
   }
 }
 
-export class channelAdminLogEventActionChangeHistoryTTL extends _ChannelAdminLogEventAction {
+class ChannelAdminLogEventActionChangeHistoryTTL extends _ChannelAdminLogEventAction {
   prev_value: number;
   new_value: number;
 
@@ -27290,7 +27290,7 @@ export class channelAdminLogEventActionChangeHistoryTTL extends _ChannelAdminLog
   }
 }
 
-export class channelAdminLogEventActionParticipantJoinByRequest extends _ChannelAdminLogEventAction {
+class ChannelAdminLogEventActionParticipantJoinByRequest extends _ChannelAdminLogEventAction {
   invite: enums.ExportedChatInvite;
   approved_by: bigint;
 
@@ -27319,7 +27319,7 @@ export class channelAdminLogEventActionParticipantJoinByRequest extends _Channel
   }
 }
 
-export class channelAdminLogEventActionToggleNoForwards extends _ChannelAdminLogEventAction {
+class ChannelAdminLogEventActionToggleNoForwards extends _ChannelAdminLogEventAction {
   new_value: boolean;
 
   protected get [id]() {
@@ -27344,7 +27344,7 @@ export class channelAdminLogEventActionToggleNoForwards extends _ChannelAdminLog
   }
 }
 
-export class channelAdminLogEventActionSendMessage extends _ChannelAdminLogEventAction {
+class ChannelAdminLogEventActionSendMessage extends _ChannelAdminLogEventAction {
   message: enums.Message;
 
   protected get [id]() {
@@ -27369,7 +27369,7 @@ export class channelAdminLogEventActionSendMessage extends _ChannelAdminLogEvent
   }
 }
 
-export class channelAdminLogEventActionChangeAvailableReactions extends _ChannelAdminLogEventAction {
+class ChannelAdminLogEventActionChangeAvailableReactions extends _ChannelAdminLogEventAction {
   prev_value: enums.ChatReactions;
   new_value: enums.ChatReactions;
 
@@ -27398,7 +27398,7 @@ export class channelAdminLogEventActionChangeAvailableReactions extends _Channel
   }
 }
 
-export class channelAdminLogEventActionChangeUsernames extends _ChannelAdminLogEventAction {
+class ChannelAdminLogEventActionChangeUsernames extends _ChannelAdminLogEventAction {
   prev_value: Array<string>;
   new_value: Array<string>;
 
@@ -27427,7 +27427,7 @@ export class channelAdminLogEventActionChangeUsernames extends _ChannelAdminLogE
   }
 }
 
-export class channelAdminLogEventActionToggleForum extends _ChannelAdminLogEventAction {
+class ChannelAdminLogEventActionToggleForum extends _ChannelAdminLogEventAction {
   new_value: boolean;
 
   protected get [id]() {
@@ -27452,7 +27452,7 @@ export class channelAdminLogEventActionToggleForum extends _ChannelAdminLogEvent
   }
 }
 
-export class channelAdminLogEventActionCreateTopic extends _ChannelAdminLogEventAction {
+class ChannelAdminLogEventActionCreateTopic extends _ChannelAdminLogEventAction {
   topic: enums.ForumTopic;
 
   protected get [id]() {
@@ -27477,7 +27477,7 @@ export class channelAdminLogEventActionCreateTopic extends _ChannelAdminLogEvent
   }
 }
 
-export class channelAdminLogEventActionEditTopic extends _ChannelAdminLogEventAction {
+class ChannelAdminLogEventActionEditTopic extends _ChannelAdminLogEventAction {
   prev_topic: enums.ForumTopic;
   new_topic: enums.ForumTopic;
 
@@ -27506,7 +27506,7 @@ export class channelAdminLogEventActionEditTopic extends _ChannelAdminLogEventAc
   }
 }
 
-export class channelAdminLogEventActionDeleteTopic extends _ChannelAdminLogEventAction {
+class ChannelAdminLogEventActionDeleteTopic extends _ChannelAdminLogEventAction {
   topic: enums.ForumTopic;
 
   protected get [id]() {
@@ -27531,7 +27531,7 @@ export class channelAdminLogEventActionDeleteTopic extends _ChannelAdminLogEvent
   }
 }
 
-export class channelAdminLogEventActionPinTopic extends _ChannelAdminLogEventAction {
+class ChannelAdminLogEventActionPinTopic extends _ChannelAdminLogEventAction {
   prev_topic?: enums.ForumTopic;
   new_topic?: enums.ForumTopic;
 
@@ -27562,7 +27562,7 @@ export class channelAdminLogEventActionPinTopic extends _ChannelAdminLogEventAct
   }
 }
 
-export class channelAdminLogEventActionToggleAntiSpam extends _ChannelAdminLogEventAction {
+class ChannelAdminLogEventActionToggleAntiSpam extends _ChannelAdminLogEventAction {
   new_value: boolean;
 
   protected get [id]() {
@@ -27587,7 +27587,7 @@ export class channelAdminLogEventActionToggleAntiSpam extends _ChannelAdminLogEv
   }
 }
 
-export class channelAdminLogEventActionChangeColor extends _ChannelAdminLogEventAction {
+class ChannelAdminLogEventActionChangeColor extends _ChannelAdminLogEventAction {
   prev_value: number;
   new_value: number;
 
@@ -27616,7 +27616,7 @@ export class channelAdminLogEventActionChangeColor extends _ChannelAdminLogEvent
   }
 }
 
-export class channelAdminLogEventActionChangeBackgroundEmoji extends _ChannelAdminLogEventAction {
+class ChannelAdminLogEventActionChangeBackgroundEmoji extends _ChannelAdminLogEventAction {
   prev_value: bigint;
   new_value: bigint;
 
@@ -27645,7 +27645,7 @@ export class channelAdminLogEventActionChangeBackgroundEmoji extends _ChannelAdm
   }
 }
 
-export class channelAdminLogEvent extends _ChannelAdminLogEvent {
+class ChannelAdminLogEvent extends _ChannelAdminLogEvent {
   id: bigint;
   date: number;
   user_id: bigint;
@@ -27682,7 +27682,7 @@ export class channelAdminLogEvent extends _ChannelAdminLogEvent {
   }
 }
 
-export class channels_adminLogResults extends _channels_AdminLogResults {
+class channels_AdminLogResults extends _channels_AdminLogResults {
   events: Array<enums.ChannelAdminLogEvent>;
   chats: Array<enums.Chat>;
   users: Array<enums.User>;
@@ -27715,7 +27715,7 @@ export class channels_adminLogResults extends _channels_AdminLogResults {
   }
 }
 
-export class channelAdminLogEventsFilter extends _ChannelAdminLogEventsFilter {
+class ChannelAdminLogEventsFilter extends _ChannelAdminLogEventsFilter {
   join?: true;
   leave?: true;
   invite?: true;
@@ -27810,7 +27810,7 @@ export class channelAdminLogEventsFilter extends _ChannelAdminLogEventsFilter {
   }
 }
 
-export class popularContact extends _PopularContact {
+class PopularContact extends _PopularContact {
   client_id: bigint;
   importers: number;
 
@@ -27839,7 +27839,7 @@ export class popularContact extends _PopularContact {
   }
 }
 
-export class messages_favedStickersNotModified extends _messages_FavedStickers {
+class messages_FavedStickersNotModified extends _messages_FavedStickers {
   protected get [id]() {
     return 0x9E8FA6D3;
   }
@@ -27857,7 +27857,7 @@ export class messages_favedStickersNotModified extends _messages_FavedStickers {
   }
 }
 
-export class messages_favedStickers extends _messages_FavedStickers {
+class messages_FavedStickers extends _messages_FavedStickers {
   hash: bigint;
   packs: Array<enums.StickerPack>;
   stickers: Array<enums.Document>;
@@ -27890,7 +27890,7 @@ export class messages_favedStickers extends _messages_FavedStickers {
   }
 }
 
-export class recentMeUrlUnknown extends _RecentMeUrl {
+class RecentMeUrlUnknown extends _RecentMeUrl {
   url: string;
 
   protected get [id]() {
@@ -27915,7 +27915,7 @@ export class recentMeUrlUnknown extends _RecentMeUrl {
   }
 }
 
-export class recentMeUrlUser extends _RecentMeUrl {
+class RecentMeUrlUser extends _RecentMeUrl {
   url: string;
   user_id: bigint;
 
@@ -27944,7 +27944,7 @@ export class recentMeUrlUser extends _RecentMeUrl {
   }
 }
 
-export class recentMeUrlChat extends _RecentMeUrl {
+class RecentMeUrlChat extends _RecentMeUrl {
   url: string;
   chat_id: bigint;
 
@@ -27973,7 +27973,7 @@ export class recentMeUrlChat extends _RecentMeUrl {
   }
 }
 
-export class recentMeUrlChatInvite extends _RecentMeUrl {
+class RecentMeUrlChatInvite extends _RecentMeUrl {
   url: string;
   chat_invite: enums.ChatInvite;
 
@@ -28002,7 +28002,7 @@ export class recentMeUrlChatInvite extends _RecentMeUrl {
   }
 }
 
-export class recentMeUrlStickerSet extends _RecentMeUrl {
+class RecentMeUrlStickerSet extends _RecentMeUrl {
   url: string;
   set: enums.StickerSetCovered;
 
@@ -28031,7 +28031,7 @@ export class recentMeUrlStickerSet extends _RecentMeUrl {
   }
 }
 
-export class help_recentMeUrls extends _help_RecentMeUrls {
+class help_RecentMeUrls extends _help_RecentMeUrls {
   urls: Array<enums.RecentMeUrl>;
   chats: Array<enums.Chat>;
   users: Array<enums.User>;
@@ -28064,7 +28064,7 @@ export class help_recentMeUrls extends _help_RecentMeUrls {
   }
 }
 
-export class inputSingleMedia extends _InputSingleMedia {
+class InputSingleMedia extends _InputSingleMedia {
   media: enums.InputMedia;
   random_id: bigint;
   message: string;
@@ -28103,7 +28103,7 @@ export class inputSingleMedia extends _InputSingleMedia {
   }
 }
 
-export class webAuthorization extends _WebAuthorization {
+class WebAuthorization extends _WebAuthorization {
   hash: bigint;
   bot_id: bigint;
   domain: string;
@@ -28160,7 +28160,7 @@ export class webAuthorization extends _WebAuthorization {
   }
 }
 
-export class account_webAuthorizations extends _account_WebAuthorizations {
+class account_WebAuthorizations extends _account_WebAuthorizations {
   authorizations: Array<enums.WebAuthorization>;
   users: Array<enums.User>;
 
@@ -28189,7 +28189,7 @@ export class account_webAuthorizations extends _account_WebAuthorizations {
   }
 }
 
-export class inputMessageID extends _InputMessage {
+class InputMessageID extends _InputMessage {
   id: number;
 
   protected get [id]() {
@@ -28214,7 +28214,7 @@ export class inputMessageID extends _InputMessage {
   }
 }
 
-export class inputMessageReplyTo extends _InputMessage {
+class InputMessageReplyTo extends _InputMessage {
   id: number;
 
   protected get [id]() {
@@ -28239,7 +28239,7 @@ export class inputMessageReplyTo extends _InputMessage {
   }
 }
 
-export class inputMessagePinned extends _InputMessage {
+class InputMessagePinned extends _InputMessage {
   protected get [id]() {
     return 0x86872538;
   }
@@ -28257,7 +28257,7 @@ export class inputMessagePinned extends _InputMessage {
   }
 }
 
-export class inputMessageCallbackQuery extends _InputMessage {
+class InputMessageCallbackQuery extends _InputMessage {
   id: number;
   query_id: bigint;
 
@@ -28286,7 +28286,7 @@ export class inputMessageCallbackQuery extends _InputMessage {
   }
 }
 
-export class inputDialogPeer extends _InputDialogPeer {
+class InputDialogPeer extends _InputDialogPeer {
   peer: enums.InputPeer;
 
   protected get [id]() {
@@ -28311,7 +28311,7 @@ export class inputDialogPeer extends _InputDialogPeer {
   }
 }
 
-export class inputDialogPeerFolder extends _InputDialogPeer {
+class InputDialogPeerFolder extends _InputDialogPeer {
   folder_id: number;
 
   protected get [id]() {
@@ -28336,7 +28336,7 @@ export class inputDialogPeerFolder extends _InputDialogPeer {
   }
 }
 
-export class dialogPeer extends _DialogPeer {
+class DialogPeer extends _DialogPeer {
   peer: enums.Peer;
 
   protected get [id]() {
@@ -28361,7 +28361,7 @@ export class dialogPeer extends _DialogPeer {
   }
 }
 
-export class dialogPeerFolder extends _DialogPeer {
+class DialogPeerFolder extends _DialogPeer {
   folder_id: number;
 
   protected get [id]() {
@@ -28386,7 +28386,7 @@ export class dialogPeerFolder extends _DialogPeer {
   }
 }
 
-export class messages_foundStickerSetsNotModified extends _messages_FoundStickerSets {
+class messages_FoundStickerSetsNotModified extends _messages_FoundStickerSets {
   protected get [id]() {
     return 0x0D54B65D;
   }
@@ -28404,7 +28404,7 @@ export class messages_foundStickerSetsNotModified extends _messages_FoundSticker
   }
 }
 
-export class messages_foundStickerSets extends _messages_FoundStickerSets {
+class messages_FoundStickerSets extends _messages_FoundStickerSets {
   hash: bigint;
   sets: Array<enums.StickerSetCovered>;
 
@@ -28433,7 +28433,7 @@ export class messages_foundStickerSets extends _messages_FoundStickerSets {
   }
 }
 
-export class fileHash extends _FileHash {
+class FileHash extends _FileHash {
   offset: bigint;
   limit: number;
   hash: Uint8Array;
@@ -28466,7 +28466,7 @@ export class fileHash extends _FileHash {
   }
 }
 
-export class inputClientProxy extends _InputClientProxy {
+class InputClientProxy extends _InputClientProxy {
   address: string;
   port: number;
 
@@ -28495,7 +28495,7 @@ export class inputClientProxy extends _InputClientProxy {
   }
 }
 
-export class help_termsOfServiceUpdateEmpty extends _help_TermsOfServiceUpdate {
+class help_TermsOfServiceUpdateEmpty extends _help_TermsOfServiceUpdate {
   expires: number;
 
   protected get [id]() {
@@ -28520,9 +28520,9 @@ export class help_termsOfServiceUpdateEmpty extends _help_TermsOfServiceUpdate {
   }
 }
 
-export class help_termsOfServiceUpdate extends _help_TermsOfServiceUpdate {
+class help_TermsOfServiceUpdate extends _help_TermsOfServiceUpdate {
   expires: number;
-  terms_of_service: enums.help_TermsOfService;
+  terms_of_service: enums.help.TermsOfService;
 
   protected get [id]() {
     return 0x28ECF961;
@@ -28542,14 +28542,14 @@ export class help_termsOfServiceUpdate extends _help_TermsOfServiceUpdate {
     ];
   }
 
-  constructor(params: { expires: number; terms_of_service: enums.help_TermsOfService }) {
+  constructor(params: { expires: number; terms_of_service: enums.help.TermsOfService }) {
     super();
     this.expires = params.expires;
     this.terms_of_service = params.terms_of_service;
   }
 }
 
-export class inputSecureFileUploaded extends _InputSecureFile {
+class InputSecureFileUploaded extends _InputSecureFile {
   id: bigint;
   parts: number;
   md5_checksum: string;
@@ -28590,7 +28590,7 @@ export class inputSecureFileUploaded extends _InputSecureFile {
   }
 }
 
-export class inputSecureFile extends _InputSecureFile {
+class InputSecureFile extends _InputSecureFile {
   id: bigint;
   access_hash: bigint;
 
@@ -28619,7 +28619,7 @@ export class inputSecureFile extends _InputSecureFile {
   }
 }
 
-export class secureFileEmpty extends _SecureFile {
+class SecureFileEmpty extends _SecureFile {
   protected get [id]() {
     return 0x64199744;
   }
@@ -28637,7 +28637,7 @@ export class secureFileEmpty extends _SecureFile {
   }
 }
 
-export class secureFile extends _SecureFile {
+class SecureFile extends _SecureFile {
   id: bigint;
   access_hash: bigint;
   size: bigint;
@@ -28686,7 +28686,7 @@ export class secureFile extends _SecureFile {
   }
 }
 
-export class secureData extends _SecureData {
+class SecureData extends _SecureData {
   data: Uint8Array;
   data_hash: Uint8Array;
   secret: Uint8Array;
@@ -28719,7 +28719,7 @@ export class secureData extends _SecureData {
   }
 }
 
-export class securePlainPhone extends _SecurePlainData {
+class SecurePlainPhone extends _SecurePlainData {
   phone: string;
 
   protected get [id]() {
@@ -28744,7 +28744,7 @@ export class securePlainPhone extends _SecurePlainData {
   }
 }
 
-export class securePlainEmail extends _SecurePlainData {
+class SecurePlainEmail extends _SecurePlainData {
   email: string;
 
   protected get [id]() {
@@ -28769,7 +28769,7 @@ export class securePlainEmail extends _SecurePlainData {
   }
 }
 
-export class secureValueTypePersonalDetails extends _SecureValueType {
+class SecureValueTypePersonalDetails extends _SecureValueType {
   protected get [id]() {
     return 0x9D2A81E3;
   }
@@ -28787,7 +28787,7 @@ export class secureValueTypePersonalDetails extends _SecureValueType {
   }
 }
 
-export class secureValueTypePassport extends _SecureValueType {
+class SecureValueTypePassport extends _SecureValueType {
   protected get [id]() {
     return 0x3DAC6A00;
   }
@@ -28805,7 +28805,7 @@ export class secureValueTypePassport extends _SecureValueType {
   }
 }
 
-export class secureValueTypeDriverLicense extends _SecureValueType {
+class SecureValueTypeDriverLicense extends _SecureValueType {
   protected get [id]() {
     return 0x06E425C4;
   }
@@ -28823,7 +28823,7 @@ export class secureValueTypeDriverLicense extends _SecureValueType {
   }
 }
 
-export class secureValueTypeIdentityCard extends _SecureValueType {
+class SecureValueTypeIdentityCard extends _SecureValueType {
   protected get [id]() {
     return 0xA0D0744B;
   }
@@ -28841,7 +28841,7 @@ export class secureValueTypeIdentityCard extends _SecureValueType {
   }
 }
 
-export class secureValueTypeInternalPassport extends _SecureValueType {
+class SecureValueTypeInternalPassport extends _SecureValueType {
   protected get [id]() {
     return 0x99A48F23;
   }
@@ -28859,7 +28859,7 @@ export class secureValueTypeInternalPassport extends _SecureValueType {
   }
 }
 
-export class secureValueTypeAddress extends _SecureValueType {
+class SecureValueTypeAddress extends _SecureValueType {
   protected get [id]() {
     return 0xCBE31E26;
   }
@@ -28877,7 +28877,7 @@ export class secureValueTypeAddress extends _SecureValueType {
   }
 }
 
-export class secureValueTypeUtilityBill extends _SecureValueType {
+class SecureValueTypeUtilityBill extends _SecureValueType {
   protected get [id]() {
     return 0xFC36954E;
   }
@@ -28895,7 +28895,7 @@ export class secureValueTypeUtilityBill extends _SecureValueType {
   }
 }
 
-export class secureValueTypeBankStatement extends _SecureValueType {
+class SecureValueTypeBankStatement extends _SecureValueType {
   protected get [id]() {
     return 0x89137C0D;
   }
@@ -28913,7 +28913,7 @@ export class secureValueTypeBankStatement extends _SecureValueType {
   }
 }
 
-export class secureValueTypeRentalAgreement extends _SecureValueType {
+class SecureValueTypeRentalAgreement extends _SecureValueType {
   protected get [id]() {
     return 0x8B883488;
   }
@@ -28931,7 +28931,7 @@ export class secureValueTypeRentalAgreement extends _SecureValueType {
   }
 }
 
-export class secureValueTypePassportRegistration extends _SecureValueType {
+class SecureValueTypePassportRegistration extends _SecureValueType {
   protected get [id]() {
     return 0x99E3806A;
   }
@@ -28949,7 +28949,7 @@ export class secureValueTypePassportRegistration extends _SecureValueType {
   }
 }
 
-export class secureValueTypeTemporaryRegistration extends _SecureValueType {
+class SecureValueTypeTemporaryRegistration extends _SecureValueType {
   protected get [id]() {
     return 0xEA02EC33;
   }
@@ -28967,7 +28967,7 @@ export class secureValueTypeTemporaryRegistration extends _SecureValueType {
   }
 }
 
-export class secureValueTypePhone extends _SecureValueType {
+class SecureValueTypePhone extends _SecureValueType {
   protected get [id]() {
     return 0xB320AADB;
   }
@@ -28985,7 +28985,7 @@ export class secureValueTypePhone extends _SecureValueType {
   }
 }
 
-export class secureValueTypeEmail extends _SecureValueType {
+class SecureValueTypeEmail extends _SecureValueType {
   protected get [id]() {
     return 0x8E3CA7EE;
   }
@@ -29003,7 +29003,7 @@ export class secureValueTypeEmail extends _SecureValueType {
   }
 }
 
-export class secureValue extends _SecureValue {
+class SecureValue extends _SecureValue {
   type: enums.SecureValueType;
   data?: enums.SecureData;
   front_side?: enums.SecureFile;
@@ -29062,7 +29062,7 @@ export class secureValue extends _SecureValue {
   }
 }
 
-export class inputSecureValue extends _InputSecureValue {
+class InputSecureValue extends _InputSecureValue {
   type: enums.SecureValueType;
   data?: enums.SecureData;
   front_side?: enums.InputSecureFile;
@@ -29117,7 +29117,7 @@ export class inputSecureValue extends _InputSecureValue {
   }
 }
 
-export class secureValueHash extends _SecureValueHash {
+class SecureValueHash extends _SecureValueHash {
   type: enums.SecureValueType;
   hash: Uint8Array;
 
@@ -29146,7 +29146,7 @@ export class secureValueHash extends _SecureValueHash {
   }
 }
 
-export class secureValueErrorData extends _SecureValueError {
+class SecureValueErrorData extends _SecureValueError {
   type: enums.SecureValueType;
   data_hash: Uint8Array;
   field: string;
@@ -29183,7 +29183,7 @@ export class secureValueErrorData extends _SecureValueError {
   }
 }
 
-export class secureValueErrorFrontSide extends _SecureValueError {
+class SecureValueErrorFrontSide extends _SecureValueError {
   type: enums.SecureValueType;
   file_hash: Uint8Array;
   text: string;
@@ -29216,7 +29216,7 @@ export class secureValueErrorFrontSide extends _SecureValueError {
   }
 }
 
-export class secureValueErrorReverseSide extends _SecureValueError {
+class SecureValueErrorReverseSide extends _SecureValueError {
   type: enums.SecureValueType;
   file_hash: Uint8Array;
   text: string;
@@ -29249,7 +29249,7 @@ export class secureValueErrorReverseSide extends _SecureValueError {
   }
 }
 
-export class secureValueErrorSelfie extends _SecureValueError {
+class SecureValueErrorSelfie extends _SecureValueError {
   type: enums.SecureValueType;
   file_hash: Uint8Array;
   text: string;
@@ -29282,7 +29282,7 @@ export class secureValueErrorSelfie extends _SecureValueError {
   }
 }
 
-export class secureValueErrorFile extends _SecureValueError {
+class SecureValueErrorFile extends _SecureValueError {
   type: enums.SecureValueType;
   file_hash: Uint8Array;
   text: string;
@@ -29315,7 +29315,7 @@ export class secureValueErrorFile extends _SecureValueError {
   }
 }
 
-export class secureValueErrorFiles extends _SecureValueError {
+class SecureValueErrorFiles extends _SecureValueError {
   type: enums.SecureValueType;
   file_hash: Array<Uint8Array>;
   text: string;
@@ -29348,7 +29348,7 @@ export class secureValueErrorFiles extends _SecureValueError {
   }
 }
 
-export class secureValueError extends _SecureValueError {
+class SecureValueError extends _SecureValueError {
   type: enums.SecureValueType;
   hash: Uint8Array;
   text: string;
@@ -29381,7 +29381,7 @@ export class secureValueError extends _SecureValueError {
   }
 }
 
-export class secureValueErrorTranslationFile extends _SecureValueError {
+class SecureValueErrorTranslationFile extends _SecureValueError {
   type: enums.SecureValueType;
   file_hash: Uint8Array;
   text: string;
@@ -29414,7 +29414,7 @@ export class secureValueErrorTranslationFile extends _SecureValueError {
   }
 }
 
-export class secureValueErrorTranslationFiles extends _SecureValueError {
+class SecureValueErrorTranslationFiles extends _SecureValueError {
   type: enums.SecureValueType;
   file_hash: Array<Uint8Array>;
   text: string;
@@ -29447,7 +29447,7 @@ export class secureValueErrorTranslationFiles extends _SecureValueError {
   }
 }
 
-export class secureCredentialsEncrypted extends _SecureCredentialsEncrypted {
+class SecureCredentialsEncrypted extends _SecureCredentialsEncrypted {
   data: Uint8Array;
   hash: Uint8Array;
   secret: Uint8Array;
@@ -29480,7 +29480,7 @@ export class secureCredentialsEncrypted extends _SecureCredentialsEncrypted {
   }
 }
 
-export class account_authorizationForm extends _account_AuthorizationForm {
+class account_AuthorizationForm extends _account_AuthorizationForm {
   required_types: Array<enums.SecureRequiredType>;
   values: Array<enums.SecureValue>;
   errors: Array<enums.SecureValueError>;
@@ -29523,7 +29523,7 @@ export class account_authorizationForm extends _account_AuthorizationForm {
   }
 }
 
-export class account_sentEmailCode extends _account_SentEmailCode {
+class account_SentEmailCode extends _account_SentEmailCode {
   email_pattern: string;
   length: number;
 
@@ -29552,7 +29552,7 @@ export class account_sentEmailCode extends _account_SentEmailCode {
   }
 }
 
-export class help_deepLinkInfoEmpty extends _help_DeepLinkInfo {
+class help_DeepLinkInfoEmpty extends _help_DeepLinkInfo {
   protected get [id]() {
     return 0x66AFA166;
   }
@@ -29570,7 +29570,7 @@ export class help_deepLinkInfoEmpty extends _help_DeepLinkInfo {
   }
 }
 
-export class help_deepLinkInfo extends _help_DeepLinkInfo {
+class help_DeepLinkInfo extends _help_DeepLinkInfo {
   update_app?: true;
   message: string;
   entities?: Array<enums.MessageEntity>;
@@ -29605,7 +29605,7 @@ export class help_deepLinkInfo extends _help_DeepLinkInfo {
   }
 }
 
-export class savedPhoneContact extends _SavedContact {
+class SavedPhoneContact extends _SavedContact {
   phone: string;
   first_name: string;
   last_name: string;
@@ -29642,7 +29642,7 @@ export class savedPhoneContact extends _SavedContact {
   }
 }
 
-export class account_takeout extends _account_Takeout {
+class account_Takeout extends _account_Takeout {
   id: bigint;
 
   protected get [id]() {
@@ -29667,7 +29667,7 @@ export class account_takeout extends _account_Takeout {
   }
 }
 
-export class passwordKdfAlgoUnknown extends _PasswordKdfAlgo {
+class PasswordKdfAlgoUnknown extends _PasswordKdfAlgo {
   protected get [id]() {
     return 0xD45AB096;
   }
@@ -29685,7 +29685,7 @@ export class passwordKdfAlgoUnknown extends _PasswordKdfAlgo {
   }
 }
 
-export class passwordKdfAlgoSHA256SHA256PBKDF2HMACSHA512iter100000SHA256ModPow extends _PasswordKdfAlgo {
+class PasswordKdfAlgoSHA256SHA256PBKDF2HMACSHA512iter100000SHA256ModPow extends _PasswordKdfAlgo {
   salt1: Uint8Array;
   salt2: Uint8Array;
   g: number;
@@ -29722,7 +29722,7 @@ export class passwordKdfAlgoSHA256SHA256PBKDF2HMACSHA512iter100000SHA256ModPow e
   }
 }
 
-export class securePasswordKdfAlgoUnknown extends _SecurePasswordKdfAlgo {
+class SecurePasswordKdfAlgoUnknown extends _SecurePasswordKdfAlgo {
   protected get [id]() {
     return 0x004A8537;
   }
@@ -29740,7 +29740,7 @@ export class securePasswordKdfAlgoUnknown extends _SecurePasswordKdfAlgo {
   }
 }
 
-export class securePasswordKdfAlgoPBKDF2HMACSHA512iter100000 extends _SecurePasswordKdfAlgo {
+class SecurePasswordKdfAlgoPBKDF2HMACSHA512iter100000 extends _SecurePasswordKdfAlgo {
   salt: Uint8Array;
 
   protected get [id]() {
@@ -29765,7 +29765,7 @@ export class securePasswordKdfAlgoPBKDF2HMACSHA512iter100000 extends _SecurePass
   }
 }
 
-export class securePasswordKdfAlgoSHA512 extends _SecurePasswordKdfAlgo {
+class SecurePasswordKdfAlgoSHA512 extends _SecurePasswordKdfAlgo {
   salt: Uint8Array;
 
   protected get [id]() {
@@ -29790,7 +29790,7 @@ export class securePasswordKdfAlgoSHA512 extends _SecurePasswordKdfAlgo {
   }
 }
 
-export class secureSecretSettings extends _SecureSecretSettings {
+class SecureSecretSettings extends _SecureSecretSettings {
   secure_algo: enums.SecurePasswordKdfAlgo;
   secure_secret: Uint8Array;
   secure_secret_id: bigint;
@@ -29823,7 +29823,7 @@ export class secureSecretSettings extends _SecureSecretSettings {
   }
 }
 
-export class inputCheckPasswordEmpty extends _InputCheckPasswordSRP {
+class InputCheckPasswordEmpty extends _InputCheckPasswordSRP {
   protected get [id]() {
     return 0x9880F658;
   }
@@ -29841,7 +29841,7 @@ export class inputCheckPasswordEmpty extends _InputCheckPasswordSRP {
   }
 }
 
-export class inputCheckPasswordSRP extends _InputCheckPasswordSRP {
+class InputCheckPasswordSRP extends _InputCheckPasswordSRP {
   srp_id: bigint;
   A: Uint8Array;
   M1: Uint8Array;
@@ -29874,7 +29874,7 @@ export class inputCheckPasswordSRP extends _InputCheckPasswordSRP {
   }
 }
 
-export class secureRequiredType extends _SecureRequiredType {
+class SecureRequiredType extends _SecureRequiredType {
   native_names?: true;
   selfie_required?: true;
   translation_required?: true;
@@ -29913,7 +29913,7 @@ export class secureRequiredType extends _SecureRequiredType {
   }
 }
 
-export class secureRequiredTypeOneOf extends _SecureRequiredType {
+class SecureRequiredTypeOneOf extends _SecureRequiredType {
   types: Array<enums.SecureRequiredType>;
 
   protected get [id]() {
@@ -29938,7 +29938,7 @@ export class secureRequiredTypeOneOf extends _SecureRequiredType {
   }
 }
 
-export class help_passportConfigNotModified extends _help_PassportConfig {
+class help_PassportConfigNotModified extends _help_PassportConfig {
   protected get [id]() {
     return 0xBFB9F457;
   }
@@ -29956,7 +29956,7 @@ export class help_passportConfigNotModified extends _help_PassportConfig {
   }
 }
 
-export class help_passportConfig extends _help_PassportConfig {
+class help_PassportConfig extends _help_PassportConfig {
   hash: number;
   countries_langs: enums.DataJSON;
 
@@ -29985,7 +29985,7 @@ export class help_passportConfig extends _help_PassportConfig {
   }
 }
 
-export class inputAppEvent extends _InputAppEvent {
+class InputAppEvent extends _InputAppEvent {
   time: number;
   type: string;
   peer: bigint;
@@ -30022,7 +30022,7 @@ export class inputAppEvent extends _InputAppEvent {
   }
 }
 
-export class jsonObjectValue extends _JSONObjectValue {
+class JsonObjectValue extends _JSONObjectValue {
   key: string;
   value: enums.JSONValue;
 
@@ -30051,7 +30051,7 @@ export class jsonObjectValue extends _JSONObjectValue {
   }
 }
 
-export class jsonNull extends _JSONValue {
+class JsonNull extends _JSONValue {
   protected get [id]() {
     return 0x3F6D7B68;
   }
@@ -30069,7 +30069,7 @@ export class jsonNull extends _JSONValue {
   }
 }
 
-export class jsonBool extends _JSONValue {
+class JsonBool extends _JSONValue {
   value: boolean;
 
   protected get [id]() {
@@ -30094,7 +30094,7 @@ export class jsonBool extends _JSONValue {
   }
 }
 
-export class jsonNumber extends _JSONValue {
+class JsonNumber extends _JSONValue {
   value: number;
 
   protected get [id]() {
@@ -30119,7 +30119,7 @@ export class jsonNumber extends _JSONValue {
   }
 }
 
-export class jsonString extends _JSONValue {
+class JsonString extends _JSONValue {
   value: string;
 
   protected get [id]() {
@@ -30144,7 +30144,7 @@ export class jsonString extends _JSONValue {
   }
 }
 
-export class jsonArray extends _JSONValue {
+class JsonArray extends _JSONValue {
   value: Array<enums.JSONValue>;
 
   protected get [id]() {
@@ -30169,7 +30169,7 @@ export class jsonArray extends _JSONValue {
   }
 }
 
-export class jsonObject extends _JSONValue {
+class JsonObject extends _JSONValue {
   value: Array<enums.JSONObjectValue>;
 
   protected get [id]() {
@@ -30194,7 +30194,7 @@ export class jsonObject extends _JSONValue {
   }
 }
 
-export class pageTableCell extends _PageTableCell {
+class PageTableCell extends _PageTableCell {
   header?: true;
   align_center?: true;
   align_right?: true;
@@ -30249,7 +30249,7 @@ export class pageTableCell extends _PageTableCell {
   }
 }
 
-export class pageTableRow extends _PageTableRow {
+class PageTableRow extends _PageTableRow {
   cells: Array<enums.PageTableCell>;
 
   protected get [id]() {
@@ -30274,7 +30274,7 @@ export class pageTableRow extends _PageTableRow {
   }
 }
 
-export class pageCaption extends _PageCaption {
+class PageCaption extends _PageCaption {
   text: enums.RichText;
   credit: enums.RichText;
 
@@ -30303,7 +30303,7 @@ export class pageCaption extends _PageCaption {
   }
 }
 
-export class pageListItemText extends _PageListItem {
+class PageListItemText extends _PageListItem {
   text: enums.RichText;
 
   protected get [id]() {
@@ -30328,7 +30328,7 @@ export class pageListItemText extends _PageListItem {
   }
 }
 
-export class pageListItemBlocks extends _PageListItem {
+class PageListItemBlocks extends _PageListItem {
   blocks: Array<enums.PageBlock>;
 
   protected get [id]() {
@@ -30353,7 +30353,7 @@ export class pageListItemBlocks extends _PageListItem {
   }
 }
 
-export class pageListOrderedItemText extends _PageListOrderedItem {
+class PageListOrderedItemText extends _PageListOrderedItem {
   num: string;
   text: enums.RichText;
 
@@ -30382,7 +30382,7 @@ export class pageListOrderedItemText extends _PageListOrderedItem {
   }
 }
 
-export class pageListOrderedItemBlocks extends _PageListOrderedItem {
+class PageListOrderedItemBlocks extends _PageListOrderedItem {
   num: string;
   blocks: Array<enums.PageBlock>;
 
@@ -30411,7 +30411,7 @@ export class pageListOrderedItemBlocks extends _PageListOrderedItem {
   }
 }
 
-export class pageRelatedArticle extends _PageRelatedArticle {
+class PageRelatedArticle extends _PageRelatedArticle {
   url: string;
   webpage_id: bigint;
   title?: string;
@@ -30462,7 +30462,7 @@ export class pageRelatedArticle extends _PageRelatedArticle {
   }
 }
 
-export class page extends _Page {
+class Page extends _Page {
   part?: true;
   rtl?: true;
   v2?: true;
@@ -30517,7 +30517,7 @@ export class page extends _Page {
   }
 }
 
-export class help_supportName extends _help_SupportName {
+class help_SupportName extends _help_SupportName {
   name: string;
 
   protected get [id]() {
@@ -30542,7 +30542,7 @@ export class help_supportName extends _help_SupportName {
   }
 }
 
-export class help_userInfoEmpty extends _help_UserInfo {
+class help_UserInfoEmpty extends _help_UserInfo {
   protected get [id]() {
     return 0xF3AE2EED;
   }
@@ -30560,7 +30560,7 @@ export class help_userInfoEmpty extends _help_UserInfo {
   }
 }
 
-export class help_userInfo extends _help_UserInfo {
+class help_UserInfo extends _help_UserInfo {
   message: string;
   entities: Array<enums.MessageEntity>;
   author: string;
@@ -30597,7 +30597,7 @@ export class help_userInfo extends _help_UserInfo {
   }
 }
 
-export class pollAnswer extends _PollAnswer {
+class PollAnswer extends _PollAnswer {
   text: string;
   option: Uint8Array;
 
@@ -30626,7 +30626,7 @@ export class pollAnswer extends _PollAnswer {
   }
 }
 
-export class poll extends _Poll {
+class Poll extends _Poll {
   id: bigint;
   closed?: true;
   public_voters?: true;
@@ -30685,7 +30685,7 @@ export class poll extends _Poll {
   }
 }
 
-export class pollAnswerVoters extends _PollAnswerVoters {
+class PollAnswerVoters extends _PollAnswerVoters {
   chosen?: true;
   correct?: true;
   option: Uint8Array;
@@ -30724,7 +30724,7 @@ export class pollAnswerVoters extends _PollAnswerVoters {
   }
 }
 
-export class pollResults extends _PollResults {
+class PollResults extends _PollResults {
   min?: true;
   results?: Array<enums.PollAnswerVoters>;
   total_voters?: number;
@@ -30771,7 +30771,7 @@ export class pollResults extends _PollResults {
   }
 }
 
-export class chatOnlines extends _ChatOnlines {
+class ChatOnlines extends _ChatOnlines {
   onlines: number;
 
   protected get [id]() {
@@ -30796,7 +30796,7 @@ export class chatOnlines extends _ChatOnlines {
   }
 }
 
-export class statsURL extends _StatsURL {
+class StatsURL extends _StatsURL {
   url: string;
 
   protected get [id]() {
@@ -30821,7 +30821,7 @@ export class statsURL extends _StatsURL {
   }
 }
 
-export class chatAdminRights extends _ChatAdminRights {
+class ChatAdminRights extends _ChatAdminRights {
   change_info?: true;
   post_messages?: true;
   edit_messages?: true;
@@ -30904,7 +30904,7 @@ export class chatAdminRights extends _ChatAdminRights {
   }
 }
 
-export class chatBannedRights extends _ChatBannedRights {
+class ChatBannedRights extends _ChatBannedRights {
   view_messages?: true;
   send_messages?: true;
   send_media?: true;
@@ -31011,7 +31011,7 @@ export class chatBannedRights extends _ChatBannedRights {
   }
 }
 
-export class inputWallPaper extends _InputWallPaper {
+class InputWallPaper extends _InputWallPaper {
   id: bigint;
   access_hash: bigint;
 
@@ -31040,7 +31040,7 @@ export class inputWallPaper extends _InputWallPaper {
   }
 }
 
-export class inputWallPaperSlug extends _InputWallPaper {
+class InputWallPaperSlug extends _InputWallPaper {
   slug: string;
 
   protected get [id]() {
@@ -31065,7 +31065,7 @@ export class inputWallPaperSlug extends _InputWallPaper {
   }
 }
 
-export class inputWallPaperNoFile extends _InputWallPaper {
+class InputWallPaperNoFile extends _InputWallPaper {
   id: bigint;
 
   protected get [id]() {
@@ -31090,7 +31090,7 @@ export class inputWallPaperNoFile extends _InputWallPaper {
   }
 }
 
-export class account_wallPapersNotModified extends _account_WallPapers {
+class account_WallPapersNotModified extends _account_WallPapers {
   protected get [id]() {
     return 0x1C199183;
   }
@@ -31108,7 +31108,7 @@ export class account_wallPapersNotModified extends _account_WallPapers {
   }
 }
 
-export class account_wallPapers extends _account_WallPapers {
+class account_WallPapers extends _account_WallPapers {
   hash: bigint;
   wallpapers: Array<enums.WallPaper>;
 
@@ -31137,7 +31137,7 @@ export class account_wallPapers extends _account_WallPapers {
   }
 }
 
-export class codeSettings extends _CodeSettings {
+class CodeSettings extends _CodeSettings {
   allow_flashcall?: true;
   current_number?: true;
   allow_app_hash?: true;
@@ -31192,7 +31192,7 @@ export class codeSettings extends _CodeSettings {
   }
 }
 
-export class wallPaperSettings extends _WallPaperSettings {
+class WallPaperSettings extends _WallPaperSettings {
   blur?: true;
   motion?: true;
   background_color?: number;
@@ -31247,7 +31247,7 @@ export class wallPaperSettings extends _WallPaperSettings {
   }
 }
 
-export class autoDownloadSettings extends _AutoDownloadSettings {
+class AutoDownloadSettings extends _AutoDownloadSettings {
   disabled?: true;
   video_preload_large?: true;
   audio_preload_next?: true;
@@ -31314,7 +31314,7 @@ export class autoDownloadSettings extends _AutoDownloadSettings {
   }
 }
 
-export class account_autoDownloadSettings extends _account_AutoDownloadSettings {
+class account_AutoDownloadSettings extends _account_AutoDownloadSettings {
   low: enums.AutoDownloadSettings;
   medium: enums.AutoDownloadSettings;
   high: enums.AutoDownloadSettings;
@@ -31347,7 +31347,7 @@ export class account_autoDownloadSettings extends _account_AutoDownloadSettings 
   }
 }
 
-export class emojiKeyword extends _EmojiKeyword {
+class EmojiKeyword extends _EmojiKeyword {
   keyword: string;
   emoticons: Array<string>;
 
@@ -31376,7 +31376,7 @@ export class emojiKeyword extends _EmojiKeyword {
   }
 }
 
-export class emojiKeywordDeleted extends _EmojiKeyword {
+class EmojiKeywordDeleted extends _EmojiKeyword {
   keyword: string;
   emoticons: Array<string>;
 
@@ -31405,7 +31405,7 @@ export class emojiKeywordDeleted extends _EmojiKeyword {
   }
 }
 
-export class emojiKeywordsDifference extends _EmojiKeywordsDifference {
+class EmojiKeywordsDifference extends _EmojiKeywordsDifference {
   lang_code: string;
   from_version: number;
   version: number;
@@ -31442,7 +31442,7 @@ export class emojiKeywordsDifference extends _EmojiKeywordsDifference {
   }
 }
 
-export class emojiURL extends _EmojiURL {
+class EmojiURL extends _EmojiURL {
   url: string;
 
   protected get [id]() {
@@ -31467,7 +31467,7 @@ export class emojiURL extends _EmojiURL {
   }
 }
 
-export class emojiLanguage extends _EmojiLanguage {
+class EmojiLanguage extends _EmojiLanguage {
   lang_code: string;
 
   protected get [id]() {
@@ -31492,7 +31492,7 @@ export class emojiLanguage extends _EmojiLanguage {
   }
 }
 
-export class folder extends _Folder {
+class Folder extends _Folder {
   autofill_new_broadcasts?: true;
   autofill_public_groups?: true;
   autofill_new_correspondents?: true;
@@ -31539,7 +31539,7 @@ export class folder extends _Folder {
   }
 }
 
-export class inputFolderPeer extends _InputFolderPeer {
+class InputFolderPeer extends _InputFolderPeer {
   peer: enums.InputPeer;
   folder_id: number;
 
@@ -31568,7 +31568,7 @@ export class inputFolderPeer extends _InputFolderPeer {
   }
 }
 
-export class folderPeer extends _FolderPeer {
+class FolderPeer extends _FolderPeer {
   peer: enums.Peer;
   folder_id: number;
 
@@ -31597,7 +31597,7 @@ export class folderPeer extends _FolderPeer {
   }
 }
 
-export class messages_searchCounter extends _messages_SearchCounter {
+class messages_SearchCounter extends _messages_SearchCounter {
   inexact?: true;
   filter: enums.MessagesFilter;
   count: number;
@@ -31632,7 +31632,7 @@ export class messages_searchCounter extends _messages_SearchCounter {
   }
 }
 
-export class urlAuthResultRequest extends _UrlAuthResult {
+class UrlAuthResultRequest extends _UrlAuthResult {
   request_write_access?: true;
   bot: enums.User;
   domain: string;
@@ -31667,7 +31667,7 @@ export class urlAuthResultRequest extends _UrlAuthResult {
   }
 }
 
-export class urlAuthResultAccepted extends _UrlAuthResult {
+class UrlAuthResultAccepted extends _UrlAuthResult {
   url: string;
 
   protected get [id]() {
@@ -31692,7 +31692,7 @@ export class urlAuthResultAccepted extends _UrlAuthResult {
   }
 }
 
-export class urlAuthResultDefault extends _UrlAuthResult {
+class UrlAuthResultDefault extends _UrlAuthResult {
   protected get [id]() {
     return 0xA9D6DB1F;
   }
@@ -31710,7 +31710,7 @@ export class urlAuthResultDefault extends _UrlAuthResult {
   }
 }
 
-export class channelLocationEmpty extends _ChannelLocation {
+class ChannelLocationEmpty extends _ChannelLocation {
   protected get [id]() {
     return 0xBFB5AD8B;
   }
@@ -31728,7 +31728,7 @@ export class channelLocationEmpty extends _ChannelLocation {
   }
 }
 
-export class channelLocation extends _ChannelLocation {
+class ChannelLocation extends _ChannelLocation {
   geo_point: enums.GeoPoint;
   address: string;
 
@@ -31757,7 +31757,7 @@ export class channelLocation extends _ChannelLocation {
   }
 }
 
-export class peerLocated extends _PeerLocated {
+class PeerLocated extends _PeerLocated {
   peer: enums.Peer;
   expires: number;
   distance: number;
@@ -31790,7 +31790,7 @@ export class peerLocated extends _PeerLocated {
   }
 }
 
-export class peerSelfLocated extends _PeerLocated {
+class PeerSelfLocated extends _PeerLocated {
   expires: number;
 
   protected get [id]() {
@@ -31815,7 +31815,7 @@ export class peerSelfLocated extends _PeerLocated {
   }
 }
 
-export class restrictionReason extends _RestrictionReason {
+class RestrictionReason extends _RestrictionReason {
   platform: string;
   reason: string;
   text: string;
@@ -31848,7 +31848,7 @@ export class restrictionReason extends _RestrictionReason {
   }
 }
 
-export class inputTheme extends _InputTheme {
+class InputTheme extends _InputTheme {
   id: bigint;
   access_hash: bigint;
 
@@ -31877,7 +31877,7 @@ export class inputTheme extends _InputTheme {
   }
 }
 
-export class inputThemeSlug extends _InputTheme {
+class InputThemeSlug extends _InputTheme {
   slug: string;
 
   protected get [id]() {
@@ -31902,7 +31902,7 @@ export class inputThemeSlug extends _InputTheme {
   }
 }
 
-export class theme extends _Theme {
+class Theme extends _Theme {
   creator?: true;
   default?: true;
   for_chat?: true;
@@ -31969,7 +31969,7 @@ export class theme extends _Theme {
   }
 }
 
-export class account_themesNotModified extends _account_Themes {
+class account_ThemesNotModified extends _account_Themes {
   protected get [id]() {
     return 0xF41EB622;
   }
@@ -31987,7 +31987,7 @@ export class account_themesNotModified extends _account_Themes {
   }
 }
 
-export class account_themes extends _account_Themes {
+class account_Themes extends _account_Themes {
   hash: bigint;
   themes: Array<enums.Theme>;
 
@@ -32016,7 +32016,7 @@ export class account_themes extends _account_Themes {
   }
 }
 
-export class auth_loginToken extends _auth_LoginToken {
+class auth_LoginToken extends _auth_LoginToken {
   expires: number;
   token: Uint8Array;
 
@@ -32045,7 +32045,7 @@ export class auth_loginToken extends _auth_LoginToken {
   }
 }
 
-export class auth_loginTokenMigrateTo extends _auth_LoginToken {
+class auth_LoginTokenMigrateTo extends _auth_LoginToken {
   dc_id: number;
   token: Uint8Array;
 
@@ -32074,8 +32074,8 @@ export class auth_loginTokenMigrateTo extends _auth_LoginToken {
   }
 }
 
-export class auth_loginTokenSuccess extends _auth_LoginToken {
-  authorization: enums.auth_Authorization;
+class auth_LoginTokenSuccess extends _auth_LoginToken {
+  authorization: enums.auth.Authorization;
 
   protected get [id]() {
     return 0x390D5C5E;
@@ -32093,13 +32093,13 @@ export class auth_loginTokenSuccess extends _auth_LoginToken {
     ];
   }
 
-  constructor(params: { authorization: enums.auth_Authorization }) {
+  constructor(params: { authorization: enums.auth.Authorization }) {
     super();
     this.authorization = params.authorization;
   }
 }
 
-export class account_contentSettings extends _account_ContentSettings {
+class account_ContentSettings extends _account_ContentSettings {
   sensitive_enabled?: true;
   sensitive_can_change?: true;
 
@@ -32130,7 +32130,7 @@ export class account_contentSettings extends _account_ContentSettings {
   }
 }
 
-export class messages_inactiveChats extends _messages_InactiveChats {
+class messages_InactiveChats extends _messages_InactiveChats {
   dates: Array<number>;
   chats: Array<enums.Chat>;
   users: Array<enums.User>;
@@ -32163,7 +32163,7 @@ export class messages_inactiveChats extends _messages_InactiveChats {
   }
 }
 
-export class baseThemeClassic extends _BaseTheme {
+class BaseThemeClassic extends _BaseTheme {
   protected get [id]() {
     return 0xC3A12462;
   }
@@ -32181,7 +32181,7 @@ export class baseThemeClassic extends _BaseTheme {
   }
 }
 
-export class baseThemeDay extends _BaseTheme {
+class BaseThemeDay extends _BaseTheme {
   protected get [id]() {
     return 0xFBD81688;
   }
@@ -32199,7 +32199,7 @@ export class baseThemeDay extends _BaseTheme {
   }
 }
 
-export class baseThemeNight extends _BaseTheme {
+class BaseThemeNight extends _BaseTheme {
   protected get [id]() {
     return 0xB7B31EA8;
   }
@@ -32217,7 +32217,7 @@ export class baseThemeNight extends _BaseTheme {
   }
 }
 
-export class baseThemeTinted extends _BaseTheme {
+class BaseThemeTinted extends _BaseTheme {
   protected get [id]() {
     return 0x6D5F77EE;
   }
@@ -32235,7 +32235,7 @@ export class baseThemeTinted extends _BaseTheme {
   }
 }
 
-export class baseThemeArctic extends _BaseTheme {
+class BaseThemeArctic extends _BaseTheme {
   protected get [id]() {
     return 0x5B11125A;
   }
@@ -32253,7 +32253,7 @@ export class baseThemeArctic extends _BaseTheme {
   }
 }
 
-export class inputThemeSettings extends _InputThemeSettings {
+class InputThemeSettings extends _InputThemeSettings {
   message_colors_animated?: true;
   base_theme: enums.BaseTheme;
   accent_color: number;
@@ -32304,7 +32304,7 @@ export class inputThemeSettings extends _InputThemeSettings {
   }
 }
 
-export class themeSettings extends _ThemeSettings {
+class ThemeSettings extends _ThemeSettings {
   message_colors_animated?: true;
   base_theme: enums.BaseTheme;
   accent_color: number;
@@ -32351,7 +32351,7 @@ export class themeSettings extends _ThemeSettings {
   }
 }
 
-export class webPageAttributeTheme extends _WebPageAttribute {
+class WebPageAttributeTheme extends _WebPageAttribute {
   documents?: Array<enums.Document>;
   settings?: enums.ThemeSettings;
 
@@ -32382,7 +32382,7 @@ export class webPageAttributeTheme extends _WebPageAttribute {
   }
 }
 
-export class webPageAttributeStory extends _WebPageAttribute {
+class WebPageAttributeStory extends _WebPageAttribute {
   peer: enums.Peer;
   id: number;
   story?: enums.StoryItem;
@@ -32417,7 +32417,7 @@ export class webPageAttributeStory extends _WebPageAttribute {
   }
 }
 
-export class messages_votesList extends _messages_VotesList {
+class messages_VotesList extends _messages_VotesList {
   count: number;
   votes: Array<enums.MessagePeerVote>;
   chats: Array<enums.Chat>;
@@ -32460,7 +32460,7 @@ export class messages_votesList extends _messages_VotesList {
   }
 }
 
-export class bankCardOpenUrl extends _BankCardOpenUrl {
+class BankCardOpenUrl extends _BankCardOpenUrl {
   url: string;
   name: string;
 
@@ -32489,7 +32489,7 @@ export class bankCardOpenUrl extends _BankCardOpenUrl {
   }
 }
 
-export class payments_bankCardData extends _payments_BankCardData {
+class payments_BankCardData extends _payments_BankCardData {
   title: string;
   open_urls: Array<enums.BankCardOpenUrl>;
 
@@ -32518,7 +32518,7 @@ export class payments_bankCardData extends _payments_BankCardData {
   }
 }
 
-export class dialogFilter extends _DialogFilter {
+class DialogFilter extends _DialogFilter {
   contacts?: true;
   non_contacts?: true;
   groups?: true;
@@ -32597,7 +32597,7 @@ export class dialogFilter extends _DialogFilter {
   }
 }
 
-export class dialogFilterDefault extends _DialogFilter {
+class DialogFilterDefault extends _DialogFilter {
   protected get [id]() {
     return 0x363293AE;
   }
@@ -32615,7 +32615,7 @@ export class dialogFilterDefault extends _DialogFilter {
   }
 }
 
-export class dialogFilterChatlist extends _DialogFilter {
+class DialogFilterChatlist extends _DialogFilter {
   has_my_invites?: true;
   id: number;
   title: string;
@@ -32662,7 +32662,7 @@ export class dialogFilterChatlist extends _DialogFilter {
   }
 }
 
-export class dialogFilterSuggested extends _DialogFilterSuggested {
+class DialogFilterSuggested extends _DialogFilterSuggested {
   filter: enums.DialogFilter;
   description: string;
 
@@ -32691,7 +32691,7 @@ export class dialogFilterSuggested extends _DialogFilterSuggested {
   }
 }
 
-export class statsDateRangeDays extends _StatsDateRangeDays {
+class StatsDateRangeDays extends _StatsDateRangeDays {
   min_date: number;
   max_date: number;
 
@@ -32720,7 +32720,7 @@ export class statsDateRangeDays extends _StatsDateRangeDays {
   }
 }
 
-export class statsAbsValueAndPrev extends _StatsAbsValueAndPrev {
+class StatsAbsValueAndPrev extends _StatsAbsValueAndPrev {
   current: number;
   previous: number;
 
@@ -32749,7 +32749,7 @@ export class statsAbsValueAndPrev extends _StatsAbsValueAndPrev {
   }
 }
 
-export class statsPercentValue extends _StatsPercentValue {
+class StatsPercentValue extends _StatsPercentValue {
   part: number;
   total: number;
 
@@ -32778,7 +32778,7 @@ export class statsPercentValue extends _StatsPercentValue {
   }
 }
 
-export class statsGraphAsync extends _StatsGraph {
+class StatsGraphAsync extends _StatsGraph {
   token: string;
 
   protected get [id]() {
@@ -32803,7 +32803,7 @@ export class statsGraphAsync extends _StatsGraph {
   }
 }
 
-export class statsGraphError extends _StatsGraph {
+class StatsGraphError extends _StatsGraph {
   error: string;
 
   protected get [id]() {
@@ -32828,7 +32828,7 @@ export class statsGraphError extends _StatsGraph {
   }
 }
 
-export class statsGraph extends _StatsGraph {
+class StatsGraph extends _StatsGraph {
   json: enums.DataJSON;
   zoom_token?: string;
 
@@ -32859,7 +32859,7 @@ export class statsGraph extends _StatsGraph {
   }
 }
 
-export class stats_broadcastStats extends _stats_BroadcastStats {
+class stats_BroadcastStats extends _stats_BroadcastStats {
   period: enums.StatsDateRangeDays;
   followers: enums.StatsAbsValueAndPrev;
   views_per_post: enums.StatsAbsValueAndPrev;
@@ -32968,7 +32968,7 @@ export class stats_broadcastStats extends _stats_BroadcastStats {
   }
 }
 
-export class help_promoDataEmpty extends _help_PromoData {
+class help_PromoDataEmpty extends _help_PromoData {
   expires: number;
 
   protected get [id]() {
@@ -32993,7 +32993,7 @@ export class help_promoDataEmpty extends _help_PromoData {
   }
 }
 
-export class help_promoData extends _help_PromoData {
+class help_PromoData extends _help_PromoData {
   proxy?: true;
   expires: number;
   peer: enums.Peer;
@@ -33044,7 +33044,7 @@ export class help_promoData extends _help_PromoData {
   }
 }
 
-export class videoSize extends _VideoSize {
+class VideoSize extends _VideoSize {
   type: string;
   w: number;
   h: number;
@@ -33087,7 +33087,7 @@ export class videoSize extends _VideoSize {
   }
 }
 
-export class videoSizeEmojiMarkup extends _VideoSize {
+class VideoSizeEmojiMarkup extends _VideoSize {
   emoji_id: bigint;
   background_colors: Array<number>;
 
@@ -33116,7 +33116,7 @@ export class videoSizeEmojiMarkup extends _VideoSize {
   }
 }
 
-export class videoSizeStickerMarkup extends _VideoSize {
+class VideoSizeStickerMarkup extends _VideoSize {
   stickerset: enums.InputStickerSet;
   sticker_id: bigint;
   background_colors: Array<number>;
@@ -33149,7 +33149,7 @@ export class videoSizeStickerMarkup extends _VideoSize {
   }
 }
 
-export class statsGroupTopPoster extends _StatsGroupTopPoster {
+class StatsGroupTopPoster extends _StatsGroupTopPoster {
   user_id: bigint;
   messages: number;
   avg_chars: number;
@@ -33182,7 +33182,7 @@ export class statsGroupTopPoster extends _StatsGroupTopPoster {
   }
 }
 
-export class statsGroupTopAdmin extends _StatsGroupTopAdmin {
+class StatsGroupTopAdmin extends _StatsGroupTopAdmin {
   user_id: bigint;
   deleted: number;
   kicked: number;
@@ -33219,7 +33219,7 @@ export class statsGroupTopAdmin extends _StatsGroupTopAdmin {
   }
 }
 
-export class statsGroupTopInviter extends _StatsGroupTopInviter {
+class StatsGroupTopInviter extends _StatsGroupTopInviter {
   user_id: bigint;
   invitations: number;
 
@@ -33248,7 +33248,7 @@ export class statsGroupTopInviter extends _StatsGroupTopInviter {
   }
 }
 
-export class stats_megagroupStats extends _stats_MegagroupStats {
+class stats_MegagroupStats extends _stats_MegagroupStats {
   period: enums.StatsDateRangeDays;
   members: enums.StatsAbsValueAndPrev;
   messages: enums.StatsAbsValueAndPrev;
@@ -33337,7 +33337,7 @@ export class stats_megagroupStats extends _stats_MegagroupStats {
   }
 }
 
-export class globalPrivacySettings extends _GlobalPrivacySettings {
+class GlobalPrivacySettings extends _GlobalPrivacySettings {
   archive_and_mute_new_noncontact_peers?: true;
   keep_archived_unmuted?: true;
   keep_archived_folders?: true;
@@ -33372,7 +33372,7 @@ export class globalPrivacySettings extends _GlobalPrivacySettings {
   }
 }
 
-export class help_countryCode extends _help_CountryCode {
+class help_CountryCode extends _help_CountryCode {
   country_code: string;
   prefixes?: Array<string>;
   patterns?: Array<string>;
@@ -33407,12 +33407,12 @@ export class help_countryCode extends _help_CountryCode {
   }
 }
 
-export class help_country extends _help_Country {
+class help_Country extends _help_Country {
   hidden?: true;
   iso2: string;
   default_name: string;
   name?: string;
-  country_codes: Array<enums.help_CountryCode>;
+  country_codes: Array<enums.help.CountryCode>;
 
   protected get [id]() {
     return 0xC3878E23;
@@ -33440,7 +33440,7 @@ export class help_country extends _help_Country {
     ];
   }
 
-  constructor(params: { hidden?: true; iso2: string; default_name: string; name?: string; country_codes: Array<enums.help_CountryCode> }) {
+  constructor(params: { hidden?: true; iso2: string; default_name: string; name?: string; country_codes: Array<enums.help.CountryCode> }) {
     super();
     this.hidden = params.hidden;
     this.iso2 = params.iso2;
@@ -33450,7 +33450,7 @@ export class help_country extends _help_Country {
   }
 }
 
-export class help_countriesListNotModified extends _help_CountriesList {
+class help_CountriesListNotModified extends _help_CountriesList {
   protected get [id]() {
     return 0x93CC1F32;
   }
@@ -33468,8 +33468,8 @@ export class help_countriesListNotModified extends _help_CountriesList {
   }
 }
 
-export class help_countriesList extends _help_CountriesList {
-  countries: Array<enums.help_Country>;
+class help_CountriesList extends _help_CountriesList {
+  countries: Array<enums.help.Country>;
   hash: number;
 
   protected get [id]() {
@@ -33490,14 +33490,14 @@ export class help_countriesList extends _help_CountriesList {
     ];
   }
 
-  constructor(params: { countries: Array<enums.help_Country>; hash: number }) {
+  constructor(params: { countries: Array<enums.help.Country>; hash: number }) {
     super();
     this.countries = params.countries;
     this.hash = params.hash;
   }
 }
 
-export class messageViews extends _MessageViews {
+class MessageViews extends _MessageViews {
   views?: number;
   forwards?: number;
   replies?: enums.MessageReplies;
@@ -33532,7 +33532,7 @@ export class messageViews extends _MessageViews {
   }
 }
 
-export class messages_messageViews extends _messages_MessageViews {
+class messages_MessageViews extends _messages_MessageViews {
   views: Array<enums.MessageViews>;
   chats: Array<enums.Chat>;
   users: Array<enums.User>;
@@ -33565,7 +33565,7 @@ export class messages_messageViews extends _messages_MessageViews {
   }
 }
 
-export class messages_discussionMessage extends _messages_DiscussionMessage {
+class messages_DiscussionMessage extends _messages_DiscussionMessage {
   messages: Array<enums.Message>;
   max_id?: number;
   read_inbox_max_id?: number;
@@ -33616,7 +33616,7 @@ export class messages_discussionMessage extends _messages_DiscussionMessage {
   }
 }
 
-export class messageReplyHeader extends _MessageReplyHeader {
+class MessageReplyHeader extends _MessageReplyHeader {
   reply_to_scheduled?: true;
   forum_topic?: true;
   quote?: true;
@@ -33683,7 +33683,7 @@ export class messageReplyHeader extends _MessageReplyHeader {
   }
 }
 
-export class messageReplyStoryHeader extends _MessageReplyHeader {
+class MessageReplyStoryHeader extends _MessageReplyHeader {
   user_id: bigint;
   story_id: number;
 
@@ -33712,7 +33712,7 @@ export class messageReplyStoryHeader extends _MessageReplyHeader {
   }
 }
 
-export class messageReplies extends _MessageReplies {
+class MessageReplies extends _MessageReplies {
   comments?: true;
   replies: number;
   replies_pts: number;
@@ -33763,7 +33763,7 @@ export class messageReplies extends _MessageReplies {
   }
 }
 
-export class peerBlocked extends _PeerBlocked {
+class PeerBlocked extends _PeerBlocked {
   peer_id: enums.Peer;
   date: number;
 
@@ -33792,7 +33792,7 @@ export class peerBlocked extends _PeerBlocked {
   }
 }
 
-export class stats_messageStats extends _stats_MessageStats {
+class stats_MessageStats extends _stats_MessageStats {
   views_graph: enums.StatsGraph;
   reactions_by_emotion_graph: enums.StatsGraph;
 
@@ -33821,7 +33821,7 @@ export class stats_messageStats extends _stats_MessageStats {
   }
 }
 
-export class groupCallDiscarded extends _GroupCall {
+class GroupCallDiscarded extends _GroupCall {
   id: bigint;
   access_hash: bigint;
   duration: number;
@@ -33854,7 +33854,7 @@ export class groupCallDiscarded extends _GroupCall {
   }
 }
 
-export class groupCall extends _GroupCall {
+class GroupCall extends _GroupCall {
   join_muted?: true;
   can_change_join_muted?: true;
   join_date_asc?: true;
@@ -33949,7 +33949,7 @@ export class groupCall extends _GroupCall {
   }
 }
 
-export class inputGroupCall extends _InputGroupCall {
+class InputGroupCall extends _InputGroupCall {
   id: bigint;
   access_hash: bigint;
 
@@ -33978,7 +33978,7 @@ export class inputGroupCall extends _InputGroupCall {
   }
 }
 
-export class groupCallParticipant extends _GroupCallParticipant {
+class GroupCallParticipant extends _GroupCallParticipant {
   muted?: true;
   left?: true;
   can_self_unmute?: true;
@@ -34077,7 +34077,7 @@ export class groupCallParticipant extends _GroupCallParticipant {
   }
 }
 
-export class phone_groupCall extends _phone_GroupCall {
+class phone_GroupCall extends _phone_GroupCall {
   call: enums.GroupCall;
   participants: Array<enums.GroupCallParticipant>;
   participants_next_offset: string;
@@ -34118,7 +34118,7 @@ export class phone_groupCall extends _phone_GroupCall {
   }
 }
 
-export class phone_groupParticipants extends _phone_GroupParticipants {
+class phone_GroupParticipants extends _phone_GroupParticipants {
   count: number;
   participants: Array<enums.GroupCallParticipant>;
   next_offset: string;
@@ -34163,7 +34163,7 @@ export class phone_groupParticipants extends _phone_GroupParticipants {
   }
 }
 
-export class inlineQueryPeerTypeSameBotPM extends _InlineQueryPeerType {
+class InlineQueryPeerTypeSameBotPM extends _InlineQueryPeerType {
   protected get [id]() {
     return 0x3081ED9D;
   }
@@ -34181,7 +34181,7 @@ export class inlineQueryPeerTypeSameBotPM extends _InlineQueryPeerType {
   }
 }
 
-export class inlineQueryPeerTypePM extends _InlineQueryPeerType {
+class InlineQueryPeerTypePM extends _InlineQueryPeerType {
   protected get [id]() {
     return 0x833C0FAC;
   }
@@ -34199,7 +34199,7 @@ export class inlineQueryPeerTypePM extends _InlineQueryPeerType {
   }
 }
 
-export class inlineQueryPeerTypeChat extends _InlineQueryPeerType {
+class InlineQueryPeerTypeChat extends _InlineQueryPeerType {
   protected get [id]() {
     return 0xD766C50A;
   }
@@ -34217,7 +34217,7 @@ export class inlineQueryPeerTypeChat extends _InlineQueryPeerType {
   }
 }
 
-export class inlineQueryPeerTypeMegagroup extends _InlineQueryPeerType {
+class InlineQueryPeerTypeMegagroup extends _InlineQueryPeerType {
   protected get [id]() {
     return 0x5EC4BE43;
   }
@@ -34235,7 +34235,7 @@ export class inlineQueryPeerTypeMegagroup extends _InlineQueryPeerType {
   }
 }
 
-export class inlineQueryPeerTypeBroadcast extends _InlineQueryPeerType {
+class InlineQueryPeerTypeBroadcast extends _InlineQueryPeerType {
   protected get [id]() {
     return 0x6334EE9A;
   }
@@ -34253,7 +34253,7 @@ export class inlineQueryPeerTypeBroadcast extends _InlineQueryPeerType {
   }
 }
 
-export class inlineQueryPeerTypeBotPM extends _InlineQueryPeerType {
+class InlineQueryPeerTypeBotPM extends _InlineQueryPeerType {
   protected get [id]() {
     return 0x0E3B2D0C;
   }
@@ -34271,7 +34271,7 @@ export class inlineQueryPeerTypeBotPM extends _InlineQueryPeerType {
   }
 }
 
-export class messages_historyImport extends _messages_HistoryImport {
+class messages_HistoryImport extends _messages_HistoryImport {
   id: bigint;
 
   protected get [id]() {
@@ -34296,7 +34296,7 @@ export class messages_historyImport extends _messages_HistoryImport {
   }
 }
 
-export class messages_historyImportParsed extends _messages_HistoryImportParsed {
+class messages_HistoryImportParsed extends _messages_HistoryImportParsed {
   pm?: true;
   group?: true;
   title?: string;
@@ -34331,7 +34331,7 @@ export class messages_historyImportParsed extends _messages_HistoryImportParsed 
   }
 }
 
-export class messages_affectedFoundMessages extends _messages_AffectedFoundMessages {
+class messages_AffectedFoundMessages extends _messages_AffectedFoundMessages {
   pts: number;
   pts_count: number;
   offset: number;
@@ -34368,7 +34368,7 @@ export class messages_affectedFoundMessages extends _messages_AffectedFoundMessa
   }
 }
 
-export class chatInviteImporter extends _ChatInviteImporter {
+class ChatInviteImporter extends _ChatInviteImporter {
   requested?: true;
   via_chatlist?: true;
   user_id: bigint;
@@ -34415,7 +34415,7 @@ export class chatInviteImporter extends _ChatInviteImporter {
   }
 }
 
-export class messages_exportedChatInvites extends _messages_ExportedChatInvites {
+class messages_ExportedChatInvites extends _messages_ExportedChatInvites {
   count: number;
   invites: Array<enums.ExportedChatInvite>;
   users: Array<enums.User>;
@@ -34448,7 +34448,7 @@ export class messages_exportedChatInvites extends _messages_ExportedChatInvites 
   }
 }
 
-export class messages_exportedChatInvite extends _messages_ExportedChatInvite {
+class messages_ExportedChatInvite extends _messages_ExportedChatInvite {
   invite: enums.ExportedChatInvite;
   users: Array<enums.User>;
 
@@ -34477,7 +34477,7 @@ export class messages_exportedChatInvite extends _messages_ExportedChatInvite {
   }
 }
 
-export class messages_exportedChatInviteReplaced extends _messages_ExportedChatInvite {
+class messages_ExportedChatInviteReplaced extends _messages_ExportedChatInvite {
   invite: enums.ExportedChatInvite;
   new_invite: enums.ExportedChatInvite;
   users: Array<enums.User>;
@@ -34510,7 +34510,7 @@ export class messages_exportedChatInviteReplaced extends _messages_ExportedChatI
   }
 }
 
-export class messages_chatInviteImporters extends _messages_ChatInviteImporters {
+class messages_ChatInviteImporters extends _messages_ChatInviteImporters {
   count: number;
   importers: Array<enums.ChatInviteImporter>;
   users: Array<enums.User>;
@@ -34543,7 +34543,7 @@ export class messages_chatInviteImporters extends _messages_ChatInviteImporters 
   }
 }
 
-export class chatAdminWithInvites extends _ChatAdminWithInvites {
+class ChatAdminWithInvites extends _ChatAdminWithInvites {
   admin_id: bigint;
   invites_count: number;
   revoked_invites_count: number;
@@ -34576,7 +34576,7 @@ export class chatAdminWithInvites extends _ChatAdminWithInvites {
   }
 }
 
-export class messages_chatAdminsWithInvites extends _messages_ChatAdminsWithInvites {
+class messages_ChatAdminsWithInvites extends _messages_ChatAdminsWithInvites {
   admins: Array<enums.ChatAdminWithInvites>;
   users: Array<enums.User>;
 
@@ -34605,7 +34605,7 @@ export class messages_chatAdminsWithInvites extends _messages_ChatAdminsWithInvi
   }
 }
 
-export class messages_checkedHistoryImportPeer extends _messages_CheckedHistoryImportPeer {
+class messages_CheckedHistoryImportPeer extends _messages_CheckedHistoryImportPeer {
   confirm_text: string;
 
   protected get [id]() {
@@ -34630,7 +34630,7 @@ export class messages_checkedHistoryImportPeer extends _messages_CheckedHistoryI
   }
 }
 
-export class phone_joinAsPeers extends _phone_JoinAsPeers {
+class phone_JoinAsPeers extends _phone_JoinAsPeers {
   peers: Array<enums.Peer>;
   chats: Array<enums.Chat>;
   users: Array<enums.User>;
@@ -34663,7 +34663,7 @@ export class phone_joinAsPeers extends _phone_JoinAsPeers {
   }
 }
 
-export class phone_exportedGroupCallInvite extends _phone_ExportedGroupCallInvite {
+class phone_ExportedGroupCallInvite extends _phone_ExportedGroupCallInvite {
   link: string;
 
   protected get [id]() {
@@ -34688,7 +34688,7 @@ export class phone_exportedGroupCallInvite extends _phone_ExportedGroupCallInvit
   }
 }
 
-export class groupCallParticipantVideoSourceGroup extends _GroupCallParticipantVideoSourceGroup {
+class GroupCallParticipantVideoSourceGroup extends _GroupCallParticipantVideoSourceGroup {
   semantics: string;
   sources: Array<number>;
 
@@ -34717,7 +34717,7 @@ export class groupCallParticipantVideoSourceGroup extends _GroupCallParticipantV
   }
 }
 
-export class groupCallParticipantVideo extends _GroupCallParticipantVideo {
+class GroupCallParticipantVideo extends _GroupCallParticipantVideo {
   paused?: true;
   endpoint: string;
   source_groups: Array<enums.GroupCallParticipantVideoSourceGroup>;
@@ -34756,7 +34756,7 @@ export class groupCallParticipantVideo extends _GroupCallParticipantVideo {
   }
 }
 
-export class stickers_suggestedShortName extends _stickers_SuggestedShortName {
+class stickers_SuggestedShortName extends _stickers_SuggestedShortName {
   short_name: string;
 
   protected get [id]() {
@@ -34781,7 +34781,7 @@ export class stickers_suggestedShortName extends _stickers_SuggestedShortName {
   }
 }
 
-export class botCommandScopeDefault extends _BotCommandScope {
+class BotCommandScopeDefault extends _BotCommandScope {
   protected get [id]() {
     return 0x2F6CB2AB;
   }
@@ -34799,7 +34799,7 @@ export class botCommandScopeDefault extends _BotCommandScope {
   }
 }
 
-export class botCommandScopeUsers extends _BotCommandScope {
+class BotCommandScopeUsers extends _BotCommandScope {
   protected get [id]() {
     return 0x3C4F04D8;
   }
@@ -34817,7 +34817,7 @@ export class botCommandScopeUsers extends _BotCommandScope {
   }
 }
 
-export class botCommandScopeChats extends _BotCommandScope {
+class BotCommandScopeChats extends _BotCommandScope {
   protected get [id]() {
     return 0x6FE1A881;
   }
@@ -34835,7 +34835,7 @@ export class botCommandScopeChats extends _BotCommandScope {
   }
 }
 
-export class botCommandScopeChatAdmins extends _BotCommandScope {
+class BotCommandScopeChatAdmins extends _BotCommandScope {
   protected get [id]() {
     return 0xB9AA606A;
   }
@@ -34853,7 +34853,7 @@ export class botCommandScopeChatAdmins extends _BotCommandScope {
   }
 }
 
-export class botCommandScopePeer extends _BotCommandScope {
+class BotCommandScopePeer extends _BotCommandScope {
   peer: enums.InputPeer;
 
   protected get [id]() {
@@ -34878,7 +34878,7 @@ export class botCommandScopePeer extends _BotCommandScope {
   }
 }
 
-export class botCommandScopePeerAdmins extends _BotCommandScope {
+class BotCommandScopePeerAdmins extends _BotCommandScope {
   peer: enums.InputPeer;
 
   protected get [id]() {
@@ -34903,7 +34903,7 @@ export class botCommandScopePeerAdmins extends _BotCommandScope {
   }
 }
 
-export class botCommandScopePeerUser extends _BotCommandScope {
+class BotCommandScopePeerUser extends _BotCommandScope {
   peer: enums.InputPeer;
   user_id: enums.InputUser;
 
@@ -34932,7 +34932,7 @@ export class botCommandScopePeerUser extends _BotCommandScope {
   }
 }
 
-export class account_resetPasswordFailedWait extends _account_ResetPasswordResult {
+class account_ResetPasswordFailedWait extends _account_ResetPasswordResult {
   retry_date: number;
 
   protected get [id]() {
@@ -34957,7 +34957,7 @@ export class account_resetPasswordFailedWait extends _account_ResetPasswordResul
   }
 }
 
-export class account_resetPasswordRequestedWait extends _account_ResetPasswordResult {
+class account_ResetPasswordRequestedWait extends _account_ResetPasswordResult {
   until_date: number;
 
   protected get [id]() {
@@ -34982,7 +34982,7 @@ export class account_resetPasswordRequestedWait extends _account_ResetPasswordRe
   }
 }
 
-export class account_resetPasswordOk extends _account_ResetPasswordResult {
+class account_ResetPasswordOk extends _account_ResetPasswordResult {
   protected get [id]() {
     return 0xE926D63E;
   }
@@ -35000,7 +35000,7 @@ export class account_resetPasswordOk extends _account_ResetPasswordResult {
   }
 }
 
-export class sponsoredMessage extends _SponsoredMessage {
+class SponsoredMessage extends _SponsoredMessage {
   recommended?: true;
   show_peer_photo?: true;
   random_id: Uint8Array;
@@ -35083,7 +35083,7 @@ export class sponsoredMessage extends _SponsoredMessage {
   }
 }
 
-export class messages_sponsoredMessages extends _messages_SponsoredMessages {
+class messages_SponsoredMessages extends _messages_SponsoredMessages {
   posts_between?: number;
   messages: Array<enums.SponsoredMessage>;
   chats: Array<enums.Chat>;
@@ -35122,7 +35122,7 @@ export class messages_sponsoredMessages extends _messages_SponsoredMessages {
   }
 }
 
-export class messages_sponsoredMessagesEmpty extends _messages_SponsoredMessages {
+class messages_SponsoredMessagesEmpty extends _messages_SponsoredMessages {
   protected get [id]() {
     return 0x1839490F;
   }
@@ -35140,7 +35140,7 @@ export class messages_sponsoredMessagesEmpty extends _messages_SponsoredMessages
   }
 }
 
-export class searchResultsCalendarPeriod extends _SearchResultsCalendarPeriod {
+class SearchResultsCalendarPeriod extends _SearchResultsCalendarPeriod {
   date: number;
   min_msg_id: number;
   max_msg_id: number;
@@ -35177,7 +35177,7 @@ export class searchResultsCalendarPeriod extends _SearchResultsCalendarPeriod {
   }
 }
 
-export class messages_searchResultsCalendar extends _messages_SearchResultsCalendar {
+class messages_SearchResultsCalendar extends _messages_SearchResultsCalendar {
   inexact?: true;
   count: number;
   min_date: number;
@@ -35236,7 +35236,7 @@ export class messages_searchResultsCalendar extends _messages_SearchResultsCalen
   }
 }
 
-export class searchResultPosition extends _SearchResultsPosition {
+class SearchResultPosition extends _SearchResultsPosition {
   msg_id: number;
   date: number;
   offset: number;
@@ -35269,7 +35269,7 @@ export class searchResultPosition extends _SearchResultsPosition {
   }
 }
 
-export class messages_searchResultsPositions extends _messages_SearchResultsPositions {
+class messages_SearchResultsPositions extends _messages_SearchResultsPositions {
   count: number;
   positions: Array<enums.SearchResultsPosition>;
 
@@ -35298,7 +35298,7 @@ export class messages_searchResultsPositions extends _messages_SearchResultsPosi
   }
 }
 
-export class channels_sendAsPeers extends _channels_SendAsPeers {
+class channels_SendAsPeers extends _channels_SendAsPeers {
   peers: Array<enums.SendAsPeer>;
   chats: Array<enums.Chat>;
   users: Array<enums.User>;
@@ -35331,7 +35331,7 @@ export class channels_sendAsPeers extends _channels_SendAsPeers {
   }
 }
 
-export class users_userFull extends _users_UserFull {
+class users_UserFull extends _users_UserFull {
   full_user: enums.UserFull;
   chats: Array<enums.Chat>;
   users: Array<enums.User>;
@@ -35364,7 +35364,7 @@ export class users_userFull extends _users_UserFull {
   }
 }
 
-export class messages_peerSettings extends _messages_PeerSettings {
+class messages_PeerSettings extends _messages_PeerSettings {
   settings: enums.PeerSettings;
   chats: Array<enums.Chat>;
   users: Array<enums.User>;
@@ -35397,7 +35397,7 @@ export class messages_peerSettings extends _messages_PeerSettings {
   }
 }
 
-export class auth_loggedOut extends _auth_LoggedOut {
+class auth_LoggedOut extends _auth_LoggedOut {
   future_auth_token?: Uint8Array;
 
   protected get [id]() {
@@ -35424,7 +35424,7 @@ export class auth_loggedOut extends _auth_LoggedOut {
   }
 }
 
-export class reactionCount extends _ReactionCount {
+class ReactionCount extends _ReactionCount {
   chosen_order?: number;
   reaction: enums.Reaction;
   count: number;
@@ -35459,7 +35459,7 @@ export class reactionCount extends _ReactionCount {
   }
 }
 
-export class messageReactions extends _MessageReactions {
+class MessageReactions extends _MessageReactions {
   min?: true;
   can_see_list?: true;
   results: Array<enums.ReactionCount>;
@@ -35498,7 +35498,7 @@ export class messageReactions extends _MessageReactions {
   }
 }
 
-export class messages_messageReactionsList extends _messages_MessageReactionsList {
+class messages_MessageReactionsList extends _messages_MessageReactionsList {
   count: number;
   reactions: Array<enums.MessagePeerReaction>;
   chats: Array<enums.Chat>;
@@ -35541,7 +35541,7 @@ export class messages_messageReactionsList extends _messages_MessageReactionsLis
   }
 }
 
-export class availableReaction extends _AvailableReaction {
+class AvailableReaction extends _AvailableReaction {
   inactive?: true;
   premium?: true;
   reaction: string;
@@ -35608,7 +35608,7 @@ export class availableReaction extends _AvailableReaction {
   }
 }
 
-export class messages_availableReactionsNotModified extends _messages_AvailableReactions {
+class messages_AvailableReactionsNotModified extends _messages_AvailableReactions {
   protected get [id]() {
     return 0x9F071957;
   }
@@ -35626,7 +35626,7 @@ export class messages_availableReactionsNotModified extends _messages_AvailableR
   }
 }
 
-export class messages_availableReactions extends _messages_AvailableReactions {
+class messages_AvailableReactions extends _messages_AvailableReactions {
   hash: number;
   reactions: Array<enums.AvailableReaction>;
 
@@ -35655,7 +35655,7 @@ export class messages_availableReactions extends _messages_AvailableReactions {
   }
 }
 
-export class messagePeerReaction extends _MessagePeerReaction {
+class MessagePeerReaction extends _MessagePeerReaction {
   big?: true;
   unread?: true;
   my?: true;
@@ -35702,7 +35702,7 @@ export class messagePeerReaction extends _MessagePeerReaction {
   }
 }
 
-export class groupCallStreamChannel extends _GroupCallStreamChannel {
+class GroupCallStreamChannel extends _GroupCallStreamChannel {
   channel: number;
   scale: number;
   last_timestamp_ms: bigint;
@@ -35735,7 +35735,7 @@ export class groupCallStreamChannel extends _GroupCallStreamChannel {
   }
 }
 
-export class phone_groupCallStreamChannels extends _phone_GroupCallStreamChannels {
+class phone_GroupCallStreamChannels extends _phone_GroupCallStreamChannels {
   channels: Array<enums.GroupCallStreamChannel>;
 
   protected get [id]() {
@@ -35760,7 +35760,7 @@ export class phone_groupCallStreamChannels extends _phone_GroupCallStreamChannel
   }
 }
 
-export class phone_groupCallStreamRtmpUrl extends _phone_GroupCallStreamRtmpUrl {
+class phone_GroupCallStreamRtmpUrl extends _phone_GroupCallStreamRtmpUrl {
   url: string;
   key: string;
 
@@ -35789,7 +35789,7 @@ export class phone_groupCallStreamRtmpUrl extends _phone_GroupCallStreamRtmpUrl 
   }
 }
 
-export class attachMenuBotIconColor extends _AttachMenuBotIconColor {
+class AttachMenuBotIconColor extends _AttachMenuBotIconColor {
   name: string;
   color: number;
 
@@ -35818,7 +35818,7 @@ export class attachMenuBotIconColor extends _AttachMenuBotIconColor {
   }
 }
 
-export class attachMenuBotIcon extends _AttachMenuBotIcon {
+class AttachMenuBotIcon extends _AttachMenuBotIcon {
   name: string;
   icon: enums.Document;
   colors?: Array<enums.AttachMenuBotIconColor>;
@@ -35853,7 +35853,7 @@ export class attachMenuBotIcon extends _AttachMenuBotIcon {
   }
 }
 
-export class attachMenuBot extends _AttachMenuBot {
+class AttachMenuBot extends _AttachMenuBot {
   inactive?: true;
   has_settings?: true;
   request_write_access?: true;
@@ -35916,7 +35916,7 @@ export class attachMenuBot extends _AttachMenuBot {
   }
 }
 
-export class attachMenuBotsNotModified extends _AttachMenuBots {
+class AttachMenuBotsNotModified extends _AttachMenuBots {
   protected get [id]() {
     return 0xF1D88A5C;
   }
@@ -35934,7 +35934,7 @@ export class attachMenuBotsNotModified extends _AttachMenuBots {
   }
 }
 
-export class attachMenuBots extends _AttachMenuBots {
+class AttachMenuBots extends _AttachMenuBots {
   hash: bigint;
   bots: Array<enums.AttachMenuBot>;
   users: Array<enums.User>;
@@ -35967,7 +35967,7 @@ export class attachMenuBots extends _AttachMenuBots {
   }
 }
 
-export class attachMenuBotsBot extends _AttachMenuBotsBot {
+class AttachMenuBotsBot extends _AttachMenuBotsBot {
   bot: enums.AttachMenuBot;
   users: Array<enums.User>;
 
@@ -35996,7 +35996,7 @@ export class attachMenuBotsBot extends _AttachMenuBotsBot {
   }
 }
 
-export class webViewResultUrl extends _WebViewResult {
+class WebViewResultUrl extends _WebViewResult {
   query_id: bigint;
   url: string;
 
@@ -36025,7 +36025,7 @@ export class webViewResultUrl extends _WebViewResult {
   }
 }
 
-export class simpleWebViewResultUrl extends _SimpleWebViewResult {
+class SimpleWebViewResultUrl extends _SimpleWebViewResult {
   url: string;
 
   protected get [id]() {
@@ -36050,7 +36050,7 @@ export class simpleWebViewResultUrl extends _SimpleWebViewResult {
   }
 }
 
-export class webViewMessageSent extends _WebViewMessageSent {
+class WebViewMessageSent extends _WebViewMessageSent {
   msg_id?: enums.InputBotInlineMessageID;
 
   protected get [id]() {
@@ -36077,7 +36077,7 @@ export class webViewMessageSent extends _WebViewMessageSent {
   }
 }
 
-export class botMenuButtonDefault extends _BotMenuButton {
+class BotMenuButtonDefault extends _BotMenuButton {
   protected get [id]() {
     return 0x7533A588;
   }
@@ -36095,7 +36095,7 @@ export class botMenuButtonDefault extends _BotMenuButton {
   }
 }
 
-export class botMenuButtonCommands extends _BotMenuButton {
+class BotMenuButtonCommands extends _BotMenuButton {
   protected get [id]() {
     return 0x4258C205;
   }
@@ -36113,7 +36113,7 @@ export class botMenuButtonCommands extends _BotMenuButton {
   }
 }
 
-export class botMenuButton extends _BotMenuButton {
+class BotMenuButton extends _BotMenuButton {
   text: string;
   url: string;
 
@@ -36142,7 +36142,7 @@ export class botMenuButton extends _BotMenuButton {
   }
 }
 
-export class account_savedRingtonesNotModified extends _account_SavedRingtones {
+class account_SavedRingtonesNotModified extends _account_SavedRingtones {
   protected get [id]() {
     return 0xFBF6E8B1;
   }
@@ -36160,7 +36160,7 @@ export class account_savedRingtonesNotModified extends _account_SavedRingtones {
   }
 }
 
-export class account_savedRingtones extends _account_SavedRingtones {
+class account_SavedRingtones extends _account_SavedRingtones {
   hash: bigint;
   ringtones: Array<enums.Document>;
 
@@ -36189,7 +36189,7 @@ export class account_savedRingtones extends _account_SavedRingtones {
   }
 }
 
-export class notificationSoundDefault extends _NotificationSound {
+class NotificationSoundDefault extends _NotificationSound {
   protected get [id]() {
     return 0x97E8BEBE;
   }
@@ -36207,7 +36207,7 @@ export class notificationSoundDefault extends _NotificationSound {
   }
 }
 
-export class notificationSoundNone extends _NotificationSound {
+class NotificationSoundNone extends _NotificationSound {
   protected get [id]() {
     return 0x6F0C34DF;
   }
@@ -36225,7 +36225,7 @@ export class notificationSoundNone extends _NotificationSound {
   }
 }
 
-export class notificationSoundLocal extends _NotificationSound {
+class NotificationSoundLocal extends _NotificationSound {
   title: string;
   data: string;
 
@@ -36254,7 +36254,7 @@ export class notificationSoundLocal extends _NotificationSound {
   }
 }
 
-export class notificationSoundRingtone extends _NotificationSound {
+class NotificationSoundRingtone extends _NotificationSound {
   id: bigint;
 
   protected get [id]() {
@@ -36279,7 +36279,7 @@ export class notificationSoundRingtone extends _NotificationSound {
   }
 }
 
-export class account_savedRingtone extends _account_SavedRingtone {
+class account_SavedRingtone extends _account_SavedRingtone {
   protected get [id]() {
     return 0xB7263F6D;
   }
@@ -36297,7 +36297,7 @@ export class account_savedRingtone extends _account_SavedRingtone {
   }
 }
 
-export class account_savedRingtoneConverted extends _account_SavedRingtone {
+class account_SavedRingtoneConverted extends _account_SavedRingtone {
   document: enums.Document;
 
   protected get [id]() {
@@ -36322,7 +36322,7 @@ export class account_savedRingtoneConverted extends _account_SavedRingtone {
   }
 }
 
-export class attachMenuPeerTypeSameBotPM extends _AttachMenuPeerType {
+class AttachMenuPeerTypeSameBotPM extends _AttachMenuPeerType {
   protected get [id]() {
     return 0x7D6BE90E;
   }
@@ -36340,7 +36340,7 @@ export class attachMenuPeerTypeSameBotPM extends _AttachMenuPeerType {
   }
 }
 
-export class attachMenuPeerTypeBotPM extends _AttachMenuPeerType {
+class AttachMenuPeerTypeBotPM extends _AttachMenuPeerType {
   protected get [id]() {
     return 0xC32BFA1A;
   }
@@ -36358,7 +36358,7 @@ export class attachMenuPeerTypeBotPM extends _AttachMenuPeerType {
   }
 }
 
-export class attachMenuPeerTypePM extends _AttachMenuPeerType {
+class AttachMenuPeerTypePM extends _AttachMenuPeerType {
   protected get [id]() {
     return 0xF146D31F;
   }
@@ -36376,7 +36376,7 @@ export class attachMenuPeerTypePM extends _AttachMenuPeerType {
   }
 }
 
-export class attachMenuPeerTypeChat extends _AttachMenuPeerType {
+class AttachMenuPeerTypeChat extends _AttachMenuPeerType {
   protected get [id]() {
     return 0x0509113F;
   }
@@ -36394,7 +36394,7 @@ export class attachMenuPeerTypeChat extends _AttachMenuPeerType {
   }
 }
 
-export class attachMenuPeerTypeBroadcast extends _AttachMenuPeerType {
+class AttachMenuPeerTypeBroadcast extends _AttachMenuPeerType {
   protected get [id]() {
     return 0x7BFBDEFC;
   }
@@ -36412,7 +36412,7 @@ export class attachMenuPeerTypeBroadcast extends _AttachMenuPeerType {
   }
 }
 
-export class inputInvoiceMessage extends _InputInvoice {
+class InputInvoiceMessage extends _InputInvoice {
   peer: enums.InputPeer;
   msg_id: number;
 
@@ -36441,7 +36441,7 @@ export class inputInvoiceMessage extends _InputInvoice {
   }
 }
 
-export class inputInvoiceSlug extends _InputInvoice {
+class InputInvoiceSlug extends _InputInvoice {
   slug: string;
 
   protected get [id]() {
@@ -36466,7 +36466,7 @@ export class inputInvoiceSlug extends _InputInvoice {
   }
 }
 
-export class inputInvoicePremiumGiftCode extends _InputInvoice {
+class InputInvoicePremiumGiftCode extends _InputInvoice {
   purpose: enums.InputStorePaymentPurpose;
   option: enums.PremiumGiftCodeOption;
 
@@ -36495,7 +36495,7 @@ export class inputInvoicePremiumGiftCode extends _InputInvoice {
   }
 }
 
-export class payments_exportedInvoice extends _payments_ExportedInvoice {
+class payments_ExportedInvoice extends _payments_ExportedInvoice {
   url: string;
 
   protected get [id]() {
@@ -36520,7 +36520,7 @@ export class payments_exportedInvoice extends _payments_ExportedInvoice {
   }
 }
 
-export class messages_transcribedAudio extends _messages_TranscribedAudio {
+class messages_TranscribedAudio extends _messages_TranscribedAudio {
   pending?: true;
   transcription_id: bigint;
   text: string;
@@ -36563,7 +36563,7 @@ export class messages_transcribedAudio extends _messages_TranscribedAudio {
   }
 }
 
-export class help_premiumPromo extends _help_PremiumPromo {
+class help_PremiumPromo extends _help_PremiumPromo {
   status_text: string;
   status_entities: Array<enums.MessageEntity>;
   video_sections: Array<string>;
@@ -36608,7 +36608,7 @@ export class help_premiumPromo extends _help_PremiumPromo {
   }
 }
 
-export class inputStorePaymentPremiumSubscription extends _InputStorePaymentPurpose {
+class InputStorePaymentPremiumSubscription extends _InputStorePaymentPurpose {
   restore?: true;
   upgrade?: true;
 
@@ -36639,7 +36639,7 @@ export class inputStorePaymentPremiumSubscription extends _InputStorePaymentPurp
   }
 }
 
-export class inputStorePaymentGiftPremium extends _InputStorePaymentPurpose {
+class InputStorePaymentGiftPremium extends _InputStorePaymentPurpose {
   user_id: enums.InputUser;
   currency: string;
   amount: bigint;
@@ -36672,7 +36672,7 @@ export class inputStorePaymentGiftPremium extends _InputStorePaymentPurpose {
   }
 }
 
-export class inputStorePaymentPremiumGiftCode extends _InputStorePaymentPurpose {
+class InputStorePaymentPremiumGiftCode extends _InputStorePaymentPurpose {
   users: Array<enums.InputUser>;
   boost_peer?: enums.InputPeer;
   currency: string;
@@ -36711,7 +36711,7 @@ export class inputStorePaymentPremiumGiftCode extends _InputStorePaymentPurpose 
   }
 }
 
-export class inputStorePaymentPremiumGiveaway extends _InputStorePaymentPurpose {
+class InputStorePaymentPremiumGiveaway extends _InputStorePaymentPurpose {
   only_new_subscribers?: true;
   boost_peer: enums.InputPeer;
   additional_peers?: Array<enums.InputPeer>;
@@ -36766,7 +36766,7 @@ export class inputStorePaymentPremiumGiveaway extends _InputStorePaymentPurpose 
   }
 }
 
-export class premiumGiftOption extends _PremiumGiftOption {
+class PremiumGiftOption extends _PremiumGiftOption {
   months: number;
   currency: string;
   amount: bigint;
@@ -36809,7 +36809,7 @@ export class premiumGiftOption extends _PremiumGiftOption {
   }
 }
 
-export class paymentFormMethod extends _PaymentFormMethod {
+class PaymentFormMethod extends _PaymentFormMethod {
   url: string;
   title: string;
 
@@ -36838,7 +36838,7 @@ export class paymentFormMethod extends _PaymentFormMethod {
   }
 }
 
-export class emojiStatusEmpty extends _EmojiStatus {
+class EmojiStatusEmpty extends _EmojiStatus {
   protected get [id]() {
     return 0x2DE11AAE;
   }
@@ -36856,7 +36856,7 @@ export class emojiStatusEmpty extends _EmojiStatus {
   }
 }
 
-export class emojiStatus extends _EmojiStatus {
+class EmojiStatus extends _EmojiStatus {
   document_id: bigint;
 
   protected get [id]() {
@@ -36881,7 +36881,7 @@ export class emojiStatus extends _EmojiStatus {
   }
 }
 
-export class emojiStatusUntil extends _EmojiStatus {
+class EmojiStatusUntil extends _EmojiStatus {
   document_id: bigint;
   until: number;
 
@@ -36910,7 +36910,7 @@ export class emojiStatusUntil extends _EmojiStatus {
   }
 }
 
-export class account_emojiStatusesNotModified extends _account_EmojiStatuses {
+class account_EmojiStatusesNotModified extends _account_EmojiStatuses {
   protected get [id]() {
     return 0xD08CE645;
   }
@@ -36928,7 +36928,7 @@ export class account_emojiStatusesNotModified extends _account_EmojiStatuses {
   }
 }
 
-export class account_emojiStatuses extends _account_EmojiStatuses {
+class account_EmojiStatuses extends _account_EmojiStatuses {
   hash: bigint;
   statuses: Array<enums.EmojiStatus>;
 
@@ -36957,7 +36957,7 @@ export class account_emojiStatuses extends _account_EmojiStatuses {
   }
 }
 
-export class reactionEmpty extends _Reaction {
+class ReactionEmpty extends _Reaction {
   protected get [id]() {
     return 0x79F5D419;
   }
@@ -36975,7 +36975,7 @@ export class reactionEmpty extends _Reaction {
   }
 }
 
-export class reactionEmoji extends _Reaction {
+class ReactionEmoji extends _Reaction {
   emoticon: string;
 
   protected get [id]() {
@@ -37000,7 +37000,7 @@ export class reactionEmoji extends _Reaction {
   }
 }
 
-export class reactionCustomEmoji extends _Reaction {
+class ReactionCustomEmoji extends _Reaction {
   document_id: bigint;
 
   protected get [id]() {
@@ -37025,7 +37025,7 @@ export class reactionCustomEmoji extends _Reaction {
   }
 }
 
-export class chatReactionsNone extends _ChatReactions {
+class ChatReactionsNone extends _ChatReactions {
   protected get [id]() {
     return 0xEAFC32BC;
   }
@@ -37043,7 +37043,7 @@ export class chatReactionsNone extends _ChatReactions {
   }
 }
 
-export class chatReactionsAll extends _ChatReactions {
+class ChatReactionsAll extends _ChatReactions {
   allow_custom?: true;
 
   protected get [id]() {
@@ -37070,7 +37070,7 @@ export class chatReactionsAll extends _ChatReactions {
   }
 }
 
-export class chatReactionsSome extends _ChatReactions {
+class ChatReactionsSome extends _ChatReactions {
   reactions: Array<enums.Reaction>;
 
   protected get [id]() {
@@ -37095,7 +37095,7 @@ export class chatReactionsSome extends _ChatReactions {
   }
 }
 
-export class messages_reactionsNotModified extends _messages_Reactions {
+class messages_ReactionsNotModified extends _messages_Reactions {
   protected get [id]() {
     return 0xB06FDBDF;
   }
@@ -37113,7 +37113,7 @@ export class messages_reactionsNotModified extends _messages_Reactions {
   }
 }
 
-export class messages_reactions extends _messages_Reactions {
+class messages_Reactions extends _messages_Reactions {
   hash: bigint;
   reactions: Array<enums.Reaction>;
 
@@ -37142,7 +37142,7 @@ export class messages_reactions extends _messages_Reactions {
   }
 }
 
-export class emailVerifyPurposeLoginSetup extends _EmailVerifyPurpose {
+class EmailVerifyPurposeLoginSetup extends _EmailVerifyPurpose {
   phone_number: string;
   phone_code_hash: string;
 
@@ -37171,7 +37171,7 @@ export class emailVerifyPurposeLoginSetup extends _EmailVerifyPurpose {
   }
 }
 
-export class emailVerifyPurposeLoginChange extends _EmailVerifyPurpose {
+class EmailVerifyPurposeLoginChange extends _EmailVerifyPurpose {
   protected get [id]() {
     return 0x527D22EB;
   }
@@ -37189,7 +37189,7 @@ export class emailVerifyPurposeLoginChange extends _EmailVerifyPurpose {
   }
 }
 
-export class emailVerifyPurposePassport extends _EmailVerifyPurpose {
+class EmailVerifyPurposePassport extends _EmailVerifyPurpose {
   protected get [id]() {
     return 0xBBF51685;
   }
@@ -37207,7 +37207,7 @@ export class emailVerifyPurposePassport extends _EmailVerifyPurpose {
   }
 }
 
-export class emailVerificationCode extends _EmailVerification {
+class EmailVerificationCode extends _EmailVerification {
   code: string;
 
   protected get [id]() {
@@ -37232,7 +37232,7 @@ export class emailVerificationCode extends _EmailVerification {
   }
 }
 
-export class emailVerificationGoogle extends _EmailVerification {
+class EmailVerificationGoogle extends _EmailVerification {
   token: string;
 
   protected get [id]() {
@@ -37257,7 +37257,7 @@ export class emailVerificationGoogle extends _EmailVerification {
   }
 }
 
-export class emailVerificationApple extends _EmailVerification {
+class EmailVerificationApple extends _EmailVerification {
   token: string;
 
   protected get [id]() {
@@ -37282,7 +37282,7 @@ export class emailVerificationApple extends _EmailVerification {
   }
 }
 
-export class account_emailVerified extends _account_EmailVerified {
+class account_EmailVerified extends _account_EmailVerified {
   email: string;
 
   protected get [id]() {
@@ -37307,9 +37307,9 @@ export class account_emailVerified extends _account_EmailVerified {
   }
 }
 
-export class account_emailVerifiedLogin extends _account_EmailVerified {
+class account_EmailVerifiedLogin extends _account_EmailVerified {
   email: string;
-  sent_code: enums.auth_SentCode;
+  sent_code: enums.auth.SentCode;
 
   protected get [id]() {
     return 0xE1BB0D61;
@@ -37329,14 +37329,14 @@ export class account_emailVerifiedLogin extends _account_EmailVerified {
     ];
   }
 
-  constructor(params: { email: string; sent_code: enums.auth_SentCode }) {
+  constructor(params: { email: string; sent_code: enums.auth.SentCode }) {
     super();
     this.email = params.email;
     this.sent_code = params.sent_code;
   }
 }
 
-export class premiumSubscriptionOption extends _PremiumSubscriptionOption {
+class PremiumSubscriptionOption extends _PremiumSubscriptionOption {
   current?: true;
   can_purchase_upgrade?: true;
   transaction?: string;
@@ -37391,7 +37391,7 @@ export class premiumSubscriptionOption extends _PremiumSubscriptionOption {
   }
 }
 
-export class sendAsPeer extends _SendAsPeer {
+class SendAsPeer extends _SendAsPeer {
   premium_required?: true;
   peer: enums.Peer;
 
@@ -37422,7 +37422,7 @@ export class sendAsPeer extends _SendAsPeer {
   }
 }
 
-export class messageExtendedMediaPreview extends _MessageExtendedMedia {
+class MessageExtendedMediaPreview extends _MessageExtendedMedia {
   w?: number;
   h?: number;
   thumb?: enums.PhotoSize;
@@ -37461,7 +37461,7 @@ export class messageExtendedMediaPreview extends _MessageExtendedMedia {
   }
 }
 
-export class messageExtendedMedia extends _MessageExtendedMedia {
+class MessageExtendedMedia extends _MessageExtendedMedia {
   media: enums.MessageMedia;
 
   protected get [id]() {
@@ -37486,7 +37486,7 @@ export class messageExtendedMedia extends _MessageExtendedMedia {
   }
 }
 
-export class stickerKeyword extends _StickerKeyword {
+class StickerKeyword extends _StickerKeyword {
   document_id: bigint;
   keyword: Array<string>;
 
@@ -37515,7 +37515,7 @@ export class stickerKeyword extends _StickerKeyword {
   }
 }
 
-export class username extends _Username {
+class Username extends _Username {
   editable?: true;
   active?: true;
   username: string;
@@ -37550,7 +37550,7 @@ export class username extends _Username {
   }
 }
 
-export class forumTopicDeleted extends _ForumTopic {
+class ForumTopicDeleted extends _ForumTopic {
   id: number;
 
   protected get [id]() {
@@ -37575,7 +37575,7 @@ export class forumTopicDeleted extends _ForumTopic {
   }
 }
 
-export class forumTopic extends _ForumTopic {
+class ForumTopic extends _ForumTopic {
   my?: true;
   closed?: true;
   pinned?: true;
@@ -37674,7 +37674,7 @@ export class forumTopic extends _ForumTopic {
   }
 }
 
-export class messages_forumTopics extends _messages_ForumTopics {
+class messages_ForumTopics extends _messages_ForumTopics {
   order_by_create_date?: true;
   count: number;
   topics: Array<enums.ForumTopic>;
@@ -37725,7 +37725,7 @@ export class messages_forumTopics extends _messages_ForumTopics {
   }
 }
 
-export class defaultHistoryTTL extends _DefaultHistoryTTL {
+class DefaultHistoryTTL extends _DefaultHistoryTTL {
   period: number;
 
   protected get [id]() {
@@ -37750,7 +37750,7 @@ export class defaultHistoryTTL extends _DefaultHistoryTTL {
   }
 }
 
-export class exportedContactToken extends _ExportedContactToken {
+class ExportedContactToken extends _ExportedContactToken {
   url: string;
   expires: number;
 
@@ -37779,7 +37779,7 @@ export class exportedContactToken extends _ExportedContactToken {
   }
 }
 
-export class requestPeerTypeUser extends _RequestPeerType {
+class RequestPeerTypeUser extends _RequestPeerType {
   bot?: boolean;
   premium?: boolean;
 
@@ -37810,7 +37810,7 @@ export class requestPeerTypeUser extends _RequestPeerType {
   }
 }
 
-export class requestPeerTypeChat extends _RequestPeerType {
+class RequestPeerTypeChat extends _RequestPeerType {
   creator?: true;
   bot_participant?: true;
   has_username?: boolean;
@@ -37857,7 +37857,7 @@ export class requestPeerTypeChat extends _RequestPeerType {
   }
 }
 
-export class requestPeerTypeBroadcast extends _RequestPeerType {
+class RequestPeerTypeBroadcast extends _RequestPeerType {
   creator?: true;
   has_username?: boolean;
   user_admin_rights?: enums.ChatAdminRights;
@@ -37896,7 +37896,7 @@ export class requestPeerTypeBroadcast extends _RequestPeerType {
   }
 }
 
-export class emojiListNotModified extends _EmojiList {
+class EmojiListNotModified extends _EmojiList {
   protected get [id]() {
     return 0x481EADFA;
   }
@@ -37914,7 +37914,7 @@ export class emojiListNotModified extends _EmojiList {
   }
 }
 
-export class emojiList extends _EmojiList {
+class EmojiList extends _EmojiList {
   hash: bigint;
   document_id: Array<bigint>;
 
@@ -37943,7 +37943,7 @@ export class emojiList extends _EmojiList {
   }
 }
 
-export class emojiGroup extends _EmojiGroup {
+class EmojiGroup extends _EmojiGroup {
   title: string;
   icon_emoji_id: bigint;
   emoticons: Array<string>;
@@ -37976,7 +37976,7 @@ export class emojiGroup extends _EmojiGroup {
   }
 }
 
-export class messages_emojiGroupsNotModified extends _messages_EmojiGroups {
+class messages_EmojiGroupsNotModified extends _messages_EmojiGroups {
   protected get [id]() {
     return 0x6FB4AD87;
   }
@@ -37994,7 +37994,7 @@ export class messages_emojiGroupsNotModified extends _messages_EmojiGroups {
   }
 }
 
-export class messages_emojiGroups extends _messages_EmojiGroups {
+class messages_EmojiGroups extends _messages_EmojiGroups {
   hash: number;
   groups: Array<enums.EmojiGroup>;
 
@@ -38023,7 +38023,7 @@ export class messages_emojiGroups extends _messages_EmojiGroups {
   }
 }
 
-export class textWithEntities extends _TextWithEntities {
+class TextWithEntities extends _TextWithEntities {
   text: string;
   entities: Array<enums.MessageEntity>;
 
@@ -38052,7 +38052,7 @@ export class textWithEntities extends _TextWithEntities {
   }
 }
 
-export class messages_translateResult extends _messages_TranslatedText {
+class messages_TranslateResult extends _messages_TranslatedText {
   result: Array<enums.TextWithEntities>;
 
   protected get [id]() {
@@ -38077,7 +38077,7 @@ export class messages_translateResult extends _messages_TranslatedText {
   }
 }
 
-export class autoSaveSettings extends _AutoSaveSettings {
+class AutoSaveSettings extends _AutoSaveSettings {
   photos?: true;
   videos?: true;
   video_max_size?: bigint;
@@ -38112,7 +38112,7 @@ export class autoSaveSettings extends _AutoSaveSettings {
   }
 }
 
-export class autoSaveException extends _AutoSaveException {
+class AutoSaveException extends _AutoSaveException {
   peer: enums.Peer;
   settings: enums.AutoSaveSettings;
 
@@ -38141,7 +38141,7 @@ export class autoSaveException extends _AutoSaveException {
   }
 }
 
-export class account_autoSaveSettings extends _account_AutoSaveSettings {
+class account_AutoSaveSettings extends _account_AutoSaveSettings {
   users_settings: enums.AutoSaveSettings;
   chats_settings: enums.AutoSaveSettings;
   broadcasts_settings: enums.AutoSaveSettings;
@@ -38186,7 +38186,7 @@ export class account_autoSaveSettings extends _account_AutoSaveSettings {
   }
 }
 
-export class help_appConfigNotModified extends _help_AppConfig {
+class help_AppConfigNotModified extends _help_AppConfig {
   protected get [id]() {
     return 0x7CDE641D;
   }
@@ -38204,7 +38204,7 @@ export class help_appConfigNotModified extends _help_AppConfig {
   }
 }
 
-export class help_appConfig extends _help_AppConfig {
+class help_AppConfig extends _help_AppConfig {
   hash: number;
   config: enums.JSONValue;
 
@@ -38233,7 +38233,7 @@ export class help_appConfig extends _help_AppConfig {
   }
 }
 
-export class inputBotAppID extends _InputBotApp {
+class InputBotAppID extends _InputBotApp {
   id: bigint;
   access_hash: bigint;
 
@@ -38262,7 +38262,7 @@ export class inputBotAppID extends _InputBotApp {
   }
 }
 
-export class inputBotAppShortName extends _InputBotApp {
+class InputBotAppShortName extends _InputBotApp {
   bot_id: enums.InputUser;
   short_name: string;
 
@@ -38291,7 +38291,7 @@ export class inputBotAppShortName extends _InputBotApp {
   }
 }
 
-export class botAppNotModified extends _BotApp {
+class BotAppNotModified extends _BotApp {
   protected get [id]() {
     return 0x5DA674B7;
   }
@@ -38309,7 +38309,7 @@ export class botAppNotModified extends _BotApp {
   }
 }
 
-export class botApp extends _BotApp {
+class BotApp extends _BotApp {
   id: bigint;
   access_hash: bigint;
   short_name: string;
@@ -38364,7 +38364,7 @@ export class botApp extends _BotApp {
   }
 }
 
-export class messages_botApp extends _messages_BotApp {
+class messages_BotApp extends _messages_BotApp {
   inactive?: true;
   request_write_access?: true;
   has_settings?: true;
@@ -38403,7 +38403,7 @@ export class messages_botApp extends _messages_BotApp {
   }
 }
 
-export class appWebViewResultUrl extends _AppWebViewResult {
+class AppWebViewResultUrl extends _AppWebViewResult {
   url: string;
 
   protected get [id]() {
@@ -38428,7 +38428,7 @@ export class appWebViewResultUrl extends _AppWebViewResult {
   }
 }
 
-export class inlineBotWebView extends _InlineBotWebView {
+class InlineBotWebView extends _InlineBotWebView {
   text: string;
   url: string;
 
@@ -38457,7 +38457,7 @@ export class inlineBotWebView extends _InlineBotWebView {
   }
 }
 
-export class readParticipantDate extends _ReadParticipantDate {
+class ReadParticipantDate extends _ReadParticipantDate {
   user_id: bigint;
   date: number;
 
@@ -38486,7 +38486,7 @@ export class readParticipantDate extends _ReadParticipantDate {
   }
 }
 
-export class inputChatlistDialogFilter extends _InputChatlist {
+class InputChatlistDialogFilter extends _InputChatlist {
   filter_id: number;
 
   protected get [id]() {
@@ -38511,7 +38511,7 @@ export class inputChatlistDialogFilter extends _InputChatlist {
   }
 }
 
-export class exportedChatlistInvite extends _ExportedChatlistInvite {
+class ExportedChatlistInvite extends _ExportedChatlistInvite {
   title: string;
   url: string;
   peers: Array<enums.Peer>;
@@ -38546,7 +38546,7 @@ export class exportedChatlistInvite extends _ExportedChatlistInvite {
   }
 }
 
-export class chatlists_exportedChatlistInvite extends _chatlists_ExportedChatlistInvite {
+class chatlists_ExportedChatlistInvite extends _chatlists_ExportedChatlistInvite {
   filter: enums.DialogFilter;
   invite: enums.ExportedChatlistInvite;
 
@@ -38575,7 +38575,7 @@ export class chatlists_exportedChatlistInvite extends _chatlists_ExportedChatlis
   }
 }
 
-export class chatlists_exportedInvites extends _chatlists_ExportedInvites {
+class chatlists_ExportedInvites extends _chatlists_ExportedInvites {
   invites: Array<enums.ExportedChatlistInvite>;
   chats: Array<enums.Chat>;
   users: Array<enums.User>;
@@ -38608,7 +38608,7 @@ export class chatlists_exportedInvites extends _chatlists_ExportedInvites {
   }
 }
 
-export class chatlists_chatlistInviteAlready extends _chatlists_ChatlistInvite {
+class chatlists_ChatlistInviteAlready extends _chatlists_ChatlistInvite {
   filter_id: number;
   missing_peers: Array<enums.Peer>;
   already_peers: Array<enums.Peer>;
@@ -38649,7 +38649,7 @@ export class chatlists_chatlistInviteAlready extends _chatlists_ChatlistInvite {
   }
 }
 
-export class chatlists_chatlistInvite extends _chatlists_ChatlistInvite {
+class chatlists_ChatlistInvite extends _chatlists_ChatlistInvite {
   title: string;
   emoticon?: string;
   peers: Array<enums.Peer>;
@@ -38692,7 +38692,7 @@ export class chatlists_chatlistInvite extends _chatlists_ChatlistInvite {
   }
 }
 
-export class chatlists_chatlistUpdates extends _chatlists_ChatlistUpdates {
+class chatlists_ChatlistUpdates extends _chatlists_ChatlistUpdates {
   missing_peers: Array<enums.Peer>;
   chats: Array<enums.Chat>;
   users: Array<enums.User>;
@@ -38725,7 +38725,7 @@ export class chatlists_chatlistUpdates extends _chatlists_ChatlistUpdates {
   }
 }
 
-export class bots_botInfo extends _bots_BotInfo {
+class bots_BotInfo extends _bots_BotInfo {
   name: string;
   about: string;
   description: string;
@@ -38758,7 +38758,7 @@ export class bots_botInfo extends _bots_BotInfo {
   }
 }
 
-export class messagePeerVote extends _MessagePeerVote {
+class MessagePeerVote extends _MessagePeerVote {
   peer: enums.Peer;
   option: Uint8Array;
   date: number;
@@ -38791,7 +38791,7 @@ export class messagePeerVote extends _MessagePeerVote {
   }
 }
 
-export class messagePeerVoteInputOption extends _MessagePeerVote {
+class MessagePeerVoteInputOption extends _MessagePeerVote {
   peer: enums.Peer;
   date: number;
 
@@ -38820,7 +38820,7 @@ export class messagePeerVoteInputOption extends _MessagePeerVote {
   }
 }
 
-export class messagePeerVoteMultiple extends _MessagePeerVote {
+class MessagePeerVoteMultiple extends _MessagePeerVote {
   peer: enums.Peer;
   options: Array<Uint8Array>;
   date: number;
@@ -38853,7 +38853,7 @@ export class messagePeerVoteMultiple extends _MessagePeerVote {
   }
 }
 
-export class sponsoredWebPage extends _SponsoredWebPage {
+class SponsoredWebPage extends _SponsoredWebPage {
   url: string;
   site_name: string;
   photo?: enums.Photo;
@@ -38888,7 +38888,7 @@ export class sponsoredWebPage extends _SponsoredWebPage {
   }
 }
 
-export class storyViews extends _StoryViews {
+class StoryViews extends _StoryViews {
   has_viewers?: true;
   views_count: number;
   forwards_count?: number;
@@ -38935,7 +38935,7 @@ export class storyViews extends _StoryViews {
   }
 }
 
-export class storyItemDeleted extends _StoryItem {
+class StoryItemDeleted extends _StoryItem {
   id: number;
 
   protected get [id]() {
@@ -38960,7 +38960,7 @@ export class storyItemDeleted extends _StoryItem {
   }
 }
 
-export class storyItemSkipped extends _StoryItem {
+class StoryItemSkipped extends _StoryItem {
   close_friends?: true;
   id: number;
   date: number;
@@ -38999,7 +38999,7 @@ export class storyItemSkipped extends _StoryItem {
   }
 }
 
-export class storyItem extends _StoryItem {
+class StoryItem extends _StoryItem {
   pinned?: true;
   public?: true;
   close_friends?: true;
@@ -39102,7 +39102,7 @@ export class storyItem extends _StoryItem {
   }
 }
 
-export class stories_allStoriesNotModified extends _stories_AllStories {
+class stories_AllStoriesNotModified extends _stories_AllStories {
   state: string;
   stealth_mode: enums.StoriesStealthMode;
 
@@ -39133,7 +39133,7 @@ export class stories_allStoriesNotModified extends _stories_AllStories {
   }
 }
 
-export class stories_allStories extends _stories_AllStories {
+class stories_AllStories extends _stories_AllStories {
   has_more?: true;
   count: number;
   state: string;
@@ -39184,7 +39184,7 @@ export class stories_allStories extends _stories_AllStories {
   }
 }
 
-export class stories_stories extends _stories_Stories {
+class stories_Stories extends _stories_Stories {
   count: number;
   stories: Array<enums.StoryItem>;
   chats: Array<enums.Chat>;
@@ -39221,7 +39221,7 @@ export class stories_stories extends _stories_Stories {
   }
 }
 
-export class storyView extends _StoryView {
+class StoryView extends _StoryView {
   blocked?: true;
   blocked_my_stories_from?: true;
   user_id: bigint;
@@ -39264,7 +39264,7 @@ export class storyView extends _StoryView {
   }
 }
 
-export class stories_storyViewsList extends _stories_StoryViewsList {
+class stories_StoryViewsList extends _stories_StoryViewsList {
   count: number;
   reactions_count: number;
   views: Array<enums.StoryView>;
@@ -39307,7 +39307,7 @@ export class stories_storyViewsList extends _stories_StoryViewsList {
   }
 }
 
-export class stories_storyViews extends _stories_StoryViews {
+class stories_StoryViews extends _stories_StoryViews {
   views: Array<enums.StoryViews>;
   users: Array<enums.User>;
 
@@ -39336,7 +39336,7 @@ export class stories_storyViews extends _stories_StoryViews {
   }
 }
 
-export class inputReplyToMessage extends _InputReplyTo {
+class InputReplyToMessage extends _InputReplyTo {
   reply_to_msg_id: number;
   top_msg_id?: number;
   reply_to_peer_id?: enums.InputPeer;
@@ -39383,7 +39383,7 @@ export class inputReplyToMessage extends _InputReplyTo {
   }
 }
 
-export class inputReplyToStory extends _InputReplyTo {
+class InputReplyToStory extends _InputReplyTo {
   user_id: enums.InputUser;
   story_id: number;
 
@@ -39412,7 +39412,7 @@ export class inputReplyToStory extends _InputReplyTo {
   }
 }
 
-export class exportedStoryLink extends _ExportedStoryLink {
+class ExportedStoryLink extends _ExportedStoryLink {
   link: string;
 
   protected get [id]() {
@@ -39437,7 +39437,7 @@ export class exportedStoryLink extends _ExportedStoryLink {
   }
 }
 
-export class storiesStealthMode extends _StoriesStealthMode {
+class StoriesStealthMode extends _StoriesStealthMode {
   active_until_date?: number;
   cooldown_until_date?: number;
 
@@ -39468,7 +39468,7 @@ export class storiesStealthMode extends _StoriesStealthMode {
   }
 }
 
-export class mediaAreaCoordinates extends _MediaAreaCoordinates {
+class MediaAreaCoordinates extends _MediaAreaCoordinates {
   x: number;
   y: number;
   w: number;
@@ -39509,7 +39509,7 @@ export class mediaAreaCoordinates extends _MediaAreaCoordinates {
   }
 }
 
-export class mediaAreaVenue extends _MediaArea {
+class MediaAreaVenue extends _MediaArea {
   coordinates: enums.MediaAreaCoordinates;
   geo: enums.GeoPoint;
   title: string;
@@ -39558,7 +39558,7 @@ export class mediaAreaVenue extends _MediaArea {
   }
 }
 
-export class inputMediaAreaVenue extends _MediaArea {
+class InputMediaAreaVenue extends _MediaArea {
   coordinates: enums.MediaAreaCoordinates;
   query_id: bigint;
   result_id: string;
@@ -39591,7 +39591,7 @@ export class inputMediaAreaVenue extends _MediaArea {
   }
 }
 
-export class mediaAreaGeoPoint extends _MediaArea {
+class MediaAreaGeoPoint extends _MediaArea {
   coordinates: enums.MediaAreaCoordinates;
   geo: enums.GeoPoint;
 
@@ -39620,7 +39620,7 @@ export class mediaAreaGeoPoint extends _MediaArea {
   }
 }
 
-export class mediaAreaSuggestedReaction extends _MediaArea {
+class MediaAreaSuggestedReaction extends _MediaArea {
   dark?: true;
   flipped?: true;
   coordinates: enums.MediaAreaCoordinates;
@@ -39659,7 +39659,7 @@ export class mediaAreaSuggestedReaction extends _MediaArea {
   }
 }
 
-export class peerStories extends _PeerStories {
+class PeerStories extends _PeerStories {
   peer: enums.Peer;
   max_read_id?: number;
   stories: Array<enums.StoryItem>;
@@ -39694,7 +39694,7 @@ export class peerStories extends _PeerStories {
   }
 }
 
-export class stories_peerStories extends _stories_PeerStories {
+class stories_PeerStories extends _stories_PeerStories {
   stories: enums.PeerStories;
   chats: Array<enums.Chat>;
   users: Array<enums.User>;
@@ -39727,7 +39727,7 @@ export class stories_peerStories extends _stories_PeerStories {
   }
 }
 
-export class messages_webPage extends _messages_WebPage {
+class messages_WebPage extends _messages_WebPage {
   webpage: enums.WebPage;
   chats: Array<enums.Chat>;
   users: Array<enums.User>;
@@ -39760,7 +39760,7 @@ export class messages_webPage extends _messages_WebPage {
   }
 }
 
-export class premiumGiftCodeOption extends _PremiumGiftCodeOption {
+class PremiumGiftCodeOption extends _PremiumGiftCodeOption {
   users: number;
   months: number;
   store_product?: string;
@@ -39807,7 +39807,7 @@ export class premiumGiftCodeOption extends _PremiumGiftCodeOption {
   }
 }
 
-export class payments_checkedGiftCode extends _payments_CheckedGiftCode {
+class payments_CheckedGiftCode extends _payments_CheckedGiftCode {
   via_giveaway?: true;
   from_id: enums.Peer;
   giveaway_msg_id?: number;
@@ -39866,7 +39866,7 @@ export class payments_checkedGiftCode extends _payments_CheckedGiftCode {
   }
 }
 
-export class payments_giveawayInfo extends _payments_GiveawayInfo {
+class payments_GiveawayInfo extends _payments_GiveawayInfo {
   participating?: true;
   preparing_results?: true;
   start_date: number;
@@ -39913,7 +39913,7 @@ export class payments_giveawayInfo extends _payments_GiveawayInfo {
   }
 }
 
-export class payments_giveawayInfoResults extends _payments_GiveawayInfo {
+class payments_GiveawayInfoResults extends _payments_GiveawayInfo {
   winner?: true;
   refunded?: true;
   start_date: number;
@@ -39964,7 +39964,7 @@ export class payments_giveawayInfoResults extends _payments_GiveawayInfo {
   }
 }
 
-export class prepaidGiveaway extends _PrepaidGiveaway {
+class PrepaidGiveaway extends _PrepaidGiveaway {
   id: bigint;
   months: number;
   quantity: number;
@@ -40001,7 +40001,7 @@ export class prepaidGiveaway extends _PrepaidGiveaway {
   }
 }
 
-export class boost extends _Boost {
+class Boost extends _Boost {
   gift?: true;
   giveaway?: true;
   unclaimed?: true;
@@ -40064,7 +40064,7 @@ export class boost extends _Boost {
   }
 }
 
-export class premium_boostsList extends _premium_BoostsList {
+class premium_BoostsList extends _premium_BoostsList {
   count: number;
   boosts: Array<enums.Boost>;
   next_offset?: string;
@@ -40103,7 +40103,7 @@ export class premium_boostsList extends _premium_BoostsList {
   }
 }
 
-export class myBoost extends _MyBoost {
+class MyBoost extends _MyBoost {
   slot: number;
   peer?: enums.Peer;
   date: number;
@@ -40146,7 +40146,7 @@ export class myBoost extends _MyBoost {
   }
 }
 
-export class premium_myBoosts extends _premium_MyBoosts {
+class premium_MyBoosts extends _premium_MyBoosts {
   my_boosts: Array<enums.MyBoost>;
   chats: Array<enums.Chat>;
   users: Array<enums.User>;
@@ -40179,7 +40179,7 @@ export class premium_myBoosts extends _premium_MyBoosts {
   }
 }
 
-export class premium_boostsStatus extends _premium_BoostsStatus {
+class premium_BoostsStatus extends _premium_BoostsStatus {
   my_boost?: true;
   level: number;
   current_level_boosts: number;
@@ -40242,7 +40242,7 @@ export class premium_boostsStatus extends _premium_BoostsStatus {
   }
 }
 
-export class storyFwdHeader extends _StoryFwdHeader {
+class StoryFwdHeader extends _StoryFwdHeader {
   modified?: true;
   from?: enums.Peer;
   from_name?: string;
@@ -40281,7 +40281,7 @@ export class storyFwdHeader extends _StoryFwdHeader {
   }
 }
 
-export class postInteractionCountersMessage extends _PostInteractionCounters {
+class PostInteractionCountersMessage extends _PostInteractionCounters {
   msg_id: number;
   views: number;
   forwards: number;
@@ -40318,7 +40318,7 @@ export class postInteractionCountersMessage extends _PostInteractionCounters {
   }
 }
 
-export class postInteractionCountersStory extends _PostInteractionCounters {
+class PostInteractionCountersStory extends _PostInteractionCounters {
   story_id: number;
   views: number;
   forwards: number;
@@ -40355,7 +40355,7 @@ export class postInteractionCountersStory extends _PostInteractionCounters {
   }
 }
 
-export class stats_storyStats extends _stats_StoryStats {
+class stats_StoryStats extends _stats_StoryStats {
   views_graph: enums.StatsGraph;
   reactions_by_emotion_graph: enums.StatsGraph;
 
@@ -40384,7 +40384,7 @@ export class stats_storyStats extends _stats_StoryStats {
   }
 }
 
-export class publicForwardMessage extends _PublicForward {
+class PublicForwardMessage extends _PublicForward {
   message: enums.Message;
 
   protected get [id]() {
@@ -40409,7 +40409,7 @@ export class publicForwardMessage extends _PublicForward {
   }
 }
 
-export class publicForwardStory extends _PublicForward {
+class PublicForwardStory extends _PublicForward {
   peer: enums.Peer;
   story: enums.StoryItem;
 
@@ -40438,7 +40438,7 @@ export class publicForwardStory extends _PublicForward {
   }
 }
 
-export class stats_publicForwards extends _stats_PublicForwards {
+class stats_PublicForwards extends _stats_PublicForwards {
   count: number;
   forwards: Array<enums.PublicForward>;
   next_offset?: string;
@@ -40481,7 +40481,7 @@ export class stats_publicForwards extends _stats_PublicForwards {
   }
 }
 
-export class peerColor extends _PeerColor {
+class PeerColor extends _PeerColor {
   color?: number;
   background_emoji_id?: bigint;
 
@@ -40512,7 +40512,7 @@ export class peerColor extends _PeerColor {
   }
 }
 
-export class help_peerColorSet extends _help_PeerColorSet {
+class help_PeerColorSet extends _help_PeerColorSet {
   colors: Array<number>;
 
   protected get [id]() {
@@ -40537,7 +40537,7 @@ export class help_peerColorSet extends _help_PeerColorSet {
   }
 }
 
-export class help_peerColorProfileSet extends _help_PeerColorSet {
+class help_PeerColorProfileSet extends _help_PeerColorSet {
   palette_colors: Array<number>;
   bg_colors: Array<number>;
   story_colors: Array<number>;
@@ -40570,11 +40570,11 @@ export class help_peerColorProfileSet extends _help_PeerColorSet {
   }
 }
 
-export class help_peerColorOption extends _help_PeerColorOption {
+class help_PeerColorOption extends _help_PeerColorOption {
   hidden?: true;
   color_id: number;
-  colors?: enums.help_PeerColorSet;
-  dark_colors?: enums.help_PeerColorSet;
+  colors?: enums.help.PeerColorSet;
+  dark_colors?: enums.help.PeerColorSet;
 
   protected get [id]() {
     return 0x135BD42F;
@@ -40600,7 +40600,7 @@ export class help_peerColorOption extends _help_PeerColorOption {
     ];
   }
 
-  constructor(params: { hidden?: true; color_id: number; colors?: enums.help_PeerColorSet; dark_colors?: enums.help_PeerColorSet }) {
+  constructor(params: { hidden?: true; color_id: number; colors?: enums.help.PeerColorSet; dark_colors?: enums.help.PeerColorSet }) {
     super();
     this.hidden = params.hidden;
     this.color_id = params.color_id;
@@ -40609,7 +40609,7 @@ export class help_peerColorOption extends _help_PeerColorOption {
   }
 }
 
-export class help_peerColorsNotModified extends _help_PeerColors {
+class help_PeerColorsNotModified extends _help_PeerColors {
   protected get [id]() {
     return 0x2BA1F5CE;
   }
@@ -40627,9 +40627,9 @@ export class help_peerColorsNotModified extends _help_PeerColors {
   }
 }
 
-export class help_peerColors extends _help_PeerColors {
+class help_PeerColors extends _help_PeerColors {
   hash: number;
-  colors: Array<enums.help_PeerColorOption>;
+  colors: Array<enums.help.PeerColorOption>;
 
   protected get [id]() {
     return 0x00F8ED08;
@@ -40649,1689 +40649,4248 @@ export class help_peerColors extends _help_PeerColors {
     ];
   }
 
-  constructor(params: { hash: number; colors: Array<enums.help_PeerColorOption> }) {
+  constructor(params: { hash: number; colors: Array<enums.help.PeerColorOption> }) {
     super();
     this.hash = params.hash;
     this.colors = params.colors;
   }
 }
 
-export declare namespace enums {
-  export type ResPQ = resPQ;
-  export type P_Q_inner_data = p_q_inner_data_dc | p_q_inner_data_temp_dc;
-  export type Server_DH_Params = server_DH_params_ok;
-  export type Server_DH_inner_data = server_DH_inner_data;
-  export type Client_DH_Inner_Data = client_DH_inner_data;
-  export type Set_client_DH_params_answer = dh_gen_ok | dh_gen_retry | dh_gen_fail;
-  export type BindAuthKeyInner = bind_auth_key_inner;
-  export type RpcError = rpc_error;
-  export type RpcDropAnswer = rpc_answer_unknown | rpc_answer_dropped_running | rpc_answer_dropped;
-  export type FutureSalt = future_salt;
-  export type FutureSalts = future_salts;
-  export type Pong = pong;
-  export type DestroySessionRes = destroy_session_ok | destroy_session_none;
-  export type NewSession = new_session_created;
-  export type Object = gzip_packed;
-  export type MsgsAck = msgs_ack;
-  export type BadMsgNotification = bad_msg_notification | bad_server_salt;
-  export type MsgResendReq = msg_resend_req;
-  export type MsgsStateReq = msgs_state_req;
-  export type MsgsStateInfo = msgs_state_info;
-  export type MsgsAllInfo = msgs_all_info;
-  export type MsgDetailedInfo = msg_detailed_info | msg_new_detailed_info;
-  export type DestroyAuthKeyRes = destroy_auth_key_ok | destroy_auth_key_none | destroy_auth_key_fail;
-  export type HttpWait = http_wait;
-  export type True = r$true;
-  export type Error = error;
-  export type Null = r$null;
-  export type InputPeer = inputPeerEmpty | inputPeerSelf | inputPeerChat | inputPeerUser | inputPeerChannel | inputPeerUserFromMessage | inputPeerChannelFromMessage;
-  export type InputUser = inputUserEmpty | inputUserSelf | inputUser | inputUserFromMessage;
-  export type InputContact = inputPhoneContact;
-  export type InputFile = inputFile | inputFileBig;
-  export type InputMedia = inputMediaEmpty | inputMediaUploadedPhoto | inputMediaPhoto | inputMediaGeoPoint | inputMediaContact | inputMediaUploadedDocument | inputMediaDocument | inputMediaVenue | inputMediaPhotoExternal | inputMediaDocumentExternal | inputMediaGame | inputMediaInvoice | inputMediaGeoLive | inputMediaPoll | inputMediaDice | inputMediaStory | inputMediaWebPage;
-  export type InputChatPhoto = inputChatPhotoEmpty | inputChatUploadedPhoto | inputChatPhoto;
-  export type InputGeoPoint = inputGeoPointEmpty | inputGeoPoint;
-  export type InputPhoto = inputPhotoEmpty | inputPhoto;
-  export type InputFileLocation = inputFileLocation | inputEncryptedFileLocation | inputDocumentFileLocation | inputSecureFileLocation | inputTakeoutFileLocation | inputPhotoFileLocation | inputPhotoLegacyFileLocation | inputPeerPhotoFileLocation | inputStickerSetThumb | inputGroupCallStream;
-  export type Peer = peerUser | peerChat | peerChannel;
-  export type storage_FileType = storage_fileUnknown | storage_filePartial | storage_fileJpeg | storage_fileGif | storage_filePng | storage_filePdf | storage_fileMp3 | storage_fileMov | storage_fileMp4 | storage_fileWebp;
-  export type User = userEmpty | user;
-  export type UserProfilePhoto = userProfilePhotoEmpty | userProfilePhoto;
-  export type UserStatus = userStatusEmpty | userStatusOnline | userStatusOffline | userStatusRecently | userStatusLastWeek | userStatusLastMonth;
-  export type Chat = chatEmpty | chat | chatForbidden | channel | channelForbidden;
-  export type ChatFull = chatFull | channelFull;
-  export type ChatParticipant = chatParticipant | chatParticipantCreator | chatParticipantAdmin;
-  export type ChatParticipants = chatParticipantsForbidden | chatParticipants;
-  export type ChatPhoto = chatPhotoEmpty | chatPhoto;
-  export type Message = messageEmpty | message | messageService;
-  export type MessageMedia = messageMediaEmpty | messageMediaPhoto | messageMediaGeo | messageMediaContact | messageMediaUnsupported | messageMediaDocument | messageMediaWebPage | messageMediaVenue | messageMediaGame | messageMediaInvoice | messageMediaGeoLive | messageMediaPoll | messageMediaDice | messageMediaStory | messageMediaGiveaway;
-  export type MessageAction = messageActionEmpty | messageActionChatCreate | messageActionChatEditTitle | messageActionChatEditPhoto | messageActionChatDeletePhoto | messageActionChatAddUser | messageActionChatDeleteUser | messageActionChatJoinedByLink | messageActionChannelCreate | messageActionChatMigrateTo | messageActionChannelMigrateFrom | messageActionPinMessage | messageActionHistoryClear | messageActionGameScore | messageActionPaymentSentMe | messageActionPaymentSent | messageActionPhoneCall | messageActionScreenshotTaken | messageActionCustomAction | messageActionBotAllowed | messageActionSecureValuesSentMe | messageActionSecureValuesSent | messageActionContactSignUp | messageActionGeoProximityReached | messageActionGroupCall | messageActionInviteToGroupCall | messageActionSetMessagesTTL | messageActionGroupCallScheduled | messageActionSetChatTheme | messageActionChatJoinedByRequest | messageActionWebViewDataSentMe | messageActionWebViewDataSent | messageActionGiftPremium | messageActionTopicCreate | messageActionTopicEdit | messageActionSuggestProfilePhoto | messageActionRequestedPeer | messageActionSetChatWallPaper | messageActionGiftCode | messageActionGiveawayLaunch | messageActionGiveawayResults;
-  export type Dialog = dialog | dialogFolder;
-  export type Photo = photoEmpty | photo;
-  export type PhotoSize = photoSizeEmpty | photoSize | photoCachedSize | photoStrippedSize | photoSizeProgressive | photoPathSize;
-  export type GeoPoint = geoPointEmpty | geoPoint;
-  export type auth_SentCode = auth_sentCode | auth_sentCodeSuccess;
-  export type auth_Authorization = auth_authorization | auth_authorizationSignUpRequired;
-  export type auth_ExportedAuthorization = auth_exportedAuthorization;
-  export type InputNotifyPeer = inputNotifyPeer | inputNotifyUsers | inputNotifyChats | inputNotifyBroadcasts | inputNotifyForumTopic;
-  export type InputPeerNotifySettings = inputPeerNotifySettings;
-  export type PeerNotifySettings = peerNotifySettings;
-  export type PeerSettings = peerSettings;
-  export type WallPaper = wallPaper | wallPaperNoFile;
-  export type ReportReason = inputReportReasonSpam | inputReportReasonViolence | inputReportReasonPornography | inputReportReasonChildAbuse | inputReportReasonOther | inputReportReasonCopyright | inputReportReasonGeoIrrelevant | inputReportReasonFake | inputReportReasonIllegalDrugs | inputReportReasonPersonalDetails;
-  export type UserFull = userFull;
-  export type Contact = contact;
-  export type ImportedContact = importedContact;
-  export type ContactStatus = contactStatus;
-  export type contacts_Contacts = contacts_contactsNotModified | contacts_contacts;
-  export type contacts_ImportedContacts = contacts_importedContacts;
-  export type contacts_Blocked = contacts_blocked | contacts_blockedSlice;
-  export type messages_Dialogs = messages_dialogs | messages_dialogsSlice | messages_dialogsNotModified;
-  export type messages_Messages = messages_messages | messages_messagesSlice | messages_channelMessages | messages_messagesNotModified;
-  export type messages_Chats = messages_chats | messages_chatsSlice;
-  export type messages_ChatFull = messages_chatFull;
-  export type messages_AffectedHistory = messages_affectedHistory;
-  export type MessagesFilter = inputMessagesFilterEmpty | inputMessagesFilterPhotos | inputMessagesFilterVideo | inputMessagesFilterPhotoVideo | inputMessagesFilterDocument | inputMessagesFilterUrl | inputMessagesFilterGif | inputMessagesFilterVoice | inputMessagesFilterMusic | inputMessagesFilterChatPhotos | inputMessagesFilterPhoneCalls | inputMessagesFilterRoundVoice | inputMessagesFilterRoundVideo | inputMessagesFilterMyMentions | inputMessagesFilterGeo | inputMessagesFilterContacts | inputMessagesFilterPinned;
-  export type Update = updateNewMessage | updateMessageID | updateDeleteMessages | updateUserTyping | updateChatUserTyping | updateChatParticipants | updateUserStatus | updateUserName | updateNewAuthorization | updateNewEncryptedMessage | updateEncryptedChatTyping | updateEncryption | updateEncryptedMessagesRead | updateChatParticipantAdd | updateChatParticipantDelete | updateDcOptions | updateNotifySettings | updateServiceNotification | updatePrivacy | updateUserPhone | updateReadHistoryInbox | updateReadHistoryOutbox | updateWebPage | updateReadMessagesContents | updateChannelTooLong | updateChannel | updateNewChannelMessage | updateReadChannelInbox | updateDeleteChannelMessages | updateChannelMessageViews | updateChatParticipantAdmin | updateNewStickerSet | updateStickerSetsOrder | updateStickerSets | updateSavedGifs | updateBotInlineQuery | updateBotInlineSend | updateEditChannelMessage | updateBotCallbackQuery | updateEditMessage | updateInlineBotCallbackQuery | updateReadChannelOutbox | updateDraftMessage | updateReadFeaturedStickers | updateRecentStickers | updateConfig | updatePtsChanged | updateChannelWebPage | updateDialogPinned | updatePinnedDialogs | updateBotWebhookJSON | updateBotWebhookJSONQuery | updateBotShippingQuery | updateBotPrecheckoutQuery | updatePhoneCall | updateLangPackTooLong | updateLangPack | updateFavedStickers | updateChannelReadMessagesContents | updateContactsReset | updateChannelAvailableMessages | updateDialogUnreadMark | updateMessagePoll | updateChatDefaultBannedRights | updateFolderPeers | updatePeerSettings | updatePeerLocated | updateNewScheduledMessage | updateDeleteScheduledMessages | updateTheme | updateGeoLiveViewed | updateLoginToken | updateMessagePollVote | updateDialogFilter | updateDialogFilterOrder | updateDialogFilters | updatePhoneCallSignalingData | updateChannelMessageForwards | updateReadChannelDiscussionInbox | updateReadChannelDiscussionOutbox | updatePeerBlocked | updateChannelUserTyping | updatePinnedMessages | updatePinnedChannelMessages | updateChat | updateGroupCallParticipants | updateGroupCall | updatePeerHistoryTTL | updateChatParticipant | updateChannelParticipant | updateBotStopped | updateGroupCallConnection | updateBotCommands | updatePendingJoinRequests | updateBotChatInviteRequester | updateMessageReactions | updateAttachMenuBots | updateWebViewResultSent | updateBotMenuButton | updateSavedRingtones | updateTranscribedAudio | updateReadFeaturedEmojiStickers | updateUserEmojiStatus | updateRecentEmojiStatuses | updateRecentReactions | updateMoveStickerSetToTop | updateMessageExtendedMedia | updateChannelPinnedTopic | updateChannelPinnedTopics | updateUser | updateAutoSaveSettings | updateGroupInvitePrivacyForbidden | updateStory | updateReadStories | updateStoryID | updateStoriesStealthMode | updateSentStoryReaction | updateBotChatBoost | updateChannelViewForumAsMessages | updatePeerWallpaper;
-  export type updates_State = updates_state;
-  export type updates_Difference = updates_differenceEmpty | updates_difference | updates_differenceSlice | updates_differenceTooLong;
-  export type Updates = updatesTooLong | updateShortMessage | updateShortChatMessage | updateShort | updatesCombined | updates | updateShortSentMessage;
-  export type photos_Photos = photos_photos | photos_photosSlice;
-  export type photos_Photo = photos_photo;
-  export type upload_File = upload_file | upload_fileCdnRedirect;
-  export type DcOption = dcOption;
-  export type Config = config;
-  export type NearestDc = nearestDc;
-  export type help_AppUpdate = help_appUpdate | help_noAppUpdate;
-  export type help_InviteText = help_inviteText;
-  export type EncryptedChat = encryptedChatEmpty | encryptedChatWaiting | encryptedChatRequested | encryptedChat | encryptedChatDiscarded;
-  export type InputEncryptedChat = inputEncryptedChat;
-  export type EncryptedFile = encryptedFileEmpty | encryptedFile;
-  export type InputEncryptedFile = inputEncryptedFileEmpty | inputEncryptedFileUploaded | inputEncryptedFile | inputEncryptedFileBigUploaded;
-  export type EncryptedMessage = encryptedMessage | encryptedMessageService;
-  export type messages_DhConfig = messages_dhConfigNotModified | messages_dhConfig;
-  export type messages_SentEncryptedMessage = messages_sentEncryptedMessage | messages_sentEncryptedFile;
-  export type InputDocument = inputDocumentEmpty | inputDocument;
-  export type Document = documentEmpty | document;
-  export type help_Support = help_support;
-  export type NotifyPeer = notifyPeer | notifyUsers | notifyChats | notifyBroadcasts | notifyForumTopic;
-  export type SendMessageAction = sendMessageTypingAction | sendMessageCancelAction | sendMessageRecordVideoAction | sendMessageUploadVideoAction | sendMessageRecordAudioAction | sendMessageUploadAudioAction | sendMessageUploadPhotoAction | sendMessageUploadDocumentAction | sendMessageGeoLocationAction | sendMessageChooseContactAction | sendMessageGamePlayAction | sendMessageRecordRoundAction | sendMessageUploadRoundAction | speakingInGroupCallAction | sendMessageHistoryImportAction | sendMessageChooseStickerAction | sendMessageEmojiInteraction | sendMessageEmojiInteractionSeen;
-  export type contacts_Found = contacts_found;
-  export type InputPrivacyKey = inputPrivacyKeyStatusTimestamp | inputPrivacyKeyChatInvite | inputPrivacyKeyPhoneCall | inputPrivacyKeyPhoneP2P | inputPrivacyKeyForwards | inputPrivacyKeyProfilePhoto | inputPrivacyKeyPhoneNumber | inputPrivacyKeyAddedByPhone | inputPrivacyKeyVoiceMessages | inputPrivacyKeyAbout;
-  export type PrivacyKey = privacyKeyStatusTimestamp | privacyKeyChatInvite | privacyKeyPhoneCall | privacyKeyPhoneP2P | privacyKeyForwards | privacyKeyProfilePhoto | privacyKeyPhoneNumber | privacyKeyAddedByPhone | privacyKeyVoiceMessages | privacyKeyAbout;
-  export type InputPrivacyRule = inputPrivacyValueAllowContacts | inputPrivacyValueAllowAll | inputPrivacyValueAllowUsers | inputPrivacyValueDisallowContacts | inputPrivacyValueDisallowAll | inputPrivacyValueDisallowUsers | inputPrivacyValueAllowChatParticipants | inputPrivacyValueDisallowChatParticipants | inputPrivacyValueAllowCloseFriends;
-  export type PrivacyRule = privacyValueAllowContacts | privacyValueAllowAll | privacyValueAllowUsers | privacyValueDisallowContacts | privacyValueDisallowAll | privacyValueDisallowUsers | privacyValueAllowChatParticipants | privacyValueDisallowChatParticipants | privacyValueAllowCloseFriends;
-  export type account_PrivacyRules = account_privacyRules;
-  export type AccountDaysTTL = accountDaysTTL;
-  export type DocumentAttribute = documentAttributeImageSize | documentAttributeAnimated | documentAttributeSticker | documentAttributeVideo | documentAttributeAudio | documentAttributeFilename | documentAttributeHasStickers | documentAttributeCustomEmoji;
-  export type messages_Stickers = messages_stickersNotModified | messages_stickers;
-  export type StickerPack = stickerPack;
-  export type messages_AllStickers = messages_allStickersNotModified | messages_allStickers;
-  export type messages_AffectedMessages = messages_affectedMessages;
-  export type WebPage = webPageEmpty | webPagePending | webPage | webPageNotModified;
-  export type Authorization = authorization;
-  export type account_Authorizations = account_authorizations;
-  export type account_Password = account_password;
-  export type account_PasswordSettings = account_passwordSettings;
-  export type account_PasswordInputSettings = account_passwordInputSettings;
-  export type auth_PasswordRecovery = auth_passwordRecovery;
-  export type ReceivedNotifyMessage = receivedNotifyMessage;
-  export type ExportedChatInvite = chatInviteExported | chatInvitePublicJoinRequests;
-  export type ChatInvite = chatInviteAlready | chatInvite | chatInvitePeek;
-  export type InputStickerSet = inputStickerSetEmpty | inputStickerSetID | inputStickerSetShortName | inputStickerSetAnimatedEmoji | inputStickerSetDice | inputStickerSetAnimatedEmojiAnimations | inputStickerSetPremiumGifts | inputStickerSetEmojiGenericAnimations | inputStickerSetEmojiDefaultStatuses | inputStickerSetEmojiDefaultTopicIcons;
-  export type StickerSet = stickerSet;
-  export type messages_StickerSet = messages_stickerSet | messages_stickerSetNotModified;
-  export type BotCommand = botCommand;
-  export type BotInfo = botInfo;
-  export type KeyboardButton = keyboardButton | keyboardButtonUrl | keyboardButtonCallback | keyboardButtonRequestPhone | keyboardButtonRequestGeoLocation | keyboardButtonSwitchInline | keyboardButtonGame | keyboardButtonBuy | keyboardButtonUrlAuth | inputKeyboardButtonUrlAuth | keyboardButtonRequestPoll | inputKeyboardButtonUserProfile | keyboardButtonUserProfile | keyboardButtonWebView | keyboardButtonSimpleWebView | keyboardButtonRequestPeer;
-  export type KeyboardButtonRow = keyboardButtonRow;
-  export type ReplyMarkup = replyKeyboardHide | replyKeyboardForceReply | replyKeyboardMarkup | replyInlineMarkup;
-  export type MessageEntity = messageEntityUnknown | messageEntityMention | messageEntityHashtag | messageEntityBotCommand | messageEntityUrl | messageEntityEmail | messageEntityBold | messageEntityItalic | messageEntityCode | messageEntityPre | messageEntityTextUrl | messageEntityMentionName | inputMessageEntityMentionName | messageEntityPhone | messageEntityCashtag | messageEntityUnderline | messageEntityStrike | messageEntityBankCard | messageEntitySpoiler | messageEntityCustomEmoji | messageEntityBlockquote;
-  export type InputChannel = inputChannelEmpty | inputChannel | inputChannelFromMessage;
-  export type contacts_ResolvedPeer = contacts_resolvedPeer;
-  export type MessageRange = messageRange;
-  export type updates_ChannelDifference = updates_channelDifferenceEmpty | updates_channelDifferenceTooLong | updates_channelDifference;
-  export type ChannelMessagesFilter = channelMessagesFilterEmpty | channelMessagesFilter;
-  export type ChannelParticipant = channelParticipant | channelParticipantSelf | channelParticipantCreator | channelParticipantAdmin | channelParticipantBanned | channelParticipantLeft;
-  export type ChannelParticipantsFilter = channelParticipantsRecent | channelParticipantsAdmins | channelParticipantsKicked | channelParticipantsBots | channelParticipantsBanned | channelParticipantsSearch | channelParticipantsContacts | channelParticipantsMentions;
-  export type channels_ChannelParticipants = channels_channelParticipants | channels_channelParticipantsNotModified;
-  export type channels_ChannelParticipant = channels_channelParticipant;
-  export type help_TermsOfService = help_termsOfService;
-  export type messages_SavedGifs = messages_savedGifsNotModified | messages_savedGifs;
-  export type InputBotInlineMessage = inputBotInlineMessageMediaAuto | inputBotInlineMessageText | inputBotInlineMessageMediaGeo | inputBotInlineMessageMediaVenue | inputBotInlineMessageMediaContact | inputBotInlineMessageGame | inputBotInlineMessageMediaInvoice | inputBotInlineMessageMediaWebPage;
-  export type InputBotInlineResult = inputBotInlineResult | inputBotInlineResultPhoto | inputBotInlineResultDocument | inputBotInlineResultGame;
-  export type BotInlineMessage = botInlineMessageMediaAuto | botInlineMessageText | botInlineMessageMediaGeo | botInlineMessageMediaVenue | botInlineMessageMediaContact | botInlineMessageMediaInvoice | botInlineMessageMediaWebPage;
-  export type BotInlineResult = botInlineResult | botInlineMediaResult;
-  export type messages_BotResults = messages_botResults;
-  export type ExportedMessageLink = exportedMessageLink;
-  export type MessageFwdHeader = messageFwdHeader;
-  export type auth_CodeType = auth_codeTypeSms | auth_codeTypeCall | auth_codeTypeFlashCall | auth_codeTypeMissedCall | auth_codeTypeFragmentSms;
-  export type auth_SentCodeType = auth_sentCodeTypeApp | auth_sentCodeTypeSms | auth_sentCodeTypeCall | auth_sentCodeTypeFlashCall | auth_sentCodeTypeMissedCall | auth_sentCodeTypeEmailCode | auth_sentCodeTypeSetUpEmailRequired | auth_sentCodeTypeFragmentSms | auth_sentCodeTypeFirebaseSms;
-  export type messages_BotCallbackAnswer = messages_botCallbackAnswer;
-  export type messages_MessageEditData = messages_messageEditData;
-  export type InputBotInlineMessageID = inputBotInlineMessageID | inputBotInlineMessageID64;
-  export type InlineBotSwitchPM = inlineBotSwitchPM;
-  export type messages_PeerDialogs = messages_peerDialogs;
-  export type TopPeer = topPeer;
-  export type TopPeerCategory = topPeerCategoryBotsPM | topPeerCategoryBotsInline | topPeerCategoryCorrespondents | topPeerCategoryGroups | topPeerCategoryChannels | topPeerCategoryPhoneCalls | topPeerCategoryForwardUsers | topPeerCategoryForwardChats;
-  export type TopPeerCategoryPeers = topPeerCategoryPeers;
-  export type contacts_TopPeers = contacts_topPeersNotModified | contacts_topPeers | contacts_topPeersDisabled;
-  export type DraftMessage = draftMessageEmpty | draftMessage;
-  export type messages_FeaturedStickers = messages_featuredStickersNotModified | messages_featuredStickers;
-  export type messages_RecentStickers = messages_recentStickersNotModified | messages_recentStickers;
-  export type messages_ArchivedStickers = messages_archivedStickers;
-  export type messages_StickerSetInstallResult = messages_stickerSetInstallResultSuccess | messages_stickerSetInstallResultArchive;
-  export type StickerSetCovered = stickerSetCovered | stickerSetMultiCovered | stickerSetFullCovered | stickerSetNoCovered;
-  export type MaskCoords = maskCoords;
-  export type InputStickeredMedia = inputStickeredMediaPhoto | inputStickeredMediaDocument;
-  export type Game = game;
-  export type InputGame = inputGameID | inputGameShortName;
-  export type HighScore = highScore;
-  export type messages_HighScores = messages_highScores;
-  export type RichText = textEmpty | textPlain | textBold | textItalic | textUnderline | textStrike | textFixed | textUrl | textEmail | textConcat | textSubscript | textSuperscript | textMarked | textPhone | textImage | textAnchor;
-  export type PageBlock = pageBlockUnsupported | pageBlockTitle | pageBlockSubtitle | pageBlockAuthorDate | pageBlockHeader | pageBlockSubheader | pageBlockParagraph | pageBlockPreformatted | pageBlockFooter | pageBlockDivider | pageBlockAnchor | pageBlockList | pageBlockBlockquote | pageBlockPullquote | pageBlockPhoto | pageBlockVideo | pageBlockCover | pageBlockEmbed | pageBlockEmbedPost | pageBlockCollage | pageBlockSlideshow | pageBlockChannel | pageBlockAudio | pageBlockKicker | pageBlockTable | pageBlockOrderedList | pageBlockDetails | pageBlockRelatedArticles | pageBlockMap;
-  export type PhoneCallDiscardReason = phoneCallDiscardReasonMissed | phoneCallDiscardReasonDisconnect | phoneCallDiscardReasonHangup | phoneCallDiscardReasonBusy;
-  export type DataJSON = dataJSON;
-  export type LabeledPrice = labeledPrice;
-  export type Invoice = invoice;
-  export type PaymentCharge = paymentCharge;
-  export type PostAddress = postAddress;
-  export type PaymentRequestedInfo = paymentRequestedInfo;
-  export type PaymentSavedCredentials = paymentSavedCredentialsCard;
-  export type WebDocument = webDocument | webDocumentNoProxy;
-  export type InputWebDocument = inputWebDocument;
-  export type InputWebFileLocation = inputWebFileLocation | inputWebFileGeoPointLocation | inputWebFileAudioAlbumThumbLocation;
-  export type upload_WebFile = upload_webFile;
-  export type payments_PaymentForm = payments_paymentForm;
-  export type payments_ValidatedRequestedInfo = payments_validatedRequestedInfo;
-  export type payments_PaymentResult = payments_paymentResult | payments_paymentVerificationNeeded;
-  export type payments_PaymentReceipt = payments_paymentReceipt;
-  export type payments_SavedInfo = payments_savedInfo;
-  export type InputPaymentCredentials = inputPaymentCredentialsSaved | inputPaymentCredentials | inputPaymentCredentialsApplePay | inputPaymentCredentialsGooglePay;
-  export type account_TmpPassword = account_tmpPassword;
-  export type ShippingOption = shippingOption;
-  export type InputStickerSetItem = inputStickerSetItem;
-  export type InputPhoneCall = inputPhoneCall;
-  export type PhoneCall = phoneCallEmpty | phoneCallWaiting | phoneCallRequested | phoneCallAccepted | phoneCall | phoneCallDiscarded;
-  export type PhoneConnection = phoneConnection | phoneConnectionWebrtc;
-  export type PhoneCallProtocol = phoneCallProtocol;
-  export type phone_PhoneCall = phone_phoneCall;
-  export type upload_CdnFile = upload_cdnFileReuploadNeeded | upload_cdnFile;
-  export type CdnPublicKey = cdnPublicKey;
-  export type CdnConfig = cdnConfig;
-  export type LangPackString = langPackString | langPackStringPluralized | langPackStringDeleted;
-  export type LangPackDifference = langPackDifference;
-  export type LangPackLanguage = langPackLanguage;
-  export type ChannelAdminLogEventAction = channelAdminLogEventActionChangeTitle | channelAdminLogEventActionChangeAbout | channelAdminLogEventActionChangeUsername | channelAdminLogEventActionChangePhoto | channelAdminLogEventActionToggleInvites | channelAdminLogEventActionToggleSignatures | channelAdminLogEventActionUpdatePinned | channelAdminLogEventActionEditMessage | channelAdminLogEventActionDeleteMessage | channelAdminLogEventActionParticipantJoin | channelAdminLogEventActionParticipantLeave | channelAdminLogEventActionParticipantInvite | channelAdminLogEventActionParticipantToggleBan | channelAdminLogEventActionParticipantToggleAdmin | channelAdminLogEventActionChangeStickerSet | channelAdminLogEventActionTogglePreHistoryHidden | channelAdminLogEventActionDefaultBannedRights | channelAdminLogEventActionStopPoll | channelAdminLogEventActionChangeLinkedChat | channelAdminLogEventActionChangeLocation | channelAdminLogEventActionToggleSlowMode | channelAdminLogEventActionStartGroupCall | channelAdminLogEventActionDiscardGroupCall | channelAdminLogEventActionParticipantMute | channelAdminLogEventActionParticipantUnmute | channelAdminLogEventActionToggleGroupCallSetting | channelAdminLogEventActionParticipantJoinByInvite | channelAdminLogEventActionExportedInviteDelete | channelAdminLogEventActionExportedInviteRevoke | channelAdminLogEventActionExportedInviteEdit | channelAdminLogEventActionParticipantVolume | channelAdminLogEventActionChangeHistoryTTL | channelAdminLogEventActionParticipantJoinByRequest | channelAdminLogEventActionToggleNoForwards | channelAdminLogEventActionSendMessage | channelAdminLogEventActionChangeAvailableReactions | channelAdminLogEventActionChangeUsernames | channelAdminLogEventActionToggleForum | channelAdminLogEventActionCreateTopic | channelAdminLogEventActionEditTopic | channelAdminLogEventActionDeleteTopic | channelAdminLogEventActionPinTopic | channelAdminLogEventActionToggleAntiSpam | channelAdminLogEventActionChangeColor | channelAdminLogEventActionChangeBackgroundEmoji;
-  export type ChannelAdminLogEvent = channelAdminLogEvent;
-  export type channels_AdminLogResults = channels_adminLogResults;
-  export type ChannelAdminLogEventsFilter = channelAdminLogEventsFilter;
-  export type PopularContact = popularContact;
-  export type messages_FavedStickers = messages_favedStickersNotModified | messages_favedStickers;
-  export type RecentMeUrl = recentMeUrlUnknown | recentMeUrlUser | recentMeUrlChat | recentMeUrlChatInvite | recentMeUrlStickerSet;
-  export type help_RecentMeUrls = help_recentMeUrls;
-  export type InputSingleMedia = inputSingleMedia;
-  export type WebAuthorization = webAuthorization;
-  export type account_WebAuthorizations = account_webAuthorizations;
-  export type InputMessage = inputMessageID | inputMessageReplyTo | inputMessagePinned | inputMessageCallbackQuery;
-  export type InputDialogPeer = inputDialogPeer | inputDialogPeerFolder;
-  export type DialogPeer = dialogPeer | dialogPeerFolder;
-  export type messages_FoundStickerSets = messages_foundStickerSetsNotModified | messages_foundStickerSets;
-  export type FileHash = fileHash;
-  export type InputClientProxy = inputClientProxy;
-  export type help_TermsOfServiceUpdate = help_termsOfServiceUpdateEmpty | help_termsOfServiceUpdate;
-  export type InputSecureFile = inputSecureFileUploaded | inputSecureFile;
-  export type SecureFile = secureFileEmpty | secureFile;
-  export type SecureData = secureData;
-  export type SecurePlainData = securePlainPhone | securePlainEmail;
-  export type SecureValueType = secureValueTypePersonalDetails | secureValueTypePassport | secureValueTypeDriverLicense | secureValueTypeIdentityCard | secureValueTypeInternalPassport | secureValueTypeAddress | secureValueTypeUtilityBill | secureValueTypeBankStatement | secureValueTypeRentalAgreement | secureValueTypePassportRegistration | secureValueTypeTemporaryRegistration | secureValueTypePhone | secureValueTypeEmail;
-  export type SecureValue = secureValue;
-  export type InputSecureValue = inputSecureValue;
-  export type SecureValueHash = secureValueHash;
-  export type SecureValueError = secureValueErrorData | secureValueErrorFrontSide | secureValueErrorReverseSide | secureValueErrorSelfie | secureValueErrorFile | secureValueErrorFiles | secureValueError | secureValueErrorTranslationFile | secureValueErrorTranslationFiles;
-  export type SecureCredentialsEncrypted = secureCredentialsEncrypted;
-  export type account_AuthorizationForm = account_authorizationForm;
-  export type account_SentEmailCode = account_sentEmailCode;
-  export type help_DeepLinkInfo = help_deepLinkInfoEmpty | help_deepLinkInfo;
-  export type SavedContact = savedPhoneContact;
-  export type account_Takeout = account_takeout;
-  export type PasswordKdfAlgo = passwordKdfAlgoUnknown | passwordKdfAlgoSHA256SHA256PBKDF2HMACSHA512iter100000SHA256ModPow;
-  export type SecurePasswordKdfAlgo = securePasswordKdfAlgoUnknown | securePasswordKdfAlgoPBKDF2HMACSHA512iter100000 | securePasswordKdfAlgoSHA512;
-  export type SecureSecretSettings = secureSecretSettings;
-  export type InputCheckPasswordSRP = inputCheckPasswordEmpty | inputCheckPasswordSRP;
-  export type SecureRequiredType = secureRequiredType | secureRequiredTypeOneOf;
-  export type help_PassportConfig = help_passportConfigNotModified | help_passportConfig;
-  export type InputAppEvent = inputAppEvent;
-  export type JSONObjectValue = jsonObjectValue;
-  export type JSONValue = jsonNull | jsonBool | jsonNumber | jsonString | jsonArray | jsonObject;
-  export type PageTableCell = pageTableCell;
-  export type PageTableRow = pageTableRow;
-  export type PageCaption = pageCaption;
-  export type PageListItem = pageListItemText | pageListItemBlocks;
-  export type PageListOrderedItem = pageListOrderedItemText | pageListOrderedItemBlocks;
-  export type PageRelatedArticle = pageRelatedArticle;
-  export type Page = page;
-  export type help_SupportName = help_supportName;
-  export type help_UserInfo = help_userInfoEmpty | help_userInfo;
-  export type PollAnswer = pollAnswer;
-  export type Poll = poll;
-  export type PollAnswerVoters = pollAnswerVoters;
-  export type PollResults = pollResults;
-  export type ChatOnlines = chatOnlines;
-  export type StatsURL = statsURL;
-  export type ChatAdminRights = chatAdminRights;
-  export type ChatBannedRights = chatBannedRights;
-  export type InputWallPaper = inputWallPaper | inputWallPaperSlug | inputWallPaperNoFile;
-  export type account_WallPapers = account_wallPapersNotModified | account_wallPapers;
-  export type CodeSettings = codeSettings;
-  export type WallPaperSettings = wallPaperSettings;
-  export type AutoDownloadSettings = autoDownloadSettings;
-  export type account_AutoDownloadSettings = account_autoDownloadSettings;
-  export type EmojiKeyword = emojiKeyword | emojiKeywordDeleted;
-  export type EmojiKeywordsDifference = emojiKeywordsDifference;
-  export type EmojiURL = emojiURL;
-  export type EmojiLanguage = emojiLanguage;
-  export type Folder = folder;
-  export type InputFolderPeer = inputFolderPeer;
-  export type FolderPeer = folderPeer;
-  export type messages_SearchCounter = messages_searchCounter;
-  export type UrlAuthResult = urlAuthResultRequest | urlAuthResultAccepted | urlAuthResultDefault;
-  export type ChannelLocation = channelLocationEmpty | channelLocation;
-  export type PeerLocated = peerLocated | peerSelfLocated;
-  export type RestrictionReason = restrictionReason;
-  export type InputTheme = inputTheme | inputThemeSlug;
-  export type Theme = theme;
-  export type account_Themes = account_themesNotModified | account_themes;
-  export type auth_LoginToken = auth_loginToken | auth_loginTokenMigrateTo | auth_loginTokenSuccess;
-  export type account_ContentSettings = account_contentSettings;
-  export type messages_InactiveChats = messages_inactiveChats;
-  export type BaseTheme = baseThemeClassic | baseThemeDay | baseThemeNight | baseThemeTinted | baseThemeArctic;
-  export type InputThemeSettings = inputThemeSettings;
-  export type ThemeSettings = themeSettings;
-  export type WebPageAttribute = webPageAttributeTheme | webPageAttributeStory;
-  export type messages_VotesList = messages_votesList;
-  export type BankCardOpenUrl = bankCardOpenUrl;
-  export type payments_BankCardData = payments_bankCardData;
-  export type DialogFilter = dialogFilter | dialogFilterDefault | dialogFilterChatlist;
-  export type DialogFilterSuggested = dialogFilterSuggested;
-  export type StatsDateRangeDays = statsDateRangeDays;
-  export type StatsAbsValueAndPrev = statsAbsValueAndPrev;
-  export type StatsPercentValue = statsPercentValue;
-  export type StatsGraph = statsGraphAsync | statsGraphError | statsGraph;
-  export type stats_BroadcastStats = stats_broadcastStats;
-  export type help_PromoData = help_promoDataEmpty | help_promoData;
-  export type VideoSize = videoSize | videoSizeEmojiMarkup | videoSizeStickerMarkup;
-  export type StatsGroupTopPoster = statsGroupTopPoster;
-  export type StatsGroupTopAdmin = statsGroupTopAdmin;
-  export type StatsGroupTopInviter = statsGroupTopInviter;
-  export type stats_MegagroupStats = stats_megagroupStats;
-  export type GlobalPrivacySettings = globalPrivacySettings;
-  export type help_CountryCode = help_countryCode;
-  export type help_Country = help_country;
-  export type help_CountriesList = help_countriesListNotModified | help_countriesList;
-  export type MessageViews = messageViews;
-  export type messages_MessageViews = messages_messageViews;
-  export type messages_DiscussionMessage = messages_discussionMessage;
-  export type MessageReplyHeader = messageReplyHeader | messageReplyStoryHeader;
-  export type MessageReplies = messageReplies;
-  export type PeerBlocked = peerBlocked;
-  export type stats_MessageStats = stats_messageStats;
-  export type GroupCall = groupCallDiscarded | groupCall;
-  export type InputGroupCall = inputGroupCall;
-  export type GroupCallParticipant = groupCallParticipant;
-  export type phone_GroupCall = phone_groupCall;
-  export type phone_GroupParticipants = phone_groupParticipants;
-  export type InlineQueryPeerType = inlineQueryPeerTypeSameBotPM | inlineQueryPeerTypePM | inlineQueryPeerTypeChat | inlineQueryPeerTypeMegagroup | inlineQueryPeerTypeBroadcast | inlineQueryPeerTypeBotPM;
-  export type messages_HistoryImport = messages_historyImport;
-  export type messages_HistoryImportParsed = messages_historyImportParsed;
-  export type messages_AffectedFoundMessages = messages_affectedFoundMessages;
-  export type ChatInviteImporter = chatInviteImporter;
-  export type messages_ExportedChatInvites = messages_exportedChatInvites;
-  export type messages_ExportedChatInvite = messages_exportedChatInvite | messages_exportedChatInviteReplaced;
-  export type messages_ChatInviteImporters = messages_chatInviteImporters;
-  export type ChatAdminWithInvites = chatAdminWithInvites;
-  export type messages_ChatAdminsWithInvites = messages_chatAdminsWithInvites;
-  export type messages_CheckedHistoryImportPeer = messages_checkedHistoryImportPeer;
-  export type phone_JoinAsPeers = phone_joinAsPeers;
-  export type phone_ExportedGroupCallInvite = phone_exportedGroupCallInvite;
-  export type GroupCallParticipantVideoSourceGroup = groupCallParticipantVideoSourceGroup;
-  export type GroupCallParticipantVideo = groupCallParticipantVideo;
-  export type stickers_SuggestedShortName = stickers_suggestedShortName;
-  export type BotCommandScope = botCommandScopeDefault | botCommandScopeUsers | botCommandScopeChats | botCommandScopeChatAdmins | botCommandScopePeer | botCommandScopePeerAdmins | botCommandScopePeerUser;
-  export type account_ResetPasswordResult = account_resetPasswordFailedWait | account_resetPasswordRequestedWait | account_resetPasswordOk;
-  export type SponsoredMessage = sponsoredMessage;
-  export type messages_SponsoredMessages = messages_sponsoredMessages | messages_sponsoredMessagesEmpty;
-  export type SearchResultsCalendarPeriod = searchResultsCalendarPeriod;
-  export type messages_SearchResultsCalendar = messages_searchResultsCalendar;
-  export type SearchResultsPosition = searchResultPosition;
-  export type messages_SearchResultsPositions = messages_searchResultsPositions;
-  export type channels_SendAsPeers = channels_sendAsPeers;
-  export type users_UserFull = users_userFull;
-  export type messages_PeerSettings = messages_peerSettings;
-  export type auth_LoggedOut = auth_loggedOut;
-  export type ReactionCount = reactionCount;
-  export type MessageReactions = messageReactions;
-  export type messages_MessageReactionsList = messages_messageReactionsList;
-  export type AvailableReaction = availableReaction;
-  export type messages_AvailableReactions = messages_availableReactionsNotModified | messages_availableReactions;
-  export type MessagePeerReaction = messagePeerReaction;
-  export type GroupCallStreamChannel = groupCallStreamChannel;
-  export type phone_GroupCallStreamChannels = phone_groupCallStreamChannels;
-  export type phone_GroupCallStreamRtmpUrl = phone_groupCallStreamRtmpUrl;
-  export type AttachMenuBotIconColor = attachMenuBotIconColor;
-  export type AttachMenuBotIcon = attachMenuBotIcon;
-  export type AttachMenuBot = attachMenuBot;
-  export type AttachMenuBots = attachMenuBotsNotModified | attachMenuBots;
-  export type AttachMenuBotsBot = attachMenuBotsBot;
-  export type WebViewResult = webViewResultUrl;
-  export type SimpleWebViewResult = simpleWebViewResultUrl;
-  export type WebViewMessageSent = webViewMessageSent;
-  export type BotMenuButton = botMenuButtonDefault | botMenuButtonCommands | botMenuButton;
-  export type account_SavedRingtones = account_savedRingtonesNotModified | account_savedRingtones;
-  export type NotificationSound = notificationSoundDefault | notificationSoundNone | notificationSoundLocal | notificationSoundRingtone;
-  export type account_SavedRingtone = account_savedRingtone | account_savedRingtoneConverted;
-  export type AttachMenuPeerType = attachMenuPeerTypeSameBotPM | attachMenuPeerTypeBotPM | attachMenuPeerTypePM | attachMenuPeerTypeChat | attachMenuPeerTypeBroadcast;
-  export type InputInvoice = inputInvoiceMessage | inputInvoiceSlug | inputInvoicePremiumGiftCode;
-  export type payments_ExportedInvoice = payments_exportedInvoice;
-  export type messages_TranscribedAudio = messages_transcribedAudio;
-  export type help_PremiumPromo = help_premiumPromo;
-  export type InputStorePaymentPurpose = inputStorePaymentPremiumSubscription | inputStorePaymentGiftPremium | inputStorePaymentPremiumGiftCode | inputStorePaymentPremiumGiveaway;
-  export type PremiumGiftOption = premiumGiftOption;
-  export type PaymentFormMethod = paymentFormMethod;
-  export type EmojiStatus = emojiStatusEmpty | emojiStatus | emojiStatusUntil;
-  export type account_EmojiStatuses = account_emojiStatusesNotModified | account_emojiStatuses;
-  export type Reaction = reactionEmpty | reactionEmoji | reactionCustomEmoji;
-  export type ChatReactions = chatReactionsNone | chatReactionsAll | chatReactionsSome;
-  export type messages_Reactions = messages_reactionsNotModified | messages_reactions;
-  export type EmailVerifyPurpose = emailVerifyPurposeLoginSetup | emailVerifyPurposeLoginChange | emailVerifyPurposePassport;
-  export type EmailVerification = emailVerificationCode | emailVerificationGoogle | emailVerificationApple;
-  export type account_EmailVerified = account_emailVerified | account_emailVerifiedLogin;
-  export type PremiumSubscriptionOption = premiumSubscriptionOption;
-  export type SendAsPeer = sendAsPeer;
-  export type MessageExtendedMedia = messageExtendedMediaPreview | messageExtendedMedia;
-  export type StickerKeyword = stickerKeyword;
-  export type Username = username;
-  export type ForumTopic = forumTopicDeleted | forumTopic;
-  export type messages_ForumTopics = messages_forumTopics;
-  export type DefaultHistoryTTL = defaultHistoryTTL;
-  export type ExportedContactToken = exportedContactToken;
-  export type RequestPeerType = requestPeerTypeUser | requestPeerTypeChat | requestPeerTypeBroadcast;
-  export type EmojiList = emojiListNotModified | emojiList;
-  export type EmojiGroup = emojiGroup;
-  export type messages_EmojiGroups = messages_emojiGroupsNotModified | messages_emojiGroups;
-  export type TextWithEntities = textWithEntities;
-  export type messages_TranslatedText = messages_translateResult;
-  export type AutoSaveSettings = autoSaveSettings;
-  export type AutoSaveException = autoSaveException;
-  export type account_AutoSaveSettings = account_autoSaveSettings;
-  export type help_AppConfig = help_appConfigNotModified | help_appConfig;
-  export type InputBotApp = inputBotAppID | inputBotAppShortName;
-  export type BotApp = botAppNotModified | botApp;
-  export type messages_BotApp = messages_botApp;
-  export type AppWebViewResult = appWebViewResultUrl;
-  export type InlineBotWebView = inlineBotWebView;
-  export type ReadParticipantDate = readParticipantDate;
-  export type InputChatlist = inputChatlistDialogFilter;
-  export type ExportedChatlistInvite = exportedChatlistInvite;
-  export type chatlists_ExportedChatlistInvite = chatlists_exportedChatlistInvite;
-  export type chatlists_ExportedInvites = chatlists_exportedInvites;
-  export type chatlists_ChatlistInvite = chatlists_chatlistInviteAlready | chatlists_chatlistInvite;
-  export type chatlists_ChatlistUpdates = chatlists_chatlistUpdates;
-  export type bots_BotInfo = bots_botInfo;
-  export type MessagePeerVote = messagePeerVote | messagePeerVoteInputOption | messagePeerVoteMultiple;
-  export type SponsoredWebPage = sponsoredWebPage;
-  export type StoryViews = storyViews;
-  export type StoryItem = storyItemDeleted | storyItemSkipped | storyItem;
-  export type stories_AllStories = stories_allStoriesNotModified | stories_allStories;
-  export type stories_Stories = stories_stories;
-  export type StoryView = storyView;
-  export type stories_StoryViewsList = stories_storyViewsList;
-  export type stories_StoryViews = stories_storyViews;
-  export type InputReplyTo = inputReplyToMessage | inputReplyToStory;
-  export type ExportedStoryLink = exportedStoryLink;
-  export type StoriesStealthMode = storiesStealthMode;
-  export type MediaAreaCoordinates = mediaAreaCoordinates;
-  export type MediaArea = mediaAreaVenue | inputMediaAreaVenue | mediaAreaGeoPoint | mediaAreaSuggestedReaction;
-  export type PeerStories = peerStories;
-  export type stories_PeerStories = stories_peerStories;
-  export type messages_WebPage = messages_webPage;
-  export type PremiumGiftCodeOption = premiumGiftCodeOption;
-  export type payments_CheckedGiftCode = payments_checkedGiftCode;
-  export type payments_GiveawayInfo = payments_giveawayInfo | payments_giveawayInfoResults;
-  export type PrepaidGiveaway = prepaidGiveaway;
-  export type Boost = boost;
-  export type premium_BoostsList = premium_boostsList;
-  export type MyBoost = myBoost;
-  export type premium_MyBoosts = premium_myBoosts;
-  export type premium_BoostsStatus = premium_boostsStatus;
-  export type StoryFwdHeader = storyFwdHeader;
-  export type PostInteractionCounters = postInteractionCountersMessage | postInteractionCountersStory;
-  export type stats_StoryStats = stats_storyStats;
-  export type PublicForward = publicForwardMessage | publicForwardStory;
-  export type stats_PublicForwards = stats_publicForwards;
-  export type PeerColor = peerColor;
-  export type help_PeerColorSet = help_peerColorSet | help_peerColorProfileSet;
-  export type help_PeerColorOption = help_peerColorOption;
-  export type help_PeerColors = help_peerColorsNotModified | help_peerColors;
+export const types = {
+  Type,
+  TypeX,
+  ResPQ,
+  P_q_inner_data_dc,
+  P_q_inner_data_temp_dc,
+  Server_DH_params_ok,
+  Server_DH_inner_data,
+  Client_DH_inner_data,
+  Dh_gen_ok,
+  Dh_gen_retry,
+  Dh_gen_fail,
+  Bind_auth_key_inner,
+  Rpc_error,
+  Rpc_answer_unknown,
+  Rpc_answer_dropped_running,
+  Rpc_answer_dropped,
+  Future_salt,
+  Future_salts,
+  Pong,
+  Destroy_session_ok,
+  Destroy_session_none,
+  New_session_created,
+  Gzip_packed,
+  Msgs_ack,
+  Bad_msg_notification,
+  Bad_server_salt,
+  Msg_resend_req,
+  Msgs_state_req,
+  Msgs_state_info,
+  Msgs_all_info,
+  Msg_detailed_info,
+  Msg_new_detailed_info,
+  Destroy_auth_key_ok,
+  Destroy_auth_key_none,
+  Destroy_auth_key_fail,
+  Http_wait,
+  True,
+  Error,
+  Null,
+  InputPeerEmpty,
+  InputPeerSelf,
+  InputPeerChat,
+  InputPeerUser,
+  InputPeerChannel,
+  InputPeerUserFromMessage,
+  InputPeerChannelFromMessage,
+  InputUserEmpty,
+  InputUserSelf,
+  InputUser,
+  InputUserFromMessage,
+  InputPhoneContact,
+  InputFile,
+  InputFileBig,
+  InputMediaEmpty,
+  InputMediaUploadedPhoto,
+  InputMediaPhoto,
+  InputMediaGeoPoint,
+  InputMediaContact,
+  InputMediaUploadedDocument,
+  InputMediaDocument,
+  InputMediaVenue,
+  InputMediaPhotoExternal,
+  InputMediaDocumentExternal,
+  InputMediaGame,
+  InputMediaInvoice,
+  InputMediaGeoLive,
+  InputMediaPoll,
+  InputMediaDice,
+  InputMediaStory,
+  InputMediaWebPage,
+  InputChatPhotoEmpty,
+  InputChatUploadedPhoto,
+  InputChatPhoto,
+  InputGeoPointEmpty,
+  InputGeoPoint,
+  InputPhotoEmpty,
+  InputPhoto,
+  InputFileLocation,
+  InputEncryptedFileLocation,
+  InputDocumentFileLocation,
+  InputSecureFileLocation,
+  InputTakeoutFileLocation,
+  InputPhotoFileLocation,
+  InputPhotoLegacyFileLocation,
+  InputPeerPhotoFileLocation,
+  InputStickerSetThumb,
+  InputGroupCallStream,
+  PeerUser,
+  PeerChat,
+  PeerChannel,
+  UserEmpty,
+  User,
+  UserProfilePhotoEmpty,
+  UserProfilePhoto,
+  UserStatusEmpty,
+  UserStatusOnline,
+  UserStatusOffline,
+  UserStatusRecently,
+  UserStatusLastWeek,
+  UserStatusLastMonth,
+  ChatEmpty,
+  Chat,
+  ChatForbidden,
+  Channel,
+  ChannelForbidden,
+  ChatFull,
+  ChannelFull,
+  ChatParticipant,
+  ChatParticipantCreator,
+  ChatParticipantAdmin,
+  ChatParticipantsForbidden,
+  ChatParticipants,
+  ChatPhotoEmpty,
+  ChatPhoto,
+  MessageEmpty,
+  Message,
+  MessageService,
+  MessageMediaEmpty,
+  MessageMediaPhoto,
+  MessageMediaGeo,
+  MessageMediaContact,
+  MessageMediaUnsupported,
+  MessageMediaDocument,
+  MessageMediaWebPage,
+  MessageMediaVenue,
+  MessageMediaGame,
+  MessageMediaInvoice,
+  MessageMediaGeoLive,
+  MessageMediaPoll,
+  MessageMediaDice,
+  MessageMediaStory,
+  MessageMediaGiveaway,
+  MessageActionEmpty,
+  MessageActionChatCreate,
+  MessageActionChatEditTitle,
+  MessageActionChatEditPhoto,
+  MessageActionChatDeletePhoto,
+  MessageActionChatAddUser,
+  MessageActionChatDeleteUser,
+  MessageActionChatJoinedByLink,
+  MessageActionChannelCreate,
+  MessageActionChatMigrateTo,
+  MessageActionChannelMigrateFrom,
+  MessageActionPinMessage,
+  MessageActionHistoryClear,
+  MessageActionGameScore,
+  MessageActionPaymentSentMe,
+  MessageActionPaymentSent,
+  MessageActionPhoneCall,
+  MessageActionScreenshotTaken,
+  MessageActionCustomAction,
+  MessageActionBotAllowed,
+  MessageActionSecureValuesSentMe,
+  MessageActionSecureValuesSent,
+  MessageActionContactSignUp,
+  MessageActionGeoProximityReached,
+  MessageActionGroupCall,
+  MessageActionInviteToGroupCall,
+  MessageActionSetMessagesTTL,
+  MessageActionGroupCallScheduled,
+  MessageActionSetChatTheme,
+  MessageActionChatJoinedByRequest,
+  MessageActionWebViewDataSentMe,
+  MessageActionWebViewDataSent,
+  MessageActionGiftPremium,
+  MessageActionTopicCreate,
+  MessageActionTopicEdit,
+  MessageActionSuggestProfilePhoto,
+  MessageActionRequestedPeer,
+  MessageActionSetChatWallPaper,
+  MessageActionGiftCode,
+  MessageActionGiveawayLaunch,
+  MessageActionGiveawayResults,
+  Dialog,
+  DialogFolder,
+  PhotoEmpty,
+  Photo,
+  PhotoSizeEmpty,
+  PhotoSize,
+  PhotoCachedSize,
+  PhotoStrippedSize,
+  PhotoSizeProgressive,
+  PhotoPathSize,
+  GeoPointEmpty,
+  GeoPoint,
+  InputNotifyPeer,
+  InputNotifyUsers,
+  InputNotifyChats,
+  InputNotifyBroadcasts,
+  InputNotifyForumTopic,
+  InputPeerNotifySettings,
+  PeerNotifySettings,
+  PeerSettings,
+  WallPaper,
+  WallPaperNoFile,
+  InputReportReasonSpam,
+  InputReportReasonViolence,
+  InputReportReasonPornography,
+  InputReportReasonChildAbuse,
+  InputReportReasonOther,
+  InputReportReasonCopyright,
+  InputReportReasonGeoIrrelevant,
+  InputReportReasonFake,
+  InputReportReasonIllegalDrugs,
+  InputReportReasonPersonalDetails,
+  UserFull,
+  Contact,
+  ImportedContact,
+  ContactStatus,
+  InputMessagesFilterEmpty,
+  InputMessagesFilterPhotos,
+  InputMessagesFilterVideo,
+  InputMessagesFilterPhotoVideo,
+  InputMessagesFilterDocument,
+  InputMessagesFilterUrl,
+  InputMessagesFilterGif,
+  InputMessagesFilterVoice,
+  InputMessagesFilterMusic,
+  InputMessagesFilterChatPhotos,
+  InputMessagesFilterPhoneCalls,
+  InputMessagesFilterRoundVoice,
+  InputMessagesFilterRoundVideo,
+  InputMessagesFilterMyMentions,
+  InputMessagesFilterGeo,
+  InputMessagesFilterContacts,
+  InputMessagesFilterPinned,
+  UpdateNewMessage,
+  UpdateMessageID,
+  UpdateDeleteMessages,
+  UpdateUserTyping,
+  UpdateChatUserTyping,
+  UpdateChatParticipants,
+  UpdateUserStatus,
+  UpdateUserName,
+  UpdateNewAuthorization,
+  UpdateNewEncryptedMessage,
+  UpdateEncryptedChatTyping,
+  UpdateEncryption,
+  UpdateEncryptedMessagesRead,
+  UpdateChatParticipantAdd,
+  UpdateChatParticipantDelete,
+  UpdateDcOptions,
+  UpdateNotifySettings,
+  UpdateServiceNotification,
+  UpdatePrivacy,
+  UpdateUserPhone,
+  UpdateReadHistoryInbox,
+  UpdateReadHistoryOutbox,
+  UpdateWebPage,
+  UpdateReadMessagesContents,
+  UpdateChannelTooLong,
+  UpdateChannel,
+  UpdateNewChannelMessage,
+  UpdateReadChannelInbox,
+  UpdateDeleteChannelMessages,
+  UpdateChannelMessageViews,
+  UpdateChatParticipantAdmin,
+  UpdateNewStickerSet,
+  UpdateStickerSetsOrder,
+  UpdateStickerSets,
+  UpdateSavedGifs,
+  UpdateBotInlineQuery,
+  UpdateBotInlineSend,
+  UpdateEditChannelMessage,
+  UpdateBotCallbackQuery,
+  UpdateEditMessage,
+  UpdateInlineBotCallbackQuery,
+  UpdateReadChannelOutbox,
+  UpdateDraftMessage,
+  UpdateReadFeaturedStickers,
+  UpdateRecentStickers,
+  UpdateConfig,
+  UpdatePtsChanged,
+  UpdateChannelWebPage,
+  UpdateDialogPinned,
+  UpdatePinnedDialogs,
+  UpdateBotWebhookJSON,
+  UpdateBotWebhookJSONQuery,
+  UpdateBotShippingQuery,
+  UpdateBotPrecheckoutQuery,
+  UpdatePhoneCall,
+  UpdateLangPackTooLong,
+  UpdateLangPack,
+  UpdateFavedStickers,
+  UpdateChannelReadMessagesContents,
+  UpdateContactsReset,
+  UpdateChannelAvailableMessages,
+  UpdateDialogUnreadMark,
+  UpdateMessagePoll,
+  UpdateChatDefaultBannedRights,
+  UpdateFolderPeers,
+  UpdatePeerSettings,
+  UpdatePeerLocated,
+  UpdateNewScheduledMessage,
+  UpdateDeleteScheduledMessages,
+  UpdateTheme,
+  UpdateGeoLiveViewed,
+  UpdateLoginToken,
+  UpdateMessagePollVote,
+  UpdateDialogFilter,
+  UpdateDialogFilterOrder,
+  UpdateDialogFilters,
+  UpdatePhoneCallSignalingData,
+  UpdateChannelMessageForwards,
+  UpdateReadChannelDiscussionInbox,
+  UpdateReadChannelDiscussionOutbox,
+  UpdatePeerBlocked,
+  UpdateChannelUserTyping,
+  UpdatePinnedMessages,
+  UpdatePinnedChannelMessages,
+  UpdateChat,
+  UpdateGroupCallParticipants,
+  UpdateGroupCall,
+  UpdatePeerHistoryTTL,
+  UpdateChatParticipant,
+  UpdateChannelParticipant,
+  UpdateBotStopped,
+  UpdateGroupCallConnection,
+  UpdateBotCommands,
+  UpdatePendingJoinRequests,
+  UpdateBotChatInviteRequester,
+  UpdateMessageReactions,
+  UpdateAttachMenuBots,
+  UpdateWebViewResultSent,
+  UpdateBotMenuButton,
+  UpdateSavedRingtones,
+  UpdateTranscribedAudio,
+  UpdateReadFeaturedEmojiStickers,
+  UpdateUserEmojiStatus,
+  UpdateRecentEmojiStatuses,
+  UpdateRecentReactions,
+  UpdateMoveStickerSetToTop,
+  UpdateMessageExtendedMedia,
+  UpdateChannelPinnedTopic,
+  UpdateChannelPinnedTopics,
+  UpdateUser,
+  UpdateAutoSaveSettings,
+  UpdateGroupInvitePrivacyForbidden,
+  UpdateStory,
+  UpdateReadStories,
+  UpdateStoryID,
+  UpdateStoriesStealthMode,
+  UpdateSentStoryReaction,
+  UpdateBotChatBoost,
+  UpdateChannelViewForumAsMessages,
+  UpdatePeerWallpaper,
+  UpdatesTooLong,
+  UpdateShortMessage,
+  UpdateShortChatMessage,
+  UpdateShort,
+  UpdatesCombined,
+  Updates,
+  UpdateShortSentMessage,
+  DcOption,
+  Config,
+  NearestDc,
+  EncryptedChatEmpty,
+  EncryptedChatWaiting,
+  EncryptedChatRequested,
+  EncryptedChat,
+  EncryptedChatDiscarded,
+  InputEncryptedChat,
+  EncryptedFileEmpty,
+  EncryptedFile,
+  InputEncryptedFileEmpty,
+  InputEncryptedFileUploaded,
+  InputEncryptedFile,
+  InputEncryptedFileBigUploaded,
+  EncryptedMessage,
+  EncryptedMessageService,
+  InputDocumentEmpty,
+  InputDocument,
+  DocumentEmpty,
+  Document,
+  NotifyPeer,
+  NotifyUsers,
+  NotifyChats,
+  NotifyBroadcasts,
+  NotifyForumTopic,
+  SendMessageTypingAction,
+  SendMessageCancelAction,
+  SendMessageRecordVideoAction,
+  SendMessageUploadVideoAction,
+  SendMessageRecordAudioAction,
+  SendMessageUploadAudioAction,
+  SendMessageUploadPhotoAction,
+  SendMessageUploadDocumentAction,
+  SendMessageGeoLocationAction,
+  SendMessageChooseContactAction,
+  SendMessageGamePlayAction,
+  SendMessageRecordRoundAction,
+  SendMessageUploadRoundAction,
+  SpeakingInGroupCallAction,
+  SendMessageHistoryImportAction,
+  SendMessageChooseStickerAction,
+  SendMessageEmojiInteraction,
+  SendMessageEmojiInteractionSeen,
+  InputPrivacyKeyStatusTimestamp,
+  InputPrivacyKeyChatInvite,
+  InputPrivacyKeyPhoneCall,
+  InputPrivacyKeyPhoneP2P,
+  InputPrivacyKeyForwards,
+  InputPrivacyKeyProfilePhoto,
+  InputPrivacyKeyPhoneNumber,
+  InputPrivacyKeyAddedByPhone,
+  InputPrivacyKeyVoiceMessages,
+  InputPrivacyKeyAbout,
+  PrivacyKeyStatusTimestamp,
+  PrivacyKeyChatInvite,
+  PrivacyKeyPhoneCall,
+  PrivacyKeyPhoneP2P,
+  PrivacyKeyForwards,
+  PrivacyKeyProfilePhoto,
+  PrivacyKeyPhoneNumber,
+  PrivacyKeyAddedByPhone,
+  PrivacyKeyVoiceMessages,
+  PrivacyKeyAbout,
+  InputPrivacyValueAllowContacts,
+  InputPrivacyValueAllowAll,
+  InputPrivacyValueAllowUsers,
+  InputPrivacyValueDisallowContacts,
+  InputPrivacyValueDisallowAll,
+  InputPrivacyValueDisallowUsers,
+  InputPrivacyValueAllowChatParticipants,
+  InputPrivacyValueDisallowChatParticipants,
+  InputPrivacyValueAllowCloseFriends,
+  PrivacyValueAllowContacts,
+  PrivacyValueAllowAll,
+  PrivacyValueAllowUsers,
+  PrivacyValueDisallowContacts,
+  PrivacyValueDisallowAll,
+  PrivacyValueDisallowUsers,
+  PrivacyValueAllowChatParticipants,
+  PrivacyValueDisallowChatParticipants,
+  PrivacyValueAllowCloseFriends,
+  AccountDaysTTL,
+  DocumentAttributeImageSize,
+  DocumentAttributeAnimated,
+  DocumentAttributeSticker,
+  DocumentAttributeVideo,
+  DocumentAttributeAudio,
+  DocumentAttributeFilename,
+  DocumentAttributeHasStickers,
+  DocumentAttributeCustomEmoji,
+  StickerPack,
+  WebPageEmpty,
+  WebPagePending,
+  WebPage,
+  WebPageNotModified,
+  Authorization,
+  ReceivedNotifyMessage,
+  ChatInviteExported,
+  ChatInvitePublicJoinRequests,
+  ChatInviteAlready,
+  ChatInvite,
+  ChatInvitePeek,
+  InputStickerSetEmpty,
+  InputStickerSetID,
+  InputStickerSetShortName,
+  InputStickerSetAnimatedEmoji,
+  InputStickerSetDice,
+  InputStickerSetAnimatedEmojiAnimations,
+  InputStickerSetPremiumGifts,
+  InputStickerSetEmojiGenericAnimations,
+  InputStickerSetEmojiDefaultStatuses,
+  InputStickerSetEmojiDefaultTopicIcons,
+  StickerSet,
+  BotCommand,
+  BotInfo,
+  KeyboardButton,
+  KeyboardButtonUrl,
+  KeyboardButtonCallback,
+  KeyboardButtonRequestPhone,
+  KeyboardButtonRequestGeoLocation,
+  KeyboardButtonSwitchInline,
+  KeyboardButtonGame,
+  KeyboardButtonBuy,
+  KeyboardButtonUrlAuth,
+  InputKeyboardButtonUrlAuth,
+  KeyboardButtonRequestPoll,
+  InputKeyboardButtonUserProfile,
+  KeyboardButtonUserProfile,
+  KeyboardButtonWebView,
+  KeyboardButtonSimpleWebView,
+  KeyboardButtonRequestPeer,
+  KeyboardButtonRow,
+  ReplyKeyboardHide,
+  ReplyKeyboardForceReply,
+  ReplyKeyboardMarkup,
+  ReplyInlineMarkup,
+  MessageEntityUnknown,
+  MessageEntityMention,
+  MessageEntityHashtag,
+  MessageEntityBotCommand,
+  MessageEntityUrl,
+  MessageEntityEmail,
+  MessageEntityBold,
+  MessageEntityItalic,
+  MessageEntityCode,
+  MessageEntityPre,
+  MessageEntityTextUrl,
+  MessageEntityMentionName,
+  InputMessageEntityMentionName,
+  MessageEntityPhone,
+  MessageEntityCashtag,
+  MessageEntityUnderline,
+  MessageEntityStrike,
+  MessageEntityBankCard,
+  MessageEntitySpoiler,
+  MessageEntityCustomEmoji,
+  MessageEntityBlockquote,
+  InputChannelEmpty,
+  InputChannel,
+  InputChannelFromMessage,
+  MessageRange,
+  ChannelMessagesFilterEmpty,
+  ChannelMessagesFilter,
+  ChannelParticipant,
+  ChannelParticipantSelf,
+  ChannelParticipantCreator,
+  ChannelParticipantAdmin,
+  ChannelParticipantBanned,
+  ChannelParticipantLeft,
+  ChannelParticipantsRecent,
+  ChannelParticipantsAdmins,
+  ChannelParticipantsKicked,
+  ChannelParticipantsBots,
+  ChannelParticipantsBanned,
+  ChannelParticipantsSearch,
+  ChannelParticipantsContacts,
+  ChannelParticipantsMentions,
+  InputBotInlineMessageMediaAuto,
+  InputBotInlineMessageText,
+  InputBotInlineMessageMediaGeo,
+  InputBotInlineMessageMediaVenue,
+  InputBotInlineMessageMediaContact,
+  InputBotInlineMessageGame,
+  InputBotInlineMessageMediaInvoice,
+  InputBotInlineMessageMediaWebPage,
+  InputBotInlineResult,
+  InputBotInlineResultPhoto,
+  InputBotInlineResultDocument,
+  InputBotInlineResultGame,
+  BotInlineMessageMediaAuto,
+  BotInlineMessageText,
+  BotInlineMessageMediaGeo,
+  BotInlineMessageMediaVenue,
+  BotInlineMessageMediaContact,
+  BotInlineMessageMediaInvoice,
+  BotInlineMessageMediaWebPage,
+  BotInlineResult,
+  BotInlineMediaResult,
+  ExportedMessageLink,
+  MessageFwdHeader,
+  InputBotInlineMessageID,
+  InputBotInlineMessageID64,
+  InlineBotSwitchPM,
+  TopPeer,
+  TopPeerCategoryBotsPM,
+  TopPeerCategoryBotsInline,
+  TopPeerCategoryCorrespondents,
+  TopPeerCategoryGroups,
+  TopPeerCategoryChannels,
+  TopPeerCategoryPhoneCalls,
+  TopPeerCategoryForwardUsers,
+  TopPeerCategoryForwardChats,
+  TopPeerCategoryPeers,
+  DraftMessageEmpty,
+  DraftMessage,
+  StickerSetCovered,
+  StickerSetMultiCovered,
+  StickerSetFullCovered,
+  StickerSetNoCovered,
+  MaskCoords,
+  InputStickeredMediaPhoto,
+  InputStickeredMediaDocument,
+  Game,
+  InputGameID,
+  InputGameShortName,
+  HighScore,
+  TextEmpty,
+  TextPlain,
+  TextBold,
+  TextItalic,
+  TextUnderline,
+  TextStrike,
+  TextFixed,
+  TextUrl,
+  TextEmail,
+  TextConcat,
+  TextSubscript,
+  TextSuperscript,
+  TextMarked,
+  TextPhone,
+  TextImage,
+  TextAnchor,
+  PageBlockUnsupported,
+  PageBlockTitle,
+  PageBlockSubtitle,
+  PageBlockAuthorDate,
+  PageBlockHeader,
+  PageBlockSubheader,
+  PageBlockParagraph,
+  PageBlockPreformatted,
+  PageBlockFooter,
+  PageBlockDivider,
+  PageBlockAnchor,
+  PageBlockList,
+  PageBlockBlockquote,
+  PageBlockPullquote,
+  PageBlockPhoto,
+  PageBlockVideo,
+  PageBlockCover,
+  PageBlockEmbed,
+  PageBlockEmbedPost,
+  PageBlockCollage,
+  PageBlockSlideshow,
+  PageBlockChannel,
+  PageBlockAudio,
+  PageBlockKicker,
+  PageBlockTable,
+  PageBlockOrderedList,
+  PageBlockDetails,
+  PageBlockRelatedArticles,
+  PageBlockMap,
+  PhoneCallDiscardReasonMissed,
+  PhoneCallDiscardReasonDisconnect,
+  PhoneCallDiscardReasonHangup,
+  PhoneCallDiscardReasonBusy,
+  DataJSON,
+  LabeledPrice,
+  Invoice,
+  PaymentCharge,
+  PostAddress,
+  PaymentRequestedInfo,
+  PaymentSavedCredentialsCard,
+  WebDocument,
+  WebDocumentNoProxy,
+  InputWebDocument,
+  InputWebFileLocation,
+  InputWebFileGeoPointLocation,
+  InputWebFileAudioAlbumThumbLocation,
+  InputPaymentCredentialsSaved,
+  InputPaymentCredentials,
+  InputPaymentCredentialsApplePay,
+  InputPaymentCredentialsGooglePay,
+  ShippingOption,
+  InputStickerSetItem,
+  InputPhoneCall,
+  PhoneCallEmpty,
+  PhoneCallWaiting,
+  PhoneCallRequested,
+  PhoneCallAccepted,
+  PhoneCall,
+  PhoneCallDiscarded,
+  PhoneConnection,
+  PhoneConnectionWebrtc,
+  PhoneCallProtocol,
+  CdnPublicKey,
+  CdnConfig,
+  LangPackString,
+  LangPackStringPluralized,
+  LangPackStringDeleted,
+  LangPackDifference,
+  LangPackLanguage,
+  ChannelAdminLogEventActionChangeTitle,
+  ChannelAdminLogEventActionChangeAbout,
+  ChannelAdminLogEventActionChangeUsername,
+  ChannelAdminLogEventActionChangePhoto,
+  ChannelAdminLogEventActionToggleInvites,
+  ChannelAdminLogEventActionToggleSignatures,
+  ChannelAdminLogEventActionUpdatePinned,
+  ChannelAdminLogEventActionEditMessage,
+  ChannelAdminLogEventActionDeleteMessage,
+  ChannelAdminLogEventActionParticipantJoin,
+  ChannelAdminLogEventActionParticipantLeave,
+  ChannelAdminLogEventActionParticipantInvite,
+  ChannelAdminLogEventActionParticipantToggleBan,
+  ChannelAdminLogEventActionParticipantToggleAdmin,
+  ChannelAdminLogEventActionChangeStickerSet,
+  ChannelAdminLogEventActionTogglePreHistoryHidden,
+  ChannelAdminLogEventActionDefaultBannedRights,
+  ChannelAdminLogEventActionStopPoll,
+  ChannelAdminLogEventActionChangeLinkedChat,
+  ChannelAdminLogEventActionChangeLocation,
+  ChannelAdminLogEventActionToggleSlowMode,
+  ChannelAdminLogEventActionStartGroupCall,
+  ChannelAdminLogEventActionDiscardGroupCall,
+  ChannelAdminLogEventActionParticipantMute,
+  ChannelAdminLogEventActionParticipantUnmute,
+  ChannelAdminLogEventActionToggleGroupCallSetting,
+  ChannelAdminLogEventActionParticipantJoinByInvite,
+  ChannelAdminLogEventActionExportedInviteDelete,
+  ChannelAdminLogEventActionExportedInviteRevoke,
+  ChannelAdminLogEventActionExportedInviteEdit,
+  ChannelAdminLogEventActionParticipantVolume,
+  ChannelAdminLogEventActionChangeHistoryTTL,
+  ChannelAdminLogEventActionParticipantJoinByRequest,
+  ChannelAdminLogEventActionToggleNoForwards,
+  ChannelAdminLogEventActionSendMessage,
+  ChannelAdminLogEventActionChangeAvailableReactions,
+  ChannelAdminLogEventActionChangeUsernames,
+  ChannelAdminLogEventActionToggleForum,
+  ChannelAdminLogEventActionCreateTopic,
+  ChannelAdminLogEventActionEditTopic,
+  ChannelAdminLogEventActionDeleteTopic,
+  ChannelAdminLogEventActionPinTopic,
+  ChannelAdminLogEventActionToggleAntiSpam,
+  ChannelAdminLogEventActionChangeColor,
+  ChannelAdminLogEventActionChangeBackgroundEmoji,
+  ChannelAdminLogEvent,
+  ChannelAdminLogEventsFilter,
+  PopularContact,
+  RecentMeUrlUnknown,
+  RecentMeUrlUser,
+  RecentMeUrlChat,
+  RecentMeUrlChatInvite,
+  RecentMeUrlStickerSet,
+  InputSingleMedia,
+  WebAuthorization,
+  InputMessageID,
+  InputMessageReplyTo,
+  InputMessagePinned,
+  InputMessageCallbackQuery,
+  InputDialogPeer,
+  InputDialogPeerFolder,
+  DialogPeer,
+  DialogPeerFolder,
+  FileHash,
+  InputClientProxy,
+  InputSecureFileUploaded,
+  InputSecureFile,
+  SecureFileEmpty,
+  SecureFile,
+  SecureData,
+  SecurePlainPhone,
+  SecurePlainEmail,
+  SecureValueTypePersonalDetails,
+  SecureValueTypePassport,
+  SecureValueTypeDriverLicense,
+  SecureValueTypeIdentityCard,
+  SecureValueTypeInternalPassport,
+  SecureValueTypeAddress,
+  SecureValueTypeUtilityBill,
+  SecureValueTypeBankStatement,
+  SecureValueTypeRentalAgreement,
+  SecureValueTypePassportRegistration,
+  SecureValueTypeTemporaryRegistration,
+  SecureValueTypePhone,
+  SecureValueTypeEmail,
+  SecureValue,
+  InputSecureValue,
+  SecureValueHash,
+  SecureValueErrorData,
+  SecureValueErrorFrontSide,
+  SecureValueErrorReverseSide,
+  SecureValueErrorSelfie,
+  SecureValueErrorFile,
+  SecureValueErrorFiles,
+  SecureValueError,
+  SecureValueErrorTranslationFile,
+  SecureValueErrorTranslationFiles,
+  SecureCredentialsEncrypted,
+  SavedPhoneContact,
+  PasswordKdfAlgoUnknown,
+  PasswordKdfAlgoSHA256SHA256PBKDF2HMACSHA512iter100000SHA256ModPow,
+  SecurePasswordKdfAlgoUnknown,
+  SecurePasswordKdfAlgoPBKDF2HMACSHA512iter100000,
+  SecurePasswordKdfAlgoSHA512,
+  SecureSecretSettings,
+  InputCheckPasswordEmpty,
+  InputCheckPasswordSRP,
+  SecureRequiredType,
+  SecureRequiredTypeOneOf,
+  InputAppEvent,
+  JsonObjectValue,
+  JsonNull,
+  JsonBool,
+  JsonNumber,
+  JsonString,
+  JsonArray,
+  JsonObject,
+  PageTableCell,
+  PageTableRow,
+  PageCaption,
+  PageListItemText,
+  PageListItemBlocks,
+  PageListOrderedItemText,
+  PageListOrderedItemBlocks,
+  PageRelatedArticle,
+  Page,
+  PollAnswer,
+  Poll,
+  PollAnswerVoters,
+  PollResults,
+  ChatOnlines,
+  StatsURL,
+  ChatAdminRights,
+  ChatBannedRights,
+  InputWallPaper,
+  InputWallPaperSlug,
+  InputWallPaperNoFile,
+  CodeSettings,
+  WallPaperSettings,
+  AutoDownloadSettings,
+  EmojiKeyword,
+  EmojiKeywordDeleted,
+  EmojiKeywordsDifference,
+  EmojiURL,
+  EmojiLanguage,
+  Folder,
+  InputFolderPeer,
+  FolderPeer,
+  UrlAuthResultRequest,
+  UrlAuthResultAccepted,
+  UrlAuthResultDefault,
+  ChannelLocationEmpty,
+  ChannelLocation,
+  PeerLocated,
+  PeerSelfLocated,
+  RestrictionReason,
+  InputTheme,
+  InputThemeSlug,
+  Theme,
+  BaseThemeClassic,
+  BaseThemeDay,
+  BaseThemeNight,
+  BaseThemeTinted,
+  BaseThemeArctic,
+  InputThemeSettings,
+  ThemeSettings,
+  WebPageAttributeTheme,
+  WebPageAttributeStory,
+  BankCardOpenUrl,
+  DialogFilter,
+  DialogFilterDefault,
+  DialogFilterChatlist,
+  DialogFilterSuggested,
+  StatsDateRangeDays,
+  StatsAbsValueAndPrev,
+  StatsPercentValue,
+  StatsGraphAsync,
+  StatsGraphError,
+  StatsGraph,
+  VideoSize,
+  VideoSizeEmojiMarkup,
+  VideoSizeStickerMarkup,
+  StatsGroupTopPoster,
+  StatsGroupTopAdmin,
+  StatsGroupTopInviter,
+  GlobalPrivacySettings,
+  MessageViews,
+  MessageReplyHeader,
+  MessageReplyStoryHeader,
+  MessageReplies,
+  PeerBlocked,
+  GroupCallDiscarded,
+  GroupCall,
+  InputGroupCall,
+  GroupCallParticipant,
+  InlineQueryPeerTypeSameBotPM,
+  InlineQueryPeerTypePM,
+  InlineQueryPeerTypeChat,
+  InlineQueryPeerTypeMegagroup,
+  InlineQueryPeerTypeBroadcast,
+  InlineQueryPeerTypeBotPM,
+  ChatInviteImporter,
+  ChatAdminWithInvites,
+  GroupCallParticipantVideoSourceGroup,
+  GroupCallParticipantVideo,
+  BotCommandScopeDefault,
+  BotCommandScopeUsers,
+  BotCommandScopeChats,
+  BotCommandScopeChatAdmins,
+  BotCommandScopePeer,
+  BotCommandScopePeerAdmins,
+  BotCommandScopePeerUser,
+  SponsoredMessage,
+  SearchResultsCalendarPeriod,
+  SearchResultPosition,
+  ReactionCount,
+  MessageReactions,
+  AvailableReaction,
+  MessagePeerReaction,
+  GroupCallStreamChannel,
+  AttachMenuBotIconColor,
+  AttachMenuBotIcon,
+  AttachMenuBot,
+  AttachMenuBotsNotModified,
+  AttachMenuBots,
+  AttachMenuBotsBot,
+  WebViewResultUrl,
+  SimpleWebViewResultUrl,
+  WebViewMessageSent,
+  BotMenuButtonDefault,
+  BotMenuButtonCommands,
+  BotMenuButton,
+  NotificationSoundDefault,
+  NotificationSoundNone,
+  NotificationSoundLocal,
+  NotificationSoundRingtone,
+  AttachMenuPeerTypeSameBotPM,
+  AttachMenuPeerTypeBotPM,
+  AttachMenuPeerTypePM,
+  AttachMenuPeerTypeChat,
+  AttachMenuPeerTypeBroadcast,
+  InputInvoiceMessage,
+  InputInvoiceSlug,
+  InputInvoicePremiumGiftCode,
+  InputStorePaymentPremiumSubscription,
+  InputStorePaymentGiftPremium,
+  InputStorePaymentPremiumGiftCode,
+  InputStorePaymentPremiumGiveaway,
+  PremiumGiftOption,
+  PaymentFormMethod,
+  EmojiStatusEmpty,
+  EmojiStatus,
+  EmojiStatusUntil,
+  ReactionEmpty,
+  ReactionEmoji,
+  ReactionCustomEmoji,
+  ChatReactionsNone,
+  ChatReactionsAll,
+  ChatReactionsSome,
+  EmailVerifyPurposeLoginSetup,
+  EmailVerifyPurposeLoginChange,
+  EmailVerifyPurposePassport,
+  EmailVerificationCode,
+  EmailVerificationGoogle,
+  EmailVerificationApple,
+  PremiumSubscriptionOption,
+  SendAsPeer,
+  MessageExtendedMediaPreview,
+  MessageExtendedMedia,
+  StickerKeyword,
+  Username,
+  ForumTopicDeleted,
+  ForumTopic,
+  DefaultHistoryTTL,
+  ExportedContactToken,
+  RequestPeerTypeUser,
+  RequestPeerTypeChat,
+  RequestPeerTypeBroadcast,
+  EmojiListNotModified,
+  EmojiList,
+  EmojiGroup,
+  TextWithEntities,
+  AutoSaveSettings,
+  AutoSaveException,
+  InputBotAppID,
+  InputBotAppShortName,
+  BotAppNotModified,
+  BotApp,
+  AppWebViewResultUrl,
+  InlineBotWebView,
+  ReadParticipantDate,
+  InputChatlistDialogFilter,
+  ExportedChatlistInvite,
+  MessagePeerVote,
+  MessagePeerVoteInputOption,
+  MessagePeerVoteMultiple,
+  SponsoredWebPage,
+  StoryViews,
+  StoryItemDeleted,
+  StoryItemSkipped,
+  StoryItem,
+  StoryView,
+  InputReplyToMessage,
+  InputReplyToStory,
+  ExportedStoryLink,
+  StoriesStealthMode,
+  MediaAreaCoordinates,
+  MediaAreaVenue,
+  InputMediaAreaVenue,
+  MediaAreaGeoPoint,
+  MediaAreaSuggestedReaction,
+  PeerStories,
+  PremiumGiftCodeOption,
+  PrepaidGiveaway,
+  Boost,
+  MyBoost,
+  StoryFwdHeader,
+  PostInteractionCountersMessage,
+  PostInteractionCountersStory,
+  PublicForwardMessage,
+  PublicForwardStory,
+  PeerColor,
+  storage: {
+    FileUnknown: storage_FileUnknown,
+    FilePartial: storage_FilePartial,
+    FileJpeg: storage_FileJpeg,
+    FileGif: storage_FileGif,
+    FilePng: storage_FilePng,
+    FilePdf: storage_FilePdf,
+    FileMp3: storage_FileMp3,
+    FileMov: storage_FileMov,
+    FileMp4: storage_FileMp4,
+    FileWebp: storage_FileWebp,
+  },
+  auth: {
+    SentCode: auth_SentCode,
+    SentCodeSuccess: auth_SentCodeSuccess,
+    Authorization: auth_Authorization,
+    AuthorizationSignUpRequired: auth_AuthorizationSignUpRequired,
+    ExportedAuthorization: auth_ExportedAuthorization,
+    PasswordRecovery: auth_PasswordRecovery,
+    CodeTypeSms: auth_CodeTypeSms,
+    CodeTypeCall: auth_CodeTypeCall,
+    CodeTypeFlashCall: auth_CodeTypeFlashCall,
+    CodeTypeMissedCall: auth_CodeTypeMissedCall,
+    CodeTypeFragmentSms: auth_CodeTypeFragmentSms,
+    SentCodeTypeApp: auth_SentCodeTypeApp,
+    SentCodeTypeSms: auth_SentCodeTypeSms,
+    SentCodeTypeCall: auth_SentCodeTypeCall,
+    SentCodeTypeFlashCall: auth_SentCodeTypeFlashCall,
+    SentCodeTypeMissedCall: auth_SentCodeTypeMissedCall,
+    SentCodeTypeEmailCode: auth_SentCodeTypeEmailCode,
+    SentCodeTypeSetUpEmailRequired: auth_SentCodeTypeSetUpEmailRequired,
+    SentCodeTypeFragmentSms: auth_SentCodeTypeFragmentSms,
+    SentCodeTypeFirebaseSms: auth_SentCodeTypeFirebaseSms,
+    LoginToken: auth_LoginToken,
+    LoginTokenMigrateTo: auth_LoginTokenMigrateTo,
+    LoginTokenSuccess: auth_LoginTokenSuccess,
+    LoggedOut: auth_LoggedOut,
+  },
+  contacts: {
+    ContactsNotModified: contacts_ContactsNotModified,
+    Contacts: contacts_Contacts,
+    ImportedContacts: contacts_ImportedContacts,
+    Blocked: contacts_Blocked,
+    BlockedSlice: contacts_BlockedSlice,
+    Found: contacts_Found,
+    ResolvedPeer: contacts_ResolvedPeer,
+    TopPeersNotModified: contacts_TopPeersNotModified,
+    TopPeers: contacts_TopPeers,
+    TopPeersDisabled: contacts_TopPeersDisabled,
+  },
+  messages: {
+    Dialogs: messages_Dialogs,
+    DialogsSlice: messages_DialogsSlice,
+    DialogsNotModified: messages_DialogsNotModified,
+    Messages: messages_Messages,
+    MessagesSlice: messages_MessagesSlice,
+    ChannelMessages: messages_ChannelMessages,
+    MessagesNotModified: messages_MessagesNotModified,
+    Chats: messages_Chats,
+    ChatsSlice: messages_ChatsSlice,
+    ChatFull: messages_ChatFull,
+    AffectedHistory: messages_AffectedHistory,
+    DhConfigNotModified: messages_DhConfigNotModified,
+    DhConfig: messages_DhConfig,
+    SentEncryptedMessage: messages_SentEncryptedMessage,
+    SentEncryptedFile: messages_SentEncryptedFile,
+    StickersNotModified: messages_StickersNotModified,
+    Stickers: messages_Stickers,
+    AllStickersNotModified: messages_AllStickersNotModified,
+    AllStickers: messages_AllStickers,
+    AffectedMessages: messages_AffectedMessages,
+    StickerSet: messages_StickerSet,
+    StickerSetNotModified: messages_StickerSetNotModified,
+    SavedGifsNotModified: messages_SavedGifsNotModified,
+    SavedGifs: messages_SavedGifs,
+    BotResults: messages_BotResults,
+    BotCallbackAnswer: messages_BotCallbackAnswer,
+    MessageEditData: messages_MessageEditData,
+    PeerDialogs: messages_PeerDialogs,
+    FeaturedStickersNotModified: messages_FeaturedStickersNotModified,
+    FeaturedStickers: messages_FeaturedStickers,
+    RecentStickersNotModified: messages_RecentStickersNotModified,
+    RecentStickers: messages_RecentStickers,
+    ArchivedStickers: messages_ArchivedStickers,
+    StickerSetInstallResultSuccess: messages_StickerSetInstallResultSuccess,
+    StickerSetInstallResultArchive: messages_StickerSetInstallResultArchive,
+    HighScores: messages_HighScores,
+    FavedStickersNotModified: messages_FavedStickersNotModified,
+    FavedStickers: messages_FavedStickers,
+    FoundStickerSetsNotModified: messages_FoundStickerSetsNotModified,
+    FoundStickerSets: messages_FoundStickerSets,
+    SearchCounter: messages_SearchCounter,
+    InactiveChats: messages_InactiveChats,
+    VotesList: messages_VotesList,
+    MessageViews: messages_MessageViews,
+    DiscussionMessage: messages_DiscussionMessage,
+    HistoryImport: messages_HistoryImport,
+    HistoryImportParsed: messages_HistoryImportParsed,
+    AffectedFoundMessages: messages_AffectedFoundMessages,
+    ExportedChatInvites: messages_ExportedChatInvites,
+    ExportedChatInvite: messages_ExportedChatInvite,
+    ExportedChatInviteReplaced: messages_ExportedChatInviteReplaced,
+    ChatInviteImporters: messages_ChatInviteImporters,
+    ChatAdminsWithInvites: messages_ChatAdminsWithInvites,
+    CheckedHistoryImportPeer: messages_CheckedHistoryImportPeer,
+    SponsoredMessages: messages_SponsoredMessages,
+    SponsoredMessagesEmpty: messages_SponsoredMessagesEmpty,
+    SearchResultsCalendar: messages_SearchResultsCalendar,
+    SearchResultsPositions: messages_SearchResultsPositions,
+    PeerSettings: messages_PeerSettings,
+    MessageReactionsList: messages_MessageReactionsList,
+    AvailableReactionsNotModified: messages_AvailableReactionsNotModified,
+    AvailableReactions: messages_AvailableReactions,
+    TranscribedAudio: messages_TranscribedAudio,
+    ReactionsNotModified: messages_ReactionsNotModified,
+    Reactions: messages_Reactions,
+    ForumTopics: messages_ForumTopics,
+    EmojiGroupsNotModified: messages_EmojiGroupsNotModified,
+    EmojiGroups: messages_EmojiGroups,
+    TranslateResult: messages_TranslateResult,
+    BotApp: messages_BotApp,
+    WebPage: messages_WebPage,
+  },
+  updates: {
+    State: updates_State,
+    DifferenceEmpty: updates_DifferenceEmpty,
+    Difference: updates_Difference,
+    DifferenceSlice: updates_DifferenceSlice,
+    DifferenceTooLong: updates_DifferenceTooLong,
+    ChannelDifferenceEmpty: updates_ChannelDifferenceEmpty,
+    ChannelDifferenceTooLong: updates_ChannelDifferenceTooLong,
+    ChannelDifference: updates_ChannelDifference,
+  },
+  photos: {
+    Photos: photos_Photos,
+    PhotosSlice: photos_PhotosSlice,
+    Photo: photos_Photo,
+  },
+  upload: {
+    File: upload_File,
+    FileCdnRedirect: upload_FileCdnRedirect,
+    WebFile: upload_WebFile,
+    CdnFileReuploadNeeded: upload_CdnFileReuploadNeeded,
+    CdnFile: upload_CdnFile,
+  },
+  help: {
+    AppUpdate: help_AppUpdate,
+    NoAppUpdate: help_NoAppUpdate,
+    InviteText: help_InviteText,
+    Support: help_Support,
+    TermsOfService: help_TermsOfService,
+    RecentMeUrls: help_RecentMeUrls,
+    TermsOfServiceUpdateEmpty: help_TermsOfServiceUpdateEmpty,
+    TermsOfServiceUpdate: help_TermsOfServiceUpdate,
+    DeepLinkInfoEmpty: help_DeepLinkInfoEmpty,
+    DeepLinkInfo: help_DeepLinkInfo,
+    PassportConfigNotModified: help_PassportConfigNotModified,
+    PassportConfig: help_PassportConfig,
+    SupportName: help_SupportName,
+    UserInfoEmpty: help_UserInfoEmpty,
+    UserInfo: help_UserInfo,
+    PromoDataEmpty: help_PromoDataEmpty,
+    PromoData: help_PromoData,
+    CountryCode: help_CountryCode,
+    Country: help_Country,
+    CountriesListNotModified: help_CountriesListNotModified,
+    CountriesList: help_CountriesList,
+    PremiumPromo: help_PremiumPromo,
+    AppConfigNotModified: help_AppConfigNotModified,
+    AppConfig: help_AppConfig,
+    PeerColorSet: help_PeerColorSet,
+    PeerColorProfileSet: help_PeerColorProfileSet,
+    PeerColorOption: help_PeerColorOption,
+    PeerColorsNotModified: help_PeerColorsNotModified,
+    PeerColors: help_PeerColors,
+  },
+  account: {
+    PrivacyRules: account_PrivacyRules,
+    Authorizations: account_Authorizations,
+    Password: account_Password,
+    PasswordSettings: account_PasswordSettings,
+    PasswordInputSettings: account_PasswordInputSettings,
+    TmpPassword: account_TmpPassword,
+    WebAuthorizations: account_WebAuthorizations,
+    AuthorizationForm: account_AuthorizationForm,
+    SentEmailCode: account_SentEmailCode,
+    Takeout: account_Takeout,
+    WallPapersNotModified: account_WallPapersNotModified,
+    WallPapers: account_WallPapers,
+    AutoDownloadSettings: account_AutoDownloadSettings,
+    ThemesNotModified: account_ThemesNotModified,
+    Themes: account_Themes,
+    ContentSettings: account_ContentSettings,
+    ResetPasswordFailedWait: account_ResetPasswordFailedWait,
+    ResetPasswordRequestedWait: account_ResetPasswordRequestedWait,
+    ResetPasswordOk: account_ResetPasswordOk,
+    SavedRingtonesNotModified: account_SavedRingtonesNotModified,
+    SavedRingtones: account_SavedRingtones,
+    SavedRingtone: account_SavedRingtone,
+    SavedRingtoneConverted: account_SavedRingtoneConverted,
+    EmojiStatusesNotModified: account_EmojiStatusesNotModified,
+    EmojiStatuses: account_EmojiStatuses,
+    EmailVerified: account_EmailVerified,
+    EmailVerifiedLogin: account_EmailVerifiedLogin,
+    AutoSaveSettings: account_AutoSaveSettings,
+  },
+  channels: {
+    ChannelParticipants: channels_ChannelParticipants,
+    ChannelParticipantsNotModified: channels_ChannelParticipantsNotModified,
+    ChannelParticipant: channels_ChannelParticipant,
+    AdminLogResults: channels_AdminLogResults,
+    SendAsPeers: channels_SendAsPeers,
+  },
+  payments: {
+    PaymentForm: payments_PaymentForm,
+    ValidatedRequestedInfo: payments_ValidatedRequestedInfo,
+    PaymentResult: payments_PaymentResult,
+    PaymentVerificationNeeded: payments_PaymentVerificationNeeded,
+    PaymentReceipt: payments_PaymentReceipt,
+    SavedInfo: payments_SavedInfo,
+    BankCardData: payments_BankCardData,
+    ExportedInvoice: payments_ExportedInvoice,
+    CheckedGiftCode: payments_CheckedGiftCode,
+    GiveawayInfo: payments_GiveawayInfo,
+    GiveawayInfoResults: payments_GiveawayInfoResults,
+  },
+  phone: {
+    PhoneCall: phone_PhoneCall,
+    GroupCall: phone_GroupCall,
+    GroupParticipants: phone_GroupParticipants,
+    JoinAsPeers: phone_JoinAsPeers,
+    ExportedGroupCallInvite: phone_ExportedGroupCallInvite,
+    GroupCallStreamChannels: phone_GroupCallStreamChannels,
+    GroupCallStreamRtmpUrl: phone_GroupCallStreamRtmpUrl,
+  },
+  stats: {
+    BroadcastStats: stats_BroadcastStats,
+    MegagroupStats: stats_MegagroupStats,
+    MessageStats: stats_MessageStats,
+    StoryStats: stats_StoryStats,
+    PublicForwards: stats_PublicForwards,
+  },
+  stickers: {
+    SuggestedShortName: stickers_SuggestedShortName,
+  },
+  users: {
+    UserFull: users_UserFull,
+  },
+  chatlists: {
+    ExportedChatlistInvite: chatlists_ExportedChatlistInvite,
+    ExportedInvites: chatlists_ExportedInvites,
+    ChatlistInviteAlready: chatlists_ChatlistInviteAlready,
+    ChatlistInvite: chatlists_ChatlistInvite,
+    ChatlistUpdates: chatlists_ChatlistUpdates,
+  },
+  bots: {
+    BotInfo: bots_BotInfo,
+  },
+  stories: {
+    AllStoriesNotModified: stories_AllStoriesNotModified,
+    AllStories: stories_AllStories,
+    Stories: stories_Stories,
+    StoryViewsList: stories_StoryViewsList,
+    StoryViews: stories_StoryViews,
+    PeerStories: stories_PeerStories,
+  },
+  premium: {
+    BoostsList: premium_BoostsList,
+    MyBoosts: premium_MyBoosts,
+    BoostsStatus: premium_BoostsStatus,
+  },
+};
+export interface types
+{
+  Type: Type;
+  TypeX: TypeX;
+  ResPQ: ResPQ;
+  P_q_inner_data_dc: P_q_inner_data_dc;
+  P_q_inner_data_temp_dc: P_q_inner_data_temp_dc;
+  Server_DH_params_ok: Server_DH_params_ok;
+  Server_DH_inner_data: Server_DH_inner_data;
+  Client_DH_inner_data: Client_DH_inner_data;
+  Dh_gen_ok: Dh_gen_ok;
+  Dh_gen_retry: Dh_gen_retry;
+  Dh_gen_fail: Dh_gen_fail;
+  Bind_auth_key_inner: Bind_auth_key_inner;
+  Rpc_error: Rpc_error;
+  Rpc_answer_unknown: Rpc_answer_unknown;
+  Rpc_answer_dropped_running: Rpc_answer_dropped_running;
+  Rpc_answer_dropped: Rpc_answer_dropped;
+  Future_salt: Future_salt;
+  Future_salts: Future_salts;
+  Pong: Pong;
+  Destroy_session_ok: Destroy_session_ok;
+  Destroy_session_none: Destroy_session_none;
+  New_session_created: New_session_created;
+  Gzip_packed: Gzip_packed;
+  Msgs_ack: Msgs_ack;
+  Bad_msg_notification: Bad_msg_notification;
+  Bad_server_salt: Bad_server_salt;
+  Msg_resend_req: Msg_resend_req;
+  Msgs_state_req: Msgs_state_req;
+  Msgs_state_info: Msgs_state_info;
+  Msgs_all_info: Msgs_all_info;
+  Msg_detailed_info: Msg_detailed_info;
+  Msg_new_detailed_info: Msg_new_detailed_info;
+  Destroy_auth_key_ok: Destroy_auth_key_ok;
+  Destroy_auth_key_none: Destroy_auth_key_none;
+  Destroy_auth_key_fail: Destroy_auth_key_fail;
+  Http_wait: Http_wait;
+  True: True;
+  Error: Error;
+  Null: Null;
+  InputPeerEmpty: InputPeerEmpty;
+  InputPeerSelf: InputPeerSelf;
+  InputPeerChat: InputPeerChat;
+  InputPeerUser: InputPeerUser;
+  InputPeerChannel: InputPeerChannel;
+  InputPeerUserFromMessage: InputPeerUserFromMessage;
+  InputPeerChannelFromMessage: InputPeerChannelFromMessage;
+  InputUserEmpty: InputUserEmpty;
+  InputUserSelf: InputUserSelf;
+  InputUser: InputUser;
+  InputUserFromMessage: InputUserFromMessage;
+  InputPhoneContact: InputPhoneContact;
+  InputFile: InputFile;
+  InputFileBig: InputFileBig;
+  InputMediaEmpty: InputMediaEmpty;
+  InputMediaUploadedPhoto: InputMediaUploadedPhoto;
+  InputMediaPhoto: InputMediaPhoto;
+  InputMediaGeoPoint: InputMediaGeoPoint;
+  InputMediaContact: InputMediaContact;
+  InputMediaUploadedDocument: InputMediaUploadedDocument;
+  InputMediaDocument: InputMediaDocument;
+  InputMediaVenue: InputMediaVenue;
+  InputMediaPhotoExternal: InputMediaPhotoExternal;
+  InputMediaDocumentExternal: InputMediaDocumentExternal;
+  InputMediaGame: InputMediaGame;
+  InputMediaInvoice: InputMediaInvoice;
+  InputMediaGeoLive: InputMediaGeoLive;
+  InputMediaPoll: InputMediaPoll;
+  InputMediaDice: InputMediaDice;
+  InputMediaStory: InputMediaStory;
+  InputMediaWebPage: InputMediaWebPage;
+  InputChatPhotoEmpty: InputChatPhotoEmpty;
+  InputChatUploadedPhoto: InputChatUploadedPhoto;
+  InputChatPhoto: InputChatPhoto;
+  InputGeoPointEmpty: InputGeoPointEmpty;
+  InputGeoPoint: InputGeoPoint;
+  InputPhotoEmpty: InputPhotoEmpty;
+  InputPhoto: InputPhoto;
+  InputFileLocation: InputFileLocation;
+  InputEncryptedFileLocation: InputEncryptedFileLocation;
+  InputDocumentFileLocation: InputDocumentFileLocation;
+  InputSecureFileLocation: InputSecureFileLocation;
+  InputTakeoutFileLocation: InputTakeoutFileLocation;
+  InputPhotoFileLocation: InputPhotoFileLocation;
+  InputPhotoLegacyFileLocation: InputPhotoLegacyFileLocation;
+  InputPeerPhotoFileLocation: InputPeerPhotoFileLocation;
+  InputStickerSetThumb: InputStickerSetThumb;
+  InputGroupCallStream: InputGroupCallStream;
+  PeerUser: PeerUser;
+  PeerChat: PeerChat;
+  PeerChannel: PeerChannel;
+  UserEmpty: UserEmpty;
+  User: User;
+  UserProfilePhotoEmpty: UserProfilePhotoEmpty;
+  UserProfilePhoto: UserProfilePhoto;
+  UserStatusEmpty: UserStatusEmpty;
+  UserStatusOnline: UserStatusOnline;
+  UserStatusOffline: UserStatusOffline;
+  UserStatusRecently: UserStatusRecently;
+  UserStatusLastWeek: UserStatusLastWeek;
+  UserStatusLastMonth: UserStatusLastMonth;
+  ChatEmpty: ChatEmpty;
+  Chat: Chat;
+  ChatForbidden: ChatForbidden;
+  Channel: Channel;
+  ChannelForbidden: ChannelForbidden;
+  ChatFull: ChatFull;
+  ChannelFull: ChannelFull;
+  ChatParticipant: ChatParticipant;
+  ChatParticipantCreator: ChatParticipantCreator;
+  ChatParticipantAdmin: ChatParticipantAdmin;
+  ChatParticipantsForbidden: ChatParticipantsForbidden;
+  ChatParticipants: ChatParticipants;
+  ChatPhotoEmpty: ChatPhotoEmpty;
+  ChatPhoto: ChatPhoto;
+  MessageEmpty: MessageEmpty;
+  Message: Message;
+  MessageService: MessageService;
+  MessageMediaEmpty: MessageMediaEmpty;
+  MessageMediaPhoto: MessageMediaPhoto;
+  MessageMediaGeo: MessageMediaGeo;
+  MessageMediaContact: MessageMediaContact;
+  MessageMediaUnsupported: MessageMediaUnsupported;
+  MessageMediaDocument: MessageMediaDocument;
+  MessageMediaWebPage: MessageMediaWebPage;
+  MessageMediaVenue: MessageMediaVenue;
+  MessageMediaGame: MessageMediaGame;
+  MessageMediaInvoice: MessageMediaInvoice;
+  MessageMediaGeoLive: MessageMediaGeoLive;
+  MessageMediaPoll: MessageMediaPoll;
+  MessageMediaDice: MessageMediaDice;
+  MessageMediaStory: MessageMediaStory;
+  MessageMediaGiveaway: MessageMediaGiveaway;
+  MessageActionEmpty: MessageActionEmpty;
+  MessageActionChatCreate: MessageActionChatCreate;
+  MessageActionChatEditTitle: MessageActionChatEditTitle;
+  MessageActionChatEditPhoto: MessageActionChatEditPhoto;
+  MessageActionChatDeletePhoto: MessageActionChatDeletePhoto;
+  MessageActionChatAddUser: MessageActionChatAddUser;
+  MessageActionChatDeleteUser: MessageActionChatDeleteUser;
+  MessageActionChatJoinedByLink: MessageActionChatJoinedByLink;
+  MessageActionChannelCreate: MessageActionChannelCreate;
+  MessageActionChatMigrateTo: MessageActionChatMigrateTo;
+  MessageActionChannelMigrateFrom: MessageActionChannelMigrateFrom;
+  MessageActionPinMessage: MessageActionPinMessage;
+  MessageActionHistoryClear: MessageActionHistoryClear;
+  MessageActionGameScore: MessageActionGameScore;
+  MessageActionPaymentSentMe: MessageActionPaymentSentMe;
+  MessageActionPaymentSent: MessageActionPaymentSent;
+  MessageActionPhoneCall: MessageActionPhoneCall;
+  MessageActionScreenshotTaken: MessageActionScreenshotTaken;
+  MessageActionCustomAction: MessageActionCustomAction;
+  MessageActionBotAllowed: MessageActionBotAllowed;
+  MessageActionSecureValuesSentMe: MessageActionSecureValuesSentMe;
+  MessageActionSecureValuesSent: MessageActionSecureValuesSent;
+  MessageActionContactSignUp: MessageActionContactSignUp;
+  MessageActionGeoProximityReached: MessageActionGeoProximityReached;
+  MessageActionGroupCall: MessageActionGroupCall;
+  MessageActionInviteToGroupCall: MessageActionInviteToGroupCall;
+  MessageActionSetMessagesTTL: MessageActionSetMessagesTTL;
+  MessageActionGroupCallScheduled: MessageActionGroupCallScheduled;
+  MessageActionSetChatTheme: MessageActionSetChatTheme;
+  MessageActionChatJoinedByRequest: MessageActionChatJoinedByRequest;
+  MessageActionWebViewDataSentMe: MessageActionWebViewDataSentMe;
+  MessageActionWebViewDataSent: MessageActionWebViewDataSent;
+  MessageActionGiftPremium: MessageActionGiftPremium;
+  MessageActionTopicCreate: MessageActionTopicCreate;
+  MessageActionTopicEdit: MessageActionTopicEdit;
+  MessageActionSuggestProfilePhoto: MessageActionSuggestProfilePhoto;
+  MessageActionRequestedPeer: MessageActionRequestedPeer;
+  MessageActionSetChatWallPaper: MessageActionSetChatWallPaper;
+  MessageActionGiftCode: MessageActionGiftCode;
+  MessageActionGiveawayLaunch: MessageActionGiveawayLaunch;
+  MessageActionGiveawayResults: MessageActionGiveawayResults;
+  Dialog: Dialog;
+  DialogFolder: DialogFolder;
+  PhotoEmpty: PhotoEmpty;
+  Photo: Photo;
+  PhotoSizeEmpty: PhotoSizeEmpty;
+  PhotoSize: PhotoSize;
+  PhotoCachedSize: PhotoCachedSize;
+  PhotoStrippedSize: PhotoStrippedSize;
+  PhotoSizeProgressive: PhotoSizeProgressive;
+  PhotoPathSize: PhotoPathSize;
+  GeoPointEmpty: GeoPointEmpty;
+  GeoPoint: GeoPoint;
+  InputNotifyPeer: InputNotifyPeer;
+  InputNotifyUsers: InputNotifyUsers;
+  InputNotifyChats: InputNotifyChats;
+  InputNotifyBroadcasts: InputNotifyBroadcasts;
+  InputNotifyForumTopic: InputNotifyForumTopic;
+  InputPeerNotifySettings: InputPeerNotifySettings;
+  PeerNotifySettings: PeerNotifySettings;
+  PeerSettings: PeerSettings;
+  WallPaper: WallPaper;
+  WallPaperNoFile: WallPaperNoFile;
+  InputReportReasonSpam: InputReportReasonSpam;
+  InputReportReasonViolence: InputReportReasonViolence;
+  InputReportReasonPornography: InputReportReasonPornography;
+  InputReportReasonChildAbuse: InputReportReasonChildAbuse;
+  InputReportReasonOther: InputReportReasonOther;
+  InputReportReasonCopyright: InputReportReasonCopyright;
+  InputReportReasonGeoIrrelevant: InputReportReasonGeoIrrelevant;
+  InputReportReasonFake: InputReportReasonFake;
+  InputReportReasonIllegalDrugs: InputReportReasonIllegalDrugs;
+  InputReportReasonPersonalDetails: InputReportReasonPersonalDetails;
+  UserFull: UserFull;
+  Contact: Contact;
+  ImportedContact: ImportedContact;
+  ContactStatus: ContactStatus;
+  InputMessagesFilterEmpty: InputMessagesFilterEmpty;
+  InputMessagesFilterPhotos: InputMessagesFilterPhotos;
+  InputMessagesFilterVideo: InputMessagesFilterVideo;
+  InputMessagesFilterPhotoVideo: InputMessagesFilterPhotoVideo;
+  InputMessagesFilterDocument: InputMessagesFilterDocument;
+  InputMessagesFilterUrl: InputMessagesFilterUrl;
+  InputMessagesFilterGif: InputMessagesFilterGif;
+  InputMessagesFilterVoice: InputMessagesFilterVoice;
+  InputMessagesFilterMusic: InputMessagesFilterMusic;
+  InputMessagesFilterChatPhotos: InputMessagesFilterChatPhotos;
+  InputMessagesFilterPhoneCalls: InputMessagesFilterPhoneCalls;
+  InputMessagesFilterRoundVoice: InputMessagesFilterRoundVoice;
+  InputMessagesFilterRoundVideo: InputMessagesFilterRoundVideo;
+  InputMessagesFilterMyMentions: InputMessagesFilterMyMentions;
+  InputMessagesFilterGeo: InputMessagesFilterGeo;
+  InputMessagesFilterContacts: InputMessagesFilterContacts;
+  InputMessagesFilterPinned: InputMessagesFilterPinned;
+  UpdateNewMessage: UpdateNewMessage;
+  UpdateMessageID: UpdateMessageID;
+  UpdateDeleteMessages: UpdateDeleteMessages;
+  UpdateUserTyping: UpdateUserTyping;
+  UpdateChatUserTyping: UpdateChatUserTyping;
+  UpdateChatParticipants: UpdateChatParticipants;
+  UpdateUserStatus: UpdateUserStatus;
+  UpdateUserName: UpdateUserName;
+  UpdateNewAuthorization: UpdateNewAuthorization;
+  UpdateNewEncryptedMessage: UpdateNewEncryptedMessage;
+  UpdateEncryptedChatTyping: UpdateEncryptedChatTyping;
+  UpdateEncryption: UpdateEncryption;
+  UpdateEncryptedMessagesRead: UpdateEncryptedMessagesRead;
+  UpdateChatParticipantAdd: UpdateChatParticipantAdd;
+  UpdateChatParticipantDelete: UpdateChatParticipantDelete;
+  UpdateDcOptions: UpdateDcOptions;
+  UpdateNotifySettings: UpdateNotifySettings;
+  UpdateServiceNotification: UpdateServiceNotification;
+  UpdatePrivacy: UpdatePrivacy;
+  UpdateUserPhone: UpdateUserPhone;
+  UpdateReadHistoryInbox: UpdateReadHistoryInbox;
+  UpdateReadHistoryOutbox: UpdateReadHistoryOutbox;
+  UpdateWebPage: UpdateWebPage;
+  UpdateReadMessagesContents: UpdateReadMessagesContents;
+  UpdateChannelTooLong: UpdateChannelTooLong;
+  UpdateChannel: UpdateChannel;
+  UpdateNewChannelMessage: UpdateNewChannelMessage;
+  UpdateReadChannelInbox: UpdateReadChannelInbox;
+  UpdateDeleteChannelMessages: UpdateDeleteChannelMessages;
+  UpdateChannelMessageViews: UpdateChannelMessageViews;
+  UpdateChatParticipantAdmin: UpdateChatParticipantAdmin;
+  UpdateNewStickerSet: UpdateNewStickerSet;
+  UpdateStickerSetsOrder: UpdateStickerSetsOrder;
+  UpdateStickerSets: UpdateStickerSets;
+  UpdateSavedGifs: UpdateSavedGifs;
+  UpdateBotInlineQuery: UpdateBotInlineQuery;
+  UpdateBotInlineSend: UpdateBotInlineSend;
+  UpdateEditChannelMessage: UpdateEditChannelMessage;
+  UpdateBotCallbackQuery: UpdateBotCallbackQuery;
+  UpdateEditMessage: UpdateEditMessage;
+  UpdateInlineBotCallbackQuery: UpdateInlineBotCallbackQuery;
+  UpdateReadChannelOutbox: UpdateReadChannelOutbox;
+  UpdateDraftMessage: UpdateDraftMessage;
+  UpdateReadFeaturedStickers: UpdateReadFeaturedStickers;
+  UpdateRecentStickers: UpdateRecentStickers;
+  UpdateConfig: UpdateConfig;
+  UpdatePtsChanged: UpdatePtsChanged;
+  UpdateChannelWebPage: UpdateChannelWebPage;
+  UpdateDialogPinned: UpdateDialogPinned;
+  UpdatePinnedDialogs: UpdatePinnedDialogs;
+  UpdateBotWebhookJSON: UpdateBotWebhookJSON;
+  UpdateBotWebhookJSONQuery: UpdateBotWebhookJSONQuery;
+  UpdateBotShippingQuery: UpdateBotShippingQuery;
+  UpdateBotPrecheckoutQuery: UpdateBotPrecheckoutQuery;
+  UpdatePhoneCall: UpdatePhoneCall;
+  UpdateLangPackTooLong: UpdateLangPackTooLong;
+  UpdateLangPack: UpdateLangPack;
+  UpdateFavedStickers: UpdateFavedStickers;
+  UpdateChannelReadMessagesContents: UpdateChannelReadMessagesContents;
+  UpdateContactsReset: UpdateContactsReset;
+  UpdateChannelAvailableMessages: UpdateChannelAvailableMessages;
+  UpdateDialogUnreadMark: UpdateDialogUnreadMark;
+  UpdateMessagePoll: UpdateMessagePoll;
+  UpdateChatDefaultBannedRights: UpdateChatDefaultBannedRights;
+  UpdateFolderPeers: UpdateFolderPeers;
+  UpdatePeerSettings: UpdatePeerSettings;
+  UpdatePeerLocated: UpdatePeerLocated;
+  UpdateNewScheduledMessage: UpdateNewScheduledMessage;
+  UpdateDeleteScheduledMessages: UpdateDeleteScheduledMessages;
+  UpdateTheme: UpdateTheme;
+  UpdateGeoLiveViewed: UpdateGeoLiveViewed;
+  UpdateLoginToken: UpdateLoginToken;
+  UpdateMessagePollVote: UpdateMessagePollVote;
+  UpdateDialogFilter: UpdateDialogFilter;
+  UpdateDialogFilterOrder: UpdateDialogFilterOrder;
+  UpdateDialogFilters: UpdateDialogFilters;
+  UpdatePhoneCallSignalingData: UpdatePhoneCallSignalingData;
+  UpdateChannelMessageForwards: UpdateChannelMessageForwards;
+  UpdateReadChannelDiscussionInbox: UpdateReadChannelDiscussionInbox;
+  UpdateReadChannelDiscussionOutbox: UpdateReadChannelDiscussionOutbox;
+  UpdatePeerBlocked: UpdatePeerBlocked;
+  UpdateChannelUserTyping: UpdateChannelUserTyping;
+  UpdatePinnedMessages: UpdatePinnedMessages;
+  UpdatePinnedChannelMessages: UpdatePinnedChannelMessages;
+  UpdateChat: UpdateChat;
+  UpdateGroupCallParticipants: UpdateGroupCallParticipants;
+  UpdateGroupCall: UpdateGroupCall;
+  UpdatePeerHistoryTTL: UpdatePeerHistoryTTL;
+  UpdateChatParticipant: UpdateChatParticipant;
+  UpdateChannelParticipant: UpdateChannelParticipant;
+  UpdateBotStopped: UpdateBotStopped;
+  UpdateGroupCallConnection: UpdateGroupCallConnection;
+  UpdateBotCommands: UpdateBotCommands;
+  UpdatePendingJoinRequests: UpdatePendingJoinRequests;
+  UpdateBotChatInviteRequester: UpdateBotChatInviteRequester;
+  UpdateMessageReactions: UpdateMessageReactions;
+  UpdateAttachMenuBots: UpdateAttachMenuBots;
+  UpdateWebViewResultSent: UpdateWebViewResultSent;
+  UpdateBotMenuButton: UpdateBotMenuButton;
+  UpdateSavedRingtones: UpdateSavedRingtones;
+  UpdateTranscribedAudio: UpdateTranscribedAudio;
+  UpdateReadFeaturedEmojiStickers: UpdateReadFeaturedEmojiStickers;
+  UpdateUserEmojiStatus: UpdateUserEmojiStatus;
+  UpdateRecentEmojiStatuses: UpdateRecentEmojiStatuses;
+  UpdateRecentReactions: UpdateRecentReactions;
+  UpdateMoveStickerSetToTop: UpdateMoveStickerSetToTop;
+  UpdateMessageExtendedMedia: UpdateMessageExtendedMedia;
+  UpdateChannelPinnedTopic: UpdateChannelPinnedTopic;
+  UpdateChannelPinnedTopics: UpdateChannelPinnedTopics;
+  UpdateUser: UpdateUser;
+  UpdateAutoSaveSettings: UpdateAutoSaveSettings;
+  UpdateGroupInvitePrivacyForbidden: UpdateGroupInvitePrivacyForbidden;
+  UpdateStory: UpdateStory;
+  UpdateReadStories: UpdateReadStories;
+  UpdateStoryID: UpdateStoryID;
+  UpdateStoriesStealthMode: UpdateStoriesStealthMode;
+  UpdateSentStoryReaction: UpdateSentStoryReaction;
+  UpdateBotChatBoost: UpdateBotChatBoost;
+  UpdateChannelViewForumAsMessages: UpdateChannelViewForumAsMessages;
+  UpdatePeerWallpaper: UpdatePeerWallpaper;
+  UpdatesTooLong: UpdatesTooLong;
+  UpdateShortMessage: UpdateShortMessage;
+  UpdateShortChatMessage: UpdateShortChatMessage;
+  UpdateShort: UpdateShort;
+  UpdatesCombined: UpdatesCombined;
+  Updates: Updates;
+  UpdateShortSentMessage: UpdateShortSentMessage;
+  DcOption: DcOption;
+  Config: Config;
+  NearestDc: NearestDc;
+  EncryptedChatEmpty: EncryptedChatEmpty;
+  EncryptedChatWaiting: EncryptedChatWaiting;
+  EncryptedChatRequested: EncryptedChatRequested;
+  EncryptedChat: EncryptedChat;
+  EncryptedChatDiscarded: EncryptedChatDiscarded;
+  InputEncryptedChat: InputEncryptedChat;
+  EncryptedFileEmpty: EncryptedFileEmpty;
+  EncryptedFile: EncryptedFile;
+  InputEncryptedFileEmpty: InputEncryptedFileEmpty;
+  InputEncryptedFileUploaded: InputEncryptedFileUploaded;
+  InputEncryptedFile: InputEncryptedFile;
+  InputEncryptedFileBigUploaded: InputEncryptedFileBigUploaded;
+  EncryptedMessage: EncryptedMessage;
+  EncryptedMessageService: EncryptedMessageService;
+  InputDocumentEmpty: InputDocumentEmpty;
+  InputDocument: InputDocument;
+  DocumentEmpty: DocumentEmpty;
+  Document: Document;
+  NotifyPeer: NotifyPeer;
+  NotifyUsers: NotifyUsers;
+  NotifyChats: NotifyChats;
+  NotifyBroadcasts: NotifyBroadcasts;
+  NotifyForumTopic: NotifyForumTopic;
+  SendMessageTypingAction: SendMessageTypingAction;
+  SendMessageCancelAction: SendMessageCancelAction;
+  SendMessageRecordVideoAction: SendMessageRecordVideoAction;
+  SendMessageUploadVideoAction: SendMessageUploadVideoAction;
+  SendMessageRecordAudioAction: SendMessageRecordAudioAction;
+  SendMessageUploadAudioAction: SendMessageUploadAudioAction;
+  SendMessageUploadPhotoAction: SendMessageUploadPhotoAction;
+  SendMessageUploadDocumentAction: SendMessageUploadDocumentAction;
+  SendMessageGeoLocationAction: SendMessageGeoLocationAction;
+  SendMessageChooseContactAction: SendMessageChooseContactAction;
+  SendMessageGamePlayAction: SendMessageGamePlayAction;
+  SendMessageRecordRoundAction: SendMessageRecordRoundAction;
+  SendMessageUploadRoundAction: SendMessageUploadRoundAction;
+  SpeakingInGroupCallAction: SpeakingInGroupCallAction;
+  SendMessageHistoryImportAction: SendMessageHistoryImportAction;
+  SendMessageChooseStickerAction: SendMessageChooseStickerAction;
+  SendMessageEmojiInteraction: SendMessageEmojiInteraction;
+  SendMessageEmojiInteractionSeen: SendMessageEmojiInteractionSeen;
+  InputPrivacyKeyStatusTimestamp: InputPrivacyKeyStatusTimestamp;
+  InputPrivacyKeyChatInvite: InputPrivacyKeyChatInvite;
+  InputPrivacyKeyPhoneCall: InputPrivacyKeyPhoneCall;
+  InputPrivacyKeyPhoneP2P: InputPrivacyKeyPhoneP2P;
+  InputPrivacyKeyForwards: InputPrivacyKeyForwards;
+  InputPrivacyKeyProfilePhoto: InputPrivacyKeyProfilePhoto;
+  InputPrivacyKeyPhoneNumber: InputPrivacyKeyPhoneNumber;
+  InputPrivacyKeyAddedByPhone: InputPrivacyKeyAddedByPhone;
+  InputPrivacyKeyVoiceMessages: InputPrivacyKeyVoiceMessages;
+  InputPrivacyKeyAbout: InputPrivacyKeyAbout;
+  PrivacyKeyStatusTimestamp: PrivacyKeyStatusTimestamp;
+  PrivacyKeyChatInvite: PrivacyKeyChatInvite;
+  PrivacyKeyPhoneCall: PrivacyKeyPhoneCall;
+  PrivacyKeyPhoneP2P: PrivacyKeyPhoneP2P;
+  PrivacyKeyForwards: PrivacyKeyForwards;
+  PrivacyKeyProfilePhoto: PrivacyKeyProfilePhoto;
+  PrivacyKeyPhoneNumber: PrivacyKeyPhoneNumber;
+  PrivacyKeyAddedByPhone: PrivacyKeyAddedByPhone;
+  PrivacyKeyVoiceMessages: PrivacyKeyVoiceMessages;
+  PrivacyKeyAbout: PrivacyKeyAbout;
+  InputPrivacyValueAllowContacts: InputPrivacyValueAllowContacts;
+  InputPrivacyValueAllowAll: InputPrivacyValueAllowAll;
+  InputPrivacyValueAllowUsers: InputPrivacyValueAllowUsers;
+  InputPrivacyValueDisallowContacts: InputPrivacyValueDisallowContacts;
+  InputPrivacyValueDisallowAll: InputPrivacyValueDisallowAll;
+  InputPrivacyValueDisallowUsers: InputPrivacyValueDisallowUsers;
+  InputPrivacyValueAllowChatParticipants: InputPrivacyValueAllowChatParticipants;
+  InputPrivacyValueDisallowChatParticipants: InputPrivacyValueDisallowChatParticipants;
+  InputPrivacyValueAllowCloseFriends: InputPrivacyValueAllowCloseFriends;
+  PrivacyValueAllowContacts: PrivacyValueAllowContacts;
+  PrivacyValueAllowAll: PrivacyValueAllowAll;
+  PrivacyValueAllowUsers: PrivacyValueAllowUsers;
+  PrivacyValueDisallowContacts: PrivacyValueDisallowContacts;
+  PrivacyValueDisallowAll: PrivacyValueDisallowAll;
+  PrivacyValueDisallowUsers: PrivacyValueDisallowUsers;
+  PrivacyValueAllowChatParticipants: PrivacyValueAllowChatParticipants;
+  PrivacyValueDisallowChatParticipants: PrivacyValueDisallowChatParticipants;
+  PrivacyValueAllowCloseFriends: PrivacyValueAllowCloseFriends;
+  AccountDaysTTL: AccountDaysTTL;
+  DocumentAttributeImageSize: DocumentAttributeImageSize;
+  DocumentAttributeAnimated: DocumentAttributeAnimated;
+  DocumentAttributeSticker: DocumentAttributeSticker;
+  DocumentAttributeVideo: DocumentAttributeVideo;
+  DocumentAttributeAudio: DocumentAttributeAudio;
+  DocumentAttributeFilename: DocumentAttributeFilename;
+  DocumentAttributeHasStickers: DocumentAttributeHasStickers;
+  DocumentAttributeCustomEmoji: DocumentAttributeCustomEmoji;
+  StickerPack: StickerPack;
+  WebPageEmpty: WebPageEmpty;
+  WebPagePending: WebPagePending;
+  WebPage: WebPage;
+  WebPageNotModified: WebPageNotModified;
+  Authorization: Authorization;
+  ReceivedNotifyMessage: ReceivedNotifyMessage;
+  ChatInviteExported: ChatInviteExported;
+  ChatInvitePublicJoinRequests: ChatInvitePublicJoinRequests;
+  ChatInviteAlready: ChatInviteAlready;
+  ChatInvite: ChatInvite;
+  ChatInvitePeek: ChatInvitePeek;
+  InputStickerSetEmpty: InputStickerSetEmpty;
+  InputStickerSetID: InputStickerSetID;
+  InputStickerSetShortName: InputStickerSetShortName;
+  InputStickerSetAnimatedEmoji: InputStickerSetAnimatedEmoji;
+  InputStickerSetDice: InputStickerSetDice;
+  InputStickerSetAnimatedEmojiAnimations: InputStickerSetAnimatedEmojiAnimations;
+  InputStickerSetPremiumGifts: InputStickerSetPremiumGifts;
+  InputStickerSetEmojiGenericAnimations: InputStickerSetEmojiGenericAnimations;
+  InputStickerSetEmojiDefaultStatuses: InputStickerSetEmojiDefaultStatuses;
+  InputStickerSetEmojiDefaultTopicIcons: InputStickerSetEmojiDefaultTopicIcons;
+  StickerSet: StickerSet;
+  BotCommand: BotCommand;
+  BotInfo: BotInfo;
+  KeyboardButton: KeyboardButton;
+  KeyboardButtonUrl: KeyboardButtonUrl;
+  KeyboardButtonCallback: KeyboardButtonCallback;
+  KeyboardButtonRequestPhone: KeyboardButtonRequestPhone;
+  KeyboardButtonRequestGeoLocation: KeyboardButtonRequestGeoLocation;
+  KeyboardButtonSwitchInline: KeyboardButtonSwitchInline;
+  KeyboardButtonGame: KeyboardButtonGame;
+  KeyboardButtonBuy: KeyboardButtonBuy;
+  KeyboardButtonUrlAuth: KeyboardButtonUrlAuth;
+  InputKeyboardButtonUrlAuth: InputKeyboardButtonUrlAuth;
+  KeyboardButtonRequestPoll: KeyboardButtonRequestPoll;
+  InputKeyboardButtonUserProfile: InputKeyboardButtonUserProfile;
+  KeyboardButtonUserProfile: KeyboardButtonUserProfile;
+  KeyboardButtonWebView: KeyboardButtonWebView;
+  KeyboardButtonSimpleWebView: KeyboardButtonSimpleWebView;
+  KeyboardButtonRequestPeer: KeyboardButtonRequestPeer;
+  KeyboardButtonRow: KeyboardButtonRow;
+  ReplyKeyboardHide: ReplyKeyboardHide;
+  ReplyKeyboardForceReply: ReplyKeyboardForceReply;
+  ReplyKeyboardMarkup: ReplyKeyboardMarkup;
+  ReplyInlineMarkup: ReplyInlineMarkup;
+  MessageEntityUnknown: MessageEntityUnknown;
+  MessageEntityMention: MessageEntityMention;
+  MessageEntityHashtag: MessageEntityHashtag;
+  MessageEntityBotCommand: MessageEntityBotCommand;
+  MessageEntityUrl: MessageEntityUrl;
+  MessageEntityEmail: MessageEntityEmail;
+  MessageEntityBold: MessageEntityBold;
+  MessageEntityItalic: MessageEntityItalic;
+  MessageEntityCode: MessageEntityCode;
+  MessageEntityPre: MessageEntityPre;
+  MessageEntityTextUrl: MessageEntityTextUrl;
+  MessageEntityMentionName: MessageEntityMentionName;
+  InputMessageEntityMentionName: InputMessageEntityMentionName;
+  MessageEntityPhone: MessageEntityPhone;
+  MessageEntityCashtag: MessageEntityCashtag;
+  MessageEntityUnderline: MessageEntityUnderline;
+  MessageEntityStrike: MessageEntityStrike;
+  MessageEntityBankCard: MessageEntityBankCard;
+  MessageEntitySpoiler: MessageEntitySpoiler;
+  MessageEntityCustomEmoji: MessageEntityCustomEmoji;
+  MessageEntityBlockquote: MessageEntityBlockquote;
+  InputChannelEmpty: InputChannelEmpty;
+  InputChannel: InputChannel;
+  InputChannelFromMessage: InputChannelFromMessage;
+  MessageRange: MessageRange;
+  ChannelMessagesFilterEmpty: ChannelMessagesFilterEmpty;
+  ChannelMessagesFilter: ChannelMessagesFilter;
+  ChannelParticipant: ChannelParticipant;
+  ChannelParticipantSelf: ChannelParticipantSelf;
+  ChannelParticipantCreator: ChannelParticipantCreator;
+  ChannelParticipantAdmin: ChannelParticipantAdmin;
+  ChannelParticipantBanned: ChannelParticipantBanned;
+  ChannelParticipantLeft: ChannelParticipantLeft;
+  ChannelParticipantsRecent: ChannelParticipantsRecent;
+  ChannelParticipantsAdmins: ChannelParticipantsAdmins;
+  ChannelParticipantsKicked: ChannelParticipantsKicked;
+  ChannelParticipantsBots: ChannelParticipantsBots;
+  ChannelParticipantsBanned: ChannelParticipantsBanned;
+  ChannelParticipantsSearch: ChannelParticipantsSearch;
+  ChannelParticipantsContacts: ChannelParticipantsContacts;
+  ChannelParticipantsMentions: ChannelParticipantsMentions;
+  InputBotInlineMessageMediaAuto: InputBotInlineMessageMediaAuto;
+  InputBotInlineMessageText: InputBotInlineMessageText;
+  InputBotInlineMessageMediaGeo: InputBotInlineMessageMediaGeo;
+  InputBotInlineMessageMediaVenue: InputBotInlineMessageMediaVenue;
+  InputBotInlineMessageMediaContact: InputBotInlineMessageMediaContact;
+  InputBotInlineMessageGame: InputBotInlineMessageGame;
+  InputBotInlineMessageMediaInvoice: InputBotInlineMessageMediaInvoice;
+  InputBotInlineMessageMediaWebPage: InputBotInlineMessageMediaWebPage;
+  InputBotInlineResult: InputBotInlineResult;
+  InputBotInlineResultPhoto: InputBotInlineResultPhoto;
+  InputBotInlineResultDocument: InputBotInlineResultDocument;
+  InputBotInlineResultGame: InputBotInlineResultGame;
+  BotInlineMessageMediaAuto: BotInlineMessageMediaAuto;
+  BotInlineMessageText: BotInlineMessageText;
+  BotInlineMessageMediaGeo: BotInlineMessageMediaGeo;
+  BotInlineMessageMediaVenue: BotInlineMessageMediaVenue;
+  BotInlineMessageMediaContact: BotInlineMessageMediaContact;
+  BotInlineMessageMediaInvoice: BotInlineMessageMediaInvoice;
+  BotInlineMessageMediaWebPage: BotInlineMessageMediaWebPage;
+  BotInlineResult: BotInlineResult;
+  BotInlineMediaResult: BotInlineMediaResult;
+  ExportedMessageLink: ExportedMessageLink;
+  MessageFwdHeader: MessageFwdHeader;
+  InputBotInlineMessageID: InputBotInlineMessageID;
+  InputBotInlineMessageID64: InputBotInlineMessageID64;
+  InlineBotSwitchPM: InlineBotSwitchPM;
+  TopPeer: TopPeer;
+  TopPeerCategoryBotsPM: TopPeerCategoryBotsPM;
+  TopPeerCategoryBotsInline: TopPeerCategoryBotsInline;
+  TopPeerCategoryCorrespondents: TopPeerCategoryCorrespondents;
+  TopPeerCategoryGroups: TopPeerCategoryGroups;
+  TopPeerCategoryChannels: TopPeerCategoryChannels;
+  TopPeerCategoryPhoneCalls: TopPeerCategoryPhoneCalls;
+  TopPeerCategoryForwardUsers: TopPeerCategoryForwardUsers;
+  TopPeerCategoryForwardChats: TopPeerCategoryForwardChats;
+  TopPeerCategoryPeers: TopPeerCategoryPeers;
+  DraftMessageEmpty: DraftMessageEmpty;
+  DraftMessage: DraftMessage;
+  StickerSetCovered: StickerSetCovered;
+  StickerSetMultiCovered: StickerSetMultiCovered;
+  StickerSetFullCovered: StickerSetFullCovered;
+  StickerSetNoCovered: StickerSetNoCovered;
+  MaskCoords: MaskCoords;
+  InputStickeredMediaPhoto: InputStickeredMediaPhoto;
+  InputStickeredMediaDocument: InputStickeredMediaDocument;
+  Game: Game;
+  InputGameID: InputGameID;
+  InputGameShortName: InputGameShortName;
+  HighScore: HighScore;
+  TextEmpty: TextEmpty;
+  TextPlain: TextPlain;
+  TextBold: TextBold;
+  TextItalic: TextItalic;
+  TextUnderline: TextUnderline;
+  TextStrike: TextStrike;
+  TextFixed: TextFixed;
+  TextUrl: TextUrl;
+  TextEmail: TextEmail;
+  TextConcat: TextConcat;
+  TextSubscript: TextSubscript;
+  TextSuperscript: TextSuperscript;
+  TextMarked: TextMarked;
+  TextPhone: TextPhone;
+  TextImage: TextImage;
+  TextAnchor: TextAnchor;
+  PageBlockUnsupported: PageBlockUnsupported;
+  PageBlockTitle: PageBlockTitle;
+  PageBlockSubtitle: PageBlockSubtitle;
+  PageBlockAuthorDate: PageBlockAuthorDate;
+  PageBlockHeader: PageBlockHeader;
+  PageBlockSubheader: PageBlockSubheader;
+  PageBlockParagraph: PageBlockParagraph;
+  PageBlockPreformatted: PageBlockPreformatted;
+  PageBlockFooter: PageBlockFooter;
+  PageBlockDivider: PageBlockDivider;
+  PageBlockAnchor: PageBlockAnchor;
+  PageBlockList: PageBlockList;
+  PageBlockBlockquote: PageBlockBlockquote;
+  PageBlockPullquote: PageBlockPullquote;
+  PageBlockPhoto: PageBlockPhoto;
+  PageBlockVideo: PageBlockVideo;
+  PageBlockCover: PageBlockCover;
+  PageBlockEmbed: PageBlockEmbed;
+  PageBlockEmbedPost: PageBlockEmbedPost;
+  PageBlockCollage: PageBlockCollage;
+  PageBlockSlideshow: PageBlockSlideshow;
+  PageBlockChannel: PageBlockChannel;
+  PageBlockAudio: PageBlockAudio;
+  PageBlockKicker: PageBlockKicker;
+  PageBlockTable: PageBlockTable;
+  PageBlockOrderedList: PageBlockOrderedList;
+  PageBlockDetails: PageBlockDetails;
+  PageBlockRelatedArticles: PageBlockRelatedArticles;
+  PageBlockMap: PageBlockMap;
+  PhoneCallDiscardReasonMissed: PhoneCallDiscardReasonMissed;
+  PhoneCallDiscardReasonDisconnect: PhoneCallDiscardReasonDisconnect;
+  PhoneCallDiscardReasonHangup: PhoneCallDiscardReasonHangup;
+  PhoneCallDiscardReasonBusy: PhoneCallDiscardReasonBusy;
+  DataJSON: DataJSON;
+  LabeledPrice: LabeledPrice;
+  Invoice: Invoice;
+  PaymentCharge: PaymentCharge;
+  PostAddress: PostAddress;
+  PaymentRequestedInfo: PaymentRequestedInfo;
+  PaymentSavedCredentialsCard: PaymentSavedCredentialsCard;
+  WebDocument: WebDocument;
+  WebDocumentNoProxy: WebDocumentNoProxy;
+  InputWebDocument: InputWebDocument;
+  InputWebFileLocation: InputWebFileLocation;
+  InputWebFileGeoPointLocation: InputWebFileGeoPointLocation;
+  InputWebFileAudioAlbumThumbLocation: InputWebFileAudioAlbumThumbLocation;
+  InputPaymentCredentialsSaved: InputPaymentCredentialsSaved;
+  InputPaymentCredentials: InputPaymentCredentials;
+  InputPaymentCredentialsApplePay: InputPaymentCredentialsApplePay;
+  InputPaymentCredentialsGooglePay: InputPaymentCredentialsGooglePay;
+  ShippingOption: ShippingOption;
+  InputStickerSetItem: InputStickerSetItem;
+  InputPhoneCall: InputPhoneCall;
+  PhoneCallEmpty: PhoneCallEmpty;
+  PhoneCallWaiting: PhoneCallWaiting;
+  PhoneCallRequested: PhoneCallRequested;
+  PhoneCallAccepted: PhoneCallAccepted;
+  PhoneCall: PhoneCall;
+  PhoneCallDiscarded: PhoneCallDiscarded;
+  PhoneConnection: PhoneConnection;
+  PhoneConnectionWebrtc: PhoneConnectionWebrtc;
+  PhoneCallProtocol: PhoneCallProtocol;
+  CdnPublicKey: CdnPublicKey;
+  CdnConfig: CdnConfig;
+  LangPackString: LangPackString;
+  LangPackStringPluralized: LangPackStringPluralized;
+  LangPackStringDeleted: LangPackStringDeleted;
+  LangPackDifference: LangPackDifference;
+  LangPackLanguage: LangPackLanguage;
+  ChannelAdminLogEventActionChangeTitle: ChannelAdminLogEventActionChangeTitle;
+  ChannelAdminLogEventActionChangeAbout: ChannelAdminLogEventActionChangeAbout;
+  ChannelAdminLogEventActionChangeUsername: ChannelAdminLogEventActionChangeUsername;
+  ChannelAdminLogEventActionChangePhoto: ChannelAdminLogEventActionChangePhoto;
+  ChannelAdminLogEventActionToggleInvites: ChannelAdminLogEventActionToggleInvites;
+  ChannelAdminLogEventActionToggleSignatures: ChannelAdminLogEventActionToggleSignatures;
+  ChannelAdminLogEventActionUpdatePinned: ChannelAdminLogEventActionUpdatePinned;
+  ChannelAdminLogEventActionEditMessage: ChannelAdminLogEventActionEditMessage;
+  ChannelAdminLogEventActionDeleteMessage: ChannelAdminLogEventActionDeleteMessage;
+  ChannelAdminLogEventActionParticipantJoin: ChannelAdminLogEventActionParticipantJoin;
+  ChannelAdminLogEventActionParticipantLeave: ChannelAdminLogEventActionParticipantLeave;
+  ChannelAdminLogEventActionParticipantInvite: ChannelAdminLogEventActionParticipantInvite;
+  ChannelAdminLogEventActionParticipantToggleBan: ChannelAdminLogEventActionParticipantToggleBan;
+  ChannelAdminLogEventActionParticipantToggleAdmin: ChannelAdminLogEventActionParticipantToggleAdmin;
+  ChannelAdminLogEventActionChangeStickerSet: ChannelAdminLogEventActionChangeStickerSet;
+  ChannelAdminLogEventActionTogglePreHistoryHidden: ChannelAdminLogEventActionTogglePreHistoryHidden;
+  ChannelAdminLogEventActionDefaultBannedRights: ChannelAdminLogEventActionDefaultBannedRights;
+  ChannelAdminLogEventActionStopPoll: ChannelAdminLogEventActionStopPoll;
+  ChannelAdminLogEventActionChangeLinkedChat: ChannelAdminLogEventActionChangeLinkedChat;
+  ChannelAdminLogEventActionChangeLocation: ChannelAdminLogEventActionChangeLocation;
+  ChannelAdminLogEventActionToggleSlowMode: ChannelAdminLogEventActionToggleSlowMode;
+  ChannelAdminLogEventActionStartGroupCall: ChannelAdminLogEventActionStartGroupCall;
+  ChannelAdminLogEventActionDiscardGroupCall: ChannelAdminLogEventActionDiscardGroupCall;
+  ChannelAdminLogEventActionParticipantMute: ChannelAdminLogEventActionParticipantMute;
+  ChannelAdminLogEventActionParticipantUnmute: ChannelAdminLogEventActionParticipantUnmute;
+  ChannelAdminLogEventActionToggleGroupCallSetting: ChannelAdminLogEventActionToggleGroupCallSetting;
+  ChannelAdminLogEventActionParticipantJoinByInvite: ChannelAdminLogEventActionParticipantJoinByInvite;
+  ChannelAdminLogEventActionExportedInviteDelete: ChannelAdminLogEventActionExportedInviteDelete;
+  ChannelAdminLogEventActionExportedInviteRevoke: ChannelAdminLogEventActionExportedInviteRevoke;
+  ChannelAdminLogEventActionExportedInviteEdit: ChannelAdminLogEventActionExportedInviteEdit;
+  ChannelAdminLogEventActionParticipantVolume: ChannelAdminLogEventActionParticipantVolume;
+  ChannelAdminLogEventActionChangeHistoryTTL: ChannelAdminLogEventActionChangeHistoryTTL;
+  ChannelAdminLogEventActionParticipantJoinByRequest: ChannelAdminLogEventActionParticipantJoinByRequest;
+  ChannelAdminLogEventActionToggleNoForwards: ChannelAdminLogEventActionToggleNoForwards;
+  ChannelAdminLogEventActionSendMessage: ChannelAdminLogEventActionSendMessage;
+  ChannelAdminLogEventActionChangeAvailableReactions: ChannelAdminLogEventActionChangeAvailableReactions;
+  ChannelAdminLogEventActionChangeUsernames: ChannelAdminLogEventActionChangeUsernames;
+  ChannelAdminLogEventActionToggleForum: ChannelAdminLogEventActionToggleForum;
+  ChannelAdminLogEventActionCreateTopic: ChannelAdminLogEventActionCreateTopic;
+  ChannelAdminLogEventActionEditTopic: ChannelAdminLogEventActionEditTopic;
+  ChannelAdminLogEventActionDeleteTopic: ChannelAdminLogEventActionDeleteTopic;
+  ChannelAdminLogEventActionPinTopic: ChannelAdminLogEventActionPinTopic;
+  ChannelAdminLogEventActionToggleAntiSpam: ChannelAdminLogEventActionToggleAntiSpam;
+  ChannelAdminLogEventActionChangeColor: ChannelAdminLogEventActionChangeColor;
+  ChannelAdminLogEventActionChangeBackgroundEmoji: ChannelAdminLogEventActionChangeBackgroundEmoji;
+  ChannelAdminLogEvent: ChannelAdminLogEvent;
+  ChannelAdminLogEventsFilter: ChannelAdminLogEventsFilter;
+  PopularContact: PopularContact;
+  RecentMeUrlUnknown: RecentMeUrlUnknown;
+  RecentMeUrlUser: RecentMeUrlUser;
+  RecentMeUrlChat: RecentMeUrlChat;
+  RecentMeUrlChatInvite: RecentMeUrlChatInvite;
+  RecentMeUrlStickerSet: RecentMeUrlStickerSet;
+  InputSingleMedia: InputSingleMedia;
+  WebAuthorization: WebAuthorization;
+  InputMessageID: InputMessageID;
+  InputMessageReplyTo: InputMessageReplyTo;
+  InputMessagePinned: InputMessagePinned;
+  InputMessageCallbackQuery: InputMessageCallbackQuery;
+  InputDialogPeer: InputDialogPeer;
+  InputDialogPeerFolder: InputDialogPeerFolder;
+  DialogPeer: DialogPeer;
+  DialogPeerFolder: DialogPeerFolder;
+  FileHash: FileHash;
+  InputClientProxy: InputClientProxy;
+  InputSecureFileUploaded: InputSecureFileUploaded;
+  InputSecureFile: InputSecureFile;
+  SecureFileEmpty: SecureFileEmpty;
+  SecureFile: SecureFile;
+  SecureData: SecureData;
+  SecurePlainPhone: SecurePlainPhone;
+  SecurePlainEmail: SecurePlainEmail;
+  SecureValueTypePersonalDetails: SecureValueTypePersonalDetails;
+  SecureValueTypePassport: SecureValueTypePassport;
+  SecureValueTypeDriverLicense: SecureValueTypeDriverLicense;
+  SecureValueTypeIdentityCard: SecureValueTypeIdentityCard;
+  SecureValueTypeInternalPassport: SecureValueTypeInternalPassport;
+  SecureValueTypeAddress: SecureValueTypeAddress;
+  SecureValueTypeUtilityBill: SecureValueTypeUtilityBill;
+  SecureValueTypeBankStatement: SecureValueTypeBankStatement;
+  SecureValueTypeRentalAgreement: SecureValueTypeRentalAgreement;
+  SecureValueTypePassportRegistration: SecureValueTypePassportRegistration;
+  SecureValueTypeTemporaryRegistration: SecureValueTypeTemporaryRegistration;
+  SecureValueTypePhone: SecureValueTypePhone;
+  SecureValueTypeEmail: SecureValueTypeEmail;
+  SecureValue: SecureValue;
+  InputSecureValue: InputSecureValue;
+  SecureValueHash: SecureValueHash;
+  SecureValueErrorData: SecureValueErrorData;
+  SecureValueErrorFrontSide: SecureValueErrorFrontSide;
+  SecureValueErrorReverseSide: SecureValueErrorReverseSide;
+  SecureValueErrorSelfie: SecureValueErrorSelfie;
+  SecureValueErrorFile: SecureValueErrorFile;
+  SecureValueErrorFiles: SecureValueErrorFiles;
+  SecureValueError: SecureValueError;
+  SecureValueErrorTranslationFile: SecureValueErrorTranslationFile;
+  SecureValueErrorTranslationFiles: SecureValueErrorTranslationFiles;
+  SecureCredentialsEncrypted: SecureCredentialsEncrypted;
+  SavedPhoneContact: SavedPhoneContact;
+  PasswordKdfAlgoUnknown: PasswordKdfAlgoUnknown;
+  PasswordKdfAlgoSHA256SHA256PBKDF2HMACSHA512iter100000SHA256ModPow: PasswordKdfAlgoSHA256SHA256PBKDF2HMACSHA512iter100000SHA256ModPow;
+  SecurePasswordKdfAlgoUnknown: SecurePasswordKdfAlgoUnknown;
+  SecurePasswordKdfAlgoPBKDF2HMACSHA512iter100000: SecurePasswordKdfAlgoPBKDF2HMACSHA512iter100000;
+  SecurePasswordKdfAlgoSHA512: SecurePasswordKdfAlgoSHA512;
+  SecureSecretSettings: SecureSecretSettings;
+  InputCheckPasswordEmpty: InputCheckPasswordEmpty;
+  InputCheckPasswordSRP: InputCheckPasswordSRP;
+  SecureRequiredType: SecureRequiredType;
+  SecureRequiredTypeOneOf: SecureRequiredTypeOneOf;
+  InputAppEvent: InputAppEvent;
+  JsonObjectValue: JsonObjectValue;
+  JsonNull: JsonNull;
+  JsonBool: JsonBool;
+  JsonNumber: JsonNumber;
+  JsonString: JsonString;
+  JsonArray: JsonArray;
+  JsonObject: JsonObject;
+  PageTableCell: PageTableCell;
+  PageTableRow: PageTableRow;
+  PageCaption: PageCaption;
+  PageListItemText: PageListItemText;
+  PageListItemBlocks: PageListItemBlocks;
+  PageListOrderedItemText: PageListOrderedItemText;
+  PageListOrderedItemBlocks: PageListOrderedItemBlocks;
+  PageRelatedArticle: PageRelatedArticle;
+  Page: Page;
+  PollAnswer: PollAnswer;
+  Poll: Poll;
+  PollAnswerVoters: PollAnswerVoters;
+  PollResults: PollResults;
+  ChatOnlines: ChatOnlines;
+  StatsURL: StatsURL;
+  ChatAdminRights: ChatAdminRights;
+  ChatBannedRights: ChatBannedRights;
+  InputWallPaper: InputWallPaper;
+  InputWallPaperSlug: InputWallPaperSlug;
+  InputWallPaperNoFile: InputWallPaperNoFile;
+  CodeSettings: CodeSettings;
+  WallPaperSettings: WallPaperSettings;
+  AutoDownloadSettings: AutoDownloadSettings;
+  EmojiKeyword: EmojiKeyword;
+  EmojiKeywordDeleted: EmojiKeywordDeleted;
+  EmojiKeywordsDifference: EmojiKeywordsDifference;
+  EmojiURL: EmojiURL;
+  EmojiLanguage: EmojiLanguage;
+  Folder: Folder;
+  InputFolderPeer: InputFolderPeer;
+  FolderPeer: FolderPeer;
+  UrlAuthResultRequest: UrlAuthResultRequest;
+  UrlAuthResultAccepted: UrlAuthResultAccepted;
+  UrlAuthResultDefault: UrlAuthResultDefault;
+  ChannelLocationEmpty: ChannelLocationEmpty;
+  ChannelLocation: ChannelLocation;
+  PeerLocated: PeerLocated;
+  PeerSelfLocated: PeerSelfLocated;
+  RestrictionReason: RestrictionReason;
+  InputTheme: InputTheme;
+  InputThemeSlug: InputThemeSlug;
+  Theme: Theme;
+  BaseThemeClassic: BaseThemeClassic;
+  BaseThemeDay: BaseThemeDay;
+  BaseThemeNight: BaseThemeNight;
+  BaseThemeTinted: BaseThemeTinted;
+  BaseThemeArctic: BaseThemeArctic;
+  InputThemeSettings: InputThemeSettings;
+  ThemeSettings: ThemeSettings;
+  WebPageAttributeTheme: WebPageAttributeTheme;
+  WebPageAttributeStory: WebPageAttributeStory;
+  BankCardOpenUrl: BankCardOpenUrl;
+  DialogFilter: DialogFilter;
+  DialogFilterDefault: DialogFilterDefault;
+  DialogFilterChatlist: DialogFilterChatlist;
+  DialogFilterSuggested: DialogFilterSuggested;
+  StatsDateRangeDays: StatsDateRangeDays;
+  StatsAbsValueAndPrev: StatsAbsValueAndPrev;
+  StatsPercentValue: StatsPercentValue;
+  StatsGraphAsync: StatsGraphAsync;
+  StatsGraphError: StatsGraphError;
+  StatsGraph: StatsGraph;
+  VideoSize: VideoSize;
+  VideoSizeEmojiMarkup: VideoSizeEmojiMarkup;
+  VideoSizeStickerMarkup: VideoSizeStickerMarkup;
+  StatsGroupTopPoster: StatsGroupTopPoster;
+  StatsGroupTopAdmin: StatsGroupTopAdmin;
+  StatsGroupTopInviter: StatsGroupTopInviter;
+  GlobalPrivacySettings: GlobalPrivacySettings;
+  MessageViews: MessageViews;
+  MessageReplyHeader: MessageReplyHeader;
+  MessageReplyStoryHeader: MessageReplyStoryHeader;
+  MessageReplies: MessageReplies;
+  PeerBlocked: PeerBlocked;
+  GroupCallDiscarded: GroupCallDiscarded;
+  GroupCall: GroupCall;
+  InputGroupCall: InputGroupCall;
+  GroupCallParticipant: GroupCallParticipant;
+  InlineQueryPeerTypeSameBotPM: InlineQueryPeerTypeSameBotPM;
+  InlineQueryPeerTypePM: InlineQueryPeerTypePM;
+  InlineQueryPeerTypeChat: InlineQueryPeerTypeChat;
+  InlineQueryPeerTypeMegagroup: InlineQueryPeerTypeMegagroup;
+  InlineQueryPeerTypeBroadcast: InlineQueryPeerTypeBroadcast;
+  InlineQueryPeerTypeBotPM: InlineQueryPeerTypeBotPM;
+  ChatInviteImporter: ChatInviteImporter;
+  ChatAdminWithInvites: ChatAdminWithInvites;
+  GroupCallParticipantVideoSourceGroup: GroupCallParticipantVideoSourceGroup;
+  GroupCallParticipantVideo: GroupCallParticipantVideo;
+  BotCommandScopeDefault: BotCommandScopeDefault;
+  BotCommandScopeUsers: BotCommandScopeUsers;
+  BotCommandScopeChats: BotCommandScopeChats;
+  BotCommandScopeChatAdmins: BotCommandScopeChatAdmins;
+  BotCommandScopePeer: BotCommandScopePeer;
+  BotCommandScopePeerAdmins: BotCommandScopePeerAdmins;
+  BotCommandScopePeerUser: BotCommandScopePeerUser;
+  SponsoredMessage: SponsoredMessage;
+  SearchResultsCalendarPeriod: SearchResultsCalendarPeriod;
+  SearchResultPosition: SearchResultPosition;
+  ReactionCount: ReactionCount;
+  MessageReactions: MessageReactions;
+  AvailableReaction: AvailableReaction;
+  MessagePeerReaction: MessagePeerReaction;
+  GroupCallStreamChannel: GroupCallStreamChannel;
+  AttachMenuBotIconColor: AttachMenuBotIconColor;
+  AttachMenuBotIcon: AttachMenuBotIcon;
+  AttachMenuBot: AttachMenuBot;
+  AttachMenuBotsNotModified: AttachMenuBotsNotModified;
+  AttachMenuBots: AttachMenuBots;
+  AttachMenuBotsBot: AttachMenuBotsBot;
+  WebViewResultUrl: WebViewResultUrl;
+  SimpleWebViewResultUrl: SimpleWebViewResultUrl;
+  WebViewMessageSent: WebViewMessageSent;
+  BotMenuButtonDefault: BotMenuButtonDefault;
+  BotMenuButtonCommands: BotMenuButtonCommands;
+  BotMenuButton: BotMenuButton;
+  NotificationSoundDefault: NotificationSoundDefault;
+  NotificationSoundNone: NotificationSoundNone;
+  NotificationSoundLocal: NotificationSoundLocal;
+  NotificationSoundRingtone: NotificationSoundRingtone;
+  AttachMenuPeerTypeSameBotPM: AttachMenuPeerTypeSameBotPM;
+  AttachMenuPeerTypeBotPM: AttachMenuPeerTypeBotPM;
+  AttachMenuPeerTypePM: AttachMenuPeerTypePM;
+  AttachMenuPeerTypeChat: AttachMenuPeerTypeChat;
+  AttachMenuPeerTypeBroadcast: AttachMenuPeerTypeBroadcast;
+  InputInvoiceMessage: InputInvoiceMessage;
+  InputInvoiceSlug: InputInvoiceSlug;
+  InputInvoicePremiumGiftCode: InputInvoicePremiumGiftCode;
+  InputStorePaymentPremiumSubscription: InputStorePaymentPremiumSubscription;
+  InputStorePaymentGiftPremium: InputStorePaymentGiftPremium;
+  InputStorePaymentPremiumGiftCode: InputStorePaymentPremiumGiftCode;
+  InputStorePaymentPremiumGiveaway: InputStorePaymentPremiumGiveaway;
+  PremiumGiftOption: PremiumGiftOption;
+  PaymentFormMethod: PaymentFormMethod;
+  EmojiStatusEmpty: EmojiStatusEmpty;
+  EmojiStatus: EmojiStatus;
+  EmojiStatusUntil: EmojiStatusUntil;
+  ReactionEmpty: ReactionEmpty;
+  ReactionEmoji: ReactionEmoji;
+  ReactionCustomEmoji: ReactionCustomEmoji;
+  ChatReactionsNone: ChatReactionsNone;
+  ChatReactionsAll: ChatReactionsAll;
+  ChatReactionsSome: ChatReactionsSome;
+  EmailVerifyPurposeLoginSetup: EmailVerifyPurposeLoginSetup;
+  EmailVerifyPurposeLoginChange: EmailVerifyPurposeLoginChange;
+  EmailVerifyPurposePassport: EmailVerifyPurposePassport;
+  EmailVerificationCode: EmailVerificationCode;
+  EmailVerificationGoogle: EmailVerificationGoogle;
+  EmailVerificationApple: EmailVerificationApple;
+  PremiumSubscriptionOption: PremiumSubscriptionOption;
+  SendAsPeer: SendAsPeer;
+  MessageExtendedMediaPreview: MessageExtendedMediaPreview;
+  MessageExtendedMedia: MessageExtendedMedia;
+  StickerKeyword: StickerKeyword;
+  Username: Username;
+  ForumTopicDeleted: ForumTopicDeleted;
+  ForumTopic: ForumTopic;
+  DefaultHistoryTTL: DefaultHistoryTTL;
+  ExportedContactToken: ExportedContactToken;
+  RequestPeerTypeUser: RequestPeerTypeUser;
+  RequestPeerTypeChat: RequestPeerTypeChat;
+  RequestPeerTypeBroadcast: RequestPeerTypeBroadcast;
+  EmojiListNotModified: EmojiListNotModified;
+  EmojiList: EmojiList;
+  EmojiGroup: EmojiGroup;
+  TextWithEntities: TextWithEntities;
+  AutoSaveSettings: AutoSaveSettings;
+  AutoSaveException: AutoSaveException;
+  InputBotAppID: InputBotAppID;
+  InputBotAppShortName: InputBotAppShortName;
+  BotAppNotModified: BotAppNotModified;
+  BotApp: BotApp;
+  AppWebViewResultUrl: AppWebViewResultUrl;
+  InlineBotWebView: InlineBotWebView;
+  ReadParticipantDate: ReadParticipantDate;
+  InputChatlistDialogFilter: InputChatlistDialogFilter;
+  ExportedChatlistInvite: ExportedChatlistInvite;
+  MessagePeerVote: MessagePeerVote;
+  MessagePeerVoteInputOption: MessagePeerVoteInputOption;
+  MessagePeerVoteMultiple: MessagePeerVoteMultiple;
+  SponsoredWebPage: SponsoredWebPage;
+  StoryViews: StoryViews;
+  StoryItemDeleted: StoryItemDeleted;
+  StoryItemSkipped: StoryItemSkipped;
+  StoryItem: StoryItem;
+  StoryView: StoryView;
+  InputReplyToMessage: InputReplyToMessage;
+  InputReplyToStory: InputReplyToStory;
+  ExportedStoryLink: ExportedStoryLink;
+  StoriesStealthMode: StoriesStealthMode;
+  MediaAreaCoordinates: MediaAreaCoordinates;
+  MediaAreaVenue: MediaAreaVenue;
+  InputMediaAreaVenue: InputMediaAreaVenue;
+  MediaAreaGeoPoint: MediaAreaGeoPoint;
+  MediaAreaSuggestedReaction: MediaAreaSuggestedReaction;
+  PeerStories: PeerStories;
+  PremiumGiftCodeOption: PremiumGiftCodeOption;
+  PrepaidGiveaway: PrepaidGiveaway;
+  Boost: Boost;
+  MyBoost: MyBoost;
+  StoryFwdHeader: StoryFwdHeader;
+  PostInteractionCountersMessage: PostInteractionCountersMessage;
+  PostInteractionCountersStory: PostInteractionCountersStory;
+  PublicForwardMessage: PublicForwardMessage;
+  PublicForwardStory: PublicForwardStory;
+  PeerColor: PeerColor;
+  storage: {
+    FileUnknown: storage_FileUnknown;
+    FilePartial: storage_FilePartial;
+    FileJpeg: storage_FileJpeg;
+    FileGif: storage_FileGif;
+    FilePng: storage_FilePng;
+    FilePdf: storage_FilePdf;
+    FileMp3: storage_FileMp3;
+    FileMov: storage_FileMov;
+    FileMp4: storage_FileMp4;
+    FileWebp: storage_FileWebp;
+  };
+  auth: {
+    SentCode: auth_SentCode;
+    SentCodeSuccess: auth_SentCodeSuccess;
+    Authorization: auth_Authorization;
+    AuthorizationSignUpRequired: auth_AuthorizationSignUpRequired;
+    ExportedAuthorization: auth_ExportedAuthorization;
+    PasswordRecovery: auth_PasswordRecovery;
+    CodeTypeSms: auth_CodeTypeSms;
+    CodeTypeCall: auth_CodeTypeCall;
+    CodeTypeFlashCall: auth_CodeTypeFlashCall;
+    CodeTypeMissedCall: auth_CodeTypeMissedCall;
+    CodeTypeFragmentSms: auth_CodeTypeFragmentSms;
+    SentCodeTypeApp: auth_SentCodeTypeApp;
+    SentCodeTypeSms: auth_SentCodeTypeSms;
+    SentCodeTypeCall: auth_SentCodeTypeCall;
+    SentCodeTypeFlashCall: auth_SentCodeTypeFlashCall;
+    SentCodeTypeMissedCall: auth_SentCodeTypeMissedCall;
+    SentCodeTypeEmailCode: auth_SentCodeTypeEmailCode;
+    SentCodeTypeSetUpEmailRequired: auth_SentCodeTypeSetUpEmailRequired;
+    SentCodeTypeFragmentSms: auth_SentCodeTypeFragmentSms;
+    SentCodeTypeFirebaseSms: auth_SentCodeTypeFirebaseSms;
+    LoginToken: auth_LoginToken;
+    LoginTokenMigrateTo: auth_LoginTokenMigrateTo;
+    LoginTokenSuccess: auth_LoginTokenSuccess;
+    LoggedOut: auth_LoggedOut;
+  };
+  contacts: {
+    ContactsNotModified: contacts_ContactsNotModified;
+    Contacts: contacts_Contacts;
+    ImportedContacts: contacts_ImportedContacts;
+    Blocked: contacts_Blocked;
+    BlockedSlice: contacts_BlockedSlice;
+    Found: contacts_Found;
+    ResolvedPeer: contacts_ResolvedPeer;
+    TopPeersNotModified: contacts_TopPeersNotModified;
+    TopPeers: contacts_TopPeers;
+    TopPeersDisabled: contacts_TopPeersDisabled;
+  };
+  messages: {
+    Dialogs: messages_Dialogs;
+    DialogsSlice: messages_DialogsSlice;
+    DialogsNotModified: messages_DialogsNotModified;
+    Messages: messages_Messages;
+    MessagesSlice: messages_MessagesSlice;
+    ChannelMessages: messages_ChannelMessages;
+    MessagesNotModified: messages_MessagesNotModified;
+    Chats: messages_Chats;
+    ChatsSlice: messages_ChatsSlice;
+    ChatFull: messages_ChatFull;
+    AffectedHistory: messages_AffectedHistory;
+    DhConfigNotModified: messages_DhConfigNotModified;
+    DhConfig: messages_DhConfig;
+    SentEncryptedMessage: messages_SentEncryptedMessage;
+    SentEncryptedFile: messages_SentEncryptedFile;
+    StickersNotModified: messages_StickersNotModified;
+    Stickers: messages_Stickers;
+    AllStickersNotModified: messages_AllStickersNotModified;
+    AllStickers: messages_AllStickers;
+    AffectedMessages: messages_AffectedMessages;
+    StickerSet: messages_StickerSet;
+    StickerSetNotModified: messages_StickerSetNotModified;
+    SavedGifsNotModified: messages_SavedGifsNotModified;
+    SavedGifs: messages_SavedGifs;
+    BotResults: messages_BotResults;
+    BotCallbackAnswer: messages_BotCallbackAnswer;
+    MessageEditData: messages_MessageEditData;
+    PeerDialogs: messages_PeerDialogs;
+    FeaturedStickersNotModified: messages_FeaturedStickersNotModified;
+    FeaturedStickers: messages_FeaturedStickers;
+    RecentStickersNotModified: messages_RecentStickersNotModified;
+    RecentStickers: messages_RecentStickers;
+    ArchivedStickers: messages_ArchivedStickers;
+    StickerSetInstallResultSuccess: messages_StickerSetInstallResultSuccess;
+    StickerSetInstallResultArchive: messages_StickerSetInstallResultArchive;
+    HighScores: messages_HighScores;
+    FavedStickersNotModified: messages_FavedStickersNotModified;
+    FavedStickers: messages_FavedStickers;
+    FoundStickerSetsNotModified: messages_FoundStickerSetsNotModified;
+    FoundStickerSets: messages_FoundStickerSets;
+    SearchCounter: messages_SearchCounter;
+    InactiveChats: messages_InactiveChats;
+    VotesList: messages_VotesList;
+    MessageViews: messages_MessageViews;
+    DiscussionMessage: messages_DiscussionMessage;
+    HistoryImport: messages_HistoryImport;
+    HistoryImportParsed: messages_HistoryImportParsed;
+    AffectedFoundMessages: messages_AffectedFoundMessages;
+    ExportedChatInvites: messages_ExportedChatInvites;
+    ExportedChatInvite: messages_ExportedChatInvite;
+    ExportedChatInviteReplaced: messages_ExportedChatInviteReplaced;
+    ChatInviteImporters: messages_ChatInviteImporters;
+    ChatAdminsWithInvites: messages_ChatAdminsWithInvites;
+    CheckedHistoryImportPeer: messages_CheckedHistoryImportPeer;
+    SponsoredMessages: messages_SponsoredMessages;
+    SponsoredMessagesEmpty: messages_SponsoredMessagesEmpty;
+    SearchResultsCalendar: messages_SearchResultsCalendar;
+    SearchResultsPositions: messages_SearchResultsPositions;
+    PeerSettings: messages_PeerSettings;
+    MessageReactionsList: messages_MessageReactionsList;
+    AvailableReactionsNotModified: messages_AvailableReactionsNotModified;
+    AvailableReactions: messages_AvailableReactions;
+    TranscribedAudio: messages_TranscribedAudio;
+    ReactionsNotModified: messages_ReactionsNotModified;
+    Reactions: messages_Reactions;
+    ForumTopics: messages_ForumTopics;
+    EmojiGroupsNotModified: messages_EmojiGroupsNotModified;
+    EmojiGroups: messages_EmojiGroups;
+    TranslateResult: messages_TranslateResult;
+    BotApp: messages_BotApp;
+    WebPage: messages_WebPage;
+  };
+  updates: {
+    State: updates_State;
+    DifferenceEmpty: updates_DifferenceEmpty;
+    Difference: updates_Difference;
+    DifferenceSlice: updates_DifferenceSlice;
+    DifferenceTooLong: updates_DifferenceTooLong;
+    ChannelDifferenceEmpty: updates_ChannelDifferenceEmpty;
+    ChannelDifferenceTooLong: updates_ChannelDifferenceTooLong;
+    ChannelDifference: updates_ChannelDifference;
+  };
+  photos: {
+    Photos: photos_Photos;
+    PhotosSlice: photos_PhotosSlice;
+    Photo: photos_Photo;
+  };
+  upload: {
+    File: upload_File;
+    FileCdnRedirect: upload_FileCdnRedirect;
+    WebFile: upload_WebFile;
+    CdnFileReuploadNeeded: upload_CdnFileReuploadNeeded;
+    CdnFile: upload_CdnFile;
+  };
+  help: {
+    AppUpdate: help_AppUpdate;
+    NoAppUpdate: help_NoAppUpdate;
+    InviteText: help_InviteText;
+    Support: help_Support;
+    TermsOfService: help_TermsOfService;
+    RecentMeUrls: help_RecentMeUrls;
+    TermsOfServiceUpdateEmpty: help_TermsOfServiceUpdateEmpty;
+    TermsOfServiceUpdate: help_TermsOfServiceUpdate;
+    DeepLinkInfoEmpty: help_DeepLinkInfoEmpty;
+    DeepLinkInfo: help_DeepLinkInfo;
+    PassportConfigNotModified: help_PassportConfigNotModified;
+    PassportConfig: help_PassportConfig;
+    SupportName: help_SupportName;
+    UserInfoEmpty: help_UserInfoEmpty;
+    UserInfo: help_UserInfo;
+    PromoDataEmpty: help_PromoDataEmpty;
+    PromoData: help_PromoData;
+    CountryCode: help_CountryCode;
+    Country: help_Country;
+    CountriesListNotModified: help_CountriesListNotModified;
+    CountriesList: help_CountriesList;
+    PremiumPromo: help_PremiumPromo;
+    AppConfigNotModified: help_AppConfigNotModified;
+    AppConfig: help_AppConfig;
+    PeerColorSet: help_PeerColorSet;
+    PeerColorProfileSet: help_PeerColorProfileSet;
+    PeerColorOption: help_PeerColorOption;
+    PeerColorsNotModified: help_PeerColorsNotModified;
+    PeerColors: help_PeerColors;
+  };
+  account: {
+    PrivacyRules: account_PrivacyRules;
+    Authorizations: account_Authorizations;
+    Password: account_Password;
+    PasswordSettings: account_PasswordSettings;
+    PasswordInputSettings: account_PasswordInputSettings;
+    TmpPassword: account_TmpPassword;
+    WebAuthorizations: account_WebAuthorizations;
+    AuthorizationForm: account_AuthorizationForm;
+    SentEmailCode: account_SentEmailCode;
+    Takeout: account_Takeout;
+    WallPapersNotModified: account_WallPapersNotModified;
+    WallPapers: account_WallPapers;
+    AutoDownloadSettings: account_AutoDownloadSettings;
+    ThemesNotModified: account_ThemesNotModified;
+    Themes: account_Themes;
+    ContentSettings: account_ContentSettings;
+    ResetPasswordFailedWait: account_ResetPasswordFailedWait;
+    ResetPasswordRequestedWait: account_ResetPasswordRequestedWait;
+    ResetPasswordOk: account_ResetPasswordOk;
+    SavedRingtonesNotModified: account_SavedRingtonesNotModified;
+    SavedRingtones: account_SavedRingtones;
+    SavedRingtone: account_SavedRingtone;
+    SavedRingtoneConverted: account_SavedRingtoneConverted;
+    EmojiStatusesNotModified: account_EmojiStatusesNotModified;
+    EmojiStatuses: account_EmojiStatuses;
+    EmailVerified: account_EmailVerified;
+    EmailVerifiedLogin: account_EmailVerifiedLogin;
+    AutoSaveSettings: account_AutoSaveSettings;
+  };
+  channels: {
+    ChannelParticipants: channels_ChannelParticipants;
+    ChannelParticipantsNotModified: channels_ChannelParticipantsNotModified;
+    ChannelParticipant: channels_ChannelParticipant;
+    AdminLogResults: channels_AdminLogResults;
+    SendAsPeers: channels_SendAsPeers;
+  };
+  payments: {
+    PaymentForm: payments_PaymentForm;
+    ValidatedRequestedInfo: payments_ValidatedRequestedInfo;
+    PaymentResult: payments_PaymentResult;
+    PaymentVerificationNeeded: payments_PaymentVerificationNeeded;
+    PaymentReceipt: payments_PaymentReceipt;
+    SavedInfo: payments_SavedInfo;
+    BankCardData: payments_BankCardData;
+    ExportedInvoice: payments_ExportedInvoice;
+    CheckedGiftCode: payments_CheckedGiftCode;
+    GiveawayInfo: payments_GiveawayInfo;
+    GiveawayInfoResults: payments_GiveawayInfoResults;
+  };
+  phone: {
+    PhoneCall: phone_PhoneCall;
+    GroupCall: phone_GroupCall;
+    GroupParticipants: phone_GroupParticipants;
+    JoinAsPeers: phone_JoinAsPeers;
+    ExportedGroupCallInvite: phone_ExportedGroupCallInvite;
+    GroupCallStreamChannels: phone_GroupCallStreamChannels;
+    GroupCallStreamRtmpUrl: phone_GroupCallStreamRtmpUrl;
+  };
+  stats: {
+    BroadcastStats: stats_BroadcastStats;
+    MegagroupStats: stats_MegagroupStats;
+    MessageStats: stats_MessageStats;
+    StoryStats: stats_StoryStats;
+    PublicForwards: stats_PublicForwards;
+  };
+  stickers: {
+    SuggestedShortName: stickers_SuggestedShortName;
+  };
+  users: {
+    UserFull: users_UserFull;
+  };
+  chatlists: {
+    ExportedChatlistInvite: chatlists_ExportedChatlistInvite;
+    ExportedInvites: chatlists_ExportedInvites;
+    ChatlistInviteAlready: chatlists_ChatlistInviteAlready;
+    ChatlistInvite: chatlists_ChatlistInvite;
+    ChatlistUpdates: chatlists_ChatlistUpdates;
+  };
+  bots: {
+    BotInfo: bots_BotInfo;
+  };
+  stories: {
+    AllStoriesNotModified: stories_AllStoriesNotModified;
+    AllStories: stories_AllStories;
+    Stories: stories_Stories;
+    StoryViewsList: stories_StoryViewsList;
+    StoryViews: stories_StoryViews;
+    PeerStories: stories_PeerStories;
+  };
+  premium: {
+    BoostsList: premium_BoostsList;
+    MyBoosts: premium_MyBoosts;
+    BoostsStatus: premium_BoostsStatus;
+  };
 }
 export const map = new Map<number, TLObjectConstructor>([
-  [0x05162463, resPQ],
-  [0xA9F55F95, p_q_inner_data_dc],
-  [0x56FDDF88, p_q_inner_data_temp_dc],
-  [0xD0E8075C, server_DH_params_ok],
-  [0xB5890DBA, server_DH_inner_data],
-  [0x6643B654, client_DH_inner_data],
-  [0x3BCBF734, dh_gen_ok],
-  [0x46DC1FB9, dh_gen_retry],
-  [0xA69DAE02, dh_gen_fail],
-  [0x75A3F765, bind_auth_key_inner],
-  [0x2144CA19, rpc_error],
-  [0x5E2AD36E, rpc_answer_unknown],
-  [0xCD78E586, rpc_answer_dropped_running],
-  [0xA43AD8B7, rpc_answer_dropped],
-  [0x0949D9DC, future_salt],
-  [0xAE500895, future_salts],
-  [0x347773C5, pong],
-  [0xE22045FC, destroy_session_ok],
-  [0x62D350C9, destroy_session_none],
-  [0x9EC20908, new_session_created],
-  [0x3072CFA1, gzip_packed],
-  [0x62D6B459, msgs_ack],
-  [0xA7EFF811, bad_msg_notification],
-  [0xEDAB447B, bad_server_salt],
-  [0x7D861A08, msg_resend_req],
-  [0xDA69FB52, msgs_state_req],
-  [0x04DEB57D, msgs_state_info],
-  [0x8CC0D131, msgs_all_info],
-  [0x276D3EC6, msg_detailed_info],
-  [0x809DB6DF, msg_new_detailed_info],
-  [0xF660E1D4, destroy_auth_key_ok],
-  [0x0A9F2259, destroy_auth_key_none],
-  [0xEA109B13, destroy_auth_key_fail],
-  [0x9299359F, http_wait],
-  [0x3FEDD339, r$true],
-  [0xC4B9F9BB, error],
-  [0x56730BCC, r$null],
-  [0x7F3B18EA, inputPeerEmpty],
-  [0x7DA07EC9, inputPeerSelf],
-  [0x35A95CB9, inputPeerChat],
-  [0xDDE8A54C, inputPeerUser],
-  [0x27BCBBFC, inputPeerChannel],
-  [0xA87B0A1C, inputPeerUserFromMessage],
-  [0xBD2A0840, inputPeerChannelFromMessage],
-  [0xB98886CF, inputUserEmpty],
-  [0xF7C1B13F, inputUserSelf],
-  [0xF21158C6, inputUser],
-  [0x1DA448E2, inputUserFromMessage],
-  [0xF392B7F4, inputPhoneContact],
-  [0xF52FF27F, inputFile],
-  [0xFA4F0BB5, inputFileBig],
-  [0x9664F57F, inputMediaEmpty],
-  [0x1E287D04, inputMediaUploadedPhoto],
-  [0xB3BA0635, inputMediaPhoto],
-  [0xF9C44144, inputMediaGeoPoint],
-  [0xF8AB7DFB, inputMediaContact],
-  [0x5B38C6C1, inputMediaUploadedDocument],
-  [0x33473058, inputMediaDocument],
-  [0xC13D1C11, inputMediaVenue],
-  [0xE5BBFE1A, inputMediaPhotoExternal],
-  [0xFB52DC99, inputMediaDocumentExternal],
-  [0xD33F43F3, inputMediaGame],
-  [0x8EB5A6D5, inputMediaInvoice],
-  [0x971FA843, inputMediaGeoLive],
-  [0x0F94E5F1, inputMediaPoll],
-  [0xE66FBF7B, inputMediaDice],
-  [0x89FDD778, inputMediaStory],
-  [0xC21B8849, inputMediaWebPage],
-  [0x1CA48F57, inputChatPhotoEmpty],
-  [0xBDCDAEC0, inputChatUploadedPhoto],
-  [0x8953AD37, inputChatPhoto],
-  [0xE4C123D6, inputGeoPointEmpty],
-  [0x48222FAF, inputGeoPoint],
-  [0x1CD7BF0D, inputPhotoEmpty],
-  [0x3BB3B94A, inputPhoto],
-  [0xDFDAABE1, inputFileLocation],
-  [0xF5235D55, inputEncryptedFileLocation],
-  [0xBAD07584, inputDocumentFileLocation],
-  [0xCBC7EE28, inputSecureFileLocation],
-  [0x29BE5899, inputTakeoutFileLocation],
-  [0x40181FFE, inputPhotoFileLocation],
-  [0xD83466F3, inputPhotoLegacyFileLocation],
-  [0x37257E99, inputPeerPhotoFileLocation],
-  [0x9D84F3DB, inputStickerSetThumb],
-  [0x0598A92A, inputGroupCallStream],
-  [0x59511722, peerUser],
-  [0x36C6019A, peerChat],
-  [0xA2A5371E, peerChannel],
-  [0xAA963B05, storage_fileUnknown],
-  [0x40BC6F52, storage_filePartial],
-  [0x007EFE0E, storage_fileJpeg],
-  [0xCAE1AADF, storage_fileGif],
-  [0x0A4F63C0, storage_filePng],
-  [0xAE1E508D, storage_filePdf],
-  [0x528A0677, storage_fileMp3],
-  [0x4B09EBBC, storage_fileMov],
-  [0xB3CEA0E4, storage_fileMp4],
-  [0x1081464C, storage_fileWebp],
-  [0xD3BC4B7A, userEmpty],
-  [0x215C4438, user],
-  [0x4F11BAE1, userProfilePhotoEmpty],
-  [0x82D1F706, userProfilePhoto],
-  [0x09D05049, userStatusEmpty],
-  [0xEDB93949, userStatusOnline],
-  [0x008C703F, userStatusOffline],
-  [0xE26F42F1, userStatusRecently],
-  [0x07BF09FC, userStatusLastWeek],
-  [0x77EBC742, userStatusLastMonth],
-  [0x29562865, chatEmpty],
-  [0x41CBF256, chat],
-  [0x6592A1A7, chatForbidden],
-  [0x8E87CCD8, channel],
-  [0x17D493D5, channelForbidden],
-  [0xC9D31138, chatFull],
-  [0x723027BD, channelFull],
-  [0xC02D4007, chatParticipant],
-  [0xE46BCEE4, chatParticipantCreator],
-  [0xA0933F5B, chatParticipantAdmin],
-  [0x8763D3E1, chatParticipantsForbidden],
-  [0x3CBC93F8, chatParticipants],
-  [0x37C1011C, chatPhotoEmpty],
-  [0x1C6E1C11, chatPhoto],
-  [0x90A6CA84, messageEmpty],
-  [0x38116EE0, message],
-  [0x2B085862, messageService],
-  [0x3DED6320, messageMediaEmpty],
-  [0x695150D7, messageMediaPhoto],
-  [0x56E0D474, messageMediaGeo],
-  [0x70322949, messageMediaContact],
-  [0x9F84F49E, messageMediaUnsupported],
-  [0x4CF4D72D, messageMediaDocument],
-  [0xDDF10C3B, messageMediaWebPage],
-  [0x2EC0533F, messageMediaVenue],
-  [0xFDB19008, messageMediaGame],
-  [0xF6A548D3, messageMediaInvoice],
-  [0xB940C666, messageMediaGeoLive],
-  [0x4BD6E798, messageMediaPoll],
-  [0x3F7EE58B, messageMediaDice],
-  [0x68CB6283, messageMediaStory],
-  [0x58260664, messageMediaGiveaway],
-  [0xB6AEF7B0, messageActionEmpty],
-  [0xBD47CBAD, messageActionChatCreate],
-  [0xB5A1CE5A, messageActionChatEditTitle],
-  [0x7FCB13A8, messageActionChatEditPhoto],
-  [0x95E3FBEF, messageActionChatDeletePhoto],
-  [0x15CEFD00, messageActionChatAddUser],
-  [0xA43F30CC, messageActionChatDeleteUser],
-  [0x031224C3, messageActionChatJoinedByLink],
-  [0x95D2AC92, messageActionChannelCreate],
-  [0xE1037F92, messageActionChatMigrateTo],
-  [0xEA3948E9, messageActionChannelMigrateFrom],
-  [0x94BD38ED, messageActionPinMessage],
-  [0x9FBAB604, messageActionHistoryClear],
-  [0x92A72876, messageActionGameScore],
-  [0x8F31B327, messageActionPaymentSentMe],
-  [0x96163F56, messageActionPaymentSent],
-  [0x80E11A7F, messageActionPhoneCall],
-  [0x4792929B, messageActionScreenshotTaken],
-  [0xFAE69F56, messageActionCustomAction],
-  [0xC516D679, messageActionBotAllowed],
-  [0x1B287353, messageActionSecureValuesSentMe],
-  [0xD95C6154, messageActionSecureValuesSent],
-  [0xF3F25F76, messageActionContactSignUp],
-  [0x98E0D697, messageActionGeoProximityReached],
-  [0x7A0D7F42, messageActionGroupCall],
-  [0x502F92F7, messageActionInviteToGroupCall],
-  [0x3C134D7B, messageActionSetMessagesTTL],
-  [0xB3A07661, messageActionGroupCallScheduled],
-  [0xAA786345, messageActionSetChatTheme],
-  [0xEBBCA3CB, messageActionChatJoinedByRequest],
-  [0x47DD8079, messageActionWebViewDataSentMe],
-  [0xB4C38CB5, messageActionWebViewDataSent],
-  [0xC83D6AEC, messageActionGiftPremium],
-  [0x0D999256, messageActionTopicCreate],
-  [0xC0944820, messageActionTopicEdit],
-  [0x57DE635E, messageActionSuggestProfilePhoto],
-  [0xFE77345D, messageActionRequestedPeer],
-  [0x5060A3F4, messageActionSetChatWallPaper],
-  [0xD2CFDB0E, messageActionGiftCode],
-  [0x332BA9ED, messageActionGiveawayLaunch],
-  [0x2A9FADC5, messageActionGiveawayResults],
-  [0xD58A08C6, dialog],
-  [0x71BD134C, dialogFolder],
-  [0x2331B22D, photoEmpty],
-  [0xFB197A65, photo],
-  [0x0E17E23C, photoSizeEmpty],
-  [0x75C78E60, photoSize],
-  [0x021E1AD6, photoCachedSize],
-  [0xE0B0BC2E, photoStrippedSize],
-  [0xFA3EFB95, photoSizeProgressive],
-  [0xD8214D41, photoPathSize],
-  [0x1117DD5F, geoPointEmpty],
-  [0xB2A2F663, geoPoint],
-  [0x5E002502, auth_sentCode],
-  [0x2390FE44, auth_sentCodeSuccess],
-  [0x2EA2C0D4, auth_authorization],
-  [0x44747E9A, auth_authorizationSignUpRequired],
-  [0xB434E2B8, auth_exportedAuthorization],
-  [0xB8BC5B0C, inputNotifyPeer],
-  [0x193B4417, inputNotifyUsers],
-  [0x4A95E84E, inputNotifyChats],
-  [0xB1DB7C7E, inputNotifyBroadcasts],
-  [0x5C467992, inputNotifyForumTopic],
-  [0xCACB6AE2, inputPeerNotifySettings],
-  [0x99622C0C, peerNotifySettings],
-  [0xA518110D, peerSettings],
-  [0xA437C3ED, wallPaper],
-  [0xE0804116, wallPaperNoFile],
-  [0x58DBCAB8, inputReportReasonSpam],
-  [0x1E22C78D, inputReportReasonViolence],
-  [0x2E59D922, inputReportReasonPornography],
-  [0xADF44EE3, inputReportReasonChildAbuse],
-  [0xC1E4A2B1, inputReportReasonOther],
-  [0x9B89F93A, inputReportReasonCopyright],
-  [0xDBD4FEED, inputReportReasonGeoIrrelevant],
-  [0xF5DDD6E7, inputReportReasonFake],
-  [0x0A8EB2BE, inputReportReasonIllegalDrugs],
-  [0x9EC7863D, inputReportReasonPersonalDetails],
-  [0xB9B12C6C, userFull],
-  [0x145ADE0B, contact],
-  [0xC13E3C50, importedContact],
-  [0x16D9703B, contactStatus],
-  [0xB74BA9D2, contacts_contactsNotModified],
-  [0xEAE87E42, contacts_contacts],
-  [0x77D01C3B, contacts_importedContacts],
-  [0x0ADE1591, contacts_blocked],
-  [0xE1664194, contacts_blockedSlice],
-  [0x15BA6C40, messages_dialogs],
-  [0x71E094F3, messages_dialogsSlice],
-  [0xF0E3E596, messages_dialogsNotModified],
-  [0x8C718E87, messages_messages],
-  [0x3A54685E, messages_messagesSlice],
-  [0xC776BA4E, messages_channelMessages],
-  [0x74535F21, messages_messagesNotModified],
-  [0x64FF9FD5, messages_chats],
-  [0x9CD81144, messages_chatsSlice],
-  [0xE5D7D19C, messages_chatFull],
-  [0xB45C69D1, messages_affectedHistory],
-  [0x57E2F66C, inputMessagesFilterEmpty],
-  [0x9609A51C, inputMessagesFilterPhotos],
-  [0x9FC00E65, inputMessagesFilterVideo],
-  [0x56E9F0E4, inputMessagesFilterPhotoVideo],
-  [0x9EDDF188, inputMessagesFilterDocument],
-  [0x7EF0DD87, inputMessagesFilterUrl],
-  [0xFFC86587, inputMessagesFilterGif],
-  [0x50F5C392, inputMessagesFilterVoice],
-  [0x3751B49E, inputMessagesFilterMusic],
-  [0x3A20ECB8, inputMessagesFilterChatPhotos],
-  [0x80C99768, inputMessagesFilterPhoneCalls],
-  [0x7A7C17A4, inputMessagesFilterRoundVoice],
-  [0xB549DA53, inputMessagesFilterRoundVideo],
-  [0xC1F8E69A, inputMessagesFilterMyMentions],
-  [0xE7026D0D, inputMessagesFilterGeo],
-  [0xE062DB83, inputMessagesFilterContacts],
-  [0x1BB00451, inputMessagesFilterPinned],
-  [0x1F2B0AFD, updateNewMessage],
-  [0x4E90BFD6, updateMessageID],
-  [0xA20DB0E5, updateDeleteMessages],
-  [0xC01E857F, updateUserTyping],
-  [0x83487AF0, updateChatUserTyping],
-  [0x07761198, updateChatParticipants],
-  [0xE5BDF8DE, updateUserStatus],
-  [0xA7848924, updateUserName],
-  [0x8951ABEF, updateNewAuthorization],
-  [0x12BCBD9A, updateNewEncryptedMessage],
-  [0x1710F156, updateEncryptedChatTyping],
-  [0xB4A2E88D, updateEncryption],
-  [0x38FE25B7, updateEncryptedMessagesRead],
-  [0x3DDA5451, updateChatParticipantAdd],
-  [0xE32F3D77, updateChatParticipantDelete],
-  [0x8E5E9873, updateDcOptions],
-  [0xBEC268EF, updateNotifySettings],
-  [0xEBE46819, updateServiceNotification],
-  [0xEE3B272A, updatePrivacy],
-  [0x05492A13, updateUserPhone],
-  [0x9C974FDF, updateReadHistoryInbox],
-  [0x2F2F21BF, updateReadHistoryOutbox],
-  [0x7F891213, updateWebPage],
-  [0xF8227181, updateReadMessagesContents],
-  [0x108D941F, updateChannelTooLong],
-  [0x635B4C09, updateChannel],
-  [0x62BA04D9, updateNewChannelMessage],
-  [0x922E6E10, updateReadChannelInbox],
-  [0xC32D5B12, updateDeleteChannelMessages],
-  [0xF226AC08, updateChannelMessageViews],
-  [0xD7CA61A2, updateChatParticipantAdmin],
-  [0x688A30AA, updateNewStickerSet],
-  [0x0BB2D201, updateStickerSetsOrder],
-  [0x31C24808, updateStickerSets],
-  [0x9375341E, updateSavedGifs],
-  [0x496F379C, updateBotInlineQuery],
-  [0x12F12A07, updateBotInlineSend],
-  [0x1B3F4DF7, updateEditChannelMessage],
-  [0xB9CFC48D, updateBotCallbackQuery],
-  [0xE40370A3, updateEditMessage],
-  [0x691E9052, updateInlineBotCallbackQuery],
-  [0xB75F99A9, updateReadChannelOutbox],
-  [0x1B49EC6D, updateDraftMessage],
-  [0x571D2742, updateReadFeaturedStickers],
-  [0x9A422C20, updateRecentStickers],
-  [0xA229DD06, updateConfig],
-  [0x3354678F, updatePtsChanged],
-  [0x2F2BA99F, updateChannelWebPage],
-  [0x6E6FE51C, updateDialogPinned],
-  [0xFA0F3CA2, updatePinnedDialogs],
-  [0x8317C0C3, updateBotWebhookJSON],
-  [0x9B9240A6, updateBotWebhookJSONQuery],
-  [0xB5AEFD7D, updateBotShippingQuery],
-  [0x8CAA9A96, updateBotPrecheckoutQuery],
-  [0xAB0F6B1E, updatePhoneCall],
-  [0x46560264, updateLangPackTooLong],
-  [0x56022F4D, updateLangPack],
-  [0xE511996D, updateFavedStickers],
-  [0xEA29055D, updateChannelReadMessagesContents],
-  [0x7084A7BE, updateContactsReset],
-  [0xB23FC698, updateChannelAvailableMessages],
-  [0xE16459C3, updateDialogUnreadMark],
-  [0xACA1657B, updateMessagePoll],
-  [0x54C01850, updateChatDefaultBannedRights],
-  [0x19360DC0, updateFolderPeers],
-  [0x6A7E7366, updatePeerSettings],
-  [0xB4AFCFB0, updatePeerLocated],
-  [0x39A51DFB, updateNewScheduledMessage],
-  [0x90866CEE, updateDeleteScheduledMessages],
-  [0x8216FBA3, updateTheme],
-  [0x871FB939, updateGeoLiveViewed],
-  [0x564FE691, updateLoginToken],
-  [0x24F40E77, updateMessagePollVote],
-  [0x26FFDE7D, updateDialogFilter],
-  [0xA5D72105, updateDialogFilterOrder],
-  [0x3504914F, updateDialogFilters],
-  [0x2661BF09, updatePhoneCallSignalingData],
-  [0xD29A27F4, updateChannelMessageForwards],
-  [0xD6B19546, updateReadChannelDiscussionInbox],
-  [0x695C9E7C, updateReadChannelDiscussionOutbox],
-  [0xEBE07752, updatePeerBlocked],
-  [0x8C88C923, updateChannelUserTyping],
-  [0xED85EAB5, updatePinnedMessages],
-  [0x5BB98608, updatePinnedChannelMessages],
-  [0xF89A6A4E, updateChat],
-  [0xF2EBDB4E, updateGroupCallParticipants],
-  [0x14B24500, updateGroupCall],
-  [0xBB9BB9A5, updatePeerHistoryTTL],
-  [0xD087663A, updateChatParticipant],
-  [0x985D3ABB, updateChannelParticipant],
-  [0xC4870A49, updateBotStopped],
-  [0x0B783982, updateGroupCallConnection],
-  [0x4D712F2E, updateBotCommands],
-  [0x7063C3DB, updatePendingJoinRequests],
-  [0x11DFA986, updateBotChatInviteRequester],
-  [0x5E1B3CB8, updateMessageReactions],
-  [0x17B7A20B, updateAttachMenuBots],
-  [0x1592B79D, updateWebViewResultSent],
-  [0x14B85813, updateBotMenuButton],
-  [0x74D8BE99, updateSavedRingtones],
-  [0x0084CD5A, updateTranscribedAudio],
-  [0xFB4C496C, updateReadFeaturedEmojiStickers],
-  [0x28373599, updateUserEmojiStatus],
-  [0x30F443DB, updateRecentEmojiStatuses],
-  [0x6F7863F4, updateRecentReactions],
-  [0x86FCCF85, updateMoveStickerSetToTop],
-  [0x5A73A98C, updateMessageExtendedMedia],
-  [0x192EFBE3, updateChannelPinnedTopic],
-  [0xFE198602, updateChannelPinnedTopics],
-  [0x20529438, updateUser],
-  [0xEC05B097, updateAutoSaveSettings],
-  [0xCCF08AD6, updateGroupInvitePrivacyForbidden],
-  [0x75B3B798, updateStory],
-  [0xF74E932B, updateReadStories],
-  [0x1BF335B9, updateStoryID],
-  [0x2C084DC1, updateStoriesStealthMode],
-  [0x7D627683, updateSentStoryReaction],
-  [0x904DD49C, updateBotChatBoost],
-  [0x07B68920, updateChannelViewForumAsMessages],
-  [0xAE3F101D, updatePeerWallpaper],
-  [0xA56C2A3E, updates_state],
-  [0x5D75A138, updates_differenceEmpty],
-  [0x00F49CA0, updates_difference],
-  [0xA8FB1981, updates_differenceSlice],
-  [0x4AFE8F6D, updates_differenceTooLong],
-  [0xE317AF7E, updatesTooLong],
-  [0x313BC7F8, updateShortMessage],
-  [0x4D6DEEA5, updateShortChatMessage],
-  [0x78D4DEC1, updateShort],
-  [0x725B04C3, updatesCombined],
-  [0x74AE4240, updates],
-  [0x9015E101, updateShortSentMessage],
-  [0x8DCA6AA5, photos_photos],
-  [0x15051F54, photos_photosSlice],
-  [0x20212CA8, photos_photo],
-  [0x096A18D5, upload_file],
-  [0xF18CDA44, upload_fileCdnRedirect],
-  [0x18B7A10D, dcOption],
-  [0xCC1A241E, config],
-  [0x8E1A1775, nearestDc],
-  [0xCCBBCE30, help_appUpdate],
-  [0xC45A6536, help_noAppUpdate],
-  [0x18CB9F78, help_inviteText],
-  [0xAB7EC0A0, encryptedChatEmpty],
-  [0x66B25953, encryptedChatWaiting],
-  [0x48F1D94C, encryptedChatRequested],
-  [0x61F0D4C7, encryptedChat],
-  [0x1E1C7C45, encryptedChatDiscarded],
-  [0xF141B5E1, inputEncryptedChat],
-  [0xC21F497E, encryptedFileEmpty],
-  [0xA8008CD8, encryptedFile],
-  [0x1837C364, inputEncryptedFileEmpty],
-  [0x64BD0306, inputEncryptedFileUploaded],
-  [0x5A17B5E5, inputEncryptedFile],
-  [0x2DC173C8, inputEncryptedFileBigUploaded],
-  [0xED18C118, encryptedMessage],
-  [0x23734B06, encryptedMessageService],
-  [0xC0E24635, messages_dhConfigNotModified],
-  [0x2C221EDD, messages_dhConfig],
-  [0x560F8935, messages_sentEncryptedMessage],
-  [0x9493FF32, messages_sentEncryptedFile],
-  [0x72F0EAAE, inputDocumentEmpty],
-  [0x1ABFB575, inputDocument],
-  [0x36F8C871, documentEmpty],
-  [0x8FD4C4D8, document],
-  [0x17C6B5F6, help_support],
-  [0x9FD40BD8, notifyPeer],
-  [0xB4C83B4C, notifyUsers],
-  [0xC007CEC3, notifyChats],
-  [0xD612E8EF, notifyBroadcasts],
-  [0x226E6308, notifyForumTopic],
-  [0x16BF744E, sendMessageTypingAction],
-  [0xFD5EC8F5, sendMessageCancelAction],
-  [0xA187D66F, sendMessageRecordVideoAction],
-  [0xE9763AEC, sendMessageUploadVideoAction],
-  [0xD52F73F7, sendMessageRecordAudioAction],
-  [0xF351D7AB, sendMessageUploadAudioAction],
-  [0xD1D34A26, sendMessageUploadPhotoAction],
-  [0xAA0CD9E4, sendMessageUploadDocumentAction],
-  [0x176F8BA1, sendMessageGeoLocationAction],
-  [0x628CBC6F, sendMessageChooseContactAction],
-  [0xDD6A8F48, sendMessageGamePlayAction],
-  [0x88F27FBC, sendMessageRecordRoundAction],
-  [0x243E1C66, sendMessageUploadRoundAction],
-  [0xD92C2285, speakingInGroupCallAction],
-  [0xDBDA9246, sendMessageHistoryImportAction],
-  [0xB05AC6B1, sendMessageChooseStickerAction],
-  [0x25972BCB, sendMessageEmojiInteraction],
-  [0xB665902E, sendMessageEmojiInteractionSeen],
-  [0xB3134D9D, contacts_found],
-  [0x4F96CB18, inputPrivacyKeyStatusTimestamp],
-  [0xBDFB0426, inputPrivacyKeyChatInvite],
-  [0xFABADC5F, inputPrivacyKeyPhoneCall],
-  [0xDB9E70D2, inputPrivacyKeyPhoneP2P],
-  [0xA4DD4C08, inputPrivacyKeyForwards],
-  [0x5719BACC, inputPrivacyKeyProfilePhoto],
-  [0x0352DAFA, inputPrivacyKeyPhoneNumber],
-  [0xD1219BDD, inputPrivacyKeyAddedByPhone],
-  [0xAEE69D68, inputPrivacyKeyVoiceMessages],
-  [0x3823CC40, inputPrivacyKeyAbout],
-  [0xBC2EAB30, privacyKeyStatusTimestamp],
-  [0x500E6DFA, privacyKeyChatInvite],
-  [0x3D662B7B, privacyKeyPhoneCall],
-  [0x39491CC8, privacyKeyPhoneP2P],
-  [0x69EC56A3, privacyKeyForwards],
-  [0x96151FED, privacyKeyProfilePhoto],
-  [0xD19AE46D, privacyKeyPhoneNumber],
-  [0x42FFD42B, privacyKeyAddedByPhone],
-  [0x0697F414, privacyKeyVoiceMessages],
-  [0xA486B761, privacyKeyAbout],
-  [0x0D09E07B, inputPrivacyValueAllowContacts],
-  [0x184B35CE, inputPrivacyValueAllowAll],
-  [0x131CC67F, inputPrivacyValueAllowUsers],
-  [0x0BA52007, inputPrivacyValueDisallowContacts],
-  [0xD66B66C9, inputPrivacyValueDisallowAll],
-  [0x90110467, inputPrivacyValueDisallowUsers],
-  [0x840649CF, inputPrivacyValueAllowChatParticipants],
-  [0xE94F0F86, inputPrivacyValueDisallowChatParticipants],
-  [0x2F453E49, inputPrivacyValueAllowCloseFriends],
-  [0xFFFE1BAC, privacyValueAllowContacts],
-  [0x65427B82, privacyValueAllowAll],
-  [0xB8905FB2, privacyValueAllowUsers],
-  [0xF888FA1A, privacyValueDisallowContacts],
-  [0x8B73E763, privacyValueDisallowAll],
-  [0xE4621141, privacyValueDisallowUsers],
-  [0x6B134E8E, privacyValueAllowChatParticipants],
-  [0x41C87565, privacyValueDisallowChatParticipants],
-  [0xF7E8D89B, privacyValueAllowCloseFriends],
-  [0x50A04E45, account_privacyRules],
-  [0xB8D0AFDF, accountDaysTTL],
-  [0x6C37C15C, documentAttributeImageSize],
-  [0x11B58939, documentAttributeAnimated],
-  [0x6319D612, documentAttributeSticker],
-  [0xD38FF1C2, documentAttributeVideo],
-  [0x9852F9C6, documentAttributeAudio],
-  [0x15590068, documentAttributeFilename],
-  [0x9801D2F7, documentAttributeHasStickers],
-  [0xFD149899, documentAttributeCustomEmoji],
-  [0xF1749A22, messages_stickersNotModified],
-  [0x30A6EC7E, messages_stickers],
-  [0x12B299D4, stickerPack],
-  [0xE86602C3, messages_allStickersNotModified],
-  [0xCDBBCEBB, messages_allStickers],
-  [0x84D19185, messages_affectedMessages],
-  [0x211A1788, webPageEmpty],
-  [0xB0D13E47, webPagePending],
-  [0xE89C45B2, webPage],
-  [0x7311CA11, webPageNotModified],
-  [0xAD01D61D, authorization],
-  [0x4BFF8EA0, account_authorizations],
-  [0x957B50FB, account_password],
-  [0x9A5C33E5, account_passwordSettings],
-  [0xC23727C9, account_passwordInputSettings],
-  [0x137948A5, auth_passwordRecovery],
-  [0xA384B779, receivedNotifyMessage],
-  [0x0AB4A819, chatInviteExported],
-  [0xED107AB7, chatInvitePublicJoinRequests],
-  [0x5A686D7C, chatInviteAlready],
-  [0xCDE0EC40, chatInvite],
-  [0x61695CB0, chatInvitePeek],
-  [0xFFB62B95, inputStickerSetEmpty],
-  [0x9DE7A269, inputStickerSetID],
-  [0x861CC8A0, inputStickerSetShortName],
-  [0x028703C8, inputStickerSetAnimatedEmoji],
-  [0xE67F520E, inputStickerSetDice],
-  [0x0CDE3739, inputStickerSetAnimatedEmojiAnimations],
-  [0xC88B3B02, inputStickerSetPremiumGifts],
-  [0x04C4D4CE, inputStickerSetEmojiGenericAnimations],
-  [0x29D0F5EE, inputStickerSetEmojiDefaultStatuses],
-  [0x44C1F8E9, inputStickerSetEmojiDefaultTopicIcons],
-  [0x2DD14EDC, stickerSet],
-  [0x6E153F16, messages_stickerSet],
-  [0xD3F924EB, messages_stickerSetNotModified],
-  [0xC27AC8C7, botCommand],
-  [0x8F300B57, botInfo],
-  [0xA2FA4880, keyboardButton],
-  [0x258AFF05, keyboardButtonUrl],
-  [0x35BBDB6B, keyboardButtonCallback],
-  [0xB16A6C29, keyboardButtonRequestPhone],
-  [0xFC796B3F, keyboardButtonRequestGeoLocation],
-  [0x93B9FBB5, keyboardButtonSwitchInline],
-  [0x50F41CCF, keyboardButtonGame],
-  [0xAFD93FBB, keyboardButtonBuy],
-  [0x10B78D29, keyboardButtonUrlAuth],
-  [0xD02E7FD4, inputKeyboardButtonUrlAuth],
-  [0xBBC7515D, keyboardButtonRequestPoll],
-  [0xE988037B, inputKeyboardButtonUserProfile],
-  [0x308660C1, keyboardButtonUserProfile],
-  [0x13767230, keyboardButtonWebView],
-  [0xA0C0505C, keyboardButtonSimpleWebView],
-  [0x0D0B468C, keyboardButtonRequestPeer],
-  [0x77608B83, keyboardButtonRow],
-  [0xA03E5B85, replyKeyboardHide],
-  [0x86B40B08, replyKeyboardForceReply],
-  [0x85DD99D1, replyKeyboardMarkup],
-  [0x48A30254, replyInlineMarkup],
-  [0xBB92BA95, messageEntityUnknown],
-  [0xFA04579D, messageEntityMention],
-  [0x6F635B0D, messageEntityHashtag],
-  [0x6CEF8AC7, messageEntityBotCommand],
-  [0x6ED02538, messageEntityUrl],
-  [0x64E475C2, messageEntityEmail],
-  [0xBD610BC9, messageEntityBold],
-  [0x826F8B60, messageEntityItalic],
-  [0x28A20571, messageEntityCode],
-  [0x73924BE0, messageEntityPre],
-  [0x76A6D327, messageEntityTextUrl],
-  [0xDC7B1140, messageEntityMentionName],
-  [0x208E68C9, inputMessageEntityMentionName],
-  [0x9B69E34B, messageEntityPhone],
-  [0x4C4E743F, messageEntityCashtag],
-  [0x9C4E7E8B, messageEntityUnderline],
-  [0xBF0693D4, messageEntityStrike],
-  [0x761E6AF4, messageEntityBankCard],
-  [0x32CA960F, messageEntitySpoiler],
-  [0xC8CF05F8, messageEntityCustomEmoji],
-  [0x020DF5D0, messageEntityBlockquote],
-  [0xEE8C1E86, inputChannelEmpty],
-  [0xF35AEC28, inputChannel],
-  [0x5B934F9D, inputChannelFromMessage],
-  [0x7F077AD9, contacts_resolvedPeer],
-  [0x0AE30253, messageRange],
-  [0x3E11AFFB, updates_channelDifferenceEmpty],
-  [0xA4BCC6FE, updates_channelDifferenceTooLong],
-  [0x2064674E, updates_channelDifference],
-  [0x94D42EE7, channelMessagesFilterEmpty],
-  [0xCD77D957, channelMessagesFilter],
-  [0xC00C07C0, channelParticipant],
-  [0x35A8BFA7, channelParticipantSelf],
-  [0x2FE601D3, channelParticipantCreator],
-  [0x34C3BB53, channelParticipantAdmin],
-  [0x6DF8014E, channelParticipantBanned],
-  [0x1B03F006, channelParticipantLeft],
-  [0xDE3F3C79, channelParticipantsRecent],
-  [0xB4608969, channelParticipantsAdmins],
-  [0xA3B54985, channelParticipantsKicked],
-  [0xB0D1865B, channelParticipantsBots],
-  [0x1427A5E1, channelParticipantsBanned],
-  [0x0656AC4B, channelParticipantsSearch],
-  [0xBB6AE88D, channelParticipantsContacts],
-  [0xE04B5CEB, channelParticipantsMentions],
-  [0x9AB0FEAF, channels_channelParticipants],
-  [0xF0173FE9, channels_channelParticipantsNotModified],
-  [0xDFB80317, channels_channelParticipant],
-  [0x780A0310, help_termsOfService],
-  [0xE8025CA2, messages_savedGifsNotModified],
-  [0x84A02A0D, messages_savedGifs],
-  [0x3380C786, inputBotInlineMessageMediaAuto],
-  [0x3DCD7A87, inputBotInlineMessageText],
-  [0x96929A85, inputBotInlineMessageMediaGeo],
-  [0x417BBF11, inputBotInlineMessageMediaVenue],
-  [0xA6EDBFFD, inputBotInlineMessageMediaContact],
-  [0x4B425864, inputBotInlineMessageGame],
-  [0xD7E78225, inputBotInlineMessageMediaInvoice],
-  [0xBDDCC510, inputBotInlineMessageMediaWebPage],
-  [0x88BF9319, inputBotInlineResult],
-  [0xA8D864A7, inputBotInlineResultPhoto],
-  [0xFFF8FDC4, inputBotInlineResultDocument],
-  [0x4FA417F2, inputBotInlineResultGame],
-  [0x764CF810, botInlineMessageMediaAuto],
-  [0x8C7F65E2, botInlineMessageText],
-  [0x051846FD, botInlineMessageMediaGeo],
-  [0x8A86659C, botInlineMessageMediaVenue],
-  [0x18D1CDC2, botInlineMessageMediaContact],
-  [0x354A9B09, botInlineMessageMediaInvoice],
-  [0x809AD9A6, botInlineMessageMediaWebPage],
-  [0x11965F3A, botInlineResult],
-  [0x17DB940B, botInlineMediaResult],
-  [0xE021F2F6, messages_botResults],
-  [0x5DAB1AF4, exportedMessageLink],
-  [0x5F777DCE, messageFwdHeader],
-  [0x72A3158C, auth_codeTypeSms],
-  [0x741CD3E3, auth_codeTypeCall],
-  [0x226CCEFB, auth_codeTypeFlashCall],
-  [0xD61AD6EE, auth_codeTypeMissedCall],
-  [0x06ED998C, auth_codeTypeFragmentSms],
-  [0x3DBB5986, auth_sentCodeTypeApp],
-  [0xC000BBA2, auth_sentCodeTypeSms],
-  [0x5353E5A7, auth_sentCodeTypeCall],
-  [0xAB03C6D9, auth_sentCodeTypeFlashCall],
-  [0x82006484, auth_sentCodeTypeMissedCall],
-  [0xF450F59B, auth_sentCodeTypeEmailCode],
-  [0xA5491DEA, auth_sentCodeTypeSetUpEmailRequired],
-  [0xD9565C39, auth_sentCodeTypeFragmentSms],
-  [0xE57B1432, auth_sentCodeTypeFirebaseSms],
-  [0x36585EA4, messages_botCallbackAnswer],
-  [0x26B5DDE6, messages_messageEditData],
-  [0x890C3D89, inputBotInlineMessageID],
-  [0xB6D915D7, inputBotInlineMessageID64],
-  [0x3C20629F, inlineBotSwitchPM],
-  [0x3371C354, messages_peerDialogs],
-  [0xEDCDC05B, topPeer],
-  [0xAB661B5B, topPeerCategoryBotsPM],
-  [0x148677E2, topPeerCategoryBotsInline],
-  [0x0637B7ED, topPeerCategoryCorrespondents],
-  [0xBD17A14A, topPeerCategoryGroups],
-  [0x161D9628, topPeerCategoryChannels],
-  [0x1E76A78C, topPeerCategoryPhoneCalls],
-  [0xA8406CA9, topPeerCategoryForwardUsers],
-  [0xFBEEC0F0, topPeerCategoryForwardChats],
-  [0xFB834291, topPeerCategoryPeers],
-  [0xDE266EF5, contacts_topPeersNotModified],
-  [0x70B772A8, contacts_topPeers],
-  [0xB52C939D, contacts_topPeersDisabled],
-  [0x1B0C841A, draftMessageEmpty],
-  [0x3FCCF7EF, draftMessage],
-  [0xC6DC0C66, messages_featuredStickersNotModified],
-  [0xBE382906, messages_featuredStickers],
-  [0x0B17F890, messages_recentStickersNotModified],
-  [0x88D37C56, messages_recentStickers],
-  [0x4FCBA9C8, messages_archivedStickers],
-  [0x38641628, messages_stickerSetInstallResultSuccess],
-  [0x35E410A8, messages_stickerSetInstallResultArchive],
-  [0x6410A5D2, stickerSetCovered],
-  [0x3407E51B, stickerSetMultiCovered],
-  [0x40D13C0E, stickerSetFullCovered],
-  [0x77B15D1C, stickerSetNoCovered],
-  [0xAED6DBB2, maskCoords],
-  [0x4A992157, inputStickeredMediaPhoto],
-  [0x0438865B, inputStickeredMediaDocument],
-  [0xBDF9653B, game],
-  [0x032C3E77, inputGameID],
-  [0xC331E80A, inputGameShortName],
-  [0x73A379EB, highScore],
-  [0x9A3BFD99, messages_highScores],
-  [0xDC3D824F, textEmpty],
-  [0x744694E0, textPlain],
-  [0x6724ABC4, textBold],
-  [0xD912A59C, textItalic],
-  [0xC12622C4, textUnderline],
-  [0x9BF8BB95, textStrike],
-  [0x6C3F19B9, textFixed],
-  [0x3C2884C1, textUrl],
-  [0xDE5A0DD6, textEmail],
-  [0x7E6260D7, textConcat],
-  [0xED6A8504, textSubscript],
-  [0xC7FB5E01, textSuperscript],
-  [0x034B8621, textMarked],
-  [0x1CCB966A, textPhone],
-  [0x081CCF4F, textImage],
-  [0x35553762, textAnchor],
-  [0x13567E8A, pageBlockUnsupported],
-  [0x70ABC3FD, pageBlockTitle],
-  [0x8FFA9A1F, pageBlockSubtitle],
-  [0xBAAFE5E0, pageBlockAuthorDate],
-  [0xBFD064EC, pageBlockHeader],
-  [0xF12BB6E1, pageBlockSubheader],
-  [0x467A0766, pageBlockParagraph],
-  [0xC070D93E, pageBlockPreformatted],
-  [0x48870999, pageBlockFooter],
-  [0xDB20B188, pageBlockDivider],
-  [0xCE0D37B0, pageBlockAnchor],
-  [0xE4E88011, pageBlockList],
-  [0x263D7C26, pageBlockBlockquote],
-  [0x4F4456D3, pageBlockPullquote],
-  [0x1759C560, pageBlockPhoto],
-  [0x7C8FE7B6, pageBlockVideo],
-  [0x39F23300, pageBlockCover],
-  [0xA8718DC5, pageBlockEmbed],
-  [0xF259A80B, pageBlockEmbedPost],
-  [0x65A0FA4D, pageBlockCollage],
-  [0x031F9590, pageBlockSlideshow],
-  [0xEF1751B5, pageBlockChannel],
-  [0x804361EA, pageBlockAudio],
-  [0x1E148390, pageBlockKicker],
-  [0xBF4DEA82, pageBlockTable],
-  [0x9A8AE1E1, pageBlockOrderedList],
-  [0x76768BED, pageBlockDetails],
-  [0x16115A96, pageBlockRelatedArticles],
-  [0xA44F3EF6, pageBlockMap],
-  [0x85E42301, phoneCallDiscardReasonMissed],
-  [0xE095C1A0, phoneCallDiscardReasonDisconnect],
-  [0x57ADC690, phoneCallDiscardReasonHangup],
-  [0xFAF7E8C9, phoneCallDiscardReasonBusy],
-  [0x7D748D04, dataJSON],
-  [0xCB296BF8, labeledPrice],
-  [0x5DB95A15, invoice],
-  [0xEA02C27E, paymentCharge],
-  [0x1E8CAAEB, postAddress],
-  [0x909C3F94, paymentRequestedInfo],
-  [0xCDC27A1F, paymentSavedCredentialsCard],
-  [0x1C570ED1, webDocument],
-  [0xF9C8BCC6, webDocumentNoProxy],
-  [0x9BED434D, inputWebDocument],
-  [0xC239D686, inputWebFileLocation],
-  [0x9F2221C9, inputWebFileGeoPointLocation],
-  [0xF46FE924, inputWebFileAudioAlbumThumbLocation],
-  [0x21E753BC, upload_webFile],
-  [0xA0058751, payments_paymentForm],
-  [0xD1451883, payments_validatedRequestedInfo],
-  [0x4E5F810D, payments_paymentResult],
-  [0xD8411139, payments_paymentVerificationNeeded],
-  [0x70C4FE03, payments_paymentReceipt],
-  [0xFB8FE43C, payments_savedInfo],
-  [0xC10EB2CF, inputPaymentCredentialsSaved],
-  [0x3417D728, inputPaymentCredentials],
-  [0x0AA1C39F, inputPaymentCredentialsApplePay],
-  [0x8AC32801, inputPaymentCredentialsGooglePay],
-  [0xDB64FD34, account_tmpPassword],
-  [0xB6213CDF, shippingOption],
-  [0x32DA9E9C, inputStickerSetItem],
-  [0x1E36FDED, inputPhoneCall],
-  [0x5366C915, phoneCallEmpty],
-  [0xC5226F17, phoneCallWaiting],
-  [0x14B0ED0C, phoneCallRequested],
-  [0x3660C311, phoneCallAccepted],
-  [0x967F7C67, phoneCall],
-  [0x50CA4DE1, phoneCallDiscarded],
-  [0x9CC123C7, phoneConnection],
-  [0x635FE375, phoneConnectionWebrtc],
-  [0xFC878FC8, phoneCallProtocol],
-  [0xEC82E140, phone_phoneCall],
-  [0xEEA8E46E, upload_cdnFileReuploadNeeded],
-  [0xA99FCA4F, upload_cdnFile],
-  [0xC982EABA, cdnPublicKey],
-  [0x5725E40A, cdnConfig],
-  [0xCAD181F6, langPackString],
-  [0x6C47AC9F, langPackStringPluralized],
-  [0x2979EEB2, langPackStringDeleted],
-  [0xF385C1F6, langPackDifference],
-  [0xEECA5CE3, langPackLanguage],
-  [0xE6DFB825, channelAdminLogEventActionChangeTitle],
-  [0x55188A2E, channelAdminLogEventActionChangeAbout],
-  [0x6A4AFC38, channelAdminLogEventActionChangeUsername],
-  [0x434BD2AF, channelAdminLogEventActionChangePhoto],
-  [0x1B7907AE, channelAdminLogEventActionToggleInvites],
-  [0x26AE0971, channelAdminLogEventActionToggleSignatures],
-  [0xE9E82C18, channelAdminLogEventActionUpdatePinned],
-  [0x709B2405, channelAdminLogEventActionEditMessage],
-  [0x42E047BB, channelAdminLogEventActionDeleteMessage],
-  [0x183040D3, channelAdminLogEventActionParticipantJoin],
-  [0xF89777F2, channelAdminLogEventActionParticipantLeave],
-  [0xE31C34D8, channelAdminLogEventActionParticipantInvite],
-  [0xE6D83D7E, channelAdminLogEventActionParticipantToggleBan],
-  [0xD5676710, channelAdminLogEventActionParticipantToggleAdmin],
-  [0xB1C3CAA7, channelAdminLogEventActionChangeStickerSet],
-  [0x5F5C95F1, channelAdminLogEventActionTogglePreHistoryHidden],
-  [0x2DF5FC0A, channelAdminLogEventActionDefaultBannedRights],
-  [0x8F079643, channelAdminLogEventActionStopPoll],
-  [0x050C7AC8, channelAdminLogEventActionChangeLinkedChat],
-  [0x0E6B76AE, channelAdminLogEventActionChangeLocation],
-  [0x53909779, channelAdminLogEventActionToggleSlowMode],
-  [0x23209745, channelAdminLogEventActionStartGroupCall],
-  [0xDB9F9140, channelAdminLogEventActionDiscardGroupCall],
-  [0xF92424D2, channelAdminLogEventActionParticipantMute],
-  [0xE64429C0, channelAdminLogEventActionParticipantUnmute],
-  [0x56D6A247, channelAdminLogEventActionToggleGroupCallSetting],
-  [0xFE9FC158, channelAdminLogEventActionParticipantJoinByInvite],
-  [0x5A50FCA4, channelAdminLogEventActionExportedInviteDelete],
-  [0x410A134E, channelAdminLogEventActionExportedInviteRevoke],
-  [0xE90EBB59, channelAdminLogEventActionExportedInviteEdit],
-  [0x3E7F6847, channelAdminLogEventActionParticipantVolume],
-  [0x6E941A38, channelAdminLogEventActionChangeHistoryTTL],
-  [0xAFB6144A, channelAdminLogEventActionParticipantJoinByRequest],
-  [0xCB2AC766, channelAdminLogEventActionToggleNoForwards],
-  [0x278F2868, channelAdminLogEventActionSendMessage],
-  [0xBE4E0EF8, channelAdminLogEventActionChangeAvailableReactions],
-  [0xF04FB3A9, channelAdminLogEventActionChangeUsernames],
-  [0x02CC6383, channelAdminLogEventActionToggleForum],
-  [0x58707D28, channelAdminLogEventActionCreateTopic],
-  [0xF06FE208, channelAdminLogEventActionEditTopic],
-  [0xAE168909, channelAdminLogEventActionDeleteTopic],
-  [0x5D8D353B, channelAdminLogEventActionPinTopic],
-  [0x64F36DFC, channelAdminLogEventActionToggleAntiSpam],
-  [0x3C2B247B, channelAdminLogEventActionChangeColor],
-  [0x445FC434, channelAdminLogEventActionChangeBackgroundEmoji],
-  [0x1FAD68CD, channelAdminLogEvent],
-  [0xED8AF74D, channels_adminLogResults],
-  [0xEA107AE4, channelAdminLogEventsFilter],
-  [0x5CE14175, popularContact],
-  [0x9E8FA6D3, messages_favedStickersNotModified],
-  [0x2CB51097, messages_favedStickers],
-  [0x46E1D13D, recentMeUrlUnknown],
-  [0xB92C09E2, recentMeUrlUser],
-  [0xB2DA71D2, recentMeUrlChat],
-  [0xEB49081D, recentMeUrlChatInvite],
-  [0xBC0A57DC, recentMeUrlStickerSet],
-  [0x0E0310D7, help_recentMeUrls],
-  [0x1CC6E91F, inputSingleMedia],
-  [0xA6F8F452, webAuthorization],
-  [0xED56C9FC, account_webAuthorizations],
-  [0xA676A322, inputMessageID],
-  [0xBAD88395, inputMessageReplyTo],
-  [0x86872538, inputMessagePinned],
-  [0xACFA1A7E, inputMessageCallbackQuery],
-  [0xFCAAFEB7, inputDialogPeer],
-  [0x64600527, inputDialogPeerFolder],
-  [0xE56DBF05, dialogPeer],
-  [0x514519E2, dialogPeerFolder],
-  [0x0D54B65D, messages_foundStickerSetsNotModified],
-  [0x8AF09DD2, messages_foundStickerSets],
-  [0xF39B035C, fileHash],
-  [0x75588B3F, inputClientProxy],
-  [0xE3309F7F, help_termsOfServiceUpdateEmpty],
-  [0x28ECF961, help_termsOfServiceUpdate],
-  [0x3334B0F0, inputSecureFileUploaded],
-  [0x5367E5BE, inputSecureFile],
-  [0x64199744, secureFileEmpty],
-  [0x7D09C27E, secureFile],
-  [0x8AEABEC3, secureData],
-  [0x7D6099DD, securePlainPhone],
-  [0x21EC5A5F, securePlainEmail],
-  [0x9D2A81E3, secureValueTypePersonalDetails],
-  [0x3DAC6A00, secureValueTypePassport],
-  [0x06E425C4, secureValueTypeDriverLicense],
-  [0xA0D0744B, secureValueTypeIdentityCard],
-  [0x99A48F23, secureValueTypeInternalPassport],
-  [0xCBE31E26, secureValueTypeAddress],
-  [0xFC36954E, secureValueTypeUtilityBill],
-  [0x89137C0D, secureValueTypeBankStatement],
-  [0x8B883488, secureValueTypeRentalAgreement],
-  [0x99E3806A, secureValueTypePassportRegistration],
-  [0xEA02EC33, secureValueTypeTemporaryRegistration],
-  [0xB320AADB, secureValueTypePhone],
-  [0x8E3CA7EE, secureValueTypeEmail],
-  [0x187FA0CA, secureValue],
-  [0xDB21D0A7, inputSecureValue],
-  [0xED1ECDB0, secureValueHash],
-  [0xE8A40BD9, secureValueErrorData],
-  [0x00BE3DFA, secureValueErrorFrontSide],
-  [0x868A2AA5, secureValueErrorReverseSide],
-  [0xE537CED6, secureValueErrorSelfie],
-  [0x7A700873, secureValueErrorFile],
-  [0x666220E9, secureValueErrorFiles],
-  [0x869D758F, secureValueError],
-  [0xA1144770, secureValueErrorTranslationFile],
-  [0x34636DD8, secureValueErrorTranslationFiles],
-  [0x33F0EA47, secureCredentialsEncrypted],
-  [0xAD2E1CD8, account_authorizationForm],
-  [0x811F854F, account_sentEmailCode],
-  [0x66AFA166, help_deepLinkInfoEmpty],
-  [0x6A4EE832, help_deepLinkInfo],
-  [0x1142BD56, savedPhoneContact],
-  [0x4DBA4501, account_takeout],
-  [0xD45AB096, passwordKdfAlgoUnknown],
-  [0x3A912D4A, passwordKdfAlgoSHA256SHA256PBKDF2HMACSHA512iter100000SHA256ModPow],
-  [0x004A8537, securePasswordKdfAlgoUnknown],
-  [0xBBF2DDA0, securePasswordKdfAlgoPBKDF2HMACSHA512iter100000],
-  [0x86471D92, securePasswordKdfAlgoSHA512],
-  [0x1527BCAC, secureSecretSettings],
-  [0x9880F658, inputCheckPasswordEmpty],
-  [0xD27FF082, inputCheckPasswordSRP],
-  [0x829D99DA, secureRequiredType],
-  [0x027477B4, secureRequiredTypeOneOf],
-  [0xBFB9F457, help_passportConfigNotModified],
-  [0xA098D6AF, help_passportConfig],
-  [0x1D1B1245, inputAppEvent],
-  [0xC0DE1BD9, jsonObjectValue],
-  [0x3F6D7B68, jsonNull],
-  [0xC7345E6A, jsonBool],
-  [0x2BE0DFA4, jsonNumber],
-  [0xB71E767A, jsonString],
-  [0xF7444763, jsonArray],
-  [0x99C1D49D, jsonObject],
-  [0x34566B6A, pageTableCell],
-  [0xE0C0C5E5, pageTableRow],
-  [0x6F747657, pageCaption],
-  [0xB92FB6CD, pageListItemText],
-  [0x25E073FC, pageListItemBlocks],
-  [0x5E068047, pageListOrderedItemText],
-  [0x98DD8936, pageListOrderedItemBlocks],
-  [0xB390DC08, pageRelatedArticle],
-  [0x98657F0D, page],
-  [0x8C05F1C9, help_supportName],
-  [0xF3AE2EED, help_userInfoEmpty],
-  [0x01EB3758, help_userInfo],
-  [0x6CA9C2E9, pollAnswer],
-  [0x86E18161, poll],
-  [0x3B6DDAD2, pollAnswerVoters],
-  [0x7ADF2420, pollResults],
-  [0xF041E250, chatOnlines],
-  [0x47A971E0, statsURL],
-  [0x5FB224D5, chatAdminRights],
-  [0x9F120418, chatBannedRights],
-  [0xE630B979, inputWallPaper],
-  [0x72091C80, inputWallPaperSlug],
-  [0x967A462E, inputWallPaperNoFile],
-  [0x1C199183, account_wallPapersNotModified],
-  [0xCDC3858C, account_wallPapers],
-  [0xAD253D78, codeSettings],
-  [0x1DC1BCA4, wallPaperSettings],
-  [0xBAA57628, autoDownloadSettings],
-  [0x63CACF26, account_autoDownloadSettings],
-  [0xD5B3B9F9, emojiKeyword],
-  [0x236DF622, emojiKeywordDeleted],
-  [0x5CC761BD, emojiKeywordsDifference],
-  [0xA575739D, emojiURL],
-  [0xB3FB5361, emojiLanguage],
-  [0xFF544E65, folder],
-  [0xFBD2C296, inputFolderPeer],
-  [0xE9BAA668, folderPeer],
-  [0xE844EBFF, messages_searchCounter],
-  [0x92D33A0E, urlAuthResultRequest],
-  [0x8F8C0E4E, urlAuthResultAccepted],
-  [0xA9D6DB1F, urlAuthResultDefault],
-  [0xBFB5AD8B, channelLocationEmpty],
-  [0x209B82DB, channelLocation],
-  [0xCA461B5D, peerLocated],
-  [0xF8EC284B, peerSelfLocated],
-  [0xD072ACB4, restrictionReason],
-  [0x3C5693E9, inputTheme],
-  [0xF5890DF1, inputThemeSlug],
-  [0xA00E67D6, theme],
-  [0xF41EB622, account_themesNotModified],
-  [0x9A3D8C6D, account_themes],
-  [0x629F1980, auth_loginToken],
-  [0x068E9916, auth_loginTokenMigrateTo],
-  [0x390D5C5E, auth_loginTokenSuccess],
-  [0x57E28221, account_contentSettings],
-  [0xA927FEC5, messages_inactiveChats],
-  [0xC3A12462, baseThemeClassic],
-  [0xFBD81688, baseThemeDay],
-  [0xB7B31EA8, baseThemeNight],
-  [0x6D5F77EE, baseThemeTinted],
-  [0x5B11125A, baseThemeArctic],
-  [0x8FDE504F, inputThemeSettings],
-  [0xFA58B6D4, themeSettings],
-  [0x54B56617, webPageAttributeTheme],
-  [0x2E94C3E7, webPageAttributeStory],
-  [0x4899484E, messages_votesList],
-  [0xF568028A, bankCardOpenUrl],
-  [0x3E24E573, payments_bankCardData],
-  [0x7438F7E8, dialogFilter],
-  [0x363293AE, dialogFilterDefault],
-  [0xD64A04A8, dialogFilterChatlist],
-  [0x77744D4A, dialogFilterSuggested],
-  [0xB637EDAF, statsDateRangeDays],
-  [0xCB43ACDE, statsAbsValueAndPrev],
-  [0xCBCE2FE0, statsPercentValue],
-  [0x4A27EB2D, statsGraphAsync],
-  [0xBEDC9822, statsGraphError],
-  [0x8EA464B6, statsGraph],
-  [0x396CA5FC, stats_broadcastStats],
-  [0x98F6AC75, help_promoDataEmpty],
-  [0x8C39793F, help_promoData],
-  [0xDE33B094, videoSize],
-  [0xF85C413C, videoSizeEmojiMarkup],
-  [0x0DA082FE, videoSizeStickerMarkup],
-  [0x9D04AF9B, statsGroupTopPoster],
-  [0xD7584C87, statsGroupTopAdmin],
-  [0x535F779D, statsGroupTopInviter],
-  [0xEF7FF916, stats_megagroupStats],
-  [0x734C4CCB, globalPrivacySettings],
-  [0x4203C5EF, help_countryCode],
-  [0xC3878E23, help_country],
-  [0x93CC1F32, help_countriesListNotModified],
-  [0x87D0759E, help_countriesList],
-  [0x455B853D, messageViews],
-  [0xB6C4F543, messages_messageViews],
-  [0xA6341782, messages_discussionMessage],
-  [0xAFBC09DB, messageReplyHeader],
-  [0x9C98BFC1, messageReplyStoryHeader],
-  [0x83D60FC2, messageReplies],
-  [0xE8FD8014, peerBlocked],
-  [0x7FE91C14, stats_messageStats],
-  [0x7780BCB4, groupCallDiscarded],
-  [0xD597650C, groupCall],
-  [0xD8AA840F, inputGroupCall],
-  [0xEBA636FE, groupCallParticipant],
-  [0x9E727AAD, phone_groupCall],
-  [0xF47751B6, phone_groupParticipants],
-  [0x3081ED9D, inlineQueryPeerTypeSameBotPM],
-  [0x833C0FAC, inlineQueryPeerTypePM],
-  [0xD766C50A, inlineQueryPeerTypeChat],
-  [0x5EC4BE43, inlineQueryPeerTypeMegagroup],
-  [0x6334EE9A, inlineQueryPeerTypeBroadcast],
-  [0x0E3B2D0C, inlineQueryPeerTypeBotPM],
-  [0x1662AF0B, messages_historyImport],
-  [0x5E0FB7B9, messages_historyImportParsed],
-  [0xEF8D3E6C, messages_affectedFoundMessages],
-  [0x8C5ADFD9, chatInviteImporter],
-  [0xBDC62DCC, messages_exportedChatInvites],
-  [0x1871BE50, messages_exportedChatInvite],
-  [0x222600EF, messages_exportedChatInviteReplaced],
-  [0x81B6B00A, messages_chatInviteImporters],
-  [0xF2ECEF23, chatAdminWithInvites],
-  [0xB69B72D7, messages_chatAdminsWithInvites],
-  [0xA24DE717, messages_checkedHistoryImportPeer],
-  [0xAFE5623F, phone_joinAsPeers],
-  [0x204BD158, phone_exportedGroupCallInvite],
-  [0xDCB118B7, groupCallParticipantVideoSourceGroup],
-  [0x67753AC8, groupCallParticipantVideo],
-  [0x85FEA03F, stickers_suggestedShortName],
-  [0x2F6CB2AB, botCommandScopeDefault],
-  [0x3C4F04D8, botCommandScopeUsers],
-  [0x6FE1A881, botCommandScopeChats],
-  [0xB9AA606A, botCommandScopeChatAdmins],
-  [0xDB9D897D, botCommandScopePeer],
-  [0x3FD863D1, botCommandScopePeerAdmins],
-  [0x0A1321F3, botCommandScopePeerUser],
-  [0xE3779861, account_resetPasswordFailedWait],
-  [0xE9EFFC7D, account_resetPasswordRequestedWait],
-  [0xE926D63E, account_resetPasswordOk],
-  [0xED5383F7, sponsoredMessage],
-  [0xC9EE1D87, messages_sponsoredMessages],
-  [0x1839490F, messages_sponsoredMessagesEmpty],
-  [0xC9B0539F, searchResultsCalendarPeriod],
-  [0x147EE23C, messages_searchResultsCalendar],
-  [0x7F648B67, searchResultPosition],
-  [0x53B22BAF, messages_searchResultsPositions],
-  [0xF496B0C6, channels_sendAsPeers],
-  [0x3B6D152E, users_userFull],
-  [0x6880B94D, messages_peerSettings],
-  [0xC3A2835F, auth_loggedOut],
-  [0xA3D1CB80, reactionCount],
-  [0x4F2B9479, messageReactions],
-  [0x31BD492D, messages_messageReactionsList],
-  [0xC077EC01, availableReaction],
-  [0x9F071957, messages_availableReactionsNotModified],
-  [0x768E3AAD, messages_availableReactions],
-  [0x8C79B63C, messagePeerReaction],
-  [0x80EB48AF, groupCallStreamChannel],
-  [0xD0E482B2, phone_groupCallStreamChannels],
-  [0x2DBF3432, phone_groupCallStreamRtmpUrl],
-  [0x4576F3F0, attachMenuBotIconColor],
-  [0xB2A7386B, attachMenuBotIcon],
-  [0xD90D8DFE, attachMenuBot],
-  [0xF1D88A5C, attachMenuBotsNotModified],
-  [0x3C4301C0, attachMenuBots],
-  [0x93BF667F, attachMenuBotsBot],
-  [0x0C14557C, webViewResultUrl],
-  [0x882F76BB, simpleWebViewResultUrl],
-  [0x0C94511C, webViewMessageSent],
-  [0x7533A588, botMenuButtonDefault],
-  [0x4258C205, botMenuButtonCommands],
-  [0xC7B57CE6, botMenuButton],
-  [0xFBF6E8B1, account_savedRingtonesNotModified],
-  [0xC1E92CC5, account_savedRingtones],
-  [0x97E8BEBE, notificationSoundDefault],
-  [0x6F0C34DF, notificationSoundNone],
-  [0x830B9AE4, notificationSoundLocal],
-  [0xFF6C8049, notificationSoundRingtone],
-  [0xB7263F6D, account_savedRingtone],
-  [0x1F307EB7, account_savedRingtoneConverted],
-  [0x7D6BE90E, attachMenuPeerTypeSameBotPM],
-  [0xC32BFA1A, attachMenuPeerTypeBotPM],
-  [0xF146D31F, attachMenuPeerTypePM],
-  [0x0509113F, attachMenuPeerTypeChat],
-  [0x7BFBDEFC, attachMenuPeerTypeBroadcast],
-  [0xC5B56859, inputInvoiceMessage],
-  [0xC326CAEF, inputInvoiceSlug],
-  [0x98986C0D, inputInvoicePremiumGiftCode],
-  [0xAED0CBD9, payments_exportedInvoice],
-  [0xCFB9D957, messages_transcribedAudio],
-  [0x5334759C, help_premiumPromo],
-  [0xA6751E66, inputStorePaymentPremiumSubscription],
-  [0x616F7FE8, inputStorePaymentGiftPremium],
-  [0xA3805F3F, inputStorePaymentPremiumGiftCode],
-  [0x7C9375E6, inputStorePaymentPremiumGiveaway],
-  [0x74C34319, premiumGiftOption],
-  [0x88F8F21B, paymentFormMethod],
-  [0x2DE11AAE, emojiStatusEmpty],
-  [0x929B619D, emojiStatus],
-  [0xFA30A8C7, emojiStatusUntil],
-  [0xD08CE645, account_emojiStatusesNotModified],
-  [0x90C467D1, account_emojiStatuses],
-  [0x79F5D419, reactionEmpty],
-  [0x1B2286B8, reactionEmoji],
-  [0x8935FC73, reactionCustomEmoji],
-  [0xEAFC32BC, chatReactionsNone],
-  [0x52928BCA, chatReactionsAll],
-  [0x661D4037, chatReactionsSome],
-  [0xB06FDBDF, messages_reactionsNotModified],
-  [0xEAFDF716, messages_reactions],
-  [0x4345BE73, emailVerifyPurposeLoginSetup],
-  [0x527D22EB, emailVerifyPurposeLoginChange],
-  [0xBBF51685, emailVerifyPurposePassport],
-  [0x922E55A9, emailVerificationCode],
-  [0xDB909EC2, emailVerificationGoogle],
-  [0x96D074FD, emailVerificationApple],
-  [0x2B96CD1B, account_emailVerified],
-  [0xE1BB0D61, account_emailVerifiedLogin],
-  [0x5F2D1DF2, premiumSubscriptionOption],
-  [0xB81C7034, sendAsPeer],
-  [0xAD628CC8, messageExtendedMediaPreview],
-  [0xEE479C64, messageExtendedMedia],
-  [0xFCFEB29C, stickerKeyword],
-  [0xB4073647, username],
-  [0x023F109B, forumTopicDeleted],
-  [0x71701DA9, forumTopic],
-  [0x367617D3, messages_forumTopics],
-  [0x43B46B20, defaultHistoryTTL],
-  [0x41BF109B, exportedContactToken],
-  [0x5F3B8A00, requestPeerTypeUser],
-  [0xC9F06E1B, requestPeerTypeChat],
-  [0x339BEF6C, requestPeerTypeBroadcast],
-  [0x481EADFA, emojiListNotModified],
-  [0x7A1E11D1, emojiList],
-  [0x7A9ABDA9, emojiGroup],
-  [0x6FB4AD87, messages_emojiGroupsNotModified],
-  [0x881FB94B, messages_emojiGroups],
-  [0x751F3146, textWithEntities],
-  [0x33DB32F8, messages_translateResult],
-  [0xC84834CE, autoSaveSettings],
-  [0x81602D47, autoSaveException],
-  [0x4C3E069D, account_autoSaveSettings],
-  [0x7CDE641D, help_appConfigNotModified],
-  [0xDD18782E, help_appConfig],
-  [0xA920BD7A, inputBotAppID],
-  [0x908C0407, inputBotAppShortName],
-  [0x5DA674B7, botAppNotModified],
-  [0x95FCD1D6, botApp],
-  [0xEB50ADF5, messages_botApp],
-  [0x3C1B4F0D, appWebViewResultUrl],
-  [0xB57295D5, inlineBotWebView],
-  [0x4A4FF172, readParticipantDate],
-  [0xF3E0DA33, inputChatlistDialogFilter],
-  [0x0C5181AC, exportedChatlistInvite],
-  [0x10E6E3A6, chatlists_exportedChatlistInvite],
-  [0x10AB6DC7, chatlists_exportedInvites],
-  [0xFA87F659, chatlists_chatlistInviteAlready],
-  [0x1DCD839D, chatlists_chatlistInvite],
-  [0x93BD878D, chatlists_chatlistUpdates],
-  [0xE8A775B0, bots_botInfo],
-  [0xB6CC2D5C, messagePeerVote],
-  [0x74CDA504, messagePeerVoteInputOption],
-  [0x4628F6E6, messagePeerVoteMultiple],
-  [0x3DB8EC63, sponsoredWebPage],
-  [0x8D595CD6, storyViews],
-  [0x51E6EE4F, storyItemDeleted],
-  [0xFFADC913, storyItemSkipped],
-  [0xAF6365A1, storyItem],
-  [0x1158FE3E, stories_allStoriesNotModified],
-  [0x6EFC5E81, stories_allStories],
-  [0x5DD8C3C8, stories_stories],
-  [0xB0BDEAC5, storyView],
-  [0x46E9B9EC, stories_storyViewsList],
-  [0xDE9EED1D, stories_storyViews],
-  [0x22C0F6D5, inputReplyToMessage],
-  [0x15B0F283, inputReplyToStory],
-  [0x3FC9053B, exportedStoryLink],
-  [0x712E27FD, storiesStealthMode],
-  [0x03D1EA4E, mediaAreaCoordinates],
-  [0xBE82DB9C, mediaAreaVenue],
-  [0xB282217F, inputMediaAreaVenue],
-  [0xDF8B3B22, mediaAreaGeoPoint],
-  [0x14455871, mediaAreaSuggestedReaction],
-  [0x9A35E999, peerStories],
-  [0xCAE68768, stories_peerStories],
-  [0xFD5E12BD, messages_webPage],
-  [0x257E962B, premiumGiftCodeOption],
-  [0xB722F158, payments_checkedGiftCode],
-  [0x4367DAA0, payments_giveawayInfo],
-  [0x00CD5570, payments_giveawayInfoResults],
-  [0xB2539D54, prepaidGiveaway],
-  [0x2A1C8C71, boost],
-  [0x86F8613C, premium_boostsList],
-  [0xC448415C, myBoost],
-  [0x9AE228E2, premium_myBoosts],
-  [0x4959427A, premium_boostsStatus],
-  [0xB826E150, storyFwdHeader],
-  [0xE7058E7F, postInteractionCountersMessage],
-  [0x8A480E27, postInteractionCountersStory],
-  [0x50CD067C, stats_storyStats],
-  [0x01F2BF4A, publicForwardMessage],
-  [0xEDF3ADD0, publicForwardStory],
-  [0x93037E20, stats_publicForwards],
-  [0xB54B5ACF, peerColor],
-  [0x26219A58, help_peerColorSet],
-  [0x767D61EB, help_peerColorProfileSet],
-  [0x135BD42F, help_peerColorOption],
-  [0x2BA1F5CE, help_peerColorsNotModified],
-  [0x00F8ED08, help_peerColors],
+  [0x05162463, _ResPQ],
+  [0xA9F55F95, _P_Q_inner_data],
+  [0x56FDDF88, _P_Q_inner_data],
+  [0xD0E8075C, _Server_DH_Params],
+  [0xB5890DBA, _Server_DH_inner_data],
+  [0x6643B654, _Client_DH_Inner_Data],
+  [0x3BCBF734, _Set_client_DH_params_answer],
+  [0x46DC1FB9, _Set_client_DH_params_answer],
+  [0xA69DAE02, _Set_client_DH_params_answer],
+  [0x75A3F765, _BindAuthKeyInner],
+  [0x2144CA19, _RpcError],
+  [0x5E2AD36E, _RpcDropAnswer],
+  [0xCD78E586, _RpcDropAnswer],
+  [0xA43AD8B7, _RpcDropAnswer],
+  [0x0949D9DC, _FutureSalt],
+  [0xAE500895, _FutureSalts],
+  [0x347773C5, _Pong],
+  [0xE22045FC, _DestroySessionRes],
+  [0x62D350C9, _DestroySessionRes],
+  [0x9EC20908, _NewSession],
+  [0x3072CFA1, _Object],
+  [0x62D6B459, _MsgsAck],
+  [0xA7EFF811, _BadMsgNotification],
+  [0xEDAB447B, _BadMsgNotification],
+  [0x7D861A08, _MsgResendReq],
+  [0xDA69FB52, _MsgsStateReq],
+  [0x04DEB57D, _MsgsStateInfo],
+  [0x8CC0D131, _MsgsAllInfo],
+  [0x276D3EC6, _MsgDetailedInfo],
+  [0x809DB6DF, _MsgDetailedInfo],
+  [0xF660E1D4, _DestroyAuthKeyRes],
+  [0x0A9F2259, _DestroyAuthKeyRes],
+  [0xEA109B13, _DestroyAuthKeyRes],
+  [0x9299359F, _HttpWait],
+  [0x3FEDD339, _True],
+  [0xC4B9F9BB, _Error],
+  [0x56730BCC, _Null],
+  [0x7F3B18EA, _InputPeer],
+  [0x7DA07EC9, _InputPeer],
+  [0x35A95CB9, _InputPeer],
+  [0xDDE8A54C, _InputPeer],
+  [0x27BCBBFC, _InputPeer],
+  [0xA87B0A1C, _InputPeer],
+  [0xBD2A0840, _InputPeer],
+  [0xB98886CF, _InputUser],
+  [0xF7C1B13F, _InputUser],
+  [0xF21158C6, _InputUser],
+  [0x1DA448E2, _InputUser],
+  [0xF392B7F4, _InputContact],
+  [0xF52FF27F, _InputFile],
+  [0xFA4F0BB5, _InputFile],
+  [0x9664F57F, _InputMedia],
+  [0x1E287D04, _InputMedia],
+  [0xB3BA0635, _InputMedia],
+  [0xF9C44144, _InputMedia],
+  [0xF8AB7DFB, _InputMedia],
+  [0x5B38C6C1, _InputMedia],
+  [0x33473058, _InputMedia],
+  [0xC13D1C11, _InputMedia],
+  [0xE5BBFE1A, _InputMedia],
+  [0xFB52DC99, _InputMedia],
+  [0xD33F43F3, _InputMedia],
+  [0x8EB5A6D5, _InputMedia],
+  [0x971FA843, _InputMedia],
+  [0x0F94E5F1, _InputMedia],
+  [0xE66FBF7B, _InputMedia],
+  [0x89FDD778, _InputMedia],
+  [0xC21B8849, _InputMedia],
+  [0x1CA48F57, _InputChatPhoto],
+  [0xBDCDAEC0, _InputChatPhoto],
+  [0x8953AD37, _InputChatPhoto],
+  [0xE4C123D6, _InputGeoPoint],
+  [0x48222FAF, _InputGeoPoint],
+  [0x1CD7BF0D, _InputPhoto],
+  [0x3BB3B94A, _InputPhoto],
+  [0xDFDAABE1, _InputFileLocation],
+  [0xF5235D55, _InputFileLocation],
+  [0xBAD07584, _InputFileLocation],
+  [0xCBC7EE28, _InputFileLocation],
+  [0x29BE5899, _InputFileLocation],
+  [0x40181FFE, _InputFileLocation],
+  [0xD83466F3, _InputFileLocation],
+  [0x37257E99, _InputFileLocation],
+  [0x9D84F3DB, _InputFileLocation],
+  [0x0598A92A, _InputFileLocation],
+  [0x59511722, _Peer],
+  [0x36C6019A, _Peer],
+  [0xA2A5371E, _Peer],
+  [0xAA963B05, _storage_FileType],
+  [0x40BC6F52, _storage_FileType],
+  [0x007EFE0E, _storage_FileType],
+  [0xCAE1AADF, _storage_FileType],
+  [0x0A4F63C0, _storage_FileType],
+  [0xAE1E508D, _storage_FileType],
+  [0x528A0677, _storage_FileType],
+  [0x4B09EBBC, _storage_FileType],
+  [0xB3CEA0E4, _storage_FileType],
+  [0x1081464C, _storage_FileType],
+  [0xD3BC4B7A, _User],
+  [0x215C4438, _User],
+  [0x4F11BAE1, _UserProfilePhoto],
+  [0x82D1F706, _UserProfilePhoto],
+  [0x09D05049, _UserStatus],
+  [0xEDB93949, _UserStatus],
+  [0x008C703F, _UserStatus],
+  [0xE26F42F1, _UserStatus],
+  [0x07BF09FC, _UserStatus],
+  [0x77EBC742, _UserStatus],
+  [0x29562865, _Chat],
+  [0x41CBF256, _Chat],
+  [0x6592A1A7, _Chat],
+  [0x8E87CCD8, _Chat],
+  [0x17D493D5, _Chat],
+  [0xC9D31138, _ChatFull],
+  [0x723027BD, _ChatFull],
+  [0xC02D4007, _ChatParticipant],
+  [0xE46BCEE4, _ChatParticipant],
+  [0xA0933F5B, _ChatParticipant],
+  [0x8763D3E1, _ChatParticipants],
+  [0x3CBC93F8, _ChatParticipants],
+  [0x37C1011C, _ChatPhoto],
+  [0x1C6E1C11, _ChatPhoto],
+  [0x90A6CA84, _Message],
+  [0x38116EE0, _Message],
+  [0x2B085862, _Message],
+  [0x3DED6320, _MessageMedia],
+  [0x695150D7, _MessageMedia],
+  [0x56E0D474, _MessageMedia],
+  [0x70322949, _MessageMedia],
+  [0x9F84F49E, _MessageMedia],
+  [0x4CF4D72D, _MessageMedia],
+  [0xDDF10C3B, _MessageMedia],
+  [0x2EC0533F, _MessageMedia],
+  [0xFDB19008, _MessageMedia],
+  [0xF6A548D3, _MessageMedia],
+  [0xB940C666, _MessageMedia],
+  [0x4BD6E798, _MessageMedia],
+  [0x3F7EE58B, _MessageMedia],
+  [0x68CB6283, _MessageMedia],
+  [0x58260664, _MessageMedia],
+  [0xB6AEF7B0, _MessageAction],
+  [0xBD47CBAD, _MessageAction],
+  [0xB5A1CE5A, _MessageAction],
+  [0x7FCB13A8, _MessageAction],
+  [0x95E3FBEF, _MessageAction],
+  [0x15CEFD00, _MessageAction],
+  [0xA43F30CC, _MessageAction],
+  [0x031224C3, _MessageAction],
+  [0x95D2AC92, _MessageAction],
+  [0xE1037F92, _MessageAction],
+  [0xEA3948E9, _MessageAction],
+  [0x94BD38ED, _MessageAction],
+  [0x9FBAB604, _MessageAction],
+  [0x92A72876, _MessageAction],
+  [0x8F31B327, _MessageAction],
+  [0x96163F56, _MessageAction],
+  [0x80E11A7F, _MessageAction],
+  [0x4792929B, _MessageAction],
+  [0xFAE69F56, _MessageAction],
+  [0xC516D679, _MessageAction],
+  [0x1B287353, _MessageAction],
+  [0xD95C6154, _MessageAction],
+  [0xF3F25F76, _MessageAction],
+  [0x98E0D697, _MessageAction],
+  [0x7A0D7F42, _MessageAction],
+  [0x502F92F7, _MessageAction],
+  [0x3C134D7B, _MessageAction],
+  [0xB3A07661, _MessageAction],
+  [0xAA786345, _MessageAction],
+  [0xEBBCA3CB, _MessageAction],
+  [0x47DD8079, _MessageAction],
+  [0xB4C38CB5, _MessageAction],
+  [0xC83D6AEC, _MessageAction],
+  [0x0D999256, _MessageAction],
+  [0xC0944820, _MessageAction],
+  [0x57DE635E, _MessageAction],
+  [0xFE77345D, _MessageAction],
+  [0x5060A3F4, _MessageAction],
+  [0xD2CFDB0E, _MessageAction],
+  [0x332BA9ED, _MessageAction],
+  [0x2A9FADC5, _MessageAction],
+  [0xD58A08C6, _Dialog],
+  [0x71BD134C, _Dialog],
+  [0x2331B22D, _Photo],
+  [0xFB197A65, _Photo],
+  [0x0E17E23C, _PhotoSize],
+  [0x75C78E60, _PhotoSize],
+  [0x021E1AD6, _PhotoSize],
+  [0xE0B0BC2E, _PhotoSize],
+  [0xFA3EFB95, _PhotoSize],
+  [0xD8214D41, _PhotoSize],
+  [0x1117DD5F, _GeoPoint],
+  [0xB2A2F663, _GeoPoint],
+  [0x5E002502, _auth_SentCode],
+  [0x2390FE44, _auth_SentCode],
+  [0x2EA2C0D4, _auth_Authorization],
+  [0x44747E9A, _auth_Authorization],
+  [0xB434E2B8, _auth_ExportedAuthorization],
+  [0xB8BC5B0C, _InputNotifyPeer],
+  [0x193B4417, _InputNotifyPeer],
+  [0x4A95E84E, _InputNotifyPeer],
+  [0xB1DB7C7E, _InputNotifyPeer],
+  [0x5C467992, _InputNotifyPeer],
+  [0xCACB6AE2, _InputPeerNotifySettings],
+  [0x99622C0C, _PeerNotifySettings],
+  [0xA518110D, _PeerSettings],
+  [0xA437C3ED, _WallPaper],
+  [0xE0804116, _WallPaper],
+  [0x58DBCAB8, _ReportReason],
+  [0x1E22C78D, _ReportReason],
+  [0x2E59D922, _ReportReason],
+  [0xADF44EE3, _ReportReason],
+  [0xC1E4A2B1, _ReportReason],
+  [0x9B89F93A, _ReportReason],
+  [0xDBD4FEED, _ReportReason],
+  [0xF5DDD6E7, _ReportReason],
+  [0x0A8EB2BE, _ReportReason],
+  [0x9EC7863D, _ReportReason],
+  [0xB9B12C6C, _UserFull],
+  [0x145ADE0B, _Contact],
+  [0xC13E3C50, _ImportedContact],
+  [0x16D9703B, _ContactStatus],
+  [0xB74BA9D2, _contacts_Contacts],
+  [0xEAE87E42, _contacts_Contacts],
+  [0x77D01C3B, _contacts_ImportedContacts],
+  [0x0ADE1591, _contacts_Blocked],
+  [0xE1664194, _contacts_Blocked],
+  [0x15BA6C40, _messages_Dialogs],
+  [0x71E094F3, _messages_Dialogs],
+  [0xF0E3E596, _messages_Dialogs],
+  [0x8C718E87, _messages_Messages],
+  [0x3A54685E, _messages_Messages],
+  [0xC776BA4E, _messages_Messages],
+  [0x74535F21, _messages_Messages],
+  [0x64FF9FD5, _messages_Chats],
+  [0x9CD81144, _messages_Chats],
+  [0xE5D7D19C, _messages_ChatFull],
+  [0xB45C69D1, _messages_AffectedHistory],
+  [0x57E2F66C, _MessagesFilter],
+  [0x9609A51C, _MessagesFilter],
+  [0x9FC00E65, _MessagesFilter],
+  [0x56E9F0E4, _MessagesFilter],
+  [0x9EDDF188, _MessagesFilter],
+  [0x7EF0DD87, _MessagesFilter],
+  [0xFFC86587, _MessagesFilter],
+  [0x50F5C392, _MessagesFilter],
+  [0x3751B49E, _MessagesFilter],
+  [0x3A20ECB8, _MessagesFilter],
+  [0x80C99768, _MessagesFilter],
+  [0x7A7C17A4, _MessagesFilter],
+  [0xB549DA53, _MessagesFilter],
+  [0xC1F8E69A, _MessagesFilter],
+  [0xE7026D0D, _MessagesFilter],
+  [0xE062DB83, _MessagesFilter],
+  [0x1BB00451, _MessagesFilter],
+  [0x1F2B0AFD, _Update],
+  [0x4E90BFD6, _Update],
+  [0xA20DB0E5, _Update],
+  [0xC01E857F, _Update],
+  [0x83487AF0, _Update],
+  [0x07761198, _Update],
+  [0xE5BDF8DE, _Update],
+  [0xA7848924, _Update],
+  [0x8951ABEF, _Update],
+  [0x12BCBD9A, _Update],
+  [0x1710F156, _Update],
+  [0xB4A2E88D, _Update],
+  [0x38FE25B7, _Update],
+  [0x3DDA5451, _Update],
+  [0xE32F3D77, _Update],
+  [0x8E5E9873, _Update],
+  [0xBEC268EF, _Update],
+  [0xEBE46819, _Update],
+  [0xEE3B272A, _Update],
+  [0x05492A13, _Update],
+  [0x9C974FDF, _Update],
+  [0x2F2F21BF, _Update],
+  [0x7F891213, _Update],
+  [0xF8227181, _Update],
+  [0x108D941F, _Update],
+  [0x635B4C09, _Update],
+  [0x62BA04D9, _Update],
+  [0x922E6E10, _Update],
+  [0xC32D5B12, _Update],
+  [0xF226AC08, _Update],
+  [0xD7CA61A2, _Update],
+  [0x688A30AA, _Update],
+  [0x0BB2D201, _Update],
+  [0x31C24808, _Update],
+  [0x9375341E, _Update],
+  [0x496F379C, _Update],
+  [0x12F12A07, _Update],
+  [0x1B3F4DF7, _Update],
+  [0xB9CFC48D, _Update],
+  [0xE40370A3, _Update],
+  [0x691E9052, _Update],
+  [0xB75F99A9, _Update],
+  [0x1B49EC6D, _Update],
+  [0x571D2742, _Update],
+  [0x9A422C20, _Update],
+  [0xA229DD06, _Update],
+  [0x3354678F, _Update],
+  [0x2F2BA99F, _Update],
+  [0x6E6FE51C, _Update],
+  [0xFA0F3CA2, _Update],
+  [0x8317C0C3, _Update],
+  [0x9B9240A6, _Update],
+  [0xB5AEFD7D, _Update],
+  [0x8CAA9A96, _Update],
+  [0xAB0F6B1E, _Update],
+  [0x46560264, _Update],
+  [0x56022F4D, _Update],
+  [0xE511996D, _Update],
+  [0xEA29055D, _Update],
+  [0x7084A7BE, _Update],
+  [0xB23FC698, _Update],
+  [0xE16459C3, _Update],
+  [0xACA1657B, _Update],
+  [0x54C01850, _Update],
+  [0x19360DC0, _Update],
+  [0x6A7E7366, _Update],
+  [0xB4AFCFB0, _Update],
+  [0x39A51DFB, _Update],
+  [0x90866CEE, _Update],
+  [0x8216FBA3, _Update],
+  [0x871FB939, _Update],
+  [0x564FE691, _Update],
+  [0x24F40E77, _Update],
+  [0x26FFDE7D, _Update],
+  [0xA5D72105, _Update],
+  [0x3504914F, _Update],
+  [0x2661BF09, _Update],
+  [0xD29A27F4, _Update],
+  [0xD6B19546, _Update],
+  [0x695C9E7C, _Update],
+  [0xEBE07752, _Update],
+  [0x8C88C923, _Update],
+  [0xED85EAB5, _Update],
+  [0x5BB98608, _Update],
+  [0xF89A6A4E, _Update],
+  [0xF2EBDB4E, _Update],
+  [0x14B24500, _Update],
+  [0xBB9BB9A5, _Update],
+  [0xD087663A, _Update],
+  [0x985D3ABB, _Update],
+  [0xC4870A49, _Update],
+  [0x0B783982, _Update],
+  [0x4D712F2E, _Update],
+  [0x7063C3DB, _Update],
+  [0x11DFA986, _Update],
+  [0x5E1B3CB8, _Update],
+  [0x17B7A20B, _Update],
+  [0x1592B79D, _Update],
+  [0x14B85813, _Update],
+  [0x74D8BE99, _Update],
+  [0x0084CD5A, _Update],
+  [0xFB4C496C, _Update],
+  [0x28373599, _Update],
+  [0x30F443DB, _Update],
+  [0x6F7863F4, _Update],
+  [0x86FCCF85, _Update],
+  [0x5A73A98C, _Update],
+  [0x192EFBE3, _Update],
+  [0xFE198602, _Update],
+  [0x20529438, _Update],
+  [0xEC05B097, _Update],
+  [0xCCF08AD6, _Update],
+  [0x75B3B798, _Update],
+  [0xF74E932B, _Update],
+  [0x1BF335B9, _Update],
+  [0x2C084DC1, _Update],
+  [0x7D627683, _Update],
+  [0x904DD49C, _Update],
+  [0x07B68920, _Update],
+  [0xAE3F101D, _Update],
+  [0xA56C2A3E, _updates_State],
+  [0x5D75A138, _updates_Difference],
+  [0x00F49CA0, _updates_Difference],
+  [0xA8FB1981, _updates_Difference],
+  [0x4AFE8F6D, _updates_Difference],
+  [0xE317AF7E, _Updates],
+  [0x313BC7F8, _Updates],
+  [0x4D6DEEA5, _Updates],
+  [0x78D4DEC1, _Updates],
+  [0x725B04C3, _Updates],
+  [0x74AE4240, _Updates],
+  [0x9015E101, _Updates],
+  [0x8DCA6AA5, _photos_Photos],
+  [0x15051F54, _photos_Photos],
+  [0x20212CA8, _photos_Photo],
+  [0x096A18D5, _upload_File],
+  [0xF18CDA44, _upload_File],
+  [0x18B7A10D, _DcOption],
+  [0xCC1A241E, _Config],
+  [0x8E1A1775, _NearestDc],
+  [0xCCBBCE30, _help_AppUpdate],
+  [0xC45A6536, _help_AppUpdate],
+  [0x18CB9F78, _help_InviteText],
+  [0xAB7EC0A0, _EncryptedChat],
+  [0x66B25953, _EncryptedChat],
+  [0x48F1D94C, _EncryptedChat],
+  [0x61F0D4C7, _EncryptedChat],
+  [0x1E1C7C45, _EncryptedChat],
+  [0xF141B5E1, _InputEncryptedChat],
+  [0xC21F497E, _EncryptedFile],
+  [0xA8008CD8, _EncryptedFile],
+  [0x1837C364, _InputEncryptedFile],
+  [0x64BD0306, _InputEncryptedFile],
+  [0x5A17B5E5, _InputEncryptedFile],
+  [0x2DC173C8, _InputEncryptedFile],
+  [0xED18C118, _EncryptedMessage],
+  [0x23734B06, _EncryptedMessage],
+  [0xC0E24635, _messages_DhConfig],
+  [0x2C221EDD, _messages_DhConfig],
+  [0x560F8935, _messages_SentEncryptedMessage],
+  [0x9493FF32, _messages_SentEncryptedMessage],
+  [0x72F0EAAE, _InputDocument],
+  [0x1ABFB575, _InputDocument],
+  [0x36F8C871, _Document],
+  [0x8FD4C4D8, _Document],
+  [0x17C6B5F6, _help_Support],
+  [0x9FD40BD8, _NotifyPeer],
+  [0xB4C83B4C, _NotifyPeer],
+  [0xC007CEC3, _NotifyPeer],
+  [0xD612E8EF, _NotifyPeer],
+  [0x226E6308, _NotifyPeer],
+  [0x16BF744E, _SendMessageAction],
+  [0xFD5EC8F5, _SendMessageAction],
+  [0xA187D66F, _SendMessageAction],
+  [0xE9763AEC, _SendMessageAction],
+  [0xD52F73F7, _SendMessageAction],
+  [0xF351D7AB, _SendMessageAction],
+  [0xD1D34A26, _SendMessageAction],
+  [0xAA0CD9E4, _SendMessageAction],
+  [0x176F8BA1, _SendMessageAction],
+  [0x628CBC6F, _SendMessageAction],
+  [0xDD6A8F48, _SendMessageAction],
+  [0x88F27FBC, _SendMessageAction],
+  [0x243E1C66, _SendMessageAction],
+  [0xD92C2285, _SendMessageAction],
+  [0xDBDA9246, _SendMessageAction],
+  [0xB05AC6B1, _SendMessageAction],
+  [0x25972BCB, _SendMessageAction],
+  [0xB665902E, _SendMessageAction],
+  [0xB3134D9D, _contacts_Found],
+  [0x4F96CB18, _InputPrivacyKey],
+  [0xBDFB0426, _InputPrivacyKey],
+  [0xFABADC5F, _InputPrivacyKey],
+  [0xDB9E70D2, _InputPrivacyKey],
+  [0xA4DD4C08, _InputPrivacyKey],
+  [0x5719BACC, _InputPrivacyKey],
+  [0x0352DAFA, _InputPrivacyKey],
+  [0xD1219BDD, _InputPrivacyKey],
+  [0xAEE69D68, _InputPrivacyKey],
+  [0x3823CC40, _InputPrivacyKey],
+  [0xBC2EAB30, _PrivacyKey],
+  [0x500E6DFA, _PrivacyKey],
+  [0x3D662B7B, _PrivacyKey],
+  [0x39491CC8, _PrivacyKey],
+  [0x69EC56A3, _PrivacyKey],
+  [0x96151FED, _PrivacyKey],
+  [0xD19AE46D, _PrivacyKey],
+  [0x42FFD42B, _PrivacyKey],
+  [0x0697F414, _PrivacyKey],
+  [0xA486B761, _PrivacyKey],
+  [0x0D09E07B, _InputPrivacyRule],
+  [0x184B35CE, _InputPrivacyRule],
+  [0x131CC67F, _InputPrivacyRule],
+  [0x0BA52007, _InputPrivacyRule],
+  [0xD66B66C9, _InputPrivacyRule],
+  [0x90110467, _InputPrivacyRule],
+  [0x840649CF, _InputPrivacyRule],
+  [0xE94F0F86, _InputPrivacyRule],
+  [0x2F453E49, _InputPrivacyRule],
+  [0xFFFE1BAC, _PrivacyRule],
+  [0x65427B82, _PrivacyRule],
+  [0xB8905FB2, _PrivacyRule],
+  [0xF888FA1A, _PrivacyRule],
+  [0x8B73E763, _PrivacyRule],
+  [0xE4621141, _PrivacyRule],
+  [0x6B134E8E, _PrivacyRule],
+  [0x41C87565, _PrivacyRule],
+  [0xF7E8D89B, _PrivacyRule],
+  [0x50A04E45, _account_PrivacyRules],
+  [0xB8D0AFDF, _AccountDaysTTL],
+  [0x6C37C15C, _DocumentAttribute],
+  [0x11B58939, _DocumentAttribute],
+  [0x6319D612, _DocumentAttribute],
+  [0xD38FF1C2, _DocumentAttribute],
+  [0x9852F9C6, _DocumentAttribute],
+  [0x15590068, _DocumentAttribute],
+  [0x9801D2F7, _DocumentAttribute],
+  [0xFD149899, _DocumentAttribute],
+  [0xF1749A22, _messages_Stickers],
+  [0x30A6EC7E, _messages_Stickers],
+  [0x12B299D4, _StickerPack],
+  [0xE86602C3, _messages_AllStickers],
+  [0xCDBBCEBB, _messages_AllStickers],
+  [0x84D19185, _messages_AffectedMessages],
+  [0x211A1788, _WebPage],
+  [0xB0D13E47, _WebPage],
+  [0xE89C45B2, _WebPage],
+  [0x7311CA11, _WebPage],
+  [0xAD01D61D, _Authorization],
+  [0x4BFF8EA0, _account_Authorizations],
+  [0x957B50FB, _account_Password],
+  [0x9A5C33E5, _account_PasswordSettings],
+  [0xC23727C9, _account_PasswordInputSettings],
+  [0x137948A5, _auth_PasswordRecovery],
+  [0xA384B779, _ReceivedNotifyMessage],
+  [0x0AB4A819, _ExportedChatInvite],
+  [0xED107AB7, _ExportedChatInvite],
+  [0x5A686D7C, _ChatInvite],
+  [0xCDE0EC40, _ChatInvite],
+  [0x61695CB0, _ChatInvite],
+  [0xFFB62B95, _InputStickerSet],
+  [0x9DE7A269, _InputStickerSet],
+  [0x861CC8A0, _InputStickerSet],
+  [0x028703C8, _InputStickerSet],
+  [0xE67F520E, _InputStickerSet],
+  [0x0CDE3739, _InputStickerSet],
+  [0xC88B3B02, _InputStickerSet],
+  [0x04C4D4CE, _InputStickerSet],
+  [0x29D0F5EE, _InputStickerSet],
+  [0x44C1F8E9, _InputStickerSet],
+  [0x2DD14EDC, _StickerSet],
+  [0x6E153F16, _messages_StickerSet],
+  [0xD3F924EB, _messages_StickerSet],
+  [0xC27AC8C7, _BotCommand],
+  [0x8F300B57, _BotInfo],
+  [0xA2FA4880, _KeyboardButton],
+  [0x258AFF05, _KeyboardButton],
+  [0x35BBDB6B, _KeyboardButton],
+  [0xB16A6C29, _KeyboardButton],
+  [0xFC796B3F, _KeyboardButton],
+  [0x93B9FBB5, _KeyboardButton],
+  [0x50F41CCF, _KeyboardButton],
+  [0xAFD93FBB, _KeyboardButton],
+  [0x10B78D29, _KeyboardButton],
+  [0xD02E7FD4, _KeyboardButton],
+  [0xBBC7515D, _KeyboardButton],
+  [0xE988037B, _KeyboardButton],
+  [0x308660C1, _KeyboardButton],
+  [0x13767230, _KeyboardButton],
+  [0xA0C0505C, _KeyboardButton],
+  [0x0D0B468C, _KeyboardButton],
+  [0x77608B83, _KeyboardButtonRow],
+  [0xA03E5B85, _ReplyMarkup],
+  [0x86B40B08, _ReplyMarkup],
+  [0x85DD99D1, _ReplyMarkup],
+  [0x48A30254, _ReplyMarkup],
+  [0xBB92BA95, _MessageEntity],
+  [0xFA04579D, _MessageEntity],
+  [0x6F635B0D, _MessageEntity],
+  [0x6CEF8AC7, _MessageEntity],
+  [0x6ED02538, _MessageEntity],
+  [0x64E475C2, _MessageEntity],
+  [0xBD610BC9, _MessageEntity],
+  [0x826F8B60, _MessageEntity],
+  [0x28A20571, _MessageEntity],
+  [0x73924BE0, _MessageEntity],
+  [0x76A6D327, _MessageEntity],
+  [0xDC7B1140, _MessageEntity],
+  [0x208E68C9, _MessageEntity],
+  [0x9B69E34B, _MessageEntity],
+  [0x4C4E743F, _MessageEntity],
+  [0x9C4E7E8B, _MessageEntity],
+  [0xBF0693D4, _MessageEntity],
+  [0x761E6AF4, _MessageEntity],
+  [0x32CA960F, _MessageEntity],
+  [0xC8CF05F8, _MessageEntity],
+  [0x020DF5D0, _MessageEntity],
+  [0xEE8C1E86, _InputChannel],
+  [0xF35AEC28, _InputChannel],
+  [0x5B934F9D, _InputChannel],
+  [0x7F077AD9, _contacts_ResolvedPeer],
+  [0x0AE30253, _MessageRange],
+  [0x3E11AFFB, _updates_ChannelDifference],
+  [0xA4BCC6FE, _updates_ChannelDifference],
+  [0x2064674E, _updates_ChannelDifference],
+  [0x94D42EE7, _ChannelMessagesFilter],
+  [0xCD77D957, _ChannelMessagesFilter],
+  [0xC00C07C0, _ChannelParticipant],
+  [0x35A8BFA7, _ChannelParticipant],
+  [0x2FE601D3, _ChannelParticipant],
+  [0x34C3BB53, _ChannelParticipant],
+  [0x6DF8014E, _ChannelParticipant],
+  [0x1B03F006, _ChannelParticipant],
+  [0xDE3F3C79, _ChannelParticipantsFilter],
+  [0xB4608969, _ChannelParticipantsFilter],
+  [0xA3B54985, _ChannelParticipantsFilter],
+  [0xB0D1865B, _ChannelParticipantsFilter],
+  [0x1427A5E1, _ChannelParticipantsFilter],
+  [0x0656AC4B, _ChannelParticipantsFilter],
+  [0xBB6AE88D, _ChannelParticipantsFilter],
+  [0xE04B5CEB, _ChannelParticipantsFilter],
+  [0x9AB0FEAF, _channels_ChannelParticipants],
+  [0xF0173FE9, _channels_ChannelParticipants],
+  [0xDFB80317, _channels_ChannelParticipant],
+  [0x780A0310, _help_TermsOfService],
+  [0xE8025CA2, _messages_SavedGifs],
+  [0x84A02A0D, _messages_SavedGifs],
+  [0x3380C786, _InputBotInlineMessage],
+  [0x3DCD7A87, _InputBotInlineMessage],
+  [0x96929A85, _InputBotInlineMessage],
+  [0x417BBF11, _InputBotInlineMessage],
+  [0xA6EDBFFD, _InputBotInlineMessage],
+  [0x4B425864, _InputBotInlineMessage],
+  [0xD7E78225, _InputBotInlineMessage],
+  [0xBDDCC510, _InputBotInlineMessage],
+  [0x88BF9319, _InputBotInlineResult],
+  [0xA8D864A7, _InputBotInlineResult],
+  [0xFFF8FDC4, _InputBotInlineResult],
+  [0x4FA417F2, _InputBotInlineResult],
+  [0x764CF810, _BotInlineMessage],
+  [0x8C7F65E2, _BotInlineMessage],
+  [0x051846FD, _BotInlineMessage],
+  [0x8A86659C, _BotInlineMessage],
+  [0x18D1CDC2, _BotInlineMessage],
+  [0x354A9B09, _BotInlineMessage],
+  [0x809AD9A6, _BotInlineMessage],
+  [0x11965F3A, _BotInlineResult],
+  [0x17DB940B, _BotInlineResult],
+  [0xE021F2F6, _messages_BotResults],
+  [0x5DAB1AF4, _ExportedMessageLink],
+  [0x5F777DCE, _MessageFwdHeader],
+  [0x72A3158C, _auth_CodeType],
+  [0x741CD3E3, _auth_CodeType],
+  [0x226CCEFB, _auth_CodeType],
+  [0xD61AD6EE, _auth_CodeType],
+  [0x06ED998C, _auth_CodeType],
+  [0x3DBB5986, _auth_SentCodeType],
+  [0xC000BBA2, _auth_SentCodeType],
+  [0x5353E5A7, _auth_SentCodeType],
+  [0xAB03C6D9, _auth_SentCodeType],
+  [0x82006484, _auth_SentCodeType],
+  [0xF450F59B, _auth_SentCodeType],
+  [0xA5491DEA, _auth_SentCodeType],
+  [0xD9565C39, _auth_SentCodeType],
+  [0xE57B1432, _auth_SentCodeType],
+  [0x36585EA4, _messages_BotCallbackAnswer],
+  [0x26B5DDE6, _messages_MessageEditData],
+  [0x890C3D89, _InputBotInlineMessageID],
+  [0xB6D915D7, _InputBotInlineMessageID],
+  [0x3C20629F, _InlineBotSwitchPM],
+  [0x3371C354, _messages_PeerDialogs],
+  [0xEDCDC05B, _TopPeer],
+  [0xAB661B5B, _TopPeerCategory],
+  [0x148677E2, _TopPeerCategory],
+  [0x0637B7ED, _TopPeerCategory],
+  [0xBD17A14A, _TopPeerCategory],
+  [0x161D9628, _TopPeerCategory],
+  [0x1E76A78C, _TopPeerCategory],
+  [0xA8406CA9, _TopPeerCategory],
+  [0xFBEEC0F0, _TopPeerCategory],
+  [0xFB834291, _TopPeerCategoryPeers],
+  [0xDE266EF5, _contacts_TopPeers],
+  [0x70B772A8, _contacts_TopPeers],
+  [0xB52C939D, _contacts_TopPeers],
+  [0x1B0C841A, _DraftMessage],
+  [0x3FCCF7EF, _DraftMessage],
+  [0xC6DC0C66, _messages_FeaturedStickers],
+  [0xBE382906, _messages_FeaturedStickers],
+  [0x0B17F890, _messages_RecentStickers],
+  [0x88D37C56, _messages_RecentStickers],
+  [0x4FCBA9C8, _messages_ArchivedStickers],
+  [0x38641628, _messages_StickerSetInstallResult],
+  [0x35E410A8, _messages_StickerSetInstallResult],
+  [0x6410A5D2, _StickerSetCovered],
+  [0x3407E51B, _StickerSetCovered],
+  [0x40D13C0E, _StickerSetCovered],
+  [0x77B15D1C, _StickerSetCovered],
+  [0xAED6DBB2, _MaskCoords],
+  [0x4A992157, _InputStickeredMedia],
+  [0x0438865B, _InputStickeredMedia],
+  [0xBDF9653B, _Game],
+  [0x032C3E77, _InputGame],
+  [0xC331E80A, _InputGame],
+  [0x73A379EB, _HighScore],
+  [0x9A3BFD99, _messages_HighScores],
+  [0xDC3D824F, _RichText],
+  [0x744694E0, _RichText],
+  [0x6724ABC4, _RichText],
+  [0xD912A59C, _RichText],
+  [0xC12622C4, _RichText],
+  [0x9BF8BB95, _RichText],
+  [0x6C3F19B9, _RichText],
+  [0x3C2884C1, _RichText],
+  [0xDE5A0DD6, _RichText],
+  [0x7E6260D7, _RichText],
+  [0xED6A8504, _RichText],
+  [0xC7FB5E01, _RichText],
+  [0x034B8621, _RichText],
+  [0x1CCB966A, _RichText],
+  [0x081CCF4F, _RichText],
+  [0x35553762, _RichText],
+  [0x13567E8A, _PageBlock],
+  [0x70ABC3FD, _PageBlock],
+  [0x8FFA9A1F, _PageBlock],
+  [0xBAAFE5E0, _PageBlock],
+  [0xBFD064EC, _PageBlock],
+  [0xF12BB6E1, _PageBlock],
+  [0x467A0766, _PageBlock],
+  [0xC070D93E, _PageBlock],
+  [0x48870999, _PageBlock],
+  [0xDB20B188, _PageBlock],
+  [0xCE0D37B0, _PageBlock],
+  [0xE4E88011, _PageBlock],
+  [0x263D7C26, _PageBlock],
+  [0x4F4456D3, _PageBlock],
+  [0x1759C560, _PageBlock],
+  [0x7C8FE7B6, _PageBlock],
+  [0x39F23300, _PageBlock],
+  [0xA8718DC5, _PageBlock],
+  [0xF259A80B, _PageBlock],
+  [0x65A0FA4D, _PageBlock],
+  [0x031F9590, _PageBlock],
+  [0xEF1751B5, _PageBlock],
+  [0x804361EA, _PageBlock],
+  [0x1E148390, _PageBlock],
+  [0xBF4DEA82, _PageBlock],
+  [0x9A8AE1E1, _PageBlock],
+  [0x76768BED, _PageBlock],
+  [0x16115A96, _PageBlock],
+  [0xA44F3EF6, _PageBlock],
+  [0x85E42301, _PhoneCallDiscardReason],
+  [0xE095C1A0, _PhoneCallDiscardReason],
+  [0x57ADC690, _PhoneCallDiscardReason],
+  [0xFAF7E8C9, _PhoneCallDiscardReason],
+  [0x7D748D04, _DataJSON],
+  [0xCB296BF8, _LabeledPrice],
+  [0x5DB95A15, _Invoice],
+  [0xEA02C27E, _PaymentCharge],
+  [0x1E8CAAEB, _PostAddress],
+  [0x909C3F94, _PaymentRequestedInfo],
+  [0xCDC27A1F, _PaymentSavedCredentials],
+  [0x1C570ED1, _WebDocument],
+  [0xF9C8BCC6, _WebDocument],
+  [0x9BED434D, _InputWebDocument],
+  [0xC239D686, _InputWebFileLocation],
+  [0x9F2221C9, _InputWebFileLocation],
+  [0xF46FE924, _InputWebFileLocation],
+  [0x21E753BC, _upload_WebFile],
+  [0xA0058751, _payments_PaymentForm],
+  [0xD1451883, _payments_ValidatedRequestedInfo],
+  [0x4E5F810D, _payments_PaymentResult],
+  [0xD8411139, _payments_PaymentResult],
+  [0x70C4FE03, _payments_PaymentReceipt],
+  [0xFB8FE43C, _payments_SavedInfo],
+  [0xC10EB2CF, _InputPaymentCredentials],
+  [0x3417D728, _InputPaymentCredentials],
+  [0x0AA1C39F, _InputPaymentCredentials],
+  [0x8AC32801, _InputPaymentCredentials],
+  [0xDB64FD34, _account_TmpPassword],
+  [0xB6213CDF, _ShippingOption],
+  [0x32DA9E9C, _InputStickerSetItem],
+  [0x1E36FDED, _InputPhoneCall],
+  [0x5366C915, _PhoneCall],
+  [0xC5226F17, _PhoneCall],
+  [0x14B0ED0C, _PhoneCall],
+  [0x3660C311, _PhoneCall],
+  [0x967F7C67, _PhoneCall],
+  [0x50CA4DE1, _PhoneCall],
+  [0x9CC123C7, _PhoneConnection],
+  [0x635FE375, _PhoneConnection],
+  [0xFC878FC8, _PhoneCallProtocol],
+  [0xEC82E140, _phone_PhoneCall],
+  [0xEEA8E46E, _upload_CdnFile],
+  [0xA99FCA4F, _upload_CdnFile],
+  [0xC982EABA, _CdnPublicKey],
+  [0x5725E40A, _CdnConfig],
+  [0xCAD181F6, _LangPackString],
+  [0x6C47AC9F, _LangPackString],
+  [0x2979EEB2, _LangPackString],
+  [0xF385C1F6, _LangPackDifference],
+  [0xEECA5CE3, _LangPackLanguage],
+  [0xE6DFB825, _ChannelAdminLogEventAction],
+  [0x55188A2E, _ChannelAdminLogEventAction],
+  [0x6A4AFC38, _ChannelAdminLogEventAction],
+  [0x434BD2AF, _ChannelAdminLogEventAction],
+  [0x1B7907AE, _ChannelAdminLogEventAction],
+  [0x26AE0971, _ChannelAdminLogEventAction],
+  [0xE9E82C18, _ChannelAdminLogEventAction],
+  [0x709B2405, _ChannelAdminLogEventAction],
+  [0x42E047BB, _ChannelAdminLogEventAction],
+  [0x183040D3, _ChannelAdminLogEventAction],
+  [0xF89777F2, _ChannelAdminLogEventAction],
+  [0xE31C34D8, _ChannelAdminLogEventAction],
+  [0xE6D83D7E, _ChannelAdminLogEventAction],
+  [0xD5676710, _ChannelAdminLogEventAction],
+  [0xB1C3CAA7, _ChannelAdminLogEventAction],
+  [0x5F5C95F1, _ChannelAdminLogEventAction],
+  [0x2DF5FC0A, _ChannelAdminLogEventAction],
+  [0x8F079643, _ChannelAdminLogEventAction],
+  [0x050C7AC8, _ChannelAdminLogEventAction],
+  [0x0E6B76AE, _ChannelAdminLogEventAction],
+  [0x53909779, _ChannelAdminLogEventAction],
+  [0x23209745, _ChannelAdminLogEventAction],
+  [0xDB9F9140, _ChannelAdminLogEventAction],
+  [0xF92424D2, _ChannelAdminLogEventAction],
+  [0xE64429C0, _ChannelAdminLogEventAction],
+  [0x56D6A247, _ChannelAdminLogEventAction],
+  [0xFE9FC158, _ChannelAdminLogEventAction],
+  [0x5A50FCA4, _ChannelAdminLogEventAction],
+  [0x410A134E, _ChannelAdminLogEventAction],
+  [0xE90EBB59, _ChannelAdminLogEventAction],
+  [0x3E7F6847, _ChannelAdminLogEventAction],
+  [0x6E941A38, _ChannelAdminLogEventAction],
+  [0xAFB6144A, _ChannelAdminLogEventAction],
+  [0xCB2AC766, _ChannelAdminLogEventAction],
+  [0x278F2868, _ChannelAdminLogEventAction],
+  [0xBE4E0EF8, _ChannelAdminLogEventAction],
+  [0xF04FB3A9, _ChannelAdminLogEventAction],
+  [0x02CC6383, _ChannelAdminLogEventAction],
+  [0x58707D28, _ChannelAdminLogEventAction],
+  [0xF06FE208, _ChannelAdminLogEventAction],
+  [0xAE168909, _ChannelAdminLogEventAction],
+  [0x5D8D353B, _ChannelAdminLogEventAction],
+  [0x64F36DFC, _ChannelAdminLogEventAction],
+  [0x3C2B247B, _ChannelAdminLogEventAction],
+  [0x445FC434, _ChannelAdminLogEventAction],
+  [0x1FAD68CD, _ChannelAdminLogEvent],
+  [0xED8AF74D, _channels_AdminLogResults],
+  [0xEA107AE4, _ChannelAdminLogEventsFilter],
+  [0x5CE14175, _PopularContact],
+  [0x9E8FA6D3, _messages_FavedStickers],
+  [0x2CB51097, _messages_FavedStickers],
+  [0x46E1D13D, _RecentMeUrl],
+  [0xB92C09E2, _RecentMeUrl],
+  [0xB2DA71D2, _RecentMeUrl],
+  [0xEB49081D, _RecentMeUrl],
+  [0xBC0A57DC, _RecentMeUrl],
+  [0x0E0310D7, _help_RecentMeUrls],
+  [0x1CC6E91F, _InputSingleMedia],
+  [0xA6F8F452, _WebAuthorization],
+  [0xED56C9FC, _account_WebAuthorizations],
+  [0xA676A322, _InputMessage],
+  [0xBAD88395, _InputMessage],
+  [0x86872538, _InputMessage],
+  [0xACFA1A7E, _InputMessage],
+  [0xFCAAFEB7, _InputDialogPeer],
+  [0x64600527, _InputDialogPeer],
+  [0xE56DBF05, _DialogPeer],
+  [0x514519E2, _DialogPeer],
+  [0x0D54B65D, _messages_FoundStickerSets],
+  [0x8AF09DD2, _messages_FoundStickerSets],
+  [0xF39B035C, _FileHash],
+  [0x75588B3F, _InputClientProxy],
+  [0xE3309F7F, _help_TermsOfServiceUpdate],
+  [0x28ECF961, _help_TermsOfServiceUpdate],
+  [0x3334B0F0, _InputSecureFile],
+  [0x5367E5BE, _InputSecureFile],
+  [0x64199744, _SecureFile],
+  [0x7D09C27E, _SecureFile],
+  [0x8AEABEC3, _SecureData],
+  [0x7D6099DD, _SecurePlainData],
+  [0x21EC5A5F, _SecurePlainData],
+  [0x9D2A81E3, _SecureValueType],
+  [0x3DAC6A00, _SecureValueType],
+  [0x06E425C4, _SecureValueType],
+  [0xA0D0744B, _SecureValueType],
+  [0x99A48F23, _SecureValueType],
+  [0xCBE31E26, _SecureValueType],
+  [0xFC36954E, _SecureValueType],
+  [0x89137C0D, _SecureValueType],
+  [0x8B883488, _SecureValueType],
+  [0x99E3806A, _SecureValueType],
+  [0xEA02EC33, _SecureValueType],
+  [0xB320AADB, _SecureValueType],
+  [0x8E3CA7EE, _SecureValueType],
+  [0x187FA0CA, _SecureValue],
+  [0xDB21D0A7, _InputSecureValue],
+  [0xED1ECDB0, _SecureValueHash],
+  [0xE8A40BD9, _SecureValueError],
+  [0x00BE3DFA, _SecureValueError],
+  [0x868A2AA5, _SecureValueError],
+  [0xE537CED6, _SecureValueError],
+  [0x7A700873, _SecureValueError],
+  [0x666220E9, _SecureValueError],
+  [0x869D758F, _SecureValueError],
+  [0xA1144770, _SecureValueError],
+  [0x34636DD8, _SecureValueError],
+  [0x33F0EA47, _SecureCredentialsEncrypted],
+  [0xAD2E1CD8, _account_AuthorizationForm],
+  [0x811F854F, _account_SentEmailCode],
+  [0x66AFA166, _help_DeepLinkInfo],
+  [0x6A4EE832, _help_DeepLinkInfo],
+  [0x1142BD56, _SavedContact],
+  [0x4DBA4501, _account_Takeout],
+  [0xD45AB096, _PasswordKdfAlgo],
+  [0x3A912D4A, _PasswordKdfAlgo],
+  [0x004A8537, _SecurePasswordKdfAlgo],
+  [0xBBF2DDA0, _SecurePasswordKdfAlgo],
+  [0x86471D92, _SecurePasswordKdfAlgo],
+  [0x1527BCAC, _SecureSecretSettings],
+  [0x9880F658, _InputCheckPasswordSRP],
+  [0xD27FF082, _InputCheckPasswordSRP],
+  [0x829D99DA, _SecureRequiredType],
+  [0x027477B4, _SecureRequiredType],
+  [0xBFB9F457, _help_PassportConfig],
+  [0xA098D6AF, _help_PassportConfig],
+  [0x1D1B1245, _InputAppEvent],
+  [0xC0DE1BD9, _JSONObjectValue],
+  [0x3F6D7B68, _JSONValue],
+  [0xC7345E6A, _JSONValue],
+  [0x2BE0DFA4, _JSONValue],
+  [0xB71E767A, _JSONValue],
+  [0xF7444763, _JSONValue],
+  [0x99C1D49D, _JSONValue],
+  [0x34566B6A, _PageTableCell],
+  [0xE0C0C5E5, _PageTableRow],
+  [0x6F747657, _PageCaption],
+  [0xB92FB6CD, _PageListItem],
+  [0x25E073FC, _PageListItem],
+  [0x5E068047, _PageListOrderedItem],
+  [0x98DD8936, _PageListOrderedItem],
+  [0xB390DC08, _PageRelatedArticle],
+  [0x98657F0D, _Page],
+  [0x8C05F1C9, _help_SupportName],
+  [0xF3AE2EED, _help_UserInfo],
+  [0x01EB3758, _help_UserInfo],
+  [0x6CA9C2E9, _PollAnswer],
+  [0x86E18161, _Poll],
+  [0x3B6DDAD2, _PollAnswerVoters],
+  [0x7ADF2420, _PollResults],
+  [0xF041E250, _ChatOnlines],
+  [0x47A971E0, _StatsURL],
+  [0x5FB224D5, _ChatAdminRights],
+  [0x9F120418, _ChatBannedRights],
+  [0xE630B979, _InputWallPaper],
+  [0x72091C80, _InputWallPaper],
+  [0x967A462E, _InputWallPaper],
+  [0x1C199183, _account_WallPapers],
+  [0xCDC3858C, _account_WallPapers],
+  [0xAD253D78, _CodeSettings],
+  [0x1DC1BCA4, _WallPaperSettings],
+  [0xBAA57628, _AutoDownloadSettings],
+  [0x63CACF26, _account_AutoDownloadSettings],
+  [0xD5B3B9F9, _EmojiKeyword],
+  [0x236DF622, _EmojiKeyword],
+  [0x5CC761BD, _EmojiKeywordsDifference],
+  [0xA575739D, _EmojiURL],
+  [0xB3FB5361, _EmojiLanguage],
+  [0xFF544E65, _Folder],
+  [0xFBD2C296, _InputFolderPeer],
+  [0xE9BAA668, _FolderPeer],
+  [0xE844EBFF, _messages_SearchCounter],
+  [0x92D33A0E, _UrlAuthResult],
+  [0x8F8C0E4E, _UrlAuthResult],
+  [0xA9D6DB1F, _UrlAuthResult],
+  [0xBFB5AD8B, _ChannelLocation],
+  [0x209B82DB, _ChannelLocation],
+  [0xCA461B5D, _PeerLocated],
+  [0xF8EC284B, _PeerLocated],
+  [0xD072ACB4, _RestrictionReason],
+  [0x3C5693E9, _InputTheme],
+  [0xF5890DF1, _InputTheme],
+  [0xA00E67D6, _Theme],
+  [0xF41EB622, _account_Themes],
+  [0x9A3D8C6D, _account_Themes],
+  [0x629F1980, _auth_LoginToken],
+  [0x068E9916, _auth_LoginToken],
+  [0x390D5C5E, _auth_LoginToken],
+  [0x57E28221, _account_ContentSettings],
+  [0xA927FEC5, _messages_InactiveChats],
+  [0xC3A12462, _BaseTheme],
+  [0xFBD81688, _BaseTheme],
+  [0xB7B31EA8, _BaseTheme],
+  [0x6D5F77EE, _BaseTheme],
+  [0x5B11125A, _BaseTheme],
+  [0x8FDE504F, _InputThemeSettings],
+  [0xFA58B6D4, _ThemeSettings],
+  [0x54B56617, _WebPageAttribute],
+  [0x2E94C3E7, _WebPageAttribute],
+  [0x4899484E, _messages_VotesList],
+  [0xF568028A, _BankCardOpenUrl],
+  [0x3E24E573, _payments_BankCardData],
+  [0x7438F7E8, _DialogFilter],
+  [0x363293AE, _DialogFilter],
+  [0xD64A04A8, _DialogFilter],
+  [0x77744D4A, _DialogFilterSuggested],
+  [0xB637EDAF, _StatsDateRangeDays],
+  [0xCB43ACDE, _StatsAbsValueAndPrev],
+  [0xCBCE2FE0, _StatsPercentValue],
+  [0x4A27EB2D, _StatsGraph],
+  [0xBEDC9822, _StatsGraph],
+  [0x8EA464B6, _StatsGraph],
+  [0x396CA5FC, _stats_BroadcastStats],
+  [0x98F6AC75, _help_PromoData],
+  [0x8C39793F, _help_PromoData],
+  [0xDE33B094, _VideoSize],
+  [0xF85C413C, _VideoSize],
+  [0x0DA082FE, _VideoSize],
+  [0x9D04AF9B, _StatsGroupTopPoster],
+  [0xD7584C87, _StatsGroupTopAdmin],
+  [0x535F779D, _StatsGroupTopInviter],
+  [0xEF7FF916, _stats_MegagroupStats],
+  [0x734C4CCB, _GlobalPrivacySettings],
+  [0x4203C5EF, _help_CountryCode],
+  [0xC3878E23, _help_Country],
+  [0x93CC1F32, _help_CountriesList],
+  [0x87D0759E, _help_CountriesList],
+  [0x455B853D, _MessageViews],
+  [0xB6C4F543, _messages_MessageViews],
+  [0xA6341782, _messages_DiscussionMessage],
+  [0xAFBC09DB, _MessageReplyHeader],
+  [0x9C98BFC1, _MessageReplyHeader],
+  [0x83D60FC2, _MessageReplies],
+  [0xE8FD8014, _PeerBlocked],
+  [0x7FE91C14, _stats_MessageStats],
+  [0x7780BCB4, _GroupCall],
+  [0xD597650C, _GroupCall],
+  [0xD8AA840F, _InputGroupCall],
+  [0xEBA636FE, _GroupCallParticipant],
+  [0x9E727AAD, _phone_GroupCall],
+  [0xF47751B6, _phone_GroupParticipants],
+  [0x3081ED9D, _InlineQueryPeerType],
+  [0x833C0FAC, _InlineQueryPeerType],
+  [0xD766C50A, _InlineQueryPeerType],
+  [0x5EC4BE43, _InlineQueryPeerType],
+  [0x6334EE9A, _InlineQueryPeerType],
+  [0x0E3B2D0C, _InlineQueryPeerType],
+  [0x1662AF0B, _messages_HistoryImport],
+  [0x5E0FB7B9, _messages_HistoryImportParsed],
+  [0xEF8D3E6C, _messages_AffectedFoundMessages],
+  [0x8C5ADFD9, _ChatInviteImporter],
+  [0xBDC62DCC, _messages_ExportedChatInvites],
+  [0x1871BE50, _messages_ExportedChatInvite],
+  [0x222600EF, _messages_ExportedChatInvite],
+  [0x81B6B00A, _messages_ChatInviteImporters],
+  [0xF2ECEF23, _ChatAdminWithInvites],
+  [0xB69B72D7, _messages_ChatAdminsWithInvites],
+  [0xA24DE717, _messages_CheckedHistoryImportPeer],
+  [0xAFE5623F, _phone_JoinAsPeers],
+  [0x204BD158, _phone_ExportedGroupCallInvite],
+  [0xDCB118B7, _GroupCallParticipantVideoSourceGroup],
+  [0x67753AC8, _GroupCallParticipantVideo],
+  [0x85FEA03F, _stickers_SuggestedShortName],
+  [0x2F6CB2AB, _BotCommandScope],
+  [0x3C4F04D8, _BotCommandScope],
+  [0x6FE1A881, _BotCommandScope],
+  [0xB9AA606A, _BotCommandScope],
+  [0xDB9D897D, _BotCommandScope],
+  [0x3FD863D1, _BotCommandScope],
+  [0x0A1321F3, _BotCommandScope],
+  [0xE3779861, _account_ResetPasswordResult],
+  [0xE9EFFC7D, _account_ResetPasswordResult],
+  [0xE926D63E, _account_ResetPasswordResult],
+  [0xED5383F7, _SponsoredMessage],
+  [0xC9EE1D87, _messages_SponsoredMessages],
+  [0x1839490F, _messages_SponsoredMessages],
+  [0xC9B0539F, _SearchResultsCalendarPeriod],
+  [0x147EE23C, _messages_SearchResultsCalendar],
+  [0x7F648B67, _SearchResultsPosition],
+  [0x53B22BAF, _messages_SearchResultsPositions],
+  [0xF496B0C6, _channels_SendAsPeers],
+  [0x3B6D152E, _users_UserFull],
+  [0x6880B94D, _messages_PeerSettings],
+  [0xC3A2835F, _auth_LoggedOut],
+  [0xA3D1CB80, _ReactionCount],
+  [0x4F2B9479, _MessageReactions],
+  [0x31BD492D, _messages_MessageReactionsList],
+  [0xC077EC01, _AvailableReaction],
+  [0x9F071957, _messages_AvailableReactions],
+  [0x768E3AAD, _messages_AvailableReactions],
+  [0x8C79B63C, _MessagePeerReaction],
+  [0x80EB48AF, _GroupCallStreamChannel],
+  [0xD0E482B2, _phone_GroupCallStreamChannels],
+  [0x2DBF3432, _phone_GroupCallStreamRtmpUrl],
+  [0x4576F3F0, _AttachMenuBotIconColor],
+  [0xB2A7386B, _AttachMenuBotIcon],
+  [0xD90D8DFE, _AttachMenuBot],
+  [0xF1D88A5C, _AttachMenuBots],
+  [0x3C4301C0, _AttachMenuBots],
+  [0x93BF667F, _AttachMenuBotsBot],
+  [0x0C14557C, _WebViewResult],
+  [0x882F76BB, _SimpleWebViewResult],
+  [0x0C94511C, _WebViewMessageSent],
+  [0x7533A588, _BotMenuButton],
+  [0x4258C205, _BotMenuButton],
+  [0xC7B57CE6, _BotMenuButton],
+  [0xFBF6E8B1, _account_SavedRingtones],
+  [0xC1E92CC5, _account_SavedRingtones],
+  [0x97E8BEBE, _NotificationSound],
+  [0x6F0C34DF, _NotificationSound],
+  [0x830B9AE4, _NotificationSound],
+  [0xFF6C8049, _NotificationSound],
+  [0xB7263F6D, _account_SavedRingtone],
+  [0x1F307EB7, _account_SavedRingtone],
+  [0x7D6BE90E, _AttachMenuPeerType],
+  [0xC32BFA1A, _AttachMenuPeerType],
+  [0xF146D31F, _AttachMenuPeerType],
+  [0x0509113F, _AttachMenuPeerType],
+  [0x7BFBDEFC, _AttachMenuPeerType],
+  [0xC5B56859, _InputInvoice],
+  [0xC326CAEF, _InputInvoice],
+  [0x98986C0D, _InputInvoice],
+  [0xAED0CBD9, _payments_ExportedInvoice],
+  [0xCFB9D957, _messages_TranscribedAudio],
+  [0x5334759C, _help_PremiumPromo],
+  [0xA6751E66, _InputStorePaymentPurpose],
+  [0x616F7FE8, _InputStorePaymentPurpose],
+  [0xA3805F3F, _InputStorePaymentPurpose],
+  [0x7C9375E6, _InputStorePaymentPurpose],
+  [0x74C34319, _PremiumGiftOption],
+  [0x88F8F21B, _PaymentFormMethod],
+  [0x2DE11AAE, _EmojiStatus],
+  [0x929B619D, _EmojiStatus],
+  [0xFA30A8C7, _EmojiStatus],
+  [0xD08CE645, _account_EmojiStatuses],
+  [0x90C467D1, _account_EmojiStatuses],
+  [0x79F5D419, _Reaction],
+  [0x1B2286B8, _Reaction],
+  [0x8935FC73, _Reaction],
+  [0xEAFC32BC, _ChatReactions],
+  [0x52928BCA, _ChatReactions],
+  [0x661D4037, _ChatReactions],
+  [0xB06FDBDF, _messages_Reactions],
+  [0xEAFDF716, _messages_Reactions],
+  [0x4345BE73, _EmailVerifyPurpose],
+  [0x527D22EB, _EmailVerifyPurpose],
+  [0xBBF51685, _EmailVerifyPurpose],
+  [0x922E55A9, _EmailVerification],
+  [0xDB909EC2, _EmailVerification],
+  [0x96D074FD, _EmailVerification],
+  [0x2B96CD1B, _account_EmailVerified],
+  [0xE1BB0D61, _account_EmailVerified],
+  [0x5F2D1DF2, _PremiumSubscriptionOption],
+  [0xB81C7034, _SendAsPeer],
+  [0xAD628CC8, _MessageExtendedMedia],
+  [0xEE479C64, _MessageExtendedMedia],
+  [0xFCFEB29C, _StickerKeyword],
+  [0xB4073647, _Username],
+  [0x023F109B, _ForumTopic],
+  [0x71701DA9, _ForumTopic],
+  [0x367617D3, _messages_ForumTopics],
+  [0x43B46B20, _DefaultHistoryTTL],
+  [0x41BF109B, _ExportedContactToken],
+  [0x5F3B8A00, _RequestPeerType],
+  [0xC9F06E1B, _RequestPeerType],
+  [0x339BEF6C, _RequestPeerType],
+  [0x481EADFA, _EmojiList],
+  [0x7A1E11D1, _EmojiList],
+  [0x7A9ABDA9, _EmojiGroup],
+  [0x6FB4AD87, _messages_EmojiGroups],
+  [0x881FB94B, _messages_EmojiGroups],
+  [0x751F3146, _TextWithEntities],
+  [0x33DB32F8, _messages_TranslatedText],
+  [0xC84834CE, _AutoSaveSettings],
+  [0x81602D47, _AutoSaveException],
+  [0x4C3E069D, _account_AutoSaveSettings],
+  [0x7CDE641D, _help_AppConfig],
+  [0xDD18782E, _help_AppConfig],
+  [0xA920BD7A, _InputBotApp],
+  [0x908C0407, _InputBotApp],
+  [0x5DA674B7, _BotApp],
+  [0x95FCD1D6, _BotApp],
+  [0xEB50ADF5, _messages_BotApp],
+  [0x3C1B4F0D, _AppWebViewResult],
+  [0xB57295D5, _InlineBotWebView],
+  [0x4A4FF172, _ReadParticipantDate],
+  [0xF3E0DA33, _InputChatlist],
+  [0x0C5181AC, _ExportedChatlistInvite],
+  [0x10E6E3A6, _chatlists_ExportedChatlistInvite],
+  [0x10AB6DC7, _chatlists_ExportedInvites],
+  [0xFA87F659, _chatlists_ChatlistInvite],
+  [0x1DCD839D, _chatlists_ChatlistInvite],
+  [0x93BD878D, _chatlists_ChatlistUpdates],
+  [0xE8A775B0, _bots_BotInfo],
+  [0xB6CC2D5C, _MessagePeerVote],
+  [0x74CDA504, _MessagePeerVote],
+  [0x4628F6E6, _MessagePeerVote],
+  [0x3DB8EC63, _SponsoredWebPage],
+  [0x8D595CD6, _StoryViews],
+  [0x51E6EE4F, _StoryItem],
+  [0xFFADC913, _StoryItem],
+  [0xAF6365A1, _StoryItem],
+  [0x1158FE3E, _stories_AllStories],
+  [0x6EFC5E81, _stories_AllStories],
+  [0x5DD8C3C8, _stories_Stories],
+  [0xB0BDEAC5, _StoryView],
+  [0x46E9B9EC, _stories_StoryViewsList],
+  [0xDE9EED1D, _stories_StoryViews],
+  [0x22C0F6D5, _InputReplyTo],
+  [0x15B0F283, _InputReplyTo],
+  [0x3FC9053B, _ExportedStoryLink],
+  [0x712E27FD, _StoriesStealthMode],
+  [0x03D1EA4E, _MediaAreaCoordinates],
+  [0xBE82DB9C, _MediaArea],
+  [0xB282217F, _MediaArea],
+  [0xDF8B3B22, _MediaArea],
+  [0x14455871, _MediaArea],
+  [0x9A35E999, _PeerStories],
+  [0xCAE68768, _stories_PeerStories],
+  [0xFD5E12BD, _messages_WebPage],
+  [0x257E962B, _PremiumGiftCodeOption],
+  [0xB722F158, _payments_CheckedGiftCode],
+  [0x4367DAA0, _payments_GiveawayInfo],
+  [0x00CD5570, _payments_GiveawayInfo],
+  [0xB2539D54, _PrepaidGiveaway],
+  [0x2A1C8C71, _Boost],
+  [0x86F8613C, _premium_BoostsList],
+  [0xC448415C, _MyBoost],
+  [0x9AE228E2, _premium_MyBoosts],
+  [0x4959427A, _premium_BoostsStatus],
+  [0xB826E150, _StoryFwdHeader],
+  [0xE7058E7F, _PostInteractionCounters],
+  [0x8A480E27, _PostInteractionCounters],
+  [0x50CD067C, _stats_StoryStats],
+  [0x01F2BF4A, _PublicForward],
+  [0xEDF3ADD0, _PublicForward],
+  [0x93037E20, _stats_PublicForwards],
+  [0xB54B5ACF, _PeerColor],
+  [0x26219A58, _help_PeerColorSet],
+  [0x767D61EB, _help_PeerColorSet],
+  [0x135BD42F, _help_PeerColorOption],
+  [0x2BA1F5CE, _help_PeerColors],
+  [0x00F8ED08, _help_PeerColors],
 // deno-lint-ignore no-explicit-any
 ] as const as any);
+export declare namespace enums {
+  export type ResPQ = types["ResPQ"];
+  export type P_Q_inner_data = types["P_q_inner_data_dc"] | types["P_q_inner_data_temp_dc"];
+  export type Server_DH_Params = types["Server_DH_params_ok"];
+  export type Server_DH_inner_data = types["Server_DH_inner_data"];
+  export type Client_DH_Inner_Data = types["Client_DH_inner_data"];
+  export type Set_client_DH_params_answer = types["Dh_gen_ok"] | types["Dh_gen_retry"] | types["Dh_gen_fail"];
+  export type BindAuthKeyInner = types["Bind_auth_key_inner"];
+  export type RpcError = types["Rpc_error"];
+  export type RpcDropAnswer = types["Rpc_answer_unknown"] | types["Rpc_answer_dropped_running"] | types["Rpc_answer_dropped"];
+  export type FutureSalt = types["Future_salt"];
+  export type FutureSalts = types["Future_salts"];
+  export type Pong = types["Pong"];
+  export type DestroySessionRes = types["Destroy_session_ok"] | types["Destroy_session_none"];
+  export type NewSession = types["New_session_created"];
+  export type Object = types["Gzip_packed"];
+  export type MsgsAck = types["Msgs_ack"];
+  export type BadMsgNotification = types["Bad_msg_notification"] | types["Bad_server_salt"];
+  export type MsgResendReq = types["Msg_resend_req"];
+  export type MsgsStateReq = types["Msgs_state_req"];
+  export type MsgsStateInfo = types["Msgs_state_info"];
+  export type MsgsAllInfo = types["Msgs_all_info"];
+  export type MsgDetailedInfo = types["Msg_detailed_info"] | types["Msg_new_detailed_info"];
+  export type DestroyAuthKeyRes = types["Destroy_auth_key_ok"] | types["Destroy_auth_key_none"] | types["Destroy_auth_key_fail"];
+  export type HttpWait = types["Http_wait"];
+  export type True = types["True"];
+  export type Error = types["Error"];
+  export type Null = types["Null"];
+  export type InputPeer = types["InputPeerEmpty"] | types["InputPeerSelf"] | types["InputPeerChat"] | types["InputPeerUser"] | types["InputPeerChannel"] | types["InputPeerUserFromMessage"] | types["InputPeerChannelFromMessage"];
+  export type InputUser = types["InputUserEmpty"] | types["InputUserSelf"] | types["InputUser"] | types["InputUserFromMessage"];
+  export type InputContact = types["InputPhoneContact"];
+  export type InputFile = types["InputFile"] | types["InputFileBig"];
+  export type InputMedia = types["InputMediaEmpty"] | types["InputMediaUploadedPhoto"] | types["InputMediaPhoto"] | types["InputMediaGeoPoint"] | types["InputMediaContact"] | types["InputMediaUploadedDocument"] | types["InputMediaDocument"] | types["InputMediaVenue"] | types["InputMediaPhotoExternal"] | types["InputMediaDocumentExternal"] | types["InputMediaGame"] | types["InputMediaInvoice"] | types["InputMediaGeoLive"] | types["InputMediaPoll"] | types["InputMediaDice"] | types["InputMediaStory"] | types["InputMediaWebPage"];
+  export type InputChatPhoto = types["InputChatPhotoEmpty"] | types["InputChatUploadedPhoto"] | types["InputChatPhoto"];
+  export type InputGeoPoint = types["InputGeoPointEmpty"] | types["InputGeoPoint"];
+  export type InputPhoto = types["InputPhotoEmpty"] | types["InputPhoto"];
+  export type InputFileLocation = types["InputFileLocation"] | types["InputEncryptedFileLocation"] | types["InputDocumentFileLocation"] | types["InputSecureFileLocation"] | types["InputTakeoutFileLocation"] | types["InputPhotoFileLocation"] | types["InputPhotoLegacyFileLocation"] | types["InputPeerPhotoFileLocation"] | types["InputStickerSetThumb"] | types["InputGroupCallStream"];
+  export type Peer = types["PeerUser"] | types["PeerChat"] | types["PeerChannel"];
+  export type User = types["UserEmpty"] | types["User"];
+  export type UserProfilePhoto = types["UserProfilePhotoEmpty"] | types["UserProfilePhoto"];
+  export type UserStatus = types["UserStatusEmpty"] | types["UserStatusOnline"] | types["UserStatusOffline"] | types["UserStatusRecently"] | types["UserStatusLastWeek"] | types["UserStatusLastMonth"];
+  export type Chat = types["ChatEmpty"] | types["Chat"] | types["ChatForbidden"] | types["Channel"] | types["ChannelForbidden"];
+  export type ChatFull = types["ChatFull"] | types["ChannelFull"];
+  export type ChatParticipant = types["ChatParticipant"] | types["ChatParticipantCreator"] | types["ChatParticipantAdmin"];
+  export type ChatParticipants = types["ChatParticipantsForbidden"] | types["ChatParticipants"];
+  export type ChatPhoto = types["ChatPhotoEmpty"] | types["ChatPhoto"];
+  export type Message = types["MessageEmpty"] | types["Message"] | types["MessageService"];
+  export type MessageMedia = types["MessageMediaEmpty"] | types["MessageMediaPhoto"] | types["MessageMediaGeo"] | types["MessageMediaContact"] | types["MessageMediaUnsupported"] | types["MessageMediaDocument"] | types["MessageMediaWebPage"] | types["MessageMediaVenue"] | types["MessageMediaGame"] | types["MessageMediaInvoice"] | types["MessageMediaGeoLive"] | types["MessageMediaPoll"] | types["MessageMediaDice"] | types["MessageMediaStory"] | types["MessageMediaGiveaway"];
+  export type MessageAction = types["MessageActionEmpty"] | types["MessageActionChatCreate"] | types["MessageActionChatEditTitle"] | types["MessageActionChatEditPhoto"] | types["MessageActionChatDeletePhoto"] | types["MessageActionChatAddUser"] | types["MessageActionChatDeleteUser"] | types["MessageActionChatJoinedByLink"] | types["MessageActionChannelCreate"] | types["MessageActionChatMigrateTo"] | types["MessageActionChannelMigrateFrom"] | types["MessageActionPinMessage"] | types["MessageActionHistoryClear"] | types["MessageActionGameScore"] | types["MessageActionPaymentSentMe"] | types["MessageActionPaymentSent"] | types["MessageActionPhoneCall"] | types["MessageActionScreenshotTaken"] | types["MessageActionCustomAction"] | types["MessageActionBotAllowed"] | types["MessageActionSecureValuesSentMe"] | types["MessageActionSecureValuesSent"] | types["MessageActionContactSignUp"] | types["MessageActionGeoProximityReached"] | types["MessageActionGroupCall"] | types["MessageActionInviteToGroupCall"] | types["MessageActionSetMessagesTTL"] | types["MessageActionGroupCallScheduled"] | types["MessageActionSetChatTheme"] | types["MessageActionChatJoinedByRequest"] | types["MessageActionWebViewDataSentMe"] | types["MessageActionWebViewDataSent"] | types["MessageActionGiftPremium"] | types["MessageActionTopicCreate"] | types["MessageActionTopicEdit"] | types["MessageActionSuggestProfilePhoto"] | types["MessageActionRequestedPeer"] | types["MessageActionSetChatWallPaper"] | types["MessageActionGiftCode"] | types["MessageActionGiveawayLaunch"] | types["MessageActionGiveawayResults"];
+  export type Dialog = types["Dialog"] | types["DialogFolder"];
+  export type Photo = types["PhotoEmpty"] | types["Photo"];
+  export type PhotoSize = types["PhotoSizeEmpty"] | types["PhotoSize"] | types["PhotoCachedSize"] | types["PhotoStrippedSize"] | types["PhotoSizeProgressive"] | types["PhotoPathSize"];
+  export type GeoPoint = types["GeoPointEmpty"] | types["GeoPoint"];
+  export type InputNotifyPeer = types["InputNotifyPeer"] | types["InputNotifyUsers"] | types["InputNotifyChats"] | types["InputNotifyBroadcasts"] | types["InputNotifyForumTopic"];
+  export type InputPeerNotifySettings = types["InputPeerNotifySettings"];
+  export type PeerNotifySettings = types["PeerNotifySettings"];
+  export type PeerSettings = types["PeerSettings"];
+  export type WallPaper = types["WallPaper"] | types["WallPaperNoFile"];
+  export type ReportReason = types["InputReportReasonSpam"] | types["InputReportReasonViolence"] | types["InputReportReasonPornography"] | types["InputReportReasonChildAbuse"] | types["InputReportReasonOther"] | types["InputReportReasonCopyright"] | types["InputReportReasonGeoIrrelevant"] | types["InputReportReasonFake"] | types["InputReportReasonIllegalDrugs"] | types["InputReportReasonPersonalDetails"];
+  export type UserFull = types["UserFull"];
+  export type Contact = types["Contact"];
+  export type ImportedContact = types["ImportedContact"];
+  export type ContactStatus = types["ContactStatus"];
+  export type MessagesFilter = types["InputMessagesFilterEmpty"] | types["InputMessagesFilterPhotos"] | types["InputMessagesFilterVideo"] | types["InputMessagesFilterPhotoVideo"] | types["InputMessagesFilterDocument"] | types["InputMessagesFilterUrl"] | types["InputMessagesFilterGif"] | types["InputMessagesFilterVoice"] | types["InputMessagesFilterMusic"] | types["InputMessagesFilterChatPhotos"] | types["InputMessagesFilterPhoneCalls"] | types["InputMessagesFilterRoundVoice"] | types["InputMessagesFilterRoundVideo"] | types["InputMessagesFilterMyMentions"] | types["InputMessagesFilterGeo"] | types["InputMessagesFilterContacts"] | types["InputMessagesFilterPinned"];
+  export type Update = types["UpdateNewMessage"] | types["UpdateMessageID"] | types["UpdateDeleteMessages"] | types["UpdateUserTyping"] | types["UpdateChatUserTyping"] | types["UpdateChatParticipants"] | types["UpdateUserStatus"] | types["UpdateUserName"] | types["UpdateNewAuthorization"] | types["UpdateNewEncryptedMessage"] | types["UpdateEncryptedChatTyping"] | types["UpdateEncryption"] | types["UpdateEncryptedMessagesRead"] | types["UpdateChatParticipantAdd"] | types["UpdateChatParticipantDelete"] | types["UpdateDcOptions"] | types["UpdateNotifySettings"] | types["UpdateServiceNotification"] | types["UpdatePrivacy"] | types["UpdateUserPhone"] | types["UpdateReadHistoryInbox"] | types["UpdateReadHistoryOutbox"] | types["UpdateWebPage"] | types["UpdateReadMessagesContents"] | types["UpdateChannelTooLong"] | types["UpdateChannel"] | types["UpdateNewChannelMessage"] | types["UpdateReadChannelInbox"] | types["UpdateDeleteChannelMessages"] | types["UpdateChannelMessageViews"] | types["UpdateChatParticipantAdmin"] | types["UpdateNewStickerSet"] | types["UpdateStickerSetsOrder"] | types["UpdateStickerSets"] | types["UpdateSavedGifs"] | types["UpdateBotInlineQuery"] | types["UpdateBotInlineSend"] | types["UpdateEditChannelMessage"] | types["UpdateBotCallbackQuery"] | types["UpdateEditMessage"] | types["UpdateInlineBotCallbackQuery"] | types["UpdateReadChannelOutbox"] | types["UpdateDraftMessage"] | types["UpdateReadFeaturedStickers"] | types["UpdateRecentStickers"] | types["UpdateConfig"] | types["UpdatePtsChanged"] | types["UpdateChannelWebPage"] | types["UpdateDialogPinned"] | types["UpdatePinnedDialogs"] | types["UpdateBotWebhookJSON"] | types["UpdateBotWebhookJSONQuery"] | types["UpdateBotShippingQuery"] | types["UpdateBotPrecheckoutQuery"] | types["UpdatePhoneCall"] | types["UpdateLangPackTooLong"] | types["UpdateLangPack"] | types["UpdateFavedStickers"] | types["UpdateChannelReadMessagesContents"] | types["UpdateContactsReset"] | types["UpdateChannelAvailableMessages"] | types["UpdateDialogUnreadMark"] | types["UpdateMessagePoll"] | types["UpdateChatDefaultBannedRights"] | types["UpdateFolderPeers"] | types["UpdatePeerSettings"] | types["UpdatePeerLocated"] | types["UpdateNewScheduledMessage"] | types["UpdateDeleteScheduledMessages"] | types["UpdateTheme"] | types["UpdateGeoLiveViewed"] | types["UpdateLoginToken"] | types["UpdateMessagePollVote"] | types["UpdateDialogFilter"] | types["UpdateDialogFilterOrder"] | types["UpdateDialogFilters"] | types["UpdatePhoneCallSignalingData"] | types["UpdateChannelMessageForwards"] | types["UpdateReadChannelDiscussionInbox"] | types["UpdateReadChannelDiscussionOutbox"] | types["UpdatePeerBlocked"] | types["UpdateChannelUserTyping"] | types["UpdatePinnedMessages"] | types["UpdatePinnedChannelMessages"] | types["UpdateChat"] | types["UpdateGroupCallParticipants"] | types["UpdateGroupCall"] | types["UpdatePeerHistoryTTL"] | types["UpdateChatParticipant"] | types["UpdateChannelParticipant"] | types["UpdateBotStopped"] | types["UpdateGroupCallConnection"] | types["UpdateBotCommands"] | types["UpdatePendingJoinRequests"] | types["UpdateBotChatInviteRequester"] | types["UpdateMessageReactions"] | types["UpdateAttachMenuBots"] | types["UpdateWebViewResultSent"] | types["UpdateBotMenuButton"] | types["UpdateSavedRingtones"] | types["UpdateTranscribedAudio"] | types["UpdateReadFeaturedEmojiStickers"] | types["UpdateUserEmojiStatus"] | types["UpdateRecentEmojiStatuses"] | types["UpdateRecentReactions"] | types["UpdateMoveStickerSetToTop"] | types["UpdateMessageExtendedMedia"] | types["UpdateChannelPinnedTopic"] | types["UpdateChannelPinnedTopics"] | types["UpdateUser"] | types["UpdateAutoSaveSettings"] | types["UpdateGroupInvitePrivacyForbidden"] | types["UpdateStory"] | types["UpdateReadStories"] | types["UpdateStoryID"] | types["UpdateStoriesStealthMode"] | types["UpdateSentStoryReaction"] | types["UpdateBotChatBoost"] | types["UpdateChannelViewForumAsMessages"] | types["UpdatePeerWallpaper"];
+  export type Updates = types["UpdatesTooLong"] | types["UpdateShortMessage"] | types["UpdateShortChatMessage"] | types["UpdateShort"] | types["UpdatesCombined"] | types["Updates"] | types["UpdateShortSentMessage"];
+  export type DcOption = types["DcOption"];
+  export type Config = types["Config"];
+  export type NearestDc = types["NearestDc"];
+  export type EncryptedChat = types["EncryptedChatEmpty"] | types["EncryptedChatWaiting"] | types["EncryptedChatRequested"] | types["EncryptedChat"] | types["EncryptedChatDiscarded"];
+  export type InputEncryptedChat = types["InputEncryptedChat"];
+  export type EncryptedFile = types["EncryptedFileEmpty"] | types["EncryptedFile"];
+  export type InputEncryptedFile = types["InputEncryptedFileEmpty"] | types["InputEncryptedFileUploaded"] | types["InputEncryptedFile"] | types["InputEncryptedFileBigUploaded"];
+  export type EncryptedMessage = types["EncryptedMessage"] | types["EncryptedMessageService"];
+  export type InputDocument = types["InputDocumentEmpty"] | types["InputDocument"];
+  export type Document = types["DocumentEmpty"] | types["Document"];
+  export type NotifyPeer = types["NotifyPeer"] | types["NotifyUsers"] | types["NotifyChats"] | types["NotifyBroadcasts"] | types["NotifyForumTopic"];
+  export type SendMessageAction = types["SendMessageTypingAction"] | types["SendMessageCancelAction"] | types["SendMessageRecordVideoAction"] | types["SendMessageUploadVideoAction"] | types["SendMessageRecordAudioAction"] | types["SendMessageUploadAudioAction"] | types["SendMessageUploadPhotoAction"] | types["SendMessageUploadDocumentAction"] | types["SendMessageGeoLocationAction"] | types["SendMessageChooseContactAction"] | types["SendMessageGamePlayAction"] | types["SendMessageRecordRoundAction"] | types["SendMessageUploadRoundAction"] | types["SpeakingInGroupCallAction"] | types["SendMessageHistoryImportAction"] | types["SendMessageChooseStickerAction"] | types["SendMessageEmojiInteraction"] | types["SendMessageEmojiInteractionSeen"];
+  export type InputPrivacyKey = types["InputPrivacyKeyStatusTimestamp"] | types["InputPrivacyKeyChatInvite"] | types["InputPrivacyKeyPhoneCall"] | types["InputPrivacyKeyPhoneP2P"] | types["InputPrivacyKeyForwards"] | types["InputPrivacyKeyProfilePhoto"] | types["InputPrivacyKeyPhoneNumber"] | types["InputPrivacyKeyAddedByPhone"] | types["InputPrivacyKeyVoiceMessages"] | types["InputPrivacyKeyAbout"];
+  export type PrivacyKey = types["PrivacyKeyStatusTimestamp"] | types["PrivacyKeyChatInvite"] | types["PrivacyKeyPhoneCall"] | types["PrivacyKeyPhoneP2P"] | types["PrivacyKeyForwards"] | types["PrivacyKeyProfilePhoto"] | types["PrivacyKeyPhoneNumber"] | types["PrivacyKeyAddedByPhone"] | types["PrivacyKeyVoiceMessages"] | types["PrivacyKeyAbout"];
+  export type InputPrivacyRule = types["InputPrivacyValueAllowContacts"] | types["InputPrivacyValueAllowAll"] | types["InputPrivacyValueAllowUsers"] | types["InputPrivacyValueDisallowContacts"] | types["InputPrivacyValueDisallowAll"] | types["InputPrivacyValueDisallowUsers"] | types["InputPrivacyValueAllowChatParticipants"] | types["InputPrivacyValueDisallowChatParticipants"] | types["InputPrivacyValueAllowCloseFriends"];
+  export type PrivacyRule = types["PrivacyValueAllowContacts"] | types["PrivacyValueAllowAll"] | types["PrivacyValueAllowUsers"] | types["PrivacyValueDisallowContacts"] | types["PrivacyValueDisallowAll"] | types["PrivacyValueDisallowUsers"] | types["PrivacyValueAllowChatParticipants"] | types["PrivacyValueDisallowChatParticipants"] | types["PrivacyValueAllowCloseFriends"];
+  export type AccountDaysTTL = types["AccountDaysTTL"];
+  export type DocumentAttribute = types["DocumentAttributeImageSize"] | types["DocumentAttributeAnimated"] | types["DocumentAttributeSticker"] | types["DocumentAttributeVideo"] | types["DocumentAttributeAudio"] | types["DocumentAttributeFilename"] | types["DocumentAttributeHasStickers"] | types["DocumentAttributeCustomEmoji"];
+  export type StickerPack = types["StickerPack"];
+  export type WebPage = types["WebPageEmpty"] | types["WebPagePending"] | types["WebPage"] | types["WebPageNotModified"];
+  export type Authorization = types["Authorization"];
+  export type ReceivedNotifyMessage = types["ReceivedNotifyMessage"];
+  export type ExportedChatInvite = types["ChatInviteExported"] | types["ChatInvitePublicJoinRequests"];
+  export type ChatInvite = types["ChatInviteAlready"] | types["ChatInvite"] | types["ChatInvitePeek"];
+  export type InputStickerSet = types["InputStickerSetEmpty"] | types["InputStickerSetID"] | types["InputStickerSetShortName"] | types["InputStickerSetAnimatedEmoji"] | types["InputStickerSetDice"] | types["InputStickerSetAnimatedEmojiAnimations"] | types["InputStickerSetPremiumGifts"] | types["InputStickerSetEmojiGenericAnimations"] | types["InputStickerSetEmojiDefaultStatuses"] | types["InputStickerSetEmojiDefaultTopicIcons"];
+  export type StickerSet = types["StickerSet"];
+  export type BotCommand = types["BotCommand"];
+  export type BotInfo = types["BotInfo"];
+  export type KeyboardButton = types["KeyboardButton"] | types["KeyboardButtonUrl"] | types["KeyboardButtonCallback"] | types["KeyboardButtonRequestPhone"] | types["KeyboardButtonRequestGeoLocation"] | types["KeyboardButtonSwitchInline"] | types["KeyboardButtonGame"] | types["KeyboardButtonBuy"] | types["KeyboardButtonUrlAuth"] | types["InputKeyboardButtonUrlAuth"] | types["KeyboardButtonRequestPoll"] | types["InputKeyboardButtonUserProfile"] | types["KeyboardButtonUserProfile"] | types["KeyboardButtonWebView"] | types["KeyboardButtonSimpleWebView"] | types["KeyboardButtonRequestPeer"];
+  export type KeyboardButtonRow = types["KeyboardButtonRow"];
+  export type ReplyMarkup = types["ReplyKeyboardHide"] | types["ReplyKeyboardForceReply"] | types["ReplyKeyboardMarkup"] | types["ReplyInlineMarkup"];
+  export type MessageEntity = types["MessageEntityUnknown"] | types["MessageEntityMention"] | types["MessageEntityHashtag"] | types["MessageEntityBotCommand"] | types["MessageEntityUrl"] | types["MessageEntityEmail"] | types["MessageEntityBold"] | types["MessageEntityItalic"] | types["MessageEntityCode"] | types["MessageEntityPre"] | types["MessageEntityTextUrl"] | types["MessageEntityMentionName"] | types["InputMessageEntityMentionName"] | types["MessageEntityPhone"] | types["MessageEntityCashtag"] | types["MessageEntityUnderline"] | types["MessageEntityStrike"] | types["MessageEntityBankCard"] | types["MessageEntitySpoiler"] | types["MessageEntityCustomEmoji"] | types["MessageEntityBlockquote"];
+  export type InputChannel = types["InputChannelEmpty"] | types["InputChannel"] | types["InputChannelFromMessage"];
+  export type MessageRange = types["MessageRange"];
+  export type ChannelMessagesFilter = types["ChannelMessagesFilterEmpty"] | types["ChannelMessagesFilter"];
+  export type ChannelParticipant = types["ChannelParticipant"] | types["ChannelParticipantSelf"] | types["ChannelParticipantCreator"] | types["ChannelParticipantAdmin"] | types["ChannelParticipantBanned"] | types["ChannelParticipantLeft"];
+  export type ChannelParticipantsFilter = types["ChannelParticipantsRecent"] | types["ChannelParticipantsAdmins"] | types["ChannelParticipantsKicked"] | types["ChannelParticipantsBots"] | types["ChannelParticipantsBanned"] | types["ChannelParticipantsSearch"] | types["ChannelParticipantsContacts"] | types["ChannelParticipantsMentions"];
+  export type InputBotInlineMessage = types["InputBotInlineMessageMediaAuto"] | types["InputBotInlineMessageText"] | types["InputBotInlineMessageMediaGeo"] | types["InputBotInlineMessageMediaVenue"] | types["InputBotInlineMessageMediaContact"] | types["InputBotInlineMessageGame"] | types["InputBotInlineMessageMediaInvoice"] | types["InputBotInlineMessageMediaWebPage"];
+  export type InputBotInlineResult = types["InputBotInlineResult"] | types["InputBotInlineResultPhoto"] | types["InputBotInlineResultDocument"] | types["InputBotInlineResultGame"];
+  export type BotInlineMessage = types["BotInlineMessageMediaAuto"] | types["BotInlineMessageText"] | types["BotInlineMessageMediaGeo"] | types["BotInlineMessageMediaVenue"] | types["BotInlineMessageMediaContact"] | types["BotInlineMessageMediaInvoice"] | types["BotInlineMessageMediaWebPage"];
+  export type BotInlineResult = types["BotInlineResult"] | types["BotInlineMediaResult"];
+  export type ExportedMessageLink = types["ExportedMessageLink"];
+  export type MessageFwdHeader = types["MessageFwdHeader"];
+  export type InputBotInlineMessageID = types["InputBotInlineMessageID"] | types["InputBotInlineMessageID64"];
+  export type InlineBotSwitchPM = types["InlineBotSwitchPM"];
+  export type TopPeer = types["TopPeer"];
+  export type TopPeerCategory = types["TopPeerCategoryBotsPM"] | types["TopPeerCategoryBotsInline"] | types["TopPeerCategoryCorrespondents"] | types["TopPeerCategoryGroups"] | types["TopPeerCategoryChannels"] | types["TopPeerCategoryPhoneCalls"] | types["TopPeerCategoryForwardUsers"] | types["TopPeerCategoryForwardChats"];
+  export type TopPeerCategoryPeers = types["TopPeerCategoryPeers"];
+  export type DraftMessage = types["DraftMessageEmpty"] | types["DraftMessage"];
+  export type StickerSetCovered = types["StickerSetCovered"] | types["StickerSetMultiCovered"] | types["StickerSetFullCovered"] | types["StickerSetNoCovered"];
+  export type MaskCoords = types["MaskCoords"];
+  export type InputStickeredMedia = types["InputStickeredMediaPhoto"] | types["InputStickeredMediaDocument"];
+  export type Game = types["Game"];
+  export type InputGame = types["InputGameID"] | types["InputGameShortName"];
+  export type HighScore = types["HighScore"];
+  export type RichText = types["TextEmpty"] | types["TextPlain"] | types["TextBold"] | types["TextItalic"] | types["TextUnderline"] | types["TextStrike"] | types["TextFixed"] | types["TextUrl"] | types["TextEmail"] | types["TextConcat"] | types["TextSubscript"] | types["TextSuperscript"] | types["TextMarked"] | types["TextPhone"] | types["TextImage"] | types["TextAnchor"];
+  export type PageBlock = types["PageBlockUnsupported"] | types["PageBlockTitle"] | types["PageBlockSubtitle"] | types["PageBlockAuthorDate"] | types["PageBlockHeader"] | types["PageBlockSubheader"] | types["PageBlockParagraph"] | types["PageBlockPreformatted"] | types["PageBlockFooter"] | types["PageBlockDivider"] | types["PageBlockAnchor"] | types["PageBlockList"] | types["PageBlockBlockquote"] | types["PageBlockPullquote"] | types["PageBlockPhoto"] | types["PageBlockVideo"] | types["PageBlockCover"] | types["PageBlockEmbed"] | types["PageBlockEmbedPost"] | types["PageBlockCollage"] | types["PageBlockSlideshow"] | types["PageBlockChannel"] | types["PageBlockAudio"] | types["PageBlockKicker"] | types["PageBlockTable"] | types["PageBlockOrderedList"] | types["PageBlockDetails"] | types["PageBlockRelatedArticles"] | types["PageBlockMap"];
+  export type PhoneCallDiscardReason = types["PhoneCallDiscardReasonMissed"] | types["PhoneCallDiscardReasonDisconnect"] | types["PhoneCallDiscardReasonHangup"] | types["PhoneCallDiscardReasonBusy"];
+  export type DataJSON = types["DataJSON"];
+  export type LabeledPrice = types["LabeledPrice"];
+  export type Invoice = types["Invoice"];
+  export type PaymentCharge = types["PaymentCharge"];
+  export type PostAddress = types["PostAddress"];
+  export type PaymentRequestedInfo = types["PaymentRequestedInfo"];
+  export type PaymentSavedCredentials = types["PaymentSavedCredentialsCard"];
+  export type WebDocument = types["WebDocument"] | types["WebDocumentNoProxy"];
+  export type InputWebDocument = types["InputWebDocument"];
+  export type InputWebFileLocation = types["InputWebFileLocation"] | types["InputWebFileGeoPointLocation"] | types["InputWebFileAudioAlbumThumbLocation"];
+  export type InputPaymentCredentials = types["InputPaymentCredentialsSaved"] | types["InputPaymentCredentials"] | types["InputPaymentCredentialsApplePay"] | types["InputPaymentCredentialsGooglePay"];
+  export type ShippingOption = types["ShippingOption"];
+  export type InputStickerSetItem = types["InputStickerSetItem"];
+  export type InputPhoneCall = types["InputPhoneCall"];
+  export type PhoneCall = types["PhoneCallEmpty"] | types["PhoneCallWaiting"] | types["PhoneCallRequested"] | types["PhoneCallAccepted"] | types["PhoneCall"] | types["PhoneCallDiscarded"];
+  export type PhoneConnection = types["PhoneConnection"] | types["PhoneConnectionWebrtc"];
+  export type PhoneCallProtocol = types["PhoneCallProtocol"];
+  export type CdnPublicKey = types["CdnPublicKey"];
+  export type CdnConfig = types["CdnConfig"];
+  export type LangPackString = types["LangPackString"] | types["LangPackStringPluralized"] | types["LangPackStringDeleted"];
+  export type LangPackDifference = types["LangPackDifference"];
+  export type LangPackLanguage = types["LangPackLanguage"];
+  export type ChannelAdminLogEventAction = types["ChannelAdminLogEventActionChangeTitle"] | types["ChannelAdminLogEventActionChangeAbout"] | types["ChannelAdminLogEventActionChangeUsername"] | types["ChannelAdminLogEventActionChangePhoto"] | types["ChannelAdminLogEventActionToggleInvites"] | types["ChannelAdminLogEventActionToggleSignatures"] | types["ChannelAdminLogEventActionUpdatePinned"] | types["ChannelAdminLogEventActionEditMessage"] | types["ChannelAdminLogEventActionDeleteMessage"] | types["ChannelAdminLogEventActionParticipantJoin"] | types["ChannelAdminLogEventActionParticipantLeave"] | types["ChannelAdminLogEventActionParticipantInvite"] | types["ChannelAdminLogEventActionParticipantToggleBan"] | types["ChannelAdminLogEventActionParticipantToggleAdmin"] | types["ChannelAdminLogEventActionChangeStickerSet"] | types["ChannelAdminLogEventActionTogglePreHistoryHidden"] | types["ChannelAdminLogEventActionDefaultBannedRights"] | types["ChannelAdminLogEventActionStopPoll"] | types["ChannelAdminLogEventActionChangeLinkedChat"] | types["ChannelAdminLogEventActionChangeLocation"] | types["ChannelAdminLogEventActionToggleSlowMode"] | types["ChannelAdminLogEventActionStartGroupCall"] | types["ChannelAdminLogEventActionDiscardGroupCall"] | types["ChannelAdminLogEventActionParticipantMute"] | types["ChannelAdminLogEventActionParticipantUnmute"] | types["ChannelAdminLogEventActionToggleGroupCallSetting"] | types["ChannelAdminLogEventActionParticipantJoinByInvite"] | types["ChannelAdminLogEventActionExportedInviteDelete"] | types["ChannelAdminLogEventActionExportedInviteRevoke"] | types["ChannelAdminLogEventActionExportedInviteEdit"] | types["ChannelAdminLogEventActionParticipantVolume"] | types["ChannelAdminLogEventActionChangeHistoryTTL"] | types["ChannelAdminLogEventActionParticipantJoinByRequest"] | types["ChannelAdminLogEventActionToggleNoForwards"] | types["ChannelAdminLogEventActionSendMessage"] | types["ChannelAdminLogEventActionChangeAvailableReactions"] | types["ChannelAdminLogEventActionChangeUsernames"] | types["ChannelAdminLogEventActionToggleForum"] | types["ChannelAdminLogEventActionCreateTopic"] | types["ChannelAdminLogEventActionEditTopic"] | types["ChannelAdminLogEventActionDeleteTopic"] | types["ChannelAdminLogEventActionPinTopic"] | types["ChannelAdminLogEventActionToggleAntiSpam"] | types["ChannelAdminLogEventActionChangeColor"] | types["ChannelAdminLogEventActionChangeBackgroundEmoji"];
+  export type ChannelAdminLogEvent = types["ChannelAdminLogEvent"];
+  export type ChannelAdminLogEventsFilter = types["ChannelAdminLogEventsFilter"];
+  export type PopularContact = types["PopularContact"];
+  export type RecentMeUrl = types["RecentMeUrlUnknown"] | types["RecentMeUrlUser"] | types["RecentMeUrlChat"] | types["RecentMeUrlChatInvite"] | types["RecentMeUrlStickerSet"];
+  export type InputSingleMedia = types["InputSingleMedia"];
+  export type WebAuthorization = types["WebAuthorization"];
+  export type InputMessage = types["InputMessageID"] | types["InputMessageReplyTo"] | types["InputMessagePinned"] | types["InputMessageCallbackQuery"];
+  export type InputDialogPeer = types["InputDialogPeer"] | types["InputDialogPeerFolder"];
+  export type DialogPeer = types["DialogPeer"] | types["DialogPeerFolder"];
+  export type FileHash = types["FileHash"];
+  export type InputClientProxy = types["InputClientProxy"];
+  export type InputSecureFile = types["InputSecureFileUploaded"] | types["InputSecureFile"];
+  export type SecureFile = types["SecureFileEmpty"] | types["SecureFile"];
+  export type SecureData = types["SecureData"];
+  export type SecurePlainData = types["SecurePlainPhone"] | types["SecurePlainEmail"];
+  export type SecureValueType = types["SecureValueTypePersonalDetails"] | types["SecureValueTypePassport"] | types["SecureValueTypeDriverLicense"] | types["SecureValueTypeIdentityCard"] | types["SecureValueTypeInternalPassport"] | types["SecureValueTypeAddress"] | types["SecureValueTypeUtilityBill"] | types["SecureValueTypeBankStatement"] | types["SecureValueTypeRentalAgreement"] | types["SecureValueTypePassportRegistration"] | types["SecureValueTypeTemporaryRegistration"] | types["SecureValueTypePhone"] | types["SecureValueTypeEmail"];
+  export type SecureValue = types["SecureValue"];
+  export type InputSecureValue = types["InputSecureValue"];
+  export type SecureValueHash = types["SecureValueHash"];
+  export type SecureValueError = types["SecureValueErrorData"] | types["SecureValueErrorFrontSide"] | types["SecureValueErrorReverseSide"] | types["SecureValueErrorSelfie"] | types["SecureValueErrorFile"] | types["SecureValueErrorFiles"] | types["SecureValueError"] | types["SecureValueErrorTranslationFile"] | types["SecureValueErrorTranslationFiles"];
+  export type SecureCredentialsEncrypted = types["SecureCredentialsEncrypted"];
+  export type SavedContact = types["SavedPhoneContact"];
+  export type PasswordKdfAlgo = types["PasswordKdfAlgoUnknown"] | types["PasswordKdfAlgoSHA256SHA256PBKDF2HMACSHA512iter100000SHA256ModPow"];
+  export type SecurePasswordKdfAlgo = types["SecurePasswordKdfAlgoUnknown"] | types["SecurePasswordKdfAlgoPBKDF2HMACSHA512iter100000"] | types["SecurePasswordKdfAlgoSHA512"];
+  export type SecureSecretSettings = types["SecureSecretSettings"];
+  export type InputCheckPasswordSRP = types["InputCheckPasswordEmpty"] | types["InputCheckPasswordSRP"];
+  export type SecureRequiredType = types["SecureRequiredType"] | types["SecureRequiredTypeOneOf"];
+  export type InputAppEvent = types["InputAppEvent"];
+  export type JSONObjectValue = types["JsonObjectValue"];
+  export type JSONValue = types["JsonNull"] | types["JsonBool"] | types["JsonNumber"] | types["JsonString"] | types["JsonArray"] | types["JsonObject"];
+  export type PageTableCell = types["PageTableCell"];
+  export type PageTableRow = types["PageTableRow"];
+  export type PageCaption = types["PageCaption"];
+  export type PageListItem = types["PageListItemText"] | types["PageListItemBlocks"];
+  export type PageListOrderedItem = types["PageListOrderedItemText"] | types["PageListOrderedItemBlocks"];
+  export type PageRelatedArticle = types["PageRelatedArticle"];
+  export type Page = types["Page"];
+  export type PollAnswer = types["PollAnswer"];
+  export type Poll = types["Poll"];
+  export type PollAnswerVoters = types["PollAnswerVoters"];
+  export type PollResults = types["PollResults"];
+  export type ChatOnlines = types["ChatOnlines"];
+  export type StatsURL = types["StatsURL"];
+  export type ChatAdminRights = types["ChatAdminRights"];
+  export type ChatBannedRights = types["ChatBannedRights"];
+  export type InputWallPaper = types["InputWallPaper"] | types["InputWallPaperSlug"] | types["InputWallPaperNoFile"];
+  export type CodeSettings = types["CodeSettings"];
+  export type WallPaperSettings = types["WallPaperSettings"];
+  export type AutoDownloadSettings = types["AutoDownloadSettings"];
+  export type EmojiKeyword = types["EmojiKeyword"] | types["EmojiKeywordDeleted"];
+  export type EmojiKeywordsDifference = types["EmojiKeywordsDifference"];
+  export type EmojiURL = types["EmojiURL"];
+  export type EmojiLanguage = types["EmojiLanguage"];
+  export type Folder = types["Folder"];
+  export type InputFolderPeer = types["InputFolderPeer"];
+  export type FolderPeer = types["FolderPeer"];
+  export type UrlAuthResult = types["UrlAuthResultRequest"] | types["UrlAuthResultAccepted"] | types["UrlAuthResultDefault"];
+  export type ChannelLocation = types["ChannelLocationEmpty"] | types["ChannelLocation"];
+  export type PeerLocated = types["PeerLocated"] | types["PeerSelfLocated"];
+  export type RestrictionReason = types["RestrictionReason"];
+  export type InputTheme = types["InputTheme"] | types["InputThemeSlug"];
+  export type Theme = types["Theme"];
+  export type BaseTheme = types["BaseThemeClassic"] | types["BaseThemeDay"] | types["BaseThemeNight"] | types["BaseThemeTinted"] | types["BaseThemeArctic"];
+  export type InputThemeSettings = types["InputThemeSettings"];
+  export type ThemeSettings = types["ThemeSettings"];
+  export type WebPageAttribute = types["WebPageAttributeTheme"] | types["WebPageAttributeStory"];
+  export type BankCardOpenUrl = types["BankCardOpenUrl"];
+  export type DialogFilter = types["DialogFilter"] | types["DialogFilterDefault"] | types["DialogFilterChatlist"];
+  export type DialogFilterSuggested = types["DialogFilterSuggested"];
+  export type StatsDateRangeDays = types["StatsDateRangeDays"];
+  export type StatsAbsValueAndPrev = types["StatsAbsValueAndPrev"];
+  export type StatsPercentValue = types["StatsPercentValue"];
+  export type StatsGraph = types["StatsGraphAsync"] | types["StatsGraphError"] | types["StatsGraph"];
+  export type VideoSize = types["VideoSize"] | types["VideoSizeEmojiMarkup"] | types["VideoSizeStickerMarkup"];
+  export type StatsGroupTopPoster = types["StatsGroupTopPoster"];
+  export type StatsGroupTopAdmin = types["StatsGroupTopAdmin"];
+  export type StatsGroupTopInviter = types["StatsGroupTopInviter"];
+  export type GlobalPrivacySettings = types["GlobalPrivacySettings"];
+  export type MessageViews = types["MessageViews"];
+  export type MessageReplyHeader = types["MessageReplyHeader"] | types["MessageReplyStoryHeader"];
+  export type MessageReplies = types["MessageReplies"];
+  export type PeerBlocked = types["PeerBlocked"];
+  export type GroupCall = types["GroupCallDiscarded"] | types["GroupCall"];
+  export type InputGroupCall = types["InputGroupCall"];
+  export type GroupCallParticipant = types["GroupCallParticipant"];
+  export type InlineQueryPeerType = types["InlineQueryPeerTypeSameBotPM"] | types["InlineQueryPeerTypePM"] | types["InlineQueryPeerTypeChat"] | types["InlineQueryPeerTypeMegagroup"] | types["InlineQueryPeerTypeBroadcast"] | types["InlineQueryPeerTypeBotPM"];
+  export type ChatInviteImporter = types["ChatInviteImporter"];
+  export type ChatAdminWithInvites = types["ChatAdminWithInvites"];
+  export type GroupCallParticipantVideoSourceGroup = types["GroupCallParticipantVideoSourceGroup"];
+  export type GroupCallParticipantVideo = types["GroupCallParticipantVideo"];
+  export type BotCommandScope = types["BotCommandScopeDefault"] | types["BotCommandScopeUsers"] | types["BotCommandScopeChats"] | types["BotCommandScopeChatAdmins"] | types["BotCommandScopePeer"] | types["BotCommandScopePeerAdmins"] | types["BotCommandScopePeerUser"];
+  export type SponsoredMessage = types["SponsoredMessage"];
+  export type SearchResultsCalendarPeriod = types["SearchResultsCalendarPeriod"];
+  export type SearchResultsPosition = types["SearchResultPosition"];
+  export type ReactionCount = types["ReactionCount"];
+  export type MessageReactions = types["MessageReactions"];
+  export type AvailableReaction = types["AvailableReaction"];
+  export type MessagePeerReaction = types["MessagePeerReaction"];
+  export type GroupCallStreamChannel = types["GroupCallStreamChannel"];
+  export type AttachMenuBotIconColor = types["AttachMenuBotIconColor"];
+  export type AttachMenuBotIcon = types["AttachMenuBotIcon"];
+  export type AttachMenuBot = types["AttachMenuBot"];
+  export type AttachMenuBots = types["AttachMenuBotsNotModified"] | types["AttachMenuBots"];
+  export type AttachMenuBotsBot = types["AttachMenuBotsBot"];
+  export type WebViewResult = types["WebViewResultUrl"];
+  export type SimpleWebViewResult = types["SimpleWebViewResultUrl"];
+  export type WebViewMessageSent = types["WebViewMessageSent"];
+  export type BotMenuButton = types["BotMenuButtonDefault"] | types["BotMenuButtonCommands"] | types["BotMenuButton"];
+  export type NotificationSound = types["NotificationSoundDefault"] | types["NotificationSoundNone"] | types["NotificationSoundLocal"] | types["NotificationSoundRingtone"];
+  export type AttachMenuPeerType = types["AttachMenuPeerTypeSameBotPM"] | types["AttachMenuPeerTypeBotPM"] | types["AttachMenuPeerTypePM"] | types["AttachMenuPeerTypeChat"] | types["AttachMenuPeerTypeBroadcast"];
+  export type InputInvoice = types["InputInvoiceMessage"] | types["InputInvoiceSlug"] | types["InputInvoicePremiumGiftCode"];
+  export type InputStorePaymentPurpose = types["InputStorePaymentPremiumSubscription"] | types["InputStorePaymentGiftPremium"] | types["InputStorePaymentPremiumGiftCode"] | types["InputStorePaymentPremiumGiveaway"];
+  export type PremiumGiftOption = types["PremiumGiftOption"];
+  export type PaymentFormMethod = types["PaymentFormMethod"];
+  export type EmojiStatus = types["EmojiStatusEmpty"] | types["EmojiStatus"] | types["EmojiStatusUntil"];
+  export type Reaction = types["ReactionEmpty"] | types["ReactionEmoji"] | types["ReactionCustomEmoji"];
+  export type ChatReactions = types["ChatReactionsNone"] | types["ChatReactionsAll"] | types["ChatReactionsSome"];
+  export type EmailVerifyPurpose = types["EmailVerifyPurposeLoginSetup"] | types["EmailVerifyPurposeLoginChange"] | types["EmailVerifyPurposePassport"];
+  export type EmailVerification = types["EmailVerificationCode"] | types["EmailVerificationGoogle"] | types["EmailVerificationApple"];
+  export type PremiumSubscriptionOption = types["PremiumSubscriptionOption"];
+  export type SendAsPeer = types["SendAsPeer"];
+  export type MessageExtendedMedia = types["MessageExtendedMediaPreview"] | types["MessageExtendedMedia"];
+  export type StickerKeyword = types["StickerKeyword"];
+  export type Username = types["Username"];
+  export type ForumTopic = types["ForumTopicDeleted"] | types["ForumTopic"];
+  export type DefaultHistoryTTL = types["DefaultHistoryTTL"];
+  export type ExportedContactToken = types["ExportedContactToken"];
+  export type RequestPeerType = types["RequestPeerTypeUser"] | types["RequestPeerTypeChat"] | types["RequestPeerTypeBroadcast"];
+  export type EmojiList = types["EmojiListNotModified"] | types["EmojiList"];
+  export type EmojiGroup = types["EmojiGroup"];
+  export type TextWithEntities = types["TextWithEntities"];
+  export type AutoSaveSettings = types["AutoSaveSettings"];
+  export type AutoSaveException = types["AutoSaveException"];
+  export type InputBotApp = types["InputBotAppID"] | types["InputBotAppShortName"];
+  export type BotApp = types["BotAppNotModified"] | types["BotApp"];
+  export type AppWebViewResult = types["AppWebViewResultUrl"];
+  export type InlineBotWebView = types["InlineBotWebView"];
+  export type ReadParticipantDate = types["ReadParticipantDate"];
+  export type InputChatlist = types["InputChatlistDialogFilter"];
+  export type ExportedChatlistInvite = types["ExportedChatlistInvite"];
+  export type MessagePeerVote = types["MessagePeerVote"] | types["MessagePeerVoteInputOption"] | types["MessagePeerVoteMultiple"];
+  export type SponsoredWebPage = types["SponsoredWebPage"];
+  export type StoryViews = types["StoryViews"];
+  export type StoryItem = types["StoryItemDeleted"] | types["StoryItemSkipped"] | types["StoryItem"];
+  export type StoryView = types["StoryView"];
+  export type InputReplyTo = types["InputReplyToMessage"] | types["InputReplyToStory"];
+  export type ExportedStoryLink = types["ExportedStoryLink"];
+  export type StoriesStealthMode = types["StoriesStealthMode"];
+  export type MediaAreaCoordinates = types["MediaAreaCoordinates"];
+  export type MediaArea = types["MediaAreaVenue"] | types["InputMediaAreaVenue"] | types["MediaAreaGeoPoint"] | types["MediaAreaSuggestedReaction"];
+  export type PeerStories = types["PeerStories"];
+  export type PremiumGiftCodeOption = types["PremiumGiftCodeOption"];
+  export type PrepaidGiveaway = types["PrepaidGiveaway"];
+  export type Boost = types["Boost"];
+  export type MyBoost = types["MyBoost"];
+  export type StoryFwdHeader = types["StoryFwdHeader"];
+  export type PostInteractionCounters = types["PostInteractionCountersMessage"] | types["PostInteractionCountersStory"];
+  export type PublicForward = types["PublicForwardMessage"] | types["PublicForwardStory"];
+  export type PeerColor = types["PeerColor"];
+  export namespace storage {
+    export type FileType = types["storage"]["FileUnknown"] | types["storage"]["FilePartial"] | types["storage"]["FileJpeg"] | types["storage"]["FileGif"] | types["storage"]["FilePng"] | types["storage"]["FilePdf"] | types["storage"]["FileMp3"] | types["storage"]["FileMov"] | types["storage"]["FileMp4"] | types["storage"]["FileWebp"];
+  }
+  export namespace auth {
+    export type SentCode = types["auth"]["SentCode"] | types["auth"]["SentCodeSuccess"];
+    export type Authorization = types["auth"]["Authorization"] | types["auth"]["AuthorizationSignUpRequired"];
+    export type ExportedAuthorization = types["auth"]["ExportedAuthorization"];
+    export type PasswordRecovery = types["auth"]["PasswordRecovery"];
+    export type CodeType = types["auth"]["CodeTypeSms"] | types["auth"]["CodeTypeCall"] | types["auth"]["CodeTypeFlashCall"] | types["auth"]["CodeTypeMissedCall"] | types["auth"]["CodeTypeFragmentSms"];
+    export type SentCodeType = types["auth"]["SentCodeTypeApp"] | types["auth"]["SentCodeTypeSms"] | types["auth"]["SentCodeTypeCall"] | types["auth"]["SentCodeTypeFlashCall"] | types["auth"]["SentCodeTypeMissedCall"] | types["auth"]["SentCodeTypeEmailCode"] | types["auth"]["SentCodeTypeSetUpEmailRequired"] | types["auth"]["SentCodeTypeFragmentSms"] | types["auth"]["SentCodeTypeFirebaseSms"];
+    export type LoginToken = types["auth"]["LoginToken"] | types["auth"]["LoginTokenMigrateTo"] | types["auth"]["LoginTokenSuccess"];
+    export type LoggedOut = types["auth"]["LoggedOut"];
+  }
+  export namespace contacts {
+    export type Contacts = types["contacts"]["ContactsNotModified"] | types["contacts"]["Contacts"];
+    export type ImportedContacts = types["contacts"]["ImportedContacts"];
+    export type Blocked = types["contacts"]["Blocked"] | types["contacts"]["BlockedSlice"];
+    export type Found = types["contacts"]["Found"];
+    export type ResolvedPeer = types["contacts"]["ResolvedPeer"];
+    export type TopPeers = types["contacts"]["TopPeersNotModified"] | types["contacts"]["TopPeers"] | types["contacts"]["TopPeersDisabled"];
+  }
+  export namespace messages {
+    export type Dialogs = types["messages"]["Dialogs"] | types["messages"]["DialogsSlice"] | types["messages"]["DialogsNotModified"];
+    export type Messages = types["messages"]["Messages"] | types["messages"]["MessagesSlice"] | types["messages"]["ChannelMessages"] | types["messages"]["MessagesNotModified"];
+    export type Chats = types["messages"]["Chats"] | types["messages"]["ChatsSlice"];
+    export type ChatFull = types["messages"]["ChatFull"];
+    export type AffectedHistory = types["messages"]["AffectedHistory"];
+    export type DhConfig = types["messages"]["DhConfigNotModified"] | types["messages"]["DhConfig"];
+    export type SentEncryptedMessage = types["messages"]["SentEncryptedMessage"] | types["messages"]["SentEncryptedFile"];
+    export type Stickers = types["messages"]["StickersNotModified"] | types["messages"]["Stickers"];
+    export type AllStickers = types["messages"]["AllStickersNotModified"] | types["messages"]["AllStickers"];
+    export type AffectedMessages = types["messages"]["AffectedMessages"];
+    export type StickerSet = types["messages"]["StickerSet"] | types["messages"]["StickerSetNotModified"];
+    export type SavedGifs = types["messages"]["SavedGifsNotModified"] | types["messages"]["SavedGifs"];
+    export type BotResults = types["messages"]["BotResults"];
+    export type BotCallbackAnswer = types["messages"]["BotCallbackAnswer"];
+    export type MessageEditData = types["messages"]["MessageEditData"];
+    export type PeerDialogs = types["messages"]["PeerDialogs"];
+    export type FeaturedStickers = types["messages"]["FeaturedStickersNotModified"] | types["messages"]["FeaturedStickers"];
+    export type RecentStickers = types["messages"]["RecentStickersNotModified"] | types["messages"]["RecentStickers"];
+    export type ArchivedStickers = types["messages"]["ArchivedStickers"];
+    export type StickerSetInstallResult = types["messages"]["StickerSetInstallResultSuccess"] | types["messages"]["StickerSetInstallResultArchive"];
+    export type HighScores = types["messages"]["HighScores"];
+    export type FavedStickers = types["messages"]["FavedStickersNotModified"] | types["messages"]["FavedStickers"];
+    export type FoundStickerSets = types["messages"]["FoundStickerSetsNotModified"] | types["messages"]["FoundStickerSets"];
+    export type SearchCounter = types["messages"]["SearchCounter"];
+    export type InactiveChats = types["messages"]["InactiveChats"];
+    export type VotesList = types["messages"]["VotesList"];
+    export type MessageViews = types["messages"]["MessageViews"];
+    export type DiscussionMessage = types["messages"]["DiscussionMessage"];
+    export type HistoryImport = types["messages"]["HistoryImport"];
+    export type HistoryImportParsed = types["messages"]["HistoryImportParsed"];
+    export type AffectedFoundMessages = types["messages"]["AffectedFoundMessages"];
+    export type ExportedChatInvites = types["messages"]["ExportedChatInvites"];
+    export type ExportedChatInvite = types["messages"]["ExportedChatInvite"] | types["messages"]["ExportedChatInviteReplaced"];
+    export type ChatInviteImporters = types["messages"]["ChatInviteImporters"];
+    export type ChatAdminsWithInvites = types["messages"]["ChatAdminsWithInvites"];
+    export type CheckedHistoryImportPeer = types["messages"]["CheckedHistoryImportPeer"];
+    export type SponsoredMessages = types["messages"]["SponsoredMessages"] | types["messages"]["SponsoredMessagesEmpty"];
+    export type SearchResultsCalendar = types["messages"]["SearchResultsCalendar"];
+    export type SearchResultsPositions = types["messages"]["SearchResultsPositions"];
+    export type PeerSettings = types["messages"]["PeerSettings"];
+    export type MessageReactionsList = types["messages"]["MessageReactionsList"];
+    export type AvailableReactions = types["messages"]["AvailableReactionsNotModified"] | types["messages"]["AvailableReactions"];
+    export type TranscribedAudio = types["messages"]["TranscribedAudio"];
+    export type Reactions = types["messages"]["ReactionsNotModified"] | types["messages"]["Reactions"];
+    export type ForumTopics = types["messages"]["ForumTopics"];
+    export type EmojiGroups = types["messages"]["EmojiGroupsNotModified"] | types["messages"]["EmojiGroups"];
+    export type TranslatedText = types["messages"]["TranslateResult"];
+    export type BotApp = types["messages"]["BotApp"];
+    export type WebPage = types["messages"]["WebPage"];
+  }
+  export namespace updates {
+    export type State = types["updates"]["State"];
+    export type Difference = types["updates"]["DifferenceEmpty"] | types["updates"]["Difference"] | types["updates"]["DifferenceSlice"] | types["updates"]["DifferenceTooLong"];
+    export type ChannelDifference = types["updates"]["ChannelDifferenceEmpty"] | types["updates"]["ChannelDifferenceTooLong"] | types["updates"]["ChannelDifference"];
+  }
+  export namespace photos {
+    export type Photos = types["photos"]["Photos"] | types["photos"]["PhotosSlice"];
+    export type Photo = types["photos"]["Photo"];
+  }
+  export namespace upload {
+    export type File = types["upload"]["File"] | types["upload"]["FileCdnRedirect"];
+    export type WebFile = types["upload"]["WebFile"];
+    export type CdnFile = types["upload"]["CdnFileReuploadNeeded"] | types["upload"]["CdnFile"];
+  }
+  export namespace help {
+    export type AppUpdate = types["help"]["AppUpdate"] | types["help"]["NoAppUpdate"];
+    export type InviteText = types["help"]["InviteText"];
+    export type Support = types["help"]["Support"];
+    export type TermsOfService = types["help"]["TermsOfService"];
+    export type RecentMeUrls = types["help"]["RecentMeUrls"];
+    export type TermsOfServiceUpdate = types["help"]["TermsOfServiceUpdateEmpty"] | types["help"]["TermsOfServiceUpdate"];
+    export type DeepLinkInfo = types["help"]["DeepLinkInfoEmpty"] | types["help"]["DeepLinkInfo"];
+    export type PassportConfig = types["help"]["PassportConfigNotModified"] | types["help"]["PassportConfig"];
+    export type SupportName = types["help"]["SupportName"];
+    export type UserInfo = types["help"]["UserInfoEmpty"] | types["help"]["UserInfo"];
+    export type PromoData = types["help"]["PromoDataEmpty"] | types["help"]["PromoData"];
+    export type CountryCode = types["help"]["CountryCode"];
+    export type Country = types["help"]["Country"];
+    export type CountriesList = types["help"]["CountriesListNotModified"] | types["help"]["CountriesList"];
+    export type PremiumPromo = types["help"]["PremiumPromo"];
+    export type AppConfig = types["help"]["AppConfigNotModified"] | types["help"]["AppConfig"];
+    export type PeerColorSet = types["help"]["PeerColorSet"] | types["help"]["PeerColorProfileSet"];
+    export type PeerColorOption = types["help"]["PeerColorOption"];
+    export type PeerColors = types["help"]["PeerColorsNotModified"] | types["help"]["PeerColors"];
+  }
+  export namespace account {
+    export type PrivacyRules = types["account"]["PrivacyRules"];
+    export type Authorizations = types["account"]["Authorizations"];
+    export type Password = types["account"]["Password"];
+    export type PasswordSettings = types["account"]["PasswordSettings"];
+    export type PasswordInputSettings = types["account"]["PasswordInputSettings"];
+    export type TmpPassword = types["account"]["TmpPassword"];
+    export type WebAuthorizations = types["account"]["WebAuthorizations"];
+    export type AuthorizationForm = types["account"]["AuthorizationForm"];
+    export type SentEmailCode = types["account"]["SentEmailCode"];
+    export type Takeout = types["account"]["Takeout"];
+    export type WallPapers = types["account"]["WallPapersNotModified"] | types["account"]["WallPapers"];
+    export type AutoDownloadSettings = types["account"]["AutoDownloadSettings"];
+    export type Themes = types["account"]["ThemesNotModified"] | types["account"]["Themes"];
+    export type ContentSettings = types["account"]["ContentSettings"];
+    export type ResetPasswordResult = types["account"]["ResetPasswordFailedWait"] | types["account"]["ResetPasswordRequestedWait"] | types["account"]["ResetPasswordOk"];
+    export type SavedRingtones = types["account"]["SavedRingtonesNotModified"] | types["account"]["SavedRingtones"];
+    export type SavedRingtone = types["account"]["SavedRingtone"] | types["account"]["SavedRingtoneConverted"];
+    export type EmojiStatuses = types["account"]["EmojiStatusesNotModified"] | types["account"]["EmojiStatuses"];
+    export type EmailVerified = types["account"]["EmailVerified"] | types["account"]["EmailVerifiedLogin"];
+    export type AutoSaveSettings = types["account"]["AutoSaveSettings"];
+  }
+  export namespace channels {
+    export type ChannelParticipants = types["channels"]["ChannelParticipants"] | types["channels"]["ChannelParticipantsNotModified"];
+    export type ChannelParticipant = types["channels"]["ChannelParticipant"];
+    export type AdminLogResults = types["channels"]["AdminLogResults"];
+    export type SendAsPeers = types["channels"]["SendAsPeers"];
+  }
+  export namespace payments {
+    export type PaymentForm = types["payments"]["PaymentForm"];
+    export type ValidatedRequestedInfo = types["payments"]["ValidatedRequestedInfo"];
+    export type PaymentResult = types["payments"]["PaymentResult"] | types["payments"]["PaymentVerificationNeeded"];
+    export type PaymentReceipt = types["payments"]["PaymentReceipt"];
+    export type SavedInfo = types["payments"]["SavedInfo"];
+    export type BankCardData = types["payments"]["BankCardData"];
+    export type ExportedInvoice = types["payments"]["ExportedInvoice"];
+    export type CheckedGiftCode = types["payments"]["CheckedGiftCode"];
+    export type GiveawayInfo = types["payments"]["GiveawayInfo"] | types["payments"]["GiveawayInfoResults"];
+  }
+  export namespace phone {
+    export type PhoneCall = types["phone"]["PhoneCall"];
+    export type GroupCall = types["phone"]["GroupCall"];
+    export type GroupParticipants = types["phone"]["GroupParticipants"];
+    export type JoinAsPeers = types["phone"]["JoinAsPeers"];
+    export type ExportedGroupCallInvite = types["phone"]["ExportedGroupCallInvite"];
+    export type GroupCallStreamChannels = types["phone"]["GroupCallStreamChannels"];
+    export type GroupCallStreamRtmpUrl = types["phone"]["GroupCallStreamRtmpUrl"];
+  }
+  export namespace stats {
+    export type BroadcastStats = types["stats"]["BroadcastStats"];
+    export type MegagroupStats = types["stats"]["MegagroupStats"];
+    export type MessageStats = types["stats"]["MessageStats"];
+    export type StoryStats = types["stats"]["StoryStats"];
+    export type PublicForwards = types["stats"]["PublicForwards"];
+  }
+  export namespace stickers {
+    export type SuggestedShortName = types["stickers"]["SuggestedShortName"];
+  }
+  export namespace users {
+    export type UserFull = types["users"]["UserFull"];
+  }
+  export namespace chatlists {
+    export type ExportedChatlistInvite = types["chatlists"]["ExportedChatlistInvite"];
+    export type ExportedInvites = types["chatlists"]["ExportedInvites"];
+    export type ChatlistInvite = types["chatlists"]["ChatlistInviteAlready"] | types["chatlists"]["ChatlistInvite"];
+    export type ChatlistUpdates = types["chatlists"]["ChatlistUpdates"];
+  }
+  export namespace bots {
+    export type BotInfo = types["bots"]["BotInfo"];
+  }
+  export namespace stories {
+    export type AllStories = types["stories"]["AllStoriesNotModified"] | types["stories"]["AllStories"];
+    export type Stories = types["stories"]["Stories"];
+    export type StoryViewsList = types["stories"]["StoryViewsList"];
+    export type StoryViews = types["stories"]["StoryViews"];
+    export type PeerStories = types["stories"]["PeerStories"];
+  }
+  export namespace premium {
+    export type BoostsList = types["premium"]["BoostsList"];
+    export type MyBoosts = types["premium"]["MyBoosts"];
+    export type BoostsStatus = types["premium"]["BoostsStatus"];
+  }
+}

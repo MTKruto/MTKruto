@@ -1,13 +1,12 @@
 // deno-fmt-ignore-file
 import { id, params, TLObject, Params, paramDesc, ParamDesc, flags } from "./1_tl_object.ts";
-import * as types from "./2_types.ts";
-import { enums } from "./2_types.ts";
+import { types, enums } from "./2_types.ts";
 
 export abstract class Function<T> extends TLObject {
   __R: T = Symbol() as unknown as T; // virtual member
 }
 
-export class req_pq_multi extends Function<enums.ResPQ> {
+export class Req_pq_multi extends Function<enums.ResPQ> {
   nonce: bigint;
 
   protected get [id]() {
@@ -32,7 +31,7 @@ export class req_pq_multi extends Function<enums.ResPQ> {
   }
 }
 
-export class req_DH_params extends Function<enums.Server_DH_Params> {
+export class Req_DH_params extends Function<enums.Server_DH_Params> {
   nonce: bigint;
   server_nonce: bigint;
   p: Uint8Array;
@@ -77,7 +76,7 @@ export class req_DH_params extends Function<enums.Server_DH_Params> {
   }
 }
 
-export class set_client_DH_params extends Function<enums.Set_client_DH_params_answer> {
+export class Set_client_DH_params extends Function<enums.Set_client_DH_params_answer> {
   nonce: bigint;
   server_nonce: bigint;
   encrypted_data: Uint8Array;
@@ -110,7 +109,7 @@ export class set_client_DH_params extends Function<enums.Set_client_DH_params_an
   }
 }
 
-export class rpc_drop_answer extends Function<enums.RpcDropAnswer> {
+export class Rpc_drop_answer extends Function<enums.RpcDropAnswer> {
   req_msg_id: bigint;
 
   protected get [id]() {
@@ -135,7 +134,7 @@ export class rpc_drop_answer extends Function<enums.RpcDropAnswer> {
   }
 }
 
-export class get_future_salts extends Function<enums.FutureSalts> {
+export class Get_future_salts extends Function<enums.FutureSalts> {
   num: number;
 
   protected get [id]() {
@@ -160,7 +159,7 @@ export class get_future_salts extends Function<enums.FutureSalts> {
   }
 }
 
-export class ping extends Function<enums.Pong> {
+export class Ping extends Function<enums.Pong> {
   ping_id: bigint;
 
   protected get [id]() {
@@ -185,7 +184,7 @@ export class ping extends Function<enums.Pong> {
   }
 }
 
-export class ping_delay_disconnect extends Function<enums.Pong> {
+export class Ping_delay_disconnect extends Function<enums.Pong> {
   ping_id: bigint;
   disconnect_delay: number;
 
@@ -214,7 +213,7 @@ export class ping_delay_disconnect extends Function<enums.Pong> {
   }
 }
 
-export class destroy_session extends Function<enums.DestroySessionRes> {
+export class Destroy_session extends Function<enums.DestroySessionRes> {
   session_id: bigint;
 
   protected get [id]() {
@@ -239,7 +238,7 @@ export class destroy_session extends Function<enums.DestroySessionRes> {
   }
 }
 
-export class destroy_auth_key extends Function<enums.DestroyAuthKeyRes> {
+export class Destroy_auth_key extends Function<enums.DestroyAuthKeyRes> {
   protected get [id]() {
     return 0xD1435160;
   }
@@ -257,7 +256,7 @@ export class destroy_auth_key extends Function<enums.DestroyAuthKeyRes> {
   }
 }
 
-export class invokeAfterMsg<T extends Function<unknown>> extends Function<T["__R"]> {
+export class InvokeAfterMsg<T extends Function<unknown>> extends Function<T["__R"]> {
   msg_id: bigint;
   query: T;
 
@@ -268,7 +267,7 @@ export class invokeAfterMsg<T extends Function<unknown>> extends Function<T["__R
   static get [paramDesc](): ParamDesc {
     return [
       ["msg_id", "bigint", "long"],
-      ["query", types.TypeX, "!X"],
+      ["query", types["TypeX"], "!X"],
     ];
   }
 
@@ -286,7 +285,7 @@ export class invokeAfterMsg<T extends Function<unknown>> extends Function<T["__R
   }
 }
 
-export class invokeAfterMsgs<T extends Function<unknown>> extends Function<T["__R"]> {
+export class InvokeAfterMsgs<T extends Function<unknown>> extends Function<T["__R"]> {
   msg_ids: Array<bigint>;
   query: T;
 
@@ -297,7 +296,7 @@ export class invokeAfterMsgs<T extends Function<unknown>> extends Function<T["__
   static get [paramDesc](): ParamDesc {
     return [
       ["msg_ids", ["bigint"], "Vector<long>"],
-      ["query", types.TypeX, "!X"],
+      ["query", types["TypeX"], "!X"],
     ];
   }
 
@@ -315,7 +314,7 @@ export class invokeAfterMsgs<T extends Function<unknown>> extends Function<T["__
   }
 }
 
-export class initConnection<T extends Function<unknown>> extends Function<T["__R"]> {
+export class InitConnection<T extends Function<unknown>> extends Function<T["__R"]> {
   api_id: number;
   device_model: string;
   system_version: string;
@@ -343,7 +342,7 @@ export class initConnection<T extends Function<unknown>> extends Function<T["__R
       ["lang_code", "string", "string"],
       ["proxy", types._InputClientProxy, "flags.0?InputClientProxy"],
       ["params", types._JSONValue, "flags.1?JSONValue"],
-      ["query", types.TypeX, "!X"],
+      ["query", types["TypeX"], "!X"],
     ];
   }
 
@@ -378,7 +377,7 @@ export class initConnection<T extends Function<unknown>> extends Function<T["__R
   }
 }
 
-export class invokeWithLayer<T extends Function<unknown>> extends Function<T["__R"]> {
+export class InvokeWithLayer<T extends Function<unknown>> extends Function<T["__R"]> {
   layer: number;
   query: T;
 
@@ -389,7 +388,7 @@ export class invokeWithLayer<T extends Function<unknown>> extends Function<T["__
   static get [paramDesc](): ParamDesc {
     return [
       ["layer", "number", "int"],
-      ["query", types.TypeX, "!X"],
+      ["query", types["TypeX"], "!X"],
     ];
   }
 
@@ -407,7 +406,7 @@ export class invokeWithLayer<T extends Function<unknown>> extends Function<T["__
   }
 }
 
-export class invokeWithoutUpdates<T extends Function<unknown>> extends Function<T["__R"]> {
+export class InvokeWithoutUpdates<T extends Function<unknown>> extends Function<T["__R"]> {
   query: T;
 
   protected get [id]() {
@@ -416,7 +415,7 @@ export class invokeWithoutUpdates<T extends Function<unknown>> extends Function<
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["query", types.TypeX, "!X"],
+      ["query", types["TypeX"], "!X"],
     ];
   }
 
@@ -432,7 +431,7 @@ export class invokeWithoutUpdates<T extends Function<unknown>> extends Function<
   }
 }
 
-export class invokeWithMessagesRange<T extends Function<unknown>> extends Function<T["__R"]> {
+export class InvokeWithMessagesRange<T extends Function<unknown>> extends Function<T["__R"]> {
   range: enums.MessageRange;
   query: T;
 
@@ -443,7 +442,7 @@ export class invokeWithMessagesRange<T extends Function<unknown>> extends Functi
   static get [paramDesc](): ParamDesc {
     return [
       ["range", types._MessageRange, "MessageRange"],
-      ["query", types.TypeX, "!X"],
+      ["query", types["TypeX"], "!X"],
     ];
   }
 
@@ -461,7 +460,7 @@ export class invokeWithMessagesRange<T extends Function<unknown>> extends Functi
   }
 }
 
-export class invokeWithTakeout<T extends Function<unknown>> extends Function<T["__R"]> {
+export class InvokeWithTakeout<T extends Function<unknown>> extends Function<T["__R"]> {
   takeout_id: bigint;
   query: T;
 
@@ -472,7 +471,7 @@ export class invokeWithTakeout<T extends Function<unknown>> extends Function<T["
   static get [paramDesc](): ParamDesc {
     return [
       ["takeout_id", "bigint", "long"],
-      ["query", types.TypeX, "!X"],
+      ["query", types["TypeX"], "!X"],
     ];
   }
 
@@ -490,7 +489,7 @@ export class invokeWithTakeout<T extends Function<unknown>> extends Function<T["
   }
 }
 
-class auth_sendCode extends Function<enums.auth_SentCode> {
+export class auth_SendCode extends Function<enums.auth_SentCode> {
   phone_number: string;
   api_id: number;
   api_hash: string;
@@ -527,7 +526,7 @@ class auth_sendCode extends Function<enums.auth_SentCode> {
   }
 }
 
-class auth_signUp extends Function<enums.auth_Authorization> {
+export class auth_SignUp extends Function<enums.auth_Authorization> {
   phone_number: string;
   phone_code_hash: string;
   first_name: string;
@@ -564,7 +563,7 @@ class auth_signUp extends Function<enums.auth_Authorization> {
   }
 }
 
-class auth_signIn extends Function<enums.auth_Authorization> {
+export class auth_SignIn extends Function<enums.auth_Authorization> {
   phone_number: string;
   phone_code_hash: string;
   phone_code?: string;
@@ -603,7 +602,7 @@ class auth_signIn extends Function<enums.auth_Authorization> {
   }
 }
 
-class auth_logOut extends Function<enums.auth_LoggedOut> {
+export class auth_LogOut extends Function<enums.auth_LoggedOut> {
   protected get [id]() {
     return 0x3E72BA19;
   }
@@ -621,7 +620,7 @@ class auth_logOut extends Function<enums.auth_LoggedOut> {
   }
 }
 
-class auth_resetAuthorizations extends Function<boolean> {
+export class auth_ResetAuthorizations extends Function<boolean> {
   protected get [id]() {
     return 0x9FAB0D1A;
   }
@@ -639,7 +638,7 @@ class auth_resetAuthorizations extends Function<boolean> {
   }
 }
 
-class auth_exportAuthorization extends Function<enums.auth_ExportedAuthorization> {
+export class auth_ExportAuthorization extends Function<enums.auth_ExportedAuthorization> {
   dc_id: number;
 
   protected get [id]() {
@@ -664,7 +663,7 @@ class auth_exportAuthorization extends Function<enums.auth_ExportedAuthorization
   }
 }
 
-class auth_importAuthorization extends Function<enums.auth_Authorization> {
+export class auth_ImportAuthorization extends Function<enums.auth_Authorization> {
   id: bigint;
   bytes: Uint8Array;
 
@@ -693,7 +692,7 @@ class auth_importAuthorization extends Function<enums.auth_Authorization> {
   }
 }
 
-class auth_bindTempAuthKey extends Function<boolean> {
+export class auth_BindTempAuthKey extends Function<boolean> {
   perm_auth_key_id: bigint;
   nonce: bigint;
   expires_at: number;
@@ -730,7 +729,7 @@ class auth_bindTempAuthKey extends Function<boolean> {
   }
 }
 
-class auth_importBotAuthorization extends Function<enums.auth_Authorization> {
+export class auth_ImportBotAuthorization extends Function<enums.auth_Authorization> {
   flags: number;
   api_id: number;
   api_hash: string;
@@ -767,7 +766,7 @@ class auth_importBotAuthorization extends Function<enums.auth_Authorization> {
   }
 }
 
-class auth_checkPassword extends Function<enums.auth_Authorization> {
+export class auth_CheckPassword extends Function<enums.auth_Authorization> {
   password: enums.InputCheckPasswordSRP;
 
   protected get [id]() {
@@ -792,7 +791,7 @@ class auth_checkPassword extends Function<enums.auth_Authorization> {
   }
 }
 
-class auth_requestPasswordRecovery extends Function<enums.auth_PasswordRecovery> {
+export class auth_RequestPasswordRecovery extends Function<enums.auth_PasswordRecovery> {
   protected get [id]() {
     return 0xD897BC66;
   }
@@ -810,9 +809,9 @@ class auth_requestPasswordRecovery extends Function<enums.auth_PasswordRecovery>
   }
 }
 
-class auth_recoverPassword extends Function<enums.auth_Authorization> {
+export class auth_RecoverPassword extends Function<enums.auth_Authorization> {
   code: string;
-  new_settings?: enums.account_PasswordInputSettings;
+  new_settings?: enums.account.PasswordInputSettings;
 
   protected get [id]() {
     return 0x37096C70;
@@ -834,14 +833,14 @@ class auth_recoverPassword extends Function<enums.auth_Authorization> {
     ];
   }
 
-  constructor(params: { code: string; new_settings?: enums.account_PasswordInputSettings }) {
+  constructor(params: { code: string; new_settings?: enums.account.PasswordInputSettings }) {
     super();
     this.code = params.code;
     this.new_settings = params.new_settings;
   }
 }
 
-class auth_resendCode extends Function<enums.auth_SentCode> {
+export class auth_ResendCode extends Function<enums.auth_SentCode> {
   phone_number: string;
   phone_code_hash: string;
 
@@ -870,7 +869,7 @@ class auth_resendCode extends Function<enums.auth_SentCode> {
   }
 }
 
-class auth_cancelCode extends Function<boolean> {
+export class auth_CancelCode extends Function<boolean> {
   phone_number: string;
   phone_code_hash: string;
 
@@ -899,7 +898,7 @@ class auth_cancelCode extends Function<boolean> {
   }
 }
 
-class auth_dropTempAuthKeys extends Function<boolean> {
+export class auth_DropTempAuthKeys extends Function<boolean> {
   except_auth_keys: Array<bigint>;
 
   protected get [id]() {
@@ -924,7 +923,7 @@ class auth_dropTempAuthKeys extends Function<boolean> {
   }
 }
 
-class auth_exportLoginToken extends Function<enums.auth_LoginToken> {
+export class auth_ExportLoginToken extends Function<enums.auth_LoginToken> {
   api_id: number;
   api_hash: string;
   except_ids: Array<bigint>;
@@ -957,7 +956,7 @@ class auth_exportLoginToken extends Function<enums.auth_LoginToken> {
   }
 }
 
-class auth_importLoginToken extends Function<enums.auth_LoginToken> {
+export class auth_ImportLoginToken extends Function<enums.auth_LoginToken> {
   token: Uint8Array;
 
   protected get [id]() {
@@ -982,7 +981,7 @@ class auth_importLoginToken extends Function<enums.auth_LoginToken> {
   }
 }
 
-class auth_acceptLoginToken extends Function<enums.Authorization> {
+export class auth_AcceptLoginToken extends Function<enums.Authorization> {
   token: Uint8Array;
 
   protected get [id]() {
@@ -1007,7 +1006,7 @@ class auth_acceptLoginToken extends Function<enums.Authorization> {
   }
 }
 
-class auth_checkRecoveryPassword extends Function<boolean> {
+export class auth_CheckRecoveryPassword extends Function<boolean> {
   code: string;
 
   protected get [id]() {
@@ -1032,7 +1031,7 @@ class auth_checkRecoveryPassword extends Function<boolean> {
   }
 }
 
-class auth_importWebTokenAuthorization extends Function<enums.auth_Authorization> {
+export class auth_ImportWebTokenAuthorization extends Function<enums.auth_Authorization> {
   api_id: number;
   api_hash: string;
   web_auth_token: string;
@@ -1065,7 +1064,7 @@ class auth_importWebTokenAuthorization extends Function<enums.auth_Authorization
   }
 }
 
-class auth_requestFirebaseSms extends Function<boolean> {
+export class auth_RequestFirebaseSms extends Function<boolean> {
   phone_number: string;
   phone_code_hash: string;
   safety_net_token?: string;
@@ -1104,7 +1103,7 @@ class auth_requestFirebaseSms extends Function<boolean> {
   }
 }
 
-class auth_resetLoginEmail extends Function<enums.auth_SentCode> {
+export class auth_ResetLoginEmail extends Function<enums.auth_SentCode> {
   phone_number: string;
   phone_code_hash: string;
 
@@ -1133,7 +1132,7 @@ class auth_resetLoginEmail extends Function<enums.auth_SentCode> {
   }
 }
 
-class account_registerDevice extends Function<boolean> {
+export class account_RegisterDevice extends Function<boolean> {
   no_muted?: true;
   token_type: number;
   token: string;
@@ -1180,7 +1179,7 @@ class account_registerDevice extends Function<boolean> {
   }
 }
 
-class account_unregisterDevice extends Function<boolean> {
+export class account_UnregisterDevice extends Function<boolean> {
   token_type: number;
   token: string;
   other_uids: Array<bigint>;
@@ -1213,7 +1212,7 @@ class account_unregisterDevice extends Function<boolean> {
   }
 }
 
-class account_updateNotifySettings extends Function<boolean> {
+export class account_UpdateNotifySettings extends Function<boolean> {
   peer: enums.InputNotifyPeer;
   settings: enums.InputPeerNotifySettings;
 
@@ -1242,7 +1241,7 @@ class account_updateNotifySettings extends Function<boolean> {
   }
 }
 
-class account_getNotifySettings extends Function<enums.PeerNotifySettings> {
+export class account_GetNotifySettings extends Function<enums.PeerNotifySettings> {
   peer: enums.InputNotifyPeer;
 
   protected get [id]() {
@@ -1267,7 +1266,7 @@ class account_getNotifySettings extends Function<enums.PeerNotifySettings> {
   }
 }
 
-class account_resetNotifySettings extends Function<boolean> {
+export class account_ResetNotifySettings extends Function<boolean> {
   protected get [id]() {
     return 0xDB7E1747;
   }
@@ -1285,7 +1284,7 @@ class account_resetNotifySettings extends Function<boolean> {
   }
 }
 
-class account_updateProfile extends Function<enums.User> {
+export class account_UpdateProfile extends Function<enums.User> {
   first_name?: string;
   last_name?: string;
   about?: string;
@@ -1320,7 +1319,7 @@ class account_updateProfile extends Function<enums.User> {
   }
 }
 
-class account_updateStatus extends Function<boolean> {
+export class account_UpdateStatus extends Function<boolean> {
   offline: boolean;
 
   protected get [id]() {
@@ -1345,7 +1344,7 @@ class account_updateStatus extends Function<boolean> {
   }
 }
 
-class account_getWallPapers extends Function<enums.account_WallPapers> {
+export class account_GetWallPapers extends Function<enums.account_WallPapers> {
   hash: bigint;
 
   protected get [id]() {
@@ -1370,7 +1369,7 @@ class account_getWallPapers extends Function<enums.account_WallPapers> {
   }
 }
 
-class account_reportPeer extends Function<boolean> {
+export class account_ReportPeer extends Function<boolean> {
   peer: enums.InputPeer;
   reason: enums.ReportReason;
   message: string;
@@ -1403,7 +1402,7 @@ class account_reportPeer extends Function<boolean> {
   }
 }
 
-class account_checkUsername extends Function<boolean> {
+export class account_CheckUsername extends Function<boolean> {
   username: string;
 
   protected get [id]() {
@@ -1428,7 +1427,7 @@ class account_checkUsername extends Function<boolean> {
   }
 }
 
-class account_updateUsername extends Function<enums.User> {
+export class account_UpdateUsername extends Function<enums.User> {
   username: string;
 
   protected get [id]() {
@@ -1453,7 +1452,7 @@ class account_updateUsername extends Function<enums.User> {
   }
 }
 
-class account_getPrivacy extends Function<enums.account_PrivacyRules> {
+export class account_GetPrivacy extends Function<enums.account_PrivacyRules> {
   key: enums.InputPrivacyKey;
 
   protected get [id]() {
@@ -1478,7 +1477,7 @@ class account_getPrivacy extends Function<enums.account_PrivacyRules> {
   }
 }
 
-class account_setPrivacy extends Function<enums.account_PrivacyRules> {
+export class account_SetPrivacy extends Function<enums.account_PrivacyRules> {
   key: enums.InputPrivacyKey;
   rules: Array<enums.InputPrivacyRule>;
 
@@ -1507,7 +1506,7 @@ class account_setPrivacy extends Function<enums.account_PrivacyRules> {
   }
 }
 
-class account_deleteAccount extends Function<boolean> {
+export class account_DeleteAccount extends Function<boolean> {
   reason: string;
   password?: enums.InputCheckPasswordSRP;
 
@@ -1538,7 +1537,7 @@ class account_deleteAccount extends Function<boolean> {
   }
 }
 
-class account_getAccountTTL extends Function<enums.AccountDaysTTL> {
+export class account_GetAccountTTL extends Function<enums.AccountDaysTTL> {
   protected get [id]() {
     return 0x08FC711D;
   }
@@ -1556,7 +1555,7 @@ class account_getAccountTTL extends Function<enums.AccountDaysTTL> {
   }
 }
 
-class account_setAccountTTL extends Function<boolean> {
+export class account_SetAccountTTL extends Function<boolean> {
   ttl: enums.AccountDaysTTL;
 
   protected get [id]() {
@@ -1581,7 +1580,7 @@ class account_setAccountTTL extends Function<boolean> {
   }
 }
 
-class account_sendChangePhoneCode extends Function<enums.auth_SentCode> {
+export class account_SendChangePhoneCode extends Function<enums.auth_SentCode> {
   phone_number: string;
   settings: enums.CodeSettings;
 
@@ -1610,7 +1609,7 @@ class account_sendChangePhoneCode extends Function<enums.auth_SentCode> {
   }
 }
 
-class account_changePhone extends Function<enums.User> {
+export class account_ChangePhone extends Function<enums.User> {
   phone_number: string;
   phone_code_hash: string;
   phone_code: string;
@@ -1643,7 +1642,7 @@ class account_changePhone extends Function<enums.User> {
   }
 }
 
-class account_updateDeviceLocked extends Function<boolean> {
+export class account_UpdateDeviceLocked extends Function<boolean> {
   period: number;
 
   protected get [id]() {
@@ -1668,7 +1667,7 @@ class account_updateDeviceLocked extends Function<boolean> {
   }
 }
 
-class account_getAuthorizations extends Function<enums.account_Authorizations> {
+export class account_GetAuthorizations extends Function<enums.account_Authorizations> {
   protected get [id]() {
     return 0xE320C158;
   }
@@ -1686,7 +1685,7 @@ class account_getAuthorizations extends Function<enums.account_Authorizations> {
   }
 }
 
-class account_resetAuthorization extends Function<boolean> {
+export class account_ResetAuthorization extends Function<boolean> {
   hash: bigint;
 
   protected get [id]() {
@@ -1711,7 +1710,7 @@ class account_resetAuthorization extends Function<boolean> {
   }
 }
 
-class account_getPassword extends Function<enums.account_Password> {
+export class account_GetPassword extends Function<enums.account_Password> {
   protected get [id]() {
     return 0x548A30F5;
   }
@@ -1729,7 +1728,7 @@ class account_getPassword extends Function<enums.account_Password> {
   }
 }
 
-class account_getPasswordSettings extends Function<enums.account_PasswordSettings> {
+export class account_GetPasswordSettings extends Function<enums.account_PasswordSettings> {
   password: enums.InputCheckPasswordSRP;
 
   protected get [id]() {
@@ -1754,9 +1753,9 @@ class account_getPasswordSettings extends Function<enums.account_PasswordSetting
   }
 }
 
-class account_updatePasswordSettings extends Function<boolean> {
+export class account_UpdatePasswordSettings extends Function<boolean> {
   password: enums.InputCheckPasswordSRP;
-  new_settings: enums.account_PasswordInputSettings;
+  new_settings: enums.account.PasswordInputSettings;
 
   protected get [id]() {
     return 0xA59B102F;
@@ -1776,14 +1775,14 @@ class account_updatePasswordSettings extends Function<boolean> {
     ];
   }
 
-  constructor(params: { password: enums.InputCheckPasswordSRP; new_settings: enums.account_PasswordInputSettings }) {
+  constructor(params: { password: enums.InputCheckPasswordSRP; new_settings: enums.account.PasswordInputSettings }) {
     super();
     this.password = params.password;
     this.new_settings = params.new_settings;
   }
 }
 
-class account_sendConfirmPhoneCode extends Function<enums.auth_SentCode> {
+export class account_SendConfirmPhoneCode extends Function<enums.auth_SentCode> {
   hash: string;
   settings: enums.CodeSettings;
 
@@ -1812,7 +1811,7 @@ class account_sendConfirmPhoneCode extends Function<enums.auth_SentCode> {
   }
 }
 
-class account_confirmPhone extends Function<boolean> {
+export class account_ConfirmPhone extends Function<boolean> {
   phone_code_hash: string;
   phone_code: string;
 
@@ -1841,7 +1840,7 @@ class account_confirmPhone extends Function<boolean> {
   }
 }
 
-class account_getTmpPassword extends Function<enums.account_TmpPassword> {
+export class account_GetTmpPassword extends Function<enums.account_TmpPassword> {
   password: enums.InputCheckPasswordSRP;
   period: number;
 
@@ -1870,7 +1869,7 @@ class account_getTmpPassword extends Function<enums.account_TmpPassword> {
   }
 }
 
-class account_getWebAuthorizations extends Function<enums.account_WebAuthorizations> {
+export class account_GetWebAuthorizations extends Function<enums.account_WebAuthorizations> {
   protected get [id]() {
     return 0x182E6D6F;
   }
@@ -1888,7 +1887,7 @@ class account_getWebAuthorizations extends Function<enums.account_WebAuthorizati
   }
 }
 
-class account_resetWebAuthorization extends Function<boolean> {
+export class account_ResetWebAuthorization extends Function<boolean> {
   hash: bigint;
 
   protected get [id]() {
@@ -1913,7 +1912,7 @@ class account_resetWebAuthorization extends Function<boolean> {
   }
 }
 
-class account_resetWebAuthorizations extends Function<boolean> {
+export class account_ResetWebAuthorizations extends Function<boolean> {
   protected get [id]() {
     return 0x682D2594;
   }
@@ -1931,7 +1930,7 @@ class account_resetWebAuthorizations extends Function<boolean> {
   }
 }
 
-class account_getAllSecureValues extends Function<enums.SecureValue[]> {
+export class account_GetAllSecureValues extends Function<enums.SecureValue[]> {
   protected get [id]() {
     return 0xB288BC7D;
   }
@@ -1949,7 +1948,7 @@ class account_getAllSecureValues extends Function<enums.SecureValue[]> {
   }
 }
 
-class account_getSecureValue extends Function<enums.SecureValue[]> {
+export class account_GetSecureValue extends Function<enums.SecureValue[]> {
   types: Array<enums.SecureValueType>;
 
   protected get [id]() {
@@ -1974,7 +1973,7 @@ class account_getSecureValue extends Function<enums.SecureValue[]> {
   }
 }
 
-class account_saveSecureValue extends Function<enums.SecureValue> {
+export class account_SaveSecureValue extends Function<enums.SecureValue> {
   value: enums.InputSecureValue;
   secure_secret_id: bigint;
 
@@ -2003,7 +2002,7 @@ class account_saveSecureValue extends Function<enums.SecureValue> {
   }
 }
 
-class account_deleteSecureValue extends Function<boolean> {
+export class account_DeleteSecureValue extends Function<boolean> {
   types: Array<enums.SecureValueType>;
 
   protected get [id]() {
@@ -2028,7 +2027,7 @@ class account_deleteSecureValue extends Function<boolean> {
   }
 }
 
-class account_getAuthorizationForm extends Function<enums.account_AuthorizationForm> {
+export class account_GetAuthorizationForm extends Function<enums.account_AuthorizationForm> {
   bot_id: bigint;
   scope: string;
   public_key: string;
@@ -2061,7 +2060,7 @@ class account_getAuthorizationForm extends Function<enums.account_AuthorizationF
   }
 }
 
-class account_acceptAuthorization extends Function<boolean> {
+export class account_AcceptAuthorization extends Function<boolean> {
   bot_id: bigint;
   scope: string;
   public_key: string;
@@ -2102,7 +2101,7 @@ class account_acceptAuthorization extends Function<boolean> {
   }
 }
 
-class account_sendVerifyPhoneCode extends Function<enums.auth_SentCode> {
+export class account_SendVerifyPhoneCode extends Function<enums.auth_SentCode> {
   phone_number: string;
   settings: enums.CodeSettings;
 
@@ -2131,7 +2130,7 @@ class account_sendVerifyPhoneCode extends Function<enums.auth_SentCode> {
   }
 }
 
-class account_verifyPhone extends Function<boolean> {
+export class account_VerifyPhone extends Function<boolean> {
   phone_number: string;
   phone_code_hash: string;
   phone_code: string;
@@ -2164,7 +2163,7 @@ class account_verifyPhone extends Function<boolean> {
   }
 }
 
-class account_sendVerifyEmailCode extends Function<enums.account_SentEmailCode> {
+export class account_SendVerifyEmailCode extends Function<enums.account_SentEmailCode> {
   purpose: enums.EmailVerifyPurpose;
   email: string;
 
@@ -2193,7 +2192,7 @@ class account_sendVerifyEmailCode extends Function<enums.account_SentEmailCode> 
   }
 }
 
-class account_verifyEmail extends Function<enums.account_EmailVerified> {
+export class account_VerifyEmail extends Function<enums.account_EmailVerified> {
   purpose: enums.EmailVerifyPurpose;
   verification: enums.EmailVerification;
 
@@ -2222,7 +2221,7 @@ class account_verifyEmail extends Function<enums.account_EmailVerified> {
   }
 }
 
-class account_initTakeoutSession extends Function<enums.account_Takeout> {
+export class account_InitTakeoutSession extends Function<enums.account_Takeout> {
   contacts?: true;
   message_users?: true;
   message_chats?: true;
@@ -2273,7 +2272,7 @@ class account_initTakeoutSession extends Function<enums.account_Takeout> {
   }
 }
 
-class account_finishTakeoutSession extends Function<boolean> {
+export class account_FinishTakeoutSession extends Function<boolean> {
   success?: true;
 
   protected get [id]() {
@@ -2300,7 +2299,7 @@ class account_finishTakeoutSession extends Function<boolean> {
   }
 }
 
-class account_confirmPasswordEmail extends Function<boolean> {
+export class account_ConfirmPasswordEmail extends Function<boolean> {
   code: string;
 
   protected get [id]() {
@@ -2325,7 +2324,7 @@ class account_confirmPasswordEmail extends Function<boolean> {
   }
 }
 
-class account_resendPasswordEmail extends Function<boolean> {
+export class account_ResendPasswordEmail extends Function<boolean> {
   protected get [id]() {
     return 0x7A7F2A15;
   }
@@ -2343,7 +2342,7 @@ class account_resendPasswordEmail extends Function<boolean> {
   }
 }
 
-class account_cancelPasswordEmail extends Function<boolean> {
+export class account_CancelPasswordEmail extends Function<boolean> {
   protected get [id]() {
     return 0xC1CBD5B6;
   }
@@ -2361,7 +2360,7 @@ class account_cancelPasswordEmail extends Function<boolean> {
   }
 }
 
-class account_getContactSignUpNotification extends Function<boolean> {
+export class account_GetContactSignUpNotification extends Function<boolean> {
   protected get [id]() {
     return 0x9F07C728;
   }
@@ -2379,7 +2378,7 @@ class account_getContactSignUpNotification extends Function<boolean> {
   }
 }
 
-class account_setContactSignUpNotification extends Function<boolean> {
+export class account_SetContactSignUpNotification extends Function<boolean> {
   silent: boolean;
 
   protected get [id]() {
@@ -2404,7 +2403,7 @@ class account_setContactSignUpNotification extends Function<boolean> {
   }
 }
 
-class account_getNotifyExceptions extends Function<enums.Updates> {
+export class account_GetNotifyExceptions extends Function<enums.Updates> {
   compare_sound?: true;
   compare_stories?: true;
   peer?: enums.InputNotifyPeer;
@@ -2439,7 +2438,7 @@ class account_getNotifyExceptions extends Function<enums.Updates> {
   }
 }
 
-class account_getWallPaper extends Function<enums.WallPaper> {
+export class account_GetWallPaper extends Function<enums.WallPaper> {
   wallpaper: enums.InputWallPaper;
 
   protected get [id]() {
@@ -2464,7 +2463,7 @@ class account_getWallPaper extends Function<enums.WallPaper> {
   }
 }
 
-class account_uploadWallPaper extends Function<enums.WallPaper> {
+export class account_UploadWallPaper extends Function<enums.WallPaper> {
   for_chat?: true;
   file: enums.InputFile;
   mime_type: string;
@@ -2503,7 +2502,7 @@ class account_uploadWallPaper extends Function<enums.WallPaper> {
   }
 }
 
-class account_saveWallPaper extends Function<boolean> {
+export class account_SaveWallPaper extends Function<boolean> {
   wallpaper: enums.InputWallPaper;
   unsave: boolean;
   settings: enums.WallPaperSettings;
@@ -2536,7 +2535,7 @@ class account_saveWallPaper extends Function<boolean> {
   }
 }
 
-class account_installWallPaper extends Function<boolean> {
+export class account_InstallWallPaper extends Function<boolean> {
   wallpaper: enums.InputWallPaper;
   settings: enums.WallPaperSettings;
 
@@ -2565,7 +2564,7 @@ class account_installWallPaper extends Function<boolean> {
   }
 }
 
-class account_resetWallPapers extends Function<boolean> {
+export class account_ResetWallPapers extends Function<boolean> {
   protected get [id]() {
     return 0xBB3B9804;
   }
@@ -2583,7 +2582,7 @@ class account_resetWallPapers extends Function<boolean> {
   }
 }
 
-class account_getAutoDownloadSettings extends Function<enums.account_AutoDownloadSettings> {
+export class account_GetAutoDownloadSettings extends Function<enums.account_AutoDownloadSettings> {
   protected get [id]() {
     return 0x56DA0B3F;
   }
@@ -2601,7 +2600,7 @@ class account_getAutoDownloadSettings extends Function<enums.account_AutoDownloa
   }
 }
 
-class account_saveAutoDownloadSettings extends Function<boolean> {
+export class account_SaveAutoDownloadSettings extends Function<boolean> {
   low?: true;
   high?: true;
   settings: enums.AutoDownloadSettings;
@@ -2636,7 +2635,7 @@ class account_saveAutoDownloadSettings extends Function<boolean> {
   }
 }
 
-class account_uploadTheme extends Function<enums.Document> {
+export class account_UploadTheme extends Function<enums.Document> {
   file: enums.InputFile;
   thumb?: enums.InputFile;
   file_name: string;
@@ -2675,7 +2674,7 @@ class account_uploadTheme extends Function<enums.Document> {
   }
 }
 
-class account_createTheme extends Function<enums.Theme> {
+export class account_CreateTheme extends Function<enums.Theme> {
   slug: string;
   title: string;
   document?: enums.InputDocument;
@@ -2714,7 +2713,7 @@ class account_createTheme extends Function<enums.Theme> {
   }
 }
 
-class account_updateTheme extends Function<enums.Theme> {
+export class account_UpdateTheme extends Function<enums.Theme> {
   format: string;
   theme: enums.InputTheme;
   slug?: string;
@@ -2761,7 +2760,7 @@ class account_updateTheme extends Function<enums.Theme> {
   }
 }
 
-class account_saveTheme extends Function<boolean> {
+export class account_SaveTheme extends Function<boolean> {
   theme: enums.InputTheme;
   unsave: boolean;
 
@@ -2790,7 +2789,7 @@ class account_saveTheme extends Function<boolean> {
   }
 }
 
-class account_installTheme extends Function<boolean> {
+export class account_InstallTheme extends Function<boolean> {
   dark?: true;
   theme?: enums.InputTheme;
   format?: string;
@@ -2829,7 +2828,7 @@ class account_installTheme extends Function<boolean> {
   }
 }
 
-class account_getTheme extends Function<enums.Theme> {
+export class account_GetTheme extends Function<enums.Theme> {
   format: string;
   theme: enums.InputTheme;
 
@@ -2858,7 +2857,7 @@ class account_getTheme extends Function<enums.Theme> {
   }
 }
 
-class account_getThemes extends Function<enums.account_Themes> {
+export class account_GetThemes extends Function<enums.account_Themes> {
   format: string;
   hash: bigint;
 
@@ -2887,7 +2886,7 @@ class account_getThemes extends Function<enums.account_Themes> {
   }
 }
 
-class account_setContentSettings extends Function<boolean> {
+export class account_SetContentSettings extends Function<boolean> {
   sensitive_enabled?: true;
 
   protected get [id]() {
@@ -2914,7 +2913,7 @@ class account_setContentSettings extends Function<boolean> {
   }
 }
 
-class account_getContentSettings extends Function<enums.account_ContentSettings> {
+export class account_GetContentSettings extends Function<enums.account_ContentSettings> {
   protected get [id]() {
     return 0x8B9B4DAE;
   }
@@ -2932,7 +2931,7 @@ class account_getContentSettings extends Function<enums.account_ContentSettings>
   }
 }
 
-class account_getMultiWallPapers extends Function<enums.WallPaper[]> {
+export class account_GetMultiWallPapers extends Function<enums.WallPaper[]> {
   wallpapers: Array<enums.InputWallPaper>;
 
   protected get [id]() {
@@ -2957,7 +2956,7 @@ class account_getMultiWallPapers extends Function<enums.WallPaper[]> {
   }
 }
 
-class account_getGlobalPrivacySettings extends Function<enums.GlobalPrivacySettings> {
+export class account_GetGlobalPrivacySettings extends Function<enums.GlobalPrivacySettings> {
   protected get [id]() {
     return 0xEB2B4CF6;
   }
@@ -2975,7 +2974,7 @@ class account_getGlobalPrivacySettings extends Function<enums.GlobalPrivacySetti
   }
 }
 
-class account_setGlobalPrivacySettings extends Function<enums.GlobalPrivacySettings> {
+export class account_SetGlobalPrivacySettings extends Function<enums.GlobalPrivacySettings> {
   settings: enums.GlobalPrivacySettings;
 
   protected get [id]() {
@@ -3000,7 +2999,7 @@ class account_setGlobalPrivacySettings extends Function<enums.GlobalPrivacySetti
   }
 }
 
-class account_reportProfilePhoto extends Function<boolean> {
+export class account_ReportProfilePhoto extends Function<boolean> {
   peer: enums.InputPeer;
   photo_id: enums.InputPhoto;
   reason: enums.ReportReason;
@@ -3037,7 +3036,7 @@ class account_reportProfilePhoto extends Function<boolean> {
   }
 }
 
-class account_resetPassword extends Function<enums.account_ResetPasswordResult> {
+export class account_ResetPassword extends Function<enums.account_ResetPasswordResult> {
   protected get [id]() {
     return 0x9308CE1B;
   }
@@ -3055,7 +3054,7 @@ class account_resetPassword extends Function<enums.account_ResetPasswordResult> 
   }
 }
 
-class account_declinePasswordReset extends Function<boolean> {
+export class account_DeclinePasswordReset extends Function<boolean> {
   protected get [id]() {
     return 0x4C9409F6;
   }
@@ -3073,7 +3072,7 @@ class account_declinePasswordReset extends Function<boolean> {
   }
 }
 
-class account_getChatThemes extends Function<enums.account_Themes> {
+export class account_GetChatThemes extends Function<enums.account_Themes> {
   hash: bigint;
 
   protected get [id]() {
@@ -3098,7 +3097,7 @@ class account_getChatThemes extends Function<enums.account_Themes> {
   }
 }
 
-class account_setAuthorizationTTL extends Function<boolean> {
+export class account_SetAuthorizationTTL extends Function<boolean> {
   authorization_ttl_days: number;
 
   protected get [id]() {
@@ -3123,7 +3122,7 @@ class account_setAuthorizationTTL extends Function<boolean> {
   }
 }
 
-class account_changeAuthorizationSettings extends Function<boolean> {
+export class account_ChangeAuthorizationSettings extends Function<boolean> {
   confirmed?: true;
   hash: bigint;
   encrypted_requests_disabled?: boolean;
@@ -3162,7 +3161,7 @@ class account_changeAuthorizationSettings extends Function<boolean> {
   }
 }
 
-class account_getSavedRingtones extends Function<enums.account_SavedRingtones> {
+export class account_GetSavedRingtones extends Function<enums.account_SavedRingtones> {
   hash: bigint;
 
   protected get [id]() {
@@ -3187,7 +3186,7 @@ class account_getSavedRingtones extends Function<enums.account_SavedRingtones> {
   }
 }
 
-class account_saveRingtone extends Function<enums.account_SavedRingtone> {
+export class account_SaveRingtone extends Function<enums.account_SavedRingtone> {
   id: enums.InputDocument;
   unsave: boolean;
 
@@ -3216,7 +3215,7 @@ class account_saveRingtone extends Function<enums.account_SavedRingtone> {
   }
 }
 
-class account_uploadRingtone extends Function<enums.Document> {
+export class account_UploadRingtone extends Function<enums.Document> {
   file: enums.InputFile;
   file_name: string;
   mime_type: string;
@@ -3249,7 +3248,7 @@ class account_uploadRingtone extends Function<enums.Document> {
   }
 }
 
-class account_updateEmojiStatus extends Function<boolean> {
+export class account_UpdateEmojiStatus extends Function<boolean> {
   emoji_status: enums.EmojiStatus;
 
   protected get [id]() {
@@ -3274,7 +3273,7 @@ class account_updateEmojiStatus extends Function<boolean> {
   }
 }
 
-class account_getDefaultEmojiStatuses extends Function<enums.account_EmojiStatuses> {
+export class account_GetDefaultEmojiStatuses extends Function<enums.account_EmojiStatuses> {
   hash: bigint;
 
   protected get [id]() {
@@ -3299,7 +3298,7 @@ class account_getDefaultEmojiStatuses extends Function<enums.account_EmojiStatus
   }
 }
 
-class account_getRecentEmojiStatuses extends Function<enums.account_EmojiStatuses> {
+export class account_GetRecentEmojiStatuses extends Function<enums.account_EmojiStatuses> {
   hash: bigint;
 
   protected get [id]() {
@@ -3324,7 +3323,7 @@ class account_getRecentEmojiStatuses extends Function<enums.account_EmojiStatuse
   }
 }
 
-class account_clearRecentEmojiStatuses extends Function<boolean> {
+export class account_ClearRecentEmojiStatuses extends Function<boolean> {
   protected get [id]() {
     return 0x18201AAE;
   }
@@ -3342,7 +3341,7 @@ class account_clearRecentEmojiStatuses extends Function<boolean> {
   }
 }
 
-class account_reorderUsernames extends Function<boolean> {
+export class account_ReorderUsernames extends Function<boolean> {
   order: Array<string>;
 
   protected get [id]() {
@@ -3367,7 +3366,7 @@ class account_reorderUsernames extends Function<boolean> {
   }
 }
 
-class account_toggleUsername extends Function<boolean> {
+export class account_ToggleUsername extends Function<boolean> {
   username: string;
   active: boolean;
 
@@ -3396,7 +3395,7 @@ class account_toggleUsername extends Function<boolean> {
   }
 }
 
-class account_getDefaultProfilePhotoEmojis extends Function<enums.EmojiList> {
+export class account_GetDefaultProfilePhotoEmojis extends Function<enums.EmojiList> {
   hash: bigint;
 
   protected get [id]() {
@@ -3421,7 +3420,7 @@ class account_getDefaultProfilePhotoEmojis extends Function<enums.EmojiList> {
   }
 }
 
-class account_getDefaultGroupPhotoEmojis extends Function<enums.EmojiList> {
+export class account_GetDefaultGroupPhotoEmojis extends Function<enums.EmojiList> {
   hash: bigint;
 
   protected get [id]() {
@@ -3446,7 +3445,7 @@ class account_getDefaultGroupPhotoEmojis extends Function<enums.EmojiList> {
   }
 }
 
-class account_getAutoSaveSettings extends Function<enums.account_AutoSaveSettings> {
+export class account_GetAutoSaveSettings extends Function<enums.account_AutoSaveSettings> {
   protected get [id]() {
     return 0xADCBBCDA;
   }
@@ -3464,7 +3463,7 @@ class account_getAutoSaveSettings extends Function<enums.account_AutoSaveSetting
   }
 }
 
-class account_saveAutoSaveSettings extends Function<boolean> {
+export class account_SaveAutoSaveSettings extends Function<boolean> {
   users?: true;
   chats?: true;
   broadcasts?: true;
@@ -3507,7 +3506,7 @@ class account_saveAutoSaveSettings extends Function<boolean> {
   }
 }
 
-class account_deleteAutoSaveExceptions extends Function<boolean> {
+export class account_DeleteAutoSaveExceptions extends Function<boolean> {
   protected get [id]() {
     return 0x53BC0020;
   }
@@ -3525,7 +3524,7 @@ class account_deleteAutoSaveExceptions extends Function<boolean> {
   }
 }
 
-class account_invalidateSignInCodes extends Function<boolean> {
+export class account_InvalidateSignInCodes extends Function<boolean> {
   codes: Array<string>;
 
   protected get [id]() {
@@ -3550,7 +3549,7 @@ class account_invalidateSignInCodes extends Function<boolean> {
   }
 }
 
-class account_updateColor extends Function<boolean> {
+export class account_UpdateColor extends Function<boolean> {
   for_profile?: true;
   color?: number;
   background_emoji_id?: bigint;
@@ -3585,7 +3584,7 @@ class account_updateColor extends Function<boolean> {
   }
 }
 
-class account_getDefaultBackgroundEmojis extends Function<enums.EmojiList> {
+export class account_GetDefaultBackgroundEmojis extends Function<enums.EmojiList> {
   hash: bigint;
 
   protected get [id]() {
@@ -3610,7 +3609,7 @@ class account_getDefaultBackgroundEmojis extends Function<enums.EmojiList> {
   }
 }
 
-class users_getUsers extends Function<enums.User[]> {
+export class users_GetUsers extends Function<enums.User[]> {
   id: Array<enums.InputUser>;
 
   protected get [id]() {
@@ -3635,7 +3634,7 @@ class users_getUsers extends Function<enums.User[]> {
   }
 }
 
-class users_getFullUser extends Function<enums.users_UserFull> {
+export class users_GetFullUser extends Function<enums.users_UserFull> {
   id: enums.InputUser;
 
   protected get [id]() {
@@ -3660,7 +3659,7 @@ class users_getFullUser extends Function<enums.users_UserFull> {
   }
 }
 
-class users_setSecureValueErrors extends Function<boolean> {
+export class users_SetSecureValueErrors extends Function<boolean> {
   id: enums.InputUser;
   errors: Array<enums.SecureValueError>;
 
@@ -3689,7 +3688,7 @@ class users_setSecureValueErrors extends Function<boolean> {
   }
 }
 
-class contacts_getContactIDs extends Function<number[]> {
+export class contacts_GetContactIDs extends Function<number[]> {
   hash: bigint;
 
   protected get [id]() {
@@ -3714,7 +3713,7 @@ class contacts_getContactIDs extends Function<number[]> {
   }
 }
 
-class contacts_getStatuses extends Function<enums.ContactStatus[]> {
+export class contacts_GetStatuses extends Function<enums.ContactStatus[]> {
   protected get [id]() {
     return 0xC4A353EE;
   }
@@ -3732,7 +3731,7 @@ class contacts_getStatuses extends Function<enums.ContactStatus[]> {
   }
 }
 
-class contacts_getContacts extends Function<enums.contacts_Contacts> {
+export class contacts_GetContacts extends Function<enums.contacts_Contacts> {
   hash: bigint;
 
   protected get [id]() {
@@ -3757,7 +3756,7 @@ class contacts_getContacts extends Function<enums.contacts_Contacts> {
   }
 }
 
-class contacts_importContacts extends Function<enums.contacts_ImportedContacts> {
+export class contacts_ImportContacts extends Function<enums.contacts_ImportedContacts> {
   contacts: Array<enums.InputContact>;
 
   protected get [id]() {
@@ -3782,7 +3781,7 @@ class contacts_importContacts extends Function<enums.contacts_ImportedContacts> 
   }
 }
 
-class contacts_deleteContacts extends Function<enums.Updates> {
+export class contacts_DeleteContacts extends Function<enums.Updates> {
   id: Array<enums.InputUser>;
 
   protected get [id]() {
@@ -3807,7 +3806,7 @@ class contacts_deleteContacts extends Function<enums.Updates> {
   }
 }
 
-class contacts_deleteByPhones extends Function<boolean> {
+export class contacts_DeleteByPhones extends Function<boolean> {
   phones: Array<string>;
 
   protected get [id]() {
@@ -3832,7 +3831,7 @@ class contacts_deleteByPhones extends Function<boolean> {
   }
 }
 
-class contacts_block extends Function<boolean> {
+export class contacts_Block extends Function<boolean> {
   my_stories_from?: true;
   id: enums.InputPeer;
 
@@ -3863,7 +3862,7 @@ class contacts_block extends Function<boolean> {
   }
 }
 
-class contacts_unblock extends Function<boolean> {
+export class contacts_Unblock extends Function<boolean> {
   my_stories_from?: true;
   id: enums.InputPeer;
 
@@ -3894,7 +3893,7 @@ class contacts_unblock extends Function<boolean> {
   }
 }
 
-class contacts_getBlocked extends Function<enums.contacts_Blocked> {
+export class contacts_GetBlocked extends Function<enums.contacts_Blocked> {
   my_stories_from?: true;
   offset: number;
   limit: number;
@@ -3929,7 +3928,7 @@ class contacts_getBlocked extends Function<enums.contacts_Blocked> {
   }
 }
 
-class contacts_search extends Function<enums.contacts_Found> {
+export class contacts_Search extends Function<enums.contacts_Found> {
   q: string;
   limit: number;
 
@@ -3958,7 +3957,7 @@ class contacts_search extends Function<enums.contacts_Found> {
   }
 }
 
-class contacts_resolveUsername extends Function<enums.contacts_ResolvedPeer> {
+export class contacts_ResolveUsername extends Function<enums.contacts_ResolvedPeer> {
   username: string;
 
   protected get [id]() {
@@ -3983,7 +3982,7 @@ class contacts_resolveUsername extends Function<enums.contacts_ResolvedPeer> {
   }
 }
 
-class contacts_getTopPeers extends Function<enums.contacts_TopPeers> {
+export class contacts_GetTopPeers extends Function<enums.contacts_TopPeers> {
   correspondents?: true;
   bots_pm?: true;
   bots_inline?: true;
@@ -4050,7 +4049,7 @@ class contacts_getTopPeers extends Function<enums.contacts_TopPeers> {
   }
 }
 
-class contacts_resetTopPeerRating extends Function<boolean> {
+export class contacts_ResetTopPeerRating extends Function<boolean> {
   category: enums.TopPeerCategory;
   peer: enums.InputPeer;
 
@@ -4079,7 +4078,7 @@ class contacts_resetTopPeerRating extends Function<boolean> {
   }
 }
 
-class contacts_resetSaved extends Function<boolean> {
+export class contacts_ResetSaved extends Function<boolean> {
   protected get [id]() {
     return 0x879537F1;
   }
@@ -4097,7 +4096,7 @@ class contacts_resetSaved extends Function<boolean> {
   }
 }
 
-class contacts_getSaved extends Function<enums.SavedContact[]> {
+export class contacts_GetSaved extends Function<enums.SavedContact[]> {
   protected get [id]() {
     return 0x82F1E39F;
   }
@@ -4115,7 +4114,7 @@ class contacts_getSaved extends Function<enums.SavedContact[]> {
   }
 }
 
-class contacts_toggleTopPeers extends Function<boolean> {
+export class contacts_ToggleTopPeers extends Function<boolean> {
   enabled: boolean;
 
   protected get [id]() {
@@ -4140,7 +4139,7 @@ class contacts_toggleTopPeers extends Function<boolean> {
   }
 }
 
-class contacts_addContact extends Function<enums.Updates> {
+export class contacts_AddContact extends Function<enums.Updates> {
   add_phone_privacy_exception?: true;
   id: enums.InputUser;
   first_name: string;
@@ -4183,7 +4182,7 @@ class contacts_addContact extends Function<enums.Updates> {
   }
 }
 
-class contacts_acceptContact extends Function<enums.Updates> {
+export class contacts_AcceptContact extends Function<enums.Updates> {
   id: enums.InputUser;
 
   protected get [id]() {
@@ -4208,7 +4207,7 @@ class contacts_acceptContact extends Function<enums.Updates> {
   }
 }
 
-class contacts_getLocated extends Function<enums.Updates> {
+export class contacts_GetLocated extends Function<enums.Updates> {
   background?: true;
   geo_point: enums.InputGeoPoint;
   self_expires?: number;
@@ -4243,7 +4242,7 @@ class contacts_getLocated extends Function<enums.Updates> {
   }
 }
 
-class contacts_blockFromReplies extends Function<enums.Updates> {
+export class contacts_BlockFromReplies extends Function<enums.Updates> {
   delete_message?: true;
   delete_history?: true;
   report_spam?: true;
@@ -4282,7 +4281,7 @@ class contacts_blockFromReplies extends Function<enums.Updates> {
   }
 }
 
-class contacts_resolvePhone extends Function<enums.contacts_ResolvedPeer> {
+export class contacts_ResolvePhone extends Function<enums.contacts_ResolvedPeer> {
   phone: string;
 
   protected get [id]() {
@@ -4307,7 +4306,7 @@ class contacts_resolvePhone extends Function<enums.contacts_ResolvedPeer> {
   }
 }
 
-class contacts_exportContactToken extends Function<enums.ExportedContactToken> {
+export class contacts_ExportContactToken extends Function<enums.ExportedContactToken> {
   protected get [id]() {
     return 0xF8654027;
   }
@@ -4325,7 +4324,7 @@ class contacts_exportContactToken extends Function<enums.ExportedContactToken> {
   }
 }
 
-class contacts_importContactToken extends Function<enums.User> {
+export class contacts_ImportContactToken extends Function<enums.User> {
   token: string;
 
   protected get [id]() {
@@ -4350,7 +4349,7 @@ class contacts_importContactToken extends Function<enums.User> {
   }
 }
 
-class contacts_editCloseFriends extends Function<boolean> {
+export class contacts_EditCloseFriends extends Function<boolean> {
   id: Array<bigint>;
 
   protected get [id]() {
@@ -4375,7 +4374,7 @@ class contacts_editCloseFriends extends Function<boolean> {
   }
 }
 
-class contacts_setBlocked extends Function<boolean> {
+export class contacts_SetBlocked extends Function<boolean> {
   my_stories_from?: true;
   id: Array<enums.InputPeer>;
   limit: number;
@@ -4410,7 +4409,7 @@ class contacts_setBlocked extends Function<boolean> {
   }
 }
 
-class messages_getMessages extends Function<enums.messages_Messages> {
+export class messages_GetMessages extends Function<enums.messages_Messages> {
   id: Array<enums.InputMessage>;
 
   protected get [id]() {
@@ -4435,7 +4434,7 @@ class messages_getMessages extends Function<enums.messages_Messages> {
   }
 }
 
-class messages_getDialogs extends Function<enums.messages_Dialogs> {
+export class messages_GetDialogs extends Function<enums.messages_Dialogs> {
   exclude_pinned?: true;
   folder_id?: number;
   offset_date: number;
@@ -4486,7 +4485,7 @@ class messages_getDialogs extends Function<enums.messages_Dialogs> {
   }
 }
 
-class messages_getHistory extends Function<enums.messages_Messages> {
+export class messages_GetHistory extends Function<enums.messages_Messages> {
   peer: enums.InputPeer;
   offset_id: number;
   offset_date: number;
@@ -4539,7 +4538,7 @@ class messages_getHistory extends Function<enums.messages_Messages> {
   }
 }
 
-class messages_search extends Function<enums.messages_Messages> {
+export class messages_Search extends Function<enums.messages_Messages> {
   peer: enums.InputPeer;
   q: string;
   from_id?: enums.InputPeer;
@@ -4614,7 +4613,7 @@ class messages_search extends Function<enums.messages_Messages> {
   }
 }
 
-class messages_readHistory extends Function<enums.messages_AffectedMessages> {
+export class messages_ReadHistory extends Function<enums.messages_AffectedMessages> {
   peer: enums.InputPeer;
   max_id: number;
 
@@ -4643,7 +4642,7 @@ class messages_readHistory extends Function<enums.messages_AffectedMessages> {
   }
 }
 
-class messages_deleteHistory extends Function<enums.messages_AffectedHistory> {
+export class messages_DeleteHistory extends Function<enums.messages_AffectedHistory> {
   just_clear?: true;
   revoke?: true;
   peer: enums.InputPeer;
@@ -4690,7 +4689,7 @@ class messages_deleteHistory extends Function<enums.messages_AffectedHistory> {
   }
 }
 
-class messages_deleteMessages extends Function<enums.messages_AffectedMessages> {
+export class messages_DeleteMessages extends Function<enums.messages_AffectedMessages> {
   revoke?: true;
   id: Array<number>;
 
@@ -4721,7 +4720,7 @@ class messages_deleteMessages extends Function<enums.messages_AffectedMessages> 
   }
 }
 
-class messages_receivedMessages extends Function<enums.ReceivedNotifyMessage[]> {
+export class messages_ReceivedMessages extends Function<enums.ReceivedNotifyMessage[]> {
   max_id: number;
 
   protected get [id]() {
@@ -4746,7 +4745,7 @@ class messages_receivedMessages extends Function<enums.ReceivedNotifyMessage[]> 
   }
 }
 
-class messages_setTyping extends Function<boolean> {
+export class messages_SetTyping extends Function<boolean> {
   peer: enums.InputPeer;
   top_msg_id?: number;
   action: enums.SendMessageAction;
@@ -4781,7 +4780,7 @@ class messages_setTyping extends Function<boolean> {
   }
 }
 
-class messages_sendMessage extends Function<enums.Updates> {
+export class messages_SendMessage extends Function<enums.Updates> {
   no_webpage?: true;
   silent?: true;
   background?: true;
@@ -4864,7 +4863,7 @@ class messages_sendMessage extends Function<enums.Updates> {
   }
 }
 
-class messages_sendMedia extends Function<enums.Updates> {
+export class messages_SendMedia extends Function<enums.Updates> {
   silent?: true;
   background?: true;
   clear_draft?: true;
@@ -4947,7 +4946,7 @@ class messages_sendMedia extends Function<enums.Updates> {
   }
 }
 
-class messages_forwardMessages extends Function<enums.Updates> {
+export class messages_ForwardMessages extends Function<enums.Updates> {
   silent?: true;
   background?: true;
   with_my_score?: true;
@@ -5022,7 +5021,7 @@ class messages_forwardMessages extends Function<enums.Updates> {
   }
 }
 
-class messages_reportSpam extends Function<boolean> {
+export class messages_ReportSpam extends Function<boolean> {
   peer: enums.InputPeer;
 
   protected get [id]() {
@@ -5047,7 +5046,7 @@ class messages_reportSpam extends Function<boolean> {
   }
 }
 
-class messages_getPeerSettings extends Function<enums.messages_PeerSettings> {
+export class messages_GetPeerSettings extends Function<enums.messages_PeerSettings> {
   peer: enums.InputPeer;
 
   protected get [id]() {
@@ -5072,7 +5071,7 @@ class messages_getPeerSettings extends Function<enums.messages_PeerSettings> {
   }
 }
 
-class messages_report extends Function<boolean> {
+export class messages_Report extends Function<boolean> {
   peer: enums.InputPeer;
   id: Array<number>;
   reason: enums.ReportReason;
@@ -5109,7 +5108,7 @@ class messages_report extends Function<boolean> {
   }
 }
 
-class messages_getChats extends Function<enums.messages_Chats> {
+export class messages_GetChats extends Function<enums.messages_Chats> {
   id: Array<bigint>;
 
   protected get [id]() {
@@ -5134,7 +5133,7 @@ class messages_getChats extends Function<enums.messages_Chats> {
   }
 }
 
-class messages_getFullChat extends Function<enums.messages_ChatFull> {
+export class messages_GetFullChat extends Function<enums.messages_ChatFull> {
   chat_id: bigint;
 
   protected get [id]() {
@@ -5159,7 +5158,7 @@ class messages_getFullChat extends Function<enums.messages_ChatFull> {
   }
 }
 
-class messages_editChatTitle extends Function<enums.Updates> {
+export class messages_EditChatTitle extends Function<enums.Updates> {
   chat_id: bigint;
   title: string;
 
@@ -5188,7 +5187,7 @@ class messages_editChatTitle extends Function<enums.Updates> {
   }
 }
 
-class messages_editChatPhoto extends Function<enums.Updates> {
+export class messages_EditChatPhoto extends Function<enums.Updates> {
   chat_id: bigint;
   photo: enums.InputChatPhoto;
 
@@ -5217,7 +5216,7 @@ class messages_editChatPhoto extends Function<enums.Updates> {
   }
 }
 
-class messages_addChatUser extends Function<enums.Updates> {
+export class messages_AddChatUser extends Function<enums.Updates> {
   chat_id: bigint;
   user_id: enums.InputUser;
   fwd_limit: number;
@@ -5250,7 +5249,7 @@ class messages_addChatUser extends Function<enums.Updates> {
   }
 }
 
-class messages_deleteChatUser extends Function<enums.Updates> {
+export class messages_DeleteChatUser extends Function<enums.Updates> {
   revoke_history?: true;
   chat_id: bigint;
   user_id: enums.InputUser;
@@ -5285,7 +5284,7 @@ class messages_deleteChatUser extends Function<enums.Updates> {
   }
 }
 
-class messages_createChat extends Function<enums.Updates> {
+export class messages_CreateChat extends Function<enums.Updates> {
   users: Array<enums.InputUser>;
   title: string;
   ttl_period?: number;
@@ -5320,7 +5319,7 @@ class messages_createChat extends Function<enums.Updates> {
   }
 }
 
-class messages_getDhConfig extends Function<enums.messages_DhConfig> {
+export class messages_GetDhConfig extends Function<enums.messages_DhConfig> {
   version: number;
   random_length: number;
 
@@ -5349,7 +5348,7 @@ class messages_getDhConfig extends Function<enums.messages_DhConfig> {
   }
 }
 
-class messages_requestEncryption extends Function<enums.EncryptedChat> {
+export class messages_RequestEncryption extends Function<enums.EncryptedChat> {
   user_id: enums.InputUser;
   random_id: number;
   g_a: Uint8Array;
@@ -5382,7 +5381,7 @@ class messages_requestEncryption extends Function<enums.EncryptedChat> {
   }
 }
 
-class messages_acceptEncryption extends Function<enums.EncryptedChat> {
+export class messages_AcceptEncryption extends Function<enums.EncryptedChat> {
   peer: enums.InputEncryptedChat;
   g_b: Uint8Array;
   key_fingerprint: bigint;
@@ -5415,7 +5414,7 @@ class messages_acceptEncryption extends Function<enums.EncryptedChat> {
   }
 }
 
-class messages_discardEncryption extends Function<boolean> {
+export class messages_DiscardEncryption extends Function<boolean> {
   delete_history?: true;
   chat_id: number;
 
@@ -5446,7 +5445,7 @@ class messages_discardEncryption extends Function<boolean> {
   }
 }
 
-class messages_setEncryptedTyping extends Function<boolean> {
+export class messages_SetEncryptedTyping extends Function<boolean> {
   peer: enums.InputEncryptedChat;
   typing: boolean;
 
@@ -5475,7 +5474,7 @@ class messages_setEncryptedTyping extends Function<boolean> {
   }
 }
 
-class messages_readEncryptedHistory extends Function<boolean> {
+export class messages_ReadEncryptedHistory extends Function<boolean> {
   peer: enums.InputEncryptedChat;
   max_date: number;
 
@@ -5504,7 +5503,7 @@ class messages_readEncryptedHistory extends Function<boolean> {
   }
 }
 
-class messages_sendEncrypted extends Function<enums.messages_SentEncryptedMessage> {
+export class messages_SendEncrypted extends Function<enums.messages_SentEncryptedMessage> {
   silent?: true;
   peer: enums.InputEncryptedChat;
   random_id: bigint;
@@ -5543,7 +5542,7 @@ class messages_sendEncrypted extends Function<enums.messages_SentEncryptedMessag
   }
 }
 
-class messages_sendEncryptedFile extends Function<enums.messages_SentEncryptedMessage> {
+export class messages_SendEncryptedFile extends Function<enums.messages_SentEncryptedMessage> {
   silent?: true;
   peer: enums.InputEncryptedChat;
   random_id: bigint;
@@ -5586,7 +5585,7 @@ class messages_sendEncryptedFile extends Function<enums.messages_SentEncryptedMe
   }
 }
 
-class messages_sendEncryptedService extends Function<enums.messages_SentEncryptedMessage> {
+export class messages_SendEncryptedService extends Function<enums.messages_SentEncryptedMessage> {
   peer: enums.InputEncryptedChat;
   random_id: bigint;
   data: Uint8Array;
@@ -5619,7 +5618,7 @@ class messages_sendEncryptedService extends Function<enums.messages_SentEncrypte
   }
 }
 
-class messages_receivedQueue extends Function<bigint[]> {
+export class messages_ReceivedQueue extends Function<bigint[]> {
   max_qts: number;
 
   protected get [id]() {
@@ -5644,7 +5643,7 @@ class messages_receivedQueue extends Function<bigint[]> {
   }
 }
 
-class messages_reportEncryptedSpam extends Function<boolean> {
+export class messages_ReportEncryptedSpam extends Function<boolean> {
   peer: enums.InputEncryptedChat;
 
   protected get [id]() {
@@ -5669,7 +5668,7 @@ class messages_reportEncryptedSpam extends Function<boolean> {
   }
 }
 
-class messages_readMessageContents extends Function<enums.messages_AffectedMessages> {
+export class messages_ReadMessageContents extends Function<enums.messages_AffectedMessages> {
   id: Array<number>;
 
   protected get [id]() {
@@ -5694,7 +5693,7 @@ class messages_readMessageContents extends Function<enums.messages_AffectedMessa
   }
 }
 
-class messages_getStickers extends Function<enums.messages_Stickers> {
+export class messages_GetStickers extends Function<enums.messages_Stickers> {
   emoticon: string;
   hash: bigint;
 
@@ -5723,7 +5722,7 @@ class messages_getStickers extends Function<enums.messages_Stickers> {
   }
 }
 
-class messages_getAllStickers extends Function<enums.messages_AllStickers> {
+export class messages_GetAllStickers extends Function<enums.messages_AllStickers> {
   hash: bigint;
 
   protected get [id]() {
@@ -5748,7 +5747,7 @@ class messages_getAllStickers extends Function<enums.messages_AllStickers> {
   }
 }
 
-class messages_getWebPagePreview extends Function<enums.MessageMedia> {
+export class messages_GetWebPagePreview extends Function<enums.MessageMedia> {
   message: string;
   entities?: Array<enums.MessageEntity>;
 
@@ -5779,7 +5778,7 @@ class messages_getWebPagePreview extends Function<enums.MessageMedia> {
   }
 }
 
-class messages_exportChatInvite extends Function<enums.ExportedChatInvite> {
+export class messages_ExportChatInvite extends Function<enums.ExportedChatInvite> {
   legacy_revoke_permanent?: true;
   request_needed?: true;
   peer: enums.InputPeer;
@@ -5826,7 +5825,7 @@ class messages_exportChatInvite extends Function<enums.ExportedChatInvite> {
   }
 }
 
-class messages_checkChatInvite extends Function<enums.ChatInvite> {
+export class messages_CheckChatInvite extends Function<enums.ChatInvite> {
   hash: string;
 
   protected get [id]() {
@@ -5851,7 +5850,7 @@ class messages_checkChatInvite extends Function<enums.ChatInvite> {
   }
 }
 
-class messages_importChatInvite extends Function<enums.Updates> {
+export class messages_ImportChatInvite extends Function<enums.Updates> {
   hash: string;
 
   protected get [id]() {
@@ -5876,7 +5875,7 @@ class messages_importChatInvite extends Function<enums.Updates> {
   }
 }
 
-class messages_getStickerSet extends Function<enums.messages_StickerSet> {
+export class messages_GetStickerSet extends Function<enums.messages_StickerSet> {
   stickerset: enums.InputStickerSet;
   hash: number;
 
@@ -5905,7 +5904,7 @@ class messages_getStickerSet extends Function<enums.messages_StickerSet> {
   }
 }
 
-class messages_installStickerSet extends Function<enums.messages_StickerSetInstallResult> {
+export class messages_InstallStickerSet extends Function<enums.messages_StickerSetInstallResult> {
   stickerset: enums.InputStickerSet;
   archived: boolean;
 
@@ -5934,7 +5933,7 @@ class messages_installStickerSet extends Function<enums.messages_StickerSetInsta
   }
 }
 
-class messages_uninstallStickerSet extends Function<boolean> {
+export class messages_UninstallStickerSet extends Function<boolean> {
   stickerset: enums.InputStickerSet;
 
   protected get [id]() {
@@ -5959,7 +5958,7 @@ class messages_uninstallStickerSet extends Function<boolean> {
   }
 }
 
-class messages_startBot extends Function<enums.Updates> {
+export class messages_StartBot extends Function<enums.Updates> {
   bot: enums.InputUser;
   peer: enums.InputPeer;
   random_id: bigint;
@@ -5996,7 +5995,7 @@ class messages_startBot extends Function<enums.Updates> {
   }
 }
 
-class messages_getMessagesViews extends Function<enums.messages_MessageViews> {
+export class messages_GetMessagesViews extends Function<enums.messages_MessageViews> {
   peer: enums.InputPeer;
   id: Array<number>;
   increment: boolean;
@@ -6029,7 +6028,7 @@ class messages_getMessagesViews extends Function<enums.messages_MessageViews> {
   }
 }
 
-class messages_editChatAdmin extends Function<boolean> {
+export class messages_EditChatAdmin extends Function<boolean> {
   chat_id: bigint;
   user_id: enums.InputUser;
   is_admin: boolean;
@@ -6062,7 +6061,7 @@ class messages_editChatAdmin extends Function<boolean> {
   }
 }
 
-class messages_migrateChat extends Function<enums.Updates> {
+export class messages_MigrateChat extends Function<enums.Updates> {
   chat_id: bigint;
 
   protected get [id]() {
@@ -6087,7 +6086,7 @@ class messages_migrateChat extends Function<enums.Updates> {
   }
 }
 
-class messages_searchGlobal extends Function<enums.messages_Messages> {
+export class messages_SearchGlobal extends Function<enums.messages_Messages> {
   folder_id?: number;
   q: string;
   filter: enums.MessagesFilter;
@@ -6146,7 +6145,7 @@ class messages_searchGlobal extends Function<enums.messages_Messages> {
   }
 }
 
-class messages_reorderStickerSets extends Function<boolean> {
+export class messages_ReorderStickerSets extends Function<boolean> {
   masks?: true;
   emojis?: true;
   order: Array<bigint>;
@@ -6181,7 +6180,7 @@ class messages_reorderStickerSets extends Function<boolean> {
   }
 }
 
-class messages_getDocumentByHash extends Function<enums.Document> {
+export class messages_GetDocumentByHash extends Function<enums.Document> {
   sha256: Uint8Array;
   size: bigint;
   mime_type: string;
@@ -6214,7 +6213,7 @@ class messages_getDocumentByHash extends Function<enums.Document> {
   }
 }
 
-class messages_getSavedGifs extends Function<enums.messages_SavedGifs> {
+export class messages_GetSavedGifs extends Function<enums.messages_SavedGifs> {
   hash: bigint;
 
   protected get [id]() {
@@ -6239,7 +6238,7 @@ class messages_getSavedGifs extends Function<enums.messages_SavedGifs> {
   }
 }
 
-class messages_saveGif extends Function<boolean> {
+export class messages_SaveGif extends Function<boolean> {
   id: enums.InputDocument;
   unsave: boolean;
 
@@ -6268,7 +6267,7 @@ class messages_saveGif extends Function<boolean> {
   }
 }
 
-class messages_getInlineBotResults extends Function<enums.messages_BotResults> {
+export class messages_GetInlineBotResults extends Function<enums.messages_BotResults> {
   bot: enums.InputUser;
   peer: enums.InputPeer;
   geo_point?: enums.InputGeoPoint;
@@ -6311,7 +6310,7 @@ class messages_getInlineBotResults extends Function<enums.messages_BotResults> {
   }
 }
 
-class messages_setInlineBotResults extends Function<boolean> {
+export class messages_SetInlineBotResults extends Function<boolean> {
   gallery?: true;
   private?: true;
   query_id: bigint;
@@ -6366,7 +6365,7 @@ class messages_setInlineBotResults extends Function<boolean> {
   }
 }
 
-class messages_sendInlineBotResult extends Function<enums.Updates> {
+export class messages_SendInlineBotResult extends Function<enums.Updates> {
   silent?: true;
   background?: true;
   clear_draft?: true;
@@ -6433,7 +6432,7 @@ class messages_sendInlineBotResult extends Function<enums.Updates> {
   }
 }
 
-class messages_getMessageEditData extends Function<enums.messages_MessageEditData> {
+export class messages_GetMessageEditData extends Function<enums.messages_MessageEditData> {
   peer: enums.InputPeer;
   id: number;
 
@@ -6462,7 +6461,7 @@ class messages_getMessageEditData extends Function<enums.messages_MessageEditDat
   }
 }
 
-class messages_editMessage extends Function<enums.Updates> {
+export class messages_EditMessage extends Function<enums.Updates> {
   no_webpage?: true;
   invert_media?: true;
   peer: enums.InputPeer;
@@ -6521,7 +6520,7 @@ class messages_editMessage extends Function<enums.Updates> {
   }
 }
 
-class messages_editInlineBotMessage extends Function<boolean> {
+export class messages_EditInlineBotMessage extends Function<boolean> {
   no_webpage?: true;
   invert_media?: true;
   id: enums.InputBotInlineMessageID;
@@ -6572,7 +6571,7 @@ class messages_editInlineBotMessage extends Function<boolean> {
   }
 }
 
-class messages_getBotCallbackAnswer extends Function<enums.messages_BotCallbackAnswer> {
+export class messages_GetBotCallbackAnswer extends Function<enums.messages_BotCallbackAnswer> {
   game?: true;
   peer: enums.InputPeer;
   msg_id: number;
@@ -6615,7 +6614,7 @@ class messages_getBotCallbackAnswer extends Function<enums.messages_BotCallbackA
   }
 }
 
-class messages_setBotCallbackAnswer extends Function<boolean> {
+export class messages_SetBotCallbackAnswer extends Function<boolean> {
   alert?: true;
   query_id: bigint;
   message?: string;
@@ -6658,7 +6657,7 @@ class messages_setBotCallbackAnswer extends Function<boolean> {
   }
 }
 
-class messages_getPeerDialogs extends Function<enums.messages_PeerDialogs> {
+export class messages_GetPeerDialogs extends Function<enums.messages_PeerDialogs> {
   peers: Array<enums.InputDialogPeer>;
 
   protected get [id]() {
@@ -6683,7 +6682,7 @@ class messages_getPeerDialogs extends Function<enums.messages_PeerDialogs> {
   }
 }
 
-class messages_saveDraft extends Function<boolean> {
+export class messages_SaveDraft extends Function<boolean> {
   no_webpage?: true;
   invert_media?: true;
   reply_to?: enums.InputReplyTo;
@@ -6734,7 +6733,7 @@ class messages_saveDraft extends Function<boolean> {
   }
 }
 
-class messages_getAllDrafts extends Function<enums.Updates> {
+export class messages_GetAllDrafts extends Function<enums.Updates> {
   protected get [id]() {
     return 0x6A3F8D65;
   }
@@ -6752,7 +6751,7 @@ class messages_getAllDrafts extends Function<enums.Updates> {
   }
 }
 
-class messages_getFeaturedStickers extends Function<enums.messages_FeaturedStickers> {
+export class messages_GetFeaturedStickers extends Function<enums.messages_FeaturedStickers> {
   hash: bigint;
 
   protected get [id]() {
@@ -6777,7 +6776,7 @@ class messages_getFeaturedStickers extends Function<enums.messages_FeaturedStick
   }
 }
 
-class messages_readFeaturedStickers extends Function<boolean> {
+export class messages_ReadFeaturedStickers extends Function<boolean> {
   id: Array<bigint>;
 
   protected get [id]() {
@@ -6802,7 +6801,7 @@ class messages_readFeaturedStickers extends Function<boolean> {
   }
 }
 
-class messages_getRecentStickers extends Function<enums.messages_RecentStickers> {
+export class messages_GetRecentStickers extends Function<enums.messages_RecentStickers> {
   attached?: true;
   hash: bigint;
 
@@ -6833,7 +6832,7 @@ class messages_getRecentStickers extends Function<enums.messages_RecentStickers>
   }
 }
 
-class messages_saveRecentSticker extends Function<boolean> {
+export class messages_SaveRecentSticker extends Function<boolean> {
   attached?: true;
   id: enums.InputDocument;
   unsave: boolean;
@@ -6868,7 +6867,7 @@ class messages_saveRecentSticker extends Function<boolean> {
   }
 }
 
-class messages_clearRecentStickers extends Function<boolean> {
+export class messages_ClearRecentStickers extends Function<boolean> {
   attached?: true;
 
   protected get [id]() {
@@ -6895,7 +6894,7 @@ class messages_clearRecentStickers extends Function<boolean> {
   }
 }
 
-class messages_getArchivedStickers extends Function<enums.messages_ArchivedStickers> {
+export class messages_GetArchivedStickers extends Function<enums.messages_ArchivedStickers> {
   masks?: true;
   emojis?: true;
   offset_id: bigint;
@@ -6934,7 +6933,7 @@ class messages_getArchivedStickers extends Function<enums.messages_ArchivedStick
   }
 }
 
-class messages_getMaskStickers extends Function<enums.messages_AllStickers> {
+export class messages_GetMaskStickers extends Function<enums.messages_AllStickers> {
   hash: bigint;
 
   protected get [id]() {
@@ -6959,7 +6958,7 @@ class messages_getMaskStickers extends Function<enums.messages_AllStickers> {
   }
 }
 
-class messages_getAttachedStickers extends Function<enums.StickerSetCovered[]> {
+export class messages_GetAttachedStickers extends Function<enums.StickerSetCovered[]> {
   media: enums.InputStickeredMedia;
 
   protected get [id]() {
@@ -6984,7 +6983,7 @@ class messages_getAttachedStickers extends Function<enums.StickerSetCovered[]> {
   }
 }
 
-class messages_setGameScore extends Function<enums.Updates> {
+export class messages_SetGameScore extends Function<enums.Updates> {
   edit_message?: true;
   force?: true;
   peer: enums.InputPeer;
@@ -7031,7 +7030,7 @@ class messages_setGameScore extends Function<enums.Updates> {
   }
 }
 
-class messages_setInlineGameScore extends Function<boolean> {
+export class messages_SetInlineGameScore extends Function<boolean> {
   edit_message?: true;
   force?: true;
   id: enums.InputBotInlineMessageID;
@@ -7074,7 +7073,7 @@ class messages_setInlineGameScore extends Function<boolean> {
   }
 }
 
-class messages_getGameHighScores extends Function<enums.messages_HighScores> {
+export class messages_GetGameHighScores extends Function<enums.messages_HighScores> {
   peer: enums.InputPeer;
   id: number;
   user_id: enums.InputUser;
@@ -7107,7 +7106,7 @@ class messages_getGameHighScores extends Function<enums.messages_HighScores> {
   }
 }
 
-class messages_getInlineGameHighScores extends Function<enums.messages_HighScores> {
+export class messages_GetInlineGameHighScores extends Function<enums.messages_HighScores> {
   id: enums.InputBotInlineMessageID;
   user_id: enums.InputUser;
 
@@ -7136,7 +7135,7 @@ class messages_getInlineGameHighScores extends Function<enums.messages_HighScore
   }
 }
 
-class messages_getCommonChats extends Function<enums.messages_Chats> {
+export class messages_GetCommonChats extends Function<enums.messages_Chats> {
   user_id: enums.InputUser;
   max_id: bigint;
   limit: number;
@@ -7169,7 +7168,7 @@ class messages_getCommonChats extends Function<enums.messages_Chats> {
   }
 }
 
-class messages_getWebPage extends Function<enums.messages_WebPage> {
+export class messages_GetWebPage extends Function<enums.messages_WebPage> {
   url: string;
   hash: number;
 
@@ -7198,7 +7197,7 @@ class messages_getWebPage extends Function<enums.messages_WebPage> {
   }
 }
 
-class messages_toggleDialogPin extends Function<boolean> {
+export class messages_ToggleDialogPin extends Function<boolean> {
   pinned?: true;
   peer: enums.InputDialogPeer;
 
@@ -7229,7 +7228,7 @@ class messages_toggleDialogPin extends Function<boolean> {
   }
 }
 
-class messages_reorderPinnedDialogs extends Function<boolean> {
+export class messages_ReorderPinnedDialogs extends Function<boolean> {
   force?: true;
   folder_id: number;
   order: Array<enums.InputDialogPeer>;
@@ -7264,7 +7263,7 @@ class messages_reorderPinnedDialogs extends Function<boolean> {
   }
 }
 
-class messages_getPinnedDialogs extends Function<enums.messages_PeerDialogs> {
+export class messages_GetPinnedDialogs extends Function<enums.messages_PeerDialogs> {
   folder_id: number;
 
   protected get [id]() {
@@ -7289,7 +7288,7 @@ class messages_getPinnedDialogs extends Function<enums.messages_PeerDialogs> {
   }
 }
 
-class messages_setBotShippingResults extends Function<boolean> {
+export class messages_SetBotShippingResults extends Function<boolean> {
   query_id: bigint;
   error?: string;
   shipping_options?: Array<enums.ShippingOption>;
@@ -7324,7 +7323,7 @@ class messages_setBotShippingResults extends Function<boolean> {
   }
 }
 
-class messages_setBotPrecheckoutResults extends Function<boolean> {
+export class messages_SetBotPrecheckoutResults extends Function<boolean> {
   success?: true;
   query_id: bigint;
   error?: string;
@@ -7359,7 +7358,7 @@ class messages_setBotPrecheckoutResults extends Function<boolean> {
   }
 }
 
-class messages_uploadMedia extends Function<enums.MessageMedia> {
+export class messages_UploadMedia extends Function<enums.MessageMedia> {
   peer: enums.InputPeer;
   media: enums.InputMedia;
 
@@ -7388,7 +7387,7 @@ class messages_uploadMedia extends Function<enums.MessageMedia> {
   }
 }
 
-class messages_sendScreenshotNotification extends Function<enums.Updates> {
+export class messages_SendScreenshotNotification extends Function<enums.Updates> {
   peer: enums.InputPeer;
   reply_to: enums.InputReplyTo;
   random_id: bigint;
@@ -7421,7 +7420,7 @@ class messages_sendScreenshotNotification extends Function<enums.Updates> {
   }
 }
 
-class messages_getFavedStickers extends Function<enums.messages_FavedStickers> {
+export class messages_GetFavedStickers extends Function<enums.messages_FavedStickers> {
   hash: bigint;
 
   protected get [id]() {
@@ -7446,7 +7445,7 @@ class messages_getFavedStickers extends Function<enums.messages_FavedStickers> {
   }
 }
 
-class messages_faveSticker extends Function<boolean> {
+export class messages_FaveSticker extends Function<boolean> {
   id: enums.InputDocument;
   unfave: boolean;
 
@@ -7475,7 +7474,7 @@ class messages_faveSticker extends Function<boolean> {
   }
 }
 
-class messages_getUnreadMentions extends Function<enums.messages_Messages> {
+export class messages_GetUnreadMentions extends Function<enums.messages_Messages> {
   peer: enums.InputPeer;
   top_msg_id?: number;
   offset_id: number;
@@ -7526,7 +7525,7 @@ class messages_getUnreadMentions extends Function<enums.messages_Messages> {
   }
 }
 
-class messages_readMentions extends Function<enums.messages_AffectedHistory> {
+export class messages_ReadMentions extends Function<enums.messages_AffectedHistory> {
   peer: enums.InputPeer;
   top_msg_id?: number;
 
@@ -7557,7 +7556,7 @@ class messages_readMentions extends Function<enums.messages_AffectedHistory> {
   }
 }
 
-class messages_getRecentLocations extends Function<enums.messages_Messages> {
+export class messages_GetRecentLocations extends Function<enums.messages_Messages> {
   peer: enums.InputPeer;
   limit: number;
   hash: bigint;
@@ -7590,7 +7589,7 @@ class messages_getRecentLocations extends Function<enums.messages_Messages> {
   }
 }
 
-class messages_sendMultiMedia extends Function<enums.Updates> {
+export class messages_SendMultiMedia extends Function<enums.Updates> {
   silent?: true;
   background?: true;
   clear_draft?: true;
@@ -7657,7 +7656,7 @@ class messages_sendMultiMedia extends Function<enums.Updates> {
   }
 }
 
-class messages_uploadEncryptedFile extends Function<enums.EncryptedFile> {
+export class messages_UploadEncryptedFile extends Function<enums.EncryptedFile> {
   peer: enums.InputEncryptedChat;
   file: enums.InputEncryptedFile;
 
@@ -7686,7 +7685,7 @@ class messages_uploadEncryptedFile extends Function<enums.EncryptedFile> {
   }
 }
 
-class messages_searchStickerSets extends Function<enums.messages_FoundStickerSets> {
+export class messages_SearchStickerSets extends Function<enums.messages_FoundStickerSets> {
   exclude_featured?: true;
   q: string;
   hash: bigint;
@@ -7721,7 +7720,7 @@ class messages_searchStickerSets extends Function<enums.messages_FoundStickerSet
   }
 }
 
-class messages_getSplitRanges extends Function<enums.MessageRange[]> {
+export class messages_GetSplitRanges extends Function<enums.MessageRange[]> {
   protected get [id]() {
     return 0x1CFF7E08;
   }
@@ -7739,7 +7738,7 @@ class messages_getSplitRanges extends Function<enums.MessageRange[]> {
   }
 }
 
-class messages_markDialogUnread extends Function<boolean> {
+export class messages_MarkDialogUnread extends Function<boolean> {
   unread?: true;
   peer: enums.InputDialogPeer;
 
@@ -7770,7 +7769,7 @@ class messages_markDialogUnread extends Function<boolean> {
   }
 }
 
-class messages_getDialogUnreadMarks extends Function<enums.DialogPeer[]> {
+export class messages_GetDialogUnreadMarks extends Function<enums.DialogPeer[]> {
   protected get [id]() {
     return 0x22E24E22;
   }
@@ -7788,7 +7787,7 @@ class messages_getDialogUnreadMarks extends Function<enums.DialogPeer[]> {
   }
 }
 
-class messages_clearAllDrafts extends Function<boolean> {
+export class messages_ClearAllDrafts extends Function<boolean> {
   protected get [id]() {
     return 0x7E58EE9C;
   }
@@ -7806,7 +7805,7 @@ class messages_clearAllDrafts extends Function<boolean> {
   }
 }
 
-class messages_updatePinnedMessage extends Function<enums.Updates> {
+export class messages_UpdatePinnedMessage extends Function<enums.Updates> {
   silent?: true;
   unpin?: true;
   pm_oneside?: true;
@@ -7849,7 +7848,7 @@ class messages_updatePinnedMessage extends Function<enums.Updates> {
   }
 }
 
-class messages_sendVote extends Function<enums.Updates> {
+export class messages_SendVote extends Function<enums.Updates> {
   peer: enums.InputPeer;
   msg_id: number;
   options: Array<Uint8Array>;
@@ -7882,7 +7881,7 @@ class messages_sendVote extends Function<enums.Updates> {
   }
 }
 
-class messages_getPollResults extends Function<enums.Updates> {
+export class messages_GetPollResults extends Function<enums.Updates> {
   peer: enums.InputPeer;
   msg_id: number;
 
@@ -7911,7 +7910,7 @@ class messages_getPollResults extends Function<enums.Updates> {
   }
 }
 
-class messages_getOnlines extends Function<enums.ChatOnlines> {
+export class messages_GetOnlines extends Function<enums.ChatOnlines> {
   peer: enums.InputPeer;
 
   protected get [id]() {
@@ -7936,7 +7935,7 @@ class messages_getOnlines extends Function<enums.ChatOnlines> {
   }
 }
 
-class messages_editChatAbout extends Function<boolean> {
+export class messages_EditChatAbout extends Function<boolean> {
   peer: enums.InputPeer;
   about: string;
 
@@ -7965,7 +7964,7 @@ class messages_editChatAbout extends Function<boolean> {
   }
 }
 
-class messages_editChatDefaultBannedRights extends Function<enums.Updates> {
+export class messages_EditChatDefaultBannedRights extends Function<enums.Updates> {
   peer: enums.InputPeer;
   banned_rights: enums.ChatBannedRights;
 
@@ -7994,7 +7993,7 @@ class messages_editChatDefaultBannedRights extends Function<enums.Updates> {
   }
 }
 
-class messages_getEmojiKeywords extends Function<enums.EmojiKeywordsDifference> {
+export class messages_GetEmojiKeywords extends Function<enums.EmojiKeywordsDifference> {
   lang_code: string;
 
   protected get [id]() {
@@ -8019,7 +8018,7 @@ class messages_getEmojiKeywords extends Function<enums.EmojiKeywordsDifference> 
   }
 }
 
-class messages_getEmojiKeywordsDifference extends Function<enums.EmojiKeywordsDifference> {
+export class messages_GetEmojiKeywordsDifference extends Function<enums.EmojiKeywordsDifference> {
   lang_code: string;
   from_version: number;
 
@@ -8048,7 +8047,7 @@ class messages_getEmojiKeywordsDifference extends Function<enums.EmojiKeywordsDi
   }
 }
 
-class messages_getEmojiKeywordsLanguages extends Function<enums.EmojiLanguage[]> {
+export class messages_GetEmojiKeywordsLanguages extends Function<enums.EmojiLanguage[]> {
   lang_codes: Array<string>;
 
   protected get [id]() {
@@ -8073,7 +8072,7 @@ class messages_getEmojiKeywordsLanguages extends Function<enums.EmojiLanguage[]>
   }
 }
 
-class messages_getEmojiURL extends Function<enums.EmojiURL> {
+export class messages_GetEmojiURL extends Function<enums.EmojiURL> {
   lang_code: string;
 
   protected get [id]() {
@@ -8098,7 +8097,7 @@ class messages_getEmojiURL extends Function<enums.EmojiURL> {
   }
 }
 
-class messages_getSearchCounters extends Function<enums.messages_SearchCounter[]> {
+export class messages_GetSearchCounters extends Function<enums.messages_SearchCounter[]> {
   peer: enums.InputPeer;
   top_msg_id?: number;
   filters: Array<enums.MessagesFilter>;
@@ -8133,7 +8132,7 @@ class messages_getSearchCounters extends Function<enums.messages_SearchCounter[]
   }
 }
 
-class messages_requestUrlAuth extends Function<enums.UrlAuthResult> {
+export class messages_RequestUrlAuth extends Function<enums.UrlAuthResult> {
   peer?: enums.InputPeer;
   msg_id?: number;
   button_id?: number;
@@ -8172,7 +8171,7 @@ class messages_requestUrlAuth extends Function<enums.UrlAuthResult> {
   }
 }
 
-class messages_acceptUrlAuth extends Function<enums.UrlAuthResult> {
+export class messages_AcceptUrlAuth extends Function<enums.UrlAuthResult> {
   write_allowed?: true;
   peer?: enums.InputPeer;
   msg_id?: number;
@@ -8215,7 +8214,7 @@ class messages_acceptUrlAuth extends Function<enums.UrlAuthResult> {
   }
 }
 
-class messages_hidePeerSettingsBar extends Function<boolean> {
+export class messages_HidePeerSettingsBar extends Function<boolean> {
   peer: enums.InputPeer;
 
   protected get [id]() {
@@ -8240,7 +8239,7 @@ class messages_hidePeerSettingsBar extends Function<boolean> {
   }
 }
 
-class messages_getScheduledHistory extends Function<enums.messages_Messages> {
+export class messages_GetScheduledHistory extends Function<enums.messages_Messages> {
   peer: enums.InputPeer;
   hash: bigint;
 
@@ -8269,7 +8268,7 @@ class messages_getScheduledHistory extends Function<enums.messages_Messages> {
   }
 }
 
-class messages_getScheduledMessages extends Function<enums.messages_Messages> {
+export class messages_GetScheduledMessages extends Function<enums.messages_Messages> {
   peer: enums.InputPeer;
   id: Array<number>;
 
@@ -8298,7 +8297,7 @@ class messages_getScheduledMessages extends Function<enums.messages_Messages> {
   }
 }
 
-class messages_sendScheduledMessages extends Function<enums.Updates> {
+export class messages_SendScheduledMessages extends Function<enums.Updates> {
   peer: enums.InputPeer;
   id: Array<number>;
 
@@ -8327,7 +8326,7 @@ class messages_sendScheduledMessages extends Function<enums.Updates> {
   }
 }
 
-class messages_deleteScheduledMessages extends Function<enums.Updates> {
+export class messages_DeleteScheduledMessages extends Function<enums.Updates> {
   peer: enums.InputPeer;
   id: Array<number>;
 
@@ -8356,7 +8355,7 @@ class messages_deleteScheduledMessages extends Function<enums.Updates> {
   }
 }
 
-class messages_getPollVotes extends Function<enums.messages_VotesList> {
+export class messages_GetPollVotes extends Function<enums.messages_VotesList> {
   peer: enums.InputPeer;
   id: number;
   option?: Uint8Array;
@@ -8399,7 +8398,7 @@ class messages_getPollVotes extends Function<enums.messages_VotesList> {
   }
 }
 
-class messages_toggleStickerSets extends Function<boolean> {
+export class messages_ToggleStickerSets extends Function<boolean> {
   uninstall?: true;
   archive?: true;
   unarchive?: true;
@@ -8438,7 +8437,7 @@ class messages_toggleStickerSets extends Function<boolean> {
   }
 }
 
-class messages_getDialogFilters extends Function<enums.DialogFilter[]> {
+export class messages_GetDialogFilters extends Function<enums.DialogFilter[]> {
   protected get [id]() {
     return 0xF19ED96D;
   }
@@ -8456,7 +8455,7 @@ class messages_getDialogFilters extends Function<enums.DialogFilter[]> {
   }
 }
 
-class messages_getSuggestedDialogFilters extends Function<enums.DialogFilterSuggested[]> {
+export class messages_GetSuggestedDialogFilters extends Function<enums.DialogFilterSuggested[]> {
   protected get [id]() {
     return 0xA29CD42C;
   }
@@ -8474,7 +8473,7 @@ class messages_getSuggestedDialogFilters extends Function<enums.DialogFilterSugg
   }
 }
 
-class messages_updateDialogFilter extends Function<boolean> {
+export class messages_UpdateDialogFilter extends Function<boolean> {
   id: number;
   filter?: enums.DialogFilter;
 
@@ -8505,7 +8504,7 @@ class messages_updateDialogFilter extends Function<boolean> {
   }
 }
 
-class messages_updateDialogFiltersOrder extends Function<boolean> {
+export class messages_UpdateDialogFiltersOrder extends Function<boolean> {
   order: Array<number>;
 
   protected get [id]() {
@@ -8530,7 +8529,7 @@ class messages_updateDialogFiltersOrder extends Function<boolean> {
   }
 }
 
-class messages_getOldFeaturedStickers extends Function<enums.messages_FeaturedStickers> {
+export class messages_GetOldFeaturedStickers extends Function<enums.messages_FeaturedStickers> {
   offset: number;
   limit: number;
   hash: bigint;
@@ -8563,7 +8562,7 @@ class messages_getOldFeaturedStickers extends Function<enums.messages_FeaturedSt
   }
 }
 
-class messages_getReplies extends Function<enums.messages_Messages> {
+export class messages_GetReplies extends Function<enums.messages_Messages> {
   peer: enums.InputPeer;
   msg_id: number;
   offset_id: number;
@@ -8620,7 +8619,7 @@ class messages_getReplies extends Function<enums.messages_Messages> {
   }
 }
 
-class messages_getDiscussionMessage extends Function<enums.messages_DiscussionMessage> {
+export class messages_GetDiscussionMessage extends Function<enums.messages_DiscussionMessage> {
   peer: enums.InputPeer;
   msg_id: number;
 
@@ -8649,7 +8648,7 @@ class messages_getDiscussionMessage extends Function<enums.messages_DiscussionMe
   }
 }
 
-class messages_readDiscussion extends Function<boolean> {
+export class messages_ReadDiscussion extends Function<boolean> {
   peer: enums.InputPeer;
   msg_id: number;
   read_max_id: number;
@@ -8682,7 +8681,7 @@ class messages_readDiscussion extends Function<boolean> {
   }
 }
 
-class messages_unpinAllMessages extends Function<enums.messages_AffectedHistory> {
+export class messages_UnpinAllMessages extends Function<enums.messages_AffectedHistory> {
   peer: enums.InputPeer;
   top_msg_id?: number;
 
@@ -8713,7 +8712,7 @@ class messages_unpinAllMessages extends Function<enums.messages_AffectedHistory>
   }
 }
 
-class messages_deleteChat extends Function<boolean> {
+export class messages_DeleteChat extends Function<boolean> {
   chat_id: bigint;
 
   protected get [id]() {
@@ -8738,7 +8737,7 @@ class messages_deleteChat extends Function<boolean> {
   }
 }
 
-class messages_deletePhoneCallHistory extends Function<enums.messages_AffectedFoundMessages> {
+export class messages_DeletePhoneCallHistory extends Function<enums.messages_AffectedFoundMessages> {
   revoke?: true;
 
   protected get [id]() {
@@ -8765,7 +8764,7 @@ class messages_deletePhoneCallHistory extends Function<enums.messages_AffectedFo
   }
 }
 
-class messages_checkHistoryImport extends Function<enums.messages_HistoryImportParsed> {
+export class messages_CheckHistoryImport extends Function<enums.messages_HistoryImportParsed> {
   import_head: string;
 
   protected get [id]() {
@@ -8790,7 +8789,7 @@ class messages_checkHistoryImport extends Function<enums.messages_HistoryImportP
   }
 }
 
-class messages_initHistoryImport extends Function<enums.messages_HistoryImport> {
+export class messages_InitHistoryImport extends Function<enums.messages_HistoryImport> {
   peer: enums.InputPeer;
   file: enums.InputFile;
   media_count: number;
@@ -8823,7 +8822,7 @@ class messages_initHistoryImport extends Function<enums.messages_HistoryImport> 
   }
 }
 
-class messages_uploadImportedMedia extends Function<enums.MessageMedia> {
+export class messages_UploadImportedMedia extends Function<enums.MessageMedia> {
   peer: enums.InputPeer;
   import_id: bigint;
   file_name: string;
@@ -8860,7 +8859,7 @@ class messages_uploadImportedMedia extends Function<enums.MessageMedia> {
   }
 }
 
-class messages_startHistoryImport extends Function<boolean> {
+export class messages_StartHistoryImport extends Function<boolean> {
   peer: enums.InputPeer;
   import_id: bigint;
 
@@ -8889,7 +8888,7 @@ class messages_startHistoryImport extends Function<boolean> {
   }
 }
 
-class messages_getExportedChatInvites extends Function<enums.messages_ExportedChatInvites> {
+export class messages_GetExportedChatInvites extends Function<enums.messages_ExportedChatInvites> {
   revoked?: true;
   peer: enums.InputPeer;
   admin_id: enums.InputUser;
@@ -8936,7 +8935,7 @@ class messages_getExportedChatInvites extends Function<enums.messages_ExportedCh
   }
 }
 
-class messages_getExportedChatInvite extends Function<enums.messages_ExportedChatInvite> {
+export class messages_GetExportedChatInvite extends Function<enums.messages_ExportedChatInvite> {
   peer: enums.InputPeer;
   link: string;
 
@@ -8965,7 +8964,7 @@ class messages_getExportedChatInvite extends Function<enums.messages_ExportedCha
   }
 }
 
-class messages_editExportedChatInvite extends Function<enums.messages_ExportedChatInvite> {
+export class messages_EditExportedChatInvite extends Function<enums.messages_ExportedChatInvite> {
   revoked?: true;
   peer: enums.InputPeer;
   link: string;
@@ -9016,7 +9015,7 @@ class messages_editExportedChatInvite extends Function<enums.messages_ExportedCh
   }
 }
 
-class messages_deleteRevokedExportedChatInvites extends Function<boolean> {
+export class messages_DeleteRevokedExportedChatInvites extends Function<boolean> {
   peer: enums.InputPeer;
   admin_id: enums.InputUser;
 
@@ -9045,7 +9044,7 @@ class messages_deleteRevokedExportedChatInvites extends Function<boolean> {
   }
 }
 
-class messages_deleteExportedChatInvite extends Function<boolean> {
+export class messages_DeleteExportedChatInvite extends Function<boolean> {
   peer: enums.InputPeer;
   link: string;
 
@@ -9074,7 +9073,7 @@ class messages_deleteExportedChatInvite extends Function<boolean> {
   }
 }
 
-class messages_getAdminsWithInvites extends Function<enums.messages_ChatAdminsWithInvites> {
+export class messages_GetAdminsWithInvites extends Function<enums.messages_ChatAdminsWithInvites> {
   peer: enums.InputPeer;
 
   protected get [id]() {
@@ -9099,7 +9098,7 @@ class messages_getAdminsWithInvites extends Function<enums.messages_ChatAdminsWi
   }
 }
 
-class messages_getChatInviteImporters extends Function<enums.messages_ChatInviteImporters> {
+export class messages_GetChatInviteImporters extends Function<enums.messages_ChatInviteImporters> {
   requested?: true;
   peer: enums.InputPeer;
   link?: string;
@@ -9150,7 +9149,7 @@ class messages_getChatInviteImporters extends Function<enums.messages_ChatInvite
   }
 }
 
-class messages_setHistoryTTL extends Function<enums.Updates> {
+export class messages_SetHistoryTTL extends Function<enums.Updates> {
   peer: enums.InputPeer;
   period: number;
 
@@ -9179,7 +9178,7 @@ class messages_setHistoryTTL extends Function<enums.Updates> {
   }
 }
 
-class messages_checkHistoryImportPeer extends Function<enums.messages_CheckedHistoryImportPeer> {
+export class messages_CheckHistoryImportPeer extends Function<enums.messages_CheckedHistoryImportPeer> {
   peer: enums.InputPeer;
 
   protected get [id]() {
@@ -9204,7 +9203,7 @@ class messages_checkHistoryImportPeer extends Function<enums.messages_CheckedHis
   }
 }
 
-class messages_setChatTheme extends Function<enums.Updates> {
+export class messages_SetChatTheme extends Function<enums.Updates> {
   peer: enums.InputPeer;
   emoticon: string;
 
@@ -9233,7 +9232,7 @@ class messages_setChatTheme extends Function<enums.Updates> {
   }
 }
 
-class messages_getMessageReadParticipants extends Function<enums.ReadParticipantDate[]> {
+export class messages_GetMessageReadParticipants extends Function<enums.ReadParticipantDate[]> {
   peer: enums.InputPeer;
   msg_id: number;
 
@@ -9262,7 +9261,7 @@ class messages_getMessageReadParticipants extends Function<enums.ReadParticipant
   }
 }
 
-class messages_getSearchResultsCalendar extends Function<enums.messages_SearchResultsCalendar> {
+export class messages_GetSearchResultsCalendar extends Function<enums.messages_SearchResultsCalendar> {
   peer: enums.InputPeer;
   filter: enums.MessagesFilter;
   offset_id: number;
@@ -9299,7 +9298,7 @@ class messages_getSearchResultsCalendar extends Function<enums.messages_SearchRe
   }
 }
 
-class messages_getSearchResultsPositions extends Function<enums.messages_SearchResultsPositions> {
+export class messages_GetSearchResultsPositions extends Function<enums.messages_SearchResultsPositions> {
   peer: enums.InputPeer;
   filter: enums.MessagesFilter;
   offset_id: number;
@@ -9336,7 +9335,7 @@ class messages_getSearchResultsPositions extends Function<enums.messages_SearchR
   }
 }
 
-class messages_hideChatJoinRequest extends Function<enums.Updates> {
+export class messages_HideChatJoinRequest extends Function<enums.Updates> {
   approved?: true;
   peer: enums.InputPeer;
   user_id: enums.InputUser;
@@ -9371,7 +9370,7 @@ class messages_hideChatJoinRequest extends Function<enums.Updates> {
   }
 }
 
-class messages_hideAllChatJoinRequests extends Function<enums.Updates> {
+export class messages_HideAllChatJoinRequests extends Function<enums.Updates> {
   approved?: true;
   peer: enums.InputPeer;
   link?: string;
@@ -9406,7 +9405,7 @@ class messages_hideAllChatJoinRequests extends Function<enums.Updates> {
   }
 }
 
-class messages_toggleNoForwards extends Function<enums.Updates> {
+export class messages_ToggleNoForwards extends Function<enums.Updates> {
   peer: enums.InputPeer;
   enabled: boolean;
 
@@ -9435,7 +9434,7 @@ class messages_toggleNoForwards extends Function<enums.Updates> {
   }
 }
 
-class messages_saveDefaultSendAs extends Function<boolean> {
+export class messages_SaveDefaultSendAs extends Function<boolean> {
   peer: enums.InputPeer;
   send_as: enums.InputPeer;
 
@@ -9464,7 +9463,7 @@ class messages_saveDefaultSendAs extends Function<boolean> {
   }
 }
 
-class messages_sendReaction extends Function<enums.Updates> {
+export class messages_SendReaction extends Function<enums.Updates> {
   big?: true;
   add_to_recent?: true;
   peer: enums.InputPeer;
@@ -9507,7 +9506,7 @@ class messages_sendReaction extends Function<enums.Updates> {
   }
 }
 
-class messages_getMessagesReactions extends Function<enums.Updates> {
+export class messages_GetMessagesReactions extends Function<enums.Updates> {
   peer: enums.InputPeer;
   id: Array<number>;
 
@@ -9536,7 +9535,7 @@ class messages_getMessagesReactions extends Function<enums.Updates> {
   }
 }
 
-class messages_getMessageReactionsList extends Function<enums.messages_MessageReactionsList> {
+export class messages_GetMessageReactionsList extends Function<enums.messages_MessageReactionsList> {
   peer: enums.InputPeer;
   id: number;
   reaction?: enums.Reaction;
@@ -9579,7 +9578,7 @@ class messages_getMessageReactionsList extends Function<enums.messages_MessageRe
   }
 }
 
-class messages_setChatAvailableReactions extends Function<enums.Updates> {
+export class messages_SetChatAvailableReactions extends Function<enums.Updates> {
   peer: enums.InputPeer;
   available_reactions: enums.ChatReactions;
 
@@ -9608,7 +9607,7 @@ class messages_setChatAvailableReactions extends Function<enums.Updates> {
   }
 }
 
-class messages_getAvailableReactions extends Function<enums.messages_AvailableReactions> {
+export class messages_GetAvailableReactions extends Function<enums.messages_AvailableReactions> {
   hash: number;
 
   protected get [id]() {
@@ -9633,7 +9632,7 @@ class messages_getAvailableReactions extends Function<enums.messages_AvailableRe
   }
 }
 
-class messages_setDefaultReaction extends Function<boolean> {
+export class messages_SetDefaultReaction extends Function<boolean> {
   reaction: enums.Reaction;
 
   protected get [id]() {
@@ -9658,7 +9657,7 @@ class messages_setDefaultReaction extends Function<boolean> {
   }
 }
 
-class messages_translateText extends Function<enums.messages_TranslatedText> {
+export class messages_TranslateText extends Function<enums.messages_TranslatedText> {
   peer?: enums.InputPeer;
   id?: Array<number>;
   text?: Array<enums.TextWithEntities>;
@@ -9697,7 +9696,7 @@ class messages_translateText extends Function<enums.messages_TranslatedText> {
   }
 }
 
-class messages_getUnreadReactions extends Function<enums.messages_Messages> {
+export class messages_GetUnreadReactions extends Function<enums.messages_Messages> {
   peer: enums.InputPeer;
   top_msg_id?: number;
   offset_id: number;
@@ -9748,7 +9747,7 @@ class messages_getUnreadReactions extends Function<enums.messages_Messages> {
   }
 }
 
-class messages_readReactions extends Function<enums.messages_AffectedHistory> {
+export class messages_ReadReactions extends Function<enums.messages_AffectedHistory> {
   peer: enums.InputPeer;
   top_msg_id?: number;
 
@@ -9779,7 +9778,7 @@ class messages_readReactions extends Function<enums.messages_AffectedHistory> {
   }
 }
 
-class messages_searchSentMedia extends Function<enums.messages_Messages> {
+export class messages_SearchSentMedia extends Function<enums.messages_Messages> {
   q: string;
   filter: enums.MessagesFilter;
   limit: number;
@@ -9812,7 +9811,7 @@ class messages_searchSentMedia extends Function<enums.messages_Messages> {
   }
 }
 
-class messages_getAttachMenuBots extends Function<enums.AttachMenuBots> {
+export class messages_GetAttachMenuBots extends Function<enums.AttachMenuBots> {
   hash: bigint;
 
   protected get [id]() {
@@ -9837,7 +9836,7 @@ class messages_getAttachMenuBots extends Function<enums.AttachMenuBots> {
   }
 }
 
-class messages_getAttachMenuBot extends Function<enums.AttachMenuBotsBot> {
+export class messages_GetAttachMenuBot extends Function<enums.AttachMenuBotsBot> {
   bot: enums.InputUser;
 
   protected get [id]() {
@@ -9862,7 +9861,7 @@ class messages_getAttachMenuBot extends Function<enums.AttachMenuBotsBot> {
   }
 }
 
-class messages_toggleBotInAttachMenu extends Function<boolean> {
+export class messages_ToggleBotInAttachMenu extends Function<boolean> {
   write_allowed?: true;
   bot: enums.InputUser;
   enabled: boolean;
@@ -9897,7 +9896,7 @@ class messages_toggleBotInAttachMenu extends Function<boolean> {
   }
 }
 
-class messages_requestWebView extends Function<enums.WebViewResult> {
+export class messages_RequestWebView extends Function<enums.WebViewResult> {
   from_bot_menu?: true;
   silent?: true;
   peer: enums.InputPeer;
@@ -9960,7 +9959,7 @@ class messages_requestWebView extends Function<enums.WebViewResult> {
   }
 }
 
-class messages_prolongWebView extends Function<boolean> {
+export class messages_ProlongWebView extends Function<boolean> {
   silent?: true;
   peer: enums.InputPeer;
   bot: enums.InputUser;
@@ -10007,7 +10006,7 @@ class messages_prolongWebView extends Function<boolean> {
   }
 }
 
-class messages_requestSimpleWebView extends Function<enums.SimpleWebViewResult> {
+export class messages_RequestSimpleWebView extends Function<enums.SimpleWebViewResult> {
   from_switch_webview?: true;
   from_side_menu?: true;
   bot: enums.InputUser;
@@ -10058,7 +10057,7 @@ class messages_requestSimpleWebView extends Function<enums.SimpleWebViewResult> 
   }
 }
 
-class messages_sendWebViewResultMessage extends Function<enums.WebViewMessageSent> {
+export class messages_SendWebViewResultMessage extends Function<enums.WebViewMessageSent> {
   bot_query_id: string;
   result: enums.InputBotInlineResult;
 
@@ -10087,7 +10086,7 @@ class messages_sendWebViewResultMessage extends Function<enums.WebViewMessageSen
   }
 }
 
-class messages_sendWebViewData extends Function<enums.Updates> {
+export class messages_SendWebViewData extends Function<enums.Updates> {
   bot: enums.InputUser;
   random_id: bigint;
   button_text: string;
@@ -10124,7 +10123,7 @@ class messages_sendWebViewData extends Function<enums.Updates> {
   }
 }
 
-class messages_transcribeAudio extends Function<enums.messages_TranscribedAudio> {
+export class messages_TranscribeAudio extends Function<enums.messages_TranscribedAudio> {
   peer: enums.InputPeer;
   msg_id: number;
 
@@ -10153,7 +10152,7 @@ class messages_transcribeAudio extends Function<enums.messages_TranscribedAudio>
   }
 }
 
-class messages_rateTranscribedAudio extends Function<boolean> {
+export class messages_RateTranscribedAudio extends Function<boolean> {
   peer: enums.InputPeer;
   msg_id: number;
   transcription_id: bigint;
@@ -10190,7 +10189,7 @@ class messages_rateTranscribedAudio extends Function<boolean> {
   }
 }
 
-class messages_getCustomEmojiDocuments extends Function<enums.Document[]> {
+export class messages_GetCustomEmojiDocuments extends Function<enums.Document[]> {
   document_id: Array<bigint>;
 
   protected get [id]() {
@@ -10215,7 +10214,7 @@ class messages_getCustomEmojiDocuments extends Function<enums.Document[]> {
   }
 }
 
-class messages_getEmojiStickers extends Function<enums.messages_AllStickers> {
+export class messages_GetEmojiStickers extends Function<enums.messages_AllStickers> {
   hash: bigint;
 
   protected get [id]() {
@@ -10240,7 +10239,7 @@ class messages_getEmojiStickers extends Function<enums.messages_AllStickers> {
   }
 }
 
-class messages_getFeaturedEmojiStickers extends Function<enums.messages_FeaturedStickers> {
+export class messages_GetFeaturedEmojiStickers extends Function<enums.messages_FeaturedStickers> {
   hash: bigint;
 
   protected get [id]() {
@@ -10265,7 +10264,7 @@ class messages_getFeaturedEmojiStickers extends Function<enums.messages_Featured
   }
 }
 
-class messages_reportReaction extends Function<boolean> {
+export class messages_ReportReaction extends Function<boolean> {
   peer: enums.InputPeer;
   id: number;
   reaction_peer: enums.InputPeer;
@@ -10298,7 +10297,7 @@ class messages_reportReaction extends Function<boolean> {
   }
 }
 
-class messages_getTopReactions extends Function<enums.messages_Reactions> {
+export class messages_GetTopReactions extends Function<enums.messages_Reactions> {
   limit: number;
   hash: bigint;
 
@@ -10327,7 +10326,7 @@ class messages_getTopReactions extends Function<enums.messages_Reactions> {
   }
 }
 
-class messages_getRecentReactions extends Function<enums.messages_Reactions> {
+export class messages_GetRecentReactions extends Function<enums.messages_Reactions> {
   limit: number;
   hash: bigint;
 
@@ -10356,7 +10355,7 @@ class messages_getRecentReactions extends Function<enums.messages_Reactions> {
   }
 }
 
-class messages_clearRecentReactions extends Function<boolean> {
+export class messages_ClearRecentReactions extends Function<boolean> {
   protected get [id]() {
     return 0x9DFEEFB4;
   }
@@ -10374,7 +10373,7 @@ class messages_clearRecentReactions extends Function<boolean> {
   }
 }
 
-class messages_getExtendedMedia extends Function<enums.Updates> {
+export class messages_GetExtendedMedia extends Function<enums.Updates> {
   peer: enums.InputPeer;
   id: Array<number>;
 
@@ -10403,7 +10402,7 @@ class messages_getExtendedMedia extends Function<enums.Updates> {
   }
 }
 
-class messages_setDefaultHistoryTTL extends Function<boolean> {
+export class messages_SetDefaultHistoryTTL extends Function<boolean> {
   period: number;
 
   protected get [id]() {
@@ -10428,7 +10427,7 @@ class messages_setDefaultHistoryTTL extends Function<boolean> {
   }
 }
 
-class messages_getDefaultHistoryTTL extends Function<enums.DefaultHistoryTTL> {
+export class messages_GetDefaultHistoryTTL extends Function<enums.DefaultHistoryTTL> {
   protected get [id]() {
     return 0x658B7188;
   }
@@ -10446,7 +10445,7 @@ class messages_getDefaultHistoryTTL extends Function<enums.DefaultHistoryTTL> {
   }
 }
 
-class messages_sendBotRequestedPeer extends Function<enums.Updates> {
+export class messages_SendBotRequestedPeer extends Function<enums.Updates> {
   peer: enums.InputPeer;
   msg_id: number;
   button_id: number;
@@ -10483,7 +10482,7 @@ class messages_sendBotRequestedPeer extends Function<enums.Updates> {
   }
 }
 
-class messages_getEmojiGroups extends Function<enums.messages_EmojiGroups> {
+export class messages_GetEmojiGroups extends Function<enums.messages_EmojiGroups> {
   hash: number;
 
   protected get [id]() {
@@ -10508,7 +10507,7 @@ class messages_getEmojiGroups extends Function<enums.messages_EmojiGroups> {
   }
 }
 
-class messages_getEmojiStatusGroups extends Function<enums.messages_EmojiGroups> {
+export class messages_GetEmojiStatusGroups extends Function<enums.messages_EmojiGroups> {
   hash: number;
 
   protected get [id]() {
@@ -10533,7 +10532,7 @@ class messages_getEmojiStatusGroups extends Function<enums.messages_EmojiGroups>
   }
 }
 
-class messages_getEmojiProfilePhotoGroups extends Function<enums.messages_EmojiGroups> {
+export class messages_GetEmojiProfilePhotoGroups extends Function<enums.messages_EmojiGroups> {
   hash: number;
 
   protected get [id]() {
@@ -10558,7 +10557,7 @@ class messages_getEmojiProfilePhotoGroups extends Function<enums.messages_EmojiG
   }
 }
 
-class messages_searchCustomEmoji extends Function<enums.EmojiList> {
+export class messages_SearchCustomEmoji extends Function<enums.EmojiList> {
   emoticon: string;
   hash: bigint;
 
@@ -10587,7 +10586,7 @@ class messages_searchCustomEmoji extends Function<enums.EmojiList> {
   }
 }
 
-class messages_togglePeerTranslations extends Function<boolean> {
+export class messages_TogglePeerTranslations extends Function<boolean> {
   disabled?: true;
   peer: enums.InputPeer;
 
@@ -10618,7 +10617,7 @@ class messages_togglePeerTranslations extends Function<boolean> {
   }
 }
 
-class messages_getBotApp extends Function<enums.messages_BotApp> {
+export class messages_GetBotApp extends Function<enums.messages_BotApp> {
   app: enums.InputBotApp;
   hash: bigint;
 
@@ -10647,7 +10646,7 @@ class messages_getBotApp extends Function<enums.messages_BotApp> {
   }
 }
 
-class messages_requestAppWebView extends Function<enums.AppWebViewResult> {
+export class messages_RequestAppWebView extends Function<enums.AppWebViewResult> {
   write_allowed?: true;
   peer: enums.InputPeer;
   app: enums.InputBotApp;
@@ -10694,7 +10693,7 @@ class messages_requestAppWebView extends Function<enums.AppWebViewResult> {
   }
 }
 
-class messages_setChatWallPaper extends Function<enums.Updates> {
+export class messages_SetChatWallPaper extends Function<enums.Updates> {
   for_both?: true;
   revert?: true;
   peer: enums.InputPeer;
@@ -10741,7 +10740,7 @@ class messages_setChatWallPaper extends Function<enums.Updates> {
   }
 }
 
-class messages_searchEmojiStickerSets extends Function<enums.messages_FoundStickerSets> {
+export class messages_SearchEmojiStickerSets extends Function<enums.messages_FoundStickerSets> {
   exclude_featured?: true;
   q: string;
   hash: bigint;
@@ -10776,7 +10775,7 @@ class messages_searchEmojiStickerSets extends Function<enums.messages_FoundStick
   }
 }
 
-class updates_getState extends Function<enums.updates_State> {
+export class updates_GetState extends Function<enums.updates_State> {
   protected get [id]() {
     return 0xEDD4882A;
   }
@@ -10794,7 +10793,7 @@ class updates_getState extends Function<enums.updates_State> {
   }
 }
 
-class updates_getDifference extends Function<enums.updates_Difference> {
+export class updates_GetDifference extends Function<enums.updates_Difference> {
   pts: number;
   pts_limit?: number;
   pts_total_limit?: number;
@@ -10841,7 +10840,7 @@ class updates_getDifference extends Function<enums.updates_Difference> {
   }
 }
 
-class updates_getChannelDifference extends Function<enums.updates_ChannelDifference> {
+export class updates_GetChannelDifference extends Function<enums.updates_ChannelDifference> {
   force?: true;
   channel: enums.InputChannel;
   filter: enums.ChannelMessagesFilter;
@@ -10884,7 +10883,7 @@ class updates_getChannelDifference extends Function<enums.updates_ChannelDiffere
   }
 }
 
-class photos_updateProfilePhoto extends Function<enums.photos_Photo> {
+export class photos_UpdateProfilePhoto extends Function<enums.photos_Photo> {
   fallback?: true;
   bot?: enums.InputUser;
   id: enums.InputPhoto;
@@ -10919,7 +10918,7 @@ class photos_updateProfilePhoto extends Function<enums.photos_Photo> {
   }
 }
 
-class photos_uploadProfilePhoto extends Function<enums.photos_Photo> {
+export class photos_UploadProfilePhoto extends Function<enums.photos_Photo> {
   fallback?: true;
   bot?: enums.InputUser;
   file?: enums.InputFile;
@@ -10966,7 +10965,7 @@ class photos_uploadProfilePhoto extends Function<enums.photos_Photo> {
   }
 }
 
-class photos_deletePhotos extends Function<bigint[]> {
+export class photos_DeletePhotos extends Function<bigint[]> {
   id: Array<enums.InputPhoto>;
 
   protected get [id]() {
@@ -10991,7 +10990,7 @@ class photos_deletePhotos extends Function<bigint[]> {
   }
 }
 
-class photos_getUserPhotos extends Function<enums.photos_Photos> {
+export class photos_GetUserPhotos extends Function<enums.photos_Photos> {
   user_id: enums.InputUser;
   offset: number;
   max_id: bigint;
@@ -11028,7 +11027,7 @@ class photos_getUserPhotos extends Function<enums.photos_Photos> {
   }
 }
 
-class photos_uploadContactProfilePhoto extends Function<enums.photos_Photo> {
+export class photos_UploadContactProfilePhoto extends Function<enums.photos_Photo> {
   suggest?: true;
   save?: true;
   user_id: enums.InputUser;
@@ -11079,7 +11078,7 @@ class photos_uploadContactProfilePhoto extends Function<enums.photos_Photo> {
   }
 }
 
-class upload_saveFilePart extends Function<boolean> {
+export class upload_SaveFilePart extends Function<boolean> {
   file_id: bigint;
   file_part: number;
   bytes: Uint8Array;
@@ -11112,7 +11111,7 @@ class upload_saveFilePart extends Function<boolean> {
   }
 }
 
-class upload_getFile extends Function<enums.upload_File> {
+export class upload_GetFile extends Function<enums.upload_File> {
   precise?: true;
   cdn_supported?: true;
   location: enums.InputFileLocation;
@@ -11155,7 +11154,7 @@ class upload_getFile extends Function<enums.upload_File> {
   }
 }
 
-class upload_saveBigFilePart extends Function<boolean> {
+export class upload_SaveBigFilePart extends Function<boolean> {
   file_id: bigint;
   file_part: number;
   file_total_parts: number;
@@ -11192,7 +11191,7 @@ class upload_saveBigFilePart extends Function<boolean> {
   }
 }
 
-class upload_getWebFile extends Function<enums.upload_WebFile> {
+export class upload_GetWebFile extends Function<enums.upload_WebFile> {
   location: enums.InputWebFileLocation;
   offset: number;
   limit: number;
@@ -11225,7 +11224,7 @@ class upload_getWebFile extends Function<enums.upload_WebFile> {
   }
 }
 
-class upload_getCdnFile extends Function<enums.upload_CdnFile> {
+export class upload_GetCdnFile extends Function<enums.upload_CdnFile> {
   file_token: Uint8Array;
   offset: bigint;
   limit: number;
@@ -11258,7 +11257,7 @@ class upload_getCdnFile extends Function<enums.upload_CdnFile> {
   }
 }
 
-class upload_reuploadCdnFile extends Function<enums.FileHash[]> {
+export class upload_ReuploadCdnFile extends Function<enums.FileHash[]> {
   file_token: Uint8Array;
   request_token: Uint8Array;
 
@@ -11287,7 +11286,7 @@ class upload_reuploadCdnFile extends Function<enums.FileHash[]> {
   }
 }
 
-class upload_getCdnFileHashes extends Function<enums.FileHash[]> {
+export class upload_GetCdnFileHashes extends Function<enums.FileHash[]> {
   file_token: Uint8Array;
   offset: bigint;
 
@@ -11316,7 +11315,7 @@ class upload_getCdnFileHashes extends Function<enums.FileHash[]> {
   }
 }
 
-class upload_getFileHashes extends Function<enums.FileHash[]> {
+export class upload_GetFileHashes extends Function<enums.FileHash[]> {
   location: enums.InputFileLocation;
   offset: bigint;
 
@@ -11345,7 +11344,7 @@ class upload_getFileHashes extends Function<enums.FileHash[]> {
   }
 }
 
-class help_getConfig extends Function<enums.Config> {
+export class help_GetConfig extends Function<enums.Config> {
   protected get [id]() {
     return 0xC4F9186B;
   }
@@ -11363,7 +11362,7 @@ class help_getConfig extends Function<enums.Config> {
   }
 }
 
-class help_getNearestDc extends Function<enums.NearestDc> {
+export class help_GetNearestDc extends Function<enums.NearestDc> {
   protected get [id]() {
     return 0x1FB33026;
   }
@@ -11381,7 +11380,7 @@ class help_getNearestDc extends Function<enums.NearestDc> {
   }
 }
 
-class help_getAppUpdate extends Function<enums.help_AppUpdate> {
+export class help_GetAppUpdate extends Function<enums.help_AppUpdate> {
   source: string;
 
   protected get [id]() {
@@ -11406,7 +11405,7 @@ class help_getAppUpdate extends Function<enums.help_AppUpdate> {
   }
 }
 
-class help_getInviteText extends Function<enums.help_InviteText> {
+export class help_GetInviteText extends Function<enums.help_InviteText> {
   protected get [id]() {
     return 0x4D392343;
   }
@@ -11424,7 +11423,7 @@ class help_getInviteText extends Function<enums.help_InviteText> {
   }
 }
 
-class help_getSupport extends Function<enums.help_Support> {
+export class help_GetSupport extends Function<enums.help_Support> {
   protected get [id]() {
     return 0x9CDF08CD;
   }
@@ -11442,7 +11441,7 @@ class help_getSupport extends Function<enums.help_Support> {
   }
 }
 
-class help_getAppChangelog extends Function<enums.Updates> {
+export class help_GetAppChangelog extends Function<enums.Updates> {
   prev_app_version: string;
 
   protected get [id]() {
@@ -11467,7 +11466,7 @@ class help_getAppChangelog extends Function<enums.Updates> {
   }
 }
 
-class help_setBotUpdatesStatus extends Function<boolean> {
+export class help_SetBotUpdatesStatus extends Function<boolean> {
   pending_updates_count: number;
   message: string;
 
@@ -11496,7 +11495,7 @@ class help_setBotUpdatesStatus extends Function<boolean> {
   }
 }
 
-class help_getCdnConfig extends Function<enums.CdnConfig> {
+export class help_GetCdnConfig extends Function<enums.CdnConfig> {
   protected get [id]() {
     return 0x52029342;
   }
@@ -11514,7 +11513,7 @@ class help_getCdnConfig extends Function<enums.CdnConfig> {
   }
 }
 
-class help_getRecentMeUrls extends Function<enums.help_RecentMeUrls> {
+export class help_GetRecentMeUrls extends Function<enums.help_RecentMeUrls> {
   referer: string;
 
   protected get [id]() {
@@ -11539,7 +11538,7 @@ class help_getRecentMeUrls extends Function<enums.help_RecentMeUrls> {
   }
 }
 
-class help_getTermsOfServiceUpdate extends Function<enums.help_TermsOfServiceUpdate> {
+export class help_GetTermsOfServiceUpdate extends Function<enums.help_TermsOfServiceUpdate> {
   protected get [id]() {
     return 0x2CA51FD1;
   }
@@ -11557,7 +11556,7 @@ class help_getTermsOfServiceUpdate extends Function<enums.help_TermsOfServiceUpd
   }
 }
 
-class help_acceptTermsOfService extends Function<boolean> {
+export class help_AcceptTermsOfService extends Function<boolean> {
   id: enums.DataJSON;
 
   protected get [id]() {
@@ -11582,7 +11581,7 @@ class help_acceptTermsOfService extends Function<boolean> {
   }
 }
 
-class help_getDeepLinkInfo extends Function<enums.help_DeepLinkInfo> {
+export class help_GetDeepLinkInfo extends Function<enums.help_DeepLinkInfo> {
   path: string;
 
   protected get [id]() {
@@ -11607,7 +11606,7 @@ class help_getDeepLinkInfo extends Function<enums.help_DeepLinkInfo> {
   }
 }
 
-class help_getAppConfig extends Function<enums.help_AppConfig> {
+export class help_GetAppConfig extends Function<enums.help_AppConfig> {
   hash: number;
 
   protected get [id]() {
@@ -11632,7 +11631,7 @@ class help_getAppConfig extends Function<enums.help_AppConfig> {
   }
 }
 
-class help_saveAppLog extends Function<boolean> {
+export class help_SaveAppLog extends Function<boolean> {
   events: Array<enums.InputAppEvent>;
 
   protected get [id]() {
@@ -11657,7 +11656,7 @@ class help_saveAppLog extends Function<boolean> {
   }
 }
 
-class help_getPassportConfig extends Function<enums.help_PassportConfig> {
+export class help_GetPassportConfig extends Function<enums.help_PassportConfig> {
   hash: number;
 
   protected get [id]() {
@@ -11682,7 +11681,7 @@ class help_getPassportConfig extends Function<enums.help_PassportConfig> {
   }
 }
 
-class help_getSupportName extends Function<enums.help_SupportName> {
+export class help_GetSupportName extends Function<enums.help_SupportName> {
   protected get [id]() {
     return 0xD360E72C;
   }
@@ -11700,7 +11699,7 @@ class help_getSupportName extends Function<enums.help_SupportName> {
   }
 }
 
-class help_getUserInfo extends Function<enums.help_UserInfo> {
+export class help_GetUserInfo extends Function<enums.help_UserInfo> {
   user_id: enums.InputUser;
 
   protected get [id]() {
@@ -11725,7 +11724,7 @@ class help_getUserInfo extends Function<enums.help_UserInfo> {
   }
 }
 
-class help_editUserInfo extends Function<enums.help_UserInfo> {
+export class help_EditUserInfo extends Function<enums.help_UserInfo> {
   user_id: enums.InputUser;
   message: string;
   entities: Array<enums.MessageEntity>;
@@ -11758,7 +11757,7 @@ class help_editUserInfo extends Function<enums.help_UserInfo> {
   }
 }
 
-class help_getPromoData extends Function<enums.help_PromoData> {
+export class help_GetPromoData extends Function<enums.help_PromoData> {
   protected get [id]() {
     return 0xC0977421;
   }
@@ -11776,7 +11775,7 @@ class help_getPromoData extends Function<enums.help_PromoData> {
   }
 }
 
-class help_hidePromoData extends Function<boolean> {
+export class help_HidePromoData extends Function<boolean> {
   peer: enums.InputPeer;
 
   protected get [id]() {
@@ -11801,7 +11800,7 @@ class help_hidePromoData extends Function<boolean> {
   }
 }
 
-class help_dismissSuggestion extends Function<boolean> {
+export class help_DismissSuggestion extends Function<boolean> {
   peer: enums.InputPeer;
   suggestion: string;
 
@@ -11830,7 +11829,7 @@ class help_dismissSuggestion extends Function<boolean> {
   }
 }
 
-class help_getCountriesList extends Function<enums.help_CountriesList> {
+export class help_GetCountriesList extends Function<enums.help_CountriesList> {
   lang_code: string;
   hash: number;
 
@@ -11859,7 +11858,7 @@ class help_getCountriesList extends Function<enums.help_CountriesList> {
   }
 }
 
-class help_getPremiumPromo extends Function<enums.help_PremiumPromo> {
+export class help_GetPremiumPromo extends Function<enums.help_PremiumPromo> {
   protected get [id]() {
     return 0xB81B93D4;
   }
@@ -11877,7 +11876,7 @@ class help_getPremiumPromo extends Function<enums.help_PremiumPromo> {
   }
 }
 
-class help_getPeerColors extends Function<enums.help_PeerColors> {
+export class help_GetPeerColors extends Function<enums.help_PeerColors> {
   hash: number;
 
   protected get [id]() {
@@ -11902,7 +11901,7 @@ class help_getPeerColors extends Function<enums.help_PeerColors> {
   }
 }
 
-class help_getPeerProfileColors extends Function<enums.help_PeerColors> {
+export class help_GetPeerProfileColors extends Function<enums.help_PeerColors> {
   hash: number;
 
   protected get [id]() {
@@ -11927,7 +11926,7 @@ class help_getPeerProfileColors extends Function<enums.help_PeerColors> {
   }
 }
 
-class channels_readHistory extends Function<boolean> {
+export class channels_ReadHistory extends Function<boolean> {
   channel: enums.InputChannel;
   max_id: number;
 
@@ -11956,7 +11955,7 @@ class channels_readHistory extends Function<boolean> {
   }
 }
 
-class channels_deleteMessages extends Function<enums.messages_AffectedMessages> {
+export class channels_DeleteMessages extends Function<enums.messages_AffectedMessages> {
   channel: enums.InputChannel;
   id: Array<number>;
 
@@ -11985,7 +11984,7 @@ class channels_deleteMessages extends Function<enums.messages_AffectedMessages> 
   }
 }
 
-class channels_reportSpam extends Function<boolean> {
+export class channels_ReportSpam extends Function<boolean> {
   channel: enums.InputChannel;
   participant: enums.InputPeer;
   id: Array<number>;
@@ -12018,7 +12017,7 @@ class channels_reportSpam extends Function<boolean> {
   }
 }
 
-class channels_getMessages extends Function<enums.messages_Messages> {
+export class channels_GetMessages extends Function<enums.messages_Messages> {
   channel: enums.InputChannel;
   id: Array<enums.InputMessage>;
 
@@ -12047,7 +12046,7 @@ class channels_getMessages extends Function<enums.messages_Messages> {
   }
 }
 
-class channels_getParticipants extends Function<enums.channels_ChannelParticipants> {
+export class channels_GetParticipants extends Function<enums.channels_ChannelParticipants> {
   channel: enums.InputChannel;
   filter: enums.ChannelParticipantsFilter;
   offset: number;
@@ -12088,7 +12087,7 @@ class channels_getParticipants extends Function<enums.channels_ChannelParticipan
   }
 }
 
-class channels_getParticipant extends Function<enums.channels_ChannelParticipant> {
+export class channels_GetParticipant extends Function<enums.channels_ChannelParticipant> {
   channel: enums.InputChannel;
   participant: enums.InputPeer;
 
@@ -12117,7 +12116,7 @@ class channels_getParticipant extends Function<enums.channels_ChannelParticipant
   }
 }
 
-class channels_getChannels extends Function<enums.messages_Chats> {
+export class channels_GetChannels extends Function<enums.messages_Chats> {
   id: Array<enums.InputChannel>;
 
   protected get [id]() {
@@ -12142,7 +12141,7 @@ class channels_getChannels extends Function<enums.messages_Chats> {
   }
 }
 
-class channels_getFullChannel extends Function<enums.messages_ChatFull> {
+export class channels_GetFullChannel extends Function<enums.messages_ChatFull> {
   channel: enums.InputChannel;
 
   protected get [id]() {
@@ -12167,7 +12166,7 @@ class channels_getFullChannel extends Function<enums.messages_ChatFull> {
   }
 }
 
-class channels_createChannel extends Function<enums.Updates> {
+export class channels_CreateChannel extends Function<enums.Updates> {
   broadcast?: true;
   megagroup?: true;
   for_import?: true;
@@ -12226,7 +12225,7 @@ class channels_createChannel extends Function<enums.Updates> {
   }
 }
 
-class channels_editAdmin extends Function<enums.Updates> {
+export class channels_EditAdmin extends Function<enums.Updates> {
   channel: enums.InputChannel;
   user_id: enums.InputUser;
   admin_rights: enums.ChatAdminRights;
@@ -12263,7 +12262,7 @@ class channels_editAdmin extends Function<enums.Updates> {
   }
 }
 
-class channels_editTitle extends Function<enums.Updates> {
+export class channels_EditTitle extends Function<enums.Updates> {
   channel: enums.InputChannel;
   title: string;
 
@@ -12292,7 +12291,7 @@ class channels_editTitle extends Function<enums.Updates> {
   }
 }
 
-class channels_editPhoto extends Function<enums.Updates> {
+export class channels_EditPhoto extends Function<enums.Updates> {
   channel: enums.InputChannel;
   photo: enums.InputChatPhoto;
 
@@ -12321,7 +12320,7 @@ class channels_editPhoto extends Function<enums.Updates> {
   }
 }
 
-class channels_checkUsername extends Function<boolean> {
+export class channels_CheckUsername extends Function<boolean> {
   channel: enums.InputChannel;
   username: string;
 
@@ -12350,7 +12349,7 @@ class channels_checkUsername extends Function<boolean> {
   }
 }
 
-class channels_updateUsername extends Function<boolean> {
+export class channels_UpdateUsername extends Function<boolean> {
   channel: enums.InputChannel;
   username: string;
 
@@ -12379,7 +12378,7 @@ class channels_updateUsername extends Function<boolean> {
   }
 }
 
-class channels_joinChannel extends Function<enums.Updates> {
+export class channels_JoinChannel extends Function<enums.Updates> {
   channel: enums.InputChannel;
 
   protected get [id]() {
@@ -12404,7 +12403,7 @@ class channels_joinChannel extends Function<enums.Updates> {
   }
 }
 
-class channels_leaveChannel extends Function<enums.Updates> {
+export class channels_LeaveChannel extends Function<enums.Updates> {
   channel: enums.InputChannel;
 
   protected get [id]() {
@@ -12429,7 +12428,7 @@ class channels_leaveChannel extends Function<enums.Updates> {
   }
 }
 
-class channels_inviteToChannel extends Function<enums.Updates> {
+export class channels_InviteToChannel extends Function<enums.Updates> {
   channel: enums.InputChannel;
   users: Array<enums.InputUser>;
 
@@ -12458,7 +12457,7 @@ class channels_inviteToChannel extends Function<enums.Updates> {
   }
 }
 
-class channels_deleteChannel extends Function<enums.Updates> {
+export class channels_DeleteChannel extends Function<enums.Updates> {
   channel: enums.InputChannel;
 
   protected get [id]() {
@@ -12483,7 +12482,7 @@ class channels_deleteChannel extends Function<enums.Updates> {
   }
 }
 
-class channels_exportMessageLink extends Function<enums.ExportedMessageLink> {
+export class channels_ExportMessageLink extends Function<enums.ExportedMessageLink> {
   grouped?: true;
   thread?: true;
   channel: enums.InputChannel;
@@ -12522,7 +12521,7 @@ class channels_exportMessageLink extends Function<enums.ExportedMessageLink> {
   }
 }
 
-class channels_toggleSignatures extends Function<enums.Updates> {
+export class channels_ToggleSignatures extends Function<enums.Updates> {
   channel: enums.InputChannel;
   enabled: boolean;
 
@@ -12551,7 +12550,7 @@ class channels_toggleSignatures extends Function<enums.Updates> {
   }
 }
 
-class channels_getAdminedPublicChannels extends Function<enums.messages_Chats> {
+export class channels_GetAdminedPublicChannels extends Function<enums.messages_Chats> {
   by_location?: true;
   check_limit?: true;
 
@@ -12582,7 +12581,7 @@ class channels_getAdminedPublicChannels extends Function<enums.messages_Chats> {
   }
 }
 
-class channels_editBanned extends Function<enums.Updates> {
+export class channels_EditBanned extends Function<enums.Updates> {
   channel: enums.InputChannel;
   participant: enums.InputPeer;
   banned_rights: enums.ChatBannedRights;
@@ -12615,7 +12614,7 @@ class channels_editBanned extends Function<enums.Updates> {
   }
 }
 
-class channels_getAdminLog extends Function<enums.channels_AdminLogResults> {
+export class channels_GetAdminLog extends Function<enums.channels_AdminLogResults> {
   channel: enums.InputChannel;
   q: string;
   events_filter?: enums.ChannelAdminLogEventsFilter;
@@ -12666,7 +12665,7 @@ class channels_getAdminLog extends Function<enums.channels_AdminLogResults> {
   }
 }
 
-class channels_setStickers extends Function<boolean> {
+export class channels_SetStickers extends Function<boolean> {
   channel: enums.InputChannel;
   stickerset: enums.InputStickerSet;
 
@@ -12695,7 +12694,7 @@ class channels_setStickers extends Function<boolean> {
   }
 }
 
-class channels_readMessageContents extends Function<boolean> {
+export class channels_ReadMessageContents extends Function<boolean> {
   channel: enums.InputChannel;
   id: Array<number>;
 
@@ -12724,7 +12723,7 @@ class channels_readMessageContents extends Function<boolean> {
   }
 }
 
-class channels_deleteHistory extends Function<enums.Updates> {
+export class channels_DeleteHistory extends Function<enums.Updates> {
   for_everyone?: true;
   channel: enums.InputChannel;
   max_id: number;
@@ -12759,7 +12758,7 @@ class channels_deleteHistory extends Function<enums.Updates> {
   }
 }
 
-class channels_togglePreHistoryHidden extends Function<enums.Updates> {
+export class channels_TogglePreHistoryHidden extends Function<enums.Updates> {
   channel: enums.InputChannel;
   enabled: boolean;
 
@@ -12788,7 +12787,7 @@ class channels_togglePreHistoryHidden extends Function<enums.Updates> {
   }
 }
 
-class channels_getLeftChannels extends Function<enums.messages_Chats> {
+export class channels_GetLeftChannels extends Function<enums.messages_Chats> {
   offset: number;
 
   protected get [id]() {
@@ -12813,7 +12812,7 @@ class channels_getLeftChannels extends Function<enums.messages_Chats> {
   }
 }
 
-class channels_getGroupsForDiscussion extends Function<enums.messages_Chats> {
+export class channels_GetGroupsForDiscussion extends Function<enums.messages_Chats> {
   protected get [id]() {
     return 0xF5DAD378;
   }
@@ -12831,7 +12830,7 @@ class channels_getGroupsForDiscussion extends Function<enums.messages_Chats> {
   }
 }
 
-class channels_setDiscussionGroup extends Function<boolean> {
+export class channels_SetDiscussionGroup extends Function<boolean> {
   broadcast: enums.InputChannel;
   group: enums.InputChannel;
 
@@ -12860,7 +12859,7 @@ class channels_setDiscussionGroup extends Function<boolean> {
   }
 }
 
-class channels_editCreator extends Function<enums.Updates> {
+export class channels_EditCreator extends Function<enums.Updates> {
   channel: enums.InputChannel;
   user_id: enums.InputUser;
   password: enums.InputCheckPasswordSRP;
@@ -12893,7 +12892,7 @@ class channels_editCreator extends Function<enums.Updates> {
   }
 }
 
-class channels_editLocation extends Function<boolean> {
+export class channels_EditLocation extends Function<boolean> {
   channel: enums.InputChannel;
   geo_point: enums.InputGeoPoint;
   address: string;
@@ -12926,7 +12925,7 @@ class channels_editLocation extends Function<boolean> {
   }
 }
 
-class channels_toggleSlowMode extends Function<enums.Updates> {
+export class channels_ToggleSlowMode extends Function<enums.Updates> {
   channel: enums.InputChannel;
   seconds: number;
 
@@ -12955,7 +12954,7 @@ class channels_toggleSlowMode extends Function<enums.Updates> {
   }
 }
 
-class channels_getInactiveChannels extends Function<enums.messages_InactiveChats> {
+export class channels_GetInactiveChannels extends Function<enums.messages_InactiveChats> {
   protected get [id]() {
     return 0x11E831EE;
   }
@@ -12973,7 +12972,7 @@ class channels_getInactiveChannels extends Function<enums.messages_InactiveChats
   }
 }
 
-class channels_convertToGigagroup extends Function<enums.Updates> {
+export class channels_ConvertToGigagroup extends Function<enums.Updates> {
   channel: enums.InputChannel;
 
   protected get [id]() {
@@ -12998,7 +12997,7 @@ class channels_convertToGigagroup extends Function<enums.Updates> {
   }
 }
 
-class channels_viewSponsoredMessage extends Function<boolean> {
+export class channels_ViewSponsoredMessage extends Function<boolean> {
   channel: enums.InputChannel;
   random_id: Uint8Array;
 
@@ -13027,7 +13026,7 @@ class channels_viewSponsoredMessage extends Function<boolean> {
   }
 }
 
-class channels_getSponsoredMessages extends Function<enums.messages_SponsoredMessages> {
+export class channels_GetSponsoredMessages extends Function<enums.messages_SponsoredMessages> {
   channel: enums.InputChannel;
 
   protected get [id]() {
@@ -13052,7 +13051,7 @@ class channels_getSponsoredMessages extends Function<enums.messages_SponsoredMes
   }
 }
 
-class channels_getSendAs extends Function<enums.channels_SendAsPeers> {
+export class channels_GetSendAs extends Function<enums.channels_SendAsPeers> {
   peer: enums.InputPeer;
 
   protected get [id]() {
@@ -13077,7 +13076,7 @@ class channels_getSendAs extends Function<enums.channels_SendAsPeers> {
   }
 }
 
-class channels_deleteParticipantHistory extends Function<enums.messages_AffectedHistory> {
+export class channels_DeleteParticipantHistory extends Function<enums.messages_AffectedHistory> {
   channel: enums.InputChannel;
   participant: enums.InputPeer;
 
@@ -13106,7 +13105,7 @@ class channels_deleteParticipantHistory extends Function<enums.messages_Affected
   }
 }
 
-class channels_toggleJoinToSend extends Function<enums.Updates> {
+export class channels_ToggleJoinToSend extends Function<enums.Updates> {
   channel: enums.InputChannel;
   enabled: boolean;
 
@@ -13135,7 +13134,7 @@ class channels_toggleJoinToSend extends Function<enums.Updates> {
   }
 }
 
-class channels_toggleJoinRequest extends Function<enums.Updates> {
+export class channels_ToggleJoinRequest extends Function<enums.Updates> {
   channel: enums.InputChannel;
   enabled: boolean;
 
@@ -13164,7 +13163,7 @@ class channels_toggleJoinRequest extends Function<enums.Updates> {
   }
 }
 
-class channels_reorderUsernames extends Function<boolean> {
+export class channels_ReorderUsernames extends Function<boolean> {
   channel: enums.InputChannel;
   order: Array<string>;
 
@@ -13193,7 +13192,7 @@ class channels_reorderUsernames extends Function<boolean> {
   }
 }
 
-class channels_toggleUsername extends Function<boolean> {
+export class channels_ToggleUsername extends Function<boolean> {
   channel: enums.InputChannel;
   username: string;
   active: boolean;
@@ -13226,7 +13225,7 @@ class channels_toggleUsername extends Function<boolean> {
   }
 }
 
-class channels_deactivateAllUsernames extends Function<boolean> {
+export class channels_DeactivateAllUsernames extends Function<boolean> {
   channel: enums.InputChannel;
 
   protected get [id]() {
@@ -13251,7 +13250,7 @@ class channels_deactivateAllUsernames extends Function<boolean> {
   }
 }
 
-class channels_toggleForum extends Function<enums.Updates> {
+export class channels_ToggleForum extends Function<enums.Updates> {
   channel: enums.InputChannel;
   enabled: boolean;
 
@@ -13280,7 +13279,7 @@ class channels_toggleForum extends Function<enums.Updates> {
   }
 }
 
-class channels_createForumTopic extends Function<enums.Updates> {
+export class channels_CreateForumTopic extends Function<enums.Updates> {
   channel: enums.InputChannel;
   title: string;
   icon_color?: number;
@@ -13327,7 +13326,7 @@ class channels_createForumTopic extends Function<enums.Updates> {
   }
 }
 
-class channels_getForumTopics extends Function<enums.messages_ForumTopics> {
+export class channels_GetForumTopics extends Function<enums.messages_ForumTopics> {
   channel: enums.InputChannel;
   q?: string;
   offset_date: number;
@@ -13374,7 +13373,7 @@ class channels_getForumTopics extends Function<enums.messages_ForumTopics> {
   }
 }
 
-class channels_getForumTopicsByID extends Function<enums.messages_ForumTopics> {
+export class channels_GetForumTopicsByID extends Function<enums.messages_ForumTopics> {
   channel: enums.InputChannel;
   topics: Array<number>;
 
@@ -13403,7 +13402,7 @@ class channels_getForumTopicsByID extends Function<enums.messages_ForumTopics> {
   }
 }
 
-class channels_editForumTopic extends Function<enums.Updates> {
+export class channels_EditForumTopic extends Function<enums.Updates> {
   channel: enums.InputChannel;
   topic_id: number;
   title?: string;
@@ -13450,7 +13449,7 @@ class channels_editForumTopic extends Function<enums.Updates> {
   }
 }
 
-class channels_updatePinnedForumTopic extends Function<enums.Updates> {
+export class channels_UpdatePinnedForumTopic extends Function<enums.Updates> {
   channel: enums.InputChannel;
   topic_id: number;
   pinned: boolean;
@@ -13483,7 +13482,7 @@ class channels_updatePinnedForumTopic extends Function<enums.Updates> {
   }
 }
 
-class channels_deleteTopicHistory extends Function<enums.messages_AffectedHistory> {
+export class channels_DeleteTopicHistory extends Function<enums.messages_AffectedHistory> {
   channel: enums.InputChannel;
   top_msg_id: number;
 
@@ -13512,7 +13511,7 @@ class channels_deleteTopicHistory extends Function<enums.messages_AffectedHistor
   }
 }
 
-class channels_reorderPinnedForumTopics extends Function<enums.Updates> {
+export class channels_ReorderPinnedForumTopics extends Function<enums.Updates> {
   force?: true;
   channel: enums.InputChannel;
   order: Array<number>;
@@ -13547,7 +13546,7 @@ class channels_reorderPinnedForumTopics extends Function<enums.Updates> {
   }
 }
 
-class channels_toggleAntiSpam extends Function<enums.Updates> {
+export class channels_ToggleAntiSpam extends Function<enums.Updates> {
   channel: enums.InputChannel;
   enabled: boolean;
 
@@ -13576,7 +13575,7 @@ class channels_toggleAntiSpam extends Function<enums.Updates> {
   }
 }
 
-class channels_reportAntiSpamFalsePositive extends Function<boolean> {
+export class channels_ReportAntiSpamFalsePositive extends Function<boolean> {
   channel: enums.InputChannel;
   msg_id: number;
 
@@ -13605,7 +13604,7 @@ class channels_reportAntiSpamFalsePositive extends Function<boolean> {
   }
 }
 
-class channels_toggleParticipantsHidden extends Function<enums.Updates> {
+export class channels_ToggleParticipantsHidden extends Function<enums.Updates> {
   channel: enums.InputChannel;
   enabled: boolean;
 
@@ -13634,7 +13633,7 @@ class channels_toggleParticipantsHidden extends Function<enums.Updates> {
   }
 }
 
-class channels_clickSponsoredMessage extends Function<boolean> {
+export class channels_ClickSponsoredMessage extends Function<boolean> {
   channel: enums.InputChannel;
   random_id: Uint8Array;
 
@@ -13663,7 +13662,7 @@ class channels_clickSponsoredMessage extends Function<boolean> {
   }
 }
 
-class channels_updateColor extends Function<enums.Updates> {
+export class channels_UpdateColor extends Function<enums.Updates> {
   channel: enums.InputChannel;
   color: number;
   background_emoji_id?: bigint;
@@ -13698,7 +13697,7 @@ class channels_updateColor extends Function<enums.Updates> {
   }
 }
 
-class channels_toggleViewForumAsMessages extends Function<enums.Updates> {
+export class channels_ToggleViewForumAsMessages extends Function<enums.Updates> {
   channel: enums.InputChannel;
   enabled: boolean;
 
@@ -13727,7 +13726,7 @@ class channels_toggleViewForumAsMessages extends Function<enums.Updates> {
   }
 }
 
-class channels_getChannelRecommendations extends Function<enums.messages_Chats> {
+export class channels_GetChannelRecommendations extends Function<enums.messages_Chats> {
   channel: enums.InputChannel;
 
   protected get [id]() {
@@ -13752,7 +13751,7 @@ class channels_getChannelRecommendations extends Function<enums.messages_Chats> 
   }
 }
 
-class bots_sendCustomRequest extends Function<enums.DataJSON> {
+export class bots_SendCustomRequest extends Function<enums.DataJSON> {
   custom_method: string;
   params: enums.DataJSON;
 
@@ -13781,7 +13780,7 @@ class bots_sendCustomRequest extends Function<enums.DataJSON> {
   }
 }
 
-class bots_answerWebhookJSONQuery extends Function<boolean> {
+export class bots_AnswerWebhookJSONQuery extends Function<boolean> {
   query_id: bigint;
   data: enums.DataJSON;
 
@@ -13810,7 +13809,7 @@ class bots_answerWebhookJSONQuery extends Function<boolean> {
   }
 }
 
-class bots_setBotCommands extends Function<boolean> {
+export class bots_SetBotCommands extends Function<boolean> {
   scope: enums.BotCommandScope;
   lang_code: string;
   commands: Array<enums.BotCommand>;
@@ -13843,7 +13842,7 @@ class bots_setBotCommands extends Function<boolean> {
   }
 }
 
-class bots_resetBotCommands extends Function<boolean> {
+export class bots_ResetBotCommands extends Function<boolean> {
   scope: enums.BotCommandScope;
   lang_code: string;
 
@@ -13872,7 +13871,7 @@ class bots_resetBotCommands extends Function<boolean> {
   }
 }
 
-class bots_getBotCommands extends Function<enums.BotCommand[]> {
+export class bots_GetBotCommands extends Function<enums.BotCommand[]> {
   scope: enums.BotCommandScope;
   lang_code: string;
 
@@ -13901,7 +13900,7 @@ class bots_getBotCommands extends Function<enums.BotCommand[]> {
   }
 }
 
-class bots_setBotMenuButton extends Function<boolean> {
+export class bots_SetBotMenuButton extends Function<boolean> {
   user_id: enums.InputUser;
   button: enums.BotMenuButton;
 
@@ -13930,7 +13929,7 @@ class bots_setBotMenuButton extends Function<boolean> {
   }
 }
 
-class bots_getBotMenuButton extends Function<enums.BotMenuButton> {
+export class bots_GetBotMenuButton extends Function<enums.BotMenuButton> {
   user_id: enums.InputUser;
 
   protected get [id]() {
@@ -13955,7 +13954,7 @@ class bots_getBotMenuButton extends Function<enums.BotMenuButton> {
   }
 }
 
-class bots_setBotBroadcastDefaultAdminRights extends Function<boolean> {
+export class bots_SetBotBroadcastDefaultAdminRights extends Function<boolean> {
   admin_rights: enums.ChatAdminRights;
 
   protected get [id]() {
@@ -13980,7 +13979,7 @@ class bots_setBotBroadcastDefaultAdminRights extends Function<boolean> {
   }
 }
 
-class bots_setBotGroupDefaultAdminRights extends Function<boolean> {
+export class bots_SetBotGroupDefaultAdminRights extends Function<boolean> {
   admin_rights: enums.ChatAdminRights;
 
   protected get [id]() {
@@ -14005,7 +14004,7 @@ class bots_setBotGroupDefaultAdminRights extends Function<boolean> {
   }
 }
 
-class bots_setBotInfo extends Function<boolean> {
+export class bots_SetBotInfo extends Function<boolean> {
   bot?: enums.InputUser;
   lang_code: string;
   name?: string;
@@ -14048,7 +14047,7 @@ class bots_setBotInfo extends Function<boolean> {
   }
 }
 
-class bots_getBotInfo extends Function<enums.bots_BotInfo> {
+export class bots_GetBotInfo extends Function<enums.bots_BotInfo> {
   bot?: enums.InputUser;
   lang_code: string;
 
@@ -14079,7 +14078,7 @@ class bots_getBotInfo extends Function<enums.bots_BotInfo> {
   }
 }
 
-class bots_reorderUsernames extends Function<boolean> {
+export class bots_ReorderUsernames extends Function<boolean> {
   bot: enums.InputUser;
   order: Array<string>;
 
@@ -14108,7 +14107,7 @@ class bots_reorderUsernames extends Function<boolean> {
   }
 }
 
-class bots_toggleUsername extends Function<boolean> {
+export class bots_ToggleUsername extends Function<boolean> {
   bot: enums.InputUser;
   username: string;
   active: boolean;
@@ -14141,7 +14140,7 @@ class bots_toggleUsername extends Function<boolean> {
   }
 }
 
-class bots_canSendMessage extends Function<boolean> {
+export class bots_CanSendMessage extends Function<boolean> {
   bot: enums.InputUser;
 
   protected get [id]() {
@@ -14166,7 +14165,7 @@ class bots_canSendMessage extends Function<boolean> {
   }
 }
 
-class bots_allowSendMessage extends Function<enums.Updates> {
+export class bots_AllowSendMessage extends Function<enums.Updates> {
   bot: enums.InputUser;
 
   protected get [id]() {
@@ -14191,7 +14190,7 @@ class bots_allowSendMessage extends Function<enums.Updates> {
   }
 }
 
-class bots_invokeWebViewCustomMethod extends Function<enums.DataJSON> {
+export class bots_InvokeWebViewCustomMethod extends Function<enums.DataJSON> {
   bot: enums.InputUser;
   custom_method: string;
   params: enums.DataJSON;
@@ -14224,7 +14223,7 @@ class bots_invokeWebViewCustomMethod extends Function<enums.DataJSON> {
   }
 }
 
-class payments_getPaymentForm extends Function<enums.payments_PaymentForm> {
+export class payments_GetPaymentForm extends Function<enums.payments_PaymentForm> {
   invoice: enums.InputInvoice;
   theme_params?: enums.DataJSON;
 
@@ -14255,7 +14254,7 @@ class payments_getPaymentForm extends Function<enums.payments_PaymentForm> {
   }
 }
 
-class payments_getPaymentReceipt extends Function<enums.payments_PaymentReceipt> {
+export class payments_GetPaymentReceipt extends Function<enums.payments_PaymentReceipt> {
   peer: enums.InputPeer;
   msg_id: number;
 
@@ -14284,7 +14283,7 @@ class payments_getPaymentReceipt extends Function<enums.payments_PaymentReceipt>
   }
 }
 
-class payments_validateRequestedInfo extends Function<enums.payments_ValidatedRequestedInfo> {
+export class payments_ValidateRequestedInfo extends Function<enums.payments_ValidatedRequestedInfo> {
   save?: true;
   invoice: enums.InputInvoice;
   info: enums.PaymentRequestedInfo;
@@ -14319,7 +14318,7 @@ class payments_validateRequestedInfo extends Function<enums.payments_ValidatedRe
   }
 }
 
-class payments_sendPaymentForm extends Function<enums.payments_PaymentResult> {
+export class payments_SendPaymentForm extends Function<enums.payments_PaymentResult> {
   form_id: bigint;
   invoice: enums.InputInvoice;
   requested_info_id?: string;
@@ -14366,7 +14365,7 @@ class payments_sendPaymentForm extends Function<enums.payments_PaymentResult> {
   }
 }
 
-class payments_getSavedInfo extends Function<enums.payments_SavedInfo> {
+export class payments_GetSavedInfo extends Function<enums.payments_SavedInfo> {
   protected get [id]() {
     return 0x227D824B;
   }
@@ -14384,7 +14383,7 @@ class payments_getSavedInfo extends Function<enums.payments_SavedInfo> {
   }
 }
 
-class payments_clearSavedInfo extends Function<boolean> {
+export class payments_ClearSavedInfo extends Function<boolean> {
   credentials?: true;
   info?: true;
 
@@ -14415,7 +14414,7 @@ class payments_clearSavedInfo extends Function<boolean> {
   }
 }
 
-class payments_getBankCardData extends Function<enums.payments_BankCardData> {
+export class payments_GetBankCardData extends Function<enums.payments_BankCardData> {
   number: string;
 
   protected get [id]() {
@@ -14440,7 +14439,7 @@ class payments_getBankCardData extends Function<enums.payments_BankCardData> {
   }
 }
 
-class payments_exportInvoice extends Function<enums.payments_ExportedInvoice> {
+export class payments_ExportInvoice extends Function<enums.payments_ExportedInvoice> {
   invoice_media: enums.InputMedia;
 
   protected get [id]() {
@@ -14465,7 +14464,7 @@ class payments_exportInvoice extends Function<enums.payments_ExportedInvoice> {
   }
 }
 
-class payments_assignAppStoreTransaction extends Function<enums.Updates> {
+export class payments_AssignAppStoreTransaction extends Function<enums.Updates> {
   receipt: Uint8Array;
   purpose: enums.InputStorePaymentPurpose;
 
@@ -14494,7 +14493,7 @@ class payments_assignAppStoreTransaction extends Function<enums.Updates> {
   }
 }
 
-class payments_assignPlayMarketTransaction extends Function<enums.Updates> {
+export class payments_AssignPlayMarketTransaction extends Function<enums.Updates> {
   receipt: enums.DataJSON;
   purpose: enums.InputStorePaymentPurpose;
 
@@ -14523,7 +14522,7 @@ class payments_assignPlayMarketTransaction extends Function<enums.Updates> {
   }
 }
 
-class payments_canPurchasePremium extends Function<boolean> {
+export class payments_CanPurchasePremium extends Function<boolean> {
   purpose: enums.InputStorePaymentPurpose;
 
   protected get [id]() {
@@ -14548,7 +14547,7 @@ class payments_canPurchasePremium extends Function<boolean> {
   }
 }
 
-class payments_getPremiumGiftCodeOptions extends Function<enums.PremiumGiftCodeOption[]> {
+export class payments_GetPremiumGiftCodeOptions extends Function<enums.PremiumGiftCodeOption[]> {
   boost_peer?: enums.InputPeer;
 
   protected get [id]() {
@@ -14575,7 +14574,7 @@ class payments_getPremiumGiftCodeOptions extends Function<enums.PremiumGiftCodeO
   }
 }
 
-class payments_checkGiftCode extends Function<enums.payments_CheckedGiftCode> {
+export class payments_CheckGiftCode extends Function<enums.payments_CheckedGiftCode> {
   slug: string;
 
   protected get [id]() {
@@ -14600,7 +14599,7 @@ class payments_checkGiftCode extends Function<enums.payments_CheckedGiftCode> {
   }
 }
 
-class payments_applyGiftCode extends Function<enums.Updates> {
+export class payments_ApplyGiftCode extends Function<enums.Updates> {
   slug: string;
 
   protected get [id]() {
@@ -14625,7 +14624,7 @@ class payments_applyGiftCode extends Function<enums.Updates> {
   }
 }
 
-class payments_getGiveawayInfo extends Function<enums.payments_GiveawayInfo> {
+export class payments_GetGiveawayInfo extends Function<enums.payments_GiveawayInfo> {
   peer: enums.InputPeer;
   msg_id: number;
 
@@ -14654,7 +14653,7 @@ class payments_getGiveawayInfo extends Function<enums.payments_GiveawayInfo> {
   }
 }
 
-class payments_launchPrepaidGiveaway extends Function<enums.Updates> {
+export class payments_LaunchPrepaidGiveaway extends Function<enums.Updates> {
   peer: enums.InputPeer;
   giveaway_id: bigint;
   purpose: enums.InputStorePaymentPurpose;
@@ -14687,7 +14686,7 @@ class payments_launchPrepaidGiveaway extends Function<enums.Updates> {
   }
 }
 
-class stickers_createStickerSet extends Function<enums.messages_StickerSet> {
+export class stickers_CreateStickerSet extends Function<enums.messages_StickerSet> {
   masks?: true;
   animated?: true;
   videos?: true;
@@ -14754,7 +14753,7 @@ class stickers_createStickerSet extends Function<enums.messages_StickerSet> {
   }
 }
 
-class stickers_removeStickerFromSet extends Function<enums.messages_StickerSet> {
+export class stickers_RemoveStickerFromSet extends Function<enums.messages_StickerSet> {
   sticker: enums.InputDocument;
 
   protected get [id]() {
@@ -14779,7 +14778,7 @@ class stickers_removeStickerFromSet extends Function<enums.messages_StickerSet> 
   }
 }
 
-class stickers_changeStickerPosition extends Function<enums.messages_StickerSet> {
+export class stickers_ChangeStickerPosition extends Function<enums.messages_StickerSet> {
   sticker: enums.InputDocument;
   position: number;
 
@@ -14808,7 +14807,7 @@ class stickers_changeStickerPosition extends Function<enums.messages_StickerSet>
   }
 }
 
-class stickers_addStickerToSet extends Function<enums.messages_StickerSet> {
+export class stickers_AddStickerToSet extends Function<enums.messages_StickerSet> {
   stickerset: enums.InputStickerSet;
   sticker: enums.InputStickerSetItem;
 
@@ -14837,7 +14836,7 @@ class stickers_addStickerToSet extends Function<enums.messages_StickerSet> {
   }
 }
 
-class stickers_setStickerSetThumb extends Function<enums.messages_StickerSet> {
+export class stickers_SetStickerSetThumb extends Function<enums.messages_StickerSet> {
   stickerset: enums.InputStickerSet;
   thumb?: enums.InputDocument;
   thumb_document_id?: bigint;
@@ -14872,7 +14871,7 @@ class stickers_setStickerSetThumb extends Function<enums.messages_StickerSet> {
   }
 }
 
-class stickers_checkShortName extends Function<boolean> {
+export class stickers_CheckShortName extends Function<boolean> {
   short_name: string;
 
   protected get [id]() {
@@ -14897,7 +14896,7 @@ class stickers_checkShortName extends Function<boolean> {
   }
 }
 
-class stickers_suggestShortName extends Function<enums.stickers_SuggestedShortName> {
+export class stickers_SuggestShortName extends Function<enums.stickers_SuggestedShortName> {
   title: string;
 
   protected get [id]() {
@@ -14922,7 +14921,7 @@ class stickers_suggestShortName extends Function<enums.stickers_SuggestedShortNa
   }
 }
 
-class stickers_changeSticker extends Function<enums.messages_StickerSet> {
+export class stickers_ChangeSticker extends Function<enums.messages_StickerSet> {
   sticker: enums.InputDocument;
   emoji?: string;
   mask_coords?: enums.MaskCoords;
@@ -14961,7 +14960,7 @@ class stickers_changeSticker extends Function<enums.messages_StickerSet> {
   }
 }
 
-class stickers_renameStickerSet extends Function<enums.messages_StickerSet> {
+export class stickers_RenameStickerSet extends Function<enums.messages_StickerSet> {
   stickerset: enums.InputStickerSet;
   title: string;
 
@@ -14990,7 +14989,7 @@ class stickers_renameStickerSet extends Function<enums.messages_StickerSet> {
   }
 }
 
-class stickers_deleteStickerSet extends Function<boolean> {
+export class stickers_DeleteStickerSet extends Function<boolean> {
   stickerset: enums.InputStickerSet;
 
   protected get [id]() {
@@ -15015,7 +15014,7 @@ class stickers_deleteStickerSet extends Function<boolean> {
   }
 }
 
-class phone_getCallConfig extends Function<enums.DataJSON> {
+export class phone_GetCallConfig extends Function<enums.DataJSON> {
   protected get [id]() {
     return 0x55451FA9;
   }
@@ -15033,7 +15032,7 @@ class phone_getCallConfig extends Function<enums.DataJSON> {
   }
 }
 
-class phone_requestCall extends Function<enums.phone_PhoneCall> {
+export class phone_RequestCall extends Function<enums.phone_PhoneCall> {
   video?: true;
   user_id: enums.InputUser;
   random_id: number;
@@ -15076,7 +15075,7 @@ class phone_requestCall extends Function<enums.phone_PhoneCall> {
   }
 }
 
-class phone_acceptCall extends Function<enums.phone_PhoneCall> {
+export class phone_AcceptCall extends Function<enums.phone_PhoneCall> {
   peer: enums.InputPhoneCall;
   g_b: Uint8Array;
   protocol: enums.PhoneCallProtocol;
@@ -15109,7 +15108,7 @@ class phone_acceptCall extends Function<enums.phone_PhoneCall> {
   }
 }
 
-class phone_confirmCall extends Function<enums.phone_PhoneCall> {
+export class phone_ConfirmCall extends Function<enums.phone_PhoneCall> {
   peer: enums.InputPhoneCall;
   g_a: Uint8Array;
   key_fingerprint: bigint;
@@ -15146,7 +15145,7 @@ class phone_confirmCall extends Function<enums.phone_PhoneCall> {
   }
 }
 
-class phone_receivedCall extends Function<boolean> {
+export class phone_ReceivedCall extends Function<boolean> {
   peer: enums.InputPhoneCall;
 
   protected get [id]() {
@@ -15171,7 +15170,7 @@ class phone_receivedCall extends Function<boolean> {
   }
 }
 
-class phone_discardCall extends Function<enums.Updates> {
+export class phone_DiscardCall extends Function<enums.Updates> {
   video?: true;
   peer: enums.InputPhoneCall;
   duration: number;
@@ -15214,7 +15213,7 @@ class phone_discardCall extends Function<enums.Updates> {
   }
 }
 
-class phone_setCallRating extends Function<enums.Updates> {
+export class phone_SetCallRating extends Function<enums.Updates> {
   user_initiative?: true;
   peer: enums.InputPhoneCall;
   rating: number;
@@ -15253,7 +15252,7 @@ class phone_setCallRating extends Function<enums.Updates> {
   }
 }
 
-class phone_saveCallDebug extends Function<boolean> {
+export class phone_SaveCallDebug extends Function<boolean> {
   peer: enums.InputPhoneCall;
   debug: enums.DataJSON;
 
@@ -15282,7 +15281,7 @@ class phone_saveCallDebug extends Function<boolean> {
   }
 }
 
-class phone_sendSignalingData extends Function<boolean> {
+export class phone_SendSignalingData extends Function<boolean> {
   peer: enums.InputPhoneCall;
   data: Uint8Array;
 
@@ -15311,7 +15310,7 @@ class phone_sendSignalingData extends Function<boolean> {
   }
 }
 
-class phone_createGroupCall extends Function<enums.Updates> {
+export class phone_CreateGroupCall extends Function<enums.Updates> {
   rtmp_stream?: true;
   peer: enums.InputPeer;
   random_id: number;
@@ -15354,7 +15353,7 @@ class phone_createGroupCall extends Function<enums.Updates> {
   }
 }
 
-class phone_joinGroupCall extends Function<enums.Updates> {
+export class phone_JoinGroupCall extends Function<enums.Updates> {
   muted?: true;
   video_stopped?: true;
   call: enums.InputGroupCall;
@@ -15401,7 +15400,7 @@ class phone_joinGroupCall extends Function<enums.Updates> {
   }
 }
 
-class phone_leaveGroupCall extends Function<enums.Updates> {
+export class phone_LeaveGroupCall extends Function<enums.Updates> {
   call: enums.InputGroupCall;
   source: number;
 
@@ -15430,7 +15429,7 @@ class phone_leaveGroupCall extends Function<enums.Updates> {
   }
 }
 
-class phone_inviteToGroupCall extends Function<enums.Updates> {
+export class phone_InviteToGroupCall extends Function<enums.Updates> {
   call: enums.InputGroupCall;
   users: Array<enums.InputUser>;
 
@@ -15459,7 +15458,7 @@ class phone_inviteToGroupCall extends Function<enums.Updates> {
   }
 }
 
-class phone_discardGroupCall extends Function<enums.Updates> {
+export class phone_DiscardGroupCall extends Function<enums.Updates> {
   call: enums.InputGroupCall;
 
   protected get [id]() {
@@ -15484,7 +15483,7 @@ class phone_discardGroupCall extends Function<enums.Updates> {
   }
 }
 
-class phone_toggleGroupCallSettings extends Function<enums.Updates> {
+export class phone_ToggleGroupCallSettings extends Function<enums.Updates> {
   reset_invite_hash?: true;
   call: enums.InputGroupCall;
   join_muted?: boolean;
@@ -15519,7 +15518,7 @@ class phone_toggleGroupCallSettings extends Function<enums.Updates> {
   }
 }
 
-class phone_getGroupCall extends Function<enums.phone_GroupCall> {
+export class phone_GetGroupCall extends Function<enums.phone_GroupCall> {
   call: enums.InputGroupCall;
   limit: number;
 
@@ -15548,7 +15547,7 @@ class phone_getGroupCall extends Function<enums.phone_GroupCall> {
   }
 }
 
-class phone_getGroupParticipants extends Function<enums.phone_GroupParticipants> {
+export class phone_GetGroupParticipants extends Function<enums.phone_GroupParticipants> {
   call: enums.InputGroupCall;
   ids: Array<enums.InputPeer>;
   sources: Array<number>;
@@ -15589,7 +15588,7 @@ class phone_getGroupParticipants extends Function<enums.phone_GroupParticipants>
   }
 }
 
-class phone_checkGroupCall extends Function<number[]> {
+export class phone_CheckGroupCall extends Function<number[]> {
   call: enums.InputGroupCall;
   sources: Array<number>;
 
@@ -15618,7 +15617,7 @@ class phone_checkGroupCall extends Function<number[]> {
   }
 }
 
-class phone_toggleGroupCallRecord extends Function<enums.Updates> {
+export class phone_ToggleGroupCallRecord extends Function<enums.Updates> {
   start?: true;
   video?: true;
   call: enums.InputGroupCall;
@@ -15661,7 +15660,7 @@ class phone_toggleGroupCallRecord extends Function<enums.Updates> {
   }
 }
 
-class phone_editGroupCallParticipant extends Function<enums.Updates> {
+export class phone_EditGroupCallParticipant extends Function<enums.Updates> {
   call: enums.InputGroupCall;
   participant: enums.InputPeer;
   muted?: boolean;
@@ -15716,7 +15715,7 @@ class phone_editGroupCallParticipant extends Function<enums.Updates> {
   }
 }
 
-class phone_editGroupCallTitle extends Function<enums.Updates> {
+export class phone_EditGroupCallTitle extends Function<enums.Updates> {
   call: enums.InputGroupCall;
   title: string;
 
@@ -15745,7 +15744,7 @@ class phone_editGroupCallTitle extends Function<enums.Updates> {
   }
 }
 
-class phone_getGroupCallJoinAs extends Function<enums.phone_JoinAsPeers> {
+export class phone_GetGroupCallJoinAs extends Function<enums.phone_JoinAsPeers> {
   peer: enums.InputPeer;
 
   protected get [id]() {
@@ -15770,7 +15769,7 @@ class phone_getGroupCallJoinAs extends Function<enums.phone_JoinAsPeers> {
   }
 }
 
-class phone_exportGroupCallInvite extends Function<enums.phone_ExportedGroupCallInvite> {
+export class phone_ExportGroupCallInvite extends Function<enums.phone_ExportedGroupCallInvite> {
   can_self_unmute?: true;
   call: enums.InputGroupCall;
 
@@ -15801,7 +15800,7 @@ class phone_exportGroupCallInvite extends Function<enums.phone_ExportedGroupCall
   }
 }
 
-class phone_toggleGroupCallStartSubscription extends Function<enums.Updates> {
+export class phone_ToggleGroupCallStartSubscription extends Function<enums.Updates> {
   call: enums.InputGroupCall;
   subscribed: boolean;
 
@@ -15830,7 +15829,7 @@ class phone_toggleGroupCallStartSubscription extends Function<enums.Updates> {
   }
 }
 
-class phone_startScheduledGroupCall extends Function<enums.Updates> {
+export class phone_StartScheduledGroupCall extends Function<enums.Updates> {
   call: enums.InputGroupCall;
 
   protected get [id]() {
@@ -15855,7 +15854,7 @@ class phone_startScheduledGroupCall extends Function<enums.Updates> {
   }
 }
 
-class phone_saveDefaultGroupCallJoinAs extends Function<boolean> {
+export class phone_SaveDefaultGroupCallJoinAs extends Function<boolean> {
   peer: enums.InputPeer;
   join_as: enums.InputPeer;
 
@@ -15884,7 +15883,7 @@ class phone_saveDefaultGroupCallJoinAs extends Function<boolean> {
   }
 }
 
-class phone_joinGroupCallPresentation extends Function<enums.Updates> {
+export class phone_JoinGroupCallPresentation extends Function<enums.Updates> {
   call: enums.InputGroupCall;
   params: enums.DataJSON;
 
@@ -15913,7 +15912,7 @@ class phone_joinGroupCallPresentation extends Function<enums.Updates> {
   }
 }
 
-class phone_leaveGroupCallPresentation extends Function<enums.Updates> {
+export class phone_LeaveGroupCallPresentation extends Function<enums.Updates> {
   call: enums.InputGroupCall;
 
   protected get [id]() {
@@ -15938,7 +15937,7 @@ class phone_leaveGroupCallPresentation extends Function<enums.Updates> {
   }
 }
 
-class phone_getGroupCallStreamChannels extends Function<enums.phone_GroupCallStreamChannels> {
+export class phone_GetGroupCallStreamChannels extends Function<enums.phone_GroupCallStreamChannels> {
   call: enums.InputGroupCall;
 
   protected get [id]() {
@@ -15963,7 +15962,7 @@ class phone_getGroupCallStreamChannels extends Function<enums.phone_GroupCallStr
   }
 }
 
-class phone_getGroupCallStreamRtmpUrl extends Function<enums.phone_GroupCallStreamRtmpUrl> {
+export class phone_GetGroupCallStreamRtmpUrl extends Function<enums.phone_GroupCallStreamRtmpUrl> {
   peer: enums.InputPeer;
   revoke: boolean;
 
@@ -15992,7 +15991,7 @@ class phone_getGroupCallStreamRtmpUrl extends Function<enums.phone_GroupCallStre
   }
 }
 
-class phone_saveCallLog extends Function<boolean> {
+export class phone_SaveCallLog extends Function<boolean> {
   peer: enums.InputPhoneCall;
   file: enums.InputFile;
 
@@ -16021,7 +16020,7 @@ class phone_saveCallLog extends Function<boolean> {
   }
 }
 
-class langpack_getLangPack extends Function<enums.LangPackDifference> {
+export class langpack_GetLangPack extends Function<enums.LangPackDifference> {
   lang_pack: string;
   lang_code: string;
 
@@ -16050,7 +16049,7 @@ class langpack_getLangPack extends Function<enums.LangPackDifference> {
   }
 }
 
-class langpack_getStrings extends Function<enums.LangPackString[]> {
+export class langpack_GetStrings extends Function<enums.LangPackString[]> {
   lang_pack: string;
   lang_code: string;
   keys: Array<string>;
@@ -16083,7 +16082,7 @@ class langpack_getStrings extends Function<enums.LangPackString[]> {
   }
 }
 
-class langpack_getDifference extends Function<enums.LangPackDifference> {
+export class langpack_GetDifference extends Function<enums.LangPackDifference> {
   lang_pack: string;
   lang_code: string;
   from_version: number;
@@ -16116,7 +16115,7 @@ class langpack_getDifference extends Function<enums.LangPackDifference> {
   }
 }
 
-class langpack_getLanguages extends Function<enums.LangPackLanguage[]> {
+export class langpack_GetLanguages extends Function<enums.LangPackLanguage[]> {
   lang_pack: string;
 
   protected get [id]() {
@@ -16141,7 +16140,7 @@ class langpack_getLanguages extends Function<enums.LangPackLanguage[]> {
   }
 }
 
-class langpack_getLanguage extends Function<enums.LangPackLanguage> {
+export class langpack_GetLanguage extends Function<enums.LangPackLanguage> {
   lang_pack: string;
   lang_code: string;
 
@@ -16170,7 +16169,7 @@ class langpack_getLanguage extends Function<enums.LangPackLanguage> {
   }
 }
 
-class folders_editPeerFolders extends Function<enums.Updates> {
+export class folders_EditPeerFolders extends Function<enums.Updates> {
   folder_peers: Array<enums.InputFolderPeer>;
 
   protected get [id]() {
@@ -16195,7 +16194,7 @@ class folders_editPeerFolders extends Function<enums.Updates> {
   }
 }
 
-class stats_getBroadcastStats extends Function<enums.stats_BroadcastStats> {
+export class stats_GetBroadcastStats extends Function<enums.stats_BroadcastStats> {
   dark?: true;
   channel: enums.InputChannel;
 
@@ -16226,7 +16225,7 @@ class stats_getBroadcastStats extends Function<enums.stats_BroadcastStats> {
   }
 }
 
-class stats_loadAsyncGraph extends Function<enums.StatsGraph> {
+export class stats_LoadAsyncGraph extends Function<enums.StatsGraph> {
   token: string;
   x?: bigint;
 
@@ -16257,7 +16256,7 @@ class stats_loadAsyncGraph extends Function<enums.StatsGraph> {
   }
 }
 
-class stats_getMegagroupStats extends Function<enums.stats_MegagroupStats> {
+export class stats_GetMegagroupStats extends Function<enums.stats_MegagroupStats> {
   dark?: true;
   channel: enums.InputChannel;
 
@@ -16288,7 +16287,7 @@ class stats_getMegagroupStats extends Function<enums.stats_MegagroupStats> {
   }
 }
 
-class stats_getMessagePublicForwards extends Function<enums.messages_Messages> {
+export class stats_GetMessagePublicForwards extends Function<enums.messages_Messages> {
   channel: enums.InputChannel;
   msg_id: number;
   offset_rate: number;
@@ -16333,7 +16332,7 @@ class stats_getMessagePublicForwards extends Function<enums.messages_Messages> {
   }
 }
 
-class stats_getMessageStats extends Function<enums.stats_MessageStats> {
+export class stats_GetMessageStats extends Function<enums.stats_MessageStats> {
   dark?: true;
   channel: enums.InputChannel;
   msg_id: number;
@@ -16368,7 +16367,7 @@ class stats_getMessageStats extends Function<enums.stats_MessageStats> {
   }
 }
 
-class stats_getStoryStats extends Function<enums.stats_StoryStats> {
+export class stats_GetStoryStats extends Function<enums.stats_StoryStats> {
   dark?: true;
   peer: enums.InputPeer;
   id: number;
@@ -16403,7 +16402,7 @@ class stats_getStoryStats extends Function<enums.stats_StoryStats> {
   }
 }
 
-class stats_getStoryPublicForwards extends Function<enums.stats_PublicForwards> {
+export class stats_GetStoryPublicForwards extends Function<enums.stats_PublicForwards> {
   peer: enums.InputPeer;
   id: number;
   offset: string;
@@ -16440,7 +16439,7 @@ class stats_getStoryPublicForwards extends Function<enums.stats_PublicForwards> 
   }
 }
 
-class chatlists_exportChatlistInvite extends Function<enums.chatlists_ExportedChatlistInvite> {
+export class chatlists_ExportChatlistInvite extends Function<enums.chatlists_ExportedChatlistInvite> {
   chatlist: enums.InputChatlist;
   title: string;
   peers: Array<enums.InputPeer>;
@@ -16473,7 +16472,7 @@ class chatlists_exportChatlistInvite extends Function<enums.chatlists_ExportedCh
   }
 }
 
-class chatlists_deleteExportedInvite extends Function<boolean> {
+export class chatlists_DeleteExportedInvite extends Function<boolean> {
   chatlist: enums.InputChatlist;
   slug: string;
 
@@ -16502,7 +16501,7 @@ class chatlists_deleteExportedInvite extends Function<boolean> {
   }
 }
 
-class chatlists_editExportedInvite extends Function<enums.ExportedChatlistInvite> {
+export class chatlists_EditExportedInvite extends Function<enums.ExportedChatlistInvite> {
   chatlist: enums.InputChatlist;
   slug: string;
   title?: string;
@@ -16541,7 +16540,7 @@ class chatlists_editExportedInvite extends Function<enums.ExportedChatlistInvite
   }
 }
 
-class chatlists_getExportedInvites extends Function<enums.chatlists_ExportedInvites> {
+export class chatlists_GetExportedInvites extends Function<enums.chatlists_ExportedInvites> {
   chatlist: enums.InputChatlist;
 
   protected get [id]() {
@@ -16566,7 +16565,7 @@ class chatlists_getExportedInvites extends Function<enums.chatlists_ExportedInvi
   }
 }
 
-class chatlists_checkChatlistInvite extends Function<enums.chatlists_ChatlistInvite> {
+export class chatlists_CheckChatlistInvite extends Function<enums.chatlists_ChatlistInvite> {
   slug: string;
 
   protected get [id]() {
@@ -16591,7 +16590,7 @@ class chatlists_checkChatlistInvite extends Function<enums.chatlists_ChatlistInv
   }
 }
 
-class chatlists_joinChatlistInvite extends Function<enums.Updates> {
+export class chatlists_JoinChatlistInvite extends Function<enums.Updates> {
   slug: string;
   peers: Array<enums.InputPeer>;
 
@@ -16620,7 +16619,7 @@ class chatlists_joinChatlistInvite extends Function<enums.Updates> {
   }
 }
 
-class chatlists_getChatlistUpdates extends Function<enums.chatlists_ChatlistUpdates> {
+export class chatlists_GetChatlistUpdates extends Function<enums.chatlists_ChatlistUpdates> {
   chatlist: enums.InputChatlist;
 
   protected get [id]() {
@@ -16645,7 +16644,7 @@ class chatlists_getChatlistUpdates extends Function<enums.chatlists_ChatlistUpda
   }
 }
 
-class chatlists_joinChatlistUpdates extends Function<enums.Updates> {
+export class chatlists_JoinChatlistUpdates extends Function<enums.Updates> {
   chatlist: enums.InputChatlist;
   peers: Array<enums.InputPeer>;
 
@@ -16674,7 +16673,7 @@ class chatlists_joinChatlistUpdates extends Function<enums.Updates> {
   }
 }
 
-class chatlists_hideChatlistUpdates extends Function<boolean> {
+export class chatlists_HideChatlistUpdates extends Function<boolean> {
   chatlist: enums.InputChatlist;
 
   protected get [id]() {
@@ -16699,7 +16698,7 @@ class chatlists_hideChatlistUpdates extends Function<boolean> {
   }
 }
 
-class chatlists_getLeaveChatlistSuggestions extends Function<enums.Peer[]> {
+export class chatlists_GetLeaveChatlistSuggestions extends Function<enums.Peer[]> {
   chatlist: enums.InputChatlist;
 
   protected get [id]() {
@@ -16724,7 +16723,7 @@ class chatlists_getLeaveChatlistSuggestions extends Function<enums.Peer[]> {
   }
 }
 
-class chatlists_leaveChatlist extends Function<enums.Updates> {
+export class chatlists_LeaveChatlist extends Function<enums.Updates> {
   chatlist: enums.InputChatlist;
   peers: Array<enums.InputPeer>;
 
@@ -16753,7 +16752,7 @@ class chatlists_leaveChatlist extends Function<enums.Updates> {
   }
 }
 
-class stories_canSendStory extends Function<boolean> {
+export class stories_CanSendStory extends Function<boolean> {
   peer: enums.InputPeer;
 
   protected get [id]() {
@@ -16778,7 +16777,7 @@ class stories_canSendStory extends Function<boolean> {
   }
 }
 
-class stories_sendStory extends Function<enums.Updates> {
+export class stories_SendStory extends Function<enums.Updates> {
   pinned?: true;
   noforwards?: true;
   fwd_modified?: true;
@@ -16853,7 +16852,7 @@ class stories_sendStory extends Function<enums.Updates> {
   }
 }
 
-class stories_editStory extends Function<enums.Updates> {
+export class stories_EditStory extends Function<enums.Updates> {
   peer: enums.InputPeer;
   id: number;
   media?: enums.InputMedia;
@@ -16904,7 +16903,7 @@ class stories_editStory extends Function<enums.Updates> {
   }
 }
 
-class stories_deleteStories extends Function<number[]> {
+export class stories_DeleteStories extends Function<number[]> {
   peer: enums.InputPeer;
   id: Array<number>;
 
@@ -16933,7 +16932,7 @@ class stories_deleteStories extends Function<number[]> {
   }
 }
 
-class stories_togglePinned extends Function<number[]> {
+export class stories_TogglePinned extends Function<number[]> {
   peer: enums.InputPeer;
   id: Array<number>;
   pinned: boolean;
@@ -16966,7 +16965,7 @@ class stories_togglePinned extends Function<number[]> {
   }
 }
 
-class stories_getAllStories extends Function<enums.stories_AllStories> {
+export class stories_GetAllStories extends Function<enums.stories_AllStories> {
   next?: true;
   hidden?: true;
   state?: string;
@@ -17001,7 +17000,7 @@ class stories_getAllStories extends Function<enums.stories_AllStories> {
   }
 }
 
-class stories_getPinnedStories extends Function<enums.stories_Stories> {
+export class stories_GetPinnedStories extends Function<enums.stories_Stories> {
   peer: enums.InputPeer;
   offset_id: number;
   limit: number;
@@ -17034,7 +17033,7 @@ class stories_getPinnedStories extends Function<enums.stories_Stories> {
   }
 }
 
-class stories_getStoriesArchive extends Function<enums.stories_Stories> {
+export class stories_GetStoriesArchive extends Function<enums.stories_Stories> {
   peer: enums.InputPeer;
   offset_id: number;
   limit: number;
@@ -17067,7 +17066,7 @@ class stories_getStoriesArchive extends Function<enums.stories_Stories> {
   }
 }
 
-class stories_getStoriesByID extends Function<enums.stories_Stories> {
+export class stories_GetStoriesByID extends Function<enums.stories_Stories> {
   peer: enums.InputPeer;
   id: Array<number>;
 
@@ -17096,7 +17095,7 @@ class stories_getStoriesByID extends Function<enums.stories_Stories> {
   }
 }
 
-class stories_toggleAllStoriesHidden extends Function<boolean> {
+export class stories_ToggleAllStoriesHidden extends Function<boolean> {
   hidden: boolean;
 
   protected get [id]() {
@@ -17121,7 +17120,7 @@ class stories_toggleAllStoriesHidden extends Function<boolean> {
   }
 }
 
-class stories_readStories extends Function<number[]> {
+export class stories_ReadStories extends Function<number[]> {
   peer: enums.InputPeer;
   max_id: number;
 
@@ -17150,7 +17149,7 @@ class stories_readStories extends Function<number[]> {
   }
 }
 
-class stories_incrementStoryViews extends Function<boolean> {
+export class stories_IncrementStoryViews extends Function<boolean> {
   peer: enums.InputPeer;
   id: Array<number>;
 
@@ -17179,7 +17178,7 @@ class stories_incrementStoryViews extends Function<boolean> {
   }
 }
 
-class stories_getStoryViewsList extends Function<enums.stories_StoryViewsList> {
+export class stories_GetStoryViewsList extends Function<enums.stories_StoryViewsList> {
   just_contacts?: true;
   reactions_first?: true;
   peer: enums.InputPeer;
@@ -17230,7 +17229,7 @@ class stories_getStoryViewsList extends Function<enums.stories_StoryViewsList> {
   }
 }
 
-class stories_getStoriesViews extends Function<enums.stories_StoryViews> {
+export class stories_GetStoriesViews extends Function<enums.stories_StoryViews> {
   peer: enums.InputPeer;
   id: Array<number>;
 
@@ -17259,7 +17258,7 @@ class stories_getStoriesViews extends Function<enums.stories_StoryViews> {
   }
 }
 
-class stories_exportStoryLink extends Function<enums.ExportedStoryLink> {
+export class stories_ExportStoryLink extends Function<enums.ExportedStoryLink> {
   peer: enums.InputPeer;
   id: number;
 
@@ -17288,7 +17287,7 @@ class stories_exportStoryLink extends Function<enums.ExportedStoryLink> {
   }
 }
 
-class stories_report extends Function<boolean> {
+export class stories_Report extends Function<boolean> {
   peer: enums.InputPeer;
   id: Array<number>;
   reason: enums.ReportReason;
@@ -17325,7 +17324,7 @@ class stories_report extends Function<boolean> {
   }
 }
 
-class stories_activateStealthMode extends Function<enums.Updates> {
+export class stories_ActivateStealthMode extends Function<enums.Updates> {
   past?: true;
   future?: true;
 
@@ -17356,7 +17355,7 @@ class stories_activateStealthMode extends Function<enums.Updates> {
   }
 }
 
-class stories_sendReaction extends Function<enums.Updates> {
+export class stories_SendReaction extends Function<enums.Updates> {
   add_to_recent?: true;
   peer: enums.InputPeer;
   story_id: number;
@@ -17395,7 +17394,7 @@ class stories_sendReaction extends Function<enums.Updates> {
   }
 }
 
-class stories_getPeerStories extends Function<enums.stories_PeerStories> {
+export class stories_GetPeerStories extends Function<enums.stories_PeerStories> {
   peer: enums.InputPeer;
 
   protected get [id]() {
@@ -17420,7 +17419,7 @@ class stories_getPeerStories extends Function<enums.stories_PeerStories> {
   }
 }
 
-class stories_getAllReadPeerStories extends Function<enums.Updates> {
+export class stories_GetAllReadPeerStories extends Function<enums.Updates> {
   protected get [id]() {
     return 0x9B5AE7F9;
   }
@@ -17438,7 +17437,7 @@ class stories_getAllReadPeerStories extends Function<enums.Updates> {
   }
 }
 
-class stories_getPeerMaxIDs extends Function<number[]> {
+export class stories_GetPeerMaxIDs extends Function<number[]> {
   id: Array<enums.InputPeer>;
 
   protected get [id]() {
@@ -17463,7 +17462,7 @@ class stories_getPeerMaxIDs extends Function<number[]> {
   }
 }
 
-class stories_getChatsToSend extends Function<enums.messages_Chats> {
+export class stories_GetChatsToSend extends Function<enums.messages_Chats> {
   protected get [id]() {
     return 0xA56A8B60;
   }
@@ -17481,7 +17480,7 @@ class stories_getChatsToSend extends Function<enums.messages_Chats> {
   }
 }
 
-class stories_togglePeerStoriesHidden extends Function<boolean> {
+export class stories_TogglePeerStoriesHidden extends Function<boolean> {
   peer: enums.InputPeer;
   hidden: boolean;
 
@@ -17510,7 +17509,7 @@ class stories_togglePeerStoriesHidden extends Function<boolean> {
   }
 }
 
-class premium_getBoostsList extends Function<enums.premium_BoostsList> {
+export class premium_GetBoostsList extends Function<enums.premium_BoostsList> {
   gifts?: true;
   peer: enums.InputPeer;
   offset: string;
@@ -17549,7 +17548,7 @@ class premium_getBoostsList extends Function<enums.premium_BoostsList> {
   }
 }
 
-class premium_getMyBoosts extends Function<enums.premium_MyBoosts> {
+export class premium_GetMyBoosts extends Function<enums.premium_MyBoosts> {
   protected get [id]() {
     return 0x0BE77B4A;
   }
@@ -17567,7 +17566,7 @@ class premium_getMyBoosts extends Function<enums.premium_MyBoosts> {
   }
 }
 
-class premium_applyBoost extends Function<enums.premium_MyBoosts> {
+export class premium_ApplyBoost extends Function<enums.premium_MyBoosts> {
   slots?: Array<number>;
   peer: enums.InputPeer;
 
@@ -17598,7 +17597,7 @@ class premium_applyBoost extends Function<enums.premium_MyBoosts> {
   }
 }
 
-class premium_getBoostsStatus extends Function<enums.premium_BoostsStatus> {
+export class premium_GetBoostsStatus extends Function<enums.premium_BoostsStatus> {
   peer: enums.InputPeer;
 
   protected get [id]() {
@@ -17623,7 +17622,7 @@ class premium_getBoostsStatus extends Function<enums.premium_BoostsStatus> {
   }
 }
 
-class premium_getUserBoosts extends Function<enums.premium_BoostsList> {
+export class premium_GetUserBoosts extends Function<enums.premium_BoostsList> {
   peer: enums.InputPeer;
   user_id: enums.InputUser;
 
@@ -17651,617 +17650,4 @@ class premium_getUserBoosts extends Function<enums.premium_BoostsList> {
     this.user_id = params.user_id;
   }
 }
-
-export const auth = {
-  sendCode: auth_sendCode,
-  signUp: auth_signUp,
-  signIn: auth_signIn,
-  logOut: auth_logOut,
-  resetAuthorizations: auth_resetAuthorizations,
-  exportAuthorization: auth_exportAuthorization,
-  importAuthorization: auth_importAuthorization,
-  bindTempAuthKey: auth_bindTempAuthKey,
-  importBotAuthorization: auth_importBotAuthorization,
-  checkPassword: auth_checkPassword,
-  requestPasswordRecovery: auth_requestPasswordRecovery,
-  recoverPassword: auth_recoverPassword,
-  resendCode: auth_resendCode,
-  cancelCode: auth_cancelCode,
-  dropTempAuthKeys: auth_dropTempAuthKeys,
-  exportLoginToken: auth_exportLoginToken,
-  importLoginToken: auth_importLoginToken,
-  acceptLoginToken: auth_acceptLoginToken,
-  checkRecoveryPassword: auth_checkRecoveryPassword,
-  importWebTokenAuthorization: auth_importWebTokenAuthorization,
-  requestFirebaseSms: auth_requestFirebaseSms,
-  resetLoginEmail: auth_resetLoginEmail,
-};
-
-export const account = {
-  registerDevice: account_registerDevice,
-  unregisterDevice: account_unregisterDevice,
-  updateNotifySettings: account_updateNotifySettings,
-  getNotifySettings: account_getNotifySettings,
-  resetNotifySettings: account_resetNotifySettings,
-  updateProfile: account_updateProfile,
-  updateStatus: account_updateStatus,
-  getWallPapers: account_getWallPapers,
-  reportPeer: account_reportPeer,
-  checkUsername: account_checkUsername,
-  updateUsername: account_updateUsername,
-  getPrivacy: account_getPrivacy,
-  setPrivacy: account_setPrivacy,
-  deleteAccount: account_deleteAccount,
-  getAccountTTL: account_getAccountTTL,
-  setAccountTTL: account_setAccountTTL,
-  sendChangePhoneCode: account_sendChangePhoneCode,
-  changePhone: account_changePhone,
-  updateDeviceLocked: account_updateDeviceLocked,
-  getAuthorizations: account_getAuthorizations,
-  resetAuthorization: account_resetAuthorization,
-  getPassword: account_getPassword,
-  getPasswordSettings: account_getPasswordSettings,
-  updatePasswordSettings: account_updatePasswordSettings,
-  sendConfirmPhoneCode: account_sendConfirmPhoneCode,
-  confirmPhone: account_confirmPhone,
-  getTmpPassword: account_getTmpPassword,
-  getWebAuthorizations: account_getWebAuthorizations,
-  resetWebAuthorization: account_resetWebAuthorization,
-  resetWebAuthorizations: account_resetWebAuthorizations,
-  getAllSecureValues: account_getAllSecureValues,
-  getSecureValue: account_getSecureValue,
-  saveSecureValue: account_saveSecureValue,
-  deleteSecureValue: account_deleteSecureValue,
-  getAuthorizationForm: account_getAuthorizationForm,
-  acceptAuthorization: account_acceptAuthorization,
-  sendVerifyPhoneCode: account_sendVerifyPhoneCode,
-  verifyPhone: account_verifyPhone,
-  sendVerifyEmailCode: account_sendVerifyEmailCode,
-  verifyEmail: account_verifyEmail,
-  initTakeoutSession: account_initTakeoutSession,
-  finishTakeoutSession: account_finishTakeoutSession,
-  confirmPasswordEmail: account_confirmPasswordEmail,
-  resendPasswordEmail: account_resendPasswordEmail,
-  cancelPasswordEmail: account_cancelPasswordEmail,
-  getContactSignUpNotification: account_getContactSignUpNotification,
-  setContactSignUpNotification: account_setContactSignUpNotification,
-  getNotifyExceptions: account_getNotifyExceptions,
-  getWallPaper: account_getWallPaper,
-  uploadWallPaper: account_uploadWallPaper,
-  saveWallPaper: account_saveWallPaper,
-  installWallPaper: account_installWallPaper,
-  resetWallPapers: account_resetWallPapers,
-  getAutoDownloadSettings: account_getAutoDownloadSettings,
-  saveAutoDownloadSettings: account_saveAutoDownloadSettings,
-  uploadTheme: account_uploadTheme,
-  createTheme: account_createTheme,
-  updateTheme: account_updateTheme,
-  saveTheme: account_saveTheme,
-  installTheme: account_installTheme,
-  getTheme: account_getTheme,
-  getThemes: account_getThemes,
-  setContentSettings: account_setContentSettings,
-  getContentSettings: account_getContentSettings,
-  getMultiWallPapers: account_getMultiWallPapers,
-  getGlobalPrivacySettings: account_getGlobalPrivacySettings,
-  setGlobalPrivacySettings: account_setGlobalPrivacySettings,
-  reportProfilePhoto: account_reportProfilePhoto,
-  resetPassword: account_resetPassword,
-  declinePasswordReset: account_declinePasswordReset,
-  getChatThemes: account_getChatThemes,
-  setAuthorizationTTL: account_setAuthorizationTTL,
-  changeAuthorizationSettings: account_changeAuthorizationSettings,
-  getSavedRingtones: account_getSavedRingtones,
-  saveRingtone: account_saveRingtone,
-  uploadRingtone: account_uploadRingtone,
-  updateEmojiStatus: account_updateEmojiStatus,
-  getDefaultEmojiStatuses: account_getDefaultEmojiStatuses,
-  getRecentEmojiStatuses: account_getRecentEmojiStatuses,
-  clearRecentEmojiStatuses: account_clearRecentEmojiStatuses,
-  reorderUsernames: account_reorderUsernames,
-  toggleUsername: account_toggleUsername,
-  getDefaultProfilePhotoEmojis: account_getDefaultProfilePhotoEmojis,
-  getDefaultGroupPhotoEmojis: account_getDefaultGroupPhotoEmojis,
-  getAutoSaveSettings: account_getAutoSaveSettings,
-  saveAutoSaveSettings: account_saveAutoSaveSettings,
-  deleteAutoSaveExceptions: account_deleteAutoSaveExceptions,
-  invalidateSignInCodes: account_invalidateSignInCodes,
-  updateColor: account_updateColor,
-  getDefaultBackgroundEmojis: account_getDefaultBackgroundEmojis,
-};
-
-export const users = {
-  getUsers: users_getUsers,
-  getFullUser: users_getFullUser,
-  setSecureValueErrors: users_setSecureValueErrors,
-};
-
-export const contacts = {
-  getContactIDs: contacts_getContactIDs,
-  getStatuses: contacts_getStatuses,
-  getContacts: contacts_getContacts,
-  importContacts: contacts_importContacts,
-  deleteContacts: contacts_deleteContacts,
-  deleteByPhones: contacts_deleteByPhones,
-  block: contacts_block,
-  unblock: contacts_unblock,
-  getBlocked: contacts_getBlocked,
-  search: contacts_search,
-  resolveUsername: contacts_resolveUsername,
-  getTopPeers: contacts_getTopPeers,
-  resetTopPeerRating: contacts_resetTopPeerRating,
-  resetSaved: contacts_resetSaved,
-  getSaved: contacts_getSaved,
-  toggleTopPeers: contacts_toggleTopPeers,
-  addContact: contacts_addContact,
-  acceptContact: contacts_acceptContact,
-  getLocated: contacts_getLocated,
-  blockFromReplies: contacts_blockFromReplies,
-  resolvePhone: contacts_resolvePhone,
-  exportContactToken: contacts_exportContactToken,
-  importContactToken: contacts_importContactToken,
-  editCloseFriends: contacts_editCloseFriends,
-  setBlocked: contacts_setBlocked,
-};
-
-export const messages = {
-  getMessages: messages_getMessages,
-  getDialogs: messages_getDialogs,
-  getHistory: messages_getHistory,
-  search: messages_search,
-  readHistory: messages_readHistory,
-  deleteHistory: messages_deleteHistory,
-  deleteMessages: messages_deleteMessages,
-  receivedMessages: messages_receivedMessages,
-  setTyping: messages_setTyping,
-  sendMessage: messages_sendMessage,
-  sendMedia: messages_sendMedia,
-  forwardMessages: messages_forwardMessages,
-  reportSpam: messages_reportSpam,
-  getPeerSettings: messages_getPeerSettings,
-  report: messages_report,
-  getChats: messages_getChats,
-  getFullChat: messages_getFullChat,
-  editChatTitle: messages_editChatTitle,
-  editChatPhoto: messages_editChatPhoto,
-  addChatUser: messages_addChatUser,
-  deleteChatUser: messages_deleteChatUser,
-  createChat: messages_createChat,
-  getDhConfig: messages_getDhConfig,
-  requestEncryption: messages_requestEncryption,
-  acceptEncryption: messages_acceptEncryption,
-  discardEncryption: messages_discardEncryption,
-  setEncryptedTyping: messages_setEncryptedTyping,
-  readEncryptedHistory: messages_readEncryptedHistory,
-  sendEncrypted: messages_sendEncrypted,
-  sendEncryptedFile: messages_sendEncryptedFile,
-  sendEncryptedService: messages_sendEncryptedService,
-  receivedQueue: messages_receivedQueue,
-  reportEncryptedSpam: messages_reportEncryptedSpam,
-  readMessageContents: messages_readMessageContents,
-  getStickers: messages_getStickers,
-  getAllStickers: messages_getAllStickers,
-  getWebPagePreview: messages_getWebPagePreview,
-  exportChatInvite: messages_exportChatInvite,
-  checkChatInvite: messages_checkChatInvite,
-  importChatInvite: messages_importChatInvite,
-  getStickerSet: messages_getStickerSet,
-  installStickerSet: messages_installStickerSet,
-  uninstallStickerSet: messages_uninstallStickerSet,
-  startBot: messages_startBot,
-  getMessagesViews: messages_getMessagesViews,
-  editChatAdmin: messages_editChatAdmin,
-  migrateChat: messages_migrateChat,
-  searchGlobal: messages_searchGlobal,
-  reorderStickerSets: messages_reorderStickerSets,
-  getDocumentByHash: messages_getDocumentByHash,
-  getSavedGifs: messages_getSavedGifs,
-  saveGif: messages_saveGif,
-  getInlineBotResults: messages_getInlineBotResults,
-  setInlineBotResults: messages_setInlineBotResults,
-  sendInlineBotResult: messages_sendInlineBotResult,
-  getMessageEditData: messages_getMessageEditData,
-  editMessage: messages_editMessage,
-  editInlineBotMessage: messages_editInlineBotMessage,
-  getBotCallbackAnswer: messages_getBotCallbackAnswer,
-  setBotCallbackAnswer: messages_setBotCallbackAnswer,
-  getPeerDialogs: messages_getPeerDialogs,
-  saveDraft: messages_saveDraft,
-  getAllDrafts: messages_getAllDrafts,
-  getFeaturedStickers: messages_getFeaturedStickers,
-  readFeaturedStickers: messages_readFeaturedStickers,
-  getRecentStickers: messages_getRecentStickers,
-  saveRecentSticker: messages_saveRecentSticker,
-  clearRecentStickers: messages_clearRecentStickers,
-  getArchivedStickers: messages_getArchivedStickers,
-  getMaskStickers: messages_getMaskStickers,
-  getAttachedStickers: messages_getAttachedStickers,
-  setGameScore: messages_setGameScore,
-  setInlineGameScore: messages_setInlineGameScore,
-  getGameHighScores: messages_getGameHighScores,
-  getInlineGameHighScores: messages_getInlineGameHighScores,
-  getCommonChats: messages_getCommonChats,
-  getWebPage: messages_getWebPage,
-  toggleDialogPin: messages_toggleDialogPin,
-  reorderPinnedDialogs: messages_reorderPinnedDialogs,
-  getPinnedDialogs: messages_getPinnedDialogs,
-  setBotShippingResults: messages_setBotShippingResults,
-  setBotPrecheckoutResults: messages_setBotPrecheckoutResults,
-  uploadMedia: messages_uploadMedia,
-  sendScreenshotNotification: messages_sendScreenshotNotification,
-  getFavedStickers: messages_getFavedStickers,
-  faveSticker: messages_faveSticker,
-  getUnreadMentions: messages_getUnreadMentions,
-  readMentions: messages_readMentions,
-  getRecentLocations: messages_getRecentLocations,
-  sendMultiMedia: messages_sendMultiMedia,
-  uploadEncryptedFile: messages_uploadEncryptedFile,
-  searchStickerSets: messages_searchStickerSets,
-  getSplitRanges: messages_getSplitRanges,
-  markDialogUnread: messages_markDialogUnread,
-  getDialogUnreadMarks: messages_getDialogUnreadMarks,
-  clearAllDrafts: messages_clearAllDrafts,
-  updatePinnedMessage: messages_updatePinnedMessage,
-  sendVote: messages_sendVote,
-  getPollResults: messages_getPollResults,
-  getOnlines: messages_getOnlines,
-  editChatAbout: messages_editChatAbout,
-  editChatDefaultBannedRights: messages_editChatDefaultBannedRights,
-  getEmojiKeywords: messages_getEmojiKeywords,
-  getEmojiKeywordsDifference: messages_getEmojiKeywordsDifference,
-  getEmojiKeywordsLanguages: messages_getEmojiKeywordsLanguages,
-  getEmojiURL: messages_getEmojiURL,
-  getSearchCounters: messages_getSearchCounters,
-  requestUrlAuth: messages_requestUrlAuth,
-  acceptUrlAuth: messages_acceptUrlAuth,
-  hidePeerSettingsBar: messages_hidePeerSettingsBar,
-  getScheduledHistory: messages_getScheduledHistory,
-  getScheduledMessages: messages_getScheduledMessages,
-  sendScheduledMessages: messages_sendScheduledMessages,
-  deleteScheduledMessages: messages_deleteScheduledMessages,
-  getPollVotes: messages_getPollVotes,
-  toggleStickerSets: messages_toggleStickerSets,
-  getDialogFilters: messages_getDialogFilters,
-  getSuggestedDialogFilters: messages_getSuggestedDialogFilters,
-  updateDialogFilter: messages_updateDialogFilter,
-  updateDialogFiltersOrder: messages_updateDialogFiltersOrder,
-  getOldFeaturedStickers: messages_getOldFeaturedStickers,
-  getReplies: messages_getReplies,
-  getDiscussionMessage: messages_getDiscussionMessage,
-  readDiscussion: messages_readDiscussion,
-  unpinAllMessages: messages_unpinAllMessages,
-  deleteChat: messages_deleteChat,
-  deletePhoneCallHistory: messages_deletePhoneCallHistory,
-  checkHistoryImport: messages_checkHistoryImport,
-  initHistoryImport: messages_initHistoryImport,
-  uploadImportedMedia: messages_uploadImportedMedia,
-  startHistoryImport: messages_startHistoryImport,
-  getExportedChatInvites: messages_getExportedChatInvites,
-  getExportedChatInvite: messages_getExportedChatInvite,
-  editExportedChatInvite: messages_editExportedChatInvite,
-  deleteRevokedExportedChatInvites: messages_deleteRevokedExportedChatInvites,
-  deleteExportedChatInvite: messages_deleteExportedChatInvite,
-  getAdminsWithInvites: messages_getAdminsWithInvites,
-  getChatInviteImporters: messages_getChatInviteImporters,
-  setHistoryTTL: messages_setHistoryTTL,
-  checkHistoryImportPeer: messages_checkHistoryImportPeer,
-  setChatTheme: messages_setChatTheme,
-  getMessageReadParticipants: messages_getMessageReadParticipants,
-  getSearchResultsCalendar: messages_getSearchResultsCalendar,
-  getSearchResultsPositions: messages_getSearchResultsPositions,
-  hideChatJoinRequest: messages_hideChatJoinRequest,
-  hideAllChatJoinRequests: messages_hideAllChatJoinRequests,
-  toggleNoForwards: messages_toggleNoForwards,
-  saveDefaultSendAs: messages_saveDefaultSendAs,
-  sendReaction: messages_sendReaction,
-  getMessagesReactions: messages_getMessagesReactions,
-  getMessageReactionsList: messages_getMessageReactionsList,
-  setChatAvailableReactions: messages_setChatAvailableReactions,
-  getAvailableReactions: messages_getAvailableReactions,
-  setDefaultReaction: messages_setDefaultReaction,
-  translateText: messages_translateText,
-  getUnreadReactions: messages_getUnreadReactions,
-  readReactions: messages_readReactions,
-  searchSentMedia: messages_searchSentMedia,
-  getAttachMenuBots: messages_getAttachMenuBots,
-  getAttachMenuBot: messages_getAttachMenuBot,
-  toggleBotInAttachMenu: messages_toggleBotInAttachMenu,
-  requestWebView: messages_requestWebView,
-  prolongWebView: messages_prolongWebView,
-  requestSimpleWebView: messages_requestSimpleWebView,
-  sendWebViewResultMessage: messages_sendWebViewResultMessage,
-  sendWebViewData: messages_sendWebViewData,
-  transcribeAudio: messages_transcribeAudio,
-  rateTranscribedAudio: messages_rateTranscribedAudio,
-  getCustomEmojiDocuments: messages_getCustomEmojiDocuments,
-  getEmojiStickers: messages_getEmojiStickers,
-  getFeaturedEmojiStickers: messages_getFeaturedEmojiStickers,
-  reportReaction: messages_reportReaction,
-  getTopReactions: messages_getTopReactions,
-  getRecentReactions: messages_getRecentReactions,
-  clearRecentReactions: messages_clearRecentReactions,
-  getExtendedMedia: messages_getExtendedMedia,
-  setDefaultHistoryTTL: messages_setDefaultHistoryTTL,
-  getDefaultHistoryTTL: messages_getDefaultHistoryTTL,
-  sendBotRequestedPeer: messages_sendBotRequestedPeer,
-  getEmojiGroups: messages_getEmojiGroups,
-  getEmojiStatusGroups: messages_getEmojiStatusGroups,
-  getEmojiProfilePhotoGroups: messages_getEmojiProfilePhotoGroups,
-  searchCustomEmoji: messages_searchCustomEmoji,
-  togglePeerTranslations: messages_togglePeerTranslations,
-  getBotApp: messages_getBotApp,
-  requestAppWebView: messages_requestAppWebView,
-  setChatWallPaper: messages_setChatWallPaper,
-  searchEmojiStickerSets: messages_searchEmojiStickerSets,
-};
-
-export const updates = {
-  getState: updates_getState,
-  getDifference: updates_getDifference,
-  getChannelDifference: updates_getChannelDifference,
-};
-
-export const photos = {
-  updateProfilePhoto: photos_updateProfilePhoto,
-  uploadProfilePhoto: photos_uploadProfilePhoto,
-  deletePhotos: photos_deletePhotos,
-  getUserPhotos: photos_getUserPhotos,
-  uploadContactProfilePhoto: photos_uploadContactProfilePhoto,
-};
-
-export const upload = {
-  saveFilePart: upload_saveFilePart,
-  getFile: upload_getFile,
-  saveBigFilePart: upload_saveBigFilePart,
-  getWebFile: upload_getWebFile,
-  getCdnFile: upload_getCdnFile,
-  reuploadCdnFile: upload_reuploadCdnFile,
-  getCdnFileHashes: upload_getCdnFileHashes,
-  getFileHashes: upload_getFileHashes,
-};
-
-export const help = {
-  getConfig: help_getConfig,
-  getNearestDc: help_getNearestDc,
-  getAppUpdate: help_getAppUpdate,
-  getInviteText: help_getInviteText,
-  getSupport: help_getSupport,
-  getAppChangelog: help_getAppChangelog,
-  setBotUpdatesStatus: help_setBotUpdatesStatus,
-  getCdnConfig: help_getCdnConfig,
-  getRecentMeUrls: help_getRecentMeUrls,
-  getTermsOfServiceUpdate: help_getTermsOfServiceUpdate,
-  acceptTermsOfService: help_acceptTermsOfService,
-  getDeepLinkInfo: help_getDeepLinkInfo,
-  getAppConfig: help_getAppConfig,
-  saveAppLog: help_saveAppLog,
-  getPassportConfig: help_getPassportConfig,
-  getSupportName: help_getSupportName,
-  getUserInfo: help_getUserInfo,
-  editUserInfo: help_editUserInfo,
-  getPromoData: help_getPromoData,
-  hidePromoData: help_hidePromoData,
-  dismissSuggestion: help_dismissSuggestion,
-  getCountriesList: help_getCountriesList,
-  getPremiumPromo: help_getPremiumPromo,
-  getPeerColors: help_getPeerColors,
-  getPeerProfileColors: help_getPeerProfileColors,
-};
-
-export const channels = {
-  readHistory: channels_readHistory,
-  deleteMessages: channels_deleteMessages,
-  reportSpam: channels_reportSpam,
-  getMessages: channels_getMessages,
-  getParticipants: channels_getParticipants,
-  getParticipant: channels_getParticipant,
-  getChannels: channels_getChannels,
-  getFullChannel: channels_getFullChannel,
-  createChannel: channels_createChannel,
-  editAdmin: channels_editAdmin,
-  editTitle: channels_editTitle,
-  editPhoto: channels_editPhoto,
-  checkUsername: channels_checkUsername,
-  updateUsername: channels_updateUsername,
-  joinChannel: channels_joinChannel,
-  leaveChannel: channels_leaveChannel,
-  inviteToChannel: channels_inviteToChannel,
-  deleteChannel: channels_deleteChannel,
-  exportMessageLink: channels_exportMessageLink,
-  toggleSignatures: channels_toggleSignatures,
-  getAdminedPublicChannels: channels_getAdminedPublicChannels,
-  editBanned: channels_editBanned,
-  getAdminLog: channels_getAdminLog,
-  setStickers: channels_setStickers,
-  readMessageContents: channels_readMessageContents,
-  deleteHistory: channels_deleteHistory,
-  togglePreHistoryHidden: channels_togglePreHistoryHidden,
-  getLeftChannels: channels_getLeftChannels,
-  getGroupsForDiscussion: channels_getGroupsForDiscussion,
-  setDiscussionGroup: channels_setDiscussionGroup,
-  editCreator: channels_editCreator,
-  editLocation: channels_editLocation,
-  toggleSlowMode: channels_toggleSlowMode,
-  getInactiveChannels: channels_getInactiveChannels,
-  convertToGigagroup: channels_convertToGigagroup,
-  viewSponsoredMessage: channels_viewSponsoredMessage,
-  getSponsoredMessages: channels_getSponsoredMessages,
-  getSendAs: channels_getSendAs,
-  deleteParticipantHistory: channels_deleteParticipantHistory,
-  toggleJoinToSend: channels_toggleJoinToSend,
-  toggleJoinRequest: channels_toggleJoinRequest,
-  reorderUsernames: channels_reorderUsernames,
-  toggleUsername: channels_toggleUsername,
-  deactivateAllUsernames: channels_deactivateAllUsernames,
-  toggleForum: channels_toggleForum,
-  createForumTopic: channels_createForumTopic,
-  getForumTopics: channels_getForumTopics,
-  getForumTopicsByID: channels_getForumTopicsByID,
-  editForumTopic: channels_editForumTopic,
-  updatePinnedForumTopic: channels_updatePinnedForumTopic,
-  deleteTopicHistory: channels_deleteTopicHistory,
-  reorderPinnedForumTopics: channels_reorderPinnedForumTopics,
-  toggleAntiSpam: channels_toggleAntiSpam,
-  reportAntiSpamFalsePositive: channels_reportAntiSpamFalsePositive,
-  toggleParticipantsHidden: channels_toggleParticipantsHidden,
-  clickSponsoredMessage: channels_clickSponsoredMessage,
-  updateColor: channels_updateColor,
-  toggleViewForumAsMessages: channels_toggleViewForumAsMessages,
-  getChannelRecommendations: channels_getChannelRecommendations,
-};
-
-export const bots = {
-  sendCustomRequest: bots_sendCustomRequest,
-  answerWebhookJSONQuery: bots_answerWebhookJSONQuery,
-  setBotCommands: bots_setBotCommands,
-  resetBotCommands: bots_resetBotCommands,
-  getBotCommands: bots_getBotCommands,
-  setBotMenuButton: bots_setBotMenuButton,
-  getBotMenuButton: bots_getBotMenuButton,
-  setBotBroadcastDefaultAdminRights: bots_setBotBroadcastDefaultAdminRights,
-  setBotGroupDefaultAdminRights: bots_setBotGroupDefaultAdminRights,
-  setBotInfo: bots_setBotInfo,
-  getBotInfo: bots_getBotInfo,
-  reorderUsernames: bots_reorderUsernames,
-  toggleUsername: bots_toggleUsername,
-  canSendMessage: bots_canSendMessage,
-  allowSendMessage: bots_allowSendMessage,
-  invokeWebViewCustomMethod: bots_invokeWebViewCustomMethod,
-};
-
-export const payments = {
-  getPaymentForm: payments_getPaymentForm,
-  getPaymentReceipt: payments_getPaymentReceipt,
-  validateRequestedInfo: payments_validateRequestedInfo,
-  sendPaymentForm: payments_sendPaymentForm,
-  getSavedInfo: payments_getSavedInfo,
-  clearSavedInfo: payments_clearSavedInfo,
-  getBankCardData: payments_getBankCardData,
-  exportInvoice: payments_exportInvoice,
-  assignAppStoreTransaction: payments_assignAppStoreTransaction,
-  assignPlayMarketTransaction: payments_assignPlayMarketTransaction,
-  canPurchasePremium: payments_canPurchasePremium,
-  getPremiumGiftCodeOptions: payments_getPremiumGiftCodeOptions,
-  checkGiftCode: payments_checkGiftCode,
-  applyGiftCode: payments_applyGiftCode,
-  getGiveawayInfo: payments_getGiveawayInfo,
-  launchPrepaidGiveaway: payments_launchPrepaidGiveaway,
-};
-
-export const stickers = {
-  createStickerSet: stickers_createStickerSet,
-  removeStickerFromSet: stickers_removeStickerFromSet,
-  changeStickerPosition: stickers_changeStickerPosition,
-  addStickerToSet: stickers_addStickerToSet,
-  setStickerSetThumb: stickers_setStickerSetThumb,
-  checkShortName: stickers_checkShortName,
-  suggestShortName: stickers_suggestShortName,
-  changeSticker: stickers_changeSticker,
-  renameStickerSet: stickers_renameStickerSet,
-  deleteStickerSet: stickers_deleteStickerSet,
-};
-
-export const phone = {
-  getCallConfig: phone_getCallConfig,
-  requestCall: phone_requestCall,
-  acceptCall: phone_acceptCall,
-  confirmCall: phone_confirmCall,
-  receivedCall: phone_receivedCall,
-  discardCall: phone_discardCall,
-  setCallRating: phone_setCallRating,
-  saveCallDebug: phone_saveCallDebug,
-  sendSignalingData: phone_sendSignalingData,
-  createGroupCall: phone_createGroupCall,
-  joinGroupCall: phone_joinGroupCall,
-  leaveGroupCall: phone_leaveGroupCall,
-  inviteToGroupCall: phone_inviteToGroupCall,
-  discardGroupCall: phone_discardGroupCall,
-  toggleGroupCallSettings: phone_toggleGroupCallSettings,
-  getGroupCall: phone_getGroupCall,
-  getGroupParticipants: phone_getGroupParticipants,
-  checkGroupCall: phone_checkGroupCall,
-  toggleGroupCallRecord: phone_toggleGroupCallRecord,
-  editGroupCallParticipant: phone_editGroupCallParticipant,
-  editGroupCallTitle: phone_editGroupCallTitle,
-  getGroupCallJoinAs: phone_getGroupCallJoinAs,
-  exportGroupCallInvite: phone_exportGroupCallInvite,
-  toggleGroupCallStartSubscription: phone_toggleGroupCallStartSubscription,
-  startScheduledGroupCall: phone_startScheduledGroupCall,
-  saveDefaultGroupCallJoinAs: phone_saveDefaultGroupCallJoinAs,
-  joinGroupCallPresentation: phone_joinGroupCallPresentation,
-  leaveGroupCallPresentation: phone_leaveGroupCallPresentation,
-  getGroupCallStreamChannels: phone_getGroupCallStreamChannels,
-  getGroupCallStreamRtmpUrl: phone_getGroupCallStreamRtmpUrl,
-  saveCallLog: phone_saveCallLog,
-};
-
-export const langpack = {
-  getLangPack: langpack_getLangPack,
-  getStrings: langpack_getStrings,
-  getDifference: langpack_getDifference,
-  getLanguages: langpack_getLanguages,
-  getLanguage: langpack_getLanguage,
-};
-
-export const folders = {
-  editPeerFolders: folders_editPeerFolders,
-};
-
-export const stats = {
-  getBroadcastStats: stats_getBroadcastStats,
-  loadAsyncGraph: stats_loadAsyncGraph,
-  getMegagroupStats: stats_getMegagroupStats,
-  getMessagePublicForwards: stats_getMessagePublicForwards,
-  getMessageStats: stats_getMessageStats,
-  getStoryStats: stats_getStoryStats,
-  getStoryPublicForwards: stats_getStoryPublicForwards,
-};
-
-export const chatlists = {
-  exportChatlistInvite: chatlists_exportChatlistInvite,
-  deleteExportedInvite: chatlists_deleteExportedInvite,
-  editExportedInvite: chatlists_editExportedInvite,
-  getExportedInvites: chatlists_getExportedInvites,
-  checkChatlistInvite: chatlists_checkChatlistInvite,
-  joinChatlistInvite: chatlists_joinChatlistInvite,
-  getChatlistUpdates: chatlists_getChatlistUpdates,
-  joinChatlistUpdates: chatlists_joinChatlistUpdates,
-  hideChatlistUpdates: chatlists_hideChatlistUpdates,
-  getLeaveChatlistSuggestions: chatlists_getLeaveChatlistSuggestions,
-  leaveChatlist: chatlists_leaveChatlist,
-};
-
-export const stories = {
-  canSendStory: stories_canSendStory,
-  sendStory: stories_sendStory,
-  editStory: stories_editStory,
-  deleteStories: stories_deleteStories,
-  togglePinned: stories_togglePinned,
-  getAllStories: stories_getAllStories,
-  getPinnedStories: stories_getPinnedStories,
-  getStoriesArchive: stories_getStoriesArchive,
-  getStoriesByID: stories_getStoriesByID,
-  toggleAllStoriesHidden: stories_toggleAllStoriesHidden,
-  readStories: stories_readStories,
-  incrementStoryViews: stories_incrementStoryViews,
-  getStoryViewsList: stories_getStoryViewsList,
-  getStoriesViews: stories_getStoriesViews,
-  exportStoryLink: stories_exportStoryLink,
-  report: stories_report,
-  activateStealthMode: stories_activateStealthMode,
-  sendReaction: stories_sendReaction,
-  getPeerStories: stories_getPeerStories,
-  getAllReadPeerStories: stories_getAllReadPeerStories,
-  getPeerMaxIDs: stories_getPeerMaxIDs,
-  getChatsToSend: stories_getChatsToSend,
-  togglePeerStoriesHidden: stories_togglePeerStoriesHidden,
-};
-
-export const premium = {
-  getBoostsList: premium_getBoostsList,
-  getMyBoosts: premium_getMyBoosts,
-  applyBoost: premium_applyBoost,
-  getBoostsStatus: premium_getBoostsStatus,
-  getUserBoosts: premium_getUserBoosts,
-};
 

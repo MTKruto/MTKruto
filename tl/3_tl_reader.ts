@@ -1,6 +1,6 @@
 import { TLError, TLRawReader } from "./0_tl_raw_reader.ts";
 import { paramDesc, TLObject } from "./1_tl_object.ts";
-import { map } from "./2_types.ts";
+import { types } from "./2_types.ts";
 import { deserialize } from "./3_deserialize.ts";
 
 export type ReadObject = boolean | TLObject | Array<ReadObject | TLObject>;
@@ -22,7 +22,7 @@ export class TLReader extends TLRawReader {
     } else if (id == 0xbc799737) {
       return false;
     }
-    const constructor = map.get(id);
+    const constructor = types.map.get(id);
     if (constructor) {
       return deserialize(this, constructor[paramDesc], constructor);
     }

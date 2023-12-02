@@ -1,7 +1,7 @@
 import { assertEquals } from "../0_deps.ts";
 import { TLRawReader } from "./0_tl_raw_reader.ts";
 import { analyzeOptionalParam, flags, isOptionalParam, isTLObjectConstructor, Param, ParamDesc, paramDesc, TLObject, TLObjectConstructor } from "./1_tl_object.ts";
-import { map } from "./2_types.ts";
+import { types } from "./2_types.ts";
 
 function deserializeSingleParam(
   reader: TLRawReader,
@@ -17,7 +17,7 @@ function deserializeSingleParam(
 ) {
   if (isTLObjectConstructor(type)) {
     const cid = reader.readInt32(false);
-    const constructor = map.get(cid);
+    const constructor = types.map.get(cid);
     if (!constructor) {
       throw new Error(`Constructor with ID ${cid} not found`);
     }
