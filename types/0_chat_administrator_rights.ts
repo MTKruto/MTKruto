@@ -57,7 +57,7 @@ export function constructChatAdministratorRights(rights_: enums.ChatAdminRights)
 }
 
 export function chatAdministratorRightsToTlObject(rights: ChatAdministratorRights) {
-  return new types.chatAdminRights({
+  return new types.ChatAdminRights({
     anonymous: rights.isAnonymous || undefined,
     other: rights.canManageChat || undefined,
     delete_messages: rights.canDeleteMessages || undefined,

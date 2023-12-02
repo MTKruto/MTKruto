@@ -79,12 +79,12 @@ export function pad(bigint: number | bigint | Uint8Array) {
   }
 }
 
-export async function checkPassword(password_: string, ap: enums.account_Password) {
+export async function checkPassword(password_: string, ap: enums.account.Password) {
   const password = new TextEncoder().encode(password_);
   const algo = ap.current_algo;
   if (
     !(algo instanceof
-      types.passwordKdfAlgoSHA256SHA256PBKDF2HMACSHA512iter100000SHA256ModPow)
+      types.PasswordKdfAlgoSHA256SHA256PBKDF2HMACSHA512iter100000SHA256ModPow)
   ) {
     throw new Error("Unexpected algorithm");
   }
@@ -168,7 +168,7 @@ export async function checkPassword(password_: string, ap: enums.account_Passwor
     kA,
   ));
 
-  return new types.inputCheckPasswordSRP({
+  return new types.InputCheckPasswordSRP({
     srp_id: srpId,
     A: pad(gA),
     M1: m1,

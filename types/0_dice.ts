@@ -8,6 +8,6 @@ export interface Dice {
   value: number;
 }
 
-export function constructDice(dice_: types.messageMediaDice): Dice {
+export function constructDice(dice_: types.MessageMediaDice): Dice {
   return { emoji: dice_.emoticon, value: dice_.value };
 }

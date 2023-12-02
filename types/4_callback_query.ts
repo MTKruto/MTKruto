@@ -14,8 +14,8 @@ export interface CallbackQuery {
   gameShortName?: string;
 }
 
-export async function constructCallbackQuery(callbackQuery: types.updateBotCallbackQuery | types.updateInlineBotCallbackQuery, getEntity: EntityGetter, getMessage: MessageGetter): Promise<CallbackQuery> {
-  const user_ = await getEntity(new types.peerUser({ user_id: callbackQuery.user_id }));
+export async function constructCallbackQuery(callbackQuery: types.UpdateBotCallbackQuery | types.UpdateInlineBotCallbackQuery, getEntity: EntityGetter, getMessage: MessageGetter): Promise<CallbackQuery> {
+  const user_ = await getEntity(new types.PeerUser({ user_id: callbackQuery.user_id }));
   if (!user_) {
     UNREACHABLE();
   }
@@ -24,7 +24,7 @@ export async function constructCallbackQuery(callbackQuery: types.updateBotCallb
   const gameShortName = callbackQuery.game_short_name;
   const data = callbackQuery.data !== undefined ? new TextDecoder().decode(callbackQuery.data) : undefined;
   const chatInstance = callbackQuery.chat_instance == 0n ? "" : String(callbackQuery.chat_instance);
-  if (callbackQuery instanceof types.updateBotCallbackQuery) {
+  if (callbackQuery instanceof types.UpdateBotCallbackQuery) {
     const message = await getMessage(peerToChatId(callbackQuery.peer), Number(callbackQuery.msg_id));
     if (message == null) {
       UNREACHABLE();

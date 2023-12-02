@@ -21,7 +21,7 @@ export interface Audio {
   thumbnails: Thumbnail[];
 }
 
-export function constructAudio(document: types.document, audioAttribute: types.documentAttributeAudio | undefined, fileId: string, fileUniqueId: string): Audio {
+export function constructAudio(document: types.Document, audioAttribute: types.DocumentAttributeAudio | undefined, fileId: string, fileUniqueId: string): Audio {
   return {
     fileId,
     fileUniqueId,
@@ -30,6 +30,6 @@ export function constructAudio(document: types.document, audioAttribute: types.d
     title: audioAttribute?.title,
     mimeType: document.mime_type,
     fileSize: Number(document.size),
-    thumbnails: document.thumbs ? document.thumbs.map((v) => v instanceof types.photoSize ? constructThumbnail(v, document) : null).filter((v) => v) as Thumbnail[] : [],
+    thumbnails: document.thumbs ? document.thumbs.map((v) => v instanceof types.PhotoSize ? constructThumbnail(v, document) : null).filter((v) => v) as Thumbnail[] : [],
   };
 }

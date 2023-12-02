@@ -51,17 +51,17 @@ export type InlineQueryResult =
 // deno-lint-ignore no-explicit-any
 export async function inlineQueryResultToTlObject(result_: InlineQueryResult, parseText: (text: string, params?: { parseMode?: ParseMode; entities?: MessageEntity[] }) => readonly [string, any[] | undefined], usernameResolver: UsernameResolver) {
   let document: enums.InputWebDocument | null = null;
-  let thumb: types.inputWebDocument | null = null;
+  let thumb: types.InputWebDocument | null = null;
   let fileId_: string | null = null;
   switch (result_.type) {
     case "audio":
       if ("audioUrl" in result_) {
-        document = new types.inputWebDocument({
+        document = new types.InputWebDocument({
           url: result_.audioUrl,
           size: 0,
           mime_type: "audio/mpeg",
           attributes: [
-            new types.documentAttributeAudio({
+            new types.DocumentAttributeAudio({
               duration: result_.audioDuration ?? 0,
               title: result_.title,
               performer: result_.performer,
@@ -74,12 +74,12 @@ export async function inlineQueryResultToTlObject(result_: InlineQueryResult, pa
       break;
     case "video":
       if ("videoUrl" in result_) {
-        document = new types.inputWebDocument({
+        document = new types.InputWebDocument({
           url: result_.videoUrl,
           size: 0,
           mime_type: result_.mimeType ?? "video/mp4",
           attributes: [
-            new types.documentAttributeVideo({
+            new types.DocumentAttributeVideo({
               duration: result_.videoDuration ?? 0,
               h: result_.videoHeight ?? 0,
               w: result_.videoWidth ?? 0,
@@ -92,7 +92,7 @@ export async function inlineQueryResultToTlObject(result_: InlineQueryResult, pa
       break;
     case "document":
       if ("documentUrl" in result_) {
-        document = new types.inputWebDocument({
+        document = new types.InputWebDocument({
           url: result_.documentUrl,
           mime_type: "application/octet-stream",
           attributes: [],
@@ -104,12 +104,12 @@ export async function inlineQueryResultToTlObject(result_: InlineQueryResult, pa
       break;
     case "gif":
       if ("gifUrl" in result_) {
-        document = new types.inputWebDocument({
+        document = new types.InputWebDocument({
           url: result_.gifUrl,
           size: 0,
           mime_type: "image/gif",
           attributes: [
-            new types.documentAttributeVideo({
+            new types.DocumentAttributeVideo({
               duration: result_.gifDuration ?? 0,
               h: result_.gifHeight ?? 0,
               w: result_.gifWidth ?? 0,
@@ -122,12 +122,12 @@ export async function inlineQueryResultToTlObject(result_: InlineQueryResult, pa
       break;
     case "mpeg4_gif":
       if ("mpeg4Url" in result_) {
-        document = new types.inputWebDocument({
+        document = new types.InputWebDocument({
           url: result_.mpeg4Url,
           size: 0,
           mime_type: "video/mp4",
           attributes: [
-            new types.documentAttributeVideo({
+            new types.DocumentAttributeVideo({
               nosound: true,
               duration: result_.mpeg4Duration ?? 0,
               w: result_.mpeg4Width ?? 0,
@@ -142,11 +142,11 @@ export async function inlineQueryResultToTlObject(result_: InlineQueryResult, pa
       break;
     case "photo":
       if ("photoUrl" in result_) {
-        document = new types.inputWebDocument({
+        document = new types.InputWebDocument({
           url: result_.photoUrl,
           size: 0,
           mime_type: "image/jpeg",
-          attributes: [new types.documentAttributeImageSize({ w: result_.photoWidth ?? 0, h: result_.photoHeight ?? 0 })],
+          attributes: [new types.DocumentAttributeImageSize({ w: result_.photoWidth ?? 0, h: result_.photoHeight ?? 0 })],
         });
       } else {
         fileId_ = result_.photoFileId;
@@ -157,12 +157,12 @@ export async function inlineQueryResultToTlObject(result_: InlineQueryResult, pa
       break;
     case "voice":
       if ("voiceUrl" in result_) {
-        document = new types.inputWebDocument({
+        document = new types.InputWebDocument({
           url: result_.voiceUrl,
           size: 0,
           mime_type: "audio/mpeg",
           attributes: [
-            new types.documentAttributeAudio({
+            new types.DocumentAttributeAudio({
               duration: result_.voiceDuration ?? 0,
               voice: true,
             }),
@@ -177,7 +177,7 @@ export async function inlineQueryResultToTlObject(result_: InlineQueryResult, pa
   const replyMarkup = "replyMarkup" in result_ && result_.replyMarkup ? await replyMarkupToTlObject(result_.replyMarkup, usernameResolver) : undefined;
 
   if ("thumbnailUrl" in result_ && result_.thumbnailUrl) {
-    thumb = new types.inputWebDocument({
+    thumb = new types.InputWebDocument({
       url: result_.thumbnailUrl,
       size: 0,
       mime_type: "image/jpeg",
@@ -194,7 +194,7 @@ export async function inlineQueryResultToTlObject(result_: InlineQueryResult, pa
 
   const { type, id } = result_;
   const [message, entities] = ret;
-  const sendMessage = new types.inputBotInlineMessageMediaAuto({
+  const sendMessage = new types.InputBotInlineMessageMediaAuto({
     message,
     entities,
     reply_markup: replyMarkup,
@@ -204,14 +204,14 @@ export async function inlineQueryResultToTlObject(result_: InlineQueryResult, pa
   const description = "description" in result_ ? result_.description : undefined;
 
   if (document != null) {
-    return new types.inputBotInlineResult({
+    return new types.InputBotInlineResult({
       id,
       type,
       title,
       description,
       thumb: thumb == null ? undefined : thumb,
       content: document,
-      send_message: new types.inputBotInlineMessageMediaAuto({
+      send_message: new types.InputBotInlineMessageMediaAuto({
         message,
         entities,
         reply_markup: replyMarkup,
@@ -219,12 +219,12 @@ export async function inlineQueryResultToTlObject(result_: InlineQueryResult, pa
     });
   } else if (fileId_ != null) {
     const fileId = FileID.decode(fileId_);
-    return new types.inputBotInlineResultDocument({
+    return new types.InputBotInlineResultDocument({
       id,
       type,
       title,
       description,
-      document: new types.inputDocument({
+      document: new types.InputDocument({
         id: fileId.params.mediaId!,
         access_hash: fileId.params.accessHash!,
         file_reference: fileId.params.fileReference!,
@@ -232,13 +232,13 @@ export async function inlineQueryResultToTlObject(result_: InlineQueryResult, pa
       send_message: sendMessage,
     });
   } else if (result_.type == "location") {
-    return new types.inputBotInlineResult({
+    return new types.InputBotInlineResult({
       id,
       type,
       title,
       description,
-      send_message: new types.inputBotInlineMessageMediaGeo({
-        geo_point: new types.inputGeoPoint({
+      send_message: new types.InputBotInlineMessageMediaGeo({
+        geo_point: new types.InputGeoPoint({
           lat: result_.latitude,
           long: result_.longitude,
           accuracy_radius: result_.horizontalAccuracy,
@@ -250,12 +250,12 @@ export async function inlineQueryResultToTlObject(result_: InlineQueryResult, pa
       }),
     });
   } else if (result_.type == "game") {
-    return new types.inputBotInlineResult({
+    return new types.InputBotInlineResult({
       id,
       type,
       title,
       description,
-      send_message: new types.inputBotInlineMessageGame({
+      send_message: new types.InputBotInlineMessageGame({
         reply_markup: replyMarkup,
       }),
     });
@@ -264,12 +264,12 @@ export async function inlineQueryResultToTlObject(result_: InlineQueryResult, pa
       UNREACHABLE();
     }
     const [message, entities] = parseText(result_.inputMessageContent.messageText, { entities: result_.inputMessageContent.entities, parseMode: result_.inputMessageContent.parseMode });
-    return new types.inputBotInlineResult({
+    return new types.InputBotInlineResult({
       id,
       type,
       title,
       description,
-      send_message: new types.inputBotInlineMessageText({
+      send_message: new types.InputBotInlineMessageText({
         message,
         entities,
         no_webpage: result_.inputMessageContent.disableWebPagePreview ? true : undefined,
@@ -280,13 +280,13 @@ export async function inlineQueryResultToTlObject(result_: InlineQueryResult, pa
     if (!result_.fourSquareId || !result_.foursquareType) {
       UNREACHABLE();
     }
-    return new types.inputBotInlineResult({
+    return new types.InputBotInlineResult({
       id,
       type,
       title,
       description,
-      send_message: new types.inputBotInlineMessageMediaVenue({
-        geo_point: new types.inputGeoPoint({ long: result_.longitude, lat: result_.latitude }),
+      send_message: new types.InputBotInlineMessageMediaVenue({
+        geo_point: new types.InputGeoPoint({ long: result_.longitude, lat: result_.latitude }),
         address: result_.address,
         provider: "foursquare",
         title: result_.title,

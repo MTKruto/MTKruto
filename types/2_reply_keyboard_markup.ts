@@ -17,7 +17,7 @@ export interface ReplyKeyboardMarkup {
   selective?: boolean;
 }
 
-export function constructReplyKeyboardMarkup(keyboard_: types.replyKeyboardMarkup): ReplyKeyboardMarkup {
+export function constructReplyKeyboardMarkup(keyboard_: types.ReplyKeyboardMarkup): ReplyKeyboardMarkup {
   const rows = new Array<KeyboardButton[]>();
   for (const row_ of keyboard_.rows) {
     const row = new Array<KeyboardButton>();
@@ -36,15 +36,15 @@ export function constructReplyKeyboardMarkup(keyboard_: types.replyKeyboardMarku
 }
 
 export function replyKeyboardMarkupToTlObject(replyMarkup: ReplyKeyboardMarkup) {
-  const rows_ = new Array<types.keyboardButtonRow>();
+  const rows_ = new Array<types.KeyboardButtonRow>();
   for (const row of replyMarkup.keyboard) {
     const row_ = new Array<enums.KeyboardButton>();
     for (const button of row) {
       row_.push(keyboardButtonToTlObject(button));
     }
-    rows_.push(new types.keyboardButtonRow({ buttons: row_ }));
+    rows_.push(new types.KeyboardButtonRow({ buttons: row_ }));
   }
-  return new types.replyKeyboardMarkup({
+  return new types.ReplyKeyboardMarkup({
     resize: replyMarkup.resizeKeyboard || undefined,
     single_use: replyMarkup.oneTimeKeyboard || undefined,
     selective: replyMarkup.selective || undefined,

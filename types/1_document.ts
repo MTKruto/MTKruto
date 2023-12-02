@@ -16,11 +16,11 @@ export interface Document {
   fileSize: number;
 }
 
-export function constructDocument(document: types.document, fileNameAttribute: types.documentAttributeFilename, fileId: string, fileUniqueId: string): Document {
+export function constructDocument(document: types.Document, fileNameAttribute: types.DocumentAttributeFilename, fileId: string, fileUniqueId: string): Document {
   return {
     fileId,
     fileUniqueId,
-    thumbnails: document.thumbs ? document.thumbs.map((v) => v instanceof types.photoSize ? constructThumbnail(v, document) : null).filter((v) => v) as Thumbnail[] : [],
+    thumbnails: document.thumbs ? document.thumbs.map((v) => v instanceof types.PhotoSize ? constructThumbnail(v, document) : null).filter((v) => v) as Thumbnail[] : [],
     fileName: fileNameAttribute.file_name,
     mimeType: document.mime_type,
     fileSize: Number(document.size),

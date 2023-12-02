@@ -15,8 +15,8 @@ export interface Thumbnail {
   fileSize: number;
 }
 
-export function constructThumbnail(size: types.photoSize, file: types.document | types.photo): Thumbnail {
-  const fileType = file instanceof types.photo ? FileType.Photo : FileType.Document;
+export function constructThumbnail(size: types.PhotoSize, file: types.Document | types.Photo): Thumbnail {
+  const fileType = file instanceof types.Photo ? FileType.Photo : FileType.Document;
 
   const fileId = new FileID(null, null, fileType, file.dc_id, {
     mediaId: file.id,

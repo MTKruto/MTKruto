@@ -95,11 +95,11 @@ export declare namespace Chat {
 /** This object represents a chat. */
 export type Chat = Chat.Private | Chat.Group | Chat.Supergroup | Chat.Channel;
 
-export function constructChat(chat: types.user): Chat.Private;
-export function constructChat(chat: types.chat): Chat.Group;
-export function constructChat(chat: types.channel): Chat.Supergroup | Chat.Channel;
-export function constructChat(chat: types.user | types.chat | types.channel): Chat {
-  if (chat instanceof types.user) {
+export function constructChat(chat: types.User): Chat.Private;
+export function constructChat(chat: types.Chat): Chat.Group;
+export function constructChat(chat: types.Channel): Chat.Supergroup | Chat.Channel;
+export function constructChat(chat: types.User | types.Chat | types.Channel): Chat {
+  if (chat instanceof types.User) {
     const id = Number(chat.id);
     const chat_: Chat.Private = {
       type: "private",
@@ -119,12 +119,12 @@ export function constructChat(chat: types.user | types.chat | types.channel): Ch
       chat_.restrictionReason = chat.restriction_reason;
     }
 
-    if (chat.photo instanceof types.userProfilePhoto) {
+    if (chat.photo instanceof types.UserProfilePhoto) {
       chat_.photo = constructChatPhoto(chat.photo, chat_.id, chat.access_hash ?? 0n);
     }
 
     return cleanObject(chat_);
-  } else if (chat instanceof types.chat) {
+  } else if (chat instanceof types.Chat) {
     const id = Number(-chat.id);
     const chat_: Chat.Group = {
       type: "group",
@@ -134,12 +134,12 @@ export function constructChat(chat: types.user | types.chat | types.channel): Ch
       isCreator: chat.creator || false,
     };
 
-    if (chat.photo instanceof types.chatPhoto) {
+    if (chat.photo instanceof types.ChatPhoto) {
       chat_.photo = constructChatPhoto(chat.photo, chat_.id, 0n);
     }
 
     return cleanObject(chat_);
-  } else if (chat instanceof types.channel) {
+  } else if (chat instanceof types.Channel) {
     let chat_: Chat.Supergroup | Chat.Channel;
     const {
       title,
@@ -181,7 +181,7 @@ export function constructChat(chat: types.user | types.chat | types.channel): Ch
       chat_.restrictionReason = (chat.restriction_reason ?? []).map(constructRestrictionReason);
     }
 
-    if (chat.photo instanceof types.chatPhoto) {
+    if (chat.photo instanceof types.ChatPhoto) {
       chat_.photo = constructChatPhoto(chat.photo, chat_.id, chat.access_hash ?? 0n);
     }
 

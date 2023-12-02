@@ -16,17 +16,17 @@ export interface Location {
   proximityAlertRadius?: number;
 }
 
-export function constructLocation(geo_: types.messageMediaGeo | types.messageMediaGeoLive | types.geoPoint): Location {
-  if (geo_ instanceof types.messageMediaGeo) {
-    const geo = geo_.geo[as](types.geoPoint);
+export function constructLocation(geo_: types.MessageMediaGeo | types.MessageMediaGeoLive | types.GeoPoint): Location {
+  if (geo_ instanceof types.MessageMediaGeo) {
+    const geo = geo_.geo[as](types.GeoPoint);
     return {
       latitude: geo.lat,
       longitude: geo.long,
       horizontalAccuracy: geo.accuracy_radius,
     };
-  } else if (geo_ instanceof types.messageMediaGeoLive) {
+  } else if (geo_ instanceof types.MessageMediaGeoLive) {
     const media = geo_;
-    const geo = media.geo[as](types.geoPoint);
+    const geo = media.geo[as](types.GeoPoint);
     return {
       latitude: geo.lat,
       longitude: geo.long,

@@ -10,7 +10,7 @@ export interface ForceReply {
   selective?: boolean;
 }
 
-export function constructForceReply(replyMarkup_: types.replyKeyboardForceReply) {
+export function constructForceReply(replyMarkup_: types.ReplyKeyboardForceReply) {
   const replyMarkup: ForceReply = { forceReply: true };
   if (replyMarkup_.placeholder) {
     replyMarkup.inputFieldPlaceholder = replyMarkup_.placeholder;
@@ -22,7 +22,7 @@ export function constructForceReply(replyMarkup_: types.replyKeyboardForceReply)
 }
 
 export function forceReplyToTlObject(replyMarkup: ForceReply) {
-  return new types.replyKeyboardForceReply({
+  return new types.ReplyKeyboardForceReply({
     selective: replyMarkup.selective || undefined,
     placeholder: replyMarkup.inputFieldPlaceholder,
   });

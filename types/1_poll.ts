@@ -32,7 +32,7 @@ export interface Poll {
   closeDate?: Date;
 }
 
-export function constructPoll(media_: types.messageMediaPoll): Poll {
+export function constructPoll(media_: types.MessageMediaPoll): Poll {
   const poll = media_.poll;
   const correctOption = media_.results.results?.find((v) => v.correct)?.option;
   const correctOptionId = correctOption !== undefined ? poll.answers.findIndex((v) => v.option.every((v, i) => correctOption[i] == v)) : undefined;

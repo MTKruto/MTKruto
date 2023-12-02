@@ -45,13 +45,13 @@ export class ClientPlain extends ClientAbstract {
     const nonce = getRandomBigInt(16, false, true);
     d("auth key creation started");
 
-    let resPq: types.resPQ | null = null;
+    let resPq: types.ResPQ | null = null;
     for (let i = 0; i < 10; i++) {
       try {
         d("req_pq_multi [%d]", i + 1);
         resPq = await this.invoke(new functions.req_pq_multi({ nonce }));
 
-        assertInstanceOf(resPq, types.resPQ);
+        assertInstanceOf(resPq, types.ResPQ);
         assertEquals(resPq.nonce, nonce);
         d("got res_pq");
         break;
@@ -92,7 +92,7 @@ export class ClientPlain extends ClientAbstract {
     const serverNonce = resPq.server_nonce;
     const newNonce = getRandomBigInt(32, false, true);
     let encryptedData = await rsaPad(
-      new types.p_q_inner_data_dc({
+      new types.P_q_inner_data_dc({
         pq,
         p,
         q,
@@ -115,7 +115,7 @@ export class ClientPlain extends ClientAbstract {
       }),
     );
 
-    assertInstanceOf(dhParams, types.server_DH_params_ok);
+    assertInstanceOf(dhParams, types.Server_DH_params_ok);
     d("got server_DH_params_ok");
 
     const newNonce_ = bufferFromBigInt(newNonce, 32, true, true);
@@ -125,7 +125,7 @@ export class ClientPlain extends ClientAbstract {
     const answerWithHash = ige256Decrypt(dhParams.encrypted_answer, tmpAesKey, tmpAesIv);
 
     const dhInnerData = new TLReader(answerWithHash.slice(20)).readObject();
-    assertInstanceOf(dhInnerData, types.server_DH_inner_data);
+    assertInstanceOf(dhInnerData, types.Server_DH_inner_data);
     const { g, g_a: gA_, dh_prime: dhPrime_ } = dhInnerData;
     const gA = bigIntFromBuffer(gA_, false, false);
     const dhPrime = bigIntFromBuffer(dhPrime_, false, false);
@@ -133,7 +133,7 @@ export class ClientPlain extends ClientAbstract {
     const b = getRandomBigInt(256, false, false);
     const gB = modExp(BigInt(g), b, dhPrime);
 
-    const data = new types.client_DH_inner_data({
+    const data = new types.Client_DH_inner_data({
       nonce,
       server_nonce: serverNonce,
       retry_id: 0n,
@@ -149,7 +149,7 @@ export class ClientPlain extends ClientAbstract {
     encryptedData = ige256Encrypt(dataWithHash, tmpAesKey, tmpAesIv);
 
     const dhGenOk = await this.invoke(new functions.set_client_DH_params({ nonce, server_nonce: serverNonce, encrypted_data: encryptedData }));
-    assertInstanceOf(dhGenOk, types.dh_gen_ok);
+    assertInstanceOf(dhGenOk, types.Dh_gen_ok);
     d("got dh_gen_ok");
 
     const serverNonceSlice = serverNonce_.slice(0, 8);

@@ -19,13 +19,13 @@ export interface VideoNote {
   fileSize: number;
 }
 
-export function constructVideoNote(document: types.document, videoAttribute: types.documentAttributeVideo, fileId: string, fileUniqueId: string): VideoNote {
+export function constructVideoNote(document: types.Document, videoAttribute: types.DocumentAttributeVideo, fileId: string, fileUniqueId: string): VideoNote {
   return {
     fileId,
     fileUniqueId,
     length: videoAttribute.w,
     duration: videoAttribute.duration,
-    thumbnails: document.thumbs ? document.thumbs.map((v) => v instanceof types.photoSize ? constructThumbnail(v, document) : null).filter((v) => v) as Thumbnail[] : [],
+    thumbnails: document.thumbs ? document.thumbs.map((v) => v instanceof types.PhotoSize ? constructThumbnail(v, document) : null).filter((v) => v) as Thumbnail[] : [],
     fileSize: Number(document.size),
   };
 }

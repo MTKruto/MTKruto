@@ -138,43 +138,43 @@ export type MessageEntity =
   | MessageEntity.CustomEmoji;
 
 export function constructMessageEntity(obj: enums.MessageEntity): MessageEntity | null {
-  if (obj instanceof types.messageEntityMention) {
+  if (obj instanceof types.MessageEntityMention) {
     return { type: "mention", offset: obj.offset, length: obj.length };
-  } else if (obj instanceof types.messageEntityHashtag) {
+  } else if (obj instanceof types.MessageEntityHashtag) {
     return { type: "hashtag", offset: obj.offset, length: obj.length };
-  } else if (obj instanceof types.messageEntityBotCommand) {
+  } else if (obj instanceof types.MessageEntityBotCommand) {
     return { type: "botCommand", offset: obj.offset ?? 0, length: obj.length };
-  } else if (obj instanceof types.messageEntityUrl) {
+  } else if (obj instanceof types.MessageEntityUrl) {
     return { type: "url", offset: obj.offset, length: obj.length };
-  } else if (obj instanceof types.messageEntityEmail) {
+  } else if (obj instanceof types.MessageEntityEmail) {
     return { type: "email", offset: obj.offset, length: obj.length };
-  } else if (obj instanceof types.messageEntityBold) {
+  } else if (obj instanceof types.MessageEntityBold) {
     return { type: "bold", offset: obj.offset, length: obj.length };
-  } else if (obj instanceof types.messageEntityItalic) {
+  } else if (obj instanceof types.MessageEntityItalic) {
     return { type: "italic", offset: obj.offset, length: obj.length };
-  } else if (obj instanceof types.messageEntityCode) {
+  } else if (obj instanceof types.MessageEntityCode) {
     return { type: "code", offset: obj.offset, length: obj.length };
-  } else if (obj instanceof types.messageEntityPre) {
+  } else if (obj instanceof types.MessageEntityPre) {
     return { type: "pre", offset: obj.offset, length: obj.length, language: obj.language };
-  } else if (obj instanceof types.messageEntityTextUrl) {
+  } else if (obj instanceof types.MessageEntityTextUrl) {
     return { type: "textLink", offset: obj.offset, length: obj.length, url: obj.url };
-  } else if (obj instanceof types.messageEntityMentionName) {
+  } else if (obj instanceof types.MessageEntityMentionName) {
     return { type: "textMention", offset: obj.offset, length: obj.length, userId: Number(obj.user_id) };
-  } else if (obj instanceof types.messageEntityCashtag) {
+  } else if (obj instanceof types.MessageEntityCashtag) {
     return { type: "cashtag", offset: obj.offset, length: obj.length };
-  } else if (obj instanceof types.messageEntityPhone) {
+  } else if (obj instanceof types.MessageEntityPhone) {
     return { type: "phoneNumber", offset: obj.offset, length: obj.length };
-  } else if (obj instanceof types.messageEntityUnderline) {
+  } else if (obj instanceof types.MessageEntityUnderline) {
     return { type: "underline", offset: obj.offset, length: obj.length };
-  } else if (obj instanceof types.messageEntityStrike) {
+  } else if (obj instanceof types.MessageEntityStrike) {
     return { type: "strikethrough", offset: obj.offset, length: obj.length };
-  } else if (obj instanceof types.messageEntityBlockquote) {
+  } else if (obj instanceof types.MessageEntityBlockquote) {
     return { type: "blockquote", offset: obj.offset, length: obj.length };
-  } else if (obj instanceof types.messageEntityBankCard) {
+  } else if (obj instanceof types.MessageEntityBankCard) {
     return { type: "bankCard", offset: obj.offset, length: obj.length };
-  } else if (obj instanceof types.messageEntitySpoiler) {
+  } else if (obj instanceof types.MessageEntitySpoiler) {
     return { type: "spoiler", offset: obj.offset, length: obj.length };
-  } else if (obj instanceof types.messageEntityCustomEmoji) {
+  } else if (obj instanceof types.MessageEntityCustomEmoji) {
     return { type: "customEmoji", offset: obj.offset, length: obj.length, customEmojiId: String(obj.document_id) };
   } else {
     return null;
@@ -185,42 +185,42 @@ export function messageEntityToTlObject(entity: MessageEntity) {
   const { offset, length } = entity;
   switch (entity.type) {
     case "mention":
-      return new types.messageEntityMention({ offset, length });
+      return new types.MessageEntityMention({ offset, length });
     case "hashtag":
-      return new types.messageEntityHashtag({ offset, length });
+      return new types.MessageEntityHashtag({ offset, length });
     case "botCommand":
-      return new types.messageEntityBotCommand({ offset, length });
+      return new types.MessageEntityBotCommand({ offset, length });
     case "url":
-      return new types.messageEntityUrl({ offset, length });
+      return new types.MessageEntityUrl({ offset, length });
     case "email":
-      return new types.messageEntityEmail({ offset, length });
+      return new types.MessageEntityEmail({ offset, length });
     case "bold":
-      return new types.messageEntityBold({ offset, length });
+      return new types.MessageEntityBold({ offset, length });
     case "italic":
-      return new types.messageEntityItalic({ offset, length });
+      return new types.MessageEntityItalic({ offset, length });
     case "code":
-      return new types.messageEntityCode({ offset, length });
+      return new types.MessageEntityCode({ offset, length });
     case "pre":
-      return new types.messageEntityPre({ offset, length, language: entity.language });
+      return new types.MessageEntityPre({ offset, length, language: entity.language });
     case "textLink":
-      return new types.messageEntityTextUrl({ offset, length, url: entity.url });
+      return new types.MessageEntityTextUrl({ offset, length, url: entity.url });
     case "textMention":
-      return new types.messageEntityMentionName({ offset, length, user_id: BigInt(entity.userId) });
+      return new types.MessageEntityMentionName({ offset, length, user_id: BigInt(entity.userId) });
     case "cashtag":
-      return new types.messageEntityCashtag({ offset, length });
+      return new types.MessageEntityCashtag({ offset, length });
     case "phoneNumber":
-      return new types.messageEntityPhone({ offset, length });
+      return new types.MessageEntityPhone({ offset, length });
     case "underline":
-      return new types.messageEntityUnderline({ offset, length });
+      return new types.MessageEntityUnderline({ offset, length });
     case "strikethrough":
-      return new types.messageEntityStrike({ offset, length });
+      return new types.MessageEntityStrike({ offset, length });
     case "blockquote":
-      return new types.messageEntityBlockquote({ offset, length });
+      return new types.MessageEntityBlockquote({ offset, length });
     case "bankCard":
-      return new types.messageEntityBankCard({ offset, length });
+      return new types.MessageEntityBankCard({ offset, length });
     case "spoiler":
-      return new types.messageEntitySpoiler({ offset, length });
+      return new types.MessageEntitySpoiler({ offset, length });
     case "customEmoji":
-      return new types.messageEntityCustomEmoji({ offset, length, document_id: BigInt(entity.customEmojiId) });
+      return new types.MessageEntityCustomEmoji({ offset, length, document_id: BigInt(entity.customEmojiId) });
   }
 }

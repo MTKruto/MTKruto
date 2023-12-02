@@ -17,16 +17,16 @@ export interface Photo {
   thumbnails: Thumbnail[];
 }
 
-export function constructPhoto(photo: types.photo): Photo {
+export function constructPhoto(photo: types.Photo): Photo {
   const sizes = photo.sizes
     .map((v) => {
-      if (v instanceof types.photoSizeProgressive) {
-        return new types.photoSize({ type: v.type, w: v.w, h: v.h, size: Math.max(...v.sizes) });
+      if (v instanceof types.PhotoSizeProgressive) {
+        return new types.PhotoSize({ type: v.type, w: v.w, h: v.h, size: Math.max(...v.sizes) });
       } else {
         return v;
       }
     })
-    .filter((v): v is types.photoSize => v instanceof types.photoSize)
+    .filter((v): v is types.PhotoSize => v instanceof types.PhotoSize)
     .sort((a, b) => a.size - b.size);
 
   const largest = sizes.slice(-1)[0];

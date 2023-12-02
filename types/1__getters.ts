@@ -3,15 +3,15 @@ import { types } from "../2_tl.ts";
 import { ChatID } from "./0_chat_id.ts";
 
 export interface EntityGetter {
-  (peer: types.peerUser): MaybePromise<types.user | null>;
-  (peer: types.peerChat): MaybePromise<types.chat | null>;
-  (peer: types.peerChannel): MaybePromise<types.channel | null>;
+  (peer: types.PeerUser): MaybePromise<types.User | null>;
+  (peer: types.PeerChat): MaybePromise<types.Chat | null>;
+  (peer: types.PeerChannel): MaybePromise<types.Channel | null>;
 }
 
 export interface InputPeerGetter {
-  (id: ChatID): Promise<types.inputPeerUser | types.inputPeerChannel | types.inputPeerChat>;
+  (id: ChatID): Promise<types.InputPeerUser | types.InputPeerChannel | types.InputPeerChat>;
 }
 
 export interface UsernameResolver {
-  (username: string): MaybePromise<types.inputUser>;
+  (username: string): MaybePromise<types.InputUser>;
 }

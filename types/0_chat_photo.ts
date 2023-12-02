@@ -26,9 +26,9 @@ export declare namespace ChatPhoto {
 /** This object represents a chat photo. */
 export type ChatPhoto = ChatPhoto.User | ChatPhoto.Chat;
 
-export function constructChatPhoto(photo: types.chatPhoto, chatId: number, chatAccessHash: bigint): ChatPhoto.Chat;
-export function constructChatPhoto(photo: types.userProfilePhoto, chatId: number, chatAccessHash: bigint): ChatPhoto.User;
-export function constructChatPhoto(photo: types.userProfilePhoto | types.chatPhoto, chatId: number, chatAccessHash: bigint): ChatPhoto {
+export function constructChatPhoto(photo: types.ChatPhoto, chatId: number, chatAccessHash: bigint): ChatPhoto.Chat;
+export function constructChatPhoto(photo: types.UserProfilePhoto, chatId: number, chatAccessHash: bigint): ChatPhoto.User;
+export function constructChatPhoto(photo: types.UserProfilePhoto | types.ChatPhoto, chatId: number, chatAccessHash: bigint): ChatPhoto {
   const smallFileId = new FileID(null, null, FileType.ChatPhoto, photo.dc_id, {
     mediaId: photo.photo_id,
     thumbnailSource: ThumbnailSource.ChatPhotoSmall,
@@ -49,7 +49,7 @@ export function constructChatPhoto(photo: types.userProfilePhoto | types.chatPho
     localId: 0,
   }).encode();
   const bigFileUniqueId = new FileUniqueID(FileUniqueType.Document, { mediaId: photo.photo_id }).encode();
-  if (photo instanceof types.chatPhoto) {
+  if (photo instanceof types.ChatPhoto) {
     return {
       smallFileId,
       smallFileUniqueId,

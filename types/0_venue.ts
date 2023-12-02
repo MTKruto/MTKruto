@@ -15,8 +15,8 @@ export interface Venue {
   foursquareType?: string;
 }
 
-export function constructVenue(media_: types.messageMediaVenue): Venue {
-  const geo = media_.geo[as](types.geoPoint);
+export function constructVenue(media_: types.MessageMediaVenue): Venue {
+  const geo = media_.geo[as](types.GeoPoint);
   return {
     location: {
       latitude: geo.lat,

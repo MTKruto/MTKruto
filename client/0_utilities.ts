@@ -7,43 +7,43 @@ export const resolve = () => Promise.resolve();
 export type With<T, K extends keyof T> = T & Required<Pick<T, K>>;
 
 export function isPtsUpdate(v: enums.Update | enums.Updates): v is
-  | types.updateShortMessage
-  | types.updateShortChatMessage
-  | types.updateShortSentMessage
-  | types.updateNewMessage
-  | types.updateDeleteMessages
-  | types.updateReadHistoryInbox
-  | types.updateReadHistoryOutbox
-  | types.updatePinnedChannelMessages
-  | types.updatePinnedMessages
-  | types.updateFolderPeers
-  | types.updateChannelWebPage
-  | types.updateEditMessage
-  | types.updateReadMessagesContents
-  | types.updateWebPage {
-  return v instanceof types.updateShortMessage ||
-    v instanceof types.updateShortChatMessage ||
-    v instanceof types.updateShortSentMessage ||
-    v instanceof types.updateNewMessage ||
-    v instanceof types.updateDeleteMessages ||
-    v instanceof types.updateReadHistoryInbox ||
-    v instanceof types.updateReadHistoryOutbox ||
-    v instanceof types.updatePinnedChannelMessages ||
-    v instanceof types.updatePinnedMessages ||
-    v instanceof types.updateFolderPeers ||
-    v instanceof types.updateChannelWebPage ||
-    v instanceof types.updateEditMessage ||
-    v instanceof types.updateReadMessagesContents ||
-    v instanceof types.updateWebPage;
+  | types.UpdateShortMessage
+  | types.UpdateShortChatMessage
+  | types.UpdateShortSentMessage
+  | types.UpdateNewMessage
+  | types.UpdateDeleteMessages
+  | types.UpdateReadHistoryInbox
+  | types.UpdateReadHistoryOutbox
+  | types.UpdatePinnedChannelMessages
+  | types.UpdatePinnedMessages
+  | types.UpdateFolderPeers
+  | types.UpdateChannelWebPage
+  | types.UpdateEditMessage
+  | types.UpdateReadMessagesContents
+  | types.UpdateWebPage {
+  return v instanceof types.UpdateShortMessage ||
+    v instanceof types.UpdateShortChatMessage ||
+    v instanceof types.UpdateShortSentMessage ||
+    v instanceof types.UpdateNewMessage ||
+    v instanceof types.UpdateDeleteMessages ||
+    v instanceof types.UpdateReadHistoryInbox ||
+    v instanceof types.UpdateReadHistoryOutbox ||
+    v instanceof types.UpdatePinnedChannelMessages ||
+    v instanceof types.UpdatePinnedMessages ||
+    v instanceof types.UpdateFolderPeers ||
+    v instanceof types.UpdateChannelWebPage ||
+    v instanceof types.UpdateEditMessage ||
+    v instanceof types.UpdateReadMessagesContents ||
+    v instanceof types.UpdateWebPage;
 }
 
 export function isChannelPtsUpdate(v: enums.Update | enums.Updates): v is
-  | types.updateNewChannelMessage
-  | types.updateEditChannelMessage
-  | types.updateDeleteChannelMessages {
-  return v instanceof types.updateNewChannelMessage ||
-    v instanceof types.updateEditChannelMessage ||
-    v instanceof types.updateDeleteChannelMessages;
+  | types.UpdateNewChannelMessage
+  | types.UpdateEditChannelMessage
+  | types.UpdateDeleteChannelMessages {
+  return v instanceof types.UpdateNewChannelMessage ||
+    v instanceof types.UpdateEditChannelMessage ||
+    v instanceof types.UpdateDeleteChannelMessages;
 }
 
 /**

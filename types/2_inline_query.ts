@@ -19,8 +19,8 @@ export interface InlineQuery {
   location?: Location;
 }
 
-export async function constructInlineQuery(query_: types.updateBotInlineQuery, getEntity: EntityGetter): Promise<InlineQuery> {
-  const user_ = await getEntity(new types.peerUser({ user_id: query_.user_id }));
+export async function constructInlineQuery(query_: types.UpdateBotInlineQuery, getEntity: EntityGetter): Promise<InlineQuery> {
+  const user_ = await getEntity(new types.PeerUser({ user_id: query_.user_id }));
   if (user_ == null) {
     UNREACHABLE();
   }
@@ -29,22 +29,22 @@ export async function constructInlineQuery(query_: types.updateBotInlineQuery, g
 
   let chatType: InlineQuery["chatType"] | undefined;
   if (query_.peer_type !== undefined) {
-    if (query_.peer_type instanceof types.inlineQueryPeerTypeSameBotPM) {
+    if (query_.peer_type instanceof types.InlineQueryPeerTypeSameBotPM) {
       chatType = "private";
-    } else if (query_.peer_type instanceof types.inlineQueryPeerTypeBotPM || query_.peer_type instanceof types.inlineQueryPeerTypePM) {
+    } else if (query_.peer_type instanceof types.InlineQueryPeerTypeBotPM || query_.peer_type instanceof types.InlineQueryPeerTypePM) {
       chatType = "sender";
-    } else if (query_.peer_type instanceof types.inlineQueryPeerTypeChat) {
+    } else if (query_.peer_type instanceof types.InlineQueryPeerTypeChat) {
       chatType = "group";
-    } else if (query_.peer_type instanceof types.inlineQueryPeerTypeMegagroup) {
+    } else if (query_.peer_type instanceof types.InlineQueryPeerTypeMegagroup) {
       chatType = "supergroup";
-    } else if (query_.peer_type instanceof types.inlineQueryPeerTypeBroadcast) {
+    } else if (query_.peer_type instanceof types.InlineQueryPeerTypeBroadcast) {
       chatType = "channel";
     } else {
       UNREACHABLE();
     }
   }
 
-  const location = query_.geo !== undefined && query_.geo instanceof types.geoPoint ? constructLocation(query_.geo) : undefined;
+  const location = query_.geo !== undefined && query_.geo instanceof types.GeoPoint ? constructLocation(query_.geo) : undefined;
 
   return {
     id: String(query_.query_id),

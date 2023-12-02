@@ -14,7 +14,7 @@ export interface Contact {
   vcard?: string;
 }
 
-export function constructContact(contact: types.messageMediaContact): Contact {
+export function constructContact(contact: types.MessageMediaContact): Contact {
   return {
     phoneNumber: contact.phone_number,
     firstName: contact.first_name,

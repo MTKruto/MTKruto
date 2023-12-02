@@ -4,7 +4,7 @@ import { types } from "./2_tl.ts";
 
 export * from "./3_errors.ts";
 
-export class FloodWait extends types.rpc_error {
+export class FloodWait extends types.Rpc_error {
   seconds: number;
 
   constructor(params: { error_code: number; error_message: string }) {
@@ -17,7 +17,7 @@ export class FloodWait extends types.rpc_error {
   }
 }
 
-export class Migrate extends types.rpc_error {
+export class Migrate extends types.Rpc_error {
   dc: number;
 
   constructor(params: { error_code: number; error_message: string }) {
@@ -54,7 +54,7 @@ const prefixMap = {
   "FLOOD_WAIT_": FloodWait,
 };
 
-export function upgradeInstance(error: types.rpc_error) {
+export function upgradeInstance(error: types.Rpc_error) {
   for (const [k, v] of Object.entries(prefixMap)) {
     if (error.error_message.startsWith(k)) {
       return new v(error);

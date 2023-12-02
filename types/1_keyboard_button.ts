@@ -78,10 +78,10 @@ export type KeyboardButton =
   | KeyboardButton.WebApp;
 
 export function constructKeyboardButton(button_: enums.KeyboardButton): KeyboardButton {
-  if (button_ instanceof types.keyboardButton) {
+  if (button_ instanceof types.KeyboardButton) {
     return { text: button_.text };
-  } else if (button_ instanceof types.keyboardButtonRequestPeer) {
-    if (button_.peer_type instanceof types.requestPeerTypeUser) {
+  } else if (button_ instanceof types.KeyboardButtonRequestPeer) {
+    if (button_.peer_type instanceof types.RequestPeerTypeUser) {
       return {
         text: button_.text,
         requestUser: {
@@ -90,7 +90,7 @@ export function constructKeyboardButton(button_: enums.KeyboardButton): Keyboard
           userIsPremium: button_.peer_type.premium || false,
         },
       };
-    } else if (button_.peer_type instanceof types.requestPeerTypeChat) {
+    } else if (button_.peer_type instanceof types.RequestPeerTypeChat) {
       const button: KeyboardButton.RequestChat = {
         text: button_.text,
         requestChat: {
@@ -109,7 +109,7 @@ export function constructKeyboardButton(button_: enums.KeyboardButton): Keyboard
         button.requestChat.userAdministratorRights = constructChatAdministratorRights(button_.peer_type.user_admin_rights);
       }
       return button;
-    } else if (button_.peer_type instanceof types.requestPeerTypeBroadcast) {
+    } else if (button_.peer_type instanceof types.RequestPeerTypeBroadcast) {
       const button: KeyboardButton.RequestChat = {
         text: button_.text,
         requestChat: {
@@ -129,11 +129,11 @@ export function constructKeyboardButton(button_: enums.KeyboardButton): Keyboard
     } else {
       UNREACHABLE();
     }
-  } else if (button_ instanceof types.keyboardButtonRequestPhone) {
+  } else if (button_ instanceof types.KeyboardButtonRequestPhone) {
     return { text: button_.text, requestContact: true };
-  } else if (button_ instanceof types.keyboardButtonRequestGeoLocation) {
+  } else if (button_ instanceof types.KeyboardButtonRequestGeoLocation) {
     return { text: button_.text, requestLocation: true };
-  } else if (button_ instanceof types.keyboardButtonRequestPoll) {
+  } else if (button_ instanceof types.KeyboardButtonRequestPoll) {
     const button: KeyboardButton.RequestPoll = { text: button_.text, requestPoll: {} };
 
     if (button_.quiz) {
@@ -141,7 +141,7 @@ export function constructKeyboardButton(button_: enums.KeyboardButton): Keyboard
     }
 
     return button;
-  } else if (button_ instanceof types.keyboardButtonWebView || button_ instanceof types.keyboardButtonSimpleWebView) {
+  } else if (button_ instanceof types.KeyboardButtonWebView || button_ instanceof types.KeyboardButtonSimpleWebView) {
     return { text: button_.text, webApp: { url: button_.url } };
   } else {
     UNREACHABLE();
@@ -150,17 +150,17 @@ export function constructKeyboardButton(button_: enums.KeyboardButton): Keyboard
 
 export function keyboardButtonToTlObject(button: KeyboardButton) {
   if ("requestUser" in button) {
-    return new types.keyboardButtonRequestPeer({
+    return new types.KeyboardButtonRequestPeer({
       text: button.text,
       button_id: button.requestUser.requestId,
-      peer_type: new types.requestPeerTypeUser({ bot: button.requestUser.userIsBot, premium: button.requestUser.userIsPremium }),
+      peer_type: new types.RequestPeerTypeUser({ bot: button.requestUser.userIsBot, premium: button.requestUser.userIsPremium }),
     });
   } else if ("requestChat" in button) {
     if (!button.requestChat.chatIsChannel) { // GUESS
-      return new types.keyboardButtonRequestPeer({
+      return new types.KeyboardButtonRequestPeer({
         text: button.text,
         button_id: button.requestChat.requestId,
-        peer_type: new types.requestPeerTypeChat({
+        peer_type: new types.RequestPeerTypeChat({
           forum: button.requestChat.chatIsForum,
           has_username: button.requestChat.chatHasUsername,
           creator: button.requestChat.chatIsCreated || undefined,
@@ -170,10 +170,10 @@ export function keyboardButtonToTlObject(button: KeyboardButton) {
         }),
       });
     } else {
-      return new types.keyboardButtonRequestPeer({
+      return new types.KeyboardButtonRequestPeer({
         text: button.text,
         button_id: button.requestChat.requestId,
-        peer_type: new types.requestPeerTypeBroadcast({
+        peer_type: new types.RequestPeerTypeBroadcast({
           has_username: button.requestChat.chatHasUsername,
           creator: button.requestChat.chatIsCreated || undefined,
           bot_admin_rights: button.requestChat.botAdministratorRights ? chatAdministratorRightsToTlObject(button.requestChat.botAdministratorRights) : undefined,
@@ -182,14 +182,14 @@ export function keyboardButtonToTlObject(button: KeyboardButton) {
       });
     }
   } else if ("requestContact" in button) {
-    return new types.keyboardButtonRequestPhone({ text: button.text });
+    return new types.KeyboardButtonRequestPhone({ text: button.text });
   } else if ("requestLocation" in button) {
-    return new types.keyboardButtonRequestGeoLocation({ text: button.text });
+    return new types.KeyboardButtonRequestGeoLocation({ text: button.text });
   } else if ("requestPoll" in button) {
-    return new types.keyboardButtonRequestPoll({ text: button.text, quiz: button.requestPoll.type == "quiz" });
+    return new types.KeyboardButtonRequestPoll({ text: button.text, quiz: button.requestPoll.type == "quiz" });
   } else if ("webApp" in button) {
-    return new types.keyboardButtonWebView({ text: button.text, url: button.webApp.url });
+    return new types.KeyboardButtonWebView({ text: button.text, url: button.webApp.url });
   } else {
-    return new types.keyboardButton({ text: button.text });
+    return new types.KeyboardButton({ text: button.text });
   }
 }

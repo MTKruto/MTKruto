@@ -36,7 +36,7 @@ export interface User {
   addedToAttachmentMenu: boolean;
 }
 
-export function constructUser(user_: types.user) {
+export function constructUser(user_: types.User) {
   const id = Number(user_.id);
   const user: User = {
     id,
@@ -54,7 +54,7 @@ export function constructUser(user_: types.user) {
     isSupport: user_.support || false,
     addedToAttachmentMenu: user_.attach_menu_enabled || false,
   };
-  if (user_.photo instanceof types.userProfilePhoto) {
+  if (user_.photo instanceof types.UserProfilePhoto) {
     user.photo = constructChatPhoto(user_.photo, user.id, user_.access_hash ?? 0n);
   }
 
