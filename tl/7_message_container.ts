@@ -1,4 +1,4 @@
-import { id } from "./1_tl_object.ts";
+import { id, name } from "./1_tl_object.ts";
 import { TLReader } from "./3_tl_reader.ts";
 import { TLWriter } from "./4_tl_writer.ts";
 import { Message_ } from "./6_message.ts";
@@ -6,6 +6,10 @@ import { Message_ } from "./6_message.ts";
 export class MessageContainer {
   static get [id]() {
     return 0x73F1F8DC;
+  }
+
+  get [name]() {
+    return "msg_container";
   }
 
   constructor(public messages: Message_[]) {
