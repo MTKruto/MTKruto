@@ -93,8 +93,7 @@ function serializeSingleParam(
   const valueRepr = value == null ? null : (typeof value === "object" && name in value) ? value[name] : value.constructor.name;
   if (isTLObjectConstructor(type)) {
     if (
-      // TODO: TypeX
-      (type.name == "TypeX" && value instanceof TLObject) ||
+      (type[name] == "TypeX" && value instanceof TLObject) ||
       value instanceof type
     ) {
       writer.write(value[serialize]());
@@ -172,7 +171,7 @@ export abstract class TLObject {
   protected abstract get [params](): Params;
 
   static get [name](): string {
-    throw new Error("Not implemented");
+    return `ctor_${this.constructor.name}`;
   }
 
   get [name]() {
