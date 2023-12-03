@@ -1,7 +1,7 @@
 import { assertEquals, assertInstanceOf } from "../0_deps.ts";
 import { TLRawReader } from "./0_tl_raw_reader.ts";
 import { paramDesc, serialize } from "./1_tl_object.ts";
-import { config, map } from "./2_types.ts";
+import { map, types } from "./2_types.ts";
 import { deserialize } from "./3_deserialize.ts";
 
 Deno.test("deserialize", () => {
@@ -75,8 +75,8 @@ Deno.test("deserialize", () => {
   const constructorId = reader.readInt32(false);
   const constructor = map.get(constructorId)!;
 
-  const config_ = deserialize(reader, constructor[paramDesc], constructor);
+  const config = deserialize(reader, constructor[paramDesc], constructor);
 
-  assertEquals(config_[serialize](), buffer);
-  assertInstanceOf(config_, config);
+  assertEquals(config[serialize](), buffer);
+  assertInstanceOf(config, types.Config);
 });
