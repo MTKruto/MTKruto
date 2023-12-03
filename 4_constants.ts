@@ -60,7 +60,7 @@ export const VECTOR_CONSTRUCTOR = 0x1CB5C415;
 
 export const INITIAL_DC: DC = "2";
 
-export const LAYER = 166;
+export const LAYER = 167;
 
 export const APP_VERSION = "MTKruto 0.1.119";
 

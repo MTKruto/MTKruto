@@ -1,4 +1,4 @@
-import { types } from "../2_tl.ts";
+import { enums, types } from "../2_tl.ts";
 
 /** The rights of a chat administrator. */
 export interface ChatAdministratorRights {
@@ -28,29 +28,29 @@ export interface ChatAdministratorRights {
   canManageTopics?: boolean;
 }
 
-export function constructChatAdministratorRights(rights_: types.ChatAdminRights) {
+export function constructChatAdministratorRights(rights_: enums.ChatAdminRights) {
   const rights: ChatAdministratorRights = {
     isAnonymous: rights_.anonymous || false,
     canManageChat: rights_.other || false,
-    canDeleteMessages: rights_.deleteMessages || false,
-    canManageVideoChats: rights_.manageCall || false,
-    canRestrictMembers: rights_.banUsers || false,
-    canPromoteMembers: rights_.addAdmins || false,
-    canChangeInfo: rights_.changeInfo || false,
-    canInviteUsers: rights_.inviteUsers || false,
+    canDeleteMessages: rights_.delete_messages || false,
+    canManageVideoChats: rights_.manage_call || false,
+    canRestrictMembers: rights_.ban_users || false,
+    canPromoteMembers: rights_.add_admins || false,
+    canChangeInfo: rights_.change_info || false,
+    canInviteUsers: rights_.invite_users || false,
   };
 
-  if (rights_.postMessages) {
-    rights.canPostMessages = rights_.postMessages;
+  if (rights_.post_messages) {
+    rights.canPostMessages = rights_.post_messages;
   }
-  if (rights_.editMessages) {
-    rights.canEditMessages = rights_.editMessages;
+  if (rights_.edit_messages) {
+    rights.canEditMessages = rights_.edit_messages;
   }
-  if (rights_.pinMessages) {
-    rights.canPinMessages = rights_.pinMessages;
+  if (rights_.pin_messages) {
+    rights.canPinMessages = rights_.pin_messages;
   }
-  if (rights_.manageTopics) {
-    rights.canManageTopics = rights_.manageTopics;
+  if (rights_.manage_topics) {
+    rights.canManageTopics = rights_.manage_topics;
   }
 
   return rights;
@@ -60,11 +60,11 @@ export function chatAdministratorRightsToTlObject(rights: ChatAdministratorRight
   return new types.ChatAdminRights({
     anonymous: rights.isAnonymous || undefined,
     other: rights.canManageChat || undefined,
-    deleteMessages: rights.canDeleteMessages || undefined,
-    manageCall: rights.canManageChat || undefined,
-    banUsers: rights.canRestrictMembers || undefined,
-    addAdmins: rights.canPromoteMembers || undefined,
-    changeInfo: rights.canChangeInfo || undefined,
-    inviteUsers: rights.canInviteUsers || undefined,
+    delete_messages: rights.canDeleteMessages || undefined,
+    manage_call: rights.canManageChat || undefined,
+    ban_users: rights.canRestrictMembers || undefined,
+    add_admins: rights.canPromoteMembers || undefined,
+    change_info: rights.canChangeInfo || undefined,
+    invite_users: rights.canInviteUsers || undefined,
   });
 }

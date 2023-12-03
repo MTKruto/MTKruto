@@ -1,4 +1,4 @@
-import { LabeledPrice } from "../tl/2_types.ts";
+import { LabeledPrice } from "./0_labeled_price.ts";
 
 export interface InputInvoiceMessageContent {
   title: string;

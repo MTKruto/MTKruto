@@ -1,4 +1,4 @@
-import { types } from "../2_tl.ts";
+import { enums } from "../2_tl.ts";
 
 export interface MaskPosition {
   /** The part of the face relative to which the mask should be placed. One of "forehead", "eyes", "mouth", or "chin". */
@@ -11,7 +11,7 @@ export interface MaskPosition {
   scale: number;
 }
 
-export function constructMaskPosition({ n, x, y, zoom }: types.MaskCoords): MaskPosition {
+export function constructMaskPosition({ n, x, y, zoom }: enums.MaskCoords): MaskPosition {
   return {
     point: n == 0 ? "forehead" : n == 1 ? "eyes" : n == 2 ? "mouth" : "chin",
     xShift: x,

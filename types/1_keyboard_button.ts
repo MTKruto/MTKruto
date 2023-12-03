@@ -1,5 +1,5 @@
 import { UNREACHABLE } from "../1_utilities.ts";
-import { types } from "../2_tl.ts";
+import { enums, types } from "../2_tl.ts";
 import { ChatAdministratorRights, chatAdministratorRightsToTlObject, constructChatAdministratorRights } from "./0_chat_administrator_rights.ts";
 import { KeyboardButtonPollType } from "./0_keyboard_button_poll_type.ts";
 import { WebAppInfo } from "./0_web_app_info.ts";
@@ -77,53 +77,53 @@ export type KeyboardButton =
   | KeyboardButton.RequestPoll
   | KeyboardButton.WebApp;
 
-export function constructKeyboardButton(button_: types.TypeKeyboardButton): KeyboardButton {
+export function constructKeyboardButton(button_: enums.KeyboardButton): KeyboardButton {
   if (button_ instanceof types.KeyboardButton) {
     return { text: button_.text };
   } else if (button_ instanceof types.KeyboardButtonRequestPeer) {
-    if (button_.peerType instanceof types.RequestPeerTypeUser) {
+    if (button_.peer_type instanceof types.RequestPeerTypeUser) {
       return {
         text: button_.text,
         requestUser: {
-          requestId: button_.buttonId,
-          userIsBot: button_.peerType.bot || false,
-          userIsPremium: button_.peerType.premium || false,
+          requestId: button_.button_id,
+          userIsBot: button_.peer_type.bot || false,
+          userIsPremium: button_.peer_type.premium || false,
         },
       };
-    } else if (button_.peerType instanceof types.RequestPeerTypeChat) {
+    } else if (button_.peer_type instanceof types.RequestPeerTypeChat) {
       const button: KeyboardButton.RequestChat = {
         text: button_.text,
         requestChat: {
-          requestId: button_.buttonId,
+          requestId: button_.button_id,
           chatIsChannel: false, // GUESS
-          chatIsForum: button_.peerType.forum || false,
-          chatHasUsername: button_.peerType.hasUsername || false,
-          chatIsCreated: button_.peerType.creator || false,
-          botIsMember: button_.peerType.botParticipant || false,
+          chatIsForum: button_.peer_type.forum || false,
+          chatHasUsername: button_.peer_type.has_username || false,
+          chatIsCreated: button_.peer_type.creator || false,
+          botIsMember: button_.peer_type.bot_participant || false,
         },
       };
-      if (button_.peerType.botAdminRights) {
-        button.requestChat.botAdministratorRights = constructChatAdministratorRights(button_.peerType.botAdminRights);
+      if (button_.peer_type.bot_admin_rights) {
+        button.requestChat.botAdministratorRights = constructChatAdministratorRights(button_.peer_type.bot_admin_rights);
       }
-      if (button_.peerType.userAdminRights) {
-        button.requestChat.userAdministratorRights = constructChatAdministratorRights(button_.peerType.userAdminRights);
+      if (button_.peer_type.user_admin_rights) {
+        button.requestChat.userAdministratorRights = constructChatAdministratorRights(button_.peer_type.user_admin_rights);
       }
       return button;
-    } else if (button_.peerType instanceof types.RequestPeerTypeBroadcast) {
+    } else if (button_.peer_type instanceof types.RequestPeerTypeBroadcast) {
       const button: KeyboardButton.RequestChat = {
         text: button_.text,
         requestChat: {
-          requestId: button_.buttonId,
+          requestId: button_.button_id,
           chatIsChannel: true, // GUESS
-          chatIsCreated: button_.peerType.creator || false,
-          chatHasUsername: button_.peerType.hasUsername || false,
+          chatIsCreated: button_.peer_type.creator || false,
+          chatHasUsername: button_.peer_type.has_username || false,
         },
       };
-      if (button_.peerType.botAdminRights) {
-        button.requestChat.botAdministratorRights = constructChatAdministratorRights(button_.peerType.botAdminRights);
+      if (button_.peer_type.bot_admin_rights) {
+        button.requestChat.botAdministratorRights = constructChatAdministratorRights(button_.peer_type.bot_admin_rights);
       }
-      if (button_.peerType.userAdminRights) {
-        button.requestChat.userAdministratorRights = constructChatAdministratorRights(button_.peerType.userAdminRights);
+      if (button_.peer_type.user_admin_rights) {
+        button.requestChat.userAdministratorRights = constructChatAdministratorRights(button_.peer_type.user_admin_rights);
       }
       return button;
     } else {
@@ -152,32 +152,32 @@ export function keyboardButtonToTlObject(button: KeyboardButton) {
   if ("requestUser" in button) {
     return new types.KeyboardButtonRequestPeer({
       text: button.text,
-      buttonId: button.requestUser.requestId,
-      peerType: new types.RequestPeerTypeUser({ bot: button.requestUser.userIsBot, premium: button.requestUser.userIsPremium }),
+      button_id: button.requestUser.requestId,
+      peer_type: new types.RequestPeerTypeUser({ bot: button.requestUser.userIsBot, premium: button.requestUser.userIsPremium }),
     });
   } else if ("requestChat" in button) {
     if (!button.requestChat.chatIsChannel) { // GUESS
       return new types.KeyboardButtonRequestPeer({
         text: button.text,
-        buttonId: button.requestChat.requestId,
-        peerType: new types.RequestPeerTypeChat({
+        button_id: button.requestChat.requestId,
+        peer_type: new types.RequestPeerTypeChat({
           forum: button.requestChat.chatIsForum,
-          hasUsername: button.requestChat.chatHasUsername,
+          has_username: button.requestChat.chatHasUsername,
           creator: button.requestChat.chatIsCreated || undefined,
-          botParticipant: button.requestChat.botIsMember || undefined,
-          botAdminRights: button.requestChat.botAdministratorRights ? chatAdministratorRightsToTlObject(button.requestChat.botAdministratorRights) : undefined,
-          userAdminRights: button.requestChat.userAdministratorRights ? chatAdministratorRightsToTlObject(button.requestChat.userAdministratorRights) : undefined,
+          bot_participant: button.requestChat.botIsMember || undefined,
+          bot_admin_rights: button.requestChat.botAdministratorRights ? chatAdministratorRightsToTlObject(button.requestChat.botAdministratorRights) : undefined,
+          user_admin_rights: button.requestChat.userAdministratorRights ? chatAdministratorRightsToTlObject(button.requestChat.userAdministratorRights) : undefined,
         }),
       });
     } else {
       return new types.KeyboardButtonRequestPeer({
         text: button.text,
-        buttonId: button.requestChat.requestId,
-        peerType: new types.RequestPeerTypeBroadcast({
-          hasUsername: button.requestChat.chatHasUsername,
+        button_id: button.requestChat.requestId,
+        peer_type: new types.RequestPeerTypeBroadcast({
+          has_username: button.requestChat.chatHasUsername,
           creator: button.requestChat.chatIsCreated || undefined,
-          botAdminRights: button.requestChat.botAdministratorRights ? chatAdministratorRightsToTlObject(button.requestChat.botAdministratorRights) : undefined,
-          userAdminRights: button.requestChat.userAdministratorRights ? chatAdministratorRightsToTlObject(button.requestChat.userAdministratorRights) : undefined,
+          bot_admin_rights: button.requestChat.botAdministratorRights ? chatAdministratorRightsToTlObject(button.requestChat.botAdministratorRights) : undefined,
+          user_admin_rights: button.requestChat.userAdministratorRights ? chatAdministratorRightsToTlObject(button.requestChat.userAdministratorRights) : undefined,
         }),
       });
     }

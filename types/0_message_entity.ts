@@ -1,4 +1,4 @@
-import { types } from "../2_tl.ts";
+import { enums, types } from "../2_tl.ts";
 
 export type MessageEntityType =
   | "mention"
@@ -137,14 +137,14 @@ export type MessageEntity =
   | MessageEntity.Spoiler
   | MessageEntity.CustomEmoji;
 
-export function constructMessageEntity(obj: types.TypeMessageEntity): MessageEntity | null {
+export function constructMessageEntity(obj: enums.MessageEntity): MessageEntity | null {
   if (obj instanceof types.MessageEntityMention) {
     return { type: "mention", offset: obj.offset, length: obj.length };
   } else if (obj instanceof types.MessageEntityHashtag) {
     return { type: "hashtag", offset: obj.offset, length: obj.length };
   } else if (obj instanceof types.MessageEntityBotCommand) {
     return { type: "botCommand", offset: obj.offset ?? 0, length: obj.length };
-  } else if (obj instanceof types.MessageEntityURL) {
+  } else if (obj instanceof types.MessageEntityUrl) {
     return { type: "url", offset: obj.offset, length: obj.length };
   } else if (obj instanceof types.MessageEntityEmail) {
     return { type: "email", offset: obj.offset, length: obj.length };
@@ -156,10 +156,10 @@ export function constructMessageEntity(obj: types.TypeMessageEntity): MessageEnt
     return { type: "code", offset: obj.offset, length: obj.length };
   } else if (obj instanceof types.MessageEntityPre) {
     return { type: "pre", offset: obj.offset, length: obj.length, language: obj.language };
-  } else if (obj instanceof types.MessageEntityTextURL) {
+  } else if (obj instanceof types.MessageEntityTextUrl) {
     return { type: "textLink", offset: obj.offset, length: obj.length, url: obj.url };
   } else if (obj instanceof types.MessageEntityMentionName) {
-    return { type: "textMention", offset: obj.offset, length: obj.length, userId: Number(obj.userId) };
+    return { type: "textMention", offset: obj.offset, length: obj.length, userId: Number(obj.user_id) };
   } else if (obj instanceof types.MessageEntityCashtag) {
     return { type: "cashtag", offset: obj.offset, length: obj.length };
   } else if (obj instanceof types.MessageEntityPhone) {
@@ -175,7 +175,7 @@ export function constructMessageEntity(obj: types.TypeMessageEntity): MessageEnt
   } else if (obj instanceof types.MessageEntitySpoiler) {
     return { type: "spoiler", offset: obj.offset, length: obj.length };
   } else if (obj instanceof types.MessageEntityCustomEmoji) {
-    return { type: "customEmoji", offset: obj.offset, length: obj.length, customEmojiId: String(obj.documentId) };
+    return { type: "customEmoji", offset: obj.offset, length: obj.length, customEmojiId: String(obj.document_id) };
   } else {
     return null;
   }
@@ -191,7 +191,7 @@ export function messageEntityToTlObject(entity: MessageEntity) {
     case "botCommand":
       return new types.MessageEntityBotCommand({ offset, length });
     case "url":
-      return new types.MessageEntityURL({ offset, length });
+      return new types.MessageEntityUrl({ offset, length });
     case "email":
       return new types.MessageEntityEmail({ offset, length });
     case "bold":
@@ -203,9 +203,9 @@ export function messageEntityToTlObject(entity: MessageEntity) {
     case "pre":
       return new types.MessageEntityPre({ offset, length, language: entity.language });
     case "textLink":
-      return new types.MessageEntityTextURL({ offset, length, url: entity.url });
+      return new types.MessageEntityTextUrl({ offset, length, url: entity.url });
     case "textMention":
-      return new types.MessageEntityMentionName({ offset, length, userId: BigInt(entity.userId) });
+      return new types.MessageEntityMentionName({ offset, length, user_id: BigInt(entity.userId) });
     case "cashtag":
       return new types.MessageEntityCashtag({ offset, length });
     case "phoneNumber":
@@ -221,6 +221,6 @@ export function messageEntityToTlObject(entity: MessageEntity) {
     case "spoiler":
       return new types.MessageEntitySpoiler({ offset, length });
     case "customEmoji":
-      return new types.MessageEntityCustomEmoji({ offset, length, documentId: BigInt(entity.customEmojiId) });
+      return new types.MessageEntityCustomEmoji({ offset, length, document_id: BigInt(entity.customEmojiId) });
   }
 }

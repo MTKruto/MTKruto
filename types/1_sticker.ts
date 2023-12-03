@@ -52,13 +52,13 @@ export async function constructSticker(document: types.Document, fileId: string,
     type: stickerAttribute.mask ? "mask" : "regular",
     width: imageSizeAttribute ? imageSizeAttribute.w : videoAttribute ? videoAttribute.w : 512,
     height: imageSizeAttribute ? imageSizeAttribute.h : videoAttribute ? videoAttribute.h : 512,
-    isAnimated: document.mimeType == "application/x-tgsticker",
-    isVideo: document.mimeType == "video/webm",
+    isAnimated: document.mime_type == "application/x-tgsticker",
+    isVideo: document.mime_type == "video/webm",
     thumbnails: document.thumbs ? document.thumbs.map((v) => v instanceof types.PhotoSize ? constructThumbnail(v, document) : null).filter((v) => v) as Thumbnail[] : [],
     emoji: stickerAttribute.alt || undefined,
     setName,
     premiumAnimation: undefined, // TODO
-    maskPosition: stickerAttribute.maskCoords ? constructMaskPosition(stickerAttribute.maskCoords) : undefined,
+    maskPosition: stickerAttribute.mask_coords ? constructMaskPosition(stickerAttribute.mask_coords) : undefined,
     customEmojiId: undefined, // TODO
     needsRepainting: undefined, // TODO
     fileSize: Number(document.size),

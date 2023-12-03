@@ -21,8 +21,8 @@ export function constructDocument(document: types.Document, fileNameAttribute: t
     fileId,
     fileUniqueId,
     thumbnails: document.thumbs ? document.thumbs.map((v) => v instanceof types.PhotoSize ? constructThumbnail(v, document) : null).filter((v) => v) as Thumbnail[] : [],
-    fileName: fileNameAttribute.fileName,
-    mimeType: document.mimeType,
+    fileName: fileNameAttribute.file_name,
+    mimeType: document.mime_type,
     fileSize: Number(document.size),
   };
 }

@@ -1,5 +1,5 @@
 import { UNREACHABLE } from "../1_utilities.ts";
-import { types } from "../2_tl.ts";
+import { enums, types } from "../2_tl.ts";
 import { FileID } from "./0__file_id.ts";
 import { MessageEntity } from "./0_message_entity.ts";
 import { ParseMode } from "./0_parse_mode.ts";
@@ -50,7 +50,7 @@ export type InlineQueryResult =
 
 // deno-lint-ignore no-explicit-any
 export async function inlineQueryResultToTlObject(result_: InlineQueryResult, parseText: (text: string, params?: { parseMode?: ParseMode; entities?: MessageEntity[] }) => readonly [string, any[] | undefined], usernameResolver: UsernameResolver) {
-  let document: types.TypeInputWebDocument | null = null;
+  let document: enums.InputWebDocument | null = null;
   let thumb: types.InputWebDocument | null = null;
   let fileId_: string | null = null;
   switch (result_.type) {
@@ -59,7 +59,7 @@ export async function inlineQueryResultToTlObject(result_: InlineQueryResult, pa
         document = new types.InputWebDocument({
           url: result_.audioUrl,
           size: 0,
-          mimeType: "audio/mpeg",
+          mime_type: "audio/mpeg",
           attributes: [
             new types.DocumentAttributeAudio({
               duration: result_.audioDuration ?? 0,
@@ -77,7 +77,7 @@ export async function inlineQueryResultToTlObject(result_: InlineQueryResult, pa
         document = new types.InputWebDocument({
           url: result_.videoUrl,
           size: 0,
-          mimeType: result_.mimeType ?? "video/mp4",
+          mime_type: result_.mimeType ?? "video/mp4",
           attributes: [
             new types.DocumentAttributeVideo({
               duration: result_.videoDuration ?? 0,
@@ -94,7 +94,7 @@ export async function inlineQueryResultToTlObject(result_: InlineQueryResult, pa
       if ("documentUrl" in result_) {
         document = new types.InputWebDocument({
           url: result_.documentUrl,
-          mimeType: "application/octet-stream",
+          mime_type: "application/octet-stream",
           attributes: [],
           size: 0,
         });
@@ -107,7 +107,7 @@ export async function inlineQueryResultToTlObject(result_: InlineQueryResult, pa
         document = new types.InputWebDocument({
           url: result_.gifUrl,
           size: 0,
-          mimeType: "image/gif",
+          mime_type: "image/gif",
           attributes: [
             new types.DocumentAttributeVideo({
               duration: result_.gifDuration ?? 0,
@@ -125,14 +125,14 @@ export async function inlineQueryResultToTlObject(result_: InlineQueryResult, pa
         document = new types.InputWebDocument({
           url: result_.mpeg4Url,
           size: 0,
-          mimeType: "video/mp4",
+          mime_type: "video/mp4",
           attributes: [
             new types.DocumentAttributeVideo({
               nosound: true,
               duration: result_.mpeg4Duration ?? 0,
               w: result_.mpeg4Width ?? 0,
               h: result_.mpeg4Height ?? 0,
-              supportsStreaming: true,
+              supports_streaming: true,
             }),
           ],
         });
@@ -145,7 +145,7 @@ export async function inlineQueryResultToTlObject(result_: InlineQueryResult, pa
         document = new types.InputWebDocument({
           url: result_.photoUrl,
           size: 0,
-          mimeType: "image/jpeg",
+          mime_type: "image/jpeg",
           attributes: [new types.DocumentAttributeImageSize({ w: result_.photoWidth ?? 0, h: result_.photoHeight ?? 0 })],
         });
       } else {
@@ -160,7 +160,7 @@ export async function inlineQueryResultToTlObject(result_: InlineQueryResult, pa
         document = new types.InputWebDocument({
           url: result_.voiceUrl,
           size: 0,
-          mimeType: "audio/mpeg",
+          mime_type: "audio/mpeg",
           attributes: [
             new types.DocumentAttributeAudio({
               duration: result_.voiceDuration ?? 0,
@@ -180,7 +180,7 @@ export async function inlineQueryResultToTlObject(result_: InlineQueryResult, pa
     thumb = new types.InputWebDocument({
       url: result_.thumbnailUrl,
       size: 0,
-      mimeType: "image/jpeg",
+      mime_type: "image/jpeg",
       attributes: [],
     });
   } else if (result_.type == "photo") {
@@ -197,7 +197,7 @@ export async function inlineQueryResultToTlObject(result_: InlineQueryResult, pa
   const sendMessage = new types.InputBotInlineMessageMediaAuto({
     message,
     entities,
-    replyMarkup,
+    reply_markup: replyMarkup,
   });
 
   const title = "title" in result_ ? result_.title : undefined;
@@ -211,10 +211,10 @@ export async function inlineQueryResultToTlObject(result_: InlineQueryResult, pa
       description,
       thumb: thumb == null ? undefined : thumb,
       content: document,
-      sendMessage: new types.InputBotInlineMessageMediaAuto({
+      send_message: new types.InputBotInlineMessageMediaAuto({
         message,
         entities,
-        replyMarkup,
+        reply_markup: replyMarkup,
       }),
     });
   } else if (fileId_ != null) {
@@ -226,10 +226,10 @@ export async function inlineQueryResultToTlObject(result_: InlineQueryResult, pa
       description,
       document: new types.InputDocument({
         id: fileId.params.mediaId!,
-        accessHash: fileId.params.accessHash!,
-        fileReference: fileId.params.fileReference!,
+        access_hash: fileId.params.accessHash!,
+        file_reference: fileId.params.fileReference!,
       }),
-      sendMessage,
+      send_message: sendMessage,
     });
   } else if (result_.type == "location") {
     return new types.InputBotInlineResult({
@@ -237,16 +237,16 @@ export async function inlineQueryResultToTlObject(result_: InlineQueryResult, pa
       type,
       title,
       description,
-      sendMessage: new types.InputBotInlineMessageMediaGeo({
-        geoPoint: new types.InputGeoPoint({
+      send_message: new types.InputBotInlineMessageMediaGeo({
+        geo_point: new types.InputGeoPoint({
           lat: result_.latitude,
           long: result_.longitude,
-          accuracyRadius: result_.horizontalAccuracy,
+          accuracy_radius: result_.horizontalAccuracy,
         }),
         heading: result_.heading,
         period: result_.livePeriod,
-        proximityNotificationRadius: result_.proximityAlertRadius,
-        replyMarkup,
+        proximity_notification_radius: result_.proximityAlertRadius,
+        reply_markup: replyMarkup,
       }),
     });
   } else if (result_.type == "game") {
@@ -255,8 +255,8 @@ export async function inlineQueryResultToTlObject(result_: InlineQueryResult, pa
       type,
       title,
       description,
-      sendMessage: new types.InputBotInlineMessageGame({
-        replyMarkup,
+      send_message: new types.InputBotInlineMessageGame({
+        reply_markup: replyMarkup,
       }),
     });
   } else if (result_.type == "article") {
@@ -269,11 +269,11 @@ export async function inlineQueryResultToTlObject(result_: InlineQueryResult, pa
       type,
       title,
       description,
-      sendMessage: new types.InputBotInlineMessageText({
+      send_message: new types.InputBotInlineMessageText({
         message,
         entities,
-        noWebpage: result_.inputMessageContent.disableWebPagePreview ? true : undefined,
-        replyMarkup,
+        no_webpage: result_.inputMessageContent.disableWebPagePreview ? true : undefined,
+        reply_markup: replyMarkup,
       }),
     });
   } else if (result_.type == "venue") {
@@ -285,14 +285,14 @@ export async function inlineQueryResultToTlObject(result_: InlineQueryResult, pa
       type,
       title,
       description,
-      sendMessage: new types.InputBotInlineMessageMediaVenue({
-        geoPoint: new types.InputGeoPoint({ long: result_.longitude, lat: result_.latitude }),
+      send_message: new types.InputBotInlineMessageMediaVenue({
+        geo_point: new types.InputGeoPoint({ long: result_.longitude, lat: result_.latitude }),
         address: result_.address,
         provider: "foursquare",
         title: result_.title,
-        venueId: result_.fourSquareId,
-        venueType: result_.foursquareType,
-        replyMarkup,
+        venue_id: result_.fourSquareId,
+        venue_type: result_.foursquareType,
+        reply_markup: replyMarkup,
       }),
     });
   } else {

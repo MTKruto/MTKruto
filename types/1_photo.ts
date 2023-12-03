@@ -30,7 +30,7 @@ export function constructPhoto(photo: types.Photo): Photo {
     .sort((a, b) => a.size - b.size);
 
   const largest = sizes.slice(-1)[0];
-  const { dcId, id: mediaId, accessHash, fileReference } = photo;
+  const { dc_id: dcId, id: mediaId, access_hash: accessHash, file_reference: fileReference } = photo;
   const fileUniqueId = new FileUniqueID(FileUniqueType.Document, { mediaId: photo.id }).encode();
 
   return {

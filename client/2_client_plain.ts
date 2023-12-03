@@ -49,7 +49,7 @@ export class ClientPlain extends ClientAbstract {
     for (let i = 0; i < 10; i++) {
       try {
         d("req_pq_multi [%d]", i + 1);
-        resPq = await this.invoke(new functions.ReqPQMulti({ nonce }));
+        resPq = await this.invoke(new functions.req_pq_multi({ nonce }));
 
         assertInstanceOf(resPq, types.ResPQ);
         assertEquals(resPq.nonce, nonce);
@@ -74,7 +74,7 @@ export class ClientPlain extends ClientAbstract {
     let publicKeyFingerprint: bigint | undefined;
     let publicKey: [bigint, bigint] | undefined;
 
-    for (const fingerprint of resPq.serverPublicKeyFingerprints) {
+    for (const fingerprint of resPq.server_public_key_fingerprints) {
       const maybePublicKey = this.#publicKeys.find(([k]) => (k == fingerprint));
       if (maybePublicKey) {
         publicKeyFingerprint = fingerprint;
@@ -89,55 +89,55 @@ export class ClientPlain extends ClientAbstract {
 
     const dc = this.dcId;
     const pq = resPq.pq;
-    const serverNonce = resPq.serverNonce;
+    const serverNonce = resPq.server_nonce;
     const newNonce = getRandomBigInt(32, false, true);
     let encryptedData = await rsaPad(
-      new types.PQInnerDataDC({
+      new types.P_q_inner_data_dc({
         pq,
         p,
         q,
         dc,
-        newNonce,
+        new_nonce: newNonce,
         nonce,
-        serverNonce,
+        server_nonce: serverNonce,
       })[serialize](),
       publicKey,
     );
 
     const dhParams = await this.invoke(
-      new functions.ReqDHParams({
+      new functions.req_DH_params({
         nonce,
-        serverNonce,
+        server_nonce: serverNonce,
         p,
         q,
-        publicKeyFingerprint,
-        encryptedData,
+        public_key_fingerprint: publicKeyFingerprint,
+        encrypted_data: encryptedData,
       }),
     );
 
-    assertInstanceOf(dhParams, types.ServerDHParamsOK);
+    assertInstanceOf(dhParams, types.Server_DH_params_ok);
     d("got server_DH_params_ok");
 
     const newNonce_ = bufferFromBigInt(newNonce, 32, true, true);
     const serverNonce_ = bufferFromBigInt(serverNonce, 16, true, true);
     const tmpAesKey = concat(await sha1(concat(newNonce_, serverNonce_)), (await sha1(concat(serverNonce_, newNonce_))).slice(0, 0 + 12));
     const tmpAesIv = concat((await sha1(concat(serverNonce_, newNonce_))).slice(12, 12 + 8), await sha1(concat(newNonce_, newNonce_)), newNonce_.slice(0, 0 + 4));
-    const answerWithHash = ige256Decrypt(dhParams.encryptedAnswer, tmpAesKey, tmpAesIv);
+    const answerWithHash = ige256Decrypt(dhParams.encrypted_answer, tmpAesKey, tmpAesIv);
 
     const dhInnerData = new TLReader(answerWithHash.slice(20)).readObject();
-    assertInstanceOf(dhInnerData, types.ServerDHInnerData);
-    const { g, gA: gA_, dhPrime: dhPrime_ } = dhInnerData;
+    assertInstanceOf(dhInnerData, types.Server_DH_inner_data);
+    const { g, g_a: gA_, dh_prime: dhPrime_ } = dhInnerData;
     const gA = bigIntFromBuffer(gA_, false, false);
     const dhPrime = bigIntFromBuffer(dhPrime_, false, false);
 
     const b = getRandomBigInt(256, false, false);
     const gB = modExp(BigInt(g), b, dhPrime);
 
-    const data = new types.ClientDHInnerData({
+    const data = new types.Client_DH_inner_data({
       nonce,
-      serverNonce,
-      retryId: 0n,
-      gB: bufferFromBigInt(gB, 256, false, false),
+      server_nonce: serverNonce,
+      retry_id: 0n,
+      g_b: bufferFromBigInt(gB, 256, false, false),
     })[serialize]();
 
     let dataWithHash = concat(await sha1(data), data);
@@ -148,8 +148,8 @@ export class ClientPlain extends ClientAbstract {
 
     encryptedData = ige256Encrypt(dataWithHash, tmpAesKey, tmpAesIv);
 
-    const dhGenOk = await this.invoke(new functions.SetClientDHParams({ nonce, serverNonce, encryptedData }));
-    assertInstanceOf(dhGenOk, types.DHGenOK);
+    const dhGenOk = await this.invoke(new functions.set_client_DH_params({ nonce, server_nonce: serverNonce, encrypted_data: encryptedData }));
+    assertInstanceOf(dhGenOk, types.Dh_gen_ok);
     d("got dh_gen_ok");
 
     const serverNonceSlice = serverNonce_.slice(0, 8);

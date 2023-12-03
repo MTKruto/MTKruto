@@ -22,7 +22,7 @@ export function constructLocation(geo_: types.MessageMediaGeo | types.MessageMed
     return {
       latitude: geo.lat,
       longitude: geo.long,
-      horizontalAccuracy: geo.accuracyRadius,
+      horizontalAccuracy: geo.accuracy_radius,
     };
   } else if (geo_ instanceof types.MessageMediaGeoLive) {
     const media = geo_;
@@ -30,16 +30,16 @@ export function constructLocation(geo_: types.MessageMediaGeo | types.MessageMed
     return {
       latitude: geo.lat,
       longitude: geo.long,
-      horizontalAccuracy: geo.accuracyRadius,
+      horizontalAccuracy: geo.accuracy_radius,
       livePeriod: media.period,
       heading: media.heading,
-      proximityAlertRadius: media.proximityNotificationRadius,
+      proximityAlertRadius: media.proximity_notification_radius,
     };
   } else {
     return {
       latitude: geo_.lat,
       longitude: geo_.long,
-      horizontalAccuracy: geo_.accuracyRadius,
+      horizontalAccuracy: geo_.accuracy_radius,
     };
   }
 }

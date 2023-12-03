@@ -18,10 +18,10 @@ export interface Thumbnail {
 export function constructThumbnail(size: types.PhotoSize, file: types.Document | types.Photo): Thumbnail {
   const fileType = file instanceof types.Photo ? FileType.Photo : FileType.Document;
 
-  const fileId = new FileID(null, null, fileType, file.dcId, {
+  const fileId = new FileID(null, null, fileType, file.dc_id, {
     mediaId: file.id,
-    accessHash: file.accessHash,
-    fileReference: file.fileReference,
+    accessHash: file.access_hash,
+    fileReference: file.file_reference,
     thumbnailFileType: fileType,
     thumbnailSource: ThumbnailSource.Thumbnail,
     thumbnailSize: size.type,
