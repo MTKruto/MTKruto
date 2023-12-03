@@ -57,6 +57,8 @@ export const serialize = Symbol();
 
 export const as = Symbol();
 
+export const name = Symbol();
+
 export function isOptionalParam(ntype: string) {
   return ntype.includes("?");
 }
@@ -167,6 +169,10 @@ function serializeSingleParam(
 export abstract class TLObject {
   protected abstract get [id](): number;
   protected abstract get [params](): Params;
+
+  static get [name](): string {
+    throw new Error("Not implemented");
+  }
 
   protected static get [paramDesc](): ParamDesc {
     // unimpl
