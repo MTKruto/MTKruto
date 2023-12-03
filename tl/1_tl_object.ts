@@ -90,16 +90,17 @@ function serializeSingleParam(
   ntype: string,
   debugInfo: string,
 ) {
-  const valueRepr = value == null ? null : value.constructor.name;
+  const valueRepr = value == null ? null : (typeof value === "object" && name in value) ? value[name] : value.constructor.name;
   if (isTLObjectConstructor(type)) {
     if (
+      // TODO: TypeX
       (type.name == "TypeX" && value instanceof TLObject) ||
       value instanceof type
     ) {
       writer.write(value[serialize]());
       return;
     } else {
-      throw new TypeError(`Expected ${type.name} but received ${valueRepr} ${debugInfo}`);
+      throw new TypeError(`Expected ${type[name]} but received ${valueRepr} ${debugInfo}`);
     }
   }
 
@@ -174,6 +175,10 @@ export abstract class TLObject {
     throw new Error("Not implemented");
   }
 
+  get [name]() {
+    return (this.constructor as typeof TLObject)[name];
+  }
+
   protected static get [paramDesc](): ParamDesc {
     // unimpl
     return [];
@@ -236,7 +241,7 @@ export abstract class TLObject {
     if (this instanceof constructor) {
       return this as InstanceType<T>;
     } else {
-      throw new TypeError(`Expected ${constructor.name} but received ${this.constructor.name}`);
+      throw new TypeError(`Expected ${constructor[name]} but received ${this[name]}`);
     }
   }
 }
@@ -244,6 +249,7 @@ export abstract class TLObject {
 export interface TLObjectConstructor<T = TLObject> {
   // deno-lint-ignore no-explicit-any
   new (params: any): T;
+  [name]: string;
   [paramDesc]: ParamDesc;
 }
 export function isTLObjectConstructor(t: unknown): t is typeof TLObject {
