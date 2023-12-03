@@ -1,5 +1,5 @@
 // deno-fmt-ignore-file
-import { id, params, TLObject, Params, paramDesc, ParamDesc, flags } from "./1_tl_object.ts";
+import { id, params, TLObject, Params, paramDesc, ParamDesc, flags, name } from "./1_tl_object.ts";
 import { types, enums } from "./2_types.ts";
 
 export abstract class Function_<T> extends TLObject {
@@ -12,6 +12,10 @@ export class req_pq_multi_ extends Function_<enums.ResPQ> {
 
   protected get [id]() {
     return 0xBE7E8EF1;
+  }
+
+  static get [name]() {
+    return "req_pq_multi"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -43,6 +47,10 @@ export class req_DH_params_ extends Function_<enums.Server_DH_Params> {
 
   protected get [id]() {
     return 0xD712E4BE;
+  }
+
+  static get [name]() {
+    return "req_DH_params"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -88,6 +96,10 @@ export class set_client_DH_params_ extends Function_<enums.Set_client_DH_params_
     return 0xF5045F1F;
   }
 
+  static get [name]() {
+    return "set_client_DH_params"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["nonce", "bigint", "int128"],
@@ -120,6 +132,10 @@ export class rpc_drop_answer_ extends Function_<enums.RpcDropAnswer> {
     return 0x58E4A740;
   }
 
+  static get [name]() {
+    return "rpc_drop_answer"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["req_msg_id", "bigint", "long"],
@@ -144,6 +160,10 @@ export class get_future_salts_ extends Function_<enums.FutureSalts> {
 
   protected get [id]() {
     return 0xB921BD04;
+  }
+
+  static get [name]() {
+    return "get_future_salts"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -172,6 +192,10 @@ export class ping_ extends Function_<enums.Pong> {
     return 0x7ABE77EC;
   }
 
+  static get [name]() {
+    return "ping"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["ping_id", "bigint", "long"],
@@ -197,6 +221,10 @@ export class ping_delay_disconnect_ extends Function_<enums.Pong> {
 
   protected get [id]() {
     return 0xF3427B8C;
+  }
+
+  static get [name]() {
+    return "ping_delay_disconnect"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -228,6 +256,10 @@ export class destroy_session_ extends Function_<enums.DestroySessionRes> {
     return 0xE7512126;
   }
 
+  static get [name]() {
+    return "destroy_session"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["session_id", "bigint", "long"],
@@ -252,6 +284,10 @@ export class destroy_auth_key_ extends Function_<enums.DestroyAuthKeyRes> {
     return 0xD1435160;
   }
 
+  static get [name]() {
+    return "destroy_auth_key"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [];
   }
@@ -272,6 +308,10 @@ export class invokeAfterMsg_<T extends Function_<unknown>> extends Function_<T["
 
   protected get [id]() {
     return 0xCB9F372D;
+  }
+
+  static get [name]() {
+    return "invokeAfterMsg"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -302,6 +342,10 @@ export class invokeAfterMsgs_<T extends Function_<unknown>> extends Function_<T[
 
   protected get [id]() {
     return 0x3DC4B4F0;
+  }
+
+  static get [name]() {
+    return "invokeAfterMsgs"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -340,6 +384,10 @@ export class initConnection_<T extends Function_<unknown>> extends Function_<T["
 
   protected get [id]() {
     return 0xC1CD5EA9;
+  }
+
+  static get [name]() {
+    return "initConnection"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -398,6 +446,10 @@ export class invokeWithLayer_<T extends Function_<unknown>> extends Function_<T[
     return 0xDA9B0D0D;
   }
 
+  static get [name]() {
+    return "invokeWithLayer"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["layer", "number", "int"],
@@ -427,6 +479,10 @@ export class invokeWithoutUpdates_<T extends Function_<unknown>> extends Functio
     return 0xBF9459B7;
   }
 
+  static get [name]() {
+    return "invokeWithoutUpdates"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["query", types["TypeX"], "!X"],
@@ -452,6 +508,10 @@ export class invokeWithMessagesRange_<T extends Function_<unknown>> extends Func
 
   protected get [id]() {
     return 0x365275F2;
+  }
+
+  static get [name]() {
+    return "invokeWithMessagesRange"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -484,6 +544,10 @@ export class invokeWithTakeout_<T extends Function_<unknown>> extends Function_<
     return 0xACA9FD2E;
   }
 
+  static get [name]() {
+    return "invokeWithTakeout"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["takeout_id", "bigint", "long"],
@@ -514,6 +578,10 @@ export class auth_sendCode_ extends Function_<enums.auth.SentCode> {
 
   protected get [id]() {
     return 0xA677244F;
+  }
+
+  static get [name]() {
+    return "auth.sendCode"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -554,6 +622,10 @@ export class auth_signUp_ extends Function_<enums.auth.Authorization> {
     return 0x80EEE427;
   }
 
+  static get [name]() {
+    return "auth.signUp"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["phone_number", "string", "string"],
@@ -592,6 +664,10 @@ export class auth_signIn_ extends Function_<enums.auth.Authorization> {
     return 0x8D52A951;
   }
 
+  static get [name]() {
+    return "auth.signIn"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["flags", flags, "#"],
@@ -627,6 +703,10 @@ export class auth_logOut_ extends Function_<enums.auth.LoggedOut> {
     return 0x3E72BA19;
   }
 
+  static get [name]() {
+    return "auth.logOut"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [];
   }
@@ -644,6 +724,10 @@ export class auth_resetAuthorizations_ extends Function_<boolean> {
   static __F = Symbol() as unknown as () => boolean;
   protected get [id]() {
     return 0x9FAB0D1A;
+  }
+
+  static get [name]() {
+    return "auth.resetAuthorizations"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -665,6 +749,10 @@ export class auth_exportAuthorization_ extends Function_<enums.auth.ExportedAuth
 
   protected get [id]() {
     return 0xE5BFFFCD;
+  }
+
+  static get [name]() {
+    return "auth.exportAuthorization"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -692,6 +780,10 @@ export class auth_importAuthorization_ extends Function_<enums.auth.Authorizatio
 
   protected get [id]() {
     return 0xA57A7DAD;
+  }
+
+  static get [name]() {
+    return "auth.importAuthorization"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -724,6 +816,10 @@ export class auth_bindTempAuthKey_ extends Function_<boolean> {
 
   protected get [id]() {
     return 0xCDD42A05;
+  }
+
+  static get [name]() {
+    return "auth.bindTempAuthKey"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -764,6 +860,10 @@ export class auth_importBotAuthorization_ extends Function_<enums.auth.Authoriza
     return 0x67A3FF2C;
   }
 
+  static get [name]() {
+    return "auth.importBotAuthorization"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["flags", "number", "int"],
@@ -799,6 +899,10 @@ export class auth_checkPassword_ extends Function_<enums.auth.Authorization> {
     return 0xD18B4D16;
   }
 
+  static get [name]() {
+    return "auth.checkPassword"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["password", types._InputCheckPasswordSRP, "InputCheckPasswordSRP"],
@@ -823,6 +927,10 @@ export class auth_requestPasswordRecovery_ extends Function_<enums.auth.Password
     return 0xD897BC66;
   }
 
+  static get [name]() {
+    return "auth.requestPasswordRecovery"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [];
   }
@@ -843,6 +951,10 @@ export class auth_recoverPassword_ extends Function_<enums.auth.Authorization> {
 
   protected get [id]() {
     return 0x37096C70;
+  }
+
+  static get [name]() {
+    return "auth.recoverPassword"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -877,6 +989,10 @@ export class auth_resendCode_ extends Function_<enums.auth.SentCode> {
     return 0x3EF1A9BF;
   }
 
+  static get [name]() {
+    return "auth.resendCode"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["phone_number", "string", "string"],
@@ -905,6 +1021,10 @@ export class auth_cancelCode_ extends Function_<boolean> {
 
   protected get [id]() {
     return 0x1F040578;
+  }
+
+  static get [name]() {
+    return "auth.cancelCode"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -936,6 +1056,10 @@ export class auth_dropTempAuthKeys_ extends Function_<boolean> {
     return 0x8E48A188;
   }
 
+  static get [name]() {
+    return "auth.dropTempAuthKeys"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["except_auth_keys", ["bigint"], "Vector<long>"],
@@ -962,6 +1086,10 @@ export class auth_exportLoginToken_ extends Function_<enums.auth.LoginToken> {
 
   protected get [id]() {
     return 0xB7E085FE;
+  }
+
+  static get [name]() {
+    return "auth.exportLoginToken"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -996,6 +1124,10 @@ export class auth_importLoginToken_ extends Function_<enums.auth.LoginToken> {
     return 0x95AC5CE4;
   }
 
+  static get [name]() {
+    return "auth.importLoginToken"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["token", Uint8Array, "bytes"],
@@ -1020,6 +1152,10 @@ export class auth_acceptLoginToken_ extends Function_<enums.Authorization> {
 
   protected get [id]() {
     return 0xE894AD4D;
+  }
+
+  static get [name]() {
+    return "auth.acceptLoginToken"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -1048,6 +1184,10 @@ export class auth_checkRecoveryPassword_ extends Function_<boolean> {
     return 0x0D36BF79;
   }
 
+  static get [name]() {
+    return "auth.checkRecoveryPassword"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["code", "string", "string"],
@@ -1074,6 +1214,10 @@ export class auth_importWebTokenAuthorization_ extends Function_<enums.auth.Auth
 
   protected get [id]() {
     return 0x2DB873A9;
+  }
+
+  static get [name]() {
+    return "auth.importWebTokenAuthorization"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -1109,6 +1253,10 @@ export class auth_requestFirebaseSms_ extends Function_<boolean> {
 
   protected get [id]() {
     return 0x89464B50;
+  }
+
+  static get [name]() {
+    return "auth.requestFirebaseSms"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -1149,6 +1297,10 @@ export class auth_resetLoginEmail_ extends Function_<enums.auth.SentCode> {
     return 0x7E960193;
   }
 
+  static get [name]() {
+    return "auth.resetLoginEmail"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["phone_number", "string", "string"],
@@ -1181,6 +1333,10 @@ export class account_registerDevice_ extends Function_<boolean> {
 
   protected get [id]() {
     return 0xEC86017A;
+  }
+
+  static get [name]() {
+    return "account.registerDevice"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -1228,6 +1384,10 @@ export class account_unregisterDevice_ extends Function_<boolean> {
     return 0x6A0D3206;
   }
 
+  static get [name]() {
+    return "account.unregisterDevice"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["token_type", "number", "int"],
@@ -1261,6 +1421,10 @@ export class account_updateNotifySettings_ extends Function_<boolean> {
     return 0x84BE5B93;
   }
 
+  static get [name]() {
+    return "account.updateNotifySettings"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["peer", types._InputNotifyPeer, "InputNotifyPeer"],
@@ -1290,6 +1454,10 @@ export class account_getNotifySettings_ extends Function_<enums.PeerNotifySettin
     return 0x12B3AD31;
   }
 
+  static get [name]() {
+    return "account.getNotifySettings"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["peer", types._InputNotifyPeer, "InputNotifyPeer"],
@@ -1314,6 +1482,10 @@ export class account_resetNotifySettings_ extends Function_<boolean> {
     return 0xDB7E1747;
   }
 
+  static get [name]() {
+    return "account.resetNotifySettings"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [];
   }
@@ -1335,6 +1507,10 @@ export class account_updateProfile_ extends Function_<enums.User> {
 
   protected get [id]() {
     return 0x78515775;
+  }
+
+  static get [name]() {
+    return "account.updateProfile"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -1371,6 +1547,10 @@ export class account_updateStatus_ extends Function_<boolean> {
     return 0x6628562C;
   }
 
+  static get [name]() {
+    return "account.updateStatus"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["offline", "boolean", "Bool"],
@@ -1395,6 +1575,10 @@ export class account_getWallPapers_ extends Function_<enums.account.WallPapers> 
 
   protected get [id]() {
     return 0x07967D36;
+  }
+
+  static get [name]() {
+    return "account.getWallPapers"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -1423,6 +1607,10 @@ export class account_reportPeer_ extends Function_<boolean> {
 
   protected get [id]() {
     return 0xC5BA3D86;
+  }
+
+  static get [name]() {
+    return "account.reportPeer"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -1457,6 +1645,10 @@ export class account_checkUsername_ extends Function_<boolean> {
     return 0x2714D86C;
   }
 
+  static get [name]() {
+    return "account.checkUsername"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["username", "string", "string"],
@@ -1481,6 +1673,10 @@ export class account_updateUsername_ extends Function_<enums.User> {
 
   protected get [id]() {
     return 0x3E0BDD7C;
+  }
+
+  static get [name]() {
+    return "account.updateUsername"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -1509,6 +1705,10 @@ export class account_getPrivacy_ extends Function_<enums.account.PrivacyRules> {
     return 0xDADBC950;
   }
 
+  static get [name]() {
+    return "account.getPrivacy"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["key", types._InputPrivacyKey, "InputPrivacyKey"],
@@ -1534,6 +1734,10 @@ export class account_setPrivacy_ extends Function_<enums.account.PrivacyRules> {
 
   protected get [id]() {
     return 0xC9F81CE8;
+  }
+
+  static get [name]() {
+    return "account.setPrivacy"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -1566,6 +1770,10 @@ export class account_deleteAccount_ extends Function_<boolean> {
     return 0xA2C0CF74;
   }
 
+  static get [name]() {
+    return "account.deleteAccount"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["flags", flags, "#"],
@@ -1595,6 +1803,10 @@ export class account_getAccountTTL_ extends Function_<enums.AccountDaysTTL> {
     return 0x08FC711D;
   }
 
+  static get [name]() {
+    return "account.getAccountTTL"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [];
   }
@@ -1614,6 +1826,10 @@ export class account_setAccountTTL_ extends Function_<boolean> {
 
   protected get [id]() {
     return 0x2442485E;
+  }
+
+  static get [name]() {
+    return "account.setAccountTTL"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -1641,6 +1857,10 @@ export class account_sendChangePhoneCode_ extends Function_<enums.auth.SentCode>
 
   protected get [id]() {
     return 0x82574AE5;
+  }
+
+  static get [name]() {
+    return "account.sendChangePhoneCode"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -1672,6 +1892,10 @@ export class account_changePhone_ extends Function_<enums.User> {
 
   protected get [id]() {
     return 0x70C32EDB;
+  }
+
+  static get [name]() {
+    return "account.changePhone"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -1706,6 +1930,10 @@ export class account_updateDeviceLocked_ extends Function_<boolean> {
     return 0x38DF3532;
   }
 
+  static get [name]() {
+    return "account.updateDeviceLocked"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["period", "number", "int"],
@@ -1730,6 +1958,10 @@ export class account_getAuthorizations_ extends Function_<enums.account.Authoriz
     return 0xE320C158;
   }
 
+  static get [name]() {
+    return "account.getAuthorizations"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [];
   }
@@ -1749,6 +1981,10 @@ export class account_resetAuthorization_ extends Function_<boolean> {
 
   protected get [id]() {
     return 0xDF77F3BC;
+  }
+
+  static get [name]() {
+    return "account.resetAuthorization"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -1775,6 +2011,10 @@ export class account_getPassword_ extends Function_<enums.account.Password> {
     return 0x548A30F5;
   }
 
+  static get [name]() {
+    return "account.getPassword"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [];
   }
@@ -1794,6 +2034,10 @@ export class account_getPasswordSettings_ extends Function_<enums.account.Passwo
 
   protected get [id]() {
     return 0x9CD4EAF9;
+  }
+
+  static get [name]() {
+    return "account.getPasswordSettings"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -1821,6 +2065,10 @@ export class account_updatePasswordSettings_ extends Function_<boolean> {
 
   protected get [id]() {
     return 0xA59B102F;
+  }
+
+  static get [name]() {
+    return "account.updatePasswordSettings"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -1853,6 +2101,10 @@ export class account_sendConfirmPhoneCode_ extends Function_<enums.auth.SentCode
     return 0x1B3FAA88;
   }
 
+  static get [name]() {
+    return "account.sendConfirmPhoneCode"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["hash", "string", "string"],
@@ -1881,6 +2133,10 @@ export class account_confirmPhone_ extends Function_<boolean> {
 
   protected get [id]() {
     return 0x5F2178C3;
+  }
+
+  static get [name]() {
+    return "account.confirmPhone"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -1913,6 +2169,10 @@ export class account_getTmpPassword_ extends Function_<enums.account.TmpPassword
     return 0x449E0B51;
   }
 
+  static get [name]() {
+    return "account.getTmpPassword"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["password", types._InputCheckPasswordSRP, "InputCheckPasswordSRP"],
@@ -1940,6 +2200,10 @@ export class account_getWebAuthorizations_ extends Function_<enums.account.WebAu
     return 0x182E6D6F;
   }
 
+  static get [name]() {
+    return "account.getWebAuthorizations"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [];
   }
@@ -1959,6 +2223,10 @@ export class account_resetWebAuthorization_ extends Function_<boolean> {
 
   protected get [id]() {
     return 0x2D01B9EF;
+  }
+
+  static get [name]() {
+    return "account.resetWebAuthorization"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -1985,6 +2253,10 @@ export class account_resetWebAuthorizations_ extends Function_<boolean> {
     return 0x682D2594;
   }
 
+  static get [name]() {
+    return "account.resetWebAuthorizations"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [];
   }
@@ -2002,6 +2274,10 @@ export class account_getAllSecureValues_ extends Function_<enums.SecureValue[]> 
   static __F = Symbol() as unknown as () => enums.SecureValue[];
   protected get [id]() {
     return 0xB288BC7D;
+  }
+
+  static get [name]() {
+    return "account.getAllSecureValues"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -2023,6 +2299,10 @@ export class account_getSecureValue_ extends Function_<enums.SecureValue[]> {
 
   protected get [id]() {
     return 0x73665BC2;
+  }
+
+  static get [name]() {
+    return "account.getSecureValue"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -2050,6 +2330,10 @@ export class account_saveSecureValue_ extends Function_<enums.SecureValue> {
 
   protected get [id]() {
     return 0x899FE31D;
+  }
+
+  static get [name]() {
+    return "account.saveSecureValue"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -2081,6 +2365,10 @@ export class account_deleteSecureValue_ extends Function_<boolean> {
     return 0xB880BC4B;
   }
 
+  static get [name]() {
+    return "account.deleteSecureValue"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["types", [types._SecureValueType], "Vector<SecureValueType>"],
@@ -2107,6 +2395,10 @@ export class account_getAuthorizationForm_ extends Function_<enums.account.Autho
 
   protected get [id]() {
     return 0xA929597A;
+  }
+
+  static get [name]() {
+    return "account.getAuthorizationForm"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -2143,6 +2435,10 @@ export class account_acceptAuthorization_ extends Function_<boolean> {
 
   protected get [id]() {
     return 0xF3ED4C73;
+  }
+
+  static get [name]() {
+    return "account.acceptAuthorization"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -2184,6 +2480,10 @@ export class account_sendVerifyPhoneCode_ extends Function_<enums.auth.SentCode>
     return 0xA5A356F9;
   }
 
+  static get [name]() {
+    return "account.sendVerifyPhoneCode"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["phone_number", "string", "string"],
@@ -2213,6 +2513,10 @@ export class account_verifyPhone_ extends Function_<boolean> {
 
   protected get [id]() {
     return 0x4DD3A7F6;
+  }
+
+  static get [name]() {
+    return "account.verifyPhone"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -2248,6 +2552,10 @@ export class account_sendVerifyEmailCode_ extends Function_<enums.account.SentEm
     return 0x98E037BB;
   }
 
+  static get [name]() {
+    return "account.sendVerifyEmailCode"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["purpose", types._EmailVerifyPurpose, "EmailVerifyPurpose"],
@@ -2276,6 +2584,10 @@ export class account_verifyEmail_ extends Function_<enums.account.EmailVerified>
 
   protected get [id]() {
     return 0x032DA4CF;
+  }
+
+  static get [name]() {
+    return "account.verifyEmail"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -2311,6 +2623,10 @@ export class account_initTakeoutSession_ extends Function_<enums.account.Takeout
 
   protected get [id]() {
     return 0x8EF3EAB0;
+  }
+
+  static get [name]() {
+    return "account.initTakeoutSession"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -2359,6 +2675,10 @@ export class account_finishTakeoutSession_ extends Function_<boolean> {
     return 0x1D2652EE;
   }
 
+  static get [name]() {
+    return "account.finishTakeoutSession"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["flags", flags, "#"],
@@ -2387,6 +2707,10 @@ export class account_confirmPasswordEmail_ extends Function_<boolean> {
     return 0x8FDF1920;
   }
 
+  static get [name]() {
+    return "account.confirmPasswordEmail"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["code", "string", "string"],
@@ -2411,6 +2735,10 @@ export class account_resendPasswordEmail_ extends Function_<boolean> {
     return 0x7A7F2A15;
   }
 
+  static get [name]() {
+    return "account.resendPasswordEmail"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [];
   }
@@ -2428,6 +2756,10 @@ export class account_cancelPasswordEmail_ extends Function_<boolean> {
   static __F = Symbol() as unknown as () => boolean;
   protected get [id]() {
     return 0xC1CBD5B6;
+  }
+
+  static get [name]() {
+    return "account.cancelPasswordEmail"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -2449,6 +2781,10 @@ export class account_getContactSignUpNotification_ extends Function_<boolean> {
     return 0x9F07C728;
   }
 
+  static get [name]() {
+    return "account.getContactSignUpNotification"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [];
   }
@@ -2468,6 +2804,10 @@ export class account_setContactSignUpNotification_ extends Function_<boolean> {
 
   protected get [id]() {
     return 0xCFF43F61;
+  }
+
+  static get [name]() {
+    return "account.setContactSignUpNotification"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -2496,6 +2836,10 @@ export class account_getNotifyExceptions_ extends Function_<enums.Updates> {
 
   protected get [id]() {
     return 0x53577479;
+  }
+
+  static get [name]() {
+    return "account.getNotifyExceptions"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -2532,6 +2876,10 @@ export class account_getWallPaper_ extends Function_<enums.WallPaper> {
     return 0xFC8DDBEA;
   }
 
+  static get [name]() {
+    return "account.getWallPaper"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["wallpaper", types._InputWallPaper, "InputWallPaper"],
@@ -2559,6 +2907,10 @@ export class account_uploadWallPaper_ extends Function_<enums.WallPaper> {
 
   protected get [id]() {
     return 0xE39A8F03;
+  }
+
+  static get [name]() {
+    return "account.uploadWallPaper"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -2600,6 +2952,10 @@ export class account_saveWallPaper_ extends Function_<boolean> {
     return 0x6C5A5B37;
   }
 
+  static get [name]() {
+    return "account.saveWallPaper"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["wallpaper", types._InputWallPaper, "InputWallPaper"],
@@ -2633,6 +2989,10 @@ export class account_installWallPaper_ extends Function_<boolean> {
     return 0xFEED5769;
   }
 
+  static get [name]() {
+    return "account.installWallPaper"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["wallpaper", types._InputWallPaper, "InputWallPaper"],
@@ -2660,6 +3020,10 @@ export class account_resetWallPapers_ extends Function_<boolean> {
     return 0xBB3B9804;
   }
 
+  static get [name]() {
+    return "account.resetWallPapers"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [];
   }
@@ -2677,6 +3041,10 @@ export class account_getAutoDownloadSettings_ extends Function_<enums.account.Au
   static __F = Symbol() as unknown as () => enums.account.AutoDownloadSettings;
   protected get [id]() {
     return 0x56DA0B3F;
+  }
+
+  static get [name]() {
+    return "account.getAutoDownloadSettings"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -2700,6 +3068,10 @@ export class account_saveAutoDownloadSettings_ extends Function_<boolean> {
 
   protected get [id]() {
     return 0x76F36233;
+  }
+
+  static get [name]() {
+    return "account.saveAutoDownloadSettings"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -2737,6 +3109,10 @@ export class account_uploadTheme_ extends Function_<enums.Document> {
 
   protected get [id]() {
     return 0x1C3DB333;
+  }
+
+  static get [name]() {
+    return "account.uploadTheme"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -2779,6 +3155,10 @@ export class account_createTheme_ extends Function_<enums.Theme> {
     return 0x652E4400;
   }
 
+  static get [name]() {
+    return "account.createTheme"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["flags", flags, "#"],
@@ -2819,6 +3199,10 @@ export class account_updateTheme_ extends Function_<enums.Theme> {
 
   protected get [id]() {
     return 0x2BF40CCC;
+  }
+
+  static get [name]() {
+    return "account.updateTheme"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -2865,6 +3249,10 @@ export class account_saveTheme_ extends Function_<boolean> {
     return 0xF257106C;
   }
 
+  static get [name]() {
+    return "account.saveTheme"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["theme", types._InputTheme, "InputTheme"],
@@ -2895,6 +3283,10 @@ export class account_installTheme_ extends Function_<boolean> {
 
   protected get [id]() {
     return 0xC727BB3B;
+  }
+
+  static get [name]() {
+    return "account.installTheme"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -2935,6 +3327,10 @@ export class account_getTheme_ extends Function_<enums.Theme> {
     return 0x3A5869EC;
   }
 
+  static get [name]() {
+    return "account.getTheme"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["format", "string", "string"],
@@ -2963,6 +3359,10 @@ export class account_getThemes_ extends Function_<enums.account.Themes> {
 
   protected get [id]() {
     return 0x7206E458;
+  }
+
+  static get [name]() {
+    return "account.getThemes"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -2994,6 +3394,10 @@ export class account_setContentSettings_ extends Function_<boolean> {
     return 0xB574B16B;
   }
 
+  static get [name]() {
+    return "account.setContentSettings"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["flags", flags, "#"],
@@ -3020,6 +3424,10 @@ export class account_getContentSettings_ extends Function_<enums.account.Content
     return 0x8B9B4DAE;
   }
 
+  static get [name]() {
+    return "account.getContentSettings"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [];
   }
@@ -3039,6 +3447,10 @@ export class account_getMultiWallPapers_ extends Function_<enums.WallPaper[]> {
 
   protected get [id]() {
     return 0x65AD71DC;
+  }
+
+  static get [name]() {
+    return "account.getMultiWallPapers"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -3065,6 +3477,10 @@ export class account_getGlobalPrivacySettings_ extends Function_<enums.GlobalPri
     return 0xEB2B4CF6;
   }
 
+  static get [name]() {
+    return "account.getGlobalPrivacySettings"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [];
   }
@@ -3084,6 +3500,10 @@ export class account_setGlobalPrivacySettings_ extends Function_<enums.GlobalPri
 
   protected get [id]() {
     return 0x1EDAAAC2;
+  }
+
+  static get [name]() {
+    return "account.setGlobalPrivacySettings"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -3113,6 +3533,10 @@ export class account_reportProfilePhoto_ extends Function_<boolean> {
 
   protected get [id]() {
     return 0xFA8CC6F5;
+  }
+
+  static get [name]() {
+    return "account.reportProfilePhoto"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -3148,6 +3572,10 @@ export class account_resetPassword_ extends Function_<enums.account.ResetPasswor
     return 0x9308CE1B;
   }
 
+  static get [name]() {
+    return "account.resetPassword"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [];
   }
@@ -3165,6 +3593,10 @@ export class account_declinePasswordReset_ extends Function_<boolean> {
   static __F = Symbol() as unknown as () => boolean;
   protected get [id]() {
     return 0x4C9409F6;
+  }
+
+  static get [name]() {
+    return "account.declinePasswordReset"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -3186,6 +3618,10 @@ export class account_getChatThemes_ extends Function_<enums.account.Themes> {
 
   protected get [id]() {
     return 0xD638DE89;
+  }
+
+  static get [name]() {
+    return "account.getChatThemes"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -3212,6 +3648,10 @@ export class account_setAuthorizationTTL_ extends Function_<boolean> {
 
   protected get [id]() {
     return 0xBF899AA0;
+  }
+
+  static get [name]() {
+    return "account.setAuthorizationTTL"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -3241,6 +3681,10 @@ export class account_changeAuthorizationSettings_ extends Function_<boolean> {
 
   protected get [id]() {
     return 0x40F48462;
+  }
+
+  static get [name]() {
+    return "account.changeAuthorizationSettings"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -3280,6 +3724,10 @@ export class account_getSavedRingtones_ extends Function_<enums.account.SavedRin
     return 0xE1902288;
   }
 
+  static get [name]() {
+    return "account.getSavedRingtones"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["hash", "bigint", "long"],
@@ -3305,6 +3753,10 @@ export class account_saveRingtone_ extends Function_<enums.account.SavedRingtone
 
   protected get [id]() {
     return 0x3DEA5B03;
+  }
+
+  static get [name]() {
+    return "account.saveRingtone"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -3336,6 +3788,10 @@ export class account_uploadRingtone_ extends Function_<enums.Document> {
 
   protected get [id]() {
     return 0x831A83A2;
+  }
+
+  static get [name]() {
+    return "account.uploadRingtone"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -3370,6 +3826,10 @@ export class account_updateEmojiStatus_ extends Function_<boolean> {
     return 0xFBD3DE6B;
   }
 
+  static get [name]() {
+    return "account.updateEmojiStatus"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["emoji_status", types._EmojiStatus, "EmojiStatus"],
@@ -3394,6 +3854,10 @@ export class account_getDefaultEmojiStatuses_ extends Function_<enums.account.Em
 
   protected get [id]() {
     return 0xD6753386;
+  }
+
+  static get [name]() {
+    return "account.getDefaultEmojiStatuses"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -3422,6 +3886,10 @@ export class account_getRecentEmojiStatuses_ extends Function_<enums.account.Emo
     return 0x0F578105;
   }
 
+  static get [name]() {
+    return "account.getRecentEmojiStatuses"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["hash", "bigint", "long"],
@@ -3446,6 +3914,10 @@ export class account_clearRecentEmojiStatuses_ extends Function_<boolean> {
     return 0x18201AAE;
   }
 
+  static get [name]() {
+    return "account.clearRecentEmojiStatuses"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [];
   }
@@ -3465,6 +3937,10 @@ export class account_reorderUsernames_ extends Function_<boolean> {
 
   protected get [id]() {
     return 0xEF500EAB;
+  }
+
+  static get [name]() {
+    return "account.reorderUsernames"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -3492,6 +3968,10 @@ export class account_toggleUsername_ extends Function_<boolean> {
 
   protected get [id]() {
     return 0x58D6B376;
+  }
+
+  static get [name]() {
+    return "account.toggleUsername"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -3523,6 +4003,10 @@ export class account_getDefaultProfilePhotoEmojis_ extends Function_<enums.Emoji
     return 0xE2750328;
   }
 
+  static get [name]() {
+    return "account.getDefaultProfilePhotoEmojis"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["hash", "bigint", "long"],
@@ -3549,6 +4033,10 @@ export class account_getDefaultGroupPhotoEmojis_ extends Function_<enums.EmojiLi
     return 0x915860AE;
   }
 
+  static get [name]() {
+    return "account.getDefaultGroupPhotoEmojis"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["hash", "bigint", "long"],
@@ -3571,6 +4059,10 @@ export class account_getAutoSaveSettings_ extends Function_<enums.account.AutoSa
   static __F = Symbol() as unknown as () => enums.account.AutoSaveSettings;
   protected get [id]() {
     return 0xADCBBCDA;
+  }
+
+  static get [name]() {
+    return "account.getAutoSaveSettings"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -3596,6 +4088,10 @@ export class account_saveAutoSaveSettings_ extends Function_<boolean> {
 
   protected get [id]() {
     return 0xD69B8361;
+  }
+
+  static get [name]() {
+    return "account.saveAutoSaveSettings"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -3636,6 +4132,10 @@ export class account_deleteAutoSaveExceptions_ extends Function_<boolean> {
     return 0x53BC0020;
   }
 
+  static get [name]() {
+    return "account.deleteAutoSaveExceptions"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [];
   }
@@ -3655,6 +4155,10 @@ export class account_invalidateSignInCodes_ extends Function_<boolean> {
 
   protected get [id]() {
     return 0xCA8AE8BA;
+  }
+
+  static get [name]() {
+    return "account.invalidateSignInCodes"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -3683,6 +4187,10 @@ export class account_updateColor_ extends Function_<boolean> {
 
   protected get [id]() {
     return 0x7CEFA15D;
+  }
+
+  static get [name]() {
+    return "account.updateColor"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -3719,6 +4227,10 @@ export class account_getDefaultBackgroundEmojis_ extends Function_<enums.EmojiLi
     return 0xA60AB9CE;
   }
 
+  static get [name]() {
+    return "account.getDefaultBackgroundEmojis"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["hash", "bigint", "long"],
@@ -3743,6 +4255,10 @@ export class users_getUsers_ extends Function_<enums.User[]> {
 
   protected get [id]() {
     return 0x0D91A548;
+  }
+
+  static get [name]() {
+    return "users.getUsers"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -3771,6 +4287,10 @@ export class users_getFullUser_ extends Function_<enums.users.UserFull> {
     return 0xB60F5918;
   }
 
+  static get [name]() {
+    return "users.getFullUser"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["id", types._InputUser, "InputUser"],
@@ -3796,6 +4316,10 @@ export class users_setSecureValueErrors_ extends Function_<boolean> {
 
   protected get [id]() {
     return 0x90C894B5;
+  }
+
+  static get [name]() {
+    return "users.setSecureValueErrors"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -3827,6 +4351,10 @@ export class contacts_getContactIDs_ extends Function_<number[]> {
     return 0x7ADC669D;
   }
 
+  static get [name]() {
+    return "contacts.getContactIDs"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["hash", "bigint", "long"],
@@ -3851,6 +4379,10 @@ export class contacts_getStatuses_ extends Function_<enums.ContactStatus[]> {
     return 0xC4A353EE;
   }
 
+  static get [name]() {
+    return "contacts.getStatuses"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [];
   }
@@ -3870,6 +4402,10 @@ export class contacts_getContacts_ extends Function_<enums.contacts.Contacts> {
 
   protected get [id]() {
     return 0x5DD69E12;
+  }
+
+  static get [name]() {
+    return "contacts.getContacts"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -3898,6 +4434,10 @@ export class contacts_importContacts_ extends Function_<enums.contacts.ImportedC
     return 0x2C800BE5;
   }
 
+  static get [name]() {
+    return "contacts.importContacts"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["contacts", [types._InputContact], "Vector<InputContact>"],
@@ -3922,6 +4462,10 @@ export class contacts_deleteContacts_ extends Function_<enums.Updates> {
 
   protected get [id]() {
     return 0x096A0E00;
+  }
+
+  static get [name]() {
+    return "contacts.deleteContacts"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -3950,6 +4494,10 @@ export class contacts_deleteByPhones_ extends Function_<boolean> {
     return 0x1013FD9E;
   }
 
+  static get [name]() {
+    return "contacts.deleteByPhones"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["phones", ["string"], "Vector<string>"],
@@ -3975,6 +4523,10 @@ export class contacts_block_ extends Function_<boolean> {
 
   protected get [id]() {
     return 0x2E2E8734;
+  }
+
+  static get [name]() {
+    return "contacts.block"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -4009,6 +4561,10 @@ export class contacts_unblock_ extends Function_<boolean> {
     return 0xB550D328;
   }
 
+  static get [name]() {
+    return "contacts.unblock"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["flags", flags, "#"],
@@ -4040,6 +4596,10 @@ export class contacts_getBlocked_ extends Function_<enums.contacts.Blocked> {
 
   protected get [id]() {
     return 0x9A868F80;
+  }
+
+  static get [name]() {
+    return "contacts.getBlocked"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -4077,6 +4637,10 @@ export class contacts_search_ extends Function_<enums.contacts.Found> {
     return 0x11F812D8;
   }
 
+  static get [name]() {
+    return "contacts.search"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["q", "string", "string"],
@@ -4104,6 +4668,10 @@ export class contacts_resolveUsername_ extends Function_<enums.contacts.Resolved
 
   protected get [id]() {
     return 0xF93CCBA3;
+  }
+
+  static get [name]() {
+    return "contacts.resolveUsername"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -4140,6 +4708,10 @@ export class contacts_getTopPeers_ extends Function_<enums.contacts.TopPeers> {
 
   protected get [id]() {
     return 0x973478B6;
+  }
+
+  static get [name]() {
+    return "contacts.getTopPeers"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -4201,6 +4773,10 @@ export class contacts_resetTopPeerRating_ extends Function_<boolean> {
     return 0x1AE373AC;
   }
 
+  static get [name]() {
+    return "contacts.resetTopPeerRating"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["category", types._TopPeerCategory, "TopPeerCategory"],
@@ -4228,6 +4804,10 @@ export class contacts_resetSaved_ extends Function_<boolean> {
     return 0x879537F1;
   }
 
+  static get [name]() {
+    return "contacts.resetSaved"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [];
   }
@@ -4245,6 +4825,10 @@ export class contacts_getSaved_ extends Function_<enums.SavedContact[]> {
   static __F = Symbol() as unknown as () => enums.SavedContact[];
   protected get [id]() {
     return 0x82F1E39F;
+  }
+
+  static get [name]() {
+    return "contacts.getSaved"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -4266,6 +4850,10 @@ export class contacts_toggleTopPeers_ extends Function_<boolean> {
 
   protected get [id]() {
     return 0x8514BDDA;
+  }
+
+  static get [name]() {
+    return "contacts.toggleTopPeers"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -4296,6 +4884,10 @@ export class contacts_addContact_ extends Function_<enums.Updates> {
 
   protected get [id]() {
     return 0xE8F463D0;
+  }
+
+  static get [name]() {
+    return "contacts.addContact"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -4338,6 +4930,10 @@ export class contacts_acceptContact_ extends Function_<enums.Updates> {
     return 0xF831A20F;
   }
 
+  static get [name]() {
+    return "contacts.acceptContact"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["id", types._InputUser, "InputUser"],
@@ -4364,6 +4960,10 @@ export class contacts_getLocated_ extends Function_<enums.Updates> {
 
   protected get [id]() {
     return 0xD348BC44;
+  }
+
+  static get [name]() {
+    return "contacts.getLocated"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -4403,6 +5003,10 @@ export class contacts_blockFromReplies_ extends Function_<enums.Updates> {
     return 0x29A8962C;
   }
 
+  static get [name]() {
+    return "contacts.blockFromReplies"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["flags", flags, "#"],
@@ -4440,6 +5044,10 @@ export class contacts_resolvePhone_ extends Function_<enums.contacts.ResolvedPee
     return 0x8AF94344;
   }
 
+  static get [name]() {
+    return "contacts.resolvePhone"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["phone", "string", "string"],
@@ -4464,6 +5072,10 @@ export class contacts_exportContactToken_ extends Function_<enums.ExportedContac
     return 0xF8654027;
   }
 
+  static get [name]() {
+    return "contacts.exportContactToken"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [];
   }
@@ -4483,6 +5095,10 @@ export class contacts_importContactToken_ extends Function_<enums.User> {
 
   protected get [id]() {
     return 0x13005788;
+  }
+
+  static get [name]() {
+    return "contacts.importContactToken"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -4511,6 +5127,10 @@ export class contacts_editCloseFriends_ extends Function_<boolean> {
     return 0xBA6705F0;
   }
 
+  static get [name]() {
+    return "contacts.editCloseFriends"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["id", ["bigint"], "Vector<long>"],
@@ -4537,6 +5157,10 @@ export class contacts_setBlocked_ extends Function_<boolean> {
 
   protected get [id]() {
     return 0x94C65C76;
+  }
+
+  static get [name]() {
+    return "contacts.setBlocked"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -4573,6 +5197,10 @@ export class messages_getMessages_ extends Function_<enums.messages.Messages> {
     return 0x63C66506;
   }
 
+  static get [name]() {
+    return "messages.getMessages"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["id", [types._InputMessage], "Vector<InputMessage>"],
@@ -4603,6 +5231,10 @@ export class messages_getDialogs_ extends Function_<enums.messages.Dialogs> {
 
   protected get [id]() {
     return 0xA0F4CB4F;
+  }
+
+  static get [name]() {
+    return "messages.getDialogs"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -4656,6 +5288,10 @@ export class messages_getHistory_ extends Function_<enums.messages.Messages> {
 
   protected get [id]() {
     return 0x4423E6C5;
+  }
+
+  static get [name]() {
+    return "messages.getHistory"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -4715,6 +5351,10 @@ export class messages_search_ extends Function_<enums.messages.Messages> {
 
   protected get [id]() {
     return 0xA0FDA762;
+  }
+
+  static get [name]() {
+    return "messages.search"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -4782,6 +5422,10 @@ export class messages_readHistory_ extends Function_<enums.messages.AffectedMess
     return 0x0E306D3A;
   }
 
+  static get [name]() {
+    return "messages.readHistory"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["peer", types._InputPeer, "InputPeer"],
@@ -4814,6 +5458,10 @@ export class messages_deleteHistory_ extends Function_<enums.messages.AffectedHi
 
   protected get [id]() {
     return 0xB08F922A;
+  }
+
+  static get [name]() {
+    return "messages.deleteHistory"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -4860,6 +5508,10 @@ export class messages_deleteMessages_ extends Function_<enums.messages.AffectedM
     return 0xE58E95D2;
   }
 
+  static get [name]() {
+    return "messages.deleteMessages"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["flags", flags, "#"],
@@ -4891,6 +5543,10 @@ export class messages_receivedMessages_ extends Function_<enums.ReceivedNotifyMe
     return 0x05A954C0;
   }
 
+  static get [name]() {
+    return "messages.receivedMessages"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["max_id", "number", "int"],
@@ -4917,6 +5573,10 @@ export class messages_setTyping_ extends Function_<boolean> {
 
   protected get [id]() {
     return 0x58943EE2;
+  }
+
+  static get [name]() {
+    return "messages.setTyping"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -4965,6 +5625,10 @@ export class messages_sendMessage_ extends Function_<enums.Updates> {
 
   protected get [id]() {
     return 0x280D096F;
+  }
+
+  static get [name]() {
+    return "messages.sendMessage"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -5051,6 +5715,10 @@ export class messages_sendMedia_ extends Function_<enums.Updates> {
     return 0x72CCC23D;
   }
 
+  static get [name]() {
+    return "messages.sendMedia"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["flags", flags, "#"],
@@ -5133,6 +5801,10 @@ export class messages_forwardMessages_ extends Function_<enums.Updates> {
     return 0xC661BBC4;
   }
 
+  static get [name]() {
+    return "messages.forwardMessages"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["flags", flags, "#"],
@@ -5197,6 +5869,10 @@ export class messages_reportSpam_ extends Function_<boolean> {
     return 0xCF1592DB;
   }
 
+  static get [name]() {
+    return "messages.reportSpam"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["peer", types._InputPeer, "InputPeer"],
@@ -5221,6 +5897,10 @@ export class messages_getPeerSettings_ extends Function_<enums.messages.PeerSett
 
   protected get [id]() {
     return 0xEFD9A6A2;
+  }
+
+  static get [name]() {
+    return "messages.getPeerSettings"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -5250,6 +5930,10 @@ export class messages_report_ extends Function_<boolean> {
 
   protected get [id]() {
     return 0x8953AB4E;
+  }
+
+  static get [name]() {
+    return "messages.report"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -5287,6 +5971,10 @@ export class messages_getChats_ extends Function_<enums.messages.Chats> {
     return 0x49E9528F;
   }
 
+  static get [name]() {
+    return "messages.getChats"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["id", ["bigint"], "Vector<long>"],
@@ -5311,6 +5999,10 @@ export class messages_getFullChat_ extends Function_<enums.messages.ChatFull> {
 
   protected get [id]() {
     return 0xAEB00B34;
+  }
+
+  static get [name]() {
+    return "messages.getFullChat"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -5338,6 +6030,10 @@ export class messages_editChatTitle_ extends Function_<enums.Updates> {
 
   protected get [id]() {
     return 0x73783FFD;
+  }
+
+  static get [name]() {
+    return "messages.editChatTitle"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -5370,6 +6066,10 @@ export class messages_editChatPhoto_ extends Function_<enums.Updates> {
     return 0x35DDD674;
   }
 
+  static get [name]() {
+    return "messages.editChatPhoto"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["chat_id", "bigint", "long"],
@@ -5399,6 +6099,10 @@ export class messages_addChatUser_ extends Function_<enums.Updates> {
 
   protected get [id]() {
     return 0xF24753E3;
+  }
+
+  static get [name]() {
+    return "messages.addChatUser"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -5433,6 +6137,10 @@ export class messages_deleteChatUser_ extends Function_<enums.Updates> {
 
   protected get [id]() {
     return 0xA2185CAB;
+  }
+
+  static get [name]() {
+    return "messages.deleteChatUser"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -5471,6 +6179,10 @@ export class messages_createChat_ extends Function_<enums.Updates> {
     return 0x0034A818;
   }
 
+  static get [name]() {
+    return "messages.createChat"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["flags", flags, "#"],
@@ -5506,6 +6218,10 @@ export class messages_getDhConfig_ extends Function_<enums.messages.DhConfig> {
     return 0x26CF8950;
   }
 
+  static get [name]() {
+    return "messages.getDhConfig"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["version", "number", "int"],
@@ -5535,6 +6251,10 @@ export class messages_requestEncryption_ extends Function_<enums.EncryptedChat> 
 
   protected get [id]() {
     return 0xF64DAF43;
+  }
+
+  static get [name]() {
+    return "messages.requestEncryption"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -5571,6 +6291,10 @@ export class messages_acceptEncryption_ extends Function_<enums.EncryptedChat> {
     return 0x3DBC0415;
   }
 
+  static get [name]() {
+    return "messages.acceptEncryption"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["peer", types._InputEncryptedChat, "InputEncryptedChat"],
@@ -5602,6 +6326,10 @@ export class messages_discardEncryption_ extends Function_<boolean> {
 
   protected get [id]() {
     return 0xF393AEA0;
+  }
+
+  static get [name]() {
+    return "messages.discardEncryption"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -5636,6 +6364,10 @@ export class messages_setEncryptedTyping_ extends Function_<boolean> {
     return 0x791451ED;
   }
 
+  static get [name]() {
+    return "messages.setEncryptedTyping"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["peer", types._InputEncryptedChat, "InputEncryptedChat"],
@@ -5664,6 +6396,10 @@ export class messages_readEncryptedHistory_ extends Function_<boolean> {
 
   protected get [id]() {
     return 0x7F4B690A;
+  }
+
+  static get [name]() {
+    return "messages.readEncryptedHistory"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -5696,6 +6432,10 @@ export class messages_sendEncrypted_ extends Function_<enums.messages.SentEncryp
 
   protected get [id]() {
     return 0x44FA7A15;
+  }
+
+  static get [name]() {
+    return "messages.sendEncrypted"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -5737,6 +6477,10 @@ export class messages_sendEncryptedFile_ extends Function_<enums.messages.SentEn
 
   protected get [id]() {
     return 0x5559481D;
+  }
+
+  static get [name]() {
+    return "messages.sendEncryptedFile"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -5781,6 +6525,10 @@ export class messages_sendEncryptedService_ extends Function_<enums.messages.Sen
     return 0x32D439A4;
   }
 
+  static get [name]() {
+    return "messages.sendEncryptedService"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["peer", types._InputEncryptedChat, "InputEncryptedChat"],
@@ -5813,6 +6561,10 @@ export class messages_receivedQueue_ extends Function_<bigint[]> {
     return 0x55A5BB66;
   }
 
+  static get [name]() {
+    return "messages.receivedQueue"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["max_qts", "number", "int"],
@@ -5837,6 +6589,10 @@ export class messages_reportEncryptedSpam_ extends Function_<boolean> {
 
   protected get [id]() {
     return 0x4B0C8C0F;
+  }
+
+  static get [name]() {
+    return "messages.reportEncryptedSpam"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -5865,6 +6621,10 @@ export class messages_readMessageContents_ extends Function_<enums.messages.Affe
     return 0x36A73F77;
   }
 
+  static get [name]() {
+    return "messages.readMessageContents"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["id", ["number"], "Vector<int>"],
@@ -5890,6 +6650,10 @@ export class messages_getStickers_ extends Function_<enums.messages.Stickers> {
 
   protected get [id]() {
     return 0xD5A5D3A1;
+  }
+
+  static get [name]() {
+    return "messages.getStickers"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -5921,6 +6685,10 @@ export class messages_getAllStickers_ extends Function_<enums.messages.AllSticke
     return 0xB8A0A1A8;
   }
 
+  static get [name]() {
+    return "messages.getAllStickers"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["hash", "bigint", "long"],
@@ -5946,6 +6714,10 @@ export class messages_getWebPagePreview_ extends Function_<enums.MessageMedia> {
 
   protected get [id]() {
     return 0x8B68B0CC;
+  }
+
+  static get [name]() {
+    return "messages.getWebPagePreview"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -5982,6 +6754,10 @@ export class messages_exportChatInvite_ extends Function_<enums.ExportedChatInvi
 
   protected get [id]() {
     return 0xA02CE5D5;
+  }
+
+  static get [name]() {
+    return "messages.exportChatInvite"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -6027,6 +6803,10 @@ export class messages_checkChatInvite_ extends Function_<enums.ChatInvite> {
     return 0x3EADB1BB;
   }
 
+  static get [name]() {
+    return "messages.checkChatInvite"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["hash", "string", "string"],
@@ -6051,6 +6831,10 @@ export class messages_importChatInvite_ extends Function_<enums.Updates> {
 
   protected get [id]() {
     return 0x6C50051C;
+  }
+
+  static get [name]() {
+    return "messages.importChatInvite"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -6078,6 +6862,10 @@ export class messages_getStickerSet_ extends Function_<enums.messages.StickerSet
 
   protected get [id]() {
     return 0xC8A0EC74;
+  }
+
+  static get [name]() {
+    return "messages.getStickerSet"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -6110,6 +6898,10 @@ export class messages_installStickerSet_ extends Function_<enums.messages.Sticke
     return 0xC78FE460;
   }
 
+  static get [name]() {
+    return "messages.installStickerSet"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["stickerset", types._InputStickerSet, "InputStickerSet"],
@@ -6139,6 +6931,10 @@ export class messages_uninstallStickerSet_ extends Function_<boolean> {
     return 0xF96E55DE;
   }
 
+  static get [name]() {
+    return "messages.uninstallStickerSet"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["stickerset", types._InputStickerSet, "InputStickerSet"],
@@ -6166,6 +6962,10 @@ export class messages_startBot_ extends Function_<enums.Updates> {
 
   protected get [id]() {
     return 0xE6DF7378;
+  }
+
+  static get [name]() {
+    return "messages.startBot"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -6205,6 +7005,10 @@ export class messages_getMessagesViews_ extends Function_<enums.messages.Message
     return 0x5784D3E1;
   }
 
+  static get [name]() {
+    return "messages.getMessagesViews"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["peer", types._InputPeer, "InputPeer"],
@@ -6239,6 +7043,10 @@ export class messages_editChatAdmin_ extends Function_<boolean> {
     return 0xA85BD1C2;
   }
 
+  static get [name]() {
+    return "messages.editChatAdmin"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["chat_id", "bigint", "long"],
@@ -6269,6 +7077,10 @@ export class messages_migrateChat_ extends Function_<enums.Updates> {
 
   protected get [id]() {
     return 0xA2875319;
+  }
+
+  static get [name]() {
+    return "messages.migrateChat"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -6303,6 +7115,10 @@ export class messages_searchGlobal_ extends Function_<enums.messages.Messages> {
 
   protected get [id]() {
     return 0x4BC6589A;
+  }
+
+  static get [name]() {
+    return "messages.searchGlobal"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -6359,6 +7175,10 @@ export class messages_reorderStickerSets_ extends Function_<boolean> {
     return 0x78337739;
   }
 
+  static get [name]() {
+    return "messages.reorderStickerSets"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["flags", flags, "#"],
@@ -6395,6 +7215,10 @@ export class messages_getDocumentByHash_ extends Function_<enums.Document> {
     return 0xB1F2061F;
   }
 
+  static get [name]() {
+    return "messages.getDocumentByHash"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["sha256", Uint8Array, "bytes"],
@@ -6427,6 +7251,10 @@ export class messages_getSavedGifs_ extends Function_<enums.messages.SavedGifs> 
     return 0x5CF09635;
   }
 
+  static get [name]() {
+    return "messages.getSavedGifs"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["hash", "bigint", "long"],
@@ -6452,6 +7280,10 @@ export class messages_saveGif_ extends Function_<boolean> {
 
   protected get [id]() {
     return 0x327A30CB;
+  }
+
+  static get [name]() {
+    return "messages.saveGif"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -6485,6 +7317,10 @@ export class messages_getInlineBotResults_ extends Function_<enums.messages.BotR
 
   protected get [id]() {
     return 0x514E999D;
+  }
+
+  static get [name]() {
+    return "messages.getInlineBotResults"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -6532,6 +7368,10 @@ export class messages_setInlineBotResults_ extends Function_<boolean> {
 
   protected get [id]() {
     return 0xBB12A419;
+  }
+
+  static get [name]() {
+    return "messages.setInlineBotResults"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -6593,6 +7433,10 @@ export class messages_sendInlineBotResult_ extends Function_<enums.Updates> {
     return 0xF7BC68BA;
   }
 
+  static get [name]() {
+    return "messages.sendInlineBotResult"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["flags", flags, "#"],
@@ -6652,6 +7496,10 @@ export class messages_getMessageEditData_ extends Function_<enums.messages.Messa
     return 0xFDA68D36;
   }
 
+  static get [name]() {
+    return "messages.getMessageEditData"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["peer", types._InputPeer, "InputPeer"],
@@ -6687,6 +7535,10 @@ export class messages_editMessage_ extends Function_<enums.Updates> {
 
   protected get [id]() {
     return 0x48F71778;
+  }
+
+  static get [name]() {
+    return "messages.editMessage"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -6747,6 +7599,10 @@ export class messages_editInlineBotMessage_ extends Function_<boolean> {
     return 0x83557DBA;
   }
 
+  static get [name]() {
+    return "messages.editInlineBotMessage"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["flags", flags, "#"],
@@ -6797,6 +7653,10 @@ export class messages_getBotCallbackAnswer_ extends Function_<enums.messages.Bot
     return 0x9342CA07;
   }
 
+  static get [name]() {
+    return "messages.getBotCallbackAnswer"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["flags", flags, "#"],
@@ -6841,6 +7701,10 @@ export class messages_setBotCallbackAnswer_ extends Function_<boolean> {
     return 0xD58F130A;
   }
 
+  static get [name]() {
+    return "messages.setBotCallbackAnswer"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["flags", flags, "#"],
@@ -6881,6 +7745,10 @@ export class messages_getPeerDialogs_ extends Function_<enums.messages.PeerDialo
     return 0xE470BCFD;
   }
 
+  static get [name]() {
+    return "messages.getPeerDialogs"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["peers", [types._InputDialogPeer], "Vector<InputDialogPeer>"],
@@ -6911,6 +7779,10 @@ export class messages_saveDraft_ extends Function_<boolean> {
 
   protected get [id]() {
     return 0x7FF3B806;
+  }
+
+  static get [name]() {
+    return "messages.saveDraft"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -6957,6 +7829,10 @@ export class messages_getAllDrafts_ extends Function_<enums.Updates> {
     return 0x6A3F8D65;
   }
 
+  static get [name]() {
+    return "messages.getAllDrafts"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [];
   }
@@ -6976,6 +7852,10 @@ export class messages_getFeaturedStickers_ extends Function_<enums.messages.Feat
 
   protected get [id]() {
     return 0x64780B14;
+  }
+
+  static get [name]() {
+    return "messages.getFeaturedStickers"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -7004,6 +7884,10 @@ export class messages_readFeaturedStickers_ extends Function_<boolean> {
     return 0x5B118126;
   }
 
+  static get [name]() {
+    return "messages.readFeaturedStickers"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["id", ["bigint"], "Vector<long>"],
@@ -7029,6 +7913,10 @@ export class messages_getRecentStickers_ extends Function_<enums.messages.Recent
 
   protected get [id]() {
     return 0x9DA9403B;
+  }
+
+  static get [name]() {
+    return "messages.getRecentStickers"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -7062,6 +7950,10 @@ export class messages_saveRecentSticker_ extends Function_<boolean> {
 
   protected get [id]() {
     return 0x392718F8;
+  }
+
+  static get [name]() {
+    return "messages.saveRecentSticker"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -7098,6 +7990,10 @@ export class messages_clearRecentStickers_ extends Function_<boolean> {
     return 0x8999602D;
   }
 
+  static get [name]() {
+    return "messages.clearRecentStickers"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["flags", flags, "#"],
@@ -7127,6 +8023,10 @@ export class messages_getArchivedStickers_ extends Function_<enums.messages.Arch
 
   protected get [id]() {
     return 0x57F17692;
+  }
+
+  static get [name]() {
+    return "messages.getArchivedStickers"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -7166,6 +8066,10 @@ export class messages_getMaskStickers_ extends Function_<enums.messages.AllStick
     return 0x640F82B8;
   }
 
+  static get [name]() {
+    return "messages.getMaskStickers"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["hash", "bigint", "long"],
@@ -7190,6 +8094,10 @@ export class messages_getAttachedStickers_ extends Function_<enums.StickerSetCov
 
   protected get [id]() {
     return 0xCC5B67CC;
+  }
+
+  static get [name]() {
+    return "messages.getAttachedStickers"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -7221,6 +8129,10 @@ export class messages_setGameScore_ extends Function_<enums.Updates> {
 
   protected get [id]() {
     return 0x8EF8ECC0;
+  }
+
+  static get [name]() {
+    return "messages.setGameScore"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -7270,6 +8182,10 @@ export class messages_setInlineGameScore_ extends Function_<boolean> {
     return 0x15AD9F64;
   }
 
+  static get [name]() {
+    return "messages.setInlineGameScore"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["flags", flags, "#"],
@@ -7312,6 +8228,10 @@ export class messages_getGameHighScores_ extends Function_<enums.messages.HighSc
     return 0xE822649D;
   }
 
+  static get [name]() {
+    return "messages.getGameHighScores"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["peer", types._InputPeer, "InputPeer"],
@@ -7345,6 +8265,10 @@ export class messages_getInlineGameHighScores_ extends Function_<enums.messages.
     return 0x0F635E1B;
   }
 
+  static get [name]() {
+    return "messages.getInlineGameHighScores"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["id", types._InputBotInlineMessageID, "InputBotInlineMessageID"],
@@ -7374,6 +8298,10 @@ export class messages_getCommonChats_ extends Function_<enums.messages.Chats> {
 
   protected get [id]() {
     return 0xE40CA104;
+  }
+
+  static get [name]() {
+    return "messages.getCommonChats"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -7409,6 +8337,10 @@ export class messages_getWebPage_ extends Function_<enums.messages.WebPage> {
     return 0x8D9692A3;
   }
 
+  static get [name]() {
+    return "messages.getWebPage"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["url", "string", "string"],
@@ -7437,6 +8369,10 @@ export class messages_toggleDialogPin_ extends Function_<boolean> {
 
   protected get [id]() {
     return 0xA731E257;
+  }
+
+  static get [name]() {
+    return "messages.toggleDialogPin"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -7470,6 +8406,10 @@ export class messages_reorderPinnedDialogs_ extends Function_<boolean> {
 
   protected get [id]() {
     return 0x3B1ADF37;
+  }
+
+  static get [name]() {
+    return "messages.reorderPinnedDialogs"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -7506,6 +8446,10 @@ export class messages_getPinnedDialogs_ extends Function_<enums.messages.PeerDia
     return 0xD6B94DF2;
   }
 
+  static get [name]() {
+    return "messages.getPinnedDialogs"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["folder_id", "number", "int"],
@@ -7532,6 +8476,10 @@ export class messages_setBotShippingResults_ extends Function_<boolean> {
 
   protected get [id]() {
     return 0xE5F672FA;
+  }
+
+  static get [name]() {
+    return "messages.setBotShippingResults"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -7570,6 +8518,10 @@ export class messages_setBotPrecheckoutResults_ extends Function_<boolean> {
     return 0x09C2DD95;
   }
 
+  static get [name]() {
+    return "messages.setBotPrecheckoutResults"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["flags", flags, "#"],
@@ -7605,6 +8557,10 @@ export class messages_uploadMedia_ extends Function_<enums.MessageMedia> {
     return 0x519BC2B1;
   }
 
+  static get [name]() {
+    return "messages.uploadMedia"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["peer", types._InputPeer, "InputPeer"],
@@ -7634,6 +8590,10 @@ export class messages_sendScreenshotNotification_ extends Function_<enums.Update
 
   protected get [id]() {
     return 0xA1405817;
+  }
+
+  static get [name]() {
+    return "messages.sendScreenshotNotification"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -7668,6 +8628,10 @@ export class messages_getFavedStickers_ extends Function_<enums.messages.FavedSt
     return 0x04F1AAA9;
   }
 
+  static get [name]() {
+    return "messages.getFavedStickers"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["hash", "bigint", "long"],
@@ -7693,6 +8657,10 @@ export class messages_faveSticker_ extends Function_<boolean> {
 
   protected get [id]() {
     return 0xB9FFC55B;
+  }
+
+  static get [name]() {
+    return "messages.faveSticker"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -7728,6 +8696,10 @@ export class messages_getUnreadMentions_ extends Function_<enums.messages.Messag
 
   protected get [id]() {
     return 0xF107E790;
+  }
+
+  static get [name]() {
+    return "messages.getUnreadMentions"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -7777,6 +8749,10 @@ export class messages_readMentions_ extends Function_<enums.messages.AffectedHis
     return 0x36E5BF4D;
   }
 
+  static get [name]() {
+    return "messages.readMentions"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["flags", flags, "#"],
@@ -7808,6 +8784,10 @@ export class messages_getRecentLocations_ extends Function_<enums.messages.Messa
 
   protected get [id]() {
     return 0x702A40E0;
+  }
+
+  static get [name]() {
+    return "messages.getRecentLocations"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -7850,6 +8830,10 @@ export class messages_sendMultiMedia_ extends Function_<enums.Updates> {
 
   protected get [id]() {
     return 0x456E8987;
+  }
+
+  static get [name]() {
+    return "messages.sendMultiMedia"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -7911,6 +8895,10 @@ export class messages_uploadEncryptedFile_ extends Function_<enums.EncryptedFile
     return 0x5057C497;
   }
 
+  static get [name]() {
+    return "messages.uploadEncryptedFile"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["peer", types._InputEncryptedChat, "InputEncryptedChat"],
@@ -7940,6 +8928,10 @@ export class messages_searchStickerSets_ extends Function_<enums.messages.FoundS
 
   protected get [id]() {
     return 0x35705B8A;
+  }
+
+  static get [name]() {
+    return "messages.searchStickerSets"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -7974,6 +8966,10 @@ export class messages_getSplitRanges_ extends Function_<enums.MessageRange[]> {
     return 0x1CFF7E08;
   }
 
+  static get [name]() {
+    return "messages.getSplitRanges"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [];
   }
@@ -7994,6 +8990,10 @@ export class messages_markDialogUnread_ extends Function_<boolean> {
 
   protected get [id]() {
     return 0xC286D98F;
+  }
+
+  static get [name]() {
+    return "messages.markDialogUnread"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -8025,6 +9025,10 @@ export class messages_getDialogUnreadMarks_ extends Function_<enums.DialogPeer[]
     return 0x22E24E22;
   }
 
+  static get [name]() {
+    return "messages.getDialogUnreadMarks"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [];
   }
@@ -8042,6 +9046,10 @@ export class messages_clearAllDrafts_ extends Function_<boolean> {
   static __F = Symbol() as unknown as () => boolean;
   protected get [id]() {
     return 0x7E58EE9C;
+  }
+
+  static get [name]() {
+    return "messages.clearAllDrafts"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -8067,6 +9075,10 @@ export class messages_updatePinnedMessage_ extends Function_<enums.Updates> {
 
   protected get [id]() {
     return 0xD2AAF7EC;
+  }
+
+  static get [name]() {
+    return "messages.updatePinnedMessage"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -8111,6 +9123,10 @@ export class messages_sendVote_ extends Function_<enums.Updates> {
     return 0x10EA6184;
   }
 
+  static get [name]() {
+    return "messages.sendVote"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["peer", types._InputPeer, "InputPeer"],
@@ -8144,6 +9160,10 @@ export class messages_getPollResults_ extends Function_<enums.Updates> {
     return 0x73BB643B;
   }
 
+  static get [name]() {
+    return "messages.getPollResults"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["peer", types._InputPeer, "InputPeer"],
@@ -8173,6 +9193,10 @@ export class messages_getOnlines_ extends Function_<enums.ChatOnlines> {
     return 0x6E2BE050;
   }
 
+  static get [name]() {
+    return "messages.getOnlines"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["peer", types._InputPeer, "InputPeer"],
@@ -8198,6 +9222,10 @@ export class messages_editChatAbout_ extends Function_<boolean> {
 
   protected get [id]() {
     return 0xDEF60797;
+  }
+
+  static get [name]() {
+    return "messages.editChatAbout"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -8230,6 +9258,10 @@ export class messages_editChatDefaultBannedRights_ extends Function_<enums.Updat
     return 0xA5866B41;
   }
 
+  static get [name]() {
+    return "messages.editChatDefaultBannedRights"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["peer", types._InputPeer, "InputPeer"],
@@ -8259,6 +9291,10 @@ export class messages_getEmojiKeywords_ extends Function_<enums.EmojiKeywordsDif
     return 0x35A0E062;
   }
 
+  static get [name]() {
+    return "messages.getEmojiKeywords"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["lang_code", "string", "string"],
@@ -8284,6 +9320,10 @@ export class messages_getEmojiKeywordsDifference_ extends Function_<enums.EmojiK
 
   protected get [id]() {
     return 0x1508B6AF;
+  }
+
+  static get [name]() {
+    return "messages.getEmojiKeywordsDifference"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -8315,6 +9355,10 @@ export class messages_getEmojiKeywordsLanguages_ extends Function_<enums.EmojiLa
     return 0x4E9963B2;
   }
 
+  static get [name]() {
+    return "messages.getEmojiKeywordsLanguages"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["lang_codes", ["string"], "Vector<string>"],
@@ -8339,6 +9383,10 @@ export class messages_getEmojiURL_ extends Function_<enums.EmojiURL> {
 
   protected get [id]() {
     return 0xD5B10C26;
+  }
+
+  static get [name]() {
+    return "messages.getEmojiURL"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -8367,6 +9415,10 @@ export class messages_getSearchCounters_ extends Function_<enums.messages.Search
 
   protected get [id]() {
     return 0x00AE7CC1;
+  }
+
+  static get [name]() {
+    return "messages.getSearchCounters"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -8404,6 +9456,10 @@ export class messages_requestUrlAuth_ extends Function_<enums.UrlAuthResult> {
 
   protected get [id]() {
     return 0x198FB446;
+  }
+
+  static get [name]() {
+    return "messages.requestUrlAuth"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -8447,6 +9503,10 @@ export class messages_acceptUrlAuth_ extends Function_<enums.UrlAuthResult> {
     return 0xB12C7125;
   }
 
+  static get [name]() {
+    return "messages.acceptUrlAuth"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["flags", flags, "#"],
@@ -8487,6 +9547,10 @@ export class messages_hidePeerSettingsBar_ extends Function_<boolean> {
     return 0x4FACB138;
   }
 
+  static get [name]() {
+    return "messages.hidePeerSettingsBar"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["peer", types._InputPeer, "InputPeer"],
@@ -8512,6 +9576,10 @@ export class messages_getScheduledHistory_ extends Function_<enums.messages.Mess
 
   protected get [id]() {
     return 0xF516760B;
+  }
+
+  static get [name]() {
+    return "messages.getScheduledHistory"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -8544,6 +9612,10 @@ export class messages_getScheduledMessages_ extends Function_<enums.messages.Mes
     return 0xBDBB0464;
   }
 
+  static get [name]() {
+    return "messages.getScheduledMessages"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["peer", types._InputPeer, "InputPeer"],
@@ -8574,6 +9646,10 @@ export class messages_sendScheduledMessages_ extends Function_<enums.Updates> {
     return 0xBD38850A;
   }
 
+  static get [name]() {
+    return "messages.sendScheduledMessages"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["peer", types._InputPeer, "InputPeer"],
@@ -8602,6 +9678,10 @@ export class messages_deleteScheduledMessages_ extends Function_<enums.Updates> 
 
   protected get [id]() {
     return 0x59AE2B16;
+  }
+
+  static get [name]() {
+    return "messages.deleteScheduledMessages"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -8635,6 +9715,10 @@ export class messages_getPollVotes_ extends Function_<enums.messages.VotesList> 
 
   protected get [id]() {
     return 0xB86E380E;
+  }
+
+  static get [name]() {
+    return "messages.getPollVotes"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -8680,6 +9764,10 @@ export class messages_toggleStickerSets_ extends Function_<boolean> {
     return 0xB5052FEA;
   }
 
+  static get [name]() {
+    return "messages.toggleStickerSets"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["flags", flags, "#"],
@@ -8715,6 +9803,10 @@ export class messages_getDialogFilters_ extends Function_<enums.DialogFilter[]> 
     return 0xF19ED96D;
   }
 
+  static get [name]() {
+    return "messages.getDialogFilters"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [];
   }
@@ -8732,6 +9824,10 @@ export class messages_getSuggestedDialogFilters_ extends Function_<enums.DialogF
   static __F = Symbol() as unknown as () => enums.DialogFilterSuggested[];
   protected get [id]() {
     return 0xA29CD42C;
+  }
+
+  static get [name]() {
+    return "messages.getSuggestedDialogFilters"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -8754,6 +9850,10 @@ export class messages_updateDialogFilter_ extends Function_<boolean> {
 
   protected get [id]() {
     return 0x1AD4A04A;
+  }
+
+  static get [name]() {
+    return "messages.updateDialogFilter"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -8787,6 +9887,10 @@ export class messages_updateDialogFiltersOrder_ extends Function_<boolean> {
     return 0xC563C1E4;
   }
 
+  static get [name]() {
+    return "messages.updateDialogFiltersOrder"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["order", ["number"], "Vector<int>"],
@@ -8813,6 +9917,10 @@ export class messages_getOldFeaturedStickers_ extends Function_<enums.messages.F
 
   protected get [id]() {
     return 0x7ED094A1;
+  }
+
+  static get [name]() {
+    return "messages.getOldFeaturedStickers"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -8853,6 +9961,10 @@ export class messages_getReplies_ extends Function_<enums.messages.Messages> {
 
   protected get [id]() {
     return 0x22DDD30C;
+  }
+
+  static get [name]() {
+    return "messages.getReplies"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -8906,6 +10018,10 @@ export class messages_getDiscussionMessage_ extends Function_<enums.messages.Dis
     return 0x446972FD;
   }
 
+  static get [name]() {
+    return "messages.getDiscussionMessage"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["peer", types._InputPeer, "InputPeer"],
@@ -8935,6 +10051,10 @@ export class messages_readDiscussion_ extends Function_<boolean> {
 
   protected get [id]() {
     return 0xF731A9F4;
+  }
+
+  static get [name]() {
+    return "messages.readDiscussion"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -8970,6 +10090,10 @@ export class messages_unpinAllMessages_ extends Function_<enums.messages.Affecte
     return 0xEE22B9A8;
   }
 
+  static get [name]() {
+    return "messages.unpinAllMessages"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["flags", flags, "#"],
@@ -9001,6 +10125,10 @@ export class messages_deleteChat_ extends Function_<boolean> {
     return 0x5BD0EE50;
   }
 
+  static get [name]() {
+    return "messages.deleteChat"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["chat_id", "bigint", "long"],
@@ -9025,6 +10153,10 @@ export class messages_deletePhoneCallHistory_ extends Function_<enums.messages.A
 
   protected get [id]() {
     return 0xF9CBE409;
+  }
+
+  static get [name]() {
+    return "messages.deletePhoneCallHistory"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -9055,6 +10187,10 @@ export class messages_checkHistoryImport_ extends Function_<enums.messages.Histo
     return 0x43FE19F3;
   }
 
+  static get [name]() {
+    return "messages.checkHistoryImport"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["import_head", "string", "string"],
@@ -9081,6 +10217,10 @@ export class messages_initHistoryImport_ extends Function_<enums.messages.Histor
 
   protected get [id]() {
     return 0x34090C3B;
+  }
+
+  static get [name]() {
+    return "messages.initHistoryImport"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -9116,6 +10256,10 @@ export class messages_uploadImportedMedia_ extends Function_<enums.MessageMedia>
 
   protected get [id]() {
     return 0x2A862092;
+  }
+
+  static get [name]() {
+    return "messages.uploadImportedMedia"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -9154,6 +10298,10 @@ export class messages_startHistoryImport_ extends Function_<boolean> {
     return 0xB43DF344;
   }
 
+  static get [name]() {
+    return "messages.startHistoryImport"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["peer", types._InputPeer, "InputPeer"],
@@ -9186,6 +10334,10 @@ export class messages_getExportedChatInvites_ extends Function_<enums.messages.E
 
   protected get [id]() {
     return 0xA2B5A3F6;
+  }
+
+  static get [name]() {
+    return "messages.getExportedChatInvites"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -9232,6 +10384,10 @@ export class messages_getExportedChatInvite_ extends Function_<enums.messages.Ex
     return 0x73746F5C;
   }
 
+  static get [name]() {
+    return "messages.getExportedChatInvite"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["peer", types._InputPeer, "InputPeer"],
@@ -9265,6 +10421,10 @@ export class messages_editExportedChatInvite_ extends Function_<enums.messages.E
 
   protected get [id]() {
     return 0xBDCA2F75;
+  }
+
+  static get [name]() {
+    return "messages.editExportedChatInvite"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -9314,6 +10474,10 @@ export class messages_deleteRevokedExportedChatInvites_ extends Function_<boolea
     return 0x56987BD5;
   }
 
+  static get [name]() {
+    return "messages.deleteRevokedExportedChatInvites"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["peer", types._InputPeer, "InputPeer"],
@@ -9344,6 +10508,10 @@ export class messages_deleteExportedChatInvite_ extends Function_<boolean> {
     return 0xD464A42B;
   }
 
+  static get [name]() {
+    return "messages.deleteExportedChatInvite"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["peer", types._InputPeer, "InputPeer"],
@@ -9371,6 +10539,10 @@ export class messages_getAdminsWithInvites_ extends Function_<enums.messages.Cha
 
   protected get [id]() {
     return 0x3920E6EF;
+  }
+
+  static get [name]() {
+    return "messages.getAdminsWithInvites"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -9403,6 +10575,10 @@ export class messages_getChatInviteImporters_ extends Function_<enums.messages.C
 
   protected get [id]() {
     return 0xDF04DD4E;
+  }
+
+  static get [name]() {
+    return "messages.getChatInviteImporters"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -9452,6 +10628,10 @@ export class messages_setHistoryTTL_ extends Function_<enums.Updates> {
     return 0xB80E5FE4;
   }
 
+  static get [name]() {
+    return "messages.setHistoryTTL"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["peer", types._InputPeer, "InputPeer"],
@@ -9481,6 +10661,10 @@ export class messages_checkHistoryImportPeer_ extends Function_<enums.messages.C
     return 0x5DC60F03;
   }
 
+  static get [name]() {
+    return "messages.checkHistoryImportPeer"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["peer", types._InputPeer, "InputPeer"],
@@ -9506,6 +10690,10 @@ export class messages_setChatTheme_ extends Function_<enums.Updates> {
 
   protected get [id]() {
     return 0xE63BE13F;
+  }
+
+  static get [name]() {
+    return "messages.setChatTheme"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -9538,6 +10726,10 @@ export class messages_getMessageReadParticipants_ extends Function_<enums.ReadPa
     return 0x31C1C44F;
   }
 
+  static get [name]() {
+    return "messages.getMessageReadParticipants"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["peer", types._InputPeer, "InputPeer"],
@@ -9568,6 +10760,10 @@ export class messages_getSearchResultsCalendar_ extends Function_<enums.messages
 
   protected get [id]() {
     return 0x49F0BDE9;
+  }
+
+  static get [name]() {
+    return "messages.getSearchResultsCalendar"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -9608,6 +10804,10 @@ export class messages_getSearchResultsPositions_ extends Function_<enums.message
     return 0x6E9583A3;
   }
 
+  static get [name]() {
+    return "messages.getSearchResultsPositions"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["peer", types._InputPeer, "InputPeer"],
@@ -9643,6 +10843,10 @@ export class messages_hideChatJoinRequest_ extends Function_<enums.Updates> {
 
   protected get [id]() {
     return 0x7FE7E815;
+  }
+
+  static get [name]() {
+    return "messages.hideChatJoinRequest"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -9681,6 +10885,10 @@ export class messages_hideAllChatJoinRequests_ extends Function_<enums.Updates> 
     return 0xE085F4EA;
   }
 
+  static get [name]() {
+    return "messages.hideAllChatJoinRequests"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["flags", flags, "#"],
@@ -9716,6 +10924,10 @@ export class messages_toggleNoForwards_ extends Function_<enums.Updates> {
     return 0xB11EAFA2;
   }
 
+  static get [name]() {
+    return "messages.toggleNoForwards"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["peer", types._InputPeer, "InputPeer"],
@@ -9744,6 +10956,10 @@ export class messages_saveDefaultSendAs_ extends Function_<boolean> {
 
   protected get [id]() {
     return 0xCCFDDF96;
+  }
+
+  static get [name]() {
+    return "messages.saveDefaultSendAs"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -9777,6 +10993,10 @@ export class messages_sendReaction_ extends Function_<enums.Updates> {
 
   protected get [id]() {
     return 0xD30D78D4;
+  }
+
+  static get [name]() {
+    return "messages.sendReaction"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -9820,6 +11040,10 @@ export class messages_getMessagesReactions_ extends Function_<enums.Updates> {
     return 0x8BBA90E6;
   }
 
+  static get [name]() {
+    return "messages.getMessagesReactions"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["peer", types._InputPeer, "InputPeer"],
@@ -9851,6 +11075,10 @@ export class messages_getMessageReactionsList_ extends Function_<enums.messages.
 
   protected get [id]() {
     return 0x461B3F48;
+  }
+
+  static get [name]() {
+    return "messages.getMessageReactionsList"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -9894,6 +11122,10 @@ export class messages_setChatAvailableReactions_ extends Function_<enums.Updates
     return 0xFEB16771;
   }
 
+  static get [name]() {
+    return "messages.setChatAvailableReactions"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["peer", types._InputPeer, "InputPeer"],
@@ -9923,6 +11155,10 @@ export class messages_getAvailableReactions_ extends Function_<enums.messages.Av
     return 0x18DEA0AC;
   }
 
+  static get [name]() {
+    return "messages.getAvailableReactions"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["hash", "number", "int"],
@@ -9947,6 +11183,10 @@ export class messages_setDefaultReaction_ extends Function_<boolean> {
 
   protected get [id]() {
     return 0x4F47A016;
+  }
+
+  static get [name]() {
+    return "messages.setDefaultReaction"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -9976,6 +11216,10 @@ export class messages_translateText_ extends Function_<enums.messages.Translated
 
   protected get [id]() {
     return 0x63183030;
+  }
+
+  static get [name]() {
+    return "messages.translateText"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -10019,6 +11263,10 @@ export class messages_getUnreadReactions_ extends Function_<enums.messages.Messa
 
   protected get [id]() {
     return 0x3223495B;
+  }
+
+  static get [name]() {
+    return "messages.getUnreadReactions"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -10068,6 +11316,10 @@ export class messages_readReactions_ extends Function_<enums.messages.AffectedHi
     return 0x54AA7F8E;
   }
 
+  static get [name]() {
+    return "messages.readReactions"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["flags", flags, "#"],
@@ -10099,6 +11351,10 @@ export class messages_searchSentMedia_ extends Function_<enums.messages.Messages
 
   protected get [id]() {
     return 0x107E31A0;
+  }
+
+  static get [name]() {
+    return "messages.searchSentMedia"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -10133,6 +11389,10 @@ export class messages_getAttachMenuBots_ extends Function_<enums.AttachMenuBots>
     return 0x16FCC2CB;
   }
 
+  static get [name]() {
+    return "messages.getAttachMenuBots"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["hash", "bigint", "long"],
@@ -10157,6 +11417,10 @@ export class messages_getAttachMenuBot_ extends Function_<enums.AttachMenuBotsBo
 
   protected get [id]() {
     return 0x77216192;
+  }
+
+  static get [name]() {
+    return "messages.getAttachMenuBot"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -10185,6 +11449,10 @@ export class messages_toggleBotInAttachMenu_ extends Function_<boolean> {
 
   protected get [id]() {
     return 0x69F59D69;
+  }
+
+  static get [name]() {
+    return "messages.toggleBotInAttachMenu"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -10228,6 +11496,10 @@ export class messages_requestWebView_ extends Function_<enums.WebViewResult> {
 
   protected get [id]() {
     return 0x269DC2C1;
+  }
+
+  static get [name]() {
+    return "messages.requestWebView"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -10290,6 +11562,10 @@ export class messages_prolongWebView_ extends Function_<boolean> {
     return 0xB0D81A83;
   }
 
+  static get [name]() {
+    return "messages.prolongWebView"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["flags", flags, "#"],
@@ -10339,6 +11615,10 @@ export class messages_requestSimpleWebView_ extends Function_<enums.SimpleWebVie
     return 0x1A46500A;
   }
 
+  static get [name]() {
+    return "messages.requestSimpleWebView"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["flags", flags, "#"],
@@ -10386,6 +11666,10 @@ export class messages_sendWebViewResultMessage_ extends Function_<enums.WebViewM
     return 0x0A4314F5;
   }
 
+  static get [name]() {
+    return "messages.sendWebViewResultMessage"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["bot_query_id", "string", "string"],
@@ -10416,6 +11700,10 @@ export class messages_sendWebViewData_ extends Function_<enums.Updates> {
 
   protected get [id]() {
     return 0xDC0242C8;
+  }
+
+  static get [name]() {
+    return "messages.sendWebViewData"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -10454,6 +11742,10 @@ export class messages_transcribeAudio_ extends Function_<enums.messages.Transcri
     return 0x269E9A49;
   }
 
+  static get [name]() {
+    return "messages.transcribeAudio"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["peer", types._InputPeer, "InputPeer"],
@@ -10484,6 +11776,10 @@ export class messages_rateTranscribedAudio_ extends Function_<boolean> {
 
   protected get [id]() {
     return 0x7F1D072F;
+  }
+
+  static get [name]() {
+    return "messages.rateTranscribedAudio"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -10521,6 +11817,10 @@ export class messages_getCustomEmojiDocuments_ extends Function_<enums.Document[
     return 0xD9AB0F54;
   }
 
+  static get [name]() {
+    return "messages.getCustomEmojiDocuments"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["document_id", ["bigint"], "Vector<long>"],
@@ -10545,6 +11845,10 @@ export class messages_getEmojiStickers_ extends Function_<enums.messages.AllStic
 
   protected get [id]() {
     return 0xFBFCA18F;
+  }
+
+  static get [name]() {
+    return "messages.getEmojiStickers"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -10573,6 +11877,10 @@ export class messages_getFeaturedEmojiStickers_ extends Function_<enums.messages
     return 0x0ECF6736;
   }
 
+  static get [name]() {
+    return "messages.getFeaturedEmojiStickers"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["hash", "bigint", "long"],
@@ -10599,6 +11907,10 @@ export class messages_reportReaction_ extends Function_<boolean> {
 
   protected get [id]() {
     return 0x3F64C076;
+  }
+
+  static get [name]() {
+    return "messages.reportReaction"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -10634,6 +11946,10 @@ export class messages_getTopReactions_ extends Function_<enums.messages.Reaction
     return 0xBB8125BA;
   }
 
+  static get [name]() {
+    return "messages.getTopReactions"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["limit", "number", "int"],
@@ -10664,6 +11980,10 @@ export class messages_getRecentReactions_ extends Function_<enums.messages.React
     return 0x39461DB2;
   }
 
+  static get [name]() {
+    return "messages.getRecentReactions"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["limit", "number", "int"],
@@ -10691,6 +12011,10 @@ export class messages_clearRecentReactions_ extends Function_<boolean> {
     return 0x9DFEEFB4;
   }
 
+  static get [name]() {
+    return "messages.clearRecentReactions"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [];
   }
@@ -10711,6 +12035,10 @@ export class messages_getExtendedMedia_ extends Function_<enums.Updates> {
 
   protected get [id]() {
     return 0x84F80814;
+  }
+
+  static get [name]() {
+    return "messages.getExtendedMedia"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -10742,6 +12070,10 @@ export class messages_setDefaultHistoryTTL_ extends Function_<boolean> {
     return 0x9EB51445;
   }
 
+  static get [name]() {
+    return "messages.setDefaultHistoryTTL"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["period", "number", "int"],
@@ -10766,6 +12098,10 @@ export class messages_getDefaultHistoryTTL_ extends Function_<enums.DefaultHisto
     return 0x658B7188;
   }
 
+  static get [name]() {
+    return "messages.getDefaultHistoryTTL"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [];
   }
@@ -10788,6 +12124,10 @@ export class messages_sendBotRequestedPeer_ extends Function_<enums.Updates> {
 
   protected get [id]() {
     return 0xFE38D01B;
+  }
+
+  static get [name]() {
+    return "messages.sendBotRequestedPeer"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -10825,6 +12165,10 @@ export class messages_getEmojiGroups_ extends Function_<enums.messages.EmojiGrou
     return 0x7488CE5B;
   }
 
+  static get [name]() {
+    return "messages.getEmojiGroups"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["hash", "number", "int"],
@@ -10849,6 +12193,10 @@ export class messages_getEmojiStatusGroups_ extends Function_<enums.messages.Emo
 
   protected get [id]() {
     return 0x2ECD56CD;
+  }
+
+  static get [name]() {
+    return "messages.getEmojiStatusGroups"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -10877,6 +12225,10 @@ export class messages_getEmojiProfilePhotoGroups_ extends Function_<enums.messag
     return 0x21A548F3;
   }
 
+  static get [name]() {
+    return "messages.getEmojiProfilePhotoGroups"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["hash", "number", "int"],
@@ -10902,6 +12254,10 @@ export class messages_searchCustomEmoji_ extends Function_<enums.EmojiList> {
 
   protected get [id]() {
     return 0x2C11C0D7;
+  }
+
+  static get [name]() {
+    return "messages.searchCustomEmoji"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -10932,6 +12288,10 @@ export class messages_togglePeerTranslations_ extends Function_<boolean> {
 
   protected get [id]() {
     return 0xE47CB579;
+  }
+
+  static get [name]() {
+    return "messages.togglePeerTranslations"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -10966,6 +12326,10 @@ export class messages_getBotApp_ extends Function_<enums.messages.BotApp> {
     return 0x34FDC5C3;
   }
 
+  static get [name]() {
+    return "messages.getBotApp"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["app", types._InputBotApp, "InputBotApp"],
@@ -10998,6 +12362,10 @@ export class messages_requestAppWebView_ extends Function_<enums.AppWebViewResul
 
   protected get [id]() {
     return 0x8C5A3B3C;
+  }
+
+  static get [name]() {
+    return "messages.requestAppWebView"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -11048,6 +12416,10 @@ export class messages_setChatWallPaper_ extends Function_<enums.Updates> {
     return 0x8FFACAE1;
   }
 
+  static get [name]() {
+    return "messages.setChatWallPaper"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["flags", flags, "#"],
@@ -11093,6 +12465,10 @@ export class messages_searchEmojiStickerSets_ extends Function_<enums.messages.F
     return 0x92B4494C;
   }
 
+  static get [name]() {
+    return "messages.searchEmojiStickerSets"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["flags", flags, "#"],
@@ -11125,6 +12501,10 @@ export class updates_getState_ extends Function_<enums.updates.State> {
     return 0xEDD4882A;
   }
 
+  static get [name]() {
+    return "updates.getState"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [];
   }
@@ -11149,6 +12529,10 @@ export class updates_getDifference_ extends Function_<enums.updates.Difference> 
 
   protected get [id]() {
     return 0x19C2F763;
+  }
+
+  static get [name]() {
+    return "updates.getDifference"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -11198,6 +12582,10 @@ export class updates_getChannelDifference_ extends Function_<enums.updates.Chann
     return 0x03173D78;
   }
 
+  static get [name]() {
+    return "updates.getChannelDifference"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["flags", flags, "#"],
@@ -11240,6 +12628,10 @@ export class photos_updateProfilePhoto_ extends Function_<enums.photos.Photo> {
     return 0x09E82039;
   }
 
+  static get [name]() {
+    return "photos.updateProfilePhoto"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["flags", flags, "#"],
@@ -11277,6 +12669,10 @@ export class photos_uploadProfilePhoto_ extends Function_<enums.photos.Photo> {
 
   protected get [id]() {
     return 0x0388A3B5;
+  }
+
+  static get [name]() {
+    return "photos.uploadProfilePhoto"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -11322,6 +12718,10 @@ export class photos_deletePhotos_ extends Function_<bigint[]> {
     return 0x87CF7F2F;
   }
 
+  static get [name]() {
+    return "photos.deletePhotos"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["id", [types._InputPhoto], "Vector<InputPhoto>"],
@@ -11349,6 +12749,10 @@ export class photos_getUserPhotos_ extends Function_<enums.photos.Photos> {
 
   protected get [id]() {
     return 0x91CD32A8;
+  }
+
+  static get [name]() {
+    return "photos.getUserPhotos"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -11390,6 +12794,10 @@ export class photos_uploadContactProfilePhoto_ extends Function_<enums.photos.Ph
 
   protected get [id]() {
     return 0xE14C4A71;
+  }
+
+  static get [name]() {
+    return "photos.uploadContactProfilePhoto"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -11440,6 +12848,10 @@ export class upload_saveFilePart_ extends Function_<boolean> {
     return 0xB304A621;
   }
 
+  static get [name]() {
+    return "upload.saveFilePart"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["file_id", "bigint", "long"],
@@ -11474,6 +12886,10 @@ export class upload_getFile_ extends Function_<enums.upload.File> {
 
   protected get [id]() {
     return 0xBE5335BE;
+  }
+
+  static get [name]() {
+    return "upload.getFile"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -11519,6 +12935,10 @@ export class upload_saveBigFilePart_ extends Function_<boolean> {
     return 0xDE7B673D;
   }
 
+  static get [name]() {
+    return "upload.saveBigFilePart"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["file_id", "bigint", "long"],
@@ -11556,6 +12976,10 @@ export class upload_getWebFile_ extends Function_<enums.upload.WebFile> {
     return 0x24E6818D;
   }
 
+  static get [name]() {
+    return "upload.getWebFile"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["location", types._InputWebFileLocation, "InputWebFileLocation"],
@@ -11588,6 +13012,10 @@ export class upload_getCdnFile_ extends Function_<enums.upload.CdnFile> {
 
   protected get [id]() {
     return 0x395F69DA;
+  }
+
+  static get [name]() {
+    return "upload.getCdnFile"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -11623,6 +13051,10 @@ export class upload_reuploadCdnFile_ extends Function_<enums.FileHash[]> {
     return 0x9B2754A8;
   }
 
+  static get [name]() {
+    return "upload.reuploadCdnFile"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["file_token", Uint8Array, "bytes"],
@@ -11651,6 +13083,10 @@ export class upload_getCdnFileHashes_ extends Function_<enums.FileHash[]> {
 
   protected get [id]() {
     return 0x91DC3F31;
+  }
+
+  static get [name]() {
+    return "upload.getCdnFileHashes"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -11683,6 +13119,10 @@ export class upload_getFileHashes_ extends Function_<enums.FileHash[]> {
     return 0x9156982A;
   }
 
+  static get [name]() {
+    return "upload.getFileHashes"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["location", types._InputFileLocation, "InputFileLocation"],
@@ -11710,6 +13150,10 @@ export class help_getConfig_ extends Function_<enums.Config> {
     return 0xC4F9186B;
   }
 
+  static get [name]() {
+    return "help.getConfig"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [];
   }
@@ -11727,6 +13171,10 @@ export class help_getNearestDc_ extends Function_<enums.NearestDc> {
   static __F = Symbol() as unknown as () => enums.NearestDc;
   protected get [id]() {
     return 0x1FB33026;
+  }
+
+  static get [name]() {
+    return "help.getNearestDc"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -11748,6 +13196,10 @@ export class help_getAppUpdate_ extends Function_<enums.help.AppUpdate> {
 
   protected get [id]() {
     return 0x522D5A7D;
+  }
+
+  static get [name]() {
+    return "help.getAppUpdate"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -11774,6 +13226,10 @@ export class help_getInviteText_ extends Function_<enums.help.InviteText> {
     return 0x4D392343;
   }
 
+  static get [name]() {
+    return "help.getInviteText"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [];
   }
@@ -11791,6 +13247,10 @@ export class help_getSupport_ extends Function_<enums.help.Support> {
   static __F = Symbol() as unknown as () => enums.help.Support;
   protected get [id]() {
     return 0x9CDF08CD;
+  }
+
+  static get [name]() {
+    return "help.getSupport"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -11812,6 +13272,10 @@ export class help_getAppChangelog_ extends Function_<enums.Updates> {
 
   protected get [id]() {
     return 0x9010EF6F;
+  }
+
+  static get [name]() {
+    return "help.getAppChangelog"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -11841,6 +13305,10 @@ export class help_setBotUpdatesStatus_ extends Function_<boolean> {
     return 0xEC22CFCD;
   }
 
+  static get [name]() {
+    return "help.setBotUpdatesStatus"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["pending_updates_count", "number", "int"],
@@ -11868,6 +13336,10 @@ export class help_getCdnConfig_ extends Function_<enums.CdnConfig> {
     return 0x52029342;
   }
 
+  static get [name]() {
+    return "help.getCdnConfig"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [];
   }
@@ -11887,6 +13359,10 @@ export class help_getRecentMeUrls_ extends Function_<enums.help.RecentMeUrls> {
 
   protected get [id]() {
     return 0x3DC0F114;
+  }
+
+  static get [name]() {
+    return "help.getRecentMeUrls"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -11913,6 +13389,10 @@ export class help_getTermsOfServiceUpdate_ extends Function_<enums.help.TermsOfS
     return 0x2CA51FD1;
   }
 
+  static get [name]() {
+    return "help.getTermsOfServiceUpdate"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [];
   }
@@ -11932,6 +13412,10 @@ export class help_acceptTermsOfService_ extends Function_<boolean> {
 
   protected get [id]() {
     return 0xEE72F79A;
+  }
+
+  static get [name]() {
+    return "help.acceptTermsOfService"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -11960,6 +13444,10 @@ export class help_getDeepLinkInfo_ extends Function_<enums.help.DeepLinkInfo> {
     return 0x3FEDC75F;
   }
 
+  static get [name]() {
+    return "help.getDeepLinkInfo"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["path", "string", "string"],
@@ -11984,6 +13472,10 @@ export class help_getAppConfig_ extends Function_<enums.help.AppConfig> {
 
   protected get [id]() {
     return 0x61E3F854;
+  }
+
+  static get [name]() {
+    return "help.getAppConfig"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -12012,6 +13504,10 @@ export class help_saveAppLog_ extends Function_<boolean> {
     return 0x6F02F748;
   }
 
+  static get [name]() {
+    return "help.saveAppLog"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["events", [types._InputAppEvent], "Vector<InputAppEvent>"],
@@ -12038,6 +13534,10 @@ export class help_getPassportConfig_ extends Function_<enums.help.PassportConfig
     return 0xC661AD08;
   }
 
+  static get [name]() {
+    return "help.getPassportConfig"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["hash", "number", "int"],
@@ -12062,6 +13562,10 @@ export class help_getSupportName_ extends Function_<enums.help.SupportName> {
     return 0xD360E72C;
   }
 
+  static get [name]() {
+    return "help.getSupportName"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [];
   }
@@ -12081,6 +13585,10 @@ export class help_getUserInfo_ extends Function_<enums.help.UserInfo> {
 
   protected get [id]() {
     return 0x038A08D3;
+  }
+
+  static get [name]() {
+    return "help.getUserInfo"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -12109,6 +13617,10 @@ export class help_editUserInfo_ extends Function_<enums.help.UserInfo> {
 
   protected get [id]() {
     return 0x66B91B70;
+  }
+
+  static get [name]() {
+    return "help.editUserInfo"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -12141,6 +13653,10 @@ export class help_getPromoData_ extends Function_<enums.help.PromoData> {
     return 0xC0977421;
   }
 
+  static get [name]() {
+    return "help.getPromoData"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [];
   }
@@ -12160,6 +13676,10 @@ export class help_hidePromoData_ extends Function_<boolean> {
 
   protected get [id]() {
     return 0x1E251C95;
+  }
+
+  static get [name]() {
+    return "help.hidePromoData"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -12187,6 +13707,10 @@ export class help_dismissSuggestion_ extends Function_<boolean> {
 
   protected get [id]() {
     return 0xF50DBAA1;
+  }
+
+  static get [name]() {
+    return "help.dismissSuggestion"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -12219,6 +13743,10 @@ export class help_getCountriesList_ extends Function_<enums.help.CountriesList> 
     return 0x735787A8;
   }
 
+  static get [name]() {
+    return "help.getCountriesList"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["lang_code", "string", "string"],
@@ -12246,6 +13774,10 @@ export class help_getPremiumPromo_ extends Function_<enums.help.PremiumPromo> {
     return 0xB81B93D4;
   }
 
+  static get [name]() {
+    return "help.getPremiumPromo"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [];
   }
@@ -12265,6 +13797,10 @@ export class help_getPeerColors_ extends Function_<enums.help.PeerColors> {
 
   protected get [id]() {
     return 0xDA80F42F;
+  }
+
+  static get [name]() {
+    return "help.getPeerColors"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -12293,6 +13829,10 @@ export class help_getPeerProfileColors_ extends Function_<enums.help.PeerColors>
     return 0xABCFA9FD;
   }
 
+  static get [name]() {
+    return "help.getPeerProfileColors"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["hash", "number", "int"],
@@ -12318,6 +13858,10 @@ export class channels_readHistory_ extends Function_<boolean> {
 
   protected get [id]() {
     return 0xCC104937;
+  }
+
+  static get [name]() {
+    return "channels.readHistory"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -12350,6 +13894,10 @@ export class channels_deleteMessages_ extends Function_<enums.messages.AffectedM
     return 0x84C1FD4E;
   }
 
+  static get [name]() {
+    return "channels.deleteMessages"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["channel", types._InputChannel, "InputChannel"],
@@ -12379,6 +13927,10 @@ export class channels_reportSpam_ extends Function_<boolean> {
 
   protected get [id]() {
     return 0xF44A8315;
+  }
+
+  static get [name]() {
+    return "channels.reportSpam"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -12414,6 +13966,10 @@ export class channels_getMessages_ extends Function_<enums.messages.Messages> {
     return 0xAD8C9A23;
   }
 
+  static get [name]() {
+    return "channels.getMessages"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["channel", types._InputChannel, "InputChannel"],
@@ -12445,6 +14001,10 @@ export class channels_getParticipants_ extends Function_<enums.channels.ChannelP
 
   protected get [id]() {
     return 0x77CED9D0;
+  }
+
+  static get [name]() {
+    return "channels.getParticipants"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -12486,6 +14046,10 @@ export class channels_getParticipant_ extends Function_<enums.channels.ChannelPa
     return 0xA0AB6CC6;
   }
 
+  static get [name]() {
+    return "channels.getParticipant"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["channel", types._InputChannel, "InputChannel"],
@@ -12515,6 +14079,10 @@ export class channels_getChannels_ extends Function_<enums.messages.Chats> {
     return 0x0A7F6BBB;
   }
 
+  static get [name]() {
+    return "channels.getChannels"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["id", [types._InputChannel], "Vector<InputChannel>"],
@@ -12539,6 +14107,10 @@ export class channels_getFullChannel_ extends Function_<enums.messages.ChatFull>
 
   protected get [id]() {
     return 0x08736A09;
+  }
+
+  static get [name]() {
+    return "channels.getFullChannel"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -12573,6 +14145,10 @@ export class channels_createChannel_ extends Function_<enums.Updates> {
 
   protected get [id]() {
     return 0x91006707;
+  }
+
+  static get [name]() {
+    return "channels.createChannel"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -12630,6 +14206,10 @@ export class channels_editAdmin_ extends Function_<enums.Updates> {
     return 0xD33C8902;
   }
 
+  static get [name]() {
+    return "channels.editAdmin"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["channel", types._InputChannel, "InputChannel"],
@@ -12666,6 +14246,10 @@ export class channels_editTitle_ extends Function_<enums.Updates> {
     return 0x566DECD0;
   }
 
+  static get [name]() {
+    return "channels.editTitle"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["channel", types._InputChannel, "InputChannel"],
@@ -12694,6 +14278,10 @@ export class channels_editPhoto_ extends Function_<enums.Updates> {
 
   protected get [id]() {
     return 0xF12E57C9;
+  }
+
+  static get [name]() {
+    return "channels.editPhoto"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -12726,6 +14314,10 @@ export class channels_checkUsername_ extends Function_<boolean> {
     return 0x10E6BD2C;
   }
 
+  static get [name]() {
+    return "channels.checkUsername"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["channel", types._InputChannel, "InputChannel"],
@@ -12754,6 +14346,10 @@ export class channels_updateUsername_ extends Function_<boolean> {
 
   protected get [id]() {
     return 0x3514B3DE;
+  }
+
+  static get [name]() {
+    return "channels.updateUsername"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -12785,6 +14381,10 @@ export class channels_joinChannel_ extends Function_<enums.Updates> {
     return 0x24B524C5;
   }
 
+  static get [name]() {
+    return "channels.joinChannel"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["channel", types._InputChannel, "InputChannel"],
@@ -12809,6 +14409,10 @@ export class channels_leaveChannel_ extends Function_<enums.Updates> {
 
   protected get [id]() {
     return 0xF836AA95;
+  }
+
+  static get [name]() {
+    return "channels.leaveChannel"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -12836,6 +14440,10 @@ export class channels_inviteToChannel_ extends Function_<enums.Updates> {
 
   protected get [id]() {
     return 0x199F3A6C;
+  }
+
+  static get [name]() {
+    return "channels.inviteToChannel"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -12867,6 +14475,10 @@ export class channels_deleteChannel_ extends Function_<enums.Updates> {
     return 0xC0111FE3;
   }
 
+  static get [name]() {
+    return "channels.deleteChannel"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["channel", types._InputChannel, "InputChannel"],
@@ -12894,6 +14506,10 @@ export class channels_exportMessageLink_ extends Function_<enums.ExportedMessage
 
   protected get [id]() {
     return 0xE63FADEB;
+  }
+
+  static get [name]() {
+    return "channels.exportMessageLink"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -12934,6 +14550,10 @@ export class channels_toggleSignatures_ extends Function_<enums.Updates> {
     return 0x1F69B606;
   }
 
+  static get [name]() {
+    return "channels.toggleSignatures"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["channel", types._InputChannel, "InputChannel"],
@@ -12962,6 +14582,10 @@ export class channels_getAdminedPublicChannels_ extends Function_<enums.messages
 
   protected get [id]() {
     return 0xF8B036AF;
+  }
+
+  static get [name]() {
+    return "channels.getAdminedPublicChannels"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -12995,6 +14619,10 @@ export class channels_editBanned_ extends Function_<enums.Updates> {
 
   protected get [id]() {
     return 0x96E6CD81;
+  }
+
+  static get [name]() {
+    return "channels.editBanned"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -13033,6 +14661,10 @@ export class channels_getAdminLog_ extends Function_<enums.channels.AdminLogResu
 
   protected get [id]() {
     return 0x33DDF480;
+  }
+
+  static get [name]() {
+    return "channels.getAdminLog"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -13082,6 +14714,10 @@ export class channels_setStickers_ extends Function_<boolean> {
     return 0xEA8CA4F9;
   }
 
+  static get [name]() {
+    return "channels.setStickers"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["channel", types._InputChannel, "InputChannel"],
@@ -13110,6 +14746,10 @@ export class channels_readMessageContents_ extends Function_<boolean> {
 
   protected get [id]() {
     return 0xEAB5DC38;
+  }
+
+  static get [name]() {
+    return "channels.readMessageContents"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -13141,6 +14781,10 @@ export class channels_deleteHistory_ extends Function_<enums.Updates> {
 
   protected get [id]() {
     return 0x9BAA9647;
+  }
+
+  static get [name]() {
+    return "channels.deleteHistory"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -13178,6 +14822,10 @@ export class channels_togglePreHistoryHidden_ extends Function_<enums.Updates> {
     return 0xEABBB94C;
   }
 
+  static get [name]() {
+    return "channels.togglePreHistoryHidden"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["channel", types._InputChannel, "InputChannel"],
@@ -13207,6 +14855,10 @@ export class channels_getLeftChannels_ extends Function_<enums.messages.Chats> {
     return 0x8341ECC0;
   }
 
+  static get [name]() {
+    return "channels.getLeftChannels"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["offset", "number", "int"],
@@ -13231,6 +14883,10 @@ export class channels_getGroupsForDiscussion_ extends Function_<enums.messages.C
     return 0xF5DAD378;
   }
 
+  static get [name]() {
+    return "channels.getGroupsForDiscussion"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [];
   }
@@ -13251,6 +14907,10 @@ export class channels_setDiscussionGroup_ extends Function_<boolean> {
 
   protected get [id]() {
     return 0x40582BB2;
+  }
+
+  static get [name]() {
+    return "channels.setDiscussionGroup"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -13282,6 +14942,10 @@ export class channels_editCreator_ extends Function_<enums.Updates> {
 
   protected get [id]() {
     return 0x8F38CD1F;
+  }
+
+  static get [name]() {
+    return "channels.editCreator"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -13318,6 +14982,10 @@ export class channels_editLocation_ extends Function_<boolean> {
     return 0x58E63F6D;
   }
 
+  static get [name]() {
+    return "channels.editLocation"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["channel", types._InputChannel, "InputChannel"],
@@ -13351,6 +15019,10 @@ export class channels_toggleSlowMode_ extends Function_<enums.Updates> {
     return 0xEDD49EF0;
   }
 
+  static get [name]() {
+    return "channels.toggleSlowMode"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["channel", types._InputChannel, "InputChannel"],
@@ -13378,6 +15050,10 @@ export class channels_getInactiveChannels_ extends Function_<enums.messages.Inac
     return 0x11E831EE;
   }
 
+  static get [name]() {
+    return "channels.getInactiveChannels"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [];
   }
@@ -13397,6 +15073,10 @@ export class channels_convertToGigagroup_ extends Function_<enums.Updates> {
 
   protected get [id]() {
     return 0x0B290C69;
+  }
+
+  static get [name]() {
+    return "channels.convertToGigagroup"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -13424,6 +15104,10 @@ export class channels_viewSponsoredMessage_ extends Function_<boolean> {
 
   protected get [id]() {
     return 0xBEAEDB94;
+  }
+
+  static get [name]() {
+    return "channels.viewSponsoredMessage"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -13455,6 +15139,10 @@ export class channels_getSponsoredMessages_ extends Function_<enums.messages.Spo
     return 0xEC210FBF;
   }
 
+  static get [name]() {
+    return "channels.getSponsoredMessages"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["channel", types._InputChannel, "InputChannel"],
@@ -13479,6 +15167,10 @@ export class channels_getSendAs_ extends Function_<enums.channels.SendAsPeers> {
 
   protected get [id]() {
     return 0x0DC770EE;
+  }
+
+  static get [name]() {
+    return "channels.getSendAs"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -13506,6 +15198,10 @@ export class channels_deleteParticipantHistory_ extends Function_<enums.messages
 
   protected get [id]() {
     return 0x367544DB;
+  }
+
+  static get [name]() {
+    return "channels.deleteParticipantHistory"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -13538,6 +15234,10 @@ export class channels_toggleJoinToSend_ extends Function_<enums.Updates> {
     return 0xE4CB9580;
   }
 
+  static get [name]() {
+    return "channels.toggleJoinToSend"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["channel", types._InputChannel, "InputChannel"],
@@ -13566,6 +15266,10 @@ export class channels_toggleJoinRequest_ extends Function_<enums.Updates> {
 
   protected get [id]() {
     return 0x4C2985B6;
+  }
+
+  static get [name]() {
+    return "channels.toggleJoinRequest"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -13598,6 +15302,10 @@ export class channels_reorderUsernames_ extends Function_<boolean> {
     return 0xB45CED1D;
   }
 
+  static get [name]() {
+    return "channels.reorderUsernames"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["channel", types._InputChannel, "InputChannel"],
@@ -13627,6 +15335,10 @@ export class channels_toggleUsername_ extends Function_<boolean> {
 
   protected get [id]() {
     return 0x50F24105;
+  }
+
+  static get [name]() {
+    return "channels.toggleUsername"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -13661,6 +15373,10 @@ export class channels_deactivateAllUsernames_ extends Function_<boolean> {
     return 0x0A245DD3;
   }
 
+  static get [name]() {
+    return "channels.deactivateAllUsernames"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["channel", types._InputChannel, "InputChannel"],
@@ -13686,6 +15402,10 @@ export class channels_toggleForum_ extends Function_<enums.Updates> {
 
   protected get [id]() {
     return 0xA4298B29;
+  }
+
+  static get [name]() {
+    return "channels.toggleForum"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -13720,6 +15440,10 @@ export class channels_createForumTopic_ extends Function_<enums.Updates> {
 
   protected get [id]() {
     return 0xF40C0224;
+  }
+
+  static get [name]() {
+    return "channels.createForumTopic"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -13770,6 +15494,10 @@ export class channels_getForumTopics_ extends Function_<enums.messages.ForumTopi
     return 0x0DE560D1;
   }
 
+  static get [name]() {
+    return "channels.getForumTopics"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["flags", flags, "#"],
@@ -13814,6 +15542,10 @@ export class channels_getForumTopicsByID_ extends Function_<enums.messages.Forum
     return 0xB0831EB9;
   }
 
+  static get [name]() {
+    return "channels.getForumTopicsByID"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["channel", types._InputChannel, "InputChannel"],
@@ -13846,6 +15578,10 @@ export class channels_editForumTopic_ extends Function_<enums.Updates> {
 
   protected get [id]() {
     return 0xF4DFA185;
+  }
+
+  static get [name]() {
+    return "channels.editForumTopic"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -13893,6 +15629,10 @@ export class channels_updatePinnedForumTopic_ extends Function_<enums.Updates> {
     return 0x6C2D9026;
   }
 
+  static get [name]() {
+    return "channels.updatePinnedForumTopic"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["channel", types._InputChannel, "InputChannel"],
@@ -13926,6 +15666,10 @@ export class channels_deleteTopicHistory_ extends Function_<enums.messages.Affec
     return 0x34435F2D;
   }
 
+  static get [name]() {
+    return "channels.deleteTopicHistory"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["channel", types._InputChannel, "InputChannel"],
@@ -13955,6 +15699,10 @@ export class channels_reorderPinnedForumTopics_ extends Function_<enums.Updates>
 
   protected get [id]() {
     return 0x2950A18F;
+  }
+
+  static get [name]() {
+    return "channels.reorderPinnedForumTopics"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -13992,6 +15740,10 @@ export class channels_toggleAntiSpam_ extends Function_<enums.Updates> {
     return 0x68F3E4EB;
   }
 
+  static get [name]() {
+    return "channels.toggleAntiSpam"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["channel", types._InputChannel, "InputChannel"],
@@ -14020,6 +15772,10 @@ export class channels_reportAntiSpamFalsePositive_ extends Function_<boolean> {
 
   protected get [id]() {
     return 0xA850A693;
+  }
+
+  static get [name]() {
+    return "channels.reportAntiSpamFalsePositive"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -14052,6 +15808,10 @@ export class channels_toggleParticipantsHidden_ extends Function_<enums.Updates>
     return 0x6A6E7854;
   }
 
+  static get [name]() {
+    return "channels.toggleParticipantsHidden"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["channel", types._InputChannel, "InputChannel"],
@@ -14080,6 +15840,10 @@ export class channels_clickSponsoredMessage_ extends Function_<boolean> {
 
   protected get [id]() {
     return 0x18AFBC93;
+  }
+
+  static get [name]() {
+    return "channels.clickSponsoredMessage"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -14111,6 +15875,10 @@ export class channels_updateColor_ extends Function_<enums.Updates> {
 
   protected get [id]() {
     return 0x621A201F;
+  }
+
+  static get [name]() {
+    return "channels.updateColor"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -14148,6 +15916,10 @@ export class channels_toggleViewForumAsMessages_ extends Function_<enums.Updates
     return 0x9738BB15;
   }
 
+  static get [name]() {
+    return "channels.toggleViewForumAsMessages"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["channel", types._InputChannel, "InputChannel"],
@@ -14177,6 +15949,10 @@ export class channels_getChannelRecommendations_ extends Function_<enums.message
     return 0x83B70D97;
   }
 
+  static get [name]() {
+    return "channels.getChannelRecommendations"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["channel", types._InputChannel, "InputChannel"],
@@ -14202,6 +15978,10 @@ export class bots_sendCustomRequest_ extends Function_<enums.DataJSON> {
 
   protected get [id]() {
     return 0xAA2769ED;
+  }
+
+  static get [name]() {
+    return "bots.sendCustomRequest"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -14234,6 +16014,10 @@ export class bots_answerWebhookJSONQuery_ extends Function_<boolean> {
     return 0xE6213F4D;
   }
 
+  static get [name]() {
+    return "bots.answerWebhookJSONQuery"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["query_id", "bigint", "long"],
@@ -14263,6 +16047,10 @@ export class bots_setBotCommands_ extends Function_<boolean> {
 
   protected get [id]() {
     return 0x0517165A;
+  }
+
+  static get [name]() {
+    return "bots.setBotCommands"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -14298,6 +16086,10 @@ export class bots_resetBotCommands_ extends Function_<boolean> {
     return 0x3D8DE0F9;
   }
 
+  static get [name]() {
+    return "bots.resetBotCommands"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["scope", types._BotCommandScope, "BotCommandScope"],
@@ -14326,6 +16118,10 @@ export class bots_getBotCommands_ extends Function_<enums.BotCommand[]> {
 
   protected get [id]() {
     return 0xE34C0DD6;
+  }
+
+  static get [name]() {
+    return "bots.getBotCommands"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -14358,6 +16154,10 @@ export class bots_setBotMenuButton_ extends Function_<boolean> {
     return 0x4504D54F;
   }
 
+  static get [name]() {
+    return "bots.setBotMenuButton"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["user_id", types._InputUser, "InputUser"],
@@ -14387,6 +16187,10 @@ export class bots_getBotMenuButton_ extends Function_<enums.BotMenuButton> {
     return 0x9C60EB28;
   }
 
+  static get [name]() {
+    return "bots.getBotMenuButton"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["user_id", types._InputUser, "InputUser"],
@@ -14413,6 +16217,10 @@ export class bots_setBotBroadcastDefaultAdminRights_ extends Function_<boolean> 
     return 0x788464E1;
   }
 
+  static get [name]() {
+    return "bots.setBotBroadcastDefaultAdminRights"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["admin_rights", types._ChatAdminRights, "ChatAdminRights"],
@@ -14437,6 +16245,10 @@ export class bots_setBotGroupDefaultAdminRights_ extends Function_<boolean> {
 
   protected get [id]() {
     return 0x925EC9EA;
+  }
+
+  static get [name]() {
+    return "bots.setBotGroupDefaultAdminRights"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -14467,6 +16279,10 @@ export class bots_setBotInfo_ extends Function_<boolean> {
 
   protected get [id]() {
     return 0x10CF3123;
+  }
+
+  static get [name]() {
+    return "bots.setBotInfo"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -14510,6 +16326,10 @@ export class bots_getBotInfo_ extends Function_<enums.bots.BotInfo> {
     return 0xDCD914FD;
   }
 
+  static get [name]() {
+    return "bots.getBotInfo"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["flags", flags, "#"],
@@ -14542,6 +16362,10 @@ export class bots_reorderUsernames_ extends Function_<boolean> {
     return 0x9709B1C2;
   }
 
+  static get [name]() {
+    return "bots.reorderUsernames"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["bot", types._InputUser, "InputUser"],
@@ -14571,6 +16395,10 @@ export class bots_toggleUsername_ extends Function_<boolean> {
 
   protected get [id]() {
     return 0x053CA973;
+  }
+
+  static get [name]() {
+    return "bots.toggleUsername"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -14605,6 +16433,10 @@ export class bots_canSendMessage_ extends Function_<boolean> {
     return 0x1359F4E6;
   }
 
+  static get [name]() {
+    return "bots.canSendMessage"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["bot", types._InputUser, "InputUser"],
@@ -14629,6 +16461,10 @@ export class bots_allowSendMessage_ extends Function_<enums.Updates> {
 
   protected get [id]() {
     return 0xF132E3EF;
+  }
+
+  static get [name]() {
+    return "bots.allowSendMessage"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -14657,6 +16493,10 @@ export class bots_invokeWebViewCustomMethod_ extends Function_<enums.DataJSON> {
 
   protected get [id]() {
     return 0x087FC5E7;
+  }
+
+  static get [name]() {
+    return "bots.invokeWebViewCustomMethod"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -14692,6 +16532,10 @@ export class payments_getPaymentForm_ extends Function_<enums.payments.PaymentFo
     return 0x37148DBB;
   }
 
+  static get [name]() {
+    return "payments.getPaymentForm"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["flags", flags, "#"],
@@ -14724,6 +16568,10 @@ export class payments_getPaymentReceipt_ extends Function_<enums.payments.Paymen
     return 0x2478D1CC;
   }
 
+  static get [name]() {
+    return "payments.getPaymentReceipt"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["peer", types._InputPeer, "InputPeer"],
@@ -14753,6 +16601,10 @@ export class payments_validateRequestedInfo_ extends Function_<enums.payments.Va
 
   protected get [id]() {
     return 0xB6C8F12B;
+  }
+
+  static get [name]() {
+    return "payments.validateRequestedInfo"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -14792,6 +16644,10 @@ export class payments_sendPaymentForm_ extends Function_<enums.payments.PaymentR
 
   protected get [id]() {
     return 0x2D03522F;
+  }
+
+  static get [name]() {
+    return "payments.sendPaymentForm"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -14835,6 +16691,10 @@ export class payments_getSavedInfo_ extends Function_<enums.payments.SavedInfo> 
     return 0x227D824B;
   }
 
+  static get [name]() {
+    return "payments.getSavedInfo"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [];
   }
@@ -14855,6 +16715,10 @@ export class payments_clearSavedInfo_ extends Function_<boolean> {
 
   protected get [id]() {
     return 0xD83D70C1;
+  }
+
+  static get [name]() {
+    return "payments.clearSavedInfo"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -14888,6 +16752,10 @@ export class payments_getBankCardData_ extends Function_<enums.payments.BankCard
     return 0x2E79D779;
   }
 
+  static get [name]() {
+    return "payments.getBankCardData"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["number", "string", "string"],
@@ -14912,6 +16780,10 @@ export class payments_exportInvoice_ extends Function_<enums.payments.ExportedIn
 
   protected get [id]() {
     return 0x0F91B065;
+  }
+
+  static get [name]() {
+    return "payments.exportInvoice"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -14939,6 +16811,10 @@ export class payments_assignAppStoreTransaction_ extends Function_<enums.Updates
 
   protected get [id]() {
     return 0x80ED747D;
+  }
+
+  static get [name]() {
+    return "payments.assignAppStoreTransaction"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -14971,6 +16847,10 @@ export class payments_assignPlayMarketTransaction_ extends Function_<enums.Updat
     return 0xDFFD50D3;
   }
 
+  static get [name]() {
+    return "payments.assignPlayMarketTransaction"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["receipt", types._DataJSON, "DataJSON"],
@@ -15000,6 +16880,10 @@ export class payments_canPurchasePremium_ extends Function_<boolean> {
     return 0x9FC19EB6;
   }
 
+  static get [name]() {
+    return "payments.canPurchasePremium"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["purpose", types._InputStorePaymentPurpose, "InputStorePaymentPurpose"],
@@ -15024,6 +16908,10 @@ export class payments_getPremiumGiftCodeOptions_ extends Function_<enums.Premium
 
   protected get [id]() {
     return 0x2757BA54;
+  }
+
+  static get [name]() {
+    return "payments.getPremiumGiftCodeOptions"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -15054,6 +16942,10 @@ export class payments_checkGiftCode_ extends Function_<enums.payments.CheckedGif
     return 0x8E51B4C1;
   }
 
+  static get [name]() {
+    return "payments.checkGiftCode"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["slug", "string", "string"],
@@ -15078,6 +16970,10 @@ export class payments_applyGiftCode_ extends Function_<enums.Updates> {
 
   protected get [id]() {
     return 0xF6E26854;
+  }
+
+  static get [name]() {
+    return "payments.applyGiftCode"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -15105,6 +17001,10 @@ export class payments_getGiveawayInfo_ extends Function_<enums.payments.Giveaway
 
   protected get [id]() {
     return 0xF4239425;
+  }
+
+  static get [name]() {
+    return "payments.getGiveawayInfo"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -15136,6 +17036,10 @@ export class payments_launchPrepaidGiveaway_ extends Function_<enums.Updates> {
 
   protected get [id]() {
     return 0x5FF58F20;
+  }
+
+  static get [name]() {
+    return "payments.launchPrepaidGiveaway"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -15178,6 +17082,10 @@ export class stickers_createStickerSet_ extends Function_<enums.messages.Sticker
 
   protected get [id]() {
     return 0x9021AB67;
+  }
+
+  static get [name]() {
+    return "stickers.createStickerSet"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -15238,6 +17146,10 @@ export class stickers_removeStickerFromSet_ extends Function_<enums.messages.Sti
     return 0xF7760F51;
   }
 
+  static get [name]() {
+    return "stickers.removeStickerFromSet"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["sticker", types._InputDocument, "InputDocument"],
@@ -15263,6 +17175,10 @@ export class stickers_changeStickerPosition_ extends Function_<enums.messages.St
 
   protected get [id]() {
     return 0xFFB6D4CA;
+  }
+
+  static get [name]() {
+    return "stickers.changeStickerPosition"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -15295,6 +17211,10 @@ export class stickers_addStickerToSet_ extends Function_<enums.messages.StickerS
     return 0x8653FEBE;
   }
 
+  static get [name]() {
+    return "stickers.addStickerToSet"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["stickerset", types._InputStickerSet, "InputStickerSet"],
@@ -15324,6 +17244,10 @@ export class stickers_setStickerSetThumb_ extends Function_<enums.messages.Stick
 
   protected get [id]() {
     return 0xA76A5392;
+  }
+
+  static get [name]() {
+    return "stickers.setStickerSetThumb"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -15360,6 +17284,10 @@ export class stickers_checkShortName_ extends Function_<boolean> {
     return 0x284B3639;
   }
 
+  static get [name]() {
+    return "stickers.checkShortName"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["short_name", "string", "string"],
@@ -15384,6 +17312,10 @@ export class stickers_suggestShortName_ extends Function_<enums.stickers.Suggest
 
   protected get [id]() {
     return 0x4DAFC503;
+  }
+
+  static get [name]() {
+    return "stickers.suggestShortName"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -15413,6 +17345,10 @@ export class stickers_changeSticker_ extends Function_<enums.messages.StickerSet
 
   protected get [id]() {
     return 0xF5537EBC;
+  }
+
+  static get [name]() {
+    return "stickers.changeSticker"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -15453,6 +17389,10 @@ export class stickers_renameStickerSet_ extends Function_<enums.messages.Sticker
     return 0x124B1C00;
   }
 
+  static get [name]() {
+    return "stickers.renameStickerSet"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["stickerset", types._InputStickerSet, "InputStickerSet"],
@@ -15482,6 +17422,10 @@ export class stickers_deleteStickerSet_ extends Function_<boolean> {
     return 0x87704394;
   }
 
+  static get [name]() {
+    return "stickers.deleteStickerSet"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["stickerset", types._InputStickerSet, "InputStickerSet"],
@@ -15504,6 +17448,10 @@ export class phone_getCallConfig_ extends Function_<enums.DataJSON> {
   static __F = Symbol() as unknown as () => enums.DataJSON;
   protected get [id]() {
     return 0x55451FA9;
+  }
+
+  static get [name]() {
+    return "phone.getCallConfig"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -15529,6 +17477,10 @@ export class phone_requestCall_ extends Function_<enums.phone.PhoneCall> {
 
   protected get [id]() {
     return 0x42FF96ED;
+  }
+
+  static get [name]() {
+    return "phone.requestCall"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -15573,6 +17525,10 @@ export class phone_acceptCall_ extends Function_<enums.phone.PhoneCall> {
     return 0x3BD2B4A0;
   }
 
+  static get [name]() {
+    return "phone.acceptCall"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["peer", types._InputPhoneCall, "InputPhoneCall"],
@@ -15606,6 +17562,10 @@ export class phone_confirmCall_ extends Function_<enums.phone.PhoneCall> {
 
   protected get [id]() {
     return 0x2EFE1722;
+  }
+
+  static get [name]() {
+    return "phone.confirmCall"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -15643,6 +17603,10 @@ export class phone_receivedCall_ extends Function_<boolean> {
     return 0x17D54F61;
   }
 
+  static get [name]() {
+    return "phone.receivedCall"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["peer", types._InputPhoneCall, "InputPhoneCall"],
@@ -15671,6 +17635,10 @@ export class phone_discardCall_ extends Function_<enums.Updates> {
 
   protected get [id]() {
     return 0xB2CBC1C0;
+  }
+
+  static get [name]() {
+    return "phone.discardCall"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -15716,6 +17684,10 @@ export class phone_setCallRating_ extends Function_<enums.Updates> {
     return 0x59EAD627;
   }
 
+  static get [name]() {
+    return "phone.setCallRating"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["flags", flags, "#"],
@@ -15754,6 +17726,10 @@ export class phone_saveCallDebug_ extends Function_<boolean> {
     return 0x277ADD7E;
   }
 
+  static get [name]() {
+    return "phone.saveCallDebug"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["peer", types._InputPhoneCall, "InputPhoneCall"],
@@ -15782,6 +17758,10 @@ export class phone_sendSignalingData_ extends Function_<boolean> {
 
   protected get [id]() {
     return 0xFF7A9383;
+  }
+
+  static get [name]() {
+    return "phone.sendSignalingData"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -15815,6 +17795,10 @@ export class phone_createGroupCall_ extends Function_<enums.Updates> {
 
   protected get [id]() {
     return 0x48CDC6D8;
+  }
+
+  static get [name]() {
+    return "phone.createGroupCall"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -15862,6 +17846,10 @@ export class phone_joinGroupCall_ extends Function_<enums.Updates> {
     return 0xB132FF7B;
   }
 
+  static get [name]() {
+    return "phone.joinGroupCall"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["flags", flags, "#"],
@@ -15906,6 +17894,10 @@ export class phone_leaveGroupCall_ extends Function_<enums.Updates> {
     return 0x500377F9;
   }
 
+  static get [name]() {
+    return "phone.leaveGroupCall"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["call", types._InputGroupCall, "InputGroupCall"],
@@ -15934,6 +17926,10 @@ export class phone_inviteToGroupCall_ extends Function_<enums.Updates> {
 
   protected get [id]() {
     return 0x7B393160;
+  }
+
+  static get [name]() {
+    return "phone.inviteToGroupCall"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -15965,6 +17961,10 @@ export class phone_discardGroupCall_ extends Function_<enums.Updates> {
     return 0x7A777135;
   }
 
+  static get [name]() {
+    return "phone.discardGroupCall"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["call", types._InputGroupCall, "InputGroupCall"],
@@ -15991,6 +17991,10 @@ export class phone_toggleGroupCallSettings_ extends Function_<enums.Updates> {
 
   protected get [id]() {
     return 0x74BBB43D;
+  }
+
+  static get [name]() {
+    return "phone.toggleGroupCallSettings"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -16028,6 +18032,10 @@ export class phone_getGroupCall_ extends Function_<enums.phone.GroupCall> {
     return 0x041845DB;
   }
 
+  static get [name]() {
+    return "phone.getGroupCall"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["call", types._InputGroupCall, "InputGroupCall"],
@@ -16059,6 +18067,10 @@ export class phone_getGroupParticipants_ extends Function_<enums.phone.GroupPart
 
   protected get [id]() {
     return 0xC558D8AB;
+  }
+
+  static get [name]() {
+    return "phone.getGroupParticipants"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -16100,6 +18112,10 @@ export class phone_checkGroupCall_ extends Function_<number[]> {
     return 0xB59CF977;
   }
 
+  static get [name]() {
+    return "phone.checkGroupCall"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["call", types._InputGroupCall, "InputGroupCall"],
@@ -16131,6 +18147,10 @@ export class phone_toggleGroupCallRecord_ extends Function_<enums.Updates> {
 
   protected get [id]() {
     return 0xF128C708;
+  }
+
+  static get [name]() {
+    return "phone.toggleGroupCallRecord"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -16178,6 +18198,10 @@ export class phone_editGroupCallParticipant_ extends Function_<enums.Updates> {
 
   protected get [id]() {
     return 0xA5273ABF;
+  }
+
+  static get [name]() {
+    return "phone.editGroupCallParticipant"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -16230,6 +18254,10 @@ export class phone_editGroupCallTitle_ extends Function_<enums.Updates> {
     return 0x1CA6AC0A;
   }
 
+  static get [name]() {
+    return "phone.editGroupCallTitle"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["call", types._InputGroupCall, "InputGroupCall"],
@@ -16259,6 +18287,10 @@ export class phone_getGroupCallJoinAs_ extends Function_<enums.phone.JoinAsPeers
     return 0xEF7C213A;
   }
 
+  static get [name]() {
+    return "phone.getGroupCallJoinAs"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["peer", types._InputPeer, "InputPeer"],
@@ -16284,6 +18316,10 @@ export class phone_exportGroupCallInvite_ extends Function_<enums.phone.Exported
 
   protected get [id]() {
     return 0xE6AA647F;
+  }
+
+  static get [name]() {
+    return "phone.exportGroupCallInvite"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -16318,6 +18354,10 @@ export class phone_toggleGroupCallStartSubscription_ extends Function_<enums.Upd
     return 0x219C34E6;
   }
 
+  static get [name]() {
+    return "phone.toggleGroupCallStartSubscription"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["call", types._InputGroupCall, "InputGroupCall"],
@@ -16347,6 +18387,10 @@ export class phone_startScheduledGroupCall_ extends Function_<enums.Updates> {
     return 0x5680E342;
   }
 
+  static get [name]() {
+    return "phone.startScheduledGroupCall"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["call", types._InputGroupCall, "InputGroupCall"],
@@ -16372,6 +18416,10 @@ export class phone_saveDefaultGroupCallJoinAs_ extends Function_<boolean> {
 
   protected get [id]() {
     return 0x575E1F8C;
+  }
+
+  static get [name]() {
+    return "phone.saveDefaultGroupCallJoinAs"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -16404,6 +18452,10 @@ export class phone_joinGroupCallPresentation_ extends Function_<enums.Updates> {
     return 0xCBEA6BC4;
   }
 
+  static get [name]() {
+    return "phone.joinGroupCallPresentation"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["call", types._InputGroupCall, "InputGroupCall"],
@@ -16433,6 +18485,10 @@ export class phone_leaveGroupCallPresentation_ extends Function_<enums.Updates> 
     return 0x1C50D144;
   }
 
+  static get [name]() {
+    return "phone.leaveGroupCallPresentation"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["call", types._InputGroupCall, "InputGroupCall"],
@@ -16457,6 +18513,10 @@ export class phone_getGroupCallStreamChannels_ extends Function_<enums.phone.Gro
 
   protected get [id]() {
     return 0x1AB21940;
+  }
+
+  static get [name]() {
+    return "phone.getGroupCallStreamChannels"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -16484,6 +18544,10 @@ export class phone_getGroupCallStreamRtmpUrl_ extends Function_<enums.phone.Grou
 
   protected get [id]() {
     return 0xDEB3ABBF;
+  }
+
+  static get [name]() {
+    return "phone.getGroupCallStreamRtmpUrl"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -16516,6 +18580,10 @@ export class phone_saveCallLog_ extends Function_<boolean> {
     return 0x41248786;
   }
 
+  static get [name]() {
+    return "phone.saveCallLog"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["peer", types._InputPhoneCall, "InputPhoneCall"],
@@ -16544,6 +18612,10 @@ export class langpack_getLangPack_ extends Function_<enums.LangPackDifference> {
 
   protected get [id]() {
     return 0xF2F2330A;
+  }
+
+  static get [name]() {
+    return "langpack.getLangPack"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -16575,6 +18647,10 @@ export class langpack_getStrings_ extends Function_<enums.LangPackString[]> {
 
   protected get [id]() {
     return 0xEFEA3803;
+  }
+
+  static get [name]() {
+    return "langpack.getStrings"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -16611,6 +18687,10 @@ export class langpack_getDifference_ extends Function_<enums.LangPackDifference>
     return 0xCD984AA5;
   }
 
+  static get [name]() {
+    return "langpack.getDifference"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["lang_pack", "string", "string"],
@@ -16643,6 +18723,10 @@ export class langpack_getLanguages_ extends Function_<enums.LangPackLanguage[]> 
     return 0x42C6978F;
   }
 
+  static get [name]() {
+    return "langpack.getLanguages"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["lang_pack", "string", "string"],
@@ -16668,6 +18752,10 @@ export class langpack_getLanguage_ extends Function_<enums.LangPackLanguage> {
 
   protected get [id]() {
     return 0x6A596502;
+  }
+
+  static get [name]() {
+    return "langpack.getLanguage"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -16699,6 +18787,10 @@ export class folders_editPeerFolders_ extends Function_<enums.Updates> {
     return 0x6847D0AB;
   }
 
+  static get [name]() {
+    return "folders.editPeerFolders"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["folder_peers", [types._InputFolderPeer], "Vector<InputFolderPeer>"],
@@ -16724,6 +18816,10 @@ export class stats_getBroadcastStats_ extends Function_<enums.stats.BroadcastSta
 
   protected get [id]() {
     return 0xAB42441A;
+  }
+
+  static get [name]() {
+    return "stats.getBroadcastStats"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -16758,6 +18854,10 @@ export class stats_loadAsyncGraph_ extends Function_<enums.StatsGraph> {
     return 0x621D5FA0;
   }
 
+  static get [name]() {
+    return "stats.loadAsyncGraph"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["flags", flags, "#"],
@@ -16788,6 +18888,10 @@ export class stats_getMegagroupStats_ extends Function_<enums.stats.MegagroupSta
 
   protected get [id]() {
     return 0xDCDF8607;
+  }
+
+  static get [name]() {
+    return "stats.getMegagroupStats"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -16824,6 +18928,10 @@ export class stats_getMessagePublicForwards_ extends Function_<enums.messages.Me
 
   protected get [id]() {
     return 0x5630281B;
+  }
+
+  static get [name]() {
+    return "stats.getMessagePublicForwards"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -16869,6 +18977,10 @@ export class stats_getMessageStats_ extends Function_<enums.stats.MessageStats> 
     return 0xB6E0A3F5;
   }
 
+  static get [name]() {
+    return "stats.getMessageStats"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["flags", flags, "#"],
@@ -16903,6 +19015,10 @@ export class stats_getStoryStats_ extends Function_<enums.stats.StoryStats> {
 
   protected get [id]() {
     return 0x374FEF40;
+  }
+
+  static get [name]() {
+    return "stats.getStoryStats"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -16942,6 +19058,10 @@ export class stats_getStoryPublicForwards_ extends Function_<enums.stats.PublicF
     return 0xA6437EF6;
   }
 
+  static get [name]() {
+    return "stats.getStoryPublicForwards"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["peer", types._InputPeer, "InputPeer"],
@@ -16979,6 +19099,10 @@ export class chatlists_exportChatlistInvite_ extends Function_<enums.chatlists.E
     return 0x8472478E;
   }
 
+  static get [name]() {
+    return "chatlists.exportChatlistInvite"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["chatlist", types._InputChatlist, "InputChatlist"],
@@ -17012,6 +19136,10 @@ export class chatlists_deleteExportedInvite_ extends Function_<boolean> {
     return 0x719C5C5E;
   }
 
+  static get [name]() {
+    return "chatlists.deleteExportedInvite"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["chatlist", types._InputChatlist, "InputChatlist"],
@@ -17042,6 +19170,10 @@ export class chatlists_editExportedInvite_ extends Function_<enums.ExportedChatl
 
   protected get [id]() {
     return 0x653DB63D;
+  }
+
+  static get [name]() {
+    return "chatlists.editExportedInvite"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -17081,6 +19213,10 @@ export class chatlists_getExportedInvites_ extends Function_<enums.chatlists.Exp
     return 0xCE03DA83;
   }
 
+  static get [name]() {
+    return "chatlists.getExportedInvites"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["chatlist", types._InputChatlist, "InputChatlist"],
@@ -17105,6 +19241,10 @@ export class chatlists_checkChatlistInvite_ extends Function_<enums.chatlists.Ch
 
   protected get [id]() {
     return 0x41C10FFF;
+  }
+
+  static get [name]() {
+    return "chatlists.checkChatlistInvite"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -17132,6 +19272,10 @@ export class chatlists_joinChatlistInvite_ extends Function_<enums.Updates> {
 
   protected get [id]() {
     return 0xA6B1E39A;
+  }
+
+  static get [name]() {
+    return "chatlists.joinChatlistInvite"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -17163,6 +19307,10 @@ export class chatlists_getChatlistUpdates_ extends Function_<enums.chatlists.Cha
     return 0x89419521;
   }
 
+  static get [name]() {
+    return "chatlists.getChatlistUpdates"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["chatlist", types._InputChatlist, "InputChatlist"],
@@ -17188,6 +19336,10 @@ export class chatlists_joinChatlistUpdates_ extends Function_<enums.Updates> {
 
   protected get [id]() {
     return 0xE089F8F5;
+  }
+
+  static get [name]() {
+    return "chatlists.joinChatlistUpdates"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -17219,6 +19371,10 @@ export class chatlists_hideChatlistUpdates_ extends Function_<boolean> {
     return 0x66E486FB;
   }
 
+  static get [name]() {
+    return "chatlists.hideChatlistUpdates"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["chatlist", types._InputChatlist, "InputChatlist"],
@@ -17243,6 +19399,10 @@ export class chatlists_getLeaveChatlistSuggestions_ extends Function_<enums.Peer
 
   protected get [id]() {
     return 0xFDBCD714;
+  }
+
+  static get [name]() {
+    return "chatlists.getLeaveChatlistSuggestions"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -17272,6 +19432,10 @@ export class chatlists_leaveChatlist_ extends Function_<enums.Updates> {
     return 0x74FAE13A;
   }
 
+  static get [name]() {
+    return "chatlists.leaveChatlist"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["chatlist", types._InputChatlist, "InputChatlist"],
@@ -17299,6 +19463,10 @@ export class stories_canSendStory_ extends Function_<boolean> {
 
   protected get [id]() {
     return 0xC7DFDFDD;
+  }
+
+  static get [name]() {
+    return "stories.canSendStory"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -17337,6 +19505,10 @@ export class stories_sendStory_ extends Function_<enums.Updates> {
 
   protected get [id]() {
     return 0xE4E6694B;
+  }
+
+  static get [name]() {
+    return "stories.sendStory"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -17409,6 +19581,10 @@ export class stories_editStory_ extends Function_<enums.Updates> {
     return 0xB583BA46;
   }
 
+  static get [name]() {
+    return "stories.editStory"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["flags", flags, "#"],
@@ -17456,6 +19632,10 @@ export class stories_deleteStories_ extends Function_<number[]> {
     return 0xAE59DB5F;
   }
 
+  static get [name]() {
+    return "stories.deleteStories"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["peer", types._InputPeer, "InputPeer"],
@@ -17485,6 +19665,10 @@ export class stories_togglePinned_ extends Function_<number[]> {
 
   protected get [id]() {
     return 0x9A75A1EF;
+  }
+
+  static get [name]() {
+    return "stories.togglePinned"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -17519,6 +19703,10 @@ export class stories_getAllStories_ extends Function_<enums.stories.AllStories> 
 
   protected get [id]() {
     return 0xEEB0D625;
+  }
+
+  static get [name]() {
+    return "stories.getAllStories"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -17557,6 +19745,10 @@ export class stories_getPinnedStories_ extends Function_<enums.stories.Stories> 
     return 0x5821A5DC;
   }
 
+  static get [name]() {
+    return "stories.getPinnedStories"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["peer", types._InputPeer, "InputPeer"],
@@ -17589,6 +19781,10 @@ export class stories_getStoriesArchive_ extends Function_<enums.stories.Stories>
 
   protected get [id]() {
     return 0xB4352016;
+  }
+
+  static get [name]() {
+    return "stories.getStoriesArchive"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -17624,6 +19820,10 @@ export class stories_getStoriesByID_ extends Function_<enums.stories.Stories> {
     return 0x5774CA74;
   }
 
+  static get [name]() {
+    return "stories.getStoriesByID"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["peer", types._InputPeer, "InputPeer"],
@@ -17653,6 +19853,10 @@ export class stories_toggleAllStoriesHidden_ extends Function_<boolean> {
     return 0x7C2557C4;
   }
 
+  static get [name]() {
+    return "stories.toggleAllStoriesHidden"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["hidden", "boolean", "Bool"],
@@ -17678,6 +19882,10 @@ export class stories_readStories_ extends Function_<number[]> {
 
   protected get [id]() {
     return 0xA556DAC8;
+  }
+
+  static get [name]() {
+    return "stories.readStories"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -17708,6 +19916,10 @@ export class stories_incrementStoryViews_ extends Function_<boolean> {
 
   protected get [id]() {
     return 0xB2028AFB;
+  }
+
+  static get [name]() {
+    return "stories.incrementStoryViews"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -17743,6 +19955,10 @@ export class stories_getStoryViewsList_ extends Function_<enums.stories.StoryVie
 
   protected get [id]() {
     return 0x7ED23C57;
+  }
+
+  static get [name]() {
+    return "stories.getStoryViewsList"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -17792,6 +20008,10 @@ export class stories_getStoriesViews_ extends Function_<enums.stories.StoryViews
     return 0x28E16CC8;
   }
 
+  static get [name]() {
+    return "stories.getStoriesViews"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["peer", types._InputPeer, "InputPeer"],
@@ -17820,6 +20040,10 @@ export class stories_exportStoryLink_ extends Function_<enums.ExportedStoryLink>
 
   protected get [id]() {
     return 0x7B8DEF20;
+  }
+
+  static get [name]() {
+    return "stories.exportStoryLink"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -17852,6 +20076,10 @@ export class stories_report_ extends Function_<boolean> {
 
   protected get [id]() {
     return 0x1923FA8C;
+  }
+
+  static get [name]() {
+    return "stories.report"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -17890,6 +20118,10 @@ export class stories_activateStealthMode_ extends Function_<enums.Updates> {
     return 0x57BBD166;
   }
 
+  static get [name]() {
+    return "stories.activateStealthMode"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["flags", flags, "#"],
@@ -17922,6 +20154,10 @@ export class stories_sendReaction_ extends Function_<enums.Updates> {
 
   protected get [id]() {
     return 0x7FD736B2;
+  }
+
+  static get [name]() {
+    return "stories.sendReaction"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -17961,6 +20197,10 @@ export class stories_getPeerStories_ extends Function_<enums.stories.PeerStories
     return 0x2C4ADA50;
   }
 
+  static get [name]() {
+    return "stories.getPeerStories"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["peer", types._InputPeer, "InputPeer"],
@@ -17985,6 +20225,10 @@ export class stories_getAllReadPeerStories_ extends Function_<enums.Updates> {
     return 0x9B5AE7F9;
   }
 
+  static get [name]() {
+    return "stories.getAllReadPeerStories"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [];
   }
@@ -18004,6 +20248,10 @@ export class stories_getPeerMaxIDs_ extends Function_<number[]> {
 
   protected get [id]() {
     return 0x535983C3;
+  }
+
+  static get [name]() {
+    return "stories.getPeerMaxIDs"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -18030,6 +20278,10 @@ export class stories_getChatsToSend_ extends Function_<enums.messages.Chats> {
     return 0xA56A8B60;
   }
 
+  static get [name]() {
+    return "stories.getChatsToSend"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [];
   }
@@ -18050,6 +20302,10 @@ export class stories_togglePeerStoriesHidden_ extends Function_<boolean> {
 
   protected get [id]() {
     return 0xBD0415C4;
+  }
+
+  static get [name]() {
+    return "stories.togglePeerStoriesHidden"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -18082,6 +20338,10 @@ export class premium_getBoostsList_ extends Function_<enums.premium.BoostsList> 
 
   protected get [id]() {
     return 0x60F67660;
+  }
+
+  static get [name]() {
+    return "premium.getBoostsList"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -18119,6 +20379,10 @@ export class premium_getMyBoosts_ extends Function_<enums.premium.MyBoosts> {
     return 0x0BE77B4A;
   }
 
+  static get [name]() {
+    return "premium.getMyBoosts"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [];
   }
@@ -18139,6 +20403,10 @@ export class premium_applyBoost_ extends Function_<enums.premium.MyBoosts> {
 
   protected get [id]() {
     return 0x6B7DA746;
+  }
+
+  static get [name]() {
+    return "premium.applyBoost"
   }
 
   static get [paramDesc](): ParamDesc {
@@ -18172,6 +20440,10 @@ export class premium_getBoostsStatus_ extends Function_<enums.premium.BoostsStat
     return 0x042F1F61;
   }
 
+  static get [name]() {
+    return "premium.getBoostsStatus"
+  }
+
   static get [paramDesc](): ParamDesc {
     return [
       ["peer", types._InputPeer, "InputPeer"],
@@ -18197,6 +20469,10 @@ export class premium_getUserBoosts_ extends Function_<enums.premium.BoostsList> 
 
   protected get [id]() {
     return 0x39854D1F;
+  }
+
+  static get [name]() {
+    return "premium.getUserBoosts"
   }
 
   static get [paramDesc](): ParamDesc {
