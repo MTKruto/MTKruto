@@ -1,9 +1,13 @@
-import { id } from "./1_tl_object.ts";
+import { id, name } from "./1_tl_object.ts";
 import { ReadObject, TLReader } from "./3_tl_reader.ts";
 
 export class RPCResult {
   static get [id]() {
     return 0xF35C6D01;
+  }
+
+  get [name]() {
+    return "rpc_result";
   }
 
   constructor(
