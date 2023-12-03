@@ -1,6 +1,6 @@
 import { debug, gunzip, Mutex } from "../0_deps.ts";
 import { bigIntFromBuffer, cleanObject, drop, getRandomBigInt, getRandomId, MaybePromise, mod, mustPrompt, mustPromptOneOf, Queue, sha1, UNREACHABLE } from "../1_utilities.ts";
-import { as, enums, functions, getChannelChatId, Message_, MessageContainer, peerToChatId, ReadObject, RPCResult, TLError, TLReader, types } from "../2_tl.ts";
+import { as, enums, functions, getChannelChatId, Message_, MessageContainer, name, peerToChatId, ReadObject, RPCResult, TLError, TLReader, types } from "../2_tl.ts";
 import { Storage, StorageMemory } from "../3_storage.ts";
 import { DC } from "../3_transport.ts";
 import { BotCommand, botCommandScopeToTlObject, CallbackQuery, ChatAction, ChatID, constructCallbackQuery, constructInlineQuery, constructMessage, constructUser, FileID, FileType, InlineQuery, InlineQueryResult, inlineQueryResultToTlObject, Message, MessageEntity, messageEntityToTlObject, ParseMode, replyMarkupToTlObject, ThumbnailSource, User, UsernameResolver } from "../3_types.ts";
@@ -652,7 +652,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
         password: while (true) {
           const ap = await this.invoke(new functions.account.getPassword());
           if (!(ap.current_algo instanceof types.PasswordKdfAlgoSHA256SHA256PBKDF2HMACSHA512iter100000SHA256ModPow)) {
-            throw new Error(`Handling ${ap.current_algo?.constructor.name} not implemented`);
+            throw new Error(`Handling ${ap.current_algo?.[name]} not implemented`);
           }
           try {
             const password = typeof params.password === "string" ? params.password : await params.password(ap.hint ?? null);
@@ -742,7 +742,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
           if (body instanceof types.Gzip_packed) {
             body = new TLReader(gunzip(body.packed_data)).readObject();
           }
-          dRecv("received %s", body.constructor.name);
+          dRecv("received %s", (typeof body === "object" && name in body) ? body[name] : body.constructor.name);
           if (body instanceof types._Updates || body instanceof types._Update) {
             this.#processUpdatesQueue.add(() => this.#processUpdates(body as types.Updates | enums.Update, true));
           } else if (body instanceof types.New_session_created) {
@@ -756,7 +756,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
             if (result instanceof types.Rpc_error) {
               dRecv("RPCResult: %d %s", result.error_code, result.error_message);
             } else {
-              dRecv("RPCResult: %s", result.constructor.name);
+              dRecv("RPCResult: %s", (typeof result === "object" && name in result) ? result[name] : result.constructor.name);
             }
             const messageId = message.body.messageId;
             const resolvePromise = () => {
@@ -868,7 +868,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
             this.#sessionId,
           ),
         );
-        d("invoked %s", function_.constructor.name);
+        d("invoked %s", function_[name]);
 
         if (noWait) {
           this.#promises.set(message.id, {
