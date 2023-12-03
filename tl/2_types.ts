@@ -6,6 +6,9 @@ export abstract class Type_ extends TLObject {
 
 // Unknown type (generic)
 export abstract class TypeX_ extends Type_ {
+  static get [name]() {
+    return "TypeX"
+  }
 }
 
 export abstract class _ResPQ_ extends Type_ {
