@@ -33,10 +33,10 @@ export function constructGame(media_: types.MessageMediaGame): Game {
         document_,
         document_.attributes.find((v): v is types.DocumentAttributeVideo => v instanceof types.DocumentAttributeVideo)!,
         document_.attributes.find((v): v is types.DocumentAttributeFilename => v instanceof types.DocumentAttributeFilename)!,
-        new FileID(null, null, FileType.Animation, document_.dcId, {
+        new FileID(null, null, FileType.Animation, document_.dc_id, {
           mediaId: document_.id,
-          accessHash: document_.accessHash,
-          fileReference: document_.fileReference,
+          accessHash: document_.access_hash,
+          fileReference: document_.file_reference,
         }).encode(),
         new FileUniqueID(FileUniqueType.Document, { mediaId: document_.id }).encode(),
       )

@@ -32,7 +32,7 @@ export function constructVideo(document: types.Document, videoAttribute: types.D
     duration: videoAttribute.duration,
     thumbnails: document.thumbs ? document.thumbs.map((v) => v instanceof types.PhotoSize ? constructThumbnail(v, document) : null).filter((v) => v) as Thumbnail[] : [],
     fileName,
-    mimeType: document.mimeType,
+    mimeType: document.mime_type,
     fileSize: Number(document.size),
   };
 }

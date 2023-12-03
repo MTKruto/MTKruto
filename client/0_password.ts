@@ -1,5 +1,5 @@
 import { bigIntFromBuffer, bufferFromBigInt, concat, getRandomBigInt, mod, modExp, sha256 } from "../1_utilities.ts";
-import { types } from "../2_tl.ts";
+import { enums, types } from "../2_tl.ts";
 
 export function isSafePrime(primeBytes: Uint8Array, g: number) {
   // deno-fmt-ignore
@@ -79,9 +79,9 @@ export function pad(bigint: number | bigint | Uint8Array) {
   }
 }
 
-export async function checkPassword(password_: string, ap: types.AccountPassword) {
+export async function checkPassword(password_: string, ap: enums.account.Password) {
   const password = new TextEncoder().encode(password_);
-  const algo = ap.currentAlgo;
+  const algo = ap.current_algo;
   if (
     !(algo instanceof
       types.PasswordKdfAlgoSHA256SHA256PBKDF2HMACSHA512iter100000SHA256ModPow)
@@ -97,8 +97,8 @@ export async function checkPassword(password_: string, ap: types.AccountPassword
     throw new Error("Got unsafe prime");
   }
 
-  const srpB = ap.srpB;
-  const srpId = ap.srpId;
+  const srpB = ap.srp_B;
+  const srpId = ap.srp_id;
   {
     if (!srpB) {
       throw new Error("srbB is not set");
@@ -169,7 +169,7 @@ export async function checkPassword(password_: string, ap: types.AccountPassword
   ));
 
   return new types.InputCheckPasswordSRP({
-    srpId: srpId,
+    srp_id: srpId,
     A: pad(gA),
     M1: m1,
   });

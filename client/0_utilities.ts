@@ -1,13 +1,12 @@
 import { path } from "../0_deps.ts";
 import { UNREACHABLE } from "../1_utilities.ts";
-import { types } from "../2_tl.ts";
-import { Username } from "../tl/2_types.ts";
+import { enums, types } from "../2_tl.ts";
 
 export const resolve = () => Promise.resolve();
 
 export type With<T, K extends keyof T> = T & Required<Pick<T, K>>;
 
-export function isPtsUpdate(v: types.TypeUpdate | types.TypeUpdates): v is
+export function isPtsUpdate(v: enums.Update | enums.Updates): v is
   | types.UpdateShortMessage
   | types.UpdateShortChatMessage
   | types.UpdateShortSentMessage
@@ -38,7 +37,7 @@ export function isPtsUpdate(v: types.TypeUpdate | types.TypeUpdates): v is
     v instanceof types.UpdateWebPage;
 }
 
-export function isChannelPtsUpdate(v: types.TypeUpdate | types.TypeUpdates): v is
+export function isChannelPtsUpdate(v: enums.Update | enums.Updates): v is
   | types.UpdateNewChannelMessage
   | types.UpdateEditChannelMessage
   | types.UpdateDeleteChannelMessages {
@@ -123,7 +122,7 @@ function validateUsername(string: string, ignoreAt = false) {
       throw errInvalidUsername(string);
     }
   }
-  if (string[Username.length - 1] == "_") {
+  if (string[string.length - 1] == "_") {
     throw errInvalidUsername(string);
   }
   for (let i = 1; i < string.length; ++i) {

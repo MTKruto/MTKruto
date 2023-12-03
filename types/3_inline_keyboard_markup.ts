@@ -1,4 +1,4 @@
-import { types } from "../2_tl.ts";
+import { enums, types } from "../2_tl.ts";
 import { UsernameResolver } from "./1__getters.ts";
 import { constructInlineKeyboardButton, InlineKeyboardButton, inlineKeyboardButtonToTlObject } from "./2_inline_keyboard_button.ts";
 
@@ -23,7 +23,7 @@ export function constructInlineKeyboardMarkup(keyboard_: types.ReplyInlineMarkup
 export async function inlineKeyboardMarkupToTlObject(keyboard: InlineKeyboardMarkup, usernameResolver: UsernameResolver) {
   const rows_ = new Array<types.KeyboardButtonRow>();
   for (const row of keyboard.inlineKeyboard) {
-    const row_ = new Array<types.TypeKeyboardButton>();
+    const row_ = new Array<enums.KeyboardButton>();
     for (const button of row) {
       row_.push(await inlineKeyboardButtonToTlObject(button, usernameResolver));
     }

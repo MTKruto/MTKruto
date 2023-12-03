@@ -1,4 +1,4 @@
-import { types } from "../2_tl.ts";
+import { enums, types } from "../2_tl.ts";
 import { constructKeyboardButton, KeyboardButton, keyboardButtonToTlObject } from "./1_keyboard_button.ts";
 
 /** This object represents a custom keyboard with reply options. */
@@ -28,7 +28,7 @@ export function constructReplyKeyboardMarkup(keyboard_: types.ReplyKeyboardMarku
   }
   return {
     resizeKeyboard: keyboard_.resize || false,
-    oneTimeKeyboard: keyboard_.singleUse || false,
+    oneTimeKeyboard: keyboard_.single_use || false,
     selective: keyboard_.selective || false,
     isPersistent: keyboard_.persistent || false,
     keyboard: rows,
@@ -38,7 +38,7 @@ export function constructReplyKeyboardMarkup(keyboard_: types.ReplyKeyboardMarku
 export function replyKeyboardMarkupToTlObject(replyMarkup: ReplyKeyboardMarkup) {
   const rows_ = new Array<types.KeyboardButtonRow>();
   for (const row of replyMarkup.keyboard) {
-    const row_ = new Array<types.TypeKeyboardButton>();
+    const row_ = new Array<enums.KeyboardButton>();
     for (const button of row) {
       row_.push(keyboardButtonToTlObject(button));
     }
@@ -46,7 +46,7 @@ export function replyKeyboardMarkupToTlObject(replyMarkup: ReplyKeyboardMarkup) 
   }
   return new types.ReplyKeyboardMarkup({
     resize: replyMarkup.resizeKeyboard || undefined,
-    singleUse: replyMarkup.oneTimeKeyboard || undefined,
+    single_use: replyMarkup.oneTimeKeyboard || undefined,
     selective: replyMarkup.selective || undefined,
     persistent: replyMarkup.isPersistent || undefined,
     rows: rows_,

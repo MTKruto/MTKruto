@@ -28,7 +28,7 @@ export function constructAudio(document: types.Document, audioAttribute: types.D
     duration: audioAttribute?.duration ?? 0,
     performer: audioAttribute?.performer,
     title: audioAttribute?.title,
-    mimeType: document.mimeType,
+    mimeType: document.mime_type,
     fileSize: Number(document.size),
     thumbnails: document.thumbs ? document.thumbs.map((v) => v instanceof types.PhotoSize ? constructThumbnail(v, document) : null).filter((v) => v) as Thumbnail[] : [],
   };

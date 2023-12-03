@@ -58,7 +58,7 @@ export async function botCommandScopeToTlObject(scope: BotCommandScope, getInput
       if (!(user instanceof types.InputPeerUser)) {
         UNREACHABLE();
       }
-      return new types.BotCommandScopePeerUser({ peer: await getInputPeer(scope.chatId), userId: new types.InputUser({ userId: user.userId, accessHash: user.accessHash }) });
+      return new types.BotCommandScopePeerUser({ peer: await getInputPeer(scope.chatId), user_id: new types.InputUser({ user_id: user.user_id, access_hash: user.access_hash }) });
     }
     default:
       UNREACHABLE();

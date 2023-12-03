@@ -15,22 +15,22 @@ export interface CallbackQuery {
 }
 
 export async function constructCallbackQuery(callbackQuery: types.UpdateBotCallbackQuery | types.UpdateInlineBotCallbackQuery, getEntity: EntityGetter, getMessage: MessageGetter): Promise<CallbackQuery> {
-  const user_ = await getEntity(new types.PeerUser({ userId: callbackQuery.userId }));
+  const user_ = await getEntity(new types.PeerUser({ user_id: callbackQuery.user_id }));
   if (!user_) {
     UNREACHABLE();
   }
   const user = constructUser(user_);
-  const id = String(callbackQuery.queryId);
-  const gameShortName = callbackQuery.gameShortName;
+  const id = String(callbackQuery.query_id);
+  const gameShortName = callbackQuery.game_short_name;
   const data = callbackQuery.data !== undefined ? new TextDecoder().decode(callbackQuery.data) : undefined;
-  const chatInstance = callbackQuery.chatInstance == 0n ? "" : String(callbackQuery.chatInstance);
+  const chatInstance = callbackQuery.chat_instance == 0n ? "" : String(callbackQuery.chat_instance);
   if (callbackQuery instanceof types.UpdateBotCallbackQuery) {
-    const message = await getMessage(peerToChatId(callbackQuery.peer), Number(callbackQuery.msgId));
+    const message = await getMessage(peerToChatId(callbackQuery.peer), Number(callbackQuery.msg_id));
     if (message == null) {
       UNREACHABLE();
     }
     return cleanObject({ id, from: user, message, chatInstance, data, gameShortName });
   } else {
-    return cleanObject({ id, from: user, inlineMessageId: Number(callbackQuery.msgId.id), chatInstance, data, gameShortName });
+    return cleanObject({ id, from: user, inlineMessageId: Number(callbackQuery.msg_id.id), chatInstance, data, gameShortName });
   }
 }

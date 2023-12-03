@@ -21,11 +21,11 @@ export function constructVenue(media_: types.MessageMediaVenue): Venue {
     location: {
       latitude: geo.lat,
       longitude: geo.long,
-      horizontalAccuracy: geo.accuracyRadius,
+      horizontalAccuracy: geo.accuracy_radius,
     },
     title: media_.title,
     address: media_.address,
-    foursquareId: media_.venueId,
-    foursquareType: media_.venueType,
+    foursquareId: media_.venue_id,
+    foursquareType: media_.venue_type,
   };
 }

@@ -1,2038 +1,2038 @@
 import { types } from "./2_tl.ts";
 
-export class AboutTooLong extends types.RPCError {
+export class AboutTooLong extends types.Rpc_error {
   //
 }
 
-export class AccessTokenExpired extends types.RPCError {
+export class AccessTokenExpired extends types.Rpc_error {
   //
 }
 
-export class AccessTokenInvalid extends types.RPCError {
+export class AccessTokenInvalid extends types.Rpc_error {
   //
 }
 
-export class ActiveUserRequired extends types.RPCError {
+export class ActiveUserRequired extends types.Rpc_error {
   //
 }
 
-export class AdminsTooMuch extends types.RPCError {
+export class AdminsTooMuch extends types.Rpc_error {
   //
 }
 
-export class AdminIdInvalid extends types.RPCError {
+export class AdminIdInvalid extends types.Rpc_error {
   //
 }
 
-export class AdminRankEmojiNotAllowed extends types.RPCError {
+export class AdminRankEmojiNotAllowed extends types.Rpc_error {
   //
 }
 
-export class AdminRankInvalid extends types.RPCError {
+export class AdminRankInvalid extends types.Rpc_error {
   //
 }
 
-export class AlbumPhotosTooMany extends types.RPCError {
+export class AlbumPhotosTooMany extends types.Rpc_error {
   //
 }
 
-export class ApiIdInvalid extends types.RPCError {
+export class ApiIdInvalid extends types.Rpc_error {
   //
 }
 
-export class ApiIdPublishedFlood extends types.RPCError {
+export class ApiIdPublishedFlood extends types.Rpc_error {
   //
 }
 
-export class ArticleTitleEmpty extends types.RPCError {
+export class ArticleTitleEmpty extends types.Rpc_error {
   //
 }
 
-export class AudioContentUrlEmpty extends types.RPCError {
+export class AudioContentUrlEmpty extends types.Rpc_error {
   //
 }
 
-export class AudioTitleEmpty extends types.RPCError {
+export class AudioTitleEmpty extends types.Rpc_error {
   //
 }
 
-export class AuthBytesInvalid extends types.RPCError {
+export class AuthBytesInvalid extends types.Rpc_error {
   //
 }
 
-export class AuthKeyDuplicated extends types.RPCError {
+export class AuthKeyDuplicated extends types.Rpc_error {
   //
 }
 
-export class AuthKeyInvalid extends types.RPCError {
+export class AuthKeyInvalid extends types.Rpc_error {
   //
 }
 
-export class AuthKeyPermEmpty extends types.RPCError {
+export class AuthKeyPermEmpty extends types.Rpc_error {
   //
 }
 
-export class AuthKeyUnregistered extends types.RPCError {
+export class AuthKeyUnregistered extends types.Rpc_error {
   //
 }
 
-export class AuthRestart extends types.RPCError {
+export class AuthRestart extends types.Rpc_error {
   //
 }
 
-export class AuthTokenAlreadyAccepted extends types.RPCError {
+export class AuthTokenAlreadyAccepted extends types.Rpc_error {
   //
 }
 
-export class AuthTokenException extends types.RPCError {
+export class AuthTokenException extends types.Rpc_error {
   //
 }
 
-export class AuthTokenExpired extends types.RPCError {
+export class AuthTokenExpired extends types.Rpc_error {
   //
 }
 
-export class AuthTokenInvalid extends types.RPCError {
+export class AuthTokenInvalid extends types.Rpc_error {
   //
 }
 
-export class AutoarchiveNotAvailable extends types.RPCError {
+export class AutoarchiveNotAvailable extends types.Rpc_error {
   //
 }
 
-export class BankCardNumberInvalid extends types.RPCError {
+export class BankCardNumberInvalid extends types.Rpc_error {
   //
 }
 
-export class BannedRightsInvalid extends types.RPCError {
+export class BannedRightsInvalid extends types.Rpc_error {
   //
 }
 
-export class BasePortLocInvalid extends types.RPCError {
+export class BasePortLocInvalid extends types.Rpc_error {
   //
 }
 
-export class BotsTooMuch extends types.RPCError {
+export class BotsTooMuch extends types.Rpc_error {
   //
 }
 
-export class BotChannelsNa extends types.RPCError {
+export class BotChannelsNa extends types.Rpc_error {
   //
 }
 
-export class BotCommandDescriptionInvalid extends types.RPCError {
+export class BotCommandDescriptionInvalid extends types.Rpc_error {
   //
 }
 
-export class BotCommandInvalid extends types.RPCError {
+export class BotCommandInvalid extends types.Rpc_error {
   //
 }
 
-export class BotDomainInvalid extends types.RPCError {
+export class BotDomainInvalid extends types.Rpc_error {
   //
 }
 
-export class BotGamesDisabled extends types.RPCError {
+export class BotGamesDisabled extends types.Rpc_error {
   //
 }
 
-export class BotGroupsBlocked extends types.RPCError {
+export class BotGroupsBlocked extends types.Rpc_error {
   //
 }
 
-export class BotInlineDisabled extends types.RPCError {
+export class BotInlineDisabled extends types.Rpc_error {
   //
 }
 
-export class BotInvalid extends types.RPCError {
+export class BotInvalid extends types.Rpc_error {
   //
 }
 
-export class BotMethodInvalid extends types.RPCError {
+export class BotMethodInvalid extends types.Rpc_error {
   //
 }
 
-export class BotMissing extends types.RPCError {
+export class BotMissing extends types.Rpc_error {
   //
 }
 
-export class BotOnesideNotAvail extends types.RPCError {
+export class BotOnesideNotAvail extends types.Rpc_error {
   //
 }
 
-export class BotPaymentsDisabled extends types.RPCError {
+export class BotPaymentsDisabled extends types.Rpc_error {
   //
 }
 
-export class BotPollsDisabled extends types.RPCError {
+export class BotPollsDisabled extends types.Rpc_error {
   //
 }
 
-export class BotResponseTimeout extends types.RPCError {
+export class BotResponseTimeout extends types.Rpc_error {
   //
 }
 
-export class BotScoreNotModified extends types.RPCError {
+export class BotScoreNotModified extends types.Rpc_error {
   //
 }
 
-export class BroadcastCallsDisabled extends types.RPCError {
+export class BroadcastCallsDisabled extends types.Rpc_error {
   //
 }
 
-export class BroadcastForbidden extends types.RPCError {
+export class BroadcastForbidden extends types.Rpc_error {
   //
 }
 
-export class BroadcastIdInvalid extends types.RPCError {
+export class BroadcastIdInvalid extends types.Rpc_error {
   //
 }
 
-export class BroadcastPublicVotersForbidden extends types.RPCError {
+export class BroadcastPublicVotersForbidden extends types.Rpc_error {
   //
 }
 
-export class BroadcastRequired extends types.RPCError {
+export class BroadcastRequired extends types.Rpc_error {
   //
 }
 
-export class ButtonDataInvalid extends types.RPCError {
+export class ButtonDataInvalid extends types.Rpc_error {
   //
 }
 
-export class ButtonTextInvalid extends types.RPCError {
+export class ButtonTextInvalid extends types.Rpc_error {
   //
 }
 
-export class ButtonTypeInvalid extends types.RPCError {
+export class ButtonTypeInvalid extends types.Rpc_error {
   //
 }
 
-export class ButtonUrlInvalid extends types.RPCError {
+export class ButtonUrlInvalid extends types.Rpc_error {
   //
 }
 
-export class ButtonUserPrivacyRestricted extends types.RPCError {
+export class ButtonUserPrivacyRestricted extends types.Rpc_error {
   //
 }
 
-export class CallAlreadyAccepted extends types.RPCError {
+export class CallAlreadyAccepted extends types.Rpc_error {
   //
 }
 
-export class CallAlreadyDeclined extends types.RPCError {
+export class CallAlreadyDeclined extends types.Rpc_error {
   //
 }
 
-export class CallOccupyFailed extends types.RPCError {
+export class CallOccupyFailed extends types.Rpc_error {
   //
 }
 
-export class CallPeerInvalid extends types.RPCError {
+export class CallPeerInvalid extends types.Rpc_error {
   //
 }
 
-export class CallProtocolFlagsInvalid extends types.RPCError {
+export class CallProtocolFlagsInvalid extends types.Rpc_error {
   //
 }
 
-export class CdnMethodInvalid extends types.RPCError {
+export class CdnMethodInvalid extends types.Rpc_error {
   //
 }
 
-export class CdnUploadTimeout extends types.RPCError {
+export class CdnUploadTimeout extends types.Rpc_error {
   //
 }
 
-export class ChannelsAdminLocatedTooMuch extends types.RPCError {
+export class ChannelsAdminLocatedTooMuch extends types.Rpc_error {
   //
 }
 
-export class ChannelsAdminPublicTooMuch extends types.RPCError {
+export class ChannelsAdminPublicTooMuch extends types.Rpc_error {
   //
 }
 
-export class ChannelsTooMuch extends types.RPCError {
+export class ChannelsTooMuch extends types.Rpc_error {
   //
 }
 
-export class ChannelBanned extends types.RPCError {
+export class ChannelBanned extends types.Rpc_error {
   //
 }
 
-export class ChannelForumMissing extends types.RPCError {
+export class ChannelForumMissing extends types.Rpc_error {
   //
 }
 
-export class ChannelIdInvalid extends types.RPCError {
+export class ChannelIdInvalid extends types.Rpc_error {
   //
 }
 
-export class ChannelInvalid extends types.RPCError {
+export class ChannelInvalid extends types.Rpc_error {
   //
 }
 
-export class ChannelParicipantMissing extends types.RPCError {
+export class ChannelParicipantMissing extends types.Rpc_error {
   //
 }
 
-export class ChannelPrivate extends types.RPCError {
+export class ChannelPrivate extends types.Rpc_error {
   //
 }
 
-export class ChannelPublicGroupNa extends types.RPCError {
+export class ChannelPublicGroupNa extends types.Rpc_error {
   //
 }
 
-export class ChannelTooBig extends types.RPCError {
+export class ChannelTooBig extends types.Rpc_error {
   //
 }
 
-export class ChannelTooLarge extends types.RPCError {
+export class ChannelTooLarge extends types.Rpc_error {
   //
 }
 
-export class ChatAboutNotModified extends types.RPCError {
+export class ChatAboutNotModified extends types.Rpc_error {
   //
 }
 
-export class ChatAboutTooLong extends types.RPCError {
+export class ChatAboutTooLong extends types.Rpc_error {
   //
 }
 
-export class ChatAdminInviteRequired extends types.RPCError {
+export class ChatAdminInviteRequired extends types.Rpc_error {
   //
 }
 
-export class ChatAdminRequired extends types.RPCError {
+export class ChatAdminRequired extends types.Rpc_error {
   //
 }
 
-export class ChatDiscussionUnallowed extends types.RPCError {
+export class ChatDiscussionUnallowed extends types.Rpc_error {
   //
 }
 
-export class ChatForbidden extends types.RPCError {
+export class ChatForbidden extends types.Rpc_error {
   //
 }
 
-export class ChatForwardsRestricted extends types.RPCError {
+export class ChatForwardsRestricted extends types.Rpc_error {
   //
 }
 
-export class ChatGetFailed extends types.RPCError {
+export class ChatGetFailed extends types.Rpc_error {
   //
 }
 
-export class ChatGuestSendForbidden extends types.RPCError {
+export class ChatGuestSendForbidden extends types.Rpc_error {
   //
 }
 
-export class ChatIdEmpty extends types.RPCError {
+export class ChatIdEmpty extends types.Rpc_error {
   //
 }
 
-export class ChatIdGenerateFailed extends types.RPCError {
+export class ChatIdGenerateFailed extends types.Rpc_error {
   //
 }
 
-export class ChatIdInvalid extends types.RPCError {
+export class ChatIdInvalid extends types.Rpc_error {
   //
 }
 
-export class ChatInvalid extends types.RPCError {
+export class ChatInvalid extends types.Rpc_error {
   //
 }
 
-export class ChatInvitePermanent extends types.RPCError {
+export class ChatInvitePermanent extends types.Rpc_error {
   //
 }
 
-export class ChatLinkExists extends types.RPCError {
+export class ChatLinkExists extends types.Rpc_error {
   //
 }
 
-export class ChatNotModified extends types.RPCError {
+export class ChatNotModified extends types.Rpc_error {
   //
 }
 
-export class ChatRestricted extends types.RPCError {
+export class ChatRestricted extends types.Rpc_error {
   //
 }
 
-export class ChatRevokeDateUnsupported extends types.RPCError {
+export class ChatRevokeDateUnsupported extends types.Rpc_error {
   //
 }
 
-export class ChatSendGameForbidden extends types.RPCError {
+export class ChatSendGameForbidden extends types.Rpc_error {
   //
 }
 
-export class ChatSendGifsForbidden extends types.RPCError {
+export class ChatSendGifsForbidden extends types.Rpc_error {
   //
 }
 
-export class ChatSendInlineForbidden extends types.RPCError {
+export class ChatSendInlineForbidden extends types.Rpc_error {
   //
 }
 
-export class ChatSendMediaForbidden extends types.RPCError {
+export class ChatSendMediaForbidden extends types.Rpc_error {
   //
 }
 
-export class ChatSendPollForbidden extends types.RPCError {
+export class ChatSendPollForbidden extends types.Rpc_error {
   //
 }
 
-export class ChatSendStickersForbidden extends types.RPCError {
+export class ChatSendStickersForbidden extends types.Rpc_error {
   //
 }
 
-export class ChatTitleEmpty extends types.RPCError {
+export class ChatTitleEmpty extends types.Rpc_error {
   //
 }
 
-export class ChatTooBig extends types.RPCError {
+export class ChatTooBig extends types.Rpc_error {
   //
 }
 
-export class ChatWriteForbidden extends types.RPCError {
+export class ChatWriteForbidden extends types.Rpc_error {
   //
 }
 
-export class ChpCallFail extends types.RPCError {
+export class ChpCallFail extends types.Rpc_error {
   //
 }
 
-export class CodeEmpty extends types.RPCError {
+export class CodeEmpty extends types.Rpc_error {
   //
 }
 
-export class CodeHashInvalid extends types.RPCError {
+export class CodeHashInvalid extends types.Rpc_error {
   //
 }
 
-export class CodeInvalid extends types.RPCError {
+export class CodeInvalid extends types.Rpc_error {
   //
 }
 
-export class ConnectionApiIdInvalid extends types.RPCError {
+export class ConnectionApiIdInvalid extends types.Rpc_error {
   //
 }
 
-export class ConnectionAppVersionEmpty extends types.RPCError {
+export class ConnectionAppVersionEmpty extends types.Rpc_error {
   //
 }
 
-export class ConnectionDeviceModelEmpty extends types.RPCError {
+export class ConnectionDeviceModelEmpty extends types.Rpc_error {
   //
 }
 
-export class ConnectionLangPackInvalid extends types.RPCError {
+export class ConnectionLangPackInvalid extends types.Rpc_error {
   //
 }
 
-export class ConnectionLayerInvalid extends types.RPCError {
+export class ConnectionLayerInvalid extends types.Rpc_error {
   //
 }
 
-export class ConnectionNotInited extends types.RPCError {
+export class ConnectionNotInited extends types.Rpc_error {
   //
 }
 
-export class ConnectionSystemEmpty extends types.RPCError {
+export class ConnectionSystemEmpty extends types.Rpc_error {
   //
 }
 
-export class ConnectionSystemLangCodeEmpty extends types.RPCError {
+export class ConnectionSystemLangCodeEmpty extends types.Rpc_error {
   //
 }
 
-export class ContactAddMissing extends types.RPCError {
+export class ContactAddMissing extends types.Rpc_error {
   //
 }
 
-export class ContactIdInvalid extends types.RPCError {
+export class ContactIdInvalid extends types.Rpc_error {
   //
 }
 
-export class ContactNameEmpty extends types.RPCError {
+export class ContactNameEmpty extends types.Rpc_error {
   //
 }
 
-export class ContactReqMissing extends types.RPCError {
+export class ContactReqMissing extends types.Rpc_error {
   //
 }
 
-export class CreateCallFailed extends types.RPCError {
+export class CreateCallFailed extends types.Rpc_error {
   //
 }
 
-export class CurrencyTotalAmountInvalid extends types.RPCError {
+export class CurrencyTotalAmountInvalid extends types.Rpc_error {
   //
 }
 
-export class DataInvalid extends types.RPCError {
+export class DataInvalid extends types.Rpc_error {
   //
 }
 
-export class DataJsonInvalid extends types.RPCError {
+export class DataJsonInvalid extends types.Rpc_error {
   //
 }
 
-export class DataTooLong extends types.RPCError {
+export class DataTooLong extends types.Rpc_error {
   //
 }
 
-export class DateEmpty extends types.RPCError {
+export class DateEmpty extends types.Rpc_error {
   //
 }
 
-export class DcIdInvalid extends types.RPCError {
+export class DcIdInvalid extends types.Rpc_error {
   //
 }
 
-export class DhGAInvalid extends types.RPCError {
+export class DhGAInvalid extends types.Rpc_error {
   //
 }
 
-export class DocumentInvalid extends types.RPCError {
+export class DocumentInvalid extends types.Rpc_error {
   //
 }
 
-export class EditBotInviteForbidden extends types.RPCError {
+export class EditBotInviteForbidden extends types.Rpc_error {
   //
 }
 
-export class EmailHashExpired extends types.RPCError {
+export class EmailHashExpired extends types.Rpc_error {
   //
 }
 
-export class EmailInvalid extends types.RPCError {
+export class EmailInvalid extends types.Rpc_error {
   //
 }
 
-export class EmailUnconfirmed extends types.RPCError {
+export class EmailUnconfirmed extends types.Rpc_error {
   //
 }
 
-export class EmailVerifyExpired extends types.RPCError {
+export class EmailVerifyExpired extends types.Rpc_error {
   //
 }
 
-export class EmojiInvalid extends types.RPCError {
+export class EmojiInvalid extends types.Rpc_error {
   //
 }
 
-export class EmojiNotModified extends types.RPCError {
+export class EmojiNotModified extends types.Rpc_error {
   //
 }
 
-export class EmoticonEmpty extends types.RPCError {
+export class EmoticonEmpty extends types.Rpc_error {
   //
 }
 
-export class EmoticonInvalid extends types.RPCError {
+export class EmoticonInvalid extends types.Rpc_error {
   //
 }
 
-export class EmoticonStickerpackMissing extends types.RPCError {
+export class EmoticonStickerpackMissing extends types.Rpc_error {
   //
 }
 
-export class EncryptedMessageInvalid extends types.RPCError {
+export class EncryptedMessageInvalid extends types.Rpc_error {
   //
 }
 
-export class EncryptionAlreadyAccepted extends types.RPCError {
+export class EncryptionAlreadyAccepted extends types.Rpc_error {
   //
 }
 
-export class EncryptionAlreadyDeclined extends types.RPCError {
+export class EncryptionAlreadyDeclined extends types.Rpc_error {
   //
 }
 
-export class EncryptionDeclined extends types.RPCError {
+export class EncryptionDeclined extends types.Rpc_error {
   //
 }
 
-export class EncryptionIdInvalid extends types.RPCError {
+export class EncryptionIdInvalid extends types.Rpc_error {
   //
 }
 
-export class EncryptionOccupyFailed extends types.RPCError {
+export class EncryptionOccupyFailed extends types.Rpc_error {
   //
 }
 
-export class EntitiesTooLong extends types.RPCError {
+export class EntitiesTooLong extends types.Rpc_error {
   //
 }
 
-export class EntityBoundsInvalid extends types.RPCError {
+export class EntityBoundsInvalid extends types.Rpc_error {
   //
 }
 
-export class EntityMentionUserInvalid extends types.RPCError {
+export class EntityMentionUserInvalid extends types.Rpc_error {
   //
 }
 
-export class ErrorTextEmpty extends types.RPCError {
+export class ErrorTextEmpty extends types.Rpc_error {
   //
 }
 
-export class ExpireDateInvalid extends types.RPCError {
+export class ExpireDateInvalid extends types.Rpc_error {
   //
 }
 
-export class ExpireForbidden extends types.RPCError {
+export class ExpireForbidden extends types.Rpc_error {
   //
 }
 
-export class ExportCardInvalid extends types.RPCError {
+export class ExportCardInvalid extends types.Rpc_error {
   //
 }
 
-export class ExternalUrlInvalid extends types.RPCError {
+export class ExternalUrlInvalid extends types.Rpc_error {
   //
 }
 
-export class FieldNameEmpty extends types.RPCError {
+export class FieldNameEmpty extends types.Rpc_error {
   //
 }
 
-export class FieldNameInvalid extends types.RPCError {
+export class FieldNameInvalid extends types.Rpc_error {
   //
 }
 
-export class FilerefUpgradeNeeded extends types.RPCError {
+export class FilerefUpgradeNeeded extends types.Rpc_error {
   //
 }
 
-export class FileContentTypeInvalid extends types.RPCError {
+export class FileContentTypeInvalid extends types.Rpc_error {
   //
 }
 
-export class FileEmtpy extends types.RPCError {
+export class FileEmtpy extends types.Rpc_error {
   //
 }
 
-export class FileIdInvalid extends types.RPCError {
+export class FileIdInvalid extends types.Rpc_error {
   //
 }
 
-export class FilePartsInvalid extends types.RPCError {
+export class FilePartsInvalid extends types.Rpc_error {
   //
 }
 
-export class FilePart_0Missing extends types.RPCError {
+export class FilePart_0Missing extends types.Rpc_error {
   //
 }
 
-export class FilePartEmpty extends types.RPCError {
+export class FilePartEmpty extends types.Rpc_error {
   //
 }
 
-export class FilePartInvalid extends types.RPCError {
+export class FilePartInvalid extends types.Rpc_error {
   //
 }
 
-export class FilePartLengthInvalid extends types.RPCError {
+export class FilePartLengthInvalid extends types.Rpc_error {
   //
 }
 
-export class FilePartSizeChanged extends types.RPCError {
+export class FilePartSizeChanged extends types.Rpc_error {
   //
 }
 
-export class FilePartSizeInvalid extends types.RPCError {
+export class FilePartSizeInvalid extends types.Rpc_error {
   //
 }
 
-export class FilePartTooBig extends types.RPCError {
+export class FilePartTooBig extends types.Rpc_error {
   //
 }
 
-export class FilePartXMissing extends types.RPCError {
+export class FilePartXMissing extends types.Rpc_error {
   //
 }
 
-export class FileReferenceEmpty extends types.RPCError {
+export class FileReferenceEmpty extends types.Rpc_error {
   //
 }
 
-export class FileReferenceExpired extends types.RPCError {
+export class FileReferenceExpired extends types.Rpc_error {
   //
 }
 
-export class FileReferenceInvalid extends types.RPCError {
+export class FileReferenceInvalid extends types.Rpc_error {
   //
 }
 
-export class FileTitleEmpty extends types.RPCError {
+export class FileTitleEmpty extends types.Rpc_error {
   //
 }
 
-export class FilterIdInvalid extends types.RPCError {
+export class FilterIdInvalid extends types.Rpc_error {
   //
 }
 
-export class FilterIncludeEmpty extends types.RPCError {
+export class FilterIncludeEmpty extends types.Rpc_error {
   //
 }
 
-export class FilterNotSupported extends types.RPCError {
+export class FilterNotSupported extends types.Rpc_error {
   //
 }
 
-export class FilterTitleEmpty extends types.RPCError {
+export class FilterTitleEmpty extends types.Rpc_error {
   //
 }
 
-export class FirstnameInvalid extends types.RPCError {
+export class FirstnameInvalid extends types.Rpc_error {
   //
 }
 
-export class FolderIdEmpty extends types.RPCError {
+export class FolderIdEmpty extends types.Rpc_error {
   //
 }
 
-export class FolderIdInvalid extends types.RPCError {
+export class FolderIdInvalid extends types.Rpc_error {
   //
 }
 
-export class FreshChangeAdminsForbidden extends types.RPCError {
+export class FreshChangeAdminsForbidden extends types.Rpc_error {
   //
 }
 
-export class FreshChangePhoneForbidden extends types.RPCError {
+export class FreshChangePhoneForbidden extends types.Rpc_error {
   //
 }
 
-export class FreshResetAuthorisationForbidden extends types.RPCError {
+export class FreshResetAuthorisationForbidden extends types.Rpc_error {
   //
 }
 
-export class FromMessageBotDisabled extends types.RPCError {
+export class FromMessageBotDisabled extends types.Rpc_error {
   //
 }
 
-export class FromPeerInvalid extends types.RPCError {
+export class FromPeerInvalid extends types.Rpc_error {
   //
 }
 
-export class GameBotInvalid extends types.RPCError {
+export class GameBotInvalid extends types.Rpc_error {
   //
 }
 
-export class GeoPointInvalid extends types.RPCError {
+export class GeoPointInvalid extends types.Rpc_error {
   //
 }
 
-export class GifContentTypeInvalid extends types.RPCError {
+export class GifContentTypeInvalid extends types.Rpc_error {
   //
 }
 
-export class GifIdInvalid extends types.RPCError {
+export class GifIdInvalid extends types.Rpc_error {
   //
 }
 
-export class GraphExpiredReload extends types.RPCError {
+export class GraphExpiredReload extends types.Rpc_error {
   //
 }
 
-export class GraphInvalidReload extends types.RPCError {
+export class GraphInvalidReload extends types.Rpc_error {
   //
 }
 
-export class GraphOutdatedReload extends types.RPCError {
+export class GraphOutdatedReload extends types.Rpc_error {
   //
 }
 
-export class GroupcallAddParticipantsFailed extends types.RPCError {
+export class GroupcallAddParticipantsFailed extends types.Rpc_error {
   //
 }
 
-export class GroupcallAlreadyDiscarded extends types.RPCError {
+export class GroupcallAlreadyDiscarded extends types.Rpc_error {
   //
 }
 
-export class GroupcallAlreadyStarted extends types.RPCError {
+export class GroupcallAlreadyStarted extends types.Rpc_error {
   //
 }
 
-export class GroupcallForbidden extends types.RPCError {
+export class GroupcallForbidden extends types.Rpc_error {
   //
 }
 
-export class GroupcallInvalid extends types.RPCError {
+export class GroupcallInvalid extends types.Rpc_error {
   //
 }
 
-export class GroupcallJoinMissing extends types.RPCError {
+export class GroupcallJoinMissing extends types.Rpc_error {
   //
 }
 
-export class GroupcallNotModified extends types.RPCError {
+export class GroupcallNotModified extends types.Rpc_error {
   //
 }
 
-export class GroupcallSsrcDuplicateMuch extends types.RPCError {
+export class GroupcallSsrcDuplicateMuch extends types.Rpc_error {
   //
 }
 
-export class GroupedMediaInvalid extends types.RPCError {
+export class GroupedMediaInvalid extends types.Rpc_error {
   //
 }
 
-export class GroupCallInvalid extends types.RPCError {
+export class GroupCallInvalid extends types.Rpc_error {
   //
 }
 
-export class HashInvalid extends types.RPCError {
+export class HashInvalid extends types.Rpc_error {
   //
 }
 
-export class HideRequesterMissing extends types.RPCError {
+export class HideRequesterMissing extends types.Rpc_error {
   //
 }
 
-export class HistoryGetFailed extends types.RPCError {
+export class HistoryGetFailed extends types.Rpc_error {
   //
 }
 
-export class ImageProcessFailed extends types.RPCError {
+export class ImageProcessFailed extends types.Rpc_error {
   //
 }
 
-export class ImportFileInvalid extends types.RPCError {
+export class ImportFileInvalid extends types.Rpc_error {
   //
 }
 
-export class ImportFormatUnrecognized extends types.RPCError {
+export class ImportFormatUnrecognized extends types.Rpc_error {
   //
 }
 
-export class ImportIdInvalid extends types.RPCError {
+export class ImportIdInvalid extends types.Rpc_error {
   //
 }
 
-export class InlineBotRequired extends types.RPCError {
+export class InlineBotRequired extends types.Rpc_error {
   //
 }
 
-export class InlineResultExpired extends types.RPCError {
+export class InlineResultExpired extends types.Rpc_error {
   //
 }
 
-export class InputConstructorInvalid extends types.RPCError {
+export class InputConstructorInvalid extends types.Rpc_error {
   //
 }
 
-export class InputFetchError extends types.RPCError {
+export class InputFetchError extends types.Rpc_error {
   //
 }
 
-export class InputFetchFail extends types.RPCError {
+export class InputFetchFail extends types.Rpc_error {
   //
 }
 
-export class InputFilterInvalid extends types.RPCError {
+export class InputFilterInvalid extends types.Rpc_error {
   //
 }
 
-export class InputLayerInvalid extends types.RPCError {
+export class InputLayerInvalid extends types.Rpc_error {
   //
 }
 
-export class InputMethodInvalid extends types.RPCError {
+export class InputMethodInvalid extends types.Rpc_error {
   //
 }
 
-export class InputRequestTooLong extends types.RPCError {
+export class InputRequestTooLong extends types.Rpc_error {
   //
 }
 
-export class InputTextEmpty extends types.RPCError {
+export class InputTextEmpty extends types.Rpc_error {
   //
 }
 
-export class InputUserDeactivated extends types.RPCError {
+export class InputUserDeactivated extends types.Rpc_error {
   //
 }
 
-export class InterdcXCallError extends types.RPCError {
+export class InterdcXCallError extends types.Rpc_error {
   //
 }
 
-export class InterdcXCallRichError extends types.RPCError {
+export class InterdcXCallRichError extends types.Rpc_error {
   //
 }
 
-export class InviteForbiddenWithJoinas extends types.RPCError {
+export class InviteForbiddenWithJoinas extends types.Rpc_error {
   //
 }
 
-export class InviteHashEmpty extends types.RPCError {
+export class InviteHashEmpty extends types.Rpc_error {
   //
 }
 
-export class InviteHashExpired extends types.RPCError {
+export class InviteHashExpired extends types.Rpc_error {
   //
 }
 
-export class InviteHashInvalid extends types.RPCError {
+export class InviteHashInvalid extends types.Rpc_error {
   //
 }
 
-export class InviteRequestSent extends types.RPCError {
+export class InviteRequestSent extends types.Rpc_error {
   //
 }
 
-export class InviteRevokedMissing extends types.RPCError {
+export class InviteRevokedMissing extends types.Rpc_error {
   //
 }
 
-export class InvoicePayloadInvalid extends types.RPCError {
+export class InvoicePayloadInvalid extends types.Rpc_error {
   //
 }
 
-export class JoinAsPeerInvalid extends types.RPCError {
+export class JoinAsPeerInvalid extends types.Rpc_error {
   //
 }
 
-export class LangCodeInvalid extends types.RPCError {
+export class LangCodeInvalid extends types.Rpc_error {
   //
 }
 
-export class LangCodeNotSupported extends types.RPCError {
+export class LangCodeNotSupported extends types.Rpc_error {
   //
 }
 
-export class LangPackInvalid extends types.RPCError {
+export class LangPackInvalid extends types.Rpc_error {
   //
 }
 
-export class LastnameInvalid extends types.RPCError {
+export class LastnameInvalid extends types.Rpc_error {
   //
 }
 
-export class LimitInvalid extends types.RPCError {
+export class LimitInvalid extends types.Rpc_error {
   //
 }
 
-export class LinkNotModified extends types.RPCError {
+export class LinkNotModified extends types.Rpc_error {
   //
 }
 
-export class LocationInvalid extends types.RPCError {
+export class LocationInvalid extends types.Rpc_error {
   //
 }
 
-export class MaxDateInvalid extends types.RPCError {
+export class MaxDateInvalid extends types.Rpc_error {
   //
 }
 
-export class MaxIdInvalid extends types.RPCError {
+export class MaxIdInvalid extends types.Rpc_error {
   //
 }
 
-export class MaxQtsInvalid extends types.RPCError {
+export class MaxQtsInvalid extends types.Rpc_error {
   //
 }
 
-export class Md5ChecksumInvalid extends types.RPCError {
+export class Md5ChecksumInvalid extends types.Rpc_error {
   //
 }
 
-export class MediaCaptionTooLong extends types.RPCError {
+export class MediaCaptionTooLong extends types.Rpc_error {
   //
 }
 
-export class MediaEmpty extends types.RPCError {
+export class MediaEmpty extends types.Rpc_error {
   //
 }
 
-export class MediaGroupedInvalid extends types.RPCError {
+export class MediaGroupedInvalid extends types.Rpc_error {
   //
 }
 
-export class MediaInvalid extends types.RPCError {
+export class MediaInvalid extends types.Rpc_error {
   //
 }
 
-export class MediaNewInvalid extends types.RPCError {
+export class MediaNewInvalid extends types.Rpc_error {
   //
 }
 
-export class MediaPrevInvalid extends types.RPCError {
+export class MediaPrevInvalid extends types.Rpc_error {
   //
 }
 
-export class MediaTtlInvalid extends types.RPCError {
+export class MediaTtlInvalid extends types.Rpc_error {
   //
 }
 
-export class MegagroupIdInvalid extends types.RPCError {
+export class MegagroupIdInvalid extends types.Rpc_error {
   //
 }
 
-export class MegagroupPrehistoryHidden extends types.RPCError {
+export class MegagroupPrehistoryHidden extends types.Rpc_error {
   //
 }
 
-export class MegagroupRequired extends types.RPCError {
+export class MegagroupRequired extends types.Rpc_error {
   //
 }
 
-export class MemberNoLocation extends types.RPCError {
+export class MemberNoLocation extends types.Rpc_error {
   //
 }
 
-export class MemberOccupyPrimaryLocFailed extends types.RPCError {
+export class MemberOccupyPrimaryLocFailed extends types.Rpc_error {
   //
 }
 
-export class MessageAuthorRequired extends types.RPCError {
+export class MessageAuthorRequired extends types.Rpc_error {
   //
 }
 
-export class MessageDeleteForbidden extends types.RPCError {
+export class MessageDeleteForbidden extends types.Rpc_error {
   //
 }
 
-export class MessageEditTimeExpired extends types.RPCError {
+export class MessageEditTimeExpired extends types.Rpc_error {
   //
 }
 
-export class MessageEmpty extends types.RPCError {
+export class MessageEmpty extends types.Rpc_error {
   //
 }
 
-export class MessageIdsEmpty extends types.RPCError {
+export class MessageIdsEmpty extends types.Rpc_error {
   //
 }
 
-export class MessageIdInvalid extends types.RPCError {
+export class MessageIdInvalid extends types.Rpc_error {
   //
 }
 
-export class MessageNotModified extends types.RPCError {
+export class MessageNotModified extends types.Rpc_error {
   //
 }
 
-export class MessagePollClosed extends types.RPCError {
+export class MessagePollClosed extends types.Rpc_error {
   //
 }
 
-export class MessageTooLong extends types.RPCError {
+export class MessageTooLong extends types.Rpc_error {
   //
 }
 
-export class MethodInvalid extends types.RPCError {
+export class MethodInvalid extends types.Rpc_error {
   //
 }
 
-export class MinDateInvalid extends types.RPCError {
+export class MinDateInvalid extends types.Rpc_error {
   //
 }
 
-export class MsgidDecreaseRetry extends types.RPCError {
+export class MsgidDecreaseRetry extends types.Rpc_error {
   //
 }
 
-export class MsgIdInvalid extends types.RPCError {
+export class MsgIdInvalid extends types.Rpc_error {
   //
 }
 
-export class MsgTooOld extends types.RPCError {
+export class MsgTooOld extends types.Rpc_error {
   //
 }
 
-export class MsgWaitFailed extends types.RPCError {
+export class MsgWaitFailed extends types.Rpc_error {
   //
 }
 
-export class MtSendQueueTooLong extends types.RPCError {
+export class MtSendQueueTooLong extends types.Rpc_error {
   //
 }
 
-export class MultiMediaTooLong extends types.RPCError {
+export class MultiMediaTooLong extends types.Rpc_error {
   //
 }
 
-export class NeedChatInvalid extends types.RPCError {
+export class NeedChatInvalid extends types.Rpc_error {
   //
 }
 
-export class NeedMemberInvalid extends types.RPCError {
+export class NeedMemberInvalid extends types.Rpc_error {
   //
 }
 
-export class NewSaltInvalid extends types.RPCError {
+export class NewSaltInvalid extends types.Rpc_error {
   //
 }
 
-export class NewSettingsEmpty extends types.RPCError {
+export class NewSettingsEmpty extends types.Rpc_error {
   //
 }
 
-export class NewSettingsInvalid extends types.RPCError {
+export class NewSettingsInvalid extends types.Rpc_error {
   //
 }
 
-export class NextOffsetInvalid extends types.RPCError {
+export class NextOffsetInvalid extends types.Rpc_error {
   //
 }
 
-export class NotAllowed extends types.RPCError {
+export class NotAllowed extends types.Rpc_error {
   //
 }
 
-export class OffsetInvalid extends types.RPCError {
+export class OffsetInvalid extends types.Rpc_error {
   //
 }
 
-export class OffsetPeerIdInvalid extends types.RPCError {
+export class OffsetPeerIdInvalid extends types.Rpc_error {
   //
 }
 
-export class OptionsTooMuch extends types.RPCError {
+export class OptionsTooMuch extends types.Rpc_error {
   //
 }
 
-export class OptionInvalid extends types.RPCError {
+export class OptionInvalid extends types.Rpc_error {
   //
 }
 
-export class PackShortNameInvalid extends types.RPCError {
+export class PackShortNameInvalid extends types.Rpc_error {
   //
 }
 
-export class PackShortNameOccupied extends types.RPCError {
+export class PackShortNameOccupied extends types.Rpc_error {
   //
 }
 
-export class PackTitleInvalid extends types.RPCError {
+export class PackTitleInvalid extends types.Rpc_error {
   //
 }
 
-export class ParticipantsTooFew extends types.RPCError {
+export class ParticipantsTooFew extends types.Rpc_error {
   //
 }
 
-export class ParticipantCallFailed extends types.RPCError {
+export class ParticipantCallFailed extends types.Rpc_error {
   //
 }
 
-export class ParticipantIdInvalid extends types.RPCError {
+export class ParticipantIdInvalid extends types.Rpc_error {
   //
 }
 
-export class ParticipantJoinMissing extends types.RPCError {
+export class ParticipantJoinMissing extends types.Rpc_error {
   //
 }
 
-export class ParticipantVersionOutdated extends types.RPCError {
+export class ParticipantVersionOutdated extends types.Rpc_error {
   //
 }
 
-export class PasswordEmpty extends types.RPCError {
+export class PasswordEmpty extends types.Rpc_error {
   //
 }
 
-export class PasswordHashInvalid extends types.RPCError {
+export class PasswordHashInvalid extends types.Rpc_error {
   //
 }
 
-export class PasswordMissing extends types.RPCError {
+export class PasswordMissing extends types.Rpc_error {
   //
 }
 
-export class PasswordRecoveryExpired extends types.RPCError {
+export class PasswordRecoveryExpired extends types.Rpc_error {
   //
 }
 
-export class PasswordRecoveryNa extends types.RPCError {
+export class PasswordRecoveryNa extends types.Rpc_error {
   //
 }
 
-export class PasswordRequired extends types.RPCError {
+export class PasswordRequired extends types.Rpc_error {
   //
 }
 
-export class PaymentProviderInvalid extends types.RPCError {
+export class PaymentProviderInvalid extends types.Rpc_error {
   //
 }
 
-export class PeerFlood extends types.RPCError {
+export class PeerFlood extends types.Rpc_error {
   //
 }
 
-export class PeerHistoryEmpty extends types.RPCError {
+export class PeerHistoryEmpty extends types.Rpc_error {
   //
 }
 
-export class PeerIdInvalid extends types.RPCError {
+export class PeerIdInvalid extends types.Rpc_error {
   //
 }
 
-export class PeerIdNotSupported extends types.RPCError {
+export class PeerIdNotSupported extends types.Rpc_error {
   //
 }
 
-export class PersistentTimestampEmpty extends types.RPCError {
+export class PersistentTimestampEmpty extends types.Rpc_error {
   //
 }
 
-export class PersistentTimestampInvalid extends types.RPCError {
+export class PersistentTimestampInvalid extends types.Rpc_error {
   //
 }
 
-export class PersistentTimestampOutdated extends types.RPCError {
+export class PersistentTimestampOutdated extends types.Rpc_error {
   //
 }
 
-export class PhoneCodeEmpty extends types.RPCError {
+export class PhoneCodeEmpty extends types.Rpc_error {
   //
 }
 
-export class PhoneCodeExpired extends types.RPCError {
+export class PhoneCodeExpired extends types.Rpc_error {
   //
 }
 
-export class PhoneCodeHashEmpty extends types.RPCError {
+export class PhoneCodeHashEmpty extends types.Rpc_error {
   //
 }
 
-export class PhoneCodeInvalid extends types.RPCError {
+export class PhoneCodeInvalid extends types.Rpc_error {
   //
 }
 
-export class PhoneHashExpired extends types.RPCError {
+export class PhoneHashExpired extends types.Rpc_error {
   //
 }
 
-export class PhoneNotOccupied extends types.RPCError {
+export class PhoneNotOccupied extends types.Rpc_error {
   //
 }
 
-export class PhoneNumberAppSignupForbidden extends types.RPCError {
+export class PhoneNumberAppSignupForbidden extends types.Rpc_error {
   //
 }
 
-export class PhoneNumberBanned extends types.RPCError {
+export class PhoneNumberBanned extends types.Rpc_error {
   //
 }
 
-export class PhoneNumberFlood extends types.RPCError {
+export class PhoneNumberFlood extends types.Rpc_error {
   //
 }
 
-export class PhoneNumberInvalid extends types.RPCError {
+export class PhoneNumberInvalid extends types.Rpc_error {
   //
 }
 
-export class PhoneNumberOccupied extends types.RPCError {
+export class PhoneNumberOccupied extends types.Rpc_error {
   //
 }
 
-export class PhoneNumberUnoccupied extends types.RPCError {
+export class PhoneNumberUnoccupied extends types.Rpc_error {
   //
 }
 
-export class PhonePasswordFlood extends types.RPCError {
+export class PhonePasswordFlood extends types.Rpc_error {
   //
 }
 
-export class PhonePasswordProtected extends types.RPCError {
+export class PhonePasswordProtected extends types.Rpc_error {
   //
 }
 
-export class PhotoContentTypeInvalid extends types.RPCError {
+export class PhotoContentTypeInvalid extends types.Rpc_error {
   //
 }
 
-export class PhotoContentUrlEmpty extends types.RPCError {
+export class PhotoContentUrlEmpty extends types.Rpc_error {
   //
 }
 
-export class PhotoCropFileMissing extends types.RPCError {
+export class PhotoCropFileMissing extends types.Rpc_error {
   //
 }
 
-export class PhotoCropSizeSmall extends types.RPCError {
+export class PhotoCropSizeSmall extends types.Rpc_error {
   //
 }
 
-export class PhotoExtInvalid extends types.RPCError {
+export class PhotoExtInvalid extends types.Rpc_error {
   //
 }
 
-export class PhotoFileMissing extends types.RPCError {
+export class PhotoFileMissing extends types.Rpc_error {
   //
 }
 
-export class PhotoIdInvalid extends types.RPCError {
+export class PhotoIdInvalid extends types.Rpc_error {
   //
 }
 
-export class PhotoInvalid extends types.RPCError {
+export class PhotoInvalid extends types.Rpc_error {
   //
 }
 
-export class PhotoInvalidDimensions extends types.RPCError {
+export class PhotoInvalidDimensions extends types.Rpc_error {
   //
 }
 
-export class PhotoSaveFileInvalid extends types.RPCError {
+export class PhotoSaveFileInvalid extends types.Rpc_error {
   //
 }
 
-export class PhotoThumbUrlEmpty extends types.RPCError {
+export class PhotoThumbUrlEmpty extends types.Rpc_error {
   //
 }
 
-export class PinnedDialogsTooMuch extends types.RPCError {
+export class PinnedDialogsTooMuch extends types.Rpc_error {
   //
 }
 
-export class PinRestricted extends types.RPCError {
+export class PinRestricted extends types.Rpc_error {
   //
 }
 
-export class PollAnswersInvalid extends types.RPCError {
+export class PollAnswersInvalid extends types.Rpc_error {
   //
 }
 
-export class PollAnswerInvalid extends types.RPCError {
+export class PollAnswerInvalid extends types.Rpc_error {
   //
 }
 
-export class PollOptionDuplicate extends types.RPCError {
+export class PollOptionDuplicate extends types.Rpc_error {
   //
 }
 
-export class PollOptionInvalid extends types.RPCError {
+export class PollOptionInvalid extends types.Rpc_error {
   //
 }
 
-export class PollQuestionInvalid extends types.RPCError {
+export class PollQuestionInvalid extends types.Rpc_error {
   //
 }
 
-export class PollUnsupported extends types.RPCError {
+export class PollUnsupported extends types.Rpc_error {
   //
 }
 
-export class PollVoteRequired extends types.RPCError {
+export class PollVoteRequired extends types.Rpc_error {
   //
 }
 
-export class PostponedTimeout extends types.RPCError {
+export class PostponedTimeout extends types.Rpc_error {
   //
 }
 
-export class PremiumAccountRequired extends types.RPCError {
+export class PremiumAccountRequired extends types.Rpc_error {
   //
 }
 
-export class PremiumCurrentlyUnavailable extends types.RPCError {
+export class PremiumCurrentlyUnavailable extends types.Rpc_error {
   //
 }
 
-export class PreviousChatImportActiveWaitXmin extends types.RPCError {
+export class PreviousChatImportActiveWaitXmin extends types.Rpc_error {
   //
 }
 
-export class PrivacyKeyInvalid extends types.RPCError {
+export class PrivacyKeyInvalid extends types.Rpc_error {
   //
 }
 
-export class PrivacyTooLong extends types.RPCError {
+export class PrivacyTooLong extends types.Rpc_error {
   //
 }
 
-export class PrivacyValueInvalid extends types.RPCError {
+export class PrivacyValueInvalid extends types.Rpc_error {
   //
 }
 
-export class PtsChangeEmpty extends types.RPCError {
+export class PtsChangeEmpty extends types.Rpc_error {
   //
 }
 
-export class PublicChannelMissing extends types.RPCError {
+export class PublicChannelMissing extends types.Rpc_error {
   //
 }
 
-export class PublicKeyRequired extends types.RPCError {
+export class PublicKeyRequired extends types.Rpc_error {
   //
 }
 
-export class QueryIdEmpty extends types.RPCError {
+export class QueryIdEmpty extends types.Rpc_error {
   //
 }
 
-export class QueryIdInvalid extends types.RPCError {
+export class QueryIdInvalid extends types.Rpc_error {
   //
 }
 
-export class QueryTooShort extends types.RPCError {
+export class QueryTooShort extends types.Rpc_error {
   //
 }
 
-export class QuizAnswerMissing extends types.RPCError {
+export class QuizAnswerMissing extends types.Rpc_error {
   //
 }
 
-export class QuizCorrectAnswersEmpty extends types.RPCError {
+export class QuizCorrectAnswersEmpty extends types.Rpc_error {
   //
 }
 
-export class QuizCorrectAnswersTooMuch extends types.RPCError {
+export class QuizCorrectAnswersTooMuch extends types.Rpc_error {
   //
 }
 
-export class QuizCorrectAnswerInvalid extends types.RPCError {
+export class QuizCorrectAnswerInvalid extends types.Rpc_error {
   //
 }
 
-export class QuizMultipleInvalid extends types.RPCError {
+export class QuizMultipleInvalid extends types.Rpc_error {
   //
 }
 
-export class RandomIdDuplicate extends types.RPCError {
+export class RandomIdDuplicate extends types.Rpc_error {
   //
 }
 
-export class RandomIdEmpty extends types.RPCError {
+export class RandomIdEmpty extends types.Rpc_error {
   //
 }
 
-export class RandomIdInvalid extends types.RPCError {
+export class RandomIdInvalid extends types.Rpc_error {
   //
 }
 
-export class RandomLengthInvalid extends types.RPCError {
+export class RandomLengthInvalid extends types.Rpc_error {
   //
 }
 
-export class RangesInvalid extends types.RPCError {
+export class RangesInvalid extends types.Rpc_error {
   //
 }
 
-export class ReactionsTooMany extends types.RPCError {
+export class ReactionsTooMany extends types.Rpc_error {
   //
 }
 
-export class ReactionEmpty extends types.RPCError {
+export class ReactionEmpty extends types.Rpc_error {
   //
 }
 
-export class ReactionInvalid extends types.RPCError {
+export class ReactionInvalid extends types.Rpc_error {
   //
 }
 
-export class ReflectorNotAvailable extends types.RPCError {
+export class ReflectorNotAvailable extends types.Rpc_error {
   //
 }
 
-export class RegIdGenerateFailed extends types.RPCError {
+export class RegIdGenerateFailed extends types.Rpc_error {
   //
 }
 
-export class ReplyMarkupBuyEmpty extends types.RPCError {
+export class ReplyMarkupBuyEmpty extends types.Rpc_error {
   //
 }
 
-export class ReplyMarkupGameEmpty extends types.RPCError {
+export class ReplyMarkupGameEmpty extends types.Rpc_error {
   //
 }
 
-export class ReplyMarkupInvalid extends types.RPCError {
+export class ReplyMarkupInvalid extends types.Rpc_error {
   //
 }
 
-export class ReplyMarkupTooLong extends types.RPCError {
+export class ReplyMarkupTooLong extends types.Rpc_error {
   //
 }
 
-export class ResetRequestMissing extends types.RPCError {
+export class ResetRequestMissing extends types.Rpc_error {
   //
 }
 
-export class ResultsTooMuch extends types.RPCError {
+export class ResultsTooMuch extends types.Rpc_error {
   //
 }
 
-export class ResultIdDuplicate extends types.RPCError {
+export class ResultIdDuplicate extends types.Rpc_error {
   //
 }
 
-export class ResultIdEmpty extends types.RPCError {
+export class ResultIdEmpty extends types.Rpc_error {
   //
 }
 
-export class ResultIdInvalid extends types.RPCError {
+export class ResultIdInvalid extends types.Rpc_error {
   //
 }
 
-export class ResultTypeInvalid extends types.RPCError {
+export class ResultTypeInvalid extends types.Rpc_error {
   //
 }
 
-export class RevoteNotAllowed extends types.RPCError {
+export class RevoteNotAllowed extends types.Rpc_error {
   //
 }
 
-export class RightsNotModified extends types.RPCError {
+export class RightsNotModified extends types.Rpc_error {
   //
 }
 
-export class RightForbidden extends types.RPCError {
+export class RightForbidden extends types.Rpc_error {
   //
 }
 
-export class RpcCallFail extends types.RPCError {
+export class RpcCallFail extends types.Rpc_error {
   //
 }
 
-export class RpcMcgetFail extends types.RPCError {
+export class RpcMcgetFail extends types.Rpc_error {
   //
 }
 
-export class RsaDecryptFailed extends types.RPCError {
+export class RsaDecryptFailed extends types.Rpc_error {
   //
 }
 
-export class ScheduleBotNotAllowed extends types.RPCError {
+export class ScheduleBotNotAllowed extends types.Rpc_error {
   //
 }
 
-export class ScheduleDateInvalid extends types.RPCError {
+export class ScheduleDateInvalid extends types.Rpc_error {
   //
 }
 
-export class ScheduleDateTooLate extends types.RPCError {
+export class ScheduleDateTooLate extends types.Rpc_error {
   //
 }
 
-export class ScheduleStatusPrivate extends types.RPCError {
+export class ScheduleStatusPrivate extends types.Rpc_error {
   //
 }
 
-export class ScheduleTooMuch extends types.RPCError {
+export class ScheduleTooMuch extends types.Rpc_error {
   //
 }
 
-export class ScoreInvalid extends types.RPCError {
+export class ScoreInvalid extends types.Rpc_error {
   //
 }
 
-export class SearchQueryEmpty extends types.RPCError {
+export class SearchQueryEmpty extends types.Rpc_error {
   //
 }
 
-export class SearchWithLinkNotSupported extends types.RPCError {
+export class SearchWithLinkNotSupported extends types.Rpc_error {
   //
 }
 
-export class SecondsInvalid extends types.RPCError {
+export class SecondsInvalid extends types.Rpc_error {
   //
 }
 
-export class SendAsPeerInvalid extends types.RPCError {
+export class SendAsPeerInvalid extends types.Rpc_error {
   //
 }
 
-export class SendCodeUnavailable extends types.RPCError {
+export class SendCodeUnavailable extends types.Rpc_error {
   //
 }
 
-export class SendMessageMediaInvalid extends types.RPCError {
+export class SendMessageMediaInvalid extends types.Rpc_error {
   //
 }
 
-export class SendMessageTypeInvalid extends types.RPCError {
+export class SendMessageTypeInvalid extends types.Rpc_error {
   //
 }
 
-export class SensitiveChangeForbidden extends types.RPCError {
+export class SensitiveChangeForbidden extends types.Rpc_error {
   //
 }
 
-export class SessionExpired extends types.RPCError {
+export class SessionExpired extends types.Rpc_error {
   //
 }
 
-export class SessionPasswordNeeded extends types.RPCError {
+export class SessionPasswordNeeded extends types.Rpc_error {
   //
 }
 
-export class SessionRevoked extends types.RPCError {
+export class SessionRevoked extends types.Rpc_error {
   //
 }
 
-export class SettingsInvalid extends types.RPCError {
+export class SettingsInvalid extends types.Rpc_error {
   //
 }
 
-export class Sha256HashInvalid extends types.RPCError {
+export class Sha256HashInvalid extends types.Rpc_error {
   //
 }
 
-export class ShortnameOccupyFailed extends types.RPCError {
+export class ShortnameOccupyFailed extends types.Rpc_error {
   //
 }
 
-export class ShortNameInvalid extends types.RPCError {
+export class ShortNameInvalid extends types.Rpc_error {
   //
 }
 
-export class ShortNameOccupied extends types.RPCError {
+export class ShortNameOccupied extends types.Rpc_error {
   //
 }
 
-export class SignInFailed extends types.RPCError {
+export class SignInFailed extends types.Rpc_error {
   //
 }
 
-export class SlowmodeMultiMsgsDisabled extends types.RPCError {
+export class SlowmodeMultiMsgsDisabled extends types.Rpc_error {
   //
 }
 
-export class SmsCodeCreateFailed extends types.RPCError {
+export class SmsCodeCreateFailed extends types.Rpc_error {
   //
 }
 
-export class SrpIdInvalid extends types.RPCError {
+export class SrpIdInvalid extends types.Rpc_error {
   //
 }
 
-export class SrpPasswordChanged extends types.RPCError {
+export class SrpPasswordChanged extends types.Rpc_error {
   //
 }
 
-export class StartParamEmpty extends types.RPCError {
+export class StartParamEmpty extends types.Rpc_error {
   //
 }
 
-export class StartParamInvalid extends types.RPCError {
+export class StartParamInvalid extends types.Rpc_error {
   //
 }
 
-export class StartParamTooLong extends types.RPCError {
+export class StartParamTooLong extends types.Rpc_error {
   //
 }
 
-export class StickerpackStickersTooMuch extends types.RPCError {
+export class StickerpackStickersTooMuch extends types.Rpc_error {
   //
 }
 
-export class StickersetInvalid extends types.RPCError {
+export class StickersetInvalid extends types.Rpc_error {
   //
 }
 
-export class StickersetOwnerAnonymous extends types.RPCError {
+export class StickersetOwnerAnonymous extends types.Rpc_error {
   //
 }
 
-export class StickersEmpty extends types.RPCError {
+export class StickersEmpty extends types.Rpc_error {
   //
 }
 
-export class StickersTooMuch extends types.RPCError {
+export class StickersTooMuch extends types.Rpc_error {
   //
 }
 
-export class StickerDocumentInvalid extends types.RPCError {
+export class StickerDocumentInvalid extends types.Rpc_error {
   //
 }
 
-export class StickerEmojiInvalid extends types.RPCError {
+export class StickerEmojiInvalid extends types.Rpc_error {
   //
 }
 
-export class StickerFileInvalid extends types.RPCError {
+export class StickerFileInvalid extends types.Rpc_error {
   //
 }
 
-export class StickerGifDimensions extends types.RPCError {
+export class StickerGifDimensions extends types.Rpc_error {
   //
 }
 
-export class StickerIdInvalid extends types.RPCError {
+export class StickerIdInvalid extends types.Rpc_error {
   //
 }
 
-export class StickerInvalid extends types.RPCError {
+export class StickerInvalid extends types.Rpc_error {
   //
 }
 
-export class StickerMimeInvalid extends types.RPCError {
+export class StickerMimeInvalid extends types.Rpc_error {
   //
 }
 
-export class StickerPngDimensions extends types.RPCError {
+export class StickerPngDimensions extends types.Rpc_error {
   //
 }
 
-export class StickerPngNopng extends types.RPCError {
+export class StickerPngNopng extends types.Rpc_error {
   //
 }
 
-export class StickerTgsNodoc extends types.RPCError {
+export class StickerTgsNodoc extends types.Rpc_error {
   //
 }
 
-export class StickerTgsNotgs extends types.RPCError {
+export class StickerTgsNotgs extends types.Rpc_error {
   //
 }
 
-export class StickerThumbPngNopng extends types.RPCError {
+export class StickerThumbPngNopng extends types.Rpc_error {
   //
 }
 
-export class StickerThumbTgsNotgs extends types.RPCError {
+export class StickerThumbTgsNotgs extends types.Rpc_error {
   //
 }
 
-export class StickerVideoBig extends types.RPCError {
+export class StickerVideoBig extends types.Rpc_error {
   //
 }
 
-export class StickerVideoNodoc extends types.RPCError {
+export class StickerVideoNodoc extends types.Rpc_error {
   //
 }
 
-export class StickerVideoNowebm extends types.RPCError {
+export class StickerVideoNowebm extends types.Rpc_error {
   //
 }
 
-export class StorageCheckFailed extends types.RPCError {
+export class StorageCheckFailed extends types.Rpc_error {
   //
 }
 
-export class StoreInvalidScalarType extends types.RPCError {
+export class StoreInvalidScalarType extends types.Rpc_error {
   //
 }
 
-export class SwitchPmTextEmpty extends types.RPCError {
+export class SwitchPmTextEmpty extends types.Rpc_error {
   //
 }
 
-export class TakeoutInvalid extends types.RPCError {
+export class TakeoutInvalid extends types.Rpc_error {
   //
 }
 
-export class TakeoutRequired extends types.RPCError {
+export class TakeoutRequired extends types.Rpc_error {
   //
 }
 
-export class TempAuthKeyAlreadyBound extends types.RPCError {
+export class TempAuthKeyAlreadyBound extends types.Rpc_error {
   //
 }
 
-export class TempAuthKeyEmpty extends types.RPCError {
+export class TempAuthKeyEmpty extends types.Rpc_error {
   //
 }
 
-export class ThemeFileInvalid extends types.RPCError {
+export class ThemeFileInvalid extends types.Rpc_error {
   //
 }
 
-export class ThemeFormatInvalid extends types.RPCError {
+export class ThemeFormatInvalid extends types.Rpc_error {
   //
 }
 
-export class ThemeInvalid extends types.RPCError {
+export class ThemeInvalid extends types.Rpc_error {
   //
 }
 
-export class ThemeMimeInvalid extends types.RPCError {
+export class ThemeMimeInvalid extends types.Rpc_error {
   //
 }
 
-export class ThemeTitleInvalid extends types.RPCError {
+export class ThemeTitleInvalid extends types.Rpc_error {
   //
 }
 
-export class Timeout extends types.RPCError {
+export class Timeout extends types.Rpc_error {
   //
 }
 
-export class TitleInvalid extends types.RPCError {
+export class TitleInvalid extends types.Rpc_error {
   //
 }
 
-export class TmpPasswordDisabled extends types.RPCError {
+export class TmpPasswordDisabled extends types.Rpc_error {
   //
 }
 
-export class TmpPasswordInvalid extends types.RPCError {
+export class TmpPasswordInvalid extends types.Rpc_error {
   //
 }
 
-export class TokenInvalid extends types.RPCError {
+export class TokenInvalid extends types.Rpc_error {
   //
 }
 
-export class TopicDeleted extends types.RPCError {
+export class TopicDeleted extends types.Rpc_error {
   //
 }
 
-export class ToLangInvalid extends types.RPCError {
+export class ToLangInvalid extends types.Rpc_error {
   //
 }
 
-export class TtlDaysInvalid extends types.RPCError {
+export class TtlDaysInvalid extends types.Rpc_error {
   //
 }
 
-export class TtlMediaInvalid extends types.RPCError {
+export class TtlMediaInvalid extends types.Rpc_error {
   //
 }
 
-export class TtlPeriodInvalid extends types.RPCError {
+export class TtlPeriodInvalid extends types.Rpc_error {
   //
 }
 
-export class TypesEmpty extends types.RPCError {
+export class TypesEmpty extends types.Rpc_error {
   //
 }
 
-export class TypeConstructorInvalid extends types.RPCError {
+export class TypeConstructorInvalid extends types.Rpc_error {
   //
 }
 
-export class Timedout extends types.RPCError {
+export class Timedout extends types.Rpc_error {
   //
 }
 
-export class UnknownError extends types.RPCError {
+export class UnknownError extends types.Rpc_error {
   //
 }
 
-export class UnknownMethod extends types.RPCError {
+export class UnknownMethod extends types.Rpc_error {
   //
 }
 
-export class UntilDateInvalid extends types.RPCError {
+export class UntilDateInvalid extends types.Rpc_error {
   //
 }
 
-export class UpdateAppToLogin extends types.RPCError {
+export class UpdateAppToLogin extends types.Rpc_error {
   //
 }
 
-export class UrlInvalid extends types.RPCError {
+export class UrlInvalid extends types.Rpc_error {
   //
 }
 
-export class UsageLimitInvalid extends types.RPCError {
+export class UsageLimitInvalid extends types.Rpc_error {
   //
 }
 
-export class UsernameInvalid extends types.RPCError {
+export class UsernameInvalid extends types.Rpc_error {
   //
 }
 
-export class UsernameNotModified extends types.RPCError {
+export class UsernameNotModified extends types.Rpc_error {
   //
 }
 
-export class UsernameNotOccupied extends types.RPCError {
+export class UsernameNotOccupied extends types.Rpc_error {
   //
 }
 
-export class UsernameOccupied extends types.RPCError {
+export class UsernameOccupied extends types.Rpc_error {
   //
 }
 
-export class UsernamePurchaseAvailable extends types.RPCError {
+export class UsernamePurchaseAvailable extends types.Rpc_error {
   //
 }
 
-export class UserpicPrivacyRequired extends types.RPCError {
+export class UserpicPrivacyRequired extends types.Rpc_error {
   //
 }
 
-export class UserpicUploadRequired extends types.RPCError {
+export class UserpicUploadRequired extends types.Rpc_error {
   //
 }
 
-export class UsersTooFew extends types.RPCError {
+export class UsersTooFew extends types.Rpc_error {
   //
 }
 
-export class UsersTooMuch extends types.RPCError {
+export class UsersTooMuch extends types.Rpc_error {
   //
 }
 
-export class UserAdminInvalid extends types.RPCError {
+export class UserAdminInvalid extends types.Rpc_error {
   //
 }
 
-export class UserAlreadyInvited extends types.RPCError {
+export class UserAlreadyInvited extends types.Rpc_error {
   //
 }
 
-export class UserAlreadyParticipant extends types.RPCError {
+export class UserAlreadyParticipant extends types.Rpc_error {
   //
 }
 
-export class UserBannedInChannel extends types.RPCError {
+export class UserBannedInChannel extends types.Rpc_error {
   //
 }
 
-export class UserBlocked extends types.RPCError {
+export class UserBlocked extends types.Rpc_error {
   //
 }
 
-export class UserBot extends types.RPCError {
+export class UserBot extends types.Rpc_error {
   //
 }
 
-export class UserBotInvalid extends types.RPCError {
+export class UserBotInvalid extends types.Rpc_error {
   //
 }
 
-export class UserBotRequired extends types.RPCError {
+export class UserBotRequired extends types.Rpc_error {
   //
 }
 
-export class UserChannelsTooMuch extends types.RPCError {
+export class UserChannelsTooMuch extends types.Rpc_error {
   //
 }
 
-export class UserCreator extends types.RPCError {
+export class UserCreator extends types.Rpc_error {
   //
 }
 
-export class UserDeactivated extends types.RPCError {
+export class UserDeactivated extends types.Rpc_error {
   //
 }
 
-export class UserDeactivatedBan extends types.RPCError {
+export class UserDeactivatedBan extends types.Rpc_error {
   //
 }
 
-export class UserDeleted extends types.RPCError {
+export class UserDeleted extends types.Rpc_error {
   //
 }
 
-export class UserIdInvalid extends types.RPCError {
+export class UserIdInvalid extends types.Rpc_error {
   //
 }
 
-export class UserInvalid extends types.RPCError {
+export class UserInvalid extends types.Rpc_error {
   //
 }
 
-export class UserIsBlocked extends types.RPCError {
+export class UserIsBlocked extends types.Rpc_error {
   //
 }
 
-export class UserIsBot extends types.RPCError {
+export class UserIsBot extends types.Rpc_error {
   //
 }
 
-export class UserKicked extends types.RPCError {
+export class UserKicked extends types.Rpc_error {
   //
 }
 
-export class UserNotMutualContact extends types.RPCError {
+export class UserNotMutualContact extends types.Rpc_error {
   //
 }
 
-export class UserNotParticipant extends types.RPCError {
+export class UserNotParticipant extends types.Rpc_error {
   //
 }
 
-export class UserPrivacyRestricted extends types.RPCError {
+export class UserPrivacyRestricted extends types.Rpc_error {
   //
 }
 
-export class UserRestricted extends types.RPCError {
+export class UserRestricted extends types.Rpc_error {
   //
 }
 
-export class UserVolumeInvalid extends types.RPCError {
+export class UserVolumeInvalid extends types.Rpc_error {
   //
 }
 
-export class VideoContentTypeInvalid extends types.RPCError {
+export class VideoContentTypeInvalid extends types.Rpc_error {
   //
 }
 
-export class VideoFileInvalid extends types.RPCError {
+export class VideoFileInvalid extends types.Rpc_error {
   //
 }
 
-export class VideoTitleEmpty extends types.RPCError {
+export class VideoTitleEmpty extends types.Rpc_error {
   //
 }
 
-export class VoiceMessagesForbidden extends types.RPCError {
+export class VoiceMessagesForbidden extends types.Rpc_error {
   //
 }
 
-export class WallpaperFileInvalid extends types.RPCError {
+export class WallpaperFileInvalid extends types.Rpc_error {
   //
 }
 
-export class WallpaperInvalid extends types.RPCError {
+export class WallpaperInvalid extends types.Rpc_error {
   //
 }
 
-export class WallpaperMimeInvalid extends types.RPCError {
+export class WallpaperMimeInvalid extends types.Rpc_error {
   //
 }
 
-export class WcConvertUrlInvalid extends types.RPCError {
+export class WcConvertUrlInvalid extends types.Rpc_error {
   //
 }
 
-export class WebdocumentInvalid extends types.RPCError {
+export class WebdocumentInvalid extends types.Rpc_error {
   //
 }
 
-export class WebdocumentMimeInvalid extends types.RPCError {
+export class WebdocumentMimeInvalid extends types.Rpc_error {
   //
 }
 
-export class WebdocumentSizeTooBig extends types.RPCError {
+export class WebdocumentSizeTooBig extends types.Rpc_error {
   //
 }
 
-export class WebdocumentUrlInvalid extends types.RPCError {
+export class WebdocumentUrlInvalid extends types.Rpc_error {
   //
 }
 
-export class WebpageCurlFailed extends types.RPCError {
+export class WebpageCurlFailed extends types.Rpc_error {
   //
 }
 
-export class WebpageMediaEmpty extends types.RPCError {
+export class WebpageMediaEmpty extends types.Rpc_error {
   //
 }
 
-export class WebpushAuthInvalid extends types.RPCError {
+export class WebpushAuthInvalid extends types.Rpc_error {
   //
 }
 
-export class WebpushKeyInvalid extends types.RPCError {
+export class WebpushKeyInvalid extends types.Rpc_error {
   //
 }
 
-export class WebpushTokenInvalid extends types.RPCError {
+export class WebpushTokenInvalid extends types.Rpc_error {
   //
 }
 
-export class WorkerBusyTooLongRetry extends types.RPCError {
+export class WorkerBusyTooLongRetry extends types.Rpc_error {
   //
 }
 
-export class YouBlockedUser extends types.RPCError {
+export class YouBlockedUser extends types.Rpc_error {
   //
 }
 

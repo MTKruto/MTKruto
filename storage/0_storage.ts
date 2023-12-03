@@ -1,5 +1,5 @@
 import { bigIntFromBuffer, MaybePromise, rleDecode, rleEncode, sha1, UNREACHABLE } from "../1_utilities.ts";
-import { serialize, TLObject, TLReader, types } from "../2_tl.ts";
+import { enums, serialize, TLObject, TLReader, types } from "../2_tl.ts";
 import { DC } from "../3_transport.ts";
 import { ZERO_CHANNEL_ID } from "../4_constants.ts";
 
@@ -103,15 +103,15 @@ export abstract class Storage {
     }
   }
 
-  async setState(state: types.UpdatesState) {
+  async setState(state: enums.updates.State) {
     await this.setTlObject(KPARTS__STATE, state);
   }
 
   async getState() {
-    return await this.getTLObject(KPARTS__STATE) as types.UpdatesState | null;
+    return await this.getTLObject(KPARTS__STATE) as enums.updates.State | null;
   }
 
-  async setMessage(chatId: number, messageId: number, message: types.TypeMessage | null) {
+  async setMessage(chatId: number, messageId: number, message: enums.Message | null) {
     if (chatId > ZERO_CHANNEL_ID) {
       await this.set(KPARTS_MESSAGE_REF(messageId), message == null ? null : chatId);
     }
@@ -131,7 +131,7 @@ export abstract class Storage {
   }
 
   async getMessage(chatId: number, messageId: number) {
-    return await this.getTLObject(KPARTS_MESSAGE(chatId, messageId)) as types.TypeMessage | null;
+    return await this.getTLObject(KPARTS_MESSAGE(chatId, messageId)) as enums.Message | null;
   }
 
   async setChannelPts(channelId: bigint, pts: number) {

@@ -19,7 +19,7 @@ export function constructVoice(document: types.Document, audioAttributes: types.
     fileId,
     fileUniqueId,
     duration: audioAttributes.duration,
-    mimeType: document.mimeType,
+    mimeType: document.mime_type,
     fileSize: Number(document.size),
   };
 }
