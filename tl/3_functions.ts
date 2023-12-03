@@ -2,11 +2,11 @@
 import { id, params, TLObject, Params, paramDesc, ParamDesc, flags } from "./1_tl_object.ts";
 import { types, enums } from "./2_types.ts";
 
-abstract class Function_<T> extends TLObject {
+export abstract class Function_<T> extends TLObject {
   __R: T = Symbol() as unknown as T; // virtual member
 }
 
-class req_pq_multi_ extends Function_<enums.ResPQ> {
+export class req_pq_multi_ extends Function_<enums.ResPQ> {
   static __F = Symbol() as unknown as (params: { nonce: bigint }) => enums.ResPQ;
   nonce: bigint;
 
@@ -32,7 +32,7 @@ class req_pq_multi_ extends Function_<enums.ResPQ> {
   }
 }
 
-class req_DH_params_ extends Function_<enums.Server_DH_Params> {
+export class req_DH_params_ extends Function_<enums.Server_DH_Params> {
   static __F = Symbol() as unknown as (params: { nonce: bigint; server_nonce: bigint; p: Uint8Array; q: Uint8Array; public_key_fingerprint: bigint; encrypted_data: Uint8Array }) => enums.Server_DH_Params;
   nonce: bigint;
   server_nonce: bigint;
@@ -78,7 +78,7 @@ class req_DH_params_ extends Function_<enums.Server_DH_Params> {
   }
 }
 
-class set_client_DH_params_ extends Function_<enums.Set_client_DH_params_answer> {
+export class set_client_DH_params_ extends Function_<enums.Set_client_DH_params_answer> {
   static __F = Symbol() as unknown as (params: { nonce: bigint; server_nonce: bigint; encrypted_data: Uint8Array }) => enums.Set_client_DH_params_answer;
   nonce: bigint;
   server_nonce: bigint;
@@ -112,7 +112,7 @@ class set_client_DH_params_ extends Function_<enums.Set_client_DH_params_answer>
   }
 }
 
-class rpc_drop_answer_ extends Function_<enums.RpcDropAnswer> {
+export class rpc_drop_answer_ extends Function_<enums.RpcDropAnswer> {
   static __F = Symbol() as unknown as (params: { req_msg_id: bigint }) => enums.RpcDropAnswer;
   req_msg_id: bigint;
 
@@ -138,7 +138,7 @@ class rpc_drop_answer_ extends Function_<enums.RpcDropAnswer> {
   }
 }
 
-class get_future_salts_ extends Function_<enums.FutureSalts> {
+export class get_future_salts_ extends Function_<enums.FutureSalts> {
   static __F = Symbol() as unknown as (params: { num: number }) => enums.FutureSalts;
   num: number;
 
@@ -164,7 +164,7 @@ class get_future_salts_ extends Function_<enums.FutureSalts> {
   }
 }
 
-class ping_ extends Function_<enums.Pong> {
+export class ping_ extends Function_<enums.Pong> {
   static __F = Symbol() as unknown as (params: { ping_id: bigint }) => enums.Pong;
   ping_id: bigint;
 
@@ -190,7 +190,7 @@ class ping_ extends Function_<enums.Pong> {
   }
 }
 
-class ping_delay_disconnect_ extends Function_<enums.Pong> {
+export class ping_delay_disconnect_ extends Function_<enums.Pong> {
   static __F = Symbol() as unknown as (params: { ping_id: bigint; disconnect_delay: number }) => enums.Pong;
   ping_id: bigint;
   disconnect_delay: number;
@@ -220,7 +220,7 @@ class ping_delay_disconnect_ extends Function_<enums.Pong> {
   }
 }
 
-class destroy_session_ extends Function_<enums.DestroySessionRes> {
+export class destroy_session_ extends Function_<enums.DestroySessionRes> {
   static __F = Symbol() as unknown as (params: { session_id: bigint }) => enums.DestroySessionRes;
   session_id: bigint;
 
@@ -246,7 +246,7 @@ class destroy_session_ extends Function_<enums.DestroySessionRes> {
   }
 }
 
-class destroy_auth_key_ extends Function_<enums.DestroyAuthKeyRes> {
+export class destroy_auth_key_ extends Function_<enums.DestroyAuthKeyRes> {
   static __F = Symbol() as unknown as () => enums.DestroyAuthKeyRes;
   protected get [id]() {
     return 0xD1435160;
@@ -265,7 +265,7 @@ class destroy_auth_key_ extends Function_<enums.DestroyAuthKeyRes> {
   }
 }
 
-class invokeAfterMsg_<T extends Function_<unknown>> extends Function_<T["__R"]> {
+export class invokeAfterMsg_<T extends Function_<unknown>> extends Function_<T["__R"]> {
   static __F = Symbol() as unknown as <T extends Function_<unknown>>(params: { msg_id: bigint; query: T }) => T["__R"];
   msg_id: bigint;
   query: T;
@@ -295,7 +295,7 @@ class invokeAfterMsg_<T extends Function_<unknown>> extends Function_<T["__R"]> 
   }
 }
 
-class invokeAfterMsgs_<T extends Function_<unknown>> extends Function_<T["__R"]> {
+export class invokeAfterMsgs_<T extends Function_<unknown>> extends Function_<T["__R"]> {
   static __F = Symbol() as unknown as <T extends Function_<unknown>>(params: { msg_ids: Array<bigint>; query: T }) => T["__R"];
   msg_ids: Array<bigint>;
   query: T;
@@ -325,7 +325,7 @@ class invokeAfterMsgs_<T extends Function_<unknown>> extends Function_<T["__R"]>
   }
 }
 
-class initConnection_<T extends Function_<unknown>> extends Function_<T["__R"]> {
+export class initConnection_<T extends Function_<unknown>> extends Function_<T["__R"]> {
   static __F = Symbol() as unknown as <T extends Function_<unknown>>(params: { api_id: number; device_model: string; system_version: string; app_version: string; system_lang_code: string; lang_pack: string; lang_code: string; proxy?: enums.InputClientProxy; params?: enums.JSONValue; query: T }) => T["__R"];
   api_id: number;
   device_model: string;
@@ -389,7 +389,7 @@ class initConnection_<T extends Function_<unknown>> extends Function_<T["__R"]> 
   }
 }
 
-class invokeWithLayer_<T extends Function_<unknown>> extends Function_<T["__R"]> {
+export class invokeWithLayer_<T extends Function_<unknown>> extends Function_<T["__R"]> {
   static __F = Symbol() as unknown as <T extends Function_<unknown>>(params: { layer: number; query: T }) => T["__R"];
   layer: number;
   query: T;
@@ -419,7 +419,7 @@ class invokeWithLayer_<T extends Function_<unknown>> extends Function_<T["__R"]>
   }
 }
 
-class invokeWithoutUpdates_<T extends Function_<unknown>> extends Function_<T["__R"]> {
+export class invokeWithoutUpdates_<T extends Function_<unknown>> extends Function_<T["__R"]> {
   static __F = Symbol() as unknown as <T extends Function_<unknown>>(params: { query: T }) => T["__R"];
   query: T;
 
@@ -445,7 +445,7 @@ class invokeWithoutUpdates_<T extends Function_<unknown>> extends Function_<T["_
   }
 }
 
-class invokeWithMessagesRange_<T extends Function_<unknown>> extends Function_<T["__R"]> {
+export class invokeWithMessagesRange_<T extends Function_<unknown>> extends Function_<T["__R"]> {
   static __F = Symbol() as unknown as <T extends Function_<unknown>>(params: { range: enums.MessageRange; query: T }) => T["__R"];
   range: enums.MessageRange;
   query: T;
@@ -475,7 +475,7 @@ class invokeWithMessagesRange_<T extends Function_<unknown>> extends Function_<T
   }
 }
 
-class invokeWithTakeout_<T extends Function_<unknown>> extends Function_<T["__R"]> {
+export class invokeWithTakeout_<T extends Function_<unknown>> extends Function_<T["__R"]> {
   static __F = Symbol() as unknown as <T extends Function_<unknown>>(params: { takeout_id: bigint; query: T }) => T["__R"];
   takeout_id: bigint;
   query: T;
@@ -505,7 +505,7 @@ class invokeWithTakeout_<T extends Function_<unknown>> extends Function_<T["__R"
   }
 }
 
-class auth_sendCode_ extends Function_<enums.auth.SentCode> {
+export class auth_sendCode_ extends Function_<enums.auth.SentCode> {
   static __F = Symbol() as unknown as (params: { phone_number: string; api_id: number; api_hash: string; settings: enums.CodeSettings }) => enums.auth.SentCode;
   phone_number: string;
   api_id: number;
@@ -543,7 +543,7 @@ class auth_sendCode_ extends Function_<enums.auth.SentCode> {
   }
 }
 
-class auth_signUp_ extends Function_<enums.auth.Authorization> {
+export class auth_signUp_ extends Function_<enums.auth.Authorization> {
   static __F = Symbol() as unknown as (params: { phone_number: string; phone_code_hash: string; first_name: string; last_name: string }) => enums.auth.Authorization;
   phone_number: string;
   phone_code_hash: string;
@@ -581,7 +581,7 @@ class auth_signUp_ extends Function_<enums.auth.Authorization> {
   }
 }
 
-class auth_signIn_ extends Function_<enums.auth.Authorization> {
+export class auth_signIn_ extends Function_<enums.auth.Authorization> {
   static __F = Symbol() as unknown as (params: { phone_number: string; phone_code_hash: string; phone_code?: string; email_verification?: enums.EmailVerification }) => enums.auth.Authorization;
   phone_number: string;
   phone_code_hash: string;
@@ -621,7 +621,7 @@ class auth_signIn_ extends Function_<enums.auth.Authorization> {
   }
 }
 
-class auth_logOut_ extends Function_<enums.auth.LoggedOut> {
+export class auth_logOut_ extends Function_<enums.auth.LoggedOut> {
   static __F = Symbol() as unknown as () => enums.auth.LoggedOut;
   protected get [id]() {
     return 0x3E72BA19;
@@ -640,7 +640,7 @@ class auth_logOut_ extends Function_<enums.auth.LoggedOut> {
   }
 }
 
-class auth_resetAuthorizations_ extends Function_<boolean> {
+export class auth_resetAuthorizations_ extends Function_<boolean> {
   static __F = Symbol() as unknown as () => boolean;
   protected get [id]() {
     return 0x9FAB0D1A;
@@ -659,7 +659,7 @@ class auth_resetAuthorizations_ extends Function_<boolean> {
   }
 }
 
-class auth_exportAuthorization_ extends Function_<enums.auth.ExportedAuthorization> {
+export class auth_exportAuthorization_ extends Function_<enums.auth.ExportedAuthorization> {
   static __F = Symbol() as unknown as (params: { dc_id: number }) => enums.auth.ExportedAuthorization;
   dc_id: number;
 
@@ -685,7 +685,7 @@ class auth_exportAuthorization_ extends Function_<enums.auth.ExportedAuthorizati
   }
 }
 
-class auth_importAuthorization_ extends Function_<enums.auth.Authorization> {
+export class auth_importAuthorization_ extends Function_<enums.auth.Authorization> {
   static __F = Symbol() as unknown as (params: { id: bigint; bytes: Uint8Array }) => enums.auth.Authorization;
   id: bigint;
   bytes: Uint8Array;
@@ -715,7 +715,7 @@ class auth_importAuthorization_ extends Function_<enums.auth.Authorization> {
   }
 }
 
-class auth_bindTempAuthKey_ extends Function_<boolean> {
+export class auth_bindTempAuthKey_ extends Function_<boolean> {
   static __F = Symbol() as unknown as (params: { perm_auth_key_id: bigint; nonce: bigint; expires_at: number; encrypted_message: Uint8Array }) => boolean;
   perm_auth_key_id: bigint;
   nonce: bigint;
@@ -753,7 +753,7 @@ class auth_bindTempAuthKey_ extends Function_<boolean> {
   }
 }
 
-class auth_importBotAuthorization_ extends Function_<enums.auth.Authorization> {
+export class auth_importBotAuthorization_ extends Function_<enums.auth.Authorization> {
   static __F = Symbol() as unknown as (params: { flags: number; api_id: number; api_hash: string; bot_auth_token: string }) => enums.auth.Authorization;
   flags: number;
   api_id: number;
@@ -791,7 +791,7 @@ class auth_importBotAuthorization_ extends Function_<enums.auth.Authorization> {
   }
 }
 
-class auth_checkPassword_ extends Function_<enums.auth.Authorization> {
+export class auth_checkPassword_ extends Function_<enums.auth.Authorization> {
   static __F = Symbol() as unknown as (params: { password: enums.InputCheckPasswordSRP }) => enums.auth.Authorization;
   password: enums.InputCheckPasswordSRP;
 
@@ -817,7 +817,7 @@ class auth_checkPassword_ extends Function_<enums.auth.Authorization> {
   }
 }
 
-class auth_requestPasswordRecovery_ extends Function_<enums.auth.PasswordRecovery> {
+export class auth_requestPasswordRecovery_ extends Function_<enums.auth.PasswordRecovery> {
   static __F = Symbol() as unknown as () => enums.auth.PasswordRecovery;
   protected get [id]() {
     return 0xD897BC66;
@@ -836,7 +836,7 @@ class auth_requestPasswordRecovery_ extends Function_<enums.auth.PasswordRecover
   }
 }
 
-class auth_recoverPassword_ extends Function_<enums.auth.Authorization> {
+export class auth_recoverPassword_ extends Function_<enums.auth.Authorization> {
   static __F = Symbol() as unknown as (params: { code: string; new_settings?: enums.account.PasswordInputSettings }) => enums.auth.Authorization;
   code: string;
   new_settings?: enums.account.PasswordInputSettings;
@@ -868,7 +868,7 @@ class auth_recoverPassword_ extends Function_<enums.auth.Authorization> {
   }
 }
 
-class auth_resendCode_ extends Function_<enums.auth.SentCode> {
+export class auth_resendCode_ extends Function_<enums.auth.SentCode> {
   static __F = Symbol() as unknown as (params: { phone_number: string; phone_code_hash: string }) => enums.auth.SentCode;
   phone_number: string;
   phone_code_hash: string;
@@ -898,7 +898,7 @@ class auth_resendCode_ extends Function_<enums.auth.SentCode> {
   }
 }
 
-class auth_cancelCode_ extends Function_<boolean> {
+export class auth_cancelCode_ extends Function_<boolean> {
   static __F = Symbol() as unknown as (params: { phone_number: string; phone_code_hash: string }) => boolean;
   phone_number: string;
   phone_code_hash: string;
@@ -928,7 +928,7 @@ class auth_cancelCode_ extends Function_<boolean> {
   }
 }
 
-class auth_dropTempAuthKeys_ extends Function_<boolean> {
+export class auth_dropTempAuthKeys_ extends Function_<boolean> {
   static __F = Symbol() as unknown as (params: { except_auth_keys: Array<bigint> }) => boolean;
   except_auth_keys: Array<bigint>;
 
@@ -954,7 +954,7 @@ class auth_dropTempAuthKeys_ extends Function_<boolean> {
   }
 }
 
-class auth_exportLoginToken_ extends Function_<enums.auth.LoginToken> {
+export class auth_exportLoginToken_ extends Function_<enums.auth.LoginToken> {
   static __F = Symbol() as unknown as (params: { api_id: number; api_hash: string; except_ids: Array<bigint> }) => enums.auth.LoginToken;
   api_id: number;
   api_hash: string;
@@ -988,7 +988,7 @@ class auth_exportLoginToken_ extends Function_<enums.auth.LoginToken> {
   }
 }
 
-class auth_importLoginToken_ extends Function_<enums.auth.LoginToken> {
+export class auth_importLoginToken_ extends Function_<enums.auth.LoginToken> {
   static __F = Symbol() as unknown as (params: { token: Uint8Array }) => enums.auth.LoginToken;
   token: Uint8Array;
 
@@ -1014,7 +1014,7 @@ class auth_importLoginToken_ extends Function_<enums.auth.LoginToken> {
   }
 }
 
-class auth_acceptLoginToken_ extends Function_<enums.Authorization> {
+export class auth_acceptLoginToken_ extends Function_<enums.Authorization> {
   static __F = Symbol() as unknown as (params: { token: Uint8Array }) => enums.Authorization;
   token: Uint8Array;
 
@@ -1040,7 +1040,7 @@ class auth_acceptLoginToken_ extends Function_<enums.Authorization> {
   }
 }
 
-class auth_checkRecoveryPassword_ extends Function_<boolean> {
+export class auth_checkRecoveryPassword_ extends Function_<boolean> {
   static __F = Symbol() as unknown as (params: { code: string }) => boolean;
   code: string;
 
@@ -1066,7 +1066,7 @@ class auth_checkRecoveryPassword_ extends Function_<boolean> {
   }
 }
 
-class auth_importWebTokenAuthorization_ extends Function_<enums.auth.Authorization> {
+export class auth_importWebTokenAuthorization_ extends Function_<enums.auth.Authorization> {
   static __F = Symbol() as unknown as (params: { api_id: number; api_hash: string; web_auth_token: string }) => enums.auth.Authorization;
   api_id: number;
   api_hash: string;
@@ -1100,7 +1100,7 @@ class auth_importWebTokenAuthorization_ extends Function_<enums.auth.Authorizati
   }
 }
 
-class auth_requestFirebaseSms_ extends Function_<boolean> {
+export class auth_requestFirebaseSms_ extends Function_<boolean> {
   static __F = Symbol() as unknown as (params: { phone_number: string; phone_code_hash: string; safety_net_token?: string; ios_push_secret?: string }) => boolean;
   phone_number: string;
   phone_code_hash: string;
@@ -1140,7 +1140,7 @@ class auth_requestFirebaseSms_ extends Function_<boolean> {
   }
 }
 
-class auth_resetLoginEmail_ extends Function_<enums.auth.SentCode> {
+export class auth_resetLoginEmail_ extends Function_<enums.auth.SentCode> {
   static __F = Symbol() as unknown as (params: { phone_number: string; phone_code_hash: string }) => enums.auth.SentCode;
   phone_number: string;
   phone_code_hash: string;
@@ -1170,7 +1170,7 @@ class auth_resetLoginEmail_ extends Function_<enums.auth.SentCode> {
   }
 }
 
-class account_registerDevice_ extends Function_<boolean> {
+export class account_registerDevice_ extends Function_<boolean> {
   static __F = Symbol() as unknown as (params: { no_muted?: true; token_type: number; token: string; app_sandbox: boolean; secret: Uint8Array; other_uids: Array<bigint> }) => boolean;
   no_muted?: true;
   token_type: number;
@@ -1218,7 +1218,7 @@ class account_registerDevice_ extends Function_<boolean> {
   }
 }
 
-class account_unregisterDevice_ extends Function_<boolean> {
+export class account_unregisterDevice_ extends Function_<boolean> {
   static __F = Symbol() as unknown as (params: { token_type: number; token: string; other_uids: Array<bigint> }) => boolean;
   token_type: number;
   token: string;
@@ -1252,7 +1252,7 @@ class account_unregisterDevice_ extends Function_<boolean> {
   }
 }
 
-class account_updateNotifySettings_ extends Function_<boolean> {
+export class account_updateNotifySettings_ extends Function_<boolean> {
   static __F = Symbol() as unknown as (params: { peer: enums.InputNotifyPeer; settings: enums.InputPeerNotifySettings }) => boolean;
   peer: enums.InputNotifyPeer;
   settings: enums.InputPeerNotifySettings;
@@ -1282,7 +1282,7 @@ class account_updateNotifySettings_ extends Function_<boolean> {
   }
 }
 
-class account_getNotifySettings_ extends Function_<enums.PeerNotifySettings> {
+export class account_getNotifySettings_ extends Function_<enums.PeerNotifySettings> {
   static __F = Symbol() as unknown as (params: { peer: enums.InputNotifyPeer }) => enums.PeerNotifySettings;
   peer: enums.InputNotifyPeer;
 
@@ -1308,7 +1308,7 @@ class account_getNotifySettings_ extends Function_<enums.PeerNotifySettings> {
   }
 }
 
-class account_resetNotifySettings_ extends Function_<boolean> {
+export class account_resetNotifySettings_ extends Function_<boolean> {
   static __F = Symbol() as unknown as () => boolean;
   protected get [id]() {
     return 0xDB7E1747;
@@ -1327,7 +1327,7 @@ class account_resetNotifySettings_ extends Function_<boolean> {
   }
 }
 
-class account_updateProfile_ extends Function_<enums.User> {
+export class account_updateProfile_ extends Function_<enums.User> {
   static __F = Symbol() as unknown as (params?: { first_name?: string; last_name?: string; about?: string }) => enums.User;
   first_name?: string;
   last_name?: string;
@@ -1363,7 +1363,7 @@ class account_updateProfile_ extends Function_<enums.User> {
   }
 }
 
-class account_updateStatus_ extends Function_<boolean> {
+export class account_updateStatus_ extends Function_<boolean> {
   static __F = Symbol() as unknown as (params: { offline: boolean }) => boolean;
   offline: boolean;
 
@@ -1389,7 +1389,7 @@ class account_updateStatus_ extends Function_<boolean> {
   }
 }
 
-class account_getWallPapers_ extends Function_<enums.account.WallPapers> {
+export class account_getWallPapers_ extends Function_<enums.account.WallPapers> {
   static __F = Symbol() as unknown as (params: { hash: bigint }) => enums.account.WallPapers;
   hash: bigint;
 
@@ -1415,7 +1415,7 @@ class account_getWallPapers_ extends Function_<enums.account.WallPapers> {
   }
 }
 
-class account_reportPeer_ extends Function_<boolean> {
+export class account_reportPeer_ extends Function_<boolean> {
   static __F = Symbol() as unknown as (params: { peer: enums.InputPeer; reason: enums.ReportReason; message: string }) => boolean;
   peer: enums.InputPeer;
   reason: enums.ReportReason;
@@ -1449,7 +1449,7 @@ class account_reportPeer_ extends Function_<boolean> {
   }
 }
 
-class account_checkUsername_ extends Function_<boolean> {
+export class account_checkUsername_ extends Function_<boolean> {
   static __F = Symbol() as unknown as (params: { username: string }) => boolean;
   username: string;
 
@@ -1475,7 +1475,7 @@ class account_checkUsername_ extends Function_<boolean> {
   }
 }
 
-class account_updateUsername_ extends Function_<enums.User> {
+export class account_updateUsername_ extends Function_<enums.User> {
   static __F = Symbol() as unknown as (params: { username: string }) => enums.User;
   username: string;
 
@@ -1501,7 +1501,7 @@ class account_updateUsername_ extends Function_<enums.User> {
   }
 }
 
-class account_getPrivacy_ extends Function_<enums.account.PrivacyRules> {
+export class account_getPrivacy_ extends Function_<enums.account.PrivacyRules> {
   static __F = Symbol() as unknown as (params: { key: enums.InputPrivacyKey }) => enums.account.PrivacyRules;
   key: enums.InputPrivacyKey;
 
@@ -1527,7 +1527,7 @@ class account_getPrivacy_ extends Function_<enums.account.PrivacyRules> {
   }
 }
 
-class account_setPrivacy_ extends Function_<enums.account.PrivacyRules> {
+export class account_setPrivacy_ extends Function_<enums.account.PrivacyRules> {
   static __F = Symbol() as unknown as (params: { key: enums.InputPrivacyKey; rules: Array<enums.InputPrivacyRule> }) => enums.account.PrivacyRules;
   key: enums.InputPrivacyKey;
   rules: Array<enums.InputPrivacyRule>;
@@ -1557,7 +1557,7 @@ class account_setPrivacy_ extends Function_<enums.account.PrivacyRules> {
   }
 }
 
-class account_deleteAccount_ extends Function_<boolean> {
+export class account_deleteAccount_ extends Function_<boolean> {
   static __F = Symbol() as unknown as (params: { reason: string; password?: enums.InputCheckPasswordSRP }) => boolean;
   reason: string;
   password?: enums.InputCheckPasswordSRP;
@@ -1589,7 +1589,7 @@ class account_deleteAccount_ extends Function_<boolean> {
   }
 }
 
-class account_getAccountTTL_ extends Function_<enums.AccountDaysTTL> {
+export class account_getAccountTTL_ extends Function_<enums.AccountDaysTTL> {
   static __F = Symbol() as unknown as () => enums.AccountDaysTTL;
   protected get [id]() {
     return 0x08FC711D;
@@ -1608,7 +1608,7 @@ class account_getAccountTTL_ extends Function_<enums.AccountDaysTTL> {
   }
 }
 
-class account_setAccountTTL_ extends Function_<boolean> {
+export class account_setAccountTTL_ extends Function_<boolean> {
   static __F = Symbol() as unknown as (params: { ttl: enums.AccountDaysTTL }) => boolean;
   ttl: enums.AccountDaysTTL;
 
@@ -1634,7 +1634,7 @@ class account_setAccountTTL_ extends Function_<boolean> {
   }
 }
 
-class account_sendChangePhoneCode_ extends Function_<enums.auth.SentCode> {
+export class account_sendChangePhoneCode_ extends Function_<enums.auth.SentCode> {
   static __F = Symbol() as unknown as (params: { phone_number: string; settings: enums.CodeSettings }) => enums.auth.SentCode;
   phone_number: string;
   settings: enums.CodeSettings;
@@ -1664,7 +1664,7 @@ class account_sendChangePhoneCode_ extends Function_<enums.auth.SentCode> {
   }
 }
 
-class account_changePhone_ extends Function_<enums.User> {
+export class account_changePhone_ extends Function_<enums.User> {
   static __F = Symbol() as unknown as (params: { phone_number: string; phone_code_hash: string; phone_code: string }) => enums.User;
   phone_number: string;
   phone_code_hash: string;
@@ -1698,7 +1698,7 @@ class account_changePhone_ extends Function_<enums.User> {
   }
 }
 
-class account_updateDeviceLocked_ extends Function_<boolean> {
+export class account_updateDeviceLocked_ extends Function_<boolean> {
   static __F = Symbol() as unknown as (params: { period: number }) => boolean;
   period: number;
 
@@ -1724,7 +1724,7 @@ class account_updateDeviceLocked_ extends Function_<boolean> {
   }
 }
 
-class account_getAuthorizations_ extends Function_<enums.account.Authorizations> {
+export class account_getAuthorizations_ extends Function_<enums.account.Authorizations> {
   static __F = Symbol() as unknown as () => enums.account.Authorizations;
   protected get [id]() {
     return 0xE320C158;
@@ -1743,7 +1743,7 @@ class account_getAuthorizations_ extends Function_<enums.account.Authorizations>
   }
 }
 
-class account_resetAuthorization_ extends Function_<boolean> {
+export class account_resetAuthorization_ extends Function_<boolean> {
   static __F = Symbol() as unknown as (params: { hash: bigint }) => boolean;
   hash: bigint;
 
@@ -1769,7 +1769,7 @@ class account_resetAuthorization_ extends Function_<boolean> {
   }
 }
 
-class account_getPassword_ extends Function_<enums.account.Password> {
+export class account_getPassword_ extends Function_<enums.account.Password> {
   static __F = Symbol() as unknown as () => enums.account.Password;
   protected get [id]() {
     return 0x548A30F5;
@@ -1788,7 +1788,7 @@ class account_getPassword_ extends Function_<enums.account.Password> {
   }
 }
 
-class account_getPasswordSettings_ extends Function_<enums.account.PasswordSettings> {
+export class account_getPasswordSettings_ extends Function_<enums.account.PasswordSettings> {
   static __F = Symbol() as unknown as (params: { password: enums.InputCheckPasswordSRP }) => enums.account.PasswordSettings;
   password: enums.InputCheckPasswordSRP;
 
@@ -1814,7 +1814,7 @@ class account_getPasswordSettings_ extends Function_<enums.account.PasswordSetti
   }
 }
 
-class account_updatePasswordSettings_ extends Function_<boolean> {
+export class account_updatePasswordSettings_ extends Function_<boolean> {
   static __F = Symbol() as unknown as (params: { password: enums.InputCheckPasswordSRP; new_settings: enums.account.PasswordInputSettings }) => boolean;
   password: enums.InputCheckPasswordSRP;
   new_settings: enums.account.PasswordInputSettings;
@@ -1844,7 +1844,7 @@ class account_updatePasswordSettings_ extends Function_<boolean> {
   }
 }
 
-class account_sendConfirmPhoneCode_ extends Function_<enums.auth.SentCode> {
+export class account_sendConfirmPhoneCode_ extends Function_<enums.auth.SentCode> {
   static __F = Symbol() as unknown as (params: { hash: string; settings: enums.CodeSettings }) => enums.auth.SentCode;
   hash: string;
   settings: enums.CodeSettings;
@@ -1874,7 +1874,7 @@ class account_sendConfirmPhoneCode_ extends Function_<enums.auth.SentCode> {
   }
 }
 
-class account_confirmPhone_ extends Function_<boolean> {
+export class account_confirmPhone_ extends Function_<boolean> {
   static __F = Symbol() as unknown as (params: { phone_code_hash: string; phone_code: string }) => boolean;
   phone_code_hash: string;
   phone_code: string;
@@ -1904,7 +1904,7 @@ class account_confirmPhone_ extends Function_<boolean> {
   }
 }
 
-class account_getTmpPassword_ extends Function_<enums.account.TmpPassword> {
+export class account_getTmpPassword_ extends Function_<enums.account.TmpPassword> {
   static __F = Symbol() as unknown as (params: { password: enums.InputCheckPasswordSRP; period: number }) => enums.account.TmpPassword;
   password: enums.InputCheckPasswordSRP;
   period: number;
@@ -1934,7 +1934,7 @@ class account_getTmpPassword_ extends Function_<enums.account.TmpPassword> {
   }
 }
 
-class account_getWebAuthorizations_ extends Function_<enums.account.WebAuthorizations> {
+export class account_getWebAuthorizations_ extends Function_<enums.account.WebAuthorizations> {
   static __F = Symbol() as unknown as () => enums.account.WebAuthorizations;
   protected get [id]() {
     return 0x182E6D6F;
@@ -1953,7 +1953,7 @@ class account_getWebAuthorizations_ extends Function_<enums.account.WebAuthoriza
   }
 }
 
-class account_resetWebAuthorization_ extends Function_<boolean> {
+export class account_resetWebAuthorization_ extends Function_<boolean> {
   static __F = Symbol() as unknown as (params: { hash: bigint }) => boolean;
   hash: bigint;
 
@@ -1979,7 +1979,7 @@ class account_resetWebAuthorization_ extends Function_<boolean> {
   }
 }
 
-class account_resetWebAuthorizations_ extends Function_<boolean> {
+export class account_resetWebAuthorizations_ extends Function_<boolean> {
   static __F = Symbol() as unknown as () => boolean;
   protected get [id]() {
     return 0x682D2594;
@@ -1998,7 +1998,7 @@ class account_resetWebAuthorizations_ extends Function_<boolean> {
   }
 }
 
-class account_getAllSecureValues_ extends Function_<enums.SecureValue[]> {
+export class account_getAllSecureValues_ extends Function_<enums.SecureValue[]> {
   static __F = Symbol() as unknown as () => enums.SecureValue[];
   protected get [id]() {
     return 0xB288BC7D;
@@ -2017,7 +2017,7 @@ class account_getAllSecureValues_ extends Function_<enums.SecureValue[]> {
   }
 }
 
-class account_getSecureValue_ extends Function_<enums.SecureValue[]> {
+export class account_getSecureValue_ extends Function_<enums.SecureValue[]> {
   static __F = Symbol() as unknown as (params: { types: Array<enums.SecureValueType> }) => enums.SecureValue[];
   types: Array<enums.SecureValueType>;
 
@@ -2043,7 +2043,7 @@ class account_getSecureValue_ extends Function_<enums.SecureValue[]> {
   }
 }
 
-class account_saveSecureValue_ extends Function_<enums.SecureValue> {
+export class account_saveSecureValue_ extends Function_<enums.SecureValue> {
   static __F = Symbol() as unknown as (params: { value: enums.InputSecureValue; secure_secret_id: bigint }) => enums.SecureValue;
   value: enums.InputSecureValue;
   secure_secret_id: bigint;
@@ -2073,7 +2073,7 @@ class account_saveSecureValue_ extends Function_<enums.SecureValue> {
   }
 }
 
-class account_deleteSecureValue_ extends Function_<boolean> {
+export class account_deleteSecureValue_ extends Function_<boolean> {
   static __F = Symbol() as unknown as (params: { types: Array<enums.SecureValueType> }) => boolean;
   types: Array<enums.SecureValueType>;
 
@@ -2099,7 +2099,7 @@ class account_deleteSecureValue_ extends Function_<boolean> {
   }
 }
 
-class account_getAuthorizationForm_ extends Function_<enums.account.AuthorizationForm> {
+export class account_getAuthorizationForm_ extends Function_<enums.account.AuthorizationForm> {
   static __F = Symbol() as unknown as (params: { bot_id: bigint; scope: string; public_key: string }) => enums.account.AuthorizationForm;
   bot_id: bigint;
   scope: string;
@@ -2133,7 +2133,7 @@ class account_getAuthorizationForm_ extends Function_<enums.account.Authorizatio
   }
 }
 
-class account_acceptAuthorization_ extends Function_<boolean> {
+export class account_acceptAuthorization_ extends Function_<boolean> {
   static __F = Symbol() as unknown as (params: { bot_id: bigint; scope: string; public_key: string; value_hashes: Array<enums.SecureValueHash>; credentials: enums.SecureCredentialsEncrypted }) => boolean;
   bot_id: bigint;
   scope: string;
@@ -2175,7 +2175,7 @@ class account_acceptAuthorization_ extends Function_<boolean> {
   }
 }
 
-class account_sendVerifyPhoneCode_ extends Function_<enums.auth.SentCode> {
+export class account_sendVerifyPhoneCode_ extends Function_<enums.auth.SentCode> {
   static __F = Symbol() as unknown as (params: { phone_number: string; settings: enums.CodeSettings }) => enums.auth.SentCode;
   phone_number: string;
   settings: enums.CodeSettings;
@@ -2205,7 +2205,7 @@ class account_sendVerifyPhoneCode_ extends Function_<enums.auth.SentCode> {
   }
 }
 
-class account_verifyPhone_ extends Function_<boolean> {
+export class account_verifyPhone_ extends Function_<boolean> {
   static __F = Symbol() as unknown as (params: { phone_number: string; phone_code_hash: string; phone_code: string }) => boolean;
   phone_number: string;
   phone_code_hash: string;
@@ -2239,7 +2239,7 @@ class account_verifyPhone_ extends Function_<boolean> {
   }
 }
 
-class account_sendVerifyEmailCode_ extends Function_<enums.account.SentEmailCode> {
+export class account_sendVerifyEmailCode_ extends Function_<enums.account.SentEmailCode> {
   static __F = Symbol() as unknown as (params: { purpose: enums.EmailVerifyPurpose; email: string }) => enums.account.SentEmailCode;
   purpose: enums.EmailVerifyPurpose;
   email: string;
@@ -2269,7 +2269,7 @@ class account_sendVerifyEmailCode_ extends Function_<enums.account.SentEmailCode
   }
 }
 
-class account_verifyEmail_ extends Function_<enums.account.EmailVerified> {
+export class account_verifyEmail_ extends Function_<enums.account.EmailVerified> {
   static __F = Symbol() as unknown as (params: { purpose: enums.EmailVerifyPurpose; verification: enums.EmailVerification }) => enums.account.EmailVerified;
   purpose: enums.EmailVerifyPurpose;
   verification: enums.EmailVerification;
@@ -2299,7 +2299,7 @@ class account_verifyEmail_ extends Function_<enums.account.EmailVerified> {
   }
 }
 
-class account_initTakeoutSession_ extends Function_<enums.account.Takeout> {
+export class account_initTakeoutSession_ extends Function_<enums.account.Takeout> {
   static __F = Symbol() as unknown as (params?: { contacts?: true; message_users?: true; message_chats?: true; message_megagroups?: true; message_channels?: true; files?: true; file_max_size?: bigint }) => enums.account.Takeout;
   contacts?: true;
   message_users?: true;
@@ -2351,7 +2351,7 @@ class account_initTakeoutSession_ extends Function_<enums.account.Takeout> {
   }
 }
 
-class account_finishTakeoutSession_ extends Function_<boolean> {
+export class account_finishTakeoutSession_ extends Function_<boolean> {
   static __F = Symbol() as unknown as (params?: { success?: true }) => boolean;
   success?: true;
 
@@ -2379,7 +2379,7 @@ class account_finishTakeoutSession_ extends Function_<boolean> {
   }
 }
 
-class account_confirmPasswordEmail_ extends Function_<boolean> {
+export class account_confirmPasswordEmail_ extends Function_<boolean> {
   static __F = Symbol() as unknown as (params: { code: string }) => boolean;
   code: string;
 
@@ -2405,7 +2405,7 @@ class account_confirmPasswordEmail_ extends Function_<boolean> {
   }
 }
 
-class account_resendPasswordEmail_ extends Function_<boolean> {
+export class account_resendPasswordEmail_ extends Function_<boolean> {
   static __F = Symbol() as unknown as () => boolean;
   protected get [id]() {
     return 0x7A7F2A15;
@@ -2424,7 +2424,7 @@ class account_resendPasswordEmail_ extends Function_<boolean> {
   }
 }
 
-class account_cancelPasswordEmail_ extends Function_<boolean> {
+export class account_cancelPasswordEmail_ extends Function_<boolean> {
   static __F = Symbol() as unknown as () => boolean;
   protected get [id]() {
     return 0xC1CBD5B6;
@@ -2443,7 +2443,7 @@ class account_cancelPasswordEmail_ extends Function_<boolean> {
   }
 }
 
-class account_getContactSignUpNotification_ extends Function_<boolean> {
+export class account_getContactSignUpNotification_ extends Function_<boolean> {
   static __F = Symbol() as unknown as () => boolean;
   protected get [id]() {
     return 0x9F07C728;
@@ -2462,7 +2462,7 @@ class account_getContactSignUpNotification_ extends Function_<boolean> {
   }
 }
 
-class account_setContactSignUpNotification_ extends Function_<boolean> {
+export class account_setContactSignUpNotification_ extends Function_<boolean> {
   static __F = Symbol() as unknown as (params: { silent: boolean }) => boolean;
   silent: boolean;
 
@@ -2488,7 +2488,7 @@ class account_setContactSignUpNotification_ extends Function_<boolean> {
   }
 }
 
-class account_getNotifyExceptions_ extends Function_<enums.Updates> {
+export class account_getNotifyExceptions_ extends Function_<enums.Updates> {
   static __F = Symbol() as unknown as (params?: { compare_sound?: true; compare_stories?: true; peer?: enums.InputNotifyPeer }) => enums.Updates;
   compare_sound?: true;
   compare_stories?: true;
@@ -2524,7 +2524,7 @@ class account_getNotifyExceptions_ extends Function_<enums.Updates> {
   }
 }
 
-class account_getWallPaper_ extends Function_<enums.WallPaper> {
+export class account_getWallPaper_ extends Function_<enums.WallPaper> {
   static __F = Symbol() as unknown as (params: { wallpaper: enums.InputWallPaper }) => enums.WallPaper;
   wallpaper: enums.InputWallPaper;
 
@@ -2550,7 +2550,7 @@ class account_getWallPaper_ extends Function_<enums.WallPaper> {
   }
 }
 
-class account_uploadWallPaper_ extends Function_<enums.WallPaper> {
+export class account_uploadWallPaper_ extends Function_<enums.WallPaper> {
   static __F = Symbol() as unknown as (params: { for_chat?: true; file: enums.InputFile; mime_type: string; settings: enums.WallPaperSettings }) => enums.WallPaper;
   for_chat?: true;
   file: enums.InputFile;
@@ -2590,7 +2590,7 @@ class account_uploadWallPaper_ extends Function_<enums.WallPaper> {
   }
 }
 
-class account_saveWallPaper_ extends Function_<boolean> {
+export class account_saveWallPaper_ extends Function_<boolean> {
   static __F = Symbol() as unknown as (params: { wallpaper: enums.InputWallPaper; unsave: boolean; settings: enums.WallPaperSettings }) => boolean;
   wallpaper: enums.InputWallPaper;
   unsave: boolean;
@@ -2624,7 +2624,7 @@ class account_saveWallPaper_ extends Function_<boolean> {
   }
 }
 
-class account_installWallPaper_ extends Function_<boolean> {
+export class account_installWallPaper_ extends Function_<boolean> {
   static __F = Symbol() as unknown as (params: { wallpaper: enums.InputWallPaper; settings: enums.WallPaperSettings }) => boolean;
   wallpaper: enums.InputWallPaper;
   settings: enums.WallPaperSettings;
@@ -2654,7 +2654,7 @@ class account_installWallPaper_ extends Function_<boolean> {
   }
 }
 
-class account_resetWallPapers_ extends Function_<boolean> {
+export class account_resetWallPapers_ extends Function_<boolean> {
   static __F = Symbol() as unknown as () => boolean;
   protected get [id]() {
     return 0xBB3B9804;
@@ -2673,7 +2673,7 @@ class account_resetWallPapers_ extends Function_<boolean> {
   }
 }
 
-class account_getAutoDownloadSettings_ extends Function_<enums.account.AutoDownloadSettings> {
+export class account_getAutoDownloadSettings_ extends Function_<enums.account.AutoDownloadSettings> {
   static __F = Symbol() as unknown as () => enums.account.AutoDownloadSettings;
   protected get [id]() {
     return 0x56DA0B3F;
@@ -2692,7 +2692,7 @@ class account_getAutoDownloadSettings_ extends Function_<enums.account.AutoDownl
   }
 }
 
-class account_saveAutoDownloadSettings_ extends Function_<boolean> {
+export class account_saveAutoDownloadSettings_ extends Function_<boolean> {
   static __F = Symbol() as unknown as (params: { low?: true; high?: true; settings: enums.AutoDownloadSettings }) => boolean;
   low?: true;
   high?: true;
@@ -2728,7 +2728,7 @@ class account_saveAutoDownloadSettings_ extends Function_<boolean> {
   }
 }
 
-class account_uploadTheme_ extends Function_<enums.Document> {
+export class account_uploadTheme_ extends Function_<enums.Document> {
   static __F = Symbol() as unknown as (params: { file: enums.InputFile; thumb?: enums.InputFile; file_name: string; mime_type: string }) => enums.Document;
   file: enums.InputFile;
   thumb?: enums.InputFile;
@@ -2768,7 +2768,7 @@ class account_uploadTheme_ extends Function_<enums.Document> {
   }
 }
 
-class account_createTheme_ extends Function_<enums.Theme> {
+export class account_createTheme_ extends Function_<enums.Theme> {
   static __F = Symbol() as unknown as (params: { slug: string; title: string; document?: enums.InputDocument; settings?: Array<enums.InputThemeSettings> }) => enums.Theme;
   slug: string;
   title: string;
@@ -2808,7 +2808,7 @@ class account_createTheme_ extends Function_<enums.Theme> {
   }
 }
 
-class account_updateTheme_ extends Function_<enums.Theme> {
+export class account_updateTheme_ extends Function_<enums.Theme> {
   static __F = Symbol() as unknown as (params: { format: string; theme: enums.InputTheme; slug?: string; title?: string; document?: enums.InputDocument; settings?: Array<enums.InputThemeSettings> }) => enums.Theme;
   format: string;
   theme: enums.InputTheme;
@@ -2856,7 +2856,7 @@ class account_updateTheme_ extends Function_<enums.Theme> {
   }
 }
 
-class account_saveTheme_ extends Function_<boolean> {
+export class account_saveTheme_ extends Function_<boolean> {
   static __F = Symbol() as unknown as (params: { theme: enums.InputTheme; unsave: boolean }) => boolean;
   theme: enums.InputTheme;
   unsave: boolean;
@@ -2886,7 +2886,7 @@ class account_saveTheme_ extends Function_<boolean> {
   }
 }
 
-class account_installTheme_ extends Function_<boolean> {
+export class account_installTheme_ extends Function_<boolean> {
   static __F = Symbol() as unknown as (params?: { dark?: true; theme?: enums.InputTheme; format?: string; base_theme?: enums.BaseTheme }) => boolean;
   dark?: true;
   theme?: enums.InputTheme;
@@ -2926,7 +2926,7 @@ class account_installTheme_ extends Function_<boolean> {
   }
 }
 
-class account_getTheme_ extends Function_<enums.Theme> {
+export class account_getTheme_ extends Function_<enums.Theme> {
   static __F = Symbol() as unknown as (params: { format: string; theme: enums.InputTheme }) => enums.Theme;
   format: string;
   theme: enums.InputTheme;
@@ -2956,7 +2956,7 @@ class account_getTheme_ extends Function_<enums.Theme> {
   }
 }
 
-class account_getThemes_ extends Function_<enums.account.Themes> {
+export class account_getThemes_ extends Function_<enums.account.Themes> {
   static __F = Symbol() as unknown as (params: { format: string; hash: bigint }) => enums.account.Themes;
   format: string;
   hash: bigint;
@@ -2986,7 +2986,7 @@ class account_getThemes_ extends Function_<enums.account.Themes> {
   }
 }
 
-class account_setContentSettings_ extends Function_<boolean> {
+export class account_setContentSettings_ extends Function_<boolean> {
   static __F = Symbol() as unknown as (params?: { sensitive_enabled?: true }) => boolean;
   sensitive_enabled?: true;
 
@@ -3014,7 +3014,7 @@ class account_setContentSettings_ extends Function_<boolean> {
   }
 }
 
-class account_getContentSettings_ extends Function_<enums.account.ContentSettings> {
+export class account_getContentSettings_ extends Function_<enums.account.ContentSettings> {
   static __F = Symbol() as unknown as () => enums.account.ContentSettings;
   protected get [id]() {
     return 0x8B9B4DAE;
@@ -3033,7 +3033,7 @@ class account_getContentSettings_ extends Function_<enums.account.ContentSetting
   }
 }
 
-class account_getMultiWallPapers_ extends Function_<enums.WallPaper[]> {
+export class account_getMultiWallPapers_ extends Function_<enums.WallPaper[]> {
   static __F = Symbol() as unknown as (params: { wallpapers: Array<enums.InputWallPaper> }) => enums.WallPaper[];
   wallpapers: Array<enums.InputWallPaper>;
 
@@ -3059,7 +3059,7 @@ class account_getMultiWallPapers_ extends Function_<enums.WallPaper[]> {
   }
 }
 
-class account_getGlobalPrivacySettings_ extends Function_<enums.GlobalPrivacySettings> {
+export class account_getGlobalPrivacySettings_ extends Function_<enums.GlobalPrivacySettings> {
   static __F = Symbol() as unknown as () => enums.GlobalPrivacySettings;
   protected get [id]() {
     return 0xEB2B4CF6;
@@ -3078,7 +3078,7 @@ class account_getGlobalPrivacySettings_ extends Function_<enums.GlobalPrivacySet
   }
 }
 
-class account_setGlobalPrivacySettings_ extends Function_<enums.GlobalPrivacySettings> {
+export class account_setGlobalPrivacySettings_ extends Function_<enums.GlobalPrivacySettings> {
   static __F = Symbol() as unknown as (params: { settings: enums.GlobalPrivacySettings }) => enums.GlobalPrivacySettings;
   settings: enums.GlobalPrivacySettings;
 
@@ -3104,7 +3104,7 @@ class account_setGlobalPrivacySettings_ extends Function_<enums.GlobalPrivacySet
   }
 }
 
-class account_reportProfilePhoto_ extends Function_<boolean> {
+export class account_reportProfilePhoto_ extends Function_<boolean> {
   static __F = Symbol() as unknown as (params: { peer: enums.InputPeer; photo_id: enums.InputPhoto; reason: enums.ReportReason; message: string }) => boolean;
   peer: enums.InputPeer;
   photo_id: enums.InputPhoto;
@@ -3142,7 +3142,7 @@ class account_reportProfilePhoto_ extends Function_<boolean> {
   }
 }
 
-class account_resetPassword_ extends Function_<enums.account.ResetPasswordResult> {
+export class account_resetPassword_ extends Function_<enums.account.ResetPasswordResult> {
   static __F = Symbol() as unknown as () => enums.account.ResetPasswordResult;
   protected get [id]() {
     return 0x9308CE1B;
@@ -3161,7 +3161,7 @@ class account_resetPassword_ extends Function_<enums.account.ResetPasswordResult
   }
 }
 
-class account_declinePasswordReset_ extends Function_<boolean> {
+export class account_declinePasswordReset_ extends Function_<boolean> {
   static __F = Symbol() as unknown as () => boolean;
   protected get [id]() {
     return 0x4C9409F6;
@@ -3180,7 +3180,7 @@ class account_declinePasswordReset_ extends Function_<boolean> {
   }
 }
 
-class account_getChatThemes_ extends Function_<enums.account.Themes> {
+export class account_getChatThemes_ extends Function_<enums.account.Themes> {
   static __F = Symbol() as unknown as (params: { hash: bigint }) => enums.account.Themes;
   hash: bigint;
 
@@ -3206,7 +3206,7 @@ class account_getChatThemes_ extends Function_<enums.account.Themes> {
   }
 }
 
-class account_setAuthorizationTTL_ extends Function_<boolean> {
+export class account_setAuthorizationTTL_ extends Function_<boolean> {
   static __F = Symbol() as unknown as (params: { authorization_ttl_days: number }) => boolean;
   authorization_ttl_days: number;
 
@@ -3232,7 +3232,7 @@ class account_setAuthorizationTTL_ extends Function_<boolean> {
   }
 }
 
-class account_changeAuthorizationSettings_ extends Function_<boolean> {
+export class account_changeAuthorizationSettings_ extends Function_<boolean> {
   static __F = Symbol() as unknown as (params: { confirmed?: true; hash: bigint; encrypted_requests_disabled?: boolean; call_requests_disabled?: boolean }) => boolean;
   confirmed?: true;
   hash: bigint;
@@ -3272,7 +3272,7 @@ class account_changeAuthorizationSettings_ extends Function_<boolean> {
   }
 }
 
-class account_getSavedRingtones_ extends Function_<enums.account.SavedRingtones> {
+export class account_getSavedRingtones_ extends Function_<enums.account.SavedRingtones> {
   static __F = Symbol() as unknown as (params: { hash: bigint }) => enums.account.SavedRingtones;
   hash: bigint;
 
@@ -3298,7 +3298,7 @@ class account_getSavedRingtones_ extends Function_<enums.account.SavedRingtones>
   }
 }
 
-class account_saveRingtone_ extends Function_<enums.account.SavedRingtone> {
+export class account_saveRingtone_ extends Function_<enums.account.SavedRingtone> {
   static __F = Symbol() as unknown as (params: { id: enums.InputDocument; unsave: boolean }) => enums.account.SavedRingtone;
   id: enums.InputDocument;
   unsave: boolean;
@@ -3328,7 +3328,7 @@ class account_saveRingtone_ extends Function_<enums.account.SavedRingtone> {
   }
 }
 
-class account_uploadRingtone_ extends Function_<enums.Document> {
+export class account_uploadRingtone_ extends Function_<enums.Document> {
   static __F = Symbol() as unknown as (params: { file: enums.InputFile; file_name: string; mime_type: string }) => enums.Document;
   file: enums.InputFile;
   file_name: string;
@@ -3362,7 +3362,7 @@ class account_uploadRingtone_ extends Function_<enums.Document> {
   }
 }
 
-class account_updateEmojiStatus_ extends Function_<boolean> {
+export class account_updateEmojiStatus_ extends Function_<boolean> {
   static __F = Symbol() as unknown as (params: { emoji_status: enums.EmojiStatus }) => boolean;
   emoji_status: enums.EmojiStatus;
 
@@ -3388,7 +3388,7 @@ class account_updateEmojiStatus_ extends Function_<boolean> {
   }
 }
 
-class account_getDefaultEmojiStatuses_ extends Function_<enums.account.EmojiStatuses> {
+export class account_getDefaultEmojiStatuses_ extends Function_<enums.account.EmojiStatuses> {
   static __F = Symbol() as unknown as (params: { hash: bigint }) => enums.account.EmojiStatuses;
   hash: bigint;
 
@@ -3414,7 +3414,7 @@ class account_getDefaultEmojiStatuses_ extends Function_<enums.account.EmojiStat
   }
 }
 
-class account_getRecentEmojiStatuses_ extends Function_<enums.account.EmojiStatuses> {
+export class account_getRecentEmojiStatuses_ extends Function_<enums.account.EmojiStatuses> {
   static __F = Symbol() as unknown as (params: { hash: bigint }) => enums.account.EmojiStatuses;
   hash: bigint;
 
@@ -3440,7 +3440,7 @@ class account_getRecentEmojiStatuses_ extends Function_<enums.account.EmojiStatu
   }
 }
 
-class account_clearRecentEmojiStatuses_ extends Function_<boolean> {
+export class account_clearRecentEmojiStatuses_ extends Function_<boolean> {
   static __F = Symbol() as unknown as () => boolean;
   protected get [id]() {
     return 0x18201AAE;
@@ -3459,7 +3459,7 @@ class account_clearRecentEmojiStatuses_ extends Function_<boolean> {
   }
 }
 
-class account_reorderUsernames_ extends Function_<boolean> {
+export class account_reorderUsernames_ extends Function_<boolean> {
   static __F = Symbol() as unknown as (params: { order: Array<string> }) => boolean;
   order: Array<string>;
 
@@ -3485,7 +3485,7 @@ class account_reorderUsernames_ extends Function_<boolean> {
   }
 }
 
-class account_toggleUsername_ extends Function_<boolean> {
+export class account_toggleUsername_ extends Function_<boolean> {
   static __F = Symbol() as unknown as (params: { username: string; active: boolean }) => boolean;
   username: string;
   active: boolean;
@@ -3515,7 +3515,7 @@ class account_toggleUsername_ extends Function_<boolean> {
   }
 }
 
-class account_getDefaultProfilePhotoEmojis_ extends Function_<enums.EmojiList> {
+export class account_getDefaultProfilePhotoEmojis_ extends Function_<enums.EmojiList> {
   static __F = Symbol() as unknown as (params: { hash: bigint }) => enums.EmojiList;
   hash: bigint;
 
@@ -3541,7 +3541,7 @@ class account_getDefaultProfilePhotoEmojis_ extends Function_<enums.EmojiList> {
   }
 }
 
-class account_getDefaultGroupPhotoEmojis_ extends Function_<enums.EmojiList> {
+export class account_getDefaultGroupPhotoEmojis_ extends Function_<enums.EmojiList> {
   static __F = Symbol() as unknown as (params: { hash: bigint }) => enums.EmojiList;
   hash: bigint;
 
@@ -3567,7 +3567,7 @@ class account_getDefaultGroupPhotoEmojis_ extends Function_<enums.EmojiList> {
   }
 }
 
-class account_getAutoSaveSettings_ extends Function_<enums.account.AutoSaveSettings> {
+export class account_getAutoSaveSettings_ extends Function_<enums.account.AutoSaveSettings> {
   static __F = Symbol() as unknown as () => enums.account.AutoSaveSettings;
   protected get [id]() {
     return 0xADCBBCDA;
@@ -3586,7 +3586,7 @@ class account_getAutoSaveSettings_ extends Function_<enums.account.AutoSaveSetti
   }
 }
 
-class account_saveAutoSaveSettings_ extends Function_<boolean> {
+export class account_saveAutoSaveSettings_ extends Function_<boolean> {
   static __F = Symbol() as unknown as (params: { users?: true; chats?: true; broadcasts?: true; peer?: enums.InputPeer; settings: enums.AutoSaveSettings }) => boolean;
   users?: true;
   chats?: true;
@@ -3630,7 +3630,7 @@ class account_saveAutoSaveSettings_ extends Function_<boolean> {
   }
 }
 
-class account_deleteAutoSaveExceptions_ extends Function_<boolean> {
+export class account_deleteAutoSaveExceptions_ extends Function_<boolean> {
   static __F = Symbol() as unknown as () => boolean;
   protected get [id]() {
     return 0x53BC0020;
@@ -3649,7 +3649,7 @@ class account_deleteAutoSaveExceptions_ extends Function_<boolean> {
   }
 }
 
-class account_invalidateSignInCodes_ extends Function_<boolean> {
+export class account_invalidateSignInCodes_ extends Function_<boolean> {
   static __F = Symbol() as unknown as (params: { codes: Array<string> }) => boolean;
   codes: Array<string>;
 
@@ -3675,7 +3675,7 @@ class account_invalidateSignInCodes_ extends Function_<boolean> {
   }
 }
 
-class account_updateColor_ extends Function_<boolean> {
+export class account_updateColor_ extends Function_<boolean> {
   static __F = Symbol() as unknown as (params?: { for_profile?: true; color?: number; background_emoji_id?: bigint }) => boolean;
   for_profile?: true;
   color?: number;
@@ -3711,7 +3711,7 @@ class account_updateColor_ extends Function_<boolean> {
   }
 }
 
-class account_getDefaultBackgroundEmojis_ extends Function_<enums.EmojiList> {
+export class account_getDefaultBackgroundEmojis_ extends Function_<enums.EmojiList> {
   static __F = Symbol() as unknown as (params: { hash: bigint }) => enums.EmojiList;
   hash: bigint;
 
@@ -3737,7 +3737,7 @@ class account_getDefaultBackgroundEmojis_ extends Function_<enums.EmojiList> {
   }
 }
 
-class users_getUsers_ extends Function_<enums.User[]> {
+export class users_getUsers_ extends Function_<enums.User[]> {
   static __F = Symbol() as unknown as (params: { id: Array<enums.InputUser> }) => enums.User[];
   id: Array<enums.InputUser>;
 
@@ -3763,7 +3763,7 @@ class users_getUsers_ extends Function_<enums.User[]> {
   }
 }
 
-class users_getFullUser_ extends Function_<enums.users.UserFull> {
+export class users_getFullUser_ extends Function_<enums.users.UserFull> {
   static __F = Symbol() as unknown as (params: { id: enums.InputUser }) => enums.users.UserFull;
   id: enums.InputUser;
 
@@ -3789,7 +3789,7 @@ class users_getFullUser_ extends Function_<enums.users.UserFull> {
   }
 }
 
-class users_setSecureValueErrors_ extends Function_<boolean> {
+export class users_setSecureValueErrors_ extends Function_<boolean> {
   static __F = Symbol() as unknown as (params: { id: enums.InputUser; errors: Array<enums.SecureValueError> }) => boolean;
   id: enums.InputUser;
   errors: Array<enums.SecureValueError>;
@@ -3819,7 +3819,7 @@ class users_setSecureValueErrors_ extends Function_<boolean> {
   }
 }
 
-class contacts_getContactIDs_ extends Function_<number[]> {
+export class contacts_getContactIDs_ extends Function_<number[]> {
   static __F = Symbol() as unknown as (params: { hash: bigint }) => number[];
   hash: bigint;
 
@@ -3845,7 +3845,7 @@ class contacts_getContactIDs_ extends Function_<number[]> {
   }
 }
 
-class contacts_getStatuses_ extends Function_<enums.ContactStatus[]> {
+export class contacts_getStatuses_ extends Function_<enums.ContactStatus[]> {
   static __F = Symbol() as unknown as () => enums.ContactStatus[];
   protected get [id]() {
     return 0xC4A353EE;
@@ -3864,7 +3864,7 @@ class contacts_getStatuses_ extends Function_<enums.ContactStatus[]> {
   }
 }
 
-class contacts_getContacts_ extends Function_<enums.contacts.Contacts> {
+export class contacts_getContacts_ extends Function_<enums.contacts.Contacts> {
   static __F = Symbol() as unknown as (params: { hash: bigint }) => enums.contacts.Contacts;
   hash: bigint;
 
@@ -3890,7 +3890,7 @@ class contacts_getContacts_ extends Function_<enums.contacts.Contacts> {
   }
 }
 
-class contacts_importContacts_ extends Function_<enums.contacts.ImportedContacts> {
+export class contacts_importContacts_ extends Function_<enums.contacts.ImportedContacts> {
   static __F = Symbol() as unknown as (params: { contacts: Array<enums.InputContact> }) => enums.contacts.ImportedContacts;
   contacts: Array<enums.InputContact>;
 
@@ -3916,7 +3916,7 @@ class contacts_importContacts_ extends Function_<enums.contacts.ImportedContacts
   }
 }
 
-class contacts_deleteContacts_ extends Function_<enums.Updates> {
+export class contacts_deleteContacts_ extends Function_<enums.Updates> {
   static __F = Symbol() as unknown as (params: { id: Array<enums.InputUser> }) => enums.Updates;
   id: Array<enums.InputUser>;
 
@@ -3942,7 +3942,7 @@ class contacts_deleteContacts_ extends Function_<enums.Updates> {
   }
 }
 
-class contacts_deleteByPhones_ extends Function_<boolean> {
+export class contacts_deleteByPhones_ extends Function_<boolean> {
   static __F = Symbol() as unknown as (params: { phones: Array<string> }) => boolean;
   phones: Array<string>;
 
@@ -3968,7 +3968,7 @@ class contacts_deleteByPhones_ extends Function_<boolean> {
   }
 }
 
-class contacts_block_ extends Function_<boolean> {
+export class contacts_block_ extends Function_<boolean> {
   static __F = Symbol() as unknown as (params: { my_stories_from?: true; id: enums.InputPeer }) => boolean;
   my_stories_from?: true;
   id: enums.InputPeer;
@@ -4000,7 +4000,7 @@ class contacts_block_ extends Function_<boolean> {
   }
 }
 
-class contacts_unblock_ extends Function_<boolean> {
+export class contacts_unblock_ extends Function_<boolean> {
   static __F = Symbol() as unknown as (params: { my_stories_from?: true; id: enums.InputPeer }) => boolean;
   my_stories_from?: true;
   id: enums.InputPeer;
@@ -4032,7 +4032,7 @@ class contacts_unblock_ extends Function_<boolean> {
   }
 }
 
-class contacts_getBlocked_ extends Function_<enums.contacts.Blocked> {
+export class contacts_getBlocked_ extends Function_<enums.contacts.Blocked> {
   static __F = Symbol() as unknown as (params: { my_stories_from?: true; offset: number; limit: number }) => enums.contacts.Blocked;
   my_stories_from?: true;
   offset: number;
@@ -4068,7 +4068,7 @@ class contacts_getBlocked_ extends Function_<enums.contacts.Blocked> {
   }
 }
 
-class contacts_search_ extends Function_<enums.contacts.Found> {
+export class contacts_search_ extends Function_<enums.contacts.Found> {
   static __F = Symbol() as unknown as (params: { q: string; limit: number }) => enums.contacts.Found;
   q: string;
   limit: number;
@@ -4098,7 +4098,7 @@ class contacts_search_ extends Function_<enums.contacts.Found> {
   }
 }
 
-class contacts_resolveUsername_ extends Function_<enums.contacts.ResolvedPeer> {
+export class contacts_resolveUsername_ extends Function_<enums.contacts.ResolvedPeer> {
   static __F = Symbol() as unknown as (params: { username: string }) => enums.contacts.ResolvedPeer;
   username: string;
 
@@ -4124,7 +4124,7 @@ class contacts_resolveUsername_ extends Function_<enums.contacts.ResolvedPeer> {
   }
 }
 
-class contacts_getTopPeers_ extends Function_<enums.contacts.TopPeers> {
+export class contacts_getTopPeers_ extends Function_<enums.contacts.TopPeers> {
   static __F = Symbol() as unknown as (params: { correspondents?: true; bots_pm?: true; bots_inline?: true; phone_calls?: true; forward_users?: true; forward_chats?: true; groups?: true; channels?: true; offset: number; limit: number; hash: bigint }) => enums.contacts.TopPeers;
   correspondents?: true;
   bots_pm?: true;
@@ -4192,7 +4192,7 @@ class contacts_getTopPeers_ extends Function_<enums.contacts.TopPeers> {
   }
 }
 
-class contacts_resetTopPeerRating_ extends Function_<boolean> {
+export class contacts_resetTopPeerRating_ extends Function_<boolean> {
   static __F = Symbol() as unknown as (params: { category: enums.TopPeerCategory; peer: enums.InputPeer }) => boolean;
   category: enums.TopPeerCategory;
   peer: enums.InputPeer;
@@ -4222,7 +4222,7 @@ class contacts_resetTopPeerRating_ extends Function_<boolean> {
   }
 }
 
-class contacts_resetSaved_ extends Function_<boolean> {
+export class contacts_resetSaved_ extends Function_<boolean> {
   static __F = Symbol() as unknown as () => boolean;
   protected get [id]() {
     return 0x879537F1;
@@ -4241,7 +4241,7 @@ class contacts_resetSaved_ extends Function_<boolean> {
   }
 }
 
-class contacts_getSaved_ extends Function_<enums.SavedContact[]> {
+export class contacts_getSaved_ extends Function_<enums.SavedContact[]> {
   static __F = Symbol() as unknown as () => enums.SavedContact[];
   protected get [id]() {
     return 0x82F1E39F;
@@ -4260,7 +4260,7 @@ class contacts_getSaved_ extends Function_<enums.SavedContact[]> {
   }
 }
 
-class contacts_toggleTopPeers_ extends Function_<boolean> {
+export class contacts_toggleTopPeers_ extends Function_<boolean> {
   static __F = Symbol() as unknown as (params: { enabled: boolean }) => boolean;
   enabled: boolean;
 
@@ -4286,7 +4286,7 @@ class contacts_toggleTopPeers_ extends Function_<boolean> {
   }
 }
 
-class contacts_addContact_ extends Function_<enums.Updates> {
+export class contacts_addContact_ extends Function_<enums.Updates> {
   static __F = Symbol() as unknown as (params: { add_phone_privacy_exception?: true; id: enums.InputUser; first_name: string; last_name: string; phone: string }) => enums.Updates;
   add_phone_privacy_exception?: true;
   id: enums.InputUser;
@@ -4330,7 +4330,7 @@ class contacts_addContact_ extends Function_<enums.Updates> {
   }
 }
 
-class contacts_acceptContact_ extends Function_<enums.Updates> {
+export class contacts_acceptContact_ extends Function_<enums.Updates> {
   static __F = Symbol() as unknown as (params: { id: enums.InputUser }) => enums.Updates;
   id: enums.InputUser;
 
@@ -4356,7 +4356,7 @@ class contacts_acceptContact_ extends Function_<enums.Updates> {
   }
 }
 
-class contacts_getLocated_ extends Function_<enums.Updates> {
+export class contacts_getLocated_ extends Function_<enums.Updates> {
   static __F = Symbol() as unknown as (params: { background?: true; geo_point: enums.InputGeoPoint; self_expires?: number }) => enums.Updates;
   background?: true;
   geo_point: enums.InputGeoPoint;
@@ -4392,7 +4392,7 @@ class contacts_getLocated_ extends Function_<enums.Updates> {
   }
 }
 
-class contacts_blockFromReplies_ extends Function_<enums.Updates> {
+export class contacts_blockFromReplies_ extends Function_<enums.Updates> {
   static __F = Symbol() as unknown as (params: { delete_message?: true; delete_history?: true; report_spam?: true; msg_id: number }) => enums.Updates;
   delete_message?: true;
   delete_history?: true;
@@ -4432,7 +4432,7 @@ class contacts_blockFromReplies_ extends Function_<enums.Updates> {
   }
 }
 
-class contacts_resolvePhone_ extends Function_<enums.contacts.ResolvedPeer> {
+export class contacts_resolvePhone_ extends Function_<enums.contacts.ResolvedPeer> {
   static __F = Symbol() as unknown as (params: { phone: string }) => enums.contacts.ResolvedPeer;
   phone: string;
 
@@ -4458,7 +4458,7 @@ class contacts_resolvePhone_ extends Function_<enums.contacts.ResolvedPeer> {
   }
 }
 
-class contacts_exportContactToken_ extends Function_<enums.ExportedContactToken> {
+export class contacts_exportContactToken_ extends Function_<enums.ExportedContactToken> {
   static __F = Symbol() as unknown as () => enums.ExportedContactToken;
   protected get [id]() {
     return 0xF8654027;
@@ -4477,7 +4477,7 @@ class contacts_exportContactToken_ extends Function_<enums.ExportedContactToken>
   }
 }
 
-class contacts_importContactToken_ extends Function_<enums.User> {
+export class contacts_importContactToken_ extends Function_<enums.User> {
   static __F = Symbol() as unknown as (params: { token: string }) => enums.User;
   token: string;
 
@@ -4503,7 +4503,7 @@ class contacts_importContactToken_ extends Function_<enums.User> {
   }
 }
 
-class contacts_editCloseFriends_ extends Function_<boolean> {
+export class contacts_editCloseFriends_ extends Function_<boolean> {
   static __F = Symbol() as unknown as (params: { id: Array<bigint> }) => boolean;
   id: Array<bigint>;
 
@@ -4529,7 +4529,7 @@ class contacts_editCloseFriends_ extends Function_<boolean> {
   }
 }
 
-class contacts_setBlocked_ extends Function_<boolean> {
+export class contacts_setBlocked_ extends Function_<boolean> {
   static __F = Symbol() as unknown as (params: { my_stories_from?: true; id: Array<enums.InputPeer>; limit: number }) => boolean;
   my_stories_from?: true;
   id: Array<enums.InputPeer>;
@@ -4565,7 +4565,7 @@ class contacts_setBlocked_ extends Function_<boolean> {
   }
 }
 
-class messages_getMessages_ extends Function_<enums.messages.Messages> {
+export class messages_getMessages_ extends Function_<enums.messages.Messages> {
   static __F = Symbol() as unknown as (params: { id: Array<enums.InputMessage> }) => enums.messages.Messages;
   id: Array<enums.InputMessage>;
 
@@ -4591,7 +4591,7 @@ class messages_getMessages_ extends Function_<enums.messages.Messages> {
   }
 }
 
-class messages_getDialogs_ extends Function_<enums.messages.Dialogs> {
+export class messages_getDialogs_ extends Function_<enums.messages.Dialogs> {
   static __F = Symbol() as unknown as (params: { exclude_pinned?: true; folder_id?: number; offset_date: number; offset_id: number; offset_peer: enums.InputPeer; limit: number; hash: bigint }) => enums.messages.Dialogs;
   exclude_pinned?: true;
   folder_id?: number;
@@ -4643,7 +4643,7 @@ class messages_getDialogs_ extends Function_<enums.messages.Dialogs> {
   }
 }
 
-class messages_getHistory_ extends Function_<enums.messages.Messages> {
+export class messages_getHistory_ extends Function_<enums.messages.Messages> {
   static __F = Symbol() as unknown as (params: { peer: enums.InputPeer; offset_id: number; offset_date: number; add_offset: number; limit: number; max_id: number; min_id: number; hash: bigint }) => enums.messages.Messages;
   peer: enums.InputPeer;
   offset_id: number;
@@ -4697,7 +4697,7 @@ class messages_getHistory_ extends Function_<enums.messages.Messages> {
   }
 }
 
-class messages_search_ extends Function_<enums.messages.Messages> {
+export class messages_search_ extends Function_<enums.messages.Messages> {
   static __F = Symbol() as unknown as (params: { peer: enums.InputPeer; q: string; from_id?: enums.InputPeer; top_msg_id?: number; filter: enums.MessagesFilter; min_date: number; max_date: number; offset_id: number; add_offset: number; limit: number; max_id: number; min_id: number; hash: bigint }) => enums.messages.Messages;
   peer: enums.InputPeer;
   q: string;
@@ -4773,7 +4773,7 @@ class messages_search_ extends Function_<enums.messages.Messages> {
   }
 }
 
-class messages_readHistory_ extends Function_<enums.messages.AffectedMessages> {
+export class messages_readHistory_ extends Function_<enums.messages.AffectedMessages> {
   static __F = Symbol() as unknown as (params: { peer: enums.InputPeer; max_id: number }) => enums.messages.AffectedMessages;
   peer: enums.InputPeer;
   max_id: number;
@@ -4803,7 +4803,7 @@ class messages_readHistory_ extends Function_<enums.messages.AffectedMessages> {
   }
 }
 
-class messages_deleteHistory_ extends Function_<enums.messages.AffectedHistory> {
+export class messages_deleteHistory_ extends Function_<enums.messages.AffectedHistory> {
   static __F = Symbol() as unknown as (params: { just_clear?: true; revoke?: true; peer: enums.InputPeer; max_id: number; min_date?: number; max_date?: number }) => enums.messages.AffectedHistory;
   just_clear?: true;
   revoke?: true;
@@ -4851,7 +4851,7 @@ class messages_deleteHistory_ extends Function_<enums.messages.AffectedHistory> 
   }
 }
 
-class messages_deleteMessages_ extends Function_<enums.messages.AffectedMessages> {
+export class messages_deleteMessages_ extends Function_<enums.messages.AffectedMessages> {
   static __F = Symbol() as unknown as (params: { revoke?: true; id: Array<number> }) => enums.messages.AffectedMessages;
   revoke?: true;
   id: Array<number>;
@@ -4883,7 +4883,7 @@ class messages_deleteMessages_ extends Function_<enums.messages.AffectedMessages
   }
 }
 
-class messages_receivedMessages_ extends Function_<enums.ReceivedNotifyMessage[]> {
+export class messages_receivedMessages_ extends Function_<enums.ReceivedNotifyMessage[]> {
   static __F = Symbol() as unknown as (params: { max_id: number }) => enums.ReceivedNotifyMessage[];
   max_id: number;
 
@@ -4909,7 +4909,7 @@ class messages_receivedMessages_ extends Function_<enums.ReceivedNotifyMessage[]
   }
 }
 
-class messages_setTyping_ extends Function_<boolean> {
+export class messages_setTyping_ extends Function_<boolean> {
   static __F = Symbol() as unknown as (params: { peer: enums.InputPeer; top_msg_id?: number; action: enums.SendMessageAction }) => boolean;
   peer: enums.InputPeer;
   top_msg_id?: number;
@@ -4945,7 +4945,7 @@ class messages_setTyping_ extends Function_<boolean> {
   }
 }
 
-class messages_sendMessage_ extends Function_<enums.Updates> {
+export class messages_sendMessage_ extends Function_<enums.Updates> {
   static __F = Symbol() as unknown as (params: { no_webpage?: true; silent?: true; background?: true; clear_draft?: true; noforwards?: true; update_stickersets_order?: true; invert_media?: true; peer: enums.InputPeer; reply_to?: enums.InputReplyTo; message: string; random_id: bigint; reply_markup?: enums.ReplyMarkup; entities?: Array<enums.MessageEntity>; schedule_date?: number; send_as?: enums.InputPeer }) => enums.Updates;
   no_webpage?: true;
   silent?: true;
@@ -5029,7 +5029,7 @@ class messages_sendMessage_ extends Function_<enums.Updates> {
   }
 }
 
-class messages_sendMedia_ extends Function_<enums.Updates> {
+export class messages_sendMedia_ extends Function_<enums.Updates> {
   static __F = Symbol() as unknown as (params: { silent?: true; background?: true; clear_draft?: true; noforwards?: true; update_stickersets_order?: true; invert_media?: true; peer: enums.InputPeer; reply_to?: enums.InputReplyTo; media: enums.InputMedia; message: string; random_id: bigint; reply_markup?: enums.ReplyMarkup; entities?: Array<enums.MessageEntity>; schedule_date?: number; send_as?: enums.InputPeer }) => enums.Updates;
   silent?: true;
   background?: true;
@@ -5113,7 +5113,7 @@ class messages_sendMedia_ extends Function_<enums.Updates> {
   }
 }
 
-class messages_forwardMessages_ extends Function_<enums.Updates> {
+export class messages_forwardMessages_ extends Function_<enums.Updates> {
   static __F = Symbol() as unknown as (params: { silent?: true; background?: true; with_my_score?: true; drop_author?: true; drop_media_captions?: true; noforwards?: true; from_peer: enums.InputPeer; id: Array<number>; random_id: Array<bigint>; to_peer: enums.InputPeer; top_msg_id?: number; schedule_date?: number; send_as?: enums.InputPeer }) => enums.Updates;
   silent?: true;
   background?: true;
@@ -5189,7 +5189,7 @@ class messages_forwardMessages_ extends Function_<enums.Updates> {
   }
 }
 
-class messages_reportSpam_ extends Function_<boolean> {
+export class messages_reportSpam_ extends Function_<boolean> {
   static __F = Symbol() as unknown as (params: { peer: enums.InputPeer }) => boolean;
   peer: enums.InputPeer;
 
@@ -5215,7 +5215,7 @@ class messages_reportSpam_ extends Function_<boolean> {
   }
 }
 
-class messages_getPeerSettings_ extends Function_<enums.messages.PeerSettings> {
+export class messages_getPeerSettings_ extends Function_<enums.messages.PeerSettings> {
   static __F = Symbol() as unknown as (params: { peer: enums.InputPeer }) => enums.messages.PeerSettings;
   peer: enums.InputPeer;
 
@@ -5241,7 +5241,7 @@ class messages_getPeerSettings_ extends Function_<enums.messages.PeerSettings> {
   }
 }
 
-class messages_report_ extends Function_<boolean> {
+export class messages_report_ extends Function_<boolean> {
   static __F = Symbol() as unknown as (params: { peer: enums.InputPeer; id: Array<number>; reason: enums.ReportReason; message: string }) => boolean;
   peer: enums.InputPeer;
   id: Array<number>;
@@ -5279,7 +5279,7 @@ class messages_report_ extends Function_<boolean> {
   }
 }
 
-class messages_getChats_ extends Function_<enums.messages.Chats> {
+export class messages_getChats_ extends Function_<enums.messages.Chats> {
   static __F = Symbol() as unknown as (params: { id: Array<bigint> }) => enums.messages.Chats;
   id: Array<bigint>;
 
@@ -5305,7 +5305,7 @@ class messages_getChats_ extends Function_<enums.messages.Chats> {
   }
 }
 
-class messages_getFullChat_ extends Function_<enums.messages.ChatFull> {
+export class messages_getFullChat_ extends Function_<enums.messages.ChatFull> {
   static __F = Symbol() as unknown as (params: { chat_id: bigint }) => enums.messages.ChatFull;
   chat_id: bigint;
 
@@ -5331,7 +5331,7 @@ class messages_getFullChat_ extends Function_<enums.messages.ChatFull> {
   }
 }
 
-class messages_editChatTitle_ extends Function_<enums.Updates> {
+export class messages_editChatTitle_ extends Function_<enums.Updates> {
   static __F = Symbol() as unknown as (params: { chat_id: bigint; title: string }) => enums.Updates;
   chat_id: bigint;
   title: string;
@@ -5361,7 +5361,7 @@ class messages_editChatTitle_ extends Function_<enums.Updates> {
   }
 }
 
-class messages_editChatPhoto_ extends Function_<enums.Updates> {
+export class messages_editChatPhoto_ extends Function_<enums.Updates> {
   static __F = Symbol() as unknown as (params: { chat_id: bigint; photo: enums.InputChatPhoto }) => enums.Updates;
   chat_id: bigint;
   photo: enums.InputChatPhoto;
@@ -5391,7 +5391,7 @@ class messages_editChatPhoto_ extends Function_<enums.Updates> {
   }
 }
 
-class messages_addChatUser_ extends Function_<enums.Updates> {
+export class messages_addChatUser_ extends Function_<enums.Updates> {
   static __F = Symbol() as unknown as (params: { chat_id: bigint; user_id: enums.InputUser; fwd_limit: number }) => enums.Updates;
   chat_id: bigint;
   user_id: enums.InputUser;
@@ -5425,7 +5425,7 @@ class messages_addChatUser_ extends Function_<enums.Updates> {
   }
 }
 
-class messages_deleteChatUser_ extends Function_<enums.Updates> {
+export class messages_deleteChatUser_ extends Function_<enums.Updates> {
   static __F = Symbol() as unknown as (params: { revoke_history?: true; chat_id: bigint; user_id: enums.InputUser }) => enums.Updates;
   revoke_history?: true;
   chat_id: bigint;
@@ -5461,7 +5461,7 @@ class messages_deleteChatUser_ extends Function_<enums.Updates> {
   }
 }
 
-class messages_createChat_ extends Function_<enums.Updates> {
+export class messages_createChat_ extends Function_<enums.Updates> {
   static __F = Symbol() as unknown as (params: { users: Array<enums.InputUser>; title: string; ttl_period?: number }) => enums.Updates;
   users: Array<enums.InputUser>;
   title: string;
@@ -5497,7 +5497,7 @@ class messages_createChat_ extends Function_<enums.Updates> {
   }
 }
 
-class messages_getDhConfig_ extends Function_<enums.messages.DhConfig> {
+export class messages_getDhConfig_ extends Function_<enums.messages.DhConfig> {
   static __F = Symbol() as unknown as (params: { version: number; random_length: number }) => enums.messages.DhConfig;
   version: number;
   random_length: number;
@@ -5527,7 +5527,7 @@ class messages_getDhConfig_ extends Function_<enums.messages.DhConfig> {
   }
 }
 
-class messages_requestEncryption_ extends Function_<enums.EncryptedChat> {
+export class messages_requestEncryption_ extends Function_<enums.EncryptedChat> {
   static __F = Symbol() as unknown as (params: { user_id: enums.InputUser; random_id: number; g_a: Uint8Array }) => enums.EncryptedChat;
   user_id: enums.InputUser;
   random_id: number;
@@ -5561,7 +5561,7 @@ class messages_requestEncryption_ extends Function_<enums.EncryptedChat> {
   }
 }
 
-class messages_acceptEncryption_ extends Function_<enums.EncryptedChat> {
+export class messages_acceptEncryption_ extends Function_<enums.EncryptedChat> {
   static __F = Symbol() as unknown as (params: { peer: enums.InputEncryptedChat; g_b: Uint8Array; key_fingerprint: bigint }) => enums.EncryptedChat;
   peer: enums.InputEncryptedChat;
   g_b: Uint8Array;
@@ -5595,7 +5595,7 @@ class messages_acceptEncryption_ extends Function_<enums.EncryptedChat> {
   }
 }
 
-class messages_discardEncryption_ extends Function_<boolean> {
+export class messages_discardEncryption_ extends Function_<boolean> {
   static __F = Symbol() as unknown as (params: { delete_history?: true; chat_id: number }) => boolean;
   delete_history?: true;
   chat_id: number;
@@ -5627,7 +5627,7 @@ class messages_discardEncryption_ extends Function_<boolean> {
   }
 }
 
-class messages_setEncryptedTyping_ extends Function_<boolean> {
+export class messages_setEncryptedTyping_ extends Function_<boolean> {
   static __F = Symbol() as unknown as (params: { peer: enums.InputEncryptedChat; typing: boolean }) => boolean;
   peer: enums.InputEncryptedChat;
   typing: boolean;
@@ -5657,7 +5657,7 @@ class messages_setEncryptedTyping_ extends Function_<boolean> {
   }
 }
 
-class messages_readEncryptedHistory_ extends Function_<boolean> {
+export class messages_readEncryptedHistory_ extends Function_<boolean> {
   static __F = Symbol() as unknown as (params: { peer: enums.InputEncryptedChat; max_date: number }) => boolean;
   peer: enums.InputEncryptedChat;
   max_date: number;
@@ -5687,7 +5687,7 @@ class messages_readEncryptedHistory_ extends Function_<boolean> {
   }
 }
 
-class messages_sendEncrypted_ extends Function_<enums.messages.SentEncryptedMessage> {
+export class messages_sendEncrypted_ extends Function_<enums.messages.SentEncryptedMessage> {
   static __F = Symbol() as unknown as (params: { silent?: true; peer: enums.InputEncryptedChat; random_id: bigint; data: Uint8Array }) => enums.messages.SentEncryptedMessage;
   silent?: true;
   peer: enums.InputEncryptedChat;
@@ -5727,7 +5727,7 @@ class messages_sendEncrypted_ extends Function_<enums.messages.SentEncryptedMess
   }
 }
 
-class messages_sendEncryptedFile_ extends Function_<enums.messages.SentEncryptedMessage> {
+export class messages_sendEncryptedFile_ extends Function_<enums.messages.SentEncryptedMessage> {
   static __F = Symbol() as unknown as (params: { silent?: true; peer: enums.InputEncryptedChat; random_id: bigint; data: Uint8Array; file: enums.InputEncryptedFile }) => enums.messages.SentEncryptedMessage;
   silent?: true;
   peer: enums.InputEncryptedChat;
@@ -5771,7 +5771,7 @@ class messages_sendEncryptedFile_ extends Function_<enums.messages.SentEncrypted
   }
 }
 
-class messages_sendEncryptedService_ extends Function_<enums.messages.SentEncryptedMessage> {
+export class messages_sendEncryptedService_ extends Function_<enums.messages.SentEncryptedMessage> {
   static __F = Symbol() as unknown as (params: { peer: enums.InputEncryptedChat; random_id: bigint; data: Uint8Array }) => enums.messages.SentEncryptedMessage;
   peer: enums.InputEncryptedChat;
   random_id: bigint;
@@ -5805,7 +5805,7 @@ class messages_sendEncryptedService_ extends Function_<enums.messages.SentEncryp
   }
 }
 
-class messages_receivedQueue_ extends Function_<bigint[]> {
+export class messages_receivedQueue_ extends Function_<bigint[]> {
   static __F = Symbol() as unknown as (params: { max_qts: number }) => bigint[];
   max_qts: number;
 
@@ -5831,7 +5831,7 @@ class messages_receivedQueue_ extends Function_<bigint[]> {
   }
 }
 
-class messages_reportEncryptedSpam_ extends Function_<boolean> {
+export class messages_reportEncryptedSpam_ extends Function_<boolean> {
   static __F = Symbol() as unknown as (params: { peer: enums.InputEncryptedChat }) => boolean;
   peer: enums.InputEncryptedChat;
 
@@ -5857,7 +5857,7 @@ class messages_reportEncryptedSpam_ extends Function_<boolean> {
   }
 }
 
-class messages_readMessageContents_ extends Function_<enums.messages.AffectedMessages> {
+export class messages_readMessageContents_ extends Function_<enums.messages.AffectedMessages> {
   static __F = Symbol() as unknown as (params: { id: Array<number> }) => enums.messages.AffectedMessages;
   id: Array<number>;
 
@@ -5883,7 +5883,7 @@ class messages_readMessageContents_ extends Function_<enums.messages.AffectedMes
   }
 }
 
-class messages_getStickers_ extends Function_<enums.messages.Stickers> {
+export class messages_getStickers_ extends Function_<enums.messages.Stickers> {
   static __F = Symbol() as unknown as (params: { emoticon: string; hash: bigint }) => enums.messages.Stickers;
   emoticon: string;
   hash: bigint;
@@ -5913,7 +5913,7 @@ class messages_getStickers_ extends Function_<enums.messages.Stickers> {
   }
 }
 
-class messages_getAllStickers_ extends Function_<enums.messages.AllStickers> {
+export class messages_getAllStickers_ extends Function_<enums.messages.AllStickers> {
   static __F = Symbol() as unknown as (params: { hash: bigint }) => enums.messages.AllStickers;
   hash: bigint;
 
@@ -5939,7 +5939,7 @@ class messages_getAllStickers_ extends Function_<enums.messages.AllStickers> {
   }
 }
 
-class messages_getWebPagePreview_ extends Function_<enums.MessageMedia> {
+export class messages_getWebPagePreview_ extends Function_<enums.MessageMedia> {
   static __F = Symbol() as unknown as (params: { message: string; entities?: Array<enums.MessageEntity> }) => enums.MessageMedia;
   message: string;
   entities?: Array<enums.MessageEntity>;
@@ -5971,7 +5971,7 @@ class messages_getWebPagePreview_ extends Function_<enums.MessageMedia> {
   }
 }
 
-class messages_exportChatInvite_ extends Function_<enums.ExportedChatInvite> {
+export class messages_exportChatInvite_ extends Function_<enums.ExportedChatInvite> {
   static __F = Symbol() as unknown as (params: { legacy_revoke_permanent?: true; request_needed?: true; peer: enums.InputPeer; expire_date?: number; usage_limit?: number; title?: string }) => enums.ExportedChatInvite;
   legacy_revoke_permanent?: true;
   request_needed?: true;
@@ -6019,7 +6019,7 @@ class messages_exportChatInvite_ extends Function_<enums.ExportedChatInvite> {
   }
 }
 
-class messages_checkChatInvite_ extends Function_<enums.ChatInvite> {
+export class messages_checkChatInvite_ extends Function_<enums.ChatInvite> {
   static __F = Symbol() as unknown as (params: { hash: string }) => enums.ChatInvite;
   hash: string;
 
@@ -6045,7 +6045,7 @@ class messages_checkChatInvite_ extends Function_<enums.ChatInvite> {
   }
 }
 
-class messages_importChatInvite_ extends Function_<enums.Updates> {
+export class messages_importChatInvite_ extends Function_<enums.Updates> {
   static __F = Symbol() as unknown as (params: { hash: string }) => enums.Updates;
   hash: string;
 
@@ -6071,7 +6071,7 @@ class messages_importChatInvite_ extends Function_<enums.Updates> {
   }
 }
 
-class messages_getStickerSet_ extends Function_<enums.messages.StickerSet> {
+export class messages_getStickerSet_ extends Function_<enums.messages.StickerSet> {
   static __F = Symbol() as unknown as (params: { stickerset: enums.InputStickerSet; hash: number }) => enums.messages.StickerSet;
   stickerset: enums.InputStickerSet;
   hash: number;
@@ -6101,7 +6101,7 @@ class messages_getStickerSet_ extends Function_<enums.messages.StickerSet> {
   }
 }
 
-class messages_installStickerSet_ extends Function_<enums.messages.StickerSetInstallResult> {
+export class messages_installStickerSet_ extends Function_<enums.messages.StickerSetInstallResult> {
   static __F = Symbol() as unknown as (params: { stickerset: enums.InputStickerSet; archived: boolean }) => enums.messages.StickerSetInstallResult;
   stickerset: enums.InputStickerSet;
   archived: boolean;
@@ -6131,7 +6131,7 @@ class messages_installStickerSet_ extends Function_<enums.messages.StickerSetIns
   }
 }
 
-class messages_uninstallStickerSet_ extends Function_<boolean> {
+export class messages_uninstallStickerSet_ extends Function_<boolean> {
   static __F = Symbol() as unknown as (params: { stickerset: enums.InputStickerSet }) => boolean;
   stickerset: enums.InputStickerSet;
 
@@ -6157,7 +6157,7 @@ class messages_uninstallStickerSet_ extends Function_<boolean> {
   }
 }
 
-class messages_startBot_ extends Function_<enums.Updates> {
+export class messages_startBot_ extends Function_<enums.Updates> {
   static __F = Symbol() as unknown as (params: { bot: enums.InputUser; peer: enums.InputPeer; random_id: bigint; start_param: string }) => enums.Updates;
   bot: enums.InputUser;
   peer: enums.InputPeer;
@@ -6195,7 +6195,7 @@ class messages_startBot_ extends Function_<enums.Updates> {
   }
 }
 
-class messages_getMessagesViews_ extends Function_<enums.messages.MessageViews> {
+export class messages_getMessagesViews_ extends Function_<enums.messages.MessageViews> {
   static __F = Symbol() as unknown as (params: { peer: enums.InputPeer; id: Array<number>; increment: boolean }) => enums.messages.MessageViews;
   peer: enums.InputPeer;
   id: Array<number>;
@@ -6229,7 +6229,7 @@ class messages_getMessagesViews_ extends Function_<enums.messages.MessageViews> 
   }
 }
 
-class messages_editChatAdmin_ extends Function_<boolean> {
+export class messages_editChatAdmin_ extends Function_<boolean> {
   static __F = Symbol() as unknown as (params: { chat_id: bigint; user_id: enums.InputUser; is_admin: boolean }) => boolean;
   chat_id: bigint;
   user_id: enums.InputUser;
@@ -6263,7 +6263,7 @@ class messages_editChatAdmin_ extends Function_<boolean> {
   }
 }
 
-class messages_migrateChat_ extends Function_<enums.Updates> {
+export class messages_migrateChat_ extends Function_<enums.Updates> {
   static __F = Symbol() as unknown as (params: { chat_id: bigint }) => enums.Updates;
   chat_id: bigint;
 
@@ -6289,7 +6289,7 @@ class messages_migrateChat_ extends Function_<enums.Updates> {
   }
 }
 
-class messages_searchGlobal_ extends Function_<enums.messages.Messages> {
+export class messages_searchGlobal_ extends Function_<enums.messages.Messages> {
   static __F = Symbol() as unknown as (params: { folder_id?: number; q: string; filter: enums.MessagesFilter; min_date: number; max_date: number; offset_rate: number; offset_peer: enums.InputPeer; offset_id: number; limit: number }) => enums.messages.Messages;
   folder_id?: number;
   q: string;
@@ -6349,7 +6349,7 @@ class messages_searchGlobal_ extends Function_<enums.messages.Messages> {
   }
 }
 
-class messages_reorderStickerSets_ extends Function_<boolean> {
+export class messages_reorderStickerSets_ extends Function_<boolean> {
   static __F = Symbol() as unknown as (params: { masks?: true; emojis?: true; order: Array<bigint> }) => boolean;
   masks?: true;
   emojis?: true;
@@ -6385,7 +6385,7 @@ class messages_reorderStickerSets_ extends Function_<boolean> {
   }
 }
 
-class messages_getDocumentByHash_ extends Function_<enums.Document> {
+export class messages_getDocumentByHash_ extends Function_<enums.Document> {
   static __F = Symbol() as unknown as (params: { sha256: Uint8Array; size: bigint; mime_type: string }) => enums.Document;
   sha256: Uint8Array;
   size: bigint;
@@ -6419,7 +6419,7 @@ class messages_getDocumentByHash_ extends Function_<enums.Document> {
   }
 }
 
-class messages_getSavedGifs_ extends Function_<enums.messages.SavedGifs> {
+export class messages_getSavedGifs_ extends Function_<enums.messages.SavedGifs> {
   static __F = Symbol() as unknown as (params: { hash: bigint }) => enums.messages.SavedGifs;
   hash: bigint;
 
@@ -6445,7 +6445,7 @@ class messages_getSavedGifs_ extends Function_<enums.messages.SavedGifs> {
   }
 }
 
-class messages_saveGif_ extends Function_<boolean> {
+export class messages_saveGif_ extends Function_<boolean> {
   static __F = Symbol() as unknown as (params: { id: enums.InputDocument; unsave: boolean }) => boolean;
   id: enums.InputDocument;
   unsave: boolean;
@@ -6475,7 +6475,7 @@ class messages_saveGif_ extends Function_<boolean> {
   }
 }
 
-class messages_getInlineBotResults_ extends Function_<enums.messages.BotResults> {
+export class messages_getInlineBotResults_ extends Function_<enums.messages.BotResults> {
   static __F = Symbol() as unknown as (params: { bot: enums.InputUser; peer: enums.InputPeer; geo_point?: enums.InputGeoPoint; query: string; offset: string }) => enums.messages.BotResults;
   bot: enums.InputUser;
   peer: enums.InputPeer;
@@ -6519,7 +6519,7 @@ class messages_getInlineBotResults_ extends Function_<enums.messages.BotResults>
   }
 }
 
-class messages_setInlineBotResults_ extends Function_<boolean> {
+export class messages_setInlineBotResults_ extends Function_<boolean> {
   static __F = Symbol() as unknown as (params: { gallery?: true; private?: true; query_id: bigint; results: Array<enums.InputBotInlineResult>; cache_time: number; next_offset?: string; switch_pm?: enums.InlineBotSwitchPM; switch_webview?: enums.InlineBotWebView }) => boolean;
   gallery?: true;
   private?: true;
@@ -6575,7 +6575,7 @@ class messages_setInlineBotResults_ extends Function_<boolean> {
   }
 }
 
-class messages_sendInlineBotResult_ extends Function_<enums.Updates> {
+export class messages_sendInlineBotResult_ extends Function_<enums.Updates> {
   static __F = Symbol() as unknown as (params: { silent?: true; background?: true; clear_draft?: true; hide_via?: true; peer: enums.InputPeer; reply_to?: enums.InputReplyTo; random_id: bigint; query_id: bigint; id: string; schedule_date?: number; send_as?: enums.InputPeer }) => enums.Updates;
   silent?: true;
   background?: true;
@@ -6643,7 +6643,7 @@ class messages_sendInlineBotResult_ extends Function_<enums.Updates> {
   }
 }
 
-class messages_getMessageEditData_ extends Function_<enums.messages.MessageEditData> {
+export class messages_getMessageEditData_ extends Function_<enums.messages.MessageEditData> {
   static __F = Symbol() as unknown as (params: { peer: enums.InputPeer; id: number }) => enums.messages.MessageEditData;
   peer: enums.InputPeer;
   id: number;
@@ -6673,7 +6673,7 @@ class messages_getMessageEditData_ extends Function_<enums.messages.MessageEditD
   }
 }
 
-class messages_editMessage_ extends Function_<enums.Updates> {
+export class messages_editMessage_ extends Function_<enums.Updates> {
   static __F = Symbol() as unknown as (params: { no_webpage?: true; invert_media?: true; peer: enums.InputPeer; id: number; message?: string; media?: enums.InputMedia; reply_markup?: enums.ReplyMarkup; entities?: Array<enums.MessageEntity>; schedule_date?: number }) => enums.Updates;
   no_webpage?: true;
   invert_media?: true;
@@ -6733,7 +6733,7 @@ class messages_editMessage_ extends Function_<enums.Updates> {
   }
 }
 
-class messages_editInlineBotMessage_ extends Function_<boolean> {
+export class messages_editInlineBotMessage_ extends Function_<boolean> {
   static __F = Symbol() as unknown as (params: { no_webpage?: true; invert_media?: true; id: enums.InputBotInlineMessageID; message?: string; media?: enums.InputMedia; reply_markup?: enums.ReplyMarkup; entities?: Array<enums.MessageEntity> }) => boolean;
   no_webpage?: true;
   invert_media?: true;
@@ -6785,7 +6785,7 @@ class messages_editInlineBotMessage_ extends Function_<boolean> {
   }
 }
 
-class messages_getBotCallbackAnswer_ extends Function_<enums.messages.BotCallbackAnswer> {
+export class messages_getBotCallbackAnswer_ extends Function_<enums.messages.BotCallbackAnswer> {
   static __F = Symbol() as unknown as (params: { game?: true; peer: enums.InputPeer; msg_id: number; data?: Uint8Array; password?: enums.InputCheckPasswordSRP }) => enums.messages.BotCallbackAnswer;
   game?: true;
   peer: enums.InputPeer;
@@ -6829,7 +6829,7 @@ class messages_getBotCallbackAnswer_ extends Function_<enums.messages.BotCallbac
   }
 }
 
-class messages_setBotCallbackAnswer_ extends Function_<boolean> {
+export class messages_setBotCallbackAnswer_ extends Function_<boolean> {
   static __F = Symbol() as unknown as (params: { alert?: true; query_id: bigint; message?: string; url?: string; cache_time: number }) => boolean;
   alert?: true;
   query_id: bigint;
@@ -6873,7 +6873,7 @@ class messages_setBotCallbackAnswer_ extends Function_<boolean> {
   }
 }
 
-class messages_getPeerDialogs_ extends Function_<enums.messages.PeerDialogs> {
+export class messages_getPeerDialogs_ extends Function_<enums.messages.PeerDialogs> {
   static __F = Symbol() as unknown as (params: { peers: Array<enums.InputDialogPeer> }) => enums.messages.PeerDialogs;
   peers: Array<enums.InputDialogPeer>;
 
@@ -6899,7 +6899,7 @@ class messages_getPeerDialogs_ extends Function_<enums.messages.PeerDialogs> {
   }
 }
 
-class messages_saveDraft_ extends Function_<boolean> {
+export class messages_saveDraft_ extends Function_<boolean> {
   static __F = Symbol() as unknown as (params: { no_webpage?: true; invert_media?: true; reply_to?: enums.InputReplyTo; peer: enums.InputPeer; message: string; entities?: Array<enums.MessageEntity>; media?: enums.InputMedia }) => boolean;
   no_webpage?: true;
   invert_media?: true;
@@ -6951,7 +6951,7 @@ class messages_saveDraft_ extends Function_<boolean> {
   }
 }
 
-class messages_getAllDrafts_ extends Function_<enums.Updates> {
+export class messages_getAllDrafts_ extends Function_<enums.Updates> {
   static __F = Symbol() as unknown as () => enums.Updates;
   protected get [id]() {
     return 0x6A3F8D65;
@@ -6970,7 +6970,7 @@ class messages_getAllDrafts_ extends Function_<enums.Updates> {
   }
 }
 
-class messages_getFeaturedStickers_ extends Function_<enums.messages.FeaturedStickers> {
+export class messages_getFeaturedStickers_ extends Function_<enums.messages.FeaturedStickers> {
   static __F = Symbol() as unknown as (params: { hash: bigint }) => enums.messages.FeaturedStickers;
   hash: bigint;
 
@@ -6996,7 +6996,7 @@ class messages_getFeaturedStickers_ extends Function_<enums.messages.FeaturedSti
   }
 }
 
-class messages_readFeaturedStickers_ extends Function_<boolean> {
+export class messages_readFeaturedStickers_ extends Function_<boolean> {
   static __F = Symbol() as unknown as (params: { id: Array<bigint> }) => boolean;
   id: Array<bigint>;
 
@@ -7022,7 +7022,7 @@ class messages_readFeaturedStickers_ extends Function_<boolean> {
   }
 }
 
-class messages_getRecentStickers_ extends Function_<enums.messages.RecentStickers> {
+export class messages_getRecentStickers_ extends Function_<enums.messages.RecentStickers> {
   static __F = Symbol() as unknown as (params: { attached?: true; hash: bigint }) => enums.messages.RecentStickers;
   attached?: true;
   hash: bigint;
@@ -7054,7 +7054,7 @@ class messages_getRecentStickers_ extends Function_<enums.messages.RecentSticker
   }
 }
 
-class messages_saveRecentSticker_ extends Function_<boolean> {
+export class messages_saveRecentSticker_ extends Function_<boolean> {
   static __F = Symbol() as unknown as (params: { attached?: true; id: enums.InputDocument; unsave: boolean }) => boolean;
   attached?: true;
   id: enums.InputDocument;
@@ -7090,7 +7090,7 @@ class messages_saveRecentSticker_ extends Function_<boolean> {
   }
 }
 
-class messages_clearRecentStickers_ extends Function_<boolean> {
+export class messages_clearRecentStickers_ extends Function_<boolean> {
   static __F = Symbol() as unknown as (params?: { attached?: true }) => boolean;
   attached?: true;
 
@@ -7118,7 +7118,7 @@ class messages_clearRecentStickers_ extends Function_<boolean> {
   }
 }
 
-class messages_getArchivedStickers_ extends Function_<enums.messages.ArchivedStickers> {
+export class messages_getArchivedStickers_ extends Function_<enums.messages.ArchivedStickers> {
   static __F = Symbol() as unknown as (params: { masks?: true; emojis?: true; offset_id: bigint; limit: number }) => enums.messages.ArchivedStickers;
   masks?: true;
   emojis?: true;
@@ -7158,7 +7158,7 @@ class messages_getArchivedStickers_ extends Function_<enums.messages.ArchivedSti
   }
 }
 
-class messages_getMaskStickers_ extends Function_<enums.messages.AllStickers> {
+export class messages_getMaskStickers_ extends Function_<enums.messages.AllStickers> {
   static __F = Symbol() as unknown as (params: { hash: bigint }) => enums.messages.AllStickers;
   hash: bigint;
 
@@ -7184,7 +7184,7 @@ class messages_getMaskStickers_ extends Function_<enums.messages.AllStickers> {
   }
 }
 
-class messages_getAttachedStickers_ extends Function_<enums.StickerSetCovered[]> {
+export class messages_getAttachedStickers_ extends Function_<enums.StickerSetCovered[]> {
   static __F = Symbol() as unknown as (params: { media: enums.InputStickeredMedia }) => enums.StickerSetCovered[];
   media: enums.InputStickeredMedia;
 
@@ -7210,7 +7210,7 @@ class messages_getAttachedStickers_ extends Function_<enums.StickerSetCovered[]>
   }
 }
 
-class messages_setGameScore_ extends Function_<enums.Updates> {
+export class messages_setGameScore_ extends Function_<enums.Updates> {
   static __F = Symbol() as unknown as (params: { edit_message?: true; force?: true; peer: enums.InputPeer; id: number; user_id: enums.InputUser; score: number }) => enums.Updates;
   edit_message?: true;
   force?: true;
@@ -7258,7 +7258,7 @@ class messages_setGameScore_ extends Function_<enums.Updates> {
   }
 }
 
-class messages_setInlineGameScore_ extends Function_<boolean> {
+export class messages_setInlineGameScore_ extends Function_<boolean> {
   static __F = Symbol() as unknown as (params: { edit_message?: true; force?: true; id: enums.InputBotInlineMessageID; user_id: enums.InputUser; score: number }) => boolean;
   edit_message?: true;
   force?: true;
@@ -7302,7 +7302,7 @@ class messages_setInlineGameScore_ extends Function_<boolean> {
   }
 }
 
-class messages_getGameHighScores_ extends Function_<enums.messages.HighScores> {
+export class messages_getGameHighScores_ extends Function_<enums.messages.HighScores> {
   static __F = Symbol() as unknown as (params: { peer: enums.InputPeer; id: number; user_id: enums.InputUser }) => enums.messages.HighScores;
   peer: enums.InputPeer;
   id: number;
@@ -7336,7 +7336,7 @@ class messages_getGameHighScores_ extends Function_<enums.messages.HighScores> {
   }
 }
 
-class messages_getInlineGameHighScores_ extends Function_<enums.messages.HighScores> {
+export class messages_getInlineGameHighScores_ extends Function_<enums.messages.HighScores> {
   static __F = Symbol() as unknown as (params: { id: enums.InputBotInlineMessageID; user_id: enums.InputUser }) => enums.messages.HighScores;
   id: enums.InputBotInlineMessageID;
   user_id: enums.InputUser;
@@ -7366,7 +7366,7 @@ class messages_getInlineGameHighScores_ extends Function_<enums.messages.HighSco
   }
 }
 
-class messages_getCommonChats_ extends Function_<enums.messages.Chats> {
+export class messages_getCommonChats_ extends Function_<enums.messages.Chats> {
   static __F = Symbol() as unknown as (params: { user_id: enums.InputUser; max_id: bigint; limit: number }) => enums.messages.Chats;
   user_id: enums.InputUser;
   max_id: bigint;
@@ -7400,7 +7400,7 @@ class messages_getCommonChats_ extends Function_<enums.messages.Chats> {
   }
 }
 
-class messages_getWebPage_ extends Function_<enums.messages.WebPage> {
+export class messages_getWebPage_ extends Function_<enums.messages.WebPage> {
   static __F = Symbol() as unknown as (params: { url: string; hash: number }) => enums.messages.WebPage;
   url: string;
   hash: number;
@@ -7430,7 +7430,7 @@ class messages_getWebPage_ extends Function_<enums.messages.WebPage> {
   }
 }
 
-class messages_toggleDialogPin_ extends Function_<boolean> {
+export class messages_toggleDialogPin_ extends Function_<boolean> {
   static __F = Symbol() as unknown as (params: { pinned?: true; peer: enums.InputDialogPeer }) => boolean;
   pinned?: true;
   peer: enums.InputDialogPeer;
@@ -7462,7 +7462,7 @@ class messages_toggleDialogPin_ extends Function_<boolean> {
   }
 }
 
-class messages_reorderPinnedDialogs_ extends Function_<boolean> {
+export class messages_reorderPinnedDialogs_ extends Function_<boolean> {
   static __F = Symbol() as unknown as (params: { force?: true; folder_id: number; order: Array<enums.InputDialogPeer> }) => boolean;
   force?: true;
   folder_id: number;
@@ -7498,7 +7498,7 @@ class messages_reorderPinnedDialogs_ extends Function_<boolean> {
   }
 }
 
-class messages_getPinnedDialogs_ extends Function_<enums.messages.PeerDialogs> {
+export class messages_getPinnedDialogs_ extends Function_<enums.messages.PeerDialogs> {
   static __F = Symbol() as unknown as (params: { folder_id: number }) => enums.messages.PeerDialogs;
   folder_id: number;
 
@@ -7524,7 +7524,7 @@ class messages_getPinnedDialogs_ extends Function_<enums.messages.PeerDialogs> {
   }
 }
 
-class messages_setBotShippingResults_ extends Function_<boolean> {
+export class messages_setBotShippingResults_ extends Function_<boolean> {
   static __F = Symbol() as unknown as (params: { query_id: bigint; error?: string; shipping_options?: Array<enums.ShippingOption> }) => boolean;
   query_id: bigint;
   error?: string;
@@ -7560,7 +7560,7 @@ class messages_setBotShippingResults_ extends Function_<boolean> {
   }
 }
 
-class messages_setBotPrecheckoutResults_ extends Function_<boolean> {
+export class messages_setBotPrecheckoutResults_ extends Function_<boolean> {
   static __F = Symbol() as unknown as (params: { success?: true; query_id: bigint; error?: string }) => boolean;
   success?: true;
   query_id: bigint;
@@ -7596,7 +7596,7 @@ class messages_setBotPrecheckoutResults_ extends Function_<boolean> {
   }
 }
 
-class messages_uploadMedia_ extends Function_<enums.MessageMedia> {
+export class messages_uploadMedia_ extends Function_<enums.MessageMedia> {
   static __F = Symbol() as unknown as (params: { peer: enums.InputPeer; media: enums.InputMedia }) => enums.MessageMedia;
   peer: enums.InputPeer;
   media: enums.InputMedia;
@@ -7626,7 +7626,7 @@ class messages_uploadMedia_ extends Function_<enums.MessageMedia> {
   }
 }
 
-class messages_sendScreenshotNotification_ extends Function_<enums.Updates> {
+export class messages_sendScreenshotNotification_ extends Function_<enums.Updates> {
   static __F = Symbol() as unknown as (params: { peer: enums.InputPeer; reply_to: enums.InputReplyTo; random_id: bigint }) => enums.Updates;
   peer: enums.InputPeer;
   reply_to: enums.InputReplyTo;
@@ -7660,7 +7660,7 @@ class messages_sendScreenshotNotification_ extends Function_<enums.Updates> {
   }
 }
 
-class messages_getFavedStickers_ extends Function_<enums.messages.FavedStickers> {
+export class messages_getFavedStickers_ extends Function_<enums.messages.FavedStickers> {
   static __F = Symbol() as unknown as (params: { hash: bigint }) => enums.messages.FavedStickers;
   hash: bigint;
 
@@ -7686,7 +7686,7 @@ class messages_getFavedStickers_ extends Function_<enums.messages.FavedStickers>
   }
 }
 
-class messages_faveSticker_ extends Function_<boolean> {
+export class messages_faveSticker_ extends Function_<boolean> {
   static __F = Symbol() as unknown as (params: { id: enums.InputDocument; unfave: boolean }) => boolean;
   id: enums.InputDocument;
   unfave: boolean;
@@ -7716,7 +7716,7 @@ class messages_faveSticker_ extends Function_<boolean> {
   }
 }
 
-class messages_getUnreadMentions_ extends Function_<enums.messages.Messages> {
+export class messages_getUnreadMentions_ extends Function_<enums.messages.Messages> {
   static __F = Symbol() as unknown as (params: { peer: enums.InputPeer; top_msg_id?: number; offset_id: number; add_offset: number; limit: number; max_id: number; min_id: number }) => enums.messages.Messages;
   peer: enums.InputPeer;
   top_msg_id?: number;
@@ -7768,7 +7768,7 @@ class messages_getUnreadMentions_ extends Function_<enums.messages.Messages> {
   }
 }
 
-class messages_readMentions_ extends Function_<enums.messages.AffectedHistory> {
+export class messages_readMentions_ extends Function_<enums.messages.AffectedHistory> {
   static __F = Symbol() as unknown as (params: { peer: enums.InputPeer; top_msg_id?: number }) => enums.messages.AffectedHistory;
   peer: enums.InputPeer;
   top_msg_id?: number;
@@ -7800,7 +7800,7 @@ class messages_readMentions_ extends Function_<enums.messages.AffectedHistory> {
   }
 }
 
-class messages_getRecentLocations_ extends Function_<enums.messages.Messages> {
+export class messages_getRecentLocations_ extends Function_<enums.messages.Messages> {
   static __F = Symbol() as unknown as (params: { peer: enums.InputPeer; limit: number; hash: bigint }) => enums.messages.Messages;
   peer: enums.InputPeer;
   limit: number;
@@ -7834,7 +7834,7 @@ class messages_getRecentLocations_ extends Function_<enums.messages.Messages> {
   }
 }
 
-class messages_sendMultiMedia_ extends Function_<enums.Updates> {
+export class messages_sendMultiMedia_ extends Function_<enums.Updates> {
   static __F = Symbol() as unknown as (params: { silent?: true; background?: true; clear_draft?: true; noforwards?: true; update_stickersets_order?: true; invert_media?: true; peer: enums.InputPeer; reply_to?: enums.InputReplyTo; multi_media: Array<enums.InputSingleMedia>; schedule_date?: number; send_as?: enums.InputPeer }) => enums.Updates;
   silent?: true;
   background?: true;
@@ -7902,7 +7902,7 @@ class messages_sendMultiMedia_ extends Function_<enums.Updates> {
   }
 }
 
-class messages_uploadEncryptedFile_ extends Function_<enums.EncryptedFile> {
+export class messages_uploadEncryptedFile_ extends Function_<enums.EncryptedFile> {
   static __F = Symbol() as unknown as (params: { peer: enums.InputEncryptedChat; file: enums.InputEncryptedFile }) => enums.EncryptedFile;
   peer: enums.InputEncryptedChat;
   file: enums.InputEncryptedFile;
@@ -7932,7 +7932,7 @@ class messages_uploadEncryptedFile_ extends Function_<enums.EncryptedFile> {
   }
 }
 
-class messages_searchStickerSets_ extends Function_<enums.messages.FoundStickerSets> {
+export class messages_searchStickerSets_ extends Function_<enums.messages.FoundStickerSets> {
   static __F = Symbol() as unknown as (params: { exclude_featured?: true; q: string; hash: bigint }) => enums.messages.FoundStickerSets;
   exclude_featured?: true;
   q: string;
@@ -7968,7 +7968,7 @@ class messages_searchStickerSets_ extends Function_<enums.messages.FoundStickerS
   }
 }
 
-class messages_getSplitRanges_ extends Function_<enums.MessageRange[]> {
+export class messages_getSplitRanges_ extends Function_<enums.MessageRange[]> {
   static __F = Symbol() as unknown as () => enums.MessageRange[];
   protected get [id]() {
     return 0x1CFF7E08;
@@ -7987,7 +7987,7 @@ class messages_getSplitRanges_ extends Function_<enums.MessageRange[]> {
   }
 }
 
-class messages_markDialogUnread_ extends Function_<boolean> {
+export class messages_markDialogUnread_ extends Function_<boolean> {
   static __F = Symbol() as unknown as (params: { unread?: true; peer: enums.InputDialogPeer }) => boolean;
   unread?: true;
   peer: enums.InputDialogPeer;
@@ -8019,7 +8019,7 @@ class messages_markDialogUnread_ extends Function_<boolean> {
   }
 }
 
-class messages_getDialogUnreadMarks_ extends Function_<enums.DialogPeer[]> {
+export class messages_getDialogUnreadMarks_ extends Function_<enums.DialogPeer[]> {
   static __F = Symbol() as unknown as () => enums.DialogPeer[];
   protected get [id]() {
     return 0x22E24E22;
@@ -8038,7 +8038,7 @@ class messages_getDialogUnreadMarks_ extends Function_<enums.DialogPeer[]> {
   }
 }
 
-class messages_clearAllDrafts_ extends Function_<boolean> {
+export class messages_clearAllDrafts_ extends Function_<boolean> {
   static __F = Symbol() as unknown as () => boolean;
   protected get [id]() {
     return 0x7E58EE9C;
@@ -8057,7 +8057,7 @@ class messages_clearAllDrafts_ extends Function_<boolean> {
   }
 }
 
-class messages_updatePinnedMessage_ extends Function_<enums.Updates> {
+export class messages_updatePinnedMessage_ extends Function_<enums.Updates> {
   static __F = Symbol() as unknown as (params: { silent?: true; unpin?: true; pm_oneside?: true; peer: enums.InputPeer; id: number }) => enums.Updates;
   silent?: true;
   unpin?: true;
@@ -8101,7 +8101,7 @@ class messages_updatePinnedMessage_ extends Function_<enums.Updates> {
   }
 }
 
-class messages_sendVote_ extends Function_<enums.Updates> {
+export class messages_sendVote_ extends Function_<enums.Updates> {
   static __F = Symbol() as unknown as (params: { peer: enums.InputPeer; msg_id: number; options: Array<Uint8Array> }) => enums.Updates;
   peer: enums.InputPeer;
   msg_id: number;
@@ -8135,7 +8135,7 @@ class messages_sendVote_ extends Function_<enums.Updates> {
   }
 }
 
-class messages_getPollResults_ extends Function_<enums.Updates> {
+export class messages_getPollResults_ extends Function_<enums.Updates> {
   static __F = Symbol() as unknown as (params: { peer: enums.InputPeer; msg_id: number }) => enums.Updates;
   peer: enums.InputPeer;
   msg_id: number;
@@ -8165,7 +8165,7 @@ class messages_getPollResults_ extends Function_<enums.Updates> {
   }
 }
 
-class messages_getOnlines_ extends Function_<enums.ChatOnlines> {
+export class messages_getOnlines_ extends Function_<enums.ChatOnlines> {
   static __F = Symbol() as unknown as (params: { peer: enums.InputPeer }) => enums.ChatOnlines;
   peer: enums.InputPeer;
 
@@ -8191,7 +8191,7 @@ class messages_getOnlines_ extends Function_<enums.ChatOnlines> {
   }
 }
 
-class messages_editChatAbout_ extends Function_<boolean> {
+export class messages_editChatAbout_ extends Function_<boolean> {
   static __F = Symbol() as unknown as (params: { peer: enums.InputPeer; about: string }) => boolean;
   peer: enums.InputPeer;
   about: string;
@@ -8221,7 +8221,7 @@ class messages_editChatAbout_ extends Function_<boolean> {
   }
 }
 
-class messages_editChatDefaultBannedRights_ extends Function_<enums.Updates> {
+export class messages_editChatDefaultBannedRights_ extends Function_<enums.Updates> {
   static __F = Symbol() as unknown as (params: { peer: enums.InputPeer; banned_rights: enums.ChatBannedRights }) => enums.Updates;
   peer: enums.InputPeer;
   banned_rights: enums.ChatBannedRights;
@@ -8251,7 +8251,7 @@ class messages_editChatDefaultBannedRights_ extends Function_<enums.Updates> {
   }
 }
 
-class messages_getEmojiKeywords_ extends Function_<enums.EmojiKeywordsDifference> {
+export class messages_getEmojiKeywords_ extends Function_<enums.EmojiKeywordsDifference> {
   static __F = Symbol() as unknown as (params: { lang_code: string }) => enums.EmojiKeywordsDifference;
   lang_code: string;
 
@@ -8277,7 +8277,7 @@ class messages_getEmojiKeywords_ extends Function_<enums.EmojiKeywordsDifference
   }
 }
 
-class messages_getEmojiKeywordsDifference_ extends Function_<enums.EmojiKeywordsDifference> {
+export class messages_getEmojiKeywordsDifference_ extends Function_<enums.EmojiKeywordsDifference> {
   static __F = Symbol() as unknown as (params: { lang_code: string; from_version: number }) => enums.EmojiKeywordsDifference;
   lang_code: string;
   from_version: number;
@@ -8307,7 +8307,7 @@ class messages_getEmojiKeywordsDifference_ extends Function_<enums.EmojiKeywords
   }
 }
 
-class messages_getEmojiKeywordsLanguages_ extends Function_<enums.EmojiLanguage[]> {
+export class messages_getEmojiKeywordsLanguages_ extends Function_<enums.EmojiLanguage[]> {
   static __F = Symbol() as unknown as (params: { lang_codes: Array<string> }) => enums.EmojiLanguage[];
   lang_codes: Array<string>;
 
@@ -8333,7 +8333,7 @@ class messages_getEmojiKeywordsLanguages_ extends Function_<enums.EmojiLanguage[
   }
 }
 
-class messages_getEmojiURL_ extends Function_<enums.EmojiURL> {
+export class messages_getEmojiURL_ extends Function_<enums.EmojiURL> {
   static __F = Symbol() as unknown as (params: { lang_code: string }) => enums.EmojiURL;
   lang_code: string;
 
@@ -8359,7 +8359,7 @@ class messages_getEmojiURL_ extends Function_<enums.EmojiURL> {
   }
 }
 
-class messages_getSearchCounters_ extends Function_<enums.messages.SearchCounter[]> {
+export class messages_getSearchCounters_ extends Function_<enums.messages.SearchCounter[]> {
   static __F = Symbol() as unknown as (params: { peer: enums.InputPeer; top_msg_id?: number; filters: Array<enums.MessagesFilter> }) => enums.messages.SearchCounter[];
   peer: enums.InputPeer;
   top_msg_id?: number;
@@ -8395,7 +8395,7 @@ class messages_getSearchCounters_ extends Function_<enums.messages.SearchCounter
   }
 }
 
-class messages_requestUrlAuth_ extends Function_<enums.UrlAuthResult> {
+export class messages_requestUrlAuth_ extends Function_<enums.UrlAuthResult> {
   static __F = Symbol() as unknown as (params?: { peer?: enums.InputPeer; msg_id?: number; button_id?: number; url?: string }) => enums.UrlAuthResult;
   peer?: enums.InputPeer;
   msg_id?: number;
@@ -8435,7 +8435,7 @@ class messages_requestUrlAuth_ extends Function_<enums.UrlAuthResult> {
   }
 }
 
-class messages_acceptUrlAuth_ extends Function_<enums.UrlAuthResult> {
+export class messages_acceptUrlAuth_ extends Function_<enums.UrlAuthResult> {
   static __F = Symbol() as unknown as (params?: { write_allowed?: true; peer?: enums.InputPeer; msg_id?: number; button_id?: number; url?: string }) => enums.UrlAuthResult;
   write_allowed?: true;
   peer?: enums.InputPeer;
@@ -8479,7 +8479,7 @@ class messages_acceptUrlAuth_ extends Function_<enums.UrlAuthResult> {
   }
 }
 
-class messages_hidePeerSettingsBar_ extends Function_<boolean> {
+export class messages_hidePeerSettingsBar_ extends Function_<boolean> {
   static __F = Symbol() as unknown as (params: { peer: enums.InputPeer }) => boolean;
   peer: enums.InputPeer;
 
@@ -8505,7 +8505,7 @@ class messages_hidePeerSettingsBar_ extends Function_<boolean> {
   }
 }
 
-class messages_getScheduledHistory_ extends Function_<enums.messages.Messages> {
+export class messages_getScheduledHistory_ extends Function_<enums.messages.Messages> {
   static __F = Symbol() as unknown as (params: { peer: enums.InputPeer; hash: bigint }) => enums.messages.Messages;
   peer: enums.InputPeer;
   hash: bigint;
@@ -8535,7 +8535,7 @@ class messages_getScheduledHistory_ extends Function_<enums.messages.Messages> {
   }
 }
 
-class messages_getScheduledMessages_ extends Function_<enums.messages.Messages> {
+export class messages_getScheduledMessages_ extends Function_<enums.messages.Messages> {
   static __F = Symbol() as unknown as (params: { peer: enums.InputPeer; id: Array<number> }) => enums.messages.Messages;
   peer: enums.InputPeer;
   id: Array<number>;
@@ -8565,7 +8565,7 @@ class messages_getScheduledMessages_ extends Function_<enums.messages.Messages> 
   }
 }
 
-class messages_sendScheduledMessages_ extends Function_<enums.Updates> {
+export class messages_sendScheduledMessages_ extends Function_<enums.Updates> {
   static __F = Symbol() as unknown as (params: { peer: enums.InputPeer; id: Array<number> }) => enums.Updates;
   peer: enums.InputPeer;
   id: Array<number>;
@@ -8595,7 +8595,7 @@ class messages_sendScheduledMessages_ extends Function_<enums.Updates> {
   }
 }
 
-class messages_deleteScheduledMessages_ extends Function_<enums.Updates> {
+export class messages_deleteScheduledMessages_ extends Function_<enums.Updates> {
   static __F = Symbol() as unknown as (params: { peer: enums.InputPeer; id: Array<number> }) => enums.Updates;
   peer: enums.InputPeer;
   id: Array<number>;
@@ -8625,7 +8625,7 @@ class messages_deleteScheduledMessages_ extends Function_<enums.Updates> {
   }
 }
 
-class messages_getPollVotes_ extends Function_<enums.messages.VotesList> {
+export class messages_getPollVotes_ extends Function_<enums.messages.VotesList> {
   static __F = Symbol() as unknown as (params: { peer: enums.InputPeer; id: number; option?: Uint8Array; offset?: string; limit: number }) => enums.messages.VotesList;
   peer: enums.InputPeer;
   id: number;
@@ -8669,7 +8669,7 @@ class messages_getPollVotes_ extends Function_<enums.messages.VotesList> {
   }
 }
 
-class messages_toggleStickerSets_ extends Function_<boolean> {
+export class messages_toggleStickerSets_ extends Function_<boolean> {
   static __F = Symbol() as unknown as (params: { uninstall?: true; archive?: true; unarchive?: true; stickersets: Array<enums.InputStickerSet> }) => boolean;
   uninstall?: true;
   archive?: true;
@@ -8709,7 +8709,7 @@ class messages_toggleStickerSets_ extends Function_<boolean> {
   }
 }
 
-class messages_getDialogFilters_ extends Function_<enums.DialogFilter[]> {
+export class messages_getDialogFilters_ extends Function_<enums.DialogFilter[]> {
   static __F = Symbol() as unknown as () => enums.DialogFilter[];
   protected get [id]() {
     return 0xF19ED96D;
@@ -8728,7 +8728,7 @@ class messages_getDialogFilters_ extends Function_<enums.DialogFilter[]> {
   }
 }
 
-class messages_getSuggestedDialogFilters_ extends Function_<enums.DialogFilterSuggested[]> {
+export class messages_getSuggestedDialogFilters_ extends Function_<enums.DialogFilterSuggested[]> {
   static __F = Symbol() as unknown as () => enums.DialogFilterSuggested[];
   protected get [id]() {
     return 0xA29CD42C;
@@ -8747,7 +8747,7 @@ class messages_getSuggestedDialogFilters_ extends Function_<enums.DialogFilterSu
   }
 }
 
-class messages_updateDialogFilter_ extends Function_<boolean> {
+export class messages_updateDialogFilter_ extends Function_<boolean> {
   static __F = Symbol() as unknown as (params: { id: number; filter?: enums.DialogFilter }) => boolean;
   id: number;
   filter?: enums.DialogFilter;
@@ -8779,7 +8779,7 @@ class messages_updateDialogFilter_ extends Function_<boolean> {
   }
 }
 
-class messages_updateDialogFiltersOrder_ extends Function_<boolean> {
+export class messages_updateDialogFiltersOrder_ extends Function_<boolean> {
   static __F = Symbol() as unknown as (params: { order: Array<number> }) => boolean;
   order: Array<number>;
 
@@ -8805,7 +8805,7 @@ class messages_updateDialogFiltersOrder_ extends Function_<boolean> {
   }
 }
 
-class messages_getOldFeaturedStickers_ extends Function_<enums.messages.FeaturedStickers> {
+export class messages_getOldFeaturedStickers_ extends Function_<enums.messages.FeaturedStickers> {
   static __F = Symbol() as unknown as (params: { offset: number; limit: number; hash: bigint }) => enums.messages.FeaturedStickers;
   offset: number;
   limit: number;
@@ -8839,7 +8839,7 @@ class messages_getOldFeaturedStickers_ extends Function_<enums.messages.Featured
   }
 }
 
-class messages_getReplies_ extends Function_<enums.messages.Messages> {
+export class messages_getReplies_ extends Function_<enums.messages.Messages> {
   static __F = Symbol() as unknown as (params: { peer: enums.InputPeer; msg_id: number; offset_id: number; offset_date: number; add_offset: number; limit: number; max_id: number; min_id: number; hash: bigint }) => enums.messages.Messages;
   peer: enums.InputPeer;
   msg_id: number;
@@ -8897,7 +8897,7 @@ class messages_getReplies_ extends Function_<enums.messages.Messages> {
   }
 }
 
-class messages_getDiscussionMessage_ extends Function_<enums.messages.DiscussionMessage> {
+export class messages_getDiscussionMessage_ extends Function_<enums.messages.DiscussionMessage> {
   static __F = Symbol() as unknown as (params: { peer: enums.InputPeer; msg_id: number }) => enums.messages.DiscussionMessage;
   peer: enums.InputPeer;
   msg_id: number;
@@ -8927,7 +8927,7 @@ class messages_getDiscussionMessage_ extends Function_<enums.messages.Discussion
   }
 }
 
-class messages_readDiscussion_ extends Function_<boolean> {
+export class messages_readDiscussion_ extends Function_<boolean> {
   static __F = Symbol() as unknown as (params: { peer: enums.InputPeer; msg_id: number; read_max_id: number }) => boolean;
   peer: enums.InputPeer;
   msg_id: number;
@@ -8961,7 +8961,7 @@ class messages_readDiscussion_ extends Function_<boolean> {
   }
 }
 
-class messages_unpinAllMessages_ extends Function_<enums.messages.AffectedHistory> {
+export class messages_unpinAllMessages_ extends Function_<enums.messages.AffectedHistory> {
   static __F = Symbol() as unknown as (params: { peer: enums.InputPeer; top_msg_id?: number }) => enums.messages.AffectedHistory;
   peer: enums.InputPeer;
   top_msg_id?: number;
@@ -8993,7 +8993,7 @@ class messages_unpinAllMessages_ extends Function_<enums.messages.AffectedHistor
   }
 }
 
-class messages_deleteChat_ extends Function_<boolean> {
+export class messages_deleteChat_ extends Function_<boolean> {
   static __F = Symbol() as unknown as (params: { chat_id: bigint }) => boolean;
   chat_id: bigint;
 
@@ -9019,7 +9019,7 @@ class messages_deleteChat_ extends Function_<boolean> {
   }
 }
 
-class messages_deletePhoneCallHistory_ extends Function_<enums.messages.AffectedFoundMessages> {
+export class messages_deletePhoneCallHistory_ extends Function_<enums.messages.AffectedFoundMessages> {
   static __F = Symbol() as unknown as (params?: { revoke?: true }) => enums.messages.AffectedFoundMessages;
   revoke?: true;
 
@@ -9047,7 +9047,7 @@ class messages_deletePhoneCallHistory_ extends Function_<enums.messages.Affected
   }
 }
 
-class messages_checkHistoryImport_ extends Function_<enums.messages.HistoryImportParsed> {
+export class messages_checkHistoryImport_ extends Function_<enums.messages.HistoryImportParsed> {
   static __F = Symbol() as unknown as (params: { import_head: string }) => enums.messages.HistoryImportParsed;
   import_head: string;
 
@@ -9073,7 +9073,7 @@ class messages_checkHistoryImport_ extends Function_<enums.messages.HistoryImpor
   }
 }
 
-class messages_initHistoryImport_ extends Function_<enums.messages.HistoryImport> {
+export class messages_initHistoryImport_ extends Function_<enums.messages.HistoryImport> {
   static __F = Symbol() as unknown as (params: { peer: enums.InputPeer; file: enums.InputFile; media_count: number }) => enums.messages.HistoryImport;
   peer: enums.InputPeer;
   file: enums.InputFile;
@@ -9107,7 +9107,7 @@ class messages_initHistoryImport_ extends Function_<enums.messages.HistoryImport
   }
 }
 
-class messages_uploadImportedMedia_ extends Function_<enums.MessageMedia> {
+export class messages_uploadImportedMedia_ extends Function_<enums.MessageMedia> {
   static __F = Symbol() as unknown as (params: { peer: enums.InputPeer; import_id: bigint; file_name: string; media: enums.InputMedia }) => enums.MessageMedia;
   peer: enums.InputPeer;
   import_id: bigint;
@@ -9145,7 +9145,7 @@ class messages_uploadImportedMedia_ extends Function_<enums.MessageMedia> {
   }
 }
 
-class messages_startHistoryImport_ extends Function_<boolean> {
+export class messages_startHistoryImport_ extends Function_<boolean> {
   static __F = Symbol() as unknown as (params: { peer: enums.InputPeer; import_id: bigint }) => boolean;
   peer: enums.InputPeer;
   import_id: bigint;
@@ -9175,7 +9175,7 @@ class messages_startHistoryImport_ extends Function_<boolean> {
   }
 }
 
-class messages_getExportedChatInvites_ extends Function_<enums.messages.ExportedChatInvites> {
+export class messages_getExportedChatInvites_ extends Function_<enums.messages.ExportedChatInvites> {
   static __F = Symbol() as unknown as (params: { revoked?: true; peer: enums.InputPeer; admin_id: enums.InputUser; offset_date?: number; offset_link?: string; limit: number }) => enums.messages.ExportedChatInvites;
   revoked?: true;
   peer: enums.InputPeer;
@@ -9223,7 +9223,7 @@ class messages_getExportedChatInvites_ extends Function_<enums.messages.Exported
   }
 }
 
-class messages_getExportedChatInvite_ extends Function_<enums.messages.ExportedChatInvite> {
+export class messages_getExportedChatInvite_ extends Function_<enums.messages.ExportedChatInvite> {
   static __F = Symbol() as unknown as (params: { peer: enums.InputPeer; link: string }) => enums.messages.ExportedChatInvite;
   peer: enums.InputPeer;
   link: string;
@@ -9253,7 +9253,7 @@ class messages_getExportedChatInvite_ extends Function_<enums.messages.ExportedC
   }
 }
 
-class messages_editExportedChatInvite_ extends Function_<enums.messages.ExportedChatInvite> {
+export class messages_editExportedChatInvite_ extends Function_<enums.messages.ExportedChatInvite> {
   static __F = Symbol() as unknown as (params: { revoked?: true; peer: enums.InputPeer; link: string; expire_date?: number; usage_limit?: number; request_needed?: boolean; title?: string }) => enums.messages.ExportedChatInvite;
   revoked?: true;
   peer: enums.InputPeer;
@@ -9305,7 +9305,7 @@ class messages_editExportedChatInvite_ extends Function_<enums.messages.Exported
   }
 }
 
-class messages_deleteRevokedExportedChatInvites_ extends Function_<boolean> {
+export class messages_deleteRevokedExportedChatInvites_ extends Function_<boolean> {
   static __F = Symbol() as unknown as (params: { peer: enums.InputPeer; admin_id: enums.InputUser }) => boolean;
   peer: enums.InputPeer;
   admin_id: enums.InputUser;
@@ -9335,7 +9335,7 @@ class messages_deleteRevokedExportedChatInvites_ extends Function_<boolean> {
   }
 }
 
-class messages_deleteExportedChatInvite_ extends Function_<boolean> {
+export class messages_deleteExportedChatInvite_ extends Function_<boolean> {
   static __F = Symbol() as unknown as (params: { peer: enums.InputPeer; link: string }) => boolean;
   peer: enums.InputPeer;
   link: string;
@@ -9365,7 +9365,7 @@ class messages_deleteExportedChatInvite_ extends Function_<boolean> {
   }
 }
 
-class messages_getAdminsWithInvites_ extends Function_<enums.messages.ChatAdminsWithInvites> {
+export class messages_getAdminsWithInvites_ extends Function_<enums.messages.ChatAdminsWithInvites> {
   static __F = Symbol() as unknown as (params: { peer: enums.InputPeer }) => enums.messages.ChatAdminsWithInvites;
   peer: enums.InputPeer;
 
@@ -9391,7 +9391,7 @@ class messages_getAdminsWithInvites_ extends Function_<enums.messages.ChatAdmins
   }
 }
 
-class messages_getChatInviteImporters_ extends Function_<enums.messages.ChatInviteImporters> {
+export class messages_getChatInviteImporters_ extends Function_<enums.messages.ChatInviteImporters> {
   static __F = Symbol() as unknown as (params: { requested?: true; peer: enums.InputPeer; link?: string; q?: string; offset_date: number; offset_user: enums.InputUser; limit: number }) => enums.messages.ChatInviteImporters;
   requested?: true;
   peer: enums.InputPeer;
@@ -9443,7 +9443,7 @@ class messages_getChatInviteImporters_ extends Function_<enums.messages.ChatInvi
   }
 }
 
-class messages_setHistoryTTL_ extends Function_<enums.Updates> {
+export class messages_setHistoryTTL_ extends Function_<enums.Updates> {
   static __F = Symbol() as unknown as (params: { peer: enums.InputPeer; period: number }) => enums.Updates;
   peer: enums.InputPeer;
   period: number;
@@ -9473,7 +9473,7 @@ class messages_setHistoryTTL_ extends Function_<enums.Updates> {
   }
 }
 
-class messages_checkHistoryImportPeer_ extends Function_<enums.messages.CheckedHistoryImportPeer> {
+export class messages_checkHistoryImportPeer_ extends Function_<enums.messages.CheckedHistoryImportPeer> {
   static __F = Symbol() as unknown as (params: { peer: enums.InputPeer }) => enums.messages.CheckedHistoryImportPeer;
   peer: enums.InputPeer;
 
@@ -9499,7 +9499,7 @@ class messages_checkHistoryImportPeer_ extends Function_<enums.messages.CheckedH
   }
 }
 
-class messages_setChatTheme_ extends Function_<enums.Updates> {
+export class messages_setChatTheme_ extends Function_<enums.Updates> {
   static __F = Symbol() as unknown as (params: { peer: enums.InputPeer; emoticon: string }) => enums.Updates;
   peer: enums.InputPeer;
   emoticon: string;
@@ -9529,7 +9529,7 @@ class messages_setChatTheme_ extends Function_<enums.Updates> {
   }
 }
 
-class messages_getMessageReadParticipants_ extends Function_<enums.ReadParticipantDate[]> {
+export class messages_getMessageReadParticipants_ extends Function_<enums.ReadParticipantDate[]> {
   static __F = Symbol() as unknown as (params: { peer: enums.InputPeer; msg_id: number }) => enums.ReadParticipantDate[];
   peer: enums.InputPeer;
   msg_id: number;
@@ -9559,7 +9559,7 @@ class messages_getMessageReadParticipants_ extends Function_<enums.ReadParticipa
   }
 }
 
-class messages_getSearchResultsCalendar_ extends Function_<enums.messages.SearchResultsCalendar> {
+export class messages_getSearchResultsCalendar_ extends Function_<enums.messages.SearchResultsCalendar> {
   static __F = Symbol() as unknown as (params: { peer: enums.InputPeer; filter: enums.MessagesFilter; offset_id: number; offset_date: number }) => enums.messages.SearchResultsCalendar;
   peer: enums.InputPeer;
   filter: enums.MessagesFilter;
@@ -9597,7 +9597,7 @@ class messages_getSearchResultsCalendar_ extends Function_<enums.messages.Search
   }
 }
 
-class messages_getSearchResultsPositions_ extends Function_<enums.messages.SearchResultsPositions> {
+export class messages_getSearchResultsPositions_ extends Function_<enums.messages.SearchResultsPositions> {
   static __F = Symbol() as unknown as (params: { peer: enums.InputPeer; filter: enums.MessagesFilter; offset_id: number; limit: number }) => enums.messages.SearchResultsPositions;
   peer: enums.InputPeer;
   filter: enums.MessagesFilter;
@@ -9635,7 +9635,7 @@ class messages_getSearchResultsPositions_ extends Function_<enums.messages.Searc
   }
 }
 
-class messages_hideChatJoinRequest_ extends Function_<enums.Updates> {
+export class messages_hideChatJoinRequest_ extends Function_<enums.Updates> {
   static __F = Symbol() as unknown as (params: { approved?: true; peer: enums.InputPeer; user_id: enums.InputUser }) => enums.Updates;
   approved?: true;
   peer: enums.InputPeer;
@@ -9671,7 +9671,7 @@ class messages_hideChatJoinRequest_ extends Function_<enums.Updates> {
   }
 }
 
-class messages_hideAllChatJoinRequests_ extends Function_<enums.Updates> {
+export class messages_hideAllChatJoinRequests_ extends Function_<enums.Updates> {
   static __F = Symbol() as unknown as (params: { approved?: true; peer: enums.InputPeer; link?: string }) => enums.Updates;
   approved?: true;
   peer: enums.InputPeer;
@@ -9707,7 +9707,7 @@ class messages_hideAllChatJoinRequests_ extends Function_<enums.Updates> {
   }
 }
 
-class messages_toggleNoForwards_ extends Function_<enums.Updates> {
+export class messages_toggleNoForwards_ extends Function_<enums.Updates> {
   static __F = Symbol() as unknown as (params: { peer: enums.InputPeer; enabled: boolean }) => enums.Updates;
   peer: enums.InputPeer;
   enabled: boolean;
@@ -9737,7 +9737,7 @@ class messages_toggleNoForwards_ extends Function_<enums.Updates> {
   }
 }
 
-class messages_saveDefaultSendAs_ extends Function_<boolean> {
+export class messages_saveDefaultSendAs_ extends Function_<boolean> {
   static __F = Symbol() as unknown as (params: { peer: enums.InputPeer; send_as: enums.InputPeer }) => boolean;
   peer: enums.InputPeer;
   send_as: enums.InputPeer;
@@ -9767,7 +9767,7 @@ class messages_saveDefaultSendAs_ extends Function_<boolean> {
   }
 }
 
-class messages_sendReaction_ extends Function_<enums.Updates> {
+export class messages_sendReaction_ extends Function_<enums.Updates> {
   static __F = Symbol() as unknown as (params: { big?: true; add_to_recent?: true; peer: enums.InputPeer; msg_id: number; reaction?: Array<enums.Reaction> }) => enums.Updates;
   big?: true;
   add_to_recent?: true;
@@ -9811,7 +9811,7 @@ class messages_sendReaction_ extends Function_<enums.Updates> {
   }
 }
 
-class messages_getMessagesReactions_ extends Function_<enums.Updates> {
+export class messages_getMessagesReactions_ extends Function_<enums.Updates> {
   static __F = Symbol() as unknown as (params: { peer: enums.InputPeer; id: Array<number> }) => enums.Updates;
   peer: enums.InputPeer;
   id: Array<number>;
@@ -9841,7 +9841,7 @@ class messages_getMessagesReactions_ extends Function_<enums.Updates> {
   }
 }
 
-class messages_getMessageReactionsList_ extends Function_<enums.messages.MessageReactionsList> {
+export class messages_getMessageReactionsList_ extends Function_<enums.messages.MessageReactionsList> {
   static __F = Symbol() as unknown as (params: { peer: enums.InputPeer; id: number; reaction?: enums.Reaction; offset?: string; limit: number }) => enums.messages.MessageReactionsList;
   peer: enums.InputPeer;
   id: number;
@@ -9885,7 +9885,7 @@ class messages_getMessageReactionsList_ extends Function_<enums.messages.Message
   }
 }
 
-class messages_setChatAvailableReactions_ extends Function_<enums.Updates> {
+export class messages_setChatAvailableReactions_ extends Function_<enums.Updates> {
   static __F = Symbol() as unknown as (params: { peer: enums.InputPeer; available_reactions: enums.ChatReactions }) => enums.Updates;
   peer: enums.InputPeer;
   available_reactions: enums.ChatReactions;
@@ -9915,7 +9915,7 @@ class messages_setChatAvailableReactions_ extends Function_<enums.Updates> {
   }
 }
 
-class messages_getAvailableReactions_ extends Function_<enums.messages.AvailableReactions> {
+export class messages_getAvailableReactions_ extends Function_<enums.messages.AvailableReactions> {
   static __F = Symbol() as unknown as (params: { hash: number }) => enums.messages.AvailableReactions;
   hash: number;
 
@@ -9941,7 +9941,7 @@ class messages_getAvailableReactions_ extends Function_<enums.messages.Available
   }
 }
 
-class messages_setDefaultReaction_ extends Function_<boolean> {
+export class messages_setDefaultReaction_ extends Function_<boolean> {
   static __F = Symbol() as unknown as (params: { reaction: enums.Reaction }) => boolean;
   reaction: enums.Reaction;
 
@@ -9967,7 +9967,7 @@ class messages_setDefaultReaction_ extends Function_<boolean> {
   }
 }
 
-class messages_translateText_ extends Function_<enums.messages.TranslatedText> {
+export class messages_translateText_ extends Function_<enums.messages.TranslatedText> {
   static __F = Symbol() as unknown as (params: { peer?: enums.InputPeer; id?: Array<number>; text?: Array<enums.TextWithEntities>; to_lang: string }) => enums.messages.TranslatedText;
   peer?: enums.InputPeer;
   id?: Array<number>;
@@ -10007,7 +10007,7 @@ class messages_translateText_ extends Function_<enums.messages.TranslatedText> {
   }
 }
 
-class messages_getUnreadReactions_ extends Function_<enums.messages.Messages> {
+export class messages_getUnreadReactions_ extends Function_<enums.messages.Messages> {
   static __F = Symbol() as unknown as (params: { peer: enums.InputPeer; top_msg_id?: number; offset_id: number; add_offset: number; limit: number; max_id: number; min_id: number }) => enums.messages.Messages;
   peer: enums.InputPeer;
   top_msg_id?: number;
@@ -10059,7 +10059,7 @@ class messages_getUnreadReactions_ extends Function_<enums.messages.Messages> {
   }
 }
 
-class messages_readReactions_ extends Function_<enums.messages.AffectedHistory> {
+export class messages_readReactions_ extends Function_<enums.messages.AffectedHistory> {
   static __F = Symbol() as unknown as (params: { peer: enums.InputPeer; top_msg_id?: number }) => enums.messages.AffectedHistory;
   peer: enums.InputPeer;
   top_msg_id?: number;
@@ -10091,7 +10091,7 @@ class messages_readReactions_ extends Function_<enums.messages.AffectedHistory> 
   }
 }
 
-class messages_searchSentMedia_ extends Function_<enums.messages.Messages> {
+export class messages_searchSentMedia_ extends Function_<enums.messages.Messages> {
   static __F = Symbol() as unknown as (params: { q: string; filter: enums.MessagesFilter; limit: number }) => enums.messages.Messages;
   q: string;
   filter: enums.MessagesFilter;
@@ -10125,7 +10125,7 @@ class messages_searchSentMedia_ extends Function_<enums.messages.Messages> {
   }
 }
 
-class messages_getAttachMenuBots_ extends Function_<enums.AttachMenuBots> {
+export class messages_getAttachMenuBots_ extends Function_<enums.AttachMenuBots> {
   static __F = Symbol() as unknown as (params: { hash: bigint }) => enums.AttachMenuBots;
   hash: bigint;
 
@@ -10151,7 +10151,7 @@ class messages_getAttachMenuBots_ extends Function_<enums.AttachMenuBots> {
   }
 }
 
-class messages_getAttachMenuBot_ extends Function_<enums.AttachMenuBotsBot> {
+export class messages_getAttachMenuBot_ extends Function_<enums.AttachMenuBotsBot> {
   static __F = Symbol() as unknown as (params: { bot: enums.InputUser }) => enums.AttachMenuBotsBot;
   bot: enums.InputUser;
 
@@ -10177,7 +10177,7 @@ class messages_getAttachMenuBot_ extends Function_<enums.AttachMenuBotsBot> {
   }
 }
 
-class messages_toggleBotInAttachMenu_ extends Function_<boolean> {
+export class messages_toggleBotInAttachMenu_ extends Function_<boolean> {
   static __F = Symbol() as unknown as (params: { write_allowed?: true; bot: enums.InputUser; enabled: boolean }) => boolean;
   write_allowed?: true;
   bot: enums.InputUser;
@@ -10213,7 +10213,7 @@ class messages_toggleBotInAttachMenu_ extends Function_<boolean> {
   }
 }
 
-class messages_requestWebView_ extends Function_<enums.WebViewResult> {
+export class messages_requestWebView_ extends Function_<enums.WebViewResult> {
   static __F = Symbol() as unknown as (params: { from_bot_menu?: true; silent?: true; peer: enums.InputPeer; bot: enums.InputUser; url?: string; start_param?: string; theme_params?: enums.DataJSON; platform: string; reply_to?: enums.InputReplyTo; send_as?: enums.InputPeer }) => enums.WebViewResult;
   from_bot_menu?: true;
   silent?: true;
@@ -10277,7 +10277,7 @@ class messages_requestWebView_ extends Function_<enums.WebViewResult> {
   }
 }
 
-class messages_prolongWebView_ extends Function_<boolean> {
+export class messages_prolongWebView_ extends Function_<boolean> {
   static __F = Symbol() as unknown as (params: { silent?: true; peer: enums.InputPeer; bot: enums.InputUser; query_id: bigint; reply_to?: enums.InputReplyTo; send_as?: enums.InputPeer }) => boolean;
   silent?: true;
   peer: enums.InputPeer;
@@ -10325,7 +10325,7 @@ class messages_prolongWebView_ extends Function_<boolean> {
   }
 }
 
-class messages_requestSimpleWebView_ extends Function_<enums.SimpleWebViewResult> {
+export class messages_requestSimpleWebView_ extends Function_<enums.SimpleWebViewResult> {
   static __F = Symbol() as unknown as (params: { from_switch_webview?: true; from_side_menu?: true; bot: enums.InputUser; url?: string; start_param?: string; theme_params?: enums.DataJSON; platform: string }) => enums.SimpleWebViewResult;
   from_switch_webview?: true;
   from_side_menu?: true;
@@ -10377,7 +10377,7 @@ class messages_requestSimpleWebView_ extends Function_<enums.SimpleWebViewResult
   }
 }
 
-class messages_sendWebViewResultMessage_ extends Function_<enums.WebViewMessageSent> {
+export class messages_sendWebViewResultMessage_ extends Function_<enums.WebViewMessageSent> {
   static __F = Symbol() as unknown as (params: { bot_query_id: string; result: enums.InputBotInlineResult }) => enums.WebViewMessageSent;
   bot_query_id: string;
   result: enums.InputBotInlineResult;
@@ -10407,7 +10407,7 @@ class messages_sendWebViewResultMessage_ extends Function_<enums.WebViewMessageS
   }
 }
 
-class messages_sendWebViewData_ extends Function_<enums.Updates> {
+export class messages_sendWebViewData_ extends Function_<enums.Updates> {
   static __F = Symbol() as unknown as (params: { bot: enums.InputUser; random_id: bigint; button_text: string; data: string }) => enums.Updates;
   bot: enums.InputUser;
   random_id: bigint;
@@ -10445,7 +10445,7 @@ class messages_sendWebViewData_ extends Function_<enums.Updates> {
   }
 }
 
-class messages_transcribeAudio_ extends Function_<enums.messages.TranscribedAudio> {
+export class messages_transcribeAudio_ extends Function_<enums.messages.TranscribedAudio> {
   static __F = Symbol() as unknown as (params: { peer: enums.InputPeer; msg_id: number }) => enums.messages.TranscribedAudio;
   peer: enums.InputPeer;
   msg_id: number;
@@ -10475,7 +10475,7 @@ class messages_transcribeAudio_ extends Function_<enums.messages.TranscribedAudi
   }
 }
 
-class messages_rateTranscribedAudio_ extends Function_<boolean> {
+export class messages_rateTranscribedAudio_ extends Function_<boolean> {
   static __F = Symbol() as unknown as (params: { peer: enums.InputPeer; msg_id: number; transcription_id: bigint; good: boolean }) => boolean;
   peer: enums.InputPeer;
   msg_id: number;
@@ -10513,7 +10513,7 @@ class messages_rateTranscribedAudio_ extends Function_<boolean> {
   }
 }
 
-class messages_getCustomEmojiDocuments_ extends Function_<enums.Document[]> {
+export class messages_getCustomEmojiDocuments_ extends Function_<enums.Document[]> {
   static __F = Symbol() as unknown as (params: { document_id: Array<bigint> }) => enums.Document[];
   document_id: Array<bigint>;
 
@@ -10539,7 +10539,7 @@ class messages_getCustomEmojiDocuments_ extends Function_<enums.Document[]> {
   }
 }
 
-class messages_getEmojiStickers_ extends Function_<enums.messages.AllStickers> {
+export class messages_getEmojiStickers_ extends Function_<enums.messages.AllStickers> {
   static __F = Symbol() as unknown as (params: { hash: bigint }) => enums.messages.AllStickers;
   hash: bigint;
 
@@ -10565,7 +10565,7 @@ class messages_getEmojiStickers_ extends Function_<enums.messages.AllStickers> {
   }
 }
 
-class messages_getFeaturedEmojiStickers_ extends Function_<enums.messages.FeaturedStickers> {
+export class messages_getFeaturedEmojiStickers_ extends Function_<enums.messages.FeaturedStickers> {
   static __F = Symbol() as unknown as (params: { hash: bigint }) => enums.messages.FeaturedStickers;
   hash: bigint;
 
@@ -10591,7 +10591,7 @@ class messages_getFeaturedEmojiStickers_ extends Function_<enums.messages.Featur
   }
 }
 
-class messages_reportReaction_ extends Function_<boolean> {
+export class messages_reportReaction_ extends Function_<boolean> {
   static __F = Symbol() as unknown as (params: { peer: enums.InputPeer; id: number; reaction_peer: enums.InputPeer }) => boolean;
   peer: enums.InputPeer;
   id: number;
@@ -10625,7 +10625,7 @@ class messages_reportReaction_ extends Function_<boolean> {
   }
 }
 
-class messages_getTopReactions_ extends Function_<enums.messages.Reactions> {
+export class messages_getTopReactions_ extends Function_<enums.messages.Reactions> {
   static __F = Symbol() as unknown as (params: { limit: number; hash: bigint }) => enums.messages.Reactions;
   limit: number;
   hash: bigint;
@@ -10655,7 +10655,7 @@ class messages_getTopReactions_ extends Function_<enums.messages.Reactions> {
   }
 }
 
-class messages_getRecentReactions_ extends Function_<enums.messages.Reactions> {
+export class messages_getRecentReactions_ extends Function_<enums.messages.Reactions> {
   static __F = Symbol() as unknown as (params: { limit: number; hash: bigint }) => enums.messages.Reactions;
   limit: number;
   hash: bigint;
@@ -10685,7 +10685,7 @@ class messages_getRecentReactions_ extends Function_<enums.messages.Reactions> {
   }
 }
 
-class messages_clearRecentReactions_ extends Function_<boolean> {
+export class messages_clearRecentReactions_ extends Function_<boolean> {
   static __F = Symbol() as unknown as () => boolean;
   protected get [id]() {
     return 0x9DFEEFB4;
@@ -10704,7 +10704,7 @@ class messages_clearRecentReactions_ extends Function_<boolean> {
   }
 }
 
-class messages_getExtendedMedia_ extends Function_<enums.Updates> {
+export class messages_getExtendedMedia_ extends Function_<enums.Updates> {
   static __F = Symbol() as unknown as (params: { peer: enums.InputPeer; id: Array<number> }) => enums.Updates;
   peer: enums.InputPeer;
   id: Array<number>;
@@ -10734,7 +10734,7 @@ class messages_getExtendedMedia_ extends Function_<enums.Updates> {
   }
 }
 
-class messages_setDefaultHistoryTTL_ extends Function_<boolean> {
+export class messages_setDefaultHistoryTTL_ extends Function_<boolean> {
   static __F = Symbol() as unknown as (params: { period: number }) => boolean;
   period: number;
 
@@ -10760,7 +10760,7 @@ class messages_setDefaultHistoryTTL_ extends Function_<boolean> {
   }
 }
 
-class messages_getDefaultHistoryTTL_ extends Function_<enums.DefaultHistoryTTL> {
+export class messages_getDefaultHistoryTTL_ extends Function_<enums.DefaultHistoryTTL> {
   static __F = Symbol() as unknown as () => enums.DefaultHistoryTTL;
   protected get [id]() {
     return 0x658B7188;
@@ -10779,7 +10779,7 @@ class messages_getDefaultHistoryTTL_ extends Function_<enums.DefaultHistoryTTL> 
   }
 }
 
-class messages_sendBotRequestedPeer_ extends Function_<enums.Updates> {
+export class messages_sendBotRequestedPeer_ extends Function_<enums.Updates> {
   static __F = Symbol() as unknown as (params: { peer: enums.InputPeer; msg_id: number; button_id: number; requested_peer: enums.InputPeer }) => enums.Updates;
   peer: enums.InputPeer;
   msg_id: number;
@@ -10817,7 +10817,7 @@ class messages_sendBotRequestedPeer_ extends Function_<enums.Updates> {
   }
 }
 
-class messages_getEmojiGroups_ extends Function_<enums.messages.EmojiGroups> {
+export class messages_getEmojiGroups_ extends Function_<enums.messages.EmojiGroups> {
   static __F = Symbol() as unknown as (params: { hash: number }) => enums.messages.EmojiGroups;
   hash: number;
 
@@ -10843,7 +10843,7 @@ class messages_getEmojiGroups_ extends Function_<enums.messages.EmojiGroups> {
   }
 }
 
-class messages_getEmojiStatusGroups_ extends Function_<enums.messages.EmojiGroups> {
+export class messages_getEmojiStatusGroups_ extends Function_<enums.messages.EmojiGroups> {
   static __F = Symbol() as unknown as (params: { hash: number }) => enums.messages.EmojiGroups;
   hash: number;
 
@@ -10869,7 +10869,7 @@ class messages_getEmojiStatusGroups_ extends Function_<enums.messages.EmojiGroup
   }
 }
 
-class messages_getEmojiProfilePhotoGroups_ extends Function_<enums.messages.EmojiGroups> {
+export class messages_getEmojiProfilePhotoGroups_ extends Function_<enums.messages.EmojiGroups> {
   static __F = Symbol() as unknown as (params: { hash: number }) => enums.messages.EmojiGroups;
   hash: number;
 
@@ -10895,7 +10895,7 @@ class messages_getEmojiProfilePhotoGroups_ extends Function_<enums.messages.Emoj
   }
 }
 
-class messages_searchCustomEmoji_ extends Function_<enums.EmojiList> {
+export class messages_searchCustomEmoji_ extends Function_<enums.EmojiList> {
   static __F = Symbol() as unknown as (params: { emoticon: string; hash: bigint }) => enums.EmojiList;
   emoticon: string;
   hash: bigint;
@@ -10925,7 +10925,7 @@ class messages_searchCustomEmoji_ extends Function_<enums.EmojiList> {
   }
 }
 
-class messages_togglePeerTranslations_ extends Function_<boolean> {
+export class messages_togglePeerTranslations_ extends Function_<boolean> {
   static __F = Symbol() as unknown as (params: { disabled?: true; peer: enums.InputPeer }) => boolean;
   disabled?: true;
   peer: enums.InputPeer;
@@ -10957,7 +10957,7 @@ class messages_togglePeerTranslations_ extends Function_<boolean> {
   }
 }
 
-class messages_getBotApp_ extends Function_<enums.messages.BotApp> {
+export class messages_getBotApp_ extends Function_<enums.messages.BotApp> {
   static __F = Symbol() as unknown as (params: { app: enums.InputBotApp; hash: bigint }) => enums.messages.BotApp;
   app: enums.InputBotApp;
   hash: bigint;
@@ -10987,7 +10987,7 @@ class messages_getBotApp_ extends Function_<enums.messages.BotApp> {
   }
 }
 
-class messages_requestAppWebView_ extends Function_<enums.AppWebViewResult> {
+export class messages_requestAppWebView_ extends Function_<enums.AppWebViewResult> {
   static __F = Symbol() as unknown as (params: { write_allowed?: true; peer: enums.InputPeer; app: enums.InputBotApp; start_param?: string; theme_params?: enums.DataJSON; platform: string }) => enums.AppWebViewResult;
   write_allowed?: true;
   peer: enums.InputPeer;
@@ -11035,7 +11035,7 @@ class messages_requestAppWebView_ extends Function_<enums.AppWebViewResult> {
   }
 }
 
-class messages_setChatWallPaper_ extends Function_<enums.Updates> {
+export class messages_setChatWallPaper_ extends Function_<enums.Updates> {
   static __F = Symbol() as unknown as (params: { for_both?: true; revert?: true; peer: enums.InputPeer; wallpaper?: enums.InputWallPaper; settings?: enums.WallPaperSettings; id?: number }) => enums.Updates;
   for_both?: true;
   revert?: true;
@@ -11083,7 +11083,7 @@ class messages_setChatWallPaper_ extends Function_<enums.Updates> {
   }
 }
 
-class messages_searchEmojiStickerSets_ extends Function_<enums.messages.FoundStickerSets> {
+export class messages_searchEmojiStickerSets_ extends Function_<enums.messages.FoundStickerSets> {
   static __F = Symbol() as unknown as (params: { exclude_featured?: true; q: string; hash: bigint }) => enums.messages.FoundStickerSets;
   exclude_featured?: true;
   q: string;
@@ -11119,7 +11119,7 @@ class messages_searchEmojiStickerSets_ extends Function_<enums.messages.FoundSti
   }
 }
 
-class updates_getState_ extends Function_<enums.updates.State> {
+export class updates_getState_ extends Function_<enums.updates.State> {
   static __F = Symbol() as unknown as () => enums.updates.State;
   protected get [id]() {
     return 0xEDD4882A;
@@ -11138,7 +11138,7 @@ class updates_getState_ extends Function_<enums.updates.State> {
   }
 }
 
-class updates_getDifference_ extends Function_<enums.updates.Difference> {
+export class updates_getDifference_ extends Function_<enums.updates.Difference> {
   static __F = Symbol() as unknown as (params: { pts: number; pts_limit?: number; pts_total_limit?: number; date: number; qts: number; qts_limit?: number }) => enums.updates.Difference;
   pts: number;
   pts_limit?: number;
@@ -11186,7 +11186,7 @@ class updates_getDifference_ extends Function_<enums.updates.Difference> {
   }
 }
 
-class updates_getChannelDifference_ extends Function_<enums.updates.ChannelDifference> {
+export class updates_getChannelDifference_ extends Function_<enums.updates.ChannelDifference> {
   static __F = Symbol() as unknown as (params: { force?: true; channel: enums.InputChannel; filter: enums.ChannelMessagesFilter; pts: number; limit: number }) => enums.updates.ChannelDifference;
   force?: true;
   channel: enums.InputChannel;
@@ -11230,7 +11230,7 @@ class updates_getChannelDifference_ extends Function_<enums.updates.ChannelDiffe
   }
 }
 
-class photos_updateProfilePhoto_ extends Function_<enums.photos.Photo> {
+export class photos_updateProfilePhoto_ extends Function_<enums.photos.Photo> {
   static __F = Symbol() as unknown as (params: { fallback?: true; bot?: enums.InputUser; id: enums.InputPhoto }) => enums.photos.Photo;
   fallback?: true;
   bot?: enums.InputUser;
@@ -11266,7 +11266,7 @@ class photos_updateProfilePhoto_ extends Function_<enums.photos.Photo> {
   }
 }
 
-class photos_uploadProfilePhoto_ extends Function_<enums.photos.Photo> {
+export class photos_uploadProfilePhoto_ extends Function_<enums.photos.Photo> {
   static __F = Symbol() as unknown as (params?: { fallback?: true; bot?: enums.InputUser; file?: enums.InputFile; video?: enums.InputFile; video_start_ts?: number; video_emoji_markup?: enums.VideoSize }) => enums.photos.Photo;
   fallback?: true;
   bot?: enums.InputUser;
@@ -11314,7 +11314,7 @@ class photos_uploadProfilePhoto_ extends Function_<enums.photos.Photo> {
   }
 }
 
-class photos_deletePhotos_ extends Function_<bigint[]> {
+export class photos_deletePhotos_ extends Function_<bigint[]> {
   static __F = Symbol() as unknown as (params: { id: Array<enums.InputPhoto> }) => bigint[];
   id: Array<enums.InputPhoto>;
 
@@ -11340,7 +11340,7 @@ class photos_deletePhotos_ extends Function_<bigint[]> {
   }
 }
 
-class photos_getUserPhotos_ extends Function_<enums.photos.Photos> {
+export class photos_getUserPhotos_ extends Function_<enums.photos.Photos> {
   static __F = Symbol() as unknown as (params: { user_id: enums.InputUser; offset: number; max_id: bigint; limit: number }) => enums.photos.Photos;
   user_id: enums.InputUser;
   offset: number;
@@ -11378,7 +11378,7 @@ class photos_getUserPhotos_ extends Function_<enums.photos.Photos> {
   }
 }
 
-class photos_uploadContactProfilePhoto_ extends Function_<enums.photos.Photo> {
+export class photos_uploadContactProfilePhoto_ extends Function_<enums.photos.Photo> {
   static __F = Symbol() as unknown as (params: { suggest?: true; save?: true; user_id: enums.InputUser; file?: enums.InputFile; video?: enums.InputFile; video_start_ts?: number; video_emoji_markup?: enums.VideoSize }) => enums.photos.Photo;
   suggest?: true;
   save?: true;
@@ -11430,7 +11430,7 @@ class photos_uploadContactProfilePhoto_ extends Function_<enums.photos.Photo> {
   }
 }
 
-class upload_saveFilePart_ extends Function_<boolean> {
+export class upload_saveFilePart_ extends Function_<boolean> {
   static __F = Symbol() as unknown as (params: { file_id: bigint; file_part: number; bytes: Uint8Array }) => boolean;
   file_id: bigint;
   file_part: number;
@@ -11464,7 +11464,7 @@ class upload_saveFilePart_ extends Function_<boolean> {
   }
 }
 
-class upload_getFile_ extends Function_<enums.upload.File> {
+export class upload_getFile_ extends Function_<enums.upload.File> {
   static __F = Symbol() as unknown as (params: { precise?: true; cdn_supported?: true; location: enums.InputFileLocation; offset: bigint; limit: number }) => enums.upload.File;
   precise?: true;
   cdn_supported?: true;
@@ -11508,7 +11508,7 @@ class upload_getFile_ extends Function_<enums.upload.File> {
   }
 }
 
-class upload_saveBigFilePart_ extends Function_<boolean> {
+export class upload_saveBigFilePart_ extends Function_<boolean> {
   static __F = Symbol() as unknown as (params: { file_id: bigint; file_part: number; file_total_parts: number; bytes: Uint8Array }) => boolean;
   file_id: bigint;
   file_part: number;
@@ -11546,7 +11546,7 @@ class upload_saveBigFilePart_ extends Function_<boolean> {
   }
 }
 
-class upload_getWebFile_ extends Function_<enums.upload.WebFile> {
+export class upload_getWebFile_ extends Function_<enums.upload.WebFile> {
   static __F = Symbol() as unknown as (params: { location: enums.InputWebFileLocation; offset: number; limit: number }) => enums.upload.WebFile;
   location: enums.InputWebFileLocation;
   offset: number;
@@ -11580,7 +11580,7 @@ class upload_getWebFile_ extends Function_<enums.upload.WebFile> {
   }
 }
 
-class upload_getCdnFile_ extends Function_<enums.upload.CdnFile> {
+export class upload_getCdnFile_ extends Function_<enums.upload.CdnFile> {
   static __F = Symbol() as unknown as (params: { file_token: Uint8Array; offset: bigint; limit: number }) => enums.upload.CdnFile;
   file_token: Uint8Array;
   offset: bigint;
@@ -11614,7 +11614,7 @@ class upload_getCdnFile_ extends Function_<enums.upload.CdnFile> {
   }
 }
 
-class upload_reuploadCdnFile_ extends Function_<enums.FileHash[]> {
+export class upload_reuploadCdnFile_ extends Function_<enums.FileHash[]> {
   static __F = Symbol() as unknown as (params: { file_token: Uint8Array; request_token: Uint8Array }) => enums.FileHash[];
   file_token: Uint8Array;
   request_token: Uint8Array;
@@ -11644,7 +11644,7 @@ class upload_reuploadCdnFile_ extends Function_<enums.FileHash[]> {
   }
 }
 
-class upload_getCdnFileHashes_ extends Function_<enums.FileHash[]> {
+export class upload_getCdnFileHashes_ extends Function_<enums.FileHash[]> {
   static __F = Symbol() as unknown as (params: { file_token: Uint8Array; offset: bigint }) => enums.FileHash[];
   file_token: Uint8Array;
   offset: bigint;
@@ -11674,7 +11674,7 @@ class upload_getCdnFileHashes_ extends Function_<enums.FileHash[]> {
   }
 }
 
-class upload_getFileHashes_ extends Function_<enums.FileHash[]> {
+export class upload_getFileHashes_ extends Function_<enums.FileHash[]> {
   static __F = Symbol() as unknown as (params: { location: enums.InputFileLocation; offset: bigint }) => enums.FileHash[];
   location: enums.InputFileLocation;
   offset: bigint;
@@ -11704,7 +11704,7 @@ class upload_getFileHashes_ extends Function_<enums.FileHash[]> {
   }
 }
 
-class help_getConfig_ extends Function_<enums.Config> {
+export class help_getConfig_ extends Function_<enums.Config> {
   static __F = Symbol() as unknown as () => enums.Config;
   protected get [id]() {
     return 0xC4F9186B;
@@ -11723,7 +11723,7 @@ class help_getConfig_ extends Function_<enums.Config> {
   }
 }
 
-class help_getNearestDc_ extends Function_<enums.NearestDc> {
+export class help_getNearestDc_ extends Function_<enums.NearestDc> {
   static __F = Symbol() as unknown as () => enums.NearestDc;
   protected get [id]() {
     return 0x1FB33026;
@@ -11742,7 +11742,7 @@ class help_getNearestDc_ extends Function_<enums.NearestDc> {
   }
 }
 
-class help_getAppUpdate_ extends Function_<enums.help.AppUpdate> {
+export class help_getAppUpdate_ extends Function_<enums.help.AppUpdate> {
   static __F = Symbol() as unknown as (params: { source: string }) => enums.help.AppUpdate;
   source: string;
 
@@ -11768,7 +11768,7 @@ class help_getAppUpdate_ extends Function_<enums.help.AppUpdate> {
   }
 }
 
-class help_getInviteText_ extends Function_<enums.help.InviteText> {
+export class help_getInviteText_ extends Function_<enums.help.InviteText> {
   static __F = Symbol() as unknown as () => enums.help.InviteText;
   protected get [id]() {
     return 0x4D392343;
@@ -11787,7 +11787,7 @@ class help_getInviteText_ extends Function_<enums.help.InviteText> {
   }
 }
 
-class help_getSupport_ extends Function_<enums.help.Support> {
+export class help_getSupport_ extends Function_<enums.help.Support> {
   static __F = Symbol() as unknown as () => enums.help.Support;
   protected get [id]() {
     return 0x9CDF08CD;
@@ -11806,7 +11806,7 @@ class help_getSupport_ extends Function_<enums.help.Support> {
   }
 }
 
-class help_getAppChangelog_ extends Function_<enums.Updates> {
+export class help_getAppChangelog_ extends Function_<enums.Updates> {
   static __F = Symbol() as unknown as (params: { prev_app_version: string }) => enums.Updates;
   prev_app_version: string;
 
@@ -11832,7 +11832,7 @@ class help_getAppChangelog_ extends Function_<enums.Updates> {
   }
 }
 
-class help_setBotUpdatesStatus_ extends Function_<boolean> {
+export class help_setBotUpdatesStatus_ extends Function_<boolean> {
   static __F = Symbol() as unknown as (params: { pending_updates_count: number; message: string }) => boolean;
   pending_updates_count: number;
   message: string;
@@ -11862,7 +11862,7 @@ class help_setBotUpdatesStatus_ extends Function_<boolean> {
   }
 }
 
-class help_getCdnConfig_ extends Function_<enums.CdnConfig> {
+export class help_getCdnConfig_ extends Function_<enums.CdnConfig> {
   static __F = Symbol() as unknown as () => enums.CdnConfig;
   protected get [id]() {
     return 0x52029342;
@@ -11881,7 +11881,7 @@ class help_getCdnConfig_ extends Function_<enums.CdnConfig> {
   }
 }
 
-class help_getRecentMeUrls_ extends Function_<enums.help.RecentMeUrls> {
+export class help_getRecentMeUrls_ extends Function_<enums.help.RecentMeUrls> {
   static __F = Symbol() as unknown as (params: { referer: string }) => enums.help.RecentMeUrls;
   referer: string;
 
@@ -11907,7 +11907,7 @@ class help_getRecentMeUrls_ extends Function_<enums.help.RecentMeUrls> {
   }
 }
 
-class help_getTermsOfServiceUpdate_ extends Function_<enums.help.TermsOfServiceUpdate> {
+export class help_getTermsOfServiceUpdate_ extends Function_<enums.help.TermsOfServiceUpdate> {
   static __F = Symbol() as unknown as () => enums.help.TermsOfServiceUpdate;
   protected get [id]() {
     return 0x2CA51FD1;
@@ -11926,7 +11926,7 @@ class help_getTermsOfServiceUpdate_ extends Function_<enums.help.TermsOfServiceU
   }
 }
 
-class help_acceptTermsOfService_ extends Function_<boolean> {
+export class help_acceptTermsOfService_ extends Function_<boolean> {
   static __F = Symbol() as unknown as (params: { id: enums.DataJSON }) => boolean;
   id: enums.DataJSON;
 
@@ -11952,7 +11952,7 @@ class help_acceptTermsOfService_ extends Function_<boolean> {
   }
 }
 
-class help_getDeepLinkInfo_ extends Function_<enums.help.DeepLinkInfo> {
+export class help_getDeepLinkInfo_ extends Function_<enums.help.DeepLinkInfo> {
   static __F = Symbol() as unknown as (params: { path: string }) => enums.help.DeepLinkInfo;
   path: string;
 
@@ -11978,7 +11978,7 @@ class help_getDeepLinkInfo_ extends Function_<enums.help.DeepLinkInfo> {
   }
 }
 
-class help_getAppConfig_ extends Function_<enums.help.AppConfig> {
+export class help_getAppConfig_ extends Function_<enums.help.AppConfig> {
   static __F = Symbol() as unknown as (params: { hash: number }) => enums.help.AppConfig;
   hash: number;
 
@@ -12004,7 +12004,7 @@ class help_getAppConfig_ extends Function_<enums.help.AppConfig> {
   }
 }
 
-class help_saveAppLog_ extends Function_<boolean> {
+export class help_saveAppLog_ extends Function_<boolean> {
   static __F = Symbol() as unknown as (params: { events: Array<enums.InputAppEvent> }) => boolean;
   events: Array<enums.InputAppEvent>;
 
@@ -12030,7 +12030,7 @@ class help_saveAppLog_ extends Function_<boolean> {
   }
 }
 
-class help_getPassportConfig_ extends Function_<enums.help.PassportConfig> {
+export class help_getPassportConfig_ extends Function_<enums.help.PassportConfig> {
   static __F = Symbol() as unknown as (params: { hash: number }) => enums.help.PassportConfig;
   hash: number;
 
@@ -12056,7 +12056,7 @@ class help_getPassportConfig_ extends Function_<enums.help.PassportConfig> {
   }
 }
 
-class help_getSupportName_ extends Function_<enums.help.SupportName> {
+export class help_getSupportName_ extends Function_<enums.help.SupportName> {
   static __F = Symbol() as unknown as () => enums.help.SupportName;
   protected get [id]() {
     return 0xD360E72C;
@@ -12075,7 +12075,7 @@ class help_getSupportName_ extends Function_<enums.help.SupportName> {
   }
 }
 
-class help_getUserInfo_ extends Function_<enums.help.UserInfo> {
+export class help_getUserInfo_ extends Function_<enums.help.UserInfo> {
   static __F = Symbol() as unknown as (params: { user_id: enums.InputUser }) => enums.help.UserInfo;
   user_id: enums.InputUser;
 
@@ -12101,7 +12101,7 @@ class help_getUserInfo_ extends Function_<enums.help.UserInfo> {
   }
 }
 
-class help_editUserInfo_ extends Function_<enums.help.UserInfo> {
+export class help_editUserInfo_ extends Function_<enums.help.UserInfo> {
   static __F = Symbol() as unknown as (params: { user_id: enums.InputUser; message: string; entities: Array<enums.MessageEntity> }) => enums.help.UserInfo;
   user_id: enums.InputUser;
   message: string;
@@ -12135,7 +12135,7 @@ class help_editUserInfo_ extends Function_<enums.help.UserInfo> {
   }
 }
 
-class help_getPromoData_ extends Function_<enums.help.PromoData> {
+export class help_getPromoData_ extends Function_<enums.help.PromoData> {
   static __F = Symbol() as unknown as () => enums.help.PromoData;
   protected get [id]() {
     return 0xC0977421;
@@ -12154,7 +12154,7 @@ class help_getPromoData_ extends Function_<enums.help.PromoData> {
   }
 }
 
-class help_hidePromoData_ extends Function_<boolean> {
+export class help_hidePromoData_ extends Function_<boolean> {
   static __F = Symbol() as unknown as (params: { peer: enums.InputPeer }) => boolean;
   peer: enums.InputPeer;
 
@@ -12180,7 +12180,7 @@ class help_hidePromoData_ extends Function_<boolean> {
   }
 }
 
-class help_dismissSuggestion_ extends Function_<boolean> {
+export class help_dismissSuggestion_ extends Function_<boolean> {
   static __F = Symbol() as unknown as (params: { peer: enums.InputPeer; suggestion: string }) => boolean;
   peer: enums.InputPeer;
   suggestion: string;
@@ -12210,7 +12210,7 @@ class help_dismissSuggestion_ extends Function_<boolean> {
   }
 }
 
-class help_getCountriesList_ extends Function_<enums.help.CountriesList> {
+export class help_getCountriesList_ extends Function_<enums.help.CountriesList> {
   static __F = Symbol() as unknown as (params: { lang_code: string; hash: number }) => enums.help.CountriesList;
   lang_code: string;
   hash: number;
@@ -12240,7 +12240,7 @@ class help_getCountriesList_ extends Function_<enums.help.CountriesList> {
   }
 }
 
-class help_getPremiumPromo_ extends Function_<enums.help.PremiumPromo> {
+export class help_getPremiumPromo_ extends Function_<enums.help.PremiumPromo> {
   static __F = Symbol() as unknown as () => enums.help.PremiumPromo;
   protected get [id]() {
     return 0xB81B93D4;
@@ -12259,7 +12259,7 @@ class help_getPremiumPromo_ extends Function_<enums.help.PremiumPromo> {
   }
 }
 
-class help_getPeerColors_ extends Function_<enums.help.PeerColors> {
+export class help_getPeerColors_ extends Function_<enums.help.PeerColors> {
   static __F = Symbol() as unknown as (params: { hash: number }) => enums.help.PeerColors;
   hash: number;
 
@@ -12285,7 +12285,7 @@ class help_getPeerColors_ extends Function_<enums.help.PeerColors> {
   }
 }
 
-class help_getPeerProfileColors_ extends Function_<enums.help.PeerColors> {
+export class help_getPeerProfileColors_ extends Function_<enums.help.PeerColors> {
   static __F = Symbol() as unknown as (params: { hash: number }) => enums.help.PeerColors;
   hash: number;
 
@@ -12311,7 +12311,7 @@ class help_getPeerProfileColors_ extends Function_<enums.help.PeerColors> {
   }
 }
 
-class channels_readHistory_ extends Function_<boolean> {
+export class channels_readHistory_ extends Function_<boolean> {
   static __F = Symbol() as unknown as (params: { channel: enums.InputChannel; max_id: number }) => boolean;
   channel: enums.InputChannel;
   max_id: number;
@@ -12341,7 +12341,7 @@ class channels_readHistory_ extends Function_<boolean> {
   }
 }
 
-class channels_deleteMessages_ extends Function_<enums.messages.AffectedMessages> {
+export class channels_deleteMessages_ extends Function_<enums.messages.AffectedMessages> {
   static __F = Symbol() as unknown as (params: { channel: enums.InputChannel; id: Array<number> }) => enums.messages.AffectedMessages;
   channel: enums.InputChannel;
   id: Array<number>;
@@ -12371,7 +12371,7 @@ class channels_deleteMessages_ extends Function_<enums.messages.AffectedMessages
   }
 }
 
-class channels_reportSpam_ extends Function_<boolean> {
+export class channels_reportSpam_ extends Function_<boolean> {
   static __F = Symbol() as unknown as (params: { channel: enums.InputChannel; participant: enums.InputPeer; id: Array<number> }) => boolean;
   channel: enums.InputChannel;
   participant: enums.InputPeer;
@@ -12405,7 +12405,7 @@ class channels_reportSpam_ extends Function_<boolean> {
   }
 }
 
-class channels_getMessages_ extends Function_<enums.messages.Messages> {
+export class channels_getMessages_ extends Function_<enums.messages.Messages> {
   static __F = Symbol() as unknown as (params: { channel: enums.InputChannel; id: Array<enums.InputMessage> }) => enums.messages.Messages;
   channel: enums.InputChannel;
   id: Array<enums.InputMessage>;
@@ -12435,7 +12435,7 @@ class channels_getMessages_ extends Function_<enums.messages.Messages> {
   }
 }
 
-class channels_getParticipants_ extends Function_<enums.channels.ChannelParticipants> {
+export class channels_getParticipants_ extends Function_<enums.channels.ChannelParticipants> {
   static __F = Symbol() as unknown as (params: { channel: enums.InputChannel; filter: enums.ChannelParticipantsFilter; offset: number; limit: number; hash: bigint }) => enums.channels.ChannelParticipants;
   channel: enums.InputChannel;
   filter: enums.ChannelParticipantsFilter;
@@ -12477,7 +12477,7 @@ class channels_getParticipants_ extends Function_<enums.channels.ChannelParticip
   }
 }
 
-class channels_getParticipant_ extends Function_<enums.channels.ChannelParticipant> {
+export class channels_getParticipant_ extends Function_<enums.channels.ChannelParticipant> {
   static __F = Symbol() as unknown as (params: { channel: enums.InputChannel; participant: enums.InputPeer }) => enums.channels.ChannelParticipant;
   channel: enums.InputChannel;
   participant: enums.InputPeer;
@@ -12507,7 +12507,7 @@ class channels_getParticipant_ extends Function_<enums.channels.ChannelParticipa
   }
 }
 
-class channels_getChannels_ extends Function_<enums.messages.Chats> {
+export class channels_getChannels_ extends Function_<enums.messages.Chats> {
   static __F = Symbol() as unknown as (params: { id: Array<enums.InputChannel> }) => enums.messages.Chats;
   id: Array<enums.InputChannel>;
 
@@ -12533,7 +12533,7 @@ class channels_getChannels_ extends Function_<enums.messages.Chats> {
   }
 }
 
-class channels_getFullChannel_ extends Function_<enums.messages.ChatFull> {
+export class channels_getFullChannel_ extends Function_<enums.messages.ChatFull> {
   static __F = Symbol() as unknown as (params: { channel: enums.InputChannel }) => enums.messages.ChatFull;
   channel: enums.InputChannel;
 
@@ -12559,7 +12559,7 @@ class channels_getFullChannel_ extends Function_<enums.messages.ChatFull> {
   }
 }
 
-class channels_createChannel_ extends Function_<enums.Updates> {
+export class channels_createChannel_ extends Function_<enums.Updates> {
   static __F = Symbol() as unknown as (params: { broadcast?: true; megagroup?: true; for_import?: true; forum?: true; title: string; about: string; geo_point?: enums.InputGeoPoint; address?: string; ttl_period?: number }) => enums.Updates;
   broadcast?: true;
   megagroup?: true;
@@ -12619,7 +12619,7 @@ class channels_createChannel_ extends Function_<enums.Updates> {
   }
 }
 
-class channels_editAdmin_ extends Function_<enums.Updates> {
+export class channels_editAdmin_ extends Function_<enums.Updates> {
   static __F = Symbol() as unknown as (params: { channel: enums.InputChannel; user_id: enums.InputUser; admin_rights: enums.ChatAdminRights; rank: string }) => enums.Updates;
   channel: enums.InputChannel;
   user_id: enums.InputUser;
@@ -12657,7 +12657,7 @@ class channels_editAdmin_ extends Function_<enums.Updates> {
   }
 }
 
-class channels_editTitle_ extends Function_<enums.Updates> {
+export class channels_editTitle_ extends Function_<enums.Updates> {
   static __F = Symbol() as unknown as (params: { channel: enums.InputChannel; title: string }) => enums.Updates;
   channel: enums.InputChannel;
   title: string;
@@ -12687,7 +12687,7 @@ class channels_editTitle_ extends Function_<enums.Updates> {
   }
 }
 
-class channels_editPhoto_ extends Function_<enums.Updates> {
+export class channels_editPhoto_ extends Function_<enums.Updates> {
   static __F = Symbol() as unknown as (params: { channel: enums.InputChannel; photo: enums.InputChatPhoto }) => enums.Updates;
   channel: enums.InputChannel;
   photo: enums.InputChatPhoto;
@@ -12717,7 +12717,7 @@ class channels_editPhoto_ extends Function_<enums.Updates> {
   }
 }
 
-class channels_checkUsername_ extends Function_<boolean> {
+export class channels_checkUsername_ extends Function_<boolean> {
   static __F = Symbol() as unknown as (params: { channel: enums.InputChannel; username: string }) => boolean;
   channel: enums.InputChannel;
   username: string;
@@ -12747,7 +12747,7 @@ class channels_checkUsername_ extends Function_<boolean> {
   }
 }
 
-class channels_updateUsername_ extends Function_<boolean> {
+export class channels_updateUsername_ extends Function_<boolean> {
   static __F = Symbol() as unknown as (params: { channel: enums.InputChannel; username: string }) => boolean;
   channel: enums.InputChannel;
   username: string;
@@ -12777,7 +12777,7 @@ class channels_updateUsername_ extends Function_<boolean> {
   }
 }
 
-class channels_joinChannel_ extends Function_<enums.Updates> {
+export class channels_joinChannel_ extends Function_<enums.Updates> {
   static __F = Symbol() as unknown as (params: { channel: enums.InputChannel }) => enums.Updates;
   channel: enums.InputChannel;
 
@@ -12803,7 +12803,7 @@ class channels_joinChannel_ extends Function_<enums.Updates> {
   }
 }
 
-class channels_leaveChannel_ extends Function_<enums.Updates> {
+export class channels_leaveChannel_ extends Function_<enums.Updates> {
   static __F = Symbol() as unknown as (params: { channel: enums.InputChannel }) => enums.Updates;
   channel: enums.InputChannel;
 
@@ -12829,7 +12829,7 @@ class channels_leaveChannel_ extends Function_<enums.Updates> {
   }
 }
 
-class channels_inviteToChannel_ extends Function_<enums.Updates> {
+export class channels_inviteToChannel_ extends Function_<enums.Updates> {
   static __F = Symbol() as unknown as (params: { channel: enums.InputChannel; users: Array<enums.InputUser> }) => enums.Updates;
   channel: enums.InputChannel;
   users: Array<enums.InputUser>;
@@ -12859,7 +12859,7 @@ class channels_inviteToChannel_ extends Function_<enums.Updates> {
   }
 }
 
-class channels_deleteChannel_ extends Function_<enums.Updates> {
+export class channels_deleteChannel_ extends Function_<enums.Updates> {
   static __F = Symbol() as unknown as (params: { channel: enums.InputChannel }) => enums.Updates;
   channel: enums.InputChannel;
 
@@ -12885,7 +12885,7 @@ class channels_deleteChannel_ extends Function_<enums.Updates> {
   }
 }
 
-class channels_exportMessageLink_ extends Function_<enums.ExportedMessageLink> {
+export class channels_exportMessageLink_ extends Function_<enums.ExportedMessageLink> {
   static __F = Symbol() as unknown as (params: { grouped?: true; thread?: true; channel: enums.InputChannel; id: number }) => enums.ExportedMessageLink;
   grouped?: true;
   thread?: true;
@@ -12925,7 +12925,7 @@ class channels_exportMessageLink_ extends Function_<enums.ExportedMessageLink> {
   }
 }
 
-class channels_toggleSignatures_ extends Function_<enums.Updates> {
+export class channels_toggleSignatures_ extends Function_<enums.Updates> {
   static __F = Symbol() as unknown as (params: { channel: enums.InputChannel; enabled: boolean }) => enums.Updates;
   channel: enums.InputChannel;
   enabled: boolean;
@@ -12955,7 +12955,7 @@ class channels_toggleSignatures_ extends Function_<enums.Updates> {
   }
 }
 
-class channels_getAdminedPublicChannels_ extends Function_<enums.messages.Chats> {
+export class channels_getAdminedPublicChannels_ extends Function_<enums.messages.Chats> {
   static __F = Symbol() as unknown as (params?: { by_location?: true; check_limit?: true }) => enums.messages.Chats;
   by_location?: true;
   check_limit?: true;
@@ -12987,7 +12987,7 @@ class channels_getAdminedPublicChannels_ extends Function_<enums.messages.Chats>
   }
 }
 
-class channels_editBanned_ extends Function_<enums.Updates> {
+export class channels_editBanned_ extends Function_<enums.Updates> {
   static __F = Symbol() as unknown as (params: { channel: enums.InputChannel; participant: enums.InputPeer; banned_rights: enums.ChatBannedRights }) => enums.Updates;
   channel: enums.InputChannel;
   participant: enums.InputPeer;
@@ -13021,7 +13021,7 @@ class channels_editBanned_ extends Function_<enums.Updates> {
   }
 }
 
-class channels_getAdminLog_ extends Function_<enums.channels.AdminLogResults> {
+export class channels_getAdminLog_ extends Function_<enums.channels.AdminLogResults> {
   static __F = Symbol() as unknown as (params: { channel: enums.InputChannel; q: string; events_filter?: enums.ChannelAdminLogEventsFilter; admins?: Array<enums.InputUser>; max_id: bigint; min_id: bigint; limit: number }) => enums.channels.AdminLogResults;
   channel: enums.InputChannel;
   q: string;
@@ -13073,7 +13073,7 @@ class channels_getAdminLog_ extends Function_<enums.channels.AdminLogResults> {
   }
 }
 
-class channels_setStickers_ extends Function_<boolean> {
+export class channels_setStickers_ extends Function_<boolean> {
   static __F = Symbol() as unknown as (params: { channel: enums.InputChannel; stickerset: enums.InputStickerSet }) => boolean;
   channel: enums.InputChannel;
   stickerset: enums.InputStickerSet;
@@ -13103,7 +13103,7 @@ class channels_setStickers_ extends Function_<boolean> {
   }
 }
 
-class channels_readMessageContents_ extends Function_<boolean> {
+export class channels_readMessageContents_ extends Function_<boolean> {
   static __F = Symbol() as unknown as (params: { channel: enums.InputChannel; id: Array<number> }) => boolean;
   channel: enums.InputChannel;
   id: Array<number>;
@@ -13133,7 +13133,7 @@ class channels_readMessageContents_ extends Function_<boolean> {
   }
 }
 
-class channels_deleteHistory_ extends Function_<enums.Updates> {
+export class channels_deleteHistory_ extends Function_<enums.Updates> {
   static __F = Symbol() as unknown as (params: { for_everyone?: true; channel: enums.InputChannel; max_id: number }) => enums.Updates;
   for_everyone?: true;
   channel: enums.InputChannel;
@@ -13169,7 +13169,7 @@ class channels_deleteHistory_ extends Function_<enums.Updates> {
   }
 }
 
-class channels_togglePreHistoryHidden_ extends Function_<enums.Updates> {
+export class channels_togglePreHistoryHidden_ extends Function_<enums.Updates> {
   static __F = Symbol() as unknown as (params: { channel: enums.InputChannel; enabled: boolean }) => enums.Updates;
   channel: enums.InputChannel;
   enabled: boolean;
@@ -13199,7 +13199,7 @@ class channels_togglePreHistoryHidden_ extends Function_<enums.Updates> {
   }
 }
 
-class channels_getLeftChannels_ extends Function_<enums.messages.Chats> {
+export class channels_getLeftChannels_ extends Function_<enums.messages.Chats> {
   static __F = Symbol() as unknown as (params: { offset: number }) => enums.messages.Chats;
   offset: number;
 
@@ -13225,7 +13225,7 @@ class channels_getLeftChannels_ extends Function_<enums.messages.Chats> {
   }
 }
 
-class channels_getGroupsForDiscussion_ extends Function_<enums.messages.Chats> {
+export class channels_getGroupsForDiscussion_ extends Function_<enums.messages.Chats> {
   static __F = Symbol() as unknown as () => enums.messages.Chats;
   protected get [id]() {
     return 0xF5DAD378;
@@ -13244,7 +13244,7 @@ class channels_getGroupsForDiscussion_ extends Function_<enums.messages.Chats> {
   }
 }
 
-class channels_setDiscussionGroup_ extends Function_<boolean> {
+export class channels_setDiscussionGroup_ extends Function_<boolean> {
   static __F = Symbol() as unknown as (params: { broadcast: enums.InputChannel; group: enums.InputChannel }) => boolean;
   broadcast: enums.InputChannel;
   group: enums.InputChannel;
@@ -13274,7 +13274,7 @@ class channels_setDiscussionGroup_ extends Function_<boolean> {
   }
 }
 
-class channels_editCreator_ extends Function_<enums.Updates> {
+export class channels_editCreator_ extends Function_<enums.Updates> {
   static __F = Symbol() as unknown as (params: { channel: enums.InputChannel; user_id: enums.InputUser; password: enums.InputCheckPasswordSRP }) => enums.Updates;
   channel: enums.InputChannel;
   user_id: enums.InputUser;
@@ -13308,7 +13308,7 @@ class channels_editCreator_ extends Function_<enums.Updates> {
   }
 }
 
-class channels_editLocation_ extends Function_<boolean> {
+export class channels_editLocation_ extends Function_<boolean> {
   static __F = Symbol() as unknown as (params: { channel: enums.InputChannel; geo_point: enums.InputGeoPoint; address: string }) => boolean;
   channel: enums.InputChannel;
   geo_point: enums.InputGeoPoint;
@@ -13342,7 +13342,7 @@ class channels_editLocation_ extends Function_<boolean> {
   }
 }
 
-class channels_toggleSlowMode_ extends Function_<enums.Updates> {
+export class channels_toggleSlowMode_ extends Function_<enums.Updates> {
   static __F = Symbol() as unknown as (params: { channel: enums.InputChannel; seconds: number }) => enums.Updates;
   channel: enums.InputChannel;
   seconds: number;
@@ -13372,7 +13372,7 @@ class channels_toggleSlowMode_ extends Function_<enums.Updates> {
   }
 }
 
-class channels_getInactiveChannels_ extends Function_<enums.messages.InactiveChats> {
+export class channels_getInactiveChannels_ extends Function_<enums.messages.InactiveChats> {
   static __F = Symbol() as unknown as () => enums.messages.InactiveChats;
   protected get [id]() {
     return 0x11E831EE;
@@ -13391,7 +13391,7 @@ class channels_getInactiveChannels_ extends Function_<enums.messages.InactiveCha
   }
 }
 
-class channels_convertToGigagroup_ extends Function_<enums.Updates> {
+export class channels_convertToGigagroup_ extends Function_<enums.Updates> {
   static __F = Symbol() as unknown as (params: { channel: enums.InputChannel }) => enums.Updates;
   channel: enums.InputChannel;
 
@@ -13417,7 +13417,7 @@ class channels_convertToGigagroup_ extends Function_<enums.Updates> {
   }
 }
 
-class channels_viewSponsoredMessage_ extends Function_<boolean> {
+export class channels_viewSponsoredMessage_ extends Function_<boolean> {
   static __F = Symbol() as unknown as (params: { channel: enums.InputChannel; random_id: Uint8Array }) => boolean;
   channel: enums.InputChannel;
   random_id: Uint8Array;
@@ -13447,7 +13447,7 @@ class channels_viewSponsoredMessage_ extends Function_<boolean> {
   }
 }
 
-class channels_getSponsoredMessages_ extends Function_<enums.messages.SponsoredMessages> {
+export class channels_getSponsoredMessages_ extends Function_<enums.messages.SponsoredMessages> {
   static __F = Symbol() as unknown as (params: { channel: enums.InputChannel }) => enums.messages.SponsoredMessages;
   channel: enums.InputChannel;
 
@@ -13473,7 +13473,7 @@ class channels_getSponsoredMessages_ extends Function_<enums.messages.SponsoredM
   }
 }
 
-class channels_getSendAs_ extends Function_<enums.channels.SendAsPeers> {
+export class channels_getSendAs_ extends Function_<enums.channels.SendAsPeers> {
   static __F = Symbol() as unknown as (params: { peer: enums.InputPeer }) => enums.channels.SendAsPeers;
   peer: enums.InputPeer;
 
@@ -13499,7 +13499,7 @@ class channels_getSendAs_ extends Function_<enums.channels.SendAsPeers> {
   }
 }
 
-class channels_deleteParticipantHistory_ extends Function_<enums.messages.AffectedHistory> {
+export class channels_deleteParticipantHistory_ extends Function_<enums.messages.AffectedHistory> {
   static __F = Symbol() as unknown as (params: { channel: enums.InputChannel; participant: enums.InputPeer }) => enums.messages.AffectedHistory;
   channel: enums.InputChannel;
   participant: enums.InputPeer;
@@ -13529,7 +13529,7 @@ class channels_deleteParticipantHistory_ extends Function_<enums.messages.Affect
   }
 }
 
-class channels_toggleJoinToSend_ extends Function_<enums.Updates> {
+export class channels_toggleJoinToSend_ extends Function_<enums.Updates> {
   static __F = Symbol() as unknown as (params: { channel: enums.InputChannel; enabled: boolean }) => enums.Updates;
   channel: enums.InputChannel;
   enabled: boolean;
@@ -13559,7 +13559,7 @@ class channels_toggleJoinToSend_ extends Function_<enums.Updates> {
   }
 }
 
-class channels_toggleJoinRequest_ extends Function_<enums.Updates> {
+export class channels_toggleJoinRequest_ extends Function_<enums.Updates> {
   static __F = Symbol() as unknown as (params: { channel: enums.InputChannel; enabled: boolean }) => enums.Updates;
   channel: enums.InputChannel;
   enabled: boolean;
@@ -13589,7 +13589,7 @@ class channels_toggleJoinRequest_ extends Function_<enums.Updates> {
   }
 }
 
-class channels_reorderUsernames_ extends Function_<boolean> {
+export class channels_reorderUsernames_ extends Function_<boolean> {
   static __F = Symbol() as unknown as (params: { channel: enums.InputChannel; order: Array<string> }) => boolean;
   channel: enums.InputChannel;
   order: Array<string>;
@@ -13619,7 +13619,7 @@ class channels_reorderUsernames_ extends Function_<boolean> {
   }
 }
 
-class channels_toggleUsername_ extends Function_<boolean> {
+export class channels_toggleUsername_ extends Function_<boolean> {
   static __F = Symbol() as unknown as (params: { channel: enums.InputChannel; username: string; active: boolean }) => boolean;
   channel: enums.InputChannel;
   username: string;
@@ -13653,7 +13653,7 @@ class channels_toggleUsername_ extends Function_<boolean> {
   }
 }
 
-class channels_deactivateAllUsernames_ extends Function_<boolean> {
+export class channels_deactivateAllUsernames_ extends Function_<boolean> {
   static __F = Symbol() as unknown as (params: { channel: enums.InputChannel }) => boolean;
   channel: enums.InputChannel;
 
@@ -13679,7 +13679,7 @@ class channels_deactivateAllUsernames_ extends Function_<boolean> {
   }
 }
 
-class channels_toggleForum_ extends Function_<enums.Updates> {
+export class channels_toggleForum_ extends Function_<enums.Updates> {
   static __F = Symbol() as unknown as (params: { channel: enums.InputChannel; enabled: boolean }) => enums.Updates;
   channel: enums.InputChannel;
   enabled: boolean;
@@ -13709,7 +13709,7 @@ class channels_toggleForum_ extends Function_<enums.Updates> {
   }
 }
 
-class channels_createForumTopic_ extends Function_<enums.Updates> {
+export class channels_createForumTopic_ extends Function_<enums.Updates> {
   static __F = Symbol() as unknown as (params: { channel: enums.InputChannel; title: string; icon_color?: number; icon_emoji_id?: bigint; random_id: bigint; send_as?: enums.InputPeer }) => enums.Updates;
   channel: enums.InputChannel;
   title: string;
@@ -13757,7 +13757,7 @@ class channels_createForumTopic_ extends Function_<enums.Updates> {
   }
 }
 
-class channels_getForumTopics_ extends Function_<enums.messages.ForumTopics> {
+export class channels_getForumTopics_ extends Function_<enums.messages.ForumTopics> {
   static __F = Symbol() as unknown as (params: { channel: enums.InputChannel; q?: string; offset_date: number; offset_id: number; offset_topic: number; limit: number }) => enums.messages.ForumTopics;
   channel: enums.InputChannel;
   q?: string;
@@ -13805,7 +13805,7 @@ class channels_getForumTopics_ extends Function_<enums.messages.ForumTopics> {
   }
 }
 
-class channels_getForumTopicsByID_ extends Function_<enums.messages.ForumTopics> {
+export class channels_getForumTopicsByID_ extends Function_<enums.messages.ForumTopics> {
   static __F = Symbol() as unknown as (params: { channel: enums.InputChannel; topics: Array<number> }) => enums.messages.ForumTopics;
   channel: enums.InputChannel;
   topics: Array<number>;
@@ -13835,7 +13835,7 @@ class channels_getForumTopicsByID_ extends Function_<enums.messages.ForumTopics>
   }
 }
 
-class channels_editForumTopic_ extends Function_<enums.Updates> {
+export class channels_editForumTopic_ extends Function_<enums.Updates> {
   static __F = Symbol() as unknown as (params: { channel: enums.InputChannel; topic_id: number; title?: string; icon_emoji_id?: bigint; closed?: boolean; hidden?: boolean }) => enums.Updates;
   channel: enums.InputChannel;
   topic_id: number;
@@ -13883,7 +13883,7 @@ class channels_editForumTopic_ extends Function_<enums.Updates> {
   }
 }
 
-class channels_updatePinnedForumTopic_ extends Function_<enums.Updates> {
+export class channels_updatePinnedForumTopic_ extends Function_<enums.Updates> {
   static __F = Symbol() as unknown as (params: { channel: enums.InputChannel; topic_id: number; pinned: boolean }) => enums.Updates;
   channel: enums.InputChannel;
   topic_id: number;
@@ -13917,7 +13917,7 @@ class channels_updatePinnedForumTopic_ extends Function_<enums.Updates> {
   }
 }
 
-class channels_deleteTopicHistory_ extends Function_<enums.messages.AffectedHistory> {
+export class channels_deleteTopicHistory_ extends Function_<enums.messages.AffectedHistory> {
   static __F = Symbol() as unknown as (params: { channel: enums.InputChannel; top_msg_id: number }) => enums.messages.AffectedHistory;
   channel: enums.InputChannel;
   top_msg_id: number;
@@ -13947,7 +13947,7 @@ class channels_deleteTopicHistory_ extends Function_<enums.messages.AffectedHist
   }
 }
 
-class channels_reorderPinnedForumTopics_ extends Function_<enums.Updates> {
+export class channels_reorderPinnedForumTopics_ extends Function_<enums.Updates> {
   static __F = Symbol() as unknown as (params: { force?: true; channel: enums.InputChannel; order: Array<number> }) => enums.Updates;
   force?: true;
   channel: enums.InputChannel;
@@ -13983,7 +13983,7 @@ class channels_reorderPinnedForumTopics_ extends Function_<enums.Updates> {
   }
 }
 
-class channels_toggleAntiSpam_ extends Function_<enums.Updates> {
+export class channels_toggleAntiSpam_ extends Function_<enums.Updates> {
   static __F = Symbol() as unknown as (params: { channel: enums.InputChannel; enabled: boolean }) => enums.Updates;
   channel: enums.InputChannel;
   enabled: boolean;
@@ -14013,7 +14013,7 @@ class channels_toggleAntiSpam_ extends Function_<enums.Updates> {
   }
 }
 
-class channels_reportAntiSpamFalsePositive_ extends Function_<boolean> {
+export class channels_reportAntiSpamFalsePositive_ extends Function_<boolean> {
   static __F = Symbol() as unknown as (params: { channel: enums.InputChannel; msg_id: number }) => boolean;
   channel: enums.InputChannel;
   msg_id: number;
@@ -14043,7 +14043,7 @@ class channels_reportAntiSpamFalsePositive_ extends Function_<boolean> {
   }
 }
 
-class channels_toggleParticipantsHidden_ extends Function_<enums.Updates> {
+export class channels_toggleParticipantsHidden_ extends Function_<enums.Updates> {
   static __F = Symbol() as unknown as (params: { channel: enums.InputChannel; enabled: boolean }) => enums.Updates;
   channel: enums.InputChannel;
   enabled: boolean;
@@ -14073,7 +14073,7 @@ class channels_toggleParticipantsHidden_ extends Function_<enums.Updates> {
   }
 }
 
-class channels_clickSponsoredMessage_ extends Function_<boolean> {
+export class channels_clickSponsoredMessage_ extends Function_<boolean> {
   static __F = Symbol() as unknown as (params: { channel: enums.InputChannel; random_id: Uint8Array }) => boolean;
   channel: enums.InputChannel;
   random_id: Uint8Array;
@@ -14103,7 +14103,7 @@ class channels_clickSponsoredMessage_ extends Function_<boolean> {
   }
 }
 
-class channels_updateColor_ extends Function_<enums.Updates> {
+export class channels_updateColor_ extends Function_<enums.Updates> {
   static __F = Symbol() as unknown as (params: { channel: enums.InputChannel; color: number; background_emoji_id?: bigint }) => enums.Updates;
   channel: enums.InputChannel;
   color: number;
@@ -14139,7 +14139,7 @@ class channels_updateColor_ extends Function_<enums.Updates> {
   }
 }
 
-class channels_toggleViewForumAsMessages_ extends Function_<enums.Updates> {
+export class channels_toggleViewForumAsMessages_ extends Function_<enums.Updates> {
   static __F = Symbol() as unknown as (params: { channel: enums.InputChannel; enabled: boolean }) => enums.Updates;
   channel: enums.InputChannel;
   enabled: boolean;
@@ -14169,7 +14169,7 @@ class channels_toggleViewForumAsMessages_ extends Function_<enums.Updates> {
   }
 }
 
-class channels_getChannelRecommendations_ extends Function_<enums.messages.Chats> {
+export class channels_getChannelRecommendations_ extends Function_<enums.messages.Chats> {
   static __F = Symbol() as unknown as (params: { channel: enums.InputChannel }) => enums.messages.Chats;
   channel: enums.InputChannel;
 
@@ -14195,7 +14195,7 @@ class channels_getChannelRecommendations_ extends Function_<enums.messages.Chats
   }
 }
 
-class bots_sendCustomRequest_ extends Function_<enums.DataJSON> {
+export class bots_sendCustomRequest_ extends Function_<enums.DataJSON> {
   static __F = Symbol() as unknown as (params: { custom_method: string; params: enums.DataJSON }) => enums.DataJSON;
   custom_method: string;
   params: enums.DataJSON;
@@ -14225,7 +14225,7 @@ class bots_sendCustomRequest_ extends Function_<enums.DataJSON> {
   }
 }
 
-class bots_answerWebhookJSONQuery_ extends Function_<boolean> {
+export class bots_answerWebhookJSONQuery_ extends Function_<boolean> {
   static __F = Symbol() as unknown as (params: { query_id: bigint; data: enums.DataJSON }) => boolean;
   query_id: bigint;
   data: enums.DataJSON;
@@ -14255,7 +14255,7 @@ class bots_answerWebhookJSONQuery_ extends Function_<boolean> {
   }
 }
 
-class bots_setBotCommands_ extends Function_<boolean> {
+export class bots_setBotCommands_ extends Function_<boolean> {
   static __F = Symbol() as unknown as (params: { scope: enums.BotCommandScope; lang_code: string; commands: Array<enums.BotCommand> }) => boolean;
   scope: enums.BotCommandScope;
   lang_code: string;
@@ -14289,7 +14289,7 @@ class bots_setBotCommands_ extends Function_<boolean> {
   }
 }
 
-class bots_resetBotCommands_ extends Function_<boolean> {
+export class bots_resetBotCommands_ extends Function_<boolean> {
   static __F = Symbol() as unknown as (params: { scope: enums.BotCommandScope; lang_code: string }) => boolean;
   scope: enums.BotCommandScope;
   lang_code: string;
@@ -14319,7 +14319,7 @@ class bots_resetBotCommands_ extends Function_<boolean> {
   }
 }
 
-class bots_getBotCommands_ extends Function_<enums.BotCommand[]> {
+export class bots_getBotCommands_ extends Function_<enums.BotCommand[]> {
   static __F = Symbol() as unknown as (params: { scope: enums.BotCommandScope; lang_code: string }) => enums.BotCommand[];
   scope: enums.BotCommandScope;
   lang_code: string;
@@ -14349,7 +14349,7 @@ class bots_getBotCommands_ extends Function_<enums.BotCommand[]> {
   }
 }
 
-class bots_setBotMenuButton_ extends Function_<boolean> {
+export class bots_setBotMenuButton_ extends Function_<boolean> {
   static __F = Symbol() as unknown as (params: { user_id: enums.InputUser; button: enums.BotMenuButton }) => boolean;
   user_id: enums.InputUser;
   button: enums.BotMenuButton;
@@ -14379,7 +14379,7 @@ class bots_setBotMenuButton_ extends Function_<boolean> {
   }
 }
 
-class bots_getBotMenuButton_ extends Function_<enums.BotMenuButton> {
+export class bots_getBotMenuButton_ extends Function_<enums.BotMenuButton> {
   static __F = Symbol() as unknown as (params: { user_id: enums.InputUser }) => enums.BotMenuButton;
   user_id: enums.InputUser;
 
@@ -14405,7 +14405,7 @@ class bots_getBotMenuButton_ extends Function_<enums.BotMenuButton> {
   }
 }
 
-class bots_setBotBroadcastDefaultAdminRights_ extends Function_<boolean> {
+export class bots_setBotBroadcastDefaultAdminRights_ extends Function_<boolean> {
   static __F = Symbol() as unknown as (params: { admin_rights: enums.ChatAdminRights }) => boolean;
   admin_rights: enums.ChatAdminRights;
 
@@ -14431,7 +14431,7 @@ class bots_setBotBroadcastDefaultAdminRights_ extends Function_<boolean> {
   }
 }
 
-class bots_setBotGroupDefaultAdminRights_ extends Function_<boolean> {
+export class bots_setBotGroupDefaultAdminRights_ extends Function_<boolean> {
   static __F = Symbol() as unknown as (params: { admin_rights: enums.ChatAdminRights }) => boolean;
   admin_rights: enums.ChatAdminRights;
 
@@ -14457,7 +14457,7 @@ class bots_setBotGroupDefaultAdminRights_ extends Function_<boolean> {
   }
 }
 
-class bots_setBotInfo_ extends Function_<boolean> {
+export class bots_setBotInfo_ extends Function_<boolean> {
   static __F = Symbol() as unknown as (params: { bot?: enums.InputUser; lang_code: string; name?: string; about?: string; description?: string }) => boolean;
   bot?: enums.InputUser;
   lang_code: string;
@@ -14501,7 +14501,7 @@ class bots_setBotInfo_ extends Function_<boolean> {
   }
 }
 
-class bots_getBotInfo_ extends Function_<enums.bots.BotInfo> {
+export class bots_getBotInfo_ extends Function_<enums.bots.BotInfo> {
   static __F = Symbol() as unknown as (params: { bot?: enums.InputUser; lang_code: string }) => enums.bots.BotInfo;
   bot?: enums.InputUser;
   lang_code: string;
@@ -14533,7 +14533,7 @@ class bots_getBotInfo_ extends Function_<enums.bots.BotInfo> {
   }
 }
 
-class bots_reorderUsernames_ extends Function_<boolean> {
+export class bots_reorderUsernames_ extends Function_<boolean> {
   static __F = Symbol() as unknown as (params: { bot: enums.InputUser; order: Array<string> }) => boolean;
   bot: enums.InputUser;
   order: Array<string>;
@@ -14563,7 +14563,7 @@ class bots_reorderUsernames_ extends Function_<boolean> {
   }
 }
 
-class bots_toggleUsername_ extends Function_<boolean> {
+export class bots_toggleUsername_ extends Function_<boolean> {
   static __F = Symbol() as unknown as (params: { bot: enums.InputUser; username: string; active: boolean }) => boolean;
   bot: enums.InputUser;
   username: string;
@@ -14597,7 +14597,7 @@ class bots_toggleUsername_ extends Function_<boolean> {
   }
 }
 
-class bots_canSendMessage_ extends Function_<boolean> {
+export class bots_canSendMessage_ extends Function_<boolean> {
   static __F = Symbol() as unknown as (params: { bot: enums.InputUser }) => boolean;
   bot: enums.InputUser;
 
@@ -14623,7 +14623,7 @@ class bots_canSendMessage_ extends Function_<boolean> {
   }
 }
 
-class bots_allowSendMessage_ extends Function_<enums.Updates> {
+export class bots_allowSendMessage_ extends Function_<enums.Updates> {
   static __F = Symbol() as unknown as (params: { bot: enums.InputUser }) => enums.Updates;
   bot: enums.InputUser;
 
@@ -14649,7 +14649,7 @@ class bots_allowSendMessage_ extends Function_<enums.Updates> {
   }
 }
 
-class bots_invokeWebViewCustomMethod_ extends Function_<enums.DataJSON> {
+export class bots_invokeWebViewCustomMethod_ extends Function_<enums.DataJSON> {
   static __F = Symbol() as unknown as (params: { bot: enums.InputUser; custom_method: string; params: enums.DataJSON }) => enums.DataJSON;
   bot: enums.InputUser;
   custom_method: string;
@@ -14683,7 +14683,7 @@ class bots_invokeWebViewCustomMethod_ extends Function_<enums.DataJSON> {
   }
 }
 
-class payments_getPaymentForm_ extends Function_<enums.payments.PaymentForm> {
+export class payments_getPaymentForm_ extends Function_<enums.payments.PaymentForm> {
   static __F = Symbol() as unknown as (params: { invoice: enums.InputInvoice; theme_params?: enums.DataJSON }) => enums.payments.PaymentForm;
   invoice: enums.InputInvoice;
   theme_params?: enums.DataJSON;
@@ -14715,7 +14715,7 @@ class payments_getPaymentForm_ extends Function_<enums.payments.PaymentForm> {
   }
 }
 
-class payments_getPaymentReceipt_ extends Function_<enums.payments.PaymentReceipt> {
+export class payments_getPaymentReceipt_ extends Function_<enums.payments.PaymentReceipt> {
   static __F = Symbol() as unknown as (params: { peer: enums.InputPeer; msg_id: number }) => enums.payments.PaymentReceipt;
   peer: enums.InputPeer;
   msg_id: number;
@@ -14745,7 +14745,7 @@ class payments_getPaymentReceipt_ extends Function_<enums.payments.PaymentReceip
   }
 }
 
-class payments_validateRequestedInfo_ extends Function_<enums.payments.ValidatedRequestedInfo> {
+export class payments_validateRequestedInfo_ extends Function_<enums.payments.ValidatedRequestedInfo> {
   static __F = Symbol() as unknown as (params: { save?: true; invoice: enums.InputInvoice; info: enums.PaymentRequestedInfo }) => enums.payments.ValidatedRequestedInfo;
   save?: true;
   invoice: enums.InputInvoice;
@@ -14781,7 +14781,7 @@ class payments_validateRequestedInfo_ extends Function_<enums.payments.Validated
   }
 }
 
-class payments_sendPaymentForm_ extends Function_<enums.payments.PaymentResult> {
+export class payments_sendPaymentForm_ extends Function_<enums.payments.PaymentResult> {
   static __F = Symbol() as unknown as (params: { form_id: bigint; invoice: enums.InputInvoice; requested_info_id?: string; shipping_option_id?: string; credentials: enums.InputPaymentCredentials; tip_amount?: bigint }) => enums.payments.PaymentResult;
   form_id: bigint;
   invoice: enums.InputInvoice;
@@ -14829,7 +14829,7 @@ class payments_sendPaymentForm_ extends Function_<enums.payments.PaymentResult> 
   }
 }
 
-class payments_getSavedInfo_ extends Function_<enums.payments.SavedInfo> {
+export class payments_getSavedInfo_ extends Function_<enums.payments.SavedInfo> {
   static __F = Symbol() as unknown as () => enums.payments.SavedInfo;
   protected get [id]() {
     return 0x227D824B;
@@ -14848,7 +14848,7 @@ class payments_getSavedInfo_ extends Function_<enums.payments.SavedInfo> {
   }
 }
 
-class payments_clearSavedInfo_ extends Function_<boolean> {
+export class payments_clearSavedInfo_ extends Function_<boolean> {
   static __F = Symbol() as unknown as (params?: { credentials?: true; info?: true }) => boolean;
   credentials?: true;
   info?: true;
@@ -14880,7 +14880,7 @@ class payments_clearSavedInfo_ extends Function_<boolean> {
   }
 }
 
-class payments_getBankCardData_ extends Function_<enums.payments.BankCardData> {
+export class payments_getBankCardData_ extends Function_<enums.payments.BankCardData> {
   static __F = Symbol() as unknown as (params: { number: string }) => enums.payments.BankCardData;
   number: string;
 
@@ -14906,7 +14906,7 @@ class payments_getBankCardData_ extends Function_<enums.payments.BankCardData> {
   }
 }
 
-class payments_exportInvoice_ extends Function_<enums.payments.ExportedInvoice> {
+export class payments_exportInvoice_ extends Function_<enums.payments.ExportedInvoice> {
   static __F = Symbol() as unknown as (params: { invoice_media: enums.InputMedia }) => enums.payments.ExportedInvoice;
   invoice_media: enums.InputMedia;
 
@@ -14932,7 +14932,7 @@ class payments_exportInvoice_ extends Function_<enums.payments.ExportedInvoice> 
   }
 }
 
-class payments_assignAppStoreTransaction_ extends Function_<enums.Updates> {
+export class payments_assignAppStoreTransaction_ extends Function_<enums.Updates> {
   static __F = Symbol() as unknown as (params: { receipt: Uint8Array; purpose: enums.InputStorePaymentPurpose }) => enums.Updates;
   receipt: Uint8Array;
   purpose: enums.InputStorePaymentPurpose;
@@ -14962,7 +14962,7 @@ class payments_assignAppStoreTransaction_ extends Function_<enums.Updates> {
   }
 }
 
-class payments_assignPlayMarketTransaction_ extends Function_<enums.Updates> {
+export class payments_assignPlayMarketTransaction_ extends Function_<enums.Updates> {
   static __F = Symbol() as unknown as (params: { receipt: enums.DataJSON; purpose: enums.InputStorePaymentPurpose }) => enums.Updates;
   receipt: enums.DataJSON;
   purpose: enums.InputStorePaymentPurpose;
@@ -14992,7 +14992,7 @@ class payments_assignPlayMarketTransaction_ extends Function_<enums.Updates> {
   }
 }
 
-class payments_canPurchasePremium_ extends Function_<boolean> {
+export class payments_canPurchasePremium_ extends Function_<boolean> {
   static __F = Symbol() as unknown as (params: { purpose: enums.InputStorePaymentPurpose }) => boolean;
   purpose: enums.InputStorePaymentPurpose;
 
@@ -15018,7 +15018,7 @@ class payments_canPurchasePremium_ extends Function_<boolean> {
   }
 }
 
-class payments_getPremiumGiftCodeOptions_ extends Function_<enums.PremiumGiftCodeOption[]> {
+export class payments_getPremiumGiftCodeOptions_ extends Function_<enums.PremiumGiftCodeOption[]> {
   static __F = Symbol() as unknown as (params?: { boost_peer?: enums.InputPeer }) => enums.PremiumGiftCodeOption[];
   boost_peer?: enums.InputPeer;
 
@@ -15046,7 +15046,7 @@ class payments_getPremiumGiftCodeOptions_ extends Function_<enums.PremiumGiftCod
   }
 }
 
-class payments_checkGiftCode_ extends Function_<enums.payments.CheckedGiftCode> {
+export class payments_checkGiftCode_ extends Function_<enums.payments.CheckedGiftCode> {
   static __F = Symbol() as unknown as (params: { slug: string }) => enums.payments.CheckedGiftCode;
   slug: string;
 
@@ -15072,7 +15072,7 @@ class payments_checkGiftCode_ extends Function_<enums.payments.CheckedGiftCode> 
   }
 }
 
-class payments_applyGiftCode_ extends Function_<enums.Updates> {
+export class payments_applyGiftCode_ extends Function_<enums.Updates> {
   static __F = Symbol() as unknown as (params: { slug: string }) => enums.Updates;
   slug: string;
 
@@ -15098,7 +15098,7 @@ class payments_applyGiftCode_ extends Function_<enums.Updates> {
   }
 }
 
-class payments_getGiveawayInfo_ extends Function_<enums.payments.GiveawayInfo> {
+export class payments_getGiveawayInfo_ extends Function_<enums.payments.GiveawayInfo> {
   static __F = Symbol() as unknown as (params: { peer: enums.InputPeer; msg_id: number }) => enums.payments.GiveawayInfo;
   peer: enums.InputPeer;
   msg_id: number;
@@ -15128,7 +15128,7 @@ class payments_getGiveawayInfo_ extends Function_<enums.payments.GiveawayInfo> {
   }
 }
 
-class payments_launchPrepaidGiveaway_ extends Function_<enums.Updates> {
+export class payments_launchPrepaidGiveaway_ extends Function_<enums.Updates> {
   static __F = Symbol() as unknown as (params: { peer: enums.InputPeer; giveaway_id: bigint; purpose: enums.InputStorePaymentPurpose }) => enums.Updates;
   peer: enums.InputPeer;
   giveaway_id: bigint;
@@ -15162,7 +15162,7 @@ class payments_launchPrepaidGiveaway_ extends Function_<enums.Updates> {
   }
 }
 
-class stickers_createStickerSet_ extends Function_<enums.messages.StickerSet> {
+export class stickers_createStickerSet_ extends Function_<enums.messages.StickerSet> {
   static __F = Symbol() as unknown as (params: { masks?: true; animated?: true; videos?: true; emojis?: true; text_color?: true; user_id: enums.InputUser; title: string; short_name: string; thumb?: enums.InputDocument; stickers: Array<enums.InputStickerSetItem>; software?: string }) => enums.messages.StickerSet;
   masks?: true;
   animated?: true;
@@ -15230,7 +15230,7 @@ class stickers_createStickerSet_ extends Function_<enums.messages.StickerSet> {
   }
 }
 
-class stickers_removeStickerFromSet_ extends Function_<enums.messages.StickerSet> {
+export class stickers_removeStickerFromSet_ extends Function_<enums.messages.StickerSet> {
   static __F = Symbol() as unknown as (params: { sticker: enums.InputDocument }) => enums.messages.StickerSet;
   sticker: enums.InputDocument;
 
@@ -15256,7 +15256,7 @@ class stickers_removeStickerFromSet_ extends Function_<enums.messages.StickerSet
   }
 }
 
-class stickers_changeStickerPosition_ extends Function_<enums.messages.StickerSet> {
+export class stickers_changeStickerPosition_ extends Function_<enums.messages.StickerSet> {
   static __F = Symbol() as unknown as (params: { sticker: enums.InputDocument; position: number }) => enums.messages.StickerSet;
   sticker: enums.InputDocument;
   position: number;
@@ -15286,7 +15286,7 @@ class stickers_changeStickerPosition_ extends Function_<enums.messages.StickerSe
   }
 }
 
-class stickers_addStickerToSet_ extends Function_<enums.messages.StickerSet> {
+export class stickers_addStickerToSet_ extends Function_<enums.messages.StickerSet> {
   static __F = Symbol() as unknown as (params: { stickerset: enums.InputStickerSet; sticker: enums.InputStickerSetItem }) => enums.messages.StickerSet;
   stickerset: enums.InputStickerSet;
   sticker: enums.InputStickerSetItem;
@@ -15316,7 +15316,7 @@ class stickers_addStickerToSet_ extends Function_<enums.messages.StickerSet> {
   }
 }
 
-class stickers_setStickerSetThumb_ extends Function_<enums.messages.StickerSet> {
+export class stickers_setStickerSetThumb_ extends Function_<enums.messages.StickerSet> {
   static __F = Symbol() as unknown as (params: { stickerset: enums.InputStickerSet; thumb?: enums.InputDocument; thumb_document_id?: bigint }) => enums.messages.StickerSet;
   stickerset: enums.InputStickerSet;
   thumb?: enums.InputDocument;
@@ -15352,7 +15352,7 @@ class stickers_setStickerSetThumb_ extends Function_<enums.messages.StickerSet> 
   }
 }
 
-class stickers_checkShortName_ extends Function_<boolean> {
+export class stickers_checkShortName_ extends Function_<boolean> {
   static __F = Symbol() as unknown as (params: { short_name: string }) => boolean;
   short_name: string;
 
@@ -15378,7 +15378,7 @@ class stickers_checkShortName_ extends Function_<boolean> {
   }
 }
 
-class stickers_suggestShortName_ extends Function_<enums.stickers.SuggestedShortName> {
+export class stickers_suggestShortName_ extends Function_<enums.stickers.SuggestedShortName> {
   static __F = Symbol() as unknown as (params: { title: string }) => enums.stickers.SuggestedShortName;
   title: string;
 
@@ -15404,7 +15404,7 @@ class stickers_suggestShortName_ extends Function_<enums.stickers.SuggestedShort
   }
 }
 
-class stickers_changeSticker_ extends Function_<enums.messages.StickerSet> {
+export class stickers_changeSticker_ extends Function_<enums.messages.StickerSet> {
   static __F = Symbol() as unknown as (params: { sticker: enums.InputDocument; emoji?: string; mask_coords?: enums.MaskCoords; keywords?: string }) => enums.messages.StickerSet;
   sticker: enums.InputDocument;
   emoji?: string;
@@ -15444,7 +15444,7 @@ class stickers_changeSticker_ extends Function_<enums.messages.StickerSet> {
   }
 }
 
-class stickers_renameStickerSet_ extends Function_<enums.messages.StickerSet> {
+export class stickers_renameStickerSet_ extends Function_<enums.messages.StickerSet> {
   static __F = Symbol() as unknown as (params: { stickerset: enums.InputStickerSet; title: string }) => enums.messages.StickerSet;
   stickerset: enums.InputStickerSet;
   title: string;
@@ -15474,7 +15474,7 @@ class stickers_renameStickerSet_ extends Function_<enums.messages.StickerSet> {
   }
 }
 
-class stickers_deleteStickerSet_ extends Function_<boolean> {
+export class stickers_deleteStickerSet_ extends Function_<boolean> {
   static __F = Symbol() as unknown as (params: { stickerset: enums.InputStickerSet }) => boolean;
   stickerset: enums.InputStickerSet;
 
@@ -15500,7 +15500,7 @@ class stickers_deleteStickerSet_ extends Function_<boolean> {
   }
 }
 
-class phone_getCallConfig_ extends Function_<enums.DataJSON> {
+export class phone_getCallConfig_ extends Function_<enums.DataJSON> {
   static __F = Symbol() as unknown as () => enums.DataJSON;
   protected get [id]() {
     return 0x55451FA9;
@@ -15519,7 +15519,7 @@ class phone_getCallConfig_ extends Function_<enums.DataJSON> {
   }
 }
 
-class phone_requestCall_ extends Function_<enums.phone.PhoneCall> {
+export class phone_requestCall_ extends Function_<enums.phone.PhoneCall> {
   static __F = Symbol() as unknown as (params: { video?: true; user_id: enums.InputUser; random_id: number; g_a_hash: Uint8Array; protocol: enums.PhoneCallProtocol }) => enums.phone.PhoneCall;
   video?: true;
   user_id: enums.InputUser;
@@ -15563,7 +15563,7 @@ class phone_requestCall_ extends Function_<enums.phone.PhoneCall> {
   }
 }
 
-class phone_acceptCall_ extends Function_<enums.phone.PhoneCall> {
+export class phone_acceptCall_ extends Function_<enums.phone.PhoneCall> {
   static __F = Symbol() as unknown as (params: { peer: enums.InputPhoneCall; g_b: Uint8Array; protocol: enums.PhoneCallProtocol }) => enums.phone.PhoneCall;
   peer: enums.InputPhoneCall;
   g_b: Uint8Array;
@@ -15597,7 +15597,7 @@ class phone_acceptCall_ extends Function_<enums.phone.PhoneCall> {
   }
 }
 
-class phone_confirmCall_ extends Function_<enums.phone.PhoneCall> {
+export class phone_confirmCall_ extends Function_<enums.phone.PhoneCall> {
   static __F = Symbol() as unknown as (params: { peer: enums.InputPhoneCall; g_a: Uint8Array; key_fingerprint: bigint; protocol: enums.PhoneCallProtocol }) => enums.phone.PhoneCall;
   peer: enums.InputPhoneCall;
   g_a: Uint8Array;
@@ -15635,7 +15635,7 @@ class phone_confirmCall_ extends Function_<enums.phone.PhoneCall> {
   }
 }
 
-class phone_receivedCall_ extends Function_<boolean> {
+export class phone_receivedCall_ extends Function_<boolean> {
   static __F = Symbol() as unknown as (params: { peer: enums.InputPhoneCall }) => boolean;
   peer: enums.InputPhoneCall;
 
@@ -15661,7 +15661,7 @@ class phone_receivedCall_ extends Function_<boolean> {
   }
 }
 
-class phone_discardCall_ extends Function_<enums.Updates> {
+export class phone_discardCall_ extends Function_<enums.Updates> {
   static __F = Symbol() as unknown as (params: { video?: true; peer: enums.InputPhoneCall; duration: number; reason: enums.PhoneCallDiscardReason; connection_id: bigint }) => enums.Updates;
   video?: true;
   peer: enums.InputPhoneCall;
@@ -15705,7 +15705,7 @@ class phone_discardCall_ extends Function_<enums.Updates> {
   }
 }
 
-class phone_setCallRating_ extends Function_<enums.Updates> {
+export class phone_setCallRating_ extends Function_<enums.Updates> {
   static __F = Symbol() as unknown as (params: { user_initiative?: true; peer: enums.InputPhoneCall; rating: number; comment: string }) => enums.Updates;
   user_initiative?: true;
   peer: enums.InputPhoneCall;
@@ -15745,7 +15745,7 @@ class phone_setCallRating_ extends Function_<enums.Updates> {
   }
 }
 
-class phone_saveCallDebug_ extends Function_<boolean> {
+export class phone_saveCallDebug_ extends Function_<boolean> {
   static __F = Symbol() as unknown as (params: { peer: enums.InputPhoneCall; debug: enums.DataJSON }) => boolean;
   peer: enums.InputPhoneCall;
   debug: enums.DataJSON;
@@ -15775,7 +15775,7 @@ class phone_saveCallDebug_ extends Function_<boolean> {
   }
 }
 
-class phone_sendSignalingData_ extends Function_<boolean> {
+export class phone_sendSignalingData_ extends Function_<boolean> {
   static __F = Symbol() as unknown as (params: { peer: enums.InputPhoneCall; data: Uint8Array }) => boolean;
   peer: enums.InputPhoneCall;
   data: Uint8Array;
@@ -15805,7 +15805,7 @@ class phone_sendSignalingData_ extends Function_<boolean> {
   }
 }
 
-class phone_createGroupCall_ extends Function_<enums.Updates> {
+export class phone_createGroupCall_ extends Function_<enums.Updates> {
   static __F = Symbol() as unknown as (params: { rtmp_stream?: true; peer: enums.InputPeer; random_id: number; title?: string; schedule_date?: number }) => enums.Updates;
   rtmp_stream?: true;
   peer: enums.InputPeer;
@@ -15849,7 +15849,7 @@ class phone_createGroupCall_ extends Function_<enums.Updates> {
   }
 }
 
-class phone_joinGroupCall_ extends Function_<enums.Updates> {
+export class phone_joinGroupCall_ extends Function_<enums.Updates> {
   static __F = Symbol() as unknown as (params: { muted?: true; video_stopped?: true; call: enums.InputGroupCall; join_as: enums.InputPeer; invite_hash?: string; params: enums.DataJSON }) => enums.Updates;
   muted?: true;
   video_stopped?: true;
@@ -15897,7 +15897,7 @@ class phone_joinGroupCall_ extends Function_<enums.Updates> {
   }
 }
 
-class phone_leaveGroupCall_ extends Function_<enums.Updates> {
+export class phone_leaveGroupCall_ extends Function_<enums.Updates> {
   static __F = Symbol() as unknown as (params: { call: enums.InputGroupCall; source: number }) => enums.Updates;
   call: enums.InputGroupCall;
   source: number;
@@ -15927,7 +15927,7 @@ class phone_leaveGroupCall_ extends Function_<enums.Updates> {
   }
 }
 
-class phone_inviteToGroupCall_ extends Function_<enums.Updates> {
+export class phone_inviteToGroupCall_ extends Function_<enums.Updates> {
   static __F = Symbol() as unknown as (params: { call: enums.InputGroupCall; users: Array<enums.InputUser> }) => enums.Updates;
   call: enums.InputGroupCall;
   users: Array<enums.InputUser>;
@@ -15957,7 +15957,7 @@ class phone_inviteToGroupCall_ extends Function_<enums.Updates> {
   }
 }
 
-class phone_discardGroupCall_ extends Function_<enums.Updates> {
+export class phone_discardGroupCall_ extends Function_<enums.Updates> {
   static __F = Symbol() as unknown as (params: { call: enums.InputGroupCall }) => enums.Updates;
   call: enums.InputGroupCall;
 
@@ -15983,7 +15983,7 @@ class phone_discardGroupCall_ extends Function_<enums.Updates> {
   }
 }
 
-class phone_toggleGroupCallSettings_ extends Function_<enums.Updates> {
+export class phone_toggleGroupCallSettings_ extends Function_<enums.Updates> {
   static __F = Symbol() as unknown as (params: { reset_invite_hash?: true; call: enums.InputGroupCall; join_muted?: boolean }) => enums.Updates;
   reset_invite_hash?: true;
   call: enums.InputGroupCall;
@@ -16019,7 +16019,7 @@ class phone_toggleGroupCallSettings_ extends Function_<enums.Updates> {
   }
 }
 
-class phone_getGroupCall_ extends Function_<enums.phone.GroupCall> {
+export class phone_getGroupCall_ extends Function_<enums.phone.GroupCall> {
   static __F = Symbol() as unknown as (params: { call: enums.InputGroupCall; limit: number }) => enums.phone.GroupCall;
   call: enums.InputGroupCall;
   limit: number;
@@ -16049,7 +16049,7 @@ class phone_getGroupCall_ extends Function_<enums.phone.GroupCall> {
   }
 }
 
-class phone_getGroupParticipants_ extends Function_<enums.phone.GroupParticipants> {
+export class phone_getGroupParticipants_ extends Function_<enums.phone.GroupParticipants> {
   static __F = Symbol() as unknown as (params: { call: enums.InputGroupCall; ids: Array<enums.InputPeer>; sources: Array<number>; offset: string; limit: number }) => enums.phone.GroupParticipants;
   call: enums.InputGroupCall;
   ids: Array<enums.InputPeer>;
@@ -16091,7 +16091,7 @@ class phone_getGroupParticipants_ extends Function_<enums.phone.GroupParticipant
   }
 }
 
-class phone_checkGroupCall_ extends Function_<number[]> {
+export class phone_checkGroupCall_ extends Function_<number[]> {
   static __F = Symbol() as unknown as (params: { call: enums.InputGroupCall; sources: Array<number> }) => number[];
   call: enums.InputGroupCall;
   sources: Array<number>;
@@ -16121,7 +16121,7 @@ class phone_checkGroupCall_ extends Function_<number[]> {
   }
 }
 
-class phone_toggleGroupCallRecord_ extends Function_<enums.Updates> {
+export class phone_toggleGroupCallRecord_ extends Function_<enums.Updates> {
   static __F = Symbol() as unknown as (params: { start?: true; video?: true; call: enums.InputGroupCall; title?: string; video_portrait?: boolean }) => enums.Updates;
   start?: true;
   video?: true;
@@ -16165,7 +16165,7 @@ class phone_toggleGroupCallRecord_ extends Function_<enums.Updates> {
   }
 }
 
-class phone_editGroupCallParticipant_ extends Function_<enums.Updates> {
+export class phone_editGroupCallParticipant_ extends Function_<enums.Updates> {
   static __F = Symbol() as unknown as (params: { call: enums.InputGroupCall; participant: enums.InputPeer; muted?: boolean; volume?: number; raise_hand?: boolean; video_stopped?: boolean; video_paused?: boolean; presentation_paused?: boolean }) => enums.Updates;
   call: enums.InputGroupCall;
   participant: enums.InputPeer;
@@ -16221,7 +16221,7 @@ class phone_editGroupCallParticipant_ extends Function_<enums.Updates> {
   }
 }
 
-class phone_editGroupCallTitle_ extends Function_<enums.Updates> {
+export class phone_editGroupCallTitle_ extends Function_<enums.Updates> {
   static __F = Symbol() as unknown as (params: { call: enums.InputGroupCall; title: string }) => enums.Updates;
   call: enums.InputGroupCall;
   title: string;
@@ -16251,7 +16251,7 @@ class phone_editGroupCallTitle_ extends Function_<enums.Updates> {
   }
 }
 
-class phone_getGroupCallJoinAs_ extends Function_<enums.phone.JoinAsPeers> {
+export class phone_getGroupCallJoinAs_ extends Function_<enums.phone.JoinAsPeers> {
   static __F = Symbol() as unknown as (params: { peer: enums.InputPeer }) => enums.phone.JoinAsPeers;
   peer: enums.InputPeer;
 
@@ -16277,7 +16277,7 @@ class phone_getGroupCallJoinAs_ extends Function_<enums.phone.JoinAsPeers> {
   }
 }
 
-class phone_exportGroupCallInvite_ extends Function_<enums.phone.ExportedGroupCallInvite> {
+export class phone_exportGroupCallInvite_ extends Function_<enums.phone.ExportedGroupCallInvite> {
   static __F = Symbol() as unknown as (params: { can_self_unmute?: true; call: enums.InputGroupCall }) => enums.phone.ExportedGroupCallInvite;
   can_self_unmute?: true;
   call: enums.InputGroupCall;
@@ -16309,7 +16309,7 @@ class phone_exportGroupCallInvite_ extends Function_<enums.phone.ExportedGroupCa
   }
 }
 
-class phone_toggleGroupCallStartSubscription_ extends Function_<enums.Updates> {
+export class phone_toggleGroupCallStartSubscription_ extends Function_<enums.Updates> {
   static __F = Symbol() as unknown as (params: { call: enums.InputGroupCall; subscribed: boolean }) => enums.Updates;
   call: enums.InputGroupCall;
   subscribed: boolean;
@@ -16339,7 +16339,7 @@ class phone_toggleGroupCallStartSubscription_ extends Function_<enums.Updates> {
   }
 }
 
-class phone_startScheduledGroupCall_ extends Function_<enums.Updates> {
+export class phone_startScheduledGroupCall_ extends Function_<enums.Updates> {
   static __F = Symbol() as unknown as (params: { call: enums.InputGroupCall }) => enums.Updates;
   call: enums.InputGroupCall;
 
@@ -16365,7 +16365,7 @@ class phone_startScheduledGroupCall_ extends Function_<enums.Updates> {
   }
 }
 
-class phone_saveDefaultGroupCallJoinAs_ extends Function_<boolean> {
+export class phone_saveDefaultGroupCallJoinAs_ extends Function_<boolean> {
   static __F = Symbol() as unknown as (params: { peer: enums.InputPeer; join_as: enums.InputPeer }) => boolean;
   peer: enums.InputPeer;
   join_as: enums.InputPeer;
@@ -16395,7 +16395,7 @@ class phone_saveDefaultGroupCallJoinAs_ extends Function_<boolean> {
   }
 }
 
-class phone_joinGroupCallPresentation_ extends Function_<enums.Updates> {
+export class phone_joinGroupCallPresentation_ extends Function_<enums.Updates> {
   static __F = Symbol() as unknown as (params: { call: enums.InputGroupCall; params: enums.DataJSON }) => enums.Updates;
   call: enums.InputGroupCall;
   params: enums.DataJSON;
@@ -16425,7 +16425,7 @@ class phone_joinGroupCallPresentation_ extends Function_<enums.Updates> {
   }
 }
 
-class phone_leaveGroupCallPresentation_ extends Function_<enums.Updates> {
+export class phone_leaveGroupCallPresentation_ extends Function_<enums.Updates> {
   static __F = Symbol() as unknown as (params: { call: enums.InputGroupCall }) => enums.Updates;
   call: enums.InputGroupCall;
 
@@ -16451,7 +16451,7 @@ class phone_leaveGroupCallPresentation_ extends Function_<enums.Updates> {
   }
 }
 
-class phone_getGroupCallStreamChannels_ extends Function_<enums.phone.GroupCallStreamChannels> {
+export class phone_getGroupCallStreamChannels_ extends Function_<enums.phone.GroupCallStreamChannels> {
   static __F = Symbol() as unknown as (params: { call: enums.InputGroupCall }) => enums.phone.GroupCallStreamChannels;
   call: enums.InputGroupCall;
 
@@ -16477,7 +16477,7 @@ class phone_getGroupCallStreamChannels_ extends Function_<enums.phone.GroupCallS
   }
 }
 
-class phone_getGroupCallStreamRtmpUrl_ extends Function_<enums.phone.GroupCallStreamRtmpUrl> {
+export class phone_getGroupCallStreamRtmpUrl_ extends Function_<enums.phone.GroupCallStreamRtmpUrl> {
   static __F = Symbol() as unknown as (params: { peer: enums.InputPeer; revoke: boolean }) => enums.phone.GroupCallStreamRtmpUrl;
   peer: enums.InputPeer;
   revoke: boolean;
@@ -16507,7 +16507,7 @@ class phone_getGroupCallStreamRtmpUrl_ extends Function_<enums.phone.GroupCallSt
   }
 }
 
-class phone_saveCallLog_ extends Function_<boolean> {
+export class phone_saveCallLog_ extends Function_<boolean> {
   static __F = Symbol() as unknown as (params: { peer: enums.InputPhoneCall; file: enums.InputFile }) => boolean;
   peer: enums.InputPhoneCall;
   file: enums.InputFile;
@@ -16537,7 +16537,7 @@ class phone_saveCallLog_ extends Function_<boolean> {
   }
 }
 
-class langpack_getLangPack_ extends Function_<enums.LangPackDifference> {
+export class langpack_getLangPack_ extends Function_<enums.LangPackDifference> {
   static __F = Symbol() as unknown as (params: { lang_pack: string; lang_code: string }) => enums.LangPackDifference;
   lang_pack: string;
   lang_code: string;
@@ -16567,7 +16567,7 @@ class langpack_getLangPack_ extends Function_<enums.LangPackDifference> {
   }
 }
 
-class langpack_getStrings_ extends Function_<enums.LangPackString[]> {
+export class langpack_getStrings_ extends Function_<enums.LangPackString[]> {
   static __F = Symbol() as unknown as (params: { lang_pack: string; lang_code: string; keys: Array<string> }) => enums.LangPackString[];
   lang_pack: string;
   lang_code: string;
@@ -16601,7 +16601,7 @@ class langpack_getStrings_ extends Function_<enums.LangPackString[]> {
   }
 }
 
-class langpack_getDifference_ extends Function_<enums.LangPackDifference> {
+export class langpack_getDifference_ extends Function_<enums.LangPackDifference> {
   static __F = Symbol() as unknown as (params: { lang_pack: string; lang_code: string; from_version: number }) => enums.LangPackDifference;
   lang_pack: string;
   lang_code: string;
@@ -16635,7 +16635,7 @@ class langpack_getDifference_ extends Function_<enums.LangPackDifference> {
   }
 }
 
-class langpack_getLanguages_ extends Function_<enums.LangPackLanguage[]> {
+export class langpack_getLanguages_ extends Function_<enums.LangPackLanguage[]> {
   static __F = Symbol() as unknown as (params: { lang_pack: string }) => enums.LangPackLanguage[];
   lang_pack: string;
 
@@ -16661,7 +16661,7 @@ class langpack_getLanguages_ extends Function_<enums.LangPackLanguage[]> {
   }
 }
 
-class langpack_getLanguage_ extends Function_<enums.LangPackLanguage> {
+export class langpack_getLanguage_ extends Function_<enums.LangPackLanguage> {
   static __F = Symbol() as unknown as (params: { lang_pack: string; lang_code: string }) => enums.LangPackLanguage;
   lang_pack: string;
   lang_code: string;
@@ -16691,7 +16691,7 @@ class langpack_getLanguage_ extends Function_<enums.LangPackLanguage> {
   }
 }
 
-class folders_editPeerFolders_ extends Function_<enums.Updates> {
+export class folders_editPeerFolders_ extends Function_<enums.Updates> {
   static __F = Symbol() as unknown as (params: { folder_peers: Array<enums.InputFolderPeer> }) => enums.Updates;
   folder_peers: Array<enums.InputFolderPeer>;
 
@@ -16717,7 +16717,7 @@ class folders_editPeerFolders_ extends Function_<enums.Updates> {
   }
 }
 
-class stats_getBroadcastStats_ extends Function_<enums.stats.BroadcastStats> {
+export class stats_getBroadcastStats_ extends Function_<enums.stats.BroadcastStats> {
   static __F = Symbol() as unknown as (params: { dark?: true; channel: enums.InputChannel }) => enums.stats.BroadcastStats;
   dark?: true;
   channel: enums.InputChannel;
@@ -16749,7 +16749,7 @@ class stats_getBroadcastStats_ extends Function_<enums.stats.BroadcastStats> {
   }
 }
 
-class stats_loadAsyncGraph_ extends Function_<enums.StatsGraph> {
+export class stats_loadAsyncGraph_ extends Function_<enums.StatsGraph> {
   static __F = Symbol() as unknown as (params: { token: string; x?: bigint }) => enums.StatsGraph;
   token: string;
   x?: bigint;
@@ -16781,7 +16781,7 @@ class stats_loadAsyncGraph_ extends Function_<enums.StatsGraph> {
   }
 }
 
-class stats_getMegagroupStats_ extends Function_<enums.stats.MegagroupStats> {
+export class stats_getMegagroupStats_ extends Function_<enums.stats.MegagroupStats> {
   static __F = Symbol() as unknown as (params: { dark?: true; channel: enums.InputChannel }) => enums.stats.MegagroupStats;
   dark?: true;
   channel: enums.InputChannel;
@@ -16813,7 +16813,7 @@ class stats_getMegagroupStats_ extends Function_<enums.stats.MegagroupStats> {
   }
 }
 
-class stats_getMessagePublicForwards_ extends Function_<enums.messages.Messages> {
+export class stats_getMessagePublicForwards_ extends Function_<enums.messages.Messages> {
   static __F = Symbol() as unknown as (params: { channel: enums.InputChannel; msg_id: number; offset_rate: number; offset_peer: enums.InputPeer; offset_id: number; limit: number }) => enums.messages.Messages;
   channel: enums.InputChannel;
   msg_id: number;
@@ -16859,7 +16859,7 @@ class stats_getMessagePublicForwards_ extends Function_<enums.messages.Messages>
   }
 }
 
-class stats_getMessageStats_ extends Function_<enums.stats.MessageStats> {
+export class stats_getMessageStats_ extends Function_<enums.stats.MessageStats> {
   static __F = Symbol() as unknown as (params: { dark?: true; channel: enums.InputChannel; msg_id: number }) => enums.stats.MessageStats;
   dark?: true;
   channel: enums.InputChannel;
@@ -16895,7 +16895,7 @@ class stats_getMessageStats_ extends Function_<enums.stats.MessageStats> {
   }
 }
 
-class stats_getStoryStats_ extends Function_<enums.stats.StoryStats> {
+export class stats_getStoryStats_ extends Function_<enums.stats.StoryStats> {
   static __F = Symbol() as unknown as (params: { dark?: true; peer: enums.InputPeer; id: number }) => enums.stats.StoryStats;
   dark?: true;
   peer: enums.InputPeer;
@@ -16931,7 +16931,7 @@ class stats_getStoryStats_ extends Function_<enums.stats.StoryStats> {
   }
 }
 
-class stats_getStoryPublicForwards_ extends Function_<enums.stats.PublicForwards> {
+export class stats_getStoryPublicForwards_ extends Function_<enums.stats.PublicForwards> {
   static __F = Symbol() as unknown as (params: { peer: enums.InputPeer; id: number; offset: string; limit: number }) => enums.stats.PublicForwards;
   peer: enums.InputPeer;
   id: number;
@@ -16969,7 +16969,7 @@ class stats_getStoryPublicForwards_ extends Function_<enums.stats.PublicForwards
   }
 }
 
-class chatlists_exportChatlistInvite_ extends Function_<enums.chatlists.ExportedChatlistInvite> {
+export class chatlists_exportChatlistInvite_ extends Function_<enums.chatlists.ExportedChatlistInvite> {
   static __F = Symbol() as unknown as (params: { chatlist: enums.InputChatlist; title: string; peers: Array<enums.InputPeer> }) => enums.chatlists.ExportedChatlistInvite;
   chatlist: enums.InputChatlist;
   title: string;
@@ -17003,7 +17003,7 @@ class chatlists_exportChatlistInvite_ extends Function_<enums.chatlists.Exported
   }
 }
 
-class chatlists_deleteExportedInvite_ extends Function_<boolean> {
+export class chatlists_deleteExportedInvite_ extends Function_<boolean> {
   static __F = Symbol() as unknown as (params: { chatlist: enums.InputChatlist; slug: string }) => boolean;
   chatlist: enums.InputChatlist;
   slug: string;
@@ -17033,7 +17033,7 @@ class chatlists_deleteExportedInvite_ extends Function_<boolean> {
   }
 }
 
-class chatlists_editExportedInvite_ extends Function_<enums.ExportedChatlistInvite> {
+export class chatlists_editExportedInvite_ extends Function_<enums.ExportedChatlistInvite> {
   static __F = Symbol() as unknown as (params: { chatlist: enums.InputChatlist; slug: string; title?: string; peers?: Array<enums.InputPeer> }) => enums.ExportedChatlistInvite;
   chatlist: enums.InputChatlist;
   slug: string;
@@ -17073,7 +17073,7 @@ class chatlists_editExportedInvite_ extends Function_<enums.ExportedChatlistInvi
   }
 }
 
-class chatlists_getExportedInvites_ extends Function_<enums.chatlists.ExportedInvites> {
+export class chatlists_getExportedInvites_ extends Function_<enums.chatlists.ExportedInvites> {
   static __F = Symbol() as unknown as (params: { chatlist: enums.InputChatlist }) => enums.chatlists.ExportedInvites;
   chatlist: enums.InputChatlist;
 
@@ -17099,7 +17099,7 @@ class chatlists_getExportedInvites_ extends Function_<enums.chatlists.ExportedIn
   }
 }
 
-class chatlists_checkChatlistInvite_ extends Function_<enums.chatlists.ChatlistInvite> {
+export class chatlists_checkChatlistInvite_ extends Function_<enums.chatlists.ChatlistInvite> {
   static __F = Symbol() as unknown as (params: { slug: string }) => enums.chatlists.ChatlistInvite;
   slug: string;
 
@@ -17125,7 +17125,7 @@ class chatlists_checkChatlistInvite_ extends Function_<enums.chatlists.ChatlistI
   }
 }
 
-class chatlists_joinChatlistInvite_ extends Function_<enums.Updates> {
+export class chatlists_joinChatlistInvite_ extends Function_<enums.Updates> {
   static __F = Symbol() as unknown as (params: { slug: string; peers: Array<enums.InputPeer> }) => enums.Updates;
   slug: string;
   peers: Array<enums.InputPeer>;
@@ -17155,7 +17155,7 @@ class chatlists_joinChatlistInvite_ extends Function_<enums.Updates> {
   }
 }
 
-class chatlists_getChatlistUpdates_ extends Function_<enums.chatlists.ChatlistUpdates> {
+export class chatlists_getChatlistUpdates_ extends Function_<enums.chatlists.ChatlistUpdates> {
   static __F = Symbol() as unknown as (params: { chatlist: enums.InputChatlist }) => enums.chatlists.ChatlistUpdates;
   chatlist: enums.InputChatlist;
 
@@ -17181,7 +17181,7 @@ class chatlists_getChatlistUpdates_ extends Function_<enums.chatlists.ChatlistUp
   }
 }
 
-class chatlists_joinChatlistUpdates_ extends Function_<enums.Updates> {
+export class chatlists_joinChatlistUpdates_ extends Function_<enums.Updates> {
   static __F = Symbol() as unknown as (params: { chatlist: enums.InputChatlist; peers: Array<enums.InputPeer> }) => enums.Updates;
   chatlist: enums.InputChatlist;
   peers: Array<enums.InputPeer>;
@@ -17211,7 +17211,7 @@ class chatlists_joinChatlistUpdates_ extends Function_<enums.Updates> {
   }
 }
 
-class chatlists_hideChatlistUpdates_ extends Function_<boolean> {
+export class chatlists_hideChatlistUpdates_ extends Function_<boolean> {
   static __F = Symbol() as unknown as (params: { chatlist: enums.InputChatlist }) => boolean;
   chatlist: enums.InputChatlist;
 
@@ -17237,7 +17237,7 @@ class chatlists_hideChatlistUpdates_ extends Function_<boolean> {
   }
 }
 
-class chatlists_getLeaveChatlistSuggestions_ extends Function_<enums.Peer[]> {
+export class chatlists_getLeaveChatlistSuggestions_ extends Function_<enums.Peer[]> {
   static __F = Symbol() as unknown as (params: { chatlist: enums.InputChatlist }) => enums.Peer[];
   chatlist: enums.InputChatlist;
 
@@ -17263,7 +17263,7 @@ class chatlists_getLeaveChatlistSuggestions_ extends Function_<enums.Peer[]> {
   }
 }
 
-class chatlists_leaveChatlist_ extends Function_<enums.Updates> {
+export class chatlists_leaveChatlist_ extends Function_<enums.Updates> {
   static __F = Symbol() as unknown as (params: { chatlist: enums.InputChatlist; peers: Array<enums.InputPeer> }) => enums.Updates;
   chatlist: enums.InputChatlist;
   peers: Array<enums.InputPeer>;
@@ -17293,7 +17293,7 @@ class chatlists_leaveChatlist_ extends Function_<enums.Updates> {
   }
 }
 
-class stories_canSendStory_ extends Function_<boolean> {
+export class stories_canSendStory_ extends Function_<boolean> {
   static __F = Symbol() as unknown as (params: { peer: enums.InputPeer }) => boolean;
   peer: enums.InputPeer;
 
@@ -17319,7 +17319,7 @@ class stories_canSendStory_ extends Function_<boolean> {
   }
 }
 
-class stories_sendStory_ extends Function_<enums.Updates> {
+export class stories_sendStory_ extends Function_<enums.Updates> {
   static __F = Symbol() as unknown as (params: { pinned?: true; noforwards?: true; fwd_modified?: true; peer: enums.InputPeer; media: enums.InputMedia; media_areas?: Array<enums.MediaArea>; caption?: string; entities?: Array<enums.MessageEntity>; privacy_rules: Array<enums.InputPrivacyRule>; random_id: bigint; period?: number; fwd_from_id?: enums.InputPeer; fwd_from_story?: number }) => enums.Updates;
   pinned?: true;
   noforwards?: true;
@@ -17395,7 +17395,7 @@ class stories_sendStory_ extends Function_<enums.Updates> {
   }
 }
 
-class stories_editStory_ extends Function_<enums.Updates> {
+export class stories_editStory_ extends Function_<enums.Updates> {
   static __F = Symbol() as unknown as (params: { peer: enums.InputPeer; id: number; media?: enums.InputMedia; media_areas?: Array<enums.MediaArea>; caption?: string; entities?: Array<enums.MessageEntity>; privacy_rules?: Array<enums.InputPrivacyRule> }) => enums.Updates;
   peer: enums.InputPeer;
   id: number;
@@ -17447,7 +17447,7 @@ class stories_editStory_ extends Function_<enums.Updates> {
   }
 }
 
-class stories_deleteStories_ extends Function_<number[]> {
+export class stories_deleteStories_ extends Function_<number[]> {
   static __F = Symbol() as unknown as (params: { peer: enums.InputPeer; id: Array<number> }) => number[];
   peer: enums.InputPeer;
   id: Array<number>;
@@ -17477,7 +17477,7 @@ class stories_deleteStories_ extends Function_<number[]> {
   }
 }
 
-class stories_togglePinned_ extends Function_<number[]> {
+export class stories_togglePinned_ extends Function_<number[]> {
   static __F = Symbol() as unknown as (params: { peer: enums.InputPeer; id: Array<number>; pinned: boolean }) => number[];
   peer: enums.InputPeer;
   id: Array<number>;
@@ -17511,7 +17511,7 @@ class stories_togglePinned_ extends Function_<number[]> {
   }
 }
 
-class stories_getAllStories_ extends Function_<enums.stories.AllStories> {
+export class stories_getAllStories_ extends Function_<enums.stories.AllStories> {
   static __F = Symbol() as unknown as (params?: { next?: true; hidden?: true; state?: string }) => enums.stories.AllStories;
   next?: true;
   hidden?: true;
@@ -17547,7 +17547,7 @@ class stories_getAllStories_ extends Function_<enums.stories.AllStories> {
   }
 }
 
-class stories_getPinnedStories_ extends Function_<enums.stories.Stories> {
+export class stories_getPinnedStories_ extends Function_<enums.stories.Stories> {
   static __F = Symbol() as unknown as (params: { peer: enums.InputPeer; offset_id: number; limit: number }) => enums.stories.Stories;
   peer: enums.InputPeer;
   offset_id: number;
@@ -17581,7 +17581,7 @@ class stories_getPinnedStories_ extends Function_<enums.stories.Stories> {
   }
 }
 
-class stories_getStoriesArchive_ extends Function_<enums.stories.Stories> {
+export class stories_getStoriesArchive_ extends Function_<enums.stories.Stories> {
   static __F = Symbol() as unknown as (params: { peer: enums.InputPeer; offset_id: number; limit: number }) => enums.stories.Stories;
   peer: enums.InputPeer;
   offset_id: number;
@@ -17615,7 +17615,7 @@ class stories_getStoriesArchive_ extends Function_<enums.stories.Stories> {
   }
 }
 
-class stories_getStoriesByID_ extends Function_<enums.stories.Stories> {
+export class stories_getStoriesByID_ extends Function_<enums.stories.Stories> {
   static __F = Symbol() as unknown as (params: { peer: enums.InputPeer; id: Array<number> }) => enums.stories.Stories;
   peer: enums.InputPeer;
   id: Array<number>;
@@ -17645,7 +17645,7 @@ class stories_getStoriesByID_ extends Function_<enums.stories.Stories> {
   }
 }
 
-class stories_toggleAllStoriesHidden_ extends Function_<boolean> {
+export class stories_toggleAllStoriesHidden_ extends Function_<boolean> {
   static __F = Symbol() as unknown as (params: { hidden: boolean }) => boolean;
   hidden: boolean;
 
@@ -17671,7 +17671,7 @@ class stories_toggleAllStoriesHidden_ extends Function_<boolean> {
   }
 }
 
-class stories_readStories_ extends Function_<number[]> {
+export class stories_readStories_ extends Function_<number[]> {
   static __F = Symbol() as unknown as (params: { peer: enums.InputPeer; max_id: number }) => number[];
   peer: enums.InputPeer;
   max_id: number;
@@ -17701,7 +17701,7 @@ class stories_readStories_ extends Function_<number[]> {
   }
 }
 
-class stories_incrementStoryViews_ extends Function_<boolean> {
+export class stories_incrementStoryViews_ extends Function_<boolean> {
   static __F = Symbol() as unknown as (params: { peer: enums.InputPeer; id: Array<number> }) => boolean;
   peer: enums.InputPeer;
   id: Array<number>;
@@ -17731,7 +17731,7 @@ class stories_incrementStoryViews_ extends Function_<boolean> {
   }
 }
 
-class stories_getStoryViewsList_ extends Function_<enums.stories.StoryViewsList> {
+export class stories_getStoryViewsList_ extends Function_<enums.stories.StoryViewsList> {
   static __F = Symbol() as unknown as (params: { just_contacts?: true; reactions_first?: true; peer: enums.InputPeer; q?: string; id: number; offset: string; limit: number }) => enums.stories.StoryViewsList;
   just_contacts?: true;
   reactions_first?: true;
@@ -17783,7 +17783,7 @@ class stories_getStoryViewsList_ extends Function_<enums.stories.StoryViewsList>
   }
 }
 
-class stories_getStoriesViews_ extends Function_<enums.stories.StoryViews> {
+export class stories_getStoriesViews_ extends Function_<enums.stories.StoryViews> {
   static __F = Symbol() as unknown as (params: { peer: enums.InputPeer; id: Array<number> }) => enums.stories.StoryViews;
   peer: enums.InputPeer;
   id: Array<number>;
@@ -17813,7 +17813,7 @@ class stories_getStoriesViews_ extends Function_<enums.stories.StoryViews> {
   }
 }
 
-class stories_exportStoryLink_ extends Function_<enums.ExportedStoryLink> {
+export class stories_exportStoryLink_ extends Function_<enums.ExportedStoryLink> {
   static __F = Symbol() as unknown as (params: { peer: enums.InputPeer; id: number }) => enums.ExportedStoryLink;
   peer: enums.InputPeer;
   id: number;
@@ -17843,7 +17843,7 @@ class stories_exportStoryLink_ extends Function_<enums.ExportedStoryLink> {
   }
 }
 
-class stories_report_ extends Function_<boolean> {
+export class stories_report_ extends Function_<boolean> {
   static __F = Symbol() as unknown as (params: { peer: enums.InputPeer; id: Array<number>; reason: enums.ReportReason; message: string }) => boolean;
   peer: enums.InputPeer;
   id: Array<number>;
@@ -17881,7 +17881,7 @@ class stories_report_ extends Function_<boolean> {
   }
 }
 
-class stories_activateStealthMode_ extends Function_<enums.Updates> {
+export class stories_activateStealthMode_ extends Function_<enums.Updates> {
   static __F = Symbol() as unknown as (params?: { past?: true; future?: true }) => enums.Updates;
   past?: true;
   future?: true;
@@ -17913,7 +17913,7 @@ class stories_activateStealthMode_ extends Function_<enums.Updates> {
   }
 }
 
-class stories_sendReaction_ extends Function_<enums.Updates> {
+export class stories_sendReaction_ extends Function_<enums.Updates> {
   static __F = Symbol() as unknown as (params: { add_to_recent?: true; peer: enums.InputPeer; story_id: number; reaction: enums.Reaction }) => enums.Updates;
   add_to_recent?: true;
   peer: enums.InputPeer;
@@ -17953,7 +17953,7 @@ class stories_sendReaction_ extends Function_<enums.Updates> {
   }
 }
 
-class stories_getPeerStories_ extends Function_<enums.stories.PeerStories> {
+export class stories_getPeerStories_ extends Function_<enums.stories.PeerStories> {
   static __F = Symbol() as unknown as (params: { peer: enums.InputPeer }) => enums.stories.PeerStories;
   peer: enums.InputPeer;
 
@@ -17979,7 +17979,7 @@ class stories_getPeerStories_ extends Function_<enums.stories.PeerStories> {
   }
 }
 
-class stories_getAllReadPeerStories_ extends Function_<enums.Updates> {
+export class stories_getAllReadPeerStories_ extends Function_<enums.Updates> {
   static __F = Symbol() as unknown as () => enums.Updates;
   protected get [id]() {
     return 0x9B5AE7F9;
@@ -17998,7 +17998,7 @@ class stories_getAllReadPeerStories_ extends Function_<enums.Updates> {
   }
 }
 
-class stories_getPeerMaxIDs_ extends Function_<number[]> {
+export class stories_getPeerMaxIDs_ extends Function_<number[]> {
   static __F = Symbol() as unknown as (params: { id: Array<enums.InputPeer> }) => number[];
   id: Array<enums.InputPeer>;
 
@@ -18024,7 +18024,7 @@ class stories_getPeerMaxIDs_ extends Function_<number[]> {
   }
 }
 
-class stories_getChatsToSend_ extends Function_<enums.messages.Chats> {
+export class stories_getChatsToSend_ extends Function_<enums.messages.Chats> {
   static __F = Symbol() as unknown as () => enums.messages.Chats;
   protected get [id]() {
     return 0xA56A8B60;
@@ -18043,7 +18043,7 @@ class stories_getChatsToSend_ extends Function_<enums.messages.Chats> {
   }
 }
 
-class stories_togglePeerStoriesHidden_ extends Function_<boolean> {
+export class stories_togglePeerStoriesHidden_ extends Function_<boolean> {
   static __F = Symbol() as unknown as (params: { peer: enums.InputPeer; hidden: boolean }) => boolean;
   peer: enums.InputPeer;
   hidden: boolean;
@@ -18073,7 +18073,7 @@ class stories_togglePeerStoriesHidden_ extends Function_<boolean> {
   }
 }
 
-class premium_getBoostsList_ extends Function_<enums.premium.BoostsList> {
+export class premium_getBoostsList_ extends Function_<enums.premium.BoostsList> {
   static __F = Symbol() as unknown as (params: { gifts?: true; peer: enums.InputPeer; offset: string; limit: number }) => enums.premium.BoostsList;
   gifts?: true;
   peer: enums.InputPeer;
@@ -18113,7 +18113,7 @@ class premium_getBoostsList_ extends Function_<enums.premium.BoostsList> {
   }
 }
 
-class premium_getMyBoosts_ extends Function_<enums.premium.MyBoosts> {
+export class premium_getMyBoosts_ extends Function_<enums.premium.MyBoosts> {
   static __F = Symbol() as unknown as () => enums.premium.MyBoosts;
   protected get [id]() {
     return 0x0BE77B4A;
@@ -18132,7 +18132,7 @@ class premium_getMyBoosts_ extends Function_<enums.premium.MyBoosts> {
   }
 }
 
-class premium_applyBoost_ extends Function_<enums.premium.MyBoosts> {
+export class premium_applyBoost_ extends Function_<enums.premium.MyBoosts> {
   static __F = Symbol() as unknown as (params: { slots?: Array<number>; peer: enums.InputPeer }) => enums.premium.MyBoosts;
   slots?: Array<number>;
   peer: enums.InputPeer;
@@ -18164,7 +18164,7 @@ class premium_applyBoost_ extends Function_<enums.premium.MyBoosts> {
   }
 }
 
-class premium_getBoostsStatus_ extends Function_<enums.premium.BoostsStatus> {
+export class premium_getBoostsStatus_ extends Function_<enums.premium.BoostsStatus> {
   static __F = Symbol() as unknown as (params: { peer: enums.InputPeer }) => enums.premium.BoostsStatus;
   peer: enums.InputPeer;
 
@@ -18190,7 +18190,7 @@ class premium_getBoostsStatus_ extends Function_<enums.premium.BoostsStatus> {
   }
 }
 
-class premium_getUserBoosts_ extends Function_<enums.premium.BoostsList> {
+export class premium_getUserBoosts_ extends Function_<enums.premium.BoostsList> {
   static __F = Symbol() as unknown as (params: { peer: enums.InputPeer; user_id: enums.InputUser }) => enums.premium.BoostsList;
   peer: enums.InputPeer;
   user_id: enums.InputUser;
