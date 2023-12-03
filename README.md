@@ -13,7 +13,7 @@ Cross-runtime JavaScript library for building Telegram clients
 - **Cross-runtime.** Runs inside browsers, Deno, and Node.js.
 - **Type-safe.** DX is enhanced with TypeScript support.
 - **Made for the Web.** Leverages Web APIs.
-- **Unoptionated.** No hidden behaviors.
+- **Unopinionated.** No hidden behaviors.
 - **Extensible.** Highly customizable.
 
 > Note: MTKruto has not reached version 1.0.0 yet. We highly recommend not to use it in production.
@@ -24,13 +24,13 @@ Cross-runtime JavaScript library for building Telegram clients
 
 ```html
 <script type="module">
-    import { Client, functions, getRandomId } from "https://esm.sh/@mtkruto/browser";
+    import { Client, getRandomId } from "https://esm.sh/@mtkruto/browser";
 
     const client = new Client();
     await client.connect();
 
-    const request = new functions.Ping({ pingId: getRandomId() });
-    console.debug(await client.invoke(request));
+    const pong = await client.api.ping({ ping_id: getRandomId() });
+    console.debug(pong);
 </script>
 ```
 
@@ -39,25 +39,25 @@ Cross-runtime JavaScript library for building Telegram clients
 ### Deno
 
 ```ts
-import { Client, functions, getRandomId } from "https://deno.land/x/mtkruto/mod.ts";
+import { Client, getRandomId } from "https://deno.land/x/mtkruto/mod.ts";
 
 const client = new Client();
 await client.connect();
 
-const request = new functions.Ping({ pingId: getRandomId() });
-console.debug(await client.invoke(request));
+const pong = await client.api.ping({ ping_id: getRandomId() });
+console.debug(pong);
 ```
 
 ### Node.js
 
 ```ts
-const { Client, functions, getRandomId } = require("@mtkruto/node"); // npm install @mtkruto/node
+const { Client, getRandomId } = require("@mtkruto/node"); // npm install @mtkruto/node
 
 const client = new Client();
 await client.connect();
 
-const request = new functions.Ping({ pingId: getRandomId() });
-console.debug(await client.invoke(request));
+const pong = await client.api.ping({ ping_id: getRandomId() });
+console.debug(pong);
 ```
 
 ## License
