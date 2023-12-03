@@ -1,5 +1,5 @@
 import { assert, assertEquals, assertFalse, assertThrows } from "../0_deps.ts";
-import { analyzeOptionalParam, flags, id, isOptionalParam, ParamDesc, paramDesc, Params, params, serialize, TLObject } from "./1_tl_object.ts";
+import { analyzeOptionalParam, flags, id, isOptionalParam, name, ParamDesc, paramDesc, Params, params, serialize, TLObject } from "./1_tl_object.ts";
 
 Deno.test("isOptionalParam", () => {
   assert(isOptionalParam("flags.8?string"));
@@ -25,6 +25,10 @@ Deno.test("serialize", () => {
 
     protected get [id]() {
       return 0x01010101;
+    }
+
+    static get [name]() {
+      return "testObject1";
     }
 
     static get [paramDesc](): ParamDesc {
@@ -60,6 +64,10 @@ Deno.test("serialize", () => {
 
     protected get [id]() {
       return 0x10101010;
+    }
+
+    static get [name]() {
+      return "testObject2";
     }
 
     static get [paramDesc](): ParamDesc {
