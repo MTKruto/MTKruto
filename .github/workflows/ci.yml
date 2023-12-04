@@ -50,6 +50,8 @@ jobs:
 
       - run: pnpm dlx madge --circular mod.ts
 
+      - run: deno run --allow-read https://raw.githubusercontent.com/MTKruto/tools/main/check_imports.ts 
+
   test:
     runs-on: ubuntu-latest
     steps:
