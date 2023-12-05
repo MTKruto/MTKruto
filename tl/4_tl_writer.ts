@@ -1,4 +1,4 @@
-import { VECTOR_CONSTRUCTOR } from "../4_constants.ts";
+import { VECTOR_CONSTRUCTOR } from "../1_utilities.ts";
 import { TLRawWriter } from "./0_tl_raw_writer.ts";
 import { serialize } from "./1_tl_object.ts";
 import { ReadObject } from "./3_tl_reader.ts";

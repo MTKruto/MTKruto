@@ -1,7 +1,6 @@
-import { bigIntFromBuffer, MaybePromise, rleDecode, rleEncode, sha1, UNREACHABLE } from "../1_utilities.ts";
+import { bigIntFromBuffer, MaybePromise, rleDecode, rleEncode, sha1, UNREACHABLE, ZERO_CHANNEL_ID } from "../1_utilities.ts";
 import { enums, serialize, TLObject, TLReader, types } from "../2_tl.ts";
 import { DC } from "../3_transport.ts";
-import { ZERO_CHANNEL_ID } from "../4_constants.ts";
 
 const KPARTS__DC = ["dc"];
 const KPARTS__AUTH_KEY = ["authKey"];

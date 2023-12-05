@@ -1,6 +1,5 @@
-import { cleanObject, getColorFromPeerId, UNREACHABLE } from "../1_utilities.ts";
+import { cleanObject, getColorFromPeerId, UNREACHABLE, ZERO_CHANNEL_ID } from "../1_utilities.ts";
 import { types } from "../2_tl.ts";
-import { ZERO_CHANNEL_ID } from "../4_constants.ts";
 import { ChatPhoto, constructChatPhoto } from "./0_chat_photo.ts";
 import { constructRestrictionReason, RestrictionReason } from "./0_restriction_reason.ts";
 

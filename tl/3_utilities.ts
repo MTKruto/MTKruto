@@ -1,5 +1,4 @@
-import { UNREACHABLE } from "../1_utilities.ts";
-import { ZERO_CHANNEL_ID } from "../4_constants.ts";
+import { UNREACHABLE, ZERO_CHANNEL_ID } from "../1_utilities.ts";
 import { enums, types } from "./2_types.ts";
 
 export function getChannelChatId(channelId: bigint) {

@@ -56,8 +56,6 @@ export const PUBLIC_KEYS: PublicKeys = Object.freeze([
   ],
 ]);
 
-export const VECTOR_CONSTRUCTOR = 0x1CB5C415;
-
 export const INITIAL_DC: DC = "2";
 
 export const LAYER = 167;
@@ -83,8 +81,6 @@ export const STICKER_SET_NAME_TTL = 172_800;
 export const MAX_CHAT_ID = 999999999999;
 
 export const MAX_CHANNEL_ID = 997852516352;
-
-export const ZERO_CHANNEL_ID = -1000000000000;
 
 export const CHANNEL_DIFFERENCE_LIMIT_USER = 100;
 
