@@ -1,7 +1,6 @@
 import { debug } from "../0_deps.ts";
-import { cleanObject, MaybePromise, UNREACHABLE } from "../1_utilities.ts";
+import { cleanObject, MaybePromise, UNREACHABLE, ZERO_CHANNEL_ID } from "../1_utilities.ts";
 import { as, enums, types } from "../2_tl.ts";
-import { ZERO_CHANNEL_ID } from "../4_constants.ts";
 import { FileID, FileType, FileUniqueID, FileUniqueType } from "./0__file_id.ts";
 import { Audio, constructAudio } from "./0_audio.ts";
 import { constructContact, Contact } from "./0_contact.ts";
