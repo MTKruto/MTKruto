@@ -34,4 +34,8 @@ export class StorageMemory extends Storage implements Storage {
       this.map.delete(key);
     }
   }
+
+  incr(key: readonly StorageKeyPart[], by: number) {
+    this.set(key, (this.get<number>(key) || 0) + by)
+  }
 }

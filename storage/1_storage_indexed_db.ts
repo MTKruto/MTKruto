@@ -29,7 +29,7 @@ export class StorageIndexedDB extends Storage {
     });
   }
 
-  set(k: StorageKeyPart[], v: unknown) {
+  set(k: readonly StorageKeyPart[], v: unknown) {
     if (!this.database) {
       throw new Error("Not initialized");
     }
@@ -87,5 +87,10 @@ export class StorageIndexedDB extends Storage {
     for (const key of keys) {
       yield [key, await this.get(key)] as [readonly StorageKeyPart[], T];
     }
+  }
+
+  async incr(key: readonly StorageKeyPart[], by: number) { // TODO: fix race
+    const currentValue = await this.get<number>(key) ;
+    await this.set(key, (currentValue|| 0) + by)
   }
 }

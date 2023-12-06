@@ -53,4 +53,8 @@ export class StorageSessionStorage extends Storage implements Storage {
       sessionStorage.removeItem(key);
     }
   }
+
+  incr(key: readonly StorageKeyPart[], by: number) {
+    this.set(key, (this.get<number>(key) || 0) + by)
+  }
 }
