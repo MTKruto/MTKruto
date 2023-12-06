@@ -1,6 +1,6 @@
 import { MaybePromise } from "../1_utilities.ts";
 import { functions, types } from "../2_tl.ts";
-import { BotCommandScope, CallbackQuery, ChatID, ForceReply, InlineKeyboardMarkup, InlineQuery, InlineQueryResultButton, Message, MessageEntity, ReplyKeyboardMarkup, ReplyKeyboardRemove } from "../3_types.ts";
+import { BotCommandScope, CallbackQuery, ChatID, ChosenInlineResult, ForceReply, InlineKeyboardMarkup, InlineQuery, InlineQueryResultButton, Message, MessageEntity, ReplyKeyboardMarkup, ReplyKeyboardRemove } from "../3_types.ts";
 import { ClientPlainParams } from "./2_client_plain.ts";
 import { ParseMode } from "../3_types.ts";
 
@@ -312,7 +312,7 @@ export interface ReplyParams {
   quote?: boolean;
 }
 
-export type FilterableUpdates = "message" | "editedMessage" | "callbackQuery";
+export type FilterableUpdates = "message" | "editedMessage" | "callbackQuery" | "inlineQuery" | "chosenInlineResult";
 
 export interface Update {
   message?: Message;
@@ -322,6 +322,7 @@ export interface Update {
   deletedMessages?: [Message, ...Message[]];
   callbackQuery?: CallbackQuery;
   inlineQuery?: InlineQuery;
+  chosenInlineResult?: ChosenInlineResult;
 }
 
 export type NextFn<T = void> = () => Promise<T>;
