@@ -1,5 +1,5 @@
-import { cleanObject, UNREACHABLE } from "../1_utilities.ts";
-import { peerToChatId, types } from "../2_tl.ts";
+import { base64EncodeUrlSafe, cleanObject, UNREACHABLE } from "../1_utilities.ts";
+import { peerToChatId, serialize, types } from "../2_tl.ts";
 import { EntityGetter } from "./1__getters.ts";
 import { constructUser, User } from "./1_user.ts";
 import { Message, MessageGetter } from "./3_message.ts";
@@ -31,6 +31,6 @@ export async function constructCallbackQuery(callbackQuery: types.UpdateBotCallb
     }
     return cleanObject({ id, from: user, message, chatInstance, data, gameShortName });
   } else {
-    return cleanObject({ id, from: user, inlineMessageId: Number(callbackQuery.msg_id.id), chatInstance, data, gameShortName });
+    return cleanObject({ id, from: user, inlineMessageId: base64EncodeUrlSafe(callbackQuery.msg_id[serialize]()), chatInstance, data, gameShortName });
   }
 }
