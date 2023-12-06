@@ -8,7 +8,7 @@ export interface CallbackQuery {
   id: string;
   from: User;
   message?: Message;
-  inlineMessageId?: number;
+  inlineMessageId?: string;
   chatInstance?: string;
   data?: string;
   gameShortName?: string;
