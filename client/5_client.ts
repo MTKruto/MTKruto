@@ -825,7 +825,10 @@ export class Client<C extends Context = Context> extends ClientAbstract {
     while (this.connected) {
       await new Promise((r) => setTimeout(r, this.#pingInterval));
       try {
-        await this.invoke(new functions.ping_delay_disconnect({ ping_id: getRandomBigInt(8, true, false), disconnect_delay: this.#pingInterval + 15 }));
+        await this.invoke(new functions.ping_delay_disconnect({ ping_id: getRandomId(), disconnect_delay: this.#pingInterval / 1_000 + 15 }));
+        if (Date.now() - this.#lastUpdates.getTime() >= 15 * 60 * 1_000) {
+          drop(this.#recoverUpdateGap("lastUpdates"));
+        }
       } catch (err) {
         d("ping loop error: %o", err);
       }
@@ -982,7 +985,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
   #handleUpdateQueue = new Queue("handleUpdate");
   #processUpdatesQueue = new Queue("processUpdates");
 
-  async checkGap(pts: number, ptsCount: number) {
+  async #checkGap(pts: number, ptsCount: number) {
     const localState = await this.#getLocalState();
     if (localState.pts + ptsCount < pts) {
       await this.#recoverUpdateGap("processUpdates");
@@ -998,7 +1001,9 @@ export class Client<C extends Context = Context> extends ClientAbstract {
     }
   }
 
+  #lastUpdates = new Date();
   async #processUpdates(updates_: enums.Update | enums.Updates, checkGap: boolean) {
+    this.#lastUpdates = new Date();
     /// First, individual updates (Update[1]) and updateShort* are extracted from Updates.[2]
     ///
     /// If an updatesTooLong[3] was received, an update gap recovery is initiated and no further action will be taken.
@@ -1065,7 +1070,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
           continue;
         }
         if (checkGap) {
-          await this.checkGap(update.pts, update.pts_count);
+          await this.#checkGap(update.pts, update.pts_count);
         }
         localState ??= await this.#getLocalState();
         originalPts ??= localState.pts;
