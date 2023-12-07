@@ -40,6 +40,7 @@ export class ConnectionTCP extends ConnectionUnframed implements ConnectionUnfra
     try {
       this.#assertConnected();
       await this.#connection!.read(p);
+      this.callback?.read(p.length);
     } finally {
       release();
     }
@@ -51,6 +52,8 @@ export class ConnectionTCP extends ConnectionUnframed implements ConnectionUnfra
     try {
       this.#assertConnected();
       await this.#connection!.write(p);
+      this.#connection?.write;
+      this.callback?.write(p.length);
     } finally {
       release();
     }
