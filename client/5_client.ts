@@ -691,6 +691,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
     await this.#initConnection();
 
     if (!this.#authKeyWasCreated) {
+      drop(this.#fetchState("start"));
       return;
     }
 
