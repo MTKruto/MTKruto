@@ -29,13 +29,13 @@ export class StorageIndexedDB extends Storage {
     });
   }
 
-  set(k: readonly StorageKeyPart[], v: unknown) {
+  set(k: readonly StorageKeyPart[], v: unknown, tx_?: IDBTransaction) {
     if (!this.database) {
       throw new Error("Not initialized");
     }
 
-    const store = this.database
-      .transaction(KV_OBJECT_STORE, "readwrite")
+    const store = (tx_ ?? this.database
+      .transaction(KV_OBJECT_STORE, "readwrite"))
       .objectStore(KV_OBJECT_STORE);
     // deno-lint-ignore no-explicit-any
     let tx: IDBRequest<any>;
@@ -54,13 +54,13 @@ export class StorageIndexedDB extends Storage {
     });
   }
 
-  get<T>(k: readonly StorageKeyPart[]) {
+  get<T>(k: readonly StorageKeyPart[], tx_?: IDBTransaction) {
     if (!this.database) {
       throw new Error("Not initialized");
     }
 
-    const tx = this.database
-      .transaction(KV_OBJECT_STORE, "readonly")
+    const tx = (tx_ ?? this.database
+      .transaction(KV_OBJECT_STORE, "readonly"))
       .objectStore(KV_OBJECT_STORE)
       .get(fixKey(k));
     return new Promise<T | null>((res, rej) => {
@@ -71,12 +71,12 @@ export class StorageIndexedDB extends Storage {
     });
   }
 
-  async *getMany<T>(prefix: readonly StorageKeyPart[]) {
+  async *getMany<T>(prefix: readonly StorageKeyPart[], tx_?: IDBTransaction) {
     if (!this.database) {
       throw new Error("Not initialized");
     }
     const keys = await new Promise<(readonly StorageKeyPart[])[]>((res, rej) => {
-      const tx = this.database!.transaction(KV_OBJECT_STORE, "readonly")
+      const tx = (tx_ ?? this.database!.transaction(KV_OBJECT_STORE, "readonly"))
         .objectStore(KV_OBJECT_STORE)
         .getAllKeys(getPrefixKeyRange(prefix));
       tx.onerror = rej;
@@ -90,7 +90,12 @@ export class StorageIndexedDB extends Storage {
   }
 
   async incr(key: readonly StorageKeyPart[], by: number) { // TODO: fix race
-    const currentValue = await this.get<number>(key);
-    await this.set(key, (currentValue || 0) + by);
+    if (!this.database) {
+      throw new Error("Not initialized");
+    }
+    const tx = this.database
+      .transaction(KV_OBJECT_STORE, "readwrite");
+    const currentValue = await this.get<number>(key, tx);
+    await this.set(key, (currentValue || 0) + by, tx);
   }
 }
