@@ -167,6 +167,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
               try {
                 await this.connect();
                 d("reconnected");
+                drop(this.#recoverUpdateGap("reconnect"));
                 break;
               } catch (err) {
                 d("failed to reconnect, retrying in %d: %o", delay, err);
