@@ -55,13 +55,8 @@ export class StorageDenoKV extends Storage implements Storage {
 
     let result: Awaited<ReturnType<Deno.AtomicOperation["commit"]>> | null = null;
     while (!result?.ok) {
-      const { value, versionstamp } = await kv.get<number>(key);
-      const op = kv.atomic();
-      if (value != null) {
-        op.check({ key, versionstamp });
-      }
-      op.set(key, (value || 0) + by);
-      result = await op.commit();
+      const count = await kv.get<number>(key);
+      result = await kv.atomic().check(count).set(key, (count.value || 0) + by).commit(); 
     }
   }
 }
