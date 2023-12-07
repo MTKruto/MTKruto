@@ -12,7 +12,7 @@ import { checkPassword } from "./0_password.ts";
 import { FileSource, getFileContents, getUsername, isChannelPtsUpdate, isHttpUrl, isPtsUpdate, resolve, With } from "./0_utilities.ts";
 import { ClientAbstract } from "./1_client_abstract.ts";
 import { ClientPlain } from "./2_client_plain.ts";
-import { AnswerCallbackQueryParams, AnswerInlineQueryParams, AuthorizeUserParams, ClientParams, ConnectionState, DeleteMessageParams, DeleteMessagesParams, DownloadParams, EditMessageParams, FilterableUpdates, FilterUpdate, ForwardMessagesParams, GetMyCommandsParams, InvokeErrorHandler, ReplyParams, SendMessageParams, SendPhotoParams, SendPollParams, SetMyCommandsParams, Update, UploadParams } from "./3_types.ts";
+import { AnswerCallbackQueryParams, AnswerInlineQueryParams, AuthorizeUserParams, ClientParams, ConnectionState, DeleteMessageParams, DeleteMessagesParams, DownloadParams, EditMessageParams, FilterableUpdates, FilterUpdate, ForwardMessagesParams, GetMyCommandsParams, InvokeErrorHandler, NetworkStatistics, ReplyParams, SendMessageParams, SendPhotoParams, SendPollParams, SetMyCommandsParams, Update, UploadParams } from "./3_types.ts";
 import { Composer, concat, flatten, Middleware, MiddlewareFn, skip } from "./4_composer.ts";
 
 const d = debug("Client");
@@ -140,6 +140,22 @@ export class Client<C extends Context = Context> extends ClientAbstract {
     this.#autoStart = params?.autoStart ?? true;
     this.#ignoreOutgoing = params?.ignoreOutgoing ?? null;
     this.#prefixes = params?.prefixes;
+
+    const transportProvider = this.transportProvider;
+    this.transportProvider = (params) => {
+      const transport = transportProvider(params);
+      transport.connection.callback = {
+        read: async (count) => {
+          const key = this.cdn ? "netstat_cdn_read" : "netstat_messages_read";
+          await this.storage.incr([key], count);
+        },
+        write: async (count) => {
+          const key = this.cdn ? "netstat_cdn_write" : "netstat_messages_write";
+          await this.storage.incr([key], count);
+        },
+      };
+      return transport;
+    };
 
     if (params?.defaultHandlers ?? true) {
       this.on("connectionState", ({ connectionState }, next) => {
@@ -2495,5 +2511,28 @@ export class Client<C extends Context = Context> extends ClientAbstract {
 
     const message = await this.#updatesToMessages(chatId, result).then((v) => v[0]);
     return Client.#assertMsgHas(message, "photo");
+  }
+
+  /**
+   * Get network statistics. This might not always be available.
+   *
+   * @method
+   */
+  async getNetworkStatistics(): Promise<NetworkStatistics> {
+    const [messagesRead, messagesWrite, cdnRead, cdnWrite] = await Promise.all([
+      this.storage.get<number>(["netstat_messages_read"]),
+      this.storage.get<number>(["netstat_messages_write"]),
+      this.storage.get<number>(["netstat_cdn_read"]),
+      this.storage.get<number>(["netstat_cdn_write"]),
+    ]);
+    const messages = {
+      sent: Number(messagesWrite || 0),
+      received: Number(messagesRead || 0),
+    };
+    const cdn = {
+      sent: Number(cdnWrite || 0),
+      received: Number(cdnRead || 0),
+    };
+    return { messages, cdn };
   }
 }
