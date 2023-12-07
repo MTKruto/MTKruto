@@ -1,4 +1,3 @@
-import { MaybePromise } from "../1_utilities.ts";
 import { Storage, StorageKeyPart } from "./0_storage.ts";
 import { fromString, toString } from "./0_utilities.ts";
 
@@ -45,12 +44,16 @@ export class StorageLocalStorage extends Storage implements Storage {
     }
   }
 
-  set(key_: readonly StorageKeyPart[], value: unknown): MaybePromise<void> {
+  set(key_: readonly StorageKeyPart[], value: unknown) {
     const key = this.prefix + toString(key_);
     if (value != null) {
       localStorage.setItem(key, toString(value));
     } else {
       localStorage.removeItem(key);
     }
+  }
+
+  incr(key: readonly StorageKeyPart[], by: number) {
+    this.set(key, (this.get<number>(key) || 0) + by);
   }
 }

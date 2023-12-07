@@ -6,6 +6,7 @@ abstract class Foundation {
   abstract open(): MaybePromise<void>;
   abstract write(p: Uint8Array): MaybePromise<void>;
   abstract close(): MaybePromise<void>;
+  callback?: { read(count: number): void; write(count: number): void };
 }
 
 export abstract class ConnectionUnframed extends Foundation {

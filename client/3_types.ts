@@ -337,3 +337,12 @@ export interface InvokeErrorHandler<C> {
 
 type Update_ = Update;
 export type FilterUpdate<Update extends Update_, Type extends keyof Update_, Field extends string, TypeType extends NonNullable<Update_[Type]> = NonNullable<Update_[Type]>> = Update & { [Type_ in Type]-?: TypeType & { [Field_ in Field]-?: Field extends keyof TypeType ? NonNullable<TypeType[Field]> : never } };
+
+export interface NetworkStatisticsEntry {
+  sent: number;
+  received: number;
+}
+export interface NetworkStatistics {
+  messages: NetworkStatisticsEntry;
+  cdn: NetworkStatisticsEntry;
+}

@@ -21,8 +21,9 @@ export abstract class Storage {
   #_authKeyId: bigint | null = null;
 
   abstract init(): MaybePromise<void>;
-  // TODO: digest keys in prod
+  // TODO: digest keys in prod?
   abstract set(key: readonly StorageKeyPart[], value: unknown): MaybePromise<void>;
+  abstract incr(key: readonly StorageKeyPart[], by: number): MaybePromise<void>;
   abstract get<T>(key: readonly StorageKeyPart[]): MaybePromise<T | null>;
   abstract getMany<T>(prefix: readonly StorageKeyPart[]): MaybePromise<Generator<[readonly StorageKeyPart[], T]> | AsyncGenerator<[readonly StorageKeyPart[], T]>>;
 

@@ -20,7 +20,7 @@ export interface ClientAbstractParams {
 
 export abstract class ClientAbstract {
   protected readonly initialDc: DC;
-  protected readonly transportProvider: TransportProvider;
+  protected transportProvider: TransportProvider;
   protected readonly cdn: boolean;
 
   protected transport?: ReturnType<TransportProvider>;

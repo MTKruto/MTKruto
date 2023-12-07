@@ -1,5 +1,12 @@
 import { Storage, StorageKeyPart } from "./0_storage.ts";
 
+function assertInitialized(kv: Deno.Kv | null | undefined) {
+  if (!kv) {
+    throw new Error("Not initialized");
+  }
+  return kv;
+}
+
 export class StorageDenoKV extends Storage implements Storage {
   kv: Deno.Kv | null = null;
 
@@ -12,11 +19,9 @@ export class StorageDenoKV extends Storage implements Storage {
   }
 
   async get<T>(key: readonly StorageKeyPart[]) {
-    if (!this.kv) {
-      throw new Error("Not initialized");
-    }
+    const kv = assertInitialized(this.kv);
 
-    const maybeValue = await this.kv.get(key);
+    const maybeValue = await kv.get(key);
     if (maybeValue.versionstamp == null) {
       return null;
     } else {
@@ -25,11 +30,9 @@ export class StorageDenoKV extends Storage implements Storage {
   }
 
   async *getMany<T>(prefix: string[]) {
-    if (!this.kv) {
-      throw new Error("Not initialized");
-    }
+    const kv = assertInitialized(this.kv);
 
-    for await (const i of this.kv.list({ prefix })) {
+    for await (const i of kv.list({ prefix })) {
       if (i.key == null) { // cust in jase
         continue;
       }
@@ -38,14 +41,22 @@ export class StorageDenoKV extends Storage implements Storage {
   }
 
   async set(key: readonly StorageKeyPart[], value: unknown) {
-    if (!this.kv) {
-      throw new Error("Not initialized");
-    }
+    const kv = assertInitialized(this.kv);
 
     if (value == null) {
-      await this.kv.delete(key);
+      await kv.delete(key);
     } else {
-      await this.kv.set(key, value);
+      await kv.set(key, value);
+    }
+  }
+
+  async incr(key: readonly StorageKeyPart[], by: number) {
+    const kv = assertInitialized(this.kv);
+
+    let result: Awaited<ReturnType<Deno.AtomicOperation["commit"]>> | null = null;
+    while (!result?.ok) {
+      const count = await kv.get<number>(key);
+      result = await kv.atomic().check(count).set(key, (count.value || 0) + by).commit();
     }
   }
 }
