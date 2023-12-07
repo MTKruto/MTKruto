@@ -146,11 +146,11 @@ export class Client<C extends Context = Context> extends ClientAbstract {
       const transport = transportProvider(params);
       transport.connection.callback = {
         read: async (count) => {
-          const key = this.cdn ? "netstat_cdn_read" : "netstat_messages_read";
+          const key = params.cdn ? "netstat_cdn_read" : "netstat_messages_read";
           await this.storage.incr([key], count);
         },
         write: async (count) => {
-          const key = this.cdn ? "netstat_cdn_write" : "netstat_messages_write";
+          const key = params.cdn ? "netstat_cdn_write" : "netstat_messages_write";
           await this.storage.incr([key], count);
         },
       };
