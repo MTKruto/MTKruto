@@ -90,7 +90,7 @@ export class StorageIndexedDB extends Storage {
   }
 
   async incr(key: readonly StorageKeyPart[], by: number) { // TODO: fix race
-    const currentValue = await this.get<number>(key) ;
-    await this.set(key, (currentValue|| 0) + by)
+    const currentValue = await this.get<number>(key);
+    await this.set(key, (currentValue || 0) + by);
   }
 }
