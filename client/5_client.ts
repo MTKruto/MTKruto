@@ -2454,7 +2454,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
     await this.deleteMessages(chatId, [messageId], params);
   }
 
-  #resolveFileId(maybeFileId: string) {
+  #resolveFileId(maybeFileId: string, expectedFileType: FileType) {
     let fileId: FileID | null = null;
     try {
       fileId = FileID.decode(maybeFileId);
@@ -2462,7 +2462,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
       d("fileId: %o", err);
     }
     if (fileId != null) {
-      if (fileId.fileType != FileType.Photo) {
+      if (fileId.fileType != expectedFileType) {
         UNREACHABLE();
       }
       if (fileId.params.mediaId == undefined || fileId.params.accessHash == undefined || fileId.params.fileReference == undefined) {
@@ -2522,7 +2522,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
     const spoiler = params?.hasSpoiler ? true : undefined;
 
     if (typeof photo === "string") {
-      const fileId = this.#resolveFileId(photo);
+      const fileId = this.#resolveFileId(photo, FileType.Photo);
       if (fileId != null) {
         media = new types.InputMediaPhoto({
           id: new types.InputPhoto(fileId),
@@ -2557,7 +2557,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
     const spoiler = params?.hasSpoiler ? true : undefined;
 
     if (typeof document === "string") {
-      const fileId = this.#resolveFileId(document);
+      const fileId = this.#resolveFileId(document, FileType.Document);
       if (fileId != null) {
         media = new types.InputMediaDocument({
           id: new types.InputDocument(fileId),
