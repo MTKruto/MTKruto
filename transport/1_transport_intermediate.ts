@@ -5,6 +5,7 @@ import { Transport } from "./0_transport.ts";
 
 export class TransportIntermediate extends Transport implements Transport {
   #connection: Connection;
+  #initialized = false;
   #obfuscated: boolean;
 
   constructor(connection: Connection, obfuscated = false) {
@@ -20,7 +21,7 @@ export class TransportIntermediate extends Transport implements Transport {
       } else {
         await this.#connection.write(new Uint8Array([0xEE, 0xEE, 0xEE, 0xEE]));
       }
-      this.initialized = true;
+      this.#initialized = true;
     } else {
       throw new Error("Transport already initialized");
     }
@@ -56,6 +57,10 @@ export class TransportIntermediate extends Transport implements Transport {
   }
 
   deinitialize() {
-    this.initialized = false;
+    this.#initialized = false;
+  }
+
+  get initialized() {
+    return this.#initialized;
   }
 }

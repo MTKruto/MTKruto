@@ -161,6 +161,10 @@ export class Client<C extends Context = Context> extends ClientAbstract {
       this.on("connectionState", ({ connectionState }, next) => {
         drop((async (): Promise<void> => {
           if (connectionState == "notConnected") {
+            if (!this.transport?.transport.initialized) {
+              d("not reconnecting");
+              return;
+            }
             let delay = 5;
             while (!this.connected) {
               d("reconnecting");
@@ -477,9 +481,10 @@ export class Client<C extends Context = Context> extends ClientAbstract {
   }
 
   #connectionInited = false;
-  disconnect() {
+  async disconnect() {
     this.#connectionInited = false;
-    return super.disconnect();
+    await super.disconnect();
+    this.#pingLoopAbortSignal?.abort();
   }
   async #initConnection() {
     if (!this.#connectionInited) {
@@ -837,11 +842,18 @@ export class Client<C extends Context = Context> extends ClientAbstract {
     }
   }
 
+  #pingLoopAbortSignal: AbortController | null = null;
   #pingInterval = 60 * 1_000; // 60 seconds
   async #pingLoop() {
+    this.#pingLoopAbortSignal = new AbortController();
     while (this.connected) {
-      await new Promise((r) => setTimeout(r, this.#pingInterval));
       try {
+        await new Promise((resolve, reject) => {
+          setTimeout(resolve, this.#pingInterval);
+          this.#pingLoopAbortSignal!.signal.onabort = () => {
+            reject(this.#pingLoopAbortSignal?.signal.reason);
+          };
+        });
         await this.invoke(new functions.ping_delay_disconnect({ ping_id: getRandomId(), disconnect_delay: this.#pingInterval / 1_000 + 15 }));
         if (Date.now() - this.#lastUpdates.getTime() >= 15 * 60 * 1_000) {
           drop(this.#recoverUpdateGap("lastUpdates"));
@@ -1246,6 +1258,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
       }
     } finally {
       this.stateChangeHandler(this.connected);
+      this.#lastUpdates = new Date();
     }
   }
 
