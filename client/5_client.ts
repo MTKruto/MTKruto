@@ -1,4 +1,4 @@
-import { debug, gunzip, Mutex } from "../0_deps.ts";
+import { contentType, debug, gunzip, Mutex } from "../0_deps.ts";
 import { bigIntFromBuffer, cleanObject, drop, getRandomBigInt, getRandomId, MaybePromise, mod, mustPrompt, mustPromptOneOf, Queue, sha1, UNREACHABLE, ZERO_CHANNEL_ID } from "../1_utilities.ts";
 import { as, enums, functions, getChannelChatId, Message_, MessageContainer, name, peerToChatId, ReadObject, RPCResult, TLError, TLReader, types } from "../2_tl.ts";
 import { Storage, StorageMemory } from "../3_storage.ts";
@@ -12,7 +12,7 @@ import { checkPassword } from "./0_password.ts";
 import { FileSource, getFileContents, getUsername, isChannelPtsUpdate, isHttpUrl, isPtsUpdate, resolve, With } from "./0_utilities.ts";
 import { ClientAbstract } from "./1_client_abstract.ts";
 import { ClientPlain } from "./2_client_plain.ts";
-import { AnswerCallbackQueryParams, AnswerInlineQueryParams, AuthorizeUserParams, ClientParams, ConnectionState, DeleteMessageParams, DeleteMessagesParams, DownloadParams, EditMessageParams, FilterableUpdates, FilterUpdate, ForwardMessagesParams, GetMyCommandsParams, InvokeErrorHandler, NetworkStatistics, ReplyParams, SendMessageParams, SendPhotoParams, SendPollParams, SetMyCommandsParams, Update, UploadParams } from "./3_types.ts";
+import { AnswerCallbackQueryParams, AnswerInlineQueryParams, AuthorizeUserParams, ClientParams, ConnectionState, DeleteMessageParams, DeleteMessagesParams, DownloadParams, EditMessageParams, FilterableUpdates, FilterUpdate, ForwardMessagesParams, GetMyCommandsParams, InvokeErrorHandler, NetworkStatistics, ReplyParams, SendDocumentParams, SendMessageParams, SendPhotoParams, SendPollParams, SetMyCommandsParams, Update, UploadParams } from "./3_types.ts";
 import { Composer, concat, flatten, Middleware, MiddlewareFn, skip } from "./4_composer.ts";
 
 const d = debug("Client");
@@ -53,6 +53,8 @@ export interface Context extends Update {
   replyPoll: (question: string, options: [string, string, ...string[]], params?: Omit<SendPollParams, "replyToMessageId"> & ReplyParams) => Promise<With<Message, "poll">>;
   /** Reply the received message with a photo. */
   replyPhoto: (photo: FileSource, params?: Omit<SendPhotoParams, "replyToMessageId"> & ReplyParams) => Promise<With<Message, "photo">>;
+  /** Reply the received message with a document. */
+  replyDocument: (document: FileSource, params?: Omit<SendDocumentParams, "replyToMessageId"> & ReplyParams) => Promise<With<Message, "document">>;
   /** Delete the received message. */
   delete: () => Promise<void>;
   /** Forward the received message. */
@@ -288,6 +290,11 @@ export class Client<C extends Context = Context> extends ClientAbstract {
         const effectiveMessage = mustGetMsg();
         const replyToMessageId = getReplyToMessageId(params?.quote, effectiveMessage);
         return this.sendPhoto(effectiveMessage.chat.id, photo, { ...params, replyToMessageId });
+      },
+      replyDocument: (document, params) => {
+        const effectiveMessage = mustGetMsg();
+        const replyToMessageId = getReplyToMessageId(params?.quote, effectiveMessage);
+        return this.sendDocument(effectiveMessage.chat.id, document, { ...params, replyToMessageId });
       },
       delete: () => {
         const effectiveMessage = mustGetMsg();
@@ -2447,52 +2454,29 @@ export class Client<C extends Context = Context> extends ClientAbstract {
     await this.deleteMessages(chatId, [messageId], params);
   }
 
-  /**
-   * Send a photo.
-   *
-   * @method
-   * @param chatId The chat to send the photo to.
-   * @param photo The photo to send.
-   */
-  async sendPhoto(chatId: ChatID, photo: FileSource, params?: SendPhotoParams): Promise<With<Message, "photo">> {
-    let media: enums.InputMedia | null = null;
-    const spoiler = params?.hasSpoiler ? true : undefined;
-
-    if (typeof photo === "string") {
-      let fileId: FileID | null = null;
-      try {
-        fileId = FileID.decode(photo);
-      } catch (err) {
-        d("fileId: %o", err);
-      }
-      if (fileId != null) {
-        if (fileId.fileType != FileType.Photo) {
-          UNREACHABLE();
-        }
-        if (fileId.params.mediaId == undefined || fileId.params.accessHash == undefined || fileId.params.fileReference == undefined) {
-          UNREACHABLE();
-        }
-        media = new types.InputMediaPhoto({
-          id: new types.InputPhoto({
-            id: fileId.params.mediaId,
-            access_hash: fileId.params.accessHash,
-            file_reference: fileId.params.fileReference,
-          }),
-          spoiler,
-        });
-      }
+  #resolveFileId(maybeFileId: string) {
+    let fileId: FileID | null = null;
+    try {
+      fileId = FileID.decode(maybeFileId);
+    } catch (err) {
+      d("fileId: %o", err);
     }
-
-    if (media == null) {
-      if (typeof photo === "string" && isHttpUrl(photo)) {
-        media = new types.InputMediaPhotoExternal({ url: photo, spoiler });
-      } else {
-        const [contents, fileName] = await getFileContents(photo);
-        const file = await this.upload(contents, { fileName, chunkSize: params?.chunkSize, signal: params?.signal });
-        media = new types.InputMediaUploadedPhoto({ file, spoiler });
+    if (fileId != null) {
+      if (fileId.fileType != FileType.Photo) {
+        UNREACHABLE();
       }
+      if (fileId.params.mediaId == undefined || fileId.params.accessHash == undefined || fileId.params.fileReference == undefined) {
+        UNREACHABLE();
+      }
+      return {
+        id: fileId.params.mediaId,
+        access_hash: fileId.params.accessHash,
+        file_reference: fileId.params.fileReference,
+      };
     }
-
+    return null;
+  }
+  async #sendMedia(chatId: ChatID, media: enums.InputMedia, params: SendPhotoParams | undefined) {
     const peer = await this.getInputPeer(chatId);
     const randomId = getRandomId();
     const silent = params?.disableNotification ? true : undefined;
@@ -2523,8 +2507,84 @@ export class Client<C extends Context = Context> extends ClientAbstract {
       }),
     );
 
-    const message = await this.#updatesToMessages(chatId, result).then((v) => v[0]);
+    return await this.#updatesToMessages(chatId, result).then((v) => v[0]);
+  }
+
+  /**
+   * Send a photo.
+   *
+   * @method
+   * @param chatId The chat to send the photo to.
+   * @param photo The photo to send.
+   */
+  async sendPhoto(chatId: ChatID, photo: FileSource, params?: SendPhotoParams): Promise<With<Message, "photo">> {
+    let media: enums.InputMedia | null = null;
+    const spoiler = params?.hasSpoiler ? true : undefined;
+
+    if (typeof photo === "string") {
+      const fileId = this.#resolveFileId(photo);
+      if (fileId != null) {
+        media = new types.InputMediaPhoto({
+          id: new types.InputPhoto(fileId),
+          spoiler,
+        });
+      }
+    }
+
+    if (media == null) {
+      if (typeof photo === "string" && isHttpUrl(photo)) {
+        media = new types.InputMediaPhotoExternal({ url: photo, spoiler });
+      } else {
+        const [contents, fileName] = await getFileContents(photo);
+        const file = await this.upload(contents, { fileName, chunkSize: params?.chunkSize, signal: params?.signal });
+        media = new types.InputMediaUploadedPhoto({ file, spoiler });
+      }
+    }
+
+    const message = await this.#sendMedia(chatId, media, params);
     return Client.#assertMsgHas(message, "photo");
+  }
+
+  /**
+   * Send a document.
+   *
+   * @method
+   * @param chatId The chat to send the document to.
+   * @param document The document to send.
+   */
+  async sendDocument(chatId: ChatID, document: FileSource, params?: SendDocumentParams) {
+    let media: enums.InputMedia | null = null;
+    const spoiler = params?.hasSpoiler ? true : undefined;
+
+    if (typeof document === "string") {
+      const fileId = this.#resolveFileId(document);
+      if (fileId != null) {
+        media = new types.InputMediaDocument({
+          id: new types.InputDocument(fileId),
+          spoiler,
+        });
+      }
+    }
+
+    if (media == null) {
+      if (typeof document === "string" && isHttpUrl(document)) {
+        media = new types.InputMediaDocumentExternal({ url: document, spoiler });
+      } else {
+        const [contents, fileName_] = await getFileContents(document);
+        const fileName = params?.fileName ?? fileName_;
+        const mimeType = params?.mimeType ?? contentType(fileName.split(".").slice(-1)[0]) ?? "application/octet-stream";
+        const file = await this.upload(contents, { fileName, chunkSize: params?.chunkSize, signal: params?.signal });
+        media = new types.InputMediaUploadedDocument({
+          file,
+          spoiler,
+          attributes: [new types.DocumentAttributeFilename({ file_name: fileName })],
+          mime_type: mimeType,
+        });
+      }
+    }
+
+    const message = await this.#sendMedia(chatId, media, params);
+    return Client.#assertMsgHas(message, "document");
   }
 
   /**
