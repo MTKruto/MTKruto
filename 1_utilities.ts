@@ -1,4 +1,4 @@
-export * from "./utilities/0_base64.ts";
+export * from "./utilities/1_base64.ts";
 export * from "./utilities/0_bigint.ts";
 export * from "./utilities/0_buffer.ts";
 export * from "./utilities/0_color.ts";
