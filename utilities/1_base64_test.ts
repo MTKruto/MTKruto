@@ -1,5 +1,5 @@
 import { assertEquals } from "../0_deps.ts";
-import { base64DecodeUrlSafe, base64EncodeUrlSafe } from "./0_base64.ts";
+import { base64DecodeUrlSafe, base64EncodeUrlSafe } from "./1_base64.ts";
 
 Deno.test("base64DecodeUrlSafe", () => {
   const actual = base64DecodeUrlSafe("SUb1fI_Zk8tMiW8ngfVTCZP-aL0BK-357OUeLO4q4a7OB_ECNwm5FxtLir0Yf1d201cAKuZYNnuqAvrcXeFixyWKm3Wo7AlD2rVdPm6NPjuLd55M-wDCxvlRIxEQERZg2waoWg");
@@ -21,6 +21,13 @@ Deno.test("base64DecodeUrlSafe", () => {
   {
     const actual = base64DecodeUrlSafe("aGk");
     const expected = new TextEncoder().encode("hi");
+
+    assertEquals(actual, expected);
+  }
+
+  {
+    const actual = base64DecodeUrlSafe("BQACAgIAAx0CYP-shwACCrNlcvay7RylgRqZg3bHIqJK51AniwACd0AAAtiPmEs1WGLRppumxB4AAwQAAx4E");
+    const expected = new Uint8Array([5, 0, 2, 2, 2, 0, 3, 29, 2, 96, 255, 172, 135, 0, 2, 10, 179, 101, 114, 246, 178, 237, 28, 165, 129, 26, 153, 131, 118, 199, 34, 162, 74, 231, 80, 39, 139, 0, 2, 119, 64, 0, 2, 216, 143, 152, 75, 53, 88, 98, 209, 166, 155, 166, 196, 30, 0, 3, 4, 0, 3, 30, 4]);
 
     assertEquals(actual, expected);
   }
