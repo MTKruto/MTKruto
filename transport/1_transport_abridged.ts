@@ -4,6 +4,7 @@ import { getObfuscationParameters } from "./0_obfuscation.ts";
 import { Transport } from "./0_transport.ts";
 
 export class TransportAbridged extends Transport implements Transport {
+  #initialized = false;
   #connection: Connection;
   #obfuscated: boolean;
 
@@ -14,13 +15,13 @@ export class TransportAbridged extends Transport implements Transport {
   }
 
   async initialize() {
-    if (!this.initialized) {
+    if (!this.#initialized) {
       if (this.#obfuscated) {
         this.obfuscationParameters = await getObfuscationParameters(0xEFEFEFEF, this.#connection);
       } else {
         await this.#connection.write(new Uint8Array([0xEF]));
       }
-      this.initialized = true;
+      this.#initialized = true;
     } else {
       throw new Error("Transport already initialized");
     }
@@ -70,6 +71,10 @@ export class TransportAbridged extends Transport implements Transport {
   }
 
   deinitialize() {
-    this.initialized = false;
+    this.#initialized = false;
+  }
+
+  get initialized() {
+    return this.#initialized;
   }
 }
