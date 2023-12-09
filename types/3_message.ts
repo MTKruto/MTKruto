@@ -62,7 +62,7 @@ export interface Message {
   /** True, if the message is a channel post that was automatically forwarded to the connected discussion group */
   isAutomaticForward?: boolean;
   /** For replies, the original message. Note that the Message object in this field will not contain further reply_to_message fields even if it itself is a reply. */
-  replyToMessage?: Omit<Message, "reply_toMessage">;
+  replyToMessage?: Omit<Message, "replyToMessage">;
   /** Bot through which the message was sent */
   viaBot?: User;
   /** Date the message was last edited in Unix time */
@@ -160,7 +160,7 @@ export interface Message {
 }
 
 export interface MessageGetter<O extends keyof Message | null = null> {
-  (chatId: number, messageId: number): MaybePromise<(O extends null ? Message : Omit<Message, "reply_toMessage">) | null>;
+  (chatId: number, messageId: number): MaybePromise<(O extends null ? Message : Omit<Message, "replyToMessage">) | null>;
 }
 
 type Message_MessageGetter = MessageGetter<"replyToMessage"> | null;
@@ -189,15 +189,15 @@ async function getReply(message_: types.Message | types.MessageService, chat: Ch
     if (message_.reply_to.forum_topic) {
       isTopicMessage = true;
     }
-    const reply_toMessage = await getMessage(chat.id, message_.reply_to.reply_to_msg_id);
-    if (reply_toMessage) {
-      return { reply_toMessage, threadId: message_.reply_to.reply_to_top_id, isTopicMessage };
+    const replyToMessage = await getMessage(chat.id, message_.reply_to.reply_to_msg_id);
+    if (replyToMessage) {
+      return { replyToMessage, threadId: message_.reply_to.reply_to_top_id, isTopicMessage };
     } else {
       d("couldn't get replied message");
     }
   }
 
-  return { reply_toMessage: undefined, threadId: undefined, isTopicMessage: undefined };
+  return { replyToMessage: undefined, threadId: undefined, isTopicMessage: undefined };
 }
 
 async function constructServiceMessage(message_: types.MessageService, chat: Chat, getEntity: EntityGetter, getMessage: Message_MessageGetter) {
@@ -261,8 +261,8 @@ async function constructServiceMessage(message_: types.MessageService, chat: Cha
   } else if (message_.action instanceof types.MessageActionChannelMigrateFrom) {
     message.chatMigratedFrom = Number(-message_.action.chat_id);
   } else if (message_.action instanceof types.MessageActionPinMessage) {
-    const { reply_toMessage } = await getReply(message_, chat, getMessage);
-    message.pinnedMessage = reply_toMessage;
+    const { replyToMessage } = await getReply(message_, chat, getMessage);
+    message.pinnedMessage = replyToMessage;
   } else if (message_.action instanceof types.MessageActionRequestedPeer) {
     const user = message_.action.peer[as](types.PeerUser);
     message.userShared = { requestId: message_.action.button_id, userId: Number(user.user_id) };
