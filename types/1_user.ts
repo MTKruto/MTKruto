@@ -38,14 +38,16 @@ export interface User {
 
 export function constructUser(user_: types.User) {
   const id = Number(user_.id);
+  const usernames = user_.usernames?.map((v) => v.username);
+  const username = user_.username ?? usernames?.shift();
   const user: User = {
     id,
     color: user_.color?.color !== undefined ? user_.color.color : getColorFromPeerId(id),
     isBot: user_.bot || false,
     firstName: user_.first_name || "",
     lastName: user_.last_name,
-    username: user_.username,
-    also: user_.usernames?.map((v) => v.username),
+    username: username,
+    also: usernames?.filter((v) => v != username),
     languageCode: user_.lang_code,
     isScam: user_.scam || false,
     isFake: user_.fake || false,
