@@ -1,6 +1,5 @@
 import { cleanObject, getColorFromPeerId, UNREACHABLE, ZERO_CHANNEL_ID } from "../1_utilities.ts";
 import { types } from "../2_tl.ts";
-import { ChatPhoto, constructChatPhoto } from "./0_chat_photo.ts";
 import { constructRestrictionReason, RestrictionReason } from "./0_restriction_reason.ts";
 
 export type ChatType =
@@ -11,14 +10,12 @@ export type ChatType =
 
 export declare namespace Chat {
   export interface Base {
-    /** The type of the chat. */
-    type: ChatType;
     /** The identifier of the chat. */
     id: number;
+    /** The type of the chat. */
+    type: ChatType;
     /** Identifier of a color that can be displayed instead of the chat's photo. */
     color: number;
-    /** The chat's photo. */
-    photo?: ChatPhoto;
   }
 
   export interface Private extends Base {
@@ -31,10 +28,6 @@ export declare namespace Chat {
     lastName?: string;
     /** The user's main username. */
     username?: string;
-    /** The user's other usernames. */
-    also?: string[];
-    /** The user's profile photo. */
-    photo?: ChatPhoto.User;
     /** Whether the user has been identified as scam. */
     isScam: boolean;
     /** Whether the user has been identified as an impersonator. */
@@ -53,8 +46,6 @@ export declare namespace Chat {
     type: "group";
     /** The title of the chat. */
     title: string;
-    /** The chat's photo. */
-    photo?: ChatPhoto.Chat;
     /** Whether the current user is the owner of the chat. */
     isCreator: boolean;
   }
@@ -64,10 +55,6 @@ export declare namespace Chat {
     title: string;
     /** The main username of the chat or channel. */
     username?: string;
-    /** The other usernames of the chat or channel. */
-    also?: string[];
-    /** The chat or channel's photo. */
-    photo?: ChatPhoto.Chat;
     /** Whether the chat or channel has been identified as scam. */
     isScam: boolean;
     /** Whether the chat or channel has been identified as an impersonator. */
@@ -101,9 +88,9 @@ export function constructChat(chat: types.User | types.Chat | types.Channel): Ch
   if (chat instanceof types.User) {
     const id = Number(chat.id);
     const chat_: Chat.Private = {
+      id,
       type: "private",
       isBot: chat.bot || false,
-      id,
       color: chat.color?.color !== undefined ? chat.color.color : getColorFromPeerId(id),
       firstName: chat.first_name || "",
       lastName: chat.last_name,
@@ -118,24 +105,16 @@ export function constructChat(chat: types.User | types.Chat | types.Channel): Ch
       chat_.restrictionReason = chat.restriction_reason;
     }
 
-    if (chat.photo instanceof types.UserProfilePhoto) {
-      chat_.photo = constructChatPhoto(chat.photo, chat_.id, chat.access_hash ?? 0n);
-    }
-
     return cleanObject(chat_);
   } else if (chat instanceof types.Chat) {
     const id = Number(-chat.id);
     const chat_: Chat.Group = {
-      type: "group",
       id,
+      type: "group",
       color: getColorFromPeerId(id),
       title: chat.title,
       isCreator: chat.creator || false,
     };
-
-    if (chat.photo instanceof types.ChatPhoto) {
-      chat_.photo = constructChatPhoto(chat.photo, chat_.id, 0n);
-    }
 
     return cleanObject(chat_);
   } else if (chat instanceof types.Channel) {
@@ -174,14 +153,9 @@ export function constructChat(chat: types.User | types.Chat | types.Channel): Ch
       };
     }
 
-    chat_.username = chat.username;
-    chat_.also = chat.usernames?.map((v) => v.username);
+    chat_.username = chat.username ?? chat.usernames?.[0].username;
     if (chat_.isRestricted) {
       chat_.restrictionReason = (chat.restriction_reason ?? []).map(constructRestrictionReason);
-    }
-
-    if (chat.photo instanceof types.ChatPhoto) {
-      chat_.photo = constructChatPhoto(chat.photo, chat_.id, chat.access_hash ?? 0n);
     }
 
     return cleanObject(chat_);
