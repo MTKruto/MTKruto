@@ -63,6 +63,7 @@ export interface Message {
   isAutomaticForward?: boolean;
   /** For replies, the original message. Note that the Message object in this field will not contain further reply_to_message fields even if it itself is a reply. */
   replyToMessage?: Omit<Message, "replyToMessage">;
+  replyToMessageId?: number;
   /** Bot through which the message was sent */
   viaBot?: User;
   /** Date the message was last edited in Unix time */
@@ -354,6 +355,9 @@ export async function constructMessage(
     hasProtectedContent: message_.noforwards || false,
   };
 
+  if (message_.reply_to instanceof types.MessageReplyHeader && message_.reply_to.reply_to_msg_id) {
+    message.replyToMessageId = message_.reply_to.reply_to_msg_id;
+  }
   Object.assign(message, await getReply(message_, chat_, getMessage));
   Object.assign(message, await getSender(message_, getEntity));
 
