@@ -762,7 +762,15 @@ export class Client<C extends Context = Context> extends ClientAbstract {
           ));
         } catch (err) {
           dRecv("failed to decrypt message: %o", err);
-          drop(this.#recoverUpdateGap("decryption"));
+          drop((async () => {
+            try {
+              await this.disconnect();
+            } catch {
+              //
+            }
+            await this.connect();
+            await this.#recoverUpdateGap("decryption");
+          })());
           continue;
         }
         const messages = decrypted instanceof MessageContainer ? decrypted.messages : [decrypted];
