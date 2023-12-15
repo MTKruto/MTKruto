@@ -1985,6 +1985,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
           );
         }
         await this.storage.setMessage(chatId, messageId, null);
+        await this.#reassignChatLastMessage(chatId);
       }
       if (deletedMessages.length > 0) {
         await this.#handle(await this.#constructContext({ deletedMessages: deletedMessages as [Message, ...Message[]] }), resolve);
