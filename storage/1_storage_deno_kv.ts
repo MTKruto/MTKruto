@@ -36,7 +36,7 @@ export class StorageDenoKV extends Storage implements Storage {
   }
 
   #fixKey(key: readonly StorageKeyPart[]) {
-    if (!this.#id !== null) {
+    if (this.#id !== null) {
       return ["__S" + this.#id, ...key];
     } else {
       return key;
