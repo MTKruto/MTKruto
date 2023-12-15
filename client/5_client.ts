@@ -3,7 +3,7 @@ import { bigIntFromBuffer, cleanObject, drop, getRandomBigInt, getRandomId, Mayb
 import { as, enums, functions, getChannelChatId, Message_, MessageContainer, name, peerToChatId, ReadObject, RPCResult, TLError, TLReader, types } from "../2_tl.ts";
 import { Storage, StorageMemory } from "../3_storage.ts";
 import { DC } from "../3_transport.ts";
-import { BotCommand, botCommandScopeToTlObject, CallbackQuery, ChatAction, ChatID, constructCallbackQuery, constructChosenInlineResult, constructInlineQuery, constructMessage, constructUser, FileID, FileType, InlineQuery, InlineQueryResult, inlineQueryResultToTlObject, Message, MessageEntity, messageEntityToTlObject, ParseMode, replyMarkupToTlObject, ThumbnailSource, User, UsernameResolver } from "../3_types.ts";
+import { BotCommand, botCommandScopeToTlObject, CallbackQuery, Chat, ChatAction, ChatID, constructCallbackQuery, constructChat, constructChat2, constructChat3, constructChosenInlineResult, constructInlineQuery, constructMessage, constructUser, FileID, FileType, getChatOrder, InlineQuery, InlineQueryResult, inlineQueryResultToTlObject, Message, MessageEntity, messageEntityToTlObject, ParseMode, replyMarkupToTlObject, ThumbnailSource, User, UsernameResolver } from "../3_types.ts";
 import { ACK_THRESHOLD, APP_VERSION, CHANNEL_DIFFERENCE_LIMIT_BOT, CHANNEL_DIFFERENCE_LIMIT_USER, DEVICE_MODEL, LANG_CODE, LANG_PACK, LAYER, MAX_CHANNEL_ID, MAX_CHAT_ID, PublicKeys, STICKER_SET_NAME_TTL, SYSTEM_LANG_CODE, SYSTEM_VERSION, USERNAME_TTL } from "../4_constants.ts";
 import { AuthKeyUnregistered, FloodWait, Migrate, PasswordHashInvalid, PhoneNumberInvalid, SessionPasswordNeeded, upgradeInstance } from "../4_errors.ts";
 import { parseHtml } from "./0_html.ts";
@@ -12,7 +12,34 @@ import { checkPassword } from "./0_password.ts";
 import { FileSource, getFileContents, getUsername, isChannelPtsUpdate, isHttpUrl, isPtsUpdate, resolve, With } from "./0_utilities.ts";
 import { ClientAbstract } from "./1_client_abstract.ts";
 import { ClientPlain } from "./2_client_plain.ts";
-import { AnswerCallbackQueryParams, AnswerInlineQueryParams, AuthorizeUserParams, ClientParams, ConnectionState, DeleteMessageParams, DeleteMessagesParams, DownloadParams, EditMessageParams, FilterableUpdates, FilterUpdate, ForwardMessagesParams, GetHistoryParams, GetMyCommandsParams, InvokeErrorHandler, NetworkStatistics, ReplyParams, SendDocumentParams, SendMessageParams, SendPhotoParams, SendPollParams, SetMyCommandsParams, Update, UploadParams } from "./3_types.ts";
+import {
+  AnswerCallbackQueryParams,
+  AnswerInlineQueryParams,
+  AuthorizeUserParams,
+  ClientParams,
+  ConnectionState,
+  DeleteMessageParams,
+  DeleteMessagesParams,
+  DownloadParams,
+  EditMessageParams,
+  FilterableUpdates,
+  FilterUpdate,
+  ForwardMessagesParams,
+  getChatListId,
+  GetChatsParams,
+  GetHistoryParams,
+  GetMyCommandsParams,
+  InvokeErrorHandler,
+  NetworkStatistics,
+  ReplyParams,
+  SendDocumentParams,
+  SendMessageParams,
+  SendPhotoParams,
+  SendPollParams,
+  SetMyCommandsParams,
+  Update,
+  UploadParams,
+} from "./3_types.ts";
 import { Composer, concat, flatten, Middleware, MiddlewareFn, skip } from "./4_composer.ts";
 
 const d = debug("Client");
@@ -1261,6 +1288,8 @@ export class Client<C extends Context = Context> extends ClientAbstract {
           }
         } else if (difference instanceof types.updates.DifferenceTooLong) {
           await this.storage.deleteMessages();
+          await this.storage.removeChats(0);
+          await this.storage.removeChats(1);
           state.pts = difference.pts;
           dGap("received differenceTooLong");
         } else if (difference instanceof types.updates.DifferenceEmpty) {
@@ -1304,7 +1333,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
         dGapC("recovered from update gap [%o, %s]", channelId, source);
         break;
       } else if (difference instanceof types.updates.ChannelDifferenceTooLong) {
-        // invalidate messages
+        // TODO: invalidate messages
         dGapC("received channelDifferenceTooLong");
         await this.#processChats(difference.chats);
         await this.#processUsers(difference.users);
@@ -1448,6 +1477,14 @@ export class Client<C extends Context = Context> extends ClientAbstract {
       await this.#processChats(result.chats);
       if ("users" in result) {
         await this.#processUsers(result.users);
+      }
+
+      if ("messages" in result) {
+        for (const message of result.messages) {
+          if (message instanceof types.Message || message instanceof types.MessageService) {
+            await this.storage.setMessage(peerToChatId(message.peer_id), message.id, message);
+          }
+        }
       }
     }
 
@@ -1609,7 +1646,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
       if (peer instanceof types.InputPeerChannel) {
         messages_ = await this.invoke(
           new functions.channels.getMessages({
-            channel: new types.InputChannel({ channel_id: peer.channel_id, access_hash: peer.access_hash }),
+            channel: new types.InputChannel(peer),
             id: messageIds.map((v) => new types.InputMessageID({ id: v })),
           }),
         ).then((v) => v[as](types.messages.ChannelMessages).messages);
@@ -1876,9 +1913,11 @@ export class Client<C extends Context = Context> extends ClientAbstract {
       });
     }
 
-    if (update instanceof types.UpdateNewMessage || update instanceof types.UpdateNewMessage || update instanceof types.UpdateNewChannelMessage || update instanceof types.UpdateNewChannelMessage) {
+    if (update instanceof types.UpdateNewMessage || update instanceof types.UpdateNewChannelMessage || update instanceof types.UpdateEditMessage || update instanceof types.UpdateEditChannelMessage) {
       if (update.message instanceof types.Message || update.message instanceof types.MessageService) {
-        await this.storage.setMessage(peerToChatId(update.message.peer_id), update.message.id, update.message);
+        const chatId = peerToChatId(update.message.peer_id);
+        await this.storage.setMessage(chatId, update.message.id, update.message);
+        await this.#reassignChatLastMessage(chatId);
       }
     }
 
@@ -1924,6 +1963,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
             );
           }
           await this.storage.setMessage(chatId, messageId, null);
+          await this.#reassignChatLastMessage(chatId);
         }
       }
       if (deletedMessages.length > 0) {
@@ -1957,6 +1997,10 @@ export class Client<C extends Context = Context> extends ClientAbstract {
       await this.#handle(await this.#constructContext({ inlineQuery: await constructInlineQuery(update, this[getEntity].bind(this)) }), resolve);
     } else if (update instanceof types.UpdateBotInlineSend) {
       await this.#handle(await this.#constructContext({ chosenInlineResult: await constructChosenInlineResult(update, this[getEntity].bind(this)) }), resolve);
+    }
+
+    if (update instanceof types.UpdatePinnedDialogs) {
+      await this.#updatePinnedChats(update);
     }
   }
 
@@ -2616,6 +2660,237 @@ export class Client<C extends Context = Context> extends ClientAbstract {
       received: Number(cdnRead || 0),
     };
     return { messages, cdn };
+  }
+
+  async #sendChatUpdate(chatId: number, added: boolean) {
+    try {
+      await this.#assertUser("");
+    } catch {
+      return;
+    }
+    const chat = this.#chats.get(chatId);
+    const update = chat === undefined ? { deletedChat: { chatId } } : added ? { newChat: chat } : { editedChat: chat };
+    this.#handleUpdateQueue.add(async () => {
+      await this.#handle(await this.#constructContext(update), resolve);
+    });
+  }
+
+  async #reassignChatLastMessage(chatId: number, add = false) {
+    try {
+      await this.#assertUser("");
+    } catch {
+      return;
+    }
+    const [chat, listId] = this.#getChatAnywhere(chatId);
+    if (!chat && !add) {
+      return;
+    }
+
+    const message_ = await this.storage.getLastMessage(chatId);
+    if (message_ != null) {
+      const message = await constructMessage(message_, this[getEntity].bind(this), this.getMessage.bind(this), this[getStickerSetName].bind(this));
+      if (chat) {
+        chat.order = getChatOrder(message, chat.pinned);
+        chat.lastMessage = message;
+        await this.storage.setChat(listId, chatId, chat.pinned, message.id, message.date);
+      } else {
+        const pinnedChats = await this.#getPinnedChats(listId);
+        const chat = await constructChat2(chatId, pinnedChats.indexOf(chatId), message, this[getEntity].bind(this));
+        if (chat == null) {
+          UNREACHABLE();
+        }
+        this.#chats.set(chatId, chat);
+        await this.storage.setChat(listId, chatId, chat.pinned, chat.lastMessage?.id ?? 0, chat.lastMessage?.date ?? new Date(0));
+      }
+      await this.#sendChatUpdate(chatId, !chat);
+      return;
+    }
+
+    // TODO: get last message with history request
+  }
+  #chats = new Map<number, Chat>();
+  #archivedChats = new Map<number, Chat>();
+  #chatsLoadedFromStorage = false;
+  #getChatAnywhere(chatId: number): [Chat | undefined, number] {
+    let chat = this.#chats.get(chatId);
+    if (chat) {
+      return [chat, 0];
+    }
+    chat = this.#archivedChats.get(chatId);
+    if (chat) {
+      return [chat, 1];
+    }
+    return [undefined, -1];
+  }
+  #getChatList(listId: number) {
+    switch (listId) {
+      case 0:
+        return this.#chats;
+      case 1:
+        return this.#archivedChats;
+      default:
+        throw new Error("Invalid chat list: " + listId);
+    }
+  }
+
+  async #loadChatsFromStorage() {
+    const chats = await this.storage.getChats(0);
+    const archivedChats = await this.storage.getChats(1);
+    for (const { chatId, pinned, topMessageId } of chats) {
+      const chat = await constructChat3(chatId, pinned, topMessageId, this[getEntity].bind(this), this.getMessage.bind(this));
+      if (chat == null) {
+        continue;
+      }
+      this.#chats.set(chat.id, chat);
+    }
+    for (const { chatId, pinned, topMessageId } of archivedChats) {
+      const chat = await constructChat3(chatId, pinned, topMessageId, this[getEntity].bind(this), this.getMessage.bind(this));
+      if (chat == null) {
+        continue;
+      }
+      this.#archivedChats.set(chat.id, chat);
+    }
+    this.#chatsLoadedFromStorage = true;
+  }
+  #getLoadedChats(listId: number) {
+    const chats_ = this.#getChatList(listId);
+
+    const chats = new Array<Chat>();
+    for (const chat of chats_.values()) {
+      chats.push(chat);
+    }
+    return chats
+      .sort((a, b) => b.id - a.id)
+      .sort((a, b) => b.order.localeCompare(a.order));
+  }
+  #pinnedChats = new Array<number>();
+  #pinnedArchiveChats = new Array<number>();
+  #storageHadPinnedChats = false;
+  #pinnedChatsLoaded = false;
+  async #loadPinnedChats() {
+    const [pinnedChats, pinnedArchiveChats] = await Promise.all([this.storage.getPinnedChats(0), this.storage.getPinnedChats(1)]);
+    if (pinnedChats != null && pinnedArchiveChats != null) {
+      this.#pinnedChats = pinnedChats;
+      this.#pinnedArchiveChats = pinnedArchiveChats;
+      this.#storageHadPinnedChats = true;
+    }
+    this.#pinnedChatsLoaded = true;
+  }
+  async #fetchPinnedChats(listId: number | null = null) {
+    if (listId == null || listId == 0) {
+      const dialogs = await this.api.messages.getPinnedDialogs({ folder_id: 0 });
+      const pinnedChats = new Array<number>();
+      for (const dialog of dialogs.dialogs) {
+        pinnedChats.push(peerToChatId(dialog.peer));
+      }
+      this.#pinnedChats = pinnedChats;
+      await this.storage.setPinnedChats(0, this.#pinnedChats);
+    }
+    if (listId == null || listId == 1) {
+      const dialogs = await this.api.messages.getPinnedDialogs({ folder_id: 1 });
+      const pinnedArchiveChats = new Array<number>();
+      for (const dialog of dialogs.dialogs) {
+        pinnedArchiveChats.push(peerToChatId(dialog.peer));
+      }
+      this.#pinnedArchiveChats = pinnedArchiveChats;
+      await this.storage.setPinnedChats(1, this.#pinnedArchiveChats);
+    }
+    if (listId != null && listId != 0 && listId != 1) {
+      UNREACHABLE();
+    }
+  }
+  async #getPinnedChats(listId: number) {
+    if (!this.#pinnedChatsLoaded) {
+      await this.#loadPinnedChats();
+    }
+    if (!this.#storageHadPinnedChats) {
+      await this.#fetchPinnedChats();
+    }
+    switch (listId) {
+      case 0:
+        return this.#pinnedChats;
+      case 1:
+        return this.#pinnedArchiveChats;
+      default:
+        UNREACHABLE();
+    }
+  }
+  async #updatePinnedChats(update: types.UpdatePinnedDialogs) {
+    const listId = update.folder_id ?? 0;
+    await this.#fetchPinnedChats(update.folder_id);
+    const chats = this.#getChatList(listId);
+    const pinnedChats = await this.#getPinnedChats(listId);
+    for (const [i, chatId] of pinnedChats.entries()) {
+      const chat = chats.get(chatId);
+      if (chat !== undefined) {
+        chat.order = getChatOrder(chat.lastMessage, i);
+        chat.pinned = i;
+        await this.#sendChatUpdate(chatId, false);
+      }
+    }
+    for (const chat of chats.values()) {
+      if (chat.pinned != -1 && pinnedChats.indexOf(chat.id) == -1) {
+        chat.order = getChatOrder(chat.lastMessage, -1);
+        chat.pinned = -1;
+        await this.#sendChatUpdate(chat.id, false);
+      }
+    }
+  }
+  async #fetchChats(listId: number, limit: number, after?: Chat) {
+    const dialogs = await this.api.messages.getDialogs({
+      limit,
+      offset_id: after?.lastMessage?.id ?? 0,
+      offset_date: after?.lastMessage?.date ? Math.ceil(after.lastMessage.date.getTime() / 1_000) : 0,
+      offset_peer: after ? await this.getInputPeer(after.id) : new types.InputPeerEmpty(),
+      hash: 0n,
+      folder_id: listId,
+    });
+    const pinnedChats = await this.#getPinnedChats(listId);
+    if (!(dialogs instanceof types.messages.Dialogs) && !(dialogs instanceof types.messages.DialogsSlice)) {
+      UNREACHABLE();
+    }
+    if (dialogs.dialogs.length == 0) {
+      await this.storage.setHasAllChats(listId, true);
+    }
+    const chats = this.#getChatList(listId);
+    for (const dialog of dialogs.dialogs) {
+      const chat = await constructChat(dialog, dialogs, pinnedChats, this[getEntity].bind(this), this.getMessage.bind(this), this[getStickerSetName].bind(this));
+      chats.set(chat.id, chat);
+      await this.storage.setChat(listId, chat.id, chat.pinned, chat.lastMessage?.id ?? 0, chat.lastMessage?.date ?? new Date(0));
+    }
+  }
+  /**
+   * Get chats.
+   *
+   * @method
+   */
+  async getChats(params?: GetChatsParams): Promise<Chat[]> {
+    await this.#assertUser("getChats");
+    if (!this.#chatsLoadedFromStorage) {
+      await this.#loadChatsFromStorage();
+    }
+    if (params?.after?.id && !this.#chats.has(params.after.id)) {
+      throw new Error("Invalid after");
+    }
+    let limit = params?.limit ?? 100;
+    if (limit <= 0 || limit > 100) {
+      limit = 100;
+    }
+    const listId = getChatListId(params?.from ?? "main");
+    let chats = this.#getLoadedChats(listId);
+    if (params?.after) {
+      chats = chats
+        .filter((v) => v.id < params.after!.id);
+    }
+    if (chats.length < limit) {
+      d("have only %d chats but %d more is needed", chats.length, limit - chats.length);
+      if (!await this.storage.hasAllChats(listId)) {
+        await this.#fetchChats(listId, limit, params?.after);
+        return await this.getChats(params);
+      }
+    }
+    chats = chats.slice(0, limit);
+    return chats;
   }
 
   /**
