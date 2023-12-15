@@ -52,7 +52,7 @@ export class StorageDenoKV extends Storage implements Storage {
     const kv = assertInitialized(this.kv);
 
     const maybeValue = await kv.get(key);
-    if (maybeValue.versionstamp == null) {
+    if (maybeValue.versionstamp === null) {
       return null;
     } else {
       return maybeValue.value as T;
