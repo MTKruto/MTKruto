@@ -197,6 +197,6 @@ export abstract class Storage {
   }
 
   getHistory(chatId: number, offsetId: 0, limit: number) {
-    this.getMany()
+    this.getMany();
   }
 }
