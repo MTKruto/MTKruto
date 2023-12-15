@@ -1698,6 +1698,17 @@ export class Client<C extends Context = Context> extends ClientAbstract {
   }
 
   async *#downloadInner(location: enums.InputFileLocation, dcId: number, params?: { chunkSize?: number }) {
+    const id = "id" in location ? location.id : "photo_id" in location ? location.photo_id : null;
+    if (id != null) {
+      const partCount = await this.storage.getFile(id);
+      if (partCount != null && partCount > 0) {
+        for await (const part of this.storage.iterFileParts(id, partCount)) {
+          yield part;
+        }
+        return;
+      }
+    }
+
     const chunkSize = params?.chunkSize ?? 1024 * 1024;
     if (mod(chunkSize, 1024) != 0) {
       throw new Error("chunkSize must be divisible by 1024");
@@ -1724,13 +1735,21 @@ export class Client<C extends Context = Context> extends ClientAbstract {
 
     const limit = chunkSize;
     let offset = 0n;
+    let part = 0;
 
     while (true) {
       const file = await (client ?? this).invoke(new functions.upload.getFile({ location, offset, limit }));
 
       if (file instanceof types.upload.File) {
         yield file.bytes;
+        if (id != null) {
+          await this.storage.saveFilePart(id, part, file.bytes);
+        }
+        ++part;
         if (file.bytes.length < limit) {
+          if (id != null) {
+            await this.storage.setFilePartCount(id, part + 1);
+          }
           break;
         } else {
           offset += BigInt(file.bytes.length);

@@ -14,6 +14,10 @@ export class StorageDenoKV extends Storage implements Storage {
     super();
   }
 
+  get supportsFiles() {
+    return false;
+  }
+
   async init() {
     this.kv = await Deno.openKv(this.path);
   }

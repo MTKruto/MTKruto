@@ -18,6 +18,10 @@ export class StorageSessionStorage extends Storage implements Storage {
   init() {
   }
 
+  get supportsFiles() {
+    return false;
+  }
+
   get<T>(key_: readonly StorageKeyPart[]) {
     const key = this.prefix + toString(key_);
     const value = sessionStorage.getItem(key);
