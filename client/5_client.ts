@@ -1714,8 +1714,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
       throw new Error("chunkSize must be divisible by 1024");
     }
 
-    const exportedAuth = await this.invoke(new functions.auth.exportAuthorization({ dc_id: dcId }));
-    const client = new Client(new StorageMemory(), this.apiId, this.apiHash, {
+    const client = new Client(dcId == this.dcId ? this.storage : this.storage.branch(`download_client_${dcId}`), this.apiId, this.apiHash, {
       transportProvider: this.transportProvider,
       appVersion: this.appVersion,
       deviceModel: this.deviceModel,
@@ -1731,7 +1730,21 @@ export class Client<C extends Context = Context> extends ClientAbstract {
     }
     await client.setDc(dc as DC);
     await client.connect();
-    await client.authorize(exportedAuth);
+    await client.#initConnection();
+
+    client.invoke.use(async (ctx, next) => {
+      if (ctx.error instanceof AuthKeyUnregistered) {
+        try {
+          const exportedAuth = await this.invoke(new functions.auth.exportAuthorization({ dc_id: dcId }));
+          await client.authorize(exportedAuth);
+          return true;
+        } catch (err) {
+          throw err;
+        }
+      } else {
+        return await next();
+      }
+    });
 
     const limit = chunkSize;
     let offset = 0n;
