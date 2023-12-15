@@ -12,7 +12,7 @@ import { checkPassword } from "./0_password.ts";
 import { FileSource, getFileContents, getUsername, isChannelPtsUpdate, isHttpUrl, isPtsUpdate, resolve, With } from "./0_utilities.ts";
 import { ClientAbstract } from "./1_client_abstract.ts";
 import { ClientPlain } from "./2_client_plain.ts";
-import { AnswerCallbackQueryParams, AnswerInlineQueryParams, AuthorizeUserParams, ClientParams, ConnectionState, DeleteMessageParams, DeleteMessagesParams, DownloadParams, EditMessageParams, FilterableUpdates, FilterUpdate, ForwardMessagesParams, GetMyCommandsParams, InvokeErrorHandler, NetworkStatistics, ReplyParams, SendDocumentParams, SendMessageParams, SendPhotoParams, SendPollParams, SetMyCommandsParams, Update, UploadParams } from "./3_types.ts";
+import { AnswerCallbackQueryParams, AnswerInlineQueryParams, AuthorizeUserParams, ClientParams, ConnectionState, DeleteMessageParams, DeleteMessagesParams, DownloadParams, EditMessageParams, FilterableUpdates, FilterUpdate, ForwardMessagesParams, GetHistoryParams, GetMyCommandsParams, InvokeErrorHandler, NetworkStatistics, ReplyParams, SendDocumentParams, SendMessageParams, SendPhotoParams, SendPollParams, SetMyCommandsParams, Update, UploadParams } from "./3_types.ts";
 import { Composer, concat, flatten, Middleware, MiddlewareFn, skip } from "./4_composer.ts";
 
 const d = debug("Client");
@@ -2621,9 +2621,10 @@ export class Client<C extends Context = Context> extends ClientAbstract {
   /**
    * Get chat history.
    *
+   * @param chatId The identifier of the chat to get its history.
    * @method
    */
-  async getHistory(chatId: ChatID, params?: { after?: Message; limit?: number }) {
+  async getHistory(chatId: ChatID, params?: GetHistoryParams) {
     let limit = params?.limit ?? 100;
     if (limit <= 0) {
       limit = 1;
