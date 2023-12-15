@@ -307,6 +307,7 @@ export async function constructMessage(
   getEntity: EntityGetter,
   getMessage: Message_MessageGetter,
   getStickerSetName: StickerSetNameGetter,
+  getReply_ = true,
 ) {
   if (!(message_ instanceof types.Message) && !(message_ instanceof types.MessageService)) {
     UNREACHABLE();
@@ -358,7 +359,9 @@ export async function constructMessage(
   if (message_.reply_to instanceof types.MessageReplyHeader && message_.reply_to.reply_to_msg_id) {
     message.replyToMessageId = message_.reply_to.reply_to_msg_id;
   }
-  Object.assign(message, await getReply(message_, chat_, getMessage));
+  if (getReply_) {
+    Object.assign(message, await getReply(message_, chat_, getMessage));
+  }
   Object.assign(message, await getSender(message_, getEntity));
 
   if (message_.media instanceof types.MessageMediaPhoto || message_.media instanceof types.MessageMediaDocument) {
