@@ -87,6 +87,22 @@ export function fromString<T>(string: string): T {
 export function fixKey(key: readonly StorageKeyPart[]) {
   return key.map((v) => typeof v === "bigint" ? String(ValueType.BigInt) + String(v) : typeof v === "string" ? String(ValueType.String) + v : v);
 }
+export function restoreKey(key: readonly StorageKeyPart[]) {
+  return key.map((v) => {
+    if (typeof v === "string") {
+      const t = Number(v[0]);
+      if (t == ValueType.BigInt) {
+        return BigInt(v.slice(1));
+      } else if (t == ValueType.String) {
+        return v.slice(1);
+      } else {
+        return v;
+      }
+    } else {
+      return v;
+    }
+  });
+}
 
 // Source: https://gist.github.com/inexorabletash/5462871
 // deno-lint-ignore no-explicit-any
