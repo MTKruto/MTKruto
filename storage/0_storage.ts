@@ -17,6 +17,8 @@ const KPARTS_MESSAGE_REF = (messageId: number) => ["messageRefs", messageId];
 
 export type StorageKeyPart = string | number | bigint;
 
+export type GetManyFilter = { prefix: readonly StorageKeyPart[] } | { start: readonly StorageKeyPart[]; end: readonly StorageKeyPart[] };
+
 export abstract class Storage {
   #_authKeyId: bigint | null = null;
 
@@ -25,7 +27,7 @@ export abstract class Storage {
   abstract set(key: readonly StorageKeyPart[], value: unknown): MaybePromise<void>;
   abstract incr(key: readonly StorageKeyPart[], by: number): MaybePromise<void>;
   abstract get<T>(key: readonly StorageKeyPart[]): MaybePromise<T | null>;
-  abstract getMany<T>(prefix: readonly StorageKeyPart[], params?: { limit?: number; reverse?: boolean }): MaybePromise<Generator<[readonly StorageKeyPart[], T]> | AsyncGenerator<[readonly StorageKeyPart[], T]>>;
+  abstract getMany<T>(prefix: GetManyFilter, params?: { limit?: number; reverse?: boolean }): MaybePromise<Generator<[readonly StorageKeyPart[], T]> | AsyncGenerator<[readonly StorageKeyPart[], T]>>;
 
   setDc(dc: DC | null) {
     return this.set(KPARTS__DC, dc);
@@ -120,7 +122,7 @@ export abstract class Storage {
 
   async deleteMessages() {
     const maybePromises = new Array<MaybePromise<void>>();
-    for await (const [k, o] of await this.getMany(["messageRefs"])) {
+    for await (const [k, o] of await this.getMany({ prefix: ["messageRefs"] })) {
       maybePromises.push(Promise.all<void>([this.set(k, null), o == null ? Promise.resolve() : this.set(KPARTS_MESSAGE(o as number, k[1] as number), null)]).then(() => {}));
     }
     await Promise.all(maybePromises.filter((v) => v instanceof Promise));

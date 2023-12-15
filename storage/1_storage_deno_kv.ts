@@ -1,4 +1,4 @@
-import { Storage, StorageKeyPart } from "./0_storage.ts";
+import { GetManyFilter, Storage, StorageKeyPart } from "./0_storage.ts";
 
 function assertInitialized(kv: Deno.Kv | null | undefined) {
   if (!kv) {
@@ -29,10 +29,10 @@ export class StorageDenoKV extends Storage implements Storage {
     }
   }
 
-  async *getMany<T>(prefix: string[], params?: { limit?: number; reverse?: boolean }) {
+  async *getMany<T>(filter: GetManyFilter, params?: { limit?: number; reverse?: boolean }) {
     const kv = assertInitialized(this.kv);
 
-    for await (const i of kv.list({ prefix }, { limit: params?.limit, reverse: params?.reverse })) {
+    for await (const i of kv.list(filter, { limit: params?.limit, reverse: params?.reverse })) {
       if (i.key == null) { // cust in jase
         continue;
       }

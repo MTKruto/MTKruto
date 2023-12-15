@@ -1,4 +1,4 @@
-import { Storage, StorageKeyPart } from "./0_storage.ts";
+import { GetManyFilter, Storage, StorageKeyPart } from "./0_storage.ts";
 import { fixKey, getPrefixKeyRange, restoreKey } from "./0_utilities.ts";
 
 const VERSION = 1;
@@ -71,18 +71,24 @@ export class StorageIndexedDB extends Storage {
     });
   }
 
-  async *getMany<T>(prefix: readonly StorageKeyPart[], params?: { limit?: number; reverse?: boolean }, tx_?: IDBTransaction) {
+  async *getMany<T>(filter: GetManyFilter, params?: { limit?: number; reverse?: boolean }, tx_?: IDBTransaction) {
     if (!this.database) {
       throw new Error("Not initialized");
     }
     if (params?.limit !== undefined && params.limit <= 0) {
       params.limit = 1;
     }
+    let keyRange: IDBKeyRange;
+    if ("prefix" in filter) {
+      keyRange = getPrefixKeyRange(fixKey(filter.prefix));
+    } else {
+      keyRange = IDBKeyRange.bound(fixKey(filter.start), fixKey(filter.end), true, true);
+    }
     const keys = await new Promise<(readonly StorageKeyPart[])[]>((res, rej) => {
       const items = new Array<readonly StorageKeyPart[]>();
       const tx = (tx_ ?? this.database!.transaction(KV_OBJECT_STORE, "readonly"))
         .objectStore(KV_OBJECT_STORE)
-        .openKeyCursor(getPrefixKeyRange(fixKey(prefix)), params?.reverse ? "prev" : undefined);
+        .openKeyCursor(keyRange, params?.reverse ? "prev" : undefined);
       tx.onerror = rej;
       tx.onsuccess = () => {
         const cursor = tx.result;
