@@ -428,22 +428,16 @@ export async function constructMessage(
       const entity = await getEntity(message_.fwd_from.from_id);
       if (entity) {
         message.forwardFrom = constructUser(entity);
-      } else {
-        UNREACHABLE();
       }
     } else if (message_.fwd_from.from_id instanceof types.PeerChat) {
       const entity = await getEntity(message_.fwd_from.from_id);
       if (entity) {
         message.forwardFromChat = constructChatP(entity);
-      } else {
-        UNREACHABLE();
       }
     } else if (message_.fwd_from.from_id instanceof types.PeerChannel) {
       const entity = await getEntity(message_.fwd_from.from_id);
       if (entity) {
         message.forwardFromChat = constructChatP(entity);
-      } else {
-        UNREACHABLE();
       }
     }
   }
