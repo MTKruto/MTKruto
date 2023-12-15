@@ -599,6 +599,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
     try {
       await this.#fetchState("authorize");
       await this.#propagateAuthorizationState(true);
+      drop(this.#recoverUpdateGap("authorize"));
       d("already authorized");
       return;
     } catch (err) {
@@ -750,17 +751,6 @@ export class Client<C extends Context = Context> extends ClientAbstract {
       drop(this.#fetchState("start"));
       drop(this.#recoverUpdateGap("start"));
       return;
-    }
-
-    try {
-      await this.#fetchState("authorize");
-      d("already authorized");
-      await this.#propagateAuthorizationState(true);
-      return;
-    } catch (err) {
-      if (!(err instanceof AuthKeyUnregistered)) {
-        throw err;
-      }
     }
 
     await this.authorize(params);
