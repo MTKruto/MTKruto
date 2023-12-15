@@ -2631,18 +2631,18 @@ export class Client<C extends Context = Context> extends ClientAbstract {
       limit = 100;
     }
     let offsetId = params?.after?.id ?? 0;
-    if (offsetId < 0  ) {
+    if (offsetId < 0) {
       offsetId = 0;
     }
-    const peer = await this.getInputPeer(chatId);   
+    const peer = await this.getInputPeer(chatId);
     const messages = new Array<Message>();
-    for (const message_ of   await this.storage.getHistory(peerToChatId(peer), offsetId, limit)) {
-      const message = await constructMessage(message_, this[getEntity].bind(this),this.getMessage.bind(this), this[getStickerSetName].bind(this), false);
-      messages.push(message) 
+    for (const message_ of await this.storage.getHistory(peerToChatId(peer), offsetId, limit)) {
+      const message = await constructMessage(message_, this[getEntity].bind(this), this.getMessage.bind(this), this[getStickerSetName].bind(this), false);
+      messages.push(message);
     }
     if (messages.length < limit) {
-      d("have only %d messages but need %d more", messages.length, limit - messages.length)
-      offsetId = messages[messages.length - 1].id
+      d("have only %d messages but need %d more", messages.length, limit - messages.length);
+      offsetId = messages[messages.length - 1].id; // TODO: track id of oldest message and don't send requests for it
       const result = await this.api.messages.getHistory({
         peer: peer,
         offset_id: offsetId,
@@ -2653,7 +2653,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
         min_id: 0,
         hash: 0n,
       });
-  
+
       if (!("messages" in result)) {
         UNREACHABLE();
       }
