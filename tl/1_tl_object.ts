@@ -143,7 +143,11 @@ function serializeSingleParam(
       }
       //
       if (typeof value === "number") {
-        writer.writeInt32(value);
+        if (ntype == "double") {
+          writer.writeDouble(value);
+        } else {
+          writer.writeInt32(value);
+        }
       } else {
         throw new TypeError(`Expected number but received ${valueRepr} ${debugInfo}`);
       }

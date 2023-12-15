@@ -30,6 +30,13 @@ export class TLRawWriter {
     return this;
   }
 
+  writeDouble(double: number) { // TODO: cover in tests
+    const buf = new Uint8Array(8);
+    new DataView(buf.buffer).setFloat64(0, double, true);
+    this.write(buf);
+    return this;
+  }
+
   writeInt128(int: bigint, signed = true) {
     this.write(bufferFromBigInt(int, 128 / 8, true, signed));
     return this;
