@@ -19,7 +19,7 @@ function deserializeSingleParam(
     const cid = reader.readInt32(false);
     const constructor = map.get(cid);
     if (!constructor) {
-      throw new Error(`Constructor with ID ${cid} not found`);
+      throw new Error(`Constructor with ID ${cid.toString(16)} not found`);
     }
     return deserialize(
       reader,
