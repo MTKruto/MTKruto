@@ -165,3 +165,18 @@ function successor(key: any) {
 
   throw new TypeError();
 }
+
+export function isInRange(key: StorageKeyPart[], start: readonly StorageKeyPart[], end: readonly StorageKeyPart[]) {
+  for (const [i, part] of key.entries()) {
+    const left = start[i];
+    const right = end[i];
+    if (left === undefined || right === undefined) {
+      return false;
+    }
+    if (part >= left && part <= right) {
+      continue;
+    }
+    return false;
+  }
+  return true;
+}

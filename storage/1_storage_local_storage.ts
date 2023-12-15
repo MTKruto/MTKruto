@@ -1,5 +1,5 @@
-import { Storage, StorageKeyPart } from "./0_storage.ts";
-import { fromString, toString } from "./0_utilities.ts";
+import { GetManyFilter, Storage, StorageKeyPart } from "./0_storage.ts";
+import { fromString, isInRange, toString } from "./0_utilities.ts";
 
 export class StorageLocalStorage extends Storage implements Storage {
   constructor(private readonly prefix: string) {
@@ -27,7 +27,7 @@ export class StorageLocalStorage extends Storage implements Storage {
     }
   }
 
-  *getMany<T>(prefix: readonly StorageKeyPart[], params?: { limit?: number; reverse?: boolean }) {
+  *getMany<T>(filter: GetManyFilter, params?: { limit?: number; reverse?: boolean }) {
     let entries = Object.entries(localStorage).sort(([a], [b]) => a.localeCompare(b));
     if (params?.reverse) {
       entries.reverse();
@@ -41,12 +41,19 @@ export class StorageLocalStorage extends Storage implements Storage {
       }
       const parts = fromString(key);
       if (Array.isArray(parts)) {
-        for (const [i, p] of prefix.entries()) {
-          if (toString(p) != toString(parts[i])) {
+        if ("prefix" in filter) {
+          for (const [i, p] of filter.prefix.entries()) {
+            if (toString(p) != toString(parts[i])) {
+              continue;
+            }
+          }
+        } else {
+          if (!isInRange(parts, filter.start, filter.end)) {
             continue;
           }
-          yield [parts, fromString(value)] as [readonly StorageKeyPart[], T];
         }
+
+        yield [parts, fromString(value)] as [readonly StorageKeyPart[], T];
       }
     }
   }
