@@ -3,7 +3,9 @@ import { GetManyFilter, Storage, StorageKeyPart } from "./0_storage.ts";
 import { fromString, isInRange, toString } from "./0_utilities.ts";
 
 export class StorageSessionStorage extends Storage implements Storage {
-  constructor(private readonly prefix: string) {
+  readonly #prefix: string;
+
+  constructor(prefix: string) {
     if (typeof sessionStorage === "undefined") {
       throw new Error("Unavailable in current environment");
     }
@@ -13,6 +15,15 @@ export class StorageSessionStorage extends Storage implements Storage {
       throw new Error("Unallowed prefix");
     }
     super();
+    this.#prefix = prefix;
+  }
+
+  get prefix() {
+    return this.#prefix;
+  }
+
+  branch(id: string) {
+    return new StorageSessionStorage(this.prefix + "S__" + id);
   }
 
   init() {

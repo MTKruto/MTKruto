@@ -37,6 +37,7 @@ export abstract class Storage {
   abstract get<T>(key: readonly StorageKeyPart[]): MaybePromise<T | null>;
   abstract getMany<T>(prefix: GetManyFilter, params?: { limit?: number; reverse?: boolean }): MaybePromise<Generator<[readonly StorageKeyPart[], T]> | AsyncGenerator<[readonly StorageKeyPart[], T]>>;
   abstract get supportsFiles(): boolean;
+  abstract branch(id: string): Storage;
 
   setDc(dc: DC | null) {
     return this.set(KPARTS__DC, dc);

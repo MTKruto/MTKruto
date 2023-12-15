@@ -4,8 +4,23 @@ import { fromString, isInRange, toString } from "./0_utilities.ts";
 
 export class StorageMemory extends Storage implements Storage {
   protected map = new Map<string, unknown>();
+  #id: string | null = null;
 
   init() {
+  }
+
+  #fixKey(key: readonly StorageKeyPart[]) {
+    if (!this.#id !== null) {
+      return ["__S" + this.#id, ...key];
+    } else {
+      return key;
+    }
+  }
+
+  branch(id: string): Storage {
+    const storage = new StorageMemory();
+    storage.#id = id;
+    return storage;
   }
 
   get supportsFiles() {
@@ -13,12 +28,16 @@ export class StorageMemory extends Storage implements Storage {
   }
 
   get<T>(key: readonly StorageKeyPart[]) {
+    key = this.#fixKey(key);
     return this.map.get(toString(key)) as T ?? null;
   }
 
   #getEntries() {
     const entries = new Array<[string, unknown]>();
     for (const entry of this.map.entries()) {
+      if (this.#id !== null && !entry[0].startsWith("__S" + this.#id)) {
+        continue;
+      }
       entries.push(entry);
     }
     return entries;
@@ -53,6 +72,8 @@ export class StorageMemory extends Storage implements Storage {
   }
 
   set(key_: readonly StorageKeyPart[], value: unknown): MaybePromise<void> {
+    key_ = this.#fixKey(key_);
+
     const key = toString(key_);
     if (value != null) {
       this.map.set(key, value);
