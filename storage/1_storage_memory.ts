@@ -8,6 +8,10 @@ export class StorageMemory extends Storage implements Storage {
   init() {
   }
 
+  get supportsFiles() {
+    return false;
+  }
+
   get<T>(key: readonly StorageKeyPart[]) {
     return this.map.get(toString(key)) as T ?? null;
   }

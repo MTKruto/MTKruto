@@ -29,6 +29,10 @@ export class StorageIndexedDB extends Storage {
     });
   }
 
+  get supportsFiles() {
+    return true;
+  }
+
   set(k: readonly StorageKeyPart[], v: unknown, tx_?: IDBTransaction) {
     if (!this.database) {
       throw new Error("Not initialized");

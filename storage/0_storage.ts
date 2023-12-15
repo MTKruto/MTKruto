@@ -20,6 +20,8 @@ const KPARTS_CHATS = (listId: number) => ["chats", listId];
 const KPARTS_CHAT = (listId: number, chatId: number) => ["chats", listId, chatId];
 const KPARTS_PINNED_CHATS = (listId: number) => ["pinnedChats", listId];
 const KPARTS_SERVER_SALT = ["serverSalt"];
+const KPARTS_FILE = (fileId: bigint) => ["files", fileId];
+const KPARTS_FILE_PART = (fileId: bigint, n: number) => ["fileParts", fileId, n];
 
 export type StorageKeyPart = string | number | bigint;
 
@@ -34,6 +36,7 @@ export abstract class Storage {
   abstract incr(key: readonly StorageKeyPart[], by: number): MaybePromise<void>;
   abstract get<T>(key: readonly StorageKeyPart[]): MaybePromise<T | null>;
   abstract getMany<T>(prefix: GetManyFilter, params?: { limit?: number; reverse?: boolean }): MaybePromise<Generator<[readonly StorageKeyPart[], T]> | AsyncGenerator<[readonly StorageKeyPart[], T]>>;
+  abstract get supportsFiles(): boolean;
 
   setDc(dc: DC | null) {
     return this.set(KPARTS__DC, dc);
@@ -265,5 +268,39 @@ export abstract class Storage {
       messages.push(message);
     }
     return messages;
+  }
+
+  async getFile(id: bigint) {
+    if (!this.supportsFiles) {
+      return null;
+    }
+    return await this.get<number>(KPARTS_FILE(id));
+  }
+
+  async *iterFileParts(id: bigint, partCount: number) {
+    if (!this.supportsFiles) {
+      return;
+    }
+    for (let i = 0; i < partCount; i++) {
+      const part = await this.get<Uint8Array>(KPARTS_FILE_PART(id, i));
+      if (part == null) {
+        continue;
+      }
+      yield part;
+    }
+  }
+
+  async saveFilePart(id: bigint, index: number, bytes: Uint8Array) {
+    if (!this.supportsFiles) {
+      return;
+    }
+    await this.set(KPARTS_FILE_PART(id, index), bytes);
+  }
+
+  async setFilePartCount(id: bigint, partCount: number) {
+    if (!this.supportsFiles) {
+      return;
+    }
+    await this.set(KPARTS_FILE(id), partCount);
   }
 }
