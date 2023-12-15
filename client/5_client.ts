@@ -12,7 +12,7 @@ import { checkPassword } from "./0_password.ts";
 import { FileSource, getFileContents, getUsername, isChannelPtsUpdate, isHttpUrl, isPtsUpdate, resolve, With } from "./0_utilities.ts";
 import { ClientAbstract } from "./1_client_abstract.ts";
 import { ClientPlain } from "./2_client_plain.ts";
-import { AnswerCallbackQueryParams, AnswerInlineQueryParams, AuthorizeUserParams, ClientParams, ConnectionState, DeleteMessageParams, DeleteMessagesParams, DownloadParams, EditMessageParams, FilterableUpdates, FilterUpdate, ForwardMessagesParams, GetMyCommandsParams, InvokeErrorHandler, NetworkStatistics, ReplyParams, SendDocumentParams, SendMessageParams, SendPhotoParams, SendPollParams, SetMyCommandsParams, Update, UploadParams } from "./3_types.ts";
+import { AnswerCallbackQueryParams, AnswerInlineQueryParams, AuthorizeUserParams, ClientParams, ConnectionState, DeleteMessageParams, DeleteMessagesParams, DownloadParams, EditMessageParams, FilterableUpdates, FilterUpdate, ForwardMessagesParams, GetHistoryParams, GetMyCommandsParams, InvokeErrorHandler, NetworkStatistics, ReplyParams, SendDocumentParams, SendMessageParams, SendPhotoParams, SendPollParams, SetMyCommandsParams, Update, UploadParams } from "./3_types.ts";
 import { Composer, concat, flatten, Middleware, MiddlewareFn, skip } from "./4_composer.ts";
 
 const d = debug("Client");
@@ -2616,5 +2616,53 @@ export class Client<C extends Context = Context> extends ClientAbstract {
       received: Number(cdnRead || 0),
     };
     return { messages, cdn };
+  }
+
+  /**
+   * Get chat history.
+   *
+   * @param chatId The identifier of the chat to get its history.
+   * @method
+   */
+  async getHistory(chatId: ChatID, params?: GetHistoryParams) {
+    let limit = params?.limit ?? 100;
+    if (limit <= 0) {
+      limit = 1;
+    } else if (limit > 100) {
+      limit = 100;
+    }
+    let offsetId = params?.after?.id ?? 0;
+    if (offsetId < 0) {
+      offsetId = 0;
+    }
+    const peer = await this.getInputPeer(chatId);
+    const messages = new Array<Message>();
+    for (const message_ of await this.storage.getHistory(peerToChatId(peer), offsetId, limit)) {
+      const message = await constructMessage(message_, this[getEntity].bind(this), this.getMessage.bind(this), this[getStickerSetName].bind(this), false);
+      messages.push(message);
+    }
+    if (messages.length < limit) {
+      d("have only %d messages but need %d more", messages.length, limit - messages.length);
+      offsetId = messages[messages.length - 1].id; // TODO: track id of oldest message and don't send requests for it
+      const result = await this.api.messages.getHistory({
+        peer: peer,
+        offset_id: offsetId,
+        offset_date: 0,
+        add_offset: 0,
+        limit,
+        max_id: 0,
+        min_id: 0,
+        hash: 0n,
+      });
+
+      if (!("messages" in result)) {
+        UNREACHABLE();
+      }
+      for (const message_ of result.messages) {
+        const message = await constructMessage(message_, this[getEntity].bind(this), this.getMessage.bind(this), this[getStickerSetName].bind(this), false);
+        messages.push(message);
+      }
+    }
+    return messages;
   }
 }

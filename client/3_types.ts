@@ -361,6 +361,13 @@ export interface ReplyParams {
   quote?: boolean;
 }
 
+export interface GetHistoryParams {
+  /** The oldest message to get messages after. */
+  after?: Message;
+  /** The maximum number of results to return. Must be in the range of 1-100. Defaults to 100. */
+  limit?: number;
+}
+
 export type FilterableUpdates = "message" | "editedMessage" | "callbackQuery" | "inlineQuery" | "chosenInlineResult";
 
 export interface Update {

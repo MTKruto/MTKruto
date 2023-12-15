@@ -197,4 +197,15 @@ export abstract class Storage {
   getServerSalt() {
     return this.get<bigint>(["serverSalt"]);
   }
+
+  async getHistory(chatId: number, offsetId: number, limit: number) {
+    if (offsetId == 0) {
+      offsetId = Infinity;
+    }
+    const messages = new Array<enums.Message>();
+    for await (const [_, buffer] of await this.getMany<Uint8Array>({ start: KPARTS_MESSAGE(chatId, 0), end: KPARTS_MESSAGE(chatId, offsetId) }, { limit, reverse: true })) {
+      messages.push(await this.getTLObject(buffer) as enums.Message);
+    }
+    return messages;
+  }
 }
