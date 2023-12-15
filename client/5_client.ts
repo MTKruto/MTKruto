@@ -2863,7 +2863,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
     if (!(dialogs instanceof types.messages.Dialogs) && !(dialogs instanceof types.messages.DialogsSlice)) {
       UNREACHABLE();
     }
-    if (dialogs.dialogs.length == 0) {
+    if (dialogs.dialogs.length < limit) {
       await this.storage.setHasAllChats(listId, true);
     }
     const chats = this.#getChatList(listId);
@@ -2894,7 +2894,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
     let chats = this.#getLoadedChats(listId);
     if (params?.after) {
       chats = chats
-        .filter((v) => v.id < params.after!.id);
+        .filter((v) => v.order < params.after!.order);
     }
     if (chats.length < limit) {
       d("have only %d chats but %d more is needed", chats.length, limit - chats.length);
