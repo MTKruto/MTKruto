@@ -96,8 +96,8 @@ export abstract class Storage {
     }
   }
 
-  async getTLObject(key: readonly StorageKeyPart[]) {
-    const buffer = await this.get<Uint8Array>(key);
+  async getTLObject(keyOrBuffer: Uint8Array | readonly StorageKeyPart[]) {
+    const buffer = keyOrBuffer instanceof Uint8Array ? keyOrBuffer : await this.get<Uint8Array>(keyOrBuffer);
     if (buffer != null) {
       return new TLReader(rleDecode(buffer)).readObject();
     } else {
