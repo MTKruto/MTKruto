@@ -387,6 +387,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
     this.#handleUpdateQueue.add(async () => {
       await this.#handle(await this.#constructContext({ connectionState }), resolve);
     });
+    this.#lastPropagatedConnectionState = connectionState;
   }
 
   #lastPropagatedConnectionState: ConnectionState | null = null;
@@ -396,7 +397,6 @@ export class Client<C extends Context = Context> extends ClientAbstract {
         const connectionState = connected ? "ready" : "notConnected";
         if (this.connected == connected && this.#lastPropagatedConnectionState != connectionState) {
           this.#propagateConnectionState(connectionState);
-          this.#lastPropagatedConnectionState = connectionState;
         }
       } finally {
         release();
@@ -748,6 +748,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
 
     if (!this.#authKeyWasCreated) {
       drop(this.#fetchState("start"));
+      drop(this.#recoverUpdateGap("start"));
       return;
     }
 
