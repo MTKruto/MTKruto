@@ -8,7 +8,7 @@ export type ChatType =
   | "supergroup"
   | "channel";
 
-export declare namespace Chat {
+export declare namespace ChatP {
   export interface Base {
     /** The identifier of the chat. */
     id: number;
@@ -79,15 +79,15 @@ export declare namespace Chat {
 }
 
 /** This object represents a chat. */
-export type Chat = Chat.Private | Chat.Group | Chat.Supergroup | Chat.Channel;
+export type ChatP = ChatP.Private | ChatP.Group | ChatP.Supergroup | ChatP.Channel;
 
-export function constructChat(chat: types.User): Chat.Private;
-export function constructChat(chat: types.Chat): Chat.Group;
-export function constructChat(chat: types.Channel): Chat.Supergroup | Chat.Channel;
-export function constructChat(chat: types.User | types.Chat | types.Channel): Chat {
+export function constructChatP(chat: types.User): ChatP.Private;
+export function constructChatP(chat: types.Chat): ChatP.Group;
+export function constructChatP(chat: types.Channel): ChatP.Supergroup | ChatP.Channel;
+export function constructChatP(chat: types.User | types.Chat | types.Channel): ChatP {
   if (chat instanceof types.User) {
     const id = Number(chat.id);
-    const chat_: Chat.Private = {
+    const chat_: ChatP.Private = {
       id,
       type: "private",
       isBot: chat.bot || false,
@@ -108,7 +108,7 @@ export function constructChat(chat: types.User | types.Chat | types.Channel): Ch
     return cleanObject(chat_);
   } else if (chat instanceof types.Chat) {
     const id = Number(-chat.id);
-    const chat_: Chat.Group = {
+    const chat_: ChatP.Group = {
       id,
       type: "group",
       color: getColorFromPeerId(id),
@@ -118,7 +118,7 @@ export function constructChat(chat: types.User | types.Chat | types.Channel): Ch
 
     return cleanObject(chat_);
   } else if (chat instanceof types.Channel) {
-    let chat_: Chat.Supergroup | Chat.Channel;
+    let chat_: ChatP.Supergroup | ChatP.Channel;
     const {
       title,
       scam: isScam = false,

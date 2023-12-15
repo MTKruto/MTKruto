@@ -13,7 +13,7 @@ import { constructVenue, Venue } from "./0_venue.ts";
 import { constructVoice, Voice } from "./0_voice.ts";
 import { EntityGetter } from "./1__getters.ts";
 import { Animation, constructAnimation } from "./1_animation.ts";
-import { Chat, constructChat } from "./1_chat.ts";
+import { ChatP, constructChatP } from "./1_chat_p.ts";
 import { constructDocument, Document } from "./1_document.ts";
 import { constructPhoto, Photo } from "./1_photo.ts";
 import { constructPoll, Poll } from "./1_poll.ts";
@@ -38,17 +38,17 @@ export interface Message {
   /** Sender of the message; empty for messages sent to channels. For backward compatibility, the field contains a fake sender user in non-channel chats, if the message was sent on behalf of a chat. */
   from?: User;
   /** Sender of the message, sent on behalf of a chat. For example, the channel itself for channel posts, the supergroup itself for messages from anonymous group administrators, the linked channel for messages automatically forwarded to the discussion group. For backward compatibility, the field from contains a fake sender user in non-channel chats, if the message was sent on behalf of a chat. */
-  senderChat?: Chat;
+  senderChat?: ChatP;
   /** Date the message was sent in Unix time */
-  date?: Date;
+  date: Date;
   /** Conversation the message belongs to */
-  chat: Chat;
+  chat: ChatP;
   /** A link to the message */
   link?: string;
   /** For forwarded messages, sender of the original message */
   forwardFrom?: User;
   /** For messages forwarded from channels or from anonymous administrators, information about the original sender chat */
-  forwardFromChat?: Chat;
+  forwardFromChat?: ChatP;
   /** For messages forwarded from channels, identifier of the original message in the channel */
   forwardId?: number;
   /** For forwarded messages that were originally sent in channels or by an anonymous chat administrator, signature of the message sender if present */
@@ -161,7 +161,7 @@ export interface Message {
 }
 
 export interface MessageGetter<O extends keyof Message | null = null> {
-  (chatId: number, messageId: number): MaybePromise<(O extends null ? Message : Omit<Message, "replyToMessage">) | null>;
+  (chatId: number, messageId: number): MaybePromise<(O extends keyof Message ? Omit<Message, O> : Message) | null>;
 }
 
 type Message_MessageGetter = MessageGetter<"replyToMessage"> | null;
@@ -177,14 +177,14 @@ async function getSender(message_: types.Message | types.MessageService, getEnti
   } else if (message_.from_id instanceof types.PeerChannel) {
     const entity = await getEntity(message_.from_id);
     if (entity) {
-      return { senderChat: constructChat(entity) };
+      return { senderChat: constructChatP(entity) };
     } else {
       UNREACHABLE();
     }
   }
 }
 
-async function getReply(message_: types.Message | types.MessageService, chat: Chat, getMessage: Message_MessageGetter) {
+async function getReply(message_: types.Message | types.MessageService, chat: ChatP, getMessage: Message_MessageGetter) {
   if (getMessage && message_.reply_to instanceof types.MessageReplyHeader && message_.reply_to.reply_to_msg_id) {
     let isTopicMessage = false;
     if (message_.reply_to.forum_topic) {
@@ -201,7 +201,7 @@ async function getReply(message_: types.Message | types.MessageService, chat: Ch
   return { replyToMessage: undefined, threadId: undefined, isTopicMessage: undefined };
 }
 
-async function constructServiceMessage(message_: types.MessageService, chat: Chat, getEntity: EntityGetter, getMessage: Message_MessageGetter) {
+async function constructServiceMessage(message_: types.MessageService, chat: ChatP, getEntity: EntityGetter, getMessage: Message_MessageGetter) {
   const message: Message = {
     out: message_.out ?? false,
     id: message_.id,
@@ -314,18 +314,18 @@ export async function constructMessage(
   }
 
   let link: string | undefined;
-  let chat_: Chat | null = null;
+  let chat_: ChatP | null = null;
   if (message_.peer_id instanceof types.PeerUser) {
     const entity = await getEntity(message_.peer_id);
     if (entity) {
-      chat_ = constructChat(entity);
+      chat_ = constructChatP(entity);
     } else {
       UNREACHABLE();
     }
   } else if (message_.peer_id instanceof types.PeerChat) {
     const entity = await getEntity(message_.peer_id);
     if (entity) {
-      chat_ = constructChat(entity);
+      chat_ = constructChatP(entity);
     } else {
       UNREACHABLE();
     }
@@ -333,7 +333,7 @@ export async function constructMessage(
     link = `https://t.me/c/${message_.peer_id.channel_id}/${message_.id}`;
     const entity = await getEntity(message_.peer_id);
     if (entity) {
-      chat_ = constructChat(entity);
+      chat_ = constructChatP(entity);
     } else {
       UNREACHABLE();
     }
@@ -434,14 +434,14 @@ export async function constructMessage(
     } else if (message_.fwd_from.from_id instanceof types.PeerChat) {
       const entity = await getEntity(message_.fwd_from.from_id);
       if (entity) {
-        message.forwardFromChat = constructChat(entity);
+        message.forwardFromChat = constructChatP(entity);
       } else {
         UNREACHABLE();
       }
     } else if (message_.fwd_from.from_id instanceof types.PeerChannel) {
       const entity = await getEntity(message_.fwd_from.from_id);
       if (entity) {
-        message.forwardFromChat = constructChat(entity);
+        message.forwardFromChat = constructChatP(entity);
       } else {
         UNREACHABLE();
       }

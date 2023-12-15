@@ -1,6 +1,6 @@
-import { MaybePromise } from "../1_utilities.ts";
+import { MaybePromise, UNREACHABLE } from "../1_utilities.ts";
 import { functions, types } from "../2_tl.ts";
-import { BotCommandScope, CallbackQuery, ChatID, ChosenInlineResult, ForceReply, InlineKeyboardMarkup, InlineQuery, InlineQueryResultButton, Message, MessageEntity, ReplyKeyboardMarkup, ReplyKeyboardRemove } from "../3_types.ts";
+import { BotCommandScope, CallbackQuery, Chat, ChatID, ChosenInlineResult, ForceReply, InlineKeyboardMarkup, InlineQuery, InlineQueryResultButton, Message, MessageEntity, ReplyKeyboardMarkup, ReplyKeyboardRemove } from "../3_types.ts";
 import { ClientPlainParams } from "./2_client_plain.ts";
 import { ParseMode } from "../3_types.ts";
 
@@ -368,7 +368,7 @@ export interface GetHistoryParams {
   limit?: number;
 }
 
-export type FilterableUpdates = "message" | "editedMessage" | "callbackQuery" | "inlineQuery" | "chosenInlineResult";
+export type FilterableUpdates = "message" | "editedMessage" | "callbackQuery" | "inlineQuery" | "chosenInlineResult" | "editedChat" | "newChat";
 
 export interface Update {
   message?: Message;
@@ -379,6 +379,9 @@ export interface Update {
   callbackQuery?: CallbackQuery;
   inlineQuery?: InlineQuery;
   chosenInlineResult?: ChosenInlineResult;
+  newChat?: Chat;
+  editedChat?: Chat;
+  deletedChat?: { chatId: number };
 }
 
 export type NextFn<T = void> = () => Promise<T>;
@@ -401,4 +404,25 @@ export interface NetworkStatisticsEntry {
 export interface NetworkStatistics {
   messages: NetworkStatisticsEntry;
   cdn: NetworkStatisticsEntry;
+}
+
+export type ChatList = "main" | "archived";
+export function getChatListId(chatList: string) {
+  switch (chatList) {
+    case "main":
+      return 0;
+    case "archived":
+      return 1;
+    default:
+      UNREACHABLE();
+  }
+}
+
+export interface GetChatsParams {
+  /** The chat list to get the chats from. Defaults to main. */
+  from?: ChatList;
+  /** The last chat to get chats after. */
+  after?: Chat;
+  /** The maximum number of results to return. Must be in the range of 1-100. Defaults to 100. */
+  limit?: number;
 }

@@ -13,7 +13,13 @@ const KPARTS__PEER = (type: string, id: bigint) => ["peer", type, id];
 const KPARTS__ACCOUNT_TYPE = ["accountType"];
 const KPARTS__STICKER_SET_NAME = (id: bigint, accessHash: bigint) => ["stickerSetName", id, accessHash];
 const KPARTS_MESSAGE = (chatId: number, messageId: number) => ["messages", chatId, messageId];
+const KPARTS_MESSAGES = (chatId: number) => ["messages", chatId];
 const KPARTS_MESSAGE_REF = (messageId: number) => ["messageRefs", messageId];
+const KPARTS_HAS_ALL_CHATS = (listId: number) => ["hasAllChats", listId];
+const KPARTS_CHATS = (listId: number) => ["chats", listId];
+const KPARTS_CHAT = (listId: number, chatId: number) => ["chats", listId, chatId];
+const KPARTS_PINNED_CHATS = (listId: number) => ["pinnedChats", listId];
+const KPARTS_SERVER_SALT = ["serverSalt"];
 
 export type StorageKeyPart = string | number | bigint;
 
@@ -136,6 +142,13 @@ export abstract class Storage {
     return await this.getTLObject(KPARTS_MESSAGE(chatId, messageId)) as enums.Message | null;
   }
 
+  async getLastMessage(chatId: number) {
+    for await (const [_, buffer] of await this.getMany<Uint8Array>({ prefix: KPARTS_MESSAGES(chatId) }, { limit: 1, reverse: true })) {
+      return await this.getTLObject(buffer) as enums.Message;
+    }
+    return null;
+  }
+
   async setChannelPts(channelId: bigint, pts: number) {
     await this.set(KPARTS__CHANNEL_PTS(channelId), pts);
   }
@@ -191,11 +204,51 @@ export abstract class Storage {
   }
 
   async setServerSalt(serverSalt: bigint) {
-    await this.set(["serverSalt"], serverSalt);
+    await this.set(KPARTS_SERVER_SALT, serverSalt);
   }
 
   getServerSalt() {
-    return this.get<bigint>(["serverSalt"]);
+    return this.get<bigint>(KPARTS_SERVER_SALT);
+  }
+
+  async setChat(listId: number, chatId: number, pinned: number, topMessageId: number, topMessageDate: Date) {
+    await this.set(KPARTS_CHAT(listId, chatId), [pinned, topMessageId, topMessageDate]);
+  }
+
+  async getChats(listId: number) {
+    const chats = new Array<{ chatId: number; pinned: number; topMessageId: number; topMessageDate: Date }>();
+    for await (const [key, value] of await this.getMany<[number, number, Date]>({ prefix: KPARTS_CHATS(listId) })) {
+      if (key.length != 3 || typeof key[2] !== "number") {
+        continue;
+      }
+      chats.push({ chatId: key[2], pinned: value[0], topMessageId: value[1], topMessageDate: value[2] });
+    }
+    return chats;
+  }
+
+  async removeChats(listId: number) {
+    for await (const [key] of await this.getMany({ prefix: KPARTS_CHATS(listId) })) {
+      await this.set(key, null);
+    }
+    await this.setHasAllChats(listId, false);
+    await this.setPinnedChats(listId, null);
+  }
+
+  async setHasAllChats(listId: number, hasAllChats: boolean) {
+    await this.set(KPARTS_HAS_ALL_CHATS(listId), hasAllChats);
+  }
+
+  async hasAllChats(listId: number) {
+    const v = await this.get<boolean>(KPARTS_HAS_ALL_CHATS(listId));
+    return v == true;
+  }
+
+  async setPinnedChats(listId: number, chatIds: number[] | null) {
+    await this.set(KPARTS_PINNED_CHATS(listId), chatIds);
+  }
+
+  async getPinnedChats(listId: number) {
+    return await this.get<number[]>(KPARTS_PINNED_CHATS(listId));
   }
 
   async getHistory(chatId: number, offsetId: number, limit: number) {
