@@ -255,9 +255,14 @@ export abstract class Storage {
     if (offsetId == 0) {
       offsetId = Infinity;
     }
+    ++limit;
     const messages = new Array<enums.Message>();
     for await (const [_, buffer] of await this.getMany<Uint8Array>({ start: KPARTS_MESSAGE(chatId, 0), end: KPARTS_MESSAGE(chatId, offsetId) }, { limit, reverse: true })) {
-      messages.push(await this.getTLObject(buffer) as enums.Message);
+      const message = await this.getTLObject(buffer) as enums.Message;
+      if ("id" in message && message.id == offsetId) {
+        continue;
+      }
+      messages.push(message);
     }
     return messages;
   }
