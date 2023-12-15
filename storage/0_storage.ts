@@ -195,4 +195,8 @@ export abstract class Storage {
   getServerSalt() {
     return this.get<bigint>(["serverSalt"]);
   }
+
+  getHistory(chatId: number, offsetId: 0, limit: number) {
+    this.getMany()
+  }
 }

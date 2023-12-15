@@ -2617,4 +2617,38 @@ export class Client<C extends Context = Context> extends ClientAbstract {
     };
     return { messages, cdn };
   }
+
+  /**
+   * Get chat history.
+   *
+   * @method
+   */
+  async getHistory(chatId: ChatID, params?: { after?: Message; limit?: number }) {
+    let limit = params?.limit ?? 100;
+    if (limit <= 0) {
+      limit = 1;
+    } else if (limit > 100) {
+      limit = 100;
+    }
+    const peer = await this.getInputPeer(chatId);
+    const result = await this.api.messages.getHistory({
+      peer: peer,
+      offset_id: params?.after?.id ?? 0,
+      offset_date: 0,
+      add_offset: 0,
+      limit,
+      max_id: 0,
+      min_id: 0,
+      hash: 0n,
+    });
+    if (!("messages" in result)) {
+      UNREACHABLE();
+    }
+    const messages = new Array<Message>();
+    for (const message_ of result.messages) {
+      const message = await constructMessage(message_, this[getEntity].bind(this), this.getMessage.bind(this), this[getStickerSetName].bind(this), false);
+      messages.push(message);
+    }
+    return messages;
+  }
 }
