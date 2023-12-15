@@ -1,10 +1,10 @@
-export * from "https://deno.land/std@0.208.0/assert/mod.ts";
+export * from "https://deno.land/std@0.209.0/assert/mod.ts";
 
-export * as path from "https://deno.land/std@0.208.0/path/mod.ts";
+export * as path from "https://deno.land/std@0.209.0/path/mod.ts";
 
-export { decodeBase64, encodeBase64 } from "https://deno.land/std@0.208.0/encoding/base64.ts";
+export { decodeBase64, encodeBase64 } from "https://deno.land/std@0.209.0/encoding/base64.ts";
 
-export { contentType } from "https://deno.land/std@0.208.0/media_types/content_type.ts";
+export { contentType } from "https://deno.land/std@0.209.0/media_types/content_type.ts";
 
 export { ctr256, factorize, ige256Decrypt, ige256Encrypt, init as initTgCrypto } from "https://deno.land/x/tgcrypto@0.3.3/mod.ts";
 
