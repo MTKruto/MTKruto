@@ -423,7 +423,7 @@ export async function constructMessage(
     message.forwardSenderName = message_.fwd_from.from_name;
     message.forwardId = message_.fwd_from.channel_post;
     message.forwardSignature = message_.fwd_from.post_author;
-    message.forwardDate = new Date(message_.date * 1_000);
+    message.forwardDate = new Date(message_.fwd_from.date * 1_000);
     if (message_.fwd_from.from_id instanceof types.PeerUser) {
       const entity = await getEntity(message_.fwd_from.from_id);
       if (entity) {
