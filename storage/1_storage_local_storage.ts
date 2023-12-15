@@ -27,8 +27,15 @@ export class StorageLocalStorage extends Storage implements Storage {
     }
   }
 
-  *getMany<T>(prefix: readonly StorageKeyPart[]) {
-    for (let [key, value] of Object.entries(localStorage)) {
+  *getMany<T>(prefix: readonly StorageKeyPart[], params?: { limit?: number; reverse?: boolean }) {
+    let entries = Object.entries(localStorage).sort(([a], [b]) => a.localeCompare(b));
+    if (params?.reverse) {
+      entries.reverse();
+    }
+    if (params?.limit !== undefined) {
+      entries = entries.slice(0, params.limit <= 0 ? 1 : params.limit);
+    }
+    for (let [key, value] of entries) {
       if (key.startsWith(this.prefix)) {
         key = key.slice(this.prefix.length);
       }

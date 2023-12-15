@@ -25,7 +25,7 @@ export abstract class Storage {
   abstract set(key: readonly StorageKeyPart[], value: unknown): MaybePromise<void>;
   abstract incr(key: readonly StorageKeyPart[], by: number): MaybePromise<void>;
   abstract get<T>(key: readonly StorageKeyPart[]): MaybePromise<T | null>;
-  abstract getMany<T>(prefix: readonly StorageKeyPart[]): MaybePromise<Generator<[readonly StorageKeyPart[], T]> | AsyncGenerator<[readonly StorageKeyPart[], T]>>;
+  abstract getMany<T>(prefix: readonly StorageKeyPart[], params?: { limit?: number; reverse?: boolean }): MaybePromise<Generator<[readonly StorageKeyPart[], T]> | AsyncGenerator<[readonly StorageKeyPart[], T]>>;
 
   setDc(dc: DC | null) {
     return this.set(KPARTS__DC, dc);

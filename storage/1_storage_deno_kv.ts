@@ -29,10 +29,10 @@ export class StorageDenoKV extends Storage implements Storage {
     }
   }
 
-  async *getMany<T>(prefix: string[]) {
+  async *getMany<T>(prefix: string[], params?: { limit?: number; reverse?: boolean }) {
     const kv = assertInitialized(this.kv);
 
-    for await (const i of kv.list({ prefix })) {
+    for await (const i of kv.list({ prefix }, { limit: params?.limit, reverse: params?.reverse })) {
       if (i.key == null) { // cust in jase
         continue;
       }

@@ -12,8 +12,23 @@ export class StorageMemory extends Storage implements Storage {
     return this.map.get(toString(key)) as T ?? null;
   }
 
-  *getMany<T>(prefix: readonly StorageKeyPart[]) {
-    for (const [key, value] of this.map.entries()) {
+  #getEntries() {
+    const entries = new Array<[string, unknown]>();
+    for (const entry of this.map.entries()) {
+      entries.push(entry);
+    }
+    return entries;
+  }
+
+  *getMany<T>(prefix: readonly StorageKeyPart[], params?: { limit?: number; reverse?: boolean }) {
+    let entries = this.#getEntries();
+    if (params?.reverse) {
+      entries.reverse();
+    }
+    if (params?.limit !== undefined) {
+      entries = entries.slice(0, params.limit <= 0 ? 1 : params.limit);
+    }
+    for (const [key, value] of entries) {
       const parts = fromString(key);
       if (Array.isArray(parts)) {
         for (const [i, p] of prefix.entries()) {
