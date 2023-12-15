@@ -2706,7 +2706,29 @@ export class Client<C extends Context = Context> extends ClientAbstract {
       return;
     }
 
-    // TODO: get last message with history request
+    const message = await this.getHistory(chatId, { limit: 1 }).then((v) => v[0]);
+    if (message !== undefined) {
+      if (chat) {
+        chat.order = getChatOrder(message, chat.pinned);
+        chat.lastMessage = message;
+        await this.storage.setChat(listId, chatId, chat.pinned, message.id, message.date);
+      } else {
+        const pinnedChats = await this.#getPinnedChats(listId);
+        const chat = await constructChat2(chatId, pinnedChats.indexOf(chatId), message, this[getEntity].bind(this));
+        if (chat == null) {
+          UNREACHABLE();
+        }
+        this.#chats.set(chatId, chat);
+      }
+      await this.#sendChatUpdate(chatId, !chat);
+      return;
+    }
+
+    if (chat) {
+      chat.order = getChatOrder(undefined, chat.pinned);
+      chat.lastMessage = undefined;
+      await this.#sendChatUpdate(chatId, false);
+    }
   }
   #chats = new Map<number, Chat>();
   #archivedChats = new Map<number, Chat>();
