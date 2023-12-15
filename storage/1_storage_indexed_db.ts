@@ -6,12 +6,25 @@ const KV_OBJECT_STORE = "kv";
 
 export class StorageIndexedDB extends Storage {
   database: IDBDatabase | null = null;
+  readonly #name: string;
+  #id: string | null = null;
 
-  constructor(public readonly name: string) {
+  constructor(name: string) {
     if (typeof indexedDB == "undefined") {
       throw new Error("Unavailable in current environment");
     }
     super();
+    this.#name = name;
+  }
+
+  get name() {
+    return this.#name;
+  }
+
+  branch(id: string) {
+    const storage = new StorageIndexedDB(this.name);
+    storage.#id = id;
+    return storage;
   }
 
   init() {
@@ -33,7 +46,16 @@ export class StorageIndexedDB extends Storage {
     return true;
   }
 
+  #fixKey(key: readonly StorageKeyPart[]) {
+    if (this.#id !== null) {
+      return ["__S" + this.#id, ...key];
+    } else {
+      return key;
+    }
+  }
+
   set(k: readonly StorageKeyPart[], v: unknown, tx_?: IDBTransaction) {
+    k = this.#fixKey(k);
     if (!this.database) {
       throw new Error("Not initialized");
     }
@@ -58,7 +80,10 @@ export class StorageIndexedDB extends Storage {
     });
   }
 
-  get<T>(k: readonly StorageKeyPart[], tx_?: IDBTransaction) {
+  get<T>(k: readonly StorageKeyPart[], tx_?: IDBTransaction | null, fix = true) {
+    if (fix) {
+      k = this.#fixKey(k);
+    }
     if (!this.database) {
       throw new Error("Not initialized");
     }
@@ -76,6 +101,15 @@ export class StorageIndexedDB extends Storage {
   }
 
   async *getMany<T>(filter: GetManyFilter, params?: { limit?: number; reverse?: boolean }, tx_?: IDBTransaction) {
+    if ("prefix" in filter && this.#id !== null) {
+      filter.prefix = this.#fixKey(filter.prefix);
+    }
+    if ("start" in filter && this.#id !== null) {
+      filter.start = this.#fixKey(filter.start);
+    }
+    if ("end" in filter && this.#id !== null) {
+      filter.end = this.#fixKey(filter.end);
+    }
     if (!this.database) {
       throw new Error("Not initialized");
     }
@@ -109,11 +143,11 @@ export class StorageIndexedDB extends Storage {
       };
     });
     for (const key of keys) {
-      yield [key, await this.get(key)] as [readonly StorageKeyPart[], T];
+      yield [key, await this.get(key, null, false)] as [readonly StorageKeyPart[], T];
     }
   }
 
-  async incr(key: readonly StorageKeyPart[], by: number) { // TODO: fix race
+  async incr(key: readonly StorageKeyPart[], by: number) {
     if (!this.database) {
       throw new Error("Not initialized");
     }
