@@ -161,18 +161,32 @@ export abstract class Storage {
     return this.get<number>(KPARTS__CHANNEL_PTS(channelId));
   }
 
-  async setEntity(peer: types.Channel): Promise<void>;
-  async setEntity(peer: types.Chat): Promise<void>;
-  async setEntity(peer: types.User): Promise<void>;
-  async setEntity(peer: types.User | types.Channel | types.Chat) {
-    const type = peer instanceof types.Channel ? "channel" : peer instanceof types.Chat ? "chat" : peer instanceof types.User ? "user" : UNREACHABLE();
-    await this.set(KPARTS__PEER(type, peer.id), rleEncode(peer[serialize]()));
+  #getEntityType(entity: types.Channel | types.ChannelForbidden | types.Chat | types.ChatForbidden | types.User) {
+    if (entity instanceof types.Channel || entity instanceof types.ChannelForbidden) {
+      return "channel";
+    } else if (entity instanceof types.Chat || entity instanceof types.ChatForbidden) {
+      return "chat";
+    } else if (entity instanceof types.User) {
+      return "user";
+    } else {
+      UNREACHABLE();
+    }
   }
 
-  async getEntity(type: "channel", id: bigint): Promise<types.Channel | null>;
-  async getEntity(type: "chat", id: bigint): Promise<types.Chat | null>;
+  async setEntity(entity: types.User | types.Channel | types.ChannelForbidden | types.Chat | types.ChatForbidden) {
+    const type = this.#getEntityType(entity);
+    await this.set(KPARTS__PEER(type, entity.id), rleEncode(entity[serialize]()));
+  }
+
+  async removeEntity(entity: types.User | types.Channel | types.ChannelForbidden | types.Chat | types.ChatForbidden) {
+    const type = this.#getEntityType(entity);
+    await this.set(KPARTS__PEER(type, entity.id), null);
+  }
+
+  async getEntity(type: "channel", id: bigint): Promise<types.Channel | types.ChannelForbidden | null>;
+  async getEntity(type: "chat", id: bigint): Promise<types.Chat | types.ChatForbidden | null>;
   async getEntity(type: "user", id: bigint): Promise<types.User | null>;
-  async getEntity(type: "channel" | "chat" | "user", id: bigint): Promise<types.Channel | types.Chat | types.User | null>;
+  async getEntity(type: "channel" | "chat" | "user", id: bigint): Promise<types.Channel | types.ChannelForbidden | types.Chat | types.ChatForbidden | types.User | null>;
   async getEntity(type: "channel" | "chat" | "user", id: bigint) {
     const peer_ = await this.get<Uint8Array>(KPARTS__PEER(type, id));
     if (peer_ != null) {

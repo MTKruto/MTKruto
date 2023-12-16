@@ -1025,6 +1025,8 @@ export class Client<C extends Context = Context> extends ClientAbstract {
         }
       } else if (chat instanceof types.Chat) {
         await this.storage.setEntity(chat);
+      } else if (chat instanceof types.ChannelForbidden || chat instanceof types.ChatForbidden) {
+        await this.storage.removeEntity(chat);
       }
     }
   }
@@ -2026,6 +2028,28 @@ export class Client<C extends Context = Context> extends ClientAbstract {
     if (update instanceof types.UpdatePinnedDialogs) {
       await this.#updatePinnedChats(update);
     }
+
+    if (update instanceof types.UpdateChannel) {
+      const peer = new types.PeerChannel(update);
+      const channel = await this[getEntity](peer);
+      if (channel != null && "left" in channel && channel.left) {
+        await this.#removeChat(peerToChatId(peer));
+      } else if (channel instanceof types.ChannelForbidden) {
+        await this.#removeChat(peerToChatId(peer));
+      } else if (channel instanceof types.Channel) {
+        await this.#updateChat(peerToChatId(peer));
+      }
+    } else if (update instanceof types.UpdateChat) { // TODO: handle deactivated (migration)
+      const peer = new types.PeerChat(update);
+      const chat = await this[getEntity](peer);
+      if (chat != null && "left" in chat && chat.left) {
+        await this.#removeChat(peerToChatId(peer));
+      } else if (chat instanceof types.ChatForbidden) {
+        await this.#removeChat(peerToChatId(peer));
+      } else if (chat instanceof types.Chat) {
+        await this.#updateChat(peerToChatId(peer));
+      }
+    }
   }
 
   /**
@@ -2692,7 +2716,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
     } catch {
       return;
     }
-    const chat = this.#chats.get(chatId);
+    const [chat] = this.#getChatAnywhere(chatId);
     const update = chat === undefined ? { deletedChat: { chatId } } : added ? { newChat: chat } : { editedChat: chat };
     this.#handleUpdateQueue.add(async () => {
       await this.#handle(await this.#constructContext(update), resolve);
@@ -2859,6 +2883,23 @@ export class Client<C extends Context = Context> extends ClientAbstract {
         return this.#pinnedArchiveChats;
       default:
         UNREACHABLE();
+    }
+  }
+  async #updateChat(chatId: number) {
+    const [chat, listId] = this.#getChatAnywhere(chatId);
+    if (chat !== undefined) {
+      const newChat = await constructChat2(chatId, chat.pinned, chat.lastMessage, this[getEntity].bind(this));
+      if (newChat != null) {
+        this.#getChatList(listId).set(chatId, newChat);
+        await this.#sendChatUpdate(chatId, false);
+      }
+    }
+  }
+  async #removeChat(chatId: number) {
+    const [chat, listId] = this.#getChatAnywhere(chatId);
+    if (chat !== undefined) {
+      this.#getChatList(listId).delete(chatId);
+      await this.#sendChatUpdate(chatId, false);
     }
   }
   async #updatePinnedChats(update: types.UpdatePinnedDialogs) {
