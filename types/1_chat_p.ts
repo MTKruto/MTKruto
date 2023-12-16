@@ -82,9 +82,9 @@ export declare namespace ChatP {
 export type ChatP = ChatP.Private | ChatP.Group | ChatP.Supergroup | ChatP.Channel;
 
 export function constructChatP(chat: types.User): ChatP.Private;
-export function constructChatP(chat: types.Chat): ChatP.Group;
-export function constructChatP(chat: types.Channel): ChatP.Supergroup | ChatP.Channel;
-export function constructChatP(chat: types.User | types.Chat | types.Channel): ChatP {
+export function constructChatP(chat: types.Chat | types.ChatForbidden): ChatP.Group;
+export function constructChatP(chat: types.Channel | types.ChannelForbidden): ChatP.Supergroup | ChatP.Channel;
+export function constructChatP(chat: types.User | types.Chat | types.ChatForbidden | types.Channel | types.ChannelForbidden): ChatP {
   if (chat instanceof types.User) {
     const id = Number(chat.id);
     const chat_: ChatP.Private = {
@@ -106,19 +106,32 @@ export function constructChatP(chat: types.User | types.Chat | types.Channel): C
     }
 
     return cleanObject(chat_);
-  } else if (chat instanceof types.Chat) {
+  } else if (chat instanceof types.Chat || chat instanceof types.ChatForbidden) {
     const id = Number(-chat.id);
     const chat_: ChatP.Group = {
       id,
       type: "group",
       color: getColorFromPeerId(id),
       title: chat.title,
-      isCreator: chat.creator || false,
+      isCreator: false,
     };
 
+    if (chat instanceof types.Chat) {
+      chat_.isCreator = chat.creator || false;
+    }
+
     return cleanObject(chat_);
-  } else if (chat instanceof types.Channel) {
+  } else if (chat instanceof types.Channel || types.ChannelForbidden) {
     let chat_: ChatP.Supergroup | ChatP.Channel;
+    const id = ZERO_CHANNEL_ID + -Number(chat.id);
+    if (chat instanceof types.ChannelForbidden) {
+      const { title } = chat;
+      if (chat.megagroup) {
+        return { id, color: getColorFromPeerId(id), title, type: "supergroup", isScam: false, isFake: false, isVerified: false, isRestricted: false, isForum: false };
+      } else {
+        return { id, color: getColorFromPeerId(id), title, type: "channel", isScam: false, isFake: false, isVerified: false, isRestricted: false };
+      }
+    }
     const {
       title,
       scam: isScam = false,
@@ -126,7 +139,6 @@ export function constructChatP(chat: types.User | types.Chat | types.Channel): C
       verified: isVerified = false,
       restricted: isRestricted = false,
     } = chat;
-    const id = ZERO_CHANNEL_ID + -Number(chat.id);
     if (chat.megagroup) {
       chat_ = {
         id,
