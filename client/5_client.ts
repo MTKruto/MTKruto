@@ -2037,7 +2037,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
       } else if (channel instanceof types.ChannelForbidden) {
         await this.#removeChat(peerToChatId(peer));
       } else if (channel instanceof types.Channel) {
-        await this.#updateChat(peerToChatId(peer));
+        await this.#updateOrAddChat(peerToChatId(peer));
       }
     } else if (update instanceof types.UpdateChat) { // TODO: handle deactivated (migration)
       const peer = new types.PeerChat(update);
@@ -2047,7 +2047,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
       } else if (chat instanceof types.ChatForbidden) {
         await this.#removeChat(peerToChatId(peer));
       } else if (chat instanceof types.Chat) {
-        await this.#updateChat(peerToChatId(peer));
+        await this.#updateOrAddChat(peerToChatId(peer));
       }
     }
   }
@@ -2723,7 +2723,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
     });
   }
 
-  async #reassignChatLastMessage(chatId: number, add = false) {
+  async #reassignChatLastMessage(chatId: number, add = false, sendUpdate = true) {
     try {
       await this.#assertUser("");
     } catch {
@@ -2750,7 +2750,9 @@ export class Client<C extends Context = Context> extends ClientAbstract {
         this.#chats.set(chatId, chat);
         await this.storage.setChat(listId, chatId, chat.pinned, chat.lastMessage?.id ?? 0, chat.lastMessage?.date ?? new Date(0));
       }
-      await this.#sendChatUpdate(chatId, !chat);
+      if (sendUpdate) {
+        await this.#sendChatUpdate(chatId, !chat);
+      }
       return;
     }
 
@@ -2768,14 +2770,18 @@ export class Client<C extends Context = Context> extends ClientAbstract {
         }
         this.#chats.set(chatId, chat);
       }
-      await this.#sendChatUpdate(chatId, !chat);
+      if (sendUpdate) {
+        await this.#sendChatUpdate(chatId, !chat);
+      }
       return;
     }
 
     if (chat) {
       chat.order = getChatOrder(undefined, chat.pinned);
       chat.lastMessage = undefined;
-      await this.#sendChatUpdate(chatId, false);
+      if (sendUpdate) {
+        await this.#sendChatUpdate(chatId, false);
+      }
     }
   }
   #chats = new Map<number, Chat>();
@@ -2885,13 +2891,20 @@ export class Client<C extends Context = Context> extends ClientAbstract {
         UNREACHABLE();
     }
   }
-  async #updateChat(chatId: number) {
+  async #updateOrAddChat(chatId: number) {
     const [chat, listId] = this.#getChatAnywhere(chatId);
     if (chat !== undefined) {
       const newChat = await constructChat2(chatId, chat.pinned, chat.lastMessage, this[getEntity].bind(this));
       if (newChat != null) {
         this.#getChatList(listId).set(chatId, newChat);
         await this.#sendChatUpdate(chatId, false);
+      }
+    } else {
+      const chat = await constructChat3(chatId, -1, -1, this[getEntity].bind(this), this.getMessage.bind(this));
+      if (chat != null) {
+        this.#getChatList(0).set(chatId, chat);
+        await this.#reassignChatLastMessage(chatId, false, false);
+        await this.#sendChatUpdate(chatId, true);
       }
     }
   }
