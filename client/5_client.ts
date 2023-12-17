@@ -3028,7 +3028,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
 
   /**
    * Get a chat.
-   * 
+   *
    * @method
    */
   async getChat(chatId: ChatID): Promise<Chat> {
