@@ -1174,7 +1174,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
       await this.#setUpdateStateDate(updates_.date);
     }
 
-    const updatesToHandle = new Array<enums.Update>();
+    const updatesToHandle = new Array<enums.Update | types.UpdateShortMessage | types.UpdateShortChatMessage | types.UpdateShortSentMessage>();
     for (const update of updates) {
       if (
         update instanceof types.UpdateShortMessage ||
@@ -1211,7 +1211,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
         }
       }
       /// If there were any Update, they will be passed to the update handling queue.
-      if (update instanceof types._Update) {
+      if (update instanceof types._Update || update instanceof types.UpdateShortMessage || update instanceof types.UpdateShortChatMessage || update instanceof types.UpdateShortSentMessage) {
         updatesToHandle.push(update);
       }
     }
@@ -1893,7 +1893,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
   }
 
   // TODO: log errors
-  async #handleUpdate(update: enums.Update) {
+  async #handleUpdate(update: enums.Update | types.UpdateShortMessage | types.UpdateShortChatMessage | types.UpdateShortSentMessage) {
     if (update instanceof types.UpdateShortMessage) {
       update = new types.UpdateNewMessage({
         message: new types.Message({
@@ -1903,7 +1903,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
           silent: update.silent,
           id: update.id,
           from_id: update.out ? new types.PeerUser({ user_id: await this.#getSelfId().then(BigInt) }) : new types.PeerUser({ user_id: update.user_id }),
-          peer_id: new types.PeerChat({ chat_id: update.user_id }),
+          peer_id: new types.PeerUser({ user_id: update.user_id }),
           message: update.message,
           date: update.date,
           fwd_from: update.fwd_from,
@@ -2047,6 +2047,12 @@ export class Client<C extends Context = Context> extends ClientAbstract {
       } else if (chat instanceof types.ChatForbidden) {
         await this.#removeChat(peerToChatId(peer));
       } else if (chat instanceof types.Chat) {
+        await this.#updateOrAddChat(peerToChatId(peer));
+      }
+    } else if (update instanceof types.UpdateUser) {
+      const peer = new types.PeerUser(update);
+      const chat = await this[getEntity](peer);
+      if (chat != null) {
         await this.#updateOrAddChat(peerToChatId(peer));
       }
     }
@@ -3018,7 +3024,9 @@ export class Client<C extends Context = Context> extends ClientAbstract {
     }
     if (messages.length < limit) {
       d("have only %d messages but need %d more", messages.length, limit - messages.length);
-      offsetId = messages[messages.length - 1].id; // TODO: track id of oldest message and don't send requests for it
+      if (messages.length > 0) {
+        offsetId = messages[messages.length - 1].id; // TODO: track id of oldest message and don't send requests for it
+      }
       const result = await this.api.messages.getHistory({
         peer: peer,
         offset_id: offsetId,
