@@ -37,7 +37,7 @@ export class TLRawReader {
   }
 
   readDouble() {
-    return new DataView(this.read(8).buffer).getFloat64(0, true); // TODO: cover in tests
+    return new DataView(this.read(8).buffer).getFloat64(0, true);
   }
 
   readInt128(signed = true) {

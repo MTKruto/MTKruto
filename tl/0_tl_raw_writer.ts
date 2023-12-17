@@ -30,7 +30,7 @@ export class TLRawWriter {
     return this;
   }
 
-  writeDouble(double: number) { // TODO: cover in tests
+  writeDouble(double: number) {
     const buf = new Uint8Array(8);
     new DataView(buf.buffer).setFloat64(0, double, true);
     this.write(buf);

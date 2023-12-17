@@ -18,6 +18,8 @@ Deno.test("TLRawReader", async (t) => {
     //
     0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x80, // int64
     //
+    0xAA, 0xF1, 0xD2, 0x4D, 0x62, 0x10, 0x26, 0xC0, // double
+    //
     0x8D, 0x03, 0xBD, 0x3C, 0x55, 0x22, 0xA5, 0x05,
     0xD6, 0xDC, 0xC4, 0x66, 0xF5, 0x3E, 0x00, 0xD0, // uint128
     //
@@ -148,6 +150,16 @@ Deno.test("TLRawReader", async (t) => {
 
     await t.step("buffer", () => {
       read += 8 * 2;
+      assertEquals(reader.buffer.length, buffer.length - read);
+      assertEquals(reader.buffer, buffer.slice(read));
+    });
+  });
+
+  await t.step("readDouble", async (t) => {
+    assertEquals(reader.readDouble(), -11.032);
+
+    await t.step("buffer", () => {
+      read += 8;
       assertEquals(reader.buffer.length, buffer.length - read);
       assertEquals(reader.buffer, buffer.slice(read));
     });
