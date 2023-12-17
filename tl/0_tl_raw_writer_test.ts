@@ -67,6 +67,21 @@ Deno.test("TLRawWriter", async (t) => {
     assertEquals(writer.buffer.length, wrote);
   });
 
+  await t.step("writeDouble", () => {
+    const size = 8;
+
+    writer.writeDouble(-11.032);
+
+    wrote += size;
+
+    // deno-fmt-ignore
+    const expected = new Uint8Array([
+      0xAA, 0xF1, 0xD2, 0x4D, 0x62, 0x10, 0x26, 0xC0, // double
+    ]);
+    assertEquals(writer.buffer.slice(wrote - size), expected);
+    assertEquals(writer.buffer.length, wrote);
+  });
+
   await t.step("writeInt128", () => {
     const size = 16 * 2;
 
