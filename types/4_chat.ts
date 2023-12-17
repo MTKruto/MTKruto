@@ -1,5 +1,5 @@
-import { cleanObject, UNREACHABLE, ZERO_CHANNEL_ID } from "../1_utilities.ts";
-import { enums, peerToChatId, types } from "../2_tl.ts";
+import { cleanObject, UNREACHABLE } from "../1_utilities.ts";
+import { chatIdToPeer, enums, peerToChatId, types } from "../2_tl.ts";
 import { ChatP, constructChatP } from "./1_chat_p.ts";
 import { ChatPhoto, constructChatPhoto } from "./0_chat_photo.ts";
 import { constructMessage, Message, MessageGetter } from "./3_message.ts";
@@ -95,27 +95,8 @@ export async function constructChat(dialog: enums.Dialog, dialogs: types.message
   }
 }
 
-export async function constructChat2(chatId: number, pinned: number, lastMessage: Message | undefined, getEntity: EntityGetter): Promise<Chat | null> {
-  let chatPAlsoPhoto: ReturnType<typeof getChatPAlsoPhoto> | null = null;
-  if (chatId < ZERO_CHANNEL_ID) {
-    const entity = await getEntity(new types.PeerChannel({ channel_id: BigInt(Math.abs(chatId - ZERO_CHANNEL_ID)) }));
-    if (entity != null) {
-      chatPAlsoPhoto = getChatPAlsoPhoto(entity);
-    }
-  } else if (chatId < 0) {
-    const entity = await getEntity(new types.PeerChat({ chat_id: BigInt(Math.abs(chatId)) }));
-    if (entity != null) {
-      chatPAlsoPhoto = getChatPAlsoPhoto(entity);
-    }
-  } else {
-    const entity = await getEntity(new types.PeerUser({ user_id: BigInt(chatId) }));
-    if (entity != null) {
-      chatPAlsoPhoto = getChatPAlsoPhoto(entity);
-    }
-  }
-  if (chatPAlsoPhoto == null) {
-    return null;
-  }
+export function constructChat2(entity: types.User | types.Chat | types.ChatForbidden | types.Channel | types.ChannelForbidden, pinned: number, lastMessage: Message | undefined): Chat {
+  const chatPAlsoPhoto = getChatPAlsoPhoto(entity);
   const order = getChatOrder(lastMessage, pinned);
 
   const { also, photo, chatP } = chatPAlsoPhoto;
@@ -132,9 +113,19 @@ export async function constructChat2(chatId: number, pinned: number, lastMessage
   }
 }
 
-export async function constructChat3(chatId: number, pinned: number, lastMessageId: number, getEntity: EntityGetter, getMessage: MessageGetter<"replyToMessage">): Promise<Chat | null> {
+export async function constructChat3(chatId: number, pinned: number, lastMessage: Message | undefined, getEntity: EntityGetter): Promise<Chat | null> {
+  const peer = chatIdToPeer(chatId);
+  const entity = await getEntity(peer);
+  if (entity == null) {
+    return null;
+  } else {
+    return constructChat2(entity, pinned, lastMessage);
+  }
+}
+
+export async function constructChat4(chatId: number, pinned: number, lastMessageId: number, getEntity: EntityGetter, getMessage: MessageGetter<"replyToMessage">): Promise<Chat | null> {
   const lastMessage_ = lastMessageId > 0 ? await getMessage(chatId, lastMessageId) : null;
   const lastMessage = lastMessage_ == null ? undefined : lastMessage_;
 
-  return await constructChat2(chatId, pinned, lastMessage, getEntity);
+  return await constructChat3(chatId, pinned, lastMessage, getEntity);
 }
