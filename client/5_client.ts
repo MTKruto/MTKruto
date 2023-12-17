@@ -1189,6 +1189,14 @@ export class Client<C extends Context = Context> extends ClientAbstract {
         await this.#recoverChannelUpdateGap(update.channel_id, "updateChannelTooLong");
       } else if (update instanceof types.UpdateUserName) {
         await this.storage.updateUsernames("user", update.user_id, update.usernames.map((v) => v.username));
+        const peer = new types.PeerUser(update);
+        const entity = await this[getEntity](peer);
+        if (entity != null) {
+          entity.usernames = update.usernames;
+          entity.first_name = update.first_name;
+          entity.last_name = update.last_name;
+          await this.storage.setEntity(entity);
+        }
       } else if (update instanceof types.UpdatePtsChanged) {
         await this.#fetchState("updatePtsChanged");
         if (this.#updateState) {
@@ -2049,7 +2057,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
       } else if (chat instanceof types.Chat) {
         await this.#updateOrAddChat(peerToChatId(peer));
       }
-    } else if (update instanceof types.UpdateUser) {
+    } else if (update instanceof types.UpdateUser || update instanceof types.UpdateUserName) {
       const peer = new types.PeerUser(update);
       const chat = await this[getEntity](peer);
       if (chat != null) {
