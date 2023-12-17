@@ -16,3 +16,13 @@ export function peerToChatId(peer: enums.Peer | enums.InputPeer) {
     UNREACHABLE();
   }
 }
+
+export function chatIdToPeer(chatId: number) {
+  if (chatId > 0) {
+    return new types.PeerUser({ user_id: BigInt(chatId) });
+  } else if (chatId > ZERO_CHANNEL_ID) {
+    return new types.PeerChat({ chat_id: BigInt(Math.abs(chatId)) });
+  } else {
+    return new types.PeerChannel({ channel_id: BigInt(ZERO_CHANNEL_ID - chatId) });
+  }
+}

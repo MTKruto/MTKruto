@@ -6,6 +6,7 @@ export interface EntityGetter {
   (peer: types.PeerUser): MaybePromise<types.User | null>;
   (peer: types.PeerChat): MaybePromise<types.Chat | types.ChatForbidden | null>;
   (peer: types.PeerChannel): MaybePromise<types.Channel | types.ChannelForbidden | null>;
+  (peer: types.PeerUser | types.PeerChat | types.PeerChannel): MaybePromise<types.User | types.Chat | types.ChatForbidden | types.Channel | types.ChannelForbidden | null>;
 }
 
 export interface InputPeerGetter {

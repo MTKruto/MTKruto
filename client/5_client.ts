@@ -3,7 +3,7 @@ import { bigIntFromBuffer, cleanObject, drop, getRandomBigInt, getRandomId, Mayb
 import { as, enums, functions, getChannelChatId, Message_, MessageContainer, name, peerToChatId, ReadObject, RPCResult, TLError, TLReader, types } from "../2_tl.ts";
 import { Storage, StorageMemory } from "../3_storage.ts";
 import { DC } from "../3_transport.ts";
-import { BotCommand, botCommandScopeToTlObject, CallbackQuery, Chat, ChatAction, ChatID, constructCallbackQuery, constructChat, constructChat2, constructChat3, constructChosenInlineResult, constructInlineQuery, constructMessage, constructUser, FileID, FileType, getChatOrder, InlineQuery, InlineQueryResult, inlineQueryResultToTlObject, Message, MessageEntity, messageEntityToTlObject, ParseMode, replyMarkupToTlObject, ThumbnailSource, User, UsernameResolver } from "../3_types.ts";
+import { BotCommand, botCommandScopeToTlObject, CallbackQuery, Chat, ChatAction, ChatID, constructCallbackQuery, constructChat, constructChat2, constructChat3, constructChat4, constructChosenInlineResult, constructInlineQuery, constructMessage, constructUser, FileID, FileType, getChatOrder, InlineQuery, InlineQueryResult, inlineQueryResultToTlObject, Message, MessageEntity, messageEntityToTlObject, ParseMode, replyMarkupToTlObject, ThumbnailSource, User, UsernameResolver } from "../3_types.ts";
 import { ACK_THRESHOLD, APP_VERSION, CHANNEL_DIFFERENCE_LIMIT_BOT, CHANNEL_DIFFERENCE_LIMIT_USER, DEVICE_MODEL, LANG_CODE, LANG_PACK, LAYER, MAX_CHANNEL_ID, MAX_CHAT_ID, PublicKeys, STICKER_SET_NAME_TTL, SYSTEM_LANG_CODE, SYSTEM_VERSION, USERNAME_TTL } from "../4_constants.ts";
 import { AuthKeyUnregistered, FloodWait, Migrate, PasswordHashInvalid, PhoneNumberInvalid, SessionPasswordNeeded, upgradeInstance } from "../4_errors.ts";
 import { parseHtml } from "./0_html.ts";
@@ -1428,8 +1428,9 @@ export class Client<C extends Context = Context> extends ClientAbstract {
   }
 
   private [getEntity](peer: types.PeerUser): Promise<types.User | null>;
-  private [getEntity](peer: types.PeerChat): Promise<types.Chat | null>;
-  private [getEntity](peer: types.PeerChannel): Promise<types.Channel | null>;
+  private [getEntity](peer: types.PeerChat): Promise<types.Chat | types.ChatForbidden | null>;
+  private [getEntity](peer: types.PeerChannel): Promise<types.Channel | types.ChannelForbidden | null>;
+  private [getEntity](peer: types.PeerUser | types.PeerChat | types.PeerChannel): Promise<types.User | types.Chat | types.ChatForbidden | types.Channel | types.ChannelForbidden | null>;
   private [getEntity](peer: types.PeerUser | types.PeerChat | types.PeerChannel) {
     const type = peer instanceof types.PeerUser ? "user" : peer instanceof types.PeerChat ? "chat" : peer instanceof types.PeerChannel ? "channel" : UNREACHABLE();
     const id = peer instanceof types.PeerUser ? peer.user_id : peer instanceof types.PeerChat ? peer.chat_id : peer instanceof types.PeerChannel ? peer.channel_id : UNREACHABLE();
@@ -2757,7 +2758,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
         await this.storage.setChat(listId, chatId, chat.pinned, message.id, message.date);
       } else {
         const pinnedChats = await this.#getPinnedChats(listId);
-        const chat = await constructChat2(chatId, pinnedChats.indexOf(chatId), message, this[getEntity].bind(this));
+        const chat = await constructChat3(chatId, pinnedChats.indexOf(chatId), message, this[getEntity].bind(this));
         if (chat == null) {
           UNREACHABLE();
         }
@@ -2778,7 +2779,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
         await this.storage.setChat(listId, chatId, chat.pinned, message.id, message.date);
       } else {
         const pinnedChats = await this.#getPinnedChats(listId);
-        const chat = await constructChat2(chatId, pinnedChats.indexOf(chatId), message, this[getEntity].bind(this));
+        const chat = await constructChat3(chatId, pinnedChats.indexOf(chatId), message, this[getEntity].bind(this));
         if (chat == null) {
           UNREACHABLE();
         }
@@ -2801,6 +2802,24 @@ export class Client<C extends Context = Context> extends ClientAbstract {
   #chats = new Map<number, Chat>();
   #archivedChats = new Map<number, Chat>();
   #chatsLoadedFromStorage = false;
+  #tryGetChatId(username: string) {
+    username = username.toLowerCase();
+    for (const chat of this.#chats.values()) {
+      if ("username" in chat) {
+        if (chat.username === username || chat.also?.some((v) => v.toLowerCase() === username)) {
+          return chat.id;
+        }
+      }
+    }
+    for (const chat of this.#archivedChats.values()) {
+      if ("username" in chat) {
+        if (chat.username === username || chat.also?.some((v) => v.toLowerCase() === username)) {
+          return chat.id;
+        }
+      }
+    }
+    return null;
+  }
   #getChatAnywhere(chatId: number): [Chat | undefined, number] {
     let chat = this.#chats.get(chatId);
     if (chat) {
@@ -2827,14 +2846,14 @@ export class Client<C extends Context = Context> extends ClientAbstract {
     const chats = await this.storage.getChats(0);
     const archivedChats = await this.storage.getChats(1);
     for (const { chatId, pinned, topMessageId } of chats) {
-      const chat = await constructChat3(chatId, pinned, topMessageId, this[getEntity].bind(this), this.getMessage.bind(this));
+      const chat = await constructChat4(chatId, pinned, topMessageId, this[getEntity].bind(this), this.getMessage.bind(this));
       if (chat == null) {
         continue;
       }
       this.#chats.set(chat.id, chat);
     }
     for (const { chatId, pinned, topMessageId } of archivedChats) {
-      const chat = await constructChat3(chatId, pinned, topMessageId, this[getEntity].bind(this), this.getMessage.bind(this));
+      const chat = await constructChat4(chatId, pinned, topMessageId, this[getEntity].bind(this), this.getMessage.bind(this));
       if (chat == null) {
         continue;
       }
@@ -2908,13 +2927,13 @@ export class Client<C extends Context = Context> extends ClientAbstract {
   async #updateOrAddChat(chatId: number) {
     const [chat, listId] = this.#getChatAnywhere(chatId);
     if (chat !== undefined) {
-      const newChat = await constructChat2(chatId, chat.pinned, chat.lastMessage, this[getEntity].bind(this));
+      const newChat = await constructChat3(chatId, chat.pinned, chat.lastMessage, this[getEntity].bind(this));
       if (newChat != null) {
         this.#getChatList(listId).set(chatId, newChat);
         await this.#sendChatUpdate(chatId, false);
       }
     } else {
-      const chat = await constructChat3(chatId, -1, -1, this[getEntity].bind(this), this.getMessage.bind(this));
+      const chat = await constructChat4(chatId, -1, -1, this[getEntity].bind(this), this.getMessage.bind(this));
       if (chat != null) {
         this.#getChatList(0).set(chatId, chat);
         await this.#reassignChatLastMessage(chatId, false, false);
@@ -2974,7 +2993,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
     }
   }
   /**
-   * Get chats.
+   * Get chats from a chat list.
    *
    * @method
    */
@@ -3005,6 +3024,71 @@ export class Client<C extends Context = Context> extends ClientAbstract {
     }
     chats = chats.slice(0, limit);
     return chats;
+  }
+
+  /**
+   * Get a chat.
+   *
+   * @method
+   */
+  async getChat(chatId: ChatID): Promise<Chat> {
+    if (await this.storage.getAccountType() == "user") {
+      let maybeChatId: number | null = null;
+      if (typeof chatId === "number") {
+        maybeChatId = chatId;
+      } else if (typeof chatId === "string") {
+        maybeChatId = this.#tryGetChatId(getUsername(chatId));
+      } else {
+        UNREACHABLE();
+      }
+      if (maybeChatId != null) {
+        const [chat] = this.#getChatAnywhere(maybeChatId);
+        if (chat !== undefined) {
+          return chat;
+        }
+      }
+    }
+    let inputPeer: enums.InputPeer | null = null;
+    if (typeof chatId === "number") {
+      const chat = await constructChat3(chatId, -1, undefined, this[getEntity].bind(this));
+      if (chat != null) {
+        return chat;
+      }
+    } else {
+      inputPeer = await this.getInputPeer(chatId);
+      const chatId_ = peerToChatId(inputPeer);
+      const chat = await constructChat3(chatId_, -1, undefined, this[getEntity].bind(this));
+      if (chat != null) {
+        return chat;
+      }
+    }
+    if (inputPeer == null) {
+      inputPeer = await this.getInputPeer(chatId);
+    }
+    if (inputPeer instanceof types.InputPeerChat) {
+      const chats = await this.api.messages.getChats({ id: [inputPeer.chat_id] }).then((v) => v[as](types.messages.Chats));
+      const chat = chats.chats[0];
+      if (chat instanceof types.ChatEmpty) {
+        UNREACHABLE();
+      }
+      return constructChat2(chat, -1, undefined);
+    } else if (inputPeer instanceof types.InputPeerChannel) {
+      const channels = await this.api.channels.getChannels({ id: [new types.InputChannel(inputPeer)] });
+      const channel = channels.chats[0];
+      if (channel instanceof types.ChatEmpty) {
+        UNREACHABLE();
+      }
+      return constructChat2(channel, -1, undefined);
+    } else if (inputPeer instanceof types.InputPeerUser) {
+      const users = await this.api.users.getUsers({ id: [new types.InputUser(inputPeer)] });
+      const user = users[0];
+      if (user instanceof types.UserEmpty) {
+        UNREACHABLE();
+      }
+      return constructChat2(user, -1, undefined);
+    } else {
+      UNREACHABLE();
+    }
   }
 
   /**
