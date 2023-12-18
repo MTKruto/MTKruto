@@ -1,9 +1,9 @@
-import { contentType, debug, gunzip, Mutex } from "../0_deps.ts";
+import { contentType, debug, extension, gunzip, Mutex } from "../0_deps.ts";
 import { bigIntFromBuffer, cleanObject, drop, getRandomBigInt, getRandomId, MaybePromise, mod, mustPrompt, mustPromptOneOf, Queue, sha1, UNREACHABLE, ZERO_CHANNEL_ID } from "../1_utilities.ts";
 import { as, enums, functions, getChannelChatId, Message_, MessageContainer, name, peerToChatId, ReadObject, RPCResult, TLError, TLReader, types } from "../2_tl.ts";
 import { Storage, StorageMemory } from "../3_storage.ts";
 import { DC } from "../3_transport.ts";
-import { BotCommand, botCommandScopeToTlObject, CallbackQuery, Chat, ChatAction, ChatID, constructCallbackQuery, constructChat, constructChat2, constructChat3, constructChat4, constructChosenInlineResult, constructInlineQuery, constructMessage, constructUser, FileID, FileType, getChatOrder, InlineQuery, InlineQueryResult, inlineQueryResultToTlObject, Message, MessageEntity, messageEntityToTlObject, ParseMode, replyMarkupToTlObject, ThumbnailSource, User, UsernameResolver } from "../3_types.ts";
+import { BotCommand, botCommandScopeToTlObject, CallbackQuery, Chat, ChatAction, ChatID, constructCallbackQuery, constructChat, constructChat2, constructChat3, constructChat4, constructChosenInlineResult, constructDocument, constructInlineQuery, constructMessage, constructUser, Document, FileID, FileType, FileUniqueID, FileUniqueType, getChatOrder, InlineQuery, InlineQueryResult, inlineQueryResultToTlObject, Message, MessageEntity, messageEntityToTlObject, ParseMode, replyMarkupToTlObject, ThumbnailSource, User, UsernameResolver } from "../3_types.ts";
 import { ACK_THRESHOLD, APP_VERSION, CHANNEL_DIFFERENCE_LIMIT_BOT, CHANNEL_DIFFERENCE_LIMIT_USER, DEVICE_MODEL, LANG_CODE, LANG_PACK, LAYER, MAX_CHANNEL_ID, MAX_CHAT_ID, PublicKeys, STICKER_SET_NAME_TTL, SYSTEM_LANG_CODE, SYSTEM_VERSION, USERNAME_TTL } from "../4_constants.ts";
 import { AuthKeyUnregistered, FloodWait, Migrate, PasswordHashInvalid, PhoneNumberInvalid, SessionPasswordNeeded, upgradeInstance } from "../4_errors.ts";
 import { parseHtml } from "./0_html.ts";
@@ -12,34 +12,7 @@ import { checkPassword } from "./0_password.ts";
 import { FileSource, getFileContents, getUsername, isChannelPtsUpdate, isHttpUrl, isPtsUpdate, resolve, With } from "./0_utilities.ts";
 import { ClientAbstract } from "./1_client_abstract.ts";
 import { ClientPlain } from "./2_client_plain.ts";
-import {
-  AnswerCallbackQueryParams,
-  AnswerInlineQueryParams,
-  AuthorizeUserParams,
-  ClientParams,
-  ConnectionState,
-  DeleteMessageParams,
-  DeleteMessagesParams,
-  DownloadParams,
-  EditMessageParams,
-  FilterableUpdates,
-  FilterUpdate,
-  ForwardMessagesParams,
-  getChatListId,
-  GetChatsParams,
-  GetHistoryParams,
-  GetMyCommandsParams,
-  InvokeErrorHandler,
-  NetworkStatistics,
-  ReplyParams,
-  SendDocumentParams,
-  SendMessageParams,
-  SendPhotoParams,
-  SendPollParams,
-  SetMyCommandsParams,
-  Update,
-  UploadParams,
-} from "./3_types.ts";
+import { AnswerCallbackQueryParams, AnswerInlineQueryParams, AuthorizeUserParams, ClientParams, ConnectionState, DeleteMessageParams, DeleteMessagesParams, DownloadParams, EditMessageParams, FilterableUpdates, FilterUpdate, ForwardMessagesParams, getChatListId, GetChatsParams, GetHistoryParams, GetMyCommandsParams, InvokeErrorHandler, NetworkStatistics, ReplyParams, SendDocumentParams, SendMessageParams, SendPhotoParams, SendPollParams, SetMyCommandsParams, Update, UploadParams } from "./3_types.ts";
 import { Composer, concat, flatten, Middleware, MiddlewareFn, skip } from "./4_composer.ts";
 
 const d = debug("Client");
@@ -3160,5 +3133,31 @@ export class Client<C extends Context = Context> extends ClientAbstract {
       }
     }
     return messages;
+  }
+
+  /**
+   * Get custom emoji documents for download.
+   *
+   * @param id Identifier of one or more of custom emojis.
+   * @method
+   */
+  async getCustomEmojiDocuments(id: string | string[]): Promise<Document[]> {
+    id = Array.isArray(id) ? id : [id];
+    if (!id.length) {
+      throw new Error("No custom emoji ID provided");
+    }
+    const documents_ = await this.api.messages.getCustomEmojiDocuments({ document_id: id.map(BigInt) }).then((v) => v.map((v) => v[as](types.Document)));
+    const documents = new Array<Document>();
+    for (const [i, document_] of documents_.entries()) {
+      const fileUniqueId = new FileUniqueID(FileUniqueType.Document, { mediaId: document_.id }).encode();
+      const fileId = new FileID(null, null, FileType.Document, document_.dc_id, {
+        mediaId: document_.id,
+        accessHash: document_.access_hash,
+        fileReference: document_.file_reference,
+      }).encode();
+      const document = constructDocument(document_, new types.DocumentAttributeFilename({ file_name: `${id[i] ?? "customEmoji"}.${extension(document_.mime_type)}` }), fileId, fileUniqueId);
+      documents.push(document);
+    }
+    return documents;
   }
 }
