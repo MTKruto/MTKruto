@@ -1796,14 +1796,17 @@ export class Client<C extends Context = Context> extends ClientAbstract {
    * ```
    * @returns A generator yielding the contents of the file.
    */
-  async download(fileId: string, params?: DownloadParams): Promise<AsyncGenerator<Uint8Array, void, unknown>> {
+  async *download(fileId: string, params?: DownloadParams): AsyncGenerator<Uint8Array, void, unknown> {
     const fileId_ = FileID.decode(fileId);
     switch (fileId_.fileType) {
       case FileType.ChatPhoto: {
         const big = fileId_.params.thumbnailSource == ThumbnailSource.ChatPhotoBig;
         const peer = await this.getInputPeer(fileId_.params.chatId!);
         const location = new types.InputPeerPhotoFileLocation({ big: big ? true : undefined, peer, photo_id: fileId_.params.mediaId! });
-        return this.#downloadInner(location, fileId_.dcId, params);
+        for await (const chunk of this.#downloadInner(location, fileId_.dcId, params)) {
+          yield chunk;
+        }
+        break;
       }
       case FileType.Photo: {
         if (fileId_.params.mediaId == undefined || fileId_.params.accessHash == undefined || fileId_.params.fileReference == undefined || fileId_.params.thumbnailSize == undefined) {
@@ -1815,7 +1818,10 @@ export class Client<C extends Context = Context> extends ClientAbstract {
           file_reference: fileId_.params.fileReference,
           thumb_size: fileId_.params.thumbnailSize,
         });
-        return this.#downloadInner(location, fileId_.dcId, params);
+        for await (const chunk of this.#downloadInner(location, fileId_.dcId, params)) {
+          yield chunk;
+        }
+        break;
       }
       default:
         UNREACHABLE();
