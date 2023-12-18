@@ -903,20 +903,20 @@ export class Client<C extends Context = Context> extends ClientAbstract {
   async #invoke<T extends (functions.Function<unknown> | types.Type) = functions.Function<unknown>>(function_: T): Promise<T extends functions.Function<unknown> ? T["__R"] : void>;
   async #invoke<T extends (functions.Function<unknown> | types.Type) = functions.Function<unknown>>(function_: T, noWait: true): Promise<void>;
   async #invoke<T extends (functions.Function<unknown> | types.Type) = functions.Function<unknown>>(function_: T, noWait?: boolean): Promise<T | void> {
-    if (!this.#auth || !this.transport) {
-      if (this.#autoStart && !this.#autoStarted) {
-        await this.start();
-      } else {
-        throw new ConnectionError("Not connected");
-      }
-    }
-    if (!this.#auth || !this.transport) {
-      UNREACHABLE();
-    }
-
     let n = 1;
     while (true) {
       try {
+        if (!this.#auth || !this.transport) {
+          if (this.#autoStart && !this.#autoStarted) {
+            await this.start();
+          } else {
+            throw new ConnectionError("Not connected");
+          }
+        }
+        if (!this.#auth || !this.transport) {
+          UNREACHABLE();
+        }
+
         let seqNo = this.#state.seqNo * 2;
         if (!(function_ instanceof functions.ping) && !(function_ instanceof types.Msgs_ack)) {
           seqNo++;
