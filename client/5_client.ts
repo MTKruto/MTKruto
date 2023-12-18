@@ -1823,6 +1823,21 @@ export class Client<C extends Context = Context> extends ClientAbstract {
         }
         break;
       }
+      case FileType.Document: {
+        if (fileId_.params.mediaId == undefined || fileId_.params.accessHash == undefined || fileId_.params.fileReference == undefined || fileId_.params.thumbnailSize == undefined) {
+          UNREACHABLE();
+        }
+        const location = new types.InputDocumentFileLocation({
+          id: fileId_.params.mediaId,
+          access_hash: fileId_.params.accessHash,
+          file_reference: fileId_.params.fileReference,
+          thumb_size: fileId_.params.thumbnailSize,
+        });
+        for await (const chunk of this.#downloadInner(location, fileId_.dcId, params)) {
+          yield chunk;
+        }
+        break;
+      }
       default:
         UNREACHABLE();
     }
