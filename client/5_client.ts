@@ -3146,8 +3146,29 @@ export class Client<C extends Context = Context> extends ClientAbstract {
     if (!id.length) {
       throw new Error("No custom emoji ID provided");
     }
-    const documents_ = await this.api.messages.getCustomEmojiDocuments({ document_id: id.map(BigInt) }).then((v) => v.map((v) => v[as](types.Document)));
     const documents = new Array<Document>();
+    let shouldFetch = false;
+    for (const [i, id_] of id.entries()) {
+      const maybeDocument = await this.storage.getCustomEmojiDocument(BigInt(id_));
+      if (maybeDocument != null && Date.now() - maybeDocument[1].getTime() <= 30 * 60 * 1_000) {
+        const document_ = maybeDocument[0];
+        const fileUniqueId = new FileUniqueID(FileUniqueType.Document, { mediaId: document_.id }).encode();
+        const fileId = new FileID(null, null, FileType.Document, document_.dc_id, {
+          mediaId: document_.id,
+          accessHash: document_.access_hash,
+          fileReference: document_.file_reference,
+        }).encode();
+        const document = constructDocument(document_, new types.DocumentAttributeFilename({ file_name: `${id[i] ?? "customEmoji"}.${extension(document_.mime_type)}` }), fileId, fileUniqueId);
+        documents.push(document);
+      } else {
+        shouldFetch = true;
+        break;
+      }
+    }
+    if (!shouldFetch) {
+      return documents;
+    }
+    const documents_ = await this.api.messages.getCustomEmojiDocuments({ document_id: id.map(BigInt) }).then((v) => v.map((v) => v[as](types.Document)));
     for (const [i, document_] of documents_.entries()) {
       const fileUniqueId = new FileUniqueID(FileUniqueType.Document, { mediaId: document_.id }).encode();
       const fileId = new FileID(null, null, FileType.Document, document_.dc_id, {
