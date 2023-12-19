@@ -473,7 +473,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
   }
 
   async #fetchState(source: string) {
-    const state = await this.invoke(new functions.updates.getState());
+    const state = await this.api.updates.getState();
     this.#updateState = state;
     d("state fetched [%s]", source);
   }
@@ -495,21 +495,19 @@ export class Client<C extends Context = Context> extends ClientAbstract {
   }
   async #initConnection() {
     if (!this.#connectionInited) {
-      await this.invoke(
-        new functions.initConnection({
-          api_id: this.apiId!,
-          app_version: this.appVersion,
-          device_model: this.deviceModel,
-          lang_code: this.langCode,
-          lang_pack: this.langPack,
-          query: new functions.invokeWithLayer({
-            layer: LAYER,
-            query: new functions.help.getConfig(),
-          }),
-          system_lang_code: this.systemLangCode,
-          system_version: this.systemVersion,
+      await this.api.initConnection({
+        api_id: this.apiId!,
+        app_version: this.appVersion,
+        device_model: this.deviceModel,
+        lang_code: this.langCode,
+        lang_pack: this.langPack,
+        query: new functions.invokeWithLayer({
+          layer: LAYER,
+          query: new functions.help.getConfig(),
         }),
-      );
+        system_lang_code: this.systemLangCode,
+        system_version: this.systemVersion,
+      });
       this.#connectionInited = true;
       d("connection inited");
     }
@@ -584,7 +582,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
     if (typeof params === "string") {
       while (true) {
         try {
-          const auth = await this.invoke(new functions.auth.importBotAuthorization({ api_id: this.apiId, api_hash: this.apiHash, bot_auth_token: params, flags: 0 }));
+          const auth = await this.api.auth.importBotAuthorization({ api_id: this.apiId, api_hash: this.apiHash, bot_auth_token: params, flags: 0 });
           this.#selfId = Number(auth[as](types.auth.Authorization).user.id);
           await this.storage.setAccountType("bot");
           break;
@@ -605,7 +603,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
     }
 
     if (params instanceof types.auth.ExportedAuthorization) {
-      await this.invoke(new functions.auth.importAuthorization({ id: params.id, bytes: params.bytes }));
+      await this.api.auth.importAuthorization({ id: params.id, bytes: params.bytes });
       dAuth("authorization imported");
       return;
     }
@@ -618,14 +616,12 @@ export class Client<C extends Context = Context> extends ClientAbstract {
           try {
             phone = typeof params.phone === "string" ? params.phone : await params.phone();
             const sendCode = () =>
-              this.invoke(
-                new functions.auth.sendCode({
-                  phone_number: phone,
-                  api_id: this.apiId!,
-                  api_hash: this.apiHash!,
-                  settings: new types.CodeSettings(),
-                }),
-              ).then((v) => v[as](types.auth.SentCode));
+              this.api.auth.sendCode({
+                phone_number: phone,
+                api_id: this.apiId!,
+                api_hash: this.apiHash!,
+                settings: new types.CodeSettings(),
+              }).then((v) => v[as](types.auth.SentCode));
             try {
               sentCode = await sendCode();
             } catch (err) {
@@ -652,13 +648,11 @@ export class Client<C extends Context = Context> extends ClientAbstract {
         code: while (true) {
           const code = typeof params.code === "string" ? params.code : await params.code();
           try {
-            const auth = await this.invoke(
-              new functions.auth.signIn({
-                phone_number: phone,
-                phone_code: code,
-                phone_code_hash: sentCode.phone_code_hash,
-              }),
-            );
+            const auth = await this.api.auth.signIn({
+              phone_number: phone,
+              phone_code: code,
+              phone_code_hash: sentCode.phone_code_hash,
+            });
             this.#selfId = Number(auth[as](types.auth.Authorization).user.id);
             await this.storage.setAccountType("user");
             dAuth("authorized as user");
@@ -680,7 +674,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
         }
 
         password: while (true) {
-          const ap = await this.invoke(new functions.account.getPassword());
+          const ap = await this.api.account.getPassword();
           if (!(ap.current_algo instanceof types.PasswordKdfAlgoSHA256SHA256PBKDF2HMACSHA512iter100000SHA256ModPow)) {
             throw new Error(`Handling ${ap.current_algo?.[name]} not implemented`);
           }
@@ -688,7 +682,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
             const password = typeof params.password === "string" ? params.password : await params.password(ap.hint ?? null);
             const input = await checkPassword(password, ap);
 
-            const auth = await this.invoke(new functions.auth.checkPassword({ password: input }));
+            const auth = await this.api.auth.checkPassword({ password: input });
             this.#selfId = Number(auth[as](types.auth.Authorization).user.id);
             await this.storage.setAccountType("user");
             dAuth("authorized as user");
@@ -860,7 +854,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
             reject(this.#pingLoopAbortSignal?.signal.reason);
           };
         });
-        await this.invoke(new functions.ping_delay_disconnect({ ping_id: getRandomId(), disconnect_delay: this.#pingInterval / 1_000 + 15 }));
+        await this.api.ping_delay_disconnect({ ping_id: getRandomId(), disconnect_delay: this.#pingInterval / 1_000 + 15 });
         if (Date.now() - this.#lastUpdates.getTime() >= 15 * 60 * 1_000) {
           drop(this.#recoverUpdateGap("lastUpdates"));
         }
@@ -1241,7 +1235,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
     try {
       let state = await this.#getLocalState();
       while (true) {
-        const difference = await this.invoke(new functions.updates.getDifference({ pts: state.pts, date: state.date, qts: state.qts ?? 0 }));
+        const difference = await this.api.updates.getDifference({ pts: state.pts, date: state.date, qts: state.qts ?? 0 });
         if (difference instanceof types.updates.Difference || difference instanceof types.updates.DifferenceSlice) {
           await this.#processChats(difference.chats);
           await this.#processUsers(difference.users);
@@ -1286,14 +1280,12 @@ export class Client<C extends Context = Context> extends ClientAbstract {
     let pts = pts_ == null ? 1 : pts_;
     while (true) {
       const { access_hash } = await this.getInputPeer(ZERO_CHANNEL_ID + -Number(channelId)).then((v) => v[as](types.InputPeerChannel));
-      const difference = await this.invoke(
-        new functions.updates.getChannelDifference({
-          pts,
-          channel: new types.InputChannel({ channel_id: channelId, access_hash }),
-          filter: new types.ChannelMessagesFilterEmpty(),
-          limit: await this.storage.getAccountType() == "user" ? CHANNEL_DIFFERENCE_LIMIT_USER : CHANNEL_DIFFERENCE_LIMIT_BOT,
-        }),
-      );
+      const difference = await this.api.updates.getChannelDifference({
+        pts,
+        channel: new types.InputChannel({ channel_id: channelId, access_hash }),
+        filter: new types.ChannelMessagesFilterEmpty(),
+        limit: await this.storage.getAccountType() == "user" ? CHANNEL_DIFFERENCE_LIMIT_USER : CHANNEL_DIFFERENCE_LIMIT_BOT,
+      });
       if (difference instanceof types.updates.ChannelDifference) {
         await this.#processChats(difference.chats);
         await this.#processUsers(difference.users);
@@ -1329,12 +1321,12 @@ export class Client<C extends Context = Context> extends ClientAbstract {
   }
 
   async getUserAccessHash(userId: bigint) {
-    const users = await this.invoke(new functions.users.getUsers({ id: [new types.InputUser({ user_id: userId, access_hash: 0n })] }));
+    const users = await this.api.users.getUsers({ id: [new types.InputUser({ user_id: userId, access_hash: 0n })] });
     return users[0]?.[as](types.User).access_hash ?? 0n;
   }
 
   async #getChannelAccessHash(channelId: bigint) {
-    const channels = await this.invoke(new functions.channels.getChannels({ id: [new types.InputChannel({ channel_id: channelId, access_hash: 0n })] }));
+    const channels = await this.api.channels.getChannels({ id: [new types.InputChannel({ channel_id: channelId, access_hash: 0n })] });
     return channels.chats[0][as](types.Channel).access_hash ?? 0n;
   }
 
@@ -1365,7 +1357,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
           channelId = id;
         }
       } else {
-        const resolved = await this.invoke(new functions.contacts.resolveUsername({ username: id }));
+        const resolved = await this.api.contacts.resolveUsername({ username: id });
         await this.#processChats(resolved.chats);
         await this.#processUsers(resolved.users);
         if (resolved.peer instanceof types.PeerUser) {
@@ -1530,20 +1522,18 @@ export class Client<C extends Context = Context> extends ClientAbstract {
     const topMsgId = params?.messageThreadId;
     const sendAs = await this.#resolveSendAs(params);
 
-    const result = await this.invoke(
-      new functions.messages.sendMessage({
-        peer,
-        random_id: randomId,
-        message,
-        no_webpage: noWebpage,
-        silent,
-        noforwards,
-        reply_to: replyToMsgId !== undefined ? new types.InputReplyToMessage({ reply_to_msg_id: replyToMsgId, top_msg_id: topMsgId }) : undefined,
-        send_as: sendAs,
-        entities,
-        reply_markup: replyMarkup,
-      }),
-    );
+    const result = await this.api.messages.sendMessage({
+      peer,
+      random_id: randomId,
+      message,
+      no_webpage: noWebpage,
+      silent,
+      noforwards,
+      reply_to: replyToMsgId !== undefined ? new types.InputReplyToMessage({ reply_to_msg_id: replyToMsgId, top_msg_id: topMsgId }) : undefined,
+      send_as: sendAs,
+      entities,
+      reply_markup: replyMarkup,
+    });
 
     const message_ = await this.#updatesToMessages(chatId, result).then((v) => v[0]);
     return Client.#assertMsgHas(message_, "text");
@@ -1587,16 +1577,14 @@ export class Client<C extends Context = Context> extends ClientAbstract {
   ): Promise<With<Message, "text">> {
     const [message, entities] = this.#parseText(text, params);
 
-    const result = await this.invoke(
-      new functions.messages.editMessage({
-        id: messageId,
-        peer: await this.getInputPeer(chatId),
-        entities,
-        message,
-        no_webpage: params?.disableWebPagePreview ? true : undefined,
-        reply_markup: await this.#constructReplyMarkup(params),
-      }),
-    );
+    const result = await this.api.messages.editMessage({
+      id: messageId,
+      peer: await this.getInputPeer(chatId),
+      entities,
+      message,
+      no_webpage: params?.disableWebPagePreview ? true : undefined,
+      reply_markup: await this.#constructReplyMarkup(params),
+    });
 
     const message_ = await this.#updatesToMessages(chatId, result).then((v) => v[0]);
     return Client.#assertMsgHas(message_, "text");
@@ -1619,18 +1607,14 @@ export class Client<C extends Context = Context> extends ClientAbstract {
     }
     if (shouldFetch) {
       if (peer instanceof types.InputPeerChannel) {
-        messages_ = await this.invoke(
-          new functions.channels.getMessages({
-            channel: new types.InputChannel(peer),
-            id: messageIds.map((v) => new types.InputMessageID({ id: v })),
-          }),
-        ).then((v) => v[as](types.messages.ChannelMessages).messages);
+        messages_ = await this.api.channels.getMessages({
+          channel: new types.InputChannel(peer),
+          id: messageIds.map((v) => new types.InputMessageID({ id: v })),
+        }).then((v) => v[as](types.messages.ChannelMessages).messages);
       } else {
-        messages_ = await this.invoke(
-          new functions.messages.getMessages({
-            id: messageIds.map((v) => new types.InputMessageID({ id: v })),
-          }),
-        ).then((v) => v[as](types.messages.Messages).messages);
+        messages_ = await this.api.messages.getMessages({
+          id: messageIds.map((v) => new types.InputMessageID({ id: v })),
+        }).then((v) => v[as](types.messages.Messages).messages);
       }
     }
     const messages = new Array<{ message: Omit<Message, "replyToMessage">; isReplyToMessage: boolean }>();
@@ -1719,7 +1703,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
     client.invoke.use(async (ctx, next) => {
       if (ctx.error instanceof AuthKeyUnregistered) {
         try {
-          const exportedAuth = await this.invoke(new functions.auth.exportAuthorization({ dc_id: dcId }));
+          const exportedAuth = await this.api.auth.exportAuthorization({ dc_id: dcId });
           await client.authorize(exportedAuth);
           return true;
         } catch (err) {
@@ -1821,7 +1805,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
     if (maybeStickerSetName != null && Date.now() - maybeStickerSetName[1].getTime() < STICKER_SET_NAME_TTL) {
       return maybeStickerSetName[0];
     } else {
-      const stickerSet = await this.invoke(new functions.messages.getStickerSet({ stickerset: inputStickerSet, hash }));
+      const stickerSet = await this.api.messages.getStickerSet({ stickerset: inputStickerSet, hash });
       const name = stickerSet[as](types.messages.StickerSet).set.short_name;
       await this.storage.updateStickerSetName(inputStickerSet.id, inputStickerSet.access_hash, name);
       return name;
@@ -1838,20 +1822,18 @@ export class Client<C extends Context = Context> extends ClientAbstract {
    * @returns The forwarded messages.
    */
   async forwardMessages(from: ChatID, to: ChatID, messageIds: number[], params?: ForwardMessagesParams): Promise<Message[]> {
-    const result = await this.invoke(
-      new functions.messages.forwardMessages({
-        from_peer: await this.getInputPeer(from),
-        to_peer: await this.getInputPeer(to),
-        id: messageIds,
-        random_id: messageIds.map(() => getRandomId()),
-        silent: params?.disableNotification || undefined,
-        top_msg_id: params?.messageThreadId,
-        noforwards: params?.disableNotification || undefined,
-        send_as: params?.sendAs ? await this.getInputPeer(params.sendAs) : undefined,
-        drop_author: params?.dropSenderName || undefined,
-        drop_media_captions: params?.dropCaption || undefined,
-      }),
-    );
+    const result = await this.api.messages.forwardMessages({
+      from_peer: await this.getInputPeer(from),
+      to_peer: await this.getInputPeer(to),
+      id: messageIds,
+      random_id: messageIds.map(() => getRandomId()),
+      silent: params?.disableNotification || undefined,
+      top_msg_id: params?.messageThreadId,
+      noforwards: params?.disableNotification || undefined,
+      send_as: params?.sendAs ? await this.getInputPeer(params.sendAs) : undefined,
+      drop_author: params?.dropSenderName || undefined,
+      drop_media_captions: params?.dropCaption || undefined,
+    });
 
     return await this.#updatesToMessages(to, result);
   }
@@ -1886,7 +1868,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
    * @method
    */
   async getMe(): Promise<User> {
-    const users = await this.invoke(new functions.users.getUsers({ id: [new types.InputUserSelf()] }));
+    const users = await this.api.users.getUsers({ id: [new types.InputUserSelf()] });
     if (users.length < 1) {
       UNREACHABLE();
     }
@@ -2069,14 +2051,12 @@ export class Client<C extends Context = Context> extends ClientAbstract {
    */
   async answerCallbackQuery(id: string, params?: AnswerCallbackQueryParams) {
     await this.#assertBot("answerCallbackQuery");
-    await this.invoke(
-      new functions.messages.setBotCallbackAnswer({
-        query_id: BigInt(id),
-        cache_time: params?.cacheTime ?? 0,
-        message: params?.text,
-        alert: params?.alert ? true : undefined,
-      }),
-    );
+    await this.api.messages.setBotCallbackAnswer({
+      query_id: BigInt(id),
+      cache_time: params?.cacheTime ?? 0,
+      message: params?.text,
+      alert: params?.alert ? true : undefined,
+    });
   }
 
   #usernameResolver: UsernameResolver = async (v) => {
@@ -2144,19 +2124,17 @@ export class Client<C extends Context = Context> extends ClientAbstract {
       solution_entities: solutionEntities,
     });
 
-    const result = await this.invoke(
-      new functions.messages.sendMedia({
-        peer,
-        random_id: randomId,
-        silent,
-        noforwards,
-        reply_markup: replyMarkup,
-        reply_to: replyToMsgId !== undefined ? new types.InputReplyToMessage({ reply_to_msg_id: replyToMsgId, top_msg_id: topMsgId }) : undefined,
-        send_as: sendAs,
-        media,
-        message: "",
-      }),
-    );
+    const result = await this.api.messages.sendMedia({
+      peer,
+      random_id: randomId,
+      silent,
+      noforwards,
+      reply_markup: replyMarkup,
+      reply_to: replyToMsgId !== undefined ? new types.InputReplyToMessage({ reply_to_msg_id: replyToMsgId, top_msg_id: topMsgId }) : undefined,
+      send_as: sendAs,
+      media,
+      message: "",
+    });
 
     const message = await this.#updatesToMessages(chatId, result).then((v) => v[0]);
     return Client.#assertMsgHas(message, "poll");
@@ -2209,7 +2187,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
       default:
         throw new Error("Invalid chat action: " + action);
     }
-    await this.invoke(new functions.messages.setTyping({ peer: await this.getInputPeer(chatId), action: action_, top_msg_id: params?.messageThreadId }));
+    await this.api.messages.setTyping({ peer: await this.getInputPeer(chatId), action: action_, top_msg_id: params?.messageThreadId });
   }
 
   /**
@@ -2312,25 +2290,21 @@ export class Client<C extends Context = Context> extends ClientAbstract {
    * @param commands The commands to set.
    */
   async setMyCommands(commands: BotCommand[], params?: SetMyCommandsParams) {
-    await this.invoke(
-      new functions.bots.setBotCommands({
-        commands: commands.map((v) => new types.BotCommand(v)),
-        lang_code: params?.languageCode ?? "",
-        scope: await botCommandScopeToTlObject(params?.scope ?? { type: "default" }, this.getInputPeer.bind(this)),
-      }),
-    );
+    await this.api.bots.setBotCommands({
+      commands: commands.map((v) => new types.BotCommand(v)),
+      lang_code: params?.languageCode ?? "",
+      scope: await botCommandScopeToTlObject(params?.scope ?? { type: "default" }, this.getInputPeer.bind(this)),
+    });
   }
 
   /**
    * Get the bot's commands in the given scope and/or language. Bot-only.
    */
   async getMyCommands(params?: GetMyCommandsParams): Promise<BotCommand[]> {
-    const commands_ = await this.invoke(
-      new functions.bots.getBotCommands({
-        lang_code: params?.languageCode ?? "",
-        scope: await botCommandScopeToTlObject(params?.scope ?? { type: "default" }, this.getInputPeer.bind(this)),
-      }),
-    );
+    const commands_ = await this.api.bots.getBotCommands({
+      lang_code: params?.languageCode ?? "",
+      scope: await botCommandScopeToTlObject(params?.scope ?? { type: "default" }, this.getInputPeer.bind(this)),
+    });
     return commands_.map((v) => ({ command: v.command, description: v.description }));
   }
 
@@ -2342,18 +2316,16 @@ export class Client<C extends Context = Context> extends ClientAbstract {
    * @param results The results to answer with.
    */
   async answerInlineQuery(id: string, results: InlineQueryResult[], params?: AnswerInlineQueryParams) {
-    await this.invoke(
-      new functions.messages.setInlineBotResults({
-        query_id: BigInt(id),
-        results: await Promise.all(results.map((v) => inlineQueryResultToTlObject(v, this.#parseText.bind(this), this.#usernameResolver.bind(this)))),
-        cache_time: params?.cacheTime ?? 300,
-        private: params?.isPersonal ? true : undefined,
-        switch_webview: params?.button && params.button.webApp ? new types.InlineBotWebView({ text: params.button.text, url: params.button.webApp.url }) : undefined,
-        switch_pm: params?.button && params.button.startParameter ? new types.InlineBotSwitchPM({ text: params.button.text, start_param: params.button.startParameter }) : undefined,
-        gallery: params?.isGallery ? true : undefined,
-        next_offset: params?.nextOffset,
-      }),
-    );
+    await this.api.messages.setInlineBotResults({
+      query_id: BigInt(id),
+      results: await Promise.all(results.map((v) => inlineQueryResultToTlObject(v, this.#parseText.bind(this), this.#usernameResolver.bind(this)))),
+      cache_time: params?.cacheTime ?? 300,
+      private: params?.isPersonal ? true : undefined,
+      switch_webview: params?.button && params.button.webApp ? new types.InlineBotWebView({ text: params.button.text, url: params.button.webApp.url }) : undefined,
+      switch_pm: params?.button && params.button.startParameter ? new types.InlineBotSwitchPM({ text: params.button.text, start_param: params.button.startParameter }) : undefined,
+      gallery: params?.isGallery ? true : undefined,
+      next_offset: params?.nextOffset,
+    });
   }
 
   //#region Composer
@@ -2469,7 +2441,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
   //#endregion
 
   async #setMyInfo(info: Omit<ConstructorParameters<typeof functions.bots.setBotInfo>[0], "bot">) {
-    await this.invoke(new functions.bots.setBotInfo({ bot: new types.InputUserSelf(), ...info }));
+    await this.api.bots.setBotInfo({ bot: new types.InputUserSelf(), ...info });
   }
 
   /**
@@ -2503,7 +2475,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
   }
 
   #getMyInfo(languageCode?: string | undefined) {
-    return this.invoke(new functions.bots.getBotInfo({ bot: new types.InputUserSelf(), lang_code: languageCode ?? "" }));
+    return this.api.bots.getBotInfo({ bot: new types.InputUserSelf(), lang_code: languageCode ?? "" });
   }
 
   /**
@@ -2546,9 +2518,9 @@ export class Client<C extends Context = Context> extends ClientAbstract {
   async deleteMessages(chatId: ChatID, messageIds: number[], params?: DeleteMessagesParams): Promise<void> {
     const peer = await this.getInputPeer(chatId);
     if (peer instanceof types.InputPeerChannel) {
-      await this.invoke(new functions.channels.deleteMessages({ channel: new types.InputChannel(peer), id: messageIds }));
+      await this.api.channels.deleteMessages({ channel: new types.InputChannel(peer), id: messageIds });
     } else {
-      await this.invoke(new functions.messages.deleteMessages({ id: messageIds, revoke: params?.onlyForMe ? undefined : true }));
+      await this.api.messages.deleteMessages({ id: messageIds, revoke: params?.onlyForMe ? undefined : true });
     }
   }
 
@@ -2601,20 +2573,18 @@ export class Client<C extends Context = Context> extends ClientAbstract {
     const caption = parseResult === undefined ? undefined : parseResult[0];
     const captionEntities = parseResult === undefined ? undefined : parseResult[1];
 
-    const result = await this.invoke(
-      new functions.messages.sendMedia({
-        peer,
-        random_id: randomId,
-        silent,
-        noforwards,
-        reply_markup: replyMarkup,
-        reply_to: replyToMsgId !== undefined ? new types.InputReplyToMessage({ reply_to_msg_id: replyToMsgId, top_msg_id: topMsgId }) : undefined,
-        send_as: sendAs,
-        media,
-        message: caption ?? "",
-        entities: captionEntities,
-      }),
-    );
+    const result = await this.api.messages.sendMedia({
+      peer,
+      random_id: randomId,
+      silent,
+      noforwards,
+      reply_markup: replyMarkup,
+      reply_to: replyToMsgId !== undefined ? new types.InputReplyToMessage({ reply_to_msg_id: replyToMsgId, top_msg_id: topMsgId }) : undefined,
+      send_as: sendAs,
+      media,
+      message: caption ?? "",
+      entities: captionEntities,
+    });
 
     return await this.#updatesToMessages(chatId, result).then((v) => v[0]);
   }
