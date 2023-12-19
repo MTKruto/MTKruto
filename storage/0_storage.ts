@@ -22,6 +22,7 @@ const KPARTS_PINNED_CHATS = (listId: number) => ["pinnedChats", listId];
 const KPARTS_SERVER_SALT = ["serverSalt"];
 const KPARTS_FILE = (fileId: bigint) => ["files", fileId];
 const KPARTS_FILE_PART = (fileId: bigint, n: number) => ["fileParts", fileId, n];
+const KPARTS_CEMOJI = (id: bigint) => ["customEmojiDocuments", id];
 
 export type StorageKeyPart = string | number | bigint;
 
@@ -106,7 +107,7 @@ export abstract class Storage {
     }
   }
 
-  async getTLObject(keyOrBuffer: Uint8Array | readonly StorageKeyPart[]) {
+  async getTlObject(keyOrBuffer: Uint8Array | readonly StorageKeyPart[]) {
     const buffer = keyOrBuffer instanceof Uint8Array ? keyOrBuffer : await this.get<Uint8Array>(keyOrBuffer);
     if (buffer != null) {
       return new TLReader(rleDecode(buffer)).readObject();
@@ -120,7 +121,7 @@ export abstract class Storage {
   }
 
   async getState() {
-    return await this.getTLObject(KPARTS__STATE) as enums.updates.State | null;
+    return await this.getTlObject(KPARTS__STATE) as enums.updates.State | null;
   }
 
   async setMessage(chatId: number, messageId: number, message: enums.Message | null) {
@@ -143,12 +144,12 @@ export abstract class Storage {
   }
 
   async getMessage(chatId: number, messageId: number) {
-    return await this.getTLObject(KPARTS_MESSAGE(chatId, messageId)) as enums.Message | null;
+    return await this.getTlObject(KPARTS_MESSAGE(chatId, messageId)) as enums.Message | null;
   }
 
   async getLastMessage(chatId: number) {
     for await (const [_, buffer] of await this.getMany<Uint8Array>({ prefix: KPARTS_MESSAGES(chatId) }, { limit: 1, reverse: true })) {
-      return await this.getTLObject(buffer) as enums.Message;
+      return await this.getTlObject(buffer) as enums.Message;
     }
     return null;
   }
@@ -276,7 +277,7 @@ export abstract class Storage {
     ++limit;
     const messages = new Array<enums.Message>();
     for await (const [_, buffer] of await this.getMany<Uint8Array>({ start: KPARTS_MESSAGE(chatId, 0), end: KPARTS_MESSAGE(chatId, offsetId) }, { limit, reverse: true })) {
-      const message = await this.getTLObject(buffer) as enums.Message;
+      const message = await this.getTlObject(buffer) as enums.Message;
       if ("id" in message && message.id == offsetId) {
         continue;
       }
@@ -317,5 +318,18 @@ export abstract class Storage {
       return;
     }
     await this.set(KPARTS_FILE(id), partCount);
+  }
+
+  async setCustomEmojiDocument(id: bigint, document: types.Document) {
+    await this.set(KPARTS_CEMOJI(id), [rleEncode(document[serialize]()), new Date()]);
+  }
+
+  async getCustomEmojiDocument(id: bigint) {
+    const v = await this.get<[Uint8Array, Date]>(KPARTS_CEMOJI(id));
+    if (v != null) {
+      return [await this.getTlObject([0]), v[1]] as [types.Document, Date];
+    } else {
+      return null;
+    }
   }
 }
