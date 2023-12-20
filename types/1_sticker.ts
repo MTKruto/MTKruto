@@ -1,5 +1,5 @@
-import { MaybePromise } from "../1_utilities.ts";
-import { as, types } from "../2_tl.ts";
+import { cleanObject, MaybePromise } from "../1_utilities.ts";
+import { types } from "../2_tl.ts";
 import { constructMaskPosition, MaskPosition } from "./0_mask_position.ts";
 import { constructThumbnail, Thumbnail } from "./0_thumbnail.ts";
 
@@ -43,9 +43,9 @@ export async function constructSticker(document: types.Document, fileId: string,
   const stickerAttribute = document.attributes.find((v): v is types.DocumentAttributeSticker => v instanceof types.DocumentAttributeSticker)!;
   const imageSizeAttribute = document.attributes.find((v): v is types.DocumentAttributeImageSize => v instanceof types.DocumentAttributeImageSize)!;
   const videoAttribute = document.attributes.find((v): v is types.DocumentAttributeVideo => v instanceof types.DocumentAttributeVideo)!;
-  const setName = await getStickerSetName(stickerAttribute.stickerset[as](types.InputStickerSetID));
+  const setName = stickerAttribute.stickerset instanceof types.InputStickerSetID ? await getStickerSetName(stickerAttribute.stickerset) : undefined;
 
-  return {
+  return cleanObject({
     fileId,
     fileUniqueId,
     // TODO: custom emoji type?
@@ -62,5 +62,5 @@ export async function constructSticker(document: types.Document, fileId: string,
     customEmojiId: undefined, // TODO
     needsRepainting: undefined, // TODO
     fileSize: Number(document.size),
-  };
+  });
 }
