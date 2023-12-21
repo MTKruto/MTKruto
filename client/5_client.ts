@@ -12,7 +12,7 @@ import { checkPassword } from "./0_password.ts";
 import { FileSource, getFileContents, getUsername, isChannelPtsUpdate, isHttpUrl, isPtsUpdate, resolve, With } from "./0_utilities.ts";
 import { ClientAbstract } from "./1_client_abstract.ts";
 import { ClientPlain } from "./2_client_plain.ts";
-import { AnswerCallbackQueryParams, AnswerInlineQueryParams, AuthorizeUserParams, ClientParams, ConnectionState, DeleteMessageParams, DeleteMessagesParams, DownloadParams, EditMessageParams, FilterableUpdates, FilterUpdate, ForwardMessagesParams, getChatListId, GetChatsParams, GetHistoryParams, GetMyCommandsParams, InvokeErrorHandler, NetworkStatistics, ReplyParams, SendAnimationParams, SendAudioParams, SendDocumentParams, SendLocationParams, SendMessageParams, SendPhotoParams, SendPollParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams, SetMyCommandsParams, Update, UploadParams } from "./3_types.ts";
+import { AnswerCallbackQueryParams, AnswerInlineQueryParams, AuthorizeUserParams, ClientParams, ConnectionState, DeleteMessageParams, DeleteMessagesParams, DownloadParams, EditMessageParams, FilterableUpdates, FilterUpdate, ForwardMessagesParams, getChatListId, GetChatsParams, GetHistoryParams, GetMyCommandsParams, InvokeErrorHandler, NetworkStatistics, ReplyParams, SendAnimationParams, SendAudioParams, SendContactParams, SendDocumentParams, SendLocationParams, SendMessageParams, SendPhotoParams, SendPollParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams, SetMyCommandsParams, Update, UploadParams } from "./3_types.ts";
 import { Composer, concat, flatten, Middleware, MiddlewareFn, skip } from "./4_composer.ts";
 
 const d = debug("Client");
@@ -57,6 +57,8 @@ export interface Context extends Update {
   replyDocument: (document: FileSource, params?: Omit<SendDocumentParams, "replyToMessageId"> & ReplyParams) => Promise<With<Message, "document">>;
   /** Reply the received message with a location. */
   replyLocation: (latitude: number, longitude: number, params?: Omit<SendLocationParams, "replyToMessageId"> & ReplyParams) => Promise<With<Message, "location">>;
+  /** Reply the received message with a contact. */
+  replyContact: (firstName: string, number: string, params?: Omit<SendContactParams, "replyToMessageId"> & ReplyParams) => Promise<With<Message, "contact">>;
   /** Reply the received message with a video. */
   replyVideo: (video: FileSource, params?: Omit<SendVideoParams, "replyToMessageId"> & ReplyParams) => Promise<With<Message, "video">>;
   /** Reply the received message with an animation. */
@@ -308,6 +310,16 @@ export class Client<C extends Context = Context> extends ClientAbstract {
         const replyToMessageId = getReplyToMessageId(params?.quote, effectiveMessage);
         return this.sendDocument(effectiveMessage.chat.id, document, { ...params, replyToMessageId });
       },
+      replyContact: (firstName, number, params) => {
+        const effectiveMessage = mustGetMsg();
+        const replyToMessageId = getReplyToMessageId(params?.quote, effectiveMessage);
+        return this.sendContact(effectiveMessage.chat.id, firstName, number, { ...params, replyToMessageId });
+      },
+      replyLocation: (latitude, longitude, params) => {
+        const effectiveMessage = mustGetMsg();
+        const replyToMessageId = getReplyToMessageId(params?.quote, effectiveMessage);
+        return this.sendLocation(effectiveMessage.chat.id, latitude, longitude, { ...params, replyToMessageId });
+      },
       replyVideo: (document, params) => {
         const effectiveMessage = mustGetMsg();
         const replyToMessageId = getReplyToMessageId(params?.quote, effectiveMessage);
@@ -327,6 +339,11 @@ export class Client<C extends Context = Context> extends ClientAbstract {
         const effectiveMessage = mustGetMsg();
         const replyToMessageId = getReplyToMessageId(params?.quote, effectiveMessage);
         return this.sendAudio(effectiveMessage.chat.id, document, { ...params, replyToMessageId });
+      },
+      replyVideoNote: (videoNote, params) => {
+        const effectiveMessage = mustGetMsg();
+        const replyToMessageId = getReplyToMessageId(params?.quote, effectiveMessage);
+        return this.sendVideoNote(effectiveMessage.chat.id, videoNote, { ...params, replyToMessageId });
       },
       delete: () => {
         const effectiveMessage = mustGetMsg();
@@ -2854,6 +2871,45 @@ export class Client<C extends Context = Context> extends ClientAbstract {
 
     const message = await this.#updatesToMessages(chatId, result).then((v) => v[0]);
     return Client.#assertMsgHas(message, "location");
+  }
+
+  /**
+   * Send a contact.
+   *
+   * @method
+   * @param chatId The chat to send the contact to.
+   * @param firstName The contact's first name.
+   * @param number The contact's phone number.
+   */
+  async sendContact(chatId: ChatID, firstName: string, number: string, params?: SendContactParams): Promise<With<Message, "contact">> {
+    const peer = await this.getInputPeer(chatId);
+    const randomId = getRandomId();
+    const silent = params?.disableNotification ? true : undefined;
+    const noforwards = params?.protectContent ? true : undefined;
+    const replyToMsgId = params?.replyToMessageId;
+    const topMsgId = params?.messageThreadId;
+    const sendAs = params?.sendAs ? await this.getInputPeer(params.sendAs) : undefined; // TODO: check default sendAs
+    const replyMarkup = await this.#constructReplyMarkup(params);
+
+    const result = await this.api.messages.sendMedia({
+      peer,
+      random_id: randomId,
+      silent,
+      noforwards,
+      reply_to: replyToMsgId !== undefined ? new types.InputReplyToMessage({ reply_to_msg_id: replyToMsgId, top_msg_id: topMsgId }) : undefined,
+      send_as: sendAs,
+      reply_markup: replyMarkup,
+      media: new types.InputMediaContact({
+        phone_number: number,
+        first_name: firstName,
+        last_name: params?.lastName ?? "",
+        vcard: params?.vcard ?? "",
+      }),
+      message: "",
+    });
+
+    const message = await this.#updatesToMessages(chatId, result).then((v) => v[0]);
+    return Client.#assertMsgHas(message, "contact");
   }
 
   /**

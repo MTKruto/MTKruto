@@ -634,6 +634,37 @@ export interface SendLocationParams {
   replyMarkup?: InlineKeyboardMarkup | ReplyKeyboardMarkup | ReplyKeyboardRemove | ForceReply;
 }
 
+export interface SendContactParams {
+  /** The contact's last name. */
+  lastName?: string;
+  /** Additional information in the vCard format. */
+  vcard?: string;
+  /**
+   * Whether to send the message in a silent way without making a sound on the recipients' clients.
+   */
+  disableNotification?: boolean;
+  /**
+   * Whether to protect the contents of the message from copying and forwarding.
+   */
+  protectContent?: boolean;
+  /**
+   * The identifier of a message to reply to.
+   */
+  replyToMessageId?: number;
+  /**
+   * The identifier of a thread to send the message to.
+   */
+  messageThreadId?: number;
+  /**
+   * The identifier of the chat to send the message on behalf of. User-only.
+   */
+  sendAs?: ChatID;
+  /**
+   * The reply markup of the message. Bot-only.
+   */
+  replyMarkup?: InlineKeyboardMarkup | ReplyKeyboardMarkup | ReplyKeyboardRemove | ForceReply;
+}
+
 export type ConnectionState = "notConnected" | "updating" | "ready";
 
 export type AuthorizationState = { authorized: boolean };
