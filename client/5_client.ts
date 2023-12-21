@@ -12,7 +12,7 @@ import { checkPassword } from "./0_password.ts";
 import { FileSource, getFileContents, getUsername, isChannelPtsUpdate, isHttpUrl, isPtsUpdate, resolve, With } from "./0_utilities.ts";
 import { ClientAbstract } from "./1_client_abstract.ts";
 import { ClientPlain } from "./2_client_plain.ts";
-import { AnswerCallbackQueryParams, AnswerInlineQueryParams, AuthorizeUserParams, ClientParams, ConnectionState, DeleteMessageParams, DeleteMessagesParams, DownloadParams, EditMessageParams, FilterableUpdates, FilterUpdate, ForwardMessagesParams, getChatListId, GetChatsParams, GetHistoryParams, GetMyCommandsParams, InvokeErrorHandler, NetworkStatistics, ReplyParams, SendAnimationParams, SendAudioParams, SendDocumentParams, SendMessageParams, SendPhotoParams, SendPollParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams, SetMyCommandsParams, Update, UploadParams } from "./3_types.ts";
+import { AnswerCallbackQueryParams, AnswerInlineQueryParams, AuthorizeUserParams, ClientParams, ConnectionState, DeleteMessageParams, DeleteMessagesParams, DownloadParams, EditMessageParams, FilterableUpdates, FilterUpdate, ForwardMessagesParams, getChatListId, GetChatsParams, GetHistoryParams, GetMyCommandsParams, InvokeErrorHandler, NetworkStatistics, ReplyParams, SendAnimationParams, SendAudioParams, SendDocumentParams, SendLocationParams, SendMessageParams, SendPhotoParams, SendPollParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams, SetMyCommandsParams, Update, UploadParams } from "./3_types.ts";
 import { Composer, concat, flatten, Middleware, MiddlewareFn, skip } from "./4_composer.ts";
 
 const d = debug("Client");
@@ -55,6 +55,8 @@ export interface Context extends Update {
   replyPhoto: (photo: FileSource, params?: Omit<SendPhotoParams, "replyToMessageId"> & ReplyParams) => Promise<With<Message, "photo">>;
   /** Reply the received message with a document. */
   replyDocument: (document: FileSource, params?: Omit<SendDocumentParams, "replyToMessageId"> & ReplyParams) => Promise<With<Message, "document">>;
+  /** Reply the received message with a location. */
+  replyLocation: (latitude: number, longitude: number, params?: Omit<SendLocationParams, "replyToMessageId"> & ReplyParams) => Promise<With<Message, "location">>;
   /** Reply the received message with a video. */
   replyVideo: (video: FileSource, params?: Omit<SendVideoParams, "replyToMessageId"> & ReplyParams) => Promise<With<Message, "video">>;
   /** Reply the received message with an animation. */
@@ -1811,7 +1813,12 @@ export class Client<C extends Context = Context> extends ClientAbstract {
         break;
       }
       case FileType.Document:
-      case FileType.Sticker: {
+      case FileType.Sticker:
+      case FileType.VideoNote:
+      case FileType.Video:
+      case FileType.Audio:
+      case FileType.Voice:
+      case FileType.Animation: {
         if (fileId_.params.mediaId == undefined || fileId_.params.accessHash == undefined || fileId_.params.fileReference == undefined || fileId_.params.thumbnailSize == undefined) {
           UNREACHABLE();
         }
@@ -2672,7 +2679,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
     if (media == null) {
       if (typeof document === "string" && isHttpUrl(document)) {
         if (!urlSupported) {
-          throw new Error("URL not supported")
+          throw new Error("URL not supported");
         }
         media = new types.InputMediaDocumentExternal({ url: document, spoiler });
       } else {
@@ -2796,6 +2803,57 @@ export class Client<C extends Context = Context> extends ClientAbstract {
       }),
     ], false);
     return Client.#assertMsgHas(message, "videoNote");
+  }
+
+  /**
+   * Send a location.
+   *
+   * @method
+   * @param chatId The chat to send the location to.
+   * @param latitude The location's latitude.
+   * @param longitude The location's longitude.
+   */
+  async sendLocation(chatId: ChatID, latitude: number, longitude: number, params?: SendLocationParams): Promise<With<Message, "location">> {
+    const peer = await this.getInputPeer(chatId);
+    const randomId = getRandomId();
+    const silent = params?.disableNotification ? true : undefined;
+    const noforwards = params?.protectContent ? true : undefined;
+    const replyToMsgId = params?.replyToMessageId;
+    const topMsgId = params?.messageThreadId;
+    const sendAs = params?.sendAs ? await this.getInputPeer(params.sendAs) : undefined; // TODO: check default sendAs
+    const replyMarkup = await this.#constructReplyMarkup(params);
+
+    const result = await this.api.messages.sendMedia({
+      peer,
+      random_id: randomId,
+      silent,
+      noforwards,
+      reply_to: replyToMsgId !== undefined ? new types.InputReplyToMessage({ reply_to_msg_id: replyToMsgId, top_msg_id: topMsgId }) : undefined,
+      send_as: sendAs,
+      reply_markup: replyMarkup,
+      media: params?.livePeriod !== undefined
+        ? new types.InputMediaGeoLive({
+          geo_point: new types.InputGeoPoint({
+            lat: latitude,
+            long: longitude,
+            accuracy_radius: params?.horizontalAccuracy,
+          }),
+          heading: params?.heading,
+          period: params.livePeriod,
+          proximity_notification_radius: params?.proximityAlertRadius,
+        })
+        : new types.InputMediaGeoPoint({
+          geo_point: new types.InputGeoPoint({
+            lat: latitude,
+            long: longitude,
+            accuracy_radius: params?.horizontalAccuracy,
+          }),
+        }),
+      message: "",
+    });
+
+    const message = await this.#updatesToMessages(chatId, result).then((v) => v[0]);
+    return Client.#assertMsgHas(message, "location");
   }
 
   /**
