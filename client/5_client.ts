@@ -12,7 +12,7 @@ import { checkPassword } from "./0_password.ts";
 import { FileSource, getFileContents, getUsername, isChannelPtsUpdate, isHttpUrl, isPtsUpdate, resolve, With } from "./0_utilities.ts";
 import { ClientAbstract } from "./1_client_abstract.ts";
 import { ClientPlain } from "./2_client_plain.ts";
-import { AnswerCallbackQueryParams, AnswerInlineQueryParams, AuthorizeUserParams, ClientParams, ConnectionState, DeleteMessageParams, DeleteMessagesParams, DownloadParams, EditMessageParams, FilterableUpdates, FilterUpdate, ForwardMessagesParams, getChatListId, GetChatsParams, GetHistoryParams, GetMyCommandsParams, InvokeErrorHandler, NetworkStatistics, ReplyParams, SendAnimationParams, SendAudioParams, SendDocumentParams, SendMessageParams, SendPhotoParams, SendPollParams, SendVideoParams, SendVoiceParams, SetMyCommandsParams, Update, UploadParams } from "./3_types.ts";
+import { AnswerCallbackQueryParams, AnswerInlineQueryParams, AuthorizeUserParams, ClientParams, ConnectionState, DeleteMessageParams, DeleteMessagesParams, DownloadParams, EditMessageParams, FilterableUpdates, FilterUpdate, ForwardMessagesParams, getChatListId, GetChatsParams, GetHistoryParams, GetMyCommandsParams, InvokeErrorHandler, NetworkStatistics, ReplyParams, SendAnimationParams, SendAudioParams, SendDocumentParams, SendMessageParams, SendPhotoParams, SendPollParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams, SetMyCommandsParams, Update, UploadParams } from "./3_types.ts";
 import { Composer, concat, flatten, Middleware, MiddlewareFn, skip } from "./4_composer.ts";
 
 const d = debug("Client");
@@ -63,6 +63,8 @@ export interface Context extends Update {
   replyVoice: (voice: FileSource, params?: Omit<SendVoiceParams, "replyToMessageId"> & ReplyParams) => Promise<With<Message, "voice">>;
   /** Reply the received message with an audio file. */
   replyAudio: (audio: FileSource, params?: Omit<SendAudioParams, "replyToMessageId"> & ReplyParams) => Promise<With<Message, "audio">>;
+  /** Reply the received message with a video note. */
+  replyVideoNote: (videoNote: FileSource, params?: Omit<SendVideoNoteParams, "replyToMessageId"> & ReplyParams) => Promise<With<Message, "videoNote">>;
   /** Delete the received message. */
   delete: () => Promise<void>;
   /** Forward the received message. */
@@ -2766,13 +2768,31 @@ export class Client<C extends Context = Context> extends ClientAbstract {
   async sendAudio(chatId: ChatID, audio: FileSource, params?: SendAudioParams): Promise<With<Message, "audio">> {
     const message = await this.#sendDocumentInner(chatId, audio, params, FileType.Audio, [
       new types.DocumentAttributeAudio({
-        voice: true,
         duration: params?.duration ?? 0,
         performer: params?.performer,
         title: params?.title,
       }),
     ]);
     return Client.#assertMsgHas(message, "audio");
+  }
+
+  /**
+   * Send a video note.
+   *
+   * @method
+   * @param chatId The chat to send the video note to.
+   * @param videoNote The video note to send.
+   */
+  async sendVideoNote(chatId: ChatID, audio: FileSource, params?: SendVideoNoteParams): Promise<With<Message, "videoNote">> {
+    const message = await this.#sendDocumentInner(chatId, audio, params, FileType.Audio, [
+      new types.DocumentAttributeVideo({
+        round_message: true,
+        w: params?.length ?? 0,
+        h: params?.length ?? 0,
+        duration: params?.duration ?? 0,
+      }),
+    ]);
+    return Client.#assertMsgHas(message, "videoNote");
   }
 
   /**
