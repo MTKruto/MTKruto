@@ -406,7 +406,6 @@ export interface NetworkStatistics {
   cdn: NetworkStatisticsEntry;
 }
 
-export type ChatList = "main" | "archived";
 export function getChatListId(chatList: string) {
   switch (chatList) {
     case "main":
@@ -420,7 +419,7 @@ export function getChatListId(chatList: string) {
 
 export interface GetChatsParams {
   /** The chat list to get the chats from. Defaults to main. */
-  from?: ChatList;
+  from?: "main" | "archived";
   /** The last chat to get chats after. */
   after?: Chat;
   /** The maximum number of results to return. Must be in the range of 1-100. Defaults to 100. */
