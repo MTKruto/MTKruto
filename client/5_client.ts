@@ -2655,7 +2655,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
     return Client.#assertMsgHas(message, "photo");
   }
 
-  async #sendDocumentInner(chatId: ChatID, document: FileSource, params: SendDocumentParams | undefined, fileType: FileType, otherAttribs: enums.DocumentAttribute[]) {
+  async #sendDocumentInner(chatId: ChatID, document: FileSource, params: SendDocumentParams | undefined, fileType: FileType, otherAttribs: enums.DocumentAttribute[], urlSupported = false) {
     let media: enums.InputMedia | null = null;
     const spoiler = params?.hasSpoiler ? true : undefined;
 
@@ -2671,6 +2671,9 @@ export class Client<C extends Context = Context> extends ClientAbstract {
 
     if (media == null) {
       if (typeof document === "string" && isHttpUrl(document)) {
+        if (!urlSupported) {
+          throw new Error("URL not supported")
+        }
         media = new types.InputMediaDocumentExternal({ url: document, spoiler });
       } else {
         const [contents, fileName_] = await getFileContents(document);
@@ -2784,14 +2787,14 @@ export class Client<C extends Context = Context> extends ClientAbstract {
    * @param videoNote The video note to send.
    */
   async sendVideoNote(chatId: ChatID, audio: FileSource, params?: SendVideoNoteParams): Promise<With<Message, "videoNote">> {
-    const message = await this.#sendDocumentInner(chatId, audio, params, FileType.Audio, [
+    const message = await this.#sendDocumentInner(chatId, audio, params, FileType.VideoNote, [
       new types.DocumentAttributeVideo({
         round_message: true,
         w: params?.length ?? 0,
         h: params?.length ?? 0,
         duration: params?.duration ?? 0,
       }),
-    ]);
+    ], false);
     return Client.#assertMsgHas(message, "videoNote");
   }
 
