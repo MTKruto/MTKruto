@@ -55,6 +55,14 @@ export interface Context extends Update {
   replyPhoto: (photo: FileSource, params?: Omit<SendPhotoParams, "replyToMessageId"> & ReplyParams) => Promise<With<Message, "photo">>;
   /** Reply the received message with a document. */
   replyDocument: (document: FileSource, params?: Omit<SendDocumentParams, "replyToMessageId"> & ReplyParams) => Promise<With<Message, "document">>;
+  /** Reply the received message with a video. */
+  replyVideo: (video: FileSource, params?: Omit<SendVideoParams, "replyToMessageId"> & ReplyParams) => Promise<With<Message, "video">>;
+  /** Reply the received message with an animation. */
+  replyAnimation: (animation: FileSource, params?: Omit<SendAnimationParams, "replyToMessageId"> & ReplyParams) => Promise<With<Message, "animation">>;
+  /** Reply the received message with a voice message. */
+  replyVoice: (voice: FileSource, params?: Omit<SendVoiceParams, "replyToMessageId"> & ReplyParams) => Promise<With<Message, "voice">>;
+  /** Reply the received message with an audio file. */
+  replyAudio: (audio: FileSource, params?: Omit<SendAudioParams, "replyToMessageId"> & ReplyParams) => Promise<With<Message, "audio">>;
   /** Delete the received message. */
   delete: () => Promise<void>;
   /** Forward the received message. */
@@ -295,6 +303,26 @@ export class Client<C extends Context = Context> extends ClientAbstract {
         const effectiveMessage = mustGetMsg();
         const replyToMessageId = getReplyToMessageId(params?.quote, effectiveMessage);
         return this.sendDocument(effectiveMessage.chat.id, document, { ...params, replyToMessageId });
+      },
+      replyVideo: (document, params) => {
+        const effectiveMessage = mustGetMsg();
+        const replyToMessageId = getReplyToMessageId(params?.quote, effectiveMessage);
+        return this.sendDocument(effectiveMessage.chat.id, document, { ...params, replyToMessageId });
+      },
+      replyAnimation: (document, params) => {
+        const effectiveMessage = mustGetMsg();
+        const replyToMessageId = getReplyToMessageId(params?.quote, effectiveMessage);
+        return this.sendAnimation(effectiveMessage.chat.id, document, { ...params, replyToMessageId });
+      },
+      replyVoice: (document, params) => {
+        const effectiveMessage = mustGetMsg();
+        const replyToMessageId = getReplyToMessageId(params?.quote, effectiveMessage);
+        return this.sendVoice(effectiveMessage.chat.id, document, { ...params, replyToMessageId });
+      },
+      replyAudio: (document, params) => {
+        const effectiveMessage = mustGetMsg();
+        const replyToMessageId = getReplyToMessageId(params?.quote, effectiveMessage);
+        return this.sendAudio(effectiveMessage.chat.id, document, { ...params, replyToMessageId });
       },
       delete: () => {
         const effectiveMessage = mustGetMsg();
