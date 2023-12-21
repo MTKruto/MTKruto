@@ -2958,7 +2958,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
     }
   }
   /**
-   * Get chats from a chat list.
+   * Get chats from a chat list. User-only.
    *
    * @method
    */
@@ -3057,7 +3057,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
   }
 
   /**
-   * Get chat history.
+   * Get chat history. User-only.
    *
    * @param chatId The identifier of the chat to get its history.
    * @method
