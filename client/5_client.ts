@@ -12,7 +12,7 @@ import { checkPassword } from "./0_password.ts";
 import { FileSource, getFileContents, getUsername, isChannelPtsUpdate, isHttpUrl, isPtsUpdate, resolve, With } from "./0_utilities.ts";
 import { ClientAbstract } from "./1_client_abstract.ts";
 import { ClientPlain } from "./2_client_plain.ts";
-import { AnswerCallbackQueryParams, AnswerInlineQueryParams, AuthorizeUserParams, ClientParams, ConnectionState, DeleteMessageParams, DeleteMessagesParams, DownloadParams, EditMessageParams, FilterableUpdates, FilterUpdate, ForwardMessagesParams, getChatListId, GetChatsParams, GetHistoryParams, GetMyCommandsParams, InvokeErrorHandler, NetworkStatistics, ReplyParams, SendDocumentParams, SendMessageParams, SendPhotoParams, SendPollParams, SetMyCommandsParams, Update, UploadParams } from "./3_types.ts";
+import { AnswerCallbackQueryParams, AnswerInlineQueryParams, AuthorizeUserParams, ClientParams, ConnectionState, DeleteMessageParams, DeleteMessagesParams, DownloadParams, EditMessageParams, FilterableUpdates, FilterUpdate, ForwardMessagesParams, getChatListId, GetChatsParams, GetHistoryParams, GetMyCommandsParams, InvokeErrorHandler, NetworkStatistics, ReplyParams, SendAnimationParams, SendAudioParams, SendContactParams, SendDiceParams, SendDocumentParams, SendLocationParams, SendMessageParams, SendPhotoParams, SendPollParams, SendVenueParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams, SetMyCommandsParams, Update, UploadParams } from "./3_types.ts";
 import { Composer, concat, flatten, Middleware, MiddlewareFn, skip } from "./4_composer.ts";
 
 const d = debug("Client");
@@ -55,6 +55,24 @@ export interface Context extends Update {
   replyPhoto: (photo: FileSource, params?: Omit<SendPhotoParams, "replyToMessageId"> & ReplyParams) => Promise<With<Message, "photo">>;
   /** Reply the received message with a document. */
   replyDocument: (document: FileSource, params?: Omit<SendDocumentParams, "replyToMessageId"> & ReplyParams) => Promise<With<Message, "document">>;
+  /** Reply the received message with a location. */
+  replyLocation: (latitude: number, longitude: number, params?: Omit<SendLocationParams, "replyToMessageId"> & ReplyParams) => Promise<With<Message, "location">>;
+  /** Reply the received message with a dice. */
+  replyDice: (params?: Omit<SendDiceParams, "replyToMessageId"> & ReplyParams) => Promise<With<Message, "dice">>;
+  /** Reply the received message with a venue. */
+  replyVenue: (latitude: number, longitude: number, title: string, address: string, params?: Omit<SendVenueParams, "replyToMessageId"> & ReplyParams) => Promise<With<Message, "venue">>;
+  /** Reply the received message with a contact. */
+  replyContact: (firstName: string, number: string, params?: Omit<SendContactParams, "replyToMessageId"> & ReplyParams) => Promise<With<Message, "contact">>;
+  /** Reply the received message with a video. */
+  replyVideo: (video: FileSource, params?: Omit<SendVideoParams, "replyToMessageId"> & ReplyParams) => Promise<With<Message, "video">>;
+  /** Reply the received message with an animation. */
+  replyAnimation: (animation: FileSource, params?: Omit<SendAnimationParams, "replyToMessageId"> & ReplyParams) => Promise<With<Message, "animation">>;
+  /** Reply the received message with a voice message. */
+  replyVoice: (voice: FileSource, params?: Omit<SendVoiceParams, "replyToMessageId"> & ReplyParams) => Promise<With<Message, "voice">>;
+  /** Reply the received message with an audio file. */
+  replyAudio: (audio: FileSource, params?: Omit<SendAudioParams, "replyToMessageId"> & ReplyParams) => Promise<With<Message, "audio">>;
+  /** Reply the received message with a video note. */
+  replyVideoNote: (videoNote: FileSource, params?: Omit<SendVideoNoteParams, "replyToMessageId"> & ReplyParams) => Promise<With<Message, "videoNote">>;
   /** Delete the received message. */
   delete: () => Promise<void>;
   /** Forward the received message. */
@@ -295,6 +313,51 @@ export class Client<C extends Context = Context> extends ClientAbstract {
         const effectiveMessage = mustGetMsg();
         const replyToMessageId = getReplyToMessageId(params?.quote, effectiveMessage);
         return this.sendDocument(effectiveMessage.chat.id, document, { ...params, replyToMessageId });
+      },
+      replyContact: (firstName, number, params) => {
+        const effectiveMessage = mustGetMsg();
+        const replyToMessageId = getReplyToMessageId(params?.quote, effectiveMessage);
+        return this.sendContact(effectiveMessage.chat.id, firstName, number, { ...params, replyToMessageId });
+      },
+      replyLocation: (latitude, longitude, params) => {
+        const effectiveMessage = mustGetMsg();
+        const replyToMessageId = getReplyToMessageId(params?.quote, effectiveMessage);
+        return this.sendLocation(effectiveMessage.chat.id, latitude, longitude, { ...params, replyToMessageId });
+      },
+      replyDice: (params) => {
+        const effectiveMessage = mustGetMsg();
+        const replyToMessageId = getReplyToMessageId(params?.quote, effectiveMessage);
+        return this.sendDice(effectiveMessage.chat.id, { ...params, replyToMessageId });
+      },
+      replyVenue: (latitude, longitude, title, address, params) => {
+        const effectiveMessage = mustGetMsg();
+        const replyToMessageId = getReplyToMessageId(params?.quote, effectiveMessage);
+        return this.sendVenue(effectiveMessage.chat.id, latitude, longitude, title, address, { ...params, replyToMessageId });
+      },
+      replyVideo: (document, params) => {
+        const effectiveMessage = mustGetMsg();
+        const replyToMessageId = getReplyToMessageId(params?.quote, effectiveMessage);
+        return this.sendDocument(effectiveMessage.chat.id, document, { ...params, replyToMessageId });
+      },
+      replyAnimation: (document, params) => {
+        const effectiveMessage = mustGetMsg();
+        const replyToMessageId = getReplyToMessageId(params?.quote, effectiveMessage);
+        return this.sendAnimation(effectiveMessage.chat.id, document, { ...params, replyToMessageId });
+      },
+      replyVoice: (document, params) => {
+        const effectiveMessage = mustGetMsg();
+        const replyToMessageId = getReplyToMessageId(params?.quote, effectiveMessage);
+        return this.sendVoice(effectiveMessage.chat.id, document, { ...params, replyToMessageId });
+      },
+      replyAudio: (document, params) => {
+        const effectiveMessage = mustGetMsg();
+        const replyToMessageId = getReplyToMessageId(params?.quote, effectiveMessage);
+        return this.sendAudio(effectiveMessage.chat.id, document, { ...params, replyToMessageId });
+      },
+      replyVideoNote: (videoNote, params) => {
+        const effectiveMessage = mustGetMsg();
+        const replyToMessageId = getReplyToMessageId(params?.quote, effectiveMessage);
+        return this.sendVideoNote(effectiveMessage.chat.id, videoNote, { ...params, replyToMessageId });
       },
       delete: () => {
         const effectiveMessage = mustGetMsg();
@@ -1781,7 +1844,12 @@ export class Client<C extends Context = Context> extends ClientAbstract {
         break;
       }
       case FileType.Document:
-      case FileType.Sticker: {
+      case FileType.Sticker:
+      case FileType.VideoNote:
+      case FileType.Video:
+      case FileType.Audio:
+      case FileType.Voice:
+      case FileType.Animation: {
         if (fileId_.params.mediaId == undefined || fileId_.params.accessHash == undefined || fileId_.params.fileReference == undefined || fileId_.params.thumbnailSize == undefined) {
           UNREACHABLE();
         }
@@ -2625,19 +2693,12 @@ export class Client<C extends Context = Context> extends ClientAbstract {
     return Client.#assertMsgHas(message, "photo");
   }
 
-  /**
-   * Send a document.
-   *
-   * @method
-   * @param chatId The chat to send the document to.
-   * @param document The document to send.
-   */
-  async sendDocument(chatId: ChatID, document: FileSource, params?: SendDocumentParams): Promise<With<Message, "document">> {
+  async #sendDocumentInner(chatId: ChatID, document: FileSource, params: SendDocumentParams | undefined, fileType: FileType, otherAttribs: enums.DocumentAttribute[], urlSupported = false) {
     let media: enums.InputMedia | null = null;
     const spoiler = params?.hasSpoiler ? true : undefined;
 
     if (typeof document === "string") {
-      const fileId = this.#resolveFileId(document, FileType.Document);
+      const fileId = this.#resolveFileId(document, fileType);
       if (fileId != null) {
         media = new types.InputMediaDocument({
           id: new types.InputDocument(fileId),
@@ -2648,6 +2709,9 @@ export class Client<C extends Context = Context> extends ClientAbstract {
 
     if (media == null) {
       if (typeof document === "string" && isHttpUrl(document)) {
+        if (!urlSupported) {
+          throw new Error("URL not supported");
+        }
         media = new types.InputMediaDocumentExternal({ url: document, spoiler });
       } else {
         const [contents, fileName_] = await getFileContents(document);
@@ -2657,14 +2721,289 @@ export class Client<C extends Context = Context> extends ClientAbstract {
         media = new types.InputMediaUploadedDocument({
           file,
           spoiler,
-          attributes: [new types.DocumentAttributeFilename({ file_name: fileName })],
+          attributes: [new types.DocumentAttributeFilename({ file_name: fileName }), ...otherAttribs],
           mime_type: mimeType,
         });
       }
     }
 
     const message = await this.#sendMedia(chatId, media, params);
+    return message;
+  }
+
+  /**
+   * Send a document.
+   *
+   * @method
+   * @param chatId The chat to send the document to.
+   * @param document The document to send.
+   */
+  async sendDocument(chatId: ChatID, document: FileSource, params?: SendDocumentParams): Promise<With<Message, "document">> {
+    const message = await this.#sendDocumentInner(chatId, document, params, FileType.Document, []);
     return Client.#assertMsgHas(message, "document");
+  }
+
+  /**
+   * Send a video.
+   *
+   * @method
+   * @param chatId The chat to send the video to.
+   * @param video The video to send.
+   */
+  async sendVideo(chatId: ChatID, video: FileSource, params?: SendVideoParams): Promise<With<Message, "video">> {
+    const message = await this.#sendDocumentInner(chatId, video, params, FileType.Video, [
+      new types.DocumentAttributeVideo({
+        supports_streaming: params?.supportsStreaming ? true : undefined,
+        w: params?.width ?? 0,
+        h: params?.height ?? 0,
+        duration: params?.duration ?? 0,
+      }),
+    ]);
+    return Client.#assertMsgHas(message, "video");
+  }
+
+  /**
+   * Send an animation.
+   *
+   * @method
+   * @param chatId The chat to send the animation to.
+   * @param animation The animation to send.
+   */
+  async sendAnimation(chatId: ChatID, animation: FileSource, params?: SendAnimationParams): Promise<With<Message, "animation">> {
+    const message = await this.#sendDocumentInner(chatId, animation, params, FileType.Animation, [
+      new types.DocumentAttributeAnimated(),
+      new types.DocumentAttributeVideo({
+        supports_streaming: true,
+        w: params?.width ?? 0,
+        h: params?.height ?? 0,
+        duration: params?.duration ?? 0,
+      }),
+    ]);
+    return Client.#assertMsgHas(message, "animation");
+  }
+
+  /**
+   * Send a voice message.
+   *
+   * @method
+   * @param chatId The chat to send the voice message to.
+   * @param voice The voice to send.
+   */
+  async sendVoice(chatId: ChatID, voice: FileSource, params?: SendVoiceParams): Promise<With<Message, "voice">> {
+    const message = await this.#sendDocumentInner(chatId, voice, params, FileType.Voice, [
+      new types.DocumentAttributeAudio({
+        voice: true,
+        duration: params?.duration ?? 0,
+      }),
+    ]);
+    return Client.#assertMsgHas(message, "voice");
+  }
+
+  /**
+   * Send an audio file.
+   *
+   * @method
+   * @param chatId The chat to send the audio file to.
+   * @param audio The audio to send.
+   */
+  async sendAudio(chatId: ChatID, audio: FileSource, params?: SendAudioParams): Promise<With<Message, "audio">> {
+    const message = await this.#sendDocumentInner(chatId, audio, params, FileType.Audio, [
+      new types.DocumentAttributeAudio({
+        duration: params?.duration ?? 0,
+        performer: params?.performer,
+        title: params?.title,
+      }),
+    ]);
+    return Client.#assertMsgHas(message, "audio");
+  }
+
+  /**
+   * Send a video note.
+   *
+   * @method
+   * @param chatId The chat to send the video note to.
+   * @param videoNote The video note to send.
+   */
+  async sendVideoNote(chatId: ChatID, audio: FileSource, params?: SendVideoNoteParams): Promise<With<Message, "videoNote">> {
+    const message = await this.#sendDocumentInner(chatId, audio, params, FileType.VideoNote, [
+      new types.DocumentAttributeVideo({
+        round_message: true,
+        w: params?.length ?? 0,
+        h: params?.length ?? 0,
+        duration: params?.duration ?? 0,
+      }),
+    ], false);
+    return Client.#assertMsgHas(message, "videoNote");
+  }
+
+  /**
+   * Send a location.
+   *
+   * @method
+   * @param chatId The chat to send the location to.
+   * @param latitude The location's latitude.
+   * @param longitude The location's longitude.
+   */
+  async sendLocation(chatId: ChatID, latitude: number, longitude: number, params?: SendLocationParams): Promise<With<Message, "location">> {
+    const peer = await this.getInputPeer(chatId);
+    const randomId = getRandomId();
+    const silent = params?.disableNotification ? true : undefined;
+    const noforwards = params?.protectContent ? true : undefined;
+    const replyToMsgId = params?.replyToMessageId;
+    const topMsgId = params?.messageThreadId;
+    const sendAs = params?.sendAs ? await this.getInputPeer(params.sendAs) : undefined; // TODO: check default sendAs
+    const replyMarkup = await this.#constructReplyMarkup(params);
+
+    const result = await this.api.messages.sendMedia({
+      peer,
+      random_id: randomId,
+      silent,
+      noforwards,
+      reply_to: replyToMsgId !== undefined ? new types.InputReplyToMessage({ reply_to_msg_id: replyToMsgId, top_msg_id: topMsgId }) : undefined,
+      send_as: sendAs,
+      reply_markup: replyMarkup,
+      media: params?.livePeriod !== undefined
+        ? new types.InputMediaGeoLive({
+          geo_point: new types.InputGeoPoint({
+            lat: latitude,
+            long: longitude,
+            accuracy_radius: params?.horizontalAccuracy,
+          }),
+          heading: params?.heading,
+          period: params.livePeriod,
+          proximity_notification_radius: params?.proximityAlertRadius,
+        })
+        : new types.InputMediaGeoPoint({
+          geo_point: new types.InputGeoPoint({
+            lat: latitude,
+            long: longitude,
+            accuracy_radius: params?.horizontalAccuracy,
+          }),
+        }),
+      message: "",
+    });
+
+    const message = await this.#updatesToMessages(chatId, result).then((v) => v[0]);
+    return Client.#assertMsgHas(message, "location");
+  }
+
+  /**
+   * Send a contact.
+   *
+   * @method
+   * @param chatId The chat to send the contact to.
+   * @param firstName The contact's first name.
+   * @param number The contact's phone number.
+   */
+  async sendContact(chatId: ChatID, firstName: string, number: string, params?: SendContactParams): Promise<With<Message, "contact">> {
+    const peer = await this.getInputPeer(chatId);
+    const randomId = getRandomId();
+    const silent = params?.disableNotification ? true : undefined;
+    const noforwards = params?.protectContent ? true : undefined;
+    const replyToMsgId = params?.replyToMessageId;
+    const topMsgId = params?.messageThreadId;
+    const sendAs = params?.sendAs ? await this.getInputPeer(params.sendAs) : undefined; // TODO: check default sendAs
+    const replyMarkup = await this.#constructReplyMarkup(params);
+
+    const result = await this.api.messages.sendMedia({
+      peer,
+      random_id: randomId,
+      silent,
+      noforwards,
+      reply_to: replyToMsgId !== undefined ? new types.InputReplyToMessage({ reply_to_msg_id: replyToMsgId, top_msg_id: topMsgId }) : undefined,
+      send_as: sendAs,
+      reply_markup: replyMarkup,
+      media: new types.InputMediaContact({
+        phone_number: number,
+        first_name: firstName,
+        last_name: params?.lastName ?? "",
+        vcard: params?.vcard ?? "",
+      }),
+      message: "",
+    });
+
+    const message = await this.#updatesToMessages(chatId, result).then((v) => v[0]);
+    return Client.#assertMsgHas(message, "contact");
+  }
+
+  /**
+   * Send a dice.
+   *
+   * @method
+   * @param chatId The chat to send the dice to.
+   */
+  async sendDice(chatId: ChatID, params?: SendDiceParams): Promise<With<Message, "dice">> {
+    const peer = await this.getInputPeer(chatId);
+    const randomId = getRandomId();
+    const silent = params?.disableNotification ? true : undefined;
+    const noforwards = params?.protectContent ? true : undefined;
+    const replyToMsgId = params?.replyToMessageId;
+    const topMsgId = params?.messageThreadId;
+    const sendAs = params?.sendAs ? await this.getInputPeer(params.sendAs) : undefined; // TODO: check default sendAs
+    const replyMarkup = await this.#constructReplyMarkup(params);
+
+    const result = await this.api.messages.sendMedia({
+      peer,
+      random_id: randomId,
+      silent,
+      noforwards,
+      reply_to: replyToMsgId !== undefined ? new types.InputReplyToMessage({ reply_to_msg_id: replyToMsgId, top_msg_id: topMsgId }) : undefined,
+      send_as: sendAs,
+      reply_markup: replyMarkup,
+      media: new types.InputMediaDice({
+        emoticon: params?.emoji ?? "🎲",
+      }),
+      message: "",
+    });
+
+    const message = await this.#updatesToMessages(chatId, result).then((v) => v[0]);
+    return Client.#assertMsgHas(message, "dice");
+  }
+
+  /**
+   * Send a venue.
+   *
+   * @method
+   * @param chatId The chat to send the venue to.
+   * @param latitude The latitude of the venue.
+   * @param longitude The longitude of the venue.
+   * @param title The title of the venue.
+   * @param address The written address of the venue.
+   */
+  async sendVenue(chatId: ChatID, latitude: number, longitude: number, title: string, address: string, params?: SendVenueParams): Promise<With<Message, "dice">> {
+    const peer = await this.getInputPeer(chatId);
+    const randomId = getRandomId();
+    const silent = params?.disableNotification ? true : undefined;
+    const noforwards = params?.protectContent ? true : undefined;
+    const replyToMsgId = params?.replyToMessageId;
+    const topMsgId = params?.messageThreadId;
+    const sendAs = params?.sendAs ? await this.getInputPeer(params.sendAs) : undefined; // TODO: check default sendAs
+    const replyMarkup = await this.#constructReplyMarkup(params);
+
+    const result = await this.api.messages.sendMedia({
+      peer,
+      random_id: randomId,
+      silent,
+      noforwards,
+      reply_to: replyToMsgId !== undefined ? new types.InputReplyToMessage({ reply_to_msg_id: replyToMsgId, top_msg_id: topMsgId }) : undefined,
+      send_as: sendAs,
+      reply_markup: replyMarkup,
+      media: new types.InputMediaVenue({
+        geo_point: new types.InputGeoPoint({
+          lat: latitude,
+          long: longitude,
+        }),
+        title,
+        address,
+        venue_id: params?.foursquareId ?? "",
+        venue_type: params?.foursquareType ?? "",
+        provider: "foursquare",
+      }),
+      message: "",
+    });
+
+    const message = await this.#updatesToMessages(chatId, result).then((v) => v[0]);
+    return Client.#assertMsgHas(message, "dice");
   }
 
   /**
