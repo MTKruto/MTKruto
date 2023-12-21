@@ -12,7 +12,7 @@ import { checkPassword } from "./0_password.ts";
 import { FileSource, getFileContents, getUsername, isChannelPtsUpdate, isHttpUrl, isPtsUpdate, resolve, With } from "./0_utilities.ts";
 import { ClientAbstract } from "./1_client_abstract.ts";
 import { ClientPlain } from "./2_client_plain.ts";
-import { AnswerCallbackQueryParams, AnswerInlineQueryParams, AuthorizeUserParams, ClientParams, ConnectionState, DeleteMessageParams, DeleteMessagesParams, DownloadParams, EditMessageParams, FilterableUpdates, FilterUpdate, ForwardMessagesParams, getChatListId, GetChatsParams, GetHistoryParams, GetMyCommandsParams, InvokeErrorHandler, NetworkStatistics, ReplyParams, SendAnimationParams, SendAudioParams, SendContactParams, SendDocumentParams, SendLocationParams, SendMessageParams, SendPhotoParams, SendPollParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams, SetMyCommandsParams, Update, UploadParams } from "./3_types.ts";
+import { AnswerCallbackQueryParams, AnswerInlineQueryParams, AuthorizeUserParams, ClientParams, ConnectionState, DeleteMessageParams, DeleteMessagesParams, DownloadParams, EditMessageParams, FilterableUpdates, FilterUpdate, ForwardMessagesParams, getChatListId, GetChatsParams, GetHistoryParams, GetMyCommandsParams, InvokeErrorHandler, NetworkStatistics, ReplyParams, SendAnimationParams, SendAudioParams, SendContactParams, SendDiceParams, SendDocumentParams, SendLocationParams, SendMessageParams, SendPhotoParams, SendPollParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams, SetMyCommandsParams, Update, UploadParams } from "./3_types.ts";
 import { Composer, concat, flatten, Middleware, MiddlewareFn, skip } from "./4_composer.ts";
 
 const d = debug("Client");
@@ -57,6 +57,8 @@ export interface Context extends Update {
   replyDocument: (document: FileSource, params?: Omit<SendDocumentParams, "replyToMessageId"> & ReplyParams) => Promise<With<Message, "document">>;
   /** Reply the received message with a location. */
   replyLocation: (latitude: number, longitude: number, params?: Omit<SendLocationParams, "replyToMessageId"> & ReplyParams) => Promise<With<Message, "location">>;
+  /** Reply the received message with a dice. */
+  replyDice: (params?: Omit<SendDiceParams, "replyToMessageId"> & ReplyParams) => Promise<With<Message, "dice">>;
   /** Reply the received message with a contact. */
   replyContact: (firstName: string, number: string, params?: Omit<SendContactParams, "replyToMessageId"> & ReplyParams) => Promise<With<Message, "contact">>;
   /** Reply the received message with a video. */
@@ -319,6 +321,11 @@ export class Client<C extends Context = Context> extends ClientAbstract {
         const effectiveMessage = mustGetMsg();
         const replyToMessageId = getReplyToMessageId(params?.quote, effectiveMessage);
         return this.sendLocation(effectiveMessage.chat.id, latitude, longitude, { ...params, replyToMessageId });
+      },
+      replyDice: (params) => {
+        const effectiveMessage = mustGetMsg();
+        const replyToMessageId = getReplyToMessageId(params?.quote, effectiveMessage);
+        return this.sendDice(effectiveMessage.chat.id, { ...params, replyToMessageId });
       },
       replyVideo: (document, params) => {
         const effectiveMessage = mustGetMsg();
@@ -2910,6 +2917,40 @@ export class Client<C extends Context = Context> extends ClientAbstract {
 
     const message = await this.#updatesToMessages(chatId, result).then((v) => v[0]);
     return Client.#assertMsgHas(message, "contact");
+  }
+
+  /**
+   * Send a dice.
+   *
+   * @method
+   * @param chatId The chat to send the dice to.
+   */
+  async sendDice(chatId: ChatID, params?: SendDiceParams): Promise<With<Message, "dice">> {
+    const peer = await this.getInputPeer(chatId);
+    const randomId = getRandomId();
+    const silent = params?.disableNotification ? true : undefined;
+    const noforwards = params?.protectContent ? true : undefined;
+    const replyToMsgId = params?.replyToMessageId;
+    const topMsgId = params?.messageThreadId;
+    const sendAs = params?.sendAs ? await this.getInputPeer(params.sendAs) : undefined; // TODO: check default sendAs
+    const replyMarkup = await this.#constructReplyMarkup(params);
+
+    const result = await this.api.messages.sendMedia({
+      peer,
+      random_id: randomId,
+      silent,
+      noforwards,
+      reply_to: replyToMsgId !== undefined ? new types.InputReplyToMessage({ reply_to_msg_id: replyToMsgId, top_msg_id: topMsgId }) : undefined,
+      send_as: sendAs,
+      reply_markup: replyMarkup,
+      media: new types.InputMediaDice({
+        emoticon: params?.emoji ?? "🎲",
+      }),
+      message: "",
+    });
+
+    const message = await this.#updatesToMessages(chatId, result).then((v) => v[0]);
+    return Client.#assertMsgHas(message, "dice");
   }
 
   /**
