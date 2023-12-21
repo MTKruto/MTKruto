@@ -2632,7 +2632,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
    * @param chatId The chat to send the document to.
    * @param document The document to send.
    */
-  async sendDocument(chatId: ChatID, document: FileSource, params?: SendDocumentParams) {
+  async sendDocument(chatId: ChatID, document: FileSource, params?: SendDocumentParams): Promise<With<Message, "document">> {
     let media: enums.InputMedia | null = null;
     const spoiler = params?.hasSpoiler ? true : undefined;
 
@@ -3062,7 +3062,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
    * @param chatId The identifier of the chat to get its history.
    * @method
    */
-  async getHistory(chatId: ChatID, params?: GetHistoryParams) {
+  async getHistory(chatId: ChatID, params?: GetHistoryParams): Promise<Message[]> {
     let limit = params?.limit ?? 100;
     if (limit <= 0) {
       limit = 1;
