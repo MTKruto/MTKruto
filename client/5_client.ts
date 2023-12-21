@@ -1780,7 +1780,8 @@ export class Client<C extends Context = Context> extends ClientAbstract {
         }
         break;
       }
-      case FileType.Document: {
+      case FileType.Document:
+      case FileType.Sticker: {
         if (fileId_.params.mediaId == undefined || fileId_.params.accessHash == undefined || fileId_.params.fileReference == undefined || fileId_.params.thumbnailSize == undefined) {
           UNREACHABLE();
         }
