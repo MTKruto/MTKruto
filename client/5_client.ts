@@ -12,7 +12,7 @@ import { checkPassword } from "./0_password.ts";
 import { FileSource, getFileContents, getUsername, isChannelPtsUpdate, isHttpUrl, isPtsUpdate, resolve, With } from "./0_utilities.ts";
 import { ClientAbstract } from "./1_client_abstract.ts";
 import { ClientPlain } from "./2_client_plain.ts";
-import { AnswerCallbackQueryParams, AnswerInlineQueryParams, AuthorizeUserParams, ClientParams, ConnectionState, DeleteMessageParams, DeleteMessagesParams, DownloadParams, EditMessageParams, FilterableUpdates, FilterUpdate, ForwardMessagesParams, getChatListId, GetChatsParams, GetHistoryParams, GetMyCommandsParams, InvokeErrorHandler, NetworkStatistics, ReplyParams, SendDocumentParams, SendMessageParams, SendPhotoParams, SendPollParams, SetMyCommandsParams, Update, UploadParams } from "./3_types.ts";
+import { AnswerCallbackQueryParams, AnswerInlineQueryParams, AuthorizeUserParams, ClientParams, ConnectionState, DeleteMessageParams, DeleteMessagesParams, DownloadParams, EditMessageParams, FilterableUpdates, FilterUpdate, ForwardMessagesParams, getChatListId, GetChatsParams, GetHistoryParams, GetMyCommandsParams, InvokeErrorHandler, NetworkStatistics, ReplyParams, SendAnimationParams, SendAudioParams, SendDocumentParams, SendMessageParams, SendPhotoParams, SendPollParams, SendVideoParams, SendVoiceParams, SetMyCommandsParams, Update, UploadParams } from "./3_types.ts";
 import { Composer, concat, flatten, Middleware, MiddlewareFn, skip } from "./4_composer.ts";
 
 const d = debug("Client");
@@ -2625,19 +2625,12 @@ export class Client<C extends Context = Context> extends ClientAbstract {
     return Client.#assertMsgHas(message, "photo");
   }
 
-  /**
-   * Send a document.
-   *
-   * @method
-   * @param chatId The chat to send the document to.
-   * @param document The document to send.
-   */
-  async sendDocument(chatId: ChatID, document: FileSource, params?: SendDocumentParams): Promise<With<Message, "document">> {
+  async #sendDocumentInner(chatId: ChatID, document: FileSource, params: SendDocumentParams | undefined, fileType: FileType, otherAttribs: enums.DocumentAttribute[]) {
     let media: enums.InputMedia | null = null;
     const spoiler = params?.hasSpoiler ? true : undefined;
 
     if (typeof document === "string") {
-      const fileId = this.#resolveFileId(document, FileType.Document);
+      const fileId = this.#resolveFileId(document, fileType);
       if (fileId != null) {
         media = new types.InputMediaDocument({
           id: new types.InputDocument(fileId),
@@ -2657,14 +2650,101 @@ export class Client<C extends Context = Context> extends ClientAbstract {
         media = new types.InputMediaUploadedDocument({
           file,
           spoiler,
-          attributes: [new types.DocumentAttributeFilename({ file_name: fileName })],
+          attributes: [new types.DocumentAttributeFilename({ file_name: fileName }), ...otherAttribs],
           mime_type: mimeType,
         });
       }
     }
 
     const message = await this.#sendMedia(chatId, media, params);
+    return message;
+  }
+
+  /**
+   * Send a document.
+   *
+   * @method
+   * @param chatId The chat to send the document to.
+   * @param document The document to send.
+   */
+  async sendDocument(chatId: ChatID, document: FileSource, params?: SendDocumentParams): Promise<With<Message, "document">> {
+    const message = await this.#sendDocumentInner(chatId, document, params, FileType.Document, []);
     return Client.#assertMsgHas(message, "document");
+  }
+
+  /**
+   * Send a video.
+   *
+   * @method
+   * @param chatId The chat to send the video to.
+   * @param video The video to send.
+   */
+  async sendVideo(chatId: ChatID, video: FileSource, params?: SendVideoParams): Promise<With<Message, "video">> {
+    const message = await this.#sendDocumentInner(chatId, video, params, FileType.Video, [
+      new types.DocumentAttributeVideo({
+        supports_streaming: params?.supportsStreaming ? true : undefined,
+        w: params?.width ?? 0,
+        h: params?.height ?? 0,
+        duration: params?.duration ?? 0,
+      }),
+    ]);
+    return Client.#assertMsgHas(message, "video");
+  }
+
+  /**
+   * Send an animation.
+   *
+   * @method
+   * @param chatId The chat to send the animation to.
+   * @param animation The animation to send.
+   */
+  async sendAnimation(chatId: ChatID, animation: FileSource, params?: SendAnimationParams): Promise<With<Message, "animation">> {
+    const message = await this.#sendDocumentInner(chatId, animation, params, FileType.Animation, [
+      new types.DocumentAttributeAnimated(),
+      new types.DocumentAttributeVideo({
+        supports_streaming: true,
+        w: params?.width ?? 0,
+        h: params?.height ?? 0,
+        duration: params?.duration ?? 0,
+      }),
+    ]);
+    return Client.#assertMsgHas(message, "animation");
+  }
+
+  /**
+   * Send a voice message.
+   *
+   * @method
+   * @param chatId The chat to send the voice message to.
+   * @param voice The voice to send.
+   */
+  async sendVoice(chatId: ChatID, voice: FileSource, params?: SendVoiceParams): Promise<With<Message, "voice">> {
+    const message = await this.#sendDocumentInner(chatId, voice, params, FileType.Voice, [
+      new types.DocumentAttributeAudio({
+        voice: true,
+        duration: params?.duration ?? 0,
+      }),
+    ]);
+    return Client.#assertMsgHas(message, "voice");
+  }
+
+  /**
+   * Send an audio file.
+   *
+   * @method
+   * @param chatId The chat to send the audio file to.
+   * @param audio The audio to send.
+   */
+  async sendAudio(chatId: ChatID, audio: FileSource, params?: SendAudioParams): Promise<With<Message, "audio">> {
+    const message = await this.#sendDocumentInner(chatId, audio, params, FileType.Audio, [
+      new types.DocumentAttributeAudio({
+        voice: true,
+        duration: params?.duration ?? 0,
+        performer: params?.performer,
+        title: params?.title,
+      }),
+    ]);
+    return Client.#assertMsgHas(message, "audio");
   }
 
   /**
