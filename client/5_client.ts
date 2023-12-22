@@ -2718,8 +2718,14 @@ export class Client<C extends Context = Context> extends ClientAbstract {
         const fileName = params?.fileName ?? fileName_;
         const mimeType = params?.mimeType ?? contentType(fileName.split(".").slice(-1)[0]) ?? "application/octet-stream";
         const file = await this.upload(contents, { fileName, chunkSize: params?.chunkSize, signal: params?.signal });
+        let thumb: enums.InputFile | undefined = undefined;
+        if (params?.thumbnail) {
+          const [thumbContents, fileName__] = await getFileContents(params.thumbnail);
+          thumb = await this.upload(thumbContents, { fileName: fileName__, chunkSize: params?.chunkSize, signal: params?.signal });
+        }
         media = new types.InputMediaUploadedDocument({
           file,
+          thumb,
           spoiler,
           attributes: [new types.DocumentAttributeFilename({ file_name: fileName }), ...otherAttribs],
           mime_type: mimeType,
