@@ -47,7 +47,7 @@ export function isChannelPtsUpdate(v: enums.Update | enums.Updates): v is
 }
 
 /**
- * Source to a file. Can be a file ID, file path, URL, or `Uint8Array`.
+ * Source to a file. Can be a file ID, a file path, URL, or a `Uint8Array`, unless otherwise noted.
  */
 export type FileSource = string | URL | Uint8Array;
 
