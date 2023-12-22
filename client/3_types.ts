@@ -1,3 +1,4 @@
+import { FileSource } from "./0_utilities.ts";
 import { MaybePromise, UNREACHABLE } from "../1_utilities.ts";
 import { functions, types } from "../2_tl.ts";
 import { BotCommandScope, CallbackQuery, Chat, ChatID, ChosenInlineResult, ForceReply, InlineKeyboardMarkup, InlineQuery, InlineQueryResultButton, Message, MessageEntity, ReplyKeyboardMarkup, ReplyKeyboardRemove } from "../3_types.ts";
@@ -306,6 +307,7 @@ export interface SendPhotoParams {
 export interface SendDocumentParams {
   /** The file name to assign. */
   fileName?: string;
+  thumbnail?: FileSource;
   /** The mime type to assign. */
   mimeType?: string;
   /** Size of each upload chunk in bytes. */
@@ -358,6 +360,7 @@ export interface SendVideoParams {
   width?: number;
   height?: number;
   supportsStreaming?: boolean;
+  thumbnail?: FileSource;
   /** The file name to assign if applicable. */
   fileName?: string;
   /** The mime type to assign. */
@@ -411,6 +414,7 @@ export interface SendAnimationParams {
   duration?: number;
   width?: number;
   height?: number;
+  thumbnail?: FileSource;
   /** The file name to assign if applicable. */
   fileName?: string;
   /** The mime type to assign. */
@@ -511,6 +515,7 @@ export interface SendAudioParams {
   duration?: number;
   performer?: string;
   title?: string;
+  thumbnail?: FileSource;
   /** The file name to assign if applicable. */
   fileName?: string;
   /** The mime type to assign. */
@@ -559,6 +564,7 @@ export interface SendVideoNoteParams {
   /** The duration of the video note in seconds. */
   duration?: number;
   length?: number;
+  thumbnail?: FileSource;
   /** The file name to assign if applicable. */
   fileName?: string;
   /** The mime type to assign. */
