@@ -69,19 +69,7 @@ export interface AuthorizeUserParams<S = string> {
   password: S | ((hint: string | null) => MaybePromise<S>);
 }
 
-export interface SendMessageParams {
-  /**
-   * The parse mode to use. If not provided, the default parse mode will be used.
-   */
-  parseMode?: ParseMode;
-  /**
-   * The message's entities.
-   */
-  entities?: MessageEntity[];
-  /**
-   * Whether to disable web page previews in the message that is to be sent.
-   */
-  disableWebPagePreview?: boolean;
+export interface _SendCommon {
   /**
    * Whether to send the message in a silent way without making a sound on the recipients' clients.
    */
@@ -107,6 +95,20 @@ export interface SendMessageParams {
    */
   replyMarkup?: InlineKeyboardMarkup | ReplyKeyboardMarkup | ReplyKeyboardRemove | ForceReply;
 }
+export interface SendMessageParams extends _SendCommon {
+  /**
+   * The parse mode to use. If not provided, the default parse mode will be used.
+   */
+  parseMode?: ParseMode;
+  /**
+   * The message's entities.
+   */
+  entities?: MessageEntity[];
+  /**
+   * Whether to disable web page previews in the message that is to be sent.
+   */
+  disableWebPagePreview?: boolean;
+}
 
 export interface EditMessageParams {
   /**
@@ -127,20 +129,7 @@ export interface EditMessageParams {
   replyMarkup?: InlineKeyboardMarkup | ReplyKeyboardMarkup | ReplyKeyboardRemove | ForceReply;
 }
 
-export interface ForwardMessagesParams {
-  messageThreadId?: number;
-  /**
-   * Whether to forward the message in a silent way without making a sound on the recipients' clients.
-   */
-  disableNotification?: boolean;
-  /**
-   * Whether to protect the contents of the forwarded message from copying and forwarding.
-   */
-  protectContent?: boolean;
-  /**
-   * The identifier of the chat to forward the message on behalf of. User-only.
-   */
-  sendAs?: ChatID;
+export interface ForwardMessagesParams extends Omit<_SendCommon, "replyToMessageId" | "replyMarkup"> {
   /**
    * Whether to not include the original sender of the message that is going to be forwarded.
    */
@@ -151,7 +140,7 @@ export interface ForwardMessagesParams {
   dropCaption?: boolean;
 }
 
-export interface SendPollParams {
+export interface SendPollParams extends _SendCommon {
   /**
    * Whether the poll should be anonymous.
    */
@@ -192,30 +181,6 @@ export interface SendPollParams {
    * Whether the poll should be closed as soon as it is sent, allowing no answers.
    */
   isClosed?: boolean;
-  /**
-   * Whether to send the message in a silent way without making a sound on the recipients' clients.
-   */
-  disableNotification?: boolean;
-  /**
-   * The identifier of a message to reply to.
-   */
-  replyToMessageId?: number;
-  /**
-   * The identifier of a thread to send the message to.
-   */
-  messageThreadId?: number;
-  /**
-   * The identifier of the chat to send the message on behalf of. User-only.
-   */
-  sendAs?: ChatID;
-  /**
-   * The reply markup of the message. Bot-only.
-   */
-  replyMarkup?: InlineKeyboardMarkup | ReplyKeyboardMarkup | ReplyKeyboardRemove | ForceReply;
-  /**
-   * Whether to protect the contents of the message from copying and forwarding.
-   */
-  protectContent?: boolean;
 }
 
 export interface DownloadParams {
@@ -223,6 +188,16 @@ export interface DownloadParams {
   chunkSize?: number;
 }
 
+export interface _UploadCommon {
+  /** The file name to assign if applicable. */
+  fileName?: string;
+  /** The mime type to assign if applicable. */
+  mimeType?: string;
+  /** Size of each upload chunk in bytes. */
+  chunkSize?: number;
+  /** Upload abort signal. */
+  signal?: AbortSignal | null;
+}
 export interface UploadParams {
   /** The file name to assign. */
   fileName?: string;
@@ -257,14 +232,8 @@ export interface DeleteMessageParams {
   onlyForMe?: boolean;
 }
 
-export interface SendPhotoParams {
-  /** The file name to assign if applicable. */
-  fileName?: string;
-  /** Size of each upload chunk in bytes. */
-  chunkSize?: number;
-  /** Upload abort signal. */
-  signal?: AbortSignal | null;
-  /** The caption of the photo. */
+export interface _CaptionCommon {
+  /** The caption to attach. */
   caption?: string;
   /**
    * The caption's entities.
@@ -274,458 +243,80 @@ export interface SendPhotoParams {
    * The parse mode to use for the caption. If not provided, the default parse mode will be used.
    */
   parseMode?: ParseMode;
+}
+export interface _SpoilCommon {
   /**
-   * Whether to mark the photo as a spoiler.
+   * Whether to mark the media as a spoiler.
    */
   hasSpoiler?: boolean;
-  /**
-   * Whether to send the message in a silent way without making a sound on the recipients' clients.
-   */
-  disableNotification?: boolean;
-  /**
-   * Whether to protect the contents of the message from copying and forwarding.
-   */
-  protectContent?: boolean;
-  /**
-   * The identifier of a message to reply to.
-   */
-  replyToMessageId?: number;
-  /**
-   * The identifier of a thread to send the message to.
-   */
-  messageThreadId?: number;
-  /**
-   * The identifier of the chat to send the message on behalf of. User-only.
-   */
-  sendAs?: ChatID;
-  /**
-   * The reply markup of the message. Bot-only.
-   */
-  replyMarkup?: InlineKeyboardMarkup | ReplyKeyboardMarkup | ReplyKeyboardRemove | ForceReply;
+}
+export interface SendPhotoParams extends _CaptionCommon, _SpoilCommon, _UploadCommon, _SendCommon {
 }
 
-export interface SendDocumentParams {
-  /** The file name to assign. */
-  fileName?: string;
+export interface _ThumbnailCommon {
+  /** A thumbnail to assign. Cannot be a URL. */
   thumbnail?: FileSource;
-  /** The mime type to assign. */
-  mimeType?: string;
-  /** Size of each upload chunk in bytes. */
-  chunkSize?: number;
-  /** Upload abort signal. */
-  signal?: AbortSignal | null;
-  /** The caption of the document. */
-  caption?: string;
-  /**
-   * The caption's entities.
-   */
-  captionEntities?: MessageEntity[];
-  /**
-   * The parse mode to use for the caption. If not provided, the default parse mode will be used.
-   */
-  parseMode?: ParseMode;
-  /**
-   * Whether to mark the document as a spoiler.
-   */
-  hasSpoiler?: boolean;
-  /**
-   * Whether to send the message in a silent way without making a sound on the recipients' clients.
-   */
-  disableNotification?: boolean;
-  /**
-   * Whether to protect the contents of the message from copying and forwarding.
-   */
-  protectContent?: boolean;
-  /**
-   * The identifier of a message to reply to.
-   */
-  replyToMessageId?: number;
-  /**
-   * The identifier of a thread to send the message to.
-   */
-  messageThreadId?: number;
-  /**
-   * The identifier of the chat to send the message on behalf of. User-only.
-   */
-  sendAs?: ChatID;
-  /**
-   * The reply markup of the message. Bot-only.
-   */
-  replyMarkup?: InlineKeyboardMarkup | ReplyKeyboardMarkup | ReplyKeyboardRemove | ForceReply;
+}
+export interface SendDocumentParams extends _CaptionCommon, _ThumbnailCommon, _SpoilCommon, _UploadCommon, _SendCommon {
 }
 
-export interface SendVideoParams {
+export interface SendVideoParams extends _CaptionCommon, _ThumbnailCommon, _SpoilCommon, _UploadCommon, _SendCommon {
   /** The duration of the video in seconds. */
   duration?: number;
+  /** The width of the photo in pixels. */
   width?: number;
+  /** The height of the photo in pixels. */
   height?: number;
   supportsStreaming?: boolean;
-  thumbnail?: FileSource;
-  /** The file name to assign if applicable. */
-  fileName?: string;
-  /** The mime type to assign. */
-  mimeType?: string;
-  /** Size of each upload chunk in bytes. */
-  chunkSize?: number;
-  /** Upload abort signal. */
-  signal?: AbortSignal | null;
-  /** The caption of the document. */
-  caption?: string;
-  /**
-   * The caption's entities.
-   */
-  captionEntities?: MessageEntity[];
-  /**
-   * The parse mode to use for the caption. If not provided, the default parse mode will be used.
-   */
-  parseMode?: ParseMode;
-  /**
-   * Whether to mark the video as a spoiler.
-   */
-  hasSpoiler?: boolean;
-  /**
-   * Whether to send the message in a silent way without making a sound on the recipients' clients.
-   */
-  disableNotification?: boolean;
-  /**
-   * Whether to protect the contents of the message from copying and forwarding.
-   */
-  protectContent?: boolean;
-  /**
-   * The identifier of a message to reply to.
-   */
-  replyToMessageId?: number;
-  /**
-   * The identifier of a thread to send the message to.
-   */
-  messageThreadId?: number;
-  /**
-   * The identifier of the chat to send the message on behalf of. User-only.
-   */
-  sendAs?: ChatID;
-  /**
-   * The reply markup of the message. Bot-only.
-   */
-  replyMarkup?: InlineKeyboardMarkup | ReplyKeyboardMarkup | ReplyKeyboardRemove | ForceReply;
 }
 
-export interface SendAnimationParams {
+export interface SendAnimationParams extends _CaptionCommon, _ThumbnailCommon, _SpoilCommon, _UploadCommon, _SendCommon {
   /** The duration of the animation in seconds. */
   duration?: number;
   width?: number;
   height?: number;
-  thumbnail?: FileSource;
-  /** The file name to assign if applicable. */
-  fileName?: string;
-  /** The mime type to assign. */
-  mimeType?: string;
-  /** Size of each upload chunk in bytes. */
-  chunkSize?: number;
-  /** Upload abort signal. */
-  signal?: AbortSignal | null;
-  /** The caption of the document. */
-  caption?: string;
-  /**
-   * The caption's entities.
-   */
-  captionEntities?: MessageEntity[];
-  /**
-   * The parse mode to use for the caption. If not provided, the default parse mode will be used.
-   */
-  parseMode?: ParseMode;
-  /**
-   * Whether to mark the animation as a spoiler.
-   */
-  hasSpoiler?: boolean;
-  /**
-   * Whether to send the message in a silent way without making a sound on the recipients' clients.
-   */
-  disableNotification?: boolean;
-  /**
-   * Whether to protect the contents of the message from copying and forwarding.
-   */
-  protectContent?: boolean;
-  /**
-   * The identifier of a message to reply to.
-   */
-  replyToMessageId?: number;
-  /**
-   * The identifier of a thread to send the message to.
-   */
-  messageThreadId?: number;
-  /**
-   * The identifier of the chat to send the message on behalf of. User-only.
-   */
-  sendAs?: ChatID;
-  /**
-   * The reply markup of the message. Bot-only.
-   */
-  replyMarkup?: InlineKeyboardMarkup | ReplyKeyboardMarkup | ReplyKeyboardRemove | ForceReply;
 }
 
-export interface SendVoiceParams {
+export interface SendVoiceParams extends _CaptionCommon, _ThumbnailCommon, _UploadCommon, _SendCommon {
   /** The duration of the voice message in seconds. */
   duration?: number;
-  /** The file name to assign if applicable. */
-  fileName?: string;
-  /** The mime type to assign. */
-  mimeType?: string;
-  /** Size of each upload chunk in bytes. */
-  chunkSize?: number;
-  /** Upload abort signal. */
-  signal?: AbortSignal | null;
-  /** The caption of the document. */
-  caption?: string;
-  /**
-   * The caption's entities.
-   */
-  captionEntities?: MessageEntity[];
-  /**
-   * The parse mode to use for the caption. If not provided, the default parse mode will be used.
-   */
-  parseMode?: ParseMode;
-  /**
-   * Whether to send the message in a silent way without making a sound on the recipients' clients.
-   */
-  disableNotification?: boolean;
-  /**
-   * Whether to protect the contents of the message from copying and forwarding.
-   */
-  protectContent?: boolean;
-  /**
-   * The identifier of a message to reply to.
-   */
-  replyToMessageId?: number;
-  /**
-   * The identifier of a thread to send the message to.
-   */
-  messageThreadId?: number;
-  /**
-   * The identifier of the chat to send the message on behalf of. User-only.
-   */
-  sendAs?: ChatID;
-  /**
-   * The reply markup of the message. Bot-only.
-   */
-  replyMarkup?: InlineKeyboardMarkup | ReplyKeyboardMarkup | ReplyKeyboardRemove | ForceReply;
 }
 
-export interface SendAudioParams {
+export interface SendAudioParams extends _CaptionCommon, _ThumbnailCommon, _UploadCommon, _SendCommon {
   /** The duration of the audio file in seconds. */
   duration?: number;
   performer?: string;
   title?: string;
-  thumbnail?: FileSource;
-  /** The file name to assign if applicable. */
-  fileName?: string;
-  /** The mime type to assign. */
-  mimeType?: string;
-  /** Size of each upload chunk in bytes. */
-  chunkSize?: number;
-  /** Upload abort signal. */
-  signal?: AbortSignal | null;
-  /** The caption of the document. */
-  caption?: string;
-  /**
-   * The caption's entities.
-   */
-  captionEntities?: MessageEntity[];
-  /**
-   * The parse mode to use for the caption. If not provided, the default parse mode will be used.
-   */
-  parseMode?: ParseMode;
-  /**
-   * Whether to send the message in a silent way without making a sound on the recipients' clients.
-   */
-  disableNotification?: boolean;
-  /**
-   * Whether to protect the contents of the message from copying and forwarding.
-   */
-  protectContent?: boolean;
-  /**
-   * The identifier of a message to reply to.
-   */
-  replyToMessageId?: number;
-  /**
-   * The identifier of a thread to send the message to.
-   */
-  messageThreadId?: number;
-  /**
-   * The identifier of the chat to send the message on behalf of. User-only.
-   */
-  sendAs?: ChatID;
-  /**
-   * The reply markup of the message. Bot-only.
-   */
-  replyMarkup?: InlineKeyboardMarkup | ReplyKeyboardMarkup | ReplyKeyboardRemove | ForceReply;
 }
 
-export interface SendVideoNoteParams {
+export interface SendVideoNoteParams extends _CaptionCommon, _ThumbnailCommon, _UploadCommon, _SendCommon {
   /** The duration of the video note in seconds. */
   duration?: number;
   length?: number;
   thumbnail?: FileSource;
-  /** The file name to assign if applicable. */
-  fileName?: string;
-  /** The mime type to assign. */
-  mimeType?: string;
-  /** Size of each upload chunk in bytes. */
-  chunkSize?: number;
-  /** Upload abort signal. */
-  signal?: AbortSignal | null;
-  /** The caption of the document. */
-  caption?: string;
-  /**
-   * The caption's entities.
-   */
-  captionEntities?: MessageEntity[];
-  /**
-   * The parse mode to use for the caption. If not provided, the default parse mode will be used.
-   */
-  parseMode?: ParseMode;
-  /**
-   * Whether to send the message in a silent way without making a sound on the recipients' clients.
-   */
-  disableNotification?: boolean;
-  /**
-   * Whether to protect the contents of the message from copying and forwarding.
-   */
-  protectContent?: boolean;
-  /**
-   * The identifier of a message to reply to.
-   */
-  replyToMessageId?: number;
-  /**
-   * The identifier of a thread to send the message to.
-   */
-  messageThreadId?: number;
-  /**
-   * The identifier of the chat to send the message on behalf of. User-only.
-   */
-  sendAs?: ChatID;
-  /**
-   * The reply markup of the message. Bot-only.
-   */
-  replyMarkup?: InlineKeyboardMarkup | ReplyKeyboardMarkup | ReplyKeyboardRemove | ForceReply;
 }
 
-export interface SendLocationParams {
+export interface SendLocationParams extends _SendCommon {
   horizontalAccuracy?: number;
   livePeriod?: number;
   heading?: number;
   proximityAlertRadius?: number;
-  /**
-   * Whether to send the message in a silent way without making a sound on the recipients' clients.
-   */
-  disableNotification?: boolean;
-  /**
-   * Whether to protect the contents of the message from copying and forwarding.
-   */
-  protectContent?: boolean;
-  /**
-   * The identifier of a message to reply to.
-   */
-  replyToMessageId?: number;
-  /**
-   * The identifier of a thread to send the message to.
-   */
-  messageThreadId?: number;
-  /**
-   * The identifier of the chat to send the message on behalf of. User-only.
-   */
-  sendAs?: ChatID;
-  /**
-   * The reply markup of the message. Bot-only.
-   */
-  replyMarkup?: InlineKeyboardMarkup | ReplyKeyboardMarkup | ReplyKeyboardRemove | ForceReply;
 }
 
-export interface SendVenueParams {
+export interface SendVenueParams extends _SendCommon {
   foursquareId?: string;
   foursquareType?: string;
-  /**
-   * Whether to send the message in a silent way without making a sound on the recipients' clients.
-   */
-  disableNotification?: boolean;
-  /**
-   * Whether to protect the contents of the message from copying and forwarding.
-   */
-  protectContent?: boolean;
-  /**
-   * The identifier of a message to reply to.
-   */
-  replyToMessageId?: number;
-  /**
-   * The identifier of a thread to send the message to.
-   */
-  messageThreadId?: number;
-  /**
-   * The identifier of the chat to send the message on behalf of. User-only.
-   */
-  sendAs?: ChatID;
-  /**
-   * The reply markup of the message. Bot-only.
-   */
-  replyMarkup?: InlineKeyboardMarkup | ReplyKeyboardMarkup | ReplyKeyboardRemove | ForceReply;
 }
 
-export interface SendContactParams {
+export interface SendContactParams extends _SendCommon {
   /** The contact's last name. */
   lastName?: string;
   /** Additional information in the vCard format. */
   vcard?: string;
-  /**
-   * Whether to send the message in a silent way without making a sound on the recipients' clients.
-   */
-  disableNotification?: boolean;
-  /**
-   * Whether to protect the contents of the message from copying and forwarding.
-   */
-  protectContent?: boolean;
-  /**
-   * The identifier of a message to reply to.
-   */
-  replyToMessageId?: number;
-  /**
-   * The identifier of a thread to send the message to.
-   */
-  messageThreadId?: number;
-  /**
-   * The identifier of the chat to send the message on behalf of. User-only.
-   */
-  sendAs?: ChatID;
-  /**
-   * The reply markup of the message. Bot-only.
-   */
-  replyMarkup?: InlineKeyboardMarkup | ReplyKeyboardMarkup | ReplyKeyboardRemove | ForceReply;
 }
 
-export interface SendDiceParams {
+export interface SendDiceParams extends _SendCommon {
   emoji?: "🎲" | "🎯" | "🏀" | "⚽" | "🎳" | "🎰";
-  /**
-   * Whether to send the message in a silent way without making a sound on the recipients' clients.
-   */
-  disableNotification?: boolean;
-  /**
-   * Whether to protect the contents of the message from copying and forwarding.
-   */
-  protectContent?: boolean;
-  /**
-   * The identifier of a message to reply to.
-   */
-  replyToMessageId?: number;
-  /**
-   * The identifier of a thread to send the message to.
-   */
-  messageThreadId?: number;
-  /**
-   * The identifier of the chat to send the message on behalf of. User-only.
-   */
-  sendAs?: ChatID;
-  /**
-   * The reply markup of the message. Bot-only.
-   */
-  replyMarkup?: InlineKeyboardMarkup | ReplyKeyboardMarkup | ReplyKeyboardRemove | ForceReply;
 }
 
 export type ConnectionState = "notConnected" | "updating" | "ready";
