@@ -12,7 +12,7 @@ import { checkPassword } from "./0_password.ts";
 import { FileSource, getFileContents, getUsername, isChannelPtsUpdate, isHttpUrl, isPtsUpdate, resolve, With } from "./0_utilities.ts";
 import { ClientAbstract } from "./1_client_abstract.ts";
 import { ClientPlain } from "./2_client_plain.ts";
-import { AnswerCallbackQueryParams, AnswerInlineQueryParams, AuthorizeUserParams, ClientParams, ConnectionState, DeleteMessageParams, DeleteMessagesParams, DownloadParams, EditMessageParams, FilterableUpdates, FilterUpdate, ForwardMessagesParams, getChatListId, GetChatsParams, GetHistoryParams, GetMyCommandsParams, InvokeErrorHandler, NetworkStatistics, ReplyParams, SendAnimationParams, SendAudioParams, SendContactParams, SendDiceParams, SendDocumentParams, SendLocationParams, SendMessageParams, SendPhotoParams, SendPollParams, SendVenueParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams, SetMyCommandsParams, Update, UploadParams } from "./3_types.ts";
+import { _SendCommon, AnswerCallbackQueryParams, AnswerInlineQueryParams, AuthorizeUserParams, ClientParams, ConnectionState, DeleteMessageParams, DeleteMessagesParams, DownloadParams, EditMessageParams, FilterableUpdates, FilterUpdate, ForwardMessagesParams, getChatListId, GetChatsParams, GetHistoryParams, GetMyCommandsParams, InvokeErrorHandler, NetworkStatistics, ReplyParams, SendAnimationParams, SendAudioParams, SendContactParams, SendDiceParams, SendDocumentParams, SendLocationParams, SendMessageParams, SendPhotoParams, SendPollParams, SendVenueParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams, SetMyCommandsParams, Update, UploadParams } from "./3_types.ts";
 import { Composer, concat, flatten, Middleware, MiddlewareFn, skip } from "./4_composer.ts";
 
 const d = debug("Client");
@@ -1559,6 +1559,12 @@ export class Client<C extends Context = Context> extends ClientAbstract {
     }
   }
 
+  #constructReplyTo(params?: _SendCommon) {
+    const topMsgId = params?.messageThreadId;
+    const replyToMsgId = params?.replyToMessageId;
+    return replyToMsgId !== undefined ? new types.InputReplyToMessage({ reply_to_msg_id: replyToMsgId, top_msg_id: topMsgId, quote_text: params?.replyQuote?.text, quote_entities: params?.replyQuote?.entities.map(messageEntityToTlObject), quote_offset: params?.replyQuote?.offset }) : undefined;
+  }
+
   /**
    * Send a text message.
    *
@@ -1581,8 +1587,6 @@ export class Client<C extends Context = Context> extends ClientAbstract {
     const noWebpage = params?.disableWebPagePreview ? true : undefined;
     const silent = params?.disableNotification ? true : undefined;
     const noforwards = params?.protectContent ? true : undefined;
-    const replyToMsgId = params?.replyToMessageId;
-    const topMsgId = params?.messageThreadId;
     const sendAs = await this.#resolveSendAs(params);
 
     const result = await this.api.messages.sendMessage({
@@ -1592,7 +1596,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
       no_webpage: noWebpage,
       silent,
       noforwards,
-      reply_to: replyToMsgId !== undefined ? new types.InputReplyToMessage({ reply_to_msg_id: replyToMsgId, top_msg_id: topMsgId }) : undefined,
+      reply_to: this.#constructReplyTo(params),
       send_as: sendAs,
       entities,
       reply_markup: replyMarkup,
@@ -2161,8 +2165,6 @@ export class Client<C extends Context = Context> extends ClientAbstract {
     const randomId = getRandomId();
     const silent = params?.disableNotification ? true : undefined;
     const noforwards = params?.protectContent ? true : undefined;
-    const replyToMsgId = params?.replyToMessageId;
-    const topMsgId = params?.messageThreadId;
     const sendAs = params?.sendAs ? await this.getInputPeer(params.sendAs) : undefined; // TODO: check default sendAs
     const replyMarkup = await this.#constructReplyMarkup(params);
 
@@ -2199,7 +2201,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
       silent,
       noforwards,
       reply_markup: replyMarkup,
-      reply_to: replyToMsgId !== undefined ? new types.InputReplyToMessage({ reply_to_msg_id: replyToMsgId, top_msg_id: topMsgId }) : undefined,
+      reply_to: this.#constructReplyTo(params),
       send_as: sendAs,
       media,
       message: "",
@@ -2631,8 +2633,6 @@ export class Client<C extends Context = Context> extends ClientAbstract {
     const randomId = getRandomId();
     const silent = params?.disableNotification ? true : undefined;
     const noforwards = params?.protectContent ? true : undefined;
-    const replyToMsgId = params?.replyToMessageId;
-    const topMsgId = params?.messageThreadId;
     const sendAs = params?.sendAs ? await this.getInputPeer(params.sendAs) : undefined; // TODO: check default sendAs
     const replyMarkup = await this.#constructReplyMarkup(params);
 
@@ -2648,7 +2648,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
       silent,
       noforwards,
       reply_markup: replyMarkup,
-      reply_to: replyToMsgId !== undefined ? new types.InputReplyToMessage({ reply_to_msg_id: replyToMsgId, top_msg_id: topMsgId }) : undefined,
+      reply_to: this.#constructReplyTo(params),
       send_as: sendAs,
       media,
       message: caption ?? "",
@@ -2855,8 +2855,6 @@ export class Client<C extends Context = Context> extends ClientAbstract {
     const randomId = getRandomId();
     const silent = params?.disableNotification ? true : undefined;
     const noforwards = params?.protectContent ? true : undefined;
-    const replyToMsgId = params?.replyToMessageId;
-    const topMsgId = params?.messageThreadId;
     const sendAs = params?.sendAs ? await this.getInputPeer(params.sendAs) : undefined; // TODO: check default sendAs
     const replyMarkup = await this.#constructReplyMarkup(params);
 
@@ -2865,7 +2863,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
       random_id: randomId,
       silent,
       noforwards,
-      reply_to: replyToMsgId !== undefined ? new types.InputReplyToMessage({ reply_to_msg_id: replyToMsgId, top_msg_id: topMsgId }) : undefined,
+      reply_to: this.#constructReplyTo(params),
       send_as: sendAs,
       reply_markup: replyMarkup,
       media: params?.livePeriod !== undefined
@@ -2906,8 +2904,6 @@ export class Client<C extends Context = Context> extends ClientAbstract {
     const randomId = getRandomId();
     const silent = params?.disableNotification ? true : undefined;
     const noforwards = params?.protectContent ? true : undefined;
-    const replyToMsgId = params?.replyToMessageId;
-    const topMsgId = params?.messageThreadId;
     const sendAs = params?.sendAs ? await this.getInputPeer(params.sendAs) : undefined; // TODO: check default sendAs
     const replyMarkup = await this.#constructReplyMarkup(params);
 
@@ -2916,7 +2912,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
       random_id: randomId,
       silent,
       noforwards,
-      reply_to: replyToMsgId !== undefined ? new types.InputReplyToMessage({ reply_to_msg_id: replyToMsgId, top_msg_id: topMsgId }) : undefined,
+      reply_to: this.#constructReplyTo(params),
       send_as: sendAs,
       reply_markup: replyMarkup,
       media: new types.InputMediaContact({
@@ -2943,8 +2939,6 @@ export class Client<C extends Context = Context> extends ClientAbstract {
     const randomId = getRandomId();
     const silent = params?.disableNotification ? true : undefined;
     const noforwards = params?.protectContent ? true : undefined;
-    const replyToMsgId = params?.replyToMessageId;
-    const topMsgId = params?.messageThreadId;
     const sendAs = params?.sendAs ? await this.getInputPeer(params.sendAs) : undefined; // TODO: check default sendAs
     const replyMarkup = await this.#constructReplyMarkup(params);
 
@@ -2953,7 +2947,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
       random_id: randomId,
       silent,
       noforwards,
-      reply_to: replyToMsgId !== undefined ? new types.InputReplyToMessage({ reply_to_msg_id: replyToMsgId, top_msg_id: topMsgId }) : undefined,
+      reply_to: this.#constructReplyTo(params),
       send_as: sendAs,
       reply_markup: replyMarkup,
       media: new types.InputMediaDice({
@@ -2981,8 +2975,6 @@ export class Client<C extends Context = Context> extends ClientAbstract {
     const randomId = getRandomId();
     const silent = params?.disableNotification ? true : undefined;
     const noforwards = params?.protectContent ? true : undefined;
-    const replyToMsgId = params?.replyToMessageId;
-    const topMsgId = params?.messageThreadId;
     const sendAs = params?.sendAs ? await this.getInputPeer(params.sendAs) : undefined; // TODO: check default sendAs
     const replyMarkup = await this.#constructReplyMarkup(params);
 
@@ -2991,7 +2983,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
       random_id: randomId,
       silent,
       noforwards,
-      reply_to: replyToMsgId !== undefined ? new types.InputReplyToMessage({ reply_to_msg_id: replyToMsgId, top_msg_id: topMsgId }) : undefined,
+      reply_to: this.#constructReplyTo(params),
       send_as: sendAs,
       reply_markup: replyMarkup,
       media: new types.InputMediaVenue({
