@@ -339,6 +339,11 @@ export interface GetHistoryParams {
   limit?: number;
 }
 
+export interface AddReactionParams {
+  big?: boolean;
+  addToRecents?: boolean;
+}
+
 export type FilterableUpdates = "message" | "editedMessage" | "callbackQuery" | "inlineQuery" | "chosenInlineResult" | "editedChat" | "newChat";
 
 export interface Update {
