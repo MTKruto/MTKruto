@@ -12,7 +12,7 @@ import { checkPassword } from "./0_password.ts";
 import { FileSource, getFileContents, getUsername, isChannelPtsUpdate, isHttpUrl, isPtsUpdate, resolve, With } from "./0_utilities.ts";
 import { ClientAbstract } from "./1_client_abstract.ts";
 import { ClientPlain } from "./2_client_plain.ts";
-import { _SendCommon, AnswerCallbackQueryParams, AnswerInlineQueryParams, AuthorizeUserParams, ClientParams, ConnectionState, DeleteMessageParams, DeleteMessagesParams, DownloadParams, EditMessageParams, FilterableUpdates, FilterUpdate, ForwardMessagesParams, getChatListId, GetChatsParams, GetHistoryParams, GetMyCommandsParams, InvokeErrorHandler, NetworkStatistics, ReplyParams, SendAnimationParams, SendAudioParams, SendContactParams, SendDiceParams, SendDocumentParams, SendLocationParams, SendMessageParams, SendPhotoParams, SendPollParams, SendVenueParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams, SetMyCommandsParams, Update, UploadParams } from "./3_types.ts";
+import { _SendCommon, AddReactionParams, AnswerCallbackQueryParams, AnswerInlineQueryParams, AuthorizeUserParams, ClientParams, ConnectionState, DeleteMessageParams, DeleteMessagesParams, DownloadParams, EditMessageParams, FilterableUpdates, FilterUpdate, ForwardMessagesParams, getChatListId, GetChatsParams, GetHistoryParams, GetMyCommandsParams, InvokeErrorHandler, NetworkStatistics, ReplyParams, SendAnimationParams, SendAudioParams, SendContactParams, SendDiceParams, SendDocumentParams, SendLocationParams, SendMessageParams, SendPhotoParams, SendPollParams, SendVenueParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams, SetMyCommandsParams, Update, UploadParams } from "./3_types.ts";
 import { Composer, concat, flatten, Middleware, MiddlewareFn, skip } from "./4_composer.ts";
 
 const d = debug("Client");
@@ -97,6 +97,10 @@ export interface Context extends Update {
   deleteMessage: (messageId: number, params?: DeleteMessagesParams) => Promise<void>;
   /** Delete multiple messages in the chat which the message was received from. */
   deleteMessages: (messageIds: number[], params?: DeleteMessagesParams) => Promise<void>;
+  /** Set the available reactions of the chat which the message was received from. */
+  setAvailableReactions: (availableReactions: "none" | "all" | Reaction[]) => Promise<void>;
+  /** Add a reaction to a message of the chat which the message was received from. */
+  addReaction: (messageId: number, reaction: Reaction, params?: AddReactionParams) => Promise<void>;
   toJSON: () => Update;
 }
 
@@ -412,6 +416,14 @@ export class Client<C extends Context = Context> extends ClientAbstract {
       deleteMessages: (messageIds, params) => {
         const effectiveMessage = mustGetMsg();
         return this.deleteMessages(effectiveMessage.chat.id, messageIds, params);
+      },
+      setAvailableReactions: (availableReactions) => {
+        const effectiveMessage = mustGetMsg();
+        return this.setAvailableReactions(effectiveMessage.chat.id, availableReactions);
+      },
+      addReaction: (messageId, reaction, params) => {
+        const effectiveMessage = mustGetMsg();
+        return this.addReaction(effectiveMessage.chat.id, messageId, reaction, params);
       },
       get toJSON() {
         return () => update;
@@ -3498,9 +3510,28 @@ export class Client<C extends Context = Context> extends ClientAbstract {
    * @method
    */
   async setAvailableReactions(chatId: ChatID, availableReactions: "none" | "all" | Reaction[]) {
+    // TODO: sync with storage
     await this.api.messages.setChatAvailableReactions({
       peer: await this.getInputPeer(chatId),
       available_reactions: availableReactions == "none" ? new types.ChatReactionsNone() : availableReactions == "all" ? new types.ChatReactionsAll() : Array.isArray(availableReactions) ? new types.ChatReactionsSome({ reactions: availableReactions.map((v) => v.type == "emoji" ? new types.ReactionEmoji({ emoticon: v.emoji }) : new types.ReactionCustomEmoji({ document_id: BigInt(v.id) })) }) : UNREACHABLE(),
+    });
+  }
+
+  /**
+   * Add a reaction to a message.
+   *
+   * @param chatId The identifier of the chat which the message belongs to.
+   * @param messageId The identifier of the message to add the reaction to.
+   * @param reaction The reaction to add.
+   */
+  async addReaction(chatId: number, messageId: number, reaction: Reaction, params?: AddReactionParams) {
+    // TODO: check storage and skip if already there
+    await this.api.messages.sendReaction({
+      peer: await this.getInputPeer(chatId),
+      msg_id: messageId,
+      reaction: [reaction.type == "emoji" ? new types.ReactionEmoji({ emoticon: reaction.emoji }) : new types.ReactionCustomEmoji({ document_id: BigInt(reaction.id) })],
+      big: params?.big ? true : undefined,
+      add_to_recent: params?.addToRecents ? true : undefined,
     });
   }
 }
