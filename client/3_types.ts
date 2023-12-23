@@ -1,7 +1,7 @@
 import { FileSource } from "./0_utilities.ts";
 import { MaybePromise, UNREACHABLE } from "../1_utilities.ts";
 import { functions, types } from "../2_tl.ts";
-import { BotCommandScope, CallbackQuery, Chat, ChatID, ChosenInlineResult, ForceReply, InlineKeyboardMarkup, InlineQuery, InlineQueryResultButton, Message, MessageEntity, ReplyKeyboardMarkup, ReplyKeyboardRemove } from "../3_types.ts";
+import { BotCommandScope, CallbackQuery, Chat, ChatID, ChosenInlineResult, ForceReply, InlineKeyboardMarkup, InlineQuery, InlineQueryResultButton, Message, MessageEntity, ReplyKeyboardMarkup, ReplyKeyboardRemove, ReplyQuote } from "../3_types.ts";
 import { ClientPlainParams } from "./2_client_plain.ts";
 import { ParseMode } from "../3_types.ts";
 
@@ -82,6 +82,10 @@ export interface _SendCommon {
    * The identifier of a message to reply to.
    */
   replyToMessageId?: number;
+  /**
+   * A specific part of the replying message's text to quote.
+   */
+  replyQuote?: ReplyQuote;
   /**
    * The identifier of a thread to send the message to.
    */
