@@ -13,6 +13,7 @@ import { constructVenue, Venue } from "./0_venue.ts";
 import { constructVoice, Voice } from "./0_voice.ts";
 import { EntityGetter } from "./1__getters.ts";
 import { Animation, constructAnimation } from "./1_animation.ts";
+import { constructReplyQuote, ReplyQuote } from "./1_reply_quote.ts";
 import { ChatP, constructChatP } from "./1_chat_p.ts";
 import { constructDocument, Document } from "./1_document.ts";
 import { constructPhoto, Photo } from "./1_photo.ts";
@@ -64,6 +65,7 @@ export interface Message {
   /** For replies, the original message. Note that the Message object in this field will not contain further reply_to_message fields even if it itself is a reply. */
   replyToMessage?: Omit<Message, "replyToMessage">;
   replyToMessageId?: number;
+  replyQuote?: ReplyQuote;
   /** Bot through which the message was sent */
   viaBot?: User;
   /** Date the message was last edited in Unix time */
@@ -357,6 +359,9 @@ export async function constructMessage(
   };
 
   if (message_.reply_to instanceof types.MessageReplyHeader && message_.reply_to.reply_to_msg_id) {
+    if (message_.reply_to.quote) {
+      message.replyQuote = constructReplyQuote(message_.reply_to.quote_text, message_.reply_to.quote_offset, message_.reply_to.quote_entities);
+    }
     message.replyToMessageId = message_.reply_to.reply_to_msg_id;
   }
   if (getReply_) {

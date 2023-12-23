@@ -37,6 +37,7 @@ export * from "./types/1_input_text_message_content.ts";
 export * from "./types/1_keyboard_button.ts";
 export * from "./types/1_photo.ts";
 export * from "./types/1_poll.ts";
+export * from "./types/1_reply_quote.ts";
 export * from "./types/1_sticker.ts";
 export * from "./types/1_user.ts";
 export * from "./types/1_video_note.ts";
