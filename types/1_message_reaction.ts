@@ -2,6 +2,7 @@ import { UNREACHABLE } from "../1_utilities.ts";
 import { peerToChatId, types } from "../2_tl.ts";
 import { constructReaction, Reaction } from "./0_reaction.ts";
 
+/** Represents a type of reaction made to a message. */
 export interface MessageReaction {
   /** The type of the reaction. */
   reaction: Reaction;
