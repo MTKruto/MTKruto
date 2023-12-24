@@ -154,6 +154,7 @@ export function keyboardButtonToTlObject(button: KeyboardButton) {
       text: button.text,
       button_id: button.requestUser.requestId,
       peer_type: new types.RequestPeerTypeUser({ bot: button.requestUser.userIsBot, premium: button.requestUser.userIsPremium }),
+      max_quantity: 1
     });
   } else if ("requestChat" in button) {
     if (!button.requestChat.chatIsChannel) { // GUESS
@@ -168,6 +169,7 @@ export function keyboardButtonToTlObject(button: KeyboardButton) {
           bot_admin_rights: button.requestChat.botAdministratorRights ? chatAdministratorRightsToTlObject(button.requestChat.botAdministratorRights) : undefined,
           user_admin_rights: button.requestChat.userAdministratorRights ? chatAdministratorRightsToTlObject(button.requestChat.userAdministratorRights) : undefined,
         }),
+        max_quantity: 1
       });
     } else {
       return new types.KeyboardButtonRequestPeer({
@@ -179,6 +181,7 @@ export function keyboardButtonToTlObject(button: KeyboardButton) {
           bot_admin_rights: button.requestChat.botAdministratorRights ? chatAdministratorRightsToTlObject(button.requestChat.botAdministratorRights) : undefined,
           user_admin_rights: button.requestChat.userAdministratorRights ? chatAdministratorRightsToTlObject(button.requestChat.userAdministratorRights) : undefined,
         }),
+        max_quantity: 1
       });
     }
   } else if ("requestContact" in button) {
