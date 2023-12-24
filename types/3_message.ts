@@ -267,7 +267,7 @@ async function constructServiceMessage(message_: types.MessageService, chat: Cha
     const { replyToMessage } = await getReply(message_, chat, getMessage);
     message.pinnedMessage = replyToMessage;
   } else if (message_.action instanceof types.MessageActionRequestedPeer) {
-    const user = message_.action.peer[as](types.PeerUser);
+    const user = message_.action.peers[0][as](types.PeerUser);
     message.userShared = { requestId: message_.action.button_id, userId: Number(user.user_id) };
   } else if (message_.action instanceof types.MessageActionBotAllowed) {
     const webAppName = message_.action.app ? message_.action.app[as](types.BotApp).title : undefined;

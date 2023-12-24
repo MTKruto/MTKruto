@@ -4249,6 +4249,66 @@ export class account_getDefaultBackgroundEmojis_ extends Function_<enums.EmojiLi
   }
 }
 
+export class account_getChannelDefaultEmojiStatuses_ extends Function_<enums.account.EmojiStatuses> {
+  static __F = Symbol() as unknown as (params: { hash: bigint }) => enums.account.EmojiStatuses;
+  hash: bigint;
+
+  protected get [id]() {
+    return 0x7727A7D5;
+  }
+
+  static get [name]() {
+    return "account.getChannelDefaultEmojiStatuses"
+  }
+
+  static get [paramDesc](): ParamDesc {
+    return [
+      ["hash", "bigint", "long"],
+    ];
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.hash, "bigint", "long"],
+    ];
+  }
+
+  constructor(params: { hash: bigint }) {
+    super();
+    this.hash = params.hash;
+  }
+}
+
+export class account_getChannelRestrictedStatusEmojis_ extends Function_<enums.EmojiList> {
+  static __F = Symbol() as unknown as (params: { hash: bigint }) => enums.EmojiList;
+  hash: bigint;
+
+  protected get [id]() {
+    return 0x35A9E0D5;
+  }
+
+  static get [name]() {
+    return "account.getChannelRestrictedStatusEmojis"
+  }
+
+  static get [paramDesc](): ParamDesc {
+    return [
+      ["hash", "bigint", "long"],
+    ];
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.hash, "bigint", "long"],
+    ];
+  }
+
+  constructor(params: { hash: bigint }) {
+    super();
+    this.hash = params.hash;
+  }
+}
+
 export class users_getUsers_ extends Function_<enums.User[]> {
   static __F = Symbol() as unknown as (params: { id: Array<enums.InputUser> }) => enums.User[];
   id: Array<enums.InputUser>;
@@ -12116,14 +12176,14 @@ export class messages_getDefaultHistoryTTL_ extends Function_<enums.DefaultHisto
 }
 
 export class messages_sendBotRequestedPeer_ extends Function_<enums.Updates> {
-  static __F = Symbol() as unknown as (params: { peer: enums.InputPeer; msg_id: number; button_id: number; requested_peer: enums.InputPeer }) => enums.Updates;
+  static __F = Symbol() as unknown as (params: { peer: enums.InputPeer; msg_id: number; button_id: number; requested_peers: Array<enums.InputPeer> }) => enums.Updates;
   peer: enums.InputPeer;
   msg_id: number;
   button_id: number;
-  requested_peer: enums.InputPeer;
+  requested_peers: Array<enums.InputPeer>;
 
   protected get [id]() {
-    return 0xFE38D01B;
+    return 0x91B2D060;
   }
 
   static get [name]() {
@@ -12135,7 +12195,7 @@ export class messages_sendBotRequestedPeer_ extends Function_<enums.Updates> {
       ["peer", types._InputPeer, "InputPeer"],
       ["msg_id", "number", "int"],
       ["button_id", "number", "int"],
-      ["requested_peer", types._InputPeer, "InputPeer"],
+      ["requested_peers", [types._InputPeer], "Vector<InputPeer>"],
     ];
   }
 
@@ -12144,16 +12204,16 @@ export class messages_sendBotRequestedPeer_ extends Function_<enums.Updates> {
       [this.peer, types._InputPeer, "InputPeer"],
       [this.msg_id, "number", "int"],
       [this.button_id, "number", "int"],
-      [this.requested_peer, types._InputPeer, "InputPeer"],
+      [this.requested_peers, [types._InputPeer], "Vector<InputPeer>"],
     ];
   }
 
-  constructor(params: { peer: enums.InputPeer; msg_id: number; button_id: number; requested_peer: enums.InputPeer }) {
+  constructor(params: { peer: enums.InputPeer; msg_id: number; button_id: number; requested_peers: Array<enums.InputPeer> }) {
     super();
     this.peer = params.peer;
     this.msg_id = params.msg_id;
     this.button_id = params.button_id;
-    this.requested_peer = params.requested_peer;
+    this.requested_peers = params.requested_peers;
   }
 }
 
@@ -13263,36 +13323,6 @@ export class help_getSupport_ extends Function_<enums.help.Support> {
 
   constructor() {
     super();
-  }
-}
-
-export class help_getAppChangelog_ extends Function_<enums.Updates> {
-  static __F = Symbol() as unknown as (params: { prev_app_version: string }) => enums.Updates;
-  prev_app_version: string;
-
-  protected get [id]() {
-    return 0x9010EF6F;
-  }
-
-  static get [name]() {
-    return "help.getAppChangelog"
-  }
-
-  static get [paramDesc](): ParamDesc {
-    return [
-      ["prev_app_version", "string", "string"],
-    ];
-  }
-
-  protected get [params](): Params {
-    return [
-      [this.prev_app_version, "string", "string"],
-    ];
-  }
-
-  constructor(params: { prev_app_version: string }) {
-    super();
-    this.prev_app_version = params.prev_app_version;
   }
 }
 
@@ -15868,13 +15898,14 @@ export class channels_clickSponsoredMessage_ extends Function_<boolean> {
 }
 
 export class channels_updateColor_ extends Function_<enums.Updates> {
-  static __F = Symbol() as unknown as (params: { channel: enums.InputChannel; color: number; background_emoji_id?: bigint }) => enums.Updates;
+  static __F = Symbol() as unknown as (params: { for_profile?: true; channel: enums.InputChannel; color?: number; background_emoji_id?: bigint }) => enums.Updates;
+  for_profile?: true;
   channel: enums.InputChannel;
-  color: number;
+  color?: number;
   background_emoji_id?: bigint;
 
   protected get [id]() {
-    return 0x621A201F;
+    return 0xD8AA3671;
   }
 
   static get [name]() {
@@ -15884,8 +15915,9 @@ export class channels_updateColor_ extends Function_<enums.Updates> {
   static get [paramDesc](): ParamDesc {
     return [
       ["flags", flags, "#"],
+      ["for_profile", "true", "flags.1?true"],
       ["channel", types._InputChannel, "InputChannel"],
-      ["color", "number", "int"],
+      ["color", "number", "flags.2?int"],
       ["background_emoji_id", "bigint", "flags.0?long"],
     ];
   }
@@ -15893,14 +15925,16 @@ export class channels_updateColor_ extends Function_<enums.Updates> {
   protected get [params](): Params {
     return [
       ["flags", flags, "#"],
+      [this.for_profile ?? null, "true", "flags.1?true"],
       [this.channel, types._InputChannel, "InputChannel"],
-      [this.color, "number", "int"],
+      [this.color ?? null, "number", "flags.2?int"],
       [this.background_emoji_id ?? null, "bigint", "flags.0?long"],
     ];
   }
 
-  constructor(params: { channel: enums.InputChannel; color: number; background_emoji_id?: bigint }) {
+  constructor(params: { for_profile?: true; channel: enums.InputChannel; color?: number; background_emoji_id?: bigint }) {
     super();
+    this.for_profile = params.for_profile;
     this.channel = params.channel;
     this.color = params.color;
     this.background_emoji_id = params.background_emoji_id;
@@ -15968,6 +16002,40 @@ export class channels_getChannelRecommendations_ extends Function_<enums.message
   constructor(params: { channel: enums.InputChannel }) {
     super();
     this.channel = params.channel;
+  }
+}
+
+export class channels_updateEmojiStatus_ extends Function_<enums.Updates> {
+  static __F = Symbol() as unknown as (params: { channel: enums.InputChannel; emoji_status: enums.EmojiStatus }) => enums.Updates;
+  channel: enums.InputChannel;
+  emoji_status: enums.EmojiStatus;
+
+  protected get [id]() {
+    return 0xF0D3E6A8;
+  }
+
+  static get [name]() {
+    return "channels.updateEmojiStatus"
+  }
+
+  static get [paramDesc](): ParamDesc {
+    return [
+      ["channel", types._InputChannel, "InputChannel"],
+      ["emoji_status", types._EmojiStatus, "EmojiStatus"],
+    ];
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.channel, types._InputChannel, "InputChannel"],
+      [this.emoji_status, types._EmojiStatus, "EmojiStatus"],
+    ];
+  }
+
+  constructor(params: { channel: enums.InputChannel; emoji_status: enums.EmojiStatus }) {
+    super();
+    this.channel = params.channel;
+    this.emoji_status = params.emoji_status;
   }
 }
 
@@ -18917,17 +18985,15 @@ export class stats_getMegagroupStats_ extends Function_<enums.stats.MegagroupSta
   }
 }
 
-export class stats_getMessagePublicForwards_ extends Function_<enums.messages.Messages> {
-  static __F = Symbol() as unknown as (params: { channel: enums.InputChannel; msg_id: number; offset_rate: number; offset_peer: enums.InputPeer; offset_id: number; limit: number }) => enums.messages.Messages;
+export class stats_getMessagePublicForwards_ extends Function_<enums.stats.PublicForwards> {
+  static __F = Symbol() as unknown as (params: { channel: enums.InputChannel; msg_id: number; offset: string; limit: number }) => enums.stats.PublicForwards;
   channel: enums.InputChannel;
   msg_id: number;
-  offset_rate: number;
-  offset_peer: enums.InputPeer;
-  offset_id: number;
+  offset: string;
   limit: number;
 
   protected get [id]() {
-    return 0x5630281B;
+    return 0x5F150144;
   }
 
   static get [name]() {
@@ -18938,9 +19004,7 @@ export class stats_getMessagePublicForwards_ extends Function_<enums.messages.Me
     return [
       ["channel", types._InputChannel, "InputChannel"],
       ["msg_id", "number", "int"],
-      ["offset_rate", "number", "int"],
-      ["offset_peer", types._InputPeer, "InputPeer"],
-      ["offset_id", "number", "int"],
+      ["offset", "string", "string"],
       ["limit", "number", "int"],
     ];
   }
@@ -18949,20 +19013,16 @@ export class stats_getMessagePublicForwards_ extends Function_<enums.messages.Me
     return [
       [this.channel, types._InputChannel, "InputChannel"],
       [this.msg_id, "number", "int"],
-      [this.offset_rate, "number", "int"],
-      [this.offset_peer, types._InputPeer, "InputPeer"],
-      [this.offset_id, "number", "int"],
+      [this.offset, "string", "string"],
       [this.limit, "number", "int"],
     ];
   }
 
-  constructor(params: { channel: enums.InputChannel; msg_id: number; offset_rate: number; offset_peer: enums.InputPeer; offset_id: number; limit: number }) {
+  constructor(params: { channel: enums.InputChannel; msg_id: number; offset: string; limit: number }) {
     super();
     this.channel = params.channel;
     this.msg_id = params.msg_id;
-    this.offset_rate = params.offset_rate;
-    this.offset_peer = params.offset_peer;
-    this.offset_id = params.offset_id;
+    this.offset = params.offset;
     this.limit = params.limit;
   }
 }
@@ -19944,9 +20004,10 @@ export class stories_incrementStoryViews_ extends Function_<boolean> {
 }
 
 export class stories_getStoryViewsList_ extends Function_<enums.stories.StoryViewsList> {
-  static __F = Symbol() as unknown as (params: { just_contacts?: true; reactions_first?: true; peer: enums.InputPeer; q?: string; id: number; offset: string; limit: number }) => enums.stories.StoryViewsList;
+  static __F = Symbol() as unknown as (params: { just_contacts?: true; reactions_first?: true; forwards_first?: true; peer: enums.InputPeer; q?: string; id: number; offset: string; limit: number }) => enums.stories.StoryViewsList;
   just_contacts?: true;
   reactions_first?: true;
+  forwards_first?: true;
   peer: enums.InputPeer;
   q?: string;
   id: number;
@@ -19966,6 +20027,7 @@ export class stories_getStoryViewsList_ extends Function_<enums.stories.StoryVie
       ["flags", flags, "#"],
       ["just_contacts", "true", "flags.0?true"],
       ["reactions_first", "true", "flags.2?true"],
+      ["forwards_first", "true", "flags.3?true"],
       ["peer", types._InputPeer, "InputPeer"],
       ["q", "string", "flags.1?string"],
       ["id", "number", "int"],
@@ -19979,6 +20041,7 @@ export class stories_getStoryViewsList_ extends Function_<enums.stories.StoryVie
       ["flags", flags, "#"],
       [this.just_contacts ?? null, "true", "flags.0?true"],
       [this.reactions_first ?? null, "true", "flags.2?true"],
+      [this.forwards_first ?? null, "true", "flags.3?true"],
       [this.peer, types._InputPeer, "InputPeer"],
       [this.q ?? null, "string", "flags.1?string"],
       [this.id, "number", "int"],
@@ -19987,10 +20050,11 @@ export class stories_getStoryViewsList_ extends Function_<enums.stories.StoryVie
     ];
   }
 
-  constructor(params: { just_contacts?: true; reactions_first?: true; peer: enums.InputPeer; q?: string; id: number; offset: string; limit: number }) {
+  constructor(params: { just_contacts?: true; reactions_first?: true; forwards_first?: true; peer: enums.InputPeer; q?: string; id: number; offset: string; limit: number }) {
     super();
     this.just_contacts = params.just_contacts;
     this.reactions_first = params.reactions_first;
+    this.forwards_first = params.forwards_first;
     this.peer = params.peer;
     this.q = params.q;
     this.id = params.id;
@@ -20329,6 +20393,58 @@ export class stories_togglePeerStoriesHidden_ extends Function_<boolean> {
   }
 }
 
+export class stories_getStoryReactionsList_ extends Function_<enums.stories.StoryReactionsList> {
+  static __F = Symbol() as unknown as (params: { forwards_first?: true; peer: enums.InputPeer; id: number; reaction?: enums.Reaction; offset?: string; limit: number }) => enums.stories.StoryReactionsList;
+  forwards_first?: true;
+  peer: enums.InputPeer;
+  id: number;
+  reaction?: enums.Reaction;
+  offset?: string;
+  limit: number;
+
+  protected get [id]() {
+    return 0xB9B2881F;
+  }
+
+  static get [name]() {
+    return "stories.getStoryReactionsList"
+  }
+
+  static get [paramDesc](): ParamDesc {
+    return [
+      ["flags", flags, "#"],
+      ["forwards_first", "true", "flags.2?true"],
+      ["peer", types._InputPeer, "InputPeer"],
+      ["id", "number", "int"],
+      ["reaction", types._Reaction, "flags.0?Reaction"],
+      ["offset", "string", "flags.1?string"],
+      ["limit", "number", "int"],
+    ];
+  }
+
+  protected get [params](): Params {
+    return [
+      ["flags", flags, "#"],
+      [this.forwards_first ?? null, "true", "flags.2?true"],
+      [this.peer, types._InputPeer, "InputPeer"],
+      [this.id, "number", "int"],
+      [this.reaction ?? null, types._Reaction, "flags.0?Reaction"],
+      [this.offset ?? null, "string", "flags.1?string"],
+      [this.limit, "number", "int"],
+    ];
+  }
+
+  constructor(params: { forwards_first?: true; peer: enums.InputPeer; id: number; reaction?: enums.Reaction; offset?: string; limit: number }) {
+    super();
+    this.forwards_first = params.forwards_first;
+    this.peer = params.peer;
+    this.id = params.id;
+    this.reaction = params.reaction;
+    this.offset = params.offset;
+    this.limit = params.limit;
+  }
+}
+
 export class premium_getBoostsList_ extends Function_<enums.premium.BoostsList> {
   static __F = Symbol() as unknown as (params: { gifts?: true; peer: enums.InputPeer; offset: string; limit: number }) => enums.premium.BoostsList;
   gifts?: true;
@@ -20629,6 +20745,8 @@ export const functions = {
     invalidateSignInCodes: account_invalidateSignInCodes_,
     updateColor: account_updateColor_,
     getDefaultBackgroundEmojis: account_getDefaultBackgroundEmojis_,
+    getChannelDefaultEmojiStatuses: account_getChannelDefaultEmojiStatuses_,
+    getChannelRestrictedStatusEmojis: account_getChannelRestrictedStatusEmojis_,
   },
   users: {
     getUsers: users_getUsers_,
@@ -20880,7 +20998,6 @@ export const functions = {
     getAppUpdate: help_getAppUpdate_,
     getInviteText: help_getInviteText_,
     getSupport: help_getSupport_,
-    getAppChangelog: help_getAppChangelog_,
     setBotUpdatesStatus: help_setBotUpdatesStatus_,
     getCdnConfig: help_getCdnConfig_,
     getRecentMeUrls: help_getRecentMeUrls_,
@@ -20961,6 +21078,7 @@ export const functions = {
     updateColor: channels_updateColor_,
     toggleViewForumAsMessages: channels_toggleViewForumAsMessages_,
     getChannelRecommendations: channels_getChannelRecommendations_,
+    updateEmojiStatus: channels_updateEmojiStatus_,
   },
   bots: {
     sendCustomRequest: bots_sendCustomRequest_,
@@ -21099,6 +21217,7 @@ export const functions = {
     getPeerMaxIDs: stories_getPeerMaxIDs_,
     getChatsToSend: stories_getChatsToSend_,
     togglePeerStoriesHidden: stories_togglePeerStoriesHidden_,
+    getStoryReactionsList: stories_getStoryReactionsList_,
   },
   premium: {
     getBoostsList: premium_getBoostsList_,
@@ -21241,6 +21360,8 @@ export declare namespace functions {
     type invalidateSignInCodes = account_invalidateSignInCodes_;
     type updateColor = account_updateColor_;
     type getDefaultBackgroundEmojis = account_getDefaultBackgroundEmojis_;
+    type getChannelDefaultEmojiStatuses = account_getChannelDefaultEmojiStatuses_;
+    type getChannelRestrictedStatusEmojis = account_getChannelRestrictedStatusEmojis_;
   }
   namespace users {
     type getUsers = users_getUsers_;
@@ -21492,7 +21613,6 @@ export declare namespace functions {
     type getAppUpdate = help_getAppUpdate_;
     type getInviteText = help_getInviteText_;
     type getSupport = help_getSupport_;
-    type getAppChangelog = help_getAppChangelog_;
     type setBotUpdatesStatus = help_setBotUpdatesStatus_;
     type getCdnConfig = help_getCdnConfig_;
     type getRecentMeUrls = help_getRecentMeUrls_;
@@ -21573,6 +21693,7 @@ export declare namespace functions {
     type updateColor = channels_updateColor_;
     type toggleViewForumAsMessages = channels_toggleViewForumAsMessages_;
     type getChannelRecommendations = channels_getChannelRecommendations_;
+    type updateEmojiStatus = channels_updateEmojiStatus_;
   }
   namespace bots {
     type sendCustomRequest = bots_sendCustomRequest_;
@@ -21711,6 +21832,7 @@ export declare namespace functions {
     type getPeerMaxIDs = stories_getPeerMaxIDs_;
     type getChatsToSend = stories_getChatsToSend_;
     type togglePeerStoriesHidden = stories_togglePeerStoriesHidden_;
+    type getStoryReactionsList = stories_getStoryReactionsList_;
   }
   namespace premium {
     type getBoostsList = premium_getBoostsList_;
