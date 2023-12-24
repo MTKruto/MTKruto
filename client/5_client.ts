@@ -1117,7 +1117,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
     /// [1]: https://core.telegram.org/type/Update
     /// [2]: https://core.telegram.org/type/Updates
     /// [3]: https://core.telegram.org/constructor/updatesTooLong
-    let updates: (enums.Update | types.UpdateShortMessage | types.UpdateShortChatMessage | types.UpdateShortSentMessage)[];
+    let updates: enums.Update[];
     if (updates_ instanceof types.UpdatesCombined || updates_ instanceof types.Updates) {
       updates = updates_.updates;
       const seq = updates_.seq;
@@ -1131,13 +1131,13 @@ export class Client<C extends Context = Context> extends ClientAbstract {
           const localSeq = localState.seq;
 
           if (localSeq + 1 == seqStart) {
-            // The updates can be applied.
+            // The update sequence can be applied.
             localState.seq = seq;
             localState.date = updates_.date;
             await this.#setUpdateStateDate(updates_.date);
             await this.storage.setState(localState);
           } else if (localSeq + 1 > seqStart) {
-            // The updates were already applied, and must be ignored.
+            // The update sequence was already applied, and must be ignored.
             d("localSeq + 1 > seqStart");
             return;
           } else if (localSeq + 1 < seqStart) {
@@ -1148,12 +1148,52 @@ export class Client<C extends Context = Context> extends ClientAbstract {
       }
     } else if (updates_ instanceof types.UpdateShort) {
       updates = [updates_.update];
-    } else if (
-      updates_ instanceof types.UpdateShortMessage ||
-      updates_ instanceof types.UpdateShortChatMessage ||
-      updates_ instanceof types.UpdateShortSentMessage
-    ) {
-      updates = [updates_];
+    } else if (updates_ instanceof types.UpdateShortMessage) {
+      updates = [
+        new types.UpdateNewMessage({
+          message: new types.Message({
+            out: updates_.out,
+            mentioned: updates_.mentioned,
+            media_unread: updates_.media_unread,
+            silent: updates_.silent,
+            id: updates_.id,
+            from_id: updates_.out ? new types.PeerUser({ user_id: await this.#getSelfId().then(BigInt) }) : new types.PeerUser({ user_id: updates_.user_id }),
+            peer_id: new types.PeerUser({ user_id: updates_.user_id }),
+            message: updates_.message,
+            date: updates_.date,
+            fwd_from: updates_.fwd_from,
+            via_bot_id: updates_.via_bot_id,
+            reply_to: updates_.reply_to,
+            entities: updates_.entities,
+            ttl_period: updates_.ttl_period,
+          }),
+          pts: updates_.pts,
+          pts_count: updates_.pts_count,
+        }),
+      ];
+    } else if (updates_ instanceof types.UpdateShortChatMessage) {
+      updates = [
+        new types.UpdateNewMessage({
+          message: new types.Message({
+            out: updates_.out,
+            mentioned: updates_.mentioned,
+            media_unread: updates_.media_unread,
+            silent: updates_.silent,
+            id: updates_.id,
+            from_id: new types.PeerUser({ user_id: updates_.from_id }),
+            peer_id: new types.PeerChat({ chat_id: updates_.chat_id }),
+            fwd_from: updates_.fwd_from,
+            via_bot_id: updates_.via_bot_id,
+            reply_to: updates_.reply_to,
+            date: updates_.date,
+            message: updates_.message,
+            entities: updates_.entities,
+            ttl_period: updates_.ttl_period,
+          }),
+          pts: updates_.pts,
+          pts_count: updates_.pts_count,
+        }),
+      ];
     } else if (updates_ instanceof types.UpdatesTooLong) {
       await this.#recoverUpdateGap("updatesTooLong");
       return;
@@ -1161,6 +1201,20 @@ export class Client<C extends Context = Context> extends ClientAbstract {
       updates = [updates_];
     } else {
       UNREACHABLE();
+    }
+
+    /// We process the updates when we are sure there is no gap.
+    if (updates_ instanceof types.Updates || updates_ instanceof types.UpdatesCombined) {
+      await this.#processChats(updates_.chats);
+      await this.#processUsers(updates_.users);
+      await this.#setUpdateStateDate(updates_.date);
+    } else if (
+      updates_ instanceof types.UpdateShort ||
+      updates_ instanceof types.UpdateShortMessage ||
+      updates_ instanceof types.UpdateShortChatMessage ||
+      updates_ instanceof types.UpdateShortSentMessage
+    ) {
+      await this.#setUpdateStateDate(updates_.date);
     }
 
     /// Then, we go through each Update and updateShort*, and see if they are order-sensitive.
@@ -1207,24 +1261,9 @@ export class Client<C extends Context = Context> extends ClientAbstract {
       }
     }
 
-    /// We process the updates when we are sure there is no gap.
-    if (updates_ instanceof types.Updates || updates_ instanceof types.UpdatesCombined) {
-      await this.#processChats(updates_.chats);
-      await this.#processUsers(updates_.users);
-      await this.#setUpdateStateDate(updates_.date);
-    } else if (updates_ instanceof types.UpdateShort) {
-      await this.#setUpdateStateDate(updates_.date);
-    }
-
-    const updatesToHandle = new Array<enums.Update | types.UpdateShortMessage | types.UpdateShortChatMessage | types.UpdateShortSentMessage>();
+    const updatesToHandle = new Array<enums.Update>();
     for (const update of updates) {
-      if (
-        update instanceof types.UpdateShortMessage ||
-        update instanceof types.UpdateShortChatMessage ||
-        update instanceof types.UpdateShortSentMessage
-      ) {
-        await this.#setUpdateStateDate(update.date);
-      } else if (update instanceof types.UpdateChannelTooLong) {
+      if (update instanceof types.UpdateChannelTooLong) {
         if (update.pts != undefined) {
           await this.storage.setChannelPts(update.channel_id, update.pts);
         }
@@ -1261,7 +1300,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
         }
       }
       /// If there were any Update, they will be passed to the update handling queue.
-      if (update instanceof types._Update || update instanceof types.UpdateShortMessage || update instanceof types.UpdateShortChatMessage || update instanceof types.UpdateShortSentMessage) {
+      if (update instanceof types._Update) {
         updatesToHandle.push(update);
       }
     }
@@ -1963,51 +2002,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
   }
 
   // TODO: log errors
-  async #handleUpdate(update: enums.Update | types.UpdateShortMessage | types.UpdateShortChatMessage | types.UpdateShortSentMessage) {
-    if (update instanceof types.UpdateShortMessage) {
-      update = new types.UpdateNewMessage({
-        message: new types.Message({
-          out: update.out,
-          mentioned: update.mentioned,
-          media_unread: update.media_unread,
-          silent: update.silent,
-          id: update.id,
-          from_id: update.out ? new types.PeerUser({ user_id: await this.#getSelfId().then(BigInt) }) : new types.PeerUser({ user_id: update.user_id }),
-          peer_id: new types.PeerUser({ user_id: update.user_id }),
-          message: update.message,
-          date: update.date,
-          fwd_from: update.fwd_from,
-          via_bot_id: update.via_bot_id,
-          reply_to: update.reply_to,
-          entities: update.entities,
-          ttl_period: update.ttl_period,
-        }),
-        pts: update.pts,
-        pts_count: update.pts_count,
-      });
-    } else if (update instanceof types.UpdateShortChatMessage) {
-      update = new types.UpdateNewMessage({
-        message: new types.Message({
-          out: update.out,
-          mentioned: update.mentioned,
-          media_unread: update.media_unread,
-          silent: update.silent,
-          id: update.id,
-          from_id: new types.PeerUser({ user_id: update.from_id }),
-          peer_id: new types.PeerChat({ chat_id: update.chat_id }),
-          fwd_from: update.fwd_from,
-          via_bot_id: update.via_bot_id,
-          reply_to: update.reply_to,
-          date: update.date,
-          message: update.message,
-          entities: update.entities,
-          ttl_period: update.ttl_period,
-        }),
-        pts: update.pts,
-        pts_count: update.pts_count,
-      });
-    }
-
+  async #handleUpdate(update: enums.Update) {
     if (update instanceof types.UpdateNewMessage || update instanceof types.UpdateNewChannelMessage || update instanceof types.UpdateEditMessage || update instanceof types.UpdateEditChannelMessage) {
       if (update.message instanceof types.Message || update.message instanceof types.MessageService) {
         const chatId = peerToChatId(update.message.peer_id);
