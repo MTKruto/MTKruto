@@ -24,3 +24,7 @@ export function constructReaction(reaction: enums.Reaction): Reaction {
     UNREACHABLE();
   }
 }
+
+export function reactionToTlObject(reaction: Reaction): enums.Reaction {
+  return reaction.type == "emoji" ? new types.ReactionEmoji({ emoticon: reaction.emoji }) : new types.ReactionCustomEmoji({ document_id: BigInt(reaction.id) });
+}
