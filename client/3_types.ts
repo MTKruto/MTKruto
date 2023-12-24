@@ -1,7 +1,7 @@
 import { FileSource } from "./0_utilities.ts";
 import { MaybePromise, UNREACHABLE } from "../1_utilities.ts";
 import { functions, types } from "../2_tl.ts";
-import { BotCommandScope, CallbackQuery, Chat, ChatID, ChosenInlineResult, ForceReply, InlineKeyboardMarkup, InlineQuery, InlineQueryResultButton, Message, MessageEntity, ReplyKeyboardMarkup, ReplyKeyboardRemove, ReplyQuote } from "../3_types.ts";
+import { BotCommandScope, CallbackQuery, Chat, ChatID, ChosenInlineResult, ForceReply, InlineKeyboardMarkup, InlineQuery, InlineQueryResultButton, Message, MessageEntity, MessageReaction, ReplyKeyboardMarkup, ReplyKeyboardRemove, ReplyQuote } from "../3_types.ts";
 import { ClientPlainParams } from "./2_client_plain.ts";
 import { ParseMode } from "../3_types.ts";
 
@@ -358,6 +358,7 @@ export interface Update {
   newChat?: Chat;
   editedChat?: Chat;
   deletedChat?: { chatId: number };
+  reactions?: { chatId: number; messageId: number; reactions: MessageReaction[] };
 }
 
 export type NextFn<T = void> = () => Promise<T>;
