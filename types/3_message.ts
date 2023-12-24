@@ -25,6 +25,7 @@ import { constructVideo, Video } from "./1_video.ts";
 import { constructGame, Game } from "./2_game.ts";
 import { constructReplyKeyboardMarkup, ReplyKeyboardMarkup } from "./2_reply_keyboard_markup.ts";
 import { constructInlineKeyboardMarkup, InlineKeyboardMarkup } from "./3_inline_keyboard_markup.ts";
+import { constructMessageReaction, MessageReaction } from "./1_message_reaction.ts";
 
 const d = debug("types/Message");
 
@@ -65,6 +66,7 @@ export interface Message {
   /** For replies, the original message. Note that the Message object in this field will not contain further reply_to_message fields even if it itself is a reply. */
   replyToMessage?: Omit<Message, "replyToMessage">;
   replyToMessageId?: number;
+  reactions?: MessageReaction[];
   replyQuote?: ReplyQuote;
   /** Bot through which the message was sent */
   viaBot?: User;
@@ -357,6 +359,11 @@ export async function constructMessage(
     isTopicMessage: false,
     hasProtectedContent: message_.noforwards || false,
   };
+
+  if (message_.reactions) {
+    const recentReactions = message_.reactions.recent_reactions ?? [];
+    message.reactions = message_.reactions.results.map((v) => constructMessageReaction(v, recentReactions));
+  }
 
   if (message_.reply_to instanceof types.MessageReplyHeader && message_.reply_to.reply_to_msg_id) {
     if (message_.reply_to.quote) {
