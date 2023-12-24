@@ -3,15 +3,17 @@ import { peerToChatId, types } from "../2_tl.ts";
 import { constructReaction, Reaction } from "./0_reaction.ts";
 
 export interface MessageReaction {
-  chosen: boolean;
-  count: number;
+  /** The type of the reaction. */
   reaction: Reaction;
-  choosers?: number[];
-  allChoosers?: boolean;
+  /** The number of those who made this reaction. */
+  count: number;
+  /** A list of identifiers of users who recently made this reaction. */
+  choosers: number[];
+  /** Whether the current user made this reaction. */
+  chosen: boolean;
 }
 
-export function constructMessageReaction(reaction_: types.ReactionCount, recentReactions: types.MessagePeerReaction[], min?: true): MessageReaction {
-  const allChoosers = min ? false : true;
+export function constructMessageReaction(reaction_: types.ReactionCount, recentReactions: types.MessagePeerReaction[]): MessageReaction {
   const choosers = recentReactions
     .filter((v) => {
       if (reaction_.reaction instanceof types.ReactionEmoji) {
@@ -26,5 +28,5 @@ export function constructMessageReaction(reaction_: types.ReactionCount, recentR
   const reaction = constructReaction(reaction_.reaction);
   const count = reaction_.count;
   const chosen = reaction_.chosen_order !== undefined ? true : false;
-  return { chosen, count, reaction, choosers, allChoosers };
+  return { reaction, count, choosers, chosen };
 }
