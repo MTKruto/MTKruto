@@ -347,6 +347,8 @@ export async function constructMessage(
     return await constructServiceMessage(message_, chat_, getEntity, getMessage);
   }
 
+  message_.reactions;
+
   const message: Message = {
     out: message_.out ?? false,
     id: message_.id,
