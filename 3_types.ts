@@ -35,6 +35,7 @@ export * from "./types/1_inline_query_result_button.ts";
 export * from "./types/1_input_invoice_message_content.ts";
 export * from "./types/1_input_text_message_content.ts";
 export * from "./types/1_keyboard_button.ts";
+export * from "./types/1_message_reaction.ts";
 export * from "./types/1_photo.ts";
 export * from "./types/1_poll.ts";
 export * from "./types/1_reply_quote.ts";
