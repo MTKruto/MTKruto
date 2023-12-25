@@ -1107,10 +1107,75 @@ export class Client<C extends Context = Context> extends ClientAbstract {
     }
   }
 
+  #channelUpdateQueues = new Map<bigint, Queue>();
+
+  async #processChannelUpdate(update: types.UpdateNewChannelMessage | types.UpdateEditChannelMessage | types.UpdateDeleteChannelMessages | types.UpdateChannelTooLong, checkGap: boolean) {
+    const channelId = update instanceof types.UpdateNewChannelMessage || update instanceof types.UpdateEditChannelMessage ? (update.message as types.Message | types.MessageService).peer_id[as](types.PeerChannel).channel_id : update.channel_id;
+    if (update instanceof types.UpdateChannelTooLong) {
+      if (update.pts != undefined) {
+        await this.storage.setChannelPts(channelId, update.pts);
+      }
+      await this.#recoverChannelUpdateGap(channelId, "updateChannelTooLong");
+      return;
+    }
+    if (update.pts != 0) {
+      const ptsCount = update.pts_count;
+      if (checkGap) {
+        await this.#checkChannelGap(channelId, update.pts, ptsCount);
+      }
+      let currentPts: number | null = await this.storage.getChannelPts(channelId);
+      currentPts ??= update.pts - ptsCount;
+      if (currentPts + ptsCount > update.pts) {
+        return;
+      }
+    }
+
+    await this.storage.setChannelPts(channelId, update.pts);
+    this.#handleUpdateQueue.add(async () => {
+      await this.#handleUpdate(update);
+    });
+  }
+
+  #queueChannelUpdate(update: types.UpdateNewChannelMessage | types.UpdateEditChannelMessage | types.UpdateDeleteChannelMessages | types.UpdateChannelTooLong, checkGap: boolean) {
+    const channelId = update instanceof types.UpdateNewChannelMessage || update instanceof types.UpdateEditChannelMessage ? (update.message as types.Message | types.MessageService).peer_id[as](types.PeerChannel).channel_id : update.channel_id;
+    let queue = this.#channelUpdateQueues.get(channelId);
+    if (queue == undefined) {
+      queue = new Queue(`channelUpdates-${channelId}`);
+      this.#channelUpdateQueues.set(channelId, queue);
+    }
+    queue.add(async () => {
+      await this.#processChannelUpdate(update, checkGap);
+    });
+  }
+
+  async #handlePtsUpdate(update: types.UpdateNewMessage | types.UpdateDeleteMessages | types.UpdateReadHistoryInbox | types.UpdateReadHistoryOutbox | types.UpdatePinnedChannelMessages | types.UpdatePinnedMessages | types.UpdateFolderPeers | types.UpdateChannelWebPage | types.UpdateEditMessage | types.UpdateReadMessagesContents | types.UpdateWebPage, checkGap: boolean) {
+    const localState = await this.#getLocalState();
+    if (update.pts != 0) {
+      if (checkGap) {
+        await this.#checkGap(update.pts, update.pts_count);
+      }
+      if (localState.pts + update.pts_count > update.pts) {
+        return;
+      }
+    }
+
+    await this.#setUpdatePts(update.pts);
+    this.#handleUpdateQueue.add(async () => {
+      await this.#handleUpdate(update);
+    });
+  }
+
+  #ptsUpdateQueue = new Queue("ptsUpdate");
+  #queuePtsUpdate(update: types.UpdateNewMessage | types.UpdateDeleteMessages | types.UpdateReadHistoryInbox | types.UpdateReadHistoryOutbox | types.UpdatePinnedChannelMessages | types.UpdatePinnedMessages | types.UpdateFolderPeers | types.UpdateChannelWebPage | types.UpdateEditMessage | types.UpdateReadMessagesContents | types.UpdateWebPage, checkGap: boolean) {
+    this.#ptsUpdateQueue.add(async () => {
+      await this.#handlePtsUpdate(update, checkGap);
+    });
+  }
+
   #lastUpdates = new Date();
   async #processUpdates(updates_: enums.Update | enums.Updates, checkGap: boolean) {
     this.#lastUpdates = new Date();
-    /// First, individual updates (Update[1]) and updateShort* are extracted from Updates.[2]
+    /// First, individual updates (Update[1]) are extracted from Updates.[2]
     ///
     /// If an updatesTooLong[3] was received, an update gap recovery is initiated and no further action will be taken.
     ///
@@ -1217,99 +1282,24 @@ export class Client<C extends Context = Context> extends ClientAbstract {
       await this.#setUpdateStateDate(updates_.date);
     }
 
-    /// Then, we go through each Update and updateShort*, and see if they are order-sensitive.
-    /// If they were, we check the local state to see if it is OK to process them right away.
-    ///
-    /// If we there was a gap, a recovery process will be initiated and the processing will be postponed.
-    let localState: types.updates.State | null = null;
-    let originalPts: number | null = null;
-    const channelPtsMap = new Map<bigint, number>();
     for (const update of updates) {
-      if (isPtsUpdate(update)) {
-        if (update.pts == 0) {
-          continue;
-        }
-        if (checkGap) {
-          await this.#checkGap(update.pts, update.pts_count);
-        }
-        localState ??= await this.#getLocalState();
-        originalPts ??= localState.pts;
-        if (localState.pts + update.pts_count > update.pts) {
-          updates = updates.filter((v) => v != update);
-        } else {
-          localState.pts = update.pts;
-        }
-      } else if (isChannelPtsUpdate(update)) {
-        if (update.pts == 0) {
-          continue;
-        }
-        const ptsCount = update.pts_count;
-        const channelId = update instanceof types.UpdateNewChannelMessage || update instanceof types.UpdateEditChannelMessage ? (update.message as types.Message | types.MessageService).peer_id[as](types.PeerChannel).channel_id : update.channel_id;
-        if (checkGap) {
-          await this.#checkChannelGap(channelId, update.pts, ptsCount);
-        }
-        let currentPts: number | null | undefined = channelPtsMap.get(channelId);
-        if (currentPts === undefined) {
-          currentPts = await this.storage.getChannelPts(channelId);
-        }
-        currentPts ??= update.pts - ptsCount;
-        if (currentPts + ptsCount > update.pts) {
-          updates = updates.filter((v) => v != update);
-        } else {
-          channelPtsMap.set(channelId, update.pts);
-        }
-      }
-    }
-
-    const updatesToHandle = new Array<enums.Update>();
-    for (const update of updates) {
-      if (update instanceof types.UpdateChannelTooLong) {
-        if (update.pts != undefined) {
-          await this.storage.setChannelPts(update.channel_id, update.pts);
-        }
-        await this.#recoverChannelUpdateGap(update.channel_id, "updateChannelTooLong");
-      } else if (update instanceof types.UpdateUserName) {
-        await this.storage.updateUsernames("user", update.user_id, update.usernames.map((v) => v.username));
-        const peer = new types.PeerUser(update);
-        const entity = await this[getEntity](peer);
-        if (entity != null) {
-          entity.usernames = update.usernames;
-          entity.first_name = update.first_name;
-          entity.last_name = update.last_name;
-          await this.storage.setEntity(entity);
-        }
-      } else if (update instanceof types.UpdatePtsChanged) {
+      if (update instanceof types.UpdatePtsChanged) {
         await this.#fetchState("updatePtsChanged");
         if (this.#updateState) {
           await this.storage.setState(this.#updateState);
         } else {
           UNREACHABLE();
         }
-      }
-      if (isPtsUpdate(update)) {
-        await this.#setUpdatePts(update.pts);
+      } else if (isPtsUpdate(update)) {
+        this.#queuePtsUpdate(update, checkGap);
       } else if (isChannelPtsUpdate(update)) {
-        let channelId: bigint | null = null;
-        if ("channel_id" in update) {
-          channelId = update.channel_id;
-        } else if ("peer_id" in update.message && update.message.peer_id !== undefined && "channel_id" in update.message.peer_id) {
-          channelId = update.message.peer_id.channel_id;
-        }
-        if (channelId != null) {
-          await this.storage.setChannelPts(channelId, update.pts);
-        }
-      }
-      /// If there were any Update, they will be passed to the update handling queue.
-      if (update instanceof types._Update) {
-        updatesToHandle.push(update);
+        this.#queueChannelUpdate(update, checkGap);
+      } else {
+        this.#handleUpdateQueue.add(async () => {
+          await this.#handleUpdate(update);
+        });
       }
     }
-
-    this.#handleUpdateQueue.add(async () => {
-      for (const update of updatesToHandle) {
-        await this.#handleUpdate(update);
-      }
-    });
   }
 
   async #setUpdateStateDate(date: number) {
@@ -2003,6 +1993,18 @@ export class Client<C extends Context = Context> extends ClientAbstract {
 
   // TODO: log errors
   async #handleUpdate(update: enums.Update) {
+    if (update instanceof types.UpdateUserName) {
+      await this.storage.updateUsernames("user", update.user_id, update.usernames.map((v) => v.username));
+      const peer = new types.PeerUser(update);
+      const entity = await this[getEntity](peer);
+      if (entity != null) {
+        entity.usernames = update.usernames;
+        entity.first_name = update.first_name;
+        entity.last_name = update.last_name;
+        await this.storage.setEntity(entity);
+      }
+    }
+
     if (update instanceof types.UpdateNewMessage || update instanceof types.UpdateNewChannelMessage || update instanceof types.UpdateEditMessage || update instanceof types.UpdateEditChannelMessage) {
       if (update.message instanceof types.Message || update.message instanceof types.MessageService) {
         const chatId = peerToChatId(update.message.peer_id);
