@@ -26,6 +26,7 @@ import { constructGame, Game } from "./2_game.ts";
 import { constructReplyKeyboardMarkup, ReplyKeyboardMarkup } from "./2_reply_keyboard_markup.ts";
 import { constructInlineKeyboardMarkup, InlineKeyboardMarkup } from "./3_inline_keyboard_markup.ts";
 import { constructMessageReaction, MessageReaction } from "./1_message_reaction.ts";
+import { constructGiveaway, Giveaway } from "./1_giveaway.ts";
 
 const d = debug("types/Message");
 
@@ -162,6 +163,7 @@ export interface Message {
   videoChatStarted?: Record<never, never>;
   /** Service message: video chat ended */
   videoChatEnded?: { duration: number };
+  giveaway?: Giveaway;
 }
 
 export interface MessageGetter<O extends keyof Message | null = null> {
@@ -512,6 +514,8 @@ export async function constructMessage(
       message.location = constructLocation(message_.media);
     } else if (message_.media instanceof types.MessageMediaWebPage) {
       //
+    } else if (message_.media instanceof types.MessageMediaGiveaway) {
+      message.giveaway = constructGiveaway(message_.media);
     } else {
       // not implemented
       UNREACHABLE();
