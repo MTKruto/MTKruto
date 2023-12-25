@@ -3291,6 +3291,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
         await this.#sendChatUpdate(chat.id, false);
       }
     }
+    await this.storage.setPinnedChats(listId, await this.#getPinnedChats(listId));
   }
   async #fetchChats(listId: number, limit: number, after?: Chat) {
     const dialogs = await this.api.messages.getDialogs({
