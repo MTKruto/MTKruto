@@ -6,10 +6,7 @@ export const resolve = () => Promise.resolve();
 
 export type With<T, K extends keyof T> = T & Required<Pick<T, K>>;
 
-export function isPtsUpdate(v: enums.Update | enums.Updates): v is
-  | types.UpdateShortMessage
-  | types.UpdateShortChatMessage
-  | types.UpdateShortSentMessage
+export function isPtsUpdate(v: enums.Update): v is
   | types.UpdateNewMessage
   | types.UpdateDeleteMessages
   | types.UpdateReadHistoryInbox
@@ -21,10 +18,7 @@ export function isPtsUpdate(v: enums.Update | enums.Updates): v is
   | types.UpdateEditMessage
   | types.UpdateReadMessagesContents
   | types.UpdateWebPage {
-  return v instanceof types.UpdateShortMessage ||
-    v instanceof types.UpdateShortChatMessage ||
-    v instanceof types.UpdateShortSentMessage ||
-    v instanceof types.UpdateNewMessage ||
+  return v instanceof types.UpdateNewMessage ||
     v instanceof types.UpdateDeleteMessages ||
     v instanceof types.UpdateReadHistoryInbox ||
     v instanceof types.UpdateReadHistoryOutbox ||
@@ -40,10 +34,12 @@ export function isPtsUpdate(v: enums.Update | enums.Updates): v is
 export function isChannelPtsUpdate(v: enums.Update | enums.Updates): v is
   | types.UpdateNewChannelMessage
   | types.UpdateEditChannelMessage
-  | types.UpdateDeleteChannelMessages {
+  | types.UpdateDeleteChannelMessages
+  | types.UpdateChannelTooLong {
   return v instanceof types.UpdateNewChannelMessage ||
     v instanceof types.UpdateEditChannelMessage ||
-    v instanceof types.UpdateDeleteChannelMessages;
+    v instanceof types.UpdateDeleteChannelMessages ||
+    v instanceof types.UpdateChannelTooLong;
 }
 
 /**
