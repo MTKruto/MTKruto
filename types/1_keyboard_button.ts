@@ -4,12 +4,16 @@ import { ChatAdministratorRights, chatAdministratorRightsToTlObject, constructCh
 import { KeyboardButtonPollType } from "./0_keyboard_button_poll_type.ts";
 import { WebAppInfo } from "./0_web_app_info.ts";
 
+/** @unlisted */
 export interface KeyboardButtonText {
   /** The button's text. */
   text: string;
 }
 
-/** This object defines the criteria used to request a suitable user. The identifier of the selected user will be shared with the bot when the corresponding button is pressed. */
+/**
+ * This object defines the criteria used to request a suitable user. The identifier of the selected user will be shared with the bot when the corresponding button is pressed.
+ * @unlisted
+ */
 export interface KeyboardButtonRequestUser extends KeyboardButtonText {
   /** If specified, pressing the button will open a list of suitable users. Tapping on any user will send their identifier to the bot in a "user_shared" service message. Available in private chats only. */
   requestUser: {
@@ -22,7 +26,7 @@ export interface KeyboardButtonRequestUser extends KeyboardButtonText {
   };
 }
 
-/** This object defines the criteria used to request a suitable chat. The identifier of the selected chat will be shared with the bot when the corresponding button is pressed. */
+/** @unlisted */
 export interface KeyboardButtonRequestChat extends KeyboardButtonText {
   /** If specified, pressing the button will open a list of suitable chats. Tapping on a chat will send its identifier to the bot in a "chat_shared" service message. Available in private chats only. */
   requestChat: {
@@ -45,21 +49,25 @@ export interface KeyboardButtonRequestChat extends KeyboardButtonText {
   };
 }
 
+/** @unlisted */
 export interface KeyboardButtonRequestContact extends KeyboardButtonText {
   /** If True, the user's phone number will be sent as a contact when the button is pressed. Available in private chats only. */
   requestContact: true;
 }
 
-export interface RequestLocation extends KeyboardButtonText {
+/** @unlisted */
+export interface KeyboardButtonRequestLocation extends KeyboardButtonText {
   /** If True, the user's current location will be sent when the button is pressed. Available in private chats only. */
   requestLocation: true;
 }
 
+/** @unlisted */
 export interface KeyboardButtonRequestPoll extends KeyboardButtonText {
   /** If specified, the user will be asked to create a poll and send it to the bot when the button is pressed. Available in private chats only. */
   requestPoll: KeyboardButtonPollType;
 }
 
+/** @unlisted */
 export interface KeyboardButtonWebApp extends KeyboardButtonText {
   /** If specified, the described Web App will be launched when the button is pressed. The Web App will be able to send a "web_app_data" service message. Available in private chats only. */
   webApp: WebAppInfo;
@@ -71,7 +79,7 @@ export type KeyboardButton =
   | KeyboardButtonRequestUser
   | KeyboardButtonRequestChat
   | KeyboardButtonRequestContact
-  | RequestLocation
+  | KeyboardButtonRequestLocation
   | KeyboardButtonRequestPoll
   | KeyboardButtonWebApp;
 

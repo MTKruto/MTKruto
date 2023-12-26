@@ -4,45 +4,54 @@ import { LoginUrl } from "./0_login_url.ts";
 import { constructWebAppInfo, WebAppInfo } from "./0_web_app_info.ts";
 import { UsernameResolver } from "./1__getters.ts";
 
+/** @unlisted */
 export interface InlineKeyboardButtonBase {
   /** Label text on the button */
   text: string;
 }
 
+/** @unlisted */
 export interface InlineKeyboardButtonURL extends InlineKeyboardButtonBase {
   /** HTTP or tg:// URL to be opened when the button is pressed. Links `tg://user?id=<user_id>` can be used to mention a user by their ID without using a username, if this is allowed by their privacy settings. */
   url: string;
 }
 
+/** @unlisted */
 export interface InlineKeyboardButtonCallback extends InlineKeyboardButtonBase {
   /** Data to be sent in a callback query to the bot when button is pressed, 1-64 bytes */
   callbackData: string;
 }
 
+/** @unlisted */
 export interface InlineKeyboardButtonWebApp extends InlineKeyboardButtonBase {
   /** Description of the Web App that will be launched when the user presses the button. The Web App will be able to send an arbitrary message on behalf of the user using the method answerWebAppQuery. Available only in private chats between a user and the bot. */
   webApp: WebAppInfo;
 }
 
+/** @unlisted */
 export interface InlineKeyboardButtonLogin extends InlineKeyboardButtonBase {
   /** An HTTPS URL used to automatically authorize the user. Can be used as a replacement for the [Telegram Login Widget](https://core.telegram.org/widgets/login). */
   loginUrl: LoginUrl;
 }
 
+/** @unlisted */
 export interface InlineKeyboardButtonSwitchInline extends InlineKeyboardButtonBase {
   /** If set, pressing the button will prompt the user to select one of their chats, open that chat and insert the bot's username and the specified inline query in the input field. May be empty, in which case just the bot's username will be inserted. */
   switchInlineQuery: string;
 }
 
+/** @unlisted */
 export interface InlineKeyboardButtonSwitchInlineCurrent extends InlineKeyboardButtonBase {
   /** If set, pressing the button will insert the bot's username and the specified inline query in the current chat's input field. May be empty, in which case only the bot's username will be inserted. */
   switchInlineQueryCurrentChat: string;
 }
 
+/** @unlisted */
 export interface InlineKeyboardButtonGame extends InlineKeyboardButtonBase {
   callbackGame: Record<never, never>;
 }
 
+/** @unlisted */
 export interface InlineKeyboardButtonPay extends InlineKeyboardButtonBase {
   /** Specify True to send a Pay button */
   pay: boolean;

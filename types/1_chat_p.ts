@@ -2,12 +2,14 @@ import { cleanObject, getColorFromPeerId, UNREACHABLE, ZERO_CHANNEL_ID } from ".
 import { types } from "../2_tl.ts";
 import { constructRestrictionReason, RestrictionReason } from "./0_restriction_reason.ts";
 
+/** @unlisted */
 export type ChatType =
   | "private"
   | "group"
   | "supergroup"
   | "channel";
 
+/** @unlisted */
 export interface ChatPBase {
   /** The identifier of the chat. */
   id: number;
@@ -17,6 +19,7 @@ export interface ChatPBase {
   color: number;
 }
 
+/** @unlisted */
 export interface ChatPPrivate extends ChatPBase {
   type: "private";
   /** Whether this is a bot's chat. */
@@ -41,6 +44,7 @@ export interface ChatPPrivate extends ChatPBase {
   restrictionReason?: RestrictionReason[];
 }
 
+/** @unlisted */
 export interface ChatPGroup extends ChatPBase {
   type: "group";
   /** The title of the chat. */
@@ -49,6 +53,7 @@ export interface ChatPGroup extends ChatPBase {
   isCreator: boolean;
 }
 
+/** @unlisted */
 export interface ChatPChannelBase extends ChatPBase {
   /** The title of the chat or channel. */
   title: string;
@@ -66,17 +71,22 @@ export interface ChatPChannelBase extends ChatPBase {
   restrictionReason?: RestrictionReason[];
 }
 
+/** @unlisted */
 export interface ChatPChannel extends ChatPChannelBase {
   type: "channel";
 }
 
+/** @unlisted */
 export interface ChatPSupergroup extends ChatPChannelBase {
   type: "supergroup";
   /** Whether the chat is a forum. */
   isForum: boolean;
 }
 
-/** This object represents a chat. */
+/**
+ * This object represents a chat.
+ * @unlisted
+ */
 export type ChatP = ChatPPrivate | ChatPGroup | ChatPSupergroup | ChatPChannel;
 
 export function constructChatP(chat: types.User): ChatPPrivate;

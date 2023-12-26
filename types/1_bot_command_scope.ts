@@ -3,32 +3,39 @@ import { types } from "../2_tl.ts";
 import { ChatID } from "./0_chat_id.ts";
 import { InputPeerGetter } from "./1__getters.ts";
 
+/** @unlisted */
 export interface BotCommandScopeDefault {
   type: "default";
 }
 
+/** @unlisted */
 export interface BotCommandScopeAllPrivateChats {
   type: "allPrivateChats";
 }
 
+/** @unlisted */
 export interface BotCommandScopeAllGroupChats {
   type: "allGroupChats";
 }
 
+/** @unlisted */
 export interface BotCommandScopeAllChatAdministrators {
   type: "allChatAdministrators";
 }
 
+/** @unlisted */
 export interface BotCommandScopeChat {
   type: "chat";
   chatId: ChatID;
 }
 
+/** @unlisted */
 export interface BotCommandScopeChatAdministrators {
   type: "chatAdministrators";
   chatId: ChatID;
 }
 
+/** @unlisted */
 export interface BotCommandScopeChatMember {
   type: "chatMember";
   chatId: ChatID;
