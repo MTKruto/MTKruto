@@ -6,7 +6,6 @@ import { InlineKeyboardMarkup } from "./3_inline_keyboard_markup.ts";
 export interface InlineQueryResultCachedPhoto {
   type: "photo";
   id: string;
-
   photoFileId: string;
   title?: string;
   description?: string;
