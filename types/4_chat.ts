@@ -1,39 +1,37 @@
 import { cleanObject, UNREACHABLE } from "../1_utilities.ts";
 import { chatIdToPeer, enums, peerToChatId, types } from "../2_tl.ts";
-import { ChatP, constructChatP } from "./1_chat_p.ts";
-import { ChatPhoto, constructChatPhoto } from "./0_chat_photo.ts";
+import { ChatP, ChatPChannel, ChatPGroup, ChatPPrivate, ChatPSupergroup, constructChatP } from "./1_chat_p.ts";
+import { ChatPhoto, ChatPhotoChat, ChatPhotoUser, constructChatPhoto } from "./0_chat_photo.ts";
 import { constructMessage, Message, MessageGetter } from "./3_message.ts";
 import { StickerSetNameGetter } from "./1_sticker.ts";
 import { EntityGetter } from "./1__getters.ts";
 
-export declare namespace Chat {
-  interface Base {
-    order: string;
-    lastMessage?: Omit<Message, "replyToMessage">;
-    pinned: number;
-  }
-
-  interface Channel extends Base, ChatP.Channel {
-    also?: string[];
-    photo?: ChatPhoto.Chat;
-  }
-
-  interface Supergroup extends Base, ChatP.Supergroup {
-    also?: string[];
-    photo?: ChatPhoto.Chat;
-  }
-
-  interface Group extends Base, ChatP.Group {
-    photo?: ChatPhoto.Chat;
-  }
-
-  interface Private extends Base, ChatP.Private {
-    also?: string[];
-    photo?: ChatPhoto.User;
-  }
+interface ChatBase {
+  order: string;
+  lastMessage?: Omit<Message, "replyToMessage">;
+  pinned: number;
 }
 
-export type Chat = Chat.Channel | Chat.Supergroup | Chat.Group | Chat.Private;
+interface ChatChannel extends ChatBase, ChatPChannel {
+  also?: string[];
+  photo?: ChatPhotoChat;
+}
+
+interface ChatSupergroup extends ChatBase, ChatPSupergroup {
+  also?: string[];
+  photo?: ChatPhotoChat;
+}
+
+interface ChatGroup extends ChatBase, ChatPGroup {
+  photo?: ChatPhotoChat;
+}
+
+interface ChatPrivate extends ChatBase, ChatPPrivate {
+  also?: string[];
+  photo?: ChatPhotoUser;
+}
+
+export type Chat = ChatChannel | ChatSupergroup | ChatGroup | ChatPrivate;
 
 function getChatPAlsoPhoto(entity: enums.User | enums.Chat | undefined) {
   let chatP: ChatP;
@@ -89,7 +87,7 @@ export async function constructChat(dialog: enums.Dialog, dialogs: types.message
   } else if (chatP.type == "channel") {
     return cleanObject({ ...chatP, order, lastMessage, also, photo, pinned });
   } else if (chatP.type == "private") {
-    return cleanObject({ ...chatP, order, lastMessage, also, photo: photo as ChatPhoto.User, pinned });
+    return cleanObject({ ...chatP, order, lastMessage, also, photo: photo as ChatPhotoUser, pinned });
   } else {
     UNREACHABLE();
   }
@@ -107,7 +105,7 @@ export function constructChat2(entity: types.User | types.Chat | types.ChatForbi
   } else if (chatP.type == "channel") {
     return cleanObject({ ...chatP, order, lastMessage, also, photo, pinned });
   } else if (chatP.type == "private") {
-    return cleanObject({ ...chatP, order, lastMessage, also, photo: photo as ChatPhoto.User, pinned });
+    return cleanObject({ ...chatP, order, lastMessage, also, photo: photo as ChatPhotoUser, pinned });
   } else {
     UNREACHABLE();
   }

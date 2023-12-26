@@ -3,41 +3,39 @@ import { types } from "../2_tl.ts";
 import { ChatID } from "./0_chat_id.ts";
 import { InputPeerGetter } from "./1__getters.ts";
 
-export declare namespace BotCommandScope {
-  export interface Default {
-    type: "default";
-  }
-
-  export interface AllPrivateChats {
-    type: "allPrivateChats";
-  }
-
-  export interface AllGroupChats {
-    type: "allGroupChats";
-  }
-
-  export interface AllChatAdministrators {
-    type: "allChatAdministrators";
-  }
-
-  export interface Chat {
-    type: "chat";
-    chatId: ChatID;
-  }
-
-  export interface ChatAdministrators {
-    type: "chatAdministrators";
-    chatId: ChatID;
-  }
-
-  export interface ChatMember {
-    type: "chatMember";
-    chatId: ChatID;
-    userId: number;
-  }
+export interface BotCommandScopeDefault {
+  type: "default";
 }
 
-export type BotCommandScope = BotCommandScope.Default | BotCommandScope.AllPrivateChats | BotCommandScope.AllGroupChats | BotCommandScope.AllChatAdministrators | BotCommandScope.Chat | BotCommandScope.ChatAdministrators | BotCommandScope.ChatMember;
+export interface BotCommandScopeAllPrivateChats {
+  type: "allPrivateChats";
+}
+
+export interface BotCommandScopeAllGroupChats {
+  type: "allGroupChats";
+}
+
+export interface BotCommandScopeAllChatAdministrators {
+  type: "allChatAdministrators";
+}
+
+export interface BotCommandScopeChat {
+  type: "chat";
+  chatId: ChatID;
+}
+
+export interface BotCommandScopeChatAdministrators {
+  type: "chatAdministrators";
+  chatId: ChatID;
+}
+
+export interface BotCommandScopeChatMember {
+  type: "chatMember";
+  chatId: ChatID;
+  userId: number;
+}
+
+export type BotCommandScope = BotCommandScopeDefault | BotCommandScopeAllPrivateChats | BotCommandScopeAllGroupChats | BotCommandScopeAllChatAdministrators | BotCommandScopeChat | BotCommandScopeChatAdministrators | BotCommandScopeChatMember;
 
 export async function botCommandScopeToTlObject(scope: BotCommandScope, getInputPeer: InputPeerGetter) {
   switch (scope.type) {

@@ -4,62 +4,60 @@ import { LoginUrl } from "./0_login_url.ts";
 import { constructWebAppInfo, WebAppInfo } from "./0_web_app_info.ts";
 import { UsernameResolver } from "./1__getters.ts";
 
-export declare namespace InlineKeyboardButton {
-  export interface Base {
-    /** Label text on the button */
-    text: string;
-  }
+export interface InlineKeyboardButtonBase {
+  /** Label text on the button */
+  text: string;
+}
 
-  export interface URL extends Base {
-    /** HTTP or tg:// URL to be opened when the button is pressed. Links `tg://user?id=<user_id>` can be used to mention a user by their ID without using a username, if this is allowed by their privacy settings. */
-    url: string;
-  }
+export interface InlineKeyboardButtonURL extends InlineKeyboardButtonBase {
+  /** HTTP or tg:// URL to be opened when the button is pressed. Links `tg://user?id=<user_id>` can be used to mention a user by their ID without using a username, if this is allowed by their privacy settings. */
+  url: string;
+}
 
-  export interface Callback extends Base {
-    /** Data to be sent in a callback query to the bot when button is pressed, 1-64 bytes */
-    callbackData: string;
-  }
+export interface InlineKeyboardButtonCallback extends InlineKeyboardButtonBase {
+  /** Data to be sent in a callback query to the bot when button is pressed, 1-64 bytes */
+  callbackData: string;
+}
 
-  export interface WebApp extends Base {
-    /** Description of the Web App that will be launched when the user presses the button. The Web App will be able to send an arbitrary message on behalf of the user using the method answerWebAppQuery. Available only in private chats between a user and the bot. */
-    webApp: WebAppInfo;
-  }
+export interface InlineKeyboardButtonWebApp extends InlineKeyboardButtonBase {
+  /** Description of the Web App that will be launched when the user presses the button. The Web App will be able to send an arbitrary message on behalf of the user using the method answerWebAppQuery. Available only in private chats between a user and the bot. */
+  webApp: WebAppInfo;
+}
 
-  export interface Login extends Base {
-    /** An HTTPS URL used to automatically authorize the user. Can be used as a replacement for the [Telegram Login Widget](https://core.telegram.org/widgets/login). */
-    loginUrl: LoginUrl;
-  }
+export interface InlineKeyboardButtonLogin extends InlineKeyboardButtonBase {
+  /** An HTTPS URL used to automatically authorize the user. Can be used as a replacement for the [Telegram Login Widget](https://core.telegram.org/widgets/login). */
+  loginUrl: LoginUrl;
+}
 
-  export interface SwitchInline extends Base {
-    /** If set, pressing the button will prompt the user to select one of their chats, open that chat and insert the bot's username and the specified inline query in the input field. May be empty, in which case just the bot's username will be inserted. */
-    switchInlineQuery: string;
-  }
+export interface InlineKeyboardButtonSwitchInline extends InlineKeyboardButtonBase {
+  /** If set, pressing the button will prompt the user to select one of their chats, open that chat and insert the bot's username and the specified inline query in the input field. May be empty, in which case just the bot's username will be inserted. */
+  switchInlineQuery: string;
+}
 
-  export interface SwitchInlineCurrent extends Base {
-    /** If set, pressing the button will insert the bot's username and the specified inline query in the current chat's input field. May be empty, in which case only the bot's username will be inserted. */
-    switchInlineQueryCurrentChat: string;
-  }
+export interface InlineKeyboardButtonSwitchInlineCurrent extends InlineKeyboardButtonBase {
+  /** If set, pressing the button will insert the bot's username and the specified inline query in the current chat's input field. May be empty, in which case only the bot's username will be inserted. */
+  switchInlineQueryCurrentChat: string;
+}
 
-  export interface Game extends Base {
-    callbackGame: Record<never, never>;
-  }
+export interface InlineKeyboardButtonGame extends InlineKeyboardButtonBase {
+  callbackGame: Record<never, never>;
+}
 
-  export interface Pay extends Base {
-    /** Specify True to send a Pay button */
-    pay: boolean;
-  }
+export interface InlineKeyboardButtonPay extends InlineKeyboardButtonBase {
+  /** Specify True to send a Pay button */
+  pay: boolean;
 }
 
 /** This object represents one button of an inline keyboard. You **must** use exactly one of the optional fields. */
 export type InlineKeyboardButton =
-  | InlineKeyboardButton.URL
-  | InlineKeyboardButton.Callback
-  | InlineKeyboardButton.WebApp
-  | InlineKeyboardButton.Login
-  | InlineKeyboardButton.SwitchInline
-  | InlineKeyboardButton.SwitchInlineCurrent
-  | InlineKeyboardButton.Game
-  | InlineKeyboardButton.Pay;
+  | InlineKeyboardButtonURL
+  | InlineKeyboardButtonCallback
+  | InlineKeyboardButtonWebApp
+  | InlineKeyboardButtonLogin
+  | InlineKeyboardButtonSwitchInline
+  | InlineKeyboardButtonSwitchInlineCurrent
+  | InlineKeyboardButtonGame
+  | InlineKeyboardButtonPay;
 
 export function constructInlineKeyboardButton(button_: enums.KeyboardButton): InlineKeyboardButton {
   if (button_ instanceof types.KeyboardButtonUrl) {

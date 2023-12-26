@@ -1,19 +1,17 @@
 import { UNREACHABLE } from "../1_utilities.ts";
 import { enums, types } from "../2_tl.ts";
 
-export declare namespace Reaction {
-  interface Emoji {
-    type: "emoji";
-    emoji: string;
-  }
-
-  interface CustomEmoji {
-    type: "customEmoji";
-    id: string;
-  }
+export interface ReactionEmoji {
+  type: "emoji";
+  emoji: string;
 }
 
-export type Reaction = Reaction.Emoji | Reaction.CustomEmoji;
+export interface ReactionCustomEmoji {
+  type: "customEmoji";
+  id: string;
+}
+
+export type Reaction = ReactionEmoji | ReactionCustomEmoji;
 
 export function constructReaction(reaction: enums.Reaction): Reaction {
   if (reaction instanceof types.ReactionEmoji) {

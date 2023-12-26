@@ -21,121 +21,119 @@ export type MessageEntityType =
   | "spoiler"
   | "customEmoji";
 
-export declare namespace MessageEntity {
-  export interface Base {
-    type: MessageEntityType;
-    /** Offset in [UTF-16 code units](https://core.telegram.org/api/entities#entity-length) to the start of the entity */
-    offset: number;
-    /** Length of the entity in [UTF-16 code units](https://core.telegram.org/api/entities#entity-length) */
-    length: number;
-  }
+export interface MessageEntityBase {
+  type: MessageEntityType;
+  /** Offset in [UTF-16 code units](https://core.telegram.org/api/entities#entity-length) to the start of the entity */
+  offset: number;
+  /** Length of the entity in [UTF-16 code units](https://core.telegram.org/api/entities#entity-length) */
+  length: number;
+}
 
-  export interface Mention extends Base {
-    type: "mention";
-  }
+export interface MessageEntityMention extends MessageEntityBase {
+  type: "mention";
+}
 
-  export interface Hashtag extends Base {
-    type: "hashtag";
-  }
+export interface MessageEntityHashtag extends MessageEntityBase {
+  type: "hashtag";
+}
 
-  export interface BotCommand extends Base {
-    type: "botCommand";
-  }
+export interface MessageEntityBotCommand extends MessageEntityBase {
+  type: "botCommand";
+}
 
-  export interface URL extends Base {
-    type: "url";
-  }
+export interface MessageEntityURL extends MessageEntityBase {
+  type: "url";
+}
 
-  export interface EmailAddress extends Base {
-    type: "email";
-  }
+export interface MessageEntityEmailAddress extends MessageEntityBase {
+  type: "email";
+}
 
-  export interface Bold extends Base {
-    type: "bold";
-  }
+export interface MessageEntityBold extends MessageEntityBase {
+  type: "bold";
+}
 
-  export interface Italic extends Base {
-    type: "italic";
-  }
+export interface MessageEntityItalic extends MessageEntityBase {
+  type: "italic";
+}
 
-  export interface Pre extends Base {
-    type: "pre";
-    /** The language identifier of the code. */
-    language: string;
-  }
+export interface MessageEntityPre extends MessageEntityBase {
+  type: "pre";
+  /** The language identifier of the code. */
+  language: string;
+}
 
-  export interface Code extends Base {
-    type: "code";
-  }
+export interface MessageEntityCode extends MessageEntityBase {
+  type: "code";
+}
 
-  export interface TextLink extends Base {
-    type: "textLink";
-    /** A URL that will be opened after the text is tapped. */
-    url: string;
-  }
+export interface MessageEntityTextLink extends MessageEntityBase {
+  type: "textLink";
+  /** A URL that will be opened after the text is tapped. */
+  url: string;
+}
 
-  export interface TextMention extends Base {
-    type: "textMention";
-    /** The identifier of the user to mention. */
-    userId: number;
-  }
+export interface MessageEntityTextMention extends MessageEntityBase {
+  type: "textMention";
+  /** The identifier of the user to mention. */
+  userId: number;
+}
 
-  export interface Cashtag extends Base {
-    type: "cashtag";
-  }
+export interface MessageEntityCashtag extends MessageEntityBase {
+  type: "cashtag";
+}
 
-  export interface PhoneNumber extends Base {
-    type: "phoneNumber";
-  }
+export interface MessageEntityPhoneNumber extends MessageEntityBase {
+  type: "phoneNumber";
+}
 
-  export interface Underline extends Base {
-    type: "underline";
-  }
+export interface MessageEntityUnderline extends MessageEntityBase {
+  type: "underline";
+}
 
-  export interface Strikethrough extends Base {
-    type: "strikethrough";
-  }
+export interface MessageEntityStrikethrough extends MessageEntityBase {
+  type: "strikethrough";
+}
 
-  export interface Blockquote extends Base {
-    type: "blockquote";
-  }
+export interface MessageEntityBlockquote extends MessageEntityBase {
+  type: "blockquote";
+}
 
-  export interface BankCard extends Base {
-    type: "bankCard";
-  }
+export interface MessageEntityBankCard extends MessageEntityBase {
+  type: "bankCard";
+}
 
-  export interface Spoiler extends Base {
-    type: "spoiler";
-  }
+export interface MessageEntitySpoiler extends MessageEntityBase {
+  type: "spoiler";
+}
 
-  export interface CustomEmoji extends Base {
-    type: "customEmoji";
-    /** The identifier of the custom emoji. */
-    customEmojiId: string;
-  }
+export interface MessageEntityCustomEmoji extends MessageEntityBase {
+  type: "customEmoji";
+  /** The identifier of the custom emoji. */
+  customEmojiId: string;
 }
 
 /** A single entity of a message's text or caption. */
 export type MessageEntity =
-  | MessageEntity.Mention
-  | MessageEntity.Hashtag
-  | MessageEntity.BotCommand
-  | MessageEntity.URL
-  | MessageEntity.EmailAddress
-  | MessageEntity.Bold
-  | MessageEntity.Italic
-  | MessageEntity.Code
-  | MessageEntity.Pre
-  | MessageEntity.TextLink
-  | MessageEntity.TextMention
-  | MessageEntity.Cashtag
-  | MessageEntity.PhoneNumber
-  | MessageEntity.Underline
-  | MessageEntity.Strikethrough
-  | MessageEntity.Blockquote
-  | MessageEntity.BankCard
-  | MessageEntity.Spoiler
-  | MessageEntity.CustomEmoji;
+  | MessageEntityMention
+  | MessageEntityHashtag
+  | MessageEntityBotCommand
+  | MessageEntityURL
+  | MessageEntityEmailAddress
+  | MessageEntityBold
+  | MessageEntityItalic
+  | MessageEntityCode
+  | MessageEntityPre
+  | MessageEntityTextLink
+  | MessageEntityTextMention
+  | MessageEntityCashtag
+  | MessageEntityPhoneNumber
+  | MessageEntityUnderline
+  | MessageEntityStrikethrough
+  | MessageEntityBlockquote
+  | MessageEntityBankCard
+  | MessageEntitySpoiler
+  | MessageEntityCustomEmoji;
 
 export function constructMessageEntity(obj: enums.MessageEntity): MessageEntity | null {
   if (obj instanceof types.MessageEntityMention) {

@@ -1,6 +1,6 @@
 import { cleanObject, getColorFromPeerId } from "../1_utilities.ts";
 import { types } from "../2_tl.ts";
-import { ChatPhoto, constructChatPhoto } from "./0_chat_photo.ts";
+import { ChatPhotoUser, constructChatPhoto } from "./0_chat_photo.ts";
 
 /** This object represents a Telegram user or bot. */
 export interface User {
@@ -19,7 +19,7 @@ export interface User {
   /** Additional usernames */
   also?: string[];
   /** The user's photo. */
-  photo?: ChatPhoto.User;
+  photo?: ChatPhotoUser;
   /** [IETF language tag](https://en.wikipedia.org/wiki/IETF_language_tag) of the user's language */
   languageCode?: string;
   /** True, if the user is a scam user */

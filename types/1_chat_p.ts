@@ -8,86 +8,84 @@ export type ChatType =
   | "supergroup"
   | "channel";
 
-export declare namespace ChatP {
-  export interface Base {
-    /** The identifier of the chat. */
-    id: number;
-    /** The type of the chat. */
-    type: ChatType;
-    /** Identifier of a color that can be displayed instead of the chat's photo. */
-    color: number;
-  }
+export interface ChatPBase {
+  /** The identifier of the chat. */
+  id: number;
+  /** The type of the chat. */
+  type: ChatType;
+  /** Identifier of a color that can be displayed instead of the chat's photo. */
+  color: number;
+}
 
-  export interface Private extends Base {
-    type: "private";
-    /** Whether this is a bot's chat. */
-    isBot?: boolean;
-    /** The first name of the user. */
-    firstName: string;
-    /** The last name of the user. */
-    lastName?: string;
-    /** The user's main username. */
-    username?: string;
-    /** Whether the user has been identified as scam. */
-    isScam: boolean;
-    /** Whether the user has been identified as an impersonator. */
-    isFake: boolean;
-    /** Whether the user is official support. */
-    isSupport: boolean;
-    /** Whether the user has been verified. */
-    isVerified: boolean;
-    /** Whether the user has been restricted. */
-    isRestricted?: boolean;
-    /** The reason why the user has been restricted. */
-    restrictionReason?: RestrictionReason[];
-  }
+export interface ChatPPrivate extends ChatPBase {
+  type: "private";
+  /** Whether this is a bot's chat. */
+  isBot?: boolean;
+  /** The first name of the user. */
+  firstName: string;
+  /** The last name of the user. */
+  lastName?: string;
+  /** The user's main username. */
+  username?: string;
+  /** Whether the user has been identified as scam. */
+  isScam: boolean;
+  /** Whether the user has been identified as an impersonator. */
+  isFake: boolean;
+  /** Whether the user is official support. */
+  isSupport: boolean;
+  /** Whether the user has been verified. */
+  isVerified: boolean;
+  /** Whether the user has been restricted. */
+  isRestricted?: boolean;
+  /** The reason why the user has been restricted. */
+  restrictionReason?: RestrictionReason[];
+}
 
-  export interface Group extends Base {
-    type: "group";
-    /** The title of the chat. */
-    title: string;
-    /** Whether the current user is the owner of the chat. */
-    isCreator: boolean;
-  }
+export interface ChatPGroup extends ChatPBase {
+  type: "group";
+  /** The title of the chat. */
+  title: string;
+  /** Whether the current user is the owner of the chat. */
+  isCreator: boolean;
+}
 
-  export interface ChannelBase extends Base {
-    /** The title of the chat or channel. */
-    title: string;
-    /** The main username of the chat or channel. */
-    username?: string;
-    /** Whether the chat or channel has been identified as scam. */
-    isScam: boolean;
-    /** Whether the chat or channel has been identified as an impersonator. */
-    isFake: boolean;
-    /** Whether the chat or channel has been verified. */
-    isVerified: boolean;
-    /** Whether the chat or channel has been restricted. */
-    isRestricted: boolean;
-    /** The reason why the chat or channel has been restricted. */
-    restrictionReason?: RestrictionReason[];
-  }
+export interface ChatPChannelBase extends ChatPBase {
+  /** The title of the chat or channel. */
+  title: string;
+  /** The main username of the chat or channel. */
+  username?: string;
+  /** Whether the chat or channel has been identified as scam. */
+  isScam: boolean;
+  /** Whether the chat or channel has been identified as an impersonator. */
+  isFake: boolean;
+  /** Whether the chat or channel has been verified. */
+  isVerified: boolean;
+  /** Whether the chat or channel has been restricted. */
+  isRestricted: boolean;
+  /** The reason why the chat or channel has been restricted. */
+  restrictionReason?: RestrictionReason[];
+}
 
-  export interface Channel extends ChannelBase {
-    type: "channel";
-  }
+export interface ChatPChannel extends ChatPChannelBase {
+  type: "channel";
+}
 
-  export interface Supergroup extends ChannelBase {
-    type: "supergroup";
-    /** Whether the chat is a forum. */
-    isForum: boolean;
-  }
+export interface ChatPSupergroup extends ChatPChannelBase {
+  type: "supergroup";
+  /** Whether the chat is a forum. */
+  isForum: boolean;
 }
 
 /** This object represents a chat. */
-export type ChatP = ChatP.Private | ChatP.Group | ChatP.Supergroup | ChatP.Channel;
+export type ChatP = ChatPPrivate | ChatPGroup | ChatPSupergroup | ChatPChannel;
 
-export function constructChatP(chat: types.User): ChatP.Private;
-export function constructChatP(chat: types.Chat | types.ChatForbidden): ChatP.Group;
-export function constructChatP(chat: types.Channel | types.ChannelForbidden): ChatP.Supergroup | ChatP.Channel;
+export function constructChatP(chat: types.User): ChatPPrivate;
+export function constructChatP(chat: types.Chat | types.ChatForbidden): ChatPGroup;
+export function constructChatP(chat: types.Channel | types.ChannelForbidden): ChatPSupergroup | ChatPChannel;
 export function constructChatP(chat: types.User | types.Chat | types.ChatForbidden | types.Channel | types.ChannelForbidden): ChatP {
   if (chat instanceof types.User) {
     const id = Number(chat.id);
-    const chat_: ChatP.Private = {
+    const chat_: ChatPPrivate = {
       id,
       type: "private",
       isBot: chat.bot || false,
@@ -108,7 +106,7 @@ export function constructChatP(chat: types.User | types.Chat | types.ChatForbidd
     return cleanObject(chat_);
   } else if (chat instanceof types.Chat || chat instanceof types.ChatForbidden) {
     const id = Number(-chat.id);
-    const chat_: ChatP.Group = {
+    const chat_: ChatPGroup = {
       id,
       type: "group",
       color: getColorFromPeerId(id),
@@ -122,7 +120,7 @@ export function constructChatP(chat: types.User | types.Chat | types.ChatForbidd
 
     return cleanObject(chat_);
   } else if (chat instanceof types.Channel || types.ChannelForbidden) {
-    let chat_: ChatP.Supergroup | ChatP.Channel;
+    let chat_: ChatPSupergroup | ChatPChannel;
     const id = ZERO_CHANNEL_ID + -Number(chat.id);
     if (chat instanceof types.ChannelForbidden) {
       const { title } = chat;
