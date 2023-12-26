@@ -1,5 +1,6 @@
 import { enums, types } from "../2_tl.ts";
 
+/** @unlisted */
 export type MessageEntityType =
   | "mention"
   | "hashtag"
@@ -21,6 +22,7 @@ export type MessageEntityType =
   | "spoiler"
   | "customEmoji";
 
+/** @unlisted */
 export interface MessageEntityBase {
   type: MessageEntityType;
   /** Offset in [UTF-16 code units](https://core.telegram.org/api/entities#entity-length) to the start of the entity */
@@ -29,84 +31,103 @@ export interface MessageEntityBase {
   length: number;
 }
 
+/** @unlisted */
 export interface MessageEntityMention extends MessageEntityBase {
   type: "mention";
 }
 
+/** @unlisted */
 export interface MessageEntityHashtag extends MessageEntityBase {
   type: "hashtag";
 }
 
+/** @unlisted */
 export interface MessageEntityBotCommand extends MessageEntityBase {
   type: "botCommand";
 }
 
+/** @unlisted */
 export interface MessageEntityURL extends MessageEntityBase {
   type: "url";
 }
 
+/** @unlisted */
 export interface MessageEntityEmailAddress extends MessageEntityBase {
   type: "email";
 }
 
+/** @unlisted */
 export interface MessageEntityBold extends MessageEntityBase {
   type: "bold";
 }
 
+/** @unlisted */
 export interface MessageEntityItalic extends MessageEntityBase {
   type: "italic";
 }
 
+/** @unlisted */
 export interface MessageEntityPre extends MessageEntityBase {
   type: "pre";
   /** The language identifier of the code. */
   language: string;
 }
 
+/** @unlisted */
 export interface MessageEntityCode extends MessageEntityBase {
   type: "code";
 }
 
+/** @unlisted */
 export interface MessageEntityTextLink extends MessageEntityBase {
   type: "textLink";
   /** A URL that will be opened after the text is tapped. */
   url: string;
 }
 
+/** @unlisted */
 export interface MessageEntityTextMention extends MessageEntityBase {
   type: "textMention";
   /** The identifier of the user to mention. */
   userId: number;
 }
 
+/** @unlisted */
 export interface MessageEntityCashtag extends MessageEntityBase {
   type: "cashtag";
 }
 
+/** @unlisted */
 export interface MessageEntityPhoneNumber extends MessageEntityBase {
   type: "phoneNumber";
 }
 
+/** @unlisted */
 export interface MessageEntityUnderline extends MessageEntityBase {
   type: "underline";
 }
 
+/** @unlisted */
 export interface MessageEntityStrikethrough extends MessageEntityBase {
   type: "strikethrough";
 }
 
+/** @unlisted */
 export interface MessageEntityBlockquote extends MessageEntityBase {
   type: "blockquote";
 }
 
+/** @unlisted */
 export interface MessageEntityBankCard extends MessageEntityBase {
   type: "bankCard";
 }
 
+/** @unlisted */
 export interface MessageEntitySpoiler extends MessageEntityBase {
   type: "spoiler";
 }
 
+/** @unlisted */
 export interface MessageEntityCustomEmoji extends MessageEntityBase {
   type: "customEmoji";
   /** The identifier of the custom emoji. */

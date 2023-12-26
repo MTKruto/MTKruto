@@ -1,11 +1,13 @@
 import { UNREACHABLE } from "../1_utilities.ts";
 import { enums, types } from "../2_tl.ts";
 
+/** @unlisted */
 export interface ReactionEmoji {
   type: "emoji";
   emoji: string;
 }
 
+/** @unlisted */
 export interface ReactionCustomEmoji {
   type: "customEmoji";
   id: string;

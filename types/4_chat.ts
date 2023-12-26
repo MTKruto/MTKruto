@@ -6,27 +6,32 @@ import { constructMessage, Message, MessageGetter } from "./3_message.ts";
 import { StickerSetNameGetter } from "./1_sticker.ts";
 import { EntityGetter } from "./1__getters.ts";
 
-interface ChatBase {
+/** @unlisted */
+export interface ChatBase {
   order: string;
   lastMessage?: Omit<Message, "replyToMessage">;
   pinned: number;
 }
 
-interface ChatChannel extends ChatBase, ChatPChannel {
+/** @unlisted */
+export interface ChatChannel extends ChatBase, ChatPChannel {
   also?: string[];
   photo?: ChatPhotoChat;
 }
 
-interface ChatSupergroup extends ChatBase, ChatPSupergroup {
+/** @unlisted */
+export interface ChatSupergroup extends ChatBase, ChatPSupergroup {
   also?: string[];
   photo?: ChatPhotoChat;
 }
 
-interface ChatGroup extends ChatBase, ChatPGroup {
+/** @unlisted */
+export interface ChatGroup extends ChatBase, ChatPGroup {
   photo?: ChatPhotoChat;
 }
 
-interface ChatPrivate extends ChatBase, ChatPPrivate {
+/** @unlisted */
+export interface ChatPrivate extends ChatBase, ChatPPrivate {
   also?: string[];
   photo?: ChatPhotoUser;
 }
