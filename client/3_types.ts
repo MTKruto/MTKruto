@@ -344,7 +344,7 @@ export interface AddReactionParams {
   addToRecents?: boolean;
 }
 
-export type FilterableUpdates = "message" | "editedMessage" | "callbackQuery" | "inlineQuery" | "chosenInlineResult" | "editedChat" | "newChat";
+export type MessageUpdates = "message" | "editedMessage";
 
 export interface Update {
   message?: Message;
@@ -372,7 +372,7 @@ export interface InvokeErrorHandler<C> {
 }
 
 type Update_ = Update;
-export type FilterUpdate<Update extends Update_, Type extends keyof Update_, Field extends string, TypeType extends NonNullable<Update_[Type]> = NonNullable<Update_[Type]>> = Update & { [Type_ in Type]-?: TypeType & { [Field_ in Field]-?: Field extends keyof TypeType ? NonNullable<TypeType[Field]> : never } };
+export type FilterUpdate<U extends Update_, Type extends keyof Update_, Field extends string, TypeType = NonNullable<Update_[Type]>> = Omit<U, keyof Update_> & Omit<Update_, Type> & { [Type_ in Type]-?: Field extends keyof TypeType ? TypeType & { [Field_ in Field]-?: Field extends keyof TypeType ? NonNullable<TypeType[Field]> : never } : NonNullable<TypeType> };
 
 export interface NetworkStatisticsEntry {
   sent: number;

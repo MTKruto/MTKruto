@@ -13,164 +13,347 @@ import { constructVenue, Venue } from "./0_venue.ts";
 import { constructVoice, Voice } from "./0_voice.ts";
 import { EntityGetter } from "./1__getters.ts";
 import { Animation, constructAnimation } from "./1_animation.ts";
-import { constructReplyQuote, ReplyQuote } from "./1_reply_quote.ts";
 import { ChatP, constructChatP } from "./1_chat_p.ts";
 import { constructDocument, Document } from "./1_document.ts";
+import { constructReplyQuote, ReplyQuote } from "./1_reply_quote.ts";
 import { constructPhoto, Photo } from "./1_photo.ts";
 import { constructPoll, Poll } from "./1_poll.ts";
 import { constructSticker, Sticker, StickerSetNameGetter } from "./1_sticker.ts";
 import { constructUser, User } from "./1_user.ts";
 import { constructVideoNote, VideoNote } from "./1_video_note.ts";
 import { constructVideo, Video } from "./1_video.ts";
+import { constructMessageReaction, MessageReaction } from "./1_message_reaction.ts";
+import { constructGiveaway, Giveaway } from "./1_giveaway.ts";
 import { constructGame, Game } from "./2_game.ts";
 import { constructReplyKeyboardMarkup, ReplyKeyboardMarkup } from "./2_reply_keyboard_markup.ts";
 import { constructInlineKeyboardMarkup, InlineKeyboardMarkup } from "./3_inline_keyboard_markup.ts";
-import { constructMessageReaction, MessageReaction } from "./1_message_reaction.ts";
-import { constructGiveaway, Giveaway } from "./1_giveaway.ts";
 
 const d = debug("types/Message");
 
-/** This object represents a message. */
-export interface Message {
-  /** Whether the message is outgoing */
+/** Properties shared between all message types. */
+export interface MessageBase {
   out: boolean;
-  /** Unique message identifier inside this chat */
   id: number;
-  /** Unique identifier of a message thread to which the message belongs; for supergroups only */
   threadId?: number;
-  /** Sender of the message; empty for messages sent to channels. For backward compatibility, the field contains a fake sender user in non-channel chats, if the message was sent on behalf of a chat. */
   from?: User;
-  /** Sender of the message, sent on behalf of a chat. For example, the channel itself for channel posts, the supergroup itself for messages from anonymous group administrators, the linked channel for messages automatically forwarded to the discussion group. For backward compatibility, the field from contains a fake sender user in non-channel chats, if the message was sent on behalf of a chat. */
   senderChat?: ChatP;
-  /** Date the message was sent in Unix time */
   date: Date;
-  /** Conversation the message belongs to */
   chat: ChatP;
-  /** A link to the message */
   link?: string;
-  /** For forwarded messages, sender of the original message */
   forwardFrom?: User;
-  /** For messages forwarded from channels or from anonymous administrators, information about the original sender chat */
   forwardFromChat?: ChatP;
-  /** For messages forwarded from channels, identifier of the original message in the channel */
   forwardId?: number;
-  /** For forwarded messages that were originally sent in channels or by an anonymous chat administrator, signature of the message sender if present */
   forwardSignature?: string;
-  /** Sender's name for messages forwarded from users who disallow adding a link to their account in forwarded messages */
   forwardSenderName?: string;
-  /** For forwarded messages, date the original message was sent in Unix time */
   forwardDate?: Date;
-  /** True, if the message is sent to a forum topic */
   isTopicMessage: boolean;
-  /** True, if the message is a channel post that was automatically forwarded to the connected discussion group */
   isAutomaticForward?: boolean;
-  /** For replies, the original message. Note that the Message object in this field will not contain further reply_to_message fields even if it itself is a reply. */
-  replyToMessage?: Omit<Message, "replyToMessage">;
+  replyToMessage?: Message;
   replyToMessageId?: number;
   reactions?: MessageReaction[];
   replyQuote?: ReplyQuote;
-  /** Bot through which the message was sent */
   viaBot?: User;
-  /** Date the message was last edited in Unix time */
   editDate?: Date;
-  /** True, if the message can't be forwarded */
   hasProtectedContent?: boolean;
-  /** The unique identifier of a media message group this message belongs to */
   mediaGroupId?: string;
-  /** Signature of the post author for messages in channels, or the custom title of an anonymous group administrator */
   authorSignature?: string;
-  /** For text messages, the actual UTF-8 text of the message */
-  text?: string;
-  /** For text messages, special entities like usernames, URLs, bot commands, etc. that appear in the text */
-  entities?: MessageEntity[];
-  /** Caption for the animation, audio, document, photo, video or voice */
-  caption?: string;
-  /** For messages with a caption, special entities like usernames, URLs, bot commands, etc. that appear in the caption */
-  captionEntities?: MessageEntity[];
-  /** True, if the message media is covered by a spoiler animation */
-  hasMediaSpoiler?: boolean;
-  /** View count for channel posts */
   views?: number;
-  /** Inline keyboard attached to the message. `login_url` buttons are represented as ordinary `url` buttons. */
   replyMarkup?: InlineKeyboardMarkup | ReplyKeyboardMarkup | ReplyKeyboardRemove | ForceReply;
-  /** Message is a photo, available sizes of the photo */
-  photo?: Photo;
-  /** Message is a general file, information about the file */
-  document?: Document;
-  /** Message is a video, information about the video */
-  video?: Video;
-  /** Message is a sticker, information about the sticker */
-  sticker?: Sticker;
-  /** Message is an animation, information about the animation. For backward compatibility, when this field is set, the document field will also be set */
-  animation?: Animation;
-  /** Message is a voice message, information about the file */
-  voice?: Voice;
-  /** Message is an audio file, information about the file */
-  audio?: Audio;
-  /** Message is a dice with random value */
-  dice?: Dice;
-  /** Message is a [video note](https://telegram.org/blog/video-messages-and-telescope), information about the video message */
-  videoNote?: VideoNote;
-  /** Message is a shared contact, information about the contact */
-  contact?: Contact;
-  /** Message is a game, information about the game. */
-  game?: Game;
-  /** New poll state. Bots receive only updates about stopped polls and polls, which were sent by the bot. */
-  poll?: Poll;
-  /** Message is a venue, information about the venue. For backward compatibility, when this field is set, the location field will also be set */
-  venue?: Venue;
-  /** Message is a shared location, information about the location */
-  location?: Location;
-  /** New members that were added to the group or supergroup and information about them (the bot itself may be one of these members) */
-  newChatMembers?: User[];
-  /** A member was removed from the group, information about them (this member may be the bot itself) */
-  leftChatMember?: User;
-  /** A chat title was changed to this value */
-  newChatTitle?: string;
-  /** A chat photo was change to this value */
-  newChatPhoto?: Photo;
-  /** Service message: the chat photo was deleted */
-  deletedChatPhoto?: true;
-  /** Service message: the group has been created */
-  groupCreated?: true;
-  /** Service message: the supergroup has been created. This field can't be received in a message coming through updates, because bot can't be a member of a supergroup when it is created. It can only be found in reply_to_message if someone replies to a very first message in a directly created supergroup. */
-  supergroupCreated?: true;
-  /** Service message: the channel has been created. This field can't be received in a message coming through updates, because bot can't be a member of a channel when it is created. It can only be found in reply_to_message if someone replies to a very first message in a channel. */
-  channelCreated?: true;
-  /** Service message: auto-delete timer settings changed in the chat */
-  messageAutoDeleteTimerChanged?: { messageAutoDeleteTime: number };
-  /** The group has been migrated to a supergroup with the specified identifier */
-  chatMigratedTo?: number;
-  /** The supergroup has been migrated from a group with the specified identifier */
-  chatMigratedFrom?: number;
-  /** Specified message was pinned. Note that the Message object in this field will not contain further reply_to_message fields even if it is itself a reply. */
-  pinnedMessage?: Message;
-  /** Service message: a user was shared with the bot */
-  userShared?: { requestId: number; userId: number };
-  /** Service message: the user allowed the bot added to the attachment menu to write messages */
-  writeAccessAllowed?: { webAppName?: string };
-  /** Service message: forum topic created */
-  forumTopicCreated?: { name: string; iconColor: string; iconCutsomEmojiId?: string };
-  /** Service message: forum topic edited */
-  forumTopicEdited?: { name?: string; iconCutsomEmojiId?: string };
-  /** Service message: forum topic closed */
-  forumTopicClosed?: Record<never, never>;
-  /** Service message: forum topic reopened */
-  forumTopicReopened?: Record<never, never>;
-  /** Service message: video chat scheduled */
-  videoChatScheduled?: { startDate: Date };
-  /** Service message: video chat started */
-  videoChatStarted?: Record<never, never>;
-  /** Service message: video chat ended */
-  videoChatEnded?: { duration: number };
-  giveaway?: Giveaway;
 }
 
-export interface MessageGetter<O extends keyof Message | null = null> {
-  (chatId: number, messageId: number): MaybePromise<(O extends keyof Message ? Omit<Message, O> : Message) | null>;
+/** Properties shared between media message types. */
+export interface MessageMediaBase extends MessageBase {
+  caption?: string;
+  captionEntities?: MessageEntity[];
+  hasMediaSpoiler?: boolean;
 }
 
-type Message_MessageGetter = MessageGetter<"replyToMessage"> | null;
+// begin message types
+
+export interface MessageText extends MessageBase {
+  text: string;
+  entities: MessageEntity[];
+}
+
+export interface MessagePhoto extends MessageMediaBase {
+  photo: Photo;
+}
+
+export interface MessageDocument extends MessageMediaBase {
+  document: Document;
+}
+
+export interface MessageVideo extends MessageMediaBase {
+  video: Video;
+}
+
+export interface MessageSticker extends MessageBase {
+  sticker: Sticker;
+}
+
+export interface MessageAnimation extends MessageMediaBase {
+  animation: Animation;
+}
+
+export interface MessageVoice extends MessageMediaBase {
+  voice: Voice;
+}
+
+export interface MessageAudio extends MessageMediaBase {
+  audio: Audio;
+}
+
+export interface MessageDice extends MessageBase {
+  dice: Dice;
+}
+
+export interface MessageVideoNote extends MessageBase {
+  videoNote: VideoNote;
+}
+
+export interface MessageContact extends MessageBase {
+  contact: Contact;
+}
+
+export interface MessageGame extends MessageBase {
+  game: Game;
+}
+
+export interface MessagePoll extends MessageBase {
+  poll: Poll;
+}
+
+export interface MessageVenue extends MessageBase {
+  venue: Venue;
+}
+
+export interface MessageLocation extends MessageBase {
+  location: Location;
+}
+
+export interface MessageNewChatMembers extends MessageBase {
+  newChatMembers: User[];
+}
+
+export interface MessageLeftChatMember extends MessageBase {
+  leftChatMember: User;
+}
+
+export interface MessageNewChatTitle extends MessageBase {
+  newChatTitle: string;
+}
+
+export interface MessageNewChatPhoto extends MessageBase {
+  newChatPhoto: Photo;
+}
+
+export interface MessageDeletedChatPhoto extends MessageBase {
+  deletedChatPhoto: true;
+}
+
+export interface MessageGroupCreated extends MessageBase {
+  groupCreated: true;
+  newChatMembers: User[];
+}
+
+export interface MessageSupergroupCreated extends MessageBase {
+  supergroupCreated: true;
+}
+
+export interface MessageChannelCreated extends MessageBase {
+  channelCreated: true;
+}
+
+export interface MessageAutoDeleteTimerChanged extends MessageBase {
+  newAutoDeleteTime: number;
+}
+
+export interface MessageChatMigratedTo extends MessageBase {
+  chatMigratedTo: number;
+}
+
+export interface MessageChatMigratedFrom extends MessageBase {
+  chatMigratedFrom: number;
+}
+
+export interface MessagePinnedMessage extends MessageBase {
+  pinnedMessage: Message;
+}
+
+export interface MessageUserShared extends MessageBase {
+  userShared: { requestId: number; userId: number };
+}
+
+export interface MessageWriteAccessAllowed extends MessageBase {
+  writeAccessAllowed: { webAppName?: string };
+}
+
+export interface MessageForumTopicCreated extends MessageBase {
+  forumTopicCreated: { name: string; iconColor: string; iconCutsomEmojiId?: string };
+}
+
+export interface MessageForumTopicEdited extends MessageBase {
+  forumTopicEdited: { name: string; iconCutsomEmojiId?: string };
+}
+
+export interface MessageForumTopicClosed extends MessageBase {
+  forumTopicClosed: true;
+}
+
+export interface MessageForumTopicReopened extends MessageBase {
+  forumTopicReopened: true;
+}
+
+export interface MessageVideoChatScheduled extends MessageBase {
+  videoChatScheduled: { startDate: Date };
+}
+
+export interface MessageVideoChatStarted extends MessageBase {
+  videoChatStarted: true;
+}
+
+export interface MessageVideoChatEnded extends MessageBase {
+  videoChatEnded: { duration: number };
+}
+
+export interface MessageGiveaway extends MessageBase {
+  giveaway: Giveaway;
+}
+
+// message type map
+
+export interface MessageTypes {
+  text: MessageText;
+  photo: MessagePhoto;
+  document: MessageDocument;
+  video: MessageVideo;
+  sticker: MessageSticker;
+  animation: MessageAnimation;
+  voice: MessageVoice;
+  audio: MessageAudio;
+  dice: MessageDice;
+  videoNote: MessageVideoNote;
+  contact: MessageContact;
+  game: MessageGame;
+  poll: MessagePoll;
+  venue: MessageVenue;
+  location: MessageLocation;
+  newChatMembers: MessageNewChatMembers;
+  leftChatMember: MessageLeftChatMember;
+  newChatTitle: MessageNewChatTitle;
+  newChatPhoto: MessageNewChatPhoto;
+  deletedChatPhoto: MessageDeletedChatPhoto;
+  groupCreated: MessageGroupCreated;
+  supergroupCreated: MessageSupergroupCreated;
+  channelCreated: MessageChannelCreated;
+  newAutoDeleteTime: MessageAutoDeleteTimerChanged;
+  chatMigratedTo: MessageChatMigratedTo;
+  chatMigratedFrom: MessageChatMigratedFrom;
+  pinnedMessage: MessagePinnedMessage;
+  userShared: MessageUserShared;
+  writeAccessAllowed: MessageWriteAccessAllowed;
+  forumTopicCreated: MessageForumTopicCreated;
+  forumTopicEdited: MessageForumTopicEdited;
+  forumTopicClosed: MessageForumTopicClosed;
+  forumTopicReopened: MessageForumTopicReopened;
+  videoChatScheduled: MessageVideoChatScheduled;
+  videoChatStarted: MessageVideoChatStarted;
+  videoChatEnded: MessageVideoChatEnded;
+  giveaway: MessageGiveaway;
+}
+
+const keys: Record<keyof MessageTypes, [string, ...string[]]> = {
+  text: ["text"],
+  photo: ["photo"],
+  document: ["document"],
+  video: ["video"],
+  sticker: ["sticker"],
+  animation: ["animation"],
+  voice: ["voice"],
+  audio: ["audio"],
+  dice: ["dice"],
+  videoNote: ["videoNote"],
+  contact: ["contact"],
+  game: ["game"],
+  poll: ["poll"],
+  venue: ["venue"],
+  location: ["location"],
+  newChatMembers: ["newChatMembers"],
+  leftChatMember: ["leftChatMember"],
+  newChatTitle: ["newChatTitle"],
+  newChatPhoto: ["newChatPhoto"],
+  deletedChatPhoto: ["deletedChatPhoto"],
+  groupCreated: ["groupCreated", "newChatMembers"],
+  supergroupCreated: ["supergroupCreated"],
+  channelCreated: ["channelCreated"],
+  newAutoDeleteTime: ["newAutoDeleteTime"],
+  chatMigratedTo: ["chatMigratedTo"],
+  chatMigratedFrom: ["chatMigratedFrom"],
+  pinnedMessage: ["pinnedMessage"],
+  userShared: ["userShared"],
+  writeAccessAllowed: ["writeAccessAllowed"],
+  forumTopicCreated: ["forumTopicCreated"],
+  forumTopicEdited: ["forumTopicEdited"],
+  forumTopicClosed: ["forumTopicClosed"],
+  forumTopicReopened: ["forumTopicReopened"],
+  videoChatScheduled: ["videoChatScheduled"],
+  videoChatStarted: ["videoChatStarted"],
+  videoChatEnded: ["videoChatEnded"],
+  giveaway: ["giveaway"],
+};
+export function assertMessageType<T extends keyof MessageTypes>(message: Message, type: T) {
+  for (const key of keys[type]) {
+    if (!(key in message) || message[key as keyof typeof message] === undefined) {
+      UNREACHABLE();
+    }
+  }
+  return message as MessageTypes[T];
+}
+
+export type Message =
+  | MessageText
+  | MessagePhoto
+  | MessageDocument
+  | MessageVideo
+  | MessageSticker
+  | MessageAnimation
+  | MessageVoice
+  | MessageAudio
+  | MessageDice
+  | MessageVideoNote
+  | MessageContact
+  | MessageGame
+  | MessagePoll
+  | MessageVenue
+  | MessageLocation
+  | MessageNewChatMembers
+  | MessageLeftChatMember
+  | MessageNewChatTitle
+  | MessageNewChatPhoto
+  | MessageDeletedChatPhoto
+  | MessageGroupCreated
+  | MessageSupergroupCreated
+  | MessageChannelCreated
+  | MessageAutoDeleteTimerChanged
+  | MessageChatMigratedTo
+  | MessageChatMigratedFrom
+  | MessagePinnedMessage
+  | MessageUserShared
+  | MessageWriteAccessAllowed
+  | MessageForumTopicCreated
+  | MessageForumTopicEdited
+  | MessageForumTopicClosed
+  | MessageForumTopicReopened
+  | MessageVideoChatScheduled
+  | MessageVideoChatStarted
+  | MessageVideoChatEnded
+  | MessageGiveaway;
+
+export interface MessageGetter {
+  (chatId: number, messageId: number): MaybePromise<Message | null>;
+}
+
+type Message_MessageGetter = MessageGetter | null;
 
 async function getSender(message_: types.Message | types.MessageService, getEntity: EntityGetter) {
   if (message_.from_id instanceof types.PeerUser) {
@@ -207,8 +390,8 @@ async function getReply(message_: types.Message | types.MessageService, chat: Ch
   return { replyToMessage: undefined, threadId: undefined, isTopicMessage: undefined };
 }
 
-async function constructServiceMessage(message_: types.MessageService, chat: ChatP, getEntity: EntityGetter, getMessage: Message_MessageGetter) {
-  const message: Message = {
+async function constructServiceMessage(message_: types.MessageService, chat: ChatP, getEntity: EntityGetter, getMessage: Message_MessageGetter): Promise<Message> {
+  const message: MessageBase = {
     out: message_.out ?? false,
     id: message_.id,
     chat: chat,
@@ -219,93 +402,118 @@ async function constructServiceMessage(message_: types.MessageService, chat: Cha
   Object.assign(message, await getSender(message_, getEntity));
 
   if (message_.action instanceof types.MessageActionChatAddUser) {
-    message.newChatMembers = [];
+    const newChatMembers = new Array<User>();
     for (const user_ of message_.action.users) {
       const entity = await getEntity(new types.PeerUser({ user_id: user_ }));
       if (entity) {
         const user = constructUser(entity);
-        message.newChatMembers.push(user);
+        newChatMembers.push(user);
       } else {
         UNREACHABLE();
       }
     }
+    return { ...message, newChatMembers };
   } else if (message_.action instanceof types.MessageActionChatDeleteUser) {
     const entity = await getEntity(new types.PeerUser({ user_id: message_.action.user_id }));
     if (entity) {
       const user = constructUser(entity);
-      message.leftChatMember = user;
+      const leftChatMember = user;
+      return { ...message, leftChatMember };
     } else {
       UNREACHABLE();
     }
   } else if (message_.action instanceof types.MessageActionChatEditTitle) {
-    message.newChatTitle = message_.action.title;
+    const newChatTitle = message_.action.title;
+    return { ...message, newChatTitle };
   } else if (message_.action instanceof types.MessageActionChatEditPhoto) {
-    message.newChatPhoto = constructPhoto(message_.action.photo[as](types.Photo));
+    const newChatPhoto = constructPhoto(message_.action.photo[as](types.Photo));
+    return { ...message, newChatPhoto };
   } else if (message_.action instanceof types.MessageActionChatDeletePhoto) {
-    message.deletedChatPhoto = true;
+    const deletedChatPhoto = true;
+    return { ...message, deletedChatPhoto };
   } else if (message_.action instanceof types.MessageActionChatCreate) {
-    message.groupCreated = true;
-    message.newChatMembers = [];
+    const groupCreated = true;
+    const newChatMembers = new Array<User>();
     for (const user_ of message_.action.users) {
       const entity = await getEntity(new types.PeerUser({ user_id: user_ }));
       if (entity) {
         const user = constructUser(entity);
-        message.newChatMembers.push(user);
+        newChatMembers.push(user);
       } else {
         UNREACHABLE();
       }
     }
+    return { ...message, groupCreated, newChatMembers };
   } else if (message_.action instanceof types.MessageActionChannelCreate) {
     if (message.chat.type == "channel") {
-      message.channelCreated = true;
+      const channelCreated = true;
+      return { ...message, channelCreated };
     } else if (message.chat.type == "supergroup") {
-      message.supergroupCreated = true;
+      const supergroupCreated = true;
+      return { ...message, supergroupCreated };
     } else {
       UNREACHABLE();
     }
   } else if (message_.action instanceof types.MessageActionChatMigrateTo) {
-    message.chatMigratedTo = ZERO_CHANNEL_ID + Number(-message_.action.channel_id);
+    const chatMigratedTo = ZERO_CHANNEL_ID + Number(-message_.action.channel_id);
+    return { ...message, chatMigratedTo };
   } else if (message_.action instanceof types.MessageActionChannelMigrateFrom) {
-    message.chatMigratedFrom = Number(-message_.action.chat_id);
+    const chatMigratedFrom = Number(-message_.action.chat_id);
+    return { ...message, chatMigratedFrom };
   } else if (message_.action instanceof types.MessageActionPinMessage) {
     const { replyToMessage } = await getReply(message_, chat, getMessage);
-    message.pinnedMessage = replyToMessage;
+    if (!replyToMessage) {
+      UNREACHABLE();
+    }
+    const pinnedMessage = replyToMessage;
+    return { ...message, pinnedMessage };
   } else if (message_.action instanceof types.MessageActionRequestedPeer) {
     const user = message_.action.peers[0][as](types.PeerUser);
-    message.userShared = { requestId: message_.action.button_id, userId: Number(user.user_id) };
+    const userShared = { requestId: message_.action.button_id, userId: Number(user.user_id) };
+    return { ...message, userShared };
   } else if (message_.action instanceof types.MessageActionBotAllowed) {
     const webAppName = message_.action.app ? message_.action.app[as](types.BotApp).title : undefined;
-    message.writeAccessAllowed = { webAppName };
+    const writeAccessAllowed = { webAppName };
+    return { ...message, writeAccessAllowed };
   } else if (message_.action instanceof types.MessageActionTopicCreate) {
-    message.forumTopicCreated = {
+    const forumTopicCreated = {
       name: message_.action.title,
       iconColor: "#" + message_.action.icon_color.toString(16).padStart(6, "0"),
       iconCutsomEmojiId: message_.action.icon_emoji_id ? String(message_.action.icon_emoji_id) : undefined,
     };
+    return { ...message, forumTopicCreated };
   } else if (message_.action instanceof types.MessageActionTopicEdit) {
     if (message_.action.closed) {
-      message.forumTopicClosed = {};
+      const forumTopicClosed = true;
+      return { ...message, forumTopicClosed };
     } else if (message_.action.title || message_.action.icon_emoji_id) {
-      message.forumTopicEdited = {
-        name: message_.action.title,
+      const forumTopicEdited = {
+        name: message_.action.title ?? "",
         iconCutsomEmojiId: message_.action.icon_emoji_id ? String(message_.action.icon_emoji_id) : undefined,
       };
+      return { ...message, forumTopicEdited };
     } else {
-      message.forumTopicReopened = {};
+      const forumTopicReopened = true;
+      return { ...message, forumTopicReopened };
     }
   } else if (message_.action instanceof types.MessageActionGroupCallScheduled) {
-    message.videoChatScheduled = { startDate: new Date(message_.action.schedule_date * 1000) };
+    const videoChatScheduled = { startDate: new Date(message_.action.schedule_date * 1000) };
+    return { ...message, videoChatScheduled };
   } else if (message_.action instanceof types.MessageActionGroupCall) {
     if (message_.action.duration) {
-      message.videoChatEnded = { duration: message_.action.duration };
+      const videoChatEnded = { duration: message_.action.duration };
+
+      return { ...message, videoChatEnded };
     } else {
-      message.videoChatStarted = {};
+      const videoChatStarted = true;
+      return { ...message, videoChatStarted };
     }
   } else if (message_.action instanceof types.MessageActionSetMessagesTTL) {
-    message.messageAutoDeleteTimerChanged = { messageAutoDeleteTime: message_.action.period || 0 };
+    const newAutoDeleteTime = message_.action.period || 0;
+    return { ...message, newAutoDeleteTime };
+  } else {
+    UNREACHABLE();
   }
-
-  return cleanObject(message);
 }
 
 export async function constructMessage(
@@ -351,7 +559,7 @@ export async function constructMessage(
     return await constructServiceMessage(message_, chat_, getEntity, getMessage);
   }
 
-  const message: Message = {
+  const message: MessageBase = {
     out: message_.out ?? false,
     id: message_.id,
     chat: chat_,
@@ -377,33 +585,6 @@ export async function constructMessage(
     Object.assign(message, await getReply(message_, chat_, getMessage));
   }
   Object.assign(message, await getSender(message_, getEntity));
-
-  if (message_.media instanceof types.MessageMediaPhoto || message_.media instanceof types.MessageMediaDocument) {
-    message.hasMediaSpoiler = message_.media.spoiler || false;
-  }
-
-  if (message_.grouped_id != undefined) {
-    message.mediaGroupId = String(message_.grouped_id);
-  }
-
-  if (message_.message) {
-    if (message_.media == undefined) {
-      message.text = message_.message;
-    } else {
-      message.caption = message_.message;
-    }
-  }
-  if (message_.entities != undefined) {
-    if (message_.media == undefined) {
-      message.entities = message_.entities.map(constructMessageEntity).filter((v) => v) as MessageEntity[];
-    } else {
-      message.captionEntities = message_.entities.map(constructMessageEntity).filter((v) => v) as MessageEntity[];
-    }
-  }
-
-  if (message_.edit_date != undefined) {
-    message.editDate = new Date(message_.edit_date * 1_000);
-  }
 
   if (message_.reply_markup) {
     if (message_.reply_markup instanceof types.ReplyKeyboardMarkup) {
@@ -456,71 +637,118 @@ export async function constructMessage(
     }
   }
 
-  if (message_.media) {
-    if (message_.media instanceof types.MessageMediaPhoto) {
-      if (message_.media.photo instanceof types.Photo) {
-        message.photo = constructPhoto(message_.media.photo);
-      }
-    } else if (message_.media instanceof types.MessageMediaDice) {
-      message.dice = constructDice(message_.media);
-    } else if (message_.media instanceof types.MessageMediaDocument) {
-      const { document } = message_.media;
-      if (document instanceof types.Document) {
-        const getFileId = (type: FileType) =>
-          new FileID(null, null, type, document.dc_id, {
-            mediaId: document.id,
-            accessHash: document.access_hash,
-            fileReference: document.file_reference,
-          }).encode();
-        const fileUniqueId = new FileUniqueID(FileUniqueType.Document, { mediaId: document.id }).encode();
-
-        const animated = document.attributes.find((v): v is types.DocumentAttributeAnimated => v instanceof types.DocumentAttributeAnimated);
-        const audio = document.attributes.find((v): v is types.DocumentAttributeAudio => v instanceof types.DocumentAttributeAudio);
-        const fileName = document.attributes.find((v): v is types.DocumentAttributeFilename => v instanceof types.DocumentAttributeFilename);
-        const sticker = document.attributes.find((v): v is types.DocumentAttributeSticker => v instanceof types.DocumentAttributeSticker);
-        const video = document.attributes.find((v): v is types.DocumentAttributeVideo => v instanceof types.DocumentAttributeVideo);
-
-        if (animated) {
-          message.animation = constructAnimation(document, video, fileName, getFileId(FileType.Animation), fileUniqueId);
-        } else if (video) {
-          if (video.round_message) {
-            message.videoNote = constructVideoNote(document, video, getFileId(FileType.VideoNote), fileUniqueId);
-          } else {
-            message.video = constructVideo(document, video, fileName?.file_name, getFileId(FileType.Video), fileUniqueId);
-          }
-        } else if (audio) {
-          if (audio.voice) {
-            message.voice = constructVoice(document, audio, getFileId(FileType.Voice), fileUniqueId);
-          } else {
-            message.audio = constructAudio(document, audio, getFileId(FileType.Audio), fileUniqueId);
-          }
-        } else if (sticker) {
-          message.sticker = await constructSticker(document, getFileId(FileType.Sticker), fileUniqueId, getStickerSetName);
-        } else if (fileName) {
-          message.document = constructDocument(document, fileName, getFileId(FileType.Document), fileUniqueId);
-        } else {
-          message.document = constructDocument(document, new types.DocumentAttributeFilename({ file_name: "Unknown" }), getFileId(FileType.Document), fileUniqueId);
-        }
-      }
-    } else if (message_.media instanceof types.MessageMediaContact) {
-      message.contact = constructContact(message_.media);
-    } else if (message_.media instanceof types.MessageMediaGame) {
-      message.game = constructGame(message_.media);
-    } else if (message_.media instanceof types.MessageMediaPoll) {
-      message.poll = constructPoll(message_.media);
-    } else if (message_.media instanceof types.MessageMediaVenue) {
-      message.venue = constructVenue(message_.media);
-    } else if (message_.media instanceof types.MessageMediaGeo || message_.media instanceof types.MessageMediaGeoLive) {
-      message.location = constructLocation(message_.media);
-    } else if (message_.media instanceof types.MessageMediaWebPage) {
-      //
-    } else if (message_.media instanceof types.MessageMediaGiveaway) {
-      message.giveaway = constructGiveaway(message_.media);
-    } else {
-      // not implemented
-      UNREACHABLE();
-    }
+  if (message_.grouped_id != undefined) {
+    message.mediaGroupId = String(message_.grouped_id);
   }
 
-  return cleanObject(message);
+  if (message_.edit_date != undefined) {
+    message.editDate = new Date(message_.edit_date * 1_000);
+  }
+
+  if (message_.message && message_.media === undefined) {
+    return {
+      ...message,
+      text: message_.message,
+      entities: message_.entities?.map(constructMessageEntity).filter((v): v is NonNullable<typeof v> => !!v) ?? [],
+    };
+  }
+
+  const messageMedia: MessageMediaBase = {
+    ...message,
+    caption: message_.message,
+    captionEntities: message_.entities?.map(constructMessageEntity).filter((v): v is NonNullable<typeof v> => !!v) ?? [],
+  };
+
+  if (message_.media instanceof types.MessageMediaPhoto || message_.media instanceof types.MessageMediaDocument) {
+    messageMedia.hasMediaSpoiler = message_.media.spoiler || false;
+  }
+
+  let m: Message | null = null;
+
+  if (message_.media instanceof types.MessageMediaPhoto) {
+    if (!message_.media.photo) {
+      UNREACHABLE();
+    }
+    const photo = constructPhoto(message_.media.photo[as](types.Photo));
+    m = { ...messageMedia, photo };
+  } else if (message_.media instanceof types.MessageMediaDice) {
+    const dice = constructDice(message_.media);
+    m = { ...message, dice };
+  } else if (message_.media instanceof types.MessageMediaDocument) {
+    const { document } = message_.media;
+    if (document instanceof types.Document) {
+      const getFileId = (type: FileType) =>
+        new FileID(null, null, type, document.dc_id, {
+          mediaId: document.id,
+          accessHash: document.access_hash,
+          fileReference: document.file_reference,
+        }).encode();
+      const fileUniqueId = new FileUniqueID(FileUniqueType.Document, { mediaId: document.id }).encode();
+
+      const animated = document.attributes.find((v): v is types.DocumentAttributeAnimated => v instanceof types.DocumentAttributeAnimated);
+      const audio = document.attributes.find((v): v is types.DocumentAttributeAudio => v instanceof types.DocumentAttributeAudio);
+      const fileName = document.attributes.find((v): v is types.DocumentAttributeFilename => v instanceof types.DocumentAttributeFilename);
+      const sticker = document.attributes.find((v): v is types.DocumentAttributeSticker => v instanceof types.DocumentAttributeSticker);
+      const video = document.attributes.find((v): v is types.DocumentAttributeVideo => v instanceof types.DocumentAttributeVideo);
+
+      if (animated) {
+        const animation = constructAnimation(document, video, fileName, getFileId(FileType.Animation), fileUniqueId);
+        m = { ...messageMedia, animation };
+      } else if (video) {
+        if (video.round_message) {
+          const videoNote = constructVideoNote(document, video, getFileId(FileType.VideoNote), fileUniqueId);
+          m = { ...message, videoNote };
+        } else {
+          const video_ = constructVideo(document, video, fileName?.file_name, getFileId(FileType.Video), fileUniqueId);
+          m = { ...messageMedia, video: video_ };
+        }
+      } else if (audio) {
+        if (audio.voice) {
+          const voice = constructVoice(document, audio, getFileId(FileType.Voice), fileUniqueId);
+          m = { ...messageMedia, voice };
+        } else {
+          const audio_ = constructAudio(document, audio, getFileId(FileType.Audio), fileUniqueId);
+          m = { ...messageMedia, audio: audio_ };
+        }
+      } else if (sticker) {
+        const sticker = await constructSticker(document, getFileId(FileType.Sticker), fileUniqueId, getStickerSetName);
+        m = { ...message, sticker };
+      } else if (fileName) {
+        const document_ = constructDocument(document, fileName, getFileId(FileType.Document), fileUniqueId);
+        m = { ...messageMedia, document: document_ };
+      } else {
+        const document_ = constructDocument(document, new types.DocumentAttributeFilename({ file_name: "Unknown" }), getFileId(FileType.Document), fileUniqueId);
+        m = { ...messageMedia, document: document_ };
+      }
+    }
+  } else if (message_.media instanceof types.MessageMediaContact) {
+    const contact = constructContact(message_.media);
+    m = { ...messageMedia, contact };
+  } else if (message_.media instanceof types.MessageMediaGame) {
+    const game = constructGame(message_.media);
+    m = { ...message, game };
+  } else if (message_.media instanceof types.MessageMediaPoll) {
+    const poll = constructPoll(message_.media);
+    m = { ...message, poll };
+  } else if (message_.media instanceof types.MessageMediaVenue) {
+    const venue = constructVenue(message_.media);
+    m = { ...message, venue };
+  } else if (message_.media instanceof types.MessageMediaGeo || message_.media instanceof types.MessageMediaGeoLive) {
+    const location = constructLocation(message_.media);
+    m = { ...message, location };
+  } else if (message_.media instanceof types.MessageMediaWebPage) {
+    UNREACHABLE(); // TODO: implement
+  } else if (message_.media instanceof types.MessageMediaGiveaway) {
+    const giveaway = constructGiveaway(message_.media);
+    m = { ...message, giveaway };
+  } else {
+    // not implemented
+    UNREACHABLE();
+  }
+
+  if (m == null) {
+    UNREACHABLE();
+  }
+
+  return cleanObject(m);
 }
