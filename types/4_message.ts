@@ -30,7 +30,10 @@ import { constructInlineKeyboardMarkup, InlineKeyboardMarkup } from "./3_inline_
 
 const d = debug("types/Message");
 
-/** Properties shared between all message types. */
+/**
+ * Properties shared between all message types.
+ * @unlisted
+ */
 export interface MessageBase {
   out: boolean;
   id: number;
@@ -61,7 +64,10 @@ export interface MessageBase {
   replyMarkup?: InlineKeyboardMarkup | ReplyKeyboardMarkup | ReplyKeyboardRemove | ForceReply;
 }
 
-/** Properties shared between media message types. */
+/**
+ * Properties shared between media message types.
+ * @unlisted
+ */
 export interface MessageMediaBase extends MessageBase {
   caption?: string;
   captionEntities?: MessageEntity[];
@@ -70,158 +76,196 @@ export interface MessageMediaBase extends MessageBase {
 
 // begin message types
 
+/** @unlisted */
 export interface MessageText extends MessageBase {
   text: string;
   entities: MessageEntity[];
 }
 
+/** @unlisted */
 export interface MessagePhoto extends MessageMediaBase {
   photo: Photo;
 }
 
+/** @unlisted */
 export interface MessageDocument extends MessageMediaBase {
   document: Document;
 }
 
+/** @unlisted */
 export interface MessageVideo extends MessageMediaBase {
   video: Video;
 }
 
+/** @unlisted */
 export interface MessageSticker extends MessageBase {
   sticker: Sticker;
 }
 
+/** @unlisted */
 export interface MessageAnimation extends MessageMediaBase {
   animation: Animation;
 }
 
+/** @unlisted */
 export interface MessageVoice extends MessageMediaBase {
   voice: Voice;
 }
 
+/** @unlisted */
 export interface MessageAudio extends MessageMediaBase {
   audio: Audio;
 }
 
+/** @unlisted */
 export interface MessageDice extends MessageBase {
   dice: Dice;
 }
 
+/** @unlisted */
 export interface MessageVideoNote extends MessageBase {
   videoNote: VideoNote;
 }
 
+/** @unlisted */
 export interface MessageContact extends MessageBase {
   contact: Contact;
 }
 
+/** @unlisted */
 export interface MessageGame extends MessageBase {
   game: Game;
 }
 
+/** @unlisted */
 export interface MessagePoll extends MessageBase {
   poll: Poll;
 }
 
+/** @unlisted */
 export interface MessageVenue extends MessageBase {
   venue: Venue;
 }
 
+/** @unlisted */
 export interface MessageLocation extends MessageBase {
   location: Location;
 }
 
+/** @unlisted */
 export interface MessageNewChatMembers extends MessageBase {
   newChatMembers: User[];
 }
 
+/** @unlisted */
 export interface MessageLeftChatMember extends MessageBase {
   leftChatMember: User;
 }
 
+/** @unlisted */
 export interface MessageNewChatTitle extends MessageBase {
   newChatTitle: string;
 }
 
+/** @unlisted */
 export interface MessageNewChatPhoto extends MessageBase {
   newChatPhoto: Photo;
 }
 
+/** @unlisted */
 export interface MessageDeletedChatPhoto extends MessageBase {
   deletedChatPhoto: true;
 }
 
+/** @unlisted */
 export interface MessageGroupCreated extends MessageBase {
   groupCreated: true;
   newChatMembers: User[];
 }
 
+/** @unlisted */
 export interface MessageSupergroupCreated extends MessageBase {
   supergroupCreated: true;
 }
 
+/** @unlisted */
 export interface MessageChannelCreated extends MessageBase {
   channelCreated: true;
 }
 
+/** @unlisted */
 export interface MessageAutoDeleteTimerChanged extends MessageBase {
   newAutoDeleteTime: number;
 }
 
+/** @unlisted */
 export interface MessageChatMigratedTo extends MessageBase {
   chatMigratedTo: number;
 }
 
+/** @unlisted */
 export interface MessageChatMigratedFrom extends MessageBase {
   chatMigratedFrom: number;
 }
 
+/** @unlisted */
 export interface MessagePinnedMessage extends MessageBase {
   pinnedMessage: Message;
 }
 
+/** @unlisted */
 export interface MessageUserShared extends MessageBase {
   userShared: { requestId: number; userId: number };
 }
 
+/** @unlisted */
 export interface MessageWriteAccessAllowed extends MessageBase {
   writeAccessAllowed: { webAppName?: string };
 }
 
+/** @unlisted */
 export interface MessageForumTopicCreated extends MessageBase {
   forumTopicCreated: { name: string; iconColor: string; iconCutsomEmojiId?: string };
 }
 
+/** @unlisted */
 export interface MessageForumTopicEdited extends MessageBase {
   forumTopicEdited: { name: string; iconCutsomEmojiId?: string };
 }
 
+/** @unlisted */
 export interface MessageForumTopicClosed extends MessageBase {
   forumTopicClosed: true;
 }
 
+/** @unlisted */
 export interface MessageForumTopicReopened extends MessageBase {
   forumTopicReopened: true;
 }
 
+/** @unlisted */
 export interface MessageVideoChatScheduled extends MessageBase {
   videoChatScheduled: { startDate: Date };
 }
 
+/** @unlisted */
 export interface MessageVideoChatStarted extends MessageBase {
   videoChatStarted: true;
 }
 
+/** @unlisted */
 export interface MessageVideoChatEnded extends MessageBase {
   videoChatEnded: { duration: number };
 }
 
+/** @unlisted */
 export interface MessageGiveaway extends MessageBase {
   giveaway: Giveaway;
 }
 
 // message type map
 
+/** @unlisted */
 export interface MessageTypes {
   text: MessageText;
   photo: MessagePhoto;
