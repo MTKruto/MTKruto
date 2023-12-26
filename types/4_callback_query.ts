@@ -2,7 +2,7 @@ import { base64EncodeUrlSafe, cleanObject, UNREACHABLE } from "../1_utilities.ts
 import { peerToChatId, serialize, types } from "../2_tl.ts";
 import { EntityGetter } from "./1__getters.ts";
 import { constructUser, User } from "./1_user.ts";
-import { Message, MessageGetter } from "./3_message.ts";
+import { Message, MessageGetter } from "./4_message.ts";
 
 export interface CallbackQuery {
   id: string;
