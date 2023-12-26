@@ -3,7 +3,7 @@ import { bigIntFromBuffer, cleanObject, drop, getRandomBigInt, getRandomId, Mayb
 import { as, enums, functions, getChannelChatId, Message_, MessageContainer, name, peerToChatId, ReadObject, RPCResult, TLError, TLReader, types } from "../2_tl.ts";
 import { Storage, StorageMemory } from "../3_storage.ts";
 import { DC } from "../3_transport.ts";
-import { BotCommand, botCommandScopeToTlObject, CallbackQuery, Chat, ChatAction, ChatID, constructCallbackQuery, constructChat, constructChat2, constructChat3, constructChat4, constructChosenInlineResult, constructDocument, constructInlineQuery, constructMessage, constructMessageReaction, constructUser, Document, FileID, FileType, FileUniqueID, FileUniqueType, getChatOrder, InlineQuery, InlineQueryResult, inlineQueryResultToTlObject, Message, MessageEntity, messageEntityToTlObject, ParseMode, Reaction, reactionToTlObject, replyMarkupToTlObject, ThumbnailSource, User, UsernameResolver } from "../3_types.ts";
+import { assertMessageType, BotCommand, botCommandScopeToTlObject, CallbackQuery, Chat, ChatAction, ChatID, constructCallbackQuery, constructChat, constructChat2, constructChat3, constructChat4, constructChosenInlineResult, constructDocument, constructInlineQuery, constructMessage, constructMessageReaction, constructUser, Document, FileID, FileType, FileUniqueID, FileUniqueType, getChatOrder, InlineQuery, InlineQueryResult, inlineQueryResultToTlObject, Message, MessageAnimation, MessageAudio, MessageContact, MessageDice, MessageDocument, MessageEntity, messageEntityToTlObject, MessageLocation, MessagePhoto, MessagePoll, MessageText, MessageTypes, MessageVenue, MessageVideo, MessageVideoNote, MessageVoice, ParseMode, Reaction, reactionToTlObject, replyMarkupToTlObject, ThumbnailSource, User, UsernameResolver } from "../3_types.ts";
 import { ACK_THRESHOLD, APP_VERSION, CHANNEL_DIFFERENCE_LIMIT_BOT, CHANNEL_DIFFERENCE_LIMIT_USER, DEVICE_MODEL, LANG_CODE, LANG_PACK, LAYER, MAX_CHANNEL_ID, MAX_CHAT_ID, PublicKeys, STICKER_SET_NAME_TTL, SYSTEM_LANG_CODE, SYSTEM_VERSION, USERNAME_TTL } from "../4_constants.ts";
 import { AuthKeyUnregistered, FloodWait, Migrate, PasswordHashInvalid, PhoneNumberInvalid, SessionPasswordNeeded, upgradeInstance } from "../4_errors.ts";
 import { parseHtml } from "./0_html.ts";
@@ -12,7 +12,7 @@ import { checkPassword } from "./0_password.ts";
 import { FileSource, getFileContents, getUsername, isChannelPtsUpdate, isHttpUrl, isPtsUpdate, resolve, With } from "./0_utilities.ts";
 import { ClientAbstract } from "./1_client_abstract.ts";
 import { ClientPlain } from "./2_client_plain.ts";
-import { _SendCommon, AddReactionParams, AnswerCallbackQueryParams, AnswerInlineQueryParams, AuthorizeUserParams, ClientParams, ConnectionState, DeleteMessageParams, DeleteMessagesParams, DownloadParams, EditMessageParams, FilterableUpdates, FilterUpdate, ForwardMessagesParams, getChatListId, GetChatsParams, GetHistoryParams, GetMyCommandsParams, InvokeErrorHandler, NetworkStatistics, ReplyParams, SendAnimationParams, SendAudioParams, SendContactParams, SendDiceParams, SendDocumentParams, SendLocationParams, SendMessageParams, SendPhotoParams, SendPollParams, SendVenueParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams, SetMyCommandsParams, Update, UploadParams } from "./3_types.ts";
+import { _SendCommon, AddReactionParams, AnswerCallbackQueryParams, AnswerInlineQueryParams, AuthorizeUserParams, ClientParams, ConnectionState, DeleteMessageParams, DeleteMessagesParams, DownloadParams, EditMessageParams, FilterUpdate, ForwardMessagesParams, getChatListId, GetChatsParams, GetHistoryParams, GetMyCommandsParams, InvokeErrorHandler, MessageUpdates, NetworkStatistics, ReplyParams, SendAnimationParams, SendAudioParams, SendContactParams, SendDiceParams, SendDocumentParams, SendLocationParams, SendMessageParams, SendPhotoParams, SendPollParams, SendVenueParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams, SetMyCommandsParams, Update, UploadParams } from "./3_types.ts";
 import { Composer, concat, flatten, Middleware, MiddlewareFn, skip } from "./4_composer.ts";
 
 const d = debug("Client");
@@ -48,31 +48,31 @@ export interface Context extends Update {
   /** Resolves to `effectiveMessage?.senderChat`. */
   senderChat: this["msg"] extends never ? never : this["msg"]["senderChat"];
   /** Reply the received message with a text message. */
-  reply: (text: string, params?: Omit<SendMessageParams, "replyToMessageId"> & ReplyParams) => Promise<With<Message, "text">>;
+  reply: (text: string, params?: Omit<SendMessageParams, "replyToMessageId"> & ReplyParams) => Promise<MessageText>;
   /** Reply the received message with a poll. */
-  replyPoll: (question: string, options: [string, string, ...string[]], params?: Omit<SendPollParams, "replyToMessageId"> & ReplyParams) => Promise<With<Message, "poll">>;
+  replyPoll: (question: string, options: [string, string, ...string[]], params?: Omit<SendPollParams, "replyToMessageId"> & ReplyParams) => Promise<MessagePoll>;
   /** Reply the received message with a photo. */
-  replyPhoto: (photo: FileSource, params?: Omit<SendPhotoParams, "replyToMessageId"> & ReplyParams) => Promise<With<Message, "photo">>;
+  replyPhoto: (photo: FileSource, params?: Omit<SendPhotoParams, "replyToMessageId"> & ReplyParams) => Promise<MessagePhoto>;
   /** Reply the received message with a document. */
-  replyDocument: (document: FileSource, params?: Omit<SendDocumentParams, "replyToMessageId"> & ReplyParams) => Promise<With<Message, "document">>;
+  replyDocument: (document: FileSource, params?: Omit<SendDocumentParams, "replyToMessageId"> & ReplyParams) => Promise<MessageDocument>;
   /** Reply the received message with a location. */
-  replyLocation: (latitude: number, longitude: number, params?: Omit<SendLocationParams, "replyToMessageId"> & ReplyParams) => Promise<With<Message, "location">>;
+  replyLocation: (latitude: number, longitude: number, params?: Omit<SendLocationParams, "replyToMessageId"> & ReplyParams) => Promise<MessageLocation>;
   /** Reply the received message with a dice. */
-  replyDice: (params?: Omit<SendDiceParams, "replyToMessageId"> & ReplyParams) => Promise<With<Message, "dice">>;
+  replyDice: (params?: Omit<SendDiceParams, "replyToMessageId"> & ReplyParams) => Promise<MessageDice>;
   /** Reply the received message with a venue. */
-  replyVenue: (latitude: number, longitude: number, title: string, address: string, params?: Omit<SendVenueParams, "replyToMessageId"> & ReplyParams) => Promise<With<Message, "venue">>;
+  replyVenue: (latitude: number, longitude: number, title: string, address: string, params?: Omit<SendVenueParams, "replyToMessageId"> & ReplyParams) => Promise<MessageVenue>;
   /** Reply the received message with a contact. */
-  replyContact: (firstName: string, number: string, params?: Omit<SendContactParams, "replyToMessageId"> & ReplyParams) => Promise<With<Message, "contact">>;
+  replyContact: (firstName: string, number: string, params?: Omit<SendContactParams, "replyToMessageId"> & ReplyParams) => Promise<MessageContact>;
   /** Reply the received message with a video. */
-  replyVideo: (video: FileSource, params?: Omit<SendVideoParams, "replyToMessageId"> & ReplyParams) => Promise<With<Message, "video">>;
+  replyVideo: (video: FileSource, params?: Omit<SendVideoParams, "replyToMessageId"> & ReplyParams) => Promise<MessageVideo>;
   /** Reply the received message with an animation. */
-  replyAnimation: (animation: FileSource, params?: Omit<SendAnimationParams, "replyToMessageId"> & ReplyParams) => Promise<With<Message, "animation">>;
+  replyAnimation: (animation: FileSource, params?: Omit<SendAnimationParams, "replyToMessageId"> & ReplyParams) => Promise<MessageAnimation>;
   /** Reply the received message with a voice message. */
-  replyVoice: (voice: FileSource, params?: Omit<SendVoiceParams, "replyToMessageId"> & ReplyParams) => Promise<With<Message, "voice">>;
+  replyVoice: (voice: FileSource, params?: Omit<SendVoiceParams, "replyToMessageId"> & ReplyParams) => Promise<MessageVoice>;
   /** Reply the received message with an audio file. */
-  replyAudio: (audio: FileSource, params?: Omit<SendAudioParams, "replyToMessageId"> & ReplyParams) => Promise<With<Message, "audio">>;
+  replyAudio: (audio: FileSource, params?: Omit<SendAudioParams, "replyToMessageId"> & ReplyParams) => Promise<MessageAudio>;
   /** Reply the received message with a video note. */
-  replyVideoNote: (videoNote: FileSource, params?: Omit<SendVideoNoteParams, "replyToMessageId"> & ReplyParams) => Promise<With<Message, "videoNote">>;
+  replyVideoNote: (videoNote: FileSource, params?: Omit<SendVideoNoteParams, "replyToMessageId"> & ReplyParams) => Promise<MessageVideoNote>;
   /** Delete the received message. */
   delete: () => Promise<void>;
   /** Forward the received message. */
@@ -80,15 +80,15 @@ export interface Context extends Update {
   /** Send a chat action to the chat which the message was received from. */
   sendChatAction: (action: ChatAction, params?: { messageThreadId?: number }) => Promise<void>;
   /** Edit a message in the chat which the message was received from. */
-  editMessageText: (messageId: number, text: string, params?: EditMessageParams) => Promise<With<Message, "text">>;
+  editMessageText: (messageId: number, text: string, params?: EditMessageParams) => Promise<MessageText>;
   /** Answer the received callback query. */
   answerCallbackQuery: (params?: AnswerCallbackQueryParams) => Promise<void>;
   /** Answer the received inline query. */
   answerInlineQuery: (results: InlineQueryResult[], params?: AnswerInlineQueryParams) => Promise<void>;
   /** Retrieve a single message of the chat which the message was received from. */
-  getMessage: (messageId: number) => Promise<Omit<Message, "replyToMessage"> | null>;
+  getMessage: (messageId: number) => Promise<Message | null>;
   /** Retrieve multiple messages of the chat which the message was received from. */
-  getMessages: (messageIds: number[]) => Promise<Omit<Message, "replyToMessage">[]>;
+  getMessages: (messageIds: number[]) => Promise<Message[]>;
   /** Forward a message of the chat which the message was received from. */
   forwardMessage: (to: ChatID, messageId: number, params?: ForwardMessagesParams) => Promise<Message>;
   /** Forward multiple messages of the chat which the message was received from. */
@@ -290,14 +290,18 @@ export class Client<C extends Context = Context> extends ClientAbstract {
       return replyToMessageId;
     };
     const me = update.connectionState !== undefined ? this.#lastGetMe : (update.authorizationState !== undefined && !update.authorizationState.authorized) ? this.#lastGetMe : await this.#getMe();
-    return cleanObject({
+
+    const context: Context = {
       ...update,
       client: this as unknown as Client,
-      me: me == null ? undefined : me,
-      msg,
-      chat,
-      from,
-      senderChat,
+      me: (me == null ? undefined : me) as C["me"],
+      msg: msg as C["msg"],
+      chat: chat as C["chat"],
+      from: from as C["from"],
+      senderChat: from as C["senderChat"],
+      get toJSON() {
+        return () => update;
+      },
       reply: (text, params) => {
         const effectiveMessage = mustGetMsg();
         const replyToMessageId = getReplyToMessageId(params?.quote, effectiveMessage);
@@ -338,10 +342,10 @@ export class Client<C extends Context = Context> extends ClientAbstract {
         const replyToMessageId = getReplyToMessageId(params?.quote, effectiveMessage);
         return this.sendVenue(effectiveMessage.chat.id, latitude, longitude, title, address, { ...params, replyToMessageId });
       },
-      replyVideo: (document, params) => {
+      replyVideo: (video, params) => {
         const effectiveMessage = mustGetMsg();
         const replyToMessageId = getReplyToMessageId(params?.quote, effectiveMessage);
-        return this.sendDocument(effectiveMessage.chat.id, document, { ...params, replyToMessageId });
+        return this.sendVideo(effectiveMessage.chat.id, video, { ...params, replyToMessageId });
       },
       replyAnimation: (document, params) => {
         const effectiveMessage = mustGetMsg();
@@ -369,7 +373,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
       },
       forward: (to, params) => {
         const effectiveMessage = mustGetMsg();
-        return this.forwardMessage(effectiveMessage.chat.id, to, effectiveMessage.id, params);
+        return this.forwardMessage(effectiveMessage.chat.id, to, effectiveMessage.id, params) as unknown as ReturnType<C["forward"]>;
       },
       answerCallbackQuery: (params) => {
         const { callbackQuery } = update;
@@ -425,10 +429,9 @@ export class Client<C extends Context = Context> extends ClientAbstract {
         const effectiveMessage = mustGetMsg();
         return this.addReaction(effectiveMessage.chat.id, messageId, reaction, params);
       },
-      get toJSON() {
-        return () => update;
-      },
-    } as C, false);
+    };
+
+    return cleanObject(context as C, false);
   };
 
   #propagateConnectionState(connectionState: ConnectionState) {
@@ -1618,7 +1621,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
     chatId: ChatID,
     text: string,
     params?: SendMessageParams,
-  ): Promise<With<Message, "text">> {
+  ): Promise<MessageText> {
     const [message, entities] = this.#parseText(text, params);
 
     const replyMarkup = await this.#constructReplyMarkup(params);
@@ -1644,7 +1647,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
     });
 
     const message_ = await this.#updatesToMessages(chatId, result).then((v) => v[0]);
-    return Client.#assertMsgHas(message_, "text");
+    return assertMessageType(message_, "text");
   }
 
   #parseText(text: string, params?: { parseMode?: ParseMode; entities?: MessageEntity[] }) {
@@ -1682,7 +1685,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
     messageId: number,
     text: string,
     params?: EditMessageParams,
-  ): Promise<With<Message, "text">> {
+  ): Promise<MessageText> {
     const [message, entities] = this.#parseText(text, params);
 
     const result = await this.api.messages.editMessage({
@@ -1695,7 +1698,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
     });
 
     const message_ = await this.#updatesToMessages(chatId, result).then((v) => v[0]);
-    return Client.#assertMsgHas(message_, "text");
+    return assertMessageType(message_, "text");
   }
 
   async #getMessagesInner(chatId_: ChatID, messageIds: number[]) {
@@ -1725,7 +1728,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
         }).then((v) => v[as](types.messages.Messages).messages);
       }
     }
-    const messages = new Array<{ message: Omit<Message, "replyToMessage">; isReplyToMessage: boolean }>();
+    const messages = new Array<{ message: Message; isReplyToMessage: boolean }>();
     for (const message_ of messages_) {
       if (message_ instanceof types.MessageEmpty) {
         continue;
@@ -1748,7 +1751,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
    * ```
    * @returns The retrieved messages.
    */
-  async getMessages(chatId: ChatID, messageIds: number[]): Promise<Omit<Message, "replyToMessage">[]> {
+  async getMessages(chatId: ChatID, messageIds: number[]): Promise<Message[]> {
     return await this.#getMessagesInner(chatId, messageIds).then((v) => v.map((v) => v.message));
   }
 
@@ -1768,7 +1771,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
    * ```
    * @returns The retrieved message.
    */
-  async getMessage(chatId: ChatID, messageId: number): Promise<Omit<Message, "replyToMessage"> | null> {
+  async getMessage(chatId: ChatID, messageId: number): Promise<Message | null> {
     const messages = await this.getMessages(chatId, [messageId]);
     return messages[0] ?? null;
   }
@@ -2165,13 +2168,6 @@ export class Client<C extends Context = Context> extends ClientAbstract {
     }
   }
 
-  static #assertMsgHas<K extends keyof Message>(message: Message, key: K): With<Message, K> {
-    if (!(key in message) || message[key] === undefined) {
-      UNREACHABLE();
-    }
-    return message as With<Message, K>;
-  }
-
   /**
    * Send a poll.
    *
@@ -2181,7 +2177,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
    * @param options The poll's options.
    * @returns The sent poll.
    */
-  async sendPoll(chatId: ChatID, question: string, options: [string, string, ...string[]], params?: SendPollParams): Promise<With<Message, "poll">> {
+  async sendPoll(chatId: ChatID, question: string, options: [string, string, ...string[]], params?: SendPollParams): Promise<MessagePoll> {
     const peer = await this.getInputPeer(chatId);
     const randomId = getRandomId();
     const silent = params?.disableNotification ? true : undefined;
@@ -2229,7 +2225,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
     });
 
     const message = await this.#updatesToMessages(chatId, result).then((v) => v[0]);
-    return Client.#assertMsgHas(message, "poll");
+    return assertMessageType(message, "poll");
   }
 
   /**
@@ -2458,14 +2454,24 @@ export class Client<C extends Context = Context> extends ClientAbstract {
     return composer;
   }
 
-  on<T extends keyof Update, F extends string>(
-    filter: T extends FilterableUpdates ? T | [T, F, ...F[]] : T,
-    ...middleawre: Middleware<FilterUpdate<C, T, F>>[]
+  on<T extends keyof Update, F extends string, K extends keyof MessageTypes | null = null>(
+    filter: T extends MessageUpdates ? T | [T, K, ...F[]] : T,
+    ...middleawre: Middleware<FilterUpdate<C, T, F, K extends keyof MessageTypes ? MessageTypes[K] : C[T]>>[]
   ) {
     const type = typeof filter === "string" ? filter : filter[0];
-    const keys = Array.isArray(filter) ? filter.slice(1) : [];
-    return this.filter((ctx): ctx is FilterUpdate<C, T, F> => {
+    let keys = Array.isArray(filter) ? filter.slice(1) : [];
+    let messageType: keyof MessageTypes | null = null;
+    if (type == "message") {
+      messageType = keys[0] as keyof MessageTypes;
+      keys = keys.slice(1);
+    }
+    return this.filter((ctx) => {
       if (type in ctx) {
+        if (messageType != null) {
+          // deno-lint-ignore ban-ts-comment
+          // @ts-ignore
+          assertMessageType(ctx[type], messageType);
+        }
         if (keys.length > 0) {
           for (const key of keys) {
             // deno-lint-ignore ban-ts-comment
@@ -2479,7 +2485,8 @@ export class Client<C extends Context = Context> extends ClientAbstract {
       } else {
         return false;
       }
-    }, ...middleawre);
+      // deno-lint-ignore no-explicit-any
+    }, ...middleawre as unknown as any) as unknown as Composer<FilterUpdate<C, T, F, K extends keyof MessageTypes ? MessageTypes[K] : C[T]>>;
   }
 
   command(
@@ -2686,7 +2693,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
    * @param chatId The chat to send the photo to.
    * @param photo The photo to send.
    */
-  async sendPhoto(chatId: ChatID, photo: FileSource, params?: SendPhotoParams): Promise<With<Message, "photo">> {
+  async sendPhoto(chatId: ChatID, photo: FileSource, params?: SendPhotoParams): Promise<MessagePhoto> {
     let media: enums.InputMedia | null = null;
     const spoiler = params?.hasSpoiler ? true : undefined;
 
@@ -2711,7 +2718,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
     }
 
     const message = await this.#sendMedia(chatId, media, params);
-    return Client.#assertMsgHas(message, "photo");
+    return assertMessageType(message, "photo");
   }
 
   async #sendDocumentInner(chatId: ChatID, document: FileSource, params: SendDocumentParams | undefined, fileType: FileType, otherAttribs: enums.DocumentAttribute[], urlSupported = false) {
@@ -2765,9 +2772,9 @@ export class Client<C extends Context = Context> extends ClientAbstract {
    * @param chatId The chat to send the document to.
    * @param document The document to send.
    */
-  async sendDocument(chatId: ChatID, document: FileSource, params?: SendDocumentParams): Promise<With<Message, "document">> {
+  async sendDocument(chatId: ChatID, document: FileSource, params?: SendDocumentParams): Promise<MessageDocument> {
     const message = await this.#sendDocumentInner(chatId, document, params, FileType.Document, []);
-    return Client.#assertMsgHas(message, "document");
+    return assertMessageType(message, "document");
   }
 
   /**
@@ -2777,7 +2784,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
    * @param chatId The chat to send the video to.
    * @param video The video to send.
    */
-  async sendVideo(chatId: ChatID, video: FileSource, params?: SendVideoParams): Promise<With<Message, "video">> {
+  async sendVideo(chatId: ChatID, video: FileSource, params?: SendVideoParams): Promise<MessageVideo> {
     const message = await this.#sendDocumentInner(chatId, video, params, FileType.Video, [
       new types.DocumentAttributeVideo({
         supports_streaming: params?.supportsStreaming ? true : undefined,
@@ -2786,7 +2793,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
         duration: params?.duration ?? 0,
       }),
     ]);
-    return Client.#assertMsgHas(message, "video");
+    return assertMessageType(message, "video");
   }
 
   /**
@@ -2796,7 +2803,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
    * @param chatId The chat to send the animation to.
    * @param animation The animation to send.
    */
-  async sendAnimation(chatId: ChatID, animation: FileSource, params?: SendAnimationParams): Promise<With<Message, "animation">> {
+  async sendAnimation(chatId: ChatID, animation: FileSource, params?: SendAnimationParams): Promise<MessageAnimation> {
     const message = await this.#sendDocumentInner(chatId, animation, params, FileType.Animation, [
       new types.DocumentAttributeAnimated(),
       new types.DocumentAttributeVideo({
@@ -2806,7 +2813,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
         duration: params?.duration ?? 0,
       }),
     ]);
-    return Client.#assertMsgHas(message, "animation");
+    return assertMessageType(message, "animation");
   }
 
   /**
@@ -2816,14 +2823,14 @@ export class Client<C extends Context = Context> extends ClientAbstract {
    * @param chatId The chat to send the voice message to.
    * @param voice The voice to send.
    */
-  async sendVoice(chatId: ChatID, voice: FileSource, params?: SendVoiceParams): Promise<With<Message, "voice">> {
+  async sendVoice(chatId: ChatID, voice: FileSource, params?: SendVoiceParams): Promise<MessageVoice> {
     const message = await this.#sendDocumentInner(chatId, voice, params, FileType.Voice, [
       new types.DocumentAttributeAudio({
         voice: true,
         duration: params?.duration ?? 0,
       }),
     ]);
-    return Client.#assertMsgHas(message, "voice");
+    return assertMessageType(message, "voice");
   }
 
   /**
@@ -2833,7 +2840,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
    * @param chatId The chat to send the audio file to.
    * @param audio The audio to send.
    */
-  async sendAudio(chatId: ChatID, audio: FileSource, params?: SendAudioParams): Promise<With<Message, "audio">> {
+  async sendAudio(chatId: ChatID, audio: FileSource, params?: SendAudioParams): Promise<MessageAudio> {
     const message = await this.#sendDocumentInner(chatId, audio, params, FileType.Audio, [
       new types.DocumentAttributeAudio({
         duration: params?.duration ?? 0,
@@ -2841,7 +2848,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
         title: params?.title,
       }),
     ]);
-    return Client.#assertMsgHas(message, "audio");
+    return assertMessageType(message, "audio");
   }
 
   /**
@@ -2851,7 +2858,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
    * @param chatId The chat to send the video note to.
    * @param videoNote The video note to send.
    */
-  async sendVideoNote(chatId: ChatID, audio: FileSource, params?: SendVideoNoteParams): Promise<With<Message, "videoNote">> {
+  async sendVideoNote(chatId: ChatID, audio: FileSource, params?: SendVideoNoteParams): Promise<MessageVideoNote> {
     const message = await this.#sendDocumentInner(chatId, audio, params, FileType.VideoNote, [
       new types.DocumentAttributeVideo({
         round_message: true,
@@ -2860,7 +2867,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
         duration: params?.duration ?? 0,
       }),
     ], false);
-    return Client.#assertMsgHas(message, "videoNote");
+    return assertMessageType(message, "videoNote");
   }
 
   /**
@@ -2871,7 +2878,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
    * @param latitude The location's latitude.
    * @param longitude The location's longitude.
    */
-  async sendLocation(chatId: ChatID, latitude: number, longitude: number, params?: SendLocationParams): Promise<With<Message, "location">> {
+  async sendLocation(chatId: ChatID, latitude: number, longitude: number, params?: SendLocationParams): Promise<MessageLocation> {
     const peer = await this.getInputPeer(chatId);
     const randomId = getRandomId();
     const silent = params?.disableNotification ? true : undefined;
@@ -2909,7 +2916,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
     });
 
     const message = await this.#updatesToMessages(chatId, result).then((v) => v[0]);
-    return Client.#assertMsgHas(message, "location");
+    return assertMessageType(message, "location");
   }
 
   /**
@@ -2920,7 +2927,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
    * @param firstName The contact's first name.
    * @param number The contact's phone number.
    */
-  async sendContact(chatId: ChatID, firstName: string, number: string, params?: SendContactParams): Promise<With<Message, "contact">> {
+  async sendContact(chatId: ChatID, firstName: string, number: string, params?: SendContactParams): Promise<MessageContact> {
     const peer = await this.getInputPeer(chatId);
     const randomId = getRandomId();
     const silent = params?.disableNotification ? true : undefined;
@@ -2946,7 +2953,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
     });
 
     const message = await this.#updatesToMessages(chatId, result).then((v) => v[0]);
-    return Client.#assertMsgHas(message, "contact");
+    return assertMessageType(message, "contact");
   }
 
   /**
@@ -2955,7 +2962,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
    * @method
    * @param chatId The chat to send the dice to.
    */
-  async sendDice(chatId: ChatID, params?: SendDiceParams): Promise<With<Message, "dice">> {
+  async sendDice(chatId: ChatID, params?: SendDiceParams): Promise<MessageDice> {
     const peer = await this.getInputPeer(chatId);
     const randomId = getRandomId();
     const silent = params?.disableNotification ? true : undefined;
@@ -2978,7 +2985,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
     });
 
     const message = await this.#updatesToMessages(chatId, result).then((v) => v[0]);
-    return Client.#assertMsgHas(message, "dice");
+    return assertMessageType(message, "dice");
   }
 
   /**
@@ -2991,7 +2998,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
    * @param title The title of the venue.
    * @param address The written address of the venue.
    */
-  async sendVenue(chatId: ChatID, latitude: number, longitude: number, title: string, address: string, params?: SendVenueParams): Promise<With<Message, "dice">> {
+  async sendVenue(chatId: ChatID, latitude: number, longitude: number, title: string, address: string, params?: SendVenueParams): Promise<MessageVenue> {
     const peer = await this.getInputPeer(chatId);
     const randomId = getRandomId();
     const silent = params?.disableNotification ? true : undefined;
@@ -3022,7 +3029,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
     });
 
     const message = await this.#updatesToMessages(chatId, result).then((v) => v[0]);
-    return Client.#assertMsgHas(message, "dice");
+    return assertMessageType(message, "venue");
   }
 
   /**
