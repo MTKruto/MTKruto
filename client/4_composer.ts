@@ -1,5 +1,5 @@
-import { User } from "../3_types.ts";
-import { FilterableUpdates, FilterUpdate, Update as Update_ } from "./3_types.ts";
+import { assertMessageType, MessageTypes, User } from "../3_types.ts";
+import { FilterUpdate, MessageUpdates, Update as Update_ } from "./3_types.ts";
 
 interface Update extends Update_ {
   me: undefined extends this["connectionState"] ? undefined extends this["authorizationState"] ? User : (User | undefined) : (User | undefined);
@@ -98,14 +98,24 @@ export class Composer<C extends Update> implements MiddlewareObj<C> {
     return composer;
   }
 
-  on<T extends keyof Update_, F extends string>(
-    filter: T extends FilterableUpdates ? T | [T, F, ...F[]] : T,
-    ...middleawre: Middleware<FilterUpdate<C, T, F>>[]
+  on<T extends keyof Update_, F extends string, K extends keyof MessageTypes | null = null>(
+    filter: T extends MessageUpdates ? T | [T, K, ...F[]] : T,
+    ...middleawre: Middleware<FilterUpdate<C, T, F, K extends keyof MessageTypes ? MessageTypes[K] : C[T]>>[]
   ) {
     const type = typeof filter === "string" ? filter : filter[0];
-    const keys = Array.isArray(filter) ? filter.slice(1) : [];
-    return this.filter((ctx): ctx is FilterUpdate<C, T, F> => {
+    let keys = Array.isArray(filter) ? filter.slice(1) : [];
+    let messageType: keyof MessageTypes | null = null;
+    if (type == "message") {
+      messageType = keys[0] as keyof MessageTypes;
+      keys = keys.slice(1);
+    }
+    return this.filter((ctx) => {
       if (type in ctx) {
+        if (messageType != null) {
+          // deno-lint-ignore ban-ts-comment
+          // @ts-ignore
+          assertMessageType(ctx[type], messageType);
+        }
         if (keys.length > 0) {
           for (const key of keys) {
             // deno-lint-ignore ban-ts-comment
@@ -119,7 +129,8 @@ export class Composer<C extends Update> implements MiddlewareObj<C> {
       } else {
         return false;
       }
-    }, ...middleawre);
+      // deno-lint-ignore no-explicit-any
+    }, ...middleawre as unknown as any) as unknown as Composer<FilterUpdate<C, T, F, K extends keyof MessageTypes ? MessageTypes[K] : C[T]>>;
   }
 
   command(

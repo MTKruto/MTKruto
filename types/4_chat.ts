@@ -9,7 +9,7 @@ import { EntityGetter } from "./1__getters.ts";
 export declare namespace Chat {
   interface Base {
     order: string;
-    lastMessage?: Message;
+    lastMessage?: Omit<Message, "replyToMessage">;
     pinned: number;
   }
 
@@ -58,14 +58,14 @@ function getChatPAlsoPhoto(entity: enums.User | enums.Chat | undefined) {
   return { chatP, also, photo };
 }
 
-export function getChatOrder(lastMessage: Message | undefined, pinned: number) {
+export function getChatOrder(lastMessage: Omit<Message, "replyToMessage"> | undefined, pinned: number) {
   const p = pinned == -1 ? "" : `P${100 - pinned}`;
   if (!lastMessage) {
     return p + "0";
   }
   return p + String((BigInt(Math.floor(lastMessage.date.getTime())) << 32n) + BigInt(lastMessage.id));
 }
-export async function constructChat(dialog: enums.Dialog, dialogs: types.messages.Dialogs | types.messages.DialogsSlice, pinnedChats: number[], getEntity: EntityGetter, getMessage: MessageGetter<"replyToMessage">, getStickerSetName: StickerSetNameGetter): Promise<Chat> {
+export async function constructChat(dialog: enums.Dialog, dialogs: types.messages.Dialogs | types.messages.DialogsSlice, pinnedChats: number[], getEntity: EntityGetter, getMessage: MessageGetter, getStickerSetName: StickerSetNameGetter): Promise<Chat> {
   const topMessage_ = dialogs.messages.find((v) => "id" in v && v.id == dialog.top_message);
   if (!topMessage_) {
     UNREACHABLE();
@@ -95,7 +95,7 @@ export async function constructChat(dialog: enums.Dialog, dialogs: types.message
   }
 }
 
-export function constructChat2(entity: types.User | types.Chat | types.ChatForbidden | types.Channel | types.ChannelForbidden, pinned: number, lastMessage: Message | undefined): Chat {
+export function constructChat2(entity: types.User | types.Chat | types.ChatForbidden | types.Channel | types.ChannelForbidden, pinned: number, lastMessage: Omit<Message, "replyToMessage"> | undefined): Chat {
   const chatPAlsoPhoto = getChatPAlsoPhoto(entity);
   const order = getChatOrder(lastMessage, pinned);
 
@@ -113,7 +113,7 @@ export function constructChat2(entity: types.User | types.Chat | types.ChatForbi
   }
 }
 
-export async function constructChat3(chatId: number, pinned: number, lastMessage: Message | undefined, getEntity: EntityGetter): Promise<Chat | null> {
+export async function constructChat3(chatId: number, pinned: number, lastMessage: Omit<Message, "replyToMessage"> | undefined, getEntity: EntityGetter): Promise<Chat | null> {
   const peer = chatIdToPeer(chatId);
   const entity = await getEntity(peer);
   if (entity == null) {
@@ -123,7 +123,7 @@ export async function constructChat3(chatId: number, pinned: number, lastMessage
   }
 }
 
-export async function constructChat4(chatId: number, pinned: number, lastMessageId: number, getEntity: EntityGetter, getMessage: MessageGetter<"replyToMessage">): Promise<Chat | null> {
+export async function constructChat4(chatId: number, pinned: number, lastMessageId: number, getEntity: EntityGetter, getMessage: MessageGetter): Promise<Chat | null> {
   const lastMessage_ = lastMessageId > 0 ? await getMessage(chatId, lastMessageId) : null;
   const lastMessage = lastMessage_ == null ? undefined : lastMessage_;
 
