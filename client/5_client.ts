@@ -298,7 +298,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
       msg: msg as C["msg"],
       chat: chat as C["chat"],
       from: from as C["from"],
-      senderChat: from as C["senderChat"],
+      senderChat: senderChat as C["senderChat"],
       get toJSON() {
         return () => update;
       },
