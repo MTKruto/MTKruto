@@ -464,28 +464,13 @@ export interface AddReactionParams {
 export type MessageUpdates = "message" | "editedMessage";
 
 export interface Update {
-  /**
-   * New incoming message of any kind - text, photo, sticker, etc.
-   */
   message?: Message;
-  /**
-   * New version of a message that is known to the bot and was edited.
-   */
   editedMessage?: Message;
   connectionState?: ConnectionState;
   authorizationState?: AuthorizationState;
   deletedMessages?: [Message, ...Message[]];
-  /**
-   * New incoming callback query.
-   */
   callbackQuery?: CallbackQuery;
-  /**
-   * New incoming inline query.
-   */
   inlineQuery?: InlineQuery;
-  /**
-   * The result of an inline query that was chosen by a user and sent to their chat partner.
-   */
   chosenInlineResult?: ChosenInlineResult;
   newChat?: Chat;
   editedChat?: Chat;
