@@ -138,21 +138,21 @@ export interface UploadParams {
 }
 
 export interface AnswerInlineQueryParams {
-  /** The maximum amount of time in seconds to cache the result on server, Defaults to 300. */
+  /** TTL of the caches of the results in seconds. Defaults to 300. */
   cacheTime?: number;
-  /** Whether the results may be cached on the server side only for the user that sent the query. */
+  /** Whether the result caches should only be for the user who made the inline query. */
   isPersonal?: boolean;
-  /** Pass the offset that a client should send in the next query with the same text to receive more results. Pass an empty string if there are no more results or if you don't support pagination. Offset length can't exceed 64 bytes. */
+  /** A parameter to be passed to the same query next time when the user’s client asks for more results. Can’t be longer than 64 bytes. */
   nextOffset?: string;
   isGallery?: boolean;
-  /** A JSON-serialized object describing a button to be shown above inline query results. */
+  /** A button to be shown along with the results. */
   button?: InlineQueryResultButton;
 }
 
 export interface SetMyCommandsParams {
-  /** A two-letter ISO 639-1 language code. If empty, commands will be applied to all users from the given scope, for whose language there are no dedicated commands. */
+  /** A two-letter ISO 639-1 language code. If not set, the command details will be updated for users having an unsupported language. */
   languageCode?: string;
-  /** A JSON-serialized object, describing scope of users for which the commands are relevant. Defaults to BotCommandScopeDefault. */
+  /** The scope in which the commands are available. */
   scope?: BotCommandScope;
 }
 
@@ -197,16 +197,16 @@ export interface SendVideoParams extends _CaptionCommon, _ThumbnailCommon, _Spoi
   width?: number;
   /** The height of the photo in pixels. */
   height?: number;
-  /** Pass True if the uploaded video is suitable for streaming. */
+  /** Whether the video is suitable for streaming. */
   supportsStreaming?: boolean;
 }
 
 export interface SendAnimationParams extends _CaptionCommon, _ThumbnailCommon, _SpoilCommon, _UploadCommon, _SendCommon {
   /** The duration of the animation in seconds. */
   duration?: number;
-  /** Animation width. */
+  /** The width of the animation file. */
   width?: number;
-  /** Animation height. */
+  /** The height of the animation file. */
   height?: number;
 }
 
@@ -218,36 +218,36 @@ export interface SendVoiceParams extends _CaptionCommon, _ThumbnailCommon, _Uplo
 export interface SendAudioParams extends _CaptionCommon, _ThumbnailCommon, _UploadCommon, _SendCommon {
   /** The duration of the audio file in seconds. */
   duration?: number;
-  /** Performer. */
+  /** Names the entities that are being featured in the audio. */
   performer?: string;
-  /** Track name. */
+  /** The title of the audio. */
   title?: string;
 }
 
 export interface SendVideoNoteParams extends _CaptionCommon, _ThumbnailCommon, _UploadCommon, _SendCommon {
   /** The duration of the video note in seconds. */
   duration?: number;
-  /** Video width and height, i.e. diameter of the video message. */
+  /** The video’s width and height (diameter). */
   length?: number;
-  /** Thumbnail of the file sent, should be in JPEG format and less than 200 kB in size. The height should not exceed 320. Ignored if the file is not uploaded using multipart/form-data. */
+  /** A thumbnail of the file to attach. Can’t be larger than 200kB or have a height exceeding 320 pixels. Can’t reuse an existing file for it and can only be uploaded directly. */
   thumbnail?: FileSource;
 }
 
 export interface SendLocationParams extends _SendCommon {
-  /** The radius of uncertainty for the location, measured in meters; 0-1500. */
+  /** The accuracy radius of the location in meters. Must be in the range of 0-1500. */
   horizontalAccuracy?: number;
-  /** Period in seconds for which the location will be updated, should be between 60 and 86400. */
+  /** The duration in which the location can be updated in seconds. Must be in the range of 80-864,000. */
   livePeriod?: number;
-  /** For live locations, a direction in which the user is moving, in degrees. Must be between 1 and 360 if specified. */
+  /** The direction which the user is moving towards. Must be in the range of 1-350. */
   heading?: number;
-  /** For live locations, a maximum distance for proximity alerts about approaching another chat member, in meters. Must be between 1 and 100000 if specified. */
+  /** The maximum distance for proximity alerts on approaching another chat member in meters. Must be in the range 1-100,000. */
   proximityAlertRadius?: number;
 }
 
 export interface SendVenueParams extends _SendCommon {
   /** Foursquare identifier of the venue. */
   foursquareId?: string;
-  /** Foursquare type of the venue, if known. (For example, “arts_entertainment/default”, “arts_entertainment/aquarium” or “food/icecream”.) */
+  /** Foursquare type of the venue, if known. For example, "arts_entertainment/default", "arts_entertainment/aquarium" or "food/icecream". */
   foursquareType?: string;
 }
 
@@ -259,7 +259,7 @@ export interface SendContactParams extends _SendCommon {
 }
 
 export interface SendDiceParams extends _SendCommon {
-  /** Emoji on which the dice throw animation is based. Currently, must be one of “🎲”, “🎯”, “🏀”, “⚽”, “🎳”, or “🎰”. Dice can have values 1-6 for “🎲”, “🎯” and “🎳”, values 1-5 for “🏀” and “⚽”, and values 1-64 for “🎰”. Defaults to “🎲”. */
+  /** The type of the dice. Can be 🎲, 🎯, 🏀, ⚽, 🎳, 🎰. Defaults to 🎲. */
   emoji?: "🎲" | "🎯" | "🏀" | "⚽" | "🎳" | "🎰";
 }
 
