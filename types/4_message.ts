@@ -567,6 +567,7 @@ export type Message =
   | MessageGiveaway
   | MessageUnsupported;
 
+/** @unlisted */
 export interface MessageGetter {
   (chatId: number, messageId: number): MaybePromise<Message | null>;
 }
