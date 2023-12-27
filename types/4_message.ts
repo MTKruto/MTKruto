@@ -35,32 +35,59 @@ const d = debug("types/Message");
  * @unlisted
  */
 export interface MessageBase {
+  /** Whether the message is outgoing (sent by the current user). */
   out: boolean;
+  /** The identifier of the message. */
   id: number;
+  /** The identifier of the message's thread. */
   threadId?: number;
+  /** The user who sent the message. */
   from?: User;
+  /** The chat which the message was sent on behalf of. */
   senderChat?: ChatP;
+  /** The point of time in which the message was sent. */
   date: Date;
+  /** The chat where the message was sent to. */
   chat: ChatP;
+  /** A link to the message. */
   link?: string;
+  /** The original sender of the message. */
   forwardFrom?: User;
+  /** The original chat of the message. */
   forwardFromChat?: ChatP;
+  /** The original identifier of the message. */
   forwardId?: number;
+  /** The original signature of the message. */
   forwardSignature?: string;
+  /** The name of the original sender of the message. */
   forwardSenderName?: string;
+  /** The point of time in which the original message was sent. */
   forwardDate?: Date;
+  /** Whether the message was sent in a topic thread. */
   isTopicMessage: boolean;
+  /** Whether the message is an automatic forward. */
   isAutomaticForward?: boolean;
+  /** The message that is being replied to. Not always available even if a message is being replied to. */
   replyToMessage?: Message;
+  /** The identifier of the message that is being replied to. */
   replyToMessageId?: number;
+  /** The reactions of the message. */
   reactions?: MessageReaction[];
+  /** The part of the message that is being replied to. */
   replyQuote?: ReplyQuote;
+  /** The inline bot that was used to send this message. */
   viaBot?: User;
+  /** The point of time in which the message's last edit was made. */
   editDate?: Date;
+  /** Whether the contents of the message is protected. */
   hasProtectedContent?: boolean;
+  /** The identifier of the message's media group. */
   mediaGroupId?: string;
+  /** The signature of the message. */
   authorSignature?: string;
+  /** The number of times the message was viewed. */
   views?: number;
+  /** The message's reply markup. */
   replyMarkup?: InlineKeyboardMarkup | ReplyKeyboardMarkup | ReplyKeyboardRemove | ForceReply;
 }
 
@@ -76,194 +103,333 @@ export interface MessageMediaBase extends MessageBase {
 
 // begin message types
 
-/** @unlisted */
+/**
+ * A text message.
+ * @unlisted
+ */
 export interface MessageText extends MessageBase {
+  /** The text included in the message. */
   text: string;
+  /** Entities of the text. */
   entities: MessageEntity[];
 }
 
 /** @unlisted */
 export interface MessagePhoto extends MessageMediaBase {
+  /** The photo included in the message. */
   photo: Photo;
 }
 
-/** @unlisted */
+/**
+ * A document message.
+ * @unlisted
+ */
 export interface MessageDocument extends MessageMediaBase {
+  /** The document included in the message. */
   document: Document;
 }
 
-/** @unlisted */
+/**
+ * A video message.
+ * @unlisted
+ */
 export interface MessageVideo extends MessageMediaBase {
+  /** The video included in the message. */
   video: Video;
 }
 
-/** @unlisted */
+/**
+ * A sticker message.
+ * @unlisted
+ */
 export interface MessageSticker extends MessageBase {
+  /** The sticker included in the message. */
   sticker: Sticker;
 }
 
-/** @unlisted */
+/**
+ * An animation message. Animations are GIFs or H.264/MPEG-4 AVC videos without sound.
+ * @unlisted
+ */
 export interface MessageAnimation extends MessageMediaBase {
+  /** The animation included in the message. */
   animation: Animation;
 }
 
-/** @unlisted */
+/**
+ * A voice message.
+ * @unlisted
+ */
 export interface MessageVoice extends MessageMediaBase {
+  /** The voice included in the message. */
   voice: Voice;
 }
 
-/** @unlisted */
+/**
+ * An audio message.
+ * @unlisted
+ */
 export interface MessageAudio extends MessageMediaBase {
+  /** The audio included in the message. */
   audio: Audio;
 }
 
-/** @unlisted */
+/**
+ * A dice message.
+ * @unlisted
+ */
 export interface MessageDice extends MessageBase {
+  /** The dice included in the message.  */
   dice: Dice;
 }
 
-/** @unlisted */
+/**
+ * A video note message.
+ * @unlisted
+ */
 export interface MessageVideoNote extends MessageBase {
+  /** The video note included in the message. */
   videoNote: VideoNote;
 }
 
-/** @unlisted */
+/**
+ * A contact message.
+ * @unlisted
+ */
 export interface MessageContact extends MessageBase {
+  /** The contact included in the message. */
   contact: Contact;
 }
 
-/** @unlisted */
+/**
+ * A game message.
+ * @unlisted
+ */
 export interface MessageGame extends MessageBase {
+  /** The game included in the message. */
   game: Game;
 }
 
-/** @unlisted */
+/**
+ * A poll message.
+ * @unlisted
+ */
 export interface MessagePoll extends MessageBase {
+  /** The poll included in the message. */
   poll: Poll;
 }
 
-/** @unlisted */
+/**
+ * A venue message.
+ * @unlisted
+ */
 export interface MessageVenue extends MessageBase {
+  /** The venue included in the message. */
   venue: Venue;
 }
 
-/** @unlisted */
+/**
+ * A location message.
+ * @unlisted
+ */
 export interface MessageLocation extends MessageBase {
+  /** The location included in the message. */
   location: Location;
 }
 
-/** @unlisted */
+/**
+ * A message that is received when new members join a chat.
+ * @unlisted
+ */
 export interface MessageNewChatMembers extends MessageBase {
+  /** The new members of the chat. */
   newChatMembers: User[];
 }
 
-/** @unlisted */
+/**
+ * A message that is received when a member leaves a chat.
+ * @unlisted
+ */
 export interface MessageLeftChatMember extends MessageBase {
+  /** The member who left the chat. */
   leftChatMember: User;
 }
 
-/** @unlisted */
+/**
+ * A message that is received when a chat's title is changed.
+ * @unlisted
+ */
 export interface MessageNewChatTitle extends MessageBase {
+  /** The new title of the chat. */
   newChatTitle: string;
 }
 
-/** @unlisted */
+/**
+ * A message that is received when a chat's photo is changed.
+ * @unlisted
+ */
 export interface MessageNewChatPhoto extends MessageBase {
+  /** The new photo of the chat. */
   newChatPhoto: Photo;
 }
 
-/** @unlisted */
+/**
+ * A message that is received when a chat's photo is removed.
+ * @unlisted
+ */
 export interface MessageDeletedChatPhoto extends MessageBase {
   deletedChatPhoto: true;
 }
 
-/** @unlisted */
+/**
+ * A message that is received by user accounts when a group is created.
+ * While bots don't receive them, they are able to see them if someone replies to them.
+ * @unlisted
+ */
 export interface MessageGroupCreated extends MessageBase {
   groupCreated: true;
+  /** The initial members of the group. */
   newChatMembers: User[];
 }
 
-/** @unlisted */
+/**
+ * A message that is received by user accounts when a supergroup is created.
+ * While bots don't receive them, they are able to see them if someone replies to them.
+ * @unlisted
+ */
 export interface MessageSupergroupCreated extends MessageBase {
   supergroupCreated: true;
 }
 
-/** @unlisted */
+/**
+ * A message that is received by user accounts when a channel is created.
+ * While bots don't receive them, they are able to see them if someone replies to them.
+ * @unlisted
+ */
 export interface MessageChannelCreated extends MessageBase {
   channelCreated: true;
 }
 
-/** @unlisted */
+/**
+ * A message that is received when a chat's auto-delete timer is changed.
+ * @unlisted
+ */
 export interface MessageAutoDeleteTimerChanged extends MessageBase {
+  /** The new auto-delete time in seconds. */
   newAutoDeleteTime: number;
 }
 
-/** @unlisted */
+/**
+ * A message that is received when a supergroup is created as a result of a group migration.
+ * @unlisted
+ */
 export interface MessageChatMigratedTo extends MessageBase {
+  /** The supergroup's ID. */
   chatMigratedTo: number;
 }
 
-/** @unlisted */
+/**
+ * A message that is received when a group is migrated to a supergroup.
+ * @unlisted
+ */
 export interface MessageChatMigratedFrom extends MessageBase {
+  /** The group's ID. */
   chatMigratedFrom: number;
 }
 
-/** @unlisted */
+/**
+ * A message that is received when a message is pinned in a chat.
+ * @unlisted
+ */
 export interface MessagePinnedMessage extends MessageBase {
+  /** The message that was pinned. */
   pinnedMessage: Message;
 }
 
-/** @unlisted */
+/**
+ * A message that is received when a bot account receives a shared user.
+ * @unlisted
+ */
 export interface MessageUserShared extends MessageBase {
   userShared: { requestId: number; userId: number };
 }
 
-/** @unlisted */
+/**
+ * A message that is received when a bot is allowed to message a user.
+ * @unlisted
+ */
 export interface MessageWriteAccessAllowed extends MessageBase {
   writeAccessAllowed: { webAppName?: string };
 }
 
-/** @unlisted */
+/**
+ * A message that is received when a new topic is created in a forum.
+ * @unlisted
+ */
 export interface MessageForumTopicCreated extends MessageBase {
   forumTopicCreated: { name: string; iconColor: string; iconCutsomEmojiId?: string };
 }
 
-/** @unlisted */
+/**
+ * A message that is received when a topic is edited in a forum.
+ * @unlisted
+ */
 export interface MessageForumTopicEdited extends MessageBase {
   forumTopicEdited: { name: string; iconCutsomEmojiId?: string };
 }
 
-/** @unlisted */
+/**
+ * A message that is received when a topic is closed in a forum.
+ * @unlisted
+ */
 export interface MessageForumTopicClosed extends MessageBase {
   forumTopicClosed: true;
 }
 
-/** @unlisted */
+/**
+ * A message that is received when a topic is reopened in a forum.
+ * @unlisted
+ */
 export interface MessageForumTopicReopened extends MessageBase {
   forumTopicReopened: true;
 }
 
-/** @unlisted */
+/**
+ * A message that is received when a video chat is scheduled in a chat.
+ * @unlisted
+ */
 export interface MessageVideoChatScheduled extends MessageBase {
   videoChatScheduled: { startDate: Date };
 }
 
-/** @unlisted */
+/**
+ * A message that is received when a video chat is started in a chat.
+ * @unlisted
+ */
 export interface MessageVideoChatStarted extends MessageBase {
   videoChatStarted: true;
 }
 
-/** @unlisted */
+/**
+ * A message that is received when a video chat is ended in a chat.
+ * @unlisted
+ */
 export interface MessageVideoChatEnded extends MessageBase {
   videoChatEnded: { duration: number };
 }
 
-/** @unlisted */
+/**
+ * A message that is received when a giveaway is started in a chat.
+ * @unlisted
+ */
 export interface MessageGiveaway extends MessageBase {
   giveaway: Giveaway;
 }
 
-/** @unlisted */
+/**
+ * An unsupported message.
+ * @unlisted
+ */
 export interface MessageUnsupported extends MessageBase {
   unsupported: true;
 }
