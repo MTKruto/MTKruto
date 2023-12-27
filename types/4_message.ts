@@ -263,6 +263,11 @@ export interface MessageGiveaway extends MessageBase {
   giveaway: Giveaway;
 }
 
+/** @unlisted */
+export interface MessageUnsupported extends MessageBase {
+  unsupported: true;
+}
+
 // message type map
 
 /** @unlisted */
@@ -304,6 +309,7 @@ export interface MessageTypes {
   videoChatStarted: MessageVideoChatStarted;
   videoChatEnded: MessageVideoChatEnded;
   giveaway: MessageGiveaway;
+  unsupported: MessageUnsupported;
 }
 
 const keys: Record<keyof MessageTypes, [string, ...string[]]> = {
@@ -344,6 +350,7 @@ const keys: Record<keyof MessageTypes, [string, ...string[]]> = {
   videoChatStarted: ["videoChatStarted"],
   videoChatEnded: ["videoChatEnded"],
   giveaway: ["giveaway"],
+  unsupported: ["unsupported"],
 };
 export function assertMessageType<T extends keyof MessageTypes>(message: Message, type: T) {
   for (const key of keys[type]) {
@@ -391,7 +398,8 @@ export type Message =
   | MessageVideoChatScheduled
   | MessageVideoChatStarted
   | MessageVideoChatEnded
-  | MessageGiveaway;
+  | MessageGiveaway
+  | MessageUnsupported;
 
 export interface MessageGetter {
   (chatId: number, messageId: number): MaybePromise<Message | null>;
@@ -781,17 +789,15 @@ export async function constructMessage(
     const location = constructLocation(message_.media);
     m = { ...message, location };
   } else if (message_.media instanceof types.MessageMediaWebPage) {
-    UNREACHABLE(); // TODO: implement
+    // TODO: implement
   } else if (message_.media instanceof types.MessageMediaGiveaway) {
     const giveaway = constructGiveaway(message_.media);
     m = { ...message, giveaway };
-  } else {
-    // not implemented
-    UNREACHABLE();
   }
 
   if (m == null) {
-    UNREACHABLE();
+    const unsupported = true;
+    m = { ...message, unsupported };
   }
 
   return cleanObject(m);
