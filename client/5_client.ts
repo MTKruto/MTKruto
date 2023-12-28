@@ -499,6 +499,9 @@ export class Client<C extends Context = Context> extends ClientAbstract {
     try {
       if (!this.#storageInited) {
         await this.storage.init();
+        if (!this.#guaranteeUpdateDelivery) {
+          await this.storage.deleteUpdates();
+        }
         this.#storageInited = true;
       }
       const authKey = await this.storage.getAuthKey();
