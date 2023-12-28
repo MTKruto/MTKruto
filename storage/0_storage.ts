@@ -14,6 +14,7 @@ const KPARTS__ACCOUNT_TYPE = ["accountType"];
 const KPARTS__STICKER_SET_NAME = (id: bigint, accessHash: bigint) => ["stickerSetName", id, accessHash];
 const KPARTS_MESSAGE = (chatId: number, messageId: number) => ["messages", chatId, messageId];
 const KPARTS_MESSAGES = (chatId: number) => ["messages", chatId];
+const KPARTS_ALL_MESSAGE_REFS = ["messageRefs"];
 const KPARTS_MESSAGE_REF = (messageId: number) => ["messageRefs", messageId];
 const KPARTS_HAS_ALL_CHATS = (listId: number) => ["hasAllChats", listId];
 const KPARTS_CHATS = (listId: number) => ["chats", listId];
@@ -23,6 +24,9 @@ const KPARTS_SERVER_SALT = ["serverSalt"];
 const KPARTS_FILE = (fileId: bigint) => ["files", fileId];
 const KPARTS_FILE_PART = (fileId: bigint, n: number) => ["fileParts", fileId, n];
 const KPARTS_CEMOJI = (id: bigint) => ["customEmojiDocuments", id];
+const KPARTS_ALL_UPDATES = ["updates"];
+const KPARTS_UPDATES = (boxId: bigint) => ["updates", boxId];
+const KPARTS_UPDATE = (boxId: bigint, id: bigint) => ["updates", boxId, id];
 
 export type StorageKeyPart = string | number | bigint;
 
@@ -133,7 +137,7 @@ export abstract class Storage {
 
   async deleteMessages() {
     const maybePromises = new Array<MaybePromise<void>>();
-    for await (const [k, o] of await this.getMany({ prefix: ["messageRefs"] })) {
+    for await (const [k, o] of await this.getMany({ prefix: KPARTS_ALL_MESSAGE_REFS })) {
       maybePromises.push(Promise.all<void>([this.set(k, null), o == null ? Promise.resolve() : this.set(KPARTS_MESSAGE(o as number, k[1] as number), null)]).then(() => {}));
     }
     await Promise.all(maybePromises.filter((v) => v instanceof Promise));
@@ -331,5 +335,33 @@ export abstract class Storage {
     } else {
       return null;
     }
+  }
+
+  #getUpdateId(update: enums.Update) {
+    let id = BigInt(Date.now()) << 32n;
+    if ("pts" in update && update.pts) {
+      id |= BigInt(update.pts);
+    } else {
+      id |= BigInt(0xFFFFFFFFn);
+    }
+    return id;
+  }
+  async setUpdate(boxId: bigint, update: enums.Update) {
+    await this.setTlObject(KPARTS_UPDATE(boxId, this.#getUpdateId(update)), update);
+  }
+
+  async deleteUpdates() {
+    const maybePromises = new Array<MaybePromise<void>>();
+    for await (const [k] of await this.getMany({ prefix: KPARTS_ALL_UPDATES })) {
+      maybePromises.push(this.set(k, null));
+    }
+    await Promise.all(maybePromises.filter((v) => v instanceof Promise));
+  }
+
+  async getFirstUpdate(boxId: bigint) {
+    for await (const [key, update] of await this.getMany<Uint8Array>({ prefix: KPARTS_UPDATES(boxId) }, { limit: 1 })) {
+      return [key, await this.getTlObject(update).then((v) => v as enums.Update)] as const;
+    }
+    return null;
   }
 }

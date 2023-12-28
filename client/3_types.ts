@@ -28,6 +28,8 @@ export interface ClientParams extends ClientPlainParams {
   ignoreOutgoing?: boolean;
   /** Default command prefixes. Defaults to `"/"` for bots and `"\"` for users. This option must be set separately for nested composers. */
   prefixes?: string | string[];
+  /** Whether to guarantee that order-sensitive updates are delivered at least once before delivering next ones. Useful mainly for clients providing a user interface à la Telegram Desktop. Defaults to `false`. */
+  guaranteeUpdateDelivery?: boolean;
 }
 
 export interface AnswerCallbackQueryParams {
