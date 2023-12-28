@@ -6,49 +6,27 @@ import { ClientPlainParams } from "./2_client_plain.ts";
 import { ParseMode } from "../3_types.ts";
 
 export interface ClientParams extends ClientPlainParams {
-  /**
-   * A parse mode to use when the `parseMode` parameter is not specified when sending or editing messages. Defauls to `ParseMode.None`.
-   */
+  /** A parse mode to use when the `parseMode` parameter is not specified when sending or editing messages. Defauls to `ParseMode.None`. */
   parseMode?: ParseMode;
-  /**
-   * The app_version parameter to be passed to initConnection when calling `authorize`. It is recommended that this parameter is changed if users are authorized. Defaults to "MTKruto" followed by this version of MTKruto.
-   */
+  /** The app_version parameter to be passed to initConnection when calling `authorize`. It is recommended that this parameter is changed if users are authorized. Defaults to "MTKruto" followed by this version of MTKruto. */
   appVersion?: string;
-  /**
-   * The device_version parameter to be passed to initConnection when calling `authorize`. The default varies by the current runtime.
-   */
+  /** The device_version parameter to be passed to initConnection when calling `authorize`. The default varies by the current runtime. */
   deviceModel?: string;
-  /**
-   * The lang_code parameter to be passed to initConnection when calling `authorize`. Defaults to the runtime's language or `"en"`.
-   */
+  /** The lang_code parameter to be passed to initConnection when calling `authorize`. Defaults to the runtime's language or `"en"`. */
   langCode?: string;
-  /**
-   * The lang_pack parameter to be passed to initConnection when calling `authorize`. Defaults to an empty string.
-   */
+  /** The lang_pack parameter to be passed to initConnection when calling `authorize`. Defaults to an empty string. */
   langPack?: string;
-  /**
-   * The system_lang_cde parameter to be passed to initConnection when calling `authorize`. Defaults to the runtime's language or `"en"`.
-   */
+  /** The system_lang_cde parameter to be passed to initConnection when calling `authorize`. Defaults to the runtime's language or `"en"`. */
   systemLangCode?: string;
-  /**
-   * The system_version parameter to be passed to initConnection when calling `authorize`. The default varies by the current runtime.
-   */
+  /** The system_version parameter to be passed to initConnection when calling `authorize`. The default varies by the current runtime. */
   systemVersion?: string;
-  /**
-   * Whether to automatically call `start` with no parameters in the first `invoke` call. Defaults to `true`.
-   */
+  /** Whether to automatically call `start` with no parameters in the first `invoke` call. Defaults to `true`. */
   autoStart?: boolean;
-  /**
-   * Whether to use default handlers. Defaults to `true`.
-   */
+  /** Whether to use default handlers. Defaults to `true`. */
   defaultHandlers?: boolean;
-  /**
-   * Whether to ignore outgoing messages. Defaults to `true` for bots, and `false` for users.
-   */
+  /** Whether to ignore outgoing messages. Defaults to `true` for bots, and `false` for users. */
   ignoreOutgoing?: boolean;
-  /**
-   * Default command prefixes. Defaults to `"/"` for bots and `"\"` for users. This option must be set separately for nested composers.
-   */
+  /** Default command prefixes. Defaults to `"/"` for bots and `"\"` for users. This option must be set separately for nested composers. */
   prefixes?: string | string[];
 }
 
@@ -70,120 +48,68 @@ export interface AuthorizeUserParams<S = string> {
 }
 
 export interface _SendCommon {
-  /**
-   * Whether to send the message in a silent way without making a sound on the recipients' clients.
-   */
+  /** Whether to send the message in a silent way without making a sound on the recipients' clients. */
   disableNotification?: boolean;
-  /**
-   * Whether to protect the contents of the message from copying and forwarding.
-   */
+  /** Whether to protect the contents of the message from copying and forwarding. */
   protectContent?: boolean;
-  /**
-   * The identifier of a message to reply to.
-   */
+  /** The identifier of a message to reply to. */
   replyToMessageId?: number;
-  /**
-   * A specific part of the replying message's text to quote.
-   */
+  /** A specific part of the replying message's text to quote. */
   replyQuote?: ReplyQuote;
-  /**
-   * The identifier of a thread to send the message to.
-   */
+  /** The identifier of a thread to send the message to. */
   messageThreadId?: number;
-  /**
-   * The identifier of the chat to send the message on behalf of. User-only.
-   */
+  /** The identifier of the chat to send the message on behalf of. User-only. */
   sendAs?: ChatID;
-  /**
-   * The reply markup of the message. Bot-only.
-   */
+  /** The reply markup of the message. Bot-only. */
   replyMarkup?: InlineKeyboardMarkup | ReplyKeyboardMarkup | ReplyKeyboardRemove | ForceReply;
 }
 export interface SendMessageParams extends _SendCommon {
-  /**
-   * The parse mode to use. If not provided, the default parse mode will be used.
-   */
+  /** The parse mode to use. If not provided, the default parse mode will be used. */
   parseMode?: ParseMode;
-  /**
-   * The message's entities.
-   */
+  /** The message's entities. */
   entities?: MessageEntity[];
-  /**
-   * Whether to disable web page previews in the message that is to be sent.
-   */
+  /** Whether to disable web page previews in the message that is to be sent. */
   disableWebPagePreview?: boolean;
 }
 
 export interface EditMessageParams {
-  /**
-   * The parse mode to use. If not provided, the default parse mode will be used.
-   */
+  /** The parse mode to use. If not provided, the default parse mode will be used. */
   parseMode?: ParseMode;
-  /**
-   * The message's entities.
-   */
+  /** The message's entities. */
   entities?: MessageEntity[];
-  /**
-   * Whether to disable web page previews in the message that is to be edited.
-   */
+  /** Whether to disable web page previews in the message that is to be edited. */
   disableWebPagePreview?: boolean;
-  /**
-   * The reply markup of the message. Bot-only.
-   */
+  /** The reply markup of the message. Bot-only. */
   replyMarkup?: InlineKeyboardMarkup | ReplyKeyboardMarkup | ReplyKeyboardRemove | ForceReply;
 }
 
 export interface ForwardMessagesParams extends Omit<_SendCommon, "replyToMessageId" | "replyMarkup"> {
-  /**
-   * Whether to not include the original sender of the message that is going to be forwarded.
-   */
+  /** Whether to not include the original sender of the message that is going to be forwarded. */
   dropSenderName?: boolean;
-  /**
-   * Whether to not include the original caption of the message that is going to be forwarded.
-   */
+  /** Whether to not include the original caption of the message that is going to be forwarded. */
   dropCaption?: boolean;
 }
 
 export interface SendPollParams extends _SendCommon {
-  /**
-   * Whether the poll should be anonymous.
-   */
+  /** Whether the poll should be anonymous. */
   isAnonymous?: boolean;
-  /**
-   * The type of the poll.
-   */
+  /** The type of the poll. */
   type?: "quiz" | "regular";
-  /**
-   * Whether multiple selections should be allowed. Only valid for regular polls.
-   */
+  /** Whether multiple selections should be allowed. Only valid for regular polls. */
   allowMultipleAnswers?: boolean;
-  /**
-   * Index of the correct option. Required for quiz polls.
-   */
+  /** Index of the correct option. Required for quiz polls. */
   correctOptionIndex?: number;
-  /**
-   * A text that will be shown to the user when the poll is answered. Only valid for quiz polls.
-   */
+  /** A text that will be shown to the user when the poll is answered. Only valid for quiz polls. */
   explanation?: string;
-  /**
-   * The parse mode to use for the explanation. If not provided, the default parse mode will be used.
-   */
+  /** The parse mode to use for the explanation. If not provided, the default parse mode will be used. */
   explanationParseMode?: ParseMode;
-  /**
-   * The explanation's entities.
-   */
+  /** The explanation's entities. */
   explanationEntities?: MessageEntity[];
-  /**
-   * Duration of the poll in seconds. Must be in the range of 5-600. Cannot be used simultaneously with `closeDate`.
-   */
+  /** Duration of the poll in seconds. Must be in the range of 5-600. Cannot be used simultaneously with `closeDate`. */
   openPeriod?: number;
-  /**
-   * The time in which the poll will be closed. Must be at least 5 seconds in the future, and no more than 600. Cannot be used simultaneously with `openPeriod`.
-   */
+  /** The time in which the poll will be closed. Must be at least 5 seconds in the future, and no more than 600. Cannot be used simultaneously with `openPeriod`. */
   closeDate?: Date;
-  /**
-   * Whether the poll should be closed as soon as it is sent, allowing no answers.
-   */
+  /** Whether the poll should be closed as soon as it is sent, allowing no answers. */
   isClosed?: boolean;
 }
 
@@ -212,15 +138,21 @@ export interface UploadParams {
 }
 
 export interface AnswerInlineQueryParams {
+  /** TTL of the caches of the results in seconds. Defaults to 300. */
   cacheTime?: number;
+  /** Whether the result caches should only be for the user who made the inline query. */
   isPersonal?: boolean;
+  /** A parameter to be passed to the same query next time when the user’s client asks for more results. Can’t be longer than 64 bytes. */
   nextOffset?: string;
   isGallery?: boolean;
+  /** A button to be shown along with the results. */
   button?: InlineQueryResultButton;
 }
 
 export interface SetMyCommandsParams {
+  /** A two-letter ISO 639-1 language code. If not set, the command details will be updated for users having an unsupported language. */
   languageCode?: string;
+  /** The scope in which the commands are available. */
   scope?: BotCommandScope;
 }
 
@@ -239,19 +171,13 @@ export interface DeleteMessageParams {
 export interface _CaptionCommon {
   /** The caption to attach. */
   caption?: string;
-  /**
-   * The caption's entities.
-   */
+  /** The caption's entities. */
   captionEntities?: MessageEntity[];
-  /**
-   * The parse mode to use for the caption. If not provided, the default parse mode will be used.
-   */
+  /** The parse mode to use for the caption. If not provided, the default parse mode will be used. */
   parseMode?: ParseMode;
 }
 export interface _SpoilCommon {
-  /**
-   * Whether to mark the media as a spoiler.
-   */
+  /** Whether to mark the media as a spoiler. */
   hasSpoiler?: boolean;
 }
 export interface SendPhotoParams extends _CaptionCommon, _SpoilCommon, _UploadCommon, _SendCommon {
@@ -271,13 +197,16 @@ export interface SendVideoParams extends _CaptionCommon, _ThumbnailCommon, _Spoi
   width?: number;
   /** The height of the photo in pixels. */
   height?: number;
+  /** Whether the video is suitable for streaming. */
   supportsStreaming?: boolean;
 }
 
 export interface SendAnimationParams extends _CaptionCommon, _ThumbnailCommon, _SpoilCommon, _UploadCommon, _SendCommon {
   /** The duration of the animation in seconds. */
   duration?: number;
+  /** The width of the animation file. */
   width?: number;
+  /** The height of the animation file. */
   height?: number;
 }
 
@@ -289,26 +218,36 @@ export interface SendVoiceParams extends _CaptionCommon, _ThumbnailCommon, _Uplo
 export interface SendAudioParams extends _CaptionCommon, _ThumbnailCommon, _UploadCommon, _SendCommon {
   /** The duration of the audio file in seconds. */
   duration?: number;
+  /** Names of the entities that are being featured in the audio. */
   performer?: string;
+  /** The title of the audio. */
   title?: string;
 }
 
 export interface SendVideoNoteParams extends _CaptionCommon, _ThumbnailCommon, _UploadCommon, _SendCommon {
   /** The duration of the video note in seconds. */
   duration?: number;
+  /** The video's width and height (diameter). */
   length?: number;
+  /** A thumbnail of the file to attach. Can't be larger than 200kB or have a height exceeding 320 pixels. Can't reuse an existing file for it and can only be uploaded directly. */
   thumbnail?: FileSource;
 }
 
 export interface SendLocationParams extends _SendCommon {
+  /** The accuracy radius of the location in meters. Must be in the range of 0-1500. */
   horizontalAccuracy?: number;
+  /** The duration in which the location can be updated in seconds. Must be in the range of 80-864,000. */
   livePeriod?: number;
+  /** The direction which the user is moving towards. Must be in the range of 1-350. */
   heading?: number;
+  /** The maximum distance for proximity alerts on approaching another chat member in meters. Must be in the range 1-100,000. */
   proximityAlertRadius?: number;
 }
 
 export interface SendVenueParams extends _SendCommon {
+  /** Foursquare identifier of the venue. */
   foursquareId?: string;
+  /** Foursquare type of the venue, if known. For example, "arts_entertainment/default", "arts_entertainment/aquarium" or "food/icecream". */
   foursquareType?: string;
 }
 
@@ -320,6 +259,7 @@ export interface SendContactParams extends _SendCommon {
 }
 
 export interface SendDiceParams extends _SendCommon {
+  /** The type of the dice. Can be 🎲, 🎯, 🏀, ⚽, 🎳, 🎰. Defaults to 🎲. */
   emoji?: "🎲" | "🎯" | "🏀" | "⚽" | "🎳" | "🎰";
 }
 
