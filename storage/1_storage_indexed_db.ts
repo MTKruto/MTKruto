@@ -4,17 +4,24 @@ import { fixKey, getPrefixKeyRange, restoreKey } from "./0_utilities.ts";
 const VERSION = 1;
 const KV_OBJECT_STORE = "kv";
 
+export interface StorageIndexedDBParams {
+  /** Whether to store files. Defaults to true. */
+  fileStorage?: boolean;
+}
+
 export class StorageIndexedDB extends Storage {
   database: IDBDatabase | null = null;
   readonly #name: string;
   #id: string | null = null;
+  #supportsFiles: boolean;
 
-  constructor(name: string) {
+  constructor(name: string, params?: StorageIndexedDBParams) {
     if (typeof indexedDB == "undefined") {
       throw new Error("Unavailable in current environment");
     }
     super();
     this.#name = name;
+    this.#supportsFiles = params?.fileStorage ?? true;
   }
 
   get name() {
@@ -43,7 +50,7 @@ export class StorageIndexedDB extends Storage {
   }
 
   get supportsFiles() {
-    return true;
+    return this.#supportsFiles;
   }
 
   #fixKey(key: readonly StorageKeyPart[]) {
