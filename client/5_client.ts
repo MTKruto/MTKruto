@@ -2548,9 +2548,9 @@ export class Client<C extends Context = Context> extends ClientAbstract {
    *
    * @method
    */
-  async setMyDescription({ description, languageCode }: { description?: string; languageCode?: string }) {
+  async setMyDescription(params?: { description?: string; languageCode?: string }) {
     await this.#assertBot("setMyDescription");
-    await this.#setMyInfo({ description, lang_code: languageCode ?? "" });
+    await this.#setMyInfo({ description: params?.description, lang_code: params?.languageCode ?? "" });
   }
 
   /**
@@ -2558,9 +2558,9 @@ export class Client<C extends Context = Context> extends ClientAbstract {
    *
    * @method
    */
-  async setMyName({ name, languageCode }: { name?: string; languageCode?: string }) {
+  async setMyName(params?: { name?: string; languageCode?: string }) {
     await this.#assertBot("setMyName");
-    await this.#setMyInfo({ name, lang_code: languageCode ?? "" });
+    await this.#setMyInfo({ name: params?.name, lang_code: params?.languageCode ?? "" });
   }
 
   /**
@@ -2568,9 +2568,9 @@ export class Client<C extends Context = Context> extends ClientAbstract {
    *
    * @method
    */
-  async setMyShortDescription({ shortDescription: about, languageCode }: { shortDescription?: string; languageCode?: string }) {
+  async setMyShortDescription(params?: { shortDescription?: string; languageCode?: string }) {
     await this.#assertBot("setMyShortDescription");
-    await this.#setMyInfo({ about, lang_code: languageCode ?? "" });
+    await this.#setMyInfo({ about: params?.shortDescription, lang_code: params?.languageCode ?? "" });
   }
 
   #getMyInfo(languageCode?: string | undefined) {
