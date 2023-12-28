@@ -25,7 +25,7 @@ export class StorageLocalStorage extends Storage implements Storage {
     return new StorageLocalStorage(this.prefix + "S__" + id);
   }
 
-  init() {
+  initialize() {
   }
 
   get supportsFiles() {

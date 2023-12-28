@@ -34,7 +34,7 @@ export class StorageIndexedDB extends Storage {
     return storage;
   }
 
-  init() {
+  initialize() {
     const db = indexedDB.open(this.name, VERSION);
     return new Promise<void>((res, rej) => {
       db.onblocked = rej;

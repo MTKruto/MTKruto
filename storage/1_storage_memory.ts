@@ -6,7 +6,7 @@ export class StorageMemory extends Storage implements Storage {
   protected map = new Map<string, unknown>();
   #id: string | null = null;
 
-  init() {
+  initialize() {
   }
 
   #fixKey(key: readonly StorageKeyPart[]) {
