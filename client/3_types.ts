@@ -218,7 +218,7 @@ export interface SendVoiceParams extends _CaptionCommon, _ThumbnailCommon, _Uplo
 export interface SendAudioParams extends _CaptionCommon, _ThumbnailCommon, _UploadCommon, _SendCommon {
   /** The duration of the audio file in seconds. */
   duration?: number;
-  /** Names the entities that are being featured in the audio. */
+  /** Names of the entities that are being featured in the audio. */
   performer?: string;
   /** The title of the audio. */
   title?: string;
@@ -227,9 +227,9 @@ export interface SendAudioParams extends _CaptionCommon, _ThumbnailCommon, _Uplo
 export interface SendVideoNoteParams extends _CaptionCommon, _ThumbnailCommon, _UploadCommon, _SendCommon {
   /** The duration of the video note in seconds. */
   duration?: number;
-  /** The video’s width and height (diameter). */
+  /** The video's width and height (diameter). */
   length?: number;
-  /** A thumbnail of the file to attach. Can’t be larger than 200kB or have a height exceeding 320 pixels. Can’t reuse an existing file for it and can only be uploaded directly. */
+  /** A thumbnail of the file to attach. Can't be larger than 200kB or have a height exceeding 320 pixels. Can't reuse an existing file for it and can only be uploaded directly. */
   thumbnail?: FileSource;
 }
 
