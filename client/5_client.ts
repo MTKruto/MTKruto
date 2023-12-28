@@ -437,7 +437,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
   };
 
   #propagateConnectionState(connectionState: ConnectionState) {
-    this.#handleUpdateQueue.add(async () => {
+    this.#getHandleUpdateQueue(this.#mainBoxId).add(async () => {
       await this.#handle(await this.#constructContext({ connectionState }), resolve);
     });
     this.#lastPropagatedConnectionState = connectionState;
@@ -1096,7 +1096,17 @@ export class Client<C extends Context = Context> extends ClientAbstract {
     }
   }
 
-  #handleUpdateQueue = new Queue("handleUpdate");
+  #handleUpdateQueues = new Map<bigint, Queue>();
+  #getHandleUpdateQueue(boxId: bigint) {
+    let queue = this.#handleUpdateQueues.get(boxId);
+    if (queue !== undefined) {
+      return queue;
+    } else {
+      queue = new Queue(`handleUpdate-${boxId}`);
+      return queue;
+    }
+  }
+
   #processUpdatesQueue = new Queue("processUpdates");
 
   async #checkGap(pts: number, ptsCount: number) {
@@ -1146,7 +1156,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
   }
 
   #queueUpdate(update: enums.Update, boxId: bigint, pts: boolean) {
-    this.#handleUpdateQueue.add(async () => {
+    this.#getHandleUpdateQueue(boxId).add(async () => {
       if (this.#guaranteeUpdateDelivery && pts) {
         await this.#handleStoredUpdates(boxId);
       } else {
@@ -2043,7 +2053,6 @@ export class Client<C extends Context = Context> extends ClientAbstract {
     this.#handleUpdatesSet.delete(boxId);
   }
 
-  // TODO: log errors
   async #handleUpdate(update: enums.Update) {
     const promises = new Array<Promise<unknown>>();
     if (update instanceof types.UpdateUserName) {
@@ -3115,7 +3124,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
     }
     const [chat] = this.#getChatAnywhere(chatId);
     const update = chat === undefined ? { deletedChat: { chatId } } : added ? { newChat: chat } : { editedChat: chat };
-    this.#handleUpdateQueue.add(async () => {
+    this.#getHandleUpdateQueue(this.#mainBoxId).add(async () => {
       await this.#handle(await this.#constructContext(update), resolve);
     });
   }
