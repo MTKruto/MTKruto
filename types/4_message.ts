@@ -638,8 +638,6 @@ async function constructServiceMessage(message_: types.MessageService, chat: Cha
       const user = constructUser(entity);
       const leftChatMember = user;
       return { ...message, leftChatMember };
-    } else {
-      UNREACHABLE();
     }
   } else if (message_.action instanceof types.MessageActionChatEditTitle) {
     const newChatTitle = message_.action.title;
@@ -658,8 +656,6 @@ async function constructServiceMessage(message_: types.MessageService, chat: Cha
       if (entity) {
         const user = constructUser(entity);
         newChatMembers.push(user);
-      } else {
-        UNREACHABLE();
       }
     }
     return { ...message, groupCreated, newChatMembers };
@@ -671,7 +667,7 @@ async function constructServiceMessage(message_: types.MessageService, chat: Cha
       const supergroupCreated = true;
       return { ...message, supergroupCreated };
     } else {
-      UNREACHABLE();
+      // UNREACHABLE();
     }
   } else if (message_.action instanceof types.MessageActionChatMigrateTo) {
     const chatMigratedTo = ZERO_CHANNEL_ID + Number(-message_.action.channel_id);
@@ -681,11 +677,10 @@ async function constructServiceMessage(message_: types.MessageService, chat: Cha
     return { ...message, chatMigratedFrom };
   } else if (message_.action instanceof types.MessageActionPinMessage) {
     const { replyToMessage } = await getReply(message_, chat, getMessage);
-    if (!replyToMessage) {
-      UNREACHABLE();
+    if (replyToMessage) {
+      const pinnedMessage = replyToMessage;
+      return { ...message, pinnedMessage };
     }
-    const pinnedMessage = replyToMessage;
-    return { ...message, pinnedMessage };
   } else if (message_.action instanceof types.MessageActionRequestedPeer) {
     const user = message_.action.peers[0][as](types.PeerUser);
     const userShared = { requestId: message_.action.button_id, userId: Number(user.user_id) };
@@ -730,9 +725,8 @@ async function constructServiceMessage(message_: types.MessageService, chat: Cha
   } else if (message_.action instanceof types.MessageActionSetMessagesTTL) {
     const newAutoDeleteTime = message_.action.period || 0;
     return { ...message, newAutoDeleteTime };
-  } else {
-    UNREACHABLE();
   }
+  return { ...message, unsupported: true };
 }
 
 export async function constructMessage(
