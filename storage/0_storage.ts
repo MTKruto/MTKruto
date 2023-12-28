@@ -35,7 +35,7 @@ export type GetManyFilter = { prefix: readonly StorageKeyPart[] } | { start: rea
 export abstract class Storage {
   #_authKeyId: bigint | null = null;
 
-  abstract init(): MaybePromise<void>;
+  abstract initialize(): MaybePromise<void>;
   // TODO: digest keys in prod?
   abstract set(key: readonly StorageKeyPart[], value: unknown): MaybePromise<void>;
   abstract incr(key: readonly StorageKeyPart[], by: number): MaybePromise<void>;

@@ -467,7 +467,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
    */
   async setDc(dc: DC) {
     if (!this.#storageInited) {
-      await this.storage.init();
+      await this.storage.initialize();
       this.#storageInited = true;
     }
     if (await this.storage.getDc() != dc) {
@@ -498,7 +498,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
     const release = await this.#connectMutex.acquire();
     try {
       if (!this.#storageInited) {
-        await this.storage.init();
+        await this.storage.initialize();
         if (!this.#guaranteeUpdateDelivery) {
           await this.storage.deleteUpdates();
         }

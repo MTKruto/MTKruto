@@ -26,7 +26,7 @@ export class StorageSessionStorage extends Storage implements Storage {
     return new StorageSessionStorage(this.prefix + "S__" + id);
   }
 
-  init() {
+  initialize() {
   }
 
   get supportsFiles() {
