@@ -33,7 +33,7 @@ export type StorageKeyPart = string | number | bigint;
 export type GetManyFilter = { prefix: readonly StorageKeyPart[] } | { start: readonly StorageKeyPart[]; end: readonly StorageKeyPart[] };
 
 export abstract class Storage {
-  #_authKeyId: bigint | null = null;
+  #authKeyId: bigint | null = null;
 
   abstract initialize(): MaybePromise<void>;
   // TODO: digest keys in prod?
@@ -54,9 +54,9 @@ export abstract class Storage {
 
   async #resetAuthKeyId(authKey: Uint8Array | null) {
     if (authKey != null) {
-      this.#_authKeyId = await sha1(authKey).then((hash) => bigIntFromBuffer(hash.slice(-8), true, false));
+      this.#authKeyId = await sha1(authKey).then((hash) => bigIntFromBuffer(hash.slice(-8), true, false));
     } else {
-      this.#_authKeyId = null;
+      this.#authKeyId = null;
     }
   }
 
@@ -72,7 +72,7 @@ export abstract class Storage {
   }
 
   get authKeyId() {
-    return this.#_authKeyId;
+    return this.#authKeyId;
   }
 
   setChannelAccessHash(id: bigint, accessHash: bigint) {
