@@ -1598,7 +1598,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
           messages.push(await constructMessage(update.message, this[getEntity].bind(this), this.getMessage.bind(this), this[getStickerSetName].bind(this)));
         }
       }
-    } else if (updates instanceof types.UpdateShortSentMessage || updates instanceof types.UpdateShortSentMessage) {
+    } else if (updates instanceof types.UpdateShortSentMessage) {
       const message = await this.getMessage(chatId, updates.id);
       if (message != null) {
         messages.push(message);
