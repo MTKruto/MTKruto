@@ -121,6 +121,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
   #promises = new Map<bigint, { resolve: (obj: ReadObject) => void; reject: (err: ReadObject | Error) => void }>();
   #toAcknowledge = new Set<bigint>();
   #updateState?: types.updates.State;
+  #guaranteeUpdateDelivery: boolean;
 
   public readonly storage: Storage;
   public readonly parseMode: ParseMode;
@@ -164,6 +165,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
     this.#autoStart = params?.autoStart ?? true;
     this.#ignoreOutgoing = params?.ignoreOutgoing ?? null;
     this.#prefixes = params?.prefixes;
+    this.#guaranteeUpdateDelivery = params?.guaranteeUpdateDelivery ?? false;
 
     const transportProvider = this.transportProvider;
     this.transportProvider = (params) => {
@@ -1112,7 +1114,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
 
   #channelUpdateQueues = new Map<bigint, Queue>();
 
-  async #processChannelUpdate(update: types.UpdateNewChannelMessage | types.UpdateEditChannelMessage | types.UpdateDeleteChannelMessages | types.UpdateChannelTooLong, checkGap: boolean) {
+  async #processChannelPtsUpdateInner(update: types.UpdateNewChannelMessage | types.UpdateEditChannelMessage | types.UpdateDeleteChannelMessages | types.UpdateChannelTooLong, checkGap: boolean) {
     const channelId = update instanceof types.UpdateNewChannelMessage || update instanceof types.UpdateEditChannelMessage ? (update.message as types.Message | types.MessageService).peer_id[as](types.PeerChannel).channel_id : update.channel_id;
     if (update instanceof types.UpdateChannelTooLong) {
       if (update.pts != undefined) {
@@ -1133,13 +1135,24 @@ export class Client<C extends Context = Context> extends ClientAbstract {
       }
     }
 
+    if (this.#guaranteeUpdateDelivery) {
+      await this.storage.setUpdate(channelId, update);
+    }
     await this.storage.setChannelPts(channelId, update.pts);
+    this.#queueUpdate(update, channelId, true);
+  }
+
+  #queueUpdate(update: enums.Update, boxId: bigint, pts: boolean) {
     this.#handleUpdateQueue.add(async () => {
-      await this.#handleUpdate(update);
+      if (this.#guaranteeUpdateDelivery && pts) {
+        await this.#handleStoredUpdates(boxId);
+      } else {
+        await this.#handleUpdate(update);
+      }
     });
   }
 
-  #queueChannelUpdate(update: types.UpdateNewChannelMessage | types.UpdateEditChannelMessage | types.UpdateDeleteChannelMessages | types.UpdateChannelTooLong, checkGap: boolean) {
+  #processChannelPtsUpdate(update: types.UpdateNewChannelMessage | types.UpdateEditChannelMessage | types.UpdateDeleteChannelMessages | types.UpdateChannelTooLong, checkGap: boolean) {
     const channelId = update instanceof types.UpdateNewChannelMessage || update instanceof types.UpdateEditChannelMessage ? (update.message as types.Message | types.MessageService).peer_id[as](types.PeerChannel).channel_id : update.channel_id;
     let queue = this.#channelUpdateQueues.get(channelId);
     if (queue == undefined) {
@@ -1147,11 +1160,12 @@ export class Client<C extends Context = Context> extends ClientAbstract {
       this.#channelUpdateQueues.set(channelId, queue);
     }
     queue.add(async () => {
-      await this.#processChannelUpdate(update, checkGap);
+      await this.#processChannelPtsUpdateInner(update, checkGap);
     });
   }
 
-  async #handlePtsUpdate(update: types.UpdateNewMessage | types.UpdateDeleteMessages | types.UpdateReadHistoryInbox | types.UpdateReadHistoryOutbox | types.UpdatePinnedChannelMessages | types.UpdatePinnedMessages | types.UpdateFolderPeers | types.UpdateChannelWebPage | types.UpdateEditMessage | types.UpdateReadMessagesContents | types.UpdateWebPage, checkGap: boolean) {
+  #mainBoxId = 0n;
+  async #processPtsUpdateInner(update: types.UpdateNewMessage | types.UpdateDeleteMessages | types.UpdateReadHistoryInbox | types.UpdateReadHistoryOutbox | types.UpdatePinnedChannelMessages | types.UpdatePinnedMessages | types.UpdateFolderPeers | types.UpdateChannelWebPage | types.UpdateEditMessage | types.UpdateReadMessagesContents | types.UpdateWebPage, checkGap: boolean) {
     const localState = await this.#getLocalState();
     if (update.pts != 0) {
       if (checkGap) {
@@ -1162,16 +1176,17 @@ export class Client<C extends Context = Context> extends ClientAbstract {
       }
     }
 
+    if (this.#guaranteeUpdateDelivery) {
+      await this.storage.setUpdate(this.#mainBoxId, update);
+    }
     await this.#setUpdatePts(update.pts);
-    this.#handleUpdateQueue.add(async () => {
-      await this.#handleUpdate(update);
-    });
+    this.#queueUpdate(update, 0n, true);
   }
 
   #ptsUpdateQueue = new Queue("ptsUpdate");
-  #queuePtsUpdate(update: types.UpdateNewMessage | types.UpdateDeleteMessages | types.UpdateReadHistoryInbox | types.UpdateReadHistoryOutbox | types.UpdatePinnedChannelMessages | types.UpdatePinnedMessages | types.UpdateFolderPeers | types.UpdateChannelWebPage | types.UpdateEditMessage | types.UpdateReadMessagesContents | types.UpdateWebPage, checkGap: boolean) {
+  #processPtsUpdate(update: types.UpdateNewMessage | types.UpdateDeleteMessages | types.UpdateReadHistoryInbox | types.UpdateReadHistoryOutbox | types.UpdatePinnedChannelMessages | types.UpdatePinnedMessages | types.UpdateFolderPeers | types.UpdateChannelWebPage | types.UpdateEditMessage | types.UpdateReadMessagesContents | types.UpdateWebPage, checkGap: boolean) {
     this.#ptsUpdateQueue.add(async () => {
-      await this.#handlePtsUpdate(update, checkGap);
+      await this.#processPtsUpdateInner(update, checkGap);
     });
   }
 
@@ -1294,13 +1309,11 @@ export class Client<C extends Context = Context> extends ClientAbstract {
           UNREACHABLE();
         }
       } else if (isPtsUpdate(update)) {
-        this.#queuePtsUpdate(update, checkGap);
+        this.#processPtsUpdate(update, checkGap);
       } else if (isChannelPtsUpdate(update)) {
-        this.#queueChannelUpdate(update, checkGap);
+        this.#processChannelPtsUpdate(update, checkGap);
       } else {
-        this.#handleUpdateQueue.add(async () => {
-          await this.#handleUpdate(update);
-        });
+        this.#queueUpdate(update, 0n, false);
       }
     }
   }
@@ -1994,8 +2007,42 @@ export class Client<C extends Context = Context> extends ClientAbstract {
     return user;
   }
 
+  #handleUpdatesSet = new Set<bigint>();
+  async #handleStoredUpdates(boxId: bigint) {
+    if (this.#handleUpdatesSet.has(boxId)) {
+      return;
+    }
+    this.#handleUpdatesSet.add(boxId);
+    do {
+      const maybeUpdate = await this.storage.getFirstUpdate(boxId);
+      if (maybeUpdate == null) {
+        break;
+      }
+      const [key, update] = maybeUpdate;
+      for (let i = 0; i < 100; ++i) {
+        try {
+          const handle = await this.#handleUpdate(update);
+          handle: for (let i = 0; i < 2; ++i) {
+            try {
+              await handle();
+              break handle;
+            } catch {
+              continue handle;
+            }
+          }
+          break;
+        } catch (err) {
+          d("#handleUpdate error: %o", err);
+        }
+      }
+      await this.storage.set(key, null);
+    } while (true);
+    this.#handleUpdatesSet.delete(boxId);
+  }
+
   // TODO: log errors
   async #handleUpdate(update: enums.Update) {
+    const promises = new Array<Promise<unknown>>();
     if (update instanceof types.UpdateUserName) {
       await this.storage.updateUsernames("user", update.user_id, update.usernames.map((v) => v.username));
       const peer = new types.PeerUser(update);
@@ -2012,7 +2059,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
       if (update.message instanceof types.Message || update.message instanceof types.MessageService) {
         const chatId = peerToChatId(update.message.peer_id);
         await this.storage.setMessage(chatId, update.message.id, update.message);
-        await this.#reassignChatLastMessage(chatId);
+        promises.push((await this.#reassignChatLastMessage(chatId))());
       }
     }
 
@@ -2025,7 +2072,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
       }
       const recentReactions = update.reactions.recent_reactions ?? [];
       const reactions = update.reactions.results.map((v) => constructMessageReaction(v, recentReactions));
-      await this.#handle(await this.#constructContext({ reactions: { chatId, messageId: update.msg_id, reactions } }), resolve);
+      promises.push((async () => this.#handle(await this.#constructContext({ reactions: { chatId, messageId: update.msg_id, reactions } }), resolve))());
     }
 
     if (
@@ -2048,7 +2095,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
             this.getMessage.bind(this),
             this[getStickerSetName].bind(this),
           );
-          await this.#handle(await this.#constructContext({ [key]: message }), resolve);
+          promises.push((async () => this.#handle(await this.#constructContext({ [key]: message }), resolve))());
         }
       }
     }
@@ -2074,7 +2121,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
         }
       }
       if (deletedMessages.length > 0) {
-        await this.#handle(await this.#constructContext({ deletedMessages: deletedMessages as [Message, ...Message[]] }), resolve);
+        promises.push((async () => this.#handle(await this.#constructContext({ deletedMessages: deletedMessages as [Message, ...Message[]] }), resolve))());
       }
     } else if (update instanceof types.UpdateDeleteChannelMessages) {
       const chatId = getChannelChatId(update.channel_id);
@@ -2095,16 +2142,16 @@ export class Client<C extends Context = Context> extends ClientAbstract {
         await this.#reassignChatLastMessage(chatId);
       }
       if (deletedMessages.length > 0) {
-        await this.#handle(await this.#constructContext({ deletedMessages: deletedMessages as [Message, ...Message[]] }), resolve);
+        promises.push((async () => this.#handle(await this.#constructContext({ deletedMessages: deletedMessages as [Message, ...Message[]] }), resolve))());
       }
     }
 
     if (update instanceof types.UpdateBotCallbackQuery || update instanceof types.UpdateInlineBotCallbackQuery) {
-      await this.#handle(await this.#constructContext({ callbackQuery: await constructCallbackQuery(update, this[getEntity].bind(this), this[getMessageWithReply].bind(this)) }), resolve);
+      promises.push((async () => this.#handle(await this.#constructContext({ callbackQuery: await constructCallbackQuery(update, this[getEntity].bind(this), this[getMessageWithReply].bind(this)) }), resolve))());
     } else if (update instanceof types.UpdateBotInlineQuery) {
-      await this.#handle(await this.#constructContext({ inlineQuery: await constructInlineQuery(update, this[getEntity].bind(this)) }), resolve);
+      promises.push((async () => this.#handle(await this.#constructContext({ inlineQuery: await constructInlineQuery(update, this[getEntity].bind(this)) }), resolve))());
     } else if (update instanceof types.UpdateBotInlineSend) {
-      await this.#handle(await this.#constructContext({ chosenInlineResult: await constructChosenInlineResult(update, this[getEntity].bind(this)) }), resolve);
+      promises.push((async () => this.#handle(await this.#constructContext({ chosenInlineResult: await constructChosenInlineResult(update, this[getEntity].bind(this)) }), resolve))());
     }
 
     if (update instanceof types.UpdatePinnedDialogs) {
@@ -2138,6 +2185,8 @@ export class Client<C extends Context = Context> extends ClientAbstract {
         await this.#updateOrAddChat(peerToChatId(peer));
       }
     }
+
+    return () => Promise.all(promises);
   }
 
   /**
@@ -3072,11 +3121,11 @@ export class Client<C extends Context = Context> extends ClientAbstract {
     try {
       await this.#assertUser("");
     } catch {
-      return;
+      return () => Promise.resolve();
     }
     const [chat, listId] = this.#getChatAnywhere(chatId);
     if (!chat && !add) {
-      return;
+      return () => Promise.resolve();
     }
 
     const message_ = await this.storage.getLastMessage(chatId);
@@ -3096,9 +3145,9 @@ export class Client<C extends Context = Context> extends ClientAbstract {
         await this.storage.setChat(listId, chatId, chat.pinned, chat.lastMessage?.id ?? 0, chat.lastMessage?.date ?? new Date(0));
       }
       if (sendUpdate) {
-        await this.#sendChatUpdate(chatId, !chat);
+        return () => this.#sendChatUpdate(chatId, !chat);
       }
-      return;
+      return () => Promise.resolve();
     }
 
     const message = await this.getHistory(chatId, { limit: 1 }).then((v) => v[0]);
@@ -3116,18 +3165,20 @@ export class Client<C extends Context = Context> extends ClientAbstract {
         this.#chats.set(chatId, chat);
       }
       if (sendUpdate) {
-        await this.#sendChatUpdate(chatId, !chat);
+        return () => this.#sendChatUpdate(chatId, !chat);
       }
-      return;
+      return () => Promise.resolve();
     }
 
     if (chat) {
       chat.order = getChatOrder(undefined, chat.pinned);
       chat.lastMessage = undefined;
       if (sendUpdate) {
-        await this.#sendChatUpdate(chatId, false);
+        return () => this.#sendChatUpdate(chatId, false);
       }
     }
+
+    return () => Promise.resolve();
   }
   #chats = new Map<number, Chat>();
   #archivedChats = new Map<number, Chat>();
