@@ -1152,7 +1152,9 @@ export class Client<C extends Context = Context> extends ClientAbstract {
     if (this.#guaranteeUpdateDelivery) {
       await this.storage.setUpdate(channelId, update);
     }
-    await this.storage.setChannelPts(channelId, update.pts);
+    if (update.pts != 0) {
+      await this.storage.setChannelPts(channelId, update.pts);
+    }
     this.#queueUpdate(update, channelId, true);
   }
 
@@ -1193,7 +1195,10 @@ export class Client<C extends Context = Context> extends ClientAbstract {
     if (this.#guaranteeUpdateDelivery) {
       await this.storage.setUpdate(this.#mainBoxId, update);
     }
-    await this.#setUpdatePts(update.pts);
+    console.log("set pts to", update.pts, "from", update);
+    if (update.pts != 0) {
+      await this.#setUpdatePts(update.pts);
+    }
     this.#queueUpdate(update, 0n, true);
   }
 
