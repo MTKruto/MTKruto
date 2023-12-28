@@ -26,3 +26,15 @@ export function chatIdToPeer(chatId: number) {
     return new types.PeerChannel({ channel_id: BigInt(ZERO_CHANNEL_ID - chatId) });
   }
 }
+
+export function inputPeerToPeer(inputPeer: enums.InputPeer) {
+  if ("user_id" in inputPeer) {
+    return new types.PeerUser(inputPeer);
+  } else if ("chat_id" in inputPeer) {
+    return new types.PeerChat(inputPeer);
+  } else if ("channel_id" in inputPeer) {
+    return new types.PeerChannel(inputPeer);
+  } else {
+    UNREACHABLE();
+  }
+}

@@ -1,13 +1,13 @@
 import { UNREACHABLE } from "./1_utilities.ts";
-import { map } from "./3_errors.ts";
-import { types } from "./2_tl.ts";
+import { ErrorWithCall, ErrorWithCallParams, map } from "./3_errors.ts";
+import { TLObject, types } from "./2_tl.ts";
 
 export * from "./3_errors.ts";
 
-export class FloodWait extends types.Rpc_error {
+export class FloodWait extends ErrorWithCall {
   seconds: number;
 
-  constructor(params: { error_code: number; error_message: string }) {
+  constructor(params: ErrorWithCallParams) {
     super(params);
     const p = params.error_message.split("_");
     this.seconds = Number(p[p.length - 1]);
@@ -17,10 +17,10 @@ export class FloodWait extends types.Rpc_error {
   }
 }
 
-export class Migrate extends types.Rpc_error {
+export class Migrate extends ErrorWithCall {
   dc: number;
 
-  constructor(params: { error_code: number; error_message: string }) {
+  constructor(params: ErrorWithCallParams) {
     super(params);
     const p = params.error_message.split("_");
     this.dc = Number(p[p.length - 1]);
@@ -54,15 +54,15 @@ const prefixMap = {
   "FLOOD_WAIT_": FloodWait,
 };
 
-export function upgradeInstance(error: types.Rpc_error) {
+export function upgradeInstance(error: types.Rpc_error, call: TLObject) {
   for (const [k, v] of Object.entries(prefixMap)) {
     if (error.error_message.startsWith(k)) {
-      return new v(error);
+      return new v({ ...error, call });
     }
   }
   for (const [k, v] of Object.entries(map)) {
     if (error.error_message == k) {
-      return new v(error);
+      return new v({ ...error, call });
     }
   }
   return error;

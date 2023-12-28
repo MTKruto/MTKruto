@@ -1,6 +1,6 @@
 import { contentType, debug, extension, gunzip, Mutex } from "../0_deps.ts";
 import { bigIntFromBuffer, cleanObject, drop, getRandomBigInt, getRandomId, MaybePromise, mod, mustPrompt, mustPromptOneOf, Queue, sha1, UNREACHABLE, ZERO_CHANNEL_ID } from "../1_utilities.ts";
-import { as, enums, functions, getChannelChatId, Message_, MessageContainer, name, peerToChatId, ReadObject, RPCResult, TLError, TLReader, types } from "../2_tl.ts";
+import { as, enums, functions, getChannelChatId, inputPeerToPeer, Message_, MessageContainer, name, peerToChatId, ReadObject, RPCResult, TLError, TLObject, TLReader, types } from "../2_tl.ts";
 import { Storage, StorageMemory } from "../3_storage.ts";
 import { DC } from "../3_transport.ts";
 import { assertMessageType, BotCommand, botCommandScopeToTlObject, CallbackQuery, Chat, ChatAction, ChatID, constructCallbackQuery, constructChat, constructChat2, constructChat3, constructChat4, constructChosenInlineResult, constructDocument, constructInlineQuery, constructMessage, constructMessageReaction, constructUser, Document, FileID, FileType, FileUniqueID, FileUniqueType, getChatOrder, InlineQuery, InlineQueryResult, inlineQueryResultToTlObject, Message, MessageAnimation, MessageAudio, MessageContact, MessageDice, MessageDocument, MessageEntity, messageEntityToTlObject, MessageLocation, MessagePhoto, MessagePoll, MessageText, MessageTypes, MessageVenue, MessageVideo, MessageVideoNote, MessageVoice, ParseMode, Reaction, reactionToTlObject, replyMarkupToTlObject, ThumbnailSource, User, UsernameResolver } from "../3_types.ts";
@@ -118,7 +118,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
   #auth: { key: Uint8Array; id: bigint } | null = null;
   #sessionId = getRandomBigInt(8, true, false);
   #state = { salt: 0n, seqNo: 0 };
-  #promises = new Map<bigint, { resolve: (obj: ReadObject) => void; reject: (err: ReadObject | Error) => void }>();
+  #promises = new Map<bigint, { resolve: (obj: ReadObject) => void; reject: (err: ReadObject | Error) => void; call: TLObject }>();
   #toAcknowledge = new Set<bigint>();
   #updateState?: types.updates.State;
   #guaranteeUpdateDelivery: boolean;
@@ -865,11 +865,11 @@ export class Client<C extends Context = Context> extends ClientAbstract {
               dRecv("RPCResult: %s", (typeof result === "object" && name in result) ? result[name] : result.constructor.name);
             }
             const messageId = message.body.messageId;
+            const promise = this.#promises.get(messageId);
             const resolvePromise = () => {
-              const promise = this.#promises.get(messageId);
               if (promise) {
                 if (result instanceof types.Rpc_error) {
-                  promise.reject(upgradeInstance(result));
+                  promise.reject(upgradeInstance(result, promise.call));
                 } else {
                   promise.resolve(result);
                 }
@@ -878,7 +878,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
             };
             if (result instanceof types._Updates || result instanceof types._Update) {
               this.#processUpdatesQueue.add(async () => {
-                await this.#processUpdates(result as enums.Updates | enums.Update, true);
+                await this.#processUpdates(result as enums.Updates | enums.Update, true, promise?.call);
                 resolvePromise();
               });
             } else {
@@ -994,6 +994,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
               }
             },
             reject: () => {},
+            call: function_,
           });
           return;
         }
@@ -1002,7 +1003,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
 
         try {
           result = await new Promise<ReadObject>((resolve, reject) => {
-            this.#promises.set(message.id, { resolve, reject });
+            this.#promises.set(message.id, { resolve, reject, call: function_ });
           });
         } catch (err) {
           if (err instanceof AuthKeyUnregistered) {
@@ -1204,7 +1205,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
   }
 
   #lastUpdates = new Date();
-  async #processUpdates(updates_: enums.Update | enums.Updates, checkGap: boolean) {
+  async #processUpdates(updates_: enums.Update | enums.Updates, checkGap: boolean, call: TLObject | null = null) {
     this.#lastUpdates = new Date();
     /// First, individual updates (Update[1]) are extracted from Updates.[2]
     ///
@@ -1283,6 +1284,29 @@ export class Client<C extends Context = Context> extends ClientAbstract {
             reply_to: updates_.reply_to,
             date: updates_.date,
             message: updates_.message,
+            entities: updates_.entities,
+            ttl_period: updates_.ttl_period,
+          }),
+          pts: updates_.pts,
+          pts_count: updates_.pts_count,
+        }),
+      ];
+    } else if (updates_ instanceof types.UpdateShortSentMessage) {
+      if (!(call instanceof functions.messages.sendMessage)) {
+        UNREACHABLE();
+      }
+      updates = [
+        new types.UpdateNewMessage({
+          message: new types.Message({
+            out: updates_.out,
+            silent: call.silent,
+            id: updates_.id,
+            from_id: new types.PeerUser({ user_id: await this.#getSelfId().then(BigInt) }),
+            peer_id: inputPeerToPeer(call.peer),
+            message: call.message,
+            media: updates_.media,
+            date: updates_.date,
+            // reply_to: call.reply_to, // TODO?
             entities: updates_.entities,
             ttl_period: updates_.ttl_period,
           }),
