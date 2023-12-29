@@ -283,7 +283,6 @@ export interface GetHistoryParams {
 
 export interface SetReactionsParams {
   big?: boolean;
-  addToRecents?: boolean;
 }
 
 export interface AddReactionParams {
