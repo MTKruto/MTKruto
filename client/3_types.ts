@@ -293,16 +293,27 @@ export interface AddReactionParams {
 export type MessageUpdates = "message" | "editedMessage";
 
 export interface Update {
+  /** A message was sent or received. */
   message?: Message;
+  /** A message was edited. */
   editedMessage?: Message;
+  /** The client's connection state was changed. */
   connectionState?: ConnectionState;
+  /** The client's authorization state was changed. */
   authorizationState?: AuthorizationState;
+  /** One or more messages were deleted. */
   deletedMessages?: [Message, ...Message[]];
+  /** A callback query was received. Bot-only. */
   callbackQuery?: CallbackQuery;
+  /** An inline query was received. Bot-only. */
   inlineQuery?: InlineQuery;
+  /** An inline result was chosen. Bot-only. */
   chosenInlineResult?: ChosenInlineResult;
+  /** A new chat was added. User-only. */
   newChat?: Chat;
+  /** A chat was edited. User-only. */
   editedChat?: Chat;
+  /** A chat was deleted. User-only. */
   deletedChat?: { chatId: number };
   reactions?: { chatId: number; messageId: number; reactions: MessageReaction[] };
 }
