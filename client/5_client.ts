@@ -282,9 +282,12 @@ export class Client<C extends Context = Context> extends ClientAbstract {
 
   #constructContext = async (update: Update) => {
     const msg = update.message ?? update.editedMessage ?? update.callbackQuery?.message;
+    const reactions = update.reactions;
     const mustGetMsg = () => {
       if (msg !== undefined) {
-        return msg;
+        return { chatId: msg.chat.id, messageId: msg.id };
+      } else if (reactions !== undefined) {
+        return { chatId: reactions.chatId, messageId: reactions.messageId };
       } else {
         UNREACHABLE();
       }
@@ -292,9 +295,10 @@ export class Client<C extends Context = Context> extends ClientAbstract {
     const chat = msg?.chat;
     const from = update.callbackQuery?.from ?? update.inlineQuery?.from ?? update.message?.from ?? update.editedMessage?.from;
     const senderChat = msg?.senderChat;
-    const getReplyToMessageId = (quote: boolean | undefined, effectiveMessage: Message) => {
-      const shouldQuote = quote === undefined ? effectiveMessage.chat.type != "private" : quote;
-      const replyToMessageId = shouldQuote ? effectiveMessage.id : undefined;
+    const getReplyToMessageId = (quote: boolean | undefined, chatId: number, messageId: number) => {
+      const isPrivate = chatId > 0;
+      const shouldQuote = quote === undefined ? !isPrivate : quote;
+      const replyToMessageId = shouldQuote ? messageId : undefined;
       return replyToMessageId;
     };
     const me = update.connectionState !== undefined ? this.#lastGetMe : (update.authorizationState !== undefined && !update.authorizationState.authorized) ? this.#lastGetMe : await this.#getMe();
@@ -311,81 +315,81 @@ export class Client<C extends Context = Context> extends ClientAbstract {
         return () => update;
       },
       reply: (text, params) => {
-        const effectiveMessage = mustGetMsg();
-        const replyToMessageId = getReplyToMessageId(params?.quote, effectiveMessage);
-        return this.sendMessage(effectiveMessage.chat.id, text, { ...params, replyToMessageId });
+        const { chatId, messageId } = mustGetMsg();
+        const replyToMessageId = getReplyToMessageId(params?.quote, chatId, messageId);
+        return this.sendMessage(chatId, text, { ...params, replyToMessageId });
       },
       replyPoll: (question, options, params) => {
-        const effectiveMessage = mustGetMsg();
-        const replyToMessageId = getReplyToMessageId(params?.quote, effectiveMessage);
-        return this.sendPoll(effectiveMessage.chat.id, question, options, { ...params, replyToMessageId });
+        const { chatId, messageId } = mustGetMsg();
+        const replyToMessageId = getReplyToMessageId(params?.quote, chatId, messageId);
+        return this.sendPoll(chatId, question, options, { ...params, replyToMessageId });
       },
       replyPhoto: (photo, params) => {
-        const effectiveMessage = mustGetMsg();
-        const replyToMessageId = getReplyToMessageId(params?.quote, effectiveMessage);
-        return this.sendPhoto(effectiveMessage.chat.id, photo, { ...params, replyToMessageId });
+        const { chatId, messageId } = mustGetMsg();
+        const replyToMessageId = getReplyToMessageId(params?.quote, chatId, messageId);
+        return this.sendPhoto(chatId, photo, { ...params, replyToMessageId });
       },
       replyDocument: (document, params) => {
-        const effectiveMessage = mustGetMsg();
-        const replyToMessageId = getReplyToMessageId(params?.quote, effectiveMessage);
-        return this.sendDocument(effectiveMessage.chat.id, document, { ...params, replyToMessageId });
+        const { chatId, messageId } = mustGetMsg();
+        const replyToMessageId = getReplyToMessageId(params?.quote, chatId, messageId);
+        return this.sendDocument(chatId, document, { ...params, replyToMessageId });
       },
       replyContact: (firstName, number, params) => {
-        const effectiveMessage = mustGetMsg();
-        const replyToMessageId = getReplyToMessageId(params?.quote, effectiveMessage);
-        return this.sendContact(effectiveMessage.chat.id, firstName, number, { ...params, replyToMessageId });
+        const { chatId, messageId } = mustGetMsg();
+        const replyToMessageId = getReplyToMessageId(params?.quote, chatId, messageId);
+        return this.sendContact(chatId, firstName, number, { ...params, replyToMessageId });
       },
       replyLocation: (latitude, longitude, params) => {
-        const effectiveMessage = mustGetMsg();
-        const replyToMessageId = getReplyToMessageId(params?.quote, effectiveMessage);
-        return this.sendLocation(effectiveMessage.chat.id, latitude, longitude, { ...params, replyToMessageId });
+        const { chatId, messageId } = mustGetMsg();
+        const replyToMessageId = getReplyToMessageId(params?.quote, chatId, messageId);
+        return this.sendLocation(chatId, latitude, longitude, { ...params, replyToMessageId });
       },
       replyDice: (params) => {
-        const effectiveMessage = mustGetMsg();
-        const replyToMessageId = getReplyToMessageId(params?.quote, effectiveMessage);
-        return this.sendDice(effectiveMessage.chat.id, { ...params, replyToMessageId });
+        const { chatId, messageId } = mustGetMsg();
+        const replyToMessageId = getReplyToMessageId(params?.quote, chatId, messageId);
+        return this.sendDice(chatId, { ...params, replyToMessageId });
       },
       replyVenue: (latitude, longitude, title, address, params) => {
-        const effectiveMessage = mustGetMsg();
-        const replyToMessageId = getReplyToMessageId(params?.quote, effectiveMessage);
-        return this.sendVenue(effectiveMessage.chat.id, latitude, longitude, title, address, { ...params, replyToMessageId });
+        const { chatId, messageId } = mustGetMsg();
+        const replyToMessageId = getReplyToMessageId(params?.quote, chatId, messageId);
+        return this.sendVenue(chatId, latitude, longitude, title, address, { ...params, replyToMessageId });
       },
       replyVideo: (video, params) => {
-        const effectiveMessage = mustGetMsg();
-        const replyToMessageId = getReplyToMessageId(params?.quote, effectiveMessage);
-        return this.sendVideo(effectiveMessage.chat.id, video, { ...params, replyToMessageId });
+        const { chatId, messageId } = mustGetMsg();
+        const replyToMessageId = getReplyToMessageId(params?.quote, chatId, messageId);
+        return this.sendVideo(chatId, video, { ...params, replyToMessageId });
       },
       replyAnimation: (document, params) => {
-        const effectiveMessage = mustGetMsg();
-        const replyToMessageId = getReplyToMessageId(params?.quote, effectiveMessage);
-        return this.sendAnimation(effectiveMessage.chat.id, document, { ...params, replyToMessageId });
+        const { chatId, messageId } = mustGetMsg();
+        const replyToMessageId = getReplyToMessageId(params?.quote, chatId, messageId);
+        return this.sendAnimation(chatId, document, { ...params, replyToMessageId });
       },
       replyVoice: (document, params) => {
-        const effectiveMessage = mustGetMsg();
-        const replyToMessageId = getReplyToMessageId(params?.quote, effectiveMessage);
-        return this.sendVoice(effectiveMessage.chat.id, document, { ...params, replyToMessageId });
+        const { chatId, messageId } = mustGetMsg();
+        const replyToMessageId = getReplyToMessageId(params?.quote, chatId, messageId);
+        return this.sendVoice(chatId, document, { ...params, replyToMessageId });
       },
       replyAudio: (document, params) => {
-        const effectiveMessage = mustGetMsg();
-        const replyToMessageId = getReplyToMessageId(params?.quote, effectiveMessage);
-        return this.sendAudio(effectiveMessage.chat.id, document, { ...params, replyToMessageId });
+        const { chatId, messageId } = mustGetMsg();
+        const replyToMessageId = getReplyToMessageId(params?.quote, chatId, messageId);
+        return this.sendAudio(chatId, document, { ...params, replyToMessageId });
       },
       replyVideoNote: (videoNote, params) => {
-        const effectiveMessage = mustGetMsg();
-        const replyToMessageId = getReplyToMessageId(params?.quote, effectiveMessage);
-        return this.sendVideoNote(effectiveMessage.chat.id, videoNote, { ...params, replyToMessageId });
+        const { chatId, messageId } = mustGetMsg();
+        const replyToMessageId = getReplyToMessageId(params?.quote, chatId, messageId);
+        return this.sendVideoNote(chatId, videoNote, { ...params, replyToMessageId });
       },
       delete: () => {
-        const effectiveMessage = mustGetMsg();
-        return this.deleteMessage(effectiveMessage.chat.id, effectiveMessage.id);
+        const { chatId, messageId } = mustGetMsg();
+        return this.deleteMessage(chatId, messageId);
       },
       forward: (to, params) => {
-        const effectiveMessage = mustGetMsg();
-        return this.forwardMessage(effectiveMessage.chat.id, to, effectiveMessage.id, params) as unknown as ReturnType<C["forward"]>;
+        const { chatId, messageId } = mustGetMsg();
+        return this.forwardMessage(chatId, to, messageId, params) as unknown as ReturnType<C["forward"]>;
       },
       react: (reactions, params) => {
-        const effectiveMessage = mustGetMsg();
-        return this.setReactions(effectiveMessage.chat.id, effectiveMessage.id, reactions, params);
+        const { chatId, messageId } = mustGetMsg();
+        return this.setReactions(chatId, messageId, reactions, params);
       },
       answerCallbackQuery: (params) => {
         const { callbackQuery } = update;
@@ -402,52 +406,52 @@ export class Client<C extends Context = Context> extends ClientAbstract {
         return this.answerInlineQuery(inlineQuery.id, results, params);
       },
       sendChatAction: (chatAction, params) => {
-        const effectiveMessage = mustGetMsg();
-        return this.sendChatAction(effectiveMessage.chat.id, chatAction, params);
+        const { chatId } = mustGetMsg();
+        return this.sendChatAction(chatId, chatAction, params);
       },
       editMessageText: (messageId, text, params) => {
-        const effectiveMessage = mustGetMsg();
-        return this.editMessageText(effectiveMessage.chat.id, messageId, text, params);
+        const { chatId } = mustGetMsg();
+        return this.editMessageText(chatId, messageId, text, params);
       },
       getMessage: (messageId) => {
-        const effectiveMessage = mustGetMsg();
-        return this.getMessage(effectiveMessage.chat.id, messageId);
+        const { chatId } = mustGetMsg();
+        return this.getMessage(chatId, messageId);
       },
       getMessages: (messageIds) => {
-        const effectiveMessage = mustGetMsg();
-        return this.getMessages(effectiveMessage.chat.id, messageIds);
+        const { chatId } = mustGetMsg();
+        return this.getMessages(chatId, messageIds);
       },
       forwardMessage: (to, messageId, params) => {
-        const effectiveMessage = mustGetMsg();
-        return this.forwardMessage(effectiveMessage.chat.id, to, messageId, params);
+        const { chatId } = mustGetMsg();
+        return this.forwardMessage(chatId, to, messageId, params);
       },
       forwardMessages: (to, messageIds, params) => {
-        const effectiveMessage = mustGetMsg();
-        return this.forwardMessages(effectiveMessage.chat.id, to, messageIds, params);
+        const { chatId } = mustGetMsg();
+        return this.forwardMessages(chatId, to, messageIds, params);
       },
       deleteMessage: (messageId, params) => {
-        const effectiveMessage = mustGetMsg();
-        return this.deleteMessage(effectiveMessage.chat.id, messageId, params);
+        const { chatId } = mustGetMsg();
+        return this.deleteMessage(chatId, messageId, params);
       },
       deleteMessages: (messageIds, params) => {
-        const effectiveMessage = mustGetMsg();
-        return this.deleteMessages(effectiveMessage.chat.id, messageIds, params);
+        const { chatId } = mustGetMsg();
+        return this.deleteMessages(chatId, messageIds, params);
       },
       setAvailableReactions: (availableReactions) => {
-        const effectiveMessage = mustGetMsg();
-        return this.setAvailableReactions(effectiveMessage.chat.id, availableReactions);
+        const { chatId } = mustGetMsg();
+        return this.setAvailableReactions(chatId, availableReactions);
       },
       addReaction: (messageId, reaction, params) => {
-        const effectiveMessage = mustGetMsg();
-        return this.addReaction(effectiveMessage.chat.id, messageId, reaction, params);
+        const { chatId } = mustGetMsg();
+        return this.addReaction(chatId, messageId, reaction, params);
       },
       removeReaction: (messageId, reaction) => {
-        const effectiveMessage = mustGetMsg();
-        return this.removeReaction(effectiveMessage.chat.id, messageId, reaction);
+        const { chatId } = mustGetMsg();
+        return this.removeReaction(chatId, messageId, reaction);
       },
       setReactions: (messageId, reactions, params) => {
-        const effectiveMessage = mustGetMsg();
-        return this.setReactions(effectiveMessage.chat.id, messageId, reactions, params);
+        const { chatId } = mustGetMsg();
+        return this.setReactions(chatId, messageId, reactions, params);
       },
     };
 
