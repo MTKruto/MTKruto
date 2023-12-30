@@ -28,3 +28,16 @@ export function constructReaction(reaction: enums.Reaction): Reaction {
 export function reactionToTlObject(reaction: Reaction): enums.Reaction {
   return reaction.type == "emoji" ? new types.ReactionEmoji({ emoticon: reaction.emoji }) : new types.ReactionCustomEmoji({ document_id: BigInt(reaction.id) });
 }
+
+export function reactionEqual(left: Reaction, right: Reaction) {
+  if (left.type == "emoji") {
+    if (right.type == "emoji" && left.emoji == right.emoji) {
+      return true;
+    }
+  } else if (left.type == "customEmoji") {
+    if (right.type == "customEmoji" && left.id == right.id) {
+      return true;
+    }
+  }
+  return false;
+}
