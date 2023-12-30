@@ -38,14 +38,15 @@ const functionNamespaces = Object.entries(functions).filter(([, v]) => !(v insta
 export interface Context extends Update {
   /** The client that received the update. */
   client: Client;
+  /** The currently authorized user. */
   me: undefined extends this["connectionState"] ? undefined extends this["authorizationState"] ? User : (User | undefined) : (User | undefined);
   /** Resolves to `ctx.message ?? ctx.editedMessage ?? ctx.callbackQuery?.message`. */
   msg: undefined extends this["message"] ? undefined extends this["editedMessage"] ? undefined extends this["callbackQuery"] ? never : this["callbackQuery"] extends With<CallbackQuery, "message"> ? this["callbackQuery"]["message"] : this["callbackQuery"] extends With<CallbackQuery, "inlineMessageId"> ? never : (Message | undefined) : this["editedMessage"] : this["message"];
-  /** Resolves to `effectiveMessage?.chat`. */
+  /** Resolves to `msg?.chat`. */
   chat: this["msg"] extends never ? never : this["msg"]["chat"];
   /** Resolves to `(ctx.message ?? ctx.editedMessage)?.from ?? ctx.callbackQuery?.from ?? ctx.inlineQuery?.from`. */
   from: this["message"] extends Message ? this["message"]["from"] : this["editedMessage"] extends Message ? this["editedMessage"]["from"] : this["callbackQuery"] extends CallbackQuery ? this["callbackQuery"]["from"] : this["inlineQuery"] extends InlineQuery ? this["inlineQuery"]["from"] : never;
-  /** Resolves to `effectiveMessage?.senderChat`. */
+  /** Resolves to `msg?.senderChat`. */
   senderChat: this["msg"] extends never ? never : this["msg"]["senderChat"];
   /** Reply the received message with a text message. */
   reply: (text: string, params?: Omit<SendMessageParams, "replyToMessageId"> & ReplyParams) => Promise<MessageText>;
