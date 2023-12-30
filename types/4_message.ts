@@ -2,7 +2,7 @@ import { debug } from "../0_deps.ts";
 import { cleanObject, MaybePromise, UNREACHABLE, ZERO_CHANNEL_ID } from "../1_utilities.ts";
 import { as, enums, types } from "../2_tl.ts";
 import { FileID, FileType, FileUniqueID, FileUniqueType } from "./0__file_id.ts";
-import { Audio, constructAudio } from "./0_audio.ts";
+import { Audio, constructAudio } from "./1_audio.ts";
 import { constructContact, Contact } from "./0_contact.ts";
 import { constructDice, Dice } from "./0_dice.ts";
 import { constructForceReply, ForceReply } from "./0_force_reply.ts";
