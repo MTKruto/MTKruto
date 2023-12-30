@@ -3,7 +3,7 @@ import { bigIntFromBuffer, cleanObject, drop, getRandomBigInt, getRandomId, Mayb
 import { as, enums, functions, getChannelChatId, inputPeerToPeer, Message_, MessageContainer, name, peerToChatId, ReadObject, RPCResult, TLError, TLObject, TLReader, types } from "../2_tl.ts";
 import { Storage, StorageMemory } from "../3_storage.ts";
 import { DC } from "../3_transport.ts";
-import { assertMessageType, BotCommand, botCommandScopeToTlObject, CallbackQuery, Chat, ChatAction, ChatID, constructCallbackQuery, constructChat, constructChat2, constructChat3, constructChat4, constructChosenInlineResult, constructDocument, constructInlineQuery, constructMessage, constructMessageReaction, constructUser, Document, FileID, FileType, FileUniqueID, FileUniqueType, getChatOrder, InlineQuery, InlineQueryResult, inlineQueryResultToTlObject, Message, MessageAnimation, MessageAudio, MessageContact, MessageDice, MessageDocument, MessageEntity, messageEntityToTlObject, MessageLocation, MessagePhoto, MessagePoll, MessageText, MessageTypes, MessageVenue, MessageVideo, MessageVideoNote, MessageVoice, ParseMode, Reaction, reactionToTlObject, replyMarkupToTlObject, ThumbnailSource, User, UsernameResolver } from "../3_types.ts";
+import { assertMessageType, BotCommand, botCommandScopeToTlObject, CallbackQuery, Chat, ChatAction, ChatID, constructCallbackQuery, constructChat, constructChat2, constructChat3, constructChat4, constructChosenInlineResult, constructDocument, constructInlineQuery, constructMessage, constructMessageReaction, constructUser, Document, FileID, FileType, FileUniqueID, FileUniqueType, getChatOrder, InlineQuery, InlineQueryResult, inlineQueryResultToTlObject, Message, MessageAnimation, MessageAudio, MessageContact, MessageDice, MessageDocument, MessageEntity, messageEntityToTlObject, MessageLocation, MessagePhoto, MessagePoll, MessageText, MessageTypes, MessageVenue, MessageVideo, MessageVideoNote, MessageVoice, ParseMode, Reaction, reactionEqual, reactionToTlObject, replyMarkupToTlObject, ThumbnailSource, User, UsernameResolver } from "../3_types.ts";
 import { ACK_THRESHOLD, APP_VERSION, CHANNEL_DIFFERENCE_LIMIT_BOT, CHANNEL_DIFFERENCE_LIMIT_USER, DEVICE_MODEL, LANG_CODE, LANG_PACK, LAYER, MAX_CHANNEL_ID, MAX_CHAT_ID, PublicKeys, STICKER_SET_NAME_TTL, SYSTEM_LANG_CODE, SYSTEM_VERSION, USERNAME_TTL } from "../4_constants.ts";
 import { AuthKeyUnregistered, FloodWait, Migrate, PasswordHashInvalid, PhoneNumberInvalid, SessionPasswordNeeded, upgradeInstance } from "../4_errors.ts";
 import { parseHtml } from "./0_html.ts";
@@ -12,7 +12,7 @@ import { checkPassword } from "./0_password.ts";
 import { FileSource, getFileContents, getUsername, isChannelPtsUpdate, isHttpUrl, isPtsUpdate, resolve, With } from "./0_utilities.ts";
 import { ClientAbstract } from "./1_client_abstract.ts";
 import { ClientPlain } from "./2_client_plain.ts";
-import { _SendCommon, AddReactionParams, AnswerCallbackQueryParams, AnswerInlineQueryParams, AuthorizeUserParams, ClientParams, ConnectionState, DeleteMessageParams, DeleteMessagesParams, DownloadParams, EditMessageParams, FilterUpdate, ForwardMessagesParams, getChatListId, GetChatsParams, GetHistoryParams, GetMyCommandsParams, InvokeErrorHandler, MessageUpdates, NetworkStatistics, ReplyParams, SendAnimationParams, SendAudioParams, SendContactParams, SendDiceParams, SendDocumentParams, SendLocationParams, SendMessageParams, SendPhotoParams, SendPollParams, SendVenueParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams, SetMyCommandsParams, Update, UploadParams } from "./3_types.ts";
+import { _SendCommon, AddReactionParams, AnswerCallbackQueryParams, AnswerInlineQueryParams, AuthorizeUserParams, ClientParams, ConnectionState, DeleteMessageParams, DeleteMessagesParams, DownloadParams, EditMessageParams, FilterUpdate, ForwardMessagesParams, getChatListId, GetChatsParams, GetHistoryParams, GetMyCommandsParams, InvokeErrorHandler, MessageUpdates, NetworkStatistics, ReplyParams, SendAnimationParams, SendAudioParams, SendContactParams, SendDiceParams, SendDocumentParams, SendLocationParams, SendMessageParams, SendPhotoParams, SendPollParams, SendVenueParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams, SetMyCommandsParams, SetReactionsParams, Update, UploadParams } from "./3_types.ts";
 import { Composer, concat, flatten, Middleware, MiddlewareFn, skip } from "./4_composer.ts";
 
 const d = debug("Client");
@@ -100,7 +100,7 @@ export interface Context extends Update {
   /** Set the available reactions of the chat which the message was received from. */
   setAvailableReactions: (availableReactions: "none" | "all" | Reaction[]) => Promise<void>;
   /** Add a reaction to a message of the chat which the message was received from. */
-  addReaction: (messageId: number, reaction: Reaction, params?: AddReactionParams) => Promise<void>;
+  addReaction: (messageId: number, reaction: Reaction, params?: SetReactionsParams) => Promise<void>;
   toJSON: () => Update;
 }
 
@@ -3626,21 +3626,60 @@ export class Client<C extends Context = Context> extends ClientAbstract {
     });
   }
 
+  async #sendReaction(chatId: number, messageId: number, reactions: Reaction[], params?: AddReactionParams) {
+    await this.api.messages.sendReaction({
+      peer: await this.getInputPeer(chatId),
+      msg_id: messageId,
+      reaction: reactions.map((v) => reactionToTlObject(v)),
+      big: params?.big ? true : undefined,
+      add_to_recent: params?.addToRecents ? true : undefined,
+    });
+  }
+
   /**
-   * Add a reaction to a message.
+   * Change reactions made to a message.
+   *
+   * @param chatId The identifier of the chat which the message belongs to.
+   * @param messageId The identifier of the message to add the reaction to.
+   * @param reactions The new reactions.
+   */
+  async setReactions(chatId: number, messageId: number, reactions: Reaction[], params?: SetReactionsParams) {
+    await this.#sendReaction(chatId, messageId, reactions, params);
+  }
+
+  /**
+   * Make a reaction to a message.
    *
    * @param chatId The identifier of the chat which the message belongs to.
    * @param messageId The identifier of the message to add the reaction to.
    * @param reaction The reaction to add.
    */
   async addReaction(chatId: number, messageId: number, reaction: Reaction, params?: AddReactionParams) {
-    // TODO: check storage and skip if already there
-    await this.api.messages.sendReaction({
-      peer: await this.getInputPeer(chatId),
-      msg_id: messageId,
-      reaction: [reactionToTlObject(reaction)],
-      big: params?.big ? true : undefined,
-      add_to_recent: params?.addToRecents ? true : undefined,
-    });
+    const chosenReactions = await this.getMessage(chatId, messageId).then((v) => v?.reactions ?? []).then((v) => v.filter((v) => v.chosen));
+    for (const r of chosenReactions) {
+      if (reactionEqual(r.reaction, reaction)) {
+        return;
+      }
+    }
+    const reactions = [reaction, ...chosenReactions.map((v) => v.reaction)];
+    await this.setReactions(chatId, messageId, reactions, params);
+  }
+
+  /**
+   * Undo a reaction made to a message.
+   *
+   * @param chatId The identifier of the chat which the message belongs to.
+   * @param messageId The identifier of the message which the reaction was made to.
+   * @param reaction The reaction to remove.
+   */
+  async removeReaction(chatId: number, messageId: number, reaction: Reaction) {
+    const chosenReactions = await this.getMessage(chatId, messageId).then((v) => v?.reactions ?? []).then((v) => v.filter((v) => v.chosen));
+    for (const r of chosenReactions) {
+      if (reactionEqual(r.reaction, reaction)) {
+        const reactions = chosenReactions.filter((v) => v != r).map((v) => v.reaction);
+        await this.setReactions(chatId, messageId, reactions);
+        break;
+      }
+    }
   }
 }
