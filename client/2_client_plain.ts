@@ -3,7 +3,7 @@ import { bigIntFromBuffer, bufferFromBigInt, concat, getRandomBigInt, modExp, rs
 import { functions, serialize, TLReader, types } from "../2_tl.ts";
 import { PUBLIC_KEYS, PublicKeys } from "../4_constants.ts";
 import { getMessageId, packUnencryptedMessage, unpackUnencryptedMessage } from "./0_message.ts";
-import { ClientAbstract, ClientAbstractParams } from "./1_client_abstract.ts";
+import { ClientAbstract, ClientAbstractParams } from "./0_client_abstract.ts";
 
 const d = debug("ClientPlain/createAuthKey");
 
