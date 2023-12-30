@@ -2,9 +2,7 @@ import { enums, types } from "../2_tl.ts";
 import { UsernameResolver } from "./1__getters.ts";
 import { constructInlineKeyboardButton, InlineKeyboardButton, inlineKeyboardButtonToTlObject } from "./2_inline_keyboard_button.ts";
 
-/** This object represents an inline keyboard that appears right next to the message it belongs to. */
 export interface InlineKeyboardMarkup {
-  /** Array of button rows, each represented by an Array of InlineKeyboardButton objects */
   inlineKeyboard: InlineKeyboardButton[][];
 }
 

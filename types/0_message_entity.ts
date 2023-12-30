@@ -25,9 +25,7 @@ export type MessageEntityType =
 /** @unlisted */
 export interface MessageEntityBase {
   type: MessageEntityType;
-  /** Offset in [UTF-16 code units](https://core.telegram.org/api/entities#entity-length) to the start of the entity */
   offset: number;
-  /** Length of the entity in [UTF-16 code units](https://core.telegram.org/api/entities#entity-length) */
   length: number;
 }
 
