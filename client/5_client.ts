@@ -3626,6 +3626,16 @@ export class Client<C extends Context = Context> extends ClientAbstract {
     });
   }
 
+  async #sendReaction(chatId: number, messageId: number, reactions: Reaction[], params?: AddReactionParams) {
+    await this.api.messages.sendReaction({
+      peer: await this.getInputPeer(chatId),
+      msg_id: messageId,
+      reaction: reactions.map((v) => reactionToTlObject(v)),
+      big: params?.big ? true : undefined,
+      add_to_recent: params?.addToRecents ? true : undefined,
+    });
+  }
+
   /**
    * Change reactions made to a message.
    *
@@ -3634,13 +3644,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
    * @param reactions The new reactions.
    */
   async setReactions(chatId: number, messageId: number, reactions: Reaction[], params?: SetReactionsParams) {
-    await this.api.messages.sendReaction({
-      peer: await this.getInputPeer(chatId),
-      msg_id: messageId,
-      reaction: reactions.map((v) => reactionToTlObject(v)),
-      big: params?.big ? true : undefined,
-      add_to_recent: params?.addToRecents ? true : undefined,
-    });
+    await this.#sendReaction(chatId, messageId, reactions, params);
   }
 
   /**
