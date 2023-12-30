@@ -1,7 +1,7 @@
-import { FileSource } from "./0_utilities.ts";
 import { MaybePromise } from "../1_utilities.ts";
 import { BotCommandScope, Chat, ChatID, ForceReply, InlineKeyboardMarkup, InlineQueryResultButton, Message, MessageEntity, ReplyKeyboardMarkup, ReplyKeyboardRemove, ReplyQuote } from "../3_types.ts";
 import { ParseMode } from "../3_types.ts";
+import { FileSource } from "./0_utilities.ts";
 import { ClientPlainParams } from "./2_client_plain.ts";
 
 export interface ClientParams extends ClientPlainParams {
