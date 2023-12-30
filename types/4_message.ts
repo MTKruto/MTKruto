@@ -87,6 +87,8 @@ export interface MessageBase {
   authorSignature?: string;
   /** The number of times the message was viewed. */
   views?: number;
+  /** The number of times the message was forwarded. */
+  forwards?: number;
   /** The message's reply markup. */
   replyMarkup?: InlineKeyboardMarkup | ReplyKeyboardMarkup | ReplyKeyboardRemove | ForceReply;
 }
@@ -779,6 +781,7 @@ export async function constructMessage(
     link,
     date: new Date(message_.date * 1_000),
     views: message_.views,
+    forwards: message_.forwards,
     isTopicMessage: false,
     hasProtectedContent: message_.noforwards || false,
   };
