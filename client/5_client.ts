@@ -282,7 +282,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
 
   #constructContext = async (update: Update) => {
     const msg = update.message ?? update.editedMessage ?? update.callbackQuery?.message;
-    const reactions = update.reactions;
+    const reactions = update.messageInteractions;
     const mustGetMsg = () => {
       if (msg !== undefined) {
         return { chatId: msg.chat.id, messageId: msg.id };
@@ -2131,10 +2131,28 @@ export class Client<C extends Context = Context> extends ClientAbstract {
       if (message instanceof types.Message) {
         message.reactions = update.reactions;
         await this.storage.setMessage(chatId, update.msg_id, message);
+        const views = message.views ?? 0;
+        const forwards = message.forwards ?? 0;
+        const recentReactions = update.reactions.recent_reactions ?? [];
+        const reactions = update.reactions.results.map((v) => constructMessageReaction(v, recentReactions));
+        promises.push((async () => this.#handle(await this.#constructContext({ messageInteractions: { chatId, messageId: update.msg_id, reactions, views, forwards } }), resolve))());
       }
-      const recentReactions = update.reactions.recent_reactions ?? [];
-      const reactions = update.reactions.results.map((v) => constructMessageReaction(v, recentReactions));
-      promises.push((async () => this.#handle(await this.#constructContext({ reactions: { chatId, messageId: update.msg_id, reactions } }), resolve))());
+    } else if (update instanceof types.UpdateChannelMessageViews || update instanceof types.UpdateChannelMessageForwards) {
+      const chatId = peerToChatId(new types.PeerChannel(update));
+      const message = await this.storage.getMessage(chatId, update.id);
+      if (message instanceof types.Message) {
+        if ("views" in update) {
+          message.views = update.views;
+        }
+        if ("forwards" in update) {
+          message.forwards = update.forwards;
+        }
+        const views = message.views ?? 0;
+        const forwards = message.forwards ?? 0;
+        const recentReactions = message.reactions?.recent_reactions ?? [];
+        const reactions = message.reactions?.results.map((v) => constructMessageReaction(v, recentReactions)) ?? [];
+        promises.push((async () => this.#handle(await this.#constructContext({ messageInteractions: { chatId, messageId: update.id, reactions, views, forwards } }), resolve))());
+      }
     }
 
     if (
