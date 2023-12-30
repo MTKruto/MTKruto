@@ -1,9 +1,8 @@
 import { FileSource } from "./0_utilities.ts";
-import { MaybePromise, UNREACHABLE } from "../1_utilities.ts";
-import { functions, types } from "../2_tl.ts";
-import { BotCommandScope, CallbackQuery, Chat, ChatID, ChosenInlineResult, ForceReply, InlineKeyboardMarkup, InlineQuery, InlineQueryResultButton, Message, MessageEntity, MessageReaction, ReplyKeyboardMarkup, ReplyKeyboardRemove, ReplyQuote } from "../3_types.ts";
-import { ClientPlainParams } from "./2_client_plain.ts";
+import { MaybePromise } from "../1_utilities.ts";
+import { BotCommandScope, Chat, ChatID, ForceReply, InlineKeyboardMarkup, InlineQueryResultButton, Message, MessageEntity, ReplyKeyboardMarkup, ReplyKeyboardRemove, ReplyQuote } from "../3_types.ts";
 import { ParseMode } from "../3_types.ts";
+import { ClientPlainParams } from "./2_client_plain.ts";
 
 export interface ClientParams extends ClientPlainParams {
   /** A parse mode to use when the `parseMode` parameter is not specified when sending or editing messages. Defauls to `ParseMode.None`. */
@@ -265,10 +264,6 @@ export interface SendDiceParams extends _SendCommon {
   emoji?: "🎲" | "🎯" | "🏀" | "⚽" | "🎳" | "🎰";
 }
 
-export type ConnectionState = "notConnected" | "updating" | "ready";
-
-export type AuthorizationState = { authorized: boolean };
-
 export interface ReplyParams {
   /** Whether to quote the message that is to be replied. Enabled by default for non-private chats. */
   quote?: boolean;
@@ -288,68 +283,6 @@ export interface SetReactionsParams {
 export interface AddReactionParams {
   big?: boolean;
   addToRecents?: boolean;
-}
-
-export type MessageUpdates = "message" | "editedMessage";
-
-export interface Update {
-  /** A message was sent or received. */
-  message?: Message;
-  /** A message was edited. */
-  editedMessage?: Message;
-  /** The client's connection state was changed. */
-  connectionState?: ConnectionState;
-  /** The client's authorization state was changed. */
-  authorizationState?: AuthorizationState;
-  /** One or more messages were deleted. */
-  deletedMessages?: { chatId: number; messageId: number }[];
-  /** A callback query was received. Bot-only. */
-  callbackQuery?: CallbackQuery;
-  /** An inline query was received. Bot-only. */
-  inlineQuery?: InlineQuery;
-  /** An inline result was chosen. Bot-only. */
-  chosenInlineResult?: ChosenInlineResult;
-  /** A new chat was added. User-only. */
-  newChat?: Chat;
-  /** A chat was edited. User-only. */
-  editedChat?: Chat;
-  /** A chat was deleted. User-only. */
-  deletedChat?: { chatId: number };
-  /** The interactions of a message were updated. User-only. */
-  messageInteractions?: { chatId: number; messageId: number; reactions: MessageReaction[]; views: number; forwards: number };
-}
-
-export type NextFn<T = void> = () => Promise<T>;
-
-export interface Handler<C> {
-  (ctx: C, next: NextFn): MaybePromise<void>;
-}
-
-export interface InvokeErrorHandler<C> {
-  (ctx: { client: C; error: unknown; function: types.Type | functions.Function<unknown>; n: number }, next: NextFn<boolean>): MaybePromise<boolean>;
-}
-
-type Update_ = Update;
-export type FilterUpdate<U extends Update_, Type extends keyof Update_, Field extends string, TypeType = NonNullable<Update_[Type]>> = Omit<U, keyof Update_> & Omit<Update_, Type> & { [Type_ in Type]-?: Field extends keyof TypeType ? TypeType & { [Field_ in Field]-?: Field extends keyof TypeType ? NonNullable<TypeType[Field]> : never } : NonNullable<TypeType> };
-
-export interface NetworkStatisticsEntry {
-  sent: number;
-  received: number;
-}
-export interface NetworkStatistics {
-  messages: NetworkStatisticsEntry;
-  cdn: NetworkStatisticsEntry;
-}
-
-export function getChatListId(chatList: string) {
-  switch (chatList) {
-    case "main":
-      return 0;
-    case "archived":
-      return 1;
-    default:
-      UNREACHABLE();
-  }
 }
 
 export interface GetChatsParams {

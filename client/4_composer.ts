@@ -1,5 +1,5 @@
 import { assertMessageType, MessageTypes, User } from "../3_types.ts";
-import { FilterUpdate, MessageUpdates, Update as Update_ } from "./3_types.ts";
+import { FilterUpdate, MessageUpdates, Update as Update_ } from "./0_updates.ts";
 
 interface Update extends Update_ {
   me: undefined extends this["connectionState"] ? undefined extends this["authorizationState"] ? User : (User | undefined) : (User | undefined);
