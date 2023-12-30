@@ -77,6 +77,8 @@ export interface Context extends Update {
   delete: () => Promise<void>;
   /** Forward the received message. */
   forward: (to: ChatID, params?: ForwardMessagesParams) => Promise<this["msg"]>;
+  /** Change the reactions made to the received message. */
+  react: (reactions: Reaction[], params?: SetReactionsParams) => Promise<void>;
   /** Send a chat action to the chat which the message was received from. */
   sendChatAction: (action: ChatAction, params?: { messageThreadId?: number }) => Promise<void>;
   /** Edit a message in the chat which the message was received from. */
@@ -100,7 +102,11 @@ export interface Context extends Update {
   /** Set the available reactions of the chat which the message was received from. */
   setAvailableReactions: (availableReactions: "none" | "all" | Reaction[]) => Promise<void>;
   /** Add a reaction to a message of the chat which the message was received from. */
-  addReaction: (messageId: number, reaction: Reaction, params?: SetReactionsParams) => Promise<void>;
+  addReaction: (messageId: number, reaction: Reaction, params?: AddReactionParams) => Promise<void>;
+  /** Remove a reaction from a message of the chat which the message was received from. */
+  removeReaction: (messageId: number, reaction: Reaction) => Promise<void>;
+  /** Change the reactions made to a message of the chat which the message was received from. */
+  setReactions: (messageId: number, reactions: Reaction[], params?: SetReactionsParams) => Promise<void>;
   toJSON: () => Update;
 }
 
@@ -377,6 +383,10 @@ export class Client<C extends Context = Context> extends ClientAbstract {
         const effectiveMessage = mustGetMsg();
         return this.forwardMessage(effectiveMessage.chat.id, to, effectiveMessage.id, params) as unknown as ReturnType<C["forward"]>;
       },
+      react: (reactions, params) => {
+        const effectiveMessage = mustGetMsg();
+        return this.setReactions(effectiveMessage.chat.id, effectiveMessage.id, reactions, params);
+      },
       answerCallbackQuery: (params) => {
         const { callbackQuery } = update;
         if (callbackQuery === undefined) {
@@ -430,6 +440,14 @@ export class Client<C extends Context = Context> extends ClientAbstract {
       addReaction: (messageId, reaction, params) => {
         const effectiveMessage = mustGetMsg();
         return this.addReaction(effectiveMessage.chat.id, messageId, reaction, params);
+      },
+      removeReaction: (messageId, reaction) => {
+        const effectiveMessage = mustGetMsg();
+        return this.removeReaction(effectiveMessage.chat.id, messageId, reaction);
+      },
+      setReactions: (messageId, reactions, params) => {
+        const effectiveMessage = mustGetMsg();
+        return this.setReactions(effectiveMessage.chat.id, messageId, reactions, params);
       },
     };
 
