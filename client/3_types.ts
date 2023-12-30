@@ -315,7 +315,8 @@ export interface Update {
   editedChat?: Chat;
   /** A chat was deleted. User-only. */
   deletedChat?: { chatId: number };
-  reactions?: { chatId: number; messageId: number; reactions: MessageReaction[] };
+  /** The interactions of a message were updated. User-only. */
+  messageInteractions?: { chatId: number; messageId: number; reactions: MessageReaction[]; views: number; forwards: number };
 }
 
 export type NextFn<T = void> = () => Promise<T>;
