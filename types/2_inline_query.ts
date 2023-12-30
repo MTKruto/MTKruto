@@ -5,17 +5,11 @@ import { EntityGetter } from "./1__getters.ts";
 import { constructUser, User } from "./1_user.ts";
 
 export interface InlineQuery {
-  /** Unique identifier for this query */
   id: string;
-  /** The user who made this query */
   from: User;
-  /** The text of the query */
   query: string;
-  /** Result offset */
   offset: string;
-  /** Type of the chat from which the inline query was sent. Can be either “sender” for a private chat with the inline query sender, “private”, “group”, “supergroup”, or “channel”. The chat type should be always known for requests sent from official clients and most third-party clients, unless the request was sent from a secret chat */
   chatType?: "sender" | "private" | "group" | "supergroup" | "channel";
-  /** The location of the user who made this query */
   location?: Location;
 }
 
