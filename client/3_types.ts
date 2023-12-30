@@ -302,7 +302,7 @@ export interface Update {
   /** The client's authorization state was changed. */
   authorizationState?: AuthorizationState;
   /** One or more messages were deleted. */
-  deletedMessages?: [Message, ...Message[]];
+  deletedMessages?: { chatId: number; messageId: number }[];
   /** A callback query was received. Bot-only. */
   callbackQuery?: CallbackQuery;
   /** An inline query was received. Bot-only. */
