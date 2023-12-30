@@ -1,4 +1,4 @@
-import { AuthorizationState, CallbackQuery, Chat, ChosenInlineResult, ConnectionState, InlineQuery, Message, MessageReaction } from "../3_types.ts";
+import { AuthorizationState, CallbackQuery, Chat, ChatP, ChosenInlineResult, ConnectionState, InlineQuery, Message, MessageReaction, ReactionCount } from "../3_types.ts";
 
 export interface Update {
   /** A message was sent or received. */
@@ -25,6 +25,8 @@ export interface Update {
   deletedChat?: { chatId: number };
   /** The interactions of a message were updated. User-only. */
   messageInteractions?: { chatId: number; messageId: number; reactions: MessageReaction[]; views: number; forwards: number };
+  /** The anonymous reactions made to a message were changed. Bot-only. */
+  messageReactionCount?: { chat: ChatP; messageId: number; date: Date; reactions: ReactionCount[] };
 }
 
 export type MessageUpdates = "message" | "editedMessage";

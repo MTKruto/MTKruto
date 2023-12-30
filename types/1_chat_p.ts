@@ -92,6 +92,7 @@ export type ChatP = ChatPPrivate | ChatPGroup | ChatPSupergroup | ChatPChannel;
 export function constructChatP(chat: types.User): ChatPPrivate;
 export function constructChatP(chat: types.Chat | types.ChatForbidden): ChatPGroup;
 export function constructChatP(chat: types.Channel | types.ChannelForbidden): ChatPSupergroup | ChatPChannel;
+export function constructChatP(chat: types.User | types.Chat | types.ChatForbidden | types.Channel | types.ChannelForbidden): ChatP;
 export function constructChatP(chat: types.User | types.Chat | types.ChatForbidden | types.Channel | types.ChannelForbidden): ChatP {
   if (chat instanceof types.User) {
     const id = Number(chat.id);
