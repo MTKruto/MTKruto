@@ -3,15 +3,14 @@ import { bigIntFromBuffer, cleanObject, drop, getRandomBigInt, getRandomId, Mayb
 import { as, enums, functions, getChannelChatId, inputPeerToPeer, Message_, MessageContainer, name, peerToChatId, ReadObject, RPCResult, TLError, TLObject, TLReader, types } from "../2_tl.ts";
 import { Storage, StorageMemory } from "../3_storage.ts";
 import { DC } from "../3_transport.ts";
-import { assertMessageType, BotCommand, botCommandScopeToTlObject, CallbackQuery, Chat, ChatAction, ChatID, ConnectionState, constructCallbackQuery, constructChat, constructChat2, constructChat3, constructChat4, constructChatP, constructChosenInlineResult, constructDocument, constructInlineQuery, constructMessage, constructMessageReaction, constructReactionCount, constructUser, Document, FileID, FileType, FileUniqueID, FileUniqueType, getChatOrder, InlineQuery, InlineQueryResult, inlineQueryResultToTlObject, Message, MessageAnimation, MessageAudio, MessageContact, MessageDice, MessageDocument, MessageEntity, messageEntityToTlObject, MessageLocation, MessagePhoto, MessagePoll, MessageText, MessageTypes, MessageVenue, MessageVideo, MessageVideoNote, MessageVoice, NetworkStatistics, ParseMode, Reaction, reactionEqual, reactionToTlObject, replyMarkupToTlObject, ThumbnailSource, User, UsernameResolver } from "../3_types.ts";
+import { assertMessageType, BotCommand, botCommandScopeToTlObject, Chat, ChatAction, ChatID, ChatP, ConnectionState, constructCallbackQuery, constructChat, constructChat2, constructChat3, constructChat4, constructChatP, constructChosenInlineResult, constructDocument, constructInlineQuery, constructMessage, constructMessageReaction, constructReactionCount, constructUser, Document, FileID, FileType, FileUniqueID, FileUniqueType, getChatOrder, InlineQueryResult, inlineQueryResultToTlObject, Message, MessageAnimation, MessageAudio, MessageContact, MessageDice, MessageDocument, MessageEntity, messageEntityToTlObject, MessageLocation, MessagePhoto, MessagePoll, MessageText, MessageTypes, MessageVenue, MessageVideo, MessageVideoNote, MessageVoice, NetworkStatistics, ParseMode, Reaction, reactionEqual, reactionToTlObject, replyMarkupToTlObject, ThumbnailSource, Update, UpdateMap, User, UsernameResolver } from "../3_types.ts";
 import { ACK_THRESHOLD, APP_VERSION, CHANNEL_DIFFERENCE_LIMIT_BOT, CHANNEL_DIFFERENCE_LIMIT_USER, DEVICE_MODEL, LANG_CODE, LANG_PACK, LAYER, MAX_CHANNEL_ID, MAX_CHAT_ID, PublicKeys, STICKER_SET_NAME_TTL, SYSTEM_LANG_CODE, SYSTEM_VERSION, USERNAME_TTL } from "../4_constants.ts";
 import { AuthKeyUnregistered, FloodWait, Migrate, PasswordHashInvalid, PhoneNumberInvalid, SessionPasswordNeeded, upgradeInstance } from "../4_errors.ts";
+import { ClientAbstract } from "./0_client_abstract.ts";
 import { parseHtml } from "./0_html.ts";
 import { decryptMessage, encryptMessage, getMessageId } from "./0_message.ts";
 import { checkPassword } from "./0_password.ts";
-import { FilterUpdate, MessageUpdates, Update } from "./0_updates.ts";
-import { FileSource, getChatListId, getFileContents, getUsername, isChannelPtsUpdate, isHttpUrl, isPtsUpdate, resolve, With } from "./0_utilities.ts";
-import { ClientAbstract } from "./0_client_abstract.ts";
+import { FileSource, getChatListId, getFileContents, getUsername, isChannelPtsUpdate, isHttpUrl, isPtsUpdate, resolve, WithUpdate } from "./0_utilities.ts";
 import { Composer, concat, flatten, Middleware, MiddlewareFn, skip } from "./1_composer.ts";
 import { ClientPlain } from "./2_client_plain.ts";
 import { _SendCommon, AddReactionParams, AnswerCallbackQueryParams, AnswerInlineQueryParams, AuthorizeUserParams, ClientParams, DeleteMessageParams, DeleteMessagesParams, DownloadParams, EditMessageParams, ForwardMessagesParams, GetChatsParams, GetHistoryParams, GetMyCommandsParams, ReplyParams, SendAnimationParams, SendAudioParams, SendContactParams, SendDiceParams, SendDocumentParams, SendLocationParams, SendMessageParams, SendPhotoParams, SendPollParams, SendVenueParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams, SetMyCommandsParams, SetReactionsParams, UploadParams } from "./3_params.ts";
@@ -41,19 +40,19 @@ type Promisify<T extends AnyFunc> = (...args: Parameters<T>) => Promise<ReturnTy
 export type Api = { [K in Keys]: Functions[K] extends { __F: AnyFunc } ? Promisify<Functions[K]["__F"]> : { [K_ in keyof Functions[K]]: Functions[K][K_] extends { __F: AnyFunc } ? Promisify<Functions[K][K_]["__F"]> : Functions[K][K_] } };
 const functionNamespaces = Object.entries(functions).filter(([, v]) => !(v instanceof Function)).map(([k]) => k);
 
-export interface Context extends Update {
+export interface Context {
   /** The client that received the update. */
   client: Client;
   /** The currently authorized user. */
-  me: undefined extends this["connectionState"] ? undefined extends this["authorizationState"] ? User : (User | undefined) : (User | undefined);
-  /** Resolves to `ctx.message ?? ctx.editedMessage ?? ctx.callbackQuery?.message`. */
-  msg: undefined extends this["message"] ? undefined extends this["editedMessage"] ? undefined extends this["callbackQuery"] ? never : this["callbackQuery"] extends With<CallbackQuery, "message"> ? this["callbackQuery"]["message"] : this["callbackQuery"] extends With<CallbackQuery, "inlineMessageId"> ? never : (Message | undefined) : this["editedMessage"] : this["message"];
-  /** Resolves to `msg?.chat`. */
-  chat: this["msg"] extends never ? never : this["msg"]["chat"];
-  /** Resolves to `(ctx.message ?? ctx.editedMessage)?.from ?? ctx.callbackQuery?.from ?? ctx.inlineQuery?.from`. */
-  from: this["message"] extends Message ? this["message"]["from"] : this["editedMessage"] extends Message ? this["editedMessage"]["from"] : this["callbackQuery"] extends CallbackQuery ? this["callbackQuery"]["from"] : this["inlineQuery"] extends InlineQuery ? this["inlineQuery"]["from"] : never;
+  me?: User;
+  /** Resolves to `message`, `editedMessage`, or the `message` field of `callbackQuery`. */
+  msg?: Message;
+  /** Resolves to `msg?.chat`. TODO */
+  chat?: ChatP;
+  /** Resolves to the `from` field of `message`, `editedMessage`, `callbackQuery`, or `inlineQuery`. */
+  from?: User;
   /** Resolves to `msg?.senderChat`. */
-  senderChat: this["msg"] extends never ? never : this["msg"]["senderChat"];
+  senderChat?: ChatP;
   /** Reply the received message with a text message. */
   reply: (text: string, params?: Omit<SendMessageParams, "replyToMessageId"> & ReplyParams) => Promise<MessageText>;
   /** Reply the received message with a poll. */
@@ -288,8 +287,8 @@ export class Client<C extends Context = Context> extends ClientAbstract {
   });
 
   #constructContext = async (update: Update) => {
-    const msg = update.message ?? update.editedMessage ?? update.callbackQuery?.message;
-    const reactions = update.messageInteractions;
+    const msg = "message" in update ? update.message : "editedMessage" in update ? update.editedMessage : "callbackQuery" in update ? update.callbackQuery.message : undefined;
+    const reactions = "messageInteractions" in update ? update.messageInteractions : undefined;
     const mustGetMsg = () => {
       if (msg !== undefined) {
         return { chatId: msg.chat.id, messageId: msg.id };
@@ -300,7 +299,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
       }
     };
     const chat = msg?.chat;
-    const from = update.callbackQuery?.from ?? update.inlineQuery?.from ?? update.message?.from ?? update.editedMessage?.from;
+    const from = "callbackQuery" in update ? update.callbackQuery.from : "inlineQuery" in update ? update.inlineQuery.from : "message" in update ? update.message.from : "editedMessage" in update ? update.editedMessage?.from : undefined;
     const senderChat = msg?.senderChat;
     const getReplyToMessageId = (quote: boolean | undefined, chatId: number, messageId: number) => {
       const isPrivate = chatId > 0;
@@ -308,7 +307,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
       const replyToMessageId = shouldQuote ? messageId : undefined;
       return replyToMessageId;
     };
-    const me = update.connectionState !== undefined ? this.#lastGetMe : (update.authorizationState !== undefined && !update.authorizationState.authorized) ? this.#lastGetMe : await this.#getMe();
+    const me = "connectionState" in update ? this.#lastGetMe : ("authorizationState" in update && !update.authorizationState.authorized) ? this.#lastGetMe : await this.#getMe();
 
     const context: Context = {
       ...update,
@@ -399,18 +398,16 @@ export class Client<C extends Context = Context> extends ClientAbstract {
         return this.setReactions(chatId, messageId, reactions, params);
       },
       answerCallbackQuery: (params) => {
-        const { callbackQuery } = update;
-        if (callbackQuery === undefined) {
+        if (!("callbackQuery" in update)) {
           UNREACHABLE();
         }
-        return this.answerCallbackQuery(callbackQuery.id, params);
+        return this.answerCallbackQuery(update.callbackQuery.id, params);
       },
       answerInlineQuery: (results, params) => {
-        const { inlineQuery } = update;
-        if (inlineQuery == undefined) {
+        if (!("inlineQuery" in update)) {
           UNREACHABLE();
         }
-        return this.answerInlineQuery(inlineQuery.id, results, params);
+        return this.answerInlineQuery(update.inlineQuery.id, results, params);
       },
       sendChatAction: (chatAction, params) => {
         const { chatId } = mustGetMsg();
@@ -2169,7 +2166,6 @@ export class Client<C extends Context = Context> extends ClientAbstract {
       update instanceof types.UpdateEditMessage ||
       update instanceof types.UpdateEditChannelMessage
     ) {
-      const key = update instanceof types.UpdateNewMessage || update instanceof types.UpdateNewChannelMessage ? "message" : "editedMessage";
       if (!(update.message instanceof types.MessageEmpty)) {
         const isOutgoing = update.message.out;
         let shouldIgnore = isOutgoing ? (await this.storage.getAccountType()) == "user" ? false : true : false;
@@ -2183,7 +2179,15 @@ export class Client<C extends Context = Context> extends ClientAbstract {
             this.getMessage.bind(this),
             this[getStickerSetName].bind(this),
           );
-          promises.push((async () => this.#handle(await this.#constructContext({ [key]: message }), resolve))());
+          promises.push((async () => {
+            let context: C;
+            if (update instanceof types.UpdateNewMessage || update instanceof types.UpdateNewChannelMessage) {
+              context = await this.#constructContext({ message });
+            } else {
+              context = await this.#constructContext({ editedMessage: message });
+            }
+            await this.#handle(context, resolve);
+          })());
         }
       }
     }
@@ -2598,9 +2602,9 @@ export class Client<C extends Context = Context> extends ClientAbstract {
     return composer;
   }
 
-  on<T extends keyof Update, F extends string, K extends keyof MessageTypes | null = null>(
-    filter: T extends MessageUpdates ? T | [T, K, ...F[]] : T,
-    ...middleawre: Middleware<FilterUpdate<C, T, F, K extends keyof MessageTypes ? MessageTypes[K] : C[T]>>[]
+  on<T extends keyof UpdateMap, F extends string, K extends keyof MessageTypes>(
+    filter: T extends "message" | "editedMessage" ? T | [T, K, ...F[]] : T,
+    ...middleawre: Middleware<WithUpdate<C, T, K, F>>[]
   ) {
     const type = typeof filter === "string" ? filter : filter[0];
     let keys = Array.isArray(filter) ? filter.slice(1) : [];
@@ -2609,7 +2613,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
       messageType = keys[0] as keyof MessageTypes;
       keys = keys.slice(1);
     }
-    return this.filter((ctx) => {
+    return this.filter((ctx): ctx is WithUpdate<C, T, K, F> => {
       if (type in ctx) {
         if (messageType != null) {
           // deno-lint-ignore ban-ts-comment
@@ -2629,8 +2633,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
       } else {
         return false;
       }
-      // deno-lint-ignore no-explicit-any
-    }, ...middleawre as unknown as any) as unknown as Composer<FilterUpdate<C, T, F, K extends keyof MessageTypes ? MessageTypes[K] : C[T]>>;
+    }, ...middleawre);
   }
 
   command(
@@ -2638,7 +2641,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
       names: string | RegExp | (string | RegExp)[];
       prefixes: string | string[];
     },
-    ...middleawre: Middleware<FilterUpdate<C, "message", "text">>[]
+    ...middleawre: Middleware<WithUpdate<C, "message", "text">>[]
   ) {
     const commands__ = typeof commands === "object" && "names" in commands ? commands.names : commands;
     const commands_ = Array.isArray(commands__) ? commands__ : [commands__];

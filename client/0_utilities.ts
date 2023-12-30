@@ -1,6 +1,7 @@
 import { path } from "../0_deps.ts";
 import { UNREACHABLE } from "../1_utilities.ts";
 import { enums, types } from "../2_tl.ts";
+import { ChatP, MessageTypes, UpdateMap, User } from "../3_types.ts";
 
 export const resolve = () => Promise.resolve();
 
@@ -166,3 +167,20 @@ export function getChatListId(chatList: string) {
       UNREACHABLE();
   }
 }
+
+type MessageWith<T extends keyof MessageTypes, F extends number | string | symbol> = F extends keyof MessageTypes[T] ? MessageTypes[T] & { [P in F]-?: NonNullable<MessageTypes[T][P]> } : MessageTypes[T];
+
+type Me<U extends keyof UpdateMap> = U extends "connectionState" | "authorizationState" ? { me?: User } : { me: User };
+type Msg<U extends keyof UpdateMap, T extends keyof MessageTypes, F extends number | string | symbol = ""> = U extends "message" | "editedMessage" ? { msg: MessageFilter<U, T, F>; chat: ChatP } : { msg?: MessageFilter<U, T, F> };
+type From<U extends keyof UpdateMap> = U extends "callbackQuery" | "inlineQuery" ? { from: User } : { from?: User };
+
+type MessageFilter<U extends keyof UpdateMap, T extends keyof MessageTypes, F extends number | string | symbol> = U extends "message" ? { message: MessageWith<T, F> }
+  : U extends "editedMessage" ? { editedMessage: MessageWith<T, F> }
+  : UpdateMap[U];
+
+export type WithUpdate<C, U extends keyof UpdateMap, T extends keyof MessageTypes, F extends number | string | symbol = ""> =
+  & C
+  & Me<U>
+  & Msg<U, T, F>
+  & From<U>
+  & MessageFilter<U, T, F>;
