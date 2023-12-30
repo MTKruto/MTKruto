@@ -155,3 +155,14 @@ export function getUsername(string: string) {
   }
   return validateUsername(parts[0]);
 }
+
+export function getChatListId(chatList: string) {
+  switch (chatList) {
+    case "main":
+      return 0;
+    case "archived":
+      return 1;
+    default:
+      UNREACHABLE();
+  }
+}
