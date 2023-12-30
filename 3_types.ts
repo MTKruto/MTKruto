@@ -44,6 +44,7 @@ export * from "./types/1_message_reaction.ts";
 export * from "./types/1_network_statistics.ts";
 export * from "./types/1_photo.ts";
 export * from "./types/1_poll.ts";
+export * from "./types/1_reaction_count.ts";
 export * from "./types/1_reply_quote.ts";
 export * from "./types/1_sticker.ts";
 export * from "./types/1_user.ts";
