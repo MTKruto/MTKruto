@@ -2182,48 +2182,45 @@ export class Client<C extends Context = Context> extends ClientAbstract {
     }
 
     if (update instanceof types.UpdateDeleteMessages) {
-      const deletedMessages = new Array<Message>();
+      const deletedMessages = new Array<{ chatId: number; messageId: number }>();
       for (const messageId of update.messages) {
         const chatId = await this.storage.getMessageChat(messageId);
         if (chatId) {
-          const message = await this.storage.getMessage(chatId, messageId);
-          if (message != null && !(message instanceof types.MessageEmpty)) {
-            deletedMessages.push(
-              await constructMessage(
-                message,
-                this[getEntity].bind(this),
-                this.getMessage.bind(this),
-                this[getStickerSetName].bind(this),
-              ),
-            );
-          }
-          await this.storage.setMessage(chatId, messageId, null);
-          await this.#reassignChatLastMessage(chatId);
+          deletedMessages.push({ chatId, messageId });
         }
       }
       if (deletedMessages.length > 0) {
-        promises.push((async () => this.#handle(await this.#constructContext({ deletedMessages: deletedMessages as [Message, ...Message[]] }), resolve))());
+        promises.push((async () => {
+          try {
+            await this.#handle(await this.#constructContext({ deletedMessages }), resolve);
+          } finally {
+            for (const { chatId, messageId } of deletedMessages) {
+              await this.storage.setMessage(chatId, messageId, null);
+              await this.#reassignChatLastMessage(chatId);
+            }
+          }
+        })());
       }
     } else if (update instanceof types.UpdateDeleteChannelMessages) {
       const chatId = getChannelChatId(update.channel_id);
-      const deletedMessages = new Array<Message>();
+      const deletedMessages = new Array<{ chatId: number; messageId: number }>();
       for (const messageId of update.messages) {
         const message = await this.storage.getMessage(chatId, messageId);
-        if (message != null && !(message instanceof types.MessageEmpty)) {
-          deletedMessages.push(
-            await constructMessage(
-              message,
-              this[getEntity].bind(this),
-              this.getMessage.bind(this),
-              this[getStickerSetName].bind(this),
-            ),
-          );
+        if (message != null) {
+          deletedMessages.push({ chatId, messageId });
         }
-        await this.storage.setMessage(chatId, messageId, null);
-        await this.#reassignChatLastMessage(chatId);
       }
       if (deletedMessages.length > 0) {
-        promises.push((async () => this.#handle(await this.#constructContext({ deletedMessages: deletedMessages as [Message, ...Message[]] }), resolve))());
+        promises.push((async () => {
+          try {
+            await this.#handle(await this.#constructContext({ deletedMessages }), resolve);
+          } finally {
+            for (const { chatId, messageId } of deletedMessages) {
+              await this.storage.setMessage(chatId, messageId, null);
+              await this.#reassignChatLastMessage(chatId);
+            }
+          }
+        })());
       }
     }
 
