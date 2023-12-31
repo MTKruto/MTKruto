@@ -1,11 +1,10 @@
 import { AuthorizationState } from "./0_authorization_state.ts";
 import { ConnectionState } from "./0_connection_state.ts";
 import { MessageIdentifier } from "./0_message_identifier.ts";
-import { ChatP } from "./1_chat_p.ts";
-import { ReactionCount } from "./1_reaction_count.ts";
 import { ChosenInlineResult } from "./2_chosen_inline_result.ts";
 import { InlineQuery } from "./2_inline_query.ts";
 import { MessageInteractions } from "./2_message_interactions.ts";
+import { MessageReactionCount } from "./2_message_reaction_count.ts";
 import { Message } from "./4_message.ts";
 import { CallbackQuery } from "./5_callback_query.ts";
 import { Chat } from "./5_chat.ts";
@@ -123,7 +122,7 @@ export interface UpdateMessageInteractions {
  */
 export interface UpdateMessageReactionCount {
   /** The new message reactions. */
-  messageReactionCount: { chat: ChatP; messageId: number; date: Date; reactions: ReactionCount[] };
+  messageReactionCount: MessageReactionCount;
 }
 
 /** @unlisted */
