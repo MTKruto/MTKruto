@@ -1,31 +1,27 @@
-import { assertMessageType, MessageTypes, User } from "../3_types.ts";
-import { FilterUpdate, MessageUpdates, Update as Update_ } from "./0_updates.ts";
-
-interface Update extends Update_ {
-  me: undefined extends this["connectionState"] ? undefined extends this["authorizationState"] ? User : (User | undefined) : (User | undefined);
-}
+import { assertMessageType, MessageTypes, Update, UpdateIntersection, UpdateMap, User } from "../3_types.ts";
+import { WithUpdate } from "./0_utilities.ts";
 
 type MaybePromise<T> = T | Promise<T>;
 
 export type NextFunction = () => Promise<void>;
 
-export type MiddlewareFn<C extends Update = Update> = (
+export type MiddlewareFn<C> = (
   ctx: C,
   next: NextFunction,
 ) => MaybePromise<unknown>;
 
-export interface MiddlewareObj<C extends Update = Update> {
+export interface MiddlewareObj<C> {
   middleware: () => MiddlewareFn<C>;
 }
-export type Middleware<C extends Update = Update> =
+export type Middleware<C> =
   | MiddlewareFn<C>
   | MiddlewareObj<C>;
 
-export function flatten<C extends Update = Update>(mw: Middleware<C>): MiddlewareFn<C> {
+export function flatten<C>(mw: Middleware<C>): MiddlewareFn<C> {
   return typeof mw === "function" ? mw : (ctx, next) => mw.middleware()(ctx, next);
 }
 
-export function concat<C extends Update = Update>(
+export function concat<C = Update>(
   left: MiddlewareFn<C>,
   right: MiddlewareFn<C>,
 ): MiddlewareFn<C> {
@@ -42,9 +38,11 @@ export function concat<C extends Update = Update>(
   };
 }
 
-export const skip: MiddlewareFn = (_ctx, next) => next();
+export function skip<C>(_ctx: C, next: NextFunction) {
+  return next();
+}
 
-export class Composer<C extends Update> implements MiddlewareObj<C> {
+export class Composer<C extends { me?: User }> implements MiddlewareObj<C> {
   #handle: MiddlewareFn<C>;
   #prefixes?: string | string[];
 
@@ -63,13 +61,13 @@ export class Composer<C extends Update> implements MiddlewareObj<C> {
     return this.#handle;
   }
 
-  use(...middleware: Middleware<C>[]) {
+  use(...middleware: Middleware<UpdateIntersection<C>>[]) {
     const composer = new Composer(...middleware);
     this.#handle = concat(this.#handle, flatten(composer));
     return composer;
   }
 
-  branch(predicate: (ctx: C) => MaybePromise<boolean>, trueHandler_: Middleware<C>, falseHandler_: Middleware<C>) {
+  branch(predicate: (ctx: UpdateIntersection<C>) => MaybePromise<boolean>, trueHandler_: Middleware<UpdateIntersection<C>>, falseHandler_: Middleware<UpdateIntersection<C>>) {
     const trueHandler = flatten(trueHandler_);
     const falseHandler = flatten(falseHandler_);
     return this.use(async (upd, next) => {
@@ -82,25 +80,25 @@ export class Composer<C extends Update> implements MiddlewareObj<C> {
   }
 
   filter<D extends C>(
-    predicate: (ctx: C) => ctx is D,
+    predicate: (ctx: UpdateIntersection<C>) => ctx is D,
     ...middleware: Middleware<D>[]
   ): Composer<D>;
   filter(
-    predicate: (ctx: C) => MaybePromise<boolean>,
-    ...middleware: Middleware<C>[]
+    predicate: (ctx: UpdateIntersection<C>) => MaybePromise<boolean>,
+    ...middleware: Middleware<UpdateIntersection<C>>[]
   ): Composer<C>;
   filter(
-    predicate: (ctx: C) => MaybePromise<boolean>,
-    ...middleware: Middleware<C>[]
+    predicate: (ctx: UpdateIntersection<C>) => MaybePromise<boolean>,
+    ...middleware: Middleware<UpdateIntersection<C>>[]
   ) {
     const composer = new Composer(...middleware);
     this.branch(predicate, composer, skip);
     return composer;
   }
 
-  on<T extends keyof Update_, F extends string, K extends keyof MessageTypes | null = null>(
-    filter: T extends MessageUpdates ? T | [T, K, ...F[]] : T,
-    ...middleawre: Middleware<FilterUpdate<C, T, F, K extends keyof MessageTypes ? MessageTypes[K] : C[T]>>[]
+  on<T extends keyof UpdateMap, F extends string, K extends keyof MessageTypes>(
+    filter: T extends "message" | "editedMessage" ? T | [T, K, ...F[]] : T,
+    ...middleawre: Middleware<WithUpdate<C, T, K, F>>[]
   ) {
     const type = typeof filter === "string" ? filter : filter[0];
     let keys = Array.isArray(filter) ? filter.slice(1) : [];
@@ -109,7 +107,7 @@ export class Composer<C extends Update> implements MiddlewareObj<C> {
       messageType = keys[0] as keyof MessageTypes;
       keys = keys.slice(1);
     }
-    return this.filter((ctx) => {
+    return this.filter((ctx): ctx is WithUpdate<C, T, K, F> => {
       if (type in ctx) {
         if (messageType != null) {
           // deno-lint-ignore ban-ts-comment
@@ -129,8 +127,7 @@ export class Composer<C extends Update> implements MiddlewareObj<C> {
       } else {
         return false;
       }
-      // deno-lint-ignore no-explicit-any
-    }, ...middleawre as unknown as any) as unknown as Composer<FilterUpdate<C, T, F, K extends keyof MessageTypes ? MessageTypes[K] : C[T]>>;
+    }, ...middleawre);
   }
 
   command(
@@ -138,7 +135,7 @@ export class Composer<C extends Update> implements MiddlewareObj<C> {
       names: string | RegExp | (string | RegExp)[];
       prefixes: string | string[];
     },
-    ...middleawre: Middleware<FilterUpdate<C, "message", "text">>[]
+    ...middleawre: Middleware<WithUpdate<C, "message", "text">>[]
   ) {
     const commands__ = typeof commands === "object" && "names" in commands ? commands.names : commands;
     const commands_ = Array.isArray(commands__) ? commands__ : [commands__];
