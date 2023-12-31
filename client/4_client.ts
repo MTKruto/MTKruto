@@ -3,7 +3,7 @@ import { bigIntFromBuffer, cleanObject, drop, getRandomBigInt, getRandomId, Mayb
 import { as, enums, functions, getChannelChatId, inputPeerToPeer, Message_, MessageContainer, name, peerToChatId, ReadObject, RPCResult, TLError, TLObject, TLReader, types } from "../2_tl.ts";
 import { Storage, StorageMemory } from "../3_storage.ts";
 import { DC } from "../3_transport.ts";
-import { assertMessageType, BotCommand, botCommandScopeToTlObject, Chat, ChatAction, ChatID, ChatP, ConnectionState, constructCallbackQuery, constructChat, constructChat2, constructChat3, constructChat4, constructChatP, constructChosenInlineResult, constructDocument, constructInlineQuery, constructMessage, constructMessageReaction, constructReactionCount, constructUser, Document, FileID, FileType, FileUniqueID, FileUniqueType, getChatOrder, InlineQueryResult, inlineQueryResultToTlObject, Message, MessageAnimation, MessageAudio, MessageContact, MessageDice, MessageDocument, MessageEntity, messageEntityToTlObject, MessageLocation, MessagePhoto, MessagePoll, MessageText, MessageTypes, MessageVenue, MessageVideo, MessageVideoNote, MessageVoice, NetworkStatistics, ParseMode, Reaction, reactionEqual, reactionToTlObject, replyMarkupToTlObject, ThumbnailSource, Update, UpdateMap, User, UsernameResolver } from "../3_types.ts";
+import { assertMessageType, BotCommand, botCommandScopeToTlObject, Chat, ChatAction, ChatID, ChatP, ConnectionState, constructCallbackQuery, constructChat, constructChat2, constructChat3, constructChat4, constructChatP, constructChosenInlineResult, constructDocument, constructInlineQuery, constructMessage, constructMessageReaction, constructReactionCount, constructUser, Document, FileID, FileType, FileUniqueID, FileUniqueType, getChatOrder, InlineQueryResult, inlineQueryResultToTlObject, Message, MessageAnimation, MessageAudio, MessageContact, MessageDice, MessageDocument, MessageEntity, messageEntityToTlObject, MessageLocation, MessagePhoto, MessagePoll, MessageText, MessageTypes, MessageVenue, MessageVideo, MessageVideoNote, MessageVoice, NetworkStatistics, ParseMode, Reaction, reactionEqual, reactionToTlObject, replyMarkupToTlObject, ThumbnailSource, Update, UpdateIntersection, UpdateMap, User, UsernameResolver } from "../3_types.ts";
 import { ACK_THRESHOLD, APP_VERSION, CHANNEL_DIFFERENCE_LIMIT_BOT, CHANNEL_DIFFERENCE_LIMIT_USER, DEVICE_MODEL, LANG_CODE, LANG_PACK, LAYER, MAX_CHANNEL_ID, MAX_CHAT_ID, PublicKeys, STICKER_SET_NAME_TTL, SYSTEM_LANG_CODE, SYSTEM_VERSION, USERNAME_TTL } from "../4_constants.ts";
 import { AuthKeyUnregistered, FloodWait, Migrate, PasswordHashInvalid, PhoneNumberInvalid, SessionPasswordNeeded, upgradeInstance } from "../4_errors.ts";
 import { ClientAbstract } from "./0_client_abstract.ts";
@@ -2567,13 +2567,13 @@ export class Client<C extends Context = Context> extends ClientAbstract {
   //#region Composer
   #handle: MiddlewareFn<C> = skip;
 
-  use(...middleware: Middleware<C>[]) {
+  use(...middleware: Middleware<UpdateIntersection<C>>[]) {
     const composer = new Composer(...middleware);
     this.#handle = concat(this.#handle, flatten(composer));
     return composer;
   }
 
-  branch(predicate: (ctx: C) => MaybePromise<boolean>, trueHandler_: Middleware<C>, falseHandler_: Middleware<C>) {
+  branch(predicate: (ctx: UpdateIntersection<C>) => MaybePromise<boolean>, trueHandler_: Middleware<UpdateIntersection<C>>, falseHandler_: Middleware<UpdateIntersection<C>>) {
     const trueHandler = flatten(trueHandler_);
     const falseHandler = flatten(falseHandler_);
     return this.use(async (upd, next) => {
@@ -2586,16 +2586,16 @@ export class Client<C extends Context = Context> extends ClientAbstract {
   }
 
   filter<D extends C>(
-    predicate: (ctx: C) => ctx is D,
+    predicate: (ctx: UpdateIntersection<C>) => ctx is D,
     ...middleware: Middleware<D>[]
   ): Composer<D>;
   filter(
-    predicate: (ctx: C) => MaybePromise<boolean>,
-    ...middleware: Middleware<C>[]
+    predicate: (ctx: UpdateIntersection<C>) => MaybePromise<boolean>,
+    ...middleware: Middleware<UpdateIntersection<C>>[]
   ): Composer<C>;
   filter(
-    predicate: (ctx: C) => MaybePromise<boolean>,
-    ...middleware: Middleware<C>[]
+    predicate: (ctx: UpdateIntersection<C>) => MaybePromise<boolean>,
+    ...middleware: Middleware<UpdateIntersection<C>>[]
   ) {
     const composer = new Composer(...middleware);
     this.branch(predicate, composer, skip);

@@ -143,6 +143,25 @@ export interface UpdateMap {
   messageReactionCount: UpdateMessageReactionCount;
 }
 
+/** @unlisted */
+export type UpdateIntersection<T> =
+  & T
+  & Partial<
+    & UpdateConnectionState
+    & UpdateAuthorizationState
+    & UpdateNewMessage
+    & UpdateEditedMessage
+    & UpdateDeletedMessages
+    & UpdateCallbackQuery
+    & UpdateInlineQuery
+    & UpdateChosenInlineResult
+    & UpdateNewChat
+    & UpdateEditedChat
+    & UpdateDeletedChat
+    & UpdateMessageInteractions
+    & UpdateMessageReactionCount
+  >;
+
 export type Update =
   | UpdateConnectionState
   | UpdateAuthorizationState

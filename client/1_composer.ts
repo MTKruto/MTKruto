@@ -1,4 +1,4 @@
-import { assertMessageType, MessageTypes, Update, UpdateMap, User } from "../3_types.ts";
+import { assertMessageType, MessageTypes, Update, UpdateIntersection, UpdateMap, User } from "../3_types.ts";
 import { WithUpdate } from "./0_utilities.ts";
 
 type MaybePromise<T> = T | Promise<T>;
@@ -61,13 +61,13 @@ export class Composer<C extends { me?: User }> implements MiddlewareObj<C> {
     return this.#handle;
   }
 
-  use(...middleware: Middleware<C>[]) {
+  use(...middleware: Middleware<UpdateIntersection<C>>[]) {
     const composer = new Composer(...middleware);
     this.#handle = concat(this.#handle, flatten(composer));
     return composer;
   }
 
-  branch(predicate: (ctx: C) => MaybePromise<boolean>, trueHandler_: Middleware<C>, falseHandler_: Middleware<C>) {
+  branch(predicate: (ctx: UpdateIntersection<C>) => MaybePromise<boolean>, trueHandler_: Middleware<UpdateIntersection<C>>, falseHandler_: Middleware<UpdateIntersection<C>>) {
     const trueHandler = flatten(trueHandler_);
     const falseHandler = flatten(falseHandler_);
     return this.use(async (upd, next) => {
@@ -80,16 +80,16 @@ export class Composer<C extends { me?: User }> implements MiddlewareObj<C> {
   }
 
   filter<D extends C>(
-    predicate: (ctx: C) => ctx is D,
+    predicate: (ctx: UpdateIntersection<C>) => ctx is D,
     ...middleware: Middleware<D>[]
   ): Composer<D>;
   filter(
-    predicate: (ctx: C) => MaybePromise<boolean>,
-    ...middleware: Middleware<C>[]
+    predicate: (ctx: UpdateIntersection<C>) => MaybePromise<boolean>,
+    ...middleware: Middleware<UpdateIntersection<C>>[]
   ): Composer<C>;
   filter(
-    predicate: (ctx: C) => MaybePromise<boolean>,
-    ...middleware: Middleware<C>[]
+    predicate: (ctx: UpdateIntersection<C>) => MaybePromise<boolean>,
+    ...middleware: Middleware<UpdateIntersection<C>>[]
   ) {
     const composer = new Composer(...middleware);
     this.branch(predicate, composer, skip);
