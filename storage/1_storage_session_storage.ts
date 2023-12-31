@@ -51,7 +51,7 @@ export class StorageSessionStorage extends Storage implements Storage {
     if (params?.limit !== undefined) {
       entries = entries.slice(0, params.limit <= 0 ? 1 : params.limit);
     }
-    for (let [key, value] of entries) {
+    entries: for (let [key, value] of entries) {
       if (key.startsWith(this.prefix)) {
         key = key.slice(this.prefix.length);
       }
@@ -60,7 +60,7 @@ export class StorageSessionStorage extends Storage implements Storage {
         if ("prefix" in filter) {
           for (const [i, p] of filter.prefix.entries()) {
             if (toString(p) != toString(parts[i])) {
-              continue;
+              continue entries;
             }
           }
         } else {
