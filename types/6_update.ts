@@ -10,7 +10,13 @@ import { CallbackQuery } from "./5_callback_query.ts";
 import { Chat } from "./5_chat.ts";
 
 /**
- * The client's connection state was changed.
+ * A client's connection state was changed.
+ *
+ * ```
+ * client.on("connectionState", (ctx) => {
+ *   console.log("The client's connection state is now:", ctx.connectionState);
+ * });
+ * ```
  * @unlisted
  */
 export interface UpdateConnectionState {
@@ -19,7 +25,18 @@ export interface UpdateConnectionState {
 }
 
 /**
- * The client's authorization state was changed.
+ * A client's authorization state was changed.
+ *
+ * ```
+ * client.on("authorizationState", (ctx) => {
+ *   if (ctx.authorizationState.authorized) {
+ *     const me = await ctx.client.getMe();
+ *     console.log("The client is now authorized as", me.firstName);
+ *   } else {
+ *     console.log("The client is no longer authorized.")
+ *   }
+ * });
+ * ```
  * @unlisted
  */
 export interface UpdateAuthorizationState {
@@ -29,6 +46,23 @@ export interface UpdateAuthorizationState {
 
 /**
  * A message was sent or received.
+ *
+ * ```
+ * // Handle text messages
+ * client.on(["message", "text"], (ctx) => {
+ *   const receivedOrSent = ctx.message.out ? "sent" : "received";
+ *   console.log("Just", receivedOrSent, "a text message:", ctx.message.text);
+ * });
+ *
+ * // Handle other messages
+ * client.on("message", (ctx) => {
+ *   if (ctx.message.out) {
+ *    console.log("Just sent a message.");
+ *   }
+ * });
+ * ```
+ *
+ * Note that updates on outgoing messages are disabled by default for bots.
  * @unlisted
  */
 export interface UpdateNewMessage {
@@ -38,6 +72,13 @@ export interface UpdateNewMessage {
 
 /**
  * A message was edited.
+ *
+ * ```
+ * client.on("editedMessage", (ctx) => {
+ *   console.log("A message was just edited.");
+ *   // ctx.editedMessage
+ * });
+ * ```
  * @unlisted
  */
 export interface UpdateEditedMessage {
@@ -47,6 +88,14 @@ export interface UpdateEditedMessage {
 
 /**
  * One or more messages were deleted.
+ *
+ * ```
+ * client.on("deletedMessages", (ctx) => {
+ *   for (const deletedMessage of ctx.deletedMessages) {
+ *     console.log(deletedMessage);
+ *   }
+ * });
+ * ```
  * @unlisted
  */
 export interface UpdateDeletedMessages {
@@ -55,7 +104,13 @@ export interface UpdateDeletedMessages {
 }
 
 /**
- * A callback query was received. Bot-only.
+ * A callback query was made (a user presses an inline button). Bot-only.
+ *
+ * ```
+ * client.on("callbackQuery", async (ctx) => {
+ *   await ctx.answerCallbackQuery(ctx.callbackQuery.data, { alert: true });
+ * });
+ * ```
  * @unlisted
  */
 export interface UpdateCallbackQuery {
@@ -65,6 +120,13 @@ export interface UpdateCallbackQuery {
 
 /**
  * An inline query was received. Bot-only.
+ *
+ * ```
+ * client.on("inlineQuery", (ctx) => {
+ *   const { from, query } = ctx.inlineQuery;
+ *   console.log("User", from.id, "sent an inline query:", query);
+ * });
+ * ```
  * @unlisted
  */
 export interface UpdateInlineQuery {
@@ -73,16 +135,16 @@ export interface UpdateInlineQuery {
 }
 
 /**
- * An inline result was chosen. Bot-only.
+ * An inline query result was chosen. Bot-only.
  * @unlisted
  */
 export interface UpdateChosenInlineResult {
-  /** The chosen inline result. */
+  /** The chosen inline query result. */
   chosenInlineResult: ChosenInlineResult;
 }
 
 /**
- * A new chat was added. User-only.
+ * A new chat was added to the chat list. User-only.
  * @unlisted
  */
 export interface UpdateNewChat {
@@ -91,7 +153,7 @@ export interface UpdateNewChat {
 }
 
 /**
- * A chat was deleted. User-only.
+ * A chat in the chat list was edited. User-only.
  * @unlisted
  */
 export interface UpdateEditedChat {
@@ -99,7 +161,7 @@ export interface UpdateEditedChat {
 }
 
 /**
- * A chat was deleted. User-only.
+ * A chat was removed from the chat list. User-only.
  * @unlisted
  */
 export interface UpdateDeletedChat {
