@@ -1,7 +1,7 @@
 import { path } from "../0_deps.ts";
 import { UNREACHABLE } from "../1_utilities.ts";
 import { enums, types } from "../2_tl.ts";
-import { ChatP, Message, MessageTypes, UpdateMap, User } from "../3_types.ts";
+import { ChatP, MessageTypes, UpdateMap, User } from "../3_types.ts";
 
 export const resolve = () => Promise.resolve();
 
