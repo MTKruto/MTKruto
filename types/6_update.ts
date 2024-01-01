@@ -49,7 +49,7 @@ export interface UpdateAuthorizationState {
  *
  * ```
  * // Handle text messages
- * client.on(["message", "text"], (ctx) => {
+ * client.on("message:text", (ctx) => {
  *   const receivedOrSent = ctx.message.out ? "sent" : "received";
  *   console.log("Just", receivedOrSent, "a text message:", ctx.message.text);
  * });
