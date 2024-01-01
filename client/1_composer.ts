@@ -1,5 +1,5 @@
-import { assertMessageType, MessageTypes, Update, UpdateIntersection, UpdateMap, User } from "../3_types.ts";
-import { WithUpdate } from "./0_utilities.ts";
+import { Update, UpdateIntersection, User } from "../3_types.ts";
+import { FilterQuery, match, WithFilter } from "./0_utilities.ts";
 
 type MaybePromise<T> = T | Promise<T>;
 
@@ -96,37 +96,12 @@ export class Composer<C extends { me?: User }> implements MiddlewareObj<C> {
     return composer;
   }
 
-  on<T extends keyof UpdateMap, F extends string, K extends keyof MessageTypes>(
-    filter: T extends "message" | "editedMessage" ? T | [T, K, ...F[]] : T,
-    ...middleawre: Middleware<WithUpdate<C, T, K, F>>[]
+  on<Q extends FilterQuery>(
+    filter: Q,
+    ...middleawre: Middleware<WithFilter<C, Q>>[]
   ) {
-    const type = typeof filter === "string" ? filter : filter[0];
-    let keys = Array.isArray(filter) ? filter.slice(1) : [];
-    let messageType: keyof MessageTypes | null = null;
-    if (type == "message") {
-      messageType = keys[0] as keyof MessageTypes;
-      keys = keys.slice(1);
-    }
-    return this.filter((ctx): ctx is WithUpdate<C, T, K, F> => {
-      if (type in ctx) {
-        if (messageType != null) {
-          // deno-lint-ignore ban-ts-comment
-          // @ts-ignore
-          assertMessageType(ctx[type], messageType);
-        }
-        if (keys.length > 0) {
-          for (const key of keys) {
-            // deno-lint-ignore ban-ts-comment
-            // @ts-ignore
-            if (!(key in ctx[type])) {
-              return false;
-            }
-          }
-        }
-        return true;
-      } else {
-        return false;
-      }
+    return this.filter((ctx): ctx is UpdateIntersection<WithFilter<C, Q>> => {
+      return match(filter, ctx);
     }, ...middleawre);
   }
 
@@ -135,7 +110,7 @@ export class Composer<C extends { me?: User }> implements MiddlewareObj<C> {
       names: string | RegExp | (string | RegExp)[];
       prefixes: string | string[];
     },
-    ...middleawre: Middleware<WithUpdate<C, "message", "text">>[]
+    ...middleawre: Middleware<WithFilter<C, "message:text">>[]
   ) {
     const commands__ = typeof commands === "object" && "names" in commands ? commands.names : commands;
     const commands_ = Array.isArray(commands__) ? commands__ : [commands__];
@@ -151,7 +126,7 @@ export class Composer<C extends { me?: User }> implements MiddlewareObj<C> {
         }
       }
     }
-    return this.on(["message", "text"]).filter((ctx) => {
+    return this.on("message:text").filter((ctx) => {
       const prefixes_ = prefixes.length == 0 ? [!ctx.me?.isBot ? "\\" : "/"] : prefixes;
       if (prefixes_.length == 0) {
         return false;
