@@ -3,14 +3,14 @@ import { bigIntFromBuffer, cleanObject, drop, getRandomBigInt, getRandomId, Mayb
 import { as, enums, functions, getChannelChatId, inputPeerToPeer, Message_, MessageContainer, name, peerToChatId, ReadObject, RPCResult, TLError, TLObject, TLReader, types } from "../2_tl.ts";
 import { Storage, StorageMemory } from "../3_storage.ts";
 import { DC } from "../3_transport.ts";
-import { assertMessageType, BotCommand, botCommandScopeToTlObject, Chat, ChatAction, ChatID, ChatP, ConnectionState, constructCallbackQuery, constructChat, constructChat2, constructChat3, constructChat4, constructChatP, constructChosenInlineResult, constructDocument, constructInlineQuery, constructMessage, constructMessageReaction, constructReactionCount, constructUser, Document, FileID, FileType, FileUniqueID, FileUniqueType, getChatOrder, InlineQueryResult, inlineQueryResultToTlObject, Message, MessageAnimation, MessageAudio, MessageContact, MessageDice, MessageDocument, MessageEntity, messageEntityToTlObject, MessageLocation, MessagePhoto, MessagePoll, MessageText, MessageTypes, MessageVenue, MessageVideo, MessageVideoNote, MessageVoice, NetworkStatistics, ParseMode, Reaction, reactionEqual, reactionToTlObject, replyMarkupToTlObject, ThumbnailSource, Update, UpdateIntersection, UpdateMap, User, UsernameResolver } from "../3_types.ts";
+import { assertMessageType, BotCommand, botCommandScopeToTlObject, Chat, ChatAction, ChatID, ChatP, ConnectionState, constructCallbackQuery, constructChat, constructChat2, constructChat3, constructChat4, constructChatP, constructChosenInlineResult, constructDocument, constructInlineQuery, constructMessage, constructMessageReaction, constructReactionCount, constructUser, Document, FileID, FileType, FileUniqueID, FileUniqueType, getChatOrder, InlineQueryResult, inlineQueryResultToTlObject, Message, MessageAnimation, MessageAudio, MessageContact, MessageDice, MessageDocument, MessageEntity, messageEntityToTlObject, MessageLocation, MessagePhoto, MessagePoll, MessageText, MessageVenue, MessageVideo, MessageVideoNote, MessageVoice, NetworkStatistics, ParseMode, Reaction, reactionEqual, reactionToTlObject, replyMarkupToTlObject, ThumbnailSource, Update, UpdateIntersection, User, UsernameResolver } from "../3_types.ts";
 import { ACK_THRESHOLD, APP_VERSION, CHANNEL_DIFFERENCE_LIMIT_BOT, CHANNEL_DIFFERENCE_LIMIT_USER, DEVICE_MODEL, LANG_CODE, LANG_PACK, LAYER, MAX_CHANNEL_ID, MAX_CHAT_ID, PublicKeys, STICKER_SET_NAME_TTL, SYSTEM_LANG_CODE, SYSTEM_VERSION, USERNAME_TTL } from "../4_constants.ts";
 import { AuthKeyUnregistered, FloodWait, Migrate, PasswordHashInvalid, PhoneNumberInvalid, SessionPasswordNeeded, upgradeInstance } from "../4_errors.ts";
 import { ClientAbstract } from "./0_client_abstract.ts";
 import { parseHtml } from "./0_html.ts";
 import { decryptMessage, encryptMessage, getMessageId } from "./0_message.ts";
 import { checkPassword } from "./0_password.ts";
-import { FileSource, getChatListId, getFileContents, getUsername, isChannelPtsUpdate, isHttpUrl, isPtsUpdate, resolve, WithUpdate } from "./0_utilities.ts";
+import { FileSource, FilterQuery, getChatListId, getFileContents, getUsername, isChannelPtsUpdate, isHttpUrl, isPtsUpdate, match, resolve, WithFilter } from "./0_utilities.ts";
 import { Composer, concat, flatten, Middleware, MiddlewareFn, skip } from "./1_composer.ts";
 import { ClientPlain } from "./2_client_plain.ts";
 import { _SendCommon, AddReactionParams, AnswerCallbackQueryParams, AnswerInlineQueryParams, AuthorizeUserParams, ClientParams, DeleteMessageParams, DeleteMessagesParams, DownloadParams, EditMessageParams, ForwardMessagesParams, GetChatsParams, GetHistoryParams, GetMyCommandsParams, ReplyParams, SendAnimationParams, SendAudioParams, SendContactParams, SendDiceParams, SendDocumentParams, SendLocationParams, SendMessageParams, SendPhotoParams, SendPollParams, SendVenueParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams, SetMyCommandsParams, SetReactionsParams, UploadParams } from "./3_params.ts";
@@ -2602,37 +2602,12 @@ export class Client<C extends Context = Context> extends ClientAbstract {
     return composer;
   }
 
-  on<T extends keyof UpdateMap, F extends string, K extends keyof MessageTypes>(
-    filter: T extends "message" | "editedMessage" ? T | [T, K, ...F[]] : T,
-    ...middleawre: Middleware<WithUpdate<C, T, K, F>>[]
+  on<Q extends FilterQuery>(
+    filter: Q,
+    ...middleawre: Middleware<WithFilter<C, Q>>[]
   ) {
-    const type = typeof filter === "string" ? filter : filter[0];
-    let keys = Array.isArray(filter) ? filter.slice(1) : [];
-    let messageType: keyof MessageTypes | null = null;
-    if (type == "message") {
-      messageType = keys[0] as keyof MessageTypes;
-      keys = keys.slice(1);
-    }
-    return this.filter((ctx): ctx is WithUpdate<C, T, K, F> => {
-      if (type in ctx) {
-        if (messageType != null) {
-          // deno-lint-ignore ban-ts-comment
-          // @ts-ignore
-          assertMessageType(ctx[type], messageType);
-        }
-        if (keys.length > 0) {
-          for (const key of keys) {
-            // deno-lint-ignore ban-ts-comment
-            // @ts-ignore
-            if (!(key in ctx[type])) {
-              return false;
-            }
-          }
-        }
-        return true;
-      } else {
-        return false;
-      }
+    return this.filter((ctx): ctx is UpdateIntersection<WithFilter<C, Q>> => {
+      return match(filter, ctx);
     }, ...middleawre);
   }
 
@@ -2641,7 +2616,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
       names: string | RegExp | (string | RegExp)[];
       prefixes: string | string[];
     },
-    ...middleawre: Middleware<WithUpdate<C, "message", "text">>[]
+    ...middleawre: Middleware<WithFilter<C, "message:text">>[]
   ) {
     const commands__ = typeof commands === "object" && "names" in commands ? commands.names : commands;
     const commands_ = Array.isArray(commands__) ? commands__ : [commands__];
@@ -2657,7 +2632,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
         }
       }
     }
-    return this.on(["message", "text"]).filter((ctx) => {
+    return this.on("message:text").filter((ctx) => {
       const prefixes_ = prefixes.length == 0 ? [!ctx.me?.isBot ? "\\" : "/"] : prefixes;
       if (prefixes_.length == 0) {
         return false;
