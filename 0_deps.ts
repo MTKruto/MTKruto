@@ -18,7 +18,7 @@ export { ctr256, factorize, ige256Decrypt, ige256Encrypt, init as initTgCrypto }
 
 export { gunzip, gzip } from "https://raw.githubusercontent.com/MTKruto/compress/main/gzip/gzip.ts";
 
-export { Mutex, type MutexInterface } from "https://esm.sh/async-mutex@0.4.0";
+export { Mutex } from "https://raw.githubusercontent.com/MTKruto/mutex/main/mod.ts";
 
 export { Parser } from "https://deno.land/x/html_parser@v0.1.3/src/mod.ts";
 
