@@ -1,5 +1,5 @@
-import { assertEquals, assertThrows } from "../0_deps.ts";
-import { getUsername } from "./0_utilities.ts";
+import { assert, assertEquals, assertThrows } from "../0_deps.ts";
+import { getUsername, match } from "./0_utilities.ts";
 
 Deno.test("getUsername", () => {
   const validUsernames = ["pic", "telegram", "p_ic", "test12345", "a".repeat(32)];
@@ -24,4 +24,14 @@ Deno.test("getUsername", () => {
     assertThrows(() => getUsername("https://telegram.me/" + username), username);
     assertThrows(() => getUsername("https://telegram.dog/" + username), username);
   }
+});
+
+Deno.test("match", () => {
+  assert(match("message", { message: {} }));
+  assert(match("connectionState", { connectionState: {} }));
+  assert(!match("message", { editedMessage: {} }));
+  assert(match(":text", { editedMessage: { text: {} } }));
+  assert(match(":text", { message: { text: {} } }));
+  assert(match("message:text", { message: { text: {} } }));
+  assert(!match("editedMessage:text", { message: { text: {} } }));
 });
