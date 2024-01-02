@@ -9,7 +9,7 @@ export interface CallbackQuery {
   from: User;
   message?: Message;
   inlineMessageId?: string;
-  chatInstance?: string;
+  chatInstance: string;
   data?: string;
   gameShortName?: string;
 }

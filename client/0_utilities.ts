@@ -171,7 +171,7 @@ export function getChatListId(chatList: string) {
 type AnyLevel1 = keyof UpdateMap;
 type GetLevel1Type<L1 extends AnyLevel1> = UpdateMap[L1];
 
-type GetAnyLevel2<L1 extends AnyLevel1> = L1 extends "message" | "editedMessage" ? keyof MessageTypes : never;
+type GetAnyLevel2<L1 extends AnyLevel1> = L1 extends "message" | "editedMessage" ? keyof MessageTypes : L1 extends "chosenInlineResult" ? "inlineMessageId" : L1 extends "callbackQuery" ? "message" | "inlineMessageId" | "data" | "gameShortName" : never;
 type AnyLevel2<L1 extends AnyLevel1 = AnyLevel1> = L1 extends unknown ? `${L1 extends "message" | "editedMessage" ? L1 | "" : L1}:${GetAnyLevel2<L1>}`
   : never;
 type GetLevel2Type<L1 extends string, L2 extends string> = L2 extends keyof MessageTypes ? L1 extends "" ? { [P in "message" | "editedMessage"]?: MessageTypes[L2] } : L1 extends "message" | "editedMessage" ? { [P in L1]: MessageTypes[L2] } : never : never;
