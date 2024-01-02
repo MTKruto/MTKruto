@@ -19,7 +19,7 @@ type AnyLevelX = AnyLevel1 | AnyLevel2;
 
 type FilterCore<Q extends AnyLevelX = AnyLevelX> = Q extends AnyLevel1 ? GetLevel1Type<Q> : Q extends `${infer L1}:${infer L2}` ? GetLevel2Type<L1, L2> : 1;
 
-type Chat<T> = "msg" extends keyof T ? T & { chat: ChatP } : T;
+type Chat<T> = "msg" extends keyof T ? T & { chat: ChatP } : "messageReactions" extends keyof T ? T & { chat: ChatP } : "messageReactionCount" extends keyof T ? T & { chat: ChatP } : T;
 type Msg<T> = "message" extends keyof T ? T & { msg: NonNullable<T["message"]> } : "editedMessage" extends keyof T ? T & { msg: NonNullable<T["editedMessage"]> } : "callbackQuery" extends keyof T ? "message" extends keyof T["callbackQuery"] ? T & { msg: T["callbackQuery"]["message"] } : T : T;
 type From<T> = "callbackQuery" extends keyof T ? T & { from: User } : "inlineQuery" extends keyof T ? T & { from: User } : "message" extends keyof T ? T & { from?: User } : "editedMessage" extends keyof T ? T & { from?: User } : T;
 type SenderChat<T> = "message" extends keyof T ? T & { senderChat?: ChatP } : "editedMessage" extends keyof T ? T & { senderChat?: ChatP } : T;
