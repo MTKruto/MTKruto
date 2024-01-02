@@ -460,7 +460,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
       },
     };
 
-    return cleanObject(context as C, false);
+    return cleanObject(context as C);
   };
 
   #propagateConnectionState(connectionState: ConnectionState) {
