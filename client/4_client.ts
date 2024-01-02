@@ -3,11 +3,11 @@ import { bigIntFromBuffer, cleanObject, drop, getRandomBigInt, getRandomId, Mayb
 import { as, enums, functions, getChannelChatId, inputPeerToPeer, Message_, MessageContainer, name, peerToChatId, ReadObject, RPCResult, TLError, TLObject, TLReader, types } from "../2_tl.ts";
 import { Storage, StorageMemory } from "../3_storage.ts";
 import { DC } from "../3_transport.ts";
-import { assertMessageType, BotCommand, botCommandScopeToTlObject, Chat, ChatAction, ChatID, ChatP, ConnectionState, constructCallbackQuery, constructChat, constructChat2, constructChat3, constructChat4, constructChatP, constructChosenInlineResult, constructDocument, constructInlineQuery, constructMessage, constructMessageReaction, constructReactionCount, constructUser, Document, FileID, FileType, FileUniqueID, FileUniqueType, getChatOrder, InlineQueryResult, inlineQueryResultToTlObject, Message, MessageAnimation, MessageAudio, MessageContact, MessageDice, MessageDocument, MessageEntity, messageEntityToTlObject, MessageLocation, MessagePhoto, MessagePoll, MessageText, MessageVenue, MessageVideo, MessageVideoNote, MessageVoice, NetworkStatistics, ParseMode, Reaction, reactionEqual, reactionToTlObject, replyMarkupToTlObject, ThumbnailSource, Update, UpdateIntersection, User, UsernameResolver } from "../3_types.ts";
+import { assertMessageType, BotCommand, botCommandScopeToTlObject, Chat, ChatAction, ChatID, ChatP, ConnectionState, constructCallbackQuery, constructChat, constructChat2, constructChat3, constructChat4, constructChosenInlineResult, constructDocument, constructInlineQuery, constructMessage, constructMessageReaction, constructMessageReactionCount, constructMessageReactions, constructUser, Document, FileID, FileType, FileUniqueID, FileUniqueType, getChatOrder, InlineQueryResult, inlineQueryResultToTlObject, Message, MessageAnimation, MessageAudio, MessageContact, MessageDice, MessageDocument, MessageEntity, messageEntityToTlObject, MessageLocation, MessagePhoto, MessagePoll, MessageText, MessageVenue, MessageVideo, MessageVideoNote, MessageVoice, NetworkStatistics, ParseMode, Reaction, reactionEqual, reactionToTlObject, replyMarkupToTlObject, ThumbnailSource, Update, UpdateIntersection, User, UsernameResolver } from "../3_types.ts";
 import { ACK_THRESHOLD, APP_VERSION, CHANNEL_DIFFERENCE_LIMIT_BOT, CHANNEL_DIFFERENCE_LIMIT_USER, DEVICE_MODEL, LANG_CODE, LANG_PACK, LAYER, MAX_CHANNEL_ID, MAX_CHAT_ID, PublicKeys, STICKER_SET_NAME_TTL, SYSTEM_LANG_CODE, SYSTEM_VERSION, USERNAME_TTL } from "../4_constants.ts";
 import { AuthKeyUnregistered, FloodWait, Migrate, PasswordHashInvalid, PhoneNumberInvalid, SessionPasswordNeeded, upgradeInstance } from "../4_errors.ts";
-import { FilterQuery, match, WithFilter } from "./0_filters.ts";
 import { ClientAbstract } from "./0_client_abstract.ts";
+import { FilterQuery, match, WithFilter } from "./0_filters.ts";
 import { parseHtml } from "./0_html.ts";
 import { decryptMessage, encryptMessage, getMessageId } from "./0_message.ts";
 import { checkPassword } from "./0_password.ts";
@@ -2242,14 +2242,14 @@ export class Client<C extends Context = Context> extends ClientAbstract {
     } else if (update instanceof types.UpdateBotInlineSend) {
       promises.push((async () => this.#handle(await this.#constructContext({ chosenInlineResult: await constructChosenInlineResult(update, this[getEntity].bind(this)) }), resolve))());
     } else if (update instanceof types.UpdateBotMessageReactions) {
-      const date = new Date(update.date * 1000);
-      const reactions = update.reactions.map((v) => constructReactionCount(v));
-      const entity = await this[getEntity](update.peer);
-      if (entity) {
-        const chat = constructChatP(entity);
-        const messageId = update.msg_id;
-        const messageReactionCount = { chat, messageId, date, reactions };
+      const messageReactionCount = await constructMessageReactionCount(update, this[getEntity].bind(this));
+      if (messageReactionCount) {
         promises.push((async () => this.#handle(await this.#constructContext({ messageReactionCount }), resolve))());
+      }
+    } else if (update instanceof types.UpdateBotMessageReaction) {
+      const messageReactions = await constructMessageReactions(update, this[getEntity].bind(this));
+      if (messageReactions) {
+        promises.push((async () => this.#handle(await this.#constructContext({ messageReactions }), resolve))());
       }
     }
 
