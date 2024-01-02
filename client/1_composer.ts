@@ -1,5 +1,5 @@
 import { Update, UpdateIntersection, User } from "../3_types.ts";
-import { FilterQuery, match, WithFilter } from "./0_utilities.ts";
+import { FilterQuery, match, WithFilter } from "./0_filters.ts";
 
 type MaybePromise<T> = T | Promise<T>;
 
