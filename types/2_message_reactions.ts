@@ -48,5 +48,5 @@ export async function constructMessageReactions(update: types.UpdateBotMessageRe
     date,
     oldReactions,
     newReactions,
-  }, false);
+  });
 }
