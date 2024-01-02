@@ -5,6 +5,7 @@ import { ChosenInlineResult } from "./2_chosen_inline_result.ts";
 import { InlineQuery } from "./2_inline_query.ts";
 import { MessageInteractions } from "./2_message_interactions.ts";
 import { MessageReactionCount } from "./2_message_reaction_count.ts";
+import { MessageReactions } from "./2_message_reactions.ts";
 import { Message } from "./4_message.ts";
 import { CallbackQuery } from "./5_callback_query.ts";
 import { Chat } from "./5_chat.ts";
@@ -187,6 +188,14 @@ export interface UpdateMessageReactionCount {
   messageReactionCount: MessageReactionCount;
 }
 
+/**
+ * The reactions made to a message by a user were changed. Bot-only.
+ * @unlisted
+ */
+export interface UpdateMessageReactions {
+  messageReactions: MessageReactions;
+}
+
 /** @unlisted */
 export interface UpdateMap {
   message: UpdateNewMessage;
@@ -202,6 +211,7 @@ export interface UpdateMap {
   deletedChat: UpdateDeletedChat;
   messageInteractions: UpdateMessageInteractions;
   messageReactionCount: UpdateMessageReactionCount;
+  messageReactions: UpdateMessageReactions;
 }
 
 /** @unlisted */
@@ -221,6 +231,7 @@ export type UpdateIntersection<T> =
     & UpdateDeletedChat
     & UpdateMessageInteractions
     & UpdateMessageReactionCount
+    & UpdateMessageReactions
   >;
 
 export type Update =
@@ -236,4 +247,5 @@ export type Update =
   | UpdateEditedChat
   | UpdateDeletedChat
   | UpdateMessageInteractions
-  | UpdateMessageReactionCount;
+  | UpdateMessageReactionCount
+  | UpdateMessageReactions;
