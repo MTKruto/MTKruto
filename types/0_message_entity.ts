@@ -23,110 +23,110 @@ export type MessageEntityType =
   | "customEmoji";
 
 /** @unlisted */
-export interface MessageEntityBase {
+export interface _MessageEntityBase {
   type: MessageEntityType;
   offset: number;
   length: number;
 }
 
 /** @unlisted */
-export interface MessageEntityMention extends MessageEntityBase {
+export interface MessageEntityMention extends _MessageEntityBase {
   type: "mention";
 }
 
 /** @unlisted */
-export interface MessageEntityHashtag extends MessageEntityBase {
+export interface MessageEntityHashtag extends _MessageEntityBase {
   type: "hashtag";
 }
 
 /** @unlisted */
-export interface MessageEntityBotCommand extends MessageEntityBase {
+export interface MessageEntityBotCommand extends _MessageEntityBase {
   type: "botCommand";
 }
 
 /** @unlisted */
-export interface MessageEntityURL extends MessageEntityBase {
+export interface MessageEntityURL extends _MessageEntityBase {
   type: "url";
 }
 
 /** @unlisted */
-export interface MessageEntityEmailAddress extends MessageEntityBase {
+export interface MessageEntityEmailAddress extends _MessageEntityBase {
   type: "email";
 }
 
 /** @unlisted */
-export interface MessageEntityBold extends MessageEntityBase {
+export interface MessageEntityBold extends _MessageEntityBase {
   type: "bold";
 }
 
 /** @unlisted */
-export interface MessageEntityItalic extends MessageEntityBase {
+export interface MessageEntityItalic extends _MessageEntityBase {
   type: "italic";
 }
 
 /** @unlisted */
-export interface MessageEntityPre extends MessageEntityBase {
+export interface MessageEntityPre extends _MessageEntityBase {
   type: "pre";
   /** The language identifier of the code. */
   language: string;
 }
 
 /** @unlisted */
-export interface MessageEntityCode extends MessageEntityBase {
+export interface MessageEntityCode extends _MessageEntityBase {
   type: "code";
 }
 
 /** @unlisted */
-export interface MessageEntityTextLink extends MessageEntityBase {
+export interface MessageEntityTextLink extends _MessageEntityBase {
   type: "textLink";
   /** A URL that will be opened after the text is tapped. */
   url: string;
 }
 
 /** @unlisted */
-export interface MessageEntityTextMention extends MessageEntityBase {
+export interface MessageEntityTextMention extends _MessageEntityBase {
   type: "textMention";
   /** The identifier of the user to mention. */
   userId: number;
 }
 
 /** @unlisted */
-export interface MessageEntityCashtag extends MessageEntityBase {
+export interface MessageEntityCashtag extends _MessageEntityBase {
   type: "cashtag";
 }
 
 /** @unlisted */
-export interface MessageEntityPhoneNumber extends MessageEntityBase {
+export interface MessageEntityPhoneNumber extends _MessageEntityBase {
   type: "phoneNumber";
 }
 
 /** @unlisted */
-export interface MessageEntityUnderline extends MessageEntityBase {
+export interface MessageEntityUnderline extends _MessageEntityBase {
   type: "underline";
 }
 
 /** @unlisted */
-export interface MessageEntityStrikethrough extends MessageEntityBase {
+export interface MessageEntityStrikethrough extends _MessageEntityBase {
   type: "strikethrough";
 }
 
 /** @unlisted */
-export interface MessageEntityBlockquote extends MessageEntityBase {
+export interface MessageEntityBlockquote extends _MessageEntityBase {
   type: "blockquote";
 }
 
 /** @unlisted */
-export interface MessageEntityBankCard extends MessageEntityBase {
+export interface MessageEntityBankCard extends _MessageEntityBase {
   type: "bankCard";
 }
 
 /** @unlisted */
-export interface MessageEntitySpoiler extends MessageEntityBase {
+export interface MessageEntitySpoiler extends _MessageEntityBase {
   type: "spoiler";
 }
 
 /** @unlisted */
-export interface MessageEntityCustomEmoji extends MessageEntityBase {
+export interface MessageEntityCustomEmoji extends _MessageEntityBase {
   type: "customEmoji";
   /** The identifier of the custom emoji. */
   customEmojiId: string;
