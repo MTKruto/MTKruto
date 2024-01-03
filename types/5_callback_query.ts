@@ -4,6 +4,7 @@ import { EntityGetter } from "./1__getters.ts";
 import { constructUser, User } from "./1_user.ts";
 import { Message, MessageGetter } from "./4_message.ts";
 
+/** A received callback query. */
 export interface CallbackQuery {
   id: string;
   from: User;

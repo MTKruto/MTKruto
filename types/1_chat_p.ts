@@ -84,8 +84,7 @@ export interface ChatPSupergroup extends ChatPChannelBase {
 }
 
 /**
- * This object represents a chat.
- * @unlisted
+ * A chat with lesser fields.
  */
 export type ChatP = ChatPPrivate | ChatPGroup | ChatPSupergroup | ChatPChannel;
 

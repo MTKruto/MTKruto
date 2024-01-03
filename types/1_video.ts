@@ -1,7 +1,7 @@
 import { types } from "../2_tl.ts";
 import { constructThumbnail, Thumbnail } from "./0_thumbnail.ts";
 
-/** This object represents a video file. */
+/** A video file. */
 export interface Video {
   /** A file identifier that can be used to download or reuse this file. */
   fileId: string;

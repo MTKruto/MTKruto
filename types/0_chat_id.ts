@@ -1,4 +1,4 @@
 /**
- * A chat identifier as provided by MTKruto or a string starting with a @ that is followed by a username.
+ * A chat identifier as provided by MTKruto, a chat username, or a chat link (e.g., https://mtkruto.t.me, https://telegram.me/mtkruto).
  */
 export type ChatID = number | string;
