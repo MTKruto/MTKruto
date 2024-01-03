@@ -4,27 +4,212 @@ import { FileID } from "./0__file_id.ts";
 import { MessageEntity } from "./0_message_entity.ts";
 import { ParseMode } from "./0_parse_mode.ts";
 import { UsernameResolver } from "./1__getters.ts";
-import { InlineQueryResultArticle } from "./4_inline_query_result_article.ts";
-import { InlineQueryResultAudio } from "./4_inline_query_result_audio.ts";
-import { InlineQueryResultCachedAudio } from "./4_inline_query_result_cached_audio.ts";
-import { InlineQueryResultCachedDocument } from "./4_inline_query_result_cached_document.ts";
-import { InlineQueryResultCachedGif } from "./4_inline_query_result_cached_gif.ts";
-import { InlineQueryResultCachedMpeg4Gif } from "./4_inline_query_result_cached_mpeg4_gif.ts";
-import { InlineQueryResultCachedPhoto } from "./4_inline_query_result_cached_photo.ts";
-import { InlineQueryResultCachedSticker } from "./4_inline_query_result_cached_sticker.ts";
-import { InlineQueryResultCachedVideo } from "./4_inline_query_result_cached_video.ts";
-import { InlineQueryResultCachedVoice } from "./4_inline_query_result_cached_voice.ts";
-import { InlineQueryResultContact } from "./4_inline_query_result_contact.ts";
-import { InlineQueryResultDocument } from "./4_inline_query_result_document.ts";
-import { InlineQueryResultGame } from "./4_inline_query_result_game.ts";
-import { InlineQueryResultGif } from "./4_inline_query_result_gif.ts";
-import { InlineQueryResultLocation } from "./4_inline_query_result_location.ts";
-import { InlineQueryResultMpeg4Gif } from "./4_inline_query_result_mpeg4_gif.ts";
-import { InlineQueryResultPhoto } from "./4_inline_query_result_photo.ts";
-import { InlineQueryResultVenue } from "./4_inline_query_result_venue.ts";
-import { InlineQueryResultVideo } from "./4_inline_query_result_video.ts";
-import { InlineQueryResultVoice } from "./4_inline_query_result_voice.ts";
+import { InputMessageContent } from "./2_input_message_content.ts";
+import { InlineKeyboardMarkup } from "./3_inline_keyboard_markup.ts";
 import { replyMarkupToTlObject } from "./4_reply_markup.ts";
+
+/** @unlisted */
+export interface _InlineQueryResultBase {
+  id: string;
+}
+
+/** @unlisted */
+export interface _InlineQueryResultCaptionCommon {
+  caption?: string;
+  parseMode?: ParseMode;
+  captionEntities?: MessageEntity[];
+}
+
+/** @unlisted */
+export interface _InlineQueryResultInputMessageContentReplyMarkupCommon {
+  inputMessageContent?: InputMessageContent;
+  replyMarkup?: InlineKeyboardMarkup;
+}
+
+/** @unlisted */
+export interface _InlineQueryResultThumbnailCommon {
+  thumbnailUrl?: string;
+  thumbnailWidth?: string;
+  thumbnailHeight?: string;
+}
+
+/** @unlisted */
+export interface InlineQueryResultArticle extends _InlineQueryResultBase {
+  type: "article";
+  title: string;
+  inputMessageContent: InputMessageContent;
+  description?: string;
+  replyMarkup?: InlineKeyboardMarkup;
+  url?: string;
+  hideUrl?: boolean;
+}
+
+/** @unlisted */
+export interface InlineQueryResultAudio extends _InlineQueryResultBase, _InlineQueryResultCaptionCommon, _InlineQueryResultInputMessageContentReplyMarkupCommon {
+  type: "audio";
+  title: string;
+  audioUrl: string;
+  performer?: string;
+  audioDuration?: number;
+}
+
+/** @unlisted */
+export interface InlineQueryResultCachedAudio extends _InlineQueryResultBase, _InlineQueryResultCaptionCommon, _InlineQueryResultInputMessageContentReplyMarkupCommon {
+  type: "audio";
+  audioFileId: string;
+}
+
+/** @unlisted */
+export interface InlineQueryResultCachedDocument extends _InlineQueryResultBase, _InlineQueryResultCaptionCommon, _InlineQueryResultInputMessageContentReplyMarkupCommon {
+  type: "document";
+  documentFileId: string;
+  description?: string;
+}
+
+/** @unlisted */
+export interface InlineQueryResultCachedGif extends _InlineQueryResultBase, _InlineQueryResultCaptionCommon, _InlineQueryResultInputMessageContentReplyMarkupCommon {
+  type: "gif";
+  gifFileId: string;
+  title?: string;
+}
+
+/** @unlisted */
+export interface InlineQueryResultCachedMpeg4Gif extends _InlineQueryResultBase, _InlineQueryResultCaptionCommon, _InlineQueryResultInputMessageContentReplyMarkupCommon {
+  type: "mpeg4_gif";
+  mpeg4FileId: string;
+  title?: string;
+}
+
+/** @unlisted */
+export interface InlineQueryResultCachedPhoto extends _InlineQueryResultBase, _InlineQueryResultCaptionCommon, _InlineQueryResultInputMessageContentReplyMarkupCommon {
+  type: "photo";
+  photoFileId: string;
+  title?: string;
+  description?: string;
+}
+
+/** @unlisted */
+export interface InlineQueryResultCachedSticker extends _InlineQueryResultBase, _InlineQueryResultInputMessageContentReplyMarkupCommon {
+  type: "sticker";
+  stickerFileId: string;
+}
+
+/** @unlisted */
+export interface InlineQueryResultCachedVideo extends _InlineQueryResultBase, _InlineQueryResultCaptionCommon, _InlineQueryResultInputMessageContentReplyMarkupCommon {
+  type: "video";
+  title: string;
+  videoFileId: string;
+  description?: string;
+}
+
+/** @unlisted */
+export interface InlineQueryResultCachedVoice extends _InlineQueryResultBase, _InlineQueryResultCaptionCommon, _InlineQueryResultInputMessageContentReplyMarkupCommon {
+  type: "voice";
+  title: string;
+  voiceFileId: string;
+}
+
+/** @unlisted */
+export interface InlineQueryResultContact extends _InlineQueryResultBase, _InlineQueryResultCaptionCommon, _InlineQueryResultInputMessageContentReplyMarkupCommon, _InlineQueryResultThumbnailCommon {
+  type: "game";
+  phoneNumber: string;
+  firstName: string;
+  lastName?: string;
+  vcard?: string;
+}
+
+/** @unlisted */
+export interface InlineQueryResultDocument extends _InlineQueryResultBase, _InlineQueryResultCaptionCommon, _InlineQueryResultInputMessageContentReplyMarkupCommon, _InlineQueryResultThumbnailCommon {
+  type: "document";
+  title: string;
+  documentUrl: string;
+}
+
+/** @unlisted */
+export interface InlineQueryResultGame extends _InlineQueryResultBase {
+  type: "game";
+  gameShortName: string;
+  replyMarkup?: InlineKeyboardMarkup;
+}
+
+/** @unlisted */
+export interface InlineQueryResultGif extends _InlineQueryResultBase, _InlineQueryResultCaptionCommon, _InlineQueryResultInputMessageContentReplyMarkupCommon {
+  type: "gif";
+  title?: string;
+  gifUrl: string;
+  gifWidth?: number;
+  gifHeight?: number;
+  gifDuration?: number;
+  thumbnailUrl?: string;
+  thumbnailMimeType?: string;
+}
+
+/** @unlisted */
+export interface InlineQueryResultLocation extends _InlineQueryResultBase, _InlineQueryResultInputMessageContentReplyMarkupCommon, _InlineQueryResultThumbnailCommon {
+  type: "location";
+  title: string;
+  latitude: number;
+  longitude: number;
+  horizontalAccuracy?: number;
+  livePeriod?: number;
+  heading?: number;
+  proximityAlertRadius?: number;
+}
+
+/** @unlisted */
+export interface InlineQueryResultMpeg4Gif extends _InlineQueryResultBase, _InlineQueryResultCaptionCommon, _InlineQueryResultInputMessageContentReplyMarkupCommon {
+  type: "mpeg4_gif";
+  mpeg4Url: string;
+  title?: string;
+  mpeg4Width?: number;
+  mpeg4Height?: number;
+  mpeg4Duration?: number;
+  thumbnailUrl?: string;
+  thumbnailMimeType?: string;
+}
+
+/** @unlisted */
+export interface InlineQueryResultPhoto extends _InlineQueryResultBase, _InlineQueryResultInputMessageContentReplyMarkupCommon {
+  type: "photo";
+  photoUrl: string;
+  thumbnailUrl: string;
+  title?: string;
+  description?: string;
+  photoWidth?: number;
+  photoHeight?: number;
+}
+
+/** @unlisted */
+export interface InlineQueryResultVenue extends _InlineQueryResultBase, _InlineQueryResultInputMessageContentReplyMarkupCommon, _InlineQueryResultThumbnailCommon {
+  type: "venue";
+  title: string;
+  latitude: number;
+  longitude: number;
+  address: string;
+  fourSquareId?: string;
+  foursquareType?: string;
+}
+
+/** @unlisted */
+export interface InlineQueryResultVideo extends _InlineQueryResultBase, _InlineQueryResultCaptionCommon, _InlineQueryResultInputMessageContentReplyMarkupCommon {
+  type: "video";
+  title: string;
+  description?: string;
+  videoUrl: string;
+  mimeType: string;
+  thumbnailUrl: string;
+  videoWidth?: number;
+  videoHeight?: number;
+  videoDuration?: number;
+}
+
+/** @unlisted */
+export interface InlineQueryResultVoice extends _InlineQueryResultBase, _InlineQueryResultCaptionCommon, _InlineQueryResultInputMessageContentReplyMarkupCommon {
+  type: "voice";
+  title: string;
+  voiceUrl: string;
+  voiceDuration?: number;
+}
 
 export type InlineQueryResult =
   | InlineQueryResultCachedAudio
