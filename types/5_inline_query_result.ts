@@ -4,7 +4,7 @@ import { FileID } from "./0__file_id.ts";
 import { MessageEntity } from "./0_message_entity.ts";
 import { ParseMode } from "./0_parse_mode.ts";
 import { UsernameResolver } from "./1__getters.ts";
-import { InputMessageContent } from "./2_input_message_content.ts";
+import { InputMessageContent } from "./1_input_message_content.ts";
 import { InlineKeyboardMarkup } from "./3_inline_keyboard_markup.ts";
 import { replyMarkupToTlObject } from "./4_reply_markup.ts";
 
