@@ -2,7 +2,7 @@ import { types } from "../2_tl.ts";
 import { FileID, FileType, FileUniqueID, FileUniqueType, ThumbnailSource } from "./0__file_id.ts";
 
 /** @unlisted */
-export interface ChatPhotoBase {
+export interface _ChatPhotoBase {
   /** A file identifier that can be used to download or reuse the small version of the chat photo (160x160). */
   smallFileId: string;
   /** A file identifier that can be used to identify the small version of the chat photo (160x160). */
@@ -16,13 +16,13 @@ export interface ChatPhotoBase {
 }
 
 /** @unlisted */
-export interface ChatPhotoUser extends ChatPhotoBase {
+export interface ChatPhotoUser extends _ChatPhotoBase {
   /** Differentiates between user profile photos. */
   personal: true;
 }
 
 /** @unlisted */
-export type ChatPhotoChat = ChatPhotoBase;
+export type ChatPhotoChat = _ChatPhotoBase;
 
 /** This object represents a chat photo. */
 export type ChatPhoto = ChatPhotoUser | ChatPhotoChat;

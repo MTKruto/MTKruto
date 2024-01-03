@@ -10,7 +10,7 @@ export type ChatType =
   | "channel";
 
 /** @unlisted */
-export interface ChatPBase {
+export interface _ChatPBase {
   /** The identifier of the chat. */
   id: number;
   /** The type of the chat. */
@@ -20,7 +20,7 @@ export interface ChatPBase {
 }
 
 /** @unlisted */
-export interface ChatPPrivate extends ChatPBase {
+export interface ChatPPrivate extends _ChatPBase {
   type: "private";
   /** Whether this is a bot's chat. */
   isBot?: boolean;
@@ -45,7 +45,7 @@ export interface ChatPPrivate extends ChatPBase {
 }
 
 /** @unlisted */
-export interface ChatPGroup extends ChatPBase {
+export interface ChatPGroup extends _ChatPBase {
   type: "group";
   /** The title of the chat. */
   title: string;
@@ -54,7 +54,7 @@ export interface ChatPGroup extends ChatPBase {
 }
 
 /** @unlisted */
-export interface ChatPChannelBase extends ChatPBase {
+export interface ChatPChannelBase extends _ChatPBase {
   /** The title of the chat or channel. */
   title: string;
   /** The main username of the chat or channel. */

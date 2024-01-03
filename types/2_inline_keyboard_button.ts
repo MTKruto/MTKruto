@@ -5,47 +5,47 @@ import { constructWebAppInfo, WebAppInfo } from "./0_web_app_info.ts";
 import { UsernameResolver } from "./1__getters.ts";
 
 /** @unlisted */
-export interface InlineKeyboardButtonBase {
+export interface _InlineKeyboardButtonBase {
   text: string;
 }
 
 /** @unlisted */
-export interface InlineKeyboardButtonURL extends InlineKeyboardButtonBase {
+export interface InlineKeyboardButtonURL extends _InlineKeyboardButtonBase {
   url: string;
 }
 
 /** @unlisted */
-export interface InlineKeyboardButtonCallback extends InlineKeyboardButtonBase {
+export interface InlineKeyboardButtonCallback extends _InlineKeyboardButtonBase {
   callbackData: string;
 }
 
 /** @unlisted */
-export interface InlineKeyboardButtonWebApp extends InlineKeyboardButtonBase {
+export interface InlineKeyboardButtonWebApp extends _InlineKeyboardButtonBase {
   webApp: WebAppInfo;
 }
 
 /** @unlisted */
-export interface InlineKeyboardButtonLogin extends InlineKeyboardButtonBase {
+export interface InlineKeyboardButtonLogin extends _InlineKeyboardButtonBase {
   loginUrl: LoginUrl;
 }
 
 /** @unlisted */
-export interface InlineKeyboardButtonSwitchInline extends InlineKeyboardButtonBase {
+export interface InlineKeyboardButtonSwitchInline extends _InlineKeyboardButtonBase {
   switchInlineQuery: string;
 }
 
 /** @unlisted */
-export interface InlineKeyboardButtonSwitchInlineCurrent extends InlineKeyboardButtonBase {
+export interface InlineKeyboardButtonSwitchInlineCurrent extends _InlineKeyboardButtonBase {
   switchInlineQueryCurrentChat: string;
 }
 
 /** @unlisted */
-export interface InlineKeyboardButtonGame extends InlineKeyboardButtonBase {
+export interface InlineKeyboardButtonGame extends _InlineKeyboardButtonBase {
   callbackGame: Record<never, never>;
 }
 
 /** @unlisted */
-export interface InlineKeyboardButtonPay extends InlineKeyboardButtonBase {
+export interface InlineKeyboardButtonPay extends _InlineKeyboardButtonBase {
   pay: boolean;
 }
 

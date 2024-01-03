@@ -7,31 +7,31 @@ import { StickerSetNameGetter } from "./1_sticker.ts";
 import { constructMessage, Message, MessageGetter } from "./4_message.ts";
 
 /** @unlisted */
-export interface ChatBase {
+export interface _ChatBase {
   order: string;
   lastMessage?: Omit<Message, "replyToMessage">;
   pinned: number;
 }
 
 /** @unlisted */
-export interface ChatChannel extends ChatBase, ChatPChannel {
+export interface ChatChannel extends _ChatBase, ChatPChannel {
   also?: string[];
   photo?: ChatPhotoChat;
 }
 
 /** @unlisted */
-export interface ChatSupergroup extends ChatBase, ChatPSupergroup {
+export interface ChatSupergroup extends _ChatBase, ChatPSupergroup {
   also?: string[];
   photo?: ChatPhotoChat;
 }
 
 /** @unlisted */
-export interface ChatGroup extends ChatBase, ChatPGroup {
+export interface ChatGroup extends _ChatBase, ChatPGroup {
   photo?: ChatPhotoChat;
 }
 
 /** @unlisted */
-export interface ChatPrivate extends ChatBase, ChatPPrivate {
+export interface ChatPrivate extends _ChatBase, ChatPPrivate {
   also?: string[];
   photo?: ChatPhotoUser;
 }

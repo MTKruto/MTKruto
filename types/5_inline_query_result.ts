@@ -9,7 +9,23 @@ import { InlineKeyboardMarkup } from "./3_inline_keyboard_markup.ts";
 import { replyMarkupToTlObject } from "./4_reply_markup.ts";
 
 /** @unlisted */
+type InlineQueryResultType =
+  | "article"
+  | "audio"
+  | "document"
+  | "gif"
+  | "mpeg4Gif"
+  | "photo"
+  | "sticker"
+  | "video"
+  | "voice"
+  | "game"
+  | "location"
+  | "venue";
+
+/** @unlisted */
 export interface _InlineQueryResultBase {
+  type: InlineQueryResultType;
   id: string;
 }
 
@@ -75,7 +91,7 @@ export interface InlineQueryResultCachedGif extends _InlineQueryResultBase, _Inl
 
 /** @unlisted */
 export interface InlineQueryResultCachedMpeg4Gif extends _InlineQueryResultBase, _InlineQueryResultCaptionCommon, _InlineQueryResultInputMessageContentReplyMarkupCommon {
-  type: "mpeg4_gif";
+  type: "mpeg4Gif";
   mpeg4FileId: string;
   title?: string;
 }
@@ -158,7 +174,7 @@ export interface InlineQueryResultLocation extends _InlineQueryResultBase, _Inli
 
 /** @unlisted */
 export interface InlineQueryResultMpeg4Gif extends _InlineQueryResultBase, _InlineQueryResultCaptionCommon, _InlineQueryResultInputMessageContentReplyMarkupCommon {
-  type: "mpeg4_gif";
+  type: "mpeg4Gif";
   mpeg4Url: string;
   title?: string;
   mpeg4Width?: number;
@@ -305,7 +321,7 @@ export async function inlineQueryResultToTlObject(result_: InlineQueryResult, pa
         fileId_ = result_.gifFileId;
       }
       break;
-    case "mpeg4_gif":
+    case "mpeg4Gif":
       if ("mpeg4Url" in result_) {
         document = new types.InputWebDocument({
           url: result_.mpeg4Url,
