@@ -1,5 +1,5 @@
-import { types } from "../2_tl.ts";
 import { cleanObject } from "../1_utilities.ts";
+import { types } from "../2_tl.ts";
 import { constructReaction, Reaction } from "./0_reaction.ts";
 import { EntityGetter } from "./1__getters.ts";
 import { ChatP, constructChatP } from "./1_chat_p.ts";
