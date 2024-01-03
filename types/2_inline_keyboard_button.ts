@@ -49,7 +49,7 @@ export interface InlineKeyboardButtonPay extends _InlineKeyboardButtonBase {
   pay: boolean;
 }
 
-/** This object represents one button of an inline keyboard. You **must** use exactly one of the optional fields. */
+/** A button of an inline keyboard. */
 export type InlineKeyboardButton =
   | InlineKeyboardButtonURL
   | InlineKeyboardButtonCallback
