@@ -1,6 +1,5 @@
 import { MaybePromise } from "../1_utilities.ts";
-import { BotCommandScope, Chat, ChatID, ForceReply, InlineKeyboardMarkup, InlineQueryResultButton, Message, MessageEntity, ReplyKeyboardMarkup, ReplyKeyboardRemove, ReplyQuote } from "../3_types.ts";
-import { ParseMode } from "../3_types.ts";
+import { BotCommandScope, Chat, ChatID, InlineQueryResultButton, Message, MessageEntity, ParseMode, ReplyMarkup, ReplyQuote } from "../3_types.ts";
 import { FileSource } from "./0_utilities.ts";
 import { ClientPlainParams } from "./2_client_plain.ts";
 
@@ -62,7 +61,7 @@ export interface _SendCommon {
   /** The identifier of the chat to send the message on behalf of. User-only. */
   sendAs?: ChatID;
   /** The reply markup of the message. Bot-only. */
-  replyMarkup?: InlineKeyboardMarkup | ReplyKeyboardMarkup | ReplyKeyboardRemove | ForceReply;
+  replyMarkup?: ReplyMarkup;
 }
 export interface SendMessageParams extends _SendCommon {
   /** The parse mode to use. If not provided, the default parse mode will be used. */
@@ -81,7 +80,7 @@ export interface EditMessageParams {
   /** Whether to disable web page previews in the message that is to be edited. */
   disableWebPagePreview?: boolean;
   /** The reply markup of the message. Bot-only. */
-  replyMarkup?: InlineKeyboardMarkup | ReplyKeyboardMarkup | ReplyKeyboardRemove | ForceReply;
+  replyMarkup?: ReplyMarkup;
 }
 
 export interface ForwardMessagesParams extends Omit<_SendCommon, "replyToMessageId" | "replyMarkup"> {

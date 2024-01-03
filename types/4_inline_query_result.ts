@@ -5,8 +5,7 @@ import { MessageEntity } from "./0_message_entity.ts";
 import { ParseMode } from "./0_parse_mode.ts";
 import { UsernameResolver } from "./1__getters.ts";
 import { InputMessageContent } from "./1_input_message_content.ts";
-import { InlineKeyboardMarkup } from "./3_inline_keyboard_markup.ts";
-import { replyMarkupToTlObject } from "./4_reply_markup.ts";
+import { ReplyMarkupInlineKeyboard, replyMarkupToTlObject } from "./3_reply_markup.ts";
 
 /** @unlisted */
 type InlineQueryResultType =
@@ -39,7 +38,7 @@ export interface _InlineQueryResultCaptionCommon {
 /** @unlisted */
 export interface _InlineQueryResultInputMessageContentReplyMarkupCommon {
   inputMessageContent?: InputMessageContent;
-  replyMarkup?: InlineKeyboardMarkup;
+  replyMarkup?: ReplyMarkupInlineKeyboard;
 }
 
 /** @unlisted */
@@ -55,7 +54,7 @@ export interface InlineQueryResultArticle extends _InlineQueryResultBase {
   title: string;
   inputMessageContent: InputMessageContent;
   description?: string;
-  replyMarkup?: InlineKeyboardMarkup;
+  replyMarkup?: ReplyMarkupInlineKeyboard;
   url?: string;
   hideUrl?: boolean;
 }
@@ -145,7 +144,7 @@ export interface InlineQueryResultDocument extends _InlineQueryResultBase, _Inli
 export interface InlineQueryResultGame extends _InlineQueryResultBase {
   type: "game";
   gameShortName: string;
-  replyMarkup?: InlineKeyboardMarkup;
+  replyMarkup?: ReplyMarkupInlineKeyboard;
 }
 
 /** @unlisted */

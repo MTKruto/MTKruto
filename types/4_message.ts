@@ -4,10 +4,8 @@ import { as, enums, types } from "../2_tl.ts";
 import { FileID, FileType, FileUniqueID, FileUniqueType } from "./0__file_id.ts";
 import { constructContact, Contact } from "./0_contact.ts";
 import { constructDice, Dice } from "./0_dice.ts";
-import { constructForceReply, ForceReply } from "./0_force_reply.ts";
 import { constructLocation, Location } from "./0_location.ts";
 import { constructMessageEntity, MessageEntity } from "./0_message_entity.ts";
-import { constructReplyKeyboardRemove, ReplyKeyboardRemove } from "./0_reply_keyboard_remove.ts";
 import { constructVenue, Venue } from "./0_venue.ts";
 import { constructVoice, Voice } from "./0_voice.ts";
 import { EntityGetter } from "./1__getters.ts";
@@ -25,8 +23,7 @@ import { constructUser, User } from "./1_user.ts";
 import { constructVideoNote, VideoNote } from "./1_video_note.ts";
 import { constructVideo, Video } from "./1_video.ts";
 import { constructGame, Game } from "./2_game.ts";
-import { constructReplyKeyboardMarkup, ReplyKeyboardMarkup } from "./2_reply_keyboard_markup.ts";
-import { constructInlineKeyboardMarkup, InlineKeyboardMarkup } from "./3_inline_keyboard_markup.ts";
+import { constructReplyMarkup, ReplyMarkup } from "./3_reply_markup.ts";
 
 const d = debug("types/Message");
 
@@ -90,7 +87,7 @@ export interface _MessageBase {
   /** The number of times the message was forwarded. */
   forwards?: number;
   /** The message's reply markup. */
-  replyMarkup?: InlineKeyboardMarkup | ReplyKeyboardMarkup | ReplyKeyboardRemove | ForceReply;
+  replyMarkup?: ReplyMarkup;
 }
 
 /**
@@ -803,17 +800,7 @@ export async function constructMessage(
   Object.assign(message, await getSender(message_, getEntity));
 
   if (message_.reply_markup) {
-    if (message_.reply_markup instanceof types.ReplyKeyboardMarkup) {
-      message.replyMarkup = constructReplyKeyboardMarkup(message_.reply_markup);
-    } else if (message_.reply_markup instanceof types.ReplyInlineMarkup) {
-      message.replyMarkup = constructInlineKeyboardMarkup(message_.reply_markup);
-    } else if (message_.reply_markup instanceof types.ReplyKeyboardHide) {
-      message.replyMarkup = constructReplyKeyboardRemove(message_.reply_markup);
-    } else if (message_.reply_markup instanceof types.ReplyKeyboardForceReply) {
-      message.replyMarkup = constructForceReply(message_.reply_markup);
-    } else {
-      UNREACHABLE();
-    }
+    message.replyMarkup = constructReplyMarkup(message_.reply_markup);
   }
 
   if (message_.via_bot_id != undefined) {
