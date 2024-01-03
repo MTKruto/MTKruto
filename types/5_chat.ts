@@ -36,6 +36,9 @@ export interface ChatPrivate extends _ChatBase, ChatPPrivate {
   photo?: ChatPhotoUser;
 }
 
+/**
+ * A chat with more fields.
+ */
 export type Chat = ChatChannel | ChatSupergroup | ChatGroup | ChatPrivate;
 
 function getChatPAlsoPhoto(entity: enums.User | enums.Chat | undefined) {

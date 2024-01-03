@@ -234,6 +234,7 @@ export type UpdateIntersection<T> =
     & UpdateMessageReactions
   >;
 
+/** An incoming update. */
 export type Update =
   | UpdateConnectionState
   | UpdateAuthorizationState

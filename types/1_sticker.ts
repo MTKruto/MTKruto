@@ -3,7 +3,7 @@ import { types } from "../2_tl.ts";
 import { constructMaskPosition, MaskPosition } from "./0_mask_position.ts";
 import { constructThumbnail, Thumbnail } from "./0_thumbnail.ts";
 
-/** This object represents a sticker. */
+/** A sticker. */
 export interface Sticker {
   /** A file identifier that can be used to download or reuse this file. */
   fileId: string;

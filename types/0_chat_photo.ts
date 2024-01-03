@@ -24,7 +24,7 @@ export interface ChatPhotoUser extends _ChatPhotoBase {
 /** @unlisted */
 export type ChatPhotoChat = _ChatPhotoBase;
 
-/** This object represents a chat photo. */
+/** A chat photo. */
 export type ChatPhoto = ChatPhotoUser | ChatPhotoChat;
 
 export function constructChatPhoto(photo: types.ChatPhoto, chatId: number, chatAccessHash: bigint): ChatPhotoChat;

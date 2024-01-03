@@ -1,7 +1,7 @@
 import { types } from "../2_tl.ts";
 import { constructThumbnail, Thumbnail } from "./0_thumbnail.ts";
 
-/** This object represents an animation file (GIF or H.264/MPEG-4 AVC video without sound). */
+/** An animation file (GIF or H.264/MPEG-4 AVC video without sound). */
 export interface Animation {
   /** A file identifier that can be used to download or reuse this file. */
   fileId: string;

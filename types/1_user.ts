@@ -2,7 +2,7 @@ import { cleanObject, getColorFromPeerId } from "../1_utilities.ts";
 import { types } from "../2_tl.ts";
 import { ChatPhotoUser, constructChatPhoto } from "./0_chat_photo.ts";
 
-/** This object represents a Telegram user or bot. */
+/** A user. */
 export interface User {
   /** Unique identifier for this user or bot */
   id: number;
