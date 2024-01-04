@@ -1812,13 +1812,24 @@ export class Client<C extends Context = Context> extends ClientAbstract {
     return message_;
   }
 
-  async #getMessagesInner(chatId_: ChatID, messageIds: number[]) {
-    const peer = await this.getInputPeer(chatId_);
+  /**
+   * Retrieve multiple messages.
+   *
+   * @method
+   * @param chatId The identifier of the chat to retrieve the messages from.
+   * @param messageIds The identifiers of the messages to retrieve.
+   * @example ```ts
+   * const message = await client.getMessages("@MTKruto", [210, 212]);
+   * ```
+   * @returns The retrieved messages.
+   */
+  async getMessages(chatId: ChatID, messageIds: number[]): Promise<Message[]> {
+    const peer = await this.getInputPeer(chatId);
     let messages_ = new Array<enums.Message>();
-    const chatId = peerToChatId(peer);
+    const chatId_ = peerToChatId(peer);
     let shouldFetch = false;
     for (const messageId of messageIds) {
-      const message = await this.storage.getMessage(chatId, messageId);
+      const message = await this.storage.getMessage(chatId_, messageId);
       if (message == null) {
         messages_ = [];
         shouldFetch = true;
@@ -1839,36 +1850,23 @@ export class Client<C extends Context = Context> extends ClientAbstract {
         }).then((v) => v[as](types.messages.Messages).messages);
       }
     }
-    const messages = new Array<{ message: Message; isReplyToMessage: boolean }>();
+    const messages = new Array<Message>();
     for (const message_ of messages_) {
       if (message_ instanceof types.MessageEmpty) {
         continue;
       }
       const message = await constructMessage(message_, this[getEntity].bind(this), null, this[getStickerSetName].bind(this));
-      const isReplyToMessage = message_ instanceof types.Message && message_.reply_to instanceof types.MessageReplyHeader;
-      messages.push({ message, isReplyToMessage });
+      messages.push(message);
     }
     return messages;
   }
 
-  /**
-   * Retrieve multiple messages.
-   *
-   * @method
-   * @param chatId The identifier of the chat to retrieve the messages from.
-   * @param messageIds The identifiers of the messages to retrieve.
-   * @example ```ts
-   * const message = await client.getMessages("@MTKruto", [210, 212]);
-   * ```
-   * @returns The retrieved messages.
-   */
-  async getMessages(chatId: ChatID, messageIds: number[]): Promise<Message[]> {
-    return await this.#getMessagesInner(chatId, messageIds).then((v) => v.map((v) => v.message));
-  }
-
   private async [getMessageWithReply](chatId: ChatID, messageId: number): Promise<Message | null> {
-    const messages = await this.#getMessagesInner(chatId, [messageId]);
-    return messages[0]?.message ?? null;
+    const message = await this.getMessage(chatId, messageId);
+    if (message != null && message.replyToMessageId) {
+      message.replyToMessage = await this.getMessage(chatId, message.replyToMessageId) ?? undefined;
+    }
+    return message;
   }
 
   /**
