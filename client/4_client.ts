@@ -90,6 +90,8 @@ export interface Context {
   sendChatAction: (action: ChatAction, params?: { messageThreadId?: number }) => Promise<void>;
   /** Edit a message in the chat which the message was received from. */
   editMessageText: (messageId: number, text: string, params?: EditMessageParams) => Promise<MessageText>;
+  /** Edit the reply markup of a message in the chat which the message was received from. */
+  editMessageReplyMarkup: (messageId: number, params?: EditMessageReplyMarkupParams) => Promise<Message>;
   /** Answer the received callback query. */
   answerCallbackQuery: (params?: AnswerCallbackQueryParams) => Promise<void>;
   /** Answer the received inline query. */
@@ -418,6 +420,10 @@ export class Client<C extends Context = Context> extends ClientAbstract {
       editMessageText: (messageId, text, params) => {
         const { chatId } = mustGetMsg();
         return this.editMessageText(chatId, messageId, text, params);
+      },
+      editMessageReplyMarkup: (messageId, params) => {
+        const { chatId } = mustGetMsg();
+        return this.editMessageReplyMarkup(chatId, messageId, params);
       },
       getMessage: (messageId) => {
         const { chatId } = mustGetMsg();
