@@ -14,7 +14,7 @@ import { checkPassword } from "./0_password.ts";
 import { FileSource, getChatListId, getFileContents, getUsername, isChannelPtsUpdate, isHttpUrl, isPtsUpdate, resolve } from "./0_utilities.ts";
 import { Composer, concat, flatten, Middleware, MiddlewareFn, skip } from "./1_composer.ts";
 import { ClientPlain } from "./2_client_plain.ts";
-import { _SendCommon, AddReactionParams, AnswerCallbackQueryParams, AnswerInlineQueryParams, AuthorizeUserParams, ClientParams, DeleteMessageParams, DeleteMessagesParams, DownloadParams, EditMessageParams, ForwardMessagesParams, GetChatsParams, GetHistoryParams, GetMyCommandsParams, ReplyParams, SendAnimationParams, SendAudioParams, SendContactParams, SendDiceParams, SendDocumentParams, SendLocationParams, SendMessageParams, SendPhotoParams, SendPollParams, SendVenueParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams, SetMyCommandsParams, SetReactionsParams, UploadParams } from "./3_params.ts";
+import { _SendCommon, AddReactionParams, AnswerCallbackQueryParams, AnswerInlineQueryParams, AuthorizeUserParams, ClientParams, DeleteMessageParams, DeleteMessagesParams, DownloadParams, EditMessageParams, EditMessageReplyMarkupParams, ForwardMessagesParams, GetChatsParams, GetHistoryParams, GetMyCommandsParams, ReplyParams, SendAnimationParams, SendAudioParams, SendContactParams, SendDiceParams, SendDocumentParams, SendLocationParams, SendMessageParams, SendPhotoParams, SendPollParams, SendVenueParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams, SetMyCommandsParams, SetReactionsParams, UploadParams } from "./3_params.ts";
 
 export type NextFn<T = void> = () => Promise<T>;
 export interface InvokeErrorHandler<C> {
@@ -1757,8 +1757,8 @@ export class Client<C extends Context = Context> extends ClientAbstract {
    * Edit a message's text.
    *
    * @method
-   * @param chatId The chat where the message is.
-   * @param messageId The ID of the message.
+   * @param chatId The chat that contains the messages.
+   * @param messageId The message's identifier.
    * @param text The new text of the message.
    * @returns The edited text message.
    */
@@ -1781,6 +1781,29 @@ export class Client<C extends Context = Context> extends ClientAbstract {
 
     const message_ = await this.#updatesToMessages(chatId, result).then((v) => v[0]);
     return assertMessageType(message_, "text");
+  }
+
+  /**
+   * Edit a message's reply markup.
+   *
+   * @method
+   * @param chatId The chat that contains the messages.
+   * @param messageId The message's identifier.
+   * @returns The edited message.
+   */
+  async editMessageReplyMarkup(
+    chatId: ChatID,
+    messageId: number,
+    params?: EditMessageReplyMarkupParams,
+  ): Promise<Message> {
+    const result = await this.api.messages.editMessage({
+      id: messageId,
+      peer: await this.getInputPeer(chatId),
+      reply_markup: await this.#constructReplyMarkup(params),
+    });
+
+    const message_ = await this.#updatesToMessages(chatId, result).then((v) => v[0]);
+    return message_;
   }
 
   async #getMessagesInner(chatId_: ChatID, messageIds: number[]) {
