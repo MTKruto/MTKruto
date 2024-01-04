@@ -3,7 +3,7 @@ import { bigIntFromBuffer, cleanObject, drop, getRandomBigInt, getRandomId, Mayb
 import { as, enums, functions, getChannelChatId, inputPeerToPeer, Message_, MessageContainer, name, peerToChatId, ReadObject, RPCResult, TLError, TLObject, TLReader, types } from "../2_tl.ts";
 import { Storage, StorageMemory } from "../3_storage.ts";
 import { DC } from "../3_transport.ts";
-import { assertMessageType, BotCommand, botCommandScopeToTlObject, Chat, ChatAction, ChatID, ChatP, ConnectionState, constructCallbackQuery, constructChat, constructChat2, constructChat3, constructChat4, constructChosenInlineResult, constructDocument, constructInlineQuery, constructMessage, constructMessageReaction, constructMessageReactionCount, constructMessageReactions, constructUser, Document, FileID, FileType, FileUniqueID, FileUniqueType, getChatOrder, InlineQueryResult, inlineQueryResultToTlObject, Message, MessageAnimation, MessageAudio, MessageContact, MessageDice, MessageDocument, MessageEntity, messageEntityToTlObject, MessageLocation, MessagePhoto, MessagePoll, MessageText, MessageVenue, MessageVideo, MessageVideoNote, MessageVoice, NetworkStatistics, ParseMode, Reaction, reactionEqual, reactionToTlObject, replyMarkupToTlObject, ThumbnailSource, Update, UpdateIntersection, User, UsernameResolver } from "../3_types.ts";
+import { assertMessageType, BotCommand, botCommandScopeToTlObject, Chat, ChatAction, ChatID, ChatP, ConnectionState, constructCallbackQuery, constructChat, constructChat2, constructChat3, constructChat4, constructChosenInlineResult, constructDocument, constructInlineQuery, constructMessage, constructMessageReaction, constructMessageReactionCount, constructMessageReactions, constructUser, Document, EditMessageReplyMarkupParams, FileID, FileType, FileUniqueID, FileUniqueType, getChatOrder, InlineQueryResult, inlineQueryResultToTlObject, Message, MessageAnimation, MessageAudio, MessageContact, MessageDice, MessageDocument, MessageEntity, messageEntityToTlObject, MessageLocation, MessagePhoto, MessagePoll, MessageText, MessageVenue, MessageVideo, MessageVideoNote, MessageVoice, NetworkStatistics, ParseMode, Reaction, reactionEqual, reactionToTlObject, replyMarkupToTlObject, ThumbnailSource, Update, UpdateIntersection, User, UsernameResolver } from "../3_types.ts";
 import { ACK_THRESHOLD, APP_VERSION, CHANNEL_DIFFERENCE_LIMIT_BOT, CHANNEL_DIFFERENCE_LIMIT_USER, DEVICE_MODEL, LANG_CODE, LANG_PACK, LAYER, MAX_CHANNEL_ID, MAX_CHAT_ID, PublicKeys, STICKER_SET_NAME_TTL, SYSTEM_LANG_CODE, SYSTEM_VERSION, USERNAME_TTL } from "../4_constants.ts";
 import { AuthKeyUnregistered, FloodWait, Migrate, PasswordHashInvalid, PhoneNumberInvalid, SessionPasswordNeeded, upgradeInstance } from "../4_errors.ts";
 import { ClientAbstract } from "./0_client_abstract.ts";
@@ -1757,7 +1757,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
    * Edit a message's text.
    *
    * @method
-   * @param chatId The chat where the message is.
+   * @param chatId The chat that contains the messages.
    * @param messageId The ID of the message.
    * @param text The new text of the message.
    * @returns The edited text message.
@@ -1781,6 +1781,29 @@ export class Client<C extends Context = Context> extends ClientAbstract {
 
     const message_ = await this.#updatesToMessages(chatId, result).then((v) => v[0]);
     return assertMessageType(message_, "text");
+  }
+
+  /**
+   * Edit a message's reply markup.
+   *
+   * @method
+   * @param chatId The chat that contains the messages.
+   * @param messageId The ID of the message.
+   * @returns The edited message.
+   */
+  async editMessageReplyMarkup(
+    chatId: ChatID,
+    messageId: number,
+    params?: EditMessageReplyMarkupParams,
+  ): Promise<Message> {
+    const result = await this.api.messages.editMessage({
+      id: messageId,
+      peer: await this.getInputPeer(chatId),
+      reply_markup: await this.#constructReplyMarkup(params),
+    });
+
+    const message_ = await this.#updatesToMessages(chatId, result).then((v) => v[0]);
+    return message_;
   }
 
   async #getMessagesInner(chatId_: ChatID, messageIds: number[]) {
