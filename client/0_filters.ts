@@ -1,4 +1,4 @@
-import { ChatP, MessageTypes, UpdateMap, User } from "../3_types.ts";
+import { CallbackQuery, ChatP, ChosenInlineResult, MessageTypes, UpdateMap, User } from "../3_types.ts";
 
 type AnyLevel1 = keyof UpdateMap;
 type GetLevel1Type<L1 extends AnyLevel1> = UpdateMap[L1];
@@ -10,10 +10,17 @@ interface Level2Map {
   "chosenInlineResult": "inlineMessageId";
 }
 
+interface Level2TypeMap {
+  "callbackQuery": CallbackQuery;
+  "chosenInlineResult": ChosenInlineResult;
+}
+
 type GetAnyLevel2<L1 extends AnyLevel1> = L1 extends keyof Level2Map ? Level2Map[L1] : never;
 type AnyLevel2<L1 extends AnyLevel1 = AnyLevel1> = L1 extends unknown ? `${L1 extends "message" | "editedMessage" ? L1 | "" : L1}:${GetAnyLevel2<L1>}`
   : never;
-type GetLevel2Type<L1 extends string, L2 extends string> = L2 extends keyof MessageTypes ? L1 extends "" ? { [P in "message" | "editedMessage"]?: MessageTypes[L2] } : L1 extends "message" | "editedMessage" ? { [P in L1]: MessageTypes[L2] } : never : never;
+type GetLevel2Type<L1 extends string, L2 extends string> = L2 extends keyof MessageTypes ? L1 extends "" ? { [P in "message" | "editedMessage"]?: MessageTypes[L2] } : L1 extends "message" | "editedMessage" ? { [P in L1]: MessageTypes[L2] } : never
+  : L1 extends keyof Level2TypeMap ? L2 extends Level2Map[L1] ? { [P in L1]: Level2TypeMap[P] & { [P in L2]-?: P extends keyof Level2TypeMap[L1] ? NonNullable<Level2TypeMap[L1][P]> : never } } : never
+  : never;
 
 type AnyLevelX = AnyLevel1 | AnyLevel2;
 
