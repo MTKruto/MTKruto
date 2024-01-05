@@ -1,11 +1,16 @@
 export function concat(...buffers: [Uint8Array, Uint8Array, ...Uint8Array[]]) {
-  const bytes = new Array<number>();
-  for (const buffer of buffers) {
-    for (const byte of buffer) {
-      bytes.push(byte);
-    }
+  let length = 0;
+  for (const b of buffers) {
+    length += b.length;
   }
-  const buffer = new Uint8Array(bytes);
+
+  const buffer = new Uint8Array(length);
+  let offset = 0;
+  for (const b of buffers) {
+    buffer.set(b, offset);
+    offset += b.length;
+  }
+
   return buffer;
 }
 
