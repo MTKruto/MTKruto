@@ -14,7 +14,7 @@ import { checkPassword } from "./0_password.ts";
 import { FileSource, getChatListId, getFileContents, getUsername, isChannelPtsUpdate, isHttpUrl, isPtsUpdate, resolve } from "./0_utilities.ts";
 import { Composer, concat, flatten, Middleware, MiddlewareFn, skip } from "./1_composer.ts";
 import { ClientPlain } from "./2_client_plain.ts";
-import { _SendCommon, AddReactionParams, AnswerCallbackQueryParams, AnswerInlineQueryParams, AuthorizeUserParams, ClientParams, DeleteMessageParams, DeleteMessagesParams, DownloadParams, EditMessageParams, EditMessageReplyMarkupParams, ForwardMessagesParams, GetChatsParams, GetHistoryParams, GetMyCommandsParams, ReplyParams, SendAnimationParams, SendAudioParams, SendContactParams, SendDiceParams, SendDocumentParams, SendLocationParams, SendMessageParams, SendPhotoParams, SendPollParams, SendVenueParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams, SetMyCommandsParams, SetReactionsParams, UploadParams } from "./3_params.ts";
+import { _SendCommon, AddReactionParams, AnswerCallbackQueryParams, AnswerInlineQueryParams, AuthorizeUserParams, ClientParams, DeleteMessageParams, DeleteMessagesParams, DownloadParams, EditMessageParams, EditMessageReplyMarkupParams, ForwardMessagesParams, GetChatsParams, GetHistoryParams, GetMyCommandsParams, ReplyParams, SendAnimationParams, SendAudioParams, SendContactParams, SendDiceParams, SendDocumentParams, SendLocationParams, SendMessageParams, SendPhotoParams, SendPollParams, SendVenueParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams, SetChatPhotoParams, SetMyCommandsParams, SetReactionsParams, UploadParams } from "./3_params.ts";
 
 export type NextFn<T = void> = () => Promise<T>;
 export interface InvokeErrorHandler<C> {
@@ -3740,6 +3740,29 @@ export class Client<C extends Context = Context> extends ClientAbstract {
         await this.setReactions(chatId, messageId, reactions);
         break;
       }
+    }
+  }
+
+  /**
+   * Set a chat's photo.
+   *
+   * @param chatId The identifier of the chat.
+   * @param photo A photo to set as the chat's photo.
+   */
+  async setChatPhoto(chatId: number, photo: FileSource, params?: SetChatPhotoParams) {
+    const peer = await this.getInputPeer(chatId);
+    if (!(peer instanceof types.InputPeerChannel) && !(peer instanceof types.InputPeerChat)) {
+      UNREACHABLE();
+    }
+
+    const [contents, fileName] = await getFileContents(photo);
+    const file = await this.upload(contents, { fileName: params?.fileName ?? fileName, chunkSize: params?.chunkSize, signal: params?.signal });
+    const photo_ = new types.InputChatUploadedPhoto({ file });
+
+    if (peer instanceof types.InputPeerChannel) {
+      await this.api.channels.editPhoto({ channel: new types.InputChannel(peer), photo: photo_ });
+    } else if (peer instanceof types.InputPeerChat) {
+      await this.api.messages.editChatPhoto({ chat_id: peer.chat_id, photo: photo_ });
     }
   }
 }
