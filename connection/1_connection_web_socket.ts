@@ -1,5 +1,5 @@
 import { debug, Mutex } from "../0_deps.ts";
-import { UNREACHABLE } from "../1_utilities.ts";
+import { concat, UNREACHABLE } from "../1_utilities.ts";
 import { ConnectionUnframed } from "./0_connection.ts";
 
 const d = debug("ConnectionWebSocket");
@@ -9,7 +9,7 @@ export class ConnectionWebSocket extends ConnectionUnframed implements Connectio
   #webSocket: WebSocket;
   #rMutex = new Mutex();
   #wMutex = new Mutex();
-  #buffer = new Array<number>();
+  #buffer = new Uint8Array();
   #nextResolve: [number, { resolve: () => void; reject: (err: unknown) => void }] | null = null;
 
   constructor(private readonly url: string | URL) {
@@ -34,9 +34,7 @@ export class ConnectionWebSocket extends ConnectionUnframed implements Connectio
       const release = await mutex.acquire();
       const data = new Uint8Array(await new Blob([e.data].map((v) => v instanceof Blob || v instanceof Uint8Array ? v : v instanceof ArrayBuffer ? v : UNREACHABLE())).arrayBuffer());
 
-      for (const byte of data) {
-        this.#buffer.push(byte);
-      }
+      this.#buffer = concat(this.#buffer, data);
 
       if (
         this.#nextResolve != null && this.#buffer.length >= this.#nextResolve[0]
@@ -109,7 +107,9 @@ export class ConnectionWebSocket extends ConnectionUnframed implements Connectio
       if (this.#buffer.length < p.length) {
         await new Promise<void>((resolve, reject) => this.#nextResolve = [p.length, { resolve, reject }]);
       }
-      p.set(this.#buffer.splice(0, p.length));
+      const slice = this.#buffer.slice(0, p.length);
+      p.set(slice);
+      this.#buffer = this.#buffer.slice(slice.length);
     } finally {
       release();
     }
