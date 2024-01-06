@@ -247,6 +247,29 @@ export abstract class TLObject {
       throw new TypeError(`Expected ${constructor[name]} but received ${this[name]}`);
     }
   }
+
+  toJSON() {
+    // deno-lint-ignore no-explicit-any
+    const r: Record<string, any> = { _: this[name] };
+    const desc = (this.constructor as typeof TLObject)[paramDesc];
+    for (const [name] of desc) {
+      const n = name as keyof this;
+      if (n in this && this[n] !== undefined) {
+        if (typeof this[n] === "bigint") {
+          r[name] = String(this[n]);
+        } else if (this[n] instanceof Uint8Array) {
+          const buffer = this[n] as Uint8Array;
+          r[name] = "";
+          for (const b of buffer) {
+            r[name] += b.toString(16).padStart(2, "0").toUpperCase();
+          }
+        } else {
+          r[name] = this[n];
+        }
+      }
+    }
+    return r;
+  }
 }
 
 export interface TLObjectConstructor<T = TLObject> {
