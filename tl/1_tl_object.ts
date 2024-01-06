@@ -250,7 +250,7 @@ export abstract class TLObject {
 
   toJSON() {
     // deno-lint-ignore no-explicit-any
-    const r: Record<string, any> = { _: this[name] };
+    const r: Record<string, any> = { _: this[name] + `#${this[id].toString(16).toUpperCase()}` };
     const desc = (this.constructor as typeof TLObject)[paramDesc];
     for (const [name] of desc) {
       const n = name as keyof this;
