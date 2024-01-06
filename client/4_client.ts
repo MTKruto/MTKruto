@@ -116,6 +116,8 @@ export interface Context {
   removeReaction: (messageId: number, reaction: Reaction) => Promise<void>;
   /** Change the reactions made to a message of the chat which the message was received from. */
   setReactions: (messageId: number, reactions: Reaction[], params?: SetReactionsParams) => Promise<void>;
+  /** Set the photo of the chat which the message was received from. */
+  setChatPhoto: (photo: FileSource, params?: SetChatPhotoParams) => Promise<void>;
   toJSON: () => Update;
 }
 
@@ -464,6 +466,10 @@ export class Client<C extends Context = Context> extends ClientAbstract {
       setReactions: (messageId, reactions, params) => {
         const { chatId } = mustGetMsg();
         return this.setReactions(chatId, messageId, reactions, params);
+      },
+      setChatPhoto: (photo, params) => {
+        const { chatId } = mustGetMsg();
+        return this.setChatPhoto(chatId, photo, params);
       },
     };
 
