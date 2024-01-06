@@ -188,6 +188,10 @@ export interface _SpoilCommon {
 export interface SendPhotoParams extends _CaptionCommon, _SpoilCommon, _UploadCommon, _SendCommon {
 }
 
+// deno-lint-ignore no-empty-interface
+export interface SetChatPhotoParams extends _UploadCommon {
+}
+
 export interface _ThumbnailCommon {
   /** A thumbnail to assign. Cannot be a URL. */
   thumbnail?: FileSource;
