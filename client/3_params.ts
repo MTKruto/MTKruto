@@ -1,5 +1,5 @@
 import { MaybePromise } from "../1_utilities.ts";
-import { BotCommandScope, Chat, ChatID, InlineQueryResultButton, Message, MessageEntity, ParseMode, ReplyMarkup, ReplyQuote } from "../3_types.ts";
+import { BotCommandScope, Chat, ID, InlineQueryResultButton, Message, MessageEntity, ParseMode, ReplyMarkup, ReplyQuote } from "../3_types.ts";
 import { FileSource } from "./0_utilities.ts";
 import { ClientPlainParams } from "./2_client_plain.ts";
 
@@ -59,7 +59,7 @@ export interface _SendCommon {
   /** The identifier of a thread to send the message to. */
   messageThreadId?: number;
   /** The identifier of the chat to send the message on behalf of. User-only. */
-  sendAs?: ChatID;
+  sendAs?: ID;
   /** The reply markup of the message. Bot-only. */
   replyMarkup?: ReplyMarkup;
 }

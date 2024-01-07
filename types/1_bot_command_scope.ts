@@ -1,6 +1,6 @@
 import { UNREACHABLE } from "../1_utilities.ts";
 import { types } from "../2_tl.ts";
-import { ChatID } from "./0_chat_id.ts";
+import { ID } from "./0_id.ts";
 import { InputPeerGetter } from "./1__getters.ts";
 
 /** @unlisted */
@@ -26,19 +26,19 @@ export interface BotCommandScopeAllChatAdministrators {
 /** @unlisted */
 export interface BotCommandScopeChat {
   type: "chat";
-  chatId: ChatID;
+  chatId: ID;
 }
 
 /** @unlisted */
 export interface BotCommandScopeChatAdministrators {
   type: "chatAdministrators";
-  chatId: ChatID;
+  chatId: ID;
 }
 
 /** @unlisted */
 export interface BotCommandScopeChatMember {
   type: "chatMember";
-  chatId: ChatID;
+  chatId: ID;
   userId: number;
 }
 
