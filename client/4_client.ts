@@ -14,7 +14,7 @@ import { checkPassword } from "./0_password.ts";
 import { FileSource, getChatListId, getFileContents, getUsername, isChannelPtsUpdate, isHttpUrl, isPtsUpdate, resolve } from "./0_utilities.ts";
 import { Composer, concat, flatten, Middleware, MiddlewareFn, skip } from "./1_composer.ts";
 import { ClientPlain } from "./2_client_plain.ts";
-import { _SendCommon, AddReactionParams, AnswerCallbackQueryParams, AnswerInlineQueryParams, AuthorizeUserParams, ClientParams, DeleteMessageParams, DeleteMessagesParams, DownloadParams, EditMessageParams, EditMessageReplyMarkupParams, ForwardMessagesParams, GetChatsParams, GetHistoryParams, GetMyCommandsParams, ReplyParams, SendAnimationParams, SendAudioParams, SendContactParams, SendDiceParams, SendDocumentParams, SendLocationParams, SendMessageParams, SendPhotoParams, SendPollParams, SendVenueParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams, SetChatPhotoParams, SetMyCommandsParams, SetReactionsParams, UploadParams } from "./3_params.ts";
+import { _SendCommon, AddReactionParams, AnswerCallbackQueryParams, AnswerInlineQueryParams, AuthorizeUserParams, ClientParams, DeleteMessageParams, DeleteMessagesParams, DownloadParams, EditMessageParams, EditMessageReplyMarkupParams, ForwardMessagesParams, GetChatsParams, GetHistoryParams, GetMyCommandsParams, PinMessageParams, ReplyParams, SendAnimationParams, SendAudioParams, SendContactParams, SendDiceParams, SendDocumentParams, SendLocationParams, SendMessageParams, SendPhotoParams, SendPollParams, SendVenueParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams, SetChatPhotoParams, SetMyCommandsParams, SetReactionsParams, UploadParams } from "./3_params.ts";
 
 export type NextFn<T = void> = () => Promise<T>;
 export interface InvokeErrorHandler<C> {
@@ -84,6 +84,8 @@ export interface Context {
   delete: () => Promise<void>;
   /** Forward the received message. */
   forward: (to: ChatID, params?: ForwardMessagesParams) => Promise<this["msg"]>;
+  /** Pin the received message. */
+  pin: (params?: PinMessageParams) => Promise<void>;
   /** Change the reactions made to the received message. */
   react: (reactions: Reaction[], params?: SetReactionsParams) => Promise<void>;
   /** Send a chat action to the chat which the message was received from. */
@@ -108,6 +110,8 @@ export interface Context {
   deleteMessage: (messageId: number, params?: DeleteMessagesParams) => Promise<void>;
   /** Delete multiple messages in the chat which the message was received from. */
   deleteMessages: (messageIds: number[], params?: DeleteMessagesParams) => Promise<void>;
+  /** Pin a message in the chat which the message was received from. */
+  pinMessage: (messageId: number, params?: PinMessageParams) => Promise<void>;
   /** Set the available reactions of the chat which the message was received from. */
   setAvailableReactions: (availableReactions: "none" | "all" | Reaction[]) => Promise<void>;
   /** Add a reaction to a message of the chat which the message was received from. */
@@ -402,6 +406,10 @@ export class Client<C extends Context = Context> extends ClientAbstract {
         const { chatId, messageId } = mustGetMsg();
         return this.forwardMessage(chatId, to, messageId, params) as unknown as ReturnType<C["forward"]>;
       },
+      pin: (params) => {
+        const { chatId, messageId } = mustGetMsg();
+        return this.pinMessage(chatId, messageId, params);
+      },
       react: (reactions, params) => {
         const { chatId, messageId } = mustGetMsg();
         return this.setReactions(chatId, messageId, reactions, params);
@@ -453,6 +461,10 @@ export class Client<C extends Context = Context> extends ClientAbstract {
       deleteMessages: (messageIds, params) => {
         const { chatId } = mustGetMsg();
         return this.deleteMessages(chatId, messageIds, params);
+      },
+      pinMessage: (messageId, params) => {
+        const { chatId } = mustGetMsg();
+        return this.pinMessage(chatId, messageId, params);
       },
       setAvailableReactions: (availableReactions) => {
         const { chatId } = mustGetMsg();
@@ -1780,7 +1792,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
    * Edit a message's text.
    *
    * @method
-   * @param chatId The chat that contains the messages.
+   * @param chatId The identifier of the chat that contains the messages.
    * @param messageId The message's identifier.
    * @param text The new text of the message.
    * @returns The edited text message.
@@ -1810,7 +1822,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
    * Edit a message's reply markup.
    *
    * @method
-   * @param chatId The chat that contains the messages.
+   * @param chatId The identifier of the chat that contains the messages.
    * @param messageId The message's identifier.
    * @returns The edited message.
    */
@@ -2778,7 +2790,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
    * Delete multiple messages.
    *
    * @method
-   * @param chatId The chat that contains the messages.
+   * @param chatId The identifier of the chat that contains the messages.
    * @param messageIds The identifier of the messages to delete.
    */
   async deleteMessages(chatId: ChatID, messageIds: number[], params?: DeleteMessagesParams): Promise<void> {
@@ -2794,7 +2806,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
    * Delete a single message.
    *
    * @method
-   * @param chatId The chat that contains the message.
+   * @param chatId The identifier of the chat that contains the message.
    * @param messageId The identifier of the message to delete.
    */
   async deleteMessage(chatId: ChatID, messageId: number, params?: DeleteMessageParams): Promise<void> {
@@ -3814,5 +3826,20 @@ export class Client<C extends Context = Context> extends ClientAbstract {
     }
     const participant = await this.getInputPeer(userId);
     await this.api.channels.deleteParticipantHistory({ channel: new types.InputChannel(channel), participant });
+  }
+
+  /**
+   * Pin a message in a chat.
+   *
+   * @param chatId The identifier of the chat that contains the message.
+   * @param messageId The message's identifier.
+   */
+  async pinMessage(chatId: ChatID, messageId: number, params?: PinMessageParams): Promise<void> {
+    await this.api.messages.updatePinnedMessage({
+      peer: await this.getInputPeer(chatId),
+      id: messageId,
+      silent: params?.disableNotification ? true : undefined,
+      pm_oneside: params?.bothSides ? undefined : true,
+    });
   }
 }
