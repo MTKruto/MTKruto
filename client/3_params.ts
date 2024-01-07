@@ -308,3 +308,10 @@ export interface PinMessageParams {
   /** Whether to silently pin the message. */
   disableNotification?: boolean;
 }
+
+export interface BanChatMemberParams {
+  /** A point of time in the future to automatically withdraw the ban. */
+  untilDate?: Date;
+  /** Whether to delete all of the user's messages. */
+  deleteMessages?: boolean;
+}
