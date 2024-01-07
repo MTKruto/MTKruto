@@ -3,7 +3,7 @@ export * from "./types/0_authorization_state.ts";
 export * from "./types/0_bot_command.ts";
 export * from "./types/0_chat_action.ts";
 export * from "./types/0_chat_administrator_rights.ts";
-export * from "./types/0_chat_id.ts";
+export * from "./types/0_id.ts";
 export * from "./types/0_chat_photo.ts";
 export * from "./types/0_connection_state.ts";
 export * from "./types/0_contact.ts";
