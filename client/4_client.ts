@@ -134,6 +134,8 @@ export interface Context {
   deleteChatPhoto: () => Promise<void>;
   /** Ban a member from the chat which the message was received from. */
   banChatMember: (memberId: ChatID, params?: BanChatMemberParams) => Promise<void>;
+  /** Unban a member from the chat which the message was received from. */
+  unbanChatMember: (memberId: ChatID) => Promise<void>;
   deleteChatMemberMessages: (userId: ChatID) => Promise<void>;
   toJSON: () => Update;
 }
@@ -522,6 +524,10 @@ export class Client<C extends Context = Context> extends ClientAbstract {
       banChatMember: (memberId, params) => {
         const { chatId } = mustGetMsg();
         return this.banChatMember(chatId, memberId, params);
+      },
+      unbanChatMember: (memberId) => {
+        const { chatId } = mustGetMsg();
+        return this.unbanChatMember(chatId, memberId);
       },
       deleteChatMemberMessages: (userId) => {
         const { chatId } = mustGetMsg();
@@ -3915,7 +3921,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
    *
    * @method
    * @param chatId The identifier of the chat.
-   * @param memberId The identifier of the member.
+   * @param memberId The identifier of the member to unban.
    */
   async banChatMember(chatId: ChatID, memberId: ChatID, params?: BanChatMemberParams): Promise<void> {
     const chat = await this.getInputPeer(chatId);
@@ -3955,8 +3961,28 @@ export class Client<C extends Context = Context> extends ClientAbstract {
         user_id: new types.InputUser(member),
         revoke_history: params?.deleteMessages ? true : undefined,
       });
-    } else {
-      UNREACHABLE();
+    }
+  }
+
+  /**
+   * Unban a member from a chat.
+   *
+   * @method
+   * @param chatId The identifier of the chat. Must be a supergroup.
+   * @param memberId The identifier of the member to ban.
+   */
+  async unbanChatMember(chatId: ChatID, memberId: ChatID): Promise<void> {
+    const chat = await this.getInputPeer(chatId);
+    if (!(chat instanceof types.InputPeerChannel)) {
+      throw new Error("Invalid chat ID");
+    }
+    const member = await this.getInputPeer(memberId);
+    if (chat instanceof types.InputPeerChannel) {
+      await this.api.channels.editBanned({
+        channel: new types.InputChannel(chat),
+        participant: member,
+        banned_rights: new types.ChatBannedRights({ until_date: 0 }),
+      });
     }
   }
 }
