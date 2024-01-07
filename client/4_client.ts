@@ -90,6 +90,8 @@ export interface Context {
   unpin: (params?: PinMessageParams) => Promise<void>;
   /** Ban the sender of the received message. */
   banSender: (params?: BanChatMemberParams) => Promise<void>;
+  /** Kick the sender of the received message. */
+  kickSender: () => Promise<void>;
   /** Change the reactions made to the received message. */
   react: (reactions: Reaction[], params?: SetReactionsParams) => Promise<void>;
   /** Send a chat action to the chat which the message was received from. */
@@ -136,6 +138,8 @@ export interface Context {
   banChatMember: (memberId: ChatID, params?: BanChatMemberParams) => Promise<void>;
   /** Unban a member from the chat which the message was received from. */
   unbanChatMember: (memberId: ChatID) => Promise<void>;
+  /** Kick a member from the chat which the message was received from. */
+  kickChatMember: (memberId: ChatID) => Promise<void>;
   deleteChatMemberMessages: (userId: ChatID) => Promise<void>;
   toJSON: () => Update;
 }
@@ -433,6 +437,13 @@ export class Client<C extends Context = Context> extends ClientAbstract {
         }
         return this.banChatMember(chatId, senderId, params);
       },
+      kickSender: () => {
+        const { chatId, senderId } = mustGetMsg();
+        if (!senderId) {
+          UNREACHABLE();
+        }
+        return this.kickChatMember(chatId, senderId);
+      },
       react: (reactions, params) => {
         const { chatId, messageId } = mustGetMsg();
         return this.setReactions(chatId, messageId, reactions, params);
@@ -528,6 +539,10 @@ export class Client<C extends Context = Context> extends ClientAbstract {
       unbanChatMember: (memberId) => {
         const { chatId } = mustGetMsg();
         return this.unbanChatMember(chatId, memberId);
+      },
+      kickChatMember: (memberId) => {
+        const { chatId } = mustGetMsg();
+        return this.kickChatMember(chatId, memberId);
       },
       deleteChatMemberMessages: (userId) => {
         const { chatId } = mustGetMsg();
@@ -3921,7 +3936,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
    *
    * @method
    * @param chatId The identifier of the chat.
-   * @param memberId The identifier of the member to unban.
+   * @param memberId The identifier of the member.
    */
   async banChatMember(chatId: ChatID, memberId: ChatID, params?: BanChatMemberParams): Promise<void> {
     const chat = await this.getInputPeer(chatId);
@@ -3969,7 +3984,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
    *
    * @method
    * @param chatId The identifier of the chat. Must be a supergroup.
-   * @param memberId The identifier of the member to ban.
+   * @param memberId The identifier of the member.
    */
   async unbanChatMember(chatId: ChatID, memberId: ChatID): Promise<void> {
     const chat = await this.getInputPeer(chatId);
@@ -3984,5 +3999,17 @@ export class Client<C extends Context = Context> extends ClientAbstract {
         banned_rights: new types.ChatBannedRights({ until_date: 0 }),
       });
     }
+  }
+
+  /**
+   * Kick a member from a chat. Same as calling banChatMember and unbanChatMember after it.
+   *
+   * @method
+   * @param chatId The identifier of the chat. Must be a supergroup.
+   * @param memberId The identifier of the member.
+   */
+  async kickChatMember(chatId: ChatID, memberId: ChatID): Promise<void> {
+    await this.banChatMember(chatId, memberId);
+    await this.unbanChatMember(chatId, memberId);
   }
 }
