@@ -86,6 +86,8 @@ export interface Context {
   forward: (to: ChatID, params?: ForwardMessagesParams) => Promise<this["msg"]>;
   /** Pin the received message. */
   pin: (params?: PinMessageParams) => Promise<void>;
+  /** Unpin the received message. */
+  unpin: (params?: PinMessageParams) => Promise<void>;
   /** Change the reactions made to the received message. */
   react: (reactions: Reaction[], params?: SetReactionsParams) => Promise<void>;
   /** Send a chat action to the chat which the message was received from. */
@@ -112,6 +114,10 @@ export interface Context {
   deleteMessages: (messageIds: number[], params?: DeleteMessagesParams) => Promise<void>;
   /** Pin a message in the chat which the message was received from. */
   pinMessage: (messageId: number, params?: PinMessageParams) => Promise<void>;
+  /** Unpin a message in the chat which the message was received from. */
+  unpinMessage: (messageId: number) => Promise<void>;
+  /** Unpin the pinned messages in the chat which the message was received from. */
+  unpinMessages: (messageId: number) => Promise<void>;
   /** Set the available reactions of the chat which the message was received from. */
   setAvailableReactions: (availableReactions: "none" | "all" | Reaction[]) => Promise<void>;
   /** Add a reaction to a message of the chat which the message was received from. */
@@ -410,6 +416,10 @@ export class Client<C extends Context = Context> extends ClientAbstract {
         const { chatId, messageId } = mustGetMsg();
         return this.pinMessage(chatId, messageId, params);
       },
+      unpin: () => {
+        const { chatId, messageId } = mustGetMsg();
+        return this.unpinMessage(chatId, messageId);
+      },
       react: (reactions, params) => {
         const { chatId, messageId } = mustGetMsg();
         return this.setReactions(chatId, messageId, reactions, params);
@@ -465,6 +475,14 @@ export class Client<C extends Context = Context> extends ClientAbstract {
       pinMessage: (messageId, params) => {
         const { chatId } = mustGetMsg();
         return this.pinMessage(chatId, messageId, params);
+      },
+      unpinMessage: (messageId) => {
+        const { chatId } = mustGetMsg();
+        return this.unpinMessage(chatId, messageId);
+      },
+      unpinMessages: () => {
+        const { chatId } = mustGetMsg();
+        return this.unpinMessages(chatId);
       },
       setAvailableReactions: (availableReactions) => {
         const { chatId } = mustGetMsg();
@@ -3847,6 +3865,33 @@ export class Client<C extends Context = Context> extends ClientAbstract {
       id: messageId,
       silent: params?.disableNotification ? true : undefined,
       pm_oneside: params?.bothSides ? undefined : true,
+    });
+  }
+
+  /**
+   * Unpin a pinned message.
+   *
+   * @method
+   * @param chatId The identifier of the chat that contains the message.
+   * @param messageId The message's identifier.
+   */
+  async unpinMessage(chatId: ChatID, messageId: number): Promise<void> {
+    await this.api.messages.updatePinnedMessage({
+      peer: await this.getInputPeer(chatId),
+      id: messageId,
+      unpin: true,
+    });
+  }
+
+  /**
+   * Unpin all pinned messages in a chat.
+   *
+   * @method
+   * @param chatId The identifier of the chat.
+   */
+  async unpinMessages(chatId: ChatID): Promise<void> {
+    await this.api.messages.unpinAllMessages({
+      peer: await this.getInputPeer(chatId),
     });
   }
 }
