@@ -1,4 +1,4 @@
-import { cleanObject } from "../1_utilities.ts";
+import { cleanObject, fromUnixTimestamp } from "../1_utilities.ts";
 import { types } from "../2_tl.ts";
 import { constructReaction, Reaction } from "./0_reaction.ts";
 import { EntityGetter } from "./1__getters.ts";
@@ -16,7 +16,7 @@ export interface MessageReactions {
 }
 
 export async function constructMessageReactions(update: types.UpdateBotMessageReaction, getEntity: EntityGetter): Promise<MessageReactions | null> {
-  const date = new Date(update.date * 1_000);
+  const date = fromUnixTimestamp(update.date);
   const oldReactions = update.old_reactions.map((v) => constructReaction(v));
   const newReactions = update.new_reactions.map((v) => constructReaction(v));
   const messageId = update.msg_id;

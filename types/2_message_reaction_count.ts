@@ -1,3 +1,4 @@
+import { fromUnixTimestamp } from "../1_utilities.ts";
 import { types } from "../2_tl.ts";
 import { EntityGetter } from "./1__getters.ts";
 import { ChatP, constructChatP } from "./1_chat_p.ts";
@@ -11,7 +12,7 @@ export interface MessageReactionCount {
 }
 
 export async function constructMessageReactionCount(update: types.UpdateBotMessageReactions, getEntity: EntityGetter): Promise<MessageReactionCount | null> {
-  const date = new Date(update.date * 1_000);
+  const date = fromUnixTimestamp(update.date);
   const reactions = update.reactions.map((v) => constructReactionCount(v));
   const entity = await getEntity(update.peer);
   if (entity) {

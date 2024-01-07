@@ -1,5 +1,5 @@
 import { debug } from "../0_deps.ts";
-import { cleanObject, MaybePromise, UNREACHABLE, ZERO_CHANNEL_ID } from "../1_utilities.ts";
+import { cleanObject, fromUnixTimestamp, MaybePromise, UNREACHABLE, ZERO_CHANNEL_ID } from "../1_utilities.ts";
 import { as, enums, types } from "../2_tl.ts";
 import { FileID, FileType, FileUniqueID, FileUniqueType } from "./0__file_id.ts";
 import { constructContact, Contact } from "./0_contact.ts";
@@ -613,7 +613,7 @@ async function constructServiceMessage(message_: types.MessageService, chat: Cha
     out: message_.out ?? false,
     id: message_.id,
     chat: chat,
-    date: new Date(message_.date * 1_000),
+    date: fromUnixTimestamp(message_.date),
     isTopicMessage: false,
   };
 
@@ -776,7 +776,7 @@ export async function constructMessage(
     id: message_.id,
     chat: chat_,
     link,
-    date: new Date(message_.date * 1_000),
+    date: fromUnixTimestamp(message_.date),
     views: message_.views,
     forwards: message_.forwards,
     isTopicMessage: false,
@@ -821,7 +821,7 @@ export async function constructMessage(
     message.forwardSenderName = message_.fwd_from.from_name;
     message.forwardId = message_.fwd_from.channel_post;
     message.forwardSignature = message_.fwd_from.post_author;
-    message.forwardDate = new Date(message_.fwd_from.date * 1_000);
+    message.forwardDate = fromUnixTimestamp(message_.fwd_from.date);
     if (message_.fwd_from.from_id instanceof types.PeerUser) {
       const entity = await getEntity(message_.fwd_from.from_id);
       if (entity) {
@@ -845,7 +845,7 @@ export async function constructMessage(
   }
 
   if (message_.edit_date != undefined) {
-    message.editDate = new Date(message_.edit_date * 1_000);
+    message.editDate = fromUnixTimestamp(message_.edit_date);
   }
 
   if (message_.message && message_.media === undefined) {

@@ -33,3 +33,11 @@ export function mustPromptOneOf<T extends readonly string[]>(message: string, ch
 export const ZERO_CHANNEL_ID = -1000000000000;
 
 export const VECTOR_CONSTRUCTOR = 0x1CB5C415;
+
+export function toUnixTimestamp(date: Date) {
+  return Math.floor(date.getTime() / 1_000);
+}
+
+export function fromUnixTimestamp(date: number) {
+  return new Date(date * 1_000);
+}

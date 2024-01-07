@@ -5,5 +5,8 @@
   },
   "compilerOptions": {
     "lib": ["dom", "esnext", "deno.unstable"]
+  },
+  "tasks": {
+    "flc": "deno fmt && deno lint && deno check mod.ts"
   }
 }
