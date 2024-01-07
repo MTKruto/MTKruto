@@ -3606,8 +3606,8 @@ export class Client<C extends Context = Context> extends ClientAbstract {
   /**
    * Get chat history. User-only.
    *
-   * @param chatId The identifier of the chat to get its history.
    * @method
+   * @param chatId The identifier of the chat to get its history.
    */
   async getHistory(chatId: ChatID, params?: GetHistoryParams): Promise<Message[]> {
     let limit = params?.limit ?? 100;
@@ -3656,8 +3656,8 @@ export class Client<C extends Context = Context> extends ClientAbstract {
   /**
    * Get custom emoji documents for download.
    *
-   * @param id Identifier of one or more of custom emojis.
    * @method
+   * @param id Identifier of one or more of custom emojis.
    */
   async getCustomEmojiDocuments(id: string | string[]): Promise<Document[]> {
     id = Array.isArray(id) ? id : [id];
@@ -3703,9 +3703,9 @@ export class Client<C extends Context = Context> extends ClientAbstract {
   /**
    * Set a chat's available reactions.
    *
+   * @method
    * @param chatId The identifier of the chat.
    * @param availableReactions The new available reactions.
-   * @method
    */
   async setAvailableReactions(chatId: ChatID, availableReactions: "none" | "all" | Reaction[]): Promise<void> {
     // TODO: sync with storage
@@ -3728,6 +3728,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
   /**
    * Change reactions made to a message.
    *
+   * @method
    * @param chatId The identifier of the chat which the message belongs to.
    * @param messageId The identifier of the message to add the reaction to.
    * @param reactions The new reactions.
@@ -3739,6 +3740,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
   /**
    * Make a reaction to a message.
    *
+   * @method
    * @param chatId The identifier of the chat which the message belongs to.
    * @param messageId The identifier of the message to add the reaction to.
    * @param reaction The reaction to add.
@@ -3757,6 +3759,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
   /**
    * Undo a reaction made to a message.
    *
+   * @method
    * @param chatId The identifier of the chat which the message belongs to.
    * @param messageId The identifier of the message which the reaction was made to.
    * @param reaction The reaction to remove.
@@ -3775,6 +3778,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
   /**
    * Set a chat's photo.
    *
+   * @method
    * @param chatId The identifier of the chat.
    * @param photo A photo to set as the chat's photo.
    */
@@ -3798,6 +3802,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
   /**
    * Delete a chat's photo.
    *
+   * @method
    * @param chatId The identifier of the chat.
    */
   async deleteChatPhoto(chatId: number): Promise<void> {
@@ -3816,6 +3821,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
   /**
    * Delete all messages sent by a specific user in a chat.
    *
+   * @method
    * @param chatId The identifier of the chat. Must be a supergroup.
    * @param userId The identifier of the user.
    */
@@ -3831,6 +3837,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
   /**
    * Pin a message in a chat.
    *
+   * @method
    * @param chatId The identifier of the chat that contains the message.
    * @param messageId The message's identifier.
    */
