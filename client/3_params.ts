@@ -301,3 +301,10 @@ export interface GetChatsParams {
   /** The maximum number of results to return. Must be in the range of 1-100. Defaults to 100. */
   limit?: number;
 }
+
+export interface PinMessageParams {
+  /** Whether to pin the message for both sides. For private chats only. */
+  bothSides?: boolean;
+  /** Whether to silently pin the message. */
+  disableNotification?: boolean;
+}
