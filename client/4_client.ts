@@ -118,6 +118,8 @@ export interface Context {
   setReactions: (messageId: number, reactions: Reaction[], params?: SetReactionsParams) => Promise<void>;
   /** Set the photo of the chat which the message was received from. */
   setChatPhoto: (photo: FileSource, params?: SetChatPhotoParams) => Promise<void>;
+  /** Remove the photo of the chat which the message was received from. */
+  removeChatPhoto: () => Promise<void>;
   toJSON: () => Update;
 }
 
@@ -470,6 +472,10 @@ export class Client<C extends Context = Context> extends ClientAbstract {
       setChatPhoto: (photo, params) => {
         const { chatId } = mustGetMsg();
         return this.setChatPhoto(chatId, photo, params);
+      },
+      removeChatPhoto: () => {
+        const { chatId } = mustGetMsg();
+        return this.removeChatPhoto(chatId);
       },
     };
 
@@ -3769,6 +3775,24 @@ export class Client<C extends Context = Context> extends ClientAbstract {
       await this.api.channels.editPhoto({ channel: new types.InputChannel(peer), photo: photo_ });
     } else if (peer instanceof types.InputPeerChat) {
       await this.api.messages.editChatPhoto({ chat_id: peer.chat_id, photo: photo_ });
+    }
+  }
+
+  /**
+   * Remove a chat's photo.
+   *
+   * @param chatId The identifier of the chat.
+   */
+  async removeChatPhoto(chatId: number) {
+    const peer = await this.getInputPeer(chatId);
+    if (!(peer instanceof types.InputPeerChannel) && !(peer instanceof types.InputPeerChat)) {
+      UNREACHABLE();
+    }
+
+    if (peer instanceof types.InputPeerChannel) {
+      await this.api.channels.editPhoto({ channel: new types.InputChannel(peer), photo: new types.InputChatPhotoEmpty() });
+    } else if (peer instanceof types.InputPeerChat) {
+      await this.api.messages.editChatPhoto({ chat_id: peer.chat_id, photo: new types.InputChatPhotoEmpty() });
     }
   }
 }
