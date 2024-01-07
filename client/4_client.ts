@@ -2381,6 +2381,8 @@ export class Client<C extends Context = Context> extends ClientAbstract {
 
     if (update instanceof types.UpdatePinnedDialogs) {
       await this.#updatePinnedChats(update);
+    } else if (update instanceof types.UpdateFolderPeers) {
+      await this.#moveChats(update);
     }
 
     if (update instanceof types.UpdateChannel) {
@@ -3526,6 +3528,17 @@ export class Client<C extends Context = Context> extends ClientAbstract {
     if (chat !== undefined) {
       this.#getChatList(listId).delete(chatId);
       await this.#sendChatUpdate(chatId, false);
+    }
+  }
+  async #moveChats(update: types.UpdateFolderPeers) {
+    for (const { peer, folder_id: listId } of update.folder_peers) {
+      const chatId = peerToChatId(peer);
+      const [chat, currentListId] = this.#getChatAnywhere(chatId);
+      if (chat !== undefined && listId != currentListId) {
+        this.#getChatList(currentListId).delete(chatId);
+        this.#getChatList(listId).set(chatId, chat);
+        await this.#sendChatUpdate(chatId, true);
+      }
     }
   }
   async #updatePinnedChats(update: types.UpdatePinnedDialogs) {
