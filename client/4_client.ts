@@ -120,6 +120,7 @@ export interface Context {
   setChatPhoto: (photo: FileSource, params?: SetChatPhotoParams) => Promise<void>;
   /** Delete the photo of the chat which the message was received from. */
   deleteChatPhoto: () => Promise<void>;
+  deleteUserMessages: (userId: ChatID) => Promise<void>;
   toJSON: () => Update;
 }
 
@@ -476,6 +477,10 @@ export class Client<C extends Context = Context> extends ClientAbstract {
       deleteChatPhoto: () => {
         const { chatId } = mustGetMsg();
         return this.deleteChatPhoto(chatId);
+      },
+      deleteUserMessages: (userId) => {
+        const { chatId } = mustGetMsg();
+        return this.deleteUserMessages(chatId, userId);
       },
     };
 
@@ -3690,7 +3695,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
    * @param availableReactions The new available reactions.
    * @method
    */
-  async setAvailableReactions(chatId: ChatID, availableReactions: "none" | "all" | Reaction[]) {
+  async setAvailableReactions(chatId: ChatID, availableReactions: "none" | "all" | Reaction[]): Promise<void> {
     // TODO: sync with storage
     await this.api.messages.setChatAvailableReactions({
       peer: await this.getInputPeer(chatId),
@@ -3715,7 +3720,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
    * @param messageId The identifier of the message to add the reaction to.
    * @param reactions The new reactions.
    */
-  async setReactions(chatId: number, messageId: number, reactions: Reaction[], params?: SetReactionsParams) {
+  async setReactions(chatId: number, messageId: number, reactions: Reaction[], params?: SetReactionsParams): Promise<void> {
     await this.#sendReaction(chatId, messageId, reactions, params);
   }
 
@@ -3726,7 +3731,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
    * @param messageId The identifier of the message to add the reaction to.
    * @param reaction The reaction to add.
    */
-  async addReaction(chatId: number, messageId: number, reaction: Reaction, params?: AddReactionParams) {
+  async addReaction(chatId: number, messageId: number, reaction: Reaction, params?: AddReactionParams): Promise<void> {
     const chosenReactions = await this.getMessage(chatId, messageId).then((v) => v?.reactions ?? []).then((v) => v.filter((v) => v.chosen));
     for (const r of chosenReactions) {
       if (reactionEqual(r.reaction, reaction)) {
@@ -3744,7 +3749,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
    * @param messageId The identifier of the message which the reaction was made to.
    * @param reaction The reaction to remove.
    */
-  async removeReaction(chatId: number, messageId: number, reaction: Reaction) {
+  async removeReaction(chatId: number, messageId: number, reaction: Reaction): Promise<void> {
     const chosenReactions = await this.getMessage(chatId, messageId).then((v) => v?.reactions ?? []).then((v) => v.filter((v) => v.chosen));
     for (const r of chosenReactions) {
       if (reactionEqual(r.reaction, reaction)) {
@@ -3761,7 +3766,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
    * @param chatId The identifier of the chat.
    * @param photo A photo to set as the chat's photo.
    */
-  async setChatPhoto(chatId: number, photo: FileSource, params?: SetChatPhotoParams) {
+  async setChatPhoto(chatId: number, photo: FileSource, params?: SetChatPhotoParams): Promise<void> {
     const peer = await this.getInputPeer(chatId);
     if (!(peer instanceof types.InputPeerChannel) && !(peer instanceof types.InputPeerChat)) {
       UNREACHABLE();
@@ -3783,7 +3788,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
    *
    * @param chatId The identifier of the chat.
    */
-  async deleteChatPhoto(chatId: number) {
+  async deleteChatPhoto(chatId: number): Promise<void> {
     const peer = await this.getInputPeer(chatId);
     if (!(peer instanceof types.InputPeerChannel) && !(peer instanceof types.InputPeerChat)) {
       UNREACHABLE();
@@ -3794,5 +3799,20 @@ export class Client<C extends Context = Context> extends ClientAbstract {
     } else if (peer instanceof types.InputPeerChat) {
       await this.api.messages.editChatPhoto({ chat_id: peer.chat_id, photo: new types.InputChatPhotoEmpty() });
     }
+  }
+
+  /**
+   * Delete all messages sent by a specific user in a chat.
+   *
+   * @param chatId The identifier of the chat. Must be a supergroup.
+   * @param userId The identifier of the user.
+   */
+  async deleteUserMessages(chatId: ChatID, userId: ChatID): Promise<void> {
+    const channel = await this.getInputPeer(chatId);
+    if (!(channel instanceof types.InputPeerChannel)) {
+      throw new Error("Invalid chat ID");
+    }
+    const participant = await this.getInputPeer(userId);
+    await this.api.channels.deleteParticipantHistory({ channel: new types.InputChannel(channel), participant });
   }
 }
