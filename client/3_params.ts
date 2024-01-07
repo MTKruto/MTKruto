@@ -1,5 +1,5 @@
 import { MaybePromise } from "../1_utilities.ts";
-import { BotCommandScope, Chat, ID, InlineQueryResultButton, Message, MessageEntity, ParseMode, ReplyMarkup, ReplyQuote } from "../3_types.ts";
+import { BotCommandScope, Chat, ChatMemberRights, ID, InlineQueryResultButton, Message, MessageEntity, ParseMode, ReplyMarkup, ReplyQuote } from "../3_types.ts";
 import { FileSource } from "./0_utilities.ts";
 import { ClientPlainParams } from "./2_client_plain.ts";
 
@@ -314,4 +314,11 @@ export interface BanChatMemberParams {
   untilDate?: Date;
   /** Whether to delete all of the user's messages. */
   deleteMessages?: boolean;
+}
+
+export interface SetChatMemberRightsParams {
+  /** The member's new rights. All properties default to `true` if the chat's default member rights allow. This means that this method is the same as unbanChatMember if this parameter is not provided or all of its fields are `true`. */
+  rights?: ChatMemberRights;
+  /** A point of time in the future to automatically withdraw the restrictions. */
+  untilDate?: Date;
 }

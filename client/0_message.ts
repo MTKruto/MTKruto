@@ -1,9 +1,9 @@
 import { assertEquals, ige256Decrypt, ige256Encrypt } from "../0_deps.ts";
-import { bufferFromBigInt, concat, mod, sha256 } from "../1_utilities.ts";
+import { bufferFromBigInt, concat, mod, sha256, toUnixTimestamp } from "../1_utilities.ts";
 import { id, Message_, MessageContainer, RPCResult, serialize, TLObject, TLReader, TLWriter } from "../2_tl.ts";
 
 export function getMessageId(lastMsgId: bigint) {
-  const now = new Date().getTime() / 1000 + 0;
+  const now = toUnixTimestamp(new Date()) + 0;
   const nanoseconds = Math.floor((now - Math.floor(now)) * 1e9);
   let newMsgId = (BigInt(Math.floor(now)) <<
     32n) ||

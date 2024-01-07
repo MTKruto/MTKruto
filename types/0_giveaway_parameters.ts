@@ -1,3 +1,4 @@
+import { fromUnixTimestamp } from "../1_utilities.ts";
 import { peerToChatId, types } from "../2_tl.ts";
 
 export interface GiveawayParameters {
@@ -13,7 +14,7 @@ export function constructGiveawayParameters(g: types.MessageMediaGiveaway): Give
   const boostedChatId = peerToChatId(new types.PeerChannel({ channel_id: g.channels[0] }));
   const additionalChatIds = g.channels.slice(1).map((v) => peerToChatId(new types.PeerChannel({ channel_id: v })));
   const onlyNewMembers = g.only_new_subscribers ? true : false;
-  const winnerSelectionDate = new Date(g.until_date * 1_000);
+  const winnerSelectionDate = fromUnixTimestamp(g.until_date);
 
   return { boostedChatId, additionalChatIds, winnerSelectionDate, onlyNewMembers, countries };
 }

@@ -1,5 +1,5 @@
 import { contentType, debug, extension, gunzip, Mutex } from "../0_deps.ts";
-import { bigIntFromBuffer, cleanObject, drop, getRandomBigInt, getRandomId, MaybePromise, mod, mustPrompt, mustPromptOneOf, Queue, sha1, UNREACHABLE, ZERO_CHANNEL_ID } from "../1_utilities.ts";
+import { bigIntFromBuffer, cleanObject, drop, getRandomBigInt, getRandomId, MaybePromise, mod, mustPrompt, mustPromptOneOf, Queue, sha1, toUnixTimestamp, UNREACHABLE, ZERO_CHANNEL_ID } from "../1_utilities.ts";
 import { as, enums, functions, getChannelChatId, inputPeerToPeer, Message_, MessageContainer, name, peerToChatId, ReadObject, RPCResult, TLError, TLObject, TLReader, types } from "../2_tl.ts";
 import { Storage, StorageMemory } from "../3_storage.ts";
 import { DC } from "../3_transport.ts";
@@ -14,7 +14,7 @@ import { checkPassword } from "./0_password.ts";
 import { FileSource, getChatListId, getFileContents, getUsername, isChannelPtsUpdate, isHttpUrl, isPtsUpdate, resolve } from "./0_utilities.ts";
 import { Composer, concat, flatten, Middleware, MiddlewareFn, skip } from "./1_composer.ts";
 import { ClientPlain } from "./2_client_plain.ts";
-import { _SendCommon, AddReactionParams, AnswerCallbackQueryParams, AnswerInlineQueryParams, AuthorizeUserParams, BanChatMemberParams, ClientParams, DeleteMessageParams, DeleteMessagesParams, DownloadParams, EditMessageParams, EditMessageReplyMarkupParams, ForwardMessagesParams, GetChatsParams, GetHistoryParams, GetMyCommandsParams, PinMessageParams, ReplyParams, SendAnimationParams, SendAudioParams, SendContactParams, SendDiceParams, SendDocumentParams, SendLocationParams, SendMessageParams, SendPhotoParams, SendPollParams, SendVenueParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams, SetChatPhotoParams, SetMyCommandsParams, SetReactionsParams, UploadParams } from "./3_params.ts";
+import { _SendCommon, AddReactionParams, AnswerCallbackQueryParams, AnswerInlineQueryParams, AuthorizeUserParams, BanChatMemberParams, ClientParams, DeleteMessageParams, DeleteMessagesParams, DownloadParams, EditMessageParams, EditMessageReplyMarkupParams, ForwardMessagesParams, GetChatsParams, GetHistoryParams, GetMyCommandsParams, PinMessageParams, ReplyParams, SendAnimationParams, SendAudioParams, SendContactParams, SendDiceParams, SendDocumentParams, SendLocationParams, SendMessageParams, SendPhotoParams, SendPollParams, SendVenueParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams, SetChatMemberRightsParams, SetChatPhotoParams, SetMyCommandsParams, SetReactionsParams, UploadParams } from "./3_params.ts";
 
 export type NextFn<T = void> = () => Promise<T>;
 export interface InvokeErrorHandler<C> {
@@ -92,6 +92,8 @@ export interface Context {
   banSender: (params?: BanChatMemberParams) => Promise<void>;
   /** Kick the sender of the received message. */
   kickSender: () => Promise<void>;
+  /** Set the rights of the received message. */
+  setSenderRights: (params?: SetChatMemberRightsParams) => Promise<void>;
   /** Change the reactions made to the received message. */
   react: (reactions: Reaction[], params?: SetReactionsParams) => Promise<void>;
   /** Send a chat action to the chat which the message was received from. */
@@ -140,6 +142,8 @@ export interface Context {
   unbanChatMember: (memberId: ID) => Promise<void>;
   /** Kick a member from the chat which the message was received from. */
   kickChatMember: (memberId: ID) => Promise<void>;
+  /** Set the rights of a member of the chat which the message was received from. */
+  setChatMemberRights: (memberId: ID, params?: SetChatMemberRightsParams) => Promise<void>;
   deleteChatMemberMessages: (userId: ID) => Promise<void>;
   toJSON: () => Update;
 }
@@ -444,6 +448,13 @@ export class Client<C extends Context = Context> extends ClientAbstract {
         }
         return this.kickChatMember(chatId, senderId);
       },
+      setSenderRights: (params) => {
+        const { chatId, senderId } = mustGetMsg();
+        if (!senderId) {
+          UNREACHABLE();
+        }
+        return this.setChatMemberRights(chatId, senderId, params);
+      },
       react: (reactions, params) => {
         const { chatId, messageId } = mustGetMsg();
         return this.setReactions(chatId, messageId, reactions, params);
@@ -543,6 +554,10 @@ export class Client<C extends Context = Context> extends ClientAbstract {
       kickChatMember: (memberId) => {
         const { chatId } = mustGetMsg();
         return this.kickChatMember(chatId, memberId);
+      },
+      setChatMemberRights: (memberId, params) => {
+        const { chatId } = mustGetMsg();
+        return this.setChatMemberRights(chatId, memberId, params);
       },
       deleteChatMemberMessages: (userId) => {
         const { chatId } = mustGetMsg();
@@ -2457,7 +2472,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
       answers,
       question,
       closed: params?.isClosed ? true : undefined,
-      close_date: params?.closeDate ? Math.floor(params.closeDate.getTime() / 1000) : undefined,
+      close_date: params?.closeDate ? toUnixTimestamp(params.closeDate) : undefined,
       close_period: params?.openPeriod ? params.openPeriod : undefined,
       multiple_choice: params?.allowMultipleAnswers ? true : undefined,
       public_voters: params?.isAnonymous === false ? true : undefined,
@@ -3539,7 +3554,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
     const dialogs = await this.api.messages.getDialogs({
       limit,
       offset_id: after?.lastMessage?.id ?? 0,
-      offset_date: after?.lastMessage?.date ? Math.ceil(after.lastMessage.date.getTime() / 1_000) : 0,
+      offset_date: after?.lastMessage?.date ? toUnixTimestamp(after.lastMessage.date) : 0,
       offset_peer: after ? await this.getInputPeer(after.id) : new types.InputPeerEmpty(),
       hash: 0n,
       folder_id: listId,
@@ -3920,15 +3935,13 @@ export class Client<C extends Context = Context> extends ClientAbstract {
   }
 
   /**
-   * Unpin all pinned messages in a chat.
+   * Unpin all pinned messages.
    *
    * @method
    * @param chatId The identifier of the chat.
    */
   async unpinMessages(chatId: ID): Promise<void> {
-    await this.api.messages.unpinAllMessages({
-      peer: await this.getInputPeer(chatId),
-    });
+    await this.api.messages.unpinAllMessages({ peer: await this.getInputPeer(chatId) });
   }
 
   /**
@@ -3956,7 +3969,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
         channel: new types.InputChannel(chat),
         participant: member,
         banned_rights: new types.ChatBannedRights({
-          until_date: params?.untilDate ? Math.ceil(params.untilDate.getTime() / 1_000) : 0, // todo
+          until_date: params?.untilDate ? toUnixTimestamp(params.untilDate) : 0, // todo
           view_messages: true,
           send_messages: true,
           send_media: true,
@@ -3992,17 +4005,15 @@ export class Client<C extends Context = Context> extends ClientAbstract {
       throw new Error("Invalid chat ID");
     }
     const member = await this.getInputPeer(memberId);
-    if (chat instanceof types.InputPeerChannel) {
-      await this.api.channels.editBanned({
-        channel: new types.InputChannel(chat),
-        participant: member,
-        banned_rights: new types.ChatBannedRights({ until_date: 0 }),
-      });
-    }
+    await this.api.channels.editBanned({
+      channel: new types.InputChannel(chat),
+      participant: member,
+      banned_rights: new types.ChatBannedRights({ until_date: 0 }),
+    });
   }
 
   /**
-   * Kick a member from a chat. Same as calling banChatMember and unbanChatMember after it.
+   * Kick a member from a chat. Same as a banChatMember call followed by unbanChatMember.
    *
    * @method
    * @param chatId The identifier of the chat. Must be a supergroup.
@@ -4011,5 +4022,44 @@ export class Client<C extends Context = Context> extends ClientAbstract {
   async kickChatMember(chatId: ID, memberId: ID): Promise<void> {
     await this.banChatMember(chatId, memberId);
     await this.unbanChatMember(chatId, memberId);
+  }
+
+  /**
+   * Set the rights of a chat member.
+   *
+   * @method
+   * @param chatId The identifier of the chat. Must be a supergroup.
+   * @param memberId The identifier of a member.
+   */
+  async setChatMemberRights(chatId: ID, memberId: ID, params?: SetChatMemberRightsParams): Promise<void> {
+    const chat = await this.getInputPeer(chatId);
+    if (!(chat instanceof types.InputPeerChannel)) {
+      throw new Error("Invalid chat ID");
+    }
+    const member = await this.getInputPeer(memberId);
+    await this.api.channels.editBanned({
+      channel: new types.InputChannel(chat),
+      participant: member,
+      banned_rights: new types.ChatBannedRights({
+        until_date: params?.untilDate ? toUnixTimestamp(params.untilDate) : 0,
+        send_messages: params?.rights?.canSendMessages ? true : undefined,
+        send_audios: params?.rights?.canSendAudio ? true : undefined,
+        send_docs: params?.rights?.canSendDocuments ? true : undefined,
+        send_photos: params?.rights?.canSendPhotos ? true : undefined,
+        send_videos: params?.rights?.canSendVideos ? true : undefined,
+        send_roundvideos: params?.rights?.canSendVideoNotes ? true : undefined,
+        send_voices: params?.rights?.canSendVoice ? true : undefined,
+        send_polls: params?.rights?.canSendPolls ? true : undefined,
+        send_stickers: params?.rights?.canSendStickers ? true : undefined,
+        send_gifs: params?.rights?.canSendAnimations ? true : undefined,
+        send_games: params?.rights?.canSendGames ? true : undefined,
+        send_inline: params?.rights?.canSendInlineBotResults ? true : undefined,
+        embed_links: params?.rights?.canAddWebPagePreviews ? true : undefined,
+        change_info: params?.rights?.canChangeInfo ? true : undefined,
+        invite_users: params?.rights?.canInviteUsers ? true : undefined,
+        pin_messages: params?.rights?.canPinMessages ? true : undefined,
+        manage_topics: params?.rights?.canManageTopics ? true : undefined,
+      }),
+    });
   }
 }
