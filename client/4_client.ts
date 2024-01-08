@@ -1014,7 +1014,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
                 resolvePromise();
               });
             } else {
-              await this.processResult(result);
+              await this.#processResult(result);
               resolvePromise();
             }
           } else if (message.body instanceof types.Pong) {
@@ -1613,7 +1613,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
     }
   }
 
-  async getUserAccessHash(userId: bigint) {
+  async #getUserAccessHash(userId: bigint) {
     const users = await this.api.users.getUsers({ id: [new types.InputUser({ user_id: userId, access_hash: 0n })] });
     return users[0]?.[as](types.User).access_hash ?? 0n;
   }
@@ -1629,7 +1629,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
       if ("channel_id" in inputPeer) {
         inputPeer.access_hash = await this.#getChannelAccessHash(inputPeer.channel_id);
       } else {
-        inputPeer.access_hash = await this.getUserAccessHash(inputPeer.user_id);
+        inputPeer.access_hash = await this.#getUserAccessHash(inputPeer.user_id);
         await this.storage.setUserAccessHash(inputPeer.user_id, inputPeer.access_hash);
       }
     }
@@ -1695,7 +1695,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
     return this.storage.getEntity(type, id);
   }
 
-  async processResult(result: ReadObject) {
+  async #processResult(result: ReadObject) {
     if (
       result instanceof types.messages.Dialogs ||
       result instanceof types.messages.DialogsSlice ||
