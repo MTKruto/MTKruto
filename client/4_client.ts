@@ -276,7 +276,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
           connect: async () => {
             await client.connect();
 
-            if (dcId != this.dcId) {
+            if (dcId && dcId != this.dcId) {
               let dc = String(dcId);
               if (this.dcId < 0) {
                 dc += "-test";
