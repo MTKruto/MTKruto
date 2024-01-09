@@ -364,4 +364,16 @@ export abstract class Storage {
     }
     return null;
   }
+
+  async assertUser(source: string) {
+    if (await this.getAccountType() != "user") {
+      throw new Error(`${source}: not user a client`);
+    }
+  }
+
+  async assertBot(source: string) {
+    if (await this.getAccountType() != "bot") {
+      throw new Error(`${source}: not a bot client`);
+    }
+  }
 }
