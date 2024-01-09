@@ -236,8 +236,8 @@ export class Client<C extends Context = Context> extends ClientAbstract {
       guaranteeUpdateDelivery: this.#guaranteeUpdateDelivery,
       setConnectionState: this.#propagateConnectionState.bind(this),
       resetConnectionState: () => this.stateChangeHandler(this.connected),
-      getSelfId: this.#getSelfId,
-      getInputPeer: this.getInputPeer,
+      getSelfId: this.#getSelfId.bind(this),
+      getInputPeer: this.getInputPeer.bind(this),
       getEntity: this[getEntity].bind(this),
       handleUpdate: this.#queueHandleCtxUpdate.bind(this),
       parseMode: this.#parseMode,
@@ -284,7 +284,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
 
             await client.#initConnection();
           },
-          disconnect: client.disconnect,
+          disconnect: client.disconnect.bind(client),
         };
       },
     };
