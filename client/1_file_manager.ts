@@ -90,12 +90,13 @@ export class FileManager {
     }
   }
 
-  async *#downloadInner(location: enums.InputFileLocation, dcId: number, params?: { chunkSize?: number }) {
+  async *#downloadInner(location: enums.InputFileLocation, dcId: number, params?: { chunkSize?: number; offset?: number }) {
     const id = "id" in location ? location.id : "photo_id" in location ? location.photo_id : null;
     if (id != null) {
-      const partCount = await this.#c.storage.getFile(id);
-      if (partCount != null && partCount > 0) {
-        for await (const part of this.#c.storage.iterFileParts(id, partCount)) {
+      const file = await this.#c.storage.getFile(id);
+      const partOffset = file == null ? 0 : params?.offset ? Math.ceil(10 / file[1]) - 1 : 0;
+      if (file != null && file[0] > 0) {
+        for await (const part of this.#c.storage.iterFileParts(id, file[0], partOffset)) {
           yield part;
         }
         return;
@@ -111,7 +112,7 @@ export class FileManager {
     await connect();
 
     const limit = chunkSize;
-    let offset = 0n;
+    let offset = params?.offset ? BigInt(params.offset) : 0n;
     let part = 0;
 
     try {
@@ -126,7 +127,7 @@ export class FileManager {
           ++part;
           if (file.bytes.length < limit) {
             if (id != null) {
-              await this.#c.storage.setFilePartCount(id, part + 1);
+              await this.#c.storage.setFilePartCount(id, part + 1, chunkSize);
             }
             break;
           } else {
