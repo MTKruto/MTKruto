@@ -1,6 +1,7 @@
 import { path } from "../0_deps.ts";
 import { UNREACHABLE } from "../1_utilities.ts";
 import { enums, types } from "../2_tl.ts";
+import { FileSource } from "../3_types.ts";
 
 export const resolve = () => Promise.resolve();
 
@@ -39,11 +40,6 @@ export function isChannelPtsUpdate(v: enums.Update | enums.Updates): v is
     v instanceof types.UpdateDeleteChannelMessages ||
     v instanceof types.UpdateChannelTooLong;
 }
-
-/**
- * Source to a file. Can be a file ID, a file path, URL, or a `Uint8Array`, unless otherwise noted.
- */
-export type FileSource = string | URL | Uint8Array;
 
 export async function getFileContents(source: FileSource, fileName = "") {
   fileName = fileName.trim() || "file";
