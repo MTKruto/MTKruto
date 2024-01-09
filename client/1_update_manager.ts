@@ -9,14 +9,14 @@ const d = debug("UpdateManager");
 const dGap = debug("UpdateManager/recoverUpdateGap");
 const dGapC = debug("UpdateManager/recoverChannelUpdateGap");
 
-export type UpdateHandler = () => Promise<(() => Promise<void>)>;
+type UpdateHandler = (update: enums.Update) => Promise<(() => Promise<unknown>)>;
 
 export class UpdateManager {
   static readonly MAIN_BOX_ID = 0n;
 
   #c: C;
-  #handlers = new Map<enums.Update, UpdateHandler>();
   #updateState?: types.updates.State;
+  #updateHandler?: UpdateHandler;
 
   constructor(c: C) {
     this.#c = c;
@@ -541,18 +541,15 @@ export class UpdateManager {
   }
 
   async #handleUpdate(update: enums.Update) {
-    const handler = this.#handlers.get(update);
+    const handler = this.#updateHandler;
     if (handler) {
-      return await handler();
+      return await handler(update);
     } else {
       return () => Promise.resolve();
     }
   }
 
-  setHandler(updates: enums.Update | enums.Update[], handler: UpdateHandler) {
-    updates = Array.isArray(updates) ? updates : [updates];
-    for (const update of updates) {
-      this.#handlers.set(update, handler);
-    }
+  setUpdateHandler(handler: UpdateHandler) {
+    this.#updateHandler = handler;
   }
 }

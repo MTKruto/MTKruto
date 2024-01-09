@@ -14,9 +14,9 @@ import { checkPassword } from "./0_password.ts";
 import { Api } from "./0_types.ts";
 import { FileSource, getChatListId, getFileContents, getUsername, isHttpUrl, resolve } from "./0_utilities.ts";
 import { Composer, concat, flatten, Middleware, MiddlewareFn, skip } from "./1_composer.ts";
+import { UpdateManager } from "./1_update_manager.ts";
 import { ClientPlain } from "./2_client_plain.ts";
 import { _SendCommon, AddReactionParams, AnswerCallbackQueryParams, AnswerInlineQueryParams, AuthorizeUserParams, BanChatMemberParams, ClientParams, DeleteMessageParams, DeleteMessagesParams, DownloadParams, EditMessageParams, EditMessageReplyMarkupParams, ForwardMessagesParams, GetChatsParams, GetHistoryParams, GetMyCommandsParams, PinMessageParams, ReplyParams, SendAnimationParams, SendAudioParams, SendContactParams, SendDiceParams, SendDocumentParams, SendLocationParams, SendMessageParams, SendPhotoParams, SendPollParams, SendVenueParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams, SetChatMemberRightsParams, SetChatPhotoParams, SetMyCommandsParams, SetReactionsParams, UploadParams } from "./3_params.ts";
-import { UpdateManager } from "./1_update_manager.ts";
 
 export type NextFn<T = void> = () => Promise<T>;
 export interface InvokeErrorHandler<C> {
@@ -216,6 +216,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
       getInputPeer: this.getInputPeer,
     };
     this.#updateManager = new UpdateManager(c);
+    this.#updateManager.setUpdateHandler(this.#handleUpdate.bind(this));
 
     const transportProvider = this.transportProvider;
     this.transportProvider = (params) => {
@@ -1717,39 +1718,6 @@ export class Client<C extends Context = Context> extends ClientAbstract {
     const user = constructUser(users[0][as](types.User));
     this.#lastGetMe = user;
     return user;
-  }
-
-  #handleUpdatesSet = new Set<bigint>();
-  async #handleStoredUpdates(boxId: bigint) {
-    if (this.#handleUpdatesSet.has(boxId)) {
-      return;
-    }
-    this.#handleUpdatesSet.add(boxId);
-    do {
-      const maybeUpdate = await this.storage.getFirstUpdate(boxId);
-      if (maybeUpdate == null) {
-        break;
-      }
-      const [key, update] = maybeUpdate;
-      for (let i = 0; i < 100; ++i) {
-        try {
-          const handle = await this.#handleUpdate(update);
-          handle: for (let i = 0; i < 2; ++i) {
-            try {
-              await handle();
-              break handle;
-            } catch {
-              continue handle;
-            }
-          }
-          break;
-        } catch (err) {
-          d("#handleUpdate error: %o", err);
-        }
-      }
-      await this.storage.set(key, null);
-    } while (true);
-    this.#handleUpdatesSet.delete(boxId);
   }
 
   async #handleUpdate(update: enums.Update) {
