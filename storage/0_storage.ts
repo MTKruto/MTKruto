@@ -294,14 +294,14 @@ export abstract class Storage {
     if (!this.supportsFiles) {
       return null;
     }
-    return await this.get<number>(KPARTS_FILE(id));
+    return await this.get<[number, number]>(KPARTS_FILE(id));
   }
 
-  async *iterFileParts(id: bigint, partCount: number) {
+  async *iterFileParts(id: bigint, partCount: number, offset: number) {
     if (!this.supportsFiles) {
       return;
     }
-    for (let i = 0; i < partCount; i++) {
+    for (let i = offset; i < partCount; i++) {
       const part = await this.get<Uint8Array>(KPARTS_FILE_PART(id, i));
       if (part == null) {
         continue;
@@ -317,11 +317,11 @@ export abstract class Storage {
     await this.set(KPARTS_FILE_PART(id, index), bytes);
   }
 
-  async setFilePartCount(id: bigint, partCount: number) {
+  async setFilePartCount(id: bigint, partCount: number, chunkSize: number) {
     if (!this.supportsFiles) {
       return;
     }
-    await this.set(KPARTS_FILE(id), partCount);
+    await this.set(KPARTS_FILE(id), [partCount, chunkSize]);
   }
 
   async setCustomEmojiDocument(id: bigint, document: types.Document) {

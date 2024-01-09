@@ -92,6 +92,8 @@ export interface SendPollParams extends _SendCommon {
 export interface DownloadParams {
   /** Size of each download chunk in bytes. */
   chunkSize?: number;
+  /** Download offset in bytes. */
+  offset?: number;
 }
 
 export interface _UploadCommon {
