@@ -5,7 +5,6 @@ import { Chat, constructChat, constructChat3, constructChat4, constructMessage, 
 import { C as C_ } from "./0_types.ts";
 import { getChatListId } from "./0_utilities.ts";
 import { UpdateManager } from "./1_update_manager.ts";
-import { GetChatsParams } from "./3_params.ts";
 
 type C = C_ & { updateManager: UpdateManager };
 
@@ -332,29 +331,28 @@ export class ChatListManager {
     }
   }
 
-  async getChats(params?: GetChatsParams): Promise<Chat[]> {
+  async getChats(from: "archived" | "main" = "main", after?: Chat, limit = 100): Promise<Chat[]> {
     await this.#c.storage.assertUser("getChats");
     if (!this.#chatsLoadedFromStorage) {
       await this.#loadChatsFromStorage();
     }
-    if (params?.after?.id && !this.#chats.has(params.after.id)) {
+    if (after && !this.#chats.get(after.id)) {
       throw new Error("Invalid after");
     }
-    let limit = params?.limit ?? 100;
     if (limit <= 0 || limit > 100) {
       limit = 100;
     }
-    const listId = getChatListId(params?.from ?? "main");
+    const listId = getChatListId(from);
     let chats = this.#getLoadedChats(listId);
-    if (params?.after) {
+    if (after) {
       chats = chats
-        .filter((v) => v.order < params.after!.order);
+        .filter((v) => v.order < after!.order);
     }
     if (chats.length < limit) {
       d("have only %d chats but %d more is needed", chats.length, limit - chats.length);
       if (!await this.#c.storage.hasAllChats(listId)) {
-        await this.#fetchChats(listId, limit, params?.after);
-        return await this.getChats(params);
+        await this.#fetchChats(listId, limit, after);
+        return await this.getChats(from, after, limit);
       }
     }
     chats = chats.slice(0, limit);

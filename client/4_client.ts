@@ -15,9 +15,9 @@ import { Api } from "./0_types.ts";
 import { FileSource, getFileContents, getUsername, isHttpUrl, resolve } from "./0_utilities.ts";
 import { Composer, concat, flatten, Middleware, MiddlewareFn, skip } from "./1_composer.ts";
 import { UpdateManager } from "./1_update_manager.ts";
+import { ChatListManager } from "./2_chat_list_manager.ts";
 import { ClientPlain } from "./2_client_plain.ts";
 import { _SendCommon, AddReactionParams, AnswerCallbackQueryParams, AnswerInlineQueryParams, AuthorizeUserParams, BanChatMemberParams, ClientParams, DeleteMessageParams, DeleteMessagesParams, DownloadParams, EditMessageParams, EditMessageReplyMarkupParams, ForwardMessagesParams, GetChatsParams, GetHistoryParams, GetMyCommandsParams, PinMessageParams, ReplyParams, SendAnimationParams, SendAudioParams, SendContactParams, SendDiceParams, SendDocumentParams, SendLocationParams, SendMessageParams, SendPhotoParams, SendPollParams, SendVenueParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams, SetChatMemberRightsParams, SetChatPhotoParams, SetMyCommandsParams, SetReactionsParams, UploadParams } from "./3_params.ts";
-import { ChatListManager } from "./4_chat_list_manager.ts";
 
 export type NextFn<T = void> = () => Promise<T>;
 export interface InvokeErrorHandler<C> {
@@ -2778,7 +2778,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
    * @method
    */
   async getChats(params?: GetChatsParams): Promise<Chat[]> {
-    return await this.#chatListManager.getChats(params);
+    return await this.#chatListManager.getChats(params?.from, params?.after, params?.limit);
   }
 
   /**
