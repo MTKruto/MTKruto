@@ -219,7 +219,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
       getEntity: this[getEntity].bind(this),
       getMessage: this.getMessage.bind(this),
       getStickerSetName: this[getStickerSetName].bind(this),
-      queueDispatchMainBoxUpdate: this.#queueDispatchMainBoxUpdate.bind(this),
+      handleUpdate: this.#queueHandleCtxUpdate.bind(this),
     };
     this.#updateManager = new UpdateManager(c);
     this.#chatListManager = new ChatListManager({ ...c, updateManager: this.#updateManager });
@@ -583,7 +583,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
   };
 
   #propagateConnectionState(connectionState: ConnectionState) {
-    this.#queueDispatchMainBoxUpdate({ connectionState });
+    this.#queueHandleCtxUpdate({ connectionState });
     this.#lastPropagatedConnectionState = connectionState;
   }
 
@@ -1713,13 +1713,13 @@ export class Client<C extends Context = Context> extends ClientAbstract {
     return user;
   }
 
-  async #dispatchUpdate(update: Update) {
+  async #handleCtxUpdate(update: Update) {
     await this.#handle(await this.#constructContext(update), resolve);
   }
 
-  #queueDispatchMainBoxUpdate(update: Update) {
+  #queueHandleCtxUpdate(update: Update) {
     this.#updateManager.getHandleUpdateQueue(UpdateManager.MAIN_BOX_ID).add(async () => {
-      await this.#dispatchUpdate(update);
+      await this.#handleCtxUpdate(update);
     });
   }
 
@@ -1755,7 +1755,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
         const forwards = message.forwards ?? 0;
         const recentReactions = update.reactions.recent_reactions ?? [];
         const reactions = update.reactions.results.map((v) => constructMessageReaction(v, recentReactions));
-        promises.push(this.#dispatchUpdate({ messageInteractions: { chatId, messageId: update.msg_id, reactions, views, forwards } }));
+        promises.push(this.#handleCtxUpdate({ messageInteractions: { chatId, messageId: update.msg_id, reactions, views, forwards } }));
       }
     } else if (update instanceof types.UpdateChannelMessageViews || update instanceof types.UpdateChannelMessageForwards) {
       const chatId = peerToChatId(new types.PeerChannel(update));
@@ -1771,7 +1771,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
         const forwards = message.forwards ?? 0;
         const recentReactions = message.reactions?.recent_reactions ?? [];
         const reactions = message.reactions?.results.map((v) => constructMessageReaction(v, recentReactions)) ?? [];
-        promises.push(this.#dispatchUpdate({ messageInteractions: { chatId, messageId: update.id, reactions, views, forwards } }));
+        promises.push(this.#handleCtxUpdate({ messageInteractions: { chatId, messageId: update.id, reactions, views, forwards } }));
       }
     }
 
@@ -1796,9 +1796,9 @@ export class Client<C extends Context = Context> extends ClientAbstract {
           );
           promises.push((async () => {
             if (update instanceof types.UpdateNewMessage || update instanceof types.UpdateNewChannelMessage) {
-              await this.#dispatchUpdate({ message });
+              await this.#handleCtxUpdate({ message });
             } else {
-              await this.#dispatchUpdate({ editedMessage: message });
+              await this.#handleCtxUpdate({ editedMessage: message });
             }
           })());
         }
@@ -1816,7 +1816,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
       if (deletedMessages.length > 0) {
         promises.push((async () => {
           try {
-            await this.#dispatchUpdate({ deletedMessages });
+            await this.#handleCtxUpdate({ deletedMessages });
           } finally {
             for (const { chatId, messageId } of deletedMessages) {
               await this.storage.setMessage(chatId, messageId, null);
@@ -1837,7 +1837,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
       if (deletedMessages.length > 0) {
         promises.push((async () => {
           try {
-            await this.#dispatchUpdate({ deletedMessages });
+            await this.#handleCtxUpdate({ deletedMessages });
           } finally {
             for (const { chatId, messageId } of deletedMessages) {
               await this.storage.setMessage(chatId, messageId, null);
@@ -1849,20 +1849,20 @@ export class Client<C extends Context = Context> extends ClientAbstract {
     }
 
     if (update instanceof types.UpdateBotCallbackQuery || update instanceof types.UpdateInlineBotCallbackQuery) {
-      promises.push(this.#dispatchUpdate({ callbackQuery: await constructCallbackQuery(update, this[getEntity].bind(this), this[getMessageWithReply].bind(this)) }));
+      promises.push(this.#handleCtxUpdate({ callbackQuery: await constructCallbackQuery(update, this[getEntity].bind(this), this[getMessageWithReply].bind(this)) }));
     } else if (update instanceof types.UpdateBotInlineQuery) {
-      promises.push(this.#dispatchUpdate({ inlineQuery: await constructInlineQuery(update, this[getEntity].bind(this)) }));
+      promises.push(this.#handleCtxUpdate({ inlineQuery: await constructInlineQuery(update, this[getEntity].bind(this)) }));
     } else if (update instanceof types.UpdateBotInlineSend) {
-      promises.push(this.#dispatchUpdate({ chosenInlineResult: await constructChosenInlineResult(update, this[getEntity].bind(this)) }));
+      promises.push(this.#handleCtxUpdate({ chosenInlineResult: await constructChosenInlineResult(update, this[getEntity].bind(this)) }));
     } else if (update instanceof types.UpdateBotMessageReactions) {
       const messageReactionCount = await constructMessageReactionCount(update, this[getEntity].bind(this));
       if (messageReactionCount) {
-        promises.push(this.#dispatchUpdate({ messageReactionCount }));
+        promises.push(this.#handleCtxUpdate({ messageReactionCount }));
       }
     } else if (update instanceof types.UpdateBotMessageReaction) {
       const messageReactions = await constructMessageReactions(update, this[getEntity].bind(this));
       if (messageReactions) {
-        promises.push(this.#dispatchUpdate({ messageReactions }));
+        promises.push(this.#handleCtxUpdate({ messageReactions }));
       }
     }
 

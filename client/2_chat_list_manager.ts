@@ -25,7 +25,7 @@ export class ChatListManager {
     }
     const [chat] = this.getChatAnywhere(chatId);
     const update = chat === undefined ? { deletedChat: { chatId } } : added ? { newChat: chat } : { editedChat: chat };
-    this.#c.queueDispatchMainBoxUpdate(update);
+    this.#c.handleUpdate(update);
   }
 
   async reassignChatLastMessage(chatId: number, add = false, sendUpdate = true) {
