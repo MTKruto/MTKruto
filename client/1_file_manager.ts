@@ -1,6 +1,6 @@
 import { debug, extension } from "../0_deps.ts";
 import { drop, getRandomId, mod, UNREACHABLE } from "../1_utilities.ts";
-import { enums, types } from "../2_tl.ts";
+import { as, enums, types } from "../2_tl.ts";
 import { constructDocument, Document, FileID, FileType, FileUniqueID, FileUniqueType, ThumbnailSource } from "../3_types.ts";
 import { FloodWait } from "../4_errors.ts";
 import { DownloadParams, UploadParams } from "./0_params.ts";
