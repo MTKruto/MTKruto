@@ -3,7 +3,7 @@ import { bigIntFromBuffer, cleanObject, drop, getRandomBigInt, getRandomId, Mayb
 import { as, enums, functions, getChannelChatId, Message_, MessageContainer, name, peerToChatId, ReadObject, RPCResult, TLError, TLObject, TLReader, types } from "../2_tl.ts";
 import { Storage, StorageMemory } from "../3_storage.ts";
 import { DC } from "../3_transport.ts";
-import { BotCommand, botCommandScopeToTlObject, Chat, ChatAction, ChatP, ConnectionState, constructCallbackQuery, constructChat2, constructChat3, constructChosenInlineResult, constructInlineQuery, constructMessageReaction, constructMessageReactionCount, constructMessageReactions, constructUser, Document, FileSource, ID, InlineQueryResult, inlineQueryResultToTlObject, Message, MessageAnimation, MessageAudio, MessageContact, MessageDice, MessageDocument, MessageEntity, messageEntityToTlObject, MessageLocation, MessagePhoto, MessagePoll, MessageText, MessageVenue, MessageVideo, MessageVideoNote, MessageVoice, NetworkStatistics, ParseMode, Reaction, reactionEqual, reactionToTlObject, Update, UpdateIntersection, User, UsernameResolver } from "../3_types.ts";
+import { BotCommand, botCommandScopeToTlObject, Chat, ChatAction, ChatP, ConnectionState, constructCallbackQuery, constructChat2, constructChat3, constructChosenInlineResult, constructInlineQuery, constructMessageReaction, constructMessageReactionCount, constructMessageReactions, constructUser, Document, FileSource, ID, InlineQueryResult, inlineQueryResultToTlObject, Message, MessageAnimation, MessageAudio, MessageContact, MessageDice, MessageDocument, MessageEntity, messageEntityToTlObject, MessageLocation, MessagePhoto, MessagePoll, MessageText, MessageVenue, MessageVideo, MessageVideoNote, MessageVoice, NetworkStatistics, ParseMode, Reaction, Update, UpdateIntersection, User, UsernameResolver } from "../3_types.ts";
 import { ACK_THRESHOLD, APP_VERSION, DEVICE_MODEL, LANG_CODE, LANG_PACK, LAYER, MAX_CHANNEL_ID, MAX_CHAT_ID, PublicKeys, SYSTEM_LANG_CODE, SYSTEM_VERSION, USERNAME_TTL } from "../4_constants.ts";
 import { AuthKeyUnregistered, FloodWait, Migrate, PasswordHashInvalid, PhoneNumberInvalid, SessionPasswordNeeded, upgradeInstance } from "../4_errors.ts";
 import { ClientAbstract } from "./0_client_abstract.ts";
@@ -17,9 +17,10 @@ import { getFileContents, getUsername, resolve } from "./0_utilities.ts";
 import { Composer, concat, flatten, Middleware, MiddlewareFn, skip } from "./1_composer.ts";
 import { FileManager } from "./1_file_manager.ts";
 import { UpdateManager } from "./1_update_manager.ts";
-import { ChatListManager } from "./2_chat_list_manager.ts";
 import { ClientPlain, ClientPlainParams } from "./2_client_plain.ts";
 import { MessageManager } from "./2_message_manager.ts";
+import { ChatListManager } from "./3_chat_list_manager.ts";
+import { ReactionManager } from "./3_reaction_manager.ts";
 
 export type NextFn<T = void> = () => Promise<T>;
 export interface InvokeErrorHandler<C> {
@@ -185,6 +186,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
   #fileManager: FileManager;
   #messageManager: MessageManager;
   #chatListManager: ChatListManager;
+  #reactionManager: ReactionManager;
 
   public readonly storage: Storage;
   #parseMode: ParseMode;
@@ -292,6 +294,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
     this.#fileManager = new FileManager(c);
     this.#messageManager = new MessageManager({ ...c, fileManager: this.#fileManager });
     this.#chatListManager = new ChatListManager({ ...c, messageManager: this.#messageManager });
+    this.#reactionManager = new ReactionManager({ ...c, messageManager: this.#messageManager });
     this.#updateManager.setUpdateHandler(this.#handleUpdate.bind(this));
 
     const transportProvider = this.transportProvider;
@@ -2246,21 +2249,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
    * @param availableReactions The new available reactions.
    */
   async setAvailableReactions(chatId: ID, availableReactions: "none" | "all" | Reaction[]): Promise<void> {
-    // TODO: sync with storage
-    await this.api.messages.setChatAvailableReactions({
-      peer: await this.getInputPeer(chatId),
-      available_reactions: availableReactions == "none" ? new types.ChatReactionsNone() : availableReactions == "all" ? new types.ChatReactionsAll() : Array.isArray(availableReactions) ? new types.ChatReactionsSome({ reactions: availableReactions.map((v) => v.type == "emoji" ? new types.ReactionEmoji({ emoticon: v.emoji }) : new types.ReactionCustomEmoji({ document_id: BigInt(v.id) })) }) : UNREACHABLE(),
-    });
-  }
-
-  async #sendReaction(chatId: number, messageId: number, reactions: Reaction[], params?: AddReactionParams) {
-    await this.api.messages.sendReaction({
-      peer: await this.getInputPeer(chatId),
-      msg_id: messageId,
-      reaction: reactions.map((v) => reactionToTlObject(v)),
-      big: params?.big ? true : undefined,
-      add_to_recent: params?.addToRecents ? true : undefined,
-    });
+    await this.#reactionManager.setAvailableReactions(chatId, availableReactions);
   }
 
   /**
@@ -2272,7 +2261,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
    * @param reactions The new reactions.
    */
   async setReactions(chatId: number, messageId: number, reactions: Reaction[], params?: SetReactionsParams): Promise<void> {
-    await this.#sendReaction(chatId, messageId, reactions, params);
+    await this.#reactionManager.setReactions(chatId, messageId, reactions, params);
   }
 
   /**
@@ -2284,14 +2273,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
    * @param reaction The reaction to add.
    */
   async addReaction(chatId: number, messageId: number, reaction: Reaction, params?: AddReactionParams): Promise<void> {
-    const chosenReactions = await this.getMessage(chatId, messageId).then((v) => v?.reactions ?? []).then((v) => v.filter((v) => v.chosen));
-    for (const r of chosenReactions) {
-      if (reactionEqual(r.reaction, reaction)) {
-        return;
-      }
-    }
-    const reactions = [reaction, ...chosenReactions.map((v) => v.reaction)];
-    await this.setReactions(chatId, messageId, reactions, params);
+    await this.#reactionManager.addReaction(chatId, messageId, reaction, params);
   }
 
   /**
@@ -2303,14 +2285,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
    * @param reaction The reaction to remove.
    */
   async removeReaction(chatId: number, messageId: number, reaction: Reaction): Promise<void> {
-    const chosenReactions = await this.getMessage(chatId, messageId).then((v) => v?.reactions ?? []).then((v) => v.filter((v) => v.chosen));
-    for (const r of chosenReactions) {
-      if (reactionEqual(r.reaction, reaction)) {
-        const reactions = chosenReactions.filter((v) => v != r).map((v) => v.reaction);
-        await this.setReactions(chatId, messageId, reactions);
-        break;
-      }
-    }
+    await this.#reactionManager.removeReaction(chatId, messageId, reaction);
   }
 
   /**
