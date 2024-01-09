@@ -1,34 +1,5 @@
 import { MaybePromise } from "../1_utilities.ts";
-import { BotCommandScope, Chat, ChatMemberRights, ID, InlineQueryResultButton, Message, MessageEntity, ParseMode, ReplyMarkup, ReplyQuote } from "../3_types.ts";
-import { FileSource } from "./0_utilities.ts";
-import { ClientPlainParams } from "./2_client_plain.ts";
-
-export interface ClientParams extends ClientPlainParams {
-  /** A parse mode to use when the `parseMode` parameter is not specified when sending or editing messages. Defauls to `ParseMode.None`. */
-  parseMode?: ParseMode;
-  /** The app_version parameter to be passed to initConnection when calling `authorize`. It is recommended that this parameter is changed if users are authorized. Defaults to "MTKruto" followed by this version of MTKruto. */
-  appVersion?: string;
-  /** The device_version parameter to be passed to initConnection when calling `authorize`. The default varies by the current runtime. */
-  deviceModel?: string;
-  /** The lang_code parameter to be passed to initConnection when calling `authorize`. Defaults to the runtime's language or `"en"`. */
-  langCode?: string;
-  /** The lang_pack parameter to be passed to initConnection when calling `authorize`. Defaults to an empty string. */
-  langPack?: string;
-  /** The system_lang_cde parameter to be passed to initConnection when calling `authorize`. Defaults to the runtime's language or `"en"`. */
-  systemLangCode?: string;
-  /** The system_version parameter to be passed to initConnection when calling `authorize`. The default varies by the current runtime. */
-  systemVersion?: string;
-  /** Whether to automatically call `start` with no parameters in the first `invoke` call. Defaults to `true`. */
-  autoStart?: boolean;
-  /** Whether to use default handlers. Defaults to `true`. */
-  defaultHandlers?: boolean;
-  /** Whether to ignore outgoing messages. Defaults to `true` for bots, and `false` for users. */
-  ignoreOutgoing?: boolean;
-  /** Default command prefixes. Defaults to `"/"` for bots and `"\"` for users. This option must be set separately for nested composers. */
-  prefixes?: string | string[];
-  /** Whether to guarantee that order-sensitive updates are delivered at least once before delivering next ones. Useful mainly for clients providing a user interface à la Telegram Desktop. Defaults to `false`. */
-  guaranteeUpdateDelivery?: boolean;
-}
+import { BotCommandScope, Chat, ChatMemberRights, FileSource, ID, InlineQueryResultButton, Message, MessageEntity, ParseMode, ReplyMarkup, ReplyQuote } from "../3_types.ts";
 
 export interface AnswerCallbackQueryParams {
   /** A text to be shown to the user. */
