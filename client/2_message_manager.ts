@@ -5,10 +5,15 @@ import { assertMessageType, constructMessage as constructMessage_, FileID, FileS
 import { STICKER_SET_NAME_TTL } from "../4_constants.ts";
 import { parseHtml } from "./0_html.ts";
 import { _SendCommon, EditMessageParams, EditMessageReplyMarkupParams, ForwardMessagesParams, GetHistoryParams, SendAnimationParams, SendAudioParams, SendContactParams, SendDiceParams, SendDocumentParams, SendLocationParams, SendMessageParams, SendPhotoParams, SendPollParams, SendVenueParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams } from "./0_params.ts";
-import { C } from "./0_types.ts";
+import { C as C_ } from "./0_types.ts";
 import { getFileContents, isHttpUrl } from "./0_utilities.ts";
+import { FileManager } from "./1_file_manager.ts";
 
 const d = debug("MessageManager");
+
+interface C extends C_ {
+  fileManager: FileManager;
+}
 
 export class MessageManager {
   #c: C;
@@ -461,11 +466,11 @@ export class MessageManager {
         const [contents, fileName_] = await getFileContents(document);
         const fileName = params?.fileName ?? fileName_;
         const mimeType = params?.mimeType ?? contentType(fileName.split(".").slice(-1)[0]) ?? "application/octet-stream";
-        const file = await this.#c.upload(contents, { fileName, chunkSize: params?.chunkSize, signal: params?.signal });
+        const file = await this.#c.fileManager.upload(contents, { fileName, chunkSize: params?.chunkSize, signal: params?.signal });
         let thumb: enums.InputFile | undefined = undefined;
         if (params?.thumbnail) {
           const [thumbContents, fileName__] = await getFileContents(params.thumbnail);
-          thumb = await this.#c.upload(thumbContents, { fileName: fileName__, chunkSize: params?.chunkSize, signal: params?.signal });
+          thumb = await this.#c.fileManager.upload(thumbContents, { fileName: fileName__, chunkSize: params?.chunkSize, signal: params?.signal });
         }
         media = new types.InputMediaUploadedDocument({
           file,
@@ -505,7 +510,7 @@ export class MessageManager {
         media = new types.InputMediaPhotoExternal({ url: photo, spoiler });
       } else {
         const [contents, fileName] = await getFileContents(photo);
-        const file = await this.#c.upload(contents, { fileName, chunkSize: params?.chunkSize, signal: params?.signal });
+        const file = await this.#c.fileManager.upload(contents, { fileName, chunkSize: params?.chunkSize, signal: params?.signal });
         media = new types.InputMediaUploadedPhoto({ file, spoiler });
       }
     }

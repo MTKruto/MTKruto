@@ -1,9 +1,9 @@
 import { debug, extension, gunzip, Mutex } from "../0_deps.ts";
-import { bigIntFromBuffer, cleanObject, drop, getRandomBigInt, getRandomId, MaybePromise, mod, mustPrompt, mustPromptOneOf, sha1, toUnixTimestamp, UNREACHABLE, ZERO_CHANNEL_ID } from "../1_utilities.ts";
+import { bigIntFromBuffer, cleanObject, drop, getRandomBigInt, getRandomId, MaybePromise, mustPrompt, mustPromptOneOf, sha1, toUnixTimestamp, UNREACHABLE, ZERO_CHANNEL_ID } from "../1_utilities.ts";
 import { as, enums, functions, getChannelChatId, Message_, MessageContainer, name, peerToChatId, ReadObject, RPCResult, TLError, TLObject, TLReader, types } from "../2_tl.ts";
 import { Storage, StorageMemory } from "../3_storage.ts";
 import { DC } from "../3_transport.ts";
-import { BotCommand, botCommandScopeToTlObject, Chat, ChatAction, ChatP, ConnectionState, constructCallbackQuery, constructChat2, constructChat3, constructChosenInlineResult, constructDocument, constructInlineQuery, constructMessageReaction, constructMessageReactionCount, constructMessageReactions, constructUser, Document, FileID, FileSource, FileType, FileUniqueID, FileUniqueType, ID, InlineQueryResult, inlineQueryResultToTlObject, Message, MessageAnimation, MessageAudio, MessageContact, MessageDice, MessageDocument, MessageEntity, messageEntityToTlObject, MessageLocation, MessagePhoto, MessagePoll, MessageText, MessageVenue, MessageVideo, MessageVideoNote, MessageVoice, NetworkStatistics, ParseMode, Reaction, reactionEqual, reactionToTlObject, ThumbnailSource, Update, UpdateIntersection, User, UsernameResolver } from "../3_types.ts";
+import { BotCommand, botCommandScopeToTlObject, Chat, ChatAction, ChatP, ConnectionState, constructCallbackQuery, constructChat2, constructChat3, constructChosenInlineResult, constructDocument, constructInlineQuery, constructMessageReaction, constructMessageReactionCount, constructMessageReactions, constructUser, Document, FileID, FileSource, FileType, FileUniqueID, FileUniqueType, ID, InlineQueryResult, inlineQueryResultToTlObject, Message, MessageAnimation, MessageAudio, MessageContact, MessageDice, MessageDocument, MessageEntity, messageEntityToTlObject, MessageLocation, MessagePhoto, MessagePoll, MessageText, MessageVenue, MessageVideo, MessageVideoNote, MessageVoice, NetworkStatistics, ParseMode, Reaction, reactionEqual, reactionToTlObject, Update, UpdateIntersection, User, UsernameResolver } from "../3_types.ts";
 import { ACK_THRESHOLD, APP_VERSION, DEVICE_MODEL, LANG_CODE, LANG_PACK, LAYER, MAX_CHANNEL_ID, MAX_CHAT_ID, PublicKeys, SYSTEM_LANG_CODE, SYSTEM_VERSION, USERNAME_TTL } from "../4_constants.ts";
 import { AuthKeyUnregistered, FloodWait, Migrate, PasswordHashInvalid, PhoneNumberInvalid, SessionPasswordNeeded, upgradeInstance } from "../4_errors.ts";
 import { ClientAbstract } from "./0_client_abstract.ts";
@@ -12,13 +12,14 @@ import { parseHtml } from "./0_html.ts";
 import { decryptMessage, encryptMessage, getMessageId } from "./0_message.ts";
 import { _SendCommon, AddReactionParams, AnswerCallbackQueryParams, AnswerInlineQueryParams, AuthorizeUserParams, BanChatMemberParams, DeleteMessageParams, DeleteMessagesParams, DownloadParams, EditMessageParams, EditMessageReplyMarkupParams, ForwardMessagesParams, GetChatsParams, GetHistoryParams, GetMyCommandsParams, PinMessageParams, ReplyParams, SendAnimationParams, SendAudioParams, SendContactParams, SendDiceParams, SendDocumentParams, SendLocationParams, SendMessageParams, SendPhotoParams, SendPollParams, SendVenueParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams, SetChatMemberRightsParams, SetChatPhotoParams, SetMyCommandsParams, SetReactionsParams, UploadParams } from "./0_params.ts";
 import { checkPassword } from "./0_password.ts";
-import { Api } from "./0_types.ts";
+import { Api, ConnectionError } from "./0_types.ts";
 import { getFileContents, getUsername, resolve } from "./0_utilities.ts";
 import { Composer, concat, flatten, Middleware, MiddlewareFn, skip } from "./1_composer.ts";
-import { MessageManager } from "./1_message_manager.ts";
+import { FileManager } from "./1_file_manager.ts";
 import { UpdateManager } from "./1_update_manager.ts";
 import { ChatListManager } from "./2_chat_list_manager.ts";
 import { ClientPlain, ClientPlainParams } from "./2_client_plain.ts";
+import { MessageManager } from "./2_message_manager.ts";
 
 export type NextFn<T = void> = () => Promise<T>;
 export interface InvokeErrorHandler<C> {
@@ -28,7 +29,6 @@ export interface InvokeErrorHandler<C> {
 const d = debug("Client");
 const dAuth = debug("Client/authorize");
 const dRecv = debug("Client/receiveLoop");
-const dUpload = debug("Client/upload");
 
 const getEntity = Symbol();
 export const handleMigrationError = Symbol();
@@ -148,10 +148,6 @@ export function skipInvoke<C extends Context>(): InvokeErrorHandler<Client<C>> {
 
 export const restartAuth = Symbol();
 
-export class ConnectionError extends Error {
-  //
-}
-
 export interface ClientParams extends ClientPlainParams {
   /** A parse mode to use when the `parseMode` parameter is not specified when sending or editing messages. Defauls to `ParseMode.None`. */
   parseMode?: ParseMode;
@@ -186,6 +182,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
   #toAcknowledge = new Set<bigint>();
   #guaranteeUpdateDelivery: boolean;
   #updateManager: UpdateManager;
+  #fileManager: FileManager;
   #messageManager: MessageManager;
   #chatListManager: ChatListManager;
 
@@ -244,10 +241,56 @@ export class Client<C extends Context = Context> extends ClientAbstract {
       getEntity: this[getEntity].bind(this),
       handleUpdate: this.#queueHandleCtxUpdate.bind(this),
       parseMode: this.#parseMode,
-      upload: this.upload.bind(this),
+      apiFactory: (dcId?: number) => {
+        const client = new Client((!dcId || dcId == this.dcId) ? this.storage : this.storage.branch(`download_client_${dcId}`), this.apiId, this.apiHash, {
+          transportProvider: this.transportProvider,
+          appVersion: this.appVersion,
+          deviceModel: this.deviceModel,
+          langCode: this.langCode,
+          langPack: this.langPack,
+          systemLangCode: this.systemLangCode,
+          systemVersion: this.systemVersion,
+          cdn: true,
+        });
+
+        client.#state.salt = this.#state.salt;
+
+        client.invoke.use(async (ctx, next) => {
+          if (ctx.error instanceof AuthKeyUnregistered && dcId) {
+            try {
+              const exportedAuth = await this.api.auth.exportAuthorization({ dc_id: dcId });
+              await client.authorize(exportedAuth);
+              return true;
+            } catch (err) {
+              throw err;
+            }
+          } else {
+            return await next();
+          }
+        });
+
+        return {
+          api: client.api,
+          connect: async () => {
+            await client.connect();
+
+            if (dcId != this.dcId) {
+              let dc = String(dcId);
+              if (this.dcId < 0) {
+                dc += "-test";
+              }
+              await client.setDc(dc as DC);
+            }
+
+            await client.#initConnection();
+          },
+          disconnect: client.disconnect,
+        };
+      },
     };
     this.#updateManager = new UpdateManager(c);
-    this.#messageManager = new MessageManager(c);
+    this.#fileManager = new FileManager(c);
+    this.#messageManager = new MessageManager({ ...c, fileManager: this.#fileManager });
     this.#chatListManager = new ChatListManager({ ...c, messageManager: this.#messageManager });
     this.#updateManager.setUpdateHandler(this.#handleUpdate.bind(this));
 
@@ -1392,82 +1435,6 @@ export class Client<C extends Context = Context> extends ClientAbstract {
     return await this.#messageManager.getMessage(chatId, messageId);
   }
 
-  async *#downloadInner(location: enums.InputFileLocation, dcId: number, params?: { chunkSize?: number }) {
-    const id = "id" in location ? location.id : "photo_id" in location ? location.photo_id : null;
-    if (id != null) {
-      const partCount = await this.storage.getFile(id);
-      if (partCount != null && partCount > 0) {
-        for await (const part of this.storage.iterFileParts(id, partCount)) {
-          yield part;
-        }
-        return;
-      }
-    }
-
-    const chunkSize = params?.chunkSize ?? 1024 * 1024;
-    if (mod(chunkSize, 1024) != 0) {
-      throw new Error("chunkSize must be divisible by 1024");
-    }
-
-    const client = new Client(dcId == this.dcId ? this.storage : this.storage.branch(`download_client_${dcId}`), this.apiId, this.apiHash, {
-      transportProvider: this.transportProvider,
-      appVersion: this.appVersion,
-      deviceModel: this.deviceModel,
-      langCode: this.langCode,
-      langPack: this.langPack,
-      systemLangCode: this.systemLangCode,
-      systemVersion: this.systemVersion,
-      cdn: true,
-    });
-    let dc = String(dcId);
-    if (this.dcId < 0) {
-      dc += "-test";
-    }
-    await client.setDc(dc as DC);
-    await client.connect();
-    await client.#initConnection();
-
-    client.invoke.use(async (ctx, next) => {
-      if (ctx.error instanceof AuthKeyUnregistered) {
-        try {
-          const exportedAuth = await this.api.auth.exportAuthorization({ dc_id: dcId });
-          await client.authorize(exportedAuth);
-          return true;
-        } catch (err) {
-          throw err;
-        }
-      } else {
-        return await next();
-      }
-    });
-
-    const limit = chunkSize;
-    let offset = 0n;
-    let part = 0;
-
-    while (true) {
-      const file = await (client ?? this).invoke(new functions.upload.getFile({ location, offset, limit }));
-
-      if (file instanceof types.upload.File) {
-        yield file.bytes;
-        if (id != null) {
-          await this.storage.saveFilePart(id, part, file.bytes);
-        }
-        ++part;
-        if (file.bytes.length < limit) {
-          if (id != null) {
-            await this.storage.setFilePartCount(id, part + 1);
-          }
-          break;
-        } else {
-          offset += BigInt(file.bytes.length);
-        }
-      } else {
-        UNREACHABLE();
-      }
-    }
-  }
-
   /**
    * Download a file.
    *
@@ -1481,55 +1448,8 @@ export class Client<C extends Context = Context> extends ClientAbstract {
    * @returns A generator yielding the contents of the file.
    */
   async *download(fileId: string, params?: DownloadParams): AsyncGenerator<Uint8Array, void, unknown> {
-    const fileId_ = FileID.decode(fileId);
-    switch (fileId_.fileType) {
-      case FileType.ChatPhoto: {
-        const big = fileId_.params.thumbnailSource == ThumbnailSource.ChatPhotoBig;
-        const peer = await this.getInputPeer(fileId_.params.chatId!);
-        const location = new types.InputPeerPhotoFileLocation({ big: big ? true : undefined, peer, photo_id: fileId_.params.mediaId! });
-        for await (const chunk of this.#downloadInner(location, fileId_.dcId, params)) {
-          yield chunk;
-        }
-        break;
-      }
-      case FileType.Photo: {
-        if (fileId_.params.mediaId == undefined || fileId_.params.accessHash == undefined || fileId_.params.fileReference == undefined || fileId_.params.thumbnailSize == undefined) {
-          UNREACHABLE();
-        }
-        const location = new types.InputPhotoFileLocation({
-          id: fileId_.params.mediaId,
-          access_hash: fileId_.params.accessHash,
-          file_reference: fileId_.params.fileReference,
-          thumb_size: fileId_.params.thumbnailSize,
-        });
-        for await (const chunk of this.#downloadInner(location, fileId_.dcId, params)) {
-          yield chunk;
-        }
-        break;
-      }
-      case FileType.Document:
-      case FileType.Sticker:
-      case FileType.VideoNote:
-      case FileType.Video:
-      case FileType.Audio:
-      case FileType.Voice:
-      case FileType.Animation: {
-        if (fileId_.params.mediaId == undefined || fileId_.params.accessHash == undefined || fileId_.params.fileReference == undefined || fileId_.params.thumbnailSize == undefined) {
-          UNREACHABLE();
-        }
-        const location = new types.InputDocumentFileLocation({
-          id: fileId_.params.mediaId,
-          access_hash: fileId_.params.accessHash,
-          file_reference: fileId_.params.fileReference,
-          thumb_size: fileId_.params.thumbnailSize,
-        });
-        for await (const chunk of this.#downloadInner(location, fileId_.dcId, params)) {
-          yield chunk;
-        }
-        break;
-      }
-      default:
-        UNREACHABLE();
+    for await (const chunk of this.#fileManager.download(fileId, params)) {
+      yield chunk;
     }
   }
 
@@ -1841,90 +1761,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
    * @param contents The contents of the file.
    */
   async upload(contents: Uint8Array, params?: UploadParams) {
-    const isBig = contents.length > 1048576; // 10 MB
-
-    const chunkSize = params?.chunkSize ?? 512 * 1024;
-    if (mod(chunkSize, 1024) != 0) {
-      throw new Error("chunkSize must be divisible by 1024");
-    }
-
-    const signal = params?.signal;
-
-    dUpload("uploading " + (isBig ? "big " : "") + "file of size " + contents.length + " with chunk size of " + chunkSize);
-
-    const fileId = getRandomId();
-    const name = params?.fileName ?? fileId.toString();
-
-    const client = new Client(this.storage, this.apiId, this.apiHash, {
-      transportProvider: this.transportProvider,
-      appVersion: this.appVersion,
-      deviceModel: this.deviceModel,
-      langCode: this.langCode,
-      langPack: this.langPack,
-      systemLangCode: this.systemLangCode,
-      systemVersion: this.systemVersion,
-      cdn: true,
-      initialDc: this.initialDc,
-      autoStart: false,
-    });
-    signal?.addEventListener("abort", () => drop(client.disconnect()));
-    client.#state.salt = this.#state.salt;
-    await client.connect();
-    let part = 0;
-    const partCount = Math.ceil(contents.length / chunkSize);
-
-    try {
-      main: for (; part < partCount; part++) {
-        chunk: while (true) {
-          try {
-            const start = part * chunkSize;
-            const end = start + chunkSize;
-            const bytes = contents.slice(start, end);
-            if (bytes.length == 0) {
-              continue main;
-            }
-            if (isBig) {
-              await client.api.upload.saveBigFilePart({ file_id: fileId, file_part: part, bytes, file_total_parts: partCount });
-            } else {
-              await client.api.upload.saveFilePart({ file_id: fileId, bytes, file_part: part });
-            }
-            dUpload((part + 1) + " out of " + partCount + " chunks have been uploaded so far");
-            break chunk;
-          } catch (err) {
-            if (signal?.aborted) {
-              break main;
-            }
-            if (err instanceof FloodWait) {
-              dUpload("got a flood wait of " + err.seconds + " seconds");
-              await new Promise((r) => setTimeout(r, err.seconds * 1000));
-            } else if (err instanceof ConnectionError) {
-              while (true) {
-                try {
-                  await new Promise((r) => setTimeout(r, 3000));
-                  await client.connect();
-                } catch {
-                  if (signal?.aborted) {
-                    break main;
-                  }
-                }
-              }
-            } else {
-              throw err;
-            }
-          }
-        }
-      }
-    } finally {
-      drop(client.disconnect());
-    }
-
-    dUpload("uploaded all " + partCount + " chunk(s)");
-
-    if (isBig) {
-      return new types.InputFileBig({ id: fileId, parts: contents.length / chunkSize, name });
-    } else {
-      return new types.InputFile({ id: fileId, name, parts: part, md5_checksum: "" });
-    }
+    return await this.#fileManager.upload(contents, params);
   }
 
   /**

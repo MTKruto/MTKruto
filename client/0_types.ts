@@ -9,6 +9,10 @@ type AnyFunc = (...args: any) => any;
 type Promisify<T extends AnyFunc> = (...args: Parameters<T>) => Promise<ReturnType<T>>;
 export type Api = { [K in Keys]: Functions[K] extends { __F: AnyFunc } ? Promisify<Functions[K]["__F"]> : { [K_ in keyof Functions[K]]: Functions[K][K_] extends { __F: AnyFunc } ? Promisify<Functions[K][K_]["__F"]> : Functions[K][K_] } };
 
+interface ApiFactory {
+  (dcId?: number): { api: Api; connect: () => Promise<void>; disconnect: () => Promise<void> };
+}
+
 export interface C {
   api: Api;
   storage: Storage;
@@ -20,5 +24,9 @@ export interface C {
   getEntity: EntityGetter;
   handleUpdate: (update: Update) => void;
   parseMode: ParseMode;
-  upload: (contents: Uint8Array, params?: { fileName?: string; chunkSize?: number; signal?: AbortSignal | null }) => Promise<types.InputFile | types.InputFileBig>;
+  apiFactory: ApiFactory;
+}
+
+export class ConnectionError extends Error {
+  //
 }

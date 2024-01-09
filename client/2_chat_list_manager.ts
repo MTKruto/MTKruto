@@ -4,7 +4,7 @@ import { peerToChatId, types } from "../2_tl.ts";
 import { Chat, constructChat, constructChat3, constructChat4, constructMessage, getChatOrder } from "../3_types.ts";
 import { C as C_ } from "./0_types.ts";
 import { getChatListId } from "./0_utilities.ts";
-import { MessageManager } from "./1_message_manager.ts";
+import { MessageManager } from "./2_message_manager.ts";
 
 type C = C_ & { messageManager: MessageManager };
 
