@@ -1,7 +1,7 @@
 import { debug } from "../0_deps.ts";
 import { toUnixTimestamp, UNREACHABLE } from "../1_utilities.ts";
 import { peerToChatId, types } from "../2_tl.ts";
-import { Chat, constructChat, constructChat3, constructChat4, constructMessage, getChatOrder } from "../3_types.ts";
+import { Chat, constructChat, constructChat3, constructChat4, getChatOrder } from "../3_types.ts";
 import { C as C_ } from "./0_types.ts";
 import { getChatListId } from "./0_utilities.ts";
 import { MessageManager } from "./2_message_manager.ts";
@@ -41,7 +41,7 @@ export class ChatListManager {
 
     const message_ = await this.#c.storage.getLastMessage(chatId);
     if (message_ != null) {
-      const message = await constructMessage(message_, this.#c.getEntity, this.#c.messageManager.getMessage, this.#c.messageManager.getStickerSetName);
+      const message = await this.#c.messageManager.constructMessage(message_);
       if (chat) {
         chat.order = getChatOrder(message, chat.pinned);
         chat.lastMessage = message;
@@ -138,14 +138,14 @@ export class ChatListManager {
     const chats = await this.#c.storage.getChats(0);
     const archivedChats = await this.#c.storage.getChats(1);
     for (const { chatId, pinned, topMessageId } of chats) {
-      const chat = await constructChat4(chatId, pinned, topMessageId, this.#c.getEntity, this.#c.messageManager.getMessage);
+      const chat = await constructChat4(chatId, pinned, topMessageId, this.#c.getEntity, this.#c.messageManager.getMessage.bind(this.#c.messageManager));
       if (chat == null) {
         continue;
       }
       this.#chats.set(chat.id, chat);
     }
     for (const { chatId, pinned, topMessageId } of archivedChats) {
-      const chat = await constructChat4(chatId, pinned, topMessageId, this.#c.getEntity, this.#c.messageManager.getMessage);
+      const chat = await constructChat4(chatId, pinned, topMessageId, this.#c.getEntity, this.#c.messageManager.getMessage.bind(this.#c.messageManager));
       if (chat == null) {
         continue;
       }
@@ -225,7 +225,7 @@ export class ChatListManager {
         await this.#sendChatUpdate(chatId, false);
       }
     } else {
-      const chat = await constructChat4(chatId, -1, -1, this.#c.getEntity, this.#c.messageManager.getMessage);
+      const chat = await constructChat4(chatId, -1, -1, this.#c.getEntity, this.#c.messageManager.getMessage.bind(this.#c.messageManager));
       if (chat != null) {
         this.#getChatList(0).set(chatId, chat);
         await this.reassignChatLastMessage(chatId, false, false);
@@ -325,7 +325,7 @@ export class ChatListManager {
     }
     const chats = this.#getChatList(listId);
     for (const dialog of dialogs.dialogs) {
-      const chat = await constructChat(dialog, dialogs, pinnedChats, this.#c.getEntity, this.#c.messageManager.getMessage, this.#c.messageManager.getStickerSetName);
+      const chat = await constructChat(dialog, dialogs, pinnedChats, this.#c.getEntity, this.#c.messageManager.getMessage.bind(this.#c.messageManager), this.#c.messageManager.getStickerSetName.bind(this.#c.messageManager));
       chats.set(chat.id, chat);
       await this.#c.storage.setChat(listId, chat.id, chat.pinned, chat.lastMessage?.id ?? 0, chat.lastMessage?.date ?? new Date(0));
     }
