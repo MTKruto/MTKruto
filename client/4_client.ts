@@ -1,9 +1,9 @@
-import { debug, extension, gunzip, Mutex } from "../0_deps.ts";
+import { debug, gunzip, Mutex } from "../0_deps.ts";
 import { bigIntFromBuffer, cleanObject, drop, getRandomBigInt, getRandomId, MaybePromise, mustPrompt, mustPromptOneOf, sha1, toUnixTimestamp, UNREACHABLE, ZERO_CHANNEL_ID } from "../1_utilities.ts";
 import { as, enums, functions, getChannelChatId, Message_, MessageContainer, name, peerToChatId, ReadObject, RPCResult, TLError, TLObject, TLReader, types } from "../2_tl.ts";
 import { Storage, StorageMemory } from "../3_storage.ts";
 import { DC } from "../3_transport.ts";
-import { BotCommand, botCommandScopeToTlObject, Chat, ChatAction, ChatP, ConnectionState, constructCallbackQuery, constructChat2, constructChat3, constructChosenInlineResult, constructDocument, constructInlineQuery, constructMessageReaction, constructMessageReactionCount, constructMessageReactions, constructUser, Document, FileID, FileSource, FileType, FileUniqueID, FileUniqueType, ID, InlineQueryResult, inlineQueryResultToTlObject, Message, MessageAnimation, MessageAudio, MessageContact, MessageDice, MessageDocument, MessageEntity, messageEntityToTlObject, MessageLocation, MessagePhoto, MessagePoll, MessageText, MessageVenue, MessageVideo, MessageVideoNote, MessageVoice, NetworkStatistics, ParseMode, Reaction, reactionEqual, reactionToTlObject, Update, UpdateIntersection, User, UsernameResolver } from "../3_types.ts";
+import { BotCommand, botCommandScopeToTlObject, Chat, ChatAction, ChatP, ConnectionState, constructCallbackQuery, constructChat2, constructChat3, constructChosenInlineResult, constructInlineQuery, constructMessageReaction, constructMessageReactionCount, constructMessageReactions, constructUser, Document, FileSource, ID, InlineQueryResult, inlineQueryResultToTlObject, Message, MessageAnimation, MessageAudio, MessageContact, MessageDice, MessageDocument, MessageEntity, messageEntityToTlObject, MessageLocation, MessagePhoto, MessagePoll, MessageText, MessageVenue, MessageVideo, MessageVideoNote, MessageVoice, NetworkStatistics, ParseMode, Reaction, reactionEqual, reactionToTlObject, Update, UpdateIntersection, User, UsernameResolver } from "../3_types.ts";
 import { ACK_THRESHOLD, APP_VERSION, DEVICE_MODEL, LANG_CODE, LANG_PACK, LAYER, MAX_CHANNEL_ID, MAX_CHAT_ID, PublicKeys, SYSTEM_LANG_CODE, SYSTEM_VERSION, USERNAME_TTL } from "../4_constants.ts";
 import { AuthKeyUnregistered, FloodWait, Migrate, PasswordHashInvalid, PhoneNumberInvalid, SessionPasswordNeeded, upgradeInstance } from "../4_errors.ts";
 import { ClientAbstract } from "./0_client_abstract.ts";
@@ -1982,12 +1982,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
    * @param messageIds The identifier of the messages to delete.
    */
   async deleteMessages(chatId: ID, messageIds: number[], params?: DeleteMessagesParams): Promise<void> {
-    const peer = await this.getInputPeer(chatId);
-    if (peer instanceof types.InputPeerChannel) {
-      await this.api.channels.deleteMessages({ channel: new types.InputChannel(peer), id: messageIds });
-    } else {
-      await this.api.messages.deleteMessages({ id: messageIds, revoke: params?.onlyForMe ? undefined : true });
-    }
+    return await this.#messageManager.deleteMessages(chatId, messageIds, params);
   }
 
   /**
@@ -1998,7 +1993,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
    * @param messageId The identifier of the message to delete.
    */
   async deleteMessage(chatId: ID, messageId: number, params?: DeleteMessageParams): Promise<void> {
-    await this.deleteMessages(chatId, [messageId], params);
+    return await this.#messageManager.deleteMessages(chatId, [messageId], params);
   }
 
   /**
@@ -2240,44 +2235,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
    * @param id Identifier of one or more of custom emojis.
    */
   async getCustomEmojiDocuments(id: string | string[]): Promise<Document[]> {
-    id = Array.isArray(id) ? id : [id];
-    if (!id.length) {
-      throw new Error("No custom emoji ID provided");
-    }
-    const documents = new Array<Document>();
-    let shouldFetch = false;
-    for (const [i, id_] of id.entries()) {
-      const maybeDocument = await this.storage.getCustomEmojiDocument(BigInt(id_));
-      if (maybeDocument != null && Date.now() - maybeDocument[1].getTime() <= 30 * 60 * 1_000) {
-        const document_ = maybeDocument[0];
-        const fileUniqueId = new FileUniqueID(FileUniqueType.Document, { mediaId: document_.id }).encode();
-        const fileId = new FileID(null, null, FileType.Document, document_.dc_id, {
-          mediaId: document_.id,
-          accessHash: document_.access_hash,
-          fileReference: document_.file_reference,
-        }).encode();
-        const document = constructDocument(document_, new types.DocumentAttributeFilename({ file_name: `${id[i] ?? "customEmoji"}.${extension(document_.mime_type)}` }), fileId, fileUniqueId);
-        documents.push(document);
-      } else {
-        shouldFetch = true;
-        break;
-      }
-    }
-    if (!shouldFetch) {
-      return documents;
-    }
-    const documents_ = await this.api.messages.getCustomEmojiDocuments({ document_id: id.map(BigInt) }).then((v) => v.map((v) => v[as](types.Document)));
-    for (const [i, document_] of documents_.entries()) {
-      const fileUniqueId = new FileUniqueID(FileUniqueType.Document, { mediaId: document_.id }).encode();
-      const fileId = new FileID(null, null, FileType.Document, document_.dc_id, {
-        mediaId: document_.id,
-        accessHash: document_.access_hash,
-        fileReference: document_.file_reference,
-      }).encode();
-      const document = constructDocument(document_, new types.DocumentAttributeFilename({ file_name: `${id[i] ?? "customEmoji"}.${extension(document_.mime_type)}` }), fileId, fileUniqueId);
-      documents.push(document);
-    }
-    return documents;
+    return await this.#fileManager.getCustomEmojiDocuments(id);
   }
 
   /**
@@ -2406,12 +2364,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
    * @param memberId The identifier of the member.
    */
   async deleteChatMemberMessages(chatId: ID, memberId: ID): Promise<void> {
-    const channel = await this.getInputPeer(chatId);
-    if (!(channel instanceof types.InputPeerChannel)) {
-      throw new Error("Invalid chat ID");
-    }
-    const participant = await this.getInputPeer(memberId);
-    await this.api.channels.deleteParticipantHistory({ channel: new types.InputChannel(channel), participant });
+    return await this.#messageManager.deleteChatMemberMessages(chatId, memberId);
   }
 
   /**
@@ -2422,12 +2375,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
    * @param messageId The message's identifier.
    */
   async pinMessage(chatId: ID, messageId: number, params?: PinMessageParams): Promise<void> {
-    await this.api.messages.updatePinnedMessage({
-      peer: await this.getInputPeer(chatId),
-      id: messageId,
-      silent: params?.disableNotification ? true : undefined,
-      pm_oneside: params?.bothSides ? undefined : true,
-    });
+    return await this.#messageManager.pinMessage(chatId, messageId, params);
   }
 
   /**
@@ -2438,11 +2386,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
    * @param messageId The message's identifier.
    */
   async unpinMessage(chatId: ID, messageId: number): Promise<void> {
-    await this.api.messages.updatePinnedMessage({
-      peer: await this.getInputPeer(chatId),
-      id: messageId,
-      unpin: true,
-    });
+    return await this.#messageManager.unpinMessage(chatId, messageId);
   }
 
   /**
@@ -2452,7 +2396,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
    * @param chatId The identifier of the chat.
    */
   async unpinMessages(chatId: ID): Promise<void> {
-    await this.api.messages.unpinAllMessages({ peer: await this.getInputPeer(chatId) });
+    return await this.#messageManager.unpinMessages(chatId);
   }
 
   /**

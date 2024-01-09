@@ -4,7 +4,7 @@ import { as, enums, peerToChatId, types } from "../2_tl.ts";
 import { assertMessageType, constructMessage as constructMessage_, FileID, FileSource, FileType, ID, Message, MessageEntity, messageEntityToTlObject, ParseMode, replyMarkupToTlObject, UsernameResolver } from "../3_types.ts";
 import { STICKER_SET_NAME_TTL } from "../4_constants.ts";
 import { parseHtml } from "./0_html.ts";
-import { _SendCommon, EditMessageParams, EditMessageReplyMarkupParams, ForwardMessagesParams, GetHistoryParams, SendAnimationParams, SendAudioParams, SendContactParams, SendDiceParams, SendDocumentParams, SendLocationParams, SendMessageParams, SendPhotoParams, SendPollParams, SendVenueParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams } from "./0_params.ts";
+import { _SendCommon, DeleteMessagesParams, EditMessageParams, EditMessageReplyMarkupParams, ForwardMessagesParams, GetHistoryParams, PinMessageParams, SendAnimationParams, SendAudioParams, SendContactParams, SendDiceParams, SendDocumentParams, SendLocationParams, SendMessageParams, SendPhotoParams, SendPollParams, SendVenueParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams } from "./0_params.ts";
 import { C as C_ } from "./0_types.ts";
 import { getFileContents, isHttpUrl } from "./0_utilities.ts";
 import { FileManager } from "./1_file_manager.ts";
@@ -657,5 +657,44 @@ export class MessageManager {
 
     const message_ = await this.#updatesToMessages(chatId, result).then((v) => v[0]);
     return assertMessageType(message_, "text");
+  }
+
+  async deleteMessages(chatId: ID, messageIds: number[], params?: DeleteMessagesParams) {
+    const peer = await this.#c.getInputPeer(chatId);
+    if (peer instanceof types.InputPeerChannel) {
+      await this.#c.api.channels.deleteMessages({ channel: new types.InputChannel(peer), id: messageIds });
+    } else {
+      await this.#c.api.messages.deleteMessages({ id: messageIds, revoke: params?.onlyForMe ? undefined : true });
+    }
+  }
+
+  async deleteChatMemberMessages(chatId: ID, memberId: ID) {
+    const channel = await this.#c.getInputPeer(chatId);
+    if (!(channel instanceof types.InputPeerChannel)) {
+      throw new Error("Invalid chat ID");
+    }
+    const participant = await this.#c.getInputPeer(memberId);
+    await this.#c.api.channels.deleteParticipantHistory({ channel: new types.InputChannel(channel), participant });
+  }
+
+  async pinMessage(chatId: ID, messageId: number, params?: PinMessageParams) {
+    await this.#c.api.messages.updatePinnedMessage({
+      peer: await this.#c.getInputPeer(chatId),
+      id: messageId,
+      silent: params?.disableNotification ? true : undefined,
+      pm_oneside: params?.bothSides ? undefined : true,
+    });
+  }
+
+  async unpinMessage(chatId: ID, messageId: number) {
+    await this.#c.api.messages.updatePinnedMessage({
+      peer: await this.#c.getInputPeer(chatId),
+      id: messageId,
+      unpin: true,
+    });
+  }
+
+  async unpinMessages(chatId: ID) {
+    await this.#c.api.messages.unpinAllMessages({ peer: await this.#c.getInputPeer(chatId) });
   }
 }
