@@ -1,10 +1,10 @@
 import { contentType, debug, extension, gunzip, Mutex } from "../0_deps.ts";
-import { bigIntFromBuffer, cleanObject, drop, getRandomBigInt, getRandomId, MaybePromise, mod, mustPrompt, mustPromptOneOf, Queue, sha1, toUnixTimestamp, UNREACHABLE, ZERO_CHANNEL_ID } from "../1_utilities.ts";
-import { as, enums, functions, getChannelChatId, inputPeerToPeer, Message_, MessageContainer, name, peerToChatId, ReadObject, RPCResult, TLError, TLObject, TLReader, types } from "../2_tl.ts";
+import { bigIntFromBuffer, cleanObject, drop, getRandomBigInt, getRandomId, MaybePromise, mod, mustPrompt, mustPromptOneOf, sha1, toUnixTimestamp, UNREACHABLE, ZERO_CHANNEL_ID } from "../1_utilities.ts";
+import { as, enums, functions, getChannelChatId, Message_, MessageContainer, name, peerToChatId, ReadObject, RPCResult, TLError, TLObject, TLReader, types } from "../2_tl.ts";
 import { Storage, StorageMemory } from "../3_storage.ts";
 import { DC } from "../3_transport.ts";
 import { assertMessageType, BotCommand, botCommandScopeToTlObject, Chat, ChatAction, ChatP, ConnectionState, constructCallbackQuery, constructChat, constructChat2, constructChat3, constructChat4, constructChosenInlineResult, constructDocument, constructInlineQuery, constructMessage, constructMessageReaction, constructMessageReactionCount, constructMessageReactions, constructUser, Document, FileID, FileType, FileUniqueID, FileUniqueType, getChatOrder, ID, InlineQueryResult, inlineQueryResultToTlObject, Message, MessageAnimation, MessageAudio, MessageContact, MessageDice, MessageDocument, MessageEntity, messageEntityToTlObject, MessageLocation, MessagePhoto, MessagePoll, MessageText, MessageVenue, MessageVideo, MessageVideoNote, MessageVoice, NetworkStatistics, ParseMode, Reaction, reactionEqual, reactionToTlObject, replyMarkupToTlObject, ThumbnailSource, Update, UpdateIntersection, User, UsernameResolver } from "../3_types.ts";
-import { ACK_THRESHOLD, APP_VERSION, CHANNEL_DIFFERENCE_LIMIT_BOT, CHANNEL_DIFFERENCE_LIMIT_USER, DEVICE_MODEL, LANG_CODE, LANG_PACK, LAYER, MAX_CHANNEL_ID, MAX_CHAT_ID, PublicKeys, STICKER_SET_NAME_TTL, SYSTEM_LANG_CODE, SYSTEM_VERSION, USERNAME_TTL } from "../4_constants.ts";
+import { ACK_THRESHOLD, APP_VERSION, DEVICE_MODEL, LANG_CODE, LANG_PACK, LAYER, MAX_CHANNEL_ID, MAX_CHAT_ID, PublicKeys, STICKER_SET_NAME_TTL, SYSTEM_LANG_CODE, SYSTEM_VERSION, USERNAME_TTL } from "../4_constants.ts";
 import { AuthKeyUnregistered, FloodWait, Migrate, PasswordHashInvalid, PhoneNumberInvalid, SessionPasswordNeeded, upgradeInstance } from "../4_errors.ts";
 import { ClientAbstract } from "./0_client_abstract.ts";
 import { FilterQuery, match, WithFilter } from "./0_filters.ts";
@@ -12,7 +12,7 @@ import { parseHtml } from "./0_html.ts";
 import { decryptMessage, encryptMessage, getMessageId } from "./0_message.ts";
 import { checkPassword } from "./0_password.ts";
 import { Api } from "./0_types.ts";
-import { FileSource, getChatListId, getFileContents, getUsername, isChannelPtsUpdate, isHttpUrl, isPtsUpdate, resolve } from "./0_utilities.ts";
+import { FileSource, getChatListId, getFileContents, getUsername, isHttpUrl, resolve } from "./0_utilities.ts";
 import { Composer, concat, flatten, Middleware, MiddlewareFn, skip } from "./1_composer.ts";
 import { ClientPlain } from "./2_client_plain.ts";
 import { _SendCommon, AddReactionParams, AnswerCallbackQueryParams, AnswerInlineQueryParams, AuthorizeUserParams, BanChatMemberParams, ClientParams, DeleteMessageParams, DeleteMessagesParams, DownloadParams, EditMessageParams, EditMessageReplyMarkupParams, ForwardMessagesParams, GetChatsParams, GetHistoryParams, GetMyCommandsParams, PinMessageParams, ReplyParams, SendAnimationParams, SendAudioParams, SendContactParams, SendDiceParams, SendDocumentParams, SendLocationParams, SendMessageParams, SendPhotoParams, SendPollParams, SendVenueParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams, SetChatMemberRightsParams, SetChatPhotoParams, SetMyCommandsParams, SetReactionsParams, UploadParams } from "./3_params.ts";
@@ -24,8 +24,6 @@ export interface InvokeErrorHandler<C> {
 }
 
 const d = debug("Client");
-const dGap = debug("Client/recoverUpdateGap");
-const dGapC = debug("Client/recoverChannelUpdateGap");
 const dAuth = debug("Client/authorize");
 const dRecv = debug("Client/receiveLoop");
 const dUpload = debug("Client/upload");
@@ -577,7 +575,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
   };
 
   #propagateConnectionState(connectionState: ConnectionState) {
-    this.#getHandleUpdateQueue(UpdateManager.MAIN_BOX_ID).add(async () => {
+    this.#updateManager.getHandleUpdateQueue(UpdateManager.MAIN_BOX_ID).add(async () => {
       await this.#handle(await this.#constructContext({ connectionState }), resolve);
     });
     this.#lastPropagatedConnectionState = connectionState;
@@ -984,7 +982,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
           }
           dRecv("received %s", (typeof body === "object" && name in body) ? body[name] : body.constructor.name);
           if (body instanceof types._Updates || body instanceof types._Update) {
-            this.#processUpdatesQueue.add(() => this.#processUpdates(body as types.Updates | enums.Update, true));
+            this.#updateManager.processUpdates(body as types.Updates | enums.Update, true);
           } else if (body instanceof types.New_session_created) {
             this.#state.salt = body.server_salt;
             await this.storage.setServerSalt(this.#state.salt);
@@ -1011,10 +1009,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
               }
             };
             if (result instanceof types._Updates || result instanceof types._Update) {
-              this.#processUpdatesQueue.add(async () => {
-                await this.#processUpdates(result as enums.Updates | enums.Update, true, promise?.call);
-                resolvePromise();
-              });
+              this.#updateManager.processUpdates(result as enums.Updates | enums.Update, true, promise?.call, resolvePromise);
             } else {
               await this.#updateManager.processResult(result);
               resolvePromise();
@@ -1061,6 +1056,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
 
   #pingLoopAbortSignal: AbortController | null = null;
   #pingInterval = 60 * 1_000; // 60 seconds
+  #lastUpdates = new Date();
   async #pingLoop() {
     this.#pingLoopAbortSignal = new AbortController();
     while (this.connected) {
@@ -2835,7 +2831,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
     }
     const [chat] = this.#getChatAnywhere(chatId);
     const update = chat === undefined ? { deletedChat: { chatId } } : added ? { newChat: chat } : { editedChat: chat };
-    this.#getHandleUpdateQueue(this.#mainBoxId).add(async () => {
+    this.#updateManager.getHandleUpdateQueue(UpdateManager.MAIN_BOX_ID).add(async () => {
       await this.#handle(await this.#constructContext(update), resolve);
     });
   }

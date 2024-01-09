@@ -1,19 +1,19 @@
 import { debug } from "../0_deps.ts";
 import { Queue, UNREACHABLE, ZERO_CHANNEL_ID } from "../1_utilities.ts";
-import { as, enums, functions, inputPeerToPeer, TLObject, types } from "../2_tl.ts";
+import { as, enums, functions, inputPeerToPeer, peerToChatId, ReadObject, TLObject, types } from "../2_tl.ts";
 import { CHANNEL_DIFFERENCE_LIMIT_BOT, CHANNEL_DIFFERENCE_LIMIT_USER } from "../4_constants.ts";
 import { C } from "./0_types.ts";
 import { isChannelPtsUpdate, isPtsUpdate } from "./0_utilities.ts";
 
-const d = debug("Client");
-const dGap = debug("Client/recoverUpdateGap");
-const dGapC = debug("Client/recoverChannelUpdateGap");
+const d = debug("UpdateManager");
+const dGap = debug("UpdateManager/recoverUpdateGap");
+const dGapC = debug("UpdateManager/recoverChannelUpdateGap");
 
 export type UpdateHandler = () => Promise<(() => Promise<void>)>;
 
 export class UpdateManager {
   static readonly MAIN_BOX_ID = 0n;
-  
+
   #c: C;
   #handlers = new Map<enums.Update, UpdateHandler>();
   #updateState?: types.updates.State;
@@ -47,6 +47,68 @@ export class UpdateManager {
     }
   }
 
+  async processResult(result: ReadObject) {
+    if (
+      result instanceof types.messages.Dialogs ||
+      result instanceof types.messages.DialogsSlice ||
+      result instanceof types.messages.Messages ||
+      result instanceof types.messages.MessagesSlice ||
+      result instanceof types.messages.ChannelMessages ||
+      result instanceof types.messages.ChatFull ||
+      result instanceof types.contacts.Found ||
+      result instanceof types.account.PrivacyRules ||
+      result instanceof types.contacts.ResolvedPeer ||
+      result instanceof types.channels.ChannelParticipants ||
+      result instanceof types.channels.ChannelParticipant ||
+      result instanceof types.messages.PeerDialogs ||
+      result instanceof types.contacts.TopPeers ||
+      result instanceof types.channels.AdminLogResults ||
+      result instanceof types.help.RecentMeUrls ||
+      result instanceof types.messages.InactiveChats ||
+      result instanceof types.help.PromoData ||
+      result instanceof types.messages.MessageViews ||
+      result instanceof types.messages.DiscussionMessage ||
+      result instanceof types.phone.GroupCall ||
+      result instanceof types.phone.GroupParticipants ||
+      result instanceof types.phone.JoinAsPeers ||
+      result instanceof types.messages.SponsoredMessages ||
+      result instanceof types.messages.SearchResultsCalendar ||
+      result instanceof types.channels.SendAsPeers ||
+      result instanceof types.users.UserFull ||
+      result instanceof types.messages.PeerSettings ||
+      result instanceof types.messages.MessageReactionsList ||
+      result instanceof types.messages.ForumTopics ||
+      result instanceof types.account.AutoSaveSettings ||
+      result instanceof types.chatlists.ExportedInvites ||
+      result instanceof types.chatlists.ChatlistInviteAlready ||
+      result instanceof types.chatlists.ChatlistInvite ||
+      result instanceof types.chatlists.ChatlistUpdates ||
+      result instanceof types.messages.Chats ||
+      result instanceof types.messages.ChatsSlice
+    ) {
+      await this.processChats(result.chats);
+      if ("users" in result) {
+        await this.processUsers(result.users);
+      }
+
+      if ("messages" in result) {
+        for (const message of result.messages) {
+          if (message instanceof types.Message || message instanceof types.MessageService) {
+            await this.#c.storage.setMessage(peerToChatId(message.peer_id), message.id, message);
+          }
+        }
+      }
+    }
+
+    if (result instanceof types.messages.Messages) {
+      for (const message of result.messages) {
+        if (message instanceof types.Message || message instanceof types.MessageService) {
+          await this.#c.storage.setMessage(peerToChatId(message.peer_id), message.id, message);
+        }
+      }
+    }
+  }
+
   async processUsers(users: enums.User[]) {
     for (const user of users) {
       if (user instanceof types.User && user.access_hash) {
@@ -63,7 +125,7 @@ export class UpdateManager {
   }
 
   #handleUpdateQueues = new Map<bigint, Queue>();
-  #getHandleUpdateQueue(boxId: bigint) {
+  getHandleUpdateQueue(boxId: bigint) {
     let queue = this.#handleUpdateQueues.get(boxId);
     if (queue !== undefined) {
       return queue;
@@ -122,7 +184,7 @@ export class UpdateManager {
   }
 
   #queueUpdate(update: enums.Update, boxId: bigint, pts: boolean) {
-    this.#getHandleUpdateQueue(boxId).add(async () => {
+    this.getHandleUpdateQueue(boxId).add(async () => {
       if (this.#c.guaranteeUpdateDelivery && pts) {
         await this.#handleStoredUpdates(boxId);
       } else {
@@ -155,7 +217,7 @@ export class UpdateManager {
     }
 
     if (this.#c.guaranteeUpdateDelivery) {
-      await this.#c.storage.setUpdate(this.#mainBoxId, update);
+      await this.#c.storage.setUpdate(UpdateManager.MAIN_BOX_ID, update);
     }
     if (update.pts != 0) {
       await this.#setUpdatePts(update.pts);
@@ -168,6 +230,11 @@ export class UpdateManager {
     this.#ptsUpdateQueue.add(async () => {
       await this.#processPtsUpdateInner(update, checkGap);
     });
+  }
+
+  #processUpdatesQueue = new Queue("UpdateManager/processUpdates");
+  processUpdates(updates: enums.Update | enums.Updates, checkGap: boolean, call: TLObject | null = null, callback?: () => void) {
+    this.#processUpdatesQueue.add(() => this.#processUpdates(updates, checkGap, call).then(callback));
   }
 
   async #processUpdates(updates_: enums.Update | enums.Updates, checkGap: boolean, call: TLObject | null = null) {
