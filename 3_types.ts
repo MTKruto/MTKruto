@@ -8,6 +8,7 @@ export * from "./types/0_connection_state.ts";
 export * from "./types/0_contact.ts";
 export * from "./types/0_dice.ts";
 export * from "./types/0__file_id.ts";
+export * from "./types/0_file_source.ts";
 export * from "./types/0_giveaway_parameters.ts";
 export * from "./types/0_id.ts";
 export * from "./types/0_keyboard_button_poll_type.ts";

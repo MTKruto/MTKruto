@@ -1,6 +1,6 @@
 import { functions, types } from "../2_tl.ts";
 import { Storage } from "../3_storage.ts";
-import { ConnectionState, EntityGetter, ID, MessageGetter, StickerSetNameGetter, Update } from "../3_types.ts";
+import { ConnectionState, EntityGetter, ID, ParseMode, Update } from "../3_types.ts";
 
 type Functions = typeof functions;
 type Keys = keyof Functions;
@@ -17,9 +17,8 @@ export interface C {
   resetConnectionState: () => void;
   getSelfId: () => Promise<number>;
   getInputPeer: (id: ID) => Promise<types.InputPeerChat | types.InputPeerUser | types.InputPeerChannel>;
-  getLastMessage: (chatId: ID) => ReturnType<MessageGetter>;
   getEntity: EntityGetter;
-  getMessage: MessageGetter;
-  getStickerSetName: StickerSetNameGetter;
   handleUpdate: (update: Update) => void;
+  parseMode: ParseMode;
+  upload: (contents: Uint8Array, params?: { fileName?: string; chunkSize?: number; signal?: AbortSignal | null }) => Promise<types.InputFile | types.InputFileBig>;
 }
