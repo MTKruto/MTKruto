@@ -673,8 +673,6 @@ export class Client<C extends Context = Context> extends ClientAbstract {
     });
   }).bind(this);
 
-  #storageInited = false;
-
   /**
    * Sets the DC and resets the auth key stored in the session provider
    * if the stored DC was not the same as the `dc` parameter.
@@ -682,10 +680,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
    * @param dc The DC to change to.
    */
   async setDc(dc: DC) {
-    if (!this.#storageInited) {
-      await this.storage.initialize();
-      this.#storageInited = true;
-    }
+    await this.#initStorage();
     if (await this.storage.getDc() != dc) {
       await this.storage.setDc(dc);
       await this.storage.setAuthKey(null);
@@ -698,6 +693,17 @@ export class Client<C extends Context = Context> extends ClientAbstract {
     const hash = await sha1(key);
     const id = bigIntFromBuffer(hash.slice(-8), true, false);
     this.#auth = { key, id };
+  }
+
+  #storageInited = false;
+  async #initStorage() {
+    if (!this.#storageInited) {
+      await this.storage.initialize();
+      if (!this.#guaranteeUpdateDelivery) {
+        await this.storage.deleteUpdates();
+      }
+      this.#storageInited = true;
+    }
   }
 
   #authKeyWasCreated = true;
@@ -713,13 +719,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
     }
     const release = await this.#connectMutex.acquire();
     try {
-      if (!this.#storageInited) {
-        await this.storage.initialize();
-        if (!this.#guaranteeUpdateDelivery) {
-          await this.storage.deleteUpdates();
-        }
-        this.#storageInited = true;
-      }
+      await this.#initStorage();
       const authKey = await this.storage.getAuthKey();
       if (authKey == null) {
         const plain = new ClientPlain({ initialDc: this.initialDc, transportProvider: this.transportProvider, cdn: this.cdn, publicKeys: this.#publicKeys });
