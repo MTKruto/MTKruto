@@ -25,6 +25,7 @@ export interface C {
   handleUpdate: (update: Update) => void;
   parseMode: ParseMode;
   apiFactory: ApiFactory;
+  ignoreOutgoing: boolean | null;
 }
 
 export class ConnectionError extends Error {

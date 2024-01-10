@@ -359,11 +359,18 @@ export class ChatListManager {
     return chats;
   }
 
-  static canHandleUpdate(update: enums.Update): update is types.UpdatePinnedDialogs | types.UpdateFolderPeers | types.UpdateChannel | types.UpdateChat | types.UpdateUser | types.UpdateUserName {
-    return update instanceof types.UpdatePinnedDialogs || update instanceof types.UpdateFolderPeers || update instanceof types.UpdateChannel || update instanceof types.UpdateChat || update instanceof types.UpdateUser || update instanceof types.UpdateUserName;
+  static canHandleUpdate(update: enums.Update): update is types.UpdateNewMessage | types.UpdateNewChannelMessage | types.UpdatePinnedDialogs | types.UpdateFolderPeers | types.UpdateChannel | types.UpdateChat | types.UpdateUser | types.UpdateUserName {
+    return update instanceof types.UpdateNewMessage || update instanceof types.UpdateNewChannelMessage || update instanceof types.UpdatePinnedDialogs || update instanceof types.UpdateFolderPeers || update instanceof types.UpdateChannel || update instanceof types.UpdateChat || update instanceof types.UpdateUser || update instanceof types.UpdateUserName;
   }
 
-  async handleUpdate(update: types.UpdatePinnedDialogs | types.UpdateFolderPeers | types.UpdateChannel | types.UpdateChat | types.UpdateUser | types.UpdateUserName) {
+  async handleUpdate(update: types.UpdateNewMessage | types.UpdateNewChannelMessage | types.UpdatePinnedDialogs | types.UpdateFolderPeers | types.UpdateChannel | types.UpdateChat | types.UpdateUser | types.UpdateUserName) {
+    if (update instanceof types.UpdateNewMessage || update instanceof types.UpdateNewChannelMessage || update instanceof types.UpdateEditMessage || update instanceof types.UpdateEditChannelMessage) {
+      if (update.message instanceof types.Message || update.message instanceof types.MessageService) {
+        const chatId = peerToChatId(update.message.peer_id);
+        await this.reassignChatLastMessage(chatId);
+      }
+    }
+
     if (update instanceof types.UpdatePinnedDialogs) {
       await this.#handleUpdatePinnedDialogs(update);
     } else if (update instanceof types.UpdateFolderPeers) {

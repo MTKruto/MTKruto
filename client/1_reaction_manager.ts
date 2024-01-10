@@ -10,11 +10,11 @@ export class ReactionManager {
     this.#c = c;
   }
 
-  static canConstructUpdate(update: enums.Update): update is types.UpdateBotMessageReactions | types.UpdateBotMessageReaction | types.UpdateMessageReactions | types.UpdateChannelMessageViews | types.UpdateChannelMessageForwards {
+  static canHandleUpdate(update: enums.Update): update is types.UpdateBotMessageReactions | types.UpdateBotMessageReaction | types.UpdateMessageReactions | types.UpdateChannelMessageViews | types.UpdateChannelMessageForwards {
     return update instanceof types.UpdateBotMessageReactions || update instanceof types.UpdateBotMessageReaction || update instanceof types.UpdateMessageReactions || update instanceof types.UpdateChannelMessageViews || update instanceof types.UpdateChannelMessageForwards;
   }
 
-  async constructUpdate(update: types.UpdateBotMessageReactions | types.UpdateBotMessageReaction | types.UpdateMessageReactions | types.UpdateChannelMessageViews | types.UpdateChannelMessageForwards): Promise<Update | null> {
+  async handleUpdate(update: types.UpdateBotMessageReactions | types.UpdateBotMessageReaction | types.UpdateMessageReactions | types.UpdateChannelMessageViews | types.UpdateChannelMessageForwards): Promise<Update | null> {
     if (update instanceof types.UpdateBotMessageReactions) {
       const messageReactionCount = await constructMessageReactionCount(update, this.#c.getEntity);
       if (messageReactionCount) {
