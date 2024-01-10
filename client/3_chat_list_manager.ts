@@ -1,6 +1,6 @@
 import { debug } from "../0_deps.ts";
 import { toUnixTimestamp, UNREACHABLE } from "../1_utilities.ts";
-import { peerToChatId, types } from "../2_tl.ts";
+import { enums, peerToChatId, types } from "../2_tl.ts";
 import { Chat, constructChat, constructChat3, constructChat4, getChatOrder } from "../3_types.ts";
 import { C as C_ } from "./0_types.ts";
 import { getChatListId } from "./0_utilities.ts";
@@ -241,7 +241,7 @@ export class ChatListManager {
       await this.#sendChatUpdate(chatId, false);
     }
   }
-  async handelUpdateFolderPeers(update: types.UpdateFolderPeers) {
+  async #handleUpdateFolderPeers(update: types.UpdateFolderPeers) {
     for (const { peer, folder_id: listId } of update.folder_peers) {
       const chatId = peerToChatId(peer);
       const [chat, currentListId] = this.getChatAnywhere(chatId);
@@ -252,7 +252,7 @@ export class ChatListManager {
       }
     }
   }
-  async handleUpdatePinnedDialogs(update: types.UpdatePinnedDialogs) {
+  async #handleUpdatePinnedDialogs(update: types.UpdatePinnedDialogs) {
     const listId = update.folder_id ?? 0;
     await this.#fetchPinnedChats(update.folder_id);
     const chats = this.#getChatList(listId);
@@ -275,7 +275,7 @@ export class ChatListManager {
     await this.#c.storage.setPinnedChats(listId, await this.#getPinnedChats(listId));
   }
 
-  async handleUpdateChannel(update: types.UpdateChannel) {
+  async #handleUpdateChannel(update: types.UpdateChannel) {
     const peer = new types.PeerChannel(update);
     const channel = await this.#c.getEntity(peer);
     if (channel != null && "left" in channel && channel.left) {
@@ -287,7 +287,7 @@ export class ChatListManager {
     }
   }
 
-  async handleUpdateChat(update: types.UpdateChat) { // TODO: handle deactivated (migration)
+  async #handleUpdateChat(update: types.UpdateChat) { // TODO: handle deactivated (migration)
     const peer = new types.PeerChat(update);
     const chat = await this.#c.getEntity(peer);
     if (chat != null && "left" in chat && chat.left) {
@@ -299,7 +299,7 @@ export class ChatListManager {
     }
   }
 
-  async handleUpdateUser(update: types.UpdateUser | types.UpdateUserName) {
+  async #handleUpdateUser(update: types.UpdateUser | types.UpdateUserName) {
     const peer = new types.PeerUser(update);
     const chat = await this.#c.getEntity(peer);
     if (chat != null) {
@@ -357,5 +357,25 @@ export class ChatListManager {
     }
     chats = chats.slice(0, limit);
     return chats;
+  }
+
+  static canHandleUpdate(update: enums.Update): update is types.UpdatePinnedDialogs | types.UpdateFolderPeers | types.UpdateChannel | types.UpdateChat | types.UpdateUser | types.UpdateUserName {
+    return update instanceof types.UpdatePinnedDialogs || update instanceof types.UpdateFolderPeers || update instanceof types.UpdateChannel || update instanceof types.UpdateChat || update instanceof types.UpdateUser || update instanceof types.UpdateUserName;
+  }
+
+  async handleUpdate(update: types.UpdatePinnedDialogs | types.UpdateFolderPeers | types.UpdateChannel | types.UpdateChat | types.UpdateUser | types.UpdateUserName) {
+    if (update instanceof types.UpdatePinnedDialogs) {
+      await this.#handleUpdatePinnedDialogs(update);
+    } else if (update instanceof types.UpdateFolderPeers) {
+      await this.#handleUpdateFolderPeers(update);
+    } else if (update instanceof types.UpdateChannel) {
+      await this.#handleUpdateChannel(update);
+    } else if (update instanceof types.UpdateChat) {
+      await this.#handleUpdateChat(update);
+    } else if (update instanceof types.UpdateUser || update instanceof types.UpdateUserName) {
+      await this.#handleUpdateUser(update);
+    } else {
+      UNREACHABLE();
+    }
   }
 }
