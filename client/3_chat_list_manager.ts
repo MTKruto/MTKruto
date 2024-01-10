@@ -369,9 +369,7 @@ export class ChatListManager {
         const chatId = peerToChatId(update.message.peer_id);
         await this.reassignChatLastMessage(chatId);
       }
-    }
-
-    if (update instanceof types.UpdatePinnedDialogs) {
+    } else if (update instanceof types.UpdatePinnedDialogs) {
       await this.#handleUpdatePinnedDialogs(update);
     } else if (update instanceof types.UpdateFolderPeers) {
       await this.#handleUpdateFolderPeers(update);
