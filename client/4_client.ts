@@ -995,18 +995,11 @@ export class Client<C extends Context = Context> extends ClientAbstract {
   }
 
   /**
-   * Same as calling `.connect()` followed by `.authorize(params)` if the session didn't have an auth key.
+   * Same as calling `.connect()` followed by `.authorize(params)`.
    */
   async start(params?: string | types.auth.ExportedAuthorization | AuthorizeUserParams) {
     await this.connect();
     await this.#initConnection();
-
-    if (!this.#authKeyWasCreated) {
-      drop(this.#updateManager.fetchState("start"));
-      drop(this.#updateManager.recoverUpdateGap("start"));
-      return;
-    }
-
     await this.authorize(params);
   }
 
