@@ -1,9 +1,9 @@
 import { debug, gunzip, Mutex } from "../0_deps.ts";
 import { bigIntFromBuffer, cleanObject, drop, getRandomBigInt, getRandomId, MaybePromise, mustPrompt, mustPromptOneOf, sha1, toUnixTimestamp, UNREACHABLE, ZERO_CHANNEL_ID } from "../1_utilities.ts";
-import { as, enums, functions, Message_, MessageContainer, name, peerToChatId, ReadObject, RPCResult, TLError, TLObject, TLReader, types } from "../2_tl.ts";
+import { as, enums, functions, Message_, MessageContainer, name, ReadObject, RPCResult, TLError, TLObject, TLReader, types } from "../2_tl.ts";
 import { Storage, StorageMemory } from "../3_storage.ts";
 import { DC } from "../3_transport.ts";
-import { BotCommand, botCommandScopeToTlObject, Chat, ChatAction, ChatP, ConnectionState, constructChat2, constructChat3, constructUser, Document, FileSource, ID, InlineQueryResult, Message, MessageAnimation, MessageAudio, MessageContact, MessageDice, MessageDocument, MessageEntity, messageEntityToTlObject, MessageLocation, MessagePhoto, MessagePoll, MessageText, MessageVenue, MessageVideo, MessageVideoNote, MessageVoice, NetworkStatistics, ParseMode, Reaction, Update, UpdateIntersection, User, UsernameResolver } from "../3_types.ts";
+import { BotCommand, botCommandScopeToTlObject, Chat, ChatAction, ChatP, ConnectionState, constructUser, Document, FileSource, ID, InlineQueryResult, Message, MessageAnimation, MessageAudio, MessageContact, MessageDice, MessageDocument, MessageEntity, messageEntityToTlObject, MessageLocation, MessagePhoto, MessagePoll, MessageText, MessageVenue, MessageVideo, MessageVideoNote, MessageVoice, NetworkStatistics, ParseMode, Reaction, Update, UpdateIntersection, User } from "../3_types.ts";
 import { ACK_THRESHOLD, APP_VERSION, DEVICE_MODEL, LANG_CODE, LANG_PACK, LAYER, MAX_CHANNEL_ID, MAX_CHAT_ID, PublicKeys, SYSTEM_LANG_CODE, SYSTEM_VERSION, USERNAME_TTL } from "../4_constants.ts";
 import { AuthKeyUnregistered, FloodWait, Migrate, PasswordHashInvalid, PhoneNumberInvalid, SessionPasswordNeeded, upgradeInstance } from "../4_errors.ts";
 import { ClientAbstract } from "./0_client_abstract.ts";
@@ -713,7 +713,6 @@ export class Client<C extends Context = Context> extends ClientAbstract {
     }
   }
 
-  #authKeyWasCreated = true;
   #connectMutex = new Mutex();
   /**
    * Loads the session if `setDc` was not called, initializes and connnects
@@ -746,7 +745,6 @@ export class Client<C extends Context = Context> extends ClientAbstract {
           this.#state.salt = await this.storage.getServerSalt() ?? 0n;
         }
         await this.#setAuth(authKey);
-        this.#authKeyWasCreated = false;
       }
       const dc = await this.storage.getDc();
       if (dc != null) {
@@ -1283,6 +1281,10 @@ export class Client<C extends Context = Context> extends ClientAbstract {
   }
 
   async #getInputPeerInner(id: ID) {
+    const idn = Number(id);
+    if (!isNaN(idn)) {
+      id = idn;
+    }
     if (typeof id === "string") {
       id = getUsername(id);
       let userId = 0n;
@@ -1572,6 +1574,103 @@ export class Client<C extends Context = Context> extends ClientAbstract {
     return () => Promise.all(promises);
   }
 
+  //#region Composer
+  #handle: MiddlewareFn<C> = skip;
+
+  use(...middleware: Middleware<UpdateIntersection<C>>[]) {
+    const composer = new Composer(...middleware);
+    this.#handle = concat(this.#handle, flatten(composer));
+    return composer;
+  }
+
+  branch(predicate: (ctx: UpdateIntersection<C>) => MaybePromise<boolean>, trueHandler_: Middleware<UpdateIntersection<C>>, falseHandler_: Middleware<UpdateIntersection<C>>) {
+    const trueHandler = flatten(trueHandler_);
+    const falseHandler = flatten(falseHandler_);
+    return this.use(async (upd, next) => {
+      if (await predicate(upd)) {
+        await trueHandler(upd, next);
+      } else {
+        await falseHandler(upd, next);
+      }
+    });
+  }
+
+  filter<D extends C>(
+    predicate: (ctx: UpdateIntersection<C>) => ctx is D,
+    ...middleware: Middleware<D>[]
+  ): Composer<D>;
+  filter(
+    predicate: (ctx: UpdateIntersection<C>) => MaybePromise<boolean>,
+    ...middleware: Middleware<UpdateIntersection<C>>[]
+  ): Composer<C>;
+  filter(
+    predicate: (ctx: UpdateIntersection<C>) => MaybePromise<boolean>,
+    ...middleware: Middleware<UpdateIntersection<C>>[]
+  ) {
+    const composer = new Composer(...middleware);
+    this.branch(predicate, composer, skip);
+    return composer;
+  }
+
+  on<Q extends FilterQuery>(
+    filter: Q,
+    ...middleawre: Middleware<WithFilter<C, Q>>[]
+  ) {
+    return this.filter((ctx): ctx is UpdateIntersection<WithFilter<C, Q>> => {
+      return match(filter, ctx);
+    }, ...middleawre);
+  }
+
+  command(
+    commands: string | RegExp | (string | RegExp)[] | {
+      names: string | RegExp | (string | RegExp)[];
+      prefixes: string | string[];
+    },
+    ...middleawre: Middleware<WithFilter<C, "message:text">>[]
+  ) {
+    const commands__ = typeof commands === "object" && "names" in commands ? commands.names : commands;
+    const commands_ = Array.isArray(commands__) ? commands__ : [commands__];
+    const prefixes_ = typeof commands === "object" && "prefixes" in commands ? commands.prefixes : (this.#prefixes ?? []);
+    const prefixes = Array.isArray(prefixes_) ? prefixes_ : [prefixes_];
+    for (const left of prefixes) {
+      for (const right of prefixes) {
+        if (left == right) {
+          continue;
+        }
+        if (left.startsWith(right) || right.startsWith(left)) {
+          throw new Error("Intersecting prefixes");
+        }
+      }
+    }
+    return this.on("message:text").filter((ctx) => {
+      const prefixes_ = prefixes.length == 0 ? [!ctx.me?.isBot ? "\\" : "/"] : prefixes;
+      if (prefixes_.length == 0) {
+        return false;
+      }
+      const cmd = ctx.message.text.split(/\s/, 1)[0];
+      const prefix = prefixes_.find((v) => cmd.startsWith(v));
+      if (prefix === undefined) {
+        return false;
+      }
+      if (cmd.includes("@")) {
+        const username = cmd.split("@", 2)[1];
+        if (username.toLowerCase() !== ctx.me!.username?.toLowerCase()) {
+          return false;
+        }
+      }
+      const command_ = cmd.split("@", 1)[0].split(prefix, 2)[1].toLowerCase();
+      for (const command of commands_) {
+        if (typeof command === "string" && (command.toLowerCase() == command_)) {
+          return true;
+        } else if (command instanceof RegExp && command.test(command_)) {
+          return true;
+        }
+      }
+      return false;
+    }, ...middleawre);
+  }
+  //#endregion
+
   /**
    * Answer a callback query. Bot-only.
    *
@@ -1581,11 +1680,6 @@ export class Client<C extends Context = Context> extends ClientAbstract {
   async answerCallbackQuery(id: string, params?: AnswerCallbackQueryParams): Promise<void> {
     await this.#callbackQueryManager.answerCallbackQuery(id, params);
   }
-
-  #usernameResolver: UsernameResolver = async (v) => {
-    const inputPeer = await this.getInputPeer(v).then((v) => v[as](types.InputPeerUser));
-    return new types.InputUser(inputPeer);
-  };
 
   /**
    * Send a poll.
@@ -1695,103 +1789,6 @@ export class Client<C extends Context = Context> extends ClientAbstract {
   async answerInlineQuery(id: string, results: InlineQueryResult[], params?: AnswerInlineQueryParams): Promise<void> {
     await this.#inlineQueryManager.answerInlineQuery(id, results, params);
   }
-
-  //#region Composer
-  #handle: MiddlewareFn<C> = skip;
-
-  use(...middleware: Middleware<UpdateIntersection<C>>[]) {
-    const composer = new Composer(...middleware);
-    this.#handle = concat(this.#handle, flatten(composer));
-    return composer;
-  }
-
-  branch(predicate: (ctx: UpdateIntersection<C>) => MaybePromise<boolean>, trueHandler_: Middleware<UpdateIntersection<C>>, falseHandler_: Middleware<UpdateIntersection<C>>) {
-    const trueHandler = flatten(trueHandler_);
-    const falseHandler = flatten(falseHandler_);
-    return this.use(async (upd, next) => {
-      if (await predicate(upd)) {
-        await trueHandler(upd, next);
-      } else {
-        await falseHandler(upd, next);
-      }
-    });
-  }
-
-  filter<D extends C>(
-    predicate: (ctx: UpdateIntersection<C>) => ctx is D,
-    ...middleware: Middleware<D>[]
-  ): Composer<D>;
-  filter(
-    predicate: (ctx: UpdateIntersection<C>) => MaybePromise<boolean>,
-    ...middleware: Middleware<UpdateIntersection<C>>[]
-  ): Composer<C>;
-  filter(
-    predicate: (ctx: UpdateIntersection<C>) => MaybePromise<boolean>,
-    ...middleware: Middleware<UpdateIntersection<C>>[]
-  ) {
-    const composer = new Composer(...middleware);
-    this.branch(predicate, composer, skip);
-    return composer;
-  }
-
-  on<Q extends FilterQuery>(
-    filter: Q,
-    ...middleawre: Middleware<WithFilter<C, Q>>[]
-  ) {
-    return this.filter((ctx): ctx is UpdateIntersection<WithFilter<C, Q>> => {
-      return match(filter, ctx);
-    }, ...middleawre);
-  }
-
-  command(
-    commands: string | RegExp | (string | RegExp)[] | {
-      names: string | RegExp | (string | RegExp)[];
-      prefixes: string | string[];
-    },
-    ...middleawre: Middleware<WithFilter<C, "message:text">>[]
-  ) {
-    const commands__ = typeof commands === "object" && "names" in commands ? commands.names : commands;
-    const commands_ = Array.isArray(commands__) ? commands__ : [commands__];
-    const prefixes_ = typeof commands === "object" && "prefixes" in commands ? commands.prefixes : (this.#prefixes ?? []);
-    const prefixes = Array.isArray(prefixes_) ? prefixes_ : [prefixes_];
-    for (const left of prefixes) {
-      for (const right of prefixes) {
-        if (left == right) {
-          continue;
-        }
-        if (left.startsWith(right) || right.startsWith(left)) {
-          throw new Error("Intersecting prefixes");
-        }
-      }
-    }
-    return this.on("message:text").filter((ctx) => {
-      const prefixes_ = prefixes.length == 0 ? [!ctx.me?.isBot ? "\\" : "/"] : prefixes;
-      if (prefixes_.length == 0) {
-        return false;
-      }
-      const cmd = ctx.message.text.split(/\s/, 1)[0];
-      const prefix = prefixes_.find((v) => cmd.startsWith(v));
-      if (prefix === undefined) {
-        return false;
-      }
-      if (cmd.includes("@")) {
-        const username = cmd.split("@", 2)[1];
-        if (username.toLowerCase() !== ctx.me!.username?.toLowerCase()) {
-          return false;
-        }
-      }
-      const command_ = cmd.split("@", 1)[0].split(prefix, 2)[1].toLowerCase();
-      for (const command of commands_) {
-        if (typeof command === "string" && (command.toLowerCase() == command_)) {
-          return true;
-        } else if (command instanceof RegExp && command.test(command_)) {
-          return true;
-        }
-      }
-      return false;
-    }, ...middleawre);
-  }
-  //#endregion
 
   async #setMyInfo(info: Omit<ConstructorParameters<typeof functions.bots.setBotInfo>[0], "bot">) {
     await this.api.bots.setBotInfo({ bot: new types.InputUserSelf(), ...info });
@@ -2046,63 +2043,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
    * @method
    */
   async getChat(chatId: ID): Promise<Chat> {
-    if (await this.storage.getAccountType() == "user") {
-      let maybeChatId: number | null = null;
-      if (typeof chatId === "number") {
-        maybeChatId = chatId;
-      } else if (typeof chatId === "string") {
-        maybeChatId = this.#chatListManager.tryGetChatId(getUsername(chatId));
-      } else {
-        UNREACHABLE();
-      }
-      if (maybeChatId != null) {
-        const [chat] = this.#chatListManager.getChatAnywhere(maybeChatId);
-        if (chat !== undefined) {
-          return chat;
-        }
-      }
-    }
-    let inputPeer: enums.InputPeer | null = null;
-    if (typeof chatId === "number") {
-      const chat = await constructChat3(chatId, -1, undefined, this[getEntity].bind(this));
-      if (chat != null) {
-        return chat;
-      }
-    } else {
-      inputPeer = await this.getInputPeer(chatId);
-      const chatId_ = peerToChatId(inputPeer);
-      const chat = await constructChat3(chatId_, -1, undefined, this[getEntity].bind(this));
-      if (chat != null) {
-        return chat;
-      }
-    }
-    if (inputPeer == null) {
-      inputPeer = await this.getInputPeer(chatId);
-    }
-    if (inputPeer instanceof types.InputPeerChat) {
-      const chats = await this.api.messages.getChats({ id: [inputPeer.chat_id] }).then((v) => v[as](types.messages.Chats));
-      const chat = chats.chats[0];
-      if (chat instanceof types.ChatEmpty) {
-        UNREACHABLE();
-      }
-      return constructChat2(chat, -1, undefined);
-    } else if (inputPeer instanceof types.InputPeerChannel) {
-      const channels = await this.api.channels.getChannels({ id: [new types.InputChannel(inputPeer)] });
-      const channel = channels.chats[0];
-      if (channel instanceof types.ChatEmpty) {
-        UNREACHABLE();
-      }
-      return constructChat2(channel, -1, undefined);
-    } else if (inputPeer instanceof types.InputPeerUser) {
-      const users = await this.api.users.getUsers({ id: [new types.InputUser(inputPeer)] });
-      const user = users[0];
-      if (user instanceof types.UserEmpty) {
-        UNREACHABLE();
-      }
-      return constructChat2(user, -1, undefined);
-    } else {
-      UNREACHABLE();
-    }
+    return await this.#chatListManager.getChat(chatId);
   }
 
   /**
