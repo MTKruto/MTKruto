@@ -1,9 +1,9 @@
 import { debug } from "../0_deps.ts";
 import { toUnixTimestamp, UNREACHABLE } from "../1_utilities.ts";
-import { enums, peerToChatId, types } from "../2_tl.ts";
-import { Chat, constructChat, constructChat3, constructChat4, getChatOrder } from "../3_types.ts";
+import { as, enums, peerToChatId, types } from "../2_tl.ts";
+import { Chat, constructChat, constructChat2, constructChat3, constructChat4, getChatOrder, ID } from "../3_types.ts";
 import { C as C_ } from "./0_types.ts";
-import { getChatListId } from "./0_utilities.ts";
+import { getChatListId, getUsername } from "./0_utilities.ts";
 import { MessageManager } from "./2_message_manager.ts";
 
 type C = C_ & { messageManager: MessageManager };
@@ -23,7 +23,7 @@ export class ChatListManager {
     } catch {
       return;
     }
-    const [chat] = this.getChatAnywhere(chatId);
+    const [chat] = this.#getChatAnywhere(chatId);
     const update = chat === undefined ? { deletedChat: { chatId } } : added ? { newChat: chat } : { editedChat: chat };
     this.#c.handleUpdate(update);
   }
@@ -34,7 +34,7 @@ export class ChatListManager {
     } catch {
       return () => Promise.resolve();
     }
-    const [chat, listId] = this.getChatAnywhere(chatId);
+    const [chat, listId] = this.#getChatAnywhere(chatId);
     if (!chat && !add) {
       return () => Promise.resolve();
     }
@@ -94,7 +94,7 @@ export class ChatListManager {
   #chats = new Map<number, Chat>();
   #archivedChats = new Map<number, Chat>();
   #chatsLoadedFromStorage = false;
-  tryGetChatId(username: string) {
+  #tryGetChatId(username: string) {
     username = username.toLowerCase();
     for (const chat of this.#chats.values()) {
       if ("username" in chat) {
@@ -112,7 +112,7 @@ export class ChatListManager {
     }
     return null;
   }
-  getChatAnywhere(chatId: number): [Chat | undefined, number] {
+  #getChatAnywhere(chatId: number): [Chat | undefined, number] {
     let chat = this.#chats.get(chatId);
     if (chat) {
       return [chat, 0];
@@ -217,7 +217,7 @@ export class ChatListManager {
     }
   }
   async #updateOrAddChat(chatId: number) {
-    const [chat, listId] = this.getChatAnywhere(chatId);
+    const [chat, listId] = this.#getChatAnywhere(chatId);
     if (chat !== undefined) {
       const newChat = await constructChat3(chatId, chat.pinned, chat.lastMessage, this.#c.getEntity);
       if (newChat != null) {
@@ -235,7 +235,7 @@ export class ChatListManager {
   }
 
   async #removeChat(chatId: number) {
-    const [chat, listId] = this.getChatAnywhere(chatId);
+    const [chat, listId] = this.#getChatAnywhere(chatId);
     if (chat !== undefined) {
       this.#getChatList(listId).delete(chatId);
       await this.#sendChatUpdate(chatId, false);
@@ -244,7 +244,7 @@ export class ChatListManager {
   async #handleUpdateFolderPeers(update: types.UpdateFolderPeers) {
     for (const { peer, folder_id: listId } of update.folder_peers) {
       const chatId = peerToChatId(peer);
-      const [chat, currentListId] = this.getChatAnywhere(chatId);
+      const [chat, currentListId] = this.#getChatAnywhere(chatId);
       if (chat !== undefined && listId != currentListId) {
         this.#getChatList(currentListId).delete(chatId);
         this.#getChatList(listId).set(chatId, chat);
@@ -379,6 +379,66 @@ export class ChatListManager {
       await this.#handleUpdateChat(update);
     } else if (update instanceof types.UpdateUser || update instanceof types.UpdateUserName) {
       await this.#handleUpdateUser(update);
+    } else {
+      UNREACHABLE();
+    }
+  }
+
+  async getChat(chatId: ID) {
+    if (await this.#c.storage.getAccountType() == "user") {
+      let maybeChatId: number | null = null;
+      if (typeof chatId === "number") {
+        maybeChatId = chatId;
+      } else if (typeof chatId === "string") {
+        maybeChatId = this.#tryGetChatId(getUsername(chatId));
+      } else {
+        UNREACHABLE();
+      }
+      if (maybeChatId != null) {
+        const [chat] = this.#getChatAnywhere(maybeChatId);
+        if (chat !== undefined) {
+          return chat;
+        }
+      }
+    }
+    let inputPeer: enums.InputPeer | null = null;
+    if (typeof chatId === "number") {
+      const chat = await constructChat3(chatId, -1, undefined, this.#c.getEntity);
+      if (chat != null) {
+        return chat;
+      }
+    } else {
+      inputPeer = await this.#c.getInputPeer(chatId);
+      const chatId_ = peerToChatId(inputPeer);
+      const chat = await constructChat3(chatId_, -1, undefined, this.#c.getEntity);
+      if (chat != null) {
+        return chat;
+      }
+    }
+    if (inputPeer == null) {
+      inputPeer = await this.#c.getInputPeer(chatId);
+    }
+    if (inputPeer instanceof types.InputPeerChat) {
+      const chats = await this.#c.api.messages.getChats({ id: [inputPeer.chat_id] }).then((v) => v[as](types.messages.Chats));
+      const chat = chats.chats[0];
+      if (chat instanceof types.ChatEmpty) {
+        UNREACHABLE();
+      }
+      return constructChat2(chat, -1, undefined);
+    } else if (inputPeer instanceof types.InputPeerChannel) {
+      const channels = await this.#c.api.channels.getChannels({ id: [new types.InputChannel(inputPeer)] });
+      const channel = channels.chats[0];
+      if (channel instanceof types.ChatEmpty) {
+        UNREACHABLE();
+      }
+      return constructChat2(channel, -1, undefined);
+    } else if (inputPeer instanceof types.InputPeerUser) {
+      const users = await this.#c.api.users.getUsers({ id: [new types.InputUser(inputPeer)] });
+      const user = users[0];
+      if (user instanceof types.UserEmpty) {
+        UNREACHABLE();
+      }
+      return constructChat2(user, -1, undefined);
     } else {
       UNREACHABLE();
     }
