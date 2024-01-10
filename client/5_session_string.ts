@@ -1,5 +1,6 @@
 import { base64DecodeUrlSafe, base64EncodeUrlSafe, rleDecode, rleEncode } from "../1_utilities.ts";
 import { TLReader, TLWriter } from "../2_tl.ts";
+import { DC } from "../3_transport.ts";
 import { Client } from "./4_client.ts";
 
 export async function exportSessionString(client: Client) {
@@ -20,6 +21,6 @@ export async function importSessionString(client: Client, string: string) {
   const dc = reader.readString();
   const authKey = reader.readBytes();
   await client.storage.initialize();
-  await client.storage.setDc(dc);
+  await client.storage.setDc(dc as DC);
   await client.storage.setAuthKey(authKey);
 }
