@@ -77,7 +77,7 @@ export class ConnectionWebSocket extends ConnectionUnframed implements Connectio
     try {
       while (this.#webSocket.readyState != WebSocket.OPEN) {
         if (this.#webSocket.readyState == WebSocket.CLOSED) {
-          if (this.#connectionError instanceof ErrorEvent) {
+          if (this.#connectionError && "message" in this.#connectionError) {
             throw new Error(this.#connectionError.message);
           } else {
             throw new Error("Connection was closed");
