@@ -1,6 +1,6 @@
 import { debug, gunzip, Mutex } from "../0_deps.ts";
 import { bigIntFromBuffer, cleanObject, drop, getRandomBigInt, getRandomId, MaybePromise, mustPrompt, mustPromptOneOf, sha1, toUnixTimestamp, UNREACHABLE, ZERO_CHANNEL_ID } from "../1_utilities.ts";
-import { as, enums, functions,  Message_, MessageContainer, name, peerToChatId, ReadObject, RPCResult, TLError, TLObject, TLReader, types } from "../2_tl.ts";
+import { as, enums, functions, Message_, MessageContainer, name, peerToChatId, ReadObject, RPCResult, TLError, TLObject, TLReader, types } from "../2_tl.ts";
 import { Storage, StorageMemory } from "../3_storage.ts";
 import { DC } from "../3_transport.ts";
 import { BotCommand, botCommandScopeToTlObject, Chat, ChatAction, ChatP, ConnectionState, constructChat2, constructChat3, constructUser, Document, FileSource, ID, InlineQueryResult, Message, MessageAnimation, MessageAudio, MessageContact, MessageDice, MessageDocument, MessageEntity, messageEntityToTlObject, MessageLocation, MessagePhoto, MessagePoll, MessageText, MessageVenue, MessageVideo, MessageVideoNote, MessageVoice, NetworkStatistics, ParseMode, Reaction, Update, UpdateIntersection, User, UsernameResolver } from "../3_types.ts";
