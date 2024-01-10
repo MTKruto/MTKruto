@@ -1,10 +1,11 @@
 import { contentType, debug } from "../0_deps.ts";
 import { getRandomId, toUnixTimestamp, UNREACHABLE } from "../1_utilities.ts";
 import { as, enums, peerToChatId, types } from "../2_tl.ts";
-import { assertMessageType, constructMessage as constructMessage_, FileID, FileSource, FileType, ID, Message, MessageEntity, messageEntityToTlObject, ParseMode, replyMarkupToTlObject, UsernameResolver } from "../3_types.ts";
+import { assertMessageType, constructMessage as constructMessage_, FileID, FileSource, FileType, ID, Message, MessageEntity, messageEntityToTlObject, ParseMode, Reaction, reactionEqual, reactionToTlObject, replyMarkupToTlObject, UsernameResolver } from "../3_types.ts";
 import { STICKER_SET_NAME_TTL } from "../4_constants.ts";
 import { parseHtml } from "./0_html.ts";
 import { _SendCommon, DeleteMessagesParams, EditMessageParams, EditMessageReplyMarkupParams, ForwardMessagesParams, GetHistoryParams, PinMessageParams, SendAnimationParams, SendAudioParams, SendContactParams, SendDiceParams, SendDocumentParams, SendLocationParams, SendMessageParams, SendPhotoParams, SendPollParams, SendVenueParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams } from "./0_params.ts";
+import { AddReactionParams, SetReactionsParams } from "./0_params.ts";
 import { C as C_ } from "./0_types.ts";
 import { getFileContents, isHttpUrl } from "./0_utilities.ts";
 import { FileManager } from "./1_file_manager.ts";
@@ -73,7 +74,7 @@ export class MessageManager {
     return messages[0] ?? null;
   }
 
-  #parseText(text: string, params?: { parseMode?: ParseMode; entities?: MessageEntity[] }) {
+  parseText(text: string, params?: { parseMode?: ParseMode; entities?: MessageEntity[] }) {
     const entities_ = params?.entities ?? [];
     const parseMode = params?.parseMode ?? this.#c.parseMode;
     switch (parseMode) {
@@ -195,7 +196,7 @@ export class MessageManager {
     return messages;
   }
 
-  #usernameResolver: UsernameResolver = async (v) => {
+  usernameResolver: UsernameResolver = async (v) => {
     const inputPeer = await this.#c.getInputPeer(v).then((v) => v[as](types.InputPeerUser));
     return new types.InputUser(inputPeer);
   };
@@ -203,7 +204,7 @@ export class MessageManager {
   async #constructReplyMarkup(params?: Pick<SendMessageParams, "replyMarkup">) {
     if (params?.replyMarkup) {
       await this.#c.storage.assertBot("replyMarkup");
-      return replyMarkupToTlObject(params.replyMarkup, this.#usernameResolver.bind(this));
+      return replyMarkupToTlObject(params.replyMarkup, this.usernameResolver.bind(this));
     }
   }
 
@@ -220,7 +221,7 @@ export class MessageManager {
     text: string,
     params?: SendMessageParams,
   ) {
-    const [message, entities] = this.#parseText(text, params);
+    const [message, entities] = this.parseText(text, params);
 
     const replyMarkup = await this.#constructReplyMarkup(params);
 
@@ -528,7 +529,7 @@ export class MessageManager {
     const replyMarkup = await this.#constructReplyMarkup(params);
 
     const caption_ = params?.caption;
-    const parseResult = caption_ !== undefined ? this.#parseText(caption_, { parseMode: params?.parseMode, entities: params?.captionEntities }) : undefined;
+    const parseResult = caption_ !== undefined ? this.parseText(caption_, { parseMode: params?.parseMode, entities: params?.captionEntities }) : undefined;
 
     const caption = parseResult === undefined ? undefined : parseResult[0];
     const captionEntities = parseResult === undefined ? undefined : parseResult[1];
@@ -581,7 +582,7 @@ export class MessageManager {
     const replyMarkup = await this.#constructReplyMarkup(params);
 
     const explanation = params?.explanation;
-    const parseResult = explanation !== undefined ? this.#parseText(explanation, { parseMode: params?.explanationParseMode, entities: params?.explanationEntities }) : undefined;
+    const parseResult = explanation !== undefined ? this.parseText(explanation, { parseMode: params?.explanationParseMode, entities: params?.explanationEntities }) : undefined;
 
     const solution = parseResult === undefined ? undefined : parseResult[0];
     const solutionEntities = parseResult === undefined ? undefined : parseResult[1];
@@ -644,7 +645,7 @@ export class MessageManager {
     text: string,
     params?: EditMessageParams,
   ) {
-    const [message, entities] = this.#parseText(text, params);
+    const [message, entities] = this.parseText(text, params);
 
     const result = await this.#c.api.messages.editMessage({
       id: messageId,
@@ -696,5 +697,49 @@ export class MessageManager {
 
   async unpinMessages(chatId: ID) {
     await this.#c.api.messages.unpinAllMessages({ peer: await this.#c.getInputPeer(chatId) });
+  }
+
+  async setAvailableReactions(chatId: ID, availableReactions: "none" | "all" | Reaction[]) {
+    // TODO: sync with storage
+    await this.#c.api.messages.setChatAvailableReactions({
+      peer: await this.#c.getInputPeer(chatId),
+      available_reactions: availableReactions == "none" ? new types.ChatReactionsNone() : availableReactions == "all" ? new types.ChatReactionsAll() : Array.isArray(availableReactions) ? new types.ChatReactionsSome({ reactions: availableReactions.map((v) => v.type == "emoji" ? new types.ReactionEmoji({ emoticon: v.emoji }) : new types.ReactionCustomEmoji({ document_id: BigInt(v.id) })) }) : UNREACHABLE(),
+    });
+  }
+
+  async #sendReaction(chatId: number, messageId: number, reactions: Reaction[], params?: AddReactionParams) {
+    await this.#c.api.messages.sendReaction({
+      peer: await this.#c.getInputPeer(chatId),
+      msg_id: messageId,
+      reaction: reactions.map((v) => reactionToTlObject(v)),
+      big: params?.big ? true : undefined,
+      add_to_recent: params?.addToRecents ? true : undefined,
+    });
+  }
+
+  async setReactions(chatId: number, messageId: number, reactions: Reaction[], params?: SetReactionsParams) {
+    await this.#sendReaction(chatId, messageId, reactions, params);
+  }
+
+  async addReaction(chatId: number, messageId: number, reaction: Reaction, params?: AddReactionParams) {
+    const chosenReactions = await this.getMessage(chatId, messageId).then((v) => v?.reactions ?? []).then((v) => v.filter((v) => v.chosen));
+    for (const r of chosenReactions) {
+      if (reactionEqual(r.reaction, reaction)) {
+        return;
+      }
+    }
+    const reactions = [reaction, ...chosenReactions.map((v) => v.reaction)];
+    await this.setReactions(chatId, messageId, reactions, params);
+  }
+
+  async removeReaction(chatId: number, messageId: number, reaction: Reaction) {
+    const chosenReactions = await this.getMessage(chatId, messageId).then((v) => v?.reactions ?? []).then((v) => v.filter((v) => v.chosen));
+    for (const r of chosenReactions) {
+      if (reactionEqual(r.reaction, reaction)) {
+        const reactions = chosenReactions.filter((v) => v != r).map((v) => v.reaction);
+        await this.setReactions(chatId, messageId, reactions);
+        break;
+      }
+    }
   }
 }
