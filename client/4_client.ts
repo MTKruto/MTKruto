@@ -1,6 +1,6 @@
 import { debug, gunzip, Mutex } from "../0_deps.ts";
 import { bigIntFromBuffer, cleanObject, drop, getRandomBigInt, getRandomId, MaybePromise, mustPrompt, mustPromptOneOf, sha1, toUnixTimestamp, UNREACHABLE, ZERO_CHANNEL_ID } from "../1_utilities.ts";
-import { as, enums, functions, getChannelChatId, Message_, MessageContainer, name, peerToChatId, ReadObject, RPCResult, TLError, TLObject, TLReader, types } from "../2_tl.ts";
+import { as, enums, functions,  Message_, MessageContainer, name, peerToChatId, ReadObject, RPCResult, TLError, TLObject, TLReader, types } from "../2_tl.ts";
 import { Storage, StorageMemory } from "../3_storage.ts";
 import { DC } from "../3_transport.ts";
 import { BotCommand, botCommandScopeToTlObject, Chat, ChatAction, ChatP, ConnectionState, constructChat2, constructChat3, constructUser, Document, FileSource, ID, InlineQueryResult, Message, MessageAnimation, MessageAudio, MessageContact, MessageDice, MessageDocument, MessageEntity, messageEntityToTlObject, MessageLocation, MessagePhoto, MessagePoll, MessageText, MessageVenue, MessageVideo, MessageVideoNote, MessageVoice, NetworkStatistics, ParseMode, Reaction, Update, UpdateIntersection, User, UsernameResolver } from "../3_types.ts";
@@ -293,6 +293,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
           disconnect: client.disconnect.bind(client),
         };
       },
+      ignoreOutgoing: this.#ignoreOutgoing,
     };
     this.#updateManager = new UpdateManager(c);
     this.#fileManager = new FileManager(c);
@@ -1531,76 +1532,18 @@ export class Client<C extends Context = Context> extends ClientAbstract {
       }
     }
 
-    if (update instanceof types.UpdateNewMessage || update instanceof types.UpdateNewChannelMessage || update instanceof types.UpdateEditMessage || update instanceof types.UpdateEditChannelMessage) {
-      if (update.message instanceof types.Message || update.message instanceof types.MessageService) {
-        const chatId = peerToChatId(update.message.peer_id);
-        await this.storage.setMessage(chatId, update.message.id, update.message);
-        promises.push(this.#chatListManager.reassignChatLastMessage(chatId));
-      }
-    }
-
-    if (
-      update instanceof types.UpdateNewMessage ||
-      update instanceof types.UpdateNewChannelMessage ||
-      update instanceof types.UpdateEditMessage ||
-      update instanceof types.UpdateEditChannelMessage
-    ) {
-      if (!(update.message instanceof types.MessageEmpty)) {
-        const isOutgoing = update.message.out;
-        let shouldIgnore = isOutgoing ? (await this.storage.getAccountType()) == "user" ? false : true : false;
-        if (this.#ignoreOutgoing != null && isOutgoing) {
-          shouldIgnore = this.#ignoreOutgoing;
-        }
-        if (!shouldIgnore) {
-          const message = await this.#messageManager.constructMessage(update.message);
-          promises.push((async () => {
-            if (update instanceof types.UpdateNewMessage || update instanceof types.UpdateNewChannelMessage) {
-              await this.#handleCtxUpdate({ message });
-            } else {
-              await this.#handleCtxUpdate({ editedMessage: message });
-            }
-          })());
-        }
-      }
-    }
-
-    if (update instanceof types.UpdateDeleteMessages) {
-      const deletedMessages = new Array<{ chatId: number; messageId: number }>();
-      for (const messageId of update.messages) {
-        const chatId = await this.storage.getMessageChat(messageId);
-        if (chatId) {
-          deletedMessages.push({ chatId, messageId });
-        }
-      }
-      if (deletedMessages.length > 0) {
+    if (MessageManager.canHandleUpdate(update)) {
+      const update_ = await this.#messageManager.handleUpdate(update);
+      if (update_) {
         promises.push((async () => {
           try {
-            await this.#handleCtxUpdate({ deletedMessages });
+            await this.#handleCtxUpdate(update_);
           } finally {
-            for (const { chatId, messageId } of deletedMessages) {
-              await this.storage.setMessage(chatId, messageId, null);
-              await this.#chatListManager.reassignChatLastMessage(chatId);
-            }
-          }
-        })());
-      }
-    } else if (update instanceof types.UpdateDeleteChannelMessages) {
-      const chatId = getChannelChatId(update.channel_id);
-      const deletedMessages = new Array<{ chatId: number; messageId: number }>();
-      for (const messageId of update.messages) {
-        const message = await this.storage.getMessage(chatId, messageId);
-        if (message != null) {
-          deletedMessages.push({ chatId, messageId });
-        }
-      }
-      if (deletedMessages.length > 0) {
-        promises.push((async () => {
-          try {
-            await this.#handleCtxUpdate({ deletedMessages });
-          } finally {
-            for (const { chatId, messageId } of deletedMessages) {
-              await this.storage.setMessage(chatId, messageId, null);
-              await this.#chatListManager.reassignChatLastMessage(chatId);
+            if ("deletedMessages" in update_) {
+              for (const { chatId, messageId } of update_.deletedMessages) {
+                await this.storage.setMessage(chatId, messageId, null);
+                await this.#chatListManager.reassignChatLastMessage(chatId);
+              }
             }
           }
         })());
@@ -1615,8 +1558,8 @@ export class Client<C extends Context = Context> extends ClientAbstract {
       promises.push(this.#handleCtxUpdate(await this.#inlineQueryManager.handleUpdate(update)));
     }
 
-    if (ReactionManager.canConstructUpdate(update)) {
-      const upd = await this.#reactionManager.constructUpdate(update);
+    if (ReactionManager.canHandleUpdate(update)) {
+      const upd = await this.#reactionManager.handleUpdate(update);
       if (upd) {
         promises.push(this.#handleCtxUpdate(upd));
       }

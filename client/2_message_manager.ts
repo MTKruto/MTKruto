@@ -1,7 +1,7 @@
 import { contentType, debug } from "../0_deps.ts";
 import { getRandomId, toUnixTimestamp, UNREACHABLE } from "../1_utilities.ts";
-import { as, enums, peerToChatId, types } from "../2_tl.ts";
-import { assertMessageType, constructMessage as constructMessage_, FileID, FileSource, FileType, ID, Message, MessageEntity, messageEntityToTlObject, ParseMode, Reaction, reactionEqual, reactionToTlObject, replyMarkupToTlObject, UsernameResolver } from "../3_types.ts";
+import { as, enums, getChannelChatId, peerToChatId, types } from "../2_tl.ts";
+import { assertMessageType, constructMessage as constructMessage_, FileID, FileSource, FileType, ID, Message, MessageEntity, messageEntityToTlObject, ParseMode, Reaction, reactionEqual, reactionToTlObject, replyMarkupToTlObject, Update, UsernameResolver } from "../3_types.ts";
 import { STICKER_SET_NAME_TTL } from "../4_constants.ts";
 import { parseHtml } from "./0_html.ts";
 import { _SendCommon, DeleteMessagesParams, EditMessageParams, EditMessageReplyMarkupParams, ForwardMessagesParams, GetHistoryParams, PinMessageParams, SendAnimationParams, SendAudioParams, SendContactParams, SendDiceParams, SendDocumentParams, SendLocationParams, SendMessageParams, SendPhotoParams, SendPollParams, SendVenueParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams } from "./0_params.ts";
@@ -741,5 +741,67 @@ export class MessageManager {
         break;
       }
     }
+  }
+
+  static canHandleUpdate(update: enums.Update): update is types.UpdateNewMessage | types.UpdateNewChannelMessage | types.UpdateEditMessage | types.UpdateEditChannelMessage | types.UpdateDeleteMessages | types.UpdateDeleteChannelMessages {
+    return update instanceof types.UpdateNewMessage || update instanceof types.UpdateNewChannelMessage || update instanceof types.UpdateEditMessage || update instanceof types.UpdateEditChannelMessage || update instanceof types.UpdateDeleteMessages || update instanceof types.UpdateDeleteChannelMessages;
+  }
+
+  async handleUpdate(update: types.UpdateNewMessage | types.UpdateNewChannelMessage | types.UpdateEditMessage | types.UpdateEditChannelMessage | types.UpdateDeleteMessages | types.UpdateDeleteChannelMessages): Promise<Update | null> {
+    if (update instanceof types.UpdateNewMessage || update instanceof types.UpdateNewChannelMessage || update instanceof types.UpdateEditMessage || update instanceof types.UpdateEditChannelMessage) {
+      if (update.message instanceof types.Message || update.message instanceof types.MessageService) {
+        const chatId = peerToChatId(update.message.peer_id);
+        await this.#c.storage.setMessage(chatId, update.message.id, update.message);
+        // promises.push(this.#chatListManager.reassignChatLastMessage(chatId));
+      }
+    }
+
+    if (
+      update instanceof types.UpdateNewMessage ||
+      update instanceof types.UpdateNewChannelMessage ||
+      update instanceof types.UpdateEditMessage ||
+      update instanceof types.UpdateEditChannelMessage
+    ) {
+      if (!(update.message instanceof types.MessageEmpty)) {
+        const isOutgoing = update.message.out;
+        let shouldIgnore = isOutgoing ? (await this.#c.storage.getAccountType()) == "user" ? false : true : false;
+        if (this.#c.ignoreOutgoing != null && isOutgoing) {
+          shouldIgnore = this.#c.ignoreOutgoing;
+        }
+        if (!shouldIgnore) {
+          const message = await this.constructMessage(update.message);
+          if (update instanceof types.UpdateNewMessage || update instanceof types.UpdateNewChannelMessage) {
+            return ({ message });
+          } else {
+            return ({ editedMessage: message });
+          }
+        }
+      }
+    }
+
+    if (update instanceof types.UpdateDeleteMessages) {
+      const deletedMessages = new Array<{ chatId: number; messageId: number }>();
+      for (const messageId of update.messages) {
+        const chatId = await this.#c.storage.getMessageChat(messageId);
+        if (chatId) {
+          deletedMessages.push({ chatId, messageId });
+        }
+      }
+      if (deletedMessages.length > 0) {
+        return { deletedMessages };
+      }
+    } else if (update instanceof types.UpdateDeleteChannelMessages) {
+      const chatId = getChannelChatId(update.channel_id);
+      const deletedMessages = new Array<{ chatId: number; messageId: number }>();
+      for (const messageId of update.messages) {
+        const message = await this.#c.storage.getMessage(chatId, messageId);
+        if (message != null) {
+          deletedMessages.push({ chatId, messageId });
+        }
+      }
+      return { deletedMessages };
+    }
+
+    return null;
   }
 }
