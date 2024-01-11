@@ -26,6 +26,7 @@ export interface C {
   parseMode: ParseMode;
   apiFactory: ApiFactory;
   ignoreOutgoing: boolean | null;
+  cdn: boolean;
 }
 
 export class ConnectionError extends Error {
