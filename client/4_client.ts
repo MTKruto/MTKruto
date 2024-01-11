@@ -1,21 +1,22 @@
 import { debug, gunzip, Mutex } from "../0_deps.ts";
-import { bigIntFromBuffer, cleanObject, drop, getRandomBigInt, getRandomId, MaybePromise, mustPrompt, mustPromptOneOf, sha1, toUnixTimestamp, UNREACHABLE, ZERO_CHANNEL_ID } from "../1_utilities.ts";
+import { bigIntFromBuffer, cleanObject, drop, getRandomBigInt, getRandomId, MaybePromise, mustPrompt, mustPromptOneOf, sha1, UNREACHABLE, ZERO_CHANNEL_ID } from "../1_utilities.ts";
 import { as, enums, functions, Message_, MessageContainer, name, ReadObject, RPCResult, TLError, TLObject, TLReader, types } from "../2_tl.ts";
 import { Storage, StorageMemory } from "../3_storage.ts";
 import { DC } from "../3_transport.ts";
-import { BotCommand, botCommandScopeToTlObject, Chat, ChatAction, ChatP, ConnectionState, constructUser, Document, FileSource, ID, InlineQueryResult, Message, MessageAnimation, MessageAudio, MessageContact, MessageDice, MessageDocument, MessageEntity, messageEntityToTlObject, MessageLocation, MessagePhoto, MessagePoll, MessageText, MessageVenue, MessageVideo, MessageVideoNote, MessageVoice, NetworkStatistics, ParseMode, Reaction, Update, UpdateIntersection, User } from "../3_types.ts";
+import { BotCommand, Chat, ChatAction, ChatP, ConnectionState, constructUser, Document, FileSource, ID, InlineQueryResult, Message, MessageAnimation, MessageAudio, MessageContact, MessageDice, MessageDocument, MessageLocation, MessagePhoto, MessagePoll, MessageText, MessageVenue, MessageVideo, MessageVideoNote, MessageVoice, NetworkStatistics, ParseMode, Reaction, Update, UpdateIntersection, User } from "../3_types.ts";
 import { ACK_THRESHOLD, APP_VERSION, DEVICE_MODEL, LANG_CODE, LANG_PACK, LAYER, MAX_CHANNEL_ID, MAX_CHAT_ID, PublicKeys, SYSTEM_LANG_CODE, SYSTEM_VERSION, USERNAME_TTL } from "../4_constants.ts";
 import { AuthKeyUnregistered, FloodWait, Migrate, PasswordHashInvalid, PhoneNumberInvalid, SessionPasswordNeeded, upgradeInstance } from "../4_errors.ts";
 import { ClientAbstract } from "./0_client_abstract.ts";
 import { FilterQuery, match, WithFilter } from "./0_filters.ts";
-import { parseHtml } from "./0_html.ts";
 import { decryptMessage, encryptMessage, getMessageId } from "./0_message.ts";
 import { _SendCommon, AddReactionParams, AnswerCallbackQueryParams, AnswerInlineQueryParams, AuthorizeUserParams, BanChatMemberParams, DeleteMessageParams, DeleteMessagesParams, DownloadParams, EditMessageParams, EditMessageReplyMarkupParams, ForwardMessagesParams, GetChatsParams, GetHistoryParams, GetMyCommandsParams, PinMessageParams, ReplyParams, SendAnimationParams, SendAudioParams, SendContactParams, SendDiceParams, SendDocumentParams, SendLocationParams, SendMessageParams, SendPhotoParams, SendPollParams, SendVenueParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams, SetChatMemberRightsParams, SetChatPhotoParams, SetMyCommandsParams, SetReactionsParams, UploadParams } from "./0_params.ts";
 import { checkPassword } from "./0_password.ts";
 import { Api, ConnectionError } from "./0_types.ts";
-import { getFileContents, getUsername, resolve } from "./0_utilities.ts";
+import { getUsername, resolve } from "./0_utilities.ts";
+import { BotInfoManager } from "./1_bot_info_manager.ts";
 import { Composer, concat, flatten, Middleware, MiddlewareFn, skip } from "./1_composer.ts";
 import { FileManager } from "./1_file_manager.ts";
+import { NetworkStatisticsManager } from "./1_network_statistics_manager.ts";
 import { ReactionManager } from "./1_reaction_manager.ts";
 import { UpdateManager } from "./1_update_manager.ts";
 import { ClientPlain, ClientPlainParams } from "./2_client_plain.ts";
@@ -99,9 +100,9 @@ export interface Context {
   editMessageText: (messageId: number, text: string, params?: EditMessageParams) => Promise<MessageText>;
   /** Edit the reply markup of a message in the chat which the message was received from. */
   editMessageReplyMarkup: (messageId: number, params?: EditMessageReplyMarkupParams) => Promise<Message>;
-  /** Answer the received callback query. */
+  /** Answer the received callback query. Bot-only. */
   answerCallbackQuery: (params?: AnswerCallbackQueryParams) => Promise<void>;
-  /** Answer the received inline query. */
+  /** Answer the received inline query. Bot-only */
   answerInlineQuery: (results: InlineQueryResult[], params?: AnswerInlineQueryParams) => Promise<void>;
   /** Retrieve a single message of the chat which the message was received from. */
   getMessage: (messageId: number) => Promise<Message | null>;
@@ -185,6 +186,8 @@ export class Client<C extends Context = Context> extends ClientAbstract {
   #toAcknowledge = new Set<bigint>();
   #guaranteeUpdateDelivery: boolean;
   #updateManager: UpdateManager;
+  #networkStatisticsManager: NetworkStatisticsManager;
+  #botInfoManager: BotInfoManager;
   #fileManager: FileManager;
   #reactionManager: ReactionManager;
   #messageManager: MessageManager;
@@ -293,9 +296,12 @@ export class Client<C extends Context = Context> extends ClientAbstract {
           disconnect: client.disconnect.bind(client),
         };
       },
+      cdn: params?.cdn ?? false,
       ignoreOutgoing: this.#ignoreOutgoing,
     };
     this.#updateManager = new UpdateManager(c);
+    this.#networkStatisticsManager = new NetworkStatisticsManager(c);
+    this.#botInfoManager = new BotInfoManager(c);
     this.#fileManager = new FileManager(c);
     this.#reactionManager = new ReactionManager(c);
     this.#messageManager = new MessageManager({ ...c, fileManager: this.#fileManager });
@@ -307,16 +313,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
     const transportProvider = this.transportProvider;
     this.transportProvider = (params) => {
       const transport = transportProvider(params);
-      transport.connection.callback = {
-        read: async (count) => {
-          const key = params.cdn ? "netstat_cdn_read" : "netstat_messages_read";
-          await this.storage.incr([key], count);
-        },
-        write: async (count) => {
-          const key = params.cdn ? "netstat_cdn_write" : "netstat_messages_write";
-          await this.storage.incr([key], count);
-        },
-      };
+      transport.connection.callback = this.#networkStatisticsManager.getTransportReadWriteCallback();
       return transport;
     };
 
@@ -1343,6 +1340,178 @@ export class Client<C extends Context = Context> extends ClientAbstract {
     return this.storage.getEntity(type, id);
   }
 
+  async #handleCtxUpdate(update: Update) {
+    await this.#handle(await this.#constructContext(update), resolve);
+  }
+
+  #queueHandleCtxUpdate(update: Update) {
+    this.#updateManager.getHandleUpdateQueue(UpdateManager.MAIN_BOX_ID).add(async () => {
+      await this.#handleCtxUpdate(update);
+    });
+  }
+
+  async #handleUpdate(update: enums.Update) {
+    const promises = new Array<Promise<unknown>>();
+    if (update instanceof types.UpdateUserName) {
+      await this.storage.updateUsernames("user", update.user_id, update.usernames.map((v) => v.username));
+      const peer = new types.PeerUser(update);
+      const entity = await this[getEntity](peer);
+      if (entity != null) {
+        entity.usernames = update.usernames;
+        entity.first_name = update.first_name;
+        entity.last_name = update.last_name;
+        await this.storage.setEntity(entity);
+      }
+    }
+
+    if (MessageManager.canHandleUpdate(update)) {
+      const update_ = await this.#messageManager.handleUpdate(update);
+      if (update_) {
+        promises.push((async () => {
+          try {
+            await this.#handleCtxUpdate(update_);
+          } finally {
+            if ("deletedMessages" in update_) {
+              for (const { chatId, messageId } of update_.deletedMessages) {
+                await this.storage.setMessage(chatId, messageId, null);
+                await this.#chatListManager.reassignChatLastMessage(chatId);
+              }
+            }
+          }
+        })());
+      }
+    }
+
+    if (CallbackQueryManager.canHandleUpdate(update)) {
+      promises.push(this.#handleCtxUpdate(await this.#callbackQueryManager.handleUpdate(update)));
+    }
+
+    if (InlineQueryManager.canHandleUpdate(update)) {
+      promises.push(this.#handleCtxUpdate(await this.#inlineQueryManager.handleUpdate(update)));
+    }
+
+    if (ReactionManager.canHandleUpdate(update)) {
+      const upd = await this.#reactionManager.handleUpdate(update);
+      if (upd) {
+        promises.push(this.#handleCtxUpdate(upd));
+      }
+    }
+
+    if (ChatListManager.canHandleUpdate(update)) {
+      await this.#chatListManager.handleUpdate(update);
+    }
+
+    return () => Promise.all(promises);
+  }
+
+  #lastGetMe: User | null = null;
+  async #getMe() {
+    if (this.#lastGetMe != null) {
+      return this.#lastGetMe;
+    } else {
+      const user = await this.getMe();
+      this.#lastGetMe = user;
+      return user;
+    }
+  }
+
+  //#region Composer
+  #handle: MiddlewareFn<C> = skip;
+
+  use(...middleware: Middleware<UpdateIntersection<C>>[]) {
+    const composer = new Composer(...middleware);
+    this.#handle = concat(this.#handle, flatten(composer));
+    return composer;
+  }
+
+  branch(predicate: (ctx: UpdateIntersection<C>) => MaybePromise<boolean>, trueHandler_: Middleware<UpdateIntersection<C>>, falseHandler_: Middleware<UpdateIntersection<C>>) {
+    const trueHandler = flatten(trueHandler_);
+    const falseHandler = flatten(falseHandler_);
+    return this.use(async (upd, next) => {
+      if (await predicate(upd)) {
+        await trueHandler(upd, next);
+      } else {
+        await falseHandler(upd, next);
+      }
+    });
+  }
+
+  filter<D extends C>(
+    predicate: (ctx: UpdateIntersection<C>) => ctx is D,
+    ...middleware: Middleware<D>[]
+  ): Composer<D>;
+  filter(
+    predicate: (ctx: UpdateIntersection<C>) => MaybePromise<boolean>,
+    ...middleware: Middleware<UpdateIntersection<C>>[]
+  ): Composer<C>;
+  filter(
+    predicate: (ctx: UpdateIntersection<C>) => MaybePromise<boolean>,
+    ...middleware: Middleware<UpdateIntersection<C>>[]
+  ) {
+    const composer = new Composer(...middleware);
+    this.branch(predicate, composer, skip);
+    return composer;
+  }
+
+  on<Q extends FilterQuery>(
+    filter: Q,
+    ...middleawre: Middleware<WithFilter<C, Q>>[]
+  ) {
+    return this.filter((ctx): ctx is UpdateIntersection<WithFilter<C, Q>> => {
+      return match(filter, ctx);
+    }, ...middleawre);
+  }
+
+  command(
+    commands: string | RegExp | (string | RegExp)[] | {
+      names: string | RegExp | (string | RegExp)[];
+      prefixes: string | string[];
+    },
+    ...middleawre: Middleware<WithFilter<C, "message:text">>[]
+  ) {
+    const commands__ = typeof commands === "object" && "names" in commands ? commands.names : commands;
+    const commands_ = Array.isArray(commands__) ? commands__ : [commands__];
+    const prefixes_ = typeof commands === "object" && "prefixes" in commands ? commands.prefixes : (this.#prefixes ?? []);
+    const prefixes = Array.isArray(prefixes_) ? prefixes_ : [prefixes_];
+    for (const left of prefixes) {
+      for (const right of prefixes) {
+        if (left == right) {
+          continue;
+        }
+        if (left.startsWith(right) || right.startsWith(left)) {
+          throw new Error("Intersecting prefixes");
+        }
+      }
+    }
+    return this.on("message:text").filter((ctx) => {
+      const prefixes_ = prefixes.length == 0 ? [!ctx.me?.isBot ? "\\" : "/"] : prefixes;
+      if (prefixes_.length == 0) {
+        return false;
+      }
+      const cmd = ctx.message.text.split(/\s/, 1)[0];
+      const prefix = prefixes_.find((v) => cmd.startsWith(v));
+      if (prefix === undefined) {
+        return false;
+      }
+      if (cmd.includes("@")) {
+        const username = cmd.split("@", 2)[1];
+        if (username.toLowerCase() !== ctx.me!.username?.toLowerCase()) {
+          return false;
+        }
+      }
+      const command_ = cmd.split("@", 1)[0].split(prefix, 2)[1].toLowerCase();
+      for (const command of commands_) {
+        if (typeof command === "string" && (command.toLowerCase() == command_)) {
+          return true;
+        } else if (command instanceof RegExp && command.test(command_)) {
+          return true;
+        }
+      }
+      return false;
+    }, ...middleawre);
+  }
+  //#endregion
+
   /**
    * Send a text message.
    *
@@ -1353,27 +1522,6 @@ export class Client<C extends Context = Context> extends ClientAbstract {
    */
   async sendMessage(chatId: ID, text: string, params?: SendMessageParams): Promise<MessageText> {
     return await this.#messageManager.sendMessage(chatId, text, params);
-  }
-
-  #parseText(text: string, params?: { parseMode?: ParseMode; entities?: MessageEntity[] }) {
-    const entities_ = params?.entities ?? [];
-    const parseMode = params?.parseMode ?? this.#parseMode;
-    switch (parseMode) {
-      case null:
-        break;
-      case "HTML": {
-        const [newText, entitiesToPush] = parseHtml(text);
-        text = newText;
-        for (const entity of entitiesToPush) {
-          entities_.push(entity);
-        }
-        break;
-      }
-      default:
-        UNREACHABLE();
-    }
-    const entities = entities_?.length > 0 ? entities_.map((v) => messageEntityToTlObject(v)) : undefined;
-    return [text, entities] as const;
   }
 
   /**
@@ -1484,17 +1632,6 @@ export class Client<C extends Context = Context> extends ClientAbstract {
     return await this.forwardMessages(from, to, [messageId], params).then((v) => v[0]);
   }
 
-  #lastGetMe: User | null = null;
-  async #getMe() {
-    if (this.#lastGetMe != null) {
-      return this.#lastGetMe;
-    } else {
-      const user = await this.getMe();
-      this.#lastGetMe = user;
-      return user;
-    }
-  }
-
   /**
    * Get information on the currently authorized user.
    *
@@ -1509,167 +1646,6 @@ export class Client<C extends Context = Context> extends ClientAbstract {
     this.#lastGetMe = user;
     return user;
   }
-
-  async #handleCtxUpdate(update: Update) {
-    await this.#handle(await this.#constructContext(update), resolve);
-  }
-
-  #queueHandleCtxUpdate(update: Update) {
-    this.#updateManager.getHandleUpdateQueue(UpdateManager.MAIN_BOX_ID).add(async () => {
-      await this.#handleCtxUpdate(update);
-    });
-  }
-
-  async #handleUpdate(update: enums.Update) {
-    const promises = new Array<Promise<unknown>>();
-    if (update instanceof types.UpdateUserName) {
-      await this.storage.updateUsernames("user", update.user_id, update.usernames.map((v) => v.username));
-      const peer = new types.PeerUser(update);
-      const entity = await this[getEntity](peer);
-      if (entity != null) {
-        entity.usernames = update.usernames;
-        entity.first_name = update.first_name;
-        entity.last_name = update.last_name;
-        await this.storage.setEntity(entity);
-      }
-    }
-
-    if (MessageManager.canHandleUpdate(update)) {
-      const update_ = await this.#messageManager.handleUpdate(update);
-      if (update_) {
-        promises.push((async () => {
-          try {
-            await this.#handleCtxUpdate(update_);
-          } finally {
-            if ("deletedMessages" in update_) {
-              for (const { chatId, messageId } of update_.deletedMessages) {
-                await this.storage.setMessage(chatId, messageId, null);
-                await this.#chatListManager.reassignChatLastMessage(chatId);
-              }
-            }
-          }
-        })());
-      }
-    }
-
-    if (CallbackQueryManager.canHandleUpdate(update)) {
-      promises.push(this.#handleCtxUpdate(await this.#callbackQueryManager.handleUpdate(update)));
-    }
-
-    if (InlineQueryManager.canHandleUpdate(update)) {
-      promises.push(this.#handleCtxUpdate(await this.#inlineQueryManager.handleUpdate(update)));
-    }
-
-    if (ReactionManager.canHandleUpdate(update)) {
-      const upd = await this.#reactionManager.handleUpdate(update);
-      if (upd) {
-        promises.push(this.#handleCtxUpdate(upd));
-      }
-    }
-
-    if (ChatListManager.canHandleUpdate(update)) {
-      await this.#chatListManager.handleUpdate(update);
-    }
-
-    return () => Promise.all(promises);
-  }
-
-  //#region Composer
-  #handle: MiddlewareFn<C> = skip;
-
-  use(...middleware: Middleware<UpdateIntersection<C>>[]) {
-    const composer = new Composer(...middleware);
-    this.#handle = concat(this.#handle, flatten(composer));
-    return composer;
-  }
-
-  branch(predicate: (ctx: UpdateIntersection<C>) => MaybePromise<boolean>, trueHandler_: Middleware<UpdateIntersection<C>>, falseHandler_: Middleware<UpdateIntersection<C>>) {
-    const trueHandler = flatten(trueHandler_);
-    const falseHandler = flatten(falseHandler_);
-    return this.use(async (upd, next) => {
-      if (await predicate(upd)) {
-        await trueHandler(upd, next);
-      } else {
-        await falseHandler(upd, next);
-      }
-    });
-  }
-
-  filter<D extends C>(
-    predicate: (ctx: UpdateIntersection<C>) => ctx is D,
-    ...middleware: Middleware<D>[]
-  ): Composer<D>;
-  filter(
-    predicate: (ctx: UpdateIntersection<C>) => MaybePromise<boolean>,
-    ...middleware: Middleware<UpdateIntersection<C>>[]
-  ): Composer<C>;
-  filter(
-    predicate: (ctx: UpdateIntersection<C>) => MaybePromise<boolean>,
-    ...middleware: Middleware<UpdateIntersection<C>>[]
-  ) {
-    const composer = new Composer(...middleware);
-    this.branch(predicate, composer, skip);
-    return composer;
-  }
-
-  on<Q extends FilterQuery>(
-    filter: Q,
-    ...middleawre: Middleware<WithFilter<C, Q>>[]
-  ) {
-    return this.filter((ctx): ctx is UpdateIntersection<WithFilter<C, Q>> => {
-      return match(filter, ctx);
-    }, ...middleawre);
-  }
-
-  command(
-    commands: string | RegExp | (string | RegExp)[] | {
-      names: string | RegExp | (string | RegExp)[];
-      prefixes: string | string[];
-    },
-    ...middleawre: Middleware<WithFilter<C, "message:text">>[]
-  ) {
-    const commands__ = typeof commands === "object" && "names" in commands ? commands.names : commands;
-    const commands_ = Array.isArray(commands__) ? commands__ : [commands__];
-    const prefixes_ = typeof commands === "object" && "prefixes" in commands ? commands.prefixes : (this.#prefixes ?? []);
-    const prefixes = Array.isArray(prefixes_) ? prefixes_ : [prefixes_];
-    for (const left of prefixes) {
-      for (const right of prefixes) {
-        if (left == right) {
-          continue;
-        }
-        if (left.startsWith(right) || right.startsWith(left)) {
-          throw new Error("Intersecting prefixes");
-        }
-      }
-    }
-    return this.on("message:text").filter((ctx) => {
-      const prefixes_ = prefixes.length == 0 ? [!ctx.me?.isBot ? "\\" : "/"] : prefixes;
-      if (prefixes_.length == 0) {
-        return false;
-      }
-      const cmd = ctx.message.text.split(/\s/, 1)[0];
-      const prefix = prefixes_.find((v) => cmd.startsWith(v));
-      if (prefix === undefined) {
-        return false;
-      }
-      if (cmd.includes("@")) {
-        const username = cmd.split("@", 2)[1];
-        if (username.toLowerCase() !== ctx.me!.username?.toLowerCase()) {
-          return false;
-        }
-      }
-      const command_ = cmd.split("@", 1)[0].split(prefix, 2)[1].toLowerCase();
-      for (const command of commands_) {
-        if (typeof command === "string" && (command.toLowerCase() == command_)) {
-          return true;
-        } else if (command instanceof RegExp && command.test(command_)) {
-          return true;
-        }
-      }
-      return false;
-    }, ...middleawre);
-  }
-  //#endregion
 
   /**
    * Answer a callback query. Bot-only.
@@ -1702,46 +1678,8 @@ export class Client<C extends Context = Context> extends ClientAbstract {
    * @param action The chat action.
    * @param messageThreadId The thread to send the chat action to.
    */
-  async sendChatAction(chatId: ID, action: ChatAction, params?: { messageThreadId?: number }) {
-    let action_: enums.SendMessageAction;
-    switch (action) {
-      case "type":
-        action_ = new types.SendMessageTypingAction();
-        break;
-      case "uploadPhoto":
-        action_ = new types.SendMessageUploadPhotoAction({ progress: 0 });
-        break;
-      case "recordVideo":
-        action_ = new types.SendMessageRecordVideoAction();
-        break;
-      case "uploadVideo":
-        action_ = new types.SendMessageRecordVideoAction();
-        break;
-      case "recordVoice":
-        action_ = new types.SendMessageRecordAudioAction();
-        break;
-      case "uploadAudio":
-        action_ = new types.SendMessageUploadAudioAction({ progress: 0 });
-        break;
-      case "uploadDocument":
-        action_ = new types.SendMessageUploadDocumentAction({ progress: 0 });
-        break;
-      case "chooseSticker":
-        action_ = new types.SendMessageChooseStickerAction();
-        break;
-      case "findLocation":
-        action_ = new types.SendMessageGeoLocationAction();
-        break;
-      case "recordVideoNote":
-        action_ = new types.SendMessageRecordRoundAction();
-        break;
-      case "uploadVideoNote":
-        action_ = new types.SendMessageUploadRoundAction({ progress: 0 });
-        break;
-      default:
-        throw new Error("Invalid chat action: " + action);
-    }
-    await this.api.messages.setTyping({ peer: await this.getInputPeer(chatId), action: action_, top_msg_id: params?.messageThreadId });
+  async sendChatAction(chatId: ID, action: ChatAction, params?: { messageThreadId?: number }): Promise<void> {
+    return await this.#messageManager.sendChatAction(chatId, action, params);
   }
 
   /**
@@ -1750,7 +1688,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
    * @method
    * @param contents The contents of the file.
    */
-  async upload(contents: Uint8Array, params?: UploadParams) {
+  async upload(contents: Uint8Array, params?: UploadParams) { // TODO: return type
     return await this.#fileManager.upload(contents, params);
   }
 
@@ -1760,23 +1698,15 @@ export class Client<C extends Context = Context> extends ClientAbstract {
    * @method
    * @param commands The commands to set.
    */
-  async setMyCommands(commands: BotCommand[], params?: SetMyCommandsParams) {
-    await this.api.bots.setBotCommands({
-      commands: commands.map((v) => new types.BotCommand(v)),
-      lang_code: params?.languageCode ?? "",
-      scope: await botCommandScopeToTlObject(params?.scope ?? { type: "default" }, this.getInputPeer.bind(this)),
-    });
+  async setMyCommands(commands: BotCommand[], params?: SetMyCommandsParams): Promise<void> {
+    await this.#botInfoManager.setMyCommands(commands, params);
   }
 
   /**
    * Get the bot's commands in the given scope and/or language. Bot-only.
    */
   async getMyCommands(params?: GetMyCommandsParams): Promise<BotCommand[]> {
-    const commands_ = await this.api.bots.getBotCommands({
-      lang_code: params?.languageCode ?? "",
-      scope: await botCommandScopeToTlObject(params?.scope ?? { type: "default" }, this.getInputPeer.bind(this)),
-    });
-    return commands_.map((v) => ({ command: v.command, description: v.description }));
+    return await this.#botInfoManager.getMyCommands(params);
   }
 
   /**
@@ -1790,18 +1720,13 @@ export class Client<C extends Context = Context> extends ClientAbstract {
     await this.#inlineQueryManager.answerInlineQuery(id, results, params);
   }
 
-  async #setMyInfo(info: Omit<ConstructorParameters<typeof functions.bots.setBotInfo>[0], "bot">) {
-    await this.api.bots.setBotInfo({ bot: new types.InputUserSelf(), ...info });
-  }
-
   /**
    * Set the bot's description in the given language. Bot-only.
    *
    * @method
    */
-  async setMyDescription(params?: { description?: string; languageCode?: string }) {
-    await this.storage.assertBot("setMyDescription");
-    await this.#setMyInfo({ description: params?.description, lang_code: params?.languageCode ?? "" });
+  async setMyDescription(params?: { description?: string; languageCode?: string }): Promise<void> {
+    await this.#botInfoManager.setMyDescription(params);
   }
 
   /**
@@ -1809,9 +1734,8 @@ export class Client<C extends Context = Context> extends ClientAbstract {
    *
    * @method
    */
-  async setMyName(params?: { name?: string; languageCode?: string }) {
-    await this.storage.assertBot("setMyName");
-    await this.#setMyInfo({ name: params?.name, lang_code: params?.languageCode ?? "" });
+  async setMyName(params?: { name?: string; languageCode?: string }): Promise<void> {
+    await this.#botInfoManager.setMyName(params);
   }
 
   /**
@@ -1819,13 +1743,8 @@ export class Client<C extends Context = Context> extends ClientAbstract {
    *
    * @method
    */
-  async setMyShortDescription(params?: { shortDescription?: string; languageCode?: string }) {
-    await this.storage.assertBot("setMyShortDescription");
-    await this.#setMyInfo({ about: params?.shortDescription, lang_code: params?.languageCode ?? "" });
-  }
-
-  #getMyInfo(languageCode?: string | undefined) {
-    return this.api.bots.getBotInfo({ bot: new types.InputUserSelf(), lang_code: languageCode ?? "" });
+  async setMyShortDescription(params?: { shortDescription?: string; languageCode?: string }): Promise<void> {
+    await this.#botInfoManager.setMyShortDescription(params);
   }
 
   /**
@@ -1834,8 +1753,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
    * @method
    */
   async getMyDescription(params?: { languageCode?: string }): Promise<string> {
-    await this.storage.assertBot("getMyDescription");
-    return await this.#getMyInfo(params?.languageCode).then((v) => v.description);
+    return await this.#botInfoManager.getMyDescription(params);
   }
 
   /**
@@ -1844,8 +1762,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
    * @method
    */
   async getMyName(params?: { languageCode?: string }): Promise<string> {
-    await this.storage.assertBot("getMyName");
-    return await this.#getMyInfo(params?.languageCode).then((v) => v.description);
+    return await this.#botInfoManager.getMyName(params);
   }
 
   /**
@@ -1854,8 +1771,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
    * @method
    */
   async getMyShortDescription(params?: { languageCode?: string }): Promise<string> {
-    await this.storage.assertBot("getMyShortDescription");
-    return await this.#getMyInfo(params?.languageCode).then((v) => v.about);
+    return await this.#botInfoManager.getMyShortDescription(params);
   }
 
   /**
@@ -2011,21 +1927,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
    * @method
    */
   async getNetworkStatistics(): Promise<NetworkStatistics> {
-    const [messagesRead, messagesWrite, cdnRead, cdnWrite] = await Promise.all([
-      this.storage.get<number>(["netstat_messages_read"]),
-      this.storage.get<number>(["netstat_messages_write"]),
-      this.storage.get<number>(["netstat_cdn_read"]),
-      this.storage.get<number>(["netstat_cdn_write"]),
-    ]);
-    const messages = {
-      sent: Number(messagesWrite || 0),
-      received: Number(messagesRead || 0),
-    };
-    const cdn = {
-      sent: Number(cdnWrite || 0),
-      received: Number(cdnRead || 0),
-    };
-    return { messages, cdn };
+    return await this.#networkStatisticsManager.getNetworkStatistics();
   }
 
   /**
@@ -2121,20 +2023,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
    * @param photo A photo to set as the chat's photo.
    */
   async setChatPhoto(chatId: number, photo: FileSource, params?: SetChatPhotoParams): Promise<void> {
-    const peer = await this.getInputPeer(chatId);
-    if (!(peer instanceof types.InputPeerChannel) && !(peer instanceof types.InputPeerChat)) {
-      UNREACHABLE();
-    }
-
-    const [contents, fileName] = await getFileContents(photo);
-    const file = await this.upload(contents, { fileName: params?.fileName ?? fileName, chunkSize: params?.chunkSize, signal: params?.signal });
-    const photo_ = new types.InputChatUploadedPhoto({ file });
-
-    if (peer instanceof types.InputPeerChannel) {
-      await this.api.channels.editPhoto({ channel: new types.InputChannel(peer), photo: photo_ });
-    } else if (peer instanceof types.InputPeerChat) {
-      await this.api.messages.editChatPhoto({ chat_id: peer.chat_id, photo: photo_ });
-    }
+    await this.#messageManager.setChatPhoto(chatId, photo, params);
   }
 
   /**
@@ -2144,16 +2033,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
    * @param chatId The identifier of the chat.
    */
   async deleteChatPhoto(chatId: number): Promise<void> {
-    const peer = await this.getInputPeer(chatId);
-    if (!(peer instanceof types.InputPeerChannel) && !(peer instanceof types.InputPeerChat)) {
-      UNREACHABLE();
-    }
-
-    if (peer instanceof types.InputPeerChannel) {
-      await this.api.channels.editPhoto({ channel: new types.InputChannel(peer), photo: new types.InputChatPhotoEmpty() });
-    } else if (peer instanceof types.InputPeerChat) {
-      await this.api.messages.editChatPhoto({ chat_id: peer.chat_id, photo: new types.InputChatPhotoEmpty() });
-    }
+    await this.#messageManager.deleteChatPhoto(chatId);
   }
 
   /**
@@ -2207,44 +2087,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
    * @param memberId The identifier of the member.
    */
   async banChatMember(chatId: ID, memberId: ID, params?: BanChatMemberParams): Promise<void> {
-    const chat = await this.getInputPeer(chatId);
-    if (!(chat instanceof types.InputPeerChannel) && !(chat instanceof types.InputPeerChat)) {
-      throw new Error("Invalid chat ID");
-    }
-    const member = await this.getInputPeer(memberId);
-    if (chat instanceof types.InputPeerChannel) {
-      if (params?.deleteMessages) {
-        try {
-          await this.deleteChatMemberMessages(chatId, memberId);
-        } catch {
-          //
-        }
-      }
-      await this.api.channels.editBanned({
-        channel: new types.InputChannel(chat),
-        participant: member,
-        banned_rights: new types.ChatBannedRights({
-          until_date: params?.untilDate ? toUnixTimestamp(params.untilDate) : 0, // todo
-          view_messages: true,
-          send_messages: true,
-          send_media: true,
-          send_stickers: true,
-          send_gifs: true,
-          send_games: true,
-          send_inline: true,
-          embed_links: true,
-        }),
-      });
-    } else if (chat instanceof types.InputPeerChat) {
-      if (!(member instanceof types.InputPeerUser)) {
-        throw new Error("Invalid user ID");
-      }
-      await this.api.messages.deleteChatUser({
-        chat_id: chat.chat_id,
-        user_id: new types.InputUser(member),
-        revoke_history: params?.deleteMessages ? true : undefined,
-      });
-    }
+    await this.#messageManager.banChatMember(chatId, memberId, params);
   }
 
   /**
@@ -2255,16 +2098,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
    * @param memberId The identifier of the member.
    */
   async unbanChatMember(chatId: ID, memberId: ID): Promise<void> {
-    const chat = await this.getInputPeer(chatId);
-    if (!(chat instanceof types.InputPeerChannel)) {
-      throw new Error("Invalid chat ID");
-    }
-    const member = await this.getInputPeer(memberId);
-    await this.api.channels.editBanned({
-      channel: new types.InputChannel(chat),
-      participant: member,
-      banned_rights: new types.ChatBannedRights({ until_date: 0 }),
-    });
+    await this.#messageManager.unbanChatMember(chatId, memberId);
   }
 
   /**
@@ -2275,8 +2109,8 @@ export class Client<C extends Context = Context> extends ClientAbstract {
    * @param memberId The identifier of the member.
    */
   async kickChatMember(chatId: ID, memberId: ID): Promise<void> {
-    await this.banChatMember(chatId, memberId);
-    await this.unbanChatMember(chatId, memberId);
+    await this.#messageManager.banChatMember(chatId, memberId);
+    await this.#messageManager.unbanChatMember(chatId, memberId);
   }
 
   /**
@@ -2287,34 +2121,6 @@ export class Client<C extends Context = Context> extends ClientAbstract {
    * @param memberId The identifier of a member.
    */
   async setChatMemberRights(chatId: ID, memberId: ID, params?: SetChatMemberRightsParams): Promise<void> {
-    const chat = await this.getInputPeer(chatId);
-    if (!(chat instanceof types.InputPeerChannel)) {
-      throw new Error("Invalid chat ID");
-    }
-    const member = await this.getInputPeer(memberId);
-    await this.api.channels.editBanned({
-      channel: new types.InputChannel(chat),
-      participant: member,
-      banned_rights: new types.ChatBannedRights({
-        until_date: params?.untilDate ? toUnixTimestamp(params.untilDate) : 0,
-        send_messages: params?.rights?.canSendMessages ? true : undefined,
-        send_audios: params?.rights?.canSendAudio ? true : undefined,
-        send_docs: params?.rights?.canSendDocuments ? true : undefined,
-        send_photos: params?.rights?.canSendPhotos ? true : undefined,
-        send_videos: params?.rights?.canSendVideos ? true : undefined,
-        send_roundvideos: params?.rights?.canSendVideoNotes ? true : undefined,
-        send_voices: params?.rights?.canSendVoice ? true : undefined,
-        send_polls: params?.rights?.canSendPolls ? true : undefined,
-        send_stickers: params?.rights?.canSendStickers ? true : undefined,
-        send_gifs: params?.rights?.canSendAnimations ? true : undefined,
-        send_games: params?.rights?.canSendGames ? true : undefined,
-        send_inline: params?.rights?.canSendInlineBotResults ? true : undefined,
-        embed_links: params?.rights?.canAddWebPagePreviews ? true : undefined,
-        change_info: params?.rights?.canChangeInfo ? true : undefined,
-        invite_users: params?.rights?.canInviteUsers ? true : undefined,
-        pin_messages: params?.rights?.canPinMessages ? true : undefined,
-        manage_topics: params?.rights?.canManageTopics ? true : undefined,
-      }),
-    });
+    await this.#messageManager.setChatMemberRights(chatId, memberId, params);
   }
 }

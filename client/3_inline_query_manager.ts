@@ -15,6 +15,7 @@ export class InlineQueryManager {
   }
 
   async answerInlineQuery(id: string, results: InlineQueryResult[], params?: AnswerInlineQueryParams) {
+    await this.#c.storage.assertBot("answerInlineQuery");
     await this.#c.api.messages.setInlineBotResults({
       query_id: BigInt(id),
       results: await Promise.all(results.map((v) => inlineQueryResultToTlObject(v, this.#c.messageManager.parseText.bind(this), this.#c.messageManager.usernameResolver.bind(this)))),

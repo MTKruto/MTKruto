@@ -1,10 +1,10 @@
 import { contentType, debug } from "../0_deps.ts";
 import { getRandomId, toUnixTimestamp, UNREACHABLE } from "../1_utilities.ts";
 import { as, enums, getChannelChatId, peerToChatId, types } from "../2_tl.ts";
-import { assertMessageType, constructMessage as constructMessage_, FileID, FileSource, FileType, ID, Message, MessageEntity, messageEntityToTlObject, ParseMode, Reaction, reactionEqual, reactionToTlObject, replyMarkupToTlObject, Update, UsernameResolver } from "../3_types.ts";
+import { assertMessageType, ChatAction, constructMessage as constructMessage_, FileID, FileSource, FileType, ID, Message, MessageEntity, messageEntityToTlObject, ParseMode, Reaction, reactionEqual, reactionToTlObject, replyMarkupToTlObject, Update, UsernameResolver } from "../3_types.ts";
 import { STICKER_SET_NAME_TTL } from "../4_constants.ts";
 import { parseHtml } from "./0_html.ts";
-import { _SendCommon, DeleteMessagesParams, EditMessageParams, EditMessageReplyMarkupParams, ForwardMessagesParams, GetHistoryParams, PinMessageParams, SendAnimationParams, SendAudioParams, SendContactParams, SendDiceParams, SendDocumentParams, SendLocationParams, SendMessageParams, SendPhotoParams, SendPollParams, SendVenueParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams } from "./0_params.ts";
+import { _SendCommon, BanChatMemberParams, DeleteMessagesParams, EditMessageParams, EditMessageReplyMarkupParams, ForwardMessagesParams, GetHistoryParams, PinMessageParams, SendAnimationParams, SendAudioParams, SendContactParams, SendDiceParams, SendDocumentParams, SendLocationParams, SendMessageParams, SendPhotoParams, SendPollParams, SendVenueParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams, SetChatMemberRightsParams, SetChatPhotoParams } from "./0_params.ts";
 import { AddReactionParams, SetReactionsParams } from "./0_params.ts";
 import { C as C_ } from "./0_types.ts";
 import { getFileContents, isHttpUrl } from "./0_utilities.ts";
@@ -803,5 +803,163 @@ export class MessageManager {
     }
 
     return null;
+  }
+
+  async sendChatAction(chatId: ID, action: ChatAction, params?: { messageThreadId?: number }) {
+    let action_: enums.SendMessageAction;
+    switch (action) {
+      case "type":
+        action_ = new types.SendMessageTypingAction();
+        break;
+      case "uploadPhoto":
+        action_ = new types.SendMessageUploadPhotoAction({ progress: 0 });
+        break;
+      case "recordVideo":
+        action_ = new types.SendMessageRecordVideoAction();
+        break;
+      case "uploadVideo":
+        action_ = new types.SendMessageRecordVideoAction();
+        break;
+      case "recordVoice":
+        action_ = new types.SendMessageRecordAudioAction();
+        break;
+      case "uploadAudio":
+        action_ = new types.SendMessageUploadAudioAction({ progress: 0 });
+        break;
+      case "uploadDocument":
+        action_ = new types.SendMessageUploadDocumentAction({ progress: 0 });
+        break;
+      case "chooseSticker":
+        action_ = new types.SendMessageChooseStickerAction();
+        break;
+      case "findLocation":
+        action_ = new types.SendMessageGeoLocationAction();
+        break;
+      case "recordVideoNote":
+        action_ = new types.SendMessageRecordRoundAction();
+        break;
+      case "uploadVideoNote":
+        action_ = new types.SendMessageUploadRoundAction({ progress: 0 });
+        break;
+      default:
+        throw new Error("Invalid chat action: " + action);
+    }
+    await this.#c.api.messages.setTyping({ peer: await this.#c.getInputPeer(chatId), action: action_, top_msg_id: params?.messageThreadId });
+  }
+
+  async deleteChatPhoto(chatId: number) {
+    const peer = await this.#c.getInputPeer(chatId);
+    if (!(peer instanceof types.InputPeerChannel) && !(peer instanceof types.InputPeerChat)) {
+      UNREACHABLE();
+    }
+
+    if (peer instanceof types.InputPeerChannel) {
+      await this.#c.api.channels.editPhoto({ channel: new types.InputChannel(peer), photo: new types.InputChatPhotoEmpty() });
+    } else if (peer instanceof types.InputPeerChat) {
+      await this.#c.api.messages.editChatPhoto({ chat_id: peer.chat_id, photo: new types.InputChatPhotoEmpty() });
+    }
+  }
+
+  async setChatPhoto(chatId: number, photo: FileSource, params?: SetChatPhotoParams): Promise<void> {
+    const peer = await this.#c.getInputPeer(chatId);
+    if (!(peer instanceof types.InputPeerChannel) && !(peer instanceof types.InputPeerChat)) {
+      UNREACHABLE();
+    }
+
+    const [contents, fileName] = await getFileContents(photo);
+    const file = await this.#c.fileManager.upload(contents, { fileName: params?.fileName ?? fileName, chunkSize: params?.chunkSize, signal: params?.signal });
+    const photo_ = new types.InputChatUploadedPhoto({ file });
+
+    if (peer instanceof types.InputPeerChannel) {
+      await this.#c.api.channels.editPhoto({ channel: new types.InputChannel(peer), photo: photo_ });
+    } else if (peer instanceof types.InputPeerChat) {
+      await this.#c.api.messages.editChatPhoto({ chat_id: peer.chat_id, photo: photo_ });
+    }
+  }
+
+  async banChatMember(chatId: ID, memberId: ID, params?: BanChatMemberParams) {
+    const chat = await this.#c.getInputPeer(chatId);
+    if (!(chat instanceof types.InputPeerChannel) && !(chat instanceof types.InputPeerChat)) {
+      throw new Error("Invalid chat ID");
+    }
+    const member = await this.#c.getInputPeer(memberId);
+    if (chat instanceof types.InputPeerChannel) {
+      if (params?.deleteMessages) {
+        try {
+          await this.deleteChatMemberMessages(chatId, memberId);
+        } catch {
+          //
+        }
+      }
+      await this.#c.api.channels.editBanned({
+        channel: new types.InputChannel(chat),
+        participant: member,
+        banned_rights: new types.ChatBannedRights({
+          until_date: params?.untilDate ? toUnixTimestamp(params.untilDate) : 0, // todo
+          view_messages: true,
+          send_messages: true,
+          send_media: true,
+          send_stickers: true,
+          send_gifs: true,
+          send_games: true,
+          send_inline: true,
+          embed_links: true,
+        }),
+      });
+    } else if (chat instanceof types.InputPeerChat) {
+      if (!(member instanceof types.InputPeerUser)) {
+        throw new Error("Invalid user ID");
+      }
+      await this.#c.api.messages.deleteChatUser({
+        chat_id: chat.chat_id,
+        user_id: new types.InputUser(member),
+        revoke_history: params?.deleteMessages ? true : undefined,
+      });
+    }
+  }
+
+  async unbanChatMember(chatId: ID, memberId: ID) {
+    const chat = await this.#c.getInputPeer(chatId);
+    if (!(chat instanceof types.InputPeerChannel)) {
+      throw new Error("Invalid chat ID");
+    }
+    const member = await this.#c.getInputPeer(memberId);
+    await this.#c.api.channels.editBanned({
+      channel: new types.InputChannel(chat),
+      participant: member,
+      banned_rights: new types.ChatBannedRights({ until_date: 0 }),
+    });
+  }
+
+  async setChatMemberRights(chatId: ID, memberId: ID, params?: SetChatMemberRightsParams) {
+    const chat = await this.#c.getInputPeer(chatId);
+    if (!(chat instanceof types.InputPeerChannel)) {
+      throw new Error("Invalid chat ID");
+    }
+    const member = await this.#c.getInputPeer(memberId);
+    await this.#c.api.channels.editBanned({
+      channel: new types.InputChannel(chat),
+      participant: member,
+      banned_rights: new types.ChatBannedRights({
+        until_date: params?.untilDate ? toUnixTimestamp(params.untilDate) : 0,
+        send_messages: params?.rights?.canSendMessages ? true : undefined,
+        send_audios: params?.rights?.canSendAudio ? true : undefined,
+        send_docs: params?.rights?.canSendDocuments ? true : undefined,
+        send_photos: params?.rights?.canSendPhotos ? true : undefined,
+        send_videos: params?.rights?.canSendVideos ? true : undefined,
+        send_roundvideos: params?.rights?.canSendVideoNotes ? true : undefined,
+        send_voices: params?.rights?.canSendVoice ? true : undefined,
+        send_polls: params?.rights?.canSendPolls ? true : undefined,
+        send_stickers: params?.rights?.canSendStickers ? true : undefined,
+        send_gifs: params?.rights?.canSendAnimations ? true : undefined,
+        send_games: params?.rights?.canSendGames ? true : undefined,
+        send_inline: params?.rights?.canSendInlineBotResults ? true : undefined,
+        embed_links: params?.rights?.canAddWebPagePreviews ? true : undefined,
+        change_info: params?.rights?.canChangeInfo ? true : undefined,
+        invite_users: params?.rights?.canInviteUsers ? true : undefined,
+        pin_messages: params?.rights?.canPinMessages ? true : undefined,
+        manage_topics: params?.rights?.canManageTopics ? true : undefined,
+      }),
+    });
   }
 }
