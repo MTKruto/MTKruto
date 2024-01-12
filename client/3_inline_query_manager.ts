@@ -18,7 +18,7 @@ export class InlineQueryManager {
     await this.#c.storage.assertBot("answerInlineQuery");
     await this.#c.api.messages.setInlineBotResults({
       query_id: BigInt(id),
-      results: await Promise.all(results.map((v) => inlineQueryResultToTlObject(v, this.#c.messageManager.parseText.bind(this), this.#c.messageManager.usernameResolver.bind(this)))),
+      results: await Promise.all(results.map((v) => inlineQueryResultToTlObject(v, this.#c.messageManager.parseText.bind(this.#c.messageManager), this.#c.messageManager.usernameResolver.bind(this.#c.messageManager)))),
       cache_time: params?.cacheTime ?? 300,
       private: params?.isPersonal ? true : undefined,
       switch_webview: params?.button && params.button.webApp ? new types.InlineBotWebView({ text: params.button.text, url: params.button.webApp.url }) : undefined,
