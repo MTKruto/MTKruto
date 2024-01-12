@@ -28,6 +28,6 @@ export class CallbackQueryManager {
   }
 
   async handleUpdate(update: types.UpdateBotCallbackQuery | types.UpdateInlineBotCallbackQuery): Promise<Update> {
-    return { callbackQuery: await constructCallbackQuery(update, this.#c.getEntity, this.#c.messageManager.getMessageWithReply.bind(this)) };
+    return { callbackQuery: await constructCallbackQuery(update, this.#c.getEntity, this.#c.messageManager.getMessageWithReply.bind(this.#c.messageManager)) };
   }
 }
