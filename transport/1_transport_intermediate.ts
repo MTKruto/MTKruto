@@ -34,7 +34,7 @@ export class TransportIntermediate extends Transport implements Transport {
       const buffer = new Uint8Array(4);
       await this.#connection.read(buffer);
       this.decrypt(buffer);
-      const dataView = new DataView(buffer.buffer);
+      const dataView = new DataView(buffer.buffer, buffer.byteOffset, buffer.byteLength);
       length = dataView.getUint32(0, true);
     }
 

@@ -12,7 +12,7 @@ Deno.test("TLRawWriter", async (t) => {
     wrote += size;
 
     const expected = new Uint8Array([0x00]);
-    assertEquals(writer.buffer.slice(wrote - size), expected);
+    assertEquals(writer.buffer.subarray(wrote - size), expected);
     assertEquals(writer.buffer.length, wrote);
   });
 
@@ -29,7 +29,7 @@ Deno.test("TLRawWriter", async (t) => {
       0xFF, 0xFF, 0x7F, // uint24
       0x01, 0x00, 0x80, // int24
     ]);
-    assertEquals(writer.buffer.slice(wrote - size), expected);
+    assertEquals(writer.buffer.subarray(wrote - size), expected);
     assertEquals(writer.buffer.length, wrote);
   });
 
@@ -46,7 +46,7 @@ Deno.test("TLRawWriter", async (t) => {
       0xCC, 0xEE, 0xFF, 0xFF, // uint32
       0xFF, 0xFF, 0xFE, 0xFF, // int32
     ]);
-    assertEquals(writer.buffer.slice(wrote - size), expected);
+    assertEquals(writer.buffer.subarray(wrote - size), expected);
     assertEquals(writer.buffer.length, wrote);
   });
 
@@ -63,7 +63,7 @@ Deno.test("TLRawWriter", async (t) => {
       0x68, 0xFF, 0x98, 0x88, 0xDD, 0xCC, 0xFF, 0xEE, // uint64
       0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x80, // int64
     ]);
-    assertEquals(writer.buffer.slice(wrote - size), expected);
+    assertEquals(writer.buffer.subarray(wrote - size), expected);
     assertEquals(writer.buffer.length, wrote);
   });
 
@@ -78,7 +78,7 @@ Deno.test("TLRawWriter", async (t) => {
     const expected = new Uint8Array([
       0xAA, 0xF1, 0xD2, 0x4D, 0x62, 0x10, 0x26, 0xC0, // double
     ]);
-    assertEquals(writer.buffer.slice(wrote - size), expected);
+    assertEquals(writer.buffer.subarray(wrote - size), expected);
     assertEquals(writer.buffer.length, wrote);
   });
 
@@ -97,7 +97,7 @@ Deno.test("TLRawWriter", async (t) => {
       0x17, 0xB3, 0x50, 0x37, 0x1C, 0xAD, 0x8A, 0xDF,
       0xE5, 0x02, 0x96, 0x48, 0x24, 0xC6, 0x6E, 0x07, // int128
     ]);
-    assertEquals(writer.buffer.slice(wrote - size), expected);
+    assertEquals(writer.buffer.subarray(wrote - size), expected);
     assertEquals(writer.buffer.length, wrote);
   });
 
@@ -120,7 +120,7 @@ Deno.test("TLRawWriter", async (t) => {
       0x41, 0x98, 0x0D, 0x97, 0xA6, 0xA2, 0x96, 0x1E,
       0x95, 0xCE, 0xC6, 0xEF, 0x78, 0x95, 0xB9, 0x5F, // int256
     ]);
-    assertEquals(writer.buffer.slice(wrote - size), expected);
+    assertEquals(writer.buffer.subarray(wrote - size), expected);
     assertEquals(writer.buffer.length, wrote);
   });
 
@@ -205,7 +205,7 @@ Deno.test("TLRawWriter", async (t) => {
       0xC5, 0x12, 0xAB, 0xA5, 0x5A, 0xD5, 0xFD, 0x89,
       0x5E, 0x02, 0xD3, 0x00, // more than 254 bytes
     ]);
-    assertEquals(writer.buffer.slice(wrote - size), expected);
+    assertEquals(writer.buffer.subarray(wrote - size), expected);
     assertEquals(writer.buffer.length, wrote);
   });
 
@@ -254,7 +254,7 @@ Deno.test("TLRawWriter", async (t) => {
       0x6F, 0x4D, 0x54, 0x4B, 0x72, 0x75, 0x74, 0x6F,
       0x4D, 0x54, 0x4B, 0x72, 0x75, 0x74, 0x6F, 0x00 // string with more than 254 bytes
     ]);
-    assertEquals(writer.buffer.slice(wrote - size), expected);
+    assertEquals(writer.buffer.subarray(wrote - size), expected);
     assertEquals(writer.buffer.length, wrote);
   });
 });

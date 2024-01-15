@@ -1,7 +1,7 @@
 import { contentType, debug } from "../0_deps.ts";
 import { getRandomId, toUnixTimestamp, UNREACHABLE } from "../1_utilities.ts";
 import { as, enums, getChannelChatId, peerToChatId, types } from "../2_tl.ts";
-import { assertMessageType, ChatAction, constructMessage as constructMessage_, FileID, FileSource, FileType, ID, Message, MessageEntity, messageEntityToTlObject, ParseMode, Reaction, reactionEqual, reactionToTlObject, replyMarkupToTlObject, Update, UsernameResolver } from "../3_types.ts";
+import { assertMessageType, ChatAction, ChatMember, chatMemberRightsToTlObject, constructChatMember, constructMessage as constructMessage_, FileID, FileSource, FileType, ID, Message, MessageEntity, messageEntityToTlObject, ParseMode, Reaction, reactionEqual, reactionToTlObject, replyMarkupToTlObject, Update, UsernameResolver } from "../3_types.ts";
 import { STICKER_SET_NAME_TTL } from "../4_constants.ts";
 import { parseHtml } from "./0_html.ts";
 import { _SendCommon, BanChatMemberParams, DeleteMessagesParams, EditMessageParams, EditMessageReplyMarkupParams, ForwardMessagesParams, GetHistoryParams, PinMessageParams, SendAnimationParams, SendAudioParams, SendContactParams, SendDiceParams, SendDocumentParams, SendLocationParams, SendMessageParams, SendPhotoParams, SendPollParams, SendVenueParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams, SetChatMemberRightsParams, SetChatPhotoParams } from "./0_params.ts";
@@ -940,26 +940,41 @@ export class MessageManager {
     await this.#c.api.channels.editBanned({
       channel: new types.InputChannel(chat),
       participant: member,
-      banned_rights: new types.ChatBannedRights({
-        until_date: params?.untilDate ? toUnixTimestamp(params.untilDate) : 0,
-        send_messages: params?.rights?.canSendMessages ? true : undefined,
-        send_audios: params?.rights?.canSendAudio ? true : undefined,
-        send_docs: params?.rights?.canSendDocuments ? true : undefined,
-        send_photos: params?.rights?.canSendPhotos ? true : undefined,
-        send_videos: params?.rights?.canSendVideos ? true : undefined,
-        send_roundvideos: params?.rights?.canSendVideoNotes ? true : undefined,
-        send_voices: params?.rights?.canSendVoice ? true : undefined,
-        send_polls: params?.rights?.canSendPolls ? true : undefined,
-        send_stickers: params?.rights?.canSendStickers ? true : undefined,
-        send_gifs: params?.rights?.canSendAnimations ? true : undefined,
-        send_games: params?.rights?.canSendGames ? true : undefined,
-        send_inline: params?.rights?.canSendInlineBotResults ? true : undefined,
-        embed_links: params?.rights?.canAddWebPagePreviews ? true : undefined,
-        change_info: params?.rights?.canChangeInfo ? true : undefined,
-        invite_users: params?.rights?.canInviteUsers ? true : undefined,
-        pin_messages: params?.rights?.canPinMessages ? true : undefined,
-        manage_topics: params?.rights?.canManageTopics ? true : undefined,
-      }),
+      banned_rights: chatMemberRightsToTlObject(params?.rights, params?.untilDate),
     });
+  }
+
+  async getChatAdministrators(chatId: ID) {
+    const peer = await this.#c.getInputPeer(chatId);
+    if (peer instanceof types.InputPeerChannel) {
+      const channel = new types.InputChannel(peer);
+      const participants = await this.#c.api.channels.getParticipants({
+        channel,
+        filter: new types.ChannelParticipantsAdmins(),
+        offset: 0,
+        limit: 100,
+        hash: 0n,
+      });
+      if (participants instanceof types.channels.ChannelParticipantsNotModified) {
+        UNREACHABLE();
+      }
+      const chatMembers = new Array<ChatMember>();
+      for (const p of participants.participants) {
+        chatMembers.push(await constructChatMember(p, this.#c.getEntity));
+      }
+      return chatMembers;
+    } else if (peer instanceof types.InputPeerChat) {
+      const fullChat = await this.#c.api.messages.getFullChat(peer); // TODO: full chat cache
+      if (!(fullChat.full_chat instanceof types.ChatFull) || !(fullChat.full_chat.participants instanceof types.ChatParticipants)) {
+        UNREACHABLE();
+      }
+      const chatMembers = new Array<ChatMember>();
+      for (const p of fullChat.full_chat.participants.participants) {
+        chatMembers.push(await constructChatMember(p, this.#c.getEntity));
+      }
+      return chatMembers;
+    } else {
+      UNREACHABLE();
+    }
   }
 }

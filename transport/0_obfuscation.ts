@@ -11,7 +11,7 @@ export async function getObfuscationParameters(protocol: number, connection: Con
       continue;
     }
 
-    const dataView = new DataView(init.buffer);
+    const dataView = new DataView(init.buffer, init.byteOffset, init.byteLength);
     const firstInt = dataView.getInt32(0);
     if ([0x44414548, 0x54534F50, 0x20544547, 0x4954504F, 0x02010316, 0xDDDDDDDD, 0xEEEEEEEE].includes(firstInt)) {
       continue;
@@ -37,7 +37,7 @@ export async function getObfuscationParameters(protocol: number, connection: Con
   const decryptIv = initRev.slice(40, 40 + 16);
   const decryptionCTR = new CTR(decryptKey, decryptIv);
 
-  await connection.write(concat(init.slice(0, 56), encryptedInit.slice(56, 56 + 8)));
+  await connection.write(concat(init.subarray(0, 56), encryptedInit.subarray(56, 56 + 8)));
 
   return { encryptionCTR, decryptionCTR };
 }

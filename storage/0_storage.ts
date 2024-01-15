@@ -54,7 +54,7 @@ export abstract class Storage {
 
   async #resetAuthKeyId(authKey: Uint8Array | null) {
     if (authKey != null) {
-      this.#authKeyId = await sha1(authKey).then((hash) => bigIntFromBuffer(hash.slice(-8), true, false));
+      this.#authKeyId = await sha1(authKey).then((hash) => bigIntFromBuffer(hash.subarray(-8), true, false));
     } else {
       this.#authKeyId = null;
     }
