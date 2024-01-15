@@ -548,6 +548,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
         return this.setChatMemberRights(chatId, senderId, params);
       },
       getChatAdministrators: () => {
+        const { chatId } = mustGetMsg();
         return this.getChatAdministrators(chatId);
       },
       react: (reactions, params) => {
