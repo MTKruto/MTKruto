@@ -82,10 +82,10 @@ export class FileID {
 
     if (major < 4) {
       minor = 0;
-      buffer = decoded.slice(0, -1);
+      buffer = decoded.subarray(0, -1);
     } else {
       minor = decoded[decoded.length - 2];
-      buffer = decoded.slice(0, -2);
+      buffer = decoded.subarray(0, -2);
     }
     const reader = new TLReader(buffer);
 

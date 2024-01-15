@@ -47,13 +47,13 @@ export async function encryptMessage(message: Message_, authKey: Uint8Array, aut
 
   const payload = payloadWriter.buffer;
 
-  const messageKey = (await sha256(concat(authKey.slice(88, 120), payload))).slice(8, 24);
+  const messageKey = (await sha256(concat(authKey.subarray(88, 120), payload))).subarray(8, 24);
 
-  const a = await sha256(concat(messageKey, authKey.slice(0, 36)));
-  const b = await sha256(concat(authKey.slice(40, 76), messageKey));
+  const a = await sha256(concat(messageKey, authKey.subarray(0, 36)));
+  const b = await sha256(concat(authKey.subarray(40, 76), messageKey));
 
-  const aesKey = concat(a.slice(0, 8), b.slice(8, 24), a.slice(24, 32));
-  const aesIV = concat(b.slice(0, 8), a.slice(8, 24), b.slice(24, 32));
+  const aesKey = concat(a.subarray(0, 8), b.subarray(8, 24), a.subarray(24, 32));
+  const aesIV = concat(b.subarray(0, 8), a.subarray(8, 24), b.subarray(24, 32));
 
   const messageWriter = new TLWriter();
 
@@ -70,11 +70,11 @@ export async function decryptMessage(buffer: Uint8Array, authKey: Uint8Array, au
   const messageKey_ = reader.readInt128();
   const messageKey = bufferFromBigInt(messageKey_, 16, true, true);
 
-  const a = await sha256(concat(messageKey, authKey.slice(8, 44)));
-  const b = await sha256(concat(authKey.slice(48, 84), messageKey));
+  const a = await sha256(concat(messageKey, authKey.subarray(8, 44)));
+  const b = await sha256(concat(authKey.subarray(48, 84), messageKey));
 
-  const aesKey = concat(a.slice(0, 8), b.slice(8, 24), a.slice(24, 32));
-  const aesIv = concat(b.slice(0, 8), a.slice(8, 24), b.slice(24, 32));
+  const aesKey = concat(a.subarray(0, 8), b.subarray(8, 24), a.subarray(24, 32));
+  const aesIv = concat(b.subarray(0, 8), a.subarray(8, 24), b.subarray(24, 32));
 
   const plaintext = ige256Decrypt(reader.buffer, aesKey, aesIv);
   assertEquals(plaintext.buffer.byteLength % 4, 0);

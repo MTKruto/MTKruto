@@ -41,7 +41,7 @@ export class TransportAbridged extends Transport implements Transport {
         const buffer = new Uint8Array(3);
         await this.#connection.read(buffer);
         this.decrypt(buffer);
-        const dataView = new DataView(buffer.buffer);
+        const dataView = new DataView(buffer.buffer, buffer.byteOffset, buffer.byteLength);
         length = dataView.getUint16(0, true);
       }
     }

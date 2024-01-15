@@ -118,7 +118,7 @@ Deno.test("TLRawReader", async (t) => {
     await t.step("buffer", () => {
       read++;
       assertEquals(reader.buffer.length, bufferLength - read);
-      assertEquals(reader.buffer, buffer.slice(read));
+      assertEquals(reader.buffer, buffer.subarray(read));
     });
   });
 
@@ -129,7 +129,7 @@ Deno.test("TLRawReader", async (t) => {
     await t.step("buffer", () => {
       read += 3 * 2;
       assertEquals(reader.buffer.length, buffer.length - read);
-      assertEquals(reader.buffer, buffer.slice(read));
+      assertEquals(reader.buffer, buffer.subarray(read));
     });
   });
 
@@ -140,7 +140,7 @@ Deno.test("TLRawReader", async (t) => {
     await t.step("buffer", () => {
       read += 4 * 2;
       assertEquals(reader.buffer.length, buffer.length - read);
-      assertEquals(reader.buffer, buffer.slice(read));
+      assertEquals(reader.buffer, buffer.subarray(read));
     });
   });
 
@@ -151,7 +151,7 @@ Deno.test("TLRawReader", async (t) => {
     await t.step("buffer", () => {
       read += 8 * 2;
       assertEquals(reader.buffer.length, buffer.length - read);
-      assertEquals(reader.buffer, buffer.slice(read));
+      assertEquals(reader.buffer, buffer.subarray(read));
     });
   });
 
@@ -161,7 +161,7 @@ Deno.test("TLRawReader", async (t) => {
     await t.step("buffer", () => {
       read += 8;
       assertEquals(reader.buffer.length, buffer.length - read);
-      assertEquals(reader.buffer, buffer.slice(read));
+      assertEquals(reader.buffer, buffer.subarray(read));
     });
   });
 
@@ -172,7 +172,7 @@ Deno.test("TLRawReader", async (t) => {
     await t.step("buffer", () => {
       read += 16 * 2;
       assertEquals(reader.buffer.length, buffer.length - read);
-      assertEquals(reader.buffer, buffer.slice(read));
+      assertEquals(reader.buffer, buffer.subarray(read));
     });
   });
 
@@ -189,7 +189,7 @@ Deno.test("TLRawReader", async (t) => {
     await t.step("buffer", () => {
       read += 32 * 2;
       assertEquals(reader.buffer.length, buffer.length - read);
-      assertEquals(reader.buffer, buffer.slice(read));
+      assertEquals(reader.buffer, buffer.subarray(read));
     });
   });
 
@@ -237,7 +237,7 @@ Deno.test("TLRawReader", async (t) => {
     await t.step("buffer", () => {
       read += 4 + (1 + 3 + 255 + 1);
       assertEquals(reader.buffer.length, buffer.length - read);
-      assertEquals(reader.buffer, buffer.slice(read));
+      assertEquals(reader.buffer, buffer.subarray(read));
     });
   });
 
@@ -248,7 +248,7 @@ Deno.test("TLRawReader", async (t) => {
     await t.step("buffer", () => {
       read += 4 + (1 + 3 + 259 + 1);
       assertEquals(reader.buffer.length, buffer.length - read);
-      assertEquals(reader.buffer, buffer.slice(read));
+      assertEquals(reader.buffer, buffer.subarray(read));
     });
   });
 });

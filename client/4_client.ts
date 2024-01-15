@@ -3,7 +3,7 @@ import { bigIntFromBuffer, cleanObject, drop, getRandomBigInt, getRandomId, Mayb
 import { as, enums, functions, Message_, MessageContainer, name, ReadObject, RPCResult, TLError, TLObject, TLReader, types } from "../2_tl.ts";
 import { Storage, StorageMemory } from "../3_storage.ts";
 import { DC } from "../3_transport.ts";
-import { BotCommand, Chat, ChatAction, ChatP, ConnectionState, constructUser, Document, FileSource, ID, InlineQueryResult, Message, MessageAnimation, MessageAudio, MessageContact, MessageDice, MessageDocument, MessageLocation, MessagePhoto, MessagePoll, MessageText, MessageVenue, MessageVideo, MessageVideoNote, MessageVoice, NetworkStatistics, ParseMode, Reaction, Update, UpdateIntersection, User } from "../3_types.ts";
+import { BotCommand, Chat, ChatAction, ChatMember, ChatP, ConnectionState, constructUser, Document, FileSource, ID, InlineQueryResult, Message, MessageAnimation, MessageAudio, MessageContact, MessageDice, MessageDocument, MessageLocation, MessagePhoto, MessagePoll, MessageText, MessageVenue, MessageVideo, MessageVideoNote, MessageVoice, NetworkStatistics, ParseMode, Reaction, Update, UpdateIntersection, User } from "../3_types.ts";
 import { ACK_THRESHOLD, APP_VERSION, DEVICE_MODEL, LANG_CODE, LANG_PACK, LAYER, MAX_CHANNEL_ID, MAX_CHAT_ID, PublicKeys, SYSTEM_LANG_CODE, SYSTEM_VERSION, USERNAME_TTL } from "../4_constants.ts";
 import { AuthKeyUnregistered, FloodWait, Migrate, PasswordHashInvalid, PhoneNumberInvalid, SessionPasswordNeeded, upgradeInstance } from "../4_errors.ts";
 import { ClientAbstract } from "./0_client_abstract.ts";
@@ -92,6 +92,8 @@ export interface Context {
   kickSender: () => Promise<void>;
   /** Set the rights of the received message. */
   setSenderRights: (params?: SetChatMemberRightsParams) => Promise<void>;
+  /** Get the administrators of the chat which the message was received from. */
+  getChatAdministrators: () => Promise<ChatMember[]>;
   /** Change the reactions made to the received message. */
   react: (reactions: Reaction[], params?: SetReactionsParams) => Promise<void>;
   /** Send a chat action to the chat which the message was received from. */
@@ -545,6 +547,10 @@ export class Client<C extends Context = Context> extends ClientAbstract {
         }
         return this.setChatMemberRights(chatId, senderId, params);
       },
+      getChatAdministrators: () => {
+        const { chatId } = mustGetMsg();
+        return this.getChatAdministrators(chatId);
+      },
       react: (reactions, params) => {
         const { chatId, messageId } = mustGetMsg();
         return this.setReactions(chatId, messageId, reactions, params);
@@ -837,17 +843,6 @@ export class Client<C extends Context = Context> extends ClientAbstract {
       throw new Error("apiHash not set");
     }
 
-    if (typeof params === "undefined") {
-      const loginType = mustPromptOneOf("Do you want to login as bot [b] or user [u]?", ["b", "u"] as const);
-      if (loginType == "b") {
-        params = mustPrompt("Bot token:");
-      } else {
-        params = { phone: () => mustPrompt("Phone number:"), code: () => mustPrompt("Verification code:"), password: () => mustPrompt("Password:") };
-      }
-    }
-
-    dAuth("authorizing with %s", typeof params === "string" ? "bot token" : params instanceof types.auth.ExportedAuthorization ? "exported authorization" : "AuthorizeUserParams");
-
     await this.#initConnection();
 
     try {
@@ -861,6 +856,17 @@ export class Client<C extends Context = Context> extends ClientAbstract {
         throw err;
       }
     }
+
+    if (typeof params === "undefined") {
+      const loginType = mustPromptOneOf("Do you want to login as bot [b] or user [u]?", ["b", "u"] as const);
+      if (loginType == "b") {
+        params = mustPrompt("Bot token:");
+      } else {
+        params = { phone: () => mustPrompt("Phone number:"), code: () => mustPrompt("Verification code:"), password: () => mustPrompt("Password:") };
+      }
+    }
+
+    dAuth("authorizing with %s", typeof params === "string" ? "bot token" : params instanceof types.auth.ExportedAuthorization ? "exported authorization" : "AuthorizeUserParams");
 
     if (typeof params === "string") {
       while (true) {
@@ -995,7 +1001,6 @@ export class Client<C extends Context = Context> extends ClientAbstract {
    */
   async start(params?: string | types.auth.ExportedAuthorization | AuthorizeUserParams) {
     await this.connect();
-    await this.#initConnection();
     await this.authorize(params);
   }
 
@@ -2122,5 +2127,15 @@ export class Client<C extends Context = Context> extends ClientAbstract {
    */
   async setChatMemberRights(chatId: ID, memberId: ID, params?: SetChatMemberRightsParams): Promise<void> {
     await this.#messageManager.setChatMemberRights(chatId, memberId, params);
+  }
+
+  /**
+   * Get the administrators of a chat.
+   *
+   * @method
+   * @param chatId The identifier of the chat.
+   */
+  async getChatAdministrators(chatId: ID): Promise<ChatMember[]> {
+    return await this.#messageManager.getChatAdministrators(chatId);
   }
 }
