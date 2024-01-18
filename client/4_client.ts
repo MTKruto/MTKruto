@@ -846,7 +846,6 @@ export class Client<C extends Context = Context> extends ClientAbstract {
       d("already authorized");
       return;
     } catch (err) {
-      console.debug(err);
       if (!(err instanceof AuthKeyUnregistered)) {
         throw err;
       }
