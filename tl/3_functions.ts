@@ -4403,6 +4403,36 @@ export class users_setSecureValueErrors_ extends Function_<boolean> {
   }
 }
 
+export class users_getIsPremiumRequiredToContact_ extends Function_<boolean[]> {
+  static __F = Symbol() as unknown as (params: { id: Array<enums.InputUser> }) => boolean[];
+  id: Array<enums.InputUser>;
+
+  protected get [id]() {
+    return 0xA622AA10;
+  }
+
+  static get [name]() {
+    return "users.getIsPremiumRequiredToContact"
+  }
+
+  static get [paramDesc](): ParamDesc {
+    return [
+      ["id", [types._InputUser], "Vector<InputUser>"],
+    ];
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.id, [types._InputUser], "Vector<InputUser>"],
+    ];
+  }
+
+  constructor(params: { id: Array<enums.InputUser> }) {
+    super();
+    this.id = params.id;
+  }
+}
+
 export class contacts_getContactIDs_ extends Function_<number[]> {
   static __F = Symbol() as unknown as (params: { hash: bigint }) => number[];
   hash: bigint;
@@ -5394,10 +5424,12 @@ export class messages_getHistory_ extends Function_<enums.messages.Messages> {
 }
 
 export class messages_search_ extends Function_<enums.messages.Messages> {
-  static __F = Symbol() as unknown as (params: { peer: enums.InputPeer; q: string; from_id?: enums.InputPeer; top_msg_id?: number; filter: enums.MessagesFilter; min_date: number; max_date: number; offset_id: number; add_offset: number; limit: number; max_id: number; min_id: number; hash: bigint }) => enums.messages.Messages;
+  static __F = Symbol() as unknown as (params: { peer: enums.InputPeer; q: string; from_id?: enums.InputPeer; saved_peer_id?: enums.InputPeer; saved_reaction?: Array<enums.Reaction>; top_msg_id?: number; filter: enums.MessagesFilter; min_date: number; max_date: number; offset_id: number; add_offset: number; limit: number; max_id: number; min_id: number; hash: bigint }) => enums.messages.Messages;
   peer: enums.InputPeer;
   q: string;
   from_id?: enums.InputPeer;
+  saved_peer_id?: enums.InputPeer;
+  saved_reaction?: Array<enums.Reaction>;
   top_msg_id?: number;
   filter: enums.MessagesFilter;
   min_date: number;
@@ -5410,7 +5442,7 @@ export class messages_search_ extends Function_<enums.messages.Messages> {
   hash: bigint;
 
   protected get [id]() {
-    return 0xA0FDA762;
+    return 0x29EE847A;
   }
 
   static get [name]() {
@@ -5423,6 +5455,8 @@ export class messages_search_ extends Function_<enums.messages.Messages> {
       ["peer", types._InputPeer, "InputPeer"],
       ["q", "string", "string"],
       ["from_id", types._InputPeer, "flags.0?InputPeer"],
+      ["saved_peer_id", types._InputPeer, "flags.2?InputPeer"],
+      ["saved_reaction", [types._Reaction], "flags.3?Vector<Reaction>"],
       ["top_msg_id", "number", "flags.1?int"],
       ["filter", types._MessagesFilter, "MessagesFilter"],
       ["min_date", "number", "int"],
@@ -5442,6 +5476,8 @@ export class messages_search_ extends Function_<enums.messages.Messages> {
       [this.peer, types._InputPeer, "InputPeer"],
       [this.q, "string", "string"],
       [this.from_id ?? null, types._InputPeer, "flags.0?InputPeer"],
+      [this.saved_peer_id ?? null, types._InputPeer, "flags.2?InputPeer"],
+      [this.saved_reaction ?? null, [types._Reaction], "flags.3?Vector<Reaction>"],
       [this.top_msg_id ?? null, "number", "flags.1?int"],
       [this.filter, types._MessagesFilter, "MessagesFilter"],
       [this.min_date, "number", "int"],
@@ -5455,11 +5491,13 @@ export class messages_search_ extends Function_<enums.messages.Messages> {
     ];
   }
 
-  constructor(params: { peer: enums.InputPeer; q: string; from_id?: enums.InputPeer; top_msg_id?: number; filter: enums.MessagesFilter; min_date: number; max_date: number; offset_id: number; add_offset: number; limit: number; max_id: number; min_id: number; hash: bigint }) {
+  constructor(params: { peer: enums.InputPeer; q: string; from_id?: enums.InputPeer; saved_peer_id?: enums.InputPeer; saved_reaction?: Array<enums.Reaction>; top_msg_id?: number; filter: enums.MessagesFilter; min_date: number; max_date: number; offset_id: number; add_offset: number; limit: number; max_id: number; min_id: number; hash: bigint }) {
     super();
     this.peer = params.peer;
     this.q = params.q;
     this.from_id = params.from_id;
+    this.saved_peer_id = params.saved_peer_id;
+    this.saved_reaction = params.saved_reaction;
     this.top_msg_id = params.top_msg_id;
     this.filter = params.filter;
     this.min_date = params.min_date;
@@ -9468,13 +9506,14 @@ export class messages_getEmojiURL_ extends Function_<enums.EmojiURL> {
 }
 
 export class messages_getSearchCounters_ extends Function_<enums.messages.SearchCounter[]> {
-  static __F = Symbol() as unknown as (params: { peer: enums.InputPeer; top_msg_id?: number; filters: Array<enums.MessagesFilter> }) => enums.messages.SearchCounter[];
+  static __F = Symbol() as unknown as (params: { peer: enums.InputPeer; saved_peer_id?: enums.InputPeer; top_msg_id?: number; filters: Array<enums.MessagesFilter> }) => enums.messages.SearchCounter[];
   peer: enums.InputPeer;
+  saved_peer_id?: enums.InputPeer;
   top_msg_id?: number;
   filters: Array<enums.MessagesFilter>;
 
   protected get [id]() {
-    return 0x00AE7CC1;
+    return 0x1BBCF300;
   }
 
   static get [name]() {
@@ -9485,6 +9524,7 @@ export class messages_getSearchCounters_ extends Function_<enums.messages.Search
     return [
       ["flags", flags, "#"],
       ["peer", types._InputPeer, "InputPeer"],
+      ["saved_peer_id", types._InputPeer, "flags.2?InputPeer"],
       ["top_msg_id", "number", "flags.0?int"],
       ["filters", [types._MessagesFilter], "Vector<MessagesFilter>"],
     ];
@@ -9494,14 +9534,16 @@ export class messages_getSearchCounters_ extends Function_<enums.messages.Search
     return [
       ["flags", flags, "#"],
       [this.peer, types._InputPeer, "InputPeer"],
+      [this.saved_peer_id ?? null, types._InputPeer, "flags.2?InputPeer"],
       [this.top_msg_id ?? null, "number", "flags.0?int"],
       [this.filters, [types._MessagesFilter], "Vector<MessagesFilter>"],
     ];
   }
 
-  constructor(params: { peer: enums.InputPeer; top_msg_id?: number; filters: Array<enums.MessagesFilter> }) {
+  constructor(params: { peer: enums.InputPeer; saved_peer_id?: enums.InputPeer; top_msg_id?: number; filters: Array<enums.MessagesFilter> }) {
     super();
     this.peer = params.peer;
+    this.saved_peer_id = params.saved_peer_id;
     this.top_msg_id = params.top_msg_id;
     this.filters = params.filters;
   }
@@ -10812,14 +10854,15 @@ export class messages_getMessageReadParticipants_ extends Function_<enums.ReadPa
 }
 
 export class messages_getSearchResultsCalendar_ extends Function_<enums.messages.SearchResultsCalendar> {
-  static __F = Symbol() as unknown as (params: { peer: enums.InputPeer; filter: enums.MessagesFilter; offset_id: number; offset_date: number }) => enums.messages.SearchResultsCalendar;
+  static __F = Symbol() as unknown as (params: { peer: enums.InputPeer; saved_peer_id?: enums.InputPeer; filter: enums.MessagesFilter; offset_id: number; offset_date: number }) => enums.messages.SearchResultsCalendar;
   peer: enums.InputPeer;
+  saved_peer_id?: enums.InputPeer;
   filter: enums.MessagesFilter;
   offset_id: number;
   offset_date: number;
 
   protected get [id]() {
-    return 0x49F0BDE9;
+    return 0x6AA3F6BD;
   }
 
   static get [name]() {
@@ -10828,7 +10871,9 @@ export class messages_getSearchResultsCalendar_ extends Function_<enums.messages
 
   static get [paramDesc](): ParamDesc {
     return [
+      ["flags", flags, "#"],
       ["peer", types._InputPeer, "InputPeer"],
+      ["saved_peer_id", types._InputPeer, "flags.2?InputPeer"],
       ["filter", types._MessagesFilter, "MessagesFilter"],
       ["offset_id", "number", "int"],
       ["offset_date", "number", "int"],
@@ -10837,16 +10882,19 @@ export class messages_getSearchResultsCalendar_ extends Function_<enums.messages
 
   protected get [params](): Params {
     return [
+      ["flags", flags, "#"],
       [this.peer, types._InputPeer, "InputPeer"],
+      [this.saved_peer_id ?? null, types._InputPeer, "flags.2?InputPeer"],
       [this.filter, types._MessagesFilter, "MessagesFilter"],
       [this.offset_id, "number", "int"],
       [this.offset_date, "number", "int"],
     ];
   }
 
-  constructor(params: { peer: enums.InputPeer; filter: enums.MessagesFilter; offset_id: number; offset_date: number }) {
+  constructor(params: { peer: enums.InputPeer; saved_peer_id?: enums.InputPeer; filter: enums.MessagesFilter; offset_id: number; offset_date: number }) {
     super();
     this.peer = params.peer;
+    this.saved_peer_id = params.saved_peer_id;
     this.filter = params.filter;
     this.offset_id = params.offset_id;
     this.offset_date = params.offset_date;
@@ -10854,14 +10902,15 @@ export class messages_getSearchResultsCalendar_ extends Function_<enums.messages
 }
 
 export class messages_getSearchResultsPositions_ extends Function_<enums.messages.SearchResultsPositions> {
-  static __F = Symbol() as unknown as (params: { peer: enums.InputPeer; filter: enums.MessagesFilter; offset_id: number; limit: number }) => enums.messages.SearchResultsPositions;
+  static __F = Symbol() as unknown as (params: { peer: enums.InputPeer; saved_peer_id?: enums.InputPeer; filter: enums.MessagesFilter; offset_id: number; limit: number }) => enums.messages.SearchResultsPositions;
   peer: enums.InputPeer;
+  saved_peer_id?: enums.InputPeer;
   filter: enums.MessagesFilter;
   offset_id: number;
   limit: number;
 
   protected get [id]() {
-    return 0x6E9583A3;
+    return 0x9C7F2F10;
   }
 
   static get [name]() {
@@ -10870,7 +10919,9 @@ export class messages_getSearchResultsPositions_ extends Function_<enums.message
 
   static get [paramDesc](): ParamDesc {
     return [
+      ["flags", flags, "#"],
       ["peer", types._InputPeer, "InputPeer"],
+      ["saved_peer_id", types._InputPeer, "flags.2?InputPeer"],
       ["filter", types._MessagesFilter, "MessagesFilter"],
       ["offset_id", "number", "int"],
       ["limit", "number", "int"],
@@ -10879,16 +10930,19 @@ export class messages_getSearchResultsPositions_ extends Function_<enums.message
 
   protected get [params](): Params {
     return [
+      ["flags", flags, "#"],
       [this.peer, types._InputPeer, "InputPeer"],
+      [this.saved_peer_id ?? null, types._InputPeer, "flags.2?InputPeer"],
       [this.filter, types._MessagesFilter, "MessagesFilter"],
       [this.offset_id, "number", "int"],
       [this.limit, "number", "int"],
     ];
   }
 
-  constructor(params: { peer: enums.InputPeer; filter: enums.MessagesFilter; offset_id: number; limit: number }) {
+  constructor(params: { peer: enums.InputPeer; saved_peer_id?: enums.InputPeer; filter: enums.MessagesFilter; offset_id: number; limit: number }) {
     super();
     this.peer = params.peer;
+    this.saved_peer_id = params.saved_peer_id;
     this.filter = params.filter;
     this.offset_id = params.offset_id;
     this.limit = params.limit;
@@ -12552,6 +12606,385 @@ export class messages_searchEmojiStickerSets_ extends Function_<enums.messages.F
     this.exclude_featured = params.exclude_featured;
     this.q = params.q;
     this.hash = params.hash;
+  }
+}
+
+export class messages_getSavedDialogs_ extends Function_<enums.messages.SavedDialogs> {
+  static __F = Symbol() as unknown as (params: { exclude_pinned?: true; offset_date: number; offset_id: number; offset_peer: enums.InputPeer; limit: number; hash: bigint }) => enums.messages.SavedDialogs;
+  exclude_pinned?: true;
+  offset_date: number;
+  offset_id: number;
+  offset_peer: enums.InputPeer;
+  limit: number;
+  hash: bigint;
+
+  protected get [id]() {
+    return 0x5381D21A;
+  }
+
+  static get [name]() {
+    return "messages.getSavedDialogs"
+  }
+
+  static get [paramDesc](): ParamDesc {
+    return [
+      ["flags", flags, "#"],
+      ["exclude_pinned", "true", "flags.0?true"],
+      ["offset_date", "number", "int"],
+      ["offset_id", "number", "int"],
+      ["offset_peer", types._InputPeer, "InputPeer"],
+      ["limit", "number", "int"],
+      ["hash", "bigint", "long"],
+    ];
+  }
+
+  protected get [params](): Params {
+    return [
+      ["flags", flags, "#"],
+      [this.exclude_pinned ?? null, "true", "flags.0?true"],
+      [this.offset_date, "number", "int"],
+      [this.offset_id, "number", "int"],
+      [this.offset_peer, types._InputPeer, "InputPeer"],
+      [this.limit, "number", "int"],
+      [this.hash, "bigint", "long"],
+    ];
+  }
+
+  constructor(params: { exclude_pinned?: true; offset_date: number; offset_id: number; offset_peer: enums.InputPeer; limit: number; hash: bigint }) {
+    super();
+    this.exclude_pinned = params.exclude_pinned;
+    this.offset_date = params.offset_date;
+    this.offset_id = params.offset_id;
+    this.offset_peer = params.offset_peer;
+    this.limit = params.limit;
+    this.hash = params.hash;
+  }
+}
+
+export class messages_getSavedHistory_ extends Function_<enums.messages.Messages> {
+  static __F = Symbol() as unknown as (params: { peer: enums.InputPeer; offset_id: number; offset_date: number; add_offset: number; limit: number; max_id: number; min_id: number; hash: bigint }) => enums.messages.Messages;
+  peer: enums.InputPeer;
+  offset_id: number;
+  offset_date: number;
+  add_offset: number;
+  limit: number;
+  max_id: number;
+  min_id: number;
+  hash: bigint;
+
+  protected get [id]() {
+    return 0x3D9A414D;
+  }
+
+  static get [name]() {
+    return "messages.getSavedHistory"
+  }
+
+  static get [paramDesc](): ParamDesc {
+    return [
+      ["peer", types._InputPeer, "InputPeer"],
+      ["offset_id", "number", "int"],
+      ["offset_date", "number", "int"],
+      ["add_offset", "number", "int"],
+      ["limit", "number", "int"],
+      ["max_id", "number", "int"],
+      ["min_id", "number", "int"],
+      ["hash", "bigint", "long"],
+    ];
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.peer, types._InputPeer, "InputPeer"],
+      [this.offset_id, "number", "int"],
+      [this.offset_date, "number", "int"],
+      [this.add_offset, "number", "int"],
+      [this.limit, "number", "int"],
+      [this.max_id, "number", "int"],
+      [this.min_id, "number", "int"],
+      [this.hash, "bigint", "long"],
+    ];
+  }
+
+  constructor(params: { peer: enums.InputPeer; offset_id: number; offset_date: number; add_offset: number; limit: number; max_id: number; min_id: number; hash: bigint }) {
+    super();
+    this.peer = params.peer;
+    this.offset_id = params.offset_id;
+    this.offset_date = params.offset_date;
+    this.add_offset = params.add_offset;
+    this.limit = params.limit;
+    this.max_id = params.max_id;
+    this.min_id = params.min_id;
+    this.hash = params.hash;
+  }
+}
+
+export class messages_deleteSavedHistory_ extends Function_<enums.messages.AffectedHistory> {
+  static __F = Symbol() as unknown as (params: { peer: enums.InputPeer; max_id: number; min_date?: number; max_date?: number }) => enums.messages.AffectedHistory;
+  peer: enums.InputPeer;
+  max_id: number;
+  min_date?: number;
+  max_date?: number;
+
+  protected get [id]() {
+    return 0x6E98102B;
+  }
+
+  static get [name]() {
+    return "messages.deleteSavedHistory"
+  }
+
+  static get [paramDesc](): ParamDesc {
+    return [
+      ["flags", flags, "#"],
+      ["peer", types._InputPeer, "InputPeer"],
+      ["max_id", "number", "int"],
+      ["min_date", "number", "flags.2?int"],
+      ["max_date", "number", "flags.3?int"],
+    ];
+  }
+
+  protected get [params](): Params {
+    return [
+      ["flags", flags, "#"],
+      [this.peer, types._InputPeer, "InputPeer"],
+      [this.max_id, "number", "int"],
+      [this.min_date ?? null, "number", "flags.2?int"],
+      [this.max_date ?? null, "number", "flags.3?int"],
+    ];
+  }
+
+  constructor(params: { peer: enums.InputPeer; max_id: number; min_date?: number; max_date?: number }) {
+    super();
+    this.peer = params.peer;
+    this.max_id = params.max_id;
+    this.min_date = params.min_date;
+    this.max_date = params.max_date;
+  }
+}
+
+export class messages_getPinnedSavedDialogs_ extends Function_<enums.messages.SavedDialogs> {
+  static __F = Symbol() as unknown as () => enums.messages.SavedDialogs;
+  protected get [id]() {
+    return 0xD63D94E0;
+  }
+
+  static get [name]() {
+    return "messages.getPinnedSavedDialogs"
+  }
+
+  static get [paramDesc](): ParamDesc {
+    return [];
+  }
+
+  protected get [params](): Params {
+    return [];
+  }
+
+  constructor() {
+    super();
+  }
+}
+
+export class messages_toggleSavedDialogPin_ extends Function_<boolean> {
+  static __F = Symbol() as unknown as (params: { pinned?: true; peer: enums.InputDialogPeer }) => boolean;
+  pinned?: true;
+  peer: enums.InputDialogPeer;
+
+  protected get [id]() {
+    return 0xAC81BBDE;
+  }
+
+  static get [name]() {
+    return "messages.toggleSavedDialogPin"
+  }
+
+  static get [paramDesc](): ParamDesc {
+    return [
+      ["flags", flags, "#"],
+      ["pinned", "true", "flags.0?true"],
+      ["peer", types._InputDialogPeer, "InputDialogPeer"],
+    ];
+  }
+
+  protected get [params](): Params {
+    return [
+      ["flags", flags, "#"],
+      [this.pinned ?? null, "true", "flags.0?true"],
+      [this.peer, types._InputDialogPeer, "InputDialogPeer"],
+    ];
+  }
+
+  constructor(params: { pinned?: true; peer: enums.InputDialogPeer }) {
+    super();
+    this.pinned = params.pinned;
+    this.peer = params.peer;
+  }
+}
+
+export class messages_reorderPinnedSavedDialogs_ extends Function_<boolean> {
+  static __F = Symbol() as unknown as (params: { force?: true; order: Array<enums.InputDialogPeer> }) => boolean;
+  force?: true;
+  order: Array<enums.InputDialogPeer>;
+
+  protected get [id]() {
+    return 0x8B716587;
+  }
+
+  static get [name]() {
+    return "messages.reorderPinnedSavedDialogs"
+  }
+
+  static get [paramDesc](): ParamDesc {
+    return [
+      ["flags", flags, "#"],
+      ["force", "true", "flags.0?true"],
+      ["order", [types._InputDialogPeer], "Vector<InputDialogPeer>"],
+    ];
+  }
+
+  protected get [params](): Params {
+    return [
+      ["flags", flags, "#"],
+      [this.force ?? null, "true", "flags.0?true"],
+      [this.order, [types._InputDialogPeer], "Vector<InputDialogPeer>"],
+    ];
+  }
+
+  constructor(params: { force?: true; order: Array<enums.InputDialogPeer> }) {
+    super();
+    this.force = params.force;
+    this.order = params.order;
+  }
+}
+
+export class messages_getSavedReactionTags_ extends Function_<enums.messages.SavedReactionTags> {
+  static __F = Symbol() as unknown as (params: { hash: bigint }) => enums.messages.SavedReactionTags;
+  hash: bigint;
+
+  protected get [id]() {
+    return 0x761DDACF;
+  }
+
+  static get [name]() {
+    return "messages.getSavedReactionTags"
+  }
+
+  static get [paramDesc](): ParamDesc {
+    return [
+      ["hash", "bigint", "long"],
+    ];
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.hash, "bigint", "long"],
+    ];
+  }
+
+  constructor(params: { hash: bigint }) {
+    super();
+    this.hash = params.hash;
+  }
+}
+
+export class messages_updateSavedReactionTag_ extends Function_<boolean> {
+  static __F = Symbol() as unknown as (params: { reaction: enums.Reaction; title?: string }) => boolean;
+  reaction: enums.Reaction;
+  title?: string;
+
+  protected get [id]() {
+    return 0x60297DEC;
+  }
+
+  static get [name]() {
+    return "messages.updateSavedReactionTag"
+  }
+
+  static get [paramDesc](): ParamDesc {
+    return [
+      ["flags", flags, "#"],
+      ["reaction", types._Reaction, "Reaction"],
+      ["title", "string", "flags.0?string"],
+    ];
+  }
+
+  protected get [params](): Params {
+    return [
+      ["flags", flags, "#"],
+      [this.reaction, types._Reaction, "Reaction"],
+      [this.title ?? null, "string", "flags.0?string"],
+    ];
+  }
+
+  constructor(params: { reaction: enums.Reaction; title?: string }) {
+    super();
+    this.reaction = params.reaction;
+    this.title = params.title;
+  }
+}
+
+export class messages_getDefaultTagReactions_ extends Function_<enums.messages.Reactions> {
+  static __F = Symbol() as unknown as (params: { hash: bigint }) => enums.messages.Reactions;
+  hash: bigint;
+
+  protected get [id]() {
+    return 0xBDF93428;
+  }
+
+  static get [name]() {
+    return "messages.getDefaultTagReactions"
+  }
+
+  static get [paramDesc](): ParamDesc {
+    return [
+      ["hash", "bigint", "long"],
+    ];
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.hash, "bigint", "long"],
+    ];
+  }
+
+  constructor(params: { hash: bigint }) {
+    super();
+    this.hash = params.hash;
+  }
+}
+
+export class messages_getOutboxReadDate_ extends Function_<enums.OutboxReadDate> {
+  static __F = Symbol() as unknown as (params: { peer: enums.InputPeer; msg_id: number }) => enums.OutboxReadDate;
+  peer: enums.InputPeer;
+  msg_id: number;
+
+  protected get [id]() {
+    return 0x8C4BFE5D;
+  }
+
+  static get [name]() {
+    return "messages.getOutboxReadDate"
+  }
+
+  static get [paramDesc](): ParamDesc {
+    return [
+      ["peer", types._InputPeer, "InputPeer"],
+      ["msg_id", "number", "int"],
+    ];
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.peer, types._InputPeer, "InputPeer"],
+      [this.msg_id, "number", "int"],
+    ];
+  }
+
+  constructor(params: { peer: enums.InputPeer; msg_id: number }) {
+    super();
+    this.peer = params.peer;
+    this.msg_id = params.msg_id;
   }
 }
 
@@ -20752,6 +21185,7 @@ export const functions = {
     getUsers: users_getUsers_,
     getFullUser: users_getFullUser_,
     setSecureValueErrors: users_setSecureValueErrors_,
+    getIsPremiumRequiredToContact: users_getIsPremiumRequiredToContact_,
   },
   contacts: {
     getContactIDs: contacts_getContactIDs_,
@@ -20969,6 +21403,16 @@ export const functions = {
     requestAppWebView: messages_requestAppWebView_,
     setChatWallPaper: messages_setChatWallPaper_,
     searchEmojiStickerSets: messages_searchEmojiStickerSets_,
+    getSavedDialogs: messages_getSavedDialogs_,
+    getSavedHistory: messages_getSavedHistory_,
+    deleteSavedHistory: messages_deleteSavedHistory_,
+    getPinnedSavedDialogs: messages_getPinnedSavedDialogs_,
+    toggleSavedDialogPin: messages_toggleSavedDialogPin_,
+    reorderPinnedSavedDialogs: messages_reorderPinnedSavedDialogs_,
+    getSavedReactionTags: messages_getSavedReactionTags_,
+    updateSavedReactionTag: messages_updateSavedReactionTag_,
+    getDefaultTagReactions: messages_getDefaultTagReactions_,
+    getOutboxReadDate: messages_getOutboxReadDate_,
   },
   updates: {
     getState: updates_getState_,
@@ -21367,6 +21811,7 @@ export declare namespace functions {
     type getUsers = users_getUsers_;
     type getFullUser = users_getFullUser_;
     type setSecureValueErrors = users_setSecureValueErrors_;
+    type getIsPremiumRequiredToContact = users_getIsPremiumRequiredToContact_;
   }
   namespace contacts {
     type getContactIDs = contacts_getContactIDs_;
@@ -21584,6 +22029,16 @@ export declare namespace functions {
     type requestAppWebView = messages_requestAppWebView_;
     type setChatWallPaper = messages_setChatWallPaper_;
     type searchEmojiStickerSets = messages_searchEmojiStickerSets_;
+    type getSavedDialogs = messages_getSavedDialogs_;
+    type getSavedHistory = messages_getSavedHistory_;
+    type deleteSavedHistory = messages_deleteSavedHistory_;
+    type getPinnedSavedDialogs = messages_getPinnedSavedDialogs_;
+    type toggleSavedDialogPin = messages_toggleSavedDialogPin_;
+    type reorderPinnedSavedDialogs = messages_reorderPinnedSavedDialogs_;
+    type getSavedReactionTags = messages_getSavedReactionTags_;
+    type updateSavedReactionTag = messages_updateSavedReactionTag_;
+    type getDefaultTagReactions = messages_getDefaultTagReactions_;
+    type getOutboxReadDate = messages_getOutboxReadDate_;
   }
   namespace updates {
     type getState = updates_getState_;
