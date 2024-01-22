@@ -179,6 +179,8 @@ export interface ClientParams extends ClientPlainParams {
   prefixes?: string | string[];
   /** Whether to guarantee that order-sensitive updates are delivered at least once before delivering next ones. Useful mainly for clients providing a user interface à la Telegram Desktop. Defaults to `false`. */
   guaranteeUpdateDelivery?: boolean;
+  /** Whether to not handle updates received when the client was not running. Defaults to `true` for bots, and `false` for users. */
+  dropPendingUpdates?: boolean;
 }
 export class Client<C extends Context = Context> extends ClientAbstract {
   #auth: { key: Uint8Array; id: bigint } | null = null;
@@ -300,6 +302,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
       },
       cdn: params?.cdn ?? false,
       ignoreOutgoing: this.#ignoreOutgoing,
+      dropPendingUpdates: params?.dropPendingUpdates,
     };
     this.#updateManager = new UpdateManager(c);
     this.#networkStatisticsManager = new NetworkStatisticsManager(c);

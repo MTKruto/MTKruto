@@ -27,6 +27,7 @@ export interface C {
   apiFactory: ApiFactory;
   ignoreOutgoing: boolean | null;
   cdn: boolean;
+  dropPendingUpdates?: boolean;
 }
 
 export class ConnectionError extends Error {

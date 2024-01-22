@@ -22,10 +22,24 @@ export class UpdateManager {
     this.#c = c;
   }
 
+  #defaultDropPendingUpdates: boolean | null = null;
+  async #mustDropPendingUpdates() {
+    if (typeof this.#c.dropPendingUpdates === "boolean") {
+      return this.#c.dropPendingUpdates;
+    }
+    if (this.#defaultDropPendingUpdates == null) {
+      this.#defaultDropPendingUpdates = await this.#c.storage.getAccountType() == "bot";
+    }
+    return this.#defaultDropPendingUpdates;
+  }
+
   async fetchState(source: string) {
     const state = await this.#c.api.updates.getState();
     this.#updateState = state;
     d("state fetched [%s]", source);
+    if (await this.#mustDropPendingUpdates()) {
+      await this.#c.storage.setState(state);
+    }
   }
 
   async processChats(chats: enums.Chat[]) {
@@ -135,6 +149,20 @@ export class UpdateManager {
     }
   }
 
+  #nonFirst = new Set<bigint>();
+  async #getChannelPtsWithDropPendingUpdatesCheck(channelId: bigint) {
+    if (!(await this.#mustDropPendingUpdates())) {
+      return await this.#c.storage.getChannelPts(channelId);
+    }
+    const first = !this.#nonFirst.has(channelId);
+    if (first) {
+      this.#nonFirst.add(channelId);
+      return null;
+    } else {
+      return await this.#c.storage.getChannelPts(channelId);
+    }
+  }
+
   async #checkGap(pts: number, ptsCount: number) {
     const localState = await this.#getLocalState();
     if (localState.pts + ptsCount < pts) {
@@ -142,7 +170,7 @@ export class UpdateManager {
     }
   }
   async #checkChannelGap(channelId: bigint, pts: number, ptsCount: number) {
-    let localPts = await this.#c.storage.getChannelPts(channelId);
+    let localPts = await this.#getChannelPtsWithDropPendingUpdatesCheck(channelId);
     if (!localPts) {
       localPts = pts - ptsCount;
     }
@@ -167,7 +195,7 @@ export class UpdateManager {
       if (checkGap) {
         await this.#checkChannelGap(channelId, update.pts, ptsCount);
       }
-      let currentPts: number | null = await this.#c.storage.getChannelPts(channelId);
+      let currentPts: number | null = await this.#getChannelPtsWithDropPendingUpdatesCheck(channelId);
       currentPts ??= update.pts - ptsCount;
       if (currentPts + ptsCount > update.pts) {
         return;
