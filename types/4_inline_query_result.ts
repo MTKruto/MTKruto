@@ -249,7 +249,7 @@ export type InlineQueryResult =
   | InlineQueryResultVoice;
 
 // deno-lint-ignore no-explicit-any
-export async function inlineQueryResultToTlObject(result_: InlineQueryResult, parseText: (text: string, params?: { parseMode?: ParseMode; entities?: MessageEntity[] }) => readonly [string, any[] | undefined], usernameResolver: UsernameResolver) {
+export async function inlineQueryResultToTlObject(result_: InlineQueryResult, parseText: (text: string, params?: { parseMode?: ParseMode; entities?: MessageEntity[] }) => Promise<readonly [string, any[] | undefined]>, usernameResolver: UsernameResolver) {
   let document: enums.InputWebDocument | null = null;
   let thumb: types.InputWebDocument | null = null;
   let fileId_: string | null = null;
@@ -387,9 +387,9 @@ export async function inlineQueryResultToTlObject(result_: InlineQueryResult, pa
     thumb = document;
   }
 
-  let ret: ReturnType<typeof parseText> = ["", []];
+  let ret: Awaited<ReturnType<typeof parseText>> = ["", []];
   if ("caption" in result_ && result_.caption) {
-    ret = parseText(result_.caption, { parseMode: result_.parseMode, entities: result_.captionEntities });
+    ret = await parseText(result_.caption, { parseMode: result_.parseMode, entities: result_.captionEntities });
   }
 
   const { type, id } = result_;
@@ -463,7 +463,7 @@ export async function inlineQueryResultToTlObject(result_: InlineQueryResult, pa
     if (!("messageText" in result_.inputMessageContent)) {
       UNREACHABLE();
     }
-    const [message, entities] = parseText(result_.inputMessageContent.messageText, { entities: result_.inputMessageContent.entities, parseMode: result_.inputMessageContent.parseMode });
+    const [message, entities] = await parseText(result_.inputMessageContent.messageText, { entities: result_.inputMessageContent.entities, parseMode: result_.inputMessageContent.parseMode });
     return new types.InputBotInlineResult({
       id,
       type,
