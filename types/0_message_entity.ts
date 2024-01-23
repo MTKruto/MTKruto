@@ -1,4 +1,6 @@
+import { UNREACHABLE } from "../1_utilities.ts";
 import { enums, types } from "../2_tl.ts";
+import { EntityGetter } from "./1__getters.ts";
 
 /** @unlisted */
 export type MessageEntityType =
@@ -198,7 +200,7 @@ export function constructMessageEntity(obj: enums.MessageEntity): MessageEntity 
   }
 }
 
-export function messageEntityToTlObject(entity: MessageEntity) {
+export async function messageEntityToTlObject(entity: MessageEntity, getEntity: EntityGetter) {
   const { offset, length } = entity;
   switch (entity.type) {
     case "mention":
@@ -219,10 +221,33 @@ export function messageEntityToTlObject(entity: MessageEntity) {
       return new types.MessageEntityCode({ offset, length });
     case "pre":
       return new types.MessageEntityPre({ offset, length, language: entity.language });
-    case "textLink":
+    case "textLink": {
+      if (entity.url.startsWith("tg://user?id=")) {
+        try {
+          const url = new URL(entity.url);
+          if (url.protocol == "tg:" && url.hostname == "user" && url.pathname == "/") {
+            const id = Number(url.searchParams.get("id"));
+            if (!isNaN(id)) {
+              const entity_ = await getEntity(new types.PeerUser({ user_id: BigInt(id) }));
+              if (!entity_) {
+                UNREACHABLE();
+              }
+              return new types.InputMessageEntityMentionName({ offset, length, user_id: new types.InputUser({ user_id: entity_.id, access_hash: entity_.access_hash ?? 0n }) });
+            }
+          }
+        } catch {
+          //
+        }
+      }
       return new types.MessageEntityTextUrl({ offset, length, url: entity.url });
-    case "textMention":
-      return new types.MessageEntityMentionName({ offset, length, user_id: BigInt(entity.userId) });
+    }
+    case "textMention": {
+      const entity_ = await getEntity(new types.PeerUser({ user_id: BigInt(entity.userId) }));
+      if (!entity_) {
+        UNREACHABLE();
+      }
+      return new types.InputMessageEntityMentionName({ offset, length, user_id: new types.InputUser({ user_id: entity_.id, access_hash: entity_.access_hash ?? 0n }) });
+    }
     case "cashtag":
       return new types.MessageEntityCashtag({ offset, length });
     case "phoneNumber":

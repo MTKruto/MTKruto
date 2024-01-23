@@ -74,7 +74,7 @@ export class MessageManager {
     return messages[0] ?? null;
   }
 
-  parseText(text: string, params?: { parseMode?: ParseMode; entities?: MessageEntity[] }) {
+  async parseText(text: string, params?: { parseMode?: ParseMode; entities?: MessageEntity[] }) {
     const entities_ = params?.entities ?? [];
     const parseMode = params?.parseMode ?? this.#c.parseMode;
     switch (parseMode) {
@@ -91,7 +91,7 @@ export class MessageManager {
       default:
         UNREACHABLE();
     }
-    const entities = entities_?.length > 0 ? entities_.map((v) => messageEntityToTlObject(v)) : undefined;
+    const entities = entities_?.length > 0 ? await Promise.all(entities_.map((v) => messageEntityToTlObject(v, this.#c.getEntity))) : undefined;
     return [text, entities] as const;
   }
 
@@ -221,7 +221,7 @@ export class MessageManager {
     text: string,
     params?: SendMessageParams,
   ) {
-    const [message, entities] = this.parseText(text, params);
+    const [message, entities] = await this.parseText(text, params);
 
     const replyMarkup = await this.#constructReplyMarkup(params);
 
@@ -239,7 +239,7 @@ export class MessageManager {
       no_webpage: noWebpage,
       silent,
       noforwards,
-      reply_to: this.#constructReplyTo(params),
+      reply_to: await this.#constructReplyTo(params),
       send_as: sendAs,
       entities,
       reply_markup: replyMarkup,
@@ -249,10 +249,10 @@ export class MessageManager {
     return assertMessageType(message_, "text");
   }
 
-  #constructReplyTo(params?: _SendCommon) {
+  async #constructReplyTo(params?: _SendCommon) {
     const topMsgId = params?.messageThreadId;
     const replyToMsgId = params?.replyToMessageId;
-    return replyToMsgId !== undefined ? new types.InputReplyToMessage({ reply_to_msg_id: replyToMsgId, top_msg_id: topMsgId, quote_text: params?.replyQuote?.text, quote_entities: params?.replyQuote?.entities.map(messageEntityToTlObject), quote_offset: params?.replyQuote?.offset }) : undefined;
+    return replyToMsgId !== undefined ? new types.InputReplyToMessage({ reply_to_msg_id: replyToMsgId, top_msg_id: topMsgId, quote_text: params?.replyQuote?.text, quote_entities: await Promise.all(params?.replyQuote?.entities.map((v) => messageEntityToTlObject(v, this.#c.getEntity)) ?? []), quote_offset: params?.replyQuote?.offset }) : undefined;
   }
 
   async sendVenue(chatId: ID, latitude: number, longitude: number, title: string, address: string, params?: SendVenueParams) {
@@ -268,7 +268,7 @@ export class MessageManager {
       random_id: randomId,
       silent,
       noforwards,
-      reply_to: this.#constructReplyTo(params),
+      reply_to: await this.#constructReplyTo(params),
       send_as: sendAs,
       reply_markup: replyMarkup,
       media: new types.InputMediaVenue({
@@ -302,7 +302,7 @@ export class MessageManager {
       random_id: randomId,
       silent,
       noforwards,
-      reply_to: this.#constructReplyTo(params),
+      reply_to: await this.#constructReplyTo(params),
       send_as: sendAs,
       reply_markup: replyMarkup,
       media: new types.InputMediaContact({
@@ -331,7 +331,7 @@ export class MessageManager {
       random_id: randomId,
       silent,
       noforwards,
-      reply_to: this.#constructReplyTo(params),
+      reply_to: await this.#constructReplyTo(params),
       send_as: sendAs,
       reply_markup: replyMarkup,
       media: new types.InputMediaDice({
@@ -357,7 +357,7 @@ export class MessageManager {
       random_id: randomId,
       silent,
       noforwards,
-      reply_to: this.#constructReplyTo(params),
+      reply_to: await this.#constructReplyTo(params),
       send_as: sendAs,
       reply_markup: replyMarkup,
       media: params?.livePeriod !== undefined
@@ -529,7 +529,7 @@ export class MessageManager {
     const replyMarkup = await this.#constructReplyMarkup(params);
 
     const caption_ = params?.caption;
-    const parseResult = caption_ !== undefined ? this.parseText(caption_, { parseMode: params?.parseMode, entities: params?.captionEntities }) : undefined;
+    const parseResult = caption_ !== undefined ? await this.parseText(caption_, { parseMode: params?.parseMode, entities: params?.captionEntities }) : undefined;
 
     const caption = parseResult === undefined ? undefined : parseResult[0];
     const captionEntities = parseResult === undefined ? undefined : parseResult[1];
@@ -540,7 +540,7 @@ export class MessageManager {
       silent,
       noforwards,
       reply_markup: replyMarkup,
-      reply_to: this.#constructReplyTo(params),
+      reply_to: await this.#constructReplyTo(params),
       send_as: sendAs,
       media,
       message: caption ?? "",
@@ -582,7 +582,7 @@ export class MessageManager {
     const replyMarkup = await this.#constructReplyMarkup(params);
 
     const explanation = params?.explanation;
-    const parseResult = explanation !== undefined ? this.parseText(explanation, { parseMode: params?.explanationParseMode, entities: params?.explanationEntities }) : undefined;
+    const parseResult = explanation !== undefined ? await this.parseText(explanation, { parseMode: params?.explanationParseMode, entities: params?.explanationEntities }) : undefined;
 
     const solution = parseResult === undefined ? undefined : parseResult[0];
     const solutionEntities = parseResult === undefined ? undefined : parseResult[1];
@@ -614,7 +614,7 @@ export class MessageManager {
       silent,
       noforwards,
       reply_markup: replyMarkup,
-      reply_to: this.#constructReplyTo(params),
+      reply_to: await this.#constructReplyTo(params),
       send_as: sendAs,
       media,
       message: "",
@@ -645,7 +645,7 @@ export class MessageManager {
     text: string,
     params?: EditMessageParams,
   ) {
-    const [message, entities] = this.parseText(text, params);
+    const [message, entities] = await this.parseText(text, params);
 
     const result = await this.#c.api.messages.editMessage({
       id: messageId,
@@ -769,6 +769,7 @@ export class MessageManager {
           shouldIgnore = this.#c.ignoreOutgoing;
         }
         if (!shouldIgnore) {
+          console.debug(update.message);
           const message = await this.constructMessage(update.message);
           if (update instanceof types.UpdateNewMessage || update instanceof types.UpdateNewChannelMessage) {
             return ({ message });
