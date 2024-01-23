@@ -44,18 +44,16 @@ export class UpdateManager {
 
   async processChats(chats: enums.Chat[]) {
     for (const chat of chats) {
-      if (chat instanceof types.Channel && chat.access_hash) {
+      if (chat instanceof types.Channel || chat instanceof types.ChannelForbidden) {
         await this.#c.storage.setEntity(chat);
-        if (chat.username) {
+        if ("username" in chat && chat.username) {
           await this.#c.storage.updateUsernames("channel", chat.id, [chat.username]);
         }
-        if (chat.usernames) {
+        if ("usernames" in chat && chat.usernames) {
           await this.#c.storage.updateUsernames("channel", chat.id, chat.usernames.map((v) => v.username));
         }
-      } else if (chat instanceof types.Chat) {
+      } else if (chat instanceof types.Chat || chat instanceof types.ChatForbidden) {
         await this.#c.storage.setEntity(chat);
-      } else if (chat instanceof types.ChannelForbidden || chat instanceof types.ChatForbidden) {
-        await this.#c.storage.removeEntity(chat);
       }
     }
   }

@@ -183,11 +183,6 @@ export abstract class Storage {
     await this.set(KPARTS__PEER(type, entity.id), rleEncode(entity[serialize]()));
   }
 
-  async removeEntity(entity: types.User | types.Channel | types.ChannelForbidden | types.Chat | types.ChatForbidden) {
-    const type = this.#getEntityType(entity);
-    await this.set(KPARTS__PEER(type, entity.id), null);
-  }
-
   async getEntity(type: "channel", id: bigint): Promise<types.Channel | types.ChannelForbidden | null>;
   async getEntity(type: "chat", id: bigint): Promise<types.Chat | types.ChatForbidden | null>;
   async getEntity(type: "user", id: bigint): Promise<types.User | null>;
