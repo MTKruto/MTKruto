@@ -94,7 +94,7 @@ export interface _MessageBase {
  * Properties shared between media message types.
  * @unlisted
  */
-export interface MessageMediaBase extends _MessageBase {
+export interface _MessageMediaBase extends _MessageBase {
   caption?: string;
   captionEntities?: MessageEntity[];
   hasMediaSpoiler?: boolean;
@@ -114,7 +114,7 @@ export interface MessageText extends _MessageBase {
 }
 
 /** @unlisted */
-export interface MessagePhoto extends MessageMediaBase {
+export interface MessagePhoto extends _MessageMediaBase {
   /** The photo included in the message. */
   photo: Photo;
 }
@@ -123,7 +123,7 @@ export interface MessagePhoto extends MessageMediaBase {
  * A document message.
  * @unlisted
  */
-export interface MessageDocument extends MessageMediaBase {
+export interface MessageDocument extends _MessageMediaBase {
   /** The document included in the message. */
   document: Document;
 }
@@ -132,7 +132,7 @@ export interface MessageDocument extends MessageMediaBase {
  * A video message.
  * @unlisted
  */
-export interface MessageVideo extends MessageMediaBase {
+export interface MessageVideo extends _MessageMediaBase {
   /** The video included in the message. */
   video: Video;
 }
@@ -150,7 +150,7 @@ export interface MessageSticker extends _MessageBase {
  * An animation message. Animations are GIFs or H.264/MPEG-4 AVC videos without sound.
  * @unlisted
  */
-export interface MessageAnimation extends MessageMediaBase {
+export interface MessageAnimation extends _MessageMediaBase {
   /** The animation included in the message. */
   animation: Animation;
 }
@@ -159,7 +159,7 @@ export interface MessageAnimation extends MessageMediaBase {
  * A voice message.
  * @unlisted
  */
-export interface MessageVoice extends MessageMediaBase {
+export interface MessageVoice extends _MessageMediaBase {
   /** The voice included in the message. */
   voice: Voice;
 }
@@ -168,7 +168,7 @@ export interface MessageVoice extends MessageMediaBase {
  * An audio message.
  * @unlisted
  */
-export interface MessageAudio extends MessageMediaBase {
+export interface MessageAudio extends _MessageMediaBase {
   /** The audio included in the message. */
   audio: Audio;
 }
@@ -856,7 +856,7 @@ export async function constructMessage(
     };
   }
 
-  const messageMedia: MessageMediaBase = {
+  const messageMedia: _MessageMediaBase = {
     ...message,
     caption: message_.message,
     captionEntities: message_.entities?.map(constructMessageEntity).filter((v): v is NonNullable<typeof v> => !!v) ?? [],
