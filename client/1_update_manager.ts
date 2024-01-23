@@ -46,7 +46,6 @@ export class UpdateManager {
     for (const chat of chats) {
       if (chat instanceof types.Channel && chat.access_hash) {
         await this.#c.storage.setEntity(chat);
-        await this.#c.storage.setChannelAccessHash(chat.id, chat.access_hash);
         if (chat.username) {
           await this.#c.storage.updateUsernames("channel", chat.id, [chat.username]);
         }
@@ -127,7 +126,6 @@ export class UpdateManager {
     for (const user of users) {
       if (user instanceof types.User && user.access_hash) {
         await this.#c.storage.setEntity(user);
-        await this.#c.storage.setUserAccessHash(user.id, user.access_hash);
         if (user.username) {
           await this.#c.storage.updateUsernames("user", user.id, [user.username]);
         }

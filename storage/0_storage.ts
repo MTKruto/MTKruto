@@ -4,8 +4,6 @@ import { DC } from "../3_transport.ts";
 
 const KPARTS__DC = ["dc"];
 const KPARTS__AUTH_KEY = ["authKey"];
-const KPARTS__CHANNEL_ACCESS_HASH = (v: bigint) => ["channelAccessHash", v];
-const KPARTS__USER_ACCESS_HASH = (v: bigint) => ["userAccessHash", v];
 const KPARTS__USERNAME = (v: string) => ["username", v];
 const KPARTS__STATE = ["state"];
 const KPARTS__CHANNEL_PTS = (v: bigint) => ["channelPts", v];
@@ -75,20 +73,22 @@ export abstract class Storage {
     return this.#authKeyId;
   }
 
-  setChannelAccessHash(id: bigint, accessHash: bigint) {
-    return this.set(KPARTS__CHANNEL_ACCESS_HASH(id), accessHash);
+  async getChannelAccessHash(id: bigint) {
+    const channel = await this.getEntity("channel", id);
+    if (channel) {
+      return typeof channel.access_hash === "bigint" ? channel.access_hash : null;
+    } else {
+      return null;
+    }
   }
 
-  getChannelAccessHash(id: bigint) {
-    return this.get<bigint>(KPARTS__CHANNEL_ACCESS_HASH(id));
-  }
-
-  setUserAccessHash(id: bigint, accessHash: bigint) {
-    return this.set(KPARTS__USER_ACCESS_HASH(id), accessHash);
-  }
-
-  getUserAccessHash(id: bigint) {
-    return this.get<bigint>(KPARTS__USER_ACCESS_HASH(id));
+  async getUserAccessHash(id: bigint) {
+    const user = await this.getEntity("user", id);
+    if (user) {
+      return typeof user.access_hash === "bigint" ? user.access_hash : null;
+    } else {
+      return null;
+    }
   }
 
   async updateUsernames(type: "user" | "channel", id: bigint, usernames: string[]) {

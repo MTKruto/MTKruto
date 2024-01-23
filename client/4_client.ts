@@ -1279,7 +1279,6 @@ export class Client<C extends Context = Context> extends ClientAbstract {
         inputPeer.access_hash = await this.#getChannelAccessHash(inputPeer.channel_id);
       } else {
         inputPeer.access_hash = await this.#getUserAccessHash(inputPeer.user_id);
-        await this.storage.setUserAccessHash(inputPeer.user_id, inputPeer.access_hash);
       }
     }
     return inputPeer;
