@@ -129,7 +129,7 @@ export function constructChatP(chat: types.User | types.Chat | types.ChatForbidd
     }
 
     return cleanObject(chat_);
-  } else if (chat instanceof types.Channel || types.ChannelForbidden) {
+  } else if (chat instanceof types.Channel || chat instanceof types.ChannelForbidden) {
     let chat_: ChatPSupergroup | ChatPChannel;
     const id = ZERO_CHANNEL_ID + -Number(chat.id);
     if (chat instanceof types.ChannelForbidden) {
