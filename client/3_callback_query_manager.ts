@@ -6,6 +6,8 @@ import { MessageManager } from "./2_message_manager.ts";
 
 type C = C_ & { messageManager: MessageManager };
 
+type CallbackQueryManagerUpdate = types.UpdateBotCallbackQuery | types.UpdateInlineBotCallbackQuery;
+
 export class CallbackQueryManager {
   #c: C;
 
@@ -23,11 +25,11 @@ export class CallbackQueryManager {
     });
   }
 
-  static canHandleUpdate(update: enums.Update): update is types.UpdateBotCallbackQuery | types.UpdateInlineBotCallbackQuery {
+  static canHandleUpdate(update: enums.Update): update is CallbackQueryManagerUpdate {
     return update instanceof types.UpdateBotCallbackQuery || update instanceof types.UpdateInlineBotCallbackQuery;
   }
 
-  async handleUpdate(update: types.UpdateBotCallbackQuery | types.UpdateInlineBotCallbackQuery): Promise<Update> {
+  async handleUpdate(update: CallbackQueryManagerUpdate): Promise<Update> {
     return { callbackQuery: await constructCallbackQuery(update, this.#c.getEntity, this.#c.messageManager.getMessageWithReply.bind(this.#c.messageManager)) };
   }
 }

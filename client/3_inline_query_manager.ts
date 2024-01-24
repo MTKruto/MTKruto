@@ -7,6 +7,8 @@ import { MessageManager } from "./2_message_manager.ts";
 
 type C = C_ & { messageManager: MessageManager };
 
+type InlineQueryManagerUpdate = types.UpdateBotInlineQuery | types.UpdateBotInlineSend;
+
 export class InlineQueryManager {
   #c: C;
 
@@ -28,11 +30,11 @@ export class InlineQueryManager {
     });
   }
 
-  static canHandleUpdate(update: enums.Update): update is types.UpdateBotInlineQuery | types.UpdateBotInlineSend {
+  static canHandleUpdate(update: enums.Update): update is InlineQueryManagerUpdate {
     return update instanceof types.UpdateBotInlineQuery || update instanceof types.UpdateBotInlineSend;
   }
 
-  async handleUpdate(update: types.UpdateBotInlineQuery | types.UpdateBotInlineSend): Promise<Update> {
+  async handleUpdate(update: InlineQueryManagerUpdate): Promise<Update> {
     if (update instanceof types.UpdateBotInlineQuery) {
       return { inlineQuery: await constructInlineQuery(update, this.#c.getEntity) };
     } else if (update instanceof types.UpdateBotInlineSend) {

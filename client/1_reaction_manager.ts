@@ -3,6 +3,13 @@ import { enums, peerToChatId, types } from "../2_tl.ts";
 import { constructMessageReaction, constructMessageReactionCount, constructMessageReactions, Update } from "../3_types.ts";
 import { C } from "./0_types.ts";
 
+type ReactionManagerUpdate =
+  | types.UpdateBotMessageReactions
+  | types.UpdateBotMessageReaction
+  | types.UpdateMessageReactions
+  | types.UpdateChannelMessageViews
+  | types.UpdateChannelMessageForwards;
+
 export class ReactionManager {
   #c: C;
 
@@ -10,11 +17,11 @@ export class ReactionManager {
     this.#c = c;
   }
 
-  static canHandleUpdate(update: enums.Update): update is types.UpdateBotMessageReactions | types.UpdateBotMessageReaction | types.UpdateMessageReactions | types.UpdateChannelMessageViews | types.UpdateChannelMessageForwards {
+  static canHandleUpdate(update: enums.Update): update is ReactionManagerUpdate {
     return update instanceof types.UpdateBotMessageReactions || update instanceof types.UpdateBotMessageReaction || update instanceof types.UpdateMessageReactions || update instanceof types.UpdateChannelMessageViews || update instanceof types.UpdateChannelMessageForwards;
   }
 
-  async handleUpdate(update: types.UpdateBotMessageReactions | types.UpdateBotMessageReaction | types.UpdateMessageReactions | types.UpdateChannelMessageViews | types.UpdateChannelMessageForwards): Promise<Update | null> {
+  async handleUpdate(update: ReactionManagerUpdate): Promise<Update | null> {
     if (update instanceof types.UpdateBotMessageReactions) {
       const messageReactionCount = await constructMessageReactionCount(update, this.#c.getEntity);
       if (messageReactionCount) {
