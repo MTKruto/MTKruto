@@ -205,6 +205,14 @@ export interface UpdateChatMember {
   chatMember: ChatMemberUpdated;
 }
 
+/**
+ * The status of a current account was changed in a chat.
+ * @unlisted
+ */
+export interface UpdateMyChatMember {
+  myChatMember: ChatMemberUpdated;
+}
+
 /** @unlisted */
 export interface UpdateMap {
   message: UpdateNewMessage;
@@ -222,6 +230,7 @@ export interface UpdateMap {
   messageReactionCount: UpdateMessageReactionCount;
   messageReactions: UpdateMessageReactions;
   chatMember: UpdateChatMember;
+  myChatMember: UpdateMyChatMember;
 }
 
 /** @unlisted */
@@ -243,6 +252,7 @@ export type UpdateIntersection<T> =
     & UpdateMessageReactionCount
     & UpdateMessageReactions
     & UpdateChatMember
+    & UpdateMyChatMember
   >;
 
 /** An incoming update. */
@@ -261,4 +271,5 @@ export type Update =
   | UpdateMessageInteractions
   | UpdateMessageReactionCount
   | UpdateMessageReactions
-  | UpdateChatMember;
+  | UpdateChatMember
+  | UpdateMyChatMember;
