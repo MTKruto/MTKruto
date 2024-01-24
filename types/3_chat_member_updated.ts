@@ -25,11 +25,11 @@ export interface ChatMemberUpdated {
   viaSharedFolder?: boolean;
 }
 
-export async function constructChatMemberUpdated(update: types.UpdateChannelParticipant, getEntity: EntityGetter): Promise<ChatMemberUpdated> {
+export async function constructChatMemberUpdated(update: types.UpdateChannelParticipant | types.UpdateChatParticipant, getEntity: EntityGetter): Promise<ChatMemberUpdated> {
   if (!update.prev_participant && !update.new_participant) {
     UNREACHABLE();
   }
-  const chat_ = await getEntity(new types.PeerChannel(update));
+  const chat_ = await getEntity("channel_id" in update ? new types.PeerChannel(update) : new types.PeerChat(update));
   const from_ = await getEntity(new types.PeerUser({ user_id: update.actor_id }));
   if (!chat_ || !from_) {
     UNREACHABLE();
@@ -40,7 +40,7 @@ export async function constructChatMemberUpdated(update: types.UpdateChannelPart
   const date = fromUnixTimestamp(update.date);
   const oldChatMember = await constructChatMember(update.prev_participant ?? new types.ChannelParticipantLeft({ peer: userPeer }), getEntity);
   const newChatMember = await constructChatMember(update.new_participant ?? new types.ChannelParticipantLeft({ peer: userPeer }), getEntity);
-  const viaSharedFolder = update.via_chatlist ? true : update.invite ? false : undefined;
+  const viaSharedFolder = "via_chatlist" in update ? update.via_chatlist ? true : update.invite ? false : undefined : undefined;
   const inviteLink = (update.invite && update.invite instanceof types.ChatInviteExported) ? await constructInviteLink(update.invite, getEntity) : undefined;
   return cleanObject({
     chat,
