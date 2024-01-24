@@ -1,6 +1,7 @@
 import { contentType, debug } from "../0_deps.ts";
 import { getRandomId, toUnixTimestamp, UNREACHABLE } from "../1_utilities.ts";
 import { as, enums, getChannelChatId, peerToChatId, types } from "../2_tl.ts";
+import { constructChatMemberUpdated } from "../3_types.ts";
 import { assertMessageType, ChatAction, ChatMember, chatMemberRightsToTlObject, constructChatMember, constructMessage as constructMessage_, FileID, FileSource, FileType, ID, Message, MessageEntity, messageEntityToTlObject, ParseMode, Reaction, reactionEqual, reactionToTlObject, replyMarkupToTlObject, Update, UsernameResolver } from "../3_types.ts";
 import { STICKER_SET_NAME_TTL } from "../4_constants.ts";
 import { parseHtml } from "./0_html.ts";
@@ -15,6 +16,15 @@ const d = debug("MessageManager");
 interface C extends C_ {
   fileManager: FileManager;
 }
+
+type MessageManagerUpdate =
+  | types.UpdateNewMessage
+  | types.UpdateNewChannelMessage
+  | types.UpdateEditMessage
+  | types.UpdateEditChannelMessage
+  | types.UpdateDeleteMessages
+  | types.UpdateDeleteChannelMessages
+  | types.UpdateChannelParticipant;
 
 export class MessageManager {
   #c: C;
@@ -743,16 +753,21 @@ export class MessageManager {
     }
   }
 
-  static canHandleUpdate(update: enums.Update): update is types.UpdateNewMessage | types.UpdateNewChannelMessage | types.UpdateEditMessage | types.UpdateEditChannelMessage | types.UpdateDeleteMessages | types.UpdateDeleteChannelMessages {
-    return update instanceof types.UpdateNewMessage || update instanceof types.UpdateNewChannelMessage || update instanceof types.UpdateEditMessage || update instanceof types.UpdateEditChannelMessage || update instanceof types.UpdateDeleteMessages || update instanceof types.UpdateDeleteChannelMessages;
+  static canHandleUpdate(update: enums.Update): update is MessageManagerUpdate {
+    return update instanceof types.UpdateNewMessage ||
+      update instanceof types.UpdateNewChannelMessage ||
+      update instanceof types.UpdateEditMessage ||
+      update instanceof types.UpdateEditChannelMessage ||
+      update instanceof types.UpdateDeleteMessages ||
+      update instanceof types.UpdateDeleteChannelMessages ||
+      update instanceof types.UpdateChannelParticipant;
   }
 
-  async handleUpdate(update: types.UpdateNewMessage | types.UpdateNewChannelMessage | types.UpdateEditMessage | types.UpdateEditChannelMessage | types.UpdateDeleteMessages | types.UpdateDeleteChannelMessages): Promise<Update | null> {
+  async handleUpdate(update: MessageManagerUpdate): Promise<Update | null> {
     if (update instanceof types.UpdateNewMessage || update instanceof types.UpdateNewChannelMessage || update instanceof types.UpdateEditMessage || update instanceof types.UpdateEditChannelMessage) {
       if (update.message instanceof types.Message || update.message instanceof types.MessageService) {
         const chatId = peerToChatId(update.message.peer_id);
         await this.#c.storage.setMessage(chatId, update.message.id, update.message);
-        // promises.push(this.#chatListManager.reassignChatLastMessage(chatId));
       }
     }
 
@@ -800,6 +815,11 @@ export class MessageManager {
         }
       }
       return { deletedMessages };
+    }
+
+    if (update instanceof types.UpdateChannelParticipant) {
+      const chatMember = await constructChatMemberUpdated(update, this.#c.getEntity);
+      return { chatMember };
     }
 
     return null;

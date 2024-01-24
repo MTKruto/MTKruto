@@ -6,6 +6,7 @@ import { InlineQuery } from "./2_inline_query.ts";
 import { MessageInteractions } from "./2_message_interactions.ts";
 import { MessageReactionCount } from "./2_message_reaction_count.ts";
 import { MessageReactions } from "./2_message_reactions.ts";
+import { ChatMemberUpdated } from "./3_chat_member_updated.ts";
 import { Message } from "./4_message.ts";
 import { CallbackQuery } from "./5_callback_query.ts";
 import { Chat } from "./5_chat.ts";
@@ -196,6 +197,14 @@ export interface UpdateMessageReactions {
   messageReactions: MessageReactions;
 }
 
+/**
+ * The status of a chat member was changed.
+ * @unlisted
+ */
+export interface UpdateChatMember {
+  chatMember: ChatMemberUpdated;
+}
+
 /** @unlisted */
 export interface UpdateMap {
   message: UpdateNewMessage;
@@ -212,6 +221,7 @@ export interface UpdateMap {
   messageInteractions: UpdateMessageInteractions;
   messageReactionCount: UpdateMessageReactionCount;
   messageReactions: UpdateMessageReactions;
+  chatMember: UpdateChatMember;
 }
 
 /** @unlisted */
@@ -232,6 +242,7 @@ export type UpdateIntersection<T> =
     & UpdateMessageInteractions
     & UpdateMessageReactionCount
     & UpdateMessageReactions
+    & UpdateChatMember
   >;
 
 /** An incoming update. */
@@ -249,4 +260,5 @@ export type Update =
   | UpdateDeletedChat
   | UpdateMessageInteractions
   | UpdateMessageReactionCount
-  | UpdateMessageReactions;
+  | UpdateMessageReactions
+  | UpdateChatMember;
