@@ -819,7 +819,12 @@ export class MessageManager {
 
     if (update instanceof types.UpdateChannelParticipant) {
       const chatMember = await constructChatMemberUpdated(update, this.#c.getEntity);
-      return { chatMember };
+      const selfId = await this.#c.getSelfId();
+      if (chatMember.oldChatMember.user.id == selfId) {
+        return { myChatMember: chatMember };
+      } else {
+        return { chatMember };
+      }
     }
 
     return null;
