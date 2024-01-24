@@ -1,8 +1,7 @@
 import { cleanObject, fromUnixTimestamp, UNREACHABLE } from "../1_utilities.ts";
 import { types } from "../2_tl.ts";
-import { constructUser } from "../3_types.ts";
 import { EntityGetter } from "./1__getters.ts";
-import { User } from "./1_user.ts";
+import { constructUser, User } from "./1_user.ts";
 
 /** A chat invite link. */
 export interface InviteLink {

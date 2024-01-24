@@ -1,6 +1,6 @@
 import { cleanObject, fromUnixTimestamp, UNREACHABLE } from "../1_utilities.ts";
 import { types } from "../2_tl.ts";
-import { EntityGetter } from "../3_types.ts";
+import { EntityGetter } from "./1__getters.ts";
 import { constructChatMember, constructUser } from "../mod.ts";
 import { constructChatP } from "./1_chat_p.ts";
 import { ChatP } from "./1_chat_p.ts";
