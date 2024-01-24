@@ -206,7 +206,7 @@ export interface UpdateChatMember {
 }
 
 /**
- * The status of a current account was changed in a chat.
+ * The status of the current account was changed in a chat.
  * @unlisted
  */
 export interface UpdateMyChatMember {
