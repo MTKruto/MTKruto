@@ -24,7 +24,8 @@ type MessageManagerUpdate =
   | types.UpdateEditChannelMessage
   | types.UpdateDeleteMessages
   | types.UpdateDeleteChannelMessages
-  | types.UpdateChannelParticipant;
+  | types.UpdateChannelParticipant
+  | types.UpdateChatParticipant;
 
 export class MessageManager {
   #c: C;
@@ -760,7 +761,8 @@ export class MessageManager {
       update instanceof types.UpdateEditChannelMessage ||
       update instanceof types.UpdateDeleteMessages ||
       update instanceof types.UpdateDeleteChannelMessages ||
-      update instanceof types.UpdateChannelParticipant;
+      update instanceof types.UpdateChannelParticipant ||
+      update instanceof types.UpdateChatParticipant;
   }
 
   async handleUpdate(update: MessageManagerUpdate): Promise<Update | null> {
@@ -817,7 +819,7 @@ export class MessageManager {
       return { deletedMessages };
     }
 
-    if (update instanceof types.UpdateChannelParticipant) {
+    if (update instanceof types.UpdateChannelParticipant || update instanceof types.UpdateChatParticipant) {
       const chatMember = await constructChatMemberUpdated(update, this.#c.getEntity);
       const selfId = await this.#c.getSelfId();
       if (chatMember.oldChatMember.user.id == selfId) {
