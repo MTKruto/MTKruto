@@ -422,7 +422,7 @@ export async function inlineQueryResultToTlObject(result_: InlineQueryResult, pa
     const fileId = FileID.decode(fileId_);
     return new types.InputBotInlineResultDocument({
       id,
-      type,
+      type: type == "document" ? "file" : type,
       title,
       description,
       document: new types.InputDocument({
