@@ -2,7 +2,7 @@ import { UNREACHABLE } from "../1_utilities.ts";
 import { enums, types } from "../2_tl.ts";
 import { ChatAdministratorRights, chatAdministratorRightsToTlObject, constructChatAdministratorRights } from "./0_chat_administrator_rights.ts";
 import { KeyboardButtonPollType } from "./0_keyboard_button_poll_type.ts";
-import { WebAppInfo } from "./0_web_app_info.ts";
+import { MiniAppInfo } from "./0_mini_app_info.ts";
 
 /** @unlisted */
 export interface KeyboardButtonText {
@@ -48,8 +48,8 @@ export interface KeyboardButtonRequestPoll extends KeyboardButtonText {
 }
 
 /** @unlisted */
-export interface KeyboardButtonWebApp extends KeyboardButtonText {
-  webApp: WebAppInfo;
+export interface KeyboardButtonMiniApp extends KeyboardButtonText {
+  miniApp: MiniAppInfo;
 }
 
 /** A button of a custom keyboard. */
@@ -60,7 +60,7 @@ export type KeyboardButton =
   | KeyboardButtonRequestContact
   | KeyboardButtonRequestLocation
   | KeyboardButtonRequestPoll
-  | KeyboardButtonWebApp;
+  | KeyboardButtonMiniApp;
 
 export function constructKeyboardButton(button_: enums.KeyboardButton): KeyboardButton {
   if (button_ instanceof types.KeyboardButton) {
@@ -127,7 +127,7 @@ export function constructKeyboardButton(button_: enums.KeyboardButton): Keyboard
 
     return button;
   } else if (button_ instanceof types.KeyboardButtonWebView || button_ instanceof types.KeyboardButtonSimpleWebView) {
-    return { text: button_.text, webApp: { url: button_.url } };
+    return { text: button_.text, miniApp: { url: button_.url } };
   } else {
     UNREACHABLE();
   }
@@ -175,8 +175,8 @@ export function keyboardButtonToTlObject(button: KeyboardButton) {
     return new types.KeyboardButtonRequestGeoLocation({ text: button.text });
   } else if ("requestPoll" in button) {
     return new types.KeyboardButtonRequestPoll({ text: button.text, quiz: button.requestPoll.type == "quiz" });
-  } else if ("webApp" in button) {
-    return new types.KeyboardButtonWebView({ text: button.text, url: button.webApp.url });
+  } else if ("miniApp" in button) {
+    return new types.KeyboardButtonWebView({ text: button.text, url: button.miniApp.url });
   } else {
     return new types.KeyboardButton({ text: button.text });
   }

@@ -23,7 +23,7 @@ export class InlineQueryManager {
       results: await Promise.all(results.map((v) => inlineQueryResultToTlObject(v, this.#c.messageManager.parseText.bind(this.#c.messageManager), this.#c.messageManager.usernameResolver.bind(this.#c.messageManager)))),
       cache_time: params?.cacheTime ?? 300,
       private: params?.isPersonal ? true : undefined,
-      switch_webview: params?.button && params.button.webApp ? new types.InlineBotWebView({ text: params.button.text, url: params.button.webApp.url }) : undefined,
+      switch_webview: params?.button && params.button.miniApp ? new types.InlineBotWebView({ text: params.button.text, url: params.button.miniApp.url }) : undefined,
       switch_pm: params?.button && params.button.startParameter ? new types.InlineBotSwitchPM({ text: params.button.text, start_param: params.button.startParameter }) : undefined,
       gallery: params?.isGallery ? true : undefined,
       next_offset: params?.nextOffset,

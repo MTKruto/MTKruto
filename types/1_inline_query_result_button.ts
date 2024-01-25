@@ -1,7 +1,7 @@
-import { WebAppInfo } from "./0_web_app_info.ts";
+import { MiniAppInfo } from "./0_mini_app_info.ts";
 
 export interface InlineQueryResultButton {
   text: string;
-  webApp?: WebAppInfo;
+  miniApp?: MiniAppInfo;
   startParameter?: string;
 }
