@@ -4,6 +4,7 @@ import { constructLocation, Location } from "./0_location.ts";
 import { EntityGetter } from "./1__getters.ts";
 import { constructUser, User } from "./1_user.ts";
 
+/** An incoming inline query. */
 export interface InlineQuery {
   id: string;
   from: User;

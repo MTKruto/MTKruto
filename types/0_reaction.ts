@@ -13,6 +13,7 @@ export interface ReactionCustomEmoji {
   id: string;
 }
 
+/** A reaction type. */
 export type Reaction = ReactionEmoji | ReactionCustomEmoji;
 
 export function constructReaction(reaction: enums.Reaction): Reaction {
