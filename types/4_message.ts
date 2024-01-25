@@ -358,7 +358,7 @@ export interface MessageUserShared extends _MessageBase {
  * @unlisted
  */
 export interface MessageWriteAccessAllowed extends _MessageBase {
-  writeAccessAllowed: { webAppName?: string };
+  writeAccessAllowed: { miniAppName?: string };
 }
 
 /**
@@ -685,8 +685,8 @@ async function constructServiceMessage(message_: types.MessageService, chat: Cha
     const userShared = { requestId: message_.action.button_id, userId: Number(user.user_id) };
     return { ...message, userShared };
   } else if (message_.action instanceof types.MessageActionBotAllowed) {
-    const webAppName = message_.action.app ? message_.action.app[as](types.BotApp).title : undefined;
-    const writeAccessAllowed = { webAppName };
+    const miniAppName = message_.action.app ? message_.action.app[as](types.BotApp).title : undefined;
+    const writeAccessAllowed = { miniAppName };
     return { ...message, writeAccessAllowed };
   } else if (message_.action instanceof types.MessageActionTopicCreate) {
     const forumTopicCreated = {

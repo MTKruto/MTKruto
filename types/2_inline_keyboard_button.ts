@@ -1,7 +1,7 @@
 import { UNREACHABLE } from "../1_utilities.ts";
 import { enums, types } from "../2_tl.ts";
 import { LoginUrl } from "./0_login_url.ts";
-import { constructWebAppInfo, WebAppInfo } from "./0_web_app_info.ts";
+import { constructMiniAppInfo, MiniAppInfo } from "./0_mini_app_info.ts";
 import { UsernameResolver } from "./1__getters.ts";
 
 /** @unlisted */
@@ -20,8 +20,8 @@ export interface InlineKeyboardButtonCallback extends _InlineKeyboardButtonBase 
 }
 
 /** @unlisted */
-export interface InlineKeyboardButtonWebApp extends _InlineKeyboardButtonBase {
-  webApp: WebAppInfo;
+export interface InlineKeyboardButtonMiniApp extends _InlineKeyboardButtonBase {
+  miniApp: MiniAppInfo;
 }
 
 /** @unlisted */
@@ -53,7 +53,7 @@ export interface InlineKeyboardButtonPay extends _InlineKeyboardButtonBase {
 export type InlineKeyboardButton =
   | InlineKeyboardButtonURL
   | InlineKeyboardButtonCallback
-  | InlineKeyboardButtonWebApp
+  | InlineKeyboardButtonMiniApp
   | InlineKeyboardButtonLogin
   | InlineKeyboardButtonSwitchInline
   | InlineKeyboardButtonSwitchInlineCurrent
@@ -66,7 +66,7 @@ export function constructInlineKeyboardButton(button_: enums.KeyboardButton): In
   } else if (button_ instanceof types.KeyboardButtonCallback) {
     return { text: button_.text, callbackData: new TextDecoder().decode(button_.data) };
   } else if (button_ instanceof types.KeyboardButtonWebView || button_ instanceof types.KeyboardButtonSimpleWebView) {
-    return { text: button_.text, webApp: constructWebAppInfo(button_.url) };
+    return { text: button_.text, miniApp: constructMiniAppInfo(button_.url) };
   } else if (button_ instanceof types.KeyboardButtonUrlAuth) {
     return { text: button_.text, loginUrl: { url: button_.url, forwardText: button_.fwd_text } };
   } else if (button_ instanceof types.KeyboardButtonSwitchInline) {
@@ -89,8 +89,8 @@ export async function inlineKeyboardButtonToTlObject(button: InlineKeyboardButto
     return new types.KeyboardButtonUrl({ text: button.text, url: button.url });
   } else if ("callbackData" in button) {
     return new types.KeyboardButtonCallback({ text: button.text, data: new TextEncoder().encode(button.callbackData) });
-  } else if ("webApp" in button) {
-    return new types.KeyboardButtonWebView({ text: button.text, url: button.webApp.url });
+  } else if ("miniApp" in button) {
+    return new types.KeyboardButtonWebView({ text: button.text, url: button.miniApp.url });
   } else if ("loginUrl" in button) {
     return new types.InputKeyboardButtonUrlAuth({
       text: button.text,
