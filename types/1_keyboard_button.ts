@@ -52,6 +52,7 @@ export interface KeyboardButtonWebApp extends KeyboardButtonText {
   webApp: WebAppInfo;
 }
 
+/** A button of a custom keyboard. */
 export type KeyboardButton =
   | KeyboardButtonText
   | KeyboardButtonRequestUser

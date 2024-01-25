@@ -91,4 +91,5 @@ export interface InputMessageContentInvoice {
   isFlexible?: boolean;
 }
 
+/** The content of a message to be returned as an inline query result. */
 export type InputMessageContent = InputMessageContentText | InputMessageContentLocation | InputMessageContentVenue | InputMessageContentContact | InputMessageContentInvoice;

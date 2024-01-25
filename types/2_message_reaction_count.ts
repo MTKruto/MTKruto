@@ -4,6 +4,7 @@ import { EntityGetter } from "./1__getters.ts";
 import { ChatP, constructChatP } from "./1_chat_p.ts";
 import { constructReactionCount, ReactionCount } from "./1_reaction_count.ts";
 
+/** Information on the reactions made to a channel post. */
 export interface MessageReactionCount {
   chat: ChatP;
   messageId: number;
