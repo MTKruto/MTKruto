@@ -5,6 +5,7 @@ import { MessageEntity } from "./0_message_entity.ts";
 import { Animation, constructAnimation } from "./1_animation.ts";
 import { constructPhoto, Photo } from "./1_photo.ts";
 
+/** A game. */
 export interface Game {
   title: string;
   description: string;

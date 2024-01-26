@@ -1,6 +1,7 @@
 import { fromUnixTimestamp } from "../1_utilities.ts";
 import { peerToChatId, types } from "../2_tl.ts";
 
+/** Giveaway parameters. */
 export interface GiveawayParameters {
   boostedChatId: number;
   additionalChatIds: number[];

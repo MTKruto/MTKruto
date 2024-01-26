@@ -52,6 +52,7 @@ export interface ChatMemberBanned extends ChatMemberBase {
   untilDate?: Date;
 }
 
+/** A chat member. */
 export type ChatMember = ChatMemberCreator | ChatMemberAdministrator | ChatMemberMember | ChatMemberRestricted | ChatMemberLeft | ChatMemberBanned;
 
 export async function constructChatMember(participant: enums.ChannelParticipant | enums.ChatParticipant, getEntity: EntityGetter): Promise<ChatMember> {

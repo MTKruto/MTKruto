@@ -8,6 +8,7 @@ import { ChatMember, constructChatMember } from "./2_chat_member.ts";
 import { constructInviteLink } from "./2_invite_link.ts";
 import { InviteLink } from "./2_invite_link.ts";
 
+/** Changes made to a chat member. */
 export interface ChatMemberUpdated {
   /** The chat in which the change was made. */
   chat: ChatP;

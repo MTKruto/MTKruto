@@ -37,6 +37,7 @@ export interface Sticker {
   fileSize?: number;
 }
 
+/** @unlisted */
 export type StickerSetNameGetter = (inputStickerSet: types.InputStickerSetID) => MaybePromise<string>;
 
 export async function constructSticker(document: types.Document, fileId: string, fileUniqueId: string, getStickerSetName: StickerSetNameGetter): Promise<Sticker> {

@@ -3,6 +3,7 @@ import { types } from "../2_tl.ts";
 import { constructMessageEntity, MessageEntity } from "./0_message_entity.ts";
 import { constructPollOption, PollOption } from "./0_poll_option.ts";
 
+/** A poll. */
 export interface Poll {
   id: string;
   question: string;
