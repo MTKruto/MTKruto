@@ -4,6 +4,7 @@ import { constructLocation, Location } from "./0_location.ts";
 import { EntityGetter } from "./1__getters.ts";
 import { constructUser, User } from "./1_user.ts";
 
+/** A chosen inline result. */
 export interface ChosenInlineResult {
   resultId: string;
   from: User;

@@ -526,6 +526,7 @@ export function assertMessageType<T extends keyof MessageTypes>(message: Message
   return message as MessageTypes[T];
 }
 
+/** Any type of message. */
 export type Message =
   | MessageText
   | MessagePhoto

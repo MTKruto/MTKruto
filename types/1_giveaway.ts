@@ -1,6 +1,7 @@
 import { types } from "../2_tl.ts";
 import { constructGiveawayParameters, GiveawayParameters } from "./0_giveaway_parameters.ts";
 
+/** A giveaway. */
 export interface Giveaway {
   parameters: GiveawayParameters;
   winnerCount: number;
