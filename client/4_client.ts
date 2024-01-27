@@ -1136,11 +1136,18 @@ export class Client<C extends Context = Context> extends ClientAbstract {
             reject(this.#pingLoopAbortSignal?.signal.reason);
           };
         });
+        if (!this.connected) {
+          continue;
+        }
+        this.#pingLoopAbortSignal.signal.throwIfAborted();
         await this.api.ping_delay_disconnect({ ping_id: getRandomId(), disconnect_delay: this.#pingInterval / 1_000 + 15 });
         if (Date.now() - this.#lastUpdates.getTime() >= 15 * 60 * 1_000) {
           drop(this.#updateManager.recoverUpdateGap("lastUpdates"));
         }
       } catch (err) {
+        if (!this.connected) {
+          continue;
+        }
         d("ping loop error: %o", err);
       }
     }
