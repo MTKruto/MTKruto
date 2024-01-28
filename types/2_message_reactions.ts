@@ -5,6 +5,7 @@ import { EntityGetter } from "./1__getters.ts";
 import { ChatP, constructChatP } from "./1_chat_p.ts";
 import { constructUser, User } from "./1_user.ts";
 
+/** The reactions of a user to a messages in a group. */
 export interface MessageReactions {
   chat: ChatP;
   messageId: number;

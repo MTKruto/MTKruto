@@ -1,5 +1,6 @@
 import { enums } from "../2_tl.ts";
 
+/** A mask position. */
 export interface MaskPosition {
   point: "forehead" | "eyes" | "mouth" | "chin";
   xShift: number;

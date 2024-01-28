@@ -1,5 +1,6 @@
 import { enums } from "../2_tl.ts";
 
+/** A poll option. */
 export interface PollOption {
   /** The option's text (1-100 characters). */
   text: string;
