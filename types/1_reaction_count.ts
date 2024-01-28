@@ -1,6 +1,7 @@
 import { types } from "../2_tl.ts";
 import { constructReaction, Reaction } from "./0_reaction.ts";
 
+/** The count of a specific reaction. */
 export interface ReactionCount {
   reaction: Reaction;
   count: number;

@@ -140,6 +140,7 @@ function forceReplyToTlObject(replyMarkup: ReplyMarkupForceReply) {
 
 //
 
+/** A message's reply markup. */
 export type ReplyMarkup = ReplyMarkupInlineKeyboard | ReplyMarkupKeyboard | ReplyMarkupRemoveKeyboard | ReplyMarkupForceReply;
 
 export function constructReplyMarkup(replyMarkup: enums.ReplyMarkup) {

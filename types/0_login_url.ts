@@ -1,3 +1,4 @@
+/** A login URL. */
 export interface LoginUrl {
   url: string;
   forwardText?: string;
