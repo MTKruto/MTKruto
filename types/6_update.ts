@@ -1,6 +1,6 @@
 import { AuthorizationState } from "./0_authorization_state.ts";
 import { ConnectionState } from "./0_connection_state.ts";
-import { MessageIdentifier } from "./0_message_identifier.ts";
+import { MessageReference } from "./0_message_reference.ts";
 import { ChosenInlineResult } from "./2_chosen_inline_result.ts";
 import { InlineQuery } from "./2_inline_query.ts";
 import { MessageInteractions } from "./2_message_interactions.ts";
@@ -102,7 +102,7 @@ export interface UpdateEditedMessage {
  */
 export interface UpdateDeletedMessages {
   /** The deleted messages. */
-  deletedMessages: MessageIdentifier[];
+  deletedMessages: MessageReference[];
 }
 
 /**
