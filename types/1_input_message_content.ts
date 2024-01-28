@@ -1,6 +1,6 @@
-import { LabeledPrice } from "./0_labeled_price.ts";
 import { MessageEntity } from "./0_message_entity.ts";
 import { ParseMode } from "./0_parse_mode.ts";
+import { PriceTag } from "./0_price_tag.ts";
 
 /**
  * A message content that shares a contact.
@@ -74,7 +74,7 @@ export interface InputMessageContentInvoice {
   payload: string;
   providerToken: string;
   currency: string;
-  prices: LabeledPrice[];
+  prices: PriceTag[];
   maxTipAmount?: number;
   suggestedTipAmounts?: number[];
   providerData?: string;
