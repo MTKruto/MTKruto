@@ -2,7 +2,7 @@ import { contentType, debug } from "../0_deps.ts";
 import { getRandomId, toUnixTimestamp, UNREACHABLE } from "../1_utilities.ts";
 import { as, enums, getChannelChatId, peerToChatId, types } from "../2_tl.ts";
 import { constructChatMemberUpdated } from "../3_types.ts";
-import { assertMessageType, ChatAction, ChatMember, chatMemberRightsToTlObject, constructChatMember, constructMessage as constructMessage_, FileID, FileSource, FileType, ID, Message, MessageEntity, messageEntityToTlObject, ParseMode, Reaction, reactionEqual, reactionToTlObject, replyMarkupToTlObject, Update, UsernameResolver } from "../3_types.ts";
+import { assertMessageType, ChatAction, ChatMember, chatMemberRightsToTlObject, constructChatMember, constructMessage as constructMessage_, deserializeInlineMessageId, FileID, FileSource, FileType, ID, Message, MessageEntity, messageEntityToTlObject, ParseMode, Reaction, reactionEqual, reactionToTlObject, replyMarkupToTlObject, Update, UsernameResolver } from "../3_types.ts";
 import { STICKER_SET_NAME_TTL } from "../4_constants.ts";
 import { parseHtml } from "./0_html.ts";
 import { _SendCommon, BanChatMemberParams, DeleteMessagesParams, EditMessageParams, EditMessageReplyMarkupParams, ForwardMessagesParams, GetHistoryParams, PinMessageParams, SendAnimationParams, SendAudioParams, SendContactParams, SendDiceParams, SendDocumentParams, SendLocationParams, SendMessageParams, SendPhotoParams, SendPollParams, SendVenueParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams, SetChatMemberRightsParams, SetChatPhotoParams } from "./0_params.ts";
@@ -650,6 +650,18 @@ export class MessageManager {
     return message_;
   }
 
+  async editInlineMessageReplyMarkup(
+    inlineMessageId: string,
+    params?: EditMessageReplyMarkupParams,
+  ) {
+    const id = deserializeInlineMessageId(inlineMessageId);
+
+    await this.#c.api.messages.editInlineBotMessage({
+      id,
+      reply_markup: await this.#constructReplyMarkup(params),
+    });
+  }
+
   async editMessageText(
     chatId: ID,
     messageId: number,
@@ -669,6 +681,20 @@ export class MessageManager {
 
     const message_ = await this.#updatesToMessages(chatId, result).then((v) => v[0]);
     return assertMessageType(message_, "text");
+  }
+
+  async editInlineMessageText(inlineMessageId: string, text: string, params?: EditMessageParams) {
+    const [message, entities] = await this.parseText(text);
+
+    const id = deserializeInlineMessageId(inlineMessageId);
+
+    await this.#c.api.messages.editInlineBotMessage({
+      id,
+      entities,
+      message,
+      no_webpage: params?.disableWebPagePreview ? true : undefined,
+      reply_markup: await this.#constructReplyMarkup(params),
+    });
   }
 
   async deleteMessages(chatId: ID, messageIds: number[], params?: DeleteMessagesParams) {
