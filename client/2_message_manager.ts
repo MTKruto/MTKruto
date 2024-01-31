@@ -163,7 +163,7 @@ export class MessageManager {
     return await this.#updatesToMessages(to, result);
   }
 
-  async getHistory(chatId: ID, params?: GetHistoryParams) {
+  async getHistory(chatId: ID, params?: GetHistoryParams) { // TODO: get from database properly
     let limit = params?.limit ?? 100;
     if (limit <= 0) {
       limit = 1;
@@ -176,33 +176,26 @@ export class MessageManager {
     }
     const peer = await this.#c.getInputPeer(chatId);
     const messages = new Array<Message>();
-    for (const message_ of await this.#c.storage.getHistory(peerToChatId(peer), offsetId, limit)) {
+    if (messages.length > 0) {
+      offsetId = messages[messages.length - 1].id; // TODO: track id of oldest message and don't send requests for it
+    }
+    const result = await this.#c.api.messages.getHistory({
+      peer: peer,
+      offset_id: offsetId,
+      offset_date: 0,
+      add_offset: 0,
+      limit,
+      max_id: 0,
+      min_id: 0,
+      hash: 0n,
+    });
+
+    if (!("messages" in result)) {
+      UNREACHABLE();
+    }
+    for (const message_ of result.messages) {
       const message = await this.constructMessage(message_, false);
       messages.push(message);
-    }
-    if (messages.length < limit) {
-      d("have only %d messages but need %d more", messages.length, limit - messages.length);
-      if (messages.length > 0) {
-        offsetId = messages[messages.length - 1].id; // TODO: track id of oldest message and don't send requests for it
-      }
-      const result = await this.#c.api.messages.getHistory({
-        peer: peer,
-        offset_id: offsetId,
-        offset_date: 0,
-        add_offset: 0,
-        limit,
-        max_id: 0,
-        min_id: 0,
-        hash: 0n,
-      });
-
-      if (!("messages" in result)) {
-        UNREACHABLE();
-      }
-      for (const message_ of result.messages) {
-        const message = await this.constructMessage(message_, false);
-        messages.push(message);
-      }
     }
     return messages;
   }
