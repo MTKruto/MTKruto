@@ -1557,6 +1557,17 @@ export class Client<C extends Context = Context> extends ClientAbstract {
   }
 
   /**
+   * Edit an inline message's text.
+   *
+   * @method
+   * @param inlineMessageId The inline message's identifier.
+   * @param text The new text of the message.
+   */
+  async editInlineMessageText(inlineMessageId: string, text: string, params?: EditMessageParams): Promise<void> {
+    await this.#messageManager.editInlineMessageText(inlineMessageId, text, params);
+  }
+
+  /**
    * Edit a message's reply markup.
    *
    * @method
@@ -1570,6 +1581,16 @@ export class Client<C extends Context = Context> extends ClientAbstract {
     params?: EditMessageReplyMarkupParams,
   ): Promise<Message> {
     return await this.#messageManager.editMessageReplyMarkup(chatId, messageId, params);
+  }
+
+  /**
+   * Edit an inline message's reply markup.
+   *
+   * @method
+   * @param inlineMessageId The inline message's identifier.
+   */
+  async editInlineMessageReplyMarkup(inlineMessageId: string, params?: EditMessageReplyMarkupParams) {
+    return await this.#messageManager.editInlineMessageReplyMarkup(inlineMessageId, params);
   }
 
   /**
