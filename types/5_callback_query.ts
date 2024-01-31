@@ -15,7 +15,7 @@ export interface CallbackQuery {
   gameShortName?: string;
 }
 
-const ERR_INVALID_MESSAGE_ID = new Error("Invalid inline message ID");
+const ERR_INVALID_INLINE_MESSAGE_ID = new Error("Invalid inline message ID");
 export function deserializeInlineMessageId(inlineMessageId: string) {
   try {
     const buffer = base64DecodeUrlSafe(inlineMessageId);
@@ -25,10 +25,10 @@ export function deserializeInlineMessageId(inlineMessageId: string) {
       return object;
     }
   } catch {
-    throw ERR_INVALID_MESSAGE_ID;
+    throw ERR_INVALID_INLINE_MESSAGE_ID;
   }
 
-  throw ERR_INVALID_MESSAGE_ID;
+  throw ERR_INVALID_INLINE_MESSAGE_ID;
 }
 
 export async function constructCallbackQuery(callbackQuery: types.UpdateBotCallbackQuery | types.UpdateInlineBotCallbackQuery, getEntity: EntityGetter, getMessage: MessageGetter): Promise<CallbackQuery> {
