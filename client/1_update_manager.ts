@@ -105,7 +105,7 @@ export class UpdateManager {
       if ("messages" in result) {
         for (const message of result.messages) {
           if (message instanceof types.Message || message instanceof types.MessageService) {
-            await this.#c.storage.setMessage(peerToChatId(message.peer_id), message.id, message);
+            await this.#c.messageStorage.setMessage(peerToChatId(message.peer_id), message.id, message);
           }
         }
       }
@@ -114,7 +114,7 @@ export class UpdateManager {
     if (result instanceof types.messages.Messages) {
       for (const message of result.messages) {
         if (message instanceof types.Message || message instanceof types.MessageService) {
-          await this.#c.storage.setMessage(peerToChatId(message.peer_id), message.id, message);
+          await this.#c.messageStorage.setMessage(peerToChatId(message.peer_id), message.id, message);
         }
       }
     }
@@ -467,7 +467,7 @@ export class UpdateManager {
             UNREACHABLE();
           }
         } else if (difference instanceof types.updates.DifferenceTooLong) {
-          await this.#c.storage.deleteMessages();
+          await this.#c.messageStorage.deleteMessages();
           await this.#c.storage.removeChats(0);
           await this.#c.storage.removeChats(1);
           state.pts = difference.pts;

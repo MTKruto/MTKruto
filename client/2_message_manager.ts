@@ -788,7 +788,7 @@ export class MessageManager {
     if (update instanceof types.UpdateNewMessage || update instanceof types.UpdateNewChannelMessage || update instanceof types.UpdateEditMessage || update instanceof types.UpdateEditChannelMessage) {
       if (update.message instanceof types.Message || update.message instanceof types.MessageService) {
         const chatId = peerToChatId(update.message.peer_id);
-        await this.#c.storage.setMessage(chatId, update.message.id, update.message);
+        await this.#c.messageStorage.setMessage(chatId, update.message.id, update.message);
       }
     }
 
