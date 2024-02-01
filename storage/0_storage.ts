@@ -38,7 +38,7 @@ const K = {
     customEmojiDocument: (id: bigint) => [...K.cache.customEmojiDocuments(), id],
   },
   messages: {
-    P: (string: string) => `chatlists.${string}`,
+    P: (string: string) => `messages.${string}`,
     messages: (chatId: number) => [K.messages.P("messages"), chatId],
     message: (chatId: number, messageId: number) => [...K.messages.messages(chatId), messageId],
     allMessageRefs: () => [K.messages.P("messageRefs")],
