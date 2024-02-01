@@ -2,6 +2,8 @@ import { MaybePromise } from "../1_utilities.ts";
 import { GetManyFilter, Storage, StorageKeyPart } from "./0_storage.ts";
 import { fromString, isInRange, toString } from "./0_utilities.ts";
 
+const MAX_ITEMS = 50_000;
+
 export class StorageMemory extends Storage implements Storage {
   protected map = new Map<string, unknown>();
   #id: string | null = null;
@@ -51,13 +53,13 @@ export class StorageMemory extends Storage implements Storage {
     if (params?.limit !== undefined) {
       entries = entries.slice(0, params.limit <= 0 ? 1 : params.limit);
     }
-    for (const [key, value] of entries) {
+    entries: for (const [key, value] of entries) {
       const parts = fromString(key);
       if (Array.isArray(parts)) {
         if ("prefix" in filter) {
           for (const [i, p] of filter.prefix.entries()) {
             if (toString(p) != toString(parts[i])) {
-              continue;
+              continue entries;
             }
           }
         } else {
@@ -84,5 +86,11 @@ export class StorageMemory extends Storage implements Storage {
 
   incr(key: readonly StorageKeyPart[], by: number) {
     this.set(key, (this.get<number>(key) || 0) + by);
+  }
+
+  async clearIfNeeded() {
+    if (this.map.size >= MAX_ITEMS) {
+      await this.clear();
+    }
   }
 }

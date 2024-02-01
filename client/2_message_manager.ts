@@ -40,7 +40,7 @@ export class MessageManager {
     const chatId_ = peerToChatId(peer);
     let shouldFetch = false;
     for (const messageId of messageIds) {
-      const message = await this.#c.storage.getMessage(chatId_, messageId);
+      const message = await this.#c.messageStorage.getMessage(chatId_, messageId);
       if (message == null) {
         messages_ = [];
         shouldFetch = true;
@@ -818,7 +818,7 @@ export class MessageManager {
     if (update instanceof types.UpdateDeleteMessages) {
       const deletedMessages = new Array<{ chatId: number; messageId: number }>();
       for (const messageId of update.messages) {
-        const chatId = await this.#c.storage.getMessageChat(messageId);
+        const chatId = await this.#c.messageStorage.getMessageChat(messageId);
         if (chatId) {
           deletedMessages.push({ chatId, messageId });
         }
@@ -830,7 +830,7 @@ export class MessageManager {
       const chatId = getChannelChatId(update.channel_id);
       const deletedMessages = new Array<{ chatId: number; messageId: number }>();
       for (const messageId of update.messages) {
-        const message = await this.#c.storage.getMessage(chatId, messageId);
+        const message = await this.#c.messageStorage.getMessage(chatId, messageId);
         if (message != null) {
           deletedMessages.push({ chatId, messageId });
         }

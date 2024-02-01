@@ -24,12 +24,18 @@ const K = {
   },
   cache: {
     P: (string: string) => `cache.${string}`,
-    username: (v: string) => [K.cache.P("username"), v],
-    peer: (type: string, id: bigint) => [K.cache.P("peer"), type, id],
-    stickerSetName: (id: bigint, accessHash: bigint) => [K.cache.P("stickerSetNames"), id, accessHash],
-    file: (fileId: bigint) => [K.cache.P("files"), fileId],
-    filePart: (fileId: bigint, n: number) => [K.cache.P("fileParts"), fileId, n],
-    customEmojiDocument: (id: bigint) => [K.cache.P("customEmojiDocuments"), id],
+    usernames: () => [K.cache.P("username")],
+    username: (v: string) => [...K.cache.usernames(), v],
+    peers: () => [K.cache.P("peer")],
+    peer: (type: string, id: bigint) => [...K.cache.peers(), type, id],
+    stickerSetNames: () => [K.cache.P("stickerSetNames")],
+    stickerSetName: (id: bigint, accessHash: bigint) => [...K.cache.stickerSetNames(), id, accessHash],
+    files: () => [K.cache.P("files")],
+    file: (fileId: bigint) => [...K.cache.files(), fileId],
+    fileParts: () => [K.cache.P("fileParts")],
+    filePart: (fileId: bigint, n: number) => [...K.cache.fileParts(), fileId, n],
+    customEmojiDocuments: () => [K.cache.P("customEmojiDocuments")],
+    customEmojiDocument: (id: bigint) => [...K.cache.customEmojiDocuments(), id],
   },
   messages: {
     P: (string: string) => `chatlists.${string}`,
@@ -230,8 +236,13 @@ export abstract class Storage {
     }
   }
 
-  getAccountType() {
-    return this.get<"user" | "bot">(K.auth.accountType());
+  #accountType: "user" | "bot" | null = null;
+  async getAccountType() {
+    if (this.#accountType != null) {
+      return this.#accountType;
+    } else {
+      return this.#accountType = await this.get<"user" | "bot">(K.auth.accountType());
+    }
   }
 
   async updateStickerSetName(id: bigint, accessHash: bigint, name: string) {
@@ -391,5 +402,57 @@ export abstract class Storage {
     if (await this.getAccountType() != "bot") {
       throw new Error(`${source}: not a bot client`);
     }
+  }
+
+  async deleteFiles() {
+    if (!this.supportsFiles) {
+      return;
+    }
+
+    for await (const [key] of await this.getMany({ prefix: K.cache.fileParts() })) {
+      await this.set(key, null);
+    }
+
+    for await (const [key] of await this.getMany({ prefix: K.cache.files() })) {
+      await this.set(key, null);
+    }
+  }
+
+  async deleteCustomEmojiDocuments() {
+    for await (const [key] of await this.getMany({ prefix: K.cache.customEmojiDocuments() })) {
+      await this.set(key, null);
+    }
+  }
+
+  async deleteStickerSetNames() {
+    for await (const [key] of await this.getMany({ prefix: K.cache.stickerSetNames() })) {
+      await this.set(key, null);
+    }
+  }
+
+  async deletePeers() {
+    for await (const [key] of await this.getMany({ prefix: K.cache.peers() })) {
+      await this.set(key, null);
+    }
+  }
+
+  async deleteUsernames() {
+    for await (const [key] of await this.getMany({ prefix: K.cache.usernames() })) {
+      await this.set(key, null);
+    }
+  }
+
+  async clear() {
+    await Promise.all([
+      this.deleteMessages(),
+      this.removeChats(0),
+      this.removeChats(1),
+      this.deleteUpdates(),
+      this.deleteFiles(),
+      this.deleteCustomEmojiDocuments(),
+      this.deleteStickerSetNames(),
+      this.deletePeers(),
+      this.deleteUsernames(),
+    ]);
   }
 }
