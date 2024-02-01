@@ -1,13 +1,21 @@
-import { assertEquals, ige256Decrypt, ige256Encrypt } from "../0_deps.ts";
-import { bufferFromBigInt, concat, mod, sha256, toUnixTimestamp } from "../1_utilities.ts";
+import {
+  assertEquals,
+  ige256Decrypt,
+  ige256Encrypt,
+} from "../0_deps.ts";
+import {
+  bufferFromBigInt,
+  concat,
+  mod,
+  sha256,
+  toUnixTimestamp,
+} from "../1_utilities.ts";
 import { id, Message_, MessageContainer, RPCResult, serialize, TLObject, TLReader, TLWriter } from "../2_tl.ts";
 
 export function getMessageId(lastMsgId: bigint) {
   const now = toUnixTimestamp(new Date()) + 0;
   const nanoseconds = Math.floor((now - Math.floor(now)) * 1e9);
-  let newMsgId = (BigInt(Math.floor(now)) <<
-    32n) ||
-    (BigInt(nanoseconds) << 2n);
+  let newMsgId = (BigInt(Math.floor(now)) << 32n) || (BigInt(nanoseconds) << 2n);
   if (lastMsgId >= newMsgId) {
     newMsgId = lastMsgId + 4n;
   }
@@ -22,6 +30,7 @@ export function packUnencryptedMessage(data: Uint8Array, messageId: bigint) {
   writer.write(data);
   return writer.buffer;
 }
+
 export function unpackUnencryptedMessage(buffer: Uint8Array) {
   const reader = new TLReader(buffer);
   const _authKeyId = reader.readInt64();
@@ -32,7 +41,13 @@ export function unpackUnencryptedMessage(buffer: Uint8Array) {
   return { messageId, message };
 }
 
-export async function encryptMessage(message: Message_, authKey: Uint8Array, authKeyId: bigint, salt: bigint, sessionId: bigint) {
+export async function encryptMessage(
+  message: Message_,
+  authKey: Uint8Array,
+  authKeyId: bigint,
+  salt: bigint,
+  sessionId: bigint
+) {
   const encoded = (message.body as TLObject)[serialize]();
 
   const payloadWriter = new TLWriter();
@@ -49,8 +64,8 @@ export async function encryptMessage(message: Message_, authKey: Uint8Array, aut
 
   const messageKey = (await sha256(concat(authKey.subarray(88, 120), payload))).subarray(8, 24);
 
-  const a = await sha256(concat(messageKey, authKey.subarray(0, 36)));
-  const b = await sha256(concat(authKey.subarray(40, 76), messageKey));
+  const a = await sha256(concat(messageKey, authKey.subarray(0, 32)));
+  const b = await sha256(concat(authKey.subarray(32, 64), messageKey));
 
   const aesKey = concat(a.subarray(0, 8), b.subarray(8, 24), a.subarray(24, 32));
   const aesIV = concat(b.subarray(0, 8), a.subarray(8, 24), b.subarray(24, 32));
@@ -63,15 +78,21 @@ export async function encryptMessage(message: Message_, authKey: Uint8Array, aut
 
   return messageWriter.buffer;
 }
-export async function decryptMessage(buffer: Uint8Array, authKey: Uint8Array, authKeyId: bigint, _sessionId: bigint) {
+
+export async function decryptMessage(
+  buffer: Uint8Array,
+  authKey: Uint8Array,
+  authKeyId: bigint,
+  _sessionId: bigint
+) {
   const reader = new TLReader(buffer);
   assertEquals(reader.readInt64(false), authKeyId);
 
   const messageKey_ = reader.readInt128();
   const messageKey = bufferFromBigInt(messageKey_, 16, true, true);
 
-  const a = await sha256(concat(messageKey, authKey.subarray(8, 44)));
-  const b = await sha256(concat(authKey.subarray(48, 84), messageKey));
+  const a = await sha256(concat(messageKey, authKey.subarray(8, 40)));
+  const b = await sha256(concat(authKey.subarray(40, 72), messageKey));
 
   const aesKey = concat(a.subarray(0, 8), b.subarray(8, 24), a.subarray(24, 32));
   const aesIv = concat(b.subarray(0, 8), a.subarray(8, 24), b.subarray(24, 32));
