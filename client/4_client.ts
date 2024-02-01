@@ -1185,11 +1185,14 @@ export class Client<C extends Context = Context> extends ClientAbstract {
 
   async #cleanupLoop() {
     if (this.#storeMessages || !(this.messageStorage instanceof StorageMemory)) {
+      d("not starting cleanup loop");
       return;
+    } else {
+      d("cleanup loop started");
     }
     while (this.connected) {
       try {
-        this.messageStorage.clearIfNeeded();
+        await this.messageStorage.clearIfNeeded();
         d("cleanup complete");
         await new Promise((r) => setTimeout(r, 900_000));
       } catch (err) {

@@ -88,9 +88,9 @@ export class StorageMemory extends Storage implements Storage {
     this.set(key, (this.get<number>(key) || 0) + by);
   }
 
-  clearIfNeeded() {
+  async clearIfNeeded() {
     if (this.map.size >= MAX_ITEMS) {
-      this.map.clear();
+      await this.clear();
     }
   }
 }
