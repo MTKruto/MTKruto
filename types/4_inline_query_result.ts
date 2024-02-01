@@ -184,7 +184,7 @@ export interface InlineQueryResultMpeg4Gif extends _InlineQueryResultBase, _Inli
 }
 
 /** @unlisted */
-export interface InlineQueryResultPhoto extends _InlineQueryResultBase, _InlineQueryResultInputMessageContentReplyMarkupCommon {
+export interface InlineQueryResultPhoto extends _InlineQueryResultBase, _InlineQueryResultCaptionCommon, _InlineQueryResultInputMessageContentReplyMarkupCommon {
   type: "photo";
   photoUrl: string;
   thumbnailUrl: string;
