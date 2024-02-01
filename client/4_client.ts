@@ -218,6 +218,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
   readonly #autoStart: boolean;
   readonly #ignoreOutgoing: boolean | null;
   readonly #prefixes?: string | string[];
+  readonly #storeMessages: boolean;
 
   /**
    * Constructs the client.
@@ -235,7 +236,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
     super(params);
 
     this.storage = storage ?? new StorageMemory();
-    if (!(params?.storeMessages ?? false)) {
+    if (!(this.#storeMessages = params?.storeMessages ?? false)) {
       this.messageStorage = new StorageMemory();
     } else {
       this.messageStorage = this.storage;
@@ -790,6 +791,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
       }
       d("encrypted client connected");
       drop(this.#receiveLoop());
+      drop(this.#cleanupLoop());
       if (this.#pingLoopStarted) {
         drop(this.#pingLoop());
       }
@@ -1181,6 +1183,24 @@ export class Client<C extends Context = Context> extends ClientAbstract {
     }
   }
 
+  async #cleanupLoop() {
+    if (this.#storeMessages || !(this.messageStorage instanceof StorageMemory)) {
+      return;
+    }
+    while (this.connected) {
+      try {
+        this.messageStorage.clearIfNeeded();
+        d("cleanup complete");
+        await new Promise((r) => setTimeout(r, 900_000));
+      } catch (err) {
+        if (!this.connected) {
+          break;
+        }
+        d("cleanup loop error: %o", err);
+      }
+    }
+  }
+
   #pingLoopStarted = false;
   #autoStarted = false;
   #lastMsgId = 0n;
@@ -1295,6 +1315,16 @@ export class Client<C extends Context = Context> extends ClientAbstract {
    */
   send<T extends (functions.Function<unknown> | types.Type) = functions.Function<unknown>>(function_: T) {
     return this.invoke(function_, true);
+  }
+
+  #deleteMessagesIfNeeded() {
+    if (this.#storeMessages) {
+      return;
+    }
+    if (!(this.messageStorage instanceof StorageMemory)) {
+      UNREACHABLE();
+    }
+    this.messageStorage.clearIfNeeded();
   }
 
   async #getUserAccessHash(userId: bigint) {
