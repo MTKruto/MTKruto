@@ -813,7 +813,8 @@ export class Client<C extends Context = Context> extends ClientAbstract {
   async disconnect() {
     this.#connectionInited = false;
     await super.disconnect();
-    this.#pingLoopAbortSignal?.abort();
+    this.#pingLoopAbortController?.abort();
+    this.#cleanupLoopAbortController?.abort();
   }
   async #initConnection() {
     if (!this.#connectionInited) {
@@ -1153,23 +1154,24 @@ export class Client<C extends Context = Context> extends ClientAbstract {
     }
   }
 
-  #pingLoopAbortSignal: AbortController | null = null;
+  #pingLoopAbortController: AbortController | null = null;
   #pingInterval = 60 * 1_000; // 60 seconds
   #lastUpdates = new Date();
   async #pingLoop() {
-    this.#pingLoopAbortSignal = new AbortController();
+    this.#pingLoopAbortController = new AbortController();
     while (this.connected) {
       try {
         await new Promise((resolve, reject) => {
-          setTimeout(resolve, this.#pingInterval);
-          this.#pingLoopAbortSignal!.signal.onabort = () => {
-            reject(this.#pingLoopAbortSignal?.signal.reason);
+          const timeout = setTimeout(resolve, this.#pingInterval);
+          this.#pingLoopAbortController!.signal.onabort = () => {
+            reject(this.#pingLoopAbortController?.signal.reason);
+            clearTimeout(timeout);
           };
         });
         if (!this.connected) {
           continue;
         }
-        this.#pingLoopAbortSignal.signal.throwIfAborted();
+        this.#pingLoopAbortController.signal.throwIfAborted();
         await this.api.ping_delay_disconnect({ ping_id: getRandomId(), disconnect_delay: this.#pingInterval / 1_000 + 15 });
         if (Date.now() - this.#lastUpdates.getTime() >= 15 * 60 * 1_000) {
           drop(this.#updateManager.recoverUpdateGap("lastUpdates"));
@@ -1183,6 +1185,8 @@ export class Client<C extends Context = Context> extends ClientAbstract {
     }
   }
 
+  #cleanupLoopAbortController: AbortController | null = null;
+  #cleanupInterval = 900_000;
   async #cleanupLoop() {
     if (this.#storeMessages || !(this.messageStorage instanceof StorageMemory)) {
       d("not starting cleanup loop");
@@ -1190,11 +1194,22 @@ export class Client<C extends Context = Context> extends ClientAbstract {
     } else {
       d("cleanup loop started");
     }
+    this.#cleanupLoopAbortController = new AbortController();
     while (this.connected) {
       try {
         await this.messageStorage.clearIfNeeded();
         d("cleanup complete");
-        await new Promise((r) => setTimeout(r, 900_000));
+        await new Promise((resolve, reject) => {
+          const timeout = setTimeout(resolve, this.#cleanupInterval);
+          this.#cleanupLoopAbortController!.signal.onabort = () => {
+            reject(this.#cleanupLoopAbortController?.signal.reason);
+            clearTimeout(timeout);
+          };
+        });
+        if (!this.connected) {
+          continue;
+        }
+        this.#cleanupLoopAbortController.signal.throwIfAborted();
       } catch (err) {
         if (!this.connected) {
           break;
