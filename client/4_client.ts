@@ -1463,7 +1463,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
           } finally {
             if ("deletedMessages" in update_) {
               for (const { chatId, messageId } of update_.deletedMessages) {
-                await this.storage.setMessage(chatId, messageId, null);
+                await this.messageStorage.setMessage(chatId, messageId, null);
                 await this.#chatListManager.reassignChatLastMessage(chatId);
               }
             }

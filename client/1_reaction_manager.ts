@@ -41,7 +41,7 @@ export class ReactionManager {
       const message = await this.#c.messageStorage.getMessage(chatId, update.msg_id);
       if (message instanceof types.Message) {
         message.reactions = update.reactions;
-        await this.#c.storage.setMessage(chatId, update.msg_id, message);
+        await this.#c.messageStorage.setMessage(chatId, update.msg_id, message);
         const views = message.views ?? 0;
         const forwards = message.forwards ?? 0;
         const recentReactions = update.reactions.recent_reactions ?? [];
