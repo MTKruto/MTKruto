@@ -224,7 +224,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
    * @param apiHash App's API hash from [my.telegram.org/apps](https://my.telegram.org/apps). Defaults to empty string (unset).
    */
   constructor(
-    storage?: Storage | null,
+    storage?: StorageLocalStorage | null,
     public readonly apiId: number | null = 0,
     public readonly apiHash: string | null = "",
     params?: ClientParams,
