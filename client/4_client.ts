@@ -98,6 +98,8 @@ export interface Context {
   react: (reactions: Reaction[], params?: SetReactionsParams) => Promise<void>;
   /** Send a chat action to the chat which the message was received from. */
   sendChatAction: (action: ChatAction, params?: { messageThreadId?: number }) => Promise<void>;
+  editInlineMessageText: (text: string, params?: EditMessageParams) => Promise<void>;
+  editInlineMessageReplyMarkup: (params?: EditMessageReplyMarkupParams) => Promise<void>;
   /** Edit a message in the chat which the message was received from. */
   editMessageText: (messageId: number, text: string, params?: EditMessageParams) => Promise<MessageText>;
   /** Edit the reply markup of a message in the chat which the message was received from. */
@@ -144,6 +146,7 @@ export interface Context {
   kickChatMember: (memberId: ID) => Promise<void>;
   /** Set the rights of a member of the chat which the message was received from. */
   setChatMemberRights: (memberId: ID, params?: SetChatMemberRightsParams) => Promise<void>;
+  /** Delete all messages sent by a specific member of the chat which the message was received from. */
   deleteChatMemberMessages: (userId: ID) => Promise<void>;
   toJSON: () => Update;
 }
@@ -425,6 +428,14 @@ export class Client<C extends Context = Context> extends ClientAbstract {
         UNREACHABLE();
       }
     };
+    const mustGetInlineMsgId = () => {
+      if ("chosenInlineResult" in update) {
+        if (update.chosenInlineResult.inlineMessageId) {
+          return update.chosenInlineResult.inlineMessageId;
+        }
+      }
+      UNREACHABLE();
+    };
     const chat_ = "messageReactions" in update ? update.messageReactions.chat : "messageReactionCount" in update ? update.messageReactionCount.chat : undefined;
     const chat = chat_ ?? msg?.chat;
     const from = "callbackQuery" in update ? update.callbackQuery.from : "inlineQuery" in update ? update.inlineQuery.from : "message" in update ? update.message.from : "editedMessage" in update ? update.editedMessage?.from : undefined;
@@ -573,6 +584,14 @@ export class Client<C extends Context = Context> extends ClientAbstract {
       sendChatAction: (chatAction, params) => {
         const { chatId } = mustGetMsg();
         return this.sendChatAction(chatId, chatAction, params);
+      },
+      editInlineMessageText: (text, params) => {
+        const inlineMessageId = mustGetInlineMsgId();
+        return this.editInlineMessageText(inlineMessageId, text, params);
+      },
+      editInlineMessageReplyMarkup: (params) => {
+        const inlineMessageId = mustGetInlineMsgId();
+        return this.editInlineMessageReplyMarkup(inlineMessageId, params);
       },
       editMessageText: (messageId, text, params) => {
         const { chatId } = mustGetMsg();
