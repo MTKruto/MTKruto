@@ -38,7 +38,7 @@ export class ReactionManager {
       }
     } else if (update instanceof types.UpdateMessageReactions) {
       const chatId = peerToChatId(update.peer);
-      const message = await this.#c.storage.getMessage(chatId, update.msg_id);
+      const message = await this.#c.messageStorage.getMessage(chatId, update.msg_id);
       if (message instanceof types.Message) {
         message.reactions = update.reactions;
         await this.#c.storage.setMessage(chatId, update.msg_id, message);
@@ -52,7 +52,7 @@ export class ReactionManager {
       }
     } else if (update instanceof types.UpdateChannelMessageViews || update instanceof types.UpdateChannelMessageForwards) {
       const chatId = peerToChatId(new types.PeerChannel(update));
-      const message = await this.#c.storage.getMessage(chatId, update.id);
+      const message = await this.#c.messageStorage.getMessage(chatId, update.id);
       if (message instanceof types.Message) {
         if ("views" in update) {
           message.views = update.views;

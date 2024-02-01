@@ -184,6 +184,8 @@ export interface ClientParams extends ClientPlainParams {
   guaranteeUpdateDelivery?: boolean;
   /** Whether to not handle updates received when the client was not running. Defaults to `true` for bots, and `false` for users. */
   dropPendingUpdates?: boolean;
+  /** Whether to store messages. Defaults to `false`. */
+  storeMessages?: boolean;
 }
 export class Client<C extends Context = Context> extends ClientAbstract {
   #auth: { key: Uint8Array; id: bigint } | null = null;
@@ -203,6 +205,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
   #chatListManager: ChatListManager;
 
   public readonly storage: Storage;
+  public readonly messageStorage: Storage;
   #parseMode: ParseMode;
 
   public readonly appVersion: string;
@@ -215,6 +218,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
   readonly #autoStart: boolean;
   readonly #ignoreOutgoing: boolean | null;
   readonly #prefixes?: string | string[];
+  readonly #storeMessages: boolean;
 
   /**
    * Constructs the client.
@@ -232,6 +236,11 @@ export class Client<C extends Context = Context> extends ClientAbstract {
     super(params);
 
     this.storage = storage ?? new StorageMemory();
+    if (!(this.#storeMessages = params?.storeMessages ?? false)) {
+      this.messageStorage = new StorageMemory();
+    } else {
+      this.messageStorage = this.storage;
+    }
     this.#parseMode = params?.parseMode ?? null;
 
     this.appVersion = params?.appVersion ?? APP_VERSION;
@@ -249,6 +258,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
     const c = {
       api: this.api,
       storage: this.storage,
+      messageStorage: this.messageStorage,
       guaranteeUpdateDelivery: this.#guaranteeUpdateDelivery,
       setConnectionState: this.#propagateConnectionState.bind(this),
       resetConnectionState: () => this.stateChangeHandler(this.connected),
@@ -781,6 +791,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
       }
       d("encrypted client connected");
       drop(this.#receiveLoop());
+      drop(this.#cleanupLoop());
       if (this.#pingLoopStarted) {
         drop(this.#pingLoop());
       }
@@ -1172,6 +1183,27 @@ export class Client<C extends Context = Context> extends ClientAbstract {
     }
   }
 
+  async #cleanupLoop() {
+    if (this.#storeMessages || !(this.messageStorage instanceof StorageMemory)) {
+      d("not starting cleanup loop");
+      return;
+    } else {
+      d("cleanup loop started");
+    }
+    while (this.connected) {
+      try {
+        await this.messageStorage.clearIfNeeded();
+        d("cleanup complete");
+        await new Promise((r) => setTimeout(r, 900_000));
+      } catch (err) {
+        if (!this.connected) {
+          break;
+        }
+        d("cleanup loop error: %o", err);
+      }
+    }
+  }
+
   #pingLoopStarted = false;
   #autoStarted = false;
   #lastMsgId = 0n;
@@ -1286,6 +1318,16 @@ export class Client<C extends Context = Context> extends ClientAbstract {
    */
   send<T extends (functions.Function<unknown> | types.Type) = functions.Function<unknown>>(function_: T) {
     return this.invoke(function_, true);
+  }
+
+  #deleteMessagesIfNeeded() {
+    if (this.#storeMessages) {
+      return;
+    }
+    if (!(this.messageStorage instanceof StorageMemory)) {
+      UNREACHABLE();
+    }
+    this.messageStorage.clearIfNeeded();
   }
 
   async #getUserAccessHash(userId: bigint) {
