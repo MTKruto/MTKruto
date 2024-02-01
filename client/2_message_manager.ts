@@ -677,7 +677,7 @@ export class MessageManager {
   }
 
   async editInlineMessageText(inlineMessageId: string, text: string, params?: EditMessageParams) {
-    const [message, entities] = await this.parseText(text);
+    const [message, entities] = await this.parseText(text, params);
 
     const id = deserializeInlineMessageId(inlineMessageId);
 
