@@ -184,6 +184,8 @@ export interface ClientParams extends ClientPlainParams {
   guaranteeUpdateDelivery?: boolean;
   /** Whether to not handle updates received when the client was not running. Defaults to `true` for bots, and `false` for users. */
   dropPendingUpdates?: boolean;
+  /** Whether to store messages. Defaults to `false`. */
+  storeMessages?: boolean;
 }
 export class Client<C extends Context = Context> extends ClientAbstract {
   #auth: { key: Uint8Array; id: bigint } | null = null;
@@ -203,6 +205,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
   #chatListManager: ChatListManager;
 
   public readonly storage: Storage;
+  public readonly messageStorage: Storage;
   #parseMode: ParseMode;
 
   public readonly appVersion: string;
@@ -232,6 +235,11 @@ export class Client<C extends Context = Context> extends ClientAbstract {
     super(params);
 
     this.storage = storage ?? new StorageMemory();
+    if (!(params?.storeMessages ?? false)) {
+      this.messageStorage = new StorageMemory();
+    } else {
+      this.messageStorage = this.storage;
+    }
     this.#parseMode = params?.parseMode ?? null;
 
     this.appVersion = params?.appVersion ?? APP_VERSION;
@@ -249,6 +257,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
     const c = {
       api: this.api,
       storage: this.storage,
+      messageStorage: this.messageStorage,
       guaranteeUpdateDelivery: this.#guaranteeUpdateDelivery,
       setConnectionState: this.#propagateConnectionState.bind(this),
       resetConnectionState: () => this.stateChangeHandler(this.connected),

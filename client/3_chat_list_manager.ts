@@ -49,7 +49,7 @@ export class ChatListManager {
       return () => Promise.resolve();
     }
 
-    const message_ = await this.#c.storage.getLastMessage(chatId);
+    const message_ = await this.#c.messageStorage.getLastMessage(chatId);
     if (message_ != null) {
       const message = await this.#c.messageManager.constructMessage(message_);
       if (chat) {

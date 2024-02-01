@@ -16,6 +16,7 @@ interface ApiFactory {
 export interface C {
   api: Api;
   storage: Storage;
+  messageStorage: Storage;
   guaranteeUpdateDelivery: boolean;
   setConnectionState: (connectionState: ConnectionState) => void;
   resetConnectionState: () => void;
