@@ -22,7 +22,7 @@ export function parseHtml(html: string) {
           stack.push({ type: "code", offset: text.length, length: 0 });
           break;
         case "pre": {
-          const language = attribs.language ?? "";
+          const language = attribs["language"] ?? "";
           stack.push({ type: "pre", offset: text.length, length: 0, language });
           break;
         }
@@ -43,7 +43,7 @@ export function parseHtml(html: string) {
           stack.push({ type: "strikethrough", offset: text.length, length: 0 });
           break;
         case "span":
-          if (attribs.class != "tg-spoiler") {
+          if (attribs.class !== "tg-spoiler") {
             throw new Error("The class attribute must be tg-spoiler");
           }
           // falls through
@@ -58,6 +58,7 @@ export function parseHtml(html: string) {
           break;
         case "blockquote":
           stack.push({ type: "blockquote", offset: text.length, length: 0 });
+          break;
       }
     },
     ontext(data) {
@@ -69,9 +70,9 @@ export function parseHtml(html: string) {
         item.length += data.length;
       }
     },
-    onclosetag() {
+    onclosetag(name) {
       const lastItem = stack.pop();
-      if (lastItem) {
+      if (lastItem && lastItem.type === name) {
         entities.push(lastItem);
       }
     },
@@ -82,7 +83,7 @@ export function parseHtml(html: string) {
   text = text.trimEnd();
 
   for (const entity of entities) {
-    while (text[entity.offset + (entity.length - 1)] === undefined) {
+    while (text[entity.offset + entity.length - 1] === undefined) {
       --entity.length;
     }
   }
