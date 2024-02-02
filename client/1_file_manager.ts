@@ -203,7 +203,7 @@ export class FileManager {
     const documents = new Array<Document>();
     let shouldFetch = false;
     for (const [i, id_] of id.entries()) {
-      const maybeDocument = await this.#c.storage.getCustomEmojiDocument(BigInt(id_));
+      const maybeDocument = await this.#c.messageStorage.getCustomEmojiDocument(BigInt(id_));
       if (maybeDocument != null && Date.now() - maybeDocument[1].getTime() <= 30 * 60 * 1_000) {
         const document_ = maybeDocument[0];
         const fileUniqueId = new FileUniqueID(FileUniqueType.Document, { mediaId: document_.id }).encode();

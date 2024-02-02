@@ -131,13 +131,13 @@ export class MessageManager {
   }
 
   async getStickerSetName(inputStickerSet: types.InputStickerSetID, hash = 0) {
-    const maybeStickerSetName = await this.#c.storage.getStickerSetName(inputStickerSet.id, inputStickerSet.access_hash);
+    const maybeStickerSetName = await this.#c.messageStorage.getStickerSetName(inputStickerSet.id, inputStickerSet.access_hash);
     if (maybeStickerSetName != null && Date.now() - maybeStickerSetName[1].getTime() < STICKER_SET_NAME_TTL) {
       return maybeStickerSetName[0];
     } else {
       const stickerSet = await this.#c.api.messages.getStickerSet({ stickerset: inputStickerSet, hash });
       const name = stickerSet[as](types.messages.StickerSet).set.short_name;
-      await this.#c.storage.updateStickerSetName(inputStickerSet.id, inputStickerSet.access_hash, name);
+      await this.#c.messageStorage.updateStickerSetName(inputStickerSet.id, inputStickerSet.access_hash, name);
       return name;
     }
   }
