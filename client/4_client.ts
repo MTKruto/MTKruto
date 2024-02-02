@@ -791,7 +791,6 @@ export class Client<C extends Context = Context> extends ClientAbstract {
       }
       d("encrypted client connected");
       drop(this.#receiveLoop());
-      drop(this.#cleanupLoop());
       if (this.#pingLoopStarted) {
         drop(this.#pingLoop());
       }
@@ -814,7 +813,6 @@ export class Client<C extends Context = Context> extends ClientAbstract {
     this.#connectionInited = false;
     await super.disconnect();
     this.#pingLoopAbortController?.abort();
-    this.#cleanupLoopAbortController?.abort();
   }
   async #initConnection() {
     if (!this.#connectionInited) {
@@ -1185,40 +1183,6 @@ export class Client<C extends Context = Context> extends ClientAbstract {
     }
   }
 
-  #cleanupLoopAbortController: AbortController | null = null;
-  #cleanupInterval = 900_000;
-  async #cleanupLoop() {
-    if (this.#storeMessages || !(this.messageStorage instanceof StorageMemory)) {
-      d("not starting cleanup loop");
-      return;
-    } else {
-      d("cleanup loop started");
-    }
-    this.#cleanupLoopAbortController = new AbortController();
-    while (this.connected) {
-      try {
-        await this.messageStorage.clearIfNeeded();
-        d("cleanup complete");
-        await new Promise((resolve, reject) => {
-          const timeout = setTimeout(resolve, this.#cleanupInterval);
-          this.#cleanupLoopAbortController!.signal.onabort = () => {
-            reject(this.#cleanupLoopAbortController?.signal.reason);
-            clearTimeout(timeout);
-          };
-        });
-        if (!this.connected) {
-          continue;
-        }
-        this.#cleanupLoopAbortController.signal.throwIfAborted();
-      } catch (err) {
-        if (!this.connected) {
-          break;
-        }
-        d("cleanup loop error: %o", err);
-      }
-    }
-  }
-
   #pingLoopStarted = false;
   #autoStarted = false;
   #lastMsgId = 0n;
@@ -1333,16 +1297,6 @@ export class Client<C extends Context = Context> extends ClientAbstract {
    */
   send<T extends (functions.Function<unknown> | types.Type) = functions.Function<unknown>>(function_: T) {
     return this.invoke(function_, true);
-  }
-
-  #deleteMessagesIfNeeded() {
-    if (this.#storeMessages) {
-      return;
-    }
-    if (!(this.messageStorage instanceof StorageMemory)) {
-      UNREACHABLE();
-    }
-    this.messageStorage.clearIfNeeded();
   }
 
   async #getUserAccessHash(userId: bigint) {
