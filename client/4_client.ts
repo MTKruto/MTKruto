@@ -1375,7 +1375,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
     if (typeof id === "string") {
       id = getUsername(id);
       let resolvedId = 0;
-      const maybeUsername = await this.storage.getUsername(id);
+      const maybeUsername = await this.messageStorage.getUsername(id);
       if (maybeUsername != null && Date.now() - maybeUsername[1].getTime() < USERNAME_TTL) {
         const [id] = maybeUsername;
         resolvedId = id;
@@ -1420,7 +1420,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
   private [getEntity](peer: types.PeerUser | types.PeerChat | types.PeerChannel): Promise<types.User | types.Chat | types.ChatForbidden | types.Channel | types.ChannelForbidden | null>;
   private [getEntity](peer: types.PeerUser | types.PeerChat | types.PeerChannel) {
     const id = peerToChatId(peer);
-    return this.storage.getEntity(id);
+    return this.messageStorage.getEntity(id);
   }
 
   async #handleCtxUpdate(update: Update) {
