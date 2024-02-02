@@ -1,6 +1,6 @@
 import { debug, gunzip, Mutex } from "../0_deps.ts";
 import { bigIntFromBuffer, cleanObject, drop, getRandomBigInt, getRandomId, MaybePromise, mustPrompt, mustPromptOneOf, sha1, UNREACHABLE, ZERO_CHANNEL_ID } from "../1_utilities.ts";
-import { as, enums, functions, Message_, MessageContainer, name, ReadObject, RPCResult, TLError, TLObject, TLReader, types } from "../2_tl.ts";
+import { as, chatIdToPeerId, enums, functions, getChatIdPeerType, Message_, MessageContainer, name, peerToChatId, ReadObject, RPCResult, TLError, TLObject, TLReader, types } from "../2_tl.ts";
 import { Storage, StorageMemory } from "../3_storage.ts";
 import { DC } from "../3_transport.ts";
 import { BotCommand, Chat, ChatAction, ChatMember, ChatP, ConnectionState, constructUser, Document, FileSource, ID, InlineQueryResult, Message, MessageAnimation, MessageAudio, MessageContact, MessageDice, MessageDocument, MessageLocation, MessagePhoto, MessagePoll, MessageText, MessageVenue, MessageVideo, MessageVideoNote, MessageVoice, NetworkStatistics, ParseMode, Reaction, Update, UpdateIntersection, User } from "../3_types.ts";
@@ -1374,47 +1374,41 @@ export class Client<C extends Context = Context> extends ClientAbstract {
     }
     if (typeof id === "string") {
       id = getUsername(id);
-      let userId = 0n;
-      let channelId = 0n;
+      let resolvedId = 0;
       const maybeUsername = await this.storage.getUsername(id);
-      if (maybeUsername != null && Date.now() - maybeUsername[2].getTime() < USERNAME_TTL) {
-        const [type, id] = maybeUsername;
-        if (type == "user") {
-          userId = id;
-        } else {
-          channelId = id;
-        }
+      if (maybeUsername != null && Date.now() - maybeUsername[1].getTime() < USERNAME_TTL) {
+        const [id] = maybeUsername;
+        resolvedId = id;
       } else {
         const resolved = await this.api.contacts.resolveUsername({ username: id });
         await this.#updateManager.processChats(resolved.chats);
         await this.#updateManager.processUsers(resolved.users);
         if (resolved.peer instanceof types.PeerUser) {
-          userId = resolved.peer.user_id;
+          resolvedId = peerToChatId(resolved.peer);
         } else if (resolved.peer instanceof types.PeerChannel) {
-          channelId = resolved.peer.channel_id;
+          resolvedId = peerToChatId(resolved.peer);
         } else {
           UNREACHABLE();
         }
       }
-      if (userId) {
-        const accessHash = await this.storage.getUserAccessHash(userId);
-        return new types.InputPeerUser({ user_id: userId, access_hash: accessHash ?? 0n });
-      } else if (channelId) {
-        const accessHash = await this.storage.getChannelAccessHash(channelId);
-        return new types.InputPeerChannel({ channel_id: channelId, access_hash: accessHash ?? 0n });
+      const resolvedIdType = getChatIdPeerType(resolvedId);
+      if (resolvedIdType == "user") {
+        const accessHash = await this.storage.getUserAccessHash(resolvedId);
+        return new types.InputPeerUser({ user_id: chatIdToPeerId(resolvedId), access_hash: accessHash ?? 0n });
+      } else if (resolvedIdType == "channel") {
+        const accessHash = await this.storage.getChannelAccessHash(resolvedId);
+        return new types.InputPeerChannel({ channel_id: chatIdToPeerId(resolvedId), access_hash: accessHash ?? 0n });
       } else {
         UNREACHABLE();
       }
     } else if (id > 0) {
-      const id_ = BigInt(id);
-      const accessHash = await this.storage.getUserAccessHash(id_);
-      return new types.InputPeerUser({ user_id: id_, access_hash: accessHash ?? 0n });
+      const accessHash = await this.storage.getUserAccessHash(id);
+      return new types.InputPeerUser({ user_id: chatIdToPeerId(id), access_hash: accessHash ?? 0n });
     } else if (-MAX_CHAT_ID <= id) {
       return new types.InputPeerChat({ chat_id: BigInt(Math.abs(id)) });
     } else if (ZERO_CHANNEL_ID - MAX_CHANNEL_ID <= id && id != ZERO_CHANNEL_ID) {
-      const id_ = BigInt(Math.abs(id - ZERO_CHANNEL_ID));
-      const accessHash = await this.storage.getChannelAccessHash(id_);
-      return new types.InputPeerChannel({ channel_id: id_, access_hash: accessHash ?? 0n });
+      const accessHash = await this.storage.getChannelAccessHash(id);
+      return new types.InputPeerChannel({ channel_id: chatIdToPeerId(id), access_hash: accessHash ?? 0n });
     } else {
       throw new Error("ID format unknown or not implemented");
     }
@@ -1425,9 +1419,8 @@ export class Client<C extends Context = Context> extends ClientAbstract {
   private [getEntity](peer: types.PeerChannel): Promise<types.Channel | types.ChannelForbidden | null>;
   private [getEntity](peer: types.PeerUser | types.PeerChat | types.PeerChannel): Promise<types.User | types.Chat | types.ChatForbidden | types.Channel | types.ChannelForbidden | null>;
   private [getEntity](peer: types.PeerUser | types.PeerChat | types.PeerChannel) {
-    const type = peer instanceof types.PeerUser ? "user" : peer instanceof types.PeerChat ? "chat" : peer instanceof types.PeerChannel ? "channel" : UNREACHABLE();
-    const id = peer instanceof types.PeerUser ? peer.user_id : peer instanceof types.PeerChat ? peer.chat_id : peer instanceof types.PeerChannel ? peer.channel_id : UNREACHABLE();
-    return this.storage.getEntity(type, id);
+    const id = peerToChatId(peer);
+    return this.storage.getEntity(id);
   }
 
   async #handleCtxUpdate(update: Update) {
@@ -1443,7 +1436,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
   async #handleUpdate(update: enums.Update) {
     const promises = new Array<Promise<unknown>>();
     if (update instanceof types.UpdateUserName) {
-      await this.storage.updateUsernames("user", update.user_id, update.usernames.map((v) => v.username));
+      await this.storage.updateUsernames(Number(update.user_id), update.usernames.map((v) => v.username));
       const peer = new types.PeerUser(update);
       const entity = await this[getEntity](peer);
       if (entity != null) {

@@ -1,5 +1,5 @@
 import { bigIntFromBuffer, MaybePromise, rleDecode, rleEncode, sha1, UNREACHABLE, ZERO_CHANNEL_ID } from "../1_utilities.ts";
-import { enums, serialize, TLObject, TLReader, types } from "../2_tl.ts";
+import { AnyEntity, enums, peerToChatId, serialize, TLObject, TLReader, types } from "../2_tl.ts";
 import { DC } from "../3_transport.ts";
 
 // key parts
@@ -27,7 +27,7 @@ const K = {
     usernames: () => [K.cache.P("username")],
     username: (v: string) => [...K.cache.usernames(), v],
     peers: () => [K.cache.P("peer")],
-    peer: (type: string, id: bigint) => [...K.cache.peers(), type, id],
+    peer: (id: number) => [...K.cache.peers(), id],
     stickerSetNames: () => [K.cache.P("stickerSetNames")],
     stickerSetName: (id: bigint, accessHash: bigint) => [...K.cache.stickerSetNames(), id, accessHash],
     files: () => [K.cache.P("files")],
@@ -100,34 +100,40 @@ export abstract class Storage {
     return this.#authKeyId;
   }
 
-  async getChannelAccessHash(id: bigint) {
-    const channel = await this.getEntity("channel", id);
+  async getChannelAccessHash(id: number) {
+    const channel = await this.getEntity(id);
     if (channel) {
+      if (!(channel instanceof types.Channel) && !(channel instanceof types.ChannelForbidden)) {
+        UNREACHABLE();
+      }
       return typeof channel.access_hash === "bigint" ? channel.access_hash : null;
     } else {
       return null;
     }
   }
 
-  async getUserAccessHash(id: bigint) {
-    const user = await this.getEntity("user", id);
+  async getUserAccessHash(id: number) {
+    const user = await this.getEntity(id);
     if (user) {
+      if (!(user instanceof types.User)) {
+        UNREACHABLE();
+      }
       return typeof user.access_hash === "bigint" ? user.access_hash : null;
     } else {
       return null;
     }
   }
 
-  async updateUsernames(type: "user" | "channel", id: bigint, usernames: string[]) {
+  async updateUsernames(id: number, usernames: string[]) {
     for (let username of usernames) {
       username = username.toLowerCase();
-      await this.set(K.cache.username(username), [type, id, new Date()]);
+      await this.set(K.cache.username(username), [id, new Date()]);
     }
   }
 
   async getUsername(username: string) {
     username = username.toLowerCase();
-    return await this.get<["user" | "channel", bigint, Date]>(K.cache.username(username));
+    return await this.get<[number, Date]>(K.cache.username(username));
   }
 
   async setTlObject(key: readonly StorageKeyPart[], value: TLObject | null) {
@@ -193,31 +199,16 @@ export abstract class Storage {
     return this.get<number>(K.updates.channelPts(channelId));
   }
 
-  #getEntityType(entity: types.Channel | types.ChannelForbidden | types.Chat | types.ChatForbidden | types.User) {
-    if (entity instanceof types.Channel || entity instanceof types.ChannelForbidden) {
-      return "channel";
-    } else if (entity instanceof types.Chat || entity instanceof types.ChatForbidden) {
-      return "chat";
-    } else if (entity instanceof types.User) {
-      return "user";
-    } else {
-      UNREACHABLE();
-    }
+  async setEntity(entity: AnyEntity) {
+    await this.set(K.cache.peer(peerToChatId(entity)), [rleEncode(entity[serialize]()), new Date()]);
   }
 
-  async setEntity(entity: types.User | types.Channel | types.ChannelForbidden | types.Chat | types.ChatForbidden) {
-    const type = this.#getEntityType(entity);
-    await this.set(K.cache.peer(type, entity.id), rleEncode(entity[serialize]()));
-  }
-
-  async getEntity(type: "channel", id: bigint): Promise<types.Channel | types.ChannelForbidden | null>;
-  async getEntity(type: "chat", id: bigint): Promise<types.Chat | types.ChatForbidden | null>;
-  async getEntity(type: "user", id: bigint): Promise<types.User | null>;
-  async getEntity(type: "channel" | "chat" | "user", id: bigint): Promise<types.Channel | types.ChannelForbidden | types.Chat | types.ChatForbidden | types.User | null>;
-  async getEntity(type: "channel" | "chat" | "user", id: bigint) {
-    const peer_ = await this.get<Uint8Array>(K.cache.peer(type, id));
+  async getEntity(key: number) {
+    const peer_ = await this.get<[Uint8Array, Date]>(K.cache.peer(key));
     if (peer_ != null) {
-      return new TLReader(rleDecode(peer_)).readObject();
+      const [obj_] = peer_;
+      const entity = new TLReader(rleDecode(obj_)).readObject() as AnyEntity;
+      return entity;
     } else {
       return null;
     }
