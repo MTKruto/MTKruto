@@ -1390,14 +1390,14 @@ export class Client<C extends Context = Context> extends ClientAbstract {
   async #handleUpdate(update: enums.Update) {
     const promises = new Array<Promise<unknown>>();
     if (update instanceof types.UpdateUserName) {
-      await this.storage.updateUsernames(Number(update.user_id), update.usernames.map((v) => v.username));
+      await this.messageStorage.updateUsernames(Number(update.user_id), update.usernames.map((v) => v.username));
       const peer = new types.PeerUser(update);
       const entity = await this[getEntity](peer);
       if (entity != null) {
         entity.usernames = update.usernames;
         entity.first_name = update.first_name;
         entity.last_name = update.last_name;
-        await this.storage.setEntity(entity);
+        await this.messageStorage.setEntity(entity);
       }
     }
 

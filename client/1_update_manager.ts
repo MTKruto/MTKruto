@@ -123,12 +123,12 @@ export class UpdateManager {
   async processUsers(users: enums.User[]) {
     for (const user of users) {
       if (user instanceof types.User && user.access_hash) {
-        await this.#c.storage.setEntity(user);
+        await this.#c.messageStorage.setEntity(user);
         if (user.username) {
-          await this.#c.storage.updateUsernames(peerToChatId(user), [user.username]);
+          await this.#c.messageStorage.updateUsernames(peerToChatId(user), [user.username]);
         }
         if (user.usernames) {
-          await this.#c.storage.updateUsernames(peerToChatId(user), user.usernames.map((v) => v.username));
+          await this.#c.messageStorage.updateUsernames(peerToChatId(user), user.usernames.map((v) => v.username));
         }
       }
     }
