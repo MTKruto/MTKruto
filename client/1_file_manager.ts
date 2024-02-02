@@ -224,6 +224,7 @@ export class FileManager {
     }
     const documents_ = await this.#c.api.messages.getCustomEmojiDocuments({ document_id: id.map(BigInt) }).then((v) => v.map((v) => v[as](types.Document)));
     for (const [i, document_] of documents_.entries()) {
+      await this.#c.messageStorage.setCustomEmojiDocument(document_.id, document_);
       const fileUniqueId = new FileUniqueID(FileUniqueType.Document, { mediaId: document_.id }).encode();
       const fileId = new FileID(null, null, FileType.Document, document_.dc_id, {
         mediaId: document_.id,
