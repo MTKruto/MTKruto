@@ -47,10 +47,10 @@ export class UpdateManager {
       if (chat instanceof types.Channel || chat instanceof types.ChannelForbidden) {
         await this.#c.storage.setEntity(chat);
         if ("username" in chat && chat.username) {
-          await this.#c.storage.updateUsernames("channel", chat.id, [chat.username]);
+          await this.#c.storage.updateUsernames(peerToChatId(chat), [chat.username]);
         }
         if ("usernames" in chat && chat.usernames) {
-          await this.#c.storage.updateUsernames("channel", chat.id, chat.usernames.map((v) => v.username));
+          await this.#c.storage.updateUsernames(peerToChatId(chat), chat.usernames.map((v) => v.username));
         }
       } else if (chat instanceof types.Chat || chat instanceof types.ChatForbidden) {
         await this.#c.storage.setEntity(chat);
@@ -125,10 +125,10 @@ export class UpdateManager {
       if (user instanceof types.User && user.access_hash) {
         await this.#c.storage.setEntity(user);
         if (user.username) {
-          await this.#c.storage.updateUsernames("user", user.id, [user.username]);
+          await this.#c.storage.updateUsernames(peerToChatId(user), [user.username]);
         }
         if (user.usernames) {
-          await this.#c.storage.updateUsernames("user", user.id, user.usernames.map((v) => v.username));
+          await this.#c.storage.updateUsernames(peerToChatId(user), user.usernames.map((v) => v.username));
         }
       }
     }
