@@ -23,7 +23,8 @@ Deno.test("key parts", () => {
   assertEquals(K.cache.peers(), ["cache.peer"]);
   assertEquals(K.cache.peer(123), ["cache.peer", 123]);
   assertEquals(K.cache.stickerSetNames(), ["cache.stickerSetNames"]);
-  assertEquals(K.cache.stickerSetName(123n, 0n), ["cache.stickerSetNames", 123n, 0n]), assertEquals(K.cache.files(), ["cache.files"]);
+  assertEquals(K.cache.stickerSetName(123n, 0n), ["cache.stickerSetNames", 123n, 0n]);
+  assertEquals(K.cache.files(), ["cache.files"]);
   assertEquals(K.cache.file(123n), ["cache.files", 123n]);
   assertEquals(K.cache.fileParts(), ["cache.fileParts"]);
   assertEquals(K.cache.filePart(123n, 0), ["cache.fileParts", 123n, 0]);
