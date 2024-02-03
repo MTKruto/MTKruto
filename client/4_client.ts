@@ -1347,21 +1347,21 @@ export class Client<C extends Context = Context> extends ClientAbstract {
       }
       const resolvedIdType = getChatIdPeerType(resolvedId);
       if (resolvedIdType == "user") {
-        const accessHash = await this.storage.getUserAccessHash(resolvedId);
+        const accessHash = await this.messageStorage.getUserAccessHash(resolvedId);
         return new types.InputPeerUser({ user_id: chatIdToPeerId(resolvedId), access_hash: accessHash ?? 0n });
       } else if (resolvedIdType == "channel") {
-        const accessHash = await this.storage.getChannelAccessHash(resolvedId);
+        const accessHash = await this.messageStorage.getChannelAccessHash(resolvedId);
         return new types.InputPeerChannel({ channel_id: chatIdToPeerId(resolvedId), access_hash: accessHash ?? 0n });
       } else {
         UNREACHABLE();
       }
     } else if (id > 0) {
-      const accessHash = await this.storage.getUserAccessHash(id);
+      const accessHash = await this.messageStorage.getUserAccessHash(id);
       return new types.InputPeerUser({ user_id: chatIdToPeerId(id), access_hash: accessHash ?? 0n });
     } else if (-MAX_CHAT_ID <= id) {
       return new types.InputPeerChat({ chat_id: BigInt(Math.abs(id)) });
     } else if (ZERO_CHANNEL_ID - MAX_CHANNEL_ID <= id && id != ZERO_CHANNEL_ID) {
-      const accessHash = await this.storage.getChannelAccessHash(id);
+      const accessHash = await this.messageStorage.getChannelAccessHash(id);
       return new types.InputPeerChannel({ channel_id: chatIdToPeerId(id), access_hash: accessHash ?? 0n });
     } else {
       throw new Error("ID format unknown or not implemented");
