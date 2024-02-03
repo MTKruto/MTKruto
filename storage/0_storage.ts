@@ -3,7 +3,7 @@ import { AnyEntity, enums, peerToChatId, serialize, TLObject, TLReader, types } 
 import { DC } from "../3_transport.ts";
 
 // key parts
-const K = {
+export const K = {
   session: {
     P: (string: string) => `session.${string}`,
     serverSalt: () => [K.session.P("serverSalt")],
