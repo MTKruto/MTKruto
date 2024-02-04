@@ -612,14 +612,15 @@ export class auth_sendCode_ extends Function_<enums.auth.SentCode> {
 }
 
 export class auth_signUp_ extends Function_<enums.auth.Authorization> {
-  static __F = Symbol() as unknown as (params: { phone_number: string; phone_code_hash: string; first_name: string; last_name: string }) => enums.auth.Authorization;
+  static __F = Symbol() as unknown as (params: { no_joined_notifications?: true; phone_number: string; phone_code_hash: string; first_name: string; last_name: string }) => enums.auth.Authorization;
+  no_joined_notifications?: true;
   phone_number: string;
   phone_code_hash: string;
   first_name: string;
   last_name: string;
 
   protected get [id]() {
-    return 0x80EEE427;
+    return 0xAAC7B717;
   }
 
   static get [name]() {
@@ -628,6 +629,8 @@ export class auth_signUp_ extends Function_<enums.auth.Authorization> {
 
   static get [paramDesc](): ParamDesc {
     return [
+      ["flags", flags, "#"],
+      ["no_joined_notifications", "true", "flags.0?true"],
       ["phone_number", "string", "string"],
       ["phone_code_hash", "string", "string"],
       ["first_name", "string", "string"],
@@ -637,6 +640,8 @@ export class auth_signUp_ extends Function_<enums.auth.Authorization> {
 
   protected get [params](): Params {
     return [
+      ["flags", flags, "#"],
+      [this.no_joined_notifications ?? null, "true", "flags.0?true"],
       [this.phone_number, "string", "string"],
       [this.phone_code_hash, "string", "string"],
       [this.first_name, "string", "string"],
@@ -644,8 +649,9 @@ export class auth_signUp_ extends Function_<enums.auth.Authorization> {
     ];
   }
 
-  constructor(params: { phone_number: string; phone_code_hash: string; first_name: string; last_name: string }) {
+  constructor(params: { no_joined_notifications?: true; phone_number: string; phone_code_hash: string; first_name: string; last_name: string }) {
     super();
+    this.no_joined_notifications = params.no_joined_notifications;
     this.phone_number = params.phone_number;
     this.phone_code_hash = params.phone_code_hash;
     this.first_name = params.first_name;
@@ -12859,11 +12865,12 @@ export class messages_reorderPinnedSavedDialogs_ extends Function_<boolean> {
 }
 
 export class messages_getSavedReactionTags_ extends Function_<enums.messages.SavedReactionTags> {
-  static __F = Symbol() as unknown as (params: { hash: bigint }) => enums.messages.SavedReactionTags;
+  static __F = Symbol() as unknown as (params: { peer?: enums.InputPeer; hash: bigint }) => enums.messages.SavedReactionTags;
+  peer?: enums.InputPeer;
   hash: bigint;
 
   protected get [id]() {
-    return 0x761DDACF;
+    return 0x3637E05B;
   }
 
   static get [name]() {
@@ -12872,18 +12879,23 @@ export class messages_getSavedReactionTags_ extends Function_<enums.messages.Sav
 
   static get [paramDesc](): ParamDesc {
     return [
+      ["flags", flags, "#"],
+      ["peer", types._InputPeer, "flags.0?InputPeer"],
       ["hash", "bigint", "long"],
     ];
   }
 
   protected get [params](): Params {
     return [
+      ["flags", flags, "#"],
+      [this.peer ?? null, types._InputPeer, "flags.0?InputPeer"],
       [this.hash, "bigint", "long"],
     ];
   }
 
-  constructor(params: { hash: bigint }) {
+  constructor(params: { peer?: enums.InputPeer; hash: bigint }) {
     super();
+    this.peer = params.peer;
     this.hash = params.hash;
   }
 }
