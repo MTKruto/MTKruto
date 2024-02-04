@@ -1325,6 +1325,22 @@ export class Client<C extends Context = Context> extends ClientAbstract {
     return inputPeer;
   }
 
+  async getInputChannel(id: ID) {
+    const inputPeer = await this.getInputPeer(id);
+    if (!(inputPeer instanceof types.InputPeerChannel)) {
+      UNREACHABLE();
+    }
+    return new types.InputChannel(inputPeer);
+  }
+
+  async getInputUser(id: ID) {
+    const inputPeer = await this.getInputPeer(id);
+    if (!(inputPeer instanceof types.InputPeerUser)) {
+      UNREACHABLE();
+    }
+    return new types.InputUser(inputPeer);
+  }
+
   async #getInputPeerInner(id: ID) {
     const idn = Number(id);
     if (!isNaN(idn)) {
