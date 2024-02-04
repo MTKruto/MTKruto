@@ -33,12 +33,31 @@ export class UpdateManager {
     return this.#defaultDropPendingUpdates;
   }
 
+  #state: types.updates.State | null | undefined = undefined;
+  async #getState() {
+    if (await this.#mustDropPendingUpdates()) {
+      return this.#state ?? null;
+    }
+    if (this.#state !== undefined) {
+      return this.#state;
+    }
+    const state = await this.#c.storage.getState();
+    return this.#state = state;
+  }
+
+  async #setState(state: types.updates.State) {
+    this.#state = state;
+    if (!await this.#mustDropPendingUpdates()) {
+      await this.#c.storage.setState(state);
+    }
+  }
+
   async fetchState(source: string) {
     const state = await this.#c.api.updates.getState();
     this.#updateState = state;
     d("state fetched [%s]", source);
     if (await this.#mustDropPendingUpdates()) {
-      await this.#c.storage.setState(state);
+      await this.#setState(state);
     }
   }
 
@@ -287,7 +306,7 @@ export class UpdateManager {
             localState.seq = seq;
             localState.date = updates_.date;
             await this.#setUpdateStateDate(updates_.date);
-            await this.#c.storage.setState(localState);
+            await this.#setState(localState);
           } else if (localSeq + 1 > seqStart) {
             // The update sequence was already applied, and must be ignored.
             d("localSeq + 1 > seqStart");
@@ -396,7 +415,7 @@ export class UpdateManager {
       if (update instanceof types.UpdatePtsChanged) {
         await this.fetchState("updatePtsChanged");
         if (this.#updateState) {
-          await this.#c.storage.setState(this.#updateState);
+          await this.#setState(this.#updateState);
         } else {
           UNREACHABLE();
         }
@@ -413,26 +432,26 @@ export class UpdateManager {
   async #setUpdateStateDate(date: number) {
     const localState = await this.#getLocalState();
     localState.date = date;
-    await this.#c.storage.setState(localState);
+    await this.#setState(localState);
   }
 
   async #setUpdatePts(pts: number) {
     const localState = await this.#getLocalState();
     localState.pts = pts;
-    await this.#c.storage.setState(localState);
+    await this.#setState(localState);
   }
 
   async #getLocalState() {
-    let localState = await this.#c.storage.getState();
+    let localState = await this.#getState();
     if (!localState) {
       if (this.#updateState) {
         localState = this.#updateState;
-        await this.#c.storage.setState(localState);
+        await this.#setState(localState);
       } else {
         await this.fetchState("getLocalState");
         if (this.#updateState) {
           localState = this.#updateState;
-          await this.#c.storage.setState(localState);
+          await this.#setState(localState);
         } else {
           UNREACHABLE();
         }
@@ -458,7 +477,7 @@ export class UpdateManager {
             await this.#processUpdates(update, false);
           }
           if (difference instanceof types.updates.Difference) {
-            await this.#c.storage.setState(difference.state);
+            await this.#setState(difference.state);
             dGap("recovered from update gap");
             break;
           } else if (difference instanceof types.updates.DifferenceSlice) {
