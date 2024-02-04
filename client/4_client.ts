@@ -443,6 +443,10 @@ export class Client<C extends Context = Context> extends ClientAbstract {
         if (update.chosenInlineResult.inlineMessageId) {
           return update.chosenInlineResult.inlineMessageId;
         }
+      } else if ("callbackQuery" in update) {
+        if (update.callbackQuery.inlineMessageId) {
+          return update.callbackQuery.inlineMessageId;
+        }
       }
       UNREACHABLE();
     };
