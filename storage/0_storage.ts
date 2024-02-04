@@ -69,6 +69,10 @@ export abstract class Storage {
   abstract get supportsFiles(): boolean;
   abstract branch(id: string): Storage;
 
+  get isMemoryStorage() {
+    return false;
+  }
+
   setDc(dc: DC | null) {
     return this.set(K.auth.dc(), dc);
   }
@@ -140,14 +144,18 @@ export abstract class Storage {
     if (value == null) {
       await this.set(key, null);
     } else {
-      await this.set(key, rleEncode(value[serialize]()));
+      await this.set(key, this.isMemoryStorage ? value : rleEncode(value[serialize]()));
     }
   }
 
-  async getTlObject(keyOrBuffer: Uint8Array | readonly StorageKeyPart[]) {
-    const buffer = keyOrBuffer instanceof Uint8Array ? keyOrBuffer : await this.get<Uint8Array>(keyOrBuffer);
+  async getTlObject(keyOrBuffer: TLObject | Uint8Array | readonly StorageKeyPart[]) {
+    const buffer = (keyOrBuffer instanceof Uint8Array || keyOrBuffer instanceof TLObject) ? keyOrBuffer : await this.get<Uint8Array>(keyOrBuffer);
     if (buffer != null) {
-      return new TLReader(rleDecode(buffer)).readObject();
+      if (buffer instanceof Uint8Array) {
+        return new TLReader(rleDecode(buffer)).readObject();
+      } else {
+        return buffer;
+      }
     } else {
       return null;
     }
@@ -200,15 +208,14 @@ export abstract class Storage {
   }
 
   async setEntity(entity: AnyEntity) {
-    await this.set(K.cache.peer(peerToChatId(entity)), [rleEncode(entity[serialize]()), new Date()]);
+    await this.set(K.cache.peer(peerToChatId(entity)), [this.isMemoryStorage ? entity : rleEncode(entity[serialize]()), new Date()]);
   }
 
   async getEntity(key: number) {
     const peer_ = await this.get<[Uint8Array, Date]>(K.cache.peer(key));
     if (peer_ != null) {
       const [obj_] = peer_;
-      const entity = new TLReader(rleDecode(obj_)).readObject() as AnyEntity;
-      return entity;
+      return await this.getTlObject(obj_);
     } else {
       return null;
     }
@@ -343,13 +350,13 @@ export abstract class Storage {
   }
 
   async setCustomEmojiDocument(id: bigint, document: types.Document) {
-    await this.set(K.cache.customEmojiDocument(id), [rleEncode(document[serialize]()), new Date()]);
+    await this.set(K.cache.customEmojiDocument(id), [this.isMemoryStorage ? document : rleEncode(document[serialize]()), new Date()]);
   }
 
   async getCustomEmojiDocument(id: bigint) {
     const v = await this.get<[Uint8Array, Date]>(K.cache.customEmojiDocument(id));
     if (v != null) {
-      return [await this.getTlObject([0]), v[1]] as [types.Document, Date];
+      return [await this.getTlObject(v[0]), v[1]] as [types.Document, Date];
     } else {
       return null;
     }

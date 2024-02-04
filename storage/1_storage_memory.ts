@@ -7,6 +7,10 @@ export class StorageMemory extends Storage implements Storage {
   protected messageMap = new CacheMap<string, unknown>(30_000);
   #id: string | null = null;
 
+  get isMemoryStorage() {
+    return true;
+  }
+
   initialize() {
   }
 
