@@ -1305,12 +1305,20 @@ export class Client<C extends Context = Context> extends ClientAbstract {
 
   async #getUserAccessHash(userId: bigint) {
     const users = await this.api.users.getUsers({ id: [new types.InputUser({ user_id: userId, access_hash: 0n })] });
-    return users[0]?.[as](types.User).access_hash ?? 0n;
+    const user = users[0]?.[as](types.User);
+    if (user) {
+      await this.messageStorage.setEntity(user);
+    }
+    return user?.access_hash ?? 0n;
   }
 
   async #getChannelAccessHash(channelId: bigint) {
     const channels = await this.api.channels.getChannels({ id: [new types.InputChannel({ channel_id: channelId, access_hash: 0n })] });
-    return channels.chats[0][as](types.Channel).access_hash ?? 0n;
+    const channel = channels.chats[0][as](types.Channel);
+    if (channel) {
+      await this.messageStorage.setEntity(channel);
+    }
+    return channel?.access_hash ?? 0n;
   }
 
   async getInputPeer(id: ID) {
@@ -1392,9 +1400,15 @@ export class Client<C extends Context = Context> extends ClientAbstract {
   private [getEntity](peer: types.PeerChat): Promise<types.Chat | types.ChatForbidden | null>;
   private [getEntity](peer: types.PeerChannel): Promise<types.Channel | types.ChannelForbidden | null>;
   private [getEntity](peer: types.PeerUser | types.PeerChat | types.PeerChannel): Promise<types.User | types.Chat | types.ChatForbidden | types.Channel | types.ChannelForbidden | null>;
-  private [getEntity](peer: types.PeerUser | types.PeerChat | types.PeerChannel) {
+  private async [getEntity](peer: types.PeerUser | types.PeerChat | types.PeerChannel) {
     const id = peerToChatId(peer);
-    return this.messageStorage.getEntity(id);
+    const entity = await this.messageStorage.getEntity(id);
+    if (entity == null && await this.storage.getAccountType() == "bot" && peer instanceof types.PeerUser || peer instanceof types.PeerChannel) {
+      await this.getInputPeer(id);
+    } else {
+      return entity;
+    }
+    return await this.messageStorage.getEntity(id);
   }
 
   async #handleCtxUpdate(update: Update) {
