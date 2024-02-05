@@ -12,6 +12,8 @@ export enum ValueType {
   Array,
 }
 
+export const WEB_STORAGE_PREFIX_EXP = /^[\d\w]+$/;
+
 export function toString(value: unknown): string {
   if (typeof value === "boolean") {
     return `${ValueType.Boolean}${Number(value)}`;
