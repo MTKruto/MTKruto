@@ -1325,6 +1325,9 @@ export class Client<C extends Context = Context> extends ClientAbstract {
   }
 
   async getInputPeer(id: ID) {
+    if (id === "me") {
+      return new types.InputPeerSelf();
+    }
     const inputPeer = await this.#getInputPeerInner(id);
     if ((inputPeer instanceof types.InputPeerUser || inputPeer instanceof types.InputPeerChannel && inputPeer.access_hash == 0n) && await this.storage.getAccountType() == "bot") {
       if ("channel_id" in inputPeer) {
