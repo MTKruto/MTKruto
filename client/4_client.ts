@@ -3,13 +3,13 @@ import { bigIntFromBuffer, cleanObject, drop, getRandomBigInt, getRandomId, Mayb
 import { as, chatIdToPeerId, enums, functions, getChatIdPeerType, Message_, MessageContainer, name, peerToChatId, ReadObject, RPCResult, TLError, TLObject, TLReader, types } from "../2_tl.ts";
 import { Storage, StorageMemory } from "../3_storage.ts";
 import { DC } from "../3_transport.ts";
-import { BotCommand, Chat, ChatAction, ChatMember, ChatP, ConnectionState, constructUser, Document, FileSource, ID, InlineQueryResult, Message, MessageAnimation, MessageAudio, MessageContact, MessageDice, MessageDocument, MessageLocation, MessagePhoto, MessagePoll, MessageText, MessageVenue, MessageVideo, MessageVideoNote, MessageVoice, NetworkStatistics, ParseMode, Reaction, Update, UpdateIntersection, User } from "../3_types.ts";
+import { BotCommand, Chat, ChatAction, ChatMember, ChatP, ConnectionState, constructUser, Document, FileSource, ID, InlineQueryResult, Message, MessageAnimation, MessageAudio, MessageContact, MessageDice, MessageDocument, MessageLocation, MessagePhoto, MessagePoll, MessageText, MessageVenue, MessageVideo, MessageVideoNote, MessageVoice, NetworkStatistics, ParseMode, Reaction, StoryContent, Update, UpdateIntersection, User } from "../3_types.ts";
 import { ACK_THRESHOLD, APP_VERSION, DEVICE_MODEL, LANG_CODE, LANG_PACK, LAYER, MAX_CHANNEL_ID, MAX_CHAT_ID, PublicKeys, SYSTEM_LANG_CODE, SYSTEM_VERSION, USERNAME_TTL } from "../4_constants.ts";
 import { AuthKeyUnregistered, FloodWait, Migrate, PasswordHashInvalid, PhoneNumberInvalid, SessionPasswordNeeded, upgradeInstance } from "../4_errors.ts";
 import { ClientAbstract } from "./0_client_abstract.ts";
 import { FilterQuery, match, WithFilter } from "./0_filters.ts";
 import { decryptMessage, encryptMessage, getMessageId } from "./0_message.ts";
-import { _SendCommon, AddReactionParams, AnswerCallbackQueryParams, AnswerInlineQueryParams, AuthorizeUserParams, BanChatMemberParams, DeleteMessageParams, DeleteMessagesParams, DownloadParams, EditMessageParams, EditMessageReplyMarkupParams, ForwardMessagesParams, GetChatsParams, GetHistoryParams, GetMyCommandsParams, PinMessageParams, ReplyParams, SendAnimationParams, SendAudioParams, SendContactParams, SendDiceParams, SendDocumentParams, SendLocationParams, SendMessageParams, SendPhotoParams, SendPollParams, SendVenueParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams, SetChatMemberRightsParams, SetChatPhotoParams, SetMyCommandsParams, SetReactionsParams, UploadParams } from "./0_params.ts";
+import { _SendCommon, AddReactionParams, AnswerCallbackQueryParams, AnswerInlineQueryParams, AuthorizeUserParams, BanChatMemberParams, CreateStoryParams, DeleteMessageParams, DeleteMessagesParams, DownloadParams, EditMessageParams, EditMessageReplyMarkupParams, ForwardMessagesParams, GetChatsParams, GetHistoryParams, GetMyCommandsParams, PinMessageParams, ReplyParams, SendAnimationParams, SendAudioParams, SendContactParams, SendDiceParams, SendDocumentParams, SendLocationParams, SendMessageParams, SendPhotoParams, SendPollParams, SendVenueParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams, SetChatMemberRightsParams, SetChatPhotoParams, SetMyCommandsParams, SetReactionsParams, UploadParams } from "./0_params.ts";
 import { checkPassword } from "./0_password.ts";
 import { Api, ConnectionError } from "./0_types.ts";
 import { getUsername, resolve } from "./0_utilities.ts";
@@ -24,6 +24,7 @@ import { MessageManager } from "./2_message_manager.ts";
 import { CallbackQueryManager } from "./3_callback_query_manager.ts";
 import { ChatListManager } from "./3_chat_list_manager.ts";
 import { InlineQueryManager } from "./3_inline_query_manager.ts";
+import { StoryManager } from "./3_story_manager.ts";
 
 export type NextFn<T = void> = () => Promise<T>;
 export interface InvokeErrorHandler<C> {
@@ -200,6 +201,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
   #fileManager: FileManager;
   #reactionManager: ReactionManager;
   #messageManager: MessageManager;
+  #storyManager: StoryManager;
   #callbackQueryManager: CallbackQueryManager;
   #inlineQueryManager: InlineQueryManager;
   #chatListManager: ChatListManager;
@@ -324,6 +326,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
     this.#reactionManager = new ReactionManager(c);
     this.#messageManager = new MessageManager({ ...c, fileManager: this.#fileManager });
     this.#callbackQueryManager = new CallbackQueryManager({ ...c, messageManager: this.#messageManager });
+    this.#storyManager = new StoryManager({ ...c, fileManager: this.#fileManager, messageManager: this.#messageManager });
     this.#inlineQueryManager = new InlineQueryManager({ ...c, messageManager: this.#messageManager });
     this.#chatListManager = new ChatListManager({ ...c, messageManager: this.#messageManager });
     this.#updateManager.setUpdateHandler(this.#handleUpdate.bind(this));
@@ -2224,5 +2227,15 @@ export class Client<C extends Context = Context> extends ClientAbstract {
    */
   async getChatAdministrators(chatId: ID): Promise<ChatMember[]> {
     return await this.#messageManager.getChatAdministrators(chatId);
+  }
+
+  /**
+   * Create a story.
+   *
+   * @method
+   * @param content The content of the story.
+   */
+  async createStory(content: StoryContent, params?: CreateStoryParams) {
+    await this.#storyManager.createStory(content, params);
   }
 }

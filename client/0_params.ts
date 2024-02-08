@@ -297,10 +297,9 @@ export interface SetChatMemberRightsParams {
   untilDate?: Date;
 }
 
-export interface CreateStoryParams {
+export interface CreateStoryParams extends _CaptionCommon, _UploadCommon {
   chatId?: ID;
   clickableAreas?: StoryClickableArea[];
-  caption?: string;
   privacy?: StoryPrivacy;
   activeFor?: number;
   from?: number;
