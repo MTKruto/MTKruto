@@ -1,5 +1,5 @@
-import { chatIdToPeer, types } from "../2_tl.ts";
 import { UNREACHABLE } from "../1_utilities.ts";
+import { chatIdToPeer, types } from "../2_tl.ts";
 import { Location } from "./0_location.ts";
 import { MessageReference } from "./0_message_reference.ts";
 import { reactionToTlObject } from "./0_reaction.ts";
