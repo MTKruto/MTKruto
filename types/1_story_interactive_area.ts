@@ -90,5 +90,7 @@ export async function storyInteractiveAreaToTlObject(area: StoryInteractiveArea,
     }
     const channel = new types.InputChannel({ channel_id: entity.id, access_hash: entity.access_hash ?? 0n });
     return new types.InputMediaAreaChannelPost({ coordinates, channel, msg_id: area.messageReference.messageId });
+  } else {
+    UNREACHABLE();
   }
 }
