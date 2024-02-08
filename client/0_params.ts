@@ -1,5 +1,6 @@
 import { MaybePromise } from "../1_utilities.ts";
-import { BotCommandScope, Chat, ChatMemberRights, FileSource, ID, InlineQueryResultButton, Message, MessageEntity, ParseMode, ReplyMarkup, ReplyQuote } from "../3_types.ts";
+import { BotCommandScope, Chat, ChatMemberRights, FileSource, ID, InlineQueryResultButton, Message, MessageEntity, ParseMode, ReplyMarkup, ReplyQuote, StoryClickableArea } from "../3_types.ts";
+import { StoryPrivacy } from "../types/1_story_privacy.ts";
 
 export interface AnswerCallbackQueryParams {
   /** A text to be shown to the user. */
@@ -294,4 +295,15 @@ export interface SetChatMemberRightsParams {
   rights?: ChatMemberRights;
   /** A point of time in the future to automatically withdraw the restrictions. */
   untilDate?: Date;
+}
+
+export interface CreateStoryParams {
+  chatId?: ID;
+  clickableAreas?: StoryClickableArea[];
+  caption?: string;
+  privacy?: StoryPrivacy;
+  activeFor?: number;
+  from?: number;
+  highlight?: boolean;
+  protectContent?: boolean;
 }
