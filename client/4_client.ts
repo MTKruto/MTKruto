@@ -2310,7 +2310,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
    * @param storyId The identifier of the story to add to highlights.
    */
   async addStoriesToHighlight(chatId: ID, storyId: number): Promise<void> {
-    await this.#storyManager.addStoryToHighlight(chatId, storyId);
+    await this.#storyManager.addStoryToHighlights(chatId, storyId);
   }
 
   /**
