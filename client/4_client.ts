@@ -1425,6 +1425,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
   }
 
   async #handleUpdate(update: enums.Update) {
+    console.log(update.constructor.name);
     const promises = new Array<Promise<unknown>>();
     if (update instanceof types.UpdateUserName) {
       await this.messageStorage.updateUsernames(Number(update.user_id), update.usernames.map((v) => v.username));
@@ -2234,9 +2235,10 @@ export class Client<C extends Context = Context> extends ClientAbstract {
    *
    * @method
    * @param content The content of the story.
+   * @returns The created story.
    */
-  async createStory(content: InputStoryContent, params?: CreateStoryParams) {
-    await this.#storyManager.createStory(content, params);
+  async createStory(content: InputStoryContent, params?: CreateStoryParams): Promise<Story> {
+   return await this.#storyManager.createStory(content, params);
   }
 
   /**
@@ -2260,7 +2262,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
    * @param chatId The identifier of the chat to retrieve the story from.
    * @param storyId The identifier of the story to retrieve.
    */
-  async getStory(chatId: ID, storyId: number): Promise<Story> {
-    return await this.#storyManager.getStory(chatId, storyId);
+  async getStory(chatId: ID, storyId: number): Promise<Story | null> {
+    return await this.#storyManager.getStory(chatId, storyId) ;
   }
 }

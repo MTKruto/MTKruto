@@ -18,6 +18,16 @@ export class StoryManager {
     this.#c = c;
   }
 
+  async #updatesToStory(updates: enums.Updates) {
+    if (updates instanceof types.Updates) {
+      const updateStory = updates.updates.find((v): v is types.UpdateStory => v instanceof types.UpdateStory);
+      if (updateStory && updateStory.story instanceof types.StoryItem) {
+        return await constructStory(updateStory.story, updateStory.peer, this.#c.getEntity);
+      }
+    }
+    UNREACHABLE();
+  }
+
   async createStory(content: InputStoryContent, params?: CreateStoryParams) {
     let media: enums.InputMedia | null = null;
     const source = "video" in content ? content.video : "photo" in content ? content.photo : UNREACHABLE();
@@ -66,7 +76,7 @@ export class StoryManager {
       }
     }
 
-    await this.#c.api.stories.sendStory({
+    const updates = await this.#c.api.stories.sendStory({
       peer,
       random_id: randomId,
       media,
@@ -78,6 +88,7 @@ export class StoryManager {
       pinned: params?.highlight ? true : undefined,
       media_areas: mediaAreas,
     });
+    return await this.#updatesToStory(updates);
   }
 
   async getStories(chatId: ID, storyIds: number[]) {
@@ -91,6 +102,6 @@ export class StoryManager {
   }
 
   async getStory(chatId: ID, storyId: number) {
-    return await this.getStories(chatId, [storyId]).then((v) => v[0]);
+    return await this.getStories(chatId, [storyId]).then((v) => v[0] ?? null);
   }
 }
