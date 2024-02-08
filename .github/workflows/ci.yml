@@ -117,3 +117,9 @@ jobs:
               workflow_id: "doc.yml",
               ref: "main",
             });
+
+  l:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - run: test `cat $(find . -type f | grep ".ts$") | grep "console." | wc -l` -eq 9
