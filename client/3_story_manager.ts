@@ -62,7 +62,7 @@ export class StoryManager {
 
     if (params?.interactiveAreas?.length) {
       for (const area of params.interactiveAreas) {
-        mediaAreas.push(await storyInteractiveAreaToTlObject(area));
+        mediaAreas.push(await storyInteractiveAreaToTlObject(area, this.#c.getEntity));
       }
     }
 
