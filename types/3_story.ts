@@ -1,9 +1,11 @@
 import { fromUnixTimestamp, UNREACHABLE } from "../1_utilities.ts";
 import { types } from "../2_tl.ts";
+import { constructMessageEntity, MessageEntity } from "./0_message_entity.ts";
 import { EntityGetter } from "./1__getters.ts";
 import { ChatP, constructChatP } from "./1_chat_p.ts";
 import { InputStoryContent } from "./1_input_story_content.ts";
 import { constructStoryInteractiveArea, StoryInteractiveArea } from "./1_story_interactive_area.ts";
+import { StoryPrivacy } from "./1_story_privacy.ts";
 import { constructStoryContent } from "./2_story_content.ts";
 
 export interface Story {
@@ -13,6 +15,9 @@ export interface Story {
   content: InputStoryContent;
   interactiveAreas: StoryInteractiveArea[];
   highlighted: boolean;
+  privacy: StoryPrivacy;
+  caption?: string;
+  captionEntities?: MessageEntity[];
 }
 
 export async function constructStory(story: types.StoryItem, peer: types.PeerUser | types.PeerChat | types.PeerChannel, getEntity: EntityGetter) {
@@ -26,6 +31,8 @@ export async function constructStory(story: types.StoryItem, peer: types.PeerUse
   const interactiveAreas = (story.media_areas ?? []).map(constructStoryInteractiveArea);
   const highlighted = story.pinned ? true : false;
   const content = constructStoryContent(story.media);
+  const caption = story.caption;
+  const captionEntities = story.entities?.map(constructMessageEntity).filter((v): v is NonNullable<typeof v> => !!v);
 
   return {
     id,
@@ -34,5 +41,7 @@ export async function constructStory(story: types.StoryItem, peer: types.PeerUse
     content,
     interactiveAreas,
     highlighted,
+    caption,
+    captionEntities,
   };
 }
