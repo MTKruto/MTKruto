@@ -1,10 +1,10 @@
 import { UNREACHABLE } from "../1_utilities.ts";
-import { chatIdToPeer, types } from "../2_tl.ts";
-import { Location } from "./0_location.ts";
+import { chatIdToPeer, enums, peerToChatId, types } from "../2_tl.ts";
+import { constructLocation, Location } from "./0_location.ts";
 import { MessageReference } from "./0_message_reference.ts";
-import { reactionToTlObject } from "./0_reaction.ts";
+import { constructReaction, reactionToTlObject } from "./0_reaction.ts";
 import { Reaction } from "./0_reaction.ts";
-import { Venue } from "./0_venue.ts";
+import { constructVenue, Venue } from "./0_venue.ts";
 import { EntityGetter } from "./1__getters.ts";
 
 /** @unlisted */
@@ -49,6 +49,48 @@ export type StoryInteractiveArea =
   | StoryInteractiveAreaVenue
   | StoryInteractiveAreaReaction
   | StoryInteractiveAreaMessage;
+
+function constructStoryInteractiveAreaPosition(position: types.MediaAreaCoordinates): StoryInteractiveAreaPosition {
+  return {
+    xPercentage: position.x,
+    yPercentage: position.y,
+    widthPercentage: position.w,
+    heightPercentage: position.h,
+    rotationAngle: position.rotation,
+  };
+}
+export function constructStoryInteractiveArea(area: enums.MediaArea): StoryInteractiveArea {
+  const position = constructStoryInteractiveAreaPosition(area.coordinates);
+  if (area instanceof types.MediaAreaGeoPoint) {
+    if (area.geo instanceof types.GeoPointEmpty) {
+      UNREACHABLE(); // will this ever be empty?
+    }
+    const location = constructLocation(area.geo);
+    return { position, location };
+  } else if (area instanceof types.MediaAreaVenue) {
+    const venue = constructVenue(area);
+    return { position, venue };
+  } else if (area instanceof types.MediaAreaSuggestedReaction) {
+    const reaction = constructReaction(area.reaction);
+    return {
+      position,
+      reaction,
+      count: 0, // TODO: count
+      flipped: area.flipped ? true : false,
+      dark: area.dark ? true : false,
+    };
+  } else if (area instanceof types.MediaAreaChannelPost) {
+    return {
+      position,
+      messageReference: {
+        chatId: peerToChatId(area),
+        messageId: area.msg_id,
+      },
+    };
+  } else {
+    UNREACHABLE();
+  }
+}
 
 function storyInteractiveAreaPositionToTlObject(position: StoryInteractiveAreaPosition) {
   return new types.MediaAreaCoordinates({

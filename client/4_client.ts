@@ -2238,4 +2238,24 @@ export class Client<C extends Context = Context> extends ClientAbstract {
   async createStory(content: StoryContent, params?: CreateStoryParams) {
     await this.#storyManager.createStory(content, params);
   }
+
+  /**
+   * Retrieve multiple stories.
+   *
+   * @method
+   * @param chatId The identifier of the chat to retrieve the stories from.
+   * @param storyIds The identifier of the stories to retrieve.
+   */
+  async getStories(chatId: ID, storyIds: number[]) {
+  }
+
+  /**
+   * Retrieve a single story.
+   *
+   * @method
+   * @param chatId The identifier of the chat to retrieve the story from.
+   * @param storyId The identifier of the story to retrieve.
+   */
+  async getStory(chatId: ID, storyId: number) {
+  }
 }
