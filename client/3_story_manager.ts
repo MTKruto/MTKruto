@@ -1,8 +1,8 @@
 import { contentType } from "../0_deps.ts";
-import { getRandomId } from "../1_utilities.ts";
-import { enums, types } from "../2_tl.ts";
-import { FileType, storyInteractiveAreaToTlObject, storyPrivacyToTlObject } from "../3_types.ts";
-import { StoryContent } from "../types/1_story_content.ts";
+import { getRandomId, UNREACHABLE } from "../1_utilities.ts";
+import { as, enums, inputPeerToPeer, types } from "../2_tl.ts";
+import { constructStory, FileType, ID, Story, storyInteractiveAreaToTlObject, storyPrivacyToTlObject } from "../3_types.ts";
+import { InputStoryContent } from "../types/1_input_story_content.ts";
 import { CreateStoryParams } from "./0_params.ts";
 import { C as C_ } from "./0_types.ts";
 import { getFileContents, isHttpUrl } from "./0_utilities.ts";
@@ -18,9 +18,9 @@ export class StoryManager {
     this.#c = c;
   }
 
-  async createStory(content: StoryContent, params?: CreateStoryParams) {
+  async createStory(content: InputStoryContent, params?: CreateStoryParams) {
     let media: enums.InputMedia | null = null;
-    const source = "video" in content ? content.video : content.photo;
+    const source = "video" in content ? content.video : "photo" in content ? content.photo : UNREACHABLE();
 
     if (typeof source === "string") {
       const fileId = this.#c.messageManager.resolveFileId(source, FileType.Photo);
@@ -78,5 +78,19 @@ export class StoryManager {
       pinned: params?.highlight ? true : undefined,
       media_areas: mediaAreas,
     });
+  }
+
+  async getStories(chatId: ID, storyIds: number[]) {
+    const peer = await this.#c.getInputPeer(chatId);
+    const stories_ = await this.#c.api.stories.getStoriesByID({ peer, id: storyIds });
+    const stories = new Array<Story>();
+    for (const story of stories_.stories) {
+      stories.push(await constructStory(story[as](types.StoryItem), inputPeerToPeer(peer), this.#c.getEntity));
+    }
+    return stories;
+  }
+
+  async getStory(chatId: ID, storyId: number) {
+    return await this.getStories(chatId, [storyId]).then((v) => v[0]);
   }
 }

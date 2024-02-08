@@ -3,7 +3,7 @@ import { bigIntFromBuffer, cleanObject, drop, getRandomBigInt, getRandomId, Mayb
 import { as, chatIdToPeerId, enums, functions, getChatIdPeerType, Message_, MessageContainer, name, peerToChatId, ReadObject, RPCResult, TLError, TLObject, TLReader, types } from "../2_tl.ts";
 import { Storage, StorageMemory } from "../3_storage.ts";
 import { DC } from "../3_transport.ts";
-import { BotCommand, Chat, ChatAction, ChatMember, ChatP, ConnectionState, constructUser, Document, FileSource, ID, InlineQueryResult, Message, MessageAnimation, MessageAudio, MessageContact, MessageDice, MessageDocument, MessageLocation, MessagePhoto, MessagePoll, MessageText, MessageVenue, MessageVideo, MessageVideoNote, MessageVoice, NetworkStatistics, ParseMode, Reaction, StoryContent, Update, UpdateIntersection, User } from "../3_types.ts";
+import { BotCommand, Chat, ChatAction, ChatMember, ChatP, ConnectionState, constructUser, Document, FileSource, ID, InlineQueryResult, InputStoryContent, Message, MessageAnimation, MessageAudio, MessageContact, MessageDice, MessageDocument, MessageLocation, MessagePhoto, MessagePoll, MessageText, MessageVenue, MessageVideo, MessageVideoNote, MessageVoice, NetworkStatistics, ParseMode, Reaction, Story, Update, UpdateIntersection, User } from "../3_types.ts";
 import { ACK_THRESHOLD, APP_VERSION, DEVICE_MODEL, LANG_CODE, LANG_PACK, LAYER, MAX_CHANNEL_ID, MAX_CHAT_ID, PublicKeys, SYSTEM_LANG_CODE, SYSTEM_VERSION, USERNAME_TTL } from "../4_constants.ts";
 import { AuthKeyUnregistered, FloodWait, Migrate, PasswordHashInvalid, PhoneNumberInvalid, SessionPasswordNeeded, upgradeInstance } from "../4_errors.ts";
 import { ClientAbstract } from "./0_client_abstract.ts";
@@ -2235,7 +2235,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
    * @method
    * @param content The content of the story.
    */
-  async createStory(content: StoryContent, params?: CreateStoryParams) {
+  async createStory(content: InputStoryContent, params?: CreateStoryParams) {
     await this.#storyManager.createStory(content, params);
   }
 
@@ -2246,7 +2246,11 @@ export class Client<C extends Context = Context> extends ClientAbstract {
    * @param chatId The identifier of the chat to retrieve the stories from.
    * @param storyIds The identifier of the stories to retrieve.
    */
-  async getStories(chatId: ID, storyIds: number[]) {
+  async getStories(chatId: ID, storyIds: number[]): Promise<Story[]> {
+    if (!storyIds.length) {
+      return [];
+    }
+    return await this.#storyManager.getStories(chatId, storyIds);
   }
 
   /**
@@ -2256,6 +2260,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
    * @param chatId The identifier of the chat to retrieve the story from.
    * @param storyId The identifier of the story to retrieve.
    */
-  async getStory(chatId: ID, storyId: number) {
+  async getStory(chatId: ID, storyId: number): Promise<Story> {
+    return await this.#storyManager.getStory(chatId, storyId);
   }
 }

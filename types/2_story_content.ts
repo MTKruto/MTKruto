@@ -1,8 +1,8 @@
 import { UNREACHABLE } from "../1_utilities.ts";
 import { as, enums, types } from "../2_tl.ts";
+import { FileID, FileType, FileUniqueID, FileUniqueType } from "./0__file_id.ts";
 import { constructPhoto, Photo } from "./1_photo.ts";
 import { constructVideo, Video } from "./1_video.ts";
-import { FileID, FileType, FileUniqueID, FileUniqueType } from "./0__file_id.ts";
 
 /** @unlisted */
 export interface StoryContentPhoto {

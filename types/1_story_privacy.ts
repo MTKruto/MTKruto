@@ -66,3 +66,17 @@ export async function storyPrivacyToTlObject(privacy: StoryPrivacy, getEntity: E
   }
   return rules;
 }
+
+export function constructStoryPrivacy(privacy: enums.PrivacyRule[]): StoryPrivacy {
+  const except = privacy.find((v): v is types.PrivacyValueDisallowUsers => v instanceof types.PrivacyValueDisallowUsers)?.users?.map(Number) ?? [];
+  if (privacy.some((v) => v instanceof types.PrivacyValueAllowAll)) {
+    return { everyoneExcept: except };
+  } else if (privacy.some((v) => v instanceof types.PrivacyValueAllowContacts)) {
+    return { contactsExcept: except };
+  } else if (privacy.some((v) => v instanceof types.PrivacyValueAllowCloseFriends)) {
+    return { closeFriends: true };
+  }
+
+  const only = privacy.find((v): v is types.PrivacyValueAllowUsers => v instanceof types.PrivacyValueAllowUsers)?.users?.map(Number) ?? [];
+  return { only };
+}

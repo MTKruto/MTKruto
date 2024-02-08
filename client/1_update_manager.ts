@@ -79,50 +79,87 @@ export class UpdateManager {
 
   async processResult(result: ReadObject) {
     if (
+      result instanceof types.account.AuthorizationForm ||
+      result instanceof types.account.AutoSaveSettings ||
+      result instanceof types.account.PrivacyRules ||
+      result instanceof types.account.WebAuthorizations ||
+      result instanceof types.AttachMenuBots ||
+      result instanceof types.AttachMenuBotsBot ||
+      result instanceof types.channels.AdminLogResults ||
+      result instanceof types.channels.ChannelParticipant ||
+      result instanceof types.channels.ChannelParticipants ||
+      result instanceof types.channels.SendAsPeers ||
+      result instanceof types.ChatInvite ||
+      result instanceof types.chatlists.ChatlistInvite ||
+      result instanceof types.chatlists.ChatlistInviteAlready ||
+      result instanceof types.chatlists.ChatlistUpdates ||
+      result instanceof types.chatlists.ExportedInvites ||
+      result instanceof types.contacts.Blocked ||
+      result instanceof types.contacts.BlockedSlice ||
+      result instanceof types.contacts.Contacts ||
+      result instanceof types.contacts.Found ||
+      result instanceof types.contacts.ImportedContacts ||
+      result instanceof types.contacts.ResolvedPeer ||
+      result instanceof types.contacts.TopPeers ||
+      result instanceof types.help.PromoData ||
+      result instanceof types.help.RecentMeUrls ||
+      result instanceof types.messages.BotResults ||
+      result instanceof types.messages.ChannelMessages ||
+      result instanceof types.messages.ChatAdminsWithInvites ||
+      result instanceof types.messages.ChatFull ||
+      result instanceof types.messages.ChatInviteImporters ||
+      result instanceof types.messages.Chats ||
+      result instanceof types.messages.ChatsSlice ||
       result instanceof types.messages.Dialogs ||
       result instanceof types.messages.DialogsSlice ||
+      result instanceof types.messages.DiscussionMessage ||
+      result instanceof types.messages.ExportedChatInvite ||
+      result instanceof types.messages.ExportedChatInviteReplaced ||
+      result instanceof types.messages.ExportedChatInvites ||
+      result instanceof types.messages.ForumTopics ||
+      result instanceof types.messages.HighScores ||
+      result instanceof types.messages.InactiveChats ||
+      result instanceof types.messages.MessageReactionsList ||
       result instanceof types.messages.Messages ||
       result instanceof types.messages.MessagesSlice ||
-      result instanceof types.messages.ChannelMessages ||
-      result instanceof types.messages.ChatFull ||
-      result instanceof types.contacts.Found ||
-      result instanceof types.account.PrivacyRules ||
-      result instanceof types.contacts.ResolvedPeer ||
-      result instanceof types.channels.ChannelParticipants ||
-      result instanceof types.channels.ChannelParticipant ||
-      result instanceof types.messages.PeerDialogs ||
-      result instanceof types.contacts.TopPeers ||
-      result instanceof types.channels.AdminLogResults ||
-      result instanceof types.help.RecentMeUrls ||
-      result instanceof types.messages.InactiveChats ||
-      result instanceof types.help.PromoData ||
       result instanceof types.messages.MessageViews ||
-      result instanceof types.messages.DiscussionMessage ||
+      result instanceof types.messages.PeerDialogs ||
+      result instanceof types.messages.PeerSettings ||
+      result instanceof types.messages.SearchResultsCalendar ||
+      result instanceof types.messages.SponsoredMessages ||
+      result instanceof types.messages.VotesList ||
+      result instanceof types.messages.WebPage ||
+      result instanceof types.payments.CheckedGiftCode ||
+      result instanceof types.payments.PaymentForm ||
+      result instanceof types.payments.PaymentReceipt ||
       result instanceof types.phone.GroupCall ||
       result instanceof types.phone.GroupParticipants ||
       result instanceof types.phone.JoinAsPeers ||
-      result instanceof types.messages.SponsoredMessages ||
-      result instanceof types.messages.SearchResultsCalendar ||
-      result instanceof types.channels.SendAsPeers ||
-      result instanceof types.users.UserFull ||
-      result instanceof types.messages.PeerSettings ||
-      result instanceof types.messages.MessageReactionsList ||
-      result instanceof types.messages.ForumTopics ||
-      result instanceof types.account.AutoSaveSettings ||
-      result instanceof types.chatlists.ExportedInvites ||
-      result instanceof types.chatlists.ChatlistInviteAlready ||
-      result instanceof types.chatlists.ChatlistInvite ||
-      result instanceof types.chatlists.ChatlistUpdates ||
-      result instanceof types.messages.Chats ||
-      result instanceof types.messages.ChatsSlice
+      result instanceof types.phone.PhoneCall ||
+      result instanceof types.photos.Photo ||
+      result instanceof types.photos.Photos ||
+      result instanceof types.photos.PhotosSlice ||
+      result instanceof types.premium.BoostsList ||
+      result instanceof types.premium.MyBoosts ||
+      result instanceof types.stats.MegagroupStats ||
+      result instanceof types.stats.PublicForwards ||
+      result instanceof types.stories.AllStories ||
+      result instanceof types.stories.PeerStories ||
+      result instanceof types.stories.Stories ||
+      result instanceof types.stories.StoryViews ||
+      result instanceof types.stories.StoryViewsList ||
+      result instanceof types.users.UserFull
     ) {
-      await this.processChats(result.chats);
+      if ("chats" in result) {
+        await this.processChats(result.chats);
+      }
+
       if ("users" in result) {
         await this.processUsers(result.users);
       }
 
-      if ("messages" in result) {
-        for (const message of result.messages) {
+      if ("messages" in result && Array.isArray(result.messages)) {
+        for (const message of result.messages as unknown[]) {
           if (message instanceof types.Message || message instanceof types.MessageService) {
             await this.#c.messageStorage.setMessage(peerToChatId(message.peer_id), message.id, message);
           }
