@@ -1,5 +1,5 @@
 import { MaybePromise } from "../1_utilities.ts";
-import { BotCommandScope, Chat, ChatMemberRights, FileSource, ID, InlineQueryResultButton, Message, MessageEntity, ParseMode, ReplyMarkup, ReplyQuote, StoryClickableArea } from "../3_types.ts";
+import { BotCommandScope, Chat, ChatMemberRights, FileSource, ID, InlineQueryResultButton, Message, MessageEntity, ParseMode, ReplyMarkup, ReplyQuote, StoryInteractiveArea } from "../3_types.ts";
 import { StoryPrivacy } from "../types/1_story_privacy.ts";
 
 export interface AnswerCallbackQueryParams {
@@ -299,7 +299,7 @@ export interface SetChatMemberRightsParams {
 
 export interface CreateStoryParams extends _CaptionCommon, _UploadCommon {
   chatId?: ID;
-  clickableAreas?: StoryClickableArea[];
+  interactiveAreas?: StoryInteractiveArea[];
   privacy?: StoryPrivacy;
   activeFor?: number;
   from?: number;

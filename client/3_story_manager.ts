@@ -1,7 +1,7 @@
 import { contentType } from "../0_deps.ts";
 import { getRandomId } from "../1_utilities.ts";
 import { enums, types } from "../2_tl.ts";
-import { FileType, storyPrivacyToTlObject } from "../3_types.ts";
+import { FileType, storyInteractiveAreaToTlObject, storyPrivacyToTlObject } from "../3_types.ts";
 import { StoryContent } from "../types/1_story_content.ts";
 import { CreateStoryParams } from "./0_params.ts";
 import { C as C_ } from "./0_types.ts";
@@ -58,6 +58,13 @@ export class StoryManager {
     const peer = params?.chatId ? await this.#c.getInputPeer(params.chatId) : new types.InputPeerSelf();
     const randomId = getRandomId();
     const privacyRules = await storyPrivacyToTlObject(params?.privacy ?? { everyoneExcept: [] }, this.#c.getEntity);
+    const mediaAreas = new Array<enums.MediaArea>();
+
+    if (params?.interactiveAreas?.length) {
+      for (const area of params.interactiveAreas) {
+        mediaAreas.push(await storyInteractiveAreaToTlObject(area));
+      }
+    }
 
     await this.#c.api.stories.sendStory({
       peer,
@@ -66,6 +73,10 @@ export class StoryManager {
       privacy_rules: privacyRules,
       caption,
       entities,
+      noforwards: params?.protectContent ? true : undefined,
+      period: params?.activeFor,
+      pinned: params?.highlight ? true : undefined,
+      media_areas: mediaAreas,
     });
   }
 }
