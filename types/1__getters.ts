@@ -1,5 +1,5 @@
 import { MaybePromise } from "../1_utilities.ts";
-import { types } from "../2_tl.ts";
+import { enums, types } from "../2_tl.ts";
 import { ID } from "./0_id.ts";
 
 /** @unlisted */
@@ -12,7 +12,7 @@ export interface EntityGetter {
 
 /** @unlisted */
 export interface InputPeerGetter {
-  (id: ID): Promise<types.InputPeerUser | types.InputPeerChannel | types.InputPeerChat>;
+  (id: ID): Promise<enums.InputPeer>;
 }
 
 /** @unlisted */
