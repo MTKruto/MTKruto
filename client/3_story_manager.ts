@@ -1,7 +1,7 @@
 import { contentType } from "../0_deps.ts";
 import { getRandomId, UNREACHABLE } from "../1_utilities.ts";
 import { as, enums, inputPeerToPeer, types } from "../2_tl.ts";
-import { constructStory, FileType, Story, storyInteractiveAreaToTlObject, storyPrivacyToTlObject } from "../3_types.ts";
+import { constructStory, FileType, ID, Story, storyInteractiveAreaToTlObject, storyPrivacyToTlObject } from "../3_types.ts";
 import { InputStoryContent } from "../types/1_input_story_content.ts";
 import { CreateStoryParams } from "./0_params.ts";
 import { C as C_ } from "./0_types.ts";
@@ -102,6 +102,6 @@ export class StoryManager {
   }
 
   async getStory(chatId: ID, storyId: number) {
-    return await this.getStories(chatId[storyId]).then((v) => v[0] ?? null);
+    return await this.getStories(chatId, [storyId]).then((v) => v[0] ?? null);
   }
 }
