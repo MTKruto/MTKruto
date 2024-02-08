@@ -1,7 +1,7 @@
 import { contentType } from "../0_deps.ts";
 import { getRandomId, UNREACHABLE } from "../1_utilities.ts";
 import { as, enums, inputPeerToPeer, types } from "../2_tl.ts";
-import { constructStory, FileType, ID, Story, storyInteractiveAreaToTlObject, storyPrivacyToTlObject } from "../3_types.ts";
+import { constructStory, FileType, Story, storyInteractiveAreaToTlObject, storyPrivacyToTlObject } from "../3_types.ts";
 import { InputStoryContent } from "../types/1_input_story_content.ts";
 import { CreateStoryParams } from "./0_params.ts";
 import { C as C_ } from "./0_types.ts";
@@ -28,7 +28,7 @@ export class StoryManager {
     UNREACHABLE();
   }
 
-  async createStory(content: InputStoryContent, params?: CreateStoryParams) {
+  async createStory(chatId: ID, content: InputStoryContent, params?: CreateStoryParams) {
     let media: enums.InputMedia | null = null;
     const source = "video" in content ? content.video : "photo" in content ? content.photo : UNREACHABLE();
 
@@ -65,7 +65,7 @@ export class StoryManager {
 
     const caption = parseResult === undefined ? undefined : parseResult[0];
     const entities = parseResult === undefined ? undefined : parseResult[1];
-    const peer = params?.chatId ? await this.#c.getInputPeer(params.chatId) : new types.InputPeerSelf();
+    const peer = await this.#c.getInputPeer(chatId);
     const randomId = getRandomId();
     const privacyRules = await storyPrivacyToTlObject(params?.privacy ?? { everyoneExcept: [] }, this.#c.getEntity);
     const mediaAreas = new Array<enums.MediaArea>();
@@ -102,6 +102,6 @@ export class StoryManager {
   }
 
   async getStory(chatId: ID, storyId: number) {
-    return await this.getStories(chatId, [storyId]).then((v) => v[0] ?? null);
+    return await this.getStories(chatId[storyId]).then((v) => v[0] ?? null);
   }
 }

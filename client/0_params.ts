@@ -1,3 +1,4 @@
+// deno-lint-ignore-file no-empty-interface
 import { MaybePromise } from "../1_utilities.ts";
 import { BotCommandScope, Chat, ChatMemberRights, FileSource, ID, InlineQueryResultButton, Message, MessageEntity, ParseMode, ReplyMarkup, ReplyQuote, StoryInteractiveArea } from "../3_types.ts";
 import { StoryPrivacy } from "../types/1_story_privacy.ts";
@@ -162,7 +163,6 @@ export interface _SpoilCommon {
 export interface SendPhotoParams extends _CaptionCommon, _SpoilCommon, _UploadCommon, _SendCommon {
 }
 
-// deno-lint-ignore no-empty-interface
 export interface SetChatPhotoParams extends _UploadCommon {
 }
 
@@ -298,7 +298,6 @@ export interface SetChatMemberRightsParams {
 }
 
 export interface CreateStoryParams extends _CaptionCommon, _UploadCommon {
-  chatId?: ID;
   interactiveAreas?: StoryInteractiveArea[];
   privacy?: StoryPrivacy;
   activeFor?: number;

@@ -2240,8 +2240,8 @@ export class Client<C extends Context = Context> extends ClientAbstract {
    * @param content The content of the story.
    * @returns The created story.
    */
-  async createStory(content: InputStoryContent, params?: CreateStoryParams): Promise<Story> {
-   return await this.#storyManager.createStory(content, params);
+  async createStory(chatId: ID, content: InputStoryContent, params?: CreateStoryParams): Promise<Story> {
+    return await this.#storyManager.createStory(chatId, content, params);
   }
 
   /**
@@ -2266,6 +2266,6 @@ export class Client<C extends Context = Context> extends ClientAbstract {
    * @param storyId The identifier of the story to retrieve.
    */
   async getStory(chatId: ID, storyId: number): Promise<Story | null> {
-    return await this.#storyManager.getStory(chatId, storyId) ;
+    return await this.#storyManager.getStory(chatId, storyId);
   }
 }
