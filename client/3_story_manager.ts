@@ -113,4 +113,25 @@ export class StoryManager {
   async deleteStory(chatId: ID, storyId: number) {
     await this.deleteStories(chatId, [storyId]);
   }
+
+  async #togglePinned(chatId: ID, storyIds: number[], pinned: boolean) {
+    const peer = await this.#c.getInputPeer(chatId);
+    await this.#c.api.stories.togglePinned({ peer, id: storyIds, pinned });
+  }
+
+  async addStoriesToHighlights(chatId: ID, storyIds: number[]) {
+    await this.#togglePinned(chatId, storyIds, true);
+  }
+
+  async addStoryToHighlights(chatId: ID, storyId: number) {
+    await this.addStoriesToHighlights(chatId, [storyId]);
+  }
+
+  async removeStoriesFromHighlights(chatId: ID, storyIds: number[]) {
+    await this.#togglePinned(chatId, storyIds, false);
+  }
+
+  async removeStoryFromHighlights(chatId: ID, storyId: number) {
+    await this.removeStoriesFromHighlights(chatId, [storyId]);
+  }
 }

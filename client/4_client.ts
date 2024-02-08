@@ -2290,4 +2290,48 @@ export class Client<C extends Context = Context> extends ClientAbstract {
   async deleteStory(chatId: ID, storyId: number): Promise<void> {
     await this.#storyManager.deleteStory(chatId, storyId);
   }
+
+  /**
+   * Add multiple stories to highlights.
+   *
+   * @method
+   * @param chatId The identifier of the chat that has the stories.
+   * @param storyIds The identifiers of the stories to add to highlights.
+   */
+  async addStoriesToHighlights(chatId: ID, storyIds: number[]): Promise<void> {
+    await this.#storyManager.addStoriesToHighlights(chatId, storyIds);
+  }
+
+  /**
+   * Add a single story to highlights.
+   *
+   * @method
+   * @param chatId The identifier of the chat that has the story.
+   * @param storyId The identifier of the story to add to highlights.
+   */
+  async addStoriesToHighlight(chatId: ID, storyId: number): Promise<void> {
+    await this.#storyManager.addStoryToHighlight(chatId, storyId);
+  }
+
+  /**
+   * Remove multiple stories from highlights.
+   *
+   * @method
+   * @param chatId The identifier of the chat that has the stories.
+   * @param storyIds The identifiers of the stories to remove from highlights.
+   */
+  async removeStoriesFromHighlights(chatId: ID, storyIds: number[]): Promise<void> {
+    await this.#storyManager.removeStoriesFromHighlights(chatId, storyIds);
+  }
+
+  /**
+   * Remove a single story from highlights.
+   *
+   * @method
+   * @param chatId The identifier of the chat that has the story.
+   * @param storyId The identifier of the story to remove from highlights.
+   */
+  async removeStoryFromHighlights(chatId: ID, storyId: number): Promise<void> {
+    await this.#storyManager.removeStoryFromHighlights(chatId, storyId);
+  }
 }
