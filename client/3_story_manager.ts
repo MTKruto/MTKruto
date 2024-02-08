@@ -104,4 +104,13 @@ export class StoryManager {
   async getStory(chatId: ID, storyId: number) {
     return await this.getStories(chatId, [storyId]).then((v) => v[0] ?? null);
   }
+
+  async deleteStories(chatId: ID, storyIds: number[]) {
+    const peer = await this.#c.getInputPeer(chatId);
+    await this.#c.api.stories.deleteStories({ peer, id: storyIds });
+  }
+
+  async deleteStory(chatId: ID, storyId: number) {
+    await this.deleteStories(chatId, [storyId]);
+  }
 }

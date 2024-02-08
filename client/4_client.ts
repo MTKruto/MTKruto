@@ -1878,7 +1878,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
    *
    * @method
    * @param chatId The identifier of the chat that contains the messages.
-   * @param messageIds The identifier of the messages to delete.
+   * @param messageIds The identifiers of the messages to delete.
    */
   async deleteMessages(chatId: ID, messageIds: number[], params?: DeleteMessagesParams): Promise<void> {
     return await this.#messageManager.deleteMessages(chatId, messageIds, params);
@@ -2249,7 +2249,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
    *
    * @method
    * @param chatId The identifier of the chat to retrieve the stories from.
-   * @param storyIds The identifier of the stories to retrieve.
+   * @param storyIds The identifiers of the stories to retrieve.
    */
   async getStories(chatId: ID, storyIds: number[]): Promise<Story[]> {
     if (!storyIds.length) {
@@ -2267,5 +2267,27 @@ export class Client<C extends Context = Context> extends ClientAbstract {
    */
   async getStory(chatId: ID, storyId: number): Promise<Story | null> {
     return await this.#storyManager.getStory(chatId, storyId);
+  }
+
+  /**
+   * Delete multiple stories.
+   *
+   * @method
+   * @param chatId The identifier of the chat to delete the stories from.
+   * @param storyIds The identifiers of the stories to delete.
+   */
+  async deleteStories(chatId: ID, storyIds: number[]): Promise<void> {
+    await this.#storyManager.deleteStories(chatId, storyIds);
+  }
+
+  /**
+   * Delete a single story.
+   *
+   * @method
+   * @param chatId The identifier of the chat to delete the story from.
+   * @param storyId The identifier of the story to delete.
+   */
+  async deleteStory(chatId: ID, storyId: number): Promise<void> {
+    await this.#storyManager.deleteStory(chatId, storyId);
   }
 }
