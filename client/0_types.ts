@@ -1,4 +1,4 @@
-import { enums, functions } from "../2_tl.ts";
+import { enums, functions, types } from "../2_tl.ts";
 import { Storage } from "../3_storage.ts";
 import { ConnectionState, EntityGetter, ID, ParseMode, Update } from "../3_types.ts";
 
@@ -22,6 +22,7 @@ export interface C {
   resetConnectionState: () => void;
   getSelfId: () => Promise<number>;
   getInputPeer: (id: ID) => Promise<enums.InputPeer>;
+  getInputChannel: (id: ID) => Promise<types.InputChannel>;
   getEntity: EntityGetter;
   handleUpdate: (update: Update) => void;
   parseMode: ParseMode;
