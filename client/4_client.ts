@@ -266,6 +266,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
       resetConnectionState: () => this.stateChangeHandler(this.connected),
       getSelfId: this.#getSelfId.bind(this),
       getInputPeer: this.getInputPeer.bind(this),
+      getInputChannel: this.getInputChannel.bind(this),
       getEntity: this[getEntity].bind(this),
       handleUpdate: this.#queueHandleCtxUpdate.bind(this),
       parseMode: this.#parseMode,
@@ -2339,5 +2340,25 @@ export class Client<C extends Context = Context> extends ClientAbstract {
    */
   async removeStoryFromHighlights(chatId: ID, storyId: number): Promise<void> {
     await this.#storyManager.removeStoryFromHighlights(chatId, storyId);
+  }
+
+  /**
+   * Enable join requests in a chat.
+   * 
+   * @method
+   * @param chatId The identifier of the chat. Must be a channel or a supergroup.
+   */
+  async enableJoinRequests(chatId: ID) {
+    await this.#messageManager.enableJoinRequests(chatId)
+  }
+
+  /**
+   * Disable join requests in a chat.
+   * 
+   * @method
+   * @param chatId The identifier of the chat. Must be a channel or a supergroup.
+   */
+  async disableJoinRequests(chatId: ID) {
+    await this.#messageManager.disableJoinRequests(chatId)
   }
 }

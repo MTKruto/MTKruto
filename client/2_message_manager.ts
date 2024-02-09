@@ -1023,4 +1023,15 @@ export class MessageManager {
       UNREACHABLE();
     }
   }
+
+  async #toggleJoinRequests(chatId: ID, enabled: boolean) {
+    const peer = await this.#c.getInputChannel(chatId);
+    await this.#c.api.channels.toggleJoinRequests({ peer, enabled });
+  }
+  async enableJoinRequests(chatId: ID) {
+    await this.#toggleJoinRequests(chatId, true);
+  }
+  async disableJoinRequests(chatId: ID) {
+    await this.#toggleJoinRequests(chatId, false);
+  }
 }
