@@ -1025,8 +1025,8 @@ export class MessageManager {
   }
 
   async #toggleJoinRequests(chatId: ID, enabled: boolean) {
-    const peer = await this.#c.getInputChannel(chatId);
-    await this.#c.api.channels.toggleJoinRequest({ peer, enabled });
+    const channel = await this.#c.getInputChannel(chatId);
+    await this.#c.api.channels.toggleJoinRequest({ channel, enabled });
   }
   async enableJoinRequests(chatId: ID) {
     await this.#toggleJoinRequests(chatId, true);
