@@ -1428,7 +1428,6 @@ export class Client<C extends Context = Context> extends ClientAbstract {
   }
 
   async #handleUpdate(update: enums.Update) {
-    console.log(update.constructor.name);
     const promises = new Array<Promise<unknown>>();
     if (update instanceof types.UpdateUserName) {
       await this.messageStorage.updateUsernames(Number(update.user_id), update.usernames.map((v) => v.username));
