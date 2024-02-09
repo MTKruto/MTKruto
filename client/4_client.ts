@@ -2344,21 +2344,21 @@ export class Client<C extends Context = Context> extends ClientAbstract {
 
   /**
    * Enable join requests in a chat.
-   * 
+   *
    * @method
    * @param chatId The identifier of the chat. Must be a channel or a supergroup.
    */
   async enableJoinRequests(chatId: ID) {
-    await this.#messageManager.enableJoinRequests(chatId)
+    await this.#messageManager.enableJoinRequests(chatId);
   }
 
   /**
    * Disable join requests in a chat.
-   * 
+   *
    * @method
    * @param chatId The identifier of the chat. Must be a channel or a supergroup.
    */
   async disableJoinRequests(chatId: ID) {
-    await this.#messageManager.disableJoinRequests(chatId)
+    await this.#messageManager.disableJoinRequests(chatId);
   }
 }
