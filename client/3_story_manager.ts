@@ -47,7 +47,8 @@ export class StoryManager {
       if (typeof source === "string" && isHttpUrl(source)) {
         throw new Error("URL not supported");
       } else {
-        const [contents, fileName] = await getFileContents(source);
+        const [contents, fileName_] = await getFileContents(source);
+        const fileName = params?.fileName ?? fileName_;
         const mimeType = contentType(fileName.split(".").slice(-1)[0]) ?? "application/octet-stream";
         const file = await this.#c.fileManager.upload(contents, { fileName, chunkSize: params?.chunkSize, signal: params?.signal });
         if ("video" in content) {
