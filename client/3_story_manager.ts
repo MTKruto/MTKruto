@@ -1,7 +1,7 @@
 import { contentType } from "../0_deps.ts";
 import { getRandomId, UNREACHABLE } from "../1_utilities.ts";
-import { as, enums, inputPeerToPeer, types } from "../2_tl.ts";
-import { constructStory, FileType, ID, Story, storyInteractiveAreaToTlObject, storyPrivacyToTlObject } from "../3_types.ts";
+import { as, enums, inputPeerToPeer, peerToChatId, types } from "../2_tl.ts";
+import { constructStory, FileType, ID, Story, storyInteractiveAreaToTlObject, storyPrivacyToTlObject, Update } from "../3_types.ts";
 import { InputStoryContent } from "../types/1_input_story_content.ts";
 import { CreateStoryParams } from "./0_params.ts";
 import { C as C_ } from "./0_types.ts";
@@ -10,6 +10,8 @@ import { FileManager } from "./1_file_manager.ts";
 import { MessageManager } from "./2_message_manager.ts";
 
 type C = C_ & { fileManager: FileManager; messageManager: MessageManager };
+
+type StoryManagerUpdate = types.UpdateStory;
 
 export class StoryManager {
   #c: C;
@@ -133,5 +135,22 @@ export class StoryManager {
 
   async removeStoryFromHighlights(chatId: ID, storyId: number) {
     await this.removeStoriesFromHighlights(chatId, [storyId]);
+  }
+
+  canHandleUpdate(update: enums.Update): update is StoryManagerUpdate {
+    return update instanceof types.UpdateStory;
+  }
+
+  async handleUpdate(update: StoryManagerUpdate): Promise<Update | null> {
+    if (update.story instanceof types.StoryItemDeleted) {
+      const chatId = peerToChatId(update.peer);
+      const storyId = update.story.id;
+      return { deletedStory: { chatId, storyId } };
+    } else if (update.story instanceof types.StoryItem) {
+      const story = await constructStory(update.story, update.peer, this.#c.getEntity);
+      return { story };
+    } else {
+      return null;
+    }
   }
 }

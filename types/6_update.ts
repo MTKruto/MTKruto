@@ -10,6 +10,8 @@ import { ChatMemberUpdated } from "./3_chat_member_updated.ts";
 import { Message } from "./4_message.ts";
 import { CallbackQuery } from "./5_callback_query.ts";
 import { Chat } from "./5_chat.ts";
+import { StoryReference } from "./0_story_reference.ts";
+import { Story } from "./3_story.ts";
 
 /**
  * A client's connection state was changed.
@@ -213,6 +215,22 @@ export interface UpdateMyChatMember {
   myChatMember: ChatMemberUpdated;
 }
 
+/**
+ * A story was deleted.
+ * @unlisted
+ */
+export interface UpdateDeletedStory {
+  deletedStory: StoryReference;
+}
+
+/**
+ * A story was posted.
+ * @unlisted
+ */
+export interface UpdateNewStory {
+  story: Story;
+}
+
 /** @unlisted */
 export interface UpdateMap {
   message: UpdateNewMessage;
@@ -231,6 +249,8 @@ export interface UpdateMap {
   messageReactions: UpdateMessageReactions;
   chatMember: UpdateChatMember;
   myChatMember: UpdateMyChatMember;
+  deletedStory: UpdateDeletedStory;
+  story: UpdateNewStory;
 }
 
 /** @unlisted */
@@ -253,6 +273,8 @@ export type UpdateIntersection<T> =
     & UpdateMessageReactions
     & UpdateChatMember
     & UpdateMyChatMember
+    & UpdateDeletedStory
+    & UpdateNewStory
   >;
 
 /** An incoming update. */
@@ -272,4 +294,6 @@ export type Update =
   | UpdateMessageReactionCount
   | UpdateMessageReactions
   | UpdateChatMember
-  | UpdateMyChatMember;
+  | UpdateMyChatMember
+  | UpdateDeletedStory
+  | UpdateNewStory;
