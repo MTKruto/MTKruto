@@ -137,7 +137,7 @@ export class StoryManager {
     await this.removeStoriesFromHighlights(chatId, [storyId]);
   }
 
-  canHandleUpdate(update: enums.Update): update is StoryManagerUpdate {
+  static canHandleUpdate(update: enums.Update): update is StoryManagerUpdate {
     return update instanceof types.UpdateStory;
   }
 

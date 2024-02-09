@@ -1478,6 +1478,13 @@ export class Client<C extends Context = Context> extends ClientAbstract {
       await this.#chatListManager.handleUpdate(update);
     }
 
+    if (StoryManager.canHandleUpdate(update)) {
+      const upd = await this.#storyManager.handleUpdate(update);
+      if (upd) {
+        promises.push(this.#handleCtxUpdate(upd));
+      }
+    }
+
     return () => Promise.all(promises);
   }
 
