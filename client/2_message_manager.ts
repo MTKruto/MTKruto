@@ -452,7 +452,7 @@ export class MessageManager {
     const spoiler = params?.hasSpoiler ? true : undefined;
 
     if (typeof document === "string") {
-      const fileId = this.#resolveFileId(document, fileType);
+      const fileId = this.resolveFileId(document, fileType);
       if (fileId != null) {
         media = new types.InputMediaDocument({
           id: new types.InputDocument(fileId),
@@ -501,7 +501,7 @@ export class MessageManager {
     const spoiler = params?.hasSpoiler ? true : undefined;
 
     if (typeof photo === "string") {
-      const fileId = this.#resolveFileId(photo, FileType.Photo);
+      const fileId = this.resolveFileId(photo, FileType.Photo);
       if (fileId != null) {
         media = new types.InputMediaPhoto({
           id: new types.InputPhoto(fileId),
@@ -554,7 +554,7 @@ export class MessageManager {
     return await this.#updatesToMessages(chatId, result).then((v) => v[0]);
   }
 
-  #resolveFileId(maybeFileId: string, expectedFileType: FileType) {
+  resolveFileId(maybeFileId: string, expectedFileType: FileType) {
     let fileId: FileID | null = null;
     try {
       fileId = FileID.decode(maybeFileId);

@@ -3,13 +3,13 @@ import { bigIntFromBuffer, cleanObject, drop, getRandomBigInt, getRandomId, Mayb
 import { as, chatIdToPeerId, enums, functions, getChatIdPeerType, Message_, MessageContainer, name, peerToChatId, ReadObject, RPCResult, TLError, TLObject, TLReader, types } from "../2_tl.ts";
 import { Storage, StorageMemory } from "../3_storage.ts";
 import { DC } from "../3_transport.ts";
-import { BotCommand, Chat, ChatAction, ChatMember, ChatP, ConnectionState, constructUser, Document, FileSource, ID, InlineQueryResult, Message, MessageAnimation, MessageAudio, MessageContact, MessageDice, MessageDocument, MessageLocation, MessagePhoto, MessagePoll, MessageText, MessageVenue, MessageVideo, MessageVideoNote, MessageVoice, NetworkStatistics, ParseMode, Reaction, Update, UpdateIntersection, User } from "../3_types.ts";
+import { BotCommand, Chat, ChatAction, ChatMember, ChatP, ConnectionState, constructUser, Document, FileSource, ID, InlineQueryResult, InputStoryContent, Message, MessageAnimation, MessageAudio, MessageContact, MessageDice, MessageDocument, MessageLocation, MessagePhoto, MessagePoll, MessageText, MessageVenue, MessageVideo, MessageVideoNote, MessageVoice, NetworkStatistics, ParseMode, Reaction, Story, Update, UpdateIntersection, User } from "../3_types.ts";
 import { ACK_THRESHOLD, APP_VERSION, DEVICE_MODEL, LANG_CODE, LANG_PACK, LAYER, MAX_CHANNEL_ID, MAX_CHAT_ID, PublicKeys, SYSTEM_LANG_CODE, SYSTEM_VERSION, USERNAME_TTL } from "../4_constants.ts";
 import { AuthKeyUnregistered, FloodWait, Migrate, PasswordHashInvalid, PhoneNumberInvalid, SessionPasswordNeeded, upgradeInstance } from "../4_errors.ts";
 import { ClientAbstract } from "./0_client_abstract.ts";
 import { FilterQuery, match, WithFilter } from "./0_filters.ts";
 import { decryptMessage, encryptMessage, getMessageId } from "./0_message.ts";
-import { _SendCommon, AddReactionParams, AnswerCallbackQueryParams, AnswerInlineQueryParams, AuthorizeUserParams, BanChatMemberParams, DeleteMessageParams, DeleteMessagesParams, DownloadParams, EditMessageParams, EditMessageReplyMarkupParams, ForwardMessagesParams, GetChatsParams, GetHistoryParams, GetMyCommandsParams, PinMessageParams, ReplyParams, SendAnimationParams, SendAudioParams, SendContactParams, SendDiceParams, SendDocumentParams, SendLocationParams, SendMessageParams, SendPhotoParams, SendPollParams, SendVenueParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams, SetChatMemberRightsParams, SetChatPhotoParams, SetMyCommandsParams, SetReactionsParams, UploadParams } from "./0_params.ts";
+import { _SendCommon, AddReactionParams, AnswerCallbackQueryParams, AnswerInlineQueryParams, AuthorizeUserParams, BanChatMemberParams, CreateStoryParams, DeleteMessageParams, DeleteMessagesParams, DownloadParams, EditMessageParams, EditMessageReplyMarkupParams, ForwardMessagesParams, GetChatsParams, GetHistoryParams, GetMyCommandsParams, PinMessageParams, ReplyParams, SendAnimationParams, SendAudioParams, SendContactParams, SendDiceParams, SendDocumentParams, SendLocationParams, SendMessageParams, SendPhotoParams, SendPollParams, SendVenueParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams, SetChatMemberRightsParams, SetChatPhotoParams, SetMyCommandsParams, SetReactionsParams, UploadParams } from "./0_params.ts";
 import { checkPassword } from "./0_password.ts";
 import { Api, ConnectionError } from "./0_types.ts";
 import { getUsername, resolve } from "./0_utilities.ts";
@@ -24,6 +24,7 @@ import { MessageManager } from "./2_message_manager.ts";
 import { CallbackQueryManager } from "./3_callback_query_manager.ts";
 import { ChatListManager } from "./3_chat_list_manager.ts";
 import { InlineQueryManager } from "./3_inline_query_manager.ts";
+import { StoryManager } from "./3_story_manager.ts";
 
 export type NextFn<T = void> = () => Promise<T>;
 export interface InvokeErrorHandler<C> {
@@ -200,6 +201,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
   #fileManager: FileManager;
   #reactionManager: ReactionManager;
   #messageManager: MessageManager;
+  #storyManager: StoryManager;
   #callbackQueryManager: CallbackQueryManager;
   #inlineQueryManager: InlineQueryManager;
   #chatListManager: ChatListManager;
@@ -324,6 +326,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
     this.#reactionManager = new ReactionManager(c);
     this.#messageManager = new MessageManager({ ...c, fileManager: this.#fileManager });
     this.#callbackQueryManager = new CallbackQueryManager({ ...c, messageManager: this.#messageManager });
+    this.#storyManager = new StoryManager({ ...c, fileManager: this.#fileManager, messageManager: this.#messageManager });
     this.#inlineQueryManager = new InlineQueryManager({ ...c, messageManager: this.#messageManager });
     this.#chatListManager = new ChatListManager({ ...c, messageManager: this.#messageManager });
     this.#updateManager.setUpdateHandler(this.#handleUpdate.bind(this));
@@ -1475,6 +1478,13 @@ export class Client<C extends Context = Context> extends ClientAbstract {
       await this.#chatListManager.handleUpdate(update);
     }
 
+    if (StoryManager.canHandleUpdate(update)) {
+      const upd = await this.#storyManager.handleUpdate(update);
+      if (upd) {
+        promises.push(this.#handleCtxUpdate(upd));
+      }
+    }
+
     return () => Promise.all(promises);
   }
 
@@ -1874,7 +1884,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
    *
    * @method
    * @param chatId The identifier of the chat that contains the messages.
-   * @param messageIds The identifier of the messages to delete.
+   * @param messageIds The identifiers of the messages to delete.
    */
   async deleteMessages(chatId: ID, messageIds: number[], params?: DeleteMessagesParams): Promise<void> {
     return await this.#messageManager.deleteMessages(chatId, messageIds, params);
@@ -2227,5 +2237,107 @@ export class Client<C extends Context = Context> extends ClientAbstract {
    */
   async getChatAdministrators(chatId: ID): Promise<ChatMember[]> {
     return await this.#messageManager.getChatAdministrators(chatId);
+  }
+
+  /**
+   * Create a story.
+   *
+   * @method
+   * @param content The content of the story.
+   * @returns The created story.
+   */
+  async createStory(chatId: ID, content: InputStoryContent, params?: CreateStoryParams): Promise<Story> {
+    return await this.#storyManager.createStory(chatId, content, params);
+  }
+
+  /**
+   * Retrieve multiple stories.
+   *
+   * @method
+   * @param chatId The identifier of the chat to retrieve the stories from.
+   * @param storyIds The identifiers of the stories to retrieve.
+   */
+  async getStories(chatId: ID, storyIds: number[]): Promise<Story[]> {
+    if (!storyIds.length) {
+      return [];
+    }
+    return await this.#storyManager.getStories(chatId, storyIds);
+  }
+
+  /**
+   * Retrieve a single story.
+   *
+   * @method
+   * @param chatId The identifier of the chat to retrieve the story from.
+   * @param storyId The identifier of the story to retrieve.
+   */
+  async getStory(chatId: ID, storyId: number): Promise<Story | null> {
+    return await this.#storyManager.getStory(chatId, storyId);
+  }
+
+  /**
+   * Delete multiple stories.
+   *
+   * @method
+   * @param chatId The identifier of the chat to delete the stories from.
+   * @param storyIds The identifiers of the stories to delete.
+   */
+  async deleteStories(chatId: ID, storyIds: number[]): Promise<void> {
+    await this.#storyManager.deleteStories(chatId, storyIds);
+  }
+
+  /**
+   * Delete a single story.
+   *
+   * @method
+   * @param chatId The identifier of the chat to delete the story from.
+   * @param storyId The identifier of the story to delete.
+   */
+  async deleteStory(chatId: ID, storyId: number): Promise<void> {
+    await this.#storyManager.deleteStory(chatId, storyId);
+  }
+
+  /**
+   * Add multiple stories to highlights.
+   *
+   * @method
+   * @param chatId The identifier of the chat that has the stories.
+   * @param storyIds The identifiers of the stories to add to highlights.
+   */
+  async addStoriesToHighlights(chatId: ID, storyIds: number[]): Promise<void> {
+    await this.#storyManager.addStoriesToHighlights(chatId, storyIds);
+  }
+
+  /**
+   * Add a single story to highlights.
+   *
+   * @method
+   * @param chatId The identifier of the chat that has the story.
+   * @param storyId The identifier of the story to add to highlights.
+   */
+  async addStoryToHighlights(chatId: ID, storyId: number): Promise<void> {
+    await this.#storyManager.addStoryToHighlights(chatId, storyId);
+  }
+
+  /**
+   * Remove multiple stories from highlights.
+   *
+   * @method
+   * @param chatId The identifier of the chat that has the stories.
+   * @param storyIds The identifiers of the stories to remove from highlights.
+   */
+  async removeStoriesFromHighlights(chatId: ID, storyIds: number[]): Promise<void> {
+    await this.#storyManager.removeStoriesFromHighlights(chatId, storyIds);
+  }
+
+  /**
+   * Remove a single story from highlights.
+   *
+   * @method
+   * @param chatId The identifier of the chat that has the story.
+   * @param storyId The identifier of the story to remove from highlights.
+   */
+  async removeStoryFromHighlights(chatId: ID, storyId: number): Promise<void> {
+    await this.#storyManager.removeStoryFromHighlights(chatId, storyId);
   }
 }
