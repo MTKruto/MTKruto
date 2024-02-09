@@ -2241,7 +2241,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
   }
 
   /**
-   * Create a story.
+   * Create a story. User-only.
    *
    * @method
    * @param content The content of the story.
@@ -2252,7 +2252,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
   }
 
   /**
-   * Retrieve multiple stories.
+   * Retrieve multiple stories. User-only.
    *
    * @method
    * @param chatId The identifier of the chat to retrieve the stories from.
@@ -2266,7 +2266,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
   }
 
   /**
-   * Retrieve a single story.
+   * Retrieve a single story. User-only.
    *
    * @method
    * @param chatId The identifier of the chat to retrieve the story from.
@@ -2277,7 +2277,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
   }
 
   /**
-   * Delete multiple stories.
+   * Delete multiple stories. User-only.
    *
    * @method
    * @param chatId The identifier of the chat to delete the stories from.
@@ -2288,7 +2288,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
   }
 
   /**
-   * Delete a single story.
+   * Delete a single story. User-only.
    *
    * @method
    * @param chatId The identifier of the chat to delete the story from.
@@ -2299,7 +2299,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
   }
 
   /**
-   * Add multiple stories to highlights.
+   * Add multiple stories to highlights. User-only.
    *
    * @method
    * @param chatId The identifier of the chat that has the stories.
@@ -2310,7 +2310,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
   }
 
   /**
-   * Add a single story to highlights.
+   * Add a single story to highlights. User-only.
    *
    * @method
    * @param chatId The identifier of the chat that has the story.
@@ -2321,7 +2321,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
   }
 
   /**
-   * Remove multiple stories from highlights.
+   * Remove multiple stories from highlights. User-only.
    *
    * @method
    * @param chatId The identifier of the chat that has the stories.
@@ -2332,7 +2332,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
   }
 
   /**
-   * Remove a single story from highlights.
+   * Remove a single story from highlights. User-only.
    *
    * @method
    * @param chatId The identifier of the chat that has the story.
@@ -2343,7 +2343,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
   }
 
   /**
-   * Enable join requests in a chat.
+   * Enable join requests in a chat. User-only.
    *
    * @method
    * @param chatId The identifier of the chat. Must be a channel or a supergroup.
@@ -2353,7 +2353,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
   }
 
   /**
-   * Disable join requests in a chat.
+   * Disable join requests in a chat. User-only.
    *
    * @method
    * @param chatId The identifier of the chat. Must be a channel or a supergroup.
