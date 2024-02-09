@@ -8,6 +8,7 @@ import { constructStoryPrivacy } from "./1_story_privacy.ts";
 import { StoryPrivacy } from "./1_story_privacy.ts";
 import { StoryContent } from "./2_story_content.ts";
 import { constructStoryContent } from "./2_story_content.ts";
+import { constructStoryInteractions, StoryInteractions } from "./2_story_interactions.ts";
 
 export interface Story {
   out: boolean;
@@ -18,6 +19,7 @@ export interface Story {
   content: StoryContent;
   interactiveAreas: StoryInteractiveArea[];
   highlighted: boolean;
+  interactions?: StoryInteractions;
   privacy?: StoryPrivacy;
   caption?: string;
   captionEntities?: MessageEntity[];
@@ -37,6 +39,7 @@ export async function constructStory(story: types.StoryItem, peer: types.PeerUse
   const caption = story.caption;
   const captionEntities = story.entities?.map(constructMessageEntity).filter((v): v is NonNullable<typeof v> => !!v);
   const privacy = story.privacy ? constructStoryPrivacy(story.privacy) : undefined;
+  const interactions = story.views ? constructStoryInteractions(story.views) : undefined;
 
   return cleanObject({
     out: story.out ? true : false,
@@ -47,6 +50,7 @@ export async function constructStory(story: types.StoryItem, peer: types.PeerUse
     edited: story.edited ? true : false,
     interactiveAreas,
     highlighted,
+    interactions,
     privacy,
     caption,
     captionEntities,
