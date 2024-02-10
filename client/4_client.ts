@@ -1600,7 +1600,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
   /**
    * Send a text message.
    *
-   * @method
+   * @method ms
    * @param chatId The chat to send the message to.
    * @param text The message's text.
    * @returns The sent text message.
@@ -1612,7 +1612,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
   /**
    * Edit a message's text.
    *
-   * @method
+   * @method ms
    * @param chatId The identifier of the chat that contains the messages.
    * @param messageId The message's identifier.
    * @param text The new text of the message.
@@ -1630,7 +1630,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
   /**
    * Edit an inline message's text.
    *
-   * @method
+   * @method ms
    * @param inlineMessageId The inline message's identifier.
    * @param text The new text of the message.
    */
@@ -1641,7 +1641,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
   /**
    * Edit a message's reply markup.
    *
-   * @method
+   * @method ms
    * @param chatId The identifier of the chat that contains the messages.
    * @param messageId The message's identifier.
    * @returns The edited message.
@@ -1657,7 +1657,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
   /**
    * Edit an inline message's reply markup.
    *
-   * @method
+   * @method ms
    * @param inlineMessageId The inline message's identifier.
    */
   async editInlineMessageReplyMarkup(inlineMessageId: string, params?: EditMessageReplyMarkupParams) {
@@ -1667,7 +1667,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
   /**
    * Retrieve multiple messages.
    *
-   * @method
+   * @method ms
    * @param chatId The identifier of the chat to retrieve the messages from.
    * @param messageIds The identifiers of the messages to retrieve.
    * @example ```ts
@@ -1682,7 +1682,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
   /**
    * Retrieve a single message.
    *
-   * @method
+   * @method ms
    * @param chatId The identifier of the chat to retrieve the message from.
    * @param messageId The identifier of the message to retrieve.
    * @example ```ts
@@ -1697,7 +1697,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
   /**
    * Download a file.
    *
-   * @method
+   * @method fs
    * @param fileId The identifier of the file to download.
    * @example ```ts
    * for await (const chunk of client.download(fileId, { chunkSize: 256 * 1024 })) {
@@ -1715,7 +1715,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
   /**
    * Forward multiple messages.
    *
-   * @method
+   * @method ms
    * @param from The identifier of the chat to forward the messages from.
    * @param to The identifier of the chat to forward the messages to.
    * @param messageIds The identifiers of the messages to forward.
@@ -1728,7 +1728,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
   /**
    * Forward a single message.
    *
-   * @method
+   * @method ms
    * @param from The identifier of the chat to forward the message from.
    * @param to The identifier of the chat to forward the message to.
    * @param messageId The identifier of the message to forward.
@@ -1741,7 +1741,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
   /**
    * Get information on the currently authorized user.
    *
-   * @method
+   * @method ac
    */
   async getMe(): Promise<User> {
     const users = await this.api.users.getUsers({ id: [new types.InputUserSelf()] });
@@ -1756,7 +1756,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
   /**
    * Answer a callback query. Bot-only.
    *
-   * @method
+   * @method cq
    * @param id ID of the callback query to answer.
    */
   async answerCallbackQuery(id: string, params?: AnswerCallbackQueryParams): Promise<void> {
@@ -1766,7 +1766,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
   /**
    * Send a poll.
    *
-   * @method
+   * @method ms
    * @param chatId The chat to send the poll to.
    * @param question The poll's question.
    * @param options The poll's options.
@@ -1779,7 +1779,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
   /**
    * Send a chat action.
    *
-   * @method
+   * @method ms
    * @param chatId The chat to send the chat action to.
    * @param action The chat action.
    * @param messageThreadId The thread to send the chat action to.
@@ -1791,7 +1791,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
   /**
    * Upload a file.
    *
-   * @method
+   * @method fs
    * @param contents The contents of the file.
    */
   async upload(contents: Uint8Array, params?: UploadParams) { // TODO: return type
@@ -1801,7 +1801,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
   /**
    * Set the bot's commands in the given scope and/or language. Bot-only.
    *
-   * @method
+   * @method bs
    * @param commands The commands to set.
    */
   async setMyCommands(commands: BotCommand[], params?: SetMyCommandsParams): Promise<void> {
@@ -1810,6 +1810,8 @@ export class Client<C extends Context = Context> extends ClientAbstract {
 
   /**
    * Get the bot's commands in the given scope and/or language. Bot-only.
+   *
+   * @method bs
    */
   async getMyCommands(params?: GetMyCommandsParams): Promise<BotCommand[]> {
     return await this.#botInfoManager.getMyCommands(params);
@@ -1818,7 +1820,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
   /**
    * Answer an inline query. Bot-only.
    *
-   * @method
+   * @method iq
    * @param id The ID of the inline query to answer.
    * @param results The results to answer with.
    */
@@ -1829,7 +1831,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
   /**
    * Set the bot's description in the given language. Bot-only.
    *
-   * @method
+   * @method bs
    */
   async setMyDescription(params?: { description?: string; languageCode?: string }): Promise<void> {
     await this.#botInfoManager.setMyDescription(params);
@@ -1838,7 +1840,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
   /**
    * Set the bot's name in the given language. Bot-only.
    *
-   * @method
+   * @method bs
    */
   async setMyName(params?: { name?: string; languageCode?: string }): Promise<void> {
     await this.#botInfoManager.setMyName(params);
@@ -1847,7 +1849,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
   /**
    * Set the bot's short description in the given language. Bot-only.
    *
-   * @method
+   * @method bs
    */
   async setMyShortDescription(params?: { shortDescription?: string; languageCode?: string }): Promise<void> {
     await this.#botInfoManager.setMyShortDescription(params);
@@ -1856,7 +1858,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
   /**
    * Get the bot's description in the given language. Bot-only.
    *
-   * @method
+   * @method bs
    */
   async getMyDescription(params?: { languageCode?: string }): Promise<string> {
     return await this.#botInfoManager.getMyDescription(params);
@@ -1865,7 +1867,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
   /**
    * Set the bot's name in the given language. Bot-only.
    *
-   * @method
+   * @method bs
    */
   async getMyName(params?: { languageCode?: string }): Promise<string> {
     return await this.#botInfoManager.getMyName(params);
@@ -1874,7 +1876,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
   /**
    * Get the bot's short description in the given language. Bot-only.
    *
-   * @method
+   * @method bs
    */
   async getMyShortDescription(params?: { languageCode?: string }): Promise<string> {
     return await this.#botInfoManager.getMyShortDescription(params);
@@ -1883,7 +1885,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
   /**
    * Delete multiple messages.
    *
-   * @method
+   * @method ms
    * @param chatId The identifier of the chat that contains the messages.
    * @param messageIds The identifiers of the messages to delete.
    */
@@ -1894,7 +1896,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
   /**
    * Delete a single message.
    *
-   * @method
+   * @method ms
    * @param chatId The identifier of the chat that contains the message.
    * @param messageId The identifier of the message to delete.
    */
@@ -1905,7 +1907,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
   /**
    * Send a photo.
    *
-   * @method
+   * @method ms
    * @param chatId The chat to send the photo to.
    * @param photo The photo to send.
    */
@@ -1916,7 +1918,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
   /**
    * Send a document.
    *
-   * @method
+   * @method ms
    * @param chatId The chat to send the document to.
    * @param document The document to send.
    */
@@ -1927,7 +1929,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
   /**
    * Send a video.
    *
-   * @method
+   * @method ms
    * @param chatId The chat to send the video to.
    * @param video The video to send.
    */
@@ -1938,7 +1940,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
   /**
    * Send an animation.
    *
-   * @method
+   * @method ms
    * @param chatId The chat to send the animation to.
    * @param animation The animation to send.
    */
@@ -1949,7 +1951,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
   /**
    * Send a voice message.
    *
-   * @method
+   * @method ms
    * @param chatId The chat to send the voice message to.
    * @param voice The voice to send.
    */
@@ -1960,7 +1962,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
   /**
    * Send an audio file.
    *
-   * @method
+   * @method ms
    * @param chatId The chat to send the audio file to.
    * @param audio The audio to send.
    */
@@ -1971,7 +1973,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
   /**
    * Send a video note.
    *
-   * @method
+   * @method ms
    * @param chatId The chat to send the video note to.
    * @param videoNote The video note to send.
    */
@@ -1982,7 +1984,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
   /**
    * Send a location.
    *
-   * @method
+   * @method ms
    * @param chatId The chat to send the location to.
    * @param latitude The location's latitude.
    * @param longitude The location's longitude.
@@ -1994,7 +1996,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
   /**
    * Send a contact.
    *
-   * @method
+   * @method ms
    * @param chatId The chat to send the contact to.
    * @param firstName The contact's first name.
    * @param number The contact's phone number.
@@ -2006,7 +2008,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
   /**
    * Send a dice.
    *
-   * @method
+   * @method ms
    * @param chatId The chat to send the dice to.
    */
   async sendDice(chatId: ID, params?: SendDiceParams): Promise<MessageDice> {
@@ -2016,7 +2018,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
   /**
    * Send a venue.
    *
-   * @method
+   * @method ms
    * @param chatId The chat to send the venue to.
    * @param latitude The latitude of the venue.
    * @param longitude The longitude of the venue.
@@ -2030,7 +2032,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
   /**
    * Get network statistics. This might not always be available.
    *
-   * @method
+   * @method mc
    */
   async getNetworkStatistics(): Promise<NetworkStatistics> {
     return await this.#networkStatisticsManager.getNetworkStatistics();
@@ -2039,7 +2041,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
   /**
    * Get chats from a chat list. User-only.
    *
-   * @method
+   * @method ch
    */
   async getChats(params?: GetChatsParams): Promise<Chat[]> {
     return await this.#chatListManager.getChats(params?.from, params?.after, params?.limit);
@@ -2048,7 +2050,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
   /**
    * Get a chat.
    *
-   * @method
+   * @method ch
    */
   async getChat(chatId: ID): Promise<Chat> {
     return await this.#chatListManager.getChat(chatId);
@@ -2057,7 +2059,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
   /**
    * Get chat history. User-only.
    *
-   * @method
+   * @method ch
    * @param chatId The identifier of the chat to get its history.
    */
   async getHistory(chatId: ID, params?: GetHistoryParams): Promise<Message[]> {
@@ -2067,7 +2069,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
   /**
    * Get custom emoji documents for download.
    *
-   * @method
+   * @method fs
    * @param id Identifier of one or more of custom emojis.
    */
   async getCustomEmojiDocuments(id: string | string[]): Promise<Document[]> {
@@ -2077,7 +2079,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
   /**
    * Set a chat's available reactions.
    *
-   * @method
+   * @method ch
    * @param chatId The identifier of the chat.
    * @param availableReactions The new available reactions.
    */
@@ -2088,7 +2090,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
   /**
    * Change reactions made to a message.
    *
-   * @method
+   * @method re
    * @param chatId The identifier of the chat which the message belongs to.
    * @param messageId The identifier of the message to add the reaction to.
    * @param reactions The new reactions.
@@ -2100,7 +2102,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
   /**
    * Make a reaction to a message.
    *
-   * @method
+   * @method re
    * @param chatId The identifier of the chat which the message belongs to.
    * @param messageId The identifier of the message to add the reaction to.
    * @param reaction The reaction to add.
@@ -2112,7 +2114,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
   /**
    * Undo a reaction made to a message.
    *
-   * @method
+   * @method re
    * @param chatId The identifier of the chat which the message belongs to.
    * @param messageId The identifier of the message which the reaction was made to.
    * @param reaction The reaction to remove.
@@ -2124,7 +2126,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
   /**
    * Set a chat's photo.
    *
-   * @method
+   * @method ch
    * @param chatId The identifier of the chat.
    * @param photo A photo to set as the chat's photo.
    */
@@ -2135,7 +2137,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
   /**
    * Delete a chat's photo.
    *
-   * @method
+   * @method ch
    * @param chatId The identifier of the chat.
    */
   async deleteChatPhoto(chatId: number): Promise<void> {
@@ -2145,7 +2147,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
   /**
    * Delete all messages sent by a specific member of a chat.
    *
-   * @method
+   * @method ms
    * @param chatId The identifier of the chat. Must be a supergroup.
    * @param memberId The identifier of the member.
    */
@@ -2156,7 +2158,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
   /**
    * Pin a message in a chat.
    *
-   * @method
+   * @method ms
    * @param chatId The identifier of the chat that contains the message.
    * @param messageId The message's identifier.
    */
@@ -2167,7 +2169,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
   /**
    * Unpin a pinned message.
    *
-   * @method
+   * @method ms
    * @param chatId The identifier of the chat that contains the message.
    * @param messageId The message's identifier.
    */
@@ -2178,7 +2180,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
   /**
    * Unpin all pinned messages.
    *
-   * @method
+   * @method ms
    * @param chatId The identifier of the chat.
    */
   async unpinMessages(chatId: ID): Promise<void> {
@@ -2188,7 +2190,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
   /**
    * Ban a member from a chat.
    *
-   * @method
+   * @method ch
    * @param chatId The identifier of the chat.
    * @param memberId The identifier of the member.
    */
@@ -2199,7 +2201,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
   /**
    * Unban a member from a chat.
    *
-   * @method
+   * @method ch
    * @param chatId The identifier of the chat. Must be a supergroup.
    * @param memberId The identifier of the member.
    */
@@ -2210,7 +2212,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
   /**
    * Kick a member from a chat. Same as a banChatMember call followed by unbanChatMember.
    *
-   * @method
+   * @method ch
    * @param chatId The identifier of the chat. Must be a supergroup.
    * @param memberId The identifier of the member.
    */
@@ -2222,7 +2224,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
   /**
    * Set the rights of a chat member.
    *
-   * @method
+   * @method ch
    * @param chatId The identifier of the chat. Must be a supergroup.
    * @param memberId The identifier of a member.
    */
@@ -2233,7 +2235,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
   /**
    * Get the administrators of a chat.
    *
-   * @method
+   * @method ch
    * @param chatId The identifier of the chat.
    */
   async getChatAdministrators(chatId: ID): Promise<ChatMember[]> {
@@ -2243,7 +2245,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
   /**
    * Create a story. User-only.
    *
-   * @method
+   * @method st
    * @param content The content of the story.
    * @returns The created story.
    */
@@ -2254,7 +2256,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
   /**
    * Retrieve multiple stories. User-only.
    *
-   * @method
+   * @method st
    * @param chatId The identifier of the chat to retrieve the stories from.
    * @param storyIds The identifiers of the stories to retrieve.
    */
@@ -2268,7 +2270,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
   /**
    * Retrieve a single story. User-only.
    *
-   * @method
+   * @method st
    * @param chatId The identifier of the chat to retrieve the story from.
    * @param storyId The identifier of the story to retrieve.
    */
@@ -2279,7 +2281,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
   /**
    * Delete multiple stories. User-only.
    *
-   * @method
+   * @method st
    * @param chatId The identifier of the chat to delete the stories from.
    * @param storyIds The identifiers of the stories to delete.
    */
@@ -2290,7 +2292,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
   /**
    * Delete a single story. User-only.
    *
-   * @method
+   * @method st
    * @param chatId The identifier of the chat to delete the story from.
    * @param storyId The identifier of the story to delete.
    */
@@ -2301,7 +2303,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
   /**
    * Add multiple stories to highlights. User-only.
    *
-   * @method
+   * @method st
    * @param chatId The identifier of the chat that has the stories.
    * @param storyIds The identifiers of the stories to add to highlights.
    */
@@ -2312,7 +2314,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
   /**
    * Add a single story to highlights. User-only.
    *
-   * @method
+   * @method st
    * @param chatId The identifier of the chat that has the story.
    * @param storyId The identifier of the story to add to highlights.
    */
@@ -2323,7 +2325,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
   /**
    * Remove multiple stories from highlights. User-only.
    *
-   * @method
+   * @method st
    * @param chatId The identifier of the chat that has the stories.
    * @param storyIds The identifiers of the stories to remove from highlights.
    */
@@ -2334,7 +2336,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
   /**
    * Remove a single story from highlights. User-only.
    *
-   * @method
+   * @method st
    * @param chatId The identifier of the chat that has the story.
    * @param storyId The identifier of the story to remove from highlights.
    */
@@ -2345,7 +2347,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
   /**
    * Enable join requests in a chat. User-only.
    *
-   * @method
+   * @method ch
    * @param chatId The identifier of the chat. Must be a channel or a supergroup.
    */
   async enableJoinRequests(chatId: ID) {
@@ -2355,7 +2357,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
   /**
    * Disable join requests in a chat. User-only.
    *
-   * @method
+   * @method ch
    * @param chatId The identifier of the chat. Must be a channel or a supergroup.
    */
   async disableJoinRequests(chatId: ID) {
