@@ -686,13 +686,16 @@ export class MessageManager {
     params?: EditMessageParams,
   ) {
     const [message, entities] = await this.parseText(text, params);
+    const noWebpage = params?.linkPreview?.disable ? true : undefined;
+    const invertMedia = params?.linkPreview?.putAboveText ? true : undefined;
 
     const result = await this.#c.api.messages.editMessage({
       id: messageId,
       peer: await this.#c.getInputPeer(chatId),
       entities,
       message,
-      no_webpage: params?.disableWebPagePreview ? true : undefined,
+      no_webpage: noWebpage,
+      invert_media: invertMedia,
       reply_markup: await this.#constructReplyMarkup(params),
     });
 
@@ -704,12 +707,15 @@ export class MessageManager {
     const [message, entities] = await this.parseText(text, params);
 
     const id = deserializeInlineMessageId(inlineMessageId);
+    const noWebpage = params?.linkPreview?.disable ? true : undefined;
+    const invertMedia = params?.linkPreview?.putAboveText ? true : undefined;
 
     await this.#c.api.messages.editInlineBotMessage({
       id,
       entities,
       message,
-      no_webpage: params?.disableWebPagePreview ? true : undefined,
+      no_webpage: noWebpage,
+      invert_media: invertMedia,
       reply_markup: await this.#constructReplyMarkup(params),
     });
   }
