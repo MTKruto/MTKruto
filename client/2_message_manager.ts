@@ -689,11 +689,22 @@ export class MessageManager {
     const noWebpage = params?.linkPreview?.disable ? true : undefined;
     const invertMedia = params?.linkPreview?.putAboveText ? true : undefined;
 
+    let media: enums.InputMedia | undefined = undefined;
+    if (!noWebpage && params?.linkPreview?.url) {
+      media = new types.InputMediaWebPage({
+        url: params.linkPreview.url,
+        force_large_media: params.linkPreview.largeMedia ? true : undefined,
+        force_small_media: params.linkPreview.smallMedia ? true : undefined,
+        optional: message.length ? undefined : true,
+      });
+    }
+
     const result = await this.#c.api.messages.editMessage({
       id: messageId,
       peer: await this.#c.getInputPeer(chatId),
       entities,
       message,
+      media,
       no_webpage: noWebpage,
       invert_media: invertMedia,
       reply_markup: await this.#constructReplyMarkup(params),
@@ -710,10 +721,21 @@ export class MessageManager {
     const noWebpage = params?.linkPreview?.disable ? true : undefined;
     const invertMedia = params?.linkPreview?.putAboveText ? true : undefined;
 
+    let media: enums.InputMedia | undefined = undefined;
+    if (!noWebpage && params?.linkPreview?.url) {
+      media = new types.InputMediaWebPage({
+        url: params.linkPreview.url,
+        force_large_media: params.linkPreview.largeMedia ? true : undefined,
+        force_small_media: params.linkPreview.smallMedia ? true : undefined,
+        optional: message.length ? undefined : true,
+      });
+    }
+
     await this.#c.api.messages.editInlineBotMessage({
       id,
       entities,
       message,
+      media,
       no_webpage: noWebpage,
       invert_media: invertMedia,
       reply_markup: await this.#constructReplyMarkup(params),
