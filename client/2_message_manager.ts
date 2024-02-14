@@ -231,23 +231,47 @@ export class MessageManager {
 
     const peer = await this.#c.getInputPeer(chatId);
     const randomId = getRandomId();
-    const noWebpage = params?.disableWebPagePreview ? true : undefined;
+    const noWebpage = params?.linkPreview?.disable ? true : undefined;
+    const invertMedia = params?.linkPreview?.putAboveText ? true : undefined;
     const silent = params?.disableNotification ? true : undefined;
     const noforwards = params?.protectContent ? true : undefined;
     const sendAs = await this.#resolveSendAs(params);
 
-    const result = await this.#c.api.messages.sendMessage({
-      peer,
-      random_id: randomId,
-      message,
-      no_webpage: noWebpage,
-      silent,
-      noforwards,
-      reply_to: await this.#constructReplyTo(params),
-      send_as: sendAs,
-      entities,
-      reply_markup: replyMarkup,
-    });
+    let result: enums.Updates;
+    if (!noWebpage && params?.linkPreview?.url) {
+      result = await this.#c.api.messages.sendMedia({
+        peer,
+        random_id: randomId,
+        media: new types.InputMediaWebPage({
+          url: params.linkPreview.url,
+          force_large_media: params.linkPreview.largeMedia ? true : undefined,
+          force_small_media: params.linkPreview.smallMedia ? true : undefined,
+          optional: message.length ? undefined : true,
+        }),
+        message,
+        invert_media: invertMedia,
+        silent,
+        noforwards,
+        reply_to: await this.#constructReplyTo(params),
+        send_as: sendAs,
+        entities,
+        reply_markup: replyMarkup,
+      });
+    } else {
+      result = await this.#c.api.messages.sendMessage({
+        peer,
+        random_id: randomId,
+        message,
+        no_webpage: noWebpage,
+        invert_media: invertMedia,
+        silent,
+        noforwards,
+        reply_to: await this.#constructReplyTo(params),
+        send_as: sendAs,
+        entities,
+        reply_markup: replyMarkup,
+      });
+    }
 
     const message_ = await this.#updatesToMessages(chatId, result).then((v) => v[0]);
     return assertMessageType(message_, "text");
