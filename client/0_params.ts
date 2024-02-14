@@ -1,6 +1,6 @@
 // deno-lint-ignore-file no-empty-interface
 import { MaybePromise } from "../1_utilities.ts";
-import { BotCommandScope, Chat, ChatMemberRights, FileSource, ID, InlineQueryResultButton, Message, MessageEntity, ParseMode, ReplyMarkup, ReplyQuote, StoryInteractiveArea } from "../3_types.ts";
+import { BotCommandScope, Chat, ChatMemberRights, FileSource, ID, InlineQueryResultButton, LinkPreview, Message, MessageEntity, ParseMode, ReplyMarkup, ReplyQuote, StoryInteractiveArea } from "../3_types.ts";
 import { StoryPrivacy } from "../types/1_story_privacy.ts";
 
 export interface AnswerCallbackQueryParams {
@@ -41,8 +41,7 @@ export interface SendMessageParams extends _SendCommon {
   parseMode?: ParseMode;
   /** The message's entities. */
   entities?: MessageEntity[];
-  /** Whether to disable web page previews in the message that is to be sent. */
-  disableWebPagePreview?: boolean;
+  linkPreview?: LinkPreview;
 }
 
 export interface EditMessageParams {
@@ -50,8 +49,7 @@ export interface EditMessageParams {
   parseMode?: ParseMode;
   /** The message's entities. */
   entities?: MessageEntity[];
-  /** Whether to disable web page previews in the message that is to be edited. */
-  disableWebPagePreview?: boolean;
+  linkPreview?: LinkPreview;
   /** The reply markup of the message. Bot-only. */
   replyMarkup?: ReplyMarkup;
 }
