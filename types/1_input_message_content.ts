@@ -1,3 +1,4 @@
+import { LinkPreview } from "./0_link_preview.ts";
 import { MessageEntity } from "./0_message_entity.ts";
 import { ParseMode } from "./0_parse_mode.ts";
 import { PriceTag } from "./0_price_tag.ts";
@@ -64,7 +65,7 @@ export interface InputMessageContentText {
   messageText: string;
   parseMode?: ParseMode;
   entities?: MessageEntity[];
-  disableWebPagePreview?: boolean;
+  linkPreview?: LinkPreview;
 }
 
 /** @unlisted */
