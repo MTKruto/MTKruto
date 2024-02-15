@@ -466,7 +466,7 @@ export async function inlineQueryResultToTlObject(result_: InlineQueryResult, pa
     }
     const [message, entities] = await parseText(result_.inputMessageContent.messageText, { entities: result_.inputMessageContent.entities, parseMode: result_.inputMessageContent.parseMode });
     const noWebpage = result_.inputMessageContent?.linkPreview?.disable ? true : undefined;
-    const invertMedia = result_.inputMessageContent?.linkPreview?.putAboveText ? true : undefined;
+    const invertMedia = result_.inputMessageContent?.linkPreview?.aboveText ? true : undefined;
 
     let sendMessage: enums.InputBotInlineMessage;
 

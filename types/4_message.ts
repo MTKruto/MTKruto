@@ -119,8 +119,8 @@ export interface MessageText extends _MessageBase {
  * A message with a link preview only.
  * @unlisted
  */
-export interface MessageLinkPreview extends _MessageBase {
-  linkPreview: LinkPreview;
+export interface MessageLink extends _MessageBase {
+  linkPreview: LinkPreview & { url: NonNullable<LinkPreview["url"]> };
 }
 
 /** @unlisted */
@@ -448,7 +448,7 @@ export interface MessageUnsupported extends _MessageBase {
 /** @unlisted */
 export interface MessageTypes {
   text: MessageText;
-  linkPrevie: MessageLinkPreview;
+  link: MessageLink;
   photo: MessagePhoto;
   document: MessageDocument;
   video: MessageVideo;
@@ -490,7 +490,7 @@ export interface MessageTypes {
 
 const keys: Record<keyof MessageTypes, [string, ...string[]]> = {
   text: ["text"],
-  linkPrevie: ["linkPreview"],
+  link: ["linkPreview"],
   photo: ["photo"],
   document: ["document"],
   video: ["video"],
@@ -541,7 +541,7 @@ export function assertMessageType<T extends keyof MessageTypes>(message: Message
 /** Any type of message. */
 export type Message =
   | MessageText
-  | MessageLinkPreview
+  | MessageLink
   | MessagePhoto
   | MessageDocument
   | MessageVideo
@@ -960,7 +960,7 @@ export async function constructMessage(
     if (message_.message) {
       m = { ...messageText, linkPreview };
     } else {
-      m = { ...message, linkPreview };
+      m = { ...message, linkPreview: { ...linkPreview, url: linkPreview.url ? linkPreview.url : UNREACHABLE() } };
     }
   } else if (message_.media instanceof types.MessageMediaGiveaway) {
     const giveaway = constructGiveaway(message_.media);
