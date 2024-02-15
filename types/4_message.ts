@@ -115,6 +115,14 @@ export interface MessageText extends _MessageBase {
   linkPreview?: LinkPreview;
 }
 
+/**
+ * A message with a link preview only.
+ * @unlisted
+ */
+export interface MessageLinkPreview extends _MessageBase {
+  linkPreview: LinkPreview;
+}
+
 /** @unlisted */
 export interface MessagePhoto extends _MessageMediaBase {
   /** The photo included in the message. */
@@ -440,6 +448,7 @@ export interface MessageUnsupported extends _MessageBase {
 /** @unlisted */
 export interface MessageTypes {
   text: MessageText;
+  linkPrevie: MessageLinkPreview;
   photo: MessagePhoto;
   document: MessageDocument;
   video: MessageVideo;
@@ -481,6 +490,7 @@ export interface MessageTypes {
 
 const keys: Record<keyof MessageTypes, [string, ...string[]]> = {
   text: ["text"],
+  linkPrevie: ["linkPreview"],
   photo: ["photo"],
   document: ["document"],
   video: ["video"],
@@ -531,6 +541,7 @@ export function assertMessageType<T extends keyof MessageTypes>(message: Message
 /** Any type of message. */
 export type Message =
   | MessageText
+  | MessageLinkPreview
   | MessagePhoto
   | MessageDocument
   | MessageVideo
@@ -945,7 +956,12 @@ export async function constructMessage(
     const location = constructLocation(message_.media);
     m = { ...message, location };
   } else if (message_.media instanceof types.MessageMediaWebPage) {
-    m = { ...messageText, linkPreview: constructLinkPreview(message_.media, message_.invert_media) };
+    const linkPreview = constructLinkPreview(message_.media, message_.invert_media);
+    if (message_.message) {
+      m = { ...messageText, linkPreview };
+    } else {
+      m = { ...message, linkPreview };
+    }
   } else if (message_.media instanceof types.MessageMediaGiveaway) {
     const giveaway = constructGiveaway(message_.media);
     m = { ...message, giveaway };
