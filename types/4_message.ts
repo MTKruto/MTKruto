@@ -4,6 +4,7 @@ import { as, enums, types } from "../2_tl.ts";
 import { FileID, FileType, FileUniqueID, FileUniqueType } from "./0__file_id.ts";
 import { constructContact, Contact } from "./0_contact.ts";
 import { constructDice, Dice } from "./0_dice.ts";
+import { constructLinkPreview, LinkPreview } from "./0_link_preview.ts";
 import { constructLocation, Location } from "./0_location.ts";
 import { constructMessageEntity, MessageEntity } from "./0_message_entity.ts";
 import { constructVenue, Venue } from "./0_venue.ts";
@@ -111,6 +112,7 @@ export interface MessageText extends _MessageBase {
   text: string;
   /** Entities of the text. */
   entities: MessageEntity[];
+  linkPreview?: LinkPreview;
 }
 
 /** @unlisted */
@@ -849,12 +851,14 @@ export async function constructMessage(
     message.editDate = fromUnixTimestamp(message_.edit_date);
   }
 
+  const messageText = {
+    ...message,
+    text: message_.message,
+    entities: message_.entities?.map(constructMessageEntity).filter((v): v is NonNullable<typeof v> => !!v) ?? [],
+  };
+
   if (message_.message && message_.media === undefined) {
-    return {
-      ...message,
-      text: message_.message,
-      entities: message_.entities?.map(constructMessageEntity).filter((v): v is NonNullable<typeof v> => !!v) ?? [],
-    };
+    return messageText;
   }
 
   const messageMedia: _MessageMediaBase = {
@@ -941,7 +945,7 @@ export async function constructMessage(
     const location = constructLocation(message_.media);
     m = { ...message, location };
   } else if (message_.media instanceof types.MessageMediaWebPage) {
-    // TODO: implement
+    m = { ...messageText, linkPreview: constructLinkPreview(message_.media, message_.invert_media) };
   } else if (message_.media instanceof types.MessageMediaGiveaway) {
     const giveaway = constructGiveaway(message_.media);
     m = { ...message, giveaway };
