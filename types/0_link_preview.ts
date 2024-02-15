@@ -1,11 +1,17 @@
 import { cleanObject } from "../1_utilities.ts";
 import { types } from "../2_tl.ts";
 
+/** A link preview. */
 export interface LinkPreview {
+  /** Whether link preview is disabled. */
   disable?: boolean;
+  /** The URL of the preview. */
   url?: string;
+  /** Wether the media is to be shown in a small size. */
   smallMedia?: boolean;
+  /** Whether the media is to be shown in a large size. */
   largeMedia?: boolean;
+  /** Whether the preview is to be shown above the message's text. */
   aboveText?: boolean;
 }
 

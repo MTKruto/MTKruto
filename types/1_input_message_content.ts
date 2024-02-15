@@ -62,9 +62,13 @@ export interface InputMessageContentVenue {
 
 /** @unlisted */
 export interface InputMessageContentText {
+  /** The message's text. */
   messageText: string;
+  /** The parse mode to use. If not provided, the default parse mode will be used. */
   parseMode?: ParseMode;
+  /** The message's entities. */
   entities?: MessageEntity[];
+  /** The message's link preview. */
   linkPreview?: LinkPreview;
 }
 
