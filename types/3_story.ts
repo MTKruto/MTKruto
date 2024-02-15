@@ -10,6 +10,7 @@ import { StoryContent } from "./2_story_content.ts";
 import { constructStoryContent } from "./2_story_content.ts";
 import { constructStoryInteractions, StoryInteractions } from "./2_story_interactions.ts";
 
+/** A story. */
 export interface Story {
   out: boolean;
   id: number;
