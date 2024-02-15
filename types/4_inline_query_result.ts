@@ -465,17 +465,38 @@ export async function inlineQueryResultToTlObject(result_: InlineQueryResult, pa
       UNREACHABLE();
     }
     const [message, entities] = await parseText(result_.inputMessageContent.messageText, { entities: result_.inputMessageContent.entities, parseMode: result_.inputMessageContent.parseMode });
+    const noWebpage = result_.inputMessageContent?.linkPreview?.disable ? true : undefined;
+    const invertMedia = result_.inputMessageContent?.linkPreview?.putAboveText ? true : undefined;
+
+    let sendMessage: enums.InputBotInlineMessage;
+
+    if (result_.inputMessageContent.linkPreview?.url) {
+      sendMessage = new types.InputBotInlineMessageMediaWebPage({
+        url: result_.inputMessageContent.linkPreview.url,
+        force_large_media: result_.inputMessageContent.linkPreview.largeMedia ? true : undefined,
+        force_small_media: result_.inputMessageContent.linkPreview.smallMedia ? true : undefined,
+        optional: message.length ? undefined : true,
+        message,
+        entities,
+        invert_media: invertMedia,
+        reply_markup: replyMarkup,
+      });
+    } else {
+      sendMessage = new types.InputBotInlineMessageText({
+        message,
+        entities,
+        no_webpage: noWebpage,
+        invert_media: invertMedia,
+        reply_markup: replyMarkup,
+      });
+    }
+
     return new types.InputBotInlineResult({
       id,
       type,
       title,
       description,
-      send_message: new types.InputBotInlineMessageText({
-        message,
-        entities,
-        no_webpage: result_.inputMessageContent.disableWebPagePreview ? true : undefined,
-        reply_markup: replyMarkup,
-      }),
+      send_message: sendMessage,
     });
   } else if (result_.type == "venue") {
     if (!result_.fourSquareId || !result_.foursquareType) {
