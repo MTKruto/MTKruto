@@ -112,6 +112,7 @@ export interface MessageText extends _MessageBase {
   text: string;
   /** Entities of the text. */
   entities: MessageEntity[];
+  /** The message's link preview. */
   linkPreview?: LinkPreview;
 }
 

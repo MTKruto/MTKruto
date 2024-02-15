@@ -41,6 +41,7 @@ export interface SendMessageParams extends _SendCommon {
   parseMode?: ParseMode;
   /** The message's entities. */
   entities?: MessageEntity[];
+  /** The message's link preview. */
   linkPreview?: LinkPreview;
 }
 
@@ -49,6 +50,7 @@ export interface EditMessageParams {
   parseMode?: ParseMode;
   /** The message's entities. */
   entities?: MessageEntity[];
+  /** The message's link preview. */
   linkPreview?: LinkPreview;
   /** The reply markup of the message. Bot-only. */
   replyMarkup?: ReplyMarkup;
