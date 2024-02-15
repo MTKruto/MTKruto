@@ -6,12 +6,12 @@ export interface LinkPreview {
   url?: string;
   smallMedia?: boolean;
   largeMedia?: boolean;
-  putAboveText?: boolean;
+  aboveText?: boolean;
 }
 
 export function constructLinkPreview(media: types.MessageMediaWebPage, invert?: boolean): LinkPreview {
   return cleanObject({
-    url: "url" in media.webpage ? media.webpage.url : "",
+    url: "url" in media.webpage ? media.webpage.url : undefined,
     smallMedia: media.force_small_media ? true : undefined,
     largeMedia: media.force_large_media ? true : undefined,
     putAboveText: !!invert,

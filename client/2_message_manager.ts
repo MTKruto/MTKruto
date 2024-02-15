@@ -232,7 +232,7 @@ export class MessageManager {
     const peer = await this.#c.getInputPeer(chatId);
     const randomId = getRandomId();
     const noWebpage = params?.linkPreview?.disable ? true : undefined;
-    const invertMedia = params?.linkPreview?.putAboveText ? true : undefined;
+    const invertMedia = params?.linkPreview?.aboveText ? true : undefined;
     const silent = params?.disableNotification ? true : undefined;
     const noforwards = params?.protectContent ? true : undefined;
     const sendAs = await this.#resolveSendAs(params);
@@ -687,7 +687,7 @@ export class MessageManager {
   ) {
     const [message, entities] = await this.parseText(text, params);
     const noWebpage = params?.linkPreview?.disable ? true : undefined;
-    const invertMedia = params?.linkPreview?.putAboveText ? true : undefined;
+    const invertMedia = params?.linkPreview?.aboveText ? true : undefined;
 
     let media: enums.InputMedia | undefined = undefined;
     if (!noWebpage && params?.linkPreview?.url) {
@@ -719,7 +719,7 @@ export class MessageManager {
 
     const id = deserializeInlineMessageId(inlineMessageId);
     const noWebpage = params?.linkPreview?.disable ? true : undefined;
-    const invertMedia = params?.linkPreview?.putAboveText ? true : undefined;
+    const invertMedia = params?.linkPreview?.aboveText ? true : undefined;
 
     let media: enums.InputMedia | undefined = undefined;
     if (!noWebpage && params?.linkPreview?.url) {
