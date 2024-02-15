@@ -19,6 +19,7 @@ export interface StoryContentUnsupported {
   unsupported: true;
 }
 
+/** A story content. */
 export type StoryContent = StoryContentPhoto | StoryContentVideo | StoryContentUnsupported;
 
 export function constructStoryContent(media: enums.MessageMedia): StoryContent {

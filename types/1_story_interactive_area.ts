@@ -44,6 +44,7 @@ export interface StoryInteractiveAreaMessage extends _StoryInteractiveAreaPositi
   messageReference: MessageReference;
 }
 
+/** A story's interactive area. */
 export type StoryInteractiveArea =
   | StoryInteractiveAreaLocation
   | StoryInteractiveAreaVenue
