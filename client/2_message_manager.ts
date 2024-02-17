@@ -164,6 +164,7 @@ export class MessageManager {
   }
 
   async getHistory(chatId: ID, params?: GetHistoryParams) { // TODO: get from database properly
+    await this.#c.storage.assertUser("getHistory");
     let limit = params?.limit ?? 100;
     if (limit <= 0) {
       limit = 1;
@@ -1081,9 +1082,11 @@ export class MessageManager {
     await this.#c.api.channels.toggleJoinRequest({ channel, enabled });
   }
   async enableJoinRequests(chatId: ID) {
+    await this.#c.storage.assertUser("enableJoinRequests");
     await this.#toggleJoinRequests(chatId, true);
   }
   async disableJoinRequests(chatId: ID) {
+    await this.#c.storage.assertUser("disableJoinRequests");
     await this.#toggleJoinRequests(chatId, false);
   }
 }
