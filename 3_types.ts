@@ -18,6 +18,7 @@ export * from "./types/0_login_url.ts";
 export * from "./types/0_mask_position.ts";
 export * from "./types/0_message_entity.ts";
 export * from "./types/0_message_reference.ts";
+export * from "./types/0_message_search_filter.ts";
 export * from "./types/0_mini_app_info.ts";
 export * from "./types/0_network_statistics_entry.ts";
 export * from "./types/0_parse_mode.ts";
