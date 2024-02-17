@@ -3,6 +3,7 @@ import { bigIntFromBuffer, cleanObject, drop, getRandomBigInt, getRandomId, Mayb
 import { as, chatIdToPeerId, enums, functions, getChatIdPeerType, Message_, MessageContainer, name, peerToChatId, ReadObject, RPCResult, TLError, TLObject, TLReader, types } from "../2_tl.ts";
 import { Storage, StorageMemory } from "../3_storage.ts";
 import { DC } from "../3_transport.ts";
+import { InactiveChat } from "../3_types.ts";
 import { BotCommand, Chat, ChatAction, ChatMember, ChatP, ConnectionState, constructUser, Document, FileSource, ID, InlineQueryResult, InputStoryContent, Message, MessageAnimation, MessageAudio, MessageContact, MessageDice, MessageDocument, MessageLocation, MessagePhoto, MessagePoll, MessageText, MessageVenue, MessageVideo, MessageVideoNote, MessageVoice, NetworkStatistics, ParseMode, Reaction, Story, Update, UpdateIntersection, User } from "../3_types.ts";
 import { ACK_THRESHOLD, APP_VERSION, DEVICE_MODEL, LANG_CODE, LANG_PACK, LAYER, MAX_CHANNEL_ID, MAX_CHAT_ID, PublicKeys, SYSTEM_LANG_CODE, SYSTEM_VERSION, USERNAME_TTL } from "../4_constants.ts";
 import { AuthKeyUnregistered, FloodWait, Migrate, PasswordHashInvalid, PhoneNumberInvalid, SessionPasswordNeeded, upgradeInstance } from "../4_errors.ts";
@@ -2368,7 +2369,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
   }
 
   /**
-   * Show a username in the current account, a bot account, sa upergroup, or a channel's profile.
+   * Show a username in the current account, a bot account, sa upergroup, or a channel's profile. User-only.
    *
    * @method ac
    * @param id `"me"`, a bot ID, a supergroup ID, or a channel ID.
@@ -2379,7 +2380,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
   }
 
   /**
-   * Hide a username from the current account, a bot account, a supergroup, or a channel's profile.
+   * Hide a username from the current account, a bot account, a supergroup, or a channel's profile. User-only.
    *
    * @method ac
    * @param id `"me"`, a bot ID, a supergroup ID, or a channel ID.
@@ -2390,7 +2391,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
   }
 
   /**
-   * Reorder the usernames of the current account, a bot account, a supergroup, or a channel's profile.
+   * Reorder the usernames of the current account, a bot account, a supergroup, or a channel's profile. User-only.
    *
    * @method ac
    * @param id `"me"`, a bot ID, a supergroup ID, or a channel ID.
@@ -2398,5 +2399,24 @@ export class Client<C extends Context = Context> extends ClientAbstract {
    */
   async reorderUsernames(id: ID, order: string[]): Promise<boolean> {
     return await this.#accountManager.reorderUsernames(id, order);
+  }
+
+  /**
+   * Hide all usernames from the a supergroup or a channel's profile. User-only.
+   *
+   * @method ac
+   * @param id A supergroup ID or a channel ID.
+   */
+  async hideUsernames(id: ID): Promise<boolean> {
+    return await this.#accountManager.hideUsernames(id);
+  }
+
+  /**
+   * Get inactive chats. User-only.
+   *
+   * @method ch
+   */
+  async getInactiveChats(): Promise<InactiveChat[]> {
+    return await this.#accountManager.getInactiveChats();
   }
 }
