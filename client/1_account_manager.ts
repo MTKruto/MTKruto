@@ -1,6 +1,6 @@
 import { UNREACHABLE } from "../1_utilities.ts";
 import { types } from "../2_tl.ts";
-import { ID } from "../3_types.ts";
+import { constructInactiveChat, ID } from "../3_types.ts";
 import { C } from "./0_types.ts";
 
 export class AccountManager {
@@ -45,5 +45,21 @@ export class AccountManager {
     } else {
       UNREACHABLE();
     }
+  }
+
+  async hideUsernames(id: ID) {
+    await this.#c.storage.assertUser("hideUsernames");
+    const peer = await this.#c.getInputPeer(id);
+    if (peer instanceof types.InputPeerChannel) {
+      return await this.#c.api.channels.deactivateAllUsernames({ channel: new types.InputChannel(peer) });
+    } else {
+      UNREACHABLE();
+    }
+  }
+
+  async getInactiveChats() {
+    await this.#c.storage.assertUser("getInactiveChats");
+    const { chats, dates } = await this.#c.api.channels.getInactiveChannels();
+    return chats.map((v, i) => constructInactiveChat(v, dates[i]));
   }
 }
