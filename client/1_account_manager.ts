@@ -34,6 +34,7 @@ export class AccountManager {
   }
 
   async reorderUsernames(id: ID, order: string[]) {
+    await this.#c.storage.assertUser("reorderUsernames");
     const peer = await this.#c.getInputPeer(id);
     if (peer instanceof types.InputPeerSelf) {
       return await this.#c.api.account.reorderUsernames({ order });
