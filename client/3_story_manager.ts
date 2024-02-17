@@ -31,6 +31,7 @@ export class StoryManager {
   }
 
   async createStory(chatId: ID, content: InputStoryContent, params?: CreateStoryParams) {
+    await this.#c.storage.assertUser("createStory");
     let media: enums.InputMedia | null = null;
     const source = "video" in content ? content.video : "photo" in content ? content.photo : UNREACHABLE();
 
@@ -95,6 +96,7 @@ export class StoryManager {
   }
 
   async getStories(chatId: ID, storyIds: number[]) {
+    await this.#c.storage.assertUser("getStories");
     const peer = await this.#c.getInputPeer(chatId);
     const stories_ = await this.#c.api.stories.getStoriesByID({ peer, id: storyIds });
     const stories = new Array<Story>();
@@ -105,15 +107,18 @@ export class StoryManager {
   }
 
   async getStory(chatId: ID, storyId: number) {
+    await this.#c.storage.assertUser("getStory");
     return await this.getStories(chatId, [storyId]).then((v) => v[0] ?? null);
   }
 
   async deleteStories(chatId: ID, storyIds: number[]) {
+    await this.#c.storage.assertUser("deleteStories");
     const peer = await this.#c.getInputPeer(chatId);
     await this.#c.api.stories.deleteStories({ peer, id: storyIds });
   }
 
   async deleteStory(chatId: ID, storyId: number) {
+    await this.#c.storage.assertUser("deleteStory");
     await this.deleteStories(chatId, [storyId]);
   }
 
@@ -123,18 +128,22 @@ export class StoryManager {
   }
 
   async addStoriesToHighlights(chatId: ID, storyIds: number[]) {
+    await this.#c.storage.assertUser("addStoriesToHighlights");
     await this.#togglePinned(chatId, storyIds, true);
   }
 
   async addStoryToHighlights(chatId: ID, storyId: number) {
+    await this.#c.storage.assertUser("addStoryToHighlights");
     await this.addStoriesToHighlights(chatId, [storyId]);
   }
 
   async removeStoriesFromHighlights(chatId: ID, storyIds: number[]) {
+    await this.#c.storage.assertUser("removeStoriesFromHighlights");
     await this.#togglePinned(chatId, storyIds, false);
   }
 
   async removeStoryFromHighlights(chatId: ID, storyId: number) {
+    await this.#c.storage.assertUser("removeStoryFromHighlights");
     await this.removeStoriesFromHighlights(chatId, [storyId]);
   }
 
