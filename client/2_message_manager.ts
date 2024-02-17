@@ -4,8 +4,10 @@ import { as, enums, getChannelChatId, peerToChatId, types } from "../2_tl.ts";
 import { constructChatMemberUpdated } from "../3_types.ts";
 import { assertMessageType, ChatAction, ChatMember, chatMemberRightsToTlObject, constructChatMember, constructMessage as constructMessage_, deserializeInlineMessageId, FileID, FileSource, FileType, ID, Message, MessageEntity, messageEntityToTlObject, ParseMode, Reaction, reactionEqual, reactionToTlObject, replyMarkupToTlObject, Update, UsernameResolver } from "../3_types.ts";
 import { STICKER_SET_NAME_TTL } from "../4_constants.ts";
+import { messageSearchFilterToTlObject } from "../types/0_message_search_filter.ts";
 import { parseHtml } from "./0_html.ts";
 import { _SendCommon, BanChatMemberParams, DeleteMessagesParams, EditMessageParams, EditMessageReplyMarkupParams, ForwardMessagesParams, GetHistoryParams, PinMessageParams, SendAnimationParams, SendAudioParams, SendContactParams, SendDiceParams, SendDocumentParams, SendLocationParams, SendMessageParams, SendPhotoParams, SendPollParams, SendVenueParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams, SetChatMemberRightsParams, SetChatPhotoParams } from "./0_params.ts";
+import { SearchMessagesParams } from "./0_params.ts";
 import { AddReactionParams, SetReactionsParams } from "./0_params.ts";
 import { C as C_ } from "./0_types.ts";
 import { getFileContents, isHttpUrl } from "./0_utilities.ts";
@@ -1088,5 +1090,31 @@ export class MessageManager {
   async disableJoinRequests(chatId: ID) {
     await this.#c.storage.assertUser("disableJoinRequests");
     await this.#toggleJoinRequests(chatId, false);
+  }
+
+  async searchMessages(chatId: ID, query: string, params?: SearchMessagesParams) {
+    const result = await this.#c.api.messages.search({
+      peer: await this.#c.getInputPeer(chatId),
+      q: query,
+      add_offset: 0,
+      filter: messageSearchFilterToTlObject(params?.filter ?? "empty"),
+      hash: 0n,
+      limit: params?.limit ?? 100,
+      max_date: 0,
+      max_id: 0,
+      min_date: 0,
+      min_id: 0,
+      offset_id: params?.after ? params.after : 0,
+      from_id: params?.from ? await this.#c.getInputPeer(params.from) : undefined,
+    });
+    if (!("messages" in result)) {
+      UNREACHABLE();
+    }
+    const messages = new Array<Message>();
+    for (const message_ of result.messages) {
+      const message = await this.constructMessage(message_, false);
+      messages.push(message);
+    }
+    return messages;
   }
 }

@@ -1,7 +1,6 @@
 // deno-lint-ignore-file no-empty-interface
 import { MaybePromise } from "../1_utilities.ts";
-import { BotCommandScope, Chat, ChatMemberRights, FileSource, ID, InlineQueryResultButton, LinkPreview, Message, MessageEntity, ParseMode, ReplyMarkup, ReplyQuote, StoryInteractiveArea } from "../3_types.ts";
-import { StoryPrivacy } from "../types/1_story_privacy.ts";
+import { BotCommandScope, Chat, ChatMemberRights, FileSource, ID, InlineQueryResultButton, LinkPreview, Message, MessageEntity, MessageSearchFilter, ParseMode, ReplyMarkup, ReplyQuote, StoryInteractiveArea, StoryPrivacy } from "../3_types.ts";
 
 export interface AnswerCallbackQueryParams {
   /** A text to be shown to the user. */
@@ -304,4 +303,12 @@ export interface CreateStoryParams extends _CaptionCommon, _UploadCommon {
   from?: number;
   highlight?: boolean;
   protectContent?: boolean;
+}
+
+export interface SearchMessagesParams {
+  from?: ID;
+  filter?: MessageSearchFilter;
+  after?: number;
+  messageThreadId?: number;
+  limit?: number;
 }
