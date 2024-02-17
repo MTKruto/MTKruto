@@ -13,6 +13,7 @@ import { _SendCommon, AddReactionParams, AnswerCallbackQueryParams, AnswerInline
 import { checkPassword } from "./0_password.ts";
 import { Api, ConnectionError } from "./0_types.ts";
 import { getUsername, resolve } from "./0_utilities.ts";
+import { AccountManager } from "./1_account_manager.ts";
 import { BotInfoManager } from "./1_bot_info_manager.ts";
 import { Composer, concat, flatten, Middleware, MiddlewareFn, skip } from "./1_composer.ts";
 import { FileManager } from "./1_file_manager.ts";
@@ -205,6 +206,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
   #callbackQueryManager: CallbackQueryManager;
   #inlineQueryManager: InlineQueryManager;
   #chatListManager: ChatListManager;
+  #accountManager: AccountManager;
 
   public readonly storage: Storage;
   public readonly messageStorage: Storage;
@@ -330,6 +332,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
     this.#storyManager = new StoryManager({ ...c, fileManager: this.#fileManager, messageManager: this.#messageManager });
     this.#inlineQueryManager = new InlineQueryManager({ ...c, messageManager: this.#messageManager });
     this.#chatListManager = new ChatListManager({ ...c, messageManager: this.#messageManager });
+    this.#accountManager = new AccountManager(c);
     this.#updateManager.setUpdateHandler(this.#handleUpdate.bind(this));
 
     const transportProvider = this.transportProvider;
@@ -2362,5 +2365,27 @@ export class Client<C extends Context = Context> extends ClientAbstract {
    */
   async disableJoinRequests(chatId: ID) {
     await this.#messageManager.disableJoinRequests(chatId);
+  }
+
+  /**
+   * Show a username in the current account, a bot account, supergroup, or channel's profile.
+   *
+   * @method ac
+   * @param id `"me"`, a bot ID, a supergroup ID, or a channel ID.
+   * @param username The username to show.
+   */
+  async showUsername(id: ID, username: string) {
+    await this.#accountManager.showUsername(id, username);
+  }
+
+  /**
+   * Hide a username from the current account, a bot account, supergroup, or channel's profile.
+   *
+   * @method ac
+   * @param id `"me"`, a bot ID, a supergroup ID, or a channel ID.
+   * @param username The username to hide.
+   */
+  async hideUsername(id: ID, username: string) {
+    await this.#accountManager.hideUsername(id, username);
   }
 }
