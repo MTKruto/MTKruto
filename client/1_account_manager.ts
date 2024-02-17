@@ -32,4 +32,18 @@ export class AccountManager {
     await this.#c.storage.assertUser("hideUsername");
     await this.#toggleUsername(id, username, false);
   }
+
+  async reorderUsernames(id: ID, order: string[]) {
+    await this.#c.storage.assertUser("reorderUsernames");
+    const peer = await this.#c.getInputPeer(id);
+    if (peer instanceof types.InputPeerSelf) {
+      return await this.#c.api.account.reorderUsernames({ order });
+    } else if (peer instanceof types.InputPeerUser) {
+      return await this.#c.api.bots.reorderUsernames({ bot: new types.InputUser(peer), order });
+    } else if (peer instanceof types.InputPeerChannel) {
+      return await this.#c.api.channels.reorderUsernames({ channel: new types.InputChannel(peer), order });
+    } else {
+      UNREACHABLE();
+    }
+  }
 }

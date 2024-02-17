@@ -2368,7 +2368,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
   }
 
   /**
-   * Show a username in the current account, a bot account, supergroup, or channel's profile.
+   * Show a username in the current account, a bot account, sa upergroup, or a channel's profile.
    *
    * @method ac
    * @param id `"me"`, a bot ID, a supergroup ID, or a channel ID.
@@ -2379,7 +2379,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
   }
 
   /**
-   * Hide a username from the current account, a bot account, supergroup, or channel's profile.
+   * Hide a username from the current account, a bot account, a supergroup, or a channel's profile.
    *
    * @method ac
    * @param id `"me"`, a bot ID, a supergroup ID, or a channel ID.
@@ -2387,5 +2387,16 @@ export class Client<C extends Context = Context> extends ClientAbstract {
    */
   async hideUsername(id: ID, username: string) {
     await this.#accountManager.hideUsername(id, username);
+  }
+
+  /**
+   * Reorder the usernames of the current account, a bot account, a supergroup, or a channel's profile.
+   *
+   * @method ac
+   * @param id `"me"`, a bot ID, a supergroup ID, or a channel ID.
+   * @param order The new order to use.
+   */
+  async reorderUsernames(id: ID, order: string[]): Promise<boolean> {
+    return await this.#accountManager.reorderUsernames(id, order);
   }
 }
