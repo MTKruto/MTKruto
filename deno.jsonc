@@ -1,5 +1,8 @@
 {
   "lock": false,
+  "name": "@mtkruto/mtkruto",
+  "version": "0.1.153",
+  "exports": "./mod.ts",
   "fmt": {
     "lineWidth": 1000
   },
