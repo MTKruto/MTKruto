@@ -1,5 +1,5 @@
 // deno-lint-ignore-file no-explicit-any
-let verbosity = Number("LOG_VERBOSITY" in globalThis ? (globalThis as any).LOG_VERBOSITY : typeof Deno !== undefined ? (Deno as any).env.get("LOG_VERBOSITY") : "process" in globalThis ? (globalThis as any).process.env.LOG : "") || 0;
+let verbosity = Number("LOG_VERBOSITY" in globalThis ? (globalThis as any).LOG_VERBOSITY : "Deno" in globalThis ? (globalThis as any).Deno.env.get("LOG_VERBOSITY") : "process" in globalThis ? (globalThis as any).process.env.LOG : "") || 0;
 export function setLogVerbosity(verbosity_: number) {
   verbosity = verbosity_;
 }
