@@ -1,5 +1,5 @@
-import { debug, gunzip, Mutex } from "../0_deps.ts";
-import { bigIntFromBuffer, cleanObject, drop, getRandomBigInt, getRandomId, MaybePromise, mustPrompt, mustPromptOneOf, sha1, UNREACHABLE, ZERO_CHANNEL_ID } from "../1_utilities.ts";
+import { debug, gunzip } from "../0_deps.ts";
+import { bigIntFromBuffer, cleanObject, drop, getRandomBigInt, getRandomId, MaybePromise, mustPrompt, mustPromptOneOf, Mutex, sha1, UNREACHABLE, ZERO_CHANNEL_ID } from "../1_utilities.ts";
 import { as, chatIdToPeerId, enums, functions, getChatIdPeerType, Message_, MessageContainer, name, peerToChatId, ReadObject, RPCResult, TLError, TLObject, TLReader, types } from "../2_tl.ts";
 import { Storage, StorageMemory } from "../3_storage.ts";
 import { DC } from "../3_transport.ts";
@@ -715,14 +715,14 @@ export class Client<C extends Context = Context> extends ClientAbstract {
 
   #lastPropagatedConnectionState: ConnectionState | null = null;
   protected stateChangeHandler = ((connected: boolean) => {
-    this.#connectMutex.acquire().then((release) => {
+    this.#connectMutex.lock().then((unlock) => {
       try {
         const connectionState = connected ? "ready" : "notConnected";
         if (this.connected == connected && this.#lastPropagatedConnectionState != connectionState) {
           this.#propagateConnectionState(connectionState);
         }
       } finally {
-        release();
+        unlock();
       }
     });
   }).bind(this);
@@ -770,7 +770,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
     if (this.connected) {
       return;
     }
-    const release = await this.#connectMutex.acquire();
+    const unlock = await this.#connectMutex.lock();
     try {
       await this.#initStorage();
       const authKey = await this.storage.getAuthKey();
@@ -807,7 +807,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
         drop(this.#pingLoop());
       }
     } finally {
-      release();
+      unlock();
     }
   }
 

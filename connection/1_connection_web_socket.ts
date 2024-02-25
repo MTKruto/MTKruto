@@ -1,5 +1,5 @@
-import { debug, Mutex } from "../0_deps.ts";
-import { concat, UNREACHABLE } from "../1_utilities.ts";
+import { debug } from "../0_deps.ts";
+import { concat, Mutex, UNREACHABLE } from "../1_utilities.ts";
 import { ConnectionUnframed } from "./0_connection.ts";
 
 const d = debug("ConnectionWebSocket");
@@ -31,7 +31,7 @@ export class ConnectionWebSocket extends ConnectionUnframed implements Connectio
       if (typeof e.data === "string") {
         return;
       }
-      const release = await mutex.acquire();
+      const unlock = await mutex.lock();
       const data = new Uint8Array(await new Blob([e.data].map((v) => v instanceof Blob || v instanceof Uint8Array ? v : v instanceof ArrayBuffer ? v : UNREACHABLE())).arrayBuffer());
 
       this.#buffer = concat(this.#buffer, data);
@@ -43,7 +43,7 @@ export class ConnectionWebSocket extends ConnectionUnframed implements Connectio
         this.#nextResolve = null;
       }
 
-      release();
+      unlock();
     });
     webSocket.addEventListener("error", (err) => {
       if (this.#isConnecting) {
@@ -101,7 +101,7 @@ export class ConnectionWebSocket extends ConnectionUnframed implements Connectio
 
   async read(p: Uint8Array) {
     this.#assertConnected();
-    const release = await this.#rMutex.acquire();
+    const unlock = await this.#rMutex.lock();
     try {
       this.#assertConnected();
       if (this.#buffer.length < p.length) {
@@ -111,18 +111,18 @@ export class ConnectionWebSocket extends ConnectionUnframed implements Connectio
       p.set(slice);
       this.#buffer = this.#buffer.slice(slice.length);
     } finally {
-      release();
+      unlock();
     }
   }
 
   async write(p: Uint8Array) {
     this.#assertConnected();
-    const release = await this.#wMutex.acquire();
+    const unlock = await this.#wMutex.lock();
     try {
       this.#assertConnected();
       this.#webSocket.send(p);
     } finally {
-      release();
+      unlock();
     }
   }
 
