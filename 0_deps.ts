@@ -4,7 +4,14 @@ export * as path from "https://deno.land/std@0.216.0/path/mod.ts";
 
 export { decodeBase64, encodeBase64 } from "https://deno.land/std@0.216.0/encoding/base64.ts";
 
-export { contentType } from "https://deno.land/std@0.216.0/media_types/content_type.ts";
+import { contentType as contentType_ } from "https://deno.land/std@0.216.0/media_types/content_type.ts";
+export const contentType: typeof contentType_ = (extentionOrType) => {
+  if (extentionOrType == "tgs") {
+    return "application/x-tgsticker";
+  } else {
+    return contentType_(extentionOrType);
+  }
+};
 import { extension as extension_ } from "https://deno.land/std@0.216.0/media_types/extension.ts";
 export function extension(mimeType: string) {
   if (mimeType == "application/x-tgsticker") {
