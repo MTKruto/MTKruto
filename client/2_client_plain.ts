@@ -29,8 +29,14 @@ export class ClientPlain extends ClientAbstract {
       throw new Error("Not connected");
     }
     const msgId = this.#lastMsgId = getMessageId(this.#lastMsgId);
-    await this.transport.transport.send(packUnencryptedMessage(function_[serialize](), msgId));
+
+    const payload = packUnencryptedMessage(function_[serialize](), msgId);
+    await this.transport.transport.send(payload);
+    L.out(function_);
+    L.outBin(payload);
+
     const buffer = await this.transport.transport.receive();
+    L.inBin(payload);
     if (buffer.length == 4) {
       const int = bigIntFromBuffer(buffer, true, true);
       if (int == -404n) {
@@ -39,7 +45,9 @@ export class ClientPlain extends ClientAbstract {
     }
     const { message } = unpackUnencryptedMessage(buffer);
     const reader = new TLReader(message);
-    return reader.readObject();
+    const result = reader.readObject();
+    L.in(result);
+    return result;
   }
 
   async createAuthKey() {

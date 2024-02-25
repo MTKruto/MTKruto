@@ -9,7 +9,20 @@ export const WARNING = 2;
 export const INFO = 3;
 export const DEBUG = 4;
 export const TRACE = 5;
+export const IN = 10;
+export const OUT = 10;
+export const IN_BIN = 20;
+export const OUT_BIN = 20;
 
+const INA = ">".repeat(6);
+const OUTA = "<".repeat(6);
+function toHex(p: Uint8Array) {
+  let s = "";
+  for (const b of p) {
+    s += b.toString(16).toUpperCase().padStart(2, "0");
+  }
+  return s;
+}
 export function getLogger(scope: string) {
   return {
     client(id: number) {
@@ -32,6 +45,24 @@ export function getLogger(scope: string) {
     },
     trace(...args: any[]) {
       this.log(TRACE, ...args);
+    },
+    in(...args: any[]) {
+      this.log(IN, INA, ...args);
+    },
+    out(...args: any[]) {
+      this.log(OUT, OUTA, ...args);
+    },
+    inBin(p: Uint8Array) {
+      if (verbosity < IN_BIN) { // So it is not converted to hex
+        return;
+      }
+      this.log(IN_BIN, INA, toHex(p));
+    },
+    outBin(p: Uint8Array) {
+      if (verbosity < OUT_BIN) { // So it is not unnecessarilly converted to hex
+        return;
+      }
+      this.log(OUT_BIN, OUTA, toHex(p));
     },
     log(verbosity_: number, ...args: any[]) {
       if (verbosity < verbosity_) {
