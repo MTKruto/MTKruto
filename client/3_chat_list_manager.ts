@@ -361,7 +361,7 @@ export class ChatListManager {
         .filter((v) => v.order < after!.order);
     }
     if (chats.length < limit) {
-      this.#LgetChats.debug("have only %d chats but %d more is needed", chats.length, limit - chats.length);
+      this.#LgetChats.debug(`have only ${chats.length} chats but ${limit - chats.length} more is needed`);
       if (!await this.#c.storage.hasAllChats(listId)) {
         await this.#fetchChats(listId, limit, after);
         return await this.getChats(from, after, limit);

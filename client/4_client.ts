@@ -1090,7 +1090,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
           ));
           this.#L.in(decrypted);
         } catch (err) {
-          this.#LreceiveLoop.error("failed to decrypt message: %o", err);
+          this.#LreceiveLoop.error("failed to decrypt message:", err);
           drop((async () => {
             try {
               await this.disconnect();
@@ -1109,7 +1109,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
           if (body instanceof types.Gzip_packed) {
             body = new TLReader(gunzip(body.packed_data)).readObject();
           }
-          this.#LreceiveLoop.debug("received %s", (typeof body === "object" && name in body) ? body[name] : body.constructor.name);
+          this.#LreceiveLoop.debug("received", (typeof body === "object" && name in body) ? body[name] : body.constructor.name);
           if (body instanceof types._Updates || body instanceof types._Update) {
             this.#updateManager.processUpdates(body as types.Updates | enums.Update, true);
           } else if (body instanceof types.New_session_created) {
@@ -1121,9 +1121,9 @@ export class Client<C extends Context = Context> extends ClientAbstract {
               result = new TLReader(gunzip(result.packed_data)).readObject();
             }
             if (result instanceof types.Rpc_error) {
-              this.#LreceiveLoop.debug("RPCResult: %d %s", result.error_code, result.error_message);
+              this.#LreceiveLoop.debug("RPCResult:", result.error_code, result.error_message);
             } else {
-              this.#LreceiveLoop.debug("RPCResult: %s", (typeof result === "object" && name in result) ? result[name] : result.constructor.name);
+              this.#LreceiveLoop.debug("RPCResult:", (typeof result === "object" && name in result) ? result[name] : result.constructor.name);
             }
             const messageId = message.body.messageId;
             const promise = this.#promises.get(messageId);

@@ -63,7 +63,7 @@ export class UpdateManager {
   async fetchState(source: string) {
     const state = await this.#c.api.updates.getState();
     this.#updateState = state;
-    this.#LfetchState.debug("state fetched [%s]", source);
+    this.#LfetchState.debug(`state fetched [${source}]`);
     if (await this.#mustDropPendingUpdates()) {
       await this.#setState(state);
     }
@@ -505,7 +505,7 @@ export class UpdateManager {
     return localState;
   }
   async recoverUpdateGap(source: string) {
-    this.#LrecoverUpdateGap.debug("recovering from update gap [%s]", source);
+    this.#LrecoverUpdateGap.debug(`recovering from update gap [${source}]`);
 
     this.#c.setConnectionState("updating");
     try {
@@ -550,7 +550,7 @@ export class UpdateManager {
   }
 
   async #recoverChannelUpdateGap(channelId: bigint, source: string) {
-    this.#LrecoverChannelUpdateGap.debug("recovering channel update gap [%o, %s]", channelId, source);
+    this.#LrecoverChannelUpdateGap.debug(`recovering channel update gap [${channelId}, ${source}]`);
     const pts_ = await this.#c.storage.getChannelPts(channelId);
     let pts = pts_ == null ? 1 : pts_;
     while (true) {
@@ -571,7 +571,7 @@ export class UpdateManager {
           await this.#processUpdates(update, false);
         }
         await this.#c.storage.setChannelPts(channelId, difference.pts);
-        this.#LrecoverChannelUpdateGap.debug("recovered from update gap [%o, %s]", channelId, source);
+        this.#LrecoverChannelUpdateGap.debug(`recovered from update gap [${channelId}, ${source}]`, channelId, source);
         break;
       } else if (difference instanceof types.updates.ChannelDifferenceTooLong) {
         // TODO: invalidate messages
