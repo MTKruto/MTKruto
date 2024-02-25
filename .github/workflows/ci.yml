@@ -61,7 +61,7 @@ jobs:
         with:
           deno-version: vx.x.x
 
-      - run: deno test
+      - run: deno test --allow-env=LOG_VERBOSITY
 
   transform-browser:
     runs-on: ubuntu-latest
