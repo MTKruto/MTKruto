@@ -85,7 +85,7 @@ export function getLogger(scope: string) {
         default:
           fn = console.log;
       }
-      fn(`[${verbosity} ${scope}]`, ...args);
+      fn(`[${verbosity_} ${scope}]`, ...args);
     },
   };
 }
