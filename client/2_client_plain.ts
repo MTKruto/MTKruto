@@ -57,7 +57,7 @@ export class ClientPlain extends ClientAbstract {
     let resPq: types.ResPQ | null = null;
     for (let i = 0; i < 10; i++) {
       try {
-        LcreateAuthKey.debug("req_pq_multi [%d]", i + 1);
+        LcreateAuthKey.debug(`req_pq_multi [${i + 1}]`);
         resPq = await this.invoke(new functions.req_pq_multi({ nonce }));
 
         assertInstanceOf(resPq, types.ResPQ);
@@ -65,7 +65,7 @@ export class ClientPlain extends ClientAbstract {
         LcreateAuthKey.debug("got res_pq");
         break;
       } catch (err) {
-        LcreateAuthKey.debug("req_pq_multi error: %o", err);
+        LcreateAuthKey.debug("req_pq_multi error:", err);
       }
     }
     if (!resPq) {
@@ -73,10 +73,10 @@ export class ClientPlain extends ClientAbstract {
     }
 
     const pq_ = bigIntFromBuffer(resPq.pq, false, false);
-    LcreateAuthKey.debug("pq=%d", pq_);
+    LcreateAuthKey.debug(`pq=${pq_}`);
     const [p_, q_] = factorize(pq_);
     LcreateAuthKey.debug("factorized pq");
-    LcreateAuthKey.debug("p=%d, q=%d", p_, q_);
+    LcreateAuthKey.debug(`p=${p_}, q=${q_}`);
     const p = bufferFromBigInt(p_, 4, false, false);
     const q = bufferFromBigInt(q_, 4, false, false);
 
