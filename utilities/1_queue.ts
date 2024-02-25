@@ -1,4 +1,4 @@
-import { getLogger, Logger } from "../1_utilities.ts";
+import { getLogger, Logger } from "./0_logger.ts";
 
 export class Queue {
   #logger: Logger;
