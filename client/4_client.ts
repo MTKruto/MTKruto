@@ -1078,6 +1078,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
         }
 
         const buffer = await this.transport.transport.receive();
+        this.#L.inBin(buffer);
 
         let decrypted;
         try {
@@ -1087,6 +1088,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
             this.#auth.id,
             this.#sessionId,
           ));
+          this.#L.in(decrypted);
         } catch (err) {
           this.#LreceiveLoop.error("failed to decrypt message: %o", err);
           drop((async () => {
@@ -1240,15 +1242,16 @@ export class Client<C extends Context = Context> extends ClientAbstract {
 
         const messageId = this.#lastMsgId = getMessageId(this.#lastMsgId);
         const message = new Message_(messageId, seqNo, function_);
-        await this.transport.transport.send(
-          await encryptMessage(
-            message,
-            this.#auth.key,
-            this.#auth.id,
-            this.#state.salt,
-            this.#sessionId,
-          ),
+        const payload = await encryptMessage(
+          message,
+          this.#auth.key,
+          this.#auth.id,
+          this.#state.salt,
+          this.#sessionId,
         );
+        await this.transport.transport.send(payload);
+        this.#L.out(message);
+        this.#L.outBin(payload);
         this.#Linvoke.debug("invoked", function_[name]);
 
         if (noWait) {
