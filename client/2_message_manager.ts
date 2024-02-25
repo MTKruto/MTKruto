@@ -1,5 +1,5 @@
-import { contentType, debug } from "../0_deps.ts";
-import { getRandomId, toUnixTimestamp, UNREACHABLE } from "../1_utilities.ts";
+import { contentType } from "../0_deps.ts";
+import { getLogger, getRandomId, Logger, toUnixTimestamp, UNREACHABLE } from "../1_utilities.ts";
 import { as, enums, getChannelChatId, peerToChatId, types } from "../2_tl.ts";
 import { constructChatMemberUpdated } from "../3_types.ts";
 import { assertMessageType, ChatAction, ChatMember, chatMemberRightsToTlObject, constructChatMember, constructMessage as constructMessage_, deserializeInlineMessageId, FileID, FileSource, FileType, ID, Message, MessageEntity, messageEntityToTlObject, ParseMode, Reaction, reactionEqual, reactionToTlObject, replyMarkupToTlObject, Update, UsernameResolver } from "../3_types.ts";
@@ -12,8 +12,6 @@ import { AddReactionParams, SetReactionsParams } from "./0_params.ts";
 import { C as C_ } from "./0_types.ts";
 import { getFileContents, isHttpUrl } from "./0_utilities.ts";
 import { FileManager } from "./1_file_manager.ts";
-
-const d = debug("MessageManager");
 
 interface C extends C_ {
   fileManager: FileManager;
@@ -31,9 +29,13 @@ type MessageManagerUpdate =
 
 export class MessageManager {
   #c: C;
+  #LresolveFileId: Logger;
 
   constructor(c: C) {
     this.#c = c;
+
+    const L = getLogger("MessageManager").client(c.id);
+    this.#LresolveFileId = L.branch("resolveFileId");
   }
 
   async getMessages(chatId: ID, messageIds: number[]) {
@@ -586,7 +588,7 @@ export class MessageManager {
     try {
       fileId = FileID.decode(maybeFileId);
     } catch (err) {
-      d("fileId: %o", err);
+      this.#LresolveFileId.warning(err);
     }
     if (fileId != null) {
       if (fileId.fileType != expectedFileType) {

@@ -6,6 +6,7 @@ export * from "./utilities/0_color.ts";
 export * from "./utilities/0_control.ts";
 export * from "./utilities/0_crypto.ts";
 export * from "./utilities/0_hash.ts";
+export * from "./utilities/0_logger.ts";
 export * from "./utilities/0_mutex.ts";
 export * from "./utilities/0_object.ts";
 export * from "./utilities/0_queue.ts";

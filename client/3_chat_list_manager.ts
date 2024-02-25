@@ -1,5 +1,4 @@
-import { debug } from "../0_deps.ts";
-import { toUnixTimestamp, UNREACHABLE } from "../1_utilities.ts";
+import { getLogger, Logger, toUnixTimestamp, UNREACHABLE } from "../1_utilities.ts";
 import { as, enums, peerToChatId, types } from "../2_tl.ts";
 import { Chat, constructChat, constructChat2, constructChat3, constructChat4, getChatOrder, ID } from "../3_types.ts";
 import { C as C_ } from "./0_types.ts";
@@ -7,8 +6,6 @@ import { getChatListId, getUsername } from "./0_utilities.ts";
 import { MessageManager } from "./2_message_manager.ts";
 
 type C = C_ & { messageManager: MessageManager };
-
-const d = debug("ChatListManager");
 
 type ChatListManagerUpdate =
   | types.UpdateNewMessage
@@ -23,8 +20,13 @@ type ChatListManagerUpdate =
 export class ChatListManager {
   #c: C;
 
+  #LgetChats: Logger;
+
   constructor(c: C) {
     this.#c = c;
+
+    const L = getLogger("ChatListManager").client(c.id);
+    this.#LgetChats = L.branch("getChats");
   }
 
   async #sendChatUpdate(chatId: number, added: boolean) {
@@ -359,7 +361,7 @@ export class ChatListManager {
         .filter((v) => v.order < after!.order);
     }
     if (chats.length < limit) {
-      d("have only %d chats but %d more is needed", chats.length, limit - chats.length);
+      this.#LgetChats.debug("have only %d chats but %d more is needed", chats.length, limit - chats.length);
       if (!await this.#c.storage.hasAllChats(listId)) {
         await this.#fetchChats(listId, limit, after);
         return await this.getChats(from, after, limit);

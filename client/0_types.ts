@@ -14,6 +14,7 @@ interface ApiFactory {
 }
 
 export interface C {
+  id: number;
   api: Api;
   storage: Storage;
   messageStorage: Storage;

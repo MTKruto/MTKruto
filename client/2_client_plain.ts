@@ -1,11 +1,12 @@
-import { assertEquals, assertInstanceOf, debug, factorize, ige256Decrypt, ige256Encrypt } from "../0_deps.ts";
-import { bigIntFromBuffer, bufferFromBigInt, concat, getRandomBigInt, modExp, rsaPad, sha1, UNREACHABLE } from "../1_utilities.ts";
+import { assertEquals, assertInstanceOf, factorize, ige256Decrypt, ige256Encrypt } from "../0_deps.ts";
+import { bigIntFromBuffer, bufferFromBigInt, concat, getLogger, getRandomBigInt, modExp, rsaPad, sha1, UNREACHABLE } from "../1_utilities.ts";
 import { functions, serialize, TLReader, types } from "../2_tl.ts";
 import { PUBLIC_KEYS, PublicKeys } from "../4_constants.ts";
 import { ClientAbstract, ClientAbstractParams } from "./0_client_abstract.ts";
 import { getMessageId, packUnencryptedMessage, unpackUnencryptedMessage } from "./0_message.ts";
 
-const d = debug("ClientPlain/createAuthKey");
+const L = getLogger("ClientPlain");
+const LcreateAuthKey = L.branch("createAuthKey");
 
 export interface ClientPlainParams extends ClientAbstractParams {
   /**
@@ -43,20 +44,20 @@ export class ClientPlain extends ClientAbstract {
 
   async createAuthKey() {
     const nonce = getRandomBigInt(16, false, true);
-    d("auth key creation started");
+    LcreateAuthKey.debug("auth key creation started");
 
     let resPq: types.ResPQ | null = null;
     for (let i = 0; i < 10; i++) {
       try {
-        d("req_pq_multi [%d]", i + 1);
+        LcreateAuthKey.debug("req_pq_multi [%d]", i + 1);
         resPq = await this.invoke(new functions.req_pq_multi({ nonce }));
 
         assertInstanceOf(resPq, types.ResPQ);
         assertEquals(resPq.nonce, nonce);
-        d("got res_pq");
+        LcreateAuthKey.debug("got res_pq");
         break;
       } catch (err) {
-        d("req_pq_multi error: %o", err);
+        LcreateAuthKey.debug("req_pq_multi error: %o", err);
       }
     }
     if (!resPq) {
@@ -64,10 +65,10 @@ export class ClientPlain extends ClientAbstract {
     }
 
     const pq_ = bigIntFromBuffer(resPq.pq, false, false);
-    d("pq=%d", pq_);
+    LcreateAuthKey.debug("pq=%d", pq_);
     const [p_, q_] = factorize(pq_);
-    d("factorized pq");
-    d("p=%d, q=%d", p_, q_);
+    LcreateAuthKey.debug("factorized pq");
+    LcreateAuthKey.debug("p=%d, q=%d", p_, q_);
     const p = bufferFromBigInt(p_, 4, false, false);
     const q = bufferFromBigInt(q_, 4, false, false);
 
@@ -116,7 +117,7 @@ export class ClientPlain extends ClientAbstract {
     );
 
     assertInstanceOf(dhParams, types.Server_DH_params_ok);
-    d("got server_DH_params_ok");
+    LcreateAuthKey.debug("got server_DH_params_ok");
 
     const newNonce_ = bufferFromBigInt(newNonce, 32, true, true);
     const serverNonce_ = bufferFromBigInt(serverNonce, 16, true, true);
@@ -150,7 +151,7 @@ export class ClientPlain extends ClientAbstract {
 
     const dhGenOk = await this.invoke(new functions.set_client_DH_params({ nonce, server_nonce: serverNonce, encrypted_data: encryptedData }));
     assertInstanceOf(dhGenOk, types.Dh_gen_ok);
-    d("got dh_gen_ok");
+    LcreateAuthKey.debug("got dh_gen_ok");
 
     const serverNonceSlice = serverNonce_.subarray(0, 8);
     const salt = newNonce_.subarray(0, 0 + 8).map((v, i) => v ^ serverNonceSlice[i]);
@@ -158,7 +159,7 @@ export class ClientPlain extends ClientAbstract {
     const authKey_ = modExp(gA, b, dhPrime);
     const authKey = bufferFromBigInt(authKey_, 256, false, false);
 
-    d("auth key created");
+    LcreateAuthKey.debug("auth key created");
 
     return {
       authKey,

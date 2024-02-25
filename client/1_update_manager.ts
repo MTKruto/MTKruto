@@ -1,13 +1,8 @@
-import { debug } from "../0_deps.ts";
-import { Queue, UNREACHABLE, ZERO_CHANNEL_ID } from "../1_utilities.ts";
+import { getLogger, Logger, Queue, UNREACHABLE, ZERO_CHANNEL_ID } from "../1_utilities.ts";
 import { as, enums, functions, inputPeerToPeer, peerToChatId, ReadObject, TLObject, types } from "../2_tl.ts";
 import { CHANNEL_DIFFERENCE_LIMIT_BOT, CHANNEL_DIFFERENCE_LIMIT_USER } from "../4_constants.ts";
 import { C } from "./0_types.ts";
 import { isChannelPtsUpdate, isPtsUpdate } from "./0_utilities.ts";
-
-const d = debug("UpdateManager");
-const dGap = debug("UpdateManager/recoverUpdateGap");
-const dGapC = debug("UpdateManager/recoverChannelUpdateGap");
 
 type UpdateHandler = (update: enums.Update) => Promise<(() => Promise<unknown>)>;
 
@@ -18,8 +13,21 @@ export class UpdateManager {
   #updateState?: types.updates.State;
   #updateHandler?: UpdateHandler;
 
+  #LrecoverUpdateGap: Logger;
+  #LrecoverChannelUpdateGap: Logger;
+  #L$handleUpdate: Logger;
+  #L$processUpdates: Logger;
+  #LfetchState: Logger;
+
   constructor(c: C) {
     this.#c = c;
+
+    const L = getLogger("UpdateManager").client(c.id);
+    this.#LrecoverUpdateGap = L.branch("recoverUpdateGap");
+    this.#LrecoverChannelUpdateGap = L.branch("recoverChannelUpdateGap");
+    this.#L$handleUpdate = L.branch("#handleUpdate");
+    this.#L$processUpdates = L.branch("#processUpdates");
+    this.#LfetchState = L.branch("fetchState");
   }
 
   #defaultDropPendingUpdates: boolean | null = null;
@@ -55,7 +63,7 @@ export class UpdateManager {
   async fetchState(source: string) {
     const state = await this.#c.api.updates.getState();
     this.#updateState = state;
-    d("state fetched [%s]", source);
+    this.#LfetchState.debug("state fetched [%s]", source);
     if (await this.#mustDropPendingUpdates()) {
       await this.#setState(state);
     }
@@ -333,7 +341,7 @@ export class UpdateManager {
       if (checkGap) {
         if (seqStart == 0) {
           checkGap = false;
-          d("seqStart=0");
+          this.#L$processUpdates.debug("seqStart=0");
         } else {
           const localState = await this.#getLocalState();
           const localSeq = localState.seq;
@@ -346,7 +354,7 @@ export class UpdateManager {
             await this.#setState(localState);
           } else if (localSeq + 1 > seqStart) {
             // The update sequence was already applied, and must be ignored.
-            d("localSeq + 1 > seqStart");
+            this.#L$processUpdates.debug("localSeq + 1 > seqStart");
             return;
           } else if (localSeq + 1 < seqStart) {
             // There's an updates gap that must be filled.
@@ -497,7 +505,7 @@ export class UpdateManager {
     return localState;
   }
   async recoverUpdateGap(source: string) {
-    dGap("recovering from update gap [%s]", source);
+    this.#LrecoverUpdateGap.debug("recovering from update gap [%s]", source);
 
     this.#c.setConnectionState("updating");
     try {
@@ -515,7 +523,7 @@ export class UpdateManager {
           }
           if (difference instanceof types.updates.Difference) {
             await this.#setState(difference.state);
-            dGap("recovered from update gap");
+            this.#LrecoverUpdateGap.debug("recovered from update gap");
             break;
           } else if (difference instanceof types.updates.DifferenceSlice) {
             state = difference.intermediate_state;
@@ -527,10 +535,10 @@ export class UpdateManager {
           await this.#c.storage.removeChats(0);
           await this.#c.storage.removeChats(1);
           state.pts = difference.pts;
-          dGap("received differenceTooLong");
+          this.#LrecoverUpdateGap.debug("received differenceTooLong");
         } else if (difference instanceof types.updates.DifferenceEmpty) {
           await this.#setUpdateStateDate(difference.date);
-          dGap("there was no update gap");
+          this.#LrecoverUpdateGap.debug("there was no update gap");
           break;
         } else {
           UNREACHABLE();
@@ -542,7 +550,7 @@ export class UpdateManager {
   }
 
   async #recoverChannelUpdateGap(channelId: bigint, source: string) {
-    dGapC("recovering channel update gap [%o, %s]", channelId, source);
+    this.#LrecoverChannelUpdateGap.debug("recovering channel update gap [%o, %s]", channelId, source);
     const pts_ = await this.#c.storage.getChannelPts(channelId);
     let pts = pts_ == null ? 1 : pts_;
     while (true) {
@@ -563,11 +571,11 @@ export class UpdateManager {
           await this.#processUpdates(update, false);
         }
         await this.#c.storage.setChannelPts(channelId, difference.pts);
-        dGapC("recovered from update gap [%o, %s]", channelId, source);
+        this.#LrecoverChannelUpdateGap.debug("recovered from update gap [%o, %s]", channelId, source);
         break;
       } else if (difference instanceof types.updates.ChannelDifferenceTooLong) {
         // TODO: invalidate messages
-        dGapC("received channelDifferenceTooLong");
+        this.#LrecoverChannelUpdateGap.debug("received channelDifferenceTooLong");
         await this.processChats(difference.chats);
         await this.processUsers(difference.users);
         for (const message of difference.messages) {
@@ -579,9 +587,9 @@ export class UpdateManager {
         } else {
           UNREACHABLE();
         }
-        dGapC("processed channelDifferenceTooLong");
+        this.#LrecoverChannelUpdateGap.debug("processed channelDifferenceTooLong");
       } else if (difference instanceof types.updates.ChannelDifferenceEmpty) {
-        dGapC("there was no update gap");
+        this.#LrecoverChannelUpdateGap.debug("there was no update gap");
         break;
       }
     }
@@ -612,7 +620,7 @@ export class UpdateManager {
           }
           break;
         } catch (err) {
-          d("#handleUpdate error: %o", err);
+          this.#L$handleUpdate.error(err);
         }
       }
       await this.#c.storage.set(key, null);
