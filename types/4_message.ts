@@ -1,5 +1,4 @@
-import { debug } from "../0_deps.ts";
-import { cleanObject, fromUnixTimestamp, MaybePromise, UNREACHABLE, ZERO_CHANNEL_ID } from "../1_utilities.ts";
+import { cleanObject, fromUnixTimestamp, getLogger, MaybePromise, UNREACHABLE, ZERO_CHANNEL_ID } from "../1_utilities.ts";
 import { as, enums, types } from "../2_tl.ts";
 import { FileID, FileType, FileUniqueID, FileUniqueType } from "./0__file_id.ts";
 import { constructContact, Contact } from "./0_contact.ts";
@@ -26,7 +25,7 @@ import { constructVideo, Video } from "./1_video.ts";
 import { constructGame, Game } from "./2_game.ts";
 import { constructReplyMarkup, ReplyMarkup } from "./3_reply_markup.ts";
 
-const d = debug("types/Message");
+const L = getLogger("Message");
 
 /**
  * Properties shared between all message types.
@@ -616,7 +615,7 @@ async function getReply(message_: types.Message | types.MessageService, chat: Ch
     if (replyToMessage) {
       return { replyToMessage, threadId: message_.reply_to.reply_to_top_id, isTopicMessage };
     } else {
-      d("couldn't get replied message");
+      L.warning("couldn't get replied message");
     }
   }
 

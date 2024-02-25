@@ -1,11 +1,11 @@
-import { debug } from "../0_deps.ts";
+import { getLogger, Logger } from "../1_utilities.ts";
 
 export class Queue {
-  #d: ReturnType<typeof debug>;
+  #logger: Logger;
   functions = new Array<() => Promise<void>>();
 
   constructor(name: string) {
-    this.#d = debug(`q/${name}`);
+    this.#logger = getLogger(`q/${name}`);
   }
 
   add(fn: () => Promise<void>) {
@@ -24,7 +24,7 @@ export class Queue {
     if (fn !== undefined) {
       fn()
         .catch((err) => {
-          this.#d("%o", "stack" in err ? err.stack : err);
+          this.#logger.error((typeof err === "object" && err != null && "stack" in err) ? err.stack : err);
         })
         .finally(() => {
           this.#busy = false;

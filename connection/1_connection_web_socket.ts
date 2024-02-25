@@ -1,8 +1,7 @@
-import { debug } from "../0_deps.ts";
-import { concat, Mutex, UNREACHABLE } from "../1_utilities.ts";
+import { concat, getLogger, Mutex, UNREACHABLE } from "../1_utilities.ts";
 import { ConnectionUnframed } from "./0_connection.ts";
 
-const d = debug("ConnectionWebSocket");
+const L = getLogger("ConnectionWebSocket");
 const errConnectionNotOpen = new Error("Connection not open");
 
 export class ConnectionWebSocket extends ConnectionUnframed implements ConnectionUnframed {
@@ -51,7 +50,7 @@ export class ConnectionWebSocket extends ConnectionUnframed implements Connectio
         this.#connectionError = err;
       }
       if (this.connected) {
-        d("WebSocket error: %o", err);
+        L.error(err);
       }
     });
     return webSocket;

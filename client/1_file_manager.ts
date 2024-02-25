@@ -1,18 +1,20 @@
-import { debug, extension } from "../0_deps.ts";
-import { drop, getRandomId, mod, UNREACHABLE } from "../1_utilities.ts";
+import { extension } from "../0_deps.ts";
+import { drop, getLogger, getRandomId, Logger, mod, UNREACHABLE } from "../1_utilities.ts";
 import { as, enums, types } from "../2_tl.ts";
 import { constructDocument, Document, FileID, FileType, FileUniqueID, FileUniqueType, ThumbnailSource } from "../3_types.ts";
 import { FloodWait } from "../4_errors.ts";
 import { DownloadParams, UploadParams } from "./0_params.ts";
 import { C, ConnectionError } from "./0_types.ts";
 
-const d = debug("FileManager");
-
 export class FileManager {
   #c: C;
+  #Lupload: Logger;
 
   constructor(c: C) {
     this.#c = c;
+
+    const L = getLogger("FileManager").client(c.id);
+    this.#Lupload = L.branch("upload");
   }
 
   async upload(contents: Uint8Array, params?: UploadParams) {
@@ -25,7 +27,7 @@ export class FileManager {
 
     const signal = params?.signal;
 
-    d("uploading " + (isBig ? "big " : "") + "file of size " + contents.length + " with chunk size of " + chunkSize);
+    this.#Lupload.debug("uploading " + (isBig ? "big " : "") + "file of size " + contents.length + " with chunk size of " + chunkSize);
 
     const fileId = getRandomId();
     const name = params?.fileName ?? fileId.toString();
@@ -51,14 +53,14 @@ export class FileManager {
             } else {
               await api.upload.saveFilePart({ file_id: fileId, bytes, file_part: part });
             }
-            d((part + 1) + " out of " + partCount + " chunks have been uploaded so far");
+            this.#Lupload.debug((part + 1) + " out of " + partCount + " chunks have been uploaded so far");
             break chunk;
           } catch (err) {
             if (signal?.aborted) {
               break main;
             }
-            if (err instanceof FloodWait) {
-              d("got a flood wait of " + err.seconds + " seconds");
+            if (err instanceof FloodWait) { // TODO: should this be removed?
+              this.#Lupload.warning("got a flood wait of " + err.seconds + " seconds");
               await new Promise((r) => setTimeout(r, err.seconds * 1000));
             } else if (err instanceof ConnectionError) {
               while (true) {
@@ -81,7 +83,7 @@ export class FileManager {
       drop(disconnect());
     }
 
-    d("uploaded all " + partCount + " chunk(s)");
+    this.#Lupload.debug("uploaded all " + partCount + " chunk(s)");
 
     if (isBig) {
       return new types.InputFileBig({ id: fileId, parts: contents.length / chunkSize, name });

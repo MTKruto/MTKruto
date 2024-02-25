@@ -1,5 +1,5 @@
-import { debug, gunzip } from "../0_deps.ts";
-import { bigIntFromBuffer, cleanObject, drop, getRandomBigInt, getRandomId, MaybePromise, mustPrompt, mustPromptOneOf, Mutex, sha1, UNREACHABLE, ZERO_CHANNEL_ID } from "../1_utilities.ts";
+import { gunzip } from "../0_deps.ts";
+import { bigIntFromBuffer, cleanObject, drop, getLogger, getRandomBigInt, getRandomId, Logger, MaybePromise, mustPrompt, mustPromptOneOf, Mutex, sha1, UNREACHABLE, ZERO_CHANNEL_ID } from "../1_utilities.ts";
 import { as, chatIdToPeerId, enums, functions, getChatIdPeerType, Message_, MessageContainer, name, peerToChatId, ReadObject, RPCResult, TLError, TLObject, TLReader, types } from "../2_tl.ts";
 import { Storage, StorageMemory } from "../3_storage.ts";
 import { DC } from "../3_transport.ts";
@@ -33,9 +33,7 @@ export interface InvokeErrorHandler<C> {
   (ctx: { client: C; error: unknown; function: types.Type | functions.Function<unknown>; n: number }, next: NextFn<boolean>): MaybePromise<boolean>;
 }
 
-const d = debug("Client");
-const dAuth = debug("Client/authorize");
-const dRecv = debug("Client/receiveLoop");
+let id = 0;
 
 const getEntity = Symbol();
 export const handleMigrationError = Symbol();
@@ -225,6 +223,15 @@ export class Client<C extends Context = Context> extends ClientAbstract {
   readonly #prefixes?: string | string[];
   readonly #storeMessages: boolean;
 
+  #id: number;
+  #L: Logger;
+  #Lauthorize: Logger;
+  #LreceiveLoop: Logger;
+  #LpingLoop: Logger;
+  #Linvoke: Logger;
+  #LhandleMigrationError: Logger;
+  #L$initConncetion: Logger;
+
   /**
    * Constructs the client.
    *
@@ -259,8 +266,18 @@ export class Client<C extends Context = Context> extends ClientAbstract {
     this.#ignoreOutgoing = params?.ignoreOutgoing ?? null;
     this.#prefixes = params?.prefixes;
     this.#guaranteeUpdateDelivery = params?.guaranteeUpdateDelivery ?? false;
+    this.#id = id++;
+
+    const L = this.#L = getLogger("Client").client(this.#id);
+    this.#Lauthorize = L.branch("authorize");
+    this.#LreceiveLoop = L.branch("receiveLoop");
+    this.#LpingLoop = L.branch("pingLoop");
+    this.#Linvoke = L.branch("invoke");
+    this.#LhandleMigrationError = L.branch("[handleMigrationError]");
+    this.#L$initConncetion = L.branch("#initConnection");
 
     const c = {
+      id,
       api: this.api,
       storage: this.storage,
       messageStorage: this.messageStorage,
@@ -348,19 +365,19 @@ export class Client<C extends Context = Context> extends ClientAbstract {
         drop((async (): Promise<void> => {
           if (connectionState == "notConnected") {
             if (!this.transport?.transport.initialized) {
-              d("not reconnecting");
+              L.debug("not reconnecting");
               return;
             }
             let delay = 5;
             while (!this.connected) {
-              d("reconnecting");
+              L.debug("reconnecting");
               try {
                 await this.connect();
-                d("reconnected");
+                L.debug("reconnected");
                 drop(this.#updateManager.recoverUpdateGap("reconnect"));
                 break;
               } catch (err) {
-                d("failed to reconnect, retrying in %d: %o", delay, err);
+                L.debug(`failed to reconnect, retrying in ${delay}:`, err);
               }
               await new Promise((r) => setTimeout(r, delay * 1_000));
               if (delay < 15) {
@@ -374,7 +391,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
 
       this.invoke.use(async ({ error }, next) => {
         if (error instanceof FloodWait && error.seconds <= 10) {
-          d("sleeping for %d because of: %o", error.seconds, error);
+          L.warning("sleeping for", error.seconds, "because of:", error);
           await new Promise((r) => setTimeout(r, 1000 * error.seconds));
           return true;
         } else {
@@ -801,7 +818,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
       if (dc == null) {
         await this.storage.setDc(this.initialDc);
       }
-      d("encrypted client connected");
+      this.#L.debug("connected");
       drop(this.#receiveLoop());
       if (this.#pingLoopStarted) {
         drop(this.#pingLoop());
@@ -817,7 +834,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
       newDc += "-test";
     }
     await this.reconnect(newDc as DC);
-    d("migrated to DC%s", newDc);
+    this.#LhandleMigrationError.debug(`migrated to DC${newDc}`);
   }
 
   #connectionInited = false;
@@ -842,7 +859,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
         system_version: this.systemVersion,
       });
       this.#connectionInited = true;
-      d("connection inited");
+      this.#L$initConncetion.debug("connection inited");
     }
   }
 
@@ -893,7 +910,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
       await this.#updateManager.fetchState("authorize");
       await this.#propagateAuthorizationState(true);
       drop(this.#updateManager.recoverUpdateGap("authorize"));
-      d("already authorized");
+      this.#Lauthorize.debug("already authorized");
       return;
     } catch (err) {
       if (!(err instanceof AuthKeyUnregistered)) {
@@ -910,7 +927,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
       }
     }
 
-    dAuth("authorizing with %s", typeof params === "string" ? "bot token" : params instanceof types.auth.ExportedAuthorization ? "exported authorization" : "AuthorizeUserParams");
+    this.#Lauthorize.debug("authorizing with", typeof params === "string" ? "bot token" : params instanceof types.auth.ExportedAuthorization ? "exported authorization" : "AuthorizeUserParams");
 
     if (typeof params === "string") {
       while (true) {
@@ -929,7 +946,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
           }
         }
       }
-      dAuth("authorized as bot");
+      this.#Lauthorize.debug("authorized as bot");
       await this.#propagateAuthorizationState(true);
       await this.#updateManager.fetchState("authorize");
       return;
@@ -937,7 +954,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
 
     if (params instanceof types.auth.ExportedAuthorization) {
       await this.api.auth.importAuthorization({ id: params.id, bytes: params.bytes });
-      dAuth("authorization imported");
+      this.#Lauthorize.debug("authorization imported");
       return;
     }
 
@@ -975,7 +992,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
             }
           }
         }
-        dAuth("verification code sent");
+        this.#Lauthorize.debug("verification code sent");
 
         let err: unknown;
         code: while (true) {
@@ -988,7 +1005,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
             });
             this.#selfId = Number(auth[as](types.auth.Authorization).user.id);
             await this.storage.setAccountType("user");
-            dAuth("authorized as user");
+            this.#Lauthorize.debug("authorized as user");
             await this.#propagateAuthorizationState(true);
             await this.#updateManager.fetchState("authorize");
             return;
@@ -1018,7 +1035,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
             const auth = await this.api.auth.checkPassword({ password: input });
             this.#selfId = Number(auth[as](types.auth.Authorization).user.id);
             await this.storage.setAccountType("user");
-            dAuth("authorized as user");
+            this.#Lauthorize.debug("authorized as user");
             await this.#propagateAuthorizationState(true);
             await this.#updateManager.fetchState("authorize");
             return;
@@ -1071,7 +1088,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
             this.#sessionId,
           ));
         } catch (err) {
-          dRecv("failed to decrypt message: %o", err);
+          this.#LreceiveLoop.error("failed to decrypt message: %o", err);
           drop((async () => {
             try {
               await this.disconnect();
@@ -1090,7 +1107,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
           if (body instanceof types.Gzip_packed) {
             body = new TLReader(gunzip(body.packed_data)).readObject();
           }
-          dRecv("received %s", (typeof body === "object" && name in body) ? body[name] : body.constructor.name);
+          this.#LreceiveLoop.debug("received %s", (typeof body === "object" && name in body) ? body[name] : body.constructor.name);
           if (body instanceof types._Updates || body instanceof types._Update) {
             this.#updateManager.processUpdates(body as types.Updates | enums.Update, true);
           } else if (body instanceof types.New_session_created) {
@@ -1102,9 +1119,9 @@ export class Client<C extends Context = Context> extends ClientAbstract {
               result = new TLReader(gunzip(result.packed_data)).readObject();
             }
             if (result instanceof types.Rpc_error) {
-              dRecv("RPCResult: %d %s", result.error_code, result.error_message);
+              this.#LreceiveLoop.debug("RPCResult: %d %s", result.error_code, result.error_message);
             } else {
-              dRecv("RPCResult: %s", (typeof result === "object" && name in result) ? result[name] : result.constructor.name);
+              this.#LreceiveLoop.debug("RPCResult: %s", (typeof result === "object" && name in result) ? result[name] : result.constructor.name);
             }
             const messageId = message.body.messageId;
             const promise = this.#promises.get(messageId);
@@ -1131,7 +1148,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
               this.#promises.delete(message.body.msg_id);
             }
           } else if (message.body instanceof types.Bad_server_salt) {
-            d("server salt reassigned");
+            this.#LreceiveLoop.debug("server salt reassigned");
             this.#state.salt = message.body.new_server_salt;
             await this.storage.setServerSalt(this.#state.salt);
             const promise = this.#promises.get(message.body.bad_msg_id);
@@ -1147,10 +1164,10 @@ export class Client<C extends Context = Context> extends ClientAbstract {
         if (!this.connected) {
           break;
         } else if (err instanceof TLError) {
-          dRecv("failed to deserialize: %o", err);
+          this.#LreceiveLoop.error("failed to deserialize:", err);
           drop(this.#updateManager.recoverUpdateGap("deserialize"));
         } else {
-          dRecv("uncaught error: %o", err);
+          this.#LreceiveLoop.error("unexpected error:", err);
         }
       }
     }
@@ -1190,7 +1207,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
         if (!this.connected) {
           continue;
         }
-        d("ping loop error: %o", err);
+        this.#LpingLoop.error(err);
       }
     }
   }
@@ -1232,7 +1249,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
             this.#sessionId,
           ),
         );
-        d("invoked %s", function_[name]);
+        this.#Linvoke.debug("invoked", function_[name]);
 
         if (noWait) {
           this.#promises.set(message.id, {
