@@ -36,25 +36,25 @@ export class ConnectionTCP extends ConnectionUnframed implements ConnectionUnfra
 
   async read(p: Uint8Array) {
     this.#assertConnected();
-    const release = await this.#rMutex.acquire();
+    const unlock = await this.#rMutex.lock();
     try {
       this.#assertConnected();
       await this.#connection!.read(p);
       this.callback?.read(p.length);
     } finally {
-      release();
+      unlock();
     }
   }
 
   async write(p: Uint8Array) {
     this.#assertConnected();
-    const release = await this.#wMutex.acquire();
+    const unlock = await this.#wMutex.lock();
     try {
       this.#assertConnected();
       await this.#connection!.write(p);
       this.callback?.write(p.length);
     } finally {
-      release();
+      unlock();
     }
   }
 
