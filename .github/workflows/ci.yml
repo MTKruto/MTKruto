@@ -10,33 +10,27 @@ jobs:
   lint:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - uses: denoland/setup-deno@v1
-        with:
-          deno-version: vx.x.x
 
       - run: deno lint
 
   fmt:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - uses: denoland/setup-deno@v1
-        with:
-          deno-version: vx.x.x
 
       - run: deno fmt --check
 
   check:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - uses: denoland/setup-deno@v1
-        with:
-          deno-version: vx.x.x
 
       - run: deno check mod.ts
 
@@ -55,22 +49,18 @@ jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - uses: denoland/setup-deno@v1
-        with:
-          deno-version: vx.x.x
 
       - run: deno test --allow-env=LOG_VERBOSITY
 
   transform-browser:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - uses: denoland/setup-deno@v1
-        with:
-          deno-version: vx.x.x
 
       - uses: actions/setup-node@v3
         with:
@@ -86,11 +76,9 @@ jobs:
   transform-node:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - uses: denoland/setup-deno@v1
-        with:
-          deno-version: vx.x.x
 
       - uses: actions/setup-node@v3
         with:
@@ -121,5 +109,5 @@ jobs:
   l:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - run: test `cat $(find . -type f | grep ".ts$") | grep "console." | wc -l` -eq 15
