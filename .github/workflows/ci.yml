@@ -47,7 +47,12 @@ jobs:
       - run: deno run --allow-read https://raw.githubusercontent.com/MTKruto/tools/main/check_imports.ts
 
   test:
-    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        platform: [ubuntu-latest, macos-latest, windows-latest]
+        node-version: ["20.x"]
+
+    runs-on: ${{ matrix.platform }}
     steps:
       - uses: actions/checkout@v4
 
