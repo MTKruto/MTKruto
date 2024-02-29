@@ -22,17 +22,14 @@ export abstract class ClientAbstract {
   protected readonly initialDc: DC;
   protected transportProvider: TransportProvider;
   protected readonly cdn: boolean;
-
   protected transport?: ReturnType<TransportProvider>;
-  #dc?: DC;
+  protected stateChangeHandler?: (connected: boolean) => void;
 
   constructor(params?: ClientAbstractParams) {
     this.initialDc = params?.initialDc ?? INITIAL_DC;
-    this.transportProvider = params?.transportProvider ?? transportProviderWebSocket();
+    this.transportProvider = params?.transportProvider ?? transportProviderWebSocket;
     this.cdn = params?.cdn ?? false;
   }
-
-  protected stateChangeHandler?: (connected: boolean) => void;
 
   get dcId() {
     if (!this.transport) {
@@ -41,17 +38,21 @@ export abstract class ClientAbstract {
     return this.transport.dcId;
   }
 
-  // MaybePromise since `Client` has to deal with `Storage.set()`
-  setDc(dc: DC): MaybePromise<void> {
-    this.#dc = dc;
+  async setDc(dc: DC): Promise<void> {
+    this.transport = this.transportProvider({ dc, cdn: this.cdn });
   }
 
   get connected() {
-    return this.transport === undefined ? false : this.transport.connection.connected;
+    return !!this.transport && this.transport.connection.connected;
   }
 
   async connect() {
-    this.transport = this.transportProvider({ dc: this.#dc ?? this.initialDc, cdn: this.cdn });
+    if (!this.transport) {
+      throw new Error("DC not set. Call setDc() before connect()");
+    }
+    if (this.connected) {
+      throw new Error("Already connected");
+    }
     this.transport.connection.stateChangeHandler = this.stateChangeHandler;
     await initTgCrypto();
     await this.transport.connection.open();
@@ -72,5 +73,6 @@ export abstract class ClientAbstract {
     }
     await this.transport.transport.deinitialize();
     await this.transport.connection.close();
+    this.transport = undefined;
   }
 }
