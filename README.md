@@ -10,7 +10,7 @@ Cross-runtime JavaScript library for building Telegram clients
 
 ### Key Features
 
-- **Cross-runtime.** Runs inside browsers, Deno, and Node.js.
+- **Cross-runtime.** Runs inside browsers, Deno, Node.js, and Bun.
 - **Type-safe.** DX is enhanced with TypeScript support.
 - **Made for the Web.** Leverages Web APIs.
 - **Unopinionated.** No hidden behaviors.
