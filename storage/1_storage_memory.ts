@@ -6,12 +6,21 @@ export class StorageMemory extends Storage implements Storage {
   protected map = new Map<string, unknown>();
   protected messageMap = new CacheMap<string, unknown>(30_000);
   #id: string | null = null;
+  #sessionString?: string;
+
+  constructor(sessionString?: string) {
+    super();
+    this.#sessionString = sessionString;
+  }
 
   get isMemoryStorage() {
     return true;
   }
 
-  initialize() {
+  async initialize() {
+    if (this.#sessionString) {
+      await this.importSessionString(this.#sessionString);
+    }
   }
 
   getMap(key: readonly StorageKeyPart[]) {
