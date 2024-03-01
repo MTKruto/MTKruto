@@ -258,11 +258,14 @@ export interface GetHistoryParams {
 }
 
 export interface SetReactionsParams {
+  /** Whether to make the new reactions more notable. */
   big?: boolean;
 }
 
 export interface AddReactionParams {
+  /** Whether to make the new reaction more notable. */
   big?: boolean;
+  /** Whether to add the reaction to recent reactions. */
   addToRecents?: boolean;
 }
 
@@ -297,18 +300,27 @@ export interface SetChatMemberRightsParams {
 }
 
 export interface CreateStoryParams extends _CaptionCommon, _UploadCommon {
+  /** The story's interactive areas. */
   interactiveAreas?: StoryInteractiveArea[];
+  /** The story's privacy settings. */
   privacy?: StoryPrivacy;
+  /** The period in which the story will be active. */
   activeFor?: number;
-  from?: number;
+  /** Whether to add the story to highlights. */
   highlight?: boolean;
+  /** Whether to protect the contents of the story from copying and forwarding. */
   protectContent?: boolean;
 }
 
 export interface SearchMessagesParams {
+  /** If set, only messages sent by `from` are returned. */
   from?: ID;
+  /** A search filter to apply. */
   filter?: MessageSearchFilter;
+  /** A message identifier to start searching after. */
   after?: number;
+  /** The identifier of a message thread to search in. */
   messageThreadId?: number;
+  /** The maximum number of results to return. Must be in the range of 1-100. Defaults to 100. */
   limit?: number;
 }
