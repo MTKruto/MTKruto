@@ -1119,4 +1119,9 @@ export class MessageManager {
     }
     return messages;
   }
+
+  async setBoostsRequiredToCircumventRestrictions(chatId: ID, boosts: number) {
+    const channel = await this.#c.getInputChannel(chatId);
+    await this.#c.api.channels.setBoostsToUnblockRestrictions({ channel, boosts });
+  }
 }
