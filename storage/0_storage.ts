@@ -1,5 +1,5 @@
-import { bigIntFromBuffer, MaybePromise, rleDecode, rleEncode, sha1, UNREACHABLE, ZERO_CHANNEL_ID } from "../1_utilities.ts";
-import { AnyEntity, enums, peerToChatId, serialize, TLObject, TLReader, types } from "../2_tl.ts";
+import { base64DecodeUrlSafe, base64EncodeUrlSafe, bigIntFromBuffer, MaybePromise, rleDecode, rleEncode, sha1, UNREACHABLE, ZERO_CHANNEL_ID } from "../1_utilities.ts";
+import { AnyEntity, enums, peerToChatId, serialize, TLObject, TLReader, TLWriter, types } from "../2_tl.ts";
 import { DC } from "../3_transport.ts";
 
 // key parts
@@ -102,6 +102,27 @@ export abstract class Storage {
 
   get authKeyId() {
     return this.#authKeyId;
+  }
+
+  async exportSessionString() {
+    const [dc, authKey] = await Promise.all([this.getDc(), this.getAuthKey()]);
+    if (dc == null || authKey == null) {
+      throw new Error("Not authorized");
+    }
+    const writer = new TLWriter();
+    writer.writeString(dc);
+    writer.writeBytes(authKey);
+    const data = rleEncode(writer.buffer);
+    return base64EncodeUrlSafe(data);
+  }
+
+  async importSessionString(string: string) {
+    const data = rleDecode(base64DecodeUrlSafe(string));
+    const reader = new TLReader(data);
+    const dc = reader.readString();
+    const authKey = reader.readBytes();
+    await this.setDc(dc as DC);
+    await this.setAuthKey(authKey);
   }
 
   async getChannelAccessHash(id: number) {
