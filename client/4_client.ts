@@ -149,6 +149,8 @@ export interface Context {
   setChatMemberRights: (memberId: ID, params?: SetChatMemberRightsParams) => Promise<void>;
   /** Delete all messages sent by a specific member of the chat which the message was received from. */
   deleteChatMemberMessages: (userId: ID) => Promise<void>;
+  /** Search the messages of the chat which the message was received from. */
+  searchMessages: (query: string, params?: SearchMessagesParams) => Promise<Message[]>;
   /** Set the number of boosts required to circument the chat's default restrictions. */
   setBoostsRequiredToCircumventRestrictions: (boosts: number) => Promise<void>;
   toJSON: () => Update;
@@ -721,6 +723,10 @@ export class Client<C extends Context = Context> extends ClientAbstract {
       deleteChatMemberMessages: (userId) => {
         const { chatId } = mustGetMsg();
         return this.deleteChatMemberMessages(chatId, userId);
+      },
+      searchMessages: (query, params) => {
+        const { chatId } = mustGetMsg();
+        return this.searchMessages(chatId, query, params);
       },
       setBoostsRequiredToCircumventRestrictions: (boosts) => {
         const { chatId } = mustGetMsg();
