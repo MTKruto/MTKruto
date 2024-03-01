@@ -16484,6 +16484,74 @@ export class channels_updateEmojiStatus_ extends Function_<enums.Updates> {
   }
 }
 
+export class channels_setBoostsToUnblockRestrictions_ extends Function_<enums.Updates> {
+  static __F = Symbol() as unknown as (params: { channel: enums.InputChannel; boosts: number }) => enums.Updates;
+  channel: enums.InputChannel;
+  boosts: number;
+
+  protected get [id]() {
+    return 0xAD399CEE;
+  }
+
+  static get [name]() {
+    return "channels.setBoostsToUnblockRestrictions"
+  }
+
+  static get [paramDesc](): ParamDesc {
+    return [
+      ["channel", types._InputChannel, "InputChannel"],
+      ["boosts", "number", "int"],
+    ];
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.channel, types._InputChannel, "InputChannel"],
+      [this.boosts, "number", "int"],
+    ];
+  }
+
+  constructor(params: { channel: enums.InputChannel; boosts: number }) {
+    super();
+    this.channel = params.channel;
+    this.boosts = params.boosts;
+  }
+}
+
+export class channels_setEmojiStickers_ extends Function_<boolean> {
+  static __F = Symbol() as unknown as (params: { channel: enums.InputChannel; stickerset: enums.InputStickerSet }) => boolean;
+  channel: enums.InputChannel;
+  stickerset: enums.InputStickerSet;
+
+  protected get [id]() {
+    return 0x3CD930B7;
+  }
+
+  static get [name]() {
+    return "channels.setEmojiStickers"
+  }
+
+  static get [paramDesc](): ParamDesc {
+    return [
+      ["channel", types._InputChannel, "InputChannel"],
+      ["stickerset", types._InputStickerSet, "InputStickerSet"],
+    ];
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.channel, types._InputChannel, "InputChannel"],
+      [this.stickerset, types._InputStickerSet, "InputStickerSet"],
+    ];
+  }
+
+  constructor(params: { channel: enums.InputChannel; stickerset: enums.InputStickerSet }) {
+    super();
+    this.channel = params.channel;
+    this.stickerset = params.stickerset;
+  }
+}
+
 export class bots_sendCustomRequest_ extends Function_<enums.DataJSON> {
   static __F = Symbol() as unknown as (params: { custom_method: string; params: enums.DataJSON }) => enums.DataJSON;
   custom_method: string;
@@ -21535,6 +21603,8 @@ export const functions = {
     toggleViewForumAsMessages: channels_toggleViewForumAsMessages_,
     getChannelRecommendations: channels_getChannelRecommendations_,
     updateEmojiStatus: channels_updateEmojiStatus_,
+    setBoostsToUnblockRestrictions: channels_setBoostsToUnblockRestrictions_,
+    setEmojiStickers: channels_setEmojiStickers_,
   },
   bots: {
     sendCustomRequest: bots_sendCustomRequest_,
@@ -22161,6 +22231,8 @@ export declare namespace functions {
     type toggleViewForumAsMessages = channels_toggleViewForumAsMessages_;
     type getChannelRecommendations = channels_getChannelRecommendations_;
     type updateEmojiStatus = channels_updateEmojiStatus_;
+    type setBoostsToUnblockRestrictions = channels_setBoostsToUnblockRestrictions_;
+    type setEmojiStickers = channels_setEmojiStickers_;
   }
   namespace bots {
     type sendCustomRequest = bots_sendCustomRequest_;
