@@ -5712,9 +5712,12 @@ export class ChannelFull_ extends _ChatFull_ {
   available_reactions?: enums.ChatReactions;
   stories?: enums.PeerStories;
   wallpaper?: enums.WallPaper;
+  boosts_applied?: number;
+  boosts_unrestrict?: number;
+  emojiset?: enums.StickerSet;
 
   protected get [id]() {
-    return 0x0F2BCB6F;
+    return 0x44C054A7;
   }
 
   static get [name]() {
@@ -5776,6 +5779,9 @@ export class ChannelFull_ extends _ChatFull_ {
       ["available_reactions", _ChatReactions_, "flags.30?ChatReactions"],
       ["stories", _PeerStories_, "flags2.4?PeerStories"],
       ["wallpaper", _WallPaper_, "flags2.7?WallPaper"],
+      ["boosts_applied", "number", "flags2.8?int"],
+      ["boosts_unrestrict", "number", "flags2.9?int"],
+      ["emojiset", _StickerSet_, "flags2.10?StickerSet"],
     ];
   }
 
@@ -5834,10 +5840,13 @@ export class ChannelFull_ extends _ChatFull_ {
       [this.available_reactions ?? null, _ChatReactions_, "flags.30?ChatReactions"],
       [this.stories ?? null, _PeerStories_, "flags2.4?PeerStories"],
       [this.wallpaper ?? null, _WallPaper_, "flags2.7?WallPaper"],
+      [this.boosts_applied ?? null, "number", "flags2.8?int"],
+      [this.boosts_unrestrict ?? null, "number", "flags2.9?int"],
+      [this.emojiset ?? null, _StickerSet_, "flags2.10?StickerSet"],
     ];
   }
 
-  constructor(params: { can_view_participants?: true; can_set_username?: true; can_set_stickers?: true; hidden_prehistory?: true; can_set_location?: true; has_scheduled?: true; can_view_stats?: true; blocked?: true; can_delete_channel?: true; antispam?: true; participants_hidden?: true; translations_disabled?: true; stories_pinned_available?: true; view_forum_as_messages?: true; id: bigint; about: string; participants_count?: number; admins_count?: number; kicked_count?: number; banned_count?: number; online_count?: number; read_inbox_max_id: number; read_outbox_max_id: number; unread_count: number; chat_photo: enums.Photo; notify_settings: enums.PeerNotifySettings; exported_invite?: enums.ExportedChatInvite; bot_info: Array<enums.BotInfo>; migrated_from_chat_id?: bigint; migrated_from_max_id?: number; pinned_msg_id?: number; stickerset?: enums.StickerSet; available_min_id?: number; folder_id?: number; linked_chat_id?: bigint; location?: enums.ChannelLocation; slowmode_seconds?: number; slowmode_next_send_date?: number; stats_dc?: number; pts: number; call?: enums.InputGroupCall; ttl_period?: number; pending_suggestions?: Array<string>; groupcall_default_join_as?: enums.Peer; theme_emoticon?: string; requests_pending?: number; recent_requesters?: Array<bigint>; default_send_as?: enums.Peer; available_reactions?: enums.ChatReactions; stories?: enums.PeerStories; wallpaper?: enums.WallPaper }) {
+  constructor(params: { can_view_participants?: true; can_set_username?: true; can_set_stickers?: true; hidden_prehistory?: true; can_set_location?: true; has_scheduled?: true; can_view_stats?: true; blocked?: true; can_delete_channel?: true; antispam?: true; participants_hidden?: true; translations_disabled?: true; stories_pinned_available?: true; view_forum_as_messages?: true; id: bigint; about: string; participants_count?: number; admins_count?: number; kicked_count?: number; banned_count?: number; online_count?: number; read_inbox_max_id: number; read_outbox_max_id: number; unread_count: number; chat_photo: enums.Photo; notify_settings: enums.PeerNotifySettings; exported_invite?: enums.ExportedChatInvite; bot_info: Array<enums.BotInfo>; migrated_from_chat_id?: bigint; migrated_from_max_id?: number; pinned_msg_id?: number; stickerset?: enums.StickerSet; available_min_id?: number; folder_id?: number; linked_chat_id?: bigint; location?: enums.ChannelLocation; slowmode_seconds?: number; slowmode_next_send_date?: number; stats_dc?: number; pts: number; call?: enums.InputGroupCall; ttl_period?: number; pending_suggestions?: Array<string>; groupcall_default_join_as?: enums.Peer; theme_emoticon?: string; requests_pending?: number; recent_requesters?: Array<bigint>; default_send_as?: enums.Peer; available_reactions?: enums.ChatReactions; stories?: enums.PeerStories; wallpaper?: enums.WallPaper; boosts_applied?: number; boosts_unrestrict?: number; emojiset?: enums.StickerSet }) {
     super();
     this.can_view_participants = params.can_view_participants;
     this.can_set_username = params.can_set_username;
@@ -5890,6 +5899,9 @@ export class ChannelFull_ extends _ChatFull_ {
     this.available_reactions = params.available_reactions;
     this.stories = params.stories;
     this.wallpaper = params.wallpaper;
+    this.boosts_applied = params.boosts_applied;
+    this.boosts_unrestrict = params.boosts_unrestrict;
+    this.emojiset = params.emojiset;
   }
 }
 
@@ -6182,6 +6194,7 @@ export class Message_ extends _Message_ {
   invert_media?: true;
   id: number;
   from_id?: enums.Peer;
+  from_boosts_applied?: number;
   peer_id: enums.Peer;
   saved_peer_id?: enums.Peer;
   fwd_from?: enums.MessageFwdHeader;
@@ -6203,7 +6216,7 @@ export class Message_ extends _Message_ {
   ttl_period?: number;
 
   protected get [id]() {
-    return 0x76BEC211;
+    return 0x1E4C8A69;
   }
 
   static get [name]() {
@@ -6226,6 +6239,7 @@ export class Message_ extends _Message_ {
       ["invert_media", "true", "flags.27?true"],
       ["id", "number", "int"],
       ["from_id", _Peer_, "flags.8?Peer"],
+      ["from_boosts_applied", "number", "flags.29?int"],
       ["peer_id", _Peer_, "Peer"],
       ["saved_peer_id", _Peer_, "flags.28?Peer"],
       ["fwd_from", _MessageFwdHeader_, "flags.2?MessageFwdHeader"],
@@ -6264,6 +6278,7 @@ export class Message_ extends _Message_ {
       [this.invert_media ?? null, "true", "flags.27?true"],
       [this.id, "number", "int"],
       [this.from_id ?? null, _Peer_, "flags.8?Peer"],
+      [this.from_boosts_applied ?? null, "number", "flags.29?int"],
       [this.peer_id, _Peer_, "Peer"],
       [this.saved_peer_id ?? null, _Peer_, "flags.28?Peer"],
       [this.fwd_from ?? null, _MessageFwdHeader_, "flags.2?MessageFwdHeader"],
@@ -6286,7 +6301,7 @@ export class Message_ extends _Message_ {
     ];
   }
 
-  constructor(params: { out?: true; mentioned?: true; media_unread?: true; silent?: true; post?: true; from_scheduled?: true; legacy?: true; edit_hide?: true; pinned?: true; noforwards?: true; invert_media?: true; id: number; from_id?: enums.Peer; peer_id: enums.Peer; saved_peer_id?: enums.Peer; fwd_from?: enums.MessageFwdHeader; via_bot_id?: bigint; reply_to?: enums.MessageReplyHeader; date: number; message: string; media?: enums.MessageMedia; reply_markup?: enums.ReplyMarkup; entities?: Array<enums.MessageEntity>; views?: number; forwards?: number; replies?: enums.MessageReplies; edit_date?: number; post_author?: string; grouped_id?: bigint; reactions?: enums.MessageReactions; restriction_reason?: Array<enums.RestrictionReason>; ttl_period?: number }) {
+  constructor(params: { out?: true; mentioned?: true; media_unread?: true; silent?: true; post?: true; from_scheduled?: true; legacy?: true; edit_hide?: true; pinned?: true; noforwards?: true; invert_media?: true; id: number; from_id?: enums.Peer; from_boosts_applied?: number; peer_id: enums.Peer; saved_peer_id?: enums.Peer; fwd_from?: enums.MessageFwdHeader; via_bot_id?: bigint; reply_to?: enums.MessageReplyHeader; date: number; message: string; media?: enums.MessageMedia; reply_markup?: enums.ReplyMarkup; entities?: Array<enums.MessageEntity>; views?: number; forwards?: number; replies?: enums.MessageReplies; edit_date?: number; post_author?: string; grouped_id?: bigint; reactions?: enums.MessageReactions; restriction_reason?: Array<enums.RestrictionReason>; ttl_period?: number }) {
     super();
     this.out = params.out;
     this.mentioned = params.mentioned;
@@ -6301,6 +6316,7 @@ export class Message_ extends _Message_ {
     this.invert_media = params.invert_media;
     this.id = params.id;
     this.from_id = params.from_id;
+    this.from_boosts_applied = params.from_boosts_applied;
     this.peer_id = params.peer_id;
     this.saved_peer_id = params.saved_peer_id;
     this.fwd_from = params.fwd_from;
@@ -8440,6 +8456,35 @@ export class MessageActionGiveawayResults_ extends _MessageAction_ {
     super();
     this.winners_count = params.winners_count;
     this.unclaimed_count = params.unclaimed_count;
+  }
+}
+
+export class MessageActionBoostApply_ extends _MessageAction_ {
+  boosts: number;
+
+  protected get [id]() {
+    return 0xCC02AA6D;
+  }
+
+  static get [name]() {
+    return "messageActionBoostApply"
+  }
+
+  static get [paramDesc](): ParamDesc {
+    return [
+      ["boosts", "number", "int"],
+    ];
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.boosts, "number", "int"],
+    ];
+  }
+
+  constructor(params: { boosts: number }) {
+    super();
+    this.boosts = params.boosts;
   }
 }
 
@@ -31417,6 +31462,39 @@ export class ChannelAdminLogEventActionChangeEmojiStatus_ extends _ChannelAdminL
   }
 }
 
+export class ChannelAdminLogEventActionChangeEmojiStickerSet_ extends _ChannelAdminLogEventAction_ {
+  prev_stickerset: enums.InputStickerSet;
+  new_stickerset: enums.InputStickerSet;
+
+  protected get [id]() {
+    return 0x46D840AB;
+  }
+
+  static get [name]() {
+    return "channelAdminLogEventActionChangeEmojiStickerSet"
+  }
+
+  static get [paramDesc](): ParamDesc {
+    return [
+      ["prev_stickerset", _InputStickerSet_, "InputStickerSet"],
+      ["new_stickerset", _InputStickerSet_, "InputStickerSet"],
+    ];
+  }
+
+  protected get [params](): Params {
+    return [
+      [this.prev_stickerset, _InputStickerSet_, "InputStickerSet"],
+      [this.new_stickerset, _InputStickerSet_, "InputStickerSet"],
+    ];
+  }
+
+  constructor(params: { prev_stickerset: enums.InputStickerSet; new_stickerset: enums.InputStickerSet }) {
+    super();
+    this.prev_stickerset = params.prev_stickerset;
+    this.new_stickerset = params.new_stickerset;
+  }
+}
+
 export class ChannelAdminLogEvent_ extends _ChannelAdminLogEvent_ {
   id: bigint;
   date: number;
@@ -38208,11 +38286,11 @@ export class MessageReplyHeader_ extends _MessageReplyHeader_ {
 }
 
 export class MessageReplyStoryHeader_ extends _MessageReplyHeader_ {
-  user_id: bigint;
+  peer: enums.Peer;
   story_id: number;
 
   protected get [id]() {
-    return 0x9C98BFC1;
+    return 0x0E5AF939;
   }
 
   static get [name]() {
@@ -38221,21 +38299,21 @@ export class MessageReplyStoryHeader_ extends _MessageReplyHeader_ {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["user_id", "bigint", "long"],
+      ["peer", _Peer_, "Peer"],
       ["story_id", "number", "int"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.user_id, "bigint", "long"],
+      [this.peer, _Peer_, "Peer"],
       [this.story_id, "number", "int"],
     ];
   }
 
-  constructor(params: { user_id: bigint; story_id: number }) {
+  constructor(params: { peer: enums.Peer; story_id: number }) {
     super();
-    this.user_id = params.user_id;
+    this.peer = params.peer;
     this.story_id = params.story_id;
   }
 }
@@ -44227,6 +44305,7 @@ export class StoryItem_ extends _StoryItem_ {
   out?: true;
   id: number;
   date: number;
+  from_id?: enums.Peer;
   fwd_from?: enums.StoryFwdHeader;
   expire_date: number;
   caption?: string;
@@ -44238,7 +44317,7 @@ export class StoryItem_ extends _StoryItem_ {
   sent_reaction?: enums.Reaction;
 
   protected get [id]() {
-    return 0xAF6365A1;
+    return 0x79B26A24;
   }
 
   static get [name]() {
@@ -44259,6 +44338,7 @@ export class StoryItem_ extends _StoryItem_ {
       ["out", "true", "flags.16?true"],
       ["id", "number", "int"],
       ["date", "number", "int"],
+      ["from_id", _Peer_, "flags.18?Peer"],
       ["fwd_from", _StoryFwdHeader_, "flags.17?StoryFwdHeader"],
       ["expire_date", "number", "int"],
       ["caption", "string", "flags.0?string"],
@@ -44285,6 +44365,7 @@ export class StoryItem_ extends _StoryItem_ {
       [this.out ?? null, "true", "flags.16?true"],
       [this.id, "number", "int"],
       [this.date, "number", "int"],
+      [this.from_id ?? null, _Peer_, "flags.18?Peer"],
       [this.fwd_from ?? null, _StoryFwdHeader_, "flags.17?StoryFwdHeader"],
       [this.expire_date, "number", "int"],
       [this.caption ?? null, "string", "flags.0?string"],
@@ -44297,7 +44378,7 @@ export class StoryItem_ extends _StoryItem_ {
     ];
   }
 
-  constructor(params: { pinned?: true; public?: true; close_friends?: true; min?: true; noforwards?: true; edited?: true; contacts?: true; selected_contacts?: true; out?: true; id: number; date: number; fwd_from?: enums.StoryFwdHeader; expire_date: number; caption?: string; entities?: Array<enums.MessageEntity>; media: enums.MessageMedia; media_areas?: Array<enums.MediaArea>; privacy?: Array<enums.PrivacyRule>; views?: enums.StoryViews; sent_reaction?: enums.Reaction }) {
+  constructor(params: { pinned?: true; public?: true; close_friends?: true; min?: true; noforwards?: true; edited?: true; contacts?: true; selected_contacts?: true; out?: true; id: number; date: number; from_id?: enums.Peer; fwd_from?: enums.StoryFwdHeader; expire_date: number; caption?: string; entities?: Array<enums.MessageEntity>; media: enums.MessageMedia; media_areas?: Array<enums.MediaArea>; privacy?: Array<enums.PrivacyRule>; views?: enums.StoryViews; sent_reaction?: enums.Reaction }) {
     super();
     this.pinned = params.pinned;
     this.public = params.public;
@@ -44310,6 +44391,7 @@ export class StoryItem_ extends _StoryItem_ {
     this.out = params.out;
     this.id = params.id;
     this.date = params.date;
+    this.from_id = params.from_id;
     this.fwd_from = params.fwd_from;
     this.expire_date = params.expire_date;
     this.caption = params.caption;
@@ -44726,11 +44808,11 @@ export class InputReplyToMessage_ extends _InputReplyTo_ {
 }
 
 export class InputReplyToStory_ extends _InputReplyTo_ {
-  user_id: enums.InputUser;
+  peer: enums.InputPeer;
   story_id: number;
 
   protected get [id]() {
-    return 0x15B0F283;
+    return 0x5881323A;
   }
 
   static get [name]() {
@@ -44739,21 +44821,21 @@ export class InputReplyToStory_ extends _InputReplyTo_ {
 
   static get [paramDesc](): ParamDesc {
     return [
-      ["user_id", _InputUser_, "InputUser"],
+      ["peer", _InputPeer_, "InputPeer"],
       ["story_id", "number", "int"],
     ];
   }
 
   protected get [params](): Params {
     return [
-      [this.user_id, _InputUser_, "InputUser"],
+      [this.peer, _InputPeer_, "InputPeer"],
       [this.story_id, "number", "int"],
     ];
   }
 
-  constructor(params: { user_id: enums.InputUser; story_id: number }) {
+  constructor(params: { peer: enums.InputPeer; story_id: number }) {
     super();
-    this.user_id = params.user_id;
+    this.peer = params.peer;
     this.story_id = params.story_id;
   }
 }
@@ -46116,9 +46198,10 @@ export class help_PeerColorOption_ extends _help_PeerColorOption_ {
   colors?: enums.help.PeerColorSet;
   dark_colors?: enums.help.PeerColorSet;
   channel_min_level?: number;
+  group_min_level?: number;
 
   protected get [id]() {
-    return 0xEF8430AB;
+    return 0xADEC6EBE;
   }
 
   static get [name]() {
@@ -46133,6 +46216,7 @@ export class help_PeerColorOption_ extends _help_PeerColorOption_ {
       ["colors", _help_PeerColorSet_, "flags.1?help.PeerColorSet"],
       ["dark_colors", _help_PeerColorSet_, "flags.2?help.PeerColorSet"],
       ["channel_min_level", "number", "flags.3?int"],
+      ["group_min_level", "number", "flags.4?int"],
     ];
   }
 
@@ -46144,16 +46228,18 @@ export class help_PeerColorOption_ extends _help_PeerColorOption_ {
       [this.colors ?? null, _help_PeerColorSet_, "flags.1?help.PeerColorSet"],
       [this.dark_colors ?? null, _help_PeerColorSet_, "flags.2?help.PeerColorSet"],
       [this.channel_min_level ?? null, "number", "flags.3?int"],
+      [this.group_min_level ?? null, "number", "flags.4?int"],
     ];
   }
 
-  constructor(params: { hidden?: true; color_id: number; colors?: enums.help.PeerColorSet; dark_colors?: enums.help.PeerColorSet; channel_min_level?: number }) {
+  constructor(params: { hidden?: true; color_id: number; colors?: enums.help.PeerColorSet; dark_colors?: enums.help.PeerColorSet; channel_min_level?: number; group_min_level?: number }) {
     super();
     this.hidden = params.hidden;
     this.color_id = params.color_id;
     this.colors = params.colors;
     this.dark_colors = params.dark_colors;
     this.channel_min_level = params.channel_min_level;
+    this.group_min_level = params.group_min_level;
   }
 }
 
@@ -47273,6 +47359,7 @@ export const types = {
   MessageActionGiftCode: MessageActionGiftCode_,
   MessageActionGiveawayLaunch: MessageActionGiveawayLaunch_,
   MessageActionGiveawayResults: MessageActionGiveawayResults_,
+  MessageActionBoostApply: MessageActionBoostApply_,
   Dialog: Dialog_,
   DialogFolder: DialogFolder_,
   PhotoEmpty: PhotoEmpty_,
@@ -47818,6 +47905,7 @@ export const types = {
   ChannelAdminLogEventActionChangeProfilePeerColor: ChannelAdminLogEventActionChangeProfilePeerColor_,
   ChannelAdminLogEventActionChangeWallpaper: ChannelAdminLogEventActionChangeWallpaper_,
   ChannelAdminLogEventActionChangeEmojiStatus: ChannelAdminLogEventActionChangeEmojiStatus_,
+  ChannelAdminLogEventActionChangeEmojiStickerSet: ChannelAdminLogEventActionChangeEmojiStickerSet_,
   ChannelAdminLogEvent: ChannelAdminLogEvent_,
   ChannelAdminLogEventsFilter: ChannelAdminLogEventsFilter_,
   PopularContact: PopularContact_,
@@ -49021,6 +49109,7 @@ export declare namespace types {
   type MessageActionGiftCode = MessageActionGiftCode_;
   type MessageActionGiveawayLaunch = MessageActionGiveawayLaunch_;
   type MessageActionGiveawayResults = MessageActionGiveawayResults_;
+  type MessageActionBoostApply = MessageActionBoostApply_;
   type Dialog = Dialog_;
   type DialogFolder = DialogFolder_;
   type PhotoEmpty = PhotoEmpty_;
@@ -49566,6 +49655,7 @@ export declare namespace types {
   type ChannelAdminLogEventActionChangeProfilePeerColor = ChannelAdminLogEventActionChangeProfilePeerColor_;
   type ChannelAdminLogEventActionChangeWallpaper = ChannelAdminLogEventActionChangeWallpaper_;
   type ChannelAdminLogEventActionChangeEmojiStatus = ChannelAdminLogEventActionChangeEmojiStatus_;
+  type ChannelAdminLogEventActionChangeEmojiStickerSet = ChannelAdminLogEventActionChangeEmojiStickerSet_;
   type ChannelAdminLogEvent = ChannelAdminLogEvent_;
   type ChannelAdminLogEventsFilter = ChannelAdminLogEventsFilter_;
   type PopularContact = PopularContact_;
@@ -50246,7 +50336,7 @@ export const map = new Map<number, TLObjectConstructor>([
   [0x0AADFC8F, Channel_],
   [0x17D493D5, ChannelForbidden_],
   [0xC9D31138, ChatFull_],
-  [0x0F2BCB6F, ChannelFull_],
+  [0x44C054A7, ChannelFull_],
   [0xC02D4007, ChatParticipant_],
   [0xE46BCEE4, ChatParticipantCreator_],
   [0xA0933F5B, ChatParticipantAdmin_],
@@ -50255,7 +50345,7 @@ export const map = new Map<number, TLObjectConstructor>([
   [0x37C1011C, ChatPhotoEmpty_],
   [0x1C6E1C11, ChatPhoto_],
   [0x90A6CA84, MessageEmpty_],
-  [0x76BEC211, Message_],
+  [0x1E4C8A69, Message_],
   [0x2B085862, MessageService_],
   [0x3DED6320, MessageMediaEmpty_],
   [0x695150D7, MessageMediaPhoto_],
@@ -50314,6 +50404,7 @@ export const map = new Map<number, TLObjectConstructor>([
   [0x678C2E09, MessageActionGiftCode_],
   [0x332BA9ED, MessageActionGiveawayLaunch_],
   [0x2A9FADC5, MessageActionGiveawayResults_],
+  [0xCC02AA6D, MessageActionBoostApply_],
   [0xD58A08C6, Dialog_],
   [0x71BD134C, DialogFolder_],
   [0x2331B22D, PhotoEmpty_],
@@ -50962,6 +51053,7 @@ export const map = new Map<number, TLObjectConstructor>([
   [0x5E477B25, ChannelAdminLogEventActionChangeProfilePeerColor_],
   [0x31BB5D52, ChannelAdminLogEventActionChangeWallpaper_],
   [0x3EA9FEB1, ChannelAdminLogEventActionChangeEmojiStatus_],
+  [0x46D840AB, ChannelAdminLogEventActionChangeEmojiStickerSet_],
   [0x1FAD68CD, ChannelAdminLogEvent_],
   [0xED8AF74D, channels_AdminLogResults_],
   [0xEA107AE4, ChannelAdminLogEventsFilter_],
@@ -51147,7 +51239,7 @@ export const map = new Map<number, TLObjectConstructor>([
   [0xB6C4F543, messages_MessageViews_],
   [0xA6341782, messages_DiscussionMessage_],
   [0xAFBC09DB, MessageReplyHeader_],
-  [0x9C98BFC1, MessageReplyStoryHeader_],
+  [0x0E5AF939, MessageReplyStoryHeader_],
   [0x83D60FC2, MessageReplies_],
   [0xE8FD8014, PeerBlocked_],
   [0x7FE91C14, stats_MessageStats_],
@@ -51317,7 +51409,7 @@ export const map = new Map<number, TLObjectConstructor>([
   [0x8D595CD6, StoryViews_],
   [0x51E6EE4F, StoryItemDeleted_],
   [0xFFADC913, StoryItemSkipped_],
-  [0xAF6365A1, StoryItem_],
+  [0x79B26A24, StoryItem_],
   [0x1158FE3E, stories_AllStoriesNotModified_],
   [0x6EFC5E81, stories_AllStories_],
   [0x5DD8C3C8, stories_Stories_],
@@ -51327,7 +51419,7 @@ export const map = new Map<number, TLObjectConstructor>([
   [0x59D78FC5, stories_StoryViewsList_],
   [0xDE9EED1D, stories_StoryViews_],
   [0x22C0F6D5, InputReplyToMessage_],
-  [0x15B0F283, InputReplyToStory_],
+  [0x5881323A, InputReplyToStory_],
   [0x3FC9053B, ExportedStoryLink_],
   [0x712E27FD, StoriesStealthMode_],
   [0x03D1EA4E, MediaAreaCoordinates_],
@@ -51360,7 +51452,7 @@ export const map = new Map<number, TLObjectConstructor>([
   [0xB54B5ACF, PeerColor_],
   [0x26219A58, help_PeerColorSet_],
   [0x767D61EB, help_PeerColorProfileSet_],
-  [0xEF8430AB, help_PeerColorOption_],
+  [0xADEC6EBE, help_PeerColorOption_],
   [0x2BA1F5CE, help_PeerColorsNotModified_],
   [0x00F8ED08, help_PeerColors_],
   [0x6090D6D5, StoryReaction_],
@@ -51425,7 +51517,7 @@ export declare namespace enums {
   type ChatPhoto = types.ChatPhotoEmpty | types.ChatPhoto;
   type Message = types.MessageEmpty | types.Message | types.MessageService;
   type MessageMedia = types.MessageMediaEmpty | types.MessageMediaPhoto | types.MessageMediaGeo | types.MessageMediaContact | types.MessageMediaUnsupported | types.MessageMediaDocument | types.MessageMediaWebPage | types.MessageMediaVenue | types.MessageMediaGame | types.MessageMediaInvoice | types.MessageMediaGeoLive | types.MessageMediaPoll | types.MessageMediaDice | types.MessageMediaStory | types.MessageMediaGiveaway | types.MessageMediaGiveawayResults;
-  type MessageAction = types.MessageActionEmpty | types.MessageActionChatCreate | types.MessageActionChatEditTitle | types.MessageActionChatEditPhoto | types.MessageActionChatDeletePhoto | types.MessageActionChatAddUser | types.MessageActionChatDeleteUser | types.MessageActionChatJoinedByLink | types.MessageActionChannelCreate | types.MessageActionChatMigrateTo | types.MessageActionChannelMigrateFrom | types.MessageActionPinMessage | types.MessageActionHistoryClear | types.MessageActionGameScore | types.MessageActionPaymentSentMe | types.MessageActionPaymentSent | types.MessageActionPhoneCall | types.MessageActionScreenshotTaken | types.MessageActionCustomAction | types.MessageActionBotAllowed | types.MessageActionSecureValuesSentMe | types.MessageActionSecureValuesSent | types.MessageActionContactSignUp | types.MessageActionGeoProximityReached | types.MessageActionGroupCall | types.MessageActionInviteToGroupCall | types.MessageActionSetMessagesTTL | types.MessageActionGroupCallScheduled | types.MessageActionSetChatTheme | types.MessageActionChatJoinedByRequest | types.MessageActionWebViewDataSentMe | types.MessageActionWebViewDataSent | types.MessageActionGiftPremium | types.MessageActionTopicCreate | types.MessageActionTopicEdit | types.MessageActionSuggestProfilePhoto | types.MessageActionRequestedPeer | types.MessageActionSetChatWallPaper | types.MessageActionGiftCode | types.MessageActionGiveawayLaunch | types.MessageActionGiveawayResults;
+  type MessageAction = types.MessageActionEmpty | types.MessageActionChatCreate | types.MessageActionChatEditTitle | types.MessageActionChatEditPhoto | types.MessageActionChatDeletePhoto | types.MessageActionChatAddUser | types.MessageActionChatDeleteUser | types.MessageActionChatJoinedByLink | types.MessageActionChannelCreate | types.MessageActionChatMigrateTo | types.MessageActionChannelMigrateFrom | types.MessageActionPinMessage | types.MessageActionHistoryClear | types.MessageActionGameScore | types.MessageActionPaymentSentMe | types.MessageActionPaymentSent | types.MessageActionPhoneCall | types.MessageActionScreenshotTaken | types.MessageActionCustomAction | types.MessageActionBotAllowed | types.MessageActionSecureValuesSentMe | types.MessageActionSecureValuesSent | types.MessageActionContactSignUp | types.MessageActionGeoProximityReached | types.MessageActionGroupCall | types.MessageActionInviteToGroupCall | types.MessageActionSetMessagesTTL | types.MessageActionGroupCallScheduled | types.MessageActionSetChatTheme | types.MessageActionChatJoinedByRequest | types.MessageActionWebViewDataSentMe | types.MessageActionWebViewDataSent | types.MessageActionGiftPremium | types.MessageActionTopicCreate | types.MessageActionTopicEdit | types.MessageActionSuggestProfilePhoto | types.MessageActionRequestedPeer | types.MessageActionSetChatWallPaper | types.MessageActionGiftCode | types.MessageActionGiveawayLaunch | types.MessageActionGiveawayResults | types.MessageActionBoostApply;
   type Dialog = types.Dialog | types.DialogFolder;
   type Photo = types.PhotoEmpty | types.Photo;
   type PhotoSize = types.PhotoSizeEmpty | types.PhotoSize | types.PhotoCachedSize | types.PhotoStrippedSize | types.PhotoSizeProgressive | types.PhotoPathSize;
@@ -51523,7 +51615,7 @@ export declare namespace enums {
   type LangPackString = types.LangPackString | types.LangPackStringPluralized | types.LangPackStringDeleted;
   type LangPackDifference = types.LangPackDifference;
   type LangPackLanguage = types.LangPackLanguage;
-  type ChannelAdminLogEventAction = types.ChannelAdminLogEventActionChangeTitle | types.ChannelAdminLogEventActionChangeAbout | types.ChannelAdminLogEventActionChangeUsername | types.ChannelAdminLogEventActionChangePhoto | types.ChannelAdminLogEventActionToggleInvites | types.ChannelAdminLogEventActionToggleSignatures | types.ChannelAdminLogEventActionUpdatePinned | types.ChannelAdminLogEventActionEditMessage | types.ChannelAdminLogEventActionDeleteMessage | types.ChannelAdminLogEventActionParticipantJoin | types.ChannelAdminLogEventActionParticipantLeave | types.ChannelAdminLogEventActionParticipantInvite | types.ChannelAdminLogEventActionParticipantToggleBan | types.ChannelAdminLogEventActionParticipantToggleAdmin | types.ChannelAdminLogEventActionChangeStickerSet | types.ChannelAdminLogEventActionTogglePreHistoryHidden | types.ChannelAdminLogEventActionDefaultBannedRights | types.ChannelAdminLogEventActionStopPoll | types.ChannelAdminLogEventActionChangeLinkedChat | types.ChannelAdminLogEventActionChangeLocation | types.ChannelAdminLogEventActionToggleSlowMode | types.ChannelAdminLogEventActionStartGroupCall | types.ChannelAdminLogEventActionDiscardGroupCall | types.ChannelAdminLogEventActionParticipantMute | types.ChannelAdminLogEventActionParticipantUnmute | types.ChannelAdminLogEventActionToggleGroupCallSetting | types.ChannelAdminLogEventActionParticipantJoinByInvite | types.ChannelAdminLogEventActionExportedInviteDelete | types.ChannelAdminLogEventActionExportedInviteRevoke | types.ChannelAdminLogEventActionExportedInviteEdit | types.ChannelAdminLogEventActionParticipantVolume | types.ChannelAdminLogEventActionChangeHistoryTTL | types.ChannelAdminLogEventActionParticipantJoinByRequest | types.ChannelAdminLogEventActionToggleNoForwards | types.ChannelAdminLogEventActionSendMessage | types.ChannelAdminLogEventActionChangeAvailableReactions | types.ChannelAdminLogEventActionChangeUsernames | types.ChannelAdminLogEventActionToggleForum | types.ChannelAdminLogEventActionCreateTopic | types.ChannelAdminLogEventActionEditTopic | types.ChannelAdminLogEventActionDeleteTopic | types.ChannelAdminLogEventActionPinTopic | types.ChannelAdminLogEventActionToggleAntiSpam | types.ChannelAdminLogEventActionChangePeerColor | types.ChannelAdminLogEventActionChangeProfilePeerColor | types.ChannelAdminLogEventActionChangeWallpaper | types.ChannelAdminLogEventActionChangeEmojiStatus;
+  type ChannelAdminLogEventAction = types.ChannelAdminLogEventActionChangeTitle | types.ChannelAdminLogEventActionChangeAbout | types.ChannelAdminLogEventActionChangeUsername | types.ChannelAdminLogEventActionChangePhoto | types.ChannelAdminLogEventActionToggleInvites | types.ChannelAdminLogEventActionToggleSignatures | types.ChannelAdminLogEventActionUpdatePinned | types.ChannelAdminLogEventActionEditMessage | types.ChannelAdminLogEventActionDeleteMessage | types.ChannelAdminLogEventActionParticipantJoin | types.ChannelAdminLogEventActionParticipantLeave | types.ChannelAdminLogEventActionParticipantInvite | types.ChannelAdminLogEventActionParticipantToggleBan | types.ChannelAdminLogEventActionParticipantToggleAdmin | types.ChannelAdminLogEventActionChangeStickerSet | types.ChannelAdminLogEventActionTogglePreHistoryHidden | types.ChannelAdminLogEventActionDefaultBannedRights | types.ChannelAdminLogEventActionStopPoll | types.ChannelAdminLogEventActionChangeLinkedChat | types.ChannelAdminLogEventActionChangeLocation | types.ChannelAdminLogEventActionToggleSlowMode | types.ChannelAdminLogEventActionStartGroupCall | types.ChannelAdminLogEventActionDiscardGroupCall | types.ChannelAdminLogEventActionParticipantMute | types.ChannelAdminLogEventActionParticipantUnmute | types.ChannelAdminLogEventActionToggleGroupCallSetting | types.ChannelAdminLogEventActionParticipantJoinByInvite | types.ChannelAdminLogEventActionExportedInviteDelete | types.ChannelAdminLogEventActionExportedInviteRevoke | types.ChannelAdminLogEventActionExportedInviteEdit | types.ChannelAdminLogEventActionParticipantVolume | types.ChannelAdminLogEventActionChangeHistoryTTL | types.ChannelAdminLogEventActionParticipantJoinByRequest | types.ChannelAdminLogEventActionToggleNoForwards | types.ChannelAdminLogEventActionSendMessage | types.ChannelAdminLogEventActionChangeAvailableReactions | types.ChannelAdminLogEventActionChangeUsernames | types.ChannelAdminLogEventActionToggleForum | types.ChannelAdminLogEventActionCreateTopic | types.ChannelAdminLogEventActionEditTopic | types.ChannelAdminLogEventActionDeleteTopic | types.ChannelAdminLogEventActionPinTopic | types.ChannelAdminLogEventActionToggleAntiSpam | types.ChannelAdminLogEventActionChangePeerColor | types.ChannelAdminLogEventActionChangeProfilePeerColor | types.ChannelAdminLogEventActionChangeWallpaper | types.ChannelAdminLogEventActionChangeEmojiStatus | types.ChannelAdminLogEventActionChangeEmojiStickerSet;
   type ChannelAdminLogEvent = types.ChannelAdminLogEvent;
   type ChannelAdminLogEventsFilter = types.ChannelAdminLogEventsFilter;
   type PopularContact = types.PopularContact;
