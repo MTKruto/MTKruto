@@ -6,11 +6,11 @@ export class StorageMemory extends Storage implements Storage {
   protected map = new Map<string, unknown>();
   protected messageMap = new CacheMap<string, unknown>(30_000);
   #id: string | null = null;
-  #sessionString?: string;
+  #authString?: string;
 
-  constructor(sessionString?: string) {
+  constructor(authString?: string) {
     super();
-    this.#sessionString = sessionString;
+    this.#authString = authString;
   }
 
   get isMemoryStorage() {
@@ -18,8 +18,8 @@ export class StorageMemory extends Storage implements Storage {
   }
 
   async initialize() {
-    if (this.#sessionString) {
-      await this.importSessionString(this.#sessionString);
+    if (this.#authString) {
+      await this.importAuthString(this.#authString);
     }
   }
 

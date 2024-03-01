@@ -104,7 +104,7 @@ export abstract class Storage {
     return this.#authKeyId;
   }
 
-  async exportSessionString() {
+  async exportAuthString() {
     const [dc, authKey] = await Promise.all([this.getDc(), this.getAuthKey()]);
     if (dc == null || authKey == null) {
       throw new Error("Not authorized");
@@ -116,7 +116,7 @@ export abstract class Storage {
     return base64EncodeUrlSafe(data);
   }
 
-  async importSessionString(string: string) {
+  async importAuthString(string: string) {
     const data = rleDecode(base64DecodeUrlSafe(string));
     const reader = new TLReader(data);
     const dc = reader.readString();

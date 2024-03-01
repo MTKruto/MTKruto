@@ -1344,13 +1344,13 @@ export class Client<C extends Context = Context> extends ClientAbstract {
     return this.invoke(function_, true);
   }
 
-  exportSessionString(): Promise<string> {
-    return this.storage.exportSessionString();
+  exportAuthString(): Promise<string> {
+    return this.storage.exportAuthString();
   }
 
-  async importSessionString(sessionString: string): Promise<void> {
+  async importAuthString(authString: string): Promise<void> {
     await this.#initStorage();
-    await this.storage.importSessionString(sessionString);
+    await this.storage.importAuthString(authString);
   }
 
   async #getUserAccessHash(userId: bigint) {
