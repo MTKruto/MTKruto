@@ -16,7 +16,7 @@ Cross-runtime JavaScript library for building Telegram clients
 - **Unopinionated.** No hidden behaviors.
 - **Extensible.** Highly customizable.
 
-> Note: MTKruto has not reached version 1.0.0 yet. We highly recommend not to use it in production.
+> Note: MTKruto has not reached version 1.0.0 yet. While it can run in production, we currently do not recommend depending on it for critical projects.
 
 ## Get Started
 
@@ -60,6 +60,18 @@ const pong = await client.api.ping({ ping_id: getRandomId() });
 console.debug(pong);
 ```
 
+### Bun
+
+```ts
+import { Client, getRandomId } from "@mtkruto/mtkruto"; // bunx jsr i @mtkruto/mtkruto
+
+const client = new Client();
+await client.connect();
+
+const pong = await client.api.ping({ ping_id: getRandomId() });
+console.debug(pong);
+```
+
 ## License
 
-MTKruto is made open-source under the GNU Lesser General Public License version 3, or at your option, any later version. You are bound by the terms and conditions of this license. Refer to the [LICENSE](./LICENSE) file for more.
+MTKruto is made open-source under the GNU Lesser General Public License version 3, or at your option, any later version. Refer to [LICENSE](./LICENSE) for more.
