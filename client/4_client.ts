@@ -149,6 +149,8 @@ export interface Context {
   setChatMemberRights: (memberId: ID, params?: SetChatMemberRightsParams) => Promise<void>;
   /** Delete all messages sent by a specific member of the chat which the message was received from. */
   deleteChatMemberMessages: (userId: ID) => Promise<void>;
+  /** Set the number of boosts required to circument the chat's default restrictions. */
+  setBoostsRequiredToCircumventRestrictions: (boosts: number) => Promise<void>;
   toJSON: () => Update;
 }
 
@@ -719,6 +721,10 @@ export class Client<C extends Context = Context> extends ClientAbstract {
       deleteChatMemberMessages: (userId) => {
         const { chatId } = mustGetMsg();
         return this.deleteChatMemberMessages(chatId, userId);
+      },
+      setBoostsRequiredToCircumventRestrictions: (boosts) => {
+        const { chatId } = mustGetMsg();
+        return this.setBoostsRequiredToCircumventRestrictions(chatId, boosts);
       },
     };
 
@@ -2449,5 +2455,16 @@ export class Client<C extends Context = Context> extends ClientAbstract {
    */
   async searchMessages(chatId: ID, query: string, params?: SearchMessagesParams): Promise<Message[]> {
     return await this.#messageManager.searchMessages(chatId, query, params);
+  }
+
+  /**
+   * Set the number of boosts required to circument a chat's default restrictions.
+   *
+   * @method ch
+   * @param chatId The identifier of the chat.
+   * @param boosts The number of boosts required to circumvent its restrictions.
+   */
+  async setBoostsRequiredToCircumventRestrictions(chatId: ID, boosts: number): Promise<void> {
+    await this.#messageManager.setBoostsRequiredToCircumventRestrictions(chatId, boosts);
   }
 }
