@@ -2450,4 +2450,14 @@ export class Client<C extends Context = Context> extends ClientAbstract {
   async searchMessages(chatId: ID, query: string, params?: SearchMessagesParams): Promise<Message[]> {
     return await this.#messageManager.searchMessages(chatId, query, params);
   }
+
+  /**
+   * Set the number of boosts required to circument a chat's default restrictions.
+   *
+   * @param chatId The identifier of the chat.
+   * @param boosts The number of boosts required to circumvent its restrictions.
+   */
+  async setBoostsRequiredToCircumventRestrictions(chatId: ID, boosts: number): Promise<void> {
+    await this.#messageManager.setBoostsRequiredToCircumventRestrictions(chatId, boosts);
+  }
 }
