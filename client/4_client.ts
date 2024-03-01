@@ -2460,6 +2460,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
   /**
    * Set the number of boosts required to circument a chat's default restrictions.
    *
+   * @method ch
    * @param chatId The identifier of the chat.
    * @param boosts The number of boosts required to circumvent its restrictions.
    */
