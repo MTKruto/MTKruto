@@ -225,7 +225,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
   readonly #autoStart: boolean;
   readonly #ignoreOutgoing: boolean | null;
   readonly #prefixes?: string | string[];
-  readonly #storeMessages: boolean;
+  #storeMessages: boolean;
 
   #id: number;
   #L: Logger;
@@ -239,20 +239,21 @@ export class Client<C extends Context = Context> extends ClientAbstract {
   /**
    * Constructs the client.
    *
-   * @param storage The storage provider to use. Defaults to memory storage.
+   * @param storage The storage provider to use. Defaults to memory storage. Passing a string constructs a memory storage with the string being the string session.
    * @param apiId App's API ID from [my.telegram.org](https://my.telegram.org/apps). Defaults to 0 (unset).
    * @param apiHash App's API hash from [my.telegram.org/apps](https://my.telegram.org/apps). Defaults to empty string (unset).
    */
   constructor(
-    storage?: Storage | null,
+    storage?: Storage | string | null,
     public readonly apiId: number | null = 0,
     public readonly apiHash: string | null = "",
     params?: ClientParams,
   ) {
     super(params);
 
-    this.storage = storage ?? new StorageMemory();
-    if (!(this.#storeMessages = params?.storeMessages ?? false)) {
+    this.storage = typeof storage === "string" ? new StorageMemory(storage) : storage ?? new StorageMemory();
+    this.#storeMessages = params?.storeMessages ?? false;
+    if (!this.#storeMessages) {
       this.messageStorage = new StorageMemory();
     } else {
       this.messageStorage = this.storage;
