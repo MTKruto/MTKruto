@@ -1344,6 +1344,15 @@ export class Client<C extends Context = Context> extends ClientAbstract {
     return this.invoke(function_, true);
   }
 
+  exportSessionString(): Promise<string> {
+    return this.storage.exportSessionString();
+  }
+
+  async importSessionString(sessionString: string): Promise<void> {
+    await this.#initStorage();
+    await this.storage.importSessionString(sessionString);
+  }
+
   async #getUserAccessHash(userId: bigint) {
     const users = await this.api.users.getUsers({ id: [new types.InputUser({ user_id: userId, access_hash: 0n })] });
     const user = users[0]?.[as](types.User);
