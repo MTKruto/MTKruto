@@ -157,6 +157,12 @@ export interface Context {
   createInviteLink: (params?: CreateInviteLinkParams) => Promise<InviteLink>;
   /** Get the invite links that were created for the chat which the message was received from. */
   getCreatedInviteLinks: (params?: GetCreatedInviteLinksParams) => Promise<InviteLink[]>;
+  /** Leave the chat which the message was received from. */
+  leave: () => Promise<void>;
+  /** Block the user who sent the message. User-only. */
+  block: () => Promise<void>;
+  /** Unblock the user who sent the message. */
+  unblock: () => Promise<void>;
   toJSON: () => Update;
 }
 
@@ -473,6 +479,17 @@ export class Client<C extends Context = Context> extends ClientAbstract {
         UNREACHABLE();
       }
     };
+    const mustGetUserId = () => {
+      if (msg?.from) {
+        return msg.from.id;
+      } else if ("callbackQuery" in update) {
+        return update.callbackQuery.from.id;
+      } else if ("chosenInlineResult" in update) {
+        return update.chosenInlineResult.from.id;
+      } else {
+        UNREACHABLE();
+      }
+    };
     const mustGetInlineMsgId = () => {
       if ("chosenInlineResult" in update) {
         if (update.chosenInlineResult.inlineMessageId) {
@@ -745,6 +762,16 @@ export class Client<C extends Context = Context> extends ClientAbstract {
       getCreatedInviteLinks: (params) => {
         const { chatId } = mustGetMsg();
         return this.getCreatedInviteLinks(chatId, params);
+      },
+      leave: () => {
+        const { chatId } = mustGetMsg();
+        return this.leaveChat(chatId);
+      },
+      block: () => {
+        return this.blockUser(mustGetUserId());
+      },
+      unblock: () => {
+        return this.unblockUser(mustGetUserId());
       },
     };
 
@@ -2538,5 +2565,45 @@ export class Client<C extends Context = Context> extends ClientAbstract {
    */
   async getCreatedInviteLinks(chatId: ID, params?: GetCreatedInviteLinksParams): Promise<InviteLink[]> {
     return await this.#messageManager.getCreatedInviteLinks(chatId, params);
+  }
+
+  /**
+   * Join a chat. User-only.
+   *
+   * @method ch
+   * @param chatId The identifier of the chat to join.
+   */
+  async joinChat(chatId: ID): Promise<void> {
+    await this.#messageManager.joinChat(chatId);
+  }
+
+  /**
+   * Leave a chat.
+   *
+   * @method ch
+   * @param chatId The identifier of the chat to leave.
+   */
+  async leaveChat(chatId: ID): Promise<void> {
+    await this.#messageManager.leaveChat(chatId);
+  }
+
+  /**
+   * Block a user. User-only.
+   *
+   * @method mc
+   * @param userId The identifier of the user to block.
+   */
+  async blockUser(userId: ID): Promise<void> {
+    await this.#messageManager.blockUser(userId);
+  }
+
+  /**
+   * Unblock a user. User-only.
+   *
+   * @method mc
+   * @param userId The identifier of the user to unblock.
+   */
+  async unblockUser(userId: ID): Promise<void> {
+    await this.#messageManager.unblockUser(userId);
   }
 }

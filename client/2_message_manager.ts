@@ -1149,4 +1149,49 @@ export class MessageManager {
     });
     return await Promise.all(invites.map((v) => v[as](types.ChatInviteExported)).map((v) => constructInviteLink(v, this.#c.getEntity)));
   }
+
+  async joinChat(chatId: ID) {
+    await this.#c.storage.assertUser("joinChat");
+    const peer = await this.#c.getInputPeer(chatId);
+    if (peer instanceof types.InputPeerUser) {
+      throw new Error("joinChat: cannot join private chats");
+    } else if (peer instanceof types.InputPeerChannel) {
+      await this.#c.api.channels.joinChannel({ channel: new types.InputChannel(peer) });
+    } else if (peer instanceof types.InputPeerChat) {
+      await this.#c.api.messages.addChatUser({ chat_id: peer.chat_id, user_id: new types.InputUserSelf(), fwd_limit: 0 }); // TODO: use potential high-level method for adding participants to chats
+    } else {
+      UNREACHABLE();
+    }
+  }
+
+  async leaveChat(chatId: ID) {
+    const peer = await this.#c.getInputPeer(chatId);
+    if (peer instanceof types.InputPeerUser) {
+      throw new Error("leaveChat: cannot leave private chats");
+    } else if (peer instanceof types.InputPeerChannel) {
+      await this.#c.api.channels.leaveChannel({ channel: new types.InputChannel(peer) });
+    } else if (peer instanceof types.InputPeerChat) {
+      await this.#c.api.messages.deleteChatUser({ chat_id: peer.chat_id, user_id: new types.InputUserSelf() }); // TODO: use potential high-level method for adding participants to chats
+    } else {
+      UNREACHABLE();
+    }
+  }
+
+  async blockUser(userId: ID) {
+    await this.#c.storage.assertUser("blockUser");
+    const id = await this.#c.getInputPeer(userId);
+    if (!(id instanceof types.User)) {
+      throw new Error("blockUser: only users can be blocked or unblocked");
+    }
+    await this.#c.api.contacts.block({ id });
+  }
+
+  async unblockUser(userId: ID) {
+    await this.#c.storage.assertUser("unblockUser");
+    const id = await this.#c.getInputPeer(userId);
+    if (!(id instanceof types.User)) {
+      throw new Error("unblockUser: only users can be blocked or unblocked");
+    }
+    await this.#c.api.contacts.unblock({ id });
+  }
 }
