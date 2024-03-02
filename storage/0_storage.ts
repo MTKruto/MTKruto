@@ -77,7 +77,7 @@ export abstract class Storage {
     await this.set(K.auth.dc(), dc);
   }
 
-  getDc(): Promise<DC | null> {
+  getDc(): MaybePromise<DC | null> {
     return this.get<DC>(K.auth.dc());
   }
 
@@ -104,7 +104,7 @@ export abstract class Storage {
     return this.#authKeyId;
   }
 
-  async exportAuthString(): string {
+  async exportAuthString(): Promise<string> {
     const [dc, authKey] = await Promise.all([this.getDc(), this.getAuthKey()]);
     if (dc == null || authKey == null) {
       throw new Error("Not authorized");
@@ -205,7 +205,7 @@ export abstract class Storage {
     await Promise.all(maybePromises.filter((v) => v instanceof Promise));
   }
 
-  getMessageChat(messageId: number): Promise<number | null> {
+  getMessageChat(messageId: number): MaybePromise<number | null> {
     return this.get<number>(K.messages.messageRef(messageId));
   }
 
@@ -404,7 +404,7 @@ export abstract class Storage {
     await Promise.all(maybePromises.filter((v) => v instanceof Promise));
   }
 
-  async getFirstUpdate(boxId: bigint): Promise<[StorageKeyPart[], enums.Update]> {
+  async getFirstUpdate(boxId: bigint): Promise<[readonly StorageKeyPart[], enums.Update] | null> {
     for await (const [key, update] of await this.getMany<Uint8Array>({ prefix: K.updates.updates(boxId) }, { limit: 1 })) {
       return [key, await this.getTlObject(update).then((v) => v as enums.Update)];
     }
