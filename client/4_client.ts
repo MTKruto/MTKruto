@@ -155,7 +155,10 @@ export interface Context {
   setBoostsRequiredToCircumventRestrictions: (boosts: number) => Promise<void>;
   /** Create an invite link for the chat which the message was received from. */
   createInviteLink: (params?: CreateInviteLinkParams) => Promise<InviteLink>;
-
+  /** Block the user who sent the message. User-only. */
+  block: () => Promise<void>;
+  /** Unblock the user who sent the message. */
+  unblock: () => Promise<void>;
   toJSON: () => Update;
 }
 
@@ -471,6 +474,17 @@ export class Client<C extends Context = Context> extends ClientAbstract {
         UNREACHABLE();
       }
     };
+    const mustGetUserId = () => {
+      if (msg?.from) {
+        return msg.from.id;
+      } else if ("callbackQuery" in update) {
+        return update.callbackQuery.from.id;
+      } else if ("chosenInlineResult" in update) {
+        return update.chosenInlineResult.from.id;
+      } else {
+        UNREACHABLE();
+      }
+    };
     const mustGetInlineMsgId = () => {
       if ("chosenInlineResult" in update) {
         if (update.chosenInlineResult.inlineMessageId) {
@@ -739,6 +753,12 @@ export class Client<C extends Context = Context> extends ClientAbstract {
       createInviteLink: (params) => {
         const { chatId } = mustGetMsg();
         return this.createInviteLink(chatId, params);
+      },
+      block: () => {
+        return this.blockUser(mustGetUserId());
+      },
+      unblock: () => {
+        return this.unblockUser(mustGetUserId());
       },
     };
 
@@ -2521,5 +2541,25 @@ export class Client<C extends Context = Context> extends ClientAbstract {
    */
   async createInviteLink(chatId: ID, params?: CreateInviteLinkParams): Promise<InviteLink> {
     return await this.#messageManager.createInviteLink(chatId, params);
+  }
+
+  /**
+   * Block a user. User-only.
+   *
+   * @method mc
+   * @param userId The identifier of the user to block.
+   */
+  async blockUser(userId: ID): Promise<void> {
+    await this.#messageManager.blockUser(userId);
+  }
+
+  /**
+   * Unblock a user. User-only.
+   *
+   * @method mc
+   * @param userId The identifier of the user to unblock.
+   */
+  async unblockUser(userId: ID): Promise<void> {
+    await this.#messageManager.unblockUser(userId);
   }
 }
