@@ -9,18 +9,18 @@ export interface InviteLink {
   inviteLink: string;
   /** The user who created the invite link. */
   creator: User;
-  /** Whether the invite link requires explicit approval from administrators. */
-  createsJoinRequest: boolean;
+  /** Whether an admin must explicitly approve join requests originating from this invite link. */
+  requiresApproval: boolean;
   // TODO: primary?
   /** Whether the invite link is revoked. */
   revoked: boolean;
-  /** An optional name. */
-  name?: string;
+  /** An optional title. */
+  title?: string;
   /** The point of time in which the invite link is expired at. */
   expiresAt?: Date;
-  /** The number of times the invite link can be used. */
+  /** The times the invite link can be used. */
   limit?: number;
-  /** The number of pending join requests from this invite link. */
+  /** The number of pending join requests originating from this invite link. */
   pendingJoinRequestCount?: number;
 }
 
@@ -31,18 +31,18 @@ export async function constructInviteLink(inviteLink_: types.ChatInviteExported,
   }
   const inviteLink = inviteLink_.link;
   const creator = constructUser(entity);
-  const createsJoinRequest = inviteLink_.request_needed ? true : false;
+  const requiresApproval = inviteLink_.request_needed ? true : false;
   const revoked = inviteLink_.revoked ? true : false;
-  const name = inviteLink_.title;
+  const title = inviteLink_.title;
   const expiresAt = inviteLink_.expire_date ? fromUnixTimestamp(inviteLink_.expire_date) : undefined;
   const limit = inviteLink_.usage_limit ? inviteLink_.usage_limit : undefined;
   const pendingJoinRequestCount = inviteLink_.requested;
   return cleanObject({
     inviteLink,
     creator,
-    createsJoinRequest,
+    requiresApproval,
     revoked,
-    name,
+    title,
     expiresAt,
     limit,
     pendingJoinRequestCount,
