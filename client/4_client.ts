@@ -2495,7 +2495,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
    * Create an invite link
    *
    * @method ch
-   * @param chatId The identifier of the chat to create an invite link for.
+   * @param chatId The identifier of the chat to create the invite link for.
    * @returns The newly created invite link.
    */
   async createInviteLink(chatId: ID, params?: CreateInviteLinkParams): Promise<InviteLink> {
