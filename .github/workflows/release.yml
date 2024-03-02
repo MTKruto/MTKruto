@@ -22,7 +22,7 @@ jobs:
 
       - run: deno run -A https://esm.sh/gh/mtkruto/tools@4ca0c02076/pre_jsr.ts ${{ github.ref_name }}
 
-      - run: deno publish --allow-slow-types
+      - run: deno publish
 
   publish-npm:
     name: Publish to npm
