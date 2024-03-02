@@ -10,7 +10,7 @@ import { AuthKeyUnregistered, FloodWait, Migrate, PasswordHashInvalid, PhoneNumb
 import { ClientAbstract } from "./0_client_abstract.ts";
 import { FilterQuery, match, WithFilter } from "./0_filters.ts";
 import { decryptMessage, encryptMessage, getMessageId } from "./0_message.ts";
-import { _SendCommon, AddReactionParams, AnswerCallbackQueryParams, AnswerInlineQueryParams, AuthorizeUserParams, BanChatMemberParams, CreateInviteLinkParams, CreateStoryParams, DeleteMessageParams, DeleteMessagesParams, DownloadParams, EditMessageParams, EditMessageReplyMarkupParams, ForwardMessagesParams, GetChatsParams, GetHistoryParams, GetMyCommandsParams, PinMessageParams, ReplyParams, SearchMessagesParams, SendAnimationParams, SendAudioParams, SendContactParams, SendDiceParams, SendDocumentParams, SendLocationParams, SendMessageParams, SendPhotoParams, SendPollParams, SendVenueParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams, SetChatMemberRightsParams, SetChatPhotoParams, SetMyCommandsParams, SetReactionsParams, UploadParams } from "./0_params.ts";
+import { _SendCommon, AddReactionParams, AnswerCallbackQueryParams, AnswerInlineQueryParams, AuthorizeUserParams, BanChatMemberParams, CreateInviteLinkParams, CreateStoryParams, DeleteMessageParams, DeleteMessagesParams, DownloadParams, EditMessageParams, EditMessageReplyMarkupParams, ForwardMessagesParams, GetChatsParams, GetCreatedInviteLinksParams, GetHistoryParams, GetMyCommandsParams, PinMessageParams, ReplyParams, SearchMessagesParams, SendAnimationParams, SendAudioParams, SendContactParams, SendDiceParams, SendDocumentParams, SendLocationParams, SendMessageParams, SendPhotoParams, SendPollParams, SendVenueParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams, SetChatMemberRightsParams, SetChatPhotoParams, SetMyCommandsParams, SetReactionsParams, UploadParams } from "./0_params.ts";
 import { checkPassword } from "./0_password.ts";
 import { Api, ConnectionError } from "./0_types.ts";
 import { getUsername, resolve } from "./0_utilities.ts";
@@ -155,6 +155,8 @@ export interface Context {
   setBoostsRequiredToCircumventRestrictions: (boosts: number) => Promise<void>;
   /** Create an invite link for the chat which the message was received from. */
   createInviteLink: (params?: CreateInviteLinkParams) => Promise<InviteLink>;
+  /** Get the invite links that were created for the chat which the message was received from. */
+  getCreatedInviteLinks: (params?: GetCreatedInviteLinksParams) => Promise<InviteLink[]>;
   /** Leave the chat which the message was received from. */
   leave: () => Promise<void>;
   /** Block the user who sent the message. User-only. */
@@ -300,6 +302,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
       getSelfId: this.#getSelfId.bind(this),
       getInputPeer: this.getInputPeer.bind(this),
       getInputChannel: this.getInputChannel.bind(this),
+      getInputUser: this.getInputUser.bind(this),
       getEntity: this[getEntity].bind(this),
       handleUpdate: this.#queueHandleCtxUpdate.bind(this),
       parseMode: this.#parseMode,
@@ -755,6 +758,10 @@ export class Client<C extends Context = Context> extends ClientAbstract {
       createInviteLink: (params) => {
         const { chatId } = mustGetMsg();
         return this.createInviteLink(chatId, params);
+      },
+      getCreatedInviteLinks: (params) => {
+        const { chatId } = mustGetMsg();
+        return this.getCreatedInviteLinks(chatId, params);
       },
       leave: () => {
         const { chatId } = mustGetMsg();
@@ -2539,7 +2546,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
   }
 
   /**
-   * Create an invite link
+   * Create an invite link.
    *
    * @method ch
    * @param chatId The identifier of the chat to create the invite link for.
@@ -2547,6 +2554,17 @@ export class Client<C extends Context = Context> extends ClientAbstract {
    */
   async createInviteLink(chatId: ID, params?: CreateInviteLinkParams): Promise<InviteLink> {
     return await this.#messageManager.createInviteLink(chatId, params);
+  }
+
+  /**
+   * Get the invite links created for a chat. User-only.
+   *
+   * @method ch
+   * @param chatId The identifier of the chat.
+   * @returns The invite links created for the chat. This might be a subset of the results if they were less than `limit`. The parameters `afterDate` and `afterInviteLink` can be used for pagination.
+   */
+  async getCreatedInviteLinks(chatId: ID, params?: GetCreatedInviteLinksParams): Promise<InviteLink[]> {
+    return await this.#messageManager.getCreatedInviteLinks(chatId, params);
   }
 
   /**
