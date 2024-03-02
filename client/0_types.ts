@@ -24,6 +24,7 @@ export interface C {
   getSelfId: () => Promise<number>;
   getInputPeer: (id: ID) => Promise<enums.InputPeer>;
   getInputChannel: (id: ID) => Promise<types.InputChannel>;
+  getInputUser: (id: ID) => Promise<types.InputUser>;
   getEntity: EntityGetter;
   handleUpdate: (update: Update) => void;
   parseMode: ParseMode;
