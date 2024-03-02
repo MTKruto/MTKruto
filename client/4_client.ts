@@ -1714,7 +1714,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
    * @param inlineMessageId The inline message's identifier.
    */
   async editInlineMessageReplyMarkup(inlineMessageId: string, params?: EditMessageReplyMarkupParams) {
-    return await this.#messageManager.editInlineMessageReplyMarkup(inlineMessageId, params);
+    await this.#messageManager.editInlineMessageReplyMarkup(inlineMessageId, params);
   }
 
   /**
@@ -1838,7 +1838,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
    * @param messageThreadId The thread to send the chat action to.
    */
   async sendChatAction(chatId: ID, action: ChatAction, params?: { messageThreadId?: number }): Promise<void> {
-    return await this.#messageManager.sendChatAction(chatId, action, params);
+    await this.#messageManager.sendChatAction(chatId, action, params);
   }
 
   /**
@@ -1846,6 +1846,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
    *
    * @method fs
    * @param contents The contents of the file.
+   * @returns The uploaded file.
    */
   async upload(contents: Uint8Array, params?: UploadParams) { // TODO: return type
     return await this.#fileManager.upload(contents, params);
@@ -1865,6 +1866,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
    * Get the bot's commands in the given scope and/or language. Bot-only.
    *
    * @method bs
+   * @returns The current bot's commands in the specified language.
    */
   async getMyCommands(params?: GetMyCommandsParams): Promise<BotCommand[]> {
     return await this.#botInfoManager.getMyCommands(params);
@@ -1912,15 +1914,17 @@ export class Client<C extends Context = Context> extends ClientAbstract {
    * Get the bot's description in the given language. Bot-only.
    *
    * @method bs
+   * @returns The current bot's description in the specified language.
    */
   async getMyDescription(params?: { languageCode?: string }): Promise<string> {
     return await this.#botInfoManager.getMyDescription(params);
   }
 
   /**
-   * Set the bot's name in the given language. Bot-only.
+   * Get the bot's name in the given language. Bot-only.
    *
    * @method bs
+   * @returns The current bot's name in the specified language.
    */
   async getMyName(params?: { languageCode?: string }): Promise<string> {
     return await this.#botInfoManager.getMyName(params);
@@ -1930,6 +1934,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
    * Get the bot's short description in the given language. Bot-only.
    *
    * @method bs
+   * @returns The current bot's short description in the specified language.
    */
   async getMyShortDescription(params?: { languageCode?: string }): Promise<string> {
     return await this.#botInfoManager.getMyShortDescription(params);
@@ -1943,7 +1948,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
    * @param messageIds The identifiers of the messages to delete.
    */
   async deleteMessages(chatId: ID, messageIds: number[], params?: DeleteMessagesParams): Promise<void> {
-    return await this.#messageManager.deleteMessages(chatId, messageIds, params);
+    await this.#messageManager.deleteMessages(chatId, messageIds, params);
   }
 
   /**
@@ -1954,7 +1959,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
    * @param messageId The identifier of the message to delete.
    */
   async deleteMessage(chatId: ID, messageId: number, params?: DeleteMessageParams): Promise<void> {
-    return await this.#messageManager.deleteMessages(chatId, [messageId], params);
+    await this.#messageManager.deleteMessages(chatId, [messageId], params);
   }
 
   /**
@@ -1963,6 +1968,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
    * @method ms
    * @param chatId The chat to send the photo to.
    * @param photo The photo to send.
+   * @returns The sent photo.
    */
   async sendPhoto(chatId: ID, photo: FileSource, params?: SendPhotoParams): Promise<MessagePhoto> {
     return await this.#messageManager.sendPhoto(chatId, photo, params);
@@ -1974,6 +1980,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
    * @method ms
    * @param chatId The chat to send the document to.
    * @param document The document to send.
+   * @returns The sent document.
    */
   async sendDocument(chatId: ID, document: FileSource, params?: SendDocumentParams): Promise<MessageDocument> {
     return await this.#messageManager.sendDocument(chatId, document, params);
@@ -1985,6 +1992,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
    * @method ms
    * @param chatId The chat to send the video to.
    * @param video The video to send.
+   * @returns The sent video.
    */
   async sendVideo(chatId: ID, video: FileSource, params?: SendVideoParams): Promise<MessageVideo> {
     return await this.#messageManager.sendVideo(chatId, video, params);
@@ -1996,6 +2004,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
    * @method ms
    * @param chatId The chat to send the animation to.
    * @param animation The animation to send.
+   * @returns The sent animation.
    */
   async sendAnimation(chatId: ID, animation: FileSource, params?: SendAnimationParams): Promise<MessageAnimation> {
     return await this.#messageManager.sendAnimation(chatId, animation, params);
@@ -2007,6 +2016,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
    * @method ms
    * @param chatId The chat to send the voice message to.
    * @param voice The voice to send.
+   * @returns The sent voice message.
    */
   async sendVoice(chatId: ID, voice: FileSource, params?: SendVoiceParams): Promise<MessageVoice> {
     return await this.#messageManager.sendVoice(chatId, voice, params);
@@ -2018,6 +2028,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
    * @method ms
    * @param chatId The chat to send the audio file to.
    * @param audio The audio to send.
+   * @returns The sent audio filr.
    */
   async sendAudio(chatId: ID, audio: FileSource, params?: SendAudioParams): Promise<MessageAudio> {
     return await this.#messageManager.sendAudio(chatId, audio, params);
@@ -2029,6 +2040,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
    * @method ms
    * @param chatId The chat to send the video note to.
    * @param videoNote The video note to send.
+   * @returns The sent video note.
    */
   async sendVideoNote(chatId: ID, videoNote: FileSource, params?: SendVideoNoteParams): Promise<MessageVideoNote> {
     return await this.#messageManager.sendVideoNote(chatId, videoNote, params);
@@ -2041,6 +2053,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
    * @param chatId The chat to send the location to.
    * @param latitude The location's latitude.
    * @param longitude The location's longitude.
+   * @returns The sent location.
    */
   async sendLocation(chatId: ID, latitude: number, longitude: number, params?: SendLocationParams): Promise<MessageLocation> {
     return await this.#messageManager.sendLocation(chatId, latitude, longitude, params);
@@ -2053,6 +2066,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
    * @param chatId The chat to send the contact to.
    * @param firstName The contact's first name.
    * @param number The contact's phone number.
+   * @returns The sent contact.
    */
   async sendContact(chatId: ID, firstName: string, number: string, params?: SendContactParams): Promise<MessageContact> {
     return await this.#messageManager.sendContact(chatId, firstName, number, params);
@@ -2063,6 +2077,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
    *
    * @method ms
    * @param chatId The chat to send the dice to.
+   * @returns The sent dice.
    */
   async sendDice(chatId: ID, params?: SendDiceParams): Promise<MessageDice> {
     return await this.#messageManager.sendDice(chatId, params);
@@ -2077,6 +2092,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
    * @param longitude The longitude of the venue.
    * @param title The title of the venue.
    * @param address The written address of the venue.
+   * @returns The sent venue.
    */
   async sendVenue(chatId: ID, latitude: number, longitude: number, title: string, address: string, params?: SendVenueParams): Promise<MessageVenue> {
     return await this.#messageManager.sendVenue(chatId, latitude, longitude, title, address, params);
@@ -2124,6 +2140,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
    *
    * @method fs
    * @param id Identifier of one or more of custom emojis.
+   * @returns The custom emoji documents.
    */
   async getCustomEmojiDocuments(id: string | string[]): Promise<Document[]> {
     return await this.#fileManager.getCustomEmojiDocuments(id);
@@ -2205,7 +2222,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
    * @param memberId The identifier of the member.
    */
   async deleteChatMemberMessages(chatId: ID, memberId: ID): Promise<void> {
-    return await this.#messageManager.deleteChatMemberMessages(chatId, memberId);
+    await this.#messageManager.deleteChatMemberMessages(chatId, memberId);
   }
 
   /**
@@ -2216,7 +2233,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
    * @param messageId The message's identifier.
    */
   async pinMessage(chatId: ID, messageId: number, params?: PinMessageParams): Promise<void> {
-    return await this.#messageManager.pinMessage(chatId, messageId, params);
+    await this.#messageManager.pinMessage(chatId, messageId, params);
   }
 
   /**
@@ -2227,7 +2244,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
    * @param messageId The message's identifier.
    */
   async unpinMessage(chatId: ID, messageId: number): Promise<void> {
-    return await this.#messageManager.unpinMessage(chatId, messageId);
+    await this.#messageManager.unpinMessage(chatId, messageId);
   }
 
   /**
@@ -2237,7 +2254,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
    * @param chatId The identifier of the chat.
    */
   async unpinMessages(chatId: ID): Promise<void> {
-    return await this.#messageManager.unpinMessages(chatId);
+    await this.#messageManager.unpinMessages(chatId);
   }
 
   /**
@@ -2290,6 +2307,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
    *
    * @method ch
    * @param chatId The identifier of the chat.
+   * @returns The chat's administrators.
    */
   async getChatAdministrators(chatId: ID): Promise<ChatMember[]> {
     return await this.#messageManager.getChatAdministrators(chatId);
@@ -2326,6 +2344,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
    * @method st
    * @param chatId The identifier of the chat to retrieve the story from.
    * @param storyId The identifier of the story to retrieve.
+   * @returns The retrieved story.
    */
   async getStory(chatId: ID, storyId: number): Promise<Story | null> {
     return await this.#storyManager.getStory(chatId, storyId);
@@ -2445,6 +2464,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
    * @method ac
    * @param id `"me"`, a bot ID, a supergroup ID, or a channel ID.
    * @param order The new order to use.
+   * @returns Whether the order was changed.
    */
   async reorderUsernames(id: ID, order: string[]): Promise<boolean> {
     return await this.#accountManager.reorderUsernames(id, order);
@@ -2464,6 +2484,7 @@ export class Client<C extends Context = Context> extends ClientAbstract {
    * Get inactive chats. User-only.
    *
    * @method ch
+   * @retuns A list of inactive chats the current user is member of.
    */
   async getInactiveChats(): Promise<InactiveChat[]> {
     return await this.#accountManager.getInactiveChats();
