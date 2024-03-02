@@ -1136,4 +1136,22 @@ export class MessageManager {
     });
     return await constructInviteLink(result[as](types.ChatInviteExported), this.#c.getEntity);
   }
+
+  async blockUser(userId: ID) {
+    await this.#c.storage.assertUser("blockUser");
+    const id = await this.#c.getInputPeer(userId);
+    if (!(id instanceof types.User)) {
+      throw new Error("blockUser: only users can be blocked or unblocked");
+    }
+    await this.#c.api.contacts.block({ id });
+  }
+
+  async unblockUser(userId: ID) {
+    await this.#c.storage.assertUser("unblockUser");
+    const id = await this.#c.getInputPeer(userId);
+    if (!(id instanceof types.User)) {
+      throw new Error("unblockUser: only users can be blocked or unblocked");
+    }
+    await this.#c.api.contacts.unblock({ id });
+  }
 }
