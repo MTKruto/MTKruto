@@ -4,13 +4,13 @@ import { as, chatIdToPeerId, enums, functions, getChatIdPeerType, Message_, Mess
 import { Storage, StorageMemory } from "../3_storage.ts";
 import { DC } from "../3_transport.ts";
 import { InactiveChat } from "../3_types.ts";
-import { BotCommand, Chat, ChatAction, ChatMember, ChatP, ConnectionState, constructUser, Document, FileSource, ID, InlineQueryResult, InputStoryContent, Message, MessageAnimation, MessageAudio, MessageContact, MessageDice, MessageDocument, MessageLocation, MessagePhoto, MessagePoll, MessageText, MessageVenue, MessageVideo, MessageVideoNote, MessageVoice, NetworkStatistics, ParseMode, Reaction, Story, Update, UpdateIntersection, User } from "../3_types.ts";
+import { BotCommand, Chat, ChatAction, ChatMember, ChatP, ConnectionState, constructUser, Document, FileSource, ID, InlineQueryResult, InputStoryContent, InviteLink, Message, MessageAnimation, MessageAudio, MessageContact, MessageDice, MessageDocument, MessageLocation, MessagePhoto, MessagePoll, MessageText, MessageVenue, MessageVideo, MessageVideoNote, MessageVoice, NetworkStatistics, ParseMode, Reaction, Story, Update, UpdateIntersection, User } from "../3_types.ts";
 import { ACK_THRESHOLD, APP_VERSION, DEVICE_MODEL, LANG_CODE, LANG_PACK, LAYER, MAX_CHANNEL_ID, MAX_CHAT_ID, PublicKeys, SYSTEM_LANG_CODE, SYSTEM_VERSION, USERNAME_TTL } from "../4_constants.ts";
 import { AuthKeyUnregistered, FloodWait, Migrate, PasswordHashInvalid, PhoneNumberInvalid, SessionPasswordNeeded, upgradeInstance } from "../4_errors.ts";
 import { ClientAbstract } from "./0_client_abstract.ts";
 import { FilterQuery, match, WithFilter } from "./0_filters.ts";
 import { decryptMessage, encryptMessage, getMessageId } from "./0_message.ts";
-import { _SendCommon, AddReactionParams, AnswerCallbackQueryParams, AnswerInlineQueryParams, AuthorizeUserParams, BanChatMemberParams, CreateStoryParams, DeleteMessageParams, DeleteMessagesParams, DownloadParams, EditMessageParams, EditMessageReplyMarkupParams, ForwardMessagesParams, GetChatsParams, GetHistoryParams, GetMyCommandsParams, PinMessageParams, ReplyParams, SearchMessagesParams, SendAnimationParams, SendAudioParams, SendContactParams, SendDiceParams, SendDocumentParams, SendLocationParams, SendMessageParams, SendPhotoParams, SendPollParams, SendVenueParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams, SetChatMemberRightsParams, SetChatPhotoParams, SetMyCommandsParams, SetReactionsParams, UploadParams } from "./0_params.ts";
+import { _SendCommon, AddReactionParams, AnswerCallbackQueryParams, AnswerInlineQueryParams, AuthorizeUserParams, BanChatMemberParams, CreateInviteLinkParams, CreateStoryParams, DeleteMessageParams, DeleteMessagesParams, DownloadParams, EditMessageParams, EditMessageReplyMarkupParams, ForwardMessagesParams, GetChatsParams, GetHistoryParams, GetMyCommandsParams, PinMessageParams, ReplyParams, SearchMessagesParams, SendAnimationParams, SendAudioParams, SendContactParams, SendDiceParams, SendDocumentParams, SendLocationParams, SendMessageParams, SendPhotoParams, SendPollParams, SendVenueParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams, SetChatMemberRightsParams, SetChatPhotoParams, SetMyCommandsParams, SetReactionsParams, UploadParams } from "./0_params.ts";
 import { checkPassword } from "./0_password.ts";
 import { Api, ConnectionError } from "./0_types.ts";
 import { getUsername, resolve } from "./0_utilities.ts";
@@ -153,6 +153,9 @@ export interface Context {
   searchMessages: (query: string, params?: SearchMessagesParams) => Promise<Message[]>;
   /** Set the number of boosts required to circument the chat's default restrictions. */
   setBoostsRequiredToCircumventRestrictions: (boosts: number) => Promise<void>;
+  /** Create an invite link for the chat which the message was received from. */
+  createInviteLink: (params?: CreateInviteLinkParams) => Promise<InviteLink>;
+
   toJSON: () => Update;
 }
 
@@ -732,6 +735,10 @@ export class Client<C extends Context = Context> extends ClientAbstract {
       setBoostsRequiredToCircumventRestrictions: (boosts) => {
         const { chatId } = mustGetMsg();
         return this.setBoostsRequiredToCircumventRestrictions(chatId, boosts);
+      },
+      createInviteLink: (params) => {
+        const { chatId } = mustGetMsg();
+        return this.createInviteLink(chatId, params);
       },
     };
 
@@ -2482,5 +2489,16 @@ export class Client<C extends Context = Context> extends ClientAbstract {
    */
   async setBoostsRequiredToCircumventRestrictions(chatId: ID, boosts: number): Promise<void> {
     await this.#messageManager.setBoostsRequiredToCircumventRestrictions(chatId, boosts);
+  }
+
+  /**
+   * Create an invite link
+   *
+   * @method ch
+   * @param chatId The identifier of the chat to create an invite link for.
+   * @returns The newly created invite link.
+   */
+  async createInviteLink(chatId: ID, params?: CreateInviteLinkParams): Promise<InviteLink> {
+    return await this.#messageManager.createInviteLink(chatId, params);
   }
 }

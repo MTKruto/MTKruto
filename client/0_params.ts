@@ -324,3 +324,14 @@ export interface SearchMessagesParams {
   /** The maximum number of results to return. Must be in the range of 1-100. Defaults to 100. */
   limit?: number;
 }
+
+export interface CreateInviteLinkParams {
+  /** An optional title to be attached to the link that can only be seen by admins. */
+  title?: string;
+  /** The point of time in which the invite link must no longer work. */
+  expireAt?: Date;
+  /** The times the invite link can be used. Cannot be specified while `requireApproval` is `true`. */
+  limit?: number;
+  /** Whether an admin must explicitly approve join requests originating from this invite link. Cannot be `true` while `limit` is specified. */
+  requireApproval?: boolean;
+}
