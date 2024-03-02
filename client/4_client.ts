@@ -155,7 +155,8 @@ export interface Context {
   setBoostsRequiredToCircumventRestrictions: (boosts: number) => Promise<void>;
   /** Create an invite link for the chat which the message was received from. */
   createInviteLink: (params?: CreateInviteLinkParams) => Promise<InviteLink>;
-
+  /** Leave the chat which the message was received from. */
+  leave: () => Promise<void>;
   toJSON: () => Update;
 }
 
@@ -739,6 +740,10 @@ export class Client<C extends Context = Context> extends ClientAbstract {
       createInviteLink: (params) => {
         const { chatId } = mustGetMsg();
         return this.createInviteLink(chatId, params);
+      },
+      leave: () => {
+        const { chatId } = mustGetMsg();
+        return this.leaveChat(chatId);
       },
     };
 
@@ -2521,5 +2526,25 @@ export class Client<C extends Context = Context> extends ClientAbstract {
    */
   async createInviteLink(chatId: ID, params?: CreateInviteLinkParams): Promise<InviteLink> {
     return await this.#messageManager.createInviteLink(chatId, params);
+  }
+
+  /**
+   * Join a chat. User-only.
+   *
+   * @method ch
+   * @param chatId The identifier of the chat to join.
+   */
+  async joinChat(chatId: ID): Promise<void> {
+    await this.#messageManager.joinChat(chatId);
+  }
+
+  /**
+   * Leave a chat.
+   *
+   * @method ch
+   * @param chatId The identifier of the chat to leave.
+   */
+  async leaveChat(chatId: ID): Promise<void> {
+    await this.#messageManager.leaveChat(chatId);
   }
 }
